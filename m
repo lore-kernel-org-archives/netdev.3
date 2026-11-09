@@ -1,91 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794188679;
-	b=OaFhIZtttBdXCR+cBpFpxdCd60UzFBg1H8OyTlotwTVadAUHfwLxN9ZFDr04GXro3tsC
-	 S/fGmIapo1v6MKeVTeQeaAJQsCjpYUXfTtJ8/+pBFqzNXEi/0u57nhYrho/bih4am0G2P
-	 IAbvGQ//QBBRn+9c+2sFeUiP5Iqke546Br8awYxKSdDaZcYAh3khfxZZIzxUQhxhTRCT6
-	 yjzYP2IwT7mgc5q4nGUq3lFg2JnteDR2pJtPBp1pMujFYZl3sp2ntnStToAYCXyC+Bmpe
-	 ILuXrHnCCNHU2oPMBKHgVVEOj4V6U0VEFBXvelcGGm89whjf5n85wDfUx6Uw+z3LIVQ==
+	t=1794188680;
+	b=Pj6pweGCU8eYiV1eN2hfCXZIQ88MKI4vVsYFxN7J1TUYdEbIxgWYit2mKj08V67U08MD
+	 awsKBKSK0Gt0DEiKRPEm2TFBgg/oze4CLUtqc7PfFfAAvIPgWe0Whqu4JZ3fadS9cT/fD
+	 cGLJXcqaSATqGzBhbFExFgEgOcMDVlC28V26dFcEBWvNs1FgrgS1vvbdOsrhb3BXZv/EA
+	 6InF0QigtdjxVc/3IOKbR3fHZjs0ZmErFXdDIwZwjyxhOCKbd2+PM9vyy3y8CpcREExHK
+	 cd9w5M7jb/Lae9EyQly36z3jV5Ke7W2XGL3auhvAi9qXb5+Q2kfN9ae9l9nSrJAEN5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794188679;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188680;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=bKRDH/csWdBIzl+fZEfHW5bnC7W0jUjOjtkERiHwheQ=;
-	b=ll2VpqkrWKicZkNF0PscIR9EdvpIJwfv+gMFTj2LgD1XhyQrtx7nnn3Yyc+5Q+bRH5/3
-	 +lSnbMHZpErZLtEtbB5OqPfad/gpViHl8Djmo+YAPtpfo2vyXru9UOgKbNFF0MJ/sYlCO
-	 vYuj+AnPTRuzvnhS4+1XvEIvn3an2KYv+hHimk+8IJ4roOB5Qwl0A8np3DWqx0CvbML2z
-	 oXDe9Yvx0Dr6E1GiJZG6E1wcRU30WABu/P3PbeJnanHRdmYLzh+VC28wdYA8FMKo1DwnJ
-	 +VGfy8aPjt4j/yORfSIovnQ9UcxQ4Z9DBOyEjM6dKmAYCsuJPfKwTPG9VglWH+WIQnQ==
+	bh=g5J/aOBvgTo8YDMv6UDQhVKZORAcQYXvMorhpgrKPmg=;
+	b=GCnupUEjAHBsWx5kMIx8LdHv1FZsH5FpX2UQQUnai5dnangcL7HUqGSXalRZdSUPz/iL
+	 WSt7cIqczdLEMu0BdMqnkYZ5aiP0Lww+00tblDHYm1yhjqjpX+x2rPQcPr3UGPyr6/2o+
+	 yn8LWvMXeFVR9D9tYSNfre2DvYBBMnEw3udPCw0S5GiPRMxGBlS6JcU2YG3Zy+Qnyhl5N
+	 OAiIaP2mBn9NSSxlU7Xu4/mUXp9r23RtlhOIapR0RiJnrWRvKGW4nahOLe+zuhPtJF6/F
+	 A2HTP/gu99zST6/KPhqv+08ick7u9KsiIIGtYcYMp1yIctdYv8YpMcgC7mVGq+wHIvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=uRAuvNr+;
-	arc=none smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Zf1kA+cz;
+	arc=none smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE8B606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:44:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FE8B606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692B5606A33B
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:44:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 692B5606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=uRAuvNr+
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc4be0e5351so92519a12.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:44:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Zf1kA+cz
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso94936a12.3
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:44:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794188679; x=1794793479; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794188680; x=1794793480; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bKRDH/csWdBIzl+fZEfHW5bnC7W0jUjOjtkERiHwheQ=;
-        b=uRAuvNr+vQKwjMhhzCS58E8T4CdgvTIY7JFU8+OURgPGInckS0JpIktGFqg818dhEu
-         5/r5g10FVUMJ/aiabG+G7+q/lVBrauTSrNqxwqK/fs/3aDqEw0waE3a8N5XohMEocblQ
-         k1WJfZsF4l9ZLVaj6tOqUNXhbrKIbAlbBeosMn9G2mMgigKTXMzv6e+6xlbqBiCekfYr
-         2YgDfUnJO0mysYBEuDRw0ZGlHKX7ZBrwQ4+fSr8+DY3YaoFgAV77ocojr2FInLT7oICm
-         ZM5iqyFAiAbaB49MN3yg4/KvE60oYqi+0kCtfYwg18gK79bGfjxX/+fCDv11KA5BxTDl
-         /AIA==
+        bh=g5J/aOBvgTo8YDMv6UDQhVKZORAcQYXvMorhpgrKPmg=;
+        b=Zf1kA+czPwCAVcoaRM3Jj1tyhP4DwcJe01mniu+e2gI1bPuBmTKY8YxRVSfAYlcJdt
+         rFfHRZLwG16FM0zEmLllgspmfeYtY2vFn/HgGUUSzi6Po3XqhXgBWDXluXtcZy35VSQc
+         9jAixggQR737mcDoFAUYcSRWQ5hto/HMC/VBoTbM5MSI4Hles23jKZPINs/0QgQnO1n1
+         62rHbAUP7Y9WhoHHdgxxo8gEmcrsFaWGgFao/y5NbmZkrYbvi/bvgRaOXrBcTkHYessD
+         P38nizqn9FiDe397b5whX6WK52wtbnfHmANe0Evxf0fj/+gmRqBsf/W5dQ6oLX3IAcyR
+         gENg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794188679; x=1794793479;
+        d=1e100.net; s=20260707; t=1794188680; x=1794793480;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bKRDH/csWdBIzl+fZEfHW5bnC7W0jUjOjtkERiHwheQ=;
-        b=rk24Cnk661ynR3EkF1IQDg4hKEwLZPQNxeY3lj9+K/XhyVTuur90at3AaMwyBY2lBF
-         f/D2Tu0w0K1TBUX1Xw7MImVhZG86e7HJ6wsT1Klz7apLSVYXgcDpyRsh56t+U9lTVB8Y
-         cSa9CQyc9bLtWo8BpwJn3/WZv+0cM3SAxY9LrbZ5idlXjKOTsgXjvZ+SM5GrYqIGF5bQ
-         wM2XGH4PgZI7bBMVLszWv0hCNTuNc6EDh2jZNK0N7U532IFoFBUhniSN1GfkuVcA8EgY
-         mBOMR2pyCYfQjUwauYi75B272qMEXcr7FCkGwH0oHPcB89+J5vYukZrO8p6QB85SF3mQ
-         WzPA==
-X-Gm-Message-State: APuU4Z/cGyQbFTW/AoEVbSVbUNuL83GftB/dRUDrRfIgQmE3jmEiQvlg
-	Kt5CwI3TE/B5NaVBu1y6XB49jEs7/crVUZxtUit4XCjZEUdOD4mCdk2WP8a9CKEKd7jp3VHZ5AZ
-	tA0xWV50=
-X-Gm-Gg: AYBFou2+w9VhudOsvq0HLPTf9McIZxM1eeVO9G99iMcuuGt8cmt+TedbHvpsZ+0bxp6
-	Sm1yHr0n78ed87oyppA0FAw7D6dvrVRQk6qA3rilChBT1Nrfyac7CbfNOdpQh9Zkml5SpI54NGw
-	dMIdvY6bTaD+z0gdGM3bAi1EuR9US90Bgo7RjBjN7MrDXFMzJzzGPxLaRfar1H16Mp+L5g2t5MS
-	sU14G5v2VKpNlE5giXlHCvRi7sAf6Wd173pKdNycs0QnCUOj+eKOfoK2Kt4d28vtC8M5YzJPET8
-	qdlndbLw9tPMqD66Ef9mXCZzcF3u39wRRVscsaXLnbbo+EQFVy0vOEACR+HPkflbzGSuYnB8Rbm
-	YiGaOoesO/0USGLnUUO1dZJG+xAz367PSAPEX2bSmsEjv/cO0I+rVSX10yZbsnZ4YPUxiynn9Hw
-	QIIdAIkAJ6TC5bVfqfrS+ZrklW5aeVXMVRzTamkwzWxZiMOKsNy3t5oy1G+/SRO7gAFCLtoZ4gc
-	8na8IKW8JtY7B2XDuId+IRkpdSXWPtuMfP57oFs1mFd+JOB5IgN9yBmRmI8c6R6qqGFbpfQpA8k
-	BalqwCj3zjl/nhfpUVeIjL/Sd0JViOuY9OKSnhhYUcLWtZsEdM+ttOG39j7L01x2cTG590Q=
-X-Received: by 2002:a17:90b:5683:b0:3b0:d551:ab2 with SMTP id 98e67ed59e1d1-3b12d5ac42fmr2381037a91.51.1794188678581;
-        Sun, 08 Nov 2026 17:44:38 -0800 (PST)
+        bh=g5J/aOBvgTo8YDMv6UDQhVKZORAcQYXvMorhpgrKPmg=;
+        b=NT9Ky4tjTaV18Cb8FDe7fqhHGK11WLZWkV+hjPIkk14xjQkkCjimKIibQ+IRtOk1yJ
+         NgaWWFKlRFbwW74/J4f3zihwftzNf2AZcGxP4u6kr5bj5ozoycwuRT/dWoKcMdIqOicl
+         loH4rzQCrzTllYc/SSu6Sg6G+212GWYdq90wqss+J1yEBdObfOP16IrrNVcrDUUgTfqJ
+         /H8fGQlPPirJB/WhRdPERbTHZXDGI44b71LBqfB6IfA9sgs0BGMhXRNoBp/QtXKfDFQz
+         t/qCCmCvSXC8lSXsaIRKcub1CKn36xeDghkUkEJHCNP+n3DeBzoriKDmeNp2nZ9EZ6Gx
+         k0cw==
+X-Gm-Message-State: APuU4Z8CCOMdyXflKX1gSlkj8G8JKquFrNmOXe2PpS7Y7ZjOyZUJhQri
+	r9RlSxXOg8keMHW91iIPN8CHONLewLuSOX6BhoMhK6fls6XqWzQsxANC8g4adqOPROGpBDH2PLj
+	gRBcqt9g=
+X-Gm-Gg: AYBFou1lFxSCus06G3KCHNwmiTDajVL+fTQAbXDKeRfURE0KmUWl+2F/IjUWtgU9Eu0
+	t8TPHugpzrjiYW3ZosyUTbG0jBoLW3WyYTcji4mvhMIH4YDuZzeVpDWvnsd651NDYEdH4cibFE2
+	JLsJzUUlr9T5stgO09t1Qrvm3FRAO14tdDEd7q8kztncZJ1bwcf0A6kQTZv837gP1sx3Zqy0WBN
+	BP1Z5UrbO8yCP8pVxUnH48IE/dJPPHVDrFku6t/oxFPHf6PbrwMVcGMFRqfmYMFxt/eAK2UlFaL
+	efXAEsPHUW1x0BvI962RgGAEYN1Tv/gcB7EZOMdQMDfF4okmtCM3Rx+otp55JdnRmWIg5WK0mjF
+	k+MtZfjJ34G4055IGxFtwYA2RgjvB48TVPAPLuzgNAfHHGIN2te9WJ9adl7ynE5ATfK20qZ3ibz
+	sW8nTBl6XidFmLuPYgbm0KJcSVRtbtJ1bVivxTNi1pbu1m3QkMvRlDTDwauzCrdGOrsT6oXt23P
+	dbxHaYdqcEQ0pAGNGZMdT6n0LvozJzfRZgSZT1GondvZDR5hiskuSLrEzIWCsFkoWf2J9s91W07
+	6PBBceL5vMUaUpt2JBgmrdxYHs9CH3mVpbTICP6Rae41psSOqVgYOLMTTKrRZTUxl4WmTLA=
+X-Received: by 2002:a17:90b:47:b0:3a8:7096:9b48 with SMTP id 98e67ed59e1d1-3b12d105c47mr2369503a91.1.1794188679728;
+        Sun, 08 Nov 2026 17:44:39 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc1bc1e6sm5641735a91.0.2026.11.08.17.44.37
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc1bc1e6sm5641735a91.0.2026.11.08.17.44.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 17:44:37 -0800 (PST)
+        Sun, 08 Nov 2026 17:44:39 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH iproute2 1/5] netlink: use a counter for sequence numbers
-Date: Sun,  8 Nov 2026 17:43:58 -0800
-Message-ID: <20261109014434.115922-2-stephen@networkplumber.org>
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2 2/5] netlink: ignore messages not sent by the kernel
+Date: Sun,  8 Nov 2026 17:43:59 -0800
+Message-ID: <20261109014434.115922-3-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109014434.115922-1-stephen@networkplumber.org>
 References: <20261109014434.115922-1-stephen@networkplumber.org>
@@ -100,120 +99,207 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Seeding the sequence number from time() breaks with a 32-bit time_t
-after 2038: time() returns -1, the first request gets sequence zero,
-and the range check in __rtnl_talk_iov() underflows, leaving ip
-blocked in recvmsg(). The seed adds nothing since replies are already
-matched by port id.
+A process with CAP_NET_ADMIN over the namespace can send unicast or
+multicast netlink datagrams to iproute2 tools. rtnl_listen() and
+mnlu_socket_recv_run() never checked the sender, so monitors print
+forged events and exit or overflow on malformed ones. The dump and talk
+loops checked nl_pid only after framing checks and after ss -D had
+recorded the datagram.
 
-Drop the seed so libnetlink starts at 1, make the range check
-wrap-safe, and replace the per-message time() in the mnl helpers with
-a counter that starts at 1 and skips zero.
+Drop any datagram whose sender is not port id 0 right after recvmsg(),
+in rtnl_recvmsg(), rtnl_listen() and a new mnlu_socket_recvfrom().
 
-Reported-by: Florian Fainelli <f.fainelli@gmail.com>
-Reported-by: Anthropic OSS scanner (ANT-2026-E6IHJA62)
-Reported-by: Anthropic OSS scanner (ANT-2026-1UC2GBCD)
+Reported-by: Anthropic OSS scanner (ANT-2026-ISEFARJF)
+Reported-by: Anthropic OSS scanner (ANT-2026-GYQAKSVI)
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
  include/mnl_utils.h |  1 +
- lib/libnetlink.c    |  4 +---
- lib/mnl_utils.c     | 13 +++++++++++--
- rdma/utils.c        |  2 +-
- 4 files changed, 14 insertions(+), 6 deletions(-)
+ lib/libnetlink.c    | 36 ++++++++++++++++++++----------------
+ lib/mnl_utils.c     | 35 ++++++++++++++++++++++++++++++++++-
+ rdma/stat.c         |  2 +-
+ 4 files changed, 56 insertions(+), 18 deletions(-)
 
 diff --git a/include/mnl_utils.h b/include/mnl_utils.h
-index 4df9e398..d809383c 100644
+index d809383c..19a49de6 100644
 --- a/include/mnl_utils.h
 +++ b/include/mnl_utils.h
-@@ -25,6 +25,7 @@ int mnlu_gen_socket_sndrcv(struct mnlu_gen_socket *nlg, const struct nlmsghdr *n
- 
- struct mnl_socket *mnlu_socket_open(int bus);
- int mnl_add_nl_group(struct mnl_socket *nl, unsigned int group);
-+uint32_t mnlu_next_seq(void);
+@@ -28,6 +28,7 @@ int mnl_add_nl_group(struct mnl_socket *nl, unsigned int group);
+ uint32_t mnlu_next_seq(void);
  struct nlmsghdr *mnlu_msg_prepare(void *buf, uint32_t nlmsg_type, uint16_t flags,
  				  void *extra_header, size_t extra_header_size);
++ssize_t mnlu_socket_recvfrom(const struct mnl_socket *nl, void *buf, size_t buf_size);
  int mnlu_socket_recv_run(struct mnl_socket *nl, unsigned int seq, void *buf, size_t buf_size,
+ 			 mnl_cb_t cb, void *data);
+ int mnlu_gen_socket_recv_run(struct mnlu_gen_socket *nlg, mnl_cb_t cb,
 diff --git a/lib/libnetlink.c b/lib/libnetlink.c
-index edf3a8ba..6ff9cace 100644
+index 6ff9cace..b923ba02 100644
 --- a/lib/libnetlink.c
 +++ b/lib/libnetlink.c
-@@ -15,7 +15,6 @@
- #include <netinet/in.h>
- #include <string.h>
- #include <errno.h>
--#include <time.h>
- #include <sys/uio.h>
- #include <linux/fib_rules.h>
- #include <linux/if_addrlabel.h>
-@@ -246,7 +245,6 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
- 			rth->local.nl_family);
- 		goto err;
- 	}
--	rth->seq = time(NULL);
- 	return 0;
- err:
- 	rtnl_close(rth);
-@@ -1092,7 +1090,7 @@ next:
+@@ -843,12 +843,22 @@ static int __rtnl_recvmsg(int fd, struct msghdr *msg, int flags)
+ 	return len;
+ }
  
- 			if (nladdr.nl_pid != 0 ||
- 			    h->nlmsg_pid != rtnl->local.nl_pid ||
--			    h->nlmsg_seq > seq || h->nlmsg_seq < seq - iovlen) {
-+			    (unsigned int)(seq - h->nlmsg_seq) >= iovlen) {
++/* Netlink datagrams from other processes are discarded */
++static bool rtnl_from_kernel(const struct msghdr *msg)
++{
++	const struct sockaddr_nl *nladdr = msg->msg_name;
++
++	return msg->msg_namelen == sizeof(*nladdr) && nladdr->nl_pid == 0;
++}
++
+ static int rtnl_recvmsg(int fd, struct msghdr *msg, char **answer)
+ {
+ 	struct iovec *iov = msg->msg_iov;
+ 	char *buf;
+ 	int len;
+ 
++again:
++	msg->msg_namelen = sizeof(struct sockaddr_nl);
+ 	iov->iov_base = NULL;
+ 	iov->iov_len = 0;
+ 
+@@ -873,6 +883,11 @@ static int rtnl_recvmsg(int fd, struct msghdr *msg, char **answer)
+ 		return len;
+ 	}
+ 
++	if (!rtnl_from_kernel(msg)) {
++		free(buf);
++		goto again;
++	}
++
+ 	if (answer)
+ 		*answer = buf;
+ 	else
+@@ -918,8 +933,7 @@ static int rtnl_dump_filter_l(struct rtnl_handle *rth,
+ 
+ 				h->nlmsg_flags &= ~a->nc_flags;
+ 
+-				if (nladdr.nl_pid != 0 ||
+-				    h->nlmsg_pid != rth->local.nl_pid ||
++				if (h->nlmsg_pid != rth->local.nl_pid ||
+ 				    h->nlmsg_seq != rth->dump)
+ 					goto skip_it;
+ 
+@@ -1066,12 +1080,6 @@ next:
+ 		if (status < 0)
+ 			return status;
+ 
+-		if (msg.msg_namelen != sizeof(nladdr)) {
+-			fprintf(stderr,
+-				"sender address length == %d\n",
+-				msg.msg_namelen);
+-			exit(1);
+-		}
+ 		for (h = (struct nlmsghdr *)buf; status >= sizeof(*h); ) {
+ 			int len = h->nlmsg_len;
+ 			int l = len - sizeof(*h);
+@@ -1088,8 +1096,7 @@ next:
+ 				exit(1);
+ 			}
+ 
+-			if (nladdr.nl_pid != 0 ||
+-			    h->nlmsg_pid != rtnl->local.nl_pid ||
++			if (h->nlmsg_pid != rtnl->local.nl_pid ||
+ 			    (unsigned int)(seq - h->nlmsg_seq) >= iovlen) {
  				/* Don't forget to skip that message. */
  				status -= NLMSG_ALIGN(len);
- 				h = (struct nlmsghdr *)((char *)h + NLMSG_ALIGN(len));
+@@ -1246,6 +1253,7 @@ int rtnl_listen(struct rtnl_handle *rtnl,
+ 		}
+ 
+ 		iov.iov_len = sizeof(buf);
++		msg.msg_namelen = sizeof(nladdr);
+ 		status = recvmsg(rtnl->fd, &msg, 0);
+ 
+ 		if (status < 0) {
+@@ -1261,12 +1269,8 @@ int rtnl_listen(struct rtnl_handle *rtnl,
+ 			fprintf(stderr, "EOF on netlink\n");
+ 			return -1;
+ 		}
+-		if (msg.msg_namelen != sizeof(nladdr)) {
+-			fprintf(stderr,
+-				"Sender address length == %d\n",
+-				msg.msg_namelen);
+-			exit(1);
+-		}
++		if (!rtnl_from_kernel(&msg))
++			continue;
+ 
+ 		if (rtnl->flags & RTNL_HANDLE_F_LISTEN_ALL_NSID) {
+ 			memset(&ctrl, 0, sizeof(ctrl));
 diff --git a/lib/mnl_utils.c b/lib/mnl_utils.c
-index 43b4cd1a..44e54aa8 100644
+index 44e54aa8..8ddf2b90 100644
 --- a/lib/mnl_utils.c
 +++ b/lib/mnl_utils.c
-@@ -5,7 +5,6 @@
+@@ -5,6 +5,7 @@
  
  #include <errno.h>
  #include <string.h>
--#include <time.h>
++#include <sys/socket.h>
  #include <libmnl/libmnl.h>
  #include <linux/genetlink.h>
  
-@@ -40,6 +39,16 @@ int mnl_add_nl_group(struct mnl_socket *nl, unsigned int group)
- 	return mnl_socket_bind(nl, group, MNL_SOCKET_AUTOPID);
- }
+@@ -111,6 +112,38 @@ static mnl_cb_t mnlu_cb_array[NLMSG_MIN_TYPE] = {
+ 	[NLMSG_OVERRUN]	= mnlu_cb_noop,
+ };
  
-+/* Sequence number for next request, zero is reserved for kernel events */
-+uint32_t mnlu_next_seq(void)
++/*
++ * Like mnl_socket_recvfrom(), but discards datagrams that were
++ * not sent by the kernel.
++ */
++ssize_t mnlu_socket_recvfrom(const struct mnl_socket *nl, void *buf, size_t buf_size)
 +{
-+	static uint32_t seq;
++	struct sockaddr_nl addr;
++	struct iovec iov = {
++		.iov_base = buf,
++		.iov_len = buf_size,
++	};
++	struct msghdr msg = {
++		.msg_name = &addr,
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++	};
++	ssize_t ret;
 +
-+	if (++seq == 0)
-+		seq = 1;
-+	return seq;
++	do {
++		msg.msg_namelen = sizeof(addr);
++		ret = recvmsg(mnl_socket_get_fd(nl), &msg, 0);
++		if (ret < 0)
++			return ret;
++	} while (msg.msg_namelen != sizeof(addr) || addr.nl_pid != 0);
++
++	if (msg.msg_flags & MSG_TRUNC) {
++		errno = ENOSPC;
++		return -1;
++	}
++	return ret;
 +}
 +
- struct nlmsghdr *mnlu_msg_prepare(void *buf, uint32_t nlmsg_type, uint16_t flags,
- 				  void *extra_header, size_t extra_header_size)
+ int mnlu_socket_recv_run(struct mnl_socket *nl, unsigned int seq, void *buf, size_t buf_size,
+ 			 mnl_cb_t cb, void *data)
  {
-@@ -49,7 +58,7 @@ struct nlmsghdr *mnlu_msg_prepare(void *buf, uint32_t nlmsg_type, uint16_t flags
- 	nlh = mnl_nlmsg_put_header(buf);
- 	nlh->nlmsg_type = nlmsg_type;
- 	nlh->nlmsg_flags = flags;
--	nlh->nlmsg_seq = time(NULL);
-+	nlh->nlmsg_seq = mnlu_next_seq();
+@@ -118,7 +151,7 @@ int mnlu_socket_recv_run(struct mnl_socket *nl, unsigned int seq, void *buf, siz
+ 	int err;
  
- 	eh = mnl_nlmsg_put_extra_header(nlh, extra_header_size);
- 	memcpy(eh, extra_header, extra_header_size);
-diff --git a/rdma/utils.c b/rdma/utils.c
-index f6605eef..a85e8422 100644
---- a/rdma/utils.c
-+++ b/rdma/utils.c
-@@ -685,7 +685,7 @@ int rd_exec_cmd(struct rd *rd, const struct rd_cmd *cmds, const char *str)
+ 	do {
+-		err = mnl_socket_recvfrom(nl, buf, buf_size);
++		err = mnlu_socket_recvfrom(nl, buf, buf_size);
+ 		if (err <= 0)
+ 			break;
+ 		err = mnl_cb_run2(buf, err, seq, portid,
+diff --git a/rdma/stat.c b/rdma/stat.c
+index f2c2d173..01cc171b 100644
+--- a/rdma/stat.c
++++ b/rdma/stat.c
+@@ -735,7 +735,7 @@ static int stat_one_qp_unbind(struct rd *rd)
+ 	 * then rd_recv_msg() always return -1 here
+ 	 */
+ 	portid = mnl_socket_get_portid(rd->nl);
+-	ret = mnl_socket_recvfrom(rd->nl, buf, sizeof(buf));
++	ret = mnlu_socket_recvfrom(rd->nl, buf, sizeof(buf));
+ 	if (ret <= 0)
+ 		return ret;
  
- void rd_prepare_msg(struct rd *rd, uint32_t cmd, uint32_t *seq, uint16_t flags)
- {
--	*seq = time(NULL);
-+	*seq = mnlu_next_seq();
- 
- 	rd->nlh = mnl_nlmsg_put_header(rd->buff);
- 	rd->nlh->nlmsg_type = RDMA_NL_GET_TYPE(RDMA_NL_NLDEV, cmd);
 -- 
 2.53.0
 
