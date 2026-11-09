@@ -1,97 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.76.5.236
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794201522;
-	b=1YyVEocVKtZcIQv364h8tVwqE4ow/M8lZyoKzD6xIT888kgisOr6eICiARnr8faysbkj
-	 RwfsbUxAcYgVrwk8ATRHYEAY+jvh3nqANGvubgf7HtQ+gbnILPylvAO5Eef/hfmQMrYDy
-	 0Zvsi+BnnffhzSMwDoaIdxE+JJjwZ0lRM2EvTeJh/nhS2bnVpvHjPPbSVMWEIQVzr0dDa
-	 tE9TvuhgGvdg8p2iJxz2iBpGch7G4EQNwMHY45o3P29vMmbjOrAlSwpiBI1Qk1Xl0JBWw
-	 h5JJjQojQE/YQRMpv9ZSCtrsGVAiMXxcNzVc7Cwc1B696eWYGheN5glgZQkNNWvLj3g==
+	t=1794201562;
+	b=wUW6Ttunzwu2eSGMtCCyjgaV8lYexlAzltGb4uaHGvD00xPpyOMEEXgwKGSqsTzwJeyN
+	 sPthzNOLsumHtn3n/hDWYmj2qXD8/LjKfQ64Ffh1FX8xBRBLOavp2lF8JxYSvPkmWu4ny
+	 o84266WbPovLRuNBeLzTnlbl0f6RGKpG7SJVgqL43jraRoY3FdGg3XXTRdFQYdxUanf73
+	 61u6JCV20/ZTNj79eh+Jmo9GLNwg22TFChpyfTuL5hpDPUOxVqw11HvOQA2abaXL3QLIC
+	 thrvQzWiSKIweKrv+Dx3NMkt08EbFFUjeBFpf6w8UwMvafpLZBYr28f7j5qzAz8rjUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794201522;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
-	b=tDn48CiI5PRkq/8ViaiBOYxAanfdSG3BPz/sPJ9Ed3qwVv8G9rujpj+c5F6ahtg8jHzs
-	 A3jioTrhdC1NdpX/En+t8CJnpSEitw8GBZ+lkAlg1ttS7vu77hjeTmFJjVQDp/RgZ9JxI
-	 +ndllnKrtFEPR8XXOud8gq8j76UksUevPBpR/hyLYF/O4NPE76lmcOGX6U4T743Kxg6cW
-	 KV6YPrXp4PnGcCXZaXYd86/NSeC0Mvg6ACCyeoyfWSS7DVL5JbDMqmQSwlf0ugjJbMGmu
-	 AhrRFJY/1DSwoyfHj3g1wESfEDPHvGYUTHExt1GETEAV+bkRf51jZ99spVTWbF+zWAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794201562;
+	h=DMARC-Filter:X-MD-Sfrom:X-MD-SrcIP:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version:
+	 DKIM-Signature;
+	bh=Ce3YwrOJXaRipfIYp3w8Z9TnqInm8hZCIQukd1m1qlk=;
+	b=auEuUg7PpLRMCu33ePhFV93jq91ASMgyJWITtnV8sMxs3c6wef5RJTp7AsWY/7nEHx9T
+	 xBiR/Y6i0EqEYYvTVe8Ht6ddyXxw/s5xODUa1Y3mjLgZum2zjZU9zdIbvI0Qhb+IMpSWh
+	 ZvJsgrwUN3iLrBft308+m/rKNjMpFdozxZD6fQaAW/+h3zuLdSr2U8cViffxhWhZ1MjEO
+	 XLBOZvY/VJraiFgw1Vr5xF3KTX1rh6CjrytdWzGhLp6O4fp+4wN5Y+kugOfuGhHG84QE9
+	 A2Ek+arz0uaDSau0Q/oq9EP3Wvn7bM6yQ5bY0G5D8HArc38RAZk+cnrVkyX5fI5qnwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=codeconstruct.com.au;
-	spf=pass smtp.mailfrom=codeconstruct.com.au;
-	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq;
-	arc=none smtp.remote-ip=203.29.241.158
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135E606A321;
-	Mon,  9 Nov 2026 05:18:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1135E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	dmarc=pass header.from=baidu.com;
+	spf=pass smtp.mailfrom=baidu.com;
+	dkim=pass header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=BnktGqNT;
+	arc=none smtp.remote-ip=180.76.5.236
+Received: from outbound.baidu.com (outbound.baidu.com [180.76.5.236])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 66A8B606A321;
+	Mon,  9 Nov 2026 05:19:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A8B606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1794201519;
-	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=egf84Gcqai+t2RbzRcp/hsSqUjhQHhjh3vyzhBpm8hV2KWxqDFJxnPUahIU113EcT
-	 BgLm6wqU/Euo4rhk1oHtIX3Z9zvOL05mtWbK6K/L7+70zAOa6b9LxPeqiMFkTfAyXR
-	 sJ6r+I/RKBuOwB8hQ4kh0KzVB0J735kCbnMQRQlA7QvM+MYWUHFrMnQcdvVsUlq4qL
-	 OrhgI7yGlCRf9GdwPQCvkWPbpW6LqMolW9oQ7mrzBne/qL9+nOjj/aqp3F164dsqk2
-	 7rLero/HB4L0DSs1r+ug01+7VgG2RcG87tSeq7M4AqhpAUCMcl+W2qQMRVuMpXb4J2
-	 kfa7LW520ih5Q==
-Received: from [192.168.68.117] (unknown [180.150.112.139])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 083566E9E9;
-	Mon,  9 Nov 2026 13:18:31 +0800 (AWST)
-Message-ID: <4848c58f3152233477c4fa4786de2a49c9261c9c.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 09/14] soc: aspeed: convert LPC and P2A control mmap
- hooks to mmap_prepare
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Juergen Gross
- <jgross@suse.com>,  Stefano Stabellini <sstabellini@kernel.org>, Oleksandr
- Tyshchenko <oleksandr_tyshchenko@epam.com>, Madhavan Srinivasan	
- <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>,  "Ritesh Harjani (IBM)"	 <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Haiyang Zhang	
- <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui	
- <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang	
- <jasowangio@gmail.com>, Eugenio =?ISO-8859-1?Q?P=E9rez?=
- <eperezma@redhat.com>,  Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko
- Sakkinen <jarkko@kernel.org>, Dave Hansen	 <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar	 <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Jan Kara <jack@suse.com>, Paul Moore
- <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=	 <omosnacek@gmail.com>, Joel Stanley
- <joel@jms.id.au>, Ryan Chen	 <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>, Konrad
- Dybcio <konradybcio@kernel.org>, Abel Vesa	 <abelvesa@kernel.org>, Jens
- Wiklander <jenswi@kernel.org>, Sumit Garg	 <sumit.garg@kernel.org>, Scott
- Branden <scott.branden@broadcom.com>,  Broadcom internal kernel review list
-	 <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran
- <richardcochran@gmail.com>, David Woodhouse	 <dwmw2@infradead.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski	 <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org, 	virtualization@lists.linux.dev,
- linux-sgx@vger.kernel.org, 	selinux@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, 	linux-aspeed@lists.ozlabs.org,
- linux-arm-msm@vger.kernel.org, 	op-tee@lists.trustedfirmware.org,
- netdev@vger.kernel.org
-Date: Mon, 09 Nov 2026 15:48:30 +1030
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
-	 <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key, unprotected) header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=BnktGqNT
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.45
+From: "Li,Rongqing" <lirongqing@baidu.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIGFmX3VuaXg6IEZpeCB3cm9uZyBz?=
+ =?gb2312?B?b2NrZXQgdGVzdGVkIGluIHRoZSBzeW1tZXRyaWMgaGFsZiBvZiB1bml4X3N0?=
+ =?gb2312?B?YXRlX2xvY2tfY21wX2ZuKCku?=
+Thread-Topic: [????] Re: [PATCH] af_unix: Fix wrong socket tested in the
+ symmetric half of unix_state_lock_cmp_fn().
+Thread-Index: AQHdbiv8JPaqeURuJkmRgktJk6Opfbchu90AgAN7aIA=
+Date: Mon, 9 Nov 2026 05:19:15 +0000
+Message-ID: <06faaaea248d4cefb1f12d1221b75a8a@baidu.com>
+References: <20261106201822.1734-1-lirongqing@baidu.com>
+ <au7bGHqwhXXttXH_@google.com>
+In-Reply-To: <au7bGHqwhXXttXH_@google.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,16 +67,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1794201559;
+	bh=Ce3YwrOJXaRipfIYp3w8Z9TnqInm8hZCIQukd1m1qlk=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=BnktGqNTdzYCtmaSKBirjfFdHdxXUvMZp//Iq6FTjlo4y3zxCE8daWyoIIvEkLnPr
+	 tHmAJ0e3x6qWRJ6UrktvTlxEkLzJYZLb25MzI+HHWWdcapxnVuqlHmjC3GNQzYLeuN
+	 eSrXOQB/i2/+QerzxR5Qjzfg3aJBwH6nLLv7/E21LQKE0Xv86N1Z7Ux7MmgBg9Pdlo
+	 W9w5EfKIKjwOQUhTeSy3+RpY6DIEuNF98+6BnO30ZdcGX9JuMzxS3gVKMPDjTdYHbE
+	 DqbdOyfPJdKxqVmNCP4GeuTrM+tStqG2CwQCc8BTzEVK3Ch7e6054OK1iUrQxO32/U
+	 dozKF7/paX7AA==
 
-On Thu, 2026-11-05 at 21:05 +0000, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook for both
-> the LPC control and P2A control drivers.
->=20
-> Both remap a range of their reserved memory region, so use the PFN remap
-> mmap action to do so, retaining the -EAGAIN error on failure via the acti=
-on
-> error override.
->=20
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+DQo+ID4gW1BBVENIXSBhZl91bml4OiBGaXggd3Jvbmcgc29ja2V0IHRlc3RlZCBpbiB0aGUgc3lt
+bWV0cmljIGhhbGYNCj4gDQo+IFRoaXMgaXMgbmV0LW5leHQgbWF0ZXJpYWwsIHNvIGl0IHNob3Vs
+ZCBiZQ0KPiANCj4gICBbUEFUQ0ggbmV0LW5leHQgdlhdIGFmX3VuaXg6IC4uLg0KPiANCj4gc2Vl
+IERvY3VtZW50YXRpb24vcHJvY2Vzcy9tYWludGFpbmVyLW5ldGRldi5yc3QuDQo+IA0KPiANCj4g
+T24gU2F0LCAwNyBOb3YgMjAyNiAwNDoxODoyMiArMDgwMCwgbGlyb25ncWluZyB3cm90ZToNCj4g
+PiBGcm9tOiBMaSBSb25nUWluZyA8bGlyb25ncWluZ0BiYWlkdS5jb20+DQo+ID4NCj4gPiBUaGUg
+c2Vjb25kIGhhbGYgb2YgdW5peF9zdGF0ZV9sb2NrX2NtcF9mbigpIGlzIG1lYW50IHRvIG1pcnJv
+ciB0aGUNCj4gPiBmaXJzdCBvbmUgd2l0aCB0aGUgcm9sZXMgb2YgYSBhbmQgYiBzd2FwcGVkLCBi
+dXQgaXQgc3dpdGNoZXMgb24gYidzDQo+ID4gc3RhdGUgYWdhaW46DQo+ID4NCj4gPiAJaWYgKGIt
+PnNrLnNrX3N0YXRlID09IFRDUF9MSVNURU4pIHsNCj4gPiAJCXN3aXRjaCAoYi0+c2suc2tfc3Rh
+dGUpIHsNCj4gPiAJCWNhc2UgVENQX0NMT1NFOg0KPiA+IAkJY2FzZSBUQ1BfRVNUQUJMSVNIRUQ6
+DQo+ID4gCQkJcmV0dXJuIDE7DQo+ID4NCj4gPiBUaGUgZW5jbG9zaW5nIGlmIGFscmVhZHkgZXN0
+YWJsaXNoZWQgdGhhdCBiIGlzIFRDUF9MSVNURU4sIHNvIHRoZQ0KPiA+IHN3aXRjaCBjYW4gb25s
+eSByZWFjaCB0aGUgZGVmYXVsdCBsYWJlbCBhbmQgdGhlIGJyYW5jaCBhbHdheXMgcmV0dXJucw0K
+PiA+IDAsICJubyBvcmRlciBrbm93biIsIGluc3RlYWQgb2YgdGhlIGludGVuZGVkIDEuDQo+ID4N
+Cj4gPiBUZXN0IGEncyBzdGF0ZSwgYXMgdGhlIGZpcnN0IGhhbGYgZG9lcy4gIFRoZSBjb2RlIGlz
+IG9ubHkgY29tcGlsZWQNCj4gPiB3aXRoIENPTkZJR19QUk9WRV9MT0NLSU5HLCBzbyB0aGVyZSBp
+cyBubyBydW50aW1lIG1lbW9yeS1zYWZldHkNCj4gPiBpbXBhY3Q7IHRoZSBlZmZlY3QgaXMgdGhh
+dCBsb2NrZGVwIGNhbm5vdCB2YWxpZGF0ZSB0aGlzIG5lc3Rpbmcgb3JkZXINCj4gPiBvZiB1bml4
+X3N0YXRlX2xvY2soKS4NCj4gPg0KPiA+IEZpeGVzOiA5OGY3MDZkZTQ0NWIgKCJhZl91bml4OiBE
+ZWZpbmUgbG9ja2luZyBvcmRlciBmb3IgVV9MT0NLX1NFQ09ORA0KPiA+IGluIHVuaXhfc3RyZWFt
+X2Nvbm5lY3QoKS4iKQ0KPiANCj4gUGxlYXNlIGRyb3AgdGhlIHRhZy4NCj4gDQo+IEFzIGNvbW1l
+bnRlZCwgdGhlIGJyYW5jaCBuZXZlciBoaXRzIGFuZCBubyByZWFsIGlzc3VlIGV4aXN0cywgbm90
+IHdvcnRoDQo+IGJhY2twb3J0aW5nLg0KPiANCg0KT2ssIEkgd2lsbCBzZW5kIHYyDQoNCltMaSxS
+b25ncWluZ10gDQoNCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3Fp
+bmdAYmFpZHUuY29tPg0KPiA+IC0tLQ0KPiA+ICBuZXQvdW5peC9hZl91bml4LmMgfCAyICstDQo+
+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiA+DQo+
+ID4gZGlmZiAtLWdpdCBhL25ldC91bml4L2FmX3VuaXguYyBiL25ldC91bml4L2FmX3VuaXguYyBp
+bmRleA0KPiA+IGU3YTA1ODIuLjUwMWU2OTMgMTAwNjQ0DQo+ID4gLS0tIGEvbmV0L3VuaXgvYWZf
+dW5peC5jDQo+ID4gKysrIGIvbmV0L3VuaXgvYWZfdW5peC5jDQo+ID4gQEAgLTE2Myw3ICsxNjMs
+NyBAQCBzdGF0aWMgaW50IHVuaXhfc3RhdGVfbG9ja19jbXBfZm4oY29uc3Qgc3RydWN0DQo+ID4g
+bG9ja2RlcF9tYXAgKl9hLA0KPiA+DQo+ID4gIAkvKiBTaG91bGQgbmV2ZXIgaGFwcGVuLiAgSnVz
+dCB0byBiZSBzeW1tZXRyaWMuICovDQo+ID4gIAlpZiAoYi0+c2suc2tfc3RhdGUgPT0gVENQX0xJ
+U1RFTikgew0KPiA+IC0JCXN3aXRjaCAoYi0+c2suc2tfc3RhdGUpIHsNCj4gPiArCQlzd2l0Y2gg
+KGEtPnNrLnNrX3N0YXRlKSB7DQo+ID4gIAkJY2FzZSBUQ1BfQ0xPU0U6DQo+ID4gIAkJY2FzZSBU
+Q1BfRVNUQUJMSVNIRUQ6DQo+ID4gIAkJCXJldHVybiAxOw0KPiA+IC0tDQo+ID4gMi45LjQNCj4g
+Pg0K
