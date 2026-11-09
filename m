@@ -1,71 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.216.245.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794191462;
-	b=yqeIQ7WxdfP6VYMoRoSAwXWXZrhA4bW7oho41WgwWekpIhXBDCP4HBUqiZH6cA+1nGoQ
-	 DaW54j7rGcfwC8uv2gOQSADATns+sSMQGzOHFNH5lRy5TgVJGHS2ZJWY4DUSfY/1N+1In
-	 ttExRoVgSWX9Xf7CAmggDcgz9zTQ6bnXL/VDRATOL+4wd2YfLGl51G03P06MyOP/2i+az
-	 9MIpcHZLhwQEVzWFdyOGqYmxAI+UBihxMELVU+7qHwD31MVJvX82FgpnuO43nhKciwjLU
-	 pNxv72k9pC/aNnst/3SL1zU6kBkZ5y1IG5dnNVnK/litd7BnZD7/T42tS4vKcjui7lA==
+	t=1794191671;
+	b=RZ91KOAttDddoPtFLfLyyaR2bZT9KfeXqt93O20AjUr0soLMYik64+9rVF9Jzi2YR6xU
+	 1CIUXLNLLdnP9E7JPQwq2LKptlWEgXjIUB2IH2rsfbWm+aOyNQlElSpvs8yrR8cv8jmf6
+	 COXXRwd0y8wUNIaBB9Yp2xt4WNfzFH3zC8FiAszVy45a4CUpcbo8biV/zwh9sft6/FH4x
+	 U/CoMPD6+rdx6Skm/nIP3xTF99VxLVfnnkanvvshc6FujUiO2aTJm1nw+Nwb6JVavuGPd
+	 83BGPb6Vl+rxX0lbG5JP2zTp7Mvc5w6DGzojh2Ff/tQ5JDK4q7H0VFVt5DAVw/PwDug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794191462;
-	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	bh=Sg7kFJ816o8kJgvC4j52qN4GkMxGSDm4Q8WgxVvur4k=;
-	b=ywa0ADHggmSUTecX2DqW+4k5tQGynuZYR5ClYsq25IoexUrD77U2/BFwU8Xg8U/qE0L4
-	 AEtcKdsYjPqch2tsuheO+YiOKJIr+T5V+fswnRx7/zOCZ1fZC9VEkcdPll0Jl/y/AhoxS
-	 AP2gWXFBLnHAbxZ0PR13fiWbCyucR7MMy7cxFiHiB05N4ntbBWZ5X9rrETKM7C9SvSeFb
-	 tO2uTrHc11moiGTQvkN6GVQ5HzunDjeT8DbNqiQZz1q+TfD7txS9y/CshD35xRJEF1+Er
-	 s8IWiwhT1oPlLZq6ZxkggJ/YenZ9FocVtbc84xmvdv5xO5BlSDE2ZhJXDyh/3/c7rRw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794191671;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=yaOg5jE0A5OJDKzqYaU0N0tlT5DHTRA+lI5J6+ouIOE=;
+	b=nwZPjPLXDN7xqFFUeMtnPKpN/CV1VMBC0Aym+xSLfYJ2b7XtTEH89ukbHfJJIQNoj1Nq
+	 5GnBxGipOLxUvPZUU5tEDPSaY+heeOqYzHDANy8uVBMHKVEMbh0UkiJrd6RKHHvT+zoB3
+	 xxGd/w3AKaWnBRxxxDkOTaIZH7RKJbP0/FIIXQ+VMIy8yERmVBVU+59wkTVt8iEmfgsaF
+	 YBE622xFKZjUDMJ7XIrq/pie83EptzDTvkzPFATgvuNkTbJMvrUKTUJmYIMkhOdamQnkj
+	 3Ji85ga3sBt1XhLqyUyDEd2hKrciFtx1fRHOk+ebmwXz6v4VcbteeQMTZhpIwyWiH7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=realsil.com.cn;
-	spf=pass smtp.mailfrom=realsil.com.cn;
-	dkim=pass header.d=realsil.com.cn header.i=@realsil.com.cn header.a=rsa-sha256 header.s=dkim header.b=rg+iY2Is;
-	arc=none smtp.remote-ip=211.75.126.72
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	dmarc=none header.from=strlen.de;
+	spf=pass smtp.mailfrom=strlen.de;
+	arc=none smtp.remote-ip=91.216.245.30
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C59606A31C;
-	Mon,  9 Nov 2026 02:30:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81C59606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=realsil.com.cn header.i=@realsil.com.cn header.a=rsa-sha256 header.s=dkim header.b=rg+iY2Is
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6A92UPdY43939940, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1794191426;
-	bh=Sg7kFJ816o8kJgvC4j52qN4GkMxGSDm4Q8WgxVvur4k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=rg+iY2IsbtT5E9DL609reaWoZPb4slw/PLSOTOsLuFqtD9sEU7Y1kSteF0dFP+gUy
-	 dNkewB6H3SPOpTt+IPI2lVl4MurW7UcZIfNY18TPv5oK+7IDbrlQRjAgadf2cmlc3c
-	 4XrEfFknaT96Bgrs8aNne9E0JJijDt3GWO1eRI+k1dvEd3INPlkDTro0miL4p5ujwp
-	 i5xrF4rvkYOXBU9CfALvNigVUP0uQWVAgxYmREsWmqFCVGwA5kQeteYuuZTIOZoIZV
-	 YhzocNuMANSpGBm/oXL1jjVZJ+G5UirpdVTMMIzOHaey9iTQtt3tbqHeJUyuLPgWvm
-	 1hWKBe8nXrsWA==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6A92UPdY43939940
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 9 Nov 2026 10:30:26 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 9 Nov 2026 10:30:25 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
- Transport; Mon, 9 Nov 2026 10:30:25 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v1 0/3] r8169: add PTP support for RTL8127a
-Date: Mon, 9 Nov 2026 10:30:19 +0800
-Message-ID: <20261109023022.770-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9DE606A320;
+	Mon,  9 Nov 2026 02:34:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E9DE606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 3DB7160490; Mon, 09 Nov 2026 03:34:21 +0100 (CET)
+Date: Mon, 9 Nov 2026 03:34:20 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Noah Weinberger <NoahWeinberger2003@proton.me>
+Cc: "pablo@netfilter.org" <pablo@netfilter.org>,
+	"kadlec@netfilter.org" <kadlec@netfilter.org>,
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] netfilter: nft_dynset: reject DELETE op when set lacks
+ ->delete
+Message-ID: <avExLOsc3ZWRF5hh@strlen.de>
+References: <5aybqcVfq3WxYdpbT0Ea6bEWamp-4x10J9FF_5La7SSXJ57a4j176x_t3zUW8Ii2r84MsPX8xx_vNashO2PRWvuO9yNsaxS8YV_4TLc-QHU=@proton.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,42 +52,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5aybqcVfq3WxYdpbT0Ea6bEWamp-4x10J9FF_5La7SSXJ57a4j176x_t3zUW8Ii2r84MsPX8xx_vNashO2PRWvuO9yNsaxS8YV_4TLc-QHU=@proton.me>
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Noah Weinberger <NoahWeinberger2003@proton.me> wrote:
+> Hello,
+> 
+> nft_dynset_init() checks that the referenced set implements ->update,
+> but for NFT_DYNSET_OP_DELETE the packet path calls set->ops->delete
+> unconditionally. Today the only set type with ->update (nft_set_hash)
+> also implements ->delete, so the call is always valid - but any future
+> set type implementing ->update without ->delete turns a rule evaluation
+> into a NULL function call.
+> 
+> Reject the DELETE op at init time when ->delete is missing, next to the
+> existing ->update check.
+> 
+> Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07), net/netfilter/nft_dynset.c:98-101 (eval), 209-217 (init).
+> Longstanding asymmetry.
+> 
+> This was found during an assisted (AI-supported) static source review of
+> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
+> reporter against that tree. The patch below has NOT been compiled and has
+> NOT been runtime tested, and no reproducer was produced - the triggering
+> conditions are described above instead. Please treat this as a report for
+> verification rather than a battle-tested fix.
 
-This series adds IEEE 1588 PTP support to r8169 for RTL8127a
-(RTL_GIGA_MAC_VER_80): a PTP hardware clock and hardware TX/RX
-timestamping of PTPv2 event messages. PPS and other auxiliary
-functions are intentionally left out.
+This would have been fine 1 year ago but we no longer have resources
+and time to reproduce and verify such "fixes".
 
-The PTP block is accessed through the PHY OCP interface, which may now
-be used from atomic context, so patch 1 converts the GPHY_OCP access to
-an atomic poll and serializes it with a dedicated spinlock.
+Ask your LLM for a reproducer, run it, show a minimal backtrace.
+We have LLMs too and we can use them to create enough usless and
+time-consuming tasks as-is.
 
-Patch 2 registers the PHC (adjfine, adjtime, gettimex64, settime64)
-while the interface is up.
-
-Patch 3 adds hardware timestamping via ndo_hwtstamp_get/set, reports
-the capabilities via get_ts_info and the TX timestamp counters via
-get_ts_stats.
-
-Javen Xu (3):
-  r8169: make PHY OCP access safe in atomic context
-  r8169: add PTP hardware clock support for RTL8127a
-  r8169: add hardware timestamping support for RTL8127a
-
- drivers/net/ethernet/realtek/Kconfig      |   1 +
- drivers/net/ethernet/realtek/Makefile     |   2 +-
- drivers/net/ethernet/realtek/r8169.h      |   2 +
- drivers/net/ethernet/realtek/r8169_main.c | 113 ++++-
- drivers/net/ethernet/realtek/r8169_ptp.c  | 556 ++++++++++++++++++++++
- drivers/net/ethernet/realtek/r8169_ptp.h  |  58 +++
- 6 files changed, 722 insertions(+), 10 deletions(-)
- create mode 100644 drivers/net/ethernet/realtek/r8169_ptp.c
- create mode 100644 drivers/net/ethernet/realtek/r8169_ptp.h
-
--- 
-2.43.0
-
+I have a db of +1k reports just like this one.
