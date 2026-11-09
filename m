@@ -1,61 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794226541;
-	b=bqb4GxiJKBMsWFdnWOP/y+IwEiXDhhnhFjbmDW1McqKipLjQv90z8DYlIdTUi0w63ruz
-	 8pQvDVknFjShDOkPVB1luXlMp98FXUPwoXCApG5npB77BJqZ2EurBzrU1EfZ5XzuP6KF+
-	 rk2m1XjOdr9UOWzHRXK1G0j90VsCEeAtW8z2z7dIg9jrdiidsjCkI5pej21fc926OcxDd
-	 Q8bAbZ9KLJhxq44LhLmioh0zsl1dmHB5kYUUkr/X8XazoxaNV41Ht4pSMN3wJP4ziDj5k
-	 hPtLDLgsuakKYU2lMaZvQOr4uDMQMy+swwwPoQzkqjwhd57+XeofWTLkG0QOjIrKzfA==
+	t=1794226629;
+	b=Cdefq6JMYIhopLHvjrxw+hhydu9vAY4SeNSMU7qY4wGXqXsDc6XgTajsoDh69i6+z+H1
+	 En8KLa4uxbz+FHNxBoDqbG9CRoED5w63A1P2BTkdfdVM0tw38i8q5Dw3BEuOtG89vGsfF
+	 CDENAHF1xII6PLKczhAWajIXYPBVRDxuGG/qwwdy06EEwROwauGHE/sOCi3MM6I6zh2kf
+	 i24hfkOVzHJRZRNljiPBw/biHj+hKqEH97QEswdRJdnVihHKUeidWpsJPBJqKOFDVU6ch
+	 zgR10FmKyrCbM5a8cawcVWmx/ijhWyiSY6itBhLfd9sKf1dcXg/eX8CYYsiVAzdSG/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794226541;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=8jvHBme6zPqyADTvxOn21MVTvYy0GCMqqQxDtMJ34xs=;
-	b=HZK6VV5YAiznPJmw5M+Cb7uyavS1RU0c46AE6OxWlOByv0Hhq35FLnj3FIXbQgGcxflg
-	 dlf0mwnUwT58tzlgzxnUHUWlpxM0Yl7Dlp/93jBsbBKeVDUO5DxcfTrr+lWRVW4sw2EfR
-	 cYtpNG3Sv35lGSI2VG1CFKpFSJerf4HurhyRptQ2VtL6GBZACxkrn7QGLQCPjw7/yE971
-	 3mEWYpQsYQwy3jN8cdY+eEEQ6SYtF06//BpR8ucrv5FLXBfSEyCZTCB139W7wWZ9MgqHA
-	 boMEIyXrb7X/pnYsMTx2sdMX5x2MwhZcnmSwKoV/jincWwyZtQosEC4pf4L3wSKlwTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794226629;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:References:
+	 In-Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:Thread-Index:Content-Language;
+	bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
+	b=VL4FaUleqk3ooPLr3F3BgrKlrKOa0ZAnPiH1g5B1Re/tWFnkxVFH3Lo4+0OjcuGMvpuF
+	 fLmXUqjkfv4gS8MFpPNWR0oYiwP5t7E8aTKVOpHCrDmqoPAr46g/7PlipNtR5S1pvBZF5
+	 IdlpGe18hxwlpBDBZDNnw3JuEIKYlky22p/29MbN2jIyMt96bp72h39lalvNZjrLRCJ3g
+	 qmrwBK4OWKMWYXlvBdXQgHHHYBjHhISzxcbutun8JWRz6JYVqrW0qa2+TvgCKtRwjdMEa
+	 ey9j1EsCjQtonx/zPLPiHWdWribRNcrWTN0StQS6MQfVZhY3WTRl9N3z83UT7Zwly0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZlAyCLV6;
-	arc=none smtp.remote-ip=117.135.210.3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w05G0xgc;
+	arc=none smtp.remote-ip=209.85.160.175
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976B3606A322;
-	Mon,  9 Nov 2026 12:15:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 976B3606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC507606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:17:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC507606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZlAyCLV6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8j
-	vHBme6zPqyADTvxOn21MVTvYy0GCMqqQxDtMJ34xs=; b=ZlAyCLV6auT/Wi36Wz
-	G3tHhsaxImlPQkGQFv+qnbdQb14mN8N3VlMkJmAl9ybGD+7BUyKnNVSTDiqShfvU
-	pmFCGi8eMQBjNDIVSDlM302cxsSIe+PHMrJZgH/0UTuHLR8hqo4ir6cGj4V+dffu
-	sZCDD3aE9cYLHv+gpoZlXa8IY=
-Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXn1A4ufFqsGfQGg--.48849S2;
-	Mon, 09 Nov 2026 20:14:49 +0800 (CST)
-From: shaos <shawnq1@163.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net/sched: release old template when replacing a chain
-Date: Mon,  9 Nov 2026 12:14:48 +0000
-Message-Id: <20261109121448.2589374-1-shawnq1@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w05G0xgc
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-53e1d40628eso10244851cf.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:17:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794226628; x=1794831428; darn=vger.kernel.org;
+        h=content-language:thread-index:content-transfer-encoding
+         :content-type:mime-version:message-id:date:subject:in-reply-to
+         :references:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
+        b=w05G0xgcfX7EvI2qIZJ18ej/X+ze6J03RBhPVvmJMlroGEnzzeupGnpBjIDYcjHyVu
+         2p0LltbD8FOj8Lik2mAVGaBiIfhRkUUeev6AFxQsEGmJqJqlw+Gy1UYgTDyIEHycpARn
+         upttpJgPs9LGncA11RX+NQjUIoaA/UBWfs88upJRDQs4LJxEcRd+SzD1htdlZO7twz5R
+         RIF/F1KLDr+tAFTjEjFwbc8JGMP4iQZUJmZWgDUvGvKpJkoYlNj4YhtSkkE7SOiaEbL+
+         sErJ90Ub5QU7ruSNsMTj7HzGKYzuvdNssezj5uADjyc3J2OP4LVQS1Mo7T2/FaJqULrE
+         yoyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794226628; x=1794831428;
+        h=content-language:thread-index:content-transfer-encoding
+         :content-type:mime-version:message-id:date:subject:in-reply-to
+         :references:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
+        b=X+a00wGAr4BO4F7oLd9JVEdh5e8NcE6QKfrcl29Bpq0zhP2Spdy8TlRPGVyp+sq6BZ
+         nPldgApp/WlKjlc144pX92YlPk9EkJ8ii8lf7BXbAIXCaJGrHaSRuds326398AOr0JLR
+         wrI4WS84K8BHhXaZOYiqvvIrJjrHweNqT+63k+oNbgQ8xffoGNzK5gjMO5Tnp91q5C0S
+         nmh9WwrlTkeJwTQhjJe2oCTGmg+Pq1KRcgUbqkm58wh1LTVqRpqSNYQZgtv+yskX25zk
+         xy8FishzupzmUNwKiDNscr7L0y9++uXNCavoiUdvNgamu1kcjlpYP+VnXMpHAz6/I/CI
+         8aEA==
+X-Gm-Message-State: APuU4Z+I91EcvMh7loF3xoP1eEw71LnhFrV7aJBVPvC4Ax7mmz5vHvWU
+	Z2Nj0Zu3JuxuX9vB4/g86LzFLdPw4qX/3wsjT9ISNCBWTYcBpXwCBMfbK8HPzsY7
+X-Gm-Gg: AYBFou2AcziNNEaFF/Sv6yyBhXCFXTyrvJnLu9LmC0KIxSCpeMD2vCH//o9TWNaUqeO
+	1w1EU/lhH9eNDbaL+U/KHd5rCrT7lR/AfoEGpPJkyBeto5oaL6d+0DiiwMlQ1FrOScjLFzK2GXY
+	/kFdZQUaLgqR+CWGHUEhD55Lr24N5uVtyqm1u0istgVi8Etpmb8rE/ntihhr2slKnyEO3yNbKnA
+	YCne2PQ8vmjonAeFZWQJ6ujOXr2gU3oVfb2RTqAL4THVxP7JJpOyXolq1ZvmMRa0Wb5aPNO7uur
+	S096btUDqW87iGXhAn1QZnhBHk6Hra4Xt+hOYdRGzZjASTvBXOlAUqodTxHEqCrdHbWLay3H9c+
+	0zXw7Z6t8MHDR94FErUq2s0XRTRv5Zdu9GpdDbIpET1T08YRzu8V4QI2of+PMYeqCaJUvvFnZ1K
+	AxwdRPhsOWzvcjnCgzJGJj17L96tl6U5TEL3XmruE9cSb/sq4ztarw4aongsv1YXNabETB0U/1v
+	5Haf4ojGZ0CSd41DYiBUnuSZ0gopp9cOExbvV2gqLpOGABq1mv4H0cDwFF99ma+KdoLhgLaxtxX
+	iK4K6tyOS5hGGrCsHUVAUcn7vCvgM98zRqzCP9N2eut8
+X-Received: by 2002:a05:622a:22d0:20b0:535:f9dd:a3de with SMTP id d75a77b69052e-554472361f7mr8323831cf.23.1794226626380;
+        Mon, 09 Nov 2026 04:17:06 -0800 (PST)
+Received: from Desktop ([186.247.171.84])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55261474cc3sm39066831cf.3.2026.11.09.04.17.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Nov 2026 04:17:05 -0800 (PST)
+From: <brianrobertjames@gmail.com>
+To: <netdev@vger.kernel.org>
+Cc: <westeri@kernel.org>,
+	<YehezkelShB@gmail.com>,
+	<riverscn@gmail.com>
+References: <000201dd6fba$2c726e80$85574b80$@gmail.com>
+In-Reply-To: <000201dd6fba$2c726e80$85574b80$@gmail.com>
+Subject: [PATCH net] thunderbolt: Use needed_headroom for the transport header
+Date: Mon, 9 Nov 2026 07:17:04 -0500
+Message-ID: <001101dd7044$3ba5edc0$b2f1c940$@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,102 +98,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXn1A4ufFqsGfQGg--.48849S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWw18Xr1rZryrWr1UGw4DArb_yoWrury5pr
-	ZYkw1ftF4UtF1xtFs2yF18W3WSgws3Gw1UCFn5Ww1jyanIgrn2yrWxK3y3uFy8CFZ5GrZ0
-	qrW5Jan7Xr45CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrWrXUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC0BqToWrxuTrlYQAA3k
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: Ad1wQzllGGjtmFgISvi5Wzu4RDT11Q==
+Content-Language: en-us
 
-Hello,
+alloc_etherdev() initializes hard_header_len to ETH_HLEN. tbnet_probe()
+then adds the 12-byte Thunderbolt transport header, although that header
+is not part of the Ethernet MAC header handed to eth_type_trans()/GRO.
 
-An action-held traffic-control chain can remain alive after
-RTM_DELCHAIN because a goto-chain action still references it.
-RTM_NEWCHAIN can reuse the chain. When a new template is supplied,
-tc_chain_tmplt_add() creates a template and overwrites the existing
-chain->tmplt_ops and chain->tmplt_priv without destroying the old
-one.
+This makes gro_list_prepare() include 12 bytes of the IP header in its
+nonstandard link-layer comparison. Changing IP lengths, IDs or checksums
+can prevent recognition of packets belonging to the same TCP flow,
+allowing later packets to bypass earlier data held by GRO. On the tested
+direct USB4 link this causes TCP reordering and excess retransmissions.
 
-The old struct fl_flow_tmplt allocation (1160 bytes) becomes
-unreachable, along with its classifier module reference. Each repeated
-chain recreation leaks one object from kmalloc-2k. The allocation uses
-GFP_KERNEL without __GFP_ACCOUNT, and the tested objects remain after
-the network namespace that created them is destroyed.
+Reserve the transport header in needed_headroom instead. Keep the
+Ethernet hard_header_len at 14, with 12 bytes of needed_headroom. This
+preserves the transport space requirement without changing wire format,
+offload features, or RX/TX credit allocation.
 
-A local user with permission to create unprivileged user and network
-namespaces can obtain CAP_NET_ADMIN inside the child network namespace
-and trigger the leak without packet traffic or a race. The demonstrated
-impact is unbounded host-global kernel memory consumption; no memory
-corruption or privilege escalation is demonstrated.
+Shun Li published the identical correction on October 9, 2026, in
+riverscn/thunderbolt-net-dkms (commit b18a196bb5ca). Credit for that prior
+published correction belongs to Shun Li. This submission adds our
+independent AMD/Proxmox hardware validation and receive-order evidence.
 
-Two fresh QEMU boots of the unpatched Linux 7.3 tree showed
-kmalloc-2k active objects increasing from 60 to 192 after 128 cycles.
-The no-action and held-chain/no-template controls remained at 60. A
-UID 1000 user+network namespace run increased the count from 48 to 204;
-the matching control increased it from 48 to 84.
-
-With this patch, two fresh 128-cycle positive boots remained at 60,
-and both controls remained at 60. The user-namespace positive and
-control runs both showed the same 48-to-84 setup delta, with no
-per-cycle increase. The positive PoC reports a failed leak threshold on
-the patched kernel because it is written to expect the vulnerable
-behavior; the zero delta is the expected fixed result.
-
-The issue was found during an LLM-assisted source review and confirmed
-with a userspace PoC in a disposable QEMU VM.
-
-HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
-Git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-Source version: Linux 7.3.0
-Compiler:       gcc 11.4.0, GNU ld 2.38
-
-The console output, kernel config, reproducer, namespace launcher, and
-patched-kernel validation logs are available here:
-Console output:
-https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/7ff5d84b07e0b260952d2f8575ffb1936edcb099/console-output.txt
-Kernel config:
-https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/aeed6e5360a23b7e36cc06272dc0069f8639c61f/kernel-config.txt
-Reproducer:
-https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/f73bf112b5d6bd7e6633963e3dee0c0083ffeef0/reproducer.sh
-User namespace launcher:
-https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/b30237aa0b52e39ebb9da06d790c3f8430b62903/userns_launcher.c
-Patched validation:
-https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/d769d8afbfa6293e3f7bff967a3408521972dcb5/patch-validation.txt
-
-Run the reproducer as root, or with CAP_NET_ADMIN in a disposable
-network namespace, on an unpatched kernel with BusyBox and iproute2:
-
-    ./reproducer.sh positive 128
-    ./reproducer.sh control-no-action 128
-    ./reproducer.sh control-held-no-template 128
-
-The user-namespace test used userns_launcher.c inside the test
-initramfs. It drops to UID 1000 before creating the user and network
-namespaces, then runs the same positive trigger.
-
-The patch creates a replacement template first, leaving the old one
-intact if creation fails. After successful creation it destroys the
-old template and drops its module reference before installing the new
-pointer pair.
-
-Fixes: 9f407f1768d3 ("net: sched: introduce chain templates")
-Signed-off-by: shaos <shawnq1@163.com>
+Link: https://github.com/riverscn/thunderbolt-net-dkms/commit/b18a196bb5ca
+Link: https://bugzilla.proxmox.com/show_bug.cgi?id=8306
+Signed-off-by: Brian James <brianrobertjames@gmail.com>
 ---
- net/sched/cls_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+Follow-up to my November 8 report in this thread. Fabian Grunbichler at
+Proxmox requested that the actual patch be submitted upstream. The
+one-line diff is included inline below for review.
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index a9f54988561f2..56a706b3dbcab 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -3128,6 +3128,8 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
- 		module_put(ops->owner);
- 		return PTR_ERR(tmplt_priv);
- 	}
-+	/* An action-held chain can retain a template after RTM_DELCHAIN. */
-+	tc_chain_tmplt_del(chain->tmplt_ops, chain->tmplt_priv);
- 	chain->tmplt_ops = ops;
- 	chain->tmplt_priv = tmplt_priv;
- 	return 0;
+Test environment:
+- Two AMD x86-64 hosts, direct native USB4/thunderbolt0 traffic.
+- Receiver: Proxmox 7.0.14-28-pve; historical tests also used 7.0.2-6-pve.
+- MTU 9000, TSO/GSO/GRO enabled, gso_max_size 65536.
+- Unpaced single-stream IPv4 TCP iperf3, 20 seconds per arm.
+- Stock thunderbolt controller unchanged; only the receiver's network
+  driver's header/headroom line changed. Cable, ports, MTU, offloads and
+  CPU/IRQ placement were held constant within each comparison.
+
+Receiver-only original -> corrected -> original comparison:
+  Original:           30.599221 Gb/s, 620 TCP retransmissions
+  GRO corrected:      29.779541 Gb/s,   0 TCP retransmissions
+  Original restored:  29.994158 Gb/s, 540 TCP retransmissions
+
+Endpoint interface error/drop increments and receiver FQ drops were zero
+in all three arms. The unchanged sender in this isolation test ran
+7.0.2-6-pve with TX E2E enabled; receiver RX flags stayed FRAME|E2E (6).
+This comparison isolates the receiver fix with that sender configuration.
+It does not establish that GRO alone resolves every retransmission mode
+when both peers run 7.0.14-28-pve.
+
+Historical 7.0.2 receiver-only comparisons on each host, 20 seconds/arm:
+  Receiver A retransmissions: 536 -> 0 -> 132
+  Receiver B retransmissions: 564 -> 0 -> 769
+
+Historical paired receive hooks covered identical TCP payload bytes
+(18,871,120,863) and packet counts (303,590) before GRO and at TCP ingress,
+on the same CPU. Forward sequence gaps were 0 before GRO and 1,219 at TCP
+ingress, with no packet-length parsing mismatches. A corrected capture
+had equal byte coverage at both hooks and zero forward gaps. Overlapping
+and retransmitted sequence ranges were handled separately. This supports
+an ordering defect in the receive software path for this failure mode.
+Runtime tracing confirmed header/headroom 26/0 before and 14/12 after.
+
+The measurements above came from actual Proxmox hosts. The current
+mainline source was inspected but has not been runtime-tested on this
+hardware. The diff context was checked against mainline commit
+7475ea8b58616b33c04afb976cf0fbaad9dd63fb. The separate TX-credit diagnostic
+is excluded from this patch. No Ceph qualification is claimed.
+
+AI assistance disclosure: source review, diagnostic automation, analysis
+and preparation of this email were AI-assisted using OpenAI Codex
+(GPT-6 model family; a more specific serving-model identifier was not
+provided). The measurements and traces are not simulated results.
+
+ drivers/net/thunderbolt/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -1410,7 +1410,7 @@ static int tbnet_probe(struct tb_service *svc)
+ 	dev->hw_features = NETIF_F_SG | NETIF_F_ALL_TSO | NETIF_F_GRO |
+ 			   NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
+ 	dev->features = dev->hw_features | NETIF_F_HIGHDMA;
+-	dev->hard_header_len += sizeof(struct thunderbolt_ip_frame_header);
++	dev->needed_headroom = sizeof(struct thunderbolt_ip_frame_header);
+ 
+ 	netif_napi_add(dev, &net->napi, tbnet_poll);
+
 
