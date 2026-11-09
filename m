@@ -1,106 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794209642;
-	b=zqfsHio4VPO+T1Vp4m+7siOm/ZKOZLR/zaCjR4G46pvOIGOwHXypHimH47+Ut/2exJds
-	 ad5j1+7PzPnXZwwJv28Nrtzpsc/PttnuAOSWWMIu3SJ9VV36+R5QXet/p1U1u6V8u0a+O
-	 Iju3rCfbzD1nWo3TGUMvYIOfjX9WHGwSjEH94MUqUj3vlLWY/JcWvWPygcesTFKEikltY
-	 7g5GiuxifffDLXMo3+dcd2gMys85TtIpJKjBeUc99rZ5rQ8ADFVYTge1m5oNkt5oPo2Dc
-	 Dc7w6AHh2STpwiA/+qYC/Pab6E3MpznSRSpzW5qCXUGzgWqgK38gkGjN+F1QOrCs4FA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794209642;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=B3l+GDk6MeFYrAnRhVsWA6EIzPGUlkU1a9CHDfuLeDU=;
-	b=G45e8QygBSNHZ6eyfToZKuMNUarh6sTpXsmezVHZwtZZkez+j/xTjjqFBlq10Jf04Ogs
-	 RPPzIBBI0lhb8teX+L+y6nPJRWh99OuxpdZwOxTTFFUe19Qog0G/clUbRCUoCpuxlhex+
-	 HqprKDmt+cdqwPenhz/NUUBPDB1mI5lY6B+hetgJR0QR/GX3/QHgohoqu3KByK26UW7eJ
-	 Cplrjq7CgD2o6ZoVjSq2jHzTZCEFXBjlYjJhn/VSH0dGXIkCKxpEEZXXSs6pRc5gTsTRO
-	 KaBNuO4WeceGLNDIaqYUxmSkKwyw8/sqBy/RI+6UfpEMV7nGz7tw5DTU7h/JJCxVCPw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=mlCzcOE6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.54
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012054.outbound.protection.outlook.com [40.93.195.54])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794209652;
+	b=ueRJ3rd8jdospcvnu3pvWUcmbE7L6IMIyOvYsSQnFyjXy7uMcvtyvDBIb+luJDPpgEkI
+	 VLy/vaqKDNtoxIglpj9oh8z4Xvnc3C4/JKAkA/MP97CqMUvJcaebqI1Eit8tEXajM/w99
+	 reFO1/Rly7H+MqGV8ZGjiTJWIjBKTjJUP27q+7FFUjJfW+t5V1XfkstwWEQxjlJJymoHJ
+	 URCSSB48SncW90hXM1ViCdorzH2nPJV9l9Gi2b4ehHsIGpGS+BJFazKnKieoT0HDZn2DI
+	 kcRMtx4GfpwXjuY848+m+wyoOzT6oyH5NB7bOLJCKLptGKzGZSlY6LV7igTG+xHZCrw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794209652;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
+	 Content-Transfer-Encoding;
+	bh=5KpZyXTyDaeCpFL09xfcSddfcVQz8Z2BLa6aTzaRrnw=;
+	b=kIrpUDg7h4QzTP+CD/Lnd48zHcPGiFoqWCqL5t+ztsfJ6Y1KCPhZBgZWcE5QNouGiTVx
+	 YmKkGkqxtkLpog7RUX3zYCyEDD6nCmBiuBcaGaKmzFiqIi8ZyNeFG90EiGsY4D5q5q+Yw
+	 5jt12kvfHl8KRJNRGWdE1cxiF9QaGWZB9egZG5jXSUSMSK8dxx7a3Zzf8ps/KpYZW1pGj
+	 mlv4YeD3A1tKClMeNv+n9zg5T6J5DxdPAnLmElEZyYo+qvTxfr4d3WeYlV1t34Gu7SjxJ
+	 nSLUzxSU00zRpbt1jafZMkwZ+KXyBo9+rfjB+geKyE9bzBmy3B8/gPOAjFT4nz9yVWQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwKBHRrg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2928B606A321;
-	Mon,  9 Nov 2026 07:34:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2928B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA1606D827;
+	Mon,  9 Nov 2026 07:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=mlCzcOE6
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oXUuh5i1Sl7hF1KoyWFlfUjBLN95CRKbxa6MrFrCL7+PUzMbH/d2iSoid6Z2rQQJsIRFlpRsEjlL5JfUTOvtmj4fjQmrN95DH5bkc/8wY7ytVT8FZyhj1sK+nNIxY60WfUZQ61p+8q46xbIW7L8nSJgRDwmg6OXYmEchE3aWn06oNr+PRX9fReSbhUn2rXAwvabkEMEeeRouDRikZD1gftfpie+hNU6cPaJfYyV0r8vxV7LZDNL7WveJeO+ZUzo21Lby5pKlPVajktPrHlSKOzHFk3ugWJxbsLHEmM38J9pP/L3xo7zlDSWf9Ux+5URRBKKP7ZAHfjtFs2qQeEtOlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B3l+GDk6MeFYrAnRhVsWA6EIzPGUlkU1a9CHDfuLeDU=;
- b=KNBgsi+FQrEJ40mnx4XsEtVSzjG92CTmC2syG/xGLOKSf4wQ1c5Wd7NMFFg0IAPylvgCNvbb7myFv7LrAGVg4L0INQGrMzOykFtuTfjgec4hsj2pIRhxUDbUI/LTjhE89E8xfnmUZOs+gW0NYkdL0DA4iE6P5+qxtDa5pzvR3zpVRLh6oyhN/o4F2DDzPrvBZfw5XgbYUEXXSl86LInzRKAzINpAYZ/GlBf7xCCbC0i5W/myVeG27S++GxlyfMQzChK4Voa8P9s9bDq0Q5UlS5TCDW/Cx1n7dyVH0hiSGBl6estHiVMJ3zdgNVaQJo+UK36uWgqccCOtc+ze2xSXRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B3l+GDk6MeFYrAnRhVsWA6EIzPGUlkU1a9CHDfuLeDU=;
- b=mlCzcOE6DJdLlTH0UMRdx8repgg57hSs0KfP2B89RK2AdaQmoR0okAcnkyuuyvHCULEQzus+USe0nJ0BfDsqYWANtYgt1JkV/YAEhMFuBuG6IkkdJIUwd6i9D/z+Ifbfw+a0ef7wRhcxUgfJPfhEDpgjIrP72qm7/DYkvZ2Rd2k=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22)
- by SJ2PR12MB9086.namprd12.prod.outlook.com (2603:10b6:a03:55f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
- 2026 07:33:58 +0000
-Received: from SA1PR12MB6798.namprd12.prod.outlook.com
- ([fe80::e317:e4a3:6ae9:8c54]) by SA1PR12MB6798.namprd12.prod.outlook.com
- ([fe80::e317:e4a3:6ae9:8c54%5]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
- 07:33:58 +0000
-Message-ID: <057778fb-e2da-4edf-aace-5ff96ae386ba@amd.com>
-Date: Mon, 9 Nov 2026 13:03:29 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] net: xilinx: axienet: use
- dmaengine_prep_slave_sg_context()
-To: Frank.Li@oss.nxp.com, Matt Porter <mporter@kernel.crashing.org>,
- Alexandre Bounine <alex.bou9@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- Frank Li <Frank.Li@kernel.org>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Michal Simek <michal.simek@amd.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-References: <20261106-rio_sg-v1-0-bc54b4bd8c95@nxp.com>
- <20261106-rio_sg-v1-2-bc54b4bd8c95@nxp.com>
-Content-Language: en-US
-From: "Gupta, Suraj" <suraj.gupta2@amd.com>
-In-Reply-To: <20261106-rio_sg-v1-2-bc54b4bd8c95@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PNYPR01CA0055.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:2b5::11) To SA1PR12MB6798.namprd12.prod.outlook.com
- (2603:10b6:806:25a::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwKBHRrg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410D21F0089F;
+	Mon,  9 Nov 2026 07:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794209652;
+	bh=5KpZyXTyDaeCpFL09xfcSddfcVQz8Z2BLa6aTzaRrnw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lwKBHRrgtLlHdfSIgSshSm3e0EGD/FzxILn/oHZ/MBhIlxI92zK1vyP/KinI0O+dq
+	 N1lkFUZ1d1LxsJFXpKksY6sxA+asTaTHkZoul7zy9272bic517JX89oNFsIZ1y5Xpo
+	 lpJVehQ2mPpV8DtjN9VWns0x+h74ukvpSJnGqPF3qV7WMyHiEty6/9IUL4NqOH9sbO
+	 N4Xg0BfHVzBLU8JKOsEAtqqFC/KoByvzJTCTdkwPkrln1oXePe+/4LOBk5b6PTvakB
+	 qGWrjTRcTvelnyEbe0ToJwLbaTKoeQR0FT/RT6LxYj1L0gDGKgW+DHEKRPmlndd15f
+	 1L7qwcpsIsz/A==
+From: Leon Romanovsky <leon@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Cc: linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v2 04/19] USB: Release interface claims refused during registration
+Date: Mon,  9 Nov 2026 09:33:34 +0200
+Message-ID: <20261109-device-trust-core-v2-4-3b12d9a9f861@nvidia.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
+References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,115 +97,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB6798:EE_|SJ2PR12MB9086:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7edd7a2-27fd-4ea1-6ada-08df3e33d13c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|921020|10067099003|11063799006|4143699003|56012099006|261021123027099003|261021121427099003|261022105027099003|261009223027099003|261026140227099003|261028144727099003|261102123227099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	U1wsMF1FhUWprpAGuo/Ix4YWsEEo9dXoh9HIzhluqr7tD06kjM2ryV6ArFFU/t0p2+bx8UIYjoNjs81hARVlw2MSF8+dkKVWY9rKaa6C0VEocT8HVDN5ohQuXtckB0IIZW3ykc1lOI+3C8iDiV4r5e0L0cwPFapIG03xc3uN6eNTgnWXMG/qe26dJyihkckLEnFHYf2/ujoITEvjeEnubJMNHKcTy3ltTBQINjMY5A2vlUrtOW28LddyDsXwwW/2vAJijrmGyi7Eai8edep0Z3KmYj+xSBX6RwA1B31m6Y1ed6iK1wykEVkbAl8l6WvRmq6Wv2nFU4w1Ojrk10S6covXh4Q0qqa0g77Lv6MGgdR+u3vAUqqepJUwhA668q9wKPaWv1GGKDsOt2t77AuqbzH3wherWNYf+9MnlLR31uNpIv/29Vw/Iucj+q/3uDrE0RvjJxSJgxHgY/XmGDWlpHdXwcOeYY7bN2Cqw5FsgODwio5bPdqzgVqj3/QuhmivtgH3H4+BWBWgawqtozKao+7xuXVy8bj9MeXG6qlolZ0+dPQmSMXGlXhSWYgDbVhkq/K6jlbkCwxCM4ykjBEqPtGNuqXyulsobruGp4dp55TAGGZRpfxbSrs7m7Zx1gqKP0VhQXgERST6UasHfNTcbqK3MmJjurPBk6yOZwKWEiNLi0adpFCVJBLR3E9G4pF72jBhg8Y1V3vrsV9WqoV4JA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB6798.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(921020)(10067099003)(11063799006)(4143699003)(56012099006)(261021123027099003)(261021121427099003)(261022105027099003)(261009223027099003)(261026140227099003)(261028144727099003)(261102123227099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NnVqb3c0WDdwUW9wdWs4dUxETnovYWNHYWkwdzV3eFYyYnRTK0dOdDVuWHVk?=
- =?utf-8?B?dFR1S25NYnN2V0ZmdFpIMWluRTd0RkUxdk9mdHNLTUM5K0NVRzNsYTBHZ2JY?=
- =?utf-8?B?WGorbWNDblZpaWtQcGVDQWNLNS83WXNXeGpNNDlrandRbGV4TmxnMjBrTm43?=
- =?utf-8?B?Z2ROcnNqa2luZmJzRUtZRWd2K1g5eE12QUJqQ2hueURXK0RMTENHR1loamdD?=
- =?utf-8?B?VElFQS9aWk5nUzNXeVJTQ20wZzZvVi81MVBhS2hCS21USkx6cHdUd1orM0ht?=
- =?utf-8?B?NkM3R05PaFN4ZVdTTDRKc1FRd0s4dkN3dDR5QW4wdHd1Z2R6SExWdHVrbU9u?=
- =?utf-8?B?QVRObHFhT3I4eEt0THVxUEdzSGdYOU5McERUY1lWVlFkMGRrb3RMeGpUYUVK?=
- =?utf-8?B?N3VlMHh0NkRDTWlKN05ZWDVvQU5jdW9DNXVyT1AxYk1RajNBNzNTWmZoK09X?=
- =?utf-8?B?TXU5SVppeld4OHRwcGV3cnQrcnVKOE5tZGJqNUtoL05EYS9FdjNXVUV5V0pH?=
- =?utf-8?B?MWhlUXlWeUtjdUJCT3Q2c0UrOEt2ci8yb3REL0dPTnRjUjFUTjFRbHRqeGtF?=
- =?utf-8?B?TENpSVNqbVQvNGpnWVVpZ0JGQnZ1ajVlaGFwRVluMHh0MWtVQ2k5QnlRbFho?=
- =?utf-8?B?WmdKT05tQllRY0VydGpFcjlHMmhLb1NQSnc5bXh3RFlPTkpHMnA5cm55dE52?=
- =?utf-8?B?Q1ZTZklBSHZYSC9kL1dMdGZVZitmVUtFamZ1cjJLN2xSYWZqa1daT3NDNVpV?=
- =?utf-8?B?L3h2Qi82K0ZPck5tQjFaMFR1MnZvSGNYZHZwaXdBN0xmNEFMYjRrOUdWMTJB?=
- =?utf-8?B?dHJ0TWhHcm92VkZYRW5wMEJTVnc5RFhXOTIwS2wyZXdLZWQvRlhIbWlnZDc5?=
- =?utf-8?B?QStOcWF2RkZVSzZyMEh4TkZ6YXBwSm9qZ25MTzBzZEZRMXU4cmhjcDEzU0Uv?=
- =?utf-8?B?eVoyOElhNkZtUVNsVCsrTHBsNDhVbmVrYkdNWGljVW1rZitEVkkxdlNnR3pC?=
- =?utf-8?B?ZXR5c0orMy81dnFHR1hNQkVpVko5TWdDZGdhVVhubWpka1JIMHF0emh0b21D?=
- =?utf-8?B?THZqbUl3NzdRSlpBOGxWWTdXeEdGNWsrZXZzZFF3RklEdzhIMTM1Y1phdzBC?=
- =?utf-8?B?cW9OTGRId1gzQlNCdnFBTy9xQ29NTG5wNjBoR1pXTVQvM25nQ1hYTkV6NU9L?=
- =?utf-8?B?UEp0RmluZU81Vkp5NzRmZFJobUFibE9ONDN1d3FUKzZxQ1kzeGlicEdtM1o4?=
- =?utf-8?B?cHRjV1VTamEzYnZ0YTczNGRaZWxVTlo4Tit0cDBCTUFpenVNaEQrMDF5UGJr?=
- =?utf-8?B?bzdGUHBGbXI3VlUwTkRTTWRCK3FSQXdTSm5ieXhCaVQwQzhPUnF6bWdNL0Vk?=
- =?utf-8?B?VC9jWmFVTmQ4bGRVbFl3alZuQ0V6bFUxZVpnd0I1a1M4NGVLOThRTVJrSUVa?=
- =?utf-8?B?dEdzbUZuYlB1cnI4TkdtaE1nYnFUQmRWcFBMYUFwTzFTcDVoejdLQkVhWjc1?=
- =?utf-8?B?MFZQK3AzTGFTVEFDOVBPbmJTVGxMdytZOG9zSmFzeHFINVFleTJPRHRweUV6?=
- =?utf-8?B?VytlV1pKR3Zyd0svQmF6MlBpUXIxdnM0T3ZCKzJuM0RuekFkM1dnRE1VK29x?=
- =?utf-8?B?OGFKMm1DZWZ6ekZ0R2RMcmhUWHZ3WGJGcHdqcWFFUzNLWHdkSlNvTTBUM1I1?=
- =?utf-8?B?a2RsZlNlNWFqYmF6aXdTRE55VEp2aFRpcGZNVUY1NHZmbGFqcnVvY2xmdUtz?=
- =?utf-8?B?SGRrd1QzR0d1bTIyK2JNRzYydHNWeUVMZWlNZ2xHSlBIOFpweEZqQTFqTmpZ?=
- =?utf-8?B?WHVJaVdxL0k4aXpWTlg0N05sK0RrMVFQY2NYM25NRS9wSFFVVTZaY0tqOVV6?=
- =?utf-8?B?dDB3YTJNVU5GOUF4ZEIycnhtTkMzU0dwMklZRks4ck1TYVl2MnZBZXBPdGlN?=
- =?utf-8?B?MndxazVRbTM2bCttQ2hXdkxUckJGY1dnNzNNc0FxbnZBekJidHlhN1d0TG5S?=
- =?utf-8?B?eHgzZkE2b29kR0pjbzZoS29SdUhNd1RZTjU1RGxtbGhrSGhkSTZIRkY4UlBN?=
- =?utf-8?B?SlVOdkN3czQvZ2w5ZGE0YmRsalBMMWI3U1lORlo0b1I4ZXNDSEkrajJHTkZa?=
- =?utf-8?B?MVI5VW9zeVFrUmdtM2tSNXJ5Y3I1azc4R0VwZEpxUnl2R1FDQmp0azA2MU56?=
- =?utf-8?B?L1gxVUhrQlQvY1AxOXFpRlRFZHVRWS81emVYMFNRNnVHblpKR2lZZ0ljcitP?=
- =?utf-8?B?LzQ4MldNcUJ1STg4SndvZHJpeGhTb0YvbTJaL0JHN2RWY1Q3ZHUwaEdpSXVN?=
- =?utf-8?B?QWpKRXJyWk53b1ZiaFV0M09mTStwSkFzMlFqSk9FQUJ6a2dtNlM2dz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7edd7a2-27fd-4ea1-6ada-08df3e33d13c
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB6798.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 07:33:58.6863
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fxK3nEjJ4iU5PZsQD0vkW2epSwcAgAjkXRRfo8EzWFASeV7Kj/7tdtN0iMREUpSlHOxSGu9g6wPIi+wmSNxyIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9086
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
 
+From: Leon Romanovsky <leonro@nvidia.com>
 
+An interface can be claimed by a sibling's probe before registration.
+If its later binding fails, driver core clears the driver pointer while
+USB retains the bound state and claimant data. Device registration still
+succeeds, leaving the claimant unaware that its binding was refused.
 
-On 11/7/2026 4:13 AM, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Replace the direct call to dma_dev->device_prep_slave_sg() with the
-> dmaengine_prep_slave_sg_context() helper, which handles NULL checks and
-> passes the context pointer cleanly.
-> 
-> No functional change. Prepare to make struct dma_device private to the DMA
-> engine.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Suggest go through DMA engine tree. this is only one of 3 user, which
-> use context at prep sg.
-> ---
->   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 7e83c4b5f1931..55d1b39caf7ed 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1006,9 +1006,10 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
->   		app_metadata[0] |= 2; /* Tx Full Checksum Offload Enabled */
->   	}
->   
-> -	dma_tx_desc = dma_dev->device_prep_slave_sg(lp->tx_chan, skbuf_dma->sgl,
-> -			sg_len, DMA_MEM_TO_DEV,
-> -			DMA_PREP_INTERRUPT, (void *)app_metadata);
-> +	dma_tx_desc = dmaengine_prep_slave_sg_context(lp->tx_chan, skbuf_dma->sgl,
-> +						      sg_len, DMA_MEM_TO_DEV,
-> +						      DMA_PREP_INTERRUPT,
-> +						      (void *)app_metadata);
+Remember the claimant across device_add() and invoke USB unbinding when
+driver core drops the claim. Hold the claimant's module while running its
+disconnect callback, and clear the retained interface state.
 
-After this change, dma_dev looks unused & can be removed. Shashiko bot 
-also pointed same.
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ drivers/usb/core/driver.c  | 18 ++++++++++++++++++
+ drivers/usb/core/message.c |  8 ++++++++
+ drivers/usb/core/usb.h     |  2 ++
+ 3 files changed, 28 insertions(+)
 
-Thanks,
-Suraj
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index ad5d9d5fc7598..ee36eae34bdcc 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -652,6 +652,24 @@ void usb_driver_release_interface(struct usb_driver *driver,
+ }
+ EXPORT_SYMBOL_GPL(usb_driver_release_interface);
+ 
++/*
++ * The driver core refused to bind an interface that a sibling claimed before
++ * it was registered, and dropped the claim. Let the claimant release the
++ * interface instead of operating it with a bound interface but no driver.
++ */
++void usb_driver_release_refused_claim(struct usb_interface *iface,
++				      struct device_driver *claimant)
++{
++	struct device *dev = &iface->dev;
++
++	device_lock(dev);
++	dev->driver = claimant;
++	usb_unbind_interface(dev);
++	dev_set_drvdata(dev, NULL);
++	dev->driver = NULL;
++	device_unlock(dev);
++}
++
+ /* returns 0 if no match, 1 if match */
+ int usb_match_device(struct usb_device *dev, const struct usb_device_id *id)
+ {
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index a738d03c23eac..d35a7710c8ef4 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -2264,6 +2264,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 	 */
+ 	for (i = 0; i < nintf; ++i) {
+ 		struct usb_interface *intf = cp->interface[i];
++		struct device_driver *claimant;
+ 
+ 		if (intf->dev.of_node &&
+ 		    !of_device_is_available(intf->dev.of_node)) {
+@@ -2277,7 +2278,14 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 			dev_name(&intf->dev), configuration,
+ 			intf->cur_altsetting->desc.bInterfaceNumber);
+ 		device_enable_async_suspend(&intf->dev);
++		claimant = intf->dev.driver;
++		if (claimant && !try_module_get(claimant->owner))
++			claimant = NULL;
+ 		ret = device_add(&intf->dev);
++		if (!ret && claimant && !intf->dev.driver)
++			usb_driver_release_refused_claim(intf, claimant);
++		if (claimant)
++			module_put(claimant->owner);
+ 		if (ret != 0) {
+ 			dev_err(&dev->dev, "device_add(%s) --> %d\n",
+ 				dev_name(&intf->dev), ret);
+diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
+index a9b37aeb515be..293340a48b6c5 100644
+--- a/drivers/usb/core/usb.h
++++ b/drivers/usb/core/usb.h
+@@ -49,6 +49,8 @@ extern int usb_set_isoch_delay(struct usb_device *dev);
+ extern int usb_get_bos_descriptor(struct usb_device *dev);
+ extern void usb_release_bos_descriptor(struct usb_device *dev);
+ extern int usb_set_configuration(struct usb_device *dev, int configuration);
++void usb_driver_release_refused_claim(struct usb_interface *iface,
++				      struct device_driver *claimant);
+ extern int usb_choose_configuration(struct usb_device *udev);
+ extern int usb_generic_driver_probe(struct usb_device *udev);
+ extern void usb_generic_driver_disconnect(struct usb_device *udev);
 
-
->   	if (!dma_tx_desc)
->   		goto xmit_error_unmap_sg;
->   
-> 
+-- 
+2.56.0
 
