@@ -1,85 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794226002;
-	b=GqS3cWlPs8M4+MZiEIftbEtojBcSY90RgtIO23TxjL6i8q6FnNPCuFCb3tHDLThAHdHF
-	 VOrhf7xBZ0GmyLZfxQsSH2JC0XS48Rgu/ti78htH1vTIRvicvwgX8Dc2AdNAo0G+uFS7u
-	 tGegOxS2X1i1pcuPexnUgjC0pQVM109jlFbhVsx00qheTUxfp4f+b7agqjD/OfFhnpmbH
-	 4Asueo/5EqNWP/56GdIUqgdZW9k/uF1U67cx0pl9unpIGvUploPVFRJOcs2vRoMZQHINM
-	 IYFhzMPTvIkscuvH8zcbBKH18RMTP3mxnO72PDhskHwDtKMxpYmjY6m8/+hZ1B+Gp3Q==
+	t=1794226372;
+	b=dcdrfs/kyDF+3WhAkhcIO7WZwhyoyQbOBiVTQ5/kgmAC7HIS6NPhjM4X649lRnT7pNlh
+	 swTt+33zSUJFzBAKcE3vSmnVAeYpswjnOjUQWIVOd+SFXO7oBJOFygI8iavMBhdH2BHIF
+	 a+Hap6SKeASfuHnImZEhmb8GddAlZ8XwJ58MqqwLufB3pVIPrj+mM5X9e7BeL9pT7NDek
+	 BLlU+VhG06KwXEKpdgdFL9zJuHFupPjvqfcwtvgmEdYRTAKBNBCdGOEpt3AqgdnJDSH0i
+	 PQuSasqgXw3/3hZ5zeEkc34Mipkpe5G1vDzVVd8P+ToKG0GPOOjnJXOrCgFQ2+rbhEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794226002;
-	h=DMARC-Filter:X-UUID:X-CTIC-Tags:X-CID-P-RULE:X-CID-O-INFO:X-CID-INFO:
-	 X-CID-META:X-CID-BVR:X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:
-	 Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=dsn9lzxkmL9tDmJQzeHWFvkXsP2Re0j6GSR5rnnpTJo=;
-	b=BFCa0DXWZP0h3z8f7xOYSJzCG6cKyBm1pYquBmViRsdHxSPRk5ScVkgbjJv00g1XeQR0
-	 W8m4SpgwGa5qruZ+VaFbBpdXAAmagTfF7mw4B9mheaFYvlHd+W86TTintXB1CpTpNcgMi
-	 JoMA7bL3IMHidTlq9MIuILiWP/pTBeLEVxEqHHO+qyjOjXWMlMJJak4etT+155a0XilFN
-	 vAY5xw/1hDz1xJ/DfjZvgCnrcFwtsjlTsi2CNwT99dOhQZCdHlw9vwffzJPiWGESOxrfa
-	 Rapa7UUoafei2ToBqNZaMtiVTnv1PYMfAYZlIvhjDrEV7gptF+pTuaRT9OGpZv4SGZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794226372;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=dYz5XasKnN4TugzUWfM3/cMdAY/x2jzfHlfhQ+galWM=;
+	b=AZxEp+DPD+unjDrVytiuPyfyBvJMemWyLvK4BJqJn3xYttwReJxT5zXbA8nRWayUfKwm
+	 MNkWkySKjhwtXv4pDh99TNxm84NXp+ErxmvCdjf6JIPRg0/kAy0LF8zwZiCT7cy44mV1M
+	 y4vAb4Np1XeHzTZVvSnQHuwsNaAAHSf+RXdr6JWIqjJWU2ViZJbVp9bUtJ+vKH15b60Cn
+	 RArV20zMly9o/0KdhCSBwflHEMVrYUmfo7/Hyc1QoqRkmXidzfC9PFDPA9xpGMGqzwUef
+	 YqLvqrlmmtwrkzRQY+/+vI/nQqScOOtmGHNB5J7OkglfbwPMCo1gp9fKMcOkkwUuD6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZHCnSDpN;
+	arc=none smtp.remote-ip=91.218.175.170
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA45606A321;
-	Mon,  9 Nov 2026 12:06:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFA45606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: fff19b22dc3511f19a56ed5b684f684d-20261109
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_EXISTED, SPF_NOPASS
-	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:fff65bc1-1838-4afa-b309-89729647d0e7,IP:10,
-	URL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-10
-X-CID-INFO: VERSION:1.3.19,REQID:fff65bc1-1838-4afa-b309-89729647d0e7,IP:10,UR
-	L:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTIO
-	N:release,TS:-10
-X-CID-META: VersionHash:7db8b62,CLOUDID:1aca65a05f6e0835b90bb375317ee4ba,BulkI
-	D:261028205648ZJS9BQFX,BulkQuantity:2,SF:17|19|66|78|81|82|102|127|153|850
-	|865|898,TC:nil,Content:0|15|50|99,EDM:1|-100,IP:-2|1,URL:0,File:nil,RT:ni
-	l,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,B
-	RR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_IBB,TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,
-	TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: fff19b22dc3511f19a56ed5b684f684d-20261109
-X-User: kuangkai@kylinos.cn
-Received: from localhost.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
-	(envelope-from <kuangkai@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 34375348; Mon, 09 Nov 2026 20:06:31 +0800
-From: Kai Kuang <kuangkai@kylinos.cn>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kuangkai@kylinos.cn
-Subject: [PATCH net-next 0/2] net: dsa: user: minor cleanups
-Date: Mon,  9 Nov 2026 20:06:05 +0800
-Message-Id: <20261109120607.344544-1-kuangkai@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <f69cabe3-d835-4fb6-b654-d0e172bde743@lunn.ch>
-References: <f69cabe3-d835-4fb6-b654-d0e172bde743@lunn.ch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC2606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:12:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86DC2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZHCnSDpN
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OUZK1hzYgJtzU4nG/ylLO2w+RnFmaiBPq0yD7tkY4Ik=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794226368; v=1; x=1794831168;
+ b=ZHCnSDpNkPq3NM5T6edR1zp/xB7qZJSfbdE8sV6x9s6+F6gMapAVhQb8vrotPpnBD7QpADkY
+ WTDu/1vlU/NAeAbMgHSb/JWlgZKrNLoD5WgTPisGLTBOMXWXkGpqqnnIybhgzxReRESxBteMwZa
+ yFsNK1ZMXAJwN7gJ12G0ML2c=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 84c5a36d145168ef;
+	Mon, 09 Nov 2026 12:12:47 +0000
+X-Mizu-Trace-ID: 84c5a36d145168ef
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b2d2255f-c9f4-4c94-a739-b80f9bc49323@linux.dev>
+Date: Mon, 9 Nov 2026 12:12:47 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,34 +58,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ptp: ocp: replace __get_free_page() with
+ kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Two small, self-contained cleanups in the DSA user port code, targeted
-at net-next:
+On 08/11/2026 08:40, Mike Rapoport (Microsoft) wrote:
+> ptp_ocp_summary_show() allocates a temporary buffer for formatting
+> PTP OCP device summary information.
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> Replace use of __get_free_page() with kmalloc() and free_page() with
+> kfree().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
+> 
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> Removing needless calls to page allocator helps with memdesc (aka project
+> folio) conversion and gives a nicer API without casts.
+> ---
+>   drivers/ptp/ptp_ocp.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index 625a85b2dc7e5..decc56892059b 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -18,6 +18,7 @@
+>   #include <linux/spi/spi.h>
+>   #include <linux/spi/xilinx_spi.h>
+>   #include <linux/spi/altera.h>
+> +#include <linux/slab.h>
+>   #include <net/devlink.h>
+>   #include <linux/i2c.h>
+>   #include <linux/iopoll.h>
+> @@ -5281,7 +5282,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+>   	bool on, map;
+>   	int i;
+>   
+> -	buf = (char *)__get_free_page(GFP_KERNEL);
+> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>   	if (!buf)
+>   		return -ENOMEM;
+>   
+> @@ -5497,7 +5498,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+>   			   post_ns - pre_ns);
+>   	}
+>   
+> -	free_page((unsigned long)buf);
+> +	kfree(buf);
+>   	return 0;
+>   }
+>   DEFINE_SHOW_ATTRIBUTE(ptp_ocp_summary);
+> 
+> ---
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> change-id: 20260624-b4-ptp-ed56a38a6afd
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
 
-Patch 1: use u32/u8/u64 in the ->get_strings() and
-->get_ethtool_stats() implementations to match the ethtool_ops method
-prototypes in include/linux/ethtool.h.
-
-Patch 2: document the plain wmb() in the LAG DSA conduit migration
-path. The barrier orders the dp->cpu_dp stores before the new
-lag_dev->dsa_ptr is published to the concurrent RX path readers.
-
-Neither patch changes behavior. Reposting now that net-next has
-re-opened, as previously requested during the merge window; the patches
-are unchanged.
-
-Kai Kuang (2):
-  net: dsa: user: use kernel types in ethtool callbacks
-  net: dsa: user: document the write memory barrier on LAG conduit
-    migration
-
- net/dsa/user.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
--- 
-2.25.1
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
+Thanks,
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
