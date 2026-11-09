@@ -1,58 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794202370;
-	b=Vi1mNKLaV8ZPOkC2nVqPf118+V8SUtKJWMSCXs22BsnNpKx/KSKnJVEg15ZeLZXD9ShJ
-	 3aDmasEjN605NyO8Hhc8N/1vkjZdbiMh31WiJHVSqFe8++y6Wy3pE0hj51uE1aCAK2QzP
-	 TA0+37mNTB5fDRpg/7EUoUKJrHnPLTBbY2Bkmlwk2DhbklHnHZj9jvmzxSoaSxp6ps33v
-	 Gube8TyF+pXIT60HEuvOdsPuT7uW3RJlDHvRJgUS9j9aRV3dLZfoSGiZFl+xZxvoNDVvu
-	 BvHL0hVhvEfmikditGI9VahGpLe1vQMePBkNfZnIWoMyaWR2xYjWanDGDDP6fHOcgTg==
+	t=1794202723;
+	b=u9YxVewtujWeIrIDZWVqb7Q7r7b4RBl5DHBk2gJjJ68FpW2L4rjXhuKSEM4Ia+TrOzVx
+	 /wJLx6TBlm/z1dq2grsMZZ/XgwMMFXO+EQwPnK9o0FYtnoFzVr3zTI6Sidc/D9AwUAkQC
+	 5VE6b5q0krifWm4RVL8Szg6npydt7R2EOwy7KSP9ot0M4hnqnUc0ZIi36e5ESKbUJQm5H
+	 HgoVe4w7e5FEZs0NbT4GOtYDtd4GaSK7K4qCaGy2/oKSJW7py1DNp7VhnqLw5tTZle/X4
+	 GBjx+WYlH2qCTrx7y004Mrsy+zXJFftQmA/J0sIDa4Wl+UgwKx2oUzPFebGy1Gd4FBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794202370;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=M9ZETq7T1R9UCyvYbLAPs+OEJSYPIyDzuF8XiKAv+tI=;
-	b=y2tLuUINgzHvWRGsM7t+yVrCKic9/k6kcWS++g4T9c409kf8B8pNx4mKW+O0QFttKcwu
-	 qJvTP4d93HnqpFfpCx6WTKtFQaci2Mgz+qu6wgXfFWfqw+jvddLIaYRhfpVg90nuniyGF
-	 qsKcak4BxIfGsTwDO3PlsugBZbUvzUHdZjO17RGihhkWV5l2Zp1W9Yku6lIZ4H8SV44tV
-	 lyx7EGk+BeaJ99wqKJ7s5vqeuwhpoP9Av0vK1w4hgSD16maGTS4Ohqk4H29VhaResfWBJ
-	 PPgIL4tsmhwgFIuGhvdfOKApxWIYqctAxnffvJ5OHrWzk/cQUzHDBdFDZ62YrFkB7Xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794202723;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:To:Cc:X-Mailer;
+	bh=rWxNWXe5G6wjh9IGFPGDGAkB5T+2UjYSyeDpEVeA6SI=;
+	b=wni7mcBpe5TQFFU3/7I+acdwNPyniorGqOqLEy24FYI8+74jTYO1o6mBuLwDzVPSW2/Y
+	 qvrLDXEnmtYXI7BrzunlOFQ9316WAw7qf6Iyv1nmv/vxnXGDx5xTHzl9BeL3LIxQ3LU5D
+	 8+hDWy9ch+naWnBiT7P0QhiEz9sWYqRvaqngOske59nmWVBcvukXBUcYJ7wYpmBPonGLN
+	 S8dhmI8sunboTEnxaTwCUemi/OiNnidgOSGbT0oVXJSY7btUikvOQ0rLtebVRH7NDRF2Z
+	 XG5KJrzhpiZLcdj2RzRmWlLxS2vXEa9yvgj/V1BWOIrsE4e1As7ZoULbQ1XNb8OkL0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ER1getbt;
-	arc=none smtp.remote-ip=220.197.31.2
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nu8L+VRD;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEFC606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 05:32:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AEFC606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAC6606A322
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 05:38:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFAC6606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ER1getbt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=M9
-	ZETq7T1R9UCyvYbLAPs+OEJSYPIyDzuF8XiKAv+tI=; b=ER1getbt7GwEtXuQvH
-	GTKsQM1zxnebEWJMQ6BAo4XQqeB4pazDnuuoTd/Qec2bJTtPDNkyTov0HJHil5To
-	yaNrlM0sKK7O7uEbUPbrkGUf2gSVfJz313o82io1wNSceMX/ndmuRKOLVjm5EC2a
-	iy1X31lf+AgD8goMRyOzibFw4=
-Received: from device-ubuntu.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3v47gWvFq37XTFw--.24970S3;
-	Mon, 09 Nov 2026 13:32:36 +0800 (CST)
-From: Fang Jiabao <kaquoin@163.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org,
-	Fang Jiabao <kaquoin@163.com>
-Subject: [PATCH iproute2 v2 2/2] ip nexthop: use the request size as the limit when adding encap
-Date: Mon,  9 Nov 2026 13:32:09 +0800
-Message-ID: <20261109053209.65753-2-kaquoin@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261109053209.65753-1-kaquoin@163.com>
-References: <20261109053209.65753-1-kaquoin@163.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nu8L+VRD
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3282db206d3so1148472eec.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 21:38:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794202722; x=1794807522; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rWxNWXe5G6wjh9IGFPGDGAkB5T+2UjYSyeDpEVeA6SI=;
+        b=nu8L+VRDGTxdgpVmpWsOijUDss9X3eZpMkEbshj7cQW8hJJoF3mU6p1o56ubnge9f3
+         JBfIKW+lZf5gK6DnTTJF9WWGlcfyGkjsStXXd87YdwU8pAXZOvekYXmhAV8Sjw7uzy/B
+         qHq6Otj2gA04+mSWYkWRZ0taJCCGxleW/ZdaybAF2SQno1nvhrxHaOPLEVEWIWIecX+j
+         gZW4SaFvaNB7Lm2Ok/YMJOiz/tw+ZHVdMxAEDJLeLRtUrnssPB2Yci2kOiepBQ/G4FI8
+         kwtrWABJOmBwC8Uvxvw9tHcHKP0DDB4sbXIo47uHJ+1+IvxId7JTc/qI6WgO1JTsUfdf
+         oYBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794202722; x=1794807522;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=rWxNWXe5G6wjh9IGFPGDGAkB5T+2UjYSyeDpEVeA6SI=;
+        b=ovw2eqOMp2N9PuNO+mvHL4Dpu2KLXkOrTniLtT5vjjyn05HKQXDdYDgFZbrHhjsPGY
+         C16E9+D3SEYc9hRrmVTZUUzXFH4YugOiY2q0Bedg1IbQ5iau22Zdj4gvGoDVtT6Sg317
+         SWJZtUN4RaRTVHZwVZb7RbUe+X1qfm7zI4+PnRFGnstxbk/i2Q47jBu2B6ilgmMFaxwt
+         ag81dp4nwmDRKqeNL32O2ERZ4SHHaSc2/mQf4wMbYowhb1XbJt9qgbKwxtSzP83QmYsA
+         T7GEjS0fTl3Fy7TGlMQ5iBSlINYMXW1SDMOmzkijgo78nQlRCfOmvRSEfPTqcVQsWMDU
+         qlZg==
+X-Gm-Message-State: APuU4Z8baBYGbKfQO1Hp1W+qobHCNQrizNvg1cJbXBIYpV7vl/A+R5ul
+	7gq6G+ZD8OyuaZydHRqOlnlfC7J7wZVFTwQRTK9HrIxf79adk0brWDnZ
+X-Gm-Gg: AYBFou26xiwClo/visdzBuvJKa2ZMtgojLSeejphrMv6KMUpHOHrJ65eNv1ATsvW4XY
+	aLt8mc99cksD6+R3XV05a/bi6t3+5/rWck8ionJR6ws2mhHQVgp9tQyRaUe6p5nJALYBdD3XSlG
+	glutRV26MmdKFDJYKcFefKqUA+M7On0ROa0XIEFJicSL5icddq65/PEC4PshzV9lVUzfJeQn8NJ
+	ee39VGPAKSF4LLj5YPKyeGtYjm98XAacHt8B+Tq23RXxfD27t4tOeRh438NBsnroWpRppLshU9n
+	u+sZjRrDv3L+iqzfSLaYDgHYSnSYe5wWDn8cW8eIqrKbK0lXwcAiu7rJaZZQtBdGhr4z71S+1lF
+	lbXDJOkHOGlDMqc+T+6v+UGxSzcJOX5a5HjxwHlGaApKubC5lNaT43P4lxlQ504RD+RHOVEAyHg
+	lVsHhh7ighEM41ZCu9f8jljbjMYHOmmfwei6LatgeLg4A7bRLjG9VvW2WqKCsBC0KY84QuUG7QN
+	gnzsRJ4b36HAFNjKsUNIqAAR3tffqiDKsiuNNEipFbSSWwLRHr22SAJi+M9EgVsaWyeKuikEo2H
+	YTkqikICWTO/wcQJyUJVqObQ2MRTgKh28Q17f1socI+puw==
+X-Received: by 2002:a05:7301:dd8f:b0:369:21a:dcca with SMTP id 5a478bee46e88-37256326c2dmr6432760eec.10.1794202722040;
+        Sun, 08 Nov 2026 21:38:42 -0800 (PST)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37265a179c1sm9593242eec.11.2026.11.08.21.38.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 21:38:41 -0800 (PST)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Date: Mon, 09 Nov 2026 00:38:37 -0500
+Subject: [PATCH net-next v2] veth: set the real number of queues before
+ registering the devices
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,69 +90,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v47gWvFq37XTFw--.24970S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw13Kr13Jw4fJFy8ZrW7CFg_yoW5Jr48pF
-	Z3KFWDtrZ5JrWIya9rta1Ik3yUCw4xKayUCF1vk34qyFs8WF1SvFyIyrWYgrWUG397Jw4k
-	trZrKw15GFWq93DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRsa9-UUUUU=
-X-CM-SenderInfo: 5ndt30llq6il2tof0z/xtbC9RTqX2rxWvTb2QAA3j
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261109-bug-veth-init-queues-before-register-v2-1-d7dea61811da@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFxc8WoC/5WNQQ6CMBBFr0Jm7RhaFYwr72FYtPiBSaRoWxoM4
+ e423MDly8v/b6UALwh0K1bySBJkchn0oaB2MK4HyzMz6VJXqlQV27nnhDiwOIn8mTEjsEU3ebB
+ HLyHCM2BRVydTKlNTvnp7dLLsmQc5RHZYIjXZDHkw+e/eT2r3/6WSYsXd+QqrrdUXU9770cjr2
+ E4jNdu2/QB/hsBl4gAAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Qiliang Yuan <odys.yuan@gmail.com>, Wang Zhan <wang.zhan@smartx.com>
+X-Mailer: b4 0.13.0
 
-ipnh_modify() passes a hardcoded 1024 as the size limit to addraw_l()
-when it adds the encap attribute, and ignores the return value. Every
-other attribute in this function is bounded by sizeof(req). If the encap
-attribute does not fit, for example a seg6 encap with 59 segments,
-addraw_l() prints "addraw_l ERROR: message exceeded bound of 1024" and
-returns -1, but ip sends the request without the encap attribute and
-exits with status 0. A nexthop without encap is then installed silently.
+Since commit 9d3684c24a52 ("veth: create by default nr_possible_cpus
+queues"), each veth device is allocated with one rx and one tx queue
+per possible CPU, and veth_newlink() reduces the real number of queues
+to one unless the user asked for a number.
 
-Use sizeof(req) as the limit, like the other attributes, and return an
-error if addraw_l() fails instead of sending an incomplete request.
+Both devices are already registered at that point, so
+netif_set_real_num_tx_queues() and netif_set_real_num_rx_queues()
+remove the sysfs objects of every extra queue that register_netdevice()
+has just created, each one emitting an add and a remove uevent, and the
+tx side also waits for an expedited RCU grace period. This happens with
+RTNL held, twice per pair, and grows with the number of possible CPUs:
+with 240 of them a veth pair emits about 1900 uevents, and udev takes
+minutes to work through those of a few hundred pairs.
 
-Fixes: 63df8e8543b0 ("Add support for nexthop objects")
-Assisted-by: Claude:claude-sonnet-5-5
-Signed-off-by: Fang Jiabao <kaquoin@163.com>
+Set the number of queues before registering each device. For a device
+that is not registered yet this only updates the counters, so the extra
+queues never appear in sysfs, and the error paths that undid a
+registration are no longer needed. Creating and then deleting 500 veth
+pairs, one ip -batch each, in a 16 vCPU guest, median of 3 runs, per
+pair with udev stopped, and how long udev stays busy after the deletion
+with it running:
+
+                                   before      after
+  16 possible CPUs    create        902 us      295 us
+                      delete       6180 us     6147 us
+                      udev busy     > 300 s      4.5 s
+                      uevents           126          6
+  240 possible CPUs   create       9354 us      505 us
+                      delete       7343 us     6916 us
+                      udev busy     > 300 s      6.2 s
+                      uevents          1918          6
+
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+Tested-by: Wang Zhan <wang.zhan@smartx.com>
+Reviewed-by: Wang Zhan <wang.zhan@smartx.com>
 ---
-Changes since v1: new patch, the same problem in ip nexthop, as
-requested by Stephen Hemminger.
+V1 -> V2:
+- Rebase onto net-next, where the peer's queues are set from its own
+  attributes (tbp), and keep setting them before registering the peer
+- Retest in another guest with udev stopped, where deletion is not
+  faster, and add how long udev stays busy afterwards, as deletion times
+  with udev running mostly depend on its backlog
+- Keep Wang Zhan's tags, as the code only changes by the rebase
 
-Tested on current main (d95f6650, "man: ip-neighbour.8: document
-protocol keyword"), in a network namespace with a dummy device, with:
+v1: https://lore.kernel.org/r/20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com
+---
+ drivers/net/veth.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-  ip nexthop add id N via fc00:ee::1 dev d0 encap seg6 mode encap segs <N SIDs>
-
-Before: with 59 segments or more, addraw_l() prints its error, the exit
-status is 0 and the nexthop is installed without encap (observed on
-e4cd9f1d, the only commit since then changes a man page). After: 58, 59
-and 60 segments are added with encap, exit status 0. With 61 and 62
-segments "addraw_l ERROR: message exceeded bound of 1048" is printed,
-the exit status is 1 and no nexthop is installed.
-
-The request buffer in ipnh_modify() is only 1024 bytes, so sizeof(req)
-is barely larger than the old limit. I did not change the buffer size.
-
- ip/ipnexthop.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/ip/ipnexthop.c b/ip/ipnexthop.c
-index ad8ad0c0..ae6a28d4 100644
---- a/ip/ipnexthop.c
-+++ b/ip/ipnexthop.c
-@@ -1108,10 +1108,10 @@ static int ipnh_modify(int cmd, unsigned int flags, int argc, char **argv)
- 			lwt_parse_encap(rta, sizeof(buf), &argc, &argv,
- 					NHA_ENCAP, NHA_ENCAP_TYPE);
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index a61842b2585bf..0539b3661793d 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1875,6 +1875,10 @@ static int veth_newlink(struct net_device *dev,
  
--			if (rta->rta_len > RTA_LENGTH(0)) {
--				addraw_l(&req.n, 1024, RTA_DATA(rta),
--					 RTA_PAYLOAD(rta));
--			}
-+			if (rta->rta_len > RTA_LENGTH(0) &&
-+			    addraw_l(&req.n, sizeof(req), RTA_DATA(rta),
-+				     RTA_PAYLOAD(rta)) < 0)
-+				return -1;
- 		} else if (!strcmp(*argv, "blackhole")) {
- 			addattr_l(&req.n, sizeof(req), NHA_BLACKHOLE, NULL, 0);
- 			if (req.nhm.nh_family == AF_UNSPEC)
+ 	netif_inherit_tso_max(peer, dev);
+ 
++	err = veth_init_queues(peer, tbp);
++	if (err)
++		goto err_register_peer;
++
+ 	err = register_netdevice(peer);
+ 	if (err < 0)
+ 		goto err_register_peer;
+@@ -1904,6 +1908,10 @@ static int veth_newlink(struct net_device *dev,
+ 	else
+ 		snprintf(dev->name, IFNAMSIZ, DRV_NAME "%%d");
+ 
++	err = veth_init_queues(dev, tb);
++	if (err)
++		goto err_register_dev;
++
+ 	err = register_netdevice(dev);
+ 	if (err < 0)
+ 		goto err_register_dev;
+@@ -1917,16 +1925,10 @@ static int veth_newlink(struct net_device *dev,
+ 	priv = netdev_priv(dev);
+ 	rcu_assign_pointer(priv->peer, peer);
+ 	netdev_hold(peer, &priv->peer_tracker, GFP_KERNEL);
+-	err = veth_init_queues(dev, tb);
+-	if (err)
+-		goto err_queues;
+ 
+ 	priv = netdev_priv(peer);
+ 	rcu_assign_pointer(priv->peer, dev);
+ 	netdev_hold(dev, &priv->peer_tracker, GFP_KERNEL);
+-	err = veth_init_queues(peer, tbp);
+-	if (err)
+-		goto err_peer_queues;
+ 
+ 	veth_disable_gro(dev);
+ 	/* update XDP supported features */
+@@ -1935,12 +1937,6 @@ static int veth_newlink(struct net_device *dev,
+ 
+ 	return 0;
+ 
+-err_peer_queues:
+-	netdev_put(dev, &priv->peer_tracker);
+-	priv = netdev_priv(dev);
+-err_queues:
+-	netdev_put(peer, &priv->peer_tracker);
+-	unregister_netdevice(dev);
+ err_register_dev:
+ 	/* nothing to do */
+ err_configure_peer:
+
+---
+base-commit: fa5196392691051963726787944db872420dfa75
+change-id: 20261016-bug-veth-init-queues-before-register-eebe763a01a7
+
+Best regards,
 -- 
-2.43.0
+Qiliang Yuan <odys.yuan@gmail.com>
 
