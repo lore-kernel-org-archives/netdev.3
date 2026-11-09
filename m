@@ -1,55 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229764;
-	b=JhzOe5/FBx0Uw/QxaUiZqeN1f/6hfDtlzGvvliwZE+cOAWbperV8NilNiDt+2J3Ezcjp
-	 vl52Iy18uLE2wzV2VH/Tlcdtqkm/j8YIR25V3M9ZXHfjig5uArCX9+B7rxbUOpIjl0a5B
-	 ByXCoY1oLawImI4QfBna4D3N2D24e62A1/odmBATQt0GoCA/Q/F0JvCAeE1dZJPLnFUCE
-	 au2bkdU+FhV7udi+bCOBMTxsDuzXOOWrelbcWi+qfQ1QBJiPRitT4OKRowt7vi0CBouDs
-	 WPZK3nUcNGpYBWFidfkLCW9ihgDdA5BrHj+lEkO9J5RrXgKoWjJc07LtlVmGZI0irOQ==
+	t=1794229849;
+	b=DNEqArzjhz10KSzpELdwhaYCkrAk+1buAIdsSSDSfGEslFYh4qciJcbhBeEOxPxOVqSW
+	 Ti/NB7RucVCXRBlUyaMMt9I33TXkuMktqjHtnCgb5YNaFSrDhZyl+PCMcTZ5PvSDhcVz+
+	 JIvZ9oS73tS7hT/eDLbFRdmLDXqzazP6Zzfq4HgldTs24kBoB2kuYEX9Bnc4F1/nSOlvw
+	 fddGSqPnY8n43yw5KPsMJxTS9cO6wrcvhYwPBcWCdqs7w41R7KFGWDYfJIp+1mImliCEh
+	 zSqQKFfsMWjH0nenFMx0EvSV86KyvdAj+CunnYZIDWyTeEqSB1cAAm0fPx1MdryZxrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229764;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=wVb94j5oWA2XXVhXgiQspwdYnM+eA6VBMFxjzm5MA9Y=;
-	b=TqmlyHG7XJnOt4dBreRdblMCs1od9rBTcaifhqTpwc1QkMYIPp6ZbT6htvS4gXPbaIby
-	 3eQM3v3z1Th0/941AX9V3eYmWr+ts4XmTQwrGRtWfDYBtwlpabgRTQ2VWdNOGwiWVILG2
-	 QFkSEk/6r/pDUCxWlvLyi0CsKmGf9bQuZU3WBv0hms62hhwjlTQ7sZbXRu+CzSIoqpTp7
-	 UPehFTv7quK6SKErMVjsPt2oONtxNCqcSukBYV7EXoX30ppdhI/ptWy+1FHWZWHaoDkLn
-	 NTeUYn9GTAphpjy90P178yibHeupgLbmK/nF9jZmx5OuR3V/Mctv26EMyoSP4XhUuTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229849;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xq56ye0cilKoYtkCm9so//HbQcJMShZ8jayP8IVetxw=;
+	b=Jbryph3G/V3EPSwt7obnKjkrZCm4JuEvykGuIos/A+sE2GNPs4g53hpa8AQ6/3K0gVBE
+	 mRRGx29utityEXRN43/ibkfGNG8Xz/zBy7n5eZ3snkWirwOGAkB8CDo48j3d9gRmM6N70
+	 TTE4BlGylkjXyFHhHpvSpf0BXHxxXSuoHvi8lMZ2VNxNshMJq/vywIOLdx6ZT6oizp2km
+	 7NfI13pW+IFNQzXHn+eBURUqH1zriyUF/x7y589Zs9hs8f8jFcFzZhC0BTlXPUmaSvmOK
+	 LM4rS6cssDsVayNJTqn6zZspt50vB/HYHp4/OXJ7ZcvwCruet6vFNuhNesvOdigMLDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8vmDinm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=corp.free.fr;
+	spf=pass smtp.mailfrom=corp.free.fr;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=HfFM9Ud3;
+	arc=none smtp.remote-ip=212.27.60.169
+Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44314606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3F5606D818;
+	Mon,  9 Nov 2026 13:10:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F3F5606D818
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8vmDinm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20451F008A3
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794229764;
-	bh=wVb94j5oWA2XXVhXgiQspwdYnM+eA6VBMFxjzm5MA9Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=h8vmDinmpVjjtL7AnZY3bRVSMMimVlMtJjRWlsgnL/hGGY/5O9COI6PcF7h7NpiUJ
-	 ydUlhltrQVD5nsH5pfEC2aYjfbJR8Ekdx/RyWlcFnYyP5+nX/86JHIA7GlAv+f3gbZ
-	 /sfJxxthUp/GqJiGZAsbI2zK0RCpN+YofD7av8RGgPv0BqLS4AmZHNKtj7GJoNo5RS
-	 VM7GOciukuWXhA3G2JtnylKQfpSf24naOORHx2j+/5VLI4L/QIhz1oO2XLhPLO8v21
-	 lFa6JwGtYBLxCJJFLCsFPO/SMsz+VHki2hqdY2a7+tqPiZ559CykGtXQT0ONgI1lco
-	 9XLMWei5FZbsw==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6aa9606ddadso439388eaf.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:09:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErG+O++Ze6GKO3cYaV940Dt1Cu72Q1k/+z5ZKoxrGY1vI2lFPvNTHRkc5rYx6VaPUJQTJqs/gLM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/wSaYMOBHEHNTcNR939K0LQIc2no9KxAn9ME8kIzAKjLGn17yX
-	kdzxy8ChUYNDAmgu+kBd1uBZD+SbDrk0AAjNshs+CYW+4Ru20fZmcrKFI1+IyuG7EICAkC6+xfN
-	IFBPdwnZpHlRXCYABYysvQOkCI16dw7I=
-X-Received: by 2002:a05:6820:4a18:b0:702:3087:ca56 with SMTP id
- 006d021491bc7-7170f25b44dmr1354549eaf.26.1794229763205; Mon, 09 Nov 2026
- 05:09:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=HfFM9Ud3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
+	t=1794229847; bh=iGxFXY5s4DXgSHppry+TbbV91qX+iyEjhioIZWhodzc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HfFM9Ud3/KMWpIajIMs+Aoqd8N+Lm+MPnHTlZUBkInvGOfEvbcC1oLnP4REP8fdcH
+	 O7ThAiRa0owvrlkJE5yRd88IkczPPw8qqDnfsAmmBl5J3ppfNysMdu6hrsq3Z9fIqj
+	 QVyjW6gfGQp0lVPCf1ff+cTYySAbZ8tJGT/qRRA7iucZvoOFhxvGGcJr9P2iQQsB6N
+	 IK5R6K2MVj/ANKeYr3KBWQBCQr9AX2/o5nOOuhWJn0rxsraV0v083eg89F58DURwc5
+	 ycyqaoMKsN6iPI8Z08Uul7OsL/ifah4zUIpSica3u2ktBApiokEA9LNGvCy4I63lid
+	 LRwoMmjsJPK2A==
+Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
+	by rcs.proxad.net (Postfix) with ESMTPSA id B9DC444C11B9;
+	Mon,  9 Nov 2026 14:10:46 +0100 (CET)
+From: Alexandre Cassen <acassen@corp.free.fr>
+To: Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	oss-drivers@corigine.com
+Subject: [PATCH net-next 03/10] nfp: flower: refuse a tunnel key wider than the VNI
+Date: Mon,  9 Nov 2026 14:10:29 +0100
+Message-ID: <20261109131039.959438-4-acassen@corp.free.fr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261109131039.959438-1-acassen@corp.free.fr>
+References: <20261109131039.959438-1-acassen@corp.free.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,138 +88,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106234313.2537882-2-edumazet@kernel.org> <179409673700.994134.1614691544438367987@kernel.org>
-In-Reply-To: <179409673700.994134.1614691544438367987@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 9 Nov 2026 14:09:11 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiq67pFNB1r13YxjA4Btabg=mEZb9N7Z4Dqsw+WA_4C2sQ@mail.gmail.com>
-X-Gm-Features: AclHuK-oRMKMgOuax-68pJRAsFibJFXSOgnmPj4y7N8K2Fhs0kFwf1YHobFMK8g
-Message-ID: <CAL4Wiiq67pFNB1r13YxjA4Btabg=mEZb9N7Z4Dqsw+WA_4C2sQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] ipv4: unshare headers before recompiling IP
- options in ipv4_send_dest_unreach()
-To: netdev-bot+sashiko@kernel.org
-Cc: kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, 
-	dsahern@kernel.org, idosch@nvidia.com, paul@paul-moore.com, 
-	linux-security-module@vger.kernel.org, kylebot@openai.com, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le dim. 8 nov. 2026 =C3=A0 01:12, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] This patch adds skb_unclone(skb, GFP_ATOMIC) to
->   ipv4_send_dest_unreach() (net/ipv4/route.c:1272-1274).
->
-> --
->
-> ipv4: unshare headers before recompiling IP options in ipv4_send_dest_unr=
-each()
->
-> The patch makes the IPv4 header private with skb_unclone() before
-> __ip_options_compile() rewrites Record Route and Timestamp options in
-> place in ipv4_send_dest_unreach(). The goal is to stop concurrent
-> link-failure processing of clones from changing an option pointer after
-> it has been checked. If the copy fails, no ICMP error is sent.
->
-> > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> > index 3a90c8d28b940..4d8fcc95c2f46 100644
-> > --- a/net/ipv4/route.c
-> > +++ b/net/ipv4/route.c
-> > @@ -1269,7 +1269,8 @@ static void ipv4_send_dest_unreach(struct sk_buff=
- *skb)
-> >
-> >       memset(&parm, 0, sizeof(parm));
-> >       if (ip_hdr(skb)->ihl > 5) {
-> > -             if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
-> > +             if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4) ||
-> > +                 skb_unclone(skb, GFP_ATOMIC))
->
-> [Severity: High]
-> Can this skb_unclone() leave stale header pointers in callers of
-> dst_link_failure()?
->
-> ipv4_send_dest_unreach() runs as the ipv4 dst_ops->link_failure
-> callback. Before this patch, a header that was already linear was never
-> reallocated on this path, because pskb_network_may_pull() returns early.
-> Now, when the skb is cloned and has options (ihl > 5),
-> pskb_expand_head() swaps skb->head and calls skb_release_data() on the
-> old head, which drops this skb's reference.
->
-> ip_tunnel_xmit() in net/ipv4/ip_tunnel.c saves a raw pointer into the
-> head before calling dst_link_failure(), and does not reload it
-> afterwards:
->
-> ip_tunnel_xmit() {
->     ...
->         inner_iph =3D (const struct iphdr *)skb_inner_network_header(skb)=
-;
->     ...
->                         WRITE_ONCE(tunnel->err_count, err_count - 1);
->
->                         dst_link_failure(skb);
->     ...
->         tos =3D ip_tunnel_ecn_encap(tos, inner_iph, skb);
->         ttl =3D tnl_params->ttl;
->         if (ttl =3D=3D 0) {
->                 if (payload_protocol =3D=3D htons(ETH_P_IP))
->                         ttl =3D inner_iph->ttl;
->     ...
-> }
->
-> For header_ops GRE devices, ipgre_xmit() in net/ipv4/ip_gre.c also
-> points tnl_params into the head:
->
->         tnl_params =3D (const struct iphdr *)skb->data;
->
-> The call chain is:
->
-> ip_tunnel_xmit()->dst_link_failure()->ipv4_link_failure()->
-> ipv4_send_dest_unreach()->skb_unclone()->pskb_expand_head()
->
-> Cloned skbs do get here. TCP transmits nohdr clones, so
-> skb_header_cloned() is false and skb_cow_head() in
-> ipgre_xmit()/gre_tap_xmit() does not unclone them, but skb_cloned() is
-> still true. An unprivileged user can add RR/TS options with
-> setsockopt(IP_OPTIONS). err_count goes up on ICMP errors from remote
-> hosts in ipgre_err().
->
-> After the expand, the old head stays alive only while the other clone
-> holder, such as the TCP rtx queue skb or a tc-mirred original, keeps its
-> reference. If the tunnel has a qdisc, the clone can be sent without the
-> socket lock, and an ACK on another CPU could free the original. That
-> could happen during __icmp_send(), or even inside pskb_expand_head()
-> between the skb_cloned() check and skb_release_data().
->
-> In that case, are the inner_iph->tos, tnl_params->ttl and inner_iph->ttl
-> reads use-after-free reads, with the stale bytes written into the outer
-> header's TOS/TTL?
->
-> Would it be safer to compile and echo the options from a private copy
-> rather than uncloning the caller's skb inside a link_failure callback?
-> Another option would be to reload inner_iph and tnl_params in
-> ip_tunnel_xmit() after dst_link_failure(). Either way, it seems worth
-> checking the other dst_link_failure() callers for the same pattern.
+VXLAN and GENEVE rules shift the key and the mask of enc_key_id into a 24
+bit VNI. An exact key above bit 23 already selects the wrong VNI. Flower
+is about to accept partial masks. A mask that only covers bits above 23
+would then match any VNI. Refuse a key that no VNI can match. GRE keeps
+its 32 bit key.
 
-Good catch, thanks. Callers of dst_link_failure() such as
-ip_tunnel_xmit() keep pointers into skb->head (inner_iph, and
-tnl_params for GRE devices with header_ops) across the call, so
-ipv4_send_dest_unreach() must not reallocate the caller's skb head.
+Found by an AI code review agent while auditing the users of enc_key_id.
+Build tested only.
 
-v2 will compile and echo the options on a private pskb_copy() instead,
-leaving the caller's skb untouched.
+Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+---
+ .../ethernet/netronome/nfp/flower/offload.c   | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-pw-bot: cr
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/offload.c b/drivers/net/ethernet/netronome/nfp/flower/offload.c
+index 161190200dbd..e5f6f4f464ad 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/offload.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/offload.c
+@@ -150,6 +150,23 @@ static bool nfp_flower_check_higher_than_l3(struct flow_rule *rule)
+ 	       flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ICMP);
+ }
+ 
++static int
++nfp_flower_check_tun_vni(struct flow_rule *rule,
++			 struct netlink_ext_ack *extack)
++{
++	struct flow_match_enc_keyid enc_keyid;
++
++	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID))
++		return 0;
++
++	flow_rule_match_enc_keyid(rule, &enc_keyid);
++	if (be32_to_cpu(enc_keyid.key->keyid) < VXLAN_N_VID)
++		return 0;
++
++	NL_SET_ERR_MSG_MOD(extack, "unsupported offload: tunnel key does not fit the 24 bit VNI");
++	return -EOPNOTSUPP;
++}
++
+ static int
+ nfp_flower_calc_opt_layer(struct flow_dissector_key_enc_opts *enc_opts,
+ 			  u32 *key_layer_two, int *key_size, bool ipv6,
+@@ -411,6 +428,10 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
+ 				NL_SET_ERR_MSG_MOD(extack, "unsupported offload: ingress netdev does not match the expected tunnel type");
+ 				return -EOPNOTSUPP;
+ 			}
++
++			err = nfp_flower_check_tun_vni(rule, extack);
++			if (err)
++				return err;
+ 		}
+ 	}
+ 
+-- 
+2.43.0
+
