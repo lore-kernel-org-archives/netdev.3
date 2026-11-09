@@ -1,102 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794213062;
-	b=f1FBmCZGg1coOIuffrdr7imvKiAAof+zvFS8tIvVhqpT2KncmGCfAbHvEmYEkVqUn3BD
-	 rLYsPIZcJFalUKVVDdtEzCIDQkz/2uD1ESkFTlnqTSnwISyN8OWqv8ayY8cS+W2A6llVa
-	 UyJ8cXNevO8JUHvDSa0EQ3ma3r1EUSZqKj9FDjnw4FEvjuN7miEvjnCNcdPqxTXE+7Ne3
-	 nAuIKLI48RqAgVhv5bQAtAZ5lCv+e4OuEnUkZbIQXeAJ+lvHs91vBXgq9H2ajVw+H6oPJ
-	 q/Ri9iqjoclyLc+eL9Vxdr07TMEObOQr7tAlFpmhug73FqAwHcOjDFOtHVRZyqKaTbQ==
+	t=1794213233;
+	b=nvrji3ywaE7C3Z3dDUDRtDjm0LMIj/P9THyWYjQM/hLswigUJESNwFWEA5PqWwb/u6jM
+	 iHWa/lt4yGzAKpJfJDlN+THGYjyBhhHohc4+1TmYLhVedw8MMFc/TrkVt22gVZ+N/tW93
+	 CrwPgpFWCayURNfPg135XKJKQY0b3zKDWYebHgbWFchVXkATuVgirHuWh+dWPk+vJgkFz
+	 WiHNuOv1hHTpA/kHrWpkmz+Q4RoXH8mXSpml2xudl95lux2d3P0s7BszEUlJZyQqTv3ik
+	 XHeMud0//dPDid+mmnmKjHmBuXC1HKtlqzwqzG1m6pAnE2r6s8JT/0vqzfjwXcHFVpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794213062;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
-	b=KDxM7f5nG1KPNei/jyqFKq3oFdfktliNutK/Kdfk2k0ANiHYwwnKx5iCCmxm+QG5z58q
-	 WnD4cRYJgPy0ztzyK9YdcZVboGkjpvAH0pG5W3cYtXNJeRxvHSgMpYbmyOk8KhHkV7N5m
-	 FvG15F6w/6i+7KeFobSdsrqJ3DUqjMTQuSJJR/12n22cO5TYTZNio2Ye7hzuippgnpiQn
-	 +FI5NP5gNnV0IH8FKsx7cf1tDQ2QEs6rP4Ck25Ay0kKEjfUSifMau59ez5iFnRVbxjXey
-	 PMS4jLPD6Yx1AFU3wOCWmENkg185yrPGCWHKAzlj/G+/SdV7GPw1kjz7oDiL6oNP/Qw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794213233;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=UDd0Zg6CUretoFYA67K2u0vOJ5JoLZIvq3TwMbsLA/g=;
+	b=IofmZfaJIVSyNjDGdpFRL0tTbm6euUFWIajIPtBYk/pNCCEzt5JNOqj1FXPMs5gNdWYt
+	 TGIwCDvY+xLJ8OBufMxni5x3dIE1W0jmtNLrVHnEN+nd4E+R2DZFGW0zYw08TphEpxRe1
+	 uwAiZRPB4dF/m7KSoKE7O0s6nYkB6YEYXorIbdJToYWFBciMsBCcF//eiVaC/QKJ8LGGV
+	 JzyU+y7KXhOr6LjmAe3I+5tzQJktW+DezPJffaFD9wrZ2Anpku6CXaZPWz5TjrbTW7PwS
+	 IrU+x07ehhGepIFGak5HkbVeSllZa7ctJNRUX28tsQagbhzaRzkYnO60pick3QQTM3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jU89jaK5;
-	arc=none smtp.remote-ip=74.125.82.171
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cE/8KthE";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0767A606A322
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:31:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0767A606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F4C606A326;
+	Mon,  9 Nov 2026 08:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jU89jaK5
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-37000e7234bso80780eec.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 00:31:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794213061; x=1794817861; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
-        b=jU89jaK5dnAFqhr6/U60Wm+KBdemIPUAoWBa9y10Mk9AEUfHm1Pa0iMz/lxQ0n5Ux4
-         pky21JLLJrd7tLJ5GFtAHPV8h7ntqQ0ebFN57Mqh9J8Te8+Ci8tDEsqhM+pUmaS2BgHu
-         mmUR0X9uzi9jE6ezViLjRCO2xdnpkXw0Afm8sdF4ZZJp+i081byH6OhPjYvEYUN4t3Lf
-         kbUmVJXdx+bzkVRkGBJmz839qzNhXzSs0nUVeveROtfFCWtmktSQQCLTPwDcoEB9a79y
-         vPwQN/OgLAXAFSUr22w17OWIIFVRE6X9nBuzYJQkok3mltOVDZdLWBr6IEcCPFIqTV7E
-         PPWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794213061; x=1794817861;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
-        b=bhmMU+T84eyy8NpLid4PjNH38M+Y6rw95Hezda0q6NpjUlOpssECsgjBKJ6RVL0mmj
-         DA7k/XmrhgALuXyx6Fe5l1uvMmTHPiCN1Jh7XM2VhPQZu0vi1CYhRBdUvDk0jWloiuhc
-         mGKrSpzo4PLLCoqO9E34cNHjZAbm/6dDdbVMl98TocCN4pQ90+d9+vs2mZycftdgMIcT
-         W9GsCORfN/5tJKrZLjT99UQU1ubGT5bpHazaS+frWTQupQbktWl76JsyGmJ0paZ6/tPA
-         9uPis+6bsNgdyTuyQLGgtqjzhpM9pDuY04HP2YHRU6DgcEHrHkgymbLU5eEeQDL/oJsT
-         8CZQ==
-X-Forwarded-Encrypted: i=1; AL+hErGzBXgzgxgdAoiblUYPYWikxYFoWTYhnZK62oMDYCXzN/iBUxcpsGSKxv8BZHEzpJ7ixPP9atM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+7949T3OLfmC2T+8otx6FKqC17sTZf9GxcKSCnsJ5F7lEJKVhJ
-	PHKynV5pT2HiiqKDo9+iscTVROGhVQ7v98iBIbdIjwBZCA5HNXvcK7Qy
-X-Gm-Gg: AYBFou1VafkEL+W54o4eO+p6Y7JX+kESUpWRkKyQQwx5xb8hzCduiL/rzyJFWD1SkCN
-	MNJWJtJsRgs9f13+VfaUEzTi5P1+xJFakYSHBXKYKQUkdy4iRvFyX0dywsvEfJ9Wt/UTLVDQEOy
-	PfnHHVKFTG/PmLis9xvJ7vII2gDX9DvfTcEDRHo3TnIVYR/T9C0lBDBeFnNzR03yXDV4fDucvoF
-	/UsMdvDldvt94HVDW1YPxTzGTswqQ+mjKxcXxfe335ANoRqTxIFMUSyvYs8eLpjgIIQWhHtsEVi
-	kl4ZUjaF+AG+3GwVezBOcAUmhxtIihq+k1gKOvac6nbdv15/iQmnBtGVPodBOeRRvFfjD4HcnxZ
-	SLwJojl1KCSELE37XXE7fWjPQ94Kg7gvHF/Ku8U6C/wTKK983PfFEBLrgUQfpv8x6KdwvjDDlLU
-	BMBA73Fith1ycmSSzO4IvvzuOlNUXhpWJKv6m6zY+JiJyffh54fdjc1Jqfm5GKk858GPHay1Tan
-	R/FbXu2QRyLxJgixJEaMsrz4h3CpgH3R8dFX6ypbjlBtdor32jERVCfTCmQeym57U2G6D8jblnu
-	XwZvCZ7NpD08bNGdiBRBW+deAGVO411LewxCnzQ=
-X-Received: by 2002:a05:693c:65c6:b0:36e:53bc:4681 with SMTP id 5a478bee46e88-372569fae2emr6648368eec.37.1794213061041;
-        Mon, 09 Nov 2026 00:31:01 -0800 (PST)
-Received: from xploitoverload ([2409:40c1:400f:1382:e6ca:3a31:da44:4020])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-372667d60absm12131756eec.26.2026.11.09.00.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 00:31:00 -0800 (PST)
-From: Kalpesh Solanki <skalpesh942@gmail.com>
-To: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: andrew+netdev@lunn.ch,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
-	Kalpesh Solanki <skalpesh942@gmail.com>
-Subject: [PATCH net v4] tun: disallow setting IEEE 802.15.4 and 6LoWPAN link types via TUNSETLINK
-Date: Mon,  9 Nov 2026 14:00:37 +0530
-Message-ID: <20261109083037.22337-1-skalpesh942@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cE/8KthE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB881F0089F;
+	Mon,  9 Nov 2026 08:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794213233;
+	bh=UDd0Zg6CUretoFYA67K2u0vOJ5JoLZIvq3TwMbsLA/g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cE/8KthEUJtk0LewDEGnN0ewmMPUVYUelvP+s0qv4QA7UIjX4h/v/r0ez56cA3r7i
+	 SBFUNy0NosBcg5c9LquPAbY+nTEsp5Ur3v3JJjrcuf2OpKBtPkiLNiLoQAlGIn7RoX
+	 nmyq0AH3oKDZ8GboW9SFOIWdgs6mqXR2JztyPdf4Dptt/hwB6twsS7sXF4xe1Bw5dE
+	 Szmokk+6tyoLsW4K4sDgO16F9Q2+3au8Y9qc1Rty0At7GEXyewFbfy6M3fPj2NM4yG
+	 gZP94gmXyHnZo8Z+xp5OYEnHiS5yFDh2N1VyJayDgUIqtwjtCPdLLpfHHw2qMK4WYB
+	 rJgw8OesaKwMQ==
+Subject: Re: [PATCH net] netfilter: xt_dccp: reject short option lengths
+From: netdev-bot+sashiko@kernel.org
+To: shawnq1@163.com
+Cc: pablo@netfilter.org, tjdqudcks0424@naver.com, fw@strlen.de, phil@nwl.cc,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+ horms@kernel.org, coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 08:33:51 +0000
+Message-ID: <179421323164.994134.2385901971109672793@kernel.org>
+In-Reply-To: <20261105081735.749379-1-shawnq1@163.com>
+References: <20261105081735.749379-1-shawnq1@163.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,63 +63,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-A userspace application can set the link type of a TUN/TAP interface
-to ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, or ARPHRD_6LOWPAN
-via ioctl(fd, TUNSETLINK, arg) because tun_get_addr_len() explicitly
-recognized these types.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-However, TUN devices cannot function as genuine IEEE 802.15.4 or 6LoWPAN
-interfaces:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-1. They lack wpan_phy, channels, PAN IDs, and MLME operations, and tun
-   never initializes dev->ieee802154_ptr or dev->ml_priv. When an
-   unprivileged user creates a TUN interface in a user+net namespace,
-   changes its link type to ARPHRD_IEEE802154, and issues a netlink dump
-   request (such as IEEE802154_LLSEC_LIST_KEY),
-   ieee802154_llsec_dump_table() unconditionally dereferences
-   dev->ieee802154_ptr / ieee802154_mlme_ops(dev), triggering a supervisor
-   null-pointer dereference / general protection fault. Similar
-   dereferences occur across net/ieee802154/nl-phy.c (ieee802154_del_iface)
-   and net/ieee802154/socket.c.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-2. Similarly, the 6LoWPAN subsystem assumes via lowpan_dev(dev) that
-   netdev_priv(dev) is struct lowpan_dev. On a TUN device, netdev_priv(dev)
-   is struct tun_struct. On netdev events (such as NETDEV_DOWN in
-   net/6lowpan/core.c:lowpan_device_event), it clears bits in
-   lowpan_dev(dev)->ctx.table flags, which corrupts private memory inside
-   tun_struct.
+- [Medium] The patch turns option lengths 0 and 1 into a hotdrop instead
+  of a no-match, and the commit message does not say so.
+- [Low] The commit body is an email cover letter pasted into the
+  permanent changelog.
+- [Low] Whether xt_dccp drops a malformed option TLV now depends on which
+  malformed form it is and on option order.
 
-Rather than scattering checks across subsystems, fix the issue at the
-source: disallow setting ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, and
-ARPHRD_6LOWPAN via TUNSETLINK by returning -EINVAL. Cast arg to unsigned
-short in the comparison to prevent upper-bit truncation bypasses (e.g.
-arg = ARPHRD_IEEE802154 | 0x10000).
+--
 
-Fixes: ff4cc3ac93e1 ("[TUNTAP]: Allow setting the linktype of the tap device from userspace")
-Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
-Signed-off-by: Kalpesh Solanki <skalpesh942@gmail.com>
----
- drivers/net/tun.c | 4 ++++
- 1 file changed, 4 insertions(+)
+netfilter: xt_dccp: reject short option lengths
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index dcec7311e60..b50a7245be9 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3362,6 +3362,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
- 			netif_info(tun, drv, tun->dev,
- 				   "Linktype set failed because interface is up\n");
- 			ret = -EBUSY;
-+		} else if ((unsigned short)arg == ARPHRD_IEEE802154 ||
-+			   (unsigned short)arg == ARPHRD_IEEE802154_MONITOR ||
-+			   (unsigned short)arg == ARPHRD_6LOWPAN) {
-+			ret = -EINVAL;
- 		} else {
- 			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
- 						       tun->dev);
+This patch changes dccp_find_option() in net/netfilter/xt_dccp.c so that
+a multi-byte DCCP option with a length byte of 0 or 1 is treated as
+invalid. The walker previously advanced by one byte and could read the
+length byte as the next option type. With this patch it sets hotdrop and
+stops.
+
+Link: https://lists.openwall.net/netdev/2026/10/20/477
+
+> Hello,
+
+[Severity: Low]
+This isn't a bug, but the changelog reads like an email cover letter that
+was pasted in as the commit body. It opens with "Hello,".
+
+It also includes reproduction notes that would usually go below the ---
+line: QEMU and gcc versions, gist URLs, tested SHAs, and build and boot
+steps.
+
+The technical explanation ends mid-sentence:
+
+> The option walker should reject a TLV length below two before advancing:
+>
+> Fixes: 1d3de414eb20 ("[NETFILTER]: New iptables DCCP protocol header match")
+
+Nothing follows the colon. The message also doesn't say what the code now
+does with a length of 0 or 1, which is to hotdrop the packet.
+
+> diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
+> index 23a4e3e8df7de..e0d7f43749588 100644
+> --- a/net/netfilter/xt_dccp.c
+> +++ b/net/netfilter/xt_dccp.c
+> @@ -62,10 +62,15 @@ dccp_find_option(u_int8_t option,
+>  			return true;
+>  		}
+>  
+> -		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1)
+> +		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1) {
+>  			i++;
+> -		else
+> -			i += op[i + 1] ? : 1;
+> +		} else {
+> +			if (op[i + 1] < 2) {
+> +				spin_unlock_bh(&dccp_buflock);
+> +				goto invalid;
+> +			}
+
+[Severity: Medium]
+Is the change from a no-match to a hotdrop intended here?
+
+The goto invalid path sets *hotdrop = true. dccp_mt() passes &par->hotdrop
+down through match_option(), and ipt_do_table() then stops rule traversal
+and drops the packet, whatever the target or chain policy:
+
+net/ipv4/netfilter/ip_tables.c:ipt_do_table() {
+    ...
+	} while (!acpar.hotdrop);
+    ...
+	if (acpar.hotdrop)
+		return NF_DROP;
+    ...
+}
+
+Before this patch, a packet with options {32, 1} just failed the match and
+kept going. With this patch it looks like the packet is also dropped in
+setups such as these:
+
+- an ACCEPT policy chain with a non-terminal --dccp-option N rule, for
+  example LOG or MARK, or a rule in the mangle or raw table
+
+- an inverted rule such as "! --dccp-option 5 -j ACCEPT", which used to
+  match {32, 1} or {32, 0} because option 5 is absent
+
+The commit message only describes the DROP policy allow-list case. In that
+case hotdrop and no-match give the same result.
+
+nft_exthdr_dccp_eval() handles the same malformed TLV as "option not
+present" and does not drop the packet:
+
+net/netfilter/nft_exthdr.c:nft_exthdr_dccp_eval() {
+    ...
+		if (len < 2)
+			goto err;
+    ...
+err:
+	*dest = 0;
+}
+
+xt_dccp already hotdrops when doff is shorter than the header, so hotdrop
+may be the intended policy. Could the changelog say why hotdrop was chosen
+over returning false? Could it also note that the iptables and nftables
+DCCP option matches now give different results for these packets?
+
+> +			i += op[i + 1];
+> +		}
+>  	}
+
+[Severity: Low]
+With the new hotdrop, dccp_find_option() now handles malformed TLVs in
+different ways. The hotdrop only fires for a length of 0 or 1, and only if
+the walker reaches that option before it finds the requested type.
+
+Other malformed forms still end as a plain no-match:
+
+- a length larger than the remaining option area, where
+  i += op[i + 1] runs past optlen and the function returns false
+
+- a multi-byte type (above DCCPO_MAX_RESERVED) in the last byte, which
+  the i == optlen - 1 branch skips as if it were a single-byte option
+
+Also, the op[i] == option check returns true before any length is checked.
+So {32, 1} still matches --dccp-option 32, and {1, 32, 1} matches
+--dccp-option 1 without the bad trailing TLV being examined.
+
+Take an inverted rule like "! --dccp-option 5 -j ACCEPT". It would accept
+{32, 0xff} and a trailing {..., 32}, but hotdrop {32, 1}, even though all
+three are malformed. nft_exthdr_dccp_eval() treats every one of these as
+"not present".
+
+None of these cases brings back the false match this patch fixes. Once
+lengths are at least 2, the walk stays on TLV boundaries.
+
+Should these malformed forms all be handled the same way?
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105081735.749379-1-shawnq1%40163.com
