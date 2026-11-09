@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794266105;
-	b=s6F3bizRxWR7o8uJHxn9OQnduqbteTbbYrrT2PtGTbxk96D43vDpkH/WXb1O4+kuXxyf
-	 BfBKBrgVQW2ffiGyyD5xdsJVVIpnFzBZZC4/MhCNoqeq/z+/pPYY36UzyxjlfV2/1hCU/
-	 Lr9DeqmzpBlrWr3gCC022BuMvTPdnTyECyndfoFElcymK3fSaTQmpq3J6U6knkCpOi5SQ
-	 A7SKHAYvfpQ6uLUO1FTNe80fTBdzOJ4Rcea33oOjV8l9nMNWzl8IDi7LDU6JiQEcUyCH3
-	 6oILbUJg7YGc3EmSw0CWVznhQX3g23Z5wqteJr23ysNQYA4N3Fvl033iZzCMSYWD1Lg==
+	t=1794266106;
+	b=RJp1amrcAENTk22mv6sjAbzV0XaYQN08Y6kfvQRZy0HsBggBnlKl3x7kxq/KEvez1BK5
+	 XCCR4m1CJbpzQiLOSDezw/Ie7M7mTy/kEpazbPJSLgNJ/l2er0H8/6maibAuvL+4Ea01X
+	 vcogDfxcftyvblHMxcrNYEYk105hdjDaVrnm3wuHc+b93OBETksognUMf2LYRz0T+1/Vi
+	 8KOycZ2m381nLnbfabIirE+UFLsq/TvPvE0uqCs5q7P1N31JTxbtCLbvxTYGSc078VfLJ
+	 e7NNtgsFrOPxyN9uDW0M7+Dp8/GhdHN0fTqTvyXnOB4rDP3SmBd32YZBmXNvttOAi3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794266105;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266106;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=g1aJkuxd0Ur2EcndcqLJniNjLXwxT7nR+FRcSV89gas=;
-	b=md1HXnnCeleT2IFynkBeM8jvIooe8TVDVa11Ip6Hp/st5OTZQcoIddRnp5VPAusC4g2O
-	 5rviKVCpBGBvEC5MU7po1ylxuPUMKxiWj388kI8gLKuPKDnK9h31h50mzuobhnrRqr7nx
-	 MhssNYvxeZULm1s5ldIJ7XuTwdMJU/qgqRjd2qkcQ9LvZkhMjSU29MJkfZ3pRYR9N7Lw3
-	 3VcmitJVc50yZUBGIXUIAHQJAy3HQAmDWu9tVd8JvvEIYjNGicUWJzo8D5iJClYplBB5x
-	 9O25pApH7D8vONmS45wXQNTW+BZzUEbUfIGBqlIcH3sm+q1/mSkWwVd1L9VqZWmD7kQ==
+	bh=Y2y8WScowwkJy4kQizvjBIJ/X9P/iFF0EmSPDT9CpKk=;
+	b=ffwQ9R8IhQvDDlJeFkm8C/QMix6kv23ikirb/aQuRR4lZiAJZNwdl0uchIGa2BQrUVDv
+	 PSv3IN4gipPI9Np92acGP9xZ4xXq7IJTkPsLSGQEeK6NIPJxD/krwyR5GxxpMP8nc76f2
+	 jfPVkirZZXJHN7RpMvPeq40lYZudbe1ejJLRQi65QkyWFIguLdg5GwLyYcsJsCdHmA0gH
+	 5Hs90o9DH1siZYN481XguCyQ9xnxEcpS3M3NyND1EvpwYhJvsn8CH2/OOkW5VQgBp4TDb
+	 Ai4DoIn0BoC7we3u1XTKAyAGSWyaTcnZxc3ZHIiiVSe0G/dVl5ACP9Ai0tOZ5UVEdpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H2805Djz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=blaoP5kO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75281606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613D6606A332
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H2805Djz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA12F1F0089F;
-	Mon,  9 Nov 2026 23:15:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=blaoP5kO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5589E1F008A1;
+	Mon,  9 Nov 2026 23:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794266104;
-	bh=g1aJkuxd0Ur2EcndcqLJniNjLXwxT7nR+FRcSV89gas=;
+	s=k20260515; t=1794266106;
+	bh=Y2y8WScowwkJy4kQizvjBIJ/X9P/iFF0EmSPDT9CpKk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H2805DjznEqUoyd+zayJbfxuYKRIo4ucQvrxIIiG8S0NTI4VsMpXI1hnK9zaqQqE9
-	 ceVVNvN+DY1mRPIwtWbfpmB71aRuo7+cDfFRJqzUiV0IQp6UHZxePKuLshXmRnD9O9
-	 Ha13JLCbnWERz1Fh/iyGH+Cb8Lf/S0xjv5QOw+7Z7V/Yjy0ieWpYCzEhr4vqI3P+44
-	 9Z3q4tSzdorDQpXxj9Ptv5S5ilgEvuOWs/Q4zvDrlrcK4V8UdG7Mxk9nsv+B3xzA18
-	 6xg03CFmHRV9Af8gJlOAPqFPUCiawmG7VSZSyOZ+FIbT+bcndA3XCUVxvZNcNvC/F+
-	 plpP3Wfd9bYtA==
-Subject:
- Re: [PATCH net-next 1/4] ipv6: fix transport header of forwarded GSO packets
+	b=blaoP5kOCE9KBTPSyaFBDHVqL7UYVaK086g06vx2UgAlTyna5dSyPIy+aRxEGghWY
+	 jFekEHTg2EQPRScJgjhTUR4fnZ9KOQu7ZwGegvJBRHB0PSYellOdx1fBypQIzqBcAh
+	 eT+RI5p/Dtow4wwuSd+0pg4wKyaydvWas+RxUloFVCBSGAwcvLLD1wvYbBmIaUaQfG
+	 oU1o67zeRWatA/nLvzriuo0RAzzrWSQmHQ1+8NbRuw+CXJW7WeMR/zAu7yEZ7E7x/D
+	 sXuIQHKCDJKjrUiCw4ClnnCYw+pFcGubmhY1f25AZ/BQTTswq4VJ/rsRvsD/ysCkYD
+	 DyeikTDwBrOxw==
+Subject: Re: [PATCH net-next 2/4] ipv6: sr: keep transport header after inline
+ SRH insertion
 From: netdev-bot+sashiko@kernel.org
 To: tactii@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
  idosch@nvidia.com, andrea.mayer@uniroma2.it, justin.iurman@gmail.com,
  aahringo@redhat.com, willemb@google.com, alexander.duyck@gmail.com
-Date: Mon, 09 Nov 2026 23:15:03 +0000
-Message-ID: <179426610333.994134.2644370589086394410@kernel.org>
-In-Reply-To: <20261105201309.3182307-2-tactii@gmail.com>
-References: <20261105201309.3182307-2-tactii@gmail.com>
-X-sashiko-severity: High
+Date: Mon, 09 Nov 2026 23:15:04 +0000
+Message-ID: <179426610491.994134.1159798416281184648@kernel.org>
+In-Reply-To: <20261105201309.3182307-3-tactii@gmail.com>
+References: <20261105201309.3182307-3-tactii@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,205 +65,156 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The commit fixes a regression users can see but has no Fixes:
+  tag.
+- [Low] The new save/restore in seg6_output_core() assumes the transport
+  header sits at or after offset sizeof(struct ipv6hdr), where…
 
-- [High] ipv6: unvalidated csum_start in ip6_forward() moves
-  transport_header backwards
-- [Medium] In ip6_forward() (net/ipv6/ip6_output.c), the new else-branch
-  sets transport_header to whatever ipv6_skip_exthdr() returns.
-- [Low] The commit fixes a user-visible bug: forwarded IPv6 GSO flows
-  with destination-options or routing headers stall on Packet Too Big at…
+Pre-existing issues:
+- [Low] Concern: the same defect (transport_header left on a newly
+  inserted IPv6 extension header) remains in…
 
 --
 
-ipv6: fix transport header of forwarded GSO packets
+ipv6: sr: keep transport header after inline SRH insertion
 
-This patch resets transport_header in ip6_forward() for GSO packets before
-the MTU check. CHECKSUM_PARTIAL packets without encapsulation take it from
-csum_start, and other packets with extension headers walk the chain with
-ipv6_skip_exthdr(). This keeps skb_gso_validate_network_len() from reading
-a bogus TCP header length, which caused Packet Too Big stalls and
-SKB_BAD_GSO drops.
+On the output path, this patch keeps transport_header pointing at the L4
+header after seg6_do_srh() inserts an SRH in inline mode. Before the
+insertion it saves the distance from the transport header to the end of
+the packet, and afterwards it restores it. GSO length checks then no longer
+read the SRH as a TCP header.
 
-> skb_gso_validate_network_len() then reads a bogus TCP header length. An
-> overestimate makes ip6_forward() answer with Packet Too Big at the
-> current MTU, and the flow stalls. Since commit 7fb4c1967011 ("net: pull
-> headers in qdisc_pkt_len_segs_init()"), a bogus doff below 5 also makes
-> __dev_queue_xmit() drop the packet as SKB_BAD_GSO.
-
-[ ... ]
-
-> Signed-off-by: Matt Vollrath <tactii@gmail.com>
+> In inline mode, seg6_do_srh() leaves transport_header at the inserted
+> SRH, although the L4 header has not moved. GSO length checks then read
+> the SRH as TCP, and since commit 7fb4c1967011 ("net: pull headers in
+> qdisc_pkt_len_segs_init()"), a bogus doff below 5 there makes
+> __dev_queue_xmit() drop each GSO packet of the flow as SKB_BAD_GSO.
 
 [Severity: Low]
-Should this patch carry a Fixes: tag and a stable Cc? The only pointer to
-where the bug came from, fe6cc55f3a9a ("net: ip, ipv6: handle gso skbs in
-forwarding path"), is in the notes below the --- separator, and git am
-strips those.
+Should this have a Fixes: tag?
 
-Stable trees that pick up 7fb4c1967011 would start dropping these
-forwarded packets as SKB_BAD_GSO. Nothing in the commit points the stable
-tooling at this fix.
-
-Would a trailer like this in the commit body work, along with a mention of
-7fb4c1967011?
-
-Fixes: fe6cc55f3a9a ("net: ip, ipv6: handle gso skbs in forwarding path")
-
-> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-> index 25fe0ba98b1a6..60ac56afbd06b 100644
-> --- a/net/ipv6/ip6_output.c
-> +++ b/net/ipv6/ip6_output.c
-> @@ -662,6 +662,23 @@ int ip6_forward(struct sk_buff *skb)
->  
->  	__IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTFORWDATAGRAMS);
->  
-> +	if (skb_is_gso(skb)) {
-> +		if (skb->ip_summed == CHECKSUM_PARTIAL && !skb->encapsulation) {
-> +			skb_set_transport_header(skb,
-> +						 skb_checksum_start_offset(skb));
-> +		} else if (ipv6_ext_hdr(hdr->nexthdr)) {
-> +			u8 nexthdr = hdr->nexthdr;
-> +			__be16 frag_off;
-> +			int thoff;
-> +
-> +			thoff = ipv6_skip_exthdr(skb, skb_network_offset(skb) +
-> +						 sizeof(*hdr), &nexthdr,
-> +						 &frag_off);
-> +			if (thoff >= 0)
-> +				skb_set_transport_header(skb, thoff);
-
-[Severity: High]
-Can the CHECKSUM_PARTIAL branch move transport_header backwards, into
-the fixed IPv6 header or even in front of skb->data?
-
-csum_start is taken as is here. Nothing checks that
-skb_checksum_start_offset(skb) is at least skb_network_offset(skb) +
-sizeof(*hdr). Before this patch, the forwarding path kept the
-transport_header set by ip6_rcv_core(), which never pointed inside the
-fixed header.
-
-For packets injected through tun/tap, macvtap or af_packet with
-VIRTIO_NET_HDR_F_NEEDS_CSUM, csum_start comes from userspace. The check
-in __virtio_net_hdr_to_skb() runs while skb->data still points at the
-Ethernet header:
-
-include/linux/virtio_net.h:__virtio_net_hdr_to_skb() {
-    ...
-		if (!skb_partial_csum_set(skb, start, off))
-			return -EINVAL;
-		if (skb_transport_offset(skb) < nh_min_len)
-			return -EINVAL;
-    ...
-}
-
-nh_min_len is sizeof(struct ipv6hdr) for VIRTIO_NET_HDR_GSO_TCPV6, so a
-csum_start of 40 is accepted. After eth_type_trans() pulls the 14 byte
-Ethernet header, that is offset 26 from the network header, in the
-middle of the source address. A routed TCPV6 GSO packet built this way
-takes this branch and gets transport_header set inside the IPv6
-header. From there:
-
-ip6_forward()
-  ip6_pkt_too_big()
-    skb_gso_validate_network_len()
-      skb_gso_network_seglen()
-        skb_gso_transport_seglen()
-          thlen = tcp_hdrlen(skb);
-
-This reads doff out of the address bytes. The network header length
-comes out 14 bytes short and thlen is garbage, so the MTU checks here
-and in ip6_finish_output_gso() use the wrong segment length.
-qdisc_pkt_len_segs_init() later reads the same bogus doff.
-
-It gets worse if the offset goes negative. bpf_prog_run_generic_xdp()
-calls __skb_pull() after bpf_xdp_adjust_head() without adjusting
-csum_start, so ip_summed can stay CHECKSUM_PARTIAL with csum_start
-behind skb->data. A negative transport offset wraps the unsigned
-arithmetic in skb_gso_network_seglen(), which lets the packet past the
-MTU checks. Then, in qdisc_pkt_len_segs_init():
+On an inline seg6 route, every GSO packet of the flow gets dropped here:
 
 net/core/dev.c:qdisc_pkt_len_segs_init() {
     ...
-		hdr_len = skb_transport_offset(skb);
-    ...
-		th = (const struct tcphdr *)(skb->data + hdr_len);
-    ...
-}
-
-hdr_len is an unsigned int. With a transport offset between -20 and -1
-the length passed to pskb_may_pull() wraps to a small value that
-passes, and th ends up about 4 GiB past skb->data on 64-bit. Reading
-th->doff there would oops.
-
-Would it be enough to use csum_start only when
-skb_checksum_start_offset(skb) >= skb_network_offset(skb) +
-sizeof(*hdr), and fall back to the ipv6_skip_exthdr() walk otherwise?
-
-[Severity: Medium]
-Can this make tcp_hdrlen() read past the linear data of the skb?
-
-For each extension header, ipv6_skip_exthdr() reads only the 2-byte
-generic header through skb_header_pointer(). After the last one it adds
-hdrlen without a bounds check, and for destination or routing options
-hdrlen can be up to 2048 bytes:
-
-net/ipv6/exthdrs_core.c:ipv6_skip_exthdr() {
-    ...
-		nexthdr = hp->nexthdr;
-		start += hdrlen;
+		tlen = __tcp_hdrlen(th);
+		if (tlen < sizeof(*th))
+			return SKB_DROP_REASON_SKB_BAD_GSO;
     ...
 }
 
-So thoff can point into the page frags or past skb->len. The only check
-here is thoff >= 0.
+The commit message mentions 7fb4c1967011 only in prose. Commit
+6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection
+with lwtunnels"), which placed transport_header at the SRH, appears only
+below the --- line, and git-am strips that part.
 
-Right after this, the MTU check reads the TCP header directly at the new
-offset:
+Without a Fixes: trailer, stable backports may miss this. The other
+patches in the series seem to have the same gap.
 
-ip6_forward()
-  ip6_pkt_too_big()
-    skb_gso_validate_network_len()
-      skb_gso_network_seglen()
-        skb_gso_transport_seglen()
-          thlen = tcp_hdrlen(skb);
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 0d39a38a5dd29..942704eca8db0 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
 
-tcp_hdrlen() reads tcp_hdr(skb)->doff with no pskb_may_pull() and no
-skb_header_pointer().
+[ ... ]
 
-The else branch runs for TCP GSO skbs that are neither CHECKSUM_PARTIAL
-nor encapsulated. Two examples are fraglist GRO (CHECKSUM_UNNECESSARY) and
-virtio_net_hdr GSO packets without NEEDS_CSUM.
-
-On ingress, only the extension header chain that was actually parsed gets
-linearized. Suppose the chain is rewritten before ip6_forward(), for
-example by nftables payload mangling in PREROUTING or by a tc BPF
-store_bytes. Then the new thoff can land far past skb_headlen(), possibly
-past skb->end. Both of those need CAP_NET_ADMIN, which an unprivileged
-user namespace has inside its own netns.
-
-Before this patch, transport_header on this path pointed just past the
-fixed header, or past a hop-by-hop header that ipv6_parse_hopopts() had
-already pulled. Either way the read stayed inside the linear data.
-
-Would a pskb_may_pull(skb, thoff + sizeof(struct tcphdr)) check for TCP
-GSO cover this, keeping the old transport_header if the pull fails?
-
-> +		}
-> +	}
+> @@ -684,10 +685,17 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+>  	dst = dst_cache_get(&slwt->cache_output);
+>  	local_bh_enable();
+>  
+> +	if (slwt->tuninfo->mode == SEG6_IPTUN_MODE_INLINE &&
+> +	    skb_transport_header_was_set(skb))
+> +		tail_len = skb->len - skb_transport_offset(skb);
 > +
->  	mtu = ip6_dst_mtu_maybe_forward(dst, true);
->  	if (mtu < IPV6_MIN_MTU)
->  		mtu = IPV6_MIN_MTU;
+>  	err = seg6_do_srh(skb, dst);
+>  	if (unlikely(err))
+>  		goto drop;
+>  
+> +	if (tail_len >= 0)
+> +		skb_set_transport_header(skb, skb->len - tail_len);
+> +
+
+[Severity: Low]
+Does this restore assume the transport header is at or past offset
+sizeof(struct ipv6hdr)?
+
+__seg6_do_srh_inline() pulls the 40-byte IPv6 header and pushes 40 + hdrlen
+bytes. It then moves the IPv6 header to the new front and copies the SRH in
+at offset 40. Only bytes at offset 40 or later keep their distance to the
+end of the packet.
+
+rawv6_send_hdrinc() leaves the transport offset at 0:
+
+net/ipv6/raw.c:rawv6_send_hdrinc() {
+    ...
+	skb->transport_header = skb->network_header;
+    ...
+}
+
+The packet then goes through NF_HOOK(LOCAL_OUT, ..., dst_output) to
+seg6_output_core(). With an inline seg6 route, tail_len becomes skb->len,
+and after the insertion transport_header ends up at offset hdrlen:
+
+- With a single-segment SRH (24 bytes), that is inside daddr of the IPv6
+  header.
+- With 3 segments (56 bytes), it is 16 bytes into the SRH.
+
+Before this patch, seg6_do_srh() left it at offset 40, on a header
+boundary.
+
+These packets are neither GSO nor CHECKSUM_PARTIAL. The effect is
+therefore limited to egress code that uses skb_transport_offset()
+directly, such as act_pedit layered keys or BPF.
+
+Could the guard also require skb_transport_offset(skb) >=
+sizeof(struct ipv6hdr) before tail_len is saved?
+
+The later series patches "ipv6: rpl: keep transport header after SRH
+insertion" and "ipv6: ioam: keep transport header after inline insertion"
+seem to copy the same unguarded check into rpl_output() and
+ioam6_output().
+
+[Severity: Low]
+This is a pre-existing issue, but the same pattern exists in other places.
+In each of them, transport_header is left on a newly inserted extension
+header:
+
+- rpl_output()->rpl_do_srh_inline()
+- ioam6_output()->ioam6_do_inline()
+- input_action_end_b6() in net/ipv6/seg6_local.c:
+
+net/ipv6/seg6_local.c:input_action_end_b6() {
+    ...
+	err = seg6_do_srh_inline(skb, slwt->srh);
+	if (err)
+		goto drop;
+
+	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+
+	seg6_lookup_nexthop(skb, NULL, 0);
+    ...
+}
+
+The rest of the series appears to fix these cases:
+
+- "ipv6: rpl: keep transport header after SRH insertion" adds the same
+  tail_len save/restore to rpl_output().
+- "ipv6: ioam: keep transport header after inline insertion" adds it to
+  ioam6_output() for inline mode.
+- input_action_end_b6() is an input path. "ipv6: fix transport header of
+  forwarded GSO packets" corrects transport_header in ip6_forward() for
+  forwarded GSO packets, and local delivery parses extension headers
+  starting at the SRH.
+
+Is there another caller of these inline insertion helpers that the series
+leaves uncovered, or are all of them handled once the remaining patches
+are applied?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105201309.3182307-1-tactii%40gmail.com
