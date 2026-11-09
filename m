@@ -1,100 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794236074;
-	b=sehghjmi7OJcGM3Yy+XrIhqDI7cmor/S4vFyOuf+7oCCAI1PxnvEyEf5cyXkIdj+7/iw
-	 USWr2B5ltoRmYWG9azhUti8ppB8GFVrEEqr7XyZTV3eVcY0XRLrbyMLnOsWu3TVG5HNtf
-	 Q0X/hhopJM+VOXfVA507tj2bfrwv8o2u9PGuqjXE9AUTkSBOQoPUMlPovKGYJkjZGKOFf
-	 lx3nQcPaRpJ1sHgtDHukzEAygjZzalCBzlQEm6XlTEvSANu2F1qqaEatZxAAPayF29ylr
-	 9gVN8lgl19MExKFgqh9RXYxjjU0NM4Cd661nxEapxq1lka7Hk2ml6GvAUJyrBZm81Uw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794236074;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Uu2ycv9me8mHBGrXAn80H1Hsv9lPp2MX3pjtM0lSbsk=;
-	b=dGP7mjPLxKXUDYWGSyUfMvlnzSy/gV0aoxx/gbgaIt8AqOZDI0gcheBE/okkr8uF6PLY
-	 +f3V2RMySLw9hJOZYedYaNqfULRqU9PlVoVuQy5Jl1XOPqJju5khQDR3RI7lPxCplUgw1
-	 3vuCKDhalbc+EmN5di+pPw1hae0PKUgGEkS87X6GvBBzwWJ4Ww7n5E4Wj5KC7eihuud41
-	 CnRISuQxlvZjcclH6dOTZm+fwE4gBcCprK7P+JYbu+vTtHmL9QUR7p8CelqYoAiQLeqty
-	 /sJ3iIgLIXJVzQkwaNLxE6KcpIKOdGBkYc9ySpNica27dJTpLyv3CSlVtmB6j7zewnw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i0L239Ly;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794236905;
+	b=RL5N8lOG2XP+dz5EsP3LMx1gasCAbLIg7nRmc8iVKXCUWact6MuzMGcggDBFJM7Io1VL
+	 sl3NgAaulIkq7p9A5YvQVTjNe7hAYMQZmff4XvTHvZ3gQFIR/IoP9xqtCD967hXpLhWU4
+	 kkvH3GbmaExFdv1Wo/ekAedIXYPbGSD6Dvkjb4eu20wqdKqphQd4dQVi1l5mrjTP4ue9b
+	 0/CqukhHrpwa0di1w0kz5b4M2j6GnlyzScHaSFpuD8Ldt9g9o/eRewVhULoskKe3IWP5m
+	 Q7uM/aKRIFMgfubBYyKTOGR2wX1RV1CyIaKvu8C/4vJVZIwGKMgc5ZboGQASjLj/0dA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794236905;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=NcQSsbzqyco4Iw3u+HR1WbdmTXLgzsyGZKY4I0nDx4g=;
+	b=z2G7WOK0OaZmrR6ZyoNKTLt9psOGGRWHPqLPPn0EzjpUHPrit7o2RRwZhpOvM5F/19AX
+	 RsGMQBVgAOLyw3nUZBaf0+hvHUJcMCzBSA83aL/l1al4VLDmp4MzlWQJ+06t7Dx4dq/Bw
+	 vQg5vWU/ipoJRx9DOr9z6xHd1P1xiXLCi5+phqBwFcscLZOeadNKbl2fmKUP0qb3PzpRt
+	 Wcfm+6cWvC0HWpVU6QwDMXYqHmmq3siAO9kyZI+8xVKmO8DAszh/BZJfQ62RT5mWqx4JB
+	 iDFzGf5SBiKmSRq9I3Z/rDEwIYn73Yr7sUyJZXtfKOubTbyTDnn0STSFihyyqOaX12w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjE1vUbw;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCEF606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 14:54:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0DCEF606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19808606A333;
+	Mon,  9 Nov 2026 15:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i0L239Ly
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-533202fe429so228731cf.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 06:54:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794236073; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WXTVUn103D4N3FsH2EAJ7mOmUBxqDwPPfta+3nwadTceTkJeHcRagmYMRSXrfM1nJO
-         W9vYAUBUKvYLgwfwRrJoEDGAa72icoNM5BLwooFusbCYjlrJk26jt8tb45f2eBbNyufK
-         y0FxTgC1vzBfB0w6ZEtziNs4TyJ+EgkryP0wK8RVfBH2E6HkUhpfZWqU/03AsdSagUd+
-         /fCdPd2N7wiKvZYJr4/lIWt3n8KPpKjZ9DpMxF51uxXHzV4+iCYnDEhH9qCVdR61qn4f
-         SqADWLRExaHV7S5b56E6Ya3krcyKaI6JONy+iVHPBZlgqdfc7BZG7BU6T1uLntfT9NS3
-         Oq3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Uu2ycv9me8mHBGrXAn80H1Hsv9lPp2MX3pjtM0lSbsk=;
-        fh=U+ysQBQK4t9H4NWxgBIJBmLCO4Ca7nBRCqFYT4NiqlI=;
-        b=aMAVsO7sLNzzp1WGWsLTwluU7Zi+UjEI6iJNceJSYFtEgoZE9LaKe/OygjoVOQGqWD
-         AiX7IO7AixHl4t7ow5/3sNgmcbmd9xCh2xtmRRXrH0TIvFU7f5WYjfdwx1ygt1nWhuQF
-         Z0lfc+kcsGW52rAUdcusQbz9UgBXbBYH6s/9FXqeA7CywoHGRTmr+8wE3dlmchim2UUr
-         g9f340nE4Imb4Gp84Yi7XOtVQ771PH/08G3feEcIIG3LZWsdOl5DOfCJp/YozgHKFqxB
-         DNkpWd0rGXp85b35VhUrV1FR3Vu8SYu/h+hMa2Pg3/ryzhps9krC0qb20NIcSSa2nKPN
-         eFRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794236073; x=1794840873; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Uu2ycv9me8mHBGrXAn80H1Hsv9lPp2MX3pjtM0lSbsk=;
-        b=i0L239LyS5taVUuVZGIVY2/a1cXvU3Ff5r0hhHz/SBdHYeMYijNZuMUNb0oov1J8pZ
-         dbjjtQBnhfo+wuQKQOIgh/EZSfqFrx4X3PJOlSi7RqKU8Ek/PcgcKr2bBPXMC/Q7LRYR
-         ow0R5YhyxfEuZlewUbhuzmJAHVhrt52nILSGfBeCCWI3enl7aUsojsx5Ufb6zWPS/n/j
-         Aa5FsAlInEbzIe5jJ3BWTYkNzs7c2uTb5oA6kD3SLfZBDVOj018FHHFDLMnEQdqg8/qu
-         zq6KBT16hfP1p3EuLqzxYd3muF6BIGIMEg/HITgsWSBArPs44LhJ8Ayy019s4oS4gAqb
-         XLcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794236073; x=1794840873;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Uu2ycv9me8mHBGrXAn80H1Hsv9lPp2MX3pjtM0lSbsk=;
-        b=fNpfk0yD5QsVdiwToKOHD4J1DxmGbjy5yx6gI8g6SnT6eck4qaqP0xWPsdjS3l3kfB
-         oBJFrWiWOTLaOmbYhWCePte+FXwGP18dkFwBWi8tu3D0+MLB7uEGnWsh9SeDMNLzIpMr
-         W6/nCYi4HeAHEBDaYA9f4yIkCHqEwkebg6DHbxfFLDe52rOEbNoI2ssm3f6jvl1EFvnk
-         +XIZzAccNuDmyDxGOIFXJr26ynvbP6eQK2mnt5TQ4mOpOVc6Jy740/65y4ePkvSC42ue
-         QQnpxLpbnL8d5zs2qsT2MCQvRCkokStJTUpPUXT9DDWq7RSJISE/gaodB/PbTQwehIpV
-         NOPw==
-X-Forwarded-Encrypted: i=1; AL+hErE2Q6jVmVfKW7JCIsSqng/tObD/zgsJunaZdvk+DzBHfgmXqw0CaGrUJSOs2b+0wepz3axrXko=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+WNbqLBYLHXFKA/tERNRC3F7Xqp2NDoVglSLfEklbNcvQAw8v8
-	bB6z+1O0PA1TmcZpHaCKI4uRuClkVxWqa1sd35oiFk71joLl8qva2Xhc/7GSogpYH6Il63UAcMJ
-	KUXO7MHjBFGxxF6MAHldr8dD40O1boa6BItCa/wxF
-X-Gm-Gg: AYBFou3YAl9nzrXpbWzK26Jq8k9rAOjUVrr9shbWRqzxxLGmlqpbSgBIGtwPdEaRFyC
-	uqmLrEVG7+KpsgDkhXuYPXhQ8SjKFnPYv1Hpz0LYzZjcFHNwIBKEtTufaGe2Imc/Rsf2dqYatFu
-	tnezgPV7Q8as+FXFbQEQ16uNVpR50d5JhVLySjMEJImI1FVIAqZThZXSVPap4nqI3ZlW0j+AQ9x
-	q6i82hy5rfJlf47OUkIjWTgEMJEGONIk33TqkphqD0ff5XuDeMY/TBXQ4j5tizGkaiRh2PVprSi
-	1SDCkndHd641SrqgCHa/dUNB1z++PIMpS9XjsUH/HuELICTqsRzFo/A0Yj/R4KEEUqyMSTNvgK6
-	rB4/4VPLHbsAuduT2Q5gQhWXkFHinwtcRJHSx9j31ABueHTVsG5fSj7Aofa4=
-X-Received: by 2002:ac8:5c88:0:b0:536:934f:7da2 with SMTP id
- d75a77b69052e-54f9fd8f8d1mr38320671cf.2.1794236072272; Mon, 09 Nov 2026
- 06:54:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjE1vUbw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269DC1F008A1;
+	Mon,  9 Nov 2026 15:08:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794236905;
+	bh=NcQSsbzqyco4Iw3u+HR1WbdmTXLgzsyGZKY4I0nDx4g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hjE1vUbw/MMz5L3/c3e7VTt/XVkSOGHsTV3pWhlWM1HM5RWYYLmwYwfOCcIzbu3mp
+	 UhO/J3C0hANhRN9HAY/oUSsuFqWA8Yd4qtX4XFftPVHk6Kx1R1JlvubmHfhg9grooV
+	 tNx8QH6wA1auUk1qvoWjOtTLjscnhQSS1o5YUWE2BO/v+vMP53MB/uwo9SDheschzf
+	 UpcV0NXyHznsKwhredcD2RPPg5JhZLh5rBxh8LvbeRET7a2XR9hILPVd2ecuMaoFEz
+	 UhbZBo9z/KnEknIAztvDSDUN1p6sQ5zXvkGfX/XMMICJ17Pzx4acbvM7RrIuXmBP6i
+	 ecvjMADGumsVQ==
+Subject:
+ Re: [PATCH ipsec v2 4/7] xfrm: prevent AES-GCM nonce reuse after early GSO
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ sd@queasysnail.net, davem@davemloft.net, borisp@nvidia.com, saeedm@nvidia.com,
+ leonro@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
+Date: Mon, 09 Nov 2026 15:08:23 +0000
+Message-ID: <179423690370.994134.2277361511117933962@kernel.org>
+In-Reply-To: <20261108142652.1330952-5-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261108142652.1330952-5-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,98 +65,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103162326.3615979-1-lrizzo@google.com> <1cfe950e-50af-4120-87c8-375f67eb3e01@intel.com>
-In-Reply-To: <1cfe950e-50af-4120-87c8-375f67eb3e01@intel.com>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Mon, 9 Nov 2026 15:53:55 +0100
-X-Gm-Features: AclHuK8TskNldJ9T-2m3-q5kqcKrV-1RZ0T7vtN0-Um1ktY8-kpgA25IyzuryKc
-Message-ID: <CAMOZA0KTYjRGuD3axNKaNb-o5=c8Zt=zG4Q3JFxPbWuBVu5MKg@mail.gmail.com>
-Subject: Re: [PATCH iwl-next v3 0/2] libeth, idpf: use GFP_KERNEL for the
- initial Rx ring fill
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Brian Vazquez <brianvv@google.com>, Joshua Hay <joshua.a.hay@intel.com>, 
-	Larysa Zaremba <larysa.zaremba@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 5, 2026 at 7:08=E2=80=AFPM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The code change is correct, but the commit message for "xfrm:
+  prevent AES-GCM nonce reuse after early GSO" describes a narrower…
+
+--
+
+xfrm: prevent AES-GCM nonce reuse after early GSO
+
+This commit calls secpath_set() on each segment in xfrm_output_gso() when
+xfrm_offload() is set. As a result, segments produced by skb_gso_segment()
+no longer share a single xo->seq. Each segment's IV is then built from its
+own sequence number.
+
+> xfrm: prevent AES-GCM nonce reuse after early GSO
 >
-> From: Luigi Rizzo <lrizzo@google.com>
-> Date: Tue,  3 Nov 2026 16:23:23 +0000
->
-> > libeth_rx_alloc() always allocates with GFP_ATOMIC, including when a
-> > driver fills its Rx rings at open or on queue reconfiguration. That
-> > fill runs in process context, right after page_pool_create() and before
-> > the queues' NAPI is enabled, so it may sleep, and GFP_ATOMIC is
-> > needlessly restrictive there: it can neither reclaim nor compact, while
-> > the initial fill can allocate tens of thousands of buffers across all
-> > queues.
-> >
-> > Patch 1 adds __libeth_rx_alloc() taking a gfp_t parameter and turns
-> > libeth_rx_alloc() into its GFP_ATOMIC wrapper.
-> > Patch 2 switches idpf's initial Rx ring fill (both splitq and singleq)
-> > to GFP_KERNEL.
-> >
-> > v3:
-> >   - rename libeth_rx_alloc_gfp() to __libeth_rx_alloc() and put the gfp
-> >     argument on its own line in page_pool_alloc_netmem() (Alexander Lob=
-akin)
-> > v2: https://lore.kernel.org/r/20261019210604.2433620-1-lrizzo@google.co=
-m/
-> >   - split into two patches (libeth helper and idpf consumer)
-> > v1: https://lore.kernel.org/r/20261016151835.2500807-1-lrizzo@google.co=
-m/
-> >
-> > Luigi Rizzo (2):
-> >   libeth: add __libeth_rx_alloc() to specify allocation flags
-> >   idpf: use GFP_KERNEL for the initial Rx ring fill
->
-> For the series:
->
-> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> With software ESP offload, xfrm_output() attaches a secpath before
+> calling xfrm_output_gso() for an encapsulated GSO packet, but
+> skb_gso_segment() leaves the splitted skbs sharing the same secpath,
+> including xo->seq.
 
-Looking further at the problem, gemini pointed out that libeth_rx_alloc()
-is called in a way that makes it easy and robust to tell when it
-can use GFP_KERNEL. This would greatly simplify the patch.
+[ ... ]
 
-Alexander, do you like this version better perhaps ?
+> segments. When validate_xmit_xfrm() calls esp*_xmit() for each
+> segment, the IV is constructed from the same value N+t-1, causing
+> nonce reuse in AES-GCM. Yet, each ESP header correctly keeps using
+> value N+i from its private XFRM_SKB_CB.
 
-cheers
-luigi
+[Severity: Medium]
+The code change looks correct. Is the commit message narrower than the bug
+it fixes, though?
 
-diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-index 5d991404845e6..38c0e5066f0ef 100644
---- a/include/net/libeth/rx.h
-+++ b/include/net/libeth/rx.h
-@@ -104,10 +104,17 @@ void libeth_rx_fq_destroy(struct libeth_fq *fq);
- static inline dma_addr_t libeth_rx_alloc(const struct libeth_fq_fp *fq, u3=
-2 i)
- {
-        struct libeth_fqe *buf =3D &fq->fqes[i];
-+       /* fq->fqes is zero-allocated and pre-filled in process context for
-+        * indices [0 .. fq->count - 2]; slot fq->count - 1 is first alloca=
-ted
-+        * in NAPI. Use GFP_KERNEL for initial pre-fill and GFP_ATOMIC afte=
-r.
-+        */
-+       gfp_t gfp =3D (buf->truesize || i =3D=3D fq->count - 1) ?
-+                   GFP_ATOMIC : GFP_KERNEL;
+Is the problem limited to software ESP offload? In xfrm_output(), the early
+GSO path runs for any state where xfrm_dev_offload_ok() is true. That
+includes XFRM_DEV_OFFLOAD_CRYPTO states bound to a NIC:
 
-        buf->truesize =3D fq->truesize;
--       buf->netmem =3D page_pool_dev_alloc_netmem(fq->pp, &buf->offset,
--                                                &buf->truesize);
-+       buf->netmem =3D page_pool_alloc_netmem(fq->pp, &buf->offset,
-+                                            &buf->truesize,
-+                                            gfp | __GFP_NOWARN);
-        if (unlikely(!buf->netmem))
-                return DMA_MAPPING_ERROR;
+net/xfrm/xfrm_output.c:xfrm_output() {
+    ...
+	if (xfrm_dev_offload_ok(skb, x)) {
+		...
+		if (skb_is_gso(skb)) {
+			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
+				return xfrm_output_gso(net, sk, skb);
+    ...
+}
 
->
-> Thanks!
-> Olek
+In that case, xfrm_replay_overflow_offload() writes N+i into the shared xo
+for each segment. If the segments are queued before validate_xmit_xfrm()
+runs, esp_xmit() reads the shared value N+t-1. On the hw_offload branch it
+then copies that value into the private xo:
+
+net/ipv4/esp4_offload.c:esp_xmit() {
+    ...
+	seq = xo->seq.low;
+    ...
+	if (hw_offload && encap_type == UDP_ENCAP_ESPINUDP) {
+		...
+		esph->seq_no = htonl(seq);
+	}
+    ...
+	if (hw_offload) {
+		if (!skb_ext_add(skb, SKB_EXT_SEC_PATH))
+			return -ENOMEM;
+		...
+		xo->seq.low = seq;
+    ...
+}
+
+Drivers build the IV from this xo->seq. For example, mlx5e_ipsec_set_iv()
+does:
+
+	seqno = cpu_to_be64(xo->seq.low + ((u64)xo->seq.hi << 32));
+
+and nfp copies xo->seq.low and xo->seq.hi into offload_info. Wouldn't
+hardware crypto offload users hit the same nonce reuse?
+
+Is the statement "each ESP header correctly keeps using value N+i"
+accurate? For hardware offload with UDP_ENCAP_ESPINUDP, the
+esph->seq_no = htonl(seq) assignment above overwrites the header with the
+shared value. Every segment would then carry the same sequence number on
+the wire, and the peer's anti-replay check would drop t-1 of the t
+segments.
+
+Is the problem specific to AES-GCM? In the software fallback, esp.seqno
+feeds the seqiv-based IV for any counter-nonce AEAD the SA uses. That
+includes rfc4106(gcm), rfc4309(ccm), rfc4543(gmac) and
+rfc7539esp(chacha20,poly1305).
+
+The new secpath_set() call in xfrm_output_gso() is guarded only by
+xfrm_offload(segs), so the fix appears to cover all of these cases. Could
+the subject and commit message be updated to mention hardware crypto
+offload, the UDP encapsulation ESP header sequence number, and the non-GCM
+AEAD modes?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108142652.1330952-1-Jeremy.Jean%40oss.cyber.gouv.fr
