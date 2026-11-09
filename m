@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794248759;
-	b=R02XP/s+Fyrxh0zR3g/xym/sfYfN3C43K0qo1n1NQV6SxWkidqgdyF/+zQLOVRhOA0D4
-	 H5Wc/ZoXeKCwIdGGVzzWlnx+awgsAOha2SqkVywrjcLNI7nfRAOpzGIxS1dPXJhMkvzdN
-	 TYKYeDkQypRg3nT/hkWV3B/rQDz2NeF73JaFptf45J3w4K6usaTbwwipkrUa8gs5d44wP
-	 GBKPkDu7zuYvF28y0EIx/p24clDgLvDTD5jpPEoYpxe/wu4lD8dIYYw9FwftYrIGBQ+ox
-	 drG6fyzNutFWcjiPdAvdUC2sI9avX+3/BNmTrlLwPJdVDOuHWtUKdEoa7ijXPiPC3rA==
+	t=1794248755;
+	b=QuoBr4mFRhFdbLMVKCOtUgo2Men8e2KjM04+/+2VCgJGbmUeYSyXuv29AFVVc1+G6Ws3
+	 I10aTP2xj5nZDnaIxKKtX7FKs8SDOxp4TTFtHKzO/fcK8WY7Y++vYA6By4zYnKmUC4gqp
+	 hsFzJWx491qArdAS0TK57NwWlQAKfGlul1knoN7G2r+gcBa2HtTeuCkWtRhRp67oqcCad
+	 Dd2tSuY4BDbBSbCCX9inKYXL2bUbrevqgnL+0E7gQ4MpI7AFI9BfetMrF1BP8lg/ONHYY
+	 37H0JkcThVZu3ecZZ0QcvRT2UcjF32gg9ojz80dnkogY7ky3bqDztx+vz5ZLJ1u6RHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248759;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248755;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=F900AAsyhWSGfvSMjAgbbzmK+pQvO8F59zHwAoO/xyA=;
-	b=4yOGrM6papb4T2jTbzNxTla+F0afLglfgn4TWbucBETQNtRS+bg5hhBNbR9aJXf7Z7AW
-	 WAEro4EV4WmQEnDjeYnNhmIaUiZgVWaoFs8vsOGuCq2kF5cyfqXnWtZZJDn+bHStwYPxC
-	 J1Qe/NVGCjjOqJg5hQ0d204WPFxdtCSkKOkv/4XI/CSBZs5hojTdzIV+tVrGXwz/xuL/H
-	 mW7sG2tYNtLQzRR0FuHEa7sA3NvQnA2+1dJp6g3hgSYVdcF1RxqJhLR7rJoLRCoFeBqu6
-	 7/hiUcHzjpaUMWijhxpIcVEzkbB+zisGmCSE5KeAdj7ROL0GM9zlrP5fy+SKMX1rRSw==
+	bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
+	b=q5BAa43zGWC3ipP8PKt5UCCNpv77E3QXfM50h3SnOXyR5X/n0kGZzqS79ugF9G35WHdO
+	 Rpqfshu8S87XVuQTYGbyzH0uKVWL2Hna2NfxK28lW8U4cXqTxC4+QmQHRikTLWq5DXWGo
+	 aY/RIm6SM27iVol6a98YEuDe7gGdmY3m4plwohYVdvGyFx4Q5kKzkqHDVrc5QOdAg3MvY
+	 VVv2lwqMIcI+nPBQGhTUeRzq51ueMKKvvDwqZ/PJ4pd7ETKbxG1qxCIkjMndf7WjlT2jc
+	 Pn8M1ru/VjRc46TeeSMXuC5b3ckvS8fmAsNbdOBbSuyWHNl4EtkaM+DUN37MtCmHFtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fXXUwj45;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PucykuzF;
+	arc=none smtp.remote-ip=209.85.218.70
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C831606E12A
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C831606E12A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCBF606CC4C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BCBF606CC4C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fXXUwj45
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c4d28d38d79so124886966b.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PucykuzF
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c37b2763f1bso146256766b.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794248757; x=1794853557; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794248753; x=1794853553; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=F900AAsyhWSGfvSMjAgbbzmK+pQvO8F59zHwAoO/xyA=;
-        b=fXXUwj45SaVt3UFn2b4xpOL9pi1OyH8MHBRiZoJ0xgh4iWEZeSbDcxIwUOAqOhdjm+
-         KjIyPPtAN1K9HjNbYASxm966Y60ixP0x7gOv2gGGi5zZLFTxf21FnAKsU4IJCfrPpeMu
-         rv+q//BqOxK1b0DGN6JL1WZaMjGuBiVksbuyUuGZXiJAYrkQdTi4LhvWP6LOb8WFUwXC
-         gpfOIizR7opcQephqJ0OW634OUyeVihfHm/w56Wpq+jUha9oSBXMB9bGGebr56OgIAFk
-         iCMWOHyE3HJxH6EDODNBrXgfzd1P1HrjOqoF3h/i96FaA4gUROY8wahgEZS9aaFeFzUc
-         0zyg==
+        bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
+        b=PucykuzF+kI0Fuxe+WUtPrHWdECLJ+HBRvHEY3hGmZsDV+Y42K8qiOX2BzVv79MI4I
+         sp6z2uGUNfZO3DNfGXEfg5goMbKSqdSse3Kn4YQwJik9dK5GupSkGDDOHDQXyB8GeeOL
+         oOHe117qlnkKsTiiH7yL78B5OhDmfU5ZVZX/HlY5HwmlHtalgSheh1MWEE1rxgowjPyI
+         tpDzWcHNPO5WdwAqcxM/c8D2Qmwz14WYetq0bjBADOmHkecHo6oL2868rrbZ4xtWYlAv
+         Q93ai98PFrO9ycqoBX092LG8WjGWH+ds/U9P++J5ww0ccv1NclFeVqZLDjUpTTUX2mTz
+         T1sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248757; x=1794853557;
+        d=1e100.net; s=20260707; t=1794248753; x=1794853553;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=F900AAsyhWSGfvSMjAgbbzmK+pQvO8F59zHwAoO/xyA=;
-        b=TgLWXudr06urGgrHX8sHCrkbAtS1ubA97hrR98XLGTGKLid387HKlq9xIazHrQ+xAC
-         d7XmAmwiivhi/NknG8O47l8TYvtW6uE+PD3XIrf2bg+EZIsZZxi8qsJ750hfVFxzXRaC
-         ANcO/16XOwSU4ZcVTotRjLuKQtD0UtPjG5A7kWhAeUUk2g6dQI2d6Hll568AhW8xMhMk
-         sVi/5UiS0+6AICk5Uf2brzV5hsVi7M2zVN852WpfsDxQ6IufNsaontSmnnIWhnyC2zw4
-         eFqGwKhPTb8EvHIip6lICAe6fEpYk6NyM9tTyVMvU9dRqOKRwOlgLKQpQZ/Ey9hs7OI1
-         VKlg==
-X-Forwarded-Encrypted: i=1; AL+hErEdhhdLUSUAYjb4LLNvVG0YqlB0muV6Xrr47ftPbKaTLtDijiR3ur+6Za2OgJf8VclWK7nGX/I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9KCCLGbA9f8UmToDyN5W+DchLKq8Y4/dXNS1IECe1mbNATl+pI
-	1HeDex4x6ARDKgsGxRIYi6oUoQab4tYY+32Enhyzx3LY8HByNd8h3AXBEZ4ycCIzHrWeTzxhD+i
-	j2LxA3w==
-X-Received: from ejjj18-n1.prod.google.com ([2002:a05:6938:a092:10b0:c33:6983:9d2f])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3fa6:b0:c46:bbde:734b
- with SMTP id a640c23a62f3a-c50495f02d5mr16406166b.32.1794248756683; Mon, 09
- Nov 2026 10:25:56 -0800 (PST)
-Date: Mon,  9 Nov 2026 18:25:27 +0000
+        bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
+        b=iZV6zlaCbsAI7EtqmlRq0bxkfVFgDMpNYfNaJckB2mE9/ApOgybONbPqKv+vKietpt
+         z/oD9r1sgSuxOmO909cNl/XRVdeUp74bw42ebvSj2g6GA/LMwi4OaPgqb5UEiMhNLbdD
+         2V8ZOigMNtsXTOGvIe+KCmIlfNgJZhM9lgzq+Sla77sf8Ulz+GcfAqDX8PPtUZ1i/ePq
+         5KgDKQmFr4/CVzLPX1ycrUi7YzfDInCG4GhuCq9TIc/M1ZeS1i2cUlcFdR5/EGGf+AKS
+         AFPQsidUZeu3gbmse+gxWE5E47fdMZ1jwwr5bD40nhddCYxaAGoMmrFzXEYm065wXDYn
+         oZgQ==
+X-Forwarded-Encrypted: i=1; AL+hErHfu9ZemyR5ZUAoZezqxJe9oT4uYyRjZxlJGYs1Wi4JDuNyXYbRKKXCDcftotAmjRyQeTaINsM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/tfa48O/m78uDivBBoz1pIeDcNM4uZOMeVZECSrXVJg1Xtc9Et
+	QU25Y1p2GtQ8g7wC9gJRB6k2L8IAVjO1npMEe1AEmMpN5ukOTlTqM9UJxD0oq4gP0aKu+2GjBev
+	MFLRVFg==
+X-Received: from ejpg23.prod.google.com ([2002:a17:906:7c57:b0:c3f:d175:ee6a])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3e20:b0:c41:64c1:cc2d
+ with SMTP id a640c23a62f3a-c50491bd62emr17871766b.2.1794248752661; Mon, 09
+ Nov 2026 10:25:52 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:24 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,9 +81,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261109182533.3594984-20-lrizzo@google.com>
-Subject: [RFC PATCH v2 19/25] iommu/dma: Stop recycling old PISA pages when
- allocator waste is high
+Message-ID: <20261109182533.3594984-17-lrizzo@google.com>
+Subject: [RFC PATCH v2 16/25] mm/slub: Add SLAB_CACHE_PISA_RO for PISA-backed
+ slab caches
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -103,193 +103,257 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When a PISA allocator holds many partially used 2MB pages with low
-overall utilization, callers that recycle blocks in place (page_pool,
-per-task TX page_frags, and per-CPU block caches) can keep old 2MB pages
-pinned indefinitely with only a few blocks in use.
+skb heads are provided by a slab allocator that is fed by alloc_pages().
 
-Record @alloc_jiffies in struct pisa_meta when a 2MB page is bound to an
-allocator or taken from the allocator's idle list, and add two module
-parameters:
-- pisa.wasted_pct (1..99%, 0 disables): wasted block percentage
-  threshold above which compaction kicks in.
-- pisa.old_ms (1..100000 ms, 0 disables): age threshold after which a
-  partially used 2MB page is eligible to stop recycling.
+Add SLAB_CACHE_PISA_RO so that a slab cache can back its slabs with
+zeroed, read-only PISA folios (__GFP_PISA_RO | __GFP_ZERO) via
+pisa_alloc_folio(), clamping the slab order to
+[2, PAGE_ALLOC_COSTLY_ORDER].
+Slabs are still released with free_frozen_pages(), so pages from PISA
+return to their allocator via __free_pages_prepare(). Caches with
+SLAB_CACHE_PISA_RO skip KFENCE and are never merged.
 
-When both parameters are set and an allocator's wasted block fraction
-exceeds wasted_pct, pisa_page_can_recycle() returns false for partial
-2MB pages older than old_ms (except the head page actively being
-filled).
+Existing caches are unaffected.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/iommu/pisa-alloc.c | 48 ++++++++++++++++++++++++++++++++------
- drivers/iommu/pisa-priv.h  |  2 ++
- 2 files changed, 43 insertions(+), 7 deletions(-)
+ drivers/iommu/pisa-alloc.c | 27 +++++++++++++++++++++++++++
+ drivers/iommu/pisa-kunit.c | 19 +++++++++++++++++++
+ include/linux/pisa.h       |  7 +++++++
+ include/linux/slab.h       | 10 ++++++++++
+ mm/slab.h                  |  3 ++-
+ mm/slab_common.c           |  5 ++++-
+ mm/slub.c                  | 14 +++++++++++++-
+ 7 files changed, 82 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-index 1930135880d2b..5054a96f0f4e9 100644
+index 4b61ec84ed6d1..3b5c49d143a7e 100644
 --- a/drivers/iommu/pisa-alloc.c
 +++ b/drivers/iommu/pisa-alloc.c
-@@ -74,6 +74,14 @@ module_param_named(idle_ms, pisa_idle_ms, uint, 0644);
- static unsigned int pisa_compact __read_mostly;
- module_param_named(compact, pisa_compact, uint, 0644);
- 
-+/* Stop recycling partial pages older than @pisa_old_ms when wasted blocks > @pisa_wasted_pct%. */
-+#define PISA_OLD_MS_MAX		100000U
-+static unsigned int pisa_wasted_pct __read_mostly;
-+module_param_named(wasted_pct, pisa_wasted_pct, uint, 0644);
-+
-+static unsigned int pisa_old_ms __read_mostly;
-+module_param_named(old_ms, pisa_old_ms, uint, 0644);
-+
- /* Max pages zeroed in each scrubber run (0 = disabled, capped at PISA_SCRUB_MAX_LIMIT). */
- unsigned int pisa_scrub_max __read_mostly;
- #define PISA_SCRUB_MAX_LIMIT	65536U
-@@ -399,6 +407,7 @@ static struct pisa_meta *pisa_pick_dirty_meta(struct pisa_alloc *pa)
- 		meta = list_last_entry(&pa->idle, struct pisa_meta, list);
- 		if (meta->nr_dirty) {
- 			pa->num_idle_pages--;
-+			WRITE_ONCE(meta->alloc_jiffies, jiffies);
- 			return meta;
- 		}
- 	}
-@@ -603,7 +612,7 @@ static void pisa_return_block_locked(struct pisa_alloc *pa, struct page *block,
-  * pisa_page_can_recycle - Check if a block can stay cached in a caller pool
-  * @page: Block head page
-  *
-- * Called on the recycle fast path (per-CPU cache, TX page_frag, page_pool).
-+ * Called on the recycle fast path (per-CPU cache, TX page_frag).
-  * Fast-path cost is a static-key branch plus a READ_ONCE() of module parameters
-  * (~1-2 ns when compaction is off); when enabled, it does a lockless RCU +
-  * metadata array lookup (~5-10 ns).
-@@ -613,10 +622,11 @@ static void pisa_return_block_locked(struct pisa_alloc *pa, struct page *block,
-  */
- bool pisa_page_can_recycle(const struct page *page)
- {
--	unsigned long bpp, in_use, free_blocks, pfn;
-+	unsigned int compact, wasted_pct, old_ms;
-+	unsigned long bpp, in_use, free_blocks;
- 	const struct pisa_meta *meta;
- 	const struct pisa_alloc *pa;
--	unsigned int compact;
-+	unsigned long pfn;
- 	bool ret = true;
- 	u8 on_list;
- 	long held;
-@@ -625,7 +635,9 @@ bool pisa_page_can_recycle(const struct page *page)
- 		return true;
- 
- 	compact = READ_ONCE(pisa_compact);
--	if (!compact)
-+	wasted_pct = READ_ONCE(pisa_wasted_pct);
-+	old_ms = READ_ONCE(pisa_old_ms);
-+	if (!compact && (!wasted_pct || !old_ms))
- 		return true;
- 
- 	pfn = page_to_pfn(page);
-@@ -638,6 +650,13 @@ bool pisa_page_can_recycle(const struct page *page)
- 	if (on_list == PISA_LIST_FULL || on_list == PISA_LIST_NONE)
- 		goto out;
- 
-+	if (!compact) {
-+		unsigned long max_age = msecs_to_jiffies(min(old_ms, PISA_OLD_MS_MAX));
-+
-+		if (!time_after(jiffies, READ_ONCE(meta->alloc_jiffies) + max_age))
-+			goto out;
-+	}
-+
- 	pa = meta->pa;
- 	if (!pa)
- 		goto out;
-@@ -657,12 +676,21 @@ bool pisa_page_can_recycle(const struct page *page)
- 	free_blocks = held > 0 && (unsigned long)held * bpp > in_use ?
- 		      (unsigned long)held * bpp - in_use : 0;
- 
--	ret = free_blocks <= (unsigned long)compact * bpp;
-+	if (compact && free_blocks > (unsigned long)compact * bpp) {
-+		ret = false;
-+		goto out;
-+	}
-+	if (wasted_pct && old_ms && held > 0 &&
-+	    free_blocks * 100 > (unsigned long)held * bpp * wasted_pct) {
-+		unsigned long max_age = msecs_to_jiffies(min(old_ms, PISA_OLD_MS_MAX));
-+
-+		ret = !time_after(jiffies, READ_ONCE(meta->alloc_jiffies) + max_age);
-+	}
- out:
- 	rcu_read_unlock();
- 	return ret;
+@@ -848,6 +848,33 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order, int preferred
+ 	return pisa_alloc_bulk(pa, gfp & ~__GFP_PISA_RW, nr_pages, page_array, frozen);
  }
--EXPORT_SYMBOL_GPL(pisa_page_can_recycle);
-+EXPORT_SYMBOL(pisa_page_can_recycle);
  
- /* Return @n freed blocks to @pa under a single acquisition of @pa->lock. */
- static void pisa_free_bulk(struct pisa_alloc *pa, struct page **blocks, unsigned int n)
-@@ -1195,6 +1223,7 @@ static struct pisa_meta *pisa_pick_meta(struct pisa_alloc *pa, bool zero)
- 		meta = list_first_entry_or_null(&pa->idle, struct pisa_meta, list);
- 		if (meta && meta->nr_clean) {
- 			pa->num_idle_pages--;
-+			WRITE_ONCE(meta->alloc_jiffies, jiffies);
- 			WRITE_ONCE(pa->idle_jiffies, jiffies);
- 			return meta;
- 		}
-@@ -1218,6 +1247,7 @@ static struct pisa_meta *pisa_pick_meta(struct pisa_alloc *pa, bool zero)
- 	if (!list_empty(&pa->idle)) {
- 		meta = list_last_entry(&pa->idle, struct pisa_meta, list);
- 		pa->num_idle_pages--;
-+		WRITE_ONCE(meta->alloc_jiffies, jiffies);
- 		WRITE_ONCE(pa->idle_jiffies, jiffies);
- 		return meta;
- 	}
-@@ -1287,6 +1317,7 @@ static unsigned long __pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp, unsigne
- 		spin_lock_irqsave(&pa->lock, flags);
- 		meta->pa = pa;
- 		meta->prot = pa->prot;
-+		WRITE_ONCE(meta->alloc_jiffies, jiffies);
- 		/* Set PISA_ACTIVE after @meta is fully set up. */
- 		WRITE_ONCE(meta->flags, meta->flags | PISA_ACTIVE);
- 		pa->stats.page_alloc_cnt++;
-@@ -1454,8 +1485,10 @@ static struct page *pisa_take_contig(struct pisa_meta *meta, unsigned int nblock
- 	}
- 
- 	if (meta->on_list == PISA_LIST_IDLE_CLEAN ||
--	    meta->on_list == PISA_LIST_IDLE_DIRTY)
-+	    meta->on_list == PISA_LIST_IDLE_DIRTY) {
- 		pa->num_idle_pages--;
-+		WRITE_ONCE(meta->alloc_jiffies, jiffies);
++/**
++ * pisa_alloc_folio - Allocate a frozen folio for SLUB (SLAB_CACHE_PISA_RO)
++ * @gfp: GFP flags (must have __GFP_PISA_RW or __GFP_PISA_RO set)
++ * @order: Folio order
++ * @nid: Target NUMA node (or NUMA_NO_NODE)
++ *
++ * Drops __GFP_THISNODE before calling the per-node allocator and verifies
++ * node placement afterwards.
++ *
++ * Return: Frozen folio of @order, or NULL.
++ */
++struct folio *pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid)
++{
++	struct page *page;
++
++	page = pisa_alloc_pages(gfp & ~__GFP_THISNODE, order, nid, NULL);
++	if (!page)
++		return NULL;
++	if (unlikely((gfp & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
++		     page_to_nid(page) != nid)) {
++		page_ref_unfreeze(page, 1);
++		__free_pages(page, order);
++		return NULL;
 +	}
++	return page_folio(page);
++}
++
+ /**
+  * pisa_has_free_blocks_rx - Check if @dev has free PISA RX blocks of @order on @nid
+  * @dev: Device to check
+diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
+index 40bf7801183da..9cc1328893ace 100644
+--- a/drivers/iommu/pisa-kunit.c
++++ b/drivers/iommu/pisa-kunit.c
+@@ -12,6 +12,7 @@
+ #include <linux/mm.h>
+ #include <linux/shrinker.h>
+ #include <linux/skbuff.h>
++#include <linux/slab.h>
+ #include <net/sock.h>
  
- 	for (i = 0; i < nblocks; i++) {
- 		if (__test_and_clear_bit(off + i, meta->clean_bitmap)) {
-@@ -1544,6 +1577,7 @@ void *pisa_alloc_coherent(struct page **pagep, struct device *dev,
- 		spin_lock_irqsave(&pa->lock, flags);
- 		meta->pa = pa;
- 		meta->prot = pa->prot;
-+		WRITE_ONCE(meta->alloc_jiffies, jiffies);
- 		WRITE_ONCE(meta->flags, meta->flags | PISA_ACTIVE);
- 		pa->stats.page_alloc_cnt++;
- 		page = pisa_take_contig(meta, nblocks, align_mask);
-diff --git a/drivers/iommu/pisa-priv.h b/drivers/iommu/pisa-priv.h
-index fe1bff0bba322..4d04bb191ecea 100644
---- a/drivers/iommu/pisa-priv.h
-+++ b/drivers/iommu/pisa-priv.h
-@@ -74,6 +74,7 @@ enum {
-  * @list:	Node in @pa lists or per-node reservoir (pisa_node.pages)
-  * @llnode:	Node in lockless pisa_free_list for async release to the buddy allocator
-  * @rcu:	RCU head used to defer release to the buddy allocator
-+ * @alloc_jiffies: Timestamp (jiffies) when the page entered or re-entered use
-  * @clean_bitmap: Bitmap of zeroed available block indices
-  * @dirty_bitmap: Bitmap of dirty available block indices
+ #include "dma-iommu.h"
+@@ -621,6 +622,23 @@ static void test_reservoir_and_scrubber(struct kunit *test)
+ 	WRITE_ONCE(pisa_scrub_max, old_scrub);
+ }
+ 
++static void test_slub_page_alloc(struct kunit *test)
++{
++	struct kmem_cache *s;
++	void *obj;
++
++	s = kmem_cache_create("pisa_kunit_slab", 1024, NULL,
++			      SLAB_NO_MERGE | SLAB_CACHE_PISA_RO);
++	KUNIT_ASSERT_NOT_NULL(test, s);
++
++	obj = kmem_cache_alloc(s, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, obj);
++	KUNIT_EXPECT_TRUE(test, is_pisa_page(virt_to_page(obj)));
++	kmem_cache_free(s, obj);
++
++	kmem_cache_destroy(s);
++}
++
+ static struct kunit_case pisa_meta_test_cases[] = {
+ 	KUNIT_CASE(test_meta_init_and_roundtrip),
+ 	KUNIT_CASE(test_meta_invalid_phys),
+@@ -635,6 +653,7 @@ static struct kunit_case pisa_meta_test_cases[] = {
+ 	KUNIT_CASE(test_pcp_cache),
+ 	KUNIT_CASE(test_gfp_pisa),
+ 	KUNIT_CASE(test_reservoir_and_scrubber),
++	KUNIT_CASE(test_slub_page_alloc),
+ 	{}
+ };
+ 
+diff --git a/include/linux/pisa.h b/include/linux/pisa.h
+index 89eb0722d90bc..b9c5197f2d88d 100644
+--- a/include/linux/pisa.h
++++ b/include/linux/pisa.h
+@@ -110,6 +110,7 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order,
+ 				    int nr_pages, struct page **page_array,
+ 				    bool frozen);
+ 
++struct folio *pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid);
+ bool pisa_has_free_blocks_rx(const struct device *dev, unsigned int order, int nid);
+ bool pisa_page_can_recycle(const struct page *page);
+ 
+@@ -181,6 +182,12 @@ pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order, int preferred_nid,
+ 	return 0;
+ }
+ 
++static inline struct folio *
++pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid)
++{
++	return NULL;
++}
++
+ static inline gfp_t pisa_rx_gfp(const struct device *dev)
+ {
+ 	return 0;
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index cda126def67af..df19c5898e9fe 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -66,6 +66,9 @@ enum _slab_flag_bits {
+ #endif
+ #endif
+ 	_SLAB_NO_SHEAVES,
++#ifdef CONFIG_PISA
++	_SLAB_CACHE_PISA_RO,
++#endif
+ 	_SLAB_FLAGS_LAST_BIT
+ };
+ 
+@@ -260,6 +263,13 @@ enum _slab_flag_bits {
+ #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
+ #endif
+ 
++/* Back slabs with zeroed read-only PISA folios (__GFP_PISA_RO | __GFP_ZERO) */
++#ifdef CONFIG_PISA
++#define SLAB_CACHE_PISA_RO	__SLAB_FLAG_BIT(_SLAB_CACHE_PISA_RO)
++#else
++#define SLAB_CACHE_PISA_RO	__SLAB_FLAG_UNUSED
++#endif
++
+ /*
+  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+  *
+diff --git a/mm/slab.h b/mm/slab.h
+index e94ac63d10dc0..53620e40b216b 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -473,7 +473,8 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+ 			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
+ 			 SLAB_NOLEAKTRACE | SLAB_RECLAIM_ACCOUNT | \
+ 			 SLAB_TEMPORARY | SLAB_ACCOUNT | \
+-			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
++			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE | \
++			 SLAB_CACHE_PISA_RO)
+ 
+ #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
+ 			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 01c64ef661e7f..d6c00047b1623 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -49,7 +49,7 @@ struct kmem_cache *kmem_cache;
   */
-@@ -94,6 +95,7 @@ struct pisa_meta {
- 		struct llist_node llnode;
- 		struct rcu_head rcu;
- 	};
-+	unsigned long alloc_jiffies;
+ #define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
+ 		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
+-		SLAB_OBJ_EXT_IN_OBJ)
++		SLAB_OBJ_EXT_IN_OBJ | SLAB_CACHE_PISA_RO)
  
- 	DECLARE_BITMAP(clean_bitmap, PISA_MAX_BLOCKS) ____cacheline_aligned;
- 	DECLARE_BITMAP(dirty_bitmap, PISA_MAX_BLOCKS) ____cacheline_aligned;
+ #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+ 			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
+@@ -377,6 +377,9 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 	if (s)
+ 		goto out_unlock;
+ 
++	if (flags & SLAB_CACHE_PISA_RO)
++		flags |= SLAB_SKIP_KFENCE;
++
+ 	cache_name = kstrdup_const(name, GFP_KERNEL);
+ 	if (!cache_name) {
+ 		err = -ENOMEM;
+diff --git a/mm/slub.c b/mm/slub.c
+index 45e077c7526c2..63609768f4e3f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -46,6 +46,7 @@
+ #include <linux/prandom.h>
+ #include <kunit/test.h>
+ #include <kunit/test-bug.h>
++#include <linux/pisa.h>
+ #include <linux/sort.h>
+ #include <linux/irq_work.h>
+ #include <linux/kprobes.h>
+@@ -3378,6 +3379,8 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
+ 	if (unlikely(!allow_spin))
+ 		page = alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
+ 								  node, order);
++	else if (unlikely(flags & __GFP_PISA_RO))
++		page = (struct page *)pisa_alloc_folio(flags, order, node);
+ 	else if (node == NUMA_NO_NODE)
+ 		page = alloc_frozen_pages(flags, order);
+ 	else
+@@ -3484,7 +3487,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
+ 	gfp_t alloc_gfp;
+ 	void *start;
+ 
+-	flags &= gfp_allowed_mask;
++	flags &= gfp_allowed_mask & ~__GFP_PISA_RW;
+ 
+ 	flags |= s->allocflags;
+ 
+@@ -3495,9 +3498,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
+ 	alloc_gfp = (flags | __GFP_NOWARN | __GFP_NORETRY) & ~__GFP_NOFAIL;
+ 	if ((alloc_gfp & __GFP_DIRECT_RECLAIM) && oo_order(oo) > oo_order(s->min))
+ 		alloc_gfp = (alloc_gfp | __GFP_NOMEMALLOC) & ~__GFP_RECLAIM;
++	if (unlikely(s->flags & SLAB_CACHE_PISA_RO))
++		alloc_gfp = (flags | __GFP_NOWARN) & ~__GFP_NOFAIL;
+ 
+ 	slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
+ 	if (unlikely(!slab)) {
++		if (s->flags & SLAB_CACHE_PISA_RO)
++			return NULL;
+ 		oo = s->min;
+ 		alloc_gfp = flags;
+ 		/*
+@@ -8182,6 +8189,11 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+ 		s->allocflags |= __GFP_RECLAIMABLE;
+ 
++	if (s->flags & SLAB_CACHE_PISA_RO) {
++		s->allocflags |= __GFP_PISA_RO | __GFP_ZERO;
++		order = clamp_t(unsigned int, order, 2, PAGE_ALLOC_COSTLY_ORDER);
++	}
++
+ 	/*
+ 	 * For kmalloc caches we enable sheaves later by
+ 	 * bootstrap_kmalloc_sheaves() to avoid recursion.
 -- 
 2.56.0.542.g3ef89b7020-goog
 
