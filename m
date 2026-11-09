@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794231921;
-	b=l7wNvECZ+bDQSaU4/nBb5DcUToIfru/s68lLGIN4yL/zCMlwAOf3luoOLdVedDlv1ES4
-	 DdHdpdeLnxWWFYyIskhSLTgZVxXF3e/mcWxJR43OfenvsZ52ZdoG9K7xd9mhKj1SoR2gz
-	 ND9W2aTnJ42i94aQLb14pJ4RdA6HBQ49G4Hbi8lHV72wRD6dZCkZz1k9GX+t51+fiZDuA
-	 tMqPowB/BXijqzPS3sLZLgm2VgodYjM8R0bMob3UAUIMFuMHZUdeVf257Y0dh4hv8XE/I
-	 pVzwzECMwH0bLB2MPLlJAK0xDWsq68u9Dd+6kPLIw9ecY4OdgPdS00eMf7QGC0N/t3g==
+	t=1794231928;
+	b=EICRU2U93DXuZUaoVIt5LCkZEa84eMi/hQPwsYeTwltswhBXRRf/VfhW0LBcdKAXzv6e
+	 N0AbN40C0x2cfUMAK4Uk73fHyxJ+tvymaFmQVO3+lhaJLcpbTTBS/hjhCZjeX1hPnBt/V
+	 F7UVqOm2/Hx6kILNxZR4ZP6xApdRsrX2lQzu0dPOEImpsc0j4iaVevouK5dMjRP4b+MrA
+	 6g6IInTBrcX2fjoXldigDppMGgPwrLY69rZHFUxQFbHWK/nE6qtFnQsaLuJ7aBMvcarIF
+	 b2D0PPxYiaJMM9Iqkmvq1+OYhiFDuKYuzzUPabQnY9bYb7vAHOlFJ1yeEEYQUP3xFNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794231921;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231928;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
-	b=yKfMEu+Jmlc6xjy79fn6DjsTzS/RG6Iw5Q2Mw14bPkFqM9E8fiIhLq5dV73NaxlIE8wX
-	 8TVJXMVCJG4estd1E983tBTvCW2kA/YLDouNTqnM8H98YhsOJCtOXRr51eHIrqN+0sHE2
-	 KJu82Tcv5AifavTc/DwpYGHki3/MEEAA+5HlQj52in63e+37rTj2xALg2N1L0xmOU515o
-	 w7VPgN5uo6VWc6F57iSTvHgNdc04jupo4Mp/m0+nrYr+2C2DCEZWuOcyeDPVtbrehCWHO
-	 sQJQVorYM18KRrgFS2jNB0gm2UyBNzFVkQtwsyHEUpydPICJWG5LGyXhB2bmiXmjCCg==
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=7ROzI5pFKC1DlvyH7PwbH3PaOSQ+SHEt5iuezD/Lo1w=;
+	b=QKskPU4OcWrmdVfgpseJ2tWM0Gcm3DIRVzuW4XjwjGTDfUnWXZK+rwm8+YDwl1KsFPB9
+	 n10hL3OHKCaoYKV2Bk/yyjRqwTfoQLhnmOP4tq4flbYIug19HoP+dj4sThlDaqwQpj2tu
+	 JnoSZScu39IEnpCWWXzVv6GP1JK7cPnf87WHh8IW959UxgcnnrrjriebIZhnqMBlOVKHW
+	 0/NhgOPl9n7hACwtcSGGEqw6ZKeq6ZDiylwEH2vCDbHnYRKqAePDBrkPSlrfQK0Tu3QeV
+	 6joF4GfRE+Q7uPmU7GyeRhsgmgq9VKvfIQvBBbMo+jAomVp7hST2IIrkNBS4RmYMzSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vD5Yodr3;
-	arc=none smtp.remote-ip=209.85.215.175
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lntKLG1W;
+	arc=none smtp.remote-ip=209.85.215.172
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79C606A323
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:45:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F79C606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB55C606D804
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:45:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB55C606D804
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vD5Yodr3
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso415578a12.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:45:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lntKLG1W
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cd8ba7c2694so307451a12.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:45:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794231921; x=1794836721; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
-        b=vD5Yodr3X1C0rOWGiV4KYpByjyi5NN2U1kf/rt9jVtcRLs+Wh/OK/kef9yZI+La0H9
-         mUkBg1N2VbAN85LyfTRZVjUUEhdGXYeMc90gN0QhtcvWozHmNPKdIbKmjPo233RqkNJl
-         WQPg5mqCPM4ZBmKbZDiLSsFGcvftdrtoFFBOTXPFJRClb0fmwW5a3mCjUED8RTLZ/9gJ
-         aP5DztaUutJ6VNxAResBO2W5MEG82FX3SMrWa5yqZF9N61gLogY5HjLIebxU3x/EV1P7
-         v/0TTBGZ1vF7yOzeMzdYw39D3gTtnwkXksBNtYPa4dZWh/97nVW1rw7enctg3blDPY8e
-         IaKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794231921; x=1794836721;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794231927; x=1794836727; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
-        b=zRs6vphIyIRUvmkzH+Y/RrxRUXnhdGkCg5yEcOLUzkPt8aQp059SEOlg+U8N8iVXwJ
-         w7GjdlsWH83HjS3Dw96X+DgCCD+VLC6D7epRmVfcx0gOr7osWtR94LaGAfWDxGv8cDWK
-         z3ncWVpD0oLtKsFH+VDyprM/Th4C5icdu+2KQsrZZeGCh+JU1ksfgSSjgp6Y+v+G7nDA
-         fG0cRYjDdpK3tbyqX4IfhucEdTTA2z7/SlUi3l3WvfIq47PmunanjlE7OAKHcYQmTpPf
-         6bPh2Rj9VUMa+PRMxVy+MECsIOWnqDKfgDAWTJlK/Jau+aQ0HaK8JOYHqb2reR5kSRuZ
-         079w==
-X-Forwarded-Encrypted: i=1; AL+hErFnUjDFuN9rSpX/kdDKYcvN2eVHYkKRZIHodY6Dr8qYal5cewZaZ9lgqSdWlDooTHkMEZUnj+g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z//0twxFqXuwkEC/VaS0kEwZno8r64VheHe3UmB7oUg9qZ/hmSN
-	mRW4Ynu98KkSKlQmQKlspUzrd2Cqk9ygA3I8yjTk+djPn632v5fGZKh+
-X-Gm-Gg: AYBFou3+ZAfAG3tNIBbR6Tuq9YAF3eITR/Yf8HwD2fQ48Fb6jhn0QNotUBnu3sGkeRk
-	RnN034DAtyrIc4WFJWlXgttBFdG6fRKazlmyrRXwIwnLVx+XA1/Al0b3ipKExIXfJstKPZCxi/w
-	rP4Bsa+SFsjnVDL6gvHEGp7H15uhUgMDDF8Xxbrz5zHUe0RhX38MzRpK4/1SqSprMeulR4C51eK
-	oKxw19Mn3I6Z1p/RHuChKOsByYj1lBCo9cpcMXnBXD7MztPbd6Yst0AsYYBkO/voFtX+lREo91j
-	JUmZSFjVR+g6fXwTJQjhd5rPva+Y0p/ivkerIppgXHKNpafpuR/E1AIb5+aR4S3lRpR6ebFL2w0
-	+7avfszsyARUKxzDm71wCz6m5k5ufg/8x+rh8jik4Noyc7qf/LZWLfanMzWO/tbSIyDi7LH/dDK
-	cZMWa4oC5SG4wf7V/RjiC6Rj78H0Z9pL/6zlVWi2olN2nHy3DTt/CZfQhwFn24zXCtu8gRiyXuB
-	DukYSCiKYj+TyNwHFJJD9vli3ql3y0hw/XvI1MUVGqMMG6Yt2H8RtaWgITTtMJXdx0I8ND2j0zt
-	iTOF9KBdE5cQscZ1dJ+I6nQpZjez
-X-Received: by 2002:a17:902:f710:b0:2ed:1b02:f6f2 with SMTP id d9443c01a7336-2ed833ee3abmr40925505ad.6.1794231920747;
-        Mon, 09 Nov 2026 05:45:20 -0800 (PST)
+        bh=7ROzI5pFKC1DlvyH7PwbH3PaOSQ+SHEt5iuezD/Lo1w=;
+        b=lntKLG1Wz33t5Qj17jC/tC3S0IIMyWb4WPH64F0oOzWRxmWkzGRPHy5SJSuJIMKfZm
+         Xjw3giTGvEKF97qFw8CSiRId0IdtdkLIZ1BB2z97PVXdqcWDR7PighHDGpUmoZ7fqG2X
+         MDlenkCrXSjTl6R63MZKr06JUwHvyraCtHLF8Dzo4qe+PwPlRzSlrod39B5S69V8TyL9
+         xxmXcgvQxUIYgVr0f17mPipJ1Y3RblEwuqLsQGbFJU+nV+S3s5B12GiH49bAeh9n/3mD
+         SRl8FJpdCdg8flaAN8vVgmuYKh2yljVGLClNOD4BhBgZQBwbALYG1wnbubo7kOXGhyQE
+         ofPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794231927; x=1794836727;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7ROzI5pFKC1DlvyH7PwbH3PaOSQ+SHEt5iuezD/Lo1w=;
+        b=i1Vnw20GUyI/YePTyaZvHzbmsToJPxlmQveL2MGaHi1uKmcJKj397QhMjBTXEpBHId
+         X5qIVTxVr3wQhxg1bXRGhmZ5Kder1CA/5WJFjESyMqs+o3LKhZ2ng16ihaHYbgrWkWE2
+         o+42y0srhWQDM9HO+a2wpK09RheW+Yi/ea0jFEOeV7KsDGddxs6OjDrQBEaohdKEaH8a
+         NVmpsr0tspf7HSxa94iqReR0vM5oeVdxM6EG4yEVSkBiipIw/FZYahvQYaSQa3WDH4PA
+         U7rVrV4sY9KOFaPWvnNIminoKqtdyoShbKNFEv/EBqA4+xi0MZ0Fs664RIyXtrirlj8A
+         LWOg==
+X-Forwarded-Encrypted: i=1; AL+hErGMFnzS/RXDPnepag9Nc//vUErd8SpxCDo9B5L+cAuxpcwAmjwR9Y5/jyzH/u5Jl51y6E5kG3A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bncoGoIyIDEGBcZmrGW3yhsRNNDD2Q4T2Wu9anaWlJpMnsNwD
+	xt9Rv5/la0PbpPVjemZW1ZM93e9dRm959G4lfu/kbWrW81KtaZFXvqO1
+X-Gm-Gg: AYBFou2st940O7UJBFOS7jNc9MMlcNuISJQ1UF2G59A9FKe6n3VaatAEmHxR85YqLIV
+	vx7useMtYSSGcsiN7U5goRa+mj0aQPjB9viylQTpStx4JVjjMlvcdjDOsmuq7/e0AhCYNTr5Iop
+	N5T0l4ANognjZFI2+n/Cv4r9sF378kgpu5hSQN+f0xnwsfj6kbo5GECUC0a4K1k1MwuoZHWcyoG
+	vDRe3o3Yo8njJBj8i1KJ45K9O4EDF9j1olm2ehqwGQoYc7OEQ+TWVgGL2jwprrfoi0q0Qz52jq3
+	1i0Pjw7qHYnrWgTxKbQ0kpgEHdB7VHUpNcuYtPs85GjDAIi95j7Q3gvmoj/WbOLv4Si+4gd7yx3
+	berkFivilhcIv8GKrYpwpiMvP/va6F/rpOUUMcBdfJXKsScf22Ywh0/EaocWWwrk+GkmG5WPYsu
+	p+U8CeKtZq/Ejt21AZiBu881zmImq5f9++iM+qUyNkLG2b53cvxoAMp/ff7mqsheoVVVmy7+Mx4
+	E5ZLCCMhk1PPT2jWHnKNRaACvg2hzrzNB1X7DEaA8z2LMibX65M9dtidezJM+vxo1l8ncd0RNCg
+	PP9FoxD+5NrAKQ7VvqrAZZXFT+F2
+X-Received: by 2002:a17:903:3890:b0:2ea:1b9b:b938 with SMTP id d9443c01a7336-2ed83791011mr36027055ad.55.1794231927034;
+        Mon, 09 Nov 2026 05:45:27 -0800 (PST)
 Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed81727f9bsm11014285ad.57.2026.11.09.05.45.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed81727f9bsm11014285ad.57.2026.11.09.05.45.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 05:45:20 -0800 (PST)
+        Mon, 09 Nov 2026 05:45:26 -0800 (PST)
 From: Zxyan Zhu <zxyan0222@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -95,11 +96,15 @@ Cc: mcoquelin.stm32@gmail.com,
 	netdev@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v10 0/3] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
-Date: Mon,  9 Nov 2026 21:45:03 +0800
-Message-Id: <20261109134506.2794160-1-zxyan0222@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net-next v10 1/3] net: stmmac: dwmac-socfpga: complete cross-timestamp on ATSNS
+Date: Mon,  9 Nov 2026 21:45:04 +0800
+Message-Id: <20261109134506.2794160-2-zxyan0222@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261109134506.2794160-1-zxyan0222@gmail.com>
+References: <20261109134506.2794160-1-zxyan0222@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,57 +116,134 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds auxiliary snapshot (EXTTS) interrupt support to
-DWXGMAC2/DWXLGMAC2, fixes a stale TSIS race on the Agilex5
-cross-timestamp path that the new handler would otherwise expose, and
-guards the shared aux snapshot handler against a zero channel mask.
+The Agilex5 smtg_crosststamp() handler polls XGMAC_INT_STATUS for TSIS
+to learn that the auxiliary snapshot is latched.  TSIS is a transient,
+read-to-clear status bit, so the poll is racy in two ways: a stale TSIS
+from an unrelated event satisfies it before the snapshot is latched,
+leaving *device unwritten while the call reports success, and a
+concurrent reader of XGMAC_TIMESTAMP_STATUS can clear it and make the
+poll time out.
 
-Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS
-count instead of the transient TSIS bit, waits for the FIFO clear to
-complete, and holds aux_ts_lock across the whole trigger/poll/drain
-sequence so a concurrent EXTTS request cannot flush the snapshot FIFO
-mid-flight.
+The FIFO level is also reported by the ATSNS count in
+XGMAC_TIMESTAMP_STATUS, which reading the register does not disturb.
+Poll ATSNS instead of TSIS, after waiting for the PTP_ACR_ATSFC FIFO
+clear, so a stale ATSNS cannot satisfy the poll before the new snapshot
+is latched.
 
-Patch 2 guards the shared aux snapshot handler against a zero channel
-mask: ilog2() is applied to the mask without a zero check, and
-ilog2(0) yields an out-of-range event index that ptp_clock_event()
-feeds to test_bit() unchecked from hard IRQ context.
+Hold aux_ts_lock across the whole sequence, and refuse the request
+with -EBUSY while a channel is enabled, so the PTP_ACR mask
+programming cannot disarm it and a concurrent request cannot flush the
+FIFO between the poll and the drain loop.  The lock is held across the
+SMTG register reads as well, so a concurrent PTP_SYS_OFFSET_PRECISE
+cannot retrigger GPO0 while they run.  The internal snapshot trigger
+is disarmed on the way out, including the error paths, so it does not
+stay armed in PTP_ACR after the cross-timestamp.
 
-Patch 3 adds a dedicated DWXGMAC2 timestamp interrupt handler.  The
-XGMAC hwif entries used the generic ops, whose callback read the wrong
-register and whose enable mask omitted the timestamp interrupt, so the
-clock advertised the aux snapshot channels but no event was ever
-delivered.  XGMAC_TSIE is not enabled by default; it is armed on demand
-from the EXTTS enable/disable path through a new callback, and the
-handler only touches the FIFO while the interrupt is armed and while no
-cross-timestamp owns it.  The interrupt is disarmed on suspend and
-unregister and re-armed on resume.
-
-The failure fixed by patch 3 was hit while bringing up auxiliary
-snapshot interrupts on a local DWXGMAC2 board (not Agilex5-class):
-enabling an EXTTS channel succeeded but no PTP_CLOCK_EXTTS event ever
-arrived.  After the change the same board delivers EXTTS events on the
-enabled channel.  The races fixed by patches 1 and 2 were found by
-reviewing the code paths that this bring-up exposed; they are narrow
-race windows and were not reproduced on hardware in isolation.
-
+Fixes: fd8c4f645496 ("net: stmmac: socfpga: Add hardware supported cross-timestamp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
 ---
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 52 +++++++++++++++----
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
-v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
-v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
-v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
-v5: https://lore.kernel.org/netdev/20260910081020.86227-1-zxyan0222@gmail.com/
-v6: https://lore.kernel.org/netdev/20260929073553.4136336-1-zxyan0222@gmail.com/
-v7: https://lore.kernel.org/netdev/20261004120526.2728564-1-zxyan0222@gmail.com/
-v8: https://lore.kernel.org/netdev/20261013033207.1684328-1-zxyan0222@gmail.com/
-v9: https://lore.kernel.org/netdev/20261104125030.1183146-1-zxyan0222@gmail.com/
-
-v10:
-- Rebase on net-next from 2026-11-09 (containing 7.4-rc2, which moves
-  the est_lock initialisation next to the aux_ts_lock one).
-- Wrap two lines that exceeded 80 columns.
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 6d4bc1fe8f75..2d3c6702e203 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -304,13 +304,15 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 	int i, ret;
+ 	u32 v;
+ 
++	mutex_lock(&priv->aux_ts_lock);
+ 	/* Both internal crosstimestamping and external triggered event
+-	 * timestamping cannot be run concurrently.
++	 * timestamping cannot be run concurrently: the PTP_ACR mask
++	 * programming below would disarm an external channel.
+ 	 */
+-	if (priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN)
++	if (priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN) {
++		mutex_unlock(&priv->aux_ts_lock);
+ 		return -EBUSY;
+-
+-	mutex_lock(&priv->aux_ts_lock);
++	}
+ 	/* Enable Internal snapshot trigger */
+ 	acr_value = readl(ptpaddr + PTP_ACR);
+ 	acr_value &= ~PTP_ACR_MASK;
+@@ -337,8 +339,21 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 	acr_value = readl(ptpaddr + PTP_ACR);
+ 	acr_value |= PTP_ACR_ATSFC;
+ 	writel(acr_value, ptpaddr + PTP_ACR);
+-	/* Release the mutex */
+-	mutex_unlock(&priv->aux_ts_lock);
++
++	/* Wait for the FIFO clear, so the poll only sees snapshots from
++	 * this trigger.
++	 */
++	ret = readl_poll_timeout(ptpaddr + PTP_ACR, acr_value,
++				 !(acr_value & PTP_ACR_ATSFC), 10, 10000);
++	if (ret) {
++		acr_value = readl(ptpaddr + PTP_ACR);
++		acr_value &= ~PTP_ACR_MASK;
++		writel(acr_value, ptpaddr + PTP_ACR);
++		mutex_unlock(&priv->aux_ts_lock);
++		netdev_err(priv->dev, "%s: Failed to clear snapshot FIFO\n",
++			   __func__);
++		return ret;
++	}
+ 
+ 	/* Trigger Internal snapshot signal. Create a rising edge by just toggle
+ 	 * the GPO0 to low and back to high.
+@@ -349,10 +364,17 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 	gpio_value |= XGMAC_GPIO_GPO0;
+ 	writel(gpio_value, ioaddr + XGMAC_GPIO_STATUS);
+ 
+-	/* Poll for time sync operation done */
+-	ret = readl_poll_timeout(priv->ioaddr + XGMAC_INT_STATUS, v,
+-				 (v & XGMAC_INT_TSIS), 100, 10000);
++	/* Poll ATSNS instead of the transient TSIS: the ATSNS count is
++	 * the FIFO level and is not cleared by reading the register.
++	 */
++	ret = readl_poll_timeout(ioaddr + XGMAC_TIMESTAMP_STATUS, v,
++				 FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, v),
++				 100, 10000);
+ 	if (ret) {
++		acr_value = readl(ptpaddr + PTP_ACR);
++		acr_value &= ~PTP_ACR_MASK;
++		writel(acr_value, ptpaddr + PTP_ACR);
++		mutex_unlock(&priv->aux_ts_lock);
+ 		netdev_err(priv->dev, "%s: Wait for time sync operation timeout\n",
+ 			   __func__);
+ 		return ret;
+@@ -364,8 +386,7 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 		.use_nsecs = false,
+ 	};
+ 
+-	num_snapshot = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK,
+-				 readl(ioaddr + XGMAC_TIMESTAMP_STATUS));
++	num_snapshot = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, v);
+ 
+ 	/* Repeat until the timestamps are from the FIFO last segment */
+ 	for (i = 0; i < num_snapshot; i++) {
+@@ -375,9 +396,18 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 		read_unlock_irqrestore(&priv->ptp_lock, flags);
+ 	}
+ 
++	/* Disarm the internal snapshot trigger, so the PTP_ACR mask does
++	 * not stay armed behind the software state.
++	 */
++	acr_value = readl(ptpaddr + PTP_ACR);
++	acr_value &= ~PTP_ACR_MASK;
++	writel(acr_value, ptpaddr + PTP_ACR);
++
+ 	get_smtgtime(priv->mii, SMTG_MDIO_ADDR, &smtg_time);
+ 	system->cycles = smtg_time;
+ 
++	mutex_unlock(&priv->aux_ts_lock);
++
+ 	return 0;
+ }
+ 
 -- 
 2.34.1
 
