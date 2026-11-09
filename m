@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794266668;
-	b=4/JtazDacM2DwaZYHw0bqvnY8aChpcLQMUKEWNY4CBEnMBhiOOy7NPACERH3QV5FdknH
-	 AmaD6l15I/xcncbsnulXIdEYUTYeBiNPr23pNGS3JCgh9Sxa9y7ZQ/v5BSmbKwMuADeN3
-	 XPc4P2L3ypRXQSVMMY68awiWVQN2YcbBCruKHHX09yDUwTkiuk4QTgBfq2Yl+1L5FezTZ
-	 3U+IhYVcK4JSeCf9SuE+Uqr3O4x7XjYVJXJ381638PbfXYOSlqeRuC1eJ+PhVMVa0cKPE
-	 FsGbslWzqNelQs2OC9bFEu9uGz66eoPtChRS+SpoCfpzyK5//UKuNjjHx6mqep6GpGQ==
+	t=1794266873;
+	b=DS4jCVY28YFbu+TmgnKGZCj9KJFS5psivsrk2OSWzG8CMZQt4rWeO5XRiHAXIcdRLTAI
+	 gRV9UC5b/qVGVfuqX2UQ6G1NcXaHWRcZNqoEbqzYxE+4hYPpGcyPoxKRCQ3BS2sJQjhC4
+	 tclVHqNQeyF2pT+zfKhK5Jg1rRcnsYrd++b6JXchIyWRrXNGrUx6kzovZKj57PuJM2K1y
+	 7fMG4UMGo0UzNTEqnjD/S9dH4u8RcCqBwxRmB5/nI9Tb2aDSRBTYYzSo9mMK52a71DT8h
+	 jPM/BerasXSTW6Gxc8mFmz3Q6xNvedDiffYzH+halmInL6A93gxI3+sOJST7EiLvsng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794266668;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266873;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=9C2s1QNFolN3kugJfyD+5SXr39r+c73y9g8wz+xyicY=;
-	b=OqfbjLyswy3xDGykIlKjO12XM5/lhnNvwjH8+OnbYBwd8OqoMtkffaOHt/ZerMLEtDO7
-	 cvWwr8M/SmbYGE6q/lavNi+PSHNaT5OaDKK9pSXT0Sd1F8aN1+MaaZ/vreLpI5tzm2+fa
-	 N3WYicZunAEdZS8UIkbMapNXX9oJ/2stcC98XzmDCemTjK79sk2gaacFR0YbA/a4gJUfB
-	 fiz1KJRk8FiJ3M+xNpfzVu1/KQqPqAIczf2H8HUpYpsFFzVOc8l7KAcdLsSy54fre2RWE
-	 oxvR9xPWNHku6SWcRxNQAMNQ5wRk+/WBnx0LP0t4CNdYhVBb1hMvQaXYqf1f5jDDIpA==
+	bh=pxieaRF+DEmHDZqBYUPaxBs1kvnt1y8Mjbqb6MFwtFQ=;
+	b=kecAjHydaGbEwUNxD4LJbwkCSHEYgYunjfy5EHrTYr2ARd05p6TxbAc3Vta3X7gSAaUl
+	 SkffDxEEeyoUyvm9ov+Tdv7RPlunKp8g1EcepixFZlh+BHXWDc2WAmcwxLAFZ0S1SNHx3
+	 PReydcF0KRQhDgErbtKSQeMJadmRMm9SiREpJyG7+oMIkK1p2SGD+F318Pp2GzdmYEiSh
+	 U4RTwUpTAWdHEQuwMaLf5mJ2mfuLqSXC1jZE6fk/3ztmFlbOYGZA089vscd6c4xizt7Jh
+	 OXKH2hQbRb89eNhAG4R3T6BnwGCmowddwr+ODhZXvXB59v/IneUe+CRiWQ53SvrN6fg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nPLbb08n;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sys5P63d;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03675606A335;
-	Mon,  9 Nov 2026 23:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5212D606A31C;
+	Mon,  9 Nov 2026 23:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nPLbb08n
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163241F0089F;
-	Mon,  9 Nov 2026 23:24:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sys5P63d
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E92E1F0089F;
+	Mon,  9 Nov 2026 23:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794266667;
-	bh=9C2s1QNFolN3kugJfyD+5SXr39r+c73y9g8wz+xyicY=;
+	s=k20260515; t=1794266872;
+	bh=pxieaRF+DEmHDZqBYUPaxBs1kvnt1y8Mjbqb6MFwtFQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nPLbb08nvVW6XhAA6j6TFjx5qGvOTysLNsJ4VUEvCFvfWGI2OXHUkwV1IYxzv5evH
-	 P5WQcHNgiCW+I4ymWmmeiiSt95Bayyxztxu1FdU3gTsEdyS4ZcmQTExHqbeLWhGvh6
-	 H6i4Jl88zJcyPrYFaj4DwVQKXCoxBE8OCp66sxXz9ToJvi+zSY1VJHm27Qwg/te16a
-	 QsIfovLs/zUtP+YWvkCa4cr1IEjshv9Povp29f9wwnOsMJC1PpT+aYudFXcHLtFhZu
-	 dpI7KXuzoOjvUFVpeyYUPrF7PUMDEbqjAuPN+mDrl0JmnceXWbjj3sLPomeFpdjcin
-	 cSdS3ewM4ZOuQ==
-Subject:
- Re: [PATCH] net: dsa: sja1110: pull meta timestamps before reading them
+	b=Sys5P63dPMA9ugIubxhhxprGv7JEAzMdd1Sro4pFmA7+v2xn7f5rzQ7yTXbKlFJuM
+	 Qko3aQuCuf8OmuafbUjLU8gBB7++J8a0bc9hk/oEOfFL9sr9U/yKI+d+S+/m5qrd5i
+	 cs1h7blDbRWPiMd0eirn6wdV7lCwSmiYwAZ7pK8/kTAqPgjEz8ThB4tTlaCidXGW2f
+	 /oyflR5gxEMTg4sNvkk8+nUv025GKZmthsR9/E856CL9k0CfaOE0RQUDMwhwL5wvn/
+	 1JQz6+cYUxWajeBvMzqL2fWeN2Fv0oD5tq5i0+0ui9h0as6tPEc6P0dF5uEwNGXLxC
+	 Km5wwoJBVj4TA==
+Subject: Re: [PATCH net] net: ibm: emac: fix TX skb double free in
+ emac_full_tx_reset()
 From: netdev-bot+sashiko@kernel.org
-To: NoahWeinberger2003@proton.me
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 23:24:26 +0000
-Message-ID: <179426666660.994134.10642884311879085983@kernel.org>
-In-Reply-To: <mnJ9l2Ebi69wyTB5k6FBEnjRESb0SmEnlqwaQAOEJ1x5qRQJ3ZMVAdX7Bn9-yWEnQ0iv_3KLoI1yUVCc88IJOVGGow9rOyG6Y54sPMeW0zQ=@proton.me>
-References: <mnJ9l2Ebi69wyTB5k6FBEnjRESb0SmEnlqwaQAOEJ1x5qRQJ3ZMVAdX7Bn9-yWEnQ0iv_3KLoI1yUVCc88IJOVGGow9rOyG6Y54sPMeW0zQ=@proton.me>
+ david@gibson.dropbear.id.au, jeff@garzik.org, linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 23:27:51 +0000
+Message-ID: <179426687184.994134.17421592671496655124@kernel.org>
+In-Reply-To: <20261105231516.120321-1-rosenp@gmail.com>
+References: <20261105231516.120321-1-rosenp@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,161 +75,109 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In sja1110_rcv_meta() (net/dsa/tag_sja1105.c), the patch adds a
-  pskb_may_pull() but leaves `buf` stale.
-- [Low] The commit message is not fit to apply.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the trailer
-  branch of sja1110_rcv_inband_control_extension()…
+- [High] This patch fixes only one of the two emac_clean_tx_ring()
+  callers, so the same TX skb double free can still happen in…
 
 --
 
-net: dsa: sja1110: pull meta timestamps before reading them
+net: ibm: emac: fix TX skb double free in emac_full_tx_reset()
 
-The patch adds a pskb_may_pull() to sja1110_rcv_meta(). The pull covers
-the (n_ts + 1) ten-byte timestamp records before they are parsed. The goal
-is to harden the SJA1110 meta frame parser against truncated or non-linear
-skbs.
+This patch takes netif_tx_lock_bh() around emac_clean_tx_ring() and the
+tx_cnt/tx_slot/ack_slot reset in emac_full_tx_reset(). This keeps
+emac_poll_tx() from freeing skbs a second time after the ring has been
+cleaned. mal_poll() still calls emac_poll_tx() while polling of this EMAC
+is disabled.
 
-> net: dsa: sja1110: pull meta timestamps before reading them
->
-> Hello,
+> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+> index 640618c0a09e9..377755af835cc 100644
+> --- a/drivers/net/ethernet/ibm/emac/core.c
+> +++ b/drivers/net/ethernet/ibm/emac/core.c
+> @@ -745,8 +745,15 @@ static void emac_full_tx_reset(struct emac_instance *dev)
+>  
+>  	emac_tx_disable(dev);
+>  	mal_disable_tx_channel(dev->mal, dev->mal_tx_chan);
+> +
+> +	/* MAL NAPI runs emac_poll_tx() even while polling of this EMAC is
+> +	 * disabled. A cleaned descriptor reads as completed, so clean the
+> +	 * ring under the TX lock or emac_poll_tx() frees the skbs again.
+> +	 */
+> +	netif_tx_lock_bh(dev->ndev);
+>  	emac_clean_tx_ring(dev);
+>  	dev->tx_cnt = dev->tx_slot = dev->ack_slot = 0;
+> +	netif_tx_unlock_bh(dev->ndev);
+
+[Severity: High]
+This covers emac_full_tx_reset(). Can the same TX skb double free still
+happen through the other caller of emac_clean_tx_ring()? That caller is
+emac_close() in drivers/net/ethernet/ibm/emac/core.c, and it still cleans
+the ring without the TX lock:
+
+drivers/net/ethernet/ibm/emac/core.c:emac_close() {
+    ...
+	mal_disable_tx_channel(dev->mal, dev->mal_tx_chan);
+	mal_poll_del(dev->mal, &dev->commac);
+
+	emac_clean_tx_ring(dev);
+	emac_clean_rx_ring(dev);
+    ...
+}
+
+On this path, the only NAPI synchronization is one napi_synchronize() call
+in mal_poll_disable(), reached through emac_netif_stop(). The MAL NAPI
+instance is shared, so mal_poll() can be scheduled again after that. It
+could be triggered by:
+
+  - TX EOB interrupts raised while emac_tx_disable() waits for in-flight
+    frames
+  - another EMAC on the same MAL
+  - mal_poll_enable()
+  - the rotting-packet path
+
+mal_poll() then calls poll_tx for every commac on the list. It does this
+without mal->lock and without checking MAL_COMMAC_POLL_DISABLED:
+
+drivers/net/ethernet/ibm/emac/mal.c:mal_poll() {
+    ...
+	list_for_each(l, &mal->poll_list) {
+		struct mal_commac *mc =
+			list_entry(l, struct mal_commac, poll_list);
+		mc->ops->poll_tx(mc->dev);
+	}
+    ...
+}
+
+mal_poll_del() only does a list_del() under mal->lock, and mal_poll()
+never takes that lock. Nothing waits for an in-progress poll afterwards.
+
+On SMP, this interleaving looks possible. One example is the dual-CPU
+476GTR described in akebono.dts with an ibm,emac4sync EMAC:
+
+CPU1 (emac_close)                  CPU2 (mal_poll()->emac_poll_tx())
+mal_poll_del()
+                                   netif_tx_lock_bh(dev->ndev);
+                                   ctrl = dev->tx_desc[slot].ctrl;
+                                   /* READY clear */
+                                   skb = dev->tx_skb[slot];
+emac_clean_tx_ring()
+  dev_kfree_skb(dev->tx_skb[i]);
+  dev->tx_skb[i] = NULL;
+  dev->tx_desc[i].ctrl = 0;
+                                   dev_kfree_skb(skb);
+
+This is the same "cleaned descriptor reads as completed" double free that
+the commit message and the new comment describe. Neither the commit message
+nor the new comment mentions the close path.
+
+There is also a related issue at the same spot. list_del() in
+mal_poll_del() poisons commac->poll_list.next, and a concurrent
+list_for_each() in mal_poll() may still follow that pointer.
+
+Would it make sense to also take netif_tx_lock_bh() around
+emac_clean_tx_ring() in emac_close()? Another option is to call
+napi_synchronize() after the list_del() in mal_poll_del(). The second
+option would also stop mal_poll() from following the poisoned pointer.
 
 [ ... ]
 
-> This was found during an assisted (AI-supported) static source review of
-> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
-> reporter against that tree. The patch below has NOT been compiled and has
-> NOT been runtime tested, and no reproducer was produced - the triggering
-> conditions are described above instead. Please treat this as a report for
-> verification rather than a battle-tested fix.
->
-> Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
-
-[Severity: Low]
-This isn't a bug, but the changelog has a few problems for an applied
-commit.
-
-There is no Signed-off-by: line. The only trailer is a Reported-by: that
-names the author.
-
-The "Hello," greeting, the AI-assisted review note, the "has NOT been
-compiled" disclaimer and the reference to the reporter's tree read like
-cover letter text. Should they go below the --- line?
-
-The message calls this "Longstanding code" but has no Fixes: tag. The meta
-frame parsing seems to come from commit 566b18c8b752 ("net: dsa: sja1105:
-implement TX timestamping for SJA1110"). The buf initialization was later
-reworked by commit 5d928ff48656 ("net: dsa: create a helper for locating
-EtherType DSA headers on RX").
-
-The changelog also says the non-linear skb read is fixed. See the comment
-below on buf: that claim may not hold.
-
-> diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-> index bfe1f746f55be..caa66596a0840 100644
-> --- a/net/dsa/tag_sja1105.c
-> +++ b/net/dsa/tag_sja1105.c
-> @@ -537,6 +537,12 @@ static struct sk_buff *sja1110_rcv_meta(struct sk_buff *skb, u16 rx_header)
->  	struct dsa_switch *ds;
->  	int i;
->  
-> +	if (!pskb_may_pull(skb,
-> +			   2 + (n_ts + 1) * SJA1110_META_TSTAMP_SIZE)) {
-> +		kfree_skb(skb);
-> +		return NULL;
-> +	}
-> +
-
-[Severity: High]
-Can buf end up pointing into freed memory after this pull? buf is set at
-the top of sja1110_rcv_meta(), before the new check, and is never
-reloaded:
-
-	u8 *buf = dsa_etype_header_pos_rx(skb) + SJA1110_HEADER_LEN;
-
-If the meta payload is not fully linear, pskb_may_pull() calls
-__pskb_pull_tail(). When there is not enough tailroom, that function
-reallocates the head:
-
-	if (eat > 0 || skb_cloned(skb)) {
-		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
-				     GFP_ATOMIC))
-
-pskb_expand_head() copies the data into a new head and frees the old one
-with skb_free_head(). The kernel-doc for both functions says header
-pointers must be reloaded after the call.
-
-The loop further down still reads through the old pointer:
-
-		ts_id = buf[0];
-		source_port = (buf[1] & GENMASK(7, 4)) >> 4;
-		dir = (buf[1] & BIT(3)) >> 3;
-		tstamp = be64_to_cpu(*(__be64 *)(buf + 2));
-
-Those values then go to tagger_data->meta_tstamp_handler().
-
-dsa_switch_rcv() calls skb_unclone_full() before ->rcv(), so skb_cloned()
-should not trigger the realloc. The eat > 0 case still can, for example
-on a conduit that builds small fixed-size heads and puts the rest in
-frags.
-
-In the non-linear case the commit message describes, would this turn the
-out-of-bounds read into a use-after-free read?
-
-In sja1110_process_meta_tstamp(), a garbage ts_id that matches nothing
-hits WARN_ON(!skb_match). A ts_id that does match would pass 8 bytes of
-freed memory to skb_complete_tx_timestamp() as the TX timestamp.
-
-Would it work to recompute buf after the pull succeeds, or to move the buf
-initialization below the pskb_may_pull() check?
-
->  	cpu_dp = conduit->dsa_ptr;
->  	ds = dsa_switch_find(cpu_dp->dst->index, switch_id);
->  	if (!ds) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the commit message's threat
-model ("buggy or compromised switch silicon" and "short-skb conduit
-paths") also applies to the caller, sja1110_rcv_inband_control_extension().
-Its trailer branch looks like it can reach BUG() on a malformed header.
-
-start_of_padding comes straight from the 12-bit header field and is never
-checked:
-
-	if (rx_header & SJA1110_RX_HEADER_HAS_TRAILER) {
-		int start_of_padding = SJA1110_RX_HEADER_TRAILER_POS(rx_header);
-		u8 *rx_trailer = skb_tail_pointer(skb) - SJA1110_RX_TRAILER_LEN;
-		...
-		if (pskb_trim_rcsum(skb, start_of_padding - ETH_HLEN)) {
-			kfree_skb(skb);
-			return NULL;
-		}
-	...
-	/* Advance skb->data past the DSA header */
-	skb_pull_rcsum(skb, SJA1110_HEADER_LEN);
-
-If start_of_padding is between 14 and 17, the trim leaves skb->len at 0 to
-3 and returns success. The unconditional skb_pull_rcsum(skb, 4) would then
-hit BUG_ON(len > skb->len) in skb_pull_rcsum(). Should start_of_padding be
-checked against ETH_HLEN + SJA1110_HEADER_LEN and skb->len?
-
-The same branch reads the 13-byte trailer from skb_tail_pointer(skb) with
-no check on skb->len or linearity. On a non-linear skb, would that parse
-the end of the linear area instead of the real trailer?
-
-In VLAN-filtering mode the taggers accept hardware-stripped VLAN tags. If
-a conduit strips the 802.1Q tag from a front-port frame whose inner
-EtherType is ETH_P_SJA1110, could rx_header contain bytes from the wire?
-That has not been confirmed.
-
-sja1105_meta_unpack() has a similar issue. It reads 8 bytes from
-skb_mac_header(skb) + ETH_HLEN without a pskb_may_pull() or length check:
-
-	u8 *buf = skb_mac_header(skb) + ETH_HLEN;
-
-Should these sites be hardened as well?
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/mnJ9l2Ebi69wyTB5k6FBEnjRESb0SmEnlqwaQAOEJ1x5qRQJ3ZMVAdX7Bn9-yWEnQ0iv_3KLoI1yUVCc88IJOVGGow9rOyG6Y54sPMeW0zQ%3D%40proton.me
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105231516.120321-1-rosenp%40gmail.com
