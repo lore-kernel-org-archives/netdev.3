@@ -1,103 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794235754;
-	b=U0rDKDRxJTPBOWQxqpKVa7Z5rR/LBVQnj6Xy9P0+2+IWnRzDry2ZaqTIufbMBMR1aSx7
-	 4FrPSWKKdCFhFwGkxmpiuvBrDJJwNrk9XE9iy4kXF2yQTszim6xl/TIv9Gx+jgMrigLkK
-	 ywhyaieJdX7YpdgiqsO118kCiqjB5tLrMhI/c1IbkrY9WSucmJ9Jkp8Ilh05U1xVGL8U/
-	 wmYZoE6s++CtGDjVCp9pIrK6hZj7EspYGNT5OJ5NfMdiCFvoGuScGHiGvYugssua3lIsT
-	 4bEl5tjxxPCUvFStQWVPTIjS/mIODatuKqC00mYbz1qZlz+dr8GfTMma6qA9PSlnpCg==
+	t=1794235763;
+	b=VkeriM8Wpa6UKZVLJe/3AKdayOLdqHEijGZPruehuQ/53UmyS5MkFbvHKT6mZkiVoozv
+	 klcomTymV4US15DUx/cfMVjzOOBf9leEWsn4I3lPp6ityk/Dr0CdC8MbG5bHuZWDsZsne
+	 r3rA46J71l9Axkxq3AcU6ZfL7fZr5eRChNdZoWS3/FqE1XWaoiPad2G07nDcwPJkPtsWA
+	 ltoXEBGRUkJFpuGWFYpXxBMTzjkOjzkw2lrkWUKTfopvo/bEbrPI9fPg2NcVd3VRfqqCm
+	 9bq1o5ZXivvrGbNj3HrfZTysDkvOeGJc3+LnQTFQKdzrDTzV40yv4ptMzwYItsJ2zdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794235754;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
-	 Received:Received:Received:Received:Received:From:To:CC:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type:X-ADIRuleOP-NewSCL:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=5YgZ9DsB3zSM/Trq6vFjN0hFNxSxLNqKUjoqOa8muPg=;
-	b=gaYbCjrfKODQnrkF+WrQx/nxVSHHYN86Gd759AkGg/7vJgllX4QP9dXzEUfIRB9QpxrY
-	 uLZo4DkdoFP0n8EQbOt88CwC2BlLq9UXZOAfejG7pHvfi/4pTcCJGG0A+idIpzi5pJ5Qe
-	 xx4o6O7UU5Y2GL/WwFfoVJpdS1oiYlAjds8/S3wjOhxY3pCOOZKeNFJ+tqr0QGXL59bq+
-	 AEJyMmS72K28eeLzjzIU0HPpzdVEmRKILYpF6OO3QHdNpmLHlgKvZjqgOMajoGJuOvyGW
-	 e8r1gmUUoAz478afCZYEZMj8iLL0YuPkXdkT5ZhRVgTWDt7dujT30tKH+oU30eZrdNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794235763;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=gH6ldD8h94PEyI/fVVqy2zum25OGPnjEUR2wKK3jY6c=;
+	b=lj1iG0zpyirFfQk0KuQE8+bVo4fGeE3r8+BuoPJ41l+vAzpixB558KaB8Zasuo1SIJ5Q
+	 0igZUkIU25IHeC8QbNslBeV5k1F1r/woJ9A2yKWDO4mxv0Dfc6buptZynJd7MnqrfL6/9
+	 fxVv/8o+bD2AaqQsAA/JY1riP1KMQxEkXz4tea5VNq1vZPEgpEWM+0PXeBs5M/3EcGkwd
+	 yo+JplIjnM/gZv3ST3IlqYSq1UvsG7xJiFKfrpuVzKEnyzP314ya5TJLhRnnnk5UvKJpR
+	 nzZtb/LVySH4C1M7QnPbY3rqaaLsyRNqX8n0aMjpWfjzIXZyVNl8lpAVZjz/uXxhSVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=analog.com;
-	spf=pass smtp.mailfrom=analog.com;
-	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=A3479sUD;
-	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=XW1AEf7a;
-	arc=none smtp.remote-ip=148.163.135.77
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="RZh/2TpP";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3C6606A321;
-	Mon,  9 Nov 2026 14:49:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF3C6606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA85606EEB9;
+	Mon,  9 Nov 2026 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=A3479sUD;
-	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=XW1AEf7a
-Received: from pps.filterd (m0516787.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9EN34g957267;
-	Mon, 9 Nov 2026 09:48:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=DKIM; bh=5YgZ9DsB3zSM/Trq
-	6vFjN0hFNxSxLNqKUjoqOa8muPg=; b=A3479sUDLkegaxxJiglwXrQOIwKvqloI
-	zIUW5OV5+I75WuPvNrKOdQTYgNjImlkFq+SBHS5xRFxY39sWOuxs6A0yBt8UxlEa
-	r5/54vdszYPWx/ndVbDXS0Oyp5i6ZKxoa7NrEEFF1S0IgAaGEf7WMaBewPlEqL+E
-	3+JfzpoiDF2JJK/O8OFA6Kv8iNfl2OjHw0miWR8nx6EBBhx+4zi7Mb2GLf6JlOvM
-	kqkPJN3kJWtUUOPyfoNik9xxrgC7KL0Aedlbj0SLxsoGPLO0Sg2QFFIfxOPbBNmD
-	41pFLVUKWVL51Uz9DKF1GUw1exqn8wytjIbF/oHWHCo+mSCsvnQMKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=5YgZ9DsB3zSM/Trq6vFjN0hFNxS
-	xLNqKUjoqOa8muPg=; b=XW1AEf7aLWs1lg0LSqvGp8HrgpUpNCxSd9+Qa88i8Uq
-	7tzoof/s6DmqTEcjjIIdoQgWPyMYoe9Uz/+j7vGHii6AdSvGvFQ05DQXahWMpsCQ
-	YCseMq8uztfgoigSOz1GXE8tIeMPqo/alvxCZUeEFdT8C5oTEFKPEULsRSHRvm3Z
-	tw+sx5fUUvQ2VFXOTv9bpqEPb7xMwP2D5ifVBA7mv5myPmWy6bFcLgf66AwB8se9
-	HTx2i+7MgLPlwVSFZ16FpKzpnDF5k7qCYzY5SkEiuk3OW12gDLjH+yCojl6uWhBv
-	jr/x8KoOlfZCZurQoZoZL8gg2xP18A0gM1qamE5BPzQ==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4hufw007yd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 09:48:57 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 6A9EmuCu027042
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 9 Nov 2026 09:48:56 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 9 Nov 2026 09:48:56 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 9 Nov 2026 09:48:56 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 9 Nov 2026 09:48:56 -0500
-Received: from HYB-6AVb5If9qTU.tail230d3d.ts.net (HYB-6AVb5If9qTU.ad.analog.com [10.135.4.41])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 6A9EmcNM025728;
-	Mon, 9 Nov 2026 09:48:43 -0500
-From: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Stefan Eichenberger
-	<eichest@gmail.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
-Subject: [PATCH net v2] net: phy: c45: select BASE-T1 type for the forced speed
-Date: Mon, 9 Nov 2026 16:48:37 +0200
-Message-ID: <20261109144837.738619-1-iustin.stolniceanu@analog.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZh/2TpP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DE61F008A4;
+	Mon,  9 Nov 2026 14:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794235762;
+	bh=gH6ldD8h94PEyI/fVVqy2zum25OGPnjEUR2wKK3jY6c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RZh/2TpP+pZnXBnGrUO5i0q2EOtpkHrC/0w8x62IAxn9LaVI1+5LPQfwUnewgXjUV
+	 SZr+jBm0TRpaNn7oCS+nMTNZWQAlzzf993Be4p2tqg5qiQ3QaVSIuep5hAaiLlo8iQ
+	 MOHJnP8832qBduKpquHW6ozuSUsIY3MO8F67ojN3PeZvpPfopcNYUBooF+Kn5jsrV8
+	 zTdEmSDHRk2Il6JHic/KjF5IWUm9gXA+FawalMOWV/eP3C71C8PqkVpD/RrgoUwdkC
+	 VetP4udLsFyGjnknfGeCVIrqOeX663T/N0QsylrqY5CFGC2lWBC32rs0aEueip1pJb
+	 skt2dFd15SQBg==
+Subject: Re: [PATCH net v5 5/5] amt: harden relay authentication and teardown
+From: netdev-bot+sashiko@kernel.org
+To: omar@blockcast.net
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
+ linux-rt-devel@lists.linux.dev
+Date: Mon, 09 Nov 2026 14:49:21 +0000
+Message-ID: <179423576119.994134.11181391213411379311@kernel.org>
+In-Reply-To: <20261105125010.1107546-6-omar@blockcast.net>
+References: <20261105125010.1107546-6-omar@blockcast.net>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,184 +64,243 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: RpdlgAug7x65dcsCCOoibpGE4bl8IhcJ
-X-Proofpoint-ORIG-GUID: RpdlgAug7x65dcsCCOoibpGE4bl8IhcJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA1OCBTYWx0ZWRfX5tU0zs4cfid6
- 1thA+BNU6NHa4rLZg0rxnVi4nmC1N291oJZ2AEEK0ZSTEwl82axvQvR4JLUJsFm5wGvtLHi6MSc
- WU27j6iTYUi+B/4UWggMp9z/n3IJ7JcWuCAppjjK690EWePdW0s1R4bK63mJY3EzpWUg/Kb3G1i
- zyA1hIQbql+S/jnniKnyQiz6xwYEJIyF13OH72J6h7yUGRCMug+yC8NXjIS7gqLK3wIxIFcll7u
- 5PACTvhdhQO52xJfj6mKx+DT1jyoN+47OPLLUs6TE7G2FYaNvX89wOTpgl47518IPDdxXoXECKY
- q+v6J11z4CJqyBPrtN1wRo6nPYfUQTPeqbDGUghzzst16mLF7iGrWmTDQmZlHwHvHMlpiHLtHwO
- 4bTH/2H3TNguS9jiyxOr3IWhD4eQrWbFa2qVpKHeljO7FmpczmsO8YGT0N15Sn/nWYHC+tsiqCv
- 5+CrIZjdma2Ht9g6xug==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA1OCBTYWx0ZWRfX0fXogKLOAdf5
- tUb0Ym6tXUIeMuPE2ASBDHQm9qGJJrCLcJAVpWSQhp+m15j9+AQ60KoHLbcmCZdDwYD7VtFDVxm
- wQfJNXM+erJDXVuFXkJvUnsN+swZfZfiwyehxtk3Huk6SLNjsbKf
-X-Authority-Analysis: v=2.4 cv=IuiL47/g c=1 sm=1 tr=0 ts=6af1dd59 cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
- a=OmVn7CZJonkx5R5zMQLL:22 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
- a=kTs4aKTdxJRZGFSXfREA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-09_05,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611090058
 
-Commit 25108a834e14 ("net: phy: c45: add support for 1000BASE-T1 forced
-setup") made genphy_c45_pma_setup_forced() write the type selection
-field (bits 3:0) of the BASE-T1 PMA/PMD control register (1.2100) on
-every forced setup: 1000BASE-T1 for SPEED_1000, and 0 for everything
-else. 0 selects 100BASE-T1, so forcing a 10BASE-T1L PHY to 10 Mbit/s
-now also switches its PMA to 100BASE-T1, a mode it does not implement.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Seen on an ADIN1110 (internal ADIN1100 PHY): after
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
-  ethtool -s ethX autoneg off speed 10 master-slave forced-master
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-1.2100 reads 0xc000 instead of the 0xc002. Since the field is not
-restored by re-enabling autoneg, the PHY keeps the wrong type until
-the next forced setup or reset.
+- [Medium] The patch makes several security-relevant behaviour changes
+  that the changelog does not state.
+- [Medium] AMT_MAX_TUNNELS_PER_SRC is fixed at 16, but the global table
+  size amt->max_tunnels can be set by the administrator.
+- [Low] The subject line says "harden relay authentication and teardown",
+  but the patch does not change any teardown path.
+- [Low] amt_request_handler() takes the device-wide amt->lock with
+  spin_lock_bh() for every Request that passes the header checks, forged…
+- [Low] The new comments on amt_send_igmp_gq() ('the requesting source is
+  not authenticated yet and no tunnel state exists for it') and…
 
-Add a helper that returns the type selection value for the forced speed
-and the supported link modes: 100BASE-T1, 1000BASE-T1, and 10BASE-T1L or
-10BASE-T1S for SPEED_10 depending on the supported 10 Mbit/s modes. Fail
-with -EINVAL when no type matches instead of writing 100BASE-T1. This
-also applies to forced 2.5G, 5G and 10G on BASE-T1 capable PHYs, for
-which there are no link modes yet.
+--
 
-The field is called "type selection" in IEEE 802.3-2022 (45.2.1.214,
-Table 45-178). Keep the old STRAP names as aliases.
+amt: harden relay authentication and teardown
 
-Tested on EVAL-ADIN1110EBZ: with this change, forcing 10 Mbit/s writes
-1.2100 = 0xc002 (10BASE-T1L) instead of the invalid 0xc000.
+This patch makes AMT Relay Request handling stateless. The Query MAC is
+now derived from the source address, source port, nonce and current
+secret, and tunnel allocation moves to the Membership Update path after
+the MAC is verified. Tunnels are keyed by address and port, with a global
+limit, a fixed per-source limit of 16, and four secret generations
+protected by a new seqcount, amt->key_seq.
 
-Fixes: 25108a834e14 ("net: phy: c45: add support for 1000BASE-T1 forced setup")
-Signed-off-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
----
-Changes in v2 (review by Andrew Lunn):
-- Name the type selection values after 802.3-2022 (Table 45-178) and
-  define all of them, including 2.5GBASE-T1, 5GBASE-T1 and 10GBASE-T1.
-  The old STRAP name comes from 6f1c646d88c5 and is kept as an alias
-  for userspace.
-- Add a helper that returns the type selection for the forced speed and
-  the supported link modes, also covering 10BASE-T1S. It returns
-  -EINVAL when no type matches instead of writing 100BASE-T1, which
-  also applies to forced 2.5G, 5G and 10G on BASE-T1 capable PHYs.
-- Resolve the type before the first register write, so a failure leaves
-  the PHY untouched (reported by the Sashiko review bot).
-- Retitle the patch, as it is no longer specific to 10BASE-T1L.
-- Link to v1: https://lore.kernel.org/r/20261104152534.1425241-1-iustin.stolniceanu@analog.com
+> amt: harden relay authentication and teardown
 
- drivers/net/phy/phy-c45.c | 46 ++++++++++++++++++++++++++++++++++-----
- include/uapi/linux/mdio.h | 13 +++++++++--
- 2 files changed, 52 insertions(+), 7 deletions(-)
+[Severity: Low]
+Is "teardown" accurate in the subject? This patch doesn't change
+amt_tunnel_expire() or amt_dev_stop(), and the commit message body
+doesn't mention teardown.
 
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 870920311f9a..8334678df841 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -104,6 +104,36 @@ int genphy_c45_pma_baset1_setup_master_slave(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(genphy_c45_pma_baset1_setup_master_slave);
- 
-+/* Type selection value for the BASE-T1 PMA/PMD control register (1.2100,
-+ * 802.3-2022 Table 45-178) matching the forced speed. 10 Mbit/s is ambiguous
-+ * between 10BASE-T1L and 10BASE-T1S, so the supported link modes decide.
-+ * 2.5G, 5G and 10GBASE-T1 are not handled as there are no link modes for them
-+ * yet.
-+ */
-+static int genphy_c45_baset1_type_sel(struct phy_device *phydev)
-+{
-+	switch (phydev->speed) {
-+	case SPEED_100:
-+		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_100BT1;
-+	case SPEED_1000:
-+		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1;
-+	case SPEED_10:
-+		if (linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1L_Full_BIT,
-+				      phydev->supported))
-+			return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1L;
-+		if (linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_Full_BIT,
-+				      phydev->supported) ||
-+		    linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_Half_BIT,
-+				      phydev->supported) ||
-+		    linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half_BIT,
-+				      phydev->supported))
-+			return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1S;
-+		return -EINVAL;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- /**
-  * genphy_c45_pma_setup_forced - configures a forced speed
-  * @phydev: target phy_device struct
-@@ -166,6 +196,16 @@ int genphy_c45_pma_setup_forced(struct phy_device *phydev)
- 		return -EINVAL;
- 	}
- 
-+	/* Resolve the type before the first write, so a speed without a
-+	 * matching type leaves the PHY untouched.
-+	 */
-+	bt1_ctrl = 0;
-+	if (genphy_c45_baset1_able(phydev)) {
-+		bt1_ctrl = genphy_c45_baset1_type_sel(phydev);
-+		if (bt1_ctrl < 0)
-+			return bt1_ctrl;
-+	}
-+
- 	ret = phy_write_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1, ctrl1);
- 	if (ret < 0)
- 		return ret;
-@@ -179,12 +219,8 @@ int genphy_c45_pma_setup_forced(struct phy_device *phydev)
- 		if (ret < 0)
- 			return ret;
- 
--		bt1_ctrl = 0;
--		if (phydev->speed == SPEED_1000)
--			bt1_ctrl = MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000;
--
- 		ret = phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_PMD_BT1_CTRL,
--				     MDIO_PMA_PMD_BT1_CTRL_STRAP, bt1_ctrl);
-+				     MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL, bt1_ctrl);
- 		if (ret < 0)
- 			return ret;
- 	}
-diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-index 06f4bc3c20c7..2806f60ed105 100644
---- a/include/uapi/linux/mdio.h
-+++ b/include/uapi/linux/mdio.h
-@@ -417,8 +417,17 @@
- #define MDIO_AN_10BT1_AN_STAT_LPA_EEE_T1L	0x4000 /* 10BASE-T1L LP EEE ability advertisement */
- 
- /* BASE-T1 PMA/PMD control register */
--#define MDIO_PMA_PMD_BT1_CTRL_STRAP		0x000F /* Type selection (Strap) */
--#define MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000	0x0001 /* Select 1000BASE-T1 */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL		0x000F /* Type selection */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_100BT1	0x0000 /* Select 100BASE-T1 */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1	0x0001 /* Select 1000BASE-T1 */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1L	0x0002 /* Select 10BASE-T1L */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1S	0x0003 /* Select 10BASE-T1S */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_2P5GBT1	0x0004 /* Select 2.5GBASE-T1 */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_5GBT1	0x0005 /* Select 5GBASE-T1 */
-+#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10GBT1	0x0006 /* Select 10GBASE-T1 */
-+/* Legacy names, kept for userspace */
-+#define MDIO_PMA_PMD_BT1_CTRL_STRAP		MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL
-+#define MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000	MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1
- #define MDIO_PMA_PMD_BT1_CTRL_CFG_MST		0x4000 /* MASTER-SLAVE config value */
- 
- /* 1000BASE-T1 PCS control register */
+The only teardown-related edits in include/net/amt.h re-word the struct
+amt_tunnel_list comments on last_seen and dead. Their meaning stays the
+same, for example:
 
-base-commit: 241dec6f9ab74d8c3ef246764f3611666b96b9e1
+-	 * tunnel first; the other then leaves it alone, so it is freed once.
++	 * tunnel first;
++	 * the other then leaves it alone, so the tunnel is freed exactly once.
+
+Those comments were added by the earlier patch in this series, "amt: fix
+use-after-free when a Membership Update re-arms a freed tunnel".
+Re-flowing them here can make backports of either patch conflict.
+
+The one code change related to teardown is the new netif_running()
+recheck under amt->lock in amt_tunnel_get_or_create():
+
+	if (!netif_running(amt->dev)) {
+		spin_unlock_bh(&amt->lock);
+		return NULL;
+	}
+
+The commit message doesn't describe this recheck.
+
+> Keep Requests stateless by deriving the Query MAC from the source address,
+> source port, nonce, and current secret. Authenticate the Membership Update
+> before decapsulation or allocation, key verified state by the address/port
+> endpoint, enforce global and per-source limits, and silently reject an
+> endpoint that cannot be admitted. Retain four secret generations so a
+> gateway can renew its MAC across rotations.
+
+[Severity: Medium]
+Should the changelog describe a few more behaviour changes? The patch has
+a Fixes: tag for net, so stable maintainers will need to see them.
+
+First, amt_dev_open() now seeds amt->key before amt_socket_create()
+instead of after it. In the old code, a Request that arrived in that
+window reached amt_request_handler() and ran:
+
+	tunnel->key = amt->key;
+
+At that point amt->key was still zero on the first open, or still the
+previous key on later opens, and the tunnel kept that key for its whole
+lifetime. This is a separate fix, and only an in-code comment explains
+it.
+
+Second, tunnel->key used to be copied once when the tunnel was created
+and was never refreshed. Rotation in amt_secret_work() never affected
+existing tunnels, so their MACs never expired.
+
+Now every MAC is valid only for the four-generation window (180-240s). If
+a gateway doesn't send a new Request within that window, its Updates are
+dropped as "Invalid MAC".
+
+Third, amt_update_handler() used to accept only the nonce from the most
+recent Request:
+
+	if ((nonce == tunnel->nonce &&
+	     response_mac == tunnel->mac)) {
+
+It now accepts any (nonce, MAC) pair minted for saddr:sport under
+key[0..3]. The replay window grows from "until the next Request" to
+180-240s.
+
+> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+> index 26a942c2a1267..312b36b54ff8e 100644
+> --- a/drivers/net/amt.c
+> +++ b/drivers/net/amt.c
+> @@ -857,11 +857,16 @@ static void amt_send_request(struct amt_dev *amt, bool v6)
+
+[ ... ]
+
+> -static void amt_send_igmp_gq(struct amt_dev *amt,
+> -			     struct amt_tunnel_list *tunnel)
+> +/* The destination is passed by value rather than as a tunnel: the requesting
+> + * source is not authenticated yet and no tunnel state exists for it - see
+> + * amt_request_handler().
+> + */
+> +static void amt_send_igmp_gq(struct amt_dev *amt, __be32 daddr, __be16 dport,
+> +			     __be32 nonce, u64 mac)
+
+[ ... ]
+
+> @@ -1198,9 +1216,16 @@ static void amt_send_multicast_data(struct amt_dev *amt,
+>  			    0);
+>  }
+>  
+> +/* Send a Membership Query to a source that has not been authenticated yet.
+> + *
+> + * No per-source state exists at this point and none is created: the nonce and
+> + * the keyed MAC are carried in the Query and recomputed from the Membership
+> + * Update when it comes back, so everything this needs is passed by value.
+> + */
+
+[Severity: Low]
+Do these two comments hold on the renewal path? When a tunnel for
+saddr:sport already exists, amt_request_handler() sets have, skips the
+admission check, and still sends the Query:
+
+		if (tunnel->source_port == udph->source)
+			have = true;
+	...
+	if (!have && (full || per_src >= AMT_MAX_TUNNELS_PER_SRC))
+		return true;
+
+amt_secret_work() and amt_update_handler() rely on this periodic Request
+renewal, and on that path tunnel state does exist for the destination.
+
+The helpers work either way because every input is passed by value. The
+comments still describe a precondition that the code doesn't enforce.
+
+[ ... ]
+
+> @@ -2586,16 +2610,107 @@ static bool amt_membership_query_handler(struct amt_dev *amt,
+
+[ ... ]
+
+> +/* Look up the tunnel for a source whose Membership Update has already been
+> + * authenticated, creating it on first contact.
+> + *
+> + * This is now the only place tunnel state is allocated, so amt->max_tunnels
+> + * bounds the number of *verified* gateways rather than the number of
+> + * unverified Requests anyone can send.  A fixed per-source cap additionally
+> + * stops one verified source address from monopolising the table.
+> + */
+
+[ ... ]
+
+> +	if (amt->nr_tunnels >= amt->max_tunnels ||
+> +	    per_src >= AMT_MAX_TUNNELS_PER_SRC) {
+> +		spin_unlock_bh(&amt->lock);
+> +		return NULL;
+> +	}
+
+[Severity: Medium]
+Does the per-source cap still work when amt->max_tunnels is 16 or less?
+amt_newlink() accepts any nonzero IFLA_AMT_MAX_TUNNELS:
+
+	if (data[IFLA_AMT_MAX_TUNNELS] &&
+	    nla_get_u32(data[IFLA_AMT_MAX_TUNNELS]))
+		amt->max_tunnels = nla_get_u32(data[IFLA_AMT_MAX_TUNNELS]);
+
+With max_tunnels <= 16, nr_tunnels reaches max_tunnels before per_src can
+reach AMT_MAX_TUNNELS_PER_SRC. One real source address can then send
+Requests and Updates from 16 UDP ports and take every slot.
+
+Once the table is full, amt_request_handler() withholds the Query from
+every new endpoint:
+
+	if (!have && (full || per_src >= AMT_MAX_TUNNELS_PER_SRC))
+		return true;
+
+Legitimate gateways then never get a MAC or a tunnel. To keep its slots,
+the attacker only needs to send an Update within each 3 * GMI. This
+contradicts the comment above, which says the cap "stops one verified
+source address from monopolising the table".
+
+The cap also doesn't scale with the table size: two addresses can fill a
+32-slot table, and eight can fill the default 128.
+
+The commit message defers a configurable limit because that needs new
+uAPI. Could the cap be derived from max_tunnels instead, for example
+min(16, max(1, max_tunnels / 8)), which needs no uAPI?
+
+[ ... ]
+
+> @@ -2841,59 +2988,41 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  	if (amtrh->reserved1 || amtrh->reserved2 || amtrh->version)
+>  		return true;
+>  
+
+[ ... ]
+
+> +	/* Snapshot the secret and limits under the lock; keep the endpoint walk
+> +	 * out of the lock so spoofed Requests cannot serialize relay updates.
+> +	 */
+> +	spin_lock_bh(&amt->lock);
+> +	key = amt->key[0];
+> +	full = amt->nr_tunnels >= amt->max_tunnels;
+>  	spin_unlock_bh(&amt->lock);
+
+[Severity: Low]
+Does this need amt->lock? Every Request that passes the header checks,
+spoofed ones included, now takes the device-wide lock. Before the patch,
+a Request from an address that already had a tunnel took no lock at all.
+
+The same patch adds amt->key_seq, documented as "For lockless readers of
+key", and uses it in amt_update_handler(). The full value is only
+advisory, because amt_tunnel_get_or_create() checks the limit again under
+the lock.
+
+A key_seq read loop plus READ_ONCE(amt->nr_tunnels) would make this path
+lockless. As written, a Request flood on many CPUs contends on amt->lock
+with amt_tunnel_get_or_create(), amt_tunnel_expire() and
+amt_secret_work(). That works against the comment's goal of keeping
+spoofed Requests from serializing relay updates.
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105125010.1107546-1-omar%40blockcast.net
