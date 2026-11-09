@@ -1,65 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794251838;
-	b=YvA9yCfKy+AJTeqDvWqgscpbrZkH2d6Hh0xc8HQmIk+EIPICIAmR4FeVAArm7QRCdux9
-	 YlbIOVmSWE9F/IhkNuzKonoG/tgMj9G+Y/yv4GAVx5y/32pHX+/Jr01ZTczVUG8wYbNND
-	 4GRL/1lEZdGQo6O6LsZGmZdYsjpMRL7OZBHWdEBQn+tu/2cyOjdy2ChKnD2PY64WLSF7z
-	 EUZWAvAeBXXguumSjOEz3tGA5kLYi8YeOOpC2yo892+JuXKzYIFzeXqTmIEow9IcZV01c
-	 9MMno9/516/v1RbUL2rk9/J7H2bUJgJ1eMFYKgx2q1+iFzHq6x2D2ak74lKk84ForQg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794251838;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=GAVNy5aPv0qj5WR137agzHi11vLYU2rhbuq8I3ycGFU=;
-	b=qS1sxcb7CJBQiQuF4d03A6DXap/0chgqUG1IqzdR8xdrUOWo4pFMKT+opMR/IW5NdBwO
-	 QV+VQa9qlVSmR/NSVfjw4Ti5oFLD1dKmCTBcE0bVEoup1IXDY8zalewr9OQqw8XtVWMVU
-	 EkDyqoolTae9BqlufXLIbUiq0jQm9jpZkV+BSgLLA2IXCbThVdKB6qFSw1xHd/R12BCz2
-	 cRRshhHMZjwEp0Q2AtLve0HWWRN3Cs/ar1JtUcz7gYZ1TNGtHXLZ6GhWgVE7B7nUX08zP
-	 h5rC3L/dgo0wJDOvxD+YxXUSQ4I1AjdEGoC9m1NWQqkLzJAP0IHrFxJ5RasoKv8iV1g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cz9zFbj3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794251996;
+	b=maGMyJ9JGVzY8hSBHT813c1vraP2XCK95ZA7u40jjeNT4ro1grdZrCzFHrxCnoNIU7ah
+	 zHpsi7RU/MIGWn4rlzfOaEqEd68BpVMTseBXnpJfLSac9vX2Ztp7HCmM6bncnPiPaA7jT
+	 upj/BIrTMbC3rnNVRo2eoDIuiW8DfO9npMKuREVFO/cn0UQid9zHBlL0qHrg00cM82eCo
+	 A0pTgRfiu1mEgVPHAQapOyfquOjQR+W3CRSMMCEV5rwRV6tsYzJQwWUIlm0Qc9u8CF7mg
+	 S7QMH/Jav7RneQaE55U2GsLeMXgXTVnSwAoPF3y06SpepcQb0ZFloxffOovAHgXRcvw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794251996;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-ZohoMailClient;
+	bh=xXRdPVb50TWlk0L6/I1UtmIuajNdhex23Kf/XiKuJzg=;
+	b=m74sFqePxIf2C7nAecDdzWN4XLqrCHooQaBYIFjdDWIe22J6Fassm2QczcB6YuJ6iOz/
+	 OZobF0Nqp7rjd112LC3JpElx8mE15RIjhHppzQhft3rfz/0guB3xdJaMtTZRTeXaZopw/
+	 ztmdFeuJd9psPljQh1XapPFYPWWblynKrqfOeipw2+XWQhjM1OjiNSOhvXav+lRIbJhU8
+	 xMfRTiZulTFWkuB58Ut9QS6O3O/XfPNkho8QziappJ3+S9SOUJ3u/Oc4wRrG0tfw6LmPI
+	 KAtyp0tl629h8AZ+h0AQ9m0ICtW/lwmc+B/pn/WUOiQhAHdkxpK4CZsKwYbeashL7WA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=laveeshbansal.com;
+	spf=pass smtp.mailfrom=laveeshbansal.com;
+	dkim=pass header.d=laveeshbansal.com header.i=@laveeshbansal.com header.a=rsa-sha256 header.s=zoho header.b=O135p7wq;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.15
+Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B7D606A326;
-	Mon,  9 Nov 2026 19:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06684606A325;
+	Mon,  9 Nov 2026 19:19:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06684606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=laveeshbansal.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cz9zFbj3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA251F0089F;
-	Mon,  9 Nov 2026 19:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794251838;
-	bh=GAVNy5aPv0qj5WR137agzHi11vLYU2rhbuq8I3ycGFU=;
-	h=From:To:Cc:Subject:Date;
-	b=cz9zFbj3W7ETd7p2fdFHj1QKUVCI2VLuMwBDQ/tbS/qPXLo06KUTnuOZTh3sMwD1f
-	 q7DZ4HqxesLJqdjVuLP7rJxfJy3bflpGq5OIZsfIhfr6zBXLperAYsl34RcUDrDmBW
-	 dt10tbcSe+MIkBzv9+ijoFEB8oOnIvJ5gybwYd3yooTgcX/2DFKFXLlpW1xYl8QV2S
-	 2ZyoE1p2sOGb1wkY4qHxAvvjyH9XdLcBujhs/1oizQysCyJrv+2cNrcu7MX/FK7Rkt
-	 49fyncRQiXdCTy0SXQVKY/d2azAIde/z9p6ibdF4POxJbRTxz7PTnKH9Izf30qlagr
-	 TZhvuEFNcdDbQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <f.fainelli@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] dt-bindings: net: Convert HiSilicon GMAC v1/2 to DT schema
-Date: Mon,  9 Nov 2026 13:16:41 -0600
-Message-ID: <20261109191641.653847-3-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=@laveeshbansal.com header.a=rsa-sha256 header.s=zoho header.b=O135p7wq
+ARC-Seal: i=1; a=rsa-sha256; t=1794251965; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TqTJOIrRy9nmy6yVksJ69y0B43f/fEog5gMZXAUpd8qmplpqoELUwZAGT5QtraG0RJi9q7b5+ZFoXcNcmRGkB/cAVDkVqLYKvX0przYosV1qplbwZfuSCiyccElYYBNejcx6VFpZvnYAyCP7LwONo/aoDfhvAGOv0n9l8RJiwU0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794251965; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xXRdPVb50TWlk0L6/I1UtmIuajNdhex23Kf/XiKuJzg=; 
+	b=i5nM/A3/bRLgwyiJFt78q40+sES7z3VyNm5Jx3tNDM2ImM3c2M//83BZDCmH9FGfv7QNrsLEi9PLFjXsPjz+VEN7xC+Mq0Xb5+5wqwD4L6athFfw3y10m3rulu3skWZhfzhG2RA0FFkZ0COdmvflBU0JX8lNM26I2TviFZqOAw4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=laveeshbansal.com;
+	spf=pass  smtp.mailfrom=laveeshb@laveeshbansal.com;
+	dmarc=pass header.from=<laveeshb@laveeshbansal.com>
+DKIM-Signature: a=rsa-sha256; b=O135p7wqSldtUDN6yRfrG0r7O3ZzhFrZJ6+KsZl/HPlwUQgXes0WtldUXAvninIL7fWzcJNiJwkrgMk1Iezocpkapis8UF1/fvXfnfpTI/GJcymu+aH30dUSwhUjIsVpl/zrJvzAz2/l7+u/jhdkfZHM6Na/nqlZrLdOwrnYaAY=; c=relaxed/relaxed; s=zoho; d=laveeshbansal.com; v=1; bh=xXRdPVb50TWlk0L6/I1UtmIuajNdhex23Kf/XiKuJzg=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794251964738187.39484140775266;
+	Mon, 9 Nov 2026 11:19:24 -0800 (PST)
+From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+a8ba738fe2db6b4bb27f@syzkaller.appspotmail.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH nf-next 0/2] netfilter: bridge: refragment packets with a vlan tag moved by the bridge
+Date: Mon,  9 Nov 2026 11:18:40 -0800
+Message-ID: <20261109191842.57359-1-laveeshb@laveeshbansal.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,209 +71,46 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Convert the HiSilicon GMAC v1/2 binding to DT schema format.
+Fragmented packets are dropped on a vlan filtering bridge with bridge
+conntrack when the protocol of their vlan tag differs from the bridge's
+vlan_protocol, an 802.1Q tag on an 802.1ad bridge for instance. Patch 1
+handles the tag when refragmenting. Patch 2 adds a selftest.
 
-As this binding also contains the MDIO bus directly rather than in an
-'mdio' child node, the MDIO node name schema needs to be relaxed.
+As discussed with Pablo in the first posting
+(https://lore.kernel.org/r/atck-NoWvemxIsF6@chamomile), the
+DEBUG_NET_WARN_ON_ONCE() change went to nf on its own and is now in the net
+tree as 683ff28ab18a. This series is based on that commit and is meant
+for nf-next, which does not have it yet.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../bindings/net/hisilicon,hisi-gmac-v1.yaml  | 96 +++++++++++++++++++
- .../bindings/net/hisilicon-hix5hd2-gmac.txt   | 60 ------------
- .../devicetree/bindings/net/mdio.yaml         |  7 +-
- 3 files changed, 102 insertions(+), 61 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/hisilicon,hisi-gmac-v1.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt
+Changes since the first posting
+(https://lore.kernel.org/r/20261020000308.37362-1-laveeshb@laveeshbansal.com):
+patch 1 keeps the tag together with the ethernet header instead of in
+separate fields, and the selftest runs its checks even if the kernel had
+warned before.
 
-diff --git a/Documentation/devicetree/bindings/net/hisilicon,hisi-gmac-v1.yaml b/Documentation/devicetree/bindings/net/hisilicon,hisi-gmac-v1.yaml
-new file mode 100644
-index 000000000000..89ed6ab1905e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/hisilicon,hisi-gmac-v1.yaml
-@@ -0,0 +1,96 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/hisilicon,hisi-gmac-v1.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Hisilicon GMAC controller
-+
-+maintainers:
-+  - Jian Shen <shenjian15@huawei.com>
-+  - Jijie Shao <shaojijie@huawei.com>
-+
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/net/mdio.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: hisilicon,hix5hd2-gmac
-+          - const: hisilicon,hisi-gmac-v1
-+      - items:
-+          - const: hisilicon,hi3798cv200-gmac
-+          - const: hisilicon,hisi-gmac-v2
-+
-+  reg:
-+    items:
-+      - description: MAC registers
-+      - description: External interface control register
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    minItems: 1
-+    maxItems: 2
-+
-+  clock-names:
-+    minItems: 1
-+    items:
-+      - const: mac_core
-+      - const: mac_ifc
-+
-+  resets:
-+    minItems: 1
-+    maxItems: 3
-+
-+  reset-names:
-+    minItems: 1
-+    items:
-+      - const: mac_core
-+      - const: mac_ifc
-+      - const: phy
-+
-+  hisilicon,phy-reset-delays-us:
-+    description: Triplet of PHY reset delays in microseconds.
-+    items:
-+      - description: Pre-reset delay.
-+      - description: Reset pulse duration.
-+      - description: Post-reset delay.
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - phy-mode
-+  - phy-handle
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/histb-clock.h>
-+
-+    ethernet@f9840000 {
-+        compatible = "hisilicon,hi3798cv200-gmac", "hisilicon,hisi-gmac-v2";
-+        reg = <0xf9840000 0x1000>, <0xf984300c 0x4>;
-+        interrupts = <0 71 4>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        phy-mode = "rgmii";
-+        phy-handle = <&phy2>;
-+        mac-address = [00 00 00 00 00 00];
-+        clocks = <&crg HISTB_ETH0_MAC_CLK>, <&crg HISTB_ETH0_MACIF_CLK>;
-+        clock-names = "mac_core", "mac_ifc";
-+        resets = <&crg 0xcc 8>, <&crg 0xcc 10>, <&crg 0xcc 12>;
-+        reset-names = "mac_core", "mac_ifc", "phy";
-+        hisilicon,phy-reset-delays-us = <10000 10000 30000>;
-+
-+        phy2: ethernet-phy@2 {
-+            reg = <2>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt b/Documentation/devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt
-deleted file mode 100644
-index cddf46bf6b63..000000000000
---- a/Documentation/devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt
-+++ /dev/null
-@@ -1,60 +0,0 @@
--Hisilicon hix5hd2 gmac controller
--
--Required properties:
--- compatible: should contain one of the following SoC strings:
--	* "hisilicon,hix5hd2-gmac"
--	* "hisilicon,hi3798cv200-gmac"
--	* "hisilicon,hi3516a-gmac"
--	and one of the following version string:
--	* "hisilicon,hisi-gmac-v1"
--	* "hisilicon,hisi-gmac-v2"
--  The version v1 includes SoCs hix5hd2.
--  The version v2 includes SoCs hi3798cv200, hi3516a.
--- reg: specifies base physical address(s) and size of the device registers.
--  The first region is the MAC register base and size.
--  The second region is external interface control register.
--- interrupts: should contain the MAC interrupt.
--- #address-cells: must be <1>.
--- #size-cells: must be <0>.
--- phy-mode: see ethernet.txt [1].
--- phy-handle: see ethernet.txt [1].
--- clocks: clock phandle and specifier pair.
--- clock-names: contain the clock name "mac_core"(required) and "mac_ifc"(optional).
--- resets: should contain the phandle to the MAC core reset signal(optional),
--	the MAC interface reset signal(optional)
--	and the PHY reset signal(optional).
--- reset-names: contain the reset signal name "mac_core"(optional),
--	"mac_ifc"(optional) and "phy"(optional).
--- hisilicon,phy-reset-delays-us: triplet of delays if PHY reset signal given.
--	The 1st cell is reset pre-delay in micro seconds.
--	The 2nd cell is reset pulse in micro seconds.
--	The 3rd cell is reset post-delay in micro seconds.
--
--The MAC address will be determined using the properties defined in
--ethernet.txt[1].
--
--- PHY subnode: inherits from phy binding [2]
--
--[1] Documentation/devicetree/bindings/net/ethernet.txt
--[2] Documentation/devicetree/bindings/net/phy.txt
--
--Example:
--	gmac0: ethernet@f9840000 {
--		compatible = "hisilicon,hi3798cv200-gmac", "hisilicon,hisi-gmac-v2";
--		reg = <0xf9840000 0x1000>,<0xf984300c 0x4>;
--		interrupts = <0 71 4>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		phy-mode = "rgmii";
--		phy-handle = <&phy2>;
--		mac-address = [00 00 00 00 00 00];
--		clocks = <&crg HISTB_ETH0_MAC_CLK>, <&crg HISTB_ETH0_MACIF_CLK>;
--		clock-names = "mac_core", "mac_ifc";
--		resets = <&crg 0xcc 8>, <&crg 0xcc 10>, <&crg 0xcc 12>;
--		reset-names = "mac_core", "mac_ifc", "phy";
--		hisilicon,phy-reset-delays-us = <10000 10000 30000>;
--
--		phy2: ethernet-phy@2 {
--			reg = <2>;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/net/mdio.yaml b/Documentation/devicetree/bindings/net/mdio.yaml
-index bed3987a8fbf..1f812753dbd1 100644
---- a/Documentation/devicetree/bindings/net/mdio.yaml
-+++ b/Documentation/devicetree/bindings/net/mdio.yaml
-@@ -17,9 +17,14 @@ description:
-   bus. These should follow the generic ethernet-phy.yaml document, or
-   a device specific binding document.
- 
-+select:
-+  properties:
-+    $nodename:
-+      pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
-+
- properties:
-   $nodename:
--    pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
-+    pattern: '^(ethernet|mdio(-(bus|external))?)(@.+|-([0-9]+))?$'
- 
-   "#address-cells":
-     const: 1
+I used an LLM tool for the analysis, the code and the test runs.
+
+I tested the series on arm64 and x86_64, with and without KASAN, lockdep
+and kmemleak. The selftest fails without patch 1.
+
+Laveesh Bansal (2):
+  netfilter: bridge: refragment packets with a vlan tag moved by the
+    bridge
+  selftests: netfilter: add bridge conntrack test for vlan protocol
+    mismatch
+
+ include/linux/netfilter_bridge.h              |   4 +-
+ net/bridge/netfilter/nf_conntrack_bridge.c    |  46 +++-
+ .../testing/selftests/net/netfilter/Makefile  |   1 +
+ .../net/netfilter/bridge_ct_vlan_proto.sh     | 198 ++++++++++++++++++
+ tools/testing/selftests/net/netfilter/config  |   1 +
+ 5 files changed, 241 insertions(+), 9 deletions(-)
+ create mode 100755 tools/testing/selftests/net/netfilter/bridge_ct_vlan_proto.sh
+
+
+base-commit: 683ff28ab18accb25268741a724645eee839d41a
 -- 
-2.53.0
+2.43.0
 
