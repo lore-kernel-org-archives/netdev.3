@@ -1,60 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794223497;
-	b=SNAbSIw2jTSvGziaNHdysffKSaF4QCxS4JpIG0zOEGhZ6W6CfbKAMvfsJ5g6+D8aqFo8
-	 vlSrMedaO4MwCYB6c8tG0g0pgE7c3C5MFGuAKLYfrme5b9kYZsQzkUXy2btdE1Y/4QHAQ
-	 8SFVToZKfrhHr++8estGtfe7SCSZ/mLBofe2Plih6r+aBinhPU0nkV4n3Eq4L/A/tRHvL
-	 xfVifQKwefZIe45suelxXDbv4iyrEbUBCBvSVpg5DcP2I00s57zV66Srz5n+09/Jd1lYN
-	 pvXmzG2scg/psck8zkvzZ05DzYzwZIOL9J647a3ISZp18nBrMXeqelNdhab+UT2WbdA==
+	t=1794223657;
+	b=spEtiLHs1vykCb7mu18k+fj5gS7BEkKaMdlKxXuZJw3m5VVuJjpOfkW4LAMFYy+Mly6E
+	 VZKQbyZF2edVcC2p8IWqFFLV1YOlSllKdKV/KNi86+yQ9vWNWc9G9wgPMVVGLrMpuOU3s
+	 g01geXp53SmaWi3iH5M0YLchwGkOSqRtXngI8Gy+F8sRhrqFmOTJr1/xm7/7x8/Zn/SS+
+	 T+y62K9SOKsPGV5pY8CNL3u2US196cooTgHmR6ypd+jSSRn/H5IN5QHvbvg4V3ubmStst
+	 PYejedaFY/tIGx9zQ5yBtUVV0s8UZkV9Lp0tO+as/awA/wK8fpPtrRtwfN7L4q+M7yQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794223497;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=WkXk8UeMIidM85N3aQ+wC/0a5G6Gf28wjQOq2oq5ouE=;
-	b=hg+ufHyWZyLymbbsNaE3IMFd7eqwOoGZZk6zEYqsM6ZHUx6qxbrApmYL5dt23wbJe3vp
-	 ZzBBXg/+LA8CkEqab8c7ARrBSEre1VsqbFs7RHZOdGTsXy0/jFg4Ro5IfrhmMVvOnYc3L
-	 7gMsZVpDplTF9cfQy8qqz1k1OCs8udcCf9r3UhrAgw47PA5NCsKQn7dhuJCdPqn3zDPQ0
-	 ShbxulmSzEzqKYIbg6OL+QkNwbxkV+fL367f+fClJZYnQKiUF7fG3pZRdwdpVbCAeQ/cv
-	 odoxn/CuopaoMF1V1A6gY/Sv2kAtjNz36oe1PUdfFaMo43Qfp4yEwUcfUnjslaANI7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794223657;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=GTe3rVqqBFubJwfvXPNDDRZX+sidHXepwnZzWomDy5A=;
+	b=NfU9kT2bZiORXw5zCXCda/QL8aJYOgH2BUdYtc79k8w+H+He5VhdNu9Cnf2/2IcxBuZu
+	 whoIpQKrD35eFow0FLSeMsppAHs7T/JowXmdaEvnahhYKBHCrBHaeXZYVCvXSKNKTWszk
+	 Bu8qi6oDSgI1VXT2Gz0/7R+qYdNY941e6XcKfGF8hCMO9ChGo+afDYbgil6zPxFQW8Ini
+	 zhqGLTzGo1Higv2QnpkZm+THa5sLuSQ314SC+lkWoKCvQA7uNE01oHPo+7+uf7W7pI2vb
+	 YaXO+uRyI3C57qCB2gf8wMWl5rPrj/0D0L6RxC02HaZZJotqm2D1dRWZD7LMkPwW/AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1P9jweV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iU5O51DC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C652606A31C;
-	Mon,  9 Nov 2026 11:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54B7606A31C;
+	Mon,  9 Nov 2026 11:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1P9jweV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB081F0089F;
-	Mon,  9 Nov 2026 11:24:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iU5O51DC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EA41F0089F;
+	Mon,  9 Nov 2026 11:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794223496;
-	bh=WkXk8UeMIidM85N3aQ+wC/0a5G6Gf28wjQOq2oq5ouE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j1P9jweVtKFreXVlXGX4OQRWUqQL1IbwZVuAbemRauaDZ/+Tmhb9J1ana7IuoCwT1
-	 ap/RS00ZiEV8AKpvU03iZKOpWyc3ATpOzZpZYNsK4Lxgh7kWs7n3/FzIH0fwJjBdMh
-	 TjYfowfE7MFEqQo40qb0LtNHfoAZFI930zGSIVSM/U+oKCKYh80nAyfHvptERGNYXt
-	 hOastcYc3BFYquSex+hrsv6LMMSzHIyr5cd9Sf5KkN/AaIjzAT2NME7R/WjltNVQDQ
-	 42gHLAsGhU02pNoYSMhLb8tslSUohki00SmyGE/e886/BibgkKiBH/SrVQ2Vna5Vgf
-	 4G3/O/coCspxw==
-Subject: Re: [PATCH net] nfp: flower: hold an RCU read lock while using an
- offloaded MAC entry
-From: netdev-bot+sashiko@kernel.org
-To: getshell@seu.edu.cn
-Cc: kuba@kernel.org, horms@kernel.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, oss-drivers@corigine.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Mon, 09 Nov 2026 11:24:55 +0000
-Message-ID: <179422349578.994134.14069907207951136090@kernel.org>
-In-Reply-To: <20261108105605.1668-1-getshell@seu.edu.cn>
-References: <20261108105605.1668-1-getshell@seu.edu.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794223656;
+	bh=GTe3rVqqBFubJwfvXPNDDRZX+sidHXepwnZzWomDy5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iU5O51DC6zVVQKzDHuys9tIxjfbSOhYw8z0UcE86pb//wkXavh32S2N8S2PUurU2A
+	 o1E3RopKG7W94xtmWo25LA834OkIsoplK5Zc5sWRxNqoMBKXFQxzncUeAVAHVqzYUN
+	 x0xzl99BebTVjgItzYyFM18S+rvSgi3xMyTZJ/jJZ69X0Gf56Vq2vszIAP9EEsAUq5
+	 YP1A5SHoyPmQVAQUq/DaV61yYmuj4yVaaeC+HIcZMJhadQiWUxN4AW86j7fp4xdZK/
+	 SKtdAofdOgM6AVAC0cEZ3+8Z/6By8LpM/kvwzBv9E4RtCHAt3TdDxZIlKuxADBPb0I
+	 863RWmyUQ6DWA==
+Date: Mon, 9 Nov 2026 12:27:22 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, linux-um@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+	ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, coreteam@netfilter.org, 
+	kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH RESEND v2 07/23] proc: let procfs own the seq_file of
+ seq_file entries
+Message-ID: <20261109-atemberaubend-begabung-bedienen-85aade0f99b4@brauner>
+References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-7-76ace653a773@kernel.org>
+ <8A21EE2A-F392-40B7-9152-CBC440FDDA70@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,131 +79,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8A21EE2A-F392-40B7-9152-CBC440FDDA70@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, Nov 07, 2026 at 08:10:28AM -0800, Kees Cook wrote:
+> Please use the new style typed allocation calls for objects:
+> 
+> ops = kmalloc_obj(*ops);
+> 
+> (This happened to jump out at me, but please check the other patches for this pattern.)
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Done, there are 5 of them in total:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+proc: resume readdir after the last name it returned
+-		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL_ACCOUNT);
++		cursor = kmalloc_obj(*cursor, GFP_KERNEL_ACCOUNT);
 
-- [Medium] The commit message gets the pre-patch state wrong and leaves
-  out half of the fix.
-- [Medium] nfp: flower: RMW race on mac_entry->index in
-  nfp_flower_xmit_pre_tun_flow()
+proc: sysctl: resume readdir after the last name it returned
+-		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL_ACCOUNT);
++		cursor = kmalloc_obj(*cursor, GFP_KERNEL_ACCOUNT);
 
---
+proc: keep the open files of an entry in an open node
+-		dp->open = kzalloc(sizeof(*dp->open), GFP_KERNEL);
++		dp->open = kzalloc_obj(*dp->open);
 
-nfp: flower: hold an RCU read lock while using an offloaded MAC entry
+proc: own the wait queue of an entry with a ->proc_poll()
+-	on = kzalloc(sizeof(*on), GFP_KERNEL);
++	on = kzalloc_obj(*on);
 
-This commit takes rcu_read_lock() around the offloaded MAC lookup in
-nfp_flower_xmit_pre_tun_flow() and around the update of mac_entry->index.
-The index is copied into a local before nfp_flower_xmit_tun_conf() is
-called. The patch also adds an rcu_head to struct nfp_tun_offloaded_mac
-and converts the kfree(entry) calls in nfp_tunnel_add_shared_mac() and
-nfp_tunnel_del_shared_mac() to kfree_rcu().
-
-> so kfree_rcu() alone is not enough: a grace period only protects readers
-> still inside an RCU read-side critical section. The writer is the netdev
-> notifier chain under rtnl, freeing in nfp_tunnel_del_shared_mac() with
-> rhashtable_remove_fast() + kfree_rcu(); the reader is the tc flower
-> offload path, which holds no rtnl, only priv->nfp_fl_lock.
-
-[ ... ]
-
-> the unlock: the firmware payload is unchanged and kfree_rcu() is kept.
-
-[Severity: Medium]
-Is this an accurate description of the code before the patch?
-
-Before this patch, struct nfp_tun_offloaded_mac had no rcu_head, and
-nfp_tunnel_del_shared_mac() freed the entry with a plain kfree(). This
-patch adds both the field and the conversion:
-
-    struct nfp_tun_offloaded_mac {
-    ...
-    	int bridge_count;
-    +	struct rcu_head rcu;
-    };
-
-and in nfp_tunnel_del_shared_mac():
-
-    -	kfree(entry);
-    +	kfree_rcu(entry, rcu);
-
-So kfree_rcu() is not "kept". It is introduced here.
-
-The patch also converts the err_free_entry path in
-nfp_tunnel_add_shared_mac(). That path is reached from err_remove_hash
-after the entry has already been inserted into offloaded_macs, but the
-commit message does not mention it:
-
-    err_remove_hash:
-    	rhashtable_remove_fast(&priv->tun.offloaded_macs, &entry->ht_node,
-    			       offloaded_macs_params);
-    err_free_entry:
-    -	kfree(entry);
-    +	kfree_rcu(entry, rcu);
-
-The patch carries Cc: stable. Could the commit message, and maybe the
-subject, say that the original bug was an immediate kfree() with no grace
-period? It would also help to say that the fix adds the rcu_head and
-converts both kfree() calls, not just the reader-side lock. Otherwise a
-backport could take only the rcu_read_lock()/rcu_read_unlock() part and
-keep the immediate kfree().
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-> --- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-> +++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-> @@ -1462,7 +1473,10 @@ int nfp_flower_xmit_pre_tun_flow(struct nfp_app *app,
->  	else
->  		mac_entry->index &= ~NFP_TUN_PRE_TUN_IPV6_BIT;
->  
-> -	payload.port_idx = cpu_to_be16(mac_entry->index);
-> +	mac_idx = mac_entry->index;
-> +	rcu_read_unlock();
-> +
-> +	payload.port_idx = cpu_to_be16(mac_idx);
->  
->  	/* Copy mac id and vlan to flow - dev may not exist at delete time. */
->  	flow->pre_tun_rule.vlan_tci = payload.vlan_tci;
-
-[Severity: Medium]
-The commit message says the read-modify-write of mac_entry->index is
-now inside the RCU read-side section, but rcu_read_lock() only keeps
-the entry from being freed. It does not serialize setting or clearing
-NFP_TUN_PRE_TUN_IPV6_BIT here against the writers in
-nfp_tunnel_add_shared_mac() and nfp_tunnel_del_shared_mac(). Those
-assign entry->index from the netdev notifier under rtnl, while this
-path holds only priv->nfp_fl_lock. Either side's update to
-entry->index can be lost.
-
-Writing the IPv6 bit back into the shared entry also seems to corrupt
-the index those writers rely on. NFP_TUN_PRE_TUN_IPV6_BIT is BIT(7),
-and nfp_tunnel_is_mac_idx_global() compares the whole low byte of the
-index against NFP_FLOWER_CMSG_PORT_TYPE_OTHER_PORT. After an IPv6
-pre-tunnel rule has been offloaded, the low byte of entry->index has
-0x80 set.
-
-Later, nfp_tunnel_del_shared_mac() drops the last reference. It only
-masks off NFP_TUN_PRE_TUN_IDX_BIT before calling
-nfp_tunnel_is_mac_idx_global(), so the check fails. The ida_free() on
-priv->tun.mac_off_ids is then skipped, which leaks the ID. The stale
-bit is also carried into the index that the bridge_count revert path
-sends through __nfp_tunnel_offload_mac().
-
-This behaviour predates the patch. Since mac_idx is now a local copy
-anyway, would it make sense to read mac_entry->index once with
-READ_ONCE() under rcu_read_lock() and apply NFP_TUN_PRE_TUN_IPV6_BIT
-only to mac_idx? flow->pre_tun_rule.port_idx is taken from
-payload.port_idx, so the delete path should still see the IPv6 bit.
-Or is there a reason the bit has to be stored in the shared entry?
+proc: let procfs own the seq_file of seq_file entries
+-	ops = kmalloc(sizeof(*ops), GFP_KERNEL);
++	ops = kmalloc_obj(*ops);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108105605.1668-1-getshell%40seu.edu.cn
