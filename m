@@ -1,59 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794213233;
-	b=nvrji3ywaE7C3Z3dDUDRtDjm0LMIj/P9THyWYjQM/hLswigUJESNwFWEA5PqWwb/u6jM
-	 iHWa/lt4yGzAKpJfJDlN+THGYjyBhhHohc4+1TmYLhVedw8MMFc/TrkVt22gVZ+N/tW93
-	 CrwPgpFWCayURNfPg135XKJKQY0b3zKDWYebHgbWFchVXkATuVgirHuWh+dWPk+vJgkFz
-	 WiHNuOv1hHTpA/kHrWpkmz+Q4RoXH8mXSpml2xudl95lux2d3P0s7BszEUlJZyQqTv3ik
-	 XHeMud0//dPDid+mmnmKjHmBuXC1HKtlqzwqzG1m6pAnE2r6s8JT/0vqzfjwXcHFVpg==
+	t=1794213460;
+	b=gani+FA0xHMM894ieYPXAuWiv2e7jnKSABBNtuhT710W/DMH+A3x+2iGi1oGyuA4wpFW
+	 7YgnH/OUL/V4vbA97sEyn9yKeg+cip2yqrer3a/aT6rxaPD5zrUQ5Ujw4UnPVChTUVAVV
+	 M00KlCXp+7OPM98F7VJrF6Y7TDclIOVeqLCjfCAGM31FreLvTo9dUed5WX/bXlTI/cH37
+	 hF24Dy5zKReIcLUI/xF92S19nNhzioHwo29ZvkrGRhHS6ryY+jbWgR6v62RXQ2Tgsks3q
+	 y5ATESIwhDd4MQySaVOQCOMu8XH75CDCldeF6fR/5N2Ecchj39OJBscn9BUOg8I6phg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794213233;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=UDd0Zg6CUretoFYA67K2u0vOJ5JoLZIvq3TwMbsLA/g=;
-	b=IofmZfaJIVSyNjDGdpFRL0tTbm6euUFWIajIPtBYk/pNCCEzt5JNOqj1FXPMs5gNdWYt
-	 TGIwCDvY+xLJ8OBufMxni5x3dIE1W0jmtNLrVHnEN+nd4E+R2DZFGW0zYw08TphEpxRe1
-	 uwAiZRPB4dF/m7KSoKE7O0s6nYkB6YEYXorIbdJToYWFBciMsBCcF//eiVaC/QKJ8LGGV
-	 JzyU+y7KXhOr6LjmAe3I+5tzQJktW+DezPJffaFD9wrZ2Anpku6CXaZPWz5TjrbTW7PwS
-	 IrU+x07ehhGepIFGak5HkbVeSllZa7ctJNRUX28tsQagbhzaRzkYnO60pick3QQTM3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794213460;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=nC1Wszvh4Y9MkwTmdjUSmc1pvfFIw9wR53jTSHBM7fo=;
+	b=rXMB3b90GuzoV0JAxwo4EctDe23zi2ADNaPqOk4q+C4yPWcfIpajvNUbxBDnCLpZ7M6v
+	 +inllXkmF0nN7s4CCtpWdDQMUbSbTRBwHgx/9yxPrpN2M9GBA+cTaJc8GVyHWZCjYUa65
+	 fNjAgBKh4tS0SMYZFGcXihrKZW/k8WhV87RW5XGLhkqBPStg3nTJZLd3QGDQDjKMWvT2w
+	 PhLzuBgky7ehX2dbe8GOzDu0wCimjakwLSHSgZY0oLsxABmS7T333YLSdiNpf9p6z22yV
+	 2hfQY+KfcwQgpa5QLN7bN9jng2Hdt65J9YulA6iQAaoL7hbn/O3Qvp3K3VmcBtISipQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cE/8KthE";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F4C606A326;
-	Mon,  9 Nov 2026 08:33:53 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zLzYjUX5;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E700606A31C;
+	Mon,  9 Nov 2026 08:37:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E700606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cE/8KthE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB881F0089F;
-	Mon,  9 Nov 2026 08:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794213233;
-	bh=UDd0Zg6CUretoFYA67K2u0vOJ5JoLZIvq3TwMbsLA/g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cE/8KthEUJtk0LewDEGnN0ewmMPUVYUelvP+s0qv4QA7UIjX4h/v/r0ez56cA3r7i
-	 SBFUNy0NosBcg5c9LquPAbY+nTEsp5Ur3v3JJjrcuf2OpKBtPkiLNiLoQAlGIn7RoX
-	 nmyq0AH3oKDZ8GboW9SFOIWdgs6mqXR2JztyPdf4Dptt/hwB6twsS7sXF4xe1Bw5dE
-	 Szmokk+6tyoLsW4K4sDgO16F9Q2+3au8Y9qc1Rty0At7GEXyewFbfy6M3fPj2NM4yG
-	 gZP94gmXyHnZo8Z+xp5OYEnHiS5yFDh2N1VyJayDgUIqtwjtCPdLLpfHHw2qMK4WYB
-	 rJgw8OesaKwMQ==
-Subject: Re: [PATCH net] netfilter: xt_dccp: reject short option lengths
-From: netdev-bot+sashiko@kernel.org
-To: shawnq1@163.com
-Cc: pablo@netfilter.org, tjdqudcks0424@naver.com, fw@strlen.de, phil@nwl.cc,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
- horms@kernel.org, coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 08:33:51 +0000
-Message-ID: <179421323164.994134.2385901971109672793@kernel.org>
-In-Reply-To: <20261105081735.749379-1-shawnq1@163.com>
-References: <20261105081735.749379-1-shawnq1@163.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zLzYjUX5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=zLzYjUX5q2OAokroJ266wewJfAlZdbX8Yu8TWv+pWhkhAy0NaATWmXoq6ABRfIAcqU/BUjUsni+RX
+	 3U+Ap6P8w9gqen79WBoA/fgS9MmlOTdDK6wAOYG4Bjrl5lZwoPjj0tmKEQk2ZrREqRBsaTFnFwOYBs
+	 xwqdMiiGPwh0thZI=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76af18636a24-c4277;
+	Mon, 09 Nov 2026 16:37:13 +0800 (CST)
+X-RM-TRANSID:2ee76af18636a24-c4277
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6af18637b98-8865f;
+	Mon, 09 Nov 2026 16:37:13 +0800 (CST)
+X-RM-TRANSID:2eea6af18637b98-8865f
+From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Diogo Ivo <diogo.ivo@siemens.com>,
+	Haokexin <haokexin@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ti: icssg-prueth-sr1: Fix device_node refcount leak in prueth_probe()
+Date: Mon,  9 Nov 2026 16:37:09 +0800
+Message-ID: <20261109093500.54322-laixiangwu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <179335102798.3327.13730382084781364050@kernel.org>
+References: <179335102798.3327.13730382084781364050@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,151 +80,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Please find below the additional information netdev-bot requested
+for this series.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+How the issue was discovered: manual code inspection of the error
+paths in prueth_probe() while auditing the SR1.0 driver for
+probe-time resource leaks.
 
-- [Medium] The patch turns option lengths 0 and 1 into a hotdrop instead
-  of a no-match, and the commit message does not say so.
-- [Low] The commit body is an email cover letter pasted into the
-  permanent changelog.
-- [Low] Whether xt_dccp drops a malformed option TLV now depends on which
-  malformed form it is and on option order.
+Whether the issue was actually triggered: no, it is purely
+theoretical. The affected branches only run when the "ti,mii-g-rt"
+or "ti,mii-rt" syscon regmap lookup fails, which happens only with a
+malformed or incomplete device tree. On a valid DT these branches
+are never taken. When they are, probe() fails with -ENODEV and the
+of_node_get() references taken on eth0_node/eth1_node earlier in
+the function are leaked silently; there is no stack trace or error
+message pointing at the leak itself.
 
---
+Hardware the change was tested on: none, it was not tested on real
+hardware. The change only re-routes two error branches to the
+existing put_cores label, which is already exercised by the other
+failure paths in the same function (e.g. prueth_get_cores()
+failures), so no new cleanup code is introduced.
 
-netfilter: xt_dccp: reject short option lengths
+Regarding the Sashiko finding: the same leak in the non-SR1 variant
+of the driver (icssg_prueth.c) is real, and it is fixed by a
+companion patch submitted at the same time as this one:
 
-This patch changes dccp_find_option() in net/netfilter/xt_dccp.c so that
-a multi-byte DCCP option with a length byte of 0 or 1 is treated as
-invalid. The walker previously advanced by one byte and could read the
-length byte as the next option type. With this patch it sets hotdrop and
-stops.
+https://lore.kernel.org/netdev/20261030085651.1944-1-laixiangwu@cmss.chinamobile.com/
 
-Link: https://lists.openwall.net/netdev/2026/10/20/477
+Best regards,
+Xiangwu Lai
 
-> Hello,
 
-[Severity: Low]
-This isn't a bug, but the changelog reads like an email cover letter that
-was pasted in as the commit body. It opens with "Hello,".
-
-It also includes reproduction notes that would usually go below the ---
-line: QEMU and gcc versions, gist URLs, tested SHAs, and build and boot
-steps.
-
-The technical explanation ends mid-sentence:
-
-> The option walker should reject a TLV length below two before advancing:
->
-> Fixes: 1d3de414eb20 ("[NETFILTER]: New iptables DCCP protocol header match")
-
-Nothing follows the colon. The message also doesn't say what the code now
-does with a length of 0 or 1, which is to hotdrop the packet.
-
-> diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
-> index 23a4e3e8df7de..e0d7f43749588 100644
-> --- a/net/netfilter/xt_dccp.c
-> +++ b/net/netfilter/xt_dccp.c
-> @@ -62,10 +62,15 @@ dccp_find_option(u_int8_t option,
->  			return true;
->  		}
->  
-> -		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1)
-> +		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1) {
->  			i++;
-> -		else
-> -			i += op[i + 1] ? : 1;
-> +		} else {
-> +			if (op[i + 1] < 2) {
-> +				spin_unlock_bh(&dccp_buflock);
-> +				goto invalid;
-> +			}
-
-[Severity: Medium]
-Is the change from a no-match to a hotdrop intended here?
-
-The goto invalid path sets *hotdrop = true. dccp_mt() passes &par->hotdrop
-down through match_option(), and ipt_do_table() then stops rule traversal
-and drops the packet, whatever the target or chain policy:
-
-net/ipv4/netfilter/ip_tables.c:ipt_do_table() {
-    ...
-	} while (!acpar.hotdrop);
-    ...
-	if (acpar.hotdrop)
-		return NF_DROP;
-    ...
-}
-
-Before this patch, a packet with options {32, 1} just failed the match and
-kept going. With this patch it looks like the packet is also dropped in
-setups such as these:
-
-- an ACCEPT policy chain with a non-terminal --dccp-option N rule, for
-  example LOG or MARK, or a rule in the mangle or raw table
-
-- an inverted rule such as "! --dccp-option 5 -j ACCEPT", which used to
-  match {32, 1} or {32, 0} because option 5 is absent
-
-The commit message only describes the DROP policy allow-list case. In that
-case hotdrop and no-match give the same result.
-
-nft_exthdr_dccp_eval() handles the same malformed TLV as "option not
-present" and does not drop the packet:
-
-net/netfilter/nft_exthdr.c:nft_exthdr_dccp_eval() {
-    ...
-		if (len < 2)
-			goto err;
-    ...
-err:
-	*dest = 0;
-}
-
-xt_dccp already hotdrops when doff is shorter than the header, so hotdrop
-may be the intended policy. Could the changelog say why hotdrop was chosen
-over returning false? Could it also note that the iptables and nftables
-DCCP option matches now give different results for these packets?
-
-> +			i += op[i + 1];
-> +		}
->  	}
-
-[Severity: Low]
-With the new hotdrop, dccp_find_option() now handles malformed TLVs in
-different ways. The hotdrop only fires for a length of 0 or 1, and only if
-the walker reaches that option before it finds the requested type.
-
-Other malformed forms still end as a plain no-match:
-
-- a length larger than the remaining option area, where
-  i += op[i + 1] runs past optlen and the function returns false
-
-- a multi-byte type (above DCCPO_MAX_RESERVED) in the last byte, which
-  the i == optlen - 1 branch skips as if it were a single-byte option
-
-Also, the op[i] == option check returns true before any length is checked.
-So {32, 1} still matches --dccp-option 32, and {1, 32, 1} matches
---dccp-option 1 without the bad trailing TLV being examined.
-
-Take an inverted rule like "! --dccp-option 5 -j ACCEPT". It would accept
-{32, 0xff} and a trailing {..., 32}, but hotdrop {32, 1}, even though all
-three are malformed. nft_exthdr_dccp_eval() treats every one of these as
-"not present".
-
-None of these cases brings back the false match this patch fixes. Once
-lengths are at least 2, the walk stays on TLV boundaries.
-
-Should these malformed forms all be handled the same way?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105081735.749379-1-shawnq1%40163.com
