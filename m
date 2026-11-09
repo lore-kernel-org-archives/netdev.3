@@ -1,79 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794253173;
-	b=42qNF0G67NHWsp0eNYUNOu/gT3sQeix7dwl9yXCCC41Lc8dvvKRSVS2fQ5GMqAuwyAHB
-	 5s9Q4eRzu8GluAAxGxNh87rNCBIGgFwpL/LY6a6E5NQvgXoz6ugfRaCyL1zZ37/wxGN9T
-	 g8UuGNqi/1mMtZYi+ztW8H6q3sEZ5x8S5cM5bEwmsFTvVBVdt4bqYebDsAd13pRpvgUAR
-	 2ezJpntpgxmLNAup5HtcnlPCh2DQvrh2Cy6z62YsK4twpgHzPCBz+aWI20g+iQzkA4qfS
-	 Wcgs2V0Mbw20AoIEHb9SpMraZKIQ75chBbVZ37WJ7cPKuC1Na58NIxYmAH5VXVJDe7g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794253173;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
-	b=3FSFvVhzv/Jk3Wlgb9+Hg6YT1HKZ90q+IZY+spG/WG+JmvbwYS+C7Pjh8uFS1z/B5+0t
-	 l2UXTKRybKMWvGBgDgo4KYOTAEtvrjbWZeEYuBlRgEKvxu02d4C08lf9jGkHndgQXhnXi
-	 zp4NedTJ+q5ZOrO0MmGPDa2fwiuodEgX+cpDg1kBT15odlWWBuHc2gKtfPWuvKcID+TTN
-	 qrQwt31fL4tERZgVTeBDvujRc1sBmcbPAMav8coxR5Vki1X+V0rwnW+5RBaa8F79L3SpZ
-	 sZl7avOdx35ecPt7UUNnB14EZtdCS/0EXKjUGpO+iAnOojgbsYWNWyMQSEgxy3nzTWQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794253212;
+	b=unA0ujEMySsq0bCvf3IcqowB2cScg6C8cvaOXFz5pH3n7tlA4uKvM+N70mkYlBxJSbro
+	 lSmosXP93Jdv4T5sTPGVx3w3X8BaKoQ+H6ckOz/KRO57ekpdzeLRsYlLcLJ/2aG76R6hO
+	 Txtvn36XjAQdKMIcQc1hnfl0KA5xIK4da7cVQNOzbA8xZqa1Lh8pjdPxaBP0RjNQZB04M
+	 9uB3IcXcfzbBZU6KxjNT0CnEiWfeDB6chD8HTsLGHJU252ElWTPeLAIYzYJvJBSg8eCEJ
+	 HZDXzx7sRO12sr0w0X+yCU5bhVdnb+/uXeEpymo/C55w16n3fZVRFrHSUgamwnnfSig==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253212;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=4Wm2J/Rwm9e2g/zE5Ghv/n1yoFpaR5DeMNlmeAfXp5E=;
+	b=fkbU+E4fkwfs2fgV0gGnnGSmGya/aRPiJGLBZL0O3aJmVy0NMhlH/hAxmyvSFK9jW0ts
+	 1rGREb5GX6h/TDZt7OETzmcaPanFWCUx00XalrCJ3uOUzY9sm5xWSl7jUzBzsTY4dt3xk
+	 R4d79IOMZ2ixCBmNqsu8nwz06zUohOCYs+OX41xKw80n3xMjkaC83wM8Zqj5bOpnpKaE/
+	 u6Uoe9BztKpxX40xq0aQyNZy1rGMtQ0RGImCvXAITukos4c443WGcMFIlI2FfZMxGYNLU
+	 Dm0Bos0ORfHzwigVoeFVK6KoYa3iSY8zGA0RmB2XAvDstO6L9JC3sNprN2dwQgyRSCg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nrzPmfHg;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DF5606A31C;
-	Mon,  9 Nov 2026 19:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39576606A321;
+	Mon,  9 Nov 2026 19:40:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39576606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794253172;
-	b=0NmJiQoL9uCY9dXfVNem3nvUDAD46sX4u6F+096w9DsfoF7wbMcYPCSXwEohn0UZMFdB
-	 KURk5DvuW6OSoupH2MlVBngnEpVizIcbrc+eaEtUbcvxC9gmrY511wK2GDpwEh49wqXXG
-	 LIjW/yXoVY66GjErXSWf25qS3iwLiFpQ7f0ZpVZDMj4BPbS0pVY/Os7qxZO1lvCrwkAjQ
-	 OskYGMHWjPP2yxsHCPC2+6qtll7HvHB685pvknT7HzEfJhQMdubOzKuap/B1sX8mY2jge
-	 H/ITbjq1FByjNQDJWZvhjxapb4sGTpKqk8Qqz8LO19H5rjThaRg6JaYcarl7oTmwgOw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794253172;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
-	b=0G+/98hUvMBhFEquEe83GkDDcxReMkRpc+AJQUVCf4+TMwWLmmBz0OIeRqoZP4TnCQw2
-	 J+jYlmtC1vEJwXj/O0u6ZkYZ0QPfglQ3zL2VdLRws9XZxaCCLO9++132ZMxVujBAjinGc
-	 r89cem3qQB6Vu81ohhMCFMdFKVaJNc13pktpzlruyCJ1uoMgfMP9kWPnyaXNwS2Je0FUP
-	 7PiR0sNjmcBLXEWSPI9VREAPBA07L4sGgREgbk7703U5lT9/nroxqifILlIQK8fLA7JTM
-	 /U7KFDIuBD17bHNFDOPu09HGryysmi1/BSmMU8Ic3GlZD8CVO4CcfYUBDDusQVYrUSw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A21B11F0089F;
-	Mon,  9 Nov 2026 19:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794253172;
-	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=DZNrmWxWOFiKrNxNxneZOqnZ+6ZfXGIc2bp0EmcEtOWokJYPqrGYWXVW6O+1G1IzJ
-	 EeQuOmkqbhNbh1/wJnArvzqFVvDFSat/Yj0FZbBfqla51Ju9WYjajWhQFFK37u7Bei
-	 YCPnnBSIPZ2Len/+3zGdiD4Yvd2vn0Zp9QMJ9MKmuQc9vUIFmqbzKsFBACX7ouKQNb
-	 VTANWBzcNiYIm3kPNWimYOFABUsSk9b/OvoBzTXGUsei6MGAGUVFcyfO6+b58TmObM
-	 sHcHmrVqK1WQMOmB+FNAb2bKmQmceAymL45u9NyjhVMNvXMz/wTGzI8OIZTEtQRjou
-	 vWHeYR6V4j9Cw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F291048619;
-	Mon,  9 Nov 2026 19:39:30 +0000 (UTC)
-From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
-Date: Mon, 09 Nov 2026 20:39:24 +0100
-Subject: [PATCH net v4] vsock/virtio: clear vqs[] to avoid a UAF on a
- failed PM restore
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nrzPmfHg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794253213; x=1825789213;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=pNrs0GhiFl2Onw5lHsU62rnokYtXhv/ZC6egY3NlFSM=;
+  b=nrzPmfHgC9nogs9lKacbqNZgHKGkSCkp0D01FoWyES6QiF9S7wCyxfWX
+   X9AT53GIvvsMGT/CCIRnZSFBQCoDQ/KnifLbqcw6lSRJso+sGVKIuu+mm
+   YXZZMHw4kM6KzKwDC6ggitaji+53gAktCw+2ZcFKsOkNj1tTtZ/znSOSX
+   iVLq7zjMg5WD6Wm6Y5adf18qXTtYdHqYe5xFXgW8La9AHP3BQ+KmjQIty
+   kkkKlfJm2GSTzQezF1aTKj4Rv2yJ5Dz9dBT4LPhiEN6pSMOFoXplKrHP+
+   IJ4QLsZ3w1MseuimzAs2tmr5tDh97d3c6qp9fAkmw1KU1EVl6SBXSAjKp
+   A==;
+X-CSE-ConnectionGUID: EToJPp+aRK+gxMCQXk9C+A==
+X-CSE-MsgGUID: 9eCBJDMPToSLDSztzFsqZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2867544"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2867544"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 11:40:12 -0800
+X-CSE-ConnectionGUID: 9DAS3eDqQU+YUNTN4PwKMA==
+X-CSE-MsgGUID: oMGM5B6wQjqPytry7vo6uQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="9727724"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.139])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 11:40:04 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+ Hans de Goede <hansg@kernel.org>, Ike Panhc <ikepanhc@gmail.com>, 
+ Rong Zhang <i@rong.moe>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
+ linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org
+In-Reply-To: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
+References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
+Subject: Re: [PATCH v7 00/13] leds: Add support for hardware-initiated
+ hardware control trigger transition
+Message-Id: <179425319974.10927.7190572777719580956.b4-ty@b4>
+Date: Mon, 09 Nov 2026 21:39:59 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,144 +92,58 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261109-vsock-restore-uaf-send-v4-1-1df8dfb5d5de@eldare.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQW6DMBAF0KtEXsfVjAGbZNV7RFkYZty4iaCyw
- UqEuHsNXRRFirL8oz/vTyJy8BzFcTeJwMlH33c5lPudaC+2+2LpKWehQGkEQJli315l4Dj0geV
- onYzckUTXmuKgncWGRH7+Cez8fYVPouNBnP+OcWy+uR0Wcqld/OI81vmEa/ndUkKJsiKrwRkwF
- ehPvpEN/EG8jiS1YVT9klGZ0aayljRZg+UzU/wzCOVLpsgMaSDQZV03ldky8zz/AjpYukFhAQA
- A
-X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
-To: Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794253170; l=4147;
- i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
- bh=5YFXaOW8KllonSsjF6SOnB8HkwciO73pZwsUjT72k8E=;
- b=o5Ui0yGmlrlsv7s3vDR3Ic3XgYduWqet+IqPcVhgBKc2puHQzgL+jxfeHT/pgfs6jWrU82E9J
- /7KX0+ab2xgBwU5CsrABnE3TPB51T8iCBoYthWQ/phU9iNUse8McHiX
-X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
- pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
-X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
- auth_id=1075
-X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
-Reply-To: jrmmhm.kernel@eldare.de
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 
-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+On Mon, 21 Sep 2026 03:40:14 +0800, Rong Zhang wrote:
 
-virtio_vsock_vqs_del() frees the virtqueues but leaves vsock->vqs[]
-pointing at them. If virtio_vsock_restore() then fails, the driver
-stays bound with a dangling vqs[], and the next freeze or unbind
-passes a freed virtqueue to virtqueue_detach_unused_buf():
+> Some laptops can tune their keyboard backlight according to ambient
+> light sensors (auto mode). This capability is essentially a hardware
+> control trigger. Meanwhile, such laptops also offer a shrotcut for
+> cycling through brightness levels and auto mode. For example, on
+> ThinkBook, pressing Fn+Space ("shortcut") cycles keyboard backlight
+> levels in the following sequence:
+> 
+> [...]
 
-  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
-   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
-   virtio_vsock_remove
-  Freed by task ...:
-   vp_del_vqs
-   virtio_vsock_freeze
+Thank you for your contribution, it has been applied to my local
+review-ilpo-next branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo-next branch only once I've pushed my
+local branch there, which might take a while.
 
-Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
-early from virtio_vsock_vqs_del() when vqs[] is empty: the detach
-loops would pass NULL to virtqueue_detach_unused_buf(), and a second
-del_vqs() would free virtio-mmio's IRQ again, which only WARNs in
-free_irq() ("Trying to free already-free IRQ").
+FYI [if applicable to your patch], as per Linus' policy change, also
+fixes are mostly routed through for-next unless the fix is for a
+commit introduced in the most recent cycle or is clearly a regression
+fix.
 
-Found with the help of Anthropic's Claude and reproduced on virtio-pci
-and virtio-mmio by failing the restore with failslab, without other
-kernel changes; the virtio-mmio WARN was found by the netdev Sashiko
-review and reproduced with v1 of this patch. With this patch neither
-report appears on virtio-pci or virtio-mmio guests, and the vsock
-vmtest.sh single-VM tests pass. A find_vqs() failure after some
-virtqueues were set up was not exercised.
+The list of commits applied:
+[01/13] leds: class: Always protect brightness_show() with led_access
+        (no commit info)
+[02/13] leds: trigger: Move led_trigger_is_hw_controlled() to the right place
+        (no commit info)
+[03/13] leds: class: Remove hardware control trigger when writing brightness
+        (no commit info)
+[04/13] leds: trigger: Move led_trigger_group to the right place
+        (no commit info)
+[05/13] leds: trigger: Add hw_offloaded() callback and provide trigger_may_offload_to_hw attribute
+        (no commit info)
+[06/13] leds: cros_ec: Implement hw_offloaded() trigger callback
+        (no commit info)
+[07/13] leds: turris-omnia: Implement hw_offloaded() trigger callback and declare hw_control_trigger
+        (no commit info)
+[08/13] leds: trigger: netdev: Implement hw_offloaded() callback
+        (no commit info)
+[09/13] leds: trigger: Enforce strict checks in led_trigger_is_hw_controlled()
+        (no commit info)
+[10/13] leds: trigger: Add led_trigger_notify_hw_control_changed() interface
+        (no commit info)
+[11/13] platform/x86: ideapad-laptop: Serialize keyboard backlight tracking
+        commit: d288a6f989b7b9e6a730140c601987b886af327e
+[12/13] platform/x86: ideapad-laptop: Decouple hardware & classdev brightness for keyboard backlight
+        commit: 7d6c073d181d7855561831cb4bba17dc9b7d4aa9
+[13/13] platform/x86: ideapad-laptop: Fully support auto keyboard backlight
+        commit: 5d805ca01382d63d54c9984e7f19922c4ae6f3dc
 
-Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
----
-Changes in v4:
-- Say why the early return is needed: the detach loops would pass NULL
-  to virtqueue_detach_unused_buf() (answering Stefano).
-- Say in the message and the comment that freeing virtio-mmio's IRQ
-  again only WARNs (Stefano).
-- Move the send queue purge before virtio_reset_device() (Stefano).
-- Message: the use-after-free also reproduces on virtio-mmio.
-- Rebase onto current net; rebuilt and retested on virtio-pci and
-  virtio-mmio, and the vmtest.sh single-VM tests rerun on this version.
-  The moved purge ran with an empty send queue only; the ns_* tests of
-  vmtest.sh were not run (they need root on the host). The reproducers
-  are available on request.
-- Link to v3: https://patch.msgid.link/20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de
----
- net/vmw_vsock/virtio_transport.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 4f9aa9c4c3aa..cf63bc99f3cc 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -714,8 +714,10 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
- 	atomic_set(&vsock->queued_replies, 0);
- 
- 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
--	if (ret < 0)
-+	if (ret < 0) {
-+		memset(vsock->vqs, 0, sizeof(vsock->vqs));
- 		return ret;
-+	}
- 
- 	virtio_vsock_update_guest_cid(vsock);
- 
-@@ -776,11 +778,19 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
- 	vsock->event_run = false;
- 	mutex_unlock(&vsock->event_lock);
- 
-+	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
-+
- 	/* Flush all device writes and interrupts, device will not use any
- 	 * more buffers.
- 	 */
- 	virtio_reset_device(vdev);
- 
-+	/* After a failed restore no virtqueues are live, and a second
-+	 * del_vqs() would free virtio-mmio's IRQ again (a WARN in free_irq()).
-+	 */
-+	if (!vsock->vqs[VSOCK_VQ_RX])
-+		return;
-+
- 	mutex_lock(&vsock->rx_lock);
- 	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
- 		kfree_skb(skb);
-@@ -791,10 +801,10 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
- 		kfree_skb(skb);
- 	mutex_unlock(&vsock->tx_lock);
- 
--	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
--
- 	/* Delete virtqueues and flush outstanding callbacks if any */
- 	vdev->config->del_vqs(vdev);
-+
-+	memset(vsock->vqs, 0, sizeof(vsock->vqs));
- }
- 
- static int virtio_vsock_probe(struct virtio_device *vdev)
-
----
-base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
-change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
-
-Best regards,
---  
-Jerome Mohm <jrmmhm.kernel@eldare.de>
-
+--
+ i.
 
