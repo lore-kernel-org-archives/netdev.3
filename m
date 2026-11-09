@@ -1,55 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794216979;
-	b=Bgfez30pz1+2VmSrkGEmYTX/ve9OP18J/qoES1yvEnrpvJ46SEnDYKhDjovq1Wczit+M
-	 XHnmc07i3KXQ17a0/wwqT7NCSnwvLHNa2pFpDzqohmkpiExxi/gRsA0/ya3WDfzwNKL3k
-	 3ZaBFyjZ0xoDBJ1sP1FtDKsrbsV+PXoPk3sT1mQHPKAki9OKwLBSVvVx8MFmylFNnTfSW
-	 xrfPP494WM0UJxMwbypvrazIWtm9xFTTZRjk+//FtHch5yUW52scZKa19EJ3iN4IQo7rQ
-	 OOFChEqrAFb38LZwyCdBdaVBGf7Lopuc1I0K/+3bONdFB2SCwa8XU9JxBFe/6CeH/8g==
+	t=1794216986;
+	b=qz7LgKiVrGXCeA7rpCiAh4ju7XVbz9fk9wZO3reAMTU3lhD1LMfcnQueCp0qxeA+fnDe
+	 9VM3rc2fnNCcuCkUU+JBHAcl8vizVFSXNlFyAFnVezH3LKbXpAv1mtYcCGp40FsRWeawi
+	 b5aevBB6eagp9BZObP5gTOiIuy+R6TXgeAbS/o0Eut4YztKx/c9iknvkF1SUWtMF3UJ+u
+	 6XQ/x0RJEa5PWAafafm6zP/Du4bYxOlzh3rk+Zp1awNLcGp1Ud7r4jKfJO3B87hK37HLn
+	 wzm3g2ZdT4XIYF1vX3WW/aY/zM9fQhUjWki2AFfgm6scy3YwN7FHDEO+dzmC0x3ZCmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794216979;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:To:From:
-	 Subject:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=dHRGfCgTvHqw+Xm+mcoU8W0ABowFwhenFntbddoej4k=;
-	b=GdCK97mWYkD58zX9bZhBsQvhmJ/9U9zhfXyUb9BAZHkra5ekU5usC6Z530VswQciT7hR
-	 lvSbrb0hdQTVTHEGBhCnQYWrRi31VTb/uvjAhyv0GeNDoYgQNFAEVBXPwCPBtS3sl7FH4
-	 RLSfAJR49l0gs3Pljc6nBxUOIWef05ManidY9Q4lOfl5lesljcIoYPgXCuN/05cxQZpj6
-	 UoySjUEs7C0E+XWgijX5WvP3b4EPfo1DVbIFJiQaVN07ye+wVg4uGp0wEGbAvI1sgDP5V
-	 CvtlCcAdu6mLvz7Tifh/8pYE4JkDGaG9zEPIpHi5uJFm1EOKh+V5rzVuL0oeltitk8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794216986;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Scanned-By;
+	bh=QuBgA2e8QPY48MESrCdXXkhIC68z59uPc1JVscwI/74=;
+	b=w88TFK2CrI7dHijV1+QCLObtxLeliYnSxgXnTo66hMwhl3ziR6Lq9c2BnbYMMzbSkQhs
+	 hgftTGmh42fzVADfHpVqDzMY9KPBAPKWIykdvQpBfOD+2uMBRPkFRnuGIc8XunR39r9g2
+	 tfcjyYXzhoVOmxFig+ZrIvNKZCTxOB3CSrgjxQB+7oShsTFsB6Fpmnd1QZCrBTuDV2Xnz
+	 Ji94knl2WLdpcv/yVZTWUCZpKBj+3G/fgrIksvzRsAZ33CsDgyJbfvWFTHNkBzbM3V8Fc
+	 iyiRAMwo/va8t4iGlqNMqmIO0VifiNn7XqbY1+ldDmHMO4vFbNVSzmwyTRMaWHXdEUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=t97r7erB;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DlVDwCYI;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48A9606A335
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 09:36:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E48A9606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6C6606D831
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 09:36:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA6C6606D831
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=t97r7erB
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E46761A15D0;
-	Mon,  9 Nov 2026 09:36:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B959C60051;
-	Mon,  9 Nov 2026 09:36:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D38BD103293AB;
-	Mon,  9 Nov 2026 10:36:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794216972; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=dHRGfCgTvHqw+Xm+mcoU8W0ABowFwhenFntbddoej4k=;
-	b=t97r7erBFKewO+0p16spvAdkRX18pXHGfVRcQP++9YFkQUSf+rH1ByZeKuZwsJQChpSdPw
-	qQKaj6dmhoSJmh3QeYxSucSHAu+oF+fbZgahyYfHMIRrThTpVLm1wmEDSPhc57ispC9gxO
-	kzo84Rswy+xxi0gFta4N73DdU3IU/jKsQNswWGPQSupbYywvJZLLuhNaxkBTkJQF2xwBUQ
-	K3qkTzRqffk8QEfsCwN78uUovqmaodRnfSTvzqyCX1mceiBGaOk/pAoaG3e+W8sEna2n+/
-	MmZ050cZshpjJ7LobLukabhAmU/b08JUeSxtJ6jHKCo7eFtRMADMTabzC6su2w==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DlVDwCYI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794216984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QuBgA2e8QPY48MESrCdXXkhIC68z59uPc1JVscwI/74=;
+	b=DlVDwCYIDPmZs/5qwMrV4NK5M2qB5RP792hRtlIUE7ZRoMaZhSAuudcVoWp4/pG8IZ2p0f
+	wg742eu7H48IRbhewCmG0an72Im41sMeepKKEG05A8jP0j6+U36lyPTuzaeXJWyHLBUuPl
+	RB7PRKyOFjx/kI9AYB2o9YajfXoS3XQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-wYHW6xu4O7SjWwN01tDAMQ-1; Mon,
+ 09 Nov 2026 04:36:18 -0500
+X-MC-Unique: wYHW6xu4O7SjWwN01tDAMQ-1
+X-Mimecast-MFC-AGG-ID: wYHW6xu4O7SjWwN01tDAMQ_1794216976
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3220D1955F10;
+	Mon,  9 Nov 2026 09:36:16 +0000 (UTC)
+Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.48.50])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5232A1800446;
+	Mon,  9 Nov 2026 09:36:11 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v3 05/14] dpll: dpllsim: Add support to set input pin state
+Date: Mon,  9 Nov 2026 10:35:14 +0100
+Message-ID: <20261109093523.931201-6-poros@redhat.com>
+In-Reply-To: <20261109093523.931201-1-poros@redhat.com>
+References: <20261109093523.931201-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,64 +92,102 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Nov 2026 10:36:07 +0100
-Message-Id: <DMQKTZSD2W8Z.42K05D0EP34X@bootlin.com>
-Cc: "Sean Anderson" <sean.anderson@linux.dev>, "Robert Hancock"
- <robert.hancock@calian.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net 0/2] net: macb: two fixes for macb_tx_error_task()
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
-In-Reply-To: <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hello Nicolai,
+Add support for setting the state of input pins on the device.
+Implement the state_on_dpll_set callback for input pins and advertise
+the state-can-change capability for them, so that userspace can move a
+pin between the states valid for the device mode. The core checks the
+capability only, the states a mode allows are up to the driver: in
+automatic mode a pin is selectable or disconnected, in manual mode
+connected or disconnected, as Documentation/driver-api/dpll.rst
+describes them. The device reports automatic mode, so connected is
+refused with -EINVAL and an extack message. The check is written for
+both modes already, so that manual mode has nothing to add to it when
+it arrives. The driver stores the requested state and reports it back
+unchanged, it does not act on it yet. Output pins keep reporting their
+state only.
 
-On Sat Nov 7, 2026 at 9:58 PM CET, Nicolai Buchwitz wrote:
-> Both pre-existing bugs were flagged during the clashiko review of my
-> software FCS patch [1]. These are the promised follow-up patches.
->
-> Patch 1 credits the frames dropped on a TX error to BQL. Patch 2 takes
-> tx_ptr_lock in the task, as macb_start_xmit() moves the same pointers
-> under it.
->
-> Tested on a Raspberry Pi CM5 (RP1 GEM). The bugs are hard to reproduce
-> and the error path never fired there, but they are worth fixing anyway.
->
-> [1] https://lore.kernel.org/netdev/d1f02ab923c0464fa73cafa75a21943d@tipi-=
-net.de/
->
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
-> Nicolai Buchwitz (2):
->       net: macb: credit unsent frames to BQL in macb_tx_error_task()
->       net: macb: take tx_ptr_lock in macb_tx_error_task()
->
->  drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+v3:
+- refuse pin states that are not valid in the device mode, so that
+  connected is refused in automatic mode, the mode the device reports,
+  with an extack message (Ivan Vecera)
+- the Acked-by of v2 is not carried over, the callback changed
 
-Yes! Same as you: I never trigger this codepath, so I cannot test
-easily. But with your two patches, macb_tx_error_task() is a bit less
-broken. It should also reduce Sashiko splats on future patches which is
-a nice benefit (of course it won't be silent, it still has
-macb_hresp_error_task to complain about).
+v2: https://lore.kernel.org/all/20261105151852.1844305-6-poros@redhat.com/
+v1: https://lore.kernel.org/all/20261103093910.596225-6-poros@redhat.com/
+---
+ drivers/dpll/dpllsim/dpll.c | 42 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-For both patches:
-
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/drivers/dpll/dpllsim/dpll.c b/drivers/dpll/dpllsim/dpll.c
+index a1d5921fb8d017..794020d0c112e8 100644
+--- a/drivers/dpll/dpllsim/dpll.c
++++ b/drivers/dpll/dpllsim/dpll.c
+@@ -104,10 +104,46 @@ static int dpllsim_pin_state_get(const struct dpll_pin *pin, void *pin_priv,
+ 	return 0;
+ }
+ 
++/*
++ * The states a user may request depend on the device mode: connected and
++ * disconnected select and deselect the reference in manual mode, selectable
++ * and disconnected offer a pin to or withdraw it from the automatic
++ * selection. The core checks the state-can-change capability only.
++ */
++static bool dpllsim_pin_state_valid(const struct dpllsim_dev *sim,
++				    enum dpll_pin_state state)
++{
++	if (state == DPLL_PIN_STATE_DISCONNECTED)
++		return true;
++	if (sim->mode == DPLL_MODE_MANUAL)
++		return state == DPLL_PIN_STATE_CONNECTED;
++	return state == DPLL_PIN_STATE_SELECTABLE;
++}
++
++static int dpllsim_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
++				 const struct dpll_device *dpll,
++				 void *dpll_priv, enum dpll_pin_state state,
++				 struct netlink_ext_ack *extack)
++{
++	struct dpllsim_pin *sim_pin = pin_priv;
++	struct dpllsim_dev *sim = sim_pin->dev;
++
++	guard(mutex)(&sim->lock);
++	if (!dpllsim_pin_state_valid(sim, state)) {
++		NL_SET_ERR_MSG_FMT(extack, "Pin state not valid in %s mode",
++				   sim->mode == DPLL_MODE_MANUAL ?
++				   "manual" : "automatic");
++		return -EINVAL;
++	}
++	sim_pin->state = state;
++	return 0;
++}
++
+ static const struct dpll_pin_ops dpllsim_input_pin_ops = {
+ 	.frequency_get = dpllsim_pin_frequency_get,
+ 	.direction_get = dpllsim_pin_direction_get,
+ 	.state_on_dpll_get = dpllsim_pin_state_get,
++	.state_on_dpll_set = dpllsim_pin_state_set,
+ };
+ 
+ static const struct dpll_pin_ops dpllsim_output_pin_ops = {
+@@ -149,6 +185,12 @@ static void dpllsim_pin_props(struct dpllsim_pin *pin,
+ 		prop->freq_supported_num = ARRAY_SIZE(dpllsim_freq_ext);
+ 		break;
+ 	}
++
++	/* Capabilities follow the ops the pin is served by */
++	if (dpllsim_pin_select_ops(pin) == &dpllsim_input_pin_ops)
++		prop->capabilities = DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
++	else
++		prop->capabilities = 0;
+ }
+ 
+ static bool dpllsim_pin_frequency_valid(struct dpllsim_pin *pin)
+-- 
+2.56.0
 
