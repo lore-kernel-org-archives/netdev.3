@@ -1,94 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794208300;
-	b=T2WA2FWMeXN5U8p+dS7GFw9LhtqxoVDwDU+sARVBqUAiAsJq3qJZI5gd7GSmUb33Yvl9
-	 9zZQzHRE5bFXhyWHHHAn/Wtf6m9Wu+kTfB75LBDJzvfDWZ/9fjvjq6leX5hnqK3GX9FQu
-	 bFLx0QLno8c4KML2bQGgmgs/M07+MBs2GkRFJ4RWxSLvTtktxBGdQb/0h6Cl/nHhh3Me4
-	 +sDxVw5EJd7Oni3+yOwE0keL2RwLWtTvDsH3zUU28BiIh0TMYXrqm/uw+GONFWBbc3cmD
-	 loTHrv6a22LKexkkp+t0ZFgkMqq/kNuJyxzxa2ZHahyajdtlf1YLWyRXijfEiIAI0Fw==
+	t=1794208656;
+	b=Eka/ZM3b95UjKja2bI9JRW0qxAeqjqJbW4omnkrDDDZOW5AS0/km7YVrDCEquQKRHpWi
+	 4VvKPw9YptYBUqgIZGkYEZYBZ7mhKv5fFBTeGysGM2ABaJDYKhLeDyWkazDTpL9QWQxZO
+	 zCxyabxrDTjCKA3vV2+cW50rCIhogdb5x7qV8tQvHS28d//bCT0zuwtMNTpd0o9lml+8K
+	 NYqHeLEHXzUwXvz90o6YqyCTHLAjaTke0SSjJaVXps5NQ7NkE30S5L53d+S1fUfBDFn7r
+	 3i9QUI2842pJFbNrrNio5KhQNz0vU6ABE6iLM0+S7eKI/ZM3FROSpuxk2lq7Iowsh2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794208300;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=8OYFe2XU1DYyJ60n31cK1Ueu0La+cc+ar5c9yH0L4lk=;
-	b=Lk8TkKSif24KQ7I9+2DMPJI7T7f+39J+N7pn+Dc9H3g08e3rpHJAOHyAxCwqBK/dpgt5
-	 SMXNO4PqoD/1x1wskBbb1m3VRdTCrGwIGeg8dsWPTe3QQpiuK11ceSFiA5XyVzE4+CfGB
-	 0xE0gHEZc3UIk+NqZbk9VSsFjFBanrCtXqdbCtL4BAEdpXgu8ceCB/uRK/qOvgtim9BkA
-	 xITv1DDYtONBqLT763CQ/PK4Lhc0NZHxRxwXJjIbbjRNyqgQ5JY3DItwZmISkY/EqyLWq
-	 7jPF8tFMcTjRtDcWqZT9df+uQafxIiQ2lCQIQXaNLk8DjYB+19oiwv+D37CsxWtyGag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794208656;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=OQmsuoo1ZrhJ2krA7x9g4TLAy5xS6aBrhwI0OCqB08QqV9FzdNcFR44upGyolGrk1Utc
+	 626rBDrziW2alf05svF5nmDmzLVbteJwg38+vS7X1lna5Asu8eroQORJDtgS5Hkcmz5QK
+	 R15927cJXz9SzT9uEx4oNc6pvEKfY9gb7O0ZkdOMdY6BSUZq5PUIYWEtetAzrcc8BwLAd
+	 b2TgVIFRbuGw19YuogJU+OCreHtlkibP+mcz0lczvxUCD7UE4qwlwterJypODnzB1/cnO
+	 CL8Fc6wniKdsyB9EGCaY7baeDVm4MF7ZtTMDcNQc2FdiCcd3uEo9ltLcSFuozr8r3pQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VPQYYvpx;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OxEqlnQ6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE01606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 07:11:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFE01606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B3F606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 07:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VPQYYvpx
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-492f0a1b685so352193f8f.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 23:11:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794208298; x=1794813098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8OYFe2XU1DYyJ60n31cK1Ueu0La+cc+ar5c9yH0L4lk=;
-        b=VPQYYvpxeyg2AEnNUpLQ6j0jv6Se1SjL/cTZJyLGelqwJh+kyTNxT0k/2I5gXttQI9
-         vWb1t2ujfG0eoCIqxbGdeKF7T/4wHvrDnPp9G+i9CgYqy9uP2krVS8sdPPOzjq27xk6w
-         T2JjN/CBRQAd4DsVbOt6IZxftGnw5khD168aJDn45D0CCckgwukbqx1Ge6vn/w7eNK2p
-         XGsYsKFXYV33N+mb/K9GzmNlIFwwb2bMEi9wp6r1FDInzYnEdQ8RrCpO+diXzpdrv56G
-         rwoEZwDiTYzjTygBd2vwNBIaNZI8aTilCd6QO10TiiWFoYsDZTzr7vLcJ1qsfIrNTRZq
-         kw1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794208298; x=1794813098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8OYFe2XU1DYyJ60n31cK1Ueu0La+cc+ar5c9yH0L4lk=;
-        b=E2zg7gRuqBXYG/H8NDNzuNVC9U3DEObU/8Kuk8/D2ESDh7r/rAM0esHBgRENekUgfN
-         oM4J7H+fRBvn5qIaVirfJgrLnlS8WPe5LAnP4T4LzXEDhHG4CW5pP9Fm37V9RDKKlRkt
-         L8bL5u9pIYUnoYv3RIXBPuNm5bGDWL+sqIvEVC5H5+ykuuejy88/qvA8CoA02S/BBwJ9
-         lNtmq1/JJziXy4ntj4HzWwDHXJl7F/394I8vAIlwLIecFY3tz+E783IO09EmaP0BM5Ju
-         bLSfadvftfzp+7QiuaL1BO8CZMjyWVA61UNV1xWW4xTkAwzKzuP3yfPoGZSSF/uYIy7r
-         fJjA==
-X-Gm-Message-State: APuU4Z/80HPxdz7Yra3V3Uh4ZHhlpFQJ10XsZ7bJlkCw4+D9Fr9qzH2I
-	8Zxv8ftkRfdbcGGlL8EWANlSoFyetL2vnvuP4jMuimSN7iskXEQ2254ts74cPg==
-X-Gm-Gg: AYBFou3Nt29aW4J0b/rFM/tZqbcfpx0juD7Sn2QXPOat6C2UOV+9hPow8sxD3K7p4C8
-	9GMyUTlkVdjJLY48o6JUCLugIoI1FWQvyejyO3WPzD5RPn+bQh1Eel74awX/pQkYPri/THwy4Eb
-	q95QcXHEC2XI8HVs/Qd+ndE4jzCeufsc+1cUbXCiAK46vFX4TuqQ6wYVTlpJTf3XwkWeYNyjN+N
-	ZwUgtU4s/6Ou7NL7F9HDBFDEy8F/zoBK/bq45ZEcvl9qPjtSiV8MxfqWKVCk/QxN+5+GrYvrRSH
-	R19FQQ57CfZObr+TzfLlwOz+EOH5SDa2J4TIU7i8AON3yuqrj9QkjpUx+eq+7rMF1upFcLACpJX
-	lp/oYrlitWyiU6xeDfqiBusD1DZ5GwX7bA+0si4xXETqD6Y411BEDMUTtcse7kDSAXy3RPsdm0V
-	gvN77Hk7O0ZGsolDpTZRQLbAmWoz4tQYNVqXCoFBqVBj+m1bRvPPBQTXOnWwmCjuUZlceDqvMNN
-	EUsbR5IGe8X6t914ShRmpw/MQNnOYRpO+AU5pLFzezwpZrTtL7WZhAN7DauRp14UUdD4FBwqyz4
-	bXUwBSzipeKUyb+Q9SFq9GUYgr+8dHK/pyi536xvUNQYVQ==
-X-Received: by 2002:a05:6000:3c5:b0:490:6ed6:e568 with SMTP id ffacd0b85a97d-4958c778ef0mr5598800f8f.52.1794208297974;
-        Sun, 08 Nov 2026 23:11:37 -0800 (PST)
-Received: from localhost.localdomain ([2a06:c701:474b:1700:c04b:c764:c130:9d10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49597186ec5sm8368341f8f.33.2026.11.08.23.11.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 23:11:37 -0800 (PST)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: netdev@vger.kernel.org
-Cc: akiyano@amazon.com,
-	darinzon@amazon.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH net-next] net: ena: set admin device pointer before queue allocations
-Date: Mon,  9 Nov 2026 09:11:27 +0200
-Message-ID: <20261109071126.87125-2-thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OxEqlnQ6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73DB1F0089F;
+	Mon,  9 Nov 2026 07:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794208655;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OxEqlnQ6vzECaA4yCnEbZ12WFHAe13+IpDGnGq2C3xzYkUqIr/Ly203kFMOWNFxy3
+	 FUYX+QS+n47c94ENWmbCGDOQl59+dz+jrptsZR9g0d7B/jn2CiEj0owcJnJgs2TWw4
+	 w7I9LZDHAFEstmtw7far/l1sNeVuYisXEgx3E+N4+uEHXfILMCsTvEEOwj3B7BOOcs
+	 ait7fffatkgRVQN4IQO9xxJHtO+5nEwBq+fTxLN5OG7ikBWkPkVyBoQuLRp5yCn2QZ
+	 YPY3z7Pbd9fXv+5t71PMsoNgnToKEmTiuvKJaqgQE3T7luqrPI5WfMGxFB9bHgPOd4
+	 cjJOgNVw1ZRqg==
+From: netdev-bot+sinfo@kernel.org
+To: Avi Weiss <thnkslprpt@gmail.com>
+Cc: netdev@vger.kernel.org, akiyano@amazon.com, darinzon@amazon.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH net-next] net: ena: set admin device pointer before queue
+ allocations
+Date: Mon, 09 Nov 2026 07:17:34 +0000
+Message-ID: <179420865444.488859.3137456836373315308@kernel.org>
+In-Reply-To: <20261109071126.87125-2-thnkslprpt@gmail.com>
+References: <20261109071126.87125-2-thnkslprpt@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,46 +63,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On the first probe, ena_com_admin_init() allocates the completion
-contexts and admin SQ/CQ buffers before setting admin_queue->ena_dev.
-Their allocation failure paths log through this pointer, which is
-still NULL. A failed allocation therefore dereferences NULL instead
-of returning -ENOMEM.
+Hi!
 
-Set admin_queue->ena_dev before the first allocation so the helpers
-can log errors and return -ENOMEM normally.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: da580ca8de2c ("net: ena: add device distinct log prefix to files")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
----
- drivers/net/ethernet/amazon/ena/ena_com.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index 297fb36ab8c16..23b3ef50b8b6b 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -2000,6 +2000,8 @@ int ena_com_admin_init(struct ena_com_dev *ena_dev,
- 
- 	spin_lock_init(&admin_queue->q_lock);
- 
-+	admin_queue->ena_dev = ena_dev;
-+
- 	ret = ena_com_init_comp_ctxt(admin_queue);
- 	if (ret)
- 		goto error;
-@@ -2045,7 +2047,6 @@ int ena_com_admin_init(struct ena_com_dev *ena_dev,
- 	if (ret)
- 		goto error;
- 
--	admin_queue->ena_dev = ena_dev;
- 	admin_queue->running_state = true;
- 
- 	return 0;
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-base-commit: fa5196392691051963726787944db872420dfa75
--- 
-2.43.0
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
