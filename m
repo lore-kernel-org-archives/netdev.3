@@ -1,58 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794249819;
-	b=UEw95ZXrsLgNtIH17HDuNNBBtyaberN4Gy446W1OCDLVgZcv1akm5hJ8w9k35I/knsnN
-	 KGseor/udccIyUFIi5Bo4SEPkiAAxLkTrN2/0TlGYRXww70p0eQxkZMUe0NaU2H6dbmIj
-	 jHEMoNkCDE4FX7+HKiFyMT6dACbBhkcpuIPm5W84YWOZNpT1wLdpmtfpySPPzjAMqgWFo
-	 OS3CdFYgUWJXXMPgoR/etlASniTXZvNnTWMzVV6owp72X25r8jdpLqAFxpUJz3HCdrc9w
-	 KqijJs5M+P3P0PZm1nGy9OD73hJvIhRSNiWBN8UGqj7MD7ebDTc1WZX01vYWQ+F+ldQ==
+	t=1794250176;
+	b=JrxYFa7BKqdftQXjwwfn4qCYAN2GubrqE+QpACcsK3QIf9cpPdTeMzZhzbVBszpSinzV
+	 ufEnE0g5x/Vd6drsm7B4qN4wNLQ9Pbv+YseQkgLwS/hN+GENGH86k/gGOTVQLeT0LiZp2
+	 ieUVl3coEoqAFVSKZX+X4dm+Ow8Tr3YIb8cJuQg+6qa3sWROaRornNUM0xsZ2eg4NT1uT
+	 DtFexoQmimEwi60S48ZKvYRYffMr78ieMMnMvL0Y81CE9j4XsYWZWi1AmXBwJJRDPbgwX
+	 0YHEVd933tfiKEqXh2TOsyheO1Sa3E1MZglXl9MFNY4p7wUpw7oZpCTrC97Tmzx+vqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794249819;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=8HtWsqjdMoTX2Fb8l+C+eNfBcEvZQRDPyczvbpyW3w8=;
-	b=ZvINBJbYfLDf3GjkthAiBWnT8hw3Ix6J770hd0bFrN5ep7PuknDmxjKwPcXBF2UxujV+
-	 IxamJQZI9UcWLg9uuqDXJT+DirTzbQZyCWAB77ZvP+h/M/XpY64VWcoerYvaADLX4Sqq1
-	 O1y4mI0X4xkh8cHI3xfBlGwUN8V91YqKhg1blM+mk8zkYAfrjZM07M3mbcsFSmct5m3LP
-	 RW6+ztLwD8O1y/q4P9tlIc/Hd5Xbh2gXARJ5YGqDPI2EyBpI8azLP4C0o+XA7kTlqFUjx
-	 MqrDOLetC4uqW0dsrsEPYfNrvYxL55AoOSIMTHFPutXvJkbR5IYJ6xjjsfg5n870A7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794250176;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:From:To:Cc:References:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=2tiX5MWWHNOac9PpvuPAQbgiOOllgktxVDOjG7K/UDU=;
+	b=44SboSLRQUIVBsvHTsT6hnLoOc5EZ81hoDnvnUXz5QwdpXDb78+ayk/S+skpYgnXl83a
+	 dremg65qQSGMgCFqz2V+3HKHYZUd9Aei6u2k77i3s1A1ZESyjhnCxLRNjmAZPITiJIATG
+	 wRTQQ4tKsohJ5y/uiHnrPE1Ii2rD9HnCeeG+eu9NXtga3Y77u5nIDJ6NG5vRTTeCvFBeM
+	 a95K2W/Naw8A5P37orjzj8sdGBlRq0ep/TLhOgOapB9X1UdnqxOQZ8QHqozIn2ZRWdDOT
+	 DjX4+kbxsgiQtDA9v/Oh/mw9pJSSiHOuPMzbDQHE/k7Fjj9hDt4HMPeyq9+BYMFnbBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=amHqmKjA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="g2VdP/wB";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715AA606A325;
-	Mon,  9 Nov 2026 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5619606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=amHqmKjA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951041F0089F;
-	Mon,  9 Nov 2026 18:43:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2VdP/wB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736631F008A1;
+	Mon,  9 Nov 2026 18:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794249819;
-	bh=8HtWsqjdMoTX2Fb8l+C+eNfBcEvZQRDPyczvbpyW3w8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=amHqmKjArB7VMndrMInbLpnsEXdyIskeI+FNQZrb6+DWVjfBWicKn/xjk3uxeBamP
-	 o53f/stlG72bu9HdSY9ukjCl0x+m3e3nOtU0TaWBDzpBzkR8a0oqR+b3eRhqrkvVKm
-	 Vjt7PU8tOYqi3qXZY1KVt2WObAv7aUIsf7eFWhVm7zf+vay6A1yqf2JOv/yrYsyZQJ
-	 Kj6vjaTxHLN0S5dg54YNfzIuu4XgMAR+wXMWOkWKTzEmh2zafKxR3oRAhVEK5SFvlF
-	 +CCRDmWYAd6zeDVTS2BNDhEyJThIid0KY1xJN4G7EolI4ylzE2vzWtoEaniOasm3eV
-	 1FiWEUkLAYBQQ==
-Subject: Re: [PATCH net-next] net: usb: lan78xx: use phylink for Wake-on-LAN
-From: netdev-bot+sashiko@kernel.org
-To: prashantsengar25031@gmail.com
-Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, linux@armlinux.org.uk,
- linux-usb@vger.kernel.org, kuba@kernel.org
-Date: Mon, 09 Nov 2026 18:43:38 +0000
-Message-ID: <179424981810.994134.1872539285457359260@kernel.org>
-In-Reply-To: <20261108180137.3488023-1-prashantsengar25031@gmail.com>
-References: <20261108180137.3488023-1-prashantsengar25031@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794250175;
+	bh=2tiX5MWWHNOac9PpvuPAQbgiOOllgktxVDOjG7K/UDU=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=g2VdP/wB3AFZb9miH7vkG2airH0xzhAJHv2pgI3rEA2Jhn81VHiEs3UmQL2F6ZgUX
+	 uwnZwX+B2ieMKizbG59ncK7OzndvBIxy977ZvUK0KwIcaEWz+xyu1tEC06wXt+VCm2
+	 eRKsS8aV7IO8mePbMbkCzHNJ3V+D1O0yE7SznnW2YTX7I7QpHgULTVb5btJYo5Dg95
+	 cUEnsWi3FWauhajSdAGXIa2cKV0I/H3mE/zne2bRcDEZE66593wlL5WKOf8n8tpD4f
+	 yu7LDLokoN0mup90Y52sWsaeOqXWusFT3b+hs9UheDSmypZuf3o0pEE2L+JYfyam0M
+	 o/Pxq91pS4ysA==
+Message-ID: <5c90ecc3-0335-43a0-af97-06c73276a3a8@kernel.org>
+Date: Mon, 9 Nov 2026 19:49:32 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,293 +51,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: NIPA: TDC: delay the start
+Content-Language: fr
+From: Matthieu Baerts <matttbe@kernel.org>
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jakub Kicinski <kuba@kernel.org>,
+ Pedro Tammela <pctammela@mojatatu.com>, Netdev <netdev@vger.kernel.org>
+References: <6f0ee3c4-32b7-4422-b69d-c879c94262a7@kernel.org>
+ <20261106092441.00cf9765@kernel.org>
+ <CAM0EoM=4fNFXaFUV1kh-H9Bdrt_K0yDsbOMJHWpgON2bG-GyEA@mail.gmail.com>
+ <ef3ca6c4-57f4-44a7-b44e-f34e06dfb3dc@kernel.org>
+ <CAM0EoM=GofsOkOdLv_-xRMRK8u5_E5BSgnqUCUcReZDrKuUEHQ@mail.gmail.com>
+ <415e54b3-9bc5-41a3-a9da-3631dcb46157@kernel.org>
+ <CA+NMeC9TKz3a=8JYHavHRv2UcM4GxhhnqM9QzzVAu4gKSiz59A@mail.gmail.com>
+ <851b4466-3141-464e-810e-94befcf90286@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <851b4466-3141-464e-810e-94befcf90286@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 09/11/2026 19:40, Matthieu Baerts wrote:
+> Hi Victor,
+> 
+> On 09/11/2026 18:39, Victor Nogueira wrote:
+>> Hi Matthieu,
+>>
+>> On Mon, Nov 9, 2026 at 2:31 PM Matthieu Baerts <matttbe@kernel.org> wrote:
+>>>
+>>> On 09/11/2026 18:22, Jamal Hadi Salim wrote:
+>>>> On Mon, Nov 9, 2026 at 11:58 AM Matthieu Baerts <matttbe@kernel.org> wrote:
+>>>>>
+>>>>> Hi Jamal,
+>>>>>
+>>>>> Thank you for your reply!
+>>>>>
+>>>>> On 06/11/2026 22:39, Jamal Hadi Salim wrote:
+>>>>>> ,
+>>>>>>
+>>>>>> On Fri, Nov 6, 2026 at 12:28 PM Jakub Kicinski <kuba@kernel.org> wrote:
+>>>>>>>
+>>>>>>> On Thu, 5 Nov 2026 11:43:27 +0100 Matthieu Baerts wrote:
+>>>>>>>> Hi Pedro,
+>>>>>>>>
+>>>>>>>> I hope you are doing well.
+>>>>>>>>
+>>>>>>>> I'm helping the netdev maintainers with the CI (NIPA), and lately, I
+>>>>>>>> noticed the 'tdc' runners were often marked as either "timeout" or
+>>>>>>>> "pending". It looks like this is because it missed the creation of the
+>>>>>>>> branch which can take more than 2 minutes for various reasons: PW access
+>>>>>>>> is slow, git push needs to be retried in a few seconds, etc.
+>>>>>>>>
+>>>>>>>> I opened a PR to delay the start:
+>>>>>>>>
+>>>>>>>>   https://github.com/p4tc-dev/tc-executor/pull/2
+>>>>>>>> [...]
+>>>>>
+>>>>> Good idea, I just changed that!
+>>>>>
+>>>>> Please ping me when it is fixed, so I can re-enable the runner on NIPA's
+>>>>> side.
+>>>>
+>>>> @Victor Nogueira  is the one fixing it..
+>>
+>> I applied the change Saturday and it's been running fine since then.
+> 
+> Ah good, thank you, I thought I had to wait because the PR was not merged.
+Oh, sorry, it looks like I missed the last notification, the PR has been
+merged! All good then :)
+
+Cheers,
+Matt
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 2 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Adding `.mac_wol_set` makes phylink_mac_supports_wol() true, so
-  phylink_suspend() ignores the driver's `mac_wol=false` argument and…
-- [Medium] This patch removes WAKE_PHY (`ethtool -s ethX wol p`) for
-  lan78xx devices that have a PHY, and the commit message does not…
-- [Medium] The commit message says probe 'preserves' the default magic-
-  packet configuration, but the behaviour changes.
-- [Low] `pdata->wol` has writers that disagree on what it means.
-- [Low] If phylink_ethtool_set_wol() fails in lan78xx_probe(), for
-  example because an external PHY's set_wol returns an error other than…
-
---
-
-net: usb: lan78xx: use phylink for Wake-on-LAN
-
-This patch moves the lan78xx ethtool WoL handlers to
-phylink_ethtool_get_wol() and phylink_ethtool_set_wol(). It adds a
-mac_wol_set callback and advertises MAC wake modes through
-phylink_config. At probe, it now sends a default WAKE_MAGIC configuration
-through phylink and sets netdev->ethtool->wol_enabled.
-
-> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-> index d73002b2c21ac..7d67dd150271b 100644
-> --- a/drivers/net/usb/lan78xx.c
-> +++ b/drivers/net/usb/lan78xx.c
-
-[ ... ]
-
-> @@ -2617,12 +2629,24 @@ static int lan78xx_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
->  	return lan78xx_mac_eee_enable(dev, true);
->  }
->  
-> +static int lan78xx_mac_wol_set(struct phylink_config *config,
-> +			       u32 wolopts, const u8 *sopass)
-> +{
-> +	struct lan78xx_net *dev = netdev_priv(to_net_dev(config->dev));
-> +	struct lan78xx_priv *pdata = (struct lan78xx_priv *)dev->data[0];
-> +
-> +	pdata->wol = wolopts;
-
-[Severity: Low]
-What is pdata->wol supposed to hold? The mac_wol_set kernel-doc in
-include/linux/phylink.h says options the PHY can handle will already have
-been removed from wolopts, so this stores the MAC-only set.
-
-Both callers of phylink_ethtool_set_wol() overwrite pdata->wol right
-afterwards with the merged PHY+MAC set:
-
-lan78xx_set_wol() {
-    ...
-	ret = phylink_ethtool_set_wol(dev->phylink, wol);
-	...
-	phylink_ethtool_get_wol(dev->phylink, &actual);
-	pdata->wol = actual.wolopts;
-}
-
-and phylink_ethtool_get_wol() does:
-
-	wol->wolopts |= pl->wolopts_mac;
-
-So is this store always dead?
-
-lan78xx_suspend() passes the merged value to lan78xx_set_suspend().
-phylink_suspend() decides from the MAC-only set instead:
-
-	mac_wol = !!pl->wolopts_mac;
-
-Take an external PHY on LAN7801 whose driver implements get_wol and
-handles WAKE_MAGIC. There, wolopts_mac would be 0, so phylink calls
-phylink_stop(), and lan78xx_mac_link_down() stops RX/TX and resets the
-MAC.
-
-The driver would still arm MAC magic-packet detection (WUCSR_MPEN_,
-SUS_MODE_3) for a mode the PHY handles. It also would not set
-PMT_CTL_PHY_WAKE_EN_ to pass on the PHY's wake.
-
-Can the driver and phylink end up disagreeing about who handles WoL and
-whether the MAC needs to keep receiving?
-
-> +
-> +	return 0;
-> +}
-> +
->  static const struct phylink_mac_ops lan78xx_phylink_mac_ops = {
->  	.mac_config = lan78xx_mac_config,
->  	.mac_link_down = lan78xx_mac_link_down,
->  	.mac_link_up = lan78xx_mac_link_up,
->  	.mac_disable_tx_lpi = lan78xx_mac_disable_tx_lpi,
->  	.mac_enable_tx_lpi = lan78xx_mac_enable_tx_lpi,
-> +	.mac_wol_set = lan78xx_mac_wol_set,
-
-[Severity: High]
-Does setting mac_wol_set leave the link permanently down after a normal
-system resume?
-
-With mac_wol_set set, phylink_mac_supports_wol() returns true, and
-phylink_suspend() ignores the mac_wol argument from the driver:
-
-phylink_suspend() {
-	...
-	if (phylink_mac_supports_wol(pl))
-		mac_wol = !!pl->wolopts_mac;
-
-	if (mac_wol && (!pl->netdev || pl->netdev->ethtool->wol_enabled)) {
-		...
-		__set_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
-	...
-}
-
-By default, the new probe code sets pl->wolopts_mac = WAKE_MAGIC (lan88xx
-has no get_wol, so all of it goes to the MAC) and sets wol_enabled to
-true.
-
-So with the interface open, every system suspend through
-lan78xx_suspend()->phylink_suspend(dev->phylink, false) takes this
-branch. It sets PHYLINK_DISABLE_MAC_WOL and turns carrier off, but does
-not stop phylink or phylib.
-
-Only phylink_resume() clears that bit, and lan78xx calls it only from
-lan78xx_reset_resume(). lan78xx_resume() is used when the device keeps
-power across sleep, and it has no phylink call.
-
-After that, phylink_resolve() sees a non-zero phylink_disable_state and
-forces the link down:
-
-	if (pl->phylink_disable_state) {
-		pl->link_failed = false;
-		link_state = pl->link_config;
-		link_state.link = false;
-
-Before this patch, ip link set down/up recovered from this state, because
-phylink_stop() sets STOPPED and phylink_start() clears it. phylink_start()
-only clears PHYLINK_DISABLE_STOPPED, so the MAC_WOL bit now survives
-ifdown/ifup and ethtool wol d.
-
-Won't the interface stay without carrier until a reset_resume or a driver
-rebind?
-
-On the reset_resume path, lan78xx_reset() hard-resets the PHY through
-PMT_CTL_PHY_RST_. Before, phylink_resume()->phylink_start()->phy_start()
-brought phylib back up and re-ran aneg configuration.
-
-Now phylink_resume() takes the MAC-WoL branch (mac_initial_config plus a
-re-resolve). phylib was never halted, so it doesn't reprogram the freshly
-reset PHY.
-
-Are user-configured advertisement or forced link modes lost in that case?
-
-Runtime autosuspend doesn't trigger this, since lan78xx_open() holds a
-usb_autopm reference until lan78xx_stop(). The system suspend path alone
-is enough.
-
->  };
-
-[ ... ]
-
-> @@ -2848,6 +2872,10 @@ static int lan78xx_phylink_setup(struct lan78xx_net *dev)
->  	       dev->phylink_config.supported_interfaces,
->  	       sizeof(dev->phylink_config.lpi_interfaces));
->  
-> +	pc->wol_mac_support = WAKE_MAGIC | WAKE_UCAST | WAKE_BCAST |
-> +		      WAKE_MCAST | WAKE_ARP;
-
-[Severity: Medium]
-Is WAKE_PHY meant to be left out here? The driver still includes WAKE_PHY
-in WAKE_ALL, and lan78xx_set_suspend() still handles it:
-
-	if (wol & WAKE_PHY) {
-		temp_pmt_ctl |= PMT_CTL_PHY_WAKE_EN_;
-
-Before the patch, lan78xx_get_wol() reported supported = WAKE_ALL. Now
-the supported mask comes from phylink_ethtool_get_wol(), which is the PHY
-driver's get_wol result OR'd with wol_mac_support.
-
-The internal PHY uses the lan88xx driver in drivers/net/phy/microchip.c.
-It has set_wol but no get_wol, so it adds nothing, and WAKE_PHY is never
-advertised.
-
-ethnl_set_wol() then rejects it:
-
-	if (wol.wolopts & ~wol.supported) {
-
-The new wol->wolopts & ~actual.supported check in lan78xx_set_wol() also
-rejects it with -EINVAL.
-
-So ethtool -s ethX wol p, wol pg, and systemd-networkd WakeOnLan=phy all
-worked before and now fail. The PMT_CTL_PHY_WAKE_EN_ path in
-lan78xx_set_suspend() can no longer be reached.
-
-The commit message doesn't mention this change. The PHY-less LAN7801
-testing wouldn't exercise this path.
-
-Should WAKE_PHY be added to wol_mac_support, since the MAC implements it?
-
-> +	pc->wol_phy_legacy = true;
-> +
-
-[ ... ]
-
-> @@ -4803,6 +4835,24 @@ static int lan78xx_probe(struct usb_interface *intf,
->  	if (ret < 0)
->  		goto free_urbs;
->  
-> +	/* Preserve the default magic-packet wakeup configuration. */
-> +	rtnl_lock();
-> +
-> +	ret = phylink_ethtool_set_wol(dev->phylink, &wol);
-> +	if (!ret) {
-> +		struct lan78xx_priv *pdata = (struct lan78xx_priv *)dev->data[0];
-> +
-> +		wol.cmd = ETHTOOL_GWOL;
-> +		phylink_ethtool_get_wol(dev->phylink, &wol);
-> +		pdata->wol = wol.wolopts;
-> +		netdev->ethtool->wol_enabled = !!wol.wolopts;
-
-[Severity: Medium]
-The commit message says:
-
-  Preserve the default magic-packet wakeup configuration
-
-Does this code change the default PHY power behaviour, though?
-
-Before the patch, lan78xx_bind() only set pdata->wol = WAKE_MAGIC. The
-PHY was never told about WoL, and netdev->ethtool->wol_enabled stayed
-false.
-
-With wol_phy_legacy = true, phylink_phy_supports_wol() returns true
-whenever a phydev is attached, so this call reaches
-phy_ethtool_set_wol(). lan88xx_set_wol() then sets
-priv->wolopts = WAKE_MAGIC, and external PHYs on LAN7801 get their WoL
-hardware programmed.
-
-With wol_enabled forced to true, phy_suspend() returns -EBUSY:
-
-	phydev->wol_enabled = phy_may_wakeup(phydev) ||
-			      (netdev && netdev->ethtool->wol_enabled);
-	if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
-		return -EBUSY;
-
-and lan88xx_suspend() skips genphy_suspend() while priv->wolopts is set:
-
-	if (!priv->wolopts)
-		genphy_suspend(phydev);
-
-So the PHY would no longer be powered down when
-phylink_stop()->phy_stop() halts it, including on a plain ip link set
-down. In that case the !dev_open branch of lan78xx_suspend() disables all
-wake sources anyway, so keeping the PHY powered doesn't seem to help.
-
-Is this new default intended for every lan78xx device with a PHY?
-
-> +	}
-> +
-> +	rtnl_unlock();
-> +
-> +	if (ret)
-> +		netdev_warn(netdev, "failed to initialize WoL: %d\n", ret);
-
-[Severity: Low]
-What happens to pdata->wol if phylink_ethtool_set_wol() fails here? One
-example is an external PHY on LAN7801 whose set_wol returns an error
-other than -EOPNOTSUPP, such as an MDIO or USB control transfer failure.
-
-pdata->wol keeps the WAKE_MAGIC value set in lan78xx_bind(). Meanwhile
-pl->wolopts_mac stays 0 and netdev->ethtool->wol_enabled stays false.
-
-lan78xx_get_wol() would then report no active WoL through phylink, but
-lan78xx_suspend() still does:
-
-	ret = lan78xx_set_suspend(dev, pdata->wol);
-
-and arms magic-packet wake (WUCSR_MPEN_).
-
-Should pdata->wol be reset on this failure path so it matches what
-phylink reports? This can't happen with the internal lan88xx PHY, whose
-set_wol always returns 0.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108180137.3488023-1-prashantsengar25031%40gmail.com
