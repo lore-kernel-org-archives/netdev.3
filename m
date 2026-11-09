@@ -1,90 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794188681;
-	b=ToiBBnVJCwp0I4H2rZZAyDerhD5P0reAeDlpnH5JHBTAweeXVpPeX1MTzhtSG2VgstjF
-	 o0vIzL17rHG3OEvqIIeXfgSyAWrYSsPVgC2lTDkx7/nQRyDhByZqEqXqdk3lJyooZD3Ad
-	 72OYZPtp46W8y6dBtDH20LTEbanMRnYgyB+oeHCMmbeZk1+ecj87CRtLFV+1rWjT9l1A9
-	 jamSKIAqjuJy1cObLmYKAPFxetlozhq1S4VHaDq+0s385lQ4KfmACcg+5M5V4rMP4HkGu
-	 ALOfy6p8MyEE83MXd8PZF0fID/HqrCaVGQ1CE+Eh3CaVfzkkptNfgkjmqCbOmarCMRg==
+	t=1794188682;
+	b=TEklhta9PRFF7SOoP7+1h7UsPJ/jR0XH7/N2MYeRWN1LQv55iMIJqkPDtzJYuZ6ZgF+2
+	 ptKgADeq+wTru/kiMLggfE0Eczt+Yc7bc31UoN43MqHHDwSKalh/fnuH03to3mwGqpfUj
+	 kkVe65ezCybWVckRONw++3X+NdekfB9VvPZoIJdjHjKFN152LXDmbDAfvdoNPxfvDXfuT
+	 UoyvmOwCsKeh47ttWPGvlF8PEorGaknPYgYwDU9fYrtLCVHOpaGQVGZkg5HfVQ57zaN4T
+	 2gMJiz2DXvMTOvX0V9ilLBnYKMjEQz9XjItCbR8bqMQTp6gXG3/boDw42Oj+TnPdxVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794188681;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188682;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=NNwvO7TmJQtnxU+ywtGhB/dcWKqg+cfjcl1zoCnHJ0g=;
-	b=XLj62TUbEuLsGjPeURz7ljrtzJ74kwIb6OOb7YO+ufpyq3V32UvlVy13SEc0R8UjI1S9
-	 prxJEYiCXZ9vesJwX3pzvsjCmWm09Rjq3xr0vUORGg4CQ+kC1zQ0WcgUYPYdLqdB0G8yb
-	 I3PLLEAUEp4KEBHmt32L0quettgk0jRdydHEeABhOd4264uCnOvVTI32ZxABBA2JmtfWw
-	 Xf2aSa8zjghmHi2vvPOAYPA859F8OqWYKfwuSO7b/Kr5H/S1E0MsFAeAL3+zI2xADd1GZ
-	 Z8wiV946wh41bXYguIpPt93F+OHxXRcifJ8N/cQSP6IW0uD/88iQfiiU3un0/bE5pbQ==
+	bh=Bby9HqZMeUEl9Nn1jT+qhLJUTGxmdH/6xK9tGSiBg60=;
+	b=Czekyp+MJP44NVq+xejGvasVopM0u+A2eqJ7sLTlvSxbK7WmduebOCOioTsQLW8n3u66
+	 NRGihxgyREXaJRdEAVNRUo96hCSXRo5hfi8N588LwnxqjYa5WnRpafFLTghHbvDoexf4W
+	 UKaC/eEAuSo4bBfBze/+eyDbHtFSFASZxB+3w39Y/j84xXwiNbWokuVA+yW4lh6HB6wgU
+	 Xz/UWYTZ+w48Ir244QtYXav9GWboDNxWzChdRZldbXvIWQuue0CuTS5o/EGpoYtAV8GFs
+	 PkTxp0Op5pI0sLNeFKiwIMeadVR2ldoPHOyijEeQYzatpTke88csBDGlqWrj+twK4iw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=W5yQOp6N;
-	arc=none smtp.remote-ip=209.85.216.46
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gMJJVw7W;
+	arc=none smtp.remote-ip=209.85.214.176
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2147A606D801
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:44:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2147A606D801
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EAD606D812
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:44:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63EAD606D812
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=W5yQOp6N
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b09c07b3d2so172965a91.3
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:44:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gMJJVw7W
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ed11653a91so1487335ad.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:44:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794188680; x=1794793480; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794188682; x=1794793482; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NNwvO7TmJQtnxU+ywtGhB/dcWKqg+cfjcl1zoCnHJ0g=;
-        b=W5yQOp6NHFlKMpL/T9+IXosVn/BSCaTvw8o4jeHuqTBLWHmaVKQoXkWBojAsfGk9CG
-         KWQvKnoVf4z6VjtLnKnxlRN+SgMpcu/DV2UJ0jilCwUEU/IBUe+n5WQWaabZeWlC/9vt
-         UsYmtOwLQ8qO0ffff2XM4wFGDZyQ9WJMH+lhqUWN9U30rni/HAY3d6d1P0rvgKBiOk/x
-         dXhk++4cCoyuOd/+F2vGIgyhU4hI3Ctb3OFtNLyRA6/ESmxCozV0kQV0+Tnf53oRE9w1
-         2P/qprrjkz/X6mfr/AeX+OyxhQgz9x7qCKWAoQdLuD3NR0eFoOAQVWKUKSQcvUzs73F4
-         W/pw==
+        bh=Bby9HqZMeUEl9Nn1jT+qhLJUTGxmdH/6xK9tGSiBg60=;
+        b=gMJJVw7Wkp0TW2i4f6uRPL3/BtNdK+FWzcFWFeGjg5XHK+HoNvzQfZaN0OlCqrNOoF
+         Ru6BX/MNkrcRUeNFLZWn3PPp5TuzVuVlEuMl8Cynvo7L+5nxsBKPHVTx+AT2XlfBgQmG
+         V4DLpc4cwTkDlqsgTLYgTskTH3D30bcBYBSbfQGENgIBSysmZ+8JLReC+bOwsWX+t8xe
+         hza4pOnr88CJSJo5rkfTKr0u9TWajAmvyOhzvhHuNfGPJwTs0gWoqbnISsfxJbpTksPg
+         /gsP48vYQpxQBA8KTGYoMzNHLuVKV2EtblcpOKUkEeloeqiov2Zy7DW0YvKebnn3TXAc
+         ISTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794188680; x=1794793480;
+        d=1e100.net; s=20260707; t=1794188682; x=1794793482;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NNwvO7TmJQtnxU+ywtGhB/dcWKqg+cfjcl1zoCnHJ0g=;
-        b=wanCtYtgGh6Mxj4uv0bxtsyRLo1AsvtQWoldoEYkdbAsW/86shxTRpVysmjYOqBvz8
-         BCfE8/CwPAvi/Vc2GvWuO3xSoNNoVMVXW+NS/l9iMYI8lk1HDGo5/w3fSIor0TauigbX
-         dovkGWFNqRSqquC6FFk6jqL+5zhdDbp+/HdjHmtL+fPYYOgNYbFxhw9LpLKaNX2uktHj
-         ipqbyD+0Q0Nt9aa2C3zxDvQsNU/WWmblWIzyP3LS4BaD0sSfAYwuEm7N6NxQP7wasF1l
-         D7To+KvhUYsdCwo88l0tefmWZrxHm1miWIQopiJate/UGkCg/eu2hFwmxqaQZaPpCwQA
-         uE/Q==
-X-Gm-Message-State: APuU4Z+BL4xx5bbnnobBSzlhos/LEpQbTo0OkprXcjq+gyp4OvQc6cIm
-	Q+sea7obgBukT09DslF8CGqZWMdbBVdLkk3I0EPuewRJK+TeD0GgRpDxFE1jIWHmUQyJLX0QG5w
-	NF9G0
-X-Gm-Gg: AYBFou0L8dRxQMC1gIOvcXW9/teeged/ENPDtegMAvZ9jHe37yaUvc7TRMjwdG5FiW7
-	3I8pgHEU07uK78tqdV0yM+fnmLYfnz/23AiaiYZ1fa069Lq6uJj3/7SH4NqQnl5wnDiHsjfBVvD
-	XzUR8lsD2Huds1yR4dNBgMqATtwTSv+l27kc4GWjuKH2Bmr1uULdf8OUuaPAwizcseEOhm6y9My
-	aiJ9VWT+E9wKz6FjIqDltgf2d21i8NgbfHK1vW1tedH7fbDTsu9wtwPuxM1XTmpAmIFvnN4AhPY
-	5pPa6XWKt5ZLrH4M1EQQuUnX7hWciYV3KK3uH9IyMTufQsQS2DpkyfMCjkbCVSC3UOXhV3UozVx
-	YU5Y6mFSboNwBUNGh7GD8+K+XJAdiMqr6A7s/8S3f/ox6MJScz6O7g1gntv8FgJ8iIDnkgTI15J
-	VJr0NJ1/KQfPhGnR5RlWcRVhz3USPsAuN+xeDtNfxHovBE+HDN9CVwUw3jKHDxwBYhb3Ws0L1FA
-	q9fHSvYUMR2N7U+ZMWRJyDmpkwiWk9hEyAsRlF1GmkF/4VfLhXRDXPzfg8NjZM1hxrTZalN1Awy
-	elgWYyvxXngDBoRmtDp+ioXe/kfb3F89V8PM3xsIvT4lG2jLIehBEMht2S3owoAMWbivHpM=
-X-Received: by 2002:a17:90b:1c09:b0:3ac:ad90:7090 with SMTP id 98e67ed59e1d1-3b12d59374dmr2471753a91.67.1794188680387;
-        Sun, 08 Nov 2026 17:44:40 -0800 (PST)
+        bh=Bby9HqZMeUEl9Nn1jT+qhLJUTGxmdH/6xK9tGSiBg60=;
+        b=sxR3nFr6UGmmn+EkN2SfuS5z5jki0HwlAbGdUMCkzh5hX+dVMjY7rXqmbQcVu+8BoE
+         90ZnF0wl3VGAfqcbN5ORtBRK9iITFU2zshaD+avT4ohu4vQ8tNzLmJZW+WtMYtE3JOc0
+         OfuFPpVjsAlJbf+qmNxaB4ml+X0AN01hv2SMorJJtGjJz4NOs8rQGAKM/qcpFPUbSKW8
+         9b6acNJUtyg7zZcpF4wKjFc7wve7Jt88yUgwz5+nnxJkBDFqtlJT6pQHqEmbvyevGnA4
+         QaTvEWDtn6nSqMvajBsLWpSB2cHNjgYvfpnyNCN5lwJ8NTbIuzIvSEiK7bSgfYad8GJ2
+         g0Iw==
+X-Gm-Message-State: APuU4Z+mUDZMSIFeRXHWCcZvqyrMM3vMNV15mkg8pYW8QhiFmPLNFA1e
+	izAuZbaW0+n6l0y7pqe0buzOu4cLc1K6ToVc1HakSV200QeWpqMdso443mVbGRG5MjDWtqGXB/F
+	kvx6GuXU=
+X-Gm-Gg: AYBFou3WbdFHUEBUpG/iB3PI1pe75J+u9CiJrCfBmxz93dvoWfalut9N3R1xjDmqHnD
+	BrIN4qw9/L8sltlh0xxxHDJSGyMHHZsJpDhwhE12n7hP5u8G8P98webxd8HlCOkfADO0SnMOrht
+	WAFaO3eYcUT4rVSEfRHddNtCyPZk0I8qFfHX7N4iRWLj8Jig56lL8vLkGBWc/N3umxnH6i1KaEu
+	ik1XCRnLYnRXq9PtVjm4XOetMyTM+aZ/mriRB/OlczBYaoiiZz5ofyGhwPHwgY9jPspTGvOlWhS
+	lgOF+ff3sirIHCvPV2cXxbOcNtcCWP/1fguPuVSUIbWnZ8zJI/ux2epNBWQ0SAiqEnc6j/erAgr
+	5519PwDvOukZqQK5WgA+yznOPSKFPGygcGx06x+Ojtw+xLplSFdLDxnHubSKkhPN0XAlv4RvK1B
+	CEi8zmN2oEN7iLub9PpM+dG/UbTLZbPhSakrU3rfdxZdiSb4mfXKhJBswDAkArFmAxWDqlA7Q0N
+	jGRwrGPXIZPSr4bAxEi/jFmvx8PcRqN2X6lywZlrIVDm5K+IEutJgaQL4U7BZ0Do4bvuperSRc/
+	Bn5fnQmK72H39A9v7a25Kx9QbyIV1LLQU0s2GXSzCzHIaFH9lxVUcgArxpgwK+/N4sCyRs0=
+X-Received: by 2002:a17:90b:254e:b0:3ab:9c73:130 with SMTP id 98e67ed59e1d1-3b12d355381mr2442289a91.33.1794188681713;
+        Sun, 08 Nov 2026 17:44:41 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc1bc1e6sm5641735a91.0.2026.11.08.17.44.39
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc1bc1e6sm5641735a91.0.2026.11.08.17.44.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 17:44:40 -0800 (PST)
+        Sun, 08 Nov 2026 17:44:41 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 3/5] netlink: connect sockets to the kernel
-Date: Sun,  8 Nov 2026 17:44:00 -0800
-Message-ID: <20261109014434.115922-4-stephen@networkplumber.org>
+Subject: [PATCH iproute2 5/5] libnetlink: do not read past datagram when recording dump
+Date: Sun,  8 Nov 2026 17:44:02 -0800
+Message-ID: <20261109014434.115922-6-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109014434.115922-1-stephen@networkplumber.org>
 References: <20261109014434.115922-1-stephen@networkplumber.org>
@@ -99,73 +99,39 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The netlink sockets were bound but not connected, so any process with
-CAP_NET_ADMIN over the namespace can queue unicast datagrams to them.
-Even though they are discarded, a steady stream fills the receive queue
-and keeps a dump from ever completing.
+With a dump file (ss -D), rtnl_dump_filter_l() wrote NLMSG_ALIGN(status)
+bytes, reading up to 3 bytes past the received data, and past the
+buffer when the datagram is larger than 32K.
 
-Connect the socket to the kernel (port id 0) after bind, so the kernel
-refuses unicast from other senders. Multicast is still delivered and
-is filtered on receive.
+Write the datagram, then explicit zero padding, since rtnl_from_file()
+expects padded messages.
 
-Reported-by: Anthropic OSS scanner (ANT-2026-WUWQ5598)
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- lib/libnetlink.c | 8 ++++++++
- lib/mnl_utils.c  | 6 ++++++
- 2 files changed, 14 insertions(+)
+ lib/libnetlink.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/lib/libnetlink.c b/lib/libnetlink.c
-index b923ba02..6432d537 100644
+index de0681ac..f67f2b48 100644
 --- a/lib/libnetlink.c
 +++ b/lib/libnetlink.c
-@@ -192,6 +192,7 @@ void rtnl_close(struct rtnl_handle *rth)
- int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
- 		      int protocol)
- {
-+	const struct sockaddr_nl kernel_addr = { .nl_family = AF_NETLINK };
- 	socklen_t addr_len;
- 	int sndbuf = 32768;
- 	int one = 1;
-@@ -230,6 +231,13 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
- 		perror("Cannot bind netlink socket");
- 		goto err;
- 	}
+@@ -928,8 +928,13 @@ static int rtnl_dump_filter_l(struct rtnl_handle *rth,
+ 		if (status < 0)
+ 			return status;
+ 
+-		if (rth->dump_fp)
+-			fwrite(buf, 1, NLMSG_ALIGN(status), rth->dump_fp);
++		if (rth->dump_fp) {
++			static const char pad[NLMSG_ALIGNTO];
 +
-+	/* Refuse unicast from other processes, only the kernel may send */
-+	if (connect(rth->fd, (struct sockaddr *)&kernel_addr,
-+		    sizeof(kernel_addr)) < 0) {
-+		perror("Cannot connect netlink socket");
-+		goto err;
-+	}
- 	addr_len = sizeof(rth->local);
- 	if (getsockname(rth->fd, (struct sockaddr *)&rth->local,
- 			&addr_len) < 0) {
-diff --git a/lib/mnl_utils.c b/lib/mnl_utils.c
-index 8ddf2b90..c49afed7 100644
---- a/lib/mnl_utils.c
-+++ b/lib/mnl_utils.c
-@@ -15,6 +15,7 @@
++			/* rtnl_from_file() expects padded messages */
++			fwrite(buf, 1, status, rth->dump_fp);
++			fwrite(pad, 1, NLMSG_ALIGN(status) - status, rth->dump_fp);
++		}
  
- struct mnl_socket *mnlu_socket_open(int bus)
- {
-+	const struct sockaddr_nl kernel_addr = { .nl_family = AF_NETLINK };
- 	struct mnl_socket *nl;
- 	int one = 1;
- 
-@@ -28,6 +29,11 @@ struct mnl_socket *mnlu_socket_open(int bus)
- 	if (mnl_socket_bind(nl, 0, MNL_SOCKET_AUTOPID) < 0)
- 		goto err_bind;
- 
-+	/* Refuse unicast from other processes, only the kernel may send */
-+	if (connect(mnl_socket_get_fd(nl), (struct sockaddr *)&kernel_addr,
-+		    sizeof(kernel_addr)) < 0)
-+		goto err_bind;
-+
- 	return nl;
- 
- err_bind:
+ 		for (a = arg; a->filter; a++) {
+ 			struct nlmsghdr *h = (struct nlmsghdr *)buf;
 -- 
 2.53.0
 
