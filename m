@@ -1,76 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.210
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794242471;
-	b=vwqRLg5ow9spfrn9+coLYHD86cYXgy+0HYrWXkTMmemC7cQ/iUo9f7opeIYM6wrEiasp
-	 kn5QSE1iX6J5TqVMsGpdCEk/XVxx+7bK9ItpEWQTCcB1YBALwm1negfvYCsUcv8LJMdnJ
-	 qAWIPIw/d5QkFZpfOKEycSvM8AGY3uSDTMXMsLP94IjhBo3fcxznGR1fzYEFNKXwQBn/1
-	 HgA+xhKTOM53zAaqcKpTD4nNfZ8vncI6xucxhUmUA75K3TOp5iiWnHSbkNbqCjMR2FruY
-	 EpPkM/r71K0tqvuYRBH5c6rZLrlMivIttg2chuMll/ysm4pYfGDeSB8Hl2MpHXNo3cA==
+	t=1794242476;
+	b=VY9s8Nsd6SpzORAz2EzW0g8K8RRBB11dNUO9zi7k5y+sbZFD1UeTZ+pQtjXCdUdlCtCT
+	 N/P885LHkTXO4QemsZcJEu7Q/Z52A4sPsWKAxmFy2NOKDJdHWyc7Fq14NCq6pfzd9XIv3
+	 /3972tOmdTMWnJJQU2CB1GzGtNp0Sd7nc5WNHk9bWKDxlHdP8keA1Ulzr9fXTG3G5Ol4D
+	 D/Xjh7VU4b0Lg4/GElwTKAQT2JDtQlUcImmDF/WqloOytEKRFMwfgLeIoei56uD1Y3J6z
+	 qG9SPvjp/flqJVV5aMiqsPWDSNkRsJf0F28z5M8puMz+e2zHvPycwSzsxEJFplo3dlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794242471;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794242476;
 	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
 	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=V+X7IEFTcG0ZrnplJcNIA2UecbDUOL9zjh/xRk24TaQ=;
-	b=Fw8aXH19Yq9K7126lXZ71kby00tkzxWwEiCWkHU2GB7m+9yJq5gkPWkQbdlJN7svBTw3
-	 wrML8IXBbshQIdnK2OE99V2cYitDwYU7Sn31PHH6eOaFnGAaRSoyFZW9tEc7i0nkvVWwC
-	 K86wACNugbHqlb5XjfB0JCfARdz03wiLkKgstLRTLuPbUqfJfvUxH/jIY+FtJHoytH5QK
-	 eMJcYtXqx2hKHIrGw80ix//9RcowikE7vxyalllcIMrn/g/1lo6sbSowy82YWra7TNcGQ
-	 KCF8AmJFe3KuCHZvWDft5Lok1y8ov64e6H9yw1NDwYYUeoU1EXYri9/zfYSw6wQA8vg==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ZR65Us3EwKoGha65hsMt3PgrTRCJTzM1r6GUbWjJFSc=;
+	b=zkZC2J7hGWooejul1CwaSNfn7gV1wRLxN9XyFfXHdxrRrTaYxJGwqRnZ6CxugNJI2cg/
+	 YOimNLJiUGsZMPoq3k3Qk78w9XD8hbydDf6awCXC+7tCRnHEyPinkZfwEdyT8DC4blu8j
+	 HpAb3P1Zj+dw969bPnnOp8ar7f50kGG1/M/f/pEMoB5cSEVv09b23EyGaKyD2CRRSlObw
+	 SY4nTztBSgF4RnO9TKTcbSGCq4bs1i+06m8tB8fFxVTU4WJXx8+dSI5tOsTXjJIBA1HKx
+	 IdpkbKccoZG+am5pxjf1jbcnLR6annKMDgqvcxE00oTwVzl5Q5Q+31/oEEf+P0O3B2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=foxmail.com;
 	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=SlSm8EaO;
-	arc=none smtp.remote-ip=162.62.57.137
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b="Y2o/LJ/M";
+	arc=none smtp.remote-ip=162.62.57.210
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD14606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:41:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FD14606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A440C606A330
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:41:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A440C606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=SlSm8EaO
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=Y2o/LJ/M
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794242464;
-	bh=V+X7IEFTcG0ZrnplJcNIA2UecbDUOL9zjh/xRk24TaQ=;
-	h=From:To:Cc:Subject:Date;
-	b=SlSm8EaO+ufW+TrhRoO54Qn5oa8R1Hh+xuTv+BsS+BaL83GKQ8IeYvFYhTDoG0PCX
-	 6ITXxUBu0WLuIBNrigO5BWIlq184OQaCDZxiJ1pHwc4CJm8bWP7eU1gkk7PdIeNK/4
-	 Kd96O41CvivoBrh2drN3s1UiUBwIRxAPnHx12OP8=
+	s=s201512; t=1794242465;
+	bh=ZR65Us3EwKoGha65hsMt3PgrTRCJTzM1r6GUbWjJFSc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y2o/LJ/MnEQ3cHEP5ro3hxPM42y+0gjjgWyuFvZxTxYYtOkEa60d1R2lY4YYYWmKC
+	 YYMcvyckmAYh6HFZTfbQNYv3FzShWh2pbNJF9ZGEhvvwrCafgEnVf8lSbpmh/Ri/SB
+	 UGZlI4w7+/X5bPLHbCirFkBNc9ymyImyvzUUHH3g=
 Received: from localhost.localdomain ([183.23.108.92])
 	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
 	id A413CE3C; Tue, 10 Nov 2026 00:41:01 +0800
-X-QQ-mid: xmsmtpt1794242461tm7ib9yvw
-Message-ID: <tencent_6BAC076E552C6F338052FC02794D9B28ED0A@qq.com>
-X-QQ-XMAILINFO: M/NR0wiIuy70ISTSzmCZ1jczkDN/6Vf0mJqpV7bfVQt1pUnVpABKDExRbOB51R
-	 1T00JcHDfyc8Lqcjk/uNr92SI6aTxHF78RN/FI/KZnHE2R02BuC/YDLfcrgThPxTuY7XAo5HK/Uh
-	 4DDPy1fNsml4v2rJ82KZ4DMgFE0cKblTcjN8G+5K3vIDfaXY+JFg+3QyEEZJva26BTmz2yXYTW3c
-	 VP6AkeUuaGDzzYcG3vBoJQL/5LLoziidXT2+Rw+iBXZbIUpbrqqLFfr9Sb53lxL6/DGompT8FO3c
-	 r/BwIKabPPp4k6pSksb2bX3F6H9s9roBWpbl0dMTZgDjyfFkqc4vWTk5bwVEoBwO2TSRfQReBoDV
-	 h/kdFTpKUtuSlPeuBGLWfXVloToOVU3M3tAR6SxrxjJaS5KAJXRZYRGfx2nW8052xH0tdEOkknM6
-	 5+S5WaGS5MRlrmEmzYD0+wuodiOSI5/b/C4Cw4rL6xmR8JdsZqBnBi0BfNwDsKijxdVSZVb37l1S
-	 YRMrP4uf3yjYlaeNr0OzpXL0lJEUWtUVCsIoxMF73q+2DsbYvkvMZ/W49Np/V33uT3HZbUSu6DIi
-	 eNMYC3ofhkmciJgxgJd6uOc5P4rE2pkqledzTumm4WdnvsSytoI4/HuYcA/bNba77r7+Myn2BYdE
-	 03gv0qer+sIZ3kV5+73w4AWpxIGEPzSJ7J894bZyQi1bVjoJBokUozo7/4afilIXc0q5ObA5R1GN
-	 zjc28Zpt0IDxzu1z+FrD5Wx8IC5Y3JTjj4r2V9uY9GBLCWdSqInhOrxd9SVHZ44e42ysw3e/8qLw
-	 DED8IKkxW7tZ3CJCw1v4YQnD1XmMu+Ac0sTR2mqRIXGF4xpImRoumtjAok0aVJof7O6wGSjIQKcX
-	 +Sqt3LsuBbJWepAN3++qRNZDA2/Gc3bDMXKQ/lZrgBz/2oU3C0DAMv1u4iXtVQkUwHM0MD09lDSN
-	 bnDi1dI0qtFa9XrGRw+A89SqhRybKW+4Skrgg96bm9GlSueiYmTPBhPUStcvXx+smpDf1eVHV5gZ
-	 CmOjw9f3LyMZR4hC7Zyvg6SA+VfOF0uG2IJUMRVB00dZ1ClyksYGq7vAZOhQTH66Fzuq7eINCVOi
-	 2QdAPl
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-mid: xmsmtpt1794242463t42i41li8
+Message-ID: <tencent_95DA7493D2DB7AFE16C0B22A431E45295006@qq.com>
+X-QQ-XMAILINFO: N/WmRbclY25Gp7BtJXUBkPxfg7t2YTH24XfxLZmOl9XPNyuDPvusFlEYLz1hK3
+	 u81kM7r98t8IAt9a8A8RNDgTFOC7WYMFeYx0z6hKd2bs48F+hUnCackfWuH/EWP3gDhpIabogd+W
+	 X1xLARuEyjx/Uu1LGMykaMHCNysNov9yjfQyZeFsYDDKZMNgdCyTqnEQEK8YDkLS6XJlX2Ya29aC
+	 FTE5+CqvftapXqwi1kfil8PJS2s163wlgOHWGFgMRjFLIvQkiLQ/8anjXeewCVX3FR6+t5OzeOKy
+	 oqmzG8gnOkl9TeByRnJdUBR6FIKwOHqlEkWFswe+Hrn3EgsaGBukapv/+6UiFUtjdvQhhr6FfgUa
+	 xnAMxC4C0IKhBpM9my+0XDnTfX2eD/6GrD7L+DmMZqoJqqt3Kx3UtIqnGkudHvuPPxUW11hPEue7
+	 9+YLmUFYrmTmAiD2CbD39DhgJg1zx5dQvBCPfV/rSf065mrMK1XouhSX5HTqkoKJ76Kr8ckqT1wr
+	 Z7Te3c7hMBqLLH2OccvXDdog0njGH/8u3p8tvBa6EFGTXP/ANMFTrv4xIa4rDANZoZgEiNHGLo4F
+	 N0fBIE4jF88e7a2wfXnxZfkAU0a8Hk/y+olGBuwBRcb9Aot5vpxCCmcb1kZBnw2rGuyg7O/rl+ZO
+	 glsKCyFqrIG9/uhExFHCZ743/6nA50dLtwytT7JwAXFNQn07/62e+lO8ZbBANtxi2sy3wz7CLW8n
+	 5lriTrvZkQzyfnbBYiXHqylJNEBsNmLw6vLeLeWMBAiaFoNR3OX2h7gkUSHfKxypYCQ0oPh7GcVV
+	 3Sn3F6G83SQBy5B05AZPFYS+BKJaK84X8BQfVabiC285cYbZJAz/j57F0ZRq75mH0yUFakfll2ra
+	 QLV8PSmOAgIY7Ahcw+Z77Pvs+bfWRA08QxLIMVhPl5yylqsuryWDQWRkyjZIlua50vLwBIjyTAjl
+	 vSHK6kMjKscTW91YkLXsfr8pMCynCtA2phuuCyXVL0R7MBzO2Xil5vIDfZXbfgrl4jKnV30AMqni
+	 iEc8ZeDnTPjA7BBoUevTr7CtTgaFw=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 From: memoriaru@foxmail.com
 To: netdev@vger.kernel.org
 Cc: Steen.Hegelund@microchip.com,
 	daniel.machon@microchip.com,
 	UNGLinuxDriver@microchip.com,
 	memoriaru@foxmail.com
-Subject: [PATCH net v3 0/2] net: sparx5/lan969x: fix RX ring stall on frames from inactive ports
-Date: Tue, 10 Nov 2026 00:40:58 +0800
-X-OQ-MSGID: <20261109164100.8947-1-memoriaru@foxmail.com>
+Subject: [PATCH net v3 2/2] net: lan969x: fix RX ring stall on frames from inactive ports
+Date: Tue, 10 Nov 2026 00:41:00 +0800
+X-OQ-MSGID: <20261109164100.8947-3-memoriaru@foxmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20261109164100.8947-1-memoriaru@foxmail.com>
+References: <20261109164100.8947-1-memoriaru@foxmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,39 +86,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Hewei <memoriaru@foxmail.com>
 
-The FDMA RX path on both sparx5 and its lan969x sibling stalls the RX
-ring forever when the hardware delivers a frame whose source port does
-not map to an active netdev: the inactive-port error branch in both
-drivers leaves the FDMA software cursor untouched, while the DCB keeps
-its hardware DONE bit - so every following NAPI poll picks the same
-DCB again and RX traffic stalls on all ports until the module is
-reloaded.
+When a received frame's source port does not map to an active netdev,
+lan969x_fdma_rx_get_frame() recycles the page via the page pool and
+returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
+loop without advancing the FDMA software cursor.
 
-Patch 1 treats a bogus frame on sparx5 as consumed (free the skb, clear
-the array slot, return true). Patch 2 splits the two NULL meanings on
-lan969x (allocation failure keeps its retry-later break; a bogus frame
-returns ERR_PTR(-EINVAL)) and advances past it in the poll loop.
+As on sparx5, the DCB still carries its hardware DONE bit, so every
+following NAPI poll picks the same DCB, hits the same inactive-port
+branch and breaks again: RX traffic stalls on all ports until the
+module is reloaded.
 
-v3: address Daniel's review of v2 (pw-bot: cr) - drop the extraction
-FIFO flush and the redundant comments, use dev_err_ratelimited()
-instead of dev_err()/WARN_ON() (per Daniel's testing the splats slow
-RX to a crawl), and drop the now-unneeded err.h include. No change to
-the fix mechanics.
+A NULL return currently covers two different situations: a failed
+build_skb() (allocation failure - breaking out and retrying the same
+DCB later is correct) and a bogus frame (which must be dropped and
+skipped). Split the two: recycle the page, log a ratelimited error and
+return ERR_PTR(-EINVAL) for a bogus frame, and advance past such a DB
+in the poll loop. The WARN_ON() is also dropped as the backtrace slows
+RX to a crawl on every bad frame.
 
 Found by code inspection; the stall needs the hardware to emit a frame
 with an invalid source port, which cannot be triggered without hardware.
-Review from someone with access to sparx5/lan969x systems would be
-appreciated.
 
-
-Zhang Hewei (2):
-  net: sparx5: fix RX ring stall on frames from inactive ports
-  net: lan969x: fix RX ring stall on frames from inactive ports
-
+Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
+---
  .../microchip/sparx5/lan969x/lan969x_fdma.c     | 17 +++++++++++++++--
- .../net/ethernet/microchip/sparx5/sparx5_fdma.c |  8 +++++---
- 2 files changed, 20 insertions(+), 5 deletions(-)
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+index 053d125..5f5adb7 100644
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+@@ -113,8 +113,12 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
+ 	sparx5_ifh_parse(sparx5, page_address(page), &fi);
+ 	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
+ 					       NULL;
+-	if (WARN_ON(!port))
+-		goto free_page;
++	if (!port) {
++		dev_err_ratelimited(sparx5->dev, "Data on inactive port %d\n",
++				    fi.src_port);
++		page_pool_recycle_direct(rx->page_pool, page);
++		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	skb = build_skb(page_address(page), fdma->db_size);
+ 	if (unlikely(!skb))
+@@ -258,6 +262,15 @@ int lan969x_fdma_napi_poll(struct napi_struct *napi, int weight)
+ 			break;
+ 
+ 		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
++		if (IS_ERR(skb)) {
++			fdma_db_advance(fdma);
++			counter++;
++			if (fdma_dcb_is_reusable(fdma))
++				continue;
++			fdma_db_reset(fdma);
++			fdma_dcb_advance(fdma);
++			continue;
++		}
+ 		if (!skb)
+ 			break;
+ 
 -- 
 2.39.5 (Apple Git-154)
 
