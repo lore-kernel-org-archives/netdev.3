@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794262952;
-	b=e+l3BD862i9eLaOu3vfg/jicGigmeERAmQAISWPWd64Jb6sSkEULWxKmYb/1fF4Zi5BT
-	 M19E8Lv+jnzN7Wq/EbPFHLsdExegAU6Fr4oFMQKE1NYbiLXsVOzJAbJThy5foDIZ5tjIh
-	 Kn1PdseYXBIkGMJKeR4QyGvQYe5zP+U5ilVT2zj4JBl2WJx2lG65m6ClMITtDF0bOsXDg
-	 +akp/sBKzKf9KrOMdYUTsMsum12rLPcMCjs+CAFxnFgas36mBd4OAf4lZ5Il7IrzGm8Az
-	 63Epgd/Hixy6YAXgNg9tBzXKmXTqyoXaBm8WSqOO4AcYl9ot4BjqkVj59nXxs43Kulg==
+	t=1794262949;
+	b=BeWDaT1daqUibLoMvpL9uxsh5Gh0/jJ8e77MefOugjRQXZp86uqXVAhO5jirFtTY1uPW
+	 JLLrBDucUR+VY9jFproS9apj+tmuxjk/UeezYIbuB4zoZTWFw99gvLFbY7dh3u3m2BT7/
+	 rEeFgaAl7okAojTRQo7RTdD9/FqdUPCj86DbWA2kSnc60XKPABIo6pCJ341pohlcgvSob
+	 28J5FMvoS1eDnm0P6R9uW1p2RoXoQ4u7/m3ZWK64QRaCc+7max4uzogWwy/29/y5xhqFx
+	 8DAlhfAT41mFUiTVTTLG/190WOnKaMEK/WCM6vgAh4ND0VVKCf7cji5HveKBTheNcMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262952;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262949;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=OiCpC5XsB3JYKakoqgJAGxb3FzHd2zCmjhOwtLqCcWc=;
-	b=PrxrPzUuXPmEuSUgw/EMl0b+LfkLsv23rKLi7gzqrQ+QSq4WBud2SqYh2kSjG+Flwgnn
-	 7QX6YgmNgb8Vw7DL2jIC4WhNtq4ubo4Kad6Y6DS35cN8jpua1RW5Q7dqb1ZQjrSXPdh+Q
-	 lv/ck186R0dsosbFR/Axu3FnbUnKgmlX3Hxt5Ze1KhzvERpBcXE04LhQutL4pUfIdPAdU
-	 WCeUolyU7u9iBAJYD4e8l7JZ+mSQ5QidK7sy5+g2SgZEviRyQ+gOX9AQNRAaCT5wIPnhL
-	 uFwhivJSAfbW+xismlY7WdLAlBumg/K27GfYRNJv4ef+BSJGcMK2TKoE7/TCX2vJdgA==
+	bh=9NPLeku08GmCj363CiWIy/aymqtWXMX4G6VP01gGwnQ=;
+	b=S/FQuHvMHOwxgO6wL/yRI4UH9esDYmnsOyQO5Ck8cgtqks180uD2/IglE4QOaKyT19Pv
+	 Oz7G+X5jhGJaOSvkoPIKUDp9o+W5K3wIA+NYBGRJ6Ygri3OWp6fi4ooYMHH3zfsFv2uhV
+	 8vQl4OJ0yazLFY0TQ2+67bbmY3u24wvKwR5B6wHtzimbfsUflawDtDB3pHE6oiTiLrAEF
+	 JaDrJxnIPUJeSYJbiQ6xyznvcJflG64f4LPL76sy7Jji2R3IBxC3cVkota/dI1FQpHOc3
+	 qFC0UhM0ycn8cnFYfAl+wDAg+exU1f5/qse2YwtJsg/wPVKdrHHQukdjrULGbInt7Vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pc14mFzS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mvhiud0U;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16A60A261A;
-	Mon,  9 Nov 2026 22:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BCE606A334;
+	Mon,  9 Nov 2026 22:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pc14mFzS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313761F008A3;
-	Mon,  9 Nov 2026 22:22:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mvhiud0U
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A7F1F0089F;
+	Mon,  9 Nov 2026 22:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794262951;
-	bh=OiCpC5XsB3JYKakoqgJAGxb3FzHd2zCmjhOwtLqCcWc=;
+	s=k20260515; t=1794262948;
+	bh=9NPLeku08GmCj363CiWIy/aymqtWXMX4G6VP01gGwnQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Pc14mFzS08ChMou+vLHy/VLWuEut/MmhM/CcqDlpyb4cC33r6yBXzcopmsDJvDx7Q
-	 da3giONMgPOV4LK+b2fGDRnQRfY4pwLUiL7ODCHH8rARYHAmfX119IvabQSMtC7co/
-	 6S6J5YLtL59C1HRJ3k1NozoiV6lOL+NXJ32K4Pbhv7t7X/4eIWxa73ytlpsNLtdDSO
-	 y5djTQ+DKBv1ceyYlcwGFLCptf0ccsVN7cIn9UUHVQmuC2CaznszxcyGO/tuJS7ppr
-	 kmAHdY93dRYxZ5QFTLeJEi/N5OgsHGAuVu2CqkbD/fkzWmuGyry0Fpc6UnMDnrkpBA
-	 uchrsM5WgkYZw==
-Subject: Re: [PATCH net-next v5 6/7] net: dsa: motorcomm: Report inconsistency
- on bridge join failure
+	b=mvhiud0UPCwGmjz6Knjs8ke8SKh0wq3V0gU2az74X6YKbcNSuONQXTNGzGSAkfAdi
+	 IG+2C/I6BCj8FHem5Uu05Z5Oyjf62xE1yqDcV2k4WgFFJe8SUr3S+QP+qw6QzlI9ve
+	 8x4rU7MMcCt1ZQLW4srlrVxfC1M7VhTDwsvzfurLjm1n1pmSjB5LqlOJPDbI7u6Amg
+	 Wq1+gqQQ5MRcZmTBA8ACSExmJgHw4Lnfl9tEikxKKSzetge1+J4GroIeTTRDKQDerw
+	 JTkMeSR9TFHmZQaNUATEcctqeDgJKbO9lU0szcC/DScMDMu5XNJBlAGomdeS3GA8hb
+	 E5bS4pVrDCsnw==
+Subject: Re: [PATCH net-next v5 2/7] net: dsa: motorcomm: Drop VID 0 VLAN
+ table programming
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 22:22:30 +0000
-Message-ID: <179426295075.994134.15437406189348834005@kernel.org>
-In-Reply-To: <20261108214450.1662362-7-mmyangfl@gmail.com>
-References: <20261108214450.1662362-7-mmyangfl@gmail.com>
-X-sashiko-severity: High
+Date: Mon, 09 Nov 2026 22:22:27 +0000
+Message-ID: <179426294748.994134.3345680195855302131@kernel.org>
+In-Reply-To: <20261108214450.1662362-3-mmyangfl@gmail.com>
+References: <20261108214450.1662362-3-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,157 +75,113 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] When yt921x_bridge_join() fails partway, the patch knowingly
-  leaves the switch half-programmed and only sets an extack message.
-- [Medium] In yt921x_dsa_port_bridge_join()
-  (drivers/net/dsa/motorcomm/chip.c:1436-1439), a failed join is…
-- [Low] The new extack text "Fatal IO error; hardware no longer
-  consistent" is set for every non-zero return from…
+- [Medium] The commit message says the VID 0 VLAN table entry is never
+  looked up because the hardware gives priority-tagged frames the port's…
+- [Medium] The commit removes the VID 0 VLAN table programming for every
+  supported chip, but its only evidence is a measurement on YT9215S.
 
 --
 
-net: dsa: motorcomm: Report inconsistency on bridge join failure
+net: dsa: motorcomm: Drop VID 0 VLAN table programming
 
-This commit sets an extack error message in yt921x_dsa_port_bridge_join()
-when yt921x_bridge_join() fails, because DSA does not call port_bridge_leave
-after a failed join. The commit message says that rolling back from the
-driver would only issue more register accesses that could fail the same way.
+This commit removes the setup-time write of the VID 0 VLAN table entry
+from yt921x_chip_setup_dsa(). The commit message says the entry is
+unreachable because priority-tagged frames are classified to the port's
+PVID before the VLAN table lookup, as measured on YT9215S.
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 46534127d070e..3d4aa79ac0268 100644
+> index 693564aeaec14..47f06945b8c4e 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -1433,6 +1433,11 @@ yt921x_dsa_port_bridge_join(struct dsa_switch *ds, int port,
->  	res = yt921x_bridge_join(priv, port, ports_mask);
->  	mutex_unlock(&priv->reg_lock);
+
+[ ... ]
+
+> @@ -2321,15 +2320,6 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+>  	if (res)
+>  		return res;
 >  
-> +	/* DSA does not send bridge_leave when join fails */
-> +	if (res)
-
-[Severity: High]
-What state is the switch left in when yt921x_bridge_join() fails partway?
-In net/dsa/port.c, dsa_port_bridge_join() does only this:
-
-	err = dsa_broadcast(DSA_NOTIFIER_BRIDGE_JOIN, &info);
-	if (err)
-		goto out_rollback;
-    ...
-out_rollback:
-	dsa_port_bridge_destroy(dp, br);
-
-So software treats the port as standalone, but the hardware may still have
-the following.
-
-YT921X_PORT_LEARN_DIS may be cleared in YT921X_PORTn_LEARN(port) by
-yt921x_userport_bridge(). The driver does not set fdb_isolation, so the
-standalone port would learn into the shared FDB. yt921x_userport_standalone()
-normally prevents that.
-
-Some YT921X_PORTn_ISOLATION() registers may already have been rewritten by
-the loop in yt921x_bridge():
-
-		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
-				       ctrl);
-		if (res)
-			return res;
-
-ports_mask includes the joining port. So the lower-indexed members would no
-longer block the joining port, and the joining port's own register may
-already allow forwarding to the bridge.
-
-Can the switch then forward and flood traffic between a port the kernel
-thinks is standalone and the bridge members, until another join/leave
-cycle?
-
-The commit message says:
-
-  "Rolling back from the driver would just issue more register accesses
-  that can fail the same way."
-
-yt921x_reg_mdio_read() and yt921x_reg_mdio_write() each send the full SMI
-address/data sequence by themselves. So an MDIO failure looks
-per-transaction and may be transient. The driver also keeps doing register
-I/O after this failure.
-
-Would a best-effort call to yt921x_bridge_leave() on this error path work,
-reporting the inconsistency only if that call also fails?
-yt921x_bridge_leave() already exists. It runs yt921x_userport_standalone()
-and then yt921x_isolate() to restore the standalone configuration.
-
-Later in the series, "net: dsa: motorcomm: Support BR_FLOOD and
-BR_MCAST_FLOOD offloading" adds yt921x_bridge_flood_set() as a third join
-step. It writes the global YT921X_FILTER_UNK_UCAST/MCAST registers, and the
-error path is still not rolled back there.
-
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Fatal IO error; hardware no longer consistent");
+> -	/* Tagged VID 0 should be treated as untagged, which confuses the
+> -	 * hardware a lot
+> -	 */
+> -	ctrls[0] = YT921X_VLAN_CTRLa_LEARN_DIS | YT921X_VLAN_CTRLa_PORTS_M;
+> -	ctrls[1] = 0;
+> -	res = yt921x_reg64_write(priv, YT921X_VLANn_CTRL(0), ctrls);
 
 [Severity: Medium]
-Will this message reach anyone when extack is NULL? NL_SET_ERR_MSG_MOD()
-does nothing in that case, and the legacy bridge ioctl passes NULL:
+Is the VID 0 entry still unreachable when the port's PVID is itself 0?
 
-net/bridge/br_ioctl.c:add_del_if() {
-    ...
-		ret = br_add_if(br, dev, NULL);
-    ...
-}
+The commit message's reasoning only works if the PVID is non-zero. The
+driver sets PVID 0 on VLAN-filtering ports in two places.
 
-That NULL is passed down this chain:
+yt921x_pvid_clear():
 
-netdev_upper_dev_link()->dsa_user_changeupper()->dsa_port_bridge_join()
-    ->DSA_NOTIFIER_BRIDGE_JOIN->ds->ops->port_bridge_join()
+	res = yt921x_port_set_pvid(priv, port,
+				   vlan_filtering ? 0 : YT921X_VID_UNWARE);
 
-So brctl addif (SIOCBRADDIF) on a yt921x port would still report nothing
-beyond the errno.
+yt921x_vlan_filtering(), where br_vlan_get_pvid() returns 0 when the
+bridge port has no PVID:
 
-On the netlink path, the message goes only to the requesting socket. The
-hardware state it describes stays after the reply.
+	br_vlan_get_pvid(bdev, &pvid);
+	res = yt921x_port_set_pvid(priv, port, pvid);
+	...
+	/* Do not drop tagged frames here; let VLAN_IGR_FILTER do it */
+	if (vlan_filtering && !pvid)
+		ctrl |= YT921X_PORT_VLAN_CTRL1_CVLAN_DROP_UNTAGGED;
 
-The matching leave path in this driver already logs failures in
-yt921x_dsa_port_bridge_leave():
+In both cases only CVLAN_DROP_UNTAGGED is set. Does CVLAN_DROP_UNTAGGED
+also drop priority-tagged frames?
 
-	if (res)
-		dev_err(dev, "Failed to %s port %d: %i\n", "unbridge",
-			port, res);
+If it does not, then by the classification model in the commit message,
+a priority-tagged frame on such a port gets VID 0. The hardware would
+then read YT921X_VLANn_CTRL(0) for ingress membership, learning and the
+untag bitmap.
 
-Should the join path also log with dev_err(), in addition to setting the
-extack message?
+Before this patch that entry had a known state: all ports were members,
+LEARN_DIS was set and no ports were untagged. After it, the entry holds
+either its reset default or whatever yt921x_vlan_add() writes when 8021q
+adds VID 0 through dsa_user_vlan_rx_add_vid():
 
-[Severity: Low]
-Is this message accurate for every non-zero return from
-yt921x_bridge_join()?
+yt921x_vlan_add():
 
-The first hardware access is this chain:
+	masks[0] = YT921X_VLAN_CTRLa_PORTn(port) |
+		   YT921X_VLAN_CTRLa_PORTS(priv->cpu_ports_mask);
+	ctrls[0] = masks[0];
 
-yt921x_userport_bridge()->yt921x_reg_clear_bits()->yt921x_reg_update_bits()
+That write never sets LEARN_DIS.
 
-yt921x_reg_update_bits() does this before any write:
+Could this change how priority-tagged frames are forwarded or learned on
+VLAN-aware ports that have no PVID?
 
-	res = yt921x_reg_read(priv, reg, &v);
-	if (res)
-		return res;
+Later patches in the series do not seem to restore any VID 0
+programming. That leaves yt921x_vlan_add() and yt921x_vlan_del() as the
+only code that writes VLANn_CTRL(0).
 
-If that read fails, no register has been changed. After
-dsa_port_bridge_destroy(), hardware and software still agree, yet the user
-is told the hardware is "no longer consistent".
+[Severity: Medium]
+The commit message says this behaviour was "measured on YT9215S", but
+the removal applies to every chip in yt921x_infos. That list includes
+YT9215SC, YT9215RB, YT9214NB and YT9213NB. It also includes YT9218N and
+YT9218MB, which have a different chip ID major:
 
-"Fatal" also seems inaccurate. The driver records no dead state, and each
-SMI access is self-contained.
+	{
+		"YT9218N", YT9218_MAJOR, 0, 0,
+	...
+	{
+		"YT9218MB", YT9218_MAJOR, 1, 0,
 
-A more speculative case: if a register op returned -EOPNOTSUPP,
-dsa_user_changeupper() would turn the join into a success:
+Has the same PVID classification of priority-tagged frames been
+confirmed on the YT9218 parts? The removed comment noted that tagged
+VID 0 "confuses the hardware a lot".
 
-			if (err == -EOPNOTSUPP) {
-				NL_SET_ERR_MSG_WEAK_MOD(extack,
-							"Offloading not supported");
-				err = 0;
-			}
+If a variant does look up the VID 0 entry for priority-tagged frames,
+that entry now stays at its reset default. After 8021q adds VID 0, it
+holds a partial state with learning enabled instead.
 
-A weak message does not replace the driver's text. The successful join
-would then carry the "Fatal IO error" message.
+On those chips, could priority-tagged traffic then be dropped by
+VLAN_IGR_FILTER, forwarded to the wrong ports, or learned into the
+VID 0 FID?
 
-Could the message be set only when a write has actually happened, or be
-softened to something like "may be inconsistent"?
+yt921x_chip_setup_dsa() does not check priv->info->major before
+skipping this programming.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108214450.1662362-1-mmyangfl%40gmail.com
