@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794248961;
-	b=YjVtzLl7SSuA0fOlzCatDkKNmBlmURP/wz7mZFqu5w3l94lao8hfCn4jDEa2yDHzkkiL
-	 JQCalEkzv1JTNp7cxE1cmvxIiRjlEpWLOKEu2fb+/YjdjRtDOXJFDQOnE0ChscMNE8g2o
-	 Bw1DGuV8xnTgxHskepGna9FV9iiZB2F1txUHD5Z69soIIy15hSYc2/DEk3DiDSdvnKEkv
-	 hGMCzohLoSQAeUNbZzVCtvsrWRmXn6WR6LRs4E3AtWFKhkGop/9ZUV3+4cpzJMBXcV0tx
-	 3xsGCJJBbRqScXQZXI+A9l7X1KMO2Y8ks2kDlZWTrlyfd06Yn/DUHxM9z6om38m0l6Q==
+	t=1794248962;
+	b=YrsEJnapsHcfA/2IoXBhR1MbNWmFYDTc4te83iO8MvQBmOzk1YeZCUpO4B5THUDoDghD
+	 zAYxyuIpdvp4+b5fzPsav1EP+ztt8LV0wgdVmcAoG+tBcndtmSwRDVX4lZiZU52ry0peh
+	 llA8d1z6Zq8e2HuHPCUKmqYI+cAfblG3qlmdZCnEcSeZZBYJQXH7/PeDeLi+hDxt2qDJe
+	 //aDuvAZTBz5twKE9cK+aM0O3R9QwipDwilf7yrit4jA4NXnap3HWCJS06Y3kirmWDoMe
+	 tzVx0YQ7mYmOIL2rP1OZyAbznRxy/H3a/cPrjSSS2Zj2nTlLvw2E7BW8G2Tdf1SVoIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248961;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248962;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:Message-ID:From:
 	 To:Cc:In-Reply-To:Subject:Content-Type;
-	bh=TyNlOaE6r53YabDf7NgKAHxeTjKkEmLPqy6LNOwpSOw=;
-	b=i6o10nCBTEcLncki7g5s9FZq+L7NEscBiige85mLmNZNKHMj6YrIrnVX6AbL7SWH95eh
-	 g6CRU+RfRUVQeo177s8zy787llwewVVkI9KaHPMuAjvEoSFCSmRz4BU24ibXU3X6ARGlU
-	 hZ7xgwYojgUT1jLEptTAtwdNmox5gLBsJARRZKoGEIyVqxReLHLXfWsHUrNfkcfsoo99W
-	 MXCw0wtTvkJ0e7woUreeWrbcR6LMywMUlYYbT+wkI3d38UQ/sIzomUeiwg6d7MLBpTilb
-	 Tam9wW3gDInSuFAA4Fv1XbEf519AKVjpHJnOSEIMJxJf8xPtkx/KnhzR92QbAPBJwGA==
+	bh=eZXah+GU1zYRZgrwJ8SeyJuEq1JV0JX65ZErGIYWKN4=;
+	b=kv3QxCRn/uMbb0vAV3uokaTPLntgesrerpNueEunr+E6LvUNmRQIrmx5Rce3BtnUXxpw
+	 28ryqJhcZ5ecS+2bhwmuDOU2FSuhcs9Y1IWxBiPS1KBMvNJMJgezHQmQjQH8cUWr/Ypd7
+	 Ogb9Eb/0Am2QsuVsOPkyjodSEMc7QYWNdeYITT9htKUBO1p/8NuyN4QIAO1lTXtfAdGYc
+	 LwmiyRaW++3XT7COIg6OygfSeePfb6GZgDM8SpxCAre9mmzVCNiBIrv0brO6mIbfcFIs/
+	 OOR6kr23zf2whbTJqrqzi7AIeO0VZx+rsFp2luW8eN1umQa2j8ioCOYRnH74DLdaA3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wVPmauA8;
-	arc=none smtp.remote-ip=74.125.229.7
-Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KSJhy7sp;
+	arc=none smtp.remote-ip=74.125.229.6
+Received: from mail-dy2-f6.google.com (mail-dy2-f6.google.com [74.125.229.6])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCF36070ED0
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:29:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBCF36070ED0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF2860A2605
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:29:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CF2860A2605
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wVPmauA8
-Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-33e5ae86ff2so721847eec.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:29:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KSJhy7sp
+Received: by mail-dy2-f6.google.com with SMTP id 5a478bee46e88-35adc681e1aso1649146eec.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:29:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794248960; x=1794853760; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794248961; x=1794853761; darn=vger.kernel.org;
         h=content-type:subject:in-reply-to:cc:to:from:message-id:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=TyNlOaE6r53YabDf7NgKAHxeTjKkEmLPqy6LNOwpSOw=;
-        b=wVPmauA8OdLBNUi//iUcElADcRibZhBlYmRzMsqGWZwocRzhlB8pAEZUyTVONutmzP
-         YHGl7m7d5gmKZ+kHy+amcdGR0AdGQnPC70uqhqLev+qT0zS5gLE0OQedk71PD93HuDHe
-         d4AmF+8Op5QqLeFTRnHezx/ld31iyUN1GiwdR9gI83FoQB/p3kN+M6POA5UihECgoHE8
-         nuCiIhx0et4FR8tdMwbyimQJYCdpUxlrmR1+YMHy6otayeUpxcz8AVkru0zzf6Ais/I4
-         VVUtRfQ+Vg5feQX7YYsyKpySiIOvAMZA1iGgR5VhnDI5k3Uv8f3/btggB3XTDbZErZLZ
-         HL3A==
+        bh=eZXah+GU1zYRZgrwJ8SeyJuEq1JV0JX65ZErGIYWKN4=;
+        b=KSJhy7spSVu5bxRcystXBVzm1AoZWAvdpFQsG4ejBx9otx6a4+2dMgf2GDHtdvnAGF
+         jA2RS+6Esp+A1s1IsndxuLyW4jjRdT+99xKWuANKBhT7XEBw6JMDu56+D5v78sr+CZQ3
+         epMrT3Cb0EOf6gfAYdYs9yft2FRR6cey/8yTtq9j2979h/g75hxWoG4MP8S3dNDq3jTo
+         JveOWlD/jjVgTb9h/9sefJef+OQLdIcfAYxIYfK3zpZJFwN+1YZ/gzE45F9G8iGhFOut
+         EwlQ0ianw7caxy1nqlGQVzvV5uLTQ9lMZqesTRtpUQ/OFpRz5fRw4c4WhjujA6UhaKph
+         H+1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248960; x=1794853760;
+        d=1e100.net; s=20260707; t=1794248961; x=1794853761;
         h=content-type:subject:in-reply-to:cc:to:from:message-id:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TyNlOaE6r53YabDf7NgKAHxeTjKkEmLPqy6LNOwpSOw=;
-        b=vkmFouhUYZEDwMmExgzA7inbjJnN6Tjyc+fxq2yZtEEZThzXNdLRg60VorgPLLv6kC
-         QB1XyLDSF8EL/w227nRcEvsMj9FgsmyoHjz5sF13ljqLwYT0MiX2QTOUb625I4a4CfGQ
-         ntwthoB69FobF7aBA23GglYUlrbEhJnBNGr3SBWgddI+GF3jiuhTlOs0Im98Wvnnu8qU
-         2zz/yHuVtHB8jmNffE74Gaid8DijYmSW+/FuaCpL3QpJ56Bc/GGCi4exv8WNWY7wLwUq
-         GRXUBlx58hNCrzKZK9LO/ZithK+t1RsQvOYo/AKABQbLHnjjtQYzLqcocEjLP/TQqQoF
-         GuXQ==
-X-Gm-Message-State: APuU4Z8tsfli/jzitcnTDmMuPh+gfEusZtEj2JpIW4Jpxwy9KNwDdNiI
-	Ru152AdX8valj0xsVA9/FU1ljBScZ3bnyFCgKhD3frZdcz0tov/7xrjd
-X-Gm-Gg: AYBFou3m/UrzRdeClV98Ks0XM3VFr4OAVPFhKgq5gZTvh/vEHSexGi3J0EQe3TttQcg
-	G3SVZTuO4kwdd0bWi7h1Y2D7nOUJRU9ABnrTm+952ChUgCAhRPXwj2jCQalYjpDJPcufG7EPmyc
-	t0Y9qiG7P4zKdoDjPtu19zvqxAvb5jfZbKVifKQDx5G2wZlqqS6eebgtfc206ecT4e7HoZQPZLf
-	eMKPaO+xMo58iphRzyn5x8rq1q0tW7yGB5qHIJCUqu/Oq+hB2EjZ9JWfm9JTGtxAmP3crIMZ8eU
-	17EopzCiXrtXE38LfiJ27zEkCG3eXMijpph307wvJsF+IzRNOzxQ4MmOr8SWTLNkf99i5xYPq5l
-	foUer9ZE6Dq7McPBOPbfJ2Fao9AbzoQ3+Cdn14EPdeZ5apfNvg2PgZTPS8F9KdrHmNrGN4SxZNE
-	tkSEg0h+TW/mMoV47IZ4i/v09Qs+ZOLWlDbRVokcuTbfj9mmO/sVgUL6ksWobDaEzevmKAaW3a5
-	OKsbVmpaydROKfUfcxV5r61AC+q1Y4n2mC6ISfzBrquBma5M+YZVSDZqjkZVfvLsWMTCAut96Pl
-	xlyM8jbieerh3zkAUsnkIEQ=
-X-Received: by 2002:a05:7300:e9dc:10b0:36d:3c0f:cc85 with SMTP id 5a478bee46e88-3751c82b5e5mr145592eec.5.1794248960011;
-        Mon, 09 Nov 2026 10:29:20 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:41::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520512ec1sm99440eec.12.2026.11.09.10.29.19
+        bh=eZXah+GU1zYRZgrwJ8SeyJuEq1JV0JX65ZErGIYWKN4=;
+        b=kNDyDsGGF8FBE7Cc97pKpVX/g5KKgYRnRdSJIemFis2fMFRtyGrcPvMDXM7H2/fIE2
+         mWQQplxKJEpyZ+XyLCmYhhZUWL2H6Ldg0ouLw1c60YIYH15+PLVJ/UqM0oa2HyV6ZXUc
+         D8T0ctqy8UQ01oQLUzZnR+TfNJrkF8sOeZ9A57iKoqBCt2nuybmVmC7z+fXJOJ1g8/iN
+         SalERoxjEo2OZMxVHf2A66c/Qn3tsn6S6x/gE/59MS83hWPvD6M/cnEI/BbCD/Coj9wf
+         lrQcH4oL5Du5DdZPT3i1Dxfj0ZFjBiTr2PzbmDrHlAqiLeu0rIbx27xG7haM+Bsh3oYO
+         pOgQ==
+X-Gm-Message-State: APuU4Z+koMhflR8Dp9ItL3sYYvRtvJmaOm/IBK7duaJ0rFS8vadXziqi
+	lOVqQj7mDI5Sb1u3LdEYG31JkF2IFL4M/uJm74yExaQ+4HsOdf/LjwO7
+X-Gm-Gg: AYBFou3++gPJmPuFI+7m0Q8JSClNqm7ilMe1Zz9qoeuVY/rvJAG1dnc8RCRbXQUKEbr
+	BYFainAgV7VfW42AbwpDn+yJfwrzPKfmHbOTS3pSt7Bixrrpxyq6Vbmwktv9/HUUEviyFMtDPZ6
+	QpIfLvjnAcdq7zLwedeI07qZJmfAU44vzKC+OcUsSjpbgC1XvTnA5JNYp1TMBYV0XqKa1biNBE+
+	Pnm2geLzcjFr0soSOJNarqvEwbLzOU2iL3KTotca/CrT2rzHbZBf78Nc7SJGP0VpwThbVqwRxvi
+	775LTzykxPF57y1uyVL0DX9OHP4iOSjt1B37GMmeZBEbgWFK0LfjtwSX/IfJXY8MpFHVjZNg6Vl
+	lyMmH2tBIrSZ5BEh4kDGFwwEA9EaE2ANP4c3iTOobLqiotOyxxDa3OJvmYxvIa/sZ6dMJ99rrML
+	nYLmsKs8oWroQ07SukKXY+i/BQ6jVbMCDmXx8W31LYfGZUnqWTk8sgyQTKJHP5WaUmbmZfkCybp
+	Lb7SrM21uO15rWs7IPha60sJQd1ppakuXxDa+GM3jbz0eugRBwfFxk9vnX4s3fWzQHTuy4+uv7j
+	FcJM5bfUUnXbIENEdq0gVW0=
+X-Received: by 2002:a05:693c:41c5:10b0:372:7af9:b916 with SMTP id 5a478bee46e88-3751ef77c8dmr97324eec.18.1794248961138;
+        Mon, 09 Nov 2026 10:29:21 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6e::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520608b52sm102777eec.13.2026.11.09.10.29.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 10:29:19 -0800 (PST)
-Date: Mon, 09 Nov 2026 10:29:18 -0800
-Message-ID: <8025f6aed4bc33298e8be50280ab72e4@gmail.com>
+        Mon, 09 Nov 2026 10:29:20 -0800 (PST)
+Date: Mon, 09 Nov 2026 10:29:20 -0800
+Message-ID: <e4def2839d68382fd50e4fe1e6b4f116@gmail.com>
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -90,9 +90,9 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  daniel@iogearbox.net, razor@blackwall.org, leitao@debian.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org, leon@kernel.org
-In-Reply-To: <179418738174.994134.464817117967884735@kernel.org>
-Subject: Re:  Re: [PATCH net-next v3 7/9] net/mlx5e: lift the netmem TX frag
- size limit
+In-Reply-To: <179418737248.994134.10509157155829463489@kernel.org>
+Subject: Re: [PATCH net-next v3 1/9] bnxt_en: let the stack segment GSO skbs
+ with too many frags
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -103,22 +103,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 
+> > +#if (MAX_SKB_FRAGS > TX_MAX_FRAGS)
+> > +	if (skb_shinfo(skb)->nr_frags > TX_MAX_FRAGS)
+> > +		features &= ~NETIF_F_GSO_MASK;
+> > +#endif
+> 
 > [Severity: Low]
-> Is U32_MAX really the largest length an mlx5 data segment can describe?
-> The commit message says:
+> Should this patch have a Fixes: tag?
 > 
->   TX data segments have a 32-bit byte count, so devmem TX frags don't
->   need a size limit.
-> 
-> Bit 31 of byte_count looks like it is the inline segment marker rather
-> than part of the length:
+> Commit b91e82129400 ("bnxt_en: Linearize TX SKB if the fragments exceed
+> the max") added the unconditional linearize in bnxt_start_xmit():
 
 [..]
 
-> Would a value that matches the hardware, such as (1U << 31) - 1 or SZ_1G,
-> work better here? The commit message would need updating to match.
+> The commit message describes both problems. Without a Fixes: tag, stable
+> kernels that carry b91e82129400 won't pick up this fix.
 
-Let me switch to SZ_1G to be 100% safe.
+Will add a Fixes tag, but not sure it's worth the backports..
 
----
-pw-bot: cr
+> [Severity: Low]
+> Can the segments that the stack produces here still have more than
+> TX_MAX_FRAGS unreadable frags?
+
+[..]
+
+> Could the commit message mention this limitation? Fully closing the gap
+> would need a fallback that handles unreadable frags, or a frag limit per
+> MSS window at sendmsg time, rather than skb_linearize().
+
+Not sure what's suggested here. The example that's given goes via skb_linearize
+and fails cleanly (as expected). Handling this in a better manner is out of
+scope?
