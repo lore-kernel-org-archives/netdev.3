@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794267027;
-	b=tjZdkUZHmr00M+hwafeM+1r1ZRLGXPImyMvB06+YBk07NKmd3KZ0Z3KVTEvJiNrYgzfV
-	 5FwT3lzdzsrsx/wj1l6MlNQYzvF2rOoAlAxpXVBWcnjTOVED8AcoffPqlXlaHmt1cvyrS
-	 Ts53iFdifkjKyBKqaUXA5vI2gcfd77iuMnBHda7xZH/NBQRjW9bejIxxibIP1ne5UAp63
-	 h4UI4Hc1veFL2uIiqCMN4bA04IkvHElvbtx0IQQRShbs6vSyvJTVqzABdm3ycFL6xVob5
-	 SnAHZl8Og1lOYZmU8OyRQlZ8klar+gQi1GVTK9XmEO5+wy6+r0v5p6RObf7TQXmjCpA==
+	t=1794267022;
+	b=e5CBkLhcpRs+t9boWK3ZstlsCSt/tfXki9wZBcnHGMNohaLdyzvrsSJdSbt5oF8oJUjM
+	 /FR9Kw+FdJD4RA0qpwns6qZ3TxNyZGu6tFEO++nJiy5m2jaBeQOCBYl9b4LdNwoNMe63R
+	 S/IzUxyZmx5eYv2p9a+OvRUYNgOBr0yVnRpG/7RIrgqr+g+w4c9l9FvoVzGECnGpMNg0L
+	 NnYGWmGSaGnxZUA3q30iK+VraryZVZlivCICIkQw8F+5jr/gqAliaPtJGHDNyNtYS4qlf
+	 mBxuPuNEFyA+Dk/YQtuDwjMXROfIE65jlaMg3DsWSBV2GEbeMbXtfmGwlPR5pGok85Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794267027;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794267022;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Aul0+57KJrHaIZ99Xbi6Jwc/cNCXvRyRs0VsyjGNzjo=;
-	b=RMA1Z1EN8vzfoGNmTvETU/5ur/IXJ4A43zuYJ9awzdVyr+y3J6ATmLwaB/N1gjB4Nzhy
-	 gFfJRu1BdTClZEYM0TAjb78ogp/72wQ816IFi/7MZjHFCCt0S9yqv4uw3cJ6kss8jUvbU
-	 08TzD8OLVAWbA4ULHq1p3oZKlBzEMuC5uq3BTkQNZmyzfwqEHdoM13DArbqF2yfPpC7kW
-	 RZKW2R7zm9foIDoRYNI1r0o2DZ7CEznHISrxpMfzUmH4DN/bEzb7C8irlyEcXRm9vbOtj
-	 hZUcnwkTD2c3Jhuy+0llel2nGCEVFg1hRNKeFBeRATxNTcfetmKMOr/tdhNQU58wJ7w==
+	bh=d7flpOWW+EdDVpjqNDQCEwbgE1WjvjabhxU7S+bNa1k=;
+	b=Wt1U+1dWSBgKCciUbLsjD3/pyJ+ZX8xi/XnP6JSrSSIg5JVyW9NNBKDySBDMlAfjj4d3
+	 ifmFzOxeCHNfnfi6NxLdE2gfOteedVI/SPe5q1RMO30u2c4epLvUYbbXNBysr9sO9bUDS
+	 DOwQ1gjcmiLqaa5eIPZ3E2nYj144Roj/fg9UelMQyu1X2rXxd/IeJCvaVnI0yXRlcUS+o
+	 wHo+zluQfyDcCP159o3WfQQFajp63YZMWTMAZqHYYQl2bxzwXj564ET1QOS+1ExWkKNmI
+	 IJvP4/lQNCPXn3tCQGHOejU5ydvRR6SMKcja4dglX2xrCBmK2Glsx0hSax5yvVSUfoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKMuYezg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nH0eA1sB;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2109360A2600;
-	Mon,  9 Nov 2026 23:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FA7606A321;
+	Mon,  9 Nov 2026 23:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKMuYezg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC73B1F0089F;
-	Mon,  9 Nov 2026 23:30:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nH0eA1sB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F5E1F0089F;
+	Mon,  9 Nov 2026 23:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794267027;
-	bh=Aul0+57KJrHaIZ99Xbi6Jwc/cNCXvRyRs0VsyjGNzjo=;
+	s=k20260515; t=1794267021;
+	bh=d7flpOWW+EdDVpjqNDQCEwbgE1WjvjabhxU7S+bNa1k=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JKMuYezgzJUgf+6PkJAGgmrkLx2iaJQak262xV8i5njRvYaRlQPMRZh4KGVpQroq5
-	 xXyeJnb+hpodlqQMLsyoYJMAqKJ3uRwtuPQZnmrk8xCDOg3uPxbHE5X+C+OA2boT67
-	 xwidnV65g0DDxUQG7flm2V2g7D+AEZxhbCHSg3/g+tlwe8PLl5KbscuMGox0J8lrcR
-	 a+Apt7fX4ALgCjmDyduCebDxMxqd8MfqvE35JhiLpH26iFYWVcRSDzwh3A04GjLuCG
-	 BlCn8lNzd3Bj5fkLPHNAU9gEsMYgbmK5CoBvdTWAxJ0zQlTrVdHyrFn4J43H/EzUf+
-	 aeur+vZPxGAiA==
+	b=nH0eA1sBP1mmuUL/NiZB2U6tR8AqFqC1VUc4yEC0XgDbq+/OlqmO83hY2wwD4f0kE
+	 SRVvBzFKjCpFaRrfAMyDAl1qwqChLR6ZfKotz77LNMbr8RgltPhUbok1hkuA6KVthr
+	 Fdw9U27S3VN6VUSZ8RfvNcj1iAkaqXGyQLb1v2WRAWxTGI2WIrQb3u/FxU2wNO16D5
+	 AlnyIipXX4i41jFRVFN0IgAXPp/GpfXuY0MifwXnneutL/ZqOQ42sRNocaZKjpzIdy
+	 bQebz+JbMBAQDNF1/ydGDVCK68K7p9nj4S0hlIkRbMd5t7QlBfhcUvdT60BIM4Oe4s
+	 N+ZL2Do0Qnvfg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D843E391AFA5;
-	Mon,  9 Nov 2026 23:30:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8354391AFA5;
+	Mon,  9 Nov 2026 23:30:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,50 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/5] netconsole: Support messages
- ratelimit-ing
+Subject: Re: [PATCH] net: skbuff: preserve fclone lifetime when freeing stolen
+ heads
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179426702566.3543549.15081609670268314046.git-patchwork-notify@kernel.org>
-Date: Mon, 09 Nov 2026 23:30:25 +0000
-References: <20261103-netcons_ratelimit-v4-0-b554c27ba27a@debian.org>
-In-Reply-To: <20261103-netcons_ratelimit-v4-0-b554c27ba27a@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, shuah@kernel.org, edumazet@kernel.org,
- rdunlap@infradead.org, paulmck@kernel.org, gustavold@gmail.com,
- asantostc@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com
+ <179426702076.3543549.4583782076046363502.git-patchwork-notify@kernel.org>
+Date: Mon, 09 Nov 2026 23:30:20 +0000
+References: <20261030042329.74461-1-kylebot@openai.com>
+In-Reply-To: <20261030042329.74461-1-kylebot@openai.com>
+To: Kyle Zeng <kylebot@openai.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ outbounddisclosures@openai.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 03 Nov 2026 02:37:45 -0800 you wrote:
-> netconsole hands every console message to every enabled target, with no
-> bound on the rate.
+On Thu, 29 Oct 2026 21:23:29 -0700 you wrote:
+> skb_morph() can give an skb from skbuff_fclone_cache a page-fragment
+> head without changing its fclone tag. IPv4 reassembly can produce such
+> an skb, which can subsequently reach the GRO stolen-head path.
 > 
-> At Meta, a few hosts caused some DoS and netconsd was OOM killed in
-> some regions, fed by 3 billion RCU messages from thousand hosts and by
-> a swap fault that retries forever, which logged 6 million copies of one
-> line on a single host in a few hours.
+> napi_skb_free_stolen_head() puts the shell into the ordinary NAPI skb
+> cache without dropping its fclone_ref. If the embedded companion is
+> still live, KASAN poisons it along with the original, and later cache
+> reuse or eviction can overwrite or free the allocation underneath it.
+> A mirrored batman-adv DAT packet retained in a plug qdisc reproduces a
+> KASAN use-after-free in plug_dequeue().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v4,1/5] netconsole: send the oops when oops_only is set
-    https://git.kernel.org/netdev/net-next/c/96178f0437dd
-  - [net-next,v4,2/5] netconsole: add a per-target message rate limit
-    https://git.kernel.org/netdev/net-next/c/cfc3ceefdc96
-  - [net-next,v4,3/5] netconsole: allow configuring the rate limit interval through configfs
-    https://git.kernel.org/netdev/net-next/c/04d1be8ae2dd
-  - [net-next,v4,4/5] netconsole: allow configuring the rate limit burst through configfs
-    https://git.kernel.org/netdev/net-next/c/8481c27649b9
-  - [net-next,v4,5/5] docs: netconsole: document rate limit feature
-    https://git.kernel.org/netdev/net-next/c/ec1e576cd88d
+  - net: skbuff: preserve fclone lifetime when freeing stolen heads
+    https://git.kernel.org/netdev/net/c/86706ffa990e
 
 You are awesome, thank you!
 -- 
