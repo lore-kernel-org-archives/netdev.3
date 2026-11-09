@@ -1,60 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794259399;
-	b=ZPvyGYqt5o0yev5s8g4xacK0U/9W8TrjnsRepzZd8ffSNd7eZGrbY1+wZJhXZSb4W4JJ
-	 +/yuMHD35kYfYA+2HGUp45mkZcmtWaCe0UeZFb03tKs/ijiEskAGubSBVQKr5SzFunHoH
-	 tnDdZsdTAh8PRSum3t7nYjNnR7NW2d1Ewr10WMwOSKv2INMl9WeNNEVasZpkggh0iyPUK
-	 nzYCGa9XXS3nMRAvKOXWZTUoxs7NVAfE9LsQb4eGRMQ9JyxrAOaiMxSzIAuwQjJtsgDi2
-	 O7pJn2y2l2Thl2UVGcQJcHiFct3zt2Yd031QT1B9KDJRa0KJIBR+HORQXhUONpyDOTg==
+	t=1794259563;
+	b=vJp5AGSpmJWfWETN3qZLVM61sHzesWTc+N8iA7YMc8XoUKcwoWGKNESAPzHh7i+YYYj6
+	 tJPnugR0z7il6CKrdfspROmpOOxNNdQ+sGBI1TbzK0EZ4oODk+A50MlO6ruoOWes4gBW4
+	 kG+y6BqruKGEe7uae79UMJJXDY6IgnW4czHWruOcdT7YnpgY72Ket73ciLXSFl+RYzhm0
+	 8Xce06PteqgO0g4NLrvPR7BzAQubYJVlyLHh5OAIIs2Y9vn13q6FP252QJAgv+JpOlLP1
+	 PPr2wl8nVQueJH9pf2blF11fQwpksaGRPG85sQ+F2ocjbIk1JHLFAFpax1dS6bXpdTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794259399;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=+kUTd224F4w2WVRCX29Wbt8/OcYpKrZOIe0kcjayeIo=;
-	b=plNbDbmkjhphRWA7jd6lRxcsYOmH8LOME30n6vRKNKedgpB1RBCrOejk+ErxJy4BDRyj
-	 9WpLZMKrvpuv2rvag0LU35AOPbIgJ1+RQ5T94dMwfZ0kcDFtwBhbmEMISJrAq9S3v1EIE
-	 t3n65GTyPTRyb7BZOUkCJqZauAJ69tKnrqB6VkGtH2w2o1GmfQHESK+lX+Yr8SgZwF5xT
-	 WrGvGQ2LvHhZe0fDZh7LTNaQlUYn/kL08lQ6GtJmehzjt9a5dYo+KH589ZAvJrS6jyT+8
-	 VsfPwOLyQWSlOTjPxqea54PzgbpT5ttwxugim8m3ss0wKb29n5H7/PrO+5wGcMBdVZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794259563;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
+	b=nBZ/AEUv9TmkAhzwvW5+bVOn76ZPHPsXHbaHsMWDtHMlkOW/X/t3YAhshVX/c8F3hln8
+	 HFmpjNqWpKF7sdFq+DrajN/guz7D0fKM4jXC0MJxcvej1IGjBKXJwqlJ9ILNrgyhVe0a1
+	 Y4dRbwDCRlhfjf4FuUFF+U2eatpUbW0jyg0xLewUEfmGS9OIRGO9BmID53y8m6e3+cses
+	 hw+y6qXyX360bEiVwOUF8s02vjpVV1zuOiqdVaVekPLcH+R/V0USXCUwilSE1hYZnDoZs
+	 pTdx24OSLiBvs3Bl8UiS4Or84z0ea/YA3lVtZZAQL9T2MzaGvrLZXOu+JlEws5+qmdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nVqjpXl3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cPb9WBQV;
+	arc=none smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC301606A31C;
-	Mon,  9 Nov 2026 21:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CAA606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 21:26:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21CAA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nVqjpXl3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969901F008A1;
-	Mon,  9 Nov 2026 21:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794259398;
-	bh=+kUTd224F4w2WVRCX29Wbt8/OcYpKrZOIe0kcjayeIo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nVqjpXl3jELyOGYz8QbtC9ZmJjl+dXzZ0Nfjtwg2s+48CfxcodVzNgRjxDGMX+HJ4
-	 zZPk79N9QUVB43OeJhBO2LOmq06RNAy/ZzZuhj3qyTEkTs+k3Hm6PUnuPBwUY3hq5x
-	 ftt88gv/tSP0PlpMIXbRAH9IQDEuV0G/Y98Zq8DW69iLNVDbRkUMpCH53Wwzb9fMk8
-	 P1TvlqzvOZdTULh13FTwnHlA3lD7Hkk7hVJ2g0UZ6B3YoFoy8JPCgcCXxKbxfebTtp
-	 eUN9eQXZVT5Cp50jDKrmzPbW31kYKxmsVBTobYAOEBLixE1pA+jWUGl9GBOf3TiKcO
-	 j+R8thQJBIgHQ==
-Subject: Re: [PATCH net] virtio_net: check RX buffer length before DMA sync
-From: netdev-bot+sashiko@kernel.org
-To: vladimir@dfb.sh
-Cc: netdev@vger.kernel.org, mst@redhat.com, jasowangio@gmail.com,
- eperezma@redhat.com, xuanzhuo@linux.alibaba.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- vishs@meta.com, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, nikolai@kalinidze.me
-Date: Mon, 09 Nov 2026 21:23:17 +0000
-Message-ID: <179425939711.994134.2719389056327615125@kernel.org>
-In-Reply-To: <20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14@dfb.sh>
-References: <20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14@dfb.sh>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cPb9WBQV
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so610577b3a.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 13:26:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794259562; x=1794864362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
+        b=cPb9WBQVZGuA2p6y5G1rnf8qrywNuLGbquUytmjFSVK2c9cFSmSBsr9IJC1lNy4c4k
+         nAfo2pimOolJx78Igw2BAO0LF7ZrC3nc07T0K0sKRfvqeXozq6HbSc5yPkbyI3+Nm9Nb
+         ZMtLYYsAAn9drr1v6NLvmq9cXwVI7ZI6abXWMuXYSNe+VIGDA/k87IVuWp4jE8QOLtkF
+         X8Z19WdwhsMFvagnoWQ5Ljd5k4/ECxoQ6m0okWPBCfGHpGzD2tVqzsyYTGS+ePgSyrqL
+         b99W8w4FjFRO6Q6cbkpoJxjtd6Bkyh+oUYl8NCSxojZo5B1whJws+RIWVj2ESd0yQQSR
+         Xj8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794259562; x=1794864362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
+        b=dldMupPxUr3ssUODagVkKKI8SkAhSgDFaDDGVcymug7NGxkluaqg8t9MvpM6Vc8GMT
+         gIA8UCEIoV0+ROaDHKy0PzTh8dYmyCiwNawpS9ap4kO7rbf4XJVvyUqtVm7hrlObZyHg
+         TRTJQjybW+EDn9OSSK9iAblWxQJd7/tImvt/3Wc1pSvSGxQ8Ine8CsfK1JWmXLJxOq3l
+         ToyfsBBTOv7J4KWccVQF2G3w/XoIVvl5JVtiebKMJ1z+WzqsrA3QJ1jOf8oEUw7pJZGf
+         MHkHPj+MW0e+pysARRmFc5JQo9LRpSelm1u+ENoLaWdw1Vr7kHzho/YvEJ66cY5WNJTN
+         8Ltw==
+X-Gm-Message-State: APuU4Z8g2brgRCX1niMquT8Gb3NGWUi77NWz+ILdB3Hk831VbxiAGQSY
+	auiMuBI2BBjIaRUKmlp9ZMogJX8WdU/UXSS/MilvKnpgzvJ12dnUNj4mgBFIxw+ZIuxcdkTA4CC
+	fsHlqjAM=
+X-Gm-Gg: AYBFou2jU0Inz9Fp0D1F5dNZiMGfe4/G2OAhWziYJG22euvU72opCkQjgZkt6Ar8eZQ
+	1bCx3SfNrm1AA1hheZY80cGK09evxU+3YVlwbOe5tZ4Arqnk2SoRgiduKxYkSzJVEB4RrUggrHX
+	5Tsoz33oHRkDOF50r5W9W3gJfPkm93OFuiOg6M3oIQpjl0WQSx9UHllOTtWY+xqoYhFxtr0Irua
+	Kp3AQTIG2T0lSboY3QkohmgmmzFEtsem/VQsmkn9xkCTO8JDYVZe1h/mfOQc5qU2dW0KKsO0oGP
+	eI7WZR+Zt6ThSAqYm4AKtyeLLx/5c/rDd09lYz9tkf6XMo/ibPjB+Y7/30Kt3b2/5jRRPx++f4R
+	TylXPdwJpDlgwQrn38tyqcOl0pQUf8agGyzAtrkaF0klYUCzEOB+vHEPXwgsoC+3FyzSST6N/Dg
+	RSsXvIyROPmz9b/5/B544ddKmWfLQwVqaeDwjPFKAivUXUJWdaibZaUJwAWAm/Etp4tEOS4TkQm
+	XKoy6ZyQ6a+kEUmrNc5Hq9oREYx0SOdQeszECT2vg/iLlQ4TaTetCMQbKnGpaTO8fxp3BfmX6D/
+	hIDZhJYE2371Si05fko9ia+VNb6Ud2ZRh997agXHfnfa1Wg6G/lP9k9pgle6GF4aWb5Z
+X-Received: by 2002:a05:6a00:17a3:b0:897:4932:5098 with SMTP id d2e1a72fcca58-8ba86b939f6mr746526b3a.27.1794259562386;
+        Mon, 09 Nov 2026 13:26:02 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de3619sm122854b3a.5.2026.11.09.13.26.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 13:26:01 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2 00/11] ss fixes from an OSS scan
+Date: Mon,  9 Nov 2026 13:25:16 -0800
+Message-ID: <20261109212559.39661-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,107 +93,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Fixes for the ss findings of scan iproute2-20261015-004, plus bugs
+found while confirming them.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+The biggest overall change is removing all the fallback /proc parsing.
+Even the oldest supported LTS kernel now supports netlink for socket
+diagnostics. Users building their own kernels with custom configs
+without netlink socket diags will just see an error.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The other changes escape names chosen by whoever owns the socket,
+bound state and type values from the kernel before indexing name
+tables, and stop treating a netlink port id as the owner's pid.
 
-- [Medium] The Fixes: tag and the changelog blame commit 24fbd3967f3f
-  ("virtio_net: add page_pool support for buffer allocation") for…
+The overall output format is unchanged. Replaying a TCPDIAG_FILE does show
+more: the recorded IPv6 dump was skipped before, so those rows are new
+and the address columns widen to fit them.
 
---
+Stephen Hemminger (11):
+  ss: fix double close on sock_diag send failure
+  ss: drop /proc fallback for socket listing
+  ss: escape names chosen by the socket owner
+  ss: size the TCPDIAG_FILE buffer to the record
+  ss: replay all dumps in TCPDIAG_FILE
+  ss: bound state and type name lookups
+  ss: fix rpcbind service cache
+  ss: read socket SELinux context only for -z
+  ss: check owner before naming a netlink socket
+  ss: keep following events after ENOBUFS
+  ss: report a failed SCTP or MPTCP dump
 
-virtio_net: check RX buffer length before DMA sync
-
-This patch moves check_mergeable_len() ahead of
-page_pool_dma_sync_for_cpu() in the mergeable fragment loops. It also
-limits the head buffer sync in receive_buf() to the length of the buffer
-that was posted. The goal is to stop a malicious device under SWIOTLB from
-using an oversized used length to bounce its own bytes over neighbouring
-page pool fragments.
-
-> Since commit 24fbd3967f3f ("virtio_net: add page_pool support for
-> buffer allocation"), an RX queue that uses the DMA API
-> (rq->use_page_pool_dma, for example with VIRTIO_F_ACCESS_PLATFORM)
-> syncs each received buffer with page_pool_dma_sync_for_cpu() using the
-> length the device wrote to the used ring, and checks that length
-> against the posted buffer only after the sync.
-
-[ ... ]
-
-> Fixes: 24fbd3967f3f ("virtio_net: add page_pool support for buffer allocation")
-> Cc: stable@vger.kernel.org
-
-[Severity: Medium]
-Is 24fbd3967f3f the right commit for the Fixes: tag? The sync before the
-length check seems to predate page_pool. That commit appears to have only
-moved it into the per-site page_pool_dma_sync_for_cpu() calls.
-
-In the parent of 24fbd3967f3f, every merge or small mode RX buffer goes
-through virtnet_rq_get_buf(). It syncs using the raw used length:
-
-drivers/net/virtio_net.c:virtnet_rq_get_buf() {
-    ...
-	buf = virtqueue_get_buf_ctx(rq->vq, len, ctx);
-	if (buf)
-		virtnet_rq_unmap(rq, buf, *len);
-    ...
-}
-
-drivers/net/virtio_net.c:virtnet_rq_unmap() {
-    ...
-	if (dma->need_sync && len) {
-		offset = buf - (head + sizeof(*dma));
-
-		virtqueue_map_sync_single_range_for_cpu(rq->vq, dma->addr,
-							offset, len,
-							DMA_FROM_DEVICE);
-	}
-    ...
-}
-
-This covers the head buffer through virtnet_receive_packets() ->
-receive_buf(). It also covers the fragments in receive_mergeable(),
-virtnet_build_xdp_buff_mrg(), xdp_linearize_page() and
-mergeable_buf_free().
-
-In every case the sync runs before check_mergeable_len() or the
-GOOD_PACKET_LEN check in receive_small().
-
-In virtnet_rq_alloc() the mapping covers the whole alloc_frag:
-
-	dma->len = alloc_frag->size - sizeof(*dma);
-
-So under SWIOTLB, wouldn't an oversized used length copy bytes chosen by
-the device over the neighbouring RX buffers in the same frag? That looks
-like the same primitive the changelog describes.
-
-git blame points at 295525e29a5b ("virtio_net: merge dma operations when
-filling mergeable buffers"). The path then became unconditional for merge
-and small mode in fb22437c1ba3 ("virtio_net: rx remove premapped failover
-code").
-
-Kernels with fb22437c1ba3 but not 24fbd3967f3f seem to be just as
-exposed. With only the 24fbd3967f3f tag, stable tooling would not pick
-those trees up. This patch also cannot apply there, because the page_pool
-code does not exist in them.
-
-That also affects the note after the changelog:
-
-> An alternative is one sync helper bounded by the posted length for all
-> four call sites; we kept the per-site change to keep the net and
-> stable backport small.
-
-Should the Fixes: tag point at 295525e29a5b and/or fb22437c1ba3? It would
-also help to say in the changelog that those trees need a separate fix,
-for example limiting the sync in virtnet_rq_unmap() to the posted length.
+ lib/escape.c                  |   7 +-
+ man/man8/ss.8                 |   3 +-
+ misc/ss.c                     | 874 +++++++++-------------------------
+ testsuite/tests/ss/ssfilter.t |  26 +-
+ 4 files changed, 239 insertions(+), 671 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14%40dfb.sh
+2.53.0
+
