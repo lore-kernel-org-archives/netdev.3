@@ -1,92 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794192864;
-	b=q9GppLDzIRwf6oih955xRPsPL9TswWoRV5crNlwFcD8mkLnxLzp34cL/ITHnS/F0Mwgc
-	 sOe2yzr8pRCsALKOCy+SdR94+2P+AGNsvXBqkKPe1K6pUdyUGvsvg4mcaTZsyYirzSn35
-	 OZHSfbD/zpW5zQ9Ti25mGILsXwGJAvKk0Qjn/0ByLLOdTWsLTnvdvHFwShBaAEVMBY/gv
-	 jChpcSrBoHEG2b6aCEEFm8PDdx8JS7OXBVDMX1ujloGzI14EHCNjyMScg3mAVnMxc5+By
-	 8I/AaNwmp+MZHEnH7W9X9I0jY+JBADTV0jgszoODismCRCQfBvKOfwkrDu9mlOu6rHQ==
+	t=1794192897;
+	b=MC1YMGEoMh+kVeQZ0Yc1x714dVaBPRNQZIBIghEdeyfY20Jql0DW7vpfNEA+OfYWf4do
+	 A5Dp8dZxPKhxaruOnIaAbYS14LfGHplWNk0VU1jHT2BcXC/QFtu4QDF72gvOoWIygyfp7
+	 9YJoreCgUO0ROsJDe2dp/+RmCcFlJfxmRvt2u0x1yQZXGdZbOAeD5Hvn06Y5e+YGL281B
+	 6r7BSLnGlU0FDo0C8DKxTVSBA2W+nwbQQdABWIbLojfyfYkvPlkz2TJ/b0zUTmcgNe4RE
+	 Th+Y233ikTL0c6P8ntB8Nq7BuMovPiW93vWMWC07P03Z6w99TN/kHObmfmY5S/NIyLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794192864;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=YFiFvM32hOcR5Y90zApzECJ7RVHYz69VRXl9qwib/qo=;
-	b=EpUrpDC6I3fWgDNgEBLenHlG6itNnQz2lJIdx7VHFgBvglZildsBSbJd7QMRhgdw/PaK
-	 GUMCZTVTLG9AFssdWDM89aEzhxJE3aAxmdGvKIbQGpBJFiiXM7HbiTIlHGy01rhQkOF9N
-	 bY/12uOUGpOQcB4dmHDhoUtTL+k6No0CQeGFvHxcSdVUHAquIlDc+xZBEEUNYbMT3ma3m
-	 5nqOt18mNTugfnpRhJ72/LPMv88OTcJgzPheTAlcQGzLnFla5bDwOgb8JlWF5rgllgRHS
-	 1L9+EQ7/fxakdpkQmyNrypO27bvN01ulueMdr9DtXPAlgO/Qw+/k9TyNIotnGhQqLtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794192897;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=hYrJTFeeaJTcrWxyWoGWMilmtuo78RKW5cGiyhOt/fM=;
+	b=YbF9NcleTBjHBL3cuBnQnUTryUXtF1xoqDcQlNuyGbyKoSRMxiVWV2YkcsEITxAKgkFp
+	 OuTxxC8lH0JijIDFsbzW7vtGumN8NH8nrOr168Ia7oc13QDEZCiGzKmXtsf0z5B7Df4xy
+	 ozIIpqorWFTWzINGcFwtF35gYIvKwDAi6zcNQZAbPMYgCZaR8Oa3RlkROhnYBidfEp3hs
+	 liRqC5qqU8S1bZDxWPQHmlpPEPHk/d9W02k9i/xzJmMSxyOavhbZkKwrZdhMMwH34q9VH
+	 i0RjlzGhyN5kXoPJhn3FsMEGpQtTue106PAqXEBF4sGKB2zdSnTo3AUy/kwe7tn8uGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gMh86AzT;
-	arc=none smtp.remote-ip=209.85.210.174
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=o8byScok;
+	arc=none smtp.remote-ip=95.215.58.151
+Received: from mta1.migadu.com (out-151.mta1.migadu.com [95.215.58.151])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D648606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 02:54:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D648606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F7E606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 02:54:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56F7E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gMh86AzT
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so294931b3a.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 18:54:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794192863; x=1794797663; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YFiFvM32hOcR5Y90zApzECJ7RVHYz69VRXl9qwib/qo=;
-        b=gMh86AzTUxJsjktaXCiWQhVjfcIZq34kh9cg7PRORFrBK0/f4OWqfeQY/Uthvvb8VT
-         oBsyotvQS4Ukkt+mTLCQ6ff25GUR5oBWKvQiiBkdC3LFG4OFr3cVarUvOCbAaEwLPAPq
-         0ZbTUdxo1TGIkkxsQBScdYjYciBWP4RO5PHn2prt12a05D/IblRxUYIQyGk+wwCQNSho
-         LPJLVOOCd9MaTqpMo8ahQ+oMIyDXtXvjSu+OPb6KOAu0t881srQ4iDhUwlTWm8J2SaFR
-         3qSfznAvoW1XdDRKITQIgs154Q5WLnI+FGmFSoxkmEJm/UOpr3VqMwq3a317gDaXlQST
-         4nWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794192863; x=1794797663;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YFiFvM32hOcR5Y90zApzECJ7RVHYz69VRXl9qwib/qo=;
-        b=Asr2mAJvKH2oOMHeid49W7sO8H5gZoCYi+rr9vQ62tk/lHSg/uCmbE9vfjhNY2uMHI
-         zpuzGVoSl3Y8a5W+xr7tfJ6sX1OkTTYnaRwhnS2peKT9+4g3WYPfgFbL/5v7/NItt6IM
-         XMmlGggYTzfRGJLG2MHaVGIc8+Oomv0rYpewEisxOwQetLYS+cDHARxkeyd91WPeL/JA
-         Cld3AHwwsU39pa4MTZaSj/ZkavdIVdDYuk9LkzgdVFng4HSD/WXV2AX+rzFI/DLaYgym
-         mwmAr77EnuCsQ44byQ4H960NWDz+pcks0dys0X1NS1FXeFDTMM+XInmJ+VuU/H6Ny4yu
-         Nycg==
-X-Gm-Message-State: APuU4Z8It7DHRuv42iqRSWk/qYkb+1mUgeKsIEZR1wwsVz4F930jhjnR
-	P0kCxEuP4LVfG+AJc0QQ8bbNbZvP0thnJL3eOFOiQFpVDZRF2wrDsiEmoW6s05XQez4=
-X-Gm-Gg: AYBFou1BflCtRB9JS/u4F3+gRO4/EIFqFCZiG86vhNa1VYhC7x4UDWRDRVxf8UsZQvU
-	jttle5t7zmhamyDCvJvXRZPXH2H1YkWJkgHZUUcylDUdJTLFuMev+Vptda8MFdJAX5tWnVi2Lwe
-	D5dLU5fEiwjHpmrjGIvn1CqKMNjbTVlALvWA5Z+4uYTXWoPRCUBJnRqj0rZOOQx4QcyUJkmmTYm
-	wn09Rhn6fvv08uEM6nq11JKzDwHbjAB/DmfGpCd1OU4op80AbBdh+fSCHYbEWS0M6JE2w5kdSco
-	XVTzUQY61itrrKxe0zkthwwokcUHN88rc9TKJCI2oT2HMbXWX28sWgbsFM91oDj+ANFFBvjBfpD
-	wqVmPTWXQpyklrUFcy/WodhPw81ROg/hpkAUFi6rFncm6XVOQaVuYvPGI+aEg/BkQhQBUYTYD8o
-	XVhmA3GApuALAaeu0pr5vSbQphWRSJ9X5UxgWgbaWGMiHySjpTpH7K68NAeJifvSfeN0IuWLWw3
-	Q4Az3ov5u1a1/Hj38KrE4674MuTl3rM2YCSBJJktip2h1PuN35REQ35kWtMvhAIdA3DAYvwxKSq
-	ecLNo44j2341gXIK0AQF8vRw+VlGc2l9GItUSm7ot32np9DYJLePSMPz7wzVde3FJRG/SOkY
-X-Received: by 2002:a05:6a00:3289:b0:8a0:58c3:8ceb with SMTP id d2e1a72fcca58-8b67026524dmr2442507b3a.45.1794192862733;
-        Sun, 08 Nov 2026 18:54:22 -0800 (PST)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b649b0d50fsm883376b3a.40.2026.11.08.18.54.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 18:54:22 -0800 (PST)
-Date: Sun, 8 Nov 2026 18:54:20 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Fang Jiabao <kaquoin@163.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH iproute2] ip route: check return value of addraw_l()
- when adding encap
-Message-ID: <20261108185420.1d3dba55@phoenix.local>
-In-Reply-To: <20261102090535.226168-1-kaquoin@163.com>
-References: <20261102090535.226168-1-kaquoin@163.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=o8byScok
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AklJRutHnCjXFhvSqdKi7qHVk0KLDVHRQgdOQp8cMPo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794192894; v=1; x=1794797694;
+ b=o8byScokjp+ULsxsEcyZI40PKGlyJqSpGRqP4vcSIwCXSrrhBoDONhExVlJxSlTTdikAeYQC
+ xhln6Y4vnRwQLa49NRuuEVKNyJk2DmR/vJ6tJYRvyuPAOT298kMqpfrXh9/kkeOtD8X8m+nGLFc
+ sabLDu4xDbC2LSZYG4cZKbsA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 89474d14179b70cf;
+	Mon, 09 Nov 2026 02:54:54 +0000
+X-Mizu-Trace-ID: 89474d14179b70cf
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Julian Anastasov <ja@ssi.bg>,
+	Allison Henderson <achender@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
+	linux-security-module@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	lvs-devel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-sctp@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH net-next 00/14] net: annotate data-races around sysctl knobs
+Date: Mon,  9 Nov 2026 10:51:59 +0800
+Message-ID: <20261109025425.328445-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,100 +98,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon,  2 Nov 2026 17:05:34 +0800
-Fang Jiabao <kaquoin@163.com> wrote:
+While testing the recent sysctl range fixes I noticed that a lot of our
+sysctl knobs are read with plain loads while the handlers update them
+with WRITE_ONCE() and no lock, so KCSAN reports them as data races. I
+then used an LLM to go through every ctl_table under net/ and list the
+readers that were left behind. This series annotates them with
+READ_ONCE(), and adds WRITE_ONCE() to a few custom handlers and netlink
+paths that store to the same fields with plain writes. Most of it is a
+plain READ_ONCE() at each read; where a function reads the same knob
+twice to make one decision, it now reads it once into a local, so the
+comparison and the value it acts on cannot come from two different
+writes.
 
-> iproute_modify() ignores the return value of addraw_l() when it adds
-> the encap attribute. If the attribute does not fit into the request,
-> for example a seg6 encap with 60 segments, addraw_l() prints
-> "addraw_l ERROR: message exceeded bound of 1024" and returns -1, but
-> ip sends the request without the encap attribute and exits with
-> status 0. A route without encap is then installed silently.
-> 
-> Return an error instead of sending the incomplete request.
-> 
-> Fixes: 1e5293056a02 ("lwtunnel: Add encapsulation support to ip route")
-> Assisted-by: Claude:claude-sonnet-5-5
-> Signed-off-by: Fang Jiabao <kaquoin@163.com>
-> ---
-> Tested on current main (e4cd9f1d, "json_writer: fix pretty printing of
-> arrays"), in a network namespace with a dummy device:
-> 
->   ip -6 route add fc00:ff::60/128 encap seg6 mode encap segs <60 SIDs> dev d0
-> 
-> Before: "addraw_l ERROR: message exceeded bound of 1024", exit status 0,
-> and a route without encap was installed.
-> After: same message, exit status 1, no route installed.
-> With 59 segments the route is still added with encap, exit status 0.
-> 
-> With 63 or more segments the failure happens earlier, in the encap
-> parsing, with a different error. That is not addressed here. The same
-> addraw_l() pattern exists in ip/ipnexthop.c and is not changed here.
-> 
->  ip/iproute.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+There are no Fixes tags. Done one knob per patch this would be well over
+a hundred commits, so I grouped them by subsystem and feature instead to
+keep the review manageable. If maintainers prefer, I can split it up
+further with a Fixes tag on each one, as several smaller series.
 
-I agree with AI review here:
+No functional change. KCSAN does hit these, e.g. toggling
+net.ipv6.icmp.echo_ignore_all while receiving ICMPv6 echo requests:
 
-The bug is real and worth fixing - thanks. I reproduced the
-error-then-send behavior: with 60 segments the unpatched ip prints the
-addraw_l error and still hands the request to the kernel (the reply
-proves the send). Exit 0 follows from the ignored return value, matching
-your test. Silently installing a route without the requested encap is
-the worst possible outcome here.
+  BUG: KCSAN: data-race in icmpv6_rcv / proc_dou8vec_minmax
 
-But please fix the cause rather than the symptom.
+  write (marked) to 0xffffffff8ee2940d of 1 bytes by task 504 on cpu 0:
+   proc_dou8vec_minmax+0x1ab/0x1f0
+   proc_sys_call_handler+0x282/0x3a0
+   proc_sys_write+0x13/0x20
+   ...
 
-> -			if (rta->rta_len > RTA_LENGTH(0))
-> -				addraw_l(&req.n, 1024
-> -					 , RTA_DATA(rta), RTA_PAYLOAD(rta));
-> +			if (rta->rta_len > RTA_LENGTH(0) &&
-> +			    addraw_l(&req.n, 1024, RTA_DATA(rta),
-> +				     RTA_PAYLOAD(rta)) < 0)
-> +				return -1;
+  read to 0xffffffff8ee2940d of 1 bytes by interrupt on cpu 3:
+   icmpv6_rcv+0x99d/0xd40
+   ip6_protocol_deliver_rcu+0x787/0x9a0
+   ip6_input_finish+0xb0/0x1b0
+   ip6_input+0xa8/0x250
+   ipv6_rcv+0x14b/0x1c0
+   ...
 
-The request buffer is 4096 bytes:
+  value changed: 0x01 -> 0x00
 
-	struct {
-		struct nlmsghdr	n;
-		struct rtmsg		r;
-		char			buf[4096];
-	} req = { ... };
+Jiayuan Chen (14):
+  ipv4: annotate data-races around ip_rt_* sysctls
+  inet: frags: annotate data-races around fqdir->timeout and
+    fqdir->max_dist
+  ipv6: annotate data-races around addrconf sysctls
+  ipv6: annotate data-races around icmpv6 reply sysctls
+  calipso: annotate data-races around cache sysctls
+  sctp: annotate data-races around sctp sysctls
+  mptcp: annotate data-races around pernet sysctls
+  rds: annotate data-races around core rds sysctls
+  netfilter: conntrack: annotate data-races around conntrack sysctls
+  netfilter: bridge: annotate data-races around br_netfilter and nf_log
+    sysctls
+  ipvs: annotate data-races around lblc_expiration and lblcr_expiration
+  net/smc: annotate data-races around smc sysctls
+  netfilter: conntrack: annotate data-races around timeout and tcp
+    sysctls
+  netfilter: cttimeout: annotate data-races around the default timeouts
 
-so the hardcoded 1024 is simply wrong - it is a leftover that bears no
-relation to the actual buffer. Every other attribute in this function
-passes sizeof(req); this call site is the only one using a magic number.
+ include/net/ipv6.h                            |   2 +-
+ include/net/netfilter/nf_conntrack_acct.h     |   6 +-
+ .../net/netfilter/nf_conntrack_timestamp.h    |   2 +-
+ net/bridge/br_netfilter_hooks.c               |  20 ++--
+ net/bridge/netfilter/ebt_log.c                |   2 +-
+ net/ipv4/inet_fragment.c                      |   2 +-
+ net/ipv4/ip_fragment.c                        |   6 +-
+ net/ipv4/route.c                              |  34 +++---
+ net/ipv6/addrconf.c                           |  22 ++--
+ net/ipv6/calipso.c                            |   6 +-
+ net/ipv6/icmp.c                               |  10 +-
+ net/ipv6/ndisc.c                              |   2 +-
+ net/ipv6/route.c                              |   8 +-
+ net/mptcp/ctrl.c                              |  18 +--
+ net/netfilter/ipvs/ip_vs_lblc.c               |   2 +-
+ net/netfilter/ipvs/ip_vs_lblcr.c              |   2 +-
+ net/netfilter/nf_conntrack_core.c             |   8 +-
+ net/netfilter/nf_conntrack_ecache.c           |   2 +-
+ net/netfilter/nf_conntrack_expect.c           |   2 +-
+ net/netfilter/nf_conntrack_netlink.c          |   2 +-
+ net/netfilter/nf_conntrack_proto.c            |   6 +-
+ net/netfilter/nf_conntrack_proto_generic.c    |   8 +-
+ net/netfilter/nf_conntrack_proto_gre.c        |  20 ++--
+ net/netfilter/nf_conntrack_proto_icmp.c       |  12 +-
+ net/netfilter/nf_conntrack_proto_icmpv6.c     |  12 +-
+ net/netfilter/nf_conntrack_proto_sctp.c       |  13 ++-
+ net/netfilter/nf_conntrack_proto_tcp.c        | 110 +++++++++---------
+ net/netfilter/nf_conntrack_proto_udp.c        |  24 ++--
+ net/netfilter/nf_flow_table_core.c            |   4 +-
+ net/netfilter/nf_log_syslog.c                 |   2 +-
+ net/rds/recv.c                                |   2 +-
+ net/rds/send.c                                |   8 +-
+ net/rds/threads.c                             |   4 +-
+ net/sctp/associola.c                          |   2 +-
+ net/sctp/bind_addr.c                          |   2 +-
+ net/sctp/endpointola.c                        |  14 +--
+ net/sctp/input.c                              |   2 +-
+ net/sctp/sm_make_chunk.c                      |   6 +-
+ net/sctp/sm_sideeffect.c                      |   2 +-
+ net/sctp/sm_statefuns.c                       |   6 +-
+ net/sctp/socket.c                             |  46 ++++----
+ net/sctp/sysctl.c                             |  16 +--
+ net/sctp/transport.c                          |   6 +-
+ net/smc/af_smc.c                              |   8 +-
+ net/smc/smc_clc.c                             |   8 +-
+ net/smc/smc_core.c                            |   2 +-
+ net/smc/smc_tx.c                              |   2 +-
+ 47 files changed, 259 insertions(+), 246 deletions(-)
 
-That matters because the 60-segment case you hit is not actually too
-big for the message. It only exceeds the bogus 1024 limit. Using the
-correct bound:
+-- 
+2.43.0
 
-			if (rta->rta_len > RTA_LENGTH(0) &&
-			    addraw_l(&req.n, sizeof(req), RTA_DATA(rta),
-				     RTA_PAYLOAD(rta)) < 0)
-				return -1;
-
-I tested this and the 60-segment route is accepted and passed to the
-kernel instead of being rejected. Segment counts up to 62 work; at 63
-the 1024-byte rta buffer in iproute_modify becomes the limiting factor
-and it fails there with a clear error - which is the earlier failure you
-noted.
-
-So your patch makes a working command fail loudly, while fixing the
-bound makes it work. Keep the return-value check - it is correct and
-still needed for genuinely oversized attributes - but combine it with
-sizeof(req).
-
-> The same addraw_l() pattern exists in ip/ipnexthop.c and is not
-> changed here.
-
-Please fix it in the same series; it is the identical bug with the
-identical 1024, and leaving one copy behind just means someone
-rediscovers it later. Two small patches are fine.
-
-Otherwise the patch is well formed - builds clean, the Fixes tag
-resolves correctly, and the commit message states the problem and the
-reproducer clearly. Please respin.
