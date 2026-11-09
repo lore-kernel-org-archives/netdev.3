@@ -1,67 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794256136;
-	b=0jt9xDtlZj7+4CquAx+tbqMh3EzL3ZIngCSsyfd8ZiegrMXCI8RR4QHmHNBs5/SVivq3
-	 MZsFhYClOa1eVOuE61Z+5q0zpFCRqe22OcGr15aooliFI7XDRQTW/buM6sij+SExEMQyo
-	 /Gi7XIXnEq9tBpiYMR4yB05KeybSGVEKtgFMsrAvqRvBb5bBCHHO4MW3rmx7YMbaWq1JD
-	 L4U/Nndpg5PNGansa/tNakTBe4UnPGaoYssESFvV/ds62kmpOQblRxKMb+5rZEblcx5BZ
-	 74Zrvv36Qp4H3thRVX2IzqXhHuUdOi9U4/4ymwZghKeLMFq7dG4woKvOWwFNA0o2ySg==
+	t=1794256157;
+	b=QAPtLoHXXbGpSovuNBrOPxGQhi+3WsTKh+glf904TWEgcn4X1YN3YVoP8ctXELOxlYe7
+	 Ckx9rOUsZzFF7yq33lR6AtgLTYTh3/ckWvi4sgRWi0VPd+DAwyQjE8qwpzROZyLyYqt5O
+	 TUt58DSOB1vW3zsuhQc+eF/kFu3UiypHJuOidxngbf+iYYUCmpk7WkhbUWQ5rWgYaMrps
+	 LyHggQH/Q/e6X3khp1cUN58RA0QmWDdyybCgLjeVrZ6WYSvpBfmA77mMUNYQrrNCItww9
+	 HXaIs42TIFupxN6F5MYV7r5V4O/yDcTyDis/ehG6DLpB7H+mlARTgCEf5au3XSva1Xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794256136;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Last-TLS-Session-Version;
-	bh=O8bWXtQs5tyhPqTBhmBjUN2HbzWi04nLxsVKERMlLnY=;
-	b=yurXnaXZW71vRqm6FoCj2P7S6XAMdb3vhep4spK6YpuU7A5H8odyHKQDuR9kEzo8wi8L
-	 wp9Q3sdVjPBQAMscAqt+9owwoF3/6VR6tHJca1+qsAV8NIkZT1iZTiBwdsfWutuUsNHgY
-	 yjlVxGhGdSw2S6uZohxLlGe8s/Hz+JlZ39a4yCI+czSr7yIkJHgglzeefoU3mv3N/Ujyj
-	 /bVUarROI8ZgHyHyVFRG+Nn6AKNvxI8AwEqec9t3vyKGB0I2k9hTOTB2GCnw+b80zZRvK
-	 SjHXA6fyhZGsJxCQQBPWcMJFcvyBkbyuEWDYM+NvGPaZqCtW9XsEg2LfXITOWQ1/EKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794256157;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=RJXpVdEQQ4k4fP/MJ0YE0BzV6lM556s8EF58JGKSn74=;
+	b=bPnj72VMuI9T2KoA5kXo0qEL3uGOq+RZ4ICEO4UeirfRMDPnr7kWk76wLiDoUlVA0HaR
+	 /iuT5YeAFMxDuUda8GjO9JdR7F0ge2uAPLOrVbtRd/AasKgbB+1HAOcbdH9ig2UiTEYDe
+	 PequDu+0qK6qMh6Mby8CoYc+zyJfQaTkBk3a1Wd5rgVwWOaBTRrg9Df8B+C0rkhY5Mh3M
+	 sDp6xiz4f887LUHZaswbt52bxH45Zx5yjLettQc1w2FVyMlcARS4UsZlR2feiO9RBPinl
+	 kKBjt9/xbxVh/8wcM6SgviWNwbJaMxGh0dleNLU5dSmZJx6a0NVx3cw7mYShb8tMO1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=OfLuCSba;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=jPtiJpkU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7439A606A321;
-	Mon,  9 Nov 2026 20:28:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7439A606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042E6606A333;
+	Mon,  9 Nov 2026 20:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=OfLuCSba
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 085A8A1583;
-	Mon, 09 Nov 2026 21:28:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794256131; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=O8bWXtQs5tyhPqTBhmBjUN2HbzWi04nLxsVKERMlLnY=;
-	b=OfLuCSbabGbXKxsEWTqsxyM3H3PDPY0x1vCeUaij/McT8+ZLIk+jVIiEn81OsUSWcQyp+y
-	EL0A2/Et5KjkhkSyrVBg5SKA52z7ZzgkT2HENFFUWlylMZ2fNRx2qMvOwMLyrTPuVt8CBk
-	PL773vnoj0kE8Lyom1RbSv+Ljwd2FHKa7ynPAFMsvm62xWbdGUoJpaxB8T10Dtww2tTy5M
-	ESYBAVQ4lTHKf5aWyPpRZXk9tJbaIeMGe45Q2hz7KSosP8+t0aBPQuHWjRp+THYnOh1yGU
-	g4FXLYpwsReFK27ZXMrn/09xpMwviqO1DUJedIC+eIILUh5OrPHION4rBAwizQ==
-Message-ID: <62513008af14da4a6fb35e1a9566146dca0efbef.camel@tipi-net.de>
-Subject: Re: [PATCH net] net: bcmgenet: cap the Tx queue threshold at the
- ring size
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
- 	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, 	justin.chen@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, 	razor@blackwall.org,
- kerneljasonxing@gmail.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 21:28:48 +0100
-In-Reply-To: <179424433591.994134.17565447879442853727@kernel.org>
-References: <20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71@tipi-net.de>
-	 <179424433591.994134.17565447879442853727@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=jPtiJpkU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384B21F0089F;
+	Mon,  9 Nov 2026 20:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1794256156;
+	bh=RJXpVdEQQ4k4fP/MJ0YE0BzV6lM556s8EF58JGKSn74=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jPtiJpkUnwmbTrw3uDWTqdZKfAzJA7qCw2SsFjA+wc5UpvWwtFwVOz5JbGNu0cBon
+	 +pmCRCzP9IbGRqlxuZ3pl8N2b09yw0a8fV9eDAYaRR56XdvQjqVCSwTtLwHkltDfF5
+	 cJUtwjSkjKnAgWbG8msbkf592oo0XvK6Tq1MCjro=
+Date: Mon, 9 Nov 2026 15:29:12 -0500
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Noah Weinberger <NoahWeinberger2003@proton.me>
+Cc: "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"security@kernel.org" <security@kernel.org>
+Subject: Re: [PATCH] wifi: nl80211: clear wdev before erroring out of station
+ dump
+Message-ID: <2026110952-litter-haziness-bc23@gregkh>
+References: <ltwfLZuSH-PEFdqMECEU8rHwZCjSL5--7RG-qrW8a-Fwezdgpb1QYiDm-8aCRNIgwY-laqSmHJWAqV4uI092NLEudhWEABdd3B5iGsV4jJ8=@proton.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,77 +57,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ltwfLZuSH-PEFdqMECEU8rHwZCjSL5--7RG-qrW8a-Fwezdgpb1QYiDm-8aCRNIgwY-laqSmHJWAqV4uI092NLEudhWEABdd3B5iGsV4jJ8=@proton.me>
 
-On Mon, 2026-11-09 at 17:12 +0000, netdev-bot+sashiko@kernel.org wrote:
->  [...]
+On Sun, Nov 08, 2026 at 09:57:39PM +0000, Noah Weinberger wrote:
+> Hello,
+> 
+> In nl80211_dump_station(), the new -EAGAIN retry path calls
+> __nl80211_lock_held_wdev(), which drops the reference we hold and then
+> re-looks up the wdev under the wiphy mutex. If the wdev is being
+> removed, that lookup returns ERR_PTR(-ENODEV).
+> 
+> The IS_ERR branch jumps to out_err with 'wdev' still set to the error
+> pointer, and out_err then does:
+> 
+>     else if (wdev)
+>             wdev_put(wdev);
+> 
+> i.e. wdev_put() is called on ERR_PTR(-ENODEV), dereferencing an
+> unmapped kernel address (~0xd). The station dump requires no
+> capabilities, so any local user can reach the trigger while a
+> concurrent interface removal (admin action or unplug) closes the race.
+> The result is a kernel oops in the dumping task, or a full panic with
+> panic_on_oops.
+> 
+> The sibling handlers nl80211_get_station() and nl80211_tx_mgmt() never
+> put the error pointer; the dump path is the only one that does. Clear
+> wdev before jumping to the error label.
+> 
+> Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07), net/wireless/nl80211.c:9023-9035 (EAGAIN path), nl80211.c:296-306 (__nl80211_lock_held_wdev), nl80211.c:9133-9137 (out_err).
+> Introduced in the v7.4 merge window (unlocked station-dump rework).
+> 
+> This was found during an assisted (AI-supported) static source review of
+> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
+> reporter against that tree. The patch below has NOT been compiled and has
+> NOT been runtime tested, and no reproducer was produced - the triggering
+> conditions are described above instead. Please treat this as a report for
+> verification rather than a battle-tested fix.
+> 
+> Fixes: [fill in before sending - on a full clone run:
+>   git log -S '__nl80211_lock_held_wdev' --oneline -- net/wireless/nl80211.c]
+> Reported-by: [your name and email]
 
+I think you forgot to read the patch your LLM spit out :(
 
-> [Severity: High]
->=20
-> Does this fully fix the stall on queues 1 to 4 when
-> CONFIG_MAX_SKB_FRAGS
-> is 31 or more? The wake threshold is now capped, but the per-skb
-> admission
-> check at the top of bcmgenet_xmit() has not changed:
->=20
-> bcmgenet_xmit() {
-> =C2=A0=C2=A0=C2=A0 ...
-> 	if (ring->free_bds <=3D (nr_frags + 1)) {
-> 		if (!netif_tx_queue_stopped(txq))
-> 			netif_tx_stop_queue(txq);
-> 		ret =3D NETDEV_TX_BUSY;
-> 		goto out;
-> 	}
-> =C2=A0=C2=A0=C2=A0 ...
-> }
->=20
-> free_bds can never be larger than ring->size (32). So an skb with
-> nr_frags >=3D 31 gets rejected even when the ring is completely empty.
->=20
-> In that case nothing is in flight, so no Tx-done interrupt arrives
-> and
-> bcmgenet_tx_poll() never wakes the queue. The watchdog is the only
-> wake
-> source left:
->=20
-> dev_watchdog()
-> =C2=A0 bcmgenet_timeout()
-> =C2=A0=C2=A0=C2=A0 bcmgenet_tx_reclaim(dev, ring, true);
-> =C2=A0=C2=A0=C2=A0 BCMGENET_STATS64_INC((&ring->stats64), errors);
-> =C2=A0=C2=A0=C2=A0 netif_tx_wake_queue(txq);
->=20
-> The qdisc then retries the same requeued skb and gets NETDEV_TX_BUSY
-> again, so the queue stops again.
->=20
-> Wouldn't that leave the queue, and every flow hashed to it, stuck for
-> good? The "NETDEV WATCHDOG: transmit queue N timed out" message and
-> the
-> error count from the commit message would then come back every
-> watchdog_timeo.
->=20
-> The core does not keep such skbs away from the driver. The driver
-> advertises NETIF_F_SG, and it has no ndo_features_check and no
-> skb_linearize() fallback. Highly fragmented skbs can come from
-> MSG_ZEROCOPY, from splice, or from forwarded traffic.
->=20
-> Should bcmgenet_xmit() also handle skbs where nr_frags + 1 >=3D ring-
-> >size?
-> It could linearize or drop them, or clear NETIF_F_SG for them in
-> ndo_features_check.
->=20
-> > =C2=A0	ring->clean_ptr =3D start_ptr;
-> > =C2=A0	ring->c_index =3D 0;
-> > =C2=A0	ring->free_bds =3D size;
->=20
-> [ ... ]
-
-Another angle, also pre-existing, but lets fix this properly with
-another patch in v2. Long term goal should be to get rid of the
-undersized queues (see my response to Florian)
-
---
-pw-bot: cr
-
---=20
-Nicolai Buchwitz <nb@tipi-net.de>
