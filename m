@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794266409;
-	b=hDQ28I9eQDm68ORP8GPlpXvG8jew38jsOAEbSpQMHc35R27/INKbyOizsioF5EmpWtER
-	 olYTjqWozK1DHzp5qcMsbXn18iDXNqlISACULtJIl96YKeSBQzh6Is68xOsUeS78HvUTk
-	 F9zaGSKII6MwgRw7yP0h3Hbdwy3uHz8T98Cgw67khNUO54BXwpQfn2xptGBdgofbuGm86
-	 kpU1Tt+jZfPTfq1sST030N9BCD5v+9aoWK6vwRulwPMddhl7f/gVCt8zCm3CB4EuuuZW7
-	 W3YRc9SPRx56wA9fxKIK/X9Esx/wVmAavryKmx7uvH0Ug+ektziyl1Zv+xk0mRnhncw==
+	t=1794266407;
+	b=NweYO7y4TCOIGYruxJVuZCZXHMTdaP8cjBbu2d7tLEZmlAlV/fDkI85kZJjiAYpzNF+i
+	 9AEcMSLMgzvUU+nc77M0o1ql/IirHMoRK+Rsj+LmyZKD7O++ex+f5vMs36PATmNkQPKjr
+	 QaFQFt5+u4wgnXxDPGuTacpHVrf6wLOFKwKfQ+XAd7g02l61uHTLx4JECKcxkjgIGwfcO
+	 sbXyiTWWZKIbxyWjfF+g3LCGfURAuxHBAp6P+IbOCI+khu4cpI6PsST2GG+zLLqbu07UP
+	 26n2Oa2cActIU7MzkmYnqO08pgII3wyh3MGL4/CarNsrQG/XfWDWOTYqM/9L1VM2zGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794266409;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266407;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=RYNIz5BtdSZEKWsa7foM6BaeCgtEGgUpqaYcQSWujVM=;
-	b=tBn+PLMY8lsRWeWqo3Sj/BZ897dkDx8aXBq4YMrB4JUUki1wihIv6WjnwP67WL50HKZy
-	 X6WDxx4eLt59My+y68U2Is/3TT08ciVqWVF7GMSNWa//I47ndYQBZ7fjSdEb8pQKUt6dX
-	 Wj99bdTkWA7hmzAy/FKQVcf5PxZjzNmC0lThpjIWamOEHl7iNRvpdYld8gSRwYdm3Avim
-	 E8UvsO9oHyhi9hyxgheid+i+D5aJlthC94+yiG91zMJL0TulTaasn10G480cB1WefK6lo
-	 paJ0Rpf6M0rdKIwiAiArCXFnXlvsCFcp5enCkSnFt4udEWKGFV4akZmDZu78mzZvK7Q==
+	bh=wFAP8r9CaQQlfx6iSws7XcCoEgxpI34vrJvw4H/11RI=;
+	b=RELOZnUI1h/XTO/f3Zmxajil3awhEKrK+e0H0BPpvoRXXCq6FqMlDEpMRX+8rgjhNI06
+	 jIdDlcZHgje1uZ63p9kxYbdDBZgOloBIZ2ofmcHxenq6HNVacCOUyFx3H5O2zlQu8C5GH
+	 2LtAJHKZ7u3HefGnjiue5fOzA96UmPhXdaDQQZGeq7R9MScJKd2q5rFH7AaFAzick468B
+	 /9pJHRhjMVUjV/se7wF+28bKNcfxq7UAgwBInDhdf0yvH4PrgAtf/dneSU14ifsa70XEC
+	 bDvu/U7xRDJ1xnesswg8pXYG5r6rMQ7szTey5bucb6QY0zNGCEGe7K9JQdoeAjFFAZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="aHYWO/6I";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="at/Voxot";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A0C606A334
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB0B606A326;
+	Mon,  9 Nov 2026 23:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aHYWO/6I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60541F008A2;
-	Mon,  9 Nov 2026 23:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=at/Voxot
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6871F008A2;
+	Mon,  9 Nov 2026 23:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794266408;
-	bh=RYNIz5BtdSZEKWsa7foM6BaeCgtEGgUpqaYcQSWujVM=;
+	s=k20260515; t=1794266407;
+	bh=wFAP8r9CaQQlfx6iSws7XcCoEgxpI34vrJvw4H/11RI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aHYWO/6IW6gYdOK3Oh0P76baOmO7j+nVvCHlU5ANpqvxv4BC9GULkhg+6ZQvy0YvY
-	 tJ/M2k2hb+5G6gq8Y8wcSoOGVjaAlYU+De7Ahdiqx+qBw0a2aPoWbh68uTR5FpNsO9
-	 8iJcGPgvX0ejNWohcl/5RK+xg5Q74DFXbZVBm6d8T+FYii0RcIY1Kq32J6Vs9Y0eZp
-	 l3tdLOAGRF+kHdz6OcSHazvKVHj5XLvCUS2pev6j20/MRWhVmM4vgFfevMq4rwnJgd
-	 kBT6JANT+G5bW3KkjEzvrjgdDw4l38IzpQa3Xj7XVSztpWM7/OqqWgDiv92G0WwYHg
-	 pONoP5SxL22aA==
+	b=at/VoxotQ1gaLG12naEs/Lrq+/DMK+KU9jEfKRUMqib+2IZ2fTtdFlgB4Tmykv5N/
+	 INWqsvL0dGsGPVgWf1/0dDeA4WQqEbSzdNRzcXaYwmSIUsOtWElcU0/yVSAVAglMjM
+	 atyCGMckMdf0jJG9GeBhcF0f3E7Px4H0/HeD7YctZV/bjpCgg4WS2XsMMJHnWHXdeV
+	 pF1MyyI+vIVcTIHTPm6U4kIhfj23ueMGbyVFYFKt8lwI1SmE5fPlE393St0lcVC9BG
+	 /c07Z6nOQKpb87LJXNVmvQHd+WzGitxGCKQ292zho4IQLrD7ZaeUaaPiMfFrqfxO4p
+	 9txLQFRDJqO2g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B14E391AF99;
-	Mon,  9 Nov 2026 23:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210B3391AF99;
+	Mon,  9 Nov 2026 23:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,48 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] ipv4: fix fragment length accounting
+Subject: Re: [PATCH] ipv4: keep XFRM headers out of corked skb lengths
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179426640716.3539542.13397803141946938999.git-patchwork-notify@kernel.org>
-Date: Mon, 09 Nov 2026 23:20:07 +0000
-References: 
- <36C40B0A9C6336F3+ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
-In-Reply-To: 
- <36C40B0A9C6336F3+ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
-To: =?utf-8?b?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1PlronlhajlhazlhbHpgq7nrrEpIDx0?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	=?utf-8?b?ZW5jZW50b3Nfc2VjdXJlQHRlbmNlbnQuY29tPg==?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+ <179426640593.3539542.14588290897473786391.git-patchwork-notify@kernel.org>
+Date: Mon, 09 Nov 2026 23:20:05 +0000
+References: <20261030042229.74068-1-kylebot@openai.com>
+In-Reply-To: <20261030042229.74068-1-kylebot@openai.com>
+To: Kyle Zeng <kylebot@openai.com>
 Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- pabeni@redhat.com, kuba@kernel.org, willemb@google.com,
- willemdebruijn.kernel@gmail.com, klassert@kernel.org,
- steffen.klassert@secunet.com, edumazet@kernel.org
+ linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 05 Nov 2026 15:34:36 +0800 you wrote:
-> This series corrects fragment length accounting in __ip_append_data().
-> Patch 1 reserves the XFRM bundle header space as headroom. Patch 2
-> rejects an append when the transport header and moved tail do not fit;
-> it also addresses the independently reachable ICMP Timestamp case.
+On Thu, 29 Oct 2026 21:22:29 -0700 you wrote:
+> __ip_append_data() allocates space for dst.header_len in the first skb,
+> but includes that space in skb->len until __ip_make_skb() pulls it.
+> Fragment accounting uses an MTU that already excludes the XFRM headers.
+> As a result, the next skb can have a fraggap larger than its capped
+> datalen, and skb_copy_and_csum_bits() can overwrite its shared info.
 > 
-> Changes since the initial public posting:
-> - Patch 1: correct the skb->len/fraggap explanation, clarify IPv6's
->   dst_exthdrlen terminology, and scope the layout comparison to the
->   same skb setup inputs. Add Willem's Reviewed-by.
-> - Patch 2: describe the ICMP Timestamp corruption path, distinguish
->   negative copy from unsigned pagedlen wrap, update the subject and
->   Fixes tag, and remove the unrelated XFRM Reported-by.
-> - No code changes in either patch.
+> For example, five AH tunnel states can reserve 500 bytes while leaving
+> an effective MTU of 348. With 40 bytes of IPv4 options, the second skb
+> has room for 288 bytes of fragment data but receives a 500-byte gap
+> copy. The overwritten shared info is subsequently consumed by the skb
+> release paths.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,2/2] net/ipv4: reject appends with negative fragment copy
-    (no matching commit)
-  - [net,v2,1/2] net/ipv4: reserve exthdrlen as headroom instead of counting it in skb->len
+  - ipv4: keep XFRM headers out of corked skb lengths
     https://git.kernel.org/netdev/net/c/0f47fce51a98
 
 You are awesome, thank you!
