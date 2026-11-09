@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.59.229
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794211421;
-	b=YA70wxB1HvXnPVUif+eA3MyB+4qOgC3bpXh8XnsZrwAlLeoPZH4qFcse2//zJvU4EScT
-	 VLBxHylmuxiNrIRQhCSl3d/yFZWQN/Q0L2/v+GMdrdsgLd8RxPgY56HGvARXgCSeiqgbd
-	 ZJ7a7R8OjhyfdkA75jBfxjPN3J6weFpBUFKkOc1E+AbkE1xOJ/g4vryMoyuzgJQJmMkjE
-	 YU3cL6mo4QjDd5u7XP5cJDOjUEkaIfvImN14lfktN5ZWqzuk3sUTPMrbxYS9xje8gosg3
-	 gkin7MWSX2l/3JzhvnPakuL1t/DLm0IMmx9bWVb69YftuYwOB5dbmyYvGpRvCkt8i5w==
+	t=1794211420;
+	b=O/lOgqjceEigB0FTMycL3pFQHhlIN3g0SdOhKEfOei/sEN4JBc78b5lfd1dS0rM0szcF
+	 F7WnsEqeWDs6CQGB75LMK5cdOKji/yd5rLiFfVIjbFYUQ1kcxEwOCkkH8E3TzzNCo+vF1
+	 1i22jCJJJu+vezFb8IkRo8FCwtCbGcVsCFsNbtmn0b6gMo1qb9t/vAXmHZUH0Eeej+v39
+	 14WKJN6UNcw3zuSAt2893+9bjq8zh9Oq/KG/+2OtA+23V715/jPaa5gRtRYsC3kZVi4gK
+	 3dsz5JWksV41m1n/QrlsL1xN5jM34YoSQfDxkt+j2KkY9TwOQ5fY7YclAAJvQLXR54g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794211421;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794211420;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=OxeUOVtKsetsphxGDMJs8PJRhMZ9AqwAedSw7oZd+VY=;
-	b=PaEFAtQ9MEFbYaQW8rS5dI6tB50fP0hVOJAVyFgbfxMO/5UI/KLBWpNZ3V5Pb5cMDQ+b
-	 YQw0359eX2Fdp8hk1Tc32GOlL6vMKGdhvEhWk3Wx+98zHn5pxKFm7tymFiR+7AmuT1Aql
-	 XcbxqCeXx2MKXAyFl7HIiVAhFIQk7n0eoM0pZrVIvhw+gnjZXWLJ8qoCIyx0qC13NldvV
-	 YyxvPN5fHEIkrdF+GR9QQxd4gqFCY+lZuTNdjZuj1TCsHEzsKgLP9q883ZaQsCEKcIi9n
-	 i07XQITJEv9eDSGze0q2E1PL8W3LZB/qxdYvDTKSdQsu2EkkjKaLDc9oRBJyNkdno+g==
+	bh=ymBHKkh/7311Wew6Y2XIMeYWSUqBJNNugEpNopnlV5A=;
+	b=DxpqUjocHHuelaC/h67qMwSd0PJwZygTLyFdXUR4Vc2GdaTrH5yGjf27tlNn9yPskYf1
+	 +8BLc0BL/1RRuJsgOru7mQm9RUGKJWk1GBtWFPxphe3aGcaKeXZNZt3APzBcH9FZQTZ58
+	 sCh4HxAnRjsZQamaVshTZLCyQv6bYBVjZayQ9gy4k3ifhlAWhSwi8vmI8CPQFlyOmEM4q
+	 RB+u8Yz9B3LSv/4jl0j9mPG0Cqlm25JrNjCxS9TBgvLm+Yy8EzbriVQCCLONLHQNTkxKt
+	 eDPZEx+CRvRwYqkkRCKLpZASTaHlM2fqFR8pDNOt+Ofzf9YZLNLqgkJzOoAjscZuZRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=1wt.eu;
 	spf=pass smtp.mailfrom=1wt.eu;
-	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=pHEycA5r;
+	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=h7j1YXLn;
 	arc=none smtp.remote-ip=51.159.59.229
 Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2839C606D83D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28380606D839;
 	Mon,  9 Nov 2026 08:03:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2839C606D83D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28380606D839
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=pHEycA5r
+	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=h7j1YXLn
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1794211414; bh=OxeUOVtKsetsphxGDMJs8PJRhMZ9AqwAedSw7oZd+VY=;
+	t=1794211414; bh=ymBHKkh/7311Wew6Y2XIMeYWSUqBJNNugEpNopnlV5A=;
 	h=From:Message-ID:From;
-	b=pHEycA5rs/S9jmCpua8ZIaBjZUk6jouvVhxIASun9dOicjtjmr1u1h0vFSnh0cEb6
-	 u+5bhdCiiB9CU2ys1XOgRt8wuU4zz3gtFfpQJbB+IRykl9R+1xjs8RFkGiXDGVD9S3
-	 xJ0LiacFT39HFn32xe0T6XCkOCnT333J3W04vp+A=
+	b=h7j1YXLnAovCd73J/Ym0CWLF446dTK9x0BnJORx3uzbSBWU7Dsd7aN90xJOMe3oqZ
+	 BnIEggT586edXz1NGCjmNbfri+8wPA1cvKjJNkrxxcM8Bwbsif5ZoY5VSasaWSjF/A
+	 cXC/QJuZ1kh2L6vag5c8wR//EgOyzP+VZSRV/BHs=
 Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id C1918C0968;
+	by mta1.formilux.org (Postfix) with ESMTP id BFA9DC0967;
 	Mon, 09 Nov 2026 09:03:34 +0100 (CET)
 From: Willy Tarreau <w@1wt.eu>
 To: Jonathan Corbet <corbet@lwn.net>
@@ -50,9 +50,9 @@ Cc: skhan@linuxfoundation.org, Randy Dunlap <rdunlap@infradead.org>,
         gregkh@linuxfoundation.org, "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH 14/14] docs: netdev: align the security fixes section with security-bugs.rst
-Date: Mon,  9 Nov 2026 09:02:40 +0100
-Message-ID: <20261109080240.29444-15-w@1wt.eu>
+Subject: [PATCH 13/14] docs: submitting-patches: defer to security-bugs.rst for security fixes
+Date: Mon,  9 Nov 2026 09:02:39 +0100
+Message-ID: <20261109080240.29444-14-w@1wt.eu>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261109080240.29444-1-w@1wt.eu>
 References: <20261109080240.29444-1-w@1wt.eu>
@@ -67,49 +67,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The netdev maintainer profile asks reporters of bugs with possible
-security implications to use the public lists, which is consistent with
-the way most of these bugs are handled, but it says nothing about
-reproducers, and its suggested alternatives contradict security-bugs.rst:
-it points to the security team's address, and to the linux-distros list
-which must not be contacted before a fix is accepted. This text has been
-left unchanged since 2013 when security reports were not yet a problem,
-just because it remained unnoticed during the security doc refactoring.
-
-Let's not change the rule (list first), just remind that repros are not
-meant to be publicly shared, and suggest to defer to security-bugs.rst
-now.
+Despite recent improvements, the security team continues to receive
+non-compliant reports clearly indicating that the author had not read
+the documentation. It turns out that submitting-patches.rst asks to
+send such reports to list's address in a short paragraph, so it's very
+likely that some reports only find this one and do not read the rest!
+Let's replace this with an invitation to read the security doc instead.
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- Documentation/process/maintainer-netdev.rst | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ Documentation/process/submitting-patches.rst | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/process/maintainer-netdev.rst b/Documentation/process/maintainer-netdev.rst
-index 0c155adccfac9..2d1be16c498ec 100644
---- a/Documentation/process/maintainer-netdev.rst
-+++ b/Documentation/process/maintainer-netdev.rst
-@@ -334,10 +334,15 @@ Security fixes
- Do not email netdev maintainers directly if you think you discovered
- a bug that might have possible security implications.
- The current netdev maintainer has consistently requested that
--people use the mailing lists and not reach out directly.  If you aren't
--OK with that, then perhaps consider mailing security@kernel.org or
--reading about http://oss-security.openwall.org/wiki/mailing-lists/distros
--as possible alternative mechanisms.
-+people use the mailing lists and not reach out directly. Fixes for such
-+bugs are posted to the lists like any other fix, with a commit message
-+that does not detail how to exploit the bug. Never post reproducers or
-+exploits publicly: maintainers will ask for them privately if needed.
-+
-+Only for the rare bugs that constitute a vulnerability according to
-+Documentation/process/threat-model.rst and that were not found using
-+AI-based tools, follow the process described in
-+Documentation/process/security-bugs.rst instead.
+diff --git a/Documentation/process/submitting-patches.rst b/Documentation/process/submitting-patches.rst
+index f271d7413f72c..ac7d0d8f5be56 100644
+--- a/Documentation/process/submitting-patches.rst
++++ b/Documentation/process/submitting-patches.rst
+@@ -253,11 +253,11 @@ He gets a lot of e-mail, and, at this point, very few patches go through
+ Linus directly, so typically you should do your best to -avoid-
+ sending him e-mail.
  
+-If you have a patch that fixes an exploitable security bug, send that patch
+-to security@kernel.org.  For severe bugs, a short embargo may be considered
+-to allow distributors to get the patch out to users; in such cases,
+-obviously, the patch should not be sent to any public lists. See also
+-Documentation/process/security-bugs.rst.
++If you have a patch that fixes a bug with possible security implications, you
++need to read Documentation/process/security-bugs.rst first: it explains which
++bugs need to be handled privately, and whom to send them to.  Most such fixes
++are posted publicly like any other fix, but their reproducers and exploits must
++never be posted publicly.
  
- Co-posting changes to user space components
+ Patches that fix a severe bug in a released kernel should be directed
+ toward the stable maintainers by putting a line like this::
 -- 
 2.52.0
 
