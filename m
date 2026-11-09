@@ -1,73 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.226
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794196359;
-	b=HsPbO2HrFabteF2OBmr7tkBP/ssc/+zxUUT1AoVEpClselm84mYytZ+i+9CDoLn/zrUD
-	 88j4dP1jsCKHuz9vFcgkJpvU5glYmE7fZiMbLX32ytO6xZzdYuooJW0I2QDCSg/EjAKhs
-	 qm2n31dDG0BL+C8+cGpHeN1hGxya3JWb3IgIcwLG7G/0LF3woaKb4eUC5txVCkS0FvcM8
-	 ydnT+7sxo6lh4p4XsWN9Hz5cbuoOeeY9HhD0OwpU421OCi2deKtqaFYHc+biIBjVoVxBR
-	 PhVJVVR9plo0QaN6ua1uEXaGCJgdTuwC+rcjyjNs+zftPsnRO2Z3r+K1AeGLgi3zS4w==
+	t=1794196420;
+	b=RCKUQT+t5RIxbVOBs24U6rEcNy35NY3APAJqDRWu4ZJIvLu9eEHZmC9UzA/JEkaYe03D
+	 2UZRQvnmSP8FKon3wslB59YA3fcN8b7N1D7ubU8TV9FrvY2MrnNK5wgk1bMi03rcD8hFX
+	 eLNlUQQTzPIi8vc3dze3Z2FOQQYQXzYn4mQlem007KrgvXBZZPNYOlHrQjPQA/uxp6BMj
+	 82j9frg2fLHZQJP1tPEBi8rbup7Cqsd+1WHLRVk2n1quZmPMM3t9ZYrTIPK0FYqAimUIB
+	 1rblMBHNi9rScCDdT8J7nWb0Ex6XddyqJrkXLYIzQzQpNGlL0EtAlvjQInMpOZfBVeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794196359;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Date:Message-ID;
-	bh=UVNf9XVGQ9iwewOtqIQdfWKo+D0otSzQYSZuL2dIs84=;
-	b=viZfWSuOzyhVbMnWW1ZRdh7tQNSV84EyrderGC0INAjMFyJl4h+o53EdH4pMxmihgz8w
-	 exakALMMu4aPNt1pfy9ScHt7mmQvuQwh8NX+z7r2MqjWjH1veDU2Ra8rKUx9xN0TX8jxG
-	 I4RlrBKPER8f2wSXIc3sTirS/3ssrOxIq8xf7RYXmFBUf9A2n4UVT905zxFiUCWj3hBro
-	 jmQeUE1EdtdQrXI9vWKqc7VlKIYgcQdyQPGknVPtBv/NIFFMFgGev+gb4lfL1bxQn0UFF
-	 IT2fOIFlAS4qAiu3NEje/BldBJD8G/gvh6Twuu0axbR55h090mGZoNkR9Z2l2Xa6MDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794196420;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=ocFCQgnrZq3E5Wbo1k9gqSh7z9YgYKQWe52cQlkZ0UY=;
+	b=D04ABXFc2UNv/dNwgJVLh8IsOBD8MDP9wjm6LkeGMRI/PmQao1tFizlMy3waRtqyAiUC
+	 4PUkU4qmzbtt+l7uyKV0qEwfGfLduAwXpO3+KtAOlfU5A3qcubYnUAzrz7R7mAbFiVlF6
+	 enHOKpg6y+qLjX5KsbicOaSsGz1EhA+asfVPd/1VMW28qfRgvTkAI1Vyr9qqRAzpr/dB4
+	 DP+gjGPkoW0zZFJBXVyHRcTHz5umgD2dkX5WjwHxo4ReSzNyu0o6mhLu+L3B/DpULlBn1
+	 6t3DN6/5lynJFXyy5oPcTJbcfXeN+bk48brJ2d8t2/mc/diBxEOuO748K4f5F3lnmHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Ve4dq0We;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E51E606A31C;
-	Mon,  9 Nov 2026 03:52:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E51E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b="j3k/9zr+";
+	arc=none smtp.remote-ip=113.46.200.226
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FD9606A321;
+	Mon,  9 Nov 2026 03:53:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6FD9606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Ve4dq0We
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Ve4dq0Wef+DYULKFxR31cYHOIux8HOb3yvxrfd8gJMxr4mjTzCPlwEe1MNMhhsQc8854/njOGzPFN
-	 GODg0cGMdhyrhx9Ki8KMHP6wBDmTxwNVtPl/vdKAwGdDSwB4tBbijiHwej17g1H8COt03wcxuzw3Bf
-	 7YtTEh7dkpCV2Pl0=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af14384691-6042b;
-	Mon, 09 Nov 2026 11:52:36 +0800 (CST)
-X-RM-TRANSID:2ee46af14384691-6042b
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [198.18.0.19] (unknown[223.108.79.102])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af14382608-803ac;
-	Mon, 09 Nov 2026 11:52:36 +0800 (CST)
-X-RM-TRANSID:2ee56af14382608-803ac
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org,
-    oe-linux-nfc@lists.linux.dev,
-    David Heidelberg <david@ixit.cz>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@kernel.org>,
-    Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>,
-    Simon Horman <horms@kernel.org>,
-    Thierry Escande <thierry.escande@linux.intel.com>,
-    Samuel Ortiz <sameo@linux.intel.com>,
-    Samuel Ortiz <sameo@rivosinc.com>,
-    linux-kernel@vger.kernel.org,
-    yana06070@163.com
-Subject: Re: [PATCH net-next] NFC: digital: fix target leak after Type 1 Tag discovery
-In-Reply-To: <179419447430.488859.5809759694387881043@kernel.org>
-References: <20261109031832.37642-1-yanxia@cmss.chinamobile.com> <179419447430.488859.5809759694387881043@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=j3k/9zr+
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ocFCQgnrZq3E5Wbo1k9gqSh7z9YgYKQWe52cQlkZ0UY=;
+	b=j3k/9zr+dycy+lXORykPB/5NLz64SLNuB8rO6NKovP51s9fnn/ynKVAK3Qm2RIf76oOdsMEFF
+	yIq+ywaZnhHVv5J6PX1fHbTCmZSY+SMfHZ+MK+h8BdDp2JPlL8ozUip2kjNdnfyaPzjYnLRqNAA
+	Ebf5kGRi0Y+RLv2yxvhz7hY=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jNG923mM2zKm7F;
+	Mon,  9 Nov 2026 11:53:26 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 28C3440580;
+	Mon,  9 Nov 2026 11:53:35 +0800 (CST)
+Received: from [10.67.121.233] (10.67.121.233) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 9 Nov 2026 11:53:34 +0800
+Message-ID: <e4ce40a0-2bcc-4be9-8697-797c84275cc7@huawei.com>
+Date: Mon, 9 Nov 2026 11:53:33 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,18 +62,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: hns3: destroy the page pool if RX buffer allocation
+ fails
+To: Simon Horman <horms@kernel.org>, Wentao Liang <vulab@iscas.ac.cn>
+References: <20261103100533.1310018-1-vulab@iscas.ac.cn>
+ <20261106180307.GM865646@horms.kernel.org>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20261106180307.GM865646@horms.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Date: Mon, 09 Nov 2026 03:52:34 +0000
-Message-ID: <20261109035234.47231-1-yanxia@cmss.chinamobile.com>
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Hi,
 
-This was found by code inspection. I haven't triggered it at runtime.
-nfc_targets_found() copies the target, but the T1T success path returns
-without freeing the original allocation.
+on 2026/11/7 2:03, Simon Horman wrote:
+> On Tue, Nov 03, 2026 at 10:05:33AM +0000, Wentao Liang wrote:
+>> hns3_alloc_ring_memory() creates the page pool and then fills the RX
+>> ring with buffers from it. If filling the ring fails, the error path
+>> only frees the descriptors and the descriptor callbacks, so the page
+>> pool created a moment earlier is leaked.
+>>
+>> The page pool is normally destroyed by hns3_fini_ring(), but
+>> hns3_init_all_ring() only cleans up the rings that were set up before
+>> the failing one, so the pool of the failing ring is never released.
+>>
+>> Destroy the page pool on the buffer allocation failure path too.
+>>
+>> Fixes: 93188e9642c3 ("net: hns3: support skb's frag page recycling based on page pool")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+>> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+>> ---
+>>   drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> index 47788be64be6..fe339ddc6379 100644
+>> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> @@ -5073,6 +5073,10 @@ static int hns3_alloc_ring_memory(struct hns3_enet_ring *ring)
+>>   
+>>   out_with_desc:
+>>   	hns3_free_desc(ring);
+>> +	if (ring->page_pool) {
+>> +		page_pool_destroy(ring->page_pool);
+>> +		ring->page_pool = NULL;
+>> +	}
+> The condition is not necessary as as page_pool_destroy is a no-op when
+> passed NULL. Please remove it to simplify the code-flow.
+
+Hi Simon, Wentao,
+
+Agreed, good catch. I am fixing the same leak in my series:
+   https://lore.kernel.org/all/20261030095633.377289-3-shaojijie@huawei.com/
+
+My v3 had the same redundant guard, and v4 will drop it, since
+page_pool_destroy() already handles NULL and out_with_desc is only
+reachable from the RX branch.
+
+Wentao, thanks for your work on this and for tracking down the
+duplicate. Sorry you had to withdraw it.
 
 Thanks,
-Xia Yan
+Jijie Shao
 
 
