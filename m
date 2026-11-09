@@ -1,78 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794239358;
-	b=1PkNWaOACaFUG/15IQc3wiPbQNEYt6QKG1Y0SrOUbP2ltiHGPQw71Fa5H5CYGNKNT3Vn
-	 5QsjFz5+rCP0ACzeOS1xOcR//YZJKY+5Y8F3rmxpDv3JsGNsJGV2+0TSF+tIZIrs6DcUW
-	 h68zWLbvayYpNfdp33l3V041GCOji81/A16xkWgvdYynrD+eodMyfmRuV4TPvQhOn4sRY
-	 aIF8FNb7cCem+BPzjMFtDJ110hqTMvOEQXK/YQJUH2oqLoi5fLPHx887xjt20WSwZ8EC0
-	 WgcsMBJ1qnAl0DXUEqU/Q8Zy79JfXwaOSfLlON4XyeaYTUaqU9r6KKzWg7LFVH2hIGA==
+	t=1794239355;
+	b=u15j7FQHR1J303Le1BI5VodI2Le+UZiStxwaqbfGGarieGod3jx+9CwSsr6sn1ZMy0yU
+	 Gnebv1C3MW/hDxVDZ4Mjm/tjTrJrgjfOEXfi6C1QhG2Sjeg+WGJy3lfFTuzw/jjpNU3Mu
+	 MxvJV2kY3Tbc1MLnlTzH1+k1Y3r20SfSC8MrmgbNa0tRzIXoKjJ3L43LYW5nV4tpscsSd
+	 /N3jXgXk9WTNCEURN9LN1rZ1Cakd+SJZIit+DkGmI9WhhkoN+6/i4KAkr0zPWmO00+4aH
+	 q2YvqnAbY4T8Es/Bn4gOSSQdArzMqic1A2uqxSDTQrrhxoF/NYRaV244T/3G29AWqJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794239358;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
-	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
-	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=mQ4LVrS7TAycIWuwYP6nLPokX8EbBu04NF8VpAWRnUc=;
-	b=dy5+NQ2e6cJLfW5oIHui/QLAOCDvMywXnhz72jr6a3q4HADmw4jBJI4nitSWmyoLzxxw
-	 wC9xk3It6/cJcebhktmjDkvAvwU2CVOc4iaYknmkR8WZUQQcFNDaqbtghF8ebt8V/ipLD
-	 F2s8uwnawfxqvYtqY3CnOVIxHkAp55uhsUXZxRQAa56llgPXgNux1o+bNiOfdpa2MQmbV
-	 M5uZvNaGlwOQNh9RLAlp//stNCbaZSCDlwFclZgWs6auQVDIBrvCTym9mNY9+7CDpMKy6
-	 gcVoffrJ8OOOkU7TC5OtTXnJbg9MdPJ69WWYPT1+aFPzzQ5C93Rr094RKjV24keChog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794239355;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=YbLfW9U7bURTW7WWyEUs2jKzerBMtTsg+xvyertb1hc=;
+	b=cmTJ6nWBrOkWVRFNG2iEeqNDz3x6SItbx46H3YH8RI3s5xy5iTxw8TpAZGW3CswfvAxn
+	 UBhMV0wxq+8asy7ddMIWgS8SuMXhz1TbEH46y75foxa9L0Lt+y2J6fGk20FUroGFXMiqX
+	 uDafmHZDeOTTvVr5nKjIX4TQQVlGL0CNfdlNA0lcUpMBTgbjxZ6A6UuYJjt9zNF1IdDOC
+	 EU1f1aEj1r6VXHdzmySSHaIhOOk+Yok7mGLbtKKI/KhkVc8xM84R12fmmMKFSJdlIAQZ4
+	 iRPHHltu5fzIVlIuH2FKfFlaUNPnOr6lu45h/AOouF26l8EztwfnyfQvZSzbYEuxD5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=linux.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.175
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NgmDxAS1;
+	arc=none smtp.remote-ip=209.85.218.48
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FBE606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 15:49:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2FBE606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5ee029fd76aso440983e0c.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 07:49:17 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAD9606A330
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 15:49:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDAD9606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NgmDxAS1
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c247f6687dcso176756866b.2
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 07:49:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1794239353; x=1794844153; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YbLfW9U7bURTW7WWyEUs2jKzerBMtTsg+xvyertb1hc=;
+        b=NgmDxAS1XReNTi/U/iDSh8mgdE/VoqW1kZ2zrt2gbEsPCn3AoOaYrbgL9tBQAZLMEg
+         sV1TIQgRXFgzd1XPkVoMNWMz8rwtJgsCUJvrGIXSjJEsh2kAkWJWNGOMqn56aoS4OmA8
+         lpwqWCOhQBlb9P7N5tlRhT4FVaxsJECMGhHakqy/9NLArjfFFim4/6V3tlgq5sWA5cwL
+         xIK6pjqBvc+iI/Fxmm2zbJb8gixcmt4FLLxfXebAgJBtVqdpAQYe9yFNrmVh/GaOD0mh
+         mXtE4u5A8ZUk9XtmUFwyDlF2ztOVWC3Id4wBEKb7x8CsvaLz3kNnOz5wMXICrpr/rXZk
+         tahA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794239356; x=1794844156;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794239353; x=1794844153;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mQ4LVrS7TAycIWuwYP6nLPokX8EbBu04NF8VpAWRnUc=;
-        b=I/RfqH7yOL14dWSC53qaJcaSPqB0I3B9Uh2Hd5c6M0aV4aw255Tso8WvLNKjHQYFsL
-         ueCmSQ5+Ue0QTFSa9Zpw0L5bD/3u5ATpeIGYXRTFpgT+27fywGiGCeltN5WAMtOiLSsT
-         GI67cpYfRur+25kDqIl6cWVEC8UCTMeHHpxPdcUPZumGfui5LwARpd/9lvzgpLb/9ZN0
-         y0vIiHBRPcN4VF70hqJG21F1UISwHb2ROZhRwwXeRSf+mHGGnurE+wdJSwHbQYerOC5k
-         HbxGNrhB/CaUFcyMoCk+OWbrrDPMi779R7HLX+bsrurG7Rs0aoJpNysXtaluyVtcwkQs
-         n+Zw==
-X-Forwarded-Encrypted: i=1; AL+hErEKUXIIuAYRAfEQcjnvEcJh54kdAgtn+gvdEH9R4zTrMOSqFFVyQHBb+VDhLBgZ42cO9Rb8AqY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+cowVo7IiEqn8fgMLcnerX6ezSH5cA+z5hGOCfmEMAlRw0I7MI
-	CDMawVivoZ3dakF9Fs3xNIg3mY18rRRsQmi2aCmVQW4VzfXppC7P48HiNE+j7ZWCpPwAAg==
-X-Gm-Gg: AYBFou1D+I8pxWQynUcOvUaLnATLQXElJUwT25WrculfvdRXYuZW6SqZsICX9X3ECod
-	/laI8IYfSNOocwObEEhBWMBLpMwT1vBwoBPbAz9kbJN1cx6cWRl5+kNv+USBsuYKSz99x7NGcen
-	LPbeblvv8CZw45WhSaI9JePpYPSk9gzrTATdm7C/SVIJTVGtby9Ia7pgcdK4HtplPTPqrkN7YZl
-	oQd2gkJCCW0vnfVwC2YTG5PT9VYvDQXlkM7u95qWPQ2lR9mQaqR1Mh1+oNMRjjWaJSOrfEBnQ4u
-	T32vG037xJWPxAk4IsGnbWGDx7YkU1T9hrA98hfuG1x2wZNPPIzEoo+mQasTKddEHMxXBtJYon9
-	EVACVbgM0A8zMCYQvFZm0AE8siQD0BLmrsV/TNzeKz4GEoVB93lUDKhehvmeohlxo3uYSe6gKgX
-	suylbDrd6CF8BDDuWj0vZWkdYyW0ZWTBqlUNT9RtCXgfoIs1WlMHfo3RBE+NNWMjGqjywV2QU98
-	lqjchBNxDoQD4mQi0iFPIBbUa9oYhP9JnebAFahcbH26HdVRUfC1K+Am0UHTJa8UAFXpzBPt+eF
-	x204MlDYm3xd4aAjoDrWtJfIBiQ5//flyePNF5fNRnHrBPOq06SAoNqXamiKqXhrDNw4ub8f8W9
-	fsayL/WAlk42s8iUzQ5BIGgE7CO2yrB6jX/ihy56/1hDiDI8a9hSRo8Il
-X-Received: by 2002:a05:6122:3c4e:b0:5c7:fbb5:6ea0 with SMTP id 71dfb90a1353d-5ece72073c4mr1527739e0c.4.1794239356574;
-        Mon, 09 Nov 2026 07:49:16 -0800 (PST)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ece6682bd0sm4571550e0c.16.2026.11.09.07.49.16
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 07:49:16 -0800 (PST)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5e9528732b4so836715e0c.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 07:49:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGQdmXx6yJ4G+fXbJ9I+5WwOEkt/InQHHQNVslKwW5nuL9kL87BkgpkmmqZKnppcN0J/CKW2CY=@vger.kernel.org
-X-Received: by 2002:a05:690c:e3ce:b0:8b3:56f0:38d1 with SMTP id
- 00721157ae682-8b36c854704mr28695777b3.3.1794239004423; Mon, 09 Nov 2026
- 07:43:24 -0800 (PST)
+        bh=YbLfW9U7bURTW7WWyEUs2jKzerBMtTsg+xvyertb1hc=;
+        b=PtiGXFfI/q/v6MpGDBUokIk5oGBJQRX4tmRlsO1YGWgtVG5RhhthDRmwte5nCMpSeE
+         Dwryou2O5TzrBxUY/cmw9N9ldBw8OsYVspHjuB6b65/GilieLcr/T8oGr9NM/1UKegS4
+         FHSQC32pOqZNWbSlhv5RlgJ08KTHjWyPDmMzn43fMoouHNJppvWIK2mXHdRKyZYyfnRq
+         2PR8yZ/HKn71S/FTcRX7a4At29YQ1HLVlNr13KByAlL04C730lIwGgi7wASTclhKgs4b
+         /gGr3HSbJjLVKol4puYYlsClBlJW+TuOuNQMP/0VsvNtOckT1u0rWiQyWtyE/j59tfi9
+         ChxQ==
+X-Forwarded-Encrypted: i=1; AL+hErFzrrYjOtfpUDmYETqEaCV3GziXDHyiwaPJZLHYWWf75tZ1nUvC6V77TK0o+nuMwU2+7LHB6JA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+gszRew/nn0jZQyc3LKU2kVLaZizAMN3GSV3F9nio3+thqY6lX
+	aWn68kvFJ8GbHf6n07KmMrkUoYcJbVfeWR1vbnagrWSTjOoveTtz4OGpfN9V55jPBR7bENZ9L4R
+	r7MOzYJE=
+X-Gm-Gg: AYBFou388nUEyJ7GzXlgfYFDi99gPsGJcCvWTQr6yvQDRumTvthQXChZh9yKxKPD9Cb
+	ssOrRf8+WporFEXp7d3M41cCU3uQt8EZG00eB6eRHtp5gmePqmaxDQ2hHpq9ZSyriujYxUCj/9N
+	owiFDjVZAmkHXD3IBZLOsXp1g9Hv7p6om0sPcO9y5hrv3fc59EqNtZ5KTSHepylGG4VYzmjhVmf
+	ooIBqs/1QCmydBqpKxlBn8pIhcymba3u+srXUL8T8N/6kb72qLS6THOJ51mKiSITZV9AntpCnJt
+	td1+KPpq2y+LdL2PndTFKTknczqfcZ3DHp5horC0Ck0mKYWPBxjSD6M6QeJ19ZM3XrI/qBEp7S8
+	XB1g1NQMRjBp1S78xMtvOmg47dJ505FwV8jR4vK1CY2ROgkg9mRw0WQJtBxXjQgMKGh2QlACa4A
+	wEkgpGR8a0WUg9X1oGeR0W5W+KIYgg++b4fCbBqwPQlHVa5zZLrCFh/2xwmXSYRUMBps72QenzD
+	IsIl/LWLrQgt01SPdvezsE80ny0TTVosn1xJzezeJPRUgpzrqJqymZ9lJ2der7HODRIOgLw1BiJ
+	PLWapMQCBNqVnsQOCqyLLY2pWA2e7epfW8uGSctQX1vD/ao=
+X-Received: by 2002:a17:907:e8e:b0:c2e:8eb7:53dd with SMTP id a640c23a62f3a-c4d6d82594cmr350173866b.42.1794239353250;
+        Mon, 09 Nov 2026 07:49:13 -0800 (PST)
+Received: from L9JK9NPFH9 ([2a09:bac6:37ad:1e5a::306:b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d6a9990besm179938866b.70.2026.11.09.07.49.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Nov 2026 07:49:12 -0800 (PST)
+From: Tianyi Gao <tianyi@cloudflare.com>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	David Keogh <dkeogh@amazon.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Alasdair McWilliam <alasdair@mcwilliam.dev>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Breno Leitao <leitao@debian.org>,
+	=?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	bpf@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and LL_ALLOC_SPACE()
+Date: Mon,  9 Nov 2026 15:49:09 +0000
+Message-ID: <20261109154909.32748-1-tianyi@cloudflare.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261108190831.3f991a13@phoenix.local>
+References: <cover.1794020868.git.tianyi@cloudflare.com> <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com> <willemdebruijn.kernel.1d64e7848503b@gmail.com> <20261107182526.69543-1-tianyi@cloudflare.com> <willemdebruijn.kernel.2c6a653eb65fa@gmail.com> <20261108190831.3f991a13@phoenix.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,184 +133,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103163715.385394-1-tanure@linux.com> <20261103163715.385394-3-tanure@linux.com>
- <20261105-stoic-cricket-of-tolerance-cb3014@quoll> <35dc1ebf-5194-4ec8-adfb-dcc8ea717750@amlogic.com>
-In-Reply-To: <35dc1ebf-5194-4ec8-adfb-dcc8ea717750@amlogic.com>
-Reply-To: tanure@linux.com
-From: Lucas Tanure <tanure@linux.com>
-Date: Mon, 9 Nov 2026 15:43:13 +0000
-X-Gmail-Original-Message-ID: <CAJX_Q+0QqBHGv-4nfmY8N_xr=KQgUFtwPQTVZBxTK1LHV0jGOQ@mail.gmail.com>
-X-Gm-Features: AclHuK8i80yCCEWCPsmXh9g28kddZ8mRpDlp24I5tNty5i0jlojD6mTpEXhkklk
-Message-ID: <CAJX_Q+0QqBHGv-4nfmY8N_xr=KQgUFtwPQTVZBxTK1LHV0jGOQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/7] dt-bindings: net: amlogic,meson-dwmac: add amlogic,t7-dwmac
-To: Chuan Liu <chuan.liu@amlogic.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, xianwei.zhao@amlogic.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 6, 2026 at 3:16=E2=80=AFAM Chuan Liu <chuan.liu@amlogic.com> wr=
-ote:
->
-> Hi Krzysztof, Lucas,
->
-> On 11/5/2026 7:57 PM, Krzysztof Kozlowski wrote:
-> > [ EXTERNAL EMAIL ]
-> >
-> > On Tue, Nov 03, 2026 at 04:37:10PM +0000, Lucas Tanure wrote:
-> >>
-> >> Assisted-by: LLM
-> >
-> > Drop this one.
-> >
-> >> Signed-off-by: Lucas Tanure <tanure@linux.com>
-> >> ---
-> >>   .../bindings/net/amlogic,meson-dwmac.yaml     | 59 +++++++++++++++++=
-++
-> >>   1 file changed, 59 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac=
-.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> >> index e769c9bb70d8..6de013e3e8f6 100644
-> >> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> >> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> >> @@ -23,6 +23,7 @@ select:
-> >>             - amlogic,meson-gxbb-dwmac
-> >>             - amlogic,meson-axg-dwmac
-> >>             - amlogic,meson-g12a-dwmac
-> >> +          - amlogic,t7-dwmac
-> >>     required:
-> >>       - compatible
-> >>
-> >> @@ -57,6 +58,59 @@ allOf:
-> >>               - const: clkin1
-> >>               - const: timing-adjustment
-> >>
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          contains:
-> >> +            const: amlogic,t7-dwmac
-> >> +    then:
-> >> +      properties:
-> >> +        clocks:
-> >> +          items:
-> >> +            - description: GMAC main clock
-> >> +            - description: First parent clock of the internal mux
-> >> +            - description: Second parent clock of the internal mux
-> >> +            - description:
-> >> +                clock of the pipeline stage inserted in the bus path =
-between
-> >> +                the controller and the DRAM. Without it, the controll=
-er cannot
-> >> +                complete DMA transfers.
-> >> +            - description:
-> >> +                clock of the register block holding PRG_ETH0 and PRG_=
-ETH1.
-> >> +                Without it, the block reads as zero and ignores write=
-s.
-> >
-> > This sounds like you take clock from other block. That's wrong, that
-> > device should take its own clock.
->
-> I see that the clock in the dts patch corresponds to <&clkc_periphs
-> CLKID_SYS_ETHPHY>. This clock provides the working clock for the APB Bus
-> of the ETH PHY controller, and this clock will affect the register
-> reading and writing of the ETH PHY (including the ETH_PLL). See section
-> 15.3.4.2 RegisterDescription in A311D2 Datasheet for details.
+Hi Stephen,
 
-Thanks. That section is the PHY block at 0xfe028000, the region of the
-mdio multiplexer node. The registers in this description are PRG_ETH0
-and PRG_ETH1 in eth_top at 0xfe024000. On the VIM4 the same gate feeds
-them too: with it off they read as zero and ignore writes. My datasheet
-revisions do not say which clock feeds eth_top. Can you confirm it is
-this one?
+Thanks for the invaluable and detailed review.
+
+On Sun, 8 Nov 2026 19:08:31 -0800, Stephen Hemminger wrote:
+> Since the motivating case is XDP, the mechanism should let the XDP program
+> ask for the padding it needs, rather than making the operator translate
+> the program's requirement into a device setting by hand.
+
+The series started from David Keogh's TC egress case, as described in
+the RFC [1] and in the first paragraph of the v1 cover letter. The veth
+XDP case came later, when I found that the same field also avoids the
+copy for generic XDP on veth.
+
+> Your own reply already works this out:
+>
+> > - XDP on a veth peer: veth_xdp_set() and generic_xdp_install() can
+> >   increase the headroom of the peer to XDP_PACKET_HEADROOM on attach
+> >   and reset it on detach.
+>
+> That is the mechanism, and it needs no uapi, no operator arithmetic, and
+> no stale state. I would rather see it implemented for the cases it covers
+> than add a permanent uapi that removes the incentive to do so.
+
+Agreed. For this case, I plan to move to this in v2. When an XDP program
+is attached to a veth device, tx_extra_headroom of the peer is set to
+XDP_PACKET_HEADROOM.
+
+> On the argument that program-side declaration is itself new uapi, and that
+> the labeled device is often not the device the skb was allocated on:
+> granted for the general TC egress case.
+
+For TC egress, the kernel does not know at attach time how many bytes
+the program pushes. Only the program, or the software that loads it,
+knows. Attach-time propagation works for XDP because XDP_PACKET_HEADROOM
+is a fixed value.
+
+Since we both agree that auto-tuning has real problems, a narrow UAPI,
+such as a BPF-side declaration, seems unavoidable for TC egress. The
+program declares the headroom that it needs through this UAPI. The
+initial plan is a BTF decl_tag, as Dragos Tatulea suggested on the RFC
+[2]. On attach, the kernel increases tx_extra_headroom of the device
+that the program is attached to.
+
+> Which leaves the genuinely hard case, the one you describe at Cloudflare: a
+> service in a netns sends through a veth pair, the host forwards to the
+> uplink, and a TC egress program there encapsulates, after ip_rcv_core()
+> has orphaned the skb so the allocating device cannot be identified. If
+> that is the real residue, make it the problem being solved and argue for
+> the narrowest mechanism that solves it.
+
+This case only came up after I started to look at in-kernel approaches,
+because the general IFLA_TX_EXTRA_HEADROOM UAPI already solves it. It is
+not a new case, and it is not uncommon. Cilium, Flannel and Calico use a
+tunnel by default [3][4][5], so the device that encapsulates is not the
+device that allocated the skb.
+
+netkit already has a similar UAPI. Commit b9ed315d3c4c ("netkit: Allow
+for configuring needed_{head,tail}room") [6] by Daniel Borkmann added
+IFLA_NETKIT_HEADROOM for Cilium in VXLAN or Geneve tunneling mode. As
+you point out, the value can go stale. But the CNI plugin sets it when
+it creates the device, as Cilium does for netkit.
+
+As far as I can see, a narrow UAPI, such as a veth attribute
+VETH_INFO_TX_EXTRA_HEADROOM, is unavoidable for this case.
+
+> As posted, the series leads with
+> cases that in-kernel propagation handles and uses them to justify an
+> interface sized for the case it does not.
+
+Based on what I have learned from both of you, this is my plan for v2:
+
+- Drop IFLA_TX_EXTRA_HEADROOM.
+- Keep 1/8 and 2/8, i.e. tx_extra_headroom, as an in-kernel field. It is
+  needed to avoid a perf regression if we just use needed_headroom. It
+  is needed in all three cases below.
+- veth XDP: set on attach as described above.
+- TC egress on the device that allocates the skb: the BTF decl_tag UAPI
+  described above.
+- Cross-device encapsulation: the veth attribute
+  VETH_INFO_TX_EXTRA_HEADROOM UAPI described above. I will rework the
+  existing iproute2 series [7] to set this attribute, and post it
+  together with v2.
+
+This would introduce two narrow UAPIs instead of one generic UAPI.
+Please let me know if everyone is happy with this new plan. If there are
+no objections, I will proceed with v2 following this plan. I am happy to
+change it if there is a better solution for these cases.
+
+To David Keogh: this plan drops the generic device attribute UAPI that
+your RFC proposed. Your TC egress use case stays in v2, with a BPF-side
+declaration instead of the device attribute. Before I proceed, please
+let me know if you are unhappy with this plan.
 
 Thanks,
-Lucas
+Tianyi
 
->
-> >
-> >
-> >> +
-> >> +        clock-names:
-> >> +          items:
-> >> +            - const: stmmaceth
-> >> +            - const: clkin0
-> >> +            - const: clkin1
-> >> +            - const: pipeline
-> >> +            - const: pclk
-> >> +
-> >> +        # The PHY adds the 2ns RGMII delays, see ethernet-controller.=
-yaml.
-> >> +        # The RX delay line of this glue is fine tuning in 200ps step=
-s,
-> >> +        # added on top of what phy-mode describes. The TX side has no=
- fine
-> >> +        # tuning: its only step is a quarter of the clock period, the=
- full
-> >> +        # 2ns at 1Gbit/s, so the TX property is not accepted.
-> >> +        tx-internal-delay-ps: false
-> >> +
-> >> +        # Deprecated: new SoCs use the standard *-internal-delay-ps
-> >> +        # properties instead.
-> >> +        amlogic,tx-delay-ns: false
-> >> +        amlogic,rx-delay-ns: false
-> >> +
-> >> +  # Delay definitions for Meson8b and newer
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          contains:
-> >> +            enum:
-> >> +              - amlogic,meson8b-dwmac
-> >> +              - amlogic,meson8m2-dwmac
-> >> +              - amlogic,meson-gxbb-dwmac
-> >> +              - amlogic,meson-axg-dwmac
-> >> +              - amlogic,meson-g12a-dwmac
-> >> +    then:
-> >> +      properties:
-> >>           amlogic,tx-delay-ns:
-> >>             enum: [0, 2, 4, 6]
-> >>             default: 2
-> >> @@ -106,6 +160,7 @@ allOf:
-> >>             contains:
-> >>               enum:
-> >>                 - amlogic,meson-g12a-dwmac
-> >> +              - amlogic,t7-dwmac
-> >>       then:
-> >>         properties:
-> >>           rx-internal-delay-ps:
-> >> @@ -142,6 +197,10 @@ properties:
-> >>         - items:
-> >>             - const: amlogic,meson6-dwmac
-> >>             - const: snps,dwmac
-> >> +      - items:
-> >> +          - const: amlogic,t7-dwmac
-> >> +          - const: snps,dwmac-5.10a
-> >> +          - const: snps,dwmac
-> >
-> > I see no such hunk in the code, so not sure how to review this.
-> >
-> > Best regards,
-> > Krzysztof
-> >
-> >
-> > _______________________________________________
-> > linux-amlogic mailing list
-> > linux-amlogic@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-amlogic
->
-> --
-> Best regards,
-> Chuan
->
+[1] https://lore.kernel.org/all/20261015235335.4162993-1-dkeogh@amazon.com/
+[2] https://lore.kernel.org/all/bba453eb-769e-458b-88f7-8cc9bcafc1db@nvidia.com/
+[3] Cilium, veth with VXLAN by default:
+    https://github.com/cilium/cilium/blob/main/pkg/defaults/defaults.go
+[4] Flannel, VXLAN by default:
+    https://github.com/flannel-io/flannel/blob/master/Documentation/kube-flannel.yml
+[5] Calico, IPIP by default:
+    https://github.com/projectcalico/calico/blob/master/manifests/calico.yaml
+[6] https://git.kernel.org/torvalds/c/b9ed315d3c4c
+[7] https://lore.kernel.org/all/cover.1794022936.git.tianyi@cloudflare.com/
