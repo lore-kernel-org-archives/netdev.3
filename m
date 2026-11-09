@@ -1,100 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.182
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794229720;
-	b=sp566638zToWLQkRxahCLOu6FWUXyWErVcJ70GeLl/2z6rwn8YsTmWul4Z4t/5Bzgt66
-	 aV0IGh8WyQ6zRVMZOGm7+vbXs85+XrZI0CHgz8UojIsxOPAE7iA5W3lbog11lFcCYTI9w
-	 bttjPQnR1cg2RWvNU5lTGWMjcPNZa3gEc6YUgu/ri/uISV791TM25Zn8CaAYPKT1q7dp8
-	 F/qCVyTB9P1meoc7TwAv1LCzLpz4mnQb55EXyIXbt7Q6cf7io5aMVJgTcm80QhshGmyes
-	 1ZBkVSZR5Dx7EW7MA90utwTFnH5Ll/qrwhXI/5aC+JT16ur7pczoATN18bq6YvXQLvQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229720;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=OKEddP/ZtNdVYxAML2vua9qtIab03bP2/fkLZgAxazY=;
-	b=lb9OVK+QFJgWbvbkX8vUNykexMoaFM5Nlmi1nCV/5fO7F5OBSKOIEeC30vYCNjCkKa7t
-	 jkPLJPBow/QmEaoVuVSIkanRP8Aw0SpsiI2ZJNRSsoS/6FPsIu2dv1sLxqi1vxinRZNp3
-	 WOmdO8yfk7G9iWWPFDKTgCjAmQ3tIBZEUxtBfOVR9D5T496UnHQoTM3eaN49aidkovi/6
-	 ZYt/KS46I2nIUxoQH8n2bnmXzK+1ic3gdu4IWRV4gUSQsGp8wN8dBBBFmblilChypvejk
-	 eufcbhMCXDx8+mkR0g0PdIXGhb0vTpIBnqt71ErnsuJCHr79idc2v7X6SmpiWK+QG8A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p4IxYHNy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.182
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794229764;
+	b=JhzOe5/FBx0Uw/QxaUiZqeN1f/6hfDtlzGvvliwZE+cOAWbperV8NilNiDt+2J3Ezcjp
+	 vl52Iy18uLE2wzV2VH/Tlcdtqkm/j8YIR25V3M9ZXHfjig5uArCX9+B7rxbUOpIjl0a5B
+	 ByXCoY1oLawImI4QfBna4D3N2D24e62A1/odmBATQt0GoCA/Q/F0JvCAeE1dZJPLnFUCE
+	 au2bkdU+FhV7udi+bCOBMTxsDuzXOOWrelbcWi+qfQ1QBJiPRitT4OKRowt7vi0CBouDs
+	 WPZK3nUcNGpYBWFidfkLCW9ihgDdA5BrHj+lEkO9J5RrXgKoWjJc07LtlVmGZI0irOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229764;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=wVb94j5oWA2XXVhXgiQspwdYnM+eA6VBMFxjzm5MA9Y=;
+	b=TqmlyHG7XJnOt4dBreRdblMCs1od9rBTcaifhqTpwc1QkMYIPp6ZbT6htvS4gXPbaIby
+	 3eQM3v3z1Th0/941AX9V3eYmWr+ts4XmTQwrGRtWfDYBtwlpabgRTQ2VWdNOGwiWVILG2
+	 QFkSEk/6r/pDUCxWlvLyi0CsKmGf9bQuZU3WBv0hms62hhwjlTQ7sZbXRu+CzSIoqpTp7
+	 UPehFTv7quK6SKErMVjsPt2oONtxNCqcSukBYV7EXoX30ppdhI/ptWy+1FHWZWHaoDkLn
+	 NTeUYn9GTAphpjy90P178yibHeupgLbmK/nF9jZmx5OuR3V/Mctv26EMyoSP4XhUuTw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8vmDinm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0BB606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:08:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F0BB606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44314606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p4IxYHNy
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cdd4dafdce9so283604a12.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:08:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794229720; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o3j9v+80qk8CrY0RXSU3zNv1uHg1rdnKwHfUkVllFFcDXKjGxsYjhD5rHLxKdUKBbh
-         3Gyt9+lE5Xu1mRM7nSyxUi7WVoOfW56/mGAhB2G+7wJ2kLgEVifA5h8qbCFcD70wj9fe
-         4DkDCVe+ecMJMNM1SekseBCUCW6CWAakIZ65k+lyxWZ77EIEyFK4r9TcViHTuOTXryCa
-         wWSwbpiifgix/Tr5uxlT3icSjCqkHZ+Y2uGxSLDV8v6xuyStyoePQIEELE/VIWyHY0RP
-         14FZKq+R37nR0F4cbNZZHUvQ46eMH0U8UKxM9B2fPAfvhooU4m1AjWUL/Ba8y3ISBLFw
-         CJsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OKEddP/ZtNdVYxAML2vua9qtIab03bP2/fkLZgAxazY=;
-        fh=/plBHkLvoWY2y3qarenfwP9DO43UQ6rPZ8tG8ifzMtk=;
-        b=PzR9mWzm1XJOLVcaGVFHvGzkJaEXp/qPFrdsay8jK0h08JNzMSTJuogYZ3z5YVGO+i
-         UN0F5ttCYrTr4pf6Nr19IlFgKoMaoBKP78N3Z3cIr/AsQdDcEslPJXIfHk3wBcOiLNKo
-         KYJhevCbOvb9iheOVcUxE2wKD9FGNyECeaWfCAaPwuRUQzGad9B1keIjGT7d0BM+/OvD
-         2W4LAOI1PKSpVci+QuHyH77btWltE7iyUTB601ui7c4X2TFBugUoY8WLKYdYg5mzRrgV
-         8V5+q9zCje1clSYu27SwL/GFhWpowOPO6rYWMuFx9yWAfZ9xFb05MpdqxyQsW/PHOGcJ
-         BgoQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794229720; x=1794834520; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OKEddP/ZtNdVYxAML2vua9qtIab03bP2/fkLZgAxazY=;
-        b=p4IxYHNy9MYAUzxRA1Ns5JvNBAn14iHWe+Ip41mYevrzh+ZYDSRy8qTiTXh8gb8q59
-         vwenErXfWOavA+8b9ARCNbggSoufzK4ehPa8VbSbMduMoEeJ0kwRmWsrg8KwtasfO179
-         u04BRIUXeHWJqfFaysiwQESkMmNfF/8pd7pht3Lgx64AFQ9gEW+sJQnAoNN9nhApzLzZ
-         nAn4MX9QJdnl2F7b5J14XfU7kHVwtknCsniT8rGJyNm7Oqk+KpRBQX5cio4HmnVfbYXc
-         edPPfcGkonxoODDNFBbJ9f7TrfkHb31v4nb947/KgsVhw+nmsYf1isDDmN6+JS8rUwaJ
-         oB2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794229720; x=1794834520;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OKEddP/ZtNdVYxAML2vua9qtIab03bP2/fkLZgAxazY=;
-        b=ikM8OjznIhG53XRbAxBTPkkQYm9jUvKNUAd7ndpik+osmSgo4Y1YUYocuHRx0npIiu
-         bTDA+45dnVoemeXfRsGVPa3Zh8F/Yd9LGkA135bj3hRoIIv3V1Yot3CG8V/ZVnnKkSF5
-         cBz7oHgfhtrWiiJuAQxXIpjQ+FD7K5Tmwab28wxzqFGs+s4lYEPo8uJE1mxs9j1sxzMC
-         R5KWwx6kJGB3q4MCXjBZWHX4VwHkep6nVnrI1wE3w9QHNyX1VlQTpg82i0hGlxQBhcSr
-         v8FqdWN7BJIXOjig2/3+Q7egqSPOgh1hPnQQuBCmEvt0oyH8586V92hkCNgLOwAnvmau
-         T7dQ==
-X-Forwarded-Encrypted: i=1; AL+hErE3hVWLtu1kC2UOD/FhTLKP2PtD9Wfjgb/1UAXTKN2zVGikwcASMAsXGRE/qznGKRpmYrQAHeQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9tZkly5gFhoZqJ13nsfw+RjR1C0TzSoT/qclcUMnuXJ1lWGHKA
-	o5T3EJU5Kz2DiWQioVApmt4aESdEUv0/VCt9cDBWImzJb0zClgT76zZ1RzK/In89ZuQ8PjyC6GT
-	TZg9BfGeLdfU6PeUUtexEgjVWCApSLYYrEn2k
-X-Gm-Gg: AYBFou3fpV9bIww17huWv4ggCwHKjVw9mqMgVKLBUABXDuiIDSlwMz06QaSytdOjroY
-	m6jtNwRYIEt7tpSwxnIghDCwN/awLs6PrqrPyt92Z2R+q8hwK9J+jiRwDYyZYJMe0drX72edQ8X
-	JyYWtoxFcZIpLavmEEAceQXkRwlV98LQ6BNaldIpmjQ0CVqwyJn6Wv6Ja/bqaGgNGOIY7YfVCAY
-	/IraHshjgcQDOdUwGU0y/KlyEqUneIE6jmivBGft6nL3ghpfJHYjH5PKuwewxzQCwaf1H/xhcT9
-	bobl6I4M/0hivO4xS08PfnvgFhhk9qEIq9mRtRKxk3FOPnbx7CJR8bq6mE28XafjrH+hfC6i3RF
-	dnpQOM8wgOfSNXBE5PqaKVyQ0vwf6+rtc7YrhlA==
-X-Received: by 2002:a17:903:3890:b0:2e9:9524:b004 with SMTP id
- d9443c01a7336-2ed83793651mr35834995ad.59.1794229719514; Mon, 09 Nov 2026
- 05:08:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8vmDinm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20451F008A3
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:09:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794229764;
+	bh=wVb94j5oWA2XXVhXgiQspwdYnM+eA6VBMFxjzm5MA9Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=h8vmDinmpVjjtL7AnZY3bRVSMMimVlMtJjRWlsgnL/hGGY/5O9COI6PcF7h7NpiUJ
+	 ydUlhltrQVD5nsH5pfEC2aYjfbJR8Ekdx/RyWlcFnYyP5+nX/86JHIA7GlAv+f3gbZ
+	 /sfJxxthUp/GqJiGZAsbI2zK0RCpN+YofD7av8RGgPv0BqLS4AmZHNKtj7GJoNo5RS
+	 VM7GOciukuWXhA3G2JtnylKQfpSf24naOORHx2j+/5VLI4L/QIhz1oO2XLhPLO8v21
+	 lFa6JwGtYBLxCJJFLCsFPO/SMsz+VHki2hqdY2a7+tqPiZ559CykGtXQT0ONgI1lco
+	 9XLMWei5FZbsw==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6aa9606ddadso439388eaf.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:09:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErG+O++Ze6GKO3cYaV940Dt1Cu72Q1k/+z5ZKoxrGY1vI2lFPvNTHRkc5rYx6VaPUJQTJqs/gLM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/wSaYMOBHEHNTcNR939K0LQIc2no9KxAn9ME8kIzAKjLGn17yX
+	kdzxy8ChUYNDAmgu+kBd1uBZD+SbDrk0AAjNshs+CYW+4Ru20fZmcrKFI1+IyuG7EICAkC6+xfN
+	IFBPdwnZpHlRXCYABYysvQOkCI16dw7I=
+X-Received: by 2002:a05:6820:4a18:b0:702:3087:ca56 with SMTP id
+ 006d021491bc7-7170f25b44dmr1354549eaf.26.1794229763205; Mon, 09 Nov 2026
+ 05:09:23 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,51 +59,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109125312.2208874-1-graypanda.inzag@gmail.com> <179422894695.488859.13925819352934947141@kernel.org>
-In-Reply-To: <179422894695.488859.13925819352934947141@kernel.org>
-From: Junyoung Jang <graypanda.inzag@gmail.com>
-Date: Mon, 9 Nov 2026 22:08:25 +0900
-X-Gm-Features: AclHuK_r-BhklqLacdFk7flA9saDqgS8hhdjYf5Wqi5mheW7AFHXSdxfF9SF8I4
-Message-ID: <CAO7ntTRXoVY11BPcVD849enGM0uEiSD5mZtNr-Gc3fjpyGNW7g@mail.gmail.com>
-Subject: Re: [PATCH net] igmp: use the joined device when leaving a multicast group
-To: netdev-bot+sinfo@kernel.org
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261106234313.2537882-2-edumazet@kernel.org> <179409673700.994134.1614691544438367987@kernel.org>
+In-Reply-To: <179409673700.994134.1614691544438367987@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 9 Nov 2026 14:09:11 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiq67pFNB1r13YxjA4Btabg=mEZb9N7Z4Dqsw+WA_4C2sQ@mail.gmail.com>
+X-Gm-Features: AclHuK-oRMKMgOuax-68pJRAsFibJFXSOgnmPj4y7N8K2Fhs0kFwf1YHobFMK8g
+Message-ID: <CAL4Wiiq67pFNB1r13YxjA4Btabg=mEZb9N7Z4Dqsw+WA_4C2sQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] ipv4: unshare headers before recompiling IP
+ options in ipv4_send_dest_unreach()
+To: netdev-bot+sashiko@kernel.org
+Cc: kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, 
+	dsahern@kernel.org, idosch@nvidia.com, paul@paul-moore.com, 
+	linux-security-module@vger.kernel.org, kylebot@openai.com, 
+	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Le dim. 8 nov. 2026 =C3=A0 01:12, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
+rit :
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] This patch adds skb_unclone(skb, GFP_ATOMIC) to
+>   ipv4_send_dest_unreach() (net/ipv4/route.c:1272-1274).
+>
+> --
+>
+> ipv4: unshare headers before recompiling IP options in ipv4_send_dest_unr=
+each()
+>
+> The patch makes the IPv4 header private with skb_unclone() before
+> __ip_options_compile() rewrites Record Route and Timestamp options in
+> place in ipv4_send_dest_unreach(). The goal is to stop concurrent
+> link-failure processing of clones from changing an option pointer after
+> it has been checked. If the copy fails, no ICMP error is sent.
+>
+> > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> > index 3a90c8d28b940..4d8fcc95c2f46 100644
+> > --- a/net/ipv4/route.c
+> > +++ b/net/ipv4/route.c
+> > @@ -1269,7 +1269,8 @@ static void ipv4_send_dest_unreach(struct sk_buff=
+ *skb)
+> >
+> >       memset(&parm, 0, sizeof(parm));
+> >       if (ip_hdr(skb)->ihl > 5) {
+> > -             if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
+> > +             if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4) ||
+> > +                 skb_unclone(skb, GFP_ATOMIC))
+>
+> [Severity: High]
+> Can this skb_unclone() leave stale header pointers in callers of
+> dst_link_failure()?
+>
+> ipv4_send_dest_unreach() runs as the ipv4 dst_ops->link_failure
+> callback. Before this patch, a header that was already linear was never
+> reallocated on this path, because pskb_network_may_pull() returns early.
+> Now, when the skb is cloned and has options (ihl > 5),
+> pskb_expand_head() swaps skb->head and calls skb_release_data() on the
+> old head, which drops this skb's reference.
+>
+> ip_tunnel_xmit() in net/ipv4/ip_tunnel.c saves a raw pointer into the
+> head before calling dst_link_failure(), and does not reload it
+> afterwards:
+>
+> ip_tunnel_xmit() {
+>     ...
+>         inner_iph =3D (const struct iphdr *)skb_inner_network_header(skb)=
+;
+>     ...
+>                         WRITE_ONCE(tunnel->err_count, err_count - 1);
+>
+>                         dst_link_failure(skb);
+>     ...
+>         tos =3D ip_tunnel_ecn_encap(tos, inner_iph, skb);
+>         ttl =3D tnl_params->ttl;
+>         if (ttl =3D=3D 0) {
+>                 if (payload_protocol =3D=3D htons(ETH_P_IP))
+>                         ttl =3D inner_iph->ttl;
+>     ...
+> }
+>
+> For header_ops GRE devices, ipgre_xmit() in net/ipv4/ip_gre.c also
+> points tnl_params into the head:
+>
+>         tnl_params =3D (const struct iphdr *)skb->data;
+>
+> The call chain is:
+>
+> ip_tunnel_xmit()->dst_link_failure()->ipv4_link_failure()->
+> ipv4_send_dest_unreach()->skb_unclone()->pskb_expand_head()
+>
+> Cloned skbs do get here. TCP transmits nohdr clones, so
+> skb_header_cloned() is false and skb_cow_head() in
+> ipgre_xmit()/gre_tap_xmit() does not unclone them, but skb_cloned() is
+> still true. An unprivileged user can add RR/TS options with
+> setsockopt(IP_OPTIONS). err_count goes up on ICMP errors from remote
+> hosts in ipgre_err().
+>
+> After the expand, the old head stays alive only while the other clone
+> holder, such as the TCP rtx queue skb or a tc-mirred original, keeps its
+> reference. If the tunnel has a qdisc, the clone can be sent without the
+> socket lock, and an ACK on another CPU could free the original. That
+> could happen during __icmp_send(), or even inside pskb_expand_head()
+> between the skb_cloned() check and skb_release_data().
+>
+> In that case, are the inner_iph->tos, tnl_params->ttl and inner_iph->ttl
+> reads use-after-free reads, with the stale bytes written into the outer
+> header's TOS/TTL?
+>
+> Would it be safer to compile and echo the options from a private copy
+> rather than uncloning the caller's skb inside a link_failure callback?
+> Another option would be to reload inner_iph and tnl_params in
+> ip_tunnel_xmit() after dst_link_failure(). Either way, it seems worth
+> checking the other dst_link_failure() callers for the same pattern.
 
-This issue was initially spotted using an experimental code analysis
-tool we are researching, and subsequently confirmed via manual code
-inspection.
+Good catch, thanks. Callers of dst_link_failure() such as
+ip_tunnel_xmit() keep pointers into skb->head (inner_iph, and
+tnl_params for GRE devices with header_ops) across the call, so
+ipv4_send_dest_unreach() must not reallocate the caller's skb head.
 
-The bug and the fix were dynamically verified in a local QEMU test
-environment by reproducing the condition and confirming the patch
-resolves it cleanly. I will include these details in the commit
-message if a v2 is needed.
+v2 will compile and echo the options on a private pskb_copy() instead,
+leaving the caller's skb untouched.
 
-Best regards,
-Junyoung Jang
-
-On Mon, Nov 9, 2026 at 9:55=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+pw-bot: cr
