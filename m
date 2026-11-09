@@ -1,78 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794189542;
-	b=Ml27RumUl4HB+8SNJKVea38Qnwm6qaYNODvsdsa1iGzBiCK15/zEOXUyVpbXApBEe8JM
-	 jd6Yd47EpWpoF19CIfCdqhOKGXDvGKY+O4Rmn3Dvb9coGdFz8aDIBaJ8KnArYSaxxFuiO
-	 H9r8gzh04ejmhyFOUmTjTH1f9y7qLUz5ck7dCXrjy/OidtHJjGW2ZEHri/7XZPIwsU1jI
-	 MM8LwhHwes+97bsd55c3QSZQHiP5xnFBjyTTGvCz4aDTD7OWlr6b9mzLt2ApY/owHu8Da
-	 SEuFuyonEGcEOW2vuWx3XWSLR7HPANLSf+Uu/5WwsfbL1bJICmPUPaXV1ifjJnRj0qA==
+	t=1794189606;
+	b=HHoqQvMHWI1AwKIEpMYNqa1OmNst6Mopbko2OJ2mBkLEy8i4aTp1b4hLZlqnHZnpQ9kc
+	 AxAJfn0fUAfWbNFnKlgtETTyrOLB8zK4gPucm5iXHk64aLMaedpTrvRy6aOOf1tuXU4h8
+	 lL8FqNDzZ6kHdE7X8Q3kvOYks8zhNCSPewcOiyqYJ0kvsaujxjsgMdkWQ0sd2EEtv4/NR
+	 RkyKLN/kmrPMAvayse0l7rkjmWRXfSC1CgJvqiU6oDB0ROt55YyzlE18rHFSDpu1lWxY1
+	 /RzfL526PKnfZ7GZFayAsJjYTY0Dazsfsz+0ZcRxIZZ3WWbFV/0bCZLwbX1Q5iVdyDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189542;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=+OK9DbeBognNQm2Uppczdy/4MmLJ1Qm7DUxD2VxghhA=;
-	b=4V8YNTdEFdoDptxCynXAZODWBT6RY/xqimHWRVBLYBWmxDsJpaeLFcX3Ub4mISYuoyje
-	 lpM12czrzdV5i0nnXUsZ3c3TU6zh4sCEu5yQKtzCUWrQuk+6aaDNc0EGypEXgC69n97OI
-	 1NrOrDlIb/TdTlrBkA9awr3fzy4cDzP+rjmJI1+5OKef7GvfGVFJq8y5e0veXsYwWA9oJ
-	 egmmXotHJUWSC+fY+RSu9DFum5G51Na2+TJThRl8EYv2uZdk1Obl5E5fADEGfi+Rn2hfQ
-	 KGsgwEYZ0B5ZsPlgL4rpZ7RbixnlTHxFFP5WEzjoekl72GJkyyNb9HO+6EWJIDWUZwg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794189606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=4O7b9maEIF1lUn+r9vtV3zrFTuCwJwOQGcTwpTgyKVI=;
+	b=gDj7RZpfu4UcvpaiBq26RTjL6U5ZMIauipj2z3YF9K26qdzOTlZbephbUjhzB0+aTCik
+	 +xA+m6dCGVrT7cet0MXDN+WaOh8E0XL3aui1nP/aPoPgiD3qB7Em+b5AugkpCod92lpzB
+	 7z5J2UlrCQj38SCYoiWJqA3C2DIvux0EZaKAwmJ9DauGU0jHi00tI3k38eG9x5FMejPB2
+	 jCziZqQYIbE3pS0748lbpPgAZUeLWMYKpPoc4v1c2yhza0CF7AtwIwWWMk4LlFUX0AGzl
+	 fK8NirM6p2oLG8B7adx67nEZffoPxQthjeS7l/IinHuwz+ZwPhfqht2bmIZ5Jku0grQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=m5yBrWFa;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC86606A32A;
-	Mon,  9 Nov 2026 01:58:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AAC86606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U0aikYsZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54160606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 02:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=m5yBrWFa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=m5yBrWFaxKx85D2r0pdfxUKdz4+L0/lw50/JGGJjRFILU3SuYmpBQVsrxmzTDyosFUPu//pXARTyu
-	 mxdoLu65PvtCoZvZ+/QcQcLbdKJWc8RkVSSw4v/Y7gVDCZX4YkIid/FtpsGCnzND/Panv3mluJVQA7
-	 eEnzj0zISyy/3DQs=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36af128e1877-8af85;
-	Mon, 09 Nov 2026 09:58:57 +0800 (CST)
-X-RM-TRANSID:2ee36af128e1877-8af85
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.102])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af128df0e3-7caff;
-	Mon, 09 Nov 2026 09:58:57 +0800 (CST)
-X-RM-TRANSID:2ee16af128df0e3-7caff
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	stable@vger.kernel.org,
-	tpluszz77@gmail.com,
-	willemb@google.com,
-	yana06070@163.com
-Subject: Re: [PATCH net v2 1/2] ipv6: fix cached route reuse for SO_MARK control messages
-Date: Mon,  9 Nov 2026 09:58:45 +0800
-Message-ID: <20261109015838.14237-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <willemdebruijn.kernel.1e0038bcc3ef8@gmail.com>
-References: <20261104092240.15649-1-yanxia@cmss.chinamobile.com> <willemdebruijn.kernel.1e0038bcc3ef8@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U0aikYsZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F321F0089F;
+	Mon,  9 Nov 2026 02:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794189605;
+	bh=4O7b9maEIF1lUn+r9vtV3zrFTuCwJwOQGcTwpTgyKVI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=U0aikYsZvgN/YQC4n54yKqUUjojwWKk7VoorpAr0KCPXSrnnZbyJxdG0CG/PgnmlG
+	 C0B+Ujl4xkpxzcHltSd79WWBR6GPhWvE5YhI0tHZJFvl9TtTSroy7MYQ2FpF728fIe
+	 BIL+kNZ10tU3KtgclMW4dhWktxx9jrnUHPnx9aLnN+XP4xW3zOuSTtwUi1C95GUj9n
+	 NiT94o1gCa3eEERikcUkJ6Pu86Qq6V2eeTb8Y8WIZ45kijns4jWMtpTAPeR+Fb4Z8h
+	 RWkDlNG0IY0al4CT3Phjq2uMllRWHp4AAzAzyJ39qyb5RC9v1uxaeJlPNt+fFilyEf
+	 JcQyZqT/TCCew==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D82B4380821F;
+	Mon,  9 Nov 2026 02:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,22 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next] man: ip-neighbour.8: document protocol
+ keyword
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179418960467.2493343.2506764682205641354.git-patchwork-notify@kernel.org>
+Date: Mon, 09 Nov 2026 02:00:04 +0000
+References: <20261104121702.56526-1-prijeshpatel.dev@gmail.com>
+In-Reply-To: <20261104121702.56526-1-prijeshpatel.dev@gmail.com>
+To: Prijesh Patel <prijeshpatel.dev@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, stephen@networkplumber.org,
+ prpatel@redhat.com
 
-Hi Willem,
+Hello:
 
-> Would this be a viable alternative solution?
+This patch was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
 
-Yes, I've used your approach in v3: the cache is read only when
-connected is true.
+On Wed,  4 Nov 2026 17:47:02 +0530 you wrote:
+> Document the `protocol PROTO` keyword, which tags a neighbour entry
+> with its origin (e.g. static, boot, dhcp, or a routing daemon's own
+> protocol id) on `ip neigh add/change/replace/delete`, and filters
+> entries by that origin on `ip neigh show/flush`, including the
+> special `all` value. Supported since 6b83edc0 ("neighbor: Add
+> support for protocol attribute").
+> 
+> [...]
 
-All 54 cmsg_so_mark.sh cases pass on UML, including explicit mark 0.
+Here is the summary with links:
+  - [iproute2-next] man: ip-neighbour.8: document protocol keyword
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=d95f66508b32
 
-v3:
-https://lore.kernel.org/netdev/20261109014400.9025-1-yanxia@cmss.chinamobile.com/
-
-Thanks,
-Xia Yan
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
