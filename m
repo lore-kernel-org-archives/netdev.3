@@ -1,62 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794230265;
-	b=5FpBCp2RUukwFIAgd/0jLNYbz0/XKos3IAWSmhahG/LcmGmNOlRVgaj57C1TYqapEX1c
-	 7baAI2chkWC6T5RP3UTHWR6Q5DYIrfY4EZfiLmg20XoD1CAtwWs93v5p0pcWcbhqnNNyU
-	 a6k+PPVt5C74jjkZCkYe7o3HK9MI0o09yQB8dP0TmzUsk5eGL7MVjpBz6ERCEouNH8yCo
-	 7Ej+tvbD1cv09XuOPHzrtqlpch7kHXdirS0n+k47vYLHVSucxIa4IMgF0vd+LPADJ1JeZ
-	 x02y5ykaJ1ISgIjeE3Clnh4rlCeRKsv8k+b/rEO26KVm3kiH61J9T3p5XcEDr+zlsbw==
+	t=1794230551;
+	b=3P3EBtg1X8B6F1oryHtgov2eQoeUNAmbkrgLAOhJQBVBWWF10FrQwulbVV3xq7srkSbS
+	 0NyMLUv0TOfzF4ibYKvX3JVExaaZ48KJBEz00BbjO2UfEbO+OAoAuynp/+QzYyY1YU0Gz
+	 YdLc+1sVS/T72VxQM1zPnMo1JflUpQ7JSytx9LoBftXmasuNUbjtYiAxAqIDytpnNfhI4
+	 yz0rLmB6akqZiOPOq/JKEK7MRxX92hU8CPdGV+JtIZiNWH1g4kVqqGDhoBUI6eNbo7o5V
+	 G3iW59nGtifBOhRBxGwBcO764DbKfydmJ/EqVpMdASZ+T3NwssgOw7O0mP+3/Xm1nlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794230265;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=wmSKA0NVMNFLjGl+O7ashCzG730qVs4KBuS1dZB2o1Y=;
-	b=InSPbZ8y/Sn0F062bA65XfaDS3tcxD9rvY+b4KQNa/3NEf3RgY04jCVOia0+cP8+LImd
-	 BQdhcI7miwKd9Z9gVyfw/YAbgWpOrqyZ3Q35tONxsjA5vA3jsh+VRb0vyLiU1m4okd33D
-	 cTfoFpF/DZoBmb3ZWDQzt2mPz44q+YWk4PJgxcL4dKktVON8Q1AU+z04ympJmu8SoMkSX
-	 sXTWZ0t79rLfkQCqjRQvMFiTNv4lPKJ5GeR1s7vjTD1qhSKewRKiI6xBs5KlwvDl209W9
-	 yKfWBtFyh1fiXyXYs8LU7bBfGihHPTJ+yrMH5E0QHcY1LlYpwhXHroAKqPQGLQKjrtQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794230551;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=kA2godbZnBHxyz71XZOEW+H2DRSk3CIDmt0/jBvvJU4=;
+	b=biHvQbrH6zmfB2bxSzGfqVpzyqGIuQVhY5Oah81yFJbufjHEKXCNabfeJNLVJ4bRyLz0
+	 H4ecEiITXBFxVYguBDz+mhVV+FicWC/NN8kt/oVBeV+UPpVTTcEy4Kysn3+eWBAQLJ046
+	 uoo5nJIjno2lG/8RXTAxdUUxIwmrKIWRlr8SP8f9BCVYjtgZya0LcDoptrBVMFLg1043O
+	 vxkZlnO72JPWotfT3c90ZHc6S6+/Sli1wMxbOJMRHX4ryX/a6AerwtpQCKAnQXd+gZweQ
+	 7Wm+dmWJ7+DAYB9S57LEmSFPb66vNh4cGAHxjrleI3+uhdTxX5Nfiqcf+1Y78IUF6pQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2Ulgqs7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4rTHREd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA1F606A325;
-	Mon,  9 Nov 2026 13:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F60606A321;
+	Mon,  9 Nov 2026 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2Ulgqs7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83C21F0089F;
-	Mon,  9 Nov 2026 13:17:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4rTHREd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2249F1F008BF;
+	Mon,  9 Nov 2026 13:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794230265;
-	bh=wmSKA0NVMNFLjGl+O7ashCzG730qVs4KBuS1dZB2o1Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a2Ulgqs7zf06D8PuIMyDCuX6l8nysWf52xbXNoKuuFvT5b2fYeMv8QzQTZ8ME21XK
-	 iNc6obiBk+XN71Snf16EIzJfIhOTT+qhwvQevNhEMl6L1cJIiOhknrmKIYqla5UwIp
-	 hHBKj8sj+OUqZlhZ/b+4M0td2Eu7Szr5oQnQ3806z1wXzfLL802V+VxzQQk31auZYD
-	 NnGtnJPmwqSYEE8/tLODbmrQ9Rb8leloURbQprsfp3eSSvhLKmQiWGLp+ncW4N90F8
-	 1bLshwF1gjJRLY6YfJOYb7EnR6pXr4oQcbBbTenBURJ5LKBs975LxG0ECtj6Wswobo
-	 Al7Ay0EnnmRSQ==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	linux-security-module@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>
-Subject: [PATCH net v2 1/2] ipv4: recompile IP options on a private copy in ipv4_send_dest_unreach()
-Date: Mon,  9 Nov 2026 14:17:35 +0100
-Message-ID: <20261109131736.3060756-2-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261109131736.3060756-1-edumazet@kernel.org>
-References: <20261109131736.3060756-1-edumazet@kernel.org>
+	s=k20260515; t=1794230551;
+	bh=kA2godbZnBHxyz71XZOEW+H2DRSk3CIDmt0/jBvvJU4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G4rTHREdwR0I+nKNYEBwCJqYr/+YU/uakCfflvjUoZ1IKVaSmgE7HBHoTQqEHoT1i
+	 Bmh0WdnTR9YXJYcHVoN7FeTFFAe/A6b66Dw+q8lTZ93B/Z/S7NExNQO79DHLPWzcr4
+	 DbXy2i2Y+87zuahqSSK/9Fe0AqZXj//KA8DtwkMH0Dpf8qXCgHwrYR0CzItm6aFdG1
+	 M9BEGONmuLdcUUJclzb1oh1FnL7EG7RkvKrSdktfIEGYLAamcKqNdeTOSI+O4KrY18
+	 3FUqKafFOMIlGCU3bXECa9PRaqXQDwbSM6+QlQa0DivutJfwD+tX6EeK/7NLo+rRBe
+	 lxIR02ANX54wA==
+Date: Mon, 9 Nov 2026 13:22:26 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: vulab@iscas.ac.cn, idosch@nvidia.com, petrm@nvidia.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mlxsw: spectrum_ptp: release parsing depth on MTPPPC
+ write failure
+Message-ID: <20261109132226.GL18859@horms.kernel.org>
+References: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+ <179405323723.994134.11947248661617076904@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,87 +61,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <179405323723.994134.11947248661617076904@kernel.org>
 
-__ip_options_compile() updates Record Route and Timestamp options in
-place. ipv4_send_dest_unreach() can receive skbs whose data is shared
-with clones (for example TC-mirred copies or TCP transmit clones), and
-pskb_network_may_pull() does not unshare an already linear IPv4 header.
+On Sat, Nov 07, 2026 at 12:07:17PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The patch fixes the enable-path leak but adds the same leak on
+>   the port-removal path.
 
-Concurrent link-failure processing of such clones can therefore change
-an option pointer after it has been checked. For example, a Record Route
-pointer can advance during fib_compute_spec_dst() (called from
-spec_dst_fill()), causing the following write to overwrite the next
-option's length. __ip_options_echo() then trusts that length when
-building the ICMP reply, which can overflow both the stack reply-option
-buffer and the cork-option allocation.
+I believe the issue flagged here is pre-existing. While it does affect this
+patch, the patch is still an improvement in its own right. I would
+therefore ask for follow-up on the concurrency concern raised here, but I
+do not think it should block progress of this patch.
 
-Uncloning the skb is not an option: ipv4_send_dest_unreach() runs as
-the dst_link_failure() callback, and callers such as ip_tunnel_xmit()
-keep pointers into skb->head (inner_iph, and tnl_params for GRE devices
-with header_ops) across the call.
+And while the separate bot email, requesting information on how
+the problem was found, should be answered, overall this looks good to me.
 
-Instead, recompile and echo the options on a private pskb_copy(),
-leaving the caller's skb untouched. This also stops rewriting the
-options of a packet the caller may still transmit. If the copy fails,
-do not send the ICMP error.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-The issue was found by an AI code review agent. It was not reproduced,
-and the fix was only build-tested.
+> 
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but
+>   mlxsw_sp1_ptp_mtpppc_update() has no serialization between its two…
+> - [Low] The new rollback in mlxsw_sp1_ptp_mtpppc_update()
+>   (spectrum_ptp.c:1223-1226) calls mlxsw_sp_parsing_depth_dec().
 
-Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
-v2: use a private pskb_copy() instead of skb_unclone(), callers of
-    dst_link_failure() cache pointers into skb->head (Sashiko).
-v1: https://lore.kernel.org/netdev/20261106234313.2537882-1-edumazet@kernel.org/
-
- net/ipv4/route.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 3a90c8d28b940bf615c165d9b30ac634943586e1..9af72cb892034deff2bb3169911c02c025d73cf2 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1256,6 +1256,7 @@ EXPORT_INDIRECT_CALLABLE(ipv4_dst_check);
- 
- static void ipv4_send_dest_unreach(struct sk_buff *skb)
- {
-+	struct sk_buff *nskb = NULL;
- 	struct inet_skb_parm parm;
- 	struct net_device *dev;
- 	int res;
-@@ -1271,6 +1272,16 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
- 	if (ip_hdr(skb)->ihl > 5) {
- 		if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
- 			return;
-+
-+		/* __ip_options_compile() writes into the options, and
-+		 * callers of dst_link_failure() may cache pointers into
-+		 * skb->head: work on a private copy.
-+		 */
-+		nskb = pskb_copy(skb, GFP_ATOMIC);
-+		if (!nskb)
-+			return;
-+		skb = nskb;
-+
- 		parm.opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
- 
- 		rcu_read_lock();
-@@ -1279,9 +1290,11 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
- 		rcu_read_unlock();
- 
- 		if (res)
--			return;
-+			goto out;
- 	}
- 	__icmp_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0, &parm);
-+out:
-+	consume_skb(nskb);
- }
- 
- static void ipv4_link_failure(struct sk_buff *skb)
--- 
-2.53.0
-
+...
