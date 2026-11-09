@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214363;
-	b=1xu37ga9ThC35Iayvm0A+LMU/gc8bX78ozC3qzN7lT9795MusAJjHJfiiXdaF5Zi+bRO
-	 tplGJLsmE6117w08Y7T6eAt9QElEmqHRwTm5iCw+plKN7hjEomlCmXzjODQMV03gwQG1O
-	 9byX0NW47IgutJdcstlK7kKJA6f5Wc9iJwMpeIwE1D8+0dubpRnvxs521rAzyw2eFE+ja
-	 AL/GMPByZ531l8ZfYa2SrxTVFyK9tf5e7j8H+bQDQEGhgn/XDUnxNtI1xG0fc3DFpuFwa
-	 mqXVvRRo+RbLISbx81Ipy0f4RwMERt4wvzpABOTQE8adtdzYaMLLDWH+8JlfWQsMQ4g==
+	t=1794214366;
+	b=fJ8C6B3gVF8xKU7rtDO+daBOozCVLbb5bkIonf6Xpung/U2hxBYgs9xRhB4CrX1IiH3t
+	 6eOMBo7pWXtFiMxWmNCXgGdAookChNKALiSKwekOFLBD4zPvAMNTEsKDDzKUGdce92ggA
+	 pd4enEfn4Wx/fVS3PASQIb82m4BHh93Itkpp5EkLd4ttqs0puEbmg6NGm7c6gCMMxGCcG
+	 pGkJG+pg2faW6u0P3AACf+NcERdxEDyC2THiQrsx45YhkaAoY2DWN+7brKqb+JXg+qxO0
+	 49waLJoDxW8+DdlsomSnt21BZNCR3XOMRopTUSxD4uCwhlof6Fq44E+eMxOeUNbKI7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214363;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214366;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZuCgV3iftQOi1pVHVUGM411m1BUew2QCPAkKHcu4o5c=;
-	b=5aX1QvB4SxDlBZS0E7bKZsOoeBJMWpz8IJvwntNHGlDIlhQlaDgMnJrhGyfL0DlfDabq
-	 RxBXiufHQ1nTbPKHXrKtwrKMNmYg0irAEexIdM6gCnwYOypRvWxxP+ItBrITj2FS9JKMK
-	 NwlYVjB6bxqOpLX6ECzvnyeHt1/hu9x+Nw4J9XGNMqqYcGU4WE4G+6bc+qeyZVrc0+7Aj
-	 F3gCbDk54d+YxUsPOkjE7Lboghupj19x+IdSAi5r06qKYKNEMxug4tJbhNHxIK/IvAVBs
-	 BodEDbWsH2u94bdD5GdmWHHEe4zR9YjgBcVj6jzwoyIGJIES7uL7yiKSFdBNGdjXYoQ==
+	bh=S+gPk6smiHphLVQhupXpYOXwHrOzpls7/r1mEhsRfFE=;
+	b=dB9IAvYAQH80K8Ska/Kve2J0C8LNmKzhGFjtAkRbG8MkvSZP0Xficr9Jb1gXVVbdJEVL
+	 wqn+OQ/UKhWvc4HHb9/R55y9KNJKU0K8OQ0Ov4k8CtUfeeJXeoY0t4xa9NZgrb3YDvdGZ
+	 gSx7Xf5v1CQqd7vPbfH+DmnseeVltyG96l0cN/KNNnBhvSt9EiCs2akTLtmQPIdPoHuc9
+	 q8VHUjRwMwEESG8DHOJloRojPCU8FEJiAV4ROw/L9bOE0EZPoG75v8MzHRXiJOux4b+r+
+	 7hyqBGPa3RCPw5/XikwhTrc76gKpSg0o/KGQM9UvPMgmBg7z+ZVydNVOZe44dvHnPVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Stqcbqzs;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KeXTwOcc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823B5606EEBD;
-	Mon,  9 Nov 2026 08:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E466082BD5;
+	Mon,  9 Nov 2026 08:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Stqcbqzs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6701F00A13;
-	Mon,  9 Nov 2026 08:52:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KeXTwOcc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F0F1F0089F;
+	Mon,  9 Nov 2026 08:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794214363;
-	bh=ZuCgV3iftQOi1pVHVUGM411m1BUew2QCPAkKHcu4o5c=;
+	s=k20260515; t=1794214366;
+	bh=S+gPk6smiHphLVQhupXpYOXwHrOzpls7/r1mEhsRfFE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Stqcbqzsq3zeSJ0lFxWZBujSq3Qk7mRVWuPmty4UptM+wm6dE+e8BOcNOISzoccOx
-	 qdW89OVQ8HaPtOSWJl4uSRNz4J63LgtjagoPZzWFOnmH2JpCa8ZjW4NzPXY3yZLmBn
-	 /kfR/zc5CfbcK5cPFXpuqUcUP6vj+f+0tMTxrsJzuYzc3EL5CYaBlxvZ5nwmKg2yz6
-	 yPKJuvqv5GIg+DbkZcKdjUwaoTSiXIoFpTe7mPn4zr5uvNf0IF8Spsg/bjo6c45BQp
-	 yZyH1mskd9jGHLrHHRrVrsnHkAhvaIYWRhnSD2cVPCyev/lxKwYTm7iltBDCvJzxZk
-	 7FHk7Epxtl6qA==
-Subject: Re: [PATCH net-next v9 02/11] net: dsa: realtek: rtl8365mb: add chip
- family infrastructure
+	b=KeXTwOccgEqYoUnzl8AuHfamPUX5jt7n9Wnefk/EHdYBqQM/Fy7RTsVNf7xjHJSFm
+	 KwyGKUosbs+9vy7y535s+TOIfFK+QLP5AJHZ8jQHDoZR/atEy9x5NEAd3QV19mmr/F
+	 M4Tt28SwELpRcds3x+CAunBbpgEP0idnL7pCjn5Yl87MvUSngAdDd9a0hQFC30xC+e
+	 07/KPeEfqrb1zEp71ppGyWVPv5qfEM8JKG5uRSU9YNg9Hc/zE+XYpChcUhtPm139F3
+	 qdCXy3szyistHcgXlsvUsidmOs8+hHIcje10QLCeJIOUImoS1BX5C5bhcuPJDX4p23
+	 omiSdJIS5SxMg==
+Subject: Re: [PATCH net-next v9 07/11] net: dsa: realtek: rtl8365mb: add
+ family D SDS13 PCS support
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
@@ -50,11 +50,11 @@ Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  alvin.sipraga@analog.com, gusfmora@gmail.com, kuncy7@gmail.com,
  fabianotassotti@gmail.com, gabonpivovich@gmail.com, contact@c127.dev
-Date: Mon, 09 Nov 2026 08:52:41 +0000
-Message-ID: <179421436161.994134.8843393412347553629@kernel.org>
-In-Reply-To: <310bca10-e082-4d0a-a645-42fd4e58d2a6@yahoo.com>
-References: <310bca10-e082-4d0a-a645-42fd4e58d2a6@yahoo.com>
-X-sashiko-severity: Low
+Date: Mon, 09 Nov 2026 08:52:44 +0000
+Message-ID: <179421436480.994134.17527876379511324629@kernel.org>
+In-Reply-To: <7845f6c0-4b8e-48e6-a5e6-b0b3dd8a182b@yahoo.com>
+References: <7845f6c0-4b8e-48e6-a5e6-b0b3dd8a182b@yahoo.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,99 +67,98 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] This patch leaves a stale comment in rtl8365mb_switch_init()
-  (drivers/net/dsa/realtek/rtl8365mb_main.c).
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Family D SGMII at 10/100 Mbit/s: phylink is told port 6
+  supports those speeds, but the driver never gives the SDS13 SerDes a…
 
 --
 
-net: dsa: realtek: rtl8365mb: add chip family infrastructure
+net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support
 
-This commit adds enum rtl8365mb_family and struct rtl8365mb_family_info.
-The family id, port count and init jam table now live in the family
-info, which struct rtl8365mb_chip_info points to, and all existing chips
-use the RTL8365MB_FAMILY_C instance. rtl8365mb_detect() now takes
-num_ports from the family info.
+This commit extends the RTL8367S SGMII/HSGMII PCS code to family D
+switches. Their CPU SerDes is reached through the indexed SDS13 window,
+and their SDS_MISC layout differs from family C. The patch adds family D
+tuning tables and SDS_MISC mux/mode values, always sets sds_supported on
+family D, and skips the family C SerDes link-force programming in
+pcs_link_up() and mac_link_up().
 
 > diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index da06f952a053d..b500c8404c24b 100644
+> index a87253b9c2700..86194d555fd6a 100644
 > --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 > +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
-> @@ -702,14 +705,20 @@ struct rtl8365mb_extint {
->  	unsigned int supported_interfaces;
->  };
->  
-> +static const struct rtl8365mb_family_info rtl8365mb_family_c = {
-> +	.family = RTL8365MB_FAMILY_C,
-> +	.num_ports = RTL8365MB_C_MAX_NUM_PORTS,
-> +	.jam_table = rtl8365mb_init_jam_8365mb_vc,
-> +	.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-> +};
-> +
->  /**
->   * struct rtl8365mb_chip_info - static chip-specific info
->   * @name: human-readable chip name
->   * @chip_id: chip identifier
->   * @chip_ver: chip silicon revision
-> + * @family_info: data shared by all chips of the same family
->   * @extints: available external interfaces
-> - * @jam_table: chip-specific initialization jam table
-> - * @jam_size: size of the chip's jam table
-
-[ ... ]
-
-> @@ -3036,17 +3048,17 @@ static int rtl8365mb_change_tag_protocol(struct dsa_switch *ds,
->  static int rtl8365mb_switch_init(struct realtek_priv *priv)
->  {
->  	struct rtl8365mb *mb = priv->chip_data;
-> -	const struct rtl8365mb_chip_info *ci;
-> +	const struct rtl8365mb_family_info *fi;
+> @@ -1660,6 +1783,12 @@ static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
+>  	u32 r_speed;
 >  	int ret;
->  	int i;
 >  
-> -	ci = mb->chip_info;
-> +	fi = mb->chip_info->family_info;
->  
->  	/* Do any chip-specific init jam before getting to the common stuff */
-> -	if (ci->jam_table) {
-> -		for (i = 0; i < ci->jam_size; i++) {
-> -			ret = regmap_write(priv->map, ci->jam_table[i].reg,
-> -					   ci->jam_table[i].val);
-> +	if (fi->jam_table) {
-> +		for (i = 0; i < fi->jam_size; i++) {
-> +			ret = regmap_write(priv->map, fi->jam_table[i].reg,
-> +					   fi->jam_table[i].val);
+> +	/* Family D forces the external MAC ability from mac_link_up(); its
+> +	 * SDS_MISC fields do not share the family C link-force layout.
+> +	 */
+> +	if (rtl8365mb_is_d(priv))
+> +		return;
+> +
 
-[Severity: Low]
-This isn't a bug, but should this comment in rtl8365mb_switch_init() be
-updated?
+[Severity: Medium]
+On family D, does port 6 work with SGMII at 10 or 100 Mbit/s?
 
-The jam table no longer comes from struct rtl8365mb_chip_info. It now
-comes from mb->chip_info->family_info, and the new kernel-doc describes
-@family_info as "data shared by all chips of the same family".
+rtl8365mb_sds_probe_option() now always sets mb->sds_supported on family
+D. So rtl8365mb_phylink_get_caps() advertises SGMII on port 6 along with
+10/100:
 
-The comment still says "chip-specific init jam", though. No later patch in
-the series changes it. At the end of the series both rtl8365mb_family_c
-and rtl8365mb_family_d point to the same rtl8365mb_init_jam_8365mb_vc
-table.
+    config->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+                               MAC_10 | MAC_100 | MAC_1000FD;
+    ...
+    if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_SGMII &&
+        mb->sds_supported)
+            __set_bit(PHY_INTERFACE_MODE_SGMII,
+                      config->supported_interfaces);
 
-Would something like "family-specific init jam" fit better?
+The RTL8367S-VB entry added later in the series gives port 6
+PHY_INTF(SGMII) | PHY_INTF(HSGMII).
 
->  			if (ret)
->  				return ret;
->  		}
+On family C, rtl8365mb_pcs_link_up() is the only place that programs the
+SerDes SGMII_SPD field for 10/100/1000. With this early return, no family
+D path appears to give the SDS13 SerDes a rate:
 
-[ ... ]
+  - rtl8365mb_pcs_config() writes only PA33PC_EN | PA12PC_EN |
+    MAC6_SEL_SDS0 | sds_mode into SDS_MISC. It also clears NWAY_EN, and
+    pcs_inband_caps() returns LINK_INBAND_DISABLE, so the SerDes cannot
+    learn the speed from in-band AN either.
+  - rtl8365mb_phylink_mac_link_up() skips the SDS_MISC write on family D.
+  - rtl8365mb_ext_config_forcemode() writes only the MAC-side
+    RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(port) fields.
 
-<br>
+Suppose an SGMII PHY or an SGMII fixed-link on port 6 resolves to 100 or
+10 Mbit/s. The MAC is forced to that speed, but the PCS has no programmed
+rate. If family D hardware does not derive the SerDes rate from the MAC
+force register, could the link report up and still pass no valid
+traffic?
+
+The family D SGMII branch of rtl8365mb_pcs_get_state() also does not read
+the speed back from the SerDes. It keeps what phylink passed in and falls
+back to 1000/full:
+
+    if (state->speed == SPEED_UNKNOWN)
+            state->speed = SPEED_1000;
+    if (state->duplex == DUPLEX_UNKNOWN)
+            state->duplex = DUPLEX_FULL;
+
+No later patch in the series seems to add family D SerDes speed
+programming or to limit family D SGMII to MAC_1000FD. Should family D
+SGMII advertise only MAC_1000FD, or should the SerDes rate be programmed
+for 10/100?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/9b73858d-fc09-4988-8bab-fd7b88db9412%40yahoo.com
