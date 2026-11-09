@@ -1,55 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794228957;
-	b=ANn0gxHsL5PuqY53gpyzaHgOTVupKBoZ2UhK1CJaVtKYaGG5iK/gnht9azDIfI+dAH6M
-	 CMZhtA5tSAhW32l31+HFbrBG9ViTxpyM6oqhByYz7P/MNaHW/bOVDlYCFNLTlMB2e5Nje
-	 NGkzMd2SZuaB4cqukUUTdQF6cC3Vz4kdqocdskJ8qU0fP7TR8f12cp4ZHUReUJNH1oeZD
-	 V8KRW+htzqE3GRxaGJDsaMYGmu2+/T11BgvQxtIIeiIZKjHOVF6C3W/NPObzQtaJW6NQQ
-	 yyEE4p0TNb4qVrcb2JKz25CkNhVnQWOqH1+Cvr3767oTfXrbO6wguixTTI2jWuCAJXA==
+	t=1794229046;
+	b=v9H0frF+vLGRP7gpof89H55lsITygYYpKSDSDfOt+77jkzx90Kr2XgycD4vIG236HkcC
+	 KoxhpZcr8J/k10ZBV75eVlgESGZmAvzGQyQBK1n8m+rEwnsahsmbfNGH79PUhPw/3tQdP
+	 aRXKBCZxCPxG88GhptPx5TSXW++uX+oUWi5MJJwQ6Noey87ZOVqv9Huuahu/qJTpLORZM
+	 vkKdV/RXue7aayMaA8RThcj3tceXPqfeMXMWpWmNzI4MqHTrZZR48rVWfEGALOGGriFgk
+	 Gy9xFHAWZRuvJGKE9kK742qTiTxS0rD2sDMPClczNXcVe4JcTTAfoxdyQLeL1vXexIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228957;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=QmlNSwLc6buEHOgEzj32ULNeq+2FZUUU9zK5Ugfw3Xg=;
-	b=OMWIGm1nP533ZSLbjI+BFdGgfe4aXrF6N9MsMBG4mAGpeOEHhYUL6A26OeeZ9AJTcT+R
-	 X+jdIoU9K9/OI4OF8WE4gRokNmwdgck/AuMMp3GzP0yV9WmNzdh36/yGY1cs76phiLP9x
-	 MU2/Tt3nIqyeQZt7oQz6WikjVlH+vV0Wk/6VYVuQK6rCNi+ZmpkRA2VKtMCY6C8t1wQ3s
-	 SWVNV7OLXCWTAJoy93eNL2SkFUF4nwUxVtn9SShdSfjanGq3YDqTvB5uxw93/4vMQnDWp
-	 tmnriHwcU8pdlFgOunb8NfpI1smKf5QQF7MhUa4w1DOFmoXMPx+yaWDIaYK9NK9ITMw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229046;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=decC6/EKFH5ygjGtgwveqkqNEtpd268ptmFddrXcQkE=;
+	b=zmS7uYbS0LIzWWzmeoMvXwGBZKEHmfJKHNZGfCw3jaks5492/8rDW8QB1XAqeuVyOfID
+	 SkxOiUJRrBz1EXjg4OXl5FmavR0cxq5zsUWu2PaDen6j3Y1/YFg8U0ZF9Px95z667LgRY
+	 2QUavyGSLZABnXYyXIaAuqbQYfvf4S2yy7nc25q8zhcDs8Q8RcFW5f1CU1o+j96OJTW0a
+	 CtvhV9GqzwmdvBfuuSivQfG/d69Ho4sCTN1ZKn3h7x8Xf6qN4+LTgVnj+TTSCF0RShcrV
+	 UNtH9bECA8MoTBhTzBbTJv7BRoAg3OxxJ71FVvoD3UT7Qz5f3ZWyD2NxbVUWfpw0caQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8H00QAL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ag8NylaB;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FC8606A330
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830E606A31C;
+	Mon,  9 Nov 2026 12:57:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A830E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8H00QAL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA81C1F008A3
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:55:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794228956;
-	bh=QmlNSwLc6buEHOgEzj32ULNeq+2FZUUU9zK5Ugfw3Xg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=P8H00QALHmW07qpsh+/TXpHrnHFdEo8k2j13WillFiwYYd0lEnEWHzgmUbcB83L/P
-	 uL8PTZ2B8D69AVVGUrR1hl19StJj4pK4hFir34nUpHzMXZ6auNQcHRtdVkZsENkZY2
-	 NLePEZIq39hhMV5A8jCer1YOxMXNHSwYg6T48Yshit3jgvV2BOaXOj0szA4pgun1xR
-	 k2O1giPrjQym3/bED6Wo6TZeoK+zIy629FRjMmm6q0Fx2HP4+XoLnJxMPIpLpaKIGp
-	 AuvESJ7RYPkFY/5mt28B5NP33hNfROPjpB335aPp08xaDXotAeaGhack5xzsiyfVYp
-	 +rppPNBNFtH0g==
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4adba7b3399so280268fac.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:55:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHghwovGZy5RW3ELwlWyVr1MQmEgUuMyi2dr5JSKcXecRqInSZpi19Y9OLoL+LnHkMheIkBWCQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+U/QksDLdR1CwXq++j2/sp+0ekFRPzs7pJB491/iM1SdmCDH+2
-	D1Odw94HWSzlc/Phpap5Sun8IfaxDTV4PTlfV7gQyQG1yJfG+uLJtITfG1uVV9avZra5kLQHePB
-	zuancX2LI+IqEETS90CXanyDAkWRrO8Q=
-X-Received: by 2002:a05:6808:3088:b0:567:cac4:f1c3 with SMTP id
- 5614622812f47-56814645938mr3302855b6e.23.1794228955967; Mon, 09 Nov 2026
- 04:55:55 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ag8NylaB
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8E3A3A0021;
+	Mon, 09 Nov 2026 13:57:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1794229040; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=decC6/EKFH5ygjGtgwveqkqNEtpd268ptmFddrXcQkE=;
+	b=ag8NylaBvFXAoooQLCb5KYvDCoc9EzouQ8vh15P+yAwFILO/BFMtvcoGG7E6kUb4KzfM+6
+	/b5zYZo0WY2EkoE8N0dl7JOywH447CieFC6VTUhOkRTGUoB/UN11p5HLaLkYOlNGNFSnX0
+	q47MQNI5eQpbjL4UqLZ9ZKEO7ae1UazeSKZLVqphslkAhmrMz5of8RlOj4hJJSgH9XJ8nw
+	QA1rOrnrsDo5iPhRCOQRKwE3SOOJD0M+BKd3FUKB3rZptVWFKYSvE9kouVQEoWFiYFJpIh
+	O2Rqo4lC52ywUYp/iecFdF06wWSNlxjWLF1Gy7jdAoFDKxnpH4O3RyBdG+dFSQ==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Mon, 09 Nov 2026 13:57:09 +0100
+Subject: [PATCH 6.18.y] net: macb: wait for a running xmit before resetting
+ BQL on close
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,131 +56,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <avGpsTb2hsGIjSRk@v4bel>
-In-Reply-To: <avGpsTb2hsGIjSRk@v4bel>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 9 Nov 2026 13:55:44 +0100
-X-Gmail-Original-Message-ID: <CAL4WiirT7+1BDp97UWmBC8xpwDbNn1q0kWhztB9Gvs_i9u2shA@mail.gmail.com>
-X-Gm-Features: AclHuK8AXldAhOny5_DIBeo-TPv-GHc6lNKVE1dWB49YKc5RwF3I9vvwwU8EkqE
-Message-ID: <CAL4WiirT7+1BDp97UWmBC8xpwDbNn1q0kWhztB9Gvs_i9u2shA@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: fix NULL pointer dereference when restarting a
- Fast Open listener
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261109-nb-macb-close-6-18-y-v1-1-51af4b20dffb@tipi-net.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0Q6CMAwAf4X02ZJ1SgV/xfjAZtUaHWRVIyH8u
+ 1Mf75K7GUyyisGumiHLS02HVIBWFcRLn86CeiwM3nkmch2mgPc+Boy3wQQZqcUJyXPn1hvfNLy
+ Fko5ZTvr+bffANbX1BIe/t2e4Snx8n7AsH37+SbuAAAAA
+X-Change-ID: 20261109-nb-macb-close-6-18-y-126903425567
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Sasha Levin <sashal@kernel.org>
+Cc: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Le lun. 9 nov. 2026 =C3=A0 12:08, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9c=
-rit :
->
-> When a valid RST is received for a Fast Open child accepted before the
-> three-way handshake completes, reqsk_fastopen_remove() adds the
-> request_sock to the listener's RST list if the listener is in TCP_LISTEN.
->
-> An application can call shutdown(SHUT_RD) and then listen() on the same
-> listener socket. inet_csk_listen_stop() checks rskq_rst_head without
-> holding fastopenq.lock. If rskq_rst_head is NULL, it does not acquire the
-> lock and therefore does not synchronize with an insertion by
-> reqsk_fastopen_remove() after that function has passed the TCP_LISTEN
-> check.
->
-> The subsequent reqsk_queue_alloc() also initializes rskq_rst_head,
-> rskq_rst_tail, and qlen in that order without holding the lock. If a
-> request_sock is added between the initialization of rskq_rst_head and
-> rskq_rst_tail, rskq_rst_head points to the request_sock while
-> rskq_rst_tail is NULL.
->
-> When a valid RST is later received for another accepted Fast Open child,
-> rskq_rst_head is not NULL, so reqsk_fastopen_remove() attempts to write
-> the request_sock pointer to rskq_rst_tail->dl_next while rskq_rst_tail is
-> NULL. KASAN reports:
->
->   BUG: KASAN: null-ptr-deref in reqsk_fastopen_remove+0x147/0x210
->   Write of size 8 at addr 0000000000000088 by task swapper/3/0
->   ...
->   Call Trace:
->    <IRQ>
->    ...
->    reqsk_fastopen_remove+0x147/0x210
->    tcp_check_req+0xa70/0x1060
->    ...
->    tcp_rcv_state_process+0x1cb/0x2ae0
->    ...
->    tcp_v4_do_rcv+0x1fe/0x740
->    tcp_v4_rcv+0x1744/0x2070
->    ...
->    ip_protocol_deliver_rcu+0x5c/0x280
->    ip_local_deliver_finish+0x171/0x330
->    ip_local_deliver+0x107/0x370
->    ...
->    </IRQ>
->
-> To widen the race window, the issue was reproduced after adding
-> mdelay(3000) immediately after reqsk_fastopen_remove() checks that the
-> listener is in TCP_LISTEN and immediately after reqsk_queue_alloc() sets
-> rskq_rst_head to NULL.
->
-> Make inet_csk_listen_stop() acquire fastopenq.lock regardless of the
-> value of rskq_rst_head and detach the list while holding the lock. If
-> reqsk_fastopen_remove() has already passed the TCP_LISTEN check,
-> inet_csk_listen_stop() waits until the list insertion completes.
->
-> Also initialize rskq_rst_head, rskq_rst_tail, and qlen under the same
-> lock in reqsk_queue_alloc(). Drop the references to the detached
-> request_sock objects after releasing the lock.
->
-> Fixes: 0536fcc039a8 ("tcp: prepare fastopen code for upcoming listener ch=
-anges")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  net/ipv4/inet_connection_sock.c | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
->
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_s=
-ock.c
-> index e56beec438773..5590fc7efb88d 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -1333,9 +1333,11 @@ static int inet_ulp_can_listen(const struct sock *=
-sk)
->
->  static void reqsk_queue_alloc(struct request_sock_queue *queue)
->  {
-> +       spin_lock_bh(&queue->fastopenq.lock);
->         queue->fastopenq.rskq_rst_head =3D NULL;
->         queue->fastopenq.rskq_rst_tail =3D NULL;
->         queue->fastopenq.qlen =3D 0;
-> +       spin_unlock_bh(&queue->fastopenq.lock);
+macb_close() stops the queues without waiting for an xmit still
+running on another CPU. That frame charges BQL after the reset and
+never completes, so after the reopen the queue stays stopped with an
+empty ring and the watchdog fires until the next close.
 
-I do not think this spin_lock_bh() is _needed_ here, this hunk is
-misleading/distracting.
+Seen on a Raspberry Pi CM5 with ethtool -G under load.
 
-Once inet_csk_listen_stop() takes fastopenq.lock unconditionally,
-reqsk_fastopen_remove() either inserted its req before we grabbed the lock
-(and we free it), or it will see sk_state !=3D TCP_LISTEN and will not inse=
-rt
-anything. Nothing can be added to rskq_rst_head until inet_csk_listen_start=
-()
-sets TCP_LISTEN again, after reqsk_queue_alloc().
+Upstream fixed this as part of the context swap rework in commit
+dcc3288b9433a ("net: macb: use context swapping in .set_ringparam()"),
+which is too large for stable.
 
-The double mdelay() needed to reproduce the NULL deref shows the window:
-shutdown() + listen() would have to complete while reqsk_fastopen_remove()
-is between its TCP_LISTEN check and the list insertion.
+Fixes: e6a532185daa ("net: cadence: macb: Implement BQL")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+Fixes a close race in 6.18.y and 7.3.y. Older LTS kernels have no BQL
+in macb and 7.4 has the fix through Théo's context swap series, so let's
+keep the fix small instead of pulling that whole series in.
 
-Please let's focus on the real issue, which is solely in
-inet_csk_listen_stop().
+The stall was observed on a Raspberry Pi CM5 (2/30 close/open cycles under
+load stalled), so it is worth fixing.
+---
+ drivers/net/ethernet/cadence/macb_main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Also note the more likely outcome of this race is a leak: a req stranded
-in rskq_rst_head holds a reference on the listener, and a subsequent
-close() will not call inet_csk_listen_stop() again. This is worth
-mentioning in the changelog.
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 1eaf9be483153..422dd167187da 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -3156,14 +3156,16 @@ static int macb_close(struct net_device *dev)
+ 	unsigned long flags;
+ 	unsigned int q;
+ 
+-	netif_tx_stop_all_queues(dev);
+-
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+ 		napi_disable(&queue->napi_rx);
+ 		napi_disable(&queue->napi_tx);
+-		netdev_tx_reset_queue(netdev_get_tx_queue(dev, q));
+ 	}
+ 
++	netif_tx_disable(dev);
++
++	for (q = 0; q < bp->num_queues; ++q)
++		netdev_tx_reset_queue(netdev_get_tx_queue(dev, q));
++
+ 	phylink_stop(bp->phylink);
+ 	phylink_disconnect_phy(bp->phylink);
+ 
 
-Please send a v2 with only the inet_csk_listen_stop() part.
+---
+base-commit: c3f63d70f236bb7685e6d11d1d9b5b351552e600
+change-id: 20261109-nb-macb-close-6-18-y-126903425567
 
-Thanks.
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
-pw-bo: cr
