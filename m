@@ -1,100 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794255464;
-	b=rJR7szLdc3x73+lN7vipiU2UPhhkTNMu83ixHm2w85NStDB01mI6fZ85rEe0B62f6ZA+
-	 fu2JuW9xO+EIME5GYERkutcNYndccjOrITJksIXxotFTalQhUMSE7HlNji525EHJwDMwX
-	 c4yYZjqsddDJpTZYrD/gTvcXzObO+Sw1wfBwYt2oLAu/1RCsH7TL6iN+IF7gUN+W5lW0l
-	 fyxc10fGvSS+GnEAT/iwTwM83IuuXiuXem+o/jkwrElqxBgLZ47LQwVQbtPXXeXf/hg9p
-	 RO6lE1Ri4Y6W8UY6GX7jM+ioOSSf0exBrGwb+y+XPswwXxuDUuz4xLo7klvQ8ifMrIQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794255464;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ltRfrvbZQq2u14YHzE9ATEjjt/vP6akccZZlMBuYSXQ=;
-	b=bsxPxru1/O4+JM9VOC/aKBCUsmN5JqceQK8v1ZxZbICoNxhHldr1jG4lgFahs1jResyv
-	 cBPSrJZ/GLdDunhkr3B+aNmrkRVn2+uG7+HdCce7XIYjqqM4LWiXzrbTpPTGmKNX5NUcJ
-	 Ba3zMHerabGz+YCKVLXPG1QvqClSXxIfs67Rr/IJwdjBiHCYyLhS87dj3B/gKf41Bmu0D
-	 veul8XS2rE8OkAzN7jZAbcG5hSCCriJ0IzIRZT1ZxqI56iBQVWBzacgqp/LFH48MBzKpH
-	 n6HeXM/yIBaFoEIBAd5fcZusdDzLVQeKHlbIeA09/UJCtjWrG3JpqllkJgROae3IYjA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=P0sZXvsq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794256029;
+	b=FnbAXwbQaLdqYylMr+hXSLyjjy1UEE65qmKSxEE38dxLQtfOlcta7K99wC1H/Fq8uiqH
+	 7XxQT96sKN2qrVERK0DmK63pNlQ9rD62s1siRD2I5hOFRojGw9KaAxAUAWCbO7fIpGNV4
+	 K8B4YrwLjlp/VBIukoP+o1yFNdSsBuIxoVjQ9LAq2m1ML70TsCJrmtAIQq/TMtY+a6Hhg
+	 o85SCDkYu/x7OEmuFUF7tl46LL+WPF62XYSlnuGw+Gg2tQpG0aNyti5CIfAMiw1j0ICVb
+	 RR9Fdmn+0ldFmLfaiP4d1vrNVd+KJOHGaHWUR+1jn8PNoySkVMaZuN48a61o6lZXqtw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794256029;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=bcCj37QXBo2faBMQRqYXM+W4gZMvIt0WpAHiYS31Xqc=;
+	b=pWjKyQItojCc+Pf5du56LwX/JCuVdUV/oUX5dmY2azyHsAHoQLl6G+ns7+hu0N1NXmO4
+	 1qeVE3wg/iBqaZEO6vihvO2dpmwZFBiHbr4U1xCnNf2nbVhxZcD2UXCJDtfRW2w+9TGiR
+	 7mc8e39Hg/ctS8ePUbT1mneZtFEg1LAIiTKoqJ/41eimjUDQZ/ss90T1eAtZ1+IeDWJre
+	 SdG7A0IrI8jflwVTdNOs9E+PyWbJe8QQVLmH7jJZxl0/5OQkMH2BrEvz8AgiwMg+7eoSN
+	 yhpQ0mKegaXXfF7igYJFxrnL/NvzK6g6+HsP9MVSu3bNs7TpkyaaEM6F6fROX+SIQeA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=jMpO6DuE;
+	arc=none smtp.remote-ip=173.37.86.72
+Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D75D606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 20:17:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D75D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA768606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 20:27:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA768606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=P0sZXvsq
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b579ed8da6so42a12.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 12:17:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794255463; cv=none;
-        d=google.com; s=arc-20260327;
-        b=afCwt0ggItyRcQjYwfeQaoSq2/QyJJtOOGIQpLLhJ0cfzzGEglquXOz+88ODRFz1zO
-         Fem5PRv2SP1rnK/DdTyVYoGyt1mq8teV5GEQZXhdid1TDA8ByInRRDPpQNO6OZgHrX4o
-         /RfKW28HJ8qR7j3E4a3hMGZCGg0KtEIqMyYBmnz/6CV0mMw0K+w+vVGd+F0wacj40LUU
-         NXDH4nX6ivHQ+KpAdeoeOYxcsdbKRm23aq63LMBwlExzYm+zchfhX3WS/JqO1zHkfa7x
-         qBCEb6Ijtwm+w0c0uEIJ5iHr0nIkrYE55KjhPS51DzDEofVGCaV8oEzatR0f7KSslgA0
-         ya4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ltRfrvbZQq2u14YHzE9ATEjjt/vP6akccZZlMBuYSXQ=;
-        fh=XoapXtRdy4RzuvD2g2bvR6Xy7dSsyccbI0kaYk4zu04=;
-        b=pwhnmod46yjhMrXWDUqZssiZjY+PwxUZyq2c4BVItshuQEHiUBJvwzLdAB6bbnxqIZ
-         SLEQptauHsufqDGWbSaee6jeaj1PSDLDBTgWbOolaLphBamx8W+9XTfOcQP0C7Z7nFOr
-         hTirWMt4zHUEOrhJ0xpB4/9qHhDf0jTLyXnfqqgpWzzqV6hlUEJKQMKrm6B8gbc0122g
-         jF2GVXwkqH2R34mT2h6bBDM2QBO3my8f8/6bsh+brCUrqRTHMxKWVD7ti4ReW2hvV79x
-         6gFYwfGv4b+tT6SccMVbMNQs1l9V4mFdvoKKYBHkhlVfv841Z9UReicmN2Ccoy+cWjda
-         p+CA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=jMpO6DuE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794255463; x=1794860263; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ltRfrvbZQq2u14YHzE9ATEjjt/vP6akccZZlMBuYSXQ=;
-        b=P0sZXvsqIohLE8Gp0wvO3DZJR6gUx3reQ55TVmSn9CykBgFrZfrQjaLL4smDuM0j1b
-         5waQ6jjkuJjTO+9bK6d70m2Utj/Bo3ByzfIn4qpnN36A4OGr4mTtX+4jwHJPIdtm2UYI
-         zUcvRkOzUEgrz0Rkzq4ZKf2kebSPB1+kFy/+FfAG7cS+e78EJV0P0VlujXhU9iu9Hp0A
-         8i/yBt+1uCLDsBJyHn0CJe6rqPWpfuqyQiS+hb/gskzYbsqtWwWGnajuRq7Q8FrF6ozZ
-         eZEXUqvB8fN1LtEJQnXQhyPhUQZhECtR14nfrxmKUEg2/dcOy13bALzuaFxJftMKZ4jM
-         dprg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794255463; x=1794860263;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ltRfrvbZQq2u14YHzE9ATEjjt/vP6akccZZlMBuYSXQ=;
-        b=WERggXBvSVP7G6mQJe//eaZU+uS/zWCBlsEwV2sx5pOIftBahaCWpZhn4hJ5o07i88
-         Z5QgJSzFnXRXDhnAGYiUTv8OufvkdhIHA0BO4vMnvBcPW9iyC3Q8opyZfZOlT6p9LZ+H
-         P5mC26jx5GX3Ra9GINT+VZcwggqyBcxYiYB/5GaePF1K1EOtw6DvbM7tdwr0XdL7XmiL
-         tIVClc237I0drjW/s3EKCA8fwJG92kqzv1vrhQeAbvfv3SMQVXY1fSdaThufUlu/0gWf
-         7238jCvByJLu5h/C0QOAFic3QY208WM+ezPmoLSeuQYF1MkBBRf39lIwfmGIR5s+SC5Z
-         EXew==
-X-Forwarded-Encrypted: i=1; AL+hErFw6zP9J3PCWLAAkokl0o5OB6ZbX1qrPVBi72Nqx8sCwub95bNU+1efKmOI2mfyBfLwWcA53ps=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+ZmFkGvV9H8KQF5D65s6KyHhkT8DEXLiOXsZWSoIAFK3oFkqNg
-	Vz/p/fN7POKCE0luB/PpnSgZDiDB1I77IETPTOb+BmTSqeVwfjKEAvrsh9tNHgDZbpdNtq4MJSP
-	T1UNwpzHj1k9LkT+Xz10pYL2aNOoxo36JohrvHd9M
-X-Gm-Gg: AYBFou0ZfWZvQsh/8w7eMo+f0cPrkc3yLW7ZhAgB084sUpLsOfXL2TiflvC47+6dTPe
-	T1CmKdrwls2qrizE6Leb7H5JC3ZRgbOvvEIk0rvPateKX2YDTj3quLLL7uhXWonfwOE42lqTFvf
-	4DO82649wikHFTzIEqsUbEr2NClmAFx+FG2bLozpkZV4DiLdaKI6oPof0swg3OzELMqCqITb/Lh
-	Ir0pd2kHKc5e9LJPy+Twnt1LoBzDCVmyCODL+CfwCjCPRsgC1hekldy2ztkFIRYb3aXjqEi61lO
-	LIj1wLvFYATH5nFceWFSycmqm1fqmsROqRL+qb2k/lToU7XFFn8xVTweWUyyjmbdjzN6jJawTDD
-	mt6msV37hL/0hFbjS8qs0QMIMlLsQNRL7PtiQO5z5wtk6iNAkt1YzNLaTccAOUB9CQD4=
-X-Received: by 2002:aa7:d7d3:0:b0:6b1:a517:5bce with SMTP id
- 4fb4d7f45d1cf-6b756af180fmr22485a12.16.1794255462346; Mon, 09 Nov 2026
- 12:17:42 -0800 (PST)
+  d=cisco.com; i=@cisco.com; l=1849; q=dns/txt;
+  s=iport01; t=1794256028; x=1795465628;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=bcCj37QXBo2faBMQRqYXM+W4gZMvIt0WpAHiYS31Xqc=;
+  b=jMpO6DuE2rVBv+PbMPkWImKGfJq6nQ8TgzhZlHyKXAV7q587YYlNFgSM
+   axLjVjnLrgzxaxFh37jnMVbTZG2cdZVR9txjzg7kk59aHSNbPQg60YL2M
+   xKRtfE2YkGzBKXSeXLH9e5ZI0fkoDBrgsSryU1Ckn/wV4IvtZp08cn80A
+   IN1HU6XuEE+8KHyhgsktjXYr4h4yy42Sf80z2RlTKJaUaXDCd+Ccr2AFE
+   54tBr9iy/AIZ+Tzy9yglRdjzJrZXRCgYeuqApr8xFippYxjTzdvfgutFr
+   el03lBTjbx4NgpmcZcdk8bqQTN1SH+btBwm1aDjF6uEPkc/OpMB8d8a6w
+   A==;
+X-CSE-ConnectionGUID: Ob1lbcNTQ+ehrypibLRXhA==
+X-CSE-MsgGUID: h4mJSjZgRMmEDEuXOH/Y8A==
+X-IPAS-Result: =?us-ascii?q?A0BfAwAHLPJq/4r/Ja1QAQmCWYQsQ4UgkXSeJBSBag8BA?=
+ =?us-ascii?q?QEPUQQBAYUFAo4dAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHB?=
+ =?us-ascii?q?YEOE4ZckBMCAQMjDwFGEAsaAiYCAlaDG4J1A7pxeoEygQHeSYF0FYEKLoV0g?=
+ =?us-ascii?q?m4BhQN2hH0nG4FJRIEVgys+hBYBCAtmgw+CagSCDRWBDJdPSAp4HANZLAFVE?=
+ =?us-ascii?q?w0KCwcFgSVDAzUSKhUjSwUtHYEjIR0XER5YGwYFEiAqQUNbgRKBB12BKyhdA?=
+ =?us-ascii?q?QIfRi0VgXYCglGBI10CAUlBDgdFUwklQxJHJCIIEgkBExosCoEaNTwJJj8VD?=
+ =?us-ascii?q?GQIAxoFGiYCHwgCCwIMdCgREBMdHiQvBRwmPhsKSxgNSBEsNxUZBD0BbgeUb?=
+ =?us-ascii?q?wFwMDR3ASxNGiYOHww7kwySSIE1ikOVGYQqgWifdhozhASUGZJUmQikDk2Ea?=
+ =?us-ascii?q?YFoPIFZMxoIGxWDI1IZD95jJm8BAQcCBw4DC4FokBGBbQEB?=
+IronPort-Data: A9a23:0VAWqqxeC7RsfeunwJZ6t+f0xyrEfRIJ4+MujC+fZmUNrF6WrkUCx
+ jYdWDrVb62PNGb2eY8kat7l8x4C7JHRz99jTARuqFhgHilAwSbn6Xt1DatR0we6dJCroJdPt
+ p1GAjX4BJlqCCKa/lHyYuCJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
+ 4yaT/H3Ygf/hWctajNMt8pvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE8NvK6X
+ evK0Iai9Wrf+Ro3Yvv9+losWhRXKlJ6FVHmZkt+A8BOsDAbzsAB+vpT2M4nVKtio27hc+adZ
+ zl6ncfYpQ8BZsUgkQmGOvVSO3kW0aZuoNcrLZUj2CCe5xWuTpfi/xlhJGY8ZIkS8cBLOCJD9
+ eYJMDEHSiqzh8vjldpXSsE07igiBNPgMIVavjRryivUSK5/B5vCWK7No9Rf2V/chOgXQq2YP
+ JVfM2cyKk2bM3WjOX9PYH46tPyhmnjkcz5YgFmUvqEwpWPUyWSd1ZCwbIeKJIXTH5o9ckCwp
+ j7D3V/7MB4gEdmy5ReYwlWMwd6ftHauMG4VPPjinhJwu3Wfz3IeDTUaXEW2pP2+hFL4Xd9DQ
+ 2QZ9jcrpLo/6GSoQ8P7Uhn+p2SL1jYfRtBZO+438geAzuzT+QnxLm4JUjJMdpkss9N1XjUx1
+ l6KmPvqCCZpvbnTTmiSnp+dqz+oNDdWK2IeaSIaZQ8Y5d+lq4FbpgrGRNtlEYavg9H1EC22y
+ DePxAA4iqkfgNAjyaq25xbEjiiqq5yPSRQ6jjg7RUq/5Q9/IYrgbIuy5B2DtLBLLZ2SSR+Ku
+ 31sd9Wi0d3ixKqlzESlKNjh1pnzjxpZGFUwWWJSIqQ=
+IronPort-HdrOrdr: A9a23:spUsu64btt2NLyg5aAPXwO7XdLJyesId70hD6qm+c3Bom6uj5q
+ eTdZUgpHvJYVkqNk3I9errBEDEewK+yXcX2/h1AV7BZmjbUQKTRekI0WKh+UyDJ8SUzIFgPM
+ lbHpSWcOeRMXFKyeDn/QK/D9EshPOD8KyumKPi6k0Fd3ANV0mlhD0Jcjpy1SZNNXB7OaY=
+X-Talos-CUID: 9a23:8p0TTGxbuaL+T7Aa7jPYBgUzEJkheHb78E6TLk+iGH5oQpmveV+5rfY=
+X-Talos-MUID: 9a23:7apjxAYjAQF/d+BTt2PppgpgBshSxqGDJG0QobIm/PjUHHkl
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,204,1787011200"; 
+   d="scan'208";a="545761127"
+Received: from rcdn-l-core-01.cisco.com ([173.37.255.138])
+  by rcdn-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 09 Nov 2026 20:27:00 +0000
+Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-01.cisco.com (Postfix) with ESMTPS id 633B418000285;
+	Mon,  9 Nov 2026 20:26:59 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+To: netdev@vger.kernel.org
+Cc: netdev-bot+sashiko@kernel.org,
+	sebaddel@cisco.com,
+	aradhana@cisco.com,
+	rfaucett@cisco.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v6 0/2] enic: retain admin DMA resources and identify V2 VFs
+Date: Mon,  9 Nov 2026 12:26:55 -0800
+Message-ID: <20261109202655.4140185-1-satishkh@cisco.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261107-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v6-0-155d64f802e9@cisco.com>
+References: <20261107-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v6-0-155d64f802e9@cisco.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,57 +115,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015163915.1166043-1-almasrymina@google.com>
- <20261015163915.1166043-4-almasrymina@google.com> <20261020121858.3b9107c5@kernel.org>
- <CAHS8izPwWT+vbgAe49m5vXsRxT3unbfjLTkVZBScgAPdQTo2dQ@mail.gmail.com>
- <20261021132304.23e0a4e7@kernel.org> <CAHS8izNTbs8ONvjhiw+6cRkZQq+cX3t=BZK9aCr39JNkVbY9gA@mail.gmail.com>
- <20261109104959.181a3b35@kernel.org>
-In-Reply-To: <20261109104959.181a3b35@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 9 Nov 2026 12:17:30 -0800
-X-Gm-Features: AclHuK_0MFErjqghvOz060hZJCCzy2vAPCeLH5qWi-kHJsJTH_MqHsOjMY4lEMM
-Message-ID: <CAHS8izPcFSLdmq16ZrUDKpCqUJf513EMs+Y45brc56s+mUBmeg@mail.gmail.com>
-Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman <horms@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Tariq Toukan <tariqt@nvidia.com>, 
-	Kaifeng Wang <kaifengw@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-01.cisco.com
 
-On Mon, Nov 9, 2026 at 10:50=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Sat, 7 Nov 2026 22:21:48 -0800 Mina Almasry wrote:
-> > So I started looking into whether we can improve test and fuzz
-> > coverage with an improved netdevsim. My LLM prototyped full datapath
-> > (with devmem) and offload support in netdevsim so the hardware
-> > selftests and packetdrill run and pass in a plain VM without physical
-> > NICs. I posted the branch at:
-> >
-> > https://github.com/mina/linux/tree/nsim-devmem-rx-tx
-> >
-> > The main problem is the total LLM generated diff to netdevsim: 62
-> > files changed with 5,525 additions and 672 deletions :( So it's a big
-> > change.
->
-> Great! Please keep that slop to yourself, tho.
-> Upstream isn't built to host people weekend slop.
+Thanks for the review.
 
-Understood and sorry for the bad suggestion! I was indeed unsure how
-you felt about including that kind of slop in test code. It was a bit
-too tempting to suggest it to enable the extra test coverage.
+For patch 1, I am keeping the conservative surprise-removal behavior.
+An all-ones MMIO read or PCI disconnect state establishes that the queue
+register is no longer readable, but it does not provide the queue-stop
+proof used by this patch for previously issued DMA. The driver therefore
+releases the admin graph only after directly observing RUNNING == 0. If
+surprise removal makes that observation impossible, the graph and PCI
+reservation can remain retained until reboot. V7 will state this
+limitation more clearly; the code is unchanged.
 
---=20
-Thanks,
-Mina
+The reset-worker source comments in V6 already describe both outcomes:
+resources are released only after both queues report stopped; otherwise
+the channel is quarantined and the reset is abandoned.
+
+The failed internal reopen followed by a repeated datapath stop is a
+valid pre-existing lifecycle issue. It is separate from admin DMA
+ownership, so I will address it in a separate datapath lifecycle fix
+rather than add a partial fix here.
+
+For patch 2, the code implements the deployed identity contract, but the
+V6 wording incorrectly described it. Firmware vf_index and mailbox
+src_vnic_id use 0xffff for the PF and zero-based values for VFs. Hardware
+CQ sender metadata uses 0 for the PF and vf_index + 1 for a VF; receive
+handling converts that value to the corresponding mailbox source ID. V7
+will correct the cover letter and commit message.
+
+The 0xffff PF mailbox source is intentional and matches the deployed
+protocol; V7 will document the change from the previous zero-filled
+field. V7 will also document that READ_ONCE() and dma_rmb() order the
+common DEVCMD2 result path before device-written result fields are read.
+
+V7 changes public text only. Its code and stable patch IDs are identical
+to V6. I will post V7 shortly.
+
+pw-bot: cr
