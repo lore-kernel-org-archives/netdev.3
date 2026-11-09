@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794247119;
-	b=wwDd+qdgZT9GjokiIicFoafZPloQrEFihmPrCwVQkNR6KcC5G6vAFBEyK8XYux+mO6Oe
-	 kT58UgTDXW+SSymjgqqtyHr9gJPvW4EPzkpRj5ieN3kuCs1rofMWgIvTOjd0GrwpjmEEZ
-	 1zPPTxiexYp5DiWhLtXINLNzJBh5oUu2fE4GApyxOsnzORB3I2FjnzFFsqDhpxi4GiJvC
-	 rdPiMzcNj21WQlWpDBRf+bUnYBWDsWnJSRHRrqkMhrO81mY92uimXPieeN/rZUZabgNfq
-	 sYprkt/5oU6C8mQCwoc0NralMI6Cy3XWno92WnX+TnFwT0fxKRqGK3tlzurLJubDvJg==
+	t=1794247120;
+	b=5B3Qy1naoX8Qc3m/I9oS3J9s2K9GsS9rAj/l+p76sCsFYqaKWdqH0E3WOVWsFwdd5rpE
+	 yUgMZo7DZaS2zELzULh0cxkmRzry7uhUT4hK0FgrtbPpVVfXD1sWxkKfXTmxwmx/IN5J5
+	 ozl0MyYKCQheo4cV01ICKCMJXNLyLeeOXgzGEsNR5FRGPRFJI5VK4akniayjy0xa9sOyR
+	 1FBgdMTBLkDDAfNdjeeoAfTVunE60Ll/VJufA4Lko0VjsXJaFLmzh1SfQ7qL4Ry9hHMD4
+	 oRoV31zqHw3+k2vBmey5AN4pXBvn3ZNGArzOHMK1XDaTjoFbLiAPcSZsteK4ZMju7gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794247119;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247120;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=yzz+w/j1wRh73m4OVr0A+bhX1nS97EuKv5FA4tdRArU=;
-	b=tljUKFb/63P/M44grPh3lcuLnDD4Pt3kzcEWc347MqhGRnusChc3hvcaayyvjvvw0CHY
-	 qnKEOzY5dS7jH6+TYF+r80Wv5FFqx4lveVN5/9mKk9fhywWFnLIdQjwus/CAaVoJCN2Kh
-	 HPb02dNWBDM2nECd3aB0YintGowkzMo3yqKOnF+mQKoxgj7M/cjO4DFM8G6oFkSwHeQ/W
-	 dz1Q845bAQ5wlGmEdT8fNDOkXG0tBGZtVBZJaJ5bvn6uHqknFjQwXTSiTpqdTlgpp5JJt
-	 GE0TIj5TSBJlPOSs64rPm6mEmYrNEI57neocn+K6a/SCKl0ZTR7BqGzxpGoVtxDc+iA==
+	bh=rPOvzWkUJq/t5Js23tuescAerfdO09GtRFy1lT5bZOE=;
+	b=Qy7/s9URjUh8Y/0q045pd9/sjiNGkgys87X5Or4drHTAxyzHrolY+PNibPHhXLhR4HpH
+	 dCa0FDTTWbMuD6D9D5VpFAIMK1240OIOUsMRxn2mi+O6yb/nrC/IT8BuSuURwmestw8hU
+	 7usaggunGHziLhkX39HDLx4bCU4xKmUDmCX1mRw4xDObih5NhOrZZvm6WxHH1/u3p0o9Z
+	 POm2Ep15uGtwz7TdPLLke5kXZHLlyrRaBf8booTw0SBms6vBNxwsrv+NlIZ8lSK7YoHMV
+	 rQ3SCxhMKFTrrpMNszH1maLCVCJTtvFmOKRBmlk3bzhZjw1NEKvs0jS9HQt6T6RtUtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V1Fno40m;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TuISpUT5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDEE606A321;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09C3606A325;
 	Mon,  9 Nov 2026 17:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V1Fno40m
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AF31F008A1;
-	Mon,  9 Nov 2026 17:58:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TuISpUT5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7C01F008A7;
+	Mon,  9 Nov 2026 17:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794247119;
-	bh=yzz+w/j1wRh73m4OVr0A+bhX1nS97EuKv5FA4tdRArU=;
+	bh=rPOvzWkUJq/t5Js23tuescAerfdO09GtRFy1lT5bZOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V1Fno40mP3qZgwpR+zE5PnFqGpAjbFuy2j/PIKN7Un55YT0WaQhTLjmpOokXWvjPW
-	 R0e32LaQmQpb1ibNdPTjtqYTWOoNDFqL/m3qoa1+/Fn2IC6a87AaeNLqI1pmRcGo4C
-	 pZ6ppLOsqwGW7PL6b575TcQz88B3NX18oOAy9vlt5Z834pnhWLelEtmMAppiEubPcQ
-	 SRFZgRkEmw6zTeYX/6rwX+5pSXQI8xAgPS/EwF1lCESavdEtBcYb8fw6o0lMfMUPww
-	 81tbppu6P9CDCFMYSGnxRYD7PIiuRJ8VgG6GRxLl5hThswTcFGSblsCSgTXWf9deY3
-	 DHMovPNh6oNjA==
+	b=TuISpUT5QsQj5oHdR4GvZWSNGhLdkV/cfCpr4YUgdPUq80WRtMmfyK9NwWL/okrIP
+	 KNBDvd4nuHkdKtwz+VamZpFPFin8fQhWcZ1TSveezj33nGdAi0VuSsStH7RBk3wAcG
+	 f2+Wmnq7k3CxtqbGh9oF+LYUVbYR1tRtlftNe61/O0uBdNpUufFiTlUXQqd2jqlbL4
+	 7UrzhM7A0c9muY3ZS+QG1Vpw2s2POoAW/OvlucI8+7zOBbJQbF333s5YB1IsMV+UJd
+	 IhklI70kiQ72kKwlfCchA5t/oruTQR3Sn4y5jTxDWstNRKVuhL5ITmFVmfKW0uBh5x
+	 iUq47cbi49Eug==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -50,11 +50,10 @@ Cc: netdev@vger.kernel.org,
 	shuah@kernel.org,
 	cel@kernel.org,
 	linux-kselftest@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	sashiko-bot <sashiko-bot@kernel.org>
-Subject: [PATCH net 1/5] tls: break the connection after a burst of empty data records
-Date: Mon,  9 Nov 2026 09:58:32 -0800
-Message-ID: <20261109175836.1246840-2-kuba@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net 2/5] tls: Consume empty data records in tls_sw_splice_read()
+Date: Mon,  9 Nov 2026 09:58:33 -0800
+Message-ID: <20261109175836.1246840-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109175836.1246840-1-kuba@kernel.org>
 References: <20261109175836.1246840-1-kuba@kernel.org>
@@ -69,141 +68,97 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TLS permits zero-length application_data records, and RFC 8446
-suggests them for generating cover traffic. Nothing bounds how many of
-them a reader processes back to back, though. They advance neither
-loop bound in tls_sw_recvmsg() and tls_sw_read_sock(), so a peer
-streaming them faster than the reader decrypts them keeps it in the
-kernel for as long as they arrive. recvmsg() does not check for signals
-while records are ready, and its peek and async paths queue every empty
-record on rx_list. read_sock consumers like nvme-tcp hold the socket
-lock throughout and never get control back.
+From: Chuck Lever <cel@kernel.org>
 
-Attempt the simplest possible fix, which is to break the connection
-after 128 consecutive empty data records without sleeping or returning
-to the caller.
+A zero-length application_data record decrypts to full_len == 0,
+so tls_sw_splice_read() splices zero bytes and returns zero. A zero
+return from a splice read means EOF, and the caller tears down a
+connection that is still live.
 
-The strparser is stopped before it parses the next record, so the reader
-gets the error from tls_rx_rec_wait() and no later record is delivered.
-Returning to the caller and keeping the connection alive would need a
-way to wake read_sock consumers which installed their own sk_data_ready
-after the handshake, a lot of code for a peer that is either broken or
-malicious.
+Consume the record and fetch the next one, as tls_sw_read_sock()
+does. The cap on consecutive empty records bounds the loop.
 
-Consume empty records in recvmsg() rather than queuing them on rx_list,
-so that repeated MSG_PEEK cannot pile them up past the per-read count.
-Decrypt them synchronously, too. Once a recvmsg() call has decrypted a
-record asynchronously, recv_end replaces the error with the result of
-process_rx_list(), so a call that saw only empty records returns 0, a
-false EOF, instead of the error or -EAGAIN.
+When an empty record precedes a close_notify, splice(2) now returns
+-EINVAL from the control-record test instead of a false EOF. A
+splice that reaches an alert record already reports -EINVAL.
 
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org?part=1
-Closes: https://sashiko.dev/#/patchset/20260630191551.875664-1-cel@kernel.org?part=1
-Link: https://lore.kernel.org/all/20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org/
 Fixes: c46234ebb4d1 ("tls: RX path for ktls")
-Fixes: 3be28e2c9cd0 ("net/tls: Consume empty data records in tls_sw_read_sock()")
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Closes: https://lore.kernel.org/netdev/akaoXcfamBp8_mYe@krikkit/
+Signed-off-by: Chuck Lever <cel@kernel.org>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/net/tls.h |  1 +
- net/tls/tls_sw.c  | 29 +++++++++++++++++++++++++----
- 2 files changed, 26 insertions(+), 4 deletions(-)
+Jakub:
+ - rewrite as a loop to avoid the non-error-handling goto
+---
+ net/tls/tls_sw.c | 48 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index e57bef58851e..0b001b8ab1c3 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -139,6 +139,7 @@ struct tls_sw_context_rx {
- 	u8 zc_capable:1;
- 	u8 reader_contended:1;
- 	bool key_update_pending;
-+	u8 empty_run;
- 
- 	struct tls_strparser strp;
- 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 771e02bff519..adf3b26b8a75 100644
+index adf3b26b8a75..b05b9e76bd25 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -1146,6 +1146,7 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
- 		if (!timeo)
- 			return -EAGAIN;
+@@ -2044,32 +2044,40 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+ 	if (err)
+ 		goto splice_read_end;
  
-+		ctx->empty_run = 0;
- 		released = true;
- 		add_wait_queue(sk_sleep(sk), &wait);
- 		sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-@@ -1565,6 +1566,7 @@ static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
- 			     struct tls_decrypt_arg *darg)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
-+	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	struct strp_msg *rxm;
- 	int err;
-@@ -1582,6 +1584,19 @@ static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
- 	rxm->full_len -= prot->overhead_size;
- 	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
+-	if (!skb_queue_empty(&ctx->rx_list)) {
+-		skb = __skb_dequeue(&ctx->rx_list);
+-	} else {
+-		struct tls_decrypt_arg darg;
++	for (;;) {
++		if (!skb_queue_empty(&ctx->rx_list)) {
++			skb = __skb_dequeue(&ctx->rx_list);
++		} else {
++			struct tls_decrypt_arg darg;
  
-+	/* A peer may send empty data records, e.g. as cover traffic, but
-+	 * a burst of them traps the reader in the kernel. Treat more than
-+	 * 128 in a row, without the reader sleeping or returning to the
-+	 * caller in between, as a protocol violation. Stop the strparser
-+	 * before the next record gets parsed, so the reader finds the
-+	 * error in tls_rx_rec_wait().
-+	 */
-+	if (rxm->full_len ||
-+	    tls_msg(darg->skb)->control != TLS_RECORD_TYPE_DATA)
-+		ctx->empty_run = 0;
-+	else if (unlikely(++ctx->empty_run > 128))
-+		tls_strp_abort_strp(&ctx->strp, -EBADMSG);
+-		err = tls_rx_rec_wait(sk, nonblock, true, false);
+-		if (err <= 0)
+-			goto splice_read_end;
++			err = tls_rx_rec_wait(sk, nonblock, true, false);
++			if (err <= 0)
++				goto splice_read_end;
+ 
+-		memset(&darg.inargs, 0, sizeof(darg.inargs));
++			memset(&darg.inargs, 0, sizeof(darg.inargs));
+ 
+-		err = tls_rx_one_record(sk, NULL, &darg);
+-		if (err < 0)
+-			goto splice_read_end;
++			err = tls_rx_one_record(sk, NULL, &darg);
++			if (err < 0)
++				goto splice_read_end;
+ 
+-		tls_rx_rec_done(ctx);
+-		skb = darg.skb;
+-	}
++			tls_rx_rec_done(ctx);
++			skb = darg.skb;
++		}
+ 
+-	rxm = strp_msg(skb);
+-	tlm = tls_msg(skb);
++		rxm = strp_msg(skb);
++		tlm = tls_msg(skb);
+ 
+-	/* splice does not support reading control messages */
+-	if (tlm->control != TLS_RECORD_TYPE_DATA) {
+-		err = -EINVAL;
+-		goto splice_requeue;
++		/* splice does not support reading control messages */
++		if (tlm->control != TLS_RECORD_TYPE_DATA) {
++			err = -EINVAL;
++			goto splice_requeue;
++		}
 +
- 	return tls_check_pending_rekey(sk, tls_ctx, darg->skb);
- }
- 
-@@ -1761,6 +1776,7 @@ static int tls_rx_reader_acquire(struct sock *sk, struct tls_sw_context_rx *ctx,
++		/* Splicing zero bytes would read as EOF */
++		if (rxm->full_len)
++			break;
++
++		consume_skb(skb);
  	}
  
- 	WRITE_ONCE(ctx->reader_present, 1);
-+	ctx->empty_run = 0;
- 
- 	return 0;
- }
-@@ -1874,9 +1890,11 @@ int tls_sw_recvmsg(struct sock *sk,
- 		    tlm->control == TLS_RECORD_TYPE_DATA)
- 			darg.zc = true;
- 
--		/* Do not use async mode if record is non-data */
-+		/* Do not use async mode if record is non-data or empty,
-+		 * recv_end would report an error after empty records as EOF.
-+		 */
- 		if (tlm->control == TLS_RECORD_TYPE_DATA)
--			darg.async = ctx->async_capable;
-+			darg.async = ctx->async_capable && to_decrypt;
- 		else
- 			darg.async = false;
- 
-@@ -1918,7 +1936,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 
- 			DEBUG_NET_WARN_ON_ONCE(darg.skb == ctx->strp.anchor);
- 
--			if (async) {
-+			/* Consume empty records, even when peeking, so that
-+			 * they cannot pile up on rx_list.
-+			 */
-+			if (async && chunk) {
- 				/* TLS 1.2-only, to_decrypt must be text len */
- 				chunk = min_t(int, to_decrypt, len);
- 				async_copy_bytes += chunk;
-@@ -1939,7 +1960,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 			if (err < 0)
- 				goto put_on_rx_list_err;
- 
--			if (is_peek) {
-+			if (is_peek && chunk) {
- 				peeked += chunk;
- 				goto put_on_rx_list;
- 			}
+ 	chunk = min_t(unsigned int, rxm->full_len, len);
 -- 
 2.56.0
 
