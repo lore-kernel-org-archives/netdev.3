@@ -1,77 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794267945;
-	b=aZauDdH7TwsXspaA3a3xvGNWq57n2v2Zss+L9MpkfUwmpIAYITbSvz7x0XbzxsAsg8Vq
-	 EwocHueNeTBs88vbhW1WmuYb0n88lP4cGKwh7np5s8gQD1zzc7MGSgVI1wc6D5M3YPiBx
-	 SDa/ESldz2pAuXg7H44bv7zq+JH3WK11R69HxnZdIZIUMcqdjPRH0xokvJvGxUC5PStpz
-	 /SLQduxYeL1fFPpbNpUS36fLW22Zs4iY4vcLs1r/OwIn5SojKGn+W+ttnGvcaAy3046zB
-	 sElEtfgIPMIkHx63fJlB0uyiE2jWJ2JRMkSByqc6HXYljub97fAo4nh/zxLbZUw99xQ==
+	t=1794268209;
+	b=cibRE/O/HV4wioHA6z8aRY3JUXdmYssr11O+SrOoUqnh4QR3prmpaHAeKZynENEbpOPD
+	 8hwerwWBaLj/qiHw4kcy4/2NsM+zCTjcQryPF/VmOsZHDgkktGb2C8MSqMkAyUEluWJAN
+	 KX1OlEo93sl4W1yBMmN9RHLmPHIUZapK8vKVvi4TLhSG2VUXD1+OFEZbQ+9ggBnTiF2A0
+	 5Ll0Q1K/rtufzmh8ZXOq/dKpuqRGIwHgxb1kJNSZLA9B607crqJPZktH/mxGk5AgQYlNH
+	 q+LXgpyceVtg8A3av+HscsRRbW7hKB1BYIKBqvs1J+l6PRKcmj/lE9l55AnIOk9+qKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794267945;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
-	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=X9fMC0zqN3ETxlJdsyr5ayEq0uPBqTA5dIHIwwyBzMg=;
-	b=bL/cWLFbasUg5gbUHds2h2hhTwUunMWS3PakikGcd3H4/BZHdFCdM6sCkBtWn5HYE0Or
-	 PzQRIUDvJxVJLdeGPv6Ge3Y6idS0AQIxlCV+AibC683naWAgfyibaml80fkEoHySCnjYW
-	 ouMEb8cpwv2TBsNYSU9XCZLcJB7M8t6LZ23jRm16/2C2W9GKnHXo6rTjHM86geEBgZGdB
-	 M++L5L9Zk8mQfEcSPrxYMz2SKBoByApeHkbAhdjR5CMh8NqS8Yt6Om2gy1hpqSV/w2tUW
-	 /P3Xa/foDcJ9khU02uzOBFJWfytpvdfa9fTYroKVVG9V8TWwBxKHe3iAWA3kvycUgvw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794268209;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=Y83HRkY/LmVgU3iStIYCp6YWSoUwvJI8yTrNCQGOEM0=;
+	b=0oaWS0EvoFSBhtOkyw9AAUYxbyHeqKdl6uyL1CO28j7Z7pSVNlYcAt8N2uc1iHvYGdhy
+	 3rXS/Fc+oeZAfhu4c9NmItbjVG6sQPU/jmAAqB7wyVuUbhrMH8bpeYE8BWQGyeNkAIIQV
+	 Bu/E6bfrvQPr5H6DDxjdkWBlCgde/iKkhx/Kn8PI0driZoBiVbIzsJQ4c70qoI9vAd4Na
+	 yghEFVYno/NcW6n9HAgi++z92IhfnNAL0PLJRjScJtu5tc1Yjz8umhSjnwNfpKh9E8A7o
+	 rxkP7DneIXABvwJhXtI8xBV9B4mNsXgEX1MiFTyQ6ZRplL2zdmROxlc5Rm/xwEKc7Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=telaak.dev;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FA62VwPM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE7560A2601
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:45:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FE7560A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=telaak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e95bd1c14cso13127645ad.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:45:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794267944; x=1794872744;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=X9fMC0zqN3ETxlJdsyr5ayEq0uPBqTA5dIHIwwyBzMg=;
-        b=THIG4fkO5L+JkIb7Rdj1DQdKGZHq8YATDr5ybrLraksV55JQTCFsAMmULYkBQRo3Aq
-         /fveNcndzEngxnLFzig44KQt9MkWZnwqiwlBH796GmO8zgrrxKKnl6Q6vdgq94vzDa9E
-         JeXSJj9eCXw9EDWKUxf9oLDjYOZXKw7ouxylcdymSrIF+v7znLsrpgZ5FbHRmCIX7t2l
-         INuuqUG10+r1QCwAdFj7EEZD5YRs1X2MNJb9kTVCqUWdJ08wknF+n5sQaFGgs4IZs8E0
-         ac+vz0CF/QCwBFXCucFNnc2CRpKhV9GT2cjs7lm8QbADYugiAjAzJmeBb84Lahb5xylo
-         K3+Q==
-X-Forwarded-Encrypted: i=1; AL+hErGSWlZvB/bTiteO1lktm7725ozYfM35RWTUTQZQ3LZc+im0aanjgsqXCCbo3AdxLPx4g5+fk5U=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+wt3IeZITEQEHERubdsUN4utcwv2ocXB0u81EBYqnYKghZN7N4
-	LkXOLoXmPe9KQ58zOFzHIzexKRyjDnqo3GziKkxkbgJZLdVRKV3x2yejRpfQ0nGq
-X-Gm-Gg: AYBFou2I5Ts/ppfA/Vu2gjW2YKhHLaSQ1LJoQ5N1rDoTdiqNldVCNUnYaskT/ODZn1O
-	4PLmeWk3R1wtiPyiG8Nh7hfyru87tSjxOPv8vs2URVmUsHKO9Lo6imMzW73shXM+xxSsbsR9qzE
-	XjLVGrLTERf251Nl2XgbqP1hSRC39+Cc2sKmAv693zuHkjv/nLUchTZTawM/WzrUYjXilTWNUiy
-	UFBlZip5N0aKe0i0t3S+pvL3/aSgK2MhBRUmsZ+Q9G/8oyWVk1x0lshnY3tZJuiD6WXoB4X7lnH
-	l2FRU9hKo6bSqLFq80aqKdFVVdJOJKzoDs7f27WAY5d/bqM6Vrlc3T5OotbHpHkk18xzH82YX0m
-	Tz7VmAWN/xjuE2u0n52XGTw31JmzWmy072Ey8+ybB3pfI6PFVnJQdG6ht33Dwe2b2metfJZO4ms
-	y8btQzP8nWgQfH8g3vFnsTI1JYkSXqOTIscnRKVnE+VE9VOeBY6MCQWgiiRWKWlAyhlEXfLplgB
-	Itbj5K5BRSAFc1j8w5HR9eYUTFWHy9hA2Z9/T2wgL5m5BooOwuSV37/dFAFDov39xseEn6mnby3
-	isXzkg2Van2be5sikB75skwWi6dPwkTG6GwiWvHnFgi3dYBV4FN+ALdHUtB1znP2ooO21X8vg5D
-	6Sar4iSfC4XGzuvqhYnyBKNgzctVx8fHdl8nlGLFS3w3m/g9Nt9qpBHeTW7ug
-X-Received: by 2002:a17:903:3845:b0:2e9:55fc:ded2 with SMTP id d9443c01a7336-2edb9283d89mr7682615ad.52.1794267944448;
-        Mon, 09 Nov 2026 15:45:44 -0800 (PST)
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com. [74.125.82.42])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6dd2247sm2531055ad.58.2026.11.09.15.45.42
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 15:45:42 -0800 (PST)
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1931ff67a29so303128c88.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:45:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFjEVYEV2Cw4S4JrOScSixOeGittUw3RD0YOlfjYMfvqCCWpqE+uNqwEVL8ud2V6hhg85MXjjE=@vger.kernel.org
-X-Received: by 2002:a05:7301:6790:b0:36a:1904:60a3 with SMTP id
- 5a478bee46e88-3751ef79800mr1511776eec.15.1794267942134; Mon, 09 Nov 2026
- 15:45:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1AC606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FA62VwPM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72D81F008A1;
+	Mon,  9 Nov 2026 23:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794268208;
+	bh=Y83HRkY/LmVgU3iStIYCp6YWSoUwvJI8yTrNCQGOEM0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FA62VwPMXrBLWB9OK2GqAkeVwm/UY9eBt/pbqY7WnK84GE5bC1hQ2Q+ycpIK7Gqq5
+	 UTsI/4vRA3Ky8pLrHONEnKLxAR5uE7lBfYC0A0ZnfXzi2uZW3oGWpCUQqxDzXTCvz3
+	 O2uQzg+Nt4veyTVQ2XLe6aRqp37X5z8pXpMHnqscCuuqRN6VIxbi2R8JQ+T6vXN/Q9
+	 NliXyuxHrr8VLgEzZEATizMmAz/WdCj2BJG122+y02y7mR9qovpmfs7Uw3Tva7GHnz
+	 BjJVWDP/ICwjo+tXHv86jYBH9XgmUJjHosol/HCpaJWfPUHUDiGjaz6G7w8nY8Yvfa
+	 eg/p4t2JBeoEw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B203391AFA7;
+	Mon,  9 Nov 2026 23:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,44 +53,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261108-mxl-gsw1xx-reset-v2-2-46c1da093893@telaak.dev> <179426744353.994134.16211561618771955131@kernel.org>
-In-Reply-To: <179426744353.994134.16211561618771955131@kernel.org>
-From: Joseph Telaak <joseph@telaak.dev>
-Date: Mon, 9 Nov 2026 18:45:30 -0500
-X-Gmail-Original-Message-ID: <CAPY4CJ5oMoZoJ9ivcOBe97MmT5t0wa4aj1dc8BS_YXOsbPO0bA@mail.gmail.com>
-X-Gm-Features: AclHuK-cQP4T-VAWBA1r5t7qJjfPj8sdhzoAjpgY1zmdvVatkQxJQLIbryTxlWU
-Message-ID: <CAPY4CJ5oMoZoJ9ivcOBe97MmT5t0wa4aj1dc8BS_YXOsbPO0bA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] net: dsa: mxl-gsw1xx: reset the switch
- through reset-gpios
-To: netdev-bot+sashiko@kernel.org
-Cc: hauke@hauke-m.de, andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, daniel@makrotopia.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/9] xsk: ZC mbuf fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179426820742.3549724.11101369868701539708.git-patchwork-notify@kernel.org>
+Date: Mon, 09 Nov 2026 23:50:07 +0000
+References: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
+In-Reply-To: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
+ kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
+ kerneljasonxing@gmail.com, bjorn@kernel.org, zuomao338@gmail.com
 
-> If CONFIG_RESET_GPIO is disabled, does this lookup silently return NULL even
-> when the switch node has reset-gpios?
+Hello:
 
-Yes, as for every driver that gets its reset-gpios through the
-reset-gpio fallback. A platform that uses reset-gpios enables
-RESET_GPIO.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Would a gpiod based lookup, or a gpiod fallback, make the documented
-> property work whatever the reset framework config is?
+On Mon,  2 Nov 2026 13:49:41 +0100 you wrote:
+> Welcome,
+> 
+> Nagato Shiratana reported that duplicate fill ring addresses in aligned
+> mode let a driver pass the same buffer to xsk_buff_add_frag() twice.
+> This corrupts pool->xskb_list and can lead to a NULL pointer
+> dereference in xp_free(). Patch 1 makes xsk_buff_add_frag() reject
+> such buffers.
+> 
+> [...]
 
-v1 did that; Daniel asked for reset-gpio instead, so v2 uses the reset
-controller API.
+Here is the summary with links:
+  - [net,1/9] xsk: fix list corruption in xsk_buff_add_frag()
+    https://git.kernel.org/netdev/net/c/94ae1259175f
+  - [net,2/9] i40e: xsk: fix xsk_buff_add_frag() error handling in Rx
+    https://git.kernel.org/netdev/net/c/a259b7ec09ef
+  - [net,3/9] ice: xsk: fix leaking Rx buffers in multi-buffer path
+    https://git.kernel.org/netdev/net/c/8b7bd01b9c56
+  - [net,4/9] ice: xsk: do not free in-flight frags on XDP_TX completion
+    https://git.kernel.org/netdev/net/c/5a9b5e315e10
+  - [net,5/9] libeth: xsk: do not free in-flight frags on XDP_TX completion
+    https://git.kernel.org/netdev/net/c/90e5d84086d9
+  - [net,6/9] xsk: do not clear frags flag when acquiring a buffer
+    https://git.kernel.org/netdev/net/c/e4ea8671cb79
+  - [net,7/9] i40e: xsk: fix multi-buffer XDP_PASS skb construction
+    https://git.kernel.org/netdev/net/c/76b41e83e69a
+  - [net,8/9] ice: xsk: free stashed Rx frame when cleaning the ring
+    https://git.kernel.org/netdev/net/c/d5e7a86b7cd6
+  - [net,9/9] idpf: free stashed XSk Rx frame when releasing the queue
+    https://git.kernel.org/netdev/net/c/3cbee39da825
 
-> Does this full chip reset conflict with the slew rate binding?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-It does: a board that adds reset-gpios gets the power-on defaults for
-the slew rates it does not set. v3 will say so in the binding.
 
-> Does each deferred probe then repeat the full 250 ms + 1 s blocking pulse?
-
-Yes. The switch is not registered at that point, so the cost is the
-delay, and only when the conduit defers.
-
-pw-bot: cr
