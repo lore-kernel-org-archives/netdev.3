@@ -1,92 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794189435;
-	b=j4BY9g8c8fVL/NwRdhHPOZolKxJ1Hpw047g4J+1ft+7oyw+9qSG3BQG24BjQz5bVh2/2
-	 1G+tCma910ik0TLXXC7QBk7AfVDhGBi56Jiy3lGgXeeT/PytMZ8SQWA6ooCkhn5DnQvFv
-	 uQ4t0fEYaBcb7QBSVAbVj0h9aA6A/QF3jMPRrJlKEpkzGMboyU0XuWomdXtqy4Y7PfeRf
-	 eH0np/41t0z4RH8SJ4B7/zl5FDXy5taD6hcS7ivIi34WhU7NZkN4RqifX7aNAbwG5YC9e
-	 /Z3U10cytlhRF/1K954HtWQEWN/aP5EVTKuDxZYwnyLdYVqThUK/uGc7VG2mbMcACUg==
+	t=1794189462;
+	b=GYNQ6unZ8tcl4uy2Nn59FQX+xLXLicshhzU3kh69C1o+buwa8miTBbTVHwSsYMbUqCae
+	 +RnQlJeQ/Kpummxs1gCbpMsRm3pGju1iR96bX/m2qC08As82mBBCIA/34OAgfbJU69tfd
+	 EFVMRJf+/bLQqOQMbIldFt1W/xJcJVDXbkLiOGvw1OUJbQlldErRdnWHgPDBYhvmkMXfR
+	 DBIGMi5YTn3E0ks92d+sJzzrWPuboaK/RKtBILxUsuWdH0fq/GM5Mho04c0mz4UvRovdA
+	 9t/Yiuig4+HMUA3lVYN1IRZlp0LcUFpm0tKkVGdMi66ORsPSWe1r1T3Ae5OERRQXwSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189435;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
-	b=AkYud5dW1Ndc3uwv78XPAdhkui3Zjlc7RjRglgfM5HiKpIId/joAsmmOEPvshzVqSbYz
-	 Mxwl/HGvBZSMqXtxpKde6XoZ2JC3crC/S75SFViHgOG3GPvBFHwfXrEwCyPA8ONFOegC2
-	 bS1waP4Du7nHcMPNvzRWVgQtcGPKEcetnY6Jyg8RF18VTLA8E9fLk8D6L2HDTDZ8ZCnGZ
-	 N5iE2B0DDsEtNIvxO0pX5Ig1RPxZtj1t2NHxeckAD3cnj/AhHYBbWDzPCLyWtlgbsxQjo
-	 b4/1BvlwD/6HiyuUguT4INHhVoipBOi+hknubO8RHSelq17ESZZUhuALOLuThU6xJcQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794189462;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=A7ZxBYqNVCXEXK6aupNcjX9RAPitglwASVMpqA1lXnk=;
+	b=QUv6p+N3CXhn3nEXmTPI4RfjoDN2i7LiNG0NHTNoSuuaDTxnw4PK5nEJ42KQoQwBoNrE
+	 7igTNKtgQSSnJ70/4Z/BCwE/rn00vv6xedZRbHnvFt1OPcSFU/nuoj/89JPuFaRDd/xCf
+	 LcP/E6+ZzDv7Al/iN91sFi6X5i8FDKao/ztztn44NzkWILtXXvyc4zd1anbXOdbRsbJhO
+	 C7ITSjrmx4seaJh6zkbE3w3nnhYhwA6mOj2QS4Z6H1t04GWyL3/ymSd/C+eB/DMCxYUyM
+	 DEHswmr00IvoxGepG6lENZY8BYSUTPzStcxhxo7qoUf5PifbIAPl/BHMaoBfooKlCJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="Mzch/vZ7";
-	arc=none smtp.remote-ip=209.85.215.178
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VpeOhxES;
+	arc=none smtp.remote-ip=95.215.58.1
+Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A32606A320
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:57:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75A32606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B66606A322
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:57:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42B66606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Mzch/vZ7
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccca948203aso100356a12.3
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794189435; x=1794794235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
-        b=Mzch/vZ77PPC0ZEwmvn877V3B8RBxkYhyLS9bK3fzVOiZACTCpXLJl8CMwdT/RaIh6
-         6Io4gyFPlmZzG0k3rbWSqyKP4U7EM52lgsWVMAXn8OaI/H7iXAW9hj/oTsrD/vhijUao
-         xO31gVlzJ2oeiCyDPasokX5lFZmKmijid9VR/vbN4IS0JnQLrf1rh3bdWoZY1YyyCtk3
-         pvIVPoXk2CXyabbO+p/Puot8JtdSPvEwolYqjCyv7SyRdBlhP2m7ZmUi3sM7iwkA9OY1
-         xfsLCnfFMLb5rvEEwiN8dokfN7yLoPNqTTW43DXLW2zkX8g+IlYbbVcljBQ9S2Xxrj1A
-         mPog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794189435; x=1794794235;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
-        b=lDwScLsentksnLuJy7lTnlPsuObGHS8UhXWRaxGm+52Kkl9Zs6iOs6ZfDO0DSnY/6B
-         Wd2KAunian2EX0q84uqRZN1rIaEgwtHI/81R1KjGLtMyboyScBKWDBKsXjQAvuMPcamd
-         CMIxLfswV5LbkFNrNCJ+vLHxdYM5Wd6u3q1nVd0SWL0GoZxbknQqfM1pz4G47LVLQRP9
-         M3RoPMJuoKV860p1KzxBGESO/UTnJOyzJd3fXdEPI3B6tUM5J33MvhfNL76lQvTsEka5
-         oFzhkdbV0ygdWmhZUyG5GQSzCOb3GL2VnTdhCbesH1CRPA/b5KIW2taZ9wxChVS15vl1
-         OELQ==
-X-Gm-Message-State: APuU4Z+nXbWiLgGwXwCyfX2FgsDzJymB9cJ+h6C7moIoOMiLHuVA9EJU
-	Uk+rm5dK2SGn5f06afa9BofY4lpAfqcNOAfWHJYUp3ScOWu2BEYkndOipOaubyTfLwNJKb5mlJ0
-	MLOdq/uc=
-X-Gm-Gg: AYBFou22Aqy88NpcSwFDFEtreBqycv+s0VBk0GSWHKCNas4hMYyRa9EcCxm52ttqsyV
-	hEWYg0fKApee1KiFeBHllCr2N8IGsN9GcTyz8FORX+ut3eCayISdBLczLDwn5RDwXihHKd/TUrI
-	eLAsQCg+lmy+lYj6pJUpZPN/SvdzHYTWcNqHIaYtP7BuwvKb/4DZyybAKlSAKmAFsJYt6SqVxb+
-	+fS6Cf7Sv2KMwsyR02+7UtwtdZi0Y58TR2VzP6bXUqbtMKoiPWGWQmws2SD4VAuAOIWINYpSNNP
-	rPLKeHYTGmVhaDJSIQtv1I+MX7PQLgpVUZOHzN57pFsXRgwWgePifn2NzkM2QuryGdGDdkuovTp
-	4tDFK2QzK3GTRkGi2cQuDwAHSih921W7xLSAWQn0o0XNX44u4uEJAOrhzn2XDeQo7ofdRhzxRE6
-	GGKC/oGGYQVz+xki9gGpCUliLzc1Y3kQrbfigoRhJseLaWjHrVINZ3zh4NBqp0hNJ2LMxLRxqku
-	CTJ+BQvsDZ+46RW+lfli/J7YnQisPf84Ht1i5gxTeRemGTZVLM9LuFGj3dJ0aZQ5MiES3GDZj6X
-	4h2/Z5paeZMKtu5XGSzfdhw4toZFahtp1O0AgAQkh74vcbSR0LkH3hSNkTxFMT0tuGP5UAuY
-X-Received: by 2002:a17:90b:3ecd:b0:3ab:c80:9365 with SMTP id 98e67ed59e1d1-3b12d3e71d8mr2622681a91.42.1794189434631;
-        Sun, 08 Nov 2026 17:57:14 -0800 (PST)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b12743e889sm4799418a91.0.2026.11.08.17.57.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 17:57:14 -0800 (PST)
-Date: Sun, 8 Nov 2026 17:57:12 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Dave Seddon <dave.seddon.ca@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>
-Subject: Re: [PATCH iproute2] libnetlink: zero padding in rta_addattr_l()
-Message-ID: <20261108175712.37b4c6f7@phoenix.local>
-In-Reply-To: <20261104052901.2735000-1-dave.seddon.ca@gmail.com>
-References: <20261104052901.2735000-1-dave.seddon.ca@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VpeOhxES
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=bequIIgc0ooAYgel8f/D35b7e5MsNbckYxDf2IP2oTU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794189459; v=1; x=1794794259;
+ b=VpeOhxESQJ503dIsurVClbeI/tdEodd0bOtSczm60Yam+FzJwoYWsfPnURVPMdaWUcG8MiQe
+ 3wNgh6clRwe+a/Ow1eaJvos6TcZLGIzfapOtHNUprmNuTTzNp2gk5Fzgf3AvYYsqA8dWGJXb6B7
+ C5xpWxkHFcE6gU86AlossBhs=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id c3915ad15dbfa47b;
+	Mon, 09 Nov 2026 01:57:39 +0000
+X-Mizu-Trace-ID: c3915ad15dbfa47b
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 9 Nov 2026 09:57:23 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jin Li <jinli@lanxincomputing.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, shuah@kernel.org,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net] selftests: net: forwarding: replace bash brace
+ expansion with seq
+Message-ID: <avEogwUP8hr4IXpS@fedora>
+References: <20261107133416.212677-1-jinli@lanxincomputing.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,91 +66,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261107133416.212677-1-jinli@lanxincomputing.com>
 
-On Tue,  3 Nov 2026 21:29:01 -0800
-Dave Seddon <dave.seddon.ca@gmail.com> wrote:
+On Sat, Nov 07, 2026 at 09:34:16PM +0800, Jin Li wrote:
+> {1..16384} is bash-specific brace expansion and will not work with POSIX
+> shells like dash or busybox ash. This breaks the flowlabel test when
+> /bin/sh is not bash.
+> 
+> Use $(seq 1 16384) for portable iteration. Fix the same issue in
+> custom_multipath_hash.sh, gre_custom_multipath_hash.sh and
+> ip6gre_custom_multipath_hash.sh.
+> 
 
-> rta_addattr_l() copies alen bytes but advances the parent by
-> RTA_ALIGN(len), so the 1-3 padding bytes are never written. Nests built
-> in stack buffers (lwtunnel encap, RTA_MULTIPATH, RTA_METRICS) then send
-> those bytes to the kernel. For example, in
-> 
->   ip nexthop add id 53 encap mpls 101 ttl 10 via 192.0.2.1 dev d0
-> 
-> the three bytes after MPLS_IPTUNNEL_TTL are stack contents:
-> 
->   05 00 02 00  0a 7f 00 00    MPLS_IPTUNNEL_TTL, ttl 10, stack bytes
->   05 00 02 00  0a 00 00 00    with this patch
-> 
-> and valgrind reports "sendmsg(msg.msg_iov[0]) points to uninitialised
-> byte(s)".
-> 
-> The kernel skips padding when parsing, so nothing fails, but its own
-> encoder zeroes it (__nla_reserve()). Do the same here.
-> 
-> Fixes: 6ef87f9cce21 ("ip: route: add congestion control metric")
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
+As Sashiko suggested, I think it makes sense to add
+
+Fixes: 555e5531635a ("selftests: net/forwarding: spawn sh inside vrf to speed up ping loop")
+
+> Signed-off-by: Jin Li <jinli@lanxincomputing.com>
 > ---
-> addattr_l() has the same gap, but all its callers zero their request,
-> so it is left alone.
+>  .../selftests/net/forwarding/custom_multipath_hash.sh     | 8 ++++----
+>  .../selftests/net/forwarding/gre_custom_multipath_hash.sh | 8 ++++----
+>  .../net/forwarding/ip6gre_custom_multipath_hash.sh        | 8 ++++----
+>  3 files changed, 12 insertions(+), 12 deletions(-)
 > 
-> Kernel side: nla_next() advances by NLA_ALIGN(nla_len), so padding is
-> never read; __nla_reserve() memsets it to zero.
-> ---
+> diff --git a/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
+> index 5dbfab0e2..92940370e 100755
+> --- a/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
+> +++ b/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
+> @@ -224,10 +224,10 @@ send_dst_ipv6()
+>  send_flowlabel()
+>  {
+>  	# Generate 16384 echo requests, each with a random flow label.
+> -	ip vrf exec v$h1 sh -c \
+> -		"for _ in {1..16384}; do \
+> -			$PING6 -F 0 -c 1 -q 2001:db8:4::2 >/dev/null 2>&1; \
+> -		done"
+> +	ip vrf exec v$h1 sh -c '
+> +		for _ in $(seq 1 16384); do
+> +			'"$PING6"' -F 0 -c 1 -q 2001:db8:4::2 >/dev/null 2>&1
+> +		done'
+>  }
+>  
+>  send_src_udp6()
+> diff --git a/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
+> index b4f17a5bb..19384be4b 100755
+> --- a/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
+> +++ b/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
+> @@ -319,10 +319,10 @@ send_dst_ipv6()
+>  send_flowlabel()
+>  {
+>  	# Generate 16384 echo requests, each with a random flow label.
+> -	ip vrf exec v$h1 sh -c \
+> -		"for _ in {1..16384}; do \
+> -			$PING6 -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1; \
+> -		done"
+> +	ip vrf exec v$h1 sh -c '
+> +		for _ in $(seq 1 16384); do
+> +			'"$PING6"' -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1
+> +		done'
+>  }
+>  
+>  send_src_udp6()
+> diff --git a/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
+> index b24acfa52..d848e82d4 100755
+> --- a/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
+> +++ b/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
+> @@ -321,10 +321,10 @@ send_dst_ipv6()
+>  send_flowlabel()
+>  {
+>  	# Generate 16384 echo requests, each with a random flow label.
+> -	ip vrf exec v$h1 sh -c \
+> -		"for _ in {1..16384}; do \
+> -			$PING6 -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1; \
+> -		done"
+> +	ip vrf exec v$h1 sh -c '
+> +		for _ in $(seq 1 16384); do
+> +			'"$PING6"' -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1
+> +		done'
+>  }
+>  
+>  send_src_udp6()
+> -- 
+> 2.53.0
 
-Looks good but AI had some bike shedding on details.
-
-Review summary: [PATCH iproute2] libnetlink: zero padding in rta_addattr_l()
-Dave Seddon <dave.seddon.ca@gmail.com>, 2026-11-03
-Patchwork-Id: 14942963  (delegate: dsahern@gmail.com)
-
-VERDICT
-  Fix is correct. Two commit-message problems. 
-
-THE CHANGE
-  lib/libnetlink.c, 1 insertion:
-    +	memset((void *)subrta + len, 0, RTA_ALIGN(len) - len);
-
-  rta_addattr_l() copies alen bytes but advances the parent by
-  RTA_ALIGN(len), so 1-3 padding bytes were never written. Nests built
-  in stack buffers sent stack contents to the kernel.
-
-VERIFIED
-  - Bounds safe: existing check reserves RTA_ALIGN(rta->rta_len) +
-    RTA_ALIGN(len), so the memset cannot pass maxlen. Exact-fit case
-    (maxlen=8, alen=1) returns -1 before reaching the memset.
-  - alen == 0 (rta_nest path): len = RTA_LENGTH(0) = 4, already
-    aligned, memset is a no-op, does not scribble past the header.
-  - Byte pattern matches changelog exactly:
-      before: 05 00 02 00  0a 7f 00 00
-      after:  05 00 02 00  0a 00 00 00
-  - Coverage complete: rta_addattr8/16/64 all route through
-    rta_addattr_l(). rta_addattr32() needs nothing (len=8, aligned).
-  - Applies to oss-nlseq tip (offset -7 lines), builds clean.
-    Test apply reverted; working tree untouched.
-
-PROBLEM 1 - note below the --- is wrong
-  Claims "addattr_l() has the same gap". It does not. addattr_l() has
-  zeroed its padding since 07f9436201eb (2005, "Use NLMSG_TAIL and add
-  addraw_l") -- same memset, same file. That is the precedent this
-  patch follows, worth citing rather than disclaiming.
-
-PROBLEM 2 - Fixes tag is misdirected
-  Fixes: 6ef87f9cce21 ("ip: route: add congestion control metric")
-  is a real unaligned caller (RTAX_CC_ALGO string) but not the cause.
-  The defect is in rta_addattr_l() itself, back to the BitKeeper
-  import (aba5acdf, 2004) -- no useful commit to tag. The MPLS TTL
-  reproducer in the changelog is from 9688cf3b, different again.
-  Recommend: drop the tag, state in the body that this affects every
-  caller passing an unaligned length.
-
-SEVERITY
-  Hygiene, not a vulnerability. Kernel nla_next() advances by
-  NLA_ALIGN(nla_len) so padding is never parsed; the 1-3 bytes go to
-  the kernel, not onto the wire. Real motivations are the valgrind
-  report and matching the kernel's own __nla_reserve(). The changelog
-  already frames this accurately.
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
