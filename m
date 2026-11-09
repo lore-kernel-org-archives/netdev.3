@@ -1,59 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794221207;
-	b=z05KSNbMmbE2pxW83IbcBZjVVpDhroOXAk1PSTTyBhkSHEmkjczEuXx1oLNxG2XsKwaR
-	 hWGYAMgdfSH2tEmNlEcwo4phJOqF+Lwlg5iat21ycrVawpoVOiTzoj8Xz9ZAqve+YpywC
-	 R0S5zu2achbv3KruGnO+68FuDWMeRxX4FxnFxl5GXyetlpOQuZOeFfPtzMlLx7Ilk7KCb
-	 AJ44d9W1PK5NygrxyjfAA5zewDM11QrFV8if+kpZXu/mdgSAVKPAGSPq0s78eo8sbGdz8
-	 6GlsjX1bIPZwmb825zifTnr5tZhu44f2KtxzHoNHeNxDqD2Y0SWBdE508vydEwbbffw==
+	t=1794221455;
+	b=YPEFmZ0fC484i9zjw8fkgpROs9hVAB9Btu2nkH9dqepbwbIj56hSjIygtxAObZbF5SyK
+	 VXzKH0251WrATVlUH4nJ32bNyG69+zzBaqkJOqXNrW62KLyf+dI6baQJzywbxKPZd2kro
+	 9s5p0oYUzIql8SQUfBE74P/J/D6cZi9S75bhzZ56QRONRfSAHa8royb6jmmz/IbFLLl94
+	 ZFIt7meO68040a+bMg8mbGXqRTaJ4u09fXCZr2F/abRBMgPQ77aHHjUOmfZhrtlRKHGGZ
+	 VQAUfbamPkkWxJoI3NamcihzQLGvdTEqljaYqRqYsNUPp06wCbtnbUSDPAyIcMj+95A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794221207;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=EGLRBtrqwLmpuLL/DC/Zcp+EGbQUnDJwdb8d7ZNXyZw=;
-	b=lP9afI2B9UOe3FV8KnhMrzqO9dI8fDcp0JzNcml6xALAN3Kijg+3sm9lXRPQ1VMH5/mF
-	 ze2ez3TBSK9oHWWvYzn35MLId7pOM86XHKkMvy46HcW/25MUnV1yPIBb/5BTufXJP6+iV
-	 vrNKomeolnvlXk+1spxvQFrOxr5XOK1cSxoObf3HeBH/EP0TTVoZ1SvtGOgqFMGhxxAcQ
-	 L6pInn5jXRYXbF40JMEZ1j+D7LWMQ5/qxVGiIRkoEZxKtx7ktiD2iRUCMpV4A1vrARo1t
-	 +Fd+mEcZe+1z+fmHzqZX/+APVEemaNV1gjgF8ZJR8fjVA/eXyXOJ0Ynz3jlvDKEPXOw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794221455;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version;
+	bh=dFZKLixWx5KI4GfPbaia5dkgB2QXV/9Y/o90oVOKECw=;
+	b=LMdMZEJcmKLArvZVkuggCa8IeFwaZON1dkc08wz5Tju7eb6G9cyaQY95rEeem81c/n0x
+	 ugS27c8PEkA2M20BsFYhKbWdOb2E1r8MBqFP5T25uNgiqMK3WzOInkVaVymXvGz8QoNIs
+	 rYcT4PaJ0HA17gSO/5SqWEGbuOR/vqVX/IJt8BatYZzgN60DtGK2CTRguqI46Gw2hRfst
+	 dYpAn6C6/5RLBJSN+kKyzOA82Cn0ZrL71JnQkAAKn9Bu4WCYZLFT2jOi9DwpI4uoL1Zes
+	 bmsdQNnrncuAvjxh8hoI+RQM4XYIrfOudD0jl8/1gPtLjO4r+yu4o5OZ3hM/YdBIVVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dro8/MQC";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=fqEhttIJ;
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88486606A325;
-	Mon,  9 Nov 2026 10:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A0E606A31C;
+	Mon,  9 Nov 2026 10:50:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14A0E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dro8/MQC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E421F0089F;
-	Mon,  9 Nov 2026 10:46:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794221207;
-	bh=EGLRBtrqwLmpuLL/DC/Zcp+EGbQUnDJwdb8d7ZNXyZw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dro8/MQCh7R7TbkAjW26BFB+ihtZj8Wbf7vP0yl/I+MaAhv/gOlpgbg3xqAvSJE0N
-	 TG0VHmR1JnLdYZWiTHIHdEkTKsnmJHiX6Yqg4KSUsNOt9MUW8sTW1XvYqXEPZSSsNA
-	 i/hgHWE5q3LZT3rcu1W3XHY5Ys5DoI+wOB93omFwluipdFFKoK8jUd61lz4I/ndNgo
-	 ieyq30nEKtMONxHi0pWIt03PAuKwhmwhAhSNlb3LyQMx4W7o3Aajq77qWQM+kVbzGz
-	 AhKNYYZhR0mpIwbyP1C0B8NVaEVlNXDm/OjXU8PdA5anFaVzN7p1W30A/TEuRu4Tvl
-	 HhiEw8uw4mNqQ==
-Subject:
- Re: [PATCH net-next] net: dsa: motorcomm: Free the MIB block on port teardown
-From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 10:46:46 +0000
-Message-ID: <179422120601.994134.564932634198490394@kernel.org>
-In-Reply-To: <20261108101648.1308271-1-mmyangfl@gmail.com>
-References: <20261108101648.1308271-1-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=fqEhttIJ
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A99x5mo4137589;
+	Mon, 9 Nov 2026 02:50:48 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=dFZKLixWx5KI4GfPbaia5dk
+	gB2QXV/9Y/o90oVOKECw=; b=fqEhttIJ24eUSiCxSxkPMIjfVnjJyS4k56Cyyrr
+	IajLfz9j17600FkAwp5dgd2pOwRX1z4pZ+FHdNsVVF9PW9qiay9QEs+cCIPiXSeM
+	WNT5Dsisxkkn0f7jDEtdBKY8VrKESc1dBeod/X6GzmgCbRoNE7QyiZDw3LIyrEyo
+	uhCM0knQnxK+VxM17JeTt5U7Zl5fJDh34KMumo7WL86aShm5YzyzWmtg5FNlYCCT
+	5eRZgSqvEPJ+AZqDJzdHhbh/Q6uZ9Iob21VFR+qUTHw0GFY3A3pOM9ltq8hgXEnl
+	yQJXy2wbs1x46eNVjlracfgcCUhd7I2CN0RGO7rFqm3DC9Q==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ht4cnnppy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 02:50:48 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 9 Nov 2026 02:50:47 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 9 Nov 2026 02:50:47 -0800
+Received: from sjc4ccscust-vm07.sclab.marvell.com (unknown [10.110.24.160])
+	by maili.marvell.com (Postfix) with ESMTP id D31923F708A;
+	Mon,  9 Nov 2026 02:50:46 -0800 (PST)
+From: kmahammadraf <kmahammadraf@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David
+ S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Aditya
+ Thapliyal <athapliyal@marvell.com>,
+        kmahammadraf <kmahammadraf@marvell.com>
+Subject: [PATCH net] octeontx2-af: Fix keep PF_FUNC match for AF TX rules in rep mode
+Date: Mon, 9 Nov 2026 10:50:43 +0000
+Message-ID: <20261109105043.1986921-1-kmahammadraf@marvell.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,148 +91,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=HpDjiETS c=1 sm=1 tr=0 ts=6af1a588 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=L6Q1NjILTR45zA5W52MA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA0MiBTYWx0ZWRfX9OO3/dCtkUr5
+ jekI0j6sy76RLG9/0jd+Ir3kw98vAR63ZPIoLLTQD4kBOBJWyfhhj6JCZhY6vTXnOkqA5zlVguR
+ pjTJ23t/9BZtRu/1ZBrCRzAc1WNc2q8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA0MiBTYWx0ZWRfXz/LaBKRilRZ4
+ 0MyoFX7E9+uK4tWvslPG5Wg2Ehb6ZEXNETnVp8LRWh1wBm/qxqlPccCbgV5hguUJrxumtDyT1HV
+ XVCuIPp3uKuk0vQsSWXGllIqSEdrudixgxed6O6ui0gKmerOF/9LwO0LWiz+JKKZC4S3TiYIP2w
+ cXth0fh4mslsTy0ABrvKx6cDQ/U8Ydq4nw2yXrfOQESbPjI7RfsPP6FlCIXrgk51Ci8+I+iZy6m
+ aRWI7Q6oR0JzRNT8k+Xf8S680Sa6JsrlHCZJg6U5jZWahmHBdFdByFpUN808Ey7w9sLxK8qK91v
+ jexC4eDlAq3g/w2prsnWmjqS8yEV0ic24O8hzLNMZUqOxd3H1L9fAf3tn1KPdP0H/4rVzlaC9s3
+ oQ7HYGb1cg5EFIb4ri0iX/5gk52DGqpoeThQ35hmoJTEB21c9UBqLWehrKUG7ynRhwyfmu72wr9
+ o0XD8yrl44BFHHArF9Q==
+X-Proofpoint-GUID: -SM8jb4bUgZ4qaoZfGxYqPVwLMqik_YG
+X-Proofpoint-ORIG-GUID: -SM8jb4bUgZ4qaoZfGxYqPVwLMqik_YG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-09_04,2026-11-06_01,2025-10-01_01
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Aditya Thapliyal <athapliyal@marvell.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+In representor mode, AF installs TX MCAM rules for representor traffic.
+These TX rules must match on PF_FUNC to identify the correct target
+function.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Currently, npc_update_tx_entry() clears PF_FUNC mask for AF-requested
+rules. In rep_mode, that wildcard can make a TX rule match traffic for
+other representors on the same TX interface, which can steer egress
+traffic through the wrong rule.
 
-- [Medium] The patch adds a memory leak on the yt921x_dsa_port_setup()
-  error path (drivers/net/dsa/motorcomm/chip.c).
-- [Low] A comment in yt921x_phylink_mac_link_down()
-  (drivers/net/dsa/motorcomm/chip.c) is now false.
+Fix this by not clearing PF_FUNC mask for AF-installed TX rules when
+rep_mode is enabled.
 
---
+Fixes: 683645a2317e ("octeontx2-af: Add packet path between representor and VF")
 
-net: dsa: motorcomm: Free the MIB block on port teardown
+Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
+Signed-off-by: Aditya Thapliyal <athapliyal@marvell.com>
 
-The patch moves the per-port MIB block from devm_kzalloc() to
-kvzalloc_obj() and frees it in yt921x_dsa_port_teardown(). The next
-.setup() then gets zeroed counters after the hardware reset. The
-disable/enable pairing of the MIB poll work in port_setup is dropped.
+---
+v2: https://lore.kernel.org/netdev/179292714974.3134.12015701378835588497@kernel.org/
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 33e5fc127244d..fd737c3e2e184 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -1994,11 +1994,11 @@ static void yt921x_dsa_port_teardown(struct dsa_switch *ds, int port)
->  	struct yt921x_port *pp = &priv->ports[port];
->  	struct yt921x_mib *pm = pp->mib;
->  
-> -	/* get_stats64() might not be synchronized with port_teardown(), hold
-> -	 * the MIB block till the device teardown
-> -	 */
-> -	if (pm)
-> +	if (pm) {
->  		disable_delayed_work_sync(&pm->work);
-> +		pp->mib = NULL;
-> +		kvfree(pm);
-> +	}
->  }
+    -Drop the channel-handling change from this patch.
+    -Keep this patch focused on PF_FUNC mask handling in representor mode.
+    -Clarify the representor TX symptom in the commit message.
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[Severity: Low]
-
-This isn't a bug, but the MIB block is now freed here on every tree
-teardown, so the comment in yt921x_phylink_mac_link_down() looks stale:
-
-drivers/net/dsa/motorcomm/chip.c:yt921x_phylink_mac_link_down() {
-    ...
-	/* No need to sync; port control block is hold until device remove */
-	pm = priv->ports[port].mib;
-	if (pm)
-		cancel_delayed_work(&pm->work);
-    ...
-}
-
-The code still looks safe, but for a different reason. DSA stops and
-destroys phylink before .port_teardown():
-
-  user ports:     dsa_user_destroy()->dsa_port_phylink_destroy()
-  CPU/DSA ports:  dsa_port_disable_rt()->phylink_stop(), then
-                  dsa_shared_port_link_unregister_of()
-
-All of these run before dsa_port_devlink_teardown().
-
-Could this comment be updated to give that reason instead of the old
-devm lifetime?
-
-[ ... ]
-
-> @@ -2006,12 +2006,11 @@ static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
->  	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
->  	struct yt921x_port *pp = &priv->ports[port];
->  	const struct yt921x_info *info = priv->info;
-> -	struct device *dev = yt921x_priv_to_device(priv);
->  	struct yt921x_mib *pm = pp->mib;
->  	int res;
->  
->  	if (!pm && (BIT(port) & yt921x_info_ports_mask(info))) {
-> -		pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
-> +		pm = kvzalloc_obj(*pm);
->  		if (!pm)
->  			return -ENOMEM;
->  		pp->mib = pm;
-
-[ ... ]
-
-> @@ -2031,9 +2026,6 @@ static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
->  	if (res)
->  		return res;
-
-[Severity: Medium]
-
-Now that the MIB block is no longer devm-managed, does this error path
-leak it?
-
-pm is allocated with kvzalloc_obj() and stored in pp->mib before
-yt921x_port_setup() runs. yt921x_port_setup() can fail, for example
-when a register write fails in yt921x_userport_standalone() or in the
-YT921X_PORTn_PRIO_ORD or YT921X_PORTn_ISOLATION writes. In that case
-this function returns without freeing pm.
-
-The DSA core doesn't call .port_teardown() after a failed .port_setup():
-
-net/dsa/devlink.c:dsa_port_devlink_setup() {
-    ...
-		err = ds->ops->port_setup(ds, dp->index);
-		if (err)
-			return err;
-    ...
-}
-
-dp->setup stays false, so dsa_tree_teardown_ports()->dsa_port_teardown()
-skips this port:
-
-net/dsa/dsa.c:dsa_port_teardown() {
-    ...
-	if (!dp->setup)
-		return;
-    ...
-}
-
-yt921x_mdio_remove() frees the ACL blocks but not priv->ports[].mib.
-
-With a single switch, dsa_register_switch() fails and so does probe.
-The devm-allocated priv, which holds the only pointer to the block, is
-then freed.
-
-For user ports, dsa_port_setup_as_unused() retries and reuses the
-leftover pm. If that retry also fails, the block leaks the same way.
-
-The commit message says .port_teardown() "pairs with every successful
-.port_setup()", which doesn't cover the failed-setup case.
-
-Could this path kvfree(pm) and clear pp->mib when this call did the
-allocation? Another option is to allocate only after yt921x_port_setup()
-succeeds.
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index ec004ea5154c..4afd4a10cd64 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1396,7 +1396,7 @@ static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
+ 	/* If AF is installing then do not care about
+ 	 * PF_FUNC in Send Descriptor
+ 	 */
+-	if (is_pffunc_af(req->hdr.pcifunc))
++	if (is_pffunc_af(req->hdr.pcifunc) && !rvu->rep_mode)
+ 		mask = 0;
+ 
+ 	npc_update_entry(rvu, NPC_PF_FUNC, mdata, (__force u16)htons(target),
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108101648.1308271-1-mmyangfl%40gmail.com
+2.25.1
+
