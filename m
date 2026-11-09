@@ -1,59 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794189282;
-	b=HOH4Owh0HZfBd7gJWWcoqnm7HSy/stJFerhk/DZOnZWALZHeyV18ThPuYyEkqQYD8oEV
-	 5QGb+Y6Zc9qPvfb6lzibqy7lafv2z5OmpcswUjxC+n2bDagavcE6GM4CUEHvx4RO8wcGX
-	 J63BDd6DfajOXv0thzqasycG8nOxDySEIvaDhxitr0YQBZWmb7VsoSUZ0V/193/1l3s9u
-	 EtubXOydvy9F3084gKSZGcL0Rbv2mz47FA5nLbWnpIS9xpy7XpCdEXfbOOdxsJXc+Y3jp
-	 nY5Yhotg3xyGN+sOctr+7SNKUDR/9hFW4XTVM/oSDuB+jH5nx3KwFTAj5oIh+efPT0g==
+	t=1794189435;
+	b=j4BY9g8c8fVL/NwRdhHPOZolKxJ1Hpw047g4J+1ft+7oyw+9qSG3BQG24BjQz5bVh2/2
+	 1G+tCma910ik0TLXXC7QBk7AfVDhGBi56Jiy3lGgXeeT/PytMZ8SQWA6ooCkhn5DnQvFv
+	 uQ4t0fEYaBcb7QBSVAbVj0h9aA6A/QF3jMPRrJlKEpkzGMboyU0XuWomdXtqy4Y7PfeRf
+	 eH0np/41t0z4RH8SJ4B7/zl5FDXy5taD6hcS7ivIi34WhU7NZkN4RqifX7aNAbwG5YC9e
+	 /Z3U10cytlhRF/1K954HtWQEWN/aP5EVTKuDxZYwnyLdYVqThUK/uGc7VG2mbMcACUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189282;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=i6e9dyTu3EyPnfq4IJG0Z3eas29bFD8O0rKrA8tROtk=;
-	b=p9y7LKkyTE+JO6YPydBMRTgo8OA1RlXSTKN04kAzRHC9hJku7a8B6MV7EI9xr6R6aX51
-	 gqS1FjdRHn+CbdvArOWV28an5KY/LpMF3MAbv4mnU2mbvOm7osy71gEjG61Ce60pJF+Kd
-	 oOuvGFDysZ+SjW85K6D3q7iNZYYVpqGRff1zJ6fU7Jo5jaGCkvO18nknh1GSU1Kr2E/l0
-	 r1BvUuXwoIT5X/yG14ekVDwiJuLtJy5hrEerUGAWR/ny7XsoH2wBynC4xHuT/qnXzVLGx
-	 xlI2a5qGXAuzGrU6LxiUL1www9oxKgETDcACupLVT17hNwgbHd4cBkJAAiBWC7o78bw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794189435;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
+	b=AkYud5dW1Ndc3uwv78XPAdhkui3Zjlc7RjRglgfM5HiKpIId/joAsmmOEPvshzVqSbYz
+	 Mxwl/HGvBZSMqXtxpKde6XoZ2JC3crC/S75SFViHgOG3GPvBFHwfXrEwCyPA8ONFOegC2
+	 bS1waP4Du7nHcMPNvzRWVgQtcGPKEcetnY6Jyg8RF18VTLA8E9fLk8D6L2HDTDZ8ZCnGZ
+	 N5iE2B0DDsEtNIvxO0pX5Ig1RPxZtj1t2NHxeckAD3cnj/AhHYBbWDzPCLyWtlgbsxQjo
+	 b4/1BvlwD/6HiyuUguT4INHhVoipBOi+hknubO8RHSelq17ESZZUhuALOLuThU6xJcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CNMMsCBC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="Mzch/vZ7";
+	arc=none smtp.remote-ip=209.85.215.178
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DA2606A322;
-	Mon,  9 Nov 2026 01:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A32606A320
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:57:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75A32606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CNMMsCBC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15391F0089F;
-	Mon,  9 Nov 2026 01:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794189281;
-	bh=i6e9dyTu3EyPnfq4IJG0Z3eas29bFD8O0rKrA8tROtk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CNMMsCBCkhFqrX25Vkd4yuASiT/teP4r5pU+fWqc8y57yYRT/8Te/ziZC6PMYSVY3
-	 9DcOiK1QKJgi2XWrBIadl6KoUhKQ26cB4F7fD9tK3s2AnNsfA0RnyCCzg0hsIve1rm
-	 gqIUimZH0jGgUMUbxoXcbgkKyYnLjGexYUJa522eNY7PteFKFhCRltNaIfcwjIdT+I
-	 Oe6YxpBLWKGwfH4eNgiZnBvIWxshrhk7MAzUJX9GZ2a59vh8a1wrYRqz5u826XbW4A
-	 QHNIQs71258j+Zxpo9SzuabMD9bilJooNDUesvnZ7c7b+qYTqcnHuULza+5az0XaJQ
-	 HXnWJ6bQ2qzLQ==
-Subject: Re: [PATCH net v2] net: ethernet: adi: adin1110: mask the RX IRQ of
- the port being stopped
-From: netdev-bot+sashiko@kernel.org
-To: wuyuehong@cmss.chinamobile.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
- edumazet@kernel.org, pabeni@redhat.com, nichen@iscas.ac.cn,
- linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 01:54:40 +0000
-Message-ID: <179418928039.994134.15007957865161430391@kernel.org>
-In-Reply-To: <20261104-adin1110-net-stop-v2-1-yuehongwu@cmss.chinamobile.com>
-References: <20261104-adin1110-net-stop-v2-1-yuehongwu@cmss.chinamobile.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Mzch/vZ7
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccca948203aso100356a12.3
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:57:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794189435; x=1794794235; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
+        b=Mzch/vZ77PPC0ZEwmvn877V3B8RBxkYhyLS9bK3fzVOiZACTCpXLJl8CMwdT/RaIh6
+         6Io4gyFPlmZzG0k3rbWSqyKP4U7EM52lgsWVMAXn8OaI/H7iXAW9hj/oTsrD/vhijUao
+         xO31gVlzJ2oeiCyDPasokX5lFZmKmijid9VR/vbN4IS0JnQLrf1rh3bdWoZY1YyyCtk3
+         pvIVPoXk2CXyabbO+p/Puot8JtdSPvEwolYqjCyv7SyRdBlhP2m7ZmUi3sM7iwkA9OY1
+         xfsLCnfFMLb5rvEEwiN8dokfN7yLoPNqTTW43DXLW2zkX8g+IlYbbVcljBQ9S2Xxrj1A
+         mPog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794189435; x=1794794235;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8wgCcx+Ych3tnKf4y17fQUirM+lM1wAIJTSbb/Fy8Zk=;
+        b=lDwScLsentksnLuJy7lTnlPsuObGHS8UhXWRaxGm+52Kkl9Zs6iOs6ZfDO0DSnY/6B
+         Wd2KAunian2EX0q84uqRZN1rIaEgwtHI/81R1KjGLtMyboyScBKWDBKsXjQAvuMPcamd
+         CMIxLfswV5LbkFNrNCJ+vLHxdYM5Wd6u3q1nVd0SWL0GoZxbknQqfM1pz4G47LVLQRP9
+         M3RoPMJuoKV860p1KzxBGESO/UTnJOyzJd3fXdEPI3B6tUM5J33MvhfNL76lQvTsEka5
+         oFzhkdbV0ygdWmhZUyG5GQSzCOb3GL2VnTdhCbesH1CRPA/b5KIW2taZ9wxChVS15vl1
+         OELQ==
+X-Gm-Message-State: APuU4Z+nXbWiLgGwXwCyfX2FgsDzJymB9cJ+h6C7moIoOMiLHuVA9EJU
+	Uk+rm5dK2SGn5f06afa9BofY4lpAfqcNOAfWHJYUp3ScOWu2BEYkndOipOaubyTfLwNJKb5mlJ0
+	MLOdq/uc=
+X-Gm-Gg: AYBFou22Aqy88NpcSwFDFEtreBqycv+s0VBk0GSWHKCNas4hMYyRa9EcCxm52ttqsyV
+	hEWYg0fKApee1KiFeBHllCr2N8IGsN9GcTyz8FORX+ut3eCayISdBLczLDwn5RDwXihHKd/TUrI
+	eLAsQCg+lmy+lYj6pJUpZPN/SvdzHYTWcNqHIaYtP7BuwvKb/4DZyybAKlSAKmAFsJYt6SqVxb+
+	+fS6Cf7Sv2KMwsyR02+7UtwtdZi0Y58TR2VzP6bXUqbtMKoiPWGWQmws2SD4VAuAOIWINYpSNNP
+	rPLKeHYTGmVhaDJSIQtv1I+MX7PQLgpVUZOHzN57pFsXRgwWgePifn2NzkM2QuryGdGDdkuovTp
+	4tDFK2QzK3GTRkGi2cQuDwAHSih921W7xLSAWQn0o0XNX44u4uEJAOrhzn2XDeQo7ofdRhzxRE6
+	GGKC/oGGYQVz+xki9gGpCUliLzc1Y3kQrbfigoRhJseLaWjHrVINZ3zh4NBqp0hNJ2LMxLRxqku
+	CTJ+BQvsDZ+46RW+lfli/J7YnQisPf84Ht1i5gxTeRemGTZVLM9LuFGj3dJ0aZQ5MiES3GDZj6X
+	4h2/Z5paeZMKtu5XGSzfdhw4toZFahtp1O0AgAQkh74vcbSR0LkH3hSNkTxFMT0tuGP5UAuY
+X-Received: by 2002:a17:90b:3ecd:b0:3ab:c80:9365 with SMTP id 98e67ed59e1d1-3b12d3e71d8mr2622681a91.42.1794189434631;
+        Sun, 08 Nov 2026 17:57:14 -0800 (PST)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b12743e889sm4799418a91.0.2026.11.08.17.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 17:57:14 -0800 (PST)
+Date: Sun, 8 Nov 2026 17:57:12 -0800
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Dave Seddon <dave.seddon.ca@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>
+Subject: Re: [PATCH iproute2] libnetlink: zero padding in rta_addattr_l()
+Message-ID: <20261108175712.37b4c6f7@phoenix.local>
+In-Reply-To: <20261104052901.2735000-1-dave.seddon.ca@gmail.com>
+References: <20261104052901.2735000-1-dave.seddon.ca@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,96 +96,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Tue,  3 Nov 2026 21:29:01 -0800
+Dave Seddon <dave.seddon.ca@gmail.com> wrote:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> rta_addattr_l() copies alen bytes but advances the parent by
+> RTA_ALIGN(len), so the 1-3 padding bytes are never written. Nests built
+> in stack buffers (lwtunnel encap, RTA_MULTIPATH, RTA_METRICS) then send
+> those bytes to the kernel. For example, in
+> 
+>   ip nexthop add id 53 encap mpls 101 ttl 10 via 192.0.2.1 dev d0
+> 
+> the three bytes after MPLS_IPTUNNEL_TTL are stack contents:
+> 
+>   05 00 02 00  0a 7f 00 00    MPLS_IPTUNNEL_TTL, ttl 10, stack bytes
+>   05 00 02 00  0a 00 00 00    with this patch
+> 
+> and valgrind reports "sendmsg(msg.msg_iov[0]) points to uninitialised
+> byte(s)".
+> 
+> The kernel skips padding when parsing, so nothing fails, but its own
+> encoder zeroes it (__nla_reserve()). Do the same here.
+> 
+> Fixes: 6ef87f9cce21 ("ip: route: add congestion control metric")
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
+> ---
+> addattr_l() has the same gap, but all its callers zero their request,
+> so it is left alone.
+> 
+> Kernel side: nla_next() advances by NLA_ALIGN(nla_len), so padding is
+> never read; __nla_reserve() memsets it to zero.
+> ---
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Looks good but AI had some bike shedding on details.
 
-- [High] On ADIN2111, the patch's fix in adin1110_net_stop() stops
-  working as soon as the other port is opened.
+Review summary: [PATCH iproute2] libnetlink: zero padding in rta_addattr_l()
+Dave Seddon <dave.seddon.ca@gmail.com>, 2026-11-03
+Patchwork-Id: 14942963  (delegate: dsahern@gmail.com)
 
---
+VERDICT
+  Fix is correct. Two commit-message problems. 
 
-net: ethernet: adi: adin1110: mask the RX IRQ of the port being stopped
+THE CHANGE
+  lib/libnetlink.c, 1 insertion:
+    +	memset((void *)subrta + len, 0, RTA_ALIGN(len) - len);
 
-This commit swaps the RX-ready mask bits in adin1110_net_stop(), so the
-port being stopped now masks its own RX interrupt. This matches the
-mapping in adin1110_port_rx_ready(). The goal is to keep a stopped port
-from re-raising its level-triggered interrupt when nothing drains its
-FIFO.
+  rta_addattr_l() copies alen bytes but advances the parent by
+  RTA_ALIGN(len), so 1-3 padding bytes were never written. Nests built
+  in stack buffers sent stack contents to the kernel.
 
-> diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-> index 53fac3dc8be62..abdc16089c9e3 100644
-> --- a/drivers/net/ethernet/adi/adin1110.c
-> +++ b/drivers/net/ethernet/adi/adin1110.c
-> @@ -945,7 +945,7 @@ static int adin1110_net_stop(struct net_device *net_dev)
->  	u32 mask;
->  	int ret;
->  
-> -	mask = !port_priv->nr ? ADIN2111_RX_RDY_IRQ : ADIN1110_RX_RDY_IRQ;
-> +	mask = !port_priv->nr ? ADIN1110_RX_RDY_IRQ : ADIN2111_RX_RDY_IRQ;
->  
->  	/* Disable RX RDY IRQs */
->  	mutex_lock(&priv->lock);
+VERIFIED
+  - Bounds safe: existing check reserves RTA_ALIGN(rta->rta_len) +
+    RTA_ALIGN(len), so the memset cannot pass maxlen. Exact-fit case
+    (maxlen=8, alen=1) returns -1 before reaching the memset.
+  - alen == 0 (rta_nest path): len = RTA_LENGTH(0) = 4, already
+    aligned, memset is a no-op, does not scribble past the header.
+  - Byte pattern matches changelog exactly:
+      before: 05 00 02 00  0a 7f 00 00
+      after:  05 00 02 00  0a 00 00 00
+  - Coverage complete: rta_addattr8/16/64 all route through
+    rta_addattr_l(). rta_addattr32() needs nothing (len=8, aligned).
+  - Applies to oss-nlseq tip (offset -7 lines), builds clean.
+    Test apply reverted; working tree untouched.
 
-[Severity: High]
-On ADIN2111, does this mask still hold once the peer port is opened?
+PROBLEM 1 - note below the --- is wrong
+  Claims "addattr_l() has the same gap". It does not. addattr_l() has
+  zeroed its padding since 07f9436201eb (2005, "Use NLMSG_TAIL and add
+  addraw_l") -- same memset, same file. That is the precedent this
+  patch follows, worth citing rather than disclaiming.
 
-adin1110_net_open() does not check which port is opening. It rewrites
-the whole IMASK1 register and clears the RX_RDY mask bits of both ports:
+PROBLEM 2 - Fixes tag is misdirected
+  Fixes: 6ef87f9cce21 ("ip: route: add congestion control metric")
+  is a real unaligned caller (RTAX_CC_ALGO string) but not the cause.
+  The defect is in rta_addattr_l() itself, back to the BitKeeper
+  import (aba5acdf, 2004) -- no useful commit to tag. The MPLS TTL
+  reproducer in the changelog is from 9688cf3b, different again.
+  Recommend: drop the tag, state in the body that this affects every
+  caller passing an unaligned length.
 
-drivers/net/ethernet/adi/adin1110.c:adin1110_net_open() {
-    ...
-	val = ADIN1110_TX_RDY_IRQ | ADIN1110_RX_RDY_IRQ | ADIN1110_SPI_ERR_IRQ;
-	if (priv->cfg->id == ADIN2111_MAC)
-		val |= ADIN2111_RX_RDY_IRQ;
+SEVERITY
+  Hygiene, not a vulnerability. Kernel nla_next() advances by
+  NLA_ALIGN(nla_len) so padding is never parsed; the 1-3 bytes go to
+  the kernel, not onto the wire. Real motivations are the valgrind
+  report and matching the kernel's own __nla_reserve(). The changelog
+  already frames this accurately.
 
-	priv->irq_mask = val;
-	ret = adin1110_write_reg(priv, ADIN1110_IMASK1, ~val);
-    ...
-}
-
-Take this sequence:
-
-  ip link set eth1 down  -> adin1110_net_stop() sets ADIN2111_RX_RDY_IRQ
-  ip link set eth0 down
-  ip link set eth0 up    -> adin1110_net_open() clears it again
-
-After the last step, port 1's RX_RDY interrupt is unmasked while eth1 is
-still down.
-
-eth1's RX FIFO may still hold frames at that point. Frames can arrive
-after the IMASK1 write but before phy_stop() in adin1110_net_stop(), and
-frames can also be left over when the ADIN1110_MAX_FRAMES_READ budget
-runs out. The handler skips them:
-
-adin1110_irq()
-    adin1110_port_rx_ready(priv->ports[1], status1)
-        if (!netif_oper_up(port_priv->netdev))
-            return false;
-    adin1110_write_reg(priv, ADIN1110_STATUS1, priv->irq_mask);
-    -> IRQ_HANDLED
-
-The IRQ is requested with IRQF_TRIGGER_LOW | IRQF_ONESHOT. Wouldn't the
-threaded handler then run again and again until eth1 is brought back
-up? This assumes RX_RDY stays asserted while the FIFO is not empty. The
-commit message relies on the same assumption.
-
-This looks like the same "stopped port also keeps re-raising its
-interrupt with nobody draining the FIFO" case the commit message
-describes. The only difference is that the peer port's ndo_open
-triggers it.
-
-Should adin1110_net_open() also change so that it unmasks only the
-opening port's RX_RDY bit, plus the shared TX_RDY and SPI_ERR bits? And
-should priv->irq_mask include only ports that are up?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104-adin1110-net-stop-v2-1-yuehongwu%40cmss.chinamobile.com
