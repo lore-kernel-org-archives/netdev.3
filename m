@@ -1,94 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794226629;
-	b=Cdefq6JMYIhopLHvjrxw+hhydu9vAY4SeNSMU7qY4wGXqXsDc6XgTajsoDh69i6+z+H1
-	 En8KLa4uxbz+FHNxBoDqbG9CRoED5w63A1P2BTkdfdVM0tw38i8q5Dw3BEuOtG89vGsfF
-	 CDENAHF1xII6PLKczhAWajIXYPBVRDxuGG/qwwdy06EEwROwauGHE/sOCi3MM6I6zh2kf
-	 i24hfkOVzHJRZRNljiPBw/biHj+hKqEH97QEswdRJdnVihHKUeidWpsJPBJqKOFDVU6ch
-	 zgR10FmKyrCbM5a8cawcVWmx/ijhWyiSY6itBhLfd9sKf1dcXg/eX8CYYsiVAzdSG/Q==
+	t=1794227061;
+	b=3/dAqoTfYaPdLCk7GtTy6AGokSRt76YrrqvvvzI3qaSzXCZTndBoJvLBNFDu5WRD7egF
+	 Rg0Dn4T+84eVS4IEe/cP4pmWhfic0VZJz8AR+VsrpIsyzahbpaBxhbprMl4WLRxQVLlOJ
+	 yhR48tU/bbdazUPMDVO7+OFC8/SB7hMYrwXtmL35AgQeWzXGlGZHIafte3XUjIRmz+LWx
+	 0S+1fkrA9GJDODeUjv9O/Tn1EihBgm6CTmNCxmOjwP2fVg29ak+vHecOn4NJ8A+02swbW
+	 SwNSCNo8SBtlCKmPEX5TSOehRsgsbOltAXI2XuL0hjkRsamdPGyVJZ6b48HNUOAnvVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794226629;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:References:
-	 In-Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:Thread-Index:Content-Language;
-	bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
-	b=VL4FaUleqk3ooPLr3F3BgrKlrKOa0ZAnPiH1g5B1Re/tWFnkxVFH3Lo4+0OjcuGMvpuF
-	 fLmXUqjkfv4gS8MFpPNWR0oYiwP5t7E8aTKVOpHCrDmqoPAr46g/7PlipNtR5S1pvBZF5
-	 IdlpGe18hxwlpBDBZDNnw3JuEIKYlky22p/29MbN2jIyMt96bp72h39lalvNZjrLRCJ3g
-	 qmrwBK4OWKMWYXlvBdXQgHHHYBjHhISzxcbutun8JWRz6JYVqrW0qa2+TvgCKtRwjdMEa
-	 ey9j1EsCjQtonx/zPLPiHWdWribRNcrWTN0StQS6MQfVZhY3WTRl9N3z83UT7Zwly0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794227061;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Ze6IvR7GkOD1+y/mxYYxG3sGa0/ogKBWjT4JtvkLT+A=;
+	b=mNzUiOF8WYRuRNZHfOEbvt7w+dejOqeOaBu8QmxDvWXYZH8g3esUq8fKd4ClHju47VHD
+	 ShLQyX8hzrFQhCq5b+qyO7wiqEGseP3+VZYwk0EaJsSyzYMxYS4x9x8uAQbVm1oobG+cm
+	 cBhnPOd2nOwc1IRaCdaC1cNc8RXF6JhepB12mBXPihbd6PP1Ekne4dXsPCZiKEi6mDh8f
+	 /YLd6KymJKjDRbaKeVKbEJR3lTQ/02wMdn2bDFtKkLir34kdVIgypmkhmz+u0hxFgEDhU
+	 p0Jrxc7kjypldjoUmOpFZVy1LncBXNsu8MWk2chEW7ClV2qKsRuImnp61Rg4S2SPT3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w05G0xgc;
-	arc=none smtp.remote-ip=209.85.160.175
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZpOh1YLG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC507606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:17:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC507606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4406F606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w05G0xgc
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-53e1d40628eso10244851cf.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:17:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794226628; x=1794831428; darn=vger.kernel.org;
-        h=content-language:thread-index:content-transfer-encoding
-         :content-type:mime-version:message-id:date:subject:in-reply-to
-         :references:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
-        b=w05G0xgcfX7EvI2qIZJ18ej/X+ze6J03RBhPVvmJMlroGEnzzeupGnpBjIDYcjHyVu
-         2p0LltbD8FOj8Lik2mAVGaBiIfhRkUUeev6AFxQsEGmJqJqlw+Gy1UYgTDyIEHycpARn
-         upttpJgPs9LGncA11RX+NQjUIoaA/UBWfs88upJRDQs4LJxEcRd+SzD1htdlZO7twz5R
-         RIF/F1KLDr+tAFTjEjFwbc8JGMP4iQZUJmZWgDUvGvKpJkoYlNj4YhtSkkE7SOiaEbL+
-         sErJ90Ub5QU7ruSNsMTj7HzGKYzuvdNssezj5uADjyc3J2OP4LVQS1Mo7T2/FaJqULrE
-         yoyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794226628; x=1794831428;
-        h=content-language:thread-index:content-transfer-encoding
-         :content-type:mime-version:message-id:date:subject:in-reply-to
-         :references:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NssoIYQyZ43nLRrkqV6rgytLjGWTG5noCd+YF6O5nOE=;
-        b=X+a00wGAr4BO4F7oLd9JVEdh5e8NcE6QKfrcl29Bpq0zhP2Spdy8TlRPGVyp+sq6BZ
-         nPldgApp/WlKjlc144pX92YlPk9EkJ8ii8lf7BXbAIXCaJGrHaSRuds326398AOr0JLR
-         wrI4WS84K8BHhXaZOYiqvvIrJjrHweNqT+63k+oNbgQ8xffoGNzK5gjMO5Tnp91q5C0S
-         nmh9WwrlTkeJwTQhjJe2oCTGmg+Pq1KRcgUbqkm58wh1LTVqRpqSNYQZgtv+yskX25zk
-         xy8FishzupzmUNwKiDNscr7L0y9++uXNCavoiUdvNgamu1kcjlpYP+VnXMpHAz6/I/CI
-         8aEA==
-X-Gm-Message-State: APuU4Z+I91EcvMh7loF3xoP1eEw71LnhFrV7aJBVPvC4Ax7mmz5vHvWU
-	Z2Nj0Zu3JuxuX9vB4/g86LzFLdPw4qX/3wsjT9ISNCBWTYcBpXwCBMfbK8HPzsY7
-X-Gm-Gg: AYBFou2AcziNNEaFF/Sv6yyBhXCFXTyrvJnLu9LmC0KIxSCpeMD2vCH//o9TWNaUqeO
-	1w1EU/lhH9eNDbaL+U/KHd5rCrT7lR/AfoEGpPJkyBeto5oaL6d+0DiiwMlQ1FrOScjLFzK2GXY
-	/kFdZQUaLgqR+CWGHUEhD55Lr24N5uVtyqm1u0istgVi8Etpmb8rE/ntihhr2slKnyEO3yNbKnA
-	YCne2PQ8vmjonAeFZWQJ6ujOXr2gU3oVfb2RTqAL4THVxP7JJpOyXolq1ZvmMRa0Wb5aPNO7uur
-	S096btUDqW87iGXhAn1QZnhBHk6Hra4Xt+hOYdRGzZjASTvBXOlAUqodTxHEqCrdHbWLay3H9c+
-	0zXw7Z6t8MHDR94FErUq2s0XRTRv5Zdu9GpdDbIpET1T08YRzu8V4QI2of+PMYeqCaJUvvFnZ1K
-	AxwdRPhsOWzvcjnCgzJGJj17L96tl6U5TEL3XmruE9cSb/sq4ztarw4aongsv1YXNabETB0U/1v
-	5Haf4ojGZ0CSd41DYiBUnuSZ0gopp9cOExbvV2gqLpOGABq1mv4H0cDwFF99ma+KdoLhgLaxtxX
-	iK4K6tyOS5hGGrCsHUVAUcn7vCvgM98zRqzCP9N2eut8
-X-Received: by 2002:a05:622a:22d0:20b0:535:f9dd:a3de with SMTP id d75a77b69052e-554472361f7mr8323831cf.23.1794226626380;
-        Mon, 09 Nov 2026 04:17:06 -0800 (PST)
-Received: from Desktop ([186.247.171.84])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55261474cc3sm39066831cf.3.2026.11.09.04.17.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 04:17:05 -0800 (PST)
-From: <brianrobertjames@gmail.com>
-To: <netdev@vger.kernel.org>
-Cc: <westeri@kernel.org>,
-	<YehezkelShB@gmail.com>,
-	<riverscn@gmail.com>
-References: <000201dd6fba$2c726e80$85574b80$@gmail.com>
-In-Reply-To: <000201dd6fba$2c726e80$85574b80$@gmail.com>
-Subject: [PATCH net] thunderbolt: Use needed_headroom for the transport header
-Date: Mon, 9 Nov 2026 07:17:04 -0500
-Message-ID: <001101dd7044$3ba5edc0$b2f1c940$@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZpOh1YLG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450251F0089F;
+	Mon,  9 Nov 2026 12:24:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794227060;
+	bh=Ze6IvR7GkOD1+y/mxYYxG3sGa0/ogKBWjT4JtvkLT+A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZpOh1YLGBPYls2wzMXkO6PRVKcP2rUcKinKSbmaPaCyL8k9h0GXZffr2xNxtAM2RW
+	 8QPdaBaUsvkee3lwv+lbcL93/T6ZPOQceXnpSavk1zIAH5I7DSXLxRE2V6J1Oa2aZW
+	 F9qn/Svo4ZM+TvOYlof0WvtwaKLoXMYSDgH1IB++4cRWYHj8hoLoWDDAQK46id9IOi
+	 I5DCgQt5zRBbiU/0NKWvLdXykxiLBXi0hLm74s0dKH09if5WlIOnsp31K8ThWTI4Yg
+	 Ie+rk3e7f8bUlLfCQtzmFw1yPdJT0DzxkqKBjmdjFrcxwKc9lItBayMB7pIQXiWcRT
+	 JrCSfYrbZrbNQ==
+Message-ID: <ecd91efe-dd83-4890-8e55-ae04aa744d4c@kernel.org>
+Date: Mon, 9 Nov 2026 13:24:15 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,99 +51,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 net-next 2/2] mptcp: Don't call
+ tcp_update_recv_tstamps() if not needed.
+Content-Language: fr
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ Mat Martineau <martineau@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Geliang Tang <geliang@kernel.org>,
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+References: <20261105215209.3160316-1-kuniyu@google.com>
+ <20261105215209.3160316-3-kuniyu@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20261105215209.3160316-3-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: Ad1wQzllGGjtmFgISvi5Wzu4RDT11Q==
-Content-Language: en-us
 
-alloc_etherdev() initializes hard_header_len to ETH_HLEN. tbnet_probe()
-then adds the 12-byte Thunderbolt transport header, although that header
-is not part of the Ethernet MAC header handed to eth_type_trans()/GRO.
+Hi Kuniyuki,
 
-This makes gro_list_prepare() include 12 bytes of the IP header in its
-nonstandard link-layer comparison. Changing IP lengths, IDs or checksums
-can prevent recognition of packets belonging to the same TCP flow,
-allowing later packets to bypass earlier data held by GRO. On the tested
-direct USB4 link this causes TCP reordering and excess retransmissions.
+On 05/11/2026 22:51, Kuniyuki Iwashima wrote:
+> As with TCP, __mptcp_recvmsg_mskq() also always triggers
+> tcp_recv_timestamp() if skb has hwtstamp.
+> 
+> Accessing sk->sk_tsflags incurs unnecessary costs for sockets
+> that do not need RX tstamp.
+> 
+> Let's check SOCK_RCVTSTAMP and SOCK_TIMESTAMPING_ANY under
+> lock_sock().
 
-Reserve the transport header in needed_headroom instead. Keep the
-Ethernet hard_header_len at 14, with 12 bytes of needed_headroom. This
-preserves the transport space requirement without changing wire format,
-offload features, or RX/TX credit allocation.
+Thank you for also fixing MPTCP!
 
-Shun Li published the identical correction on October 9, 2026, in
-riverscn/thunderbolt-net-dkms (commit b18a196bb5ca). Credit for that prior
-published correction belongs to Shun Li. This submission adds our
-independent AMD/Proxmox hardware validation and receive-order evidence.
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/mptcp/protocol.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 7a22e9388e0e..797797ce4e88 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -2189,7 +2189,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+>  			}
+>  		}
+>  
+> -		if (MPTCP_SKB_CB(skb)->has_rxtstamp) {
+> +		if (MPTCP_SKB_CB(skb)->has_rxtstamp &&
+> +		    tcp_want_rx_tstamp_cmsg(sk)) {
 
-Link: https://github.com/riverscn/thunderbolt-net-dkms/commit/b18a196bb5ca
-Link: https://bugzilla.proxmox.com/show_bug.cgi?id=8306
-Signed-off-by: Brian James <brianrobertjames@gmail.com>
----
-Follow-up to my November 8 report in this thread. Fabian Grunbichler at
-Proxmox requested that the actual patch be submitted upstream. The
-one-line diff is included inline below for review.
+It is "strange" to call a TCP helper on an MPTCP socket (and not on a
+TCP subflow), and that's why I preferred the previous name (sk_*). But I
+understand you got asked to change that name, so better not to change it
+again just for MPTCP I suppose :)
 
-Test environment:
-- Two AMD x86-64 hosts, direct native USB4/thunderbolt0 traffic.
-- Receiver: Proxmox 7.0.14-28-pve; historical tests also used 7.0.2-6-pve.
-- MTU 9000, TSO/GSO/GRO enabled, gso_max_size 65536.
-- Unpaced single-stream IPv4 TCP iperf3, 20 seconds per arm.
-- Stock thunderbolt controller unchanged; only the receiver's network
-  driver's header/headroom line changed. Cable, ports, MTU, offloads and
-  CPU/IRQ placement were held constant within each comparison.
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Receiver-only original -> corrected -> original comparison:
-  Original:           30.599221 Gb/s, 620 TCP retransmissions
-  GRO corrected:      29.779541 Gb/s,   0 TCP retransmissions
-  Original restored:  29.994158 Gb/s, 540 TCP retransmissions
-
-Endpoint interface error/drop increments and receiver FQ drops were zero
-in all three arms. The unchanged sender in this isolation test ran
-7.0.2-6-pve with TX E2E enabled; receiver RX flags stayed FRAME|E2E (6).
-This comparison isolates the receiver fix with that sender configuration.
-It does not establish that GRO alone resolves every retransmission mode
-when both peers run 7.0.14-28-pve.
-
-Historical 7.0.2 receiver-only comparisons on each host, 20 seconds/arm:
-  Receiver A retransmissions: 536 -> 0 -> 132
-  Receiver B retransmissions: 564 -> 0 -> 769
-
-Historical paired receive hooks covered identical TCP payload bytes
-(18,871,120,863) and packet counts (303,590) before GRO and at TCP ingress,
-on the same CPU. Forward sequence gaps were 0 before GRO and 1,219 at TCP
-ingress, with no packet-length parsing mismatches. A corrected capture
-had equal byte coverage at both hooks and zero forward gaps. Overlapping
-and retransmitted sequence ranges were handled separately. This supports
-an ordering defect in the receive software path for this failure mode.
-Runtime tracing confirmed header/headroom 26/0 before and 14/12 after.
-
-The measurements above came from actual Proxmox hosts. The current
-mainline source was inspected but has not been runtime-tested on this
-hardware. The diff context was checked against mainline commit
-7475ea8b58616b33c04afb976cf0fbaad9dd63fb. The separate TX-credit diagnostic
-is excluded from this patch. No Ceph qualification is claimed.
-
-AI assistance disclosure: source review, diagnostic automation, analysis
-and preparation of this email were AI-assisted using OpenAI Codex
-(GPT-6 model family; a more specific serving-model identifier was not
-provided). The measurements and traces are not simulated results.
-
- drivers/net/thunderbolt/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -1410,7 +1410,7 @@ static int tbnet_probe(struct tb_service *svc)
- 	dev->hw_features = NETIF_F_SG | NETIF_F_ALL_TSO | NETIF_F_GRO |
- 			   NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
- 	dev->features = dev->hw_features | NETIF_F_HIGHDMA;
--	dev->hard_header_len += sizeof(struct thunderbolt_ip_frame_header);
-+	dev->needed_headroom = sizeof(struct thunderbolt_ip_frame_header);
- 
- 	netif_napi_add(dev, &net->napi, tbnet_poll);
-
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
