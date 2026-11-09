@@ -1,62 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794196616;
-	b=K8aDRwQSy05mdgVy83hx/a/7i/wai+sAOFfMWwJnawWn+AzClQxgmI+7/WjLa8GgBDmk
-	 A3zAN73wNqGv3lGENuXHh68uM62dobPokdQ69wNxtqmdheW75Og8RfYq9czfxwxZ7YoDO
-	 TIfgH6R+lJwrgvYaJGqiHLH5KsQsyq5wn4ljt+sd0dvAR02SMrfJVG83/hjURm7Q7JYNl
-	 EUKi2yg3Q8ImE7bA1Fp8kq12EN6n8IQdHgDPpFbi0FEcQyWds8MNLOvqmRGEE+RQLihcM
-	 b3h+K+c3oxnyII++JaClbiz/Z9JTRYXn03KxpZDTEJqu75ARD4jIjyjfzLcSPVOSwVA==
+	t=1794198301;
+	b=3RMWAH0K+oq9E9ObIRLBx4BudxyfBDXjwUgDP1XMoKz08lQAatWDKnj3pIbba6rpoFEe
+	 oH/fncC/tiZmbkMsa0akLZOhSQ+zuMMAAoKAaRDEepVLSIH/H0LUo32nDt1MEen/lUI5K
+	 r65jwbnOY5+bRPenLwsqwDWSq1pbZGtTa98aG7x0BofgH0M6g5lqLVky9kChiITjSPUDv
+	 2vzK1u11qssTiffbNLBBiugolPfrayIYyyKFEZvFPXQ+7w7Fccbwi3Qz+CNJKCyZvsKXc
+	 vMuyhVHPKSohu0AijjKXsH65G8LY7RWuGB64gE3TK9BVEe9LdRr4W42bBO2G/D8I0OA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794196616;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=IpoxAai+pl1QF/TuFGqG7saRnVQYdTl5R9HquRiLLjA=;
-	b=xgSkbLQqvdkGVRm8Plc8EHIhlCZS7HwYStwP0UWs0XLjszC7acNZscayzldfGkiRsEC3
-	 yQHKzjjsnrr6YP05ctfDg9tAwMUukyiCTG4CZ+6OLD4BoIxEW8Tw1HvSoDy5SZJbCZkPW
-	 MhQNpca/8ZR7Xwo33VUxw0dTUQ1b1L65yl/VfU0XoGrLeitTGr0mucdIp0Y0JCav5udvK
-	 TBggWk4halYc7UfDvLRkgTjWsowYfkDBsAqwfqvzmjX5+Hdg6m1m2wrclMmNngG4qiltF
-	 dxmEKjLBOmiMzcHagrVf0jLVjaYhP+2YbqaaspMqmsern+A1YjBTrqhT/lksgDvRg/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794198301;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=9TTdQg+VChIJZ1WMAMbqL/k5sHftYiJQ8gWyompvtUU=;
+	b=HScqJIaaMWYVcnxmi0yBcv+zoy7W/a0zPi8dUrAq6N/PWjsgJtG+cxLvAUakC5HbSQPQ
+	 H1VtvLae7c6SmgXuNnp6njT5L/K0CDcDFf1X97f6+8kvBM2Orda2/PjkQtoWgKmIiuSu0
+	 Zt+IfRfBAav2vC3keelAQ4KdcYWT/ViCuuVeEkgogHi+lR7fmzCd+JCAdZvTTGrSKqHpQ
+	 jn4PUXKQtZfqQ7B+vann2UVMTzCQb045YYx6afHQJv8yWTK0E/EOsyiGPhZlRnkUUxTaU
+	 YD6yOw+roMCDNsDmUrcHv2hGIEp1QeCIUijhHTVrkHlk9OGS+wG551+En/K2tEQQZ7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=CFd8lFUg;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="D/4OYLWX";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658FE606A31C;
-	Mon,  9 Nov 2026 03:56:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 658FE606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF76606A321;
+	Mon,  9 Nov 2026 04:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=CFd8lFUg
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IpoxAai+pl1QF/TuFGqG7saRnVQYdTl5R9HquRiLLjA=; b=CFd8lFUg6lfA9BwHYqZzMDZ46+
-	/gGpSh/U3Yql7d+php4hyouKf1OXKFLzh+WFLBLHDu6Z4ZEf7Lb8XIAAWf8Vm5kq2aFG2QHnMColN
-	5Nx1/mr3CJWCsffKhpN3aKW03QfOCMxRe05IX+jqcKoA6xOkV9NNpofpoIUcDGDJzn6o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xQGUi-00FBUi-Vg; Mon, 09 Nov 2026 04:56:32 +0100
-Date: Mon, 9 Nov 2026 04:56:32 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Anthony Pighin <anthony.pighin@nokia.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mii: Accept link settings read back while
- the link is down
-Message-ID: <910e9272-a85e-4a71-9980-43a1b5160356@lunn.ch>
-References: <20261107210236.721901-1-anthony.pighin@nokia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D/4OYLWX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0C21F0089F;
+	Mon,  9 Nov 2026 04:25:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794198300;
+	bh=9TTdQg+VChIJZ1WMAMbqL/k5sHftYiJQ8gWyompvtUU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=D/4OYLWXtHjFh86N517QsWen/ECgj0gIrzlcfOpCp3EKZx7oFCzHB7Bt1tu3FmWii
+	 oOpBt5xASNDupS6oiY7xi4QUtkOB08Wz7NT9Zsc6xw7gZy80QfXfiKTy272edCPR+r
+	 8WVW71wbxNtgW+SBmZ9dXy8yOZHKcVrfQyM+DUOTADPNzdeAJ1T2cM00FXlYtubOqZ
+	 FDCony/6KwIEizYcOq4NBljFFAo4R1gRjd0NhqMdVghlpcLUAV+iABxUeI1j0nfXga
+	 dWkvnMRR/NylSX15TBSVuD7RGKiIb6xmv0VOG9k5iny+0ah6wls0Ewf0GTD6nZXh/l
+	 FyMyRhMLDXYxA==
+Subject: Re: [PATCH] can: peak_usb: pcan_usb: cancel restart timer on stop to
+ avoid use-after-free
+From: netdev-bot+sashiko@kernel.org
+To: hj351016@gmail.com
+Cc: mkl@pengutronix.de, linux-can@vger.kernel.org, mailhol.vincent@wanadoo.fr,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kuba@kernel.org
+Date: Mon, 09 Nov 2026 04:24:59 +0000
+Message-ID: <179419829985.488853.2152109703584398675@kernel.org>
+In-Reply-To: <20261107153319.3765325-1-hj351016@gmail.com>
+References: <20261107153319.3765325-1-hj351016@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,17 +63,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261107210236.721901-1-anthony.pighin@nokia.com>
 
-On Sat, Nov 07, 2026 at 04:02:36PM -0500, Anthony Pighin wrote:
-> Since commit f6f2e946aa4d ("net: mii: Fix the Speed display when the
-> network cable is not connected"), mii_ethtool_get_link_ksettings()
-> reports SPEED_UNKNOWN whenever the link is down.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-mii.c is old deprecated code. So i would prefer not to change it.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-I would say your first stop is to port the driver to phylink.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  Andrew
+- [High] The fix leaves the use-after-free reachable, because
+  restart_timer can be armed again after pcan_usb_stop() has deleted it.
+
+--
+
+can: peak_usb: pcan_usb: cancel restart timer on stop to avoid use-after-free
+
+This adds a dev_stop callback to the PCAN-USB adapter. The callback calls
+timer_delete_sync() on pdev->restart_timer, so the timer is drained in
+peak_usb_ndo_stop(). The aim is to stop pcan_usb_restart() from running
+on a freed struct pcan_usb after free_candev().
+
+> diff --git a/drivers/net/can/usb/peak_usb/pcan_usb.c b/drivers/net/can/usb/peak_usb/pcan_usb.c
+> index 8fd058c328564..4c131958b5aa6 100644
+> --- a/drivers/net/can/usb/peak_usb/pcan_usb.c
+> +++ b/drivers/net/can/usb/peak_usb/pcan_usb.c
+> @@ -882,6 +882,14 @@ static int pcan_usb_start(struct peak_usb_device *dev)
+>  	return pcan_usb_set_ext_vcc(dev, 0);
+>  }
+>  
+> +static int pcan_usb_stop(struct peak_usb_device *dev)
+> +{
+> +	struct pcan_usb *pdev = container_of(dev, struct pcan_usb, dev);
+> +
+> +	timer_delete_sync(&pdev->restart_timer);
+
+[Severity: High]
+Can restart_timer be armed again after this delete?
+
+The timer is armed by the restart URB completion, not by the timer
+callback. The completion calls mod_timer() every time and never checks
+urb->status:
+
+drivers/net/can/usb/peak_usb/pcan_usb.c:pcan_usb_restart_pending() {
+	...
+	mod_timer(&pdev->restart_timer,
+			jiffies + msecs_to_jiffies(PCAN_USB_STARTUP_TIMEOUT));
+	...
+}
+
+pcan_usb_restart_async() submits that URB without anchoring it to
+dev->rx_submitted or dev->tx_submitted:
+
+	usb_fill_bulk_urb(urb, dev->udev,
+			usb_sndbulkpipe(dev->udev, PCAN_USB_EP_CMDOUT),
+			buf, PCAN_USB_CMD_LEN,
+			pcan_usb_restart_pending, pdev);
+
+	return usb_submit_urb(urb, GFP_ATOMIC);
+
+So peak_usb_unlink_all_urbs() never kills it.
+
+Suppose a bus-off auto-restart, or a manual restart through netlink, has
+this URB in flight when the interface is brought down. The path is
+peak_usb_set_mode(CAN_MODE_START) -> peak_usb_restart() ->
+pcan_usb_restart_async(). peak_usb_ndo_stop() then runs as follows:
+
+  close_candev()
+    cancels only the restart work
+  peak_usb_unlink_all_urbs()
+    kills only rx_submitted and tx_submitted
+  dev->adapter->dev_stop()
+    timer is not pending yet, so nothing is deleted
+  dev->adapter->dev_set_bus(dev, 0)
+    synchronous usb_bulk_msg() on PCAN_USB_EP_CMDOUT
+
+Bulk URBs on one endpoint complete in order. Would the queued restart URB
+then complete and call mod_timer() after pcan_usb_stop() has returned?
+
+Next, suppose the device is unplugged, unbound, or the module is removed
+within PCAN_USB_STARTUP_TIMEOUT. peak_usb_disconnect() calls
+unregister_candev() on an interface that is already down, so ndo_stop
+and dev_stop do not run again. pcan_usb sets no .dev_free, so nothing
+stops the timer before free_candev():
+
+drivers/net/can/usb/peak_usb/pcan_usb_core.c:peak_usb_disconnect() {
+	...
+		unregister_candev(netdev);
+
+		kfree(dev->cmd_buf);
+		dev->next_siblings = NULL;
+		if (dev->adapter->dev_free)
+			dev->adapter->dev_free(dev);
+
+		free_candev(netdev);
+	...
+}
+
+pcan_usb_restart() -> peak_usb_restart_complete() would then write
+dev->can.state and call netif_wake_queue() on freed memory.
+
+No disconnect is needed for a related problem. Wouldn't the late timer
+still move a stopped interface from CAN_STATE_STOPPED to
+CAN_STATE_ERROR_ACTIVE and wake its queue after ndo_stop?
+
+The commit message says:
+
+  pcan_usb_restart() does not re-arm the timer, so a single
+  timer_delete_sync() drains it.
+
+That holds for the callback. Does it cover the case here, though, where
+the timer is armed by the asynchronous URB completion?
+
+Would a pcan_usb .dev_free callback that calls timer_shutdown_sync()
+work instead? peak_usb_disconnect() calls it after unregister_candev()
+and before free_candev(). By then, usb_unbind_interface() has already
+flushed the endpoint URBs with usb_disable_interface(), because the
+driver has no soft_unbind.
+
+Another option is to anchor the restart URB and kill it before dev_stop
+deletes the timer.
+
+The probe error paths in peak_usb_create_dev() also reach free_candev()
+with no restart_timer teardown for pcan_usb. These are the adap_dev_free
+and lbl_unregister_candev labels. Would the dev_free approach cover those
+paths too?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107153319.3765325-1-hj351016%40gmail.com
