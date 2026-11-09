@@ -1,58 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794224469;
-	b=R2lK4ARGOcPGRwo4tP9xWLQU42aSHV5huTDAPiGzV6DOaoYMw57JkwA9HmhpoSaQbqyV
-	 I2axe9bJNdp3D0EBI+LiiXSYcwp1D1ECNpR+bRZK+me+D/04DQkeQ8E/3XV5yGcvEtVw8
-	 YZqUzu9W4ozhS8r1NscLSfGrTOuFV7py0ydu+oG7wepAPH4JElPwdY4u2MGtt4I3B+RD0
-	 lu6qm4cRa55IB85TPIU2LE0HL8J+Yei/POpXCGarJtLVdlSxEMGsCWbnVdPFBT1zB73an
-	 9ui3W/3b9lE89F/8QbcBRtt6Xsl278IaSd8h5dW6yEvBSSBsp4i4cxOmvwMl3TSIW9A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794224469;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=BgN8f4X1rFQQNpw4mms3ar1LtMgOkGdHPy4uMQFUrdQ=;
-	b=bfwLh+oD+QZ6Rvv1xuz2/nfOIlUUUEiVNpATOW0UG3ymBZuypvBmQ4qQmqN+XHe575L3
-	 2aiAmzN4yV+h7kbhpR1Misi4pD/Lpdut0bUKpa4uL8DNSIjMpXXswTbz87BLOwKLr/VKR
-	 fvuJnqPUkOuzb6yeaORdIxnQARGJBB6O4Oy8s9zu0siYfFEIjyK1jgO3AypMoqHtXF3ka
-	 g7yeBPYVJ/yuwFxZPtvScrWEI+YWecY2nXv+UnP1ZvvBDnBv0bQVrGq39N/lFpwluftBs
-	 +w0yYJoLKDGwt+cIPbIhtUow5L9ti/mmaxH4Ebeq8REkPQDREBnPOZCqoanbGqWTDEw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xr1HlMXk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794224663;
+	b=WS4GSlie2ZANNb4BAAsaZxLO0MPkA6NaOGzUxrPPuJnD+UqrJAPtB+UJgpBmdiy03K/V
+	 d0kbKk7E0O/h6qhHh3MFi58wWUqlZWDxriqwIJY6O7BHa+XfeZ0WGTBdhB3l6BWo8xU4E
+	 boGibyHhudvK3HRS3aKIXJkr385Y8goXitZpiJKSle/t2gd5oqmwyuLuO4kizwuFcbhcc
+	 +nj+dqy4v2MwnLJJc1opKlMG1+fQGv3rlEfdrcrBPCbdhEhIE9aXe1yy1986DaDm2lkhN
+	 XcATKo4t7goeeroXBlfWAI5zEMZ4zvYqkj/RFB8SCpRiMFVscd99Vpuht3aZ51yEPmA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794224663;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Tudkjez28RMXxzBWfLg4pArawZDNqT2bA2wVkoHQwkA=;
+	b=f+3HNqWR3u2rcj0rgT4xwzOdw2IjjDg4+hEWuWB93+hy5Ny5GoIozg891Uqgx0rHZd/Q
+	 KJ/8vsmT3sw7Qu7aoMwAwIx5kM+zJMzIdLsedu6sceCmhujCjX9U3qUgfPTTVa8iacVHX
+	 STbfYRSpgPtrxZv1eDnxmLNiz4KHBR9q2+QWquPi1pUsQ8+JX+IjrrdcAn+hnXa00bc0d
+	 gohQwFqelTyo5WMFC0kCGEcToQGkGTHKBynocd6ozHnP90il0b8y50Dh+0zt0TInlUL0/
+	 2LwIP/S3xsdiWkIDzYBvSYiFBKvomLN3wIPPbJ8o946uvqWkVzhLIyGdK7pMxxjNfJA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=ZQe0wgkh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D871606A330;
-	Mon,  9 Nov 2026 11:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A77606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 11:44:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2A77606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xr1HlMXk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012E91F0089F;
-	Mon,  9 Nov 2026 11:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794224469;
-	bh=BgN8f4X1rFQQNpw4mms3ar1LtMgOkGdHPy4uMQFUrdQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Xr1HlMXkvGQnr8zkwhZZCTYvLVet7H499ZZhB+GIXrYCWot7NXR3oxvy4P6oOyn6v
-	 D+Q/Um349p1UoldFfEanXP9gpM2XUbnj1oq/tCnHuKflgx03YT4AVENDzURG7eiBPr
-	 AGPMIzeG+/9GcznJ4bG62GzxOax7y2YUUOMb7IadidrwpSyNqKHztOLIaJJAdegFxx
-	 3b5HuwbkOr1XPnOEDpJ7wl1a3TPG847aa6hmoOSOy85zARM5LZHOj2xx5Tzp0N8ffQ
-	 CjD41y5AYVWrU47RN5oZjSA33CV7f4u4x10I8J5CzOOQL8moRpWlKVxjvTDC86Vkdv
-	 zEZu0Bc6c46Bg==
-Subject: Re: [PATCH net-next] net: dsa: motorcomm: Add LAG FDB callbacks
-From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 11:41:08 +0000
-Message-ID: <179422446851.994134.17711680552032129131@kernel.org>
-In-Reply-To: <20261108105012.1326929-1-mmyangfl@gmail.com>
-References: <20261108105012.1326929-1-mmyangfl@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=ZQe0wgkh
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-67c0bd676eeso627351d50.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 03:44:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794224661; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CvXhlPQxAPePleSAudd4hDGtGlhNBvc4tlxXwEUrUbkwdvs/JHKHq/QfyUNuGujrta
+         21+7ZIdaUJk56lIh+4h877wpAT7aMBJ3Z6PmbKUYEwS3HQnMw/OopasUo0DiacVQmEZj
+         OaNctct+SEx/BrIqSwcVw6yCtqviylBcZVwo1R6C9GS7sN8/hd0qCkIRCLOFXNl5Zg7x
+         Thb819EiP0PsnfXSuRrjtLofTzAJwZAhWaRPhCi+C75AqPbu1lBzOkgpAHBblUb/0aPZ
+         LQGaKPG+fckAUn9CQ9YiyWLgC8Ul3fGc7+etf1JTczhDg4Qi/f+yLGAGrE2+kQTZMd68
+         JnNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Tudkjez28RMXxzBWfLg4pArawZDNqT2bA2wVkoHQwkA=;
+        fh=8RmJ1TkJL7iN+NvlkjYMunY5KmL2jMvo7FSORUvpFYc=;
+        b=clTdmJ7aSQLAJUQ6biIq+JOKzxsgeHg63LQE7MvXZozrXfuV3vkvQJjyv06ompgsIW
+         xEbAMpXgmW9FRGk4Q+On743EQsSwioYIAjhlCX0BYz+9BeglrW0FFJ1/aSZR0QDzmel/
+         fSSBdX02Rlp5SJ5GQUR500MxkqrX/J92CKrHKVvhjjTQ6+Jr93E93KGsXzCeU3aMJ/07
+         Hnywoq54xzEpqJEkYfAxFhLRwTb7v+qHEUp5BgFKU+MoXTKg3th3xk4GS+4fKRv6HKQ7
+         3uq+dWXIX+ZYx1RyAt27oRw22o4CUgA/EhvZJElXu2Tcrl6w144fNQCeaNnPhkh9pf7P
+         bBWw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1794224661; x=1794829461; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Tudkjez28RMXxzBWfLg4pArawZDNqT2bA2wVkoHQwkA=;
+        b=ZQe0wgkh8TKbL38Yd857vJAYjnRpvdOqiSILvwF9KMhtnugEymoI3Pq2wBpyH3gY6w
+         4ymdkZXFMAxEql/8BappkuDkki9YnXxESGCXp0UrSmvwDvEAZ3dyalYLR1JYy3uGEFOa
+         B+x811mT/wl5RrnDencOUkObB42bB9GoyCAvA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794224661; x=1794829461;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Tudkjez28RMXxzBWfLg4pArawZDNqT2bA2wVkoHQwkA=;
+        b=FwzuG3gZEkrxJHMPGouCsvUbjXuGI3wonmYqK92622FvbApi/Q8EX9wXHPjrI/xPcC
+         6WJ7rQaM/CVcGWNCQyodVIasfJUEICE1WRKS/uGQRVvCmcGC/WySq8O3cJ3r7mqrG51c
+         /XVDSEWy4pLvVRubKO+Cigt36FFitMd6gggXxdIH5qiKm4Pm/bxDe9vck8y40Vb1xPLq
+         aUXyCA7dcc2GOIiHjcsP0t1KjBEbXmFP7uLzwgUL8GSeSgLEE0d1ZzA7fwmWAtd1LE5j
+         vAh/4YYdehvaBI9gcm9rNHtWugrnovB9W8eN/ZjvNjuSGTXm9ZpkGpUQa+dLOPnVwYe9
+         KFWQ==
+X-Gm-Message-State: APuU4Z+eEckykgJEgYHNXHfuURP6VVyb7V1rCKKlUmF5U7vUbBK6ufe7
+	srNqgLgOpNqLdDaijlo4LI2DkwusropWS/Q6j/mb25aDHMXzM1C07UaHJ9qivJ43dJmpr1kZRln
+	9kvyGIoC4p+fVDmZKaYYOFf2aNhphHCOMqZLnkc8i
+X-Gm-Gg: AYBFou1MXHqtmc3Vc1qTZxowmC5lN9MVWP/Sq0txUyCz2GJTUhXWzdgmgLbzE1exqTr
+	h0eWp72WGirPQ6vjrLaTY6BeIaqP9TsFOMUknYceWuF8qR/q8v7356UziTAa7YGPIQ+P2esXtzU
+	3DMoEXBcNdYtZYiS43G5f+rcts4hcbqUh/tMpAlGdmDWCEvCSUKzVHQx6vu22GtrxTIPXd8xb6C
+	F6M+JlmzV7zvAubN90uTR/UtpOuwgbCpXwUxRXAU7SYr+wu+zNOL7WJZtOj0ax1ofCGkF1Femxs
+	2AfyQ+TjZwu/IyLYH5Up/tUWNYplCt/PPe3qM1WajFtKa8+XSirEyr73Og3QLdyDJ+4/oHLoU36
+	6ZsbAoqzQ05bWG4O8TZjtyv0HP5wqyLqLlCPzqk45OB7VQuap5QMcHYkPg5u85eISzjQVNft8jQ
+	11XsoWZBCDhUv4rFI=
+X-Received: by 2002:a05:690e:191c:b0:67c:295d:5836 with SMTP id
+ 956f58d0204a3-67c3d96bfd4mr2294772d50.17.1794224660803; Mon, 09 Nov 2026
+ 03:44:20 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,209 +101,182 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com> <179406458348.994134.6942745655171316289@kernel.org>
+In-Reply-To: <179406458348.994134.6942745655171316289@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 9 Nov 2026 06:44:09 -0500
+X-Gm-Features: AclHuK8mvVB_TGgtxN6qXQS6xYcYAMbCidFBmEaOpBy02Kh9E4kbueKy3al45cY
+Message-ID: <CAM0EoMnprPstSvZEj+FKtK_kM6JB-jkrhYRwSd_mmN3WAMFQFQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/2] net/sched: sch_teql: keep skb->dev consistent
+ on the arp-queue path
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, Nov 7, 2026 at 10:16=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The new gate in neigh_update_process_arp_queue()
+>   (net/core/neighbour.c), `if (!n1->dev->header_ops) skb->dev =3D=E2=80=
+=A6
+> - [Low] The comment added in neigh_update_process_arp_queue()
+>   (net/core/neighbour.c), '/* headerless outputs (teql, shaper) transmit=
+=E2=80=A6
+>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+I think i missed responding to this one. Sashiko-nipa responses are
+very erratic. For some threads (not mine) a review shows up 2-3 days
+later. For mine the average time seems to be 7 days and sometimes a vN
+review appears a few days later after a vN+1.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Summary: I will not be spinning anything for this series since there
+are no new code change requirements. I have addressed the
+neigh_update_process_arp_queue() issue as a separate (producer) issue
+in the past; it's a separate net-next focusing on producers. The
+comment (Low) i would have rectified if there was something meaningful
+to make me respin.
 
-- [High] The new yt921x_dsa_lag_fdb_add() and yt921x_dsa_lag_fdb_del() in
-  drivers/net/dsa/motorcomm/chip.c write a one-time snapshot of the…
-- [Medium] net: dsa: motorcomm: race on dp->lag in
-  yt921x_dsa_lag_fdb_add() and del()
+cheers,
+jamal
 
---
-
-net: dsa: motorcomm: Add LAG FDB callbacks
-
-This commit adds lag_fdb_add and lag_fdb_del callbacks to the yt921x
-driver. Each one builds a bitmap of the current LAG member ports with
-dsa_lag_foreach_port() and passes it to yt921x_fdb_join() or
-yt921x_fdb_leave().
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 33e5fc127244d..f73eed06437b9 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -883,6 +883,52 @@ yt921x_dsa_port_fdb_add(struct dsa_switch *ds, int port,
->  	return res;
->  }
->  
-> +static int
-> +yt921x_dsa_lag_fdb_del(struct dsa_switch *ds, struct dsa_lag lag,
-> +		       const unsigned char *addr, u16 vid, struct dsa_db db)
-> +{
-
-[ ... ]
-
-> +	ports_mask = 0;
-> +	dsa_lag_foreach_port(dp, ds->dst, &lag)
-> +		ports_mask |= BIT(dp->index);
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +	res = yt921x_fdb_leave(priv, addr, vid, ports_mask);
-> +	mutex_unlock(&priv->reg_lock);
-> +
-> +	return res;
-> +}
-> +
-> +static int
-> +yt921x_dsa_lag_fdb_add(struct dsa_switch *ds, struct dsa_lag lag,
-> +		       const unsigned char *addr, u16 vid, struct dsa_db db)
-> +{
-
-[Severity: Medium]
-Is it safe to walk the LAG membership here without rtnl_lock?
-
-lag_fdb_add and lag_fdb_del are reached from
-dsa_user_switchdev_event_work(). That runs on dsa_owq and does not hold
-rtnl_lock. On that path, dsa_switch_do_lag_fdb_add() and
-dsa_switch_do_lag_fdb_del() only take lag->fdb_lock before calling into
-the driver. In both new callbacks the loop also runs before
-priv->reg_lock is taken, so nothing in the driver serializes it either.
-
-dsa_lag_foreach_port() does not only visit the members of this LAG. It
-walks every port in ds->dst->ports and calls dsa_port_offloads_lag()
-on each one, which goes through dsa_port_lag_dev_get():
-
-	return dp->lag ? dp->lag->dev : NULL;
-
-At the same time, under rtnl_lock, dsa_port_lag_join() sets dp->lag
-via dsa_port_lag_create() before DSA_NOTIFIER_LAG_JOIN is sent.
-yt921x_dsa_port_lag_join() can then reject the port, for example when
-there are more members than YT921X_LAG_PORT_NUM or the hash mode does
-not match. In that case the err_lag_join rollback calls
-dsa_port_lag_destroy(). That clears dp->lag and kfree()s the dsa_lag
-once its refcount reaches zero. dsa_port_lag_leave() also calls
-dsa_port_lag_destroy() before DSA_NOTIFIER_LAG_LEAVE.
-
-So an FDB work item for one LAG can see another port's dp->lag as
-non-NULL and then read ->dev after that dsa_lag has been freed, for
-example when that port tried to create a new LAG and was refused. Even
-when nothing is freed, the loop can include a port that the driver has
-just refused, or a port that is halfway through leaving. That port then
-ends up in YT921X_FDB_IO2_EGR_PORTS of a static entry.
-
-Only CAP_NET_ADMIN can trigger the join and leave, so this is not a
-security boundary. It can still crash the machine or misprogram the
-FDB while a bridged bond is being reconfigured.
-
-Could the driver keep its own record of LAG membership instead? It
-would be updated in yt921x_dsa_port_lag_join() and
-yt921x_dsa_port_lag_leave() under priv->reg_lock, and ports_mask would
-be computed from it after reg_lock is taken here. That would also give
-a natural place to reprogram existing LAG FDB entries when membership
-changes. Or is there some DSA core serialization against dp->lag
-changes on this path that I am missing?
-
-[ ... ]
-
-> +	ports_mask = 0;
-> +	dsa_lag_foreach_port(dp, ds->dst, &lag)
-> +		ports_mask |= BIT(dp->index);
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +	res = yt921x_fdb_join(priv, addr, vid, ports_mask);
-> +	mutex_unlock(&priv->reg_lock);
-
-[Severity: High]
-What happens to this FDB entry if the LAG's membership changes after it
-is installed?
-
-The FDB destination is a plain physical port bitmap
-(YT921X_FDB_IO2_EGR_PORTS_M is GENMASK(28, 18)). So ports_mask records
-which ports were members when the call was made, and nothing updates it
-afterwards.
-
-DSA core refcounts LAG FDB entries per LAG. It only calls the driver on
-the first add and on the last delete:
-
-net/dsa/switch.c:dsa_switch_do_lag_fdb_add() {
-    ...
-	a = dsa_mac_addr_find(&lag->fdbs, addr, vid, db);
-	if (a) {
-		refcount_inc(&a->refcount);
-		...
-		goto out;
-	}
-    ...
-}
-
-net/dsa/switch.c:dsa_switch_do_lag_fdb_del() {
-    ...
-	if (!refcount_dec_and_test(&a->refcount)) {
-		...
-		goto out;
-	}
-
-	err = ds->ops->lag_fdb_del(ds, *lag, addr, vid, db);
-    ...
-}
-
-yt921x_dsa_port_lag_join() and yt921x_dsa_port_lag_leave() only
-reprogram the LAG group through yt921x_lag_set(). They don't touch FDB
-entries.
-
-Take bond0 = {swp1}, bridged, with "bridge fdb add X dev bond0 master
-static". The hardware entry gets EGR_PORTS = {swp1}.
-
-When swp2 joins bond0, the replayed add only bumps the refcount. The
-entry stays {swp1}.
-
-When swp1 leaves bond0, dsa_port_pre_lag_leave()->
-dsa_port_pre_bridge_leave() replays the delete, and that only drops the
-refcount. The entry still points at swp1. swp1 is now standalone and
-yt921x_bridge_leave() has isolated it. Unicast to X is blackholed or
-misdirected, and swp2 never gets this traffic.
-
-On the final delete, yt921x_dsa_lag_fdb_del() rebuilds the mask from the
-current members ({swp2}). Then yt921x_fdb_leave() does this:
-
-	ctrl2 = val2 & ~YT921X_FDB_IO2_EGR_PORTS(ports_mask);
-	if (ctrl2 == val2)
-		return 0;
-	if (!(ctrl2 & YT921X_FDB_IO2_EGR_PORTS_M)) {
-		ctrl = YT921X_FDB_OP_OP_DEL | YT921X_FDB_OP_START;
-		...
-	}
-	...
-	return yt921x_fdb_add_index_in12(priv, index, ctrl1, ctrl2);
-
-It either returns 0 without deleting anything, or rewrites the entry as
-STATIC with the leftover bits. Doesn't that leave a STATIC hardware FDB
-entry that DSA no longer tracks?
-
-port_fast_age wouldn't remove it either, because
-yt921x_fdb_flush_port(priv, port, false) leaves static entries alone. So
-the entry would use an FDB slot and misforward X/vid until the chip is
-reset.
-
-Before this patch, lag_fdb_add and lag_fdb_del were NULL, so
-dsa_user_fdb_event() returned -EOPNOTSUPP and this state could not
-happen.
-
-ocelot, the other lag_fdb_add implementer, keeps track of LAG FDBs and
-reprograms them when membership changes, in ocelot_migrate_lag_fdbs().
-Does this driver need something similar, called from
-yt921x_dsa_port_lag_join() and yt921x_dsa_port_lag_leave()?
-
-There is also a hardware question that can't be answered from the code.
-When a unicast FDB lookup hits an entry with several egress ports, does
-the ASIC pick one using the LAG hash, or does it send the frame to every
-listed port? If it does the latter, every frame to X would be duplicated
-across the LAG members even with no membership changes.
-
-> +
-> +	return res;
-> +}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108105012.1326929-1-mmyangfl%40gmail.com
+> --
+>
+> net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+>
+> The commit sets skb->dev to the teql slave before teql_resolve(). This
+> means an skb parked on the slave's arp_queue no longer points at a master
+> that teql_exit() can free on module unload. It also changes
+> neigh_update_process_arp_queue() to set skb->dev to the top-level
+> neighbour's device when that device has no header_ops, so the skb goes
+> back through teql_master_xmit().
+>
+> Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@moja=
+tatu.com/
+> Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel=
+.org/
+> Link: https://lore.kernel.org/netdev/20261031165925.780930-1-horms@kernel=
+.org/
+> Link: https://lore.kernel.org/netdev/179363700308.3131.117781795382902514=
+34@kernel.org/
+>
+> > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> > index d6e9c7c59a892..541cf699abae4 100644
+> > --- a/net/core/neighbour.c
+> > +++ b/net/core/neighbour.c
+> > @@ -1339,6 +1339,9 @@ static void neigh_update_process_arp_queue(struct=
+ neighbour *neigh)
+> >                       if (n2)
+> >                               n1 =3D n2;
+> >               }
+> > +             /* headerless outputs (teql, shaper) transmit on skb->dev=
+ */
+>
+> [Severity: Low]
+> This isn't a bug, but the shaper driver is no longer in the tree. There
+> is no entry for it in drivers/net/Makefile, and the older comment block
+> just above also names it.
+>
+> Would it be clearer to name in-tree devices this gate is meant for, such
+> as teql and eql?
+>
+> > +             if (!n1->dev->header_ops)
+> > +                     skb->dev =3D n1->dev;
+> > +             READ_ONCE(n1->output)(n1, skb);
+>
+> [Severity: Medium]
+> This gate is in generic neighbour code, and it doesn't check whether
+> sch_teql parked the skb. n1 comes from the skb's retained dst via
+> dst_neigh_lookup_skb().
+>
+> Can it fire for any skb parked on an arp_queue whose original route uses
+> a device with NULL header_ops? Examples include ppp, geneve in L3 mode,
+> vxlan when header_ops is NULL, rmnet, qmi_wwan, mhi_net, ipa, iosm,
+> mhi_wwan_mbim, eql and teql.
+>
+> Two producers park skbs on another device's neighbour while keeping the
+> original dst.
+>
+> The first is nft_fwd_neigh_eval(), which nft_fwd_validate() allows on
+> NF_NETDEV_EGRESS:
+>
+>         ip_decrease_ttl(iph);
+>         ...
+>         skb->dev =3D dev;
+>         skb_clear_tstamp(skb);
+>
+>         nf_dev_xmit_recursion_inc();
+>         neigh_xmit(neigh_table, dev, addr, skb);
+>
+> The second is bpf_redirect_neigh() with an explicit nexthop.
+> __bpf_redirect_neigh_v4() replaces the dst only when nh =3D=3D NULL:
+>
+>         if (!nh) {
+>         ...
+>                 skb_dst_drop(skb);
+>                 skb_dst_set(skb, &rt->dst);
+>         }
+>
+> bpf_out_neigh_v4() then sets skb->dev to the target and calls
+> neigh_output() with the old dst still attached.
+>
+> When the target device X's neighbour resolves, the drain takes this path
+> (Y is the original route device):
+>
+> neigh_update_process_arp_queue()
+>   dst_neigh_lookup_skb()  -> Y's neighbour (Y has no header_ops)
+>   skb->dev =3D Y
+>   neigh_direct_output()
+>     dev_queue_xmit() on Y
+>
+> Does this run Y's egress hooks a second time? In __dev_queue_xmit(),
+> nf_hook_egress() runs before nf_skip_egress(skb, true) is set, so the
+> nft egress chain runs again. sch_handle_egress() and tc BPF also run
+> again.
+>
+> For nft fwd, this would decrement TTL/hop_limit twice. A packet that
+> reaches Y's egress with TTL 2 would then be dropped.
+>
+> Counters, quotas and limits would also be applied twice. A tc BPF program
+> that encapsulates could encapsulate twice. If the second pass gives a
+> different verdict, the packet would leave through Y and not through the
+> device it was forwarded to.
+>
+> Before this patch these skbs went out X without a link header, which was
+> also wrong. Running Y's egress hooks a second time is new, though.
+>
+> The commit message acknowledges this:
+>
+>   "Those forwards supply their own device and nexthop and do not consult
+>   the retained dst, so dropping it at those two sites is where that is
+>   fixed; that is a separate change to the producers, not part of this
+>   series."
+>
+> The patch is tagged Cc: stable. Would stable trees get the new behaviour
+> without the producer-side fix?
+>
+> Should the dst drop in nft_fwd_neigh_eval() and in the bpf_redirect_neigh=
+()
+> explicit nexthop path go in the same series as this change?
+>
+> >               if (n2)
+> >                       neigh_release(n2);
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/QDISC-6HS9.v3.r0.20261103062649%40mojatatu.com
