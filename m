@@ -1,60 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794230581;
-	b=SXkMCBEJywHeG5Ijet1yC1zeecsxWDLFr8ikHyirbwqawIKe8+ygg5myXWfMtAoJjZAY
-	 kMSwXnf4WTEGxLFwb+g9tsH4uZZJik23hJuMXzfGOY9hSaHbGcq2wXvNRES8CofVm/fkU
-	 nry2KSMdqekaS/pyX2y09tMjBKBoNDXdzhmGghyL9bjXrBMkxbrx0UQsFzLmtXyr4/f0t
-	 ZVpS/HqJ/6Hdu/foKXJn8+4mEEkdhUyJ2bLOo4tQx97AYwUh2gcQ11RezSZGT7mDI9/iX
-	 Sa/GScc0+6GFtBpUAT1kdsg6afvPwJRZOwJR90jwd4mkhPgjkBx9ylp9wEx3oCRDX9A==
+	t=1794230691;
+	b=MRISfF0alKwTXeBaaf0bmOR/jqvdxdn32b5ZhlQuIBFRxUt/RHeT7H+TVTN+DUc7enAI
+	 0e55EAVvjkMdEO77adwr8GLdeoLjDMzkYnyUQKqc2x7uJxC4qKeCtSRWuMxnCUyJscNCs
+	 Dq5oYfPatCC1ij8Ul6aUYIpBwJJBGcslMrI9lP6jgP+Vt9pfSz/VooYPu/rhbMZcEe+Rm
+	 0s0+8zLBXEY6o2wGalsCp4ovqKm7Ha8i1pKCdkDp8cvyUlNNpkp1M0hVMm5bejme4fHV9
+	 oqTLEy5F28x35W5TTO6NC/NMzQCg3yhi8PcDpyuBX776X42hcnEoJxVRcl1r03FNtZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794230581;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=fhisNBn0BzaXUq5B1/963SsszL0EuOShr+ENAKfQrwc=;
-	b=v/AG7Gx0Ii3ykicCFr0CcpZDNn/I9vij3CSdpmVRqgwyw2pNnpEqpGT7VVzbHyeKr+UA
-	 wnd5PdJ1+WjYDuWVJYk9cekMoVEws6Zr6ToBLFFZUHGaaw1lvBIKsHS74g63YPT5FBaN/
-	 Wum7tuw+hOFt83hrSRUSASr3+QzQtp5/lB4UxYjAcT+VPJlR5x/hZ2L1CmZte5oHe7WPR
-	 qZr04fqTzX2xH5StcNz4LRoz+Q8p1425z4xwO2VnwDClkp/Q+xOzgcl2SLmlBx+P5wjXa
-	 YRlTJQBK+m+RJiwH39H0NaGKMPT5Kj84hFcDWWdjIbL+JJSfYXS4rR/fFB3h2FqTRiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794230691;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=GAhGvR2eLM43D67mkW4MLIlB8OtmJdVrtLFaXc1IelI=;
+	b=gow4BrvUE67gmSf9sgUscZHeLPCrt9EDLi+ZVH4TonDhzalbERAZtSMh8eFfCIg6Lv72
+	 qA+EoxRQffAu3czBBk9AMLlDZlRcLcxW3+ebUGysH9ZK2LV0CnnOs/CEWfu94AmMu1ibx
+	 KjAMHATnXIextAck7hN1BgTgptMUI6gd3gj3Hug/pb5AfdzB2yVjg3/4bkpf475JZtOsz
+	 Sv68h+sJtlTv5P6A4aDWrFhQc1LPbVHsd3lHoY/Zbx6XwCrrr/ZzN7Yjg6RSfka7fvJyv
+	 QPTlqwODPIHTfRlFoZSBteqqBmIMB8UGMEay85X4g/G9Yb/r+O5VOPCc1hpOCXZPnuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AxM5u3pn;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Sc3XWC0o;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6E7606A334;
-	Mon,  9 Nov 2026 13:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AC8606A31C;
+	Mon,  9 Nov 2026 13:24:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42AC8606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AxM5u3pn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995761F008A1;
-	Mon,  9 Nov 2026 13:23:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794230581;
-	bh=fhisNBn0BzaXUq5B1/963SsszL0EuOShr+ENAKfQrwc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AxM5u3pnulaZDTRxqBXOO7MtqN2VOJyKVjcnDvzdeEN1liBLquqhh3XSouvPi1Tdt
-	 JPw3dADKY07MVX49sjw5HlAczRMdV7ZHEj7Et8HfnOMDwiCxjRqmCOH9Lfzlx5SKIv
-	 JSYJFpE7l7jueWPEI+c8SeM5BDchwDETxCsB1MXOihMW+U+C49Sju4R6Nf30nAb4Vf
-	 8Phkd1rTku0kJN+F94Nu8iJy4/j7nEY6Aw8Z84nd5OdNnEaRnSCwZMFyAJEFsV4E+0
-	 INif3H54mcLlDW5v9WHRShC8SSOC8LD0e1IlpKaSC2vCLVey6u7EQrrx8oGoTVpsrp
-	 zayG9XdZVF5dw==
-Subject: Re: [PATCH net v2 2/2] selftests/net/openvswitch: check that a failed
- set keeps the features
-From: netdev-bot+sashiko@kernel.org
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
- i.maximets@ovn.org, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, jhs@mojatatu.com,
- paulb@nvidia.com, dev@openvswitch.org, linux-kselftest@vger.kernel.org
-Date: Mon, 09 Nov 2026 13:23:00 +0000
-Message-ID: <179423058020.994134.14656142555028492016@kernel.org>
-In-Reply-To: <20261108123424.2825403-3-houminxi@gmail.com>
-References: <20261108123424.2825403-3-houminxi@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Sc3XWC0o
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GAhGvR2eLM43D67mkW4MLIlB8OtmJdVrtLFaXc1IelI=; b=Sc3XWC0o9YL+V/AmfeKnHsFyJ0
+	vVfKA4JHN882lL+MOYBFLDIGLN+oDrl2vp2bTf5n99pUEMdSkRUXAKkkAtQql77wjLw9ebcP0waST
+	awreAzSJ4xneNLxoPThu5vc/wtRCtFJwtkRtiCUigrFwjhDILyDPWTwnDMcXZnnPgaXM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xQPMP-00FG0A-3G; Mon, 09 Nov 2026 14:24:33 +0100
+Date: Mon, 9 Nov 2026 14:24:33 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?utf-8?B?5p2O5bm/56GV?= <liguangshuo@mail.sdu.edu.cn>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Re: [PATCH net] net: phy: micrel: Fix potential shared PHC
+ use-after-free
+Message-ID: <198e6702-0663-4183-9aaf-0fa4082dbf79@lunn.ch>
+References: <20261107-0d0c29e10a-net-micrel-lan8814-1@mail.sdu.edu.cn>
+ <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
+ <AHAASAAGLPGJfVjn9skPJKoS.3.1794229559658.Hmail.202321181@mail.sdu.edu.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,164 +68,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AHAASAAGLPGJfVjn9skPJKoS.3.1794229559658.Hmail.202321181@mail.sdu.edu.cn>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+> >.probe() and .remove() should be opposites of each other. What happens
+> >if you do that?
+> >
+> >    Andrew
+> >
+> >---
+> >pw-bot: cr
+> >
+> 
+> On LAN8814, one PHY registers the shared PHC and owns its pin array.
+> If that PHY unregisters the clock in .remove(), the clock goes away
+> before the pins are freed. If another port is still bound, it loses
+> access to the PHC. I added the handoff in v1 to keep the clock
+> available in that case.
+> 
+> I'll rework this around the PHY that registered the clock. I'll check
+> how the remaining ports report the PHC after that PHY unbinds, and
+> what happens if it binds again while another port is still up.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+That is not what i asked for:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+.probe() and .remove() should be opposites of each other.
 
-- [Medium] In test_dp_features
-  (tools/testing/selftests/net/openvswitch/openvswitch.sh), the…
-- [Low] The patch adds CONFIG_NET_CLS_ACT=y and CONFIG_NET_TC_SKB_EXT=y
-  to tools/testing/selftests/net/openvswitch/config but leaves out…
-- [Low] selftests/net/openvswitch: unsorted CONFIG_NET_TC_SKB_EXT in
-  config
+Take the probe function and reverse the order of the lines.
 
---
+Then reverse what each function does.
 
-selftests/net/openvswitch: check that a failed set keeps the features
-
-This adds a set-dp command to ovs-dpctl.py and a new dp_features test to
-openvswitch.sh. The test checks that a rejected OVS_DP_CMD_SET leaves the
-datapath user features unchanged. It also adds CONFIG_NET_CLS_ACT and
-CONFIG_NET_TC_SKB_EXT to the selftest config fragment so the recirc round
-can run.
-
-> diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-> index 15685d2428139..d93eac0f08f7b 100644
-> --- a/tools/testing/selftests/net/openvswitch/config
-> +++ b/tools/testing/selftests/net/openvswitch/config
-> @@ -2,6 +2,8 @@ CONFIG_GENEVE=m
->  CONFIG_INET_DIAG=y
->  CONFIG_IP_SCTP=y
->  CONFIG_IPV6=y
-> +CONFIG_NET_CLS_ACT=y
-> +CONFIG_NET_TC_SKB_EXT=y
->  CONFIG_NETFILTER=y
->  CONFIG_NETFILTER_ADVANCED=y
->  CONFIG_NET_IPGRE=m
-
-[Severity: Low]
-This isn't in the right place in the sort order.
-
-The fragment is kept sorted with underscores ignored, which is the
-order the netdev selftest config checks expect. In that order
-CONFIG_NET_CLS_ACT fits where you put it, before CONFIG_NETFILTER.
-
-CONFIG_NET_TC_SKB_EXT does not. Compared without underscores,
-NETTCSKBEXT sorts after NETFILTER, NETFILTERADVANCED, NETIPGRE and
-NETIPGREDEMUX. It should go after CONFIG_NET_IPGRE_DEMUX=m and before
-the CONFIG_NF_* entries, which is also where
-selftests/net/forwarding/config has it.
-
-Putting it straight after CONFIG_NET_CLS_ACT=y breaks the ordering
-for the rest of the file. Could it be moved down in the next version?
-
-[Severity: Low]
-Should CONFIG_NET_SCHED=y be added to the fragment too?
-
-Both new symbols sit inside the if NET_SCHED block in net/sched/Kconfig.
-Nothing in the tree selects NET_SCHED, and OPENVSWITCH doesn't either:
-
-net/sched/Kconfig:
-    if NET_SCHED
-    ...
-    config NET_CLS_ACT
-    	bool "Actions"
-    ...
-    config NET_TC_SKB_EXT
-    	bool "TC recirculation support"
-    	depends on NET_CLS_ACT
-    ...
-    endif # NET_SCHED
-
-When the fragment is merged onto a base without NET_SCHED (for example
-tinyconfig or allnoconfig plus the fragment), merge_config drops both
-symbols. ovs_dp_change() then still returns -EOPNOTSUPP for
-OVS_DP_F_TC_RECIRC_SHARING, and test_dp_features skips the recirc round.
-That is the case the commit message says this change fixes.
-
-hid/config.common and tc-testing/config both list CONFIG_NET_SCHED=y next
-to these symbols.
-
-Also, the commit message says:
-
-    Select the key and the classful action support it depends on
-
-The Kconfig prompt for NET_CLS_ACT is "Actions" (tc actions), not
-classful actions. Could the wording be adjusted?
-
-> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> index 21444657a0404..e2aba1e40d559 100755
-> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-
-[ ... ]
-
-> @@ -1409,6 +1410,72 @@ test_netlink_checks () {
->  	return 0
->  }
->  
-> +test_dp_features() {
-
-[ ... ]
-
-> +	sbx_add "test_dp_features" || return $?
-> +	ovs_add_dp "test_dp_features" dpfeat || return 1
-> +
-
-[ ... ]
-
-> +	ovs_sbx "test_dp_features" dp_features_set dpfeat --features 4 \
-> +	    &> /dev/null
-> +	rc=$?
-> +	if [ $rc -eq 95 ]; then
-> +		info "tc skb extension is not compiled in, skipping recirc"
-> +		return $ksft_skip
-
-[Severity: Medium]
-Does this leave the dpfeat datapath behind on kernels without
-CONFIG_NET_TC_SKB_EXT?
-
-ovs_add_dp() creates the datapath but only queues its removal:
-
-ovs_add_dp () {
-	...
-	ovs_sbx "$sbxname" python3 $ovs_base/ovs-dpctl.py add-dp $*
-	on_exit "ovs_sbx $sbxname python3 $ovs_base/ovs-dpctl.py del-dp $1;"
-}
-
-The queued del-dp only runs from ovs_exit_sig. run_test() calls
-ovs_exit_sig for OK and FAIL, but not for a skip:
-
-	elif [ $ret -eq $ksft_skip ]; then
-		printf "TEST: %-60s  [SKIP]\n" "${tdesc}"
-
-The script-level EXIT trap doesn't catch this either. run_test runs its
-body in a subshell, and ovs_dir is only set inside that subshell.
-
-Every other test that skips after setting up the sandbox (dec_ttl,
-icmpv6, psample, drop_reason, ct/nat) calls ovs_exit_sig right before
-return $ksft_skip.
-
-Without that call, the dpfeat datapath and its netdev stay on the host
-after the run. Later runs then reuse it without any warning, because
-add-dp reports "already exists" and exits 0.
-
-Should ovs_exit_sig be called here before returning $ksft_skip?
-
-> +	elif [ $rc -ne 0 ]; then
-> +		info "the recirc set failed with $rc"
-> +		return 1
-> +	fi
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108123424.2825403-1-houminxi%40gmail.com
+	Andrew
