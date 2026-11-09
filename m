@@ -1,71 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794206474;
-	b=Uvp4OUq8KI8hnfordEwcNRGaxfCFhViyr3WvmRhTsXHdC8zXp9NQBIVKmnAAIt88PZFH
-	 DNwThQeTeAcw3A317s2kxGnwwYLD9AGcu3K/iPrrZLtMl5PDsiUtCoWgKffzcX8DNadfP
-	 4arvf+Dmq4TxLH2+/5C7EYq74urKxaXPOvgEP2DqQdNBGkhs8CP7ObWfKVz/Mn1WVS40+
-	 F3aZEx/hBp4BlSDKIuXsFyvBrQXUermu3GqW/H2HtNJy8oCsZx0KZiiw6P5x1foc6xN5w
-	 sUtt/DtqVN2//FARlM1/aGZZsjprsOEyA357S7Erl3YzuLkJjay487qINLYZgkdmYxg==
+	t=1794206496;
+	b=QGX/BTAWF2w5Scp/dZT9DeAiRb1xjAyJ/e+tlNYfhRqTeqz2OE4VzF8787MQvx2s5H5/
+	 wshSinYDpNskLaDOEoUeX/SkI6Hgp66z9LofRd4QCV+4sEdSwdvrdiB8P7CkYloYvJvRO
+	 pRNeIQmutJm+iO3OeoQzBZsAdYAOuksTxWjF/Erj74spIhS3Ux4LlgtDTWCLio7vilrw4
+	 o7muTIIWUjro00vFyaOeEMOTWEO4B950uxiwrkBd+YnVT0zqheWgWYGoyRgkgrfZmxRXy
+	 9pL0RbantakHbPNMFMDFfOtb13o3oQjISVb72ny7boOw7Wy8Tsc7h+4rhsiBMHY0Skw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794206474;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794206496;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Q4pq2LP10uD9GXhbYxSTeiDxrDfkSErB9nBqJX/up+c=;
-	b=rMXXdZhTv0W3Dqt82zTr9d6tCLgXjlWD0nTqgfBPM4+9fYjaUxrEa7gGFlKEasi/6mJ5
-	 pC4riwwxsFxs0IwfjkDaraQ6/n2iwtBDjxUT57pXLXK+oMXm6CVA3aIriS41ZanCPiDp/
-	 qjPO71bCGJGNfzcC+OkFEoJ7v2K3Ge0ZW9YcYNAzeb0U3UQ/uRA0kZKTNOE7zJmjwLU/a
-	 ZEz9l2MA2iK4eWzjwcrlQUe8qxhVZ2qPz9ud+UveDxhmXxItnG/QPHKSeTRGK/y1LjZ0l
-	 UNnY4tlKsj1E8f8pfd8Ec77jickoKVfp6bOQUA2l7lTTqH8W2l8ct1OsCBjX8VSlhxQ==
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=b4NG28+Ff2oTIi9k9M1agvKHdqFEhBLZ2FfrsTN1o5o=;
+	b=UVYb1uEMTp1jHwLr3XkLJFw8Wc40Fdky7OUq/p6U8V/7GtI3l52bCO1E9mJqzzyzKJid
+	 TdOC2evsQLmisAA3lMky4YraAc4wS0YRxmObKonzOH13SJThBFuxPw6Vbw8XzbNf6uMo6
+	 fs/Q7DyMFKKFAkubDXiVJx/Qfw/YEgBW4Sz4fBN0ADCO7qEAnks+523cOfKt3BQNqyf9O
+	 hLPtEIiKZw0/2FutP96I29edeZbN69JaA7sxXXEBucLZfqp+/HW0o+d1zQoRC0V7j5GxM
+	 E3Hjdd6vMg5wa/l6dAOzpKjy1qI1tpmGrRhmr3wjWnIyjXK6kmYRJxbjd/wjWgJGlJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="cCdxhP/c";
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77B606A323;
-	Mon,  9 Nov 2026 06:41:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D77B606A323
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=KSGCgNY7;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478D8606A31C;
+	Mon,  9 Nov 2026 06:41:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 478D8606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=cCdxhP/c
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=KSGCgNY7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=cCdxhP/cquZbpMhPeYMJ6TkSZjAgP6t/8QSyLr2sEB07EiYP+XIUn7zvH8K4mestMOd7xvQcYIpSl
-	 WcQhbAZRTrnTSTVS5n8yZKUJ/NC1pRz+5f4fF2PSPVjYRH5zSre+3L+kuZShyrVGCR2n2eLWO3hgIM
-	 Q5AlDnGNmqeGwl14=
+	b=KSGCgNY7PLDxRTZGYg34RiQ9JuzV8gwR1bXmFef1QpioYhuQoXOZ/GiX9vILwFqnBXukhE6doHEBK
+	 fsEMi93sKBulcHCBeyn5/0zmjiQZ+VA8e87QQLu2b9UxPF06n5yPBRDLyC0iFsD87c+bNldauGnHPg
+	 UkCk2YrEOIocWck4=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af16b07907-616b9;
-	Mon, 09 Nov 2026 14:41:11 +0800 (CST)
-X-RM-TRANSID:2ee46af16b07907-616b9
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af16b1d1e3-9d57a;
+	Mon, 09 Nov 2026 14:41:33 +0800 (CST)
+X-RM-TRANSID:2ee16af16b1d1e3-9d57a
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from [25.255.2.225] (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af16b05ab1-848cb;
-	Mon, 09 Nov 2026 14:41:11 +0800 (CST)
-X-RM-TRANSID:2ee56af16b05ab1-848cb
-From: xujiahao <xujiahao@cmss.chinamobile.com>
-To: Oliver Neukum <oliver@neukum.org>,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com,
-	xujiahao <xujiahao@cmss.chinamobile.com>
-Subject: [PATCH net] net: usb: cdc_ncm: don't underflow the NDP room check
-Date: Mon,  9 Nov 2026 14:09:13 +0800
-Message-ID: <20261109060913.526268-1-xujiahao@cmss.chinamobile.com>
+Received:from openEuler-24.03.03 (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af16b0cff7-849c3;
+	Mon, 09 Nov 2026 14:41:33 +0800 (CST)
+X-RM-TRANSID:2ee76af16b0cff7-849c3
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	willemb@google.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	willemdebruijn.kernel@gmail.com,
+	narcisav.kernel@gmail.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/2] net: add a KUnit test for the alloc_skb_with_frags() tail split
+Date: Mon,  9 Nov 2026 23:41:06 +0900
+Message-ID: <20261109144113.36600-1-yanhaishuang@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179419003377.994134.4899199888022081447@kernel.org>
+References: <20261108100617.23840-3-yanhaishuang@cmss.chinamobile.com> <179419003377.994134.4899199888022081447@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,66 +82,19 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cdc_ncm_ndp16() and cdc_ncm_ndp32() verify that the new NDP and the
-datagram fit into the NTB with an unsigned subtraction:
+On Mon, Nov 09, 2026 at 02:07:13AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Would it help to reference that commit by its subject (or sha once it
+> is merged)?
 
-	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-		return NULL;
+Yes, v2 names it by its subject.
 
-tx_max is only clamped to max_datagram_size + max_ndp_size + the NTH
-header size, so tx_curr_size is just big enough for one datagram and
-one NDP.  A second datagram in the same NTB is therefore exactly the
-case this check has to reject, and that is also the case where
-skb->len + reserve exceeds tx_curr_size: the subtraction wraps around to
-a huge value, the check passes, and the skb_put_zero() of max_ndp_size
-bytes that follows overruns the buffer:
+> Can this assertion fail on a system with fragmented memory, even with
+> the fix applied?
+[...]
+> Would it be more reliable to call kunit_skip() when the order-3
+> allocations cannot be satisfied?
 
-  skbuff: skb_over_panic: text:ffff80000db33558 len:428 put:172
-  head:ffff0000c2c66100 tail:0x1ac end:0x140
-  kernel BUG at net/core/skbuff.c:200
-  skb_put_zero include/linux/skbuff.h:2595 [inline]
-  cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1132 [inline]
-  cdc_ncm_fill_tx_frame+0xdf0/0x30e0 drivers/net/usb/cdc_ncm.c:1309
-
-Here end is 0x140 = 320 = 140 + 172 + 8, i.e. the one-datagram minimum.
-
-The room check in the aggregation loop cannot catch this, because it is
-done after the NDP has already been pushed.
-
-Rewrite the test as an addition, which cannot underflow and gives the
-same answer whenever the original subtraction did not wrap.
-
-Reported-by: syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1994e2ecf323ed90f255
-Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
----
- drivers/net/usb/cdc_ncm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 19db5a668..e92dc7f01 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1125,7 +1125,7 @@ static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp16(struct cdc_ncm_ctx *ctx, struct s
- 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
- 
- 	/* verify that there is room for the NDP and the datagram (reserve) */
--	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-+	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
- 		return NULL;
- 
- 	/* link to it */
-@@ -1180,7 +1180,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct cdc_ncm_ctx *ctx, struct s
- 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
- 
- 	/* verify that there is room for the NDP and the datagram (reserve) */
--	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-+	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
- 		return NULL;
- 
- 	/* link to it */
--- 
-2.43.0
-
+Yes. In v2 the test skips instead of failing when the allocation fails
+and an order-3 page can't be allocated either.
 
 
