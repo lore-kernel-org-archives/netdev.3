@@ -1,100 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794220511;
-	b=iV+NHlGEW47Epp4nZbO/SQ8SNo18D8wSY/vtYiInwMvGIZGdNagZG91HmH4VVWd5Gvp3
-	 p4Q4jlnSyCvefDdasOhtkf66RcCAC5lW2zwccOdV5S4cee3Ikh2e1bQYSMBxjBDGD2tN1
-	 M8MguUYo7fmazlick8VbLkjOQDFs5KHxaJ+KGKm7fj0SFoiluJeHZaOTstkUz4U002YJa
-	 TPV8XzVyWi83C031KmbUNxDjZAUNCwcHlaLHIjqV5OB5yFy/URQ1ujE+VmaHtvETNt1Tl
-	 JOAziF3BmAGfTkxs/eBg6q9m7wAf6kJSlSCjhff+TFBumRyGRoE1w6vWDl9GnsM+Hrw==
+	t=1794220636;
+	b=fnvK17v6ePcX88zNfYZxEUAP2qkVCbJq4hT8g2YiXC6fn7J2TjNPn55FCohrKiyRnYOw
+	 5SctDn0WOlWSSy0yzc1ZZE16ZgPSL0hbsEOh+XUqmijVK23Fgt95UzjeFjPJixAljH9Pl
+	 o7KFU6yWCAJNdHlxYIQsqSUiF9mI/1EI+iNDcXYPe8tFccodEbBh4GazOTVKm0HvIFOI/
+	 VvowfKvXuRibXLwyyizzXyD8u5+x1SbzgdCbEoOAIYmyDCTOaklRP1/w93e26UWALtt3j
+	 JmwaZq3uAUV9qb/vTY5E8xKLr9mOkUSU+G9TBjpxkHxWvIe0xzhAC+UAxwdPrT5RAXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794220511;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
-	b=p+ff1uY25f2rgp0bK0BFDyF3cW7eV4hJjebtdwBSYBf88+dFc9nBPZVA7I4xYbY3Eng2
-	 OocJ01CSELD5ycAn/V5Xf2aQdWNLhP7breR0eMEMRQIFfSR3puKJMVzDWY65Ce5sDopn0
-	 FW9sRAFMUvfBIG+9DhS4r9BCHl62qq5SEsL461pCSB/ehhiYgel5otOlm38ZoxRnpvf9l
-	 o4rvfyjJZ/K4PDGoSepxSoctidsZEgFh3bL4qP04pqSiz3PhX7G+VSb1iSwblCg8PpHsh
-	 ybd7cDUXWh8E9xNS807DVFE/BglH1AoHgREh82mKw7piV9CqW2BJh7or8qV95MXy05g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794220636;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=JWGXSQ0hUQUGHoC4dVJ49MPWtJvFZTUeG1TXP2ZaI3g=;
+	b=roWvUrbfxdVU5Yo0uTV5tJJtD6EkdDi/uJ47t7BmdCpd+qDyyyiaoiwjnpwth3OVlToN
+	 uiqNXGLtIh1NqlA860rNspXusQPuDVzdTvFjLQz0RkQL/Orc9Cl5dIqCj8gO3r2PWOapu
+	 acyXyTIUkPuv1llxnR89diHoIiKh4KCz7tuFpxb73gzqmq50kRPXFyNrtlzssjnkGG2Md
+	 JYTSAdKvIxHAonm4K3WSGqMea+XUT261Ls/fdldJJ44j1xgYCl+z7QhdhgpIojVF0N3w5
+	 ItzQFIbIH/wiQoFItyzpNawkjjLdPBsNNFXnpzVYF4j+B8J45DgnG1tC/yS1GzstEnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="g49MWb5/";
-	arc=none smtp.remote-ip=209.85.216.42
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ChR5inIe;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C24606A323
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:35:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0C24606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF518606A323;
+	Mon,  9 Nov 2026 10:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g49MWb5/
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3b0b3754f57so346853a91.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 02:35:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794220510; x=1794825310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
-        b=g49MWb5/yifGNXK9v3uJRzMXvdGfHYwVnDsvkvqEbUJ6QN0jlYqr1ebA6azfClAOT/
-         RK/UbwGDRf1IqGGk6TL2Kwi5PkpKUg9C6hmiS1LVRsH41VSiAS/nlk7H4cp+5AJtbbC8
-         GSnqjaXUhNuWEVSqFtLKFOu6cE/WcQjuIWQRH2P92DD+wRfV4wAR2aVxlEVHt2SgG/pJ
-         srvU7WjvoR/jsUrFzj+vQ8Yl48XoC7MhyKTF1Rap8WKCzascASo+RhvYPclJepG/G00W
-         7VgpYVYilAtvFTbNuW/FfaxsImmKv8evAU/LZm2cwA0Xxmi5Lv4IJeerouQbo+5r+rWa
-         gWfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794220510; x=1794825310;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
-        b=EABuWllmM0pY1pMNyZzVD+gKpr4IHX+dR44l0L72GOVOfeh1i9xQ1zS9CzA/8f1qYY
-         0U+rfEvU0sxkGHT6vscVZVSwyt2V+Ny8ucPfquccwGcskjEblmtxxfOiDTkT80Bd11jU
-         OTde/0yDlusonygzdpjzEiNj0pWmGnLtUvn+4JhOQt7RovYW6cSTvo53KraqqcNnno6a
-         o6feOntzj2WfB6Bqud5myc25UGmI+Mhs6EEq8y7DT0hF6GuXN6N091syBam806td5s11
-         Tks/y4kmUiFUNVoPHm2JypiDu10nfJhSXlReuw2f+SbGfufTVO7k4O8o9gBgncGfVM8Y
-         B7Rg==
-X-Forwarded-Encrypted: i=1; AL+hErG6B+wyfDPsSSuX0BrIMKQNG0qIPUmlpdj5ZzvQrrGNPXZVNTBS3Hou6Ee1LuMRjwTTzFr59VM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9DJ3yzMnMcxG/zNsS60Wa7NjkgpE6DGDvCOwC58DOaFEpH+lu0
-	ZuCGHb5Nb15k7+QjcJpKtJseIRHDm7G8JMckbHd7BDhIhhNaNFEMd4yL
-X-Gm-Gg: AYBFou2hnLtPhyh+ncEzHY8TmftwYzyLVe8AQym+L5STBvnPYhOo1miFCQsTa4Bc32S
-	Xl8MB9FYtEJ0OY+FaNDXFAoC03hYa+VohbPJafLqP3KXRmWhHPtxl8DZIoPcq5KE23pQnR/yOu8
-	1G9XxPpc6tKFA+SRly91OxacZbkQMqWPHqfOf6xQTfEQdjyW7PVlF4TeYekeEQwGB+IRkE/rmmm
-	qsGamDEWLpNUvOfYj0lAXW0oo8FnbuYjNfVrmsMVkR8rgDvACxjOEa1VyA8VuM4j8UO5Y5+I2yX
-	5L1MtQdey4sgQ4BmwRYHMqYppsCm90ly+oRL7+kJO3szLai6YgHJ5oizKcGQnmg78sHkEs/EIgg
-	k0Ts6Mgd7rMXH1UUVJywYLzjWYaB19qdyz/pJCNUcFZMOK8LTM15LzlEZiN+PGg/jJdOItgQoJj
-	V3ex7ZdDzC9+miq4ROsVEtbMX0mhAXaj+/XVDrF/W8hN0SkZepTheBHO6NkqO7yZj4elpZdD8iE
-	eJFtqpSdb7JE3XJDzTX6VAiDRq65islH14dTokyXsIqB9AQKE9UB1ov9JY8J/kcFAbdg/LEDZSZ
-	yx2+k8Rh8vqVgWm/0zkbhefDmjMFwRsb8g09p/lYN/dD8w7Sv0qqVkdOwMYcKk58YRpecwndl4Y
-	G
-X-Received: by 2002:a17:90b:530c:b0:3a5:c08:4c41 with SMTP id 98e67ed59e1d1-3b12d49b258mr2971323a91.50.1794220509924;
-        Mon, 09 Nov 2026 02:35:09 -0800 (PST)
-Received: from LDYT9Q2G2M ([2a09:bac1:7680:450::1c:35f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1058d3310sm10379457a91.15.2026.11.09.02.35.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 02:35:09 -0800 (PST)
-From: Zhiqi Zhang <zhiqizhangg@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Finke Lennart <lfinke@student.ethz.ch>,
-	netfilter-devel@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] lib/ts_fsm: preserve patterns across tc dump and restore
-Date: Mon,  9 Nov 2026 18:34:54 +0800
-Message-ID: <20261109103454.50617-1-zhiqizhangg@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261101081736.51803-1-zhiqizhangg@gmail.com>
-References: <20261101081736.51803-1-zhiqizhangg@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ChR5inIe
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D701F0089F;
+	Mon,  9 Nov 2026 10:37:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794220635;
+	bh=JWGXSQ0hUQUGHoC4dVJ49MPWtJvFZTUeG1TXP2ZaI3g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ChR5inIeuioYwn2lnClX1r47ujkSy3cnVwlYioF4BFRS0jInmFSD8MS8Eh7Q+v6Op
+	 lPAJKxmTWbQWxanhbExqOG+PavGbimGM2EosCDYi8dzt5A9eno9sYoLPOsrZIn+Vj7
+	 KVFLYYTCr7OfIH4wjiziV0oOIDbC8u3PGE7iBh2bISAHMc1RF4lFBNvUQ0RE93wcAZ
+	 GJdphuurrKPfvwED0gYeuzvsDZKWlBcc5MotiuMuNsCF2TRyiVcPLnyDK0HYDzIf3V
+	 ue1xRXLk6W14/9KPiEtB9WUYOfnICb//YIsKxoJWZDCq5ssBgRZuwpTDvgN/JhjX7w
+	 11NamFqqe7Zgg==
+Subject: Re: [PATCH net-next 2/3] net: sb1250-mac: Advertise and honor RX
+ checksum offload
+From: netdev-bot+sashiko@kernel.org
+To: f.fainelli@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, macro@orcam.me.uk
+Date: Mon, 09 Nov 2026 10:37:14 +0000
+Message-ID: <179422063443.994134.7898125324608942943@kernel.org>
+In-Reply-To: <20261105193435.2050321-3-f.fainelli@gmail.com>
+References: <20261105193435.2050321-3-f.fainelli@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,28 +63,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Andrew and all,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-A gentle ping on this series, sent on November 1:
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-https://lore.kernel.org/all/20261101081736.51803-1-zhiqizhangg@gmail.com/
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-v2 describes the tc dump/restore impact, adds the exported-pattern
-equality assertion, and splits the fix from the KUnit tests, with
-Cc: stable on the fix.
+- [High] sbdma_rx_process()
+  (drivers/net/ethernet/broadcom/sb1250-mac.c:1146-1149) reads the…
+- [Medium] The RX checksum engine's IP-header-offset setup, which the
+  probe comment calls necessary ("This is needed for PASS2 for Rx H/W…
 
-Could you please advise whether this series should go through Andrew's
-tree, or whether another tree should handle it?
+--
 
-The netdev CI also flagged the new lib/tests/textsearch_fsm_kunit.c file
-as lacking specific MAINTAINERS coverage. How should that file be
-covered, in light of the dedicated textsearch entry discussed in the
-v1 review? I would appreciate guidance on the intended maintainer and
-coverage before preparing an update.
+net: sb1250-mac: Advertise and honor RX checksum offload
 
-Please let me know if any further changes are needed.
+This patch adds NETIF_F_RXCSUM to hw_features. It also enables the
+offload by default on chip revisions where sbmac_set_iphdr_offset()
+reports hardware checksum support. The receive path now tests the active
+feature bit, not sc->rx_hw_checksum, before it marks packets
+CHECKSUM_UNNECESSARY.
 
-Thanks,
-Zhiqi
+> diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
+> index 1843b52e96f51..546415d3134c6 100644
+> --- a/drivers/net/ethernet/broadcom/sb1250-mac.c
+> +++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
+> @@ -1142,8 +1142,8 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
+>  				 * the kernel
+>  				 */
+>  				sb->protocol = eth_type_trans(sb,d->sbdma_eth->sbm_dev);
+> -				/* Check hw IPv4/TCP checksum if supported */
+> -				if (sc->rx_hw_checksum == ENABLE) {
+> +				/* Honor the RX checksum offload feature setting. */
+> +				if (dev->features & NETIF_F_RXCSUM) {
+>  					if (!((dsc->dscr_a) & M_DMA_ETHRX_BADIP4CS) &&
+>  					    !((dsc->dscr_a) & M_DMA_ETHRX_BADTCPCS)) {
+>  						sb->ip_summed = CHECKSUM_UNNECESSARY;
+
+[Severity: High]
+In sbdma_rx_process(), is M_DMA_ETHRX_BADTCPCS tested against the right
+descriptor word? The header defines it as a dscr_b bit:
+
+arch/mips/include/asm/sibyte/sb1250_dma.h:
+/* Note: This bit is in the DSCR_B options field */
+#define M_DMA_ETHRX_BADTCPCS	_SB_MAKEMASK1(0)
+
+In dscr_a, bit 0 is the low bit of the RX buffer's physical address,
+which sbdma_add_rcvbuffer() programs:
+
+	dsc->dscr_a = virt_to_phys(sb_new->data) |
+		V_DMA_DSCRA_A_SIZE(NUMCACHEBLKS(pktsize + NET_IP_ALIGN)) |
+		M_DMA_DSCRA_INTERRUPT;
+
+sb_new->data is set up with sbdma_align_skb(sb_new, SMP_CACHE_BYTES,
+NET_IP_ALIGN). The address is therefore cache-line aligned plus 2, so
+that bit is always 0.
+
+If so, the hardware's TCP checksum result is never read. Any frame with
+a valid IPv4 header checksum gets CHECKSUM_UNNECESSARY. That includes
+TCP segments the hardware flagged as having a bad TCP checksum, and the
+stack then skips software verification of the payload.
+
+This decoding seems to go back to the original driver code. Still, the
+commit message says "The driver already trusts hardware RX checksum
+status". This patch rewrites the same conditional and makes it a
+default-on offload that ethtool reports.
+
+Should this test dsc->dscr_b & M_DMA_ETHRX_BADTCPCS instead? The same
+loop already reads dscr_b through G_DMA_DSCRB_PKT_SIZE(), so the
+hardware does write that word back.
+
+The later patch in the series ("Add ethtool autonegotiation restart
+support") doesn't change this check either.
+
+> @@ -2214,6 +2214,10 @@ static int sbmac_init(struct platform_device *pldev, long long base)
+>  
+>  	/* This is needed for PASS2 for Rx H/W checksum feature */
+>  	sbmac_set_iphdr_offset(sc);
+> +	if (sc->rx_hw_checksum == ENABLE) {
+> +		dev->hw_features |= NETIF_F_RXCSUM;
+> +		dev->features |= NETIF_F_RXCSUM;
+> +	}
+
+[Severity: Medium]
+Is the IP header offset that the checksum engine relies on actually
+programmed while the interface is running? The comment above calls it
+necessary, but sbmac_set_iphdr_offset() does:
+
+	/* Hard code the off set to 15 for now */
+	reg = __raw_readq(sc->sbm_rxfilter);
+	reg &= ~M_MAC_IPHDR_OFFSET | V_MAC_IPHDR_OFFSET(15);
+	__raw_writeq(reg, sc->sbm_rxfilter);
+
+Because of operator precedence, this only masks the register and never
+writes 15 into the field. S_MAC_IPHDR_OFFSET is 8 and the field is 8
+bits wide, so the field ends up as the old value's low four bits.
+
+There is a second problem. The path sbmac_open() ->
+sbmac_set_channel_state() -> sbmac_channel_start() writes the whole of
+sbm_rxfilter:
+
+	__raw_writeq(0, s->sbm_rxfilter);
+	...
+	__raw_writeq(M_MAC_UCAST_EN | M_MAC_BCAST_EN, s->sbm_rxfilter);
+
+That resets IPHDR_OFFSET to 0. sbmac_mii_poll() also calls
+sbmac_channel_start() on link changes, and nothing reprograms the field
+afterwards.
+
+So while traffic is flowing, the checksum engine uses an IP header
+offset the driver never intended. NETIF_F_RXCSUM is now advertised and
+turned on by default based only on the revision check, and
+sbdma_rx_process() trusts the engine's status bits.
+
+Could the field be set with something like:
+
+	reg &= ~M_MAC_IPHDR_OFFSET;
+	reg |= V_MAC_IPHDR_OFFSET(15);
+
+and kept across the rxfilter writes in sbmac_channel_start()? This code
+predates the patch, and the later patches in the series don't touch it.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105193435.2050321-1-f.fainelli%40gmail.com
