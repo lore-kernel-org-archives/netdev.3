@@ -1,76 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794206470;
-	b=y95wsBEn8Ew9ADFo/UNQ0Wjve6K1Y/nXlyr15UB7If1Yuj8hEeKjgia3zNG3jyRwmDcR
-	 aRRdum8oLdGrNn94hwsxhqd/hLHwwZLtp21ZMnmLJHAo/eOUWe1UIhIMI8WXA4ya7fM/q
-	 wRdNtmVCc8uTZkdbXOxspC9Ex3fqZ3tv8McsGBKa/OjqGTjfyiv23Kh2nzvAB53QbLYQK
-	 SliH4hg42EVFgUv8vVg5olRXqU4C6uUKBROm/yqBWCp9cUVH2JVno8AbtAXgNaGN3JDlR
-	 mWGxIrpEIDlhw3z9XiRCKRfQflTU4sF9JLpC+inYg6srWpc2gzRQO3bFyKRJ6mLD9eQ==
+	t=1794206474;
+	b=Uvp4OUq8KI8hnfordEwcNRGaxfCFhViyr3WvmRhTsXHdC8zXp9NQBIVKmnAAIt88PZFH
+	 DNwThQeTeAcw3A317s2kxGnwwYLD9AGcu3K/iPrrZLtMl5PDsiUtCoWgKffzcX8DNadfP
+	 4arvf+Dmq4TxLH2+/5C7EYq74urKxaXPOvgEP2DqQdNBGkhs8CP7ObWfKVz/Mn1WVS40+
+	 F3aZEx/hBp4BlSDKIuXsFyvBrQXUermu3GqW/H2HtNJy8oCsZx0KZiiw6P5x1foc6xN5w
+	 sUtt/DtqVN2//FARlM1/aGZZsjprsOEyA357S7Erl3YzuLkJjay487qINLYZgkdmYxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794206470;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794206474;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=soqt50K3rw3+soUYivhJF2vTy49ZFgNuuvn5H0S2lRo=;
-	b=Gc1GXi/KsH7tEwBJvb4AUmUNT6KcPl69rmpXKkmwBaOIKTuw50ME7z4g1WUgg3QnEUMg
-	 NCmFCIpGXVyOLnrFt4tAXow0Xg3WMhsOA+fubDc7MVbCPCfEXLLb4N3LnxyX6Pz6CTzJO
-	 0muoZDt0tx0x7ZyHr5CuCWTXV/KDYmtq8fO4lP3X+iLoMHMAqRVeLPcBvXQlVnUBrZPet
-	 3w4yV0LDVI6hn/3EcXgAlSr6wydbh/MFjjXakLxk4Ot5Qy5cpSmHwL9/yQQWPO2tDE+dh
-	 YVQcovJN37vFUvdayFjvid/yKD0pXH2okEh5fKW5ssSgozzBvyBIkZDjmUMYiHgw1Uw==
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Q4pq2LP10uD9GXhbYxSTeiDxrDfkSErB9nBqJX/up+c=;
+	b=rMXXdZhTv0W3Dqt82zTr9d6tCLgXjlWD0nTqgfBPM4+9fYjaUxrEa7gGFlKEasi/6mJ5
+	 pC4riwwxsFxs0IwfjkDaraQ6/n2iwtBDjxUT57pXLXK+oMXm6CVA3aIriS41ZanCPiDp/
+	 qjPO71bCGJGNfzcC+OkFEoJ7v2K3Ge0ZW9YcYNAzeb0U3UQ/uRA0kZKTNOE7zJmjwLU/a
+	 ZEz9l2MA2iK4eWzjwcrlQUe8qxhVZ2qPz9ud+UveDxhmXxItnG/QPHKSeTRGK/y1LjZ0l
+	 UNnY4tlKsj1E8f8pfd8Ec77jickoKVfp6bOQUA2l7lTTqH8W2l8ct1OsCBjX8VSlhxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=JQunonNj;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="cCdxhP/c";
 	arc=none smtp.remote-ip=111.22.67.137
 Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7C1606A31C;
-	Mon,  9 Nov 2026 06:41:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E7C1606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77B606A323;
+	Mon,  9 Nov 2026 06:41:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D77B606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=JQunonNj
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=cCdxhP/c
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=JQunonNjB0FhU+PTB8co+UPpaRFyfokDEv8w2n0asMuhORSW5JOpbW9aUTZaLWfe+Hk9fHOt2RQSA
-	 QGQzgw9poK+dIlDC3WtT0qZs2lR8TJ4YtJUs6IvHLNLeHNCjTJf9esfVKP2yF4X3GX34mDwotserYc
-	 +tKl1yrprNvSZhgA=
+	b=cCdxhP/cquZbpMhPeYMJ6TkSZjAgP6t/8QSyLr2sEB07EiYP+XIUn7zvH8K4mestMOd7xvQcYIpSl
+	 WcQhbAZRTrnTSTVS5n8yZKUJ/NC1pRz+5f4fF2PSPVjYRH5zSre+3L+kuZShyrVGCR2n2eLWO3hgIM
+	 Q5AlDnGNmqeGwl14=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af16b00901-616b3;
-	Mon, 09 Nov 2026 14:41:06 +0800 (CST)
-X-RM-TRANSID:2ee46af16b00901-616b3
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af16b07907-616b9;
+	Mon, 09 Nov 2026 14:41:11 +0800 (CST)
+X-RM-TRANSID:2ee46af16b07907-616b9
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03.03 (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86af16ae9d21-84788;
-	Mon, 09 Nov 2026 14:41:06 +0800 (CST)
-X-RM-TRANSID:2ee86af16ae9d21-84788
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	willemdebruijn.kernel@gmail.com,
-	narcisav.kernel@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: do not run out of frags in alloc_skb_with_frags()
-Date: Mon,  9 Nov 2026 23:40:36 +0900
-Message-ID: <20261109144038.36055-1-yanhaishuang@cmss.chinamobile.com>
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af16b05ab1-848cb;
+	Mon, 09 Nov 2026 14:41:11 +0800 (CST)
+X-RM-TRANSID:2ee56af16b05ab1-848cb
+From: xujiahao <xujiahao@cmss.chinamobile.com>
+To: Oliver Neukum <oliver@neukum.org>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com,
+	xujiahao <xujiahao@cmss.chinamobile.com>
+Subject: [PATCH net] net: usb: cdc_ncm: don't underflow the NDP room check
+Date: Mon,  9 Nov 2026 14:09:13 +0800
+Message-ID: <20261109060913.526268-1-xujiahao@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179419003251.994134.13120616805502524032@kernel.org>
-References: <20261108100617.23840-2-yanhaishuang@cmss.chinamobile.com> <179419003251.994134.13120616805502524032@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,25 +77,66 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 09, 2026 at 02:07:12AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Can alloc_skb_with_frags() still run out of frags when a high-order
-> allocation fails? The fallback just below this hunk has not changed:
-[...]
-> Would it work to treat the frag budget as a hard limit on every order
-> reduction? For example, lower the order only when this still covers
-> data_len:
->
-> 	(MAX_SKB_FRAGS - nr_frags) * (PAGE_SIZE << (order - 1))
+cdc_ncm_ndp16() and cdc_ncm_ndp32() verify that the new NDP and the
+datagram fit into the NTB with an unsigned subtraction:
 
-Yes, this is a real problem, and it comes from the same commit: before
-09c2c90705bb the limit was MAX_SKB_FRAGS pages, so lowering the order
-could never run out of frags.
+	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
+		return NULL;
 
-v2 will only lower the order while the frags left can still hold the
-rest. If they can't, it tries the same order once more with the
-caller's direct reclaim (with __GFP_NORETRY), and fails only if that
-fails too.
+tx_max is only clamped to max_datagram_size + max_ndp_size + the NTH
+header size, so tx_curr_size is just big enough for one datagram and
+one NDP.  A second datagram in the same NTB is therefore exactly the
+case this check has to reject, and that is also the case where
+skb->len + reserve exceeds tx_curr_size: the subtraction wraps around to
+a huge value, the check passes, and the skb_put_zero() of max_ndp_size
+bytes that follows overruns the buffer:
 
-pw-bot: cr
+  skbuff: skb_over_panic: text:ffff80000db33558 len:428 put:172
+  head:ffff0000c2c66100 tail:0x1ac end:0x140
+  kernel BUG at net/core/skbuff.c:200
+  skb_put_zero include/linux/skbuff.h:2595 [inline]
+  cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1132 [inline]
+  cdc_ncm_fill_tx_frame+0xdf0/0x30e0 drivers/net/usb/cdc_ncm.c:1309
+
+Here end is 0x140 = 320 = 140 + 172 + 8, i.e. the one-datagram minimum.
+
+The room check in the aggregation loop cannot catch this, because it is
+done after the NDP has already been pushed.
+
+Rewrite the test as an addition, which cannot underflow and gives the
+same answer whenever the original subtraction did not wrap.
+
+Reported-by: syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1994e2ecf323ed90f255
+Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
+---
+ drivers/net/usb/cdc_ncm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 19db5a668..e92dc7f01 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1125,7 +1125,7 @@ static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp16(struct cdc_ncm_ctx *ctx, struct s
+ 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
+ 
+ 	/* verify that there is room for the NDP and the datagram (reserve) */
+-	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
++	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
+ 		return NULL;
+ 
+ 	/* link to it */
+@@ -1180,7 +1180,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct cdc_ncm_ctx *ctx, struct s
+ 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
+ 
+ 	/* verify that there is room for the NDP and the datagram (reserve) */
+-	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
++	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
+ 		return NULL;
+ 
+ 	/* link to it */
+-- 
+2.43.0
+
 
 
