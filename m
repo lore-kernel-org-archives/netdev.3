@@ -1,96 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794266270;
-	b=xEQHojxvTTdkwcPi6oi2g1YTDUBhSh+Gr2HUopTwgR8XrMz/c8cH7mjlw2t4FLLqO/i8
-	 crxQ5il8FEo4tlExXmMLNnlLmbKSmuuccH31/vv2NLc6OWBct7LBWvP1LtjHrEHt/tUzY
-	 PQe5lbFjCCw5m8BzlqxTLg18QeZCITAif/iwG9ZvO5J22E/ah1IjX7Hdpt7106nTjpFY/
-	 bwcHXF+fITr333k5thp8Q8bsM+grx0QAUg5Y8aya22gi58Nr36ph1GZ1xJpMpIrVx6plh
-	 9QeoLH1eoPv6jlQ67yuBnAlu0R2NBBsShUytpJWNhqDgNhq3xbK1HMQzaRF5yASByrg==
+	t=1794266295;
+	b=buyz1F/vQ4/Ojz0OLRueRtggRx8OOhL0q+zY8K5qnCsA8i2ttXmMpmBLUGj64i44gYit
+	 erQFF9iueXeLQTqXPPwwMhxSj6QwTqC1WgmBrbxc+dBVGI0TKQRvlEbLquKSIPtVe3G/K
+	 TlO2MZ12mEUeON7jEeLFZaejuGISqEL7eYSc3hhWhlMdV8bi2JyKqyemp1I0JS+Oz2E+r
+	 JlwPxC+cH+sK6msgmhmXkGQSR1qDA4BfmgTiCd6BgApI0mlVATrG5R9LXMTI7IYbqtjmj
+	 x7qcVyjcKyGlCmB87yN0QiWTmOcgrFrUeHGrYD+mBeiA8tpV/TmaKeAKTI4TNgntYQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794266270;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=zfZnkNtscXNAJ3rRdG+HDotXVDvKorvk3Ow5BvApXdQ=;
-	b=WUh2CWPH0YJr64E92NETgUUtmz2FdA0Y0cg7kkm8/po+0o3ux91gOthRPuWPs0GFUHRp
-	 kVAkhWj7gWoZjQN28Z66ZpnW/6yCsSHMzOYF+ivmqMVfG9frM2EaW12OwqjZwMHX2S2kH
-	 FKMCWHV+Rm6OrxMMPZ5rQi60kTN9GYtT7CQXtFypBfILoF0nP1qj6VHpbnmlQ2oQQ5zBw
-	 SgYf8hbVqjICXAcTLXoCLQiWs4njx99A8rJE2tMldATGA9qzPHZFyDj84Oo++3Xbi+3nL
-	 5dup4jvbMyTVz0l8IUaZXp7DdgGJ+MVKZd+W9TFKg4imoAf//e8PvWCCEnOTbEeIwug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266295;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vRs05BWdbViarzPJPkHj1pp6TagvH7Hn/qA5RjGhNi8=;
+	b=HAq3Zv1HVegZxarxWHMkVaVei98/L6/L9Xh8IGrWsmK9CX2/piKQqKoCJWeEgmJMcWtO
+	 ad11WqpJtsx/0yXNyqXXohvaqkN/+QicNN4W/V4rD2zhakGwm4/i4gncuTPFsPtE3Zy8h
+	 a50iVDCQXBw2dBaeVqEY1bPXXMw7SjQnyj7lXhE0HZBlyUZfdHr6mwFldLsosG4WOC9Up
+	 BdZpWrMuC+ojmr7Evsx5mTFE+fI5TvND6GPsPHsTdNhiSbpGUHHK/3vgtc5zdgXDVNqlF
+	 mQGi5lnecGquoEDBYOKrjXHqNxJ3IpjSC1M0LAwnBu1AX24ArjrFPWu/S2Uiome/NsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PNuqizSz;
-	arc=none smtp.remote-ip=209.85.218.41
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRSGdYUm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31E6606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:17:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E31E6606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D207606A31C;
+	Mon,  9 Nov 2026 23:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PNuqizSz
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c4d581da0aaso147683966b.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:17:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794266268; x=1794871068; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zfZnkNtscXNAJ3rRdG+HDotXVDvKorvk3Ow5BvApXdQ=;
-        b=PNuqizSzcAOiS1i+BSw15C7WG69iLGMME4JAJHWYzfUNLhr0h2Ex04qdJl8+Mbd9Qn
-         LQFtjtrzay4cnLge9ruWVpN11roLzTBuGJben9YEndvKCPUTspUVneir+nWJjhCbLxcD
-         vgeONHrf0npyoDu/VAheUUWjm6nwA3i2S39b/kka6/n8Yiu/r0uT38xbQixDyvdf+AGu
-         hUnkdlThyMqYJY1Grwq/TX9u7hk8D3smEGnNR+Yr9ntpoPBbYQFIEfkR1XMT0SOazVhN
-         DX5nCpmi23/TmYZq7tD8VQM7ISzCxe0XgnT07hZtwp4EVij2YtMHczopFvXUT+Wn8Y2y
-         LLnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794266268; x=1794871068;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zfZnkNtscXNAJ3rRdG+HDotXVDvKorvk3Ow5BvApXdQ=;
-        b=wiB3q49EjOfOvyFndcZmmEMkvpG1WuRx6P+b3I7GL49ipj6YCRJT6+nSN7d4pfXhVw
-         t0XfAUd2TkSDDyB9cVT5YvsGZT3y5lyyQ7KP6WfMIvsKEco6vFNIJGtx9BVA6rkfpVH7
-         7Q+Gvq0I/dp1Lx1PHD1C/RKNEDPuywvSK8bttfZ4eUB0uXqDuLMRF2bsq3TdLVWIDKGi
-         9/oAwl0xMKmH24/SGiBQCOmq4BIR0o2TxswR8YF7MdwvzsaSY/FNU1UskruU9AjazElR
-         SlTXuDrk16Dq1EUHF5WPY0Mj8YYWwB3pnCq45xY5WTPgcgZJ0cyyOAs9wnCl4XUJ7+fC
-         IXxw==
-X-Gm-Message-State: APuU4Z+b/kiBYreu+7nZA++zLbGtmK+mYephildO/0zJ0bpFkcSdGxUC
-	qoYY58lriUtoWR7aadfr4Xkds3nqrw0urDsMfZ7kwlD/3CdRe3Q3iaOtVH9MODNK
-X-Gm-Gg: AYBFou1PsW/gW+S4C66kMvtrxdmgI1qwEi1O1Nsb0xJFz6qAmKQMauZqwH+foj6b4jY
-	QnvlCJrbA6VQAlpi33je4sKiKpubPqIjuCCmBOSxpbZfQc/pUiIFbbLLBGxOV7OjUMZ60QLoyJy
-	Ofd5vDsKW0bk50tl3C4Mh+tn18CQl6LAi8iho6Uk1pKCMFMQ3KrXQksfqa7vjPbWoSBtiCR6YU6
-	ppd8wwO6zhSxVtfZk3UD6EdfbJViHiSXrZY9b2jqM5m0rQe9xTnZgOiyfCnVYmXlxrWsaqIXmID
-	5lQr6RxBbwPZDgzJgpKfnJLMaNm8z/kedFyNYn4TUP1BX4cZVhi5myHjJbIEnvb+3B3YAqzxNj6
-	ISbAt/8mlAkcP6/ELiN2vEYX+/o9HWLv9P0m4gHnuT/X+PDJAdThfG5fObuua3oJlOtefLKSjiO
-	m4BSlZM5bo6KGoQs6EjwuWaMdkq6qug0G/mjKIsX4qge10+qFgJWD2D8GqM7Hcg8/nsmncItjPC
-	zcdVqq4oi5pCJf4vyzaqJhRpG3w9TCm8qDW3+YDXkXR9p+M7pVmy4qFXmSNiDev29huRFvuqN/U
-	QIeCQR+D7Qq8oq8b0cGcUmqiuxj+4oD1qQAsp0sXNLk9hJD4eb5nwmc=
-X-Received: by 2002:a17:906:4fcf:b0:c2e:2d8c:4585 with SMTP id a640c23a62f3a-c5049612785mr59440566b.36.1794266267998;
-        Mon, 09 Nov 2026 15:17:47 -0800 (PST)
-Received: from localhost.localdomain ([2a13:e746:396c:c600::8fa])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a56f377sm29433366b.18.2026.11.09.15.17.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 15:17:47 -0800 (PST)
-From: "Kordian Chmielewski (mlody1212)" <kudzo51@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-	bcm-kernel-feedback-list@broadcom.com
-Subject: BCM4908 Ethernet and 2.5G WAN: upstreaming plan and two questions
-Date: Tue, 10 Nov 2026 00:17:39 +0100
-Message-ID: <20261109231739.2561930-1-kudzo51@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRSGdYUm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775701F0089F;
+	Mon,  9 Nov 2026 23:18:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794266294;
+	bh=vRs05BWdbViarzPJPkHj1pp6TagvH7Hn/qA5RjGhNi8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RRSGdYUmTB2v1qaXMC2xNxlQfURJ60UkzQzAbkvqo0t9WkaFtBgAm4sBfQV5Pq+sc
+	 8UvwSDkn1IQfIhxXNdjMO3Yn92ViySPvXHmdJFYz+QjpImY9VDVpt7wcuKT0mTmedK
+	 hLpiGp8g2ur0Oqk+lEfmWUZIvEpwohJlrhEbxZilLl7YQQha0vFozStilsaXlFuch8
+	 hHp/4JgzrpCKKOCdRXr+HYNcXzlDtHS69Wxcol2MnHC4kwXFkomWhhVaGbreQj+mdA
+	 YnMZTD7nhi/2BamN6gIpaqdwlqvHYUu+ZTIYQQt9ozSqRZNA9goFA4fLS9mdfr9whD
+	 axnjbryO3shYg==
+Subject: Re: [PATCH] nfc: digital: check length before reading SENS_REQ
+From: netdev-bot+sashiko@kernel.org
+To: NoahWeinberger2003@proton.me
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 23:18:13 +0000
+Message-ID: <179426629399.994134.5894764288944511010@kernel.org>
+In-Reply-To: <i69izu1c4hLS_ZLvaL0RVyF5pJt0gkMCEY-87g-j6iGMyCi9WKPGInJF53uwP9q9k4IPeEoBS6RKRCNaavGJlY7G-ifRKqdeMSC0rzYf9Tg=@proton.me>
+References: <i69izu1c4hLS_ZLvaL0RVyF5pJt0gkMCEY-87g-j6iGMyCi9WKPGInJF53uwP9q9k4IPeEoBS6RKRCNaavGJlY7G-ifRKqdeMSC0rzYf9Tg=@proton.me>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,78 +61,185 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Hi all,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-I am porting OpenWrt to the TP-Link Archer AX6000 v1 and AX11000 v1:
-a BCM4908 with two BCM43684 radios, a BCM54991E 2.5G PHY on the WAN
-socket and a BCM53134 switch for LAN 5-8. The port runs on 6.18 with
-OpenWrt main. The AX6000 v1 will be public around 16 November; the
-AX11000 v1 runs the same code and follows later. The first patch went
-to linux-wireless on 9 November (brcmfmac).
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2 (1)
 
-What works today: LAN 1-4 on the SF2 with the CPU port at 2.5G, the
-WAN at 100M, 1G and 2.5G, LAN 5-8, both radios with brcmfmac, USB,
-Bluetooth, the LEDs and the buttons.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I would like to send the Ethernet side upstream and would like to
-check the plan with you first.
+- [Medium] The commit message of "nfc: digital: check length before
+  reading SENS_REQ" has no Signed-off-by: trailer.
+- [Low] The patch is presented as a bug fix ("an empty frame reads one
+  byte past skb->len"), but it changes nothing observable.
+- [Low] The patch is framed as a fix for an overread in
+  digital_tg_recv_sens_req() (net/nfc/digital_technology.c) but has no…
 
-As fixes for net, with Fixes: tags:
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but a sibling
+  target-mode receive callback has the same read-before-length-check…
+- [Low] This problem wasn't introduced by this patch, but
+  digital_in_recv_dep_res() (net/nfc/digital_dep.c) reads the RTOX byte…
 
-- bcm4908_enet: the TX ring could stall silently under load (an
-  off-by-one in the ring indices); a DMA mapping error left the ring
-  inconsistent; RX buffers and pending TX frames were not freed on
-  stop; RX frames longer than the buffer were passed up; the RX
-  buffer address has to be written before the OWN bit.
-- bcm_sf2: with the default egress flow control thresholds of the
-  BCM4908 (32 pages) the switch drops frames under load; raised,
-  WAN to LAN runs at line rate. Is this net or net-next material?
+--
 
-For net-next, with the device trees through the BCMBCA tree:
+nfc: digital: check length before reading SENS_REQ
 
-- pinctrl-bcm4908: the "mdio" function on GPIO 48/49, the external
-  MDC/MDIO pins;
-- mdio-bcm-unimac: native Clause 45. The MDIO_CFG bit that enables
-  it I found by testing; I would be glad to have it confirmed;
-- bcm_sf2: the crossbar routing of the SerDes (the CFE leaves the
-  Runner's port on the SerDes as well), 2500BASE-X and SPEED_2500 on
-  port 7, and the IMP port at 2.5G;
-- the BCM54991E in bcm84881.c: it has no flash, so the host uploads
-  its firmware; autonegotiation and the link state are the BCM84881
-  driver's;
-- the device trees of both boards.
+This patch reorders the check in digital_tg_recv_sens_req() so that
+resp->len is tested before resp->data[0] is read. It also drops the
+now-unused sens_req local.
 
-Two questions about the WAN, where I would rather ask than guess:
+> Hello,
+>
 
-1. The SoC SerDes (a control register at 0x800c03c4 and its own MDIO
-   address) feeds the BCM54991E its 50 MHz reference clock and has to
-   follow the copper speed: SGMII at 100M and 1G, 2500BASE-X at 2.5G.
-   Today the PHY driver drives it, which I know is wrong. Where should
-   it live: a phylink_pcs in bcm_sf2, or a driver of its own? The
-   crossbar can also give the SerDes to the SoC's packet engine (the
-   Runner), which this port drives out of tree, so something both
-   could use would help.
+[ ... ]
 
-2. The PHY does not answer MDIO until its enable GPIO is high and the
-   SerDes clock runs. The binding allows "ethernet-phy-id3590.5090",
-   "ethernet-phy-ieee802.3-c45" for a PHY that needs such a sequence
-   before its IDs can be read, but fwnode_mdiobus_register_phy() calls
-   get_phy_device() whenever -c45 is there, so it reads the IDs anyway
-   and finds nothing. With the ID alone the device is created as
-   Clause 22, and today the driver switches it to Clause 45 in probe.
-   Would a change that creates the Clause 45 device from the ID in
-   that case be acceptable, or should the GPIO and the clock come up
-   before the bus is scanned, for example as reset-gpios and clocks
-   of the MDIO bus?
+> Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07), net/nfc/digital_technology.c:1088-1112 (digital_tg_recv_sens_req).
+> Longstanding code.
+>
+> This was found during an assisted (AI-supported) static source review of
+> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
+> reporter against that tree.
 
-Whether the BCM54991E firmware can go to linux-firmware, and the
-Wi-Fi side, wait on answers from Broadcom, which I have asked
-separately. The Ethernet code does not depend on them: the PHY driver
-loads its firmware with request_firmware(), and the code taken from
-Broadcom's GPL files keeps their GPL-2.0 notices.
+[ ... ]
 
-Thank you,
-Kordian Chmielewski (mlody1212)
+> Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
+
+[Severity: Medium]
+Is a Signed-off-by: missing here? The only trailer is Reported-by:, and it
+names the author, who is already credited in From:.
+Documentation/process/submitting-patches.rst requires a DCO sign-off, so the
+patch can't be applied as submitted.
+
+The body also has text that probably doesn't belong in git history:
+
+  - the "Hello," greeting
+  - the "Affected version/commit:" line with file:line ranges
+  - "every code path cited below was re-verified", although nothing is
+    cited below
+  - the note that the patch has not been compiled or runtime tested
+  - the request to treat this as a report for verification
+
+Could these move below the --- line or into a cover letter?
+
+> diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+> index ae6487c10a254..d9a8e9fc3d846 100644
+> --- a/net/nfc/digital_technology.c
+> +++ b/net/nfc/digital_technology.c
+> @@ -1088,7 +1088,6 @@ static int digital_tg_send_sens_res(struct nfc_digital_dev *ddev)
+>  void digital_tg_recv_sens_req(struct nfc_digital_dev *ddev, void *arg,
+>  			      struct sk_buff *resp)
+
+[Severity: Low]
+If this stays framed as a fix, should it have a Fixes: tag? git blame shows
+that digital_tg_recv_sens_req(), including the read before the length
+check, came from:
+
+Fixes: 1c7a4c24fbfd ("NFC Digital: Add target NFC-DEP support")
+
+If it is reworded as a cleanup instead, no Fixes: tag is needed.
+
+>  {
+> -	u8 sens_req;
+>  	int rc;
+
+[ ... ]
+
+> @@ -1097,10 +1096,8 @@ void digital_tg_recv_sens_req(struct nfc_digital_dev *ddev, void *arg,
+>  		goto exit;
+>  	}
+>  
+> -	sens_req = resp->data[0];
+> -
+> -	if (!resp->len || (sens_req != DIGITAL_CMD_SENS_REQ &&
+> -	    sens_req != DIGITAL_CMD_ALL_REQ)) {
+> +	if (!resp->len || (resp->data[0] != DIGITAL_CMD_SENS_REQ &&
+> +	    resp->data[0] != DIGITAL_CMD_ALL_REQ)) {
+
+[Severity: Low]
+Does this change any behaviour? In the old code, when resp->len is 0 the ||
+short-circuits on !resp->len. So the byte loaded into sens_req never
+affects control flow, and both versions return -EINVAL and call
+digital_poll_next_tech().
+
+For a linear skb with len == 0, data == tail <= end. The old load stayed
+inside the head allocation and could not fault.
+
+The commit message says "so an empty frame reads one byte past skb->len".
+Together with the "Affected version/commit:" line, this reads like a
+memory-safety fix. Could the changelog say plainly that this is a cleanup
+with no functional change?
+
+>  		rc = -EINVAL;
+>  		goto exit;
+>  	}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but a sibling target-mode
+callback in net/nfc/digital_dep.c has the same read-before-length-check
+pattern. There, the byte it reads is actually used:
+
+net/nfc/digital_dep.c:digital_tg_send_atr_res_complete() {
+	...
+	offset = 2;
+	if (resp->data[0] == DIGITAL_NFC_DEP_NFCA_SOD_SB)
+		offset++;
+
+	ddev->atn_count = 0;
+
+	if (resp->data[offset] == DIGITAL_CMD_PSL_REQ)
+		digital_tg_recv_psl_req(ddev, arg, resp);
+	else
+		digital_tg_recv_dep_req(ddev, arg, resp);
+}
+
+Only IS_ERR(resp) is checked before these reads. A remote initiator can
+send an empty or 1-3 byte frame after ATR_RES. That reads up to 4 bytes
+past skb->len, and the result decides which handler runs.
+
+The reads stay inside the skb head allocation. Both handlers later reject
+short frames through skb_check_crc() and digital_skb_pull_dep_sod(). So the
+visible effect seems to be a branch on uninitialized tailroom, which KMSAN
+could report as uninit-value.
+
+Should this function get a length check too, like the !resp->len check in
+digital_tg_recv_atr_req()?
+
+[Severity: Low]
+This is a pre-existing issue, but digital_in_recv_dep_res() in
+net/nfc/digital_dep.c reads the RTOX byte without checking that a byte is
+left after the header pull:
+
+net/nfc/digital_dep.c:digital_in_recv_dep_res() {
+	...
+	if (size > resp->len) {
+		rc = -EIO;
+		goto error;
+	}
+
+	skb_pull(resp, size);
+	...
+		rtox = DIGITAL_NFC_DEP_RTOX_VALUE(resp->data[0]);
+		if (!rtox || rtox > DIGITAL_NFC_DEP_RTOX_MAX) {
+	...
+}
+
+Here size is sizeof(struct digital_dep_req_res), which is 3. If a remote
+target sends a header-only RTOX DEP_RES with the timeout supervisor bit
+set, resp->len is 0 at the read.
+
+With software CRC, data[0] is the first CRC byte that was just trimmed.
+With driver-side CRC (NFC_DIGITAL_DRV_CAPS_IN_CRC), it may be
+uninitialized tailroom.
+
+If that byte & 0x3F falls in 1..DIGITAL_NFC_DEP_RTOX_MAX, can the malformed
+frame be accepted as a valid RTOX request and lead to a call to
+digital_in_send_rtox()?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/i69izu1c4hLS_ZLvaL0RVyF5pJt0gkMCEY-87g-j6iGMyCi9WKPGInJF53uwP9q9k4IPeEoBS6RKRCNaavGJlY7G-ifRKqdeMSC0rzYf9Tg%3D%40proton.me
