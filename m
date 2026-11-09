@@ -1,58 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794235437;
-	b=kuxLnuOU5tVqbb42B169NDo/Yqkji0+o5Nrpb0dII5aPaUjHRnqalNn3dnQzgCa6ZPx2
-	 KmqO6v4eFu/k5a0YdeEZvZXwkwMOwY7NyGdE8TzrqgHbeXsq+49g0kvG8VmXGoRHh6Swg
-	 Pd8EYj8PCnY9rP9Or0l2EwidVC0vo26uot9vR5xON0uG/s8qimK2n3zAmy2ephiwMJP3i
-	 URRlfg+fGWDO9oW6dSL/WLvDFlNdAbPe6AUjw+jvaBZeO4qqd3mjCH+rfnqqq/kVWPdTM
-	 0cxkILDkNqJ4/Q2hV9IP2wu7iYwirw0XzUeY3xR/ZMHsnj/ACVu/aycPnigALu0CmkQ==
+	t=1794235664;
+	b=l6LGpTBcql1Y8j7QBj3Ijg7O9QlqB9QFW9cAktLgdeom4eg94OK8hqW7f1VCeI327YJo
+	 kgrVth2JMa+0X6Jz2t7S9817CtIQDt/QLfq/8gcncNKx/9TKvhWTztvpKsnjaUPs/9y/h
+	 QbQrNj409HHxTrOVcVAEFeTcWHW3BUX/rz1zfKIKu5n4nckWVHcE5Y8gctBJH80CaGDoP
+	 TB1XVgzVUctvebI2dTfF0B8H27fkf+hKNq61v5Fc8E+HbwXsa7wrAqeUmzUx3rMFeGP9q
+	 k9bNnZpIFgL1cbMu3bkIxRVglBolGri60vFNU8JF7yMnimvlo3nuqrcQT1W0xXW+j8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794235437;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Debian-User;
-	bh=jW1Nt5uF3ROn1NR5XwafSjooEaI358J11WgWbqvS25A=;
-	b=s9gCZssg6q+pWiIpVRY57UIZAfDnmaAsIkYC/poLlqnIpEw1iSrbAL1Z3kIoHtdqizSf
-	 ymrdQCLKdKYRzi0KInV0ZyP+Qfq6g04A3G7wb/jdmeksXKaD+qHQBkMK/gCFza3cmywy1
-	 6xlhJIBpXvY5fYvf7BoAIiSnYW1KYQi6VBAXcQ+fxWk63QnAlbu2NqhoogtvZnMEcPNV7
-	 z/glT+hKPyRguuFY3doTn+XH47hFk0mp2T71P/M/1Gt8FP+n9//RIFgFQYIpa6RwWsVer
-	 vdWzICL5cpgNknV0YE/D8/HviWxx7wJW2cOIrSp2M/jiyCy9meLr0CyiyNG7p4NgMeg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794235664;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=8BjfBvvBITs0v8vpJBTpPDcN60M30b+tl6LUSDLYEFY=;
+	b=sqmb+obuOxe3E4lc9JQROjIvmWkGI/xTvFpXIclgVch06+/BaeOmkeHDcg/VmItPkFhc
+	 yiZgss6vWM4efczYFhE+A2POxJIKMTCmfD75tJfvIqBv97r8yqkAm5JKDH91mNk6VLK/w
+	 T/nRF857Qi+zSQAxcD2G4a1fuzREI/4gntifyepCoA3oBFduKTaPmC9447150+ufvbDik
+	 aNHUV4cqKk9+uVpgZLHC5NwzLF3zBxWTlkNynqEEN91pMPOLSSR0yL/7NlVQBiGb0q2Fm
+	 igSrp7eSyHUP0QeNksabW7/0SqysfvjiQcyBcmhGrtGapWySMEIJLEUf/0d9ejwrjlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=aO3NdL2h;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T+qVH9bO;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACA9606A321;
-	Mon,  9 Nov 2026 14:43:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ACA9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46ED606D803
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 14:47:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A46ED606D803
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=aO3NdL2h
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=jW1Nt5uF3ROn1NR5XwafSjooEaI358J11WgWbqvS25A=; b=aO3NdL2hCYsgw2TrTJPTlfmL+o
-	DXpl/VHMC9L+Vt3y/pzFXXyZnQ+A9O+dzWjhl51PHRGO/zCMmO+ytndiiZIZStaOKVY3i137FCjkZ
-	/oHG9UdyvJXSYpsf2Y/Mu39M+De6p2emscJvg+D5OLVmyoLZK7bdIWJHDJ7i3C69z0woscJFOHR0l
-	1tqMex+7VX+kmJ32LpB299OrT0OzWa5cAfUkzNQiDXMo94/MbypmB2rpw8YAHwvD+vmNx02Imdfdw
-	n4G2N0xSIjAZb9oRw9BUYfs7lAQLZe027uNCb30uODuyq8nZrGAzNC4KzI73tyKzE7h90tdkdWTA2
-	0uLZUywQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xQQb6-00Bh4L-17;
-	Mon, 09 Nov 2026 14:43:48 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Nov 2026 06:43:27 -0800
-Subject: [PATCH net] idpf: reset mb_wait_count once the mailbox is up
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T+qVH9bO
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2eb0f1b592bso3328335ad.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 06:47:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794235663; x=1794840463; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8BjfBvvBITs0v8vpJBTpPDcN60M30b+tl6LUSDLYEFY=;
+        b=T+qVH9bOyUcTzDcway48pCmwpWUfpZPavCJZ3yrePOD9wIRZIigPmfpFCW6z28tvaf
+         AvJJ6NX2oIL63z3W44FqeXoXezQGEsCiYenen7cqF+AZLFG2RS/Bq8UObNwHpAdVb0km
+         UWaAeQLkp/UV7WpqEfZnfA+f6gFqaQUINiukPpViF19AzGaxLImRVe7xaNz6vhsBR9XK
+         JCwOibXmHp1pXFwMRlgqP3muI/gw4IBfB9uvzhAAGbFyiPTMdNaBPN+yD+P+nnRPk6yu
+         Dcql4IZCCcAVAPjK82ltbtjYv2pccTsglh+ykwgBVlfE7Aouz7gdGwGXLJk0LYiqz0cI
+         mtyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794235663; x=1794840463;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8BjfBvvBITs0v8vpJBTpPDcN60M30b+tl6LUSDLYEFY=;
+        b=HfL6HNgTTL1NOTDPxFXVJS0Rt3gjUND3IxNMB5f2PFpjH/2vlWaf9+BLE6v6SQVDVy
+         vYVyjo7PxA4MR4qUL6HjB9D0/cB9qAEPwgFWlq1GxZKwO4+vVeK/353dWu0vF6TgNgAn
+         7xy3lpps8e+EFfiQ3h6qxPpv7Iss7hADML0jZa+G9fSdNv7oe2DhFq+XmkDRIpNiLHLZ
+         tHfUXsxJoTwvhhRYWHnHvz5w/4WhtOt1lML+RfY867r583gcj7gnoFEGOf6d70QAjsZs
+         Z54Q7JVNIBzGT9wJnPz6WopqcgWIzg92SdKk9/GyEbQ3pzZxkbkqn38lrHhUS0WWBqzs
+         7Xdw==
+X-Gm-Message-State: APuU4Z/VJH+gTshLtd7Esbx1uA4bEpbx2NiaG+5e1awoD9hJg7DounMk
+	6Nz4huXmMVQ8icM+x2fIjHSvQzsQVqYx1efb4JXQQf8YCv6o3pfvxSqLyk9/lijW
+X-Gm-Gg: AYBFou0MSl7w3lJBNc1Ga8UjWvqtGmnwgTBxE5NJujG+hBXUapdBIU2rTe6+Kp2YmFz
+	ChXBY/E/Tpo+aHYQBQ4yBLpQmI9C9ssDT9ayiijXG/UdyXeiLcXfYGiYBFb0ZtQgIAe+4Wci5xe
+	ZPthGmmXKG8WG4hnMMeeWS6dgFtU/iU8Ffi4XoRMFsWtBUJRep+5tmnVG1DgchOHAQe4/Z70asK
+	RGLxDzcRyxwdYEutNcNkVDQmCbMWjzYu7tEAUjIBz77OxjqLk0wKRCtN2ccCK/KsMIgTSAhDJ7+
+	nVd5ER/ziiQPcwFa+yRvXzSzTr2+w2kJLbB7yjQl8gSLCopvdaV6EOL0c8G4Hof5boLUJeR+K8Z
+	tB0C7G4aUN6fj5PEMtuiN0TTBq19yFAI7G3WiEF+d9C9PfAU/hteJUpt0ljotAaetCWQiFgrZrX
+	uuPfhlJRew1/A/B7LTyboQ1Tqji5PlXg4zX9/uwP+HuujbbqxIQe0zLqmnAo46hSF+X8DK3byaH
+	+Efh03CxjuIS+CJgOvJi7oOPPrd+6hGyhUSN3rdUIiP+1KtDxs4xn43PXrW5wdTYTzm6QbsxHgR
+	EfYSxu4mHLpHZqtP4VJSraqbNWb4AXeIPgLVvjA8xl5kcFNKGKr2AA==
+X-Received: by 2002:a17:902:e80a:b0:2e9:a090:dd69 with SMTP id d9443c01a7336-2ed83777169mr42173915ad.39.1794235662770;
+        Mon, 09 Nov 2026 06:47:42 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed8146de34sm12511945ad.5.2026.11.09.06.47.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 06:47:42 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] net: dsa: motorcomm: Free the MIB block on port teardown
+Date: Mon,  9 Nov 2026 22:46:50 +0800
+Message-ID: <20261109144705.1737460-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,93 +98,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-idpf-mb-wait-count-v1-1-c6584754df78@debian.org>
-X-B4-Tracking: v=1; b=H4sIAA7c8WoC/x3MTQ5AMBBA4avIrE1iGgRXEYuWKbNQ0tZPIu6us
- fwW7z0Q2AsH6LIHPJ8SZHMJlGcwLtrNjDIlgypUTVS0ibvF1eClJeK4HS4iNSVbU5KpVAUp3D1
- buf9pD44jDO/7AUP3FL1pAAAA
-X-Change-ID: 20261109-idpf-mb-wait-count-184efb41b525
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Madhu Chittim <madhu.chittim@intel.com>, 
- Emil Tantilov <emil.s.tantilov@intel.com>, 
- Joshua Hay <joshua.a.hay@intel.com>, Alan Brady <alan.brady@intel.com>, 
- Sridhar Samudrala <sridhar.samudrala@intel.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Shailendra Bhatnagar <shailendra.bhatnagar@intel.com>, 
- Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Cc: Phani Burra <phani.r.burra@intel.com>, intel-wired-lan@lists.osuosl.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2115; i=leitao@debian.org;
- h=from:subject:message-id; bh=IUwnzebJt01HkE/iBmJlwXOxBT1vqXQ85djowTpnL6I=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8dwgyTgueYnU9IIX9CLhMhQ0sEZMxd0lo20vV
- CuQ+qYDvDCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavHcIAAKCRA1o5Of/Hh3
- bf+hD/9/Eo1FESVGmVPGH3ztKPwV2xqeW+rVwoN5NfJFa4Ux78O0ymajfttjO1iksZE+VOLXzhg
- uBjp6FulhPwDmra0llVlSHhmR4q+kqqX0q3Ymk1YBN1d6tdKwwc4puCVCc1oT5dOD5NZXKBW5lE
- nzdR41o+b1w/F1TY7izmr5kQpfAHXuVmmxcZFCYEb7phgcXVcTvuppXJjevOZ6BQ+/x++B02NLs
- x64BC44X80zra6sL0yp2YmszO0Snoz88TzNxDPYPDveuUcuCV1x2eolkosmJu8DDSz/2g1XG5u+
- HuTLCmCg8Bi4yswnmJH/CtOs7V88Ua5ZQ77xEvp/zl3szlmtNwvRYLmDAQWgtCkFVFSvkvkQdOA
- HVNAysVrcHMgziMOJP4pM/tBX4/GeSTkA7RH/806abi+cnZcOcWv6MhmhPHcOcQRunX8hRejTPV
- XQ9qEQUUPjAg6Jo9ARrVYxPrV1mIMmz+SadI5eiqQm9mji3AfKnnFacvhEHePYJ65fRMyS0vCvg
- gIAKldDqgANu+Se6Tx5EO5u9yIfOWTIkPukMqGWYcVZ/2tYmbRuK/oWZJR3FYDFthHQ97+bJAXz
- hvykhDvMH1FYScHGBwOU2Ko+YJ1sABlpd+Zov0nzcX+Y0FjPu8q655RWmL9Rvyp2SHECA0ERqGf
- kdZ+y3Z0COqImDQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-idpf_vc_core_init() retries a failed virtchnl version and capabilities
-handshake up to IDPF_MB_MAX_ERR times before it gives up on the device.
-Each failure increments adapter->mb_wait_count, but nothing ever clears
-it, so the limit is shared by every initialization in the lifetime of
-the adapter, including the one done by each reset.
+.setup() can run again within one registration: removing another switch
+from the tree tears the whole tree down, and re-probing sets every
+member switch up again.
 
-A device that fails the first handshake after a reset, and then
-recovers on the retry, leaves one count behind per reset. Once 20 have
-accumulated, the next failure is final, and the device stays down until
-the driver is reloaded. This is seen in Meta's fleet on hosts with
-recurring Tx timeouts:
+The hardware reset at the start of .setup() brings the MIB counters back
+to zero, but a MIB block kept across that cycle still holds the old
+software buffer, so the next yt921x_mib_read() treats the small value as
+a 32-bit wrap and adds 2^32 to every counter it extends.
 
-  [ 2176.496801] idpf 0016:01:00.0 eth1: Detected Tx timeout: Count 21, Queue 11
-  [ 2176.508763] idpf 0016:01:00.0: Device HW Reset initiated
-  [ 2237.412541] idpf 0016:01:00.0: Transaction timed-out (op:1 cookie:9800 vc_op:1 salt:98 timeout:60000ms)
-  [ 2237.412578] idpf 0016:01:00.0: Failed to establish mailbox communications with hardware
+The old claim, get_stats64() not being synchronized with
+.port_teardown(), is not true, thus free the MIB block in
+.port_teardown(), so the next setup allocates zeroed blocks.
 
-Clear mb_wait_count once the handshake succeeds, so the limit applies
-to consecutive failures only.
+Not carrying a fix tag since there are no known multi-chip yt921x users.
 
-Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 3 +++
- 1 file changed, 3 insertions(+)
+v2:
+ - free the block on the error path
+v1: https://lore.kernel.org/r/20261108101648.1308271-1-mmyangfl@gmail.com
+ drivers/net/dsa/motorcomm/chip.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 928de868fa624e..7c11c877acd0ba 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3118,6 +3118,9 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
- 		msleep(task_delay);
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index 33e5fc127244..7e86d992bd97 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -1994,11 +1994,11 @@ static void yt921x_dsa_port_teardown(struct dsa_switch *ds, int port)
+ 	struct yt921x_port *pp = &priv->ports[port];
+ 	struct yt921x_mib *pm = pp->mib;
+ 
+-	/* get_stats64() might not be synchronized with port_teardown(), hold
+-	 * the MIB block till the device teardown
+-	 */
+-	if (pm)
++	if (pm) {
+ 		disable_delayed_work_sync(&pm->work);
++		pp->mib = NULL;
++		kvfree(pm);
++	}
+ }
+ 
+ static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
+@@ -2006,12 +2006,11 @@ static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
+ 	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
+ 	struct yt921x_port *pp = &priv->ports[port];
+ 	const struct yt921x_info *info = priv->info;
+-	struct device *dev = yt921x_priv_to_device(priv);
+-	struct yt921x_mib *pm = pp->mib;
++	struct yt921x_mib *pm;
+ 	int res;
+ 
+-	if (!pm && (BIT(port) & yt921x_info_ports_mask(info))) {
+-		pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
++	if (BIT(port) & yt921x_info_ports_mask(info)) {
++		pm = kvzalloc_obj(*pm);
+ 		if (!pm)
+ 			return -ENOMEM;
+ 		pp->mib = pm;
+@@ -2019,20 +2018,15 @@ static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
+ 		pm->port = pp;
+ 		u64_stats_init(&pm->syncp);
+ 		INIT_DELAYED_WORK(&pm->work, yt921x_mib_poll);
+-		/* Start disabled, so that the enable below always pairs with
+-		 * either this disable or the one from a previous teardown
+-		 */
+-		disable_delayed_work_sync(&pm->work);
  	}
  
-+	/* The mailbox is up, give the next reset a fresh retry budget */
-+	adapter->mb_wait_count = 0;
-+
- 	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_LAN_MEMORY_REGIONS)) {
- 		err = idpf_cfg_lan_memory_regions(adapter);
- 		if (err) {
-
----
-base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
-change-id: 20261109-idpf-mb-wait-count-184efb41b525
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+ 	mutex_lock(&priv->reg_lock);
+ 	res = yt921x_port_setup(priv, port);
+ 	mutex_unlock(&priv->reg_lock);
+-	if (res)
++	if (res) {
++		yt921x_dsa_port_teardown(ds, port);
+ 		return res;
+-
+-	if (pm)
+-		enable_delayed_work(&pm->work);
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.53.0
 
