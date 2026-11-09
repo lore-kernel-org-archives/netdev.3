@@ -1,84 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794218874;
-	b=cFkbLDhl7PXDAnNUP+XyKoeGaJJpfzC3+o7bB19/wDYnY8uWNFRbhBctU6qCTg61GePi
-	 rxoyna8dD1TQkM9KQw3GBBUgU6FbzJO1/orz3uKVF1DG1QpDMuRB3WX1cd5h3ZxMpa5SM
-	 T1Yvl+F1WDyZARt+cw0YtJPqWVZyPASMMOprYuJfvRkADkQH3PkRuX1F5iuGSOXHAPBem
-	 dfQl50rh88x+mbM9mGwegxMJYTeCnVZesYO/1poOX9ltom+oUhn5n5jHDbD9FqiGPn14J
-	 mfmVFgB4t5aA9lBkdHBNrtYMPFcUr8o2hreOjQiP8dmVx9T0vbbX1PlfQgzprbgylEQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794218874;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:
-	 MIME-Version:Content-Transfer-Encoding:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References;
-	bh=om8tdBMSIgCokEYF5704NEkqNK3MfST8p47zx4fkZms=;
-	b=1aS1pdzhdVio0ehNM8LBVygX2RLfExZ6yd1z62mNGdRFg85hlXCzELm3JEMCcY39/3TU
-	 7JyV5xS6mrF4Fm6KPZF/Q+hUWlRl8kGlL+zZ8qinSIgCQdA/zq21nv0exWrYx8PVGVmub
-	 oobWT42HlvcgbhQFYxt5NM22K2f0ok7mk33+fbEmA2NMjMv5iwJ3YRd7pxMRd14QvPwTw
-	 I8uHSW7rP9APm+JbA7ZykOCy2yN9kcGo1pxlugEwehItowkTV/Hhme9s2wSTU8z+lWG7E
-	 drxft9pZLnd3sD0N+1pB+D/VIiVWV2lhlxtla5m44uA2WYYgTu4wux7Iy1/QszUa11A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kpkoAJKz;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.40
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794218977;
+	b=5QYvNcIivTwnvU5Nap8/z05ODgoV9iwVsu56rbUiY2FHYZaqBeTlmCghrWdtGDZgFAQ7
+	 DU+JpMIt32hkBPUITR1fMi0Er89tkLcTJcTamnwJgo2DQ92H8oROf5WlwJesedV8b+eIh
+	 oJ229pF84MjsNPB/DJMplVrkSVy1U5NngJflvdHUQxPSmUNRpTBPZwYrLKzroYerWHSAT
+	 H5DIjqz+7L+V16TxNLKqfGmBcASQPzLHvl2e+GYqSJtKTyuTVQJsFfSvCVbkLRknxItSL
+	 pKjlLErxEKd3J8GdTFp2KrXzho44vndzhuVVKmu9QMjhDICGsfaTN1MRRSFWQotEBrQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794218977;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=VV4KsSBphAaiH2NWOLiWOtymQT0+VFehqzQ3XjqSMf8=;
+	b=T8jmuI15DOM0FTvvFY/mnNXC9VaTlvfB7jNLUDcKXspOSBRgy/Rx5apUIT0H9U1x0pxw
+	 YAbs9mCZFGZOTcwmbVEWdpZgXfGXkx2qF7IeWvayyPnattSdI1Aht02e/nvCA4ajfETcK
+	 uVFDMu7lEtZOBfLLBMe3QRMfTGnCN+w9U1LbwrJiPKyZSC2ev8n58ggolTJr+LE3eIIOi
+	 XCk1WdUp3GvKo+GyBF8QK/W0ormZGkO03XOv4hHZN5SzCuUjM5+EEyjRJtblfWqnahNqF
+	 oQPhp11dWarQV4PExlGZWgMvB1CEOp9qbaQRY4HVffG3L6tUCwgT/dKBP9fWHgRFyWA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KLpD48y1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.40
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012040.outbound.protection.outlook.com [52.101.43.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC98C606A334
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:07:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC98C606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DE4606A31C;
+	Mon,  9 Nov 2026 10:09:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68DE4606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kpkoAJKz
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3b147e06befso233899a91.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 02:07:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794218873; x=1794823673; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=om8tdBMSIgCokEYF5704NEkqNK3MfST8p47zx4fkZms=;
-        b=kpkoAJKzvFfzZWas09VUhTVQbKE6mMVHk7VYyT4No3RzCxcp4sVNimwy0AyQDM28sp
-         cqmK/yGpv9hWnwAZDWLsHp0IFjVnX/ApP7MlXDPRoSQdd5kDpggGgE0GtVLFEbS0D5xk
-         6LyczAtegNxWS6GMsk2+IsAyEfoHzZY5Kawsjx5kga3fWdLjLN3FPou51j1drws8/Uz3
-         l0Ns6Lw+V0cj2HUBFV+in3YbBvTqnkLGfQ9Knij5eGFGM73H6Cqv2J9xSo8Mwy8nIZJ8
-         fJe+Jh5nzQyuzUvZH7A9VSXOyVDCbA6iogszClRl8z5ecI2nJXeiNXhOW/zIoozOBU+o
-         abOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794218873; x=1794823673;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=om8tdBMSIgCokEYF5704NEkqNK3MfST8p47zx4fkZms=;
-        b=zrPItER+Rd3/i5urfc3XH8KsZKGek3FO+hhhraw5iT5YCkaTeI58Atp6/1/kdY9jOi
-         lJuq0DFgDSCGz3cuIWf/vxso3ZHfeMYYtCjJYLiRxmcZuRd8Hwmp69nlTGNR7hllU7Gf
-         wkQjsZ9GERHyDJXcsNTc/XQodfgSGhTCVpTgJV9T3HYYHHjt3gawPJlWTX/kIuMIf7aB
-         O/+lEMR09SsetsP9GgZydeseckOJfVjUXecJz4/vykXTqIynqlRs5VtwvRYdVOmN7K+n
-         FxRlYAx32KIetWsPBW86QtevZPKHqek+W44/pLwbYSRuxtfjXhaFH40ERrLtEc4GDkSG
-         BasQ==
-X-Gm-Message-State: APuU4Z+R2q6pkh8EpJ80opb1F263uTn0xh5zOkuNUWkI8ZXxlS+rddi7
-	5FKRg2/RL20lUeeUllkc9A7zuLYodYyKBKe2UiN5hQNg2vGDtBirzHWn
-X-Gm-Gg: AYBFou35OhIP83O4c1q9AVIqEXkHPPGYUBKxemUaakbirz6WhEeEm6UfVyryatI1zzc
-	5N/vlM03qwdaBeznlsqfoui7l2JfVzpWoV/787mhQUiZcddHc/5qjEhFc5oPQvHKT5NkEXoJbKJ
-	ci8cyyOnEcOAmoNGJ3HG294WAvfV7ZQP3GgNp1f9WCgvitwIObhiRi2qq/J6GW1ajTS/CD+7AHO
-	rDiy/JQk0sk9//fkodYrFbFBpkg31VDXKa53nC32ZDI93PEVMUj9Alon9phxQS+pmfL38li3iZb
-	7lSviyYh0Tuq+9ARwtOpvX82Tgn+APhUi+udjh28gbAvF1zJPz5E7kqTeAkSHjy89KUWDH5VEaT
-	+rrmFF3Z7eEdCScuUaiphIuHRAFNrTKVSRcCM89wrf+qFF/Tjak7BVmzrAoKiu9yQABjx1m16Wb
-	+SZQg01dETFnX/VMpPno1Ied/VXlcecFJM19ykWRKbLcfD5eur/bVjH/7ZwckLF0ykm/LRZMgAA
-	wQPfk9U2z2/6ZRI0Bu5qdn3zi4urJMSOXBNcRViZ0mw70qUWjdw/dDhK54LNWwqNwnRMjSt1WaR
-	2OL40XlG+SG428FG5YHqsGsG66sS23GwapNBZA==
-X-Received: by 2002:a17:90b:3d86:b0:3b0:92be:ea4a with SMTP id 98e67ed59e1d1-3b12d441c8dmr2831006a91.45.1794218873254;
-        Mon, 09 Nov 2026 02:07:53 -0800 (PST)
-Received: from [58.206.202.11] ([104.28.215.69])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1278918f4sm6303578a91.6.2026.11.09.02.07.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 02:07:52 -0800 (PST)
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KLpD48y1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jxqdFTrdKsrQlfMfDvWHXXnXhR3FeBhzGZqNZUiZH4bdONe8yz0Jd5jqBtQT+xJDRPKY2DwwrEpb9hoD7ciJ5/ZjrwBhG/wQn2bPK8J+9pEoQY7PlFhAtQa8hk0vqEHMBux0Fu8dcHRylt+TabIgtWsTvwQTjzrkLmaF33qjL6cwXXzZXxrQ6ZQP+nYec8yJcphSdYjvgIk57JJ/OaWlQ5f7InLXx1p9fYuk8iSx7uls4y5Gg35aDtruu4Fq9IUbfofGVdNdnF84iiDhg8obKu0KPbjeABGFNaIwDAg2QffRt82OF1vmSIZl5JTQiHnwuiUBu/uVC2xhHaoVQvokow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VV4KsSBphAaiH2NWOLiWOtymQT0+VFehqzQ3XjqSMf8=;
+ b=RVNpg/BvxKbKQR/VXfcJj05cnTO//HcDI8LNe9vXo5YlHQJ87VgS5vnQB2SyedJv3hwatz6Cv8fCTZIu5w43FoYvSEOg7X87nRQPdE+6FjMZ1QxdB8qdyGuRPbnZCQXah2Hrxxvzs5ac3OWqUcGAPzL6jyndFJKXpP9uMu2kd1WsXdNFXNxS9CIXuS6vBBhlxmu6djz25CfYGoaGiPUVm5OdJxJMK7ahiGz4kqKFznUmWcXnmy/ZRzMfCEdNe4KrWqBP3hUcU0v6A030HvJQqwDSZY9XRV8ZGJowFwdiy4ZY2Ig4meFLPDodWc+M/GjLw2tJZwT+YyzA18UfW8adLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VV4KsSBphAaiH2NWOLiWOtymQT0+VFehqzQ3XjqSMf8=;
+ b=KLpD48y1nugaGstgmzggJoYioYclOPSXXrnvjvjN1FZK5J8kBrMcA6XXncl7keHmVxSWFPx96rl0TO+XI5iebT5+EfkjwaVET1WIfRsEKG1LF7/+/optQEUcGlQiIhJmEhqU+Fr1dW0qfW/EgqLhyCxH7WZ9TuvnAZtm9xzkaM+vxAvsTFahiayDB8YssWaB/HTbnLQaC7qgTaPwYiBZoC8jPTU2thLN94hWWtdofmPkgw1z95ycrzGQg14iyaZxigV8USP+ssfYS46744N+lk0Oind+wdAGg8FugWIfzo+uKL/tMFM6D4jFnCrwHZlcLCrv2/w3NO4m9qzL5eM9HA==
+Received: from BN0PR04CA0088.namprd04.prod.outlook.com (2603:10b6:408:ea::33)
+ by CY8PR12MB8266.namprd12.prod.outlook.com (2603:10b6:930:79::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 10:09:28 +0000
+Received: from BN3PEPF00022BBB.namprd04.prod.outlook.com
+ (2603:10b6:408:ea:cafe::28) by BN0PR04CA0088.outlook.office365.com
+ (2603:10b6:408:ea::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
+ Nov 2026 10:09:27 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN3PEPF00022BBB.mail.protection.outlook.com (10.167.248.122) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 10:09:27 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 02:09:08 -0800
+Received: from [10.125.206.9] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 02:09:04 -0800
+Message-ID: <a15e59e8-fbfc-430e-a848-79759616287a@nvidia.com>
+Date: Mon, 9 Nov 2026 12:09:00 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,109 +104,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Haoran Wang <haoranwangsec@gmail.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, rostedt@goodmis.org, haoranwangsec@gmail.com
-Subject: [PATCH v3] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-Date: Mon, 09 Nov 2026 18:07:48 +0800
-Message-ID: <20261109180748.33682-1-haoranwangsec@gmail.com>
-In-Reply-To: <CANZ3JQQrrntu0TefPZC79pKSmsOfwAngRJyuaVm81DYaJNFHFQ@mail.gmail.com>
-References: <179241614797.5916.13928836073297916808@whr> <CANZ3JQQrrntu0TefPZC79pKSmsOfwAngRJyuaVm81DYaJNFHFQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rdma-next 16/23] RDMA/mlx5: Ignore completion events for a
+ CQ without a handler
+To: <netdev-bot+sashiko@kernel.org>
+CC: <jgg@ziepe.ca>, <leon@kernel.org>, <linux-rdma@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
+	<mbloch@nvidia.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
+	<dtatulea@nvidia.com>, <moshe@nvidia.com>, <maorg@nvidia.com>
+References: <20261103163949.1554-17-yishaih@nvidia.com>
+ <179408310019.994134.8139150984682840933@kernel.org>
+Content-Language: en-US
+From: Yishai Hadas <yishaih@nvidia.com>
+In-Reply-To: <179408310019.994134.8139150984682840933@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBB:EE_|CY8PR12MB8266:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6dc7fed-9fba-4834-12f1-08df3e4989fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|7416014|22082099003|18002099003|10067099003|4143699003|11063799006|261028144727099003|261102123227099003|261022105027099003|261021123027099003|56012099006|261021135927099003|261021121427099003|261026140227099003|261026121527099003|261009221227099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	aE9KYtcUztBcgY79fk1DlsKcToHtij8Vganp1INYoivGoLjJRL2/PxkryRNpg/dsH/EU6IRkPZYcOGftgP/1SpV6ai+LrgGtUpdB2K2wdI0itxIHqBVJBc4BUn5hAoRRZY1pM5vTTT9ulHrG0beaKSyKRQa+3yT8YvPT09GEgAm2slh8KeM44MPRQdLe2ApWB0Id/T1cpVkEdXdsqDViSJAgP+xHhb6PncVzQ8qLxOufpOtjYHbxltfYcqGhk1S7+ymNP0J9agr/hmbD9DFpFnWSfg8ffUaKT2ym/AO/vteW+2k3PRT+8RXk9CBckvzBw+WaJjEHMym1bKjFwxkJJOIZhdQDaMUROa01gsKq8gTt551fltCZmjDMi4AsTftjXMStta6oSfZiLWxfDC2QZc+nxE8fsjp4MuK4U9w6fWNoNgQX+9D7ZEh47auPqWct25cmhMKODrdeqmar1iOXEH/J/a6AubDjOpW9EFeDvNDVOr9+CRgAa/G4UIMjrRq7iH5VfHHLhsEq6/GKAK5IpZJpzgxUcj9X22DowETfzIGDUVs4O2vVZTlrG1CDxL3E8Q0Ul2uFTtZDKTnvantxKTaDSjERkq1J5AvvPxpMXyEpNyQCVvOG0IgFBZD+mBUMch1Hjs71YCWER+ZT0t2o9t5S+PXwXIf0S8NKlzdktuQ/v2vchr2O+Vsdnh62C9HC0cApDZcgjFonAnSGXTwwtQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(261028144727099003)(261102123227099003)(261022105027099003)(261021123027099003)(56012099006)(261021135927099003)(261021121427099003)(261026140227099003)(261026121527099003)(261009221227099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ODkd3xrhMX2HUDlBq5Zk0VmQVsOWFYW1fPNPWVNYgGR4g0CxtVGJSyti3cbPzN9z44ZE0jSBuy+2W4kPhahEMz/A/lJeAU+SUEX7W+Hum86+wqC4MgCr1uc5q/ulXVGWqGrAVldlJMgSqz09G0JUrzzsKRF7Kn5tRDiaDh3oaH3r4bCsbqQja/21NBhaN0KPrGL2vLXpet5Xdnv8XTehGq+ZhLNc7JwUWzLPVE0w/4QIjIdJZk87K0lb/ZrRLV8q0kSJkt/70BoOzQhcGXW8IBfHDeQc72Cat2xpeTGSFMlnw2qtT6ee8nOOBhKmpzPTEeMmxO74F0fpTtUTybbq48Dhoqw5dNSnIMLCahRpnTEMh4IV8tSBMlBeof89jk6aZvcuP98yVZR3fCKxlmz/EBg9uJYk2/PzgN4KA69G8pCocQ8QcMI8fgv2L7fgcyAk
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 10:09:27.6767
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6dc7fed-9fba-4834-12f1-08df3e4989fe
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BBB.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8266
 
-ppm_get_cpu_entries() disables preemption with get_cpu(), reads the
-current CPU's pool with per_cpu_ptr(), then acquires the pool's
-spin_lock_bh() while preemption is still disabled, and finally put_cpu().
+On 07/11/2026 22:25, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The fix leaves a memory-ordering race on comp_handler.
+> 
+> --
+> 
+> RDMA/mlx5: Ignore completion events for a CQ without a handler
+> 
+> This patch makes mlx5_ib_cq_comp() skip the comp_handler call when no
+> handler is set. The case it targets is devr->c0, which is never armed, but
+> a hostile NIC in adversarial mode can still raise a completion event for
+> it.
+> 
+>> diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
+>> index 5cc86c3f93f3e..f955eb762051d 100644
+>> --- a/drivers/infiniband/hw/mlx5/cq.c
+>> +++ b/drivers/infiniband/hw/mlx5/cq.c
+>> @@ -46,7 +46,12 @@ static void mlx5_ib_cq_comp(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe)
+>>   {
+>>   	struct ib_cq *ibcq = &to_mibcq(cq)->ibcq;
+>>   
+>> -	ibcq->comp_handler(ibcq, ibcq->cq_context);
+>> +	/*
+>> +	 * A CQ created without a handler (devr->c0) is never armed, but a
+>> +	 * hostile NIC can still raise a completion event for it.
+>> +	 */
+>> +	if (ibcq->comp_handler)
+>> +		ibcq->comp_handler(ibcq, ibcq->cq_context);
+> 
+> [Severity: High]
+> For devr->c0 this check is enough, because comp_handler stays NULL for
+> that CQ. Is it also enough for the CQs set up by __ib_alloc_cq()?
+> 
+> The companion commit "RDMA/core: Set the CQ comp_handler after its poll
+> context is set up" relies on this NULL check as a "poll context ready"
+> gate. Neither side of that gate has any ordering, though.
+> 
+> On the writer side, the CQ can be reached from the EQ interrupt once
+> create_cq() puts it in eq->cq_table.tree. The handler is published later
+> with a plain store:
+> 
+> drivers/infiniband/core/cq.c:__ib_alloc_cq() {
+>      ...
+> 	ret = dev->ops.create_cq(cq, &cq_attr, NULL);
+>      ...
+> 	case IB_POLL_SOFTIRQ:
+> 		comp_handler = ib_cq_completion_softirq;
+> 		irq_poll_init(&cq->iop, IB_POLL_BUDGET_IRQ, ib_poll_handler);
+> 		break;
+> 	case IB_POLL_WORKQUEUE:
+> 	case IB_POLL_UNBOUND_WORKQUEUE:
+> 		comp_handler = ib_cq_completion_workqueue;
+> 		INIT_WORK(&cq->work, ib_cq_poll_work);
+> 		cq->comp_wq = ...
+>      ...
+> 	cq->comp_handler = comp_handler;
+>      ...
+> }
+> 
+> On the reader side, mlx5_eq_comp_int() gets the CQ with mlx5_eq_cq_get(),
+> which is an RCU radix_tree_lookup() plus a refcount increment. That orders
+> against the tree insertion, but not against the stores made after it.
+> mlx5_ib_cq_comp() then loads comp_handler twice with plain loads.
+> 
+> Adversarial mode is enabled when cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)
+> is true. That includes arm64 Realm and pKVM guests, and those CPUs are
+> weakly ordered. Take the UMR CQ, which mlx5r_umr_resource_init() allocates
+> with IB_POLL_SOFTIRQ.
+> 
+> Could another CPU see comp_handler == ib_cq_completion_softirq before the
+> memset(), INIT_LIST_HEAD(), weight and poll stores from irq_poll_init()
+> are visible? If so, irq_poll_sched() would link iop onto the per-CPU list.
+> The delayed irq_poll_init() stores could then overwrite iop->state and
+> iop->list while iop is still on that list.
+> 
+> Possible results are per-CPU list corruption, irq_poll_softirq() spinning
+> on a stale entry, or a NULL iop->poll call. For the workqueue cases, the
+> compiler is also free to move the plain comp_handler store ahead of the
+> INIT_WORK() and cq->comp_wq stores. That could lead to queue_work() with a
+> NULL workqueue or an uninitialized work item.
+> 
+> The wmb() in the later ib_req_notify_cq() only helps if the device waits
+> for the arm doorbell, and a hostile device does not wait.
+> 
+> Would it make sense to publish the handler with:
+> 
+> 	smp_store_release(&cq->comp_handler, comp_handler);
+> 
+> in __ib_alloc_cq(), and read it once in mlx5_ib_cq_comp() with:
+> 
+> 	ib_comp_handler h = smp_load_acquire(&ibcq->comp_handler);
+> 
+> 	if (h)
+> 		h(ibcq, ibcq->cq_context);
+> 
+> That also removes the double fetch. KCSAN would likely report the current
+> plain check against the plain store as a data race. Later patches in the
+> series do not change this code.
+> 
+>>   }
+>>   
+>>   static void mlx5_ib_cq_event(struct mlx5_core_cq *mcq, enum mlx5_event type)
+> 
 
-On PREEMPT_RT kernels spin_lock_bh() becomes a sleeping lock
-(rt_spin_lock), so the task may sleep with preempt_count elevated:
-scheduling while atomic, reported as a BUG by CONFIG_DEBUG_ATOMIC_SLEEP
-and a deadlock once the lock is contended.  Any iSCSI offload I/O
-through a Chelsio NIC that reaches ppm_get_cpu_entries() triggers it.
+The race needs a hostile NIC, as a conforming device raises an event 
+only after the CQ is armed. V1 will fix it in mlx5, as only mlx5 
+supports adversarial mode: a kernel CQ will ignore events until its 
+first arm, using a release/acquire pair. This also covers devr->c0, 
+which is never armed.
 
-Read the current CPU with raw_cpu_ptr() without raising preempt_count,
-and derive the global index base from pool->base (initialised when the
-pools are allocated) instead of cpu * pool_index_max, so the base
-always matches the pool that was locked.  The owning CPU remains in the
-debug output, now derived from pool->base.
-
-Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-
----
-(Resent with the complete Cc list; the earlier copy reached only you.)
-
-Hi Sebastian,
-
-thanks for the review.  v3 below addresses your comments:
-
-- The commit message now describes what the patch does; the review
-  rationale moved into the changelog below the --- separator.
-- PREEMPT_RT spelled out.
-- pr_debug() keeps printing the owning CPU of the pool, derived as
-  pool->base / ppm->pool_index_max; the global index stays
-  i + pool->base.
-- Tested on: x86_64, compile-tested with CONFIG_PREEMPT_RT=y and
-  CONFIG_DEBUG_ATOMIC_SLEEP=y; no Chelsio hardware at hand, so the
-  change is not exercised on real offload I/O.
-
-Changes since v2:
-- Keep the owning CPU in the pr_debug() output, derived from
-  pool->base / ppm->pool_index_max (suggested by Sebastian).
-- Reword the commit message to describe what the patch does and move
-  the review discussion into this changelog; spell PREEMPT_RT.
-
-Changes since v1:
-- Drop the cpu variable: read the global-index base from pool->base
-  (initialised at pool allocation) instead of a cpu captured before
-  the lock, so the base is always consistent with the pool that was
-  locked.  The per-CPU pools are shards of the global ppod index
-  space and not tied to the running CPU (ppm_unmark_entries() derives
-  the owning pool from the index itself), so locking another CPU's
-  pool after a migration is a cache-locality matter, not a
-  correctness one.
-
- drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
---- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-+++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-@@ -119,16 +119,13 @@
- 			       unsigned long caller_data)
- {
- 	struct cxgbi_ppm_pool *pool;
--	unsigned int cpu;
- 	int i;
- 
- 	if (!ppm->pool)
- 		return -EINVAL;
- 
--	cpu = get_cpu();
--	pool = per_cpu_ptr(ppm->pool, cpu);
-+	pool = raw_cpu_ptr(ppm->pool);
- 	spin_lock_bh(&pool->lock);
--	put_cpu();
- 
- 	i = ppm_find_unused_entries(pool->bmap, ppm->pool_index_max,
- 				    pool->next, count, 0);
-@@ -145,10 +142,10 @@
- 	spin_unlock_bh(&pool->lock);
- 
- 	pr_debug("%s: cpu %u, idx %d + %d (%d), next %u.\n",
--		 __func__, cpu, i, count, i + cpu * ppm->pool_index_max,
--		pool->next);
-+		 __func__, pool->base / ppm->pool_index_max, i, count,
-+		i + pool->base, pool->next);
- 
--	i += cpu * ppm->pool_index_max;
-+	i += pool->base;
- 	ppm_mark_entries(ppm, i, count, caller_data);
- 
- 	return i;
-@@ -375,6 +372,7 @@
- 
- 		memset(ppool, 0, alloc_sz);
- 		spin_lock_init(&ppool->lock);
-+		ppool->base = count;
- 		count += ppmax;
- 	}
- 
+Yishai
