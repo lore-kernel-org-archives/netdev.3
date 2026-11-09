@@ -1,102 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794262781;
-	b=VBmImhbA1OPhWLsUjz2ILkRg4U1PToLLSyq6I/Ih1vzMsQRbOQ9JjWV/E8aPKqsnD0Xr
-	 IhtTTUv9WZmhEMkRFiDwnOQa9wnTE82p16rtUqWgCCzLleDQmvn3gbRHSZLTKM4/yOFj1
-	 PLbT/gf49yAYZS2wBJMW/0frwf/jvs230ULdbt/Fb+Pp36ETWJhZiwIsddOKLTMsNZgCi
-	 2USA1u2L6YIPv674pc0VSkCKalaKlxqMEJY12n/8l/S3acTwWty7CPkp4x1U17A6KZu8u
-	 GPiUhu5EmGKi4r9mVUl0SxLEhTOhASXNjc8WzfTrPiFGqI0V0o3YM3AfDRcGXyopzmA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262781;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MP+WAilXYUhWawcb62odslULgFQa1HZ4MqYuoDALXQk=;
-	b=LdS9k8QJfMen8+QKYmYoJ24OiNDE0bMbuiF9ghBv8pfAFh1kLPNKxFokgwY0vvDknwgK
-	 eongbz4mo5EU+cuoXBy8nA6ziEFKxCKl/OaL8F6iekguWD/pYR+DUIVcieXc7smSYzVvw
-	 PeWZX1BIhrWo8S0c+FJGo0M1C+iGMFbH8YTJdTq7QHqqjkzET5DcMF0yeFTZ65/2lEP4q
-	 08gENQI9c98rUXgyTb2v0JNBTYkNFKaDu0KDylRHCaW+v6Y1IrxrbHbQ6HxFmBPD6NeWk
-	 +vsh+qGOsj73lOKDpSR1BmGDpI7wzHk+eEQ+xgnuPOHfewW06AIPFaqq8rNhobQbQ3g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=everpuredata.com;
-	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=U+7hfUYf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.50
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794262797;
+	b=kOAMnthMW7qUuPHhyohiBKxBH+NOQ+MO/b7b0PYTkRRja5yEO2y14GmYTtfZHxR6fbFe
+	 AhEAJZ2+Ou2eYp5xJQF0V1uj+CSM+j9rZmIhEwKlcREo50FYXUM221pmfVfouSrVuQ6Ou
+	 srpaphU0KPtrtXQPsltGr5DGVs18lgQvjSESSIlAEMGYNtJFngryAt9dVxyjQgsixcvp8
+	 kjjFDrHahDNOfH5Wx5dZb+anDph3LVPhm/tg0h0hcBFRjAc/4AompmFXERa/ROCLrTTqo
+	 v81tR41EfxxKFho7DWuSqozxGPOzOnbbVDFLiQltjUqhI+VrcMzyvbuPRA1ygNaHj7w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262797;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Nl3oOExTQ74HMckae6PwPrluldj6ZE8tIHdfvvG9Ot8=;
+	b=dhTz3X6KWMRpD8Rv6DvhWUT4tlkTxkiW3WhEzREVI9MDXwtM3FVQtsCEmzOaaEV+ihS+
+	 0D1TEFlBfdeCMIcOQz9FXViaY8bOdgDwM46wwzFuzRWIKWAp/+lEZZeHA6NyyoNLNWsbQ
+	 tso3g6A6EhTpVa0c08mJ3v7RXZ3+e9cYpYKMZ67sSGxgZLhcrLs25DEEEm2QFvdshEF2s
+	 mAnI/gT10dYHj9ZaE1Mk26YGhCJBZc7BlPbj07iomlHrgY5/SEYgodOK5Z2/HdW6aR9Jh
+	 YQa4ByAi13YqOT2fjh5zUv1Dm6+rflI0lB4Ud/aa6hy5WpOzYtQt+HHjyRqo06JR5qw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=njFuq5MS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D460B606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 22:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D460B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EACB60A2611;
+	Mon,  9 Nov 2026 22:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=U+7hfUYf
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-9907a58f14dso326409241.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 14:19:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794262780; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Cxu364GyQRTNvQvznRsAToGVClgAlw1IF4CFUzgGj4BNc00/Ti5mnQg9V7ZuJKxi1U
-         BPKW8/RZmNc/5dgEbPTpj5dY1cbAywEBF61IQzoz3kera6WVzY+/1TY77V4E+x6uUoA4
-         RfUCdmynbiSlTJQMjqv9njDIbBFfrD47QKoSmQIEhlZw+ObpOAcFtBFNi0eCKRzdVDwv
-         NvL01q+ffUcEmQRirM1FifMZC0JS+f1WPqGwF8stEmys7f7FVuiQJzvDKS4QrGYyWypO
-         XmXviDoFifGb421rCq6subxkXMpuMyjSYWcWgMRqKF4EwJu/oUrwNpXm1w+aj6VfEn/+
-         dfPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MP+WAilXYUhWawcb62odslULgFQa1HZ4MqYuoDALXQk=;
-        fh=pdOcMm0rDInj0s9DyaSM5hS4aXXafQxB/2je08AXGpk=;
-        b=LPjOVEadtae7myBticcsrXHpQZrYEVV7ebmk18canHSRhqSK0hHaANwcim/O2d7y/g
-         2Xs5V7Oyrs9cbMCsWcScYITGmx50JKG0mRDH+ytf+Ljz9xGJmvZZsM+kJJEnpReTKEdE
-         n2s+i9TdIPIhiuWyciGjG90+1ObgVtOsavopXzQzBtafrJMogmD8BdA2ZQ3YeYtpXyx8
-         v+F233ErjK6lfK8UYBnYbJ4hI4EE3C0QEBbS99uV3AvzD2VggmbbdTuFk+tRVboDzFg5
-         h9w/E644IfOE9Mm8Iki6C8jWgomKJ8XjQLVHwY7aEKxyy7H/X2zSN7ru+wozHZeD/Sgn
-         cqRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1794262780; x=1794867580; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MP+WAilXYUhWawcb62odslULgFQa1HZ4MqYuoDALXQk=;
-        b=U+7hfUYfJSddCWuUxckhMhwwVvf4YQFBKE3rf1Ffnn40Rejr9+Yh38Ga+vgHW5lrDO
-         u9zBamgBF4E9yKrbFaeNuXsqhU7D4jUwYHCs+p7/lLuhc+nD7UZkoVAxYTimQHOY+eEd
-         FOjF6Rda6TddzuH8q6z+viwpegCRBhwpbr/PDuXBvjfwd/7wVfQSe/cMW/cw3sBAdxbO
-         HrjbeK0dVcCQXC3Z9EPzXDXmSNajinR7ACfLkeWbPE9AeHc6ZU2UJsGI4oXlbjcsP3q4
-         +4M5TmhBAX+zDVdunngxvnmR0/Mm8nRnNwnfUQjk0lbY7olcbMW5erdmQYX1KGJ00t4L
-         ToNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794262780; x=1794867580;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MP+WAilXYUhWawcb62odslULgFQa1HZ4MqYuoDALXQk=;
-        b=mxHJBYVRH07e7fbzQHZ+/oEf0CMObh4t4PfMJfYphJX6p8L0EuOlE9huymoJwKiB95
-         7vpW2g2o/Odai34ix3dnyW7ZeKOPnGNpZ7bgXWL5o9g07ay/91oi2/53xATGYPqh2/u9
-         UgqFOP4Zbia5aGSUFyfGAGzKT1G3PEriYkyKAYkLDo3WWJQ8hCvxMSbIoj3YY9o1QMiS
-         W/nYVxd58YZq2Vk8VvlYCaa8sY91Me/EEwNF11xjA5wgeI1COXfyy5D3svuDstVuM+fT
-         w8ah6U3a5hYOGxCihvZMda1ZNlUuM9XR7Lrw85ALxZc61vIvCckFZqqyMSz9FZ3XKQxd
-         967g==
-X-Forwarded-Encrypted: i=1; AL+hErEkMO9wZpjJvG0+HeZEMXObZKvmpM2HFY3AzMIIrpXuGZdhM1sIy130JIBr57vbsiSrFQiLn/8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ucCoZN9K6LsugnqwuiztC3CnywWLPHSVFk0/8ecB+tFB1x4lb
-	ipuZr6nTZ0iSqtfLT2AcZJX+fFo+4O+nyWLcpXLz+4LWGayv4gw6rCEEG4a+NnIXU6SN2CC7tF+
-	WadRnbOa+VIQXwEzyopCFktjg7IWlJ+zjEu5HLad1Ug==
-X-Gm-Gg: AYBFou20gjhOEl3ADXSbX1hn1irve1PwEdR3Q4VUp30+h6i6fGBtem1V/IVp+mMlaRR
-	K9KHoIsQdR06yuj+gmhFZTjVEKnwENlaFDa0RFJbkgerdg5iPCJk6HhuFfcWonSPPyvkQDGO8uL
-	kKsMHFnlyJ8KYxW1+K1jBAO4tJs3L+bjGpmN1j77YG8GhtXgafsqjhaTP4NUyo242J01jOWE7vJ
-	swSQhQfsyFySoCQmEiG4Fv1meveoh7cUgtOK3/My4fg65Axj3GGQvk8Hf5UIQk2xMy67XQohuEh
-	9dmNI0FOVi5KDenvGZAy4JBqB6DRaao7ARJSuCDwIpvalsmD/0wc9t95Cc03r35ZHYRlmWsVEKU
-	hHCYZEYwfE8creGhnD8qkpnkccmwnsyChXp/1K9q2LzgIOuLC7Tw3lDqd1TXBPJ4tk/glZ8J37V
-	MUCz6U6JbFNAsfqr2CDAao+wpE0NFOBWrKdYgWeA6HxAEOoocVBpbbAY0HuEoNF+5zgVoeG2s90
-	j13JhDa55vHSbGMM58NOCuK
-X-Received: by 2002:a05:6102:a51:b0:7d2:d159:f425 with SMTP id
- ada2fe7eead31-7d301bd171emr279481137.19.1794262779351; Mon, 09 Nov 2026
- 14:19:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=njFuq5MS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132AE1F008A1;
+	Mon,  9 Nov 2026 22:19:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794262797;
+	bh=Nl3oOExTQ74HMckae6PwPrluldj6ZE8tIHdfvvG9Ot8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=njFuq5MSbhNWD+iPwxeZemyqGDrtkevt59lMI/R6DXeWA+G4U0i1Bf7XrZ5GW14bh
+	 /ZwcUoUPCeaji4I1u6F4i+mWEqWoF5MPi5+Tb/U8ERA/6rxQZDb4m5QnMeJn+1cqrK
+	 a4gpVq9oWRl0ipkGNjCs90euBNmOXxvt491afj+gDvED1Lk0G/nRcR0hUSV14DT5+l
+	 QKD2CvTUQcginqywgkkk/WgC29G9s4fdbTh4y7atOwB7w4MC4USFrPHyaWsiYRobUg
+	 2HFQhPSOZLgc4y2c0lb317pW05eHKc4mBlcJEUx2Do1khAPPcVmrWXdtFiDZSCm2D4
+	 mB7aqbTDPgocQ==
+Subject: Re: [PATCH net-next v3 2/2] net: ethernet: mtk_eth_soc: add 9K jumbo
+From: netdev-bot+sashiko@kernel.org
+To: sandeeph@loljews.com
+Cc: netdev@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
+ mason-cw.chang@mediatek.com, frank-w@public-files.de,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 22:19:55 +0000
+Message-ID: <179426279563.994134.6856575949361866323@kernel.org>
+In-Reply-To: <patch-10770ae7af4227d4823574c6689a7a4c@loljews.com>
+References: <patch-10770ae7af4227d4823574c6689a7a4c@loljews.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,349 +66,424 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109114734.2087878-1-tariqt@nvidia.com> <20261109114734.2087878-5-tariqt@nvidia.com>
-In-Reply-To: <20261109114734.2087878-5-tariqt@nvidia.com>
-From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Mon, 9 Nov 2026 14:19:28 -0800
-X-Gm-Features: AclHuK9TsNUujWmbkc3zBgB09FhFzj4OUSQiMJsQdVHQFSB58CNhyZd_ZNz-s24
-Message-ID: <CAKaoeS0AC-czE9g8OWi=+oenZYRsgXjRkSX-BsX2imHhKNW+QA@mail.gmail.com>
-Subject: Re: [RFC net-next 4/7] net/mlx5e: Drain old TX SQs before activating
- new channels
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, 
-	Willem de Bruijn <willemb@google.com>, Alexander Graf <graf@amazon.com>, 
-	Aviad Yehezkel <aviadye@mellanox.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Boris Pismenny <borisp@mellanox.com>, Boris Pismenny <borisp@nvidia.com>, 
-	Carolina Jubran <cjubran@nvidia.com>, Costa Shulyupin <costa.shul@redhat.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Eran Ben Elisha <eranbe@mellanox.com>, Gal Pressman <gal@nvidia.com>, 
-	Ilya Lesokhin <ilyal@mellanox.com>, Jacob Keller <jacob.e.keller@intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky <leon@kernel.org>, linux-doc@vger.kernel.org, 
-	open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org, 
-	Mark Bloch <mbloch@nvidia.com>, Martin Karsten <mkarsten@uwaterloo.ca>, 
-	Randy Dunlap <rdunlap@infradead.org>, Richard Cochran <richardcochran@gmail.com>, 
-	Saeed Mahameed <saeedm@mellanox.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Stanislav Fomichev <sdf.kernel@gmail.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, Tariq Toukan <tariqt@mellanox.com>, 
-	Wang Zhan <wang.zhan@smartx.com>, William Tu <witu@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 9, 2026 at 3:49=E2=80=AFAM Tariq Toukan <tariqt@nvidia.com> wro=
-te:
->
-> On devices with tis_tir_td_order, commit 3b88a535a8e1 ("net/mlx5e:
-> Defer channels closure to reduce interface down time") closes the old
-> channels only after the new ones are activated. Their SQs are
-> deactivated before that, which rings a final doorbell, but nothing
-> waits for the HW to execute their pending WQEs: the completions of a
-> deactivated SQ are not polled, and the SQ is destroyed only when its
-> channel is closed. Meanwhile, the new SQ of the same TX queue starts
-> transmitting. A flow's WQEs still pending on the old SQ can then
-> execute after its newer WQEs on the new SQ, as WQE fences order only
-> within an SQ.
->
-> Besides reordering packets, this breaks kTLS TX offload. The WQEs of a
-> connection update its TIS crypto and record tracking state as they
-> execute. When old WQEs execute after new ones, e.g. because a PFC
-> pause held the old SQ back, the TIS state gets out of sync with the
-> TCP stream, and the connection's records go out corrupted.
->
-> Before activating the new channels, drain the TX SQs of the old ones:
-> reap their completions until all their WQEs have completed. If they
-> do not drain in time, e.g. under a long pause, warn, and close the old
-> channels before activating the new ones, as before that commit. Move
-> the deferred closure into mlx5e_switch_priv_channels(), next to that
-> decision.
->
-> Pointed out by Rishikesh Jethwani while discussing kTLS TX TIS reuse
-> for TLS 1.3 rekey on netdev.
->
-> Reproduced on ConnectX-6 Dx, with 248 channels, by changing the
-> channel count between 247 and 248 every 2 seconds while 32 kTLS TX
-> offloaded connections stream pattern data to a software kTLS receiver
-> that checks every byte. On this setup, the new channels are activated
-> about 230 ms after the old ones are deactivated, so the old SQs must
-> still hold WQEs by then: with every TX queue rate limited to 10 Mb/s,
-> 9 of 41 connections failed decryption in 60 seconds, and 11 of 43 in
-> 120 seconds. With this patch, no record failed in five such runs, 7
-> minutes in total; the drain timed out and fell back to closing the old
-> channels first 7 times. At 1 Gb/s per queue, the old SQs always
-> drained in time.
->
-> Fixes: 3b88a535a8e1 ("net/mlx5e: Defer channels closure to reduce interfa=
-ce down time")
-> Reported-by: Rishikesh Jethwani <rjethwani@everpuredata.com>
-> Closes: https://lore.kernel.org/netdev/CAKaoeS1hj9XuM7ojLBCjGA=3DEXc2M-b+=
-eRjC2Sk=3D8L_8XYeJ18w@mail.gmail.com/
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  .../net/ethernet/mellanox/mlx5/core/en/txrx.h |  1 +
->  .../net/ethernet/mellanox/mlx5/core/en_main.c | 88 ++++++++++++++++++-
->  .../net/ethernet/mellanox/mlx5/core/en_tx.c   | 41 +++++++--
->  3 files changed, 118 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/=
-net/ethernet/mellanox/mlx5/core/en/txrx.h
-> index 24e91279243e..b5bd1b6e8601 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-> @@ -112,6 +112,7 @@ struct mlx5e_xmit_data_frags {
->
->  netdev_tx_t mlx5e_xmit(struct sk_buff *skb, struct net_device *dev);
->  bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget);
-> +bool mlx5e_txqsq_drain(struct mlx5e_txqsq *sq);
->  void mlx5e_free_txqsq_descs(struct mlx5e_txqsq *sq);
->
->  static inline bool
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/=
-net/ethernet/mellanox/mlx5/core/en_main.c
-> index c3c2c5720c6f..a721e30bcaa8 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> @@ -3421,6 +3421,82 @@ static int mlx5e_switch_priv_params(struct mlx5e_p=
-riv *priv,
->         return 0;
+Thank you for your contribution! Sashiko AI review found 11 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 · Medium: 5 · Low: 5
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] mtk_xdp_setup() can accept an XDP program that then never runs.
+- [Medium] The patch changes the GMAC MCR max-RX limit on every non-
+  MT7628 SoC, not just MT7988.
+- [Medium] mtk_pdma_set_sdl() writes `FIELD_PREP(GENMASK(30,16),
+  MTK_PDMA_LRO_SDL + eth->rx_buf_len)` into PDMA RX_CFG (0x6a10) on…
+- [Medium] Normal and QDMA RX rings now use high-order compound pages
+  whenever frag_size > PAGE_SIZE: `mtk_max_buf_alloc(ring->frag_size,…
+- [Medium] On MT7988, GMAC1 (built-in switch, DT phy-mode 'internal')
+  counts as XGMII in mtk_interface_mode_is_xgmii(), so mtk_add_mac()…
+- [Medium] In the XGMII branch, mtk_set_mcr_max_rx() writes the exact
+  byte value it receives into MTK_XMAC_RX_CFG2[13:0] (`min_t(u32, val,…
+- [Low] The commit message says the patch programs the PDMA RX SDL
+  'replacing the field instead of OR-ing into the value already there',…
+- [Low] The stated motivation is to let DSA raise the conduit MTU for 9K,
+  but the -EBUSY check in mtk_change_mtu() (lines 4453-4455) tests the…
+- [Low] The commit message says the patch is a forward-port of Mason
+  Chang's 'change default rx buffer length' and 'add 9k jumbo frame…
+- [Low] The comment above the page_pool gate in mtk_rx_alloc() (lines
+  2865-2871) is now wrong in two ways.
+- [Low] The comment in mtk_dma_init() (lines 3360-3364) says
+  eth->rx_buf_len is 'Derived here, at ring allocation, so…
+
+--
+
+net: ethernet: mtk_eth_soc: add 9K jumbo
+
+This adds a MTK_NETSYS_RX_9K capability for MT7988 and advertises a 9K
+max_mtu on the XGMII MACs. The shared RX rings are sized from the largest
+MTU of any MAC, and the GMAC/XMAC max-rx limits and the PDMA RX SDL are
+programmed from that shared length. While DMA is running, MTU increases
+that need larger buffers fail with -EBUSY, and XDP is rejected when the
+buffer length is larger than MTK_PP_MAX_BUF_SIZE.
+
+Link: https://github.com/frank-w/BPI-Router-Linux/commit/b4c6cb1d5532
+Link: https://github.com/mediatek/mtk-openwrt-feeds
+
+> - program the PDMA RX SDL max frame from the shared buffer length,
+>   replacing the field instead of OR-ing into the value already there;
+
+[Severity: Low]
+Is this description accurate? In the baseline, MTK_PDMA_LRO_SDL and
+MTK_RX_CFG_SDL_OFFSET are only defined in mtk_eth_soc.h. Nothing in
+mtk_eth_soc.c uses them, and this patch adds the .rx_cfg reg map entry.
+
+So there was no OR-ing to replace. The patch adds a new write to PDMA
+RX_CFG through mtk_pdma_set_sdl(). It runs on every MT7988 DMA init and
+on MTU changes while DMA is down, including at the default 1500 MTU.
+
+Could the commit message say this is a new register write and not a fix
+to existing behaviour?
+
+> This is a forward-port of the MediaTek downstream jumbo work: Mason
+> Chang's "change default rx buffer length" and "add 9k jumbo frame
+> support" (MediaTek OpenWrt feed 999-eth-30/31, carried in
+> frank-w/BPI-Router-Linux), plus Frank Wunderlich's "try to fix crash the
+> right way".
+
+[ ... ]
+
+> Signed-off-by: Sandeep Haemoon <sandeeph@loljews.com>
+
+[Severity: Low]
+Should this carry credit tags for the original authors? The only trailer
+is the submitter's Signed-off-by. There is no Co-developed-by: and
+Signed-off-by: pair for Mason Chang or Frank Wunderlich, and no original
+From:. Documentation/process/submitting-patches.rst asks for these when
+porting someone else's work.
+
+> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> index f2b2fb1130ff9..c7bc8eaea7ab0 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+
+[ ... ]
+
+> @@ -554,6 +555,41 @@ static int mtk_mac_prepare(struct phylink_config *config, unsigned int mode,
+>  	return 0;
 >  }
->
-> +/* Time for the TX SQs of deactivated channels to complete their WQEs. *=
-/
-> +#define MLX5E_SQ_DRAIN_TIMEOUT 100 /* msecs */
-> +
-> +/* Returns 1 if the SQ still has pending WQEs, and records the first suc=
-h SQ. */
-> +static int mlx5e_drain_txqsq(struct mlx5e_txqsq *sq,
-> +                            struct mlx5e_txqsq **pending)
+>  
+> +static void mtk_set_mcr_max_rx(struct mtk_mac *mac, u32 val)
 > +{
-> +       if (mlx5e_txqsq_drain(sq))
-> +               return 0;
+> +	struct mtk_eth *eth = mac->hw;
+> +	u32 mcr_cur, mcr_new;
 > +
-> +       if (!*pending)
-> +               *pending =3D sq;
+> +	if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
+> +		return;
 > +
-> +       return 1;
-> +}
-> +
-> +/* Returns the number of the channel's TX SQs that still have pending WQ=
-Es. */
-> +static int mlx5e_drain_channel_txqsqs(struct mlx5e_channel *c,
-> +                                     struct mlx5e_txqsq **pending)
+> +	if (!mtk_interface_mode_is_xgmii(eth, mac->interface)) {
+> +		mcr_cur = mtk_r32(mac->hw, MTK_MAC_MCR(mac->id));
+> +		mcr_new = mcr_cur & ~MAC_MCR_MAX_RX_MASK;
+
+[ ... ]
+
+> +	} else if (mtk_is_netsys_v3_or_greater(mac->hw) &&
+> +		   mac->id != MTK_GMAC1_ID) {
+
+[Severity: Medium]
+After this patch, does anything program an RX length limit for GMAC1 on
+MT7988? GMAC1 is the built-in switch port with phy-mode internal, and
+mtk_interface_mode_is_xgmii() treats PHY_INTERFACE_MODE_INTERNAL as
+XGMII.
+
+Once mtk_mac_config() sets mac->interface to INTERNAL, the MCR branch
+above is skipped because the interface is XGMII. This branch is then
+skipped by the mac->id != MTK_GMAC1_ID check.
+
+Next, mtk_mac_config() does:
+
+	if (mtk_interface_mode_is_xgmii(eth, state->interface)) {
+		mtk_w32(mac->hw, MTK_GDMA_XGDM_SEL, MTK_GDMA_EG_CTRL(mac->id));
+		mtk_w32(mac->hw, MAC_MCR_FORCE_LINK_DOWN, MTK_MAC_MCR(mac->id));
+
+That leaves MAX_RX in MTK_MAC_MCR(0) at the 1518 encoding.
+mtk_xgdm_mac_link_up() also returns early for GMAC1. In the baseline,
+mtk_change_mtu() wrote MAX_RX into MTK_MAC_MCR(0).
+
+At the same time, mtk_add_mac() advertises a 9K max_mtu for GMAC1,
+because INTERNAL counts as XGMII.
+
+Depending on the hardware, one of two things seems to follow. Either 9K
+never works on the DSA conduit, or GMAC1 has no programmed limit at all.
+In the second case, does the commit message's "no MAC accepts a frame
+the rings cannot hold" hold for this MAC?
+
+> +		mcr_cur = mtk_r32(mac->hw, MTK_XMAC_RX_CFG2(mac->id));
+> +		mcr_new = mcr_cur & ~MTK_XMAC_MAX_RX_MASK;
+> +		mcr_new |= FIELD_PREP(MTK_XMAC_MAX_RX_MASK,
+> +				      min_t(u32, val, MTK_MAX_RX_LENGTH_9K));
+
+[Severity: Medium]
+Unlike the coarse buckets used for the GMAC MCR, this writes the exact
+byte value into XMAC_RX_CFG2. mtk_change_mtu() passes:
+
+	int length = new_mtu + MTK_RX_ETH_HLEN;
+
+and MTK_RX_ETH_HLEN is ETH_HLEN + ETH_FCS_LEN, with no VLAN_HLEN.
+
+Shrinking the MTU is allowed while running. After a runtime shrink to
+MTU 1500 on MT7988 GMAC2, the XMAC limit becomes 1518. Would full-size
+802.1Q tagged frames (1522 bytes) then be dropped by the MAC, even
+though the rings hold at least 2048 bytes?
+
+Likewise, at max_mtu the limit is capped at 9216, so tagged frames at
+max_mtu could not be received either.
+
+mtk_mac_config() also writes eth->rx_buf_len (at least 2048) into this
+register on every open. The effective limit then depends on whether the
+last operation was an MTU change or a reopen.
+
+[ ... ]
+
+> @@ -649,6 +685,13 @@ static void mtk_mac_config(struct phylink_config *config, unsigned int mode,
+>  		mac->interface = state->interface;
+>  	}
+>  
+> +	/* What a MAC may accept is a property of the shared RX rings, so
+> +	 * rewrite the limit on every mac_config and not only when the
+> +	 * interface mode changes: a reopen after an MTU change must narrow
+> +	 * the MACs that still carry the previous, larger limit.
+> +	 */
+> +	mtk_set_mcr_max_rx(mac, eth->rx_buf_len);
+
+[Severity: Medium]
+Is it intended that this affects every non-MT7628 SoC, and not only
+MT7988?
+
+mtk_rx_buf_len_from_mtu() never returns less than MTK_MAX_RX_LENGTH_2K.
+Every open goes through
+phylink_start()->phylink_mac_initial_config()->mtk_mac_config(). So on
+MT7621/7622/7623/7629/7981/7986 the GMAC MCR now gets
+MAC_MCR_MAX_RX_2048 at any MTU.
+
+In the baseline, mtk_mac_config() did not touch this field, and
+mtk_hw_init() used dev->mtu + MTK_RX_ETH_HLEN. A 1500 MTU interface got
+the 1518 bucket and a 1504 DSA conduit got 1536. mtk_hw_init() now uses
+eth->rx_buf_len as well.
+
+So on all of these SoCs, frames up to 2048 bytes are accepted at a 1500
+MTU, where before they were dropped and counted as rx_long_errors. The
+commit message doesn't seem to mention this change.
+
+mtk_change_mtu() also still calls:
+
+	mtk_set_mcr_max_rx(mac, length);
+
+with the per-device new_mtu + MTK_RX_ETH_HLEN. Doesn't that make the
+same MTU give a different hardware limit, depending on whether an MTU
+change or a reopen happened last?
+
+[ ... ]
+
+> @@ -2310,7 +2352,8 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+>  			if (ring->frag_size <= PAGE_SIZE)
+>  				new_data = napi_alloc_frag(ring->frag_size);
+>  			else
+> -				new_data = mtk_max_lro_buf_alloc(GFP_ATOMIC);
+> +				new_data = mtk_max_buf_alloc(ring->frag_size,
+> +							     GFP_ATOMIC);
+
+[Severity: Medium]
+With a 9K MTU, the normal and QDMA rings now take this path.
+mtk_max_buf_alloc() allocates whole pages:
+
+	data = __get_free_pages(gfp_mask | __GFP_COMP | __GFP_NOWARN,
+				get_order(size));
+
+For a frag_size of about 9.6K that is 16 KiB. Later in mtk_poll_rx(),
+the skb is still built with:
+
+	skb = build_skb(data, ring->frag_size);
+
+So skb->truesize comes from frag_size, not from the 16 KiB actually
+allocated. Does that under-report the memory pinned by each skb by
+about 40%? Remote traffic could then pin about 1.7x what the socket
+rcvbuf and tcp_mem limits allow.
+
+Before this patch only the HWLRO rings had this mismatch. Now it covers
+every RX buffer once any MAC's MTU is above about 3.5K.
+
+[ ... ]
+
+> @@ -2812,8 +2855,8 @@ static int mtk_rx_alloc(struct mtk_eth *eth, int ring_no, int rx_flag)
+>  		rx_dma_size = soc->rx.dma_size;
+>  	}
+>  
+> -	ring->frag_size = mtk_max_frag_size(rx_data_len);
+> -	ring->buf_size = mtk_max_buf_size(ring->frag_size);
+> +	ring->frag_size = mtk_max_frag_size(eth, rx_data_len);
+> +	ring->buf_size = mtk_max_buf_size(eth, ring->frag_size);
+
+[Severity: Low]
+This isn't a bug, but the comment a few lines below, above the page_pool
+check in mtk_rx_alloc(), is now stale:
+
+	 * length fits that.  Today every ring does; this is the preparation
+	 * for the 9K support in the next patch, where the normal ring grows
+	 * past the pool's limit and takes the netdev_alloc_frag()/
+	 * mtk_max_lro_buf_alloc() path below instead.
+
+This patch renames mtk_max_lro_buf_alloc() to mtk_max_buf_alloc(). This
+patch is also the 9K support. With eth->rx_buf_len up to 9216, not every
+ring fits MTK_PP_MAX_BUF_SIZE any more.
+
+[ ... ]
+
+> @@ -3256,6 +3300,55 @@ static int mtk_dma_busy_wait(struct mtk_eth *eth)
+
+[ ... ]
+
+> +static void mtk_pdma_set_sdl(struct mtk_eth *eth)
 > +{
-> +       struct mlx5e_txqsq __rcu **qos_sqs;
-> +       int num_pending =3D 0;
-> +       int i;
+> +	const struct mtk_reg_map *reg_map = eth->soc->reg_map;
+> +	u32 val;
 > +
-> +       for (i =3D 0; i < c->num_tc; i++)
-> +               num_pending +=3D mlx5e_drain_txqsq(&c->sq[i], pending);
+> +	if (!mtk_is_netsys_v3_or_greater(eth))
+> +		return;
 > +
-> +       qos_sqs =3D mlx5e_state_dereference(c->priv, c->qos_sqs);
-> +       if (!qos_sqs)
-> +               return num_pending;
-> +
-> +       for (i =3D 0; i < c->qos_sqs_size; i++) {
-> +               struct mlx5e_txqsq *sq;
-> +
-> +               sq =3D mlx5e_state_dereference(c->priv, qos_sqs[i]);
-> +               if (sq)
-> +                       num_pending +=3D mlx5e_drain_txqsq(sq, pending);
-> +       }
-> +
-> +       return num_pending;
-> +}
-> +
-> +/* Wait for the TX SQs of deactivated channels to complete all their WQE=
-s,
-> + * so that none of them executes concurrently with the new SQs.
-> + * The PTP SQs are not waited for, they carry PTP event packets only.
-> + */
+> +	val = mtk_r32(eth, reg_map->pdma.rx_cfg);
+> +	val &= ~MTK_RX_CFG_SDL_MASK;
+> +	val |= FIELD_PREP(MTK_RX_CFG_SDL_MASK,
+> +			  MTK_PDMA_LRO_SDL + eth->rx_buf_len);
+> +	mtk_w32(eth, val, reg_map->pdma.rx_cfg);
 
-The regular/QoS drain and the timeout ordering look right to me. The
-PTP SQs can carry TLS data, though. Their indices are in
-real_num_tx_queues and txq2sq, and egress skbedit can select them,
-bypassing mlx5e_select_queue(). mlx5e_xmit() runs the kTLS handling on
-any SQ, and does not reject a non-timestamped skb on a PTP SQ.
+[Severity: Medium]
+Is MTK_PDMA_LRO_SDL + eth->rx_buf_len the intended value? The comment in
+mtk_dma_init() says the SDL is programmed "from rx_buf_len so jumbo
+frames up to it are accepted by the DMA engine".
 
-If a PTP SQ holds TLS WQEs during a channel replacement, the drain can
-succeed while its TX queue index is reused, by the replacement PTP SQ
-or by a new regular SQ after a channel count change. With one TC,
-growing from 247 to 248 channels changes index 247 from PTP to the new
-regular channel's SQ. A fixed skbedit rule still selects 247, and patch
-7's owner-index comparison permits new TLS work there while the old
-PTP SQ is still pending and not yet destroyed.
+The code writes 0x3800 (14336) at 2K and 0x5400 (21504) at 9K. That is
+about 12 KiB more than both rx_buf_len and the per-descriptor
+ring->buf_size.
 
-I'd prefer to include the PTP SQs in the drain/close ordering.
-Rejecting TLS data on them before any connection-state change or TLS
-WQE posting would also be safe, but with a fixed skbedit rule every
-retransmit goes back to the same queue and is dropped again, stalling
-the connection. Excluding their indices only in queue selection does
-not cover skbedit.
+MTK_PDMA_LRO_SDL is 0x3000, the same as MTK_MAX_LRO_RX_LENGTH. That is
+an HW LRO constant, and MT7988 does not use HW LRO here.
 
-> +static bool mlx5e_drain_channels_txqsqs(struct mlx5e_channels *chs)
-> +{
-> +       unsigned long exp_time;
+The new MTK_RX_CFG_SDL_MASK, GENMASK(30, 16), sits under the "PDMA Global
+Configuration Register" comment in mtk_eth_soc.h but is applied to
+rx_cfg. At 9K, + and | give different values (0x5400 vs 0x3400), and the
+write sets bit 30. If the real field is narrower, could this overwrite a
+neighbouring RX_CFG control bit?
+
+This register was never written before, so every MT7988 board now loses
+its reset default, even at the default 1500 MTU. Is the field layout
+documented somewhere?
+
+[ ... ]
+
+> @@ -3784,7 +3877,8 @@ static int mtk_xdp_setup(struct net_device *dev, struct bpf_prog *prog,
+>  		return -EOPNOTSUPP;
+>  	}
+>  
+> -	if (dev->mtu > MTK_PP_MAX_BUF_SIZE) {
+> +	if (dev->mtu > MTK_PP_MAX_BUF_SIZE ||
+> +	    mtk_rx_buf_len(eth) > MTK_PP_MAX_BUF_SIZE) {
+
+[Severity: High]
+Can this accept an XDP program that never runs?
+
+mtk_rx_buf_len() recomputes the length from the current MTUs, but the
+live rings were built from eth->rx_buf_len. mtk_change_mtu() allows a
+shrink while DMA is running and leaves eth->rx_buf_len unchanged, so the
+two values can differ.
+
+On MT7988:
+
+1. Set GMAC2 to MTU 9000 while it is down, then bring up GMAC2 and
+   GMAC1. mtk_dma_init() sets eth->rx_buf_len to 9216, so
+   ring->buf_size is larger than MTK_PP_MAX_BUF_SIZE and
+   mtk_rx_alloc() creates no page_pool.
+
+2. Run "ip link set <gmac2> mtu 1500" while it is running. The old 9000
+   MTU still gives 9216, which is not larger than eth->rx_buf_len, so
+   there is no -EBUSY and the rings stay at 9K.
+
+3. Attach XDP to either netdev. dev->mtu is 1500 and mtk_rx_buf_len(eth)
+   is 2048, so this check passes.
+
+If the target is running, mtk_stop() returns early here, because the
+other MAC still holds a reference:
+
+	if (!refcount_dec_and_test(&eth->dma_refcnt))
+		return 0;
+
+mtk_open() then only does refcount_inc(). If the target is down,
+nothing is reopened. Either way the rings are not rebuilt.
+
+mtk_poll_rx() only calls mtk_xdp_run() inside if (ring->page_pool). So
+every packet goes through build_skb() and up the stack while the program
+shows as attached.
+
+The commit message says this case is rejected "instead of letting a
+program attach and never run". Should this check also look at
+eth->rx_buf_len, or at whether the live rings have a page_pool?
+
+[ ... ]
+
+> @@ -4357,14 +4427,33 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+>  	int length = new_mtu + MTK_RX_ETH_HLEN;
+>  	struct mtk_mac *mac = netdev_priv(dev);
+>  	struct mtk_eth *eth = mac->hw;
+> +	bool running;
+> +	u32 rx_buf_len;
+>  	int max_mtu, i;
+>  
+> +	/* The RX rings are shared by every MAC, so the buffer length follows
+> +	 * the largest MTU of all of them, including the new one.
+> +	 */
+> +	max_mtu = mtk_max_gmac_mtu(eth);
+> +	if (new_mtu > max_mtu)
+> +		max_mtu = new_mtu;
+> +	rx_buf_len = mtk_rx_buf_len_from_mtu(max_mtu);
+
+[ ... ]
+
+> +	running = refcount_read(&eth->dma_refcnt);
+> +	if (running && rx_buf_len > eth->rx_buf_len)
+> +		return -EBUSY;
+
+[Severity: Low]
+running comes from the DMA refcount that all MACs share, not from
+whether this netdev is up.
+
+On MT7988 boards where any other GMAC is up (for example a WAN port on
+GMAC2 or GMAC3), raising the DSA conduit to a jumbo MTU returns -EBUSY,
+even if the conduit itself is down. dsa_user_change_mtu() passes that
+error back to the user port.
+
+DSA brings the conduit up whenever a user port is up. Wouldn't raising a
+user port MTU on a live system then always fail, so that 9K DSA only
+works once every GMAC is down?
+
+The commit message describes the -EBUSY rule, but not that it limits the
+DSA flow it is meant to enable.
+
 > +
-> +       exp_time =3D jiffies + msecs_to_jiffies(MLX5E_SQ_DRAIN_TIMEOUT);
-> +       for (;;) {
-> +               struct mlx5e_txqsq *pending =3D NULL;
-> +               int num_pending =3D 0;
-> +               int i;
-> +
-> +               for (i =3D 0; i < chs->num; i++)
-> +                       num_pending +=3D mlx5e_drain_channel_txqsqs(chs->=
-c[i],
-> +                                                                 &pendin=
-g);
-> +
-> +               if (!num_pending)
-> +                       return true;
-> +
-> +               if (time_after(jiffies, exp_time)) {
-> +                       netdev_warn(pending->netdev,
-> +                                   "Old TX SQs not drained in %d msecs (=
-%d pending, e.g. SQ 0x%x txq %d cc 0x%x pc 0x%x), closing the old channels =
-first\n",
-> +                                   MLX5E_SQ_DRAIN_TIMEOUT, num_pending,
-> +                                   pending->sqn, pending->txq_ix,
-> +                                   pending->cc, pending->pc);
-> +                       return false;
-> +               }
-> +
-> +               usleep_range(10, 20);
-> +       }
-> +}
-> +
->  static int mlx5e_switch_priv_channels(struct mlx5e_priv *priv,
->                                       struct mlx5e_channels *old_chs,
->                                       struct mlx5e_channels *new_chs,
-> @@ -3428,6 +3504,7 @@ static int mlx5e_switch_priv_channels(struct mlx5e_=
-priv *priv,
->                                       void *context)
->  {
->         struct net_device *netdev =3D priv->netdev;
-> +       bool defer_close =3D false;
->         int carrier_ok;
->         int err =3D 0;
->
-> @@ -3450,7 +3527,10 @@ static int mlx5e_switch_priv_channels(struct mlx5e=
-_priv *priv,
->         }
->
->         mlx5e_set_xdp_feature(priv);
-> -       if (!MLX5_CAP_GEN(priv->mdev, tis_tir_td_order))
-> +
-> +       defer_close =3D MLX5_CAP_GEN(priv->mdev, tis_tir_td_order) &&
-> +                     mlx5e_drain_channels_txqsqs(old_chs);
-> +       if (!defer_close)
->                 mlx5e_close_channels(old_chs);
->         priv->profile->update_rx(priv);
->
-> @@ -3462,6 +3542,9 @@ static int mlx5e_switch_priv_channels(struct mlx5e_=
-priv *priv,
->         if (carrier_ok)
->                 netif_carrier_on(netdev);
->
-> +       if (defer_close)
-> +               mlx5e_close_channels(old_chs);
-> +
->         return err;
+>  	mtk_set_mcr_max_rx(mac, length);
+>  	WRITE_ONCE(dev->mtu, new_mtu);
+>  
+> @@ -4372,6 +4461,11 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+>  	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
+>  		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
+>  
+> +	if (!running) {
+> +		eth->rx_buf_len = rx_buf_len;
+> +		mtk_pdma_set_sdl(eth);
+> +	}
+
+[Severity: Low]
+The comment in mtk_dma_init() says eth->rx_buf_len is "Derived here, at
+ring allocation, so eth->rx_buf_len always describes the buffers the
+rings actually hold". Here it is assigned while no rings exist.
+
+rx_buf_len is also computed from mtk_max_gmac_mtu() before
+WRITE_ONCE(dev->mtu, new_mtu), so this device's old MTU still counts.
+
+For example, shrinking the only 9000 MTU device to 1500 while it is down
+leaves eth->rx_buf_len at 9216 and the SDL programmed for 9216.
+mtk_xdp_setup() computes 2048 from the new MTUs, so the two disagree
+until the next mtk_dma_init() recomputes the value.
+
+Should this use the new MTUs, or leave eth->rx_buf_len to mtk_dma_init()?
+
+>  	return 0;
 >  }
->
-> @@ -3499,9 +3582,6 @@ int mlx5e_safe_switch_params(struct mlx5e_priv *pri=
-v,
->         if (err)
->                 goto err_close;
->
-> -       if (MLX5_CAP_GEN(priv->mdev, tis_tir_td_order))
-> -               mlx5e_close_channels(old_chs);
-> -
->         kfree(new_chs);
->         kfree(old_chs);
->         return 0;
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/ne=
-t/ethernet/mellanox/mlx5/core/en_tx.c
-> index bee6f0bf1eff..eb20e3d14d46 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-> @@ -780,10 +780,11 @@ void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq)
->         }
->  }
->
-> -bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
-> +/* Returns the number of polled CQEs. */
-> +static int mlx5e_poll_tx_cqes(struct mlx5e_txqsq *sq, int napi_budget)
->  {
-> +       struct mlx5e_cq *cq =3D &sq->cq;
->         struct mlx5e_sq_stats *stats;
-> -       struct mlx5e_txqsq *sq;
->         struct mlx5_cqe64 *cqe;
->         u32 dma_fifo_cc;
->         u32 nbytes;
-> @@ -791,14 +792,9 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_=
-budget)
->         u16 sqcc;
->         int i;
->
-> -       sq =3D container_of(cq, struct mlx5e_txqsq, cq);
-> -
-> -       if (unlikely(!test_bit(MLX5E_SQ_STATE_ENABLED, &sq->state)))
-> -               return false;
-> -
->         cqe =3D mlx5_cqwq_get_cqe(&cq->wq);
->         if (!cqe)
-> -               return false;
-> +               return 0;
->
->         stats =3D sq->stats;
->
-> @@ -891,11 +887,40 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi=
-_budget)
->
->         netdev_tx_completed_queue(sq->txq, npkts, nbytes);
->
-> +       return i;
-> +}
-> +
-> +bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
-> +{
-> +       struct mlx5e_txqsq *sq =3D container_of(cq, struct mlx5e_txqsq, c=
-q);
-> +       int i;
-> +
-> +       if (unlikely(!test_bit(MLX5E_SQ_STATE_ENABLED, &sq->state)))
-> +               return false;
-> +
-> +       i =3D mlx5e_poll_tx_cqes(sq, napi_budget);
-> +       if (!i)
-> +               return false;
-> +
->         mlx5e_txqsq_wake(sq);
->
->         return (i =3D=3D MLX5E_TX_CQ_POLL_BUDGET);
->  }
->
-> +/* Reap the completions of a deactivated SQ, whose NAPI is disabled, wit=
-hout
-> + * waking its TX queue. Returns true once all its WQEs have completed.
-> + */
-> +bool mlx5e_txqsq_drain(struct mlx5e_txqsq *sq)
-> +{
-> +       int polled;
-> +
-> +       do {
-> +               polled =3D mlx5e_poll_tx_cqes(sq, 0);
-> +       } while (polled =3D=3D MLX5E_TX_CQ_POLL_BUDGET);
-> +
-> +       return sq->cc =3D=3D sq->pc;
-> +}
-> +
->  static void mlx5e_tx_wi_kfree_fifo_skbs(struct mlx5e_txqsq *sq, struct m=
-lx5e_tx_wqe_info *wi)
->  {
->         int i;
-> --
-> 2.44.0
->
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/patch-aad4cfa8d9522d1f7dbc9893ea12e813%40loljews.com
