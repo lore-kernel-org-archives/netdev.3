@@ -1,56 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794222550;
-	b=UlGF9RDbp1y8t0UXDhXaG0/2l4oFl7NlYbrUZC15LBDQ233mGkguhUka2j/6IRE2Y9fJ
-	 gEZXZEPKjgMOHJMABS53TePcvrqEv8TBRS2sHF/2GLUZb7u2n0mb+0qmuC4oMWjkFsyvf
-	 YEjigSIVbEUDnpz0TibLMS7tPoZdb+tUl1WI1tnc6EFYmkqPbXUUOyuYvGHEU9BrAceyz
-	 hzjj6R8utgyVMAes+za6e8CS6+tKb2d+gkOq25c8xxsFyTfn/bAx4ia8/c4UUFRP/cpdz
-	 YrVHKX8vPyU1XlhmkRLZZsByfpiyYqLi9ybe/gWiPI+MtdrIySRT/reErEmKtHCmLng==
+	t=1794223497;
+	b=SNAbSIw2jTSvGziaNHdysffKSaF4QCxS4JpIG0zOEGhZ6W6CfbKAMvfsJ5g6+D8aqFo8
+	 vlSrMedaO4MwCYB6c8tG0g0pgE7c3C5MFGuAKLYfrme5b9kYZsQzkUXy2btdE1Y/4QHAQ
+	 8SFVToZKfrhHr++8estGtfe7SCSZ/mLBofe2Plih6r+aBinhPU0nkV4n3Eq4L/A/tRHvL
+	 xfVifQKwefZIe45suelxXDbv4iyrEbUBCBvSVpg5DcP2I00s57zV66Srz5n+09/Jd1lYN
+	 pvXmzG2scg/psck8zkvzZ05DzYzwZIOL9J647a3ISZp18nBrMXeqelNdhab+UT2WbdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794222550;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794223497;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=aOodfZE2ZLJT1tt72r9gxw/AwWXvUZO8hln4ZVGINpQ=;
-	b=oT0VGJEMgO1aFCQLT6MLOiHyhF6UBm11OSy8vzU80uXx/Pe54d7L3henjQOvXQwmBiAN
-	 VPaATArF1LTnNV7aTXzPeHUl91yoUS0eHuNS2xzpX4DI2p9ANS3yQUwXAvVX4aiCak5wO
-	 4S11r+xYP+IbIeVlPcEIZHGjTPQXZnMDiqOYasYGydQyx5JFCbtx7KgvpiEUvuaEy8WXo
-	 uIiIUr1w12wFjQDMOoPnjVG5XHt66uB0/8PihePUhE2k/m6c5pJ4f3G3nzOFQP+WMvyf1
-	 UhomxrrtddeKWcTjQbu29latTY2DC1NWXl8GvOGFi/JA5jvucjxXQryYK9sLE4WmJjw==
+	bh=WkXk8UeMIidM85N3aQ+wC/0a5G6Gf28wjQOq2oq5ouE=;
+	b=hg+ufHyWZyLymbbsNaE3IMFd7eqwOoGZZk6zEYqsM6ZHUx6qxbrApmYL5dt23wbJe3vp
+	 ZzBBXg/+LA8CkEqab8c7ARrBSEre1VsqbFs7RHZOdGTsXy0/jFg4Ro5IfrhmMVvOnYc3L
+	 7gMsZVpDplTF9cfQy8qqz1k1OCs8udcCf9r3UhrAgw47PA5NCsKQn7dhuJCdPqn3zDPQ0
+	 ShbxulmSzEzqKYIbg6OL+QkNwbxkV+fL367f+fClJZYnQKiUF7fG3pZRdwdpVbCAeQ/cv
+	 odoxn/CuopaoMF1V1A6gY/Sv2kAtjNz36oe1PUdfFaMo43Qfp4yEwUcfUnjslaANI7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVy7dpEW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1P9jweV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C20606A322;
-	Mon,  9 Nov 2026 11:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C652606A31C;
+	Mon,  9 Nov 2026 11:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVy7dpEW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314141F0089F;
-	Mon,  9 Nov 2026 11:09:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1P9jweV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB081F0089F;
+	Mon,  9 Nov 2026 11:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794222549;
-	bh=aOodfZE2ZLJT1tt72r9gxw/AwWXvUZO8hln4ZVGINpQ=;
+	s=k20260515; t=1794223496;
+	bh=WkXk8UeMIidM85N3aQ+wC/0a5G6Gf28wjQOq2oq5ouE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OVy7dpEWlg5/XbJsqYaWzhLgZhXYjImiWD+7BGtQkQS5rpiBB85a1/PQ0PkrxDf5M
-	 wk43LO1COjb2xg+5HPNyr1QkIYNDrIb4eOs7I2Iwq4YwsQMLmMHgC7V6vgkRoLACGI
-	 XWYQ6ahL7CJCsRdAHmQNfr7CCjxQUFxNEKcMeNskzB4OD34KI6XvgWgIHKmydbIRX8
-	 ssM7IQSJdxcajwYHE98J+/58pjYvmhu5SCoPrTsqWhGYHjK4u5Z7GLERW7R5MDTvNp
-	 6EMN6qtTxnTWW04+peDUxv9u1UnMfJDe6DSMt2dITZ31QBgxdt2FcSnef3ArvwiBVi
-	 j3Og+kFrFeKxw==
-Subject:
- Re: [PATCH] nfc: pn533: validate response length before parsing DEP ATR_RES
+	b=j1P9jweVtKFreXVlXGX4OQRWUqQL1IbwZVuAbemRauaDZ/+Tmhb9J1ana7IuoCwT1
+	 ap/RS00ZiEV8AKpvU03iZKOpWyc3ATpOzZpZYNsK4Lxgh7kWs7n3/FzIH0fwJjBdMh
+	 TjYfowfE7MFEqQo40qb0LtNHfoAZFI930zGSIVSM/U+oKCKYh80nAyfHvptERGNYXt
+	 hOastcYc3BFYquSex+hrsv6LMMSzHIyr5cd9Sf5KkN/AaIjzAT2NME7R/WjltNVQDQ
+	 42gHLAsGhU02pNoYSMhLb8tslSUohki00SmyGE/e886/BibgkKiBH/SrVQ2Vna5Vgf
+	 4G3/O/coCspxw==
+Subject: Re: [PATCH net] nfp: flower: hold an RCU read lock while using an
+ offloaded MAC entry
 From: netdev-bot+sashiko@kernel.org
-To: hj351016@gmail.com
-Cc: david@ixit.cz, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Mon, 09 Nov 2026 11:09:08 +0000
-Message-ID: <179422254869.994134.11688036324201956954@kernel.org>
-In-Reply-To: <20261105105805.1450120-1-hj351016@gmail.com>
-References: <20261105105805.1450120-1-hj351016@gmail.com>
-X-sashiko-severity: High
+To: getshell@seu.edu.cn
+Cc: kuba@kernel.org, horms@kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, oss-drivers@corigine.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Mon, 09 Nov 2026 11:24:55 +0000
+Message-ID: <179422349578.994134.14069907207951136090@kernel.org>
+In-Reply-To: <20261108105605.1668-1-getshell@seu.edu.cn>
+References: <20261108105605.1668-1-getshell@seu.edu.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -63,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,171 +76,119 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new length check in pn533_poll_dep_complete() and
-  pn533_in_dep_link_up_complete() (drivers/nfc/pn533/pn533.c) runs…
-- [Medium] pn533_activate_target_nfcdep() in drivers/nfc/pn533/pn533.c
-  parses the ATR_RES returned by PN533_CMD_IN_ATR in the same way as the…
-- [Low] The commit message says 'pn533_rf_complete()-style handlers in
-  this file already length-check resp->len before use (e.g. the…
-- [Low] The patch says it fixes an out-of-bounds read whose bytes reach
-  userspace through nfc_targets_found() (netlink), but it has no Fixes:…
+- [Medium] The commit message gets the pre-patch state wrong and leaves
+  out half of the fix.
+- [Medium] nfp: flower: RMW race on mac_entry->index in
+  nfp_flower_xmit_pre_tun_flow()
 
 --
 
-nfc: pn533: validate response length before parsing DEP ATR_RES
+nfp: flower: hold an RCU read lock while using an offloaded MAC entry
 
-This patch adds a resp->len < sizeof(*rsp) check to
-pn533_poll_dep_complete() and pn533_in_dep_link_up_complete(). The check
-runs before the InJumpForDEP response is parsed as a struct
-pn533_cmd_jump_dep_response. The goal is to stop reads of the 17-byte
-fixed header from going past the end of a short frame.
+This commit takes rcu_read_lock() around the offloaded MAC lookup in
+nfp_flower_xmit_pre_tun_flow() and around the update of mac_entry->index.
+The index is copied into a local before nfp_flower_xmit_tun_conf() is
+called. The patch also adds an rcu_head to struct nfp_tun_offloaded_mac
+and converts the kfree(entry) calls in nfp_tunnel_add_shared_mac() and
+nfp_tunnel_del_shared_mac() to kfree_rcu().
 
-> A valid ATR_RES always carries the full 17-byte fixed header (the
-> general bytes, if present, start at offset 17), so reject any response
-> shorter than sizeof(*rsp) before parsing it. pn533_rf_complete()-style
-> handlers in this file already length-check resp->len before use (e.g.
-> the ATR_REQ_GB_OFFSET check in pn533_init_target_complete()).
+> so kfree_rcu() alone is not enough: a grace period only protects readers
+> still inside an RCU read-side critical section. The writer is the netdev
+> notifier chain under rtnl, freeing in nfp_tunnel_del_shared_mac() with
+> rhashtable_remove_fast() + kfree_rcu(); the reader is the tc flower
+> offload path, which holds no rtnl, only priv->nfp_fl_lock.
 
-[Severity: Low]
-Is this description accurate? pn533_rf_complete() only checks
-IS_ERR(resp), queues poll_work and frees the skb. It never reads
-resp->data and has no resp->len check.
+[ ... ]
 
-pn533_init_target_complete() does have a real check:
-
-    if (resp->len < ATR_REQ_GB_OFFSET + 1)
-        return -EINVAL;
-
-Other completion handlers in this file read resp->data without any
-length check. One example is pn533_start_poll_complete():
-
-    nbtg = resp->data[0];
-    tg = resp->data[1];
-    tgdata = &resp->data[2];
-    tgdata_len = resp->len - 2;
-
-pn533_tm_get_data_complete() and pn533_data_exchange_complete() do the
-same.
-
-Could this sentence be reworded or dropped, so it doesn't suggest the rest
-of the file already validates lengths?
-
-> Found by code review; not reproduced.
->
-> Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
-
-[Severity: Low]
-The commit message says stale buffer contents can reach userspace through
-nfc_targets_found(). Should the patch carry Fixes: tags and Cc: stable?
-
-git blame shows the unchecked parsing came from these commits:
-
-  pn533_poll_dep_complete(): 673088fb42d0 ("NFC: pn533: Send ATR_REQ
-  directly for active device detection")
-
-  pn533_in_dep_link_up_complete(): 361f3cb7f9cf ("NFC: DEP link hook
-  implementation for pn533"), with the current rsp cast from
-  13003649b1eb
-
-> diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-> index f5a6a7c20d5af..63b6032692184 100644
-> --- a/drivers/nfc/pn533/pn533.c
-> +++ b/drivers/nfc/pn533/pn533.c
-> @@ -1310,6 +1310,11 @@ static int pn533_poll_dep_complete(struct pn533 *dev, void *arg,
->  
->  	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
->  
-> +	if (resp->len < sizeof(*rsp)) {
-> +		rc = -EINVAL;
-> +		goto error;
-> +	}
-> +
->  	rc = rsp->status & PN533_CMD_RET_MASK;
->  	if (rc != PN533_CMD_RET_SUCCESS) {
->  		/* Not target found, turn radio off */
-
-[Severity: High]
-Does this check also reject failure responses that worked before? The old
-failure path read only rsp->status (resp->data[0]), so it handled a
-failure frame of any length.
-
-pn533_send_async_complete() strips the frame header and tail:
-
-    skb_pull(resp, dev->ops->rx_header_len);
-    skb_trim(resp, resp->len - dev->ops->rx_tail_len);
-
-After that, a status-only InJumpForDEP error reply such as D5 57 <status>
-has resp->len == 1. It now takes the goto error path and returns -EINVAL,
-skipping the "Not target found" branch:
-
-    queue_work(dev->wq, &dev->rf_work);
-
-pn533_wq_rf()->pn533_rf_complete() is the only place that re-queues
-poll_work after a DEP poll attempt. pn533_wq_cmd_complete() ignores the
-callback's return value except for -EINPROGRESS. Doesn't the poll loop
-then stop silently?
-
-In that state poll_mod_count stays non-zero and nfc_dev->polling stays
-true. No targets are reported, and a new NFC_CMD_START_POLL fails with
--EBUSY in nfc_start_poll() until userspace stops polling. The one
-exception is when the current modulation is listen mode
-(cur_mod->len == 0). In that case listen_timer eventually moves polling
-to the next modulation.
-
-Once pn533_start_poll_complete() has set poll_dep, this is the normal
-"no peer in range" path, not an edge case.
-
-pn533_in_dep_link_up_complete() below has the same ordering. A short
-failure reply there now returns -EINVAL before reaching this:
-
-    nfc_err(dev->dev,
-        "Bringing DEP link up failed (error 0x%x)\n", rc);
-
-so the chip's error code is no longer logged.
-
-The commit message says "A valid ATR_RES always carries the full 17-byte
-fixed header", but an error reply is not an ATR_RES. The message also
-doesn't mention any change to the failure path.
-
-Would it work to require resp->len >= 1 before reading status in both
-handlers? The resp->len >= sizeof(*rsp) check could then apply only after
-status is PN533_CMD_RET_SUCCESS.
-
-> @@ -1928,6 +1933,11 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
->  
->  	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
->  
-> +	if (resp->len < sizeof(*rsp)) {
-> +		rc = -EINVAL;
-> +		goto error;
-> +	}
-> +
->  	rc = rsp->status & PN533_CMD_RET_MASK;
->  	if (rc != PN533_CMD_RET_SUCCESS) {
->  		nfc_err(dev->dev,
+> the unlock: the firmware payload is unchanged and kfree_rcu() is kept.
 
 [Severity: Medium]
-Should pn533_activate_target_nfcdep() get the same fix? This patch leaves
-it unchanged, but it parses the ATR_RES from PN533_CMD_IN_ATR in the same
-way:
+Is this an accurate description of the code before the patch?
 
-    rsp = (struct pn533_cmd_activate_response *)resp->data;
-    rc = rsp->status & PN533_CMD_RET_MASK;
+Before this patch, struct nfp_tun_offloaded_mac had no rcu_head, and
+nfp_tunnel_del_shared_mac() freed the entry with a plain kfree(). This
+patch adds both the field and the conversion:
+
+    struct nfp_tun_offloaded_mac {
     ...
-    /* ATR_RES general bytes are located at offset 16 */
-    gt_len = resp->len - 16;
+    	int bridge_count;
+    +	struct rcu_head rcu;
+    };
 
-rsp->status is read with no resp->len check. With resp->len == 0, that
-read hits the trimmed DCS byte. The u16 gt_len also wraps when
-resp->len < 16.
+and in nfp_tunnel_del_shared_mac():
 
-nfc_set_remote_general_bytes() narrows the wrapped value to u8, and
-nfc_llcp_set_remote_gb() then rejects it. So the gt[] over-read is
-mitigated, as with the two patched handlers. The unguarded status read
-and the wrap are still there.
+    -	kfree(entry);
+    +	kfree_rcu(entry, rcu);
 
-The same approach would cover this handler: a resp->len >= 1 check
-before reading status, then a sizeof(*rsp) check after the success test.
+So kfree_rcu() is not "kept". It is introduced here.
+
+The patch also converts the err_free_entry path in
+nfp_tunnel_add_shared_mac(). That path is reached from err_remove_hash
+after the entry has already been inserted into offloaded_macs, but the
+commit message does not mention it:
+
+    err_remove_hash:
+    	rhashtable_remove_fast(&priv->tun.offloaded_macs, &entry->ht_node,
+    			       offloaded_macs_params);
+    err_free_entry:
+    -	kfree(entry);
+    +	kfree_rcu(entry, rcu);
+
+The patch carries Cc: stable. Could the commit message, and maybe the
+subject, say that the original bug was an immediate kfree() with no grace
+period? It would also help to say that the fix adds the rcu_head and
+converts both kfree() calls, not just the reader-side lock. Otherwise a
+backport could take only the rcu_read_lock()/rcu_read_unlock() part and
+keep the immediate kfree().
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> --- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> +++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> @@ -1462,7 +1473,10 @@ int nfp_flower_xmit_pre_tun_flow(struct nfp_app *app,
+>  	else
+>  		mac_entry->index &= ~NFP_TUN_PRE_TUN_IPV6_BIT;
+>  
+> -	payload.port_idx = cpu_to_be16(mac_entry->index);
+> +	mac_idx = mac_entry->index;
+> +	rcu_read_unlock();
+> +
+> +	payload.port_idx = cpu_to_be16(mac_idx);
+>  
+>  	/* Copy mac id and vlan to flow - dev may not exist at delete time. */
+>  	flow->pre_tun_rule.vlan_tci = payload.vlan_tci;
+
+[Severity: Medium]
+The commit message says the read-modify-write of mac_entry->index is
+now inside the RCU read-side section, but rcu_read_lock() only keeps
+the entry from being freed. It does not serialize setting or clearing
+NFP_TUN_PRE_TUN_IPV6_BIT here against the writers in
+nfp_tunnel_add_shared_mac() and nfp_tunnel_del_shared_mac(). Those
+assign entry->index from the netdev notifier under rtnl, while this
+path holds only priv->nfp_fl_lock. Either side's update to
+entry->index can be lost.
+
+Writing the IPv6 bit back into the shared entry also seems to corrupt
+the index those writers rely on. NFP_TUN_PRE_TUN_IPV6_BIT is BIT(7),
+and nfp_tunnel_is_mac_idx_global() compares the whole low byte of the
+index against NFP_FLOWER_CMSG_PORT_TYPE_OTHER_PORT. After an IPv6
+pre-tunnel rule has been offloaded, the low byte of entry->index has
+0x80 set.
+
+Later, nfp_tunnel_del_shared_mac() drops the last reference. It only
+masks off NFP_TUN_PRE_TUN_IDX_BIT before calling
+nfp_tunnel_is_mac_idx_global(), so the check fails. The ida_free() on
+priv->tun.mac_off_ids is then skipped, which leaks the ID. The stale
+bit is also carried into the index that the bridge_count revert path
+sends through __nfp_tunnel_offload_mac().
+
+This behaviour predates the patch. Since mac_idx is now a local copy
+anyway, would it make sense to read mac_entry->index once with
+READ_ONCE() under rcu_read_lock() and apply NFP_TUN_PRE_TUN_IPV6_BIT
+only to mac_idx? flow->pre_tun_rule.port_idx is taken from
+payload.port_idx, so the delete path should still see the IPv6 bit.
+Or is there a reason the bit has to be stored in the shared entry?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105105805.1450120-1-hj351016%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108105605.1668-1-getshell%40seu.edu.cn
