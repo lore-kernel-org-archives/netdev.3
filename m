@@ -1,58 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794245040;
-	b=O82RLd9wZuksvqC8ScSLaJ7s/V26jVzLPA8Y4rDUkdyUV3LyGdzEUTdiiO42Y1X5FM8O
-	 5FK4PK1fP2gQMy8aAQ9WOCaTgCoVf/TAEuzqjPTVb9GpQY6Dok4cowaVYXFhph4pCsZ9y
-	 W7YHsoidQD2g2pBTBh5C0ZQHEb05E+2GBSFIkEm1ingNKWqQKq0g83d2Q18ZCvvYoorK/
-	 UZmPfmOvWBdpIe8D0oZjLmGJ0vmdIbQJsvBlw+d6E8JXqNdbRofFoq65x30xNuMulFGKf
-	 mz8GHSNCGpICAsRhRH61nR9jZfGO2WxPoN0LvdDkKtvND5m+gDItoJT4plJcQNMcNvA==
+	t=1794245510;
+	b=e0MGiBIMKIY1IPeik6kXPe30/NcR7hiOOH+VuQ2wqwP5al/X+KkU++amZcUcFojOB9As
+	 I8QEi41DTlqIR3bmd/B10QsxGUhN+IaxP9+a/v+jckjFuewLzzLIHmSiaBS7riw4JemUJ
+	 lrfhlkDRaE9YDGIJHX1JeRA7SDTo78fhbewRjDqXHgxFyhzR7+t2BOLRwzu+XOciHvAbu
+	 9ZXeCuQHjvobmCdLeSZ/ipB0qtCYu5BdtIUXV2FxtDXs5/VJw7xW0Vbj/36kYz+TgOD5k
+	 Yos6mvZlbi1CzqJLVJ61kZy5U628nghPWaRx8eo5Gdy+ZuXGr/lT3SHqn7ineNqPDTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794245040;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=SkI4TIX22rtuyPPaLwG1CdpRN3yueyM1ryT+FhQmelE=;
-	b=YarabVbgIk2s1dPMsGLVbBlypOHC8bdYRd5cu56dlQMGqUMqLP2PgCwjF3sCGDuSiVXu
-	 NJ//wjyfHRPMFWZLEEJDBBgzeZx0QObq4+pILVOIxvvbu+oj82Cz4S+NomaTlQ3olNuzq
-	 KaAhwPJQ3K8JJxwWyisdpgWK0Uv2jNxvHOW7+5kTJQN5oYSAseQSa46O0tT80wiXJg126
-	 RWoNdq8Q2r/y4TIMvsLs8sWbGaPmGpWqAlfNyZoZZBbQa1MctitGd/rrEHIbCIK4Ay3i5
-	 5rfXCwH9cgUlcrcnY9IcnHcgKO2OAGFLdRTR5Yf+3NLDXAyuUj7klbPg4qUZebl0R4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794245510;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=iivDdp7Qf0V/j06fkEq8diK5DNsZmEeVI16PsWw3qmM=;
+	b=njgTe2olSfOEggXGE0GXJV+I3hmei6AzI2fZl0xmorvKavgXFWVGCjmf6yYTzWDLo1xm
+	 47X0/Gy5TeLwfeNOh88SixPARYPtMo9rL4VPFN/80c0hTn6JPnwYgRlL4oTSKwmwIaMic
+	 o/KksOmwZD6d4HV8LXQD6JH3Ky/a1VM64YDLDDdZ5C/xMmXMd1E7d5q7UplwyT5HiU+TY
+	 l/0H88MVgqFLvrhhLmxe3OuNB/Ynluz9N+RsA/Uklwz26D0Qj5h7Xg7Zw5GHIZFlnk9R/
+	 UkD69PdmbAxipqq5OXlio+PH74m78LsHCf3+92j65342KKGYRUGDngpz7yrKuHN5JOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P6VmrDH+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oHJjBR6X;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE64606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E6F606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 17:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P6VmrDH+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C171F0089F;
-	Mon,  9 Nov 2026 17:23:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oHJjBR6X
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A946E1F0089F;
+	Mon,  9 Nov 2026 17:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794245040;
-	bh=SkI4TIX22rtuyPPaLwG1CdpRN3yueyM1ryT+FhQmelE=;
-	h=From:To:Cc:Subject:Date;
-	b=P6VmrDH+k0vJlsN7oWARydBIiKOfMGwtm5z/w69iy6JOmqDVeFeGPeGNEqkSjRqt2
-	 CfcNbSSRaBCF89m/HLiNVIGIy5++fTz5fVrKWq7HW8nNnfZ7Mdo/9mDvBsnTEyprH3
-	 Ff4bawYp8+eK2A6eAoBkExmq8dsXUZmgw4oAIQp5HvqIaX+PTtM3qKmOHmZ2f+VZXB
-	 WuBoUCU75C+OIRQpe+4xDddxuqp8hRDI7tzCfI1iAfKtYszsmWi31buUzE2uSFBRAE
-	 sRk8mQE5PpxEn4t8tm+NYd8Su+CUP3RhjyZpdAj1wLS28JJbJAj1vfvUGWCKYL04DC
-	 aN+AiSTVNrBXg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Neal Cardwell <ncardwell@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH v2 net] tcp: cubic: avoid looping in bictcp_update() TCP friendliness code
-Date: Mon,  9 Nov 2026 18:23:56 +0100
-Message-ID: <20261109172356.3113732-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1794245509;
+	bh=iivDdp7Qf0V/j06fkEq8diK5DNsZmEeVI16PsWw3qmM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=oHJjBR6XJaN/ysDCsHd9lVK4EYzPHxtTGcr3js3ReijeWw5DdbjuOtAjaEbjne8nG
+	 TxsdeZOXYQrWPBLMAAZy2ur5rUyyckCBT3a9Ro6i3m95kgoHdb+C4RGOyhaoQC7uUe
+	 6goW9KeeeggGIDl1yQ2og1iZJsphf6RVKLYa03QmOzEYX5S5S1S5sl7haj2lR/MU1x
+	 onx0WFsjlLhnYPMSZJbm0/BUCI/dyz9FcoMhrIfQLP+jnQEvQbVJ4oPH2BfFx9722f
+	 uv/HlOI23qzX28q+Lj6w7tgwvoFi+GjZyJCATPV0UnxTT4QP47o5rHeaPZ01lPxovQ
+	 SprvBm5y+5eZA==
+Message-ID: <415e54b3-9bc5-41a3-a9da-3631dcb46157@kernel.org>
+Date: Mon, 9 Nov 2026 18:31:46 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,63 +51,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: NIPA: TDC: delay the start
+Content-Language: fr
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Victor Nogueira <victor@mojatatu.com>, Jakub Kicinski <kuba@kernel.org>,
+ Pedro Tammela <pctammela@mojatatu.com>, Netdev <netdev@vger.kernel.org>
+References: <6f0ee3c4-32b7-4422-b69d-c879c94262a7@kernel.org>
+ <20261106092441.00cf9765@kernel.org>
+ <CAM0EoM=4fNFXaFUV1kh-H9Bdrt_K0yDsbOMJHWpgON2bG-GyEA@mail.gmail.com>
+ <ef3ca6c4-57f4-44a7-b44e-f34e06dfb3dc@kernel.org>
+ <CAM0EoM=GofsOkOdLv_-xRMRK8u5_E5BSgnqUCUcReZDrKuUEHQ@mail.gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <CAM0EoM=GofsOkOdLv_-xRMRK8u5_E5BSgnqUCUcReZDrKuUEHQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The TCP friendliness part of bictcp_update() does:
+On 09/11/2026 18:22, Jamal Hadi Salim wrote:
+> On Mon, Nov 9, 2026 at 11:58 AM Matthieu Baerts <matttbe@kernel.org> wrote:
+>>
+>> Hi Jamal,
+>>
+>> Thank you for your reply!
+>>
+>> On 06/11/2026 22:39, Jamal Hadi Salim wrote:
+>>> ,
+>>>
+>>> On Fri, Nov 6, 2026 at 12:28 PM Jakub Kicinski <kuba@kernel.org> wrote:
+>>>>
+>>>> On Thu, 5 Nov 2026 11:43:27 +0100 Matthieu Baerts wrote:
+>>>>> Hi Pedro,
+>>>>>
+>>>>> I hope you are doing well.
+>>>>>
+>>>>> I'm helping the netdev maintainers with the CI (NIPA), and lately, I
+>>>>> noticed the 'tdc' runners were often marked as either "timeout" or
+>>>>> "pending". It looks like this is because it missed the creation of the
+>>>>> branch which can take more than 2 minutes for various reasons: PW access
+>>>>> is slow, git push needs to be retried in a few seconds, etc.
+>>>>>
+>>>>> I opened a PR to delay the start:
+>>>>>
+>>>>>   https://github.com/p4tc-dev/tc-executor/pull/2
+>>>>>
+>>>>> Another solution is to let the tdc* services running and doing the
+>>>>> monitoring themselves. In other words, you need to remove
+>>>>> "single_shot=true" from the config file. It might require you to update
+>>>>> the NIPA repo you are using to get access to a bunch of fixes.
+>>>>
+>>>> Keeps happening, I dropped TDC from required runners for now.
+>>>
+>>> This was an issue related to the indeterminate time it takes for the
+>>> branch to show up after creation.
+>>
+>> Just to put a bit more context, having no results from a runner means
+>> the CI cannot validate whether the batch being tested was passing all
+>> the tests or not. So we need to wait 3 more hours to get results. It's
+>> not dramatic, but here it happens regularly, and it should be easy to fix.
+>>
+> 
+> Agreed - we should have caught this sooner. We basically claim
+> "nothing to see here" because the branch update hasnt fully propagated
+> (although some of the time we catch the branch propagation)
 
-	delta = (cwnd * scale) >> 3;
-	while (ca->ack_cnt > delta) {
-		ca->ack_cnt -= delta;
-		ca->tcp_cwnd++;
-	}
+Indeed. Please note that what I proposed in the PR was a quick fix. As I
+mentioned earlier, I think the best is probably to let the service doing
+the polling regularly, just in case branches are created later than
+usual due to other issues. (But then, it is certainly better to switch
+to the latest version of these scripts. I guess the update should not
+cause issues, but it needs to be tested)
 
-A BPF congestion control can store any value in tp->snd_cwnd,
-tp->snd_ssthresh and icsk_ca_priv, then call the cubictcp_cong_avoid()
-kfunc or switch the socket to CUBIC. A zero delta (or a huge ack_cnt)
-then hangs the CPU in ACK processing.
+>>> Matthieu, Victor responded to you; the overall proposal you made looks
+>>> good. I don't know how we can fix this, but since Pedro is currently
+>>> away we saw this mention by pure luck: Can we change the contact email
+>>> address to hybris@mojatatu.ai? That way if you send an email there,
+>>> one of several people will see it and respond.
+>>
+>> Good idea, I just changed that!
+>>
+>> Please ping me when it is fixed, so I can re-enable the runner on NIPA's
+>> side.
+> 
+> @Victor Nogueira  is the one fixing it..
 
-Make sure delta is at least 1, and replace the loop with a division,
-done only when ack_cnt > delta (at most about once per RTT).
+Thank you!
 
-Fixes: 0baf26b0fcd7 ("bpf: tcp: Support tcp_congestion_ops in bpf")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/netdev/179363987528.3131.2987776489427079887@kernel.org/
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
-v2: fix the loop itself instead of sanitizing snd_cwnd at entry points.
-v1: https://lore.kernel.org/netdev/20261106133748.2181133-1-edumazet@kernel.org/
-
-Discovered by an AI code review agent (Sashiko), confirmed by
-code inspection only, not triggered.
-
- net/ipv4/tcp_cubic.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
-index a88e4bf86150f06eb3c0d3da99761e5d45c8f6a3..e74dabde34324d4d4764afda7022fafcdbcecbfe 100644
---- a/net/ipv4/tcp_cubic.c
-+++ b/net/ipv4/tcp_cubic.c
-@@ -298,10 +298,16 @@ static inline void bictcp_update(struct bictcp *ca, u32 cwnd, u32 acked)
- 	if (tcp_friendliness) {
- 		u32 scale = beta_scale;
- 
--		delta = (cwnd * scale) >> 3;
--		while (ca->ack_cnt > delta) {		/* update tcp cwnd */
--			ca->ack_cnt -= delta;
--			ca->tcp_cwnd++;
-+		/* BPF congestion controls can call us with any cwnd
-+		 * and ack_cnt: cwnd * scale can wrap and give a zero delta,
-+		 * and a loop could run up to 2^32 times.
-+		 */
-+		delta = max((cwnd * scale) >> 3, 1U);
-+		if (ca->ack_cnt > delta) {		/* update tcp cwnd */
-+			u32 n = (ca->ack_cnt - 1) / delta;
-+
-+			ca->ack_cnt -= n * delta;
-+			ca->tcp_cwnd += n;
- 		}
- 
- 		if (ca->tcp_cwnd > cwnd) {	/* if bic is slower than tcp */
--- 
-2.53.0
-
+Cheers,
+Matt
