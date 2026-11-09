@@ -1,83 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.250
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794233388;
-	b=Pbyr6cyNgHOpUIS8/JyRskbCZMemQT55+4ghcynpTTN8H8gj2S6ogGbz6LO1QWcwIzwg
-	 Mo1M2dTpsafFBdsRUzS5VjC2cobZ8Vo3lKtnUPIPiN41diqLAhqCsLBsV1hzKSG998X1Y
-	 7OaVTbeS3ATAvfgvawpjsQevct69zDpWd65RHaw0s2OsnF8BQS07HiJPirrl7D4ihhRlo
-	 v6a61uMRxI3IpKDJI4j5rcv9pA8rVwlzo9I3YZw0JyoMlXEZXjMD3kvuqsyUj0MJTNu6h
-	 5WdA6C1+iU831/oQtw8yMAU8GkXA+gbJrTJe6oJcqhaDZsV1ytLsRXl0NpdiiCrzi0A==
+	t=1794233410;
+	b=Rc7ZcqlrnJ5pNF99A/UQltBzDqAg0zxV6v4lUnAdKFPR6f7O1jAppLE1fBut968rDMf6
+	 BlCBxfJ/yT3HVqfUYqs9Bfw0hxbrz82OdnHqDDLhA3RZrnrGnkowkaBwVk3hlwl9FRxE4
+	 CJa1OAAZmYbtxR4G9O2Qp31uxp3rLALRbtvpUfaxj9TxATpe6I7U/hGGsKXZYFdxCUe/b
+	 3euIgYY04V01Mfa/t1ICQGfPU4w4KJDg3m4KvHlV9+fB/2j5gtu0Gn7qP3WzLmtK8KZVD
+	 98BsYH8TtjfNsdf0D51TvfUZSHfIppYe+dOUV3sevuAl+RQNjpFy0Ok8Y+Ft4JEyBxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794233388;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ci9vDSWyHxSq9FnZq3Zk79d2N7kH1vKnpPKWHcUFCWk=;
-	b=X9I7FiaQwJICH7MNhHgp1KIgPZctcbY/c0AE2z/Tqx5Bsy+4EgyHZNvY4w+uq7yIED/c
-	 cOs/4zQHBOiNg2opUq2fqgahr/yIZ/j4/jNMH/baNI2XBhT6fpMlcnyw4wrJkzYGH+ezX
-	 nCyF9VQKuWznUxQG21o1THbgLDlSXr2iMzRoooX75COYe8j19AxHLIvR+5Qp8Omo+w5ch
-	 gj5+p4qPURCk5ZaDgDAx4P2u+b/MB4LO1FAoVyF1jQVCc/F3UkQuPewnZIngwQop7fRM8
-	 vgVLgcB71fwti2KCgjkjBv7Ojd9VAixLqAOd5RlmexeEUfcPGlqrBKoNfLnPAPDM7Nw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794233410;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=zXDzhjAT9R0FNsl85MpNlLYfFlMVbyNabR7bM1DWwJk=;
+	b=pC2U/5MX4LhxHit9leKUfiRUvMGK8lV5OVAikuQbNbO2bVSlfaKFdVn9VU70tj932jH5
+	 zbJ1UUhPpRi7rEJAbOjewsi0agysEz3PQVq7ZjgdHYB+UqVBLGjtvWGeahlLHsRfZLgdZ
+	 bY78s+4nI6Uqs3GQHBwD4Dq4KzZ5DERSg7yWC8PC1f0dcfPp8Z+k/HJ+pIXvhlMf+jMZH
+	 xRt/8fWniAdioLLmhOLhmjG7PjimzUepQ/qnF26YDlSVTTBbWReJN0Sf99Ot85gQ2/1wc
+	 Ot8VtUdgiC8e/W3ChwtUA/kz17jsPBwRgQvPSCVvN7CLVL/iNlmSxsvLZDBSbs73RTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=g8vLOHOd;
-	arc=none smtp.remote-ip=91.218.175.250
-Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ApsSWzCr;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18AA606A33A
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 14:09:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A18AA606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A5B606EE8D;
+	Mon,  9 Nov 2026 14:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=g8vLOHOd
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uLmLi4eG+xNd/B9EvuWggXquRDTQtxE2MGsM+EpVXzc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794233386; v=1; x=1794838186;
- b=g8vLOHOdSzuJdv/A70FV8EuOzjjIxf7nDIOvwzm6wZwYNqXk17fAJ940lznBivP8T6AjYk+C
- fcUE9MxO+LcudfkAe6vKj1RRQo3FMeCRvn/iPYa8T0WD2dSeFNXkoN0/22R9yxjZLR5z6l2t9O/
- j/fL3y+p6WeibuZZsIFDBdPs=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 07ac29793a07b48e;
-	Mon, 09 Nov 2026 14:09:45 +0000
-X-Mizu-Trace-ID: 07ac29793a07b48e
-X-Migadu-Flow: FLOW_OUT
-From: Leon Hwang <leon.hwang@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Matt Bobrowski <matt@bobrowski.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH bpf-next 9/9] selftests/bpf: Verify cgroup prog link_create logs
-Date: Mon,  9 Nov 2026 22:08:16 +0800
-Message-ID: <20261109140816.5196-10-leon.hwang@linux.dev>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261109140816.5196-1-leon.hwang@linux.dev>
-References: <20261109140816.5196-1-leon.hwang@linux.dev>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ApsSWzCr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87611F008A2;
+	Mon,  9 Nov 2026 14:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1794233409;
+	bh=zXDzhjAT9R0FNsl85MpNlLYfFlMVbyNabR7bM1DWwJk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ApsSWzCrvMXScR+CmxaKL8Ulf9qAm6QEctwM6iy8b82NIWwEqLnwAavPY8S17B4pi
+	 8ZWLxyZWBDDIr8TmsKXh6Sb7XvCtI3SpeYvW8Ts6mU5LilnkQT2iBfVlxaxMKu2Ij/
+	 CkhzJbxUMmc3YosYNCcUGzG/Wfhxa9rv5ezVWJqQ=
+Date: Mon, 9 Nov 2026 09:10:06 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.18.y] net: macb: wait for a running xmit before
+ resetting BQL on close
+Message-ID: <2026110940-familiar-slick-4d2e@gregkh>
+References: <20261109-nb-macb-close-6-18-y-v1-1-51af4b20dffb@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,353 +63,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109-nb-macb-close-6-18-y-v1-1-51af4b20dffb@tipi-net.de>
 
-Check the error code, log message, and reported log size for unsupported
-flags, invalid target FDs, and relative attachment errors. Cover missing
-or conflicting ordering flags, a missing BPF_F_LINK flag, invalid link FDs
-and IDs, preorder mismatches, and anchors outside the target cgroup.
+On Mon, Nov 09, 2026 at 01:57:09PM +0100, Nicolai Buchwitz wrote:
+> macb_close() stops the queues without waiting for an xmit still
+> running on another CPU. That frame charges BQL after the reset and
+> never completes, so after the reopen the queue stays stopped with an
+> empty ring and the watchdog fires until the next close.
+> 
+> Seen on a Raspberry Pi CM5 with ethtool -G under load.
+> 
+> Upstream fixed this as part of the context swap rework in commit
+> dcc3288b9433a ("net: macb: use context swapping in .set_ringparam()"),
+> which is too large for stable.
 
-Also cover revision mismatches, conflicting attachment flags, cgroup
-hierarchy restrictions, and the per-cgroup program limit.
+Why is that too large?  Please backport that instead.
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
- .../selftests/bpf/prog_tests/cgroup_link.c    | 324 ++++++++++++++++++
- 1 file changed, 324 insertions(+)
+thanks,
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup_link.c b/tools/testing/selftests/bpf/prog_tests/cgroup_link.c
-index 15093a69510e..5a27d3a6a26c 100644
---- a/tools/testing/selftests/bpf/prog_tests/cgroup_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cgroup_link.c
-@@ -253,3 +253,327 @@ void serial_test_cgroup_link(void)
- 	}
- 	cleanup_cgroup_environment();
- }
-+
-+static void check_cgroup_link_create_log(int prog_fd, int target_fd,
-+					 struct bpf_link_create_opts *opts,
-+					 int err_exp, const char *msg)
-+{
-+	char log_buf[128] = {};
-+	LIBBPF_OPTS(bpf_log_opts, log_opts,
-+		    .buf = log_buf,
-+		    .size = sizeof(log_buf),
-+		    .level = 1,
-+	);
-+	int fd;
-+
-+	opts->log_opts = &log_opts;
-+	fd = bpf_link_create(prog_fd, target_fd, BPF_CGROUP_INET_EGRESS, opts);
-+	if (!ASSERT_LT(fd, 0, "bpf_link_create")) {
-+		close(fd);
-+		return;
-+	}
-+
-+	ASSERT_EQ(fd, err_exp, "err");
-+	ASSERT_STREQ(log_buf, msg, "log_buf");
-+	ASSERT_EQ(log_opts.true_size, strlen(msg) + 1, "log_size");
-+}
-+
-+static void test_cgroup_link_create_log(int target_fd, __u32 flags, int err_exp, const char *msg)
-+{
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = flags,
-+	);
-+	struct test_cgroup_link *skel;
-+
-+	skel = test_cgroup_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_cgroup_link__open_and_load"))
-+		return;
-+
-+	check_cgroup_link_create_log(bpf_program__fd(skel->progs.egress), target_fd, &opts,
-+				     err_exp, msg);
-+
-+	test_cgroup_link__destroy(skel);
-+}
-+
-+static void test_log_invalid_flags(void)
-+{
-+	const char *msg = "Invalid flags.\n";
-+
-+	test_cgroup_link_create_log(-1, BPF_F_ALLOW_OVERRIDE, -EINVAL, msg);
-+}
-+
-+static void test_log_invalid_target_fd(void)
-+{
-+	const char *msg = "Invalid target_fd.\n";
-+
-+	test_cgroup_link_create_log(-1, 0, -EBADF, msg);
-+}
-+
-+static void test_log_cgroup_attach(struct bpf_link_create_opts *opts,
-+				   int err_exp, const char *msg)
-+{
-+	struct test_cgroup_link *skel;
-+	int cg;
-+
-+	cg = test__join_cgroup("/cgroup_link_log_attach");
-+	if (!ASSERT_GE(cg, 0, "join_cgroup"))
-+		return;
-+
-+	skel = test_cgroup_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_cgroup_link__open_and_load"))
-+		goto out;
-+
-+	check_cgroup_link_create_log(bpf_program__fd(skel->progs.egress), cg, opts, err_exp, msg);
-+	test_cgroup_link__destroy(skel);
-+
-+out:
-+	close(cg);
-+}
-+
-+static void test_log_relative_without_order(void)
-+{
-+	const char *msg = "Specify exactly one of BPF_F_BEFORE or BPF_F_AFTER.\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = BPF_F_LINK,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -EINVAL, msg);
-+}
-+
-+static void test_log_relative_both_orders(void)
-+{
-+	const char *msg = "Specify exactly one of BPF_F_BEFORE or BPF_F_AFTER.\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = BPF_F_LINK | BPF_F_BEFORE | BPF_F_AFTER,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -EINVAL, msg);
-+}
-+
-+static void test_log_relative_type_mismatch(void)
-+{
-+	const char *msg = "BPF_F_LINK is required for relative link attachment.\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = BPF_F_BEFORE,
-+		    .cgroup.relative_fd = -1,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -EINVAL, msg);
-+}
-+
-+static void test_log_invalid_relative_link_fd(void)
-+{
-+	const char *msg = "Invalid relative link FD.\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = BPF_F_LINK | BPF_F_BEFORE,
-+		    .cgroup.relative_fd = -1,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -EBADF, msg);
-+}
-+
-+static void test_log_invalid_relative_link_id(void)
-+{
-+	const char *msg = "Invalid relative link ID.\n";
-+	/* Link ID zero cannot identify a link. */
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = BPF_F_LINK | BPF_F_ID | BPF_F_BEFORE,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -ENOENT, msg);
-+}
-+
-+static void test_log_relative_anchor(__u32 flags, bool other_cgroup, int err_exp, const char *msg)
-+{
-+	int cg, other_cg = -1, anchor_fd = -1, prog_fd;
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = flags,
-+	);
-+	struct test_cgroup_link *skel;
-+
-+	cg = test__join_cgroup("/cgroup_link_log_relative");
-+	if (!ASSERT_GE(cg, 0, "join_cgroup"))
-+		return;
-+
-+	if (other_cgroup) {
-+		other_cg = test__join_cgroup("/cgroup_link_log_other");
-+		if (!ASSERT_GE(other_cg, 0, "join_cgroup other"))
-+			goto cleanup;
-+	}
-+
-+	skel = test_cgroup_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_cgroup_link__open_and_load"))
-+		goto cleanup;
-+
-+	prog_fd = bpf_program__fd(skel->progs.egress);
-+	anchor_fd = bpf_link_create(prog_fd, cg, BPF_CGROUP_INET_EGRESS, NULL);
-+	if (!ASSERT_GE(anchor_fd, 0, "bpf_link_create"))
-+		goto destroy;
-+
-+	if (flags & BPF_F_LINK)
-+		opts.cgroup.relative_fd = anchor_fd;
-+	check_cgroup_link_create_log(prog_fd, other_cgroup ? other_cg : cg, &opts, err_exp, msg);
-+
-+	close(anchor_fd);
-+
-+destroy:
-+	test_cgroup_link__destroy(skel);
-+cleanup:
-+	if (other_cg >= 0)
-+		close(other_cg);
-+	close(cg);
-+}
-+
-+static void test_log_both_orders(void)
-+{
-+	const char *msg = "BPF_F_BEFORE and BPF_F_AFTER are mutually exclusive.\n";
-+
-+	test_log_relative_anchor(BPF_F_BEFORE | BPF_F_AFTER, false, -EINVAL, msg);
-+}
-+
-+static void test_log_relative_preorder_mismatch(void)
-+{
-+	const char *msg = "Relative attachment BPF_F_PREORDER mismatch.\n";
-+
-+	test_log_relative_anchor(BPF_F_LINK | BPF_F_BEFORE | BPF_F_PREORDER, false, -EINVAL, msg);
-+}
-+
-+static void test_log_relative_not_in_cgroup(void)
-+{
-+	const char *msg = "Relative attachment not found in target cgroup.\n";
-+
-+	test_log_relative_anchor(BPF_F_LINK | BPF_F_BEFORE, true, -ENOENT, msg);
-+}
-+
-+static void test_log_revision_mismatch(void)
-+{
-+	const char *msg = "Cgroup revision mismatch: expected 2, actual 1.\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .cgroup.expected_revision = 2,
-+	);
-+
-+	test_log_cgroup_attach(&opts, -ESTALE, msg);
-+}
-+
-+static void test_log_exclusive_attach(bool child, const char *msg)
-+{
-+	LIBBPF_OPTS(bpf_link_create_opts, opts);
-+	int cg, child_cg = -1, prog_fd, err;
-+	struct test_cgroup_link *skel;
-+
-+	cg = test__join_cgroup("/cgroup_link_log_exclusive");
-+	if (!ASSERT_GE(cg, 0, "join_cgroup"))
-+		return;
-+
-+	if (child) {
-+		child_cg = test__join_cgroup("/cgroup_link_log_exclusive/child");
-+		if (!ASSERT_GE(child_cg, 0, "join_child_cgroup"))
-+			goto cleanup;
-+	}
-+
-+	skel = test_cgroup_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_cgroup_link__open_and_load"))
-+		goto cleanup;
-+
-+	prog_fd = bpf_program__fd(skel->progs.egress);
-+
-+	err = bpf_prog_attach(prog_fd, cg, BPF_CGROUP_INET_EGRESS, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach"))
-+		goto destroy;
-+
-+	check_cgroup_link_create_log(prog_fd, child ? child_cg : cg, &opts, -EPERM, msg);
-+
-+	err = bpf_prog_detach2(prog_fd, cg, BPF_CGROUP_INET_EGRESS);
-+	ASSERT_OK(err, "bpf_prog_detach2");
-+
-+destroy:
-+	test_cgroup_link__destroy(skel);
-+cleanup:
-+	if (child_cg >= 0)
-+		close(child_cg);
-+	close(cg);
-+}
-+
-+static void test_log_attachment_flags_conflict(void)
-+{
-+	const char *msg = "Attachment flags conflict with existing flags.\n";
-+
-+	test_log_exclusive_attach(false, msg);
-+}
-+
-+static void test_log_hierarchy_disallows_attach(void)
-+{
-+	const char *msg = "Cgroup hierarchy does not allow attachment.\n";
-+
-+	test_log_exclusive_attach(true, msg);
-+}
-+
-+#define BPF_CGROUP_MAX_PROGS 64
-+
-+static void test_log_too_many_programs(void)
-+{
-+	const char *msg = "Too many programs attached to cgroup (limit 64).\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts);
-+	int cg, prog_fd, err, i, nr_links = 0;
-+	int link_fds[BPF_CGROUP_MAX_PROGS];
-+	struct test_cgroup_link *skel;
-+
-+	cg = test__join_cgroup("/cgroup_link_log_limit");
-+	if (!ASSERT_GE(cg, 0, "join_cgroup"))
-+		return;
-+
-+	skel = test_cgroup_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_cgroup_link__open_and_load"))
-+		goto cleanup;
-+
-+	prog_fd = bpf_program__fd(skel->progs.egress);
-+
-+	for (i = 0; i < ARRAY_SIZE(link_fds); i++) {
-+		err = bpf_link_create(prog_fd, cg, BPF_CGROUP_INET_EGRESS, NULL);
-+		if (!ASSERT_GE(err, 0, "bpf_link_create"))
-+			goto destroy;
-+
-+		link_fds[nr_links++] = err;
-+	}
-+
-+	check_cgroup_link_create_log(prog_fd, cg, &opts, -E2BIG, msg);
-+
-+destroy:
-+	for (i = 0; i < nr_links; i++)
-+		close(link_fds[i]);
-+	test_cgroup_link__destroy(skel);
-+cleanup:
-+	close(cg);
-+}
-+
-+void test_cgroup_link_log(void)
-+{
-+	if (test__start_subtest("invalid_flags"))
-+		test_log_invalid_flags();
-+	if (test__start_subtest("invalid_target_fd"))
-+		test_log_invalid_target_fd();
-+	if (test__start_subtest("relative_without_order"))
-+		test_log_relative_without_order();
-+	if (test__start_subtest("relative_both_orders"))
-+		test_log_relative_both_orders();
-+	if (test__start_subtest("relative_type_mismatch"))
-+		test_log_relative_type_mismatch();
-+	if (test__start_subtest("invalid_relative_link_fd"))
-+		test_log_invalid_relative_link_fd();
-+	if (test__start_subtest("invalid_relative_link_id"))
-+		test_log_invalid_relative_link_id();
-+	if (test__start_subtest("both_orders"))
-+		test_log_both_orders();
-+	if (test__start_subtest("relative_preorder_mismatch"))
-+		test_log_relative_preorder_mismatch();
-+	if (test__start_subtest("relative_not_in_cgroup"))
-+		test_log_relative_not_in_cgroup();
-+	if (test__start_subtest("revision_mismatch"))
-+		test_log_revision_mismatch();
-+	if (test__start_subtest("attachment_flags_conflict"))
-+		test_log_attachment_flags_conflict();
-+	if (test__start_subtest("hierarchy_disallows_attach"))
-+		test_log_hierarchy_disallows_attach();
-+	if (test__start_subtest("too_many_programs"))
-+		test_log_too_many_programs();
-+}
--- 
-2.55.0
-
+greg k-h
