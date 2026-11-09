@@ -1,130 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.14
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794228284;
-	b=yDPLlEnUEwY4JURSf2UJ11s6TR92gRh/TLn7h5ULz/b7wgPKMpXN6BvbntoP5lb5fWXF
-	 /LMt7oXPRPoy30qjhqdSLRYAcwDz46beY54D1ZuRa5uhXqO2F0muTjg7+mOKIg70Xgtfh
-	 GIyBjPJzFJsYmxE2w9bw2PWFeCYDV6XI0ZZ9CvD2T8XK5uyOriyxjt36rh2lj1fud9NjJ
-	 nrRkGrlrHd0FRd/MuRTXETr5TFyCkYT3mjgVKWCEviKwy8ewl/OQuIIvI3RHcLPnbIcwS
-	 NWDsQbrpgsCGkVRjnlziGgAaiZBZKmmkvcimRJBnTUEOhluGfcR0uc3/i9I5g/V+bjg==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.55
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794228303;
+	b=1/QnrX8KWTeRfMvaP0jjzlwrIxfUI3imUQTlE0ZynMOJCXuQKLPtcZmWDvTY8ObNpd1i
+	 mBj3EWdJbc/HfFgdiUY9adXnpscmABQs+IwmeUNQkD+qaWBxXaP6MVP/qAjsKXFP4d7N3
+	 IjNBhHchstZB+xQXgK1wKSKjsP2c4KE0zDWybvUMwkruJZanmNotfJY0XBrjKiJHzRSfw
+	 eIE2r1DHmgGvECuK2agR9Q/tgusqmbMu/y8PQ2RUKrVIL1y/bUbqaQfsa/gL4cK7LAe9o
+	 Hjm2VspbPHEY4JZ407V4IuUH1VeR58JCgz4yYDG5k3k9hBSPG64zdDgNVMZ7moEGVnQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228284;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794228303;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
 	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
 	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=eojWA9x5wSEqvGy4L9Mph7dvdH44jXjZg0pV4OEDalI=;
-	b=2nGkjnDL2GvRVdxom3Niud9IxCe9T++DlasG7V0cYjG/BlLCF9w5KlT/xtd08gBiTc4j
-	 Xt/eK2xNebsecWONwJcr/nqzezzpgO4fH58lN6qP20lYteSBdg1tXQKHqbXZ08Lin0XOT
-	 3t0co7RqUjM8e6xS+l2baWzXG5yXx/JDJ6I77FPGNkbVLY+8Hvp9Mvd2Ezp56Is5tD8K1
-	 Yi6fArcoxSfexifAwDBAgZ3DfvDg+s6TrATJZTLvrPIORsDmU19b2gw0CDhVquHfH2+2j
-	 tYFFTyp6p4VDKtiU5rK0H8rZbWugF0qmFvE7oEInutEM1MOPxKGmVWfCe/UAfEAAswA==
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=FusHpUUrEAiXXoriypc9z+V+a3ThX68049mwL/qiLwc=;
+	b=OBOsEFpU2+gcjGln4X9OBTRcS5KIu3YRUz/Pc10ievnD9cvxYiYtT5bx2NvquBMyrwQl
+	 SGP9+I+HwRevnzAYhVHxjPISbgX8pVPuwm2ZjU9KUC0QjAbWWX+UvPzOA3C6TM2KEQD8o
+	 XscJo2XoOoJhvsBGd213W/OwBMuw8o94BoVQGotS8LZKrclbiUWIMOodir5XD3k0uDHJZ
+	 EQU7E5DuVPPfP5HBh9axwvMtVg6oBZAqUj+47qvbTvBho5/u9DnR7gC/ZWoMsofbmXTWS
+	 JXc4SpgsFXwms8d9dZDwRIkrpx6Hh18CWb9wCuj+KsOR1zVuUEB+yEW+orE6uOx1K9g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cEK5D4xX;
-	arc=fail smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DRxKmUmf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.55
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012055.outbound.protection.outlook.com [52.101.53.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC51606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:44:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DC51606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E674606A31C;
+	Mon,  9 Nov 2026 12:45:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E674606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cEK5D4xX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794228283; x=1825764283;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=aUE2d/oxDe7lkuJQeLvPvdVCX6+Qm6iKXh1dtTRdc74=;
-  b=cEK5D4xXHhUKoTJcy6j0MqukSszlqevLaYekRXKnwx7nbBlYmb7Nh0Ul
-   OcGZD5hD6Fvlj5I+U2jlTGwiomvmhDFqBfSCjK2JI4WYMPKpaxhKp24i/
-   SJ8kvR1UVBoOWGwMrfHOKpFP9TXQHldnfqzGEqcskFznCHzyI8WIAenEt
-   nrbkSpQjGxoVx4korrQ59eVIGVo+C+5TcZi9PbkFRf4lKvSUb/xyJPPYR
-   4U7XRlIe4+90xPT5ie7NXBUTUJx+1jFPHpH8GJfgWBcEIfXrVAVBLCpAf
-   ez+Enskq/fecohrmviNAu+rDJy9uL8pBMwnxlXkBc/vaF4AJXaSSMnYFp
-   Q==;
-X-CSE-ConnectionGUID: SE8WEpWjSFWkPaV4xt7Apg==
-X-CSE-MsgGUID: w1nhOu2WQIuntm7iFGQhPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="2981657"
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="2981657"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 04:44:42 -0800
-X-CSE-ConnectionGUID: La6VMIviS4CNVosR5su/5A==
-X-CSE-MsgGUID: NcVdk+Q4RDOc/N5jOzGa8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="8207722"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 04:44:42 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 9 Nov 2026 04:44:41 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Mon, 9 Nov 2026 04:44:41 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.60) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 9 Nov 2026 04:44:41 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DRxKmUmf
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EsxiNTtOAW9Ihf3zjHeA16GgL9xG72N8Vse8VNVI1HyUf6FHQTUKJ4BuP89nyVKyybT3DO011cRedtLbM5cakSZEsRHX6JBDi2QrwUbTesJ3ccxK6QZvMpQOo4ovhaZbq+zy+8s31pQzy8uRIGAZgeV8B4n8EBkw8CkK+D9vXcIdoJkFISDu12uBWohj2cW6Sxjuqce6DGyl2S5uZfyKoHak/QuYoDO6F8EEM0hmVbXQiV7P8UmC2wx1S0IHoLIJ3L3dAIkChQWK2p1CZ/yVzTkVptVIpcfgk4UXKJrVNVUcNV2pLwzn16fnHBxW6DUsVaBlnstsT0IJsbxyAneBFw==
+ b=Jo3DK9NgB44yOOD1vLgQVg4hSdR9QYRnILCiZv4S3lJ7AoEw8ouT8IB43fk5xRVlkTUXmKtRxPUouIqJEUZGFK4OIRcC2b3OL5iDS/R6z650CmwFzhapIRl29VVX6w/q/4vp+A1Q1u02OJ8QJcpTjxYf7H1gNMTH9w4lBr3xd2dAQsQelDP8EOJl/75ZV7diuZAiNSyAkbe7GWDlufoonCWSQEPFl5ZichWp6JWNNoa9FbRniBIc7SFipMDOja6JZGBPpB+/Hj0qmTo6EpafqLXvEHrasmdrNmZlOujPKNNv97TA34JkQ5FaW9nPPkC3LTBqdyLfSDhZJxMd+G2caA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eojWA9x5wSEqvGy4L9Mph7dvdH44jXjZg0pV4OEDalI=;
- b=PgFa03B+p7NMppNKrP4bEkogAuvx5EAF0r7wnK7qeseyPiSpzUf1l/JenifG51Cj+P4U4vslkXZ54quATHQDS26E4F3K3aIf/fw7y6KHSeIXTdjXkGLyMY4+Z36f1Z8IHGoVYGWQn4JXCjRa6/yBGYQdCzn4pbpQhV1s/nU4QvzwAMJhdYdf7r50zi+X20NLdS5e3VrUrVtazxMTE8W+Yy+1I1O7bnxAnogE9ahb4zb/dT44yEfs9oq1STbb8Z7xc3KVhJVn/QH6Y8TSnujRd3e1/QmOrQUNFsR8/+a+nxHIgOCUkJhzupb6aKEPfKiSL8TBG6rpAvFeER1QbqFccQ==
+ bh=FusHpUUrEAiXXoriypc9z+V+a3ThX68049mwL/qiLwc=;
+ b=a6H2yEv5iAULHw4jlXd8fzrOPtRvxwIx5k8xNPKLy8OZKSU2/G1+74KnpDnGuLm48t5BkbmcxSL54qSm0J3NfSsCDKlA4CKTLqwfC8ZYh78IkVBdBIfiNMOh3MOmwDlEb9ZDntNEd8GRd7w+X2ui9QE8w93Ii6uBlA7ncIrqtAEu/ZOgBXavJsFhM57pLxSEkK7UAuZ5MlJD4hE21MOILzYFPoiezQo/PjcCSoJctLg/Q99ijn4v1VYOToEPryqnjagklLWwUFXjbwdNbMcIm6xIYSzu9GCeDtb/YUjLXp+HvaSaUNT98cBhwlC1fhNu9j3Ms7ID3YgwUixaIDItrQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FusHpUUrEAiXXoriypc9z+V+a3ThX68049mwL/qiLwc=;
+ b=DRxKmUmfTknXksu3s5drfcSGttJAevr8xhLJxcuj6WftTasvcXfXdlq1y4nJF8lG7AMggpdi9dDv9QlhQjFjen8rUYKMB5a1B8q7YYu05+oI/fy+c2twSmXHwFNx6HmU80VnfFpHXLKA4c4ifFehJFoJnKaCvy/Q9hdUcg0x5TZMl4WMzG1yuC92L0VHIxZfEUL4JIQfM72tqJ3ALGY/wW9r/hqwoolImhSvkfHPsUsZbHiVnzubLq0j8S+0ZcbB4VKzUBQhR5MTmTsVjYzUXEiRtv7LPO2Xa2Hpon8iChYtAOz4BXR3iLmK4UUxLj3UpaFQXuZ6HkbjW7JvakpsQg==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13) by SA2PR11MB5211.namprd11.prod.outlook.com
- (2603:10b6:806:fb::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 12:44:14 +0000
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
- 12:44:14 +0000
-Date: Mon, 9 Nov 2026 13:44:08 +0100
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-CC: <netdev@vger.kernel.org>, <magnus.karlsson@intel.com>,
-	<stfomichev@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<tushar.vyavahare@intel.com>, <kerneljasonxing@gmail.com>, <bjorn@kernel.org>
-Subject: Re: [PATCH net-next 0/4] selftests: move the AF_XDP test suite from
- bpf to net
-Message-ID: <avHAGLwtyucllh/M@boxer>
-References: <20261105134117.977655-1-maciej.fijalkowski@intel.com>
- <auzqcm1YLsTvUU7S@devvm16445.scu0.facebook.com>
-Content-Type: text/plain; charset="us-ascii"
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by SJ2PR12MB8955.namprd12.prod.outlook.com (2603:10b6:a03:542::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 12:44:58 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
+ 12:44:57 +0000
+Date: Mon, 9 Nov 2026 14:44:47 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: me@chasehil.tz, netdev@vger.kernel.org, dsahern@kernel.org,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, weiwan@google.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipv4: route: don't blackhole in-use routes when
+ retiring fnhe routes
+Message-ID: <20261109124447.GA1641621@shredder>
+References: <20261104182058.2673882-1-me@chasehil.tz>
+ <179416334264.994134.10564853189016691004@kernel.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auzqcm1YLsTvUU7S@devvm16445.scu0.facebook.com>
-X-ClientProxiedBy: WA0P291CA0006.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::18) To LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13)
+In-Reply-To: <179416334264.994134.10564853189016691004@kernel.org>
+X-ClientProxiedBy: TL2P290CA0025.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::20) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -135,104 +100,137 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|SA2PR11MB5211:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94fa1277-ae12-43d7-8e25-08df3e5f291e
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SJ2PR12MB8955:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1522527b-4a43-4dd7-7795-08df3e5f430b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|22082099003|18002099003|6133799003|10067099003|4143699003|11063799006|261028144727099003|261102123227099003|261022105027099003|56012099006|261021121427099003|261026121527099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info: 5zB3bzA1Bs+hzm6vtH40IVnNOkH4Ce6WM0e/K04Tn8FvGoGHFDaIcvwVpAalUp67LhkDeIKHoSQpFYtlFHSYkM4yt45htXeUnHSf2HBGL2CnrwCyvoS+meApb3BfHkevkShV3XJ4EQlZdLEURiXTWZL62c1H9j25vdGDouj6sXOKExYBun3vsdTYE8/o3y0tBhEheujCzbzWUacyfRe/uBxj2ae5Kx0sgf5j1r/VfcnPXX2aqv1XJ3BfsWC+e9OzG/TSWNRRoHuhlWhVYUe+685ICZyiSJSAgzZPD3nP4NdW+jH4zdPTxIgWD09uBPxR4VcyAMqmI7iWsthnfQ+fb0cKlsStwm91ZQ0TmhgTErSQ76/MAgWUCIImnSRFqsSRM9+ib8+i/qEkxCVRq3QaqJnHcvyt2jpQqVvNzvIDnh+XqdSlEsFDklXO5vI3ng5m2ojV2w/ngzmc93Tv59vaZcKjbUKxiONC+GHUT047OHdVZohxYBXsi235zZcYWELo1B9Hq6fQScGLlwhU6c4X88MSDJogjt1tnlufPwJ4C7DyaL01bFnY+JJZSLrW+QisvbVe/GO0VnthGgJWRMoUg/EUxZClsIYjytRzzjYyH/8V4YmWeqoD0MSqdzHnxjVf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(22082099003)(18002099003)(6133799003)(10067099003)(4143699003)(11063799006)(261028144727099003)(261102123227099003)(261022105027099003)(56012099006)(261021121427099003)(261026121527099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|23010399003|18002099003|22082099003|4143699003|11063799006|56012099006|3023799007|261102123227099003|261028144727099003|261021123027099003|261021121427099003|261022105027099003|261026121527099003|261026140227099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	y3lR2wudxnEbeXMGpyUCZGqFy052xjBN1RBd07dk37cqAQlq3tpKPTwgZCA67lxOVc5NwhJpJewPWw8cu7LQm+4tbtCKqiguajIdH1VsQngAdySD740utn5+Qwf2EujJcPph8Q3WA0e4i1Q563nXHZcakfjb2nlAEJj/PT4qFMV4/0yPf7Hu4L/vavNSqcXuBMq+XHUQGwCyHNFqw5FWOf5oiCiuC63VuWriuTGuHfiaO+rC8YV1i3kveVjR00UR4iERP1GSAwYXTn/G37KD35Iap5dAj26RbxqRbFJfws/agsYOChTRwi/30LNYuVpXxKtnmvdh5k6DODi0fjFd/wO10nyunD7fnbICzQADYHe2RYw8tgiCGzj+msnUcoqfntS4Io2K4L9bvuR4BTh54lv3CtJfpKeJcOZWSSEueVgq8O92BnpykjKT9RIcxGuPxjG7InYqTnlkZ1+U5kiDInUXVnLtmpRulJKmXRlACr0RmGGfHnZJu3qKviFkQ45zgvZGpdcGPA9n1/JyNqr0Oc0Vw3kL5CL/bhC6esSgYgXhhQi6ZGpe+3ExX0/Nm8k3dUEJqrOy7keklH6Rvuavj7a9Bl3dmnRC7WiObHj8esk8zK0mrFw7g9/LHc6Zs9qHjad/FgKOKdaoeyNRawodYuWOKquc2SIPw/CVyOqwEtI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(23010399003)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(3023799007)(261102123227099003)(261028144727099003)(261021123027099003)(261021121427099003)(261022105027099003)(261026121527099003)(261026140227099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7NZCySbdnoaqvZhFGVdubZ1CuStfH6Ksb4iJ10LOEPzlGpsS8nLYMU/h0qTw?=
- =?us-ascii?Q?cW69hOOtvuJfTWZFYnUuAKyxakgYkdGrpFNWXIa6lzZMvzkF2xWP6WYvznXT?=
- =?us-ascii?Q?i8MnMS755rumNHx8N4TjuAWwZLnsBwL1yGYk9mKrb7Aepo3nGor/sx8j3yb6?=
- =?us-ascii?Q?t42eokFnEYE9GEEwvSbgt4AlBPKMR1ED8WW08zb1udzozFFpmKMO1o/wbmmc?=
- =?us-ascii?Q?t7UGH4DQb712d4rJBelLE3ScyCn/+liMTA/sO77zCCbMv8YFbFtHRqkLnBbl?=
- =?us-ascii?Q?o+JCwqycg7Kcib1e4PXhYHlA58YqUfRRszz97SxDHoPinQPwhT6Zqv+aDd4D?=
- =?us-ascii?Q?oeJx9410stpWV9thJEnEen+r7WYn/u6QKfJYNy19cS6b86ShnZrPskJOw4zm?=
- =?us-ascii?Q?y+9VvpiA2JpIBLsDs3UtFofHdVOfH/TUFMi3dgg4TnsFjWHNW3G8pD7pFRuN?=
- =?us-ascii?Q?7U0EkeDjB1WRqGSnU0IhT9x3NsonvCDDs9/JRWuBswiU3FXMEX0EexRJ7nbY?=
- =?us-ascii?Q?nkp/U5mmw7QgCj3elJjPatvpD9/zaLZs0T2q/oOOnLUIMLq2YNpAqyjbkCbz?=
- =?us-ascii?Q?MYOovEWuWi2PUA3BaWOIg2W+R57nV/6IA6rlmLq4FJWS92ZrHsPC7kN5zcPH?=
- =?us-ascii?Q?F/1PoOWS7NbH7pjWaK8LUtHCyRxhGu0iVwGvKS+qu5B1lw0hX8WsiG32B9l1?=
- =?us-ascii?Q?fK0xe2Fd9RxyhZgCS2Qrqmw3wN7GpnmaJVFsHsyaEbd5p98FBEHg1Syc0A99?=
- =?us-ascii?Q?fZffP+vMax6ujgWMLSwXCEmjdf4Kcf0gPWXCnj55Zy8AP6td3D2nx/sgY+Zm?=
- =?us-ascii?Q?NYBil6TGvzrpdBD00k2nRyzjB/G3smXsKPf5V23Jym7sNiNX2w/h/UaXwYj/?=
- =?us-ascii?Q?HT7xR8NrVoAflVsnpGjgKRzeCYiJ+HfIG5SMqCaFLJStcwdXLNucc5s95lad?=
- =?us-ascii?Q?GXPT7rQz3HL1l4GKbUnV1ZVLoCg8cyzvZ40sGhDuyVeeejYu/Hx7ZPLftq0s?=
- =?us-ascii?Q?OljT4sTwEkGtfGggqynmv2lUCNaEdyf1KBdjPYpe2pzgZ02D5OaaT8nsMsoX?=
- =?us-ascii?Q?JgR5aFpq/Q77xcMWMdKdntKMLBizRT9LwJAPCHXMxGM1UiwwA5jxyZF8CeZ4?=
- =?us-ascii?Q?zF4D0V6lERwHyrwy1Xd6+RWLks0dSCeVcaP02kl1+b9JR44AaJYQ5bJZWWCa?=
- =?us-ascii?Q?8+DfWASTvjTlmJxFZTJOrJ4d72UDRAjkvrHGRT+s1UC71IfJ8WNtIGpnZhcX?=
- =?us-ascii?Q?6LlO9wkfyKrZ/iyb/iRovQ/wLQpKMkJrbuqatSFZ9NkFvKX+tBJ4tq/AqYNU?=
- =?us-ascii?Q?MsGq1GIChaPZdyI5yk5fX8NlVa5nrCmaMxb2YzxzeHDhYj6AeuDc3OjNmrh/?=
- =?us-ascii?Q?OMELINPBcf8G4v1fifapJR/5IrrxXi867vk+7ttiyxK9jf93xSywhUkwXjGF?=
- =?us-ascii?Q?7Za0Qnst8KOnMHBaeIwKRdX+rhx9LkGG46xYI75kjNue5Mppt5Um32B1HcjJ?=
- =?us-ascii?Q?cMO8KUQBdppjHEkCRLQssWWaL+NetY5MMwPMFmi6Mww3eFqpa5O5lPRBOdvC?=
- =?us-ascii?Q?jb5KzcCqy9NW2BLchFwjcjKtdEEVYMJ1I8LvzZeUSX02N/77nY/p1ctkq+SI?=
- =?us-ascii?Q?Tr5Wknq4yWcwdGiiFeH7M9oqPgjc8aQV/nLHoMCgkFB1h8qmwioI4xlCGF1f?=
- =?us-ascii?Q?idbE6FLQ6TnntMVNyQXywVUU8OS635tgjtck68Tqd+cwFyLtL3thtazfIhgd?=
- =?us-ascii?Q?Tqfz7e31kRFbf7vfqxtZGXfhNteHARk=3D?=
-X-Exchange-RoutingPolicyChecked: BaPEKUvzlzXe2EpOMZO3ZQ69pfg48lG2B09y/hyDopy6Brz2PgZFfqsC4YqP9vUeNcO+aglCw1jkmXJgFcnOI/nk0EKcc/QMjYbU8GcnbQKg9R33TI8rr5LQ152t3ajdb0SarYuc+Dyob03hmsWnJzwdFD5vz9TO4uDRt67A/4uORoVfgvHXATZrdNDdMFVkrlJunVqPnJSEagEDuXZ3WfCZQ+suVzWX05ADE77TPSXauPPDbAS+4z5Oez3I/E+FO2s2548XYS4WbIzkqGcK2m/0fFJGTSv10629IklqKH3uHAiisih6qDyg5b7bvDZZ/lcNxhqkijJ0AXU3ALkoeQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94fa1277-ae12-43d7-8e25-08df3e5f291e
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5Vjn9f/hqEvYWxeY0x/+lhYUL8nlNghKKjxH8J/AlEHCKIODK0tkjften6YF?=
+ =?us-ascii?Q?eiNM3dxDGPzL7UwqUXdbZcJuWnqez1K5BfYqKTTWRYhuD+sT2gmi1h4JAgSe?=
+ =?us-ascii?Q?SNk+LiPMovbl0AUgut2uvNxqRCJbi+SGnqnoR9gWGugVWfJsYRkdtmYa7+bA?=
+ =?us-ascii?Q?bjqkQlNJ4G8xXX7p+OVCnVfKPyhlNawqdk3iMlQhCHf6FTfzWDdsV8vbH/9e?=
+ =?us-ascii?Q?V/hMMFOs0SDK14jCiCXXlZZGN5FRsAaw4eIuLgvI1zqGFjXpMKU15y6dDVmS?=
+ =?us-ascii?Q?C5uHX+lrmclR4gz5VhtanUTIEZG1Bn9ZT19WRSAGiAH0JVhziPfc2u55gSny?=
+ =?us-ascii?Q?2k2Hfl6jAaRpv49i7OiH0GNDNpqMOQXigqHM1snV1991uEDpz8zfnF1zK8sx?=
+ =?us-ascii?Q?83zUIm0mr69axR0/whEEu+s2Bmo/ybb9AEDpxDq6F2X4rLK/J1JQzx01EvpF?=
+ =?us-ascii?Q?Hn6QIEnXDXJnpyx0U+1Mo+v2nadxDW+bGkoKt1pFa1OF/kz07JqYpybykVun?=
+ =?us-ascii?Q?EoPI0vL3tPtiNCQHMXxg1GS8+xV+HZX6mBhWkPJTsrOUkHWmTn9TAvZ2bGtN?=
+ =?us-ascii?Q?jW2Uhzl2OYbnrH85OE+ztLut3Xfqnngw9Hmho+uhxUajB+NSoi24ejmZE4NC?=
+ =?us-ascii?Q?fufXHr+M7cu6w2JzM6FIPQXimDBRLFJVA2IBirg04ByvU5ZvW2PlQ9gwac1v?=
+ =?us-ascii?Q?HXvheUjCRgGwEPtXcyA67xXp/cPF83XAxguLAc+ufL4SQRKkUe4AdixNoBxw?=
+ =?us-ascii?Q?dNdNLV6uuN4ZkV7JrYZivDIHlelTSO4FX8y7qeE4Fvx9xcBryCCpsfJJhnpv?=
+ =?us-ascii?Q?zbRMBMqe+fX++bFnF8cykKFAtmyIc162S2XWrmi97rr+w8nLbjnSyGN5dmBd?=
+ =?us-ascii?Q?DKPPL4Lf/YEawiPzUS5qiOYSmr+NXsnCYQ8yOvPx4lYXt96ZrhpWOTdjbXz3?=
+ =?us-ascii?Q?88uWsd0pggyvrRqhpg+NHcMGq4dC631a5vrjWvdiBLNKGHbcOJ68jh4WIF38?=
+ =?us-ascii?Q?Bzzrgg1JS+a3Pngy25ieqIQ0DPHnAruTCBUeq4mnPkCnpX8kZnZibmTm/SL3?=
+ =?us-ascii?Q?I/pRxDcAkGJt+GIglDwxLm0VUWPNQqaj/QNwRR0R8hDwwJ8nLz0dbiEwvVPu?=
+ =?us-ascii?Q?8dcE0ny87APsihUGezCbUpZDjZO5MAZNN1owH1lqQk/BcLyc3A4ie6FaVLVR?=
+ =?us-ascii?Q?/zNPhJhW+0fzafE5lIzWpGoyNfcufFsc8pukJO8s2nZlu8Zn5ZaVcefQQYoh?=
+ =?us-ascii?Q?1U+i6HmHJrzZj9YDiP56JIwHA99e3KxcnPrZQEAPn0kCD0SeFzFDlWdJSkrY?=
+ =?us-ascii?Q?a0SDatrr2CmcSA1tVONZx9NCqnXZ3qSRJYQp1qEHwBb5eEcuMg+AxGXYOGDB?=
+ =?us-ascii?Q?K1tU5IZFqnd92v9jah0G6t3A6IaNwcEnOOi5m4SZxqhpUdwRUSR3Jn0ER3kV?=
+ =?us-ascii?Q?VW3pmX3Ovg+0ddHSVTywcoqGDrDzmzm1RdtFMSwXL6qeiKg0+71ItKO8aWB+?=
+ =?us-ascii?Q?F1oo+iBz2NYuveeGijM4h0gI6yC147YcvVHu43AvNzWSITL4ODNE3Hgp4ZlX?=
+ =?us-ascii?Q?CaE47nym4D0JB7dgad23hdx/Ox+mwwfAvJGgVuIRQM/fJYjetIB25NE60s8x?=
+ =?us-ascii?Q?Ws6LCiHvfWWm9e3omXUNMHbfutmdk3wgcV7YVN6ahTCU98gjgUCI1aUmXUE7?=
+ =?us-ascii?Q?9khYDVLAOicEUWDBkazssb8tysx0CSZhU335Qcg2cw1/tQBO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1522527b-4a43-4dd7-7795-08df3e5f430b
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 12:44:14.3426
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 12:44:57.8618
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aZlQKZqsYipPNWnyUeClu7m7UoLl6Jog9r8fAMl0aKd6Z84odnINmOPgQZZfhzWPpQq0QT8Q8Law94nYFjb7roYBd7ojHXWsUb9BJbyVL7Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5211
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: uZfRlHgUpvJRGp3/vphJhFZN54dqoLQk3wboFjSxWtfYjzgzshfVIH1I7HIBTT/bz8IP2dep8i6Pj7dZIh/t7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8955
 
-On Thu, Nov 05, 2026 at 12:43:36PM -0800, Stanislav Fomichev wrote:
-> On 11/05, Maciej Fijalkowski wrote:
-> > Hi,
-> > 
-> > As the maintainers asked, this series is the first step of moving the
-> > AF_XDP selftests from selftests/bpf to selftests/net: the code moves and
-> > builds from its new location, without changing what the tests do. The
-> > rework [0] posted as "selftests: net: migrate AF_XDP test suite over to
-> > net" (v4) will follow on top of this move.
-> > 
-> > Patch 1 drops the test_progs wrapper of the AF_XDP tests, patch 2 adds a
-> > generic BPF skeleton rule to net/bpf.mk, patch 3 moves xskxceiver, its
-> > library and test_xsk.sh to selftests/net, and patch 4 (new, not covered
-> > at [0]) moves xdp_hw_metadata, which is built from the same library.
-> > 
-> > The xdp_metadata test stays in test_progs: it covers BPF core
-> > behaviour, and moving it would mean rewriting it for the kselftest
-> > harness. It keeps using xsk.c from net/lib/xsk.
-> > 
-> > xskxceiver and xdp_hw_metadata are the first users of bpftool at build
-> > time in selftests/net. NIPA has bpftool, but 0-day and KernelCI build
-> > net without it, so both tools are skipped with a warning when bpftool
-> > is missing or does not run.
-> > 
-> > test_xsk.sh is installed but not run by run_tests, so NIPA does not pick
-> > it up: it runs every case, including flaky ones, and some cases leak
-> > page_pool pages after skb_pp_cow_data() in generic XDP mode on
-> > veth-based runs. Until a later step makes the suite fit for NIPA, no CI
-> > runs the AF_XDP tests. test_xsk.sh is being removed by [0] but it is
-> > kept here as there is no other feasible way to run the test suite (if
-> > needed) until we come up with an upstreamable Python runner.
-> > 
-> > Thanks,
-> > Maciej
-> > 
-> > [0]: https://lore.kernel.org/bpf/20261016174338.787135-1-maciej.fijalkowski@intel.com/
-> > 
-> > Maciej Fijalkowski (4):
-> >   selftests/bpf: drop the test_progs AF_XDP wrapper
-> >   selftests: net: add a generic rule for BPF skeletons
-> >   selftests: xsk: move the AF_XDP test suite to selftests/net
-> >   selftests: net: move xdp_hw_metadata from selftests/bpf
+On Sun, Nov 08, 2026 at 06:42:22PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> > index 3a90c8d28b940..cd69242afab07 100644
+> > --- a/net/ipv4/route.c
+> > +++ b/net/ipv4/route.c
+> > @@ -573,6 +573,17 @@ static void ip_rt_build_flow_key(struct flowi4 *fl4, const struct sock *sk,
+> >  
+> >  static DEFINE_SPINLOCK(fnhe_lock);
+> >  
+> > +/* Other CPUs may still be using @rt, so don't dst_dev_put() it.
+> > + * rt_flush_dev() handles it if its device is unregistered.
+> > + * Marking it dead makes ipv4_dst_check() fail for users that cached it.
+> > + */
+> > +static void fnhe_retire_route(struct rtable *rt)
+> > +{
+> > +	WRITE_ONCE(rt->dst.obsolete, DST_OBSOLETE_DEAD);
+> > +	rt_add_uncached_list(rt);
+> > +	dst_release(&rt->dst);
+> > +}
 > 
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> [Severity: Medium]
+> Is there one more fnhe retirement path that still blackholes in-use
+> routes? Commit 95c47f9cf5e0 ("ipv4: call dst_dev_put() properly"), the
+> Fixes target, also added dst_dev_put() to rt_fibinfo_free() in
+> net/ipv4/fib_semantics.c. That function is used on fnhe routes when the
+> owning fib_info or nexthop is freed:
+> 
+> free_fib_info()
+>   call_rcu_hurry(free_fib_info_rcu)
+>     fib_nh_release()
+>       fib_nh_common_release()
+>         free_nh_exceptions()
+>           rt_fibinfo_free(&fnhe->fnhe_rth_input)
+>           rt_fibinfo_free(&fnhe->fnhe_rth_output)
+> 
+> net/ipv4/fib_semantics.c:rt_fibinfo_free() {
+>     ...
+> 	dst_dev_put(&rt->dst);
+> 	dst_release_immediate(&rt->dst);
+> }
+> 
+> The RCU grace period before free_fib_info_rcu() covers noref users.
+> However, __mkroute_output() hands out fnhe_rth_output with a reference:
+> 
+> 	rth = rcu_dereference(*prth);
+> 	if (rt_cache_valid(rth) && dst_hold_safe(&rth->dst))
+> 		return rth;
+> 
+> Also, __nf_queue() calls skb_dst_force() on queued skbs. Both of those
+> holders can outlive the grace period.
+> 
+> For example, a UDP sender could get the dst and then sleep copying user
+> data in ip_make_skb() while the route is deleted. Its later
+> ip_send_skb()->dst_output() would then go to dst_discard_out().
+> 
+> Another case is a forwarded skb queued to NFQUEUE at POSTROUTING and
+> reinjected after rt_fibinfo_free(). It goes through
+> ip_finish_output()->__ip_finish_output()->ip_skb_dst_mtu(), sees the
+> blackhole_netdev MTU of 68, and ip_fragment() can send ICMP_FRAG_NEEDED
+> with mtu 68 to the remote source. That is the symptom described in the
+> commit message.
+> 
+> The commit message says "Do the same for routes retired from an fnhe",
+> and the comment above says not to dst_dev_put() routes other CPUs may
+> still be using. Could rt_fibinfo_free() handle fnhe routes the same way:
+> mark them DST_OBSOLETE_DEAD, add them with rt_add_uncached_list() and
+> drop the reference?
 
-Thanks for acking! However for some reason clashiko missed this set, can
-someone remind me what could be the case here?
+No. If we are flushing this dst entry because the device is going away,
+then putting the dst entry on the uncached list from the RCU callback
+can block the unregistration completely. netdev_run_todo() flushes the
+uncached list after an RCU barrier, but the free_fib_info_rcu() RCU
+callback can queue the nexthop_free_rcu() RCU callback which will then
+put a dst entry on the uncached list after the flush.
 
-I also see in SUIE that check_selftest failed - is it mandatory to repost
-in this case?
+I think the patch is fine as-is.
+
+> 
+> Commit 5018c59607a5 also left the matching dst_dev_put() calls in
+> rt_fibinfo_free_cpus() and for nhc_rth_input, which affect non-fnhe
+> cached routes.
