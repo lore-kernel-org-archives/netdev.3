@@ -1,107 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794227492;
-	b=LznNxkaf2fng4j96KkVJqGj4mZ13mZjyuFhxK4MY6ll6YI1QfF1sCKe4vjYI8oca+uQ6
-	 8umT9m0Za9pIzjR/SyrcSOLQ/BY95f6FPirjiJIM9mXLRdoIWywE1ppi2bcuHbJOxdx9B
-	 7JBlIBZD4yPE5ln7xF/fFyoGz0EnszQvvl5qRBYSvB8n4SjXUOai9cnchwLHLXVTZxZoJ
-	 0l4DnyoF6fqeZCpIDO0heTpzkuVeQhDGVJPiM7rZzoJrqtgJj3Ld3EEQBq4JRecD1Z+k8
-	 jylWTwR+aZfIS4523bMqUw92IoPaRbgedWYD1bWX5Klf6zJU0HGBAOwS8oaWn81d5mA==
+	t=1794227623;
+	b=I2j2Wo87tjZ3plmBKo1brY9Fr4XkE7INk/35XNsb7ZO4muHxSrGbjKy/fF7OZFeggTnO
+	 QDF3qbUWyyQYiJwZm+PyzPCJN1pX1rQLLfaGo8YHtTZcgFG8A74LYjUsDMoisIi4c884c
+	 DEdTBIbslDvSusoNWLbf10fgf4RxIZtnzl4g7jgf/JlrHtXtbWg5oY55o7Qy+8UO/cMrw
+	 CwCylUg7o1t3IiFPZihJZv1LYZVGq6JXuY16Dffzi/qJh20LCe3KfaD58YBdNQYSZsBtL
+	 dTQN7TdyS+vZG79E1/ZQfTrfzqP8/lQTcTSF2Z+b7tUdm6hl1hfUxtpLGDkUJYHchfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794227492;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding;
-	bh=fIXMPIsA/87cWvB95KQ+/8m1Qdamj/60DkL4G69W9RI=;
-	b=p3KObY+4/fMrCzfoP2+BWlkvr24bXBBn/xY7w0MkTE6Ra2HVQWc2HgfzDaBTNw9ZwZG4
-	 Pf8nuDTGYMPlTWGvXXc9SbHSRGousD55nN+yALYqhY9sSxBoNk8cUshmz5Xiu1TR0mD/a
-	 v9e7RMYLIFjtW2plkIstg4L4fvTIKubhgMnmankm52IC5/2mbncmkXUBvZRaFkMQkTvXt
-	 fyU8JD9n8qrA4dkLUaPrPpne1JHCBBBbsouY9JDJWCJu+HVgmzlb9MbjNqneHhUIM9UUL
-	 7+Q2MKuSmQvcZ/f+Z/CK4rVLBTzI3qc9K1u/F9AJ81m3w0zOJPwZ48BwU0FtaRSWKNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794227623;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=2JV1b4sF9Bv6mNizFqSbv38ZX8zLnn64bzrFb3DOKnc=;
+	b=YiAFOWzHBwn8bHOapRi3cwUBDYxBtZuODmp2EDp2W9T4C7G//RjbLBy7qrkMeop5XWtA
+	 OkKyZZRCF9DxcbnlexLLZS9j9v+O0l77WF5AYmFokGxn3WLEq46Mf5FvDASPn5bRpKbI+
+	 3jZKwk/O5hKuI24OMwsY3ObmkoHWRRc6i8ay6OgZRlVzOU5AHO5MdZrP+OGMJBvyBBe1k
+	 oQmNOI/cbTNJEOUQRjb8RyDXOtVwONMBvcFf3gSEGmsABPEwVEbc7SfckNM5tG8u7B99i
+	 TEUfvqsjMtE7xetyxgo8knZcEQwRw/uRhX+gAt38bHEgwFWBKNAmYfnA2mjJI15LKLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=BVn6goM5;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=icg2C3zy;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=fail header.from=debian.org;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=74.125.224.44
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D40B606A321;
-	Mon,  9 Nov 2026 12:31:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D40B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=BVn6goM5;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=icg2C3zy
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794227489;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fIXMPIsA/87cWvB95KQ+/8m1Qdamj/60DkL4G69W9RI=;
-	b=BVn6goM5DdOyungF+KCccmht5x5GkRSV4guGwd3HLRCXTbHqP2RNiBFSjb1lRM13W51iy0
-	nY5UzEMxxhDgwT2yZpZWahcO/gFqmk3egT5469koNPX/h3rPNizr+IxKAMVVirbhfly6wZ
-	GbApcLMlTK56edrSa23nENBu4lALoN/Ok5UUwxPBZYFgFD7oMltFdIPLKmBFoHAyZIGP0j
-	cb4g0qnyjR42YZWtEp19Jh/oUNlIxTbjt+nejaridLx/hizJ/F3Xx4LHIMDbfB8aQOFq+s
-	DON4vr114yGTh1Dsj3tBOMazfCEaQiC5hHj1AzT8sR88fGghX5fUPWaOAyaCRQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794227489;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fIXMPIsA/87cWvB95KQ+/8m1Qdamj/60DkL4G69W9RI=;
-	b=icg2C3zy263T42rXs/vcrNrmpaVc6W/Byd9Lrj/krqLWZRCOZgtpnTqaiIvsOkFPEgixus
-	tgqbc4XsQzsLndDA==
-To: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Breno Leitao <leitao@debian.org>,
-	printk@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Bradley Morgan <include@grrlz.net>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	"Cen Zhang (Microsoft)" <blbllhy@gmail.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rio <rioo.tsukatsukii@gmail.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Bradley Morgan <brads@mainlining.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Pnina Feder <pnina.feder@mobileye.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>,
-	kexec@lists.infradead.org,
-	Gustavo Luiz Duarte <gustavold@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH printk 0/6] Introduce policies for unsafe flushing
-Date: Mon,  9 Nov 2026 13:37:17 +0106
-Message-ID: <20261109123127.489676-1-john.ogness@linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48150606D803
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:33:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48150606D803
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67be6030c9fso556219d50.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:33:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794227622; x=1794832422;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2JV1b4sF9Bv6mNizFqSbv38ZX8zLnn64bzrFb3DOKnc=;
+        b=do45c0T5IX8iIlacDaSv5sC/wMT5YVWsPhKIXTEArDqarYJ4uEqBdW0JytB7X1xVGt
+         x6XtLdqAGzy8DX3KGqCiPYipuwYn62nFDIDHRBDleHLOntnHjfvcdeCmpZ9snGDJLkbr
+         M195muh9aC2U++740dssRRtC/pWXGkZ+z3M6ZiugNo1mqs4gsb8ogT1a0tRjXYT+sfj9
+         nwEy0lNyIiCCfxCBS5+YB5HFZHQ7WIULfEsYQSDTAFs/QuDgKK+gI31Ie6vYxs+hJdXt
+         pQDSog2By9/PwE60U6x3oRqmOrv/9SNjwOwUZ4B1+6M+U8pWZxqOpjvmvQuTPxnI2Osc
+         ONRQ==
+X-Forwarded-Encrypted: i=1; AL+hErHDenNf5So7TpgKv96fr98pav6RXOat5Sy94i2ydJxEN5ZE1PjoLSD8WOQGHHmFFWReZoqmPBM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8fkk7Lo9mMDMmK2lUjIMw7CWD9HupM3Fdwxyv8wJNvlGxIHk8X
+	dGsfXCQnBvujhwja6BK6LAFTpqKtnBen9p7IpU9+CkD9yVC/QAwXgYFZ
+X-Gm-Gg: AYBFou2U11CizOAZEfD2wx416W1OBSuBTLQBgf4ls4h9HUiKrRrk0dceclT3a8+9vzy
+	puI5KESJGw92NlJbAHvBZLeyGAVTMAoTWNiNDC1KlBqoI1b0Gyt2bsY+VQfcPaetpdIPoIocpHP
+	pyVl9ilao6WAkJlCd1J3nfFW6FjuOOci97EMhAmgTPb3HsA22OJ6aRl8melRM2tf3tP2SYPPuG9
+	BNwFmCWxtlM9EKHjcWRMfUgH5/wB32GZkgaObU+DypWYh7PdMI35OVToSgtYDZg8XyxwR/09ITf
+	vB3IbIWbhzMVms3vgHcD3983rk2Ac9MQwyhKkJmNrq4oyptodDkXYliTsqdt7jIdN1ie/SLJLL1
+	L25TzDxnTV0B8xbgJevxCDh4jGduahlkUEUVhtYwiHAFfhfVRVcaBJYjmM4ZpkcItBeLN6QYgbn
+	o9IFVzq/fpm3o9yTt6KLk8nIsCPpOvDsoCFSXUiVV9Oxh3bajX5qMXWmPLJoZtz0bGi7KPaljXo
+	bPvaR28Ih5OMNUtHNTLzUZA7Zx6awYBCLH4oufde0zI5ACdUTzQl6Qc8Ur5Fr2z44vVMF40d/9/
+	Di2oupr4Tt399faDWZc=
+X-Received: by 2002:a05:690e:1442:b0:67c:175c:df66 with SMTP id 956f58d0204a3-67c3d963260mr2729393d50.36.1794227622290;
+        Mon, 09 Nov 2026 04:33:42 -0800 (PST)
+Received: from gmail.com ([2a03:2880:24ff:49::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c3b93be27sm3766906d50.11.2026.11.09.04.33.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 04:33:41 -0800 (PST)
+Date: Mon, 9 Nov 2026 04:33:40 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, acme@kernel.org, 
+	netdev@vger.kernel.org, llvm@lists.linux.dev, ast@kernel.org, yonghong.song@linux.dev, 
+	bpf@vger.kernel.org, kuba@kernel.org, tj@kernel.org
+Subject: Re: [BUG] bpf: tcp: bpf_tcp_ops_set_rcvlowat() missing from BTF with
+ clang KCSAN
+Message-ID: <avG9bk0kxRUvonhD@gmail.com>
+References: <au27Y9m78_3EH2v1@gmail.com>
+ <a69dd097-7e71-41f0-9a6b-eda001773236@linux.dev>
+ <au347UiVUe5oUuxM@gmail.com>
+ <au4kpSGVSH3tYiZm@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,57 +86,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au4kpSGVSH3tYiZm@google.com>
 
-Until now unsafe flushing is only performed at the very end of
-panic(), before entering the infinite loop. For other situations
-(such as panic-kexec or panic-reboot or emergency-reboot) no
-unsafe flushing is performed. The reasoning for this is because
-an unsafe flush could lead to fireworks, which could prevent the
-kexec or reboot from occurring.
+On Fri, Nov 06, 2026 at 07:05:25PM +0000, Kuniyuki Iwashima wrote:
+> On Fri, 06 Nov 2026 07:58:01 -0800, Breno Leitao wrote:
+> > On Fri, Nov 06, 2026 at 09:16:24PM +0800, Jiayuan Chen wrote:
+> > > Thanks for the report !
+> > > 
+> > > 
+> > > On 11/6/26 7:38 PM, Breno Leitao wrote:
+> > > > My arm64 KCSAN builds of linux-next fail since next-20261015, because
+> > > > bpf_tcp_ops_set_rcvlowat() is missing from the vmlinux BTF:
+> > > >
+> > > >   WARN: resolve_btfids: no BTF func for kfunc bpf_tcp_ops_set_rcvlowat in bpf_tcp_ops_set_rcvlowat_kfunc_set
+> > > >   WARN: resolve_btfids: unresolved symbol bpf_tcp_ops_set_rcvlowat
+> > > >   Failed to generate BTF for vmlinux
+> > > >   Try to disable CONFIG_DEBUG_INFO_BTF
+> > > >   make[4]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+> > > 
+> > > 
+> > > 
+> > > Has pahole fixed this issue?
+> > 
+> > I don't think so, see the line below:
+> 
+> Could you try this ?
 
-However, some users may be willing to take on such risks in order
-to see panic output. Indeed, for the netconsole (which does not
-support safe atomic printing) it is a regression that such unsafe
-printing does not occur. [0] 
+Thanks, it fixes my build. I tested it on top of pahole master (9eb594d)
+with next-20261105 and clang 22.1.3:
 
-This series adds unsafe flushing policy flags per-console to
-allow individual consoles to perform unsafe flushing for such
-scenarios. The unsafe flushing is hard-code-enabled for the
-netconsole in patch 6/6. The justification is that this is not
-less safe than the legacy netconsole.
+ - arm64 KCSAN, CONFIG_WERROR=y: vmlinux links again,
+   bpf_tcp_ops_set_rcvlowat() is back in BTF, __bpf_tcp_ops_init()
+   returns 0, and progs/tcp_autolowat.c from the selftests loads.
 
-Later these policy flags could be easily exposed to userspace
-via /sys/class/consoles/, once the sysfs per-console interface
-is available.
+ - It also brings back scx_bpf_tid_to_task() that was work arounded by
+   tejun.
 
-John Ogness
+Feel free to add my "Tested-by: Breno Leitao <leitao@debian.org>" tag.
 
-[0] https://lore.kernel.org/lkml/20260915100140.3631650-1-ryan.roberts@arm.com
-
-John Ogness (6):
-  printk: Introduce and specify flush reasons
-  console: Introduce unsafe flush policy flags
-  printk: Evaluate flush policy in nbcon_allow_unsafe_takeover()
-  printk: Remove nbcon_atomic_flush_unsafe()
-  printk: Add panic+kexec flush point
-  netconsole: Always perform unsafe flushing on panic/kdb/restart
-
- arch/powerpc/kernel/watchdog.c |   2 +-
- drivers/net/netconsole.c       |   4 ++
- include/linux/console.h        |  37 ++++++++---
- include/linux/printk.h         |  27 ++++++--
- kernel/crash_core.c            |   1 +
- kernel/panic.c                 |   2 +-
- kernel/printk/internal.h       |   4 +-
- kernel/printk/nbcon.c          | 117 ++++++++++++++++++++++-----------
- kernel/printk/printk.c         |  16 ++---
- kernel/reboot.c                |   2 +-
- lib/nmi_backtrace.c            |   2 +-
- 11 files changed, 146 insertions(+), 68 deletions(-)
-
-
-base-commit: d01f86a7da8161aac8c6304b377cf58fb75861ca
--- 
-2.47.3
-
+--breno
