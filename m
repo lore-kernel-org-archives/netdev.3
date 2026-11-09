@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794228386;
-	b=bjRSSHoDstJgHMdj18lhZ7tfd4io5cd9speUfjW4ZT9oGUEUryKkLubHT5ziBWz1qO0n
-	 VDCWoL+Wt7JKhVTBshY6mmzi8esAXmUfANSx+c8yE6XI94pkvpD4D+mNA26tBnRqBcgPC
-	 9MhvDT9ADc/HdYa2FI/2p5U5RSvnUk1uBkyInKYiNPKfxMRGNuIYYFDkSXD0AKpGBwqnl
-	 b9Ae4ov3001/pBjcdtnmvJIQKZVzjNcJmX5mEy7YlJL/dwZTQqI/GgR5FkncrG1E+mWz4
-	 ojOSp6xtfIymAsx19y4URka0ETojVtE9orXrXA7BbeW5upLXG0tybftdg2nTxnf+FNw==
+	b=L+CxN1hPktGisRW4V2Dc+bh4UE60Mq+/Z8hon1MM+u3DMnm7uhgyqebQDZEdNvOcXSsc
+	 NLLsSxXh59OhOZ6I437HI13qBomRhaz07S/weD96ghVOc6MZ4gNn0rb4XJKp/oxrAWZH7
+	 TCE4TKIsiHmxv85Fsga3ODnriL6q5kBCI9OUE+sQbUCnGhu93OUk7LORVPqn1R2N4Jnnn
+	 f56yAS9pcaphzRr/C3Ktjf9nRJDLEiwqEs53d903lJEMw314eOk9rm89JMUoDvVcz2r28
+	 Zrt+vGsiDLVQpENw2uWZt72IrUgiXk7kfuoDaAB4XvtANHWYvlNqNNbei3uIQsD93JQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794228386;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=tbvE3ophgrCUQZIitAd161cuT38XHDTnYd9KZkSD83M=;
-	b=iY94rRccPFLBWkmEv8jYUG7EDi+HYTDZjFRhdNg6lpkqEuRiqhVve3wa/AUTksoaC3vn
-	 65Vq9SGwNtYQ2TquIe4FUtmxn7QEEFlHhNAubjr6DTHLwxQ2Y5ArxLFC7N6m4i1XBlHIc
-	 JwfmPcImAyonxb4mx8U+aDpS9FYzB7Ih8KCOgsIp4+7KE5ajR1qxbaDBQHuuJsrzqY9Wm
-	 bt0kVBQ/i5Dge3zwkc2PjqV79xlOvPozll5AqLRabeNbuI3chqU8m38XwxC5JPYWFZFi5
-	 iiWQKiM6SskoqvARI+2C102kfVvqXIWFPJ1tXBpAkZrlP4Y0qavf9MIzCrYkargXiLw==
+	bh=kh7rPhttLM/9UhZnWWZ9GH6qoA/1ey+mAVM6n12p29w=;
+	b=Lx7TJFeyyPShuvkEliklU7c/5WfHgtlOSm2tQe/2q4FlGGlAQ1UNI9U0G0mnb5tzq8mr
+	 RyxbaZFICkyPjdKN1IJaH0xGMm3PnCzgIdOOW95XxvjHx188a45kd0UBOe5bS8B+QTbgA
+	 DPeRvSKqdBp0JUjYTvqGqThV1CiKIxlpFGHnsMr9QYDu0wrUJc9v/6g1h20bGyyDs6zph
+	 tQV4DHwJ08IHLOaq7liNg2oo9L0I6dpsGAuDxdqO3yETIGcDyKEjOWvvFikoBPNv7hnqe
+	 XVH3OS9N6FS0HfvoFHhUlBinTNBQecRI8wEc4mjS5TN7MaBmZewiK3fUsnG9kG40pSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=corp.free.fr;
 	spf=pass smtp.mailfrom=corp.free.fr;
-	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=SqpZePNg;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=GnJgdnUJ;
 	arc=none smtp.remote-ip=212.27.60.169
 Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA5F606A323
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:46:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEA5F606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6096606A325;
+	Mon,  9 Nov 2026 12:46:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6096606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=SqpZePNg
+	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=GnJgdnUJ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
-	t=1794228383; bh=erhRTUimfQJ4m5/y91hsFMpy4dgpR2za3cl+zBj1KbM=;
+	t=1794228384; bh=7ZPGTPVH0/RD8EODqPSC8V+GK04omyIfEDmcx5TbHo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqpZePNgfnEeQUeB7nLCEbEypN1kfNbn0ETKnuoUedkdJ858ktL3fpFAkkBF1kKBs
-	 X2SdG4gG9/3wHZ2Jp7H9kqUE2tYMmLY1sTu8V8nhAdBjSuV2oGv4fm7l69ioNbAHn3
-	 QdX+9Oz7J48ODSfQsA0MWV+tknFha+O/KOVGWJ8luwQgJoWfzvaauC6RVjR4OSdicr
-	 zu2ezrZS5ahQhScc2tATzCHQmP2XOgJ8fTHFViHmq/xypk30Om2BOQKuI6DHH90tC0
-	 0uLbRAYAZanSD6SQetyoHq16diAToz73H6FhBIsP92SDHpENUot8tsxzkNI2/15T2m
-	 +mthp20PTePaQ==
+	b=GnJgdnUJ8FO7KxFUxm8vPAsdZCo5VNQAWW/jvWGNrYrUgrkNL9HskYrD6pUff5JIc
+	 /2qZDWwqMh5BitC7DPcAVYr1WjnjGDDqbwoKxwvfibcw3cH6TtpQqTNRSrNo52HEHK
+	 X/4vmdaDM1zi6dR/R85IB+ZcDzfr+WR7E0VmhtwEwBXNKQX75w4uuCezbopLe90pCC
+	 IYLXvqdM86WZUmvQst53V4pnuzbPbALX7PZyyBYJq8jEBomP4Wg5RFYQRCALeN0d4s
+	 wc5fpozXzfcviS3vDesAOoNILglbSrgcydfopLn51z/RwhTyJetTkZf4Uqq0cIt3p2
+	 EtDmcxyfbsbSw==
 Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
-	by rcs.proxad.net (Postfix) with ESMTPSA id A9CD544C0591;
+	by rcs.proxad.net (Postfix) with ESMTPSA id E6FA944C0610;
 	Mon,  9 Nov 2026 13:46:23 +0100 (CET)
 From: Alexandre Cassen <acassen@corp.free.fr>
 To: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -55,10 +55,24 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v3 1/4] net/sched: honor TCA_ACT_FLAGS_NO_PERCPU_STATS in more actions
-Date: Mon,  9 Nov 2026 13:46:12 +0100
-Message-ID: <20261109124618.933149-2-acassen@corp.free.fr>
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v3 2/4] net/sched: honor TCA_ACT_FLAGS_NO_PERCPU_STATS in bpf, ife and skbmod
+Date: Mon,  9 Nov 2026 13:46:13 +0100
+Message-ID: <20261109124618.933149-3-acassen@corp.free.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261109124618.933149-1-acassen@corp.free.fr>
 References: <20261109124618.933149-1-acassen@corp.free.fr>
@@ -73,153 +87,183 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-skbedit, police, mpls and sample store and dump
-TCA_ACT_FLAGS_NO_PERCPU_STATS since commit 40bd094d65fc ("flow_offload:
-fill flags to action structure"), but still allocate per CPU stats.
-These take about 8 KB per action on a 128 CPU host.
+bpf, ife and skbmod are the last actions that ignore
+TCA_ACT_FLAGS_NO_PERCPU_STATS. Commit 40bd094d65fc ("flow_offload: fill
+flags to action structure") makes them store and dump the flag. They
+still allocate per CPU stats, about 8 KB per action on a 128 CPU host.
+Yet tc reports no_percpu on them.
 
-Honor the flag as the other offloadable actions already do. For example,
-a per subscriber policer offloaded to hardware:
+Honor the flag here too. These actions run only in software. With
+no_percpu every packet takes tcfa_lock to update the stats. Only the
+users who set the flag pay this cost.
 
-  tc filter add dev $DEV ingress protocol ip flower skip_sw \
-     dst_ip 10.0.0.1/32 \
-     action police index 1 rate 1mbit burst 10k \
-     conform-exceed drop/pipe no_percpu
-
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
 ---
- net/sched/act_mpls.c    |  8 ++++----
- net/sched/act_police.c  | 10 +++++-----
- net/sched/act_sample.c  |  6 +++---
- net/sched/act_skbedit.c |  9 +++++----
- 4 files changed, 17 insertions(+), 16 deletions(-)
+ net/sched/act_bpf.c    |  8 ++++----
+ net/sched/act_ife.c    | 24 ++++++++++++------------
+ net/sched/act_skbmod.c |  8 ++++----
+ 3 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
-index aa56521b7179..a870386386d9 100644
---- a/net/sched/act_mpls.c
-+++ b/net/sched/act_mpls.c
-@@ -60,7 +60,7 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb,
- 	int mac_len;
+diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
+index 06d8f78b7368..3aea3ff5785f 100644
+--- a/net/sched/act_bpf.c
++++ b/net/sched/act_bpf.c
+@@ -42,7 +42,7 @@ TC_INDIRECT_SCOPE int tcf_bpf_act(struct sk_buff *skb,
+ 	int action, filter_res;
  
- 	tcf_lastuse_update(&m->tcf_tm);
--	bstats_update(this_cpu_ptr(m->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&m->common, skb);
+ 	tcf_lastuse_update(&prog->tcf_tm);
+-	bstats_update(this_cpu_ptr(prog->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&prog->common, skb);
  
- 	/* Ensure 'data' points at mac_header prior calling mpls manipulating
- 	 * functions.
-@@ -123,7 +123,7 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb,
- 	return p->action;
- 
- drop:
--	qstats_cpu_drop_inc(m->common.cpu_qstats);
-+	tcf_action_inc_drop_qstats(&m->common);
- 	return TC_ACT_SHOT;
- }
- 
-@@ -196,8 +196,8 @@ static int tcf_mpls_init(struct net *net, struct nlattr *nla,
- 		return ACT_P_BOUND;
- 
- 	if (!exists) {
--		ret = tcf_idr_create(tn, index, est, a, &act_mpls_ops, bind,
--				     true, flags);
-+		ret = tcf_idr_create_from_flags(tn, index, est, a,
-+						&act_mpls_ops, bind, flags);
- 		if (ret) {
+ 	filter = rcu_dereference_bh(prog->filter);
+ 	if (at_ingress) {
+@@ -76,7 +76,7 @@ TC_INDIRECT_SCOPE int tcf_bpf_act(struct sk_buff *skb,
+ 		break;
+ 	case TC_ACT_SHOT:
+ 		action = filter_res;
+-		qstats_cpu_drop_inc(prog->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&prog->common);
+ 		break;
+ 	case TC_ACT_UNSPEC:
+ 		action = prog->tcf_action;
+@@ -305,8 +305,8 @@ static int tcf_bpf_init(struct net *net, struct nlattr *nla,
+ 	index = parm->index;
+ 	ret = tcf_idr_check_alloc(tn, &index, act, bind);
+ 	if (!ret) {
+-		ret = tcf_idr_create(tn, index, est, act,
+-				     &act_bpf_ops, bind, true, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, act,
++						&act_bpf_ops, bind, flags);
+ 		if (ret < 0) {
  			tcf_idr_cleanup(tn, index);
  			return ret;
-diff --git a/net/sched/act_police.c b/net/sched/act_police.c
-index 3f8147f37549..0b0c09e3dfd9 100644
---- a/net/sched/act_police.c
-+++ b/net/sched/act_police.c
-@@ -80,8 +80,8 @@ static int tcf_police_init(struct net *net, struct nlattr *nla,
- 		return ACT_P_BOUND;
- 
- 	if (!exists) {
--		ret = tcf_idr_create(tn, index, NULL, a,
--				     &act_police_ops, bind, true, flags);
-+		ret = tcf_idr_create_from_flags(tn, index, NULL, a,
-+						&act_police_ops, bind, flags);
- 		if (ret) {
- 			tcf_idr_cleanup(tn, index);
- 			return ret;
-@@ -259,7 +259,7 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
- 	int ret;
- 
- 	tcf_lastuse_update(&police->tcf_tm);
--	bstats_update(this_cpu_ptr(police->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&police->common, skb);
- 
- 	p = rcu_dereference_bh(police->params);
- 	ret = p->action;
-@@ -313,10 +313,10 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 3946a9589bb8..a931f0d353d2 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -551,8 +551,8 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
  	}
  
- inc_overlimits:
--	qstats_cpu_overlimit_inc(police->common.cpu_qstats);
-+	tcf_action_inc_overlimit_qstats(&police->common);
- inc_drops:
- 	if (ret == TC_ACT_SHOT)
--		qstats_cpu_drop_inc(police->common.cpu_qstats);
-+		tcf_action_inc_drop_qstats(&police->common);
- end:
- 	return ret;
- }
-diff --git a/net/sched/act_sample.c b/net/sched/act_sample.c
-index 44319a159b55..3029e93c4dea 100644
---- a/net/sched/act_sample.c
-+++ b/net/sched/act_sample.c
-@@ -69,8 +69,8 @@ static int tcf_sample_init(struct net *net, struct nlattr *nla,
- 		return ACT_P_BOUND;
- 
  	if (!exists) {
--		ret = tcf_idr_create(tn, index, est, a,
--				     &act_sample_ops, bind, true, flags);
+-		ret = tcf_idr_create(tn, index, est, a, &act_ife_ops,
+-				     bind, true, flags);
 +		ret = tcf_idr_create_from_flags(tn, index, est, a,
-+						&act_sample_ops, bind, flags);
++						&act_ife_ops, bind, flags);
  		if (ret) {
  			tcf_idr_cleanup(tn, index);
- 			return ret;
-@@ -173,7 +173,7 @@ TC_INDIRECT_SCOPE int tcf_sample_act(struct sk_buff *skb,
- 	int retval;
+ 			kfree(p);
+@@ -720,7 +720,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
  
- 	tcf_lastuse_update(&s->tcf_tm);
--	bstats_update(this_cpu_ptr(s->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&s->common, skb);
- 	retval = READ_ONCE(s->tcf_action);
+ 	p = rcu_dereference_bh(ife->params);
  
- 	psample_group = rcu_dereference_bh(s->psample_group);
-diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
-index 26258b353cde..1f958b7d2a60 100644
---- a/net/sched/act_skbedit.c
-+++ b/net/sched/act_skbedit.c
-@@ -45,7 +45,7 @@ TC_INDIRECT_SCOPE int tcf_skbedit_act(struct sk_buff *skb,
- 	struct tcf_skbedit_params *params;
+-	bstats_update(this_cpu_ptr(ife->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&ife->common, skb);
+ 	tcf_lastuse_update(&ife->tcf_tm);
+ 
+ 	if (skb_at_tc_ingress(skb))
+@@ -728,7 +728,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 
+ 	tlv_data = ife_decode(skb, &metalen);
+ 	if (unlikely(!tlv_data)) {
+-		qstats_cpu_drop_inc(ife->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&ife->common);
+ 		return TC_ACT_SHOT;
+ 	}
+ 
+@@ -742,7 +742,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 		curr_data = ife_tlv_meta_decode(tlv_data, ifehdr_end, &mtype,
+ 						&dlen, NULL);
+ 		if (!curr_data) {
+-			qstats_cpu_drop_inc(ife->common.cpu_qstats);
++			tcf_action_inc_drop_qstats(&ife->common);
+ 			return TC_ACT_SHOT;
+ 		}
+ 
+@@ -751,7 +751,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 			/* abuse overlimits to count metadata we cannot
+ 			 * decode: no ops for it, or the decoder rejected it
+ 			 */
+-			qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
++			tcf_action_inc_overlimit_qstats(&ife->common);
+ 
+ 			if (ret == -ENOENT)
+ 				pr_info_ratelimited("Unknown metaid %d dlen %d\n",
+@@ -763,7 +763,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 	}
+ 
+ 	if (WARN_ON(tlv_data != ifehdr_end)) {
+-		qstats_cpu_drop_inc(ife->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&ife->common);
+ 		return TC_ACT_SHOT;
+ 	}
+ 
+@@ -819,21 +819,21 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 			exceed_mtu = true;
+ 	}
+ 
+-	bstats_update(this_cpu_ptr(ife->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&ife->common, skb);
+ 	tcf_lastuse_update(&ife->tcf_tm);
+ 
+ 	if (!metalen) {		/* no metadata to send */
+ 		/* abuse overlimits to count when we allow packet
+ 		 * with no metadata
+ 		 */
+-		qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
++		tcf_action_inc_overlimit_qstats(&ife->common);
+ 		return action;
+ 	}
+ 	/* could be stupid policy setup or mtu config
+ 	 * so lets be conservative.. */
+ 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
+ drop:
+-		qstats_cpu_drop_inc(ife->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&ife->common);
+ 		return TC_ACT_SHOT;
+ 	}
+ 
+@@ -898,9 +898,9 @@ TC_INDIRECT_SCOPE int tcf_ife_act(struct sk_buff *skb,
+ 	int ret;
+ 
+ 	if (unlikely(!tcf_ife_is_eth_skb(skb))) {
+-		bstats_update(this_cpu_ptr(ife->common.cpu_bstats), skb);
++		tcf_action_update_bstats(&ife->common, skb);
+ 		tcf_lastuse_update(&ife->tcf_tm);
+-		qstats_cpu_drop_inc(ife->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&ife->common);
+ 		return TC_ACT_SHOT;
+ 	}
+ 
+diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
+index 09e9dcf58253..72dedb9b19a6 100644
+--- a/net/sched/act_skbmod.c
++++ b/net/sched/act_skbmod.c
+@@ -32,7 +32,7 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
+ 	u64 flags;
  
  	tcf_lastuse_update(&d->tcf_tm);
 -	bstats_update(this_cpu_ptr(d->common.cpu_bstats), skb);
 +	tcf_action_update_bstats(&d->common, skb);
  
- 	params = rcu_dereference_bh(d->params);
+ 	p = rcu_dereference_bh(d->skbmod_p);
+ 	if (unlikely(p->action == TC_ACT_SHOT))
+@@ -91,7 +91,7 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
+ 	return p->action;
  
-@@ -85,7 +85,7 @@ TC_INDIRECT_SCOPE int tcf_skbedit_act(struct sk_buff *skb,
- 	return params->action;
- 
- err:
--	qstats_cpu_drop_inc(d->common.cpu_qstats);
-+	tcf_action_inc_drop_qstats(&d->common);
+ drop:
+-	qstats_cpu_overlimit_inc(d->common.cpu_qstats);
++	tcf_action_inc_overlimit_qstats(&d->common);
  	return TC_ACT_SHOT;
  }
  
-@@ -221,8 +221,9 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+@@ -171,8 +171,8 @@ static int tcf_skbmod_init(struct net *net, struct nlattr *nla,
  	}
  
  	if (!exists) {
 -		ret = tcf_idr_create(tn, index, est, a,
--				     &act_skbedit_ops, bind, true, act_flags);
+-				     &act_skbmod_ops, bind, true, flags);
 +		ret = tcf_idr_create_from_flags(tn, index, est, a,
-+						&act_skbedit_ops, bind,
-+						act_flags);
++						&act_skbmod_ops, bind, flags);
  		if (ret) {
  			tcf_idr_cleanup(tn, index);
  			return ret;
