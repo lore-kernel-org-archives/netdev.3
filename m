@@ -1,80 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.190.147
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794261984;
-	b=eVC0355k7h1sjeZ+uwIoq8kq7YP86ymilXPXR/Fiq5WTXRqT7mNBQqg+pyG+OoMYL2jV
-	 4MI0yFtyiQj4ujJJ4JiC3a9IVkIvfaYCkg+WBsRPArtYYhUb1aVXZPPzmUf4AX/p+okY2
-	 9w1WLCQbbuIs/GmYyezFp+O+X3fggFd2rmOYcpLRpyywrB+NM06Ev4SRDKizhc5LjUQS8
-	 SDE7YNx76o+c8u5CvRY0Ig/68FOL3dmIGaFZi4emFR8Lo5XpwtOH6ZE5jymvgUPifwBsw
-	 GnbjakQRU60nuT5D+72VawpPzoIWW/NJPGKfIRHHFYBZr0mTzPEBbFCS+T5fZ25JkLQ==
+	t=1794262478;
+	b=lwqlcx+duGkD8d3UFuGiwJsBjIIBsNhgyYZ282tFsIZD/XtKSym6UC0nyjSRtlrPn4QP
+	 owczosZeabNerQVcHT3InUocuP8r+iuc1CgZ0JS0/PoN7HgetqgwyglauuMymHiPDlHFt
+	 GtSH87DNKvfhN2TEk+8w4KU1wmDeyT2H070bwXxhumcl+h1ARQNf+bgONNaHWHz5OI54B
+	 0vPM59zS3Rq600BXZPeBmhlaHFiN5xcEvllL7OPx7sdnHj2YUR0JrLIrijunxUUhhgM2G
+	 ZRExAYFo0Qq7A5g8qf3F7sBnUp1sQDg9sZyn4zok0cz49J66WYTDF7++x5dOjMNPf3A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794261984;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=LXdslhn4QFOhXiE4/3m7pT0ytL36hZW2Gbm9O6IkB2U=;
-	b=oYJlZFv4+Td05FaRstbAD5iDpSnLRQ4lBgsmCp8iDeNo9Rkj5VYz+CNOlHiY7B0EjA/l
-	 ta+H5zO4bKhJ/tsSlQPhzEtaHymGeM5zzubQsJhaH8tKnv0hEItZ42JZQEqp7kzDV9Edb
-	 4zcHGH+dpwQeB/mWWpKC0OyeQLv0XnFTVEbC5QPUE8rl09+hoEBeHyIbaQYsQCLSDOgTy
-	 yGDH3YdWBaKIBn814262IB94vPYlrICEoy6Wg/1Oljs86cRbqbdk6VdVC/RkXn8gmGnDD
-	 M1zgaUMH32J1h2FN/inKy9QuDH6EiYuY09tOL9ufLRp4wqBaYbFZZ5u1EulqQMTu9aA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262478;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=m2la7If7oS8mGV9E9elp0qEy1slr4e68W5FdYtWr/CM=;
+	b=2yuQ5QBZzr+nj3l4mwQ9UdC47sGDIThx/MzHJzdBKB6/PovPiVavwoCO7q90+9ze91Ck
+	 0B27zqzf74/7vu0swU++2lUCTiRvCNjt0PT9rbcUUCg1hooZhYkxolbGqT0lWwE223E+J
+	 ze836T1EFJ5aYbK96/iTSC5klV7a6dq4NZZn5doGSVePUlEv+aarJQvSSqAd+Aiu79hJE
+	 xElXRzQczqjSR46iw2pYMv7rMzzRzYDCNvIMSs0ZjsvDSRmvJ4lewfg3wvWScistXR0mK
+	 lqYka6IIDx1vXiGzPlfCSIr8To1js0k2+0LfnxajksYvEF9rZjZxFaI6vWYE199Zo/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.com;
-	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=DYMytSYK;
-	arc=none smtp.remote-ip=66.163.190.147
-Received: from sonic315-21.consmr.mail.ne1.yahoo.com (sonic315-21.consmr.mail.ne1.yahoo.com [66.163.190.147])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=ZaYbnyy6;
+	arc=none smtp.remote-ip=209.85.128.225
+Received: from mail-yw1-f225.google.com (mail-yw1-f225.google.com [209.85.128.225])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08384606A32A
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 22:06:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08384606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27855606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 22:14:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27855606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=DYMytSYK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794261983; bh=LXdslhn4QFOhXiE4/3m7pT0ytL36hZW2Gbm9O6IkB2U=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=DYMytSYK3AwByEXZ4ZLoYE4wFsAKjciyP+vSKcA65h4l6xkLbLtJJHpfqj97rIG7fN73ep+zEY7eZ90zh9YV7morXl4TToX1oS1UosIc3SDsykAjyioIDKR+qhERIb7Eg07Ctf7rCxo4EzYvHiyPG0DM0yQrXjio8S7iNzfxUO8eH5wFmXbm5T33IQYeUjUd5ekLCXJjnGkeAeAU3jORgvmiWMND9CVB3S//N3wLM2xCe8xX9hII0JznantqFH4mSTGaICsERT9u/60wnizb1DG0CxaMPnn/CendAHU58Rays4hod6Hhg9S3bSvj4f4zUmvHEGBDlK3Q+U5LxnE88A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794261983; bh=KaOp+Il++hyuwkT6/Vmv2fNNwBliSJJPIUzvrFnxIo3=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=TCUq6+b5bNS7VVrLKb8+dAuk/BvKDxdoMad/YbDGKgcS3MwqHrTlZyFouktv18n4MR/nWzCMzrK4dzhaVdlcCtchn6su9r4CoUf7ZWUg9tK95/LK5XpE/1DxNfus67iuys9+PRcnWc0cv2bR4jIPo0ubmyLyo/IqfUwQMjdEUCmTHT+zj9lGxvj2kyyZEO0asc02kbzp7+0cuNAgPHX8p6u75N8EMg9fyXc3O+LjFF+HgiHVBc/LdYI8fX52jeJh3Uq3DyUQlhhfeEgINIdqlebfmdZVRbTb942o7eIOoeU6lj4Nn7Sq+SVRpI9xutlHGDnI5hv84FH2z/JcjdZByw==
-X-YMail-OSG: mU_d6JcVM1na2kursYcZv.ZgUwJtq.y.BP7YO7QUPF0EOePXec9ANKXuWeVxgRO
- Wekst1SNltPuRcLut7brl7pO7oGSc3DDn3DC0UR7bRNshUBmMgXmiQtO4WgSINqfxVIljAlya.YB
- QsKRkuoTesNNleti.UdaTvKk6wDAvN6ajF_B39M3jpEWsmrj0VOiA9YASBfcPw2jnLL4l2MdRM2V
- 0hRxJX8o.G_sIjk0VUcqVZU6_0tfNb8nAane05gLgRfczTWonFbWdgrN_V2LsOIL1OA8C_Aj0swy
- rRLTtHWI6qdJwe2JvnmRFa.wRktubI4Vn5V9xS3vUinLN9Ah7kpUKL7706Lj8r3X56NRuCdsNhti
- G.E_UAntTkaHIDKyddcPT9VNeZa5_yrjvTSKPXZT2YvJIV.M7gfhk9y3ONNR_ywbs5W0_03ZFeFf
- E_EmOd8U31pNj2Ms9Fd0TJlQp8NtqXe.Ms4.gSfZhMFJFOuQRB3m9HCPxuMDvuWwTHlm22sjGcXy
- TjGorrVcLF2GQa2mEpYiL_CvluSQ7YKMZJVwyvoTs862Lp1S45bWSB1rJIbx8P3VRufhZsRfbWvW
- ZNuj9qDidf6lSZJkPhTGKVCzHuFK52ck7H6Rn886M8S9Jm7YIu5RXYIS88uiuZ9ixORY.ski6vhL
- 3x8xq1HJGAknzMEk0brWd_gFHAq_p1hHRVSIwe5hxeYpX1Ze4nrEiWyA5DuGoiw_nzLFSCWPYC8.
- pZJMkNssvnsonGMsf25BV.sA_a_E6X9blrdkbdmp.HanYjdBgW9VezDMcbavwkWo.5qqsCz6RKuS
- PEJTJSkENwjgSMDYR_ZPM5s6685g5vKvULMdKP2yNaHPNt4cgBRM6PfPxdM0_aKyVVqAYRCGtMXe
- stY.raLXqMXYrDwuR9NHloHOh68IpMONz3XEH42f3KvtdE0fgL4KsuH.EvwPadk8IGDCMr0o.Ado
- yGE9yVt9n6Fk2vR78EP38OU.UzHr4aFqSK7y42me41YDZkREy4nT69ccLlJYDcpVRXAlKXEzTyMY
- Hyal2zoQXP9.xQ_6iyJf51q1Qgr.rcq67jeDGUllrhRo7U9T3SnMZhowBdYTTkgLy.xpeQbXSyFV
- JGtlmXGSjgtaw7tnG7fV786G_JMds1MrjfmlsFDTFnGxWGRj3J0M5YiMUXcviM.tAOUzeHIU8wNH
- 8Uzi742vIDn6TPibbEmWypZIlNvYjGGaiS7UkZn6PeiWADuMm3YkmtEO2jEJ2RnBm__QZHA7wcil
- 0qlQEP3BCfbtG9vUMGkzwi0V4o7AryQakwp85tkXzcKcPnY4mOyLBCOO5aIAjmZlHTHAarcEBcfx
- TCCWmIJ_z0xNOvbQqOEL0K8k33JrQWxeF91cimB6rerVaXa23tzHe2h7IxBAPM.hi24WpOQqGRdI
- 2Dztj.3cS7wH3FEKrkdc.JaeOCwt5ntmvqNfeLLxw2Myb8tdSvLUxT6sT.tkXA97UxhFqy6e6O.c
- W3LoRmt0PnIZgbCgaMpE41sukwexny71nwD4dZA0vwZP3y.hwVDiFNDWjCtonJ7Rf8cIhdYy1KLe
- Qho7NyMmC6YcnEk5VljmulnIB43VlOczRkc75s8aEW5iruxPA4Z7kTmeluF9cN5JFiYfppz4rMIP
- .fTLXS.qkhfLNRPnsEPmHHln4aDl8.hfUtR.xdBoa32BmbFViF3S7wumtz6YzmvTXO9BS0R7b0H2
- zVeoZIt2ohq8JyFL5sPR1iJUuU39nKmHCTujWrBgneIx5CkyL0OTerL1RGvNzPdJ95NYr7IcK4rp
- rSWnsUkPSNDqHS2U9D.YjzMMxHAq0Pf8.6xf.h.9xwDH2NAn4eL5CHGWdj7Q8i3EskMtl3M5pkDP
- Ks6IploLiIuHlO1DIeNk9xCXnQRp00EZY_b_vT6GvlaPs_h7GL9LJ3no7K1vwvTxcaGNSedw08lr
- 1urq3dkj1MMONkF5CChUxR03Lvxri3sBF2eYhVtaPAvyL8tqEk9Dp4EgRQPXuE.ZloObqtCVR5tu
- I3s8Gld.acuU3rMP6oaZ1dypTUgTM91pT0gt7h0026LaOrEC_Jhn6x5vxn.iFmoqCnyxv0WtqxK4
- IjRGIWPyBhBuoMEwFWulKJyZH7Aw3jIb3Ydvt9pRlNNQ_wDwC83eRhtBBZLYuzpvf.sFPQAfIEHn
- OFmiNcoRUXYj2d5KQuauYrJ18xl0VDS3ixY5ZZ5tslSzr0LgfynK7SCZbd9FpHPmq6gaG1G871gn
- jf2XCAdWByuhpxZi9BGbB7C5NmhbXGGwNLjUd7o_cHGWuPbqAqEZHi68i.h71apEfOxyPchnJqoQ
- 59T_1_rkGilygk4ZyL6P3BDh6XVBtoBgd_x9biIJrddEIx4JbL_I-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: fad1860a-1754-460a-b3ba-7b3aa4e0ec41
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Mon, 9 Nov 2026 22:06:23 +0000
-Received: by hermes--production-ir2-5dd9bf4598-98szj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID cdecb7d7b98a1d01b52c305e1afc5ec8;
-          Mon, 09 Nov 2026 22:06:20 +0000 (UTC)
-Message-ID: <3d61128d-bcd2-4f31-8ba0-e35b488b5205@yahoo.com>
-Date: Mon, 9 Nov 2026 23:06:17 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=ZaYbnyy6
+Received: by mail-yw1-f225.google.com with SMTP id 00721157ae682-8b0cf2c0785so13781467b3.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 14:14:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794262477; x=1794867277;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=m2la7If7oS8mGV9E9elp0qEy1slr4e68W5FdYtWr/CM=;
+        b=a/yNar45QcqBGYEJHaQyvXBB6XIahWHj6A5PkiDfrMIRWyhsebq5aIuMo48H4nCPps
+         XI7cYz8kqLUSooIv0NCzfhKc59AiYPtK9qNh5FHoWOlBNiS1jo6cgOTSEnHfcfMAUOKR
+         tljfEFeUEiYlfrJ7ZlRHmI+VKi/ODDC1pni0f/xs4agZGMaaxLpiZlM/+NvV52oU5Vhq
+         CJCg7kJNUBHGkVSgMD9CY5QQpHBLJr/qHCItM/xRxORpFj+X65PpC2hZ4piXPE7B5V3n
+         uzlMvN9d/Lpx4FA+MbiMbzrPPrwNSTLdN2fgJTx6cW/EgiX5ri6AMajDNoW3F9/r2bMs
+         fGGQ==
+X-Forwarded-Encrypted: i=1; AL+hErHPUFsQGE4PBYYempKTWdu8GISL8GMsos70JLhU5JD60zo2N9UFltvs05CrxetQq26TEEaOZB8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+MgOPvwqevaCqVdd8sb+QymFpgIDB7a76DpH3v22f28DKUlmZc
+	UpEYMFF6F1s9Fp4Vu3Gk6l0rob6FrxEUQGsPmA34+CF7eZ8gZeophKiFMZlpQ/kPi2MszbVbrHx
+	DQGuXGvTJjCSm3BjU3MaERDF++PDV0B1H625shCBon9T1zXpfXV5HG0c5Ggo0c0SWEz6BAPaAd3
+	BPOC8y1xpUFUdJiZOhLZQNO4jn/72xtiqBdurn31rV229SNJEQOLrwnLDa2PcJ+BN6uadD1iAF5
+	fagrde37pdqqGrF
+X-Gm-Gg: AYBFou2qvwzEIo/8t0999/m/wVBslkHZPUta8/r057J17swW4hsx044JgKlz3qyvD+X
+	BsyH99UYi7RjdpIGijNuUha2FfSacK2DgOc4Z0RD+4+VzyGxEdEWUfpwfJnzmRWuVXUNGBzmXSx
+	dRczDIde+QGf7X6SqkPQu15ZcoTa8dXPkMFgteYThN6IWzuPn14HHQpcAuLWUcavSXcdWynMOVK
+	MPd+MJSCzMd0uOmSK+fjz5MzjskpaOB7WuNNRsMF8wbFG38+JIN/SJz4ZHEghkHHuDvVk2nPCHd
+	wG5Uv8LiRtEM6nuGH9/qwif1nfvypcdeoT+NlEsmMIpFAU9qWGCWSCIysDHUf9uaWU+k96ez2vY
+	zBS+zQ20+adEzWMrM0uyxC3ipCy/v/6fWpudx9UsE/cRSIvbZWbcCE5h2sj8EiuYJKzUfUFhKtj
+	daXw4zniv1/Yn9ygj0OFtQtecEz5dgjTRnabjxsxx9
+X-Received: by 2002:a05:690c:f8f:b0:8b3:5f41:3c06 with SMTP id 00721157ae682-8b392b70ddemr3838797b3.18.1794262476763;
+        Mon, 09 Nov 2026 14:14:36 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-8b39338a0f4sm46887b3.23.2026.11.09.14.14.36
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Nov 2026 14:14:36 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1383723dfddso1726802c88.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 14:14:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794262475; x=1794867275; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m2la7If7oS8mGV9E9elp0qEy1slr4e68W5FdYtWr/CM=;
+        b=ZaYbnyy6kadtq3xn0Knu0tWVKlADi3H1KOvvPZujx5l4i8hO9nj9/L5NnpaEoz7T2u
+         QNxliIjePias9+ERexJDJM//pi4Fx56/R9FUYZaVZxZn46FIUv7TObsRFIW+Yz6O4/bi
+         7nILuRtKJ/zcOW2u+rpH7zzT4I23RApGlWB78=
+X-Forwarded-Encrypted: i=1; AL+hErFnYFx9es6RS9JPlYU56Mvc2SWdDkmjAxxjiimObhIB3QSCO0+ppIEtoqjuusZ6Bullh3t/WZI=@vger.kernel.org
+X-Received: by 2002:a05:701b:4590:10b0:143:297c:276c with SMTP id a92af1059eb24-1b3b618ad61mr970035c88.33.1794262475387;
+        Mon, 09 Nov 2026 14:14:35 -0800 (PST)
+X-Received: by 2002:a05:701b:4590:10b0:143:297c:276c with SMTP id a92af1059eb24-1b3b618ad61mr969982c88.33.1794262474447;
+        Mon, 09 Nov 2026 14:14:34 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b56c4e88sm1695896c88.0.2026.11.09.14.14.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 14:14:33 -0800 (PST)
+Message-ID: <229e94bd-28ff-443f-9667-f8f304a2fb0c@broadcom.com>
+Date: Mon, 9 Nov 2026 14:14:31 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,92 +107,76 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 05/10] net: dsa: realtek: rtl8365mb: set and
- get vlan 4k for family D
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
- <1ccb6acc-0809-4abe-8443-576f6727a6d5@yahoo.com>
- <ausoMS5PcpEFz02i@analog.com>
- <CAJq09z7djw7MAbjc8jZuNsj12JhNCUOsGj-Ve73XwRjjHHO=JQ@mail.gmail.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <CAJq09z7djw7MAbjc8jZuNsj12JhNCUOsGj-Ve73XwRjjHHO=JQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH net v2 2/2] net: bcmgenet: flatten frames that cannot fit
+ the ring
+To: Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger <opendmb@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Justin Chen <justin.chen@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261109-nb-genet-txq-thld-net-v2-0-efd8f4be96f2@tipi-net.de>
+ <20261109-nb-genet-txq-thld-net-v2-2-efd8f4be96f2@tipi-net.de>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20261109-nb-genet-txq-thld-net-v2-2-efd8f4be96f2@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Mon, Nov 9, 2026 at 2:31 AM, Luiz Angelo Daros de Luca wrote:
-> This is how I'm structuring it now, though it might migrate to
-> function pointers later. A family check inside a shared function only
-> makes sense for very localized differences. Since family A is shaping
-> up well and family B sits conceptually between A and C, `is_d` doesn't
-> scale well for future variants.
+On 11/9/26 13:53, Nicolai Buchwitz wrote:
+> bcmgenet_xmit() wants one descriptor more than the frame needs. A 31
+> fragment frame needs 32 descriptors, so it is refused on a 32 descriptor
+> ring, even if the ring is empty.
+> 
+> As a result nothing is in flight which could wake the queue again. The
+> watchdog can only hand the same frame back, therefore the queue stays
+> stopped.
+> 
+> This needs CONFIG_MAX_SKB_FRAGS >= 31 and a sender which fragments that
+> finely, for example MSG_ZEROCOPY.
+> 
+> Linearize those frames instead.
+> 
+> Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-We are completely on the same page here. In the upcoming v10 patchset,
-I have already migrated to function pointers to handle these 
-family-specific differences cleanly.
-
-I introduced a dedicated `struct rtl8365mb_family_info` which has made it possible to reduce the use of `switch` statements:
-
-
-struct rtl8365mb_family_info {
-	enum rtl8365mb_family family;
-	unsigned int num_ports;
-	const struct rtl8365mb_jam_tbl_entry *jam_table;
-	size_t jam_size;
-	int (*ext_config_forcemode)(struct realtek_priv *priv, int port,
-				    bool link, int speed, int duplex,
-				    bool tx_pause, bool rx_pause);
-	int (*vlan_4k_read)(struct realtek_priv *priv, u16 vid,
-			    struct rtl8365mb_vlan4k *vlan4k);
-	int (*vlan_4k_write)(struct realtek_priv *priv,
-			     const struct rtl8365mb_vlan4k *vlan4k);
-	size_t l2_entry_size;
-	void (*l2_data_to_uc)(const u16 *data, struct rtl8365mb_l2_uc *uc);
-	void (*l2_uc_to_data)(const struct rtl8365mb_l2_uc *uc, u16 *data);
-	void (*l2_data_to_mc)(const u16 *data, struct rtl8365mb_l2_mc *mc);
-	void (*l2_mc_to_data)(const struct rtl8365mb_l2_mc *mc, u16 *data);
-};
-
-static const struct rtl8365mb_family_info rtl8365mb_family_c = {
-	.family = RTL8365MB_FAMILY_C,
-	.num_ports = RTL8365MB_C_MAX_NUM_PORTS,
-	.jam_table = rtl8365mb_init_jam_8365mb_vc,
-	.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-	.ext_config_forcemode = rtl8365mb_c_ext_config_forcemode,
-	.vlan_4k_read = rtl8365mb_c_vlan_4k_read,
-	.vlan_4k_write = rtl8365mb_c_vlan_4k_write,
-	.l2_entry_size = RTL8365MB_C_L2_ENTRY_SIZE,
-	.l2_data_to_uc = rtl8365mb_c_l2_data_to_uc,
-	.l2_uc_to_data = rtl8365mb_c_l2_uc_to_data,
-	.l2_data_to_mc = rtl8365mb_c_l2_data_to_mc,
-	.l2_mc_to_data = rtl8365mb_c_l2_mc_to_data,
-};
-
-static const struct rtl8365mb_family_info rtl8365mb_family_d = {
-	.family = RTL8365MB_FAMILY_D,
-	.num_ports = RTL8365MB_D_MAX_NUM_PORTS,
-	.jam_table = rtl8365mb_init_jam_8365mb_vc,
-	.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-	.ext_config_forcemode = rtl8365mb_d_ext_config_forcemode,
-	.vlan_4k_read = rtl8365mb_d_vlan_4k_read,
-	.vlan_4k_write = rtl8365mb_d_vlan_4k_write,
-	.l2_entry_size = RTL8365MB_D_L2_ENTRY_SIZE,
-	.l2_data_to_uc = rtl8365mb_d_l2_data_to_uc,
-	.l2_uc_to_data = rtl8365mb_d_l2_uc_to_data,
-	.l2_data_to_mc = rtl8365mb_d_l2_data_to_mc,
-	.l2_mc_to_data = rtl8365mb_d_l2_mc_to_data,
-};
-
-
-This infrastructure should make it very straightforward to hook up 
-your upcoming Family A support without duplicating logic or bloating 
-the shared functions.
-
-Best regards,
-Mieczyslaw
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
