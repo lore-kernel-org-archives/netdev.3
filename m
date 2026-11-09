@@ -1,54 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794241478;
-	b=We+ifnhLgMEltgRn9tRL1YLes8cLvKDbpmP7O4jFKg4Zv/ttPp9+pTjP/hqUZfNCyUe1
-	 2zxF1KNfUTLA8VnQcK+0hhBaqFgoU/wAhw3GOirfp9pdGfX3i/2N14AAfQYTmHXqjnP+u
-	 IV9U49cgr2F7hrfMvAAukzwkDjSfGLtLIJ4sRxroY0ZFG/RGJgc+woQKQenMkcDL8TlQJ
-	 lFRs7dBQHpMePmS1FPRzm1lolX2JI634rSF4bQVjSPZQ+mz0yFyU1Hk+jsbSaHeuvHkzy
-	 x3RNqvwMajzj7Phjt9DeUAjhon+RMq6meeFIY0ztxLuhU9wnEPxXTCzfi0oObrZeMyA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794241478;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=n5wuRW+BfwesQSl9RZrQwjD+U8kT1DloxPy/4T2mCjg=;
-	b=KqNwZxxWfRmyHJ/jQkaNmljwEfot61ZUf0VH2cr5u/Knd8fBDJgWgQZtqH2/Mz7sZ4Dj
-	 aVZzQqncsxbkob1ViGSnhMSLXtxF9OSnL0BQvIk4SuwbZESbczEqkeG22SzopToPTesCY
-	 sgmdwfWSaW2mojsadyLe8RtMO5K71OmLnjmR7uFuQ46KcDkH4nOBxvePQ9S2LHXqcezIM
-	 hOxz6dfIZuTocCqb49WzLHnkN2TsQTAphmXMlXOBuOYcWqHb2iIMrNSSOaeUosrlwaphe
-	 7e8tTUYsrmJVi5z5UMB47w8HDJmRcblWeEq9sBOCLdx1Ylz0ShRgIqbhjWkU56RuU5w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iLsvu3/I";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.63
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794241476;
+	b=vdI3+gQzk5og40EiD0dUTdf0DHi0QyTAxzG0HzX7g3Iw4niim8n3x7ZcHbBquUS7iy+h
+	 jxNND2o+6lAy4ucngCcXLo1hZCWS2UVEOhPxt55Jy0QsqT2avsFAsLKj/05YUxqkGnFEx
+	 CVHNzkhP3KNZvs8gfdXXITloKcZJgigVj9tfO8n5HzbOpHGmkr5DS23P3YmVmctg1w1xG
+	 JyvuSC8NbS+/CVFgZmXsepkJi/1Mye3p6Gr4dcjQrKTB+OhuX+e4qoZD9yeDjdRCxoblA
+	 rXrkbXwow5ktGbdkWO0qVh0rJFvhDMpBC8tazHORfwu+Ya1d+SnfprEJ2TS/aiXEP4w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794241476;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:In-Reply-To:References:User-Agent:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=wxzIwZBXQwQmi8OchGXP2O9s4V8MOMMVWtVq0gehf4o=;
+	b=Q7y81nf3em/Z719hydy2+BAV71nKLdQT6yPmqL0CXFkU9MBxJ5PsiahV3T0aSca5KdjM
+	 nMpKnYO0kf6iNjnqx9W7pWL49RpHGUx8+LNfU9YQEPuPAF6CU+2AOfY6BQ5SNxp/D8HaF
+	 U9q8BpiNqcA0nIIQkJ8V3f4dZzjqiR7EtN7ynt5EwaSZbhrowVnWJTK0+k1fqKaGuYDp5
+	 6OgPi40bc6O/B12joZ3DFghDfvkbNiNoU08UQRIlN8pCobUHwjlUgHkPgfA5WuqSQ+DMx
+	 kkI/Zps9oc7myXfY8Iugyw+hHJJ6QynZEJJMVG2G84itkHYbGODl4LgPUUPaDJDjR0g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QIX+aSjf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.63
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012063.outbound.protection.outlook.com [52.101.43.63])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB42606EE80
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B041C606A31C;
+	Mon,  9 Nov 2026 16:24:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B041C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iLsvu3/I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256931F008BC
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794241477;
-	bh=n5wuRW+BfwesQSl9RZrQwjD+U8kT1DloxPy/4T2mCjg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iLsvu3/IT33w2+nw1tF/w838npiyt65hR1rXxS8vjaUt3qDkKBO8b5eWmYbwZ6OHJ
-	 8Snwt3Yyv/03bfyxCdmcwa+imVXIrxZCqOWxdbDYB5XSXcNen/nPu5kraSi0kTvBCE
-	 htS9lFwL5+zzJsEAnOFmua9OnZ6MHIAVuIx0M3zl0uoBPDAExEHjC4f/OU+ulyHnI2
-	 h7Z3Ini3FqqPlsDjiRUJvZf9ypBD2c7AL8pZCP80U1JYgxZ4u4SwH96LuT52FqTlYk
-	 1ZXMHHwmAUcnpoo6jTdp+dCjoWJXEiKlqdGhmAYDGbS49uaVVpTpH5q6GxYgLhLS8i
-	 nFijdDGiI/45Q==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-46556b9e02cso705431fac.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 08:24:37 -0800 (PST)
-X-Gm-Message-State: APuU4Z+BZUwbmfYyg4cgVVfNsYLT/bjqcp7WHHGxS5JDJV6CL9lprNB+
-	ptbLPFU+3qNvIwCbJ81/QV2zweBUoXnHzzUzs6FX2tvNVwu8bAkkOKtxHwmn+eRtl6J2Bs8eqjk
-	XKcN0Z7ISO+FtB55nD3T7RT39zCF0lAA=
-X-Received: by 2002:a05:6870:e311:b0:46a:c673:a16c with SMTP id
- 586e51a60fabf-4ae1fe6de5cmr5970fac.5.1794241476458; Mon, 09 Nov 2026 08:24:36
- -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QIX+aSjf
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QaENBG2LD224Fu/j7eR8GetSgWyPbYarcELcxWw1t7zF4uBX8TUE8qUZYopYLl4iOYaVnro4Jv1NDOyHg+6pZ/+Ut+oXsbzbok1HvBJdyvj+R0GjOFvoVjMOEG/MpP88HmYvT0nDFJWIPBAIS0ZBaFvbhN+ZSIT+/v48Sq4UsO0Ke1oAlisWIATE1t1TWMXA7oerZ/5RLLtJ1qUoE0PTqyXIyn1JBNiGm42i1bacp5YZ6e/YkctjSrYFZNs3hdi+CpZRAa1hjEozqEnYeTKtwPNqP0Z66MdzqrV9UukPIjSEgeCeONe1u4fhKMKFdHAYnp/w3J1WPbp+NXyg2IgMiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wxzIwZBXQwQmi8OchGXP2O9s4V8MOMMVWtVq0gehf4o=;
+ b=VRgvUV0+ntxskNGv/hYPFvEt0JXGaCSbSVR3ivcd64MxkO5Pa0LEB5eHX7D0fqu8caERtmTeWj29iY/vjjY4PYb9noMcePcVgX9gJabUj8v/Cs41bmOWLBoTOKDtHvWs2ZH/ORh3GhjEqLZ55VRfIIPoiiFFhsNpOebOMTNGmTCABTfb1Mm/JLF0Mrn9IMRz2lFdGhUHn0KxzW7dN3MeIxkpopC8FvjRTeKu+6DWsLRsfdZYkxpDC5E2CPQ8RNKd9uQToneQ2gwy4VPcOEvkdtM2i0wdgemIYQRxE3uTRPMg7I36gZ90PyBFJ35eIv+gI7ISnUI4zJlZUueD3LesIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wxzIwZBXQwQmi8OchGXP2O9s4V8MOMMVWtVq0gehf4o=;
+ b=QIX+aSjfVdBupJE4SiFkmcOxbGGuRySKw/Zn2W95cKyM71U3p2QUbH+13jP3RJS0kv7cDGmqHHehCnIVMOinWYSaioWyBKy9YmQ4RpEwMZT3KwgdywUQaDKPQO1nHf7eefCCCS6Hngo21NNx62/MvdXJBQhd0uw+3KGeLIWIMxDKOfbK+DVGXWqbULvdWscNpIgtjqzb/wWmlIdzfHBGIutppNdBv3J1aQW+BS4E1ae3y/aOGvzYQwiMdazOUi6L5BLxiCTC4rGakV5mxLW8dE1RUZ89xt8zyhDyDKtLoFIe2/lBPsBtFV8si+TTHs/WBczcUkqY51wYRLuNqbFcMg==
+Received: from BN9PR03CA0882.namprd03.prod.outlook.com (2603:10b6:408:13c::17)
+ by DS7PR12MB6336.namprd12.prod.outlook.com (2603:10b6:8:93::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.12; Mon, 9 Nov 2026 16:24:17 +0000
+Received: from BN6PEPF00000074.namprd03.prod.outlook.com
+ (2603:10b6:408:13c:cafe::a5) by BN9PR03CA0882.outlook.office365.com
+ (2603:10b6:408:13c::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
+ Nov 2026 16:24:17 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN6PEPF00000074.mail.protection.outlook.com (10.167.248.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 16:24:17 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 08:23:49 -0800
+Received: from tuxedo (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 08:23:44 -0800
+From: Petr Machata <petrm@nvidia.com>
+To: Simon Horman <horms@kernel.org>
+CC: <netdev-bot+sashiko@kernel.org>, <vulab@iscas.ac.cn>, <idosch@nvidia.com>,
+	<petrm@nvidia.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] mlxsw: spectrum_ptp: release parsing depth on MTPPPC
+ write failure
+In-Reply-To: <20261109132226.GL18859@horms.kernel.org> (Simon Horman's message
+	of "Mon, 9 Nov 2026 13:22:26 +0000")
+References: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+	<179405323723.994134.11947248661617076904@kernel.org>
+	<20261109132226.GL18859@horms.kernel.org>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Mon, 9 Nov 2026 17:23:41 +0100
+Message-ID: <87pkweynw2.fsf@pmachata.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,221 +117,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106095340.2113683-2-edumazet@kernel.org> <179421814766.994134.3669228181251158303@kernel.org>
-In-Reply-To: <179421814766.994134.3669228181251158303@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 9 Nov 2026 17:24:25 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiioa61dp2DXSOfJwj3avru8zBiqyx44G_JfBBfHbrAjMsg@mail.gmail.com>
-X-Gm-Features: AclHuK83hY0GSMGeOmqZ2p3f1VOqev2f_DFnXet7mIxLfflYJSQXAipPxiQLIMA
-Message-ID: <CAL4Wiioa61dp2DXSOfJwj3avru8zBiqyx44G_JfBBfHbrAjMsg@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] net: virtio: validate outer protocol of UDP
- tunnel GSO packets
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com, 
-	jasowangio@gmail.com, eperezma@redhat.com, hassansultan@google.com, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN6PEPF00000074:EE_|DS7PR12MB6336:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2bd8c1d-bebf-4ecb-8720-08df3e7de6c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|7416014|1800799024|22082099003|18002099003|10067099003|4143699003|11063799006|261009223027099003|261028144727099003|261026121527099003|261022105027099003|261022075727099003|261021135927099003|56012099006|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	a8lvcLRwW6B0BNxfLwIW1vXILiCJJ7trDVyhjFTnXMI+xd9NX/QizuPyfc4ViLo6j1ODDar4gYOHyHDhDi8WcCvxLsR7wVtkYVHTnIZyIxOmRKWyPQ7U2IijcyXDQIdQXm+LnThQ8QIQdw2oxmPF0bTA3nA7gPfhOrGzv7CPAMcxbsCJhskhSCG4UFbYb/nm9OfuS45f9OMm5qkO4clCZQiPON/w7JRQuVDlfO8xngq1m4eyODus7lFmqKfGxUnWuws6bQsgSX2txLIJ00PvIGDxE9SpxR0vg93p1ANSmhxmEamZmAyPDCqOx0qJsn3FXQNggJ8hnJiI+UG+DbL0grFfGH4rkUnHRBTBGgFD9xApSjOOGoQAwUddM7zjrZnZlceDOT6dFdn1nTomp6qOeZermkh9T+Uwl4pJYnm8SsQ+6SwAnzaPQg49xyK1CuBpqy2zTYXexU5x5iA1LTbP1zJT9/BEoOCJtRRsDst8xL67sJfvBrk7iaNLJFbr/p6JZ+g09cRy/4+kd7/tcC1wlo/I10+cmStheTLF1o7nePPs523jxJkb8LoMupYj+3QwLacn5QeXGIYHv5AoDPgOBXQQ6KGCjTLmPmEvluS7xSiun+zsczWadm+gzCj5bZWvTk0z30AnLZOBCR/rnMbRzOLBlcTErK5AShmR1CDtMiXYiRU6YqVyaEKXVzhIPhdkEO3W1IPucTbOwwoyzucIHA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(7416014)(1800799024)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(261009223027099003)(261028144727099003)(261026121527099003)(261022105027099003)(261022075727099003)(261021135927099003)(56012099006)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	MMTe3/cyZZBIle7uO1+1r4l5xQScDpL2K8xynRHCOfie6w0PMpaQj8U4f7jDzz0j9LaT/HfrC0/K+8tnJE/7qAjx/AscqdpGkzLXt+VcgWvklL1SnQETYpVCRXGZwR3rrH6PlhyY95iz3V2/8p0Yo+rT2JXlTJGxeeeJatMnU4dey8VpMunM5PcsqSm8bTgUy0GQN8mURUqPWSX8Xa6nZJxsLo2SL2MLcqpe7Fmqbt2gEnJju081V9d6UxsOnB+pkqQ8vhm2gvL5ISDmunkm+PLeEXriz7Y8mtGePTm4DPcHaROYRm474wg6A69WVyhItFbwDdaGU6ikL9/CSUKNSxKBDlVUslr1GsVlYFNDdUccES72jBPWtrox7hWOdcGRv6LNK9R+CKo4jDbVwVAUFeuwrn4ty9zD3SJ3kqOXw6IvzgrVe1ktOhBs264BOuYM
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 16:24:17.2228
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2bd8c1d-bebf-4ecb-8720-08df3e7de6c5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN6PEPF00000074.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6336
 
-Le lun. 9 nov. 2026 =C3=A0 10:55, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The new strict outer-offset check rejects UDP-tunnel GSO
->   frames that the kernel's own tun TX path produces whenever the skb=E2=
-=80=A6
->
-> Pre-existing issues:
-> - [Low] In virtio_net_hdr_tnl_to_skb(), outer_l3min =3D ETH_HLEN +
->   virtio_l3min(outer_isv6) (include/linux/virtio_net.h:491).
->
-> --
->
-> net: virtio: validate outer protocol of UDP tunnel GSO packets
->
-> This commit makes virtio_net_hdr_tnl_to_skb() check that the frame's oute=
-r
-> L3 protocol matches the declared tunnel type. It also checks that the out=
-er
-> UDP header sits exactly at outer_th_offset. Callers pass a new has_eth
-> argument that says whether the frame starts with an Ethernet header. This
-> closes a path where an arbitrary outer ethertype combined with
-> SKB_GSO_UDP_TUNNEL could crash the host in skb_under_panic().
->
-> Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2=
-f2e2.1793276116.git.mst@redhat.com/
->
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index d6466f96cdd00..b7b6b542f4763 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
->
-> [ ... ]
->
-> > @@ -282,9 +424,33 @@ static inline unsigned int virtio_l3min(bool is_ip=
-v6)
-> >       return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
-> >  }
-> >
-> > +/* Do the tunnel offsets match the outer headers in the frame?
-> > + * The L3 header the tunnel claims must be the one the frame
-> > + * carries, with UDP following it at @outer_th.
-> > + */
-> > +static inline bool
-> > +virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool has_eth, bool oute=
-r_isv6,
-> > +                       unsigned int outer_th)
-> > +{
-> > +     int nhoff;
-> > +     __be16 proto;
-> > +     unsigned int thoff;
-> > +     int ip_proto;
-> > +
-> > +     if (!virtio_net_l3_start(skb, has_eth, &nhoff, &proto))
-> > +             return false;
-> > +     if (outer_isv6 !=3D (proto =3D=3D htons(ETH_P_IPV6)))
-> > +             return false;
-> > +     if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> > +             return false;
-> > +
-> > +     return ip_proto =3D=3D IPPROTO_UDP && outer_th =3D=3D thoff;
->
-> [Severity: Medium]
->
-> Can this exact match reject UDP tunnel GSO frames that tun itself produce=
-s
-> when the skb carries a VLAN hwaccel tag?
->
-> On the producer side, tun_put_user() writes the 802.1Q tag into the frame
-> it copies to userspace or vhost-net. It calls tun_vnet_hdr_tnl_from_skb()
-> with vlan_hlen =3D VLAN_HLEN. Only csum_start accounts for the tag:
->
-> include/linux/virtio_net.h:virtio_net_hdr_from_skb() {
->     ...
->                 hdr->csum_start =3D __cpu_to_virtio16(little_endian,
->                         skb_checksum_start_offset(skb) + vlan_hlen);
->     ...
-> }
->
-> The tunnel offsets do not:
->
-> include/linux/virtio_net.h:virtio_net_hdr_tnl_from_skb() {
->     ...
->         inner_nh =3D skb->inner_network_header - skb_headroom(skb);
->         outer_th =3D skb->transport_header - skb_headroom(skb);
->         vhdr->inner_nh_offset =3D cpu_to_le16(inner_nh);
->         vhdr->outer_th_offset =3D cpu_to_le16(outer_th);
->     ...
-> }
->
-> So outer_th_offset and inner_nh_offset both end up 4 bytes short of the
-> real UDP and inner headers in the emitted frame.
->
-> On the consumer side, with has_eth set, virtio_net_l3_start() walks the
-> in-band VLAN tag with __vlan_get_protocol(). That gives nhoff =3D 18, so
-> thoff points at the real UDP header (38 for IPv4). The emitted outer_th i=
-s
-> 34, this comparison fails, and virtio_net_hdr_tnl_to_skb() returns -EINVA=
-L.
->
-> Before this patch the same frame was accepted. Only transport_header was
-> off by 4, and ip_rcv_core() and ip6_rcv_core() reset it for local deliver=
-y.
->
-> With this change, would a guest that gets these frames from a host tap
-> drop them in virtnet_receive_done() as "bad gso" and bump
-> rx_frame_errors? A tun/tap writer that re-injects frames it read from
-> another tun would see the same rejection.
->
-> This looks reachable with VLAN-tagged UDP tunnel GSO traffic. Two example=
-s
-> are a VLAN filtering bridge with a tagged egress port, and a vlan device =
-on
-> top of a tap. tun advertises NETIF_F_HW_VLAN_CTAG_TX/STAG_TX in
-> hw_features and hw_enc_features, so the tag stays in hwaccel until
-> tun_put_user().
->
-> The later patch in this series, "tun: clear stale skb->protocol of NAPI
-> frags skbs", does not seem to fix the producer side. Should
-> virtio_net_hdr_tnl_from_skb() add vlan_hlen to outer_th_offset and
-> inner_nh_offset, with that fix landing with or before this check?
->
+Simon Horman <horms@kernel.org> writes:
 
-Right. tun keeps the tag in hwaccel for UDP tunnel GSO packets, and only
-csum_start accounts for it. The wrong offsets were already a bug: the
-receiver set inner_network_header 4 bytes off, and a forwarded packet
-segmented again would use the wrong inner headers.
+> On Sat, Nov 07, 2026 at 12:07:17PM +0000, netdev-bot+sashiko@kernel.org w=
+rote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential
+>> issue(s) to consider.
+>>=20
+>> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0 (1)
+>>=20
+>> If you believe none of the issues are legitimate, please reply to each
+>> issue of Medium severity or higher and explain why the AI is wrong.
+>> If any of them are legitimate and you plan to respin, please let patchwo=
+rk
+>> know by including "pw-bot: cr" as a separate line at the end of your rep=
+ly
+>> (one such reply per series is enough).
+>>=20
+>> - [High] The patch fixes the enable-path leak but adds the same leak on
+>>   the port-removal path.
+>
+> I believe the issue flagged here is pre-existing. While it does affect th=
+is
+> patch, the patch is still an improvement in its own right. I would
+> therefore ask for follow-up on the concurrency concern raised here, but I
+> do not think it should block progress of this patch.
+>
+> And while the separate bot email, requesting information on how
+> the problem was found, should be answered, overall this looks good to me.
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-v5 will add a patch before this one, so that virtio_net_hdr_tnl_from_skb()
-adds vlan_hlen to both offsets.
+(Sorry I didn't respond earlier. I saw Krzysztof's emails and assumed
+the thread would get bounced. This morning I saw it's still in NEW,
+decided to take a closer look, but got sidetracked by some other work.)
 
-> > +}
-> > +
-> >  static inline int
-> >  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >                         const struct virtio_net_hdr_v1_hash_tunnel *vhd=
-r,
-> > +                       bool has_eth,
-> >                         bool tnl_hdr_negotiated,
-> >                         bool tnl_csum_negotiated,
-> >                         bool little_endian)
-> > @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >       if (ret)
-> >               return ret;
-> >
-> > +     if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th=
-))
-> > +             return -EINVAL;
-> > +
->
-> [Severity: Low]
->
-> This is a pre-existing issue, not one introduced by this patch, but does
-> the has_eth =3D false path ever see ordinary IFF_TUN frames?
->
-> Earlier in virtio_net_hdr_tnl_to_skb(), the minimum outer offset still
-> assumes an Ethernet header, whatever has_eth says:
->
->         outer_l3min =3D ETH_HLEN + virtio_l3min(outer_isv6);
->         ...
->         if (outer_th < outer_l3min ||
->
-> For IFF_TUN, tun_get_user() passes has_eth =3D false and the network head=
-er
-> is at offset 0. virtio_net_tnl_offsets_ok() therefore needs outer_th =3D=
-=3D 20
-> for plain IPv4 or 40 for plain IPv6. Both values are below the 34/54 floo=
-r,
-> so these frames are rejected before the new check runs.
->
-> That leaves the !has_eth branch of virtio_net_l3_start() reachable only f=
-or
-> outer IPv4 with at least 16 bytes of options, or outer IPv6 with at least
-> 16 bytes of extension headers. The L3-relative offsets produced by tun TX
-> and by the selftest helper build_virtio_net_hdr_v1_hash_tunnel()
-> (eth_hlen =3D 0 for !is_tap) are still rejected.
->
-> The ETH_HLEN floor dates from a2fb4bc4e2a6. Now that callers pass has_eth=
-,
-> should outer_l3min depend on it?
->
+I agree. mlxsw_sp_parsing_depth_dec() looks like it can't fail, but
+that's not the case, it is fallible, it is just void, because it's
+dtor-like.
 
-This predates this series: UDP tunnel GSO over IFF_TUN has never worked
-with plain IPv4/IPv6 outer headers. Removing the floor would enable a
-path that has never been used, which does not belong in this fix.
-I will send this as a follow-up.
+I've been staring at this a bit and it probably can't stay like this,
+mlxsw_sp_parsing_depth_dec() needs to propagate the failure for
+reconfigure-like paths. It is IMHO legit to respond to a user request to
+stop timestamping with "tried it, didn't work, sorry, we keep on
+timestamping". It's only during port split where we have no other option
+and if it fails, well that's too bad, stiff upper lip & carry on.
 
-pw-bot: cr
+But the code just masks the existing failure with a void return type.
+For port removal in particular that means that OK, you manage to disable
+timstamping on that port, but if prior to that you failed to dec the
+parsing depth, there's a leak anyway.
+
+Contrary to that, devlink reload, which sashiko mentions too, is less of
+an issue, because those paths go through mlxsw_sp_fini() and
+mlxsw_sp1_init(). You get a warning splat on fini, but then init sets
+the refcount to 0 and you start with a clean slate. The splat is not
+nice, but there's no leak.
+
+Anyway, I'll be reworking this a bit, but for now:
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
