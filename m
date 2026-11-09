@@ -1,84 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.79.60.68
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229408;
-	b=11dcmH/0fGzuYtS0N5MvfG1vO24xYoe7mjahwOhx04MT/TZncyvR1l2mQf9w61LjSdna
-	 vmA5yWRH1Mwx4FGPdBh2OnsLaofFLgOYeJ2FukSORP+K4hABCogAr8bkDz38WJePHpGOZ
-	 ly+xiXycDG5wy5Ca9Bzrt/i+O7ckZl3814vp/mZ9zqPvk9cPsO0Y2VaSXBSYn4ctioQyX
-	 wu6daB6uwXu9W5cn3lez4EPOsxj1tZrkJtgJKChI2x+8XO4f8aEf2xgKsJyv2j+MvOClw
-	 RRkDtL4Yw/ur7jC6Tktisg406GCJTBMfiqNYKBC7uVeRq9PAZm+N7a6CObVFTqeaWMA==
+	t=1794229566;
+	b=V8rdVb+l0gAlG3QUbXPPHoYzf1yUT/zH6797Q9fbT8VlhHgILWu/L0oOb9XpIvPhoUvi
+	 cF7Mzjw0+Y0ewt7l7ImgMvDEGNwh6clXWYj1N7mHFMbkAzDdvIPwUb+q82kMgUGsJXlTz
+	 /Zz+Sx6wSCSfJv2cCM8zxO3Uqdhi90mmJQxjy3MUiV/Ksn33E6ILw/EcBj0nTRgjQmjOY
+	 YGqPusiGrOWQW4wSRNKMMumY5sx92WnFk0qyUAL0TQcsX1Of+4Zft7+V+8DgYCV3aya7/
+	 lV0OtYBLVwvWhpBcyu2fZJVQPeuUQrjXlXqZgGhsgiVt0DC2e+w57veM1TXj1grA54A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229408;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
-	bh=72Pzf80vHJ6tg7h9s2yhzIcCJ8giywOh4xxajI0FVfE=;
-	b=uIoZ8Jt0jrmcW4cI9+8lgmjMP+X/OIiaLviOhCI6ZyM5WB8D4/YPiGMSG7jzkHx9CHhC
-	 cHbMj7tjewld9jyw9IL4RSHtDd1R6ALiO2Qt2mFXaX2Gvn2vNE2VAcNi7nGCFlaQlimqT
-	 ouHqkiFDPuUN27gGuLGshKoXU0i5hp4uznURrsNq9EF1Gc+G8dLWZ4oJJsjCGkatSEPhl
-	 eGP6ed0eSC/pYjEOPoqJG/OAhYQYnJiIR/3O1gjgTe6O/XDXtAJxn41D6/9jTzHN9LNIZ
-	 0HaUa56wliDmgX5h3MNbeUwY+frw8hK+o8o7BKaI+KUhz4H+Q3J2yUbTiBoLfBUpkRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229566;
+	h=DMARC-Filter:Content-Type:Content-Transfer-Encoding:Message-ID:To:Cc:
+	 Subject:X-Priority:X-Mailer:X-Originating-IP:In-Reply-To:References:
+	 MIME-Version:Received:From:Date:X-HM-Tid:X-HM-MType:X-HM-NTES-SC:
+	 X-HM-Spam-Status:DKIM-Signature;
+	bh=Uwx411kQ+pLsLGYRN6fUT/Mj26SB4GKvUWvjQbIK0qs=;
+	b=Ekq/vg9jo0fQzQr6zh+xHHDxaSdp7hVDi64IXeqOmEZHK+hjhGjVGgZHrwyaRfURVaAq
+	 46diTUOLY7WVHPc5KlXVLN3x82K248puzgHieMKHy7ZVCybOz7gXQJNogL7Sd0dInea5i
+	 zWnt/N2VySS4ZY8XQnDptDeTFfK1LghGef6VBQSDsh4g0rbW8kSBU7qJ3FzDsfqhKE9PI
+	 yRUy8gL2Oaj17TkOHs4KBiFmTu4k9+cJwWTD3O2g00KsFlLXGHUO1NUVj2BTy6XNBB/CE
+	 qqfzjmWS7f7fF1gfG1Sou/HMiZmtWstGgdnAM8nsgQS+l79lfkTQK0I6KkE2B0psROQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Th6NR4gp;
-	arc=none smtp.remote-ip=209.85.219.47
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=mail.sdu.edu.cn;
+	spf=pass smtp.mailfrom=mail.sdu.edu.cn;
+	dkim=pass header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=c24RGP0w;
+	arc=none smtp.remote-ip=210.79.60.68
+Received: from mail-m6068.netease.com (mail-m6068.netease.com [210.79.60.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DFA606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:03:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3DFA606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E46E606A321;
+	Mon,  9 Nov 2026 13:06:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E46E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.sdu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.sdu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Th6NR4gp
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91eb7d1478cso9159806d6.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:03:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794229407; x=1794834207; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=72Pzf80vHJ6tg7h9s2yhzIcCJ8giywOh4xxajI0FVfE=;
-        b=Th6NR4gpQlycRBLRjBND2+14b1JRjtLWr70u04hTBSAFERKPkfJOkUTK3TEdNyfRL1
-         EdEWi4ne5l33XwRwB0IMecrK3EHlMksJaS2H9i4GxM3NATIPc+YcuZaUQ9+Us4vYWqu0
-         a7opGItIC1bBR5aL256gy45CpuBuBzS9m6EJBcNYglPbaUfm6KjU+s0vzQDbqgTEukLK
-         odJRimkIhb3JTbg75cf4GygFLOX8zJGE50MS07jGUEVGREv1k3k6wsr9OKQCh/zuCr0A
-         1EKAsR/Sp/3331X2ZIGFsUFaefJHCQulLSSxIfqaMlOUKO31bI9O+oU65URNeAqzzp5C
-         bNeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794229407; x=1794834207;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=72Pzf80vHJ6tg7h9s2yhzIcCJ8giywOh4xxajI0FVfE=;
-        b=hQpeef3S65Y4zGdL5byxt68KBse9Ei8eNVNXwWUVddOaDgVM/q8OUzBd5gfqEt8Z0V
-         I9sEWQgkVDwMxo/BfnpiCwJlewTz/5MzxkkFxRKQFrjFNS6lNFdrH849ilpWGd5UaWQh
-         kEJ+ybVcmu+m3laRX4GpX467XT9CWdaFeH7m/RW6QnSyecoTMejkpZVPjtHo4xJaeFQY
-         olHDLmFq2A3Ccn7K7yBnvUP7g8Fil4T8IHGECQHuXBMiGlho8nScRo6XLdBkZYSNtw//
-         U6u9gSqVfGRcJYmuMXgoa4BM2Rl6aiHmzdED6eylB+WRc3jFeaNGOJoH0gIj+dqgrR2C
-         SMhA==
-X-Forwarded-Encrypted: i=1; AL+hErHMaPJFWmx8tU6tkrrDI1pIqfRL2m9cTsdAtbEjM4T75aR1ZaCs0XUA8uHrrPVh2mtAA7yPSOM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8w/cLGv7+ufc/akke9yAu3SpulrdO+RqgfyfQLdzGSwZuTCYfV
-	Ra9SEEhekYNwMNVmgsJvDxJ9i9N8NKmnBjIHMVE2wDdbaUlzBeNlDZsp
-X-Gm-Gg: AYBFou1zz52s8iFxWJofaemnLQY9w+xNmIlU6/eB/f1XZhJmQWnCwMcNx4AOaSuokls
-	ye8xegmLMpSQUI4fLjo1ZUKpKm2OZoEcb5AfqqOyIGIKd6ovGJ//zQTAus7Venk0oPMB7jiOYZ/
-	WVffYYTipSUwI+eLecBisTyIIjDZ/aXVUDh2KFvWU4QFk6gp5r6wlRk2CVDv2vVgfcbVe9IWJb5
-	4NayNATduG9MVxh57xmVdqZ5liB9LKa1k7Q9CFTWVjmzuqaY1IOyigvoJydk8Ua9K5viFir+z58
-	mfOsgs5wuiA+TLxkolLqK0wikgRdN3RhjqbPqnDM9CfasjlfOWUUedQXGGO1LLlc//BIfP4CGxw
-	irjQtiyp1kOsZzkH9tU5t9J1VGOausOExLi7aCnEcy8I8WlnfDCyVRJUc6ic3YUj4gI0tzwbthm
-	eF/Eyj9cZwiVDmZ+oKyOD/BtwMBRbxX7zUiOC7h2XOpWs2qUYGR9HtNUv2o04gtrgIoTJlTwPIS
-	+8YbYbrX6lksXzFr4JMkJUDct3V1MiB4t82A8tkG0LzwjAGPkH5yw7RZ9p2N93Wole8JKHfv9qS
-	+647+bJTbfoDYc/5+rmhOeYum3VEbaUw+A==
-X-Received: by 2002:a05:620a:400b:b0:939:fde0:a71b with SMTP id af79cd13be357-947846073e3mr613394785a.0.1794229405262;
-        Mon, 09 Nov 2026 05:03:25 -0800 (PST)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94782d61906sm469034185a.14.2026.11.09.05.03.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 05:03:24 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=c24RGP0w
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AHAASAAGLPGJfVjn9skPJKoS.3.1794229559658.Hmail.202321181@mail.sdu.edu.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCBuZXRdIG5ldDogcGh5OiBtaWNyZWw6IEZpeCBwb3RlbnRpYWwgc2hhcmVkIFBIQyB1c2UtYWZ0ZXItZnJlZQ==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
+In-Reply-To: <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
+References: <20261107-0d0c29e10a-net-micrel-lan8814-1@mail.sdu.edu.cn> <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,99 +56,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Nov 2026 08:03:22 -0500
-Message-Id: <DMQP8OMF2NZ2.3K3MJRWBNXWW@gmail.com>
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-Cc: <kuba@kernel.org>, <willemdebruijn.kernel@gmail.com>,
- <davem@davemloft.net>, <edumazet@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <rdunlap@infradead.org>, <donald.hunter@gmail.com>,
- <andrew+netdev@lunn.ch>, <shuah@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 4/5] selftests: drv-net: psp: factor out psp
- connection setup
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261106-psp-v3-4-a8dd38f5a727@gmail.com>
- <179408516862.994134.13048510473902240219@kernel.org>
-In-Reply-To: <179408516862.994134.13048510473902240219@kernel.org>
+MIME-Version: 1.0
+Received: from 202321181@mail.sdu.edu.cn( [101.76.249.61] ) by ajax-webmail ( [127.0.0.1] ) ; Mon, 9 Nov 2026 21:05:59 +0800 (GMT+08:00)
+From: =?UTF-8?B?5p2O5bm/56GV?= <liguangshuo@mail.sdu.edu.cn>
+Date: Mon, 9 Nov 2026 21:05:59 +0800 (GMT+08:00)
+X-HM-Tid: 0aa1c068f344d0cdkusy32cfb2e0ea97
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMVHpP02bZAKsMEiErRSAekjx+ys+KNZNl0PLwl
+	f2MeqR5lbiqKsoq8sm3hZVy9q3VY0Ca69y1LOfMeXKdLfI1E5i1eQoqSDNKmzdVlKZstM3zMatiP
+	6f2nKh8VfvidlmoN6FW855umPHcnkTFehqKqk=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHhhKVktIHhhDShpLSksdH1YVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKS0pVTE1VSU9CVU1KWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+DKIM-Signature: a=rsa-sha256;
+	b=c24RGP0w8GS1kFlMgpeIV4goy0/fiBcfsRhdX8M7EE6Rx0KfYRRZ0miTjZgw3bZBWhWbZRq/IKlF2x0yBeDImPT+PORQF6vs8CHzhLW/PzXtyHrYIM1JUHoyqZg16/KlzZM53qp8XgFAYIsc6e43m2TE8cRRQK8wwM2sqRquBfo=; s=default; c=relaxed/relaxed; d=mail.sdu.edu.cn; v=1;
+	bh=Uwx411kQ+pLsLGYRN6fUT/Mj26SB4GKvUWvjQbIK0qs=;
+	h=date:mime-version:subject:message-id:from;
 
-On Sat Nov 7, 2026 at 3:59 PM EST, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] The commit message says "Here we are adding some more error
->   paths, so we just handle errors by closing the data sock".
->
-> --
->
-> selftests: drv-net: psp: factor out psp connection setup
->
-> This commit moves the PSP connection setup and the assoc uapi calls in
-> psp.py and psp_responder.c into helpers. Other tests that start with a ke=
-y
-> exchange can then reuse that sequence. It also makes run_session() close
-> the data socket when conn_setup_psp() fails.
->
->> The caller of conn_setup_psp() not handling errors was preexisting. Here
->> we are adding some more error paths, so we just handle errors by closing
->> the data sock to make the code a bit more robust.
->
-> [Severity: Low]
-> This isn't a bug, but is the "adding some more error paths" part still
-> accurate for v3?
->
-> Before this patch, conn_setup_psp() returned -1 in three cases:
-> psp_rx_assoc() returning NULL, recv() returning < 0, and psp_tx_assoc()
-> returning NULL.
->
-> After the patch, it fails in the same three cases:
->
->     rx_assoc() returns -1 when rsp is NULL
->     conn_setup_psp() returns -1 when recv() returns < 0
->     tx_assoc() returns -1 when tsp is NULL
->
-> The v3 changelog says the per-version key length table was replaced with
-> the key length from the kernel's rx-assoc reply. That table lookup looks
-> like the only new way this function could fail, so the sentence may be
-> left over from v1/v2.
->
-
-Ah darn. I let local sashiko convince me it was a good idea not to
-ignore the return code of conn_setup_psp(), even though it is purely a
-preexisting "issue". Then, when I was writing the commit message, I
-think I was looking at the code from the next patch where
-handle_tx_assoc() rekey handler, has an extra check against the key
-length.
-
-If I have to respin, I'll probably drop the code chunk below entirely.
-Otherwise if we can just edit the sentence:
-
-"Here we are adding some more error paths, so we just handle errors by
-closing the data sock".
-
-so it says,
-
-"Handle preexisting errors from conn_setup_psp(). No new error paths are
-introduced."
-
-Then it would be accurate.
-
-> The only behaviour change is in run_session():
->
->     if (conn_setup_psp(ys, opts, data_sock)) {
->         close(data_sock);
->         data_sock =3D -1;
->     }
->
-> Could the commit message give the actual reason for that change? For
-> example, the existing failures can leave a half set up data socket open.
-
+CkhpIEFuZHJldywKCkZyb206IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4KRGF0ZTogMjAy
+Ni0xMS0wNyAyMjo0MDo0NQpUbzogIEd1YW5nc2h1byBMaSA8bGlndWFuZ3NodW9AbWFpbC5zZHUu
+ZWR1LmNuPgpDYzogIEhlaW5lciBLYWxsd2VpdCA8aGthbGx3ZWl0MUBnbWFpbC5jb20+LFJ1c3Nl
+bGwgS2luZyA8bGludXhAYXJtbGludXgub3JnLnVrPiwiRGF2aWQgUy4gTWlsbGVyIiA8ZGF2ZW1A
+ZGF2ZW1sb2Z0Lm5ldD4sRXJpYyBEdW1hemV0IDxlZHVtYXpldEBrZXJuZWwub3JnPixKYWt1YiBL
+aWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPixQYW9sbyBBYmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+
+LG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcsbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZwpTdWJq
+ZWN0OiBSZTogW1BBVENIIG5ldF0gbmV0OiBwaHk6IG1pY3JlbDogRml4IHBvdGVudGlhbCBzaGFy
+ZWQgUEhDIHVzZS1hZnRlci1mcmVlPk9uIFNhdCwgTm92IDA3LCAyMDI2IGF0IDAyOjU0OjM3UE0g
+KzA4MDAsIEd1YW5nc2h1byBMaSB3cm90ZToKPj4gVGhlIHNoYXJlZCBQSEMgb3V0bGl2ZXMgdGhl
+IGZpcnN0IFBIWSdzIG1hbmFnZWQgcGluIGFycmF5IGFuZCBpcyBub3QKPj4gdW5yZWdpc3RlcmVk
+IGJlZm9yZSB0aGUgcGFja2FnZSBkYXRhIGlzIGZyZWVkLiBTdWJzZXF1ZW50IFBIQyBvcGVyYXRp
+b25zCj4+IGNhbiB0aGVyZWZvcmUgYWNjZXNzIHJlbGVhc2VkIHN0b3JhZ2UuCj4+IAo+PiBLZWVw
+IHRoZSBwaW5zIGF0IHBhY2thZ2Ugc2NvcGUgYW5kIHNlbGVjdCBhIHJlbWFpbmluZyBQSFkgZm9y
+IHJlZ2lzdGVyCj4+IGFjY2VzcyB3aGVuIGEgbWVtYmVyIGxlYXZlcy4gVW5yZWdpc3RlciB0aGUg
+Y2xvY2sgYmVmb3JlIHJlbGVhc2luZyBpdHMKPj4gc3RvcmFnZSBvbiB0aGUgbGFzdCBtZW1iZXIn
+cyBleGl0LiBQYWlyIGVhY2ggbWVtYmVyJ3MgcmVnaXN0cmF0aW9uIHdpdGgKPj4gY2xlYW51cCB0
+aGF0IGFsc28gcnVucyBvbiBwcm9iZSBmYWlsdXJlLCBhbmQgc2VyaWFsaXplIGNsb2NrIGFjY2Vz
+cyB3aXRoCj4+IG1lbWJlciByZW1vdmFsLgo+Cj5Zb3UgZml4IGxvb2tzIG92ZXJseSBjb21wbGlj
+YXRlZC4gVWdseS4KPgo+VHJ5IGxvb2tpbmcgYXQgaXQgZnJvbSBhIGRpZmZlcmVudCBkaXJlY3Rp
+b24uCj4KPi5wcm9iZSgpIGFuZCAucmVtb3ZlKCkgc2hvdWxkIGJlIG9wcG9zaXRlcyBvZiBlYWNo
+IG90aGVyLiBXaGF0IGhhcHBlbnMKPmlmIHlvdSBkbyB0aGF0Pwo+Cj4gICAgQW5kcmV3Cj4KPi0t
+LQo+cHctYm90OiBjcgo+CgpPbiBMQU44ODE0LCBvbmUgUEhZIHJlZ2lzdGVycyB0aGUgc2hhcmVk
+IFBIQyBhbmQgb3ducyBpdHMgcGluIGFycmF5LgpJZiB0aGF0IFBIWSB1bnJlZ2lzdGVycyB0aGUg
+Y2xvY2sgaW4gLnJlbW92ZSgpLCB0aGUgY2xvY2sgZ29lcyBhd2F5CmJlZm9yZSB0aGUgcGlucyBh
+cmUgZnJlZWQuIElmIGFub3RoZXIgcG9ydCBpcyBzdGlsbCBib3VuZCwgaXQgbG9zZXMKYWNjZXNz
+IHRvIHRoZSBQSEMuIEkgYWRkZWQgdGhlIGhhbmRvZmYgaW4gdjEgdG8ga2VlcCB0aGUgY2xvY2sK
+YXZhaWxhYmxlIGluIHRoYXQgY2FzZS4KCkknbGwgcmV3b3JrIHRoaXMgYXJvdW5kIHRoZSBQSFkg
+dGhhdCByZWdpc3RlcmVkIHRoZSBjbG9jay4gSSdsbCBjaGVjawpob3cgdGhlIHJlbWFpbmluZyBw
+b3J0cyByZXBvcnQgdGhlIFBIQyBhZnRlciB0aGF0IFBIWSB1bmJpbmRzLCBhbmQKd2hhdCBoYXBw
+ZW5zIGlmIGl0IGJpbmRzIGFnYWluIHdoaWxlIGFub3RoZXIgcG9ydCBpcyBzdGlsbCB1cC4KClRo
+YW5rcywKR3VhbmdzaHVvCgoKCg==
