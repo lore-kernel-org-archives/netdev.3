@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794248755;
-	b=QuoBr4mFRhFdbLMVKCOtUgo2Men8e2KjM04+/+2VCgJGbmUeYSyXuv29AFVVc1+G6Ws3
-	 I10aTP2xj5nZDnaIxKKtX7FKs8SDOxp4TTFtHKzO/fcK8WY7Y++vYA6By4zYnKmUC4gqp
-	 hsFzJWx491qArdAS0TK57NwWlQAKfGlul1knoN7G2r+gcBa2HtTeuCkWtRhRp67oqcCad
-	 Dd2tSuY4BDbBSbCCX9inKYXL2bUbrevqgnL+0E7gQ4MpI7AFI9BfetMrF1BP8lg/ONHYY
-	 37H0JkcThVZu3ecZZ0QcvRT2UcjF32gg9ojz80dnkogY7ky3bqDztx+vz5ZLJ1u6RHA==
+	t=1794248761;
+	b=1YGLeG6cGWD7jYe8CjXTK9Yz2hynknpwwFweQlTUbVNMciywc7LogTOVmOLLNuKJ797H
+	 7NQkZcHGafZHZeMntO2pn0mTpOB2Sfjbm62ANZxu8CaYD1ljdzwG3TTvc/4iieyXPBWI2
+	 LjJI80TfungBXr66zAiBhtuJBhdV3d978Wk1wnRozTU7+CsiYnw96YMsf9DN1miDmmpZ3
+	 DHeOilh3eDrnli1p+7ZvYUwd324Y3G/mPUdye0v39l3iO+1raG6rQzjxCTXtxZ2TQdkqz
+	 OKKiyXng2wjKLzqVuXvfv0I3eERcU0vyM0dSVyBegQyhqXV5pSZdtroAIDCmH13pBKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248755;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248761;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
-	b=q5BAa43zGWC3ipP8PKt5UCCNpv77E3QXfM50h3SnOXyR5X/n0kGZzqS79ugF9G35WHdO
-	 Rpqfshu8S87XVuQTYGbyzH0uKVWL2Hna2NfxK28lW8U4cXqTxC4+QmQHRikTLWq5DXWGo
-	 aY/RIm6SM27iVol6a98YEuDe7gGdmY3m4plwohYVdvGyFx4Q5kKzkqHDVrc5QOdAg3MvY
-	 VVv2lwqMIcI+nPBQGhTUeRzq51ueMKKvvDwqZ/PJ4pd7ETKbxG1qxCIkjMndf7WjlT2jc
-	 Pn8M1ru/VjRc46TeeSMXuC5b3ckvS8fmAsNbdOBbSuyWHNl4EtkaM+DUN37MtCmHFtA==
+	bh=X6oblkqCvojP6e7fV/VhIpBJOcN4NASJcWrnm45v9hk=;
+	b=U18lXMtoN3VrByrynaO+z6NRiyYEKPsaUWnporWKfU5Fv6rhOn3pCHKCvgkeXzpN0nHq
+	 WPWTnWe5RiubjuSwjvYn3RXsGS1p1H4/ttttuLLl579ZHuEAa7CF988KCV+aoqbpepLip
+	 /bbhCk26/qL1mcItbgR367xLvInAdEFM/jRUveS9hPTO2QgCo4qo/BhMP4H8BtY2zneOM
+	 KRfndQIWbFwYPklLcKNumC4bh5JeXtgJb2gBXVbv3KfeX9KAp55v1sHJ2WfwLRQ3X4y84
+	 qs8mIbCqaOYluM7HYTfHeYQBohypDJdcnUz3yJiW9kv19i+B9vpsoI6RoHxNoXImUcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PucykuzF;
-	arc=none smtp.remote-ip=209.85.218.70
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n0gqT9iO;
+	arc=none smtp.remote-ip=209.85.218.69
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCBF606CC4C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BCBF606CC4C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763D6607008D
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:26:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 763D6607008D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PucykuzF
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c37b2763f1bso146256766b.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n0gqT9iO
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c41b03cd1dcso113634766b.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:26:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794248753; x=1794853553; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794248760; x=1794853560; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
-        b=PucykuzF+kI0Fuxe+WUtPrHWdECLJ+HBRvHEY3hGmZsDV+Y42K8qiOX2BzVv79MI4I
-         sp6z2uGUNfZO3DNfGXEfg5goMbKSqdSse3Kn4YQwJik9dK5GupSkGDDOHDQXyB8GeeOL
-         oOHe117qlnkKsTiiH7yL78B5OhDmfU5ZVZX/HlY5HwmlHtalgSheh1MWEE1rxgowjPyI
-         tpDzWcHNPO5WdwAqcxM/c8D2Qmwz14WYetq0bjBADOmHkecHo6oL2868rrbZ4xtWYlAv
-         Q93ai98PFrO9ycqoBX092LG8WjGWH+ds/U9P++J5ww0ccv1NclFeVqZLDjUpTTUX2mTz
-         T1sg==
+        bh=X6oblkqCvojP6e7fV/VhIpBJOcN4NASJcWrnm45v9hk=;
+        b=n0gqT9iOdWAN5/dn3ZpOfiy1aiUE3AVQMsJ6fj5swlQnPw5AF+h7u+11Pc2AmlM7LW
+         evULZvi0gn52LDT4lZa+Em3Yovka0Gui61e1rjwpRXcd2gdVQNXlxLKo8xUsc0xrOEog
+         ilXSu5wa1tU2CGRAvyf7vBBcRM8BjOtUUsYPeo2UwA8SHpISDVbhGSnExz9Pbz8Kp5l+
+         XPEjqvWmTFeJ6/Nv1VJMGp2XSV3U7EIjoMgOnZxNY1f87pSkWlnHLmRBf94PP/7+xKbF
+         2rWi+0UaRAY77M7jrISYlYhc/m6NvQl4JVXSGiHADn7c4AmO3r1Anhi6BJDTbIhbsnC5
+         dnzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248753; x=1794853553;
+        d=1e100.net; s=20260707; t=1794248760; x=1794853560;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gomwgjRp8gnNvcmuG0DoiSv5Tpyva0FtvGRYSv+rt0I=;
-        b=iZV6zlaCbsAI7EtqmlRq0bxkfVFgDMpNYfNaJckB2mE9/ApOgybONbPqKv+vKietpt
-         z/oD9r1sgSuxOmO909cNl/XRVdeUp74bw42ebvSj2g6GA/LMwi4OaPgqb5UEiMhNLbdD
-         2V8ZOigMNtsXTOGvIe+KCmIlfNgJZhM9lgzq+Sla77sf8Ulz+GcfAqDX8PPtUZ1i/ePq
-         5KgDKQmFr4/CVzLPX1ycrUi7YzfDInCG4GhuCq9TIc/M1ZeS1i2cUlcFdR5/EGGf+AKS
-         AFPQsidUZeu3gbmse+gxWE5E47fdMZ1jwwr5bD40nhddCYxaAGoMmrFzXEYm065wXDYn
-         oZgQ==
-X-Forwarded-Encrypted: i=1; AL+hErHfu9ZemyR5ZUAoZezqxJe9oT4uYyRjZxlJGYs1Wi4JDuNyXYbRKKXCDcftotAmjRyQeTaINsM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/tfa48O/m78uDivBBoz1pIeDcNM4uZOMeVZECSrXVJg1Xtc9Et
-	QU25Y1p2GtQ8g7wC9gJRB6k2L8IAVjO1npMEe1AEmMpN5ukOTlTqM9UJxD0oq4gP0aKu+2GjBev
-	MFLRVFg==
-X-Received: from ejpg23.prod.google.com ([2002:a17:906:7c57:b0:c3f:d175:ee6a])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3e20:b0:c41:64c1:cc2d
- with SMTP id a640c23a62f3a-c50491bd62emr17871766b.2.1794248752661; Mon, 09
- Nov 2026 10:25:52 -0800 (PST)
-Date: Mon,  9 Nov 2026 18:25:24 +0000
+        bh=X6oblkqCvojP6e7fV/VhIpBJOcN4NASJcWrnm45v9hk=;
+        b=tfifjK7gepiw+IYf9UyncMeEuOl1ptDbYdjl86YJFmHe7Z8yWSFMrRHsvlCDT/lOkH
+         qFshdfRdYI+BJAV/t6t8kmpiKusQmowR3PMCxsxt3TiMR5h1Su47wpMG8327wbj3xhkn
+         trMgxx1mvz/AGGM+Cooa+rDnvzewAlWlOAo4jDtUwMF2+OYzR/J8xG0hx0SqdIHQobYk
+         lRo74R9H9SVBlRvKZWMEQE66iLs/9cCsJpR03FYRt0H2w8od5SWnfnoaVo7J3skKAJuh
+         vfKm3ZUmrH5ZyVqthpVOJS+gTF5UJW0QPBaGGi/r62/jA6rfbTd0r9t/jlyUf2LKmspD
+         Kdig==
+X-Forwarded-Encrypted: i=1; AL+hErFiZOQ/QdfnRyq1yClI5uow4lYXBMPHq8AFxXH//MVEKE6gMcMDPz4B+STGb+conGRC/qAoXN4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ALoIO+8D3jHddsgA6Uzu6mODhTCaMvzdLv0h7SQyaPoUzLPGF
+	0zKqBhjI4Gu/VxDd9ACxta1g6PSN2DlQSiy4o9/5n8Iky/qKvPkptg4BM+gmmz2aYPCpv47iE9D
+	J3IqXdA==
+X-Received: from ejblh15.prod.google.com ([2002:a17:906:f8cf:b0:c34:bb1f:3bc4])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:944f:b0:c3f:98d4:dfd0
+ with SMTP id a640c23a62f3a-c50495f01c0mr14975066b.45.1794248759870; Mon, 09
+ Nov 2026 10:25:59 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:30 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,9 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261109182533.3594984-17-lrizzo@google.com>
-Subject: [RFC PATCH v2 16/25] mm/slub: Add SLAB_CACHE_PISA_RO for PISA-backed
- slab caches
+Message-ID: <20261109182533.3594984-23-lrizzo@google.com>
+Subject: [RFC PATCH v2 22/25] net/gve: Use PISA memory for RX buffers
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -103,257 +102,107 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-skb heads are provided by a slab allocator that is fed by alloc_pages().
-
-Add SLAB_CACHE_PISA_RO so that a slab cache can back its slabs with
-zeroed, read-only PISA folios (__GFP_PISA_RO | __GFP_ZERO) via
-pisa_alloc_folio(), clamping the slab order to
-[2, PAGE_ALLOC_COSTLY_ORDER].
-Slabs are still released with free_frozen_pages(), so pages from PISA
-return to their allocator via __free_pages_prepare(). Caches with
-SLAB_CACHE_PISA_RO skip KFENCE and are never merged.
-
-Existing caches are unaffected.
+When dev->pisa_rx_bufs is enabled, allocate GQI-RDA RX packet buffers
+with pisa_rx_gfp(dev) so they come from the per-node PISA
+allocator, and evict plain pages when a free PISA RX block is available;
+DQO-RDA uses page_pool, which checks dev->pisa_rx_bufs directly.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/iommu/pisa-alloc.c | 27 +++++++++++++++++++++++++++
- drivers/iommu/pisa-kunit.c | 19 +++++++++++++++++++
- include/linux/pisa.h       |  7 +++++++
- include/linux/slab.h       | 10 ++++++++++
- mm/slab.h                  |  3 ++-
- mm/slab_common.c           |  5 ++++-
- mm/slub.c                  | 14 +++++++++++++-
- 7 files changed, 82 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx.c | 32 ++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-index 4b61ec84ed6d1..3b5c49d143a7e 100644
---- a/drivers/iommu/pisa-alloc.c
-+++ b/drivers/iommu/pisa-alloc.c
-@@ -848,6 +848,33 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order, int preferred
- 	return pisa_alloc_bulk(pa, gfp & ~__GFP_PISA_RW, nr_pages, page_array, frozen);
- }
- 
-+/**
-+ * pisa_alloc_folio - Allocate a frozen folio for SLUB (SLAB_CACHE_PISA_RO)
-+ * @gfp: GFP flags (must have __GFP_PISA_RW or __GFP_PISA_RO set)
-+ * @order: Folio order
-+ * @nid: Target NUMA node (or NUMA_NO_NODE)
-+ *
-+ * Drops __GFP_THISNODE before calling the per-node allocator and verifies
-+ * node placement afterwards.
-+ *
-+ * Return: Frozen folio of @order, or NULL.
-+ */
-+struct folio *pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid)
-+{
-+	struct page *page;
-+
-+	page = pisa_alloc_pages(gfp & ~__GFP_THISNODE, order, nid, NULL);
-+	if (!page)
-+		return NULL;
-+	if (unlikely((gfp & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-+		     page_to_nid(page) != nid)) {
-+		page_ref_unfreeze(page, 1);
-+		__free_pages(page, order);
-+		return NULL;
-+	}
-+	return page_folio(page);
-+}
-+
- /**
-  * pisa_has_free_blocks_rx - Check if @dev has free PISA RX blocks of @order on @nid
-  * @dev: Device to check
-diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-index 40bf7801183da..9cc1328893ace 100644
---- a/drivers/iommu/pisa-kunit.c
-+++ b/drivers/iommu/pisa-kunit.c
-@@ -12,6 +12,7 @@
- #include <linux/mm.h>
- #include <linux/shrinker.h>
- #include <linux/skbuff.h>
-+#include <linux/slab.h>
- #include <net/sock.h>
- 
- #include "dma-iommu.h"
-@@ -621,6 +622,23 @@ static void test_reservoir_and_scrubber(struct kunit *test)
- 	WRITE_ONCE(pisa_scrub_max, old_scrub);
- }
- 
-+static void test_slub_page_alloc(struct kunit *test)
-+{
-+	struct kmem_cache *s;
-+	void *obj;
-+
-+	s = kmem_cache_create("pisa_kunit_slab", 1024, NULL,
-+			      SLAB_NO_MERGE | SLAB_CACHE_PISA_RO);
-+	KUNIT_ASSERT_NOT_NULL(test, s);
-+
-+	obj = kmem_cache_alloc(s, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, obj);
-+	KUNIT_EXPECT_TRUE(test, is_pisa_page(virt_to_page(obj)));
-+	kmem_cache_free(s, obj);
-+
-+	kmem_cache_destroy(s);
-+}
-+
- static struct kunit_case pisa_meta_test_cases[] = {
- 	KUNIT_CASE(test_meta_init_and_roundtrip),
- 	KUNIT_CASE(test_meta_invalid_phys),
-@@ -635,6 +653,7 @@ static struct kunit_case pisa_meta_test_cases[] = {
- 	KUNIT_CASE(test_pcp_cache),
- 	KUNIT_CASE(test_gfp_pisa),
- 	KUNIT_CASE(test_reservoir_and_scrubber),
-+	KUNIT_CASE(test_slub_page_alloc),
- 	{}
- };
- 
-diff --git a/include/linux/pisa.h b/include/linux/pisa.h
-index 89eb0722d90bc..b9c5197f2d88d 100644
---- a/include/linux/pisa.h
-+++ b/include/linux/pisa.h
-@@ -110,6 +110,7 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order,
- 				    int nr_pages, struct page **page_array,
- 				    bool frozen);
- 
-+struct folio *pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid);
- bool pisa_has_free_blocks_rx(const struct device *dev, unsigned int order, int nid);
- bool pisa_page_can_recycle(const struct page *page);
- 
-@@ -181,6 +182,12 @@ pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order, int preferred_nid,
- 	return 0;
- }
- 
-+static inline struct folio *
-+pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid)
-+{
-+	return NULL;
-+}
-+
- static inline gfp_t pisa_rx_gfp(const struct device *dev)
- {
- 	return 0;
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cda126def67af..df19c5898e9fe 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -66,6 +66,9 @@ enum _slab_flag_bits {
- #endif
- #endif
- 	_SLAB_NO_SHEAVES,
-+#ifdef CONFIG_PISA
-+	_SLAB_CACHE_PISA_RO,
-+#endif
- 	_SLAB_FLAGS_LAST_BIT
- };
- 
-@@ -260,6 +263,13 @@ enum _slab_flag_bits {
- #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
- #endif
- 
-+/* Back slabs with zeroed read-only PISA folios (__GFP_PISA_RO | __GFP_ZERO) */
-+#ifdef CONFIG_PISA
-+#define SLAB_CACHE_PISA_RO	__SLAB_FLAG_BIT(_SLAB_CACHE_PISA_RO)
-+#else
-+#define SLAB_CACHE_PISA_RO	__SLAB_FLAG_UNUSED
-+#endif
-+
- /*
-  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
-  *
-diff --git a/mm/slab.h b/mm/slab.h
-index e94ac63d10dc0..53620e40b216b 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -473,7 +473,8 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
- 			 SLAB_NOLEAKTRACE | SLAB_RECLAIM_ACCOUNT | \
- 			 SLAB_TEMPORARY | SLAB_ACCOUNT | \
--			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
-+			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE | \
-+			 SLAB_CACHE_PISA_RO)
- 
- #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
- 			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 01c64ef661e7f..d6c00047b1623 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -49,7 +49,7 @@ struct kmem_cache *kmem_cache;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 89f287b678bf0..85c243bbdeb33 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2015-2021 Google, Inc.
   */
- #define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
- 		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
--		SLAB_OBJ_EXT_IN_OBJ)
-+		SLAB_OBJ_EXT_IN_OBJ | SLAB_CACHE_PISA_RO)
  
- #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
- 			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
-@@ -377,6 +377,9 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 	if (s)
- 		goto out_unlock;
- 
-+	if (flags & SLAB_CACHE_PISA_RO)
-+		flags |= SLAB_SKIP_KFENCE;
-+
- 	cache_name = kstrdup_const(name, GFP_KERNEL);
- 	if (!cache_name) {
- 		err = -ENOMEM;
-diff --git a/mm/slub.c b/mm/slub.c
-index 45e077c7526c2..63609768f4e3f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -46,6 +46,7 @@
- #include <linux/prandom.h>
- #include <kunit/test.h>
- #include <kunit/test-bug.h>
 +#include <linux/pisa.h>
- #include <linux/sort.h>
- #include <linux/irq_work.h>
- #include <linux/kprobes.h>
-@@ -3378,6 +3379,8 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
- 	if (unlikely(!allow_spin))
- 		page = alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
- 								  node, order);
-+	else if (unlikely(flags & __GFP_PISA_RO))
-+		page = (struct page *)pisa_alloc_folio(flags, order, node);
- 	else if (node == NUMA_NO_NODE)
- 		page = alloc_frozen_pages(flags, order);
- 	else
-@@ -3484,7 +3487,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
- 	gfp_t alloc_gfp;
- 	void *start;
+ #include "gve.h"
+ #include "gve_adminq.h"
+ #include "gve_utils.h"
+@@ -170,6 +171,8 @@ static int gve_rx_alloc_buffer(struct gve_priv *priv, struct device *dev,
+ 	dma_addr_t dma;
+ 	int err;
  
--	flags &= gfp_allowed_mask;
-+	flags &= gfp_allowed_mask & ~__GFP_PISA_RW;
++	if (rx->data.raw_addressing)
++		gfp |= pisa_rx_gfp(dev);
+ 	err = gve_alloc_page(priv, dev, &page, &dma, DMA_FROM_DEVICE, gfp);
+ 	if (err) {
+ 		u64_stats_update_begin(&rx->statss);
+@@ -499,13 +502,19 @@ static void gve_rx_flip_buff(struct gve_rx_slot_page_info *page_info, __be64 *sl
+ 	*(slot_addr) ^= offset;
+ }
  
- 	flags |= s->allocflags;
+-static int gve_rx_can_recycle_buffer(struct gve_rx_slot_page_info *page_info)
++static int gve_rx_can_recycle_buffer(struct gve_rx_ring *rx,
++				     struct gve_rx_slot_page_info *page_info)
+ {
+ 	int pagecount = page_count(page_info->page);
  
-@@ -3495,9 +3498,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
- 	alloc_gfp = (flags | __GFP_NOWARN | __GFP_NORETRY) & ~__GFP_NOFAIL;
- 	if ((alloc_gfp & __GFP_DIRECT_RECLAIM) && oo_order(oo) > oo_order(s->min))
- 		alloc_gfp = (alloc_gfp | __GFP_NOMEMALLOC) & ~__GFP_RECLAIM;
-+	if (unlikely(s->flags & SLAB_CACHE_PISA_RO))
-+		alloc_gfp = (flags | __GFP_NOWARN) & ~__GFP_NOFAIL;
- 
- 	slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
- 	if (unlikely(!slab)) {
-+		if (s->flags & SLAB_CACHE_PISA_RO)
-+			return NULL;
- 		oo = s->min;
- 		alloc_gfp = flags;
- 		/*
-@@ -8182,6 +8189,11 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
- 		s->allocflags |= __GFP_RECLAIMABLE;
- 
-+	if (s->flags & SLAB_CACHE_PISA_RO) {
-+		s->allocflags |= __GFP_PISA_RO | __GFP_ZERO;
-+		order = clamp_t(unsigned int, order, 2, PAGE_ALLOC_COSTLY_ORDER);
+ 	/* This page is not being used by any SKBs - reuse */
+-	if (pagecount == page_info->pagecnt_bias)
++	if (pagecount == page_info->pagecnt_bias) {
++		if (rx && rx->data.raw_addressing &&
++		    !is_pisa_page(page_info->page) &&
++		    pisa_has_free_blocks_rx(&rx->gve->pdev->dev, 0, rx->gve->numa_node))
++			return 0;
+ 		return 1;
 +	}
+ 	/* This page is still being used by an SKB - we can't reuse */
+ 	else if (pagecount > page_info->pagecnt_bias)
+ 		return 0;
+@@ -549,7 +558,7 @@ static struct sk_buff *gve_rx_copy_to_pool(struct gve_rx_ring *rx,
+ 
+ 	copy_page_info = &rx->qpl_copy_pool[pool_idx];
+ 	if (!copy_page_info->can_flip) {
+-		int recycle = gve_rx_can_recycle_buffer(copy_page_info);
++		int recycle = gve_rx_can_recycle_buffer(NULL, copy_page_info);
+ 
+ 		if (unlikely(recycle < 0)) {
+ 			gve_schedule_reset(rx->gve);
+@@ -669,7 +678,7 @@ static struct sk_buff *gve_rx_skb(struct gve_priv *priv, struct gve_rx_ring *rx,
+ 			u64_stats_update_end(&rx->statss);
+ 		}
+ 	} else {
+-		int recycle = gve_rx_can_recycle_buffer(page_info);
++		int recycle = gve_rx_can_recycle_buffer(rx, page_info);
+ 
+ 		if (unlikely(recycle < 0)) {
+ 			gve_schedule_reset(priv);
+@@ -975,7 +984,7 @@ static bool gve_rx_refill_buffers(struct gve_priv *priv, struct gve_rx_ring *rx)
+ 			 * owns half the page it is impossible to tell which half. Either
+ 			 * the whole page is free or it needs to be replaced.
+ 			 */
+-			int recycle = gve_rx_can_recycle_buffer(page_info);
++			int recycle = gve_rx_can_recycle_buffer(rx, page_info);
+ 
+ 			if (recycle < 0) {
+ 				if (!rx->data.raw_addressing)
+@@ -987,12 +996,15 @@ static bool gve_rx_refill_buffers(struct gve_priv *priv, struct gve_rx_ring *rx)
+ 				union gve_rx_data_slot *data_slot =
+ 						&rx->data.data_ring[idx];
+ 				struct device *dev = &priv->pdev->dev;
+-				gve_rx_free_buffer(dev, page_info, data_slot);
+-				page_info->page = NULL;
+-				if (gve_rx_alloc_buffer(priv, dev, page_info,
+-							data_slot, rx)) {
++				struct gve_rx_slot_page_info new_info;
++				union gve_rx_data_slot new_slot;
 +
- 	/*
- 	 * For kmalloc caches we enable sheaves later by
- 	 * bootstrap_kmalloc_sheaves() to avoid recursion.
++				if (gve_rx_alloc_buffer(priv, dev, &new_info,
++							&new_slot, rx))
+ 					break;
+-				}
++				gve_rx_free_buffer(dev, page_info, data_slot);
++				*page_info = new_info;
++				*data_slot = new_slot;
+ 			}
+ 		}
+ 		fill_cnt++;
 -- 
 2.56.0.542.g3ef89b7020-goog
 
