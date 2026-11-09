@@ -1,44 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794263631;
-	b=T1g9YrhLuG4QVBBbJQ42PJv8TUVT/MEHjopUOESkyUGPv8oSWY83hB0UeEJOSD4yKhEb
-	 1O2SHdMbYv4dupRAaTQnCoQ2XlH//7Bp5enN43WmNhR9RsQwKRlIbpv9kr198BX22Qt0j
-	 EsxjzCF/bDHWCX3NRZfroMcCAKw0PjxD+wf70J1ESJwNtx8AeGcc8AvidmYAJDATa0kcv
-	 26ywhO+JUkZXoBqDnJJ25432UeeD1L6g7ztQEQNLv1F4tQfpzAudxuunzKna3ZCASSVj+
-	 99rec40UBvnKKxgrRhZlzQoBteM2hDEgNRtOlxHMTVngV9i+l8TZiqcgpb4GiT3gxEw==
+	t=1794264096;
+	b=1TnbKzgdQiva48aU8FsepbLAxErT/SLAGxG7WUuKD75XR8DRwuqJIB34WT0PSTZvkGaL
+	 vtG4NIPLlK5EGsN78EPOdV7rB2a83DaMDFKAPjy/2ZHenRdkhCElUUJzs36gUhq5xHTCs
+	 lV0uKbjrXkqRwmGD0vmHHgpr8phFopoq584cDibI/GD/6A1zunKcq39k0sQqfHTAVlvOs
+	 hTuBHr3p0T8bhzuuXd1TOAyKqLTdZsrbPV3y5PQ6Md8FIK1v4N/o9GKhYrDXX3kOZrfWt
+	 hCwZwyzygyId9+pu+z9EhpriEmHq+D7XxsWu9iKhydVrv13OCmGHr/oxcWS66t8tUiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794263631;
-	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:
-	 Disposition-Notification-To:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:Sender;
-	bh=j6T4azhngLDHnYHxtK5abGg6pXWrKvEZEpN8JEf/eqk=;
-	b=PJ36BLBNSUXAxaWC7Nki+/SKtkDLNZVyx0CJxCgjOctCDMpPbAZgoIa7AmyCkO4eDAgt
-	 girJZGi7t9x/ultvs5XRE8tHk2P2U8ReUqcQAhwaQtyTKmNma/pQbtjfEe9Oxii1lO9bg
-	 5rsCSAzwE/MGHvyCQGVbqxCsZoFPM/xhTTZLdJloa5ZDn+GC++QyZaEQ07vugiCsU/Yyy
-	 PMH1VyjrYI+BlMPRCrDfq2iwfOSlJp1ZDuaFWkwWVIVdgjHgMQJiIetqW65PmAppCIwK9
-	 YdLAyuTpsyMErKy4lrHH49fbCFdMZC2iAmEW6jVTTkCqsq7DFQ52hW2pZjhf/FLvnkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794264096;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=0FmOT40SSGTEJ8nAUd6PHhQJfpkzfaV1DQZc2IL/c4g=;
+	b=GM20zFJrHCRezueQJdeCEjfixuEsKubO04bc82CcjKq1yBbWVJGvPJg+r2AB7WUEoiDg
+	 avqsdx0GnvtiRF7NfO8N0ydCszfatXmUTB7F87gQMYBhnO8vc8QE6rdMoCSHUPvE0fip2
+	 bLD1OA5HQY2IcAx+uxPgROM/T10UCcSE5mPcYvYipgcEcDtkTtC6+Fn/NPDppWTykS5zX
+	 8zEaK/dWRiG5cB8jH/B2sq1E/xIFfukIVSbJYuIuibv0EQI+LyOslBkkzfAP4T4bGFVPc
+	 6+j+m2s8V0GRdFj9cQF0zvLyNzNcsV4Xmet4Lq+HIXs0cKo8tcs/R0t0FUeof7MmZ5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=maciej.szmigiero.name;
-	spf=pass smtp.mailfrom=vps-ovh.mhejs.net;
-	arc=none smtp.remote-ip=145.239.82.108
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OvGAT3WY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6883A606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 22:33:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6883A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.100.1)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1xQXvk-00000000W3m-1490;
-	Mon, 09 Nov 2026 23:33:36 +0100
-Message-ID: <e2684e1d-3f1a-499f-bb09-903e690981c5@maciej.szmigiero.name>
-Date: Mon, 9 Nov 2026 23:33:30 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A55606A338;
+	Mon,  9 Nov 2026 22:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OvGAT3WY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7511F0089F;
+	Mon,  9 Nov 2026 22:41:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794264095;
+	bh=0FmOT40SSGTEJ8nAUd6PHhQJfpkzfaV1DQZc2IL/c4g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OvGAT3WY2lqJf+x65niUYy5RRXbHypKdImba1ImF2KnOYLPiHNrnuaCU1Ox4OE9nt
+	 ld0MqAux4mV9fqrmQronw0F6vz9DHtLAs3FUXvtdQgZm10geCm5KYQ6E72cMmhn5dt
+	 GSKeMwuPSCVIQuKY8nUCJipskiYUCyEqlPEQRioKti0PFrC4rdaeFTGTXt40jnxqY9
+	 c/IijNAkiNbb92f5XF6Fj1LS0/n24w1jojrxele/eEEp4NC8xHUSu54eKiS2Km6lQU
+	 4I1N2HjmBaClR59cLXr38UB3dbNRECiqXVn3dRCVwsm0gTMtvsFczwirw9YBnQJDhL
+	 VamZJWECPpoIA==
+Subject: Re: [PATCH] wifi: mac80211: use frame link_id when adjusting link_sta
+ on reorder release
+From: netdev-bot+sashiko@kernel.org
+To: NoahWeinberger2003@proton.me
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, security@kernel.org,
+ kuba@kernel.org
+Date: Mon, 09 Nov 2026 22:41:34 +0000
+Message-ID: <179426409490.994134.13077118770469155374@kernel.org>
+In-Reply-To: <Sq80dyNRnQWE5H_yZYIwxaQiwgvIrIlET6kND66_K0UpnKQZruHroWDq6hlYKDM0y9e2vXW2UBlBmnjw3bCLKk1Acrp7F49_jk883tbCqxk=@proton.me>
+References: <Sq80dyNRnQWE5H_yZYIwxaQiwgvIrIlET6kND66_K0UpnKQZruHroWDq6hlYKDM0y9e2vXW2UBlBmnjw3bCLKk1Acrp7F49_jk883tbCqxk=@proton.me>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -48,109 +63,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: wwan: iosm: Re-bind the driver around system
- suspend too
-To: Zev Paneth <zevpaneth@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org
-References: <20261105102009.34534-1-zevpaneth@gmail.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Content-Language: en-US, pl-PL
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <20261105102009.34534-1-zevpaneth@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Sender: mhej@vps-ovh.mhejs.net
 
-On 5.11.2026 11:20, Zev Paneth wrote:
-> On some platforms the modem loses power during suspend-to-idle even
-> though the driver keeps the device in D0 and its s2idle resume path
-> only sends a wake-up command. After a long enough s2idle cycle (about
-> five minutes or more on the test platform) the device comes back in
-> its boot ROM stage: resume logs "msg timeout", ModemManager then fails
-> to open the ports ("PORT open refused, phase A-ROM", "Failed to find
-> primary AT port"), and once userspace has touched the ports the modem
-> stays dead until a full reboot. This is the same failure mode that
-> commit 0b6f6593aa8c ("net: wwan: iosm: Fix hibernation by re-binding
-> the driver around it") addressed for hibernation.
-> 
-> Extend that approach to system suspend: unbind the driver on
-> PM_SUSPEND_PREPARE and re-bind it on PM_POST_SUSPEND, so the device is
-> re-initialized from scratch on resume, exactly as it is at boot.
-> 
-> The cost is a full modem re-enumeration after every suspend (about
-> 50 seconds until reconnected on the test platform), also on platforms
-> where the modem does survive s2idle. If that is considered too heavy,
-> this could instead be gated by a DMI quirk for the affected platforms.
-> 
-> Tested on a Fibocom L860-GL-16 (Intel XMM7560, 8086:7560) in an
-> HP ProBook 450 G10 (BIOS V72 01.13.01) with kernel 7.0: with this
-> change the modem survives an 11-minute lid-closed s2idle and
-> reconnects automatically; without it, any s2idle longer than roughly
-> five minutes left the modem in A-ROM until reboot.
-> 
-> Signed-off-by: Zev Paneth <zevpaneth@gmail.com>
-> ---
->   drivers/net/wwan/iosm/iosm_ipc_pcie.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-To be honest, I'm not sure such "big hammer" is indeed the right
-solution.
-Maybe the DMI quirk you describe would work as the last resort.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Could you instead try this iosm s2idle patch at [1]?
-This already helped one user.
-You should see "forced D3 sleep" at the modem device probe time.
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-[1]:
-https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/work_items/992#note_2938256
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks,
-Maciej
+- [Medium] The commit message names the wrong trigger for the link[-1]
+  access.
+- [Low] The commit has no Signed-off-by: line.
+- [Low] The Fixes: tag is a literal placeholder ('Fixes: [fill in before
+  sending - on a full clone run: git log -S ...]').
+- [Low] The commit message is a bug report or cover email, not a
+  changelog.
 
+--
+
+wifi: mac80211: use frame link_id when adjusting link_sta on reorder release
+
+This patch changes the link-adjust block in ieee80211_rx_handlers(). When
+a released frame arrived on a different link, rx->link_sta is now looked
+up with the frame's own status->link_id instead of the previous
+rx->link_id. This avoids indexing rx->sta->link[] with -1.
+
+> In ieee80211_rx_handlers(), when frames are released from the BA reorder
+> buffer on timeout, rx->link_sta is re-fetched using the *previous*
+> rx->link_id instead of the frame's own status->link_id. For a legacy
+> (non-MLO) client on an MLO access point,
+> ieee80211_release_reorder_timeout() passes link_id = -1 and
+> ieee80211_rx_data_set_sta() never updates rx->link_id, so the adjust
+> block evaluates rcu_dereference(rx->sta->link[-1]).
+
+[ ... ]
+
+> nan_sched and the driver-private area that follow deflink. At minimum
+> this is a remotely triggered crash on MLO APs serving legacy clients;
+> worse outcomes are layout-dependent.
+
+[Severity: Medium]
+Is this the right trigger for the link[-1] access? For stations added
+through nl80211 on an MLD interface, nl80211_new_station() requires a
+link ID:
+
+net/wireless/nl80211.c:nl80211_new_station() {
+    ...
+	if (wdev->valid_links) {
+		if (params.link_sta_params.link_id < 0)
+			return -EINVAL;
+    ...
+}
+
+ieee80211_add_station() then goes through sta_info_alloc_with_link().
+__sta_info_alloc() sets valid_links for non-MLO stations as well:
+
+	if (link_id >= 0) {
+		sta_info_add_link(sta, link_id, &sta->deflink,
+				  &sta->sta.deflink);
+		sta->sta.valid_links = BIT(link_id);
+
+So ieee80211_release_reorder_timeout() picks a real link:
+
+	if (sta->sta.valid_links)
+		link_id = ffs(sta->sta.valid_links) - 1;
+
+ieee80211_rx_data_set_sta()->ieee80211_rx_data_set_link() then sets
+rx->link_id to the station's own link. That matches status->link_id, so on
+this path a legacy client never enters the adjust block.
+
+Before this patch, the caller that does reach rx->sta->link[-1] seems to
+be ieee80211_mark_rx_ba_filtered_frames(), which always passes -1:
+
+	if (!ieee80211_rx_data_set_sta(&rx, sta, -1))
+		return;
+
+On an MLD vif with a station that has valid_links set (MLD or legacy),
+this leaves rx->link_id at -1. status->link_id is an unsigned 4-bit field,
+so the first released frame always takes the mismatch branch.
+
+In-tree, only iwlwifi mvm calls ieee80211_mark_rx_ba_filtered_frames().
+MLO-capable mvm hardware sets SUPPORTS_REORDERING_BUFFER, so
+___ieee80211_start_rx_ba_session() never assigns tid_rx and the function
+returns early.
+
+The reorder timeout path could only hit link[-1] if an MLD vif held a
+station with valid_links == 0. nl80211 doesn't appear to create such a
+station.
+
+The code change looks correct for all of these paths. It also fixes the
+MLD peer case, where stats go to the previous frame's link.
+
+Could the changelog describe the actual trigger and its driver dependence,
+instead of "a remotely triggered crash on MLO APs serving legacy clients"?
+As written, it may mislead severity triage and stable backport decisions.
+
+> Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07), net/mac80211/rx.c:4243-4255 (adjust block), rx.c:4375-4404 (ieee80211_rx_data_set_sta), rx.c:4410-4426 (ieee80211_release_reorder_timeout).
+> Introduced in the v7.4 merge window (regression vs v7.3).
+>
+> This was found during an assisted (AI-supported) static source review of
+> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
+> reporter against that tree. The patch below has NOT been compiled and has
+> NOT been runtime tested, and no reproducer was produced - the triggering
+> conditions are described above instead. Please treat this as a report for
+> verification rather than a battle-tested fix.
+
+[Severity: Low]
+This isn't a bug, but the changelog reads like a cover email rather than
+a commit message. It opens with "Hello,", refers to "The one-word fix
+below" and "every code path cited below", and includes tree-specific rx.c
+line ranges that will go stale once the patch is applied.
+
+Could the greeting, the rx.c line references and the review and testing
+notes move below the --- separator? The note that the patch is untested
+is still needed, but it doesn't belong in the permanent changelog.
+
+> Fixes: [fill in before sending - on a full clone run:
+>   git log -S 'rcu_dereference(rx->sta->link[rx->link_id])' --oneline -- net/mac80211/rx.c]
+
+[Severity: Low]
+The Fixes: tag is still a placeholder. git blame on the adjust block in
+ieee80211_rx_handlers(), including the rx->sta->link[rx->link_id] line,
+points to:
+
+Fixes: 4db13371e217 ("wifi: mac80211: refactor RX link_id and station handling")
+
+That commit also removed status->link_valid, started deriving
+status->link_id from rx->link_id in ieee80211_prepare_and_rx_handle() and
+ieee80211_invoke_fast_rx(), and left callers such as
+ieee80211_mark_rx_ba_filtered_frames() passing link_id = -1.
+
+> Reported-by: [your name and email]
+
+[Severity: Low]
+The trailers have no Signed-off-by:, and the Reported-by: is a
+placeholder. Documentation/process/coding-assistants.rst says that when
+an AI assistant was used, the human submitter must add their own
+Signed-off-by to certify the DCO. submitting-patches.rst also requires
+one.
+
+Could a Signed-off-by be added, and the placeholder Reported-by: either
+filled in or dropped?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/Sq80dyNRnQWE5H_yZYIwxaQiwgvIrIlET6kND66_K0UpnKQZruHroWDq6hlYKDM0y9e2vXW2UBlBmnjw3bCLKk1Acrp7F49_jk883tbCqxk%3D%40proton.me
