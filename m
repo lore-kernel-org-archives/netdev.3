@@ -1,97 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.58
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794193278;
-	b=Pb7Y/dcFDZZWfPI3kKk0EuOehnOwaG8CuoxttP+RxVD5uL5gVxt7fIo2RYIjkYvHbnkX
-	 Hiab3pW378OpCVvP4WZNTBCsPJgjMM4ZNoe5D2jamhw9JvG4hXHAdo5rpSd9L6pCN5L33
-	 dZF/ukwCXegWiq6rFhd101UUXoqOcIUCc+38oYxF/h0+eJPTCWf1Ce6Yxqgtzohu0Jv1Z
-	 tEGMl8d119KmgNC6bHEu1gwqN5SLlRhipykqhX0bsA3hSHGujf2PJKhScjg6D0W+8IZos
-	 wLi1fxdfZUHOAd/JW7W3Kcd/q/WCKclZ4aE+TFJgHlyRWZ2mqV70S9c88lLjeSY8Pag==
+	t=1794193288;
+	b=ouYfXWB+CwuXPow8YjpcvUKbV/muV5PlFPW+nUpKob0a0aymAxc14knssVDVHQc2Gbuk
+	 7Wj8n9W5iVAtZ3gZi3l60w+TQSaOjxpwxFp1bqwGML4k6L4eoK2fgVEddeQFmoLUhv2HK
+	 Mnsnw/9UIGr2xYAfMF+j57RHHPMScyv4wlrqU2QD5VYpjkPuUpRL3iL5Q0jldvFo1WCkV
+	 fEeygVQB2YmiXlFRixj86VKmveAITEezZSa8qOeWy3m5fmmqZQ9IEgOTaRrctyx1EpnaI
+	 OQMTIUiz7n4GUVPI8lVuscSD18MaA6CDE5b/7Kskkq58G9gIOPKLLUgiCiQXsSp96Jg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794193278;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794193288;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ElpF8lyMTNM3CY/Q7H+PHvM2mganMySTQf0T9s8n4s8=;
-	b=oBTJvQvNou+fR3GyobWXm/lQUeLFTI9wuHDd4+EWa6Ow4b5GNT1h73nfFt/DrUMJREc3
-	 nL31TBBkM1YVk7FuIezrwLQWXpgdJXMW7Gn7+/SiW0sIo3/G7iTriM5c3ZBRbnchzek5O
-	 VlA5NRFygb/9sPBR1Z3bvEPsMofg89V7KWj0xDFbs1uEjl5TJad+zoNoZtWz/ONnincfa
-	 wiz76u4SecU42uahOkesPth6qul38zhtJQKpGZlAlkhJKwo5UUc3p7j94ZKbe/ajYudnV
-	 +sAUA4ctP7AbeJHfMCHRhC+1ZPqY/GZIDtGq+IKPRMDYhGcku3j2pcOeiOoRec7vmIg==
+	bh=au/ycR8YCGbRgk4UR5scTYEiXwJwUFZkGT7G4NUC5NI=;
+	b=tcAjNcnnVxfKlx7q32KtR62BDLDiuWlZlZpqOLdg9vgQ7rJNA0nbPlMgr3OQvx7ssnDG
+	 XBfxGtSuiP1aXhAd/jxFfn6ChOOahOndUgLRXhR/6oqstmR66Vtkmr5L0fjzh9s4edQN4
+	 7RWoY/tW6Tyuj3DdIwYReFRCwTQXRv/nyvpdEQEGYQBBAspyZzu+LukQ5A+/U2ZEd5N2m
+	 XinD6AUXS8TlgTKDnbWN/RzOJJMRlttnayT6Ivgq8bN9yUy3WT/CfBWmBxxtyHBxdd9+i
+	 0uX5bug21yM7vU98+VZco+VQ35QropnP4Pj80MXAmk0G2U+8WkVmP9Th1WMgID9SFQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kWcMksUm;
-	arc=none smtp.remote-ip=95.215.58.58
-Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mfgyTlgq;
+	arc=none smtp.remote-ip=209.85.215.174
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2270606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 03:01:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2270606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8AE606A325
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 03:01:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C8AE606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kWcMksUm
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Ih9CwEp2gbLM2jko2WNdjiHmZUiAMosQAIGReidnZCw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794193275; v=1; x=1794798075;
- b=kWcMksUml6CmgJRmIIB+sqDbgcOTybVEv96IKSfKZFcgBrsdrNNg90k31T3TTEYj/T6fdG3c
- jMzT9qqcuK/UtR4PPwwk3BIsbd1gCmk8p3s8aHU4Yj0M88k4QADGBvmPoykj+ffMTNDTQfrGUbh
- ZQHJ1TlizVae5eVTxgBXaXo8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9046617f223305a1;
-	Mon, 09 Nov 2026 03:01:15 +0000
-X-Mizu-Trace-ID: 9046617f223305a1
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mfgyTlgq
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cdb628232d2so212891a12.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 19:01:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794193286; x=1794798086; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=au/ycR8YCGbRgk4UR5scTYEiXwJwUFZkGT7G4NUC5NI=;
+        b=mfgyTlgqT1/r2PHrqge7oNsYoEg6ZgbcZdDUcaPsar99gW7jtiQWIx9x8dXvMLldvn
+         Gkwu4LjQwZ/rA9lLQ512wk+0J2r4plQUm68LW5Gvev8aGB7uEVrRycrcxPJ5I72NvPff
+         /QoDdIsyMbTXJ5bF6uOns1Dqj5lKDkr3dmEH4Av0r6zn+f62D4AFT5zEJqcC8SkzgoHG
+         324POKwusnbuEN5//tIRY0AcY+1/Mqa8VKKqGEsTWQcBiwn6SYaaVZSpV+k7Gg5+aTCZ
+         rljPRjpJf6hM5BGbbFFH5BnfkgzN5p/fI5WdtcsjrnGzbxF7bacPsKYrWG5nUH3FfkRn
+         UIkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794193286; x=1794798086;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=au/ycR8YCGbRgk4UR5scTYEiXwJwUFZkGT7G4NUC5NI=;
+        b=UWFlrnbBFOZDCHpgEUCPVNRapUe7uND36rDbfSrFsSNliCSaRLQq8vGumLTszQ/tP4
+         IIEACa98jnwrgWf5DCDVvhqO9EgBerl+uQ45FqgEqV407aB1fUY4SeLz96QKoys7k/BV
+         RqFi2KV3ISHEBDJP1LGkwKtmz7XRmhJyvhS1pkEAY/8wkA6vl2JPIK2mLK78sD4EWBSb
+         VZ9uiwVZPW+dp7fpdP79wjdCamfk0TXYXRF4m0hImH6/qJu/bMGf0rIa8kWMlrzv+B2n
+         zZ2dr9Q76JdDPSNp0uZe+Z3HWvI/c8sY7HErERMeL918JUCr5rMUFN01PjxtToVBWk0k
+         iUjw==
+X-Forwarded-Encrypted: i=1; AL+hErFPWaW/EvaBzGYDRcVPe7bEeV7Cat7awIXXZKbAGfGCJEazXSgd736dFO3ihbjmf9UKZ/ZMZUg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/fRdZqGH/Iu32vxZeXAthpRNy9BD1pxwVuUwTZmxhaMC8Zvc2H
+	ohqljGank7RWGn/BkdgfG7bPuMdG8XTOSB8GWe6rgZyMSTwdP4rHBGrh
+X-Gm-Gg: AYBFou1M/q9mlU8SA5q3XNbXQds0LxYOkQ5KC68dc+NdAwfXhIlPbzp2vympy2Rt5mp
+	Wdzwthp1nxnaVU4cZThu5r5h6q98a3m2J149zkoTIsOxCkJAOO2bGJBFhTUPvypGe3lBV/slglx
+	cK6EX9Ymz4iy1vQLCcykbK+Q0ibmjVUg7pgUVe0UnMGayY89HIwKe0WSum8jD+Gi+ewr4S0vFHT
+	EId6I2Hln9mB2KFfDQCc5vRb352CRCq2u3Bou7yXzHwCJNdDdeLBRvczKFMAfuG7pUd4RV4LtYK
+	XN41gy1vBWCKZNHCKkr/Lup8JkUeVNWN8sMIN4i38WXwu4sXbJFaCPhZePM+9WmFsBGwY8NMJ22
+	nl97BTLcvzvhTWA2+tQq6cEfvlwOCM6YbZjM8b0YjDCZxRXp74YY6OXx7Q7cgQWxFRenk9u+GSh
+	5yMRDBvJCfdsF8/cAqepnpN/JflxM3p+b9ogJLaXGOfMsFiAahPUF1ee+ZWGO53DccSWhTyA7Gq
+	CbE7WdQXB4FxgCaFf+1Kqzqsd5IaZ9mbmmWAeMWMurKzSK9YDN0B3uyF+omRveEPwgwGcxGM7j0
+	JLfPbsL7qE/GsE6AdrXa0x8pIwZxX9TdBZ0B7eSLSLa1X9lJ/T4PBgU0eEJ6nXLrAwRyiik=
+X-Received: by 2002:a17:90b:4a52:b0:3a8:6a6b:596d with SMTP id 98e67ed59e1d1-3b12d441cf4mr3066492a91.26.1794193286533;
+        Sun, 08 Nov 2026 19:01:26 -0800 (PST)
+Received: from localhost.localdomain ([2409:891f:1ba1:286a:1908:5381:2f2c:6143])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1278918f4sm4920933a91.6.2026.11.08.19.01.20
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 08 Nov 2026 19:01:25 -0800 (PST)
+From: Chuang Wang <nashuiliang@gmail.com>
+To: 
+Cc: Chuang Wang <nashuiliang@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Allison Henderson <achender@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
-	linux-security-module@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	lvs-devel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-sctp@vger.kernel.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH net-next 14/14] netfilter: cttimeout: annotate data-races around the default timeouts
-Date: Mon,  9 Nov 2026 10:52:13 +0800
-Message-ID: <20261109025425.328445-15-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261109025425.328445-1-jiayuan.chen@linux.dev>
-References: <20261109025425.328445-1-jiayuan.chen@linux.dev>
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v12] net: reduce ARFS flow updates by checking LLC affinity
+Date: Mon,  9 Nov 2026 11:00:34 +0800
+Message-ID: <20261109030042.2956-1-nashuiliang@gmail.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,388 +110,192 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cttimeout_default_set() and cttimeout_default_get() hand the per-netns
-default timeout arrays to the l4proto nlattr_to_obj() and obj_to_nlattr()
-callbacks, which write and read them with plain accesses while the
-nf_conntrack_*_timeout* sysctl handlers update the same fields with
-WRITE_ONCE(). Use WRITE_ONCE() and READ_ONCE() in the callbacks.
+When an application migrates to a different CPU, RFS records the new
+CPU in the global rps_sock_flow_table via rps_record_sock_flow().  On
+the next packet of a flow, get_rps_cpu() notices the change and calls
+set_rps_cpu() to update the per-queue flow entry.  With Accelerated
+RFS (ARFS), set_rps_cpu() also invokes the driver's ndo_rx_flow_steer()
+callback so that the NIC steers the flow to a queue close to the new
+CPU.
 
-KCSAN reports both sides when the UDP default timeouts are set over
-nfnetlink while UDP traffic goes through conntrack, or while the sysctl
-is written:
+Threads that migrate frequently trigger this on every migration.  For
+drivers like mlx5, each steering call serialises on an internal lock
+(arfs_lock), and under heavy load the contention on that lock can
+outweigh the benefit of the steering update itself.
 
-  BUG: KCSAN: data-race in nf_conntrack_udp_packet / udp_timeout_nlattr_to_obj
+This patch introduces a cache-aware update strategy: the hardware
+steering update is skipped when the flow's previous target CPU and the
+new one share the same Last Level Cache (LLC), as cache locality for
+the application is preserved either way. The per-queue flow bookkeeping
+(rflow->cpu) is still updated, so RFS keeps steering packets to the CPU
+the application is running on. A new sysctl, net.core.arfs_llc_affinity,
+is added to toggle this feature (default: off).
 
-  write to 0xffffffffb0829bc4 of 4 bytes by task 457 on cpu 1:
-   udp_timeout_nlattr_to_obj+0x3b/0xf0
-   ctnl_timeout_parse_policy+0xc0/0x100
-   cttimeout_default_set+0x8f/0xc0
-   nfnetlink_rcv_msg+0x64c/0xc90
-   netlink_rcv_skb+0x9c/0x1b0
-   nfnetlink_rcv+0x9b/0x1e0
-   netlink_unicast+0x418/0x5c0
-   netlink_sendmsg+0x3fc/0x750
-   ...
+Performance Test Results:
+The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
+with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
 
-  read to 0xffffffffb0829bc4 of 4 bytes by task 459 on cpu 0:
-   nf_conntrack_udp_packet+0x27b/0x550
-   nf_conntrack_in+0x767/0xb20
-   ipv4_conntrack_local+0xb0/0x120
-   nf_hook_slow+0x7e/0x180
-   ...
+rpc_press Commands:
 
-  value changed: 0x00001e46 -> 0x00001d4c
+  for i in {1..8}; do
+    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
+    -server=<IP>:8000 -input='{"message":"hello"}'
+    -qps=0 -thread_num=512 -connection_type=pooled &
+  done
 
-  BUG: KCSAN: data-race in proc_int_u2k_conv_uop / udp_timeout_nlattr_to_obj
+Monitor mlx5e_rx_flow_steer frequency:
 
-  write (marked) to 0xffffffffb0829bc4 of 4 bytes by task 475 on cpu 1:
-   proc_int_u2k_conv_uop+0x92/0xa0
-   ...
-   proc_dointvec_jiffies+0x15/0x30
-   proc_sys_call_handler+0x282/0x3a0
-   proc_sys_write+0x13/0x20
-   ...
+  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
 
-  read to 0xffffffffb0829bc4 of 4 bytes by task 474 on cpu 0:
-   udp_timeout_nlattr_to_obj+0x2c/0xf0
-   ctnl_timeout_parse_policy+0xc0/0x100
-   cttimeout_default_set+0x8f/0xc0
-   nfnetlink_rcv_msg+0x64c/0xc90
-   ...
+Frequency of mlx5e_rx_flow_steer (via funccount[2]):
 
-  value changed: 0x00001d4c -> 0x00001e46
+  Before: ~200,000 counts/sec
+  After:       ~10 counts/sec (reduced by ~99%)
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+[1] https://github.com/apache/brpc/
+[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
+
+Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
 ---
- net/netfilter/nf_conntrack_proto_generic.c |  8 +--
- net/netfilter/nf_conntrack_proto_gre.c     | 16 ++---
- net/netfilter/nf_conntrack_proto_icmp.c    |  8 +--
- net/netfilter/nf_conntrack_proto_icmpv6.c  |  8 +--
- net/netfilter/nf_conntrack_proto_sctp.c    |  9 +--
- net/netfilter/nf_conntrack_proto_tcp.c     | 71 +++++++++++-----------
- net/netfilter/nf_conntrack_proto_udp.c     | 16 ++---
- 7 files changed, 69 insertions(+), 67 deletions(-)
+v11 -> v12:
+- drop the comment block above the LLC check, per Jakub Kicinski
+- guard the arfs_llc_affinity declaration, definition and sysctl entry
+  with CONFIG_RFS_ACCEL
+- document the sysctl in Documentation/networking/scaling.rst, per Jakub Kicinski
+v10 -> v11:
+- rename the sysctl from net.core.rps_feat_llc_affinity to
+  net.core.arfs_llc_affinity, per Neal Cardwell
+v9 -> v10:
+- move the LLC check from rps_record_sock_flow() into set_rps_cpu(),
+  so that only the ARFS hardware steering is skipped while rflow->cpu
+  is still updated, per Eric Dumazet
+- drop the sock_rps_record_flow_hash()/sock_rps_record_flow() exports,
+  which are no longer needed
+v6 -> v9:
+- simplify code and fix errors in AI submissions, per Simon Horman
+v5 -> v6:
+- remove the multi-check 'old_val == new_val', per Xuan Zhuo
+- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko]
+  undefined!', per kernel test robot
+- fix 'tcp.c:(.text+0x3e90): undefined reference to
+  `sock_rps_record_flow'', per kernel test robot
+v4 -> v5:
+- fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!', per
+  kernel test robot
+v3 -> v4:
+- add rps_llc_check, per Eric Dumazet
+v2 -> v3:
+- patch net -> net-next, per Jakub Kicinski
+v1 -> v2:
+- add rps_feat_llc_affinity; add brpc tests
+ Documentation/networking/scaling.rst |  9 +++++++++
+ include/net/rps.h                    |  4 ++++
+ net/core/dev.c                       | 14 ++++++++++++--
+ net/core/sysctl_net_core.c           |  9 +++++++++
+ 4 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_generic.c b/net/netfilter/nf_conntrack_proto_generic.c
-index cb260eb3d012c..08b8d44c9f402 100644
---- a/net/netfilter/nf_conntrack_proto_generic.c
-+++ b/net/netfilter/nf_conntrack_proto_generic.c
-@@ -27,11 +27,11 @@ static int generic_timeout_nlattr_to_obj(struct nlattr *tb[],
- 		timeout = &gn->timeout;
+diff --git a/Documentation/networking/scaling.rst b/Documentation/networking/scaling.rst
+index 6c9836000a8d..d85fe7a9e9bf 100644
+--- a/Documentation/networking/scaling.rst
++++ b/Documentation/networking/scaling.rst
+@@ -468,6 +468,15 @@ of CPU to queues is automatically deduced from the IRQ affinities
+ configured for each receive queue by the driver, so no additional
+ configuration should be necessary.
  
- 	if (tb[CTA_TIMEOUT_GENERIC_TIMEOUT])
--		*timeout =
--		    ntohl(nla_get_be32(tb[CTA_TIMEOUT_GENERIC_TIMEOUT])) * HZ;
-+		WRITE_ONCE(*timeout,
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_GENERIC_TIMEOUT])) * HZ);
- 	else {
- 		/* Set default generic timeout. */
--		*timeout = gn->timeout;
-+		WRITE_ONCE(*timeout, READ_ONCE(gn->timeout));
- 	}
++When the flow's previous target CPU and the new target CPU share the
++last level cache (LLC), the hardware steering update can be skipped,
++since the application's cache locality is preserved either way. This
++reduces contention on driver-internal locks when application threads
++migrate frequently between CPUs sharing an LLC. The functionality
++remains disabled until explicitly enabled through::
++
++  /proc/sys/net/core/arfs_llc_affinity
++
  
- 	return 0;
-@@ -42,7 +42,7 @@ generic_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
+ Suggested Configuration
+ ~~~~~~~~~~~~~~~~~~~~~~~
+diff --git a/include/net/rps.h b/include/net/rps.h
+index e33c6a2fa8bb..ff2f490a4e9a 100644
+--- a/include/net/rps.h
++++ b/include/net/rps.h
+@@ -13,6 +13,10 @@
+ extern struct static_key_false rps_needed;
+ extern struct static_key_false rfs_needed;
+ 
++#ifdef CONFIG_RFS_ACCEL
++extern struct static_key_false arfs_llc_affinity;
++#endif
++
+ /*
+  * This structure holds an RPS map which can be of variable length.  The
+  * map is an array of CPUs.
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 3b60b15e2175..0011cec29640 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5217,6 +5217,10 @@ EXPORT_SYMBOL(rps_needed);
+ struct static_key_false rfs_needed __read_mostly;
+ EXPORT_SYMBOL(rfs_needed);
+ 
++#ifdef CONFIG_RFS_ACCEL
++struct static_key_false arfs_llc_affinity __read_mostly;
++#endif
++
+ static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
  {
- 	const unsigned int *timeout = data;
+ 	return hash_32(hash, rps_tag_to_log(tag_ptr));
+@@ -5254,7 +5258,7 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
  
--	if (nla_put_be32(skb, CTA_TIMEOUT_GENERIC_TIMEOUT, htonl(*timeout / HZ)))
-+	if (nla_put_be32(skb, CTA_TIMEOUT_GENERIC_TIMEOUT, htonl(READ_ONCE(*timeout) / HZ)))
- 		goto nla_put_failure;
- 
- 	return 0;
-diff --git a/net/netfilter/nf_conntrack_proto_gre.c b/net/netfilter/nf_conntrack_proto_gre.c
-index d8bca1e29797b..e1b99c5a7c7a2 100644
---- a/net/netfilter/nf_conntrack_proto_gre.c
-+++ b/net/netfilter/nf_conntrack_proto_gre.c
-@@ -318,16 +318,16 @@ static int gre_timeout_nlattr_to_obj(struct nlattr *tb[],
- 	if (!timeouts)
- 		timeouts = gre_get_timeouts(net);
- 	/* set default timeouts for GRE. */
--	timeouts[GRE_CT_UNREPLIED] = net_gre->timeouts[GRE_CT_UNREPLIED];
--	timeouts[GRE_CT_REPLIED] = net_gre->timeouts[GRE_CT_REPLIED];
-+	WRITE_ONCE(timeouts[GRE_CT_UNREPLIED], READ_ONCE(net_gre->timeouts[GRE_CT_UNREPLIED]));
-+	WRITE_ONCE(timeouts[GRE_CT_REPLIED], READ_ONCE(net_gre->timeouts[GRE_CT_REPLIED]));
- 
- 	if (tb[CTA_TIMEOUT_GRE_UNREPLIED]) {
--		timeouts[GRE_CT_UNREPLIED] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_GRE_UNREPLIED])) * HZ;
-+		WRITE_ONCE(timeouts[GRE_CT_UNREPLIED],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_GRE_UNREPLIED])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_GRE_REPLIED]) {
--		timeouts[GRE_CT_REPLIED] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_GRE_REPLIED])) * HZ;
-+		WRITE_ONCE(timeouts[GRE_CT_REPLIED],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_GRE_REPLIED])) * HZ);
- 	}
- 	return 0;
- }
-@@ -338,9 +338,9 @@ gre_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
- 	const unsigned int *timeouts = data;
- 
- 	if (nla_put_be32(skb, CTA_TIMEOUT_GRE_UNREPLIED,
--			 htonl(timeouts[GRE_CT_UNREPLIED] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[GRE_CT_UNREPLIED]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_GRE_REPLIED,
--			 htonl(timeouts[GRE_CT_REPLIED] / HZ)))
-+			 htonl(READ_ONCE(timeouts[GRE_CT_REPLIED]) / HZ)))
- 		goto nla_put_failure;
- 	return 0;
- 
-diff --git a/net/netfilter/nf_conntrack_proto_icmp.c b/net/netfilter/nf_conntrack_proto_icmp.c
-index 0f6ef0443c6fa..0d8499b54f878 100644
---- a/net/netfilter/nf_conntrack_proto_icmp.c
-+++ b/net/netfilter/nf_conntrack_proto_icmp.c
-@@ -327,11 +327,11 @@ static int icmp_timeout_nlattr_to_obj(struct nlattr *tb[],
- 	if (tb[CTA_TIMEOUT_ICMP_TIMEOUT]) {
- 		if (!timeout)
- 			timeout = &in->timeout;
--		*timeout =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_ICMP_TIMEOUT])) * HZ;
-+		WRITE_ONCE(*timeout,
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_ICMP_TIMEOUT])) * HZ);
- 	} else if (timeout) {
- 		/* Set default ICMP timeout. */
--		*timeout = in->timeout;
-+		WRITE_ONCE(*timeout, READ_ONCE(in->timeout));
- 	}
- 	return 0;
- }
-@@ -341,7 +341,7 @@ icmp_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
+ static struct rps_dev_flow *
+ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+-	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash)
++	    struct rps_dev_flow *rflow, u16 old_cpu, u16 next_cpu, u32 hash)
  {
- 	const unsigned int *timeout = data;
- 
--	if (nla_put_be32(skb, CTA_TIMEOUT_ICMP_TIMEOUT, htonl(*timeout / HZ)))
-+	if (nla_put_be32(skb, CTA_TIMEOUT_ICMP_TIMEOUT, htonl(READ_ONCE(*timeout) / HZ)))
- 		goto nla_put_failure;
- 	return 0;
- 
-diff --git a/net/netfilter/nf_conntrack_proto_icmpv6.c b/net/netfilter/nf_conntrack_proto_icmpv6.c
-index e4eebf13950cb..6ed0f7ba60c3d 100644
---- a/net/netfilter/nf_conntrack_proto_icmpv6.c
-+++ b/net/netfilter/nf_conntrack_proto_icmpv6.c
-@@ -305,11 +305,11 @@ static int icmpv6_timeout_nlattr_to_obj(struct nlattr *tb[],
- 	if (!timeout)
- 		timeout = icmpv6_get_timeouts(net);
- 	if (tb[CTA_TIMEOUT_ICMPV6_TIMEOUT]) {
--		*timeout =
--		    ntohl(nla_get_be32(tb[CTA_TIMEOUT_ICMPV6_TIMEOUT])) * HZ;
-+		WRITE_ONCE(*timeout,
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_ICMPV6_TIMEOUT])) * HZ);
- 	} else {
- 		/* Set default ICMPv6 timeout. */
--		*timeout = in->timeout;
-+		WRITE_ONCE(*timeout, READ_ONCE(in->timeout));
- 	}
- 	return 0;
- }
-@@ -319,7 +319,7 @@ icmpv6_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
- {
- 	const unsigned int *timeout = data;
- 
--	if (nla_put_be32(skb, CTA_TIMEOUT_ICMPV6_TIMEOUT, htonl(*timeout / HZ)))
-+	if (nla_put_be32(skb, CTA_TIMEOUT_ICMPV6_TIMEOUT, htonl(READ_ONCE(*timeout) / HZ)))
- 		goto nla_put_failure;
- 	return 0;
- 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 047bf69113bf9..ea6dd1ef3df89 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -650,16 +650,17 @@ static int sctp_timeout_nlattr_to_obj(struct nlattr *tb[],
- 
- 	/* set default SCTP timeouts. */
- 	for (i=0; i<SCTP_CONNTRACK_MAX; i++)
--		timeouts[i] = sn->timeouts[i];
-+		WRITE_ONCE(timeouts[i], READ_ONCE(sn->timeouts[i]));
- 
- 	/* there's a 1:1 mapping between attributes and protocol states. */
- 	for (i=CTA_TIMEOUT_SCTP_UNSPEC+1; i<CTA_TIMEOUT_SCTP_MAX+1; i++) {
- 		if (tb[i]) {
--			timeouts[i] = ntohl(nla_get_be32(tb[i])) * HZ;
-+			WRITE_ONCE(timeouts[i], ntohl(nla_get_be32(tb[i])) * HZ);
+ 	if (next_cpu < nr_cpu_ids) {
+ 		u32 head;
+@@ -5273,6 +5277,12 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
+ 		    !(dev->features & NETIF_F_NTUPLE))
+ 			goto out;
++
++		if (static_branch_unlikely(&arfs_llc_affinity) &&
++		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
++		    cpus_share_cache(old_cpu, next_cpu))
++			goto out;
++
+ 		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
+ 		if (rxq_index == skb_get_rx_queue(skb))
+ 			goto out;
+@@ -5402,8 +5412,8 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		    (tcpu >= nr_cpu_ids || !cpu_online(tcpu) ||
+ 		     ((int)(READ_ONCE(per_cpu(softnet_data, tcpu).input_queue_head) -
+ 		      rflow->last_qtail)) >= 0)) {
++			rflow = set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, hash);
+ 			tcpu = next_cpu;
+-			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash);
  		}
- 	}
  
--	timeouts[CTA_TIMEOUT_SCTP_UNSPEC] = timeouts[CTA_TIMEOUT_SCTP_CLOSED];
-+	WRITE_ONCE(timeouts[CTA_TIMEOUT_SCTP_UNSPEC],
-+		   READ_ONCE(timeouts[CTA_TIMEOUT_SCTP_CLOSED]));
- 	return 0;
- }
- 
-@@ -670,7 +671,7 @@ sctp_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
- 	int i;
- 
- 	for (i=CTA_TIMEOUT_SCTP_UNSPEC+1; i<CTA_TIMEOUT_SCTP_MAX+1; i++) {
--	        if (nla_put_be32(skb, i, htonl(timeouts[i] / HZ)))
-+		if (nla_put_be32(skb, i, htonl(READ_ONCE(timeouts[i]) / HZ)))
- 			goto nla_put_failure;
- 	}
-         return 0;
-diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-index 0c61a16fca400..e1db372b9e530 100644
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -1523,55 +1523,56 @@ static int tcp_timeout_nlattr_to_obj(struct nlattr *tb[],
- 		timeouts = tn->timeouts;
- 	/* set default TCP timeouts. */
- 	for (i=0; i<TCP_CONNTRACK_TIMEOUT_MAX; i++)
--		timeouts[i] = tn->timeouts[i];
-+		WRITE_ONCE(timeouts[i], READ_ONCE(tn->timeouts[i]));
- 
- 	if (tb[CTA_TIMEOUT_TCP_SYN_SENT]) {
--		timeouts[TCP_CONNTRACK_SYN_SENT] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_SENT]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_SYN_SENT],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_SENT])) * HZ);
- 	}
- 
- 	if (tb[CTA_TIMEOUT_TCP_SYN_RECV]) {
--		timeouts[TCP_CONNTRACK_SYN_RECV] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_RECV]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_SYN_RECV],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_RECV])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_ESTABLISHED]) {
--		timeouts[TCP_CONNTRACK_ESTABLISHED] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_ESTABLISHED]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_ESTABLISHED],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_ESTABLISHED])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_FIN_WAIT]) {
--		timeouts[TCP_CONNTRACK_FIN_WAIT] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_FIN_WAIT]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_FIN_WAIT],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_FIN_WAIT])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_CLOSE_WAIT]) {
--		timeouts[TCP_CONNTRACK_CLOSE_WAIT] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_CLOSE_WAIT]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_CLOSE_WAIT],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_CLOSE_WAIT])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_LAST_ACK]) {
--		timeouts[TCP_CONNTRACK_LAST_ACK] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_LAST_ACK]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_LAST_ACK],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_LAST_ACK])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_TIME_WAIT]) {
--		timeouts[TCP_CONNTRACK_TIME_WAIT] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_TIME_WAIT]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_TIME_WAIT],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_TIME_WAIT])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_CLOSE]) {
--		timeouts[TCP_CONNTRACK_CLOSE] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_CLOSE]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_CLOSE],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_CLOSE])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_SYN_SENT2]) {
--		timeouts[TCP_CONNTRACK_SYN_SENT2] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_SENT2]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_SYN_SENT2],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_SYN_SENT2])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_RETRANS]) {
--		timeouts[TCP_CONNTRACK_RETRANS] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_RETRANS]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_RETRANS],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_RETRANS])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_TCP_UNACK]) {
--		timeouts[TCP_CONNTRACK_UNACK] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_UNACK]))*HZ;
-+		WRITE_ONCE(timeouts[TCP_CONNTRACK_UNACK],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_TCP_UNACK])) * HZ);
- 	}
- 
--	timeouts[CTA_TIMEOUT_TCP_UNSPEC] = timeouts[CTA_TIMEOUT_TCP_SYN_SENT];
-+	WRITE_ONCE(timeouts[CTA_TIMEOUT_TCP_UNSPEC],
-+		   READ_ONCE(timeouts[CTA_TIMEOUT_TCP_SYN_SENT]));
- 	return 0;
- }
- 
-@@ -1581,27 +1582,27 @@ tcp_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
- 	const unsigned int *timeouts = data;
- 
- 	if (nla_put_be32(skb, CTA_TIMEOUT_TCP_SYN_SENT,
--			htonl(timeouts[TCP_CONNTRACK_SYN_SENT] / HZ)) ||
-+			htonl(READ_ONCE(timeouts[TCP_CONNTRACK_SYN_SENT]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_SYN_RECV,
--			 htonl(timeouts[TCP_CONNTRACK_SYN_RECV] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_SYN_RECV]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_ESTABLISHED,
--			 htonl(timeouts[TCP_CONNTRACK_ESTABLISHED] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_ESTABLISHED]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_FIN_WAIT,
--			 htonl(timeouts[TCP_CONNTRACK_FIN_WAIT] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_FIN_WAIT]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_CLOSE_WAIT,
--			 htonl(timeouts[TCP_CONNTRACK_CLOSE_WAIT] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_CLOSE_WAIT]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_LAST_ACK,
--			 htonl(timeouts[TCP_CONNTRACK_LAST_ACK] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_LAST_ACK]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_TIME_WAIT,
--			 htonl(timeouts[TCP_CONNTRACK_TIME_WAIT] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_TIME_WAIT]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_CLOSE,
--			 htonl(timeouts[TCP_CONNTRACK_CLOSE] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_CLOSE]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_SYN_SENT2,
--			 htonl(timeouts[TCP_CONNTRACK_SYN_SENT2] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_SYN_SENT2]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_RETRANS,
--			 htonl(timeouts[TCP_CONNTRACK_RETRANS] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_RETRANS]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_TCP_UNACK,
--			 htonl(timeouts[TCP_CONNTRACK_UNACK] / HZ)))
-+			 htonl(READ_ONCE(timeouts[TCP_CONNTRACK_UNACK]) / HZ)))
- 		goto nla_put_failure;
- 	return 0;
- 
-diff --git a/net/netfilter/nf_conntrack_proto_udp.c b/net/netfilter/nf_conntrack_proto_udp.c
-index 99eedaa2b1183..777b21da3bcff 100644
---- a/net/netfilter/nf_conntrack_proto_udp.c
-+++ b/net/netfilter/nf_conntrack_proto_udp.c
-@@ -155,16 +155,16 @@ static int udp_timeout_nlattr_to_obj(struct nlattr *tb[],
- 		timeouts = un->timeouts;
- 
- 	/* set default timeouts for UDP. */
--	timeouts[UDP_CT_UNREPLIED] = un->timeouts[UDP_CT_UNREPLIED];
--	timeouts[UDP_CT_REPLIED] = un->timeouts[UDP_CT_REPLIED];
-+	WRITE_ONCE(timeouts[UDP_CT_UNREPLIED], READ_ONCE(un->timeouts[UDP_CT_UNREPLIED]));
-+	WRITE_ONCE(timeouts[UDP_CT_REPLIED], READ_ONCE(un->timeouts[UDP_CT_REPLIED]));
- 
- 	if (tb[CTA_TIMEOUT_UDP_UNREPLIED]) {
--		timeouts[UDP_CT_UNREPLIED] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_UDP_UNREPLIED])) * HZ;
-+		WRITE_ONCE(timeouts[UDP_CT_UNREPLIED],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_UDP_UNREPLIED])) * HZ);
- 	}
- 	if (tb[CTA_TIMEOUT_UDP_REPLIED]) {
--		timeouts[UDP_CT_REPLIED] =
--			ntohl(nla_get_be32(tb[CTA_TIMEOUT_UDP_REPLIED])) * HZ;
-+		WRITE_ONCE(timeouts[UDP_CT_REPLIED],
-+			   ntohl(nla_get_be32(tb[CTA_TIMEOUT_UDP_REPLIED])) * HZ);
- 	}
- 	return 0;
- }
-@@ -175,9 +175,9 @@ udp_timeout_obj_to_nlattr(struct sk_buff *skb, const void *data)
- 	const unsigned int *timeouts = data;
- 
- 	if (nla_put_be32(skb, CTA_TIMEOUT_UDP_UNREPLIED,
--			 htonl(timeouts[UDP_CT_UNREPLIED] / HZ)) ||
-+			 htonl(READ_ONCE(timeouts[UDP_CT_UNREPLIED]) / HZ)) ||
- 	    nla_put_be32(skb, CTA_TIMEOUT_UDP_REPLIED,
--			 htonl(timeouts[UDP_CT_REPLIED] / HZ)))
-+			 htonl(READ_ONCE(timeouts[UDP_CT_REPLIED]) / HZ)))
- 		goto nla_put_failure;
- 	return 0;
- 
+ 		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 9226b96f2e89..64ae4c07f1b1 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -562,6 +562,15 @@ static struct ctl_table net_core_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= rps_sock_flow_sysctl
+ 	},
++#ifdef CONFIG_RFS_ACCEL
++	{
++		.procname	= "arfs_llc_affinity",
++		.data		= &arfs_llc_affinity.key,
++		.maxlen		= sizeof(arfs_llc_affinity.key),
++		.mode		= 0644,
++		.proc_handler	= proc_do_static_key
++	},
++#endif
+ #endif
+ #ifdef CONFIG_NET_FLOW_LIMIT
+ 	{
 -- 
-2.43.0
+2.52.0
 
