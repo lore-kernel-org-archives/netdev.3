@@ -1,61 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794257501;
-	b=WMmu5HTRGnuq0o5crnLzeLZlTq5HlRmxtxkD3Unpks5H21eUai0ijvAVSwn9p8z/3dCV
-	 1KaEwJP2MonGE7ehv78v3dpkdCbq4Hv1sNCRM0pF+bZglTBy7R1kWgh43TkL8tTFsqx4F
-	 CGL8wtkI/jeYCOUXahSmuU8qaeabyNef9IxZXWPJdD/8H/2sJ/xIrR7L9DHjchqeR/MQO
-	 oDH50IEu8JyBUV4QbXuDZVlMS5jhqgPXCgkGrl0honX3vKZBZGKDtFR8h8mZz//sjkkiR
-	 HLebCZXshHpxhNE3vmDtAax9v7m1BemXFI9QPfDvw40jYQ/Xb7okUGGgD8CXYOs0oFA==
+	t=1794257999;
+	b=UFWF3+rKsaRQDaE2eZStHCT9Im10AO00Yl9ezyUGUwjFphthxNWwGKsKEfv1dFxiMHOm
+	 6rrZGnyy0QJc+Ic0psk3DCfpUKbSFxCEtTeRExgfVtNKcNJW5bYu5fqE87FszZ7me+FIw
+	 UY2EZdT765WoeAp5bqwYoM4D1HjT8dcRpH0EMoEkggFQDV2gKiEkk+T3uf/m3BeuAEGB8
+	 ofUvOlVh9jRrsLUkTvQgD+XZMvQKR+x28MgX1JjSPNGGSa0xg+qANebhf8zb/PeQXOMDA
+	 j4Hl6yjHF/rSEvD1JOiV8OtztrCn3DldBKdTBqlFGOSF4TYCYTW5Nsd7fbb2/Zo9QgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794257501;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=L4zXAJ3yW63ryN+gw48d3K33QL1qFIrjuPfLxKdzEno=;
-	b=AwTnbNLj5BufHrXKI+Hpm/E4+73nnJQsL1EziAbtagMPF6WErqEiYfm8uKJKWibae1nD
-	 Lgr51p5v1ZnV/feHNeHN85TqhoYQ1aFkANrHNw2nN60El/mDwWbQA1LBdVlPJfakf6snU
-	 wjsh8LeRNVXw6GshlE3n+tlhNWXcarEnrZfgrMNWees/gzCZ5jT99TNfvzU/WumbljJ+a
-	 jewVL+qTJoAsty7QbAyxF8teCAOo70C2jIWjlWEFsJlQcamrX4WXjUuiAFs6ijL1XsVLQ
-	 f53GyMX2PGe0yg2ziCCkeoV6C835R2WccuUAYQcIADMQSV6yf19PQV86GVYuH9roAAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794257999;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=oF/gfE30dMXc9IOZaLbHhTubdGZyqdfEDEejk3ikt7o=;
+	b=kJXPAonKzaP9keYmDRsIiEO33c2G2xBS30hFxuPdLMjMEgWOuebs5Nx3QRgnrNvfczU6
+	 z/BtS0nnOCMEPnd5z5CwmcMX8SeNI4AZUnZl4QV+hBjSi1rTXQv2BNysgKXZXaF5zYFOx
+	 /ooKJrLrkKWogu9/+gyH41PiIRPIii3byUY12ApgHOxrbLoCm+JsX+q0xQVE4apgwZiMl
+	 ExLePWujnBo/1f3UpneH0hStnUsifJJMH1uJCa4ZcubpYQKW0yPYfAHHGKadtWv6opnUz
+	 ZtGwzjhsznncyJudz1+t3Iw3gV5Wx37MlhH92Tdr+GiYRQRhrrOxYGOSKI66ADokGuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="cCMY3r/L";
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wqJGJpMn;
+	arc=none smtp.remote-ip=74.125.82.42
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA1606A330;
-	Mon,  9 Nov 2026 20:51:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9BA1606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66A3606A32A
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 20:59:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C66A3606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=cCMY3r/L
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=L4zXAJ3yW63ryN+gw48d3K33QL1qFIrjuPfLxKdzEno=; b=cCMY3r/Le/jeF9GaTJ6+A6bLat
-	RUMBthYmwyWH0IZYfmRIS9BnzmriPlNHa1FWkbKhTMXgRWv4CP/HuzDZsf/ikGmNO4F+kp6OIv/K8
-	6/sTVUB7uSCMMvCZhuGzb7sSDbCxLZ0iMwHg3kCXy32QSaEr6V5i6aBstuQTcBuTUROM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xQWKh-00FL2i-Uo; Mon, 09 Nov 2026 21:51:15 +0100
-Date: Mon, 9 Nov 2026 21:51:15 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/3] r8169: add PTP hardware clock support
- for RTL8127a
-Message-ID: <e4b6394d-11b2-4244-85f2-5c4aa89ed463@lunn.ch>
-References: <20261109023022.770-1-javen_xu@realsil.com.cn>
- <20261109023022.770-3-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wqJGJpMn
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1438d9363fbso808906c88.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 12:59:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794257998; x=1794862798; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oF/gfE30dMXc9IOZaLbHhTubdGZyqdfEDEejk3ikt7o=;
+        b=wqJGJpMnhHbFB1KeugM8sLLQe3eyRfs/1VXtFeZMS9zvrNmCSfULmk97THATUvYt+U
+         jLui5yYlepy5SQpn/W70aNTi2L25r78cw/Cpn8COofRJKoOsman46lACtGeTOH7bVc+y
+         H1YcLtMr1wRNZMfs87zT1SmPup+h3b15CT4Zdcmd+FsaPwEWDz7cYBZOK/qNKx0yFviW
+         Y69Lowe1nXtfa/u+DKbtDGqTgMrznHx7UlIefA2jPgPMxsbkKan1dJrFArEOC0Vn+QIR
+         u6rctY6j0G4Ex2T75B6GVtU5T4oPxQ5YgnZ42J73GxxeJOWfJtS4WuBGJtxbChXkz9IT
+         sPfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794257998; x=1794862798;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oF/gfE30dMXc9IOZaLbHhTubdGZyqdfEDEejk3ikt7o=;
+        b=HzpjB7LT8YHIE6wVFJoEUyMJfeaFs7S73vsXJh6rT6FtERAosRxrPOEng4ubnmzlYg
+         DvlI39eBlNtvRKl3QNdrBTktEQ9fzYtGhVgNRVC3Ke8zujelNO+yQ3FUu5JWtEce+Zdd
+         izGRE6pZXF+wYsTQ3Rkl3Bpa5VQSYapboWkFt3XiKEXQXW+hNJz1FVRykxqGh+vPoUcf
+         VSwjVAXxZC30IjaLCPbMtZaDTdrEO4iUx4eqfnOJYZRBcBboiC7PaDZrQHuJvotGWp5t
+         SvWHtpmH5Ebd/PD+6DQ5mX6kbj+5w8FGDxyv1PndZgwisFVKk3cCESY90u9OB0874O6j
+         nLTg==
+X-Forwarded-Encrypted: i=1; AL+hErEDAZkZgWLn6KkyAjE9QSef540e12OrYkXmAXKNHzHlqxX0P0dcGHf3drzjzB7b3iO8wXzY1Is=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9x+HmBuAoQTE039fdkjeOZNrOsmaxkuKMmpi3efFCSh49r9lK5
+	uZU1JiYymVMpRu9sKBGx4X1pZnYmRXczrdeTXrAyhr/f46jwIIzgm5UP
+X-Gm-Gg: AYBFou2KeFy59HL8cONcV82Xs2gJo9oUI7KPzQprozyQYev9PnJNjwwUwz413lk7fid
+	P66tOSvPPvdL5fTrLCthoszHs7u8/MWOboxT/zMpiTtm8SynQ3S576GIAiW7N1aCgR7Uqh/pzWi
+	vEMuW5mLVYyVbb2dJgM4tTiPzCKOzAGAmIO8/1HYzo10EksPhIvgxJugoScnnKhlFrMM1FcJ4Yp
+	1qBWtFwQRB38MK2AhNkpTmRp53/mOa7PeVaKEIn3eeScUlTwtIeYcVnx/QwfZ/8iBF9OmEiljao
+	Yj9W083Tum1Uk9W6cq2VyEFkDaARwagJ0zm/S5+1ePbwsG7E6VcMqZrIfLyW7nvFaFGLOq3ZKks
+	V394/q64fJJa58jsBQoZacgaJzEhGqj/zNF8N2f4tTXb/fW9JbraABods5bRW1oteCqRi8RVwuc
+	7687qHwFZAnPDXu9cYM7NH8/raLheVtZCeqEPBpSIEJZILOTlnlu8dKGbyozWsEBAAL0C4u9CXm
+	d5hogyGnmvVStV3er+VeVjcif1YJrntr2S2An9gRj5XV7Az7hPr5l8PDPTkuE62+U8n/30apDP1
+	UJnsK+LEtRdrZjMzfEi3UxczmncYUVQwB/Ypt1z3CZk3zlzie4FnpDU5DpikNs83FQ1Rk8IH21C
+	Ku+JyP8Q7TjpO219XO+WvmdoXWK7/4P+hjL14
+X-Received: by 2002:a05:7022:ea47:20b0:184:40db:6bb9 with SMTP id a92af1059eb24-1b3b5e1676fmr903499c88.8.1794257997532;
+        Mon, 09 Nov 2026 12:59:57 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1151:15:c24:4ad9:f660:1904? ([2620:10d:c090:500::5:5de1])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b4b90csm1235562c88.14.2026.11.09.12.59.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 12:59:57 -0800 (PST)
+Message-ID: <5357120d-51e3-487b-9611-6c1800348bc7@gmail.com>
+Date: Mon, 9 Nov 2026 12:59:56 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,18 +93,213 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109023022.770-3-javen_xu@realsil.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] selftests: drv-net: hds: always restore
+ tcp-data-split to auto
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20261106031208.465456-2-dimitri.daskalakis1@gmail.com>
+ <179424805285.994134.5389999211002090081@kernel.org>
+Content-Language: en-US
+From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+In-Reply-To: <179424805285.994134.5389999211002090081@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 09, 2026 at 10:30:21AM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+On 11/9/26 1:14 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
 > 
-> RTL8127a has a PTP clock in its PHY, accessed through the PHY OCP
-> interface. Register it as a PTP hardware clock supporting adjfine,
-> adjtime, gettimex64 and settime64.
+> Critical: 0 · High: 1 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The new guard in _hds_reset()
+>   (tools/testing/selftests/drivers/net/hds.py:68) is `if 'tcp-data-…
+> - [Medium] _hds_reset() now writes tcp-data-split='unknown' whenever the
+>   attribute was in the baseline snapshot.
+> - [Low] The commit message does not match the code or the tree: (1) The
+>   subject says 'always restore tcp-data-split to auto', but _hds_reset()…
+> 
+> --
+> 
+> selftests: drv-net: hds: always restore tcp-data-split to auto
+> 
+> This changes _hds_reset() in the hds.py selftest so that tcp-data-split is
+> reset to "unknown" whenever the attribute was in the saved ring snapshot.
+> Before, the reset only happened when the reported value had changed. The
+> reason given is that bnxt and mlx5 report the current HDS state rather than
+> the configured value.
+> 
+>> selftests: drv-net: hds: always restore tcp-data-split to auto
+> 
+> [Severity: Low]
+> The subject says "always", but the reset only runs when the baseline
+> snapshot contained the attribute:
+> 
+>     if 'tcp-data-split' in rings:
+> 
+> The body's "when it was reported" qualifier is the case that leaves mlx5
+> unrestored in this tree (see the _hds_reset() comment below).
+> 
 
-What PHY is this? Why is the PHY driver not exporting the clock, like
-other PHY drivers do.
+The last sentence of the patch phrases it clearly,
+"Always reset tcp-data-split to "unknown" when it was reported". If this
+needs a re-spin I could amend the commit message, but this issue does not
+justify a re-spin.
 
-	Andrew
+>> mlx5 will report enabled or disabled based on whether
+>> SHAMPO is active, and an explicit "disabled" keeps HW-GRO off.
+> 
+> Is this describing a pending mlx5 change? In this tree
+> mlx5e_ethtool_get_ringparam() never sets kernel_param->tcp_data_split. That
+> means this selftest change seems to depend on a driver patch that isn't
+> named.
+> 
+> Could the dependency be stated, so the patches get ordered correctly?
+
+This is a pending change, I've held off on sending v4 until this series
+gets merged
+https://lore.kernel.org/all/20261009025137.2631215-1-dimitri.daskalakis1@gmail.com/
+
+> 
+> Should this also have a Fixes: tag? The conditional reset came in with:
+> 
+> Fixes: ee3ae27721fb ("selftests: drv-net: hds: restore hds settings")
+> 
+> and the leak already happens without the mlx5 change. On netdevsim,
+> nsim_get_ringparam() reports ENABLED when hds_config is UNKNOWN:
+> 
+> drivers/net/netdevsim/ethtool.c:nsim_get_ringparam() {
+>     ...
+> 	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_UNKNOWN)
+> 		kernel_ring->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
+>     ...
+> }
+> 
+> So after set_hds_enable, the old code sees cur == rings and skips the
+> reset, which leaves hds_config at ENABLED. bnxt_get_ringparam() reports the
+> BNXT_FLAG_AGG_RINGS state, so the same leak happens there whenever TPA keeps
+> the agg rings on.
+> 
+
+This selftest behavior is not severe enough to warrant a Fixes tag IMO. I
+was unaware that netdevsim had this issue, but called out the existing bnxt
+behavior.
+
+>> diff --git a/tools/testing/selftests/drivers/net/hds.py b/tools/testing/selftests/drivers/net/hds.py
+>> index 606e26d75951f..af34dc9ce7499 100755
+>> --- a/tools/testing/selftests/drivers/net/hds.py
+>> +++ b/tools/testing/selftests/drivers/net/hds.py
+>> @@ -65,13 +65,13 @@ def _hds_reset(cfg, netnl, rings) -> None:
+>>      cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+>>  
+>>      arg = {'header': {'dev-index': cfg.ifindex}}
+>> -    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
+>> +    if 'tcp-data-split' in rings:
+> 
+> [Severity: High]
+> Does this new check skip the restore in the exact mlx5 case the commit
+> message describes?
+> 
+> In this tree mlx5e_ethtool_get_ringparam() never sets
+> kernel_param->tcp_data_split. So rings_prepare_data() reports
+> dev->cfg->hds_config, which defaults to ETHTOOL_TCP_DATA_SPLIT_UNKNOWN (0).
+> rings_fill_reply() only emits the attribute when the value is non-zero:
+> 
+> net/ethtool/rings.c:rings_fill_reply() {
+>     ...
+> 	    (kr->tcp_data_split &&
+> 	     (nla_put_u8(skb, ETHTOOL_A_RINGS_TCP_DATA_SPLIT,
+>     ...
+> }
+> 
+> That leaves the snapshot taken in _defer_reset_hds() without a
+> 'tcp-data-split' key. mlx5 does report 'hds-thresh', so _defer_reset_hds()
+> still registers _hds_reset().
+> 
+> After set_hds_disable, hds_config is DISABLED. In the cleanup the new check
+> is false and hds-thresh is unchanged. len(arg) is 1, so rings_set is never
+> called and the device stays explicitly "disabled".
+> 
+> After set_hds_enable it stays "enabled", and mlx5e_fix_features() then
+> forces HW-GRO on:
+> 
+> 	if (cfg && cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+> 	    !(features & NETIF_F_GRO_HW)) {
+> 
+> The old condition did send "unknown" in this case, since cur 'disabled'
+> differs from rings None. It then hit a KeyError on cur['tcp-data-split'].
+> With this patch the restore is silently skipped instead.
+> 
+> The fix only works if mlx5 always reports tcp-data-split, and that driver
+> change isn't in this tree. Would something like this cover both cases?
+> 
+>     if 'tcp-data-split' in rings or 'tcp-data-split' in cur:
+> 
+> The later comparison would also use .get() on both sides, so that a
+> missing attribute means "unknown".
+> 
+
+The reset is currently failing with a KeyError since mlx5 does not report
+the attribute. I will send v4 of a patch to report tcp-data-split in mlx5
+after this series is merged. Without this change, mlx5 will get left with
+tcp-data-split disabled, and the HW-GRO tests can end up failing.
+
+>>          # Try to reset to "unknown" first, we don't know if the setting
+>>          # was the default or user chose it. Default seems more likely.
+>>          arg['tcp-data-split'] = "unknown"
+>>          netnl.rings_set(arg)
+>>          cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+>> -        if cur['tcp-data-split'] == rings['tcp-data-split']:
+>> +        if cur.get('tcp-data-split') == rings['tcp-data-split']:
+>>              del arg['tcp-data-split']
+> 
+> [Severity: Medium]
+> Can this replace an explicit tcp-data-split=enabled, set before the test
+> ran, with UNKNOWN?
+> 
+> With the new check, "unknown" is written for every test that calls
+> _defer_reset_hds(). That includes the tests that only touch hds-thresh
+> (set_hds_thresh_random, set_hds_thresh_zero, set_hds_thresh_max,
+> set_hds_thresh_gt) and tests that skip early. Whether to keep "unknown" is
+> then decided by comparing reported values, which can match even when the
+> configured values differ.
+> 
+> On netdevsim, nsim_get_ringparam() reports ENABLED for both UNKNOWN and an
+> explicit ENABLED. Say hds_config was ENABLED before the test:
+> 
+>   - ethnl_set_rings() commits hds_config = UNKNOWN
+>   - the re-read returns 'enabled', which matches the snapshot
+>   - the del runs, and the device is left at UNKNOWN
+> 
+> On bnxt, writing UNKNOWN clears the flag in bnxt_set_ringparam():
+> 
+> 		else if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_UNKNOWN)
+> 			bp->flags &= ~BNXT_FLAG_HDS;
+> 
+> If TPA keeps the agg rings active, bnxt_get_ringparam() still reports
+> ENABLED, so the explicit HDS setting is dropped.
+> 
+> Before this patch, cur == rings in those tests, so tcp-data-split was never
+> written. Memory-provider binding requires an explicit ENABLED:
+> 
+> net/core/netdev_rx_queue.c:
+> 	if (dev->cfg->hds_config != ETHTOOL_TCP_DATA_SPLIT_ENABLED) {
+> 		NL_SET_ERR_MSG(extack, "tcp-data-split is disabled");
+> 		return -EINVAL;
+> 
+> After running hds.py, a devmem or io_uring zcrx setup that had explicitly
+> enabled HDS would no longer be able to bind.
+> 
+
+This only matters if a user explicitly changes tcp-data-split before the
+test. Resetting to "unknown" is the common behavior across selftests
+that modify tcp-data-split. It's not possible to get this fully right from
+the information netlink gives us, since GET reports state, not config.
