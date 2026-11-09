@@ -1,61 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794228106;
-	b=LBQGRorICQAnkQnTmBhgfnVMbYrlWF0h4Al+2aCiGP/NHJF/6FNuqMnyQP74mkSdYH1C
-	 MNrOd+ou1kylGJdUHTWSn6XZtwoSFJCWFMLWgV2UZLAx31vO9Bs9xa7p0FfHV1tQS48aa
-	 dSHnccI6Opt4sPTr4kC1gVPOhKQSytVni5CCyC6iq+dUqQ/P3NT5jPkN7MWe9biWNfzKH
-	 jKhb7XMKRRDXveiiWJVFCHguXhFXK0TFgqYkWwNvQUEmkDT1qghwSRKkaE4ZU8vyb7IiR
-	 SnXAYUgQXwwHfwT4Gm3SgOhaGrST23uYF5X2HxuyYTqZ4DEgrvxYCyYGTEVQkI2EZ2A==
+	t=1794228128;
+	b=fiHpbmDPueerFOcWtdSwysYIPU/0jg508NzeW/mxrv6EiXNFFrs04sEmjKE9vISQlYEN
+	 uRq4XhF8ICRH3yV2uPT9QHlceobu4OxRdNmekd4Y2IweQVCJ0BCbjR/7yExxDKgHrS3Uj
+	 06+te6BPlihYVz6Hc93ze7sUw5FlKUGi9E3ATcmoYSKojmgx6goiSbOE78ZvXmFBIZHMO
+	 qMvya0Xn/+cEcDr23+gGqiMFbgmB8I2H7wDbEElDR+tn7h1aJz24dqnoN0UmOYojAA4MD
+	 Tjc4rIPGNhuGUZH6oEGif40B5+4BjRLfBzZvBmwW+YtSP3/mfT7lEPbjdZU/4+P5rxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228106;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	b=iwSmLZd3eryJggufFZABxJ1y7Vsh4ec3ZelB/w6WFp36YRsHDociyq7KwIBVGw18HFVM
-	 Uc7XduMpMVy1hg1N52PSzM1Y6sl1MPDgTeWI9ofuwZs3YxD71bDPzivme/qQ1FHL1Hrkb
-	 JX+d5SaX6QZOwPcUULq+Nj3ApumeJDuAQYjsEctW6gBdM8ZkuSr4+UuX/dKsm6DY1lTN6
-	 nbH98Hq464KWZau8z3e5G9svTFrsTZ41klw+y0BmowesXJ9bigN4Uv3XK2svpRf/DHR2y
-	 H67AODfZlelsOyOzORccHi5JIaUJvBmtXAZxjPFL71VLWb59riGqkeGdFtutQQbLHWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794228128;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=DrzURu2hMkOt5wV2KmTwMR0vxjunx4pWdrNMPocltYw=;
+	b=CwOFvcEUhTlHVwGo4A6X4bDNG7WbSWgrf0uW/7QuJDD+601QGI09IJANLRLCkxOKBHpu
+	 Pbh2gwgg/bx3g2iTJfopVmOKusWdzhA2hoGbs/bao690iVB2ByqMPZFnCJM5ogFFZxfeA
+	 1ZVZgP66IEqHFuUpDOAzFQ5wJXLe+k4zF3DmMbNXWDJGvsGlc1z9fn1riTConfnj0Fv24
+	 4rdUbSTXRifv4gGMnj2UBVlbtBVua7qjjnWceMAXB6cnZQvtSNnDl6VdhuyJwCazx2tSB
+	 Nri/K5nmx51pHQw1dmnHhP97xI/zPdyIYnLLyoOH+Q9v/Cn1v7RhtAqZM4SDHsWG1kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a1MA8UE1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ubC5f0Ba;
+	arc=none smtp.remote-ip=95.215.58.111
+Received: from mta1.migadu.com (out-111.mta1.migadu.com [95.215.58.111])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EF3606A322
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10218606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:42:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10218606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a1MA8UE1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDCB1F0089F;
-	Mon,  9 Nov 2026 12:41:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794228106;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a1MA8UE1uyeitbKUDenR4u+xMiv7H3KpRNmPKJj3+WKiy47ijle2+T99N0ISBeG02
-	 qh5D+ndj4nlbnL6b1bCKiKh2l8m4xc1ADsrxEl9TkFwIplTC9FzcfGjil4UsDOnZ6M
-	 AE7i98s9ZgVJVQXqI7h9dIckGNcGr7bFiBI+0QYocf+/lncGWkTilhK7IJ6Dkb67XQ
-	 0ke4YeNvIwP2reuQ1cr0ENq9Z+mL+BtUGOq/NclbdGkVvj7u8A04QjJTF+yBk42TG3
-	 JzpBbSwfR7bFaTJxmay8xrV0HNPqUVSVoUg0lIR8fEEzTylKCiamb7Qw5uHAlINELR
-	 bLcxkiwSoEiSw==
-From: netdev-bot+sinfo@kernel.org
-To: Avi Weiss <thnkslprpt@gmail.com>
-Cc: Arthur Kiyanovski <akiyano@amazon.com>,
- David Arinzon <darinzon@amazon.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Subject: 
- Re: [PATCH net] net: ena: avoid double-counting TX DMA mappings on failure
-Date: Mon, 09 Nov 2026 12:41:45 +0000
-Message-ID: <179422810524.488859.17451781840821419367@kernel.org>
-In-Reply-To: <20261109123934.824610-2-thnkslprpt@gmail.com>
-References: <20261109123934.824610-2-thnkslprpt@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ubC5f0Ba
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=5+J6yPtxySZ9py737kBbAvcdrUciAK2XoEQbohvbbN4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794228125; v=1; x=1794832925;
+ b=ubC5f0Ba7K0KgYyw2dR1OSX4NfJo3kenDI+A3eDJizPU/xr99NLqWFD/65ubtDkY7axsZmvc
+ FOu1go96elsXEbA9Hy2zjeSyuM38cBBSvv4VcvfYIrRC8GYvyJ7o3yj9aqeWMN3gua+MWA4AEun
+ Sr0xeI9IUKd70XALh507MeoA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 35c9b1b43f44f0ab;
+	Mon, 09 Nov 2026 12:42:05 +0000
+X-Mizu-Trace-ID: 35c9b1b43f44f0ab
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <15481cbc-79d9-420d-821d-6ad559dc246d@linux.dev>
+Date: Mon, 9 Nov 2026 12:42:05 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +58,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 net-next 2/3] netdevsim: Implement basic ptp support
+To: Maciek Machnikowski <maciek@machnikowski.net>, netdev@vger.kernel.org
+Cc: kuba@kernel.org, richardcochran@gmail.com, milena.olech@intel.com,
+ willemdebruijn.kernel@gmail.com, andrew@lunn.ch, horms@kernel.org,
+ almasrymina@google.com
+References: <20261108201503.85000-1-maciek@machnikowski.net>
+ <20261108201503.85000-3-maciek@machnikowski.net>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20261108201503.85000-3-maciek@machnikowski.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On 08/11/2026 20:15, Maciek Machnikowski wrote:
+> Add support for virtual timestamping inside the netdevsim driver.
+> The implementation uses two attached ptp_mock clocks, reads the timestamps
+> of the ones attached either to the netdevsim or its peer and returns
+> timestamps using standard timestamps APIs.
+> 
+> This implementation enables running ptp4l on netdevsim adapters and
+> introduces a new ptp selftest.
+> 
+> skb_hwtstamps(skb)->hwtstamp aliases with skb_shinfo(skb)->xsk_meta in
+> the skb_shared_info union. For an AF_XDP generic-xmit skb forwarded to
+> a peer with RX timestamping enabled, writing the RX timestamp into
+> that union turns xsk_meta.tx_timestamp into a PHC-derived value that
+> the AF_XDP destructor (xsk_destruct_skb()) later dereferences as a
+> pointer, corrupting memory. Orphan the skb before writing the RX
+> timestamp so any pending destructor (e.g. the AF_XDP completion) runs
+> against the original, unmodified union contents first.
+> 
+> Co-developed-by: Milena Olech <milena.olech@intel.com>
+> Signed-off-by: Milena Olech <milena.olech@intel.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
