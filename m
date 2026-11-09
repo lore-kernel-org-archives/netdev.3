@@ -1,55 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794265910;
-	b=PN4D65pYeUUgA1L8GIFE/J8Es9caNjczqzFgRoyBxcF1tec3P0xbOX2Cy0xJPPOpmYiw
-	 F5UvgDZ0EcS8Qv9gb8ge3MD5ArDQLRVp9ObF8SZVescfw40VE4cpYpZlQtHEQ2ozR1CVZ
-	 eIVg85J3fRVfZbl73x2OVUYwGFrMh1p86unOaxwD5nLrmHg1MqauKzQQO94W7FJUM5i5l
-	 C9yKDY/ienFPZhMqTDwR6bttsYewDNmsB1+sJjGu9DoOj/cAZa9emDOixcd5FV74LHODP
-	 AfMplL2mRnW2pkgNu/yZNiw0FjUcpwtfehaeQra3tTecLEOJyKsyZhO5kiFYflTBO/A==
+	t=1794266105;
+	b=s6F3bizRxWR7o8uJHxn9OQnduqbteTbbYrrT2PtGTbxk96D43vDpkH/WXb1O4+kuXxyf
+	 BfBKBrgVQW2ffiGyyD5xdsJVVIpnFzBZZC4/MhCNoqeq/z+/pPYY36UzyxjlfV2/1hCU/
+	 Lr9DeqmzpBlrWr3gCC022BuMvTPdnTyECyndfoFElcymK3fSaTQmpq3J6U6knkCpOi5SQ
+	 A7SKHAYvfpQ6uLUO1FTNe80fTBdzOJ4Rcea33oOjV8l9nMNWzl8IDi7LDU6JiQEcUyCH3
+	 6oILbUJg7YGc3EmSw0CWVznhQX3g23Z5wqteJr23ysNQYA4N3Fvl033iZzCMSYWD1Lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794265910;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266105;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=k18szSYQhlE4aJnlADBUPKKWtFMZkAyMkiF2QCd2YiU=;
-	b=L9NVZd8/EfzFXQW8tqhVVi7JGM99s6jpTb0Y6DpesdTcGo8XzH6RDtEARLAZwxcll964
-	 vnjEkamzGy6+ALu90sNHIzlP+NJbzBq7t5n72NS9IJbKlEePK5mUGRETXg/lpoykt6LbC
-	 ZxrmgfegxuzUUUlPk5LoPdLjRo/dVWkKG7mpbi7Hcrxqustmqw2x5gKxwQCq9MJs/ak6d
-	 3qKphG+bbhW7puXYgnBsRPBvJ+D7eBf4yOnb+rjbMuVPExd+Lc7KwLhr74INKEwYzSeYj
-	 fYxKtVUq4GInHYl45pfvizB3W6E2R+DhYiSP5UsuBj+j+yDhxeYq2+qi8RPfbVfSoYg==
+	bh=g1aJkuxd0Ur2EcndcqLJniNjLXwxT7nR+FRcSV89gas=;
+	b=md1HXnnCeleT2IFynkBeM8jvIooe8TVDVa11Ip6Hp/st5OTZQcoIddRnp5VPAusC4g2O
+	 5rviKVCpBGBvEC5MU7po1ylxuPUMKxiWj388kI8gLKuPKDnK9h31h50mzuobhnrRqr7nx
+	 MhssNYvxeZULm1s5ldIJ7XuTwdMJU/qgqRjd2qkcQ9LvZkhMjSU29MJkfZ3pRYR9N7Lw3
+	 3VcmitJVc50yZUBGIXUIAHQJAy3HQAmDWu9tVd8JvvEIYjNGicUWJzo8D5iJClYplBB5x
+	 9O25pApH7D8vONmS45wXQNTW+BZzUEbUfIGBqlIcH3sm+q1/mSkWwVd1L9VqZWmD7kQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWOiJ+cq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H2805Djz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068C5606A31C;
-	Mon,  9 Nov 2026 23:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75281606A326
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWOiJ+cq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F081F0089F;
-	Mon,  9 Nov 2026 23:11:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H2805Djz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA12F1F0089F;
+	Mon,  9 Nov 2026 23:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794265909;
-	bh=k18szSYQhlE4aJnlADBUPKKWtFMZkAyMkiF2QCd2YiU=;
+	s=k20260515; t=1794266104;
+	bh=g1aJkuxd0Ur2EcndcqLJniNjLXwxT7nR+FRcSV89gas=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aWOiJ+cqKbWE834tmGBR9e7uBdJjpXo8CbM5r56NMo5EAiqbFiw2uHzSozNLrCHxu
-	 W1kJv0zbY53ArEIqpB30d6+GxQCt27X3s3oaYo6AYXk6qRfVDY8yEf5C6nTWh/VX7K
-	 0ru2t25IqoxL6qce0h6eMBRtI1kHerQu865yII+jWXwm3R3erJV4SlNuJtXsXEPR/7
-	 h92PB1DWramZEeP7jqkQEvZcNhql8aqVl4PwSCR/IA4w4oEkZXJy3Ascu6P1B6bcKB
-	 qvQ4XtLr5ry3wPrbpXpyVTKNAJep8SlWlXl1iagf8AH3edFc9annnPuf0OL2/RDDZl
-	 JWrcPddaKgSQQ==
-Subject: Re: [PATCH] nfc: digital: check response length in ATR_RES completion
+	b=H2805DjznEqUoyd+zayJbfxuYKRIo4ucQvrxIIiG8S0NTI4VsMpXI1hnK9zaqQqE9
+	 ceVVNvN+DY1mRPIwtWbfpmB71aRuo7+cDfFRJqzUiV0IQp6UHZxePKuLshXmRnD9O9
+	 Ha13JLCbnWERz1Fh/iyGH+Cb8Lf/S0xjv5QOw+7Z7V/Yjy0ieWpYCzEhr4vqI3P+44
+	 9Z3q4tSzdorDQpXxj9Ptv5S5ilgEvuOWs/Q4zvDrlrcK4V8UdG7Mxk9nsv+B3xzA18
+	 6xg03CFmHRV9Af8gJlOAPqFPUCiawmG7VSZSyOZ+FIbT+bcndA3XCUVxvZNcNvC/F+
+	 plpP3Wfd9bYtA==
+Subject:
+ Re: [PATCH net-next 1/4] ipv6: fix transport header of forwarded GSO packets
 From: netdev-bot+sashiko@kernel.org
-To: NoahWeinberger2003@proton.me
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 23:11:48 +0000
-Message-ID: <179426590897.994134.16082340443849254625@kernel.org>
-In-Reply-To: <LyOKCC733hNrBd6iivknR2vV1eGIrrd5XvWeTzpSKHjz0eb_mC3OYTVGmYuGYz7fEdR5vVu2V76xphxku0BWFg5TSVkzd7KD43KN7SqWpWw=@proton.me>
-References: <LyOKCC733hNrBd6iivknR2vV1eGIrrd5XvWeTzpSKHjz0eb_mC3OYTVGmYuGYz7fEdR5vVu2V76xphxku0BWFg5TSVkzd7KD43KN7SqWpWw=@proton.me>
-X-sashiko-severity: Medium
+To: tactii@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, andrea.mayer@uniroma2.it, justin.iurman@gmail.com,
+ aahringo@redhat.com, willemb@google.com, alexander.duyck@gmail.com
+Date: Mon, 09 Nov 2026 23:15:03 +0000
+Message-ID: <179426610333.994134.2644370589086394410@kernel.org>
+In-Reply-To: <20261105201309.3182307-2-tactii@gmail.com>
+References: <20261105201309.3182307-2-tactii@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -62,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -73,157 +76,194 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit has no Signed-off-by line.
-- [Low] There is no Fixes: tag.
-- [Low] The new short-frame exits in digital_tg_send_atr_res_complete()
-  (net/nfc/digital_dep.c lines 1477-1489) call digital_poll_next_tech()…
-- [Low] The lines added at the end of digital_tg_send_atr_res_complete()
-  in net/nfc/digital_dep.c (lines 1498-1500: `return;`, `exit:`,…
+- [High] ipv6: unvalidated csum_start in ip6_forward() moves
+  transport_header backwards
+- [Medium] In ip6_forward() (net/ipv6/ip6_output.c), the new else-branch
+  sets transport_header to whatever ipv6_skip_exthdr() returns.
+- [Low] The commit fixes a user-visible bug: forwarded IPv6 GSO flows
+  with destination-options or routing headers stall on Packet Too Big at…
 
 --
 
-nfc: digital: check response length in ATR_RES completion
+ipv6: fix transport header of forwarded GSO packets
 
-This patch adds resp->len checks to digital_tg_send_atr_res_complete()
-before it reads resp->data[0] and resp->data[offset]. A short frame now
-calls digital_poll_next_tech() and frees the skb. Before, it was passed
-to the PSL_REQ or DEP_REQ handler.
+This patch resets transport_header in ip6_forward() for GSO packets before
+the MTU check. CHECKSUM_PARTIAL packets without encapsulation take it from
+csum_start, and other packets with extension headers walk the chain with
+ipv6_skip_exthdr(). This keeps skb_gso_validate_network_len() from reading
+a bogus TCP header length, which caused Packet Too Big stalls and
+SKB_BAD_GSO drops.
 
-> Hello,
+> skb_gso_validate_network_len() then reads a bogus TCP header length. An
+> overestimate makes ip6_forward() answer with Packet Too Big at the
+> current MTU, and the flow stalls. Since commit 7fb4c1967011 ("net: pull
+> headers in qdisc_pkt_len_segs_init()"), a bogus doff below 5 also makes
+> __dev_queue_xmit() drop the packet as SKB_BAD_GSO.
 
 [ ... ]
 
-> This was found during an assisted (AI-supported) static source review of
-> mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); every code path cited below was re-verified by the
-> reporter against that tree. The patch below has NOT been compiled and has
-> NOT been runtime tested, and no reproducer was produced - the triggering
-> conditions are described above instead. Please treat this as a report for
-> verification rather than a battle-tested fix.
->
-> Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
+> Signed-off-by: Matt Vollrath <tactii@gmail.com>
+
+[Severity: Low]
+Should this patch carry a Fixes: tag and a stable Cc? The only pointer to
+where the bug came from, fe6cc55f3a9a ("net: ip, ipv6: handle gso skbs in
+forwarding path"), is in the notes below the --- separator, and git am
+strips those.
+
+Stable trees that pick up 7fb4c1967011 would start dropping these
+forwarded packets as SKB_BAD_GSO. Nothing in the commit points the stable
+tooling at this fix.
+
+Would a trailer like this in the commit body work, along with a mention of
+7fb4c1967011?
+
+Fixes: fe6cc55f3a9a ("net: ip, ipv6: handle gso skbs in forwarding path")
+
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index 25fe0ba98b1a6..60ac56afbd06b 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -662,6 +662,23 @@ int ip6_forward(struct sk_buff *skb)
+>  
+>  	__IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTFORWDATAGRAMS);
+>  
+> +	if (skb_is_gso(skb)) {
+> +		if (skb->ip_summed == CHECKSUM_PARTIAL && !skb->encapsulation) {
+> +			skb_set_transport_header(skb,
+> +						 skb_checksum_start_offset(skb));
+> +		} else if (ipv6_ext_hdr(hdr->nexthdr)) {
+> +			u8 nexthdr = hdr->nexthdr;
+> +			__be16 frag_off;
+> +			int thoff;
+> +
+> +			thoff = ipv6_skip_exthdr(skb, skb_network_offset(skb) +
+> +						 sizeof(*hdr), &nexthdr,
+> +						 &frag_off);
+> +			if (thoff >= 0)
+> +				skb_set_transport_header(skb, thoff);
+
+[Severity: High]
+Can the CHECKSUM_PARTIAL branch move transport_header backwards, into
+the fixed IPv6 header or even in front of skb->data?
+
+csum_start is taken as is here. Nothing checks that
+skb_checksum_start_offset(skb) is at least skb_network_offset(skb) +
+sizeof(*hdr). Before this patch, the forwarding path kept the
+transport_header set by ip6_rcv_core(), which never pointed inside the
+fixed header.
+
+For packets injected through tun/tap, macvtap or af_packet with
+VIRTIO_NET_HDR_F_NEEDS_CSUM, csum_start comes from userspace. The check
+in __virtio_net_hdr_to_skb() runs while skb->data still points at the
+Ethernet header:
+
+include/linux/virtio_net.h:__virtio_net_hdr_to_skb() {
+    ...
+		if (!skb_partial_csum_set(skb, start, off))
+			return -EINVAL;
+		if (skb_transport_offset(skb) < nh_min_len)
+			return -EINVAL;
+    ...
+}
+
+nh_min_len is sizeof(struct ipv6hdr) for VIRTIO_NET_HDR_GSO_TCPV6, so a
+csum_start of 40 is accepted. After eth_type_trans() pulls the 14 byte
+Ethernet header, that is offset 26 from the network header, in the
+middle of the source address. A routed TCPV6 GSO packet built this way
+takes this branch and gets transport_header set inside the IPv6
+header. From there:
+
+ip6_forward()
+  ip6_pkt_too_big()
+    skb_gso_validate_network_len()
+      skb_gso_network_seglen()
+        skb_gso_transport_seglen()
+          thlen = tcp_hdrlen(skb);
+
+This reads doff out of the address bytes. The network header length
+comes out 14 bytes short and thlen is garbage, so the MTU checks here
+and in ip6_finish_output_gso() use the wrong segment length.
+qdisc_pkt_len_segs_init() later reads the same bogus doff.
+
+It gets worse if the offset goes negative. bpf_prog_run_generic_xdp()
+calls __skb_pull() after bpf_xdp_adjust_head() without adjusting
+csum_start, so ip_summed can stay CHECKSUM_PARTIAL with csum_start
+behind skb->data. A negative transport offset wraps the unsigned
+arithmetic in skb_gso_network_seglen(), which lets the packet past the
+MTU checks. Then, in qdisc_pkt_len_segs_init():
+
+net/core/dev.c:qdisc_pkt_len_segs_init() {
+    ...
+		hdr_len = skb_transport_offset(skb);
+    ...
+		th = (const struct tcphdr *)(skb->data + hdr_len);
+    ...
+}
+
+hdr_len is an unsigned int. With a transport offset between -20 and -1
+the length passed to pskb_may_pull() wraps to a small value that
+passes, and th ends up about 4 GiB past skb->data on 64-bit. Reading
+th->doff there would oops.
+
+Would it be enough to use csum_start only when
+skb_checksum_start_offset(skb) >= skb_network_offset(skb) +
+sizeof(*hdr), and fall back to the ipv6_skip_exthdr() walk otherwise?
 
 [Severity: Medium]
+Can this make tcp_hdrlen() read past the linear data of the skb?
 
-There is no Signed-off-by line here. The Reported-by tag does not count
-as the DCO sign-off that Documentation/process/submitting-patches.rst
-requires, so the patch can't be applied as it is.
+For each extension header, ipv6_skip_exthdr() reads only the 2-byte
+generic header through skb_header_pointer(). After the last one it adds
+hdrlen without a bounds check, and for destination or routing options
+hdrlen can be up to 2048 bytes:
 
-Could this be resent with a Signed-off-by?
-
-Parts of the body read like a bug report rather than a changelog. These
-include "Hello,", the "Affected version/commit" line, the note about the
-AI-assisted review, and the statement that the patch has not been compiled
-or tested.
-
-Could that text go below the --- line so it stays out of git history?
-Could the patch also be build-tested before it is resent?
-
-> Longstanding code.
-
-[Severity: Low]
-
-Should this have a Fixes: tag? This patch fixes a read past skb->len that
-a remote initiator can trigger. The unchecked reads of resp->data[0] and
-resp->data[offset] seem to date back to this commit:
-
-Fixes: 1c7a4c24fbfd ("NFC Digital: Add target NFC-DEP support")
-
-> diff --git a/net/nfc/digital_dep.c b/net/nfc/digital_dep.c
-> index 968547c306a5d..b9b04db1c17e8 100644
-> --- a/net/nfc/digital_dep.c
-> +++ b/net/nfc/digital_dep.c
-> @@ -1474,16 +1474,30 @@ static void digital_tg_send_atr_res_complete(struct nfc_digital_dev *ddev,
->  		return;
->  	}
->  
-> +	if (resp->len < 1) {
-> +		digital_poll_next_tech(ddev);
-> +		goto exit;
-> +	}
-> +
->  	offset = 2;
->  	if (resp->data[0] == DIGITAL_NFC_DEP_NFCA_SOD_SB)
->  		offset++;
->  
-> +	if (resp->len < offset + 1) {
-> +		digital_poll_next_tech(ddev);
-> +		goto exit;
-> +	}
-
-[Severity: Low]
-
-Is digital_poll_next_tech() the intended way to handle these short frames?
-
-When this completion runs, digital_tg_recv_atr_req() has already sent the
-ATR_RES, cleared poll_tech_count and called nfc_tm_activated():
-
-net/nfc/digital_dep.c:digital_tg_recv_atr_req() {
+net/ipv6/exthdrs_core.c:ipv6_skip_exthdr() {
     ...
-	rc = digital_tg_send_atr_res(ddev, atr_req);
-	if (rc)
-		goto exit;
-    ...
-	poll_tech_count = ddev->poll_tech_count;
-	ddev->poll_tech_count = 0;
-
-	rc = nfc_tm_activated(ddev->nfc_dev, NFC_PROTO_NFC_DEP_MASK,
-			      NFC_COMM_PASSIVE, atr_req->gb, gb_len);
+		nexthdr = hp->nexthdr;
+		start += hdrlen;
     ...
 }
 
-So here, digital_poll_next_tech() only switches the RF off. It returns
-without scheduling poll_work:
+So thoff can point into the page frags or past skb->len. The only check
+here is thoff >= 0.
 
-net/nfc/digital_core.c:digital_poll_next_tech() {
-	digital_switch_rf(ddev, 0);
+Right after this, the MTU check reads the TCP header directly at the new
+offset:
 
-	mutex_lock(&ddev->poll_lock);
+ip6_forward()
+  ip6_pkt_too_big()
+    skb_gso_validate_network_len()
+      skb_gso_network_seglen()
+        skb_gso_transport_seglen()
+          thlen = tcp_hdrlen(skb);
 
-	if (!ddev->poll_tech_count) {
-		mutex_unlock(&ddev->poll_lock);
-		return;
-	}
-    ...
-}
+tcp_hdrlen() reads tcp_hdr(skb)->doff with no pskb_may_pull() and no
+skb_header_pointer().
 
-nfc_tm_deactivated() is not called on this path either.
+The else branch runs for TCP GSO skbs that are neither CHECKSUM_PARTIAL
+nor encapsulated. Two examples are fraglist GRO (CHECKSUM_UNNECESSARY) and
+virtio_net_hdr GSO packets without NEEDS_CSUM.
 
-Before this patch, a short frame went to digital_tg_recv_dep_req() or
-digital_tg_recv_psl_req(). It failed in skb_check_crc() or
-digital_skb_pull_dep_sod() and was simply freed. On that path,
-digital_tg_recv_dep_req() also cleared chaining_skb, saved_skb and
-atn_count. Neither handler switches the RF off, and neither queues a new
-receive.
+On ingress, only the extension header chain that was actually parsed gets
+linearized. Suppose the chain is rewritten before ip6_forward(), for
+example by nftables payload mangling in PREROUTING or by a tc BPF
+store_bytes. Then the new thoff can land far past skb_headlen(), possibly
+past skb->end. Both of those need CAP_NET_ADMIN, which an unprivileged
+user namespace has inside its own netns.
 
-After this patch, a frame of 3 bytes or less turns the RF off. A longer
-malformed frame, such as one with a bad CRC or the wrong command, is still
-dropped with the RF left on. The commit message doesn't mention this
-change.
+Before this patch, transport_header on this path pointed just past the
+fixed header, or past a hop-by-hop header that ipv6_parse_hopopts() had
+already pulled. Either way the read stayed inside the linear data.
 
-Would it be simpler to keep the old behaviour, either by passing short
-frames to digital_tg_recv_dep_req(), which already checks the length, or
-by just calling kfree_skb(resp)?
+Would a pskb_may_pull(skb, thoff + sizeof(struct tcphdr)) check for TCP
+GSO cover this, keeping the old transport_header if the pull fails?
 
+> +		}
+> +	}
 > +
->  	ddev->atn_count = 0;
->  
->  	if (resp->data[offset] == DIGITAL_CMD_PSL_REQ)
->  		digital_tg_recv_psl_req(ddev, arg, resp);
->  	else
->  		digital_tg_recv_dep_req(ddev, arg, resp);
-> +
-> +return;
-> +exit:
-> +kfree_skb(resp);
-
-[Severity: Low]
-
-This isn't a bug, but the return; and kfree_skb(resp); lines have no tab
-indentation. checkpatch.pl will flag them.
-
->  }
->  
->  static int digital_tg_send_atr_res(struct nfc_digital_dev *ddev,
+>  	mtu = ip6_dst_mtu_maybe_forward(dst, true);
+>  	if (mtu < IPV6_MIN_MTU)
+>  		mtu = IPV6_MIN_MTU;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/LyOKCC733hNrBd6iivknR2vV1eGIrrd5XvWeTzpSKHjz0eb_mC3OYTVGmYuGYz7fEdR5vVu2V76xphxku0BWFg5TSVkzd7KD43KN7SqWpWw%3D%40proton.me
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105201309.3182307-1-tactii%40gmail.com
