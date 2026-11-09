@@ -1,88 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794231961;
-	b=Rf0GXU50lNAA0degP4eXZZsWpHm0onGA6NkqP5Xd5QXqPz1rmINOkwlasDN6LS1tLOZJ
-	 tjHw/FyI9xniWc07SfqObbTXhtFt6bOAHA/AYoaMGi6NL5NqnkMuPiG2smVkHPVZG9BiJ
-	 vBnpvNyqVsvSRsP7nAU07punrcDN4ayZkldHfubig5yf/Nn2oTty3tSiI4g+lTbWI7X5m
-	 +neR36wv3pcIa7B+tDN0bQmBxKBupa3FmV5H8Y/BpEHw5k0LGcYkwWg9nFPtvqpPcZxF7
-	 ypSiCioFZ/E7k2/3Eys34nLM3WQ19CEeMVTqrwp/vGV0c9yCJjq8oaJk3UGDGV09GgQ==
+	t=1794232124;
+	b=g7Ahi3ocjPw5TAX/PCJVa7+hgJxDhsPELLs1DszmBp6hrHt5+16NibDGQfZnakg4Gk8K
+	 PYWSxGJ7ZQ1FkVPmrrM5jEcc5DrpULIg0adepYVm31ndyv7NQGXFAls2JWlrmtY2n6OKN
+	 efyuCeG0PKR2xap0WCL5T0B8AJheb5VcHjp6R/pbzaeZLDwbBdYK+2U9G5hCKCRtKLsdp
+	 vRdCD/qfAiqGl01F7AAicLhUQbEaLFUfSCIwB05oXb9711/4Er/DK1bnNIdcGlil09QNV
+	 RcjbrTUsjZPZ1DgQYnI7wYx6XVinea9uYbhS+3fcTOPTPn3xuBAY8v1LP7dFvEezbWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794231961;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=2IttIcKgL0vKNhvKWk69gg2kUvNLqT6VNsboFSUg3kk=;
-	b=aB8NikLz073EmY2uD/si/fa6LHzymTtJoh4Ifu9joLLjm/YLmJDTZp1JAtXCklxC/3OS
-	 q/0XQol0ZQ6WJuQ28rb0Ts13HOzQ/l4qBzuWjm1Q/miP8jFl5+H9YSPtu1o+qSjxCjTl2
-	 E4RHLlN+1jJ3hKbbl0T4jDpbO8fzM9ibJUrEFVBM74ClFRQY4Qg0qvgnI3XZlK8yCLjXB
-	 uopHh45tX00nJgyK9L9uwpqwBanZRZIcwBnE7H8qNx15HClWh4/LFPGXM9siQND/DHH0E
-	 /BpNRDeMpxtZb8ZMwpjhnItsjFLXqvF368e3Rxu9bV1x3EuUId2ggdJRuhcDufA8YMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794232124;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=nYjIdwe6nVNUiJwfrKE7/ebvVRpi8vNOI6DfZKYgfPE=;
+	b=pXGk/ReZIyGsZzzFXdCYENHPW/arzQx+4+qxerScMMV0yjTNZHpu6So5q4/2+WhBT8Qo
+	 rNu7xD0P/BpyRmGByUtqFaOOlqThtOGy/EAoMbSTWDWIoXUYUEgPO8Q09ncXkI15B6o3s
+	 oY7XW4A/ZA1aL/Tb2Nbs3CVSYWv81usSrhABvrGk6GOos7+2z9oUQETY/r2/5KYE0D63s
+	 selwwZNbHPnTcmpSPNSeqUz3HjRPTV0vMPCKeBBH1NJVMi53T5/ciCaf1GT1ZnhQ6e2Pl
+	 GFCK4qA1fjyPUzOU5aXcZageE7467bqiqKAmMxbT5Sy/s/TcVdEZjZBjX9w98HefjAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=vvkpw5nC;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U+RRBDq1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18D7606D806;
-	Mon,  9 Nov 2026 13:46:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C18D7606D806
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9732F606A331;
+	Mon,  9 Nov 2026 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=vvkpw5nC
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2IttIcKgL0vKNhvKWk69gg2kUvNLqT6VNsboFSUg3kk=; b=vvkpw5nCLudUCzq8Vifb2DqkGx
-	kGLbNSsg5SNGbUF/8eDZn3RbuZVaYN8yuFMCNN2LAuq766lfIQCtDmX4spECzkj0HnP+c+OqQ9JDg
-	3SbUlhnWq+AuSrWJRvoa+pF8GnEv8+SzHYUyhyd9DTaD3r5wNDWeQrzF8ZFAL3DUt7bs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xQPgl-00FGEi-MR; Mon, 09 Nov 2026 14:45:35 +0100
-Date: Mon, 9 Nov 2026 14:45:35 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 10/19] net: phy: Use the compatibility driver
- attachment API
-Message-ID: <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
-References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
- <20261109-device-trust-core-v2-10-3b12d9a9f861@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U+RRBDq1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424651F0089F;
+	Mon,  9 Nov 2026 13:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794232124;
+	bh=nYjIdwe6nVNUiJwfrKE7/ebvVRpi8vNOI6DfZKYgfPE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=U+RRBDq1BB7ys6OzHXrJyADjRINtHDgyfy1yrDb/B8T68gpn8MYKosyWrlZS531VX
+	 02AjzpZ53fL9iO7lH9QkXNTfgl3fV9qqSVm5jHKoryO88788nQ360jXl8hxgh36had
+	 H4v7RsQdzVWlykG0i51gK1vfiiI1VtYqd3of/dXFGwFOKXhoUMTGSnhjhr1S2FQkVE
+	 Br1hYDWuGel7Wu/3sYqgKOi8X9IkhdmLH7vqFp/1NsOsOY/DnZ/5uQ1GCfXzAi3rmO
+	 +lxnfVJqdudQ4nkvKZELpS113kqd4z6RFaPsdfkb/wPPHbkrE4oMJXEsbtRdJDONBm
+	 ZH/+CP1yL8XdQ==
+Subject:
+ Re: [PATCH net-next 1/2] sysfs: facilitate creating an empty directory
+From: netdev-bot+sashiko@kernel.org
+To: hkallweit1@gmail.com
+Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
+ kuba@kernel.org, horms@kernel.org, gregkh@linuxfoundation.org,
+ rafael@kernel.org, dakr@kernel.org, johan@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, driver-core@lists.linux.dev
+Date: Mon, 09 Nov 2026 13:48:42 +0000
+Message-ID: <179423212274.994134.387871053470036049@kernel.org>
+In-Reply-To: <340683d8-83f5-415b-b54c-b2916817f860@gmail.com>
+References: <340683d8-83f5-415b-b54c-b2916817f860@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,25 +64,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109-device-trust-core-v2-10-3b12d9a9f861@nvidia.com>
 
-> @@ -1956,11 +1958,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  	}
->  	phydev->drv_owner = drv_owner;
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] This patch silently reverses the semantics that commit
+  a91845b9a872 ("sysfs: Skip empty folders creation") set up on purpose…
+- [Low] The kernel-doc for struct attribute_group in
+  include/linux/sysfs.h (lines 101-103) still says "@bin_attrs: ...…
+- [Low] The comment and debug message on the rewritten check in
+  internal_create_group() (fs/sysfs/group.c:144-147) are misleading.
+
+--
+
+sysfs: facilitate creating an empty directory
+
+This patch changes the early return in internal_create_group() so that it
+only skips groups with no name and no attrs or bin_attrs. A named group with
+both arrays NULL now gets an empty sysfs directory. Callers no longer need an
+attribute list that holds only the sentinel entry.
+
+> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+> index 4e1e4f18a1669..031cb6f36b5b0 100644
+> --- a/fs/sysfs/group.c
+> +++ b/fs/sysfs/group.c
+> @@ -141,9 +141,10 @@ static int internal_create_group(struct kobject *kobj, int update,
+>  	if (unlikely(update && !kobj->sd))
+>  		return -EINVAL;
 >  
-> -	if (phydev->is_genphy_driven) {
-> -		err = d->driver->probe(d);
-> -		if (err >= 0)
-> -			err = device_bind_driver(d);
-> -
-> +	if (bind_genphy) {
-> +		err = device_driver_attach_full(drv, d);
-> +		if (err == -EBUSY)
-> +			irq = phydev->irq;
+> -	if (!grp->attrs && !grp->bin_attrs) {
+> -		pr_debug("sysfs: (bin_)attrs not set by subsystem for group: %s/%s, skipping\n",
+> -			 kobj->name, grp->name ?: "");
+> +	/* If name is set w/o attributes, create an empty directory */
+> +	if (!grp->name && !grp->attrs && !grp->bin_attrs) {
 
-Just looking at this, it is not clear where the EBUSY can from? And
-why set irq to phydev->irq?
+[Severity: Medium]
+This reverses behaviour that commit a91845b9a872 ("sysfs: Skip empty
+folders creation") added on purpose. Was that intended?
 
-    Andrew
+That commit's message covers a group "with a name and without .[bin_]attrs
+members". It says sysfs should "just skip the attribute group creation". It
+also calls an empty sysfs folder "disturbing".
+
+After this change, a named group with attrs and bin_attrs both NULL always
+gets a directory. That applies to sysfs_create_group(), sysfs_create_groups()
+and device_add_group(). It also applies to sysfs_update_group() when the
+directory doesn't exist yet.
+
+__first_visible() returns 0 when both arrays are NULL. So mode becomes
+S_IRWXU | S_IRUGO | S_IXUGO and the code reaches:
+
+    kn = kernfs_create_dir_ns(kobj->sd, grp->name, mode,
+                              uid, gid, kobj, NULL);
+    if (IS_ERR(kn)) {
+        if (PTR_ERR(kn) == -EEXIST)
+            sysfs_warn_dup(kobj->sd, grp->name);
+        return PTR_ERR(kn);
+    }
+
+A name clash used to return 0 quietly. It now returns -EEXIST and calls
+sysfs_warn_dup(), and internal_create_groups() then rolls back the whole
+group list.
+
+Some named groups are declared with NULL attrs and filled in at run time.
+One example is x86_pmu_format_group in arch/x86/events/core.c:
+
+    static struct attribute_group x86_pmu_format_group __ro_after_init = {
+        .name = "format",
+        .attrs = NULL,
+    };
+
+I couldn't find an in-tree user that registers such a group with the arrays
+still NULL. The x86 pmu, s390 PAI, amdgpu, i915, arm-cci and
+nvmem_populate_sysfs_cells() users all fill the arrays or bail out first.
+Even so, the commit message describes this only as changing one check.
+
+Could the commit message reference a91845b9a872 and explain why skipping
+empty named groups is no longer wanted? Could it also say whether existing
+named groups with runtime-filled attrs were checked?
+
+[Severity: Low]
+A named group with both arrays NULL is now a supported construct. However,
+the kernel-doc for struct attribute_group in include/linux/sysfs.h still
+says:
+
+ * @attrs:	Pointer to NULL terminated list of attributes.
+ * @bin_attrs:	Pointer to NULL terminated list of binary attributes.
+ *		Either attrs or bin_attrs or both must be provided.
+
+Should this be updated too? It could say that a named group with neither
+array creates an empty directory, and only an unnamed one is skipped.
+
+The follow-up change for wireless_group in net/core/net-sysfs.c depends on
+this, and it doesn't touch the header either.
+
+> +		pr_debug("sysfs: (bin_)attrs not set by subsystem for group: %s, skipping\n",
+> +			 kobj->name);
+
+[Severity: Low]
+This isn't a bug, but the new comment describes what happens when the
+condition is false. The block below it actually skips an unnamed group that
+has no attributes.
+
+The pr_debug() also prints kobj->name after "for group:". grp->name is
+always NULL in this branch, so the printed value is the kobject name, not a
+group name. The old "%s/%s" format kept the two separate.
+
+There is also a typo in the commit message: "sentinal" should be "sentinel".
+
+>  		return 0;
+>  	}
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0a0a7987-abb2-49c8-bc16-3938233ae9c5%40gmail.com
