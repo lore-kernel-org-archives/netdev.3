@@ -1,93 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794222521;
-	b=mWGdjGJ4teiF1AMUrsvYqWquhlhF5Owa4Mk6HhNpOKzSthILPyC0kfBVO7SlGc10rAU0
-	 /jd5QxuisdMscqkAnLIzfGnhy0MGSSOTwxQlCgZ8mVoLzA0Xrbh2VCxbXy4TpVr0FBybr
-	 qQCcnd/cR7fLBZXK8HuUfMQSWWOPnVJyNlkLGSvcIdtzN608KVgT/14hve049xVJJoZJD
-	 FNFE06fCLRp5SVsNORKOwwKx/zR+OhmVo1XLub2+/muVahw0y8Pi0Qjlgy/sj8u7u/+y3
-	 2PVuNMeEaWGejw19WViMvY92fS7QcXpmZEYGSx48gT0PDdMG/v55x9Bh2IGu/8VSd0Q==
+	t=1794222550;
+	b=UlGF9RDbp1y8t0UXDhXaG0/2l4oFl7NlYbrUZC15LBDQ233mGkguhUka2j/6IRE2Y9fJ
+	 gEZXZEPKjgMOHJMABS53TePcvrqEv8TBRS2sHF/2GLUZb7u2n0mb+0qmuC4oMWjkFsyvf
+	 YEjigSIVbEUDnpz0TibLMS7tPoZdb+tUl1WI1tnc6EFYmkqPbXUUOyuYvGHEU9BrAceyz
+	 hzjj6R8utgyVMAes+za6e8CS6+tKb2d+gkOq25c8xxsFyTfn/bAx4ia8/c4UUFRP/cpdz
+	 YrVHKX8vPyU1XlhmkRLZZsByfpiyYqLi9ybe/gWiPI+MtdrIySRT/reErEmKtHCmLng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794222521;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition;
-	bh=fhrbprpRX7kmNcPax1vb/kgVqKCIO1cjiHj/rfQnbXw=;
-	b=A6H7R/x2M5k0NZoD3jz/31PQism4qS6nPx6TTMjcNtdK2pHBVDx/W3uoDpHIMOuY3BA1
-	 UEw7di2Tro78JoZ3AOpjxm9XF2hqzK563UkmbV0Sp2QPhVVvBaYGMU1bKHqMekRpkGbvL
-	 3olN26TSF6UxhV4wZ366cYzIKCxM5cqZNhOTkHKMWM/esDckimxrpsKoqRTNNvT9QofmQ
-	 wAmT2l5fSQhJoBxXB7Yi5BTFkUQsMCKETzqC9+vXWtPkFCc/fbL+/73vkHsii3amYpctA
-	 NUO/pTk+/xRxOCKDXLFKuouNJqY0l5iFzgh6+UsFbr4cYxFwfRlHQHiVocogizGTvUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794222550;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=aOodfZE2ZLJT1tt72r9gxw/AwWXvUZO8hln4ZVGINpQ=;
+	b=oT0VGJEMgO1aFCQLT6MLOiHyhF6UBm11OSy8vzU80uXx/Pe54d7L3henjQOvXQwmBiAN
+	 VPaATArF1LTnNV7aTXzPeHUl91yoUS0eHuNS2xzpX4DI2p9ANS3yQUwXAvVX4aiCak5wO
+	 4S11r+xYP+IbIeVlPcEIZHGjTPQXZnMDiqOYasYGydQyx5JFCbtx7KgvpiEUvuaEy8WXo
+	 uIiIUr1w12wFjQDMOoPnjVG5XHt66uB0/8PihePUhE2k/m6c5pJ4f3G3nzOFQP+WMvyf1
+	 UhomxrrtddeKWcTjQbu29latTY2DC1NWXl8GvOGFi/JA5jvucjxXQryYK9sLE4WmJjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fm9inbie;
-	arc=none smtp.remote-ip=209.85.216.43
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVy7dpEW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16DF606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 11:08:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C16DF606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C20606A322;
+	Mon,  9 Nov 2026 11:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fm9inbie
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3adac5b29ebso385107a91.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 03:08:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794222520; x=1794827320; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fhrbprpRX7kmNcPax1vb/kgVqKCIO1cjiHj/rfQnbXw=;
-        b=fm9inbieny49XZbJnYsWzHOb+OWu8/+F21+6PWlDPyDwBUHncJY7UlyJDlXoR+If7y
-         BOc684IJvxABsdSZryMhgCqkZJVKVpGHmXOWORLeTU/1WASVXq9DAMJxjMARurZgFprf
-         Z+BG8MafRO9It0vRYzkx8wOnQ5eOmn/+ZGTMtFqAypBOi9dozMbMktZfcvUGCMi5F6R+
-         DRhDqgiB+LIypBzWzTtWmhVAmwb1YpYmkQ+Y1bZ1JZlMSVfWII3ROeJXXbSS+zW7eaE7
-         wxfDRgUmrImKZMtJra8s1qW6c6lGKlo3qhDmStTp1lBqONuh870FPPGUABOSP8mqaFnE
-         WpGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794222520; x=1794827320;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fhrbprpRX7kmNcPax1vb/kgVqKCIO1cjiHj/rfQnbXw=;
-        b=dJZg6tYV9uffUyg8LxOhcy0a5B0ggUt0vDZYsiwmwjY8ye/G+FLixi5RAnzNqykJ6O
-         qzZovjOTHuodgHss8xGxuKLoe8Dt+cxaE+b+P9tQ1D/S0wQ9OmOhl8jQD7wcyYku7p9j
-         xRY1P83JVDez6YnDLHFqO9btSHan0wEItAf1ZhXJnWmwulf61147vCJ8GtGmEHr3AQxY
-         bjQrmm+DwmXZmHK0V+AK7QKdIRdMYl2f7B+EXPT9Lh3mrSDq/W5Zs5bkk1gyOGNIjBah
-         nFBI5oeMG5x1jruGqAghV6Ee1sz/vXoxWifvzBXykdveq7WDfx6A9COkiTw8AK3fnWW6
-         X5wg==
-X-Gm-Message-State: APuU4Z8yP2drJBjA8HqICHZs3EusFfzrJHUX0EvdMZRmy+MGWeNzn8Ec
-	2rDnuqPLu1WYU4iuHtEDzDPSQN46zXTWb7WD7/E1QD79d0/O7rp0BI2X
-X-Gm-Gg: AYBFou1K3BLtf9JhUG8ttwOXydmrz/CqdT6cHK1sgRgyN4rgmgv+d3WB47tnlQzNblv
-	G1cO0K7z1Hkn1F6iq4MRRVFFecJaIV/n+v1WMy6b7Ege/aLgUKLysh3Cu30AN3f/VQFEFY3fWg+
-	pHpOeJwJv2JKWXhjGHsVxa+nPgbGkP/d7ccq9v/h9N37BcEHRrRRBFcSKdn/Hstq9OXFMsjMEtv
-	vJAQBQM4HjX3c1VXmR8vWHIicKEYw+8Dff9Onk04CGnhd1AoWrtBkOSU8Kf5qYrHZnxYFBnhhjB
-	lDy1UKLijYPLwyVgFBcA88poFq+Sn5dxGeuAfj3vE+VmrMH11rhy+lpSVN/paJ+nTP597lM/1+t
-	yrmxesJgLGgf5vgy1grvEtGVSaPqDQw6+Hv+z/qjKqcdbqEBB3n7tAB29nLyxXsAB6yMQxDUVQP
-	vlYZ2blSVqatZoHhlLUCytj5l5EHZs6jiLsktj7JffRf5lsSNVn94AzT42MjwvzpnuKCyU+eSQ+
-	CYB6we9MlTKJ0Rm1/fOjNVMlB3vP5ykDqi4nUYeTZbnhUKpBA2i6i/WY9ziTGm3QXjhSkv1ycvD
-	51AIsS0MK0geA2xfSNHhSrQAW9h8+z3qxcL9oWsmWaLrYhP19P4aLmXJI+wa/HJOItw+Lw==
-X-Received: by 2002:a17:90b:3e8b:b0:3a7:ab31:2f4f with SMTP id 98e67ed59e1d1-3b12d3556f3mr3600152a91.28.1794222520031;
-        Mon, 09 Nov 2026 03:08:40 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b12790bf20sm6389154a91.12.2026.11.09.03.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 03:08:38 -0800 (PST)
-Date: Mon, 9 Nov 2026 20:08:33 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net] tcp: fix NULL pointer dereference when restarting a Fast
- Open listener
-Message-ID: <avGpsTb2hsGIjSRk@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVy7dpEW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314141F0089F;
+	Mon,  9 Nov 2026 11:09:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794222549;
+	bh=aOodfZE2ZLJT1tt72r9gxw/AwWXvUZO8hln4ZVGINpQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OVy7dpEWlg5/XbJsqYaWzhLgZhXYjImiWD+7BGtQkQS5rpiBB85a1/PQ0PkrxDf5M
+	 wk43LO1COjb2xg+5HPNyr1QkIYNDrIb4eOs7I2Iwq4YwsQMLmMHgC7V6vgkRoLACGI
+	 XWYQ6ahL7CJCsRdAHmQNfr7CCjxQUFxNEKcMeNskzB4OD34KI6XvgWgIHKmydbIRX8
+	 ssM7IQSJdxcajwYHE98J+/58pjYvmhu5SCoPrTsqWhGYHjK4u5Z7GLERW7R5MDTvNp
+	 6EMN6qtTxnTWW04+peDUxv9u1UnMfJDe6DSMt2dITZ31QBgxdt2FcSnef3ArvwiBVi
+	 j3Og+kFrFeKxw==
+Subject:
+ Re: [PATCH] nfc: pn533: validate response length before parsing DEP ATR_RES
+From: netdev-bot+sashiko@kernel.org
+To: hj351016@gmail.com
+Cc: david@ixit.cz, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Mon, 09 Nov 2026 11:09:08 +0000
+Message-ID: <179422254869.994134.11688036324201956954@kernel.org>
+In-Reply-To: <20261105105805.1450120-1-hj351016@gmail.com>
+References: <20261105105805.1450120-1-hj351016@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,116 +62,183 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-When a valid RST is received for a Fast Open child accepted before the
-three-way handshake completes, reqsk_fastopen_remove() adds the
-request_sock to the listener's RST list if the listener is in TCP_LISTEN.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-An application can call shutdown(SHUT_RD) and then listen() on the same
-listener socket. inet_csk_listen_stop() checks rskq_rst_head without
-holding fastopenq.lock. If rskq_rst_head is NULL, it does not acquire the
-lock and therefore does not synchronize with an insertion by
-reqsk_fastopen_remove() after that function has passed the TCP_LISTEN
-check.
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-The subsequent reqsk_queue_alloc() also initializes rskq_rst_head,
-rskq_rst_tail, and qlen in that order without holding the lock. If a
-request_sock is added between the initialization of rskq_rst_head and
-rskq_rst_tail, rskq_rst_head points to the request_sock while
-rskq_rst_tail is NULL.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-When a valid RST is later received for another accepted Fast Open child,
-rskq_rst_head is not NULL, so reqsk_fastopen_remove() attempts to write
-the request_sock pointer to rskq_rst_tail->dl_next while rskq_rst_tail is
-NULL. KASAN reports:
+- [High] The new length check in pn533_poll_dep_complete() and
+  pn533_in_dep_link_up_complete() (drivers/nfc/pn533/pn533.c) runs…
+- [Medium] pn533_activate_target_nfcdep() in drivers/nfc/pn533/pn533.c
+  parses the ATR_RES returned by PN533_CMD_IN_ATR in the same way as the…
+- [Low] The commit message says 'pn533_rf_complete()-style handlers in
+  this file already length-check resp->len before use (e.g. the…
+- [Low] The patch says it fixes an out-of-bounds read whose bytes reach
+  userspace through nfc_targets_found() (netlink), but it has no Fixes:…
 
-  BUG: KASAN: null-ptr-deref in reqsk_fastopen_remove+0x147/0x210
-  Write of size 8 at addr 0000000000000088 by task swapper/3/0
-  ...
-  Call Trace:
-   <IRQ>
-   ...
-   reqsk_fastopen_remove+0x147/0x210
-   tcp_check_req+0xa70/0x1060
-   ...
-   tcp_rcv_state_process+0x1cb/0x2ae0
-   ...
-   tcp_v4_do_rcv+0x1fe/0x740
-   tcp_v4_rcv+0x1744/0x2070
-   ...
-   ip_protocol_deliver_rcu+0x5c/0x280
-   ip_local_deliver_finish+0x171/0x330
-   ip_local_deliver+0x107/0x370
-   ...
-   </IRQ>
+--
 
-To widen the race window, the issue was reproduced after adding
-mdelay(3000) immediately after reqsk_fastopen_remove() checks that the
-listener is in TCP_LISTEN and immediately after reqsk_queue_alloc() sets
-rskq_rst_head to NULL.
+nfc: pn533: validate response length before parsing DEP ATR_RES
 
-Make inet_csk_listen_stop() acquire fastopenq.lock regardless of the
-value of rskq_rst_head and detach the list while holding the lock. If
-reqsk_fastopen_remove() has already passed the TCP_LISTEN check,
-inet_csk_listen_stop() waits until the list insertion completes.
+This patch adds a resp->len < sizeof(*rsp) check to
+pn533_poll_dep_complete() and pn533_in_dep_link_up_complete(). The check
+runs before the InJumpForDEP response is parsed as a struct
+pn533_cmd_jump_dep_response. The goal is to stop reads of the 17-byte
+fixed header from going past the end of a short frame.
 
-Also initialize rskq_rst_head, rskq_rst_tail, and qlen under the same
-lock in reqsk_queue_alloc(). Drop the references to the detached
-request_sock objects after releasing the lock.
+> A valid ATR_RES always carries the full 17-byte fixed header (the
+> general bytes, if present, start at offset 17), so reject any response
+> shorter than sizeof(*rsp) before parsing it. pn533_rf_complete()-style
+> handlers in this file already length-check resp->len before use (e.g.
+> the ATR_REQ_GB_OFFSET check in pn533_init_target_complete()).
 
-Fixes: 0536fcc039a8 ("tcp: prepare fastopen code for upcoming listener changes")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/ipv4/inet_connection_sock.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+[Severity: Low]
+Is this description accurate? pn533_rf_complete() only checks
+IS_ERR(resp), queues poll_work and frees the skb. It never reads
+resp->data and has no resp->len check.
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index e56beec438773..5590fc7efb88d 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1333,9 +1333,11 @@ static int inet_ulp_can_listen(const struct sock *sk)
- 
- static void reqsk_queue_alloc(struct request_sock_queue *queue)
- {
-+	spin_lock_bh(&queue->fastopenq.lock);
- 	queue->fastopenq.rskq_rst_head = NULL;
- 	queue->fastopenq.rskq_rst_tail = NULL;
- 	queue->fastopenq.qlen = 0;
-+	spin_unlock_bh(&queue->fastopenq.lock);
- 
- 	queue->rskq_accept_head = NULL;
- }
-@@ -1533,17 +1535,15 @@ void inet_csk_listen_stop(struct sock *sk)
- 		if (!has_current_bpf_ctx())
- 			cond_resched();
- 	}
--	if (queue->fastopenq.rskq_rst_head) {
--		/* Free all the reqs queued in rskq_rst_head. */
--		spin_lock_bh(&queue->fastopenq.lock);
--		req = queue->fastopenq.rskq_rst_head;
--		queue->fastopenq.rskq_rst_head = NULL;
--		spin_unlock_bh(&queue->fastopenq.lock);
--		while (req != NULL) {
--			next = req->dl_next;
--			reqsk_put(req);
--			req = next;
--		}
-+	/* Free all the reqs queued in rskq_rst_head. */
-+	spin_lock_bh(&queue->fastopenq.lock);
-+	req = queue->fastopenq.rskq_rst_head;
-+	queue->fastopenq.rskq_rst_head = NULL;
-+	spin_unlock_bh(&queue->fastopenq.lock);
-+	while (req != NULL) {
-+		next = req->dl_next;
-+		reqsk_put(req);
-+		req = next;
- 	}
- 	WARN_ON_ONCE(sk->sk_ack_backlog);
- }
+pn533_init_target_complete() does have a real check:
+
+    if (resp->len < ATR_REQ_GB_OFFSET + 1)
+        return -EINVAL;
+
+Other completion handlers in this file read resp->data without any
+length check. One example is pn533_start_poll_complete():
+
+    nbtg = resp->data[0];
+    tg = resp->data[1];
+    tgdata = &resp->data[2];
+    tgdata_len = resp->len - 2;
+
+pn533_tm_get_data_complete() and pn533_data_exchange_complete() do the
+same.
+
+Could this sentence be reworded or dropped, so it doesn't suggest the rest
+of the file already validates lengths?
+
+> Found by code review; not reproduced.
+>
+> Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
+
+[Severity: Low]
+The commit message says stale buffer contents can reach userspace through
+nfc_targets_found(). Should the patch carry Fixes: tags and Cc: stable?
+
+git blame shows the unchecked parsing came from these commits:
+
+  pn533_poll_dep_complete(): 673088fb42d0 ("NFC: pn533: Send ATR_REQ
+  directly for active device detection")
+
+  pn533_in_dep_link_up_complete(): 361f3cb7f9cf ("NFC: DEP link hook
+  implementation for pn533"), with the current rsp cast from
+  13003649b1eb
+
+> diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+> index f5a6a7c20d5af..63b6032692184 100644
+> --- a/drivers/nfc/pn533/pn533.c
+> +++ b/drivers/nfc/pn533/pn533.c
+> @@ -1310,6 +1310,11 @@ static int pn533_poll_dep_complete(struct pn533 *dev, void *arg,
+>  
+>  	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
+>  
+> +	if (resp->len < sizeof(*rsp)) {
+> +		rc = -EINVAL;
+> +		goto error;
+> +	}
+> +
+>  	rc = rsp->status & PN533_CMD_RET_MASK;
+>  	if (rc != PN533_CMD_RET_SUCCESS) {
+>  		/* Not target found, turn radio off */
+
+[Severity: High]
+Does this check also reject failure responses that worked before? The old
+failure path read only rsp->status (resp->data[0]), so it handled a
+failure frame of any length.
+
+pn533_send_async_complete() strips the frame header and tail:
+
+    skb_pull(resp, dev->ops->rx_header_len);
+    skb_trim(resp, resp->len - dev->ops->rx_tail_len);
+
+After that, a status-only InJumpForDEP error reply such as D5 57 <status>
+has resp->len == 1. It now takes the goto error path and returns -EINVAL,
+skipping the "Not target found" branch:
+
+    queue_work(dev->wq, &dev->rf_work);
+
+pn533_wq_rf()->pn533_rf_complete() is the only place that re-queues
+poll_work after a DEP poll attempt. pn533_wq_cmd_complete() ignores the
+callback's return value except for -EINPROGRESS. Doesn't the poll loop
+then stop silently?
+
+In that state poll_mod_count stays non-zero and nfc_dev->polling stays
+true. No targets are reported, and a new NFC_CMD_START_POLL fails with
+-EBUSY in nfc_start_poll() until userspace stops polling. The one
+exception is when the current modulation is listen mode
+(cur_mod->len == 0). In that case listen_timer eventually moves polling
+to the next modulation.
+
+Once pn533_start_poll_complete() has set poll_dep, this is the normal
+"no peer in range" path, not an edge case.
+
+pn533_in_dep_link_up_complete() below has the same ordering. A short
+failure reply there now returns -EINVAL before reaching this:
+
+    nfc_err(dev->dev,
+        "Bringing DEP link up failed (error 0x%x)\n", rc);
+
+so the chip's error code is no longer logged.
+
+The commit message says "A valid ATR_RES always carries the full 17-byte
+fixed header", but an error reply is not an ATR_RES. The message also
+doesn't mention any change to the failure path.
+
+Would it work to require resp->len >= 1 before reading status in both
+handlers? The resp->len >= sizeof(*rsp) check could then apply only after
+status is PN533_CMD_RET_SUCCESS.
+
+> @@ -1928,6 +1933,11 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
+>  
+>  	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
+>  
+> +	if (resp->len < sizeof(*rsp)) {
+> +		rc = -EINVAL;
+> +		goto error;
+> +	}
+> +
+>  	rc = rsp->status & PN533_CMD_RET_MASK;
+>  	if (rc != PN533_CMD_RET_SUCCESS) {
+>  		nfc_err(dev->dev,
+
+[Severity: Medium]
+Should pn533_activate_target_nfcdep() get the same fix? This patch leaves
+it unchanged, but it parses the ATR_RES from PN533_CMD_IN_ATR in the same
+way:
+
+    rsp = (struct pn533_cmd_activate_response *)resp->data;
+    rc = rsp->status & PN533_CMD_RET_MASK;
+    ...
+    /* ATR_RES general bytes are located at offset 16 */
+    gt_len = resp->len - 16;
+
+rsp->status is read with no resp->len check. With resp->len == 0, that
+read hits the trimmed DCS byte. The u16 gt_len also wraps when
+resp->len < 16.
+
+nfc_set_remote_general_bytes() narrows the wrapped value to u8, and
+nfc_llcp_set_remote_gb() then rejects it. So the gt[] over-read is
+mitigated, as with the two patched handlers. The unguarded status read
+and the wrap are still there.
+
+The same approach would cover this handler: a resp->len >= 1 check
+before reading status, then a sizeof(*rsp) check after the success test.
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105105805.1450120-1-hj351016%40gmail.com
