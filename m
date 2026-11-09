@@ -1,100 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.20
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794248517;
-	b=LnzgFHFNQa93IZN0uDhb97CkS3AK6BZKBvhOQjNwdrc1VkFeIQDlAX6KsYJ/NSjIi/Lh
-	 cfp35XOQ78XDVLIWgL0ELMNChTMYFkVlQqljyWsi3V3AFyoEfbDRlyWgsT4ZbpLxAgKll
-	 nRHWvWcOWwerbhD1BqDR+Xp4GELaKh8TmMSM0S2Z+P5b02/mjX3hUHkBTg3EBfNOLpDQl
-	 /5psuuTkBwlP/wdEgfS/0g0EF4X/H5ihPAhy+rGol1y9M64MyeFyBcbyfDFqemLYGsTBi
-	 AQrwuQTjI1BZ0obsqQD3Hpx7N5mScg1KIuR7/NXRzcdDtDTqzuSie7nAyOro7SafPzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248517;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ZaR8SaGdhadUkF2SI+dRP82Z39rJt70X4U4ibnL8ODQ=;
-	b=XmVg9cIEKchDmmJwvbY+jH2H1ayzpdvTRqrF8PmywLRmW8PBXefQOXVp2M0uhvbptc6B
-	 Y9tAs5q7rWJynDXqw+Mikps2JYGJvplg0+SYYj1nl4Ytw8ixdNlSHt0B0Z2ZcF+23ECcW
-	 72LrU/MlHjQMPBQvErCKtih/HGrPCcHNkfNwCm23DxJsb3kAlWmrMX4d6Uf9Yzjd3Hd9U
-	 iLePjE5YbPlTsuqGJtkhNgr385knMKXn7tvbi0ZRLY79ycvFuuOaR+aS6dKB8kGxYAJCQ
-	 HFZfH8Q/lfxpiIWDTJE+EY2lA/gGvd/hmcb4lfN2i2wEBF6Is3X6nuIJ1GpGhKFb+4Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pC4YBeU6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.20
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011020.outbound.protection.outlook.com [52.101.57.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794248742;
+	b=4m5Bo2IPWGTzRhYo7JxxsM3onxpoTTd4kOl7mhbpwB6PR+pCokY6n2DpIiUsrasZkYuc
+	 tHSbzGmme7ev7POw1qV/+7Tzwz5aKC+zlIgik6h8RpjRWOGEIVqInfCIAy/D1Vlwr3vUz
+	 OnmT+apUApShGEcSLyKZSnyGN1qahQIEwg7hwnKdC5IruuS8NkKFBEc7Q+qksSVxkszKL
+	 ZU7P1vNv/nr5G8Jqv/lSMxQTBJsGc8E4BoUkdZ9lm8KNUcpw5nPlnuk36hCiTREb4U9iB
+	 Xvd4SxccaNIwKnPRTqxvT2KpSiM/tJxZvHm5RUCc5rBweCafS00f8HcOOl+leEkaTNQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248742;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=EKH/c3hk/KLjxJEXD2H3KrIqAmWh0TyGFdVjmyb1yr4=;
+	b=vKxpNuikggMXKqJE8NZeyotZDLoKKJ7lD0EgKnDsFmD5RFhh5R297smxsNn1RvgeSb4X
+	 7XODZZVNF621ZAaWTlwqNKfNEg+/hdizzO9BTkkVUFYub3AWwsRIiLppDHd5w/US1QdNY
+	 xZd7Ccnd8GCd12qnizOxlPEF1kuaAHRXNpxPBNd7oTHansNafJaeHPRmOj4il9XjaN2qO
+	 ci52fAepfhs291zTwjGUxNfk1t/zshkE9LHeOr6NGb212grYRkbBHrvzRjqQ149CVmm+q
+	 3B6akYGMGGjAFEd6w9aAM1DWvOHgQViauOnV/GjJPMMhC79eZYqqgnV6P6MsqxRoFSg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TyWgqRqE;
+	arc=none smtp.remote-ip=209.85.208.71
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E040606A31C;
-	Mon,  9 Nov 2026 18:21:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E040606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A9060A263C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69A9060A263C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pC4YBeU6
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EF23cfPVUdZps5ot3wEaBNwXdzcJjSZOY0RM1iQhZ7rJYMWbIdPGYcEMy+f5xnyeDOwXo3QZ70eIC6nvnCqTfsQU+VS3BfOsCXEmQy4vAjav1IM/FjYgAsAmaEZTAu+WRHaemtFqMPfCOD2bL2PtAeEvWQZpflNqEGi27HUZfOqCxi6U6VGzm+4s+NvDF1GpGUUiWFuIKgwuOCAymdrG8Dkx60E4b5Xen+J+qvizkgUGGYz1FQo7pp502ZiuypmZ/Jw7KukrwUVWFIoCeAvDHlVpjp7Kel0yaFwEZ3Of/dCQ42IQlI/H66L/10L5SkVFVTVmMA2eR4hItemPdH8lOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZaR8SaGdhadUkF2SI+dRP82Z39rJt70X4U4ibnL8ODQ=;
- b=m29nL5qaR5nZ5nVymwBPHxuLOv57By/w4Zve2A2grA6pKPuf8rA0dSullTGO3cXEDGfXv9eQj29hnHZbTm1CKREdfEQ4C2M5ZRM3lR0cTrnbZklhUzvgaw798iwIaB2Yfiz94flcYb5e+1YpFFEnhtATUqM8oaI2m0M0O16HtrX75Z7GGpV2klrdab2U/iIWHkP3Ff+n6D86J8Zp4rCnaNEDV3oC4PI4apkcisVu7fmNEBvdGM63/DqaA6zgG10qIBMI2NGEyGtkr1IdqcJ2l+3rWOVYiTzFUCchng6iAvWYa0tiIhru+l2YDs0GiBXodE6vUqdtfkvmlr4n6brCng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZaR8SaGdhadUkF2SI+dRP82Z39rJt70X4U4ibnL8ODQ=;
- b=pC4YBeU6Dw1dtqkIUggIuIgxDerSCe5rCDv1UKinlPOK5pMVKOqbsntl8K9JsaT2LGmjaNJrtNGlV+BYQHQ5p+yI736mM8mlRqbJW4ViPqO2/EuhQ3BR6znG/zu7rMeqE1u68tUpfde030p23twp+hK8LwyCvgcyKAYLhmSwbco3HNltTGyIC41l1DrByNQAx+DhTZROEF9HzmslN6CnW8701ALJm89p2FwVOks+fl48WkISdvxPAJAcnJCOl9YX3o2L/lqeU/D94RETsiX3Dl5eDGd27UsYn1kXjryyqNsRVMQiCzjAWcUps52kt9HbYJsd/jVH3aDjgywdXPpuyQ==
-Received: from MN0PR05CA0029.namprd05.prod.outlook.com (2603:10b6:208:52c::23)
- by MW4PR12MB7144.namprd12.prod.outlook.com (2603:10b6:303:21b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 18:21:46 +0000
-Received: from BN2PEPF0000A895.namprd04.prod.outlook.com
- (2603:10b6:208:52c:cafe::1c) by MN0PR05CA0029.outlook.office365.com
- (2603:10b6:208:52c::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.7 via Frontend Transport; Mon, 9
- Nov 2026 18:21:44 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN2PEPF0000A895.mail.protection.outlook.com (10.167.248.187) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 18:21:43 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 10:21:16 -0800
-Received: from [10.221.197.41] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 10:21:08 -0800
-Message-ID: <fa8bdce6-6f89-4de0-b81b-149ac20802a4@nvidia.com>
-Date: Mon, 9 Nov 2026 20:21:04 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TyWgqRqE
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b6ed7a9ffaso1184552a12.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794248741; x=1794853541; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EKH/c3hk/KLjxJEXD2H3KrIqAmWh0TyGFdVjmyb1yr4=;
+        b=TyWgqRqE9WwStKB1NsY1OlooyCZN57OUMOJ5X5acygIBGg5o+w2s3ABCZ/lSiMCK+M
+         XZ37LF72wUn7YN/AYN4vFTLM+4pfvnbi2Kfvx4bxHRmRMKr3OzIS4qS18AazPUiRp6Fq
+         kriTzCeZ+xLXpfatk81e38FAMlBOQKUT7E2BZ8iKJz4VjvZxLzQlbSCzRbtglcJcBSoZ
+         OcCOtmdr5TA9yc7uHK5i4KqeERAvtmvvQ7D0WNWJvcyQW1C1Xb/bqB+EMEBPmgIHxSPB
+         wc+ywVESL9rajUnXHtCgBskR7gKXeJlz3/5LAu29G2b3ihneORdzQChfBEVCeMQ8aaHe
+         KD9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794248741; x=1794853541;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EKH/c3hk/KLjxJEXD2H3KrIqAmWh0TyGFdVjmyb1yr4=;
+        b=NI6tGWo7PSPkeSht8Mh/ixFyJHvqfkXPJjiBGXHs9WZOVLUnA0QxlgUi85eVMPf5F3
+         Kf7OiUxilApdDVAsON+FkJfRKQJOu+28u6jK4GfdgIvtL7Wq8piWzzQEQ37zzrsUca8i
+         h2QplEMRisp/ANqX2doeDvL3WLYPLJ7LfCnhFAkZhaTPhSmlnwGS2MogJ7eUdrr5cXUC
+         NC/R+Ng/zmPew/JhrHf6I4u+pBp017aAJJrApQokbKl1Pt6c6MZazMyhpfg6d6YKiuMf
+         a/VTvJaxoQ8SsUXQwelvzwgxWw/827LsgvyH8Y38RFTFlwDwOpehgNOPvrY6irwpl7vk
+         6KcA==
+X-Forwarded-Encrypted: i=1; AL+hErFQ/txGRiScBHlCqJNIDQCN/HHiOi689pbW3UpoQHKF/cfdrZ7bxpumcMMF9oBMz80bzLEXgz8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9YYyiLJbDzazPNg4xOKqKU0JXdeX3vHph1rSDSMFFJuB25txQG
+	ivryvpr/dHlanB1O4Kxg69+V1x4cmtGPUiLbJM+NRDvC7hgl+tx5/Ch7hOD2oRgzefRdZyxJVgR
+	5RFIODQ==
+X-Received: from ejbbn2.prod.google.com ([2002:a17:906:c0c2:b0:c2e:774e:ca99])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:d09:b0:c40:b477:dfa0
+ with SMTP id a640c23a62f3a-c504953fce3mr17865966b.18.1794248740573; Mon, 09
+ Nov 2026 10:25:40 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:11 +0000
+In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,301 +78,485 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 05/15] net/mlx5: LAG, decouple iteration
- end-of-walk from MLX5_MAX_PORTS
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Akiva Goldberger <agoldberger@nvidia.com>, Carolina Jubran
-	<cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Edward Srouji
-	<edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky
-	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Patrisious Haddad
-	<phaddad@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>
-References: <20261103171009.563034-1-tariqt@nvidia.com>
- <20261103171009.563034-6-tariqt@nvidia.com>
-Content-Language: en-US
-From: Shay Drori <shayd@nvidia.com>
-In-Reply-To: <20261103171009.563034-6-tariqt@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A895:EE_|MW4PR12MB7144:EE_
-X-MS-Office365-Filtering-Correlation-Id: be4e88e4-5dd3-4a29-dc07-08df3e8e4eec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|36860700016|82310400026|4143699003|56012099006|261021123027099003|261021121427099003|261022075727099003|261022105027099003|261009223027099003|261028144727099003|261026140227099003|261026121527099003|11063799006|261102123227099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	+Mr9Os8+lLosNuv/sYBD231YX+TQe/n6sw4OrwjrFAfP9z7Ag1hPeHGmvrWGUNOppp2BXEVfz0toisrvAx12EFaDXNB+nilr46OwCdzP8d9v/bDX0jp7XApZiqBrEU0zX7V7JmZPt4nD4f5ViT2PCL6+G9/MeqNOoKffpXR/65AeJIGPTJpO8ELaGc9ef52tlyDQO4huBeLHVeUBgLUmhv8P/rlRiGLWVH3UlRXaLxv5jfZE7u/7r6fajduyW2oRFpkFIV7QGa3ZMMqfzF2YvzvWND7ob/zZPdPAFOF7AFHlVKO9ACAR1RcCL+aYzc9WcAk3jMhv5eW2kK/ReaIoxv9dccRxtUj07/266Q5g3Ki2bJhiLeMenXeuRrkLDyrc7uKptbf8TGC1oN1Oyy2xVXMA1Yq0lf0I+5VoSgC6/wg2bf4EWvfOefLyW/qzha/qcFydLltRkOejl4Cqn2+dBpI6w8WAumVdhFWe0yPa8c/43bqK5Iv8CcZ4VVzifQvCUdMpAQ5JYtFvJ3wZ9zq/aE+a9l8idZTFhShnuokjdX66TLkZmGPh4zBFRwHDz6flRkrgzmsXr485pvNNf4QuuCtNCLlwSKXz8Z99vwvrDBDegHpiYVuY91yJewzgecFrze0p/d6iJzBgjQ/lJ2Oz+JV7IoWZgGZZlXaGC3FSu5uO2jVE7aj0sg0NNTFoAfLPAfOBzqQaqSZRzikguYENBA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(36860700016)(82310400026)(4143699003)(56012099006)(261021123027099003)(261021121427099003)(261022075727099003)(261022105027099003)(261009223027099003)(261028144727099003)(261026140227099003)(261026121527099003)(11063799006)(261102123227099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	SJyLZpJatfQxSj2v16Lkkp+LW8jY317NQMXZqGuRZv94797RE4tasV2sb6awqb+4CnWP7mA81+NBCcAU0ASWfrlhNWHK/YQ9oacZacF3feqXOBPufMRlZrRZ8/VTCL6HHsKi+W1yfyTKKklVaDUdikW8lSwLRuhtoQ4BY5UNce6f+BNR85GmQwcnGabhSL5SsO+b99olYg2SemXHJjUOIdjH+FMnC7VceOKP6NmkTpCBNi2ij5e/W1+MZQ1oOQnXgIg1I6ozU4sd1TJXych6D2znoLfMZuLOSnfUAmUETPrf5VG5BqKYdqTAAVuh+WpnXh75jaQmrB+tMQ9DY+UqHRz08UEqn8szwLcLISct9GQUDwzWOdZMfuo3iWvVwtFHIB7PcLstv5XRtfv34GZfrcUvFvIdC0LLiuviWOldM79FaagoyvrapSYAK0JDV7vx
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 18:21:43.8591
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: be4e88e4-5dd3-4a29-dc07-08df3e8e4eec
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000A895.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7144
+Mime-Version: 1.0
+References: <20261003212241.3432303-1-lrizzo@google.com>
+X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
+Message-ID: <20261109182533.3594984-4-lrizzo@google.com>
+Subject: [RFC PATCH v2 03/25] iommu/dma: Add per-NUMA-node PISA page reservoir
+From: Luigi Rizzo <lrizzo@google.com>
+To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Joshua Washington <joshwash@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Luigi Rizzo <lrizzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Allocating a large page may involve compacting and blocking, so it cannot
+be issued in GFP_ATOMIC context.
 
+Add a per-NUMA-node reservoir of pre-allocated and set up PISA pages,
+that can serve allocations without blocking. The reservoir is refilled in
+process context by a per-node work item, queued with queue_work_node()
+on system_dfl_wq so each node is refilled from its own CPUs, not bound
+to the CPU that caused the miss.
 
-On 03/11/2026 19:09, Tariq Toukan wrote:
-> From: Shay Drory <shayd@nvidia.com>
-> 
-> The LAG xarray iterators returned MLX5_MAX_PORTS as their end-of-walk
-> sentinel, and the open-coded callers compared the current index against
-> MLX5_MAX_PORTS to detect the end of iteration. This ties iteration to a
-> compile-time maximum rather than to the actual number of LAG members.
-> 
-> Add ldev->max_funcs, and use it as the loop bound. Update the open-coded
-> callers accordingly. When a member is added at an xarray index >=
-> ldev->max_funcs, increase max_funcs.
-> In addition, remove the xa_alloc() limit of MLX5_MAX_PORTS.
-> 
-> No functional change; this only removes the dependency on
-> MLX5_MAX_PORTS.
-> 
-> Signed-off-by: Shay Drory <shayd@nvidia.com>
-> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-> Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->   .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 22 +++++++++++--------
->   .../net/ethernet/mellanox/mlx5/core/lag/lag.h |  3 ++-
->   .../ethernet/mellanox/mlx5/core/lag/mpesw.c   |  2 +-
->   .../mellanox/mlx5/core/lag/shared_fdb.c       |  2 +-
->   4 files changed, 17 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> index b2ac5c671ae6..73bce918cddb 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> @@ -395,6 +395,7 @@ static struct mlx5_lag *mlx5_lag_dev_alloc(struct mlx5_core_dev *dev)
->   		mlx5_core_err(dev, "Failed to init multipath lag err=%d\n",
->   			      err);
->   
-> +	ldev->max_funcs = ldev->ports;
->   	return ldev;
->   
->   err_wq:
-> @@ -1284,7 +1285,7 @@ static void mlx5_lag_assert_locked_transition(struct mlx5_lag *ldev, u32 filter)
->   	lockdep_assert_held(&ldev->lock);
->   
->   	i = mlx5_get_next_lag_func(ldev, 0, filter);
-> -	if (i < MLX5_MAX_PORTS) {
-> +	if (i < ldev->max_funcs) {
->   		pf = mlx5_lag_pf(ldev, i);
->   		if (filter == MLX5_LAG_FILTER_PORTS ||
->   		    filter == MLX5_LAG_FILTER_ALL)
-> @@ -1831,7 +1832,7 @@ struct mlx5_devcom_comp_dev *mlx5_lag_get_devcom_comp(struct mlx5_lag *ldev)
->   	filter = ldev->virt_lag ? MLX5_LAG_FILTER_ALL :
->   		MLX5_LAG_FILTER_PORTS;
->   	i = mlx5_get_next_lag_func(ldev, 0, filter);
-> -	if (i < MLX5_MAX_PORTS) {
-> +	if (i < ldev->max_funcs) {
->   		pf = mlx5_lag_pf(ldev, i);
->   		devcom = pf->dev->priv.hca_devcom_comp;
->   	}
-> @@ -2095,7 +2096,7 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
->   				break;
->   			}
->   		}
-> -		if (i < MLX5_MAX_PORTS) {
-> +		if (i < ldev->ports) {
->   			if (netif_is_bond_master(upper)) {
->   				slave = bond_slave_get_rcu(ndev_tmp);
->   				if (slave)
-> @@ -2360,13 +2361,16 @@ int mlx5_ldev_add_mdev(struct mlx5_lag *ldev,
->   	if (!pf)
->   		return -ENOMEM;
->   
-> -	err = xa_alloc(&ldev->pfs, &idx, pf, XA_LIMIT(0, MLX5_MAX_PORTS - 1),
-> +	err = xa_alloc(&ldev->pfs, &idx, pf, XA_LIMIT(0, U8_MAX - 1),
->   		       GFP_KERNEL);
->   	if (err) {
->   		kfree(pf);
->   		return err;
->   	}
->   
-> +	/* max_funcs is the iteration ceiling; grow it, never shrink. */
-> +	if (idx >= ldev->max_funcs)
-> +		ldev->max_funcs = idx + 1;
->   	pf->idx = idx;
->   	pf->dev = dev;
+pisa.reservoir_max, writable at runtime, sets the number of PISA pages
+per node (default 16 = 32 MB per node; 0 = disabled).
 
-answers to net-dev sashiko
+Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+---
+ drivers/iommu/Makefile     |   2 +-
+ drivers/iommu/pisa-alloc.c |  17 ++-
+ drivers/iommu/pisa-kunit.c |   7 +
+ drivers/iommu/pisa-meta.c  |   1 +
+ drivers/iommu/pisa-node.c  | 268 +++++++++++++++++++++++++++++++++++++
+ drivers/iommu/pisa-priv.h  |  30 +++++
+ 6 files changed, 323 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iommu/pisa-node.c
 
-Sashiko (Medium):
-Is this store safe against readers that only hold lag_lock?
-max_funcs is written here with a plain store, under ldev->lock only. The
-store happens after xa_alloc() has already published pf, but before
-pf->dev is set. mlx5_lag_get_next_peer_mdev(), mlx5_lag_get_slave_port()
-and mlx5_lag_query_cong_counters() read it while holding only lag_lock.
-Each walk reads max_funcs more than once:
-- in mlx5_get_next_lag_func(), to produce the sentinel
-- again in the mlx5_lag_for_each() condition
-- and once more in mlx5_lag_get_next_peer_mdev(), after the loop
-Suppose an add grows max_funcs from M to M + 1 between those reads. The
-stale sentinel M then passes the tmp < (ldev)->max_funcs check. The body
-runs on slot M, which holds the new pf, and pf->dev is not set yet.
-Could mlx5_lag_get_next_peer_mdev() return a NULL peer here?
-On weakly ordered CPUs, can the max_funcs store also become visible before
-the xarray slot store? A reader could then see max_funcs == M + 1 while
-mlx5_lag_pf(ldev, M) returns NULL. In that case this code in
-mlx5_lag_get_next_peer_mdev() would dereference a NULL pf:
-     pf = mlx5_lag_pf(ldev, idx);
-     if (pf->dev != dev)
-Before this patch, the sentinel and the comparison used the same constant,
-so they could not disagree.
-The later commit "net/mlx5: LAG, do not add a device to an already-active
-LAG" narrows the window for callers that only walk while LAG is active.
-These readers do not check for an active LAG themselves, though.
-
-[SD] all the readers above running only while LAG is active, and
-mlx5_lag_query_cong_counters() and mlx5_lag_get_slave_port() check
-whether lag is active explicitly before walking over the lag
-
-
->   	pf->group_id = group_id;
-> @@ -2395,7 +2399,7 @@ void mlx5_ldev_remove_mdev(struct mlx5_lag *ldev,
->   		if (pf->dev == dev)
->   			break;
->   	}
-> -	if (i >= MLX5_MAX_PORTS)
-> +	if (i >= ldev->max_funcs)
->   		return;
->   
->   	if (pf->port_change_nb.nb.notifier_call)
-> @@ -2608,7 +2612,7 @@ int mlx5_get_next_lag_func(struct mlx5_lag *ldev, int start_idx, u32 filter)
->   					 MLX5_LAG_XA_MARK_PORT, start_idx)
->   			if (pf->dev)
->   				return idx;
-> -		return MLX5_MAX_PORTS;
-> +		return ldev->max_funcs;
->   	}
->   
->   	xa_for_each_start(&ldev->pfs, idx, pf, start_idx) {
-> @@ -2618,7 +2622,7 @@ int mlx5_get_next_lag_func(struct mlx5_lag *ldev, int start_idx, u32 filter)
->   		    filter == pf->group_id)
->   			return idx;
->   	}
-> -	return MLX5_MAX_PORTS;
-> +	return ldev->max_funcs;
->   }
->   
->   bool mlx5_lag_is_roce(struct mlx5_core_dev *dev)
-> @@ -2868,7 +2872,7 @@ struct mlx5_core_dev *mlx5_lag_get_next_peer_mdev(struct mlx5_core_dev *dev, int
->   	if (!ldev)
->   		goto unlock;
->   
-> -	if (*i == MLX5_MAX_PORTS)
-> +	if (*i == ldev->max_funcs)
->   		goto unlock;
->   	mlx5_lag_for_each(idx, *i, ldev, mlx5_lag_get_filter(ldev, dev)) {
->   		pf = mlx5_lag_pf(ldev, idx);
-> @@ -2876,7 +2880,7 @@ struct mlx5_core_dev *mlx5_lag_get_next_peer_mdev(struct mlx5_core_dev *dev, int
->   			break;
->   	}
->   
-> -	if (idx == MLX5_MAX_PORTS) {
-> +	if (idx == ldev->max_funcs) {
->   		*i = idx;
->   		goto unlock;
->   	}
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
-> index 872cc769297c..479d9f42ff3f 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
-> @@ -83,6 +83,7 @@ struct mlx5_lag {
->   	unsigned long		  mode_flags;
->   	unsigned long		  state_flags;
->   	u8			  ports;
-> +	u8			  max_funcs;
->   	u8			  buckets;
->   	bool			  virt_lag;
->   	int			  mode_changes_in_progress;
-> @@ -298,7 +299,7 @@ static inline bool mlx5_lag_is_supported(struct mlx5_core_dev *dev)
->   #define mlx5_lag_for_each(i, start_index, ldev, filter) \
->   	for (int tmp = start_index; \
->   	     tmp = mlx5_get_next_lag_func(ldev, tmp, filter), \
-> -	     i = tmp, tmp < MLX5_MAX_PORTS; tmp++)
-> +	     i = tmp, tmp < (ldev)->max_funcs; tmp++)
->   
->   #define mlx5_lag_for_each_reverse(i, start_index, end_index, ldev, filter) \
->   	for (int tmp = start_index, tmp1 = end_index; \
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
-> index b65ad9a26f71..56faa1d498c7 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
-> @@ -223,7 +223,7 @@ void mlx5_mpesw_sd_devcoms_unlock(struct mlx5_lag *ldev)
->   	struct mlx5_devcom_comp_dev *sd_devcom;
->   	int i;
->   
-> -	mlx5_ldev_for_each_reverse(i, MLX5_MAX_PORTS, 0, ldev) {
-> +	mlx5_ldev_for_each_reverse(i, ldev->max_funcs, 0, ldev) {
->   		sd_devcom = mlx5_sd_get_devcom(mlx5_lag_pf(ldev, i)->dev);
->   		if (sd_devcom)
->   			mlx5_devcom_comp_unlock(sd_devcom);
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
-> index 7c7e6c832a93..29048b0c2797 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
-> @@ -71,7 +71,7 @@ static int mlx5_lag_create_single_fdb_filter(struct mlx5_lag *ldev, u32 filter)
->   
->   		err = mlx5_eswitch_offloads_single_fdb_add_one(master_esw,
->   							       slave_esw,
-> -							       ldev->ports);
-> +							       ldev->max_funcs);
-
-
-Sashiko (Medium):
-The commit message says:
-     No functional change; this only removes the dependency on
-     MLX5_MAX_PORTS.
-Is that accurate? This hunk changes the max_slaves argument from
-ldev->ports to ldev->max_funcs, and that argument sizes the master's
-egress ACL. A later commit in the series, "net/mlx5: E-switch, drop
-master egress rule under a SW vport LAG", calls this value the ACL size.
-So the size of the hardware flow table changes whenever max_funcs !=
-ports.
-
-[SD] Only the ACL size changes, and only for SD, where more PFs than
-ports join the ldev and max_funcs > ports. The rules installed are the
-same as before, so there is no functional change.
-
-
-The patch also changes behaviour in two other places:
-- The xa_alloc() limit in mlx5_ldev_add_mdev() now accepts a 9th member.
-- The found check in mlx5_handle_changeupper_event() now uses
-   i < ldev->ports instead of the max_funcs sentinel.
-Could the commit message describe these changes?
-
-[SD] The xa_alloc() change is already in the commit message ("remove the
-xa_alloc() limit of MLX5_MAX_PORTS"), and the cover letter explains why
-it can't let in a 9th member.
-mlx5_handle_changeupper_event() runs only for a PF LAG without SD: the
-netdev notifier is registered only when !mlx5_sd_is_supported(). There
-each LAG port is one PF at an xarray index below ldev->ports
-(num_lag_ports), so "i < ldev->ports" is true in exactly the same cases
-as the old end-of-walk check.
-
-
->   		if (err)
->   			goto err;
->   	}
+diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+index bda0b102dd3ba..bc58166f9303a 100644
+--- a/drivers/iommu/Makefile
++++ b/drivers/iommu/Makefile
+@@ -11,7 +11,7 @@ obj-$(CONFIG_IOMMU_API) += iommu-traces.o
+ obj-$(CONFIG_IOMMU_API) += iommu-sysfs.o
+ obj-$(CONFIG_IOMMU_DEBUGFS) += iommu-debugfs.o
+ obj-$(CONFIG_IOMMU_DMA) += dma-iommu.o
+-obj-$(CONFIG_PISA) += pisa-meta.o pisa-alloc.o
++obj-$(CONFIG_PISA) += pisa-meta.o pisa-alloc.o pisa-node.o
+ obj-$(CONFIG_PISA_META_KUNIT_TEST) += pisa-kunit.o
+ obj-$(CONFIG_IOMMU_IO_PGTABLE) += io-pgtable.o
+ obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
+diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
+index 68f5d333ae15c..cf559ee86d6f9 100644
+--- a/drivers/iommu/pisa-alloc.c
++++ b/drivers/iommu/pisa-alloc.c
+@@ -46,6 +46,14 @@ module_param_named(idle_ms, pisa_idle_ms, uint, 0644);
+ static LIST_HEAD(pisa_allocs);
+ static DEFINE_RWLOCK(pisa_allocs_lock);
+ 
++/* Per-NUMA-node PISA state (ring/TX/user allocators, reservoir). */
++struct pisa_node pisa_nodes[MAX_NUMNODES] = {
++	[0 ... MAX_NUMNODES - 1] = {
++		.next_alloc = INITIAL_JIFFIES,
++		.lock = __SPIN_LOCK_UNLOCKED(pisa_nodes.lock),
++	},
++};
++
+ static void pisa_schedule_reclaim(void);
+ 
+ /*
+@@ -75,8 +83,13 @@ static void pisa_release_page_rcu(struct rcu_head *head)
+ }
+ 
+ /* Unmap a retired PISA page, clear PISA_ACTIVE, and queue RCU release. */
+-static void pisa_release_page(struct pisa_meta *meta)
++void pisa_release_page(struct pisa_meta *meta)
+ {
++	if (!meta->pa) {
++		__free_pages(pfn_to_page(pisa_meta_to_pfn(meta)), PISA_ORDER);
++		return;
++	}
++
+ 	/* pisa_unmap_all(meta) will be called here once IOMMU mappings are added. */
+ 
+ 	/* Clear PISA_ACTIVE before the RCU grace period so new readers stop entering. */
+@@ -359,6 +372,8 @@ bool __pisa_free_page(struct page *page)
+ 
+ static int __init pisa_init(void)
+ {
++	pisa_node_init();
++
+ 	/* Dedicated WQ_MEM_RECLAIM workqueue so reclaim never blocks behind system_wq. */
+ 	pisa_wq = alloc_workqueue("pisa", WQ_MEM_RECLAIM, 0);
+ 	if (!pisa_wq)
+diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
+index 12edc73abc9c6..079f6220e742a 100644
+--- a/drivers/iommu/pisa-kunit.c
++++ b/drivers/iommu/pisa-kunit.c
+@@ -92,11 +92,18 @@ static void test_alloc_and_recycle(struct kunit *test)
+ 	pisa_set_name(NULL, "ignored");
+ }
+ 
++static void test_reservoir_and_scrubber(struct kunit *test)
++{
++	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
++	KUNIT_EXPECT_EQ(test, READ_ONCE(pisa_reservoir_max), 16U);
++}
++
+ static struct kunit_case pisa_meta_test_cases[] = {
+ 	KUNIT_CASE(test_meta_init_and_roundtrip),
+ 	KUNIT_CASE(test_meta_invalid_phys),
+ 	KUNIT_CASE(test_meta_active_toggle),
+ 	KUNIT_CASE(test_alloc_and_recycle),
++	KUNIT_CASE(test_reservoir_and_scrubber),
+ 	{}
+ };
+ 
+diff --git a/drivers/iommu/pisa-meta.c b/drivers/iommu/pisa-meta.c
+index 5ceea91e4d5e8..00939c366ba6d 100644
+--- a/drivers/iommu/pisa-meta.c
++++ b/drivers/iommu/pisa-meta.c
+@@ -272,6 +272,7 @@ int pisa_meta_init(void)
+ 
+ 	/* Register outside pisa_meta_mutex (taken by the notifier under chain lock). */
+ 	register_memory_notifier(&pisa_meta_memory_nb);
++	pisa_schedule_reservoir();
+ 	return 0;
+ 
+ out_free_vm:
+diff --git a/drivers/iommu/pisa-node.c b/drivers/iommu/pisa-node.c
+new file mode 100644
+index 0000000000000..524f0d4457ad7
+--- /dev/null
++++ b/drivers/iommu/pisa-node.c
+@@ -0,0 +1,268 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * PISA per-NUMA-node state: PISA page reservoir and background work.
++ * See Documentation/core-api/pisa.rst for the architecture overview.
++ */
++
++#include <linux/atomic.h>
++#include <linux/pisa.h>
++#include <linux/err.h>
++#include <linux/gfp.h>
++#include <linux/list.h>
++#include <linux/mm.h>
++#include <linux/moduleparam.h>
++#include <linux/nodemask.h>
++#include <linux/sched.h>
++#include <linux/sched/mm.h>
++#include <linux/spinlock.h>
++#include <linux/topology.h>
++#include <linux/workqueue.h>
++
++#include "pisa-priv.h"
++
++/* Parameters are pisa.<name> at boot and in /sys/module/pisa/parameters/. */
++#undef MODULE_PARAM_PREFIX
++#define MODULE_PARAM_PREFIX "pisa."
++
++/*
++ * Per-NUMA-node reservoir of pre-allocated, pre-zeroed, and pre-decrypted
++ * PISA pages (pisa.reservoir_max, default 16, 0 = disabled). Refilled and
++ * trimmed by each node's work item on system_dfl_wq, which also scrubs
++ * allocators on that node.
++ */
++unsigned int pisa_reservoir_max __read_mostly = 16;
++
++static int pisa_reservoir_max_set(const char *val, const struct kernel_param *kp)
++{
++	int ret = param_set_uint(val, kp);
++
++	/* Schedule per-node workers to refill or trim once pisa_meta_init() has run. */
++	if (!ret && static_branch_unlikely(&pisa_key))
++		pisa_schedule_reservoir();
++	return ret;
++}
++
++static const struct kernel_param_ops pisa_reservoir_max_ops = {
++	.set = pisa_reservoir_max_set,
++	.get = param_get_uint,
++};
++module_param_cb(reservoir_max, &pisa_reservoir_max_ops, &pisa_reservoir_max, 0644);
++
++/* Apply GFP_NOFS/GFP_NOIO scope around internal GFP_KERNEL allocations. */
++static unsigned int pisa_memalloc_save(gfp_t gfp)
++{
++	unsigned int flags = 0;
++
++	if (!(gfp & __GFP_FS))
++		flags |= PF_MEMALLOC_NOFS;
++	if (!(gfp & __GFP_IO))
++		flags |= PF_MEMALLOC_NOIO;
++	return memalloc_flags_save(flags);
++}
++
++/* Allocate a PISA page from the buddy allocator and initialize its metadata. */
++static struct pisa_meta *__pisa_page_alloc(gfp_t gfp, int nid, bool can_block,
++					   bool *clean)
++{
++	struct pisa_meta *meta;
++	unsigned int memflags;
++	struct page *page;
++
++	if (unlikely(!static_branch_unlikely(&pisa_key))) {
++		if (!can_block || (gfp & (__GFP_FS | __GFP_IO)) != (__GFP_FS | __GFP_IO) ||
++		    pisa_meta_init())
++			return ERR_PTR(-EAGAIN);
++	}
++
++	/*
++	 * Long-lived active pages must be unmovable, lowmem, non-compound, and
++	 * must not dip into emergency reserves or trigger OOM/warnings.
++	 */
++	gfp &= ~(__GFP_COMP | __GFP_HIGHMEM | __GFP_MOVABLE);
++	gfp |= __GFP_NOWARN | __GFP_NOMEMALLOC | (can_block ? __GFP_RETRY_MAYFAIL : __GFP_NORETRY);
++
++	if (can_block)
++		memflags = pisa_memalloc_save(gfp);
++	page = alloc_pages_node(nid, gfp, PISA_ORDER);
++	if (!page) {
++		if (can_block)
++			memalloc_flags_restore(memflags);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	/* Ensure the metadata chunk for this PFN is populated. */
++	if (unlikely(pisa_meta_ensure_pfn(page_to_pfn(page), can_block))) {
++		if (can_block)
++			memalloc_flags_restore(memflags);
++		__free_pages(page, PISA_ORDER);
++		return ERR_PTR(-ERANGE);
++	}
++	if (can_block)
++		memalloc_flags_restore(memflags);
++
++	meta = pisa_meta_of_pfn(page_to_pfn(page));
++	memset(meta, 0, sizeof(*meta));
++	*clean = (gfp & __GFP_ZERO) || want_init_on_alloc(0) || want_init_on_free();
++
++	return meta;
++}
++
++
++/* Refill node @nid's reservoir up to pisa_reservoir_max pre-zeroed PISA pages. */
++static void pisa_reservoir_refill_node(int nid)
++{
++	struct pisa_node *res = &pisa_nodes[nid];
++
++	while (res->nr_pages < READ_ONCE(pisa_reservoir_max)) {
++		struct pisa_meta *meta;
++		unsigned long flags;
++		bool clean;
++
++		meta = __pisa_page_alloc(GFP_KERNEL | __GFP_THISNODE, nid, true, &clean);
++		if (IS_ERR(meta))
++			break;
++
++		/* init_on_alloc/init_on_free pages are already zeroed. */
++		if (!clean)
++			memset(page_address(pfn_to_page(pisa_meta_to_pfn(meta))), 0, PISA_SIZE);
++
++		spin_lock_irqsave(&res->lock, flags);
++		list_add(&meta->list, &res->pages);
++		res->nr_pages++;
++		spin_unlock_irqrestore(&res->lock, flags);
++
++		cond_resched();
++	}
++}
++
++/* Release PISA pages in node @nid's reservoir above @max. */
++static void pisa_reservoir_trim_node(int nid, unsigned int max)
++{
++	struct pisa_node *res = &pisa_nodes[nid];
++	struct pisa_meta *meta, *tmp;
++	LIST_HEAD(free_list);
++	unsigned long flags;
++
++	spin_lock_irqsave(&res->lock, flags);
++	while (res->nr_pages > max && !list_empty(&res->pages)) {
++		list_move(res->pages.prev, &free_list);
++		res->nr_pages--;
++	}
++	spin_unlock_irqrestore(&res->lock, flags);
++
++	list_for_each_entry_safe(meta, tmp, &free_list, list) {
++		list_del_init(&meta->list);
++		pisa_release_page(meta);
++		cond_resched();
++	}
++}
++
++static void pisa_node_work_fn(struct work_struct *work)
++{
++	struct pisa_node *res = container_of(work, struct pisa_node, work);
++	int nid = res - pisa_nodes;
++	unsigned int max = READ_ONCE(pisa_reservoir_max);
++
++	if (unlikely(pisa_meta_init()))
++		return;
++
++	if (READ_ONCE(res->nr_pages) < max)
++		pisa_reservoir_refill_node(nid);
++	else if (READ_ONCE(res->nr_pages) > max)
++		pisa_reservoir_trim_node(nid, max);
++}
++
++/* Queue @nid's reservoir worker on a CPU belonging to @nid. */
++static void pisa_schedule_reservoir_node(int nid)
++{
++	if (nid >= 0 && nid < MAX_NUMNODES && node_state(nid, N_MEMORY))
++		queue_work_node(nid, system_dfl_wq, &pisa_nodes[nid].work);
++}
++
++/* Queue reservoir refill/trim workers on all memory nodes. */
++void pisa_schedule_reservoir(void)
++{
++	int nid;
++
++	for_each_node_state(nid, N_MEMORY)
++		pisa_schedule_reservoir_node(nid);
++}
++
++/* Pop one pre-prepared PISA page from node @nid's reservoir under @res->lock. */
++static struct pisa_meta *pisa_reservoir_pop_node(int nid, unsigned int max)
++{
++	struct pisa_node *res = &pisa_nodes[nid];
++	struct pisa_meta *meta;
++	unsigned long flags;
++	bool refill = false;
++
++	if (!READ_ONCE(res->nr_pages))
++		return NULL;
++
++	spin_lock_irqsave(&res->lock, flags);
++	meta = list_first_entry_or_null(&res->pages, struct pisa_meta, list);
++	if (meta) {
++		list_del_init(&meta->list);
++		res->nr_pages--;
++		refill = res->nr_pages <= max / 2;
++	}
++	spin_unlock_irqrestore(&res->lock, flags);
++
++	if (refill)
++		pisa_schedule_reservoir_node(nid);
++
++	return meta;
++}
++
++/*
++ * Pop a pre-prepared PISA page from @nid's reservoir (scheduling an async
++ * refill when <= half full or empty), or allocate one inline on miss.
++ */
++struct pisa_meta *pisa_reservoir_pop(int nid, gfp_t gfp, bool *clean)
++{
++	bool can_block = gfpflags_allow_blocking(gfp);
++	unsigned int max = READ_ONCE(pisa_reservoir_max);
++	struct pisa_meta *meta;
++
++	nid = pisa_sanitize_nid(nid);
++	if (max) {
++		meta = pisa_reservoir_pop_node(nid, max);
++		if (meta) {
++			*clean = true;
++			return meta;
++		}
++		/* Empty: pop_node() only schedules after a successful pop. */
++		pisa_schedule_reservoir_node(nid);
++	}
++
++	/* Back off briefly on GFP_ATOMIC if previous allocation on @nid failed. */
++	if (!can_block && time_before(jiffies, READ_ONCE(pisa_nodes[nid].next_alloc)))
++		return ERR_PTR(-EAGAIN);
++
++	meta = __pisa_page_alloc(gfp, nid, can_block, clean);
++	if (IS_ERR(meta))
++		pisa_alloc_backoff(nid, can_block);
++	return meta;
++}
++
++/* Number of PISA pages held in all the reservoirs. */
++unsigned long pisa_reservoir_count(void)
++{
++	unsigned long nr = 0;
++	int nid;
++
++	for_each_node_state(nid, N_MEMORY)
++		nr += READ_ONCE(pisa_nodes[nid].nr_pages);
++	return nr;
++}
++
++void __init pisa_node_init(void)
++{
++	int nid;
++
++	for (nid = 0; nid < MAX_NUMNODES; nid++) {
++		spin_lock_init(&pisa_nodes[nid].lock);
++		INIT_LIST_HEAD(&pisa_nodes[nid].pages);
++		INIT_WORK(&pisa_nodes[nid].work, pisa_node_work_fn);
++	}
++}
+diff --git a/drivers/iommu/pisa-priv.h b/drivers/iommu/pisa-priv.h
+index 769b0ef071705..0d097c665c790 100644
+--- a/drivers/iommu/pisa-priv.h
++++ b/drivers/iommu/pisa-priv.h
+@@ -4,12 +4,14 @@
+ 
+ #include <linux/dma-direction.h>
+ #include <linux/pisa.h>
++#include <linux/jiffies.h>
+ #include <linux/list.h>
+ #include <linux/llist.h>
+ #include <linux/nodemask.h>
+ #include <linux/spinlock.h>
+ #include <linux/topology.h>
+ #include <linux/types.h>
++#include <linux/workqueue.h>
+ 
+ #ifdef CONFIG_PISA
+ 
+@@ -95,6 +97,19 @@ struct pisa_alloc {
+ 	char			name[48];
+ } ____cacheline_aligned;
+ 
++/* Per-NUMA-node PISA state. */
++struct pisa_node {
++	unsigned long		next_alloc;	/* atomic alloc backoff jiffies */
++
++	spinlock_t		lock;		/* protects @pages and @nr_pages */
++	struct list_head	pages;		/* reservoir */
++	unsigned int		nr_pages;
++	struct work_struct	work;		/* refill/trim, on this node */
++} ____cacheline_aligned_in_smp;
++
++/* Per-NUMA-node PISA state (ring/TX/user allocators, reservoir). */
++extern struct pisa_node pisa_nodes[MAX_NUMNODES];
++
+ int pisa_meta_ensure_pfn(unsigned long pfn, bool can_block);
+ struct pisa_meta *pisa_meta_of_pfn(unsigned long pfn);
+ unsigned long pisa_meta_to_pfn(const struct pisa_meta *meta);
+@@ -102,6 +117,7 @@ unsigned long pisa_meta_to_pfn(const struct pisa_meta *meta);
+ struct pisa_alloc *pisa_create(int nid, unsigned int order, enum dma_data_direction dir);
+ __printf(2, 3)
+ void pisa_set_name(struct pisa_alloc *pa, const char *fmt, ...);
++void pisa_release_page(struct pisa_meta *meta);
+ 
+ static inline int pisa_sanitize_nid(int nid)
+ {
+@@ -112,5 +128,19 @@ static inline int pisa_sanitize_nid(int nid)
+ 	return nid;
+ }
+ 
++static inline void pisa_alloc_backoff(int nid, bool can_block)
++{
++	nid = pisa_sanitize_nid(nid);
++	if (!can_block)
++		WRITE_ONCE(pisa_nodes[nid].next_alloc, jiffies + DIV_ROUND_UP(HZ, 100));
++}
++
++/* pisa-node.c: per-NUMA-node PISA page reservoir and work item */
++extern unsigned int pisa_reservoir_max;
++void pisa_node_init(void);
++void pisa_schedule_reservoir(void);
++struct pisa_meta *pisa_reservoir_pop(int nid, gfp_t gfp, bool *clean);
++unsigned long pisa_reservoir_count(void);
++
+ #endif /* CONFIG_PISA */
+ #endif /* _DRIVERS_IOMMU_PISA_PRIV_H */
+-- 
+2.56.0.542.g3ef89b7020-goog
 
