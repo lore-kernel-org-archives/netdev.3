@@ -1,61 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794219701;
-	b=gHL7GnMjM53Dg0PBToFqLLh+l9bDg3ud8yjJNpINcnJESL6OZNVZF1Q9QJ9tq2/zJsfZ
-	 JGUzv64wAo2FxeSt0Baac0tj5ge+vvTqCvkX3LIQDUlvtcZplT5XjWbY53msZ+95HV8Ba
-	 ywOpqCspG9oW2flYKeDDIS6tDQQz1NMd39wXZTXuVlCCaCLB6PuTdRTVKItVeY7WCg5qz
-	 H2/kQqa12m9XQf/hNzMxfDvL0KgkfQ7OXYYJMm+1xSjwI+gxKqv2iicYewZBUqJlXU8sA
-	 GmutFbSpfAToEyUS+7J2IBQab09IrRa5YrVnvHBDf7AlTuKvx6xdHrBlJguVi6yisoQ==
+	t=1794219761;
+	b=zj+LiqL6dbQyFYUZJIXU/Em7riGkXjWE/Rt0u25/+uHb+8XEtV+GYhG6X9bJ5g6jgWvA
+	 L4GojnHa8FSGqq5e73Xhl9YJsUSJ35Hpzj/mTjrjjeVZTi8r8E7jTjLOD+QBYpqmAp9mZ
+	 wwpAZyWKJsYr93zJnssMwYMpmYRkBRuDufHyAfyGPWwgmgM0bDD5iUxGwItGTtm8/E6UO
+	 CJw4O8r7wbMnWU6c7bkmjAjHEexWg7339ISVN1UvVb+IL2YGMlQ3NgKnbHQiblLrLSdP+
+	 sRsOSl/JZgfBEGiWjAYrDsnm47lFR7fCA8mhy4pWXuj4YSdg83BH9CZRLALI/8AWQTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794219701;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=ZymPgD8p6vGeWNKUW2BLSw1c0urj54v+W0LzDlhnwWwhMa7PVs4GNAx7EjsLVti+w0yU
-	 MyzOxoCgergnrgeaIy5q0zoKZD5H4u9zm1a5/0/ud3DIyyXLnkp4RpQQU7d4aMuWN6v1f
-	 2cOjiJ6t9wt0UCQuejDjvYUO9xDkQFaHaKzePK7zRckChOts4MOf3nNtdzrz+v8L7o+to
-	 v3u7miMYIEcLkDeF1WGS0DWRdc5z87EUxcUjkhLfOMojGK6J3O7EJjp99nYtoRNXCe7yl
-	 VALBrL9cvOAp5mZt3/yUkQbpzssjT42p4SIPxfzJec7yXcl3AZFWiri8/yi63ycKr7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794219761;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:
+	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=T7TAPE/7YhD5ngclGTREyMx61AzehRbnlDAFX5Ebjf4=;
+	b=iUDpQ1R1D3f4iau/jqPb405RhYY/vk3T0Dpsemb8pU5YcA46D4beF1MpGdWrgHlHg2ET
+	 4FEpVjpkrJo2bvASkeCxb3rUx7MHmzJxr2MWyIl313QTdvl6Hla/OLVpJJXWS7P+zWEwe
+	 ImI53GKUM0NyGH6UANDC+/RxvbuECaBn0bbXYJiIIcUieUDH3GTO1nboQHhACbkhhRfRW
+	 wZJ19jzZTCpYVJkTWIknQ5NRVkVt/kqEEVAl012Lkje4B7hOToZMj4TAZsj4TACGkbXZz
+	 aV5cwydQxTI+SNNWZIbMNChzVoIb9oS11XYiybPSikktrYb4B8ORuCfD3WWfnccwnxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h2fnTfgn;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Rnq7w67q;
+	arc=none smtp.remote-ip=195.10.208.55
+Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38918606A334;
-	Mon,  9 Nov 2026 10:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0AC606A325;
+	Mon,  9 Nov 2026 10:22:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D0AC606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h2fnTfgn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562841F0089F;
-	Mon,  9 Nov 2026 10:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794219701;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h2fnTfgnODJfpFx5D5yC90YIt5Owo0/yc3Lf4WILZET6iqBmjQo+3T7G3J2qmxl6E
-	 pLp5A8M2L30Whdr5F6TO2M2CyBGha6sRFUKfkArocLWCjvDeVkOb1L+HFrUyDaiuBT
-	 XlKBhBT4g7sLicU6H+itgKryFcUfoJ1SiVzQVt2SKdxFl8QT+FwOuM8FDs7TNLiW3i
-	 vQ/uFEQCijW3S0l6tSb+s+U1VTYnv8xewaCddUAZHfYu+hVRjzd6IVb8w0lszTAmyG
-	 gs18gj31/+1H90aSrmXUyFZCtYFe37Lqzz/b9o8UCaQxmAUC10hHOHrIS0pJwCDUge
-	 2376gmqFBZErQ==
-From: netdev-bot+sinfo@kernel.org
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hramamurthy@google.com,
- jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v8] net: libwx: fix VF PM suspend/resume flow
-Date: Mon, 09 Nov 2026 10:21:39 +0000
-Message-ID: <179421969986.488859.13582406441576044740@kernel.org>
-In-Reply-To: <20261109101442.84605-1-mengyuanlou@net-swift.com>
-References: <20261109101442.84605-1-mengyuanlou@net-swift.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Rnq7w67q
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4jNQnw5dx8zNlct;
+	Mon, 09 Nov 2026 11:22:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794219748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T7TAPE/7YhD5ngclGTREyMx61AzehRbnlDAFX5Ebjf4=;
+	b=Rnq7w67qr3fdW8K0dRjJ2X5SQEXHYt+9dK6WfcRgEEH9wqqXahCq4z5TfX6F9sw3GOaGwy
+	SEJbn0MEekLBrYoRMtUPQHCOPd5TWRksWGbTtJ0+WN9kfo2Fy1VaVBWjUTS4/76B9TzWtb
+	bQfnhf2mgTI4r1DRQjews0iTccI7u0vht8j17p52PfqfY4A/O8/QB+wNIQN4bWBsmtLyt3
+	SXT1TJNvmxVHpds8f6IPmWWhCoHU/sxlGmNsKbYBQn+W9/INgwj8WXYqU7EZ0RJ1zP91Jb
+	XghtWp+xinEG90AxN+ScwFyZSmiwq3x9CjEl2gtRkLXy8mfNI6hrMxyOx4p+LQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+Message-ID: <b1d44592-ddf8-4103-ae3c-dd1c67641f01@mandelbit.com>
+Date: Mon, 9 Nov 2026 11:22:24 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,29 +66,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 1/2] tun: bound the NAPI receive queue
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, jasowangio@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ eperezma@redhat.com, shuah@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ maheshb@google.com, peterpenkov96@gmail.com, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20261103142232.1869185-1-antonio@mandelbit.com>
+ <20261103142232.1869185-2-antonio@mandelbit.com>
+ <willemdebruijn.kernel.20268598d87e6@gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@mandelbit.com>
+Organization: Mandelbit SRL
+In-Reply-To: <willemdebruijn.kernel.20268598d87e6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4jNQnw5dx8zNlct
 
-Hi!
+Hi,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On 06/11/2026 22:04, Willem de Bruijn wrote:
+> This is quite a complex solution.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Yeah, I agree. Trying to address all concerns (including Sashiko's) got 
+me a bit out of track.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+> 
+> Can we perhaps simplify it a bit? For instance:
+> 
+> On tx only keep the lockless check. Number of packets that can bypass
+> that is bounded, by the number of competing threads.
+> 
+> On rx avoid the new queue, by not temporary presenting an empty queue:
+> 
+>          spin_lock(&queue->lock);
+>          if (skb_queue_len(queue) <= budget) {
+>              skb_queue_splice_tail_init(queue, &process_queue);
+>          } else {
+>              while (skb_queue_len(&process_queue) < budget &&
+>                     (skb = __skb_dequeue(queue)))
+>                  __skb_queue_tail(&process_queue, skb);
+>          }
+>          spin_unlock(&queue->lock);
+> 
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Ok, I get your point.
+Let me spin another simplified version.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Cheers,
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+pw-bot: cr
+
+
+-- 
+Antonio Quartulli
+
+CEO and Co-Founder
+Mandelbit Srl
+https://www.mandelbit.com
+
