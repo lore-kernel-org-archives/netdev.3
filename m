@@ -1,99 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794268646;
-	b=J/oYkfdtKPrL1cin2wXoEu79MNS2wQxp0LxJtTmkVbyNKK0LlCAZUZpyZTUYsRxNTr/H
-	 qlV28lo1tvzdsV6EOzdCYrjjPqIzjYyD+jAY/rXAHWkhOU9R/MXMSS8DBVEWMSfytwxjf
-	 y+uPu0y44aq1JNOzjhKhxDM05hAFcBvqJmfITBsDtvRlWuYKtOL0r15hXLYb904YbZ3j9
-	 3H1M3K/tzhHbKRCVDraWLJl62mRdj6DM+jEp5srkXvsMQxSGfxH4vwD+aFVUMtH66BEq9
-	 fohy59DWPUxdgbJ+ZswIMM218p0xKp/rzMIhowKjpi66Fl1u2JFQutg1SS1Gj1GfTag==
+	t=1794268647;
+	b=uOrWFTGtvZL8I96WS5S9u4kBcXs92ELv3PABGucNt2OMMtUo+4nSsNilMbg2ZwNRqHET
+	 J/OhpLK6JdZzwDTlRDK1u4jPnMG9EqodoE7eEUMwJojV4zxEncwLbr3DvashTIhGeAVC6
+	 nLlfLyuKoKkCpN1G8JQF17ivRpfkrrwAzNX4s6Q8gXF2xpkVl/FLgnU+WUxJWeBRENt1L
+	 9G4PqWn8SwGKORyyvEe3+BxRq5oFajg1xALg/djjqZUbKzs9D1ynpMMwKISFHxjKfr0E5
+	 v+Ocm4/vUMUNTL9RvrdN7EpkMcU/Nrg0RsbhkZddxyk1xRAemYbf5q1+1hnWLxsHpPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794268646;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=c2l02lH4CkPIKl8yer1fYXore0VFomr5mbN4wJ3bvKc=;
-	b=mUtqmI+OHWcs/WiwXEO88le7DG9HlrfrxsboHxoJC0Nts7Ebqi5rHaTv3Qatr9sREPDr
-	 cW2IxbZQB0Z/J9Kzy7jaKbnEBnn0/TXdy9qucGwlua0Gl3oywxqloeLq3wbOIc6q8by2d
-	 QIKtUPU/lJVOO0lQKYL9R3QlbDEYqorSbo0rUdxZscYltP7ltBaKcVX4C3KJE7fBKOn9+
-	 7IsGH0kV7M9NwKpsS6v4udyGToDF5CTwe0Ttr1pRiamC4GfiZQQKesgVzQvw5q3ujcx0B
-	 zzbJoU8VdJ3fZ8aAtVEPu3laE901147OyGEnwf8IcRG26HppJQS4dFnFQOQRM1PRrrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794268647;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=S2+N6hk6wMohwuzi0HttE0MYgLDvPlo4t3NGRwXKjq0=;
+	b=f70SzdV4SwlivBJOb2AkCrDRJ7Zq23/mXFLnEx8kBditxo7q2N5WMa/9sZqH84weM7J4
+	 ZhzCgkGWJdtcN/roHnpGSNKxDWZQK2aEi1xojj4tN7Nj2BJCdO/2/XsZFoGPRCQwt9XWZ
+	 9xogYDm12gG3YFpLiatPO/Zr6YlHkT+3YFM1+0iZGUFgN794RXnr7RxCAAFb39D1mov5v
+	 GXGverh6FMpffFuGz973tLcIDG2zUnPDjRz0ZdYc6+wVr0PGxM20SHNnObSCwYKjuSH6d
+	 yNtnpOUlj64IwPWYPzgSfAfSItfmcO9pad7OJ+G2Zwk2tfJlRXlGPdio6NjVgiCWtCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="K/ookRI7";
-	arc=none smtp.remote-ip=209.85.216.98
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hghoLW4P;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7096F6071832
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:57:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7096F6071832
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7A360A262F
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:57:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA7A360A262F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=K/ookRI7
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so978035a91.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:57:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794268645; x=1794873445;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=c2l02lH4CkPIKl8yer1fYXore0VFomr5mbN4wJ3bvKc=;
-        b=UQLNxaOa9/UTWcuUjW6sHNcGyhc7LljzHKPJTe+bDfvJEHOslea3mkfVrHKRVZScy+
-         mdxTXbuPqmWZ7Rd6st4t+Va2MEiSwx+wAYmKdkT3NL4eMTEYdMh9qrcHTZOGJyIxDgxn
-         Pqtc1X+NG9zGquqdMC+TKkkBUWeePEPqsB81TzZJDns8HOmtfeR3wfFPjYlT7d7EgnIs
-         +RXwit2Vm0Ke16MusfN/+NFYFKdZqfEUL0mTKTrh0Q9F8vhkjTWVkskx3BvXd6AWOKkS
-         dy3bbk9ZoVds89GUc3iylSpGskBpk5x4dmBaYv408lzLfErqLEolC4Q72/iirlvcBJog
-         7OrA==
-X-Gm-Message-State: APuU4Z9n7xEypnp4gsXcEBW0iWQcTFnT6veMwBTGChUJBDA1Klqh7+JC
-	P+mEz5wLryVjJXhoc/yMcw5yF2SZ7bM7tESC2sB11f4NhH6fb1MPZk8V68Iuyw3vgqk/3X/JUdC
-	O+BXqSYcCpIIZq541K8vfzJoEJeCo1ZUUXZj6SNJGXvEkZAIPT6WWGX5iQhM1tgloYIyPaaiCQP
-	WYPa80ZDxak1zEwiNSpKmXfPO1XLOJ0DwbcLOGZM8MEDEyWKH96ctWtjlwANUNz/6ECx1dXpguE
-	/5lVfgpPZDk28CY
-X-Gm-Gg: AYBFou0ATqzdVQRp7wSjJBVRVU76uMQ57KFd8Do+ugqulSo0ymnNHT0R5xftSHaYfqQ
-	NzXjpv/dt4W5V96Pam6UWpwnSm+M/rdLyFvFBEh1g8AVptBFtvnsryjLIvl5ABC5Y0CIN/gLmD3
-	ydkKfzGS6ORNVUTEkjaCMaQ4BGQPNKWr+F8lI1/cMAkI6zXEhvxDX05wBEey7exyZfte7OWVL8C
-	ypbS1GldRZHdaLhU9K6fworC28bpKzP8qp38EaTbk8Vd0BE46ZHdj0YesgAtF3tjOhmiwd0lr/H
-	uBImRirZk7hc7NdVpbmmZLqccNyJBSqDPNEdV2VP0fYhmdyeW+BvxZ9xA2ljE/XkZ4l0sldqkZI
-	M9nlyU7NSK1S8mgGgMUPeAObeV6plRzomStZP1ArTFkmYQOjz95sLb7fQVeDSMEI/myx/HbajXu
-	SqyRJKTGM4fOkGt6p8mFZZuMf7fKw9aKn+jFa6O0oh
-X-Received: by 2002:a17:90b:448f:b0:3b0:af68:77a with SMTP id 98e67ed59e1d1-3b166aeefb9mr1143479a91.6.1794268644564;
-        Mon, 09 Nov 2026 15:57:24 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b16700d812sm674599a91.4.2026.11.09.15.57.23
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 15:57:24 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93f1e62510cso299878885a.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:57:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794268643; x=1794873443; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c2l02lH4CkPIKl8yer1fYXore0VFomr5mbN4wJ3bvKc=;
-        b=K/ookRI7S4LJQIWYZUBH4covA9zZEZL+Vyxe7CkJEHbCcfnMqrigxh8b5MLRjMCK5r
-         N2ZWIto40byAJr0vsNXHwevSBtiahcqeSXmlTrT2pwdUjS2SeI4729iqL5DqsL/PkIs6
-         lXyoTlDVIGcvRMp65u0MCoxQAvJ9Y+fvYOKk0=
-X-Received: by 2002:a05:620a:8089:b0:947:90cc:f151 with SMTP id af79cd13be357-9479f1c07ffmr155202585a.7.1794268643073;
-        Mon, 09 Nov 2026 15:57:23 -0800 (PST)
-X-Received: by 2002:a05:620a:8089:b0:947:90cc:f151 with SMTP id af79cd13be357-9479f1c07ffmr155200585a.7.1794268642539;
-        Mon, 09 Nov 2026 15:57:22 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e734698sm94360885a.13.2026.11.09.15.57.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 15:57:20 -0800 (PST)
-Message-ID: <c7ed60fe-eddd-43b5-9576-f574b5dd80da@broadcom.com>
-Date: Mon, 9 Nov 2026 15:57:18 -0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hghoLW4P
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LE8iV703463;
+	Mon, 9 Nov 2026 23:57:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=S2+N6hk6wMohwuzi0
+	HttE0MYgLDvPlo4t3NGRwXKjq0=; b=hghoLW4PFt2/1oJ9/6TDzDfd+6TmBzGiI
+	QPiZl+HX4w8VyGiCelzBCYBztunmP1XCrOmzaE9EBUXVQ8CxwKCLUyiGStHf9jL1
+	qt8vEReqVzgdzw5BmYOduXkQPYq+G2FbCzUvLGas8hnCv+cLoXbMRVrtl8jCjSxe
+	oc4a6nXoP1tbTfuvfmOYJy2/cYzct3oQ8dUsY8ugTwQHYFIx36s9tcvGVLl3wGi+
+	07jIaf0tJ7NCzYVFQExPPBe56+iixntXlOiXt1sxjKHQu0X1a9zqLJ4E3tqt+Npa
+	yUdJh+GXTDMmmHUWtbhBZ6GYp7W5t4RKhvz3BayB9Qr3WRR78OGyw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsug62c09-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:57:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LYr8o804996;
+	Mon, 9 Nov 2026 23:57:11 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htepvvhr0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:57:11 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9Nv9A433096198
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Nov 2026 23:57:09 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2593558059;
+	Mon,  9 Nov 2026 23:57:09 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CDE1858028;
+	Mon,  9 Nov 2026 23:57:05 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.169.223])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Nov 2026 23:57:05 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: Mingming Cao <mmc@linux.ibm.com>, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+Subject: [PATCH net-next v8 13/15] ibmveth: Expose per-queue buffer pool details via debugfs
+Date: Mon,  9 Nov 2026 15:55:54 -0800
+Message-Id: <20261109235556.60604-14-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261109235556.60604-1-mmc@linux.ibm.com>
+References: <20261109235556.60604-1-mmc@linux.ibm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,240 +97,250 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 4/8] net: dsa: b53: reject conflicting mirror
- destinations
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, vivien.didelot@gmail.com,
- linux-kernel@vger.kernel.org
-References: <20261030211617.288562-5-florian.fainelli@broadcom.com>
- <179348376172.3131.11440720201294156466@kernel.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <179348376172.3131.11440720201294156466@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: UnEOSmyi-MmVNpf-tlWf4d5xHM7ZrP5c
+X-Authority-Analysis: v=2.4 cv=PeVqFShd c=1 sm=1 tr=0 ts=6af25dd8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=QbvBlcoE7WtlK0dhai0A:9
+X-Proofpoint-GUID: o63SAEPWll-6tDbbK_e9UyY9PFFDncOK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfX48xUuwo5Dv4e
+ CbP4aJk3d2jcta2FELPAlms67QaZHG9+jO4MRI9SlHy61UJRq8UFO9a041dD1sL7BbGy/H29N35
+ I6JSOKiC29Twojqp4/UPE0mUNN7irtXfnxNnmVu0khOoW3s2iRPsZ9bLoMQusFbsDiQDsiHPz+p
+ HjOseg7SnTaZJcxP9wXV/TNiVa1xVMwj8jh3d/jDXTWJiN/Oe2PWUk7Sx3oxdEhKAS+wknXuFR8
+ 2RHHLV689L/bY1sZKN6jPPZLeGjwAXSYYdaZz4IweqibrgeJX2WejpNc6zXyCj+0ioOkdbYfZjk
+ S2MqYdZ0DRWqLSi2wUU1aj48YkV85z9UZIW0M8zqJz1SUFID/htnSMd2R5cWntdLlWlP6fwPS3z
+ xE57OJygyVNvALl6bAdwi+m7wue1EQZNLgwb5WhMaLBjCR4ecfIXSxBBDYn+b9gtw7K9+Z0KRM4
+ qsHFR4WNoAvzrmw7Vtg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfX1mPLzmAbSvsZ
+ HXpSGp/k3aDLjNeHLgJyozFsTwxQjrLllRUsnOLNcKYIwh63KBL1yzaQOlqSEikWPn/3dmiQC/2
+ m+DE3lUNp+tHqP8FmEzKpQLuuSRu/eM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-09_07,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090094
 
-On 10/31/26 14:56, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] At this commit, the new conflict check in b53_mirror_add()
->    (drivers/net/dsa/b53/b53_common.c:2553-2557) decides whether rules…
-> - [Low] The commit message says the patch propagates a failed capture-
->    control read, but only the B53_MIR_CAP_CTL read in b53_mirror_add()…
-> 
-> Pre-existing issues:
-> - [Medium] Each per-port, per-direction mirror source bit is shared by
->    every tc matchall mirror rule on that port and direction, but it is…
-> 
-> --
-> 
-> net: dsa: b53: reject conflicting mirror destinations
-> 
-> With this patch, b53_mirror_add() reads B53_MIR_CAP_CTL first. While
-> MIRROR_EN is set, it rejects a new mirror rule whose destination differs
-> from the one already programmed. b53_mirror_del() now clears the whole
-> CAP_PORT_MASK field along with MIRROR_EN when the last source is removed.
-> 
->> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
->> index c38e8c5838bd8..378f47e7250cd 100644
->> --- a/drivers/net/dsa/b53/b53_common.c
->> +++ b/drivers/net/dsa/b53/b53_common.c
->> @@ -2543,7 +2543,19 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->>   		   struct netlink_ext_ack *extack)
->>   {
->>   	struct b53_device *dev = ds->priv;
->> -	u16 reg, loc;
->> +	u16 reg, loc, cap_ctl;
->> +	int ret;
->> +
->> +	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &cap_ctl);
->> +	if (ret)
->> +		return ret;
->> +
->> +	if ((cap_ctl & MIRROR_EN) &&
->> +	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
->> +		NL_SET_ERR_MSG_MOD(extack,
->> +				   "Only one mirroring destination is supported");
->> +		return -EOPNOTSUPP;
->> +	}
-> 
-> [Severity: Medium]
-> Can leftover hardware state make this check reject a valid first rule?
-> 
-> The check only looks at MIRROR_EN and CAP_PORT_MASK as read back from
-> B53_MIR_CAP_CTL. It doesn't look at B53_IG_MIR_CTL or B53_EG_MIR_CTL.
-> 
-> At this commit, nothing in the setup path writes any of these three
-> registers. The only writers are b53_mirror_add() and b53_mirror_del().
-> Also, b53_switch_reset() doesn't soft-reset every chip.
-> 
-> Suppose a bootloader, a previous kernel (kexec or warm reboot) or an
-> earlier driver bind left MIRROR_EN set with capture port X. The first tc
-> mirror rule to any port other than X would then fail with -EOPNOTSUPP and
-> "Only one mirroring destination is supported", even though no software
-> rule exists. Before this patch, the add path just overwrote the stale
-> destination.
-> 
-> The reverse case also seems possible. Stale source bits with MIRROR_EN
-> clear pass this check, so those ports end up mirrored. The same stale bits
-> also stop b53_mirror_del() from ever clearing MIRROR_EN.
-> 
-> The later patch "net: dsa: b53: harden mirror register programming" in
-> this series seems to fix this. It adds b53_mirror_init(), which zeroes all
-> three registers from b53_setup() and bcm_sf2_sw_setup(). It also bases the
-> occupancy test on the source masks:
-> 
-> 	if (((reg | other_reg) & MIRROR_MASK) &&
-> 	    (cap_ctl & cap_mask) != cap_port) {
-> 
-> Could that be folded into this patch, so this commit doesn't regress on
-> its own?
-> 
->>   
->>   	if (ingress)
->>   		loc = B53_IG_MIR_CTL;
->> @@ -2554,11 +2566,10 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->>   	reg |= BIT(port);
->>   	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
->>   
->> -	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
->> -	reg &= ~CAP_PORT_MASK;
->> -	reg |= mirror->to_local_port;
->> -	reg |= MIRROR_EN;
->> -	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
->> +	cap_ctl &= ~CAP_PORT_MASK;
->> +	cap_ctl |= mirror->to_local_port;
->> +	cap_ctl |= MIRROR_EN;
->> +	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
->>   
->>   	return 0;
->>   }
-> 
-> [Severity: Low]
-> The commit message says the patch will "propagate a failed
-> capture-control read rather than making the decision from uninitialized
-> data". Are the other register accesses here still unchecked?
-> 
-> Just above this hunk, the source mask read is not checked:
-> 
-> 	b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-> 	reg |= BIT(port);
-> 	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
-> 
-> reg is an uninitialized stack variable. On failure, b53_mdio_read16() and
-> b53_spi_read16() return without writing *val. A failed read therefore
-> writes garbage back into B53_IG_MIR_CTL or B53_EG_MIR_CTL.
-> 
-> Both writes are unchecked too, and the function returns 0 either way. DSA
-> then keeps a mall entry that the hardware never accepted.
-> 
-> The source bit is enabled before B53_MIR_CAP_CTL is written. If the
-> capture-control write fails, MIRROR_EN can stay clear, and a later rule to
-> a different destination would pass the new guard.
-> 
-> b53_mirror_del() has the same pattern. If its B53_MIR_CAP_CTL read fails,
-> reg still holds the other-direction source mask, and that value is written
-> into the capture control register:
-> 
-> 	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
-> 	...
-> 	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-> 
-> The later patch "net: dsa: b53: harden mirror register programming" in
-> this series seems to fix all of these. Every read and write is checked,
-> B53_MIR_CAP_CTL is programmed before the source bit is enabled, and the
-> delete path jumps to an error label instead of writing back garbage.
-> 
->> @@ -2595,10 +2606,8 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
->>   
->>   	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
->>   	/* Both no longer have ports, let's disable mirroring */
->> -	if (loc_disable && other_loc_disable) {
->> -		reg &= ~MIRROR_EN;
->> -		reg &= ~mirror->to_local_port;
->> -	}
->> +	if (loc_disable && other_loc_disable)
->> +		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but each per-port,
-> per-direction source bit is shared by every matchall mirror rule on that
-> port and direction, and it is not reference counted.
-> 
-> dsa_user_add_cls_matchall_mirred() in net/dsa/user.c allows several
-> identical rules, and each one is tracked as its own mall entry. Earlier in
-> b53_mirror_del(), deleting any one of them clears the shared bit:
-> 
-> 	reg &= ~BIT(port);
-> 
-> With this patch, if that was the last bit, MIRROR_EN and CAP_PORT_MASK are
-> cleared as well. Does the remaining rule then stop mirroring in hardware
-> while it is still installed? And would the new guard in b53_mirror_add()
-> then accept a rule to a different destination?
-> 
-> The later patch "net: dsa: b53: reference count shared mirror source
-> bits" in this series seems to fix this. It adds mirror_count[2] to struct
-> b53_port, so the hardware is programmed only on the first reference and
-> cleared only when the last one goes away:
-> 
-> 	if (--(*mirror_count))
-> 		return;
-> 
->>   	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
->>   }
->>   EXPORT_SYMBOL(b53_mirror_del);
-> 
+With multi-queue RX each queue owns its own set of five buffer pools,
+so a 16-queue adapter has 80 of them. Nothing reports their runtime
+state: sysfs exposes queue 0 only, and only as configuration, and no
+ethtool key is per-pool. When RX drops under load, qstats
+rx-hw-drop-overruns names the queue but not which of its pools ran
+dry, nor how close the others are.
 
-Agreed that the conflict check needs to handle stale hardware state in 
-the same patch. I’ll fold the mirror initialization and register-access 
-hardening into this change, along with the shared-source reference 
-counting, so the fix is complete in isolation.
+Add a read-only buffer_pools debugfs file, one row per RX queue and
+buffer pool:
 
-pw-bot: cr
+  /sys/kernel/debug/ibmveth/<dev_name>/buffer_pools
+  (e.g. /sys/kernel/debug/ibmveth/30000002/buffer_pools)
+
+  Queue  Pool  Count  BuffSize  Active  Available
+
+Active is the poolN/active configuration flag. Active and Available
+are shown only for a pool that is allocated (skbuff && free_map);
+an unallocated pool shows 0 for both.
+
+The root is driver-owned so each adapter directory can use its stable
+vio name rather than the mutable netdev->name. It is created in
+module_init() and unwound if vio_register_driver() fails.
+
+A multi-line table does not belong in sysfs, so the historical queue-0
+ABI is left alone:
+
+  .../poolN/{active,num,size}
+
+Those stay one-value configuration for queue-0 pool classes. Open
+copies that geometry to queues 1..N. This series does not add
+per-queue pool sysfs dirs.
+
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+---
+Changes in v8:
+- no code change beyond the rebase
+- commit message: per-queue drops are in qstats rx-hw-drop-overruns;
+  the Active column is the configured flag
+
+Changes in v7:
+- no P13 code change
+
+Changes in v6:
+- create the debugfs root in module_init() instead of lazily on
+  first probe, which raced concurrent probes and could orphan the
+  directory on ERR_PTR(-EEXIST)
+- rename the pool buffer-count column from Size to Count, so the
+  debugfs table stops reusing the word sysfs poolN/size spells as a
+  byte length on the same pool object
+- widen the down banner: geometry above queue 0 is only populated
+  once open copies the queue-0 template
+- scope the dump RTNL comment to geometry/pool->active; available is
+  atomic_read
+
+Changes in v5:
+- debugfs buffer_pools_show walks get_num_rx_queues()
+- Series renumber: mailed v4 11/14 debugfs -> tip P13 (14->15)
+- Path uses stable vio dev_name under a driver-owned root (not netdev
+  name - avoids rename/collide)
+- rtnl_lock around dump (writers are under RTNL)
+- Show Active/Available as 0 when pool !live (debugfs view; free-path
+  available clear already in the buffer-submit patch)
+
+Changes in v4:
+- Move the all-queue buffer_pools diagnostic from sysfs to debugfs;
+  subject updated to match.
+- Keep historical queue-0 poolN/{active,num,size} sysfs as one-value
+  config (template for MQ); do not add per-queue pool sysfs dirs.
+
+ drivers/net/ethernet/ibm/ibmveth.c | 80 +++++++++++++++++++++++++++++-
+ drivers/net/ethernet/ibm/ibmveth.h |  2 +
+ 2 files changed, 81 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 1e2e845f8011..e805e7b1d2fe 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -31,6 +31,7 @@
+ #include <linux/ipv6.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/debugfs.h>
+ #include <asm/hvcall.h>
+ #include <linux/atomic.h>
+ #include <asm/vio.h>
+@@ -3811,6 +3812,67 @@ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_get_stats64	= ibmveth_get_stats64,
+ };
+ 
++static int ibmveth_buffer_pools_show(struct seq_file *m, void *v)
++{
++	struct ibmveth_adapter *adapter = m->private;
++	int i, j;
++
++	/*
++	 * size / buff_size / pool->active are written under RTNL
++	 * (veth_pool_store, open template copy). Take the same lock so
++	 * those columns are not a torn snapshot. available is updated
++	 * from NAPI/softirq; only atomic_read() keeps it from tearing.
++	 * Not required for memory safety; embedded arrays only.
++	 */
++	rtnl_lock();
++
++	seq_puts(m, "Queue  Pool  Count  BuffSize  Active  Available\n");
++	seq_puts(m, "-----  ----  -----  --------  ------  ---------\n");
++	if (!adapter->opened) {
++		seq_puts(m, "# down: Active/Available 0 unless allocated\n");
++		seq_puts(m, "# down: geometry above queue 0 set at open\n");
++	}
++
++	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++) {
++		for (j = 0; j < IBMVETH_NUM_BUFF_POOLS; j++) {
++			struct ibmveth_buff_pool *pool =
++				&adapter->rx_buff_pool[i][j];
++			bool live = pool->skbuff && pool->free_map;
++			int active = live ? pool->active : 0;
++			int available = live ? atomic_read(&pool->available)
++					     : 0;
++
++			seq_printf(m, "%5d  %4d  %5u  %8u  %6d  %9d\n",
++				   i, j, pool->size, pool->buff_size,
++				   active, available);
++		}
++	}
++
++	rtnl_unlock();
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(ibmveth_buffer_pools);
++
++/* Driver-owned root so per-adapter dirs use a stable vio name, not the
++ * mutable netdev->name (avoids stale names / eth0 collisions after rename).
++ */
++static struct dentry *ibmveth_dbg_root;
++
++static void ibmveth_debugfs_init(struct ibmveth_adapter *adapter)
++{
++	adapter->debugfs_dir =
++		debugfs_create_dir(dev_name(&adapter->vdev->dev),
++				   ibmveth_dbg_root);
++	debugfs_create_file("buffer_pools", 0400, adapter->debugfs_dir,
++			    adapter, &ibmveth_buffer_pools_fops);
++}
++
++static void ibmveth_debugfs_exit(struct ibmveth_adapter *adapter)
++{
++	debugfs_remove_recursive(adapter->debugfs_dir);
++	adapter->debugfs_dir = NULL;
++}
++
+ /**
+  * ibmveth_pool_kobj_release - Mark a pool kobject finished
+  * @kobj: kobject embedded in the pool
+@@ -4069,6 +4131,8 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+ 
+ 	netdev_dbg(netdev, "registered\n");
+ 
++	ibmveth_debugfs_init(adapter);
++
+ 	return 0;
+ 
+ err_put_pools:
+@@ -4083,6 +4147,8 @@ static void ibmveth_remove(struct vio_dev *dev)
+ 
+ 	disable_work_sync(&adapter->work);
+ 
++	ibmveth_debugfs_exit(adapter);
++
+ 	ibmveth_put_pool_kobjs(adapter, IBMVETH_NUM_BUFF_POOLS);
+ 
+ 	unregister_netdev(netdev);
+@@ -4329,15 +4395,27 @@ static struct vio_driver ibmveth_driver = {
+ 
+ static int __init ibmveth_module_init(void)
+ {
++	int rc;
++
+ 	printk(KERN_DEBUG "%s: %s %s\n", ibmveth_driver_name,
+ 	       ibmveth_driver_string, ibmveth_driver_version);
+ 
+-	return vio_register_driver(&ibmveth_driver);
++	ibmveth_dbg_root = debugfs_create_dir(ibmveth_driver_name, NULL);
++
++	rc = vio_register_driver(&ibmveth_driver);
++	if (rc) {
++		debugfs_remove_recursive(ibmveth_dbg_root);
++		ibmveth_dbg_root = NULL;
++	}
++
++	return rc;
+ }
+ 
+ static void __exit ibmveth_module_exit(void)
+ {
+ 	vio_unregister_driver(&ibmveth_driver);
++	debugfs_remove_recursive(ibmveth_dbg_root);
++	ibmveth_dbg_root = NULL;
+ }
+ 
+ module_init(ibmveth_module_init);
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 66288f8e8349..31c2c72b2cff 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -399,6 +399,8 @@ struct ibmveth_adapter {
+ 	struct ibmveth_rx_queue_stats *rx_qstats;
+ 	struct ibmveth_tx_queue_stats *tx_qstats;
+ 
++	struct dentry *debugfs_dir;
++
+ 	/* Ethtool settings */
+ 	u8 duplex;
+ 	u32 speed;
 -- 
-Florian
+2.50.1 (Apple Git-155)
+
