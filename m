@@ -1,63 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794194476;
-	b=XC6FwQVt3TKTX4wbDrcw3DuwWKlvx3Br85L8GSUIKYPVRofY3hoIDYU/S7iCa8P08Y99
-	 prLel4zxc8t7ny65e3zdpZlX/Ji31Jl/8UPijICKAsrhp5IbThfGjUn0p88di/CtA6/uW
-	 mE55XP6ymaqrgshi6HNGKXQ3UKO4Pg4uhQjNZbt+bV4NePTyLRjVMw5b97RkuB01CeQow
-	 pJ4YrI/gTzMHw8amf5AqdlBoyBurupDAU9Y9FsqwU6YDh0JrO+H6Ni1Hl5IVUMrjWABRB
-	 K06fRZjDTo0Zi+rEVdEV4jDhXiWUJFihvnyQHtJ7uuiSxzXmVG/NunwpJhTxX4Tussw==
+	t=1794194506;
+	b=w38j0+UkcqGfXZWMV2hV1yd0GuvaWTvR4kgccRLTANXTWYTewq+u7oxEE+DWyx/kC6jj
+	 J1nWWr8QDEup5GeiEwJFb566md8hm+aLTe/ugn6CJ0e44iqeMsFq8t0Re9GFtSferrYR3
+	 jg+NtA0KLlrYvhHa91ggIFoVWJy6T/2DayOZoH2mBr+w7WOQY5dCp7qZ09qd5+Fo6TrlN
+	 zqx+9yMVCOL5DMCtuJqIbBZQHLEYBxkTv2Y3XE3dL681mSOZFnrzIEqN/6uryNL72JSbZ
+	 MS/0pIyRz1K6SUhMpsZzywaS/j900db2N4TnEt5TGgHPuyKs0jLwPSk4t89USMRggMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794194476;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=acWunQSIzzVlGDIcltnxwoqU53HIn/lrZc0Hy8R/cxB0UpyziHH4SllLkdBmt0ptAvnH
-	 QacAbod9HQmOE6DMBCsLMog2zFw200lUCC3n75jG7WiOHl/M9T5HgWzYxKlawFXaIXeU0
-	 sDedfIShVEyWiLS29SwS4vVSy7U5HSXZqB7A44YCSg+AqqAr0YDZTV2TTBfIqzUtZ9/0o
-	 NE9RuI1wW3K7+IbWyCqS3x/wi2VcMtQYrDzVTi+I6Gn4lu8MeL+BAG/UVG8vzCToh6+Jk
-	 wgtrKjdxG7h+aInm+qkmp9YoEXWR4hdUQE+dZu1kUdOb+DJPkmwuUXNukHVJ/+/Ffnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794194506;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=57oS6m1b9doBy7H5rmfFkLclTYei+DSwfk/1lcfyc1c=;
+	b=bRRK33EF5tiYndZJiXQl16bUfc/YPZK2eR5fwCF2ijBTyDDJNfTGBMNW0CEANlVb/U0f
+	 j4XqBER12yPKvz4CcmtI9PkEutqsSUzo29sdCTo0B3Fo2LlgRo1/OpqpqGrmJ+c3PAy3o
+	 U6AetUdbVWlhMwfvTglN+7u8LX/niE6CABF6gcONcoqCDrOMRSHk3SnYDtzHUsVzFSY0S
+	 guS00WmatZmQQK/Fid8Op0JDHc76X4eBSXFdDq0LLBP3kNS2LjVw6UQuqWb6+Lg5pQekO
+	 F+4FyRK9lJ8oOIjwAGtHETrCM5JgV0fgHA7UQx06bZgjAHQyWOhdpH/G+EiZ9UhQwGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nfvgpl1O;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPFtGz7H;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06594606A31C;
-	Mon,  9 Nov 2026 03:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B13606A320;
+	Mon,  9 Nov 2026 03:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nfvgpl1O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C751F0089F;
-	Mon,  9 Nov 2026 03:21:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPFtGz7H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA1B1F0089F;
+	Mon,  9 Nov 2026 03:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794194475;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nfvgpl1OBKyZRM+kcsOhd8S7TqREVkdsk+zLhXRVwuZcx9hN3C3h5FpvwscGvXEFA
-	 PCiHXo0fYlGPGZ35H5uD7W6J0ccMSbw0VpnEuC8seOCoDCkNDdnCTNbtRO/9jiIam9
-	 ODbGDJJUph+CcuTajicXo74kgdwzby8VzwubgnSrlLg7DfqFMycywOi/zGHV2Iq1s8
-	 2uu2HJzGSGFkRH7xttF8p+Rxzh7IdDL5HOIccA8ccJegVUJUkOk3PI4QREpWEKBLOV
-	 VkHxAfo8PzJLDua0Titu8bSh2K6sGEItsnbAPmhiI9DrSwk3MEvJHYsNWKtqna1vCX
-	 m56UmdOFrVQxw==
-From: netdev-bot+sinfo@kernel.org
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
- David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Thierry Escande <thierry.escande@linux.intel.com>,
- Samuel Ortiz <sameo@linux.intel.com>, Samuel Ortiz <sameo@rivosinc.com>,
- linux-kernel@vger.kernel.org, yana06070@163.com
-Subject: 
- Re: [PATCH net-next] NFC: digital: fix target leak after Type 1 Tag discovery
-Date: Mon, 09 Nov 2026 03:21:14 +0000
-Message-ID: <179419447430.488859.5809759694387881043@kernel.org>
-In-Reply-To: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
-References: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1794194505;
+	bh=57oS6m1b9doBy7H5rmfFkLclTYei+DSwfk/1lcfyc1c=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=GPFtGz7HiHr6oYZ0QNpfF+ZgxAbQ2GM/oFwn9mqtHe6QgSs7tF8wNOxDOSmqjPtu+
+	 2W0Z0tBG75Cf3P0DW3WsUXKX0nSaoFE+jJLq0lWVz3uhDvhCHNz8ZHh9760xGakgAr
+	 qg+EmSGZQ2q/RxqH/LwIAF580uYFck9KG73EXZcRzv+7hB0goVB7VqXlZDBx9JLrkw
+	 TP/yYbQCUTMHDDXamTX1eUgz5gNFV9CskH3QRkUOQWsJNNOKqBDDSA/5E4gP/1h7Me
+	 AUVHe/azjKhr0eYle8aRjjL9qZjZ6WLSOX1/42TAc3EIREOL/K7IRZIouV+iAJIKss
+	 WD7zw+9OOQ6iw==
+Content-Type: multipart/mixed; boundary="===============5952342031053075532=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,21 +49,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Message-Id: <63803328eeb37398cdfa03e5991651c0fb151109c74648b599b29b9dd9508a1d@mail.kernel.org>
+In-Reply-To: <tencent_6A1D611E2DA9545DA6E76ABCCA806BC39707@qq.com>
+References: <tencent_6A1D611E2DA9545DA6E76ABCCA806BC39707@qq.com>
+Subject: Re: [PATCH bpf v4] bpf: check cpu_possible() in per-cpu helpers and map callbacks
+From: bot+bpf-ci@kernel.org
+To: treebacker@foxmail.com,bpf@vger.kernel.org
+Cc: andrii.nakryiko@gmail.com,andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,netdev@vger.kernel.org,treebacker@foxmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Mon,  9 Nov 2026 03:21:45 +0000 (UTC)
 
-Hi!
+--===============5952342031053075532==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+> bpf: check cpu_possible() in per-cpu helpers and map callbacks
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+TL;DR: Not a bug, a design question: the new cpu_possible() check in the
+bpf_map_lookup_percpu_elem() helper looks redundant, since every per-cpu map
+callback now does the same check. Could it be dropped?
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+[ ... ]
+
+> @@ -133,6 +133,10 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
+>  BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
+>  {
+>  	WARN_ON_ONCE(!bpf_rcu_lock_held());
+> +
+> +	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
+> +		return 0;
+> +
+>  	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+>  }
+
+This isn't a bug, but is the extra check in the
+bpf_map_lookup_percpu_elem() helper needed?
+
+Every map_lookup_percpu_elem callback (percpu_array_map_lookup_percpu_elem(),
+htab_percpu_map_lookup_percpu_elem() and
+htab_lru_percpu_map_lookup_percpu_elem()) now rejects impossible CPUs
+itself, and check_map_func_compatibility() only admits those three map
+types for this helper.
+
+When bpf_do_misc_fixups() patches the call into a direct call to the
+callback, the helper body never runs.  So the helper-level check never
+decides anything on either path.
+
+Could it be dropped, to match bpf_map_lookup_elem() and friends, which
+leave argument checks to the map ops?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/42553704194
+--===============5952342031053075532==--
