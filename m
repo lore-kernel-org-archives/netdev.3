@@ -1,99 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794254616;
-	b=04gguFm1UgUT36zflzoOsJXF4nLc3Vbp7zyMB86pfZC7CNFyxxzHh9elThS8GEapKYDp
-	 gU/W+0w8t2oLoeIjPGLDFJNL/bxvp48CDiYMm/pqkEnDolA4JyXcvgRXu2FtUhUbEO1VZ
-	 ef+Ay8AuEIiJiRCgwZMFW4uvGMrebsy7e0hb+THPBwWay7cplcMQwKiW3WePN2duhZ80P
-	 Pe2I0XZfBIx2/iaRrqQbtVMihHID3mmNmqGlg4XqfYU4Thupzw4wUGqDbfRDb4nLWenPV
-	 II/4El7J5tSXMNyB+jun0X9IlFK6Z9s9Fq7e8KnQ8Y76c2H1lzqNN9A4D3gGj7+U9iQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794254616;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=hO10aJTqcdq/ahujE/caCvdQLD1fV3nWWuPROud/Q5U=;
-	b=1rtngS4/mxQu2wvq+pQR1JOi5ZvInEexiNKDr0lYQh8HOX0Q7FZm9vOwJoM+RubiY0/r
-	 wrjLiLRlL2a7Hudtn3n5TjQsrBRUqRxxu2/6JcB/IeElsmXpONPmdRHdnzwBZQblo/Nsn
-	 E6qarspYoL9/AmyvcV7iWkt1RCxZFxpccgya7JxUAFo9nV5GyhXshTqC0yuPaJmZW5Vuf
-	 NiQyKJ3WXht6gOhpHgoa+PpTHc8Od4jLJm6baD8ogRnXgUcE1vlF6ld+jmeTjrUNDRY7W
-	 LaQar/Iize6VDyyk/JFX5TpPVg7o2LWMzkMdtWY61txt3+oLnq+EHhsS3SlW+R9TXOw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="oNKxcVI/";
-	arc=none smtp.remote-ip=209.85.221.46
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794254911;
+	b=unGeR5rjn3BzpSXnNcfJpUfWRo/ECkooHRmRqwSywWf6+SLF/Mu3FW7UEe2thKJD2tvn
+	 sgZsh29Ukmid9s3I1tC6o+Z4coBxtYmkk0fHyEU+Mkj/msjl9CJnOv06IcVYCgLF4s8/X
+	 kMSwcwO6FgotKIqIB+IDPeu1l04EXUB2J9ewUuhTA+8oRS7cHrzyCE2fCNm2ANaTXj8KZ
+	 A8zUwTCrkv53oyvnXBzhA6bhX+ZXJoL6ISbn7DToGkkz8Vcgk1A22kfNLGopuHZixk5ee
+	 c9gpahHsFHfIGjIQyIBw/MGRm5qdCaaedj9xXiymWhWVnA/JmLi6z9sW62JPU7wWH5w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794254911;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=OWULWeROBq9QHKGDrZtJVZFqDXu9makIQwCeo4uR55Y=;
+	b=reijL5MAWROdQ9Ca7c3iyRu3tlGl07jUma7GDVDJLwKX5WpylFh+y4DrenCY9zArVDnh
+	 /Z91bSU1akhDL88YYwSLAMZLwGvn4LDzhifABpJDCwY3RTQaLqcuUN9jEYC/1HIk3B2MH
+	 +igm9sd7o1puezO6LyI0PMvcDeZs+KKuAEiEd4bxSM8cGboArGhwrkPzm4mAP2kx/+qnc
+	 dggWcQdd5iXbVRL11pWj2kJozbkwAk7eshTgNHVx2fXLAPJbnGXHhULZ4GO2UOfp2JCxS
+	 MiLIaTRYk3+t2j36hUCueMCSdaTtZtokBeVfS7WVuruOxqdqvLt0kXSOLzApTPVoaqg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebfIBqRO;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF5606A321;
+	Mon,  9 Nov 2026 20:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebfIBqRO
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794254910;
+	b=yHLccIuQmJPWYHOtcIEc5bIKeRxIfm4l18ovjHGuSiyiIzWHrlGgNMNhtSXXm5YgZm7C
+	 E24cYB/5m2u/WBCFbkJo53dttQV68hBhCrH3z6wzwYVhEbeRKD99Hf8G/WbR6pg9A7a+a
+	 2rf6mPQIInlKt2ZWS9VbRZX/Duvu3tE1MkFqHOEfkElffCqPpLChr7qJksBUdiOfJFtbi
+	 Qwajp2T2QtVuSJqW53bdn4P0I6ELtOQ9fkZgPYLLCH6G+TXe92IZL0koPP1g/PvPAjRwj
+	 chneViDlhSOTUT7mCJ5ZcaXP3AoRxWPNlPUgcQyyIR6lmAHOrHjZEYDNJaDPCLG2C/A==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794254910;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=OWULWeROBq9QHKGDrZtJVZFqDXu9makIQwCeo4uR55Y=;
+	b=qB7ieS30qaawhMex0PT2K7XOd1hga4zJL3iz71tcNFik1SYIMeg73Br+TykVCOXS0IqC
+	 JmEd8XVaaYQywUqGcihDyZsym/dLciVwojUCgUB8BCnQ10RoIcyh0p5DIpYNyQMuq+8nx
+	 BYXoy9rr1ieyR9oSlPRhSoLCbDYevfdF/lvqj9TvjCagunCHC7+AgrdNEt/4UtAm9FxrF
+	 C0ULI7lFzxPS7ZkpKhFOqiaCr58/cruG+ArDc/csJiV3tSTW3AgYvGri5/E5IzPgh+AK1
+	 iJeMZm0hovRx7w+87ico1NNpZXhT9A9HMwRmb8xZ5rm0sMFZxii6hfaYTbcbUlsEVyw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6E5606A335
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 20:03:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF6E5606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oNKxcVI/
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-492fcbfaa87so842628f8f.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 12:03:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794254614; x=1794859414; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hO10aJTqcdq/ahujE/caCvdQLD1fV3nWWuPROud/Q5U=;
-        b=oNKxcVI/TeeQxBDAuMqyCn+ZfQQO8blhqL8KlxBC30V65fOpcWXvZ9dfBeAjWf1Q6K
-         oHTBAEMwWh6UGyNWf1v8Ni2+oKmyI+4ri+9bcL/uQ3x6gc+0YuDaIXjQtdQvIChf8gDt
-         NfWoxLCmHPs79FMm+7QWr3wbPyBqSHGn1ZApTHXLNVJrLlNI/RdxjZskVe0gkDGQTabd
-         SEeESi4NtDlXaSfooFQNoTJ/fNUCHE3ElQm674W72D/i0yv+wUB/ZzxPvKFoUy9HslKc
-         2SaNu+jt8xZjWbTP4vo3TFQ+/9ZJPM3XToLKH6q7Vf3meq1ldiOeAMbs6gDvxC5GDgrS
-         Q4Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794254614; x=1794859414;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hO10aJTqcdq/ahujE/caCvdQLD1fV3nWWuPROud/Q5U=;
-        b=hK1SddNmrVXsy1AfB4Ckz0qQ96X3QKSt0+Rwa/7UOVdqr+a0/xaWgYHiCBAJ95TKFU
-         uVovLJ6xwmmh8kCqpWZcq1HqL19kzFQu3GB4lqaJx+D8/p0/n3d/eiMMEsmM2hBp0d74
-         K0/Be4Pbx1Ug7VcdKNP3r2QDpqci33URbbGS2loD1Y4HxD74BA/1lbfFuVB9QS7MdCvy
-         ElbCGYeTyqs6vI4SRE/iroZDNXUw7vssBrqeZkbn5UtX19yxI71wQ7wuHUaiBRoufXPt
-         08Q81gD1xvVGkXLT3tpxuO7NJK5F7WOTR+uJwq5PzlFmnvLtJIoAdH84t+gvQ4qtJEW7
-         JMnQ==
-X-Forwarded-Encrypted: i=1; AL+hErFIhD33vN/GzAKXY56eY3+0s+mtzEA2fCWnV2W1qvYg9Z+R/V6rMZNjo9Mfxpqq6QTQjrk5TCw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z90GjjDVHTuW20vIOmaoyQhyXqeUfvHnxjQ8aoAOiu7wuRDNpAu
-	fs3l1KCmr+OHpcG63iuhKlpxiZi/WhXzZsaDqXFmnk00RnePhVbFQ1lU
-X-Gm-Gg: AYBFou0tQCnKXu7HllrctdlHl40ge6nA2ffDfWOhEtkIf0/jysGGEJHdnVaXF8WnHTX
-	s/INe6cC64fjLZj9lotSV8teD+16+kAQJXYSf9hB4BtXujJ/X08M8IAMKsqzKKoXzjmdgWbMCxv
-	uijE3xaIl9sul2gB6ljfG/fSn/SPyF7k/ZRy5MTa4X9zcLhGKCqTfSPrZgFUVQvcRvABZn9/Tub
-	9gCuyAYxSZFZ8iUdxlBPGXCtbK6WQ0dXdpr8im7km9VuW4+K/3h0fK3cCDxcQ05pGUYEf9FsRN+
-	fqgKseIhp4sqkvzxOYGVqvz4oAxadeYFCkGrpjdXvJY5WcFJ3i+9kX1SVhRkLuqpJLNvAqfJ8Ys
-	x3gR0bqmBqpR51FdHfO5LrETwFdbh+hnYwNb4IBT9NabH1bwMmHjhxnJ5iMMC+tVO955tnf7tfW
-	Q1QP6B9Ud3uHgCRp+G9sMEHXTuCLzyTpiJ0zbsFIpwOKOpdCyy1mazh6xycZA+CKbb5mht64BlL
-	ilVqjMqjM5K9Jvxo/ir5s0oXI9Fof1Apl1ewIymw3Y/Q2A/lvJZCI7ysyK8y9o701SD22/xUiTT
-	rK3kkYl746EgEGRjT6mOUG9Bp0F7xsGi5CxcCn/l98rlfq83616UNGiT7Dbkn2xh
-X-Received: by 2002:a05:6000:4549:b0:492:b5e9:4916 with SMTP id ffacd0b85a97d-4982f874041mr553519f8f.24.1794254614069;
-        Mon, 09 Nov 2026 12:03:34 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49835858f64sm874068f8f.16.2026.11.09.12.03.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 12:03:33 -0800 (PST)
-Date: Mon, 9 Nov 2026 20:03:32 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Haoran Wang <haoranwangsec@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- rostedt@goodmis.org
-Subject: Re: [PATCH v3] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-Message-ID: <20261109200332.52e2fc0e@pumpkin>
-In-Reply-To: <20261109180748.33682-1-haoranwangsec@gmail.com>
-References: <179241614797.5916.13928836073297916808@whr>
-	<CANZ3JQQrrntu0TefPZC79pKSmsOfwAngRJyuaVm81DYaJNFHFQ@mail.gmail.com>
-	<20261109180748.33682-1-haoranwangsec@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by smtp.kernel.org (Postfix) with ESMTPS id D46901F008A1;
+	Mon,  9 Nov 2026 20:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794254910;
+	bh=OWULWeROBq9QHKGDrZtJVZFqDXu9makIQwCeo4uR55Y=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=ebfIBqRODot7wOSzMTZg5MD9ozpqRtBARsY21u3s2GmfRN9iIl/sKm2WCpB4S2rDM
+	 t51epgmb2erF4nAKJ8Wdt5VL1zLoCjUEzzVm4YVCEp5REcSoXsrHWDLRMeK6EWeiBe
+	 L0amVa53SEGZtQOTmnFkHZY2tetvw+kqgXo4Rou4X5NMALcGNwfWdVXG7hOrhW13vk
+	 Qwd64P8TBFy3v1uUR10l/CiCiw2puwgE7G3VtMWA5oYcp3D8r26D0dA6Zy818BSndS
+	 XFqtok7+Ja0enXKm+MqcS8smpC46Tt2IXk5zsjQl4WF2I3v2p5iqYLoGHI5xHca4Bc
+	 tZ5nZdXa1+Ylg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 5FE0C48626;
+	Mon,  9 Nov 2026 20:08:29 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Mon, 09 Nov 2026 21:08:29 +0100
+Subject: [PATCH net v5] vsock/bpf: release sock lock while waiting for data
+ in recvmsg
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,131 +83,183 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261109-kbh3-1-022-fix-v2-v5-1-4d9af04f0fad@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NTU7EMAwF4KuMssbIdtK0nRX3QCzy49IA6qCkR
+ KBR706mLBihEctnP38+qyI5SVHHw1llqamk09JCd3dQYXbLs0CKLStGtoRI8OpnDQTIDFP6hMo
+ geiLDI1pDTrW79yxts5uPapFVPf0My4d/kbBetEttTmU95a/9c6W9/M+TSi2HycnYDY7G3j7IW
+ 3RZ7qPsftVXAg+3BA0IPmDfseeoo/8rmF+B0N4STBNCH7XtUQ9k4rWwbds3J8/vrk0BAAA=
+X-Change-ID: 20261001-kbh3-1-022-fix-v2-e3f14290641a
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794254908; l=5966;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=gAMP05v48lA79FLWFALXd9zeaNzA0SUA1TvaXrc531E=;
+ b=MuAaoC1faU7y/6OsXRinifDWmeyjxYlifpBjeMeeVMCUz5e3BmcfGP4S3n/tMEixejmsuZtB6
+ 4LMrBMbv0c2BKMjd1OG1HqhbS0uPowujNLWIg2eCPSTIa1QrJh4yRPu
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
 Content-Transfer-Encoding: 7bit
 
-On Mon, 09 Nov 2026 18:07:48 +0800
-Haoran Wang <haoranwangsec@gmail.com> wrote:
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-> ppm_get_cpu_entries() disables preemption with get_cpu(), reads the
-> current CPU's pool with per_cpu_ptr(), then acquires the pool's
-> spin_lock_bh() while preemption is still disabled, and finally put_cpu().
-> 
-> On PREEMPT_RT kernels spin_lock_bh() becomes a sleeping lock
-> (rt_spin_lock), so the task may sleep with preempt_count elevated:
-> scheduling while atomic, reported as a BUG by CONFIG_DEBUG_ATOMIC_SLEEP
-> and a deadlock once the lock is contended.  Any iSCSI offload I/O
-> through a Chelsio NIC that reaches ppm_get_cpu_entries() triggers it.
-> 
-> Read the current CPU with raw_cpu_ptr() without raising preempt_count,
-> and derive the global index base from pool->base (initialised when the
-> pools are allocated) instead of cpu * pool_index_max, so the base
-> always matches the pool that was locked.  The owning CPU remains in the
-> debug output, now derived from pool->base.
+vsock_bpf_recvmsg() sleeps in vsock_msg_wait_data() with the socket lock
+held, so the virtio delivery worker, which needs that lock, deadlocks
+with the reader and all vsock rx on that worker stops.
 
-I think you really need to explain why it doesn't matter that the pool
-for the 'wrong' cpu is used.
+Release the lock around the wait. The reader can then wake without
+data, so the wait loops until data arrives, the timeout, a signal
+(wait_woken() returns at once while one is pending), or a state in
+which __vsock_recvmsg() would not wait. Those states, and zero-length,
+MSG_OOB and MSG_ERRQUEUE reads, go to __vsock_recvmsg(), as Alexei
+suggested; a non-blocking read now sees them before -EAGAIN. The loop
+and the zero-length check belong to the fix (without them the reader
+returns early or spins with the lock held), so this is one patch;
+MSG_OOB and MSG_ERRQUEUE just share that path. One tested difference
+remains: a reader asleep at a virtio transport reset gets -ENOTCONN,
+where a native socket gets -ECONNRESET (0 on seqpacket).
 
-You don't need a big explanation of why you can't call spin_lock_bh()
-with preemption disabled, it is probably enough just to say that you
-can't (the most reason would be 'can sleep on PREEMPT_RT kernels).
+The deadlock and the MSG_ERRQUEUE case were found with the help of
+Anthropic's Claude, the rest by the netdev Sashiko reviews and Alexei.
+Each was reproduced in a VM without kernel changes or error injection
+(the resets unbind the guest's virtio-vsock device), except one Sashiko
+case that was checked in the code; with this patch they behave as on a
+native socket apart from the reset case above. The vsock vmtest.sh
+single-VM tests and the BPF sockmap selftests still pass, though they
+never sleep in this wait.
 
-This is separate from any issues of acquiring the wrong lock.
-I'm not sure about the trace, if you are tracing the cpu the data belongs
-to - then that should be what you call it.
-Once you hold the lock I think the cpu is fixed (even under PREEMPT_RT)
-so you could trace the actual cpu as well - especially if anything 'funny'
-might happen because the data wor the wrong cpu is being used.
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+Changes in v5:
+- One patch, using Alexei's approach: in the states where
+  __vsock_recvmsg() does not wait, and for zero-length, MSG_OOB and
+  MSG_ERRQUEUE reads, fall back to __vsock_recvmsg() instead of
+  copying its return values (Alexei).
+- So after a reset, recv(), a zero-length read and MSG_OOB return
+  -ENOTCONN, and a peer shutdown with SO_INQ reports SCM_INQ, as on a
+  socket outside a sockmap. A reset while the reader sleeps now
+  returns -ENOTCONN instead of -ECONNRESET.
+- This also covers the netdev Sashiko review of v4: SEQPACKET after a
+  reset, MSG_OOB on a closed socket and SCM_INQ on a zero-length read;
+  SHUT_RD with a pending sk_err by code reading only. A SEQPACKET
+  reader asleep at a reset still gets -ENOTCONN (native 0).
+- Don't cite the selftests as coverage of the wait (Alexei).
+- Link to v4: https://patch.msgid.link/20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de
 
-Of course, it the code is just trying to avoid lock contention (and maybe
-reduce cache line bouncing) it may not matter at all which copy of the
-data you get.
-In fact one for each cpu may be excessive - think of systems with 1000s
-of cpu not single digits.
+Not tested: virtio-mmio, repeated runs, a sockmap delete while a
+reader sleeps, a signal arriving in the same wakeup as the timeout
+(returns -EAGAIN, native -EINTR), and the vmtest.sh ns_* tests.
+Still left for separate patches, as in v4: data that sits only in
+psock->ingress_skb, and READ_ONCE()/WRITE_ONCE() for the lockless
+accesses.
 
-David
+Changes in v4: comments, one data <= 0 check and message changes
+(Stefano); rebase; retest with a new dataless-wakeup reproducer.
+Changes in v3: split into two patches (Michal); end the wait after a
+reset read with SO_ERROR, and MSG_OOB returns -EOPNOTSUPP (Sashiko).
+Changes in v2: loop in the wait, len == 0 guard (Sashiko); MSG_ERRQUEUE
+to the native path.
+---
+ net/vmw_vsock/vsock_bpf.c | 43 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index 9049d2648646..c0c9e69860dc 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -34,24 +34,35 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
+ 	return vsock_sk_has_data(sk, psock);
+ }
+ 
+-static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
++/* __vsock_recvmsg() doesn't wait in these states and knows what to return. */
++static bool vsock_rx_done(struct sock *sk)
+ {
+-	bool ret;
++	return sk->sk_err || sk->sk_state != TCP_ESTABLISHED ||
++	       (sk->sk_shutdown & RCV_SHUTDOWN) ||
++	       (vsock_sk(sk)->peer_shutdown & SEND_SHUTDOWN);
++}
++
++static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock,
++			       long timeo)
++{
++	int ret = 0;
+ 
+ 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+ 
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
+-		return true;
+-
+-	if (!timeo)
+-		return false;
+-
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+-	ret = vsock_has_data(sk, psock);
+-	if (!ret) {
+-		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
+-		ret = vsock_has_data(sk, psock);
++	while (!vsock_has_data(sk, psock) && !vsock_rx_done(sk)) {
++		if (!timeo) {
++			ret = -EAGAIN;
++			break;
++		}
++		if (signal_pending(current)) {
++			ret = sock_intr_errno(timeo);
++			break;
++		}
++		release_sock(sk);
++		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
++		lock_sock(sk);
+ 	}
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+@@ -80,6 +91,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	struct vsock_sock *vsk;
+ 	int copied;
+ 
++	if (unlikely(!len || (flags & (MSG_OOB | MSG_ERRQUEUE))))
++		return __vsock_recvmsg(sk, msg, len, flags);
++
+ 	psock = sk_psock_get(sk);
+ 	if (unlikely(!psock))
+ 		return __vsock_recvmsg(sk, msg, len, flags);
+@@ -102,10 +116,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	while (copied == 0) {
+ 		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+ 
+-		if (!vsock_msg_wait_data(sk, psock, timeo)) {
+-			copied = -EAGAIN;
++		copied = vsock_msg_wait_data(sk, psock, timeo);
++		if (copied)
+ 			break;
+-		}
+ 
+ 		if (sk_psock_queue_empty(psock)) {
+ 			release_sock(sk);
 
-> 
-> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-> 
-> ---
-> (Resent with the complete Cc list; the earlier copy reached only you.)
-> 
-> Hi Sebastian,
-> 
-> thanks for the review.  v3 below addresses your comments:
-> 
-> - The commit message now describes what the patch does; the review
->   rationale moved into the changelog below the --- separator.
-> - PREEMPT_RT spelled out.
-> - pr_debug() keeps printing the owning CPU of the pool, derived as
->   pool->base / ppm->pool_index_max; the global index stays
->   i + pool->base.
-> - Tested on: x86_64, compile-tested with CONFIG_PREEMPT_RT=y and
->   CONFIG_DEBUG_ATOMIC_SLEEP=y; no Chelsio hardware at hand, so the
->   change is not exercised on real offload I/O.
-> 
-> Changes since v2:
-> - Keep the owning CPU in the pr_debug() output, derived from
->   pool->base / ppm->pool_index_max (suggested by Sebastian).
-> - Reword the commit message to describe what the patch does and move
->   the review discussion into this changelog; spell PREEMPT_RT.
-> 
-> Changes since v1:
-> - Drop the cpu variable: read the global-index base from pool->base
->   (initialised at pool allocation) instead of a cpu captured before
->   the lock, so the base is always consistent with the pool that was
->   locked.  The per-CPU pools are shards of the global ppod index
->   space and not tied to the running CPU (ppm_unmark_entries() derives
->   the owning pool from the index itself), so locking another CPU's
->   pool after a migration is a cache-locality matter, not a
->   correctness one.
-> 
->  drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c |   12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> --- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> +++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> @@ -119,16 +119,13 @@
->  			       unsigned long caller_data)
->  {
->  	struct cxgbi_ppm_pool *pool;
-> -	unsigned int cpu;
->  	int i;
->  
->  	if (!ppm->pool)
->  		return -EINVAL;
->  
-> -	cpu = get_cpu();
-> -	pool = per_cpu_ptr(ppm->pool, cpu);
-> +	pool = raw_cpu_ptr(ppm->pool);
->  	spin_lock_bh(&pool->lock);
-> -	put_cpu();
->  
->  	i = ppm_find_unused_entries(pool->bmap, ppm->pool_index_max,
->  				    pool->next, count, 0);
-> @@ -145,10 +142,10 @@
->  	spin_unlock_bh(&pool->lock);
->  
->  	pr_debug("%s: cpu %u, idx %d + %d (%d), next %u.\n",
-> -		 __func__, cpu, i, count, i + cpu * ppm->pool_index_max,
-> -		pool->next);
-> +		 __func__, pool->base / ppm->pool_index_max, i, count,
-> +		i + pool->base, pool->next);
->  
-> -	i += cpu * ppm->pool_index_max;
-> +	i += pool->base;
->  	ppm_mark_entries(ppm, i, count, caller_data);
->  
->  	return i;
-> @@ -375,6 +372,7 @@
->  
->  		memset(ppool, 0, alloc_sz);
->  		spin_lock_init(&ppool->lock);
-> +		ppool->base = count;
->  		count += ppmax;
->  	}
->  
-> 
+---
+base-commit: 6d2cf411aba2aa0bd641b49be5b1964ac5097a50
+change-id: 20261001-kbh3-1-022-fix-v2-e3f14290641a
+
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
+
 
