@@ -1,84 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794230720;
-	b=NIyszplN2Sk/Q6hiOSySxMD/1QveevEz9zmC02cXsnCFD8VNp9RFRZATbkylJthhfD7A
-	 3QrFXp9WfNmsbdsPF5GyZqh2HsBRiX4XeFD6n4bN8UtbrsE0YMCfGSDQYBc+CqrLzX6CW
-	 cz1F2v40yS2ugBzoI8YM206L2Olt2CKb7160zqCLBGT5YeO4/F4Hp92wSzAFB4umhoAnV
-	 mnV8X/xKOF00GQn7V/18M6fcivNuBXKvnzgns+VpdgZ0HqGpYfXb9xEerz1mOB9XgO2OW
-	 idDSHX1Nft8RORg/2iB9ekmAPS5lvhDiokUlHrrwRrt3/BEc1dTjh3rqLnBx8vL4zZg==
+	t=1794231026;
+	b=OokGPRjy2dlFe+T2drUC6YzPb2NNq/gOLiIZvXCZ96YnjzfTYRIITsSOT3i3FwuGQXDN
+	 gCOXYAuTvoRVxFt7L/RDnH+PdKimO2LGXDC6kokf9wQeDGMgqvrM6TDEr+vj4cp2P+Kjx
+	 Pg5Exj+ILyNRMSu9PsP8stpwExZEI9ugTxJag/cG0jmQDCDlfuUxEWEL1L88F+T9b+5Dg
+	 ZtZC3xHgUak+VqPXFn7iC29ZxFt6eUxZKb7gPtfdNxYLD2xwM5pePLmMP1uAvd76bJNEw
+	 BfIJAjNN+Htox3IwGs0DcakbiiUgKCIJatRf/wkwoKLAhEBqmptV+27LTW8mHFiAkbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794230720;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
-	bh=n5sfA3SZFOIvKjYmGeq7v7sBZYxGPPKHgjsgmpGTfYY=;
-	b=OvhMB1gNaS6yJm90RkcPMP1lyevxl9JWOXibnsl+MbclHaib9miY9FaDH1whE1hWoTb6
-	 tUSqon/mOatVudnuxMPalUgagFUQZdrTF0w3NW5P2p0uRf7M2AvUiygKXCuf5nk2tcijQ
-	 pQnPD/CqHYsuF06wquY1JCHkYGaeP71c1O5rFjnUdYLFzPcmoTBnT69n2dLuPI0s38yAa
-	 zVbUiLoDhUB53fQB0xhJx5qboP+KMj7rqFqpBaDNoaqEkbUPcND8s866o6Ca2U9H7DqNy
-	 VjXx+Y/0CBGRG8OYU/mPyn6N4Ff+ZFU0GQk49gZNfErow4f11DzW3ufFxdSvS7A/mxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231026;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=/YIEa9l3jcw4IpWtTJZsWq0EUx5wNEMNCu0m5vYuAkM=;
+	b=ARkPoRSpm/ZCQC8LWaSDnMgcmY9F6OhfnkL8I18NpEJ0Lm2oN9PqCxNgVJ4djxGpHRM5
+	 geMuxL/jwEnPwlZ0MgUVkD7oOrHQaPHmzO8F3o3/4KZ2caeorw9kht35sxMnjTTfyjZl+
+	 qLjndkR6P3tU2glBkWXa+PNd9x/Ghq2wU7P7K1QXG328B2z5vHWzAwqEHfYLMcQL6ap7B
+	 eB7AD8leHeCtqgNVSt30Yq8xaNdyPNEOP8gK6iyjJF210NSm4ysNXtS9mFE5YHnHHLm/k
+	 wO3dnCY/IHUB/OlWrih5sZJ/dYkwNN5VFldCF9DZE1DNiadRwgYj4uaZ0FxoCgEXOUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=J5NZW79F;
-	arc=none smtp.remote-ip=209.85.219.50
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="Om/UDzaH";
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F2A606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:25:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1F2A606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339FC606A323
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:30:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 339FC606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=J5NZW79F
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91eb3ac1875so8681326d6.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:25:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794230719; x=1794835519; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=n5sfA3SZFOIvKjYmGeq7v7sBZYxGPPKHgjsgmpGTfYY=;
-        b=J5NZW79FNr5PJz7kB2vKb2+dmJoGRj56JX9udk5697EYv7c7BK0VzoFseWh1sRihBx
-         /flOUwR6OFIiXNgtzvyNK5oP3AHMpjo+0eSwqYoWawHTj+AjzK4SAEJd7h/fpwaXsUnH
-         tx4zBPZP0g9vjTo5RTuW56TzS2BzRtBRLCn758WHvfaV04ZMlds1+J6jifXjnNxmKWK5
-         QlxNg/XVSVxGWB8uEmrKFkgEF27I+aa7u+tkQbLnm92oJ1GyFU6YaUDGw7HJoQGWHQ6l
-         7giQs+29J2IdvxrWirKLlnFIyTV/uvldUDA6wX4151jAQ1/RzgPgTvu4cJh0R797oITJ
-         rdiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794230719; x=1794835519;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n5sfA3SZFOIvKjYmGeq7v7sBZYxGPPKHgjsgmpGTfYY=;
-        b=PSIBV+RCp2Ed6NB2dYEgQrV5neLq+hyIGyznxWCFuZWHu/Yx1cXSwlDDFkD9qeqdV2
-         kLDJNLzfXDMcHiONU95Tj4k8uC+6Qhwcyr7WYCszkZ6hdBb0Za4NUCFOzylRE9oHRZlw
-         gE+ITzRzsaea7n48KzaCOeaveOCuFb9TRrEn6cj00uvDu224ffu/gMptbpF85Z+UzI8Y
-         7A/bM8Sg/cpBA/46sqZadCJJPnS0u3zmarFHjeMjhJZadTrSbJ+OGGwG4z0VnhaRb36+
-         cAQEih8u85ITfXMkSonetjNMRivH3m3x8jrhDlmrjoGlFjkXb69o4F5cRn2jhOiYEOtF
-         CobA==
-X-Forwarded-Encrypted: i=1; AL+hErGzvEeJB+zIqTV7eMzksl8rs+GMZHU/zWpsWUVsmlxOeaM7CEwW5w+2AVyt0y/bsrEaQk1+Bso=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9IeMKVAqLeJpKYG5b4zeqXA5nl9v+bH5kamffJbFgvvB25novQ
-	ISUeYGwhuVOTo9TgAN/NmSpeYKYdISpeLMqFsjIgRQINPpzSB40VlvRG
-X-Gm-Gg: AYBFou3qg/3ZY+doAeM/hQw/OJd5VLMkLx+I6mNasJWQXu4y5eXVbPIJRxuk3KoiU3r
-	CraM6ATYtiVZqx6k94keQmjN30tnVi9XcFTWqptK1/GU2skbjNKrWOfls42MUcYvSKkMFEDxroX
-	ihYIxE0GBQJln0LF7L6RSgoPc2TGSzKVOPiMt5EXS/PJRBoT89lpzdVM3BaWnAhA2UT6nllx79I
-	5wfg6SujL0cb8T0Fz7lmIqgwj9WRGsvMvFyjIEQ43SHB+J2ojAJSb3AgQKjwDfFIPhY8/KqQ2+/
-	7gAXFkU/wnK0t3lYnKIi9LV6RAMiC7naq9aFBD/OmMtgHG0mxDIpW88L6nHd2ujni7A8GJVYkH8
-	T9GYG9pP2ZqNDQ/Ou+AceZZZ4zqklHuUKC2Z6YsF9b6gPfCB1Cca5eLTCzsLwCLNNLyuvSXrW6F
-	2sSgsSyZVc3np6W76BGEXYWuw+Ilns300WTyhPHx2dBlvwBw7sEjns2s5mioiwF+vDzb1J+d9QK
-	cA+gdhXa4T5dOaw26GSYJ9eB3hKwumOahNsientT4+WnQbPAKxXOH9ue/x4lk/GtYMmZkyEa+20
-	2LqDzw2/TkmG4GhS58ja7sABrOqiOw+uMg==
-X-Received: by 2002:a05:6214:19e6:b0:91e:9564:6bc5 with SMTP id 6a1803df08f44-91ed24659dfmr56542736d6.39.1794230717677;
-        Mon, 09 Nov 2026 05:25:17 -0800 (PST)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ecee77f2bsm42145486d6.35.2026.11.09.05.25.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 05:25:17 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Om/UDzaH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1794231026; x=1825767026;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ycDxRUmPKS9i4DLIktrknRBJorpI94QLeet3Rhmlb0Y=;
+  b=Om/UDzaHnK3zT35T1x7/kcpHsetG0Lr14ZA/od5HyWPYJOS9luC5aONr
+   fhaaXyJa9K5S1C83MyCmiHalx840yQDO7Kua0OqAUdFDri/IWeQpwmrBL
+   P9pv3/rHBN75wnrWd2FnI2SZHAIzFspV/kKML+SfZHtX9TC2GBUcVQjQx
+   aVywGWFhnaYuBx6kcjO65OSmkVosL9GZugIjk9uXc83FEs1Q2b9HbBpLg
+   y1zkOTdxH9j9g7UOWxCGkNFMzijRI9nIfskcU0ptnOHPwO8rI2usOhHpI
+   uzg86KHhuAP0AgYRzBQdU+TG1DGWSZ4c0i1QbcNdIhAP8rDHygdiqHrhX
+   g==;
+X-CSE-ConnectionGUID: oAyJJx9iSd2xhgHihhUd0w==
+X-CSE-MsgGUID: A1Vg3oo5Rb6s3lGjeDeBHg==
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="233293193"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Nov 2026 06:30:25 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 9 Nov 2026 06:30:25 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 9 Nov 2026 06:30:24 -0700
+Date: Mon, 9 Nov 2026 14:30:23 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: <memoriaru@foxmail.com>
+CC: <netdev@vger.kernel.org>, <Steen.Hegelund@microchip.com>,
+	<UNGLinuxDriver@microchip.com>
+Subject: Re: [PATCH net v2 1/2] net: sparx5: fix RX ring stall on frames from
+ inactive ports
+Message-ID: <20261109133023.n2lttn5vtnp33727@DEN-DL-M70577.microsemi.net>
+References: <20261109080254.92305-1-memoriaru@foxmail.com>
+ <tencent_0F653806680A4CA083E923A5AFF5982DC307@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,145 +79,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Nov 2026 08:25:16 -0500
-Message-Id: <DMQPPFZ838LR.U3X8GICZQTH6@gmail.com>
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-Cc: <kuba@kernel.org>, <willemdebruijn.kernel@gmail.com>,
- <davem@davemloft.net>, <edumazet@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <rdunlap@infradead.org>, <donald.hunter@gmail.com>,
- <andrew+netdev@lunn.ch>, <shuah@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 5/5] selftests: drv-net: psp: add rekey
- tests
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261106-psp-v3-5-a8dd38f5a727@gmail.com>
- <179408517003.994134.18139473201924553095@kernel.org>
-In-Reply-To: <179408517003.994134.18139473201924553095@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <tencent_0F653806680A4CA083E923A5AFF5982DC307@qq.com>
 
-On Sat Nov 7, 2026 at 3:59 PM EST, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] In tools/testing/selftests/drivers/net/psp.py, the second half of
->   rekey_both_sides() (the "# now, tx then rx" block, lines 734-736) does=
-=E2=80=A6
->
-> --
->
-> selftests: drv-net: psp: add rekey tests
->
-> This commit adds psp.py selftests for rekeying PSP connections. They cove=
-r
-> basic Rx and Tx rekeys, plus cases where rx-assoc and tx-assoc should fai=
-l
-> because of a psp version mismatch or the psp state. It also adds rx-assoc=
-,
-> tx-assoc and key-rotate RPCs to psp_responder.
->
->> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/=
-selftests/drivers/net/psp.py
->> index 71eeade62ad24..004faf4bb57ae 100755
->> --- a/tools/testing/selftests/drivers/net/psp.py
->> +++ b/tools/testing/selftests/drivers/net/psp.py
->
-> [ ... ]
->
->> @@ -489,6 +558,186 @@ def _data_basic_send(cfg, version, ipver):
->
-> [ ... ]
->
->> +@ksft_variants(_get_psp_ver_variants())
->> +def rekey_both_sides(cfg, version):
->> +    """Test rekeying both directions"""
->> +    _init_psp_dev(cfg)
->> +
->> +    s =3D _establish_psp_conn(cfg, version)
->> +    try:
->> +        data_len =3D _psp_txrx(cfg, s, 10)
->> +
->> +        cfg.pspnl.key_rotate({"id": cfg.psp_dev_id})
->> +        _remote_key_rotate(cfg)
->> +
->> +        # first, rx then tx
->> +        data_len =3D _rekey_rx(cfg, s, version, data_len)
->> +        data_len =3D _rekey_tx(cfg, s, data_len)
->> +
->> +        cfg.pspnl.key_rotate({"id": cfg.psp_dev_id})
->> +        _remote_key_rotate(cfg)
->> +
->> +        # now, tx then rx
->> +        data_len =3D _rekey_tx(cfg, s, data_len)
->> +        _rekey_rx(cfg, s, version, data_len)
->
-> [Severity: Low]
-> Does the "tx then rx" half of rekey_both_sides() check that either of its
-> Tx rekeys actually took effect?
->
-> After an Rx rekey, the old SPI stays acceptable:
->
-> net/psp/psp_sock.c:psp_sock_rx_rekey() {
->     ...
-> 	pas->prev_spi =3D prev->rx.spi;
-> 	pas->prev_generation =3D prev->generation;
->
-> 	memcpy(&pas->tx, &prev->tx, sizeof(pas->tx));
->     ...
-> }
->
-> psp_pse_matches_pas() accepts packets that match it:
->
-> include/net/psp/functions.h:psp_pse_matches_pas() {
->     ...
-> 		(pas->prev_spi && pas->prev_spi =3D=3D pse->spi &&
-> 		 pas->prev_generation =3D=3D pse->generation));
-> }
->
-> The old SPI only becomes invalid when the device key is rotated:
->
-> net/psp/psp_sock.c:psp_assocs_key_rotated() {
->     ...
-> 	list_for_each_entry(pas, &psd->active_assocs, assocs_list) {
-> 		if ((pas->rx.spi ^ pas->prev_spi) &
-> 		    cpu_to_be32(PSP_SPI_KEY_PHASE))
-> 			pas->prev_generation |=3D ~PSP_GEN_VALID_MASK;
-> 	}
->     ...
-> }
->
-> In the first half, the key_rotate calls that come next cause a stale Tx
-> SPI to be dropped. The second half ends right after _rekey_rx(), and
-> neither side rotates again.
->
-> Say the local tx_assoc in _rekey_tx() were silently ignored. The local
-> side would keep sending with the old SPI, and the responder would still
-> accept it through prev_spi. The same applies if the responder ignored
-> the tx assoc sent by _remote_tx_assoc() in _rekey_rx(): its echo would
-> still be accepted locally.
->
-> This half is also the only place where an Rx rekey follows a Tx rekey on
-> the same socket, which is the memcpy of prev->tx shown above. If that
-> path lost the Tx key that was just installed, would this test notice?
->
-> The v3 changelog says the basic tests now "rotate again after it to
-> verify the new key is in use". Could this test end the same way, with a
-> final cfg.pspnl.key_rotate() and _remote_key_rotate() and then another
-> _psp_txrx()?
->
->> +    finally:
->> +        _close_psp_conn(cfg, s)
->
-> [ ... ]
 
-Like you said, the other tests were changed in v3 to pick up this
-coverage. This test was more about crossing device key rotations. I
-think we can let the dedicated rx and tx rekey tests cover this.=20
+Hi,
+
+> From: Zhang Hewei <memoriaru@foxmail.com>
+> 
+> When the FDMA RX path receives a frame whose source port does not map
+> to an active netdev, sparx5_fdma_rx_get_frame() logs an error, flushes
+> the extraction FIFO and returns false - without advancing the FDMA
+> software cursor and without releasing the skb, which has already been
+> extended with skb_put().
+> 
+> The DCB for this frame still carries its hardware DONE bit, so the next
+> NAPI poll picks up the same DCB, takes the same inactive-port branch and
+> returns false again. The software cursor never moves past this DCB, so
+> RX traffic on all ports stalls until the module is reloaded. The
+> sparx5_xtr_flush() call only drains the QS_XTR hardware FIFO and does
+> not touch the DCB ring or the software cursor, so it does not clear the
+> stall.
+> 
+> Treat a bogus frame as consumed: free the skb, clear its slot in the
+> rx->skb[][] array and return true, so the NAPI loop advances past the
+> DB the same way it does for any other received frame. The slot is
+> refilled by sparx5_fdma_rx_dataptr_cb() when the DCB is recycled.
+> 
+> Found by code inspection; the stall needs the hardware to emit a frame
+> with an invalid source port, which cannot be triggered without hardware.
+> 
+> Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+> Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
+> ---
+>  drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+> index 15ec9b0..bd021df 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+> @@ -159,7 +159,14 @@ static bool sparx5_fdma_rx_get_frame(struct sparx5 *sparx5, struct sparx5_rx *rx
+>  	if (!port || !port->ndev) {
+>  		dev_err(sparx5->dev, "Data on inactive port %d\n", fi.src_port);
+>  		sparx5_xtr_flush(sparx5, XTR_QUEUE);
+
+This now runs for every bogus frame. You can omit the flush above, since the
+frame is already in the DB. Also, with this change, we want to use
+dev_err_ratelimited() instead of dev_err.
+
+> -		return false;
+> +		/*
+> +		 * The frame is bogus: free it and let the caller advance
+> +		 * past this DB. Returning false here would stall the RX
+> +		 * ring, as this DCB is never consumed by the software.
+> +		 */
+
+The last part describes the old behaviour - no point in that. Actually, ditch
+the comment altogether, it is already documented in commit description.
+
+> +		dev_kfree_skb_any(skb);
+> +		rx->skb[fdma->dcb_index][fdma->db_index] = NULL;
+> +		return true;
+>  	}
+>  	skb->dev = port->ndev;
+>  	skb_pull(skb, IFH_LEN * sizeof(u32));
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
