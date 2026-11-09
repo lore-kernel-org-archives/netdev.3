@@ -1,88 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794226444;
-	b=SF3Z55CW5G2Oqem9EmoMK4azw9PVOiYVgP4VImF4DloRzp+aGKSTIbzfPmPcQu6NWhpy
-	 YPmXlco1NM1yoU1Ca1PUkLJaO15AzSKcH2Uu8XkA7VwUqs3jEh0lmRoDmDeu1lXg3RHEv
-	 PG6qULAiBUhZwQRICaUBVizNCyKGKupvAD8GaTuSzqbPIzqxWq6zQz4wnHmRRl7nawe65
-	 aU9AZOShXdzl51nsLwNqRRDoCKcZojyIpYfq91ALKjIsgTytcF1wOdVSVyOiXWO6Z7TKA
-	 hkIx4tGKG1YPpXtWeUEiTbMuSOYa2f6JwgASoy6SdylkRsrY1VvM8GL9HqubNPsVe+A==
+	t=1794226541;
+	b=bqb4GxiJKBMsWFdnWOP/y+IwEiXDhhnhFjbmDW1McqKipLjQv90z8DYlIdTUi0w63ruz
+	 8pQvDVknFjShDOkPVB1luXlMp98FXUPwoXCApG5npB77BJqZ2EurBzrU1EfZ5XzuP6KF+
+	 rk2m1XjOdr9UOWzHRXK1G0j90VsCEeAtW8z2z7dIg9jrdiidsjCkI5pej21fc926OcxDd
+	 Q8bAbZ9KLJhxq44LhLmioh0zsl1dmHB5kYUUkr/X8XazoxaNV41Ht4pSMN3wJP4ziDj5k
+	 hPtLDLgsuakKYU2lMaZvQOr4uDMQMy+swwwPoQzkqjwhd57+XeofWTLkG0QOjIrKzfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794226444;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=s/6rTMTiN3zjj45F6hON9XdsqIM41fhzAmDLM09T6Xo=;
-	b=kgBHCQubG1ihCb4TurXSC8RfKQvjyHL2WhNikWWWv+TyKYyHkhLgKBkZFAvzEBgUG1Yv
-	 KtbsChQxUoro0eaS/G99Hu4yrgrW4pKnb2/pHELeVs8YIl3VhPC0kS/JE6HdaOHtQi0TF
-	 DCXgcFWuPhw+zWn8Ck8Y2toAVWPEbbJvgd8tU1uU38GU0hFs303roBGTOqklvKT0RvQbo
-	 ENhEIeWFg3fGr2Ich7Hd5gJqgavsmzUmQiNOGyyyxDxbVpQiwcGbtFKzsYyRcOuVpoYqa
-	 fEQvSAJVRhJuIMAFBAPRNHA2jhxCdFUOVw3VAA0ogqFFHjudO1FMNqlaMm2GKvcuvgQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794226541;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=8jvHBme6zPqyADTvxOn21MVTvYy0GCMqqQxDtMJ34xs=;
+	b=HZK6VV5YAiznPJmw5M+Cb7uyavS1RU0c46AE6OxWlOByv0Hhq35FLnj3FIXbQgGcxflg
+	 dlf0mwnUwT58tzlgzxnUHUWlpxM0Yl7Dlp/93jBsbBKeVDUO5DxcfTrr+lWRVW4sw2EfR
+	 cYtpNG3Sv35lGSI2VG1CFKpFSJerf4HurhyRptQ2VtL6GBZACxkrn7QGLQCPjw7/yE971
+	 3mEWYpQsYQwy3jN8cdY+eEEQ6SYtF06//BpR8ucrv5FLXBfSEyCZTCB139W7wWZ9MgqHA
+	 boMEIyXrb7X/pnYsMTx2sdMX5x2MwhZcnmSwKoV/jincWwyZtQosEC4pf4L3wSKlwTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="V/OYuonF";
-	arc=none smtp.remote-ip=74.125.224.138
-Received: from mail-yx2-f10.google.com (mail-yx2-f10.google.com [74.125.224.138])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZlAyCLV6;
+	arc=none smtp.remote-ip=117.135.210.3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914C8606A339
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:14:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 914C8606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976B3606A322;
+	Mon,  9 Nov 2026 12:15:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 976B3606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V/OYuonF
-Received: by mail-yx2-f10.google.com with SMTP id 00721157ae682-8b2fa622fddso2811887b3.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:14:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794226443; x=1794831243; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s/6rTMTiN3zjj45F6hON9XdsqIM41fhzAmDLM09T6Xo=;
-        b=V/OYuonF4VZxJX6ZKEKVsMryA7aLihm5GRqBtYap8ddfmlGYuFx9dR/yXNlA/8uprb
-         SjloK+Yimo97YStkTi6dkfLaN6NZYTUoI2YaudEZE9jzyCZ52Kf+XlCQLz3i117Wc7I8
-         DeZqBL/+zDQ1ouSQYREfnWR1DXKq4+EaiCBQ7eHTuf8JBrTbNCN/Qawv73iGSaOiGG9q
-         0+q1QeUEFChLhmfQh4fynBRKJ+nUqynNGdqXbL+AwCHO2NtHYX3uVqtBGa/DgluT9zia
-         m6TJAwKOuI0JbYYRjRpd1RUzoTDAdh5PAPhYRQxcyuzPyc02XvXHMQCxvnL300VrtpuW
-         G41w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794226443; x=1794831243;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s/6rTMTiN3zjj45F6hON9XdsqIM41fhzAmDLM09T6Xo=;
-        b=QhfkRuN/xEUJFSTah+BFT2vF7AfEG12qI136FIlCtCOOCKM8SgDpTqSPj8IYzTOmox
-         WJ5CihrI5vCFaWAbC9HBO9jTNKV37skJi9YyCLjoJD5If7vf0ytAHs/+ARMcvAds3EAp
-         2/9XweEH8aoOOh/MrY/F6c/RgVRGmwy1QmJeH4dHsqg06689Q8zzDDjtAoL08TVhUaJl
-         kPAmt5q6x3xxfMhpTbWhQL4sTyrcexOiXlYfrG7KdM46vpdeR7XwmEiUsNWTgwezKLzq
-         4ZtHR3llSJm+XNP4LhtlhPIUtn1hTCzaKXuuh2nrkDMW+oOCfcFskWd6ige5tbl35Tb/
-         ZTUw==
-X-Forwarded-Encrypted: i=1; AL+hErEMZzYDLDEO+xbGZrcoKqn7tMATRmBOY+251H5UFBAdX5tduWrHtcchuG0xgUuLHTwv9N7TNwQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8jfhoUeNkjXurp9Oi/3Js2NHUkt2sDzTw+PZHg8Q8JmtpoTvmR
-	eo+XKes66tB4TzwmqUYZo5w33Fe6t+jBbVpFufJzkQ0S0VHRu0d5v94X
-X-Gm-Gg: AYBFou0arrR6WdsXI9XEMpwvLHNJ/9Ay66+i0fTo5jkHkAJYLvUB9soigdxhIiBTx95
-	U8jzy2ZZm12MCdX3mUOb43AiuCzBOgA4IJZCdsTuwRpwUy0GIRAsVMnLov03leeZohGbR2zitgV
-	RoCiOIJg3qvDFqZtmckp/WsbmDJ33hG126viCgtCQ0PDsnU8UIMt/k/AHzQUjA3vGU032B6NWsn
-	tdMsObZXGFHLTlEqf6vHOda+oNs4T+9uFABRQ9O1ct3bL4wgbjuFpc5kkTBGdl0z56kw8oyYD5l
-	buTXdN79U++Nkq4CG6be1XsZWURar6jSxjqW5Yioc21/vxVac2XsiTlkuAt1NA0uket03zo2erW
-	9azXWk2PfllYP0YR6JXp4zpDmD+5pI5d5tp912/gtoJbB/Bd3GtNcxnA71iF6hw/1NhGITrqHnW
-	MeJJD/xkDxpf4G1jfILIcAFUBJBBWGJoRdeLuycv09LSTNcZzH5O5VDNmYZgNZXlE7LXayONI/b
-	iMoR+7lIzfhM5y2cpqz13miAecuAp05n66fWd2IKSGtdfj/5yXUCopdo846/S+r8rd5OtmZNOMQ
-	WfiREAVfhW7kV8/yfBkWG7mSOW6aw8y0A7E=
-X-Received: by 2002:a05:690c:e3ed:b0:8a0:76e8:c738 with SMTP id 00721157ae682-8b36c664b7dmr25866737b3.0.1794226443428;
-        Mon, 09 Nov 2026 04:14:03 -0800 (PST)
-Received: from [10.0.0.48] ([71.69.222.122])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c3b95cf4bsm3720905d50.16.2026.11.09.04.14.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 04:14:02 -0800 (PST)
-Message-ID: <7f9b7ab9-9728-42be-a5c1-9e8e62c23ab9@gmail.com>
-Date: Mon, 9 Nov 2026 07:14:01 -0500
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZlAyCLV6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8j
+	vHBme6zPqyADTvxOn21MVTvYy0GCMqqQxDtMJ34xs=; b=ZlAyCLV6auT/Wi36Wz
+	G3tHhsaxImlPQkGQFv+qnbdQb14mN8N3VlMkJmAl9ybGD+7BUyKnNVSTDiqShfvU
+	pmFCGi8eMQBjNDIVSDlM302cxsSIe+PHMrJZgH/0UTuHLR8hqo4ir6cGj4V+dffu
+	sZCDD3aE9cYLHv+gpoZlXa8IY=
+Received: from shaos.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXn1A4ufFqsGfQGg--.48849S2;
+	Mon, 09 Nov 2026 20:14:49 +0800 (CST)
+From: shaos <shawnq1@163.com>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net/sched: release old template when replacing a chain
+Date: Mon,  9 Nov 2026 12:14:48 +0000
+Message-Id: <20261109121448.2589374-1-shawnq1@163.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,118 +65,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 0/6] tls: perform TLS 1.3 KeyUpdate in the
- kernel
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
- kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Martin Belanger <martin.belanger@dell.com>,
- Daniel Pereira <danielmaraboo@gmail.com>
-References: <20261105-keyupdate-rfc-v6-0-99b695f9eb4f@gmail.com>
- <au5JP__7P_PzwDUe@krikkit>
-Content-Language: en-US
-From: Martin Belanger <martin.nvme.dev@gmail.com>
-In-Reply-To: <au5JP__7P_PzwDUe@krikkit>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXn1A4ufFqsGfQGg--.48849S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWw18Xr1rZryrWr1UGw4DArb_yoWrury5pr
+	ZYkw1ftF4UtF1xtFs2yF18W3WSgws3Gw1UCFn5Ww1jyanIgrn2yrWxK3y3uFy8CFZ5GrZ0
+	qrW5Jan7Xr45CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrWrXUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC0BqToWrxuTrlYQAA3k
 
-Hi Sabrina,
+Hello,
 
-On 11/6/26 16:40, Sabrina Dubroca wrote:
- > I'm on a medical break so I won't be able to give this a proper review
- > for another week or two, but since it keeps landing in my inbox, I
- > want to make a comment.
-[...]
- > So this is kind of a "can we slow down until we agree that we
- > really want that?"
+An action-held traffic-control chain can remain alive after
+RTM_DELCHAIN because a goto-chain action still references it.
+RTM_NEWCHAIN can reuse the chain. When a new template is supplied,
+tc_chain_tmplt_add() creates a template and overwrites the existing
+chain->tmplt_ops and chain->tmplt_priv without destroying the old
+one.
 
-I am sorry to hear that. I hope you feel better soon. There is no
-hurry. I will not send a new version before we agree on the
-direction.
+The old struct fl_flow_tmplt allocation (1160 bytes) becomes
+unreachable, along with its classifier module reference. Each repeated
+chain recreation leaks one object from kmalloc-2k. The allocation uses
+GFP_KERNEL without __GFP_ACCOUNT, and the tested objects remain after
+the network namespace that created them is destroyed.
 
- >> kTLS does not currently handle TLS 1.3 KeyUpdate. It never sends a
- >> KeyUpdate.
- >
- > Because it isn't meant to handle any part of the handshake at all,
- > just the record layer.
-[...]
- > So what you're proposing is a very fundamental change to how kTLS
- > works, I'm not convinced we want to go this way.
+A local user with permission to create unprivileged user and network
+namespaces can obtain CAP_NET_ADMIN inside the child network namespace
+and trigger the leak without packet traffic or a race. The demonstrated
+impact is unbounded host-global kernel memory consumption; no memory
+corruption or privilege escalation is demonstrated.
 
-KeyUpdate is a handshake message, but it changes only record layer
-state: the traffic key and the record sequence number. The new
-secret is one HKDF-Expand-Label of the current one. Nothing else from
-the handshake is needed.
+Two fresh QEMU boots of the unpatched Linux 7.3 tree showed
+kmalloc-2k active objects increasing from 60 to 192 after 128 cycles.
+The no-action and held-chain/no-template controls remained at 60. A
+UID 1000 user+network namespace run increased the count from 48 to 204;
+the matching control increased it from 48 to 84.
 
- > If userspace libraries don't do the right thing, we can fix the
- > libraries.
+With this patch, two fresh 128-cycle positive boots remained at 60,
+and both controls remained at 60. The user-namespace positive and
+control runs both showed the same 48-to-84 setup delta, with no
+per-cycle increase. The positive PoC reports a failed leak threshold on
+the patched kernel because it is written to expect the vulnerable
+behavior; the zero delta is the expected fixed result.
 
-I agree. The main users of this series are kernel consumers:
-NVMe/TCP (host and target) and sunrpc (client and nfsd). They have
-no user-space process above the socket. tlshd does the handshake,
-hands the keys to the kernel and exits.
+The issue was found during an LLM-assisted source review and confirmed
+with a userspace PoC in a disposable QEMU VM.
 
- > And that can't be handled with the existing handshake subsystem?
+HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
+Git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
+Source version: Linux 7.3.0
+Compiler:       gcc 11.4.0, GNU ld 2.38
 
-Not without new problems:
+The console output, kernel config, reproducer, namespace launcher, and
+patched-kernel validation logs are available here:
+Console output:
+https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/7ff5d84b07e0b260952d2f8575ffb1936edcb099/console-output.txt
+Kernel config:
+https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/aeed6e5360a23b7e36cc06272dc0069f8639c61f/kernel-config.txt
+Reproducer:
+https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/f73bf112b5d6bd7e6633963e3dee0c0083ffeef0/reproducer.sh
+User namespace launcher:
+https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/b30237aa0b52e39ebb9da06d790c3f8430b62903/userns_launcher.c
+Patched validation:
+https://gist.githubusercontent.com/shaos26/3e31c231ca56bc53ef80b5c8aada2821/raw/d769d8afbfa6293e3f7bff967a3408521972dcb5/patch-validation.txt
 
-- A handshake daemon cannot write the KeyUpdate record to a kernel
-   socket. It has no file descriptor for it.
+Run the reproducer as root, or with CAP_NET_ADMIN in a disposable
+network namespace, on an unpatched kernel with BusyBox and iproute2:
 
-- NVMe/TCP sets sk_set_memalloc() on its sockets so that it can
-   write out pages under memory pressure. A daemon has no such
-   guarantee. With root or swap on NVMe/TCP, the daemon can wait for
-   a page-in from the queue that waits for the daemon. An upcall or a
-   reconnect every few minutes makes this deadlock possible every few
-   minutes.
+    ./reproducer.sh positive 128
+    ./reproducer.sh control-no-action 128
+    ./reproducer.sh control-held-no-template 128
 
-- The traffic secrets must reach the kernel in any design. If each
-   consumer does the KeyUpdate itself, NVMe/TCP, nvmet-tcp, sunrpc,
-   nfsd and every future kTLS consumer need the same state machine.
-   In kTLS it is one implementation, which user-space applications
-   can use too.
+The user-namespace test used userns_launcher.c inside the test
+initramfs. It drops to UID 1000 before creating the user and network
+namespaces, then runs the same positive trigger.
 
- >> the 2^24 limit can be reached in less than 10 minutes in many cases.
- >
- > My math says that's 28k records/second, it's a lot.
+The patch creates a replacement template first, leaving the old one
+intact if creation fails. After successful creation it destroys the
+old template and drops its module reference before installing the new
+pointer pair.
 
-Storage traffic is different from HTTPS. The NVMe/TCP host sends one
-TLS record per command, and a 4 KiB read is a 72-byte record. The
-record count follows I/O operations, not bytes. 28k operations per
-second on one queue is normal for NVMe. I measured one queue reaching
-2^24 records in about 80 seconds. Connections stay up as long as the
-host does, so even at 1000 records per second the limit comes after
-about 4.7 hours.
+Fixes: 9f407f1768d3 ("net: sched: introduce chain templates")
+Signed-off-by: shaos <shawnq1@163.com>
+---
+ net/sched/cls_api.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Without KeyUpdate, the consumer must reconnect at the limit. For
-NVMe/TCP this tears down all queues of the controller, stops the I/O
-in flight and repeats every handshake. NVMe/TCP is storage for
-critical systems: databases for banking and stock trading, AI
-training data, and systems that hold personal data. These systems
-cannot reset their storage every few minutes.
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index a9f54988561f2..56a706b3dbcab 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -3128,6 +3128,8 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
+ 		module_put(ops->owner);
+ 		return PTR_ERR(tmplt_priv);
+ 	}
++	/* An action-held chain can retain a template after RTM_DELCHAIN. */
++	tc_chain_tmplt_del(chain->tmplt_ops, chain->tmplt_priv);
+ 	chain->tmplt_ops = ops;
+ 	chain->tmplt_priv = tmplt_priv;
+ 	return 0;
 
- > I'm not yet convinced this is a strong enough argument to justify
- > changing the model under which ktls operates
-
-RFC 9846 4.7.3: after a KeyUpdate with update_requested, the receiver
-MUST send its own KeyUpdate "prior to sending its next Application
-Data record". If a sendmsg() or sendfile() is in progress on another
-thread, nothing above kTLS can stop it before its next record. kTLS
-checks before each record.
-
- > Why does this need to be a socket option? It feels wrong to use a
- > socket option to trigger sending data, why not hook on sendmsg()?
-
-I agree. I will remove TLS_TX_KEY_UPDATE.
-
-Martin
