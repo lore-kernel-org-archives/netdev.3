@@ -1,58 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794196420;
-	b=RCKUQT+t5RIxbVOBs24U6rEcNy35NY3APAJqDRWu4ZJIvLu9eEHZmC9UzA/JEkaYe03D
-	 2UZRQvnmSP8FKon3wslB59YA3fcN8b7N1D7ubU8TV9FrvY2MrnNK5wgk1bMi03rcD8hFX
-	 eLNlUQQTzPIi8vc3dze3Z2FOQQYQXzYn4mQlem007KrgvXBZZPNYOlHrQjPQA/uxp6BMj
-	 82j9frg2fLHZQJP1tPEBi8rbup7Cqsd+1WHLRVk2n1quZmPMM3t9ZYrTIPK0FYqAimUIB
-	 1rblMBHNi9rScCDdT8J7nWb0Ex6XddyqJrkXLYIzQzQpNGlL0EtAlvjQInMpOZfBVeg==
+	t=1794196616;
+	b=K8aDRwQSy05mdgVy83hx/a/7i/wai+sAOFfMWwJnawWn+AzClQxgmI+7/WjLa8GgBDmk
+	 A3zAN73wNqGv3lGENuXHh68uM62dobPokdQ69wNxtqmdheW75Og8RfYq9czfxwxZ7YoDO
+	 TIfgH6R+lJwrgvYaJGqiHLH5KsQsyq5wn4ljt+sd0dvAR02SMrfJVG83/hjURm7Q7JYNl
+	 EUKi2yg3Q8ImE7bA1Fp8kq12EN6n8IQdHgDPpFbi0FEcQyWds8MNLOvqmRGEE+RQLihcM
+	 b3h+K+c3oxnyII++JaClbiz/Z9JTRYXn03KxpZDTEJqu75ARD4jIjyjfzLcSPVOSwVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794196420;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=ocFCQgnrZq3E5Wbo1k9gqSh7z9YgYKQWe52cQlkZ0UY=;
-	b=D04ABXFc2UNv/dNwgJVLh8IsOBD8MDP9wjm6LkeGMRI/PmQao1tFizlMy3waRtqyAiUC
-	 4PUkU4qmzbtt+l7uyKV0qEwfGfLduAwXpO3+KtAOlfU5A3qcubYnUAzrz7R7mAbFiVlF6
-	 enHOKpg6y+qLjX5KsbicOaSsGz1EhA+asfVPd/1VMW28qfRgvTkAI1Vyr9qqRAzpr/dB4
-	 DP+gjGPkoW0zZFJBXVyHRcTHz5umgD2dkX5WjwHxo4ReSzNyu0o6mhLu+L3B/DpULlBn1
-	 6t3DN6/5lynJFXyy5oPcTJbcfXeN+bk48brJ2d8t2/mc/diBxEOuO748K4f5F3lnmHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794196616;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=IpoxAai+pl1QF/TuFGqG7saRnVQYdTl5R9HquRiLLjA=;
+	b=xgSkbLQqvdkGVRm8Plc8EHIhlCZS7HwYStwP0UWs0XLjszC7acNZscayzldfGkiRsEC3
+	 yQHKzjjsnrr6YP05ctfDg9tAwMUukyiCTG4CZ+6OLD4BoIxEW8Tw1HvSoDy5SZJbCZkPW
+	 MhQNpca/8ZR7Xwo33VUxw0dTUQ1b1L65yl/VfU0XoGrLeitTGr0mucdIp0Y0JCav5udvK
+	 TBggWk4halYc7UfDvLRkgTjWsowYfkDBsAqwfqvzmjX5+Hdg6m1m2wrclMmNngG4qiltF
+	 dxmEKjLBOmiMzcHagrVf0jLVjaYhP+2YbqaaspMqmsern+A1YjBTrqhT/lksgDvRg/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b="j3k/9zr+";
-	arc=none smtp.remote-ip=113.46.200.226
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=CFd8lFUg;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FD9606A321;
-	Mon,  9 Nov 2026 03:53:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6FD9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658FE606A31C;
+	Mon,  9 Nov 2026 03:56:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 658FE606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=j3k/9zr+
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ocFCQgnrZq3E5Wbo1k9gqSh7z9YgYKQWe52cQlkZ0UY=;
-	b=j3k/9zr+dycy+lXORykPB/5NLz64SLNuB8rO6NKovP51s9fnn/ynKVAK3Qm2RIf76oOdsMEFF
-	yIq+ywaZnhHVv5J6PX1fHbTCmZSY+SMfHZ+MK+h8BdDp2JPlL8ozUip2kjNdnfyaPzjYnLRqNAA
-	Ebf5kGRi0Y+RLv2yxvhz7hY=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jNG923mM2zKm7F;
-	Mon,  9 Nov 2026 11:53:26 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 28C3440580;
-	Mon,  9 Nov 2026 11:53:35 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 9 Nov 2026 11:53:34 +0800
-Message-ID: <e4ce40a0-2bcc-4be9-8697-797c84275cc7@huawei.com>
-Date: Mon, 9 Nov 2026 11:53:33 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=CFd8lFUg
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=IpoxAai+pl1QF/TuFGqG7saRnVQYdTl5R9HquRiLLjA=; b=CFd8lFUg6lfA9BwHYqZzMDZ46+
+	/gGpSh/U3Yql7d+php4hyouKf1OXKFLzh+WFLBLHDu6Z4ZEf7Lb8XIAAWf8Vm5kq2aFG2QHnMColN
+	5Nx1/mr3CJWCsffKhpN3aKW03QfOCMxRe05IX+jqcKoA6xOkV9NNpofpoIUcDGDJzn6o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xQGUi-00FBUi-Vg; Mon, 09 Nov 2026 04:56:32 +0100
+Date: Mon, 9 Nov 2026 04:56:32 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Anthony Pighin <anthony.pighin@nokia.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: mii: Accept link settings read back while
+ the link is down
+Message-ID: <910e9272-a85e-4a71-9980-43a1b5160356@lunn.ch>
+References: <20261107210236.721901-1-anthony.pighin@nokia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,74 +66,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: hns3: destroy the page pool if RX buffer allocation
- fails
-To: Simon Horman <horms@kernel.org>, Wentao Liang <vulab@iscas.ac.cn>
-References: <20261103100533.1310018-1-vulab@iscas.ac.cn>
- <20261106180307.GM865646@horms.kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20261106180307.GM865646@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261107210236.721901-1-anthony.pighin@nokia.com>
 
+On Sat, Nov 07, 2026 at 04:02:36PM -0500, Anthony Pighin wrote:
+> Since commit f6f2e946aa4d ("net: mii: Fix the Speed display when the
+> network cable is not connected"), mii_ethtool_get_link_ksettings()
+> reports SPEED_UNKNOWN whenever the link is down.
 
-on 2026/11/7 2:03, Simon Horman wrote:
-> On Tue, Nov 03, 2026 at 10:05:33AM +0000, Wentao Liang wrote:
->> hns3_alloc_ring_memory() creates the page pool and then fills the RX
->> ring with buffers from it. If filling the ring fails, the error path
->> only frees the descriptors and the descriptor callbacks, so the page
->> pool created a moment earlier is leaked.
->>
->> The page pool is normally destroyed by hns3_fini_ring(), but
->> hns3_init_all_ring() only cleans up the rings that were set up before
->> the failing one, so the pool of the failing ring is never released.
->>
->> Destroy the page pool on the buffer allocation failure path too.
->>
->> Fixes: 93188e9642c3 ("net: hns3: support skb's frag page recycling based on page pool")
->> Cc: stable@vger.kernel.org
->> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
->> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
->> ---
->>   drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> index 47788be64be6..fe339ddc6379 100644
->> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> @@ -5073,6 +5073,10 @@ static int hns3_alloc_ring_memory(struct hns3_enet_ring *ring)
->>   
->>   out_with_desc:
->>   	hns3_free_desc(ring);
->> +	if (ring->page_pool) {
->> +		page_pool_destroy(ring->page_pool);
->> +		ring->page_pool = NULL;
->> +	}
-> The condition is not necessary as as page_pool_destroy is a no-op when
-> passed NULL. Please remove it to simplify the code-flow.
+mii.c is old deprecated code. So i would prefer not to change it.
 
-Hi Simon, Wentao,
+I would say your first stop is to port the driver to phylink.
 
-Agreed, good catch. I am fixing the same leak in my series:
-   https://lore.kernel.org/all/20261030095633.377289-3-shaojijie@huawei.com/
-
-My v3 had the same redundant guard, and v4 will drop it, since
-page_pool_destroy() already handles NULL and out_with_desc is only
-reachable from the RX branch.
-
-Wentao, thanks for your work on this and for tracking down the
-duplicate. Sorry you had to withdraw it.
-
-Thanks,
-Jijie Shao
-
-
+  Andrew
