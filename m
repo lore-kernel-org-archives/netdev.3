@@ -1,59 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794212471;
-	b=Hjds3sFy6xpu75eGMcvW3vdtceWQU9TqzU8Yd2ZLw04G6G11l0OZ9nfU4m4MKbziO/I/
-	 IdF9xz3syAg4N8FwSRxgdPZtWmViroWxQrZ4JKG6nIoXsE0eh8JkfxzQS2GbokMlMFgu8
-	 Mxd705NFMs/POmhiAeV35RFjB1+x3vpPuRvbp42aeFd1aV4REe/RZYDp0z3BD0vsQJhOW
-	 K0xz4oIuIUzt+s1Uc2WM29oR2Vb7GpnhGlWPiSeNSYYeWbXVdjLQZo226wq3ShOr+ZMHq
-	 2t7KrAJHhISplkq1guK6ZFcDGoc2+G8IbarGYUm9AocIkj6q90bKXbco9yImTwPbn1w==
+	t=1794212600;
+	b=P6jaEUCxm2ev4XhfXtD35RJhW4O6PHNiuisgBjr/NJrY9U9ThMZYoP0RjJddh6gFmxhh
+	 4mlvqv2uVscw4PPYHzF0dIZTrNFeyO6tTIr71v+PfoM6lULxNcdYX8/MwDHF051zT7JU6
+	 CIoyxMIuxgflKduyglwzJN6TV2Oe4ERkQOnThP9TBMclTO2yF3/jP20uQDAnFLuMmWIos
+	 sLSSSgFdOQc90lETzG41wG+eRC+Law+AVlufoFL2gi+4lgEIzodClTJm4FSybOuBt8yZv
+	 Ka3r4YNazzPaEf7/VyHTxf+gYi1ahHiKrJaHYhcrHSubB4SJiS3j+9dw0MDl2zNAKVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794212471;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=8NvrWGProADlBL0hduI2bypI4c8PVT8WdHWktb2NGuo=;
-	b=0nDr4INiOEyzaV1KBKZSViKA0rjbaQtzAT7/GWHEaPOIVHvRhWoUXk7oW177C5jvbsXg
-	 DO+qrL2E6egqps75gxtwabKbLfj7qrLiKHUqku5uKrPmV1sFw//g8Yx6I566GICH8XyJ8
-	 9PJbVHaOs4nQlq6/eKsy1hGgP5TSYnpr97rmhxbuPknAyQpwybjZFo0kVJhw81csqJbdG
-	 q4gQd8c7/Qv+r7gNdukep2UsoBY+pKzEq8wgThu8+PaNsXfe2ZyIAZiRQz5wVu7yotG/9
-	 OPT5vEOdBP4MB5W6fUhWzCQfIwraS7w+d7Z1yJi0zF7tTCVg5Cb5el09wsPSD00ST4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794212600;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
+	 DKIM-Signature:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:X-ClientProxiedBy;
+	bh=tlAM999AN2z4WmQSaz7KboMJcz00mR5dVBM7MGj61rM=;
+	b=wlX/yP4bOfAo/d+c65LTTTUyiBpBCQR7S7t+kmMLgNv2jlANhIJi4uHE6+D+VKKsfYKD
+	 uc0deYxCqNY/IqqoxTn8zb/SXyp4cPOdniCDm3dvZAAjO0Yozy25ys7HNQMn5hVsntSN2
+	 9zE1DGc2heRz254SEEaGw7l6D2HQ6qI06PSoY5ZxrGL4OJEYCwmUr/sm5BWJbatpVwk2N
+	 RqYsfe3xmX7umYbr5AkwtfvFnUk5cyRwxMzxyENvgA/U4+Ci52B7j2ogPLKAgYalkvn5X
+	 Vjjy/vZMkUW6/OIjBz3w9WIQ0S5k54VU+CUbWswr3NydLeGKX0bB6s4u3yLe6YNcQ9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMCp3BRU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=secunet.com;
+	spf=pass smtp.mailfrom=secunet.com;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=HA8E34+7;
+	arc=none smtp.remote-ip=62.96.220.36
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8CC606A31C;
-	Mon,  9 Nov 2026 08:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAFA606A322
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:23:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CAFA606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMCp3BRU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9E91F0089F;
-	Mon,  9 Nov 2026 08:21:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794212470;
-	bh=8NvrWGProADlBL0hduI2bypI4c8PVT8WdHWktb2NGuo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lMCp3BRUqUrrj+jb5Q2NHm0QikcHJ4w3URKUiP6Q/4drqvgvXbFytXTMJfIlZhPGR
-	 NOfNOf9VychSzn1U63DPpe8iw8i89X2DUZxd3kiG6pGogMFwlmOj2R8lpqRwTEqKJ7
-	 gt46qs47liLJOHiXfN+oza+bJUbXVHNb4L1QAyRx0A0DIdtttSkpCHQbiKrUJb2yyn
-	 leQvIk+1vOxwfDyP/u8gJBZEetgM2klT3RKravPHAEu3R03ttCnFnAUjqP3KpiOQqR
-	 XWQs3n2xqFi/0ndlLKwu5dCelovgiywTFbJKvSdyxfsuoXP0a1y3IKybtsNnnE1UFx
-	 b5+QohUMn4ssA==
-Subject: Re: [PATCH net v2] net: ti: icss-iep: fix deadlock when disabling PPS
-From: netdev-bot+sashiko@kernel.org
-To: hj351016@gmail.com
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 09 Nov 2026 08:21:09 +0000
-Message-ID: <179421246928.994134.4691531527341185507@kernel.org>
-In-Reply-To: <20261108074733.248784-1-hj351016@gmail.com>
-References: <20261108074733.248784-1-hj351016@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=HA8E34+7
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 438B0201CC;
+	Mon,  9 Nov 2026 09:23:10 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id qAp99e0zu_q7; Mon,  9 Nov 2026 09:23:09 +0100 (CET)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 020C62067F;
+	Mon,  9 Nov 2026 09:23:09 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 020C62067F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1794212589;
+	bh=tlAM999AN2z4WmQSaz7KboMJcz00mR5dVBM7MGj61rM=;
+	h=Date:From:To:CC:Subject:From;
+	b=HA8E34+7bq1yS5Xx1l3aOA0lDcEYeuc6tr/+5Sx0iiSuz447ASuozXQVccLmGnimI
+	 RHaz8oy5FWVuz4dX3HMv78hiDnp0LHo6HGqNXjWrQupXV9KnM09CbygXFyj1PMntjJ
+	 6/GrU2TV1VVZ9ztDpB+FZ3VkJsMX6TMuB00otiDnLR9uhO4rd/b3trl1+CyZbBfqVk
+	 dzCBkPi9tf62IifrsRjLa4GgMZ/v2lCq5MyQ2W+QX4aISELbs3+306tQhaDmN38f9N
+	 0CeVkASO6PKkMkSMVrpT3DvGfUFcGOuIitMrQQbTdtokSc1BSSl8Km91k91gJW+fQi
+	 8GMxz4Mw5rrsQ==
+Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 9 Nov
+ 2026 09:23:08 +0100
+Received: (nullmailer pid 2426709 invoked by uid 1000);
+	Mon, 09 Nov 2026 08:23:08 -0000
+Date: Mon, 9 Nov 2026 09:23:08 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>
+Subject: [PATCH net] MAINTAINERS: Add the new IPsec list and patchwork
+ instance
+Message-ID: <avGC7CrPVgMrBBtq@gauss4>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,172 +77,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+We now have a dedicated mailing list and patchwork instance for
+IPsec. Patches for the ipsec and ipsec-next tree should be
+submitted to netdev@vger.kernel.org and ipsec@lists.linux.dev,
+so that the new IPsec patchwork instance can track it.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I targeted the patch to net so that the new workflow gets
+implemented faster. But if there are concerns to apply it
+to net, it can also go to net-next.
 
-- [Medium] This patch moves cancel_work_sync(&iep->work) in
-  icss_iep_pps_enable() out from under ptp_clk_mutex.
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a use-
-  after-free / NULL dereference in the teardown path that the new guard…
-
---
-
-net: ti: icss-iep: fix deadlock when disabling PPS
-
-This patch changes icss_iep_pps_enable() so that cancel_work_sync(&iep->work)
-runs after ptp_clk_mutex is dropped. This avoids a deadlock with
-icss_iep_cap_cmp_work(), which takes the same mutex. It also makes
-icss_iep_cap_cmp_work() return early when neither pps_enabled nor
-perout_enabled is set.
-
-> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-> index ec085897edf09..3b2a88c2dad88 100644
-> --- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-> @@ -534,6 +534,17 @@ static void icss_iep_cap_cmp_work(struct work_struct *work)
->  
->  	mutex_lock(&iep->ptp_clk_mutex);
->  
-> +	/*
-> +	 * PPS/perout may have been disabled (and the compare hardware
-> +	 * cleared) while this work was queued or waiting for the mutex.
-> +	 * Bail out rather than re-arm CMP1 and emit a stale PPS event once
-> +	 * the event source is gone.
-> +	 */
-> +	if (!iep->pps_enabled && !iep->perout_enabled) {
-> +		mutex_unlock(&iep->ptp_clk_mutex);
-> +		return;
-> +	}
-
-[Severity: High]
-This is a pre-existing issue, but does this check cover teardown when perout
-is enabled instead of PPS?
-
-icss_iep_exit() unregisters the ptp clock before it disables perout:
-
-icss_iep_exit() {
-	if (iep->ptp_clock) {
-		ptp_clock_unregister(iep->ptp_clock);
-		iep->ptp_clock = NULL;
-	}
-	icss_iep_disable(iep);
-
-	if (iep->pps_enabled)
-		icss_iep_pps_enable(iep, false);
-	else if (iep->perout_enabled)
-		icss_iep_perout_enable(iep, NULL, false);
-	...
-}
-
-Inside ptp_clock_unregister(), ptp_disable_all_events() only sends
-PTP_CLK_REQ_PPS. icss_iep_pps_enable(off) then returns -EBUSY because
-perout_enabled is set. So CMP1 stays armed and the work is never drained.
-
-ptp_clock_unregister() then unregisters ptp->pps_source and calls
-put_device() on the ptp device, which can free the ptp clock. After that,
-iep->ptp_clock is set to NULL without holding ptp_clk_mutex.
-
-Later, icss_iep_perout_enable(iep, NULL, false) clears perout_enabled. It
-never calls cancel_work_sync().
-
-During this window icss_iep_cap_cmp_irq() can still queue the work.
-icss_iep_cap_cmp_work() gets past the new check because perout_enabled is
-still 1, and then reaches:
-
-	ptp_clock_event(iep->ptp_clock, &pevent);
-
-For PTP_CLOCK_PPSUSR, ptp_clock_event() calls pps_event(ptp->pps_source, ...)
-without a NULL check. Can this touch a freed pps_source or ptp clock, or
-dereference a NULL iep->ptp_clock?
-
-On am654 with icssg_prueth (clockops perout_enable), this looks reachable.
-Enable perout with PTP_PEROUT_REQUEST, then bring the interface down, which
-goes through prueth_emac_common_stop()->icss_iep_exit().
-
-[ ... ]
-
-> @@ -607,7 +619,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
->  	} else {
->  		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
->  		if (iep->cap_cmp_irq)
-> -			cancel_work_sync(&iep->work);
-> +			drain_work = true;
->  	}
->  
->  	if (!ret)
-> @@ -616,6 +628,15 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
->  exit:
->  	mutex_unlock(&iep->ptp_clk_mutex);
->  
-> +	/*
-> +	 * Drain the capture-compare work only after dropping ptp_clk_mutex.
-> +	 * icss_iep_cap_cmp_work() takes ptp_clk_mutex itself, so cancelling it
-> +	 * under the mutex deadlocks against a handler instance already running
-> +	 * and waiting for that same mutex.
-> +	 */
-> +	if (drain_work)
-> +		cancel_work_sync(&iep->work);
-
-[Severity: Medium]
-Now that the drain runs outside ptp_clk_mutex, is the disable still ordered
-before a following PPS or perout enable?
-
-The chardev ioctls hold ptp->pincfg_mux around ops->enable(). In
-drivers/ptp/ptp_sysfs.c, pps_enable_store() and period_store() call
-ops->enable() without it. That means a second writer can take ptp_clk_mutex
-between the mutex_unlock() and the cancel_work_sync() above:
-
-CPU1                                  CPU2
-icss_iep_pps_enable(iep, 0)
-  icss_iep_perout_enable_hw(off)
-  iep->pps_enabled = 0
-  mutex_unlock()
-                                      icss_iep_pps_enable(iep, 1)
-                                        icss_iep_perout_enable_hw(on)
-                                        iep->pps_enabled = 1
-                                        mutex_unlock()
-  cancel_work_sync(&iep->work)
-
-Two outcomes look possible.
-
-In the first, a stale work item from the old session gets the mutex after
-CPU2. It may have been queued by a CMP1 IRQ just before the disable, or it
-may already be waiting in mutex_lock(). The new check in
-icss_iep_cap_cmp_work() only looks at the flags, so the item gets through.
-It reads the new start value that icss_iep_update_to_next_boundary() wrote to
-CMP1. It writes start + iep->period back, then reports a PPSUSR event for an
-edge that has not happened yet.
-
-Would the first pulse of the new session be skipped, with a bogus timestamp
-sent to userspace?
-
-In the second, CPU1 is delayed until the new session's first CMP1 match.
-icss_iep_cap_cmp_irq() queues the new session's work, and CPU1's late
-cancel_work_sync() removes it before it runs.
-
-In the non-clockops path, this work is the only code that advances CMP1 by
-iep->period. icssg_prueth_sr1 is one example, since it calls
-icss_iep_init(iep, NULL, NULL, 0).
-
-Could PPS stop for good here while pps_enabled is still true?
-
-Before this patch, ptp_clk_mutex serialized the disable, the drain and the
-next enable.
-
-> +
->  	return ret;
->  }
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 09713dc4c6a7..36767254c33c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19506,7 +19506,9 @@ M:	Steffen Klassert <steffen.klassert@secunet.com>
+ M:	Herbert Xu <herbert@gondor.apana.org.au>
+ M:	"David S. Miller" <davem@davemloft.net>
+ L:	netdev@vger.kernel.org
++L:	ipsec@lists.linux.dev
+ S:	Maintained
++Q:	https://patchwork.kernel.org/project/ipsec/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git
+ F:	Documentation/networking/xfrm/
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108074733.248784-1-hj351016%40gmail.com
+2.53.0
+
