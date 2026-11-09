@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.216
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794211390;
-	b=053rI3pJSUAFzQMmPxXKNaWLzWXF6A2YFr96IaicqDqdvVRAjZbk9xKG8COidHSoLe4Z
-	 +vNYUdQjaWDj3vs/XGTQdLnO+SoUcKEFeOo7bd5sGzFU288aG4nezoAdMWsyX5vNWezFA
-	 ZUF6Qi/RgCsf2f4G3wBfa6x99mykQIU6+XoSzufIQNVTZUlbSE/QetviH/jq3SDz+dtq4
-	 FgYvEYoyq73p4RiyXWTBMwmgoMtHS+uPGcDBOBV8wh6UMhCVR197yYIAteWM6pvPwEGJo
-	 gd21wnTr41r1I1S6Lw3DSLISkO/VcU6yOuRVMt2GMQznCpkEJq6pgPOxSgi06hC0eHw==
+	b=zLl/hE0rIWe8eMkuzAbOxJPYc6MiAF2ZJYwi6J+aW2+l2AgfuZGVLmJ8iHVq3memNztc
+	 HopqCfPa3AeSQnQA4XPJbs8VlDRMx0vwKPJIN3Md0x6js+SnmWkaIBpRFr0vxgL9UzUSc
+	 V4zGMvqo/Z2uKeFcyQeW6M/ZKwxiTJoG8lXZbgesWeq5Ie3p+ZXN2eAjUqbGh5Fap15Oy
+	 WyjD3UZ8cUqxam0PtPG0fTO5WYScxtLHztPVQ1G0KMIZM3jOmqMKKYaBpFj4+6PjpD+Kn
+	 yDT9R5dIm17Cu3tZVrucMisb6/NnRj2pAuqnAwwzQyctpyK24zyPajXxOYbOtYsS1yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794211390;
 	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
 	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=5LJgLw/thfvUww3ktQLNjWdHCmvCJJ0i42mOOj/PlNU=;
-	b=dHvsS9744L6IiyR8c9MNb2wIyG9D8WHAhGVJKcLOjj/JrWRCcQP1i45Z1Bh3YfJDGtfp
-	 Nrl/Oi6XMDrn4TCVbtYGDszUGPj3hY7mX+ncw6YLKxBqHRhC+3zOpEliQ9T3/U4hv2SH7
-	 tOknhlyNILhEeqqzZ7l8tG7JrUG6QvnZNzf05MuYJe5al/t0eKG0t0QgI9qCWDdPYZ/sk
-	 WvTQ5j08wDz4BjkuJORNufycKlr3zjAB+TaV/B1eJk1VnzoqWcJn556uQvgHuaKEoxz4k
-	 /CrLIopGNNlrbcd8Y6z/5Ab1pUi1F4W0qrMbCN51g4KJcIk4T+yNpyZhFQJS6tsvZKA==
+	bh=gLD2qdjlkf0C6gK3J3mNyyLmAk5TsTbIQ2KxZYu6xfw=;
+	b=b4mB0WPR3alZe7muhd9jE2hrTEXVwja6GsOs+x3ZgAIOLLZzm8PUKxoBLGoMcodyX7CK
+	 zphL6CpZThpUDQKj0aC4y5wSlQXYP09xPpkuSwiBLwtqM/V/hdFTHb5++OQTKiInm2vGf
+	 kBywTVOPHXjIU1i9ZkImgv9a/JB0S74rmzFOH5nCEFNqH++7cC5YufVbIIjluGo6JDKVt
+	 eDriblmjP6+C2reluRQsJyY7VxSGhOCsS3LXOPz1jnSh13xDCvR5Q96YpDltm0rIqozCM
+	 VH7bmzUOj0i7em82wC7L8rGqxM0/Loz/4TlDW/2h6iHoXcAA0lhoR6JSYKeNwF+LABQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=foxmail.com;
 	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=gfpe297V;
-	arc=none smtp.remote-ip=162.62.58.216
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=fsYrXigN;
+	arc=none smtp.remote-ip=162.62.57.252
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B315606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9032606A332
 	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:03:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B315606A32A
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9032606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=gfpe297V
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=fsYrXigN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
 	s=s201512; t=1794211379;
-	bh=5LJgLw/thfvUww3ktQLNjWdHCmvCJJ0i42mOOj/PlNU=;
+	bh=gLD2qdjlkf0C6gK3J3mNyyLmAk5TsTbIQ2KxZYu6xfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gfpe297VhRB9TQFvp7iQq2D3BwsOPFZUuOryxhL7hmnZZcvFEsmu5+lD1oIJL3CM6
-	 yFOFUYt9kOa/UY6WP++eU81GANI/NaEuK42QyzSkBlWrdO64YlP990I/w+hOwTv/Pj
-	 XMsdYKrkfPdW+TtPEQbwlcgXo/dLOFUPGSyeihAs=
+	b=fsYrXigN9BIMDK7MMn7RiqUvqG7i5xVqUpVRGX/QqoAEN+n5FHsLtaZgki3dCjEw3
+	 HPnmXBPrGHsH4dG5DNyjjLYAVbyHVBPWz+0lsveTA531y70sC0LWu/C52X1s9FVx6O
+	 dOuU719KI8y8shs/FVvDaL796AugEGxs/dNi1T9Y=
 Received: from localhost.localdomain ([183.23.108.92])
 	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
 	id B79240B; Mon, 09 Nov 2026 16:02:55 +0800
-X-QQ-mid: xmsmtpt1794211377tjc7miiro
-Message-ID: <tencent_0F653806680A4CA083E923A5AFF5982DC307@qq.com>
-X-QQ-XMAILINFO: NuGpsYW8pZ+Ar14pzAjXQED5eeSCxvZ/71jnOi0QSkmMxnUBEpnP+lEuP6poYO
-	 CRNxq42UlwdG3RWUINtoRkQTRAA0F6l524wPhKfZSIlN4NpmrObgwRihkzAXVT6DwV42oXRv84ni
-	 oNH6kCa3d9mC8vytAM48Axknj2Qq88qPiwFV3B0yEwOUUwdUewrxjuX1j+aVaZKK8g+ElTDTQIMW
-	 E1412K9giduT/qMlEQn4vjXI8M/xPH2omCeRicKaJT2NTqyWASNyuyK+LRRolsTdoiVpfys/J7K9
-	 FkTqsdOEEuFloQZsUyAxLT6qfqu3dG4djWBts/MFceSgeESSXhFbO7G5w1X4aCZNwgfHC721x3B3
-	 8OdRWi1qYcNrGP6CzOW+S4KgHH8i7GnRfry4ZkfAjru/Eko0oeHnPNTb0o5LEukqAM2NWKzFXhze
-	 xiKOM7Q9zVkA/HV5mwxecq5HTQR8Url+CuJgdQ92dOdhpEt1rTOfG1G0p4mFjh91QSvPX2hwd6Ll
-	 n6rOMLne8GHRKmqrn4i5k9l202+1xKwDwQ02nZphnJWlxE3cMSDDcp8TyBAun24mrK9YJodUDbZE
-	 w1yio8XWmk03pd9Oz1CfXrEl/lBCoW4O83wc3md+THjp6ULwbGG4cJko+SBwNACYL0MOiTV8euGL
-	 lJw9PMq25DVK5DxT3Du6KpEhFR30Hjh/SLTHmDHuYjS3NiXLgSnQ+su0s2pXW74k4BlqLOKDt1Ra
-	 5AKvPqFPc5g5trtwnH4e0GXYPfjCmDQ63MVkfJ04aEayH2JJfgBFgm/HsMSM9hB2FBrf5b4R6n7C
-	 uf2uR9mo8eMvmOnu/54GCBGqGXigyngUeH2lzi/UgXMesiJlfSQg/u5l3YlCUmzcUEBMk6BAi0vW
-	 QMtWkI0q1AKsB9s5owlSj81ueG9aHnXZIWR0CQtAPdz0qmEGtYPRx/opeQu/9YJvxISz0XpemI0r
-	 +3viIBCMbzJi7/GpfL7hJJJdiPfRro+eAiRgDP4eV2A6Gqc5IhX1CMjLM+IfXPxAFkaR782NcypO
-	 k4IQKcv4SQpxLXHCJYTI3kjyovKiIbhAiQeWJRdg==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-mid: xmsmtpt1794211377tc6hgx68x
+Message-ID: <tencent_D6697325D37592ADABE50686370A7D208907@qq.com>
+X-QQ-XMAILINFO: N7NMbzIEsXzdPTi6tMJdatCt6ZYo8LALs0yjKWXBOE4O5wjcz2UuFgHq7o/ur2
+	 Oo/BpBOUame5zKuFqPqFW+wgR3c53w49XtVWVTqrLTZ9DZXGIj0Ndzq8uDM+e1gl9BDhdlyd7AW+
+	 OVa6OCHoZQ/16jzlS8a0u6J/AZrlX1tX8dR1Q8/c7SkA7Twnm2KWoBSqPbE9XRaFJR7FhOz9nTsg
+	 8Ot6n4Arw0tfNw6p9mqD58gLud7idiNgmwq9csVHM/dY0xGg13IpHWafRfIgXVm9CNx/XUroC3NK
+	 zW7qQuLou+e8ahzuJE86IrdUc3q+bxG9+/gyYV5mh4HwQY7yT07wDAzCpXTiWE2zPaLKx2I+YFNc
+	 MjhxubXvBSFncXL0tp3hZH7GANrYEkjWh42HVKVKBecFF+ETdyRqjo9EHsWAUdk2sWy+LV8k/i2n
+	 Ez8pGkLAGwmeMnn28MwCXrShixly+QVvB5ODyxqkNT/CO2Jxdq4gez5YMhKUgcrYEJzmGlVQ9lFZ
+	 N9IO88/fgulU4yGT4xCOtnQoH4MAakkBKybJ7aGorlCj9upsUQUk7GcTwbMHu9voTJQNaBhuzROd
+	 Hgfe29c5q1NBmF1Ai+JRihkeU5BeixckNxuU4PRXrT8C+vtsKGO4QbJykezEH8F/m/WPLgma3YAP
+	 1dqYZNsRNQc2Y4kWDZhkqIr/2Rj7eQf4aNJymqGONm+YRN05XYGlmtJUs0gedYWZykNiLtnqFUJG
+	 FdbMUGNDZC+HQ4a83TvTLz8AguObYJFFycomAEad2AjtvjIAZh4fkyuk6nscMJtUjYl6bc1usnrE
+	 vFOPIrXwSpGBBk4sjcOVzGgDJ2ohPMSgRQLHMFkO0PlXrSrLLVjsW8tL8mF7h37+eejjxBO2efHV
+	 WFZ9K4maVqK+30QOHlY22AIrEpZyVRgbYDI8bDWlvsHvRkKFwt3UHPxAgYYMRE8l9kcGXI1+R46D
+	 K+nM9WhVm5LI9PH5nw+KppUJ13NKNZmJM+wByMHez5plL4+H/n0wx1c30djL0DJDyfduWEQ0qeiy
+	 SYUG9wGzcnxtFA5tEUT2T6arzLuUz1LXRC63ZkdXtCsHs+t5dR9RPAO4oVdLM=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 From: memoriaru@foxmail.com
 To: netdev@vger.kernel.org
 Cc: Steen.Hegelund@microchip.com,
 	daniel.machon@microchip.com,
 	UNGLinuxDriver@microchip.com,
 	memoriaru@foxmail.com
-Subject: [PATCH net v2 1/2] net: sparx5: fix RX ring stall on frames from inactive ports
-Date: Mon,  9 Nov 2026 16:02:53 +0800
-X-OQ-MSGID: <20261109080254.92305-2-memoriaru@foxmail.com>
+Subject: [PATCH net v2 2/2] net: lan969x: fix RX ring stall on frames from inactive ports
+Date: Mon,  9 Nov 2026 16:02:54 +0800
+X-OQ-MSGID: <20261109080254.92305-3-memoriaru@foxmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20261109080254.92305-1-memoriaru@foxmail.com>
 References: <20261109080254.92305-1-memoriaru@foxmail.com>
@@ -86,54 +86,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Hewei <memoriaru@foxmail.com>
 
-When the FDMA RX path receives a frame whose source port does not map
-to an active netdev, sparx5_fdma_rx_get_frame() logs an error, flushes
-the extraction FIFO and returns false - without advancing the FDMA
-software cursor and without releasing the skb, which has already been
-extended with skb_put().
+When a received frame's source port does not map to an active netdev,
+lan969x_fdma_rx_get_frame() recycles the page via the page pool and
+returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
+loop without advancing the FDMA software cursor.
 
-The DCB for this frame still carries its hardware DONE bit, so the next
-NAPI poll picks up the same DCB, takes the same inactive-port branch and
-returns false again. The software cursor never moves past this DCB, so
-RX traffic on all ports stalls until the module is reloaded. The
-sparx5_xtr_flush() call only drains the QS_XTR hardware FIFO and does
-not touch the DCB ring or the software cursor, so it does not clear the
-stall.
+As on sparx5, the DCB still carries its hardware DONE bit, so every
+following NAPI poll picks the same DCB, hits the same inactive-port
+branch and breaks again: RX traffic stalls on all ports until the
+module is reloaded.
 
-Treat a bogus frame as consumed: free the skb, clear its slot in the
-rx->skb[][] array and return true, so the NAPI loop advances past the
-DB the same way it does for any other received frame. The slot is
-refilled by sparx5_fdma_rx_dataptr_cb() when the DCB is recycled.
+A NULL return currently covers two different situations: a failed
+build_skb() (allocation failure - breaking out and retrying the same
+DCB later is correct) and a bogus frame (which must be dropped and
+skipped). Split the two: recycle the page and return ERR_PTR(-EINVAL)
+for a bogus frame, and advance past such a DB in the poll loop.
 
 Found by code inspection; the stall needs the hardware to emit a frame
 with an invalid source port, which cannot be triggered without hardware.
 
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
 Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../microchip/sparx5/lan969x/lan969x_fdma.c   | 24 +++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-index 15ec9b0..bd021df 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-@@ -159,7 +159,14 @@ static bool sparx5_fdma_rx_get_frame(struct sparx5 *sparx5, struct sparx5_rx *rx
- 	if (!port || !port->ndev) {
- 		dev_err(sparx5->dev, "Data on inactive port %d\n", fi.src_port);
- 		sparx5_xtr_flush(sparx5, XTR_QUEUE);
--		return false;
+diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+index 053d125..7234474 100644
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+@@ -3,6 +3,7 @@
+  *
+  * Copyright (c) 2025 Microchip Technology Inc. and its subsidiaries.
+  */
++#include <linux/err.h>
+ #include <net/page_pool/helpers.h>
+ 
+ #include "../sparx5_main.h"
+@@ -113,8 +114,15 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
+ 	sparx5_ifh_parse(sparx5, page_address(page), &fi);
+ 	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
+ 					       NULL;
+-	if (WARN_ON(!port))
+-		goto free_page;
++	if (WARN_ON(!port)) {
++		page_pool_recycle_direct(rx->page_pool, page);
 +		/*
-+		 * The frame is bogus: free it and let the caller advance
-+		 * past this DB. Returning false here would stall the RX
-+		 * ring, as this DCB is never consumed by the software.
++		 * Signal a bogus frame so the caller advances past this
++		 * DB. Returning NULL would make the poll loop break
++		 * without advancing, stalling the RX ring forever.
 +		 */
-+		dev_kfree_skb_any(skb);
-+		rx->skb[fdma->dcb_index][fdma->db_index] = NULL;
-+		return true;
- 	}
- 	skb->dev = port->ndev;
- 	skb_pull(skb, IFH_LEN * sizeof(u32));
++		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	skb = build_skb(page_address(page), fdma->db_size);
+ 	if (unlikely(!skb))
+@@ -258,6 +266,18 @@ int lan969x_fdma_napi_poll(struct napi_struct *napi, int weight)
+ 			break;
+ 
+ 		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
++		if (IS_ERR(skb)) {
++			/* Bogus frame, buffer already recycled: advance past
++			 * this DB, or the same DCB stalls the ring forever.
++			 */
++			fdma_db_advance(fdma);
++			counter++;
++			if (fdma_dcb_is_reusable(fdma))
++				continue;
++			fdma_db_reset(fdma);
++			fdma_dcb_advance(fdma);
++			continue;
++		}
+ 		if (!skb)
+ 			break;
+ 
 -- 
 2.39.5 (Apple Git-154)
 
