@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.59.229
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794211421;
-	b=gHjHKMYWCP0QvvffpAECLKVu85NX/F/5QAieV7g/2qStViZL5VZSsl5K0Y4SXeIN2Ioh
-	 jwmZIieMilazxHbY4qMJ0sYVn4FFa0kXbqiQK4G7rml62iwUQvkOgjJ10E5nHhI2hY1MY
-	 6pbvnWggknDqsMQRpEkO4qJwr+URPFWx5eFUd1maRYKNXZEDyeMVaA5ff2HpWvW6AY9Xk
-	 kts6391pZ9CdSimkXTKQyrII5nlC6ulOUwTOTqBNAH/4lzicZSTO560AD8vAeXmNmUc+U
-	 wmgmT0gydqE5qErzS5NjgGUqAF0MTfDds0Whc/K30RfYxYEim8TrCzv5DesirxGv9vA==
+	b=luUMdGEDoH/nTxLnEkecw+sq+HlQqSr/l+dA8tv+CAcxlasihgXL/RvYRt3+ONNtx/mG
+	 yD4HsXD/S2h+n2fDqmkc2TgidxvsMhdqUCFM93OQ2eYRqXGtPN+wrG/7r/qVPSx4VIyr8
+	 +6ITVywmCuszwZ0C4gjofb8+gAD3i9DnxhuBm1cgjlRTo16TzPLDuXstKn+ajqlS36zrQ
+	 hKBV21t2D/X/mQYXct69lpE1qTalz5K/5/IA+m05xkiJdPQKnoMROcQ9bU+1BDKv1Ehnd
+	 YOWyWV/5xjQBetzmhaAi3i+aKanVvh8BTtZrL/oC9iPJzpc3xd716EtLVWa5n1grclg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794211421;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=I55+dGkuKDXOR4BfNZ0UGOlravZoEiT0iCNfM03+mag=;
-	b=Z9fUvmosx02PKUwAUiLJdMQQxopCI0/LWye7JqRUriJJueIIcZqx44fhRRjibcp5hw90
-	 2pCSudQJUKzhe7Y/GGlje+6tg8Sau05s6rM9tW3p1iduvJteYwFZayKsKh31KVL1znb4+
-	 mLJCqYJk/blHQTiy4CeKQy5C8bob+YoebkoHrnK/BGOrkfC5ElJXBjCbyisbuZ8nlAe1q
-	 0hJLuDNqGfNOcuoNpETA16ok1d6kObq2aR8LPMNRqW781IVkUeFw8KmTfIgKdE1y7jNtO
-	 i072IVNnBdzxosdIeV/TNylNUr66ETQ87RcnzYKdJYQENxgTz7z7XGdypcbJVHtY69w==
+	bh=W/ttMtoB/i97cNWzp1xf30hYT65os9u+uzSKFW1eAPQ=;
+	b=ve0qPGqzzdY6jaJ4uHTSRy8wcEDmBekQ+5eChMiY+ag3loQBlshC0Xqaeq8r08n6kH7P
+	 joNNX08BGGhF1ROaFvJVxJCl4q2yLogwRYelckrXNnhgz85aLpTYiH8pMfsYkM2dwaMK1
+	 JLq82XyxQtsCEAldMjqB/oTfcZUcjzclQYHlZVOUKa7U9kGuOaWzL7N0t90YQQDgA3laq
+	 GhhgRFnXB0WpjFxepOMI9YZW8yu5/A4PNnQTnPB2qebXVl0Pg6jC3+d1vy1OEiku44GE4
+	 Gt+ZOySGNDZCiNltueVVCpWDKeGPkuNhbUojVfNdz1nitjt4cglGkBdfRJvr9MP3d2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=1wt.eu;
 	spf=pass smtp.mailfrom=1wt.eu;
-	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=MI2R0LGG;
+	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=JNBL1KwR;
 	arc=none smtp.remote-ip=51.159.59.229
 Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF1C606EE92;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0781606EE89;
 	Mon,  9 Nov 2026 08:03:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCF1C606EE92
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0781606EE89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=MI2R0LGG
+	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=JNBL1KwR
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1794211414; bh=I55+dGkuKDXOR4BfNZ0UGOlravZoEiT0iCNfM03+mag=;
+	t=1794211414; bh=W/ttMtoB/i97cNWzp1xf30hYT65os9u+uzSKFW1eAPQ=;
 	h=From:Message-ID:From;
-	b=MI2R0LGGjOtwUmhWHUpTEN7s51HFLh7q6YWFVXVafU3a8eql3qAFxw7HjmUVjXi8e
-	 zZ1nimDjrweGZtMvM6yPgG5KQdEakUh7isAXruGK8D6bQjRdoz2Jo9yR4m7kXfHiJm
-	 qpwQe3QDFEj5CUaelnpKRSqo5Eq+kLxCbnvpvYjo=
+	b=JNBL1KwR34FvPKixpeJ1ZDwmSQtdvROeZPB8Q6Es0Hj/hx+WVBi3oTyl5lJfZX26p
+	 0dRozZ7DXv5r+UqeLDMvOF7GE1y7ArmiTZrpkoijiib+bsGLPe66pIOlcrQ6H1WtCy
+	 kRWBq58au3cqFqEYk6x6Hsd2uchmii21cyQ3sEqI=
 Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id 3D8C1C0960;
+	by mta1.formilux.org (Postfix) with ESMTP id 26174C095D;
 	Mon, 09 Nov 2026 09:03:34 +0100 (CET)
 From: Willy Tarreau <w@1wt.eu>
 To: Jonathan Corbet <corbet@lwn.net>
@@ -50,9 +50,9 @@ Cc: skhan@linuxfoundation.org, Randy Dunlap <rdunlap@infradead.org>,
         gregkh@linuxfoundation.org, "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH 12/14] docs: security-bugs: explain why AI-found bugs are handled publicly
-Date: Mon,  9 Nov 2026 09:02:38 +0100
-Message-ID: <20261109080240.29444-13-w@1wt.eu>
+Subject: [PATCH 11/14] docs: security-bugs: explain why directly sent reports add extra work
+Date: Mon,  9 Nov 2026 09:02:37 +0100
+Message-ID: <20261109080240.29444-12-w@1wt.eu>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261109080240.29444-1-w@1wt.eu>
 References: <20261109080240.29444-1-w@1wt.eu>
@@ -67,65 +67,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Many reporters of bugs found using AI do not follow the instructions to
-treat them as public, likely because they're worried to be blamed for
-disclosing it.
-
-The security team constantly receives duplicate reports within a very
-short time, which makes it clear that when an LLM finds a bug, others
-find it at the same time, and some may already be working on exploiting
-it. Keeping it private then protects nobody, while handling it publicly
-lets everyone fix it quickly without a needless embargo.
-
-Let's clarify these points and also reword a sentence about AI reports
-that could be read as "do not send them to us".
+Many reporters imagine that contacting a maintainer directly will bring
+their report a special attention but it's exactly the opposite because
+it breaks the normal workflow, and deprives the maintainer from their
+usual tools (CI, reviews etc), and even requires extra care (e.g. use
+separate branches, avoid CCing stable etc). Let's just explain this
+upfront so that reporters understand that there is a reason for everyone
+insisting on public posts.
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- Documentation/process/security-bugs.rst | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ Documentation/process/security-bugs.rst | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/process/security-bugs.rst b/Documentation/process/security-bugs.rst
-index 69dbc47f54625..72f9b8e45052e 100644
+index 280f7f3a94603..69dbc47f54625 100644
 --- a/Documentation/process/security-bugs.rst
 +++ b/Documentation/process/security-bugs.rst
-@@ -42,10 +42,16 @@ a system.
- **If you resorted to AI assistance to identify a bug, you must treat it as
- public**. While you may have valid reasons to believe it is not, the security
- team's experience shows that bugs discovered this way systematically surface
--simultaneously across multiple researchers, often on the same day. In this
--case, do not publicly share a reproducer, as this could cause unintended harm;
--just mention that one is available and maintainers might ask for it privately
--if they need it.
-+simultaneously across multiple researchers, often on the same day. Others are
-+then likely to be already working on exploiting the same bug, so keeping it
-+private would protect nobody, while handling it publicly lets everyone fix it
-+quickly without wasting time in a needless embargo. This applies even when the
-+bug falls within the threat model: only the fix and its description are made
-+public, and reporters following this procedure will never be blamed for it. In
-+any case, do not publicly share a reproducer, as this could cause unintended
-+harm; just mention that one is available and maintainers might ask for it
-+privately if they need it, or better, send it upfront in a separate message to
-+maintainers only.
+@@ -15,7 +15,14 @@ It is important that most bugs are handled publicly so as to involve the widest
+ possible audience and find the best solution.  By nature, bugs that are handled
+ in closed discussions between a small set of participants are less likely to
+ produce the best possible fix (e.g., risk of missing valid use cases, limited
+-testing abilities).
++testing abilities). In addition, dealing with private discussions on patches
++adds much more burden to maintainers who cannot follow their usual process nor
++benefit from their usual tools. For example, many subsystems have CI jobs
++running on publicly posted patches and will not merge a fix before it has been
++validated, and automated review tools such as Sashiko review patches posted to
++the lists. Since the fix will have to be posted publicly anyway, sending it
++privately first only delays it by the time needed to ask for it to be reposted
++publicly, adds extra work, and loses the benefit of early reviews.
  
- If you are unsure whether an issue qualifies, err on the side of reporting
- privately: the security team would rather triage a borderline report than miss
-@@ -169,10 +175,10 @@ ignored.
- Use common sense when evaluating the report. If the affected file has not been
- touched for more than one year and is maintained by a single individual, it is
- likely that usage has declined and exposed users are virtually non-existent
--(e.g., drivers for very old hardware, obsolete filesystems). In such cases,
--there is no need to consume a maintainer's time with an unimportant report. If
--the issue is clearly trivial and publicly discoverable, you should report it
--directly to the public mailing lists, without the reproducer.
-+(e.g., drivers for very old hardware, obsolete filesystems). In such cases, as
-+well as when the issue is clearly trivial and publicly discoverable, there is
-+no need to consume a maintainer's time with a private security report: just
-+send the fix publicly like any regular bug fix, without the reproducer.
- 
- At the very least, when using an AI assistant to find and report bugs, make the
- assistant read this file and threat-model.rst before proceeding, and have it
+ It turns out that the majority of the bugs reported via the security team are
+ just regular bugs that have been improperly qualified as security bugs due to
 -- 
 2.52.0
 
