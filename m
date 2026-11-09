@@ -1,60 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794220426;
-	b=zQNHHoFnR/wGued8+3dOYxw6w/E2p1Uoz5PM543lqF7YxIAHLq56zd2kg9q12aW3ewm4
-	 /Ng3JQt2GmlBdWAex4pHRKg4QOVEx2zywDjre1xtQlpmu9ETvRtTjdFD45+Gdcmo5J8OK
-	 b9emCobuOwFRx0r7GA8ju9HLpAfn1vHEJZUuvLUKKlm3y+FwCJmkfssYua4d0QDT1Yxjo
-	 MxSsKm8dFs84FVWAZ6dLkJmjpzLCn/tLr54EISOWB7jGX6nrZsuyMeVBjP2SePVrkQI9s
-	 JNh6PUoiPqhJq1FrznjP1vi6tfXweKeAN+CQ0KWW7QQqtZ0OCbGn3V+Kn2uLRlDpqVQ==
+	t=1794220511;
+	b=iV+NHlGEW47Epp4nZbO/SQ8SNo18D8wSY/vtYiInwMvGIZGdNagZG91HmH4VVWd5Gvp3
+	 p4Q4jlnSyCvefDdasOhtkf66RcCAC5lW2zwccOdV5S4cee3Ikh2e1bQYSMBxjBDGD2tN1
+	 M8MguUYo7fmazlick8VbLkjOQDFs5KHxaJ+KGKm7fj0SFoiluJeHZaOTstkUz4U002YJa
+	 TPV8XzVyWi83C031KmbUNxDjZAUNCwcHlaLHIjqV5OB5yFy/URQ1ujE+VmaHtvETNt1Tl
+	 JOAziF3BmAGfTkxs/eBg6q9m7wAf6kJSlSCjhff+TFBumRyGRoE1w6vWDl9GnsM+Hrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794220426;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=VRrPkVXdrF4F4ZQHVBYtdU9kJYRffolcAoStU51ARY0=;
-	b=sToIKqpQ5RugLm6gtrpKZitLXw9Ea7HsMnoYmnMYOp5CwRVi80DlwpD5uuyUT94DlM9d
-	 cWnpec41SqqU7LoB605w61rHp/ATzADyIXdIM6eRBie8C2A/w8EIDGe8ZK6X1857UOzg0
-	 869zUb4v3SOgpcb+RgsIaZNtes6uzWPmMQ/QIfK81dw2dPgxfRnWGBaL39or2kZCO9Lnb
-	 91AX08jLjH204a9G2jEsAeTX43xuLzjgPdnDMsz9EZqi+1A5rryzLnzfUbGF3YoSZo1kI
-	 JbTbgjNMtTYhgHAasWtEodYely20FyhBMBItU3mwaKTr8u9X+LX7odm+n3sW/oXB4ng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794220511;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
+	b=p+ff1uY25f2rgp0bK0BFDyF3cW7eV4hJjebtdwBSYBf88+dFc9nBPZVA7I4xYbY3Eng2
+	 OocJ01CSELD5ycAn/V5Xf2aQdWNLhP7breR0eMEMRQIFfSR3puKJMVzDWY65Ce5sDopn0
+	 FW9sRAFMUvfBIG+9DhS4r9BCHl62qq5SEsL461pCSB/ehhiYgel5otOlm38ZoxRnpvf9l
+	 o4rvfyjJZ/K4PDGoSepxSoctidsZEgFh3bL4qP04pqSiz3PhX7G+VSb1iSwblCg8PpHsh
+	 ybd7cDUXWh8E9xNS807DVFE/BglH1AoHgREh82mKw7piV9CqW2BJh7or8qV95MXy05g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6GdokD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="g49MWb5/";
+	arc=none smtp.remote-ip=209.85.216.42
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B8C606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C24606A323
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:35:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0C24606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6GdokD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E81F0089F;
-	Mon,  9 Nov 2026 10:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794220425;
-	bh=VRrPkVXdrF4F4ZQHVBYtdU9kJYRffolcAoStU51ARY0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Bd6GdokDOg0fr92ciNihq3ZNQ1ney4lla5Q6zpGt1/DhRUA/FsTF/fGRR8Mg84Uw+
-	 18ZPQkqKni+7xrTyKAjDSZk1s002P1cm/qrbn+fD7FrmyN0Zqf3rHCdEFS9+boepsN
-	 uYa63yGCeNiIr/ATnuYVXdLaKyukg/WGs5F7SuOAg43KAtVnpV5Cdh5u1fA5H4fX9p
-	 GUxOMgmqWEqg8J2xa+k/hdMdfHXra3eoraD75ITlM3R7CpAg2z6AsNkQWfM1wbiMHe
-	 uZEkUXeJYvzW8hNz6Ea+7Bdleg738UVSsua2HXIkODKg/BUKhBdGC1YLCL4A2Oe9a1
-	 xa0UhmTkguanA==
-Subject:
- Re: [PATCH net] net: wwan: iosm: Re-bind the driver around system suspend too
-From: netdev-bot+sashiko@kernel.org
-To: zevpaneth@gmail.com
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, mail@maciej.szmigiero.name, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org
-Date: Mon, 09 Nov 2026 10:33:44 +0000
-Message-ID: <179422042429.994134.17042297165807075263@kernel.org>
-In-Reply-To: <20261105102009.34534-1-zevpaneth@gmail.com>
-References: <20261105102009.34534-1-zevpaneth@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g49MWb5/
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3b0b3754f57so346853a91.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 02:35:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794220510; x=1794825310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
+        b=g49MWb5/yifGNXK9v3uJRzMXvdGfHYwVnDsvkvqEbUJ6QN0jlYqr1ebA6azfClAOT/
+         RK/UbwGDRf1IqGGk6TL2Kwi5PkpKUg9C6hmiS1LVRsH41VSiAS/nlk7H4cp+5AJtbbC8
+         GSnqjaXUhNuWEVSqFtLKFOu6cE/WcQjuIWQRH2P92DD+wRfV4wAR2aVxlEVHt2SgG/pJ
+         srvU7WjvoR/jsUrFzj+vQ8Yl48XoC7MhyKTF1Rap8WKCzascASo+RhvYPclJepG/G00W
+         7VgpYVYilAtvFTbNuW/FfaxsImmKv8evAU/LZm2cwA0Xxmi5Lv4IJeerouQbo+5r+rWa
+         gWfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794220510; x=1794825310;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Hb0sYmcLHQnhtWzS9j1woOF2kw5P/sRWChZAP1XD0M=;
+        b=EABuWllmM0pY1pMNyZzVD+gKpr4IHX+dR44l0L72GOVOfeh1i9xQ1zS9CzA/8f1qYY
+         0U+rfEvU0sxkGHT6vscVZVSwyt2V+Ny8ucPfquccwGcskjEblmtxxfOiDTkT80Bd11jU
+         OTde/0yDlusonygzdpjzEiNj0pWmGnLtUvn+4JhOQt7RovYW6cSTvo53KraqqcNnno6a
+         o6feOntzj2WfB6Bqud5myc25UGmI+Mhs6EEq8y7DT0hF6GuXN6N091syBam806td5s11
+         Tks/y4kmUiFUNVoPHm2JypiDu10nfJhSXlReuw2f+SbGfufTVO7k4O8o9gBgncGfVM8Y
+         B7Rg==
+X-Forwarded-Encrypted: i=1; AL+hErG6B+wyfDPsSSuX0BrIMKQNG0qIPUmlpdj5ZzvQrrGNPXZVNTBS3Hou6Ee1LuMRjwTTzFr59VM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9DJ3yzMnMcxG/zNsS60Wa7NjkgpE6DGDvCOwC58DOaFEpH+lu0
+	ZuCGHb5Nb15k7+QjcJpKtJseIRHDm7G8JMckbHd7BDhIhhNaNFEMd4yL
+X-Gm-Gg: AYBFou2hnLtPhyh+ncEzHY8TmftwYzyLVe8AQym+L5STBvnPYhOo1miFCQsTa4Bc32S
+	Xl8MB9FYtEJ0OY+FaNDXFAoC03hYa+VohbPJafLqP3KXRmWhHPtxl8DZIoPcq5KE23pQnR/yOu8
+	1G9XxPpc6tKFA+SRly91OxacZbkQMqWPHqfOf6xQTfEQdjyW7PVlF4TeYekeEQwGB+IRkE/rmmm
+	qsGamDEWLpNUvOfYj0lAXW0oo8FnbuYjNfVrmsMVkR8rgDvACxjOEa1VyA8VuM4j8UO5Y5+I2yX
+	5L1MtQdey4sgQ4BmwRYHMqYppsCm90ly+oRL7+kJO3szLai6YgHJ5oizKcGQnmg78sHkEs/EIgg
+	k0Ts6Mgd7rMXH1UUVJywYLzjWYaB19qdyz/pJCNUcFZMOK8LTM15LzlEZiN+PGg/jJdOItgQoJj
+	V3ex7ZdDzC9+miq4ROsVEtbMX0mhAXaj+/XVDrF/W8hN0SkZepTheBHO6NkqO7yZj4elpZdD8iE
+	eJFtqpSdb7JE3XJDzTX6VAiDRq65islH14dTokyXsIqB9AQKE9UB1ov9JY8J/kcFAbdg/LEDZSZ
+	yx2+k8Rh8vqVgWm/0zkbhefDmjMFwRsb8g09p/lYN/dD8w7Sv0qqVkdOwMYcKk58YRpecwndl4Y
+	G
+X-Received: by 2002:a17:90b:530c:b0:3a5:c08:4c41 with SMTP id 98e67ed59e1d1-3b12d49b258mr2971323a91.50.1794220509924;
+        Mon, 09 Nov 2026 02:35:09 -0800 (PST)
+Received: from LDYT9Q2G2M ([2a09:bac1:7680:450::1c:35f])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1058d3310sm10379457a91.15.2026.11.09.02.35.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Nov 2026 02:35:09 -0800 (PST)
+From: Zhiqi Zhang <zhiqizhangg@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Finke Lennart <lfinke@student.ethz.ch>,
+	netfilter-devel@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] lib/ts_fsm: preserve patterns across tc dump and restore
+Date: Mon,  9 Nov 2026 18:34:54 +0800
+Message-ID: <20261109103454.50617-1-zhiqizhangg@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261101081736.51803-1-zhiqizhangg@gmail.com>
+References: <20261101081736.51803-1-zhiqizhangg@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,280 +104,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+Hi Andrew and all,
 
-Critical: 0 · High: 0 (1) · Medium: 4 · Low: 1
+A gentle ping on this series, sent on November 1:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+https://lore.kernel.org/all/20261101081736.51803-1-zhiqizhangg@gmail.com/
 
-- [Medium] The commit message rests on a premise the code contradicts:
-  that "the driver keeps the device in D0" during s2idle.
-- [Medium] pm_notify() now unbinds and re-binds the driver on
-  PM_SUSPEND_PREPARE/PM_POST_SUSPEND with no conditions.
-- [Medium] Because the driver is unbound at PM_SUSPEND_PREPARE, which
-  suspend_prepare() sends before devices suspend and before processes…
-- [Medium] The commit message says the device is "re-initialized from
-  scratch on resume, exactly as it is at boot", but nothing resets the…
-- [Low] After this patch the driver is unbound before every system-sleep
-  transition: suspend (via PM_SUSPEND_PREPARE, sent for every state from…
+v2 describes the tc dump/restore impact, adds the exported-pattern
+equality assertion, and splits the fix from the KUnit tests, with
+Cc: stable on the fix.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch
-  makes it reachable on every suspend.
+Could you please advise whether this series should go through Andrew's
+tree, or whether another tree should handle it?
 
---
+The netdev CI also flagged the new lib/tests/textsearch_fsm_kunit.c file
+as lacking specific MAINTAINERS coverage. How should that file be
+covered, in light of the dedicated textsearch entry discussed in the
+v1 review? I would appreciate guidance on the intended maintainer and
+coverage before preparing an update.
 
-net: wwan: iosm: Re-bind the driver around system suspend too
+Please let me know if any further changes are needed.
 
-This commit extends pm_notify() in the iosm driver. The PCI driver is now
-unregistered on PM_SUSPEND_PREPARE and re-registered on PM_POST_SUSPEND,
-in addition to the existing hibernation and restore events. The goal is to
-recover a modem that comes back in its boot ROM stage after a long s2idle
-cycle by re-probing it from scratch on resume.
-
-> On some platforms the modem loses power during suspend-to-idle even
-> though the driver keeps the device in D0 and its s2idle resume path
-> only sends a wake-up command.
-
-[Severity: Medium]
-Is the "keeps the device in D0" part accurate?
-
-With the driver bound and the D0L1.2 BIOS setting, ipc_pcie_suspend_cb()
-calls ipc_pcie_suspend_s2idle(), which only does this:
-
-drivers/net/wwan/iosm/iosm_ipc_pcie.c:ipc_pcie_suspend_s2idle() {
-	ipc_cp_irq_sleep_control(ipc_pcie, IPC_MEM_DEV_PM_FORCE_SLEEP);
-	...
-	set_bit(0, &ipc_pcie->suspend);
-	...
-	ipc_imem_pm_s2idle_sleep(ipc_pcie->imem, true);
-}
-
-Nothing in drivers/net/wwan/iosm/ calls pci_save_state(), and
-SIMPLE_DEV_PM_OPS() provides no .suspend_noirq. So pci_pm_suspend_noirq()
-falls through to pci_pm_suspend_noirq_common() with state_saved clear:
-
-drivers/pci/pci-driver.c:pci_pm_suspend_noirq_common() {
-	if (!pci_dev->state_saved) {
-		pci_save_state(pci_dev);
-		...
-		if (!pci_dev->skip_bus_pm && pci_power_manageable(pci_dev))
-			pci_prepare_to_sleep(pci_dev);
-	}
-	...
-}
-
-pci_prepare_to_sleep() then picks D3hot or a platform state for the
-modem, possibly D3cold through ACPI.
-
-If the PCI core already moves the modem out of D0 on the D0L12 s2idle
-path, could that be what cuts modem power on the test platform?
-
-If so, would it be a more targeted fix to keep the device in D0 for the
-D0L12 case (for example by saving PCI state in the suspend callback to
-opt out of bus PM) instead of unbinding the driver on every suspend?
-
-> diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-> index 49052eb511baa..ebd4c45e1f4e5 100644
-> --- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-> +++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-> @@ -534,12 +534,14 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
->  
->  static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
->  {
-> -	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
-> +	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE ||
-> +	    mode == PM_SUSPEND_PREPARE) {
->  		if (pci_registered) {
->  			pci_unregister_driver(&iosm_ipc_driver);
->  			pci_registered = false;
->  		}
-
-[Severity: Medium]
-Should this be limited to the affected platforms or suspend states?
-
-suspend_prepare() sends PM_SUSPEND_PREPARE for every suspend state:
-
-kernel/power/suspend.c:suspend_prepare() {
-	...
-	error = pm_notifier_call_chain_robust(PM_SUSPEND_PREPARE, PM_POST_SUSPEND);
-	...
-}
-
-Nothing here checks pm_suspend_target_state, ipc_pcie->d3l2_support or
-the platform. So every iosm device (7360 and 7560) on every platform now
-goes through pci_unregister_driver()->ipc_pcie_remove()->
-ipc_imem_cleanup() on each s2idle, S3 or standby entry:
-
-	if (test_and_clear_bit(FULLY_FUNCTIONAL, &ipc_imem->flag)) {
-		ipc_mux_deinit(ipc_imem->mux);
-		ipc_debugfs_deinit(ipc_imem);
-		ipc_wwan_deinit(ipc_imem->wwan);
-		ipc_port_deinit(ipc_imem->ipc_port);
-	}
-
-That destroys the wwan netdevs, hangs up open AT/MBIM port fds, tears
-down devlink and drops the data session. The roughly 50 second reconnect
-follows.
-
-Commit 0b6f6593aa8c, which this patch builds on, says it was "Tested on
-XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses the existing
-suspend / resume handlers)". So at least that configuration worked with
-s2idle before this change.
-
-Would the DMI quirk mentioned in the commit message be the safer default?
-
-[Severity: Medium]
-What happens to the modem during system suspend once it has no driver?
-
-The unbind happens at PM_SUSPEND_PREPARE, before dpm_suspend(). So
-dev->driver is NULL when the PCI core suspends the device, and
-pci_pm_suspend_noirq() takes this branch:
-
-drivers/pci/pci-driver.c:pci_pm_suspend_noirq() {
-	...
-	if (!pm) {
-		pci_save_state(pci_dev);
-		goto set_unknown;
-	}
-	...
-}
-
-This skips pci_pm_suspend_noirq_common() entirely. As far as I can tell,
-that means:
-
-- The driver's own sleep handshake no longer runs. Neither the D0L12
-  IPC_MEM_DEV_PM_FORCE_SLEEP doorbell plus ipc_imem_pm_s2idle_sleep()
-  nor the D3L2 ipc_pcie_suspend() is called. The only thing sent to the
-  modem is the IPC_MEM_DEVICE_IPC_UNINIT doorbell from
-  ipc_imem_device_ipc_uninit().
-
-- The endpoint is never put into D3 and wake/PME is never armed, because
-  pci_prepare_to_sleep() is where device_may_wakeup() is honored. So
-  modem-initiated wakeup cannot work.
-
-- The endpoint no longer sets bus->self->skip_bus_pm. The root port may
-  then enter D3hot/D3cold while the endpoint is still in D0 and its CP
-  has not been force-slept.
-
-Could this raise suspend power or hurt S0ix residency on platforms where
-the modem used to survive s2idle?
-
-[Severity: Low]
-This isn't a bug, but with PM_SUSPEND_PREPARE added the driver is now
-unbound before every system sleep transition. As a result the
-iosm_ipc_pm table can no longer be reached:
-
-static SIMPLE_DEV_PM_OPS(iosm_ipc_pm, ipc_pcie_suspend_cb, ipc_pcie_resume_cb);
-
-The same goes for ipc_pcie_suspend_s2idle()/ipc_pcie_resume_s2idle(),
-ipc_pcie_suspend()/ipc_pcie_resume(), the suspend bit checked in the IRQ
-path, and the d3l2_support value that ipc_pcie_read_bios_cfg() reads at
-probe. The BIOS D0L1.2/D3L2/Disabled setting no longer changes anything.
-
-Should these callbacks be removed, or at least documented as unused?
-
-The kernel-doc for ipc_pcie_suspend()/ipc_pcie_resume() in
-iosm_ipc_pcie.h calls them runtime PM callbacks. That was already wrong,
-and now it describes functions that nothing can call.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the patch makes an existing
-use-after-free in the teardown path reachable on every suspend.
-
-In MUX_AGGREGATION mode (7560), the UL encode paths in
-ipc_imem_handle_irq() and ipc_mux_tq_ul_trigger_encode() arm
-ipc_imem->adb_timer with a 500 us timeout. Nothing on the teardown path
-cancels it. ipc_imem_cleanup() only does:
-
-	hrtimer_cancel(&ipc_imem->td_alloc_timer);
-	hrtimer_cancel(&ipc_imem->tdupdate_timer);
-	hrtimer_cancel(&ipc_imem->fast_update_timer);
-	hrtimer_cancel(&ipc_imem->startup_timer);
-
-It then calls ipc_mux_deinit(), which frees the mux without clearing
-ipc_imem->mux. The imem_config_fail error path in ipc_imem_init() also
-leaves adb_timer pending.
-
-If adb_timer is still pending at that point:
-
-ipc_imem_adb_timer_cb()
-  ipc_task_queue_send_task()
-    ipc_imem_tq_adb_timer_cb()
-      ipc_mux_ul_adb_finish(ipc_imem->mux)   <- freed mux
-
-ipc_mux_ul_adb_finish() reads ul_adb from the freed mux and writes the
-sequence and accounting fields. It can also call
-ipc_imem_td_update_timer_start(), which re-arms tdupdate_timer after it
-was cancelled. That timer can then fire after ipc_pcie_deinit() has done
-kfree(ipc_pcie->imem).
-
-If adb_timer fires after ipc_task_deinit() and kfree(ipc_imem->ipc_task),
-ipc_task_queue_send_task() touches the freed task as well.
-
-Before this patch the teardown ran only on rmmod or hibernation. Now
-pm_notify() runs it from suspend_prepare() on every s2idle/S3 entry,
-before processes are frozen, so UL traffic can still be arming adb_timer
-while the driver is unbound.
-
-Should ipc_imem_cleanup() also cancel adb_timer before ipc_mux_deinit()?
-
-> -	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
-> +	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE ||
-> +		   mode == PM_POST_SUSPEND) {
->  		if (!pci_registered) {
->  			int ret;
-
-[Severity: Medium]
-The commit message says the device is "re-initialized from scratch on
-resume, exactly as it is at boot". Does that hold when the modem keeps
-power?
-
-That covers platforms where the modem survives s2idle, short s2idle
-cycles on the affected platform, and PM_POST_SUSPEND after a suspend
-that was aborted before platform sleep.
-
-Nothing on this path resets the modem: no FLR, PERST, _RST or cold
-reset. Re-probe then finds the CP still in RUN and depends on the UNINIT
-handshake done at unbind time in ipc_imem_device_ipc_uninit():
-
-	if (ipc_pcie_check_data_link_active(ipc_imem->pcie)) {
-		ipc_doorbell_fire(ipc_imem->pcie, IPC_DOORBELL_IRQ_IPC,
-				  IPC_MEM_DEVICE_IPC_UNINIT);
-		...
-		while ((ipc_state <= IPC_MEM_DEVICE_IPC_DONT_CARE) &&
-		       (ipc_state != IPC_MEM_DEVICE_IPC_UNINIT) &&
-		       (timeout > 0)) {
-
-This handshake is skipped if the link is not active. It waits at most
-about 30 ms and returns void, so an incomplete handshake goes unnoticed.
-
-On re-bind, ipc_imem_config() requires the UNINIT state for the
-PSI/EBL/RUN phases:
-
-		if (ipc_imem->ipc_requested_state ==
-		    ipc_mmio_get_ipc_state(ipc_imem->mmio)) {
-			ipc_imem_ipc_init_check(ipc_imem);
-
-			return 0;
-		}
-		dev_err(ipc_imem->dev,
-			"ipc_status(%d) != IPC_MEM_DEVICE_IPC_UNINIT",
-		...
-	return -EIO;
-
-If the state is anything else, probe fails. pci_register_driver() still
-returns 0 in that case, so pm_notify() sets pci_registered = true with
-no device bound.
-
-Could this leave the modem unusable after resume until a manual rebind
-or a reboot?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105102009.34534-1-zevpaneth%40gmail.com
+Thanks,
+Zhiqi
