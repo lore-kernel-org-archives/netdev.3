@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=87.76.132.165
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794184575;
-	b=LlcjF416JmG1z6ONcdvz/xN15oTng7qw8tH8lxFAMRhp3joOSCj2GDXA54Ql2aZRRMU8
-	 yvtm9Eml8LCd6DQ0XHKJjmkNl/t3n/J2DnhOgFPfkwgXfl5a2rpY8NgfrNDdFa9DHZYVH
-	 yBkKAX6I0la2rggFobvRnrU4p7t/+xyTt1l08WemJsGKpbOYqhqDFVyJB8yIIJmhiQJrG
-	 fZYNnSh7ZJgVcaocZGpB8YbrHxXO6vbVDCZaazdcwZf9P+78ChTK/wY7geAuEO5bV3qKl
-	 OliGCE6q12HkyOsvfQzN+o7PEcRqsUoXdLxdN9yskk7NhKYREHz0tsadSnIJ26WdqyQ==
+	t=1794185379;
+	b=0kqfHzWmCZ7d3Iv24jz1eaD+uxSfnYIKl1VBsI/52qUhCzaZaGL+jBv9ni609P5Z7CFr
+	 lBmj1l0pJ75+N/xNHMmEE6PPMDhRWX6Zq9NeUbXFqNVyIUnQXBj5Qa1YkIz98G+jHGIJ+
+	 boyKBysVo60hX9nRIA8OWS0VhSHGXj0aU3Myn7N7gRLhPq0JnfjZ0WAz3LNJxHos29OvW
+	 haO7rjKIolyj9Aa+AAcoBDeQktrvd6b9OFZd45FeprBVGZuiaWDhcPxYjP1F58clSt4G/
+	 hq5yUdhqOYAoLGWXWxJl3d4+yHwpJNG0MAxCspVeopqItvIr2XvtzXjd7xztkcdcrRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794184575;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=MrgV9fXwBYVj4uLezFVa59Hg+/XXAINskq6Fghy76zs=;
-	b=Y3QEe9UDXU0sDI1lJOXCIsjy/rr8+8gCM3hQ6DkdoVv61vehcj608GYkjHDEo2XHNoN6
-	 BQ7n8EsBUISgzKosUxj8oE9ImGkvlDBdFkx5FUv+ofpEliSgFdAXQcQnqfQ8cQNkDoku5
-	 CRvgJ6Czh2RUxN9LWc7q9CJefhxZgvuogd0U41kizGHt0q17ESS+nxIfV8gUjYGUMXQ2L
-	 IAptQNcezbNK5rEobLQzQfMCKP9aatyWNgqgClUyY0IWpEic7qTlnk+K8dFanNmytdRTE
-	 oSvoEgiuwBRsvHkbeJjMruxvXE5dQ/yJw8DzFDF+MNA0+YoWA0K20B5HIYxmP9CqdmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794185379;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=pdpL3sSHlMHK0Bo+huRWtAzQa54MaEYpMlhgZA+5qtA=;
+	b=WhmUh9PpfFUH1mhHzoCvkQjewc2wzBqMhqNl2TxeWQZ4gcUII+8r4+rYS0kT6q/o9sST
+	 VVxYudzRrlZ/hSZr1VPqeH7H/5s1LBLpV7DnB4HmRZjaiiTq4gZOjaOdTt6peLUc8zEDx
+	 zHLT7RlvYB3tGc6ycNox9qkgsua4QIL7WcAarTEs8mPc8Nt6+HobYY2FcbNCyIWnU5fJI
+	 KSQdmnXC2jCuN+WbsykgUSu0x57t3g8f+bKe9ll+lLIxsp68gchnokEmUsipaMnyLUtQT
+	 b+KxuZd+nVmdDG8iSS00z+sMk4LZasmtFHHuQW9L4ueD4/VMeRkc3OQdp7ONveinBDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FcaNjP8t;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=auth.ink;
+	spf=pass smtp.mailfrom=auth.ink;
+	dkim=pass header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=YHdeU0R5;
+	arc=none smtp.remote-ip=87.76.132.165
+Received: from mail.netskyway.net (mail.netskyway.net [87.76.132.165])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40173606A31C;
-	Mon,  9 Nov 2026 00:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691AF606A31C;
+	Mon,  9 Nov 2026 00:49:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 691AF606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auth.ink
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auth.ink
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FcaNjP8t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B21E1F008A2;
-	Mon,  9 Nov 2026 00:36:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794184575;
-	bh=MrgV9fXwBYVj4uLezFVa59Hg+/XXAINskq6Fghy76zs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FcaNjP8t3uYt8wwOigY7Jj/L+2eMml7Pwt9+M+mSCd1uTIiJ83mLqNitjPNkzxUnX
-	 TsKJW2EWvaOxz/qgCVLIwh0jhIWJlg9k+SYK8XoJxUcsnlcuFTIt7jL2qPnzYMIA8R
-	 6krCikJbxLI2mJdOEGp8WOzf4MMc9CDjLNnKTzeThgGr2tyouFKgK4intwgZGpiLoS
-	 /x/DQo3vqldDdcI0gSz57AHQb/FWFeohWbWHnzN9xNdZkMLb9NPkjyHrUc8n1aNzeS
-	 pvAZYnTMqKbllCvLgeWkhpc5ZQPor3KR9NYmKlgR8QYkjl84Eob3FSR3nH53DNfCK2
-	 7LikZBOQtZ2/w==
-Subject:
- Re: [PATCH net 3/3] vsock/virtio: queue at most one credit update per socket
-From: netdev-bot+sashiko@kernel.org
-To: green@linuxhacker.ru
-Cc: sgarzare@redhat.com, stefanha@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 00:36:13 +0000
-Message-ID: <179418457356.994134.15621990093990477357@kernel.org>
-In-Reply-To: <20261105000141.3617241-4-green@linuxhacker.ru>
-References: <20261105000141.3617241-4-green@linuxhacker.ru>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=YHdeU0R5
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF5DD30A2A3;
+	Sun, 08 Nov 2026 21:49:24 -0300 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=auth.ink; s=dkim;
+	t=1794185366; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pdpL3sSHlMHK0Bo+huRWtAzQa54MaEYpMlhgZA+5qtA=;
+	b=YHdeU0R5ShqohxbtrcsCp2qy+LdXsxNyQLlInVbtQ1yEFVVaGakDZBdxBFSMNOZTHOnE63
+	WiGmy/rfumI03B0uUJmS9omS3KFUa6sNKIWsKkkR1yUoxqd0K5dxuHiAj0CAuBjLVtaacJ
+	kVnjwHdeNhykNwd2BQlWNlPqbJa/GtzlzbXbGzBpw7neiEWqvftqtpvIwjGUnmoIyvEZ5r
+	oj2crMmJymkS7+6frTgXj6yXQwml80YSJo0TO9RB9glMPzugIyDhRGMQMzMXTXE4oa7RtS
+	yWdUJydTy2aY8W70dQd7YNN+RrrhNYOG4PiXIHmg+3Dy7vXEiHiozkqx3prm5w==
+From: Tamir Awad <tamir@auth.ink>
+To: sashal@kernel.org,
+	kuniyu@google.com
+Cc: stable@vger.kernel.org,
+	lee@kernel.org,
+	netdev@vger.kernel.org,
+	rodrigo.zaiden@canonical.com
+Subject: [PATCH v2 5.15.y] af_unix: Clear oob_skb in scan_inflight()
+Date: Mon,  9 Nov 2026 02:49:23 +0200
+Message-ID: <179418529889.10436.12048717656065553331@auth.ink>
+X-Mailer: git-send-email 2.56.0.windows.4
+In-Reply-To: <2026-11-08-1-daily-reply-0011-af-unix-5-15-v2@kernel.org>
+References: <08E5C4C3-189B-4B0D-94F5-5C049EAF6DA8@auth.ink> <2026-11-08-1-daily-reply-0011-af-unix-5-15-v2@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,139 +66,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+unix_gc() accesses oob_skb after dropping sk_receive_queue.lock. This
+can race with queue_oob(). Clear oob_skb in scan_inflight() while the
+lock is held.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This resends Kuniyuki Iwashima's March 2025 fix for the old GC. The
+code diff is unchanged.
 
-- [Medium] Both the guest and vhost transports call
-  virtio_transport_credit_update_xmit() before the packet is actually…
+On 5.15.223, the reproducer panicked three unpatched QEMU guests. Three
+patched guests completed 8,000 rounds each without a kernel warning.
+Both builds used the same config and guest image. An instrumented run
+traced the harness's failed racing sends to EPIPE and ECONNRESET and
+confirmed all 8,000 iterations reached the race.
 
---
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Link: https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+Reported-by: Lei Lu <llfamsec@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Tamir Awad <security@auth.ink>
+---
+ net/unix/garbage.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-vsock/virtio: queue at most one credit update per socket
-
-This patch limits how many credit update packets each virtio vsock socket
-can have queued. It tracks the last queued credit update skb in
-virtio_vsock_sock and suppresses new ones while that skb is pending.
-Transports call a new virtio_transport_credit_update_xmit() hook to
-refresh fwd_cnt/buf_alloc on the tracked skb and release tracking when it
-is sent. A tracked skb holds a refcount on virtio_vsock_sock to keep it
-alive.
-
-[ ... ]
-
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 74a8fdf825d50..65d6e0790e724 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -604,18 +604,68 @@ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
-
-[ ... ]
-
-> +/* Called by the transports when @skb is put on the wire. */
-> +void virtio_transport_credit_update_xmit(struct sk_buff *skb)
-> +{
-> +	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +
-> +	if (!vvs)
-> +		return;
-> +
-> +	spin_lock_bh(&vvs->rx_lock);
-> +	/* Still the socket's last packet: carry what was suppressed. */
-> +	if (vvs->credit_update == skb) {
-> +		vvs->credit_update = NULL;
-> +		vvs->last_fwd_cnt = vvs->fwd_cnt;
-> +		hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
-> +		hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-> +	}
-> +	spin_unlock_bh(&vvs->rx_lock);
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_transport_credit_update_xmit);
-
-[Severity: Medium]
-This hook can't be undone once it has run. It clears vvs->credit_update,
-advances vvs->last_fwd_cnt and rewrites the header. Do the guest and vhost
-transports call it before the packet is actually committed?
-
-In the guest driver, virtio_transport_send_skb() calls it before
-virtqueue_add_sgs(), and that call fails when the tx vq is full:
-
-net/vmw_vsock/virtio_transport.c:virtio_transport_send_skb() {
-	virtio_transport_credit_update_xmit(skb);
-	...
-	ret = virtqueue_add_sgs(vq, sgs, out_sg, in_sg, skb, gfp);
-	if (ret < 0)
-		return ret;
-	...
-}
-
-virtio_transport_send_pkt_work() then puts the skb back at the head:
-
-	ret = virtio_transport_send_skb(skb, vq, vsock, GFP_KERNEL);
-	if (ret < 0) {
-		virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
-		break;
-	}
-
-When the fast path fails, virtio_transport_send_pkt() queues it at the
-tail instead.
-
-The requeued skb is no longer tracked. So the next
-virtio_transport_send_credit_update() is not suppressed, and it queues a
-second, tracked credit update behind the first.
-
-Doesn't that make the per-socket bound two, rather than the "at most one
-credit update" the commit message describes? Any later updates are still
-suppressed by the second tracked one, so the unbounded queuing stays
-fixed.
-
-In vhost, vhost_transport_do_send_pkt() calls the hook right after it
-gets a descriptor, before the checks that drop the skb:
-
-	virtio_transport_credit_update_xmit(skb);
-
-	if (out) {
-		restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-		...
-	}
-
-	iov_len = iov_length(&vq->iov[out], in);
-	if (iov_len < sizeof(*hdr)) {
-		restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-		...
-
-The copy_to_iter() and skb_copy_datagram_iter() fault paths drop the skb
-in the same way.
-
-Suppose updates were suppressed while this one was queued. Their fwd_cnt
-has been merged into this skb and recorded in last_fwd_cnt, but the
-guest never receives this skb.
-
-Before this patch, the suppressed update would have been a separate skb,
-delivered on the next descriptor. Now nothing resends it until more local
-reads happen. Could the guest-side sender then stall waiting for credit?
-
-Moving the hook after these checks would not be enough by itself, since
-the suppressed state is lost whenever a tracked update is dropped.
-
-The commit message says:
-
-  So a suppressed update always reaches the
-  peer, either in the queued one or in a later packet, and the fwd_cnt
-  the peer sees never goes back.
-
-Is that still true on these drop paths?
-
-[ ... ]
-
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index d2fc795..a733d0d 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -102,13 +102,14 @@ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+ 			/* Process the descriptors of this socket */
+ 			int nfd = UNIXCB(skb).fp->count;
+ 			struct file **fp = UNIXCB(skb).fp->fp;
++			struct unix_sock *u;
+ 
+ 			while (nfd--) {
+ 				/* Get the socket the fd matches if it indeed does so */
+ 				struct sock *sk = unix_get_socket(*fp++);
+ 
+ 				if (sk) {
+-					struct unix_sock *u = unix_sk(sk);
++					u = unix_sk(sk);
+ 
+ 					/* Ignore non-candidates, they could
+ 					 * have been added to the queues after
+@@ -122,6 +123,13 @@ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+ 				}
+ 			}
+ 			if (hit && hitlist != NULL) {
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++				u = unix_sk(x);
++				if (u->oob_skb) {
++					WARN_ON_ONCE(skb_unref(u->oob_skb));
++					u->oob_skb = NULL;
++				}
++#endif
+ 				__skb_unlink(skb, &x->sk_receive_queue);
+ 				__skb_queue_tail(hitlist, skb);
+ 			}
+@@ -299,17 +307,9 @@ void unix_gc(void)
+ 	 * which are creating the cycle(s).
+ 	 */
+ 	skb_queue_head_init(&hitlist);
+-	list_for_each_entry(u, &gc_candidates, link) {
++	list_for_each_entry(u, &gc_candidates, link)
+ 		scan_children(&u->sk, inc_inflight, &hitlist);
+ 
+-#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-		if (u->oob_skb) {
+-			kfree_skb(u->oob_skb);
+-			u->oob_skb = NULL;
+-		}
+-#endif
+-	}
+-
+ 	/* not_cycle_list contains those sockets which do not make up a
+ 	 * cycle.  Restore these to the inflight list.
+ 	 */
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105000141.3617241-1-green%40linuxhacker.ru
+2.56.0.windows.2
+
