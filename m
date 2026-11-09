@@ -1,65 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.164.118
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794217916;
-	b=AoN4gvXvfb/rXR5bYv88dRHLQjvx3hAQbEnxMGGNvMYzeaRnJs1iF7w0VcUYo9PYnnP0
-	 q8LFHXZaYnFihxaOrgA7mO+03Hh0xA0Ws7jPpBe1UV+fLsMbpcyWxpWplYb4bYFbWxy0+
-	 D5jEDxbM6jID3a1K32LwDtHYDlsVsAEp9+ks9adWhABIc+jVHT7kCX0jzWYPl7pre3+0O
-	 qkZMQ+/0en3PzwaSmMWffr9nrM6+ye31hSsV8t54Zr4ifKsTGGqdx8ncGdCUyEUuVJRUE
-	 DHSGI3D5+62LZgrso3xQHpKU5XnbnuTu95Ect6vC4DGiKDEFtLSYm1j/al1X3lPQ8tg==
+	t=1794218149;
+	b=U/333gpdyQHopOjcpHhM6vPCvArnjHd3nmfyiUX5MWtOOAFI88MbdBE3frNHCjd16v9c
+	 Lak9/Gasc9eW0oObHe0lEEOXEufYJenWVIxfQ47Hci+liQQSNqAkAWf6sIvWlp9C2aOwQ
+	 zPWfkVWW1eAkgBSj1wtUHnPf8mQPhyeqocZgCX8U3BL7r4U3XA1Qkvjzm6xYUOgHORDaJ
+	 Bj9C09Ev6yWwaFeHZg60a05xCiyB/dwXNykG2VppbokZk6QVlHewwuzuBFF+8ndLhQw3I
+	 AXHuFBZU1aaNkvPYs8KCJw2WbVRmxcFTgT8IlDw9e1tov3/YrfoEDB8rL5mtZrYTCGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794217916;
-	h=DMARC-Filter:DKIM-Signature:Received:X-Originating-IP:Date:
-	 X-CM-HeaderCharset:From:To:Cc:Subject:X-Priority:X-Mailer:In-Reply-To:
-	 References:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	 Message-ID:X-Coremail-Locale:X-CM-TRANSID:X-CM-SenderInfo:
-	 X-Coremail-Antispam;
-	bh=XA7B63YEOoPoc69XLHUfY2ziq2BhVYlvpPt16lzHQhk=;
-	b=YBaf3vzCv027QSfuRFEH6kJVUtRiVq9civJfVPaeyGB3dEsDJA1f0W0M/NyyXmKqGwFC
-	 4maq2rMHLXLAlsSDZJwRkVLd1o3/Al3UitBkv1drf4dWsblwUmpWiYySV3s+dMVqOTZZ2
-	 iz/d+g7NG4gGTMb33695YjueuLIqSARxPqLNcBSLupZrUo+pGw+wlitkRta9z0Xk7CtRh
-	 MB4LbDB/5h8+W4dzzgldlUkjjfuFGJJWGUvlXAVeLrJkCKznT/1bP3IEKrPMDp1v1D1hx
-	 ixNcysUmw69rgf7Hx/WhaRKWgw3RkPmEoBvLt+gvHPNZgj9s0n/Zs1d94T1svR0y1ng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794218149;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=2kS7qNxqF06hjCKC8fEyeKjUWUV8Pu6SASn8EXMiOk8=;
+	b=eEbN1OjM1CeR41uGrjFzXfw21Jj/WrT2WthlwwHqBbYYLxj2x1MoxmLDqRAT5Pvu5D25
+	 Ui5frvLZb3jeYfV2Frg4/XiI8glVdkk6gDWLVyqxGQ4YRgyjnPw38Iexkf15oIPK360Hd
+	 yo/XtncNlyLu/sU02soiEvjxARQb03KCAdy93C7uqejRzcvojxRw0phRSJ/iu3b2dydxw
+	 ggpSGLyDn9GctYsMsNGNiY5PVm/vtJkodU0RtxEfC7oCL0ISCU1GnCMEKbXBEB8A8B/0o
+	 c1CsxVw7ph3h1OOopuXW09sk668VdHcu2oPSBqayUR941wrd96l/sk+YDVSePSjgu5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mails.tsinghua.edu.cn;
-	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=fail reason="signature verification failed" header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=IizY26EI;
-	arc=none smtp.remote-ip=162.243.164.118
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EB606D810;
-	Mon,  9 Nov 2026 09:51:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 353EB606D810
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYXtlQQ3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D4606A31C;
+	Mon,  9 Nov 2026 09:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key, unprotected) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=IizY26EI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Date:From:To:Cc:
-	Subject:In-Reply-To:References:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID; bh=3HsrWzOE7DDbArLklASgrUy
-	VLEgk980VLxEZaQWsK9M=; b=IizY26EIsvlgZxr7czGr3xwnyv2flxyAEd4dH8M
-	kfqvK575XjMlY3S4XJmo/RwzD4eTBqcPx+jSPwKV1BusAA4x4Ms2sbajDo4hKtL1
-	KXeSUzMqg3X7ajg52L2CzMeaAWKA5Ol5rjPM2Y98lF9Zkk1MOmddnzbWm+SNOMM1
-	hu9I=
-Received: from zhangmh25$mails.tsinghua.edu.cn ( [183.173.160.112] ) by
- ajax-webmail-web1 (Coremail) ; Mon, 9 Nov 2026 17:51:34 +0800 (GMT+08:00)
-Date: Mon, 9 Nov 2026 17:51:34 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: zhangmh25@mails.tsinghua.edu.cn
-To: "Ido Schimmel" <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pshelar@nicira.com, stable@vger.kernel.org
-Subject: Re: Re: [PATCH net] net: ipv4: fix tnl_update_pmtu negative MTU
- advertisement
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT5 build
- 20261010(691d8f62) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-4df55a87-4b50-4a66-85a0-70f79cb6c8b5-tsinghua.edu.cn
-In-Reply-To: <20261103151844.GA1234870@shredder>
-References: <20261102155444.2658518-1-zhangmh25@mails.tsinghua.edu.cn>
- <20261103151844.GA1234870@shredder>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYXtlQQ3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AA81F008A1;
+	Mon,  9 Nov 2026 09:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794218148;
+	bh=2kS7qNxqF06hjCKC8fEyeKjUWUV8Pu6SASn8EXMiOk8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mYXtlQQ3AU5gJigOCf34O6QC51fVY5KBDLWEl+xbx+LS3SzNrbz8URsSbFIWhKytn
+	 rpJGwzGJhScF3ZTcHS9VcYMHAzfyXAeKRgnVVaYtsIj0iiXb4bOlktx5oeQ77Z+Okq
+	 1ASDVm5oqJZQ/YywjT2dvQKAhKOAy0y2tV9b5dOYERy2m6tgEv/Z2IPQyQbQzyWhZ3
+	 I230V1r4rJZ3QLwrVQD0cXP36XJ2pooohfwTk2zlXzNgkAjn/4Ztqt2BW7TwZlVaIS
+	 QXaXCN0SxknMH1ge/OjQ9Pr4wrY7xa/5TagYg2bIHSYcxK9CIeeiNEPvWDysP7LZgk
+	 Wccv4Myae35UQ==
+Subject: Re: [PATCH net v4 1/2] net: virtio: validate outer protocol of UDP
+ tunnel GSO packets
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, hassansultan@google.com,
+ virtualization@lists.linux.dev
+Date: Mon, 09 Nov 2026 09:55:47 +0000
+Message-ID: <179421814766.994134.3669228181251158303@kernel.org>
+In-Reply-To: <20261106095340.2113683-2-edumazet@kernel.org>
+References: <20261106095340.2113683-2-edumazet@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,22 +64,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-ID: <d8f76d6.23b1e.1a1bfb862e2.Coremail.zhangmh25@mails.tsinghua.edu.cn>
-X-Coremail-Locale: en_US
-X-CM-TRANSID:yAQGZQCXDj+ml_FqaFwaAg--.28789W
-X-CM-SenderInfo: x2kd0wlpkskqxpdlz2oowvx0pjkxthxhgxhubq/1tbiAgAGB2rw+M
-	7ntAAIs0
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW7Jw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
 
-SGkgSWRvLAoKVGhhbmtzIGZvciB0aGUgcmV2aWV3LCBhbmQgc29ycnkgZm9yIHRoZSBkZWxheWVk
-IHJlcGx5LgoKSSBhZ3JlZSB0aGF0IHRoZSByb3V0ZSBNVFUgdXNlZCBpbiB0aGlzIHJlcHJvZHVj
-ZXIgYWxyZWFkeSBtYWtlcyB0aGUgdHVubmVsIHVudXNhYmxlLiBUaGUgdGVzdCBkZW1vbnN0cmF0
-ZXMgaW5jb3JyZWN0IElDTVAgZmVlZGJhY2sgaW4gdGhhdCBjb25maWd1cmF0aW9uLCBidXQgZG9l
-cyBub3QgZXN0YWJsaXNoIGFuIGFkZGl0aW9uYWwgb3BlcmF0aW9uYWwgaW1wYWN0LiBBIHNlbmRl
-ciB3aG9zZSBjdXJyZW50IFBNVFUgaXMgc21hbGxlciB0aGFuIHRoZSBhZHZlcnRpc2VkIHZhbHVl
-IHNob3VsZCBhbHNvIGlnbm9yZSBpdC4KCkkgd2lsbCBzZXQgdGhpcyBwYXRjaCBhc2lkZSBmb3Ig
-bm93LiBJZiBJIGZpbmQgYSBwcmFjdGljYWwgY2FzZSB3aGVyZSB0aGUgYmVoYXZpb3IgYWZmZWN0
-cyBhbiBvdGhlcndpc2UgdXNhYmxlIGNvbmZpZ3VyYXRpb24sIEkgd2lsbCBmb2xsb3cgdXAgd2l0
-aCB0aGUgcmVsZXZhbnQgZXZpZGVuY2UuCgpUaGFua3MsCk1pbmdoYW8gWmhhbmcK
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new strict outer-offset check rejects UDP-tunnel GSO
+  frames that the kernel's own tun TX path produces whenever the skb…
+
+Pre-existing issues:
+- [Low] In virtio_net_hdr_tnl_to_skb(), outer_l3min = ETH_HLEN +
+  virtio_l3min(outer_isv6) (include/linux/virtio_net.h:491).
+
+--
+
+net: virtio: validate outer protocol of UDP tunnel GSO packets
+
+This commit makes virtio_net_hdr_tnl_to_skb() check that the frame's outer
+L3 protocol matches the declared tunnel type. It also checks that the outer
+UDP header sits exactly at outer_th_offset. Callers pass a new has_eth
+argument that says whether the frame starts with an Ethernet header. This
+closes a path where an arbitrary outer ethertype combined with
+SKB_GSO_UDP_TUNNEL could crash the host in skb_under_panic().
+
+Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com/
+
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index d6466f96cdd00..b7b6b542f4763 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+
+[ ... ]
+
+> @@ -282,9 +424,33 @@ static inline unsigned int virtio_l3min(bool is_ipv6)
+>  	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
+>  }
+>  
+> +/* Do the tunnel offsets match the outer headers in the frame?
+> + * The L3 header the tunnel claims must be the one the frame
+> + * carries, with UDP following it at @outer_th.
+> + */
+> +static inline bool
+> +virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool has_eth, bool outer_isv6,
+> +			  unsigned int outer_th)
+> +{
+> +	int nhoff;
+> +	__be16 proto;
+> +	unsigned int thoff;
+> +	int ip_proto;
+> +
+> +	if (!virtio_net_l3_start(skb, has_eth, &nhoff, &proto))
+> +		return false;
+> +	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
+> +		return false;
+> +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
+> +		return false;
+> +
+> +	return ip_proto == IPPROTO_UDP && outer_th == thoff;
+
+[Severity: Medium]
+
+Can this exact match reject UDP tunnel GSO frames that tun itself produces
+when the skb carries a VLAN hwaccel tag?
+
+On the producer side, tun_put_user() writes the 802.1Q tag into the frame
+it copies to userspace or vhost-net. It calls tun_vnet_hdr_tnl_from_skb()
+with vlan_hlen = VLAN_HLEN. Only csum_start accounts for the tag:
+
+include/linux/virtio_net.h:virtio_net_hdr_from_skb() {
+    ...
+		hdr->csum_start = __cpu_to_virtio16(little_endian,
+			skb_checksum_start_offset(skb) + vlan_hlen);
+    ...
+}
+
+The tunnel offsets do not:
+
+include/linux/virtio_net.h:virtio_net_hdr_tnl_from_skb() {
+    ...
+	inner_nh = skb->inner_network_header - skb_headroom(skb);
+	outer_th = skb->transport_header - skb_headroom(skb);
+	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
+	vhdr->outer_th_offset = cpu_to_le16(outer_th);
+    ...
+}
+
+So outer_th_offset and inner_nh_offset both end up 4 bytes short of the
+real UDP and inner headers in the emitted frame.
+
+On the consumer side, with has_eth set, virtio_net_l3_start() walks the
+in-band VLAN tag with __vlan_get_protocol(). That gives nhoff = 18, so
+thoff points at the real UDP header (38 for IPv4). The emitted outer_th is
+34, this comparison fails, and virtio_net_hdr_tnl_to_skb() returns -EINVAL.
+
+Before this patch the same frame was accepted. Only transport_header was
+off by 4, and ip_rcv_core() and ip6_rcv_core() reset it for local delivery.
+
+With this change, would a guest that gets these frames from a host tap
+drop them in virtnet_receive_done() as "bad gso" and bump
+rx_frame_errors? A tun/tap writer that re-injects frames it read from
+another tun would see the same rejection.
+
+This looks reachable with VLAN-tagged UDP tunnel GSO traffic. Two examples
+are a VLAN filtering bridge with a tagged egress port, and a vlan device on
+top of a tap. tun advertises NETIF_F_HW_VLAN_CTAG_TX/STAG_TX in
+hw_features and hw_enc_features, so the tag stays in hwaccel until
+tun_put_user().
+
+The later patch in this series, "tun: clear stale skb->protocol of NAPI
+frags skbs", does not seem to fix the producer side. Should
+virtio_net_hdr_tnl_from_skb() add vlan_hlen to outer_th_offset and
+inner_nh_offset, with that fix landing with or before this check?
+
+> +}
+> +
+>  static inline int
+>  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
+> +			  bool has_eth,
+>  			  bool tnl_hdr_negotiated,
+>  			  bool tnl_csum_negotiated,
+>  			  bool little_endian)
+> @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th))
+> +		return -EINVAL;
+> +
+
+[Severity: Low]
+
+This is a pre-existing issue, not one introduced by this patch, but does
+the has_eth = false path ever see ordinary IFF_TUN frames?
+
+Earlier in virtio_net_hdr_tnl_to_skb(), the minimum outer offset still
+assumes an Ethernet header, whatever has_eth says:
+
+	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
+	...
+	if (outer_th < outer_l3min ||
+
+For IFF_TUN, tun_get_user() passes has_eth = false and the network header
+is at offset 0. virtio_net_tnl_offsets_ok() therefore needs outer_th == 20
+for plain IPv4 or 40 for plain IPv6. Both values are below the 34/54 floor,
+so these frames are rejected before the new check runs.
+
+That leaves the !has_eth branch of virtio_net_l3_start() reachable only for
+outer IPv4 with at least 16 bytes of options, or outer IPv6 with at least
+16 bytes of extension headers. The L3-relative offsets produced by tun TX
+and by the selftest helper build_virtio_net_hdr_v1_hash_tunnel()
+(eth_hlen = 0 for !is_tap) are still rejected.
+
+The ETH_HLEN floor dates from a2fb4bc4e2a6. Now that callers pass has_eth,
+should outer_l3min depend on it?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106095340.2113683-1-edumazet%40kernel.org
