@@ -1,98 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794228607;
-	b=x9iF4dfohGDBPiBqyoJJu2OvxTqtSp+m9fLxdmHtA2B/5jRaRpb+I+O3iWCNgzIpyTR5
-	 Tq5PmeEs4b1y7GsVv6S++NVrTqCY5neFslqODLVRxm+tRLo9Q0R3SfxoXhfo0H24VmGWs
-	 zgomrqf4s7EhHVLv2DgMEwfq2hZj5i7bsH9vggN4R9G+VK33i+ZC2TDl0sCYzIcSpLZKz
-	 UxBSWa/J3N5Q0ZCWCUd3mxf9ASMu3IXfeap8ZTfuvCcLtFVbeLXclI7JWYWRi7lt8Ro41
-	 H20P4HvUdgio0l3Tx7VxbAArUNwXROia1bF5bMBH+sDWix2kHpEEeyFTaAMkPrDLRNg==
+	t=1794228649;
+	b=XQkWN+AlUTgwZOSExttGbMi/fYpY32+ab6j7uEts1I22sLXFu3ahxxNqXVAH1vp2nqNc
+	 Tm3lzxIJZrYV+3baFHPJNjitwt/OeIfXw1XoD4u+6aF6rcuAMeQGyI+nKwhqdfkJFIb5H
+	 ugYvdiEJANv0+gWoE6ThkaiZdXZVLSQhgetel7u/KanFAkZqY2N/OXJ2P8k/1nY9OOfZz
+	 ZwIDR/7A4SMO6JwIG5Vku89M9/S88n0XRIDAcP6630J8q8x3UnQRZKHOXPVPMoOQZUH7D
+	 OnrGBjo6qeLVaH8H/pdYQcPXOeLLuAu8fGTUtGGMlNw9Q+82PjixDjlmYikFGWPhawQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228607;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ULzCO0JjMJTSMtXSK5ToDUte4FnYbn3iov4P4pXWrOs=;
-	b=3oNFUWJ79dx+3nD9Jps4lDpacDjDdA2lKuI4FrIj0JVJhI2H3v+nTD2753ke3lxOi7h4
-	 xue4ajTuBCrLMSKaoVI54PuUpj3vlkNRF4FMPmZb/eSVLT+7xGM2KaL7PyUxSjJUrBWpS
-	 ox7S24qQttA8AGacP1kGy5h1E3DeYj/WSRkkMBxIN4LUcHQuvnM35+pIBVtyK4Fui/exy
-	 UWGNgXogMuMTt8nmV8qKqgxCqMefr1cTgbLwFOg/RDJHfY3n+3pCJcbz1SLsDbU1ZktOO
-	 +NP7g3E+2EOxiEU8IHIzxnMNl7Zmn/5J+0G0TLUP4uqdaIKsmyAhA9qNN7jQ0aYtjlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794228649;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=JjNSwO4mZ69wgWNuljj9jgcvdRQfwcVoIjX8RvCsKvM=;
+	b=yj9JA2eGqcKrllWdXRwsET4KApHoRgEjakvBNDPNZXt+D3bREB844XnAJzG19TxjDWnp
+	 u3LODZVjyavZugVECIyW355PXQubOFSUotfcqXdkbtk90uoM+8GzNEDxAoR2IWduNFzks
+	 R1IQNH35B6JfJgFx2+MJWweBip9kdXnr/5BriT1QNxY09pjPDDaC21XvNTyx+f+DfJmKg
+	 td1eiL9SnY4Kt+i35jJD/tP4RgFxYNbosCFLjNBsK835RbLH+M1BnRQTcCjWWixA9QZFv
+	 mGb9ecj8oPTDJaLcmX7dY8ccpMQr/ZJq9owfCcrTYxZ/dAnuTPRCwmTJB1Zc87can0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VWSEio55;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMcdWkPh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11772606D830
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 12:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11772606D830
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753EC606A322;
+	Mon,  9 Nov 2026 12:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VWSEio55
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-37000e7234bso625293eec.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 04:50:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794228606; x=1794833406; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ULzCO0JjMJTSMtXSK5ToDUte4FnYbn3iov4P4pXWrOs=;
-        b=VWSEio55nDx45swB4s1+3i/yAB+YajUhF3GaZcaZ7QhmGyeEeDwdL5vIbNGBT5YE3k
-         q+1Bg4f+Jx7sm/LjeiV30LCtDJ/eTaXYYxB19uRBRdvsWkrNfcA80S8wkQ1VAAL4RdZP
-         Q4LhjnwbHYDacfReX+O3dpkl3E5vQaV2yzca2A5bg61YoyXn8Yl6Y0ANaEGHUwMGUdya
-         x55v81jk+GK5zZ3PJ2eaYABty7C6oCbOj7Q4LImkYG9XVLeYGr/UfynJoVvhy2w+vnRm
-         U9CqDwr/2oNc1bNt1/WXslmgCBGC676tXwonBZAI7ktN5HLLstyu0AqnOvUiugk2EAS3
-         Eunw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794228606; x=1794833406;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ULzCO0JjMJTSMtXSK5ToDUte4FnYbn3iov4P4pXWrOs=;
-        b=t1z4ka87IxewBUk6damTU49a56hNtVLH+EEf+lvCAEG42oNvvSgxPXrWTrfZ8RW5Aj
-         GKy24XCGRsS3ZlEHqcCOe/RWArExgLGUqUuJQiO0BlqzDSxLBEazBIT6Hfa54yTJ87xc
-         tiExzEyVZBq2YX6PwmLB7OH9kGlzyzjsP3JuezRMY/RnXUC+qRJQEhj8Ix2/mTjrO33w
-         umR+Pxz9b/cgUlCTKufLvLZb54XDiv8o+ommQ0Olq8RBRn/+wzi0syJukrzTvqmqLD0k
-         jro+ylWYTYSezZFZxpi40EwkgUqcnWOQAPbtUI3Xx0fwe4CaW3QNDhGGxzmUFNVagnTW
-         B0jg==
-X-Forwarded-Encrypted: i=1; AL+hErHSIZRWtBz+nIbM21SqJp6Te2+iIxMJyS8B3IT2nGkhCMEgRg3qE7uIYa4KeWxQ7wq1LiaK9X0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9pjhmHi3JZAnBNTfZnVkumDB+GRJpRS0r1uL333Vim+Nw3Xswu
-	l2/UarMoUExkkI37982g5L1v+z7p5lTleclMxt2KrJGBXtn+Lg8SOAla6kka6rP3
-X-Gm-Gg: AYBFou0DNBTtPPkfKY9A1RzIDrV9dks2se2MZqqA3tXLX6/esM2NKBYNk6/aJHc/gGj
-	RpLctz4RpU6AJFjlQE4eJajO2cJ5YHDwe7PZjbRIMBZ8ku5VJl5Qir0ExUZTocqCyGDl3qXDYQU
-	thI/7bI64wRy2mBv5j3kZo910mCJUlfMKMR1/BlVcSayf1QsgwOnYvMyUOGmJRszURxC/k2/t49
-	WX7RuBxFwEuQUDGutp2e8hWeXPZpIuC2rG3RdjJaQM+hkvaSo6pZPlpMy/7UHU/p0UyQr3Z4wnn
-	qHYXaZ8UYrVu8rmdC5wZuSQpr8swYpHktIaSCDxUPqzHiIvHbv6Ae0O42dH8JKHGVyYK1+lQOlr
-	Y2FAfWzqAixrjGx3Sx5BJXv2htn0X1okX67RTLoA9ZkZBA/7jwRIqSwYVs+WA/Z6iJdXR4ikh6/
-	wcapYvG2OylxvG+ECZGD3WvG3j5JdLOJAm41eqbxkh8MzbwWW3GLnYwrcDexlX3WmSvfV6OB0w+
-	E9NGqPDx5W7dZ+L+4CAHhwx0dooxW2EOa2WEK7RkA6HCkSoom+gmHuO/jQD38WSWWcG7FiQD16g
-	tYfM3X4d9yxpIUUJKVpD/0Xx62PJKCUbqEyWDteCex74g65i
-X-Received: by 2002:a05:7300:a223:b0:36a:5042:85b1 with SMTP id 5a478bee46e88-3725302be58mr7671219eec.2.1794228605882;
-        Mon, 09 Nov 2026 04:50:05 -0800 (PST)
-Received: from hj.. ([163.239.22.29])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-372660f444csm20376602eec.19.2026.11.09.04.50.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 04:50:05 -0800 (PST)
-From: hyunjungg <hj351016@gmail.com>
-To: Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: Lennart Franzen <lennart@lfdomain.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hyunjung Ko <hj351016@gmail.com>
-Subject: [PATCH net] net: adin1110: flush rx_mode_work on stop to avoid use-after-free
-Date: Mon,  9 Nov 2026 21:49:53 +0900
-Message-ID: <20261109124953.1604903-1-hj351016@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMcdWkPh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF081F0089F;
+	Mon,  9 Nov 2026 12:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794228649;
+	bh=JjNSwO4mZ69wgWNuljj9jgcvdRQfwcVoIjX8RvCsKvM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AMcdWkPhAWKw4Kty4An/ZtOYneJtvpJDr03C4k9f4tW0Mo6sgerdBVpzfABUh/Izz
+	 RkYVqnfH+aQq6TxHIcOTPO9nHVxllQqqI5DJZKjTmZy/zYILGN0a0xlyY4h0Dr8/aa
+	 5EmkN/gp8IT7gS80cbk7N/hnq86JwIN+KeT5TLtD/1Pp8NgR8gNeuWqLWiOxlArV98
+	 lf9ViQfLIxjFbx23pEDq01GJDwvSkGChDztuhHnw56pwxwZMe40GVH5SoxrMhAFFpy
+	 ZdM2Q1b4RIxcK6EUM6ZOYnd80/6fgCvOEJUEB5mFrxshCiSW9wYfunJjU88fCRa7cI
+	 Cw5wlVwLKqaug==
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+From: netdev-bot+sashiko@kernel.org
+To: alitariq45892@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, dlan@kernel.org,
+ troy.mitchell@linux.spacemit.com, wangruikang@iscas.ac.cn, amadeus@jmu.edu.cn,
+ s-vadapalli@ti.com, tmshlvck@gmail.com, meatuni001@gmail.com,
+ vadim.fedorenko@linux.dev, maxime.chevallier@bootlin.com,
+ linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 12:50:47 +0000
+Message-ID: <179422864754.994134.12281861683384047552@kernel.org>
+In-Reply-To: <20261105123441.2524171-1-alitariq45892@gmail.com>
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,47 +67,208 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Hyunjung Ko <hj351016@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-adin1110_set_rx_mode() defers the hardware filter update to rx_mode_work
-(adin1110_rx_mode_work), which dereferences the port private data via
-container_of(). adin1110_net_stop() flushes tx_work but not rx_mode_work,
-and nothing else ever cancels it.
+Critical: 0 · High: 0 (2) · Medium: 2 · Low: 0
 
-The netdevs are registered with devm_register_netdev(), so on unbind the
-port_priv (netdev_priv) memory is freed by devres. A rx-mode update
-queued shortly before the interface goes down can therefore still be
-pending after the device is freed, and adin1110_rx_mode_work() then runs
-against freed memory (use-after-free).
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Flush rx_mode_work in adin1110_net_stop(), next to the existing tx_work
-flush, so both deferred works are drained before the device can be torn
-down. adin1110_rx_mode_work() does not re-queue itself.
+- [Medium] Possible ABBA deadlock between rtnl_mutex and the TX-timeout
+  work, added to the suspend path.
+- [Medium] The new RTNL section does not cover the netif_running() check
+  that decides whether to call emac_stop()/emac_open().
 
-Found by static analysis and code review; not tested on real hardware
-(needs an ADIN1110/ADIN2111 SPI Ethernet device).
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is High
+  severity and involves the same work/RTNL pair.
+- [High] This problem wasn't introduced by this patch, but it is High
+  severity and sits in the function the patch modifies.
 
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
----
- drivers/net/ethernet/adi/adin1110.c | 1 +
- 1 file changed, 1 insertion(+)
+--
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 53fac3d..788cf4d 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -956,6 +956,7 @@ static int adin1110_net_stop(struct net_device *net_dev)
- 
- 	netif_stop_queue(port_priv->netdev);
- 	flush_work(&port_priv->tx_work);
-+	flush_work(&port_priv->rx_mode_work);
- 	phy_stop(port_priv->phydev);
- 
- 	return 0;
+net: spacemit: Hold RTNL lock in emac_resume() and emac_suspend()
+
+This patch takes rtnl_lock() around the emac_open() call in emac_resume()
+and around the emac_stop() call in emac_suspend(). The aim is to silence
+a lockdep "suspicious RCU usage" warning from phy_disconnect(), which
+reads a pointer with rtnl_dereference().
+
+> diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+> index 71a80838bffd0..aca25a9e1e9ef 100644
+> --- a/drivers/net/ethernet/spacemit/k1_emac.c
+> +++ b/drivers/net/ethernet/spacemit/k1_emac.c
+> @@ -2033,7 +2033,10 @@ static int emac_resume(struct device *dev)
+>  	if (!netif_running(ndev))
+>  		return 0;
+>  
+> +	rtnl_lock();
+>  	ret = emac_open(ndev);
+> +	rtnl_unlock();
+> +
+>  	if (ret) {
+>  		clk_disable_unprepare(priv->bus_clk);
+>  		return ret;
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch. It sits
+in the function being changed, though. What state is the device left
+in when emac_open() fails here?
+
+By this point the unwind in emac_open() has freed the TX/RX rings. One
+of two things has also happened:
+
+- emac_up() failed, and its error path called phy_disconnect() and
+  pm_runtime_put_sync().
+- emac_phy_connect() failed, and ndev->phydev is still NULL from the
+  previous suspend.
+
+The IRQ is not requested and NAPI is disabled. emac_resume() then gates
+bus_clk and returns, but __LINK_STATE_START and IFF_UP are still set.
+
+The next "ip link set down", unregister, or emac_suspend() (which sees
+netif_running() as true) would then run:
+
+emac_stop()
+  emac_down()
+    phy_disconnect(ndev->phydev)   <- phydev is NULL
+      phy_is_started(phydev)       <- dereferences phydev->state
+
+Can this oops?
+
+Past that point, emac_down() would:
+
+- write MAC registers with the bus clock gated
+- call free_irq() on an IRQ that is not requested
+- call napi_disable() on a NAPI that is already disabled
+- underflow the runtime PM usage count
+
+Also, emac_clean_rx_desc_ring() would index the NULL rx_desc_buf, and
+emac_suspend() would call clk_disable_unprepare(priv->bus_clk) a second
+time.
+
+Separately, emac_alloc_tx_resources() and emac_alloc_rx_resources()
+kfree() the buffer array when dma_alloc_coherent() fails, but they do
+not set the pointer to NULL:
+
+	if (!tx_ring->desc_addr) {
+		kfree(tx_ring->tx_desc_buf);
+		return -ENOMEM;
+	}
+
+Could a later teardown free tx_desc_buf (or rx_desc_buf) a second time
+through that stale pointer?
+
+> @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
+>  		return 0;
+>  	}
+>  
+> +	rtnl_lock();
+>  	emac_stop(ndev);
+> +	rtnl_unlock();
+
+[Severity: Medium]
+emac_suspend() checks netif_running() to decide whether to call
+emac_stop(). That check runs before rtnl_lock() and is not repeated
+under the lock:
+
+	if (!ndev || !netif_running(ndev)) {
+		clk_disable_unprepare(priv->bus_clk);
+		return 0;
+	}
+
+	rtnl_lock();
+	emac_stop(ndev);
+
+Can another RTNL holder close the device in between?
+
+Here is one example. The netdev is moved into a netns, and that netns
+is torn down as system sleep starts. cleanup_net runs on netns_wq,
+which is not freezable. It holds RTNL and calls dev_close(), which
+calls emac_stop().
+
+Meanwhile emac_suspend() has already seen netif_running() as true. It
+blocks in rtnl_lock(), then runs emac_stop() a second time. There,
+emac_down() calls phy_disconnect(ndev->phydev) with phydev already
+NULL, and phy_is_started() dereferences it.
+
+emac_resume() has the mirror case. It also tests netif_running() before
+rtnl_lock(), so it could call emac_open() on a device that was just
+closed. That would leak the rings, the IRQ and the PHY attach.
+
+Would it make sense to take rtnl_lock() before the netif_running()
+test, with netif_device_detach() / netif_device_attach() inside the
+same locked section?
+
+[Severity: Medium]
+Does holding RTNL here invert the lock order with tx_timeout_task?
+emac_stop()->emac_down() does:
+
+	cancel_work_sync(&priv->tx_timeout_task);
+
+and the work handler takes RTNL first:
+
+emac_tx_timeout_task() {
+	...
+	rtnl_lock();
+	...
+}
+
+emac_tx_timeout() queues the work with schedule_work(). That uses the
+system workqueue, which is not freezable, so the work can run during
+system suspend:
+
+CPU1 (worker)                      CPU2 (suspend)
+emac_tx_timeout_task()
+                                   emac_suspend()
+                                     rtnl_lock()
+  rtnl_lock()  <- blocks
+                                     emac_stop()
+                                       emac_down()
+                                         cancel_work_sync()
+                                           <- waits for CPU1
+
+cancel_work_sync() goes through __flush_work()->start_flush_work().
+That finds the executing worker with find_worker_executing_work() and
+waits on a barrier queued behind it.
+
+Can this hang suspend? Lockdep may also report a circular dependency
+between rtnl_mutex and the work's lockdep_map, which would swap one
+splat for another.
+
+The ndo_stop path (dev_close() under RTNL, then emac_stop()) already
+has this pattern. This patch adds it to the system sleep path too.
+
+Could the synchronous cancel be kept out of any RTNL-held section?
+Options include cancelling the work before taking RTNL, using
+rtnl_trylock() and requeueing in the work, or a disable_work() based
+scheme.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it involves the same
+work and RTNL pair. Can emac_tx_timeout_task() wait on itself?
+
+emac_tx_timeout_task()          <- running as priv->tx_timeout_task
+  rtnl_lock()
+  dev_close(ndev)
+    __dev_close_many()
+      emac_stop()               <- ndo_stop
+        emac_down()
+          cancel_work_sync(&priv->tx_timeout_task)
+
+At this point the work is executing, not queued. start_flush_work()
+finds the calling worker itself through find_worker_executing_work().
+It then inserts a barrier that can only run after the current work
+returns, so wait_for_completion() in __flush_work() never returns.
+
+Would every TX timeout recovery leave the worker stuck while holding
+rtnl_mutex? That would block every RTNL user. With this patch, the next
+emac_suspend() would also block forever in its new rtnl_lock().
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105123441.2524171-1-alitariq45892%40gmail.com
