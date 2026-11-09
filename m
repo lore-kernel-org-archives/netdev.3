@@ -1,126 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794241777;
-	b=qRPz/o9w6qclnAhSn6EP2MVLxgqUUriNVtcyMQuU7D+KhWnNjXMOKVhOx4xLrkj7z4YY
-	 f3ARQCV4s/oh7uuJbxskm9FB63QWUvTONh14O5wCZjpL/0unGzwrHDuci/dsFGtyW/GIs
-	 L6P9cQflWoBUzr+FQoJ9h8VxTF6gsltyf/Fg1W03nmSLs3aHPo/LPLW1IK8YlGTfeaESH
-	 UiPKzQxDzjTsOkiwZEXYh3ZGxaA7YwRwrjeduf7rTf1VmqZ7pVPosZYV0h+h+HJB3X2bP
-	 XKZlYJrMKzWSodSqZVZ/j+igxUsU2srgvkYZtqRMCoFC2IwnZ7lXrOrgsr7e82hNfbA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794241777;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794241816;
+	b=lR24z1RctScsHVDdyYJJNXCze/czsg2r20LUzySEldrutHsEiDeyKSLyPX1T6zR9Alve
+	 DeYSs5WwdKJXfUgSWTL1AbrWf5K6OXYbOpa4dW9u4DFU5I0tMpJ5TL3+9ADK3UKVN4za5
+	 zj2Gh3KiEMjRUEs5xAX56qPHizbX0lYhlmtp5+pTuACUoGKDy0gEF/M8eb/WyBmHa2Hfz
+	 jj7IQRvBP8SwGdxFsAdrl/WIpesm9nPTm8BI3afyh4VlMp27qKv/gclBD7NsqdxG8I66M
+	 LThR7k4K5kg72sDrvg8aKb84bMiKyTu7fobOBTFyOLI9dcsmQeYs9DCkGaZCknSk9xg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794241816;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9uGSYggaNEPzKt2/hsVCz40RdoQwrR5MiDvzyqYfubs=;
-	b=oevoOb8C6YUP1Xdz2XgLrj1c0DhKNDzRuB2+Fo5NYvxuWv2RGmBaM7oopkUeNCttluyV
-	 IZrpyEwzl+M79RGRt5D/9uOyBWdXch7sGJDfirM0YOMwbT0txo9cueyF5sLHCznFyftIE
-	 RiQeWZDdEsyYZrmiVlnpbBDsGGCpXtkhiJ+XG4w3c7cDJ7EfE7Vu237Il33KcPW5pkSJP
-	 5hOKNjX6+HizIXzGTfV1K1zxMFPg57W3VUP2AgHkwBGm5hEmOQO0L7MjMWWmUeqVpE9k6
-	 xF8UTFAb85ev3GO15Ngl0DQuhoOn3WUeLPxBd20ZKCAosoDgzztPV0lJbINriXK8fEQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=u6VYdfpwk02ticFoJF2TXqRpW+yzUumcdZDS/l2GBHU=;
+	b=c8WJZS2Gz9EvsuHSwZi0s0t3bl5qpJwZO9KYWCaW1h12SRTuRpQSpi+1aDcBVjeqey7Y
+	 X+a69D74yOJZaKxwxygQTNt5In47xAw1P61vG/r+/FcfWTZhbRHSTPOfRWEY6BJYL2D51
+	 tayJM6VqVQLzrweaO0z4gjMiNhJmW9+CpMFaTyifWqiC/Qfa2lcU2VL4Wd3X87lLxulX0
+	 mGTu81yLUHJ+IBTuz74SNSAAYeVlsr7pSoJLtpTw1dtkvIm6Yu8dB093Rv0DP8vNMg8Z7
+	 n70G4WQ64MYV7RHYxGUbVoX8PjNVAk0yJGgVybtkDJmljFIsm7X8JRNQ+lk+d1aUpDQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l+aOXfL7;
-	arc=none smtp.remote-ip=209.85.222.175
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wpFI+fQY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.47
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCC7606EEAE
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:29:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DCC7606EEAE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3BD606EE84
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:30:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A3BD606EE84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l+aOXfL7
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93e515769d3so104758285a.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 08:29:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wpFI+fQY
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-492f6b7f70dso710502f8f.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 08:30:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794241814; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L1Kb1PWCvebuav09HzIpiiIEqSyJp3Y5Qs4CFIl+lFuhCaMse9JVyytw3PKMLgq4Fl
+         kW2nU/dXf2nPIvqy92ZqVIfvSYRjBerKVsV61svK5jveZWnNm5BBKIADcfIWwdG+vPx1
+         ZYTZuAJCGdJ48He5OYe27UMcNCg3SFzHsIbwjgfXkj0v6Ip76+ahopTtzmDRjtR3n7bj
+         x+0Ehq20iTpBccC/3i8oYGpV3f09kT0Nf9NvOJm4cwUeKy5wUsc/ngul65OzIhO7CeR4
+         JPHKQqcdpHOOsTPebOSorGmKYyvtj1t339hd/2oNc736HpDcxj/mxYgVz3Q8Vqd40E5+
+         J9Nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u6VYdfpwk02ticFoJF2TXqRpW+yzUumcdZDS/l2GBHU=;
+        fh=sgMlnpPIkoatpKB1xJDHQICPZqesERPploa6LoXqXLk=;
+        b=lq34gAdcsmdLcRO3Jd2cX65OKZghFsng0qCVQR4+NGBiLuNKFP7fhka0l7i4aabKeS
+         TvXRYZLBZw7r+6fnHnicD+iArjse++3WoUEESl1qjjHCN3yLwGrhZhNVa3wOqQO1BIyp
+         IUuk/WiPyIwkpVL4X2zsdNrlCQ+OZWj+sAAY0hOUDmlwpB8m950GPkfPpDohr/rlinC0
+         BpwFcaAXbHfzGtSnl0phY/Xp3ga0tnIWFMaK0/4EyFygIhLCWUsFAxf69DnPne+t7ld9
+         Izi9TXn8lClrIZM8ljYCELt+xjYqzThFeD/0sTD9xYVevr1KRwIV1t09Wy9BUeqxeLo+
+         20fQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794241775; x=1794846575; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9uGSYggaNEPzKt2/hsVCz40RdoQwrR5MiDvzyqYfubs=;
-        b=l+aOXfL7hMh+b3z06qKmYkuM+Ei8T+JmEfQQuVT+ZWKbcir5f6Ys2zMG80q11JlEog
-         egMuc3xusicrD9eNKKrq4sSwFVG+lrWo3jQG2Y4rAX9CpxbeCCQC8+6Jctiu8AETqciY
-         0MNbrY3SK5/yWNpU6Equvrw5U+xJIQfAnekCIh0JgvpfUwDQItfLdamku6HX2qLuuP6J
-         XMn36ueBTD3o0tj3A3ByXnJr97KNiyU7kA0H3jA8p+9VtTVGoj47jPRz1mD2bSMM0GPH
-         PMDrAaOWWAD3WF6q+bZw0Mm8T9Qj4OJDzIJhoX2h0FasYjE/s52A4TJkeuuf0OlHNA5o
-         UZqw==
+        d=gmail.com; s=20260707; t=1794241814; x=1794846614; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u6VYdfpwk02ticFoJF2TXqRpW+yzUumcdZDS/l2GBHU=;
+        b=wpFI+fQYX5XLg6M1iTaccA7S0edIczBb454ostHPIlx2eTZz0gY2FhNloOdCBkKQT/
+         a0YgJldnxAGK8jVX6lpSTNPNAkcNLLc1TB35DaWs0bFXJU3zHHJFKdfeWSgP5kpAvj77
+         t0Y5TwISYPWhAX4UmoEWBZgWxdL3MBR4fJEvMMcboFFzuy4QBjjMMeNOVz//EaaS6HHH
+         UVZaulDQCfQGx7Uh4g2P0yp78iqCsKoCJ1dt9rTtSLAC3ZiQOlDCE+4q8hTP7KKhXP5r
+         A5G4PF+7s9jd8OsHage9GL0UJRNOEclN4ZpqXylERUodl6F4ynM1xjwPPAjv2pF32WCP
+         fY9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794241775; x=1794846575;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9uGSYggaNEPzKt2/hsVCz40RdoQwrR5MiDvzyqYfubs=;
-        b=atWX27N2DrvfnR6Y5K+tcmnrdCSP1RG1ek2tCY60IuXOXipouZfLx89z3v8/sOmxCi
-         +C2upbe55FnIa2Oogb5b6os3orv1jZSjmEomODwkAMBgJvffhWpp6LOMDUAe9Vtewdjo
-         Z1x1fdHqn7J4nwX58xQCvGSbR/9aQjPy/JFlrO3aUuhkM+86XbJJ7NCVM0dfGK399UV/
-         Gb7QQ9n8my8Ed3/bBwq6pmFWJZm11dadV5fWwKoVkca7kqU/lSiCrJdOyS4c5aseRmRO
-         jblYzD2RixhIwdRuSd4SPBMz7Hfm7Gc33egUpn1nNsewOKcsjMQEjSCO+U6rWraG/Njo
-         WofA==
-X-Gm-Message-State: APuU4Z84wdcLXbYFaNbj3NaBsrEN1Wu85Ns7LR1Htx8eV16t0mImF7F1
-	cx32gDZMz8T/BqS84h3AUxxaxuuJ7KYCeTb4kw50hlA6GJnYvGL1pGNKNnbH+d1K
-X-Gm-Gg: AYBFou3pa69eaZwfIJPz1kYLvUgN0/jaHdWpsNEJKQ4Yxe+LP8pSbOacPtI0Bu1A3mg
-	n/CkXjg4E9BF9LitUoufSn9s0yvQyi5Jqi6yM4nyF7czW3/dgQgwFgfFP7h4VopWtcwJ7XbHAOA
-	CxnP0fY55wckrZKyRFk49y2MpzT9Q86HjiqbpaCwoX7zE34KGLO2Yqtw1UQAxpxxh0rTNmR6bmh
-	oDFLElihJMGMBgH6qeq4JH3LfYsbW4tOLwjCWxJiMuqy7R+x8e3/8fAISjWDAC9P2RN2DJElcbW
-	uUR/Q2GZ4ScgYWj+0YrUcRgFoubEPwDqQ06Mu4sFqd8SQLd4381Zgq5MoBdjVLwy9HpwsUGSD45
-	EGsvQcmvYV0CbwC26BZmWyhRJAo5OColfTu0N4GFlSTS6q8OPFpa4mF9PYrzBsoplEd+IUgZdE6
-	Jw8Rl2zoHwfF1naPdoYILcT665EtjT3KH7tknYp1gvOH4abWzWqawyEAJ3Lqq9CnRHX4SgVcuie
-	yFY+wImolSMZ52NQwlFhGyg+4GKy9zTbi7auj2DZMLoeW2OXN3Z+9NcyilQivk884fseQvtQqYL
-	amWANas/ohgJV14WvCBPf/pLt2G6J/vLXSnqAt3S0TLdz5J9zq7qH9N74mx2QkZFMi6dZiRaJYd
-	AKes3tu31hLk8UgVMQLvXBPoq/ZPOUKdkG0K3H/S9r8hkReVmIlzWEM2AN5kIxQpNEZVuUEc=
-X-Received: by 2002:a05:620a:2b46:b0:93f:3e39:efa1 with SMTP id af79cd13be357-9478485e333mr729465385a.23.1794241770386;
-        Mon, 09 Nov 2026 08:29:30 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e7915e2sm9102985a.23.2026.11.09.08.29.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 08:29:29 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	mef@scarletmail.rutgers.edu,
-	paul@jakma.org,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: [PATCH net-next v18 14/15] quic: add packet builder base
-Date: Mon,  9 Nov 2026 11:27:35 -0500
-Message-ID: <389f35db3403dbfe09727dd84db98b48dedc91c7.1794241656.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1794241654.git.lucien.xin@gmail.com>
-References: <cover.1794241654.git.lucien.xin@gmail.com>
+        d=1e100.net; s=20260707; t=1794241814; x=1794846614;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u6VYdfpwk02ticFoJF2TXqRpW+yzUumcdZDS/l2GBHU=;
+        b=2cqjs9UZlC4/sc+1h5L6vjZnRSx87k3JkOMNrcIx4ho55tNmO4QRiLTyKtBJ5Vt9kz
+         T0gIrrTO/s7XOQdY0nk+14FoV/645c9PZb45VWfRWhum6LuApCQDTVtb/AJxw9fyrjx1
+         QFyLivrp80Ro5tBDrA6pdcuswX5qtTAG+5ATiPfJAWJTAvscOx4jThU5tZzaIbjky46H
+         8Cf9W+k9X9g+v+TnXhOX4f/fJvtz/Ox2dnIAdGkdmekOEjUflkbMgjJ4OHY+goKFA6uL
+         B4C6bZ7hREbFDRCFLV38wVSafmelE1T3t4WJJgkoIvE6Yf6pLHISFfgGRFr0qmtiGmVq
+         aNjg==
+X-Gm-Message-State: APuU4Z+TCdkAJzFi/W0RXUb76RUX3VOaRst/3rwph0G1nZsO+YAU16xl
+	VeYWTgJbNm73a/wsAhv80TEweXf+/YBGADwRooX2D2ZKwjMDn4j7PXzF1/dOrKqv5yo3I5nzBRT
+	+Y3S63r0v6Z8CXgdMEhmGGRzfojujf68=
+X-Gm-Gg: AYBFou3JOTtBgzk0YGp5PkzOoYwqL2KSgy4jRZf+khfcomsRJpUu1ljY3tp3kd+GXDL
+	myR5bVS1qiHMEJDKPBflJpSiFqRTVX2TG4OJpbKndKSCIhc7tpDjOTNLhb2XK9tyRQnhVI9V+OT
+	dIXdlPHR4AmKvoiwaOW6mGKX9FmOo1ziq9/Z1UPAN77nT1dMTkgv+YbAIXok2LPFjlYuZxji0UN
+	Onlbas6qsSyyFLQdGXRKWXU6BpfMlXiTQ5L2rRIGOs8nrjA1pzKnxDKlec/FFX952iRPqdO+GcY
+	/537QUG8AqLvwoCZoerxL83L9hmP31tn3Nm5xGyshvmMqVcfLtswCpaduAXcLbeWVArcRqW5UBs
+	s39vluKpnubW2b1KqfJs4JFKq9YqzB8+N3t0ITnVhOsaJXFdXmXO7ZDk+cD/v2jvqFBFGlaI+C2
+	wpVjaG3ib/ZJGg6MXROuar5BKTvMdP+pxgRCrZxmbzVrHkmbgyz2vgZw==
+X-Received: by 2002:a05:6000:29ce:b0:497:9e2a:b1e with SMTP id
+ ffacd0b85a97d-4979e2a0d6bmr2119308f8f.9.1794241813991; Mon, 09 Nov 2026
+ 08:30:13 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -130,659 +104,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <179381515284.9644.1846335740085170889.stgit@ahduyck-xeon-server.home.arpa>
+ <179416277142.994134.5623223181953033290@kernel.org>
+In-Reply-To: <179416277142.994134.5623223181953033290@kernel.org>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 9 Nov 2026 08:29:37 -0800
+X-Gm-Features: AclHuK_xRb666DcBMeq7nMUJdxvBmF1ebBd9nIFEpYS4gnIiZ6jTsKhOnXkwP7k
+Message-ID: <CAKgT0UeLnt0mngmL_rULfaROjrFj8hHPK-=4pRLBRuZSBMhALA@mail.gmail.com>
+Subject: Re: [net PATCH 2/5] fbnic: Fix service task races with ndo_stop and
+ PM suspend
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, 
+	pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch introduces 'quic_packet' to handle packing of QUIC packets on
-the transmit (TX) path.
+On Sun, Nov 8, 2026 at 10:32=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 2 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] Regression in __fbnic_pm_attach()
+>   (drivers/net/ethernet/meta/fbnic/fbnic_pci.c): the patch moves=E2=80=A6
+> - [Medium] The Fixes tags are incomplete.
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but there is an
+>   unbounded hang across the RTNL drop between the two PCI error-recovery=
+=E2=80=A6
+>
+> --
+>
+> fbnic: Fix service task races with ndo_stop and PM suspend
+>
+> This commit runs the service task's health check, BMC check and re-arm
+> only while the interface is running and the device is present. It also
+> makes fbnic_pm_suspend() cancel the service task synchronously after
+> dropping RTNL. On resume, __fbnic_pm_attach() now holds RTNL and the
+> instance lock across the stats reset, fbnic_up() and the device attach.
+>
+> > Fixes: 04a230b27d8f ("fbnic: Add logic to repopulate RPC TCAM if BMC en=
+ables channel")
+> > Fixes: 6ae7da8e9e06 ("eth: fbnic: reprogram TCAMs after FW crash")
+>
+> [Severity: Medium]
+> Are these Fixes tags complete? The commit message calls the suspend
+> problem "a worse one":
 
-It provides functionality for frame packing and packet construction. The
-packet configuration includes setting the path, calculating overhead,
-and verifying routing. Frames are appended to the packet before it is
-created with the queued frames.
+It may have been a fix that was picked up along the way. The general
+"Fixes" tags are correct. Having the service task itself run isn't an
+issue until those two bits of logic were added that introduced the
+races.
 
-Once assembled, the packet is encrypted, bundled, and sent out. There
-is also support to flush the packet when no additional frames remain.
-Functions to create application (short) and handshake (long) packets
-are currently placeholders for future implementation.
+> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/=
+ethernet/meta/fbnic/fbnic_pci.c
+> > index 09eeb4b4ded8f..09ae797b1f0dc 100644
+> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+>
+> [ ... ]
+>
+> > @@ -558,19 +571,26 @@ static void __fbnic_pm_attach(struct device *dev)
+> >       struct net_device *netdev =3D fbd->netdev;
+> >       struct fbnic_net *fbn;
+> >
+> > -     rtnl_lock();
+> > -     fbnic_reset_hw_stats(fbd);
+> > -     rtnl_unlock();
+> > -
+> >       if (fbnic_init_failure(fbd))
+> >               return;
+>
+> [Severity: Medium]
+> fbnic_reset_hw_stats() now sits below the init failure check, so it no
+> longer runs when fbd->netdev is NULL. Was that intended?
 
-Key functions:
+It was intended. I had actually recommended the change. However that
+said I had overlooked the PCIe stats referenced below.
 
-- quic_packet_config(): Set the path, compute overhead, and verify routing
-  via quic_packet_route().
+> Commit b1161b1863c5 ("eth: fbnic: Reset hw stats upon PCI error") put the
+> reset ahead of this check on purpose. fbnic_reset_hw_stats() also handles
+> a NULL netdev:
+>
+>         if (fbd->netdev)
+>                 ASSERT_RTNL();
+>
+> A device in init failure mode stays bound so devlink still works. It also
+> keeps the debugfs pcie_stats file created by fbnic_dbg_fbd_init(), and
+> reading that file calls fbnic_get_hw_stats().
 
-- quic_packet_create_and_xmit(): Create and send the packet with the queued
-  frames.
+Now that you mentioned it there also appears to be a bug there in the
+driver as the stats are initialized *after* the PCIe stats debugfs is
+created, not before so there is a brief period where things can get
+collected and then lost.
 
-- quic_packet_flush(): Send the packet if there's nothing left to bundle.
+> Resume or AER/DPC recovery (fbnic_err_resume()->__fbnic_pm_attach()) can
+> reset the hardware counters. The next read then goes through
+> fbnic_hw_stat_rd64():
+>
+>         new_reg_value =3D fbnic_stat_rd64(fbd, reg, offset);
+>         stat->value +=3D new_reg_value - stat->u.old_reg_value_64;
+>
+> Won't this subtraction against the stale old_reg_value_64 wrap? That woul=
+d
+> permanently add a huge value to ob_rd_tlp, ob_wr_tlp, ob_cpl_tlp and the
+> other PCIe counters. The 32-bit counters would get wrong deltas the same
+> way.
+>
+> The new RTNL and attach ordering doesn't seem to need the reset skipped
+> here, and the commit message doesn't mention this change.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
----
-Sashiko, do not report any of the following concerns:
-  - Ignore the potential sk_wmem_alloc underflow when fragmenting bundled
-    QUIC packets. Although the original QUIC skb uses
-    skb_set_owner_sk_safe() and is not charged to sk_wmem_alloc, IP
-    fragmentation assigns ownership to newly created fragment skbs through
-    skb_set_owner_w(), which performs the required socket memory accounting
-    before sock_wfree() is used.
+This will probably need to be addressed. I will look at updating the
+patch or creating a new one to address.
 
-  - Ignore the potential socket and skb leak from packet->head during
-    socket destruction. packet->head only temporarily holds bundled packets
-    during a single sending cycle and is always flushed before the cycle
-    completes.  Therefore, there cannot be an outstanding skb referenced by
-    packet->head when the socket destruction path is reached.
+That said the issue itself should be very minor. It would present
+itself as a set of corrupted stats on an already disabled device.
 
-  - Ignore the concern about mss[QUIC_PACKET_MSS_DGRAM] not being updated.
-    mss[QUIC_PACKET_MSS_DGRAM] will be set in quic_packet_mss_update() in
-    the next patchset based on max_datagram_frame_size, so the current
-    patch intentionally does not update it yet.
+> > +     /* Hold RTNL until the device is attached, so the service task pa=
+ss
+> > +      * fbnic_up() schedules cannot run until it will see it present.
+> > +      */
+> > +     rtnl_lock();
+> > +     netdev_lock(netdev);
+> > +
+> > +     fbnic_reset_hw_stats(fbd);
+> > +
+> >       if (netif_running(netdev))
+> >               fbnic_up(fbn);
+> >
+> >       netif_device_attach(netdev);
+> > +
+> > +     netdev_unlock(netdev);
+> > +     rtnl_unlock();
+> >  }
+>
+> [Severity: High]
+> This is a pre-existing issue, not one introduced by this patch. Error
+> recovery adds the NAPI vectors under one RTNL hold and enables them under
+> a later one. Can a close between the two hang?
+>
+> fbnic_err_slot_reset()->__fbnic_pm_resume() calls __fbnic_open() under
+> rtnl_lock() and netdev_lock(). That reaches netif_napi_add_config_locked(=
+),
+> which leaves NAPI_STATE_SCHED and NAPI_STATE_NPSVC set. Then both locks
+> are dropped:
+>
+>         if (netif_running(netdev)) {
+>                 err =3D __fbnic_open(fbn);
+>         ...
+>         netdev_unlock(netdev);
+>         rtnl_unlock();
+>
+> The NAPIs are only enabled later, in
+> fbnic_err_resume()->__fbnic_pm_attach()->fbnic_up()->fbnic_napi_enable().
+>
+> In between, __LINK_STATE_START is still set, and __dev_close_many() calls
+> ndo_stop even on a detached device. So "ip link set dev X down" in that
+> window would run:
+>
+> fbnic_stop()
+>   fbnic_down()
+>     fbnic_down_noidle()
+>       fbnic_napi_disable()
+>         napi_disable_locked()
+>
+> napi_disable_locked() then waits for bits that only napi_enable_locked()
+> clears:
+>
+>         while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+>                 usleep_range(20, 200);
+>                 val =3D READ_ONCE(n->state);
+>         }
+>
+> Wouldn't that loop spin forever while holding RTNL and the instance lock?
+> fbnic_err_resume()->__fbnic_pm_attach() would then block on rtnl_lock().
+>
+> This patch now holds RTNL across fbnic_up() and the attach. The gap
+> between __fbnic_open() and fbnic_up() is still open, though.
 
-  - Ignore the concern about quic_packet_overhead() overflowing its u16
-    len. quic_token(sk)->len will be limited to QUIC_TOKEN_MAX_LEN (120)
-    in the next patchset, so the token contribution cannot cause the u16
-    calculation to wrap.
-
-  - Ignore the concern about pending bundled packets being misrouted after
-    a path change. Path migration happens only after the handshake is done,
-    at which point only short-header packets are sent. Short-header packets
-    do not use packet bundling, so packet->head is NULL when
-    quic_packet_empty() is true. Therefore, there are no old-path bundled
-    packets to flush when changing packet->path.
-
-  - Ignore the concern about quic_packet_route() constantly resetting
-    PLPMTUD. quic_packet_route() only resets PLPMTUD when quic_flow_route()
-    returns 0, indicating that the route cache has expired. In that case,
-    the route needs to be refreshed and MTU discovery must be performed
-    again.
-
-  - Ignore the concern about using bitwise OR to merge ECN flags. cb->ecn
-    can only be set to INET_ECN_ECT_0 in the next patchset, so the OR
-    operation cannot produce an unintended CE codepoint.
-
-  - Ignore the concern about ipfragok being enabled for application packets
-    in quic_packet_config(). In Linux QUIC, QUIC_CRYPTO_APP is defined as
-    0, so level being nonzero specifically identifies the handshake
-    encryption levels.  Therefore, level && ... does not enable
-    fragmentation for application packets.
-
-  - Ignore the concern about using !cb->level to identify short-header
-    packets in quic_packet_bundle(). In Linux QUIC, QUIC_CRYPTO_APP is 0,
-    so application packets have cb->level == 0 and !cb->level correctly
-    identifies them for bundle flushing.
-
-  - Ignore the concern about leaking the socket counters in
-    quic_init_sock(). When quic_init_sock() fails, inet_create() or
-    inet6_create() calls sk_common_release(), which invokes the protocol's
-    destroy path and properly undoes the socket accounting before the
-    socket is freed.
-
-  - Ignore the concern about packet->ipfragok not being applied to the
-    outgoing skb. skb->ignore_df is set based on packet->ipfragok when the
-    skb is created in the next patchset, so the setting is correctly
-    propagated to the transmitted packet.
-
-  - Ignore the concern about packet->mss[QUIC_PACKET_MSS_NORMAL] falling
-    below QUIC_MIN_UDP_PAYLOAD. QUIC_MIN_UDP_PAYLOAD is only used as the
-    minimum size for Initial packets when building or parsing them; it is
-    not a minimum for the general UDP payload or MSS. Therefore,
-    QUIC_MIN_UDP_PAYLOAD does not need to match QUIC_PATH_MIN_PMTU or
-    QUIC_BASE_PLPMTU, and the resulting MSS is valid.
-
-  - Ignore the concern about existing or nested frag_list entries in
-    quic_packet_bundle(). On the QUIC TX path, there is no code, including
-    skb_cow_data(), that appends an skb to the head skb before packet
-    bundling, so the head cannot already have a frag_list from this path.
-    Likewise, the skb being bundled does not carry a frag_list that would
-    create a nested fragment list here.
-
-  - Ignore the concern about silently ignoring encryption-level or path
-    changes when a packet is pending in quic_packet_config().
-    quic_packet_tail() will be added in the next patchset to verify that
-    the requested level and path match the current packet configuration
-    when adding a frame to the packet frame_list. If they differ, it
-    transmits the pending frames before calling quic_packet_config() with
-    the new configuration.
-
-v3:
-  - Adjust global connection and listen socket hashtable operations
-    based on the new hashtable type.
-v4:
-  - Use quic_wq for QUIC packet backlog processing work.
-v5:
-  - Rename quic_packet_create() to quic_packet_create_and_xmit()
-    (suggested by Paolo).
-  - Move the packet parser base code to a separate patch, keeping only
-    the packet builder base in this patch (suggested by Paolo).
-  - Change sent_time timestamp from u32 to u64 to improve accuracy.
-v8:
-  - Remove the dependency on struct quic_frame by returning NULL in
-    quic_packet_handshake/app_create() and dropping quic_packet_tail()
-    and struct quic_packet_sent. This effectively strips out patch 14
-    (suggested by Paolo).
-v9:
-  - Warn on oversized header length in quic_packet_config() (suggested by
-    Paolo).
-  - Factor bundle initialization into a common 'init' goto label in
-    quic_packet_bundle() (suggested by Paolo).
-  - Clarify comment for packet->ipfragok in quic_packet_config().
-v10:
-  - Set MSS to QUIC_MIN_UDP_PAYLOAD in quic_packet_init(); it serves only
-    as a default for procfs dumps before a connection exists.
-  - Introduce QUIC_PACKET_INVALID as a return value for invalid packet
-    types used in the later patch.
-  - quic_sock.config.plpmtud_probe_interval has been moved to
-    quic_path_group.plpmtud_interval, so update its usage in
-    quic_packet_route() and quic_packet_config() accordingly.
-v11:
-  - Set maximum line length to 80 characters.
-  - Change return type of quic_packet_empty() to bool.
-  - Propagate errors from quic_packet_route() in quic_packet_config()
-    (noted by AI review).
-  - Use quic_packet_taglen() instead of open-coded logic in
-    quic_packet_mss(), quic_packet_max_payload(), and
-    quic_packet_max_payload_dgram() (noted by AI review).
-  - Replace some magic numbers with QUIC_PACKET_FORM_SHORT/LONG and
-    QUIC_PACKET_MSS_NORMAL/DGRAM (noted by Paolo).
-  - Use WARN_ON_ONCE() instead of WARN_ON() in quic_packet_xmit().
-    skb_set_owner_w/r() cannot be used here because it performs memory
-    accounting, which is not desired in this context (noted by Paolo).
-v12:
-  - Set the minimum PMTU to 1200 in quic_packet_route().
-  - Increase overhead in struct packet from u8 to u16, update the related
-    cast and remove DEBUG_NET_WARN_ON_ONCE() in quic_packet_config().
-  - Fix the MSS-based bundling size check and call skb_orphan() before
-    bundling the skb in quic_packet_bundle().
-  - Remove the quic_packet_xmit() declaration and mark it static.
-  - Extract quic_packet_overhead() from quic_packet_config().
-  - Change quic_packet_create_and_xmit() to return 0 on success and an
-    error code on failure.
-  - Remove errframe, errcode, frame_len, and ack_requested from struct
-    quic_packet as they are no longer used, and update
-    quic_packet_reset() accordingly.
-  - Move ack_eliciting reset from quic_packet_config() to
-    quic_packet_reset(), as it will only be used on the RX path.
-  - Add padding as u16 in struct quic_packet to represent total padding
-    bytes appended after frames.
-  - Add path_validating in struct quic_packet for TX path to indicate
-    whether a path_validating frame is included in the packet, and reset
-    it in quic_packet_config().
-  - Move version and padding fields up in struct quic_packet for better
-    layout.
-  - Fix the comment for len, frames, ack_eliciting, non_probing and
-    has_sack in struct quic_packet.
-  - Include taglen when updating the mss in struct quic_cong.
-v14:
-  - Pass gfp flags to quic_packet_handshake_create(),
-    quic_packet_app_create(), quic_packet_number_check(),
-    quic_packet_xmit(), and quic_packet_create_and_xmit()
-    for allocations in subsequent patches.
-v15:
-  - Improve the annotation for packet->ipfragok setting in
-    quic_packet_config().
-  - Set the skb socket ownership for all outgoing packets instead of only
-    encrypted packets in quic_packet_xmit().
-v16:
-  - Update the annotation to match the order of the mss array entries in
-    struct quic_packet (noted by Sashiko AI review).
-  - Improve packet.c file description.
-v18:
-  - Use a single MSS field in struct quic_packet for all packets, rather
-    than maintaining a separate MSS for DATAGRAM frames.
-  - Add last to struct quic_packet to support stream and datagram frames
-    without a length field in the next patchset.
-  - Replace the taglen array in struct quic_packet with a single field for
-    short header packets, as long header packets always use QUIC_TAG_LEN.
----
- net/quic/Makefile |   2 +-
- net/quic/packet.c | 277 ++++++++++++++++++++++++++++++++++++++++++++++
- net/quic/packet.h |  98 ++++++++++++++++
- net/quic/socket.c |   1 +
- net/quic/socket.h |   8 ++
- 5 files changed, 385 insertions(+), 1 deletion(-)
- create mode 100644 net/quic/packet.c
- create mode 100644 net/quic/packet.h
-
-diff --git a/net/quic/Makefile b/net/quic/Makefile
-index 2ccf01ad9e22..0f903f4a7ff1 100644
---- a/net/quic/Makefile
-+++ b/net/quic/Makefile
-@@ -6,4 +6,4 @@
- obj-$(CONFIG_IP_QUIC) += quic.o
- 
- quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o \
--	  cong.o pnspace.o crypto.o timer.o
-+	  cong.o pnspace.o crypto.o timer.o packet.o
-diff --git a/net/quic/packet.c b/net/quic/packet.c
-new file mode 100644
-index 000000000000..b6f76681b690
---- /dev/null
-+++ b/net/quic/packet.c
-@@ -0,0 +1,277 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Packet creation and processing.
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#include "socket.h"
-+
-+#define QUIC_HLEN		1
-+
-+/* Make these fixed for easy coding. */
-+#define QUIC_PACKET_NUMBER_LEN	QUIC_PN_MAX_LEN
-+#define QUIC_PACKET_LENGTH_LEN	4
-+
-+static struct sk_buff *quic_packet_handshake_create(struct sock *sk, gfp_t gfp)
-+{
-+	return NULL;
-+}
-+
-+static int quic_packet_number_check(struct sock *sk, gfp_t gfp)
-+{
-+	return 0;
-+}
-+
-+static struct sk_buff *quic_packet_app_create(struct sock *sk, gfp_t gfp)
-+{
-+	return NULL;
-+}
-+
-+/* Update the MSS and inform congestion control. */
-+void quic_packet_mss_update(struct sock *sk, u32 mss)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_cong *cong = quic_cong(sk);
-+
-+	packet->mss = (u16)mss;
-+	quic_cong_set_mss(cong, packet->mss);
-+}
-+
-+/* Perform routing for the QUIC packet on the specified path, update header
-+ * length and MSS accordingly, reset path and start PMTU timer.
-+ */
-+int quic_packet_route(struct sock *sk)
-+{
-+	struct quic_path_group *paths = quic_paths(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+	union quic_addr *sa, *da;
-+	u32 pmtu;
-+	int err;
-+
-+	da = quic_path_daddr(paths, packet->path);
-+	sa = quic_path_saddr(paths, packet->path);
-+	err = quic_flow_route(sk, da, sa, &paths->fl);
-+	if (err)
-+		return err < 0 ? err : 0;
-+
-+	packet->hlen = quic_encap_len(da);
-+	pmtu = clamp(dst_mtu(__sk_dst_get(sk)),
-+		     QUIC_PATH_MIN_PMTU, QUIC_PATH_MAX_PMTU);
-+	quic_packet_mss_update(sk, pmtu - packet->hlen);
-+
-+	quic_path_pl_reset(paths);
-+	quic_timer_reset(sk, QUIC_TIMER_PMTU, paths->plpmtud_interval);
-+	return 0;
-+}
-+
-+/* Return QUIC packet header overhead for the given level and path. Includes
-+ * packet number, connection IDs, and for long headers also version, length,
-+ * and Initial token (if present). Excludes payload.
-+ */
-+u16 quic_packet_overhead(struct sock *sk, u8 level, u8 path)
-+{
-+	struct quic_conn_id_set *source = quic_source(sk);
-+	struct quic_conn_id_set *dest = quic_dest(sk);
-+	u16 len = QUIC_HLEN;
-+
-+	len += QUIC_PACKET_NUMBER_LEN; /* Packet number length. */
-+	len += quic_conn_id_choose(dest, path)->len; /* DCID length. */
-+	if (level == QUIC_CRYPTO_APP)
-+		return len;
-+
-+	len += 1; /* Length byte for DCID. */
-+	/* Length byte + SCID length. */
-+	len += 1 + quic_conn_id_active(source)->len;
-+	/* Include token for Initial packets. */
-+	if (level == QUIC_CRYPTO_INITIAL)
-+		len += quic_var_len(quic_token(sk)->len) + quic_token(sk)->len;
-+	len += QUIC_VERSION_LEN; /* Version length. */
-+	len += QUIC_PACKET_LENGTH_LEN; /* Packet length field. */
-+
-+	return len;
-+}
-+
-+/* Configure the QUIC packet header and routing based on encryption level and
-+ * path.
-+ */
-+int quic_packet_config(struct sock *sk, u8 level, u8 path)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+
-+	/* If packet already has data, no need to reconfigure. */
-+	if (!quic_packet_empty(packet))
-+		return 0;
-+
-+	packet->path_validating = 0;
-+	packet->ipfragok = 0;
-+	packet->padding = 0;
-+	packet->frames = 0;
-+	packet->last = 0;
-+
-+	packet->level = level;
-+	packet->overhead = quic_packet_overhead(sk, level, path);
-+	packet->len = packet->overhead + quic_packet_taglen(packet);
-+
-+	/* Allow fragmentation for handshake packets if PLPMTUD is enabled, as
-+	 * MTU discovery does not rely on ICMP Packet Too Big once PLPMTUD is
-+	 * enabled.
-+	 */
-+	packet->ipfragok = level && !!quic_paths(sk)->plpmtud_interval;
-+
-+	if (packet->path != path) {
-+		/* Path changed; update and reset routing cache */
-+		packet->path = path;
-+		__sk_dst_reset(sk);
-+	}
-+
-+	/* Perform routing and MSS update for the configured packet. */
-+	return quic_packet_route(sk);
-+}
-+
-+static void quic_packet_encrypt_done(struct sk_buff *skb)
-+{
-+	/* Free it for now, future patches will implement the actual deferred
-+	 * transmission logic.
-+	 */
-+	kfree_skb(skb);
-+}
-+
-+/* Coalescing Packets. */
-+static int quic_packet_bundle(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct quic_skb_cb *head_cb, *cb = QUIC_SKB_CB(skb);
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct sk_buff *p;
-+
-+	if (!packet->head) /* First packet to bundle: initialize the head. */
-+		goto init;
-+
-+	/* If bundling would exceed MSS, flush the current bundle. */
-+	if (packet->head->len + skb->len > packet->mss) {
-+		quic_packet_flush(sk);
-+		goto init;
-+	}
-+	/* Bundle it and update metadata for the aggregate skb. */
-+	skb_orphan(skb);
-+	p = packet->head;
-+	head_cb = QUIC_SKB_CB(p);
-+	if (head_cb->last == p)
-+		skb_shinfo(p)->frag_list = skb;
-+	else
-+		head_cb->last->next = skb;
-+	p->data_len += skb->len;
-+	p->truesize += skb->truesize;
-+	p->len += skb->len;
-+	head_cb->last = skb;
-+	head_cb->ecn |= cb->ecn;  /* Merge ECN flags. */
-+
-+out:
-+	/* rfc9000#section-12.2: Packets with a short header (Section 17.3) do
-+	 * not contain a Length field and so cannot be followed by other
-+	 * packets in the same UDP datagram.
-+	 *
-+	 * so Return 1 to flush if it is a Short header packet.
-+	 */
-+	return !cb->level;
-+init:
-+	packet->head = skb;
-+	cb->last = skb;
-+	goto out;
-+}
-+
-+/* Transmit a QUIC packet, possibly encrypting and bundling it. */
-+static int quic_packet_xmit(struct sock *sk, struct sk_buff *skb, gfp_t gfp)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_skb_cb *cb = QUIC_SKB_CB(skb);
-+	struct net *net = sock_net(sk);
-+	int err;
-+
-+	/* Associate skb with sk to ensure sk is valid during async encryption
-+	 * completion.
-+	 */
-+	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
-+
-+	/* Skip encryption if taglen == 0 (e.g., disable_1rtt_encryption). */
-+	if (!quic_packet_taglen(packet))
-+		goto xmit;
-+
-+	cb->crypto_done = quic_packet_encrypt_done;
-+	err = quic_crypto_encrypt(quic_crypto(sk, packet->level), skb, gfp);
-+	if (err) {
-+		if (err != -EINPROGRESS) {
-+			QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCDROP);
-+			kfree_skb(skb);
-+			return err;
-+		}
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCBACKLOGS);
-+		return err;
-+	}
-+	if (!cb->resume) /* Encryption completes synchronously. */
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCFASTPATHS);
-+
-+xmit:
-+	if (quic_packet_bundle(sk, skb))
-+		quic_packet_flush(sk);
-+	return 0;
-+}
-+
-+/* Create and transmit a new QUIC packet. */
-+int quic_packet_create_and_xmit(struct sock *sk, gfp_t gfp)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct sk_buff *skb;
-+	int err;
-+
-+	err = quic_packet_number_check(sk, gfp);
-+	if (err)
-+		goto err;
-+
-+	if (packet->level)
-+		skb = quic_packet_handshake_create(sk, gfp);
-+	else
-+		skb = quic_packet_app_create(sk, gfp);
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto err;
-+	}
-+
-+	err = quic_packet_xmit(sk, skb, gfp);
-+	if (err && err != -EINPROGRESS)
-+		goto err;
-+
-+	return 0;
-+err:
-+	pr_debug("%s: err: %d\n", __func__, err);
-+	return err;
-+}
-+
-+/* Flush any coalesced/bundled QUIC packets. */
-+void quic_packet_flush(struct sock *sk)
-+{
-+	struct quic_path_group *paths = quic_paths(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+
-+	if (packet->head) {
-+		quic_lower_xmit(sk, packet->head,
-+				quic_path_daddr(paths, packet->path),
-+				&paths->fl);
-+		packet->head = NULL;
-+	}
-+}
-+
-+void quic_packet_init(struct sock *sk)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+
-+	INIT_LIST_HEAD(&packet->frame_list);
-+	packet->mss = QUIC_MIN_UDP_PAYLOAD;
-+	packet->taglen = QUIC_TAG_LEN;
-+	packet->version = QUIC_VERSION_V1;
-+}
-diff --git a/net/quic/packet.h b/net/quic/packet.h
-new file mode 100644
-index 000000000000..a1977fcd0db0
---- /dev/null
-+++ b/net/quic/packet.h
-@@ -0,0 +1,98 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+struct quic_packet {
-+	struct quic_conn_id dcid; /* Dest Conn ID from received packet */
-+	struct quic_conn_id scid; /* Source Conn ID from received packet */
-+	union quic_addr daddr;    /* Dest address from received packet */
-+	union quic_addr saddr;    /* Source address from received packet */
-+
-+	struct list_head frame_list; /* Frames to pack into packet for send */
-+	struct sk_buff *head;        /* Head skb for packet bundling on send */
-+	u32 version;   /* QUIC version used/selected during handshake */
-+	u16 overhead;  /* QUIC header length excluding frames */
-+	u16 padding;   /* Total padding bytes to append after frames */
-+	u16 frames;    /* Number of ack-eliciting frames */
-+	u16 hlen;      /* UDP + IP header length for sending */
-+	u16 len;       /* QUIC packet length including taglen for sending */
-+	u16 mss;       /* MSS including taglen */
-+
-+	u8 path_validating:1; /* Packet contains path_validating frames */
-+	u8 ack_eliciting:1;   /* Packet contains ack-eliciting frames */
-+	u8 ack_immediate:1;   /* Send ACK immediately (skip ack_delay timer) */
-+	u8 non_probing:1;     /* Packet contains non-probing frames */
-+	u8 has_sack:1;        /* Packet contains ACK frames */
-+	u8 ipfragok:1;        /* Allow IP fragmentation */
-+	u8 path:1;            /* Path identifier used to send this packet */
-+	u8 last:1;            /* No more frame can be appended */
-+	u8 taglen;            /* Tag length for short header packets */
-+	u8 level;             /* Encryption level used */
-+};
-+
-+#define QUIC_PACKET_INITIAL_V1		0
-+#define QUIC_PACKET_0RTT_V1		1
-+#define QUIC_PACKET_HANDSHAKE_V1	2
-+#define QUIC_PACKET_RETRY_V1		3
-+
-+#define QUIC_PACKET_INITIAL_V2		1
-+#define QUIC_PACKET_0RTT_V2		2
-+#define QUIC_PACKET_HANDSHAKE_V2	3
-+#define QUIC_PACKET_RETRY_V2		0
-+
-+#define QUIC_PACKET_INITIAL		QUIC_PACKET_INITIAL_V1
-+#define QUIC_PACKET_0RTT		QUIC_PACKET_0RTT_V1
-+#define QUIC_PACKET_HANDSHAKE		QUIC_PACKET_HANDSHAKE_V1
-+#define QUIC_PACKET_RETRY		QUIC_PACKET_RETRY_V1
-+
-+#define QUIC_PACKET_INVALID		0xff
-+
-+#define QUIC_VERSION_LEN		4
-+
-+#define QUIC_PACKET_FORM_SHORT		0
-+#define QUIC_PACKET_FORM_LONG		1
-+
-+static inline u8 quic_packet_taglen(struct quic_packet *packet)
-+{
-+	return packet->level == QUIC_CRYPTO_APP ? packet->taglen : QUIC_TAG_LEN;
-+}
-+
-+static inline u32 quic_packet_mss(struct quic_packet *packet)
-+{
-+	return packet->mss - quic_packet_taglen(packet);
-+}
-+
-+static inline u32 quic_packet_max_payload(struct quic_packet *packet)
-+{
-+	return packet->mss - packet->overhead - quic_packet_taglen(packet);
-+}
-+
-+static inline bool quic_packet_empty(struct quic_packet *packet)
-+{
-+	return list_empty(&packet->frame_list);
-+}
-+
-+static inline void quic_packet_reset(struct quic_packet *packet)
-+{
-+	packet->level = 0;
-+	packet->has_sack = 0;
-+	packet->non_probing = 0;
-+	packet->ack_eliciting = 0;
-+	packet->ack_immediate = 0;
-+}
-+
-+u16 quic_packet_overhead(struct sock *sk, u8 level, u8 path);
-+int quic_packet_config(struct sock *sk, u8 level, u8 path);
-+
-+int quic_packet_create_and_xmit(struct sock *sk, gfp_t gfp);
-+int quic_packet_route(struct sock *sk);
-+
-+void quic_packet_mss_update(struct sock *sk, u32 mss);
-+void quic_packet_flush(struct sock *sk);
-+void quic_packet_init(struct sock *sk);
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index 53a2f76c9bda..f7792236752b 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -86,6 +86,7 @@ static int quic_init_sock(struct sock *sk)
- 	quic_cong_init(quic_cong(sk));
- 
- 	quic_timer_init(sk);
-+	quic_packet_init(sk);
- 
- 	if (quic_stream_init(quic_streams(sk)))
- 		return -ENOMEM;
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 7ce29974baf4..173062736020 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -20,6 +20,8 @@
- #include "path.h"
- #include "cong.h"
- 
-+#include "packet.h"
-+
- #include "protocol.h"
- #include "timer.h"
- 
-@@ -74,6 +76,7 @@ struct quic_sock {
- 	struct quic_pnspace		*space[QUIC_PNSPACE_MAX];
- 	struct quic_crypto		*crypto[QUIC_CRYPTO_MAX];
- 
-+	struct quic_packet		packet;
- 	struct quic_timer		timers[QUIC_TIMER_MAX];
- };
- 
-@@ -147,6 +150,11 @@ static inline struct quic_crypto *quic_crypto(const struct sock *sk, u8 level)
- 	return quic_sk(sk)->crypto[level];
- }
- 
-+static inline struct quic_packet *quic_packet(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->packet;
-+}
-+
- static inline void *quic_timer(const struct sock *sk, u8 type)
- {
- 	return (void *)&quic_sk(sk)->timers[type];
--- 
-2.47.1
-
+I will have to look into this. It will likely require some significant
+changes to address. I am not sure if this is the correct patch to
+address it in.
