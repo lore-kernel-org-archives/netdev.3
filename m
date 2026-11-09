@@ -1,100 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794220247;
-	b=v0aZ2e869mCrwd5TKlt00QntLnOIQ4pF0UrakZyrzM5/2aMxrKOzz57ZP8VibrGD/IYL
-	 mNdVk32ZAkKHPP4E5u5iczu3M2uc4DbNh2WI4ZlkwZzu2dxHXGx0kDvu7vZt/805Clhqr
-	 6lRyncWkYNgLlpeEMJ6b9Fa6X/CoC4Yd31hiOJ9XxxDJV35q9L/67TjICOUfBeXEQ6Adi
-	 cAJqxpBv55U2f16qsMW5Yp5YxMWXHgG9YyYH2+SOJleLqGrdNy+qA3/rmh5sv4d1ovRjh
-	 9rq49zl6iMJ7R6SzESjCYKKbvdPZpFN3ewXaGjWJSIcSxEYx7TBflNu2O5FZ/nLSrnQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794220247;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Lwv7/6Rm1ksnmB8FxVlkGOpwRvqoR8h3fOYGT7fchNY=;
-	b=KEDotIvWyExUSKjGj7uJJF1A8rd6nviSVUq0qpPQcPiUgj7N+x1mOpWgs3thMmbkgY5A
-	 tUJHphJKEC9RNC5LLgmhzU99R87mL3Ex4DSJUruZ929J/GDj4KDNy1VxXzeke9PUiFNLF
-	 D3VZV73ttb/T33L2G9RSFpZHFR7/tNUmH/H5MJDWGRmoxtvCcKLPfg5UmMUJUj+EpGIUw
-	 ih0aBt4TUWG8gNSeuwQoJt4SRcs5+ZLGz/kf7VFTHKBT5KxcToEBBhPp8MCIBbKnxZB42
-	 8FgxHK+EY9TXJcncRxisq2g89WNgJiTi6dpKgqmRVdTbIbdhKtZlyEQgNl3VgV6Fy0Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DDiXqog+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.19
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010019.outbound.protection.outlook.com [52.101.201.19])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794220426;
+	b=zQNHHoFnR/wGued8+3dOYxw6w/E2p1Uoz5PM543lqF7YxIAHLq56zd2kg9q12aW3ewm4
+	 /Ng3JQt2GmlBdWAex4pHRKg4QOVEx2zywDjre1xtQlpmu9ETvRtTjdFD45+Gdcmo5J8OK
+	 b9emCobuOwFRx0r7GA8ju9HLpAfn1vHEJZUuvLUKKlm3y+FwCJmkfssYua4d0QDT1Yxjo
+	 MxSsKm8dFs84FVWAZ6dLkJmjpzLCn/tLr54EISOWB7jGX6nrZsuyMeVBjP2SePVrkQI9s
+	 JNh6PUoiPqhJq1FrznjP1vi6tfXweKeAN+CQ0KWW7QQqtZ0OCbGn3V+Kn2uLRlDpqVQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794220426;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=VRrPkVXdrF4F4ZQHVBYtdU9kJYRffolcAoStU51ARY0=;
+	b=sToIKqpQ5RugLm6gtrpKZitLXw9Ea7HsMnoYmnMYOp5CwRVi80DlwpD5uuyUT94DlM9d
+	 cWnpec41SqqU7LoB605w61rHp/ATzADyIXdIM6eRBie8C2A/w8EIDGe8ZK6X1857UOzg0
+	 869zUb4v3SOgpcb+RgsIaZNtes6uzWPmMQ/QIfK81dw2dPgxfRnWGBaL39or2kZCO9Lnb
+	 91AX08jLjH204a9G2jEsAeTX43xuLzjgPdnDMsz9EZqi+1A5rryzLnzfUbGF3YoSZo1kI
+	 JbTbgjNMtTYhgHAasWtEodYely20FyhBMBItU3mwaKTr8u9X+LX7odm+n3sW/oXB4ng==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6GdokD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9EA606A325;
-	Mon,  9 Nov 2026 10:30:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E9EA606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B8C606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DDiXqog+
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vi5kx7+ULuDWcWhYFJGE11pC0J/rJg6/Rihrsh/CRrjYHalDVtVUiwZx+01xWHt4dQqDj46+fyy6qI9KafO4vHDuhJVrP7Sjiuh+wmiux52OsYqDtPPGU7hyPbYTJgJE4sEdISpPwvnA4UDLyzeR9s44nncZ2kxa7zvWYyjl1cLu9xyBHyjPDg//1ymw/iIl4IL+GWbePKXJK3eRR3+AG8bDSqHSEjRpzvfiWGtgZupP+E7ZVoX67nnV7jGB34T6CScE8Ofiz/QOH7xQiMgsxxCVvIoW7WNwE2tehbnejGferM99yJXKYKy4Aa8XN/W0fTtk83oHDUEOzKxITKQ4Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lwv7/6Rm1ksnmB8FxVlkGOpwRvqoR8h3fOYGT7fchNY=;
- b=tjGVyLRhvX4CuWZhh5UwmL817gquU5D6J1E+S5TXWIEup6GQE7bmca6s/OseoK38/MWy0+dGfid/UArjMPK6m/x7RNJvtBkTa1EgSaThJqRV6b0wa1Tp+eVkuTyb26W31SRSRI881pyypBMKj1ykdSirzzGiiQnCdNIvH2iHLkQDhZpm4scvb5Xfk/rVRrSpuDBsLGj9upGGrEsOJPHuXmo6B6u5ID47hy8HZGxKooLsFy1Px4iZmdZhG0DZ7ce2mq/INehU0oHyDGsJC9aBOSy/pe7zqtB21pYlErlh+oqhUrFsbar6tdc/O2u3L0liWQikpasAU4cUtM4Dr9JglA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lwv7/6Rm1ksnmB8FxVlkGOpwRvqoR8h3fOYGT7fchNY=;
- b=DDiXqog+PqX07nDiSAIMNA46U+RRzndKiZdNLy0tg7CfWd8P4YRCxf1R6rMyCrL7ivfWAYLoyrGlNWNCYLygrtgafRb7mzabJ+NAIxsViO1hP0O2lcA8vCQNZsILVqjkKqm+nvG63tkCN9J6tEcNMP/9QG0f/hhgUkMo5c17mWxI33i2RcpAygtIkwrFqcjZLPWZqZkrfBiwqYiWpN0cjFj8JqDMTqAcE1zSNWD4z1uMspn719SJlQOiK4vjQtSlvqQQjckM2gWB3RXkAqmaf4gcgZDnMtAlam+osoAr3FkpmB3lrSsgTyqnpG8fVwVXvbKsQj//1Dh+EN2T6zz5Wg==
-Received: from SJ0PR03CA0372.namprd03.prod.outlook.com (2603:10b6:a03:3a1::17)
- by MN0PR12MB5811.namprd12.prod.outlook.com (2603:10b6:208:377::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Mon, 9 Nov 2026
- 10:30:37 +0000
-Received: from SJ1PEPF00002317.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1:cafe::5c) by SJ0PR03CA0372.outlook.office365.com
- (2603:10b6:a03:3a1::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
- Nov 2026 10:30:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00002317.mail.protection.outlook.com (10.167.242.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 10:30:36 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 02:30:22 -0800
-Received: from [10.125.206.9] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 02:30:17 -0800
-Message-ID: <64bdfae3-6747-475f-9b90-4882d651d1ee@nvidia.com>
-Date: Mon, 9 Nov 2026 12:30:14 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6GdokD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E81F0089F;
+	Mon,  9 Nov 2026 10:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794220425;
+	bh=VRrPkVXdrF4F4ZQHVBYtdU9kJYRffolcAoStU51ARY0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Bd6GdokDOg0fr92ciNihq3ZNQ1ney4lla5Q6zpGt1/DhRUA/FsTF/fGRR8Mg84Uw+
+	 18ZPQkqKni+7xrTyKAjDSZk1s002P1cm/qrbn+fD7FrmyN0Zqf3rHCdEFS9+boepsN
+	 uYa63yGCeNiIr/ATnuYVXdLaKyukg/WGs5F7SuOAg43KAtVnpV5Cdh5u1fA5H4fX9p
+	 GUxOMgmqWEqg8J2xa+k/hdMdfHXra3eoraD75ITlM3R7CpAg2z6AsNkQWfM1wbiMHe
+	 uZEkUXeJYvzW8hNz6Ea+7Bdleg738UVSsua2HXIkODKg/BUKhBdGC1YLCL4A2Oe9a1
+	 xa0UhmTkguanA==
+Subject:
+ Re: [PATCH net] net: wwan: iosm: Re-bind the driver around system suspend too
+From: netdev-bot+sashiko@kernel.org
+To: zevpaneth@gmail.com
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, mail@maciej.szmigiero.name, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org
+Date: Mon, 09 Nov 2026 10:33:44 +0000
+Message-ID: <179422042429.994134.17042297165807075263@kernel.org>
+In-Reply-To: <20261105102009.34534-1-zevpaneth@gmail.com>
+References: <20261105102009.34534-1-zevpaneth@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,104 +64,280 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rdma-next 20/23] RDMA/mlx5: Clamp log_max_* shifts in QP
- and WQ limit checks
-To: <netdev-bot+sashiko@kernel.org>
-CC: <jgg@ziepe.ca>, <leon@kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
-	<mbloch@nvidia.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
-	<dtatulea@nvidia.com>, <moshe@nvidia.com>, <maorg@nvidia.com>
-References: <20261103163949.1554-21-yishaih@nvidia.com>
- <179408310595.994134.12854233732790224193@kernel.org>
-Content-Language: en-US
-From: Yishai Hadas <yishaih@nvidia.com>
-In-Reply-To: <179408310595.994134.12854233732790224193@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002317:EE_|MN0PR12MB5811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5390b833-c15c-42da-61bd-08df3e4c7e67
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|1800799024|23010399003|82310400026|376014|22082099003|18002099003|10067099003|261009223027099003|56012099006|4143699003|11063799006|261028144727099003|261022105027099003|261026140227099003|261021135927099003;
-X-Microsoft-Antispam-Message-Info:
-	Suc2+MGlbpx9or4LUSW68mfA9wgqQh7GsgKW09L6I/jlnpatYaDwhm6x2zzgOpqwIJmTM2Hb6KTLdC/+EDB8IApUlBSKssA7GZhccBLHLc4dViVXDclesHzv653ssOLfwk9MUU62YzZUTxlS4cwp9pBkdtnJ3+kMGafdxDeiqNE1x3E/AhPFp2vzUZwt4xo/iPdKSH11WpyuntC81yq2EqgROJDHF/XknRQ4Hs8Jsve+0l74a632bJc941mMjmfYwfdf+df4JB2sTVbbxXGdBwBN0asR5jkwanRvXgrR7ukV06SzHZ16N4DhRab0empP92Oi5NK2V0FssZtC2ETTnn2k4802tEcB3td8MWWXCKb13LWH2Qt5i9f3qk7GKw1UpY+koVxmyeFqNhtfNFpWVWywuj+m2MTu7vCHIB3va1Ia2TcCwzUIAti+ODG4EvI+6b19SHvkHANSCrj/tAcusCMCBFvwKPY4yz2JFHpTzia0v7/pjcjSzhJ6HZdudFcMHPOV7RCi6laLe4nEUPqvy4AKICDgRme/LlgFYsi8zVgLguqofEPGaZ0T8v5XqtGdi+FjrioMnFiuaTfOuVHExNCGBM1JEW965kb7JhNp3B4H2r9O+/gNHEZmxsU1MX+9eMjJ0ZhVmGHiLi0iu5fV7ikuDv+9ErU0zwtAAyK7kf0vFScF27JhcWMOYj6MPVusU/R8VfCX/RMQPvboKYnbKg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(1800799024)(23010399003)(82310400026)(376014)(22082099003)(18002099003)(10067099003)(261009223027099003)(56012099006)(4143699003)(11063799006)(261028144727099003)(261022105027099003)(261026140227099003)(261021135927099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GGEiEvMQTwS8t8FSjtNZjvM2SFScN8daYOs19Eypm3uZawnBbXmxwL88KXAH4o8NCkjFOYi18GdJxQ0S1c2sLa4M2Pttvrwo+2IFrVwFvaRVPXvEE1LqUWFUdgSBi+t3H9hKeL8kB9vFFiZxBSa8qQvi2P1ata8+47jJDe+uaspRKdRdIIpgoUv8IT8sR0JZcghn5J6jTS9TnU+khwGXcitKLSKyU91urfjInOA7keVmuRmwGNNVvmxQukKhLe8r1RrCpgYAoOHN1yP1GbGXbaceuIvnddvSCCRUPINo5H6tYRI31sVdcXfL69ikIM/9Uaqca3yxOVAj1lccidxAItulERigvgW6Qn2FJg5er1qxBSpMh/cNUOwfYEfJJEf/qHsYOIXYpuc2XHJr0jR6fqIsuSRqWn1hkkjLKcpMxLMjXE9dqo1+IYcaGtgUGL9G
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 10:30:36.8720
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5390b833-c15c-42da-61bd-08df3e4c7e67
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002317.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5811
 
-On 07/11/2026 22:25, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] The commit message says each limit is computed from "an 8-bit
->    log_max_* FW capability".
-> 
-> --
-> 
-> RDMA/mlx5: Clamp log_max_* shifts in QP and WQ limit checks
-> 
-> This commit replaces several open-coded 1 << MLX5_CAP_GEN(...) limit
-> calculations in drivers/infiniband/hw/mlx5/qp.c with
-> MLX5_CAP_GEN_LOGSZ_U32(). This avoids an undefined shift when a NIC
-> reports a log_max_* capability of 31 or more. The affected checks are in
-> set_rq_size(), calc_sq_size(), set_user_buf_size(), create_dci(),
-> create_user_qp(), validate_rd_atomic() and set_user_rq_size().
-> 
->> Several QP and WQ size checks in qp.c compute their limit as
->> 1 << cap, where cap is an 8-bit log_max_* FW capability. An untrusted
->> NIC can report 31 or more, which makes the shift undefined.
-> 
-> [Severity: Low]
-> This isn't a bug, but is "an 8-bit log_max_* FW capability" accurate for
-> all the caps this patch touches?
-> 
-> In struct mlx5_ifc_cmd_hca_cap_bits in include/linux/mlx5/mlx5_ifc.h,
-> only log_max_qp_sz is 8 bits wide:
-> 
-> 	u8         log_max_qp_sz[0x8];
-> 
-> The rd_atomic caps used by validate_rd_atomic() are 6 bits wide:
-> 
-> 	u8         log_max_ra_req_dc[0x6];
-> 	u8         log_max_ra_res_dc[0x6];
-> 	u8         log_max_ra_req_qp[0x6];
-> 	u8         log_max_ra_res_qp[0x6];
-> 
-> The cap used by set_user_rq_size() is 5 bits wide, so its maximum value
-> is exactly 31:
-> 
-> 	u8         log_max_wq_sz[0x5];
-> 
-> The main point still holds, since every one of these fields can reach 31
-> and the shift can be undefined.
-> 
-> Could the wording be changed to something like "a log_max_* FW capability
-> of up to 8 bits"?
-> 
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Right, will fix the commit message in V1.
+Critical: 0 · High: 0 (1) · Medium: 4 · Low: 1
 
-Yishai
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message rests on a premise the code contradicts:
+  that "the driver keeps the device in D0" during s2idle.
+- [Medium] pm_notify() now unbinds and re-binds the driver on
+  PM_SUSPEND_PREPARE/PM_POST_SUSPEND with no conditions.
+- [Medium] Because the driver is unbound at PM_SUSPEND_PREPARE, which
+  suspend_prepare() sends before devices suspend and before processes…
+- [Medium] The commit message says the device is "re-initialized from
+  scratch on resume, exactly as it is at boot", but nothing resets the…
+- [Low] After this patch the driver is unbound before every system-sleep
+  transition: suspend (via PM_SUSPEND_PREPARE, sent for every state from…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  makes it reachable on every suspend.
+
+--
+
+net: wwan: iosm: Re-bind the driver around system suspend too
+
+This commit extends pm_notify() in the iosm driver. The PCI driver is now
+unregistered on PM_SUSPEND_PREPARE and re-registered on PM_POST_SUSPEND,
+in addition to the existing hibernation and restore events. The goal is to
+recover a modem that comes back in its boot ROM stage after a long s2idle
+cycle by re-probing it from scratch on resume.
+
+> On some platforms the modem loses power during suspend-to-idle even
+> though the driver keeps the device in D0 and its s2idle resume path
+> only sends a wake-up command.
+
+[Severity: Medium]
+Is the "keeps the device in D0" part accurate?
+
+With the driver bound and the D0L1.2 BIOS setting, ipc_pcie_suspend_cb()
+calls ipc_pcie_suspend_s2idle(), which only does this:
+
+drivers/net/wwan/iosm/iosm_ipc_pcie.c:ipc_pcie_suspend_s2idle() {
+	ipc_cp_irq_sleep_control(ipc_pcie, IPC_MEM_DEV_PM_FORCE_SLEEP);
+	...
+	set_bit(0, &ipc_pcie->suspend);
+	...
+	ipc_imem_pm_s2idle_sleep(ipc_pcie->imem, true);
+}
+
+Nothing in drivers/net/wwan/iosm/ calls pci_save_state(), and
+SIMPLE_DEV_PM_OPS() provides no .suspend_noirq. So pci_pm_suspend_noirq()
+falls through to pci_pm_suspend_noirq_common() with state_saved clear:
+
+drivers/pci/pci-driver.c:pci_pm_suspend_noirq_common() {
+	if (!pci_dev->state_saved) {
+		pci_save_state(pci_dev);
+		...
+		if (!pci_dev->skip_bus_pm && pci_power_manageable(pci_dev))
+			pci_prepare_to_sleep(pci_dev);
+	}
+	...
+}
+
+pci_prepare_to_sleep() then picks D3hot or a platform state for the
+modem, possibly D3cold through ACPI.
+
+If the PCI core already moves the modem out of D0 on the D0L12 s2idle
+path, could that be what cuts modem power on the test platform?
+
+If so, would it be a more targeted fix to keep the device in D0 for the
+D0L12 case (for example by saving PCI state in the suspend callback to
+opt out of bus PM) instead of unbinding the driver on every suspend?
+
+> diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+> index 49052eb511baa..ebd4c45e1f4e5 100644
+> --- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+> +++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+> @@ -534,12 +534,14 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
+>  
+>  static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
+>  {
+> -	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
+> +	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE ||
+> +	    mode == PM_SUSPEND_PREPARE) {
+>  		if (pci_registered) {
+>  			pci_unregister_driver(&iosm_ipc_driver);
+>  			pci_registered = false;
+>  		}
+
+[Severity: Medium]
+Should this be limited to the affected platforms or suspend states?
+
+suspend_prepare() sends PM_SUSPEND_PREPARE for every suspend state:
+
+kernel/power/suspend.c:suspend_prepare() {
+	...
+	error = pm_notifier_call_chain_robust(PM_SUSPEND_PREPARE, PM_POST_SUSPEND);
+	...
+}
+
+Nothing here checks pm_suspend_target_state, ipc_pcie->d3l2_support or
+the platform. So every iosm device (7360 and 7560) on every platform now
+goes through pci_unregister_driver()->ipc_pcie_remove()->
+ipc_imem_cleanup() on each s2idle, S3 or standby entry:
+
+	if (test_and_clear_bit(FULLY_FUNCTIONAL, &ipc_imem->flag)) {
+		ipc_mux_deinit(ipc_imem->mux);
+		ipc_debugfs_deinit(ipc_imem);
+		ipc_wwan_deinit(ipc_imem->wwan);
+		ipc_port_deinit(ipc_imem->ipc_port);
+	}
+
+That destroys the wwan netdevs, hangs up open AT/MBIM port fds, tears
+down devlink and drops the data session. The roughly 50 second reconnect
+follows.
+
+Commit 0b6f6593aa8c, which this patch builds on, says it was "Tested on
+XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses the existing
+suspend / resume handlers)". So at least that configuration worked with
+s2idle before this change.
+
+Would the DMI quirk mentioned in the commit message be the safer default?
+
+[Severity: Medium]
+What happens to the modem during system suspend once it has no driver?
+
+The unbind happens at PM_SUSPEND_PREPARE, before dpm_suspend(). So
+dev->driver is NULL when the PCI core suspends the device, and
+pci_pm_suspend_noirq() takes this branch:
+
+drivers/pci/pci-driver.c:pci_pm_suspend_noirq() {
+	...
+	if (!pm) {
+		pci_save_state(pci_dev);
+		goto set_unknown;
+	}
+	...
+}
+
+This skips pci_pm_suspend_noirq_common() entirely. As far as I can tell,
+that means:
+
+- The driver's own sleep handshake no longer runs. Neither the D0L12
+  IPC_MEM_DEV_PM_FORCE_SLEEP doorbell plus ipc_imem_pm_s2idle_sleep()
+  nor the D3L2 ipc_pcie_suspend() is called. The only thing sent to the
+  modem is the IPC_MEM_DEVICE_IPC_UNINIT doorbell from
+  ipc_imem_device_ipc_uninit().
+
+- The endpoint is never put into D3 and wake/PME is never armed, because
+  pci_prepare_to_sleep() is where device_may_wakeup() is honored. So
+  modem-initiated wakeup cannot work.
+
+- The endpoint no longer sets bus->self->skip_bus_pm. The root port may
+  then enter D3hot/D3cold while the endpoint is still in D0 and its CP
+  has not been force-slept.
+
+Could this raise suspend power or hurt S0ix residency on platforms where
+the modem used to survive s2idle?
+
+[Severity: Low]
+This isn't a bug, but with PM_SUSPEND_PREPARE added the driver is now
+unbound before every system sleep transition. As a result the
+iosm_ipc_pm table can no longer be reached:
+
+static SIMPLE_DEV_PM_OPS(iosm_ipc_pm, ipc_pcie_suspend_cb, ipc_pcie_resume_cb);
+
+The same goes for ipc_pcie_suspend_s2idle()/ipc_pcie_resume_s2idle(),
+ipc_pcie_suspend()/ipc_pcie_resume(), the suspend bit checked in the IRQ
+path, and the d3l2_support value that ipc_pcie_read_bios_cfg() reads at
+probe. The BIOS D0L1.2/D3L2/Disabled setting no longer changes anything.
+
+Should these callbacks be removed, or at least documented as unused?
+
+The kernel-doc for ipc_pcie_suspend()/ipc_pcie_resume() in
+iosm_ipc_pcie.h calls them runtime PM callbacks. That was already wrong,
+and now it describes functions that nothing can call.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the patch makes an existing
+use-after-free in the teardown path reachable on every suspend.
+
+In MUX_AGGREGATION mode (7560), the UL encode paths in
+ipc_imem_handle_irq() and ipc_mux_tq_ul_trigger_encode() arm
+ipc_imem->adb_timer with a 500 us timeout. Nothing on the teardown path
+cancels it. ipc_imem_cleanup() only does:
+
+	hrtimer_cancel(&ipc_imem->td_alloc_timer);
+	hrtimer_cancel(&ipc_imem->tdupdate_timer);
+	hrtimer_cancel(&ipc_imem->fast_update_timer);
+	hrtimer_cancel(&ipc_imem->startup_timer);
+
+It then calls ipc_mux_deinit(), which frees the mux without clearing
+ipc_imem->mux. The imem_config_fail error path in ipc_imem_init() also
+leaves adb_timer pending.
+
+If adb_timer is still pending at that point:
+
+ipc_imem_adb_timer_cb()
+  ipc_task_queue_send_task()
+    ipc_imem_tq_adb_timer_cb()
+      ipc_mux_ul_adb_finish(ipc_imem->mux)   <- freed mux
+
+ipc_mux_ul_adb_finish() reads ul_adb from the freed mux and writes the
+sequence and accounting fields. It can also call
+ipc_imem_td_update_timer_start(), which re-arms tdupdate_timer after it
+was cancelled. That timer can then fire after ipc_pcie_deinit() has done
+kfree(ipc_pcie->imem).
+
+If adb_timer fires after ipc_task_deinit() and kfree(ipc_imem->ipc_task),
+ipc_task_queue_send_task() touches the freed task as well.
+
+Before this patch the teardown ran only on rmmod or hibernation. Now
+pm_notify() runs it from suspend_prepare() on every s2idle/S3 entry,
+before processes are frozen, so UL traffic can still be arming adb_timer
+while the driver is unbound.
+
+Should ipc_imem_cleanup() also cancel adb_timer before ipc_mux_deinit()?
+
+> -	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
+> +	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE ||
+> +		   mode == PM_POST_SUSPEND) {
+>  		if (!pci_registered) {
+>  			int ret;
+
+[Severity: Medium]
+The commit message says the device is "re-initialized from scratch on
+resume, exactly as it is at boot". Does that hold when the modem keeps
+power?
+
+That covers platforms where the modem survives s2idle, short s2idle
+cycles on the affected platform, and PM_POST_SUSPEND after a suspend
+that was aborted before platform sleep.
+
+Nothing on this path resets the modem: no FLR, PERST, _RST or cold
+reset. Re-probe then finds the CP still in RUN and depends on the UNINIT
+handshake done at unbind time in ipc_imem_device_ipc_uninit():
+
+	if (ipc_pcie_check_data_link_active(ipc_imem->pcie)) {
+		ipc_doorbell_fire(ipc_imem->pcie, IPC_DOORBELL_IRQ_IPC,
+				  IPC_MEM_DEVICE_IPC_UNINIT);
+		...
+		while ((ipc_state <= IPC_MEM_DEVICE_IPC_DONT_CARE) &&
+		       (ipc_state != IPC_MEM_DEVICE_IPC_UNINIT) &&
+		       (timeout > 0)) {
+
+This handshake is skipped if the link is not active. It waits at most
+about 30 ms and returns void, so an incomplete handshake goes unnoticed.
+
+On re-bind, ipc_imem_config() requires the UNINIT state for the
+PSI/EBL/RUN phases:
+
+		if (ipc_imem->ipc_requested_state ==
+		    ipc_mmio_get_ipc_state(ipc_imem->mmio)) {
+			ipc_imem_ipc_init_check(ipc_imem);
+
+			return 0;
+		}
+		dev_err(ipc_imem->dev,
+			"ipc_status(%d) != IPC_MEM_DEVICE_IPC_UNINIT",
+		...
+	return -EIO;
+
+If the state is anything else, probe fails. pci_register_driver() still
+returns 0 in that case, so pm_notify() sets pci_registered = true with
+no device bound.
+
+Could this leave the modem unusable after resume until a manual rebind
+or a reboot?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105102009.34534-1-zevpaneth%40gmail.com
