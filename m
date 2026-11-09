@@ -1,99 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794187902;
-	b=xShbJf1YFDILKQf5y8k2sofoqcwD+zqWjQfhWmy3ieGYd7gsJaKAHmb3hkWLq5/uh03k
-	 uxjrvuyvUexNLWuw1ESKHkhBvBb+HtKBrAClzWFIbzrh3eUX+x0y+GAzx4zAg1RADV9Mz
-	 lCfP9KjiBIgBqcmLovwVLfyG2tCMtoXRwmKdE+JQa0HkBpMGeBiXNJVc4zQ8PkO/9m1A4
-	 ftDVUV1B2OrvS8KG/uwthmB415lYNc2apdnsqes4MMI2fR5tNBGDYq4Ndgi+MdJwTuVAc
-	 NBXh3wUEcdBkPcsDlT1vowsB5BSojANBtfLjfHsWFYLKXkEljFD12dFmTxlrodbGIDA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794187902;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=8BIGtN0edeJ4AHaRHTPlYTsz9LtH9rZv7+zpPDlG/eE=;
-	b=bKax+x4O1CuTAN291VvlO6qj7o+rDAjss7nbdpSNoIcIwjzCODoDW2oSxnYE76RJEFTn
-	 5zQHctbFkTd9aVhxFks1JNrFPuqCLnVmKgjdogzO/NqMEG4vpAlJMFvPOefy7Joo4/YR2
-	 rllcSgmbPRqromFWXNIMoTQDKcbBCBTzLSTiDBg5d4Q63f0PxMT4L/iWoGlMnzlxi7+jl
-	 8Y72i9jAqr6ioCHQchYOvgCbb36sHHwIJ0vxaXwXX7s8ta9fwDfYnsSlfaRaYzY5Go5gK
-	 dKrPVeljL2VZ6rzMX/WrUW7TMXfBCfZtPxsKomhK5c5iZUy7FWlJV07MtD4RyHdc94w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ge+LOS3W;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794188329;
+	b=aMp17AwEZsUhfpHtbZVjOHhswdlwx3Ovfilr9aZ1A+2HBcSr4LagZXIFpLoH+AYW0gXX
+	 rlu9azkBtYRohVyjUrW+IpgfvHIKUfK1Yw4wtfEER1STU5tuSPhSAsYtk6TEDIYbk1j7K
+	 YOpj5FC0Xg76YY5d3Ai4QmSwINf1rwPBiDKApWqCmAc68G0q297bYxOHdUi9nnylCl9fZ
+	 4z+U/ZVG5I1YJmEc+PtkaPtfx/9cySdoZAg45Kave18QwPYebCvSLR0aeWyF0oPS8NBjv
+	 ZoWOWLXcZjPlDoY0bV3/5jmIFZVhey4LgJAKm4iLkoCbhChh3I8N/rMc28NbY9bXnpA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188329;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=jgJQfbD85DE2uxnUN7b8QIZUT8lwjyaqkF8TDj03zC4=;
+	b=sWAC3cVU4DEDMmdAsN79IbsXfdpC/LMdXAIAlGkhjrC+l8yaguM/BMx8c7YtZKdK6YtR
+	 A0f78NZaS33E3/T4QWeDVEjULKGKygMCAqoM757A7VjQnneJI9xghg7O48dYJaaPXpSpU
+	 0cWYIdnDqaiKX3WqHkv+dweJdmHcsJKRD6fIyAoLvCpptg1CjsSXDKVHxtR2PH91hnafd
+	 7RmPagW/ogUcBmyV+nKporvhrFr4UxHdMYiL4cmi0mOsJb1u1UOX3Q8HpLWUGl9Lpp//a
+	 NmZjOhq2Zw987wbZr3cGjZXwviYRIqjjIUX9eE5LqMADarTACOvP6Mc9bmV52IVavTg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjTPy2yz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFB4606A320
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:31:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAFB4606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625A606A320;
+	Mon,  9 Nov 2026 01:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ge+LOS3W
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4d427836e9so47691366b.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:31:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794187900; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q/eC7iMnszMPSQq0hRqxQ8degkeVoMagJCrv1CjOlHZbpiJ6RDNJin96S6tZ8TueeH
-         AfCF8ZXIaWMDbdFFjMLl420/8oIZehc34//OOeW4hL75RP9Vo6XfhttnsnOaedlyu6yQ
-         nHSXlT0ogAZaW2/4TauHukWpnJisyC54V+B6x9eT7qX5ezeCWFkzMpZIfglDeRe82kz5
-         h0Nudhe53sqRtkRq+SWLTYakuO/nxHLcf+zdhvf/ZI2fK7HTddZi1FkdiQA1DEllrhii
-         /ycY7Q8R+jKz+LLEKiuC5SPpORnOcsCaycqSOd01GvnvcSpBllK61P013EEageFiuyyX
-         A3Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=8BIGtN0edeJ4AHaRHTPlYTsz9LtH9rZv7+zpPDlG/eE=;
-        fh=cwXCpR1oWeROSpQherp1pRhNlgSzkAvQwZA6dF4M9pg=;
-        b=boB5HiP4Zlghu0WCHJUtDYssuMlX4KcfOVVMo5ki354bn8iU+Cro5tDqLNF5b8Ux1F
-         S5YTpXAx3UO8HfYBYKkx/9ph7yLBRcMcwgacDSInbOYJrm3Pb0ionOp6uvinMEEIx96w
-         93WrUJEyPWnRJxL6Flf70Ix0Ctvl72G6co7y8flLvWz9MG0op5/NLkggyhd8PeuXdw6+
-         PerkbMXKFWXUWpO5KUJ4D5+uHPTT/GigrftfKXzRa7m2w4JANmGzX0RgJbdkYYdmnmBO
-         L7NPVvTWd85uFpXmnkD8s7w67SLdtxSr6HIHHD1SwDtuPYZSre42e6T20zngF6bic6Kp
-         9tGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794187900; x=1794792700; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8BIGtN0edeJ4AHaRHTPlYTsz9LtH9rZv7+zpPDlG/eE=;
-        b=ge+LOS3WxfnHTEwdhQ6dKX1jbsxpegXgckUlJ6y01orTMKd+m5sibi7bInvWsMo78h
-         C2/zNnXG1VC3f5bz80QMZyKB6evOJV/x+PbT8cXasMtrkA4aJNuXmv3LGwDVlLh8tzPY
-         6dB1QX+GBwsRxNZAxp9dR+31OSw8XboQB4H57FnJUu9epdoHupDM9ZrWSLdL6eC9izuj
-         libw1te3jgL/ek9dbuZNL5DUuTP600NCQmYIt8o8ah1beX49iSO/BryQbq99vZ49+fme
-         xUis1ENCn9E5ote723ny+P/OTkxlK/ydftsYyzkal0mxjNOX4mdY6GBVYEabWs8M+rs4
-         Jpmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794187900; x=1794792700;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8BIGtN0edeJ4AHaRHTPlYTsz9LtH9rZv7+zpPDlG/eE=;
-        b=TqA/5H4joPtdBv45e18afXiPq+lXRwkie3S48Vdmu4xkJEV25c9nEnm6fUFkhHmRLB
-         DluQR6PGoQIN2pb4aetc049mEd1QZqT3Caq9fDiQ+FXcIGkYIyWoHZuJNpeQRZQsf2Pe
-         OXdtATQoqSl0f7l8Shdnx9qR5HN8XrQh52ssLwXa3dbcf7eASJvD2XvC7PkN0dJxuizN
-         quFDcHyAMwvzQrPAwhH/V5mYrqmNcwSNwvavhVOAk8Who1hiU7n0gOZ+JQaCNntH0HS+
-         +TWLroEPfiAgosuXKGuXeIIZUAvFltslKO/KCoGLmN3KyLOvoRG/dWiB/Cm3TiR7JnPT
-         gk+w==
-X-Forwarded-Encrypted: i=1; AL+hErEiId61OJ7Kqy2NIjKqciOPQtmPboDk7RuULj+9mwrMQLAza4dXMNvgjD1+vMmGcCkBWxsJbrY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+uq0m0VSW9ex0Uy3eTS0caim3Un7h9L62FQsNw+ThP72km1VLt
-	i6gbuSJBBMKm0798LunZVQnwV+f2Qxt4/K4lfGz9LzU65HZnf2KyTmN3bVsgAGPu+ATmQeuXIPs
-	hIM2gtoHGFkvSdm9Ftm1n5+6VmYdzykc=
-X-Gm-Gg: AYBFou0BFevQFXS+zb4N3srWCg4SVaACpRJkjqMnrBs5g2G4g6zCtcjrDjwOeK5aeS0
-	iNfWLh6VLJXsNa8qbm7AXuksIySGVDx6FlzahZgXa//xvetMDTl0ep1T1HxHutRJ9jreNFd8rnc
-	+HZnBYbDmGAQzbjjcJTT7B6rnDEoQWSsgeoboFI3ASDr92u9q4103u4hcidnADPu7Fj59Ur3ffs
-	U2fipR/pLDPhS46SAndhv9HcMwwokwUEYvtWlgrbMcY0QZP4SOrP/57FOY3mHUD2Lkz9jX47rR1
-	x2S93H0ft46/x2dEK82QqU+l8Q4BpHrX89rN8wV0lI/RoLXQLI85xP6oqsLOv5nL5QszZCcbRYN
-	ZrxPHTNVcDqnVspS3B2nSWRS6nZEQHE8XUuIpTlFbq0NBay+/C8dxIHPBUg7uwUQeYAekSQ==
-X-Received: by 2002:a17:906:9c86:b0:c40:4320:de2c with SMTP id
- a640c23a62f3a-c4d6db2544dmr166233166b.15.1794187899962; Sun, 08 Nov 2026
- 17:31:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjTPy2yz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748BC1F0089F;
+	Mon,  9 Nov 2026 01:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794188328;
+	bh=jgJQfbD85DE2uxnUN7b8QIZUT8lwjyaqkF8TDj03zC4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DjTPy2yztsF3Tw1bDXzsfQy3yCKNQuLLExDeMe3KMc+9tR31wqrUtF2Kc1Z3PHYIj
+	 c0B4nD/15J65wnauqLKeCeBZBNwRg8/gd0fmEaP9wx1i7ex7f+zt9wEBG9r1HmBKDT
+	 EGJn2CcgV35vWxd0u722U4Lom/OFTUcdn1NR75AU+hCU1Tjxq1aEWl9TnCTChkQ7jJ
+	 79qGiMQ6SAiRByFEVlCYYtSXjnJc1sgMODXXnLtQSSC/g5fTtBp6UUwSKwn6HJjMuu
+	 MaVOeO3qddBGVCvv+OmgGIFbabu8QdS1wznPGSS4OFDSFG+dL1xuu+2+9my5F6Vc4N
+	 nqnW6JHGlgEwA==
+Subject: Re: [PATCH net-next v4 2/2] net: prevent mixing frags from different
+ memory providers or bindings
+From: netdev-bot+sashiko@kernel.org
+To: almasrymina@google.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
+ kaiyuanz@google.com, linux-kernel@vger.kernel.org, ncardwell@google.com,
+ kuniyu@google.com, bobbyeshleman@meta.com, asml.silence@gmail.com,
+ sdf@fomichev.me, daniel@iogearbox.net
+Date: Mon, 09 Nov 2026 01:38:46 +0000
+Message-ID: <179418832697.994134.11198338213560511850@kernel.org>
+In-Reply-To: <20261108013838.1454450-3-almasrymina@google.com>
+References: <20261108013838.1454450-3-almasrymina@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,74 +65,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
- <1ccb6acc-0809-4abe-8443-576f6727a6d5@yahoo.com> <ausoMS5PcpEFz02i@analog.com>
-In-Reply-To: <ausoMS5PcpEFz02i@analog.com>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sun, 8 Nov 2026 22:31:27 -0300
-X-Gm-Features: AclHuK8yR5gI4v3iGi6WeBIKPSmMJ43uWzE0QqErM0CadYyGtJ6MIzDVMxKV56Y
-Message-ID: <CAJq09z7djw7MAbjc8jZuNsj12JhNCUOsGj-Ve73XwRjjHHO=JQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 05/10] net: dsa: realtek: rtl8365mb: set and
- get vlan 4k for family D
-To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
-Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>, linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	linux@armlinux.org.uk, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-> Don't you think it's better to just split out into family C/D variants
-> for these ops? If you do so, then I think relabelling the old macros for
-> the C family with RTL8365MB_C_ prefixes will also be appropriate.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Adding a `C` prefix is a clean way to organize the code, and it avoids
-scaling issues with `is_d` checks as more families are added.
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-Splitting the logic into subfunctions handled via a family enum switch
-(or eventually function pointers) is much more maintainable. Using a
-switch statement also has the advantage of compiler warnings if a new
-family is added and forgotten.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Here is a revised version of your response, keeping it professional,
-concise, and clear:
+- [Medium] The commit message says the whole change is "theoretical", but
+  one of the bundled fixes closes a bug that any devmem TX socket can…
+- [Medium] skb_has_net_iovs() returns `skb->unreadable &&
+  skb_shinfo(skb)->nr_frags`.
 
----
+--
 
-> Don't you think it's better to just split out into family C/D variants
-> for these ops? If you do so, then I think relabelling the old macros for
-> the C family with RTL8365MB_C_ prefixes will also be appropriate.
+net: prevent mixing frags from different memory providers or bindings
 
-Adding a `*_C_` prefix is a good way to organize it. It will get a bit
-messier when I submit the RTL8367R support, which I arbitrarily named
-Family A, but extra macros won't increase the final binary size. We
-might need to duplicate some macros once we have a register used by
-more than one but not all families.
+The patch adds skb_has_net_iovs(), skb_net_iov_provider(),
+skb_mem_provider_compat(), skb_frags_can_coalesce() and
+net_devmem_skb_binding(). These are used in the coalesce, shift, GRO,
+TCP collapse and devmem TX paths so that frags from different memory
+providers or devmem bindings are never mixed in one skb. It also
+propagates skb->unreadable and compares netmems when merging frags in
+tcp_clone_payload().
 
-As Alvin mentioned, splitting into subfunctions when each family has a
-distinct implementation is much cleaner. In my WIP tree
-(https://github.com/torvalds/linux/compare/master...luizluca:linux:realtek_families_wip),
-I handle it like this:
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index 6787fcf6ac3e4..e6f63450a193a 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -1882,6 +1882,17 @@ static inline bool skb_frags_readable(const struct sk_buff *skb)
+>  	return !skb->unreadable;
+>  }
+>  
+> +/* Return true if frags in this skb are backed by net_iovs.
+> + * Assumes skb->unreadable and net_iov-backed frags are equivalent for now;
+> + * the two can be decoupled in the future if readable net_iovs in skbs are
+> + * introduced. Also check nr_frags because not all frag-removal paths clear
+> + * skb->unreadable when nr_frags drops to 0.
+> + */
+> +static inline bool skb_has_net_iovs(const struct sk_buff *skb)
+> +{
+> +	return skb->unreadable && skb_shinfo(skb)->nr_frags;
+> +}
 
-static void rtl8365mb_l2_data_to_uc(struct realtek_priv *priv, const u16 *data,
-                                    struct rtl8365mb_l2_uc *uc)
-{
-        switch (rtl8365mb_get_family(priv)) {
-        case RTL8365MB_FAMILY_A:
-                rtl8365mb_a_l2_data_to_uc(data, uc);
-                break;
-        case RTL8365MB_FAMILY_C:
-                rtl8365mb_c_l2_data_to_uc(data, uc);
-                break;
-        }
-}
+[Severity: Medium]
 
-This is how I'm structuring it now, though it might migrate to
-function pointers later. A family check inside a shared function only
-makes sense for very localized differences. Since family A is shaping
-up well and family B sits conceptually between A and C, `is_d` doesn't
-scale well for future variants. Using an enum with a switch statement
-also ensures the compiler warns you if a new family case is missed.
+Does the nr_frags gate make the checks this patch replaces weaker, for
+exactly the state the comment above describes?
 
-Best regards,
+An skb with unreadable=1 and nr_frags==0 is now classified like a
+page-backed skb. So skb_mem_provider_compat() and skb_frags_can_coalesce()
+report it as compatible with a readable skb. The checks being replaced
+rejected that case:
 
-Luiz
+skb_try_coalesce():
+	if (skb_frags_readable(from) != skb_frags_readable(to))
+		return false;
+
+tcp_skb_can_collapse():
+	skb_frags_readable(to) == skb_frags_readable(from)
+
+tcp_sendmsg_locked():
+	unlikely(skb_frags_readable(skb) != !binding)
+
+Take skb_try_coalesce() with to stale-unreadable with 0 frags, and from
+readable with only page frags and headlen 0. It skips the copy path and
+passes skb_frags_can_coalesce(). It also misses the new readability check,
+because that check only runs when skb_headlen(from) != 0. The page frags
+are then copied into to, and to->unreadable stays set.
+
+skb_shift() behaves the same way and only clears the source skb's
+unreadable bit. In tcp_sendmsg_locked(), net_devmem_skb_binding(skb)
+returns NULL for such a tail. With binding == NULL, page data is appended
+to the tail instead of starting a new segment.
+
+The resulting skb is flagged unreadable but holds struct page frags.
+net_devmem_skb_binding() returns NULL for it, so would
+validate_xmit_unreadable_skb() drop it on every transmit and retransmit?
+
+	if (!binding || binding->direction != DMA_TO_DEVICE ||
+	    READ_ONCE(binding->dev) != dev)
+		goto out_free;
+
+On RX, the dmabuf recvmsg path would reject the non-niov frags.
+
+The stale state can be produced. __pskb_trim_head() in tcp_output.c
+removes frags without clearing unreadable, and it is reached through
+__tcp_retransmit_skb()->tcp_trim_head() for a FIN skb whose data has been
+acked.
+
+I could not find a live path where such an skb later becomes the target
+of a coalesce, shift or sendmsg append, because that FIN skb is the last
+one in its queue. So this may only weaken the old checks rather than
+cause a reachable failure.
+
+Would it make sense to keep rejecting a readable/unreadable mismatch in
+these paths as well?
+
+[ ... ]
+
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index cf3ddc055d48d..b8a5c3556243b 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -2692,8 +2692,9 @@ static int tcp_clone_payload(struct sock *sk, struct sk_buff *to,
+>  				     probe_size - len);
+>  			len += todo;
+>  			skb_shinfo(to)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
+> +			to->unreadable |= skb->unreadable;
+>  			if (lastfrag &&
+> -			    skb_frag_page(fragfrom) == skb_frag_page(lastfrag) &&
+> +			    skb_frag_netmem(fragfrom) == skb_frag_netmem(lastfrag) &&
+>  			    skb_frag_off(fragfrom) == skb_frag_off(lastfrag) +
+>  						      skb_frag_size(lastfrag)) {
+>  				skb_frag_size_add(lastfrag, todo);
+
+[Severity: Medium]
+
+The commit message says:
+
+  This issue is theoretical and was found by manual code inspection and
+  LLM review; it was not triggered in production.
+
+Is that accurate for this tcp_clone_payload() change? It looks like it
+fixes a reachable data corruption bug that any devmem TX socket can hit
+when MTU probing is enabled.
+
+Before this patch, the path was:
+
+tcp_write_xmit()
+  tcp_mtu_probe()
+    tcp_can_coalesce_send_queue_head()
+      tcp_skb_can_collapse()   <- only required equal readability
+    tcp_clone_payload()
+
+The probe nskb comes from tcp_stream_alloc_skb() with unreadable=0.
+Nothing set the flag when net_iov frags were copied into it. So
+validate_xmit_unreadable_skb() returned early without checking the
+binding's direction or device. Readers gated only by skb_frags_readable(),
+such as skb_copy_bits() for packet taps, could treat the net_iovs as
+struct pages.
+
+There is a second problem in the old merge test. skb_frag_page() returns
+NULL for every net_iov frag, so the test was NULL == NULL. The frag
+offset comes from the user iovec address in net_devmem_get_niov_at():
+
+	*off = virt_addr % PAGE_SIZE;
+
+Consider an iovec at dmabuf offset 0 with length 100 (niov 0, off 0),
+followed by one at offset 2*PAGE_SIZE+100 (niov 2, off 100). The two
+frags have contiguous offsets but sit on different niovs. They would be
+merged into one 200 byte frag on niov 0. Bytes 100..199 of the probe
+would then be sent from the wrong dmabuf page as valid TCP payload.
+
+Since this puts wrong data on the wire, could the commit message describe
+it accurately? Could this fix also be split into its own patch, so it is
+easier to spot for stable backports?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108013838.1454450-1-almasrymina%40google.com
