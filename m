@@ -1,59 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794243488;
-	b=klmbDOG6Bw0sacseETxReSu6+1Mu4qSryFGqaqOzAFessMbxcZwaTRGbA2iTuP0ges+y
-	 ZI//faGiPjpIMtU65accHdf05Gc3ZCif9ldGnPdMlvjUHjSw+lloEwSQ6AMEXTi12kA01
-	 e4xLzeyA1tFSx1EVsxPupupypprgMKtdsg6BEFGBRZKe4hkFGW72Dfsw/X/aRZNIz6Xjw
-	 P7TadR1FJN/k1DRDUzMNb4fvUPwWrGDGRVU67+O4cBgt0ovU2VCLWlcUIauR+lNfk/eDm
-	 WmLU9OauiyxXtKTE2RvI8bi/AXS2Ml3Y6DYgPgcpe4pzVl9AssrQSNyJsDHL6CxlwBw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794243488;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=M+TeyOZEDIkWPVUVs00lBg1GLoZC6RDP3McPSF76HZ8=;
-	b=w2nncXYFqP9qrPxPpqruySJJxVIydWsnHGNkVHoPExbbY6/GELag0o5STZREdAHq0EhB
-	 fI7GtXcO0dfn7SwLeWAiIf91EyKRWr6IWoPuxWSsIX2Ufe7bQaIkikdHcd3qk+oJ/REZY
-	 TUPXugesupIVkHBQLT205277AWmYejKLBQaAO1FVg4G9/7Ai4vQHohL68wIbuNLIZ06by
-	 OPWqUwZkliqd1cBb3IpfYS6y/ehyjOWPEZWwMA8y/YsbOQTxIIhZ4f8+hGjNuYeZukcaZ
-	 XgLhfRoCPMsIW4LGfb2koUhIcPV1a1B8WQUh5e4FUBhSDh/YkOd4Jer2Y8G+GsjF0ig==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fwn7kanm;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794243499;
+	b=H2Ybi0ZW3aT/8gKJfBwTe4rhkSzbEvk4d530LNc8mtzDdKnM4EZJaHq7AU8gnZAzPVDj
+	 m2EndbHs81HvI/fDvjRabXKMBHqqfc/EAoBD3PFZ6j6zDkh1nO2nsnV/55b6u/LME/s0S
+	 YE7Q7YAWc/KH1ZIMTZElWuJ9yU3pUypIk50AZyW0TRvZYQXIWspLHSVBItLhEYXZaYAfF
+	 FIwaBBZugzBDHqk1ErtqpGj/l954RT5CSFHZUksFEcfxKRATKGrpTF4WZBYTHJphQwFoK
+	 7w4oNKAttuqHMmSICGrB6ziZ9DsNKzavEGSvFuZdi1asTJUVZlGpHBnh/xMjJvoB6Nw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794243499;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=04wIlAZbBBFLI1pA4/Ovc7MOg/six0fgzdXInH7VT0c=;
+	b=aZamLma4KTNdk8iM1oXZSV6AYIoH1GOsXlR705XH03YuiTynjxnPe7DezjeRkf9ylE3l
+	 Dx9f/GoKZQgLNOvDvPJHC/OD78TcpttzTkxwlVoY9CAVRdTne21+HxoTtLk7A9ld68eaD
+	 EFKNRkKyPnWhuavbJzcKI1DaS5VqIJVCGTf3ZVS2d/MMxf4kyLdFI6oezF/IlWaxp37DI
+	 IIUEdSGil2JFocK0cDs5K4CdiIxGOQ8nRB/WN7zfRTpxx0vVE84kAXGaiTCZ+hX9yQCJ2
+	 b0lqn6LU2TBkMjku8VBOH+GYwkFGH1IgQlr06onk4ViXyhi1Zmi9JsuHKga9c75H4wQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="oK8pr/6H";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97E0606A339;
-	Mon,  9 Nov 2026 16:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A260E606A42B;
+	Mon,  9 Nov 2026 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fwn7kanm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3341F008A4;
-	Mon,  9 Nov 2026 16:58:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oK8pr/6H
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794243499;
+	b=pI+ZnuNCKpntsuE6pArlg8hOOa1LyKtngxd+y8/xKV5axXimOUJgBLlN1aBLVAKbI4RL
+	 Wx2uRSeHkpArNeecnF2k9+r2ZDfN2YG5UfsEsMSXdFfDnEwDHpLI0wZelBLgcFNatuF0J
+	 5ggYmw8YjqV3UagbrNUXOKL17MZwB61xakLWz1h1S8Ry3fncWfTLZkdtYHafA0Pv7G5T1
+	 Z56+FJeTOtwo3ETGhJwb4B6oN0qF63QmVbAPflZvs6i6eBM9YBwal6j4SFJM1elwR7WS3
+	 gqL1HIENeY7B/PaWcqWLHdNDCBDWvgjGlokd7GuBmLJuIsYdH7QrDF0bdHsiqbNpi2A==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794243499;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=04wIlAZbBBFLI1pA4/Ovc7MOg/six0fgzdXInH7VT0c=;
+	b=cP8dFBE1DrFpxIK6h1xM3EcrdGgq377q2epItrzV05Qh3QGuJSeYCgu5nfgiMPqkgU96
+	 Ew+Me+nd6mWuICULB016T+Zy4HNMVh2ALTUkjt7JwuFWhX3qucYZCfBWIqqatjNLzyMs8
+	 3a17h4dtf8gjxCLFNLN/fmnznbDlgwDKIOcg7ncYzfDAyxQaf4R7Hhjjl+BzgyE3Z/GDe
+	 joNQxFNl3YdQiSJNNen/gxHF/acKju93Onety9rkXjq3bzSQwtYJsyfpOmlPzYu3Lp0s+
+	 0RkLHmhH1or4crOB8DdwHtbrmfubo5BRgULiLTMvqucNxbkKfKoNM1v7KJjF/3lkq7w==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 98C671F0089F;
+	Mon,  9 Nov 2026 16:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794243487;
-	bh=M+TeyOZEDIkWPVUVs00lBg1GLoZC6RDP3McPSF76HZ8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Fwn7kanmqTK3zwaC01D/D+JPKbWz1L2OCBS0biaHmJmFlAJHKjdfofmlceQ1wOb5Q
-	 TUjTVWlTlM+VXaDBhJ3myhEGBXpSayUtECXK95jAoA7RHth8La3vb1ZE+3Ecg/VPwY
-	 FggvorewlUCxnhe92UAFe2rP1f6NWA8iuWN4nR1jwM1vkJwesJmdDXUxhrQoa9I6+1
-	 mgKCNdeNSgY/uT2OTkRFMhriv3BVzfuSPx7G+SvvffVjZwJ48+QEfiE1L6t7Ouy3kj
-	 wO3samOV8qxDMUjLgNWmQdmiOW00bl3+RHGvyELEOt62MrWclPMr1ulAnY0MuSwXGC
-	 Ao58X9CF6I+ew==
-Message-ID: <452bd8cbadba19ce86cdce4c339dadb0d977209b.camel@kernel.org>
-Subject: Re: [PATCH net v2] net/rds: Do not unpin a page after a failed
- atomic pin
-From: Allison Henderson <achender@kernel.org>
-To: Kyle Zeng <kylebot@openai.com>, linux-rdma@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com,  horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 09:58:06 -0700
-In-Reply-To: <20261107041804.64213-1-kylebot@openai.com>
-References: <20261107041804.64213-1-kylebot@openai.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=k20260515; t=1794243499;
+	bh=04wIlAZbBBFLI1pA4/Ovc7MOg/six0fgzdXInH7VT0c=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=oK8pr/6HljH8ktY2RK8fjE+m+xekvFRuwnJj2YTb7j+2Cul0gCe3bPBqjwp/Mj1mP
+	 JxQ43pDi6ghAMiz1mlLinJ118NS84gV/JqDbUdgr3tfzl0O2AAsJ9cuLxjENingGUL
+	 Bw3Scde8oJabjH9f41d1kRzIHGrBrxr8ofVlUHj197wB4i+tHbjEOUzphdtqjdLNuZ
+	 ynvLfHZWubAyyuOesbmwK9W9vE96MpiDprAExsv/FShKubwHGPpnf//aABsptuMgSg
+	 E3JI0xScB4glfcliatw55aiI6Qpj1W1Yjp6gdfE5pyviUe76eZMXwXmVwfPUL9iLno
+	 Q8ZnMR3KS7kmQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 2CA1E4853A;
+	Mon,  9 Nov 2026 16:58:18 +0000 (UTC)
+From: Blake Alexander via B4 Relay <devnull+blake.alexander.airbus.com@kernel.org>
+Date: Mon, 09 Nov 2026 17:56:30 +0100
+Subject: [PATCH net-next] net: usb: name usb ethernet mdio buses reliably
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,66 +82,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261109-net-usb-mdio-naming-v1-1-f4cca6737784@airbus.com>
+X-B4-Tracking: v=1; b=H4sIAD378WoC/yWNQQqEMBAEvyJzdiCJbHD3K+JB46hzcNQkiiD+f
+ aMei6K6TwjkmQL8shM87Rx4lgQ6z8CNjQyE3CUGo4zVWn1RKOIWWpw6nlGaiWVA1xamt6X6uMJ
+ CKhdPPR/PagV3IHREqF/jad3STXx1fV1/74gEGYQAAAA=
+X-Change-ID: 20261109-net-usb-mdio-naming-cb32f6805c36
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
+ UNGLinuxDriver@microchip.com
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Blake Alexander <blake.alexander@airbus.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794243402; l=3082;
+ i=blake.alexander@airbus.com; s=20261109; h=from:subject:message-id;
+ bh=Aq+iM0Hh6B0JDL8TaEt+jovCKbEtmkgqtg3fnPSTJ7g=;
+ b=zQtsDUC3IQ/9zbR59Oke/23oXkcipe+Aoo0hYfR0yshRy6+pJHAYpnxqU6DhpgCnfUZ9j4sO6
+ creHUuquyHCC2m7dmNf0wVECO2+pfqkrStd6/TlvRj0bQ5/4SNqnNdh
+X-Developer-Key: i=blake.alexander@airbus.com; a=ed25519;
+ pk=cfpa2FQbYHF1zxIJuHbr8W+NR9T4DK/baAknnTv2I68=
+X-Endpoint-Received: by B4 Relay for blake.alexander@airbus.com/20261109
+ with auth_id=1461
+X-Original-From: Blake Alexander <blake.alexander@airbus.com>
+Reply-To: blake.alexander@airbus.com
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2026-11-06 at 20:18 -0800, Kyle Zeng wrote:
-> rds_cmsg_atomic() assumes that a non-NULL output from rds_pin_pages()
-> represents a pin that it owns. However, pin_user_pages_fast() can roll
-> back a fast-GUP pin after racing fork() and then fail in the slow path,
-> for example after a concurrent mprotect(PROT_NONE). The output slot can
-> still contain the already-unpinned page.
->=20
-> The common error path calls unpin_user_page() on that stale pointer.
-> This can consume another subsystem's pin and allow the page to be freed
-> while it is still in use. A local unprivileged reproducer triggers a
-> KASAN use-after-free write through an io_uring registered buffer.
->=20
-> Clear page when rds_pin_pages() does not return one. The error path
-> continues to release the page on errors after a successful pin, and
-> successful requests retain their existing ownership and behavior. All
-> four RDS atomic ancillary operations share this path.
->=20
-> The issue was found by an LLM.
->=20
-> Fixes: 15133f6e67d8 ("RDS: Implement atomic operations")
-> Cc: stable@kernel.org
-Just for future reference, stable@kernel.org is for unpublished security
-bugs and stable@vger.kernel.org is for known bugs.  No need to resend,
-stable will still find it, but just an fyi for next time.
+From: Blake Alexander <blake.alexander@airbus.com>
 
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-This version looks good to me, thanks Kyle!
+Embedded systems may utilize fixed USB ethernet controllers (such as the
+LAN78xx series) which are soldered directly onto the board. Currently,
+the MDIO bus names for USB ethernet devices are non-deterministic as
+they rely on the USB bus and device numbers (e.g.
+"usb-${bus_num}:${dev_num}").
 
-Reviewed-by: Allison Henderson <achender@kernel.org>
+For hot-pluggable devices a stable MDIO bus name cannot be assumed.
+However, for systems using fixed devices, user-space configuration
+scripts and tools require predictable bus names.
 
-> ---
-> v2: Use the net subject prefix, add Fixes and stable Cc tags, and
->     include the validation results.
-> v1: https://lore.kernel.org/r/20261030042110.73571-1-kylebot@openai.com
->=20
-> I have a reproducer for this issue and can share via DM
->=20
->  net/rds/rdma.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/net/rds/rdma.c b/net/rds/rdma.c
-> index 078090d292fa..71b57abb96c4 100644
-> --- a/net/rds/rdma.c
-> +++ b/net/rds/rdma.c
-> @@ -957,8 +957,11 @@ int rds_cmsg_atomic(struct rds_sock *rs, struct rds_=
-message *rm,
->  	}
-> =20
->  	ret =3D rds_pin_pages(args->local_addr, 1, &page, 1);
-> -	if (ret !=3D 1)
-> +	if (ret !=3D 1) {
-> +		/* A failed pin can leave a stale page pointer. */
-> +		page =3D NULL;
->  		goto err;
-> +	}
->  	ret =3D 0;
-> =20
->  	sg_set_page(rm->atomic.op_sg, page, 8, offset_in_page(args->local_addr)=
-);
->=20
-> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
+Use usb_make_path() to generate the MDIO bus name instead, ensuring a
+predictable and deterministic bus naming scheme when attached at the
+same position within the USB hierarchy.
+
+Signed-off-by: Blake Alexander <blake.alexander@airbus.com>
+---
+ drivers/net/usb/asix_devices.c | 5 ++---
+ drivers/net/usb/ax88172a.c     | 5 ++---
+ drivers/net/usb/lan78xx.c      | 3 +--
+ 3 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 293ef80c4e30..c752fa3868b8 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -680,9 +680,8 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+ 	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+-	/* mii bus name is usb-<usb bus number>-<usb device number> */
+-	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+-		 dev->udev->bus->busnum, dev->udev->devnum);
++
++	usb_make_path(dev->udev, priv->mdio->id, MII_BUS_ID_SIZE);
+ 
+ 	ret = mdiobus_register(priv->mdio);
+ 	if (ret) {
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index f5036451f086..9f050de0cddb 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -73,9 +73,8 @@ static int ax88172a_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	/* mii bus name is usb-<usb bus number>-<usb device number> */
+-	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+-		 dev->udev->bus->busnum, dev->udev->devnum);
++
++	usb_make_path(dev->udev, priv->mdio->id, MII_BUS_ID_SIZE);
+ 
+ 	ret = mdiobus_register(priv->mdio);
+ 	if (ret) {
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index d73002b2c21a..153aa56b8e68 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2117,8 +2117,7 @@ static int lan78xx_mdio_init(struct lan78xx_net *dev)
+ 	dev->mdiobus->name = "lan78xx-mdiobus";
+ 	dev->mdiobus->parent = &dev->udev->dev;
+ 
+-	snprintf(dev->mdiobus->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+-		 dev->udev->bus->busnum, dev->udev->devnum);
++	usb_make_path(dev->udev, dev->mdiobus->id, MII_BUS_ID_SIZE);
+ 
+ 	switch (dev->chipid) {
+ 	case ID_REV_CHIP_ID_7800_:
+
+---
+base-commit: fa5196392691051963726787944db872420dfa75
+change-id: 20261109-net-usb-mdio-naming-cb32f6805c36
+
+Best regards,
+--  
+Blake Alexander <blake.alexander@airbus.com>
+
 
