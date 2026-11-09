@@ -1,68 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794195183;
-	b=OHKgqxLrEx75Lkuv0UhsAYcwXgY4fTgvN3diTboJawQNT8ylgEqe1dtokhd+sAMq3T/8
-	 H0DBuRZ8TpIiktKEfd/7Awbafj0YSAtyOMxuqzyiFiyxnmFMDAun7D2HbOHrzLQSGbG78
-	 //dSDMoRFsiJ41qCBVDEFsFslb3ZPSMOMzlWnP+omfn4xN1VMmn47iZWymo9dZPhxPCcn
-	 QCmejb8gjmx5pXyZZcYK8xlE/78By35+f1fItM3nQk8a1ZCkgBAWilSfFnDzhTYYEGdnW
-	 d5XX7FnY4QZ2cnII5fkW/DxOPHKIWzF+23Oh7UuTynBCuDlko1RirHKOfDCeSy6VxaQ==
+	t=1794195178;
+	b=ZwGPtjpdD3RiL483vQ/5FgnyuhFGL/O0gTII7NTOZxnGP9Uoi4WJQo5dYquqYEirLvXV
+	 +Yd96O/hz1eZxHW9RhBYSUDCaNkwLUxKsSkeWmMVs4obneKBobzLfLYwlh6fLvkqwarhW
+	 O096N4WwoETsQQtuJgwG/vErzX7xnco8ul5y0xGf+92es1WziQXVOBlKAaYUrxfp4U3iy
+	 An+RsiP3iWVHrywEwW/H4D+onyPPx0mu+6PqeCBrzHJhu63HgIPee5HjC5iY0wPjZHRCU
+	 qdgpOk7iAKJeTuk6ZV0DtbgnET78jJmrFRtMrXjLR+vXazGMSZkGbbs10gemuTwwI3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794195183;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794195178;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version;
-	bh=FVF3/IqIzeosXJUsntfaSpAvsj646CnmnA1pveLwY4U=;
-	b=wMSlOh7Oqn6RP7WllDcczoM6K6qQeXHq5B00o1g0U5jI/SMBWqR/tFeD2XuceF/QRrQd
-	 R6VqPrE87jbbBoWo9cD9nQ8/Oqz5d0cLowwy9gm1RPUTo7bc6GIECxnERff/kZd3QJgJ6
-	 ppZCl2/T4TFP/d5NVaul09x1LEN9ti/Xqz2gHlpHWbGhAvMJgg7/9wcQke+opXmAB7OjM
-	 XO+cSTBJWb6DC20X+5KyntEHQneTYy7HUoeiBEQnAFU0j3DJu0k+P6tfcNjTFMi4U688o
-	 25EB/VDzQMqHX7cQn5fMlm1wCuiMIeDhC2fPVft+ZHDkJYDRsF5Ht4IOKd88ncIIEqQ==
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version;
+	bh=zOMbTruz7AdjxBpgRfO0FeQq6w3i/Lg0lFT7TOfzRv0=;
+	b=YuapF+6Tla4lYhJG82XMZyy8wu1NDYKCasvJAMOK3D0C3Gicg8ezaOU/UqZOGyMK2ENK
+	 msLAeOTO2of8JveyLGSAZGzvIhYsxl15roVg8VOd5SoVlu90TxEdQqlNEM8/KHPQgpTPa
+	 NTEvP4HNODXItglsp/o0JjpfzCgW+YL6xcZ2iwQJeVnzOAV2MdHz946xlo/CBwgh8HMsV
+	 n9MXKnnRgWhhjLX4GWoQXSCZ6/h+xHD9q6lXXdNTMFWLGxYjZqdFAJYfktBFrGItNJJXX
+	 UVOt6C4SZAKHBGD0llvW8KWnU4mCzuPTTs0N/+ELyfPehPeb1hbQ5SnQJ3D9tzYio3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=marvell.com;
 	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=azb2WFW3;
-	arc=none smtp.remote-ip=67.231.148.174
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=lRtxrAoy;
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FDC606A333;
-	Mon,  9 Nov 2026 03:33:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85FDC606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF28E606A31C;
+	Mon,  9 Nov 2026 03:32:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF28E606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=azb2WFW3
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A93JdE53826559;
-	Sun, 8 Nov 2026 19:32:27 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=lRtxrAoy
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A93JD0i3377793;
+	Sun, 8 Nov 2026 19:32:16 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=F
-	VF3/IqIzeosXJUsntfaSpAvsj646CnmnA1pveLwY4U=; b=azb2WFW3hdrQKFE+D
-	YFxzjLMMQRweo+8lZ5RPs4D0vpXK1arkExzJsoSgD4lDyT2WbnHVZlRHA4sv/oXT
-	r2c/0uyMgmFXfRECjvRFsR4lVHm4iS63nNrIVkP+ndXsaUmg0rpsr1WIgJofm4Lt
-	HYCxkF45N0eU36hD8LyNuMSnhhO9ELKGqx+0WW/3wFIHbOx5b2C3MW0IYVVdyBDy
-	El8kL8BThJqIijgLtQXeD9YLI91ewNFxOOH041UPx6XiX8HZZEJtpdZBBo97Pxve
-	jtPHcADU8NnNDcn9N74woar8SeR5tvrPQQzopWoxv4YXyu0Hwkundcs3SCgSRi9+
-	eSN/w==
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=zOMbTruz7AdjxBpgRfO0FeQ
+	q6w3i/Lg0lFT7TOfzRv0=; b=lRtxrAoyoAPF1pth/x9a12GQJgYWa53AEniSOG3
+	WgiODf9RkNB3QKsCKKaofj4lpmtkXAqUGTe+xdlRNm8/+oPAqQiwyAOm50CxiGcs
+	CxxIvi9NZeKo4qPyR7Uqye7TPD6djHT9JGnYPUgTAi+tYuoBRLNameSyhx5pskcI
+	PBw/uU5M45pnsLY9l+X6fUGHMlj9A1HcEoaEco5RDi6khfAzxs4Fgc5ecZKd0nPq
+	OyZYxlkQVEqIdJ69UgbnpkYoqi+agxU5683T38oxIH9i7kQetbBR3b4qFVn8hGRQ
+	qqDCTil45sP6Dc3ygI5HPLcnDz99wW+Gc1dq00Lz0E+Rimg==
 Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ht27rw3um-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ht4cnmjq4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 08 Nov 2026 19:32:27 -0800 (PST)
+	Sun, 08 Nov 2026 19:32:16 -0800 (PST)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 8 Nov 2026 19:32:26 -0800
+ 15.2.1544.25; Sun, 8 Nov 2026 19:32:15 -0800
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 8 Nov 2026 19:32:25 -0800
+ Transport; Sun, 8 Nov 2026 19:32:15 -0800
 Received: from localhost.localdomain (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 3AC413F7098;
-	Sun,  8 Nov 2026 19:32:21 -0800 (PST)
+	by maili.marvell.com (Postfix) with ESMTP id 634693F7094;
+	Sun,  8 Nov 2026 19:32:11 -0800 (PST)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <netdev@vger.kernel.org>
@@ -71,14 +69,11 @@ CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
         <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
         <sdf@fomichev.me>, <sgoutham@marvell.com>,
         Ratheesh Kannoth
-	<rkannoth@marvell.com>,
-        Simon Horman <horms@kernel.org>
-Subject: [PATCH v21 net-next 2/2] octeontx2: add mqprio bandwidth offload for NIX TX schedulers
-Date: Mon, 9 Nov 2026 09:01:53 +0530
-Message-ID: <20261109033154.2161803-3-rkannoth@marvell.com>
+	<rkannoth@marvell.com>
+Subject: [PATCH v21 net-next 0/2] octeontx2: mqprio bandwidth offload for NIX TX schedulers
+Date: Mon, 9 Nov 2026 09:01:51 +0530
+Message-ID: <20261109033154.2161803-1-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261109033154.2161803-1-rkannoth@marvell.com>
-References: <20261109033154.2161803-1-rkannoth@marvell.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,1552 +85,244 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: 7GFoGm5YNkZiQe_DxWe-zna-FnOZHs24
-X-Proofpoint-ORIG-GUID: 7GFoGm5YNkZiQe_DxWe-zna-FnOZHs24
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDAxMiBTYWx0ZWRfX368h7EFWlzGC
- 0aKBbDRT6DDlyD8NtAe9TFBWouFAnH1xjrr5ErxBBzqPxbgweQrdBEqU6Kb1fCmY9fvurLADRUW
- FLQadujkgzhE/vyvOqhkbTZ7HWJxIuQz5zHBkI3my7kybnL7W0TiPrp9mtLO4biZwWi7Dd7UqJf
- /kDxrX0ScaIbdF2GGPkXzEz2Bej29sHYJHV50Mw5a1rAXov741jEXLsVs/VdGTzK3OCMN5o5jJG
- ddqllE4dInZJmFAHa7sj+59RVZdRCUyFCO+hJquyCz+IxOMcSU3novi50yONolXoNrxmEZcsx3t
- 4Da7UKN0cP/hpXgIWKqBWnE3zMHj0ytEfZ4U23WrM6E/d2IYZsmLPTkqrcOca3pfedu1LUK1BgF
- UFmwLvhnGEPT3VpqZbmj7DRZLG1J7l1NCoUcr490noB0O1vbyiJJJCHbnXN+ghTvVhJasFShQiP
- N1/j2LMNl/lMpUzLd7w==
-X-Authority-Analysis: v=2.4 cv=Ab8kjHXG c=1 sm=1 tr=0 ts=6af13ecb cx=c_pps
+X-Authority-Analysis: v=2.4 cv=HpDjiETS c=1 sm=1 tr=0 ts=6af13ec0 cx=c_pps
  a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=_hmXFnRg6jpWjyhfFtMA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDAxMiBTYWx0ZWRfX9FID54bhkWmX
- 3/lG+ItFeKN+/sVZOLRbb9n+7wPl/VZatNpiX0DAa+Q+Y0D/heRjK8dMRWXshRDEz3P12njY2kb
- 1WAQJ+IRHhpYPtRczoa7Cchp5D31yqI=
+ a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8 a=c92rfblmAAAA:8
+ a=WiP3EOUlVtzYxeA2Qx8A:9 a=OBjm3rFKGHvpk9ecZwUJ:22 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDAxMiBTYWx0ZWRfX80mSDAIeDibu
+ supvVPDNg15sRAYZNvHuH8jtQpv2zG3//U6qNNBmNBtG50hwV2ena9CvuszDrKgmr3+1Foi0ULQ
+ 2CzPK7Jv1t6am81FT7e2Lg2hgpQv0Rg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDAxMiBTYWx0ZWRfX6hIIC5Ibl2so
+ ImR5wwV/lqmL5Lz4aBakH1bHeqoJeOLDAAxkat4vQ1maEOIuPy1vn51aivKdBNEyzocpfDNrT0X
+ VtfIuK2e6HUinps5r5F7ACl4yuAvOaEabe8tRG3l5rY5Tgw0XzgaJCc9ZV8ygcdR74uKNMKgTbV
+ lYBkl2n9JAuz04M5LAwfYG11rPcYpDQtIz0MVMG6ACj9jTXfKC6TGPL5AI1n3SPLyxXwPWstNgt
+ 3fjoBM1Au1G/X3ZNH147WETX6z6qo3+8KlMJuZhgsPPX/5wmuJXjEsbtbqJkTsNIo1EtPP6RdEY
+ XdvhjhkZRz2lNr1Euqq7siG8RDKUbA5Bei8Z9QPTwGdly2NfsizihiTkau1i9fyUFFpZMW8KYY4
+ POp5o/0WzdOj8lkoGuUoyaq+wDzv3/zzsHqmJObcMD9jCqR3dKBAjfKRyYQR7Ok8fw1tavF1PpS
+ 2sLZjvTwdPBfuwV63bQ==
+X-Proofpoint-GUID: t2bK018mjzqEL5oxaFwmSA1HMDPV5PVn
+X-Proofpoint-ORIG-GUID: t2bK018mjzqEL5oxaFwmSA1HMDPV5PVn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-09_02,2026-11-06_01,2025-10-01_01
 
-Add TC_SETUP_QDISC_MQPRIO offload with TC_MQPRIO_SHAPER_BW_RATE on PF and
-VF netdevs. Program per-queue MDQ CIR/PIR via the NIX TX scheduler mailbox;
-when active, allocate one SMQ per non-QoS queue under TL4[0].
+This series adds hardware offload for channel-mode mqprio with
+TC_MQPRIO_SHAPER_BW_RATE on Marvell octeontx2/cn10k PF and VF RVU
+netdevices. Each non-QoS transmit queue is shaped by programming MDQ CIR/PIR
+on the NIX TX scheduler. When bandwidth offload is active, the driver
+allocates one SMQ per queue, parents every MDQ under TL4[0], and maps each
+traffic class min/max rate to the queue(s) in that class.
 
-The TX scheduler cannot be reprogrammed live, so add/replace/delete and
-failed setup bounce the netdev through ndo_stop()/ndo_open(). Cache rates
-in software and restore them from otx2_mqprio_up() on open, failing closed
-on error.
+The NIX TX scheduler hierarchy cannot be reprogrammed live today, so
+mqprio add, replace, delete, and failed-replace rollback rebuild it by
+bouncing the netdev through ndo_stop()/ndo_open(). That intentionally
+drops in-flight traffic on each change. otx2_mqprio_restart_netdev() clears
+__LINK_STATE_START before ndo_stop() and does not call
+dev_deactivate()/dev_activate(); carrier and TX queues are restored after
+ndo_open() via the normal link-event path when the link is up. Cache the
+active rates and restore MDQ shapers from otx2_mqprio_up() during ndo_open();
+fail closed if restoration fails, leaving ndo_open() unsuccessful and the
+interface administratively down.
 
-Stage tc replace in mq_offload_snap snapshots committed on TC_ROOT_GRAFT or
-replaced-qdisc teardown.
+Track mqprio configuration in mq_offload_snap snapshots (TC layout and
+rates). On tc qdisc replace, stage the new configuration while keeping
+the previous snapshot for rollback: failed setup restores the old
+snapshot via netdev restart when the interface is running, successful
+graft is recorded through TC_ROOT_GRAFT, and teardown of the replaced
+qdisc instance commits the staged snapshot without tearing down the live
+offload.
 
-Require a running interface with CIR+PIR support. Reject offload with PFC,
-XDP, HTB, SDP representors, per-TC rates on multi-queue classes, and
-ethtool channel changes while active.
+Patch 1 converts PF/VF and representor flag access to atomic bitops.
+Patch 2 depends on it for safe OTX2_FLAG_INTF_DOWN and OTX2_FLAG_PORT_UP
+updates on asynchronous mbox paths and during the mqprio netdev bounce.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+The driver rejects offload unless the interface is running and the device
+advertises CIR+PIR support. PF and VF RVU netdevices share the same TC
+offload path via ndo_setup_tc / otx2_open(); SDP representors are not
+supported. Per-TC rates are rejected when a traffic class spans more than
+one queue. Concurrent PFC, XDP, SDP rep, or HTB use is blocked, and ethtool
+channel count changes are blocked while mqprio bandwidth offload is active.
+
+Ratheesh Kannoth (2):
+  octeontx2: use atomic bitops for PF/VF and rep flags
+  octeontx2: add mqprio bandwidth offload for NIX TX schedulers
+
+ .../ethernet/marvell/octeontx2/nic/cn10k_ipsec.c   |   8 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c   | 154 +++-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   | 107 ++-
+ .../ethernet/marvell/octeontx2/nic/otx2_dcbnl.c    |   6 +
+ .../ethernet/marvell/octeontx2/nic/otx2_devlink.c  |   2 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |  29 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_flows.c    |  34 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |  95 ++-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_tc.c   | 838 ++++++++++++++++++++-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  16 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_vf.c   |  10 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_xsk.c  |   4 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/qos.c   |  11 +
+ .../net/ethernet/marvell/octeontx2/nic/qos_sq.c    |   4 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/rep.c   |  32 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/rep.h   |   3 +-
+ 16 files changed, 1203 insertions(+), 150 deletions(-)
+
 ---
- .../marvell/octeontx2/nic/otx2_common.c       | 143 ++-
- .../marvell/octeontx2/nic/otx2_common.h       |  34 +
- .../marvell/octeontx2/nic/otx2_dcbnl.c        |   6 +
- .../marvell/octeontx2/nic/otx2_ethtool.c      |   8 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  34 +-
- .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 936 ++++++++++++++++++
- .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  28 +-
- .../net/ethernet/marvell/octeontx2/nic/qos.c  |  11 +
- 8 files changed, 1179 insertions(+), 21 deletions(-)
+v20 -> v21: Resend
+	https://lore.kernel.org/netdev/20261014023431.1775238-1-rkannoth@marvell.com/
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index f4047b0d5d96..b4a738cf9a8b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -615,6 +615,139 @@ void otx2_get_mac_from_af(struct net_device *netdev)
- }
- EXPORT_SYMBOL(otx2_get_mac_from_af);
- 
-+static int
-+otx2_nix_tmq_reg_write(struct otx2_nic *pfvf, int cnt,
-+		       u64 reg_addr[MAX_REGS_PER_MBOX_MSG],
-+		       u64 reg_val[MAX_REGS_PER_MBOX_MSG])
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int i, err;
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+	req->num_regs = cnt;
-+
-+	for (i = 0; i < cnt; i++) {
-+		req->reg[i] = reg_addr[i];
-+		req->regval[i] = reg_val[i];
-+	}
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+
-+	return err;
-+}
-+
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
-+{
-+	u64 reg_addr[MAX_REGS_PER_MBOX_MSG];
-+	u64 reg_val[MAX_REGS_PER_MBOX_MSG];
-+	int err, smq, i, cnt = 0;
-+
-+	for (i = 0; i < pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ]; i++) {
-+		smq = pfvf->hw.txschq_list[NIX_TXSCH_LVL_SMQ][i];
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		if (cnt < MAX_REGS_PER_MBOX_MSG - 1)
-+			continue;
-+
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+		cnt = 0;
-+	}
-+
-+	if (cnt) {
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	return err;
-+}
-+
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf,
-+				 int txq, u64 minrate, u64 maxrate)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int err, smq, n = 0;
-+	u64 reg_addr[2];
-+	u64 reg_val[2];
-+	u64 rate;
-+
-+	if (!maxrate && !minrate) {
-+		smq = otx2_get_smq_idx(pfvf, txq);
-+		reg_addr[0] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[0] = 0;
-+		reg_addr[1] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[1] = 0;
-+		return otx2_nix_tmq_reg_write(pfvf, 2, reg_addr, reg_val);
-+	}
-+
-+	smq = otx2_get_smq_idx(pfvf, txq);
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+
-+	/* MQPRIO exposes only min/max rate, not burst.  Use the same 65536
-+	 * byte default as the HTB shaper path.
-+	 *
-+	 * mqprio setup restarts the netdev (otx2_mqprio_restart_netdev);
-+	 * ndo_open() may restore cached MDQ shapers via otx2_mqprio_up(), and
-+	 * setup clears every MDQ shaper before applying the new mapping.
-+	 * Program both PIR and CIR on every update so omitted rates are
-+	 * applied explicitly rather than relying on stale hardware state.
-+	 */
-+	req->reg[n] = NIX_AF_MDQX_PIR(smq);
-+	if (maxrate) {
-+		rate = otx2_convert_rate(maxrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 65536);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+
-+	/* CIR+PIR support is required and checked at mqprio setup. */
-+	req->reg[n] = NIX_AF_MDQX_CIR(smq);
-+	if (minrate) {
-+		rate = otx2_convert_rate(minrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 65536);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+	req->num_regs = n;
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
- int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for_pfc)
- {
- 	u16 (*schq_list)[MAX_TXSCHQ_PER_FUNC];
-@@ -651,7 +784,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 						(u64)hw->smq_link_type);
- 		req->num_regs++;
- 		/* MDQ config */
--		parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+		if (pfvf->mqprio.rate_limit)
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][0];
-+		else
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+
- 		req->reg[1] = NIX_AF_MDQX_PARENT(schq);
- 		req->regval[1] = parent << 16;
- 		req->num_regs++;
-@@ -777,6 +914,9 @@ int otx2_txsch_alloc(struct otx2_nic *pfvf)
- 		req->schq[NIX_TXSCH_LVL_TL4] = chan_cnt;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit)
-+		req->schq[NIX_TXSCH_LVL_SMQ] = pfvf->hw.non_qos_queues;
-+
- 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
- 	if (rc)
- 		return rc;
-@@ -841,6 +981,7 @@ void otx2_txschq_stop(struct otx2_nic *pfvf)
- 
- 	/* Clear the txschq list */
- 	for (lvl = 0; lvl < NIX_TXSCH_LVL_CNT; lvl++) {
-+		pfvf->hw.txschq_cnt[lvl] = 0;
- 		for (schq = 0; schq < MAX_TXSCHQ_PER_FUNC; schq++)
- 			pfvf->hw.txschq_list[lvl][schq] = 0;
- 	}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index f3158e293d86..dc635b246d64 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -17,6 +17,7 @@
- #include <linux/soc/marvell/silicons.h>
- #include <linux/soc/marvell/octeontx2/asm.h>
- #include <net/macsec.h>
-+#include <uapi/linux/pkt_sched.h>
- #include <net/pkt_cls.h>
- #include <net/devlink.h>
- #include <linux/time64.h>
-@@ -517,6 +518,27 @@ enum otx2_flag_bits {
- 	 BIT(OTX2_FLAG_TC_FLOWER_SUPPORT) |			\
- 	 BIT(OTX2_FLAG_REP_VF_INITIALIZED))
- 
-+struct mq_offload_snap {
-+	u64 min_rate[TC_QOPT_MAX_QUEUE];
-+	u64 max_rate[TC_QOPT_MAX_QUEUE];
-+	u32 flags;
-+	__u8 num_tc;
-+	__u16 count[TC_QOPT_MAX_QUEUE];
-+	__u16 offset[TC_QOPT_MAX_QUEUE];
-+	__u8 prio_tc_map[TC_QOPT_BITMASK + 1];
-+};
-+
-+struct otx2_mqprio {
-+	u32	flags;
-+	u64	*min_rate;
-+	u64	*max_rate;
-+	bool	rate_limit;
-+	bool	replace_setup_done;
-+	bool	replace_graft_done;
-+	bool	defer_tc_work;
-+	struct work_struct netdev_tc_work;
-+};
-+
- struct otx2_nic {
- 	void __iomem		*reg_base;
- 	struct net_device	*netdev;
-@@ -528,6 +550,10 @@ struct otx2_nic {
- 	unsigned long		flags;
- 	u64			*cq_op_addr;
- 
-+	struct otx2_mqprio	mqprio;
-+	struct mq_offload_snap	*cur_mq_snap;
-+	struct mq_offload_snap	*old_mq_snap;
-+
- 	struct bpf_prog		*xdp_prog;
- 	struct otx2_qset	qset;
- 	struct otx2_hw		hw;
-@@ -1036,6 +1062,8 @@ static inline u16 otx2_get_smq_idx(struct otx2_nic *pfvf, u16 qidx)
- 	if (qidx >= pfvf->hw.non_qos_queues) {
- 		smq = pfvf->qos.qid_to_sqmap[qidx - pfvf->hw.non_qos_queues];
- 	} else {
-+		if (!pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ])
-+			return 0;
- 		idx = qidx % pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ];
- 		smq = pfvf->hw.txschq_list[NIX_TXSCH_LVL_SMQ][idx];
- 	}
-@@ -1223,6 +1251,7 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf);
- 
- /* tc support */
- int otx2_init_tc(struct otx2_nic *nic);
-+void otx2_shutdown_tc_mqprio(struct otx2_nic *nic);
- void otx2_shutdown_tc(struct otx2_nic *nic);
- int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		  void *type_data);
-@@ -1295,6 +1324,11 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
- void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg,
- 			      struct sk_buff *skb);
- int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf, int txq,
-+				 u64 minrate, u64 maxrate);
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf);
-+int otx2_mqprio_down(struct otx2_nic *pfvf);
-+int otx2_mqprio_up(struct otx2_nic *pfvf);
- void otx2_queue_vf_work(struct mbox *mw, struct workqueue_struct *mbox_wq,
- 			int first, int mdevs, u64 intr);
- int otx2_del_mcam_flow_entry(struct otx2_nic *nic, u16 entry,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-index e3d54009180d..851bf3fd5bab 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-@@ -408,6 +408,12 @@ static int otx2_dcbnl_ieee_setpfc(struct net_device *dev, struct ieee_pfc *pfc)
- 	u8 old_pfc_en;
- 	int err;
- 
-+	if (pfvf->mqprio.rate_limit && pfc->pfc_en) {
-+		netdev_err(dev,
-+			   "PFC: cannot enable while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	old_pfc_en = pfvf->pfc_en;
- 	pfvf->pfc_en = pfc->pfc_en;
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 4fe473d9ea0d..5428b3d1b332 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -287,6 +287,14 @@ static int otx2_set_channels(struct net_device *dev,
- 		return -EINVAL;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit &&
-+	    (channel->tx_count != pfvf->hw.tx_queues ||
-+	     channel->rx_count != pfvf->hw.rx_queues)) {
-+		netdev_info(dev,
-+			    "Not permitted to change channel count while MQ prio is active\n");
-+		return -EINVAL;
-+	}
-+
- 	if (if_up)
- 		dev->netdev_ops->ndo_stop(dev);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 777e7156badb..f51161e8b594 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -2008,6 +2008,15 @@ int otx2_open(struct net_device *netdev)
- 	if (err)
- 		goto err_free_mem;
- 
-+	/* Fail closed: abort open if cached mqprio shapers cannot be restored. */
-+	err = otx2_mqprio_up(pf);
-+	if (err) {
-+		netdev_err(pf->netdev,
-+			   "mqprio: failed to restore shapers during open: %d\n",
-+			   err);
-+		goto err_free_hw;
-+	}
-+
- 	/* Register NAPI handler */
- 	for (qidx = 0; qidx < pf->hw.cint_cnt; qidx++) {
- 		cq_poll = &qset->napi[qidx];
-@@ -2206,6 +2215,7 @@ int otx2_open(struct net_device *netdev)
- 	free_irq(vec, pf);
- err_disable_napi:
- 	otx2_disable_napi(pf);
-+err_free_hw:
- 	otx2_free_hw_resources(pf);
- err_free_mem:
- 	otx2_free_queue_mem(qset);
-@@ -2281,6 +2291,7 @@ int otx2_stop(struct net_device *netdev)
- 	for (qidx = 0; qidx < netdev->num_tx_queues; qidx++)
- 		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, qidx));
- 
-+	synchronize_net();
- 	otx2_free_queue_mem(qset);
- 	/* Do not clear RQ/SQ ringsize settings */
- 	memset_startat(qset, 0, sqe_cnt);
-@@ -2924,6 +2935,12 @@ static int otx2_xdp_setup(struct otx2_nic *pf, struct bpf_prog *prog)
- 	bool if_up = netif_running(pf->netdev);
- 	struct bpf_prog *old_prog;
- 
-+	if (prog && pf->mqprio.rate_limit) {
-+		netdev_err(dev,
-+			   "XDP: cannot attach while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (prog && dev->mtu > MAX_XDP_MTU) {
- 		netdev_warn(dev, "Jumbo frames not yet supported with XDP\n");
- 		return -EOPNOTSUPP;
-@@ -3368,10 +3385,14 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (err)
- 		goto err_mcs_free;
- 
-+	err = otx2_init_tc(pf);
-+	if (err)
-+		goto err_ipsec_clean;
-+
- 	err = register_netdev(netdev);
- 	if (err) {
- 		dev_err(dev, "Failed to register netdevice\n");
--		goto err_ipsec_clean;
-+		goto err_shutdown_tc;
- 	}
- 
- 	err = otx2_wq_init(pf);
-@@ -3380,10 +3401,6 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	otx2_set_ethtool_ops(netdev);
- 
--	err = otx2_init_tc(pf);
--	if (err)
--		goto err_mcam_flow_del;
--
- 	err = otx2_register_dl(pf);
- 	if (err)
- 		goto err_mcam_flow_del;
-@@ -3420,11 +3437,13 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	otx2_sriov_vfcfg_cleanup(pf);
- err_pf_sriov_init:
- 	otx2_unregister_dl(pf);
--	otx2_shutdown_tc(pf);
- err_mcam_flow_del:
- 	otx2_mcam_flow_del(pf);
- err_unreg_netdev:
-+	otx2_shutdown_tc_mqprio(pf);
- 	unregister_netdev(netdev);
-+err_shutdown_tc:
-+	otx2_shutdown_tc(pf);
- err_ipsec_clean:
- 	cn10k_ipsec_clean(pf);
- err_mcs_free:
-@@ -3622,7 +3641,9 @@ static void otx2_remove(struct pci_dev *pdev)
- 	otx2_cgx_config_linkevents(pf, false);
- 
- 	otx2_unregister_dl(pf);
-+	otx2_shutdown_tc_mqprio(pf);
- 	unregister_netdev(netdev);
-+	otx2_shutdown_tc(pf);
- 	cn10k_ipsec_clean(pf);
- 	cn10k_mcs_free(pf);
- 	otx2_sriov_disable(pf->pdev);
-@@ -3632,7 +3653,6 @@ static void otx2_remove(struct pci_dev *pdev)
- 
- 	otx2_ptp_destroy(pf);
- 	otx2_mcam_flow_del(pf);
--	otx2_shutdown_tc(pf);
- 	otx2_shutdown_qos(pf);
- 	otx2_ndc_sync(pf);
- 	otx2_detach_resources(&pf->mbox);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 8877af348a09..b34a86259e78 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -6,6 +6,8 @@
-  */
- 
- #include <linux/netdevice.h>
-+#include <linux/rtnetlink.h>
-+#include <linux/string.h>
- #include <linux/etherdevice.h>
- #include <linux/inetdevice.h>
- #include <linux/rhashtable.h>
-@@ -16,6 +18,7 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_act/tc_vlan.h>
- #include <net/ipv6.h>
-+#include <net/pkt_sched.h>
- 
- #include "cn10k.h"
- #include "otx2_common.h"
-@@ -31,6 +34,19 @@
- 
- #define MCAST_INVALID_GRP		(-1U)
- #define RATE_MANTISSA_BITS		8
-+/* Min per-queue egress shaping rate the NIX TLX encoder supports (2 Mbps). */
-+#define OTX2_MQPRIO_MIN_RATE_BYTES_PS	250000ULL
-+
-+static u64 otx2_mqprio_max_rate_bytes_ps(void)
-+{
-+	u64 max_mbps;
-+
-+	/* NIX TLX maximum rate (Mbps), not the burst bucket cap. */
-+	max_mbps = 2ULL * ((256ULL + MAX_RATE_MANTISSA) << MAX_RATE_EXPONENT) /
-+		   256ULL;
-+
-+	return div_u64(max_mbps * 1000000ULL, 8ULL);
-+}
- 
- static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 				      u32 *burst_exp, u32 *burst_mantissa)
-@@ -61,6 +77,9 @@ static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 			*burst_mantissa = tmp / (1ULL << (*burst_exp - 7));
- 		}
- 	} else {
-+		/* burst 0: largest encodable burst (CN10K_MAX_BURST_SIZE on
-+		 * CN10K), not a minimal burst.
-+		 */
- 		*burst_exp = MAX_BURST_EXPONENT;
- 		*burst_mantissa = max_mantissa;
- 	}
-@@ -1600,14 +1619,914 @@ static int otx2_setup_tc_block(struct net_device *netdev,
- 					  nic, nic, ingress);
- }
- 
-+/* Free the per-queue min/max rate caches. */
-+static void otx2_mqprio_free_cache(struct otx2_nic *pfvf)
-+{
-+	devm_kfree(pfvf->dev, pfvf->mqprio.min_rate);
-+	devm_kfree(pfvf->dev, pfvf->mqprio.max_rate);
-+	pfvf->mqprio.min_rate = NULL;
-+	pfvf->mqprio.max_rate = NULL;
-+	pfvf->mqprio.flags = 0;
-+}
-+
-+static int otx2_mqprio_alloc_cache(struct otx2_nic *pfvf, bool replacing)
-+{
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	u64 *min_rate, *max_rate;
-+
-+	if (replacing && pfvf->mqprio.min_rate && pfvf->mqprio.max_rate) {
-+		memset(pfvf->mqprio.min_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.min_rate));
-+		memset(pfvf->mqprio.max_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.max_rate));
-+		pfvf->mqprio.flags = 0;
-+		return 0;
-+	}
-+
-+	min_rate = devm_kcalloc(pfvf->dev, num_txq, sizeof(*min_rate), GFP_KERNEL);
-+	max_rate = devm_kcalloc(pfvf->dev, num_txq, sizeof(*max_rate), GFP_KERNEL);
-+	if (!min_rate || !max_rate) {
-+		devm_kfree(pfvf->dev, min_rate);
-+		devm_kfree(pfvf->dev, max_rate);
-+		return -ENOMEM;
-+	}
-+
-+	otx2_mqprio_free_cache(pfvf);
-+	pfvf->mqprio.min_rate = min_rate;
-+	pfvf->mqprio.max_rate = max_rate;
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_free(struct otx2_nic *pfvf,
-+				  struct mq_offload_snap **snap)
-+{
-+	if (!*snap)
-+		return;
-+
-+	devm_kfree(pfvf->dev, *snap);
-+	*snap = NULL;
-+}
-+
-+static int otx2_mqprio_snap_copy(struct otx2_nic *pfvf,
-+				 struct mq_offload_snap **dst,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	const struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct mq_offload_snap *snap;
-+	int tc;
-+
-+	if (!*dst) {
-+		snap = devm_kzalloc(pfvf->dev, sizeof(*snap), GFP_KERNEL);
-+		if (!snap)
-+			return -ENOMEM;
-+		*dst = snap;
-+	} else {
-+		snap = *dst;
-+	}
-+
-+	snap->num_tc = qopt->num_tc;
-+	snap->flags = mqprio->flags;
-+	for (tc = 0; tc < TC_QOPT_MAX_QUEUE; tc++) {
-+		snap->count[tc] = qopt->count[tc];
-+		snap->offset[tc] = qopt->offset[tc];
-+		snap->min_rate[tc] = 0;
-+		snap->max_rate[tc] = 0;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			snap->min_rate[tc] = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			snap->max_rate[tc] = mqprio->max_rate[tc];
-+	}
-+	memcpy(snap->prio_tc_map, qopt->prio_tc_map, sizeof(snap->prio_tc_map));
-+
-+	return 0;
-+}
-+
-+static int otx2_mqprio_stage_cur(struct otx2_nic *pfvf,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	return otx2_mqprio_snap_copy(pfvf, &pfvf->cur_mq_snap, mqprio);
-+}
-+
-+static void otx2_mqprio_snap_commit(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+	pfvf->old_mq_snap = pfvf->cur_mq_snap;
-+	pfvf->cur_mq_snap = NULL;
-+}
-+
-+static void otx2_mqprio_clear_replace_state(struct otx2_nic *pfvf)
-+{
-+	pfvf->mqprio.replace_setup_done = false;
-+	pfvf->mqprio.replace_graft_done = false;
-+}
-+
-+static bool otx2_mqprio_mdq_allocated(struct otx2_nic *pfvf)
-+{
-+	return pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_MDQ] != 0;
-+}
-+
-+static int otx2_mqprio_restart_netdev(struct net_device *netdev, bool rate_limit);
-+
-+static void otx2_mqprio_apply_snap_netdev(struct net_device *netdev,
-+					  const struct mq_offload_snap *snap)
-+{
-+	int tc;
-+
-+	if (!snap)
-+		return;
-+
-+	netdev_set_num_tc(netdev, snap->num_tc);
-+	for (tc = 0; tc < snap->num_tc; tc++)
-+		netdev_set_tc_queue(netdev, tc, snap->count[tc],
-+				    snap->offset[tc]);
-+	for (tc = 0; tc < TC_QOPT_BITMASK + 1; tc++)
-+		netdev_set_prio_tc_map(netdev, tc, snap->prio_tc_map[tc]);
-+}
-+
-+static void otx2_mqprio_netdev_tc_work(struct work_struct *work)
-+{
-+	struct otx2_mqprio *mqprio = container_of(work, struct otx2_mqprio,
-+						  netdev_tc_work);
-+	struct otx2_nic *pfvf = container_of(mqprio, struct otx2_nic, mqprio);
-+
-+	rtnl_lock();
-+	if (READ_ONCE(pfvf->mqprio.defer_tc_work))
-+		goto out;
-+	if (pfvf->mqprio.rate_limit && pfvf->old_mq_snap)
-+		otx2_mqprio_apply_snap_netdev(pfvf->netdev, pfvf->old_mq_snap);
-+out:
-+	rtnl_unlock();
-+}
-+
-+static void otx2_mqprio_defer_netdev_tc_restore(struct otx2_nic *pfvf)
-+{
-+	if (READ_ONCE(pfvf->mqprio.defer_tc_work))
-+		return;
-+	schedule_work(&pfvf->mqprio.netdev_tc_work);
-+}
-+
-+static int otx2_mqprio_restore_old(struct otx2_nic *pfvf)
-+{
-+	struct mq_offload_snap *snap = pfvf->old_mq_snap;
-+	struct net_device *netdev = pfvf->netdev;
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq, err;
-+
-+	if (!snap)
-+		return 0;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, false);
-+	if (err) {
-+		netdev_err(netdev,
-+			   "mqprio: rollback failed to allocate rate cache: %d\n",
-+			   err);
-+		return err;
-+	}
-+
-+	memset(pfvf->mqprio.min_rate, 0, num_txq * sizeof(*pfvf->mqprio.min_rate));
-+	memset(pfvf->mqprio.max_rate, 0, num_txq * sizeof(*pfvf->mqprio.max_rate));
-+	pfvf->mqprio.flags = snap->flags;
-+
-+	for (tc = 0; tc < snap->num_tc; tc++) {
-+		u64 min_rate = snap->min_rate[tc];
-+		u64 max_rate = snap->max_rate[tc];
-+
-+		for (txq = snap->offset[tc];
-+		     txq < snap->offset[tc] + snap->count[tc]; txq++) {
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+		}
-+	}
-+
-+	otx2_mqprio_apply_snap_netdev(netdev, snap);
-+
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: rollback shaper clear failed: %d; hardware limits may not match qdisc\n",
-+				   err);
-+			return err;
-+		}
-+	}
-+
-+	/* Rebuild the TX scheduler via netdev restart when running; otx2_mqprio_up()
-+	 * alone is insufficient after a failed replace that already bounced the
-+	 * interface. If open failed, TX schedulers were freed; defer shaper restore
-+	 * to the next successful ndo_open() via otx2_mqprio_up().
-+	 */
-+	pfvf->mqprio.rate_limit = true;
-+
-+	if (netif_running(netdev)) {
-+		err = otx2_mqprio_restart_netdev(netdev, true);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: rollback netdev restart failed: %d; qdisc rates may not be enforced\n",
-+				   err);
-+			return err;
-+		}
-+	} else if (pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ]) {
-+		err = otx2_mqprio_up(pfvf);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: rollback shaper restore failed: %d; qdisc rates may not be enforced\n",
-+				   err);
-+			return err;
-+		}
-+	}
-+
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_destroy(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+}
-+
-+/* Offloaded mqprio replaced by software mqprio installs netdev TC layout in
-+ * mqprio_init() before the old offload instance is destroyed during graft.
-+ */
-+static bool otx2_mqprio_keep_netdev_tc(struct otx2_nic *pfvf)
-+{
-+	struct Qdisc *qdisc = rtnl_dereference(pfvf->netdev->qdisc);
-+
-+	return qdisc && qdisc->ops && !strcmp(qdisc->ops->id, "mqprio");
-+}
-+
-+static void otx2_mqprio_clear_sw(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+
-+	pfvf->mqprio.rate_limit = false;
-+	otx2_mqprio_clear_replace_state(pfvf);
-+	if (!otx2_mqprio_keep_netdev_tc(pfvf)) {
-+		struct Qdisc *root = rtnl_dereference(netdev->qdisc);
-+
-+		if (root && root->ops && !strcmp(root->ops->id, "taprio"))
-+			netdev_warn(netdev,
-+				    "mqprio: offload teardown cleared the TC layout of the new %s\n",
-+				    root->ops->id);
-+		netdev_set_num_tc(netdev, 0);
-+	}
-+	otx2_mqprio_free_cache(pfvf);
-+}
-+
-+/* Tear down mqprio bandwidth offload: clear per-queue shapers,
-+ * mqprio_rate_limit, netdev TC mappings, and the cached rates.  Called on
-+ * explicit mqprio teardown (tc qdisc del) and error cleanup, not on
-+ * routine netdev stop/open cycles where the offload stays active.
-+ */
-+int otx2_mqprio_down(struct otx2_nic *pfvf)
-+{
-+	int err = 0;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (netif_running(pfvf->netdev) &&
-+	    otx2_mqprio_mdq_allocated(pfvf))
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+
-+	/* The core cannot veto qdisc teardown, so always release software
-+	 * state.  The netdev restart that follows reallocates the TX
-+	 * scheduler, which drops any shaper left programmed.
-+	 */
-+	if (err)
-+		netdev_warn(pfvf->netdev,
-+			    "mqprio: failed to clear hardware shapers: %d; releasing offload state\n",
-+			    err);
-+
-+	otx2_mqprio_clear_sw(pfvf);
-+
-+	return err;
-+}
-+
-+/* Restore cached mqprio MDQ shapers after ndo_open() reprograms the TX
-+ * scheduler. Called from otx2_open() when bandwidth offload stays active
-+ * across admin down/up or an mqprio netdev bounce.
-+ *
-+ * Returns an error if any shaper mailbox operation fails. otx2_open()
-+ * fail-closes on that error: it aborts open and leaves the interface down
-+ * rather than running with partial or missing bandwidth limits.
-+ */
-+int otx2_mqprio_up(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+	int txq, err;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (!pfvf->mqprio.min_rate || !pfvf->mqprio.max_rate)
-+		return 0;
-+
-+	for (txq = 0; txq < pfvf->hw.non_qos_queues; txq++) {
-+		u64 min_rate = 0, max_rate = 0;
-+
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = pfvf->mqprio.min_rate[txq];
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = pfvf->mqprio.max_rate[txq];
-+
-+		if (!min_rate && !max_rate)
-+			continue;
-+
-+		err = otx2_nix_tm_set_queue_shaper(pfvf, txq, min_rate,
-+						   max_rate);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: failed to restore shaper for txq %d: %d\n",
-+				   txq, err);
-+			if (otx2_mqprio_mdq_allocated(pfvf) &&
-+			    otx2_nix_tm_clear_queue_shaper(pfvf))
-+				netdev_warn(netdev,
-+					    "mqprio: failed to clear shapers after partial restore\n");
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* Restart the netdev to reprogram the TX scheduler hierarchy for mqprio
-+ * bandwidth offload.  Both mqprio add and delete (when offload was active)
-+ * take this path via ndo_stop()/ndo_open() so VF-specific open logic (e.g.
-+ * LBK carrier on) runs correctly.
-+ *
-+ * Intentional behaviour: this full stop/open cycle drops in-flight traffic
-+ * (carrier off, IRQ/NAPI teardown, queue drain).  The NIX TX scheduler must
-+ * be reallocated (e.g. one SMQ per non-QoS queue) and cannot be reprogrammed
-+ * live today, so a netdev bounce is required on every mqprio add, replace,
-+ * delete, and rollback.  Users see a brief connectivity blip; this is not a
-+ * bug to "fix" without implementing the live-reprogramming path noted below.
-+ * If open fails, OTX2_FLAG_INTF_DOWN is set before netif_close() so
-+ * otx2_stop() returns early and does not touch resources already torn
-+ * down by the open error path.
-+ *
-+ * Do not call dev_deactivate()/dev_activate() here.  On replace,
-+ * qdisc_graft() already deactivates qdiscs around offload teardown;
-+ * dev_activate() from ndo_setup_tc() would republish qdiscs before graft
-+ * completes and race __qdisc_run() on the old root qdisc.  After
-+ * ndo_open(), carrier and TX queues are restored via otx2_handle_link_event()
-+ * when link is up, same as otx2_change_mtu(), not via dev_activate().
-+ *
-+ * Clear __LINK_STATE_START before ndo_stop() so netif_running() is false
-+ * for the duration of the bounce.
-+ */
-+static int otx2_mqprio_restart_netdev(struct net_device *netdev, bool rate_limit)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	const struct net_device_ops *ops = netdev->netdev_ops;
-+	bool running = netif_running(netdev);
-+	int err;
-+
-+	/* TODO: Explore live TX scheduler reprogramming to avoid a full
-+	 * ndo_stop()/ndo_open() bounce on every mqprio change.
-+	 */
-+	netdev_dbg(netdev,
-+		   "mqprio: restarting interface to reprogram TX scheduler\n");
-+
-+	if (running) {
-+		clear_bit(__LINK_STATE_START, &netdev->state);
-+		smp_mb__after_atomic(); /* Commit netif_running(). */
-+	}
-+
-+	err = ops->ndo_stop(netdev);
-+	if (err) {
-+		if (running)
-+			set_bit(__LINK_STATE_START, &netdev->state);
-+		return err;
-+	}
-+
-+	/* Set before ndo_open() so otx2_txsch_alloc() widens SMQ allocation.
-+	 * On teardown, drop mqprio software state so ndo_open() does not
-+	 * re-apply bandwidth limits via otx2_mqprio_up() after the kernel
-+	 * removed the qdisc.
-+	 */
-+	if (rate_limit)
-+		pfvf->mqprio.rate_limit = true;
-+	else
-+		otx2_mqprio_clear_sw(pfvf);
-+
-+	err = ops->ndo_open(netdev);
-+	if (!err && running) {
-+		set_bit(__LINK_STATE_START, &netdev->state);
-+	} else if (err) {
-+		netdev_err(netdev,
-+			   "Failed to restart device after mqprio change: %d; bringing interface down\n",
-+			   err);
-+		/* ndo_open() already tore down TX scheduler resources on failure;
-+		 * netif_running() is false here (__LINK_STATE_START stays clear
-+		 * until open succeeds). Drop mqprio software state only instead
-+		 * of sending shaper clears to freed queues.
-+		 */
-+		otx2_mqprio_clear_sw(pfvf);
-+		/* ndo_open() rolls back on failure; mark the interface down so
-+		 * otx2_stop() returns early when netif_close() runs.  Caller
-+		 * holds RTNL; netif_close() is used since it needs no extra
-+		 * locking (dev_close() would also take the netdev ops lock).
-+		 */
-+		otx2_set_flag(pfvf, OTX2_FLAG_INTF_DOWN);
-+		/* visible to otx2_stop() on other cpus */
-+		smp_wmb();
-+		netif_close(netdev);
-+	}
-+
-+	return err;
-+}
-+
-+static int otx2_mqprio_validate_tc_rate(struct net_device *netdev,
-+					struct netlink_ext_ack *extack,
-+					u64 rate, u32 qcount, int tc,
-+					const char *name)
-+{
-+	if (!rate)
-+		return 0;
-+
-+	if (qcount <= 1)
-+		return 0;
-+
-+	/* TODO: per-TC TL4 shapers or equal per-queue MDQ split for multi-queue TC rates. */
-+	netdev_err(netdev,
-+		   "mqprio: %s rate for tc %d not supported with %u queues\n",
-+		   name, tc, qcount);
-+	NL_SET_ERR_MSG_FMT_MOD(extack,
-+			       "mqprio: tc %d rate needs 1 queue (has %u)",
-+			       tc, qcount);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int otx2_mqprio_validate_txqs(struct net_device *netdev,
-+				     struct netlink_ext_ack *extack,
-+				     struct tc_mqprio_qopt *qopt)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq;
-+
-+	if (qopt->num_tc > num_txq) {
-+		netdev_err(netdev, "Number of TCs (%u) exceeds hw queues %u\n",
-+			   qopt->num_tc, num_txq);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "TCs (%u) exceed hw queues %u",
-+				       qopt->num_tc, num_txq);
-+		return -EINVAL;
-+	}
-+
-+	if (num_txq > MAX_TXSCHQ_PER_FUNC) {
-+		netdev_err(netdev,
-+			   "Number of queues (%u) exceeds max scheduler queues %u\n",
-+			   num_txq, MAX_TXSCHQ_PER_FUNC);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "queues (%u) exceed max schq %u",
-+				       num_txq, MAX_TXSCHQ_PER_FUNC);
-+		return -EINVAL;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u32 qcount = qopt->count[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			if (txq >= num_txq) {
-+				netdev_err(netdev,
-+					   "mqprio: txq %d exceeds offload queue count %u\n",
-+					   txq, num_txq);
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: txq %d exceeds queues %u",
-+						       txq, num_txq);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static bool otx2_mqprio_rate_valid(struct otx2_nic *pfvf, u64 rate_bytes_ps)
-+{
-+	u64 mbps;
-+
-+	if (!rate_bytes_ps)
-+		return true;
-+
-+	if (rate_bytes_ps < OTX2_MQPRIO_MIN_RATE_BYTES_PS)
-+		return false;
-+
-+	if (rate_bytes_ps > otx2_mqprio_max_rate_bytes_ps())
-+		return false;
-+
-+	if (rate_bytes_ps > div_u64(U64_MAX, 8))
-+		return false;
-+
-+	mbps = otx2_convert_rate(rate_bytes_ps);
-+	return ilog2(mbps / 2) <= MAX_RATE_EXPONENT;
-+}
-+
-+static bool otx2_tc_can_offload(struct net_device *netdev)
-+{
-+	return !!(netdev->hw_features & NETIF_F_HW_TC);
-+}
-+
-+static int otx2_teardown_tc_mqprio(struct otx2_nic *pfvf,
-+				   struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct netlink_ext_ack *extack = mqprio->extack;
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	bool had_mqprio = pfvf->mqprio.rate_limit;
-+	struct net_device *netdev = pfvf->netdev;
-+	bool if_up = netif_running(netdev);
-+	int err;
-+
-+	if (!otx2_tc_can_offload(netdev))
-+		return -EOPNOTSUPP;
-+
-+	qopt->hw = 0;
-+
-+	/* tc qdisc replace runs setup on the new mqprio before destroying the
-+	 * old one. replace_setup_done and TC_ROOT_GRAFT distinguish stale
-+	 * old-instance teardown from graft failure after setup.
-+	 * qdisc_offload_graft_helper() skips TC_ROOT_GRAFT unless hw-tc-offload
-+	 * is enabled in netdev->features; commit without graft in that case.
-+	 */
-+	if (pfvf->mqprio.replace_setup_done && pfvf->cur_mq_snap) {
-+		err = 0;
-+		if (pfvf->mqprio.replace_graft_done || !tc_can_offload(netdev)) {
-+			otx2_mqprio_snap_commit(pfvf);
-+		} else {
-+			err = otx2_mqprio_restore_old(pfvf);
-+			if (err && extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: rollback failed (%d)",
-+						       err);
-+		}
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		return err;
-+	}
-+
-+	/* Skip the netdev restart when mqprio offload was not active. */
-+	if (!had_mqprio)
-+		return 0;
-+
-+	if (if_up) {
-+		err = otx2_mqprio_down(pfvf);
-+		if (err) {
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: teardown incomplete (%d)",
-+						       err);
-+			netdev_err(netdev,
-+				   "mqprio: offload teardown incomplete (%d); driver state may not match removed qdisc\n",
-+				   err);
-+			return err;
-+		}
-+
-+		err = otx2_mqprio_restart_netdev(netdev, false);
-+		if (err) {
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: teardown restart failed (%d)",
-+						       err);
-+			netdev_err(netdev,
-+				   "mqprio: offload teardown restart failed (%d); driver state may not match removed qdisc\n",
-+				   err);
-+			return err;
-+		}
-+		return 0;
-+	}
-+
-+	/* ndo_stop() already freed the TX scheduler TL nodes; drop software
-+	 * state only.
-+	 */
-+	otx2_mqprio_clear_sw(pfvf);
-+	return 0;
-+}
-+
-+static int otx2_setup_tc_mqprio(struct net_device *netdev,
-+				struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct netlink_ext_ack *extack = mqprio->extack;
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	bool replacing = pfvf->mqprio.rate_limit;
-+	bool if_up = netif_running(netdev);
-+	int tc, txq, err, i;
-+
-+	if (!otx2_tc_can_offload(netdev))
-+		return -EOPNOTSUPP;
-+
-+	if (!qopt->hw)
-+		return otx2_teardown_tc_mqprio(pfvf, mqprio);
-+
-+	if (!if_up) {
-+		netdev_err(netdev, "mqprio: setup requires interface UP\n");
-+		NL_SET_ERR_MSG_MOD(extack, "mqprio: setup requires interface UP");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (!replacing && otx2_mqprio_keep_netdev_tc(pfvf)) {
-+		netdev_err(netdev,
-+			   "mqprio: delete existing mqprio before re-enabling hw/sw offload\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: delete existing mqprio before re-enabling hw/sw offload");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (mqprio->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+		netdev_err(netdev, "Unsupported mqprio shaper %#x\n", mqprio->shaper);
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "mqprio: bad shaper %#x",
-+				       mqprio->shaper);
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (!test_bit(QOS_CIR_PIR_SUPPORT, &pfvf->hw.cap_flag)) {
-+		netdev_err(netdev,
-+			   "mqprio: bandwidth offload requires CIR+PIR support\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload requires CIR+PIR support");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (is_otx2_sdp_rep(pfvf->pdev)) {
-+		netdev_err(netdev, "mqprio: bandwidth offload not supported on SDP rep\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload not supported on SDP rep");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (pfvf->pfc_en) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while PFC is enabled\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while PFC is enabled");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (pfvf->xdp_prog) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while XDP is active\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while XDP is active");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	if (!list_empty(&pfvf->qos.qos_tree)) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while HTB is active\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while HTB is active");
-+		err = -EOPNOTSUPP;
-+		goto fail_validate;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		if (min_rate && max_rate && min_rate > max_rate) {
-+			netdev_err(netdev,
-+				   "min_rate %llu exceeds max_rate %llu for tc %d\n",
-+				   min_rate, max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: min>max rate for tc %d",
-+					       tc);
-+			err = -EINVAL;
-+			goto fail_validate;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, min_rate,
-+							   qcount, tc, "min");
-+			if (err)
-+				goto fail_validate;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, max_rate,
-+							   qcount, tc, "max");
-+			if (err)
-+				goto fail_validate;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE &&
-+		    !otx2_mqprio_rate_valid(pfvf, min_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: min_rate %llu for tc %d is outside hardware limits\n",
-+				   min_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: min_rate out of range (tc %d)",
-+					       tc);
-+			err = -EINVAL;
-+			goto fail_validate;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE &&
-+		    !otx2_mqprio_rate_valid(pfvf, max_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: max_rate %llu for tc %d is outside hardware limits\n",
-+				   max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: max_rate out of range (tc %d)",
-+					       tc);
-+			err = -EINVAL;
-+			goto fail_validate;
-+		}
-+	}
-+
-+	err = otx2_mqprio_validate_txqs(netdev, extack, qopt);
-+	if (err)
-+		goto fail_validate;
-+
-+	err = otx2_mqprio_stage_cur(pfvf, mqprio);
-+	if (err)
-+		goto fail_validate;
-+
-+	err = otx2_mqprio_restart_netdev(pfvf->netdev, true);
-+	if (err)
-+		goto cleanup;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, replacing);
-+	if (err)
-+		goto cleanup;
-+
-+	/* otx2_mqprio_up() may have restored the previous configuration during
-+	 * the restart above. Clear every MDQ shaper before applying the new
-+	 * mapping so queues dropped from the TC layout do not keep stale
-+	 * limits in hardware.
-+	 */
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err) {
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: shaper clear failed (%d)",
-+						       err);
-+			goto cleanup;
-+		}
-+	}
-+
-+	pfvf->mqprio.flags = mqprio->flags;
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		/* Rates omitted from tc mqprio are passed as zero and both MDQ
-+		 * shaper registers are programmed; see
-+		 * otx2_nix_tm_set_queue_shaper().
-+		 * TODO: multi-queue TC rates need per-queue split; see
-+		 * otx2_mqprio_validate_tc_rate().
-+		 */
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			netdev_dbg(netdev,
-+				   "mqprio: tc %d txq %d min_rate %llu max_rate %llu\n",
-+				   tc, txq, min_rate, max_rate);
-+
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+
-+			err = otx2_nix_tm_set_queue_shaper(pfvf, txq,
-+							   min_rate, max_rate);
-+			if (err) {
-+				if (extack)
-+					NL_SET_ERR_MSG_FMT_MOD(extack,
-+							       "mqprio: shaper program failed (%d)",
-+							       err);
-+				netdev_err(netdev,
-+					   "mqprio: programming shaper failed (%d); partial limits may be active\n",
-+					   err);
-+				goto cleanup;
-+			}
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, pfvf->cur_mq_snap->num_tc);
-+	for (i = 0; i < pfvf->cur_mq_snap->num_tc; i++)
-+		netdev_set_tc_queue(netdev, i, pfvf->cur_mq_snap->count[i],
-+				    qopt->offset[i]);
-+
-+	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+
-+	if (replacing) {
-+		pfvf->mqprio.replace_setup_done = true;
-+		pfvf->mqprio.replace_graft_done = false;
-+	} else {
-+		otx2_mqprio_snap_commit(pfvf);
-+	}
-+
-+	netdev_warn_once(netdev,
-+			 "mqprio: bandwidth offload uses TL4[0] without explicit topology programming; verify scheduling if limits look wrong\n");
-+
-+	return 0;
-+
-+fail_validate:
-+	/* Failed replace destroys the new qdisc with hw_offload unset, so
-+	 * mqprio_destroy() clears netdev TC after we return. Re-apply the
-+	 * prior layout when validation fails before any hardware change.
-+	 */
-+	if (replacing)
-+		otx2_mqprio_defer_netdev_tc_restore(pfvf);
-+	return err;
-+
-+cleanup:
-+	qopt->hw = 0;
-+	if (replacing) {
-+		int restore_err = otx2_mqprio_restore_old(pfvf);
-+
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		if (restore_err) {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed and prior configuration rollback failed: %d\n",
-+				   restore_err);
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: rollback failed (%d)",
-+						       restore_err);
-+		} else {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed; hardware limits restored, netdev TC layout restore deferred\n");
-+			if (extack)
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "mqprio: replace failed; hardware limits restored, netdev TC layout restore deferred");
-+			/* Failed replace destroys the new qdisc with hw_offload
-+			 * unset, so mqprio_destroy() clears netdev TC after we
-+			 * return. Re-apply the restored layout once that unwind
-+			 * finishes.
-+			 */
-+			otx2_mqprio_defer_netdev_tc_restore(pfvf);
-+		}
-+		return err ? err : -EIO;
-+	}
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+	otx2_teardown_tc_mqprio(pfvf, mqprio);
-+	return err;
-+}
-+
-+static int otx2_setup_tc_root(struct otx2_nic *pfvf,
-+			      struct tc_root_qopt_offload *root)
-+{
-+	switch (root->command) {
-+	case TC_ROOT_GRAFT:
-+		if (pfvf->mqprio.replace_setup_done)
-+			pfvf->mqprio.replace_graft_done = true;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int otx2_setup_tc_query_caps(void *type_data)
-+{
-+	struct tc_query_caps_base *base = type_data;
-+	struct tc_mqprio_caps *caps;
-+
-+	if (base->type != TC_SETUP_QDISC_MQPRIO)
-+		return -EOPNOTSUPP;
-+
-+	caps = base->caps;
-+	caps->validate_queue_counts = true;
-+
-+	return 0;
-+}
-+
- int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		  void *type_data)
- {
- 	switch (type) {
-+	case TC_QUERY_CAPS:
-+		return otx2_setup_tc_query_caps(type_data);
- 	case TC_SETUP_BLOCK:
- 		return otx2_setup_tc_block(netdev, type_data);
- 	case TC_SETUP_QDISC_HTB:
- 		return otx2_setup_tc_htb(netdev, type_data);
-+	case TC_SETUP_QDISC_MQPRIO:
-+		return otx2_setup_tc_mqprio(netdev, type_data);
-+	case TC_SETUP_ROOT_QDISC:
-+		return otx2_setup_tc_root(netdev_priv(netdev), type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -1625,10 +2544,27 @@ int otx2_init_tc(struct otx2_nic *nic)
- 		return -EINVAL;
- 	}
- 
-+	INIT_WORK(&nic->mqprio.netdev_tc_work, otx2_mqprio_netdev_tc_work);
-+	WRITE_ONCE(nic->mqprio.defer_tc_work, false);
-+
- 	return 0;
- }
- EXPORT_SYMBOL(otx2_init_tc);
- 
-+void otx2_shutdown_tc_mqprio(struct otx2_nic *nic)
-+{
-+	/* Set the flag under RTNL: the work is only queued from ndo_setup_tc()
-+	 * (RTNL held), so nothing can be queued once this section ends.
-+	 * cancel_work_sync() must run after rtnl_unlock() as the work takes RTNL.
-+	 */
-+	rtnl_lock();
-+	WRITE_ONCE(nic->mqprio.defer_tc_work, true);
-+	otx2_mqprio_snap_destroy(nic);
-+	rtnl_unlock();
-+	cancel_work_sync(&nic->mqprio.netdev_tc_work);
-+}
-+EXPORT_SYMBOL(otx2_shutdown_tc_mqprio);
-+
- void otx2_shutdown_tc(struct otx2_nic *nic)
- {
- 	otx2_destroy_tc_flow_list(nic);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index 5f7915231ca3..6ca08b12520a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -740,25 +740,25 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (err)
- 		goto err_ipsec_clean;
- 
-+	err = otx2vf_mcam_flow_init(vf);
-+	if (err)
-+		goto err_wq_destroy;
-+
-+	err = otx2_init_tc(vf);
-+	if (err)
-+		goto err_wq_destroy;
-+
- 	err = register_netdev(netdev);
- 	if (err) {
- 		dev_err(dev, "Failed to register netdevice\n");
--		goto err_wq_destroy;
-+		goto err_shutdown_tc;
- 	}
- 
- 	otx2vf_set_ethtool_ops(netdev);
- 
--	err = otx2vf_mcam_flow_init(vf);
--	if (err)
--		goto err_unreg_netdev;
--
--	err = otx2_init_tc(vf);
--	if (err)
--		goto err_unreg_netdev;
--
- 	err = otx2_register_dl(vf);
- 	if (err)
--		goto err_shutdown_tc;
-+		goto err_unreg_netdev;
- 
- 	vf->af_xdp_zc_qidx = bitmap_zalloc(qcount, GFP_KERNEL);
- 	if (!vf->af_xdp_zc_qidx) {
-@@ -784,10 +784,11 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- #endif
- err_unreg_devlink:
- 	otx2_unregister_dl(vf);
--err_shutdown_tc:
--	otx2_shutdown_tc(vf);
- err_unreg_netdev:
-+	otx2_shutdown_tc_mqprio(vf);
- 	unregister_netdev(netdev);
-+err_shutdown_tc:
-+	otx2_shutdown_tc(vf);
- err_wq_destroy:
- 	cancel_work_sync(&vf->reset_task);
- 	cancel_work_sync(&vf->rx_mode_work);
-@@ -840,7 +841,9 @@ static void otx2vf_remove(struct pci_dev *pdev)
- #endif
- 
- 	otx2_unregister_dl(vf);
-+	otx2_shutdown_tc_mqprio(vf);
- 	unregister_netdev(netdev);
-+	otx2_shutdown_tc(vf);
- 	if (vf->otx2_wq) {
- 		cancel_work_sync(&vf->reset_task);
- 		cancel_work_sync(&vf->rx_mode_work);
-@@ -849,7 +852,6 @@ static void otx2vf_remove(struct pci_dev *pdev)
- 	cn10k_ipsec_clean(vf);
- 	otx2_ptp_destroy(vf);
- 	otx2_mcam_flow_del(vf);
--	otx2_shutdown_tc(vf);
- 	otx2_shutdown_qos(vf);
- 	otx2_detach_resources(&vf->mbox);
- 	otx2vf_disable_mbox_intr(vf);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 2ede0b84e5f5..732fff75ab0b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -118,6 +118,9 @@ static void otx2_config_sched_shaping(struct otx2_nic *pfvf,
- 	/* configure PIR */
- 	maxrate = (node->rate > node->ceil) ? node->rate : node->ceil;
- 
-+	/* 65536 is the kernel-side default burst when HTB does not supply an
-+	 * explicit value, not the NIX hardware maximum (CN10K_MAX_BURST_SIZE).
-+	 */
- 	cfg->regval[*num_regs] =
- 		otx2_get_txschq_rate_regval(pfvf, maxrate, 65536);
- 	(*num_regs)++;
-@@ -1090,6 +1093,14 @@ static int otx2_qos_root_add(struct otx2_nic *pfvf, u16 htb_maj_id, u16 htb_defc
- 		   "TC_HTB_CREATE: handle=0x%x defcls=0x%x\n",
- 		   htb_maj_id, htb_defcls);
- 
-+	if (pfvf->mqprio.rate_limit) {
-+		netdev_err(pfvf->netdev,
-+			   "HTB: cannot enable while mqprio bandwidth offload is active\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "HTB: cannot enable while mqprio bandwidth offload is active");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	root = otx2_qos_alloc_root(pfvf);
- 	if (IS_ERR(root)) {
- 		err = PTR_ERR(root);
--- 
+v19 -> v20: Addressed sashiko and Paolo comments on v19.
+- Fix the deferred netdev_tc_work use-after-free on removal: set
+  defer_tc_work under rtnl_lock() in otx2_shutdown_tc_mqprio() (the work is
+  only queued from ndo_setup_tc() with RTNL held) and run cancel_work_sync()
+  after rtnl_unlock(); drop the lockless early check in the work handler.
+- Always release mqprio software state in otx2_mqprio_down() when clearing
+  the hardware shapers fails (the core cannot veto qdisc teardown); the
+  following netdev restart reallocates the TX scheduler and drops any stale
+  shaper. The error is still reported to the user.
+- Drop the ethtool -L check that rejected TX queue reduction while
+  old_mq_snap/cur_mq_snap exist; it blocked channel changes forever after
+  an mqprio qdisc was deleted. Channel changes remain blocked while mqprio
+  offload is active.
+- Warn when tearing down an offloaded mqprio clears the TC layout installed
+  by a replacing software taprio root qdisc.
+- Say "bringing interface down" in the error printed when ndo_open() fails
+  during an mqprio restart, and correct the netif_close()/dev_close()
+  comment; drop the "in-flight traffic will be dropped" wording from the
+  restart debug message.
+	https://lore.kernel.org/netdev/20261006094357.840823-1-rkannoth@marvell.com/
+
+v18 -> v19: Addressed sashiko and review nits on v18.
+- Gate mqprio netdev_tc_work with defer_tc_work: set the flag before
+  cancel_work_sync() in otx2_shutdown_tc_mqprio() and skip scheduling or
+  running the deferred TC restore work once teardown starts (Sashiko #1).
+= Address Jakub comment.
+- Clarify the otx2_mqprio_restart_netdev() comment on failed ndo_open():
+  __LINK_STATE_START stays clear until open succeeds, so netif_running() is
+  false on that path
+	https://lore.kernel.org/netdev/20260929022915.2704627-1-rkannoth@marvell.com/
+
+v17 -> v18: Addressed sashiko comments on v17.
+- Commit staged mqprio replace snapshots when TC_ROOT_GRAFT is skipped
+  because hw-tc-offload is off in netdev->features (!tc_can_offload()),
+  instead of rolling back a replace that actually succeeded.
+- Keep NETIF_F_HW_TC in netdev->hw_features only (PF and VF); gate mqprio
+  setup/teardown on otx2_tc_can_offload() so hw-tc-offload stays opt-in via
+  ethtool -K and flower/matchall are not pushed to ndo_setup_tc by default.
+- Split TC shutdown around netdev unregister: cancel mqprio deferred work and
+  free mqprio snapshots before unregister_netdev(), but destroy the TC flower
+  flow list only after unregister so clsact teardown can still run
+  otx2_tc_del_flow() and free MCAM/mcast/policer state.
+- Reject ethtool -L TX queue reduction while mqprio offload snapshots remain,
+  so a later replace rollback cannot restore stale per-queue rates past the
+  current queue count.
+- Clarify mqprio shaper and netdev-restart comments: ndo_open() may restore
+  cached MDQ shapers via otx2_mqprio_up() before setup clears them, and a
+  failed mqprio restart relies on OTX2_FLAG_INTF_DOWN so otx2_stop() returns
+  early through netif_close(), not on skipping ndo_stop().
+	https://lore.kernel.org/netdev/20260923032217.1732753-1-rkannoth@marvell.com/
+
+v16 -> v17: Addressed sashiko comments on v16.
+- Replace the per-bit otx2_sync_flags_from_rep() loop with a masked
+  READ_ONCE/WRITE_ONCE publish of OTX2_REP_SYNC_FLAGS_MASK so lockless NAPI
+  readers never observe torn PF/representor flag combinations.
+- Evaluate mqprio.rate_limit and old_mq_snap inside rtnl_lock in
+  otx2_mqprio_netdev_tc_work() so a concurrent qdisc delete cannot leave
+  stale netdev TC mappings after offload teardown.
+- Advertise NETIF_F_HW_TC in netdev->features (PF and VF) when TC flower
+  offload is supported, so tc_can_offload() succeeds without ethtool -K
+  hw-tc-offload on; move otx2_init_tc() before register_netdev() and fix
+  probe/remove teardown ordering.
+- Reject mqprio add when a software mqprio root is already installed
+  (otx2_mqprio_keep_netdev_tc()) and defer netdev TC restore from a new
+  fail_validate path on failed replace validation before any hardware
+  change.
+- Fix otx2_mqprio_max_rate_bytes_ps() to cap against the NIX TLX maximum
+  rate instead of the burst-bucket size; use the 65536 byte HTB default
+  burst when programming MDQ shapers; guard otx2_get_smq_idx() when
+  txschq_cnt[NIX_TXSCH_LVL_SMQ] is zero after otx2_txschq_stop().
+- Rename patch 2 to octeontx2: (driver-wide PF/VF offload, not PF-only).
+	https://lore.kernel.org/netdev/20260918015906.1255204-1-rkannoth@marvell.com/
+
+v15 -> v16: Addressed sashiko comments on v15 and aligned documentation with code.
+- Sync representor flags through OTX2_FLAG_MAX in otx2_sync_flags_from_rep()
+  instead of hard-coding OTX2_REP_VF_INITIALIZED as the loop bound.
+- Drop the rvu_nix.c is_valid_txschq() ratelimited error print from the mqprio
+  patch; remove the misplaced atomic-bitops and AF-debug paragraphs from the
+  mqprio commit message (they belong to patch 1 or are out of scope).
+- Extend mq_offload_snap to record prio_tc_map[] and mqprio rate flags; restore
+  the full netdev TC layout (num_tc, queue ranges, and priority map) via
+  otx2_mqprio_apply_snap_netdev() on rollback paths.
+- Defer netdev TC restore on failed replace (otx2_mqprio_netdev_tc_work) so
+  rollback survives mqprio_destroy() clearing dev->num_tc after setup errors
+  once the core unwinds the failed qdisc instance.
+- Stop calling dev_deactivate()/dev_activate() from otx2_mqprio_restart_netdev();
+  bounce the interface with ndo_stop()/ndo_open() only and restore carrier
+  through the normal link-event path after ndo_open(), avoiding qdisc
+  reentrancy during tc replace graft.
+- Preserve netdev TC mappings when tearing down an offloaded instance that is
+  replaced by a software mqprio graft (otx2_mqprio_keep_netdev_tc()) instead
+  of always calling netdev_set_num_tc(0) and breaking the live replacement.
+- Return an error from otx2_mqprio_down() when clearing hardware shapers fails
+  and keep offload software state, instead of v15's behaviour of clearing
+  rate_limit while stale MDQ limits may remain programmed.
+- Rebuild the TX scheduler via netdev restart in otx2_mqprio_restore_old() on
+  a running interface after failed-replace rollback so partially applied MDQ
+  shapers are not left running with mismatched software state.
+- Clear txschq_cnt[] in otx2_txschq_stop() after freeing scheduler nodes so
+  post-stop shaper mailbox operations do not consult stale counts.
+- Document fail-closed ndo_open() when otx2_mqprio_up() cannot restore shapers,
+  and that PF/VF RVU netdevices share the ndo_setup_tc / otx2_open() offload
+  path (SDP representors remain unsupported); downgrade the mqprio restart
+  notice to netdev_dbg().
+	https://lore.kernel.org/netdev/20260911105521.689565-1-rkannoth@marvell.com/
+
+v14 -> v15: Addressed sashiko comments.
+- Split atomic PF/VF and representor flag access into a preparatory patch
+  so mqprio netdev-restart and mbox paths can update OTX2_FLAG_INTF_DOWN
+  and OTX2_FLAG_PORT_UP without data races on the shared flags word.
+- Clear mqprio software state when hardware shaper teardown fails, warn,
+  and still bounce the netdev on delete so offload does not remain stuck
+  active after a mailbox error.
+	https://lore.kernel.org/netdev/20260904031553.3196916-1-rkannoth@marvell.com/
+
+v13 -> v14: Addressed sashiko comments.
+- Use atomic set_bit()/clear_bit() for OTX2_FLAG_INTF_DOWN and
+  OTX2_FLAG_PORT_UP updates on netdev-restart and mbox paths.
+- Block concurrent mqprio bandwidth offload and HTB shaping.
+- Fail ndo_open() if otx2_mqprio_up() cannot restore MDQ shapers.
+- Rebuild the TX scheduler via netdev restart in otx2_mqprio_restore_old()
+  when rolling back a failed replace on a running interface.
+- Return an error from otx2_mqprio_down() if clearing hardware shapers
+  fails instead of clearing software state anyway.
+	https://lore.kernel.org/netdev/20260904031553.3196916-1-rkannoth@marvell.com/
+
+v12 -> v13: Addressed sashiko comments.
+	https://sashiko.dev/#/patchset/20260903023324.3078284-1-rkannoth%40marvell.com
+
+v11 -> v12: Addressed sashiko comments.
+	https://sashiko.dev/#/patchset/20260902015500.2985371-1-rkannoth%40marvell.com
+v10 -> v11: Addressed sashiko comments.
+	https://sashiko.dev/#/patchset/20260831131014.2639581-1-rkannoth%40marvell.com
+
+v9 -> v10: Addressed sashiko/jacub comments.
+	https://sashiko.dev/#/message/20260817032747.1765883-1-rkannoth%40marvell.com
+
+v8 -> v9: Addressed Sashiko comments
+	https://lore.kernel.org/netdev/aoJ6FhtWue0FHDQV@rkannoth-OptiPlex-7090/
+v7 -> v8: Addressed Sashiko comments
+	https://sashiko.dev/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
+v6 -> v7: Addressed Sashiko comments
+	https://sashiko.dev/#/message/20260810034738.1786029-1-rkannoth%40marvell.com
+v5 -> v6: Addressed Sashiko comments
+	https://lore.kernel.org/netdev/20260806095434.1144397-1-rkannoth@marvell.com/
+v4 -> v5: Addressed sashiko comments
+	https://sashiko.dev/#/patchset/20260803042724.3380209-1-rkannoth%40marvell.com
+v3 -> v4: Addressed sashiko comments
+	https://lore.kernel.org/netdev/20260729105139.2302908-1-rkannoth@marvell.com/
+v2 -> v3: Addressed sashiko comments
+	https://lore.kernel.org/netdev/amnYX866mYx02cBe@rkannoth-OptiPlex-7090/T/#m67310cbec48b21c7720858ab3a1ea083a0f8dc10
+v1 -> v2: Addressed sashiko comments
+	https://lore.kernel.org/netdev/20260724075010.2665758-1-rkannoth@marvell.com/
+
+--
 2.43.0
-
