@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794228670;
-	b=pEVlS2uE9iY8cBdmYl2OicKFAByUPgnp+cU5iE2TJI2ajla2WX2JdSBNpBpxHmnVPBUu
-	 uOCFY8bPh3hNSnfSD3h86Axmfc5zDjZ720Aw7OWU4pLj7dd6F9ajUEujNXX1TE62I/1/t
-	 J7w4xukXj4sKgKQ3uQTHKel4KEV/+OUEEs7GU/8dkqW/25zXxcHZePTHXE2HUITxXnGHS
-	 jBVITdx6SJIu0jx5px/4w4PWLODV3fS2ulqGJCV9i0WT2c1NRFjSDfhPyu7SRm8GYyFFq
-	 T9WRtubF/CyPXtFr5G1xDfOHH1Lw1Bx45UJ/gfVLeOzjS8YSONOtrWOD+2fpM1E6FCg==
+	t=1794228736;
+	b=K6/g4rgFmVlrbLPd/iKx3BAKNVS9LkqP4/JCL6AnU44WLbXdy3TdPIOX6PXiPTepPZDj
+	 bYBhYdifL2jMDtQ0W27b1wKicBrnHLcE0T66+3tcqwtWLjKWoEIuOIoFr6FIQLXpzb/kh
+	 tTFjyq4KHPFroZHK/D7dO3P40h0rOEZEE9EdzINPoMDKiigFhdBDNkAdFll0sUAojnd+U
+	 gNdhzF+c3UjsV4im5EG6BhtzK4HrGlub7HXfezIC8vuCcg+wRrXuRA2HBpelUvKA+jFSp
+	 ClrXAr1LQTDH4wVum7SN9YOX5cludGV2qwHm7fhCpe2en/fEeMfG5zqCu9180I5p48w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228670;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794228736;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=xMKd25EnS6bUedYZGkcOZxXWCwGfPAcr8fNNIRoGA8c=;
-	b=0hQLuSsHFLE2xbj7etlzY7fXgHHhwxh9Jje+FA/YwBGjN6PazoeZgdDYCCVr5DBJLJl2
-	 NvHMQt6412V1GbZkcCM/V2Kl8Baa2tOR86l5O3aiPCxmf3FT2ld9d5jRtxL/NoGOW65si
-	 KCHwY4FhTR0ytnw72B9UM4dy8foSFrv4siStehjzCeWKr2q3+Uu8L7QU2yACrwlwt/LwY
-	 dsayI3sQRkCvH2kTRobOuXHKJACmVp1tjl4cpkCcInSTpZM2sm34pLY1ImuHeWPY6Kkal
-	 5wYG2jHOyRAG3sxt06m+W9HL8QjhXQiCDdJlE8XklU3fCvbUJ6KxbepqMLXBdQTIdpw==
+	bh=I0qeZdg4ZJNAF2cuumqrSRtgG2tXJPz73PjmplXC9NA=;
+	b=RNjadNZ86VtVI+J3Igfle99vBQfgXS9aTBQxhBsTL8enNLnUa5L9IQZEiFGUcTEbmCFh
+	 ox59gVLwDWO8Qmu5XOOMieUAA8K8FunNXjPYQn1pmO1yCHNdMWW1JwxXJte/tA/wsPk1K
+	 rIgE8qCBTd1vSSamS8rPZr8Y3wJLY0JftGeigq3vpw1SkY1Ivh2VswyWGL7mA3hL+zCKL
+	 2jOszH+D9lcE+2HvZ0wQI3eVhqRLnQ2iXKYw5g9v+YA3QrrnXcVxaLmq7EBMD5fQQtMgd
+	 FSMacPMyHXraKhB6Q2U+ZwsxCQzZ+dqNtNqwdkPveyAc8jsqDLHOb5pGKLliqv4CK7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b9MF5eiC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hTZvlaPr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87618606A322;
-	Mon,  9 Nov 2026 12:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF67606A323;
+	Mon,  9 Nov 2026 12:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b9MF5eiC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFA51F0089F;
-	Mon,  9 Nov 2026 12:51:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hTZvlaPr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7AB1F0089F;
+	Mon,  9 Nov 2026 12:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794228670;
-	bh=xMKd25EnS6bUedYZGkcOZxXWCwGfPAcr8fNNIRoGA8c=;
+	s=k20260515; t=1794228735;
+	bh=I0qeZdg4ZJNAF2cuumqrSRtgG2tXJPz73PjmplXC9NA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b9MF5eiCe6k2xzg6jPbNosdLgMPXDk+BWYdlFRNiaTliFhdhsXa703kaEdfBflm6D
-	 QXzcd25n3e6XNdSBk9fraqUUrNeQoxsRiH8wL0r588afPeOtoktvVeCKyMJK9JyHc0
-	 5czfnAOeMdWHoCs431kI9hJwga0y7Zw8DQL/oBBikleWrCom7H+hnrTqffs91oqJo8
-	 A6MbwjPFivZhYvBxyGShsankrihVtzl+ZXqGI2VaqExT0upaM28J3K3k4dt1qHiTLs
-	 nLSeWhejneyjh+Qw5nf4qThOvSjbx3K9pmgTKoYyw2HZW7RzcVPdR4C542+1D2KxMN
-	 V7yuOch5uyG+A==
-Date: Mon, 9 Nov 2026 13:51:06 +0100
+	b=hTZvlaPrhFiMl0FB9UipgZ/Ko6xf+GhpXI4VoFBIixTaPWfM1m1jnrSIC+/AklzM6
+	 2lRphjdsVs46tP6ACqNnhbR5VB6gc+4mFC1BOKSinqMX+YRUScglipv+TntmUlNqRo
+	 lbDp19Z7TpmnX0nxGI07EiIASXjmidS/GnwRDKB5q/Lcna8Jhh9kQx4kZ8ooWbUs+s
+	 orzGGwx2XwbnS17tR0Br9jalHRtg2kfRvq0RGptbcEzJOs7OvD8+9jpMeCyodMGI/7
+	 2AXlia6ZDI7Vtly6h8geQb91Arm7KlKrCuCHs7EBNxJWGYF7nMRFl260VHGN+9Igqt
+	 c1h1s3IS1r9mg==
+Date: Mon, 9 Nov 2026 13:52:12 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Imran Shaik <imran.shaik@oss.qualcomm.com>
 Cc: Rob Herring <robh@kernel.org>, 
@@ -52,11 +52,11 @@ Cc: Rob Herring <robh@kernel.org>,
 	Taniya Das <taniya.das@oss.qualcomm.com>, Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>, 
 	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 03/10] dt-bindings: ptp: Document TSCSS hardware on
- Qualcomm Nord and Shikra SoCs
-Message-ID: <20261109-statuesque-polecat-from-lemuria-1b8ade@quoll>
+Subject: Re: [PATCH v2 06/10] arm64: dts: qcom: lemans: Add support for TSCSS
+ node
+Message-ID: <20261109-enigmatic-solid-sambar-ada2bd@quoll>
 References: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
- <20261108-tscss-v2-3-d5f575010427@oss.qualcomm.com>
+ <20261108-tscss-v2-6-d5f575010427@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,41 +68,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261108-tscss-v2-3-d5f575010427@oss.qualcomm.com>
+In-Reply-To: <20261108-tscss-v2-6-d5f575010427@oss.qualcomm.com>
 
-On Sun, Nov 08, 2026 at 06:48:24PM +0530, Imran Shaik wrote:
-> +  interrupt-names:
-> +    items:
-> +      - const: etu_summary
-> +
-> +  pinctrl-names:
-> +    minItems: 1
-> +    maxItems: 32
+On Sun, Nov 08, 2026 at 06:48:27PM +0530, Imran Shaik wrote:
+> Add Timestamp Counter Subsystem (TSCSS) node support on Qualcomm Lemans
+> SoCs.
+> 
+> Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+> ---
+>  arch/arm64/boot/dts/qcom/lemans.dtsi | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+> index 1fdb72fa5518..4c76c820cacb 100644
+> --- a/arch/arm64/boot/dts/qcom/lemans.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+> @@ -3022,6 +3022,18 @@ pcie1_phy: phy@1c14000 {
+>  			status = "disabled";
+>  		};
+>  
+> +		ptp@1c80000 {
+> +			compatible = "qcom,sa8775p-tscss";
+> +			reg = <0x0 0x01c80000 0x0 0x2000>;
 
-So here there is difference, that justifies different binding file.
-
-> +    items:
-> +      pattern: "^slice[0-9]+$"
-> +
-> +  qcom,etu-slice:
-> +    description:
-> +      ETU slice number for each entry in pinctrl-<n>, pinctrl-names and
-> +      qcom,etu-event-sel.
-> +    minItems: 1
-> +    maxItems: 32
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +
-> +  qcom,etu-event-sel:
-
-Anyway, you need common schema defining qcom,etu-slice and
-qcom,etu-event-sel properties. Maybe also pinctrl-names and other common
-properties. The individual device schemas should only override/narrow
-constraints
-
-
-> +    description:
-> +      External event selection value for each ETU slice listed in
-> +      qcom,etu-slice.
+Where is the rest of PTP devices? Your binding clearly said there are
+PTP with one and with two address spaces.
 
 Best regards,
 Krzysztof
