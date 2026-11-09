@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794248745;
-	b=YE7gUdhgf0MQVLiwpYJjJZ1pwMWHB330FZQ0DkdUKEgKdFgsJfVVl5YglsS49wuI69Gk
-	 RTaEYrldxs55naTYGtme/nJrDgUoGhY91vxOa0Vk5GjrPdk46srndI93XKCbyVcpdTyp3
-	 /IedQd4gt3vH2GP52ShRyUXeghx4wwacNiRmnvlpEwm0Ee8An91xasPZcqTCNlK7nlMtm
-	 XAYeYXG8CTScVAfA3gUoynb+1RFjEZ2/z9Co/hCCGRYtSBda7izvJg4GSexTz0RBCvOhs
-	 z+lWqbzxIiywjndBO44onLgAq2bL/O5EfJn5qdspWEwtKqdqo1mPfxIWj1+jm+zMtoQ==
+	t=1794248750;
+	b=In6/ye9xAzIbauPM7IK1YJ8trih6ZKCRyYblVbESoKaSOJ2TqLOUJSy+GdE7fsGRTX8K
+	 zgOhOO8+iTYC/23Jaji5qY6cBHEvkkAc053r66RXl4BJrxNX2SrEl0FmtKLeC9etqlbPR
+	 9IhVgcktlTSBNHAB6fizmpETfKLAeyLpyzjNwwppQglGWJRXozDcQDtWYQhjGuCkBAYf2
+	 zYD+CGaFwN9QytsovSLYYN5/wlajVCIMeL+29fc1zqlyxesMhBPMoFPoyrFtKiwDaj7QM
+	 4Gq9tvIWL5ThSzffx/5kwDbEyybrTzP1G3iTD1Uoge5WEuKXs2EwjHg6vHU5fAqLd3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248745;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248750;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=uNnpUKLFZFDZAIGfqh/0M8aoCDnLft+kz4dr3EpUusA=;
-	b=3pqLMFAl7O7yYXq4NH/cCKEYJ8awr4ru9Hfs8GeL9+NjDHIW9jiFSsxenV61zfN2OZgf
-	 Ao04esldT4sHWzERATY5yRw0GqkMdhyGJyGQ9z2wlM8b4jFH5Hr9fyaU2IxzWGtA028c6
-	 1hpbdyKMRXCy9PlwczCSyYFH3NQWyAl8H4xlX5JJLCHdZ5kqTNvXrSwk95xDklCZqRbVt
-	 lbTR3GBD1RehG5ESp5UsuRl1nUCWX2VvivSgQdlBvWTsb6z0+LbmzKBznmqlsje7U8dO6
-	 UGsNFUAHjX2gttr2gO3uukWiSBx+bVgj7jvPpq8c4cs9o9+y1bYOU9TMueDwjRXFQJQ==
+	bh=/X7nYrKappU5M+M14lx8cCjdoFlwBcGyVL/mgf8c7Co=;
+	b=4Ppjwu1m52LC9qIQQmDS5dbyQZVOwfkjb+ld9hopvdDAXBp6iJ1our3F7ukbv9LGIihW
+	 4dNyDcaNSuydDcGqldX2QhYOu5PLH01AV0QuDS1HfiyNGiIDo5onHzL8o1Cw9NMGyquUy
+	 Pn1JNaaCV/+SD/fhYRmwia8KzenKOGMKW4KopeLDU0WtBFdMhJ28TS/N/mXl83dhUO+Nn
+	 5RrwGnSdGSiQBpUfJ4ujhM4bBxFzmAsRlloF3PNIxZ4KPTF8PKD/aBknXIAnXO8smiAUf
+	 IzoS5+1jG8V6aAA9AuqGRZj4NLGdOv1tjoP7NGBoeWvITmA12LGXvDVvC+UI6JMJndQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="PlNhP/g6";
-	arc=none smtp.remote-ip=209.85.218.72
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WiqEoIvB;
+	arc=none smtp.remote-ip=209.85.218.71
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE67E60A5BC3
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE67E60A5BC3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF03606B582
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDF03606B582
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PlNhP/g6
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c4d34d6082fso116142766b.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WiqEoIvB
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c4d1684d1b3so109738266b.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794248743; x=1794853543; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794248748; x=1794853548; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uNnpUKLFZFDZAIGfqh/0M8aoCDnLft+kz4dr3EpUusA=;
-        b=PlNhP/g64O4F/LV6s3lo6yAgzjtguT2ig6lN0S9xUQ6Xt5Lx+NO2QrUfCWeLWu52br
-         dIrhvnLS3y1mg0enuPo2VHd7l1KVOW7FupSPKtP/LLOEHnyPFeYcAYZsOHP10kohMvjO
-         kMuo0W+tG8Diy2uZP4ZxAvEJGh3a+CMQF390jb4Y+1XgDCprC8NYeFQAwp9qyyRBzt/f
-         QXKVD7rZPaOQKzRnnbODYGDb8SYdTKpcs8+V8itZHNfdgcv/sAZpizivd7rZtBrIaFag
-         54WKhu7ZB5UgGf5zqJHEpZbgLIklfRbmhRQcVqNTVcKHQY/yDkW6plAXweuzmHuDwo/N
-         M/fg==
+        bh=/X7nYrKappU5M+M14lx8cCjdoFlwBcGyVL/mgf8c7Co=;
+        b=WiqEoIvBxn3UKDgIW/EQTGPPNQIVzP0bCaT7k89UBt5oCTY2LSFdhtRHsWMWue8kbk
+         rTEyZU5nlYt9CuDELCzDO3Jnjhh8QYKmivvVtF8WGcYhJap5wo/u7avwePE3dkd4msca
+         IryWETKlBZoiW/o80b+QGAdkfNjuKOb29MyOMMjBiisZSAcka6O56XbN28C09r7FX0/d
+         EfKRkAz8jXcoBJBQOT+6Q+UoF73d54z/Jbs/rfRY4fVcGmTFTbRjT/t8fAzSv4LsGE8i
+         or7cuX2/lATrvjAHpCzvlMX9jvPnaCMVXPbRx09/Bb5ehGUPSoV2ikkqkAYj9kJpOwcs
+         5ulA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248743; x=1794853543;
+        d=1e100.net; s=20260707; t=1794248748; x=1794853548;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uNnpUKLFZFDZAIGfqh/0M8aoCDnLft+kz4dr3EpUusA=;
-        b=l3IR3hpiaL4fL3EYwXxbw30SvkMpyeHIkstQYJvC9krKYbzpy6djUvK86R5lf+jSKF
-         +WPs3/6p5nN3fF5dWJ+qKH6pRRm5L/teOxctTwHLC4+B1GDcAVAi/NAEcZSSPzl+L0vU
-         vLl9kBDaQmPd+IoBqODsIjfLoNUiTzIdZoKqxwIVbU1uXVJKN5ecNMRLfEIcFOK3/lVB
-         KJhQluQM4YCR1WFiCPyqYl98aWVrsfXE8Vc0zEkP3tkJJDHkHZhYVGi/y5S6ylzwOllI
-         n2j9HUTENC4xOBHVsbw7EVewOcVziLB/aykxEdHW5gsmqiY1rtYiBrWIsRqDrf58VESP
-         D6dw==
-X-Forwarded-Encrypted: i=1; AL+hErGqwEp3ARREmZt/CKzlT6dmug4DTvWb9euwl/oqpSmnA5raCo8teINPl0N30F89FjDMFM97grY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Jywz7i2GqLgfIxoYUb7oUl5i+/iD2AwPCgRDRhGEVowVtZAqh
-	7hoMqaKk7yEcF0j6Uu8/uJEhlsFobPRbE7UCe2lgLBbcfyqnmzIIKO5sbvbiltEAa6rl616Mi5e
-	w5pggUQ==
-X-Received: from ejet13.prod.google.com ([2002:a17:906:178d:b0:c3a:bb3c:9317])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:794f:b0:c49:a539:aa45
- with SMTP id a640c23a62f3a-c50496b6556mr13388266b.42.1794248743157; Mon, 09
- Nov 2026 10:25:43 -0800 (PST)
-Date: Mon,  9 Nov 2026 18:25:14 +0000
+        bh=/X7nYrKappU5M+M14lx8cCjdoFlwBcGyVL/mgf8c7Co=;
+        b=P8pVj7lgyrnkEjNqc/zMuvCns5dHa+07RavbOkeKMg5+w6gPY4gdb7uU/H1J8FQLS0
+         FmxEFegUZFCK5tPT1Kl/cQV6f7hDuhAeNUxHVC0oGzaY/P1rQ3MELtjC+ppgsqzmfj2N
+         62odbovR4UcHP0X/ckh1i8/7kZlPpbfffaPfbd4uuUqmBlWnF40bJTD9pxmZLcnlXl5i
+         wXbygfKzMAHNxdaeDXV2eDiWRF8EdI37ah9SYl1ln/UDJutcY8LLiLMhGJMr3sFfrG2b
+         OYG2BsLfn/VCxZfuxWdE6X5mcZMToodKhf4SogImvCsV1f2ukZnbbTKLEFjspo5MLWt2
+         WrlA==
+X-Forwarded-Encrypted: i=1; AL+hErGDYS0en4hgcJbpNMfSJ16uAdD1SaPYK6Pz7jXhJ9FPI6xJhSJ4ZkEeZWI2MoPswQHCJrwci88=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Z3pJM0Z/wQO1SSfOIhDqoP8iZVZl1Xv3QwtD5HgMmPFIY3p6+
+	gp+hoAgVVArv6yX2Q7F3seeSlWwqQkqedHw7svvXpcsj+WpAjEJMU/VshUMxy2hMpxA1+of1RQl
+	ec2MC0w==
+X-Received: from ejzp25.prod.google.com ([2002:a17:906:b219:b0:c4d:3341:eee2])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:948a:b0:c4d:28ba:f221
+ with SMTP id a640c23a62f3a-c50496e271bmr16130666b.42.1794248748043; Mon, 09
+ Nov 2026 10:25:48 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:19 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,9 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261109182533.3594984-7-lrizzo@google.com>
-Subject: [RFC PATCH v2 06/25] iommu/dma: Reserve a per-domain IOVA window for
- PISA pages
+Message-ID: <20261109182533.3594984-12-lrizzo@google.com>
+Subject: [RFC PATCH v2 11/25] iommu/dma: Add per-CPU block caches to PISA allocators
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -103,412 +102,752 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-PISA buffers need to be quickly identified from their iova, and may need
-to be mapped in multiple domains. We can achieve both by reserving an IOVA
-range for PISA pages in each domain.
+Every block allocation and free takes the allocator's lock. Highly
+concurrent users e.g. socket tx fragments, can cause significant lock
+contention.
 
-Add per-domain PISA IOVA window descriptors in struct iommu_dma_cookie
-and a global slot allocator (pisa_slot_alloc() / pisa_slot_free()).
-The window is sized to twice the maximum allowed PISA buffer space,
-defaulting to max(64MB, 1/4 of physical RAM).
+Add pisa_enable_pcp(), an opt-in per-CPU front cache, similar
+to the page allocator's per-CPU lists:
 
-A buffer is mapped at the same slot offset in all windows for the domains
-that need to access it. IOVA allocation is done with a bitmap (1 bit
-per 2MB buffer, hence a 4KB bitmap supports 64GB of buffer space) at
-negligible cost.
+- Each per-CPU cache keeps up to 64 free blocks, and refills it from
+  the main allocator in batches of 32.
+- returned blocks belonging to the local NUMA node are kept in the local
+  cache.
+- returned blocks belonging to a remote NUMA node are returned to the
+  proper per-node allocator.
+The cache is fully integrated with the shrinker and CPU offlining to
+drain the cache.
+
+Enable per-CPU caches for the per-node order-0 RW and SKB_FRAG_PAGE_ORDER
+RO allocators.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/iommu/Makefile     |  3 ++
- drivers/iommu/dma-iommu.c  | 18 ++++++++
- drivers/iommu/dma-iommu.h  | 16 +++++++
- drivers/iommu/pisa-alloc.c | 12 ++++-
- drivers/iommu/pisa-kunit.c | 24 ++++++++++
- drivers/iommu/pisa-map.c   | 90 ++++++++++++++++++++++++++++++++++++++
- drivers/iommu/pisa-priv.h  | 58 ++++++++++++++++++++++++
- 7 files changed, 220 insertions(+), 1 deletion(-)
- create mode 100644 drivers/iommu/pisa-map.c
+ drivers/iommu/pisa-alloc.c | 342 +++++++++++++++++++++++++++++++++++--
+ drivers/iommu/pisa-kunit.c |  78 +++++++++
+ drivers/iommu/pisa-priv.h  |  35 +++-
+ include/linux/pisa.h       |   6 +
+ 4 files changed, 448 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
-index bc58166f9303a..125cf7e813cdc 100644
---- a/drivers/iommu/Makefile
-+++ b/drivers/iommu/Makefile
-@@ -12,6 +12,9 @@ obj-$(CONFIG_IOMMU_API) += iommu-sysfs.o
- obj-$(CONFIG_IOMMU_DEBUGFS) += iommu-debugfs.o
- obj-$(CONFIG_IOMMU_DMA) += dma-iommu.o
- obj-$(CONFIG_PISA) += pisa-meta.o pisa-alloc.o pisa-node.o
-+ifeq ($(CONFIG_IOMMU_DMA),y)
-+obj-$(CONFIG_PISA) += pisa-map.o
-+endif
- obj-$(CONFIG_PISA_META_KUNIT_TEST) += pisa-kunit.o
- obj-$(CONFIG_IOMMU_IO_PGTABLE) += io-pgtable.o
- obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 78742aeba932d..fba6084feac81 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -36,6 +36,7 @@
- #include <trace/events/swiotlb.h>
- 
- #include "dma-iommu.h"
-+#include "pisa-priv.h"
- #include "iommu-pages.h"
- #include "iommu-priv.h"
- 
-@@ -76,6 +77,8 @@ struct iommu_dma_cookie {
- 	struct iommu_domain *fq_domain;
- 	/* Options for dma-iommu use */
- 	struct iommu_dma_options options;
-+	/* IOVA window reserved for PISA pages. Nothing else can go here. */
-+	struct pisa_window win_pisa;
- };
- 
- struct iommu_dma_msi_cookie {
-@@ -1215,6 +1218,21 @@ static inline size_t iova_unaligned(struct iova_domain *iovad, phys_addr_t phys,
- 	return iova_offset(iovad, phys | size);
- }
- 
-+/* Return @domain's PISA window, or NULL if @domain cannot use PISA. */
-+struct pisa_window *pisa_dma_window(struct iommu_domain *domain)
-+{
-+	if (static_branch_unlikely(&iommu_deferred_attach_enabled) ||
-+	    !domain || domain->cookie_type != IOMMU_COOKIE_DMA_IOVA)
-+		return NULL;
-+
-+	return &domain->iova_cookie->win_pisa;
-+}
-+
-+struct iova_domain *pisa_dma_iovad(struct iommu_domain *domain)
-+{
-+	return pisa_dma_window(domain) ? &domain->iova_cookie->iovad : NULL;
-+}
-+
- dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 		enum dma_data_direction dir, unsigned long attrs)
- {
-diff --git a/drivers/iommu/dma-iommu.h b/drivers/iommu/dma-iommu.h
-index 040d002525632..f112b47396984 100644
---- a/drivers/iommu/dma-iommu.h
-+++ b/drivers/iommu/dma-iommu.h
-@@ -7,6 +7,9 @@
- 
- #include <linux/iommu.h>
- 
-+struct pisa_window;
-+struct iova_domain;
-+
- #ifdef CONFIG_IOMMU_DMA
- 
- void iommu_setup_dma_ops(struct device *dev, struct iommu_domain *domain);
-@@ -22,6 +25,9 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list);
- int iommu_dma_sw_msi(struct iommu_domain *domain, struct msi_desc *desc,
- 		     phys_addr_t msi_addr);
- 
-+struct iova_domain *pisa_dma_iovad(struct iommu_domain *domain);
-+struct pisa_window *pisa_dma_window(struct iommu_domain *domain);
-+
- extern bool iommu_dma_forcedac;
- 
- #else /* CONFIG_IOMMU_DMA */
-@@ -59,5 +65,15 @@ static inline int iommu_dma_sw_msi(struct iommu_domain *domain,
- 	return -ENODEV;
- }
- 
-+static inline struct iova_domain *pisa_dma_iovad(struct iommu_domain *domain)
-+{
-+	return NULL;
-+}
-+
-+static inline struct pisa_window *pisa_dma_window(struct iommu_domain *domain)
-+{
-+	return NULL;
-+}
-+
- #endif	/* CONFIG_IOMMU_DMA */
- #endif	/* __DMA_IOMMU_H */
 diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-index de8009fd6fff3..d7b73c3a6c0b6 100644
+index 25e4645310678..913706a503341 100644
 --- a/drivers/iommu/pisa-alloc.c
 +++ b/drivers/iommu/pisa-alloc.c
-@@ -84,10 +84,12 @@ static void pisa_release_page_rcu(struct rcu_head *head)
- 	/* Read @meta before freeing blocks; the frame can be reused immediately. */
+@@ -9,6 +9,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/cache.h>
++#include <linux/cpuhotplug.h>
+ #include <linux/device.h>
+ #include <linux/dma-direct.h>
+ #include <linux/dma-map-ops.h>
+@@ -24,6 +25,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/mutex.h>
+ #include <linux/page_owner.h>
++#include <linux/percpu.h>
+ #include <linux/pgalloc_tag.h>
+ #include <linux/rcupdate.h>
+ #include <linux/sched/mm.h>
+@@ -60,6 +62,10 @@ module_param_named(max_idle, pisa_max_idle, uint, 0644);
+ static unsigned int pisa_idle_ms __read_mostly = 200;
+ module_param_named(idle_ms, pisa_idle_ms, uint, 0644);
+ 
++/* Stop recycling partial-page blocks when free blocks exceed @pisa_compact PISA pages. */
++static unsigned int pisa_compact __read_mostly;
++module_param_named(compact, pisa_compact, uint, 0644);
++
+ /* All live allocators, protected by pisa_allocs_lock. */
+ static LIST_HEAD(pisa_allocs);
+ static DEFINE_RWLOCK(pisa_allocs_lock);
+@@ -90,7 +96,11 @@ static void pisa_release_page_rcu(struct rcu_head *head)
  	struct pisa_meta *meta = container_of(head, struct pisa_meta, rcu);
  	struct page *block, *page = pfn_to_page(pisa_meta_to_pfn(meta));
--	unsigned int i, order = meta->pa->order;
-+	unsigned int i, order = meta->pa->order, slot = meta->slot;
+ 	unsigned int i, order = meta->pa->order, slot = meta->slot;
++	unsigned long flags;
  
++	spin_lock_irqsave(&meta->pa->lock, flags);
++	meta->pa->stats.page_free_cnt++;
++	spin_unlock_irqrestore(&meta->pa->lock, flags);
  	WRITE_ONCE(meta->pa, NULL);
  
-+	/* The page has been unmapped from every domain by pisa_release_page() */
-+	pisa_slot_free(slot);
- 	atomic_long_dec(&pisa_nr_pages);
- 	for (i = 0; i < PISA_BLOCKS(order); i++) {
- 		block = page + (i << order);
-@@ -426,10 +428,16 @@ static struct pisa_meta *pisa_alloc_split_page(unsigned int order, gfp_t gfp, in
- 	if (IS_ERR(meta))
- 		return meta;
- 
-+	if (unlikely(pisa_slot_alloc(meta))) {
-+		pisa_release_page(meta);
-+		return ERR_PTR(-ENOSPC);
-+	}
-+
- 	page = pfn_to_page(pisa_meta_to_pfn(meta));
- 
- 	/* Fails with -EBUSY if a concurrent PFN walker holds a speculative ref. */
- 	if (split_page_compound(page, PISA_ORDER, order)) {
-+		pisa_slot_free(meta->slot);
- 		pisa_release_page(meta);
- 		pisa_alloc_backoff(nid, can_block);
- 		return ERR_PTR(-EBUSY);
-@@ -782,6 +790,8 @@ static int __init pisa_init(void)
- 	if (!pisa_max_pages)
- 		pisa_max_pages = max(totalram_pages() >> (PISA_ORDER + 3), 16UL);
- 
-+	pisa_slots_init();
-+
- 	/* Preallocate the supported per-node allocators. */
- 	for_each_node_state(nid, N_MEMORY) {
- 		for (i = 0; i < ARRAY_SIZE(cfg); i++) {
-diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-index 96bc8dbc38fb4..5a2e806e74654 100644
---- a/drivers/iommu/pisa-kunit.c
-+++ b/drivers/iommu/pisa-kunit.c
-@@ -10,6 +10,7 @@
- #include <linux/skbuff.h>
- #include <net/sock.h>
- 
-+#include "dma-iommu.h"
- #include "pisa-priv.h"
- 
- static void test_meta_init_and_roundtrip(struct kunit *test)
-@@ -179,6 +180,26 @@ static void test_alloc_and_recycle(struct kunit *test)
- 	WRITE_ONCE(pisa_max_pages, old_max);
+ 	/* Possibly still mapped by a device: leak it, still charged. */
+@@ -355,9 +365,223 @@ static void pisa_return_block_locked(struct pisa_alloc *pa, struct page *block,
+ 		__set_bit(idx, meta->dirty_bitmap);
+ 		meta->nr_dirty++;
+ 	}
++	pa->blocks_in_use--;
+ 	*release |= pisa_place_meta(meta);
  }
  
-+#ifdef CONFIG_IOMMU_DMA
-+static void test_window_helpers(struct kunit *test)
++/**
++ * pisa_page_can_recycle - Check if a block can stay cached in a caller pool
++ * @page: Block head page
++ *
++ * Called on the recycle fast path (per-CPU cache, TX page_frag, page_pool).
++ * Fast-path cost is a static-key branch plus a READ_ONCE() of module parameters
++ * (~1-2 ns when compaction is off); when enabled, it does a lockless RCU +
++ * metadata array lookup (~5-10 ns).
++ *
++ * Return: true if @page can be recycled in place, false if it should be
++ * released back to its allocator so sparse 2MB pages can drain.
++ */
++bool pisa_page_can_recycle(const struct page *page)
 +{
-+	struct pisa_window win = {};
++	unsigned long bpp, in_use, free_blocks, pfn;
++	const struct pisa_meta *meta;
++	const struct pisa_alloc *pa;
++	unsigned int compact;
++	bool ret = true;
++	u8 on_list;
++	long held;
 +
-+	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
++	if (!static_branch_unlikely(&pisa_key))
++		return true;
 +
-+	/* Empty window (base == 0) never owns any IOVA. */
-+	KUNIT_EXPECT_FALSE(test, is_pisa_iova(&win, 0));
-+	KUNIT_EXPECT_FALSE(test, is_pisa_iova(&win, SZ_4G));
++	compact = READ_ONCE(pisa_compact);
++	if (!compact)
++		return true;
 +
-+	win.base = SZ_4G;
-+	KUNIT_EXPECT_FALSE(test, is_pisa_iova(&win, SZ_4G - 1));
-+	KUNIT_EXPECT_TRUE(test, is_pisa_iova(&win, SZ_4G));
-+	KUNIT_EXPECT_TRUE(test, is_pisa_iova(&win, SZ_4G + pisa_window_size - 1));
-+	KUNIT_EXPECT_FALSE(test, is_pisa_iova(&win, SZ_4G + pisa_window_size));
++	pfn = page_to_pfn(page);
++	rcu_read_lock();
++	if (!is_pisa_pfn(pfn))
++		goto out;
++
++	meta = pisa_meta_of_pfn(pfn);
++	on_list = READ_ONCE(meta->on_list);
++	if (on_list == PISA_LIST_FULL || on_list == PISA_LIST_NONE)
++		goto out;
++
++	pa = meta->pa;
++	if (!pa)
++		goto out;
++
++	/* Do not drain the partial page currently being filled at list head. */
++	if (READ_ONCE(pa->partial_dirty.next) == &meta->list ||
++	    READ_ONCE(pa->partial.next) == &meta->list)
++		goto out;
++
++	bpp = PISA_BLOCKS(pa->order);
++	/* Do not drain dense pages that still have more than half their blocks in use. */
++	if (READ_ONCE(meta->nr_clean) + READ_ONCE(meta->nr_dirty) < (bpp >> 1))
++		goto out;
++
++	held = pisa_alloc_held_pages(pa);
++	in_use = READ_ONCE(pa->blocks_in_use);
++	free_blocks = held > 0 && (unsigned long)held * bpp > in_use ?
++		      (unsigned long)held * bpp - in_use : 0;
++
++	ret = free_blocks <= (unsigned long)compact * bpp;
++out:
++	rcu_read_unlock();
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pisa_page_can_recycle);
++
++/* Return @n freed blocks to @pa under a single acquisition of @pa->lock. */
++static void pisa_free_bulk(struct pisa_alloc *pa, struct page **blocks, unsigned int n)
++{
++	bool release = false;
++	unsigned long flags;
++	unsigned int i;
++
++	spin_lock_irqsave(&pa->lock, flags);
++	for (i = 0; i < n; i++) {
++		if (likely(!pisa_block_poisoned(pa, blocks[i])))
++			pisa_return_block_locked(pa, blocks[i], &release);
++	}
++	spin_unlock_irqrestore(&pa->lock, flags);
++
++	if (release)
++		pisa_schedule_reclaim();
 +}
 +
-+#endif /* CONFIG_IOMMU_DMA */
++/*
++ * Per-CPU block cache: each CPU caches up to PISA_PCP_HIGH free blocks
++ * (refcount 0, not in bitmaps), refilling and flushing in PISA_PCP_BATCH
++ * batches. Drained by the shrinker and CPU hotplug.
++ */
++
++/* Max blocks moved per per-CPU cache refill or flush (1..PISA_PCP_BATCH). */
++static unsigned int pisa_pcp_batch __read_mostly = PISA_PCP_BATCH;
++
++static int pisa_pcp_batch_set(const char *val, const struct kernel_param *kp)
++{
++	return param_set_uint_minmax(val, kp, 1, PISA_PCP_BATCH);
++}
++
++static const struct kernel_param_ops pisa_pcp_batch_ops = {
++	.set = pisa_pcp_batch_set,
++	.get = param_get_uint,
++};
++module_param_cb(pcp_batch, &pisa_pcp_batch_ops, &pisa_pcp_batch, 0644);
++
++/* Cache @n blocks at refcount 0 on this CPU, @n <= PISA_PCP_BATCH. */
++static void pisa_pcp_push(struct pisa_alloc *pa, struct page **blocks, unsigned int n)
++{
++	unsigned int i, batch = READ_ONCE(pisa_pcp_batch);
++	struct pisa_pcp *pcp;
++	unsigned long flags;
++
++	local_irq_save(flags);
++	pcp = this_cpu_ptr(pa->pcp);
++	spin_lock(&pcp->lock);
++	for (i = 0; i < n; i++) {
++		if (pcp->count == PISA_PCP_HIGH) {
++			/* Keep the most recently freed, likely still in cache. */
++			pisa_free_bulk(pa, pcp->blocks, batch);
++			pcp->count -= batch;
++			memmove(pcp->blocks, pcp->blocks + batch,
++				pcp->count * sizeof(*pcp->blocks));
++		}
++		pcp->blocks[pcp->count++] = blocks[i];
++	}
++	spin_unlock(&pcp->lock);
++	local_irq_restore(flags);
++}
++
++/* Take up to @nr blocks, at refcount 0, from this CPU's cache. */
++static unsigned int pisa_pcp_pop(struct pisa_alloc *pa, unsigned int nr, struct page **out)
++{
++	struct pisa_pcp *pcp;
++	unsigned int got = 0;
++	unsigned long flags;
++
++	local_irq_save(flags);
++	pcp = this_cpu_ptr(pa->pcp);
++	spin_lock(&pcp->lock);
++	while (got < nr && pcp->count)
++		out[got++] = pcp->blocks[--pcp->count];
++	spin_unlock(&pcp->lock);
++	local_irq_restore(flags);
++
++	return got;
++}
++
++/* Return the blocks @cpu caches for @pa. Process context. */
++static void pisa_pcp_drain_cpu(struct pisa_alloc *pa, int cpu)
++{
++	struct pisa_pcp *pcp = per_cpu_ptr(pa->pcp, cpu);
++	unsigned long flags;
++
++	spin_lock_irqsave(&pcp->lock, flags);
++	if (pcp->count) {
++		pisa_free_bulk(pa, pcp->blocks, pcp->count);
++		pcp->count = 0;
++	}
++	spin_unlock_irqrestore(&pcp->lock, flags);
++}
++
++/* Drain every non-empty CPU cache of @pa. */
++void pisa_pcp_drain(struct pisa_alloc *pa)
++{
++	int cpu;
++
++	/* Pairs with smp_store_release() in pisa_enable_pcp(). */
++	if (!smp_load_acquire(&pa->pcp))
++		return;
++	for_each_possible_cpu(cpu) {
++		if (!READ_ONCE(per_cpu_ptr(pa->pcp, cpu)->count))
++			continue;
++		pisa_pcp_drain_cpu(pa, cpu);
++	}
++}
++
++/* Blocks in @pa's caches, for shrinker and debugfs. */
++static unsigned long pisa_pcp_count(struct pisa_alloc *pa)
++{
++	unsigned long n = 0;
++	int cpu;
++
++	if (!pa->pcp)
++		return 0;
++	for_each_possible_cpu(cpu) {
++		/* A racy sum is good enough for reclaim and statistics. */
++		n += data_race(per_cpu_ptr(pa->pcp, cpu)->count);
++	}
++	return n;
++}
++
++/**
++ * pisa_enable_pcp - Put per-CPU block caches in front of an allocator
++ * @pa: Allocator to cache
++ *
++ * Return: 0, or -ENOMEM; @pa works without the cache.
++ */
++int pisa_enable_pcp(struct pisa_alloc *pa)
++{
++	struct pisa_pcp __percpu *pcp;
++	int cpu;
++
++	if (!pa || pa->pcp)
++		return 0;
++	pcp = alloc_percpu(struct pisa_pcp);
++	if (!pcp)
++		return -ENOMEM;
++	for_each_possible_cpu(cpu)
++		spin_lock_init(&per_cpu_ptr(pcp, cpu)->lock);
++	/* Publish initialized locks; readers depend on the pointer. */
++	if (cmpxchg_release(&pa->pcp, NULL, pcp))
++		free_percpu(pcp);
++	return 0;
++}
++
+ /*
+  * Return the predefined per-node allocator for (@nid, @order, @ro), or NULL.
+  */
+@@ -412,7 +636,9 @@ bool pisa_has_free_blocks_rx(const struct device *dev, unsigned int order, int n
+ 		return false;
+ 	pa = pisa_node_pa(nid, order, false);
+ 	return pa &&
+-	       (!list_empty_careful(&pa->partial) ||
++	       /* Pairs with cmpxchg_release() in pisa_enable_pcp(). */
++	       ((smp_load_acquire(&pa->pcp) && raw_cpu_read(pa->pcp->count)) ||
++		!list_empty_careful(&pa->partial) ||
+ 		!list_empty_careful(&pa->partial_dirty) ||
+ 		!list_empty_careful(&pa->idle));
+ }
+@@ -532,6 +758,7 @@ static unsigned int pisa_scan_bitmap(struct pisa_meta *meta, bool dirty,
+ 			break;
+ 	}
+ 	*countp -= used;
++	pa->blocks_in_use += used;
+ 	return got;
+ }
+ 
+@@ -638,6 +865,7 @@ static unsigned long __pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp, unsigne
+ 		meta->prot = pa->prot;
+ 		/* Set PISA_ACTIVE after @meta is fully set up. */
+ 		WRITE_ONCE(meta->flags, meta->flags | PISA_ACTIVE);
++		pa->stats.page_alloc_cnt++;
+ 	}
+ 	spin_unlock_irqrestore(&pa->lock, flags);
+ 
+@@ -656,6 +884,49 @@ static unsigned long __pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp, unsigne
+ 	return n;
+ }
+ 
++/* Allocate @nr_pages blocks through this CPU's cache, refilling in batches on miss. */
++static unsigned long pisa_pcp_alloc(struct pisa_alloc *pa, gfp_t gfp, unsigned long nr_pages,
++				    struct page **page_array, bool frozen)
++{
++	unsigned int pcp_batch = READ_ONCE(pisa_pcp_batch);
++	unsigned long got, n, i, j;
++
++	got = pisa_pcp_pop(pa, nr_pages, page_array);
++	if (got < nr_pages) {
++		if (nr_pages - got >= pcp_batch) {
++			got += __pisa_alloc_bulk(pa, gfp, nr_pages - got,
++						 page_array + got, false, true);
++		} else {
++			struct page *batch[PISA_PCP_BATCH];
++
++			n = __pisa_alloc_bulk(pa, gfp, pcp_batch, batch, false, true);
++			for (i = 0; i < n && got < nr_pages; i++)
++				page_array[got++] = batch[i];
++			if (i < n)
++				pisa_pcp_push(pa, batch + i, n - i);
++		}
++	}
++
++	for (i = j = 0; i < got; i++) {
++		struct page *block = page_array[i];
++
++		page_array[i] = NULL;
++		/* Poisoned while cached: leak it, as pisa_scan_bitmap() does. */
++		if (pisa_block_poisoned(pa, block))
++			continue;
++		pisa_block_prep(block);
++		if (want_init_on_alloc(gfp)) {
++			memset(page_address(block), 0, PAGE_SIZE << pa->order);
++			if (frozen) /* Order zeroing before caller publishes the page. */
++				smp_wmb();
++		}
++		if (!frozen)
++			page_ref_unfreeze(block, 1);
++		page_array[j++] = block;
++	}
++	return j;
++}
++
+ /**
+  * pisa_alloc_bulk - Allocate up to @nr_pages blocks from @pa
+  * @pa: Allocator to allocate from
+@@ -681,11 +952,16 @@ unsigned long pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp,
+ 			i++;
+ 			continue;
+ 		}
++
+ 		/* Fill the run of @n NULL entries at @i. */
+ 		for (n = 1; i + n < nr_pages && !page_array[i + n]; n++)
+ 			;
+-		got = __pisa_alloc_bulk(pa, gfp, n, page_array + i,
+-					want_init_on_alloc(gfp), frozen);
++		/* Pairs with smp_store_release() in pisa_enable_pcp(). */
++		if (smp_load_acquire(&pa->pcp))
++			got = pisa_pcp_alloc(pa, gfp, n, page_array + i, frozen);
++		else
++			got = __pisa_alloc_bulk(pa, gfp, n, page_array + i,
++						want_init_on_alloc(gfp), frozen);
+ 		i += got;
+ 		if (got < n)
+ 			break;
+@@ -733,10 +1009,13 @@ static struct page *pisa_take_contig(struct pisa_meta *meta, unsigned int nblock
+ 		for (i = 0; i < nblocks; i++) {
+ 			if (!pisa_block_poisoned(pa, page + i))
+ 				continue;
+-			if (__test_and_clear_bit(off + i, meta->clean_bitmap))
++			if (__test_and_clear_bit(off + i, meta->clean_bitmap)) {
+ 				meta->nr_clean--;
+-			else if (__test_and_clear_bit(off + i, meta->dirty_bitmap))
++				pa->blocks_in_use++;
++			} else if (__test_and_clear_bit(off + i, meta->dirty_bitmap)) {
+ 				meta->nr_dirty--;
++				pa->blocks_in_use++;
++			}
+ 			__set_bit(off + i, busy);
+ 			poisoned = true;
+ 			off += i + 1;
+@@ -760,6 +1039,7 @@ static struct page *pisa_take_contig(struct pisa_meta *meta, unsigned int nblock
+ 		pisa_block_prep(page + i);
+ 		page_ref_unfreeze(page + i, 1);
+ 	}
++	pa->blocks_in_use += nblocks;
+ 	pisa_place_meta(meta);
+ 	return page;
+ }
+@@ -806,6 +1086,7 @@ void *pisa_alloc_coherent(struct page **pagep, struct device *dev,
+ 	pa = pisa_node_pa(dev_to_node(dev), 0, false);
+ 	if (!pa)
+ 		return NULL;
++	pisa_pcp_drain(pa);
+ 
+ 	nblocks = size >> PAGE_SHIFT;
+ 	align_mask = (1UL << get_order(size)) - 1;
+@@ -830,6 +1111,7 @@ void *pisa_alloc_coherent(struct page **pagep, struct device *dev,
+ 		meta->pa = pa;
+ 		meta->prot = pa->prot;
+ 		WRITE_ONCE(meta->flags, meta->flags | PISA_ACTIVE);
++		pa->stats.page_alloc_cnt++;
+ 		page = pisa_take_contig(meta, nblocks, align_mask);
+ 		if (unlikely(!page))
+ 			should_release = pisa_place_meta(meta);
+@@ -876,6 +1158,17 @@ bool __pisa_free_page(struct page *page)
+ 	if (want_init_on_free())
+ 		memset(page_address(page), 0, PAGE_SIZE << pa->order);
+ 
++	/* Pairs with cmpxchg_release() in pisa_enable_pcp(). */
++	if (smp_load_acquire(&pa->pcp) && pa->nid == numa_mem_id() &&
++	    page_to_nid(page) == numa_mem_id()) {
++		if (pisa_page_can_recycle(page)) {
++			pisa_pcp_push(pa, &page, 1);
++			return true;
++		}
++		if (this_cpu_read(pa->pcp->count))
++			pisa_pcp_drain_cpu(pa, raw_smp_processor_id());
++	}
++
+ 	spin_lock_irqsave(&pa->lock, flags);
+ 	pisa_return_block_locked(pa, page, &should_release);
+ 	spin_unlock_irqrestore(&pa->lock, flags);
+@@ -889,15 +1182,17 @@ bool __pisa_free_page(struct page *page)
+ /* Shrinker: releases reservoir pages first, then idle allocator pages. */
+ static unsigned long pisa_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+-	unsigned long nr = pisa_reservoir_count();
++	unsigned long nr = pisa_reservoir_count() << PISA_ORDER;
+ 	struct pisa_alloc *pa;
+ 
+ 	read_lock(&pisa_allocs_lock);
+-	list_for_each_entry(pa, &pisa_allocs, node)
+-		nr += READ_ONCE(pa->num_idle_pages);
++	list_for_each_entry(pa, &pisa_allocs, node) {
++		nr += (unsigned long)READ_ONCE(pa->num_idle_pages) << PISA_ORDER;
++		nr += pisa_pcp_count(pa) << pa->order;
++	}
+ 	read_unlock(&pisa_allocs_lock);
+ 
+-	return nr << PISA_ORDER;
++	return nr;
+ }
+ 
+ /* Detach PISA pages from @list onto @release_list up to @nr_to_scan base pages. */
+@@ -930,6 +1225,8 @@ VISIBLE_IF_KUNIT unsigned long pisa_shrink_scan(struct shrinker *shrink, struct
+ 	if (freed < sc->nr_to_scan) {
+ 		read_lock(&pisa_allocs_lock);
+ 		list_for_each_entry(pa, &pisa_allocs, node) {
++			/* Cached blocks keep PISA pages from going idle. */
++			pisa_pcp_drain(pa);
+ 			freed += pisa_shrink_list(&pa->lock, &pa->idle,
+ 						  &pa->num_idle_pages, &release_list,
+ 						  sc->nr_to_scan - freed);
+@@ -952,15 +1249,30 @@ VISIBLE_IF_KUNIT unsigned long pisa_shrink_scan(struct shrinker *shrink, struct
+ 	return freed ?: SHRINK_STOP;
+ }
+ 
++/* Return the blocks a dead CPU cached, which nothing else would. */
++static int pisa_cpu_dead(unsigned int cpu)
++{
++	struct pisa_alloc *pa;
++
++	read_lock(&pisa_allocs_lock);
++	list_for_each_entry(pa, &pisa_allocs, node)
++		/* Pairs with smp_store_release() in pisa_enable_pcp(). */
++		if (smp_load_acquire(&pa->pcp))
++			pisa_pcp_drain_cpu(pa, cpu);
++	read_unlock(&pisa_allocs_lock);
++	return 0;
++}
++
+ static int __init pisa_init(void)
+ {
+ 	const struct {
+ 		u8 order;
+ 		bool ro;
++		bool pcp;
+ 	} cfg[] = {
+-		{ 0, false },
+-		{ 2, true },
+-		{ SKB_FRAG_PAGE_ORDER, true },
++		{ 0, false, true },
++		{ 2, true, false },
++		{ SKB_FRAG_PAGE_ORDER, true, true },
+ 	};
+ 	struct shrinker *shrink;
+ 	int nid, i;
+@@ -986,6 +1298,8 @@ static int __init pisa_init(void)
+ 			if (!pa)
+ 				continue;
+ 			pisa_set_name(pa, "pisa%s_o%u_n%d", ro ? "_ro" : "", order, nid);
++			if (cfg[i].pcp)
++				pisa_enable_pcp(pa);
+ 			pisa_nodes[nid].pa[ro][order] = pa;
+ 		}
+ 	}
+@@ -995,6 +1309,10 @@ static int __init pisa_init(void)
+ 	if (!pisa_wq)
+ 		pr_warn("pisa: no reclaim workqueue, falling back to system_wq\n");
+ 
++	if (cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN, "iommu/pisa:dead", NULL,
++				      pisa_cpu_dead) < 0)
++		pr_warn("pisa: no CPU hotplug callback, offline CPUs keep cached blocks\n");
++
+ 	shrink = shrinker_alloc(0, "pisa");
+ 	if (!shrink) {
+ 		pr_warn("pisa: shrinker registration failed\n");
+diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
+index 72ee8986b4802..5bbb540eb505e 100644
+--- a/drivers/iommu/pisa-kunit.c
++++ b/drivers/iommu/pisa-kunit.c
+@@ -482,6 +482,82 @@ static void test_dev_pisa_attrs(struct kunit *test)
+ 	device_unregister(dev);
+ }
+ 
++static void test_pcp_cache(struct kunit *test)
++{
++	struct page *blocks[PISA_PCP_HIGH + 1];
++	struct pisa_alloc *pa;
++	struct page *p1, *p2;
++	unsigned int i, n = 0;
++
++	KUNIT_EXPECT_EQ(test, pisa_enable_pcp(NULL), 0);
++	pa = pisa_node_pa(first_memory_node, 0, false);
++	KUNIT_ASSERT_NOT_NULL(test, pa);
++	KUNIT_ASSERT_EQ(test, pisa_enable_pcp(pa), 0);
++
++	p1 = pisa_alloc(pa, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p1);
++	__free_page(p1);
++	p2 = pisa_alloc(pa, GFP_KERNEL | __GFP_ZERO);
++	KUNIT_EXPECT_PTR_EQ(test, p2, p1);
++	if (p2)
++		__free_page(p2);
++
++	/* Overflowing PISA_PCP_HIGH flushes a batch back to the allocator. */
++	for (i = 0; i < ARRAY_SIZE(blocks); i++) {
++		blocks[i] = pisa_alloc(pa, GFP_KERNEL);
++		if (!blocks[i])
++			break;
++		n++;
++	}
++	KUNIT_EXPECT_EQ(test, n, (unsigned int)ARRAY_SIZE(blocks));
++	for (i = 0; i < n; i++)
++		__free_page(blocks[i]);
++}
++
++static void test_gfp_pisa(struct kunit *test)
++{
++	struct shrink_control sc = { .nr_to_scan = ULONG_MAX };
++	struct device dev = { .numa_node = first_memory_node };
++	struct page *p, *p_ro, *bulk[4] = {};
++	unsigned long n;
++	int i;
++
++	pisa_shrink_scan(NULL, &sc);
++	KUNIT_EXPECT_EQ(test, pisa_rx_gfp(NULL), 0);
++	KUNIT_EXPECT_EQ(test, pisa_rx_gfp(&dev), 0);
++	KUNIT_EXPECT_FALSE(test, pisa_has_free_blocks_rx(&dev, 0, first_memory_node));
++
++	dev.pisa_rx_bufs = true;
++	KUNIT_EXPECT_EQ(test, pisa_rx_gfp(&dev), __GFP_PISA_RW);
++
++	p = alloc_pages_node(first_memory_node, GFP_KERNEL | pisa_rx_gfp(&dev), 0);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	if (p) {
++		KUNIT_EXPECT_TRUE(test, is_pisa_page(p));
++		KUNIT_EXPECT_EQ(test, pisa_meta_of_pfn(page_to_pfn(p))->prot,
++				IOMMU_READ | IOMMU_WRITE);
++		__free_page(p);
++		KUNIT_EXPECT_TRUE(test, pisa_has_free_blocks_rx(&dev, 0, first_memory_node));
++	}
++
++	p_ro = alloc_pages(GFP_KERNEL | __GFP_COMP | __GFP_PISA_RO, 3);
++	KUNIT_ASSERT_NOT_NULL(test, p_ro);
++	if (p_ro) {
++		KUNIT_EXPECT_TRUE(test, is_pisa_page(p_ro));
++		KUNIT_EXPECT_EQ(test, pisa_meta_of_pfn(page_to_pfn(p_ro))->prot,
++				IOMMU_READ);
++		__free_pages(p_ro, 3);
++	}
++
++	n = alloc_pages_bulk_node(GFP_KERNEL | __GFP_PISA_RW, first_memory_node,
++				  ARRAY_SIZE(bulk), bulk);
++	KUNIT_EXPECT_EQ(test, n, ARRAY_SIZE(bulk));
++	for (i = 0; i < n; i++) {
++		KUNIT_EXPECT_TRUE(test, is_pisa_page(bulk[i]));
++		__free_page(bulk[i]);
++	}
++}
 +
  static void test_reservoir_and_scrubber(struct kunit *test)
  {
  	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-@@ -190,6 +211,9 @@ static struct kunit_case pisa_meta_test_cases[] = {
- 	KUNIT_CASE(test_meta_invalid_phys),
- 	KUNIT_CASE(test_meta_active_toggle),
- 	KUNIT_CASE(test_alloc_and_recycle),
-+#ifdef CONFIG_IOMMU_DMA
-+	KUNIT_CASE(test_window_helpers),
-+#endif
+@@ -499,6 +575,8 @@ static struct kunit_case pisa_meta_test_cases[] = {
+ #endif
+ 	KUNIT_CASE(test_coherent_alloc_and_free),
+ 	KUNIT_CASE(test_dev_pisa_attrs),
++	KUNIT_CASE(test_pcp_cache),
++	KUNIT_CASE(test_gfp_pisa),
  	KUNIT_CASE(test_reservoir_and_scrubber),
  	{}
  };
-diff --git a/drivers/iommu/pisa-map.c b/drivers/iommu/pisa-map.c
-new file mode 100644
-index 0000000000000..2e8d635dec34c
---- /dev/null
-+++ b/drivers/iommu/pisa-map.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * PISA per-domain IOVA window management and IOMMU mapping.
-+ * See Documentation/core-api/pisa.rst for the architecture overview.
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/cache.h>
-+#include <linux/mm.h>
-+#include <linux/moduleparam.h>
-+#include <linux/pisa.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+
-+#include "dma-iommu.h"
-+#include "pisa-priv.h"
-+
-+#undef MODULE_PARAM_PREFIX
-+#define MODULE_PARAM_PREFIX "pisa."
-+
-+/* Optional module param override for pisa_nr_slots (0 = auto: 2 * max_pages). */
-+static unsigned int pisa_cfg_slots __read_mostly;
-+module_param_named(slots, pisa_cfg_slots, uint, 0444);
-+
-+/*
-+ * Number of 2MB IOVA slots in each domain's window (computed at init from
-+ * pisa_cfg_slots or 2 * max_pages). Each active PISA page holds one slot
-+ * in [0, pisa_nr_slots) and maps at slot * PISA_SIZE in every domain's window.
-+ */
-+unsigned int pisa_nr_slots __read_mostly;
-+u64 pisa_window_size __read_mostly;
-+/* One bit per IOVA slot, set while an active PISA page holds the slot. */
-+static unsigned long *pisa_slot_bitmap __read_mostly;
-+/* Metadata of the PISA page backing each active slot, or NULL. */
-+static struct pisa_meta **pisa_slot2meta __read_mostly;
-+static unsigned int pisa_slot_hint;	/* no free slot below this */
-+/* Protects pisa_slot_bitmap and pisa_slot_hint. */
-+static DEFINE_SPINLOCK(pisa_slot_lock);
-+
-+/* Cost is typically low though the bitmap can be up to O(100K) bits on large systems. */
-+int pisa_slot_alloc(struct pisa_meta *meta)
-+{
-+	unsigned long flags;
-+	unsigned int slot;
-+
-+	spin_lock_irqsave(&pisa_slot_lock, flags);
-+	slot = find_next_zero_bit(pisa_slot_bitmap, pisa_nr_slots, pisa_slot_hint);
-+	if (slot < pisa_nr_slots) {
-+		__set_bit(slot, pisa_slot_bitmap);
-+		pisa_slot_hint = slot + 1;
-+		WRITE_ONCE(meta->slot, slot);
-+		WRITE_ONCE(pisa_slot2meta[slot], meta);
-+	}
-+	spin_unlock_irqrestore(&pisa_slot_lock, flags);
-+
-+	if (slot >= pisa_nr_slots)
-+		return -ENOSPC;
-+	return 0;
-+}
-+
-+/* Return @slot once no domain can translate it any more. */
-+void pisa_slot_free(unsigned int slot)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&pisa_slot_lock, flags);
-+	WRITE_ONCE(pisa_slot2meta[slot], NULL);
-+	__clear_bit(slot, pisa_slot_bitmap);
-+	if (slot < pisa_slot_hint)
-+		pisa_slot_hint = slot;
-+	spin_unlock_irqrestore(&pisa_slot_lock, flags);
-+}
-+
-+void __init pisa_slots_init(void)
-+{
-+	/* Fixed at boot: sizes every domain's window (default 2 * max_pages). */
-+	pisa_nr_slots = pisa_cfg_slots ?: min_t(unsigned long, 2 * pisa_max_pages, UINT_MAX >> 1);
-+	pisa_slot_bitmap = kvcalloc(BITS_TO_LONGS(pisa_nr_slots),
-+				    sizeof(unsigned long), GFP_KERNEL);
-+	pisa_slot2meta = kvcalloc(pisa_nr_slots, sizeof(*pisa_slot2meta), GFP_KERNEL);
-+	if (!pisa_slot_bitmap || !pisa_slot2meta) {
-+		kvfree(pisa_slot_bitmap);
-+		kvfree(pisa_slot2meta);
-+		pisa_slot_bitmap = NULL;
-+		pisa_slot2meta = NULL;
-+		pisa_nr_slots = 0;
-+	}
-+	/* Size of every domain's window: one 2MB page per slot. */
-+	pisa_window_size = (u64)pisa_nr_slots << PISA_SHIFT;
-+}
 diff --git a/drivers/iommu/pisa-priv.h b/drivers/iommu/pisa-priv.h
-index d5ea83745ba47..3ef6e51402ceb 100644
+index e5ca95d2654cd..8f87bdf7d4ee2 100644
 --- a/drivers/iommu/pisa-priv.h
 +++ b/drivers/iommu/pisa-priv.h
-@@ -13,12 +13,35 @@
- #include <linux/types.h>
- #include <linux/workqueue.h>
- 
-+/**
-+ * struct pisa_window - A domain's IOVA window reserved for PISA pages
-+ * @base: Window base IOVA (PISA_SIZE aligned), or 0 if unassigned
-+ * @domain_idx: Dense index + PISA_IDX_FIRST, or PISA_IDX_* sentinel while @base == 0
-+ * @idx_gen: Value of pisa_idx_gen when @domain_idx was set to NOIDX
-+ *
-+ * Lives in iommu_dma_cookie. Active PISA pages map at @base + slot * PISA_SIZE.
-+ */
-+struct pisa_window {
-+	dma_addr_t base;
-+	u16 domain_idx;
-+	u32 idx_gen;
-+};
-+
- #ifdef CONFIG_PISA
- 
- #define PISA_MAX_BLOCKS		512U
- 
- #define PISA_BLOCKS(order)	(1U << (PISA_ORDER - (order)))
- 
-+/* Sentinel values of pisa_window.domain_idx below PISA_IDX_FIRST. */
-+enum {
-+	PISA_IDX_NONE,	/* not attempted yet */
-+	PISA_IDX_NOHUGE,	/* @domain can never use PISA */
-+	PISA_IDX_NOWINDOW,	/* no IOVA range for the window */
-+	PISA_IDX_NOIDX,	/* all domain indices were in use */
-+	PISA_IDX_FIRST,	/* first valid domain index */
-+};
-+
- /*
+@@ -53,6 +53,7 @@ enum {
   * Lock hierarchy:
   * - pisa_allocs_lock (rwlock): outermost; protects pisa_allocs list.
-@@ -32,6 +55,7 @@
-  * @nr_clean:	Zeroed available blocks in @clean_bitmap
-  * @nr_dirty:	Dirty available blocks in @dirty_bitmap
-  * @on_list:	Current placement in @pa (enum pisa_meta_list)
-+ * @slot:	Dense IOVA slot index in every domain's window
-  * @pa:		Owning pisa_alloc (NULL for reservoir pages)
-  * @list:	Node in @pa lists or per-node reservoir (pisa_node.pages)
-  * @llnode:	Node in lockless pisa_free_list for async release to the buddy allocator
-@@ -44,6 +68,7 @@ struct pisa_meta {
- 	u16 nr_clean;
- 	u16 nr_dirty;
- 	u8 on_list;
-+	u32 slot;
- 	struct pisa_alloc *pa;
- 	struct list_head list;
+  * - pisa_meta_mutex (mutex): serializes pisa_meta_init() and page-table alloc.
++ * - pcp->lock (spinlock, irqsave): per-CPU block cache.
+  * - pa->lock (spinlock, irqsave): per-allocator lists, bitmaps, and stats.
+  * - pisa_domains[].map_lock (spinlock, irqsave): first-time iommu_map() in __pisa_map_phys().
+  * - pisa_domains_lock (spinlock, irqsave): leaf lock over pisa_domains[]/windows.
+@@ -105,11 +106,28 @@ static inline unsigned int pisa_meta_avail(const struct pisa_meta *meta)
+ 	return meta->nr_clean + meta->nr_dirty;
+ }
  
-@@ -172,4 +197,37 @@ unsigned long pisa_reservoir_count(void);
- unsigned long pisa_reservoir_shrink(struct list_head *release_list, unsigned long nr_to_scan);
++/* Per-CPU front cache of free blocks at refcount 0, see pisa_enable_pcp(). */
++#define PISA_PCP_HIGH	64U	/* blocks cached per CPU at most */
++#define PISA_PCP_BATCH	32U	/* blocks moved per refill or flush */
++
++struct pisa_pcp {
++	spinlock_t	lock;	/* by this CPU, or by a drain from any CPU */
++	unsigned int	count;
++	struct page	*blocks[PISA_PCP_HIGH];
++};
++
++/* Per-allocator statistics, see pisa_allocs_show(). */
++struct pisa_alloc_stats {
++	u64		page_alloc_cnt;
++	u64		page_free_cnt;
++};
++
+ /**
+  * struct pisa_alloc - Allocator managing 2MB-backed blocks of a fixed order
+- * @lock:	Spinlock protecting lists and block bitmaps
++ * @lock:	Spinlock protecting lists, block bitmaps, and u64 @stats
+  * @order:	Block order managed by this allocator (<= PISA_ORDER)
+  * @prot:	IOMMU_READ and/or IOMMU_WRITE from @dir passed to pisa_create()
++ * @pcp:	Per-CPU block caches, or NULL (see pisa_enable_pcp())
+  * @partial:	Partially used PISA pages with @nr_clean > 0
+  * @partial_dirty: Partially used PISA pages with @nr_clean == 0 and @nr_dirty > 0
+  * @idle:	Completely free PISA pages (reclaimable under pressure)
+@@ -117,15 +135,18 @@ static inline unsigned int pisa_meta_avail(const struct pisa_meta *meta)
+  * @num_idle_pages: Length of @idle
+  * @max_idle_pages: High watermark of @idle before async release to the buddy allocator
+  * @idle_jiffies: Timestamp (jiffies) when @idle last exceeded @max_idle_pages
++ * @blocks_in_use: Blocks handed out and not yet freed
+  * @nid:	NUMA node id
+  * @node:	Node in the global pisa_allocs list
+  * @name:	Debug name (defaults to caller of pisa_create())
++ * @stats:	Per-allocator statistics
+  */
+ struct pisa_alloc {
+ 	/* First cacheline: hot fields touched on block alloc and free. */
+ 	spinlock_t		lock;
+ 	u8			order;
+ 	u8			prot;
++	struct pisa_pcp __percpu *pcp;
+ 	struct list_head	partial;
+ 	struct list_head	partial_dirty;
+ 	struct list_head	idle;
+@@ -133,12 +154,22 @@ struct pisa_alloc {
+ 	unsigned int		num_idle_pages;
+ 	unsigned int		max_idle_pages;
+ 	unsigned long		idle_jiffies;
++	unsigned long		blocks_in_use;
+ 	/* Cold. */
+ 	int			nid;
+ 	struct list_head	node;
+ 	char			name[48];
++	struct pisa_alloc_stats	stats;
+ } ____cacheline_aligned;
  
- #endif /* CONFIG_PISA */
-+
-+#if defined(CONFIG_PISA) && defined(CONFIG_IOMMU_DMA)
-+
-+/* Size in bytes of every domain's PISA IOVA window, fixed at boot. */
-+extern u64 pisa_window_size;
-+extern unsigned int pisa_nr_slots;
-+
-+void pisa_slots_init(void);
-+int pisa_slot_alloc(struct pisa_meta *meta);
-+void pisa_slot_free(unsigned int slot);
-+
-+/* Return true if @dma falls within @win's reserved PISA IOVA window. */
-+static inline bool is_pisa_iova(const struct pisa_window *win, dma_addr_t dma)
++/* Active non-idle PISA pages held by @pa, for soft compaction checks. */
++static inline long pisa_alloc_held_pages(const struct pisa_alloc *pa)
 +{
-+	/* Acquire pairs with the release of @base in pisa_window_assign(). */
-+	dma_addr_t base = smp_load_acquire(&win->base);
-+
-+	return base && dma - base < pisa_window_size;
++	return (long)(READ_ONCE(pa->stats.page_alloc_cnt) -
++		      READ_ONCE(pa->stats.page_free_cnt)) -
++	       READ_ONCE(pa->num_idle_pages);
 +}
 +
-+#else /* !CONFIG_PISA || !CONFIG_IOMMU_DMA */
-+
-+#define pisa_nr_slots 0U
-+static inline void pisa_slots_init(void) {}
-+static inline int pisa_slot_alloc(struct pisa_meta *meta) { return 0; }
-+static inline void pisa_slot_free(unsigned int slot) {}
-+
-+static inline bool is_pisa_iova(const struct pisa_window *win, dma_addr_t dma)
+ /* Per-NUMA-node PISA state. */
+ struct pisa_node {
+ 	unsigned long		next_alloc;	/* atomic alloc backoff jiffies */
+@@ -202,6 +233,8 @@ struct pisa_alloc *pisa_create(int nid, unsigned int order, enum dma_data_direct
+ struct pisa_alloc *pisa_node_pa(int nid, unsigned int order, bool ro);
+ __printf(2, 3)
+ void pisa_set_name(struct pisa_alloc *pa, const char *fmt, ...);
++int pisa_enable_pcp(struct pisa_alloc *pa);
++void pisa_pcp_drain(struct pisa_alloc *pa);
+ void pisa_release_page(struct pisa_meta *meta);
+ unsigned long pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp,
+ 			      unsigned long nr_pages, struct page **page_array, bool frozen);
+diff --git a/include/linux/pisa.h b/include/linux/pisa.h
+index a6556aa403a09..cdf176464d74a 100644
+--- a/include/linux/pisa.h
++++ b/include/linux/pisa.h
+@@ -100,6 +100,7 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order,
+ 				    bool frozen);
+ 
+ bool pisa_has_free_blocks_rx(const struct device *dev, unsigned int order, int nid);
++bool pisa_page_can_recycle(const struct page *page);
+ 
+ static inline gfp_t pisa_rx_gfp(const struct device *dev)
+ {
+@@ -139,6 +140,11 @@ static inline bool pisa_free_coherent(struct page *page, size_t size)
+ 	return false;
+ }
+ 
++static inline bool pisa_page_can_recycle(const struct page *page)
 +{
-+	return false;
++	return true;
 +}
 +
-+#endif /* CONFIG_PISA && CONFIG_IOMMU_DMA */
- #endif /* _DRIVERS_IOMMU_PISA_PRIV_H */
+ static inline unsigned long
+ pisa_alloc_pages_bulk(gfp_t gfp, unsigned int order, int preferred_nid,
+ 		      nodemask_t *nodemask, int nr_pages,
 -- 
 2.56.0.542.g3ef89b7020-goog
 
