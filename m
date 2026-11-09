@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.66
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.27
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794224947;
-	b=c5lRSNUzxHSRBpcf3TRPQB4Xz+wFlmuF0AN7+86x4l5EdrB+aGPAeupiYkZ9yjExar2Y
-	 2IhyJ+Ks/nLFkCBx7CF3k8xoUeKygDcB8i17kiFChfHlc0B1KQLSF8xl2HjgVSWWgMxZW
-	 LHiuD/QcPXy5pcBRNNMil1mN5cNGT0AkJg29GLfNOpx7hlmIpD4CSNZ0SIk4DgszAu3+k
-	 +y8opIumAp+J3T9cdzbpxo4CPtPY5887OHEjZP3090IFiQ1cdbyLx7tCEgi4Np6wyPXwq
-	 5heFMUXsA/kvAjzwrSem5VH33kSvl1iIKp941NhiSyldHvY2T1Om2IkauruzVhZmSMA==
+	t=1794224962;
+	b=3cvvbwwrLF1ynwncPYGWIT/p9WkKpeMm4LNBi4zlHp0IE1r6AnCyH+zNjZFoJ6YvVy+H
+	 jSy5j63UPxRNv48pAISMpSWyFVP6pQwH7x5gmARzBUFkTMpknV3ydXOBEg/SE5Dwg6OMf
+	 So5OWnjiE0IJxNnymYi7JKKCtQyCLAvpeNMACxmSJKxOOfpELa5sLZRuCH72iV4IoWwQy
+	 7kGIdTKtNbYJ7fJ8/Vor1r5OWYyvPtAfPRDCUrV4ILq+UHNdLJzL6p0nNbpBbulw2M6+x
+	 knoqOcqOVluGE5mT2c7dNPiq0djan5d2xJYi+uJxJlP+dNZuX9jtjfSr5Esh79sLIDw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794224947;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794224962;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
@@ -26,75 +26,74 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=prKzPEmg7TNwL7izr5fVotKy+qjy0eXdDoWy49pfBCw=;
-	b=bHkZs1ZMOp11TJ9KX+Rji2gF2iabbCmftprhNpdtTdCl+t+XGAQq/+Ui1BbJb1FOtTnr
-	 c5n/1S/GJOOxzb3ZfdF4aN1RFn8IXf6KGHg7O1c9jC36T9XNIFT8GRXJdagLQiFdOrHOq
-	 T4mjFYNxVKH1lXTe8CBo0ha5Bu0YA+fvfBO+JhSlwLsUL59kEqbUSNT8qNBlx3HNJPKL5
-	 azTZYqeWCQ6nzpfdxQZBBd3z5vFT0vt9Ts3tKbC88V50z+QtLkz42znA+MhDcE8wk5u65
-	 aB91rSUgDPhxZvRBttXBsMzZvahQQXo4dAUdnJxIS+Q34hTvzah09e507CQbCB9XceQ==
+	bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
+	b=nh5zanfRMUmDiXxBpWZD4kHNNDTZ/Z21+m15rttGwq2QPPgdIiCwo4qr3RN7F3sW4V78
+	 IofNdZ3+Fb+8nOfuhjJ4sBQCP+FQ6ODtVQyoz4duamSxiCK8xFkR+X2/j+MDHCSYIoeNx
+	 1q2qeY8hktJ1ArtFRy13sqpOPtD1mysOqX8eNploclNPbvZaZarqoGrzSJ3FB0kRJ4BTG
+	 Vf3J3/lX1Uoj5wBqPfJTZJRPbr8KsMmm5msOcVKYIkQm+UUgPwmiZf5E9+SoCQd/T+DBO
+	 B63xxs9ycaba2kHc9DpehVvEh1ruXAmXk02StmVvBekXjpML8P+jDcP8XkMmtZtj8eA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CDn8giow;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.66
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010066.outbound.protection.outlook.com [52.101.61.66])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=fGRjsXs1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.27
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EC5606A321;
-	Mon,  9 Nov 2026 11:49:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50EC5606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15866606A323;
+	Mon,  9 Nov 2026 11:49:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15866606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CDn8giow
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=fGRjsXs1
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qhFG8NSkF3TsV+lyoNJoxi9s7n/JTmpFUI82wVqcCuaXeJxO1EPSPhGa8An99AiJC/Ni7ub0do8GPyiPcS+DGo013o3Dvv50Ve/3int5VOsTJy5ryTjo4PaD9mnAQ7cShDIlyGxY4GbSkSGd/BQ57DZ64G+GoV6j1HNuGUylKbPtM4HClV15ycuv81CO4mEaF6ecJtJLM8QaODCsacvJ9qW+KBvtoDnidixJ8DNjUY5GIFdIiV0VKigxgtR2IGRd3dxvQAdu/euwH2kxDO5uzBp4PQNc2B347muawBO0lSvk4/n4gmoC6se/jL6blnoOloqWebEu1EKBJjhthJr82w==
+ b=rxdXB8gzyufXFlrjB+3NTH2SSkAW1yXD2fyHD6DxJ5ubEhiKM2Af5EDQqux9yEu5WUll8eAuovdLAgpFDLwk13Z6oLqyvdYhiCz6pJv5i5nS6R0vRqZq+HhEZZ6D0IBISDAAsCcq8iKACmCfZCBzbQCT8PJLXQt86JItyUUa6kxwVZ/R5gUeO61oSFKZ4FNur7cVQPVsfwIA/Phvirv6eGmmIOyITO/v7MPS3tTlUpX2DCYDZCq+cYWuK+K+qzRvbKEGIreYAugPL0kJk8pFkl1WUj9O0aRJ6qAFQ2zKiZJzMTBhqQz1XeDXNMJwYGNsOIpshxzUTC8J+cHfehQAsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=prKzPEmg7TNwL7izr5fVotKy+qjy0eXdDoWy49pfBCw=;
- b=NtNPrM4G0OiCtEuZr9WLC4IJkGWGhsBhVatbP6Oj9K6oZnQAP7406i3tc5dZEyojuEQNgWtarizBxN3SqHKSksTC08G7WUoDwRfYJYRHGzHeU8QD3XqCGLOlb4eRcAcFrFEfnDgy9Yk9m2C3Xc7JOiGL5G1F2+HsMqz9jAS1/HIV982MxYB0eEogIfbTFYX/ZpJLdkKt1EHVL83Lm/3KsBYenI1HqNxf9ew65ExJ3aU6UAr4FC/2gMO0DZ9ExuFKwW2uaQHlDgQ91BD6oS//kBTFhPSsJQZ2HRRWz7mJwFbitRVSIEj0rhMk3ObE+e07ACmtfdfmSrzfiDmpxcBVzA==
+ bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
+ b=WxQQ9MFoUcSHIj+ZHldHkNVcYqt9bJGXoIYrmqXBqbpYunDdYUsWsGzHuyve4hHoPq17h6TEwEiLpTSA0yRSBIZlw/tOe7j8Yi36W5y18DyPWVdcVp8LZMvBPd8o72Nz7tIxjdyn3o9Xya0ipTPlyZLZYueXdwxTF3G4qylPrvWKnJK8vxdPuo9jB4w5FicdFMrN59vn2l0ElSce62z/84ydHaJamRq41VyxttKJYXDXWpigK3mE+FCT3oyk0YOlI3Co/tfXni8xgcQ772TjpVjuFcD0ofoKOSI5U+akqpsT6CM+Tw6XgNJ18fAepHCEA6ohMUk3ajvXEO9Ij5wwrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=everpuredata.com smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=everpuredata.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=prKzPEmg7TNwL7izr5fVotKy+qjy0eXdDoWy49pfBCw=;
- b=CDn8giowiifDvASa++Fc8t3H+nIbqnLrlq4/UsK2OumQh5fdPsjouC8Y1XieaQ3YLwiMDBN+0J6gA2Tp6f6pHTvvK+I298JXKb/vgGF9F+Gpz4njL5uUUogLBShIvVPfoLQwadUyCsQuSY3K4GbGXEjoMtSqlSFJ61btjdyegJsT5ZYe7JZlxKINdyjVNI3GTQf7owhyfUA0ovDZ050mFCwK8UF2trH3UdTTBDdEppOmzaISQITVBBci89wyUWzUQ0IQe17mpEA2LxKO0cb0NoLYHTbHQPPFDvwbpaFBk1Kn7ouFgnfjVTi95kWs5NeJxD4O90n+V+SHeIQUtGX5CQ==
-Received: from BN9PR03CA0392.namprd03.prod.outlook.com (2603:10b6:408:111::7)
- by DM4PR12MB7718.namprd12.prod.outlook.com (2603:10b6:8:102::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 11:48:53 +0000
-Received: from BN3PEPF00022BCB.namprd03.prod.outlook.com
- (2603:10b6:408:111:cafe::40) by BN9PR03CA0392.outlook.office365.com
- (2603:10b6:408:111::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
- Nov 2026 11:48:53 +0000
+ bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
+ b=fGRjsXs1E9ZtUJLw32truQVurGqGXlIdzPFJPpBGflrygi2CQJ+e5g/twxYJxdptpTqmB3b4weTUD4MM2y44vRrRvORAoIGjK9fZC9+NtBzvCoH4zpp3hzKqpXVvmg6OFC+TLEMJ/wmuNUXTpNFQ5/SKDs22yV5N80OmTT58jWUuiWwu4i10qqPTGPy/lHXU1Ml1w8ldatCZkENx93yyW/u7cFMARrR3aQwdeoJMgloVmVC4jTieDXzGGYLoqfZPlxpqnchBaIqTI38aFCigBAN4MfO5xL5HEwlYm0XPQ+CLvt0N/GtfVKToC1hP5bZ9qyCpyUEEBirQpa/S8g5V4A==
+Received: from CH0PR03CA0064.namprd03.prod.outlook.com (2603:10b6:610:cc::9)
+ by DS0PR12MB6632.namprd12.prod.outlook.com (2603:10b6:8:d0::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.12; Mon, 9 Nov 2026 11:49:11 +0000
+Received: from CH1PEPF0000A346.namprd04.prod.outlook.com
+ (2603:10b6:610:cc:cafe::30) by CH0PR03CA0064.outlook.office365.com
+ (2603:10b6:610:cc::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
+ Nov 2026 11:49:11 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN3PEPF00022BCB.mail.protection.outlook.com (10.167.248.168) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH1PEPF0000A346.mail.protection.outlook.com (10.167.244.11) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 11:48:53 +0000
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 11:49:11 +0000
 Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 03:48:36 -0800
+ 2026 03:48:57 -0800
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
  (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 03:48:35 -0800
+ 2026 03:48:56 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
  with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Mon, 9 Nov
- 2026 03:48:25 -0800
+ 2026 03:48:46 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: Rishikesh Jethwani <rjethwani@everpuredata.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
@@ -120,9 +119,9 @@ CC: Alexander Graf <graf@amazon.com>, Aviad Yehezkel <aviadye@mellanox.com>,
 	<sdf.kernel@gmail.com>, Stefano Garzarella <sgarzare@redhat.com>, Tariq
  Toukan <tariqt@mellanox.com>, Tariq Toukan <tariqt@nvidia.com>, Wang Zhan
 	<wang.zhan@smartx.com>, "William Tu" <witu@nvidia.com>
-Subject: [RFC net-next 1/7] net/mlx5e: kTLS, Hold a dropped skb until its posted WQEs complete
-Date: Mon, 9 Nov 2026 13:47:28 +0200
-Message-ID: <20261109114734.2087878-2-tariqt@nvidia.com>
+Subject: [RFC net-next 3/7] net/mlx5e: kTLS, Post TX context params only for skbs that use them
+Date: Mon, 9 Nov 2026 13:47:30 +0200
+Message-ID: <20261109114734.2087878-4-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20261109114734.2087878-1-tariqt@nvidia.com>
 References: <20261109114734.2087878-1-tariqt@nvidia.com>
@@ -140,196 +139,176 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCB:EE_|DM4PR12MB7718:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42990cff-feb0-4704-62a9-08df3e576dba
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A346:EE_|DS0PR12MB6632:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5372335d-dd0f-4c89-1ede-08df3e5778aa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|376014|7416014|1800799024|18002099003|22082099003|6133799003|10067099003|13003099007|921020|56012099006|11063799006|261028144727099003|261026121527099003|261102123227099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|261026140227099003|261009223027099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|7416014|376014|1800799024|22082099003|18002099003|10067099003|13003099007|921020|5023799004|11063799006|261028144727099003|261102123227099003|261022105027099003|261022075727099003|56012099006|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	5XHZrP8UjJXgwHz4c7uilZwVhSdbjbuqf95QI44bdI1ElURV11qw2Ktm394oi49jhEqdGqZ+/PUK4mrgsgi2oohukrXO5rIyw54tA0pM/4jSWGrL96n+iIdBa+9pZpjNfrxpeNHusS5dUm8Jq2a7NDy34kzNtFhAjoZonC8n4C9ukZEst+ELJ4VgpFcWc9jgpqNV7Djbg4mSDEUItDgekjos/poaNbSY5JGIc79weyJ0ac9lESqMTnL2ALhiDVHkKYP+HgHrXvqWhvIjwCa41R0cV4hHG9kmfWX5NKhZoO4tGC2lCsb6RHBvZdwsTdqU/eX4KacWG8id4ytkCmLlYj5rdrbwFgfAAqeVwNwnYX+Hm67nxNRKxiVdHW68VZbWgYTby3jZCjKvVl4BSqkWNTG3j4oXaDq3OdhvuQusM2vCwRGFenFbL6PKiY/sNaQhOPV9HliWQK4TesUrjFhT8acnzm9yj0KwW1HRMafMM1K23LAwVEbKETNpEiQGmQjZegtbOMHsro/ArfGz4uk3QtJ43Q6lBtpv1JfFbohiqlV/EgFiNgOcI3/Ys+0jeFQEFszt7cwSzZakdmEEfnrcGda55yZxRRqzHKisUu+arnGdCumWg7d0qP1wpzu0nyoV4DUe9+NsaxhOTBALzRCFSeRQB3yc+ydqnk9VotlCaoue0Ad/be98YAxD6V10c4YP8To3UVM5Mbei9nn5Irh7ww5Tc+z95NIUnZA6S932SrXFDYZq15v9GjqdnuseqSPh
+	30MdMcUfrXu3+1UR1UhXCjZQiIzH4/7kxy9HxvTsQzZmUxk1OoZE9PLLcLxU6abJeDsD6pgv/BFaUIgUmodbZwP+thVkYkBheJMLkH6PgCyOSaxKCO+bcRtDPi2DUc7EIiqbMzNW3R+luvPEUuhsfIRExys8048McGtIm8KOAoQGg/5S02x7aL7bTBMaHxhVl3Puo71Zjnfx6DixqlYnm+MF/8XcJzZLWZy61QTY5wS0o/JjRXJrdfTFluXQdAa0Gl5uuWzj/dlb6A76yilEqmAqG0d4mIv5fAfTU5qzz0GpWfjb0YD1euQtLT+O0Qq65L8o3Jee+dHOXhyP6mbmurMXXeFWqu2/Y6uUBEoX7I35yCNJQep+chvSvSZlPDoJBzkQ9hMKNp5KI1dBfPgg4saZmAF8BDmJc22djDoTafVo4NYCgif2Xg14PUMa5GXwUyctktMFDL+dukVVtgIp0CjKtL2YKhTGIKhFp0BORBc99GCi8xz7JODQdQYIlQlYyQ1dJxQoq6ecoihdAoBSCVadLMftk9512KWQDQ6btHEJDO2VMJ3LoqxQRg4Ct32f4l1vNm1eEsTkKICs8+vPeRRKUUXK21sybcSoGztRwtWI2QdDGci/GYWiPjfwxGBNOmCIRQhPmYv/wa1qbvBP5L9W1FS72h9IX1pHL5b97ia3PUVfejBN1uC+Af1ZkA1g7YLYiVLyEjfL1h21odSKzsluwRa6w2S5ZJzM/S9Z0FFCxEBuaBlTWy8wi7vJKgdT
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(6133799003)(10067099003)(13003099007)(921020)(56012099006)(11063799006)(261028144727099003)(261026121527099003)(261102123227099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(7416014)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(13003099007)(921020)(5023799004)(11063799006)(261028144727099003)(261102123227099003)(261022105027099003)(261022075727099003)(56012099006)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	CAb7mZJXRXGaceWPQ6kj2ChTxf9y3PdchfH9MptdBM71EgJWNY5/OF9Ehvqdt9FON2MqXUjIG1/PoXD9PS4IVcK4g+ogtB/YmmWZiUBUtrs6TAk/7qmVQIxzsxfEiP5mL7EBzLD4X0nRFbne9bIbaz8py89pt07vPwQrhpKQMNVphvvAxk+E9xa21ILI0NxxFeEI1xcAKvlGBR+laDtmkhgR4a9S3W9QBGOObq06irYaHRqutdejmvQw8NGOTtFajloxGJSfVha+P6ooqG0l60icY/As8CTKrnID8xnwPvxDRAkf2Yu8x+Dov3O7V7LwyojOA4idBAvrQM50vfL5Wmqr9dQsF0n4gpm87YJ5fSuKDpEdz4fXf2IKLfFRo3q4KnosA38cq33stYW6LAGy49g8bx2yrgFgIt5SUwHDOqwvEMjWBD1FKJ9bz2HRHiYb
+	QFNaQTEn3zaz+7hJRmjmaNP23X5NlVzxxMvldJwQlY7T0x0Z1H87bP5xQviQp4WEu99na3xNT/5cMgz4SeaXc78CeI9g2Z5DbR9x5Mk8ERpdzh9JWjOrjQPpyIOmf+C0W9kPjYr2lA6tW0msHdShcrsfFCq6KdiB1IZolXlTgdWrY6NTgfcKL8c48j0QEkwspEASWBWgOgc8jCmUgfqjIl6HJYRTzrw1WS5KO2u3WIkerLNnTPietOgE/mmUgxQkigIZfwlZMOTY4piwemcvKDOeUOHYc/Bx4bVBRnCQ5cT0JxOQtrOAC+xe3BWUB6eAj0jPGU4ORZIYMMqEmj++VhS5CPY035hLfAZbRMWOOqAIndF0DZkNM23ChWl2fRLJtN4+Jzd2VZZMP1mhr5v9QwdSgHfWI2BUu6p+koggtiqf5QWY9vXWAmzYzs55gRta
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:48:53.2528
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:49:11.6352
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42990cff-feb0-4704-62a9-08df3e576dba
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5372335d-dd0f-4c89-1ede-08df3e5778aa
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BCB.namprd03.prod.outlook.com
+	CH1PEPF0000A346.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7718
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6632
 
-mlx5e_ktls_del_tx() releases a TX connection's TIS and DEK with no
-completion tracking: the DEK is destroyed, and the TIS is returned to
-the recycling pool, right away. This relies on the socket lifetime:
-tls_dev_del() is called only once the socket is destructed, i.e. after
-sk_wmem_alloc drained, so every skb of the connection was completed,
-and with it every WQE posted ahead of it on the same SQ; or from
-tls_device_down(), after the channels were closed.
+A new kTLS TX context is installed by static and progress params that
+the driver posts for the connection's first skb:
+mlx5e_ktls_handle_tx_skb() posts them before it checks the skb's
+sequence. That skb may not use the context though: a pass-through skb,
+which ends before the offload start marker (SKIP_NO_DATA), e.g. TCP data
+that was queued before the socket was offloaded.
 
-This does not cover the error path: an skb can be dropped after
-parameter or DUMP WQEs were posted on its behalf, in the kTLS TX
-handling, or when DMA mapping for its SEND fails. These WQEs request
-no completion of their own and hold no socket memory, so freeing the
-skb can let the socket be destructed while they are pending. The TIS
-can then be handed to another connection, and the DEK destroyed,
-before they execute.
+A pass-through skb carries no data for the device to encrypt, and is not
+tied to the TX queue of the connection's data. For example, when netem
+on its TX queue delays it, skb_orphan_partial() releases its
+sk_wmem_alloc charge, which lets the socket move to another TX queue
+meanwhile. The params are then posted on one SQ and the connection's
+data on another, with no ordering between them, and the data can be
+encrypted before the TIS is installed, e.g. with the key of the previous
+connection that used a TIS from the pool.
 
-Defer freeing such an skb to the completion of the NOP that
-mlx5e_tx_flush() posts: completions are in order, so all WQEs posted
-before the NOP are retired by then. The SEND error paths already post
-this NOP; post it in the kTLS error path too. In the SEND error paths,
-only skbs of kTLS offloaded sockets are held.
+Post the params only for an skb that uses the context: an in-order skb
+posts them as before, and a resynced one gets a full resync, which posts
+the static params regardless of rec_seq, as it may match while the TIS
+still holds the params of its previous user. A dropped skb leaves them
+pending for the next skb.
 
-Found by LLM-assisted code inspection, while answering a question on
-kTLS TX TIS reuse for TLS 1.3 rekey on netdev.
+A pass-through skb does not use the context at all. Only data that the
+device encrypts is sent with skb->decrypted set, so skip kTLS handling
+for an skb without it, before its sequence is looked at: a pass-through
+skb held long enough can alias the sequence of a live record.
 
-Reproduced on ConnectX-6 Dx with test-only code that fails the SEND DMA
-mapping of every 2nd skb of short kTLS connections, which reset 0-1 s
-after sending 32 KB, while bulk kTLS traffic at 10 Mb/s per TX queue
-keeps the SQs backlogged, and that counts TX contexts released while
-WQEs posted for them are still pending on their SQ: 32 in 60 seconds,
-their TIS returned to the pool and their DEK destroyed early, against
-none in the same run without the drops. With this patch alone, 11188
-drops released none early.
+Pointed out by Rishikesh Jethwani for skbs that netem delays, while
+discussing kTLS TX TIS reuse for TLS 1.3 rekey on netdev. He also
+suggested the skb_is_decrypted() check.
+
+Reproduced on ConnectX-6 Dx with netem, and a 10 Mb/s rate limit, on
+half of the TX queues, and connections that send 1 MB of plaintext
+before installing kTLS TX, then stream pattern data to a software kTLS
+receiver that checks every byte, hopping between CPUs every 1 ms: 2 of
+323 connections failed at the first record after the plaintext, and the
+device failed another such record, which ran before its params, with a
+local protection error. With this patch, none of 400 connections failed.
+netem on all TX queues does not reproduce it: it fully orphans the
+offloaded data, which validate_xmit_skb() then drops.
 
 Fixes: d2ead1f360e8 ("net/mlx5e: Add kTLS TX HW offload support")
-Link: https://lore.kernel.org/netdev/20261022181751.1349984-1-rjethwani@purestorage.com/
+Reported-by: Rishikesh Jethwani <rjethwani@everpuredata.com>
+Closes: https://lore.kernel.org/netdev/CAKaoeS1hj9XuM7ojLBCjGA=EXc2M-b+eRjC2Sk=8L_8XYeJ18w@mail.gmail.com/
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/txrx.h |  1 +
- .../mellanox/mlx5/core/en_accel/ktls_tx.c     |  3 +-
- .../net/ethernet/mellanox/mlx5/core/en_tx.c   | 44 +++++++++++++++----
- 3 files changed, 39 insertions(+), 9 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ktls_tx.c     | 40 +++++++++----------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-index f2a8453d8dce..24e91279243e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-@@ -377,6 +377,7 @@ mlx5e_tx_dma_unmap(struct device *pdev, struct mlx5e_sq_dma *dma)
- }
- 
- void mlx5e_tx_mpwqe_ensure_complete(struct mlx5e_txqsq *sq);
-+void mlx5e_tx_flush(struct mlx5e_txqsq *sq, struct sk_buff *skb);
- 
- static inline bool mlx5e_tx_mpwqe_is_full(struct mlx5e_tx_mpwqe *session)
- {
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-index 29769fc99c4b..31f61f2ba824 100644
+index a4aa58ef1dda..0bd4d961e704 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-@@ -890,7 +890,8 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
- 	return true;
- 
- err_out:
--	dev_kfree_skb_any(skb);
-+	/* Parameter and DUMP WQEs may have been posted for the skb. */
-+	mlx5e_tx_flush(sq, skb);
- 	return false;
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index 14479da98f42..eb8a7a89b120 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -348,7 +348,11 @@ static void mlx5e_tx_check_stop(struct mlx5e_txqsq *sq)
- 	}
- }
- 
--static void mlx5e_tx_flush(struct mlx5e_txqsq *sq)
-+/* Post a NOP that requests a completion, and ring the doorbell. A given
-+ * skb is held by the NOP until all WQEs posted ahead of it are retired:
-+ * WQEs posted for it, e.g. kTLS ones, may need its socket to stay alive.
-+ */
-+void mlx5e_tx_flush(struct mlx5e_txqsq *sq, struct sk_buff *skb)
- {
- 	struct mlx5e_tx_wqe_info *wi;
- 	struct mlx5e_tx_wqe *wqe;
-@@ -361,13 +365,35 @@ static void mlx5e_tx_flush(struct mlx5e_txqsq *sq)
- 	wi = &sq->db.wqe_info[pi];
- 
- 	*wi = (struct mlx5e_tx_wqe_info) {
-+		.skb = skb,
- 		.num_wqebbs = 1,
+@@ -542,16 +542,6 @@ static void tx_fill_wi(struct mlx5e_txqsq *sq,
  	};
- 
- 	wqe = mlx5e_post_nop(&sq->wq, sq->sqn, &sq->pc);
-+
-+	/* The NOP takes the room of the SEND that was not posted. As after a
-+	 * SEND, stop the queue if room runs low; the completion wakes it.
-+	 */
-+	mlx5e_tx_check_stop(sq);
- 	mlx5e_notify_hw(&sq->wq, sq->pc, sq->uar_map, &wqe->ctrl);
  }
  
-+/* Drop an skb whose SEND could not be posted. */
-+static void mlx5e_tx_drop(struct mlx5e_txqsq *sq, struct sk_buff *skb)
-+{
-+	sq->stats->dropped++;
-+
-+	if (IS_ENABLED(CONFIG_MLX5_EN_TLS) &&
-+	    tls_is_skb_tx_device_offloaded(skb)) {
-+		/* kTLS WQEs may have been posted for the skb. */
-+		mlx5e_tx_flush(sq, skb);
-+		return;
+-static bool
+-mlx5e_ktls_tx_offload_test_and_clear_pending(struct mlx5e_ktls_offload_context_tx *priv_tx)
+-{
+-	bool ret = priv_tx->ctx_post_pending;
+-
+-	priv_tx->ctx_post_pending = false;
+-
+-	return ret;
+-}
+-
+ static void
+ post_static_params(struct mlx5e_txqsq *sq,
+ 		   struct mlx5e_ktls_offload_context_tx *priv_tx,
+@@ -872,6 +862,12 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
+ 	if (!datalen)
+ 		return true;
+ 
++	/* Only data that the device encrypts uses the TLS context. */
++	if (!skb_is_decrypted(skb)) {
++		stats->tls_skip_no_sync_data++;
++		return true;
 +	}
 +
-+	dev_kfree_skb_any(skb);
-+	mlx5e_tx_flush(sq, NULL);
-+}
-+
- static inline void
- mlx5e_txwqe_complete(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 		     const struct mlx5e_tx_attr *attr,
-@@ -470,9 +496,7 @@ mlx5e_sq_xmit_wqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 	return;
+ 	mlx5e_tx_mpwqe_ensure_complete(sq);
  
- err_drop:
--	stats->dropped++;
--	dev_kfree_skb_any(skb);
--	mlx5e_tx_flush(sq);
-+	mlx5e_tx_drop(sq, skb);
- }
+ 	tls_ctx = tls_get_ctx(skb->sk);
+@@ -885,9 +881,9 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
  
- static bool mlx5e_tx_skb_supports_mpwqe(struct sk_buff *skb, struct mlx5e_tx_attr *attr)
-@@ -612,9 +636,7 @@ mlx5e_sq_xmit_mpwqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 	return;
+ 	priv_tx = mlx5e_get_ktls_tx_priv_ctx(tls_ctx);
  
- err_unmap:
--	sq->stats->dropped++;
--	dev_kfree_skb_any(skb);
--	mlx5e_tx_flush(sq);
-+	mlx5e_tx_drop(sq, skb);
- }
+-	if (unlikely(mlx5e_ktls_tx_offload_test_and_clear_pending(priv_tx)))
+-		mlx5e_ktls_tx_post_param_wqes(sq, priv_tx, false, false);
+-
++	/* WQEs naming the TIS, pending context params included, are
++	 * posted only for an skb that uses it.
++	 */
+ 	seq = ntohl(tcp_hdr(skb)->seq);
+ 	ooo = priv_tx->expected_seq != seq;
+ 	/* Take the loss mark before resyncing, a loss reported meanwhile
+@@ -896,31 +892,32 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
+ 	resync = test_bit(MLX5E_KTLS_TX_RESYNC, &priv_tx->flags) &&
+ 		 test_and_clear_bit(MLX5E_KTLS_TX_RESYNC, &priv_tx->flags);
+ 	if (unlikely(ooo || resync)) {
++		/* A resync installs a pending context fully: rec_seq may match
++		 * while the TIS still holds the params of its previous user.
++		 */
++		bool full = resync || priv_tx->ctx_post_pending;
+ 		enum mlx5e_ktls_sync_retval ret =
+ 			mlx5e_ktls_tx_handle_ooo(priv_tx, sq, datalen, seq,
+-						 resync);
++						 full);
  
- void mlx5e_tx_mpwqe_ensure_complete(struct mlx5e_txqsq *sq)
-@@ -810,6 +832,12 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
- 			sqcc += wi->num_wqebbs;
+ 		if (ooo)
+ 			stats->tls_ooo++;
  
- 			if (likely(wi->skb)) {
-+				if (unlikely(!wi->num_bytes)) {
-+					/* Dropped, held by mlx5e_tx_flush() */
-+					dev_kfree_skb_any(wi->skb);
-+					continue;
-+				}
-+
- 				mlx5e_tx_wi_dma_unmap(sq, wi, &dma_fifo_cc);
- 				mlx5e_consume_skb(sq, wi->skb, cqe, napi_budget);
+ 		switch (ret) {
+ 		case MLX5E_KTLS_SYNC_DONE:
++			priv_tx->ctx_post_pending = false;
+ 			break;
+ 		case MLX5E_KTLS_SYNC_SKIP_NO_DATA:
+ 			stats->tls_skip_no_sync_data++;
+-			if (likely(!skb->decrypted)) {
+-				/* Nothing was posted, keep the mark. */
+-				if (resync)
+-					set_bit(MLX5E_KTLS_TX_RESYNC,
+-						&priv_tx->flags);
+-				goto out;
+-			}
+ 			WARN_ON_ONCE(1);
+ 			goto err_lost;
+ 		case MLX5E_KTLS_SYNC_FAIL:
+ 			stats->tls_drop_no_sync_data++;
+ 			goto err_lost;
+ 		}
++	} else if (unlikely(priv_tx->ctx_post_pending)) {
++		priv_tx->ctx_post_pending = false;
++		mlx5e_ktls_tx_post_param_wqes(sq, priv_tx, false, false);
+ 	}
  
-@@ -1007,6 +1035,6 @@ void mlx5i_sq_xmit(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- err_drop:
- 	stats->dropped++;
- 	dev_kfree_skb_any(skb);
--	mlx5e_tx_flush(sq);
-+	mlx5e_tx_flush(sq, NULL);
- }
- #endif
+ 	priv_tx->expected_seq = seq + datalen;
+@@ -930,7 +927,6 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
+ 	stats->tls_encrypted_packets += skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
+ 	stats->tls_encrypted_bytes   += datalen;
+ 
+-out:
+ 	return true;
+ 
+ err_lost:
 -- 
 2.44.0
 
