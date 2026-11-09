@@ -1,63 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.76.5.236
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794201562;
-	b=wUW6Ttunzwu2eSGMtCCyjgaV8lYexlAzltGb4uaHGvD00xPpyOMEEXgwKGSqsTzwJeyN
-	 sPthzNOLsumHtn3n/hDWYmj2qXD8/LjKfQ64Ffh1FX8xBRBLOavp2lF8JxYSvPkmWu4ny
-	 o84266WbPovLRuNBeLzTnlbl0f6RGKpG7SJVgqL43jraRoY3FdGg3XXTRdFQYdxUanf73
-	 61u6JCV20/ZTNj79eh+Jmo9GLNwg22TFChpyfTuL5hpDPUOxVqw11HvOQA2abaXL3QLIC
-	 thrvQzWiSKIweKrv+Dx3NMkt08EbFFUjeBFpf6w8UwMvafpLZBYr28f7j5qzAz8rjUA==
+	t=1794202369;
+	b=YjyjJ2AHWF8oDY6iIuQ4NqQ89Hx89+KLveX05d40VtgsZKSpQFJqAjOWsgEob+OZiszN
+	 24F5ZkkSSMnsZfGBQjHbzGrT+E0sMiE1Li/tuhyPVnDo887p7o/V+WGBgk+uKaVYR/L/s
+	 nXPDXeVkqkC8Dr+JRVs7pbo5cFaT6xHl0GaB2Ru48FffAybZAuziqVermhXLt0aJYBfaG
+	 lniNe6338r+Yb8/XBMklNElmVw+tdqnYLl4cuEtzQ9ES7nqqV7IihHvcEJDd48NrDQfVk
+	 Hvz1dwbG8YQJ94jte/gBdf7Kanhd+AT6nnUoRn4gmQZQROnmd8bA7NAJ+9YYQixTiGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794201562;
-	h=DMARC-Filter:X-MD-Sfrom:X-MD-SrcIP:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version:
-	 DKIM-Signature;
-	bh=Ce3YwrOJXaRipfIYp3w8Z9TnqInm8hZCIQukd1m1qlk=;
-	b=auEuUg7PpLRMCu33ePhFV93jq91ASMgyJWITtnV8sMxs3c6wef5RJTp7AsWY/7nEHx9T
-	 xBiR/Y6i0EqEYYvTVe8Ht6ddyXxw/s5xODUa1Y3mjLgZum2zjZU9zdIbvI0Qhb+IMpSWh
-	 ZvJsgrwUN3iLrBft308+m/rKNjMpFdozxZD6fQaAW/+h3zuLdSr2U8cViffxhWhZ1MjEO
-	 XLBOZvY/VJraiFgw1Vr5xF3KTX1rh6CjrytdWzGhLp6O4fp+4wN5Y+kugOfuGhHG84QE9
-	 A2Ek+arz0uaDSau0Q/oq9EP3Wvn7bM6yQ5bY0G5D8HArc38RAZk+cnrVkyX5fI5qnwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794202369;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=fSsd+Jru8TwrsZ00/xFyxEW8a4AeXr5gmncXZGNMYGw=;
+	b=UlFW2/yGHaKnftwipsy4hOclbL0C35KarGJGj30a1jEO7BjUklbvtYlDloMdyQH6CIrf
+	 ycwbAOxqLYSWaUc8GhViU01dbjAMAk/RNgwuwUs2tii3odZkclXgiHLe2MghdbCUwX5C5
+	 kV4eBQTFeOR9408GdADqAyrkZ5NNgXfRvz+MEW61EzOl99KH5FG7O3aytxCWJKGNDQA8v
+	 0RZvbda8LbUg1f235EhnnPaH/9gemgUPwEseAqdODjlLIjpC4Ehn9p4jt3xfdTlIdts/e
+	 KCwVhdfyQS7Q4hTuLQJ6qL2IU77CMcSOKif8oSV8xYFhZ0QbM6+1Gn5upT1Q2h2p2xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=baidu.com;
-	spf=pass smtp.mailfrom=baidu.com;
-	dkim=pass header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=BnktGqNT;
-	arc=none smtp.remote-ip=180.76.5.236
-Received: from outbound.baidu.com (outbound.baidu.com [180.76.5.236])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 66A8B606A321;
-	Mon,  9 Nov 2026 05:19:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A8B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=JgdmZiKz;
+	arc=none smtp.remote-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008B4606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 05:32:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 008B4606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=BnktGqNT
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.45
-From: "Li,Rongqing" <lirongqing@baidu.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIGFmX3VuaXg6IEZpeCB3cm9uZyBz?=
- =?gb2312?B?b2NrZXQgdGVzdGVkIGluIHRoZSBzeW1tZXRyaWMgaGFsZiBvZiB1bml4X3N0?=
- =?gb2312?B?YXRlX2xvY2tfY21wX2ZuKCku?=
-Thread-Topic: [????] Re: [PATCH] af_unix: Fix wrong socket tested in the
- symmetric half of unix_state_lock_cmp_fn().
-Thread-Index: AQHdbiv8JPaqeURuJkmRgktJk6Opfbchu90AgAN7aIA=
-Date: Mon, 9 Nov 2026 05:19:15 +0000
-Message-ID: <06faaaea248d4cefb1f12d1221b75a8a@baidu.com>
-References: <20261106201822.1734-1-lirongqing@baidu.com>
- <au7bGHqwhXXttXH_@google.com>
-In-Reply-To: <au7bGHqwhXXttXH_@google.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=JgdmZiKz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fS
+	sd+Jru8TwrsZ00/xFyxEW8a4AeXr5gmncXZGNMYGw=; b=JgdmZiKzU20OyqLlS3
+	ZVadvUdXHIIGGV7gP8PJghYtOdg1b7j2hm1YEpJaq2AfYt4R8lt+Y9rUKjflucFl
+	TZSfXE+RpIEAit8PMiKrYxq24tcGGGMuoIOiihud4o/A4jCmc9O+SKkM6JpZ16E2
+	LEU5MzS4g7Uj+xKUPAEnMGDlY=
+Received: from device-ubuntu.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3v47gWvFq37XTFw--.24970S2;
+	Mon, 09 Nov 2026 13:32:33 +0800 (CST)
+From: Fang Jiabao <kaquoin@163.com>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org,
+	Fang Jiabao <kaquoin@163.com>
+Subject: [PATCH iproute2 v2 1/2] ip route: use the request size as the limit when adding encap
+Date: Mon,  9 Nov 2026 13:32:08 +0800
+Message-ID: <20261109053209.65753-1-kaquoin@163.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,51 +59,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1794201559;
-	bh=Ce3YwrOJXaRipfIYp3w8Z9TnqInm8hZCIQukd1m1qlk=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=BnktGqNTdzYCtmaSKBirjfFdHdxXUvMZp//Iq6FTjlo4y3zxCE8daWyoIIvEkLnPr
-	 tHmAJ0e3x6qWRJ6UrktvTlxEkLzJYZLb25MzI+HHWWdcapxnVuqlHmjC3GNQzYLeuN
-	 eSrXOQB/i2/+QerzxR5Qjzfg3aJBwH6nLLv7/E21LQKE0Xv86N1Z7Ux7MmgBg9Pdlo
-	 W9w5EfKIKjwOQUhTeSy3+RpY6DIEuNF98+6BnO30ZdcGX9JuMzxS3gVKMPDjTdYHbE
-	 DqbdOyfPJdKxqVmNCP4GeuTrM+tStqG2CwQCc8BTzEVK3Ch7e6054OK1iUrQxO32/U
-	 dozKF7/paX7AA==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3v47gWvFq37XTFw--.24970S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWxuFW5tF4fZF1DJrWxtFb_yoW5Gr17pF
+	ZIga98KrZ5tF4Iyay7Ga1xZ34Yyws3JFWUJFykG3yqyFs8WFySyF9Yy34YqrW8ArZ7Jw4k
+	trsrt34UWFWDXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR_HUhUUUUU=
+X-CM-SenderInfo: 5ndt30llq6il2tof0z/xtbC9RLpXmrxWvLbpwAA3f
 
-DQo+ID4gW1BBVENIXSBhZl91bml4OiBGaXggd3Jvbmcgc29ja2V0IHRlc3RlZCBpbiB0aGUgc3lt
-bWV0cmljIGhhbGYNCj4gDQo+IFRoaXMgaXMgbmV0LW5leHQgbWF0ZXJpYWwsIHNvIGl0IHNob3Vs
-ZCBiZQ0KPiANCj4gICBbUEFUQ0ggbmV0LW5leHQgdlhdIGFmX3VuaXg6IC4uLg0KPiANCj4gc2Vl
-IERvY3VtZW50YXRpb24vcHJvY2Vzcy9tYWludGFpbmVyLW5ldGRldi5yc3QuDQo+IA0KPiANCj4g
-T24gU2F0LCAwNyBOb3YgMjAyNiAwNDoxODoyMiArMDgwMCwgbGlyb25ncWluZyB3cm90ZToNCj4g
-PiBGcm9tOiBMaSBSb25nUWluZyA8bGlyb25ncWluZ0BiYWlkdS5jb20+DQo+ID4NCj4gPiBUaGUg
-c2Vjb25kIGhhbGYgb2YgdW5peF9zdGF0ZV9sb2NrX2NtcF9mbigpIGlzIG1lYW50IHRvIG1pcnJv
-ciB0aGUNCj4gPiBmaXJzdCBvbmUgd2l0aCB0aGUgcm9sZXMgb2YgYSBhbmQgYiBzd2FwcGVkLCBi
-dXQgaXQgc3dpdGNoZXMgb24gYidzDQo+ID4gc3RhdGUgYWdhaW46DQo+ID4NCj4gPiAJaWYgKGIt
-PnNrLnNrX3N0YXRlID09IFRDUF9MSVNURU4pIHsNCj4gPiAJCXN3aXRjaCAoYi0+c2suc2tfc3Rh
-dGUpIHsNCj4gPiAJCWNhc2UgVENQX0NMT1NFOg0KPiA+IAkJY2FzZSBUQ1BfRVNUQUJMSVNIRUQ6
-DQo+ID4gCQkJcmV0dXJuIDE7DQo+ID4NCj4gPiBUaGUgZW5jbG9zaW5nIGlmIGFscmVhZHkgZXN0
-YWJsaXNoZWQgdGhhdCBiIGlzIFRDUF9MSVNURU4sIHNvIHRoZQ0KPiA+IHN3aXRjaCBjYW4gb25s
-eSByZWFjaCB0aGUgZGVmYXVsdCBsYWJlbCBhbmQgdGhlIGJyYW5jaCBhbHdheXMgcmV0dXJucw0K
-PiA+IDAsICJubyBvcmRlciBrbm93biIsIGluc3RlYWQgb2YgdGhlIGludGVuZGVkIDEuDQo+ID4N
-Cj4gPiBUZXN0IGEncyBzdGF0ZSwgYXMgdGhlIGZpcnN0IGhhbGYgZG9lcy4gIFRoZSBjb2RlIGlz
-IG9ubHkgY29tcGlsZWQNCj4gPiB3aXRoIENPTkZJR19QUk9WRV9MT0NLSU5HLCBzbyB0aGVyZSBp
-cyBubyBydW50aW1lIG1lbW9yeS1zYWZldHkNCj4gPiBpbXBhY3Q7IHRoZSBlZmZlY3QgaXMgdGhh
-dCBsb2NrZGVwIGNhbm5vdCB2YWxpZGF0ZSB0aGlzIG5lc3Rpbmcgb3JkZXINCj4gPiBvZiB1bml4
-X3N0YXRlX2xvY2soKS4NCj4gPg0KPiA+IEZpeGVzOiA5OGY3MDZkZTQ0NWIgKCJhZl91bml4OiBE
-ZWZpbmUgbG9ja2luZyBvcmRlciBmb3IgVV9MT0NLX1NFQ09ORA0KPiA+IGluIHVuaXhfc3RyZWFt
-X2Nvbm5lY3QoKS4iKQ0KPiANCj4gUGxlYXNlIGRyb3AgdGhlIHRhZy4NCj4gDQo+IEFzIGNvbW1l
-bnRlZCwgdGhlIGJyYW5jaCBuZXZlciBoaXRzIGFuZCBubyByZWFsIGlzc3VlIGV4aXN0cywgbm90
-IHdvcnRoDQo+IGJhY2twb3J0aW5nLg0KPiANCg0KT2ssIEkgd2lsbCBzZW5kIHYyDQoNCltMaSxS
-b25ncWluZ10gDQoNCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3Fp
-bmdAYmFpZHUuY29tPg0KPiA+IC0tLQ0KPiA+ICBuZXQvdW5peC9hZl91bml4LmMgfCAyICstDQo+
-ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiA+DQo+
-ID4gZGlmZiAtLWdpdCBhL25ldC91bml4L2FmX3VuaXguYyBiL25ldC91bml4L2FmX3VuaXguYyBp
-bmRleA0KPiA+IGU3YTA1ODIuLjUwMWU2OTMgMTAwNjQ0DQo+ID4gLS0tIGEvbmV0L3VuaXgvYWZf
-dW5peC5jDQo+ID4gKysrIGIvbmV0L3VuaXgvYWZfdW5peC5jDQo+ID4gQEAgLTE2Myw3ICsxNjMs
-NyBAQCBzdGF0aWMgaW50IHVuaXhfc3RhdGVfbG9ja19jbXBfZm4oY29uc3Qgc3RydWN0DQo+ID4g
-bG9ja2RlcF9tYXAgKl9hLA0KPiA+DQo+ID4gIAkvKiBTaG91bGQgbmV2ZXIgaGFwcGVuLiAgSnVz
-dCB0byBiZSBzeW1tZXRyaWMuICovDQo+ID4gIAlpZiAoYi0+c2suc2tfc3RhdGUgPT0gVENQX0xJ
-U1RFTikgew0KPiA+IC0JCXN3aXRjaCAoYi0+c2suc2tfc3RhdGUpIHsNCj4gPiArCQlzd2l0Y2gg
-KGEtPnNrLnNrX3N0YXRlKSB7DQo+ID4gIAkJY2FzZSBUQ1BfQ0xPU0U6DQo+ID4gIAkJY2FzZSBU
-Q1BfRVNUQUJMSVNIRUQ6DQo+ID4gIAkJCXJldHVybiAxOw0KPiA+IC0tDQo+ID4gMi45LjQNCj4g
-Pg0K
+iproute_modify() passes a hardcoded 1024 as the size limit to
+addraw_l() when it adds the encap attribute. The request buffer is
+larger than that, and every other attribute in this function is bounded
+by sizeof(req). With a seg6 encap of 60 segments the request still fits
+in the buffer, but addraw_l() prints "addraw_l ERROR: message exceeded
+bound of 1024" and returns -1. The return value is ignored, so ip sends
+the request without the encap attribute and exits with status 0, and a
+route without encap is installed silently.
+
+Use sizeof(req) as the limit, like the other attributes, and return an
+error if addraw_l() fails instead of sending an incomplete request.
+
+Fixes: 1e5293056a02 ("lwtunnel: Add encapsulation support to ip route")
+Assisted-by: Claude:claude-sonnet-5-5
+Signed-off-by: Fang Jiabao <kaquoin@163.com>
+---
+Changes since v1:
+  - use sizeof(req) as the limit instead of 1024, as suggested by
+    Stephen Hemminger; keep the check of the return value
+  - rewrite the commit message to describe the cause
+  - add the same fix for ip nexthop as patch 2/2
+v1: https://lore.kernel.org/netdev/20261102090535.226168-1-kaquoin@163.com/
+
+Tested on current main (d95f6650, "man: ip-neighbour.8: document
+protocol keyword"), in a network namespace with a dummy device, with:
+
+  ip -6 route add fc00:ff::N/128 encap seg6 mode encap segs <N SIDs> dev d0
+
+With 59, 60 and 62 segments the route is added with encap, exit status
+0. Before, 60 segments printed an addraw_l() error and installed a route
+without encap, exit status 0 (observed on e4cd9f1d, the only commit
+since then changes a man page). With 63 segments the result is
+unchanged: error from lwt_parse_encap(), exit status 255, no route
+installed. I did not find a way to make addraw_l() fail from the command
+line after this change, so that error path is not tested.
+
+ ip/iproute.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/ip/iproute.c b/ip/iproute.c
+index 1ce71f78..067569c2 100644
+--- a/ip/iproute.c
++++ b/ip/iproute.c
+@@ -1525,9 +1525,10 @@ static int iproute_modify(int cmd, unsigned int flags, int argc, char **argv)
+ 			lwt_parse_encap(rta, sizeof(buf), &argc, &argv,
+ 					RTA_ENCAP, RTA_ENCAP_TYPE);
+ 
+-			if (rta->rta_len > RTA_LENGTH(0))
+-				addraw_l(&req.n, 1024
+-					 , RTA_DATA(rta), RTA_PAYLOAD(rta));
++			if (rta->rta_len > RTA_LENGTH(0) &&
++			    addraw_l(&req.n, sizeof(req), RTA_DATA(rta),
++				     RTA_PAYLOAD(rta)) < 0)
++				return -1;
+ 		} else if (strcmp(*argv, "ttl-propagate") == 0) {
+ 			__u8 ttl_prop;
+ 
+-- 
+2.43.0
+
