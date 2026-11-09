@@ -1,100 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794210020;
-	b=HEwRgV9bJK6EP5Kye4Y/Cx1cmL5/lBGY4aVZdC76eWZ3I45HkPNRquU14qej9kF/3/VK
-	 tmqEPBzcU/uLWNW4DTt67BHGEC7gyDTSL1JkJ5jQMZNYiSXuD76mTgD5Ky+jwDSLW/ltw
-	 xCLZMSEtsCKNTr5y716/QV9xUy1i+mBbJ9xGnLAvaNXfuddFtla2Gct1hvMwHOb9uML98
-	 Ji1CGUDPx3v6sERYVo9a7YmdOKmfNhWYf512YOC11floebSLDAIYf/Zn5rwuDhJBtFmh1
-	 Ga4taopgeXF3ssPC89EbFr+WfCFYOcKArxF/A8gBnV62vm17LKfIRyEA4SLC5AjnZ8w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794210020;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=qbtFVfAV0d//avrt7X6KHwZhQyPReObvw80fRr8okBY=;
-	b=m0N3Wy6UV0X6FwO9lNeNkK5eEU4AoiZwTMvOhjcdmc2vFUoMVkEtFMN1/NXoU79+xYRY
-	 Xo3q9muQwZg6f/qCAX6prgb6slUfP6ziw8x5nJWO66860Bbctx4hVko6JyZGtTdTFz6nL
-	 B0EPI+IutAU+ph013R7XN/GeXHyyh1ySQQdavauBgUTfx5X+dwhy28j5RfW0YDDV8lUAt
-	 ZYsr3ntvxbjwmjA4u9K7NCDfv/ZcTldPDWiBoqsmxpwihoXU15pQQXurh5BBe2b+ADVUo
-	 xbtVccbZPyCoC8q7OHFgSdd2Kpi7d5MBnNdhO6zOXztlw0iu3o6h2PU8R95wf476VAQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fw1HJ3eB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.181
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794210583;
+	b=jOdlTxeV1w1S06M3aTMzaBURQiJH4UBElpZnrwvVDpbbztAzwFFeaeHBnUStdto1+LBq
+	 06PYfuWz5i8WY0MuEpYYPFL3p1Y2eDUbl0vruL0YfqwgA9cUzAnHdvU/Nv9SHAR9GP0za
+	 Dnyev0/8wl72HDPWYVVRMfjqnTX6ibBAPvCIOa4ILSWUZT8fGD6uCexaPy9HRWIMS70K9
+	 05GpoJ/4GL3JZfMj4l6WAUqsm+/PKfCrbHC7Ue6Kxmk3v+8Q+q1h5eivT52prMGb/FTGd
+	 fSd2/NnjQLAA3e804PuT6n2XVaHlnIGj58pwz7uiyB3OVNKGx1wdlecSUECtVCnBoMQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794210583;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=WyCMBCcX2kRnjqHFY43Gu0I0yjxEkgsugICLXCwNlrI=;
+	b=0ss7fN1OrEQpCYaXZ5hHgMYqry5Ptmt14QAl4afbKKTRVKJLff3DlQLNVPlqDoi6F8rc
+	 1KGnAGpZoMvQ5wcEh7c1+0SK5wbiFFsegN2IHSZi5VGrqeuH0fpkzn2TlE6rUYxjHsuHX
+	 9/MWvcqJ03M662zfEG9jXrAEivElGOIS5X3cOs4QKWRWgD8SmQVl+KyTL0fU4m6j1yqiJ
+	 9Oib+4584wC3b8KdbN0bZmwTEKFmX22Xxx0Eo3n4sQmIdTV8GSfy2/8ztMgm2Va9GIEd3
+	 7umTGycq4BSvEJkIrhkZD+7zyP9gNx7TJP9R0Fm/WasuAnQzXd6iiLnjW2Lj6XBT4SQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cZOYvjqO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D25E606A332
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 07:40:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D25E606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B27606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 07:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fw1HJ3eB
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so228660a12.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 23:40:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794210020; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rtXsDTaXda5PV68gJZ5F1AkfMq3F5fd/wq385D/lKUC03pSe1ROVFe+2eC11WkLZmc
-         FG68OE5+EPrCJ8Fl+LmLnKOikYcAOLY2vnEnvefbXnidSYN89lTuouDVDfTtqME1oJga
-         FNUZ8Rqtdr2LbAncpR8VBqC/kWD343JmUXQTxRsPlCRSFBHqCT0ebwWfBjE+L69skbP3
-         ooVxFMS+5K5EuduFuaC8LQd+iaBQGYxTW0V/NqMBe3+eTDXP2Ua46yRMiISvaGzXAaZQ
-         qYAHw2Rfom7NoM/ldtZNhBs41k7Ebj2+Dk4RT3O2QunMbf5IYANg3vvpwpdOCGtrfUXB
-         BayA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qbtFVfAV0d//avrt7X6KHwZhQyPReObvw80fRr8okBY=;
-        fh=FXH4cH6E2Ju3S1KfXjXKwF0ua0x8kIl6xxkxoSm0YZs=;
-        b=slm6pOSkyjl1kTLjaZ13ygD/JjHsWggQL/r+v+aNJSiocoGJznG75wjXTYByKhcWUx
-         NptohUNT/ickLKi0p7zn+3gugkr5p80lO0TXChcVSs61zKxrdmrATjSUJFlUJly2oo4l
-         vcWV2c1v4bU4foBZRxKtIv4WV06OY5vrRLTppj+K1d1w3soGN+sIL3hbJNaq54e0ZTjG
-         K3hlG43XrJFh9/rmQDnpA/i4MTTtausXaDue0p1Xg7MUZwhUntpy2GuYBmxPPysYQXbn
-         vKEK/Y4jZ1RJFSPfATf9f4GLy4TVUXpu74XaE/N986NHk78fB7sTjcJMIhznOqRFVqt3
-         sdOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794210020; x=1794814820; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qbtFVfAV0d//avrt7X6KHwZhQyPReObvw80fRr8okBY=;
-        b=Fw1HJ3eBrEG+YcG2OfXIKNyXLbtxL6pFyShNR64xnTBicLVJTLcqI70PP7XlmXPNx6
-         VWmQ662eksYGc8vJo+lcMpjTIaYcJB9aokKPIxavS8OWhjpOs8W89bix1ozwYvKeb3b4
-         M7C1Y4n+R7cdsAeFDh3I3fT0WNvzf0CnRZWDlQZYC+5M2rSyX8wMQx9uS+vQs8QSo0d/
-         2FLip2Uo0zLuYIubK7TNTBZ4sl8ZrZ+JeHk7SDm/ZlHHFtWu1M3YyNEi+YttPBGWC2RM
-         X/hXAhXzRlZNf20NwByFmIPl+GnzmQCqAB4nehLzmm3jWxLA5k3xC+msTg/JbR6XvUqv
-         ep4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794210020; x=1794814820;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qbtFVfAV0d//avrt7X6KHwZhQyPReObvw80fRr8okBY=;
-        b=Ge/PmiRSecw4gDuPa1NZwzsTgyYRkf2iUkUvDyqTLHnyeiEcLLRw9MDIfQ7qUKjmRX
-         SFupMcgkud601b2X2HEwzdm2RCvmIYQpWigprT/7CJNneUFWmKMBwMfRMY8udwJdobo/
-         NijUYcBtdua5YTUq8qMTW77cHXVMHS9VrfdPFu6Kxk/25cG7pTfujR392NPm+1TSNKsC
-         dnk0roraOt3uppkAdg8iIChsDxTTAzVifr1/9XUaXmYsjqUYxzPHxGNBDlUJVIx7i+2E
-         Jv1Bhrn4nT8fIvlpcq6IllmlVdEMP/K/l8uBMYgHKIdn8sx2Y1gIziKPMznRg2PzP9zv
-         tb4w==
-X-Forwarded-Encrypted: i=1; AL+hErG6a++qHheFtX8QD6hPDGG3D/Kf5w+SxspZZYP0N77C/Hk68yvY5SboP9bIn3YAjEJBe/ya/v0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+litZKiU142slvg5w58h64jZ/Jl3YwuVcQhmRmnc9d4VMgwWi7
-	GJBL/eAr4hZcJvelK+K1AG93ewh2agzeVsnnXze5zKfEiImRsheoCFszNwf526No+sXMjj0doZE
-	mxqnGrjVntYCX5WeF/avH6KnGa4teZso=
-X-Gm-Gg: AYBFou1NOdwcOlci4+LblenV5dOLoQ6TzrWLFRAhKhBXjD4nFi3xDs+R3/YuzzcOl6o
-	utXk3SP2vnbFFdC4ZjuHZPxgWYPrQQYpaMCGgc+g/fZnUaEN1bhxyqcXL5M6VtOxji8PGilYaxI
-	gjvUDanV9NJ20WjfLIfEF5+vM3F+NhgF8VqTbwvaza6PtCUQzXFuq9fDOnJtt5zVQOvj7m5zlzy
-	BM/xdSoLrFW05D0zdGK2NjZzA7qg6CseCpMBJRh8gkhqqmuvBFr/NvBxXStFKpR3mrK1cTamx4f
-	UtccUpd5FhatzZz7TA+V6dC2k12j0PP1Hty2c7XxD8Ohddi5vEANuGXa4GHNN8VRDj8pdzY/dv5
-	XzUUNDr40pcxu36GqYkbqoq8sqYvz2gpOt9s=
-X-Received: by 2002:a17:90b:384c:b0:3ad:a270:a623 with SMTP id
- 98e67ed59e1d1-3b12d107e44mr3364118a91.4.1794210019701; Sun, 08 Nov 2026
- 23:40:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cZOYvjqO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092FF1F008A1;
+	Mon,  9 Nov 2026 07:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794210582;
+	bh=WyCMBCcX2kRnjqHFY43Gu0I0yjxEkgsugICLXCwNlrI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cZOYvjqOOVQf4T/5TWUbPfBl63laUHi/g/ywqFtL1kq/RNZdQf8EeRFL12NmTwgN8
+	 F1L/O/7swkjBvbBr+bsw6u6W0xnN5N0drUmhsWN/cqWCSbUq7otSk8rca14+/5QA8d
+	 zcrcdIQduGuwzT6murCA5QnzIbpuErn2I826ersWI3SsMcdX2AlHJclNa2LHAXx5px
+	 E7bHL7NDNXR5AvN1ObwNh8GYthzgp3Z22WAX9WftJYgiCTyvM93ldUlFMBfkqLGG0s
+	 FpDn1xEZzTBekr/uqe8RZrW8q0eVV8rx1TkkylLjQi45PPPoJ9GeuAymsUq/K3aCCb
+	 A4/pYYWn3mEKA==
+Subject: Re: [PATCH net 2/4] tg3: Select PLL clock when preparing for shutdown
+From: netdev-bot+sashiko@kernel.org
+To: pavan.chebbi@broadcom.com
+Cc: michael.chan@broadcom.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+ andrew.gospodarek@broadcom.com, davem@davemloft.net, edumazet@kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, shravya.k-n@broadcom.com,
+ vishvambar.panth-s@broadcom.com
+Date: Mon, 09 Nov 2026 07:49:41 +0000
+Message-ID: <179421058149.994134.13195419627896454196@kernel.org>
+In-Reply-To: <20261108065526.710152-3-pavan.chebbi@broadcom.com>
+References: <20261108065526.710152-3-pavan.chebbi@broadcom.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,98 +63,146 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102135330.2493332-1-robh@kernel.org> <CAAfSe-uD=s0RpuqQ_h+_fErcEC+G=N_LA6e=p_sXJ=iG7jMc3Q@mail.gmail.com>
-In-Reply-To: <CAAfSe-uD=s0RpuqQ_h+_fErcEC+G=N_LA6e=p_sXJ=iG7jMc3Q@mail.gmail.com>
-From: Chunyan Zhang <zhang.lyra@gmail.com>
-Date: Mon, 9 Nov 2026 15:39:42 +0800
-X-Gm-Features: AclHuK_dnPMk52UN3-2_wspDGRy5a6s-cwmnh8paY6ZY-G54Qz5KZ0bygsAWCVc
-Message-ID: <CAAfSe-shr1+0YpxEvf+4k+DyGe3==PUiD72CwjE+RC4gX-ShiQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Ivan Vecera <ivecera@redhat.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Chanh Nguyen <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>, 
-	Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>, 
-	Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Ray Jui <ray.jui@broadcom.com>, 
-	Scott Branden <scott.branden@broadcom.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sound@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-tegra@vger.kernel.org, mfd@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, 5 Nov 2026 at 10:39, Chunyan Zhang
-<chunyan.zhang@linux.spacemit.com> wrote:
->
-> On Mon, 2 Nov 2026 at 21:53, Rob Herring (Arm) <robh@kernel.org> wrote:
-> >
-> > Unit-addresses by default (and most commonly) are hexadecimal. There's =
-a
-> > number of cases using decimal patterns. Fix all of them, limiting the
-> > pattern to match the 'reg' limits if there are any.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
->
-> [snip]
->
-> > diff --git a/Documentation/devicetree/bindings/thermal/sprd-thermal.yam=
-l b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> > index afa551f6185f..222d70baef1e 100644
-> > --- a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> > +++ b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> > @@ -47,7 +47,7 @@ properties:
-> >      const: 0
-> >
-> >  patternProperties:
-> > -  "^([a-z]*-)?sensor(-section)?@[0-9]+$":
-> > +  "^([a-z]*-)?sensor(-section)?@[0-9a-f]+$":
->
-> Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Following up on Andy's note about this:
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-Please disregard my Reviewed-by. Even though I did look at some of
-the other hunks, given that I'm not familiar with the other hardware,
-I don't feel comfortable giving a whole-patch Reviewed-by out of
-caution. And since I'm no longer the SPRD maintainer, an Acked-by
-wouldn't be appropriate either. So withdrawing is the best option =E2=80=94
-sorry for the inconvenience.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks,
-Chunyan
+- [Medium] In tg3_power_down_prepare()
+  (drivers/net/ethernet/broadcom/tg3.c, around lines 4130-4136), the new…
+- [Medium] The patch does an unlocked read-modify-write of
+  TG3_CPMU_PLL_CTRL_STAT (0x3638) that sets…
+
+--
+
+tg3: Select PLL clock when preparing for shutdown
+
+The patch works around a 5720 hardware issue where the chip may fail to
+wake on a single magic packet after being linked at 1G. When WoL is
+enabled and active_speed is SPEED_1000, tg3_power_down_prepare() sets
+CPMU_PLL_TLP_CLCK_SRC_NCSI_PLL in the new TG3_CPMU_PLL_CTRL_STAT register.
+tg3_chip_reset() clears the bit on every 5720 reset.
+
+> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+> index 2cf9d2ea069b5..e9b48e58fdd45 100644
+> --- a/drivers/net/ethernet/broadcom/tg3.c
+> +++ b/drivers/net/ethernet/broadcom/tg3.c
+> @@ -4127,6 +4127,14 @@ static void tg3_power_down_prepare(struct tg3 *tp)
+>  	if (device_should_wake) {
+>  		u32 mac_mode;
+>  
+> +		if (tg3_asic_rev(tp) == ASIC_REV_5720 &&
+> +		    tp->link_config.active_speed == SPEED_1000) {
+
+[Severity: Medium]
+Does active_speed here describe the link the chip will be using while it
+waits for the magic packet?
+
+The 5720 does not use phylib. Earlier in tg3_power_down_prepare() the
+driver sets TG3_PHYFLG_IS_LOW_POWER and calls tg3_setup_phy(tp, false).
+In tg3_setup_copper_phy(), active_speed is only written when the link is
+currently up:
+
+    tp->link_config.active_speed = current_speed;
+
+That write is inside the BMSR_LSTATUS branch. At relink,
+tg3_phy_copper_begin() then writes a new WoL advertisement and restarts
+autoneg, unless KEEP_LINK_ON_PWRDN is set:
+
+    if ((tp->phy_flags & TG3_PHYFLG_IS_LOW_POWER) &&
+        !(tp->phy_flags & TG3_PHYFLG_KEEP_LINK_ON_PWRDN)) {
+        adv = ADVERTISED_10baseT_Half |
+              ADVERTISED_10baseT_Full;
+        ...
+        if (tp->phy_flags & TG3_PHYFLG_1G_ON_VAUX_OK) {
+            ...
+            adv |= ADVERTISED_1000baseT_Full;
+        }
+
+Nothing updates active_speed after that, so this check reads the speed
+from before the WoL renegotiation, or a stale value. A few cases look
+possible:
+
+  - 1G_ON_VAUX_OK is set, and the link was at 100M before shutdown (for
+    example, limited with ethtool) or was down. The PHY renegotiates to
+    1G on Vaux, but the PLL bit is never set.
+
+  - KEEP_LINK_ON_PWRDN is set, the cable was unplugged at shutdown, and a
+    1G link comes up later during WoL. active_speed is stale, so the bit
+    is not set.
+
+  - Neither flag is set, so the WoL link drops to 10/100. The bit is set
+    anyway because active_speed is still 1000 from earlier.
+
+The existing active_speed check further down this block, for GMII vs
+MII, is guarded by KEEP_LINK_ON_PWRDN, where the link is kept as is. This
+new check has no such guard and does not look at tp->link_up.
+
+The commit message says "When the 5720 was linked up at 1G". Does that
+mean the link before shutdown or the link during WoL? If it means the WoL
+link, could the first two cases still hit the reported wake failure?
+
+> +			u32 val = tr32(TG3_CPMU_PLL_CTRL_STAT);
+> +
+> +			tw32(TG3_CPMU_PLL_CTRL_STAT,
+> +			     val | CPMU_PLL_TLP_CLCK_SRC_NCSI_PLL);
+> +		}
+> +
+
+[ ... ]
+
+> @@ -9394,6 +9402,12 @@ static int tg3_chip_reset(struct tg3 *tp)
+>  
+>  	tg3_restore_clk(tp);
+>  
+> +	if (tg3_asic_rev(tp) == ASIC_REV_5720) {
+> +		val = tr32(TG3_CPMU_PLL_CTRL_STAT);
+> +		tw32(TG3_CPMU_PLL_CTRL_STAT,
+> +		     val & ~CPMU_PLL_TLP_CLCK_SRC_NCSI_PLL);
+> +	}
+
+[Severity: Medium]
+Is TG3_CPMU_PLL_CTRL_STAT per-function, or is it shared between the two
+functions of the 5720?
+
+The 5720 is a dual-function device, and this bit selects the clock for
+the PCIe transaction layer. The driver already treats parts of the 5720
+CPMU block as chip-wide. For example, tg3_set_function_status() keeps
+per-function fields in TG3_CPMU_DRV_STATUS, serialized by the APE GPIO
+lock:
+
+    status = tr32(TG3_CPMU_DRV_STATUS);
+
+    shift = TG3_APE_GPIO_MSG_SHIFT + 4 * tp->pci_fn;
+
+If 0x3638 is shared, a chip reset of the other port would clear the bit
+that this port set in tg3_power_down_prepare(). That reset could come
+from tg3_open(), reset_task, an MTU change, an ethtool self-test, or that
+port's own tg3_close()->tg3_halt() during shutdown.
+
+As an example, say port 0 has WoL at 1G and port 1 has WoL disabled. Both
+are closed during shutdown, and port 1's halt clears the bit. Would port
+0 then be back in the failing state?
+
+Each function's read-modify-write also runs under its own tp->lock only,
+so concurrent updates from the two functions could lose an update.
+
+If the register is per-function, none of this applies. Could the scope of
+this register be documented? If it is shared, could access be coordinated
+across functions, as the driver does for other shared power-management
+state on this ASIC?
+
+> +
+>  	/* Increase the core clock speed to fix tx timeout issue for 5762
+>  	 * with 100Mbps link speed.
+>  	 */
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108065526.710152-1-pavan.chebbi%40broadcom.com
