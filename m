@@ -1,55 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794244317;
-	b=BxycAogtObtFZTnfeTdGFVxFUnxKygBMG3/h9PXPL+XMafB4HAe7sLuHQsSxpupCpjhK
-	 BP7c32KfI17283xPdGht1Xyu9qC+uZuZeLRFg+fHF/PKMsULHYf+7IzR/XDFfLeKhytdg
-	 /UJfCPqn+lmreolEToLTEIXwIHg5f11YWmUTHzFSk3kFCMfI7l5OJKjtX31QmJ0C1MvG7
-	 VB0wSTuyFDZdDnt8pYU8J5uYsaN3ifaRiVyBQkxYI73h3kjb7lDwC616+aUW9QUHJXPs6
-	 WDPQLoP/xINAU1n8V8jUUR/37IcSe/+SrRWLIe8w8Q/iXYhg9tXA4Bsds/vACEpVM3g==
+	t=1794244337;
+	b=Kung/0Xma8oV7F4Yy6PkFuh4/Xrq1UDvJ6rJr/+lJLnVPriqo3gR5V09Z7iupXQ/idmS
+	 sIlACSsq9ZyuSxxR6XuWZG1tYjkknHP7rAPDp+2uzTRO4/n46fCl/ZR3JhQpn2LX3adwY
+	 izZVL1++hMemeLQCTjkYYPaw6mrZm1WzcHnEo4Iw+8k2tvBJKX/7EjZB/YhqOQetwHCj5
+	 XB1vKtiQh/79wTxAC1f1EY/d4vVNpK8J0+Hp8k0A3ScNKLudHEnF8VrgrZ4sVx9CLs1kS
+	 7+XwAW+Rc3i4fAO/qmArKu1r5ID5Ky0tiKVtFoutNWvEurzE0FzNEDsQQbN/B72rswQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794244317;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=lQHWAAx+O6YYZwHBHSehA8caj2rOj0b72/Og+FIObkA=;
-	b=TptMQtKHRUDADN8onXqoHjdKF9YXFSlhT9qeuyCv3MlKDo37ixBuGE+n7y81JjrOGAKb
-	 Q9hk5N/mqR3F/hYyx3WKrmVL4HH0B+qbeWUfzkpQxaJCV6YVdiE1a5vYb5wonNezbwMyB
-	 rqsP1fgvfYOohaLKfLEeZChuvaksRCypap5jtAxbrrT1p5w1B+aJuY6OgoVUTU/XNfACQ
-	 UDS9Od7yIlrYFJZDEBUW/xJMLLFvED1jEANNe8qwgrlkuZwarmGmUY1Bcyc22G3h3pcms
-	 3hetsM/ycA07sQ/6UJcedZQVjEdLqt+7vWvo0IorypPthYHcqIiRAQ+odIvBVz5uwxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794244337;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=hzZZMQ8fpl/iDvObtrAtE4+lTu94nFzniKzTb7/B3Ks=;
+	b=UiG2VKa0mt5ivkTfcuuquCIbf3orLMkbPiGAxeHJHEOwX4Zzh3oDUMOQOSthTJT0+Hv5
+	 EpVoUDKs/Dxk/M8mvYPwUoIW9Hc8Qrc2Dc1Dd20UvDAwIt3Av3URL3wLRtEPOeBCu3s6J
+	 giBkV45QY6Y4bx/+atgHepUtMXMlBHxHgKLrh3YXs/x9wqoRLe4mxey6TK7hzH0f3NGyN
+	 0ltrEoI63EHCXPSpLAGxdhPJsGYLHy5sINK90NRtjQjCfB/CjtEOBs+I9i8lXyMK9mP6d
+	 4Wp5SIRASoE36K5xWzFW9pDTTM7br4IbFSx3LqaROdhfznBA1tfPts2BKRXkMNVDzUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lyGLxwNJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FCeltfjD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC77606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909D1606A31C;
+	Mon,  9 Nov 2026 17:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lyGLxwNJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A281F008A3
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 17:11:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FCeltfjD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBE51F0089F;
+	Mon,  9 Nov 2026 17:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794244316;
-	bh=lQHWAAx+O6YYZwHBHSehA8caj2rOj0b72/Og+FIObkA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lyGLxwNJF9CY5t4AbZfIJdpvIeCJMXeHCw4NainKZ8hgAhimApwERkMfC+ijMepPc
-	 4AvPtJ9poxrUV+BWNlxgJT3S3V6sbZ0kaxxAM8ZXcFsD+dzpqLdlvvZ/KsIgkpXMhw
-	 NN+kSAIw8XTRwIyoRt4NTojKsle+488SILg5cgN6mlXF6eE6PIfdUUvoHCR5zrZH2B
-	 XBb9Xw3lXXN+ntwW8qaL3nihwgi+gNfCCNiRI7iGvBFMidZ6H6U3LFC46XauSD5HS0
-	 9BKczsbXUVjljPxPkvLd/rYod2bGT94y2DTeignAHB9XcODyalHTHFO7UEYaUBNsMB
-	 XDX2cZoAsKnHw==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-847ac7ccd85so654010a34.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 09:11:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGulHFawAcZ2HUXs1wQh1DFdeYiP5Loagqr+KbG0IAjwlSiXTESD0k/cL9j4bQpQEU2DsqEYiY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8ykE2kb3qVSqYVkJwjYXeqLQb5HqC5WIoN9HfFrrCL5oi9X8+9
-	xjJn5t6mcTI79TsMlMzAJCSqYo+3Z9qotY+BLgJ6zaF3tYYVEC6TDKK1o8MfhHDZaNE/859Hwvk
-	PvCDebFY5b5ds3TI7g5hIXpIdEcmxbmQ=
-X-Received: by 2002:a05:6820:83c5:20b0:709:fa95:9929 with SMTP id
- 006d021491bc7-7170f2dbc08mr1850037eaf.62.1794244315702; Mon, 09 Nov 2026
- 09:11:55 -0800 (PST)
+	s=k20260515; t=1794244337;
+	bh=hzZZMQ8fpl/iDvObtrAtE4+lTu94nFzniKzTb7/B3Ks=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FCeltfjDSjW78XeaZCd5V4lxYvLkPlVIPIYw75BfO41aULF6gUm0AktNJ/2/yZFPv
+	 jzA+MlXtYSpLzYd1h0GfzKC0XQCL3q568AF9KoBZWyyf9FbEy2Tef0WdmLEucyjEOp
+	 wGQ/7lYU3Xql+8+Di+/tCYTLZ93Lcp7qsgmyL1jfiGY0Q2CH44d2pDk92ZZj/la9Dy
+	 Pj6DWVttXPHrAHmS0ViXANeCSoosKIaryeWGuczJyy8NaCPwNOLRoJ6lNqqqmiLRhD
+	 DpJM+Z38T24ZgzHco7KT75EAKSNVvIZtnlc93/q2T4UARXymmsiwxfeFF5xVr6EJui
+	 L7IyLlOaQk81Q==
+Subject:
+ Re: [PATCH net] net: bcmgenet: cap the Tx queue threshold at the ring size
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ justin.chen@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ razor@blackwall.org, kerneljasonxing@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 17:12:15 +0000
+Message-ID: <179424433591.994134.17565447879442853727@kernel.org>
+In-Reply-To: <20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71@tipi-net.de>
+References: <20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,350 +65,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106133748.2181133-1-edumazet@kernel.org> <179424245454.994134.13469440240015313651@kernel.org>
-In-Reply-To: <179424245454.994134.13469440240015313651@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 9 Nov 2026 18:11:42 +0100
-X-Gmail-Original-Message-ID: <CAL4WiipPJ2sM9KykK9VBNiT05XADMLBPAaLiNu7xaFPi30yC-A@mail.gmail.com>
-X-Gm-Features: AclHuK811EkTKpzG0EYUUCVDB7TIKzjpUNdJ6SRVEAn_ZfQaqoIR72kp1Q_VADk
-Message-ID: <CAL4WiipPJ2sM9KykK9VBNiT05XADMLBPAaLiNu7xaFPi30yC-A@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: cubic: do not trust snd_cwnd set by BPF
- congestion controls
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	ncardwell@google.com, kuniyu@google.com, horms@kernel.org, 
-	netdev@vger.kernel.org, sashiko-bot@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le lun. 9 nov. 2026 =C3=A0 17:40, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
->
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 2 (1) =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The fix is incomplete: a BPF congestion control can still stall
->   the CPU in the TCP-friendliness loop of bictcp_update() through the=E2=
-=80=A6
-> - [High] tcp: unsanitized snd_ssthresh in tcp_reinit_congestion_control()
->   hangs CUBIC
-> - [Medium] tcp: BPF CC can overwrite snd_cwnd after
->   bpf_setsockopt(TCP_CONGESTION)
-> - [Low] The new comment above the cubictcp_cong_avoid() wrapper
->   (net/ipv4/tcp_cubic.c) says bictcp_update() 'would loop forever ...=E2=
-=80=A6
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but it is in the
->   same 'BPF can store any value' threat model and is High severity.
->
-> --
->
-> tcp: cubic: do not trust snd_cwnd set by BPF congestion controls
->
-> This patch turns the cubictcp_cong_avoid() kfunc into a wrapper. The
-> wrapper ignores calls when snd_cwnd is outside [1, TCP_MAX_SND_CWND],
-> while native CUBIC calls __cubictcp_cong_avoid() directly. It also
-> clamps snd_cwnd to [1, snd_cwnd_clamp] in
-> tcp_reinit_congestion_control(), to stop the TCP friendliness loop in
-> bictcp_update() from hanging the CPU.
->
-> Link: https://lore.kernel.org/netdev/179363987528.3131.298777648942707988=
-7@kernel.org/
->
-> > diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
-> > index a88e4bf86150f..9595bdc9589c2 100644
-> > --- a/net/ipv4/tcp_cubic.c
-> > +++ b/net/ipv4/tcp_cubic.c
-> > @@ -318,7 +318,7 @@ static inline void bictcp_update(struct bictcp *ca,=
- u32 cwnd, u32 acked)
-> >       ca->cnt =3D max(ca->cnt, 2U);
-> >  }
-> >
-> > -__bpf_kfunc static void cubictcp_cong_avoid(struct sock *sk, u32 ack, =
-u32 acked)
-> > +static noinline void __cubictcp_cong_avoid(struct sock *sk, u32 ack, u=
-32 acked)
-> >  {
-> >       struct tcp_sock *tp =3D tcp_sk(sk);
-> >       struct bictcp *ca =3D inet_csk_ca(sk);
-> > @@ -335,6 +335,20 @@ __bpf_kfunc static void cubictcp_cong_avoid(struct=
- sock *sk, u32 ack, u32 acked)
-> >       tcp_cong_avoid_ai(tp, ca->cnt, acked);
->
-> [Severity: High]
-> Does clamping only snd_cwnd here still leave the same hang reachable
-> through tp->snd_ssthresh?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Yes, and the Medium issue below (writes done after
-bpf_setsockopt(TCP_CONGESTION) from a BPF callback) shows that
-sanitizing snd_cwnd at entry points can not be complete.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-v2 will instead make the friendliness code in bictcp_update() safe
-for any cwnd and ack_cnt values: delta is at least 1, and the loop
-is replaced by a division, only done when ack_cnt > delta.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->
-> A BPF congestion control can write any u32 to tp->snd_ssthresh via
-> bpf_tcp_ca_btf_struct_access(). That includes its .release()
-> callback, which tcp_cleanup_congestion_control() runs just before
-> this clamp. It can also return any value from .ssthresh(), which
-> tcp_init_cwnd_reduction() and tcp_enter_loss() store into
-> tp->snd_ssthresh. A BPF .ssthresh() can simply return 0.
->
-> tcp_reinit_congestion_control() does not touch snd_ssthresh,
-> icsk_ca_state or tp->undo_marker. With the default hystart and
-> initial_ssthresh parameters, cubictcp_init() leaves snd_ssthresh
-> alone as well.
->
-> Suppose the socket is in TCP_CA_CWR or TCP_CA_Recovery when it is
-> moved to CUBIC. The next ACK that advances snd_una past high_seq then
-> goes through tcp_fastretrans_alert()->tcp_end_cwnd_reduction():
->
-> net/ipv4/tcp_input.c:tcp_end_cwnd_reduction() {
->     ...
->         if (tp->snd_ssthresh < TCP_INFINITE_SSTHRESH &&
->             (inet_csk(sk)->icsk_ca_state =3D=3D TCP_CA_CWR || tp->undo_ma=
-rker)) {
->                 tcp_snd_cwnd_set(tp, tp->snd_ssthresh);
->                 tp->snd_cwnd_stamp =3D tcp_jiffies32;
->         }
->     ...
-> }
->
-> This copies snd_ssthresh into snd_cwnd without any bound.
-> tcp_snd_cwnd_set() warns once on 0 but still stores it.
->
-> Later in the same tcp_ack(), tcp_cong_control() calls
-> __cubictcp_cong_avoid() with snd_cwnd =3D=3D 0 and snd_ssthresh =3D=3D 0.
-> tcp_in_slow_start() is false, so bictcp_update(ca, 0, acked)
-> computes delta =3D 0 and the TCP friendliness loop never terminates.
->
-> A snd_ssthresh between TCP_MAX_SND_CWND and TCP_INFINITE_SSTHRESH
-> would instead leave snd_cwnd above TCP_MAX_SND_CWND. There
-> cwnd * beta_scale wraps and the u32 multiplications in native
-> ->ssthresh() handlers overflow, which is the state the commit message
-> says native congestion controls must not see.
->
-> Should tcp_reinit_congestion_control() also bound snd_ssthresh, for
-> example to snd_cwnd_clamp or by resetting it to
-> TCP_INFINITE_SSTHRESH? Or should it reset the CWR/Recovery state
-> when switching away from a BPF congestion control? Or is there
-> something that keeps tcp_end_cwnd_reduction() from running after
-> such a switch that I am missing?
->
-> [Severity: High]
->
-> This isn't a bug introduced by this patch, but it falls under the same
-> "BPF can store any value" threat model. tcp_cong_avoid_ai() is exposed as
-> a kfunc through bpf_tcp_ca_check_kfunc_ids. It divides by w without
-> checking for zero:
+- [High] This patch only partly fixes the Tx stall it targets.
 
-Right, this is a separate issue, I will send a separate patch.
+--
 
->
-> net/ipv4/tcp_cong.c:tcp_cong_avoid_ai() {
->     ...
->         tp->snd_cwnd_cnt +=3D acked;
->         if (tp->snd_cwnd_cnt >=3D w) {
->                 u32 delta =3D tp->snd_cwnd_cnt / w;
->     ...
-> }
->
-> When w =3D=3D 0 the guard is always true.
->
-> Can a BPF congestion control reach this division by zero in any of these
-> ways?
->
-> - Call tcp_cong_avoid_ai(tp, 0, acked) directly. The verifier does not
->   range check scalar kfunc arguments.
->
-> - Store snd_cwnd =3D 0 and snd_ssthresh =3D 0, then call the
->   tcp_reno_cong_avoid() kfunc. It passes tcp_snd_cwnd(tp) as w and does
->   not check cwnd.
->
-> - Use the new cubictcp_cong_avoid() wrapper with a valid snd_cwnd, after
->   writing ca->cnt =3D 0, ca->last_cwnd =3D snd_cwnd and ca->last_time =3D=
- a
->   recent tcp_jiffies32 value (readable from fields such as
->   tp->lsndtime). bictcp_update() then returns early, before
->   ca->cnt =3D max(ca->cnt, 2U), and __cubictcp_cong_avoid() calls
->   tcp_cong_avoid_ai(tp, 0, acked).
->
-> On x86 this would raise a divide error during ACK processing, usually in
-> softirq context. Native callers never pass w =3D=3D 0.
->
-> >  }
-> >
-> > +/* BPF congestion controls can store any value in tp->snd_cwnd.
-> > + * bictcp_update() would loop forever with cwnd =3D=3D 0, or with a cw=
-nd
-> > + * large enough for cwnd * beta_scale to wrap.
->
-> [Severity: Low]
->
+net: bcmgenet: cap the Tx queue threshold at the ring size
 
-Comment gone in v2.
+This patch adds a per-ring stop_thld field, capped at size - 1. The field
+replaces MAX_SKB_FRAGS + 1 as the threshold for stopping and waking Tx
+queues in bcmgenet_xmit() and bcmgenet_tx_poll(). The goal is to stop the
+32-descriptor priority rings from staying stopped forever when
+CONFIG_MAX_SKB_FRAGS is 31 or larger.
 
-> This isn't a bug, but is this comment accurate? It suggests that the
-> TCP_MAX_SND_CWND check rules out every cwnd for which cwnd * beta_scale
-> wraps.
->
-> cubictcp_register() accepts beta up to 1023, which gives
-> beta_scale =3D 8 * 2047 / 3 / 1 =3D 5458. With that value the u32 product
-> wraps for any cwnd above 786912. So every cwnd in [786913, 1048576]
-> passes the wrapper and still wraps.
->
-> In that range the product wraps only once and delta stays at least 482,
-> so the infinite loop is still prevented. The comment, though, treats
-> "wraps" as if it meant "loops forever", and the wrap still produces a
-> much smaller delta than intended.
->
-> The TCP_MAX_SND_CWND comment in include/net/tcp.h (from 475ff14ba558)
-> says multipliers go "up to 2047", which does not account for beta_scale
-> in bictcp_update().
->
-> > + * Native callers do not need this check.
-> > + */
-> > +__bpf_kfunc static void cubictcp_cong_avoid(struct sock *sk, u32 ack, =
-u32 acked)
-> > +{
-> > +     u32 cwnd =3D tcp_snd_cwnd(tcp_sk(sk));
-> > +
-> > +     if (unlikely(!cwnd || cwnd > TCP_MAX_SND_CWND))
-> > +             return;
-> > +     __cubictcp_cong_avoid(sk, ack, acked);
->
-> [Severity: High]
->
-> Does this wrapper fully close the hang in the bictcp_update() TCP
-> friendliness loop? It checks only snd_cwnd.
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 4d2be2a21ed1b..186d17781b890 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
-Same answer: there is no loop anymore in v2.
+[ ... ]
 
-The loop runs about
-> ack_cnt / delta times, and ack_cnt comes either from the acked argument,
-> which the BPF program chooses, or from struct bictcp state in
-> icsk_ca_priv. BPF is allowed to write that state:
->
-> net/ipv4/bpf_tcp_ca.c:bpf_tcp_ca_btf_struct_access() {
->     ...
->         case bpf_ctx_range(struct inet_connection_sock, icsk_ca_priv):
->                 end =3D offsetofend(struct inet_connection_sock, icsk_ca_=
-priv);
->     ...
-> }
->
-> snd_cwnd =3D 1 passes the check and gives delta =3D (1 * 15) >> 3 =3D 1 w=
-ith
-> the default beta_scale. Suppose a struct_ops program stores
-> snd_cwnd =3D 1, snd_ssthresh <=3D 1 (so tcp_in_slow_start() is false and
-> acked is not consumed), ca->epoch_start =3D 0 and ca->last_cwnd !=3D 1, a=
-nd
-> then calls:
->
->     cubictcp_cong_avoid(sk, 0, 0xffffffff);
->
-> The call chain is
-> cubictcp_cong_avoid()->__cubictcp_cong_avoid()->bictcp_update(ca, 1, 0xff=
-ffffff).
-> The epoch_start =3D=3D 0 branch sets ca->ack_cnt =3D 0xffffffff, and then
-> this loop runs about 2^32 times during ACK processing with the socket
-> lock held:
->
->                 delta =3D (cwnd * scale) >> 3;
->                 while (ca->ack_cnt > delta) {
->                         ca->ack_cnt -=3D delta;
->                         ca->tcp_cwnd++;
->                 }
->
-> beta_scale is a runtime global, so the compiler is not expected to turn
-> this loop into a division.
->
-> The program can set up that state again and call the kfunc repeatedly,
-> either unrolled or through bpf_loop(). Would that keep the CPU stuck
-> past the soft lockup and RCU stall thresholds, which is the same hang
-> in ACK processing the commit message describes?
->
-> Could the kfunc wrapper also bound acked (and/or ca->ack_cnt), or could
-> the BPF path compute the friendliness update with a division instead of
-> the loop?
->
-> > +}
-> > +
->
-> [ ... ]
->
-> > @@ -475,7 +489,7 @@ __bpf_kfunc static void cubictcp_acked(struct sock =
-*sk, const struct ack_sample
-> >  static struct tcp_congestion_ops cubictcp __read_mostly =3D {
-> >       .init           =3D cubictcp_init,
-> >       .ssthresh       =3D cubictcp_recalc_ssthresh,
-> > -     .cong_avoid     =3D cubictcp_cong_avoid,
-> > +     .cong_avoid     =3D __cubictcp_cong_avoid,
-> >       .set_state      =3D cubictcp_state,
-> >       .undo_cwnd      =3D tcp_reno_undo_cwnd,
-> >       .cwnd_event_tx_start =3D cubictcp_cwnd_event_tx_start,
->
-> [Severity: Medium]
-> Can a BPF congestion control still hand native CUBIC an invalid
-> snd_cwnd after the clamp in tcp_reinit_congestion_control() has run?
->
-> bpf_tcp_ca_get_func_proto() allows bpf_setsockopt() from every
-> tcp_congestion_ops callback except .release. So a BPF .cong_avoid,
-> .in_ack_event, .pkts_acked, .set_state or .undo_cwnd can call
-> bpf_setsockopt(sk, SOL_TCP, TCP_CONGESTION, "cubic", ...).
->
-> That call goes through sol_tcp_sockopt_congestion(),
-> do_tcp_setsockopt() and tcp_set_congestion_control() into
-> tcp_reinit_congestion_control(). That function clamps snd_cwnd and
-> switches icsk_ca_ops to cubictcp synchronously. Control then returns
-> to the BPF callback, which is still running.
->
-> The callback still has write access to tp->snd_cwnd and
-> tp->snd_ssthresh through bpf_tcp_ca_btf_struct_access(). It can
-> store snd_cwnd =3D 0 (or 0x88888889) and snd_ssthresh =3D 0 right after
-> bpf_setsockopt() returns. sol_tcp_sockopt_congestion() already
-> carries a comment about a similar after-the-switch hazard for cdg.
->
-> The .undo_cwnd case does not even need a direct write:
->
-> net/ipv4/tcp_input.c:tcp_undo_cwnd_reduction() {
->     ...
->                 tcp_snd_cwnd_set(tp, icsk->icsk_ca_ops->undo_cwnd(sk));
->     ...
-> }
->
-> The value returned by the BPF .undo_cwnd() is stored after that same
-> call has already switched icsk_ca_ops to cubictcp.
->
-> The hang then follows on the next ACK, or later in the same tcp_ack()
-> when the switch is done from .in_ack_event or .pkts_acked.
-> __cubictcp_cong_avoid() runs bictcp_update() with cwnd =3D=3D 0 or
-> 0x88888889, so delta is 0. The TCP friendliness loop then spins
-> forever in ACK processing, usually from softirq with the socket
-> spinlock held.
->
-> __cubictcp_cong_avoid() now relies on snd_cwnd being sane after
-> tcp_reinit_congestion_control(). Given this ordering, is that the
-> right place for the check? Would it be better to reject
-> TCP_CONGESTION from bpf_setsockopt() inside tcp_congestion_ops
-> callbacks, the way cdg is already rejected? Or to validate snd_cwnd
-> at a point the BPF program cannot run after?
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261106133748.2181133-1-edumazet%40kernel.org
+> @@ -2742,6 +2742,8 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+>  	ring->index = index;
+>  	ring->cbs = priv->tx_cbs + start_ptr;
+>  	ring->size = size;
+> +	/* A ring smaller than that would never wake */
+> +	ring->stop_thld = min_t(unsigned int, MAX_SKB_FRAGS + 1, size - 1);
 
+[Severity: High]
 
-pw-bot: cr
+Does this fully fix the stall on queues 1 to 4 when CONFIG_MAX_SKB_FRAGS
+is 31 or more? The wake threshold is now capped, but the per-skb admission
+check at the top of bcmgenet_xmit() has not changed:
+
+bcmgenet_xmit() {
+    ...
+	if (ring->free_bds <= (nr_frags + 1)) {
+		if (!netif_tx_queue_stopped(txq))
+			netif_tx_stop_queue(txq);
+		ret = NETDEV_TX_BUSY;
+		goto out;
+	}
+    ...
+}
+
+free_bds can never be larger than ring->size (32). So an skb with
+nr_frags >= 31 gets rejected even when the ring is completely empty.
+
+In that case nothing is in flight, so no Tx-done interrupt arrives and
+bcmgenet_tx_poll() never wakes the queue. The watchdog is the only wake
+source left:
+
+dev_watchdog()
+  bcmgenet_timeout()
+    bcmgenet_tx_reclaim(dev, ring, true);
+    BCMGENET_STATS64_INC((&ring->stats64), errors);
+    netif_tx_wake_queue(txq);
+
+The qdisc then retries the same requeued skb and gets NETDEV_TX_BUSY
+again, so the queue stops again.
+
+Wouldn't that leave the queue, and every flow hashed to it, stuck for
+good? The "NETDEV WATCHDOG: transmit queue N timed out" message and the
+error count from the commit message would then come back every
+watchdog_timeo.
+
+The core does not keep such skbs away from the driver. The driver
+advertises NETIF_F_SG, and it has no ndo_features_check and no
+skb_linearize() fallback. Highly fragmented skbs can come from
+MSG_ZEROCOPY, from splice, or from forwarded traffic.
+
+Should bcmgenet_xmit() also handle skbs where nr_frags + 1 >= ring->size?
+It could linearize or drop them, or clear NETIF_F_SG for them in
+ndo_features_check.
+
+>  	ring->clean_ptr = start_ptr;
+>  	ring->c_index = 0;
+>  	ring->free_bds = size;
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71%40tipi-net.de
