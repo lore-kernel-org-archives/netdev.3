@@ -1,75 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794231462;
-	b=laLKVVnL+QC0d4MNhoqIH4jXxEvLnamZazp73LMH1/edPDq12ifT7ga0M6fTAaE+O3L+
-	 ApaYrx0OEAOUdfb9BAE0jFSC1oV7LMGS4o4Izq1waMQe2avBo/eoV/VVSJgsuTgou8jcK
-	 N1xGHoBzTU2p4yVQ4rjZBmtYW6RzyW0DwCsyTB8xdjCvwTy1aScr2iD6knrf/Aobk0jGW
-	 bZ9xRFDZ2LCDqGUNFra+VbCpMbkVLuDaKHV+BfxpLqJ87Hw1KFxhpu39qf9BhVs8cGrea
-	 zpi3zZnsBvYoMdQoaazyC6fDo0q0mKRJJMgFifZyiu8B/XkMtZmz421GQZyMrd1WEqw==
+	t=1794231921;
+	b=l7wNvECZ+bDQSaU4/nBb5DcUToIfru/s68lLGIN4yL/zCMlwAOf3luoOLdVedDlv1ES4
+	 DdHdpdeLnxWWFYyIskhSLTgZVxXF3e/mcWxJR43OfenvsZ52ZdoG9K7xd9mhKj1SoR2gz
+	 ND9W2aTnJ42i94aQLb14pJ4RdA6HBQ49G4Hbi8lHV72wRD6dZCkZz1k9GX+t51+fiZDuA
+	 tMqPowB/BXijqzPS3sLZLgm2VgodYjM8R0bMob3UAUIMFuMHZUdeVf257Y0dh4hv8XE/I
+	 pVzwzECMwH0bLB2MPLlJAK0xDWsq68u9Dd+6kPLIw9ecY4OdgPdS00eMf7QGC0N/t3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794231462;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=qTo0Pq7+6TX71rE+/bZ1iamBkpCECZBGOsRsjXhsNHk=;
-	b=hy8hMtrscf1mmvmQ9NuVUMiAPfvBy210HePLO0covsmMBN7ydtXET5Mb0zSpmZvQqAtX
-	 Q/po/MrlFoDt6Xmu8cGe22aKNfg7ccXUgBv/eNPPvAbqAFolWFjnPWw+H/TPcX5acdKLa
-	 UKjgK9WHVF3Raqq2v9sUEo52Wq5EMb+RGu6X9LA+re4Qm/u5A5/huCPjfA0eOPVEIn1zB
-	 BOWW4/BIoccR/3l4oiayznBwtZJTUSSp1OzM0J5rxT6HDQNlol5MPO8LzhaGujAtBWCtf
-	 hOQr66EV9FXRPCygQNreZutn2l7tT2BLW02hg9y6/gooDaMKKDzrsRHSPhqWpBR7CgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231921;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
+	b=yKfMEu+Jmlc6xjy79fn6DjsTzS/RG6Iw5Q2Mw14bPkFqM9E8fiIhLq5dV73NaxlIE8wX
+	 8TVJXMVCJG4estd1E983tBTvCW2kA/YLDouNTqnM8H98YhsOJCtOXRr51eHIrqN+0sHE2
+	 KJu82Tcv5AifavTc/DwpYGHki3/MEEAA+5HlQj52in63e+37rTj2xALg2N1L0xmOU515o
+	 w7VPgN5uo6VWc6F57iSTvHgNdc04jupo4Mp/m0+nrYr+2C2DCEZWuOcyeDPVtbrehCWHO
+	 sQJQVorYM18KRrgFS2jNB0gm2UyBNzFVkQtwsyHEUpydPICJWG5LGyXhB2bmiXmjCCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Uvg2c4ye;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vD5Yodr3;
+	arc=none smtp.remote-ip=209.85.215.175
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C15606A33D
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:37:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71C15606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79C606A323
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:45:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F79C606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Uvg2c4ye
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794231469; x=1825767469;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zjr8kPeClPE+6nkxv35AYAmu2x+IiO6+z8m2SKqncqQ=;
-  b=Uvg2c4yeWZ0Wp7je7915IdUtJqThXogD7PwbxWODqNPK+DzSd+GlPsEP
-   mvwheJ8ejssTegqR4wpDom//r6fM7fxBxM2GIGbxFx7sWRcgbNZ/IHE62
-   iHb3hVqYgkmsdgOI8qi0WIXyrOuebe1Wu5BDTez2KgPzkx63jjn8K+zWe
-   MaQmD3b0H/hli5ZOq4rc/ORMPT5GCginQdJF/2WOpLOgVMxx9n7hHv96D
-   FVvhRUkRa86Hsk3zZU5TAX+ugYOe5E1NloAzE6+ieW65EwcpK3mSIog95
-   rLtGTcDY10IDpCqIpdKe+CeokYbdveGZ8yyvr0I3tFGkjq70dnyy0lLnp
-   A==;
-X-CSE-ConnectionGUID: FB+rwnh4THqCwaC+eWa63Q==
-X-CSE-MsgGUID: XYni4QjlTMyDqSqnzT95pQ==
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="297652133"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 06:37:42 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Mon, 9 Nov 2026 06:37:34 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 9 Nov 2026 06:37:33 -0700
-Date: Mon, 9 Nov 2026 14:37:32 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <memoriaru@foxmail.com>
-CC: <netdev@vger.kernel.org>, <Steen.Hegelund@microchip.com>,
-	<UNGLinuxDriver@microchip.com>
-Subject: Re: [PATCH net v2 0/2] net: sparx5/lan969x: fix RX ring stall on
- frames from inactive ports
-Message-ID: <20261109133732.4tfynt5ccdbqzzds@DEN-DL-M70577.microsemi.net>
-References: <tencent_E018A629F0808AA68194ECD60FB6B096BD09@qq.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vD5Yodr3
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso415578a12.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:45:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794231921; x=1794836721; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
+        b=vD5Yodr3X1C0rOWGiV4KYpByjyi5NN2U1kf/rt9jVtcRLs+Wh/OK/kef9yZI+La0H9
+         mUkBg1N2VbAN85LyfTRZVjUUEhdGXYeMc90gN0QhtcvWozHmNPKdIbKmjPo233RqkNJl
+         WQPg5mqCPM4ZBmKbZDiLSsFGcvftdrtoFFBOTXPFJRClb0fmwW5a3mCjUED8RTLZ/9gJ
+         aP5DztaUutJ6VNxAResBO2W5MEG82FX3SMrWa5yqZF9N61gLogY5HjLIebxU3x/EV1P7
+         v/0TTBGZ1vF7yOzeMzdYw39D3gTtnwkXksBNtYPa4dZWh/97nVW1rw7enctg3blDPY8e
+         IaKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794231921; x=1794836721;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZB33fDrAm2+MTpVzqHevrVjMtTfx0w/Sxjvwb8uQmek=;
+        b=zRs6vphIyIRUvmkzH+Y/RrxRUXnhdGkCg5yEcOLUzkPt8aQp059SEOlg+U8N8iVXwJ
+         w7GjdlsWH83HjS3Dw96X+DgCCD+VLC6D7epRmVfcx0gOr7osWtR94LaGAfWDxGv8cDWK
+         z3ncWVpD0oLtKsFH+VDyprM/Th4C5icdu+2KQsrZZeGCh+JU1ksfgSSjgp6Y+v+G7nDA
+         fG0cRYjDdpK3tbyqX4IfhucEdTTA2z7/SlUi3l3WvfIq47PmunanjlE7OAKHcYQmTpPf
+         6bPh2Rj9VUMa+PRMxVy+MECsIOWnqDKfgDAWTJlK/Jau+aQ0HaK8JOYHqb2reR5kSRuZ
+         079w==
+X-Forwarded-Encrypted: i=1; AL+hErFnUjDFuN9rSpX/kdDKYcvN2eVHYkKRZIHodY6Dr8qYal5cewZaZ9lgqSdWlDooTHkMEZUnj+g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z//0twxFqXuwkEC/VaS0kEwZno8r64VheHe3UmB7oUg9qZ/hmSN
+	mRW4Ynu98KkSKlQmQKlspUzrd2Cqk9ygA3I8yjTk+djPn632v5fGZKh+
+X-Gm-Gg: AYBFou3+ZAfAG3tNIBbR6Tuq9YAF3eITR/Yf8HwD2fQ48Fb6jhn0QNotUBnu3sGkeRk
+	RnN034DAtyrIc4WFJWlXgttBFdG6fRKazlmyrRXwIwnLVx+XA1/Al0b3ipKExIXfJstKPZCxi/w
+	rP4Bsa+SFsjnVDL6gvHEGp7H15uhUgMDDF8Xxbrz5zHUe0RhX38MzRpK4/1SqSprMeulR4C51eK
+	oKxw19Mn3I6Z1p/RHuChKOsByYj1lBCo9cpcMXnBXD7MztPbd6Yst0AsYYBkO/voFtX+lREo91j
+	JUmZSFjVR+g6fXwTJQjhd5rPva+Y0p/ivkerIppgXHKNpafpuR/E1AIb5+aR4S3lRpR6ebFL2w0
+	+7avfszsyARUKxzDm71wCz6m5k5ufg/8x+rh8jik4Noyc7qf/LZWLfanMzWO/tbSIyDi7LH/dDK
+	cZMWa4oC5SG4wf7V/RjiC6Rj78H0Z9pL/6zlVWi2olN2nHy3DTt/CZfQhwFn24zXCtu8gRiyXuB
+	DukYSCiKYj+TyNwHFJJD9vli3ql3y0hw/XvI1MUVGqMMG6Yt2H8RtaWgITTtMJXdx0I8ND2j0zt
+	iTOF9KBdE5cQscZ1dJ+I6nQpZjez
+X-Received: by 2002:a17:902:f710:b0:2ed:1b02:f6f2 with SMTP id d9443c01a7336-2ed833ee3abmr40925505ad.6.1794231920747;
+        Mon, 09 Nov 2026 05:45:20 -0800 (PST)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed81727f9bsm11014285ad.57.2026.11.09.05.45.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 05:45:20 -0800 (PST)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	richardcochran@gmail.com,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	rohan.g.thomas@altera.com,
+	rmk+kernel@armlinux.org.uk,
+	o.rempel@pengutronix.de,
+	wojciech.drewek@intel.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v10 0/3] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
+Date: Mon,  9 Nov 2026 21:45:03 +0800
+Message-Id: <20261109134506.2794160-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,39 +109,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <tencent_E018A629F0808AA68194ECD60FB6B096BD09@qq.com>
+Content-Transfer-Encoding: 8bit
 
-> From: Zhang Hewei <memoriaru@foxmail.com>
-> 
-> The FDMA RX path on both sparx5 and its lan969x sibling stalls the RX
-> ring forever when the hardware delivers a frame whose source port does
-> not map to an active netdev: the inactive-port error branch in both
-> drivers leaves the FDMA software cursor untouched, while the DCB keeps
-> its hardware DONE bit - so every following NAPI poll picks the same
-> DCB again and RX traffic stalls on all ports until the module is
-> reloaded. sparx5_xtr_flush() only drains the QS_XTR hardware FIFO and
-> does not clear the stall.
-> 
-> Patch 1 treats a bogus frame on sparx5 as consumed (free the skb, clear
-> the array slot, return true). Patch 2 splits the two NULL meanings on
-> lan969x (allocation failure keeps its retry-later break; a bogus frame
-> returns ERR_PTR(-EINVAL)) and advances past it in the poll loop.
-> 
-> v2: hand-assembled v1 mails were mangled (duplicated newlines, missing
-> diff headers, broken threading) and used a non-answerable From/SoB
-> address - apologies. Regenerated with git format-patch; same two fixes,
-> no functional change. v1 lore link:
-> https://lore.kernel.org/netdev/20261108184541.74618-1-memoriaru@foxmail.com/
-> 
-> Found by code inspection; the stall needs the hardware to emit a frame
-> with an invalid source port, which cannot be triggered without hardware.
-> Review from someone with access to sparx5/lan969x systems would be
-> appreciated.
+This series adds auxiliary snapshot (EXTTS) interrupt support to
+DWXGMAC2/DWXLGMAC2, fixes a stale TSIS race on the Agilex5
+cross-timestamp path that the new handler would otherwise expose, and
+guards the shared aux snapshot handler against a zero channel mask.
 
-I tested the changes. They are legit and fixes the issues described. However,
-the implemented solutions need more work.
+Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS
+count instead of the transient TSIS bit, waits for the FIFO clear to
+complete, and holds aux_ts_lock across the whole trigger/poll/drain
+sequence so a concurrent EXTTS request cannot flush the snapshot FIFO
+mid-flight.
 
-pw-bot: cr
+Patch 2 guards the shared aux snapshot handler against a zero channel
+mask: ilog2() is applied to the mask without a zero check, and
+ilog2(0) yields an out-of-range event index that ptp_clock_event()
+feeds to test_bit() unchecked from hard IRQ context.
+
+Patch 3 adds a dedicated DWXGMAC2 timestamp interrupt handler.  The
+XGMAC hwif entries used the generic ops, whose callback read the wrong
+register and whose enable mask omitted the timestamp interrupt, so the
+clock advertised the aux snapshot channels but no event was ever
+delivered.  XGMAC_TSIE is not enabled by default; it is armed on demand
+from the EXTTS enable/disable path through a new callback, and the
+handler only touches the FIFO while the interrupt is armed and while no
+cross-timestamp owns it.  The interrupt is disarmed on suspend and
+unregister and re-armed on resume.
+
+The failure fixed by patch 3 was hit while bringing up auxiliary
+snapshot interrupts on a local DWXGMAC2 board (not Agilex5-class):
+enabling an EXTTS channel succeeded but no PTP_CLOCK_EXTTS event ever
+arrived.  After the change the same board delivers EXTTS events on the
+enabled channel.  The races fixed by patches 1 and 2 were found by
+reviewing the code paths that this bring-up exposed; they are narrow
+race windows and were not reproduced on hardware in isolation.
+
+---
+
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
+v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
+v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
+v5: https://lore.kernel.org/netdev/20260910081020.86227-1-zxyan0222@gmail.com/
+v6: https://lore.kernel.org/netdev/20260929073553.4136336-1-zxyan0222@gmail.com/
+v7: https://lore.kernel.org/netdev/20261004120526.2728564-1-zxyan0222@gmail.com/
+v8: https://lore.kernel.org/netdev/20261013033207.1684328-1-zxyan0222@gmail.com/
+v9: https://lore.kernel.org/netdev/20261104125030.1183146-1-zxyan0222@gmail.com/
+
+v10:
+- Rebase on net-next from 2026-11-09 (containing 7.4-rc2, which moves
+  the est_lock initialisation next to the aux_ts_lock one).
+- Wrap two lines that exceeded 80 columns.
+
+-- 
+2.34.1
 
