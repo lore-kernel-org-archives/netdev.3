@@ -1,90 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794247730;
-	b=SnKIvgVabxFEpj44W84k/yI3lP4pGR9ZHLIf2sjjiaa6k9MgCx4VCevhlyJt4eoGEJzs
-	 qZy9QTyoAP08ekeHBbzF97E8yebWbF4ZjmOvfr7XUyPscY8KcrDgQm2pg8X4gesFGHR9K
-	 mf1AH35fTRfYP65hGTu0PlPm9BUe85FKoTgCnb6tDKf4Xk8iofkwEP0492JMiZFuaCXJ8
-	 MtGfa+SMgdf4xogRDzB+JyhS0jwIQ/EPDzHfqjnJlRWtTu5O+jhRUGIMabCgLHgFpR2P8
-	 8+23zOkJbgMr82KfbxhbiaQFtGfXM25oo60pjwUuEny3nuPqNleHgwVmgtIw+aJFHrA==
+	t=1794247770;
+	b=wccbdMlBGuAKkxPoQPxEUGgp7nt8i/TxB/8tFZnYl/D70FCLdkbQNRit8CZ996EHyBiE
+	 19hBcDuHMwcz+1mQ0eZC/J8ia6wDGFgz0rTr/dTVHKk9qu1m5cWu5yIeIdzPO7obK4ft/
+	 +ariB92wDxy6vFKbMLxLMdPm7BgrdF1Rd796E6bIyuBffc4bQWvdXTTtnK10gve8uiq+F
+	 MtBAlb/mtwJ8+TohZoi+bLjdu+uQHL4q7BkNRCx1h+8bbNiI5slN0sqvoNGOzZPFlgBzN
+	 wiyw2QJ21jsx2l33BXTmi5YUyD6gx6dbIqCK3RNjsH0JzQz9ufy1RKdj1MyFmhqgzHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794247730;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=fsHlUhiFfA5uf1PiwTU3auHAhsiVHEuuHVeOcQKbRu8=;
-	b=znX5QuCyjygORlK+mI/d4yS9N8NOFVkvVxeN4R8G/J7memSl6QXtjeZGj6LllRCfqdor
-	 meX75HCftfVS258HPuHe5dg9R3Tkt7ivaFRafmJDBl5NvEuRYfUFq3/qszh/DB0pscMe/
-	 45KT9NWKXeOwUtdENjQ1laPh3Awp7qlLA+4gP3xi0k0CdUOGAyOs4S2V/vV9gnfCdyvMT
-	 rp9MDOAQxcWeGJTPb+44bLDLTxNE88oShXCVkuBETnEwFwLoHcFSguD/Q8FOMisBGBHIy
-	 7l9OmsHDBvDtOR+0StB2E1hexEUtlrGf5RGf+ip9uP1TshqgfslkOimwlx9qqrdSSqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247770;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=AhgYO2YTCGyPJ2/VNeCXL72x5NvLo0XiOft6lPOJ+wc=;
+	b=qiZdXhkL0hNP0+AwNQj05LF17yuLl5aVo0RJX1bD3k/HsuwtDSmkgiHiCSJvGYl8j7/c
+	 5N97SrHyS1JYbgixRoJ+Bp3DCOl7Yf6fVxV1OIyFgibZFVz1hR0X+i3JoRB3aLpup5By1
+	 Et1Xz/7iYhjbmyA4BMFJqxrYZgmh2eLGStAYTj3cLn/+aGwXb+J4PNpAev1Ej8ih8VVYF
+	 CQE0LuP8VPFEOpbxcOPxxOjSK4DjgF2Nstdhd+Ocyn1wwTiKiCiDaizGgkK4IoBwu5kA6
+	 24PTr3stFNSB7W5K9y0pedLqfF/pcF3Gp6ooa2+kg3qRn/au9nwe5dv2qhc71ZOTDzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cGJROU9h;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=S26Y0hDn;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BA7606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:08:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5BA7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8185606A325;
+	Mon,  9 Nov 2026 18:09:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8185606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cGJROU9h
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a06cc097c7so661383b3a.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:08:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794247729; x=1794852529; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fsHlUhiFfA5uf1PiwTU3auHAhsiVHEuuHVeOcQKbRu8=;
-        b=cGJROU9h0pQy/fe8BYOoNJxG53ywcAxCyT1yR76sjwEgnm4WQ0HqIawaZiRmX7c59U
-         nxzkk3xBeGbSVHdz6JiWPavpWHeTVJBv5tCZ3ErdZ+J3HIVSyr3+WBpnTMKvQ+ljq4tw
-         CrBBpz0zZ0/XKkbtFY4BmyC1AMHsTwh9iMUeuZSq/UFbElEVa1Q4wYa6kS46Ax9xBeNB
-         WITF+Tp9WkdfaIRVmEIPjDNEqad+uIH4JWck8PGnYKHkf0TfmPZDKuS/VYH6RUBTgvgH
-         S9eronWtQ6NqT2Z6BAAs7Ut2VSrIe6qTqw+s1nyZCH1oMTBhx5b7DQs+iDBTtoJ5y/c5
-         Qvfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794247729; x=1794852529;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fsHlUhiFfA5uf1PiwTU3auHAhsiVHEuuHVeOcQKbRu8=;
-        b=yM8rTOE+OBy/kJ5pZqyFbzKgZqvHXQ+HIKfzP5UxiXzhDdfUPXXrV75kboNaVG9q4F
-         cMuZqKC96FzcG4xteZX9xXHLPUg82A1rWlEHp0y7i0M58/V96af7l3XRF9BpPLLPpXDu
-         VPvKrqI1A7aal91eHSehW+G6vWhf2M0tPcsYvbB4YEskO3YDtjGH6dDAxSDZ4Qvwvbjz
-         GECTu4tUd0ih0lV2B+gfdaEngMHT9vaA49fBjFxXb0NS/K5AMovr2QJpeWWD5blcRQyh
-         28QxxbkxaF0uw3d774SO8I9KdQPbw+intFaMYp/LvySqOvgCGRzMUQZYi+bLAV1R2q1e
-         mfWQ==
-X-Gm-Message-State: APuU4Z+z91WdSM/SJwUBco+nueCcDAstaO/APWwk+1/u6EI/SJA66Y5Q
-	6G3Ql2ZR1E62eJB9AvncoR2jDD4Lh71jDkKSKka8BEz28mr0jQJiv+W1cuMQ0NTIaYbddBf4K/5
-	uikiGIYU=
-X-Gm-Gg: AYBFou2/COHD+O//SYLh12QZ3Nhg/5O9PFT0+E9VsWmZIR4aZp4idcAFcSF4KCPrD53
-	RDunrawf09Op9oRDGsf6B0JimKX0rE/JhgMXBQ0zE0/Yww+/x3wLLg7MrR2kW2IiDn/C35PDV/P
-	PGT3HUTbLOPrlG5nI+yAkurlWkRwVAcRg6uB/WdzlHHggNCSuW1vqziIVaUfIDBrANPWYJOHBby
-	n3c4/pBKsz5Dv+Z6o5nAltJlDuZc4sNk1F/5/f2IBZeTdTxuNJyjiVpj7/YANe4GikTEj7uUm1c
-	SoGa9JwOs9lfE/d7lXUH+KrBdBhC+SvT/24BX6eWCVLYUBdFOaFbEJ9htZWZFBuCh0OesM4xC3d
-	Bo/Cglgi/BsADVJyQsyKFERw3RBWfTWhWTcTTZwkVd3G1tBKn29f/qbwpdr0hUn8EwWNcNd3eKe
-	A/d+XmZUgM5CAknAFF+402l+eZmIt2snMd47JseiuPsREwAiTj4LHD5XKWpWxu4B80P+5NNe9ZA
-	MzihlyOEyzCH5Xq14RTF687WBRPcmMH8ttQwH+jBP+PrmeRus5fGJXeJKxMwdkhc9vl7pL/p1z3
-	ZLwxvn4BpzfXHtWJr1aBOt5YEzGiBDnutO0JKEuuDnD1F+Gn3cZ4PZqTpLSgEUcAtFzKVliQWF7
-	snBJT5UysMKgm0MN/
-X-Received: by 2002:a05:6a00:850:b0:89e:71df:d6da with SMTP id d2e1a72fcca58-8ba83bcdb53mr440207b3a.5.1794247729225;
-        Mon, 09 Nov 2026 10:08:49 -0800 (PST)
-Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b64a1e6240sm1664051b3a.53.2026.11.09.10.08.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 10:08:48 -0800 (PST)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2] lib: do not truncate 64 bit size in json
-Date: Mon,  9 Nov 2026 10:08:46 -0800
-Message-ID: <20261109180846.301249-1-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=S26Y0hDn
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=AhgYO2YTCGyPJ2/VNeCXL72x5NvLo0XiOft6lPOJ+wc=; b=S26Y0hDniOtgxnpW1kUYp4W0vT
+	c9RLXpQOH43vlorWGxEAzJqqkeUJ1UZ6b7NN9B4SohaQtj0Wvof4Y6BXgRHhqGpdpfEFs2VsbnWpo
+	KeNq+YAygRu8g0WKBJNb3G724vGOiTOkJnKwgsAz0G/OiVKv7a7RISKeORXtrNAD/azE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xQTnw-00FJvg-Ci; Mon, 09 Nov 2026 19:09:16 +0100
+Date: Mon, 9 Nov 2026 19:09:16 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: c45: select BASE-T1 type for the forced
+ speed
+Message-ID: <c6a48ee3-6de5-4289-acd2-35e5ca140d55@lunn.ch>
+References: <20261109144837.738619-1-iustin.stolniceanu@analog.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,38 +67,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109144837.738619-1-iustin.stolniceanu@analog.com>
 
-print_color_size() takes a 64 bit size but it gets truncated
-when printing json.
+> +/* Type selection value for the BASE-T1 PMA/PMD control register (1.2100,
+> + * 802.3-2022 Table 45-178) matching the forced speed. 10 Mbit/s is ambiguous
+> + * between 10BASE-T1L and 10BASE-T1S, so the supported link modes decide.
+> + * 2.5G, 5G and 10GBASE-T1 are not handled as there are no link modes for them
+> + * yet.
+> + */
+> +static int genphy_c45_baset1_type_sel(struct phy_device *phydev)
+> +{
+> +	switch (phydev->speed) {
+> +	case SPEED_100:
+> +		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_100BT1;
+> +	case SPEED_1000:
+> +		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1;
+> +	case SPEED_10:
+> +		if (linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1L_Full_BIT,
 
-Reported-by: Anthropic OSS scanner (ANT-2026-H0R4ZJSS)
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Overall, this looks good. A nitpick, please could you sort these by
+speed. I can see why you put them in this order, 802.3 lists the bits
+in this order. But many kernel developers don't seem to read 802.3
+that closely.
+
+With this changed, please add: Reviewed-by: Andrew Lunn
+<andrew@lunn.ch>
+
+    Andrew
+
 ---
- lib/json_print_math.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/lib/json_print_math.c b/lib/json_print_math.c
-index 3e951cd9..85c29d6c 100644
---- a/lib/json_print_math.c
-+++ b/lib/json_print_math.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- 
- #include <stdarg.h>
-+#include <inttypes.h>
- #include <stdio.h>
- #include <math.h>
- 
-@@ -33,7 +34,7 @@ int print_color_size(enum output_type type, enum color_attr color,
- 	SPRINT_BUF(buf);
- 
- 	if (_IS_JSON_CONTEXT(type))
--		return print_color_uint(type, color, key, "%u", sz);
-+		return print_color_u64(type, color, key, "%"PRIu64, sz);
- 
- 	sprint_size(sz, buf);
- 	return print_color_string(type, color, key, fmt, buf);
--- 
-2.53.0
-
+pw-bot: cr
