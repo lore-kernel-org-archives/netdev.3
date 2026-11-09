@@ -1,62 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.163.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794211341;
-	b=jzfhMp5Is/i28PtkuFrKizeCUVcFpc68wOklgHlA0EMSEd6IxCcM30m6VWXc30LS5TCO
-	 gfNqggZWg+jX+kdy970EqkUOqAlRQKtv9V5/X3YVmttwp8EF3Iaj6x0kPUHD8g5FbjShm
-	 CbQWzx0HnAg1TOO4JPl3e1CNnjYZkJXLoCS6ESpOohjEZjlMgvBUCXzK4mFSmULUQkb+g
-	 de9am9EVqt7FUd/9dlSoMaC/RMW031T+G10kEbqryqimApkm9HUhghq0D7GNDPwIdYEq8
-	 BTRC0xThYPuxT3zHEJfYAGEyvqKjmZhySydwHpEBOmlrqYat6pXjQvlEIcyQsoNlmtQ==
+	t=1794211387;
+	b=N+EWxw+0NJOJGCkiqee5J2E+hxaKFyuwOZ6v9sX1WMd7L93m2hV36qECqCg0dOkK4onR
+	 4aXrpuT/1LuGRvLSAopQAmFbn5Sofsgu/FhaPUHlbTvc+ibk4LqzKR6LQZ3vbUA8gWdCC
+	 MU+rhd85337b+SIru9R/zLqc46jaWPlrwPAhbrZoH4IQ4Chj2rZFeux/RAMxnzJOtlzDr
+	 iDdxVv7lZMnJTmKyBq1IOnpe+shi0G5ejfMC0ZKfZycCtpfiY/aIdvdwzjzhDJTi0f7oN
+	 Y98We6a/zo3nnzupIUNwjl4cF/XeRGoiq5V0BfSGik70Y77GMSeJPygDkY1oqeLs0cg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794211341;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=zn9xg9opWibp15PfCBcWey+5DGHdCRlF3nHuppKwlss=;
-	b=y4ki4DNVKEyqtCqxGoFIlTZMR5LdCwGLU1meqkksGIBeiWLv2Col0OaFDaWzeuLp0Gfo
-	 mj5J8unxwt6leJYHZeHPNtnzvUVNJ5Wc1tNVCqEgI52/Jo1E6b8PJ0IRkYmrtM6w7G8q1
-	 MCXyw/PwTOAc9mQFkKUaFdIhYx2BznP0C5H0XLE+MedzGiv0ckqChSRjiOp4CcWbeprzb
-	 eh8T+GXNQZRenhhQ2BCOxaVxNVldXrqGItcoZq0GnKmT/8IBNYMIJWcFFvFEOs/mQtmxY
-	 seOXGwS29qgyzHjTamE3Ec9G4csYnBbkzxDkyg+fwJibOwG8Sb+ZsXY9WVsxrFMFllg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794211387;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Z/rHRhLXImGPKv4aC0q+JHvXgEG0/LvKco7wF+nbZOw=;
+	b=IKqlC0jAa0p5nmkwm9LXHATnbDuueYVi3z41NYSct/RTh/Dqy3gTTIRgyTjqcRWHWS9G
+	 C4DRuaZ28STr4rB7e5utJxZfdY6gNrL7nr8pUezuORhtPz5u8Su/80uIxjmBj4DYPB8yI
+	 no3ufR+Q6cf7tbrV8RvGXR8cH/uDsVIJpkwun4pDQH713k5LwGEX8y1Vpkh0vJNHvOHzL
+	 KtO4hSHoCB1OlYdARGcznDtlWX6xdx/IGc20fBz9gM1a+pWXqdrUcltiNfUkSNuZO9MGy
+	 g7nTgXUgq7xpG2SJp0R37KeH8+TGJ3m2ytlB/2foGz3udap0WZK9a8aRRLZr0f0KUvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J368ZaPs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=jQwfe26A;
+	arc=none smtp.remote-ip=43.163.128.43
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.43])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1CB606A335;
-	Mon,  9 Nov 2026 08:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6728606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:03:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6728606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J368ZaPs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2361F008A1;
-	Mon,  9 Nov 2026 08:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794211341;
-	bh=zn9xg9opWibp15PfCBcWey+5DGHdCRlF3nHuppKwlss=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J368ZaPszS8xybdDT4fbGyjht0xi43TS+zYaplUQhixvwYLaLsTkNTyRDoH6/mzii
-	 CL/YfCbQfnvJlima2nW5+/u/2GIgiaZQQCLfqAnnznI0Gewl0rTa2cTz41EqBqW16V
-	 xXlNlZxuLh83UVNRO/xYvC5b5Ty0bi2vU0EfLf8Qe2LEKxCaGoN67pIrq6Fu9T921A
-	 1QM+/g4CWz+20HgRGxqOnP1KXf1moBBB0Is3bENj6pVYFS03JsfnP63b/dsDE8qJca
-	 cbACGvQDesxhpg64jffZ5bVKPvc8ufmh+k1nyaQVfQP/hr66KI8HZF3b+26GS5Qfnp
-	 jsbroJC3dJLiQ==
-Subject: Re: [PATCH v3 2/2] usb: gadget: u_ether: fix out-of-bounds read in
- get_ether_addr
-From: netdev-bot+sashiko@kernel.org
-To: liuc63@xiaopeng.com
-Cc: gregkh@linuxfoundation.org, akpm@linux-foundation.org,
- andriy.shevchenko@intel.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, khtsai@google.com,
- fangxy@xiaopeng.com, rdunlap@infradead.org, dbrownell@users.sourceforge.net,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-Date: Mon, 09 Nov 2026 08:02:19 +0000
-Message-ID: <179421133992.994134.2792673257546866633@kernel.org>
-In-Reply-To: <20261105072147.3383565-3-liuc63@xiaopeng.com>
-References: <20261105072147.3383565-3-liuc63@xiaopeng.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=jQwfe26A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1794211377;
+	bh=Z/rHRhLXImGPKv4aC0q+JHvXgEG0/LvKco7wF+nbZOw=;
+	h=From:To:Cc:Subject:Date;
+	b=jQwfe26A9PzxBwHtFpkayoL1UWxH+yd9y5L63rfXBCHsJG7+u+dR5benk6r1Bswux
+	 ZRPoOKMfK4z+eYQcDY+Bmarq1dYFhvddJResSacxKv3ihBiZ0ofLtnWo4rP8aHb5nY
+	 MN04jndbZpS8MCvxs9t4Q0aHJAb0RXdRQtG1F1a8=
+Received: from localhost.localdomain ([183.23.108.92])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id B79240B; Mon, 09 Nov 2026 16:02:55 +0800
+X-QQ-mid: xmsmtpt1794211375te3kv8cp3
+Message-ID: <tencent_E018A629F0808AA68194ECD60FB6B096BD09@qq.com>
+X-QQ-XMAILINFO: NGZp1yYNf7Y+Tx1mgzTvMLegNet/UE90JHwikH3aBcSKgSUr4S8dNNiWJmAkNS
+	 1mUXPkxDdiwJV/L8mgdXpI++hgLRfP2CKDCLX6Y6rCRtDdWU5rJ1svTDFvqyOoffL1ucsgKbj+8I
+	 AxBDRMKWUsZFEd3d8+JIHCKz3AcS7s6/9eKB3E/zVMwMH9VTS1osjFimLVN7KZw0lIth/nBlNSH0
+	 3SK7DHsU75ziCl9fWdcFIbGGNSAjnBwRX2nkhirBX1O9JKP+5uwR/KwXcvqC4Fuc2IZ85rDVqaPq
+	 0SVXcfRjNttnljm8PNu6G32EvmWllvXRNhZlggf564VriWs4tpPG4m9h/+5EjkpDUgIAh45Btpj6
+	 1oPDXSLrSFImWJxwctTmQscF+sgWu0aCLfv9EoMVOdDv2GAN/9X+bIeeBpB/1cU9Pf0vlRTsrvLz
+	 xeYVuCfuwUfcXteGEjCvrfIm/IViqrkeQuW6HftY2hHgwlhD6hTXmU2tRPAla5BbDjVO4TMrlflC
+	 sgHFNMEEbugwISF/4vedV30isurjQhmH1v38ddNiE61i0vfhkeyoYyoswNnd4R3SCEY4AR33Zt6p
+	 Wmv2O/5Kkr+eNjJsRxUfmWtQemaygFVOWRO7tMaVFOv7tuZ0oVPNVMB8N1jKhVEoKzScyB5ZJEN3
+	 ZEDir+4UzYxsvI7rs88vJw+G/Qja7zT/JE4pRh5SGO7oaHuMz+q+NYrzy+wXaSw5BQ8lM6Q9k659
+	 QtHcHfG74kkukR6GXRmJDYRZnrLEAy2RcMKQ9QofQjB89qwINiho+NBmkClSaqX/I3NhVbfGx/y/
+	 YSGbiy+qPkQ6wNSTCItHJwxkF0v6TAM61cDU3ezd3KZ4gfoFGjDTSgeN38u8gGlB8i4HgIwuWIGg
+	 hhOmBuKG7SYea1azNVI2FDE0Vl5NLCkWLzv9o4mJcUedm7HfnOBInH9YcuT6A0pT8MQSDMX+IT8t
+	 WAVS1gaTptg+McpDNJerSRqeoPqlSWZLjIgtGCQLeG52BQ1PL2KQ2EZ1uuzP+r5JsZKjYLsN+kqC
+	 645mlkizJyhr0o6rPsXZxPytGrqCs7Fd0jah4YZVcB86LJkWMvMr79MMjZHSNqFTMuWWPDTq0Mg4
+	 ozhf+M1dq1PRZ3jJI=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org
+Cc: Steen.Hegelund@microchip.com,
+	daniel.machon@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	memoriaru@foxmail.com
+Subject: [PATCH net v2 0/2] net: sparx5/lan969x: fix RX ring stall on frames from inactive ports
+Date: Mon,  9 Nov 2026 16:02:52 +0800
+X-OQ-MSGID: <20261109080254.92305-1-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,167 +80,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+From: Zhang Hewei <memoriaru@foxmail.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+The FDMA RX path on both sparx5 and its lan969x sibling stalls the RX
+ring forever when the hardware delivers a frame whose source port does
+not map to an active netdev: the inactive-port error branch in both
+drivers leaves the FDMA software cursor untouched, while the DCB keeps
+its hardware DONE bit - so every following NAPI poll picks the same
+DCB again and RX traffic stalls on all ports until the module is
+reloaded. sparx5_xtr_flush() only drains the QS_XTR hardware FIFO and
+does not clear the stall.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Patch 1 treats a bogus frame on sparx5 as consumed (free the skb, clear
+the array slot, return true). Patch 2 splits the two NULL meanings on
+lan969x (allocation failure keeps its retry-later break; a bogus frame
+returns ERR_PTR(-EINVAL)) and advances past it in the poll loop.
 
-- [Medium] The commit message misdescribes what users see after the
-  change.
-- [Low] get_ether_addr() still accepts malformed addresses that have
-  trailing characters, and silently cuts them down to their first six…
-- [Low] The patch fixes a slab-out-of-bounds read that KASAN reports in
-  get_ether_addr(), reachable with `insmod g_ether.ko dev_addr=ab`, but…
+v2: hand-assembled v1 mails were mangled (duplicated newlines, missing
+diff headers, broken threading) and used a non-answerable From/SoB
+address - apologies. Regenerated with git format-patch; same two fixes,
+no functional change. v1 lore link:
+https://lore.kernel.org/netdev/20261108184541.74618-1-memoriaru@foxmail.com/
 
---
+Found by code inspection; the stall needs the hardware to emit a frame
+with an invalid source port, which cannot be triggered without hardware.
+Review from someone with access to sparx5/lan969x systems would be
+appreciated.
 
-usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
 
-This patch replaces the open coded six iteration parsing loop in
-get_ether_addr() with parse_mac_pton() for ':' and '.' delimited
-addresses, and with hex2bin() for the separator-less form. The goal is
-to fix an out-of-bounds read on short strings and to stop accepting
-non-hex digits. It also makes USB_U_ETHER select GENERIC_NET_UTILS.
+Zhang Hewei (2):
+  net: sparx5: fix RX ring stall on frames from inactive ports
+  net: lan969x: fix RX ring stall on frames from inactive ports
 
-Link: https://lore.kernel.org/all/20261104025058.2650911-3-liuc63@xiaopeng.com/
-
-> The configfs dev_addr and host_addr attributes of the ECM and NCM
-> functions reach the same parser through gether_set_dev_addr() and
-> gether_set_host_addr().
-
-[ ... ]
-
-> What stops working
-> is the Cisco notation "aabb.ccdd.eeff" and irregular groupings such as
-> "123456:789abc", which the old loop only accepted because it skipped a
-> delimiter wherever it happened to find one.  Supporting them would need
-> a parser per grouping, so such input now falls back to a random address.
-
-[Severity: Medium]
-Is the random address fallback accurate for the configfs path?
-
-For "aabb.ccdd.eeff", parse_mac_pton() rejects the string because it is
-shorter than MAC_ADDR_STR_LEN. hex2bin() rejects it at the '.' at offset
-4. get_ether_addr() then returns 1, and the caller discards the random
-address it wrote into new_addr:
-
-drivers/usb/gadget/function/u_ether.c:gether_set_dev_addr() {
-    ...
-	if (get_ether_addr(dev_addr, new_addr))
-		return -EINVAL;
-    ...
-}
-
-gether_set_host_addr() does the same. The store handlers generated by
-USB_ETHERNET_CONFIGFS_ITEM_ATTR_DEV_ADDR() and _HOST_ADDR() in
-u_ether_configfs.h pass that error back to userspace:
-
-		ret = gether_set_dev_addr(opts->net, page);
-		mutex_unlock(&opts->lock);
-		if (!ret)
-			ret = len;
-		return ret;
-
-So a gadget setup script that used to write "aabb.ccdd.eeff" without
-error will now get EINVAL from write(2), and the old address stays in
-place. It does not get a random address. Only the legacy module
-parameter users (ether.c, cdc2.c, multi.c, ncm.c, g_ffs.c) ignore the
-failure and keep the address that was randomised at creation.
-
-Five functions use these configfs macros: f_ecm, f_eem, f_ncm, f_rndis
-and f_subset, not just ECM and NCM.
-
-Could the commit message describe this configfs ABI change and its
-scope more precisely?
-
-[ ... ]
-
-> The loop is older than the git history: it is already present in
-> drivers/usb/gadget/ether.c in commit 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> and was copied into u_ether.c by commit 2b3d942c4878 ("usb ethernet
-> gadget: split out network core"), hence no Fixes tag.
-
-[Severity: Low]
-Should this still have a Fixes: tag? For bugs that predate git, the
-usual convention is:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-2b3d942c4878 would also work. Without a tag, and with Cc: stable
-dropped in v2, stable and distro backport tooling will not pick up this
-fix for the out-of-bounds read that KASAN reports.
-
-If the fix is backported, the commit that adds parse_mac_pton(),
-e5765bbb2de1 ("lib/net_utils: allow mac_pton() to take a custom
-delimiter"), also needs to be marked as a stable prerequisite. This
-patch does not build without it.
-
-> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-> index 59d85d6a84a89..deedea8a19fd7 100644
-> --- a/drivers/usb/gadget/function/u_ether.c
-> +++ b/drivers/usb/gadget/function/u_ether.c
-> @@ -686,18 +686,16 @@ static int eth_stop(struct net_device *net)
->  static int get_ether_addr(const char *str, u8 *dev_addr)
->  {
->  	if (str) {
-> -		unsigned	i;
-> +		bool valid;
->  
-> -		for (i = 0; i < 6; i++) {
-> -			unsigned char num;
-> +		/* Try the delimited formats first */
-> +		valid = parse_mac_pton(str, dev_addr, ".:");
-> +		if (valid && is_valid_ether_addr(dev_addr))
-> +			return 0;
->  
-> -			if ((*str == '.') || (*str == ':'))
-> -				str++;
-> -			num = hex_to_bin(*str++) << 4;
-> -			num |= hex_to_bin(*str++);
-> -			dev_addr [i] = num;
-> -		}
-> -		if (is_valid_ether_addr(dev_addr))
-> +		/* Fall back to the raw format */
-> +		valid = hex2bin(dev_addr, str, ETH_ALEN) == 0;
-> +		if (valid && is_valid_ether_addr(dev_addr))
->  			return 0;
-
-[Severity: Low]
-Can malformed addresses with trailing characters still get through
-here? parse_mac_pton() only checks for a minimum length and never looks
-past the 17th character:
-
-lib/net_utils.c:parse_mac_pton() {
-    ...
-	if (strnlen(s, MAC_ADDR_STR_LEN) < MAC_ADDR_STR_LEN)
-		return false;
-    ...
-}
-
-hex2bin() reads exactly 12 characters and returns 0 no matter what
-comes after them. get_ether_addr() does not check that the string ends
-after the parsed MAC, optionally with a trailing newline.
-
-As a result, "aa:bb:cc:dd:ee:ff:11", "aa:bb:cc:dd:ee:ffzz",
-"aabbccddeeff00" and "112233445566778899" are all accepted and silently
-cut down to their first six bytes. On the module parameter path the
-address is marked NET_ADDR_SET. On the configfs path, which passes the
-whole page, the store reports success.
-
-The old loop also ignored anything after the sixth byte. However, the
-commit message says "parse_mac_pton() checks the length". The
-parse_mac_pton() kernel-doc also says "@s must be MAC_ADDR_STR_LEN
-characters long" and "false if @s is malformed", which promises more
-than the code enforces.
-
-Would it make sense to reject trailing characters in get_ether_addr()?
+ .../microchip/sparx5/lan969x/lan969x_fdma.c   | 24 +++++++++++++++++--
+ .../ethernet/microchip/sparx5/sparx5_fdma.c   |  9 ++++++-
+ 2 files changed, 30 insertions(+), 3 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105072147.3383565-1-liuc63%40xiaopeng.com
+2.39.5 (Apple Git-154)
+
