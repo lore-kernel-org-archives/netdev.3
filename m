@@ -1,60 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.88
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794190034;
-	b=ec0mjb29fN4aq+2eaMjHNxtffvPJ3F0tXUkQy+F0XrLSOAPDs9Jo3P4n881IsVF3WMWA
-	 hah0GWVfcjeKNGYxPV4z5T2E8LLK+FgzxIH85oK0mTzP5XfTgXxfC89030tBSeDMWzvdA
-	 FDB8ouGXkOyAwbJBGgwA2nOGeJBVRXyTRGGfCCdS/9TgnAMSuFgOXnp3FqMMaQ1A7fNSn
-	 cfgc7oC1CViEjw3wJYfdu+w8eLSB7/1SWk83h32aMbSA3ecFv1x9v1czo5GapObOXJZgQ
-	 rFds7dcT7FcJg/ZCMoFiT+WOiSYdZCsuB7wpeF828C4nmEA5QSD0SqsD6sEFho/xoDg==
+	t=1794190515;
+	b=RggaUg68/W9gmrtNvSbKquJXeVUVq9Oft+/4iS1KuztCCPiavx7QmYGg4mzW7+d35rC3
+	 2tz4lqcDz0mdSYHZNIPEH40zuIYvdvBu8Qqp6kyM1+e937Nwr/SB7ZeHAengUWV1sfbPJ
+	 Idm1IFy1ugBjUumbaSNq8/a/STPECs7EhWKWNcfQpFW86Sj99S7oFEa/Iq1KIGVCc0I5k
+	 YIcJUsSO2Cf5uhDmCaXHUifETOFjrJbGNlDh3CkCsNuSeGJYhvw0UCzIKqyPE35CWLK+F
+	 PVompzU0qjLajP7rDR3wNthkc8vnRnRyuRj3VTNs7M17qSTHIZzfbMg5fxFzjE26DSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794190034;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=aP5F1SQLGFw3CwSUVsyeH935mxe5M3m3IupmBje0ewo=;
-	b=WVV17ecJwiPyEickmikOX0Fqk+yqRBdmd9HE/79ZaW98FE+e+5GC6Cba8Ma8GFpN3gPk
-	 5MiKVBmcm6O8YaoCqbtcjJJRqK1yjZIxX+39D1Hy0mv+ydqHFMb+LZAlrsR6H3nvjdTVw
-	 r04O0nBEikBvzz8ws8Rqh9G2xec+jt8dJA/Lg7ts8AOqW40cOR5kqDOJ1rjVI3d2Sk2ok
-	 wocpmT9+q04Dv7lGVt6fwHd4/CzrBFdTby4nhDwgVouwlSgcOrqSHNekERtpvneAm1xk/
-	 IXrX++kS2Kdqhu5dDE0Rv+309ns8Jdw3tTaTSzoNwjx1aIzNhUQkptd2U6QoJdB/Hgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794190515;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=bIloYSK3+4K/KkpgHLmr3ED9jzQvebQcrpQM//1CZGo=;
+	b=ff89Z+0poLqNsWh57pNveEBo7DoQuZtiOXFp7SIZj3rY00FtkGRmTp4Ib0EgI/EasPLP
+	 pVbas+eGu3CvnNLooS/C7FIFXe36tYOQBSTe3xptaHOXJiLouYI0oZ6rKTfNpldQG8D2E
+	 RhFo5wCwSdotN0RvyUkEnIxupGGgJPhIHiwJzQgqt9J2Zwc389lpQA/z+u4VX1+B3ULqY
+	 7K3Ksc5tjcxUMpWXlUgrqRLWK9ldN3rhs2q+X4Q3f80CEJnB3dpccQWhbPLcVGJEKNPHJ
+	 z/FtPtXQ+C66BeGMgSKkvwbCBTx8TxaJVvlvrOhd5PWZMwptajGqpLRoUyACaFIXXug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ErRgJEzd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Xa1Jr9pq;
+	arc=none smtp.remote-ip=95.215.58.88
+Received: from mta1.migadu.com (out-88.mta1.migadu.com [95.215.58.88])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1D606D80C;
-	Mon,  9 Nov 2026 02:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28BB606A326
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 02:15:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C28BB606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ErRgJEzd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFE11F008A5;
-	Mon,  9 Nov 2026 02:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794190033;
-	bh=aP5F1SQLGFw3CwSUVsyeH935mxe5M3m3IupmBje0ewo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ErRgJEzdWwnZjK5fm13vAsFYkNMeRAHhh6yw+ZxtdQNcnskOXSh1eJ1ErZ2DUd2Bo
-	 HM+LyrIQXCknnulgCm8Dn2ksAxYilaXxgT+zqZdW5nTu4R3m18p9r9stXZ0O4uoL9K
-	 SsIs/ksuh8LSmnyJ4PKIRorxKXRSwMn1zMcv38or7CWuA17Dcj499whHUCxfoGFr9s
-	 qHk+SPEHG9pUMOlL3VfZVhGdYSw/KyHJ6qcgMYrH1z5BXW+GMhV1k7aZqHUYESA6kA
-	 pqeAOHBfuBBmlbQpyC//kP4sh2stHc8/JoErQ2+Ag8OrFfLpKKsasEyJ/fGgIUnRjq
-	 3bDYhqrmK+oGw==
-Subject:
- Re: [PATCH net 1/2] net: do not run out of frags in alloc_skb_with_frags()
-From: netdev-bot+sashiko@kernel.org
-To: yanhaishuang@cmss.chinamobile.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
- willemdebruijn.kernel@gmail.com, linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 02:07:12 +0000
-Message-ID: <179419003251.994134.13120616805502524032@kernel.org>
-In-Reply-To: <20261108100617.23840-2-yanhaishuang@cmss.chinamobile.com>
-References: <20261108100617.23840-2-yanhaishuang@cmss.chinamobile.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Xa1Jr9pq
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=8n8V1yRl+iYZ7zK/bT1eTEsTmfpO4TUveKPsBFyRf8k=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794190511; v=1; x=1794795311;
+ b=Xa1Jr9pqz1vr1rqOZrFS0+WmpycF+gQF5QftMAeWPB9sFvpuO4IeHLZLxsBioaslsF2tXWUH
+ 64HHIz9xOEMmMctAASxPTKtUGNKqcuxlQSNGlNGKU7HN3Yecn/SoQRS9vWLWaKb2FzCUZ5mPR+3
+ aEOTp+nUxZJiQVqxrg2/+1F4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id e4b351546fe3877f;
+	Mon, 09 Nov 2026 02:15:07 +0000
+X-Mizu-Trace-ID: e4b351546fe3877f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <65d109ab-3dca-4521-bc1d-bb1f8810bb14@linux.dev>
+Date: Mon, 9 Nov 2026 10:14:57 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,136 +58,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v3 1/8] selftests/bpf: Remove sockmap update from
+ bpf_iter_unix
+To: Michal Luczaj <mhal@rbox.co>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
+ <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen
+ <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Stanislav Fomichev <sdf@fomichev.me>
+Cc: bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
+ <20261107-sockmap-update-limit-iter-v3-1-7c0bad1ad036@rbox.co>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261107-sockmap-update-limit-iter-v3-1-7c0bad1ad036@rbox.co>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+On 11/8/26 1:58 AM, Michal Luczaj wrote:
+> BPF iterator programs that can update sockmaps will be limited to
+> iter/sockmap. Remove the update from the unix selftest.
+>
+> This reverts commit 997b8483d44c ("selftests/bpf: Extend bpf_iter_unix to
+> attempt deadlocking").
+>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [High] The patch fixes the run-out-of-frags case in
-  alloc_skb_with_frags() (net/core/skbuff.c) only when every high-order…
 
---
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-net: do not run out of frags in alloc_skb_with_frags()
 
-This patch changes how alloc_skb_with_frags() picks the order for the
-tail of a paged skb. When splitting the tail into smaller pages would
-need more frags than are left, it uses one rounded-up page for the
-whole tail instead. The aim is that a data_len that passes the up-front
-size check can no longer fail with -ENOBUFS, which vhost-net retries
-without end.
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 8da53d5b76fc2..93e7b04ddfe63 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -6902,8 +6902,18 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
->  	while (data_len) {
->  		if (nr_frags == MAX_SKB_FRAGS)
->  			goto failure;
-> -		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
-> -			order--;
-> +		if (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order)) {
-> +			unsigned long pages = PAGE_ALIGN(data_len) >> PAGE_SHIFT;
-> +
-> +			/* Rounding the tail down to smaller pages takes one
-> +			 * frag per bit set in its page count. If not enough
-> +			 * frags are left for that, use one bigger page.
-> +			 */
-> +			if (hweight_long(pages) > MAX_SKB_FRAGS - nr_frags)
-> +				order = order_base_2(pages);
-> +			else
-> +				order = ilog2(pages);
-> +		}
+> ---
+>  tools/testing/selftests/bpf/progs/bpf_iter_unix.c | 10 ----------
+>  1 file changed, 10 deletions(-)
+>
+> diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_unix.c b/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
+> index 3061b148f338..90beada0386d 100644
+> --- a/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
+> +++ b/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
+> @@ -7,13 +7,6 @@
 >  
->  		if (order) {
->  			page = alloc_pages((gfp_mask & ~__GFP_DIRECT_RECLAIM) |
-
-[Severity: High]
-
-Can alloc_skb_with_frags() still run out of frags when a high-order
-allocation fails? The fallback just below this hunk has not changed:
-
-net/core/skbuff.c:alloc_skb_with_frags() {
-    ...
-			if (!page) {
-				order--;
-				continue;
-			}
-    ...
-}
-
-This lowers order for the current chunk and for every chunk after it.
-Nothing checks that the MAX_SKB_FRAGS - nr_frags frags left can still
-hold the rest of data_len at the lower order.
-
-The up-front check assumes the caller's order is used for the whole
-loop:
-
-	if (unlikely(data_len > MAX_SKB_FRAGS * (PAGE_SIZE << order)))
-
-Take CONFIG_MAX_SKB_FRAGS=17, 4K pages and the order 3 that
-tun_alloc_skb() passes. data_len can then be up to 17 * 32K = 557056
-bytes. If the first order-3 allocation fails, every later full chunk is
-16K, and 17 * 16K is only 278528 bytes.
-
-Wouldn't any data_len above 278528 then reach nr_frags == MAX_SKB_FRAGS
-and return -ENOBUFS?
-
-The new tail logic doesn't cover this case. It only runs when
-PAGE_ALIGN(data_len) < (PAGE_SIZE << order), and that is false for the
-remaining full-size data.
-
-The tail logic also relies on its own bigger allocation succeeding.
-Take the 516536 byte example from the commit message:
-
-- 15 order-3 frags are filled.
-- The tail is 7 pages, hweight 3, with only 2 frags left.
-- The code picks order_base_2(7) = 3.
-
-If the order-3 attempt and then the order-2 attempt both fail, the tail
-is filled with 8K chunks and the loop runs out of frags again.
-
-These high-order attempts use gfp_mask & ~__GFP_DIRECT_RECLAIM with
-__GFP_NOWARN. They fail whenever no order-3 pages are free at that
-moment, which is common on fragmented hosts. handle_tx_copy() still
-treats the result as transient:
-
-drivers/vhost/net.c:handle_tx_copy() {
-    ...
-			if (err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS) {
-				vhost_discard_vq_desc(vq, 1, ndesc);
-				vhost_net_enable_vq(net, vq);
-				break;
-			}
-    ...
-}
-
-Each retry starts again at order 3 without direct reclaim. When host
-high-order pages are scarce, can a guest that raises its own TSO limit
-still cause the vhost worker spin and the device stall described in the
-commit message?
-
-The KUnit patch later in the series doesn't touch net/core/skbuff.c,
-drivers/net/tun.c or drivers/vhost/net.c. So this case seems to stay
-open at the end of the series.
-
-Would it work to treat the frag budget as a hard limit on every order
-reduction? For example, lower the order only when this still covers
-data_len:
-
-	(MAX_SKB_FRAGS - nr_frags) * (PAGE_SIZE << (order - 1))
-
-If it doesn't, the code could retry with direct reclaim, fail with an
-error vhost doesn't retry, or have tun_alloc_skb() put more data in the
-linear part.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108100617.23840-1-yanhaishuang%40cmss.chinamobile.com
+>  char _license[] SEC("license") = "GPL";
+>  
+> -SEC(".maps") struct {
+> -	__uint(type, BPF_MAP_TYPE_SOCKMAP);
+> -	__uint(max_entries, 1);
+> -	__type(key, __u32);
+> -	__type(value, __u64);
+> -} sockmap;
+> -
+>  static long sock_i_ino(const struct sock *sk)
+>  {
+>  	const struct socket *sk_socket = sk->sk_socket;
+> @@ -82,8 +75,5 @@ int dump_unix(struct bpf_iter__unix *ctx)
+>  
+>  	BPF_SEQ_PRINTF(seq, "\n");
+>  
+> -	/* Test for deadlock. */
+> -	bpf_map_update_elem(&sockmap, &(int){0}, sk, 0);
+> -
+>  	return 0;
+>  }
+>
