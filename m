@@ -1,59 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794233410;
-	b=Rc7ZcqlrnJ5pNF99A/UQltBzDqAg0zxV6v4lUnAdKFPR6f7O1jAppLE1fBut968rDMf6
-	 BlCBxfJ/yT3HVqfUYqs9Bfw0hxbrz82OdnHqDDLhA3RZrnrGnkowkaBwVk3hlwl9FRxE4
-	 CJa1OAAZmYbtxR4G9O2Qp31uxp3rLALRbtvpUfaxj9TxATpe6I7U/hGGsKXZYFdxCUe/b
-	 3euIgYY04V01Mfa/t1ICQGfPU4w4KJDg3m4KvHlV9+fB/2j5gtu0Gn7qP3WzLmtK8KZVD
-	 98BsYH8TtjfNsdf0D51TvfUZSHfIppYe+dOUV3sevuAl+RQNjpFy0Ok8Y+Ft4JEyBxA==
+	t=1794233630;
+	b=yuX94818F8bIoMdARnKxtid20VPM0yhsyZrMVvLFmbds9SGXnRklgXIkFDDtpP5zXbvZ
+	 K1UHnJNNQHLbCgCSi4whTHcY++fdz8mAB66R8h7VMA3ITDSYn0o0Ki4vsBNFU+Iw1OXxp
+	 1h5VBCr07h9OIcId5k3Nr+mjWSakNVZT2KqJBmLDffynIHyjWRMUBNcHnGo0AtR1Jfsm2
+	 P72vL2+QVewpf8V2/KZRIliuBIP4QJGma/ditJqLJ7gpIjJhTVQFJMeMU6IMoSi/c9nNt
+	 /aKKXkOCDO016gstpHuWKeQ+3iIrAhZeQjSrqFyrWxbwrhs7Bv9iUopuvGuBaOQTdQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794233410;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=zXDzhjAT9R0FNsl85MpNlLYfFlMVbyNabR7bM1DWwJk=;
-	b=pC2U/5MX4LhxHit9leKUfiRUvMGK8lV5OVAikuQbNbO2bVSlfaKFdVn9VU70tj932jH5
-	 zbJ1UUhPpRi7rEJAbOjewsi0agysEz3PQVq7ZjgdHYB+UqVBLGjtvWGeahlLHsRfZLgdZ
-	 bY78s+4nI6Uqs3GQHBwD4Dq4KzZ5DERSg7yWC8PC1f0dcfPp8Z+k/HJ+pIXvhlMf+jMZH
-	 xRt/8fWniAdioLLmhOLhmjG7PjimzUepQ/qnF26YDlSVTTBbWReJN0Sf99Ot85gQ2/1wc
-	 Ot8VtUdgiC8e/W3ChwtUA/kz17jsPBwRgQvPSCVvN7CLVL/iNlmSxsvLZDBSbs73RTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794233630;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Os/kHx4LCNQuEhjGd63XDiS5ZOVJyk0A7oldmTRaPxE=;
+	b=sCgmJvzl9uigKr9+ccbSMPI22cg3/7amUR3H3soNoCSlmeluNqLGVaJS0C5VRksz0pOn
+	 78X670s6pF8yCYnDM3ZR6inK3jE2Eemmq/aW2+pS35S+3r8rMRSJDkIGFGq23bh8DX8TX
+	 ib09DaDuo3ickfjgIVvGNnjdEw1cIFbMjuYB2cE3S36kxnsolOabDQInGRUs2QIOUiWFS
+	 9E/Btsqo4jrwx6yiUjx8Zd6R3EYthG5e1KmtcOrjeWu6UMXcokFgniBuVlvZ39KXxxL0P
+	 5ieOGUnAbUN/Imlujqfmyy7tTYmj38hWiAMB2PiJcgwlK/U1B/lTux+pBWPquHBfJzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ApsSWzCr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W03cjfAy;
+	arc=none smtp.remote-ip=209.85.221.52
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A5B606EE8D;
-	Mon,  9 Nov 2026 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B70A606EE85
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 14:13:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B70A606EE85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ApsSWzCr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87611F008A2;
-	Mon,  9 Nov 2026 14:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1794233409;
-	bh=zXDzhjAT9R0FNsl85MpNlLYfFlMVbyNabR7bM1DWwJk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ApsSWzCrvMXScR+CmxaKL8Ulf9qAm6QEctwM6iy8b82NIWwEqLnwAavPY8S17B4pi
-	 8ZWLxyZWBDDIr8TmsKXh6Sb7XvCtI3SpeYvW8Ts6mU5LilnkQT2iBfVlxaxMKu2Ij/
-	 CkhzJbxUMmc3YosYNCcUGzG/Wfhxa9rv5ezVWJqQ=
-Date: Mon, 9 Nov 2026 09:10:06 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W03cjfAy
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-492fcbfaa87so591315f8f.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 06:13:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794233629; x=1794838429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Os/kHx4LCNQuEhjGd63XDiS5ZOVJyk0A7oldmTRaPxE=;
+        b=W03cjfAyfB3Mf1YemElAlcVXtCdh4C5VQGKmkFRtXEuyAWwkH1cQtYiwCeliyriXfg
+         ajuhNEC2X3U+Enq43hrs6IKow9w50DLvgAR/tPwtfR9ZZhlqiOR0Tpu1/9Y9DgCWKsRB
+         P3uRCVFVNsu2BebFWvWhivxfxHiI6zfYjAdhyzzFRtiB2etkvGbIEb1yV7P6ppxjgiRv
+         xtKCMM1gK6C+hIj1ksaF4PbQ5miHMxJoSFnA+5z4WUvKmQaGs4YJDfdwiNLxkyiWb15X
+         /V1m1CX3mkupApejKbSpTIUnZfVUA3EZn997/AMtzcvXNvjRpJWRAO95Hy5lQMD4L+7U
+         LNmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794233629; x=1794838429;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Os/kHx4LCNQuEhjGd63XDiS5ZOVJyk0A7oldmTRaPxE=;
+        b=HLCCQLslgDsRZKyluKyTxjd/Z48/f4PC/ufFryktfwgkivMqDa3UIYxzOk8D9ASS5Z
+         5ZsTA2cqVoh1Ye84l+C7t81AYbN/JFP8Ngy8Klu3QvJDny7DlC5mSAJBEf3KhdMK422G
+         /Sy52TahiF+oGGHe9vZrgaWYYsYzOO/Zlts/s3zdA5ekM/ahCccJ8/csFUwIn6HjE1of
+         e5SKrfPtmnDgufCkTjAzt2zZWk0q0eieg3YXg57iBEaQeWXid+8HnIAbftnoDjbv3GpB
+         AKrRhOvEaWcDFGBUftI2EPt2fUCzghc8Y9x6sskxrr0HyJ7veOlKN8bIVciglQYEjuUV
+         Qw3A==
+X-Gm-Message-State: APuU4Z9PKsiJeR6SqWkkvaEHrCnWpx9Q+tMCac95yUSZnVNkUzQuVwxy
+	SzcWiZKc1xzC4voQXvlrIndMyJitEuq2q3kwrWFWs2ekB23Px9QzVM8C
+X-Gm-Gg: AYBFou3VXDpBA8/e9Xx6jk19ckFtalu6XSBIvidrGWcXEpejVb/7pnr77HVQ3qeXJj0
+	IlIF3AB/aPTj7KlvRQd66aKiT4QdSftPabvRlE0F00dU3nv3VbS/SM9tatMm048/5poYe3Uyx8d
+	kIP5azYLEccwmseX/BJrfgqrjElBD3hyzyQkHMMxmwobJGi0mC4CuzfaejTvInADosUq0on3e5m
+	HmX16L18HC7OIsy3+LJuDFdJfWY3ZLtbFdHmb5mC/qdBtsWuVgqlhl0rUZc4Hrf9kwWoFdDKu6F
+	Ffz8ztmY4frPhwjK/CuqnTMiTFgN2P7/essF8zepp+kUg6VfmYl8uy/SK8szbhg/L47ALGe/YbL
+	qAf4+7PuVEgM4Dv587202CLdFd3tMPqmFRfMGiaEwOQ9EwEqu+YFLwq33/4sbbDTqne6a8JweXx
+	eo8fP5e4D7d8gGT1uGzuxao0SXmOCyJQVw3D+dq5lZnQGAIpCfbJ7+PkVGMUC+uhZYZEDXD5PNv
+	VGVbb6yhkT1xw92/OJlJiCrqfC8XITHlZodTvDMcGS2pyMnZ0EOHoc88hisqrQF/v73IiIs+rht
+	AQ6i2oiyxTXZp7MapfI+Z8gzavtC9cObIf7VeCKqbmoIGg==
+X-Received: by 2002:a05:6000:2881:b0:488:89c7:31aa with SMTP id ffacd0b85a97d-495842b8bc6mr8287926f8f.39.1794233628388;
+        Mon, 09 Nov 2026 06:13:48 -0800 (PST)
+Received: from localhost.localdomain ([2a06:c701:474b:1700:46d1:cd03:d771:378e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-495bf0772c1sm7949612f8f.18.2026.11.09.06.13.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 06:13:47 -0800 (PST)
+From: Avi Weiss <thnkslprpt@gmail.com>
+To: Arthur Kiyanovski <akiyano@amazon.com>,
+	David Arinzon <darinzon@amazon.com>
+Cc: netdev@vger.kernel.org,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.18.y] net: macb: wait for a running xmit before
- resetting BQL on close
-Message-ID: <2026110940-familiar-slick-4d2e@gregkh>
-References: <20261109-nb-macb-close-6-18-y-v1-1-51af4b20dffb@tipi-net.de>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net] net: ena: avoid RX copybreak for multi-descriptor packets
+Date: Mon,  9 Nov 2026 16:13:44 +0200
+Message-ID: <20261109141343.920187-2-thnkslprpt@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,24 +97,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109-nb-macb-close-6-18-y-v1-1-51af4b20dffb@tipi-net.de>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 09, 2026 at 01:57:09PM +0100, Nicolai Buchwitz wrote:
-> macb_close() stops the queues without waiting for an xmit still
-> running on another CPU. That frame charges BQL after the reset and
-> never completes, so after the reopen the queue stays stopped with an
-> empty ring and the watchdog fires until the next close.
-> 
-> Seen on a Raspberry Pi CM5 with ethtool -G under load.
-> 
-> Upstream fixed this as part of the context swap rework in commit
-> dcc3288b9433a ("net: macb: use context swapping in .set_ringparam()"),
-> which is too large for stable.
+ena_rx_skb() selects the copybreak path based on the first RX
+descriptor's length without checking the number of descriptors. When
+a packet spans multiple descriptors, this copies only the first
+buffer into the skb and fails to recycle the remaining request IDs,
+while RX cleanup advances by the full descriptor count.
 
-Why is that too large?  Please backport that instead.
+Restrict copybreak to single-descriptor packets and apply the same
+restriction to the rx_copybreak_pkt statistic. Multi-descriptor
+packets then use the existing fragment-processing path.
 
-thanks,
+Discovered by comparing the in-tree ENA driver with Amazon's
+standalone ENA driver.
 
-greg k-h
+Compiled with W=1 under x86_64 defconfig.
+
+Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+---
+Already fixed in Amazon's standalone ENA driver:
+https://github.com/amzn/amzn-drivers/commit/8c47df628bbc6623bd9a419f261ccc46abbd36de
+
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 7eb6456ed0d5..80f5d08305c2 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -986,7 +986,7 @@ static struct sk_buff *ena_rx_skb(struct ena_ring *rx_ring,
+ 	page_offset = rx_info->page_offset;
+ 	buf_addr = page_address(rx_info->page) + page_offset;
+ 
+-	if (len <= rx_ring->rx_copybreak) {
++	if (len <= rx_ring->rx_copybreak && likely(descs == 1)) {
+ 		skb = ena_alloc_skb(rx_ring, NULL, len);
+ 		if (unlikely(!skb))
+ 			return NULL;
+@@ -1293,7 +1293,8 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
+ 
+ 		skb_record_rx_queue(skb, rx_ring->qid);
+ 
+-		if (rx_ring->ena_bufs[0].len <= rx_ring->rx_copybreak)
++		if (rx_ring->ena_bufs[0].len <= rx_ring->rx_copybreak &&
++		    ena_rx_ctx.descs == 1)
+ 			rx_copybreak_pkt++;
+ 
+ 		total_len += skb->len;
+
+base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
+-- 
+2.43.0
+
