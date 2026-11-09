@@ -1,78 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.59.229
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794211390;
-	b=zLl/hE0rIWe8eMkuzAbOxJPYc6MiAF2ZJYwi6J+aW2+l2AgfuZGVLmJ8iHVq3memNztc
-	 HopqCfPa3AeSQnQA4XPJbs8VlDRMx0vwKPJIN3Md0x6js+SnmWkaIBpRFr0vxgL9UzUSc
-	 V4zGMvqo/Z2uKeFcyQeW6M/ZKwxiTJoG8lXZbgesWeq5Ie3p+ZXN2eAjUqbGh5Fap15Oy
-	 WyjD3UZ8cUqxam0PtPG0fTO5WYScxtLHztPVQ1G0KMIZM3jOmqMKKYaBpFj4+6PjpD+Kn
-	 yDT9R5dIm17Cu3tZVrucMisb6/NnRj2pAuqnAwwzQyctpyK24zyPajXxOYbOtYsS1yw==
+	t=1794211418;
+	b=EXj+IVDmFlaDjAmY4URwUA/bQpkm2ZFfJpt72jkrxRnGBMSaDUaArsZ2vu/Au8PACQVr
+	 R6XiHVMk8heg9FBQMue+v5LxlTrBFmvkzKG8a7AgORgaod1Rz2MIHAflLbpfBFJDYHBOZ
+	 AgX0Ll7FVfKPueogn9wlGruAAZeB2sH3TSCU8v/U/YW1b87KxYLtdTfHWmYTxm2NccbJa
+	 rdp7+LVFokbkuJaJb/bD4YhN4weiGiKbZFxyDTBA2sGB5cbmUxDldLQ7PAIvTNyLk5+xn
+	 XKvHT60Iye2VM4VDkfwFX4Sls2xg2PUQxGPLsytTxLx/vmTTCAIL2pfxRO607wFueBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794211390;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=gLD2qdjlkf0C6gK3J3mNyyLmAk5TsTbIQ2KxZYu6xfw=;
-	b=b4mB0WPR3alZe7muhd9jE2hrTEXVwja6GsOs+x3ZgAIOLLZzm8PUKxoBLGoMcodyX7CK
-	 zphL6CpZThpUDQKj0aC4y5wSlQXYP09xPpkuSwiBLwtqM/V/hdFTHb5++OQTKiInm2vGf
-	 kBywTVOPHXjIU1i9ZkImgv9a/JB0S74rmzFOH5nCEFNqH++7cC5YufVbIIjluGo6JDKVt
-	 eDriblmjP6+C2reluRQsJyY7VxSGhOCsS3LXOPz1jnSh13xDCvR5Q96YpDltm0rIqozCM
-	 VH7bmzUOj0i7em82wC7L8rGqxM0/Loz/4TlDW/2h6iHoXcAA0lhoR6JSYKeNwF+LABQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794211418;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=wdFo0XjI9tkdZIoSTisce9xdIBq2+GTowhw6RU8j3/4=;
+	b=Ktt/bNAbNkD+/DDJhkq1F/w1+D7jsYtCgbjxpZFLzgvTmWo2HzGVng3itY7a+CxKC+v3
+	 vYgdjNyS/rzW0kfwo+Fb+z8X7xWK+nMYcE4C1t114+KDmnQqn060KmUk6wbr5z2O9lgXz
+	 0ibi6qCDv839rTqW6ZB5SgKikHrAHKoprOXLuZam7YIX4t0gF5d8x7JBRVrFxsH+A/ZQS
+	 FPP/s6dx7xBr3xJ/dbSkwCFd56EFqMv535pAp6PS1I2Um2Cwnm7xxPDs+CVf95ES16WvE
+	 mQqcGgaoppGddNLICc7cYUdFUHSDRhTv2KOLfnc2uIp1CBMoYdn9AV9bODbcVsS08dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=fsYrXigN;
-	arc=none smtp.remote-ip=162.62.57.252
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=1wt.eu;
+	spf=pass smtp.mailfrom=1wt.eu;
+	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=ti4qWwWa;
+	arc=none smtp.remote-ip=51.159.59.229
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9032606A332
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:03:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9032606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49129606A31C;
+	Mon,  9 Nov 2026 08:03:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49129606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=fsYrXigN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794211379;
-	bh=gLD2qdjlkf0C6gK3J3mNyyLmAk5TsTbIQ2KxZYu6xfw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fsYrXigN9BIMDK7MMn7RiqUvqG7i5xVqUpVRGX/QqoAEN+n5FHsLtaZgki3dCjEw3
-	 HPnmXBPrGHsH4dG5DNyjjLYAVbyHVBPWz+0lsveTA531y70sC0LWu/C52X1s9FVx6O
-	 dOuU719KI8y8shs/FVvDaL796AugEGxs/dNi1T9Y=
-Received: from localhost.localdomain ([183.23.108.92])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id B79240B; Mon, 09 Nov 2026 16:02:55 +0800
-X-QQ-mid: xmsmtpt1794211377tc6hgx68x
-Message-ID: <tencent_D6697325D37592ADABE50686370A7D208907@qq.com>
-X-QQ-XMAILINFO: N7NMbzIEsXzdPTi6tMJdatCt6ZYo8LALs0yjKWXBOE4O5wjcz2UuFgHq7o/ur2
-	 Oo/BpBOUame5zKuFqPqFW+wgR3c53w49XtVWVTqrLTZ9DZXGIj0Ndzq8uDM+e1gl9BDhdlyd7AW+
-	 OVa6OCHoZQ/16jzlS8a0u6J/AZrlX1tX8dR1Q8/c7SkA7Twnm2KWoBSqPbE9XRaFJR7FhOz9nTsg
-	 8Ot6n4Arw0tfNw6p9mqD58gLud7idiNgmwq9csVHM/dY0xGg13IpHWafRfIgXVm9CNx/XUroC3NK
-	 zW7qQuLou+e8ahzuJE86IrdUc3q+bxG9+/gyYV5mh4HwQY7yT07wDAzCpXTiWE2zPaLKx2I+YFNc
-	 MjhxubXvBSFncXL0tp3hZH7GANrYEkjWh42HVKVKBecFF+ETdyRqjo9EHsWAUdk2sWy+LV8k/i2n
-	 Ez8pGkLAGwmeMnn28MwCXrShixly+QVvB5ODyxqkNT/CO2Jxdq4gez5YMhKUgcrYEJzmGlVQ9lFZ
-	 N9IO88/fgulU4yGT4xCOtnQoH4MAakkBKybJ7aGorlCj9upsUQUk7GcTwbMHu9voTJQNaBhuzROd
-	 Hgfe29c5q1NBmF1Ai+JRihkeU5BeixckNxuU4PRXrT8C+vtsKGO4QbJykezEH8F/m/WPLgma3YAP
-	 1dqYZNsRNQc2Y4kWDZhkqIr/2Rj7eQf4aNJymqGONm+YRN05XYGlmtJUs0gedYWZykNiLtnqFUJG
-	 FdbMUGNDZC+HQ4a83TvTLz8AguObYJFFycomAEad2AjtvjIAZh4fkyuk6nscMJtUjYl6bc1usnrE
-	 vFOPIrXwSpGBBk4sjcOVzGgDJ2ohPMSgRQLHMFkO0PlXrSrLLVjsW8tL8mF7h37+eejjxBO2efHV
-	 WFZ9K4maVqK+30QOHlY22AIrEpZyVRgbYDI8bDWlvsHvRkKFwt3UHPxAgYYMRE8l9kcGXI1+R46D
-	 K+nM9WhVm5LI9PH5nw+KppUJ13NKNZmJM+wByMHez5plL4+H/n0wx1c30djL0DJDyfduWEQ0qeiy
-	 SYUG9wGzcnxtFA5tEUT2T6arzLuUz1LXRC63ZkdXtCsHs+t5dR9RPAO4oVdLM=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: memoriaru@foxmail.com
-To: netdev@vger.kernel.org
-Cc: Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	memoriaru@foxmail.com
-Subject: [PATCH net v2 2/2] net: lan969x: fix RX ring stall on frames from inactive ports
-Date: Mon,  9 Nov 2026 16:02:54 +0800
-X-OQ-MSGID: <20261109080254.92305-3-memoriaru@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261109080254.92305-1-memoriaru@foxmail.com>
-References: <20261109080254.92305-1-memoriaru@foxmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=ti4qWwWa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1794211413; bh=wdFo0XjI9tkdZIoSTisce9xdIBq2+GTowhw6RU8j3/4=;
+	h=From:Message-ID:From;
+	b=ti4qWwWaF1O6QRvBWIlJO8dfbHs3WvSWMLmPnCWZLDN05tHzkoZX/AZ++oOXxQKvy
+	 PAZHNw5a90J9E75WlMRluS8W/NDc7r+INOy2VV8oN17LaLAlqr2DCvYD/bUH6/G21K
+	 YXddq5eaZijM9jP35r4uT7Sj+tnUxWGwoNIXzv0E=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id 8E998C0954;
+	Mon, 09 Nov 2026 09:03:33 +0100 (CET)
+From: Willy Tarreau <w@1wt.eu>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: skhan@linuxfoundation.org, Randy Dunlap <rdunlap@infradead.org>,
+        workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        gregkh@linuxfoundation.org, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: [PATCH 00/14] security-bugs doc updates
+Date: Mon,  9 Nov 2026 09:02:26 +0100
+Message-ID: <20261109080240.29444-1-w@1wt.eu>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,82 +64,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Hewei <memoriaru@foxmail.com>
+Hi,
 
-When a received frame's source port does not map to an active netdev,
-lan969x_fdma_rx_get_frame() recycles the page via the page pool and
-returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
-loop without advancing the FDMA software cursor.
+Here comes a new batch of updates for the security bugs doc,
+essentially to make it more readable and to address some of its
+apparent contradictions for those not reading it entirely. Some
+additions were made to explain how to send a patch and a reproducer
+separately, and to ask that first-time reporters send a single
+report at once first.
 
-As on sparx5, the DCB still carries its hardware DONE bit, so every
-following NAPI poll picks the same DCB, hits the same inactive-port
-branch and breaks again: RX traffic stalls on all ports until the
-module is reloaded.
+The first patch looks big, it only reorders paragraphs to fix the
+current mess resulting from minimal and incremental updates we've
+done over the last 6 months in reactions to some repeated mistakes
+found in reports. This accumulation has resulted in certain topics
+being discussed in a somewhat inconsistent way at different places
+in the document.
 
-A NULL return currently covers two different situations: a failed
-build_skb() (allocation failure - breaking out and retrying the same
-DCB later is correct) and a bogus frame (which must be dropped and
-skipped). Split the two: recycle the page and return ERR_PTR(-EINVAL)
-for a bogus frame, and advance past such a DB in the poll loop.
+Aside this big patch (which only reorders, doesn't change a word,
+which can be verified with "git show --color-moved", there are 13
+small patches each touching a single paragraph.
 
-Found by code inspection; the stall needs the hardware to emit a frame
-with an invalid source port, which cannot be triggered without hardware.
+Interestingly, I discovered that the list's address was still present
+in historic areas of the netdev doc and in submitting-patches, which
+could be an explanation for the non-negligible amount of reports we
+receive showing proofs that the doc was never read, so I've fixed
+that as well.
 
-Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
-Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
----
- .../microchip/sparx5/lan969x/lan969x_fdma.c   | 24 +++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+Thanks!
+Willy
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-index 053d125..7234474 100644
---- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-@@ -3,6 +3,7 @@
-  *
-  * Copyright (c) 2025 Microchip Technology Inc. and its subsidiaries.
-  */
-+#include <linux/err.h>
- #include <net/page_pool/helpers.h>
- 
- #include "../sparx5_main.h"
-@@ -113,8 +114,15 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
- 	sparx5_ifh_parse(sparx5, page_address(page), &fi);
- 	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
- 					       NULL;
--	if (WARN_ON(!port))
--		goto free_page;
-+	if (WARN_ON(!port)) {
-+		page_pool_recycle_direct(rx->page_pool, page);
-+		/*
-+		 * Signal a bogus frame so the caller advances past this
-+		 * DB. Returning NULL would make the poll loop break
-+		 * without advancing, stalling the RX ring forever.
-+		 */
-+		return ERR_PTR(-EINVAL);
-+	}
- 
- 	skb = build_skb(page_address(page), fdma->db_size);
- 	if (unlikely(!skb))
-@@ -258,6 +266,18 @@ int lan969x_fdma_napi_poll(struct napi_struct *napi, int weight)
- 			break;
- 
- 		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
-+		if (IS_ERR(skb)) {
-+			/* Bogus frame, buffer already recycled: advance past
-+			 * this DB, or the same DCB stalls the ring forever.
-+			 */
-+			fdma_db_advance(fdma);
-+			counter++;
-+			if (fdma_dcb_is_reusable(fdma))
-+				continue;
-+			fdma_db_reset(fdma);
-+			fdma_dcb_advance(fdma);
-+			continue;
-+		}
- 		if (!skb)
- 			break;
- 
+--
+Willy Tarreau (14):
+  docs: security-bugs: reorganize the document without changing its
+    contents
+  docs: security-bugs: clarify when to Cc the security team
+  docs: security-bugs: never publish reproducers of bugs with a security
+    impact
+  docs: threat-model: clarify the case of automatically mounted file
+    systems
+  docs: security-bugs: explain how to send a fix that can be applied
+  docs: security-bugs: do not send archives or binary attachments
+  docs: security-bugs: first-time reporters must send a single report
+    first
+  docs: security-bugs: explain what to do when a report gets no response
+  docs: security-bugs: reports left unanswered for 7 days will be
+    dropped
+  docs: security-bugs: add a section for maintainers receiving reports
+  docs: security-bugs: explain why directly sent reports add extra work
+  docs: security-bugs: explain why AI-found bugs are handled publicly
+  docs: submitting-patches: defer to security-bugs.rst for security
+    fixes
+  docs: netdev: align the security fixes section with security-bugs.rst
+
+ Documentation/process/maintainer-netdev.rst  |  13 +-
+ Documentation/process/security-bugs.rst      | 410 +++++++++++++------
+ Documentation/process/submitting-patches.rst |  10 +-
+ Documentation/process/threat-model.rst       |  23 +-
+ 4 files changed, 310 insertions(+), 146 deletions(-)
+
 -- 
-2.39.5 (Apple Git-154)
+2.52.0
 
