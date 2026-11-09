@@ -1,61 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794204019;
-	b=XqfG9+kUVHIchcErk7Ucd0gbnyuV96JVeIz0h4fTf3S817rofyuXw1/kazP/JmfoEqJC
-	 qpirkGuhxkxcZ5h3Gz9nHZ29rfJEiH2yln8qSwL6MobQbRJ3c5oYsuHx4XIZumulruLj0
-	 +nW5129rFEOJdxKx3HNQi92NlHUR26ufh4bfwGymnap03s6Zu9HtIV6A9Z8MyoAJzr47w
-	 MnVHzFc7Iz0eBoNng3YfJ30jmLuTD60Nq6yOK2t6CKRwKSfGZjOWDmqOqx5y3rxzwohJ0
-	 rhPyJHEjaoRFlSufD3nFxkMmZzY0BA//tHUXAJgOzu025bPtmf3GptkaYPOHhCxGmcg==
+	t=1794205757;
+	b=uKr2GE+YSyhJvph0U3NZqIRcpCiGvef3G+ZKxdcGHprSQn5QBeOd8/lRrZiecLiC+r0e
+	 mQI5BDjJCSJy0s0qJNkZsmBOEzF9iKv2FCldT2lkLcww0x+RK+sAyHCJ7p7+lpWXNr/vt
+	 mcPMb4+McSxTiOX1NCo7bI0JynXjHEuObbpydmmhKE9m6Ss15MJIc0XYeHP4esNPcVYaH
+	 vdJ1DV+U8H0fT3PrvixOpb/x5PLxljnco71MeLe6u4W6dDj36Fc9nq8fmZmXVWuxkc5kG
+	 g/4f8dgK9DRomELG9tVE1kWga3Mw5SAaebooVmeMGryyGRpF2rohRYxlxyIonkxYBIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794204019;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Ezt0QzdtXRpdhW1yj2rTzGXOSQDTzrUEz+cuvrZygBU=;
-	b=2EHwHjQwkjdWt0pFVfqotv64D4Yd/OJGXeCgr3Zrr8r6br/qeA3w9kxsg6J+LGCGAZPd
-	 mbgpG7tz8BWYDYf08g33Yz9D6As0xvHWYldRE0qk73ZLt1del/j3bIhtCYLuXIRvcQF2C
-	 ruO02RpopmQBqQ+ggAaJn8GxEDyI/d4UviBpWmsWSdZkkom+l1wI5IEinOd1F8BpOhZ5x
-	 f2fJveI0i7BTX3HIdap+3RR87tcCUyWkCFgrbiS+4U8Q0h2HvrN4lNIhTPdpBbAmT5ipU
-	 vIQuR1ZhpEw8CL8/cevT1aYgZG3nZ0cCxBW5nPbY/916Mrd1n44L31DgjZKJBSPQZCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794205757;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition;
+	bh=KXa6hdR4Flw9fixypQPPxPpj8724VJPyxYSa3LOTZ0s=;
+	b=CqV2wuM1d2wXXaRbomCtcFmVPoeJT5GMCX0gjsk4WiBrDs7d0oc9LSZ1Rdtww5uEAi+V
+	 OAxcqJfjUNeg5XqEzR8o33znvDwJral+1WjVBFsaNlY701fgsWFumXfJew8a17aQ4Mco5
+	 AMp0gKUd4oTgzN7R7O0qqmgQERJlNHxAFO0n2is75b38//Rdfv8LsvJ4N9J4DwCS9+Qs7
+	 cYn+0AHcg/jScfEuDSdHJNgYFGY6zogFyLlxk9MbsiCptZQeXJ0tJXywe/bJvmvWntojh
+	 1OVcUJgu5nlmQcnQ0xD0sx0WxAI++b3LwYrU7HMD6wFTH1gnvCvzODaE9yqFdcFjZTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YgH1LWq8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="0UWUwVY/";
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FF6606D80D;
-	Mon,  9 Nov 2026 06:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937FB606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 06:29:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 937FB606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YgH1LWq8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A771F008A6;
-	Mon,  9 Nov 2026 06:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794204019;
-	bh=Ezt0QzdtXRpdhW1yj2rTzGXOSQDTzrUEz+cuvrZygBU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YgH1LWq8b35HH0hXDk3dOkDlwfVylAC4iCxcJZGczWKBo1r0frgv2K1lp23jQllPb
-	 uasE57Hw7nYvh277QI2NzK1XyGgCi+ErhSnoSGtG2YFitlWIDUAv++qAZLxca0wPbx
-	 K4gH42H0l62qbNpb2rBWHzcEe9YNJdYMP3tWu6qgxsus8gXB+GeXYb5mrRbHjqUUoI
-	 FXanv/is2rjhkHR9GZ2/w2nkDwpaGttIsgO6SyM+HxyGQ/EY+uxouPK8oeH+aFH+A5
-	 OXXT406BNJtqyPZt7FN/Z27wKmFRZ8kNonYF59ra7o7H5podeQS7oLLemSuKodu14S
-	 VdsEvX61WZkAA==
-Subject: Re: [PATCH net-next v2 6/6] selftests: net: add leased devmem RX and
- TX netdev unregister tests
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@iogearbox.net, razor@blackwall.org, dw@davidwei.uk,
- sdf.kernel@gmail.com, bobbyeshleman@meta.com, dtatulea@nvidia.com
-Date: Mon, 09 Nov 2026 06:00:18 +0000
-Message-ID: <179420401815.994134.4956375359433881127@kernel.org>
-In-Reply-To: <20261108055809.2122934-7-almasrymina@google.com>
-References: <20261108055809.2122934-7-almasrymina@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0UWUwVY/
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso251332a91.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 22:29:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794205756; x=1794810556; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KXa6hdR4Flw9fixypQPPxPpj8724VJPyxYSa3LOTZ0s=;
+        b=0UWUwVY/5G2gAwW+AVbfPoh6eG1mO/TSakDZb7kfA55Mf7HcvonGC/gcYe45C2sOxC
+         SRl0vl+hY7cvgpmzX8lMoAwdnmx9Uv1SYo0msOeskU/wQgysaobY0WtzOJffyqyZyMEu
+         lrrVBD7ranWbyXkCBDwklG0L/SfyUrE9fcNbw2sHCeqBuOQzC+hAsN4gcvZI7OX72fl/
+         rM6qKBx0xlrDzX0RJxB29PGlyT/B1HpuJPsKrpe3uR+GM+2HncYUrT0DfOAN/bIPGMY8
+         D2FlsJOFmTmX2NtppPtmLTL903FrSWMBFN/4lVHFsJGxNSOHlWTy98j/8qiWLyNCi/Ex
+         YJsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794205756; x=1794810556;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KXa6hdR4Flw9fixypQPPxPpj8724VJPyxYSa3LOTZ0s=;
+        b=HAYk5lKUHk/USV+xtVk7s6VHhmudz1iHLCqvkTryh9oKCfYY84lOApxcaJT8SEooVV
+         euarDfuq+U055FCuR4M5bYqodFruZcea7XcfPOBgFacttjQDuR5ezg/cdd3XEHFXe4eq
+         MOKlCv23wYGz8zffdyVoD1CCnTRbo74YtsUlecXHD3nhjKOAjfxGB7ESJgqXwqnKoU01
+         eTR7stWZ2yI67jg0T4h2NZUVa9e3CHZ/7+8yxwqJ22AIncOgkVzlJlPiPv/wDNbFlHZU
+         5CDquzgr+i7y0Syp16j3cbJim2F8FEFwJXSEYdatENHltxwt5mPPoBCi2kyMkjZ8iz0m
+         Ujng==
+X-Gm-Message-State: APuU4Z8tfpIaWDBcmQ6d0BGi+loabSG7oDXu2x4vm7fN8OrwnmnKUt8o
+	UkkJwh5uxSZ0qlGPF0N9sD1FoHVbPB1Qm1V8dpUgjWelqmM3mz6jRByk
+X-Gm-Gg: AYBFou1sGsyLAVU5C0C3EhodxTiONL7MnquoFAsQGrXflNBkbZ389SY1RIVonh4RBEI
+	i9HMcPDM6fEC0n0OYOGLPIDh1z2BmqFTjDSYYUPBKKiSlz72yOqBo1e9l/nkWf1aJlyPK+f4U2p
+	xtWNf/sxih+Xyl+aHvCLUapwjnX4XHLiwl/l6HpWrzYkYYULWL/oFXCU6ADIjIqk/SZTNGRPUbX
+	OyHpJQ5Jwzj/dlMJcpJX4uB0dwbjtTM7mpwCOUhBUdh8YpJjruFdR5MpLEiMD0LiLaVZ5Md6F31
+	8Ob5KFhyfBYIeQoIVVwJMJUTw+DDGwdtAq9V8HXiNOM9mnVsK4t9mQXfEmZtddf4lf1qmwPLhCT
+	+qbPMP4VbtYQfwzf9VCqinrIxrKxlBsr1ymDp7gVPCNn/M2UCimidkUJ6I4SszuY070cRHP07b4
+	rmsNJ7Mv4D+Vrm9nKpsjvWrqMgP7/8QF1lUj13OqFRjJy2BJ5tdbmDt8RV+Ds6sN82A5AlG5nn1
+	+XZSRSyvyKC9ORU+FH9gCRcSi/4+oQH9hzEgjG3wjhooMkTGdzP6lrnaO8tuZJhlAEG8EBmFWCf
+	DfhMVEdSgOQJIpXfj6tBdR+nG0ATAC2Kw3DFF15ZNYfhneg=
+X-Received: by 2002:a17:90b:5205:b0:3ac:36c7:c144 with SMTP id 98e67ed59e1d1-3b12d508483mr1765326a91.28.1794205755816;
+        Sun, 08 Nov 2026 22:29:15 -0800 (PST)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1058d3310sm9538425a91.15.2026.11.08.22.29.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 22:29:14 -0800 (PST)
+Date: Mon, 9 Nov 2026 15:29:10 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH net] tcp: fix request_sock use-after-free during Fast Open
+ accept()
+Message-ID: <avFoNgJENLYu4t7X@v4bel>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,172 +97,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Commit e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
+made inet_csk_accept() check tfo_listener before taking fastopenq.lock
+to avoid taking the lock for connections that did not use Fast Open.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+reqsk_fastopen_remove() clears tfo_listener while holding fastopenq.lock,
+then reads req->sk. If inet_csk_accept() concurrently observes
+tfo_listener after it has been cleared, it skips fastopenq.lock and
+drops the last reference to the request_sock. This can free the
+request_sock while reqsk_fastopen_remove() is still using it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+If the freed memory is reused for a new request_sock with req->sk ==
+NULL, the reset path in reqsk_fastopen_remove() can append the new
+request_sock to the original listener's list of requests that caused an
+RST. After the new request_sock is freed, the next append writes through
+the stale rskq_rst_tail into freed memory.
 
-- [Medium] The new leased tests bind through `_devmem_bind()`, which
-  turns every NlError with EOPNOTSUPP into KsftSkipEx.
-- [Low] devmem_lease_bind_rx_unregister_check()
-  (tools/testing/selftests/net/nl_netdev.py), remove_virt_first=True…
-- [Low] devmem_lease_bind_rx_unregister_check() and
-  devmem_lease_bind_tx_unregister_check() each run a two-pass loop…
+KASAN reported the following use-after-free when writing
+fastopenq->rskq_rst_tail->dl_next = req:
 
---
+  BUG: KASAN: slab-use-after-free in reqsk_fastopen_remove+0x142/0x210
+  Write of size 8 at addr ffff888108230688 by task swapper/5/0
+  ...
+  Call Trace:
+   <IRQ>
+   ...
+   reqsk_fastopen_remove+0x142/0x210
+   tcp_check_req+0x96f/0xdd0
+   ...
+   tcp_rcv_state_process+0x19c/0x26b0
+   ...
+   tcp_v4_do_rcv+0x16e/0x490
+   tcp_v4_rcv+0x14a0/0x1af0
+   ...
+   ip_protocol_deliver_rcu+0x39/0x1e0
+   ip_local_deliver_finish+0x124/0x1e0
+   ip_local_deliver+0xfb/0x1e0
+   ...
+   </IRQ>
 
-selftests: net: add leased devmem RX and TX netdev unregister tests
+To widen the race windows, mdelay(5) was added after newsk = req->sk,
+mdelay(20) after the if (req) reqsk_put(req) block, and mdelay(100)
+after tcp_rsk(req)->tfo_listener = false. The KASAN report above was
+reproduced with this kernel.
 
-This commit adds two tests to nl_netdev.py. Each one binds an RX or TX
-dmabuf to a single-mode netkit device that leases RX queue 1 from
-netdevsim. The tests then check for clean teardown both when the netkit
-device is deleted first and when the netdevsim device is removed
-directly.
+For the lockless check, use tcp_sk(newsk)->syn_fastopen_child instead of
+tfo_listener, which reqsk_fastopen_remove() clears.
 
-> diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-> index dd0321c0b463a..fa4b5be093257 100755
-> --- a/tools/testing/selftests/net/nl_netdev.py
-> +++ b/tools/testing/selftests/net/nl_netdev.py
+syn_fastopen_child is a field of the Fast Open child TCP socket
+referenced by newsk, not of the request_sock. It is set before the child
+socket is added to the accept queue. The paths that call
+reqsk_fastopen_remove() in response to a remote ACK or RST do not clear
+this field.
 
-[ ... ]
+inet_csk_accept() uses this field to take fastopenq.lock only for Fast
+Open child sockets and rechecks tfo_listener while holding the lock.
+Connections that did not use Fast Open continue to avoid the lock.
 
-> +def devmem_lease_bind_rx_unregister_check(nf) -> None:
-> +    """Verify leased RX devmem bindings detach cleanly on virt/phys unregister."""
-> +    for remove_virt_first in (False, True):
+Other bitfields sharing the same byte can be modified concurrently, so
+annotate the lockless read of syn_fastopen_child with data_race().
 
-[ ... ]
+Fixes: e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ net/ipv4/inet_connection_sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> +        _devmem_bind(nf_priv.bind_rx, {
-> +            "ifindex": nk_ifindex,
-> +            "fd": dmabuf_fd,
-> +            "queues": [{"id": res["id"], "type": "rx"}],
-> +        })
-> +        ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-> +
-> +        if remove_virt_first:
-> +            ip(f"link del dev {nk_ifname}")
-> +            phys_q = nf.queue_get({"ifindex": nsim.ifindex, "id": 1,
-> +                                   "type": "rx"})
-> +            ksft_not_in("dmabuf", phys_q)
-> +            ksft_not_in("lease", phys_q)
-
-[Severity: Low]
-Do these two absence checks show that unleasing removed anything?
-
-Nothing earlier checks that the physical queue reported dmabuf or lease
-while the binding was active. The only check after the bind is:
-
-    ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-
-That count goes up when net_devmem_bind_dmabuf() maps the dma-buf, which
-happens before any queue gets the memory provider. So it says nothing
-about the physical rxq.
-
-Suppose netdev_nl_queue_fill_mp() stopped reporting dmabuf on the leased
-physical queue, or the lease redirect in netif_mp_open_rxq() never
-installed the memory provider. These ksft_not_in() checks would still
-pass.
-
-nk_qlease.py checks lease reporting, but no selftest checks dmabuf on a
-leased physical queue.
-
-Could a ksft_in() check on the physical queue be added right after the
-bind?
-
-> +            ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-> +            nsimdev.remove()
-> +        else:
-> +            nsimdev.remove()
-> +            ksft_ne(cmd(f"ip link show dev {nk_ifname}", fail=False).ret, 0)
-
-[Severity: Low]
-What happens on the second loop pass if this check fails?
-
-ksft_ne() only records the failure and does not raise. If removing
-netdevsim no longer cascades to the netkit device, the loop moves on to
-the remove_virt_first=True pass with the netkit device still there.
-
-That pass calls _create_netkit_single() again with the same name and
-NLM_F_EXCL:
-
-    ifname = f"nk{os.getpid()}"
-    ...
-                flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
-    ...
-    defer(cmd, f"ip link del dev {ifname}", fail=False)
-
-The deferred ip link del only runs when the whole test case ends, not
-after each iteration.
-
-Would RTM_NEWLINK then fail with EEXIST? _create_netkit_single() only
-turns EOPNOTSUPP and ENOENT into a skip, so it would re-raise that error.
-
-The real cascade failure would then be hidden under an unrelated NlError
-traceback, and the remove_virt_first=True case would not run.
-devmem_lease_bind_tx_unregister_check() has the same pattern.
-
-> +        ksft_eq(_dmabuf_attach_count(dmabuf_fd), 0)
-> +
-> +        nf_priv.close()
-> +
-> +
-> +def devmem_lease_bind_tx_unregister_check(nf) -> None:
-> +    """Verify leased TX devmem bindings detach cleanly on virt/phys unregister."""
-> +    for remove_virt_first in (False, True):
-
-[ ... ]
-
-> +        _devmem_bind(nf_priv.bind_tx, {
-> +            "ifindex": nk_ifindex,
-> +            "fd": dmabuf_fd,
-> +        })
-
-[Severity: Medium]
-Can a broken lease lookup be reported as SKIP here rather than FAIL?
-
-_devmem_bind() turns every EOPNOTSUPP into a skip:
-
-    def _devmem_bind(bind, attrs) -> None:
-        try:
-            bind(attrs)
-        except NlError as e:
-            if e.error == errno.EOPNOTSUPP:
-                raise KsftSkipEx(f"devmem binding not supported: {e}") from e
-
-netkit sets dev->netmem_tx = NETMEM_TX_NO_DMA. So this bind only succeeds
-if netdev_find_netmem_tx_dev() walks the netkit rx queues, finds
-rxq->lease, and returns the physical device. If that walk fails,
-netdev_nl_bind_tx_doit() returns the same errno:
-
-    map_dev = netdev_find_netmem_tx_dev(netdev);
-    if (!map_dev) {
-        err = -EOPNOTSUPP;
-        NL_SET_ERR_MSG(info->extack,
-                       "No DMA-capable device found for netmem TX");
-
-The leased RX bind in devmem_lease_bind_rx_unregister_check() has the
-same problem. netif_mp_open_rxq() returns -EOPNOTSUPP when the lease
-redirect resolves to a device without a parent ("rx queue belongs to a
-virtual netdev"), and __netif_mp_open_rxq() does the same when there are
-no qops.
-
-The skip is needed when netdevsim has no DMA mask and so does not set
-NETMEM_TX_DMA. But the wrapper cannot tell that case apart from a lease
-resolution failure.
-
-Would it work to skip only if a direct bind on the nsim device also
-returns EOPNOTSUPP, or to check the nsim DMA capability up front?
-
-> +        ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-
-[ ... ]
-
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index e56beec438773..e5e7b844fed44 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -683,7 +683,8 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
+ 	newsk = req->sk;
+ 
+ 	if (sk->sk_protocol == IPPROTO_TCP &&
+-	    tcp_rsk(req)->tfo_listener) {
++	    /* Stable while reqsk removal can race; adjacent bitfields may change. */
++	    data_race(!!tcp_sk(newsk)->syn_fastopen_child)) {
+ 		spin_lock_bh(&queue->fastopenq.lock);
+ 		if (tcp_rsk(req)->tfo_listener) {
+ 			/* We are still waiting for the final ACK from 3WHS
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108055809.2122934-1-almasrymina%40google.com
+2.43.0
+
