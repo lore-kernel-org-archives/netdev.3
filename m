@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794235761;
-	b=aeVyGUD4MKyj9CLl4SiQXYSe2zRIMEk9hr7n2B6FsWtQUJ58T0AyETlHJbSUPrTs8TSG
-	 yYlq6DaRCuIZvCwr2NiL8GtN6I1JQgx7lnBMJMvH76A4Aa+nsUl4gFZDg/v7XoaGmgePx
-	 W0zgKpNVAlJhbcJxm4OdfqHbzWSWVSdWW/QMbob7vyhBt9U4LG2ShB50HdTr/uoZsaLl8
-	 0L+p6NyJa1UPmlDIjSm3De6VcdMe8fOMTdmvaNp/rYy1EX8qgmTpx0CS2PSW2ewnRp2M5
-	 rg4BPQG11fSmSQuiSg43181zKVurOruqBCpJmV2KHkx5tqkoHph6GTrXpXe8aTZ3rOg==
+	t=1794235918;
+	b=AeTeWfErd2QaousAvPia6pD7qyKFhuhP8ZixVfJctxlLkBC2XB28jchC5EwnKWDfMgfb
+	 E5kDzSp9xGCqK5+GTw7kQw9A3ZCjbpgOvslwwtnsaGO5VU5jZwsrHszO8WBZktSwsnLTf
+	 4XTJe00JGyBjQlH/Z22O62pKGEK4rSaHfVh1ZzS2lzJYEYyZXIvPduQ6JG+ux2lxmRhxP
+	 /cOx9MibXL6wfLySeNfJxwMpAQlmfZOAN7bjR47l20/Oio7Vin2jYXYW5Z8rBU2yWRu/3
+	 mVCDv4wk2veTfrr07PlgDrwf2uHdVpVKB9lXgFBBYLCcWL70qcur/gQ3lGbzgJ43Jkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794235761;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794235918;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=JCuBE9rYwaqc4RBfcgIVaBjWp20I290RtM10+0Z+wSc=;
-	b=RjLhB9PnGGX8mM8lagotzvWIDA7/gmqKADhkpUfG5ewxTPV2eXqw9fmTvI5ck+yTPz9c
-	 K+l9KBZDF4KscxyetANJcHFDeS7bumz9Tyqzz5nOTpipcDUC74//h6NDoffkti85Our5U
-	 Sa1BveaqHjYxOX27iGdScoGGkuMAR8bXJNyMAW4VmFLgiPOTmiHEA1qVVu8NxWfPzEsJ0
-	 shtab2PcY8uiuud1OtqDhaL3E6CiMmPwB4OOM4LtrAUtKCopdhEw57Xj2cQLNe4T15Cpi
-	 oyLEG3KwzMq0Dpf07P90bqMFuOlNHGXczyZ+mhdYKI70pvQtfiljUshy+ck8iE0WmFA==
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=rGrd/hrGcia93dmf9EZtQ2Oojui07mAiwcWdJ1ZzDeVCeHpVsNU0xB2TwWYdg2d8vokw
+	 s7zajKLr0lSoQ8TL4P3yp3wnT/jVsUOHQAV93kBcMtOES20xxayzXqdXLREXDEsKAkJVh
+	 G0vFw5DXicu4Au6VAAa2A/huxwYjplhZJO9Rw4ZGfmRbWVf92ucQ9XeBWbwC1m0HXLysG
+	 ZXEfK8Dv3/a5UbIQDtyw+IjV/cMXghQfwBWGN/RfFRBbrz6Ems26I043HaFIsK6yzSVlD
+	 e6k9+8ohDShNc4yG7QJE6tlzVKD5OQLIIakRYRUw2teKa10+ltpgXYrxCFFhcW8+4RQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QRwEMsyR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKrE0e1C;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC5606EE9D;
-	Mon,  9 Nov 2026 14:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47C4606A337;
+	Mon,  9 Nov 2026 14:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QRwEMsyR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E99D1F008A2;
-	Mon,  9 Nov 2026 14:49:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKrE0e1C
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E828F1F008A2;
+	Mon,  9 Nov 2026 14:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794235761;
-	bh=JCuBE9rYwaqc4RBfcgIVaBjWp20I290RtM10+0Z+wSc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QRwEMsyRD08u9TEsDafDWMwx8IDLLypjHbFQ9CdXRWV7eSfRfmPhbDtOF41wZi96e
-	 iUViSto727I3b9Ot3xjoHhZ0Lm67F9QQYzDrjuIclc1a4a4WmwOkAOffCE14CvIYKC
-	 ziV+YJyQZtUbNe4D/WKN8j7ROeDgOYmOcCkuxEOo7HfZyj/cxAZDpCPKWEmF8lRlun
-	 d7FbTNUa1mi779QnLRyBS4haB52i8TI9bgjttheUqiSQ7+qjo44V67trBsDKeopuNN
-	 mSxez10Jf0pmzWbC112mYHwGDbakLjSw3GkzrF9eGsC0zKsS79YSP3BoBTwQDgwfb3
-	 4liYhm4WsxZ5w==
-Subject: Re: [PATCH net v5 4/5] amt: make pre-query report drops visible
-From: netdev-bot+sashiko@kernel.org
-To: omar@blockcast.net
-Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
- linux-rt-devel@lists.linux.dev
-Date: Mon, 09 Nov 2026 14:49:19 +0000
-Message-ID: <179423575970.994134.5432026388018419992@kernel.org>
-In-Reply-To: <20261105125010.1107546-5-omar@blockcast.net>
-References: <20261105125010.1107546-5-omar@blockcast.net>
-X-sashiko-severity: Low
+	s=k20260515; t=1794235918;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JKrE0e1CeSXvjwyDMVEiAoThWrUuGjGGwPvHqg3Bdiv//KaTNi8SgNsrgiv6zCwS6
+	 Ip8UKIRyNhwkLocs1tLJIXRD4afSKXxwb6UmUKgevgOC6dks/0/cnJjX69QsYJCC7s
+	 xw/2SKzao4fVeMKOWXbG7mVpGcSaDha4XpmQYeHIBl2IKL61BqadJUgAPS/QSRZ5Yv
+	 vjTkOMKYd56DRO4+sSpqfwXKpHBWBMZlJRyJVmLM0pzQhXmyNhUwlUGANAwL8iGvGD
+	 AnpJaDKT1aHMjZa8hRXI4TVVzUEjwvMPTHSRG9uJk8few+bXRlx1yVppqxSy5qqKNP
+	 AO2YTO9uBmxFA==
+From: netdev-bot+sinfo@kernel.org
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: dsa: motorcomm: Free the MIB block on
+ port teardown
+Date: Mon, 09 Nov 2026 14:51:57 +0000
+Message-ID: <179423591750.488859.16025770326702158514@kernel.org>
+In-Reply-To: <20261109144705.1737460-1-mmyangfl@gmail.com>
+References: <20261109144705.1737460-1-mmyangfl@gmail.com>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,53 +65,24 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Hi!
 
-Low priority / nit picks for your consideration:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-- [Low] The commit message says DEV_STATS_INC() is applied only to
-  amt_dev_xmit()'s counters: "The device is LLTX, so amt_dev_xmit() can…
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
---
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-amt: make pre-query report drops visible
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-This patch adds a debug message when an amt gateway drops an IGMP or MLD
-report because the relay's Membership Query has not arrived yet. It also
-stops amt_dev_xmit() from counting reports it forwarded as tx_dropped.
-Finally, it switches the device's tx_dropped and tx_errors updates to
-DEV_STATS_INC().
-
-> The device is LLTX, so amt_dev_xmit() can run on several CPUs at once;
-> use DEV_STATS_INC() for its tx_dropped and tx_errors updates so
-> concurrent increments are not lost.
-
-[Severity: Low]
-This isn't a bug, but does this paragraph cover the whole diff?
-
-It describes the DEV_STATS_INC() change as limited to amt_dev_xmit().
-Only two of the converted sites are in that function. The patch also
-converts every other tx_errors and tx_dropped increment in
-drivers/net/amt.c:
-
-  amt_send_discovery()      (three tx_errors sites)
-  amt_send_request()        (three tx_errors sites)
-  amt_send_igmp_gq()        (tx_dropped)
-  amt_build_mld_gq()        (tx_errors)
-  amt_send_mld_gq()         (tx_dropped)
-  amt_send_advertisement()  (three tx_errors sites)
-
-These run from the gateway workqueue and the relay receive path, not
-from ndo_start_xmit.
-
-The extra conversions look correct and are needed. DEV_STATS_INC() does
-atomic_long_inc() on the same storage as dev->stats.tx_errors and
-dev->stats.tx_dropped. A plain ++ left on either field could overwrite
-an atomic increment from amt_dev_xmit().
-
-Could the commit message mention these conversions and give that reason?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105125010.1107546-1-omar%40blockcast.net
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
