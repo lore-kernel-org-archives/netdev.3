@@ -1,61 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794268637;
-	b=chf4lfUGrRPusfVsVfJTiTJq9uvalGtRdz/RgH/LwpxoPcqDWFlAMbCV8+qG8iF41ECQ
-	 teGO5PSpmzBRN+l1Kupym8x+NfQkS1vKd+73vz2T4CxpY3tSGIGGblXBkkipmNl/PnOij
-	 2LurqUaBLfK5v2yfHnB0/4PYoFTdAbiymVdOU6Gb5KOKZ1uneq4CUoruSKJL849yfg3C5
-	 bRmO8HBaizTsScA3zkbxJrIkIyWvH3wNFh4IKnti8B1nihAvZ8eiVKYdTT9kKnub6N58f
-	 gTxWxiwMQ4FF1K4xl6wDe+b0rxb9jKqohA0G43nFV1RB8YbQK3GLmOh+zN+gDMugTDw==
+	t=1794268644;
+	b=phcipRARmXlAslrssaWk9cYEt+cw55kOtZNHgzuNo5HlWJ6r/CWisl4UHnVjS7bAljJH
+	 ynGDsjZ2nnDq26nJ+/oTSHahDLTAn16WvWe630PXbEWtszNzsvxHfxTxY8wXkQ2eMB/MK
+	 AQd+y+d/wTQtnjNspa4UZaDKSWkKi5RTeF+4YiIdVXaP6hcoo1Bao/tDJ6HUUGLcqJguM
+	 84kU21orxl8UhQKDk7AMHxfzi6fv1v4Yapt8rIayFfs1l4gP8+wvflJ64XBGbnPTyPzEA
+	 GsnHuPcT9YiOUREX9rAdjpdeX1BsQB0lJ7r1Wz6qsyp0VNWdTNnmRSvGmuY3IeCT+DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794268637;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=BReoVkiECa7pO46jz+laYP3UmgjC0qBIUABqQxeEPFs=;
-	b=exPQgbRqhSoHhqaM01lRpKUcZ+2PF7r7l/Ou9GG3W6JzrzEMbVWXgILV7GO7+w2tQJ8v
-	 0e7ziggySV0DwU6cG1oo9dWfQoNHAqyMI0VGpTbB2VOgQYmLlIQdg1FPSB1fFm27FcIuv
-	 ZTUSHMAyIPQPYEU3Klv3v/S971SFaT+sAng3KqnlJIBpsehhqmWWHst/z9RVMh7Hs/vLb
-	 NjGRN4q336W5tQ13xV2mi00ypMD2HkLsRIIT/u5mYKlPggH9VlqzWNuEpZN8q2Q+pMKPT
-	 NY4IZhq+DEKpZ5z49FH0ntrRlUYWT+78wqlrPBSoCc7ZVVEfBxV4VMpZ/uK9T6eOoZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794268644;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=aYmdUIdy4uuwX+FcOsoquIBAoon3hB3dOJMlA08DCr4=;
+	b=qUmCH2nJTsfpF7LHrjHo532DOFgFGmDlfrhqqqUaM9A7eR9UgGDl0jcgXu1EzZhJwjQu
+	 c+lQNjCR1jQFwmhLyXsOfP5SugXzERE21DsdWpg9BvZGU6q6XC0qy7sqC1/j9hXCx8YYt
+	 vNNJGdJLngDeTIDv7Q/3M6ZvXJhlYzFPVVE9oRKb/tTn6Dxa2Ainruqdr7NFGNJXeJxua
+	 Wusx1LUyFinPv7WofYK73KUvPw3UGOZbkI7HUDXLhcDcb4xOVkylmXPuWNtJwgntqf6JK
+	 mUcwHsqL/zuId9U3DcDZDHYzs4CCQMVEDihuWxkmW7o649ezC8PBPKpVIHtY8vQVn6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b28RH7Jm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZoKa+pFT;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A69060A5BFD;
-	Mon,  9 Nov 2026 23:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EFD607181D
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:57:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60EFD607181D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b28RH7Jm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5E01F0089F;
-	Mon,  9 Nov 2026 23:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794268637;
-	bh=BReoVkiECa7pO46jz+laYP3UmgjC0qBIUABqQxeEPFs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b28RH7JmMbOeYuZA2Lmk2iAe4+j43zXqpOOcVyyGq+CESAKk83OqxAzwOsWTBOeZP
-	 bxOufFF9C9K0dCJD5qzEgw5kSfC5dKm+k2tQ7GLZQlvJPe1XGgZ+JijqRpm7RUPQ1F
-	 57v9gp0P4F9KiZPfsFyisZ+RPvOkJBJvDx+i01aVmd5hDvaj91AHTPflBnUXCWm+ym
-	 notBDiBMZLn9tqKqmRLTNVCL6ZC0Q6S4TrKq6MNTFZ8S0Ra1SFhKNxtWUyJRX6r0xc
-	 AcnFB13GT+r9wRpb/zks/mot/o8+k/6tbCL82EviaN+lWBDuoioz1XFRXjwhDByN8j
-	 IePOVXshYakPA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: james.hilliard1@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: acx00: report receive statistics
-Date: Mon,  9 Nov 2026 15:57:15 -0800
-Message-ID: <20261109235715.1618218-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102-submit-acx00-phy-stats-v1-v2-1-3c8a664407c1@gmail.com>
-References: <20261102-submit-acx00-phy-stats-v1-v2-1-3c8a664407c1@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZoKa+pFT
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LEI1s512655;
+	Mon, 9 Nov 2026 23:57:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=aYmdUIdy4uuwX+FcO
+	soquIBAoon3hB3dOJMlA08DCr4=; b=ZoKa+pFT1sBWdx3eSCQFoQTK0FKENn2Jf
+	8hvdHOxnkTTaniqqC63SCKZa0Ux1PmXB6p5mLZeYnILLRybHpNfOxHMKShj88oPI
+	NzKadFIlz1QYTFvdYitD7s6RlWis2V7dUlERjmiCFbnd1kf+L4Y1S+M5k88dz+jo
+	NAZsX1IYBq/jKzXG+EkJlPt0vH2TRHCwzEB/4ACrIPclceJ09MWubRV9rnJLWpCt
+	boAFA2EMKU/adn9c2Dx8zkFctk4A8IaxlcbIHU86xcfo7/mtiYvlfpg/mG6Hydql
+	1n2IFjo1O2X2Yzii1id7UmMRy7WAhyIgpMMQd/X4lORphjFSXfUOA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsumusru7-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:57:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LK05m812485;
+	Mon, 9 Nov 2026 23:57:06 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hth0y42et-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:57:06 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9Nv4vQ64946624
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Nov 2026 23:57:05 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CBA758059;
+	Mon,  9 Nov 2026 23:57:04 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D7CD58028;
+	Mon,  9 Nov 2026 23:57:01 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.169.223])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Nov 2026 23:57:01 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: Mingming Cao <mmc@linux.ibm.com>, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+Subject: [PATCH net-next v8 12/15] ibmveth: Report MQ-aware RX counts in ethtool get_channels
+Date: Mon,  9 Nov 2026 15:55:53 -0800
+Message-Id: <20261109235556.60604-13-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261109235556.60604-1-mmc@linux.ibm.com>
+References: <20261109235556.60604-1-mmc@linux.ibm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,167 +98,161 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfXzEAYG0EnRxAQ
+ YT4qk5cRWl0NEga6zP3AqByjzLpP9nN9HeaM20bA/TpnXlMcYP9t7JGrZX4+HAtQrcqLGunUTLE
+ sGeGSBMA2xJPASjO8F6lz/Av3ucAvkc=
+X-Authority-Analysis: v=2.4 cv=GISdgeNK c=1 sm=1 tr=0 ts=6af25dd3 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=OHkRmo7XnONMdPLYg5MA:9
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-GUID: wVbhvH-MnqYPJe-c9hNlo8VDXvc_bVwo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfX40UWc9PnSUod
+ wQyDyutNzF+Y5qa/0kTW43nHTiDCHLFAkRrNKi+spVzAjo15+FQu6nx+2B2Jq7zX11RMDOvC9j4
+ /ecoXZsk6R4SpnQ/Vm343C1dCtJuB8EfT3sZ4NpM2SOWdDZp3sGSxbqyYqbyTLnbbuLwkJPNj6f
+ YheSZ180EjcnV+/lU8ecP3duN2GsJgg8j/Jmr7J8hZCiygap5R8yoyIisP0ustdEqa7hUe6x4sc
+ Vur7SnD2mrrRIY34cJ1gmSjFWTu8gBeZ9W3yLEqD6Mq1QeEQVvjO3lmDvSXnDSMd4lf+FKzHmWP
+ x/W3BIyjWoZf4vlQsYbg3mFqsqHPShgd33b5wbokXlJJ3l3iWcEBUOl9X0TcMhh8InvtxMEVDoI
+ JA3eXzPQR5Yb/QtAw1fhBZUJ1DUrXfvowxDwI/UiJX9CgdqRJyqMu3dL+LhlSBfe0SuMYfbWksd
+ VkzYT6Lwc2XbFKGStxA==
+X-Proofpoint-ORIG-GUID: uhh0evd2nws06A1bEcv00w133KX5a88o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-09_07,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090094
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Report MQ-aware channel limits and counts from get_channels():
+
+  - max_rx is IBMVETH_MAX_RX_QUEUES when MQ firmware is enabled and
+    mq_fallback is not set, else the live rx_count
+  - rx_count tracks the driver's published num_rx_queues
+
+Previously get_channels() mirrored netdev->real_num_rx_queues for both
+fields, which under-reports max_rx on MQ firmware. Here every publish
+of num_rx_queues is paired with a matching real_num, so rx_count does
+not change yet; reading the published count keeps it right once the
+resize patches can publish a count that real_num fails to reach.
+
+This patch only reports. The set_channels() rx_count reject lives in
+the MQ enable patch; the live RX set lands with the incremental resize
+patch. Once mq_fallback is set but not yet applied, rx_count is still N
+until the next open; max_rx follows rx_count rather than dropping
+to 1, because the ethtool core rejects a TX-only -L that
+resubmits rx_count above max_rx.
+
+mq_fallback is set from the replenish path without RTNL and is now
+read under RTNL here, so its accesses use READ_ONCE()/WRITE_ONCE(),
+including the two writers the MQ enable patch added.
+
+Keep this out of the stats patch: channel reporting is ethtool -l ABI,
+independent of per-queue counters, so it can be reviewed and blamed on
+its own.
+
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
 ---
-net: phy: acx00: report receive statistics
+Changes in v8:
+- get_channels max_rx is the live rx_count when single queue or once
+  mq_fallback is set, not a fixed 1 (the v7 patch 15 cap moves here)
+- mq_fallback uses READ_ONCE()/WRITE_ONCE(): replenish writes it
+  without RTNL
+- the set_channels rx_count reject is now in patch 10
 
-This patch exposes the ACx00 EPHY receive frame, byte and CRC error
-counters through the generic PHY statistics interface. The page 9
-hardware counters are sampled from the update_stats callback, and the
-deltas are accumulated into 64-bit software totals. Snapshots are taken
-before reset and suspend, and a new baseline is set after config_init.
+Changes in v7:
+- reject rx_count change with -EOPNOTSUPP in
+  set_channels() until patch 14 implements resize
+- noted: TX-only read-modify-write still passes;
+  max_rx stays here (reject, not reorder);
+  get_channels uses the adapter count,
+  get_base_stats uses real_num; RX max is
+  MAX_RX_QUEUES, not the TX CPU cap; P14
+  wires live rx_count resize; P15 is the
+  tip ABI (live rx_count, max_rx cap on
+  mq_fallback, max_tx at least the live tx_count)
 
-> diff --git a/drivers/net/phy/xpowers/acx00.c b/drivers/net/phy/xpowers/acx00.c
-> index d19ba6d8069a4..1375784d28373 100644
-> --- a/drivers/net/phy/xpowers/acx00.c
-> +++ b/drivers/net/phy/xpowers/acx00.c
+Changes in v5:
+- get_channels rx_count via get_num_rx_queues() (READ_ONCE consistency)
+- New peel: get_channels from v4 stats -> tip P12 (14->15)
+- get_channels: max_rx = MAX_RX_QUEUES when MQ else 1; rx_count =
+  get_num_rx_queues() (was mirroring real_num_rx_queues for both)
 
-[ ... ]
+ drivers/net/ethernet/ibm/ibmveth.c | 17 +++++++++++------
+ drivers/net/ethernet/ibm/ibmveth.h |  1 +
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-> @@ -110,6 +139,105 @@ static int acx00_ephy_write_page(struct phy_device *phydev, int page)
->  			   FIELD_PREP(ACX00_PAGE_SELECT_MASK, page));
->  }
->  
-> +static int acx00_ephy_read_counter(struct phy_device *phydev, u8 reg, u32 *count)
-> +{
-> +	int high, low, check;
-> +
-> +	/* The free-running counter can carry while its two halves are read. */
-> +	do {
-> +		high = __phy_read(phydev, reg);
-> +		if (high < 0)
-> +			return high;
-> +		low = __phy_read(phydev, reg + 1);
-> +		if (low < 0)
-> +			return low;
-> +		check = __phy_read(phydev, reg);
-> +		if (check < 0)
-> +			return check;
-> +	} while (high != check);
-
-[Severity: Medium]
-Is there anything that bounds this loop? It only exits on an MDIO error
-or when high == check. There is no limit on the number of passes.
-
-When this runs, __acx00_ephy_update_stats() has already taken the bus
-mdio_lock through phy_select_page(), and priv->state_lock is held. On the
-periodic path phydev->lock is held as well:
-
-_phy_state_machine()
-  phy_update_stats()
-    acx00_ephy_update_stats()
-      __acx00_ephy_update_stats()
-        phy_select_page()        /* takes mdio_lock */
-        acx00_ephy_read_counter()
-
-Suppose the high half reads differently on every pass. That could come
-from noisy or faulty register reads. It could also come from a pass
-delayed by about 5 ms while the RX byte high half is advancing at line
-rate.
-
-Would the state machine worker and every other MDIO user on the bus then
-block, including the AC300 control path? Would suspend, resume,
-soft_reset, config_init and get_phy_stats block too, since they need
-state_lock or phydev->lock?
-
-Would a small retry limit that returns -EIO or -EAGAIN be preferable?
-
-> +
-> +	*count = (u32)high << 16 | low;
-> +	return 0;
-> +}
-> +
-> +static int __acx00_ephy_update_stats(struct phy_device *phydev)
-> +{
-
-[ ... ]
-
-> +	for (i = 0; i < ACX00_NUM_STATS; i++) {
-> +		u64 count = counts[i];
-> +
-> +		if (priv->stats_valid) {
-> +			if (count < priv->stats_last[i])
-> +				count += i == ACX00_STAT_RX_BYTES ?
-> +					ACX00_RX_BYTES_WRAP : BIT_ULL(32);
-> +			priv->stats[i] += count - priv->stats_last[i];
-
-[Severity: Medium]
-Can this subtraction underflow for the RX byte counter?
-
-ACX00_RX_BYTES_WRAP is 4,000,000,000, but acx00_ephy_read_counter() can
-return any value up to 0xFFFFFFFF. Nothing checks that a sample is below
-the wrap value before it is stored in stats_last[].
-
-If stats_last[] is at least 4e9 and a later sample satisfies
-count + 4e9 < stats_last[], the u64 subtraction wraps. For example, with
-stats_last = 0xFFFFFFFF and count = 1000:
-
-  4,000,001,000 - 4,294,967,295  ->  about 1.8e19
-
-That result is then added to priv->stats[ACX00_STAT_RX_BYTES].
-
-One way to get such a sample is a PHY that stops driving MDIO while
-stats_active is true. Consistent 0xFFFF reads pass the high == check
-test and produce 0xFFFFFFFF. Another is a variant whose byte counter
-does not wrap at exactly 4e9, since that value comes from testing on
-one setup.
-
-priv->stats[] is deliberately kept across reset, power-off and suspend.
-Would one bad sample leave rx_bytes wrong for the life of the device?
-
-Would a modular delta such as (count + WRAP - last) % WRAP, or a range
-check on the sample, avoid this?
-
-> +		}
-> +		priv->stats_last[i] = counts[i];
-> +	}
-> +	priv->stats_valid = true;
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +static void acx00_ephy_get_phy_stats(struct phy_device *phydev,
-> +				     struct ethtool_eth_phy_stats *eth_stats,
-> +				     struct ethtool_phy_stats *stats)
-> +{
-> +	struct acx00_ephy_priv *priv = phydev->priv;
-> +
-> +	mutex_lock(&priv->state_lock);
-> +	stats->rx_packets = priv->stats[ACX00_STAT_RX_PACKETS];
-> +	stats->rx_bytes = priv->stats[ACX00_STAT_RX_BYTES];
-> +	stats->rx_errors = priv->stats[ACX00_STAT_RX_CRC_ERRORS];
-
-[Severity: Medium]
-Do these values match the documented meaning of the fields? The kernel-doc
-for struct ethtool_phy_stats in include/linux/ethtool.h says:
-
- * @rx_packets: Total successfully received frames
- * @rx_bytes: Total successfully received bytes
- * @rx_errors: Total received frames with errors (e.g., CRC errors)
-
-The commit message says "the packet and byte counters include errored
-frames as well as successfully received traffic", and
-__acx00_ephy_update_stats() accumulates them unchanged. That means a CRC
-errored frame is counted in both rx_errors and rx_packets, and its octets
-are counted in rx_bytes.
-
-stats_put_phydev_stats() in net/ethtool/stats.c exports these values as
-ETHTOOL_A_STATS_PHY_RX_PKTS and ETHTOOL_A_STATS_PHY_RX_BYTES. For this PHY
-those attributes would therefore mean something different from the
-documented contract.
-
-rx_packets could be corrected by subtracting the CRC error count.
-rx_bytes cannot be corrected without a per-frame byte count. Should
-rx_bytes be left unreported, or should the shared documentation be
-changed instead?
-
-> +	mutex_unlock(&priv->state_lock);
-> +}
-
-[ ... ]
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 45adf6e9be09..1e2e845f8011 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1306,7 +1306,7 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+ 		dev_err_ratelimited(&adapter->netdev->dev,
+ 				    "MQ buffer add H_FUNCTION (q=%d, batch=%u), reset\n",
+ 				    queue_index, fail.batch);
+-		adapter->mq_fallback = true;
++		WRITE_ONCE(adapter->mq_fallback, true);
+ 		schedule_work(&adapter->work);
+ 	}
+ 
+@@ -2152,7 +2152,7 @@ ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address,
+ 		if (rc) {
+ 			/* Firmware MQ gone: fall back to SQ on next open. */
+ 			if (rc == -EOPNOTSUPP)
+-				adapter->mq_fallback = true;
++				WRITE_ONCE(adapter->mq_fallback, true);
+ 			goto err_unregister;
+ 		}
+ 	}
+@@ -2192,10 +2192,10 @@ static void ibmveth_apply_mq_fallback(struct ibmveth_adapter *adapter)
+ {
+ 	struct net_device *netdev = adapter->netdev;
+ 
+-	if (!adapter->mq_fallback)
++	if (!READ_ONCE(adapter->mq_fallback))
+ 		return;
+ 
+-	adapter->mq_fallback = false;
++	WRITE_ONCE(adapter->mq_fallback, false);
+ 
+ 	if (!adapter->multi_queue && ibmveth_get_num_rx_queues(adapter) == 1)
+ 		return;
+@@ -2756,11 +2756,16 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
+ static void ibmveth_get_channels(struct net_device *netdev,
+ 				 struct ethtool_channels *channels)
+ {
++	struct ibmveth_adapter *adapter = netdev_priv(netdev);
++
+ 	channels->max_tx = ibmveth_real_max_tx_queues();
+ 	channels->tx_count = netdev->real_num_tx_queues;
+ 
+-	channels->max_rx = netdev->real_num_rx_queues;
+-	channels->rx_count = netdev->real_num_rx_queues;
++	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
++	if (adapter->multi_queue && !READ_ONCE(adapter->mq_fallback))
++		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
++	else
++		channels->max_rx = channels->rx_count;
+ }
+ 
+ static int ibmveth_set_channels(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 76640bd5598e..66288f8e8349 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -374,6 +374,7 @@ struct ibmveth_adapter {
+ 	char queue_irq_name[IBMVETH_MAX_RX_QUEUES][32];
+ 	bool multi_queue;
+ 	unsigned int num_rx_queues;
++	/* Set from replenish without RTNL: READ_ONCE()/WRITE_ONCE(). */
+ 	bool mq_fallback;
+ 	/* Lifetime: true while RX IRQ handlers / NAPI are installed. */
+ 	bool rx_irq_setup;
 -- 
-pw-bot: cr
+2.50.1 (Apple Git-155)
+
