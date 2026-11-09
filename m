@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.27
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.40
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794224962;
-	b=3cvvbwwrLF1ynwncPYGWIT/p9WkKpeMm4LNBi4zlHp0IE1r6AnCyH+zNjZFoJ6YvVy+H
-	 jSy5j63UPxRNv48pAISMpSWyFVP6pQwH7x5gmARzBUFkTMpknV3ydXOBEg/SE5Dwg6OMf
-	 So5OWnjiE0IJxNnymYi7JKKCtQyCLAvpeNMACxmSJKxOOfpELa5sLZRuCH72iV4IoWwQy
-	 7kGIdTKtNbYJ7fJ8/Vor1r5OWYyvPtAfPRDCUrV4ILq+UHNdLJzL6p0nNbpBbulw2M6+x
-	 knoqOcqOVluGE5mT2c7dNPiq0djan5d2xJYi+uJxJlP+dNZuX9jtjfSr5Esh79sLIDw==
+	t=1794224984;
+	b=J4beELEv8r6wBocfDTk6vohhfeyLkBh5uumdAoSeQ0EZt9+G8FcVay2P6doptwJUh99b
+	 wLycurulB6WAFI7F1PEH9otOe3/ymu6z6ct6Xz4098WE6qxzY5G5YaWf364F60AaiWxtI
+	 WBGjJbi82twdrjGn/r/6UOgnXYlDpYW0nysmbQzhcr/3Kj5oCPVZQs0ILjVYVfM0DZtjz
+	 xS2FUOom5jb5RsYOVRl2r5/hf7AjmVcc8M6NLP1sgnEzDZWXiHYRoviV+TAsQ8c0DXaMO
+	 NZU3W89a69h52jWZ/aZ/1SKRbk7vFj0gB6ae+qHJ28n6ICt+vY8qrZtHvPyX1+GP51A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794224962;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794224984;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
@@ -26,74 +26,75 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
-	b=nh5zanfRMUmDiXxBpWZD4kHNNDTZ/Z21+m15rttGwq2QPPgdIiCwo4qr3RN7F3sW4V78
-	 IofNdZ3+Fb+8nOfuhjJ4sBQCP+FQ6ODtVQyoz4duamSxiCK8xFkR+X2/j+MDHCSYIoeNx
-	 1q2qeY8hktJ1ArtFRy13sqpOPtD1mysOqX8eNploclNPbvZaZarqoGrzSJ3FB0kRJ4BTG
-	 Vf3J3/lX1Uoj5wBqPfJTZJRPbr8KsMmm5msOcVKYIkQm+UUgPwmiZf5E9+SoCQd/T+DBO
-	 B63xxs9ycaba2kHc9DpehVvEh1ruXAmXk02StmVvBekXjpML8P+jDcP8XkMmtZtj8eA==
+	bh=M4qcG/IotNi+dKc01MBp//a2aBblMKXrL4Q2YJR/GZo=;
+	b=DQXGtYRAJEPmZOyRq2/lq8W96X/nSSRa0zjNtcUegLVRjNi/OdByZ/466O2fkHy2DK7e
+	 m94FfO0nM3grnrAuBDkFET5xI/MfeLOqxQi/B8dMLS004RDF9HKiMg9Kdk/GRvxNYTv4F
+	 PLusTieIPOoRa1ix2I1wr1M+5eWBBMh3ZTUhLWaKLyzYl/2itdwRUr9SdAuH5alfgRgTY
+	 1tQmcpwJtg6GAQldEwdU20DzkhHwZplc/jZuoULPSIjAj/20AN8MBQj3Pztwu/4Lolu1S
+	 1gWo/5mMLzOo6VY5bIOtD0q+/tL9R1kmrUdbmfjR0csDezpS030fdgJ1wpidP3rSIbA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=fGRjsXs1;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.27
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N6iqXAce;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.40
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013040.outbound.protection.outlook.com [40.93.201.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15866606A323;
-	Mon,  9 Nov 2026 11:49:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15866606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C5D606A326;
+	Mon,  9 Nov 2026 11:49:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1C5D606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=fGRjsXs1
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N6iqXAce
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rxdXB8gzyufXFlrjB+3NTH2SSkAW1yXD2fyHD6DxJ5ubEhiKM2Af5EDQqux9yEu5WUll8eAuovdLAgpFDLwk13Z6oLqyvdYhiCz6pJv5i5nS6R0vRqZq+HhEZZ6D0IBISDAAsCcq8iKACmCfZCBzbQCT8PJLXQt86JItyUUa6kxwVZ/R5gUeO61oSFKZ4FNur7cVQPVsfwIA/Phvirv6eGmmIOyITO/v7MPS3tTlUpX2DCYDZCq+cYWuK+K+qzRvbKEGIreYAugPL0kJk8pFkl1WUj9O0aRJ6qAFQ2zKiZJzMTBhqQz1XeDXNMJwYGNsOIpshxzUTC8J+cHfehQAsA==
+ b=m55dox98mX9Dl6/KT3LHf0Q0kory++yvAXOll/MidN4V1paUVN33HLGQf78UpIm6YoSYq6ioLr7urXCkg9RnKCIk2Oegqw1nrhYEG5vsbV089AUq1jBb+aOIezuohwNi212v/HKpdS4ACnTfNAdqCFP7qvIVthS0bIK+8xBfAnbRYrlsu+O7WlzC9g+AYnvoFWxQr7gSp3N77uEU74LFmfW5nKgPRnEVt6Sw2AswPWyo3mz+wBjECN+KOQEhLfTWYF5lZqGDvuaRE/GVChBECS7p1sPZDagCa7xejG5VPDPwqmxpWWpnkkCJHIp6G8jX5vsa6fNWjwBrBoYuwbKUrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
- b=WxQQ9MFoUcSHIj+ZHldHkNVcYqt9bJGXoIYrmqXBqbpYunDdYUsWsGzHuyve4hHoPq17h6TEwEiLpTSA0yRSBIZlw/tOe7j8Yi36W5y18DyPWVdcVp8LZMvBPd8o72Nz7tIxjdyn3o9Xya0ipTPlyZLZYueXdwxTF3G4qylPrvWKnJK8vxdPuo9jB4w5FicdFMrN59vn2l0ElSce62z/84ydHaJamRq41VyxttKJYXDXWpigK3mE+FCT3oyk0YOlI3Co/tfXni8xgcQ772TjpVjuFcD0ofoKOSI5U+akqpsT6CM+Tw6XgNJ18fAepHCEA6ohMUk3ajvXEO9Ij5wwrw==
+ bh=M4qcG/IotNi+dKc01MBp//a2aBblMKXrL4Q2YJR/GZo=;
+ b=k1gD6Ciyg5qTIEs3h5LzhHmxRsWgj2319oY3RA44ztMpHgWqFKnTvaOOYjVnhCqu1n9aNfKxL+V3Q6zzh4il1rg2GsXSwQaSLaRUyFcKLlMBbV8JBAF1rhh46AXKq28U8OsfFfP/zaAKTKJ5sHqHcknAwb9YXJAbsaPpukxqt5U5BpN/scUNsaIcJYyr0Vd2zoSZnTUnZrBLKuifA60eZhdXjRd6LBmIIBsfvjdw5C+j1vMr/y2dWolUMc9NXr/KhEj2RXiaK/OXNW+WPLVX8/6XmS7Xi+vUbCQ/sn2UzubR+EcyXSebxNTm4qN5CHps2mGaKxVjIMDTuu/nP+3m5g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=everpuredata.com smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=everpuredata.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JAhr/oX+MoSmLu9aYtpBIb7VRDBE71KMvVFN1dgjjR8=;
- b=fGRjsXs1E9ZtUJLw32truQVurGqGXlIdzPFJPpBGflrygi2CQJ+e5g/twxYJxdptpTqmB3b4weTUD4MM2y44vRrRvORAoIGjK9fZC9+NtBzvCoH4zpp3hzKqpXVvmg6OFC+TLEMJ/wmuNUXTpNFQ5/SKDs22yV5N80OmTT58jWUuiWwu4i10qqPTGPy/lHXU1Ml1w8ldatCZkENx93yyW/u7cFMARrR3aQwdeoJMgloVmVC4jTieDXzGGYLoqfZPlxpqnchBaIqTI38aFCigBAN4MfO5xL5HEwlYm0XPQ+CLvt0N/GtfVKToC1hP5bZ9qyCpyUEEBirQpa/S8g5V4A==
-Received: from CH0PR03CA0064.namprd03.prod.outlook.com (2603:10b6:610:cc::9)
- by DS0PR12MB6632.namprd12.prod.outlook.com (2603:10b6:8:d0::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.12; Mon, 9 Nov 2026 11:49:11 +0000
-Received: from CH1PEPF0000A346.namprd04.prod.outlook.com
- (2603:10b6:610:cc:cafe::30) by CH0PR03CA0064.outlook.office365.com
- (2603:10b6:610:cc::9) with Microsoft SMTP Server (version=TLS1_3,
+ bh=M4qcG/IotNi+dKc01MBp//a2aBblMKXrL4Q2YJR/GZo=;
+ b=N6iqXAcekik635l7BHtJxKwbOicdSbvB9Jjuq2ErBq6v0QrYodHxRenGe79tp8vhvyHYjiGF2B3HZX0o+jM850SDpdh3z/d4xPxWZNqH2et4LAMnEGS60Av8jHdVMvDLZGNnTvE6Q42oVXTjQNJt1KhQSZvx4mRot1O48vltv3EAG1S+Wn4s756vZ0ig3VN5qMJjFANzPoctUND1nFJnLcV0INLCgs/zEbJrnKYEY0913INCgoYEkWsZ8UBK8iSlIsnt7EMDJzA4PX3PX/VqmKYR2oaTaSW9XwqYaRCdFp6qHQ/pF/XODK/gIf1UB/iEekZjlTxaGFzn/EPA3NKMRQ==
+Received: from BN0PR04CA0042.namprd04.prod.outlook.com (2603:10b6:408:e8::17)
+ by SJ0PR12MB7082.namprd12.prod.outlook.com (2603:10b6:a03:4ae::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 11:49:37 +0000
+Received: from BN3PEPF00022BCF.namprd03.prod.outlook.com
+ (2603:10b6:408:e8:cafe::4e) by BN0PR04CA0042.outlook.office365.com
+ (2603:10b6:408:e8::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
- Nov 2026 11:49:11 +0000
+ Nov 2026 11:49:37 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH1PEPF0000A346.mail.protection.outlook.com (10.167.244.11) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN3PEPF00022BCF.mail.protection.outlook.com (10.167.248.170) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 11:49:11 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 11:49:37 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 03:48:57 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 03:49:19 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 03:48:56 -0800
+ 2026 03:49:18 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
  with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Mon, 9 Nov
- 2026 03:48:46 -0800
+ 2026 03:49:08 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: Rishikesh Jethwani <rjethwani@everpuredata.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
@@ -119,9 +120,9 @@ CC: Alexander Graf <graf@amazon.com>, Aviad Yehezkel <aviadye@mellanox.com>,
 	<sdf.kernel@gmail.com>, Stefano Garzarella <sgarzare@redhat.com>, Tariq
  Toukan <tariqt@mellanox.com>, Tariq Toukan <tariqt@nvidia.com>, Wang Zhan
 	<wang.zhan@smartx.com>, "William Tu" <witu@nvidia.com>
-Subject: [RFC net-next 3/7] net/mlx5e: kTLS, Post TX context params only for skbs that use them
-Date: Mon, 9 Nov 2026 13:47:30 +0200
-Message-ID: <20261109114734.2087878-4-tariqt@nvidia.com>
+Subject: [RFC net-next 5/7] net: tls: keep the TX queue of a device-offloaded socket stable
+Date: Mon, 9 Nov 2026 13:47:32 +0200
+Message-ID: <20261109114734.2087878-6-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20261109114734.2087878-1-tariqt@nvidia.com>
 References: <20261109114734.2087878-1-tariqt@nvidia.com>
@@ -139,176 +140,290 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A346:EE_|DS0PR12MB6632:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5372335d-dd0f-4c89-1ede-08df3e5778aa
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCF:EE_|SJ0PR12MB7082:EE_
+X-MS-Office365-Filtering-Correlation-Id: 482e4dd1-b934-457b-4b42-08df3e5787e8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|7416014|376014|1800799024|22082099003|18002099003|10067099003|13003099007|921020|5023799004|11063799006|261028144727099003|261102123227099003|261022105027099003|261022075727099003|56012099006|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261009223027099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|7416014|22082099003|18002099003|10067099003|3023799007|13003099007|921020|11063799006|261028144727099003|261102123227099003|261022105027099003|261022075727099003|56012099006|261021121427099003|261021135927099003|261021123027099003|261026121527099003|261026140227099003|261009221227099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	30MdMcUfrXu3+1UR1UhXCjZQiIzH4/7kxy9HxvTsQzZmUxk1OoZE9PLLcLxU6abJeDsD6pgv/BFaUIgUmodbZwP+thVkYkBheJMLkH6PgCyOSaxKCO+bcRtDPi2DUc7EIiqbMzNW3R+luvPEUuhsfIRExys8048McGtIm8KOAoQGg/5S02x7aL7bTBMaHxhVl3Puo71Zjnfx6DixqlYnm+MF/8XcJzZLWZy61QTY5wS0o/JjRXJrdfTFluXQdAa0Gl5uuWzj/dlb6A76yilEqmAqG0d4mIv5fAfTU5qzz0GpWfjb0YD1euQtLT+O0Qq65L8o3Jee+dHOXhyP6mbmurMXXeFWqu2/Y6uUBEoX7I35yCNJQep+chvSvSZlPDoJBzkQ9hMKNp5KI1dBfPgg4saZmAF8BDmJc22djDoTafVo4NYCgif2Xg14PUMa5GXwUyctktMFDL+dukVVtgIp0CjKtL2YKhTGIKhFp0BORBc99GCi8xz7JODQdQYIlQlYyQ1dJxQoq6ecoihdAoBSCVadLMftk9512KWQDQ6btHEJDO2VMJ3LoqxQRg4Ct32f4l1vNm1eEsTkKICs8+vPeRRKUUXK21sybcSoGztRwtWI2QdDGci/GYWiPjfwxGBNOmCIRQhPmYv/wa1qbvBP5L9W1FS72h9IX1pHL5b97ia3PUVfejBN1uC+Af1ZkA1g7YLYiVLyEjfL1h21odSKzsluwRa6w2S5ZJzM/S9Z0FFCxEBuaBlTWy8wi7vJKgdT
+	E64mXZ2MPHs0knPHHE7Qhzj/il+Vee6y9xIhV9RiTMXEOIg737ZeyucZao8tPokYlvhlCmccFKX4xXtlwdzM9I7KHacmy1LWIIJQn3o2M1eORMqCi3CeZxx7f9fNM9zvg8X0h38Q//aU42OsDIZD5UNMu6f1AjQ/QABegoKUJv26vzjLEh6Lqgn5su6AsCeV3bYZ1eXth57ISplF7fujfjmTzbH9/qKcbYtCZonrQ1e7Qn7TdTQWiBurqQi3wETpwSiuoKWrmvs6LQI2c8p0+WAv+Utc3e7APTnX8erx3Hkw0L04O6OWRlRtXV6oaApf+GqHbljdnx+IGz98yqRoLMD2XyWVIIRhWHzzgIi6KIu74BHWVpqkv18GAc9EOCuNs2QJjTnfstu1yvTBYeqAJZEQEXjukwQTFhwKPyDwD2/0vMTxWJOd9i+U3xK7581f8p3yeP5DJe7+6nCiJJDyklmFx2JYItVF1yk2rhyvXKuD9g980HjKzvVfJU5maf+4PmzG0OgVU32PCAr5fgMyAL9BydpJGa5bkVrbrrN20brXxJf6roJrwITPRzJinIRmibGAYwGHxNmJJtLpow/H+gYmPGuqLFQ930bL9dQgC8iOQ1hRCRARZEE7lWxRmPS4HUdnR62njGraDQ9y5Hl1/PQt2g52Ud91JmuAyYGIhspDxQJGCJSTBI37C0EVCtNnz+FNyBS6AyYrOGSpbPgKdvo2cmsn2KYu02ZESjALOO1QgxmZLXCVWqFYHqGFQKIY
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(7416014)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(13003099007)(921020)(5023799004)(11063799006)(261028144727099003)(261102123227099003)(261022105027099003)(261022075727099003)(56012099006)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(10067099003)(3023799007)(13003099007)(921020)(11063799006)(261028144727099003)(261102123227099003)(261022105027099003)(261022075727099003)(56012099006)(261021121427099003)(261021135927099003)(261021123027099003)(261026121527099003)(261026140227099003)(261009221227099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	QFNaQTEn3zaz+7hJRmjmaNP23X5NlVzxxMvldJwQlY7T0x0Z1H87bP5xQviQp4WEu99na3xNT/5cMgz4SeaXc78CeI9g2Z5DbR9x5Mk8ERpdzh9JWjOrjQPpyIOmf+C0W9kPjYr2lA6tW0msHdShcrsfFCq6KdiB1IZolXlTgdWrY6NTgfcKL8c48j0QEkwspEASWBWgOgc8jCmUgfqjIl6HJYRTzrw1WS5KO2u3WIkerLNnTPietOgE/mmUgxQkigIZfwlZMOTY4piwemcvKDOeUOHYc/Bx4bVBRnCQ5cT0JxOQtrOAC+xe3BWUB6eAj0jPGU4ORZIYMMqEmj++VhS5CPY035hLfAZbRMWOOqAIndF0DZkNM23ChWl2fRLJtN4+Jzd2VZZMP1mhr5v9QwdSgHfWI2BUu6p+koggtiqf5QWY9vXWAmzYzs55gRta
+	E21wbS6S7ymloaf1jrCX1vdV11bR1adw/ncxE4W5OcKYFk0nE6566ZuY1n5TeHTvlvBberQ5pyXtIIJQuJYKxGx0rMdcgatZpK3I/8hzc6JgO21FJZEt7Lqlov+Ba+e0NgblWMxcZOZYdzVY+AEymLk5guN566Z6FADlcWnZnR3Ewdrrso/8HKEGYUGPmPen1s7UPAYtU2q0Q5J5ugDTAmaan7jPpXESCj/iwCdaKZsrIA0k5CtrUzo/ar+Deklcic6CiVoRsIxBAiRJCY248r42oBtyW9XFXMdhh0/RtnjMPJ9SE0gXqknovmeOF/0+ASFrPgndFco++9uJ+WxUwl170wnexfrCc+pox2Ug0C5LW1YBFK+3DqGbtzJkKBoxM7NmqZiGSxfvMpeG/p8ZZWVHM+xYlPb6V/wgqlWrnj54n3UzXLXqmXy9q0nrmF57
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:49:11.6352
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:49:37.1748
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5372335d-dd0f-4c89-1ede-08df3e5778aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 482e4dd1-b934-457b-4b42-08df3e5787e8
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A346.namprd04.prod.outlook.com
+	BN3PEPF00022BCF.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6632
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7082
 
-A new kTLS TX context is installed by static and progress params that
-the driver posts for the connection's first skb:
-mlx5e_ktls_handle_tx_skb() posts them before it checks the skb's
-sequence. That skb may not use the context though: a pass-through skb,
-which ends before the offload start marker (SKIP_NO_DATA), e.g. TCP data
-that was queued before the socket was offloaded.
+A device that keeps per-connection TLS TX state (e.g. mlx5e kTLS, where
+WQEs update the TIS crypto and record tracking state at execution time)
+cannot order work posted on different TX queues. If the flow moves to
+another TX queue while work is still in flight on the previous one, the
+device state is accessed from both queues with no ordering, corrupting
+the record stream on the wire.
 
-A pass-through skb carries no data for the device to encrypt, and is not
-tied to the TX queue of the connection's data. For example, when netem
-on its TX queue delays it, skb_orphan_partial() releases its
-sk_wmem_alloc charge, which lets the socket move to another TX queue
-meanwhile. The params are then posted on one SQ and the connection's
-data on another, with no ordering between them, and the data can be
-encrypted before the TIS is installed, e.g. with the key of the previous
-connection that used a TIS from the pool.
+The stack moves a socket's flow while packets are in flight: TCP sets
+ooo_okay when the rtx queue is empty, a dst reset (e.g. on RTO or PLB
+rehash) clears the cached TX queue, and txq_reselection_ms expires it.
 
-Post the params only for an skb that uses the context: an in-order skb
-posts them as before, and a resynced one gets a full resync, which posts
-the static params regardless of rec_seq, as it may match while the TIS
-still holds the params of its previous user. A dropped skb leaves them
-pending for the next skb.
+Let a driver declare the constraint via a new tlsdev_ops flag,
+TLSDEV_F_STICKY_TXQ, and mark sockets offloaded to such a device with a
+new sock flag, SOCK_STICKY_TXQ. While such a socket holds sk_wmem_alloc,
+keep its cached TX queue: do not clear it on dst changes, do not expire
+it, and set ooo_okay from the wmem condition only.
 
-A pass-through skb does not use the context at all. Only data that the
-device encrypts is sent with skb->decrypted set, so skip kTLS handling
-for an skb without it, before its sequence is looked at: a pass-through
-skb held long enough can alias the sequence of a live record.
+This covers the stack's own queue selection. The rest is the driver's,
+as documented: a ndo_select_queue that derives the queue from more than
+the cached one must keep its choice stable too, changing it only for an
+skb with ooo_okay set, and when TX queues are removed, the device must
+be done with their work before the flows move. tc skbedit queue_mapping
+bypasses queue selection, and is not supported for such sockets.
 
-Pointed out by Rishikesh Jethwani for skbs that netem delays, while
-discussing kTLS TX TIS reuse for TLS 1.3 rekey on netdev. He also
-suggested the skb_is_decrypted() check.
+Packets in flight are tracked by sk_wmem_alloc, so the flag also
+requires the driver not to free an skb, even a dropped one, before the
+device is done with the work posted for it.
 
-Reproduced on ConnectX-6 Dx with netem, and a 10 Mb/s rate limit, on
-half of the TX queues, and connections that send 1 MB of plaintext
-before installing kTLS TX, then stream pattern data to a software kTLS
-receiver that checks every byte, hopping between CPUs every 1 ms: 2 of
-323 connections failed at the first record after the plaintext, and the
-device failed another such record, which ran before its params, with a
-local protection error. With this patch, none of 400 connections failed.
-netem on all TX queues does not reproduce it: it fully orphans the
-offloaded data, which validate_xmit_skb() then drops.
+Found by LLM-assisted code inspection, while answering a question on
+kTLS TX TIS reuse for TLS 1.3 rekey on netdev, and reproduced on
+ConnectX-6 Dx with forced queue moves.
 
-Fixes: d2ead1f360e8 ("net/mlx5e: Add kTLS TX HW offload support")
-Reported-by: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Closes: https://lore.kernel.org/netdev/CAKaoeS1hj9XuM7ojLBCjGA=EXc2M-b+eRjC2Sk=8L_8XYeJ18w@mail.gmail.com/
+Reproduced on ConnectX-6 Dx, with 128 channels and 32 kTLS TX offloaded
+connections streaming pattern data for 60 seconds to a software kTLS
+receiver that checks every byte. Without this patch and the mlx5e one
+that follows it, 1 of 33 connections failed decryption with the default
+txq_reselection_ms, and 67 of 99 with txq_reselection_ms=1 and the
+senders migrating between CPUs every millisecond. With both applied, no
+record failed in either test, with no loss of throughput.
+
+Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+Fixes: 726e9e8b94b9 ("tcp: refine skb->ooo_okay setting")
+Fixes: 4a7708443dec ("net: allow busy connected flows to switch tx queues")
+Link: https://lore.kernel.org/netdev/20261022181751.1349984-1-rjethwani@purestorage.com/
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../mellanox/mlx5/core/en_accel/ktls_tx.c     | 40 +++++++++----------
- 1 file changed, 18 insertions(+), 22 deletions(-)
+ Documentation/admin-guide/sysctl/net.rst |  3 +++
+ Documentation/networking/tls-offload.rst | 20 ++++++++++++++
+ include/net/sock.h                       | 33 +++++++++++++++++++++---
+ include/net/tls.h                        | 13 ++++++++++
+ net/core/dev.c                           |  3 ++-
+ net/core/sock.c                          |  2 +-
+ net/ipv4/tcp_output.c                    |  7 ++++-
+ net/tls/tls_device.c                     |  3 +++
+ 8 files changed, 78 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-index a4aa58ef1dda..0bd4d961e704 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-@@ -542,16 +542,6 @@ static void tx_fill_wi(struct mlx5e_txqsq *sq,
- 	};
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index fe43e8595958..88bfb4421843 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -449,6 +449,9 @@ But switching txq can introduce reorders, especially if the
+ old queue is under high pressure. Modern TCP stacks deal
+ well with reorders if they happen not too often.
+ 
++A flow offloaded to a TLS device that keeps per-flow TX state in
++the device switches txq only once it has no packets in flight.
++
+ To disable this feature, set the value to 0.
+ 
+ Default : 1000
+diff --git a/Documentation/networking/tls-offload.rst b/Documentation/networking/tls-offload.rst
+index cf0e599c06a1..f03e48643503 100644
+--- a/Documentation/networking/tls-offload.rst
++++ b/Documentation/networking/tls-offload.rst
+@@ -190,6 +190,26 @@ TLS handling and confirms the sequence number matches its expectation.
+ The device performs encryption and authentication of the record data.
+ It replaces the authentication tag and TCP checksum with correct values.
+ 
++A device may keep the TLS state of a connection in the device, and update it
++as it processes the TX queues, with no ordering between the queues. Its driver
++sets ``TLSDEV_F_STICKY_TXQ`` in ``tlsdev_ops->flags``, and the stack then keeps
++the TX queue selection of an offloaded socket stable while the socket has
++packets in flight (``SOCK_STICKY_TXQ``): the cached queue is neither cleared on
++route changes nor expired by ``txq_reselection_ms``, and TCP sets
++``skb->ooo_okay`` only when no packet of the socket is in flight. Packets in
++flight are tracked by ``sk_wmem_alloc``, so the driver must not free an skb
++before the device is done with all the work it posted for it, even when the skb
++is dropped.
++
++The rest is up to the driver. If its ``ndo_select_queue`` derives the queue from
++more than the socket's cached queue, it must keep its choice stable as well, and
++may change it only for an skb with ``ooo_okay`` set. A queue change driven by
++the skb's priority or traffic class then waits until the socket has no packets
++in flight, which under sustained traffic may never happen. When TX queues are
++removed, the device must be done with their work before the flows that move from
++them start transmitting on other queues. ``tc`` ``skbedit queue_mapping``
++bypasses queue selection and is not supported for such sockets.
++
+ RX
+ --
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 9bba1e793f1e..ab4b5a5a74f5 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1026,6 +1026,11 @@ enum sock_flags {
+ 	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
+ 	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
+ 	SOCK_TIMESTAMPING_ANY, /* Copy of sk_tsflags & TSFLAGS_ANY */
++	SOCK_STICKY_TXQ, /* Keep the TX queue selection while packets are in
++			  * flight; set for sockets whose TX offload keeps
++			  * per-flow device state updated by queue execution
++			  * (see TLSDEV_F_STICKY_TXQ).
++			  */
+ };
+ 
+ #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
+@@ -2067,6 +2072,29 @@ static inline void sk_tx_queue_clear(struct sock *sk)
+ 	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
  }
  
--static bool
--mlx5e_ktls_tx_offload_test_and_clear_pending(struct mlx5e_ktls_offload_context_tx *priv_tx)
--{
--	bool ret = priv_tx->ctx_post_pending;
--
--	priv_tx->ctx_post_pending = false;
--
--	return ret;
--}
--
- static void
- post_static_params(struct mlx5e_txqsq *sq,
- 		   struct mlx5e_ktls_offload_context_tx *priv_tx,
-@@ -872,6 +862,12 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
- 	if (!datalen)
- 		return true;
- 
-+	/* Only data that the device encrypts uses the TLS context. */
-+	if (!skb_is_decrypted(skb)) {
-+		stats->tls_skip_no_sync_data++;
-+		return true;
-+	}
++#define SK_WMEM_ALLOC_BIAS 1
 +
- 	mlx5e_tx_mpwqe_ensure_complete(sq);
++/* A SOCK_STICKY_TXQ socket keeps its TX queue while it has packets in
++ * flight: a stateful TX offload must not see the flow on a new queue
++ * while its work may still be pending on the previous one.
++ */
++static inline bool sk_tx_queue_pinned(const struct sock *sk)
++{
++	return sock_flag(sk, SOCK_STICKY_TXQ) &&
++	       refcount_read(&sk->sk_wmem_alloc) - SK_WMEM_ALLOC_BIAS >=
++	       SKB_TRUESIZE(1);
++}
++
++/* Like sk_tx_queue_clear(), but keeps a pinned mapping, see
++ * sk_tx_queue_pinned(). Lifecycle resets (allocation, cloning) must use
++ * sk_tx_queue_clear() directly.
++ */
++static inline void sk_tx_queue_maybe_clear(struct sock *sk)
++{
++	if (!sk_tx_queue_pinned(sk))
++		sk_tx_queue_clear(sk);
++}
++
+ int sk_tx_queue_get(const struct sock *sk);
  
- 	tls_ctx = tls_get_ctx(skb->sk);
-@@ -885,9 +881,9 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
+ static inline void __sk_rx_queue_set(struct sock *sk,
+@@ -2237,7 +2265,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ {
+ 	struct dst_entry *old_dst;
  
- 	priv_tx = mlx5e_get_ktls_tx_priv_ctx(tls_ctx);
+-	sk_tx_queue_clear(sk);
++	sk_tx_queue_maybe_clear(sk);
+ 	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
+ 					    lockdep_sock_is_held(sk));
+@@ -2250,7 +2278,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ {
+ 	struct dst_entry *old_dst;
  
--	if (unlikely(mlx5e_ktls_tx_offload_test_and_clear_pending(priv_tx)))
--		mlx5e_ktls_tx_post_param_wqes(sq, priv_tx, false, false);
--
-+	/* WQEs naming the TIS, pending context params included, are
-+	 * posted only for an skb that uses it.
-+	 */
- 	seq = ntohl(tcp_hdr(skb)->seq);
- 	ooo = priv_tx->expected_seq != seq;
- 	/* Take the loss mark before resyncing, a loss reported meanwhile
-@@ -896,31 +892,32 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
- 	resync = test_bit(MLX5E_KTLS_TX_RESYNC, &priv_tx->flags) &&
- 		 test_and_clear_bit(MLX5E_KTLS_TX_RESYNC, &priv_tx->flags);
- 	if (unlikely(ooo || resync)) {
-+		/* A resync installs a pending context fully: rec_seq may match
-+		 * while the TIS still holds the params of its previous user.
-+		 */
-+		bool full = resync || priv_tx->ctx_post_pending;
- 		enum mlx5e_ktls_sync_retval ret =
- 			mlx5e_ktls_tx_handle_ooo(priv_tx, sq, datalen, seq,
--						 resync);
-+						 full);
+-	sk_tx_queue_clear(sk);
++	sk_tx_queue_maybe_clear(sk);
+ 	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = unrcu_pointer(xchg(&sk->sk_dst_cache, RCU_INITIALIZER(dst)));
+ 	dst_release(old_dst);
+@@ -2369,7 +2397,6 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
+ 	return 0;
+ }
  
- 		if (ooo)
- 			stats->tls_ooo++;
+-#define SK_WMEM_ALLOC_BIAS 1
+ /**
+  * sk_wmem_alloc_get - returns write allocations
+  * @sk: socket
+diff --git a/include/net/tls.h b/include/net/tls.h
+index e57bef58851e..80fd68c9801f 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -276,7 +276,20 @@ enum tls_offload_ctx_dir {
+ 	TLS_OFFLOAD_CTX_DIR_TX,
+ };
  
- 		switch (ret) {
- 		case MLX5E_KTLS_SYNC_DONE:
-+			priv_tx->ctx_post_pending = false;
- 			break;
- 		case MLX5E_KTLS_SYNC_SKIP_NO_DATA:
- 			stats->tls_skip_no_sync_data++;
--			if (likely(!skb->decrypted)) {
--				/* Nothing was posted, keep the mark. */
--				if (resync)
--					set_bit(MLX5E_KTLS_TX_RESYNC,
--						&priv_tx->flags);
--				goto out;
--			}
- 			WARN_ON_ONCE(1);
- 			goto err_lost;
- 		case MLX5E_KTLS_SYNC_FAIL:
- 			stats->tls_drop_no_sync_data++;
- 			goto err_lost;
- 		}
-+	} else if (unlikely(priv_tx->ctx_post_pending)) {
-+		priv_tx->ctx_post_pending = false;
-+		mlx5e_ktls_tx_post_param_wqes(sq, priv_tx, false, false);
- 	}
++/* TX offload state (e.g. crypto and record tracking state of a device
++ * connection context) is updated by TX queue execution, and the device
++ * provides no cross-queue ordering. The stack keeps the socket's TX queue
++ * selection stable while the socket has packets in flight
++ * (SOCK_STICKY_TXQ), and the driver keeps its own part of the selection
++ * stable too, see Documentation/networking/tls-offload.rst. Packets in
++ * flight are tracked by sk_wmem_alloc, so the driver must not free an skb
++ * before the device is done with all work it posted for it, even when the
++ * skb is dropped.
++ */
++#define TLSDEV_F_STICKY_TXQ	BIT(0)
++
+ struct tlsdev_ops {
++	u32 flags; /* TLSDEV_F_* */
+ 	int (*tls_dev_add)(struct net_device *netdev, struct sock *sk,
+ 			   enum tls_offload_ctx_dir direction,
+ 			   struct tls_crypto_info *crypto_info,
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 3b60b15e2175..18f7b9159ec5 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4894,7 +4894,8 @@ int sk_tx_queue_get(const struct sock *sk)
  
- 	priv_tx->expected_seq = seq + datalen;
-@@ -930,7 +927,6 @@ bool mlx5e_ktls_handle_tx_skb(struct net_device *netdev, struct mlx5e_txqsq *sq,
- 	stats->tls_encrypted_packets += skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
- 	stats->tls_encrypted_bytes   += datalen;
+ 	resel = READ_ONCE(sock_net(sk)->core.sysctl_txq_reselection);
+ 	if (resel && time_is_before_jiffies(
+-			READ_ONCE(sk->sk_tx_queue_mapping_jiffies) + resel))
++			READ_ONCE(sk->sk_tx_queue_mapping_jiffies) + resel) &&
++	    !sk_tx_queue_pinned(sk))
+ 		return -1;
  
--out:
- 	return true;
+ 	return val;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e2401d735c5a..d90a4f69ddda 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -606,7 +606,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
+ 	if (dst && READ_ONCE(dst->obsolete) &&
+ 	    INDIRECT_CALL_INET(dst->ops->check, ip6_dst_check, ipv4_dst_check,
+ 			       dst, cookie) == NULL) {
+-		sk_tx_queue_clear(sk);
++		sk_tx_queue_maybe_clear(sk);
+ 		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+ 		dst_release(dst);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 08d0d4a639fe..690f73e9de41 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1661,9 +1661,14 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	 * 2) Or rtx queue is empty.
+ 	 *    This mitigates above case if ACK packets for
+ 	 *    all prior packets were already processed.
++	 * A SOCK_STICKY_TXQ socket (stateful TX offload) relies on 1) only:
++	 * a spurious retransmit clone may still hold wmem and reference
++	 * device state from the old queue when the rtx queue is already
++	 * empty.
+ 	 */
+ 	skb->ooo_okay = sk_wmem_alloc_get(sk) < SKB_TRUESIZE(1) ||
+-			tcp_rtx_queue_empty(sk);
++			(tcp_rtx_queue_empty(sk) &&
++			 !sock_flag(sk, SOCK_STICKY_TXQ));
  
- err_lost:
+ 	/* If we had to use memory reserve to allocate this skb,
+ 	 * this might cause drops if packet is looped back :
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 4cdfbb57ecff..048b6a912d41 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -1197,6 +1197,9 @@ int tls_set_device_offload(struct sock *sk)
+ 	tls_device_attach(ctx, sk, netdev);
+ 	up_read(&device_offload_lock);
+ 
++	if (netdev->tlsdev_ops->flags & TLSDEV_F_STICKY_TXQ)
++		sock_set_flag(sk, SOCK_STICKY_TXQ);
++
+ 	/* following this assignment tls_is_skb_tx_device_offloaded
+ 	 * will return true and the context might be accessed
+ 	 * by the netdev's xmit function.
 -- 
 2.44.0
 
