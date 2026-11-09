@@ -1,81 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.240
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794212993;
-	b=Bbyg7I05J5MPImqVUp8tAnkkaYXeHLikaYsxNH1tF3H1oToIhsHyXDPeI5/KzYjmf2L0
-	 c5AjrnjgA30qOiSR/WRxWk8WfF/7PqQK+ycP0CR4lohsZY2DtaAA6mbmuCWBbRlnKwgpE
-	 vq32Tli00kHgH3a+vYFKUK2U+l1g56YB/hS+PzX1b9wbuCp7ulgjOu5KAqhR9h8TJ3tcb
-	 ke0aa62eYLlmDgFyc/GADB74cmR+BuKxCCfkLA0tdFyLsBnquPeiAUpOZ7dY1zjIw17QC
-	 +CYUT4m8HhpKvZ4Ic2hzEAFwX/4FBSA8UtDA/uOO/jPPs1TCbla1KAGWb28pOwINcig==
+	t=1794213062;
+	b=f1FBmCZGg1coOIuffrdr7imvKiAAof+zvFS8tIvVhqpT2KncmGCfAbHvEmYEkVqUn3BD
+	 rLYsPIZcJFalUKVVDdtEzCIDQkz/2uD1ESkFTlnqTSnwISyN8OWqv8ayY8cS+W2A6llVa
+	 UyJ8cXNevO8JUHvDSa0EQ3ma3r1EUSZqKj9FDjnw4FEvjuN7miEvjnCNcdPqxTXE+7Ne3
+	 nAuIKLI48RqAgVhv5bQAtAZ5lCv+e4OuEnUkZbIQXeAJ+lvHs91vBXgq9H2ajVw+H6oPJ
+	 q/Ri9iqjoclyLc+eL9Vxdr07TMEObOQr7tAlFpmhug73FqAwHcOjDFOtHVRZyqKaTbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794212993;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=PIsytMA70Zu9zd2fra8Ox+iIp9CD6WGyu99mDg6eiaY=;
-	b=Vbcxz1pdANveIEk9PapMFpGEQjOy+OP1PlEIBrsKjmM3yUc6bPcrxwsJmQxq213tve2M
-	 nRRhgrElGRZqSFmlbkKtGR2nyngN24bkMxS5etCvTZ7J1Y3EPRx8sOXFkoZAWhnyToHzP
-	 Bv6ZhIN6J4PgVl8G6Cxuwx33O8+tSP68+o8vO427wn9zxMViRrpVA9qhnBaFq+0HyIVAO
-	 ApUdDS8jlzhsSiJxLClkNc/3ZxOYLj8dyne9fpdKxqHzfSyS3wof3S9WK+eiLvMEV4b74
-	 50Taohxo9PNTXcgLUXDD4ODf/diEjQoQ/a4v6CJIAyG4MsPEPLYSRF7KHFfTbaVR6dw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794213062;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
+	b=KDxM7f5nG1KPNei/jyqFKq3oFdfktliNutK/Kdfk2k0ANiHYwwnKx5iCCmxm+QG5z58q
+	 WnD4cRYJgPy0ztzyK9YdcZVboGkjpvAH0pG5W3cYtXNJeRxvHSgMpYbmyOk8KhHkV7N5m
+	 FvG15F6w/6i+7KeFobSdsrqJ3DUqjMTQuSJJR/12n22cO5TYTZNio2Ye7hzuippgnpiQn
+	 +FI5NP5gNnV0IH8FKsx7cf1tDQ2QEs6rP4Ck25Ay0kKEjfUSifMau59ez5iFnRVbxjXey
+	 PMS4jLPD6Yx1AFU3wOCWmENkg185yrPGCWHKAzlj/G+/SdV7GPw1kjz7oDiL6oNP/Qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=VEwrf5UR;
-	arc=none smtp.remote-ip=203.205.221.240
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jU89jaK5;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9A0606A321;
-	Mon,  9 Nov 2026 08:29:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F9A0606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0767A606A322
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:31:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0767A606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=VEwrf5UR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794212983; bh=PIsytMA70Zu9zd2fra8Ox+iIp9CD6WGyu99mDg6eiaY=;
-	h=From:To:Cc:Subject:Date;
-	b=VEwrf5URwfEpy5BYU+0S2Ti63pqyeQSD9dfhbE4MYDeuI0WulkYZ0ZLqUtR3Q50Uc
-	 IEBpZfjW/Fus7feNhDNxLsfMfSq/sg64BrSMUS3LM+a5F83SX/bLK42m679hZbUhCn
-	 picP7V8pOhaCXWf+aIFW8wosxir35AzMxQwFB+Ro=
-Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:db4e:1753:6c8f:65bf])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 7681DE3D; Mon, 09 Nov 2026 16:29:40 +0800
-X-QQ-mid: xmsmtpt1794212980tspby4p0r
-Message-ID: <tencent_91DA7FD8277B509C55906702D1E425FBC906@qq.com>
-X-QQ-XMAILINFO: NvKPbWBbh1DVBvs5M/OQJuNLdC1jqoSiFDumPsN8jOCSPwGQZoyvcM8SxxIWSp
-	 yQQRiTqt3bIZHq+CWR2x8rq/E1112sS82DvGnGE5EcwUKIACRuc8NNjES/+kVWIxU6mbTYCdFck2
-	 K4MNzoitCS5zkxHDrL6x3Vx5FJ+3+XmZCxpJK8DxuE9sKQbmQSbiJYbUa9dcd1zfUJYcMt2YJKRi
-	 m2XNIE7JtozKHDuiel8Nf0ltUt3AT8IiKLzXW2F+ympm3J19kw7tPwBo7tPPqMKbXe6saENXs5Kc
-	 IMEzq7UIDASQb8BZGPWhdU7PGvNzA4vhSgB+3VPBs4m/uaLU1T0JC3uJEXIx0Nu1geVaSiqHERw/
-	 nt95/q5eiHmQcDHtr/juut4lcjeWfmrvD5Um5klSVbp9ZIA5bvPf17SiPTq4/l7mZqbGfxDqCuXu
-	 6gyodv37Wf7b3b/Xtzv/yxsnPECy1HAUvjtRxlWgA4iKVdYTzd4zHtBNy3RVFeHSZIer5R/aEI0e
-	 O2x1KR6nvPtbE3FvcR10Myxz1J61ZES+j/91OBx8NkLf7ntBPxA6ctKn81xT0Q62ohq8cQRMnL8c
-	 OkEh5jVbWgR6lEBnmIhxIiIwEomZEcc6Es/skAPNYUVCDPudoJrBivh547sKE/qVRYNebTHXLmNm
-	 EDlj103zmqih6m3vYLApWQgGtklsjBlTMhI2BFhfEEaNtMOdFw6KDm4JfO76FFp6rEQ/7IUTw4pN
-	 LY0Y2HOLlKpi6kPFha9a7DnIhneDOMw2Iu7amsmfFlJYkkHuQSZbEX29uoihPoW3sYj+cLLgH0gU
-	 Q+3uUIl5Gg0BcEstlveAQPIpwCOhUUjInk3JwsBd3dloq4jxhl0UnCEMKVKDZcXffJl2PTPs5nyY
-	 w3oS9+MI98L0s8YT7XTC3KKmgbdcNOlEbbzvA91jI4ld3PnQx9ei4H9yD0WIGUffHWtcVxv7WmrA
-	 uIkUEClk2m63HVRjCtK7/E5uHnUutbjvW7Uo1op3V/GxC2krr+5lQJpHSNbIpSd98olRvAORX4vG
-	 2/wo6reUs2duCZ7d3sb9Y71PVzdSZGFwXsJg5P0LPejnQFkxBm3SgREQVD+Uip4I5dpBNXbQMJdJ
-	 Ac9IOhKRFF8il8Z0rMZO8RWC4kXuNnudkvZ/+v+RUTUfcMiAk=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Yingjie Wang <1075151112@qq.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jU89jaK5
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-37000e7234bso80780eec.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 00:31:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794213061; x=1794817861; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
+        b=jU89jaK5dnAFqhr6/U60Wm+KBdemIPUAoWBa9y10Mk9AEUfHm1Pa0iMz/lxQ0n5Ux4
+         pky21JLLJrd7tLJ5GFtAHPV8h7ntqQ0ebFN57Mqh9J8Te8+Ci8tDEsqhM+pUmaS2BgHu
+         mmUR0X9uzi9jE6ezViLjRCO2xdnpkXw0Afm8sdF4ZZJp+i081byH6OhPjYvEYUN4t3Lf
+         kbUmVJXdx+bzkVRkGBJmz839qzNhXzSs0nUVeveROtfFCWtmktSQQCLTPwDcoEB9a79y
+         vPwQN/OgLAXAFSUr22w17OWIIFVRE6X9nBuzYJQkok3mltOVDZdLWBr6IEcCPFIqTV7E
+         PPWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794213061; x=1794817861;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vfC+pb0AJgv0GKU95tThougH9ZxYjEepJvXJA7a1FV8=;
+        b=bhmMU+T84eyy8NpLid4PjNH38M+Y6rw95Hezda0q6NpjUlOpssECsgjBKJ6RVL0mmj
+         DA7k/XmrhgALuXyx6Fe5l1uvMmTHPiCN1Jh7XM2VhPQZu0vi1CYhRBdUvDk0jWloiuhc
+         mGKrSpzo4PLLCoqO9E34cNHjZAbm/6dDdbVMl98TocCN4pQ90+d9+vs2mZycftdgMIcT
+         W9GsCORfN/5tJKrZLjT99UQU1ubGT5bpHazaS+frWTQupQbktWl76JsyGmJ0paZ6/tPA
+         9uPis+6bsNgdyTuyQLGgtqjzhpM9pDuY04HP2YHRU6DgcEHrHkgymbLU5eEeQDL/oJsT
+         8CZQ==
+X-Forwarded-Encrypted: i=1; AL+hErGzBXgzgxgdAoiblUYPYWikxYFoWTYhnZK62oMDYCXzN/iBUxcpsGSKxv8BZHEzpJ7ixPP9atM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+7949T3OLfmC2T+8otx6FKqC17sTZf9GxcKSCnsJ5F7lEJKVhJ
+	PHKynV5pT2HiiqKDo9+iscTVROGhVQ7v98iBIbdIjwBZCA5HNXvcK7Qy
+X-Gm-Gg: AYBFou1VafkEL+W54o4eO+p6Y7JX+kESUpWRkKyQQwx5xb8hzCduiL/rzyJFWD1SkCN
+	MNJWJtJsRgs9f13+VfaUEzTi5P1+xJFakYSHBXKYKQUkdy4iRvFyX0dywsvEfJ9Wt/UTLVDQEOy
+	PfnHHVKFTG/PmLis9xvJ7vII2gDX9DvfTcEDRHo3TnIVYR/T9C0lBDBeFnNzR03yXDV4fDucvoF
+	/UsMdvDldvt94HVDW1YPxTzGTswqQ+mjKxcXxfe335ANoRqTxIFMUSyvYs8eLpjgIIQWhHtsEVi
+	kl4ZUjaF+AG+3GwVezBOcAUmhxtIihq+k1gKOvac6nbdv15/iQmnBtGVPodBOeRRvFfjD4HcnxZ
+	SLwJojl1KCSELE37XXE7fWjPQ94Kg7gvHF/Ku8U6C/wTKK983PfFEBLrgUQfpv8x6KdwvjDDlLU
+	BMBA73Fith1ycmSSzO4IvvzuOlNUXhpWJKv6m6zY+JiJyffh54fdjc1Jqfm5GKk858GPHay1Tan
+	R/FbXu2QRyLxJgixJEaMsrz4h3CpgH3R8dFX6ypbjlBtdor32jERVCfTCmQeym57U2G6D8jblnu
+	XwZvCZ7NpD08bNGdiBRBW+deAGVO411LewxCnzQ=
+X-Received: by 2002:a05:693c:65c6:b0:36e:53bc:4681 with SMTP id 5a478bee46e88-372569fae2emr6648368eec.37.1794213061041;
+        Mon, 09 Nov 2026 00:31:01 -0800 (PST)
+Received: from xploitoverload ([2409:40c1:400f:1382:e6ca:3a31:da44:4020])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-372667d60absm12131756eec.26.2026.11.09.00.30.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 00:31:00 -0800 (PST)
+From: Kalpesh Solanki <skalpesh942@gmail.com>
+To: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
+	pabeni@redhat.com
+Cc: andrew+netdev@lunn.ch,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	ast@kernel.org,
-	liuhangbin@kylinos.cn
-Subject: [PATCH net v3] ipv6: reject routes without an inet6_dev
-Date: Mon,  9 Nov 2026 16:29:40 +0800
-X-OQ-MSGID: <20261109082940.3724298-1-1075151112@qq.com>
-X-Mailer: git-send-email 2.43.0
+	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
+	Kalpesh Solanki <skalpesh942@gmail.com>
+Subject: [PATCH net v4] tun: disallow setting IEEE 802.15.4 and 6LoWPAN link types via TUNSETLINK
+Date: Mon,  9 Nov 2026 14:00:37 +0530
+Message-ID: <20261109083037.22337-1-skalpesh942@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,101 +108,61 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip6_route_output() and ip6_route_lookup() can return an error-free route
-whose rt6i_idev is NULL.  Lowering an external nexthop device's MTU below
-IPV6_MIN_MTU tears down its inet6_dev, while fib6_ifdown() leaves routes
-using nexthop objects in the FIB.
+A userspace application can set the link type of a TUN/TAP interface
+to ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, or ARPHRD_6LOWPAN
+via ioctl(fd, TUNSETLINK, arg) because tun_get_addr_len() explicitly
+recognized these types.
 
-An unprivileged user with CAP_NET_ADMIN in a private user and network
-namespace can construct this state.  Consumers which treat a route without
-an error as usable can then dereference the NULL rt6i_idev.  This was
-reproduced as a KASAN NULL pointer dereference in ip6_tnl_xmit().
+However, TUN devices cannot function as genuine IEEE 802.15.4 or 6LoWPAN
+interfaces:
 
-An audit of IPv6 route and tunnel users found this unchecked
-ip6_dst_idev() dereference.
+1. They lack wpan_phy, channels, PAN IDs, and MLME operations, and tun
+   never initializes dev->ieee802154_ptr or dev->ml_priv. When an
+   unprivileged user creates a TUN interface in a user+net namespace,
+   changes its link type to ARPHRD_IEEE802154, and issues a netlink dump
+   request (such as IEEE802154_LLSEC_LIST_KEY),
+   ieee802154_llsec_dump_table() unconditionally dereferences
+   dev->ieee802154_ptr / ieee802154_mlme_ops(dev), triggering a supervisor
+   null-pointer dereference / general protection fault. Similar
+   dereferences occur across net/ieee802154/nl-phy.c (ieee802154_del_iface)
+   and net/ieee802154/socket.c.
 
-A similar missing inet6_dev check was fixed in commit 1b9b5323725e
-("netfilter: ip6t_rpfilter: reject routes without inet6_dev").  However,
-the route construction path still marks routes without an inet6_dev as
-successful, leaving every consumer responsible for the same check.
+2. Similarly, the 6LoWPAN subsystem assumes via lowpan_dev(dev) that
+   netdev_priv(dev) is struct lowpan_dev. On a TUN device, netdev_priv(dev)
+   is struct tun_struct. On netdev events (such as NETDEV_DOWN in
+   net/6lowpan/core.c:lowpan_device_event), it clears bits in
+   lowpan_dev(dev)->ctx.table flags, which corrupts private memory inside
+   tun_struct.
 
-Acquire the inet6_dev reference before initializing the destination.  If a
-non-reject route has no inet6_dev, initialize it as RTN_UNREACHABLE instead
-of a successful route.  Explicit reject routes keep their original type and
-error.  This establishes that ordinary error-free IPv6 routes have an
-inet6_dev while retaining the existing defensive checks at callers.
+Rather than scattering checks across subsystems, fix the issue at the
+source: disallow setting ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, and
+ARPHRD_6LOWPAN via TUNSETLINK by returning -EINVAL. Cast arg to unsigned
+short in the comparison to prevent upper-bit truncation bypasses (e.g.
+arg = ARPHRD_IEEE802154 | 0x10000).
 
-The modified route object builds cleanly with W=1.  A full x86_64 KASAN
-bzImage build completes; it reports two pre-existing kernel-doc warnings
-outside this change.
-
-Tests:
-  - `make W=1 net/ipv6/route.o`
-  - full x86_64 KASAN `bzImage` build with `W=1`
-  - KASAN QEMU with an unprivileged user and network namespace: after
-    lowering the MTU, the stale route returned `No route to host`, a normal
-    route still resolved, and the collect_md trigger completed without
-    KASAN, oops, or panic
-  - `tools/testing/selftests/net/ip6_tunnel.sh` in the same KASAN QEMU
-
-Fixes: 5b98324ebe29 ("ipv6: Allow routes to use nexthop objects")
-Closes: https://lore.kernel.org/netdev/DMP4WRIOGMBX.3VW2KNLBGDZ0K@gmail.com/
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Yingjie Wang <1075151112@qq.com>
+Fixes: ff4cc3ac93e1 ("[TUNTAP]: Allow setting the linktype of the tap device from userspace")
+Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
+Signed-off-by: Kalpesh Solanki <skalpesh942@gmail.com>
 ---
-Changes since v2:
-  - Use Alexei Starovoitov's V1 review as `Closes:` and drop the
-    manually supplied `Link:`, as requested by Hangbin Liu.
-  - Add the discovery method requested by the netdev information bot.
-  - Add Hangbin Liu's `Reviewed-by:`.
+ drivers/net/tun.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-v2: https://lore.kernel.org/netdev/tencent_3049FF6D9F23419F56589E244420973D2708@qq.com/
-
-Changes since v1:
-  - Move the invariant into IPv6 route construction following Alexei
-    Starovoitov's review.
-  - Acquire `rt6i_idev` before destination initialization and preserve the
-    existing handling of explicit reject routes.
-  - Update `Fixes:` to the nexthop-object route support commit.
-
-v1: https://lore.kernel.org/netdev/tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com/
-
- net/ipv6/route.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 2eb884558c24..a4c792fc55e3 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1165,6 +1165,12 @@ static void ip6_rt_init_dst(struct rt6_info *rt, const struct fib6_result *res)
- 		return;
- 	}
- 
-+	/* addrconf_ifdown() removed inet6_dev. The device can't do IPv6. */
-+	if (!rt->rt6i_idev) {
-+		ip6_rt_init_dst_reject(rt, RTN_UNREACHABLE);
-+		return;
-+	}
-+
- 	rt->dst.error = 0;
- 	rt->dst.output = ip6_output;
- 
-@@ -1200,10 +1206,10 @@ static void ip6_rt_copy_init(struct rt6_info *rt, const struct fib6_result *res)
- 	const struct net_device *dev = nh->fib_nh_dev;
- 	struct fib6_info *f6i = res->f6i;
- 
-+	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
- 	ip6_rt_init_dst(rt, res);
- 
- 	rt->rt6i_dst = f6i->fib6_dst;
--	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
- 	rt->rt6i_flags = res->fib6_flags;
- 	if (nh->fib_nh_gw_family) {
- 		rt->rt6i_gateway = nh->fib_nh_gw6;
-
-base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index dcec7311e60..b50a7245be9 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3362,6 +3362,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 			netif_info(tun, drv, tun->dev,
+ 				   "Linktype set failed because interface is up\n");
+ 			ret = -EBUSY;
++		} else if ((unsigned short)arg == ARPHRD_IEEE802154 ||
++			   (unsigned short)arg == ARPHRD_IEEE802154_MONITOR ||
++			   (unsigned short)arg == ARPHRD_6LOWPAN) {
++			ret = -EINVAL;
+ 		} else {
+ 			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
+ 						       tun->dev);
 -- 
-2.43.0
+2.53.0
 
