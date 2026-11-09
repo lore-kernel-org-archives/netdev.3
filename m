@@ -1,102 +1,184 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.222.82.107
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.9
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794250686;
-	b=vaGG8IBD48+1gRreJmzdIP33KDTWz7pdK8bZ7TttQShZzM67dWQDo7yF9vaftLxlYXcw
-	 w3Y6r+xeJacRSsrMdcgE4u1iGC841lw41CZGVhYfjQwFlC5zmINvAi17+W7n7lmSnIRNp
-	 U4lK8QWQvWd9ljE2A8hH/y1uG4C1w/ErfuzMndgnF5nta8EPiG7yemn6Wx4p4MKYF5Ro0
-	 PgVskiNo4rXIJZuwCeP18WT6Ac+Ka/8MY0Jh4dUomRLRZZO7ABq1Bo/yuTF+pgm8+KPfG
-	 eCdej6a3tDxI3CloLhjccmXYacS7EtojsCPwgW3YMEl/PPw+2w0HSG8pm4X2+31h+hw==
+	t=1794251119;
+	b=fqAifI4hhZPDuIubAm6fvx77SckkHnK9DxD3Luv+te3Cg+heBVltq3f0MW/IB8DOBe2h
+	 y6jBf+0B47CdWc9Gi8OBB+YO+uI11+rc9PrWhphLuayA7dYY+q7bhk5CxxBIEn2c3qhHe
+	 PZiKdebTf2DWT/MdMGOtC9Wwr6Hbz+fzNuugUMu4DaeqkO6nrLI0OPcdwKcrBCjsao/m9
+	 PGcyzXydTgU6uFE4s7J4ZAGMUizRZeJVCmsO8L5KRpZAcotl9cqB0siTf7hvkgH7SSc6Z
+	 J8iuo/fcp/cE+2MWak5/E+rmpjS0VoYHSnczB0653QBXzNS5OLNnw1Ku5T01FQsc9Mg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794250686;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:Content-Transfer-Encoding:
-	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-BESS-ID:
-	 X-BESS-VER:X-BESS-Apparent-Source-IP:X-BESS-Parts:
-	 X-BESS-Outbound-Spam-Score:X-BESS-Outbound-Spam-Report:
-	 X-BESS-Outbound-Spam-Status:X-BESS-BRTS-Status;
-	bh=Al1N2DcEycY/mHX2HIs47nAZebRn/FO8L8mAphp9nbc=;
-	b=gZJi6SAhg5oFA7DL41I0SUichVwrtaxdJ2j2BEVjkLf4OSd1li2uqBauJEE088nAgsAN
-	 6208ETEc5AsALlP0DEY+J4jHt9DZkemwG3QtkRgy6qVQWgSTShVzPRbe62wuCbgpEj77E
-	 XNkLCLTDIp/OTXFjatNvfoqmMWtOjZOIKbthI95+PwDj/r2K0eovg50R3oBG92DjV6Vkt
-	 FdjrHvwdO5fZz/VeaQtgVWiwNn8ySzQZeEkEDfHAV8cgDdFyhSOOfunEhp/7yQ5Ze4/Zp
-	 xBo/AV00O9B4N2I94benpchuEMjWyyCfT30MuUMwOxYtelJLxyJK5hyJHipBbILzqxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794251119;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=6+YZxQ13YOJ8UtOzew8TbdktPjj8yu1brjnF+SKC90w=;
+	b=Fa8RQINpxi8y1mtfGb9rctoeqzLVnPfnK/nm9oJg8GbTJooCkVT2ykGKBPhdmfxKsqNv
+	 XOFf8zZ2ezx8PQmDnzCuJWelSIj668xGe7jddCFqgmm4oteYqb0vLoZamH+sHj0Eo9+4Y
+	 JQse98Ovm8SecwxpbanlJJNzWpFDHF2iYHC+MqDz+WRJS6R/XcvdC87rOGJmQKNvOE5XP
+	 8xPFRwhFVl8BTqLOum9C5ZeYYNUK+2v+08NZAH/5AKcCwTxH0vChjTOb6BQoCIMQViPGo
+	 0P2RjjwyOc/8m2fQrx09f5jyTHrTo8NCmtLUAmxupPiosGBJESLM4o9IeklER+0eJNg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=opengear.com;
-	spf=pass smtp.mailfrom=digi.com;
-	dkim=pass header.d=opengear.com header.i=@opengear.com header.a=rsa-sha256 header.s=selector1 header.b=lH3zrlXf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.222.82.107
-Received: from outbound-ip173b.ess.barracuda.com (outbound-ip173b.ess.barracuda.com [209.222.82.107])
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VUqLv6+c;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABD8606A321;
-	Mon,  9 Nov 2026 18:58:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CABD8606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opengear.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digi.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303FF606A32A;
+	Mon,  9 Nov 2026 19:05:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 303FF606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=opengear.com header.i=@opengear.com header.a=rsa-sha256 header.s=selector1 header.b=lH3zrlXf
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11021086.outbound.protection.outlook.com [40.107.208.86]) by mx-outbound20-206.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Mon, 09 Nov 2026 18:57:39 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VUqLv6+c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794251118; x=1825787118;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=eMXrUJ8UKbblsKqu4OOWX155UBWvy+vGw9iUtUMdPK8=;
+  b=VUqLv6+cZLIH5m7UkdnA0+prrbpAAhuJ53ZRonoKKK3ZgrbviIQ5L3CF
+   zNDnDAELO5w9/+Yo+wNShLBercPYvdWOyh9vg4SXulPjqVO6AUeR57N4R
+   kMUFzQjN/sMP7wuHJC074/vhXRhLJMbLqzSi+5bS6aRWES/ESQwrsaoCI
+   sQngD+MblsVIFZ6YHEj6uqFf+g0lz3yWCUGVxVcizmACQkRm4myZdS6CQ
+   o4OXqyWJhmZbaHCv0Rd5ui45U+YpBQITYDab5virXkLK/lH8WXrE3jjvN
+   kaL+qYCOBaGfvRk0Xh8mYlbZraD3hWnUm2F+S3o6opBGk2uaD4skp2BZj
+   Q==;
+X-CSE-ConnectionGUID: p4dPgZQQTs+rJhxzMZXmIA==
+X-CSE-MsgGUID: dJzAWP71R4eu/T3KWWfwOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2866444"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2866444"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 11:05:17 -0800
+X-CSE-ConnectionGUID: an51gV7YRqiRJ2Fu+cVWyw==
+X-CSE-MsgGUID: Qh7mzGfjRbuG2X+tYCjpIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="8128919"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 11:05:16 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Mon, 9 Nov 2026 11:05:15 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Mon, 9 Nov 2026 11:05:15 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.64) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Mon, 9 Nov 2026 11:05:15 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QdyR9P8TB9SglFM1KVD0d5ckIv8yIMjGss8wYSYS1+cTwVBUY3EXyUxdZHK43pICwMe6yu0kierOZiMxJ7kMzbwf7XOwPhhvFdfJE1XMu+/eI/6bY+uRQVgM08zpuCmForiTQ/qnLdK43Pt68Fjk48deLAXJ9m2oWADs5kYxWy7b5OG8COlcqhPk/o7aqfUm1DJjkVujYl2z3/HJT1iy4uBEB1i3Dm3dOlmcdjSA3/pQ+BROhPhXeLgzjjgjb/4LyDQZXpI5HoQDIMSe6arFFbxH6SEvKfEb32IcRQCbnoU+UMljFWRuYo9F9ZiHsGZg6B77CmIOAi5F4JfyUG/fLQ==
+ b=Z7n98kQdoTgsQc1H37jRS9QANJUzTpJ59uFU+vxxnof11y/iz/G5hs3PGZN6kShLTi0M9Bia3cwD/XpBaCi1UoCxRQabWDUH8kFVLdiw7Ziprw4aNG1gbNnxRK255ehanPikiTJCBwzjyKg+52ihcVMenJtao67vC3EpirNCldgOJ0qP3tY6ppDyZAohR0niR7XZV/ST4c25aIF2qhKP1xJXubjK4VXKUQqZhg/xC9lYSJ3Tfv/1CdP4LQ6saHHlMzsX5d0b6zhkJCs9ZzLB2tu7s3Wu8cs0TSyfkZ3BsKniEnZOwsIU4HBVHNUTrIUfl+H74iePxp+GN+ClFq8caA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Al1N2DcEycY/mHX2HIs47nAZebRn/FO8L8mAphp9nbc=;
- b=NvQgqbZcwgGRo3qCAnkchZ2aGZl9FYga81q4I0FpnPnEXJ8IaWhe7ZPuA2EIwQqngUJvK5eCMMkUpwhMulA1oJ+cRcU45ezVF7oIXptaFMglyMtsom9HvIAYcCbRElt/t66AmIO1Cx5bbPGOoxMwZpDOm9mfXGgYifgogbo+IOl5WKBZznZLCGkdkPhWFNJ+mnna21x/Y2G9XDl6zcsgIMIdARTIOgAEQHpEjlnVfSNycgXmqc+UqBOZuwJjcuiSpczMVqVNcp09JpC7gduatHSHOxYwNFwwK511W21tiGerP8R0ABE906GhuezsxlhMl8RoZQOXyUUobjbm25O2bQ==
+ bh=6+YZxQ13YOJ8UtOzew8TbdktPjj8yu1brjnF+SKC90w=;
+ b=FBXDulriYo+BZmlkPR+XGpfbpZSmpgzyT4mDCOVsfIjtg58Y5ih+EkDbyfTmwN7/alCiqpIyYxshY86+YYm3pdeq1aSCCX8IveFZpv/xV12iU0EQJjybnsCqBuF+HNE+egBev4p/C9HBdj491ZRAuAYMoElZVz9OnK44eTiBUj5AUmCXdbbhTqMJzONKknRCAVRf3W+XMTSCthixKi9pePu02hjrQKcGWuT7LjrEfqUExWyxLdP8VeQrfDX65fURX0c1GYrGr4ujSYmaPUZ4hmHOzAReEOQzprC8as55idJFjKhma/FQ0E8HYudbgiNvR/lp+rEc4lCBeYT/071pxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=digi.com; dmarc=pass action=none header.from=opengear.com;
- dkim=pass header.d=opengear.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=opengear.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Al1N2DcEycY/mHX2HIs47nAZebRn/FO8L8mAphp9nbc=;
- b=lH3zrlXf53mX5rhObBUcVJqcU6pMvEgH3LKPoDipz3HZ4mUnCH1tibWV4Omn4fsn3DIHbNQoa292JDG6ZjNRAy0hkVUGPty9PuDLpsGd0IKl+ZLnUbniRDf7G1mzbMX6+js/VPgiM7iQmt3LvkYDAbIKmGCI3gZ2Q07Shav57q7pnPvtjOsXdUa4/+Bms5gDb4BOrUTfscnCQK6JzulePMh5XTp2a9adWJiOjX1koOTJb3IzoMjsRRJmYA6KFVeW7wSmpVGHkSvSxCKfTBybPm9Q1UhgO9ucRdzcvqsO7pB/pjeWC+lpaEnDennUnnULIcVGfOU4TMPuR8gXXycUOw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=opengear.com;
-Received: from DS4PPF6C5A39D55.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::d26) by DS0PR10MB7017.namprd10.prod.outlook.com
- (2603:10b6:8:14a::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
- 2026 18:57:35 +0000
-Received: from DS4PPF6C5A39D55.namprd10.prod.outlook.com
- ([fe80::975d:9714:9193:440a]) by DS4PPF6C5A39D55.namprd10.prod.outlook.com
- ([fe80::975d:9714:9193:440a%4]) with mapi id 15.21.0569.011; Mon, 9 Nov 2026
- 18:57:34 +0000
-From: Peter Hunt <peter.hunt@opengear.com>
-To: netdev@vger.kernel.org
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Peter Hunt <peter.hunt@opengear.com>
-Subject: [PATCH net-next] net: wwan: mhi_wwan_ctrl: say the DTR drop flush is best effort
-Date: Mon,  9 Nov 2026 11:57:31 -0700
-Message-ID: <20261109185731.182990-1-peter.hunt@opengear.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH5PR05CA0004.namprd05.prod.outlook.com
- (2603:10b6:610:1f0::9) To DS4PPF6C5A39D55.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::d26)
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB824491.namprd11.prod.outlook.com
+ (2603:10b6:208:626::16) by DS6PR11MB704522.namprd11.prod.outlook.com
+ (2603:10b6:8:412::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Mon, 9 Nov
+ 2026 19:05:12 +0000
+Received: from IA3PR11MB824491.namprd11.prod.outlook.com
+ ([fe80::c2b7:5964:96e1:8ffd]) by IA3PR11MB824491.namprd11.prod.outlook.com
+ ([fe80::c2b7:5964:96e1:8ffd%5]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
+ 19:05:11 +0000
+From: "Salin, Samuel" <samuel.salin@intel.com>
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, Brian Vazquez
+	<brianvv@google.com>, Brian Vazquez <brianvv.kernel@gmail.com>, "Nguyen,
+ Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "Chittim, Madhu" <madhu.chittim@intel.com>, "Hay, Joshua A"
+	<joshua.a.hay@intel.com>, "Samudrala, Sridhar" <sridhar.samudrala@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "David
+ Decotigny" <decot@google.com>, Li Li <boolli@google.com>, "Tantilov, Emil S"
+	<emil.s.tantilov@intel.com>, Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: RE: [PATCH iwl-net v2] idpf: wait for the reset completed state in
+ idpf_check_reset_complete()
+Thread-Topic: [PATCH iwl-net v2] idpf: wait for the reset completed state in
+ idpf_check_reset_complete()
+Thread-Index: AQHdWBpXjfwJ6tBorUC2IkGjruvcB7b84mQAgClnuPA=
+Date: Mon, 9 Nov 2026 19:05:11 +0000
+Message-ID: <IA3PR11MB82449130BE44CBEA89183442F79B732@IA3PR11MB824491.namprd11.prod.outlook.com>
+References: <20261009181553.582029-1-brianvv@google.com>
+ <DS4PPF7551E6552686B1C0E5EF78B23A44AE59D2@DS4PPF7551E6552.namprd11.prod.outlook.com>
+In-Reply-To: <DS4PPF7551E6552686B1C0E5EF78B23A44AE59D2@DS4PPF7551E6552.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB824491:EE_|DS6PR11MB704522:EE_
+x-ms-office365-filtering-correlation-id: 8a890474-3b63-4d8f-1fa7-08df3e94614c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|18002099003|22082099003|6133799003|10067099003|38070700021|921020|5023799004|261022075727099003|11063799006|261028144727099003|4143699003|261026140227099003|261026121527099003|261009223027099003|261021121427099003|56012099006|261022105027099003|261021123027099003|261102123227099003;
+x-microsoft-antispam-message-info: gdM0QarQeMSzvrpxyPItFH60zMMjl2apv9mNqdffAJ4/peJmn3yN4wHPcctid+cCidhnTqQ231A5N92KLuu/h1ohQTzq+phAtrrRcwJgKfwuwzQYbUEdvOW2mwlqvqNDEvzxQqW7VQ2yOYCEmjA60fS9ZerbWxSx5y2Tti+NwuEgMW95V7B67cwvP3UAiY4uYuUtsMtsrgN2Tkc0/zAtZ2xs62xqAAR1IG5FQU38ppQNNAvrVursApf3c8SaSRmUKL/hSOSlUJdYzclzr2+jRqMhy4wtrsJ4Uli6JekZdGyGvGsXEKNRLT5PhcrB+zr5cbvzJ9r6HhLbGCBTklpYjqpFVZYtvbPvzblKPVOuvF0A1/B9U2VaEek+vJnjyOIwmaBS869GA0W4eBBxgbGK2wZVDDPzSZKL9sF+LwvUidrcL7dq+Z29lUQEMi3DNplHgwI8hv9s7rUaesWuS0VXbMHpa3/nEtNVY+9vKekehDT9paeSI3qMpjxJqIqn3Ud/nuTy7jE+DMYSWn/dIgkttYLyJsHMdqqUmlwBu/8iX7rloNLL0ev0sAlO3uerbKH9gOjw2djPnYnQhzGBwB/Lcnm6bkGndogX+VC/wbzAqm9PnKPoMAtsyz+vr4mrECzAEXw8MNtRK46+73vHy0ITMKxNMClyknLDCdCTq5u3PBAYsTqvoQaZACCcBuLxIaImMIB2Fo5Iye1tzTSNOYK26bzayGeUSVtdHMsoTnfM/VqdBU2Y14EM8QsTtdai17TE
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB824491.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(18002099003)(22082099003)(6133799003)(10067099003)(38070700021)(921020)(5023799004)(261022075727099003)(11063799006)(261028144727099003)(4143699003)(261026140227099003)(261026121527099003)(261009223027099003)(261021121427099003)(56012099006)(261022105027099003)(261021123027099003)(261102123227099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0VDDK8XODffBS1Fd2jmttnknFPRzGt+rhs86P8rAA0bLQcfxLe861/eXg030?=
+ =?us-ascii?Q?gLmhpYhA0c12lKmUys5E9zuy9Zd6XR8wdZesFG8kg43tOezCIDuiulAs0OTM?=
+ =?us-ascii?Q?XCi7mMEAVItcuZP0rGVyyrJCucwe55T59KvKdYrDfbJD8KPzYkmZpKnKt6h1?=
+ =?us-ascii?Q?JZAqI40UEa/hq1fUbiyjlwHAB3PvPJ4dV4cNqGM8yBYoPi+HDDozj7qhDwNB?=
+ =?us-ascii?Q?ROoeyTmfHAP3Oqdn3F87TfV0E6Hkxkve+wmVHTy9Ro4USUM3ygSQiU6PtDoH?=
+ =?us-ascii?Q?+n1SVVMDWCblLm12lRbPLXvHIOf/WNzVBR9vBCRXxLkyDaqkKRCqM+c88Iej?=
+ =?us-ascii?Q?tWjqXpH/flv33f8ItLuDqX/56EwofGfOcj1j1+faFV/T6XAeW3JSb2tjTYfa?=
+ =?us-ascii?Q?cetUATzONN3+ddfbm/gsjA8r5WxYe68R4cmqtkF/94ObXX6Lp2wDcAVISQ1T?=
+ =?us-ascii?Q?U++yOLCxhpobQ8bisAcCpnYWIViIQ7ciVRTG9mdacTWnfHSC/p6Wnr63OU6p?=
+ =?us-ascii?Q?umLNF41nFVqLkCIQmznH0HHYrnuoGNrLkRxjb/Ce+HamX6etR9+cMwnfE2Ti?=
+ =?us-ascii?Q?4g8G5hoSghSckTpuQD/mz5XY06n9JoU9Nj1vKzOBU7Tfh4OXnThDOVv05AMr?=
+ =?us-ascii?Q?hTIC2RPB1mX44Cu2aT/tsYkFTXR4GbhtMsxdPm8TGiQ9Bz54E79QbUMUTBxc?=
+ =?us-ascii?Q?cC44a26kg04FkkSYpYyPW7OuLtnX5h4WaUGt7E3o6kUVhZmsWgZkTBpg653B?=
+ =?us-ascii?Q?8dKpJqHhQqQD4mIWe8qVn3BIsBt84pEuh0yr0/D3qFz67xGCjqlFSZlLsTqI?=
+ =?us-ascii?Q?YqQgijIHLzve/TAMCj3Kue2ZHmiu5/+TJaguh8DkdyXl7SUTeVs9Kvy+ijGH?=
+ =?us-ascii?Q?JgcPTJIT/qNSJU0w9b7AGB65G/7J2RJWHPrq/cZ/MppC4Ult1M+B/l91Vj4w?=
+ =?us-ascii?Q?hDce1ZBmZYHr2qyxdXH55KLAYUuKHmb2ZNbCxB/+eqad6i4nfSP1Xy/Myvk7?=
+ =?us-ascii?Q?n9lF+ceBzm/pzU9wtLwoexS2x6ROHqEor4m/JdptEmF5/ddKvac1bS1qGZOB?=
+ =?us-ascii?Q?R/hk9YA0K40dJz22/7YaRNLrCYwfYsDJl+IVKIMJAZPiq4dNTNBGC4E3XKD7?=
+ =?us-ascii?Q?Fk7pQmLFf0FIedh+4FEiPxy6Jqj9EBYEil8kOUKHrtDbF5HlhRM4DYbwd3jq?=
+ =?us-ascii?Q?pVT2btthWfNxnO/augixFLKfo/yypxS41DkfpxrzhD5xu578jvHxkUkdh0Yj?=
+ =?us-ascii?Q?GZZCZTxKixLycQ9IzI1IEFb76J+pfgD3UfKOdUHmveEhQA6FtaUC8B9RQpvv?=
+ =?us-ascii?Q?atNpWUEL6/cOGbYvVeUGlqy0vBzimRNqQE8zqvjC8b55H0TqnHrQlXzMo8PA?=
+ =?us-ascii?Q?k1urv9kVf9YXgykEGFs+ZL2QmUq3Dkn5B5yVKX2R+wnTUoAr9igW3y0dD3YH?=
+ =?us-ascii?Q?MPkn0Bq8loPaPQcRJKtbEWucfd/EjzwRA5TnfnHpRPi8S9bgRUwppbiO1sXN?=
+ =?us-ascii?Q?GjYCojhbzAd2L5cHLUtAYTDjNk4kA0PfJvxvaHhapcWJlWey0WW6A75Xh3Vg?=
+ =?us-ascii?Q?HB93dYW328CZauvQnWawueRVaTAmrjo9SjU/XgBD4MRzRQhdR5RipzeTDq/b?=
+ =?us-ascii?Q?E1JHiiVMCC7okViKKi1PgdWT7aKDd9gIo+4rRWN1K8D8YTJt1K+rb4lvtFIl?=
+ =?us-ascii?Q?nu9EqcUZhxO4seoSL+z9AC+SW274okNLjRKhVE+MyrZ+dcj9EUInhPLq128c?=
+ =?us-ascii?Q?MWv1cmq01A=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,128 +188,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PPF6C5A39D55:EE_|DS0PR10MB7017:EE_
-X-MS-Office365-Filtering-Correlation-Id: e99bce14-23ee-4689-a4bb-08df3e93508f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|261009223027099003|261028144727099003|261102123227099003|261026140227099003|261021123027099003|261021121427099003|261022105027099003|261022075727099003|56012099006|11063799006|261026121527099003|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	TGgS6AsTLtAwv2nwFm11ZGWXrmFQad1SbfjB5JH/Hqh4roaloa0kPjGGS+eXQ7Ab3QWc6OdIDZyosgVfbwDL4c+00HKoAbl0KCnXrXCvuV5IxAzYj6LVxOvMbJ7dN0awAoYCr7ar07lBPuAjiSk9J/OuTLc+b4hypv3ug0CqGvNF8VtQmHq+XNhxsYA0g2TvuceCCYBo4H1moXjCA43yvzQwUh2gCqDS+EiF9cSy9k6ULcvyVCpcacuiZ5CmDZ/MhqnbEz2gAp9j+5spb/v2Evp4PfcdGsbefzw63Ut9N86Vd37mSEJFTDkBGm2EJlRuq+YBPlXnWP76qsaoBFklIqSVKyUyRpRkyIafrTkrDd2LScT6bacEmlOBQeCIof1ouyHclTFnSCUzGtUJbPzhvfaTOWAd6IXh7NXO73wp4LsDgxV3IOwczJH4lAQUVIZHQwSvpQ+w8xAlmgLS+Bl7PHZP3YVGwdNoHDfQVd3gV7nVU8A74cAMZts4hmm4DVQ92IuoxG604xp/seOoYxwXNOButIcwANuFd7XvkOn4d3lzNvUGV9eOGnxXNDlTbA27OKobmz+ZU+H/59oIBYHTxVFDz5bimI2L+Pvo6yU6VZOrqM3W+Sysy+zjaxitHwkR
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF6C5A39D55.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(261009223027099003)(261028144727099003)(261102123227099003)(261026140227099003)(261021123027099003)(261021121427099003)(261022105027099003)(261022075727099003)(56012099006)(11063799006)(261026121527099003)(10067099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zlsex8663SNhLTjiLHudFb8w8Ab8ysSnr+KFwkflET4ZstOBCDwdigDmV2s4?=
- =?us-ascii?Q?cjH4UJ7gGqNUt2R7C6Bhz4i8u7JvykyyUot88rmddp/Y2TT5WIRQtztoYtja?=
- =?us-ascii?Q?8Rqnoj1N3vVK+FNuYIhmaCqiUD2PceQ5ItX+HFPPQ3HRcuN7AQJfuzo+bisY?=
- =?us-ascii?Q?F2obPgKiBCw3fVcJtKuLgdFaTtk7sOWXa8nyUMDXb3IM0Yjq5gDMKT5mev36?=
- =?us-ascii?Q?rVqT48ASl+mWdA7gecjKERV/oj5ycTIFvwK9yn994B5kNBqnctFZ2HO77nGA?=
- =?us-ascii?Q?BcXowdTBlrOapVEhLRa6DzKTXpiHkMnxHHls34Tf7FnOPVxDjddUm2T1QR7s?=
- =?us-ascii?Q?z4MdKersz8/qHZEayxsNyvo2zLTujxZ72mLdfSTiPm/jblokJerKULbhBSYL?=
- =?us-ascii?Q?7AZgV5rdQ2XuOEN00VUxV659hIKzH0y8tfQq0cnKrnPB/ie+LxKqM+bwam57?=
- =?us-ascii?Q?OoB34oGnlaQB8Dz36SeOuyB3KVG1VTjA4+GEL9t0lk3HX7ARGHyqMXq6mlHA?=
- =?us-ascii?Q?+4VUk7NA7nU/MW91h85XiuVHf1ULZFShlJjpEyowXA/BoX6cllkZWcKGWs4B?=
- =?us-ascii?Q?Q0JdQHM71YH7SQ+utgqkrJ2pevDKkUgvGTX+xkaiBzKaShbKI+FBJJcgJ5fO?=
- =?us-ascii?Q?E6O9vO11WiFNcCuQQ/DsvHZKNYho8VTMJVvK3JRTNYr2LXtk+TIymIFDjEwb?=
- =?us-ascii?Q?meTdQt7DfdE3dBzUCZfMlxeTmszvZJ/ur6sWTPLJwb6TJJvDNjLe02W8aRON?=
- =?us-ascii?Q?Eq3d4VU9hfePIeiQ23GAbDl1ZGcNJ8MqDEQWzIHFipTs7g+DeI8YsR4gvgXZ?=
- =?us-ascii?Q?NVibDffzFqGCq8ybyQLMU5OmFROD9/GQnrrwy6Ji8rq71bnf+9dJcURCiEQp?=
- =?us-ascii?Q?N4eCYgLXgBfzdg5SRP89bKGyL5/1iyIO8s1Fo/ySHGc6mo90ZKIiB/urRdSo?=
- =?us-ascii?Q?nzs5wEeFK60iBPrFtyajvqsCDqYFFekx8ZAVBeE9rt5xGFMEWAZdtPNKLbmE?=
- =?us-ascii?Q?1DnSWEZCTZyTWLJd5Uak2VGaBhMDYP8LZrrZc5tvHXpB+R3WUN1r4QR1C+fA?=
- =?us-ascii?Q?pAT8gK3dZDbkakPNzCaSYbS43KjdpRzo93INNqvDDa6cqCGZkL5HqAP2UvlP?=
- =?us-ascii?Q?sGnFxd3PDqmvXC82lq9z1Y+O0KSce9pLaPGtd31UJujmYqrOTWhUQLVS+ANt?=
- =?us-ascii?Q?4sa9zkZ/T16Nqjh/rszUbQWvVFfZlJp5YdyMwfaTBPlCY4rt8A1C72y8uHMv?=
- =?us-ascii?Q?XzL7/GwqsbTLCQZ8fPPKxgO7sFlIaix56/6gLDF/EF7twtnIz4bxgkj/VKTJ?=
- =?us-ascii?Q?Oh3eigErlCHOT7OQL551xd9Rhtw+9Z5D2REfGClMJ098sTvqsMvedTQcUezm?=
- =?us-ascii?Q?f5aPmHi14mWBb6N62KX7f9Qtihf0C0qi5tqaBswIa1rvFeLbHLkDEa79EZNy?=
- =?us-ascii?Q?uD8YhRHCWomr86/lwxr2dtdOydzezpHDWsn8E9YQVJyxpBnATJGJyyM1cToQ?=
- =?us-ascii?Q?E3JVk1VrIoLWo9vHedh4dRKm9imuyrw+3704Jn512SyLWYJzUirA56l0387Z?=
- =?us-ascii?Q?8RX5NtzRBfLm/biq5ECS+/zbX+fg0NqvWM4WTfoLLW44FHOmd/WXSXFDrSqn?=
- =?us-ascii?Q?EqiPHP86EUfkEqvx/9SBW7EoPY/RBPw1l/muGUtve6cltJe3JEfge4051fzJ?=
- =?us-ascii?Q?17j6Bqqyp3fCzrqC8um7ryQAcf0P3covcApgI7dyfkTWRm21?=
-X-Exchange-RoutingPolicyChecked:
-	4lupw3KYpsbIf7uuDRQO6WNOx5gBMhrKwbZTknlWYS5dr+r4sRUMf9hm8dxe0ehJJ1/GdVrN1q5+I93ZxNuGTcZlg8lBgXJiySwybX6hbUSUXvpJFlZc8VWwbx3CUSy7Ikp9D+owVD6ahkfwoUMVguIBrLxeGCW4krsYt5m9AMCJ6qg1wZeTk82zhxzDyxgOH8FewOvr7JaES4j9EG9xOJ05A9fCkl/6B8PRia5uv6inM0NikzxE93A2s8vXWRaH+d6Ek+WBW01/DkE2QAEqMau4tLWAVRsu/ysx5TVfxIdMRWX2/AtUECY+i36cd3Hb7A+M9rHq3Mvuf18r2qAKHQ==
-X-OriginatorOrg: opengear.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e99bce14-23ee-4689-a4bb-08df3e93508f
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF6C5A39D55.namprd10.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: h8ot16HJWLYEPOoU4pxWofqQNRDxwkOPrjpuQCf0savpdIfIBNDpRCAHvsehJhjuZYiw6/yyBjFbc0jtGIXIqX8Z5jS6BwiFQTTw1MiCWApEIqz1MLjIBSxN2bQRQ4ycelRrqZYzEbFwxjkhQnm+de7ggiPrycbjegQJm8d3A47Kvht25y573bjg/GWZqU5qhWVQMJTDnrWdaF9bvoDNs5R9afKyoWQu5wKFEF7AViJ84Cqvy3QDTGRM1QcxTDiDJlmmBDZtmWnaPIysFlMZnXMOsYtHRRgMzjWcesvRq0zuqe24DGE5WHGGLhswqu84lv3HJaNkaGc4AAsJI7XQSQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 18:57:34.5319
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB824491.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a890474-3b63-4d8f-1fa7-08df3e94614c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2026 19:05:11.8227
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: abb4cdb7-1b7e-483e-a143-7ebfd1184b9e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UxaOm8CZlfh3o05VxSXh2bZ31iFx9eHNtWJt/P0aYQ3NFXTGUmIz1ThCX4UJJMHo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7017
-X-BESS-ID: 1794250658-105326-7691-1337-1
-X-BESS-VER: 2019.1_20261104.2126
-X-BESS-Apparent-Source-IP: 40.107.208.86
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVkbGFgZAVgZQ0NzUxDglOc3CwM
-	DMODHNyDQl0TTR3MQyJdHcLBkoZKRUGwsA2DxwyUEAAAA=
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.277465 [from 
-	cloudscan15-142.us-east-2a.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS112744 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status:1
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MM8NtEKaCSmdDP2MQfUcz1Bb4kH/LtQ7gLc3BbET988Ehbdy80svdYxQri9LM5J2v6lbJ9c+IpzD4skwDRKeoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB704522
+X-OriginatorOrg: intel.com
 
-Three comments around the DTR/RTS work don't match the code since
-commit 10f51f4fb99d ("net: wwan: mhi_wwan_ctrl: send a DTR drop before
-it can be coalesced"):
+> -----Original Message-----
+> From: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Sent: Wednesday, October 14, 2026 3:47 AM
+> To: Brian Vazquez <brianvv@google.com>; Brian Vazquez
+> <brianvv.kernel@gmail.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org
+> Cc: Chittim, Madhu <madhu.chittim@intel.com>; Hay, Joshua A
+> <joshua.a.hay@intel.com>; Samudrala, Sridhar
+> <sridhar.samudrala@intel.com>; linux-kernel@vger.kernel.org; David
+> Decotigny <decot@google.com>; Li Li <boolli@google.com>; Tantilov, Emil S
+> <emil.s.tantilov@intel.com>; Paul Menzel <pmenzel@molgen.mpg.de>
+> Subject: RE: [PATCH iwl-net v2] idpf: wait for the reset completed state =
+in
+> idpf_check_reset_complete()
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: Brian Vazquez <brianvv@google.com>
+> > Sent: Friday, October 9, 2026 8:16 PM
+> > To: Brian Vazquez <brianvv.kernel@gmail.com>; Nguyen, Anthony L
+> > <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> > <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> > David S. Miller <davem@davemloft.net>; Eric Dumazet
+> > <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> > <pabeni@redhat.com>; intel-wired-lan@lists.osuosl.org;
+> > netdev@vger.kernel.org
+> > Cc: Chittim, Madhu <madhu.chittim@intel.com>; Hay, Joshua A
+> > <joshua.a.hay@intel.com>; Samudrala, Sridhar
+> > <sridhar.samudrala@intel.com>; linux-kernel@vger.kernel.org; David
+> > Decotigny <decot@google.com>; Li Li <boolli@google.com>; Tantilov,
+> > Emil S <emil.s.tantilov@intel.com>; Brian Vazquez
+> > <brianvv@google.com>; Paul Menzel <pmenzel@molgen.mpg.de>
+> > Subject: [PATCH iwl-net v2] idpf: wait for the reset completed state
+> > in
+> > idpf_check_reset_complete()
+> >
+> > PFGEN_RSTAT[1:0] / VFGEN_RSTAT[1:0] (PFR_STATE / VFR_STATE) encode
+> the
+> > function reset progress as a 2-bit state, not a flag. From the IDPF
+> > specification [1], "PF Reset Status - PFGEN_RSTAT":
+> >
+> >   00b - reset in progress
+> >   01b - reset completed, written by the control plane
+> >   10b - function active, written by the control plane once the function
+> >         has completed VIRTCHNL2_OP_VERSION
+> >   11b - reserved
+> >
+> > The "Function Level Reset" chapter of the same document has the driver
+> > poll the register until it reads 01b before re-initializing.
+> >
+> > idpf_check_reset_complete() tests (reg_val & rstat_m) as a boolean,
+> > with rstat_m =3D GENMASK(1, 0), so any non-zero state is taken as
+> > "completed", although only 01b carries that meaning.
+> >
+> > That only works if hardware moves the field to 00b as soon as the
+> > reset is triggered. On the Intel IPU E2100 (8086:1452) it does not:
+> > PFSWR transitions PFR_STATE to 00b only when the field currently reads
+> 01b.
+> > When the function is active (10b) the field keeps its value until the
+> > control plane finishes the reset and writes 01b, which takes a few
+> > hundred milliseconds.
+> >
+> > Consequently, on a hard reset of an active function
+> > (IDPF_HR_FUNC_RESET) the first poll sees 10b, returns immediately, the
+> > driver re-creates the mailbox and sends VIRTCHNL2_OP_VERSION while the
+> > reset is still being processed. The control plane tears the mailbox
+> > down underneath it, VERSION is never answered, and the driver sits in
+> > a
+> > 60 second virtchnl timeout (-ETIME) before going through a second hard
+> > reset which then succeeds.
+> >
+> > An FLR on an active PF is enough to reproduce it:
+> >
+> >   # echo 1 > /sys/bus/pci/devices/0000:01:00.0/reset
+> >
+> >   [  299.685030] idpf 0000:01:00.0: HW reset detected
+> >   [  299.715710] idpf 0000:01:00.0: Device HW Reset initiated
+> >   [  362.916087] idpf 0000:01:00.0: Device HW Reset initiated
+> >   [  364.318246] eth0: (slave eth1): link status definitely up, ...
+> >
+> > Nothing is logged during the 63 seconds; the timeout is silent on this
+> > path.
+> >
+> > Make idpf_check_reset_complete() wait for the state to be exactly 01b.
+> > This is the stricter reading of the register definition and it does
+> > not depend on how the field got to its current value: functions that
+> > are still in progress (00b) or active (10b) keep polling until the
+> > control plane reports completion.
+> >
+> > With the change the same FLR results in a single reset and the link is
+> > back after 1.5 seconds:
+> >
+> >   [  206.856635] idpf 0000:01:00.0: HW reset detected
+> >   [  206.887106] idpf 0000:01:00.0: Device HW Reset initiated
+> >   [  208.368721] eth0: (slave eth1): link status definitely up, ...
+> >
+> > [1]
+> > https://github.com/oasis-tcs/idpf-
+> > specification/blob/main/idpf_specification.md
+> >
+> > Fixes: 8077c727561a ("idpf: add controlq init and reset checks")
+> > Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+> > Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> > Reviewed-by: Li Li <boolli@google.com>
+> > Signed-off-by: Brian Vazquez <brianvv@google.com>
+> > ---
+> > v2: reference the IDPF spec, name the device and add an FLR reproducer
+> >     with before/after (Paul); collect Reviewed-by tags. No code change.
+> >
+> >  drivers/net/ethernet/intel/idpf/idpf.h     | 2 ++
+> >  drivers/net/ethernet/intel/idpf/idpf_lib.c | 3 ++-
+> >  2 files changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/idpf/idpf.h
+> > b/drivers/net/ethernet/intel/idpf/idpf.h
+> > index 470bc23c844c..ce8a1bd0ec8b 100644
+> > --- a/drivers/net/ethernet/intel/idpf/idpf.h
+> > +++ b/drivers/net/ethernet/intel/idpf/idpf.h
+> > @@ -166,6 +166,8 @@ struct idpf_netdev_priv {
+> >  	spinlock_t stats_lock;
+> >  };
+> >
+> > +#define IDPF_RSTAT_COMPLETE		0x01
+> > +
+> >  /**
+> >   * struct idpf_reset_reg - Reset register offsets/masks
+> >   * @rstat: Reset status register
+> > diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> > b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> > index 827c795afcb6..92eb3e9de77c 100644
+> > --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> > +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> > @@ -1874,7 +1874,8 @@ static int idpf_check_reset_complete(struct
+> > idpf_adapter *adapter,
+> >  		 * register for us yet and 0xFFFFFFFF is not a valid value for
+> >  		 * the register, so treat that as invalid.
+> >  		 */
+> > -		if (reg_val !=3D 0xFFFFFFFF && (reg_val & reset_reg-
+> > >rstat_m))
+> > +		if (reg_val !=3D 0xFFFFFFFF &&
+> > +		    (reg_val & reset_reg->rstat_m) =3D=3D IDPF_RSTAT_COMPLETE)
+> >  			return 0;
+> >
+> >  		usleep_range(5000, 10000);
+> > --
+> > 2.56.0.385.gd3acb90ef8-goog
+>=20
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-- the ->dtr_rts() comment says the drop is sent now, but a drop that
-  hits a full UL ring is retried with whatever state is latest by then,
-- the dtr_mdmbits comment only describes coalescing,
-- the remove() comment says the removal drop gets one attempt, but the
-  drop and stop() paths now flush the work as well.
-
-Update them. No functional change.
-
-Link: https://lore.kernel.org/all/179340002701.3131.15535297427661129303@kernel.org/
-Signed-off-by: Peter Hunt <peter.hunt@opengear.com>
----
- drivers/net/wwan/mhi_wwan_ctrl.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
-index 772319927867..3610613e442e 100644
---- a/drivers/net/wwan/mhi_wwan_ctrl.c
-+++ b/drivers/net/wwan/mhi_wwan_ctrl.c
-@@ -68,7 +68,8 @@ struct mhi_wwan_dev {
- 	unsigned int rx_budget;
- 
- 	/* Latest DTR/RTS state for the modem, sent from dtr_work so a burst of
--	 * changes is coalesced and only the final state has to get through
-+	 * changes is coalesced and only the final state has to get through.
-+	 * A DTR drop is flushed out on its own, see mhi_wwan_ctrl_dtr_rts().
- 	 */
- 	unsigned int dtr_mdmbits;
- 	struct delayed_work dtr_work;
-@@ -216,7 +217,9 @@ static void mhi_wwan_ctrl_dtr_rts(struct wwan_port *port, unsigned int mdmbits)
- 	schedule_delayed_work(&mhiwwan->dtr_work, 0);
- 
- 	/* A DTR drop matters on its own, e.g. to hang up a modem set to AT&D2,
--	 * so send it now rather than let a following raise coalesce it away
-+	 * so try to send it now rather than let a following raise coalesce it
-+	 * away. This is best effort, a drop that hits a full UL ring is retried
-+	 * with whatever state is latest by then.
- 	 */
- 	if (drop)
- 		flush_delayed_work(&mhiwwan->dtr_work);
-@@ -376,7 +379,7 @@ static void mhi_wwan_ctrl_remove(struct mhi_device *mhi_dev)
- 	struct mhi_wwan_dev *mhiwwan = dev_get_drvdata(&mhi_dev->dev);
- 
- 	wwan_remove_port(mhiwwan->wwan_port);
--	/* Give the DTR/RTS drop from removal one attempt, then stop the work */
-+	/* Give any pending DTR/RTS state a last attempt, then stop the work */
- 	flush_delayed_work(&mhiwwan->dtr_work);
- 	disable_delayed_work_sync(&mhiwwan->dtr_work);
- 	kfree(mhiwwan);
--- 
-2.43.0
-
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
