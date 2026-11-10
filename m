@@ -1,79 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794294836;
-	b=WXfwI2mLQ14s9uKOtV1HFIZpqSmtkqJ8Qn5avFWiePD5LMzQd5NaGFG48eUwNQqQ+sOf
-	 /vyLLmgv6VSaIrsKiyK4VYh1pvgJKPjlp1R4u3E3ESZVZZKs88eMoFKFeb1uS1hLuWhr3
-	 ltP75PKODU1y/TLg8PBTQAXzKzYV2lstJ7CFfzaBNPFVwA1Kh40p8e1Gq/GpMI4TWbIjD
-	 LA0rvgwdB6m1T5biAV6BYKxIheNPchSUVUvC68gPDRpwe6ssoRw0KMZVaoeJhPRRXZFJQ
-	 5p0EKOxPm/DepKaNrQUSin67rDp8UKmlVsSU2eHNuhT3VUVfARYQ3RckeRAvE+p7Ckw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794294836;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XM3iyYGns51wHTuIfoJe4NYI7OiUdPja2Tnl8gWGEoQ=;
-	b=L9U7N3GhwbQLRTRRKqew7LO1IliNppEiVuOBXkwcg1960SCqmdh47gcvb3yVO2H738Gh
-	 n8+Xn/OnO41yGYfVog/9GgJVroI4i14kwehvHcPvqCshiI9fmq2RNuGKZ8UhP9z7VDVB8
-	 TBwK7eIGWZFIuyDWBrP3mBhVzpAvbFKCZAujOfYrGcxEyK5+7Wj5VrcfRuL56l3Y/vzTg
-	 TPHibBgRz+Ox3+/hhzu/psZZYCbeo2kp/FQ7FUYZCyjvnXH7OSm1VLNYURefRWEfGYpRV
-	 cQrRjwTi7Cakv3oGlLZOK7heQONLexUpagYNPWbmbVhwAOr6xUlGzl/D8f0O7nMOOYA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXckI2Sy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6800D606A326;
-	Tue, 10 Nov 2026 07:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXckI2Sy
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794294836;
-	b=wDl+jtID3YoGa9o0sIOGcttFHx7Rhdwu3pZVw/RgPNuf8NyqkqeOUi+FevFm2xwFGjrw
-	 cMYtIIbGDO+AczECyJ4LLnOOcCycRC4MyMGeu+WpcSWU+ePaZNL45dasqc3NfPBnuAI6Q
-	 tAMccOFJ0OJxaMcNLd85sPAj4x275o1oAWY2QPUSS38D69Eup25vxbwNiOz1A+P+xfoKi
-	 JiTt35s9JtW6aMwcIzSF18UlFy66tYX8jXMZ+pjdTYb1z/jPqBAodEAgM+U1U96L3iuzj
-	 m/lsy/Fuz9nQgj9Qvcnu0FsfrEDMO1wKzrygjxtGGWh6YP7U6y4dm0Vg2ZvLgoshVOw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794294836;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XM3iyYGns51wHTuIfoJe4NYI7OiUdPja2Tnl8gWGEoQ=;
-	b=jrDnAmlVz8W5UzpFBMfgtk4GiQtbUei9d4rU9Mo5kfpFBNgb8x8aYHLFzgdZAEIyzSbQ
-	 oJoKxU7JJFiLY4/XdeQHZJtCXISajbgYqD3UGYICrT8CDxH0fUDnIUSYhkmyicsw40ide
-	 4s4+631XxhysTyrUmWNsa/dYwdAWLtXMqZg+TuPPKAo+GchHCN0Qw+jT2+IsJBzzfJXFK
-	 9QBcTHY0qmA2y1w2jEKlmzyL6Xm8iJrG+0uA0NMVn6DOhmI/RXms2DfTRHUvnRIib/Qj7
-	 2c33L9KtgioWohpfxjK93ZcSzqHcBdzXdbPZb+lBegMPdwVIbw13CLqSMzxaMka82PA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794295313;
+	b=Ctk1AnyO6AeaVxpg0fnZ+BVRZ2J6vuNipyPZLQcrTgGIRQO4XTy1EOVYc5/jfFKMTYyr
+	 XANTGClyCgiFLzIFS+t3l5fmHBEYwEP4mHCRumL8nLOF9EXUqrsLu2PV/Yk7zlIJN0WBH
+	 pc9nvm42T01lS4D+QrvSklDYNaqHZRIHAOEgpM8rgTJKlY4i1HdTkWLo5+ALzIGsi9xPD
+	 PPEcSCe+B67GjYb68C9IQ5rZVBSs13OxlU+6zijiWnS4OkBs/udYqJCHBgK0XWvmckl6X
+	 9PzhW9h8sq0VxLR0HJkeYJGVKLcL+Dj0qrN48d/BjtunNf2GfcljCXBJ0DZ5EQZ3LSw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794295313;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=BZAybHKPrp5cabZgbPg7Wb9TVLxchkkoh8bos8p+zE4=;
+	b=EilIv96SD4FBTeHHNTX0thUyJ4KK3xV5TGWuyZ7+cuXaMQMA/SU10XnPnT157nkA1GbN
+	 4w3fQyGXsXSXPK+ZxsTgVtrD/z9umCLLt85i3dfqGC0uTzzfgEkaizt5ZqXJKl6VCqR5m
+	 kNpUK7bvGLNAXdoKPval+Siqj4ziA+3J7HQ4JJRqhQWVY4DdkTQ4aK5U5oRGuK+2eMMF9
+	 KEn9dBZ72Me6QoOPEjvMUORjyizqbvr12WnixqFW7m3qWDjs8hijavpCc6lDieQL33TSS
+	 KQ8ohEqmbtl00o+EpMmaWFA1N1KidWmgudHI72LNzgJKs0NR7cWiQRwW11/23YDYakw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A737F1F0089F;
-	Tue, 10 Nov 2026 07:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794294836;
-	bh=XM3iyYGns51wHTuIfoJe4NYI7OiUdPja2Tnl8gWGEoQ=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=BXckI2SyNPopOUTmH8eoNMzb5dE3gxSZCg2zel/DQT1akoxVddVcElmstirAh6u3y
-	 f0NGmJ7MT2Ig4UhkGLJGwYOGEoXL7hy2YIPPgHhprZAoHqB276FrddLxQP7VNCVzWd
-	 jwvvBZF3oq/AaujuuOxolpO/8e7uTL3qTbrUEHQ62INpI1ki3xBM31cXldQxK57E/G
-	 984UWc/8MTKhosh//M1EY2b+X8AkZqy1AkQnekSl8wFOL8QAEdU9/7x6zKSJkCMYNv
-	 fqI44YZH9F7avO1RNkOi7EBUhmG8owTBnjK8qWuQMaeRWzFf0sH9DVJrEkZJSx4TYY
-	 WnCaOk69waXoQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3AE1A4891E;
-	Tue, 10 Nov 2026 07:13:55 +0000 (UTC)
-From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Tue, 10 Nov 2026 07:13:55 +0000
-Subject: [PATCH net-next] net: stmmac: dwmac-rk: only read the delays the
- MAC applies
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845E606A879
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:21:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0845E606A879
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-5682eb98dafso1852764b6e.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 23:21:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794295312; x=1794900112;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=BZAybHKPrp5cabZgbPg7Wb9TVLxchkkoh8bos8p+zE4=;
+        b=mJ+q67tjF9lvJyehn/wta6gIj0ZZJ+JlFbJKsVl9c2uiIvqycmOsBOeKkeeowlkuSB
+         Rq1B/CREHeY6i6a4T+7VqseungEbo9xilVPeDYdR/5Yq2gOx22aTGtscpAPy7fsYMNu+
+         A+kAUOS9G0tRmAll+LoQsNgQoH2cJgv0hM4Z6Js05S4B2RJLIKfsmmW2mJquCw9E1M36
+         vtgyn7z0Bf1ysWbatutQ6/buK7+KdzrbtckF6Xx5TQ9tQE4LYm1x1ckkzCJShZhNJ4+9
+         8WPmDTiWH4dFm1lD3NpZh54/XZ/annMODMO29gnnQm72LCR4jr+jr56RSCUkt++izZXO
+         wuag==
+X-Forwarded-Encrypted: i=1; AL+hErFwohYLD++yjx5fxrOjfqVuhU8a+AA2AFFZxNKwTTOY7aVcxY7QfMZ8i5eCuZyZE9nZCtD31vY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8sh8QUC9lJhaOVB398H1BEypYvhKfHr+/THCmSvWJVziIxDa6d
+	twdsdXJQUzJroezNM3upSMg9JNrJEHcEtlmQ7J8ll5wEXRO0WaiioxHf2YuwqRIJ/ILSHB/5F9X
+	J5m4JQsKmzwjYE0qZai6wxdRuoGReFSY8kGJKyPELU3Elg8y3yn3XAn5m0bI=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,141 +58,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSw7CMAwFr1J5jaU4VOVzFcQiJC4YaEBxoK2q3
- r0pbJ40epqZQDkJKxyrCRJ/ReUVC9CmAn9z8coooTBYYxsiMqi565zH0K+bHhj46UbFmpzZ7ne
- Nrf0BivxO3MrwC58gcsbIQ4bz/9HP5c4+r12Y5wWXMDVLhAAAAA==
-X-Change-ID: 20261110-stmmac-dwmac-rk-delays-41a0387624c9
-To: Heiko Stuebner <heiko@sntech.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, netdev@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794294835; l=4046;
- i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=QQNrpXBNV3rRDNQu9MSMqZkKJ0F2a8WJAor/zaH4Dzs=;
- b=/C7vRZ019UGX9xEoKZox6IV8k6tffQB9VzApV8qqosMVT1iLXR/1PDjegWS5Hdu7X7RjjaWaU
- YUuaeZtNgpXD+xcNDzz7bUfPLAHBcBOQ1lGwJhWyMw7CR3dHdeNQqcn
-X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
- pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
-X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
- auth_id=1480
-X-Original-From: Arun Iyengar <aiyengar1990@gmail.com>
-Reply-To: aiyengar1990@gmail.com
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6808:15a6:b0:540:5827:6d8c with SMTP id
+ 5614622812f47-5683cacf790mr1530702b6e.57.1794295311977; Mon, 09 Nov 2026
+ 23:21:51 -0800 (PST)
+Date: Mon, 09 Nov 2026 23:21:51 -0800
+In-Reply-To: <20261106202910.723098-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6af2c60f.5a668245.1aceb6.02ce.GAE@google.com>
+Subject: [syzbot ci] Re: xfrm: fix IPv6 atomic fragment policy handling
+From: syzbot ci <syzbot+ci38d3d40fc327a9e2@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, herbert@gondor.apana.org.au, 
+	idosch@nvidia.com, jeremy.jean@oss.cyber.gouv.fr, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org, 
+	steffen.klassert@secunet.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Arun Iyengar <aiyengar1990@gmail.com>
+syzbot ci has tested the following series
 
-The tx_delay and rx_delay properties are only used for the directions in
-which the MAC inserts the RGMII clock delay itself: both for "rgmii",
-TX for "rgmii-rxid" and RX for "rgmii-txid". For "rgmii-id" (the PHY
-adds both delays, the recommended setup) and for RMII they are ignored
-by rk_gmac_powerup().
+[v3] xfrm: fix IPv6 atomic fragment policy handling
+https://lore.kernel.org/all/20261106202910.723098-2-Jeremy.Jean@oss.cyber.gouv.fr
+* [PATCH net v3 1/2] xfrm: fix IPv6 first-fragment protocol decode
+* [PATCH net v3 2/2] xfrm: fix selector matching for IPv6 atomic fragments
 
-The driver nevertheless parses both properties unconditionally and logs
-an error, plus the default it picks, for each one that is missing. A
-correct device tree using "rgmii-rxid" therefore gets
+and found the following issue:
+WARNING in __xfrm_decode_session
 
-  Can not read property: rx_delay.
-  set rx_delay to 0x10
+Full report is available here:
+https://ci.syzbot.org/series/9d92ff08-0b82-4440-b345-9628353f5181
 
-and one using "rgmii-id" gets the same pair for tx_delay as well, for a
-value that is never programmed.
+***
 
-Only parse the delay values that will actually be used, so the error is
-reserved for device trees that really lack a required delay. Behaviour
-for "rgmii", "rgmii-rxid" and "rgmii-txid" is unchanged.
+WARNING in __xfrm_decode_session
 
-Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
----
-Tested on an Orange Pi 5 (RK3588S, Motorcomm YT8531C on gmac1) with its
-device tree using "rgmii-id": the probe log has "init for RGMII_ID" and
-no "Can not read property" lines any more, the link comes up at
-1000/Full and transfers run at line rate (940 Mbit/s receive, 0 errors).
-The "rgmii", "rgmii-rxid" and "rgmii-txid" paths are unchanged and were
-not re-tested.
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      2d2200551ccc3b9e444aecb59c4b53287e169266
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/fe2ead38-2a3d-497a-9bae-e5da0ee59933/config
 
-This patch was developed with Claude (Anthropic) as a coding assistant:
-it wrote the code and the commit message, and I reviewed and tested it
-as described above.
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 47 ++++++++++++++++----------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+------------[ cut here ]------------
+len > ((int)(~0U >> 1))
+WARNING: ./include/linux/skbuff.h:2856 at __xfrm_decode_session+0xafb/0xed0, CPU#0: syz.0.121/6184
+Modules linked in:
+CPU: 0 UID: 0 PID: 6184 Comm: syz.0.121 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__xfrm_decode_session+0xafb/0xed0
+Code: bf e0 00 00 00 4d 03 3e 4c 89 f8 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 11 03 00 00 45 8b 37 e9 33 fd ff ff e8 c6 c7 30 f7 90 <0f> 0b 90 e9 8c f7 ff ff 44 89 ef 8b 5c 24 20 89 de e8 bf c9 30 f7
+RSP: 0018:ffffc9000e926b60 EFLAGS: 00010283
+RAX: ffffffff8a9849aa RBX: 1ffff92001d24d74 RCX: 0000000000080000
+RDX: ffffc90006ec1000 RSI: 0000000000000c7f RDI: 0000000000000c80
+RBP: ffffc9000e926c90 R08: ffff88816dd8bc00 R09: 0000000000000002
+R10: 000000000000000a R11: 0000000000000002 R12: ffffc9000e926bc0
+R13: 00000000fffffff8 R14: ffff888105f226d8 R15: dffffc0000000000
+FS:  00007fc136da96c0(0000) GS:ffff88818be0d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000002cc0 CR3: 000000017256e000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ icmpv6_route_lookup+0x44a/0x610
+ icmp6_send+0x114c/0x1b50
+ icmpv6_param_prob_reason+0x32/0x50
+ ipv6_frag_rcv+0x927/0x2b40
+ ip6_protocol_deliver_rcu+0xe8c/0x1680
+ ip6_input_finish+0x191/0x370
+ NF_HOOK+0x336/0x3c0
+ ip6_input+0x16a/0x270
+ NF_HOOK+0x336/0x3c0
+ netif_receive_skb+0x278/0xbf0
+ tun_rx_batched+0x1de/0x790
+ tun_get_user+0x2b78/0x4470
+ tun_chr_write_iter+0x113/0x200
+ vfs_write+0x612/0xba0
+ ksys_write+0x150/0x270
+ do_syscall_64+0x166/0x520
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc135f6974e
+Code: 08 0f 85 a5 a8 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 80 00 00 00 00 48 83 ec 08
+RSP: 002b:00007fc136da8fb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fc136da96c0 RCX: 00007fc135f6974e
+RDX: 000000000000004a RSI: 0000200000000700 RDI: 00000000000000c8
+RBP: 00007fc136037f6d R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fc136226038 R14: 00007fc136225fa0 R15: 00007ffcfeaad798
+ </TASK>
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index c4db919ec164..f06428ce3cfc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1331,26 +1331,37 @@ static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
- 			bsp_priv->clock_input = false;
- 	}
- 
--	ret = of_property_read_u32(dev->of_node, "tx_delay", &value);
--	if (ret) {
--		bsp_priv->tx_delay = 0x30;
--		dev_err(dev, "Can not read property: tx_delay.");
--		dev_err(dev, "set tx_delay to 0x%x\n",
--			bsp_priv->tx_delay);
--	} else {
--		dev_info(dev, "TX delay(0x%x).\n", value);
--		bsp_priv->tx_delay = value;
-+	/*
-+	 * The MAC only inserts the delays which neither the PCB nor the PHY
-+	 * provide (see rk_gmac_powerup()), so only the delay values for
-+	 * those directions are needed.
-+	 */
-+	if (bsp_priv->phy_iface == PHY_INTERFACE_MODE_RGMII ||
-+	    bsp_priv->phy_iface == PHY_INTERFACE_MODE_RGMII_RXID) {
-+		ret = of_property_read_u32(dev->of_node, "tx_delay", &value);
-+		if (ret) {
-+			bsp_priv->tx_delay = 0x30;
-+			dev_err(dev, "Can not read property: tx_delay.");
-+			dev_err(dev, "set tx_delay to 0x%x\n",
-+				bsp_priv->tx_delay);
-+		} else {
-+			dev_info(dev, "TX delay(0x%x).\n", value);
-+			bsp_priv->tx_delay = value;
-+		}
- 	}
- 
--	ret = of_property_read_u32(dev->of_node, "rx_delay", &value);
--	if (ret) {
--		bsp_priv->rx_delay = 0x10;
--		dev_err(dev, "Can not read property: rx_delay.");
--		dev_err(dev, "set rx_delay to 0x%x\n",
--			bsp_priv->rx_delay);
--	} else {
--		dev_info(dev, "RX delay(0x%x).\n", value);
--		bsp_priv->rx_delay = value;
-+	if (bsp_priv->phy_iface == PHY_INTERFACE_MODE_RGMII ||
-+	    bsp_priv->phy_iface == PHY_INTERFACE_MODE_RGMII_TXID) {
-+		ret = of_property_read_u32(dev->of_node, "rx_delay", &value);
-+		if (ret) {
-+			bsp_priv->rx_delay = 0x10;
-+			dev_err(dev, "Can not read property: rx_delay.");
-+			dev_err(dev, "set rx_delay to 0x%x\n",
-+				bsp_priv->rx_delay);
-+		} else {
-+			dev_info(dev, "RX delay(0x%x).\n", value);
-+			bsp_priv->rx_delay = value;
-+		}
- 	}
- 
- 	bsp_priv->grf = syscon_regmap_lookup_by_phandle(dev->of_node,
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
 ---
-base-commit: d26955e57475434b59d43ba372b2a50d33d5e0ed
-change-id: 20261110-stmmac-dwmac-rk-delays-41a0387624c9
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-Best regards,
---  
-Arun Iyengar <aiyengar1990@gmail.com>
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
