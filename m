@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279324;
-	b=HI/A60cQ3S7ZjwlKa4nQSfVnWHJ4lLq4DcLyJl/vV6MpMCzk0Qf+2pW3BOaxte+qrTKG
-	 8crMFRMERhM6PRhkz5h9M+QnpY/1jIHJbt2/F0qALzVP5zwwhd36nMwbbOd6LUjCZhWL6
-	 YikKzDz87RNIwz5ehAwnF3dUahTILY+5mAqns26aKfMaytcqfzvDpR2wGsPagC2jKoi6e
-	 GvXKUJv36PcBmlwHovqO4y1hdTQJZBDUCEt5+CKVV0uz04gJ6QFXK60tO0Fal/N0DAPTq
-	 CcbsW9DQpA/xKcftyPji/M1Bk3KfTfKxU2Bv85L9QaOK1Axd5CMLr80LaLKUl82gY7A==
+	t=1794279328;
+	b=lYGzLR2LrwEErfhLUOn7a3W6NJReF0Soq5fzUhLd2sawdz7mg5b2ZbK0aaK/szcc7nk0
+	 rRjI7xehcVthyfHd6qpAZ9OdnT0e17kBzGTAZ1b2/evWBvNyyCguNRRakvYUb/3o/1UoZ
+	 HgZOmBYEfbW2kBm/rZA/VpFdPhYKUq1EHvmfkO27bZOKvnfzkLNrBoBkYZ/1BOJzZq3vc
+	 Z6iVLaXAjMKv2Ml0LotREi0Nasnuyk+ypVsjSDx9QM3fvsz3ft+g6zG4v7s0JmE2STHui
+	 9op1a5AzEorcqfDXYkMP5aVB5zsvpGHB1ZgrCebNeEEyJui6xj1rSvnHBxfLDDcT4lQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279324;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279328;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=846j6wL4j7UvBVjd/28Rgk3idfp9HTNpB1bpeGDTWng=;
-	b=A3OdPLnpln20B4ao3vcw2TYd6tAZBFw0ix6ctfgk6s/hdg/Y+OAFVSE0Q10m2KRAN2DL
-	 9ErOX7rUHDQ9u+CBkWDn6c5x4J6rvWO7Ppxlk4EetNKjDt4WrVkNbxoeGSDbMl020pM21
-	 HlJkJcQ6NnZHr+NEBLy5InQKtjPhOr9RL6eTlZp143TD4PD/j1vYCAuleO6jV3kxihYSt
-	 ztMF4mdboUwL7SajvH5+gBNi+FNksy1M4/Y3aPpsuJ/6yiyBYiolVYFZMm64NdbyxeldJ
-	 jqa40LSJDHfr5USZczBaNu16CPAzM2R9Xk86kaLb0fSXb2zb+PH0NEeKPsIsqArs2+w==
+	bh=kprKI/iewFMsq7EdzWuPp4wdFl9lcoIKYhiJgSZ8Ryo=;
+	b=rlll6ENsmlPUom7bQ9O2xiLN7/UNPxTcgZST+JU7WDSyDe5ejYl1ld/BVDp+/OpL5Irk
+	 x4DmNMhjkBpfdzXE8WpvNI2WHkP7L8qDvsNjrEtBO7dxXg0F9B1AyFWPTmtofEAaZ7ASg
+	 M/EIdEOJDCfg/WymvTuxm9E6aSek+PasYU5rxtgnz9tBQDGl+QrqoqZyleyfsYpEtycLW
+	 BswzsVqM5sPVLFbG9XInL27jc0cEgmfYu9cKmlUDGcIdScavnAsR7dKQINWzCotH14elo
+	 W3VEQa2HY7Z9o7/ZPpZuJ5apcX4dNu/2SXtp4W7lX1kfEmOtqRwHwNUxTAXAp0pWDgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehcs4YFY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eDoXRV5w;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B20606C6D1;
-	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDDE606D138;
+	Tue, 10 Nov 2026 02:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehcs4YFY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CB01F0089F;
-	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eDoXRV5w
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664781F008A4;
+	Tue, 10 Nov 2026 02:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279323;
-	bh=846j6wL4j7UvBVjd/28Rgk3idfp9HTNpB1bpeGDTWng=;
+	s=k20260515; t=1794279327;
+	bh=kprKI/iewFMsq7EdzWuPp4wdFl9lcoIKYhiJgSZ8Ryo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ehcs4YFYbwPN7lGLVw4nRjvIKzJuMs+nJVBbZ1HEETYCKz/yDxekLyx6XlE9VlOLf
-	 wvrIcIDJar03NkNF/fodXcYM7k2s7pwf6FIOSJpMCuobp2X6bXinJN5bRRobAs9Grd
-	 ZbLPf/IhI5mDCwJVorNzJsDH/y+jxlJdzijcltclEGiTcBNOYgNVaMeXQqqZvBD9eH
-	 YsC46xgN1/RBkWC4hVTZxZZiKbLYah9KyAR14TCKORXAOi60s0CI2EmVuSLAV6GnRN
-	 ynPzdbWHddR+LuwVEp/zz/xdBN8/x1SJcwEz62ubIbGf3GTwPlAdTeOUJ/Zyts/mTo
-	 oZx7Fr/I9dyKw==
+	b=eDoXRV5wcKLMo+lJKc2Bsh4Jqx5TdBsLawfFCB8pWrV84gXqAZ9dxCWT+RiK/H77j
+	 U2hFuSdLR7NAE0fooUh21X3tZAUcF8ENHXNqMF0Na9KEO7mjy5JShYPgE5/BjiEJlS
+	 VMDNaBRDIJT4awjlkzllo8HEXjRfD4Yc5EWPdC2zk4ghhAZiTDlLqzB7t3MHQrur9l
+	 Q3jsrIr9wAj+7M2dr5hoPkpkXMqwlr56C7/AhXqpneamMXcobhyLHrPKzhjTSUk2vo
+	 8gxTTISmfLlqKcSdNa+dCcuySiJagfrRG/BXydWDoIK1euEgUvTkjMe4soguiRIqf4
+	 sdIA10IyzKWzw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E221391AFCB;
-	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5DEC4391AFCB;
+	Tue, 10 Nov 2026 02:55:27 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] netdevsim: fix NULL deref in port attrs after unbind
+Subject: Re: [PATCH net] net: qualcomm: rmnet: bound TX aggregates on
+ byte-limit
+ update
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427932199.3612825.4107115664399893985.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:21 +0000
-References: <tencent_C7E2CBFD5E5A8E8541FEA08915F742EC6405@qq.com>
-In-Reply-To: <tencent_C7E2CBFD5E5A8E8541FEA08915F742EC6405@qq.com>
-To: Shuai Liu <847807867@qq.com>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+b3fca27eb4005f0111f4@syzkaller.appspotmail.com
+ <179427932613.3612825.2429027352189229779.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:26 +0000
+References: <20261031221052.1642262-2-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20261031221052.1642262-2-Jeremy.Jean@oss.cyber.gouv.fr>
+To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+ sean.tranchetti@oss.qualcomm.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat,  7 Nov 2026 17:20:09 +0800 you wrote:
-> The new_port and del_port device attributes call nsim_drv_port_add() and
-> nsim_drv_port_del(), which fetch the driver private data with
-> dev_get_drvdata().  If the device has been unbound from the driver, that
-> private data is NULL and priv_to_devlink() turns it into a bogus pointer,
-> so a write to either attribute faults in devl_lock():
+On Sat, 31 Oct 2026 22:10:52 +0000 you wrote:
+> If userspace reduces the TX aggregation byte limit while a buffered skb
+> is pending, subtracting the skb length from the new limit underflows.
+> The later comparison with unsigned skb->len then lets the buffered skb
+> grow past the limit.
 > 
->   BUG: unable to handle page fault for address: fffffffffffffeb0
->   RIP: 0010:__lock_acquire
->   Call Trace:
->    ...
->    nsim_drv_port_add
->    new_port_store
+> Check lengths before subtracting. Flush a buffered skb if it is already
+> at or above the new byte limit.
 > 
 > [...]
 
 Here is the summary with links:
-  - netdevsim: fix NULL deref in port attrs after unbind
-    https://git.kernel.org/netdev/net-next/c/98aaf4da98d2
+  - [net] net: qualcomm: rmnet: bound TX aggregates on byte-limit update
+    https://git.kernel.org/netdev/net-next/c/7bcccc40cdb5
 
 You are awesome, thank you!
 -- 
