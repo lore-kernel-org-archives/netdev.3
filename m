@@ -1,106 +1,143 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794313549;
-	b=v9uCAI3ndEi060w1LvG31iXvBkDriPvhA1bHkNKt9GndPPILLLVWjsgTmlBKfcqZFN4v
-	 YJv5S0JOesgoOb5ndWaSGXLZZo1Y4IAaAl24Ll3oKJzSOhVEsJNOv76qTwSvkCCQ94Hg0
-	 FjI1/SEwGYr6gdpDBjByoVaEGkTksS4zCpm+j8pBO/ufiWiff5D5Z/biSMMLUIL3kIZ56
-	 oa5tF4A4OkPIxZp+Qm5W/6us0icaPv/VQxjVPmLTNLYVxSUKv98fyGtBbpn7ePVi7zrgU
-	 9iOk30OKdXocEaxlx3utBds9Ig1mRtHBOpgyjHyKvTfO4VARHUrjzh2Y54WJQ6csBDA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794313549;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=2z9Dq46PGzc1DYcTmA3bznslu78oudIXu01vR14qyUQ=;
-	b=myiR14+vkCjihrBBRFfgzJ20kju9ijVk7m+d2DqpJkl9tbvKKRdYtTLOgFNyQbJkkcfl
-	 xC0gQgbbs/1UAupUw8adXaN/tUs+6Yu/bcN+8fy1y3u7IQ88IKd860gUjBrXOvHgMWQd5
-	 XXSDlIA647wAits8KIqJpdEujy8WZT2+8vuV9IaIhtstDD64y+/uNZO0two5bkgGbv0TS
-	 A0gmbXbRJHtuBBhXGlyTPcs0Uu5QFAJbjrrec4nBgXA9fzqZ0A2iLBI4ZTfF3ZCirXN3R
-	 VAPrAga4PTQ8QZMFs62sglEMjLCWXUhTqLFS7Lutg16b/fn6I1eMMXaEliNv/YK3+Gg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hIBLyuSZ;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AfeKsHM6;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.154.28
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794313679;
+	b=pFaMa9bLHr7mM6ZcSr+0x/5SVSkoVcE9HhzPHqF85ftVRQhZjdfzpF3vFnIAfvJ8VSZv
+	 0wmKrsLbktJxd3J1PY4dqcjl3JeiLTrAf2sH12kT2MFzUqCJwTlHvIdxy9trcB3ljhdkV
+	 Hv2hcpC68OZAH2zf32GfVw7W+4WtbRHsDdNzyPBsY31IffFBD462D6r/2yz+RNy73ODsc
+	 S4BvHX0OIHiHFFI1M9qtVRVDUNGuZIlmwSArkrImgDw4CW7cQsQsH7JbT6EU0km8k59qD
+	 QZNPQm3dvVoOIysUjs9Hk5CHEwR3R/qaOGtYtLozMCb8XaNNemGAAeuYZVhOvGUyG6g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794313679;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:DKIM-Signature:
+	 Received:Received:X-MS-Exchange-Authentication-Results:Received-SPF:
+	 Received:Received:Received:Received:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=3FW3G3PY4N3YfUx1w1EJ2qYk2m4FbbpKN/Afe0zbJ1k=;
+	b=1ea81a2Ogni3zhtjAIGwC/PIvGBv4vh9Y1Qb/r8ckPcChToyfBUGi+ss9wckWb6FlqSA
+	 ZsT77ONEKZisI4H5ydrlC3GRIcS279U7+m1mDArgMD02RVogI9sDwd7hpd5YO8r7C5llm
+	 ACRlguz8m7GBRWckDM3LxAPjgXmKq5XikXwnPfSdknVhQkRLfIMY9hZRy5t8PvdY9X0xt
+	 iQzeUH4CvogVblK/lwAQ5yvcFTnecN4sTcAkURG2apeD0q7u1oW0NQXoLR6Bw3dhAVOfp
+	 kLH9AFaCMKRplA8o/jexgqJkzQmvV/Qjpeon49dPneB/pCq/iT5BpvquB5VFzB4TOVA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ti.com;
+	spf=pass smtp.mailfrom=ti.com;
+	dkim=pass header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=foaaiYTI;
+	dkim=pass header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=JSTnVCV1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.154.28
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5590F606A337
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:25:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5590F606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C9D606A330;
+	Tue, 10 Nov 2026 12:27:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63C9D606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hIBLyuSZ;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AfeKsHM6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794313548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2z9Dq46PGzc1DYcTmA3bznslu78oudIXu01vR14qyUQ=;
-	b=hIBLyuSZmBPf+Pv0AGd16NxIq9NSp5f9bxJSyqqxB7dF5aqZvBOI7MyQ0LugBpBe7KQdrE
-	KtBWoeRukKyIMEdFYMCzUL3S4EeeQgSYh6Snr56D2XTjZLSPyVChQ4RfYKZyFNAclX9+5x
-	Z5peaTxvr4U5iv0DXtohphJhUBq21i0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-J-C-lUMOMAK8qAmgNe97bg-1; Tue, 10 Nov 2026 07:25:46 -0500
-X-MC-Unique: J-C-lUMOMAK8qAmgNe97bg-1
-X-Mimecast-MFC-AGG-ID: J-C-lUMOMAK8qAmgNe97bg_1794313546
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48fbcf023dcso1189841f8f.2
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:25:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=foaaiYTI;
+	dkim=pass (1024-bit key, unprotected) header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=JSTnVCV1
+Received: from pps.filterd (m0374956.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAB9t1t1180694;
+	Tue, 10 Nov 2026 06:27:32 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=proofpoint-05-2026; bh=3FW3G3PY4N3Yf
+	Ux1w1EJ2qYk2m4FbbpKN/Afe0zbJ1k=; b=foaaiYTIK1LZ3Qsavzd2UdxxuOC7C
+	bGLbrtW8eFDQ+t2Xz1R85qZraK+3rHcP4jRB1lowNUlxoK3lAkyqvRVYDyEM2sL9
+	cWYHBmY4Q6UBHqle6Qt3U+Mxx4sE5QXX+GOfdEwuLFl3+sHy8+DmrmngoOGRKGkD
+	1EjbzA1lE2SwUF7g3/L7gbV8uVqQE12fEtMNQdwnAvQSitIqpZaX+4rMarz/3j0c
+	yKT3Ytqzn60NQ+PsCSsCK31p53uv7ECEKBbjaYeWBekkP0O3jU1+TOExkLa2wj8Z
+	fzlahSK6fCWYrWQwoy1USoUUmIykDR39NVRHOQNYEUJyq4mzpwWCrmMHg==
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012023.outbound.protection.outlook.com [52.101.48.23])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4hv0ksrrsv-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 06:27:31 -0600 (CST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i5sj9oG+PscNB7ajZbAn0vQWaqdfu7vRRjfQJKDyBaykOVvKAZ4VUgd+oNqMrFdMoyTMtCilvmS7OakMBEkFxqWl8aFxjaR4TwciQHNk2vUntMsSo1KgjCfWRoRYqxbtR5rm84cL3MHAY8y9valF/ZgDd+V3REVo5CV2EXLtk5zGRPsYVjA+1kbm94VcyVcfAO6kEsdqRxt4AAxEiWVXxRVCmNRWwCwjJncc5Vv+npbaUUCwHo4DqpsVC+OQaIYsSO1DsLecYIo+aovolkVkrFQhRn77NYsrny1EU4Xt5jbu6XzWsa4WAFjiW5vZi+E/hV4C/DOprBXSIEO4cHba3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3FW3G3PY4N3YfUx1w1EJ2qYk2m4FbbpKN/Afe0zbJ1k=;
+ b=jbX/bX8q78coix7KvmrO9eHlHZOOAldnrS9vTm6V01MUWam642UR0TrOFk86v+hsxwYVA4GJbclbr03820baFz5olwFXw/G7iY0WARWjfEmYLaJgYFIO2px0jZbvZIx9AfvmXaKPH0kddt7P4TWX25V/hRnWF2h+vi92K3BQnGdaUn60PXeGrvjqjUbFZ2OExvK9QOCQ6O9z9Zib1IFIibfJUrwcnXIayWR0dGQ1dvyR7bM18pttd2t4TULhZ+YbQdexat9BqTpfu12kScW/FSBY9j2bANa5px1ap4UcIQFnx5606LsDLnfhzbpOk02DWlo8Jb2T2aBZ+xxS8/EpsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.195) smtp.rcpttodomain=siemens.com smtp.mailfrom=ti.com; dmarc=pass
+ (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
+ (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794313545; x=1794918345; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2z9Dq46PGzc1DYcTmA3bznslu78oudIXu01vR14qyUQ=;
-        b=AfeKsHM6C8MWJB45WMqPOmdAOipH1qlYxyu7+E3KKQXo8Wm7dSwjUfdntfy8cvUDaS
-         bYIHd1LV6S2glpKy8TpYZJmUOfyHCv/HCfDc/RocUXtyTP91ZRqaAEVZuXBose98x8cD
-         LCywM8hz0dOjX4qQJv3Lur07xIkvxMSzFNq+sBPS0645NZ4jSdQyu6UhqerhZFf9vUKo
-         lV75BZjMvtX0se34MTeSbmeEmqODKkHAbsS4Hywwo+S2PmU6MqekKqn4yYbaJOEvCGqG
-         7wk4Ee79ez8h+oaUfRuejOftkwdBtBBDb5TCkqoLXUVt3Y7m9D6UWpItVSG40LKWn3Yq
-         EByw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794313545; x=1794918345;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2z9Dq46PGzc1DYcTmA3bznslu78oudIXu01vR14qyUQ=;
-        b=lza/CmDg2NTh9zPJcUdaBt26cEh6sQG8qGOSBtncM5DEmb9Q8VINVLJeMr839TPc8i
-         fLR7Y52ATgKhwJTTJlu013EoZqNrKrMcj02/ln8UWbsklQO6FOT8t8TOTyqgoNh1VTBX
-         aO1kWle047dihVe9uNl26XsvrWwncRAf4wCuGh2/RlF9wfrkbsgtEoWQU9941fccAqMN
-         JMo2RGK+0+UwHKlwiIohAoKG64yIxDTZXmLiQU0QH/QmPt5lkeDGdKBVJJDVo51DDRui
-         ELG//j6a7U0LlS8hHmPiDCG63xgKS+Uw8w19EFehrD+VYNmRWkCPsAcnmezDLyzoGjwW
-         qF8Q==
-X-Forwarded-Encrypted: i=1; AL+hErGPJI0uirQRYP+Hr6lEVGIMxyFXnlSuccztJtktNrSxaOU3yFxZP20RU5hFaBbQBN46ZdCZ2bY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/VuIsiuLWKScsJahJBKHmx0bIH/Ogp/JXc46sdJNbLUU5dhrph
-	jnkIr0xvcfRR97u6KI8Vv6N+INeGgkrhn3yun3RAZFpHMa1zg30S4KmpOyV8mQTmANi65oQj+eD
-	2Uof8vE0GjSt006X/oVQWrksQkapJkWe2JHM7Qk5nfo7QxZKt7bALI2dqyg==
-X-Gm-Gg: AYBFou24BmnyCyxL3OHzcbwxhGx48pvy5CSr7I3jdjtKmZyF9tC7Gfv96vni4sBCXJ0
-	Z+NdBmA66ahN9WyvJSQY4TQfaYobmatKBQbHIUA2sMmi5yztSJGEUaGn2XiNA9/gPAxGYLr01z7
-	H3jfPPQOib2D5lKNhwJ0MjU2Dyb8ti1wPrnO7JKoMSwYM7hT4FaLPNNZjTtDyG5QRnsWSBw/Poz
-	twTbGZ/pdoPsHN4om8OMFY4bkknS/cbQufu+812XJ9ajTkTqsPpN8wV2iK3nbLkSKFhjbm2JT2D
-	P9SfIZtfazmfCKcvK9zw+n+OvtAIINQH9bAyGfvoi+FvgGPwip+BRTROdVQWkk4KPNd0520GjCz
-	7vfn634Y8gzal/L4FsC4kZIIqM8j9TFhOCkk=
-X-Received: by 2002:a05:6000:29d2:b0:498:88f:14c8 with SMTP id ffacd0b85a97d-4982fb52546mr2653556f8f.9.1794313545486;
-        Tue, 10 Nov 2026 04:25:45 -0800 (PST)
-X-Received: by 2002:a05:6000:29d2:b0:498:88f:14c8 with SMTP id ffacd0b85a97d-4982fb52546mr2653511f8f.9.1794313545005;
-        Tue, 10 Nov 2026 04:25:45 -0800 (PST)
-Received: from [10.43.3.161] ([213.175.37.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4989a2a505asm3264342f8f.13.2026.11.10.04.25.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 04:25:43 -0800 (PST)
-Message-ID: <f73146cb-fcbb-4263-90d9-b5378faf30f7@redhat.com>
-Date: Tue, 10 Nov 2026 13:25:41 +0100
+ d=ticloud.onmicrosoft.com; s=selector1-ticloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3FW3G3PY4N3YfUx1w1EJ2qYk2m4FbbpKN/Afe0zbJ1k=;
+ b=JSTnVCV1cheyqlwGWJyLxp5V3H5mXRsHIy/7DMLLzLFNHzoLTYC3jcQhi+8Fjm5426N6OSZa6+JFQzY2YTVn0vAnBMt39xXwD70ZYw8zz/TvCG1DlfEyo1GpBPfkeYfyWbNG3xoWjW0EzoirFOLiPWXFv6+aELfEgub63TY4UaI=
+Received: from CH0PR08CA0013.namprd08.prod.outlook.com (2603:10b6:610:33::18)
+ by IA6PR10MB997681.namprd10.prod.outlook.com (2603:10b6:208:5e3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 12:27:28 +0000
+Received: from BN2PEPF000055DF.namprd21.prod.outlook.com
+ (2603:10b6:610:33:cafe::7) by CH0PR08CA0013.outlook.office365.com
+ (2603:10b6:610:33::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Tue, 10
+ Nov 2026 12:27:28 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 198.47.21.195) smtp.mailfrom=ti.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ BN2PEPF000055DF.mail.protection.outlook.com (10.167.245.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.0 via Frontend Transport; Tue, 10 Nov 2026 12:27:27 +0000
+Received: from DFLE205.ent.ti.com (10.64.6.63) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 10 Nov
+ 2026 06:27:05 -0600
+Received: from DFLE206.ent.ti.com (10.64.6.64) by DFLE205.ent.ti.com
+ (10.64.6.63) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 10 Nov
+ 2026 06:27:05 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE206.ent.ti.com
+ (10.64.6.64) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Tue, 10 Nov 2026 06:27:05 -0600
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6AACR5AV1788044;
+	Tue, 10 Nov 2026 06:27:05 -0600
+Received: from localhost (meghana.dhcp.ti.com [172.24.231.93] (may be forged))
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 6AACR3fW003275;
+	Tue, 10 Nov 2026 06:27:04 -0600
+From: Meghana Malladi <m-malladi@ti.com>
+To: <diogo.ivo@siemens.com>, <philippe.schenker@impulsing.ch>,
+        <haokexin@gmail.com>, <devnexen@gmail.com>, <horms@kernel.org>,
+        <jacob.e.keller@intel.com>, <m-malladi@ti.com>, <pabeni@redhat.com>,
+        <kuba@kernel.org>, <edumazet@kernel.org>, <davem@davemloft.net>,
+        <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>, <danishanwar@ti.com>
+Subject: [PATCH net v3 0/3] Fix switch mode for offload and non-offload cases
+Date: Tue, 10 Nov 2026 17:56:58 +0530
+Message-ID: <20261110122700.1849634-1-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,125 +147,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 10/10] dpll: document locking rules
-Content-Language: en-US
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Min Li <min.li@microchip.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- Grzegorz Nitka <grzegorz.nitka@intel.com>,
- Karol Kolacinski <karol.kolacinski@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-References: <20261106121005.1327603-1-ivecera@redhat.com>
- <20261106121005.1327603-11-ivecera@redhat.com>
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20261106121005.1327603-11-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|IA6PR10MB997681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 382e2caa-20b6-4fd6-9f08-08df3f25fb4b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|376014|7416014|56012099006|921020|18002099003|10067099003|261009223027099003|261102123227099003|261026140227099003|261021135927099003|261021123027099003|261021121427099003|261022105027099003|261022075727099003|261028144727099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	ttRjIVuhw/flywBmEMTgh+Z0pjHpWGKzvVwUPDJuDtsattNENgidrSq//JOn+lA8Xzj1HSVWozM+D3jfTqA4uQS+dPI4qh7uEFLtdfFp+A9hqNDC47DGnPnmAjASni2z0cd1spMJhYZrLtAcz7yyaaeWNha6u6Z7y7gMWSzbNEY+pAmPatGe+rnC0kXuhTDM2hvYQmhkXycp3Hs7tJFwuj4JlPzTd1mO2OH8pQOJjoJ1GJzs5HbILLudDWD+8jvDWx1pUIICyZlLFBAnSFg5Q2O5uQv7olPCWY5R2IksV/B9VaRmuE+dcBAwtC4bTIvwjMEssPbn+j+Y5UB+iuQA5jrRj3sDPzOPxlagKgzx/RBcOHh+BY2A194JHYPPt4yIm6K/LN+9u0kyBAaH0RzCC1JNRUIFdbgngiLkrmK1/ef7nYdV83iw6vwRrYO4wgKISIqh2PZNwbC4xhSydlJLoXevLw3B/Y/XRHKpMrBN0TEfgnk5qPDnYatuEN5OCFSIyuz0KOm5BnZbhRJ4pQjbd/tJs4biuKxVV0UckRDmMdOd3UnO41M3O1ZXHgJ9Nb9N4q9107mln+zMod5ZvrNLcuEZD9FIz0U2XneaG0ZZCZjSUH9pcZbG2daGBQi85GxBVvx7U+xAq4+Hpz5kaCk9cdviKN8QCF4P3fnmx1HMUsJp81CuMu6LOTZsoZy6ZnuNBUCDmE8G2471Damcd+Mlhw==
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(7416014)(56012099006)(921020)(18002099003)(10067099003)(261009223027099003)(261102123227099003)(261026140227099003)(261021135927099003)(261021123027099003)(261021121427099003)(261022105027099003)(261022075727099003)(261028144727099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	eiMzUKRCZz9MEu+Hqd0Df/0IFFiWL9J23qzPxUBEiYmmenZvOSrSIXpxRuGnl39SKxpTegDv9ikzvC5OA5JgXiGu/hQWvpHH6o2+3iRT6tr91PSpaqh1Q19btIjyjlnHg8sRwy7vBZRRSfGR7wWKm3TxBYFzKpa8yRbVsnlrg4NyUP8Z1CGY+U3NuoAF3fECsVNNf+BPeFIaoT1bfS88OnzoO/UzNn66MvWiVE01eogf5Ss1peVhUhx9iw7GKcwxs+FX14xxSko1XvnqvGmQvGpq/gqP24+u1fTDBAm4S3vFxoTa5uFcWDvLZNHI6AtUDey8+DZBWwXQxxmzA5A10bmhxgfggVFqUZ239NtdawT34CXQ2lq57VhF9ROFL7MdjN1Lmq0uIx7iHI+m4J//WBRra9FvwE1OCrUhDiC0ZpWUhpEVrP6I+3OnaYgnJjws
+X-Exchange-RoutingPolicyChecked:
+	L3wY6fz6S5OFASPxm9S6gRixaC8pgEWM/+JcvVrkzbQRQhRB9Crqgb8p5vqYGssNVaPVBgjNA3DX2B+RcMViHAY4oi62JXUECQwEtSETrGW/IaowDiZnhLfzv589Ah/RJeLBeImLhWHE+JPF4y+v95So1A27ZLhvUiaFFShwpWmfi+BSe8Su2vnwaKZfWZAxVbR27f0o9zcMNE2tbNoXoaJy3Aw4O5AudUaa/U5+HZd/b8Egm8hZoe5znBeG9h+LARTkhHWoahWtdVWzWI3WhswvqeK/bGWJpLDD+s36Um/PEu4JlISOi9We43XvkD5jbWg6BBsg6MxVv0L/mmijQQ==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 12:27:27.1121
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 382e2caa-20b6-4fd6-9f08-08df3f25fb4b
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DF.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR10MB997681
+X-Proofpoint-ORIG-GUID: YVCFvBzkTeUivlMQpl9-Ymp4fSZbmKwn
+X-Authority-Analysis: v=2.4 cv=bcH+w+PB c=1 sm=1 tr=0 ts=6af30db3 cx=c_pps
+ a=WV97qI32orZZISq0e28SMA==:117 a=tJyPKKxUohctrY4NYmUjkA==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=zJRp6_cAMcgA:10 a=AlMIdn_sM9wA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=jwouBfj2j3NM8CExmVVE:22
+ a=VwQbUJbxAAAA:8 a=sozttTNsAAAA:8 a=lO2JvOloaZY23zWVXcUA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDA0OSBTYWx0ZWRfX02WCvm/KbCQ9
+ Yqh4UHmdFeKP+EjOYXU+J4/emJu4GTB7JExO+kl1Kg/rbKyC+CLzw4nU5InHw/RV3tUGKiMO4jl
+ BmxU8SF7xq8lAebpvL8qwdfz8En/gFyFly1HAvDSmREMvTCrnM/OliOIAF3Rtf73s9A+M5Pu1+b
+ 4tpW8QG729sTNFDePj8z5piqVHRtM6HNmq9KhyZoLLgZOm08Nibp81is+mZl7DN3UtvNGbNNqKU
+ Is73hqNO4eAOH9GnK+ZfozS3I5aVdyG9UjvWWniDj2i/+3P1qXJ6SnSJvwFRLvEMmdEL3tk3qI+
+ X20CWwwofqvcHB5WXjvgzqZ7nIVi3TNeCa5bVLG5hDxkIvcZQdx4KCje1UV/fVrug9oVOwiz0uU
+ bX4SNfrjS/blhnus+LmS8lMYhrhp+WrTvWfamotFSimJgc9/mOnV4pZJLYCjp16gYgW8YF0D5Fh
+ Lp49RvPUx8ubxvL2DKQ==
+X-Proofpoint-GUID: YVCFvBzkTeUivlMQpl9-Ymp4fSZbmKwn
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDA0OSBTYWx0ZWRfX/G0iysZ6UtfT
+ 9QSRiTTstn4z2iGeROL//krQWcC0uCjS1iTl8GRSioPHDKVaWyAbpNwkvCQXIG/olwmgpB3JOwL
+ X4C4eFIi95hA+RqlIsQpHPzMDfde37Q=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_04,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100049
+
+Non-offloaded switch mode is failing to forward packets. This patch series
+introduces fixes to ensure smooth operation of switch mode in both offload
+and non-offload cases.
+
+patch(1/3): Fix TX timestamp cleanup crash (ERR_PTR slot handling)
+patch(2/3): Fix phylib stop/start in emac_restart (R30 command race)
+patch(3/3): Fix bridge port_vlan and flooding state (multicast/unicast forwarding)
+
+v2: https://lore.kernel.org/all/20261027131732.3411403-1-m-malladi@ti.com/
+
+Meghana Malladi (3):
+  net: ti: icssg-prueth: Fix TX timestamp cleanup crash
+  net: ti: icssg-prueth: Fix phylib stop/start in emac_restart
+  net: ti: icssg-prueth: Fix bridge port_vlan and flooding state
+
+ drivers/net/ethernet/ti/icssg/icssg_common.c |  9 ++--
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 46 ++++++++++++++++++--
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h |  4 ++
+ 3 files changed, 52 insertions(+), 7 deletions(-)
 
 
-
-On 11/6/26 1:10 PM, Ivan Vecera wrote:
-> Describe the lock levels of the subsystem, which domain a callback runs
-> under and the rules device drivers have to follow.
-> 
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   Documentation/driver-api/dpll.rst | 44 +++++++++++++++++++++++++++++++
->   drivers/dpll/dpll_core.c          |  9 +++++++
->   2 files changed, 53 insertions(+)
-> 
-> diff --git a/Documentation/driver-api/dpll.rst b/Documentation/driver-api/dpll.rst
-> index 7c117ae37cc1bc..40d5037ff3bb0f 100644
-> --- a/Documentation/driver-api/dpll.rst
-> +++ b/Documentation/driver-api/dpll.rst
-> @@ -675,6 +675,50 @@ In the error path we have to rewind every allocation in the reverse order:
->   
->   More complex example can be found in Intel's ICE driver or nVidia's mlx5 driver.
->   
-> +Locking
-> +=======
-> +
-> +The subsystem uses two levels of locks, always taken in this order:
-> +
-> +- ``dpll_lock`` protects the topology of dpll devices and pins and their
-> +  lifetime. Functions changing the topology, for example dpll_pin_register(),
-> +  take it for write and send the create and delete notifications under it.
-> +  Netlink requests, each part of a dump and change notifications take it for
-> +  read for their whole duration.
-> +- A domain lock serializes driver callbacks. All dpll devices and pins created
-> +  with the same module and ``clock_id`` belong to one domain, in practice to
-> +  one chip or card.
-> +
-> +A netlink request addressing a device or a pin by its ID holds the domain lock
-> +of that object from start to end. A notification holds it while its message is
-> +built and sent, so messages of one object are sent in the order they were
-> +built. Only one domain lock is held at a time, so domains have no lock order,
-> +and callbacks of different domains can run concurrently.
-> +
-> +Callbacks of a dpll device run under the domain of the device. Callbacks of a
-> +pin run under the domain of the pin, whichever driver registered them:
-> +
-> +- A driver registering a pin of another driver with its dpll device has these
-> +  callbacks serialized with the driver that created the pin, not with the other
-> +  callbacks of its device, so it has to protect the state they share by itself.
-> +  A callback stuck in such a registration stops the domain of the pin.
-> +- The parent pin of a pin registered with dpll_pin_on_pin_register() and its
-> +  dpll devices can belong to another driver, so the callback must not
-> +  dereference their private data.
-> +- The frequency monitor belongs to the dpll device, so only callbacks of a pin
-> +  of the same domain registered with dpll_pin_register() can include
-> +  ``.measured_freq_get``.
-> +
-> +Device drivers have to follow these rules:
-> +
-> +- A callback must not call dpll_device_change_ntf(), dpll_pin_change_ntf() or
-> +  any function changing the topology.
-> +- A callback notifies about objects of the domain it runs under with
-> +  __dpll_device_change_ntf() or __dpll_pin_change_ntf(). Other objects have to
-> +  be notified from a context that holds no domain lock, for example a work item.
-> +- A driver must not call dpll_device_change_ntf(), dpll_pin_change_ntf() or any
-> +  function changing the topology while holding a lock that its callbacks take.
-> +
->   SyncE enablement
->   ================
->   For SyncE enablement it is required to allow control over dpll device
-> diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-> index 84377f8ba16036..6ad40fb9eee855 100644
-> --- a/drivers/dpll/dpll_core.c
-> +++ b/drivers/dpll/dpll_core.c
-> @@ -932,6 +932,10 @@ __dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
->    * @ops: ops for a dpll pin ops
->    * @priv: pointer to private information of owner
->    *
-> + * The callbacks run under the domain of @pin. If @pin belongs to another domain
-> + * than @dpll, they are not serialized with the callbacks of @dpll and @ops must
-> + * not include .measured_freq_get.
-> + *
->    * Context: Acquires dpll_lock and domain locks
->    * Return:
->    * * 0 on success
-> @@ -1049,6 +1053,11 @@ EXPORT_SYMBOL_GPL(dpll_pin_unregister);
->    * Register a pin with a parent pin, create references between them and
->    * between newly registered pin and dplls connected with a parent pin.
->    *
-> + * The callbacks run under the domain of @pin. The parent pin and its dplls can
-> + * belong to another driver, so @ops must not dereference their private data.
-> + * The frequency monitor belongs to a dpll, so @ops must not include
-> + * .measured_freq_get.
-> + *
->    * Context: Acquires dpll_lock and domain locks
->    * Return:
->    * * 0 on success
-Reviewed-by: Petr Oros <poros@redhat.com>
+base-commit: af6f95c3300e3d234c813b80f831dd7b80b3eaf2
+-- 
+2.43.0
 
