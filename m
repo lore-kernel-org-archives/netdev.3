@@ -1,101 +1,138 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794323472;
-	b=DrYGSaTenWXt3id4BfDFKyGExFD6wlYxqP4gALhdHaL0rec05RqUCMHeg+Xd/M2g1mp4
-	 DlxW7eTLEY3IjBmQd2r/Zfgo1Adr7h2Bna//u+ifQcx09zcXSHqz+gRrD5A/JAM6qDbVw
-	 KBEexba0EktTuqwH2QquF0euNGoOmd5cD/eeAQOBT2+rLn8yiwzFbQEplYTA/gNXUyKOF
-	 1IrwUIWH/DoJTaEPwPOJ/EFflxgHdZ5D5rnciUHevKzSWNlk9gNxk96b/6+lu9kN+EEVl
-	 Y7NWAkrmwPR0ZB3C84qKh56uv1RYFHw+o8ze+Ujt7/yG/cwV+j7+1R/BCjHOXSgquEQ==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794323689;
+	b=V3GidQbZ7Mpisi681OB52Q2RuIPLWR2Tt48cSoGyEzQW+bQuKixMy89HAWDdQvj92575
+	 UBtbUoQu3Vqe2GbpCQ+gbpffnJoYoFVV1fGBdY6v3Ey3XO25UT0beNNsS2yU4rW+io8YA
+	 56+QnzgciExZ4pzabwmwK4a5MBmStYpvqyJSF98obL02QTj2hzUZJ5BLO0mESVgNIRJFK
+	 WezYZjCyZ7vVUD9+DpDR0ntFV+qABsEAxsk5oT91izV45I8pSW0JV0PFUmdI0LIQxCxC5
+	 6N5rsO3q/Qocgf716QmmBQHeWIocmxPGglxQPTGYOcCd6IshgFuXxZoHvHr0ZhtvryA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323472;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=W6z7e3dW4mp2FHGp4Wv7zZVkrXVosanAgrqH1yhT3tk=;
-	b=gOuP9EFbNXb93Vy79QknrxT8jxeLDy5WlRymLmWrpqD3yyvjO+/g3DZC0lol5VgrvTjI
-	 v2dcbTsb5dCkrNzqcaFITAd1yEvVeAOoAcjHgTUTrAoktgdyLncUorJLTHnrzEou+mrjT
-	 XZorPB8WHreILJgqshlaLASCtfI7EoNyBEus5O7QGdfvJFtV83PdGuXzPek6yZ8vvrAgC
-	 /NrIb/wy4YSFvrRqlXNjsqbQ/UJFYYCmurLNZfE8hVWQ7ICV2oe2RC8a1VUq2jFTd/Eqo
-	 LLAA6s1yPvPJfsVz3mNQGEm4IaPUAMRYEaTuP64UXPQUNRytRR7FsXbi/c646S22Ufw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323689;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=TMQpbWXRMXvMDMJ+QMM/RAAdpW1HCOkEavEIrrS7hZ8=;
+	b=Xp7epo92qvcwdADA3MRaqY3FwfUDYX35OdjfMID+KJmg4CxD/gpMhANOpIsMs4L+I7XG
+	 q9xga4BywIlsJbt1ceSree8qC6SZt3A0GeW5PhIJDkKdLY//WJALsDhTuqnLwctZy/qwp
+	 Fq3IE7h4ldhJHFfiRR2L++MMNFCIbbxZNFhBeJdBe/qjeyXPKSKBfC2AlClzZL0WBTAu4
+	 rQickk4GvW0Wj+kYXodY/bYjo3gmVySLaHwDXQMXtupYiAIx25ijYk836Xqf9OCz9Jzza
+	 Qyr2jiofEBQ6Q8XdXYPQwjaVGxw57xf1O9lsEiPY5AJXxZVllZpO/akplA8QnFfIoJA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R3mOPevA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.43
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IODdf578;
+	arc=fail smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B174606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:11:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B174606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8042606A338;
+	Tue, 10 Nov 2026 15:14:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8042606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R3mOPevA
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-99be509f943so479122241.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:11:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794323471; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ad7LLXDhElQDnI5rRi78WODO/QBKDpafscdp+dnO63noTWdNI/35cvj/aYyJL3V+zU
-         Pd7QppI9VZ2uI4U0d72dTkSDlRl0plXIz+Xp6vN1gL7S/8Ju3O6E0UDBpL8NMabV004W
-         r70J3HQUJbQGSMwb55B1lAIJUWXSONdHBnUkL3s93bw3nCQEuzkV4/lFtLvim386mkV+
-         o+xO0vdJgGIgyWC4gQ1nPRrwhg2EBDF/UfR3L3/s5CibIOVsut/bv7+NIp1xPseFaf7t
-         Fc9wpJJBHCknGMqbXveTMjGrXmF55UCE6zGFt5uk/ebalq/HznYxKz6DiKm5kfhBDbrq
-         hAoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=W6z7e3dW4mp2FHGp4Wv7zZVkrXVosanAgrqH1yhT3tk=;
-        fh=mr5048JX5xzE4igB+Sp/Ftr473CzloZHdTDdr2Wk+Qs=;
-        b=GrYrhPpDdUe+5CYVZjruSmoz3qisrkG99Td2xAutgeD2lQfH3ROhDLHyyesJj6EXiF
-         qUd1EaFbB95flvAAQ0DXtCbTQ4K8DI8zF26i8mtnopw7NaZD3gcd7HxzZaFZ3KpPQl58
-         W/HaDwgspqt0HE3g5vEjoAKvkazqDzb7jpguN0gtiTGJUJLv5ysQv9PzCcVDmlc9RKgt
-         zJ7MNKltVbNk+lAcjPPQn/EKejrswMPDCGhkWFq8UYebRpkSNDjGNay/kPrgalfl5vlz
-         HEX3DA6wSH3JdKDccl1rg4NgO719PCwmh8HuHBLfWF7j56JIttF46Jlw0dG42ikRMnPI
-         Zkvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794323471; x=1794928271; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W6z7e3dW4mp2FHGp4Wv7zZVkrXVosanAgrqH1yhT3tk=;
-        b=R3mOPevAZ7M3aSBnsKq16hoySYLGfaI5yJUCH5GXNQs1FM29zQSTv1h/jQxwUzRjLH
-         Ok6NGMWWQqBsR+BlbsSH8zfsFYjtYet8HABNxpsL1sDH0s/r4cKapFMvOq0ae2Oj5qBf
-         zbTwXS1Aqfmx+A1DceEEORM9jXM4/qZLxaiuqX2dJZedD93VDszsRu6Tvb/+BMBiUapX
-         AULumKrUlz9KgwMJ1985fLoNUkrLz+6rFmK2XrMvcHMEHsyOYgtHt2M8zfRsZpXJk+IQ
-         910iyXRqof8fCk+/21+4chNobdOhcfbhvH9ppdp+QCfMVAv7Vgxds+i8gVShrbDOPQ5H
-         /4VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794323471; x=1794928271;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W6z7e3dW4mp2FHGp4Wv7zZVkrXVosanAgrqH1yhT3tk=;
-        b=DWxgWvDw8efy193Gc+meOSNhYEfew1jXo4mZoG0RbWi2S4LPqHdeITYnExQ/W+PWmP
-         iX4DEPgACUo8v+6VtV7cehr5kAs7pgHUL147G4+pCqV6Avvq6w5TurWeK8E66vqNZElV
-         EVr0a49yJ0lCGZ+fIJsv+P0HCIlWGCUd9X7FfqZEHXz+6Mqg26loZ8Gx3TcJ5bgcY+bM
-         EYFzRS4jhab6gDECj/87A7mGAIECv9UspTanyISb79FWuhyq4264500+uwPSyQyLjR7L
-         x/Pbl6Te5AXmpuwSCiscVIVrVGwvUCyHDKIWS9W/AmlLKYZVgk0ftYRb4ZthiWQ7Qe5T
-         xmsQ==
-X-Forwarded-Encrypted: i=1; AL+hErFRQxKwVocjZM2bS6+h7ZqybjkK7/dJwndcxTwj9Q+fapahLHRvCraMKeOtAuRSLR49s8TPyWY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+nH2M/E3Hd1RDFgePXI2d/3XFjHPyXws2BDq5pItHgALI3BZ6z
-	QkwEgmQaUFQ9IH0EGA8hTYVcXs4S6hyJIRFI22w+Elk7QS1MU+XAY4dRU/s85jGQhT2oSkQ0cmE
-	ImdDmnYPI7wTddEInBifCnvNSwQbi6VI=
-X-Gm-Gg: AYBFou0u3FHQzsm/mGIBfQYy2gaqKRdnqycGi/61pILBGS4GuzxCE+S6+lrNt6v544e
-	vlVsnTFjL1yF5IYbxPF1MVl8AHVRBE0tGOm+hG32dAC8ElrGi7flMFh5c1VQdrxgvtyS/u26YXM
-	6zk/+c+nbCzA16+qf1rXSbKtBnVQHYOtJtq2jCgkqbccoJnz7cz1kvKCUVUB0QqRg1gagYNMC34
-	CiKY1OluQZ6BRc8ZswG95narN9qSkm2Uy4vcrKe1/QOBVkj3r+TWStLAUBobqLAbLepKWphc1Ah
-	qIqKCpEwXp5eB0pTZsCt2eYNAiOQMsl7e0Ct3uKJvVOqQTJbQpdXI+Prj7mhtaZv7yoXj1j1Ufo
-	LHCixDOTvXIflsVjhyXbm0NyVNGW66dNLgqYwBkpdrkhhVH+F7+5M75P4QQGbHj9+weOp5bCspc
-	gMGsSeIyRNbThTT2GFu+aapfi6S80YEKHaffb3AQ==
-X-Received: by 2002:a05:6122:208a:b0:5ea:c214:b5cf with SMTP id
- 71dfb90a1353d-5ee0cf0d54emr1101844e0c.1.1794323471135; Tue, 10 Nov 2026
- 07:11:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IODdf578
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794323688; x=1825859688;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=AJvuzfsogg/vm9OBwFqRHyUMhF2t2Cyi7alQUsc0tag=;
+  b=IODdf578mp4/g+n283470wnGBxMmzlfT4ELffB7aeyoqX74q+mnvHAyK
+   qp6V4qC7w61HoAbknrB2qLuKLjynzMa2YVoq1YLRCx6mm5WEY/ganw/jh
+   46ZRSRB4WA68i+zZodO/vCGSXKAejWDqeGrcQXxDA8lGMGhoux4bYnhZh
+   Hfx8HOfTvjttGP3edX9yTSHk8FC6VQ7/7mPCqxcv3JQ2FtL8n3U97mG/S
+   3rZnQpfZr2mG/+ex+jhUC5S2sv1hSXshHDDGQO/2NRfxHF0KzwGKNnAFS
+   JcQG5Q4VDTl/e1cabAflOhaxrcpWaFAIOakiyACOvIDqL2E/l+TfNIzas
+   w==;
+X-CSE-ConnectionGUID: yPpBMva8QVemxgxb6Bvgmg==
+X-CSE-MsgGUID: NecTzN3MQGunf4OraOAwwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="2961317"
+X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
+   d="scan'208";a="2961317"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 07:14:47 -0800
+X-CSE-ConnectionGUID: 13A8pPafS6S6IxlqoSLKKQ==
+X-CSE-MsgGUID: bHAY97L6S7qWaaiDLKu4pQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
+   d="scan'208";a="8195771"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 07:14:47 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 10 Nov 2026 07:14:46 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 07:14:46 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.14) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 10 Nov 2026 07:14:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k/0Iyh89WZWycUQwKQmvaaLtzxydZBT6CPBAwfwXE5ERS4cLRg/GYyPyHMO8p5pIiSIi1u/Fu0WQG8e2grkqNjtajh57smHjq755X7z5IZWCxkjB9E/byW7+L1OE5W108iX694qqj9Ezqt2r59LGNDMGvoyA9PbW4P/pVo6sldh5kphWIufgkO5V3qk/l+FoukhEEc1QwFG5mcmlORtPR46CGV9Dh6+30zGUJREeYvp5M6EGnKv1mQX8kpXO3V/EXDi0icg+L9Yi3nmBhhPs3PJsWmOpgXmyNY03NsQwo4dT8K96MohGsfmpunMXLUyIXDuLvbxy1O10D+dA7rgkvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TMQpbWXRMXvMDMJ+QMM/RAAdpW1HCOkEavEIrrS7hZ8=;
+ b=pAqnG+wAj1Mykvq2+fGn814bo88F43WnU4sr/wmTK5bgZOz9bimlBVPhk/2C2DafHBKKY5uyc6b6I2Szdnz9/GBSlWLLukQV3sxeCdUu51cjn2J2Nv4CpfGvItJZj+1QGoiR8y+Tsic4an3h8MYKYehhVbdDdXpIqMXGQxzZoWz+eb1TdyWwT9Ki0/D07jMvs9eJeEaovpcR7hFquSRnlP+jXme8ejnCbhYqghXUHTKLM76s05OOZoIfEU12KOYoHMoaMhyvq7tBbB1vLTt8zarP+vx3bEz8qRaq5wwWc/1rNoNpaT0kcjs5EYObANba4xYy68BXsjmSd3xZgCOReQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by PH8PR11MB9722.namprd11.prod.outlook.com (2603:10b6:510:3a5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 15:14:43 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0592.009; Tue, 10 Nov 2026
+ 15:14:42 +0000
+Message-ID: <3d14c32a-62cc-40cb-bd60-2dc13b9a2e41@intel.com>
+Date: Tue, 10 Nov 2026 16:14:33 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v3 0/2] libeth, idpf: use GFP_KERNEL for the
+ initial Rx ring fill
+To: Luigi Rizzo <lrizzo@google.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Luigi Rizzo
+	<rizzo.unipi@gmail.com>, Brian Vazquez <brianvv@google.com>, Joshua Hay
+	<joshua.a.hay@intel.com>, Larysa Zaremba <larysa.zaremba@intel.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20261103162326.3615979-1-lrizzo@google.com>
+ <1cfe950e-50af-4120-87c8-375f67eb3e01@intel.com>
+ <CAMOZA0KTYjRGuD3axNKaNb-o5=c8Zt=zG4Q3JFxPbWuBVu5MKg@mail.gmail.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Language: en-US
+In-Reply-To: <CAMOZA0KTYjRGuD3axNKaNb-o5=c8Zt=zG4Q3JFxPbWuBVu5MKg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL0P290CA0001.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::15) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,154 +142,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104105507.62743-1-juny24602@gmail.com> <179413871612.994134.359540125574426236@kernel.org>
-In-Reply-To: <179413871612.994134.359540125574426236@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 10 Nov 2026 10:10:58 -0500
-X-Gm-Features: AclHuK89HgIbQyXWmaLQCesjdGtHdS-e5P_FfWBaym-EosoON5UnawsVLzWAcXE
-Message-ID: <CADvbK_fUOSLtD2=r2UUU+YLCVCEOPYpH+S9Pnc12oO_YjjfHOg@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: preserve stream scheduler across outq teardown
-To: netdev-bot+sashiko@kernel.org
-Cc: juny24602@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, junvyyang@tencent.com, 
-	stable@kernel.org, corvus@tencent.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH8PR11MB9722:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b06ff0f-7fc4-4155-912e-08df3f3d5845
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|261026121527099003|261028144727099003|11063799006|4143699003|56012099006|261021121427099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261102123227099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: 37o/CD21WQWsiT2D072o20hXWHde3d57EQRveVbdPd8baCO9KYUeYeMEzYJMzLV/2F/GGox+vNhJRjIwHrLo5B0Lgyw/nAmi7EirsncZ/BWs0G2+eByLcJOJRhD57c3D8FM7nt2MWD9/4uJpNNccI37JDzE6ju3tq1AzYZ5MJfR9uJqHuQ5QoWMc9anQVYgAKlvhhaH8p+P7wyk7zcZrH9UiU/vN1HzKL6QgwN10ZGiKNWSc6FteNxxvep4sKBZoU4b5JA1su3TqMFx9gofuEfzXlDCO59ppCDCSE/vbeOZjbMx410SP+xPRma5bet4TzCoBl3PWYNSAoKb1Hg1TlLQiXmcFcHR9R05AGjZSw6RWeum0z/ijNVRMg3fD7qItT4N+NtossJ6Lj+5MClqbO/ItHCXNvQBbfS5PmIdIa0gcNJjrk0Cvz+s/SfNlh5/Ytt5yM/A9L/Gzi8bPnNlNGY4Qgp4JL7d/ejLkzI6YH0+w3NOItV5gZckx7WgzsnzNqDuML3430xRQp+4eMM3H47Nqwl9Qy3m4fP0WUABHWBqIkjkpZG2zU6pYj6pULRM2Qq4P6DDsiUeGGGKKnNWvONQV4RdSABknRURVhsM7YD8qpnwVG5t9lrXMiXxXcr44
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(261026121527099003)(261028144727099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261102123227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3pZSGhGQmtGYWhiQ0w4ZWtKMzQwbzhzYXNGWFQ5UHBZcWNaNHU5YjQ3V1NK?=
+ =?utf-8?B?a3BoVlJzZ094VGdLK0RzMG9oTmltVzdCRTZJU09RNzBHV1BTMFZkNXZLK2do?=
+ =?utf-8?B?N3h6M1VvYUlMdSs1WjF4UVJER1g2VU1JdEZLN0NQL0IraTFVVWVpemRnN0tH?=
+ =?utf-8?B?QkhSR2NSckZ0SCtrM1gwZUpkY00wYUdMUlJzU0FYMFFuNkVyZ0ttRU52ZG5x?=
+ =?utf-8?B?L25nb1RvVEZvZmEwVS9NZ3cxWUwvcndBcmNlWnYyY3FleFlBNXRTdnFmQVBk?=
+ =?utf-8?B?Qkg2VlRta2xRRWExTkM1dldPUXVXMHRpclVFSVFhazZsY2IzTWs5MEJOb3NU?=
+ =?utf-8?B?RlJpQTUwYnl0UEhpdk04R1MwZHdqOUFKWk9nYXdCTzVZdS9aZ0FjZy9oUjJL?=
+ =?utf-8?B?NkQ3Q2FVS3kvd2JHTlhkZGhoMURJWDl6aUlyRXVYVFJXblJIS3VkOTJWZmRI?=
+ =?utf-8?B?b05MZEpjZTAvTUkrRnFFdVhxQ3dEYnlDVDhLY2hjZUU4MWhQODFIL1J5eHdP?=
+ =?utf-8?B?VVF5YnlGZDVrTWdCcitxSitRZVdET2tWb1g0ZUZSZDFQeXJLQWZaTnZuK1A2?=
+ =?utf-8?B?VUpSRWJweENKVWxUQkxzZUtkbGxJdWRsbE1Cd2hvdHN4Q1l0YmhNNGdSdnZY?=
+ =?utf-8?B?emFKS3dnemR6VkNseWtTR2hHeXRSOVcwejB3blh6SkZGZDUzNFl4VDg5MVhH?=
+ =?utf-8?B?bkVrSDRXSFA2Sm1MYzNSemNtbHlicHNQRVVTRVdJSE9RK1lFWktNZVFPMEtv?=
+ =?utf-8?B?d2hGZmRvTUNDUkUrSGd4RDZ6WFNESi9ndjIzSWE3YTFSQUc0Qm5KWWxidzdT?=
+ =?utf-8?B?OFJmRi9URG0yU0F3bTFiSzVDRGdwUWt0bHhteWhSamc1N1EwdWlMUEw3RmJQ?=
+ =?utf-8?B?ZDRHaFUvRnFLa0VaME5UK1VrOEN5ZVhFYWxNSlBpYitydXJiKzdGNG84SURt?=
+ =?utf-8?B?NHV4ZjlHdDRzVm0zWEZ3SVNVRTl1Ry9RS3BLV2xYUVpIK2hEZDlsckFhYm14?=
+ =?utf-8?B?UFErMXBRYXRuU2R5OGFIRElzQ0hpK01XTTJYRG9EWnZkM1BuYS8zNTBmOEdT?=
+ =?utf-8?B?R1FRSlZFeTdBbVUwbFcyRG90Qmd1RnJxcnJQMlZISDFHdVpDNUhSSUIvSlRH?=
+ =?utf-8?B?NWZOKzdOKzZzZVR1dlBzd1NlNnptdmFHU2pBRDN4RkE2ajBVWlA0UDVHcVFZ?=
+ =?utf-8?B?bzBMVmx3NE8xWmJ2czVJYWdtWUYzbWdQaUJtTkVvTldGRVVwL29XUU95enRu?=
+ =?utf-8?B?Smd0blN5dXowajdTRGJVeEhCeGtQZkViT1hZZ2laaWxYUDQzUFVGRm5VVEJq?=
+ =?utf-8?B?dU5qR2dha3dzRHluWGpZek9ZbnZTUDg2a0tmSGExUnljNEhuUVJ5dkY2WWFO?=
+ =?utf-8?B?NEptZ1lWVEZrQkZJYUNBU1FJK09vRzJhWHJic2Y0azkreC9kMC9qUm5DMk1x?=
+ =?utf-8?B?YnFTSXVvL05OeW1IQWxoeTB4Y2pCbUUrVFZKTHFFNm5YZHh3b1NEaW9wUmla?=
+ =?utf-8?B?VWJsTW1ZandoN212RGVrNnczeGtjZmpmMjNoMHVMc1h5TFUzWnNUbXBoZS9l?=
+ =?utf-8?B?TDBkV3RZTlBIRDAxUW92K0d4U3QxWU9oUUNCdHFlM1F3Q3Eyamo1L2JiUGkv?=
+ =?utf-8?B?UmxMTVZzdHU5TEpGM3Vpb0JFNGQyS2xQbGxyS3hCbHprZStRUUIwazJUNys2?=
+ =?utf-8?B?N2NyeWw3NjFXQms0aFhqeHpEU3pwcXVYY1pOeFJ5MGV4TFdqMGhpR0tlc0o2?=
+ =?utf-8?B?R3k3UTU5Nmc0TEV4MEpPNHppVk1ZdlByRTlsL0NaMnJmS0NVTlJlNkladkVM?=
+ =?utf-8?B?TmtHOFJHbWxvVUNVSmZoRllCRHJTN01OU3A1K1lBTDljckpaaVZBa1l5TmNO?=
+ =?utf-8?B?T1VFV0txTDBpNHFHaFlUVld4VTNicVQ0S1Y1WTR5c1RaWkJQYTM4akp2Z01E?=
+ =?utf-8?B?WHRsRW1EZ2syb3ZONmVINHRXTVVJa3VnZjc0SFZWM1BmK0F1djB1MGZZemtS?=
+ =?utf-8?B?MXp4VHBwWVd5STdyTm12TVgybEkzZjV0ZEcrWlZiaTZDOHpUa2dmSmpidVVp?=
+ =?utf-8?B?SFo2NmgxMVd5T0NxYWdjd2FwcUJHRXVCNU12NkNPTXVzVTBkNzNEaHJ1Z2ZY?=
+ =?utf-8?B?WkN1Y1ZVSUhuaHJoOWtGYis0N0NFRXZMLzFrYVg3YnNRZmR0ZXNHbDVvZEk2?=
+ =?utf-8?B?N2pidVcydW8vellJeDBNZFBCY0ErZlowWFltNUkzQmRGODQwb2JZZ01kYWRV?=
+ =?utf-8?B?U1VjWVBCdllzeWJTVkNMNmZucTc5MXkzbXkxemFjbXpCbVBJODVaUXdyb2tE?=
+ =?utf-8?B?N2s3dVpmdEdDNXZUT1dJb29UVHRIM0lTUW1uMHE0S2w2Q2dtelBvQkdxVnMx?=
+ =?utf-8?Q?Ky/cLYAtuKJuuMso=3D?=
+X-Exchange-RoutingPolicyChecked: UIJlz6RQTVGZiOHom+LG4dBm0e+D8Zx21ApTk92sATVxnzhmHKh/wOYDyYxQfDumuQJBD4sq/CQ6EIt1qNqhbr1tVJBFpMADHpN2uGUqO6kokxNoK0A62i29tAh+T1BBSzy7iqu5AVVirQHGndShFUqzMayPFLMupHTkVLJvju/CAr8iYzSzMAOlemeqJgIu1o5tC03W7TuMVPbUtnX3JwW7Cc2xnUFCnDPOfy/uTE1sDPJgfHkgM5WjJkxvl5J6gTLQOVhkW68A/EUZgncMIsB62bplrznRhhgrDH6lPo/nHCT9xEPWLMDOLSwx4BWiOCORpvoditHFYdN9ANJl0A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b06ff0f-7fc4-4155-912e-08df3f3d5845
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 15:14:42.0411
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WVTfcPUEuMhOugqO3MVYlVVkPrLVWlyEoSlNINMs3tsOqHRZLjp/3KeTm7dIX5Flj4u4xLSCYXWvKGzFWTfDSF00gY039G5o2erDi0Dcv6U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9722
+X-OriginatorOrg: intel.com
 
-On Sun, Nov 8, 2026 at 6:51=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The patch changes how outqueue teardown behaves in the common
->   case, and the commit message does not say so.
->
-> --
->
-> sctp: preserve stream scheduler across outq teardown
->
-> This patch keeps q->sched in sctp_outq_init() across the memset, so that
-> sctp_sched_set_sched() can free the old scheduler's per-stream state when
-> sctp_outq_teardown() reinitializes a live outqueue. Without that,
-> installing a different default scheduler could read stale data through
-> the shared union in struct sctp_stream_out_ext.
->
-> > diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
-> > index e92fb9da4647a..6cb4b4339d8b7 100644
-> > --- a/net/sctp/outqueue.c
-> > +++ b/net/sctp/outqueue.c
-> > @@ -190,9 +190,13 @@ static inline int sctp_cacc_skip(struct sctp_trans=
-port *primary,
-> >   */
-> >  void sctp_outq_init(struct sctp_association *asoc, struct sctp_outq *q=
-)
-> >  {
-> > +     const struct sctp_sched_ops *sched =3D q->sched;
-> > +
-> >       memset(q, 0, sizeof(struct sctp_outq));
-> >
-> >       q->asoc =3D asoc;
-> > +     /* Retain the scheduler to allow freeing its per-stream state. */
-> > +     q->sched =3D sched;
->
-> [Severity: Medium]
-> The commit message only talks about the case where the installed schedule=
-r
-> differs from sctp_sk(sk)->default_ss. Does this also change behaviour in
-> the more common case, where the two are the same?
->
-> Before this patch, q->sched was NULL after the memset. That meant
-> sctp_sched_set_sched() never took its early return, and every outqueue
-> purge ran n->init() and n->init_sid() on each stream:
->
-> net/sctp/stream_sched.c:sctp_sched_set_sched() {
->     ...
->         n =3D sctp_sched_ops[sched];
->         if (old =3D=3D n)
->                 return ret;
->     ...
->         n->init(&asoc->stream);
->         for (i =3D 0; i < asoc->stream.outcnt; i++) {
->                 ...
->                 ret =3D n->init_sid(&asoc->stream, i, GFP_ATOMIC);
->     ...
-> }
->
-> With q->sched kept, old =3D=3D n whenever default_ss matches the installe=
-d
-> scheduler, so the per-stream reset is skipped. The init_sid callbacks tha=
-t
-> no longer run on teardown are:
->
-> net/sctp/stream_sched_prio.c:sctp_sched_prio_init_sid() {
->         ...
->         return sctp_sched_prio_set(stream, sid, 0, gfp);
-> }
->
-> net/sctp/stream_sched_fc.c:sctp_sched_fc_init_sid() {
->         ...
->         soute->fc_length =3D 0;
->         soute->fc_weight =3D 1;
->         ...
-> }
->
-> As a result, PRIO priorities and WFQ weights set through
-> SCTP_STREAM_SCHEDULER_VALUE now survive a peer restart and a stale-cookie
-> retry. Previously both paths reset them to 0 and 1:
->
-> sctp_sf_do_dupcook_a() / sctp_sf_do_5_2_6_stale()
->   -> SCTP_CMD_PURGE_OUTQUEUE
->     -> sctp_outq_teardown()
->       -> sctp_outq_init()
->         -> sctp_sched_set_sched()   /* returns early, old =3D=3D n */
->
-> For FC and WFQ there is a second effect. __sctp_outq_teardown() calls
-> sctp_sched_dequeue_done() on every leftover data chunk it discards:
->
-> net/sctp/outqueue.c:__sctp_outq_teardown() {
->     ...
->         while ((chunk =3D sctp_outq_dequeue_data(q)) !=3D NULL) {
->                 sctp_sched_dequeue_done(q, chunk);
->
->                 /* Mark as send failure. */
->                 sctp_chunk_fail(chunk, q->error);
->     ...
-> }
->
-> sctp_sched_fc_dequeue_done() then adds ch->skb->len to soute->fc_length.
-> That used to be cleared by init_sid. Now it isn't, so a stream with a
-> large unsent backlog at restart begins the restarted association with
-> fc_length inflated by bytes that were never sent.
->
-That's expected. purged chunks were queued on those streams,
-so the fc_length stays consistent and converges as new data flows.
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Mon, 9 Nov 2026 15:53:55 +0100
 
-You may just need to mention it in the commit message when
-addressing my last comment.
+> On Thu, Nov 5, 2026 at 7:08 PM Alexander Lobakin
+> <aleksander.lobakin@intel.com> wrote:
+>>
+>> From: Luigi Rizzo <lrizzo@google.com>
+>> Date: Tue,  3 Nov 2026 16:23:23 +0000
+>>
+>>> libeth_rx_alloc() always allocates with GFP_ATOMIC, including when a
+>>> driver fills its Rx rings at open or on queue reconfiguration. That
+>>> fill runs in process context, right after page_pool_create() and before
+>>> the queues' NAPI is enabled, so it may sleep, and GFP_ATOMIC is
+>>> needlessly restrictive there: it can neither reclaim nor compact, while
+>>> the initial fill can allocate tens of thousands of buffers across all
+>>> queues.
+>>>
+>>> Patch 1 adds __libeth_rx_alloc() taking a gfp_t parameter and turns
+>>> libeth_rx_alloc() into its GFP_ATOMIC wrapper.
+>>> Patch 2 switches idpf's initial Rx ring fill (both splitq and singleq)
+>>> to GFP_KERNEL.
+>>>
+>>> v3:
+>>>   - rename libeth_rx_alloc_gfp() to __libeth_rx_alloc() and put the gfp
+>>>     argument on its own line in page_pool_alloc_netmem() (Alexander Lobakin)
+>>> v2: https://lore.kernel.org/r/20261019210604.2433620-1-lrizzo@google.com/
+>>>   - split into two patches (libeth helper and idpf consumer)
+>>> v1: https://lore.kernel.org/r/20261016151835.2500807-1-lrizzo@google.com/
+>>>
+>>> Luigi Rizzo (2):
+>>>   libeth: add __libeth_rx_alloc() to specify allocation flags
+>>>   idpf: use GFP_KERNEL for the initial Rx ring fill
+>>
+>> For the series:
+>>
+>> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> 
+> Looking further at the problem, gemini pointed out that libeth_rx_alloc()
+> is called in a way that makes it easy and robust to tell when it
+> can use GFP_KERNEL. This would greatly simplify the patch.
+> 
+> Alexander, do you like this version better perhaps ?
+> 
+> cheers
+> luigi
+> 
+> diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
+> index 5d991404845e6..38c0e5066f0ef 100644
+> --- a/include/net/libeth/rx.h
+> +++ b/include/net/libeth/rx.h
+> @@ -104,10 +104,17 @@ void libeth_rx_fq_destroy(struct libeth_fq *fq);
+>  static inline dma_addr_t libeth_rx_alloc(const struct libeth_fq_fp *fq, u32 i)
+>  {
+>         struct libeth_fqe *buf = &fq->fqes[i];
+> +       /* fq->fqes is zero-allocated and pre-filled in process context for
+> +        * indices [0 .. fq->count - 2]; slot fq->count - 1 is first allocated
+> +        * in NAPI. Use GFP_KERNEL for initial pre-fill and GFP_ATOMIC after.
+> +        */
+> +       gfp_t gfp = (buf->truesize || i == fq->count - 1) ?
+> +                   GFP_ATOMIC : GFP_KERNEL;
 
-Thanks.
+The fact that `fq->count - 1` is only allocated from the NAPI context is
+idpf's detail that doesn't belong to libeth.
+Even though this is way shorter diffstat than the original series, I
+prefer the original as it doesn't change anything for drivers other than
+idpf and allows specifying GFP flags manually without such guesses. This
+change introduces new branches on hotpath for each driver that uses libeth.
+> 
+>         buf->truesize = fq->truesize;
+> -       buf->netmem = page_pool_dev_alloc_netmem(fq->pp, &buf->offset,
+> -                                                &buf->truesize);
+> +       buf->netmem = page_pool_alloc_netmem(fq->pp, &buf->offset,
+> +                                            &buf->truesize,
+> +                                            gfp | __GFP_NOWARN);
+>         if (unlikely(!buf->netmem))
+>                 return DMA_MAPPING_ERROR;
 
-> Keeping the user-configured values may well be the preferred behaviour.
-> Since this is going to stable, could the commit message describe it? If
-> it isn't intended, should teardown reset the per-stream scheduler state
-> explicitly, or at least the fc_length accumulated from discarded chunks?
->
-> >       INIT_LIST_HEAD(&q->out_chunk_list);
-> >       INIT_LIST_HEAD(&q->control_chunk_list);
-> >       INIT_LIST_HEAD(&q->retransmit);
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261104105507.62743-1-juny24602%40gmail.com
+Thanks,
+Olek
