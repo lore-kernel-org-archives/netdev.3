@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321011;
-	b=Zp1S3jNLQajrwQgV9MTYNb7tfLUqstFKpRqIIQXw9PfY/0G695S/B/1gA5Ff1x48699o
-	 T60MEMM4uFXGagX/xFkUlTaVtpNStlk10FqfgCeUJu6MfgvrdcFBSxkDN6DwYrNlGxZYC
-	 2kg/x+Mh/Qllx8CNvLXRIwcgCzvVNCcmewj+Wrv2AadSbcWbKJDCE5bReIk/CSxd7Nfvp
-	 O45rce6d+aPuohNPJeEoVSgPkSBYfnTbECQFQARPr0z1klzMKInhqjogWGys+IYRR/5/0
-	 6Kfs6gEwVlrbD+jOyg6CpfFh5+nOmjjwmSrQQWe0t4rwqySA9l8FQLwM9Yqy2d6SbYA==
+	t=1794321008;
+	b=q9e2LlGK4Y60/KmEMDuw/BPxRkdawQTeJBb9HLl+4hz9rDz5fH6Onz/gojaHeNx2TksK
+	 XXR4Z0KkrXCs0rJUeSVriJig2710B3gcqYNJ8ce4pfs6nX954snbwojioQF2RCs1h1SiW
+	 Xhnm4fVgmWdnUMC/WU/Z18tzOi4xE9uTWfF3J/Q7ia7T/NYdh9emxbCBryJ5llbw0d7QZ
+	 JaXMfwYz9hlHZS5ersCnWjtKa8j2adNAsy0r/IW8cFwUu9hn1i9VI7coxhvFwn6dRdOcg
+	 f8vcGkXpjRuKiHzjgK3ghE2OoK06deo3/wfncZGaoGE6xkPEFoIB6yxsuYslmXjjAeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321011;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794321008;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=8FshiCFSAx/XUt9B7VmHTjgXNdsSNmtFZ8/eEUUTfnE=;
-	b=09yutzbl8UuGU1L7dzjgUgdeb+LqJ6npohC53NZWZgA4TVYLXSCTyF0g1X2XKv0bZ4bR
-	 +4Aj9oaXdgcGmfNJcHDt/IouvMqZO8ZX84QJ5xioNA/VdMqlT1CFb+eZW48Xwn9Mp8/vz
-	 aLctv2GLYP1B3HBrtz2cI6jiCUdnKcFjK0PfK9sPn0ZKU298CXUva4apHRyh1Oj411e53
-	 757ePz3I8fmONqI8M8YwoT7GyiS9Xw4mKrB9rmEva39cFQ/3Gp2ndSNltq1AR0kJGqD2j
-	 kqlNoHt1znW8+1VAANt7B+2Lzf9m2ihzw1dFFZVlae5nvCR8RNs4ApGGLJ44HEtJQmA==
+	bh=6re/8M7BAKbsJAaby7V03QwRwM9/MqNLLzk54nsXA00=;
+	b=A8X7K2S7c88Mp95r51kLcO0sf/ypWipKLTHzo6xkatL1FCUj5UVK5uqqVde0LBlc9Vyr
+	 u9rrVFJ6qBv3zhJHpKVxTFfOvyEPK9MCNmaQxw6/qi+ywJIqsQ7DLj76SWnvUxkwUvLkc
+	 /kmQ0lU4RqlG2YTcOTyQlkjUuKYfvVWFb/Cyse2hl+c8XW1MxWdPPOIZHwQYowlKUVCh7
+	 lwhPIngTNgaJpaPP8qAZsiRKRIccwiRbHbumTyW79AcJltGHp07GYTN4PSixQmpuMadi/
+	 d25OQdiC2m2MDXwhqWWDCuWQXlGKUNJWV3IQw7hR4sXrGcqrFOIsTf7JaqbZCIdGasw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HPkkfwI7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JlqNEHB0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192CE606A330;
-	Tue, 10 Nov 2026 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B07D606A321;
+	Tue, 10 Nov 2026 14:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HPkkfwI7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23631F0089F;
-	Tue, 10 Nov 2026 14:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JlqNEHB0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A819E1F0089F;
+	Tue, 10 Nov 2026 14:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321010;
-	bh=8FshiCFSAx/XUt9B7VmHTjgXNdsSNmtFZ8/eEUUTfnE=;
+	s=k20260515; t=1794321007;
+	bh=6re/8M7BAKbsJAaby7V03QwRwM9/MqNLLzk54nsXA00=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HPkkfwI7nretK/FFutLyDHNca//Bh/QglB+OsFjmsjUa0Y0Eu8CuZKrralE0P7ooe
-	 WTh1xwjb1MRXkd5jMZlum4nYPsn3azsqxwRR9cxq49+4e8Jw1VG+GGpXpN9YD0n7BN
-	 yPeeuWJyMcyTPpM8p+g+dMf+j1OfLa+vr54fUTkM++EgWzgUF+4Euq6awSXw+fA4nY
-	 9BubMA/dm7ZPOKWUHBh4VT9aIOqL7/qTqlsCnNXRJc5Vgb1gwP9vK9ZE7UcrtZejIL
-	 X5xZTGu14x89/WzQeaTWIvFH7OgBfKFlXZh9vER0qkoXPGc1Kweg02lMdjytTVLG3J
-	 w9f6LsmU8YXFg==
+	b=JlqNEHB0x83jrWOU+aXt+t6KdxBWq2a0su5gwKhZDBDzwdt1vIQ+NwqadIVD620Jl
+	 ZMlJKnzaNQn8mqKyJ431cKwCEnd14z50i39yzmzWsET+nkfQI0rpvua3TRIDtlNlIs
+	 7KNJgu85+cPAH0ouhch2WhSEoivO1FCxEzftHMCnDRMIwOywBFSqKLXWsH/34mPlV9
+	 6Z/vZWe/lIqMC5Cnyp86SOtVRvWI/qdbB0K6nMI9TKgEONPlilb/c8gOfxOH8CpsqH
+	 giLI4Stt/6YsFC+0yROroPr0/dQcoL6af4eM2KZEYtFU7qm6auzjkc3xxDdGbx1W7+
+	 N39ZX/MLnwP6Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81F139D0CA0;
-	Tue, 10 Nov 2026 14:30:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B09D39D0CA0;
+	Tue, 10 Nov 2026 14:30:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,50 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net: wwan: iosm: drop redundant skb->data check in MUX
- DL
- decode
+Subject: Re: [PATCH net 0/2] net: fix mac_len of skbs copied by generic XDP
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179432100942.3999302.10401530919113980212.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 14:30:09 +0000
-References: <20261103145925.69981-1-fangxy@xiaopeng.com>
-In-Reply-To: <20261103145925.69981-1-fangxy@xiaopeng.com>
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, johannes@sipsolutions.net, zhugl3@xiaopeng.com
+ <179432100643.3999302.15619209426166377365.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 14:30:06 +0000
+References: <20261103200036.65764-2-tianyi@cloudflare.com>
+In-Reply-To: <20261103200036.65764-2-tianyi@cloudflare.com>
+To: Tianyi Gao <tianyi@cloudflare.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, lorenzo@kernel.org,
+ toke@redhat.com, linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+ kernel-team@cloudflare.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue,  3 Nov 2026 22:59:25 +0800 you wrote:
-> The skb passed to ipc_mux_dl_decode() through the current RX path
-> always has a valid data pointer.
+On Tue,  3 Nov 2026 20:00:35 +0000 you wrote:
+> Generic XDP copies the skb before it runs a program with frags support.
+> The copy happens when the skb is cloned, nonlinear, or has less than 256
+> bytes of headroom. skb_pp_cow_data() makes the copy, but it does not
+> copy mac_len. After XDP, the skb has mac_len 0.
 > 
-> The only caller, ipc_imem_dl_skb_process(), checks for a NULL skb
-> before calling ipc_mux_dl_decode(). The skb is allocated through
-> ipc_pcie_alloc_skb() -> ipc_pcie_alloc_local_skb() ->
-> __netdev_alloc_skb(), which provides a valid data buffer on
-> successful allocation. Allocation or DMA mapping failures return
-> a NULL skb instead.
+> Two places after generic XDP move skb->data by mac_len:
+> - On XDP_REDIRECT to a cpumap, cpu_map_generic_redirect() pulls mac_len
+>   bytes, the length of the Ethernet header. Then it queues the skb to
+>   the target CPU. With mac_len 0, the IP layer on that CPU sees the
+>   Ethernet header and drops the packet.
+> - On XDP_PASS, the skb can go on to tc ingress with a BPF program
+>   attached (tcx, cls_bpf or act_bpf). Before it runs the program, tc
+>   pushes mac_len bytes, the length of the Ethernet header. With
+>   mac_len 0, skb->data stays at the IP header. Therefore, the program
+>   reads the IP header as the Ethernet header.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] net: wwan: iosm: drop redundant skb->data check in MUX DL decode
-    https://git.kernel.org/netdev/net-next/c/66974df65a0b
+  - [net,1/2] net: fix mac_len of skbs copied by generic XDP
+    https://git.kernel.org/netdev/net/c/71578e43b8a6
+  - [net,2/2] selftests: drv-net: ping: test generic XDP redirect to cpumap
+    https://git.kernel.org/netdev/net/c/71b116cf334b
 
 You are awesome, thank you!
 -- 
