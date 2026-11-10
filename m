@@ -1,82 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794307791;
-	b=RUDTJd7Xn1TEe4It1QfIs+Dp+s5Fl0tOVfEZNFwJBPTZ31fWMnudBh0fh1TWUOAoAqF0
-	 cGgNMXIOBnYXiMC1+XhbcbngXXlxGh6nMuPGAvqiKCPcg1T2AcHnVg78h1Ie61ZG24hm9
-	 12FCGXgKYiPxM2LFkukpRQyhdomU1RwIk+v+81Z+WoKfycPLPvQ4YD3P1WvYex/Z8sS3S
-	 SJPbVxbO038n6zV4aHT9E9TgDD/0tam5q4HPHOOmTrD8s9J7R6ZwKZ+PQC4DBuY8bHkJD
-	 DBUOipWUOrnLNVMmAAcQW2/7lJSLMf80Z0AA8H1SLRF3rjmUc5OEubUADcuD/S6269Q==
+	t=1794307787;
+	b=pkA/j3BOQVcPE/UFfyZGra3GGPccsZlTG9hqkyWflEYzkCPSJG5jrMHOW0XeUz3xkKKN
+	 tPih/jv9aQ1b9fIcdaCkt8umuf7LfxYjAFNFk2EO9P45zY0HC4T95b7qyEijAjq8/kWhm
+	 iRIuA/F7NZ7PQqfi8/WbLXRzRtrCwVuhRLy7RGMRlSM1Fr/r2NTvJszrUBAHVVwnJOo3h
+	 GAgEk3jgwfw9MimjpyLeK5ZOmqJc+G9nS8eodRdwDMOM+u/d8QYST+Hd9MopAFfD7t8TA
+	 mTGHfzoWVTTmmIGJ6ELCfwMylZtPlwStV6Ikyt/1lNiUbG9J9oYo7riNmUMhaonH91g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794307791;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794307787;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=jHE3vz7ikpP7qewD4PpZ2JFR+MDb2MgvZURmQJe0rMo=;
-	b=hAdOQ4pyQzi9xZvvZ2vVQVnsS4n8/dPpdbrYhmXpVuyi3DwBeajMwjYuIaXlDHBx0ya/
-	 lKp12yOm3GcODUbnISPKN1VS/b3kEbKIOPBYnE9FQkeMVJ3yrs4ce45Sx/lhEInG/P47c
-	 xTU0WFluq9+WVyk9w5DgD4OsD0+d2p2uGOWneFtz3tYSqY8ZUGVuoyBsHz0NLLzgRX5ag
-	 VEcNjzgYmIdmXjK9kVBpe6008/x6vM7ic0XC9TbRz9u2LBYIBQBMkjMbcMPLDot/93LCD
-	 d4NYI3GCCiP0c2W/ghR1p2taD0CJNGz4V1yM7lndOLS7tgdV9wNYkEMiTd3FeXKpxNA==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=TtZhYEtABJfA2LZa7bPQ/zz+wzRCh2ll5SwHuH1Q5/g=;
+	b=ZfVVtwpMY36orgZokV5XJbAYw6RsC8IdmNmwa83d6ZPxKhwgIaoa+0GAwS/oA7AQWZv0
+	 ARo/wf/hKGuLqKp8bOtU9tFAQXBhdBRAk9dnh32iRrD2T33ILqtuas2/MyvBnlj2unFQc
+	 THeMOwVMrQ55Qxo6WyYpnrgHX6XBtVrILaertMIXTLIjzdVy0KgCTC8SgOy01Tj0vZa8G
+	 BfYNvQkEiJeQWUfIkxIqnPiUhf0RHfODCtBnhE92CdpnW7z0779bZF1JhnugBmnCyEU3q
+	 RHYahfPjR4rU5dWVHhr5zadhqWu2HMOaURF8mBw9GDO27vBHkuVUFCM/xXyZ6unPBZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lhlDgiwE;
-	arc=none smtp.remote-ip=209.85.215.169
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VVmeAA0I;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA77F606A331
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:49:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA77F606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767EF606A335
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:49:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 767EF606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lhlDgiwE
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cdb45e96d2bso727230a12.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:49:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VVmeAA0I
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ed06b725fdso14076575ad.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:49:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794307790; x=1794912590; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jHE3vz7ikpP7qewD4PpZ2JFR+MDb2MgvZURmQJe0rMo=;
-        b=lhlDgiwE/QiGvBotsWQX/Irm4b/bTqrcqi+0qNxELwtCdEEX3UatmO9IxoGh+MWohO
-         NeSOmrYkfv11ataMI4qUwkQdcb7AO/2kAa/NNAaHN5mQD5yjHbV2+uqTR4uG/X0FovLb
-         30Nn9EY0fSOyblr08dSe7RmUan6wuwixOHZB8Qd05CDUsOLyJzbEomHhf+FaQt2sS7UA
-         JdL5+PAIAQdKPfNBJ8IPWs67a8cv1Ar3wD8Ylq//zGzUD6q5/eSCfsbLtTz00RYm7oI3
-         4YP8JKVrcNVy6V/Wy/XoRC85XQVORC10sCpULD1BCX6dZfXQ5nI2Za3n2ez2ppGd7xy8
-         sMtQ==
+        d=gmail.com; s=20260707; t=1794307787; x=1794912587; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TtZhYEtABJfA2LZa7bPQ/zz+wzRCh2ll5SwHuH1Q5/g=;
+        b=VVmeAA0I/x5Jg8HsmZJb5VdfMpr4zhvPv3CVsEBanr1+33/kKxnJC8xDa7BnpQLcv/
+         g3OvBUvWv9kSAIb4H8BXwvkXW8UnuDZ4pacWN4tKtw2wLtSB5nNza+xs7OIms/gyCnO3
+         Q2XgvSuWKWrkrGF5t5dXCHMxppLCcGJOaMrWNI0ZaDOKYYAMUx3cCK6nw+2CWQdCpRcD
+         u4sFJX46QFkwCADxE5aPQRYY1IefSihldQComcFDHIDZolxkxh5lwzXD2TERVddeSgsJ
+         tu9V1NDZp5ZzrAAirb4EVt7KaoqbmoCxT9iqdA0L7dbr2GkbkwbcpLDl5aJ305uZ7oi6
+         IkKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794307790; x=1794912590;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jHE3vz7ikpP7qewD4PpZ2JFR+MDb2MgvZURmQJe0rMo=;
-        b=UBiSfIu/QtdaLXONZJiAnNRm4rF9tB6vejMJr/UIu+c/d6ZRQiNgu33XTGLoBpxw8H
-         h6lGgkiroUJyIRFo8WkzbPuibSWzkxqGOt0S4GetveK7I66b1Ht3nY2x/VxU6iEgZ1QB
-         jXBntdoSwwvZn5YAja/O47bMAw+3gid6KfCf0UGA69EbLW5E7a7wk2kFLqpkVgYs6SUp
-         xUpBAumtrDYo6LLXDhttO3jcCt/To15vy8BaDhmYZRW6cYCeAWNtnjj17Dxy1D3YuWxi
-         lQ2k3X6ASQ8LEHIOQyo12StrrObe8ACGt8n6SKNqc3k8BqBuBqQ0AOMCMpfnZ+5O7pJA
-         urfA==
-X-Gm-Message-State: APuU4Z8f7NZs9/QWbdqNo978V6bh5cKXJ3FfH+EU8yEYb/vDhOcBwgkX
-	FNJph84TEgTGNWyz2jFJCdBYA9S8SuMCbJWUaWXQUL0l4cLF/qtzBAi6/Yzpafw1
-X-Gm-Gg: AYBFou15WNFa6rrbwetWI4sWqT2COBnU92P6ZFJhFZ/Tui4geCAeGRc4lZV0MtJWmvu
-	V6e1RjJdFlcWi4olXmoA6Hpu1XYx6xlUZR5fw4XU/aL0uyZJ7vvbsjRZHGyvzwRiN2yPnhM6jDc
-	wHp/R25QRETbeYyy47gr/acBTNw1LjQCiWD2mDtllOb2IQDit+rJS+nMUmZI4csbUDDLE2LdjIY
-	/5T15B0wR98Hfueb31Dz1jnBmiRRybhbaVmCrfZADY1cVTQbwd+PyZLABdqLKudccyRypIbwmaq
-	EnCBVqtKMA10H2p6yuJGpSAG9eaOPpGpKdoAUlacuiT7jwwzIpJhOJPP0C0CzPj+TkMLnnnHCgP
-	xknhH9+EtFUZgOiFcxjUwPE0hP55ySO2QKwvSgXYzViyM8RR0jrGvzbgjZihYHfGKb714tGOJkW
-	Wkj0ab5AIxU3g4+Rj03Qrsn7MqLtpz7vi8U0kO9aWgX9q+nQA+BFU0Enz9RT2CinSRc8ub85lTP
-	QlTQIkvqHzvphLMXTg4LKVEOFmnYOjfLxsmZb65PATmSZWLdutpweYkhA5jKP/ruYmqCLhZ8CaM
-	BOH/NbbswEQk5seGT9jXu/HOHboEExCv3ix7Fc9Xl8TMAy3bMMSmLEj9
-X-Received: by 2002:a17:902:fc8f:b0:2ed:948:b68 with SMTP id d9443c01a7336-2edb90b2eebmr20574655ad.9.1794307790115;
-        Tue, 10 Nov 2026 02:49:50 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794307787; x=1794912587;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TtZhYEtABJfA2LZa7bPQ/zz+wzRCh2ll5SwHuH1Q5/g=;
+        b=s5GicjyPsQdo00no0+EttRk7JjEC9c5cmXTJgaGzKv9gh5re08obQ50t1jYUrcpB7Y
+         Ct8zUOXal9wblm5nIc4Y1si8HLst5iOm3WPZ1++G1VyC2FSJTsAcge6ssaQ1q2k0TXpH
+         vCMskGW4hRCXKc6aeShBLR4KqRqB5NO0q4To25ZqcjWDHHEj+sQjJdkl6xa5iCuVwXTY
+         OwxZCbNtBFZCE6998flzkfIprH3rxhyyhht4jtqoXRFN/11UuTcsNman1kxtiOjxKLwx
+         DSTZvcjM1AHIO6xTzAqEBMyUKF0doBagJk6ohOD/jg2OBtQ3zRw6fVDGH7ugoLS36xdI
+         72JQ==
+X-Gm-Message-State: APuU4Z92KSgbWTtPzHzudDr8CAgFbmrOJDpDbhhW5iTiG4CnvBdbgGdG
+	Ymch0yqfHuWL1NIlqATmMi8pVpJktOFbTk5HDNiLsw6KP83TLfWRy3c+JaQctChK
+X-Gm-Gg: AYBFou3rx86NjcnO/USkaasvjdRhGDfPwtBDkq/DGLeJKHeHOvHxXKhGIV1xcILdS35
+	hELQoel926gi4zx/u72p982lhIEMSw3WArZ/rztTncQ0+Y4AVet3SSq0eKWxiLe0qltEX7TB6tR
+	A06kVKjpmusLecSa28yHqsyywILRrBS4hVRBLdXcWMqYIQ/H9P7RvN5RvSYp8kkHYh6HaHHRD3l
+	XNaUK+26P8AB/yLgZH2wk0/6Oqb0TEIw6u98cLh0n3Njq+8xb6VCBpe4AbumT3QS3qRAzcxjlc/
+	Z9LPbEWaXMTiBEce/Nk5fBAwc0SiseESnwiA/HflXTPwXTGkXyCX+Nfds2tzkdyctF03IKTu/jt
+	Ddf0r96X1IJgytxBymmBSb8llKtjZEXJ83crhLJ+QOgSPy9G68WSOhJ4Ka5bN8C+zPD7drukgxM
+	Jjloddwgc4FuCutX92yyMg9IZS7wJCa7eAClFa+4senecjIEMFtTAZ/YSW4b/DTu4U/QS0gBtow
+	wBJR8zLJDKTbnrooGPRdYEDdpZ+Ja5SXzN+rlJyqjwBF2lNpViay//ilpPQ7JO196AwhRcx7p9+
+	GRWt0o5VQwkGn6EyT4Z6FXILBOla/C8up7KNsjVOWN6sgUIWVSel52xr
+X-Received: by 2002:a17:902:cf0f:b0:2e9:5313:8f7b with SMTP id d9443c01a7336-2edb715dfe2mr16779565ad.9.1794307786556;
+        Tue, 10 Nov 2026 02:49:46 -0800 (PST)
 Received: from d.home.yangfl.dn42 ([2a09:bac5:6214:1250::1d3:d5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d906e4sm7337815ad.40.2026.11.10.02.49.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d906e4sm7337815ad.40.2026.11.10.02.49.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 02:49:49 -0800 (PST)
+        Tue, 10 Nov 2026 02:49:46 -0800 (PST)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -87,12 +85,10 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 1/3] net: dsa: motorcomm: Fix extack message on unsupported TC actions
-Date: Tue, 10 Nov 2026 18:48:53 +0800
-Message-ID: <20261110104930.223598-2-mmyangfl@gmail.com>
+Subject: [PATCH net v4 0/3] net: dsa: motorcomm: ACL fixup
+Date: Tue, 10 Nov 2026 18:48:52 +0800
+Message-ID: <20261110104930.223598-1-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261110104930.223598-1-mmyangfl@gmail.com>
-References: <20261110104930.223598-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,39 +100,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-No extack reasons were given to unsupported TC actions. Set a reason on
-the default path before falling back, and drop the now-redundant
-initializer of `reason`, so the compiler warns on any future path that
-uses it without assigning one.
+Various ACL defects. Found by LLM and manually verified (on YT9215).
 
-Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/tc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v4:
+ - reject action following redirect action
+v3: https://lore.kernel.org/r/20261106073806.112122-1-mmyangfl@gmail.com
+ - also unset `reason` initializer
+ - fix action resolver again
+v2: https://lore.kernel.org/r/20261103095514.338700-1-mmyangfl@gmail.com
+ - withdraw patch 2 as it needs another test run on the device
+ - fix patch 3 to align with software behavior
+v1: https://lore.kernel.org/r/20261102071119.3435180-1-mmyangfl@gmail.com
 
-diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-index 9dbd61e48fee..90b017a11a1b 100644
---- a/drivers/net/dsa/motorcomm/tc.c
-+++ b/drivers/net/dsa/motorcomm/tc.c
-@@ -1034,8 +1034,8 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
- 	const struct flow_action_entry *act;
- 	u32 *action = ruleext->r.action;
- 	bool seen_priority = false;
--	const char *reason = NULL;
- 	bool seen_police = false;
-+	const char *reason;
- 	unsigned int i;
- 	int res;
- 
-@@ -1122,6 +1122,7 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
- 			break;
- 		}
- 		default:
-+			reason = "Unsupported by HW";
- fallback:
- 			if (cls->common.skip_sw) {
- 				NL_SET_ERR_MSG_FMT_MOD(extack,
+David Yang (3):
+  net: dsa: motorcomm: Fix extack message on unsupported TC actions
+  net: dsa: motorcomm: Resolve the flower action list to one ACL verdict
+  net: dsa: motorcomm: Delete the ACL rule of the port being unbound
+
+ drivers/net/dsa/motorcomm/tc.c | 88 ++++++++++++++++++----------------
+ 1 file changed, 47 insertions(+), 41 deletions(-)
+
 -- 
 2.53.0
 
