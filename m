@@ -1,47 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794316223;
-	b=QV0ivJFfohcn0uRzoDksTa8dh4CwGGZahWPfQxNJjQJ3mRmF5zIsnZhOwwIlYDCvGAiC
-	 C/O/HwEdYk5gizViU4ykZAkvK05QhQPHCFwxTIIm6IVNgyn66zFLtLwAgXdG+ph7rZZ5g
-	 OQhLa1OgfFazKdCFLrNxnG7/xn2GrTcsU+cNdeLntHR88nUdEXtQarLWUWZFVaOQjVcUW
-	 1KWfFVyfLceBYiD8Dq74pDVQ0Zux6OrWxV3vcBKtwGfNrnLHn04611RyaBaBXeCij+jV8
-	 K4zGQAjaqnL7CyXJTpjJ2e+FK8Kkcz3yM4HkFi1ul3VjjTZ7B8STDFprqvsJCsWEBQg==
+	t=1794316275;
+	b=Ed8D4osKKCkrEIXg3bGh5KovakiTedFg9/tya4L4fq9px0whA28EQGvRtdTLUOD3wNFI
+	 0vPQztgcbKAC+kCrr4/dJpnG1VZ1VUqv8MSAmOtzBllrzp7m0EhdJ5rpzDmjgFO8VyJqO
+	 4N+fM1NipkgzCzEkS21Ryovtx2jU5z6nc1Mpuf//atYhH+1ojssvAhm3zrmTHPrRI9a7P
+	 wCcd1yNYGor+9G4B/uB8IIW+7azMC7EhaH3uYDu7yQJ8nw8RJHeEyJvZ5LQy/RHktuBxW
+	 KQobqpdth/OcybE2TtwH39nukuEHclM05xdHXIA8pGfZ4RzysUmo8jrVpsDug9Ktmhw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794316223;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=6syMrSNRwGS6gjty+GgbOX5gHZbIzGMr07iLqxjqTOM=;
-	b=IoHLZyIWxedX+8o2tnPAUpYpXL5lIXrD4efKev3DlFeoeO4DLXI1kG6MCM6V7hQ1bO+T
-	 mAr81mfS7VYUemoksMntC5wvcoeTHvmEUZeEzODKHVYmeU+YeJHffEvA45ydigRVoaGIO
-	 okGACI4vsB2fvEdQJ+CYwKfxaYHIWuii+wwr7ZKd7+kEXGQwCq2aFdmuzbklgtoU5J3TK
-	 PdKs3l0PARlj+LAGhugnsxeCcFikbr66Zv8d0rbmRWgiUyJ1eYuVMEvkj6ZUOuMD2I9hK
-	 Z+qHNge2426PidKmUVxpWiZqN2lBtdb4Q2mJzUBN5gBbWCmuM1O2i9SEdeoWxGq8Jiw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794316275;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:
+	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=Ywo8zhGzurnB0+Bm1NB4f5c8ywPLDjkCLjyZnnvvMJc=;
+	b=5JASzqapXCJvXnikZqsMxTNxWL8/qSqOcdEd3yPT5c5LwWQJOHTxj72opL98QVWDFQrG
+	 Nuqg9KXO81qmkzJaN2yfu5w7EFQadTkP37URB948vFv2Nj8Q2d+msN/c0DwSRaQbyLP2E
+	 V9ECyX83/JrGYE0jS0D2bh/cCHcz3vDaYCeZObNJcPGB6g1EgXHLTSA+f2KANPZp77TJt
+	 u8JFolAQeRcxQq1l6NskeP6ZGi0fbjR+PJqqP8zJbuNUcg2vTe/DpW4Y0A2J33T0I98Uw
+	 Vyp3ORdWjowxlQ4CdBBzfUXetS+gtl13P7WCF+hhTyk1FCMmhsFF+R06eKkTXSsz96w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oBT3jv+7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=jdY7Yitw;
+	arc=none smtp.remote-ip=195.10.208.51
+Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [195.10.208.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F00606A766;
-	Tue, 10 Nov 2026 13:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BCD606A754;
+	Tue, 10 Nov 2026 13:11:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58BCD606A754
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oBT3jv+7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF0C1F0089F;
-	Tue, 10 Nov 2026 13:10:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794316223;
-	bh=6syMrSNRwGS6gjty+GgbOX5gHZbIzGMr07iLqxjqTOM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oBT3jv+7Uh8iNm1FkZPAz5lvI4+ePpC8H2PhjSKqdjsT2nXrnihcgVY5/fNRN/qkP
-	 PdQe2p3NY1cjTf29GoUX5f7gXFwiXll+SNZDvqELr1jmfdnX9EgZsxiU79wdVAP/Nw
-	 3jsIJyYX4kr20uaqGlla6FYKC7LjFoyvU8yp3KTayEwQ/iknj4SpxJ9iibIkz9ZyGt
-	 24p2Kw4EZdFVhp4PGWqi25qvMUPoqlC6bNVjtS/MDaimyf7Al3GLinl8D2cYDKkrI/
-	 i12mODcI/Nlo4fa7mHti/iQ3zd0OZv8KCdMu0JiFvJYTsRGST2GQEGUseIznQD5kJk
-	 3vpkAAMH/xgPg==
-Message-ID: <cec4e2cc-9544-4146-9c49-92e5cff7d670@kernel.org>
-Date: Tue, 10 Nov 2026 14:10:13 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=jdY7Yitw
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4jP6V50dwnzNm;
+	Tue, 10 Nov 2026 14:11:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794316269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ywo8zhGzurnB0+Bm1NB4f5c8ywPLDjkCLjyZnnvvMJc=;
+	b=jdY7Yitwbi+ltrSQ0gamlZgwm7eIHDroKHARvrlArEXJDJDSYVEXHnWTSYnKCEAN4HeWPG
+	HWQHfRCTn/ON8DKcB5PDcvH1zSHkmjTOZMPd4pS1TtEGYvuHgGO39jDkamrt+/ZjNJBXVx
+	DGZtz4atUuvP8UN9oDDSWMEJkPe1L3DmRjd5FBaPKebj3sD1rDyagyr2KRGaYfzDCy3cnf
+	2gyjLc5ZUSvx1LSo7xJZSC/ssM0PI3GB+CWWHkpWoAQQhbv1vExQkGHUhPLglQjyLiKGsK
+	yu8UmWH6ZgPqw3xh5Dry7AJ4Bd9ft/AsELrnL65NLSpJH2vIRFeBHPWSaNbxfA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+Message-ID: <48cd2ec5-c3a1-4733-82bc-9c1df5ba3577@mandelbit.com>
+Date: Tue, 10 Nov 2026 14:11:07 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,92 +67,92 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next 01/15] xdp: reserve an skb core extension area
- after the xdp_frame
-To: Tianyi Gao <tianyi@cloudflare.com>, bpf@vger.kernel.org,
- netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Jakub Kicinski <kuba@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Vladimir Vdovin <deliran@verdict.gg>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+Subject: Re: [PATCH net] udp_tunnel: don't treat IPv4 sockets bound to an
+ address as wildcard
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter
- <donald.hunter@gmail.com>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Tushar Vyavahare <tushar.vyavahare@intel.com>,
- Jason Xing <kerneljasonxing@gmail.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Madalin Bucur <madalin.bucur@nxp.com>, Ioana Ciornei
- <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Chris J Arges <carges@cloudflare.com>, Jakub Sitnicki
- <jakub@cloudflare.com>, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- llvm@lists.linux.dev, kernel-team@cloudflare.com
-References: <cover.1794281983.git.tianyi@cloudflare.com>
- <115997f55d63b507ce54fbe9e22900b59016f3c3.1794281983.git.tianyi@cloudflare.com>
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Nikolay Aleksandrov <razor@blackwall.org>,
+ Alice Mikityanska <alice.kernel@fastmail.im>, linux-kernel@vger.kernel.org
+References: <20261110113306.3698438-1-antonio@mandelbit.com>
+ <179431059548.488859.9340944150774199097@kernel.org>
 Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <115997f55d63b507ce54fbe9e22900b59016f3c3.1794281983.git.tianyi@cloudflare.com>
+From: Antonio Quartulli <antonio@mandelbit.com>
+Organization: Mandelbit SRL
+In-Reply-To: <179431059548.488859.9340944150774199097@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4jP6V50dwnzNm
 
+Hi there, humans and not! :-)
 
-
-On 11/10/26 04:56, Tianyi Gao wrote:
-> Reserve the skb core extension area in the headroom, right after the
-> xdp_frame. An XDP program stores RX metadata there for the skb that is
-> built later.
+On 10/11/2026 12:36, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> The area begins with a header, struct xdp_skb_ext. It records the offset
-> of each entry and the end of the last entry, in 4-byte units.
-> bpf_xdp_adjust_head(), bpf_xdp_adjust_meta() and bpf_xdp_pull_data() use
-> xdp_skb_ext_end() as their lower bound, so packet data and metadata
-> cannot overwrite the entries.
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
 > 
-> The XDP_FLAGS_HAS_SKB_EXT flag indicates that the header is valid. Most
-> drivers reuse the xdp_buff between packets, so xdp_prepare_buff() clears
-> it. With BPF_F_TEST_XDP_LIVE_FRAMES, reset_ctx() restores the flags
-> before each run, and ctx_was_changed() compares them.
+>   - How the issue was discovered, e.g. hit in production, hit during
+>     development, syzbot report, manual code inspection, LLM or static
+>     analysis tool scan.
 > 
-> Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> Link: https://lore.kernel.org/all/1d5521eb-84fc-4417-a3f5-6366694d160a@kernel.org/
-> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
-> ---
->   include/net/xdp.h  | 45 +++++++++++++++++++++++++++++++++++++++++++++
->   net/bpf/test_run.c |  4 +++-
->   net/core/filter.c  |  8 +++-----
->   3 files changed, 51 insertions(+), 6 deletions(-)
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by code inspection). If it was triggered please include
+>     the symptoms, like the stack trace or error messages.
 > 
-> diff --git a/include/net/xdp.h b/include/net/xdp.h
-> index 07231adfb5f8..c888353425d4 100644
-> --- a/include/net/xdp.h
-> +++ b/include/net/xdp.h
-> @@ -81,6 +81,9 @@ enum xdp_buff_flags {
->   	 * XDP program is not attached.
->   	 */
->   	XDP_FLAGS_FRAGS_UNREADABLE	= BIT(2),
-> +	XDP_FLAGS_HAS_SKB_EXT		= BIT(3), /* skb core extension header
-> +						   * is valid
-> +						   */
 
-This can be on 1-line (80 chars) of you change the comment to be:
-  /* skb core ext hdr valid */
+The issue was discovered by an AI coding assistant during code
+inspection, while working on extending the UDP tunnel GRO lookup fast
+path (more on this in the coming days..).
 
->   };
-The rest looks good to me.
+It was then triggered on an unmodified kernel (current net): a UDP
+socket loses the datagrams sent to its port when an IPv4 fou socket
+bound to another address uses the same port:
 
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+   ip netns add rx; ip netns add tx
+   ip link add vtx netns tx type veth peer name vrx netns rx
+   ip -n rx addr add 10.9.0.1/24 dev vrx; ip -n rx addr add 10.9.0.2/24 
+dev vrx
+   ip -n tx addr add 10.9.0.3/24 dev vtx
+   ip -n rx link set vrx up; ip -n tx link set vtx up
+   ip netns exec rx ethtool -K vrx gro on
+   ip netns exec tx ethtool -K vtx tso off tx-udp-segmentation off
+   ip -n rx fou add port 5556 ipproto 4 local 10.9.0.1
+
+   # then....
+   # rx: UDP socket bound to 10.9.0.2:5556 by some $software;
+   # tx: one UDP_SEGMENT send of 32 datagrams of 1040 bytes to it,
+   # each a valid IPv4/TCP segment of one flow (quite unusual..but possible)
+
+Without the patch the bound socket receives none of the 32 datagrams:
+the GRO lookup fast path hands them to fou's gro_receive, which merges
+them as one inner TCP flow, and the aggregate is then completed for the
+plain socket.
+
+Datagrams of the same size that don't look like IPv4 arrive
+intact. With the patch all 32 arrive. (Tracing the GRO path with debug
+prints in a modified kernel confirmed that sequence.)
+
+The fix was tested:
+* with that reproducer
+* with a check that fou on the IPv4 wildcard, fou bound to an IPv6 
+address and both vxlan sockets (IPv4 and IPv6-only) are still registered 
+for the fast path as before (using a debug print on registration)
+* with the ovpn selftests on a debug kernel (lockdep, KASAN).
+
+[If needed, the reproducer script is available on request]
+
+All in all, not a critical bug, but still something worth fixing, IMHO.
+
+Regards,
+
+
+-- 
+Antonio Quartulli
+
+CEO and Co-Founder
+Mandelbit Srl
+https://www.mandelbit.com
+
