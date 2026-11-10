@@ -1,100 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794332897;
-	b=jpVjmK9nNND4rM+M79ZolaaSBoDdBhR05nGmCsolK8YjdGZfWjJd1tkE6tOix7d9wehN
-	 I0ttGoqaQVX/LxtodZy3JMNv9l9DGzSvvgbZLGuKymAWyF3tkNlE9kYDhoOEIQ9DnDFG7
-	 wbq3TszIoy7tGYunpvyfusjAt+K7HrD6eh2JqfpiNN+X7fFd5Iau3wY4H7urjfiMv7kF5
-	 27hzH1AoPCEnAoFddFtZKqkHMtsp8R8fDNE3203K9KEThSoAJIQD1eeaJACztAuvcGeIp
-	 Nmfb/upZt/KZ1YZ6lDRBsEDyGbD5ALQX93TcfPW6bvn7P5qFJwuTboU2WXjr1sWKEEw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794332897;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794332956;
+	b=YWxbAbk7xHuyhpsb2j+H6f0ELPtNUyTiKUZvneyP8O0rGbk3slauiYsapaeCrGX/NVpA
+	 1wL/mm3Ge2TtkfhlKgFTInndHkllylXfqo7Hp++AaA/uFGjQ3M4594pr1UOv+atSKcpZ3
+	 Zthsd2Rv6cZkImKWCvzz/3tPOzidlETCWcBrRW1rez9u27zjTSZ49ey5BquE4Yr8wls4Y
+	 nX1VLHQ5FP5Eew5aNuDbu/HLWpieG120Q/T+loHQI5wFI7tGZaEI6+dI4IAmPB6oA1UkF
+	 VqkDD7+v5/8KQN0JKqJP/DWD3Vu12rBb2jL7U57ZZ+E7e/phcysaoNoswHV8/K4vU/Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794332956;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=RqQVm9um/aTQzOqldkEmRJM0eYDushIj6WEYdWtOlD8=;
-	b=UbhPEUZRv6svVlcQeOEqHjVGf7Ng1mvOXNRPgkKRD0ZUGMBPo7BIGD7RQFLLGoRVJWtR
-	 IRsxFEzGVp0hOsd0hjOVe6QVU3+o/AhPpHcJNRmMfEGOMWcgaecLNG4WxVehpl5sQ+LuM
-	 3BOKDBC4WAwoKNqEAEDtNW/Pzhi9anBxzw3MNdohBsOiCSqWYH4F6+OzkuJSBje9YNSQW
-	 W//3TQqBvbSbnZw206FUxxVpHOMgOo+JqpAXWEa9vXEgw8Vhk9VMYfoWJ+qZLj1zTZAyL
-	 0xW8C+Qco8QTGtOBHzHytChsFGIYXF3N5gj6jxT6rB4RJpBFnNx2dn9ygy2fWlScIpQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="jQwrcRI/";
-	arc=none smtp.remote-ip=209.85.210.44
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=j6/vIY1+KYQxBreFtYkfvG0gVjy/kF+drhNwxzom6y4=;
+	b=AuSDxcoYuhyijnSZfJao61+9SU5jTuqwIFFhArUWxO7OExvc7OCCUQW5hZQdvozg6mHl
+	 iw/72END38R+tQlrjCJMwN6aAPLbhxYn4GVBCbFx5sok2LBWKY+CUhnsLzy5zXGVtr7Tg
+	 FRydf9V+OZBTD7TRSYLoKK5cbechJa98HuvpVujr+3EFgs1xOZse6SdH7j8jndp4l4RvI
+	 90rlBqJkIGp7mbEQh9d7JrH2tJ+bF7U/R3rvdGz3nHwvbXAgXSbzgAL8y6NVZJWDZxm+P
+	 z1REQnkdyeGZrv7IiXxvL+qcp/VJaFgU6SaCbXe2/+nc3WIhHusEoWsloFQmtw83ZZA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=zx2c4.com;
+	spf=pass smtp.mailfrom=zx2c4.com;
+	dkim=pass header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20261015.g header.b=KQdIGxie;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986D2606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:48:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 986D2606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38A2606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:49:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E38A2606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zx2c4.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jQwrcRI/
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-84621d8c7aaso1030280a34.2
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:48:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20261015.g header.b=KQdIGxie
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c43373ae89aso179943066b.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:49:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794332953; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Vd/wCXWE5LdS6XVWKfvdIfxHe6c+iERrSTMzEKFxeUHndxiOP6IcPbK9d+Xnl+gm0c
+         yon1hHIxINgdF/h4F3w+TaLu6muV1d02vmmDCOMORWztqCK7tUL9rI3GWRlpkJoAp85w
+         VZT3ItTdoHLoAsBFnSLUgWu7PzjOy5vvaS/pkAp9FTMOLodmhHeHTlE07U2vwZF2RghO
+         sfWoRRNnkqq0wHjG7EUwXjwwHKMjpvRWMEaR7CF0Va8mi2Wb1xvhs6h2VaSdC1Xg1Ga1
+         wv78y6fs07xP/yhwrG4ndjEXPkVRp8xAc2QzDpQIYX2vxit8Pt44RM4dDANg4xQn5ywM
+         yJkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=j6/vIY1+KYQxBreFtYkfvG0gVjy/kF+drhNwxzom6y4=;
+        fh=bAMSgjrNuKaTc3i+umrQ+K3rcUXdLbZ4cpQizlVKG90=;
+        b=KUMxol5P8ecMNDtnddz71+MvCuvNJpwd+ZN2s9y3euTOX8cFaVzizMEEWhY7AQ5KH4
+         jZ1VbvZPYcTGfECUA8VFReIf5JRGjO70cBvYxOj4xLxDGf7kCnnEz35pWwLDBUQ+HmVM
+         MWAvbqoNKkj19s+cWm48GofOoN/b+MDn+upohFKR3Ae+RU93PWgmVvuT+wv1oJED5Txv
+         Q5j2nBJryf/KCtzV3mwped9+NmUeVLx5GozWF9KXBHq/M7eHotlPXSVtMHj9Pr4/muxC
+         b9yD9JYQGo1683acX8RfBWwQ7ggf6uIivJ7tD37DnV0jZBnVhy8oQZ2US1aeOxSjdzRl
+         lnMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794332895; x=1794937695; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RqQVm9um/aTQzOqldkEmRJM0eYDushIj6WEYdWtOlD8=;
-        b=jQwrcRI/EDzSHXMr3gQAorj+KqxSQWHaUm8bkHAWGpAA9SqsS3z7kRr5NJqd0EKUkG
-         8HpzKSBK2n4Xr29CeavFKqDIDqXa6K9hR0+GevV2OGMFqqPWdVH9rIuvoUn6RdX8iAbK
-         tH09q8EUyOl1aScBq6gIdnxKe1FeZB3tOIlt4qLVOxSjVbyrd2KkGTdF8YNbHh+QGh+d
-         AqREXWX6g6fXImg5QuZnP6IR/2vK+T9oNmIgyKIPMl86f+OCVl4QHhtjuxUZQssfgx6G
-         tethYHJtwQOSK0U8xUQ95e7SfhXgRPBwm51GFwBgE8/ZyHMlrsr90rG0iikO7gHDr//K
-         91Qg==
+        d=zx2c4.com; s=20261015.g; t=1794332953; x=1794937753; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=j6/vIY1+KYQxBreFtYkfvG0gVjy/kF+drhNwxzom6y4=;
+        b=KQdIGxiez/gh4C0E6pwgI2SDKl5qCYpQCokfBgOCm+1FT6nN+zOKmSs8m+dOSc9xlc
+         JkzSM1BNct73WsvEKF2Na83AcWOVJphPdv+9gZoy+6Jnj8BT5v986paa+U7sfAr7q529
+         BEVxT32EbblRsl0AG7o2CAWTgTz9NGWtQH8A/z81Nz9eFWsI8/NK5Pkz9lSfkuoMw0H3
+         oiIKdDMCW6W6RJixhz5/mO8OvLGCc1TIDJK1/UeORyHjFeJFVEYLMSeIEfikqIxJJwmF
+         n2IZ4GV6VJ8n3ASxVCmuM6+N5XPi8RE0DHIXY5uhWJTs48pxoYknrMm1lfLWlKqO7dfs
+         Epbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794332895; x=1794937695;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RqQVm9um/aTQzOqldkEmRJM0eYDushIj6WEYdWtOlD8=;
-        b=p5jrFrMkgsLxPlojs1axdI2tE2g9A5MdlzTvTjwWm0qjrEjYcOUokM3CUO3l6CGU3z
-         OhDToQ4DOt/0D6e2laOKLeGbvEhAxz/lM5pdZCsVSm335YnWDscbqWB3ZBD2sBZOx1YX
-         KXdIiYLadxDbSbJP1kxj6IVxmLiWvkyOWCXSTzwx9piza5yhw+brf+4Wa7g0JFCFpTj2
-         XJFe0oHiXci8HimYjhbzXVpiTQw0KSB1vrfcE6NoPiMvHKPK1jSxaGJZTZHSJxxgkjpo
-         YqKCY30dbSIwcnI2qacZAzRl0++g9CmPHDhMXnv5r5AVcv+VOeSroKxMX2YuGnBquAHb
-         8YXg==
-X-Gm-Message-State: APuU4Z8Xeewt32Os81cekE7pCzuK+Dmb7FO6+WpdPb4qeDRLu02WZpVz
-	pnhfImyuFXavIwkgKOOxNMZd1jxjlCrv1otcf0AMs97zjym15+6KTiskEHQxtvnT
-X-Gm-Gg: AYBFou2f+XTAmakwPc9iaTwgQcyw2ilSTmpm1IMYA+qULRb5VDGmi+NOrQby4gmvVe/
-	gFNZFVVnNZb2OCpW2AGQ9aAMcaFkHk4xuQcNVpST6QnzszL3F++QQPhAJ6EoHNJQ+xJDXDVAs9d
-	FwF5TlZtZr+Bw50JDpSMwlugMz2aP+16TUY1/NrP7Ug3KsnPG+PuqYl1KuF6AAE8owAHnMFiBrP
-	aXP6RrfXvTDXOgy7vR5JrDHSLZekhX0plYfkLKw5pkZqpiZtnGdyuOR21I1SXdg54sLu1Zsl+IV
-	3W+JxRkmCPrLA3gqjjX38squ/LHqDSV+ulGcuf6PSaJ/67mSaRAIv3VMKlGFGMvvDDcM/JKPDAW
-	ffTV2BCM6GdC0jkU63wLHCDQhaPYnI1S8clk8/HPwJXokXEfBjhTpPIHPmVqio1feqOjG9V1Pba
-	GUeEX2syBGje8ukWPZYyj2oqJWt54GuqjGhUmeLd5vXhKmmAvMUkCtkyHfYD9t014ALsccSzeRi
-	pxsq515ojTBiobYJ2SHLsJNW/TW59o92HDA1s5y7rWBwwlDHLZrouqQVuOkKSKyrDPxWBE/TVAg
-	8PmFcy0CUJU595nCsyIfSxlb
-X-Received: by 2002:a05:6830:915:b0:7fa:ac4f:79a with SMTP id 46e09a7af769-860dc82c5ebmr3664031a34.22.1794332895384;
-        Tue, 10 Nov 2026 09:48:15 -0800 (PST)
-Received: from houminxi ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-860dca42411sm2389254a34.1.2026.11.10.09.48.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 09:48:15 -0800 (PST)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org
-Subject: [PATCH net-next v7 2/2] netlink: specs: add ovs datapath and vport set operations
-Date: Tue, 10 Nov 2026 12:47:51 -0500
-Message-ID: <20261110174751.973464-3-houminxi@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261110174751.973464-1-houminxi@gmail.com>
-References: <20261110174751.973464-1-houminxi@gmail.com>
+        d=1e100.net; s=20260707; t=1794332953; x=1794937753;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j6/vIY1+KYQxBreFtYkfvG0gVjy/kF+drhNwxzom6y4=;
+        b=WKqJ1q0uFdrvaSDRn4Fd0NPTYeSktyhzbl06pTVRpmzu0xCImWShuPG/NWk1lU8jED
+         z3qTWGwIIzJrlUtQKuD86+M68UdCaLbmd/9KcnDJDT5ryJ2nOA0+4ZJVEqMHAAn2BAhI
+         f4vfVUWCktmchP7SojbX0q/UK9MQ4VXPTn/faEUvZr58MRofNNMIao21S4cWhxK67DwU
+         XSI7cJSlEsEqaEqdGuHJX+kN2mDp1QpbaQneXURlxlBGWxYyXmFgLp2aCl6obMPBESfA
+         I8ZmqMTyR7ng3vw0JhTPj/k/LStex8yGG7xGaN9SvufUQy4zDCYxz0PNXsRalz5YmtGn
+         NVsQ==
+X-Forwarded-Encrypted: i=1; AL+hErEAzlJ3qCSgb79Mfz+Kmm9Bh69uY9/TflE7oBhCO/5ucWhKeBKZGV3i0zMbgA5Mf+wwEtfPM+s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/x7L0Q0l3xeTyn/BW47OqcYDpFAAa3nFXtuynheZMEOYouUmwh
+	ktbRXcfmP1H9gkfybs0lWDcgDabC2+YgJcQvaiG4Kaogy5SpD20zKaGz6jKswTgiWcDZPsLM22E
+	+Rs8s5tPic0iTrRA87C7uNxFsHsbOtF2tEWOrdCx3r88=
+X-Gm-Gg: AYBFou1oBsbTPTqDGYvJy8wyCWsTQSP32hKHYW8sg7Uaf3PFE5OdLETeZvoCvCX5OjH
+	5tZBpAVQncNXYPxjmF98tu5wLvUdrM0RRa9HV3s6N4mIZ1c2fMd2zl2IfdrXacXFlY/9X6ul1bj
+	jqTN3ZZPZw3A1F4w+cxVZgtKgKhABeGSqerKWoX/2rAa6EZ+hsGCT7OE6GQtObONWqqt3kqcdnK
+	L+FyyIl7fFedRP+CQfQqpzsxxsE9xMD2XLbfxReKga3XZMh4o/w8QaxmwDxzZZtQa3P3higxpgu
+	+giSdtv3LeeCKMNJYsQH0YUJejr3Imtt4XQ0cn0xn+Z1dHr5AyY0RrtlHTWkjuUI7of/ASIS81W
+	/Iq5Izo2pY4mSeO66s9hJe/XSBg3rBOVd8W0P6wwP2Y2ukS2/uTlRWK859/jhhWtYeVaHgUC644
+	x961KAAYpJT/tSFdVRdAcBvzElgqvSyBNf9qvz+eLcVldTItiTdGbvqAj96BfieWl2uRNHC8VQV
+	2lp
+X-Received: by 2002:a17:907:3fa2:b0:c40:38b5:d784 with SMTP id
+ a640c23a62f3a-c5049609f4fmr264194266b.22.1794332952982; Tue, 10 Nov 2026
+ 09:49:12 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,201 +106,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <116cec552f58748d434d4825c6c74f39266b265f.camel@infradead.org>
+ <avNCdbpjxM752XSw@zx2c4.com> <89b5e08e2a48c33be4cf2d495266d04a2dcf406e.camel@infradead.org>
+In-Reply-To: <89b5e08e2a48c33be4cf2d495266d04a2dcf406e.camel@infradead.org>
+From: "Jason A. Donenfeld" <jason@zx2c4.com>
+Date: Tue, 10 Nov 2026 18:49:00 +0100
+X-Gm-Features: AclHuK_fmNqGYrX8aoD5zj-ji2pF_XvdH1TFaa_HSiH96TwcOL_EUaS0rm5SADg
+Message-ID: <CAHmME9pWbftSmnJgLawNmWxNHMEqC5evxWPW8TruYkBD18Q8nQ@mail.gmail.com>
+Subject: Re: [PATCH] wireguard: socket: fix sticky source address on p2p
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S.Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Antonio Quartulli <antonio@openvpn.net>, Ralf Lici <ralf@mandelbit.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, openvpn-devel@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Both families register a SET command that the spec never described, so a
-YNL client could not change an existing datapath or vport. The datapath
-NEW command also gains the masks cache size, the per-cpu upcall pids and
-the ifindex, which its handler reads. new, del and set take
-CAP_NET_ADMIN, which is GENL_UNS_ADMIN_PERM in the kernel.
+On Tue, Nov 10, 2026 at 5:47=E2=80=AFPM David Woodhouse <dwmw2@infradead.or=
+g> wrote:
+>
+> On Tue, 2026-11-10 at 17:12 +0100, Jason A. Donenfeld wrote:
+> >
+> > Hmm... How did you choose __ip_dev_find() over, say,
+> > inet_lookup_ifaddr_rcu(), which is structurally more similar to
+> > ipv6_chk_addr()?
+>
+> __ip_dev_find() is what's exported to modules. It internally takes the
+> RCU lock and calls inet_lookup_ifaddr_rcu(). It also falls back to a
+> RT_TABLE_LOCAL lookup, which I think is the right thing here too.
 
-The datapath SET command changes the user features, the masks cache size
-and the per-cpu upcall pids. A request that leaves out user-features is
-read as zero, which clears the features set earlier. per-cpu-pids takes
-effect only when the same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU
-in user-features; without that bit the pids are dropped and the request
-still succeeds. The masks cache size has an upper bound of 4096, which
-the attribute records.
+Okay, makes sense.
 
-The vport SET command changes the upcall pid. It finds the vport by name,
-or by port number when the request carries no name. An ifindex or options
-are rejected with -EOPNOTSUPP, and a type that differs from the vport's
-type with -EINVAL. The type only has to match. The vport NEW request list
-gains the port number, which its handler reads.
+This simple patch reproduces the issue in the test suite (and confirms
+your fix):
 
-The ifindex attribute is signed in both policies, which read it with
-nla_get_s32_default() and reject anything below zero, so declare it as
-s32 to match them rather than leaving it u32. The field in the generated
-reply struct becomes __s32 with it. The reply itself does not change:
-ovs_vport_cmd_fill_info() still puts the value as u32, and the two types
-have the same width.
+diff --git a/tools/testing/selftests/wireguard/netns.sh
+b/tools/testing/selftests/wireguard/netns.sh
+index a8f550aecb35..5dfecb4c6ef1 100755
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -474,7 +474,7 @@ n2 ping -W 1 -c 1 192.168.241.1
 
-The ops in both families skip strict and dump validation in the kernel,
-so the spec says so for get, new, del and set.
+ # What happens if the inbound destination address belongs to a
+different interface as the default route?
+ ip1 link add dummy0 type dummy
+-ip1 addr add 10.50.0.1/24 dev dummy0
++ip1 addr add 10.50.0.1 peer 10.50.0.2/32 dev dummy0
+ ip1 link set dummy0 up
+ ip2 route add 10.50.0.0/24 dev veth2
+ n2 wg set wg0 peer "$pub1" endpoint 10.50.0.1:1
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- Documentation/netlink/specs/ovs_datapath.yaml | 36 +++++++++++++++++--
- Documentation/netlink/specs/ovs_vport.yaml    | 29 ++++++++++++++-
- 2 files changed, 62 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
-index f7b3671991e6..b24dc1e03f46 100644
---- a/Documentation/netlink/specs/ovs_datapath.yaml
-+++ b/Documentation/netlink/specs/ovs_datapath.yaml
-@@ -102,13 +102,17 @@ attribute-sets:
-       -
-         name: masks-cache-size
-         type: u32
-+        checks:
-+          max: 4096
-       -
-         name: per-cpu-pids
-         type: binary
-         sub-type: u32
-       -
-         name: ifindex
--        type: u32
-+        type: s32
-+        checks:
-+          min: 0
- 
- operations:
-   fixed-header: ovs-header
-@@ -119,6 +123,7 @@ operations:
-       doc: Get / dump OVS data path configuration and state
-       value: 3
-       attribute-set: datapath
-+      dont-validate: [strict, dump]
-       do: &dp-get-op
-         request:
-           attributes:
-@@ -135,24 +140,51 @@ operations:
-       dump: *dp-get-op
-     -
-       name: new
--      doc: Create new OVS data path
-+      doc: |
-+        Create new OVS data path. per-cpu-pids takes effect only when the
-+        same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in user-features.
-       value: 1
-       attribute-set: datapath
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-             - upcall-pid
-             - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
-+            - ifindex
-     -
-       name: del
-       doc: Delete existing OVS data path
-       value: 2
-       attribute-set: datapath
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS data path. The kernel treats a missing
-+        user-features attribute as zero and clears the previously set
-+        features. per-cpu-pids takes effect only when the same request
-+        sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in user-features.
-+      value: 4
-+      attribute-set: datapath
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-+            - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
- 
- mcast-groups:
-   list:
-diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-index fa975f8821b6..5a3ac4b03033 100644
---- a/Documentation/netlink/specs/ovs_vport.yaml
-+++ b/Documentation/netlink/specs/ovs_vport.yaml
-@@ -111,7 +111,9 @@ attribute-sets:
-         type: unused
-       -
-         name: ifindex
--        type: u32
-+        type: s32
-+        checks:
-+          min: 0
-       -
-         name: netnsid
-         type: u32
-@@ -128,18 +130,23 @@ operations:
-       name: new
-       doc: Create a new OVS vport
-       attribute-set: vport
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-             - type
-             - upcall-pid
-+            - port-no
-             - ifindex
-             - options
-     -
-       name: del
-       doc: Delete existing OVS vport from a data path
-       attribute-set: vport
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-@@ -150,6 +157,7 @@ operations:
-       name: get
-       doc: Get / dump OVS vport configuration and state
-       attribute-set: vport
-+      dont-validate: [strict, dump]
-       do: &vport-get-op
-         request:
-           attributes:
-@@ -165,6 +173,25 @@ operations:
-             - netnsid
-             - upcall-stats
-       dump: *vport-get-op
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS vport. The vport is picked by name, or by
-+        port number when the request carries no name. An ifindex or options
-+        are rejected with -EOPNOTSUPP, and a type that differs from the
-+        vport's type with -EINVAL. The type only has to match; the one
-+        attribute that changes state is upcall-pid.
-+      value: 4
-+      attribute-set: vport
-+      dont-validate: [strict, dump]
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+            - type
-+            - upcall-pid
-+            - port-no
- 
- mcast-groups:
-   list:
--- 
-2.56.0
+So I'll add a followup commit adding this to netns.sh.
 
+Thanks for fixing this! Applied to the wireguard repo.
+
+
+Jason
