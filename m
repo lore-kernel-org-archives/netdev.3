@@ -1,75 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794347143;
-	b=do3XZy9icFCgxE0JP76XCdJUmtgMcagPDyI7CPISjoBeN2lfVKq1DoJHlEis1hwygQku
-	 XgX4KC1ET8cwqsLnid4nZj1J4mvdN9JoupZJdIX8atiVK2uV0ka6BlHTeEC0A2bOBGcGb
-	 CJ+ZdGXed4klNxXlqOYTr5qjH1oIp2NU+2G0ZE8vEYJsIC7AseiBQ02Btto/TaPxrydGY
-	 7M49u/pXs6RNtIwpN9m2OUCiTyxVw6DNmdx9iYp3rDbLSeZpCa78z+27Y2KU9eGXd7J8P
-	 0KW5wplB+eQwt617fvceoJNeYj2wdE+5oI/tcietgbXjHca1JKCCiguKkXrK1TQ3nlw==
+	t=1794347191;
+	b=L5L3QwHzoupw/RO4U3MqMfpRWqO9HuHfh8opqe2qFR0fLeJk80GvzyADxtDpQQY2oXkb
+	 UV6TDleGKzONTUhcvN3qT8K0qCAoosg4EkJtLlzvo2YM7x44MrFQn82bv/JR4Akpwljkk
+	 VmfCLv8wj/6507qI5mK5sec6+IIv/ZcRiSr2dTEvt3kILS3VcjlwVKztfV7zWjLoKkjEO
+	 2Q/rzEfZgRawOZI0XeV18TKqL5l6aKxiGuYlvmaX0Ba+Mp6/LVAF0JWctfp5HlH8WJ1cp
+	 49P36yZvPoFkA1LBNel8XzHNTjQcy/HvwGzZ1/OEK5cmnqeg/nmdrgRitdwQuxPM8CA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794347143;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794347191;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=35fQk2prx0lBB02/47r4mEUB8fpBOI29YWOfBrE+Kf0=;
-	b=kMaNSjdu44hStqcU+0GE+wmxhODw62KKr+FO3Be+rLExyefVf3YJcE2STcTnpahaKsRh
-	 Owe08Bn89tNsI1FGm9EXZ7jLNLwpOg9Qgm39BJmfBnZrO1Bvs6r03/VNhnjYsUGHbsc07
-	 Jb2pkTtAmogcC/0pG5vghz02GbEz/bsEItTOZYecctCoIMTuHVtA969NSo3fYZ//7E2EA
-	 rzqgQLJl1eMseubAsPz3XtCzUPF3wF099sV/xFodcDr7xUx8BlPGApzve3Amvr6DLgWAw
-	 Z7P2wFiusyrsj7iTrdsNL2UDzAIH25RW7snzROfEYZfuRsO8h1o1nzfG9Yq4y2Km8wg==
+	bh=6FZ7eMvY8oN74+MoaJPVq5/MbdbF04OhfLtGkmr49Z0=;
+	b=RsUrA3+Aut4GIkS1lkNSVrPh7kioaRvcLrPIcJhbSQ0sRvKjiAnagEWxDKSSj/LXjhPR
+	 1ncoFndY5voEHSYiJdDGFDMZj1RdCu2L0SDiaX0G1+vgLbMPv57YwvUyj54ebuXyscqjF
+	 YJOuCd+X2ibe6PwquP3sy8k3hK+ZOxYRoRu7FvKw5b4HvhDVCrhFwWoRwaOvOI8u05qBe
+	 5QcE4xeCePUVlf+AnOO6KAs53s4OYRWqR8vLCbRxYaQVtno0Bi4hJ8XkuRJyQ8LTnPSDK
+	 uuL7/yAjEQqugeSotOYKr+jxFAnTihtWPLWpXAw8ZsBdnwytbXrelPMDnEoVMAdfLwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kymx3Z5Q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MUqyUj+X;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DF606A321;
-	Tue, 10 Nov 2026 21:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E08C606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kymx3Z5Q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBBE1F0089F;
-	Tue, 10 Nov 2026 21:45:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MUqyUj+X
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187421F0089F;
+	Tue, 10 Nov 2026 21:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794347142;
-	bh=35fQk2prx0lBB02/47r4mEUB8fpBOI29YWOfBrE+Kf0=;
+	s=k20260515; t=1794347191;
+	bh=6FZ7eMvY8oN74+MoaJPVq5/MbdbF04OhfLtGkmr49Z0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kymx3Z5QuLjhVt9c5TXAk+kfoV9+Q69m2rh6gKaY2iciQySjWz776ENyyzO76ntE/
-	 /uzWTdV8hdYbQdh1l4IyeQ5fyyv9r2cCWu0qjO5wH2a+J4S0bzy6nNaTA6trhTE0GW
-	 /L1dwdPvEztraG/h+sVCOy641h7Uk/TMwO2q4hRzVBg/Rkxmb7cReJ+LatfFNQPTkP
-	 6patrVaXaDmYcM/GxuvUQx3acPjDDOm/3QA23frVW+hN4rGRkeHMgbj+Hzf1wrVZRK
-	 Mzim6bafAA11Nz4YojXw6wG9MXECjIaGYV2Ai4JM+kIAL0NrS4PfdlrklEcr67vMyR
-	 y6wV8M99tyxhQ==
-Date: Tue, 10 Nov 2026 13:45:39 -0800
+	b=MUqyUj+XAOmJA0DB6k9wwJtpYOH4qg5dpRdkEF1RIq7AXOSu7uLxSsykMtjRinp+K
+	 zPrYRmSem8BuUFuWMep8T7UqIpP+qm4awJayMLrWLxur3EZ5PbNO0+hKqwQ/bbxHd7
+	 jNU13vYAi44xxCSNlL7vYgauUDBt88dOuQ4+Mhek/R8xLQGzbYknBjidS77BOB853k
+	 WRbxal+QFO2uB8sW/CviqICDjo5GtAaFh3Mx8sM7kTecv69kNA1ZIbMSxiItm4G7JG
+	 fQvm027ZpYfbEK7meBOcU/AHnEeWVqwwW7BPefSaNmGLtMZyqeZrTI3hGd7S8tIosv
+	 jlltheLc8eaTQ==
+Date: Tue, 10 Nov 2026 13:46:30 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ding Meng <meng.ding@siemens.com>
-Cc: netdev@vger.kernel.org, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony
- Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, florian.bezdeka@siemens.com,
- jan.kiszka@siemens.com, wq.wang@siemens.com, p@1g4.org,
- gerhard@engleder-embedded.com, Jason Xing <kerneljasonxing@gmail.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Martin KaFai Lau <martin.lau@linux.dev>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri
- Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor
- Solodrai <ihor.solodrai@linux.dev>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
-Message-ID: <20261110134539.12d860ef@kernel.org>
-In-Reply-To: <20261105071706.7043-1-meng.ding@siemens.com>
-References: <20261105071706.7043-1-meng.ding@siemens.com>
+To: "=?UTF-8?B?dGVuY2VudG9zX3NlY3VyZQ==?=(=?UTF-8?B?VGVuY2VudE9T5a6J5YWo?=
+ =?UTF-8?B?5YWs5YWx6YKu566x?=)" <tencentos_secure@tencent.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn
+ <willemb@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Steffen Klassert <klassert@kernel.org>, steffen.klassert@secunet.com, Eric
+ Dumazet <edumazet@kernel.org>
+Subject: Re: [PATCH net v2 2/2] net/ipv4: reject appends with negative
+ fragment copy
+Message-ID: <20261110134630.13c5af31@kernel.org>
+In-Reply-To: <306E09760B4212AC+ipv4.6d58afc075934322860394a26ceaa2e8.2@tencent.com>
+References: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
+	<306E09760B4212AC+ipv4.6d58afc075934322860394a26ceaa2e8.2@tencent.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,20 +64,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu,  5 Nov 2026 15:16:08 +0800 Ding Meng wrote:
-> +  interface index will be returned only if CONFIG_SKB_MARK_NAPI_ID is
-> +  enabled and the driver is using NAPI. This hidden configuration is
-> +  selected automatically by busy-poll support and by drivers that need
-> +  skb NAPI IDs to resolve deferred hardware timestamps. Drivers that
-> +  use deferred timestamp conversion must select it so the networking
-> +  stack can find the device and call its timestamp callback even when
-> +  busy polling is disabled. The struct contains also two other fields,
-> +  but they are reserved and undefined.
+On Thu, 05 Nov 2026 15:34:36 +0800
+tencentos_secure(TencentOS=E5=AE=89=E5=85=A8=E5=85=AC=E5=85=B1=E9=82=AE=E7=
+=AE=B1) wrote:
+> __ip_append_data() caps datalen at maxfraglen - fragheaderlen when more
+> fragments are needed, and later computes
 
-Just take napi_id from under CONFIG_NET_RX_BUSY_POLL instead of
-complicating everyone's lives.
--- 
-pw-bot: cr
+This series was incorrectly formatted, please rebase and repost.
