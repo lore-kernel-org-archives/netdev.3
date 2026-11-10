@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279326;
-	b=WXZ8ndkDgUNuwT8CGCBjvyo7eGwV7ksr97aqylL+E0w7hke7EpmijwIAI7jWJXf/JBPv
-	 HHvKZYCUEHLsS9fctz/ay4eRl6VxlZmLPPOB5WmCrhF9puiZdOztPWYc7sFZhsjtv4Lp2
-	 5RQF4bKt9AOUjq4knDNVUyFvIGUkUhdUcJaylp8v9h5voiwPE2qPnkgbzjBnMn4ORCx6l
-	 pXRMUMqnOQvA0LcT3PlKq8rp4eMPJlCV0bvOen/OgxOukL3d8zGXkDkb46cyxgiWGF4n8
-	 xJkhHaOXqEssZ3ZsEB2YdrtM08FN4tuxsqzG1Jp6ULTw42j7xot/1Mx71/MO6gUS1Cg==
+	t=1794279324;
+	b=HI/A60cQ3S7ZjwlKa4nQSfVnWHJ4lLq4DcLyJl/vV6MpMCzk0Qf+2pW3BOaxte+qrTKG
+	 8crMFRMERhM6PRhkz5h9M+QnpY/1jIHJbt2/F0qALzVP5zwwhd36nMwbbOd6LUjCZhWL6
+	 YikKzDz87RNIwz5ehAwnF3dUahTILY+5mAqns26aKfMaytcqfzvDpR2wGsPagC2jKoi6e
+	 GvXKUJv36PcBmlwHovqO4y1hdTQJZBDUCEt5+CKVV0uz04gJ6QFXK60tO0Fal/N0DAPTq
+	 CcbsW9DQpA/xKcftyPji/M1Bk3KfTfKxU2Bv85L9QaOK1Axd5CMLr80LaLKUl82gY7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279326;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279324;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=yzbqzrXHNeakWLUFfYy0kiXw+elLkCR7kWvTIuAA1SI=;
-	b=Llu1vT1PlMMFrp9F2oA7eGjXEQMaLi4idfb1rkXemo4kFAqZTsjxgK+xlI+gbcvzljX7
-	 3Z8unZP5QJwUMEvVez2XZM3gVCNIAkMsKTfHM5gw1XZrJXrmd88PbbTYVAeV3+jJEJKlp
-	 2iO6B+HzXfDJW2KzXtgo3NGz45GDQN+dXYGMNJUynhu06NQ+JfZZRHV/zX4PJKvrDxyrq
-	 8Cj3qYxJCCpilqK6kdSAzonPzLqx+basBXc1jwnDQErMVqtTaDZO7eNXuKvdpGJJSTpLI
-	 ZFITONca/IVUeH4mX3bmb1SjZKKah9YkS+2epWao7D0+JfY2WElAXHLpig6PfMaebgg==
+	bh=846j6wL4j7UvBVjd/28Rgk3idfp9HTNpB1bpeGDTWng=;
+	b=A3OdPLnpln20B4ao3vcw2TYd6tAZBFw0ix6ctfgk6s/hdg/Y+OAFVSE0Q10m2KRAN2DL
+	 9ErOX7rUHDQ9u+CBkWDn6c5x4J6rvWO7Ppxlk4EetNKjDt4WrVkNbxoeGSDbMl020pM21
+	 HlJkJcQ6NnZHr+NEBLy5InQKtjPhOr9RL6eTlZp143TD4PD/j1vYCAuleO6jV3kxihYSt
+	 ztMF4mdboUwL7SajvH5+gBNi+FNksy1M4/Y3aPpsuJ/6yiyBYiolVYFZMm64NdbyxeldJ
+	 jqa40LSJDHfr5USZczBaNu16CPAzM2R9Xk86kaLb0fSXb2zb+PH0NEeKPsIsqArs2+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3xLxsL6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehcs4YFY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7102D606D11B;
-	Tue, 10 Nov 2026 02:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B20606C6D1;
+	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3xLxsL6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235391F008A4;
-	Tue, 10 Nov 2026 02:55:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehcs4YFY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CB01F0089F;
+	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279326;
-	bh=yzbqzrXHNeakWLUFfYy0kiXw+elLkCR7kWvTIuAA1SI=;
+	s=k20260515; t=1794279323;
+	bh=846j6wL4j7UvBVjd/28Rgk3idfp9HTNpB1bpeGDTWng=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=b3xLxsL6vGu2KbJDR/sJr9hp9FTUFAlpct1X014CHIIitMBSU2fkFTPbTCzhmXtg0
-	 gKwEMywNwghXc9k1OxzoYLjv0sEtB98uyB9TaLWhD+e7r0Hs9UNc+ethviqbDVdaM9
-	 uOhc3WZJYjJxywLDzCtP/Udusopso15nrHuL16sb7SArXBmtXuY1aC29JdWgR63cRO
-	 n9PiAgPtg06hHoM1uarVWZJ/n0dC4oYEM9IyeTQ/kj58rO3ZFJOQ+TtSzQ/U0B0YKn
-	 C0V/mJBYMq0TF5qtohQy70gkID3v5sHJ7CsBqhyP/FIz4E063WgQ2KSfF3cdbMLv3y
-	 XzUB6nrfX49Cw==
+	b=ehcs4YFYbwPN7lGLVw4nRjvIKzJuMs+nJVBbZ1HEETYCKz/yDxekLyx6XlE9VlOLf
+	 wvrIcIDJar03NkNF/fodXcYM7k2s7pwf6FIOSJpMCuobp2X6bXinJN5bRRobAs9Grd
+	 ZbLPf/IhI5mDCwJVorNzJsDH/y+jxlJdzijcltclEGiTcBNOYgNVaMeXQqqZvBD9eH
+	 YsC46xgN1/RBkWC4hVTZxZZiKbLYah9KyAR14TCKORXAOi60s0CI2EmVuSLAV6GnRN
+	 ynPzdbWHddR+LuwVEp/zz/xdBN8/x1SJcwEz62ubIbGf3GTwPlAdTeOUJ/Zyts/mTo
+	 oZx7Fr/I9dyKw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 18CDE391AFCB;
-	Tue, 10 Nov 2026 02:55:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E221391AFCB;
+	Tue, 10 Nov 2026 02:55:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: qualcomm: rmnet: avoid stale VND access on TX
- drop
+Subject: Re: [PATCH] netdevsim: fix NULL deref in port attrs after unbind
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427932474.3612825.13986957054931266186.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:24 +0000
-References: <20261101232354.2047804-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20261101232354.2047804-2-Jeremy.Jean@oss.cyber.gouv.fr>
-To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
- sean.tranchetti@oss.qualcomm.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <179427932199.3612825.4107115664399893985.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:21 +0000
+References: <tencent_C7E2CBFD5E5A8E8541FEA08915F742EC6405@qq.com>
+In-Reply-To: <tencent_C7E2CBFD5E5A8E8541FEA08915F742EC6405@qq.com>
+To: Shuai Liu <847807867@qq.com>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+b3fca27eb4005f0111f4@syzkaller.appspotmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  1 Nov 2026 23:23:54 +0000 you wrote:
-> A struct rmnet_port stores a pointer to the most recently created
-> RMNET VND in port->rmnet_dev, but userspace can delete that VND while
-> the port still has another attached VND. When RMNET later sends a
-> buffered TX skb, a failure in __skb_linearize() makes rmnet_send_skb()
-> update the drop counter through that stale pointer, which causes a UAF.
+On Sat,  7 Nov 2026 17:20:09 +0800 you wrote:
+> The new_port and del_port device attributes call nsim_drv_port_add() and
+> nsim_drv_port_del(), which fetch the driver private data with
+> dev_get_drvdata().  If the device has been unbound from the driver, that
+> private data is NULL and priv_to_devlink() turns it into a bogus pointer,
+> so a write to either attribute faults in devl_lock():
 > 
-> The stale pointer can also be used by rmnet_unregister_bridge() when a
-> real device leaves bridge mode. In that case it is passed to
-> netdev_upper_dev_unlink(), which dereferences the freed VND and leaves
-> the actual bridge adjacency behind.
+>   BUG: unable to handle page fault for address: fffffffffffffeb0
+>   RIP: 0010:__lock_acquire
+>   Call Trace:
+>    ...
+>    nsim_drv_port_add
+>    new_port_store
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: qualcomm: rmnet: avoid stale VND access on TX drop
-    https://git.kernel.org/netdev/net-next/c/4f89bcfa1e16
+  - netdevsim: fix NULL deref in port attrs after unbind
+    https://git.kernel.org/netdev/net-next/c/98aaf4da98d2
 
 You are awesome, thank you!
 -- 
