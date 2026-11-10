@@ -1,54 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794335172;
-	b=vVZujMIoqKo/mdct3pEQmnP3x1s1n8/8aACLWAmmSast1ERFjig36YLtnNNCkT56lFdX
-	 U30+OgpDShwEgrN2hGbNheOLGfevwnUkACH+FVEg354V/5+z/18yVxzAMGWpi5trmrUvc
-	 6Ls8jImr9gZzq3ZD83826vuknI2U27pY9o39B3plIlYiXr+uA9bOkD1+knrJtJo3Lkfb9
-	 MEhPj1qxaAa7P99fibD0pvp0emkzncndv96XwLTrRO97UxI9weymPyh5Q23RZVq69gJnC
-	 HGDM8Fyx/HTC+eoRszOmvCq0BGzdhEgaEe8bUBECneIkONNFHGnVUslSx+0EOpvS4Nw==
+	t=1794335436;
+	b=YUedTYxLYye1r0U1RXb2gbuDdGQwtVqZBcGYeXwMmZOdvVN5fYJdD+ACMlmlBLyRubBD
+	 KEd4Gvh6H75Dv5wvr+qNTAbR6EUk0bdLSHbYMDiyz99Y/3QcHf/jQUVDeB+A/1lq1+pLq
+	 hASTg94UVppVq+jrIjHPuKOH2GKskhjH25J1GLSZJjTiaLMlE4x/vPgjNGux5UlnSEr5Y
+	 9P7jIhRlzOWNW9B2975unkUYrigqjJEN/jvoL4UYgbR/grAyvc/GsMnRSLgcJ5e1/9HOa
+	 unESvCmOzZ+jNt3dY0rKDi7OjeRvKRPTOlzTzoSl6k5M48TWwfRkDnFs+Odre84rLow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794335172;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=o/zk2YQgV579zMwD3M9nV9Vt6kgb+n47Jpfk4DZuUto=;
-	b=z53gNTGKRuEWPFptRHEXxO4hPzFZrx1I3NM6aQJ9+Lak/vfn0j/0BCY4t00eFRwVQRW5
-	 waZMgIkwVYeFPtufkkwYLlbkOEb3Lc041CKiXq9CYTVD98MHLdNCOpg1+3AL2/YnotBA1
-	 9ZmiL/UpUn6hpdHh8z38xoGirHRQnNYdMpGRdIYORPjVyTL1IYlq74VrL7Fw20YRfqsGm
-	 VjrRaAUjRPOZhbYeTpeqcy0vuU+Dsy30oZq0CbhQBdvUYPUjx4T374G8s6fAkK42rsVvd
-	 73f7HLSWGhwPcTVaAP4T1UspwYH2jZlhI3li4tnAUs79xv+wT8uJjDvJ7IPrbvquTbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794335436;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=s6BKUa7u4FDMuG4jud5vphMkBSBkv24ieHFnZ2nquQM=;
+	b=TWVPE3/Cg5H9jPY7cASeQqhz3nsNrNcc5bVHUexCdXZ7X6UBUU9gm/xtFzyGvnLeN0Xp
+	 OuOBhCuXSoMGv2Dyi7eqkSbbSYbFPxFv3vkKNfr5ivYEofBZqFDnCgenfs+3X+kNgB6EP
+	 6Lw45nXIPA5MzRJODB45K1DVfNBFlSnoboaMF1JLMwF+F1rqYfPf4UTXLBTSlC9LzCQWR
+	 4hEO8O4fzTrfgNx90k1CEJQymqVNGzHKtzly8q4tAI2HE0IqIBjOQ8cyuyo3gGD22EbpT
+	 /p1GXZLn+RtFUWtiCswUdulOpfISTGiraCwVgfSySd0QpDXJoZSXhF9v7Vrv3Tt4XoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YdpXQV46;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nmn6jdKu;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568C6606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75CC606A31C;
+	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YdpXQV46
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3102F1F0089F
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:26:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nmn6jdKu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5664F1F0089F;
+	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794335172;
-	bh=o/zk2YQgV579zMwD3M9nV9Vt6kgb+n47Jpfk4DZuUto=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YdpXQV46t0dzvXfp0xl/75HDZIaRMCUC4TDUx3OSiqmVKQbub10YLJlNEwyOsvLAv
-	 Cc9l7r1AUD0BDcHI6FRUngDEwjaJxjLxS9gc5b+ojK1s+T7+jl62oN+07gfFkkmtuq
-	 6SUguWs/2dEpfd/810mUSV1QjV4Ox3TuOGdncVfoTID+ayBaxYNtaNGTCMxUuaGKnp
-	 oRpS3AGwiKK8K30MYJhVMzEqY30dJpjLMrURsUPe1qQ863SUhb2mJW485VRw16Q9p6
-	 O/Lz9FwsodYPHOZY950eUlNab3cN1+gtHdCF1fZXCaQEouXmZOrqoaQ7qThNIZvObf
-	 QQc2rc3SS8mSw==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3ab3dd966e1so19261621fa.2
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:26:12 -0800 (PST)
-X-Gm-Message-State: APuU4Z+LPl9Wr42jeYDiRtVMoG2B/8CSsuOlNCixG6jwFaWwHcngXj3v
-	0pnpI2FLXPEuvhu7qvb01zHg5S3MfQDd1AhMgw37t47wFA3Arwkpy3VEpspAJhNeRVA9Cb1Nlrz
-	9DAhx2J6I/ShIWrqKejqD4opBvilNj1I=
-X-Received: by 2002:a05:651c:556:b0:3ac:a2b0:ac56 with SMTP id
- 38308e7fff4ca-3ae0967bd7amr6657991fa.29.1794335170933; Tue, 10 Nov 2026
- 10:26:10 -0800 (PST)
+	s=k20260515; t=1794335435;
+	bh=s6BKUa7u4FDMuG4jud5vphMkBSBkv24ieHFnZ2nquQM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Nmn6jdKu/g7Q54jYIu3uLMRQCPjdKbdcCsMnvk7mnnEeUahUZQ1lsJ7SfIQCJgtB3
+	 b8Yv5m6q3sWWeOe0OaAB3zCZaGiov0PCBNo+PuW/JkxXZtIwVAXLnVDlHGVf5L9tps
+	 B9vFh7OHoYDGeB3K9sgQ1Mo7eNpQKnzebQoHU/xJGX8U2FjLJpgTI9LmSr01Q72COd
+	 c6m43VOOFdS/GD+NwLK2Yfpk3muyw0jrIKU+LTbpjaKlmWxsQ4VXVS9VH2QjKD93ub
+	 WTSycRnUHCU1CD0ZcnzhHUYpLUNx3d9on+9g6y7O8A564aAD9gnCDBFB1v3GMSsZDn
+	 roI7lxHysPcfA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4AA6F39D608B;
+	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,186 +53,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-TIAE.v3.r0.20261109173518@mojatatu.com> <QDISC-TIAE.v3.r0.20261109173518-2@mojatatu.com>
-In-Reply-To: <QDISC-TIAE.v3.r0.20261109173518-2@mojatatu.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 10 Nov 2026 19:25:57 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiir0Gev+Uh6+S9oMkKnb6Keq=84PZWj81zTEySbv0zqOvQ@mail.gmail.com>
-X-Gm-Features: AclHuK9PGaJG-lc-A3PNIbFpeP8DspAFjQpIiIvsAC-3-FXg1x-0OGkVO3q5aPo
-Message-ID: <CAL4Wiir0Gev+Uh6+S9oMkKnb6Keq=84PZWj81zTEySbv0zqOvQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/3] net/sched: fq, fq_codel, fq_pie: skip
- empty rounds in the deficit-refill dequeue loop
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	sashiko-bot <sashiko-bot@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/4] ionic: report on-board sensors through an
+ hwmon auxiliary driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179433543409.4180948.5401934262378267297.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 18:30:34 +0000
+References: <20261103-pr46-b4-v1-0-850ab7fbec19@amd.com>
+In-Reply-To: <20261103-pr46-b4-v1-0-850ab7fbec19@amd.com>
+To: Nikhil P. Rao <nikhil.rao@amd.com>
+Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, linux@roeck-us.net,
+ corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ kees@kernel.org, gustavoars@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
+ abhijit.gangurde@amd.com, ArunKumar.Prakash@amd.com, eric.joyner@amd.com
 
-Le mar. 10 nov. 2026 =C3=A0 15:30, Victor Nogueira <victor@mojatatu.com> a =
-=C3=A9crit :
->
-> The issue: fq, fq_codel and fq_pie refill the head flow one quantum per
-> iteration until it has credit. With a size table that inflates the packet
-> length to 1 MiB and a quantum of 256 that is ~4096 iterations per packet,
-> so a dequeue over N flows can spin N * 4096 times under the qdisc lock
-> with BH disabled.
+Hello:
 
-I am quite worried by the complexity this series adds to six dequeue paths,
-for a problem that needs a pretty unusual size table to show up.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I do not think the round tracking (first/scanned) is needed.
+On Tue, 3 Nov 2026 18:14:45 +0000 you wrote:
+> AMD Pensando adapters can report board and ASIC sensors (temperature,
+> voltage and power) through the device firmware. This series exposes
+> them through hwmon.
+> 
+> Following the discussion in [1], ionic creates an "ionic.hwmon"
+> auxiliary device and a new driver in drivers/hwmon/ binds to it.
+> Guenter suggested taking the series through net-next with his Ack on
+> the hwmon driver, and agreed to his off-list reply being quoted here:
+> 
+> [...]
 
-As long as no flow can be served, a round gives one quantum to every flow
-and leaves the list in the same order. So the number of rounds needed
-before the first flow can be served can be computed from the current head,
-at any time, and added to all flows in one pass. There is no need to know
-where the round started, nor to fix up 'first' in the throttle, drop and
-detach paths.
+Here is the summary with links:
+  - [net-next,1/4] ionic: register auxiliary devices from a table of device types
+    https://git.kernel.org/netdev/net-next/c/ead2c8476c46
+  - [net-next,2/4] ionic: add device interface definitions for hardware monitoring
+    https://git.kernel.org/netdev/net-next/c/5794c810b920
+  - [net-next,3/4] ionic: add an auxiliary device for hardware monitoring
+    https://git.kernel.org/netdev/net-next/c/ae5d56bb947e
+  - [net-next,4/4] hwmon: add AMD Pensando ionic sensor driver
+    https://git.kernel.org/netdev/net-next/c/007548a7238d
 
-Empty flows do not need to be removed in the bulk pass either: give them
-the credit they would have had when detached, and let the normal path
-detach them on their next visit. For fq_codel, this also keeps the reset
-of the CoDel vars done by codel_dequeue(), which was one of the v2 issues.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-To bound the cost of the scans, a dequeue-local refill counter is enough:
-scan after a few refills, then allow the next scan only after as many
-refills as flows scanned. The scan stops at the first flow with credit,
-so normal setups only look at a couple of flows.
 
-Something like the following for fq. It adds a helper and a few lines
-where the head flow is refilled, and does not touch the other paths.
-All flows share the same quantum, so the scan needs a single divide,
-plus one per empty flow about to be detached.
-
-With a setup close to yours (8192 flows, stab overhead 1MB, quantum 256,
-fq under tbf), the longest fq_dequeue() goes from 8.4 ms to 19 us, and
-the total time spent in fq_dequeue() during the drain goes from 138 ms
-to 3.4 ms. The dequeue order captured with tcpdump on four mixed loads
-is the same before and after.
-
-The same helper shape should work for fq_codel, fq_pie, drr and sfq.
-For DRR, a class whose child returns NULL from peek() can simply abort
-the scan, as the main loop already handles that case.
-
-ETS has at most 16 bands, I would leave it alone.
-
-Also please, one patch per qdisc.
-
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index a282812c192eedea36320c21df2fdde793880b14..d0515ab14956af0b6a63d896b7c=
-f659fbb77cf1d
-100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -732,11 +732,82 @@ static struct fq_flow_head
-*fq_pband_head_select(struct fq_perband_flows *pband)
-        return pband->old_flows.first ? &pband->old_flows : NULL;
- }
-
-+/* Called from fq_dequeue() when the first flow of pband->old_flows has
-+ * no credit, and new_flows is empty.
-+ *
-+ * As long as no flow can be served, each round gives one quantum to every
-+ * flow and leaves old_flows in the same order. When packets are much bigg=
-er
-+ * than the quantum (for example inflated by a size table), thousands of s=
-uch
-+ * rounds can be needed. Add them all at once.
-+ *
-+ * An empty flow gets the credit it would have had when detached by the
-+ * one-quantum loop. It stays in the list and is detached on its next visi=
-t.
-+ *
-+ * Returns true if credits were changed, and the number of flows looked at
-+ * in *scanned.
-+ */
-+static bool fq_skip_rounds(const struct fq_sched_data *q,
-+                          const struct fq_perband_flows *pband,
-+                          unsigned int *scanned)
-+{
-+       u32 add =3D U32_MAX, quantum =3D q->quantum;
-+       int max_credit =3D INT_MIN;
-+       unsigned int n =3D 0;
-+       bool changed =3D false;
-+       struct fq_flow *f;
-+
-+       for (f =3D pband->old_flows.first; f; f =3D f->next) {
-+               n++;
-+               /* fq_flow_add_tail() would move f to another band. */
-+               if (f->band !=3D q->band_nr)
-+                       goto out;
-+               if (!f->qlen)
-+                       continue;
-+               if (f->credit > 0)
-+                       goto out;
-+               max_credit =3D max(max_credit, f->credit);
-+       }
-+
-+       /* All flows have the same quantum: the non-empty flow with the
-+        * highest credit is the first one to get credit.
-+        */
-+       if (max_credit !=3D INT_MIN)
-+               add =3D DIV_ROUND_UP(1U - (u32)max_credit, quantum) * quant=
-um;
-+
-+       for (f =3D pband->old_flows.first; f; f =3D f->next) {
-+               int credit =3D f->credit;
-+
-+               if (!f->qlen) {
-+                       if (credit > 0)
-+                               continue;
-+                       /* Only flows to be detached need a divide. */
-+                       if (add > (u32)-credit) {
-+                               f->credit =3D credit + DIV_ROUND_UP(1U -
-(u32)credit,
-+
-quantum) * quantum;
-+                               changed =3D true;
-+                               continue;
-+                       }
-+               }
-+               f->credit =3D credit + add;
-+               changed =3D true;
-+       }
-+out:
-+       *scanned =3D n;
-+       return changed;
-+}
-+
-+/* Number of one-quantum refills in fq_dequeue() before fq_skip_rounds()
-+ * is tried.
-+ */
-+#define FQ_SKIP_ROUNDS_THRESH  8
-+
- static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- {
-        struct fq_sched_data *q =3D qdisc_priv(sch);
-        u64 offload_horizon =3D fq_offload_horizon(sch, q);
-+       unsigned int next_skip =3D FQ_SKIP_ROUNDS_THRESH;
-        struct fq_perband_flows *pband;
-+       unsigned int refills =3D 0;
-        struct fq_flow_head *head;
-        u64 time_next_packet =3D 0;
-        struct sk_buff *skb;
-@@ -782,6 +853,16 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
-        f =3D head->first;
-        retry =3D 0;
-        if (f->credit <=3D 0) {
-+               if (unlikely(++refills >=3D next_skip) &&
-+                   head =3D=3D &pband->old_flows) {
-+                       unsigned int scanned;
-+                       bool skipped =3D fq_skip_rounds(q, pband, &scanned)=
-;
-+
-+                       /* Bound the cost of scans to the number of refills=
-. */
-+                       next_skip =3D refills + scanned;
-+                       if (skipped)
-+                               goto begin;
-+               }
-                f->credit +=3D q->quantum;
-                head->first =3D f->next;
-                fq_flow_add_tail(q, f, OLD_FLOW);
