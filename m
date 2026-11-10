@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794334986;
-	b=kkzg7vpUTq/MFCIClzPtO7VYKTnkWVMoU5t9LRnrNNWYbnqAdHKvxUZbYbl5Y9zgyVda
-	 qbtgFYiNnsj7LtFtKhmdARvO+oVrhVU8v6f22nwgN4w1rAng4Lcyq1J646vDjVXR4rYjq
-	 lm/HOx5NHDlv18Zq/iBK9W53h+LrLeJfPPw/JHnoCxnmzU5it8VAJK+26Z/zeSyeUsOA7
-	 SZheSME302+DTZomJnF37XXC7tqqDW2pN50+L+i10Z7fcijS7AbSD5nJzvcpDgZCp5mdu
-	 tIngeq9crqKiz31UhLIa09wGqGQ/qPTSuePy77m184ZoBUHFhiIzr1m8qmkAp09UPPQ==
+	t=1794334982;
+	b=3Gz30Szllv/fWBzsmL7+VIdQSKnRkpzDZVZxHM/m4HXf3T/P3h0nreCfQvhfeYS246jI
+	 6xMcxtyNKEVKmzunA/IpFM2PbPYbex46wtVSUyZJhcJ0U25e/1Ju1ZPt5z6R7yMmTJ8iN
+	 z0I4PZx3l0pc0RNWGgR3RLmMzPn/lbo9sB3NznZgBfozc39lq/R7h0fpJuLeYfXX5sCUQ
+	 z2ES7xYW4oUxRssjQIa4Pb2Qh0nMpflxfc2tqM4u3uim3KrcHdh6Ctj8pZY/y5Bifpy28
+	 OaPnWL4iRJStgl8NwTt5k0BYBI08skhtMq/ytRRhTmadRTwLlcRBQOPjOR309z7APhw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794334986;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794334982;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=9sE8gzaydrNHDIN+s0tYeRlNamt0qF0RhgBxRYsfIv0=;
-	b=ZcN7NZCrbmoETq80k2Gl2LRPYfLDUckwCkkyKSM3XfG9kfr1sFjRol7NdVmo6LXrbmnl
-	 5ND0QsIa8O9zdrNTP4UizvVB69krahH+iJbl4YfKrrF0k/X66ZM3oPZCANdNPRNHwfJSK
-	 jGL1qHIC1jk2Dw6APYBTqnS+ihM5eeApOV0zdk/VIsPMPbfrHdqvFMw+rspR8gFQKw8Tl
-	 8kkJ0YKVwvbkcKHvJd2+0TTqiIZOccU9HmWdCgf0WiH+0MYpUnvJw+AzvzgXhMXAJjNwi
-	 3JStBL9VKjYCzt0UrmWETRpeDabH0nPiOSJnmXO0jMFuuCTQri2cGqxpWoW6rlkyyrQ==
+	bh=nM4EMErCeXJNQs+7ozPXWBVLaYZr0fUdSK86cNZxul0=;
+	b=Tk/9dfRsFnR2LJEYJHm+cFzV1z3MH60mHPODDX/gUZm9748FCLBHrWGiPXtWK0VYWPUn
+	 IMonKva487P5wcz+szZ5McUAAKYvvb13HFrme5HzutBD5ebk5iY/ZHqcwViG+uud6P60p
+	 zDQ/cBS9DI4enXk3py/9ivYQwsMtQ+VC19phtuUR4gpM7e2wpAvq53K1f5n7fVNk91v1D
+	 +PiHVy5ZVgdcho5KehsMh1P5jPVPzGkuxnHY6vQIDqbN56NItzoBScpQ+H8PH8cd8I5Lb
+	 MQwgo9NIiSpBD2SX7IhjWz2YYwhNLxI6JCtgQbcvksyFtXdNlHJJc3l858s3TI/I8gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dIfL55HO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FuHErv1g;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8280060A2607;
-	Tue, 10 Nov 2026 18:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D542606A320;
+	Tue, 10 Nov 2026 18:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dIfL55HO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0EA1F008A1;
-	Tue, 10 Nov 2026 18:23:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FuHErv1g
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04A31F008A1;
+	Tue, 10 Nov 2026 18:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794334986;
-	bh=9sE8gzaydrNHDIN+s0tYeRlNamt0qF0RhgBxRYsfIv0=;
+	s=k20260515; t=1794334981;
+	bh=nM4EMErCeXJNQs+7ozPXWBVLaYZr0fUdSK86cNZxul0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dIfL55HOXbwYPWyq6dX5QadDojD9GRw/005QwnPDkenjdFn4T84RpwI3O3tJn3pS8
-	 Df7unLDv/XnCWoSfAMNGidQLjlVLuWuNdoN1Nj+U2UFUKY/c8Gn2yReOxqqFCFey9Z
-	 o8dz8ghEZJl87qkwMSX7SXDtmkvnf9wES3Iu/z4GXS/MmHEgx1XSLqEl/O4t1z1rTT
-	 3FOaKGDdEwTOYNpyuV7WjDyY1d15V9qwCFbW7SL8e6d6qwmyssKMW8sPehJsZhT0ZL
-	 CO00WsxQbD4N5balZWdF8SACptEKMK6d3+5ijpA8Xmw7Bfw8yCmFhZ26BR8GlAF9+Y
-	 lW+ZLn2QvrLlg==
+	b=FuHErv1guC8Yh9nbEeBWMhChLKI+Kefs48Hz19+LPzcu7/KuyXGDfceKcbxYfCUB2
+	 YzPF84dwM/0ETHxVlsN3B1hyoucuFatp395mjRAZprR1DDh99pOiBTjx2z1WcfjnDW
+	 W9br8BLBLUq5QpBcpGfEszxaGHTk+2cEquZfjeC3WxA29gv630zWxEaIEGwIZ0uxOh
+	 Gqk8Yv1x3vLKgDJTQdQGiXYM7uCksrDaXcazPVOoNykR+kFXJ6anV9IcLLjp49bzE1
+	 Ej/Ztev/qtfqqdGGlewMLgEpAhiUssepi6NNs1my4/ADfUEEhRgXj8dA8HT8Z3cfuv
+	 /JUWGlBnLbNIA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210B939D608B;
-	Tue, 10 Nov 2026 18:23:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B31439D608B;
+	Tue, 10 Nov 2026 18:23:01 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,47 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop
- phylink
+Subject: Re: [PATCH net] net: mana: fix XDP_REDIRECT of pre-allocated RX
+ buffers
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179433498467.4118637.205536379890905372.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 18:23:04 +0000
-References: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
-In-Reply-To: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
-To: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
-Cc: Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, linux@armlinux.org.uk,
- o.rempel@pengutronix.de, stable@vger.kernel.org, byu@xidian.edu.cn,
- wencheng@xidian.edu.cn
+ <179433498045.4118637.10096653969989484640.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 18:23:00 +0000
+References: <20261102064324.806414-1-orgads@gmail.com>
+In-Reply-To: <20261102064324.806414-1-orgads@gmail.com>
+To: Orgad Shaneh <orgads@gmail.com>
+Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, weh@microsoft.com,
+ kotaranov@microsoft.com, horms@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, longli@microsoft.com, dipayanroy@linux.microsoft.com,
+ hamzamahfooz@linux.microsoft.com, gargaditya@linux.microsoft.com,
+ ernis@linux.microsoft.com, falakreyaz@gmail.com, jbrandeb@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  1 Nov 2026 00:52:13 +0800 you wrote:
-> lan78xx_disconnect() stops phylink before unregistering the net device.
-> phylink_start() is only called from lan78xx_open(), so when the device is
-> unplugged before the interface has been brought up, the attached PHY is
-> still in PHY_READY and phy_stop() reports:
-> 
->   called from state READY
->   WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0xad/0x380
+On Mon,  2 Nov 2026 06:43:24 +0000 you wrote:
+> mana_pre_alloc_rxbufs() fills the RX rings with plain pages from
+> dev_alloc_pages() (from_pool == false), but the rxq is registered with
+> MEM_TYPE_PAGE_POOL and mana_run_xdp() builds every xdp_buff with that
+> rxq info. mana_rx_skb() frees a !from_pool buffer correctly on
+> XDP_PASS, XDP_TX and XDP_DROP, but a redirected buffer is freed through
+> its memory model: __xdp_return() hands the plain page to
+> page_pool_put_full_netmem(). This triggers the WARN in
+> include/net/page_pool/helpers.h, breaks the page refcount, RX refills
+> fail and the queue stops receiving.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: usb: lan78xx: let unregister_netdev() stop phylink
-    https://git.kernel.org/netdev/net/c/928012824561
+  - [net] net: mana: fix XDP_REDIRECT of pre-allocated RX buffers
+    https://git.kernel.org/netdev/net/c/67869597fab0
 
 You are awesome, thank you!
 -- 
