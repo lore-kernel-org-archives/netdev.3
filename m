@@ -1,99 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.44
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794325556;
-	b=c6iUzZktdjjOQvwDzNxfVSp4eStLEoQeQ0u+swQ+wy51dpDqPLE0ELz7I9DnSSySeM+u
-	 EYVFaqSzHoZXh41Kz3x2sP95hmPHcd8vBa+LhnaIqU8Wagc8D/lG/q2qTDpT5YdHq4ST9
-	 YlVCjS6C9/E2vGm/DiSels5H6zU60PnE1oyRhFwR4rmpoUUS++AVbqcV3vr4lXMvoFQuu
-	 Mb3HGxwQH9jboPVI6Rb3v5wFcJh66Grmgic5Jl+fu8xIyC0YzAuYWPpXKtINEhX/pf46W
-	 CdSh+dDLVCpmRhjvrgxJfaeYCLPwqqafUefsOwEir3O5QgmLyHTuNDYdiz397bUZ0Jg==
+	t=1794325666;
+	b=RFMM/yPonPUhKuywG2ALf/UvzM1lJ8V0dVnG086eHOtmQqFuzb3+bDlO85nVvADElDtl
+	 0th7qavS+NNQD7NzYoCfYiCKQGIn7vnfsLtP+eQd8Fzpw2pkqyPRnNjLSuM85b3P/zq57
+	 k1qAXWnZ6mLpX4NW0tydDO2U1cYAJmBNb+sDmMzSqjGg+uMikmR4Y+5vzJXj+IkKp4DVI
+	 x9w/xhHXmSooEQcHmFLLscEt6dzamjERpPlXHQ8lAIN5K1CqPEFveDm8BuLNsp4PffK+o
+	 CQC8/CnhbTG/adfM29VRXEQ4w1IiFmK+rhVv4KMIClCy4uxu5VMwkePRS61Jya2u3vw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325556;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325666;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=4joyfckgOzoxD1v9F8y539Lxr07wRquNtozOKKoNpYs=;
-	b=aI/8W7h2fQ3Z9i5RJj8A0UEW3zBMJrG3k/01Q/BDfW2J8c5BY39fKyYdCwK790D+/asJ
-	 BmakSt2YTwSkvcvbdWnansds2Sg+mPp+RfAh9BMkraE3UtulsI4x4Dkw+S/sPizQggval
-	 l3ErvZmKtvG5g2oQEClbt/aB1a/3Tq20hf1oS3rIXIJ5EYjXwi38jdfszUvLW9HUmbhFY
-	 QPE9gDNefhK4hJCOSQx9wDFMrEf78z9xacW06Me8U+vluliZ1+ytEBLvXs/KbBIUouuJ7
-	 MBHV8BMViCrN+JhC1IKDxOFT3PIUWHyeVgDvmqGBQzUMhuySTNHM6CQ2zRhyhZuyaLw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
+	b=FHcu0R1SAAQ+Op52aNRBsGPLFF4zE9/ZjTNd6LlJZBcSJlO7Dt9JEtC2aLnNpCiUGN6z
+	 MPxO2ZffBBxczLIGNkJOzvZt6YU2/lAmpAbX0xT42/r1aE9AB7CaC4kgvCC17uuJBxTqp
+	 4bzABwuGOxqMuhdgdJIHzCHdFQFMauAPzgcCsLxc4AlUcbyPL9FmVhTHKtlHM4LW35Apr
+	 OID3G4NhVqBapsNUbV2SqYtDkKqKFpqYJWmKyt6CcqTH8oCaYiEm1XfmN+ZH+hdKo+gW9
+	 VrNYWWjtpbZkQ7DLDMsNtkP10xSa00C17I3fZRh2YRj3e44uHLnavl85YxQRQdiwgGA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=eZLW2NkF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.41
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="I/Lw8i/b";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.44
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43727606AB5A
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:45:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43727606AB5A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9EE606A323
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:47:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A9EE606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=eZLW2NkF
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-702dedeb70dso1098740eaf.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:45:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794325555; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I/Lw8i/b
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-7ce6cb4c6faso1026814137.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:47:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794325665; cv=none;
         d=google.com; s=arc-20260327;
-        b=JlogVZBe+e02zRq5+dIvL+8yhAjfcT3/VzWRnmBW1+NggA/A5tRHQvydDlxz88Oiv5
-         ioPiIc4Y0lW26RZP+xCPMCTWFWI2eAlJhJ9xs81KV4G6LJL9W+C/QebNMp11d8gWRIB0
-         3jUM6C78gasrNSE0ohVutG+GcQTUtvbxF23wFzV85eKWJpEtgWBQM2Lu7uqc0AtfmId5
-         7w7Ri3dAedp5YICh399I2MwRfEXTfDa+OavlCLZhd/vAbXoka1wQXUiwrH+nFZXb2dmS
-         TdxTWlweGDkFNA7qfDArKwlCuREHvQHHDEgVKrN0sOb2/GLSkE3QfP4uBPRrSSXXPKpb
-         +fYg==
+        b=J0H/gvGRqGt7WPEKdUFq2OtI3wk9kZExwYaCNVs8n+wlzTxEVuQ8bxWiYTbTM2z673
+         jNYibF086TMjEbyqAcsrLEcpJWUxJP0NTESFchWfRJPcydaXlBNQqKlKrUjSsCHYqafS
+         chUgO+BF2c945r2bYLUT4SBIBFii4Opfmz+HAjKf+Vcc6QwZeqUSHwdq98noWYtpQNkR
+         a0VY+vrcGQaXlUZlItlvGnNlmpTZMxSmwxCPhfGXTbBzSQ0sDPH11TkgYbeCzaVpCcic
+         m+obQFqVP6nu23BMTIAwZ2X1klhC6haGYCPzZtXQddk9Tv6vu2iSRbtm9OKFx0hXgUie
+         0CXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=4joyfckgOzoxD1v9F8y539Lxr07wRquNtozOKKoNpYs=;
-        fh=kgG3Zm4cZX30qry6Z82k9tt/zss5tzUTrb4wpwvs6Ew=;
-        b=FZme1rXC1qWOgyeu2xV+oNn90w7T7C/RL3+z4T/x36uFfx73TC/jEYH83OdZWA7dL9
-         7K4JY/9uxqoYJRWo6npt9t0ud84FoARTdZY5g3B2thnICqhrRg5gM1zMARRcSVHnapk2
-         Q5KwLa8rpa1wz/n47UA7zvkwyrAnDhleF0hQ18EYPH5OgmZ3vOEDnM198cwtizai3jwz
-         QmiHAWaa1rP1iA03QsmglKspyfSuOD//SEZetnrVN8jLU1aidSXc890+ZFUnw0Pi52PB
-         QEo/vgS8eRhya5giuhhWbW4JDZCm5hFqPezzojyRGNH4Ipri35uFc6QN4aj9MgUqHK8a
-         8i+w==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
+        fh=decuLPkoSrYHn/UAuyrZIKclB/9cIMEXfc79VtDtkY0=;
+        b=Aiw7mQJ9tmdzT7aRoNhAjb/K0/BfgisgdQ4GIbBXVGTJ4bSyWSZL5amMqFUx9Y2iBt
+         VxjMTClfl4kex//Gvo+QYhy24qhuZ9j8LnYaextSWrSN+7hDrYwvrvjcSORQOjJtm4JH
+         PxggeXA40Vo2OKGZULHnxyrthEPLQlzeOecZXWDOLg7CKjVTWTWxB+eyTb2CM3bJ9T4G
+         j7h3w8CJ8rvFf1ef7pYOMRUOmNEqrU3/8d1v9yL9TwBcSxZSFYvhAVWNSNJ4zXah6Jxs
+         KPSwex0iJ0eLqeYIQTvaLcsvX2vZsqrYMm7mnZLk3YNWmQPIr5LXZNkDd7cfrM4B4xeN
+         N+sw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794325555; x=1794930355; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4joyfckgOzoxD1v9F8y539Lxr07wRquNtozOKKoNpYs=;
-        b=eZLW2NkFr/j9icFxNcvCAM88kGStK/E6aBuXF8X9PTB/TJstGOhvTD+oxnr2K/CFip
-         LcDYPep9GKsBbabgbijJK8fW8Ri7k+AQgTpbE0lfmYbq++4uEecMHCP8cJy+ASy5Fn1C
-         Z7cmYFLcw+cxPvYec6ZFIcz9h0hx9GUCZQNC8nte43cm5qiHbXRbnTNHTBl1+VeMbkIY
-         uqoY4pDGStIpFAnESbzX/o6nCQkRdYtqB95sCYlkXriJV8MXiOEX4NtIJW6wkeAwE2IJ
-         9SnQ/rTMEtIWDIXK5bSkmaqWrqOPx8mk6cdC7zj82UixmIlP+udjnEbIS9a3pHbUWS7o
-         nsRw==
+        d=gmail.com; s=20260707; t=1794325665; x=1794930465; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
+        b=I/Lw8i/bwk9+5IhcqVCZ//ULNLAb1ddsCuYGASvGUAtyPg5imkQGj7iIi6g9XzOHft
+         BYd8pOWh//XX/U7aTv1AlumnSHl2fuaM336e/9B/kNktK/7WZQdorEuxWpAQETEf3v8l
+         ZHO0/DHb/+jabyFywg3NjkTKHajEtGyJ/mmKwAr/U804Ezjph5uK8BSRbopqU+PfHJGg
+         G1zQdTsvH8ZEma9FpollCfKMGD0QMGV25R4SD94smgtLwY3tp9Vwzmqc0dNmSvKjCBAq
+         brmaxPH7SXPwJw9514sCKmzKCvZ5YxW9h8FSc6P8fRzgNGJvIM5b1dfu7Tj90kbhErfg
+         Ajug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794325555; x=1794930355;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4joyfckgOzoxD1v9F8y539Lxr07wRquNtozOKKoNpYs=;
-        b=Df7/QjTv5IaHM4fLajHddRAWvJNhWK/6AoTetnndYqdOmfgRR3p1gDX/y/xJEtU9RO
-         DijcoROGnQogz+Ux2JP3Mv5V7x5cwQOXiWk/OsXeWdawrN8X3Da0/U054n1ONQ8Zgnnn
-         GpiMqDUJ7S5lJMv3uFA4JWXuGLqSutTgPr6BrSE+4efHmLOT/9crpb/U+GD5hMJ1Myfi
-         4rR4qontBM7YM+eEHobkkSlwEHwz68PwpCqiB2Ef+UPGFZtPoxkD3rsfZr+hYM5LLWIW
-         pIVVSnFPhgdjt8xibeNy9IgNAGe59pI/guAfmMbyd0U85I6MU1cAsfb7VYNZ770Lbwmj
-         lD8Q==
-X-Gm-Message-State: APuU4Z+YWN3lolaUtqb97v8Hnp3ZRgonY7e/ICMyi/i1xYfjOxssNTqW
-	lMf+/Ypogjzt0jrpaGkld4eWeyowniVc1ko3BR1Ta1hx1JsYTFNJl8VyzG9S01Pf9wKxeBuoY+O
-	ZLZNWNhDf3Q4D1f4wrU+329c0cQmCr9xh3Cdh/cm0gA==
-X-Gm-Gg: AYBFou1kQDgWOL0hAV17KuqswvnX9H+/27Y5FR5/1f8Ykdiw+96ewOEdD4mCdsgoeG7
-	f1r8SoRktxpbuy2gda1Nt38+RONUVSniz328xsWnlRKrlNapENk1cQcUsWM7FvMwSzppYqGUC4c
-	SpaepYDk19zkAa1O7rHtlVHGh9wyWtU8EW/4Ffe/uqm5fHWtmQcr/EoFqKE+eB/wPh1wjJ6rzIT
-	1daPXPG7Q5QRFyZ2U7ckDcBm9OSxIEK/4LcOcfTpfDNBIwdJoEwMtIKbkWyu4j+lw3cEZIaaSbj
-	OCyKXb8zU/i+9pocunmmPkMXxcqeDrZUg1Z5plE8gkldRjOQyv1N0vGQGwK1vr/NA3ft1+G5yQ+
-	jqA8ixShdNP1E4oXxmNZ6KyTeBwNQ/k1fGTH0TWWaKVv2TLGvWm8QITVZE62jUWMhEsvXrMlJ9F
-	bSF9i0ktLqfQ==
-X-Received: by 2002:a05:6820:c2c9:10b0:716:ddaa:40eb with SMTP id
- 006d021491bc7-718a4f92ba9mr1015097eaf.28.1794325554928; Tue, 10 Nov 2026
- 07:45:54 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794325665; x=1794930465;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
+        b=K+VRo5bz2ztKzIsDPJcwn4T3ckComnIWeiCBrqFNHdCiWtWs+CvPh01et8AMJlSW6q
+         qdavCyOyNO0aLCcSoM2KHhnocRGVlquPb54qbJYVxWsjCqcPqNJVsYVJU/7hyp2gVGv5
+         3ciqvfLPFvxdK9KdUl/NW4SaXueBn5XF3Vm6G4M6gw2RvRY/d2T9y5P//rMIHqVsBI23
+         jD1wuI83hjPS/wxonIDT8Nqo7WQTHHrVFkI73O/3M+r/pkhPg7qCVWySTEZv6nx5+8nt
+         rVIc4YbuE+pZIAkslhApEkDNDxas9UGL9zTSvTsyAvBVF/A4+R7GothEcHvQ2VcT1Y6W
+         rIzQ==
+X-Forwarded-Encrypted: i=1; AL+hErFXP8QqraM9aHFZDX+8L4HtwxG9LefEYidi7qCDJLtUWCbhFQyWY94CihzBzBE3ozMtFYOpRII=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9rug8sBid14OIN23lH26M7NEX0rYzdydfmEsDae9eHtK19zjWe
+	bnXHp6ewqqdMb6LVHG9RzXM6NTjYEry4B32NwcvDTrfE1d0IuT3EHkkOOADcbK/HmtAt86oxMqC
+	mc8/Y3r8zfJj/8SFq9+/imN/MwhGMlVY=
+X-Gm-Gg: AYBFou2+5qedrqRcwMDDP1pXsbD+XEAcxHhtNrIckH7SHAOGu1zLahPr0I+EX3lrlHK
+	kRsJwNYJcbOubdhwdqCUAH7HX/lA8e5z0nGsHQ0zqwlJw0RZGlI4FsBRB78J9MstqzU4ksF1DGJ
+	ElcqSbPTJHSznTxSOgnM61cOQNoyeJiyrCLuSrALb+iOCc17mngNhqquFgscxoPYImJTxF+M3MX
+	GgxFPt53F0zT41oKvlV7tPZXpdI8BTQINM0Uvs+2tKFOF+80suRGcfc5A9oczFVIVwgBmy6+bFp
+	8zJpxKh2WZwKuFlx5NBJs9qQIWvKkYtK1k3x6/od0SV6+pkheFA1Z48oMZLluPjg1pbc956RIJE
+	7+WpSGMbAcsiNHcMTeFfJcwE4tR/3RLRlhIw3yjGnygdd8dXuxEIJ3Y164FX3F8vuHTjqpIugvm
+	AWQI70Q0tIu+ox4rJGNlVhPIy2sZCTBv4HUNYzIg==
+X-Received: by 2002:a05:6102:1606:b0:7d0:5688:f4fd with SMTP id
+ ada2fe7eead31-7d301bdfadcmr1347648137.17.1794325665086; Tue, 10 Nov 2026
+ 07:47:45 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,43 +105,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794020868.git.tianyi@cloudflare.com> <73b9d23a4190cdd02e89d3a2ce8a1a21ad5feadb.1794020868.git.tianyi@cloudflare.com>
- <20261110073807.2fa62e6c@kernel.org>
-In-Reply-To: <20261110073807.2fa62e6c@kernel.org>
-From: Tianyi Gao <tianyi@cloudflare.com>
-Date: Tue, 10 Nov 2026 15:45:44 +0000
-X-Gm-Features: AclHuK9D14tZ4FX3CoGnuGmDbJMM4Y36vINL_kHffGczXiZfZcX98tAF2DEPmTU
-Message-ID: <CAG4wq-fJfKAiCY2Z0Hv_nCBM+8gKSBq-N2Xc2KfKREkRL-VDvg@mail.gmail.com>
-Subject: Re: [PATCH net-next 8/8] selftests: net: tx_extra_headroom: test veth
- peer at creation
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Simon Horman <horms@kernel.org>, David Keogh <dkeogh@amazon.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	David Woodhouse <dwmw2@infradead.org>, Dragos Tatulea <dtatulea@nvidia.com>, 
-	Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam <alasdair@mcwilliam.dev>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Breno Leitao <leitao@debian.org>, 
-	=?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>, 
-	Danielle Ratson <danieller@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, bpf@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@cloudflare.com, nh-open-source@amazon.com
+References: <20261106185203.3326303-1-bsdhenrymartin@gmail.com>
+In-Reply-To: <20261106185203.3326303-1-bsdhenrymartin@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 10 Nov 2026 10:47:32 -0500
+X-Gm-Features: AclHuK-W2zfpJA0Fe0m-8dv7qSw468L0XRBR04aNiVAdKPvb2KSOSY4FgSHidEw
+Message-ID: <CADvbK_daN6zZNPckkGh=r70ooNwTz59VViJy5jPp1w18SDPrzw@mail.gmail.com>
+Subject: Re: [PATCH] sctp: fix skb_over_panic when adding addresses with a
+ pending delete of another family
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, edumazet@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jakub,
+On Fri, Nov 6, 2026 at 1:52=E2=80=AFPM Henry Martin <bsdhenrymartin@gmail.c=
+om> wrote:
+>
+> sctp_make_asconf_update_ip() accounts for a pending DEL_IP
+> parameter by reusing the length of the address being added. The
+> write-back side instead serializes the pending address itself,
+> with its own address family. If the pending delete is IPv6
+> (20-byte parameter) while the added addresses are IPv4 (8-byte),
+> the chunk is allocated 12 bytes short and sctp_addto_chunk()
+> writes past the end of the skb. E.g. on mainline (05441d697f7f):
+>
+>     skbuff: skb_over_panic: text:ffffffff84859c77 len:392 put:20
+>         tail:0x188 end:0x180 dev:<NULL>
+>     kernel BUG at net/core/skbuff.c:215!
+>     CPU: 0 UID: 1000 PID: 379 Comm: poc_sctp
+>     Call Trace:
+>      skb_panic
+>      skb_put
+>      sctp_addto_chunk
+>      sctp_make_asconf_update_ip
+>      sctp_send_asconf_add_ip
+>      sctp_setsockopt_bindx
+>      __x64_sys_setsockopt
+>
+> Requires addip enabled on the endpoint (net.sctp.addip_enable=3D1).
+>
+> Account for the pending delete with its own address family, as
+> the write-back side already does.
+>
+> This issue was discovered by Tencent CodeBuddy Security.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host=
+")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+>  net/sctp/sm_make_chunk.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 90de272842512..18947ec5ff9f9 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -2886,9 +2886,17 @@ struct sctp_chunk *sctp_make_asconf_update_ip(stru=
+ct sctp_association *asoc,
+>
+>                 addr_buf +=3D af->sockaddr_len;
+>                 if (asoc->asconf_addr_del_pending && !del_pickup) {
+> -                       /* reuse the parameter length from the same scope=
+ one */
+> +                       /* The DEL_IP parameter is serialized from the
+> +                        * pending address itself below; account for its
+> +                        * own address family, which may differ from the
+> +                        * added one.
+> +                        */
+> +                       addr =3D asoc->asconf_addr_del_pending;
+> +                       af =3D sctp_get_af_specific(addr->v4.sin_family);
+> +
+>                         totallen +=3D paramlen;
+> -                       totallen +=3D addr_param_len;
+> +                       totallen +=3D af->to_addr_param(addr, &addr_param=
+);
+> +
+>                         del_pickup =3D 1;
+>
+>                         pr_debug("%s: picked same-scope del_pending addr,=
+ "
+> --
+> 2.43.7
+>
+I think with no longer using addr_param_len, you can move the
+if (asoc->asconf_addr_del_pending) branch out of this loop.
 
-On Tue, 10 Nov 2026 07:38:07 -0800, Jakub Kicinski wrote:
-> Please use Python YNL directly, we don't want the dependency on iproute2
-
-Thank you for the comment. I will use Python YNL for v2, with no
-dependency on iproute2.
-
-Cheers,
-Tianyi
+Thanks.
