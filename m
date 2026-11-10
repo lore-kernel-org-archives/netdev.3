@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312501;
-	b=TZIu+zr550OF/fN6Lkl7MoJvh1F7Z+FmYOnrt6YZgWCuGrpMB6PUgLbJ9gXIgG3CPXEr
-	 jnDU94lKVizmhIW2TFb8ixccKB5BazmIq3+5t0fMln+MbDMjDyEiqOZIfVX0TNDKrPiey
-	 AmAGoWn3UBJVgRLuBK0fxhvqVGinzVRvp2pSS75Hb06agcLkNti0rPsBzXSBUoMvcmjZe
-	 weJcZ2Ambfu5sTJhjHDsCtwsUZ11iE4wWVMmZHtfRBAEJNvqwUkKKvp8HNK6Td8UQdySH
-	 87iEx6N1xU6UmbrWHUAAi3TP1G58KLZMrcRRFIjNXeUX/TJkE2PMCRSTqE7XOMUaotw==
+	t=1794312499;
+	b=zAREVpHkv9y/bcZ8B6+UxEn3Zi1ZJZzs91jfgzh7Im3WtFCQEqnP+s9ARm+/TzmzJSPV
+	 HKje7TGybeBpuehYJBtRojWVQkx74iTkMlEdmba+s5W6HCmP3ULnauXtIUZ5sDopElUio
+	 nQxTIUGmm2AV9Wfdt9ERY43LnTW/9F7pAk+bdUIjVUhOx+R6/kv0n8QXxDM2Zc0FEJiC1
+	 2gDhyAHs+bN+9l3/mKcqFNOtRDa3q7QnXKm31I2Fm/gRCuUoY+ZG0pucDXvlXKvOeoypL
+	 T5oufRKjhCtu95uZViYvkZ9kojlfb9juWAZW7zwg7+qBxoBErz5LveH4i9kmvEalYUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312501;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312499;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=mvvPC3+ird2JdQYl0sF3n5jlmtsAooRx8KFT06CTW34=;
-	b=hz7pGEw83EWiq4dLuDgZfJYHvqkKLMnVVGnNgAHcbhut8vSpRI2lDfLK0Yacyk/bSY28
-	 UsEe3bJ1yEhbjXLoM/YmUcio9POEe91LWYVapJsj+TpXDlhBtbrS2kVRI+5JpRZmSuqh/
-	 zu46ml1boW2IO+Q5cSQ1ojfermmqG+NM0lfdxYlRahaJQDStYO6Agu2pZxa9HnLtI1qjE
-	 uzqmWj0WvHr/umkKX3ZRzC+vecAdvoywHI9fLmcpPRgS7u3sxsHWW+W3soNdo33edUC5F
-	 fDKN21PKzVfmkqlvsHjcL//DoiRzsc2Z29U3zHlu9ZXYy8ELpu7fJjWSL3vyskoAAww==
+	bh=VQRdk6SHySBLAJGnophDMBUI53s97lQO9il1DqzVxmo=;
+	b=JqL0vkABOcvOyOpzFyu+nJ8vJhFNzXpb7ZGVCpf17kGSJjuY16aTqLgAKCgky5S5P35B
+	 eludKKDInKkQngi/HB7qv0k90waOlL8fzzzH1l6eS+PrFTTvnfYouadOhoKSiFRKvWJsE
+	 P3n3abcKdMCI0Wcf6NbutJjQVqZ9Xj+39NW9UuN26Z1FJ0pZUwQV9eAris0ltXSi4govC
+	 PB3pjJVK+4ZddmtQlx/yRw/x/5CA8WKCAOhoq2idTz4C3g9TkBkRyIbbhaBNrfkadhf7b
+	 84ML8yo5tUuuC8vVMyzjK4hVxpsoO1ChAvpHrzhmRVWKy22w8mPgPaiXXLLmKAX4+BA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+G1a8qa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cWQ5lw/G";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B160A2606;
-	Tue, 10 Nov 2026 12:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3487E60A380B;
+	Tue, 10 Nov 2026 12:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+G1a8qa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1571F008A2;
-	Tue, 10 Nov 2026 12:08:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cWQ5lw/G
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB35C1F0089F;
+	Tue, 10 Nov 2026 12:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312500;
-	bh=mvvPC3+ird2JdQYl0sF3n5jlmtsAooRx8KFT06CTW34=;
+	s=k20260515; t=1794312498;
+	bh=VQRdk6SHySBLAJGnophDMBUI53s97lQO9il1DqzVxmo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j+G1a8qaRKmHtc0tyGyBhCVBNpLlwbaGuKfie9D9F5mh/d6EF9kq6ikn+pbZE0DQQ
-	 Dj/DRcqpTk1kDHRfdx26w10ANGn44UeeiCAJHQazDIujfDhRStVhLF9/GZgroPheYa
-	 XoUTK/JMV+AuYDTgYrPl2Hf6TssF7Ud4/NERc0Hrur+ybT0XwrasVCfm3A49mFTY3d
-	 bE8GkpRs0m7h3FfUbw10lz9yIjlTzsGPt+ubXAZJLgnHATD+KVSZ5KnIhIpLVlKEDa
-	 yfWPMnx+OD1DZMFkskA7carVW8VSiWY5Nu8Dsb7TJ98cIsVQiVlUMWcimD+6BYwzcz
-	 N2dYgJ3J5o3yA==
-Subject: Re: [PATCH net-next v6 RESEND 4/4] net: stmmac: hold RTNL when
- reading descriptor rings in descriptors_status
+	b=cWQ5lw/Gbt5uDkya7QFZNTAgO7BaJ7HXJ6W8O3kv76px+MRPLHSyy+JAvL6FyYgf7
+	 4Zi86tq1dO15AKIoSnRT1TAzSsknSU7hJHRYLRdpl+3gA27Im64CzRcZP/JMpnY0+K
+	 W2zEphFmOi4dv/PwOQbR2Uj9an+QqcNg1OuQEmd89su8FcDbSK5sUidnTSjh9zl6XE
+	 Mu/NgU8N0cPnKw7kl7eulMhzw4m9vojwdKRvOa0l9wK5kDv8/thXhGf3LVEOrfHrLg
+	 GvhGRlkJEfDLO/h3EUpppGZlt9fNB936LroJbUt9+tT765POdaxHnsDrwR02+6ivvp
+	 djlzxnx4PNE6w==
+Subject: Re: [PATCH net-next v6 RESEND 3/4] net: stmmac: release descriptor
+ resources through priv->dma_conf on open failure
 From: netdev-bot+sashiko@kernel.org
 To: dinghui1111@163.com
 Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -51,10 +51,10 @@ Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  dinghui@lixiang.com, xiasanbo@lixiang.com, yangchen11@lixiang.com,
  liuxuanjun@lixiang.com
-Date: Tue, 10 Nov 2026 12:08:18 +0000
-Message-ID: <179431249895.994134.1654344406959828487@kernel.org>
-In-Reply-To: <20261106090507.1020751-5-dinghui1111@163.com>
-References: <20261106090507.1020751-5-dinghui1111@163.com>
+Date: Tue, 10 Nov 2026 12:08:17 +0000
+Message-ID: <179431249745.994134.2549811936240601029@kernel.org>
+In-Reply-To: <20261106090507.1020751-4-dinghui1111@163.com>
+References: <20261106090507.1020751-4-dinghui1111@163.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,98 +74,172 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit fixes a NULL pointer dereference that a user can
-  trigger, but its message has no Fixes: tag (and no Cc: stable).
-- [Low] stmmac_rings_status_show() reads its loop bounds before taking
-  RTNL.
+- [Low] This commit fixes a bug but has no Fixes: tag and no Cc: stable.
+- [Low] The commit message says stmmac_open() stops jumping into the
+  err_serdes chain after __stmmac_open() fails because that chain 'would…
+- [Low] The patch changes the ownership contract of __stmmac_open().
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but a failed
+  internal reopen leaves the netdev IFF_UP/netif_running() while the…
 
 --
 
-net: stmmac: hold RTNL when reading descriptor rings in descriptors_status
+net: stmmac: release descriptor resources through priv->dma_conf on open failure
 
-This commit takes RTNL around the descriptors_status debugfs reader so it
-is serialized against the control-plane paths that free the descriptor
-rings. It also skips queues whose rings are NULL, which happens when the
-interface stays IFF_UP after a failed internal reopen.
+After __stmmac_open() copies the temporary dma_conf, it now releases the
+descriptor resources through priv->dma_conf when it fails, so callers
+only kfree() the container. When __stmmac_open() fails, stmmac_open()
+now cleans up inline instead of jumping into the err_serdes label chain.
+stmmac_change_mtu() no longer calls free_dma_desc_resources() itself.
 
-> Skip such queues with a hint instead of dereferencing a NULL pointer
-> in stmmac_rings_status_show().
->
+> stmmac_open() no longer jumps to the serdes label chain after
+> __stmmac_open() fails, as that chain would double-release the
+> descriptor resources and double-put the runtime PM reference, so the
+> cleanup is done inline instead.
+
+[Severity: Low]
+Is the runtime PM part of this description accurate?
+
+After this patch __stmmac_open() makes no pm_runtime_* calls. Its error
+labels only stop the DMA engines and the MAC, release PTP and free the
+descriptors.
+
+The old chain err_serdes -> err_disconnect_phy -> err_runtime_pm ->
+err_dma_resources calls pm_runtime_put(priv->device) once. The new
+inline block also calls it once.
+
+The only real problem with reusing the chain seems to be the second
+free_dma_desc_resources(priv, dma_conf) on the stale temporary copy.
+Could the labels be rearranged, for example with one just before the
+kfree(dma_conf), so the cleanup sequence isn't duplicated inline?
+
 > Signed-off-by: Ding Hui <dinghui@lixiang.com>
 
 [Severity: Low]
-This fixes a NULL pointer dereference that can be triggered from debugfs,
-but the commit has no Fixes: tag and no Cc: stable. Should they be added so
-the affected stable trees pick this up?
+Should this have a Fixes: tag and Cc: stable?
 
-The state described above comes from stmmac_change_mtu() when the reopen
-fails:
+The caller-side free through the temporary dma_conf appears to come from
+commit 30134b7c47bd ("net: ethernet: stmicro: stmmac: fix possible
+memory leak in __stmmac_open"). That commit removed
+free_dma_desc_resources(priv, &priv->dma_conf) from __stmmac_open() and
+moved the free into stmmac_open() and stmmac_change_mtu().
 
-stmmac_change_mtu()
-    __stmmac_release(dev);
-    ret = __stmmac_open(dev, dma_conf);
-        init_error:
-            free_dma_desc_resources(priv, &priv->dma_conf);
+That commit carries Cc: stable@vger.kernel.org, so stable trees have the
+same caller-side free.
 
-free_dma_desc_resources() frees the rings and sets dma_rx/dma_erx and
-dma_tx/dma_etx to NULL. IFF_UP stays set.
+Backporters would also need "net: stmmac: guard against NULL pointers
+when freeing TX/RX buffers" from this series. The later
+free_dma_desc_resources(priv, &priv->dma_conf) in __stmmac_release() is
+only safe when the free helpers NULL their pointers.
 
-Before this patch, stmmac_rings_status_show() checked only IFF_UP. It then
-passed the NULL ring to sysfs_display_ring(), which dereferences p->des0. A
-reader that raced with ndo_stop, an MTU change, an XDP change or an XSK
-change could also read DMA memory while it was being freed.
-
-There are two candidate targets. One is the commit that added the
-unsynchronized descriptors_status reader. The other is the commit that
-added the MTU-change reopen path:
-
-Fixes: 347007968744 ("net: ethernet: stmicro: stmmac: permit MTU change with interface up")
+Could the commit message also describe what the user sees? It only
+mentions "stale pointers". It doesn't say that freed coherent ring
+memory can still be read without locking, for example by the debugfs
+reader stmmac_rings_status_show(), while IFF_UP stays set after a failed
+MTU change reopen.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index cd4631efe47ab..10d33a43db947 100644
+> index b02371ed2d062..cd4631efe47ab 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -6748,8 +6748,10 @@ static int stmmac_rings_status_show(struct seq_file *seq, void *v)
->  	u8 tx_count = priv->plat->tx_queues_to_use;
->  	u8 queue;
->  
-> +	rtnl_lock();
-> +
-
-[Severity: Low]
-Are the loop bounds still read outside the lock? rx_count and tx_count are
-set in the declarations, before rtnl_lock() is taken:
-
-    u8 rx_count = priv->plat->rx_queues_to_use;
-    u8 tx_count = priv->plat->tx_queues_to_use;
-
-stmmac_reinit_queues() (ethtool -L) runs under RTNL. It releases the rings
-and then updates both fields:
-
-stmmac_reinit_queues()
-    stmmac_release(dev);
-    ...
-    priv->plat->rx_queues_to_use = rx_cnt;
-    priv->plat->tx_queues_to_use = tx_cnt;
-    ...
-    ret = stmmac_open(dev);
-
-Suppose the reader loads the counts and then blocks in rtnl_lock() while
-set_channels runs. The loops then use stale bounds.
-
-If the count shrank, the reader prints "Descriptor ring not allocated" for
-queues that no longer exist. If it grew, live queues are skipped without
-any message. This is also a data race that KCSAN could report, since the
-fields are written under RTNL.
-
-The rx_queue[] and tx_queue[] arrays are sized by MTL_MAX_*_QUEUES, so the
-accesses stay in bounds. Only the debugfs output is affected.
-
-The commit message says RTNL now synchronizes this reader with the control
-plane. Would it make sense to read rx_queues_to_use and tx_queues_to_use
-after rtnl_lock() as well?
 
 [ ... ]
+
+> @@ -4290,6 +4290,8 @@ static int __stmmac_open(struct net_device *dev,
+>  	stmmac_stop_all_dma(priv);
+>  	stmmac_mac_set(priv, priv->ioaddr, false);
+>  
+> +init_error:
+> +	free_dma_desc_resources(priv, &priv->dma_conf);
+>  	return ret;
+>  }
+
+[Severity: Low]
+With this change, __stmmac_open() takes ownership of the descriptor
+resources passed in through @dma_conf and releases them on any failure.
+Both callers now only kfree() the container.
+
+The kernel-doc above __stmmac_open() still only says:
+
+ *  @dma_conf :  structure to take the dma data
+
+The same phrase is used on many other helpers in this file, so it says
+nothing about ownership.
+
+Could the kernel-doc state that the callee releases the descriptor
+resources on failure, so a future caller does not free them a second
+time?
+
+[ ... ]
+
+> @@ -6384,7 +6389,6 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
+>  
+>  		ret = __stmmac_open(dev, dma_conf);
+>  		if (ret) {
+> -			free_dma_desc_resources(priv, dma_conf);
+>  			kfree(dma_conf);
+>  			netdev_err(priv->dev, "failed reopening the interface after MTU change\n");
+>  			return ret;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but what state is the device
+left in when this reopen fails?
+
+Before the reopen, __stmmac_release() has already run
+stmmac_disable_all_queues(), which calls napi_disable() on every
+rx/tx/rxtx NAPI. It has also freed the IRQs and the rings.
+
+__stmmac_open() can then fail, for example on a DMA reset timeout in
+stmmac_init_dma_engine(), on stmmac_rxp_config(), on PTP or EST setup,
+or on stmmac_request_irq(). Every one of its error labels returns before
+stmmac_enable_all_queues().
+
+stmmac_change_mtu() then returns without clearing IFF_UP, so
+netif_running() stays true.
+
+On the next ifdown or unregister_netdev():
+
+stmmac_release()
+  __stmmac_release()
+    stmmac_disable_all_queues()
+      __stmmac_disable_all_queues()
+        napi_disable(&ch->rx_napi)
+
+This calls napi_disable() a second time on a NAPI that is already
+disabled. napi_disable_locked() in net/core/dev.c loops:
+
+	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+		usleep_range(20, 200);
+		val = READ_ONCE(n->state);
+	}
+
+Those bits are still set from the first disable. Can this spin forever
+with RTNL held?
+
+stmmac_suspend() also trusts netif_running() and reaches the same
+napi_disable() while holding priv->lock, so system suspend looks like it
+would hang too.
+
+stmmac_reinit_ringparam() and stmmac_reinit_queues() release the device
+and then call stmmac_open() the same way. If that stmmac_open() fails,
+its error path has already dropped the runtime PM reference and
+disconnected the PHY. A later stmmac_release() would do both again.
+
+The hang hides some other problems. The memcpy() in __stmmac_open()
+overwrites priv->dma_conf.tx_queue[].txtimer with the kzalloc'ed zeros.
+On a stmmac_hw_setup(), PTP or EST failure, stmmac_init_coalesce()
+never sets the timer up again, so the hrtimer_cancel() in
+__stmmac_release() would act on an uninitialized hrtimer.
+
+stmmac_free_irq(REQ_IRQ_ERR_ALL) would also run on IRQs that were never
+requested.
+
+This patch makes the repeated free_dma_desc_resources(priv,
+&priv->dma_conf) safe because the free helpers NULL the pointers. The
+last patch in the series only guards the debugfs reader. Nothing in the
+series seems to handle a device that still reports running after it has
+been torn down.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106090507.1020751-1-dinghui1111%40163.com
