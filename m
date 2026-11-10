@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279302;
-	b=JwHri6G0RSIOjejU8VTZHhItMARMvi0Ebx4RQvHgYppkOC9vlgbmLhQP+q+MTyNZ/O9U
-	 p8Z2pZv/PEgTXh6C3yq0Ux9IHiGqkIXiZfJIuUauTSQOG22B27xVEt1cGzEnW6OHzkMZ6
-	 HPcHTqgp3EdFHv4W3gvjJ5vKjFoKMRfuDHdC+qbOjwoRkLF41hXgzBnnPneG/sBqvcN07
-	 DcEzYnjpRIOmxbrrp5gIRbjfgjuZpVUg4j5GJoMNPVSrR+eGDV1IR3pvVVVv886iHwURV
-	 C5qShgzH3pF3ic13fg+LRD4nyMUykAbchbW47agDPzniN9Y2Ik1G0U092Zieipoaq4w==
+	t=1794279304;
+	b=RG0IGP7qF4vdi04UeEXCkWtYx8ZU7aXz4ziU12EKck0HfYDPPIDoACGQEBVCsoi8tUic
+	 MylvT9dYQXwaDiKp8wA+6WSlRYUGS+t19UqHB9F/sbif9fZ7M9yEwM/p2tLuqOiRtQGdI
+	 rVehy39B0TEeBo0jpvVcV0YUVlaylq0UMC2gZxJykKCezk9vXsnjYZWw9eLpqUbXZX1CK
+	 u6kVEZ2Rsokt5Ug5Z7wn76WOm8+ML2tVfGIAOuvaGLJjA/ix+aCR5FFX7hSbh6Zeb0iXS
+	 eHkLO40jgJqYLQ/wkCeCNOHFQGEQGRri2YWE4LYzsz1HiR5gc2e0b/zPW4P/D613Wqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279302;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279304;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=cTX3T6TMAJ5HwTT0XmoAC7cwn6bo+kfJagmFjRifLaA=;
-	b=WtfTek5vR56OPY+WPqzwGcTOPFXPMOA3cIHHmV9dr42tHR143ObOyDKdIcCC1Y+vIShE
-	 byzIEb9nkqp9veOaEYufHbrJ3b6CUbXd6LmYPE04Ck/72hqAdc3xE44Fbwv5p1Rx1t3YT
-	 FU5xsGwlI2+LnGG4jLUPB8NdVqRj4+MHXWdZc9w19V/4q/x/VIrqUzRDpyJVjPg3gt4EC
-	 kxz98KBFuZPErZ76YHKxufJcUdH0in1YjIxxzhmHMW2Y75Bk0Ed6rkiwXoIvK9yXu5pH8
-	 u1DkBuFUn56gWSlkO/PCpG9lfTJvn7YrBjheIXaLdVv8FkrbtJZTdP3RQL1KZOVVwHg==
+	bh=ywQ2RoGdhlkeDV6w/mm5sM6eufyYYmhH+3GSzk0jG2Y=;
+	b=aMZfGicS/cWhlqZMb8jnMshq2fkr5rdN00vti4BpOx8jYurKBd+aYYQUx1PU0vRDvZ/s
+	 ojt7GKsNlEAPO+KoIqQM7UW0+c8s+PKSzXxk83Ig9e85UU/suNQ3chnrYBiQ6UKp2lqSj
+	 A51hAMreUgLzrmBazrqh5edH8aBhwYGfzedfk/GKqFWj2p5vKK7lWOTAb3ovpgTqgrGEl
+	 tF6UDmsoXMVG5VyISQLeiwB1WluT3X+lbzw+V8LhHXifjCR4JK0ggoR6L4szCtfwX5/Ea
+	 47/zennLL73TUzlmEGXkq9ru4gH8J45UfgkUuDxiZPagX81gbQ1TopNovhHTGgiHJlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QIepXn9z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PCb3ibf7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E667360A6F4B;
-	Tue, 10 Nov 2026 02:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E2760A6F6B
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QIepXn9z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7471F008A3;
-	Tue, 10 Nov 2026 02:55:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PCb3ibf7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B071F0089F;
+	Tue, 10 Nov 2026 02:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279301;
-	bh=cTX3T6TMAJ5HwTT0XmoAC7cwn6bo+kfJagmFjRifLaA=;
+	s=k20260515; t=1794279304;
+	bh=ywQ2RoGdhlkeDV6w/mm5sM6eufyYYmhH+3GSzk0jG2Y=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QIepXn9z7tGzZ8FubGGYm6oK+M7Xv0vahL6WaPAJgGRTA4jjmjuHBacrT57BlddNV
-	 jcSxKwFLmuzUhC/bNasnjjkJhWQLdFkPsHsGuxVO4IdrKK6QVpmvficT1di8XIAEO3
-	 DyWO85QuZs/tBqVYmDAVasljAkV9OQN+2JATBeQkfm/rpoQGchb3XXcjJvufZ4Sc8U
-	 P+BrwgaBBzwirZBAMc1G6MaNTMmr56lGr2nCzgY74uSo0gqfRBYnjm8Th1qtunYpxQ
-	 GxHWWhRQb4RfcGuD6tdmV4fxY20Y4jFk3GJlHdhu+CWa2cU3Uzcvi4JP6GRu5hX1w6
-	 ExXX5CNSzO/sQ==
+	b=PCb3ibf7P8ZjaZGl6/Jy0KWuchCxExY3Y+0/8lZ9BL9tUKdpiwKBmJ97dkBmeGzTL
+	 qPapojco2UbQEwykTbUY25OFps24ryRRAb24kE3Cp8bgaF3o7mDJTXegMTGIQ7Vf5u
+	 bKLawD8k5LxIqijOGKHYGYBm4B17Y5jKz0Vhq/L5S10HZuSvK6RNMVyvK4p4MHpFCj
+	 K73UWamwZS0xdRfqRt/QvMGbHArXcsHl7lyMPux0dA83FfO/gbyMxqNWoV3qDipJdF
+	 2sxLO5Xa2OEkpqAqgXwTclvD4qZp9RJl50cHagWtUdvdvBHjKYHYaK93JYaY2wd0kR
+	 bjGCSC/oxmX4g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0CA391AFCB;
-	Tue, 10 Nov 2026 02:55:01 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2ADC5391AFCB;
+	Tue, 10 Nov 2026 02:55:04 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] team: fix promisc/allmulti leak in team_port_add error
- path
+Subject: Re: [PATCH net] ipvlan: make outbound skb headers writable
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427930017.3612825.2243864386050200403.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:00 +0000
-References: <20261104015217.2222-1-lirongqing@baidu.com>
-In-Reply-To: <20261104015217.2222-1-lirongqing@baidu.com>
-To: lirongqing <lirongqing@baidu.com>
-Cc: jiri@resnulli.us, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, zlatistiv@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, hangbin.liu@linux.dev
+ <179427930292.3612825.12017413725749529323.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:02 +0000
+References: <20261104113530.986664-1-edumazet@kernel.org>
+In-Reply-To: <20261104113530.986664-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, maheshb@google.com, kuniyu@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, kylebot@openai.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 4 Nov 2026 09:52:17 +0800 you wrote:
-> From: Li RongQing <lirongqing@baidu.com>
+On Wed,  4 Nov 2026 12:35:30 +0100 you wrote:
+> From: Kyle Zeng <kylebot@openai.com>
 > 
-> team_port_add() increments the port's promiscuity and allmulti
-> counts before calling team_dev_type_check_change(). If the latter
-> fails, the error path does not undo these increments, leaving the
-> port in promiscuous and allmulti mode even though it was not
-> successfully added to the team.
+> In L3 and L3S modes, ipvlan_process_v4_outbound() and
+> ipvlan_process_v6_outbound() hand the skb to ip_local_out() and
+> ip6_local_out(). The IP output path assumes it owns the network header:
+> __ip_local_out() rewrites tot_len and the header checksum, and
+> transport-mode XFRM can memmove the network header into the headroom
+> when xfrm_skb_check_space() finds enough room, without copying.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] team: fix promisc/allmulti leak in team_port_add error path
-    https://git.kernel.org/netdev/net/c/ff618cb00a64
+  - [net] ipvlan: make outbound skb headers writable
+    https://git.kernel.org/netdev/net/c/a45dbf182137
 
 You are awesome, thank you!
 -- 
