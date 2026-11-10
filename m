@@ -1,107 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794313216;
-	b=KMO06j3OS3eqAxAIXfwThk/QgWwOjt/62kQf4dzp0aBA+UZmB4VhyFuOhyRic4v8KhkR
-	 ytVunnIXYLJSlpJuJgq2kRcfn3lbOBi27NdF0+9xBLd+Cr/3YDIs6mrfhiZFsmsz8yCp7
-	 IMMer6+jgM4wN+GWGiqOVYKu95G47hXun8aW8ybj0lzaBR2FVgOSO28c8HjPloza/KGZy
-	 /5sQ0LMx4VLHGdDPJsw4OpqnmIFAscrtLfZb3xsF+VZWuGiaedmzxrkwQyOrXEHBAlXcy
-	 dlLdO52dZM3E9v9QqSfyD6/1cv3Nyc8GkBdOuQM/mTrB/JMloQP+MJuKQuSzJBPuVfA==
+	t=1794313235;
+	b=xXG389Cr+voe52W58ZAbv/lOLMs2a31xME4sRzqQUYVlpEjXNyA7cp9nfeo/QfmIuFF5
+	 FgSDanCirqTR8CEzPND2/8WYuIspCW8ovSVIMueBU3tTrXN/L8Qnuwlt/P2Q54zjAOJp/
+	 eJeMnaYw4ej/pR7QMkqScuN20w9qG2zrLJYCTmHSQFUehOd5vmMLM5UWSFSu14JV0gTPU
+	 vTmj0IkN4zO7lviYq4RbKPsy9ctlN2u2nxgzDKx8iNNK5wxqUPV7K3HTJ1lQdFmTVOS5M
+	 K1yoXbs6a5N+X9o0c+r+pchnkYyHAXREqG5erUfX6/llXD15Cl/i+Hk+o1F2G92JuVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794313216;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=kPdufsPBJpaLhkzWQqqT8FSuhylKhYmUXeIW0aMLwqc=;
-	b=momhV0U9sH3gokP/qTLgZsEtcBMaSmVaUkFuPyJ4eiQNkpUVxuW9ovQNdElpqfvXafTU
-	 wbHIBSfAcFzA/yuCs5LNV4hW5XMTLeFGeHKCfse4BF55Xj0jxOIT3q+7wXbcqgocy8k6k
-	 hjpsQO8CZIz8d9du853p6DZRkICMcwmZvTyJMK1Gy5Ec5ZQdWQ7mFXyU7allPXnJlcDvn
-	 R3Up+NSO/3RgMpuk/Q02a/BYrpy3PTsuw3ZoVFCBOHzBCSp8l8BUaPesyrhQa+9bgGBfs
-	 P9nsr0QUtOiIEaKqUaT9sKk0CSEj30ew9LCPXgHgrpAExgxGErypoJqdBBhpnhwV7AQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794313235;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=6rM2EcZTe3ev5LTc6GsFrDgE2qx75I9quZj2GOEZIZg=;
+	b=0BdVmg/fW5mb+fcSnlfVy8rotGdjbadFN4Du/fTCF/xtW4etKbutF1+oZkv3gj6Vs0cq
+	 NgrFpU8zEVhhLyKxkV/x8T9QR95LeFAYBPLqLMj4cIYzO7s9/EAMnYJo1f9LJXKvliz/q
+	 z4vuFv5fU82fUKgjai9VX6xydh8aqTihqduHlboD7lEw+SMfG7yjUE7MN/ecVRi3i7m4d
+	 Bz+Zgr15aV9gkKkVxO2DHnKpD3acWU3ytY7yv6EPtkfw0ZjjKMEP/pHIprYMPqbktX8zo
+	 hN2vd/2tonRAaB6zoz5yF6zu0fixEs+aeFPyhPhRwGdlOamCNkWZdcx4Pz3zap/i9zQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LGkizSni;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ovaevFci;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gq6lxTZH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AFB606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:20:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25AFB606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476B7606A32E;
+	Tue, 10 Nov 2026 12:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LGkizSni;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ovaevFci
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794313215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kPdufsPBJpaLhkzWQqqT8FSuhylKhYmUXeIW0aMLwqc=;
-	b=LGkizSniNGYF4hqBVCtIB8IV798WGc5n7tl9FrMTCMWuyFJqZdqk706zaCf34QgvrjFrlW
-	0tyc/rb0x++w82Ug5QsmQTXDiojsKxaBoGXQ9kYVjpEvkyqA1lyEugZEIVK0m3svATSUgU
-	iBMSWTIJrMu9XhY1jJJFdJ/N2U5gjZs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-PI3UEqCdNuS4742ajXbAzA-1; Tue, 10 Nov 2026 07:20:13 -0500
-X-MC-Unique: PI3UEqCdNuS4742ajXbAzA-1
-X-Mimecast-MFC-AGG-ID: PI3UEqCdNuS4742ajXbAzA_1794313213
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4916bd6e3baso1637061f8f.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:20:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794313212; x=1794918012; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kPdufsPBJpaLhkzWQqqT8FSuhylKhYmUXeIW0aMLwqc=;
-        b=ovaevFcimn2HnEBjjZ/NGwI9bTwKxnGNmYozXjxjutP/+44svBl3WI0nrxw003GSU5
-         QQPmjOgGO8Ot+VFawHXgtbSi+i59M+yI7goxfir4Kk2nysNV91nr8XgtWod6r5IqyTX9
-         NeSvpC71yJNnakGxqD6nmm/dbvsL4qGNF5Xyf/9ewEUwTIn4Bs1ImutMRuadkz4pop80
-         1HdmENo6P5iHz0VEUoqeYbgce/bBgZJysPJokj5LXIQNYXsIzU28xrucgvCkulJwLZAF
-         kxg3osvKjQlY0Z4+xanBxp67BY6br6ReKQs8CVQKIxDA5bGE0VbiSI209tR9eZwnCV3E
-         GwNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794313212; x=1794918012;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kPdufsPBJpaLhkzWQqqT8FSuhylKhYmUXeIW0aMLwqc=;
-        b=Sp87ON3H+u6WRm+ylnJnbN4Qt8KtThKXRWqv2Vkt4eD54tRAxP7Z10gcWXcwyb10sr
-         dNA+C+HdLuIVhsYNifc26iUWDVxWa6GGZLcnhbt3b8Zdvw9x1620HjAgi6jLC+4g4Ym4
-         ZiTBJnlyDu0LXJjjhcsHv4GsA1T+87cjAaYQ5n5XyDj0T/sNad/82jReXhRxVwu6rhAO
-         aJplQ5AIsQJszSiEDqrikwqgrogQHm4oGM25v5JYSVakJ9C1Dtrw19o+Ruqk3z3cBTv6
-         1BRCCNlgt59LYuJNQOTuXIgnY+t2kYwmtG0pu+3EMFmqRsSYV0JHcfhuDN6BUAmWAHjB
-         MbyQ==
-X-Forwarded-Encrypted: i=1; AL+hErED03aIELCtCPX81q8vqaeviabvFqy3pelw/SOTkO06/AEiUHCeeUpnWo93x1idgJ0pTB/i8Ic=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9HCOobfFti3jPAEu8iF70UtODz15FaHUEEgVNF0dbrnSYL2578
-	t0qyhcMFk8DDQh6Bb09FM3O2nPmLY92V2rRCEJGX/qQ5rHIexoUXt5k3yT32qeZvfNXoLtnybnw
-	lJVTSnZCt3Osqu60k5D4a6fMBt04JS3mMUGdq/E67emsScGtzVVGFo6vgHw==
-X-Gm-Gg: AYBFou2jc39xJ8FJfcXb6guLK3yOuKWTMZ0azqdnv58iHau1P5qA1DSGxPIV55gfkj3
-	EGn2eSry1237hqKOVqIVPR4X4DrjF+W7t/aQbcM1aCYFi0XkZ2RT5N6UlbVwPN7rp+exD/jtDGy
-	ig9e1zBqAsB0GNiDdQMiJ7KQK+23ZrwtlfthU1T5/ifal3uWPPkV/wYaFKHetKox4rqL+M0q7rk
-	8tn0QVNiOWKm3kyiQuXYFXxSH6mSdA392zcPS7mv3/Q6A/W1E+n05YkIYXpG/1nidKxaSAiWUlQ
-	FK2V/UHdv8omjRR+hKzwi0InDFUbe3a9Vnbwk+yhEDrGvXZciqqytMt6K7fzdXBLEGFcCluGQ6w
-	ehEW09CS4D6LljGxIIPsBpx4VQyI2Kd65Os0=
-X-Received: by 2002:a05:600c:1c0c:b0:4a2:150f:1607 with SMTP id 5b1f17b1804b1-4ba0233e877mr44341105e9.13.1794313212300;
-        Tue, 10 Nov 2026 04:20:12 -0800 (PST)
-X-Received: by 2002:a05:600c:1c0c:b0:4a2:150f:1607 with SMTP id 5b1f17b1804b1-4ba0233e877mr44340455e9.13.1794313211833;
-        Tue, 10 Nov 2026 04:20:11 -0800 (PST)
-Received: from [10.43.3.161] ([213.175.37.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49835c377fdsm3961339f8f.21.2026.11.10.04.20.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 04:20:11 -0800 (PST)
-Message-ID: <a873e0f1-ead6-49da-93af-d2c2d79c9741@redhat.com>
-Date: Tue, 10 Nov 2026 13:20:09 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gq6lxTZH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E241F0089F;
+	Tue, 10 Nov 2026 12:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794313235;
+	bh=6rM2EcZTe3ev5LTc6GsFrDgE2qx75I9quZj2GOEZIZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gq6lxTZH4cxRQwCO+gixC3+400bZsgkL+HI9hqBrQvX8EOuqFhxw92WuTo+wTkafG
+	 Io5hnrbhM/Cg+XCnyJ5/IQXj/JfU5ycNZmKVdj9T42UQyIqN3NBky+JSwBGGvvZeo8
+	 VVV+A0InKjZxGzTB7OQe2c+J+IjT79hOyYwser7I1WRbfVM0EI/vOebqoF6gs7Q0kL
+	 R8Bz3sEij1+vpv+gylytk/n6U1L6o0K0ydU0NHrHc5oCV3emN1fk0lRbRvwXZ233Q3
+	 E4rQGcwGgDeeMDFV+HJFggChFDFAQfP7/vqNLb3GnERl+3+pSuFQNyAXPLu+n0U8VD
+	 IlVmpef2C6MCQ==
+Date: Tue, 10 Nov 2026 12:20:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: mohsin.bashr@gmail.com, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+	maxime.chevallier@bootlin.com
+Subject: Re: [PATCH net v2] selftests: drv-net: pause: Avoid cleanup failures
+ for unsupported link settings
+Message-ID: <20261110122030.GD18859@horms.kernel.org>
+References: <20261103190622.3981970-1-mohsin.bashr@gmail.com>
+ <179387330655.488856.2246156256257342362@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,97 +62,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/10] ice: dpll: notify TSPLL lock status from
- the periodic work only
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Min Li <min.li@microchip.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- Grzegorz Nitka <grzegorz.nitka@intel.com>,
- Karol Kolacinski <karol.kolacinski@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-References: <20261106121005.1327603-1-ivecera@redhat.com>
- <20261106121005.1327603-2-ivecera@redhat.com>
-Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20261106121005.1327603-2-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179387330655.488856.2246156256257342362@kernel.org>
 
-
-
-On 11/6/26 1:09 PM, Ivan Vecera wrote:
-> ice_dpll_tspll_state_on_dpll_set() notifies the TSPLL device from a
-> callback of the TIME_REF pin. This pin belongs to an external DPLL and the
-> DPLL core is going to run its callbacks under a lock of the pin's owner,
-> which does not cover the TSPLL device.
+On Thu, Nov 05, 2026 at 10:08:26AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
 > 
-> Only update dpll_state in the callback, so a device get reports the new
-> state right away, and leave prev_dpll_state to
-> ice_dpll_periodic_work_e825(), which then sends the notification. It now
-> arrives up to 500 ms later and after the reply to the request.
+> Critical: 0 · High: 1 · Medium: 0 · Low: 1
 > 
-> Refresh dpll_state on every run of the work, as the state written by the
-> callback can be transient and the lock status can return to
-> prev_dpll_state before the next run. No notification is sent in this case.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   drivers/net/ethernet/intel/ice/ice_dpll.c | 14 +++++---------
->   1 file changed, 5 insertions(+), 9 deletions(-)
+> - [High] The fix is incomplete: the same cleanup failure still happens on
+>   the link-autoneg-on branch of pause_setup() in…
+> - [Low] In pause_setup()
+>   (tools/testing/selftests/drivers/net/hw/pause.py, local lines 410-414,…
 > 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-> index ade1fb3dd06743..bdbcf7af296eb4 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-> @@ -2914,7 +2914,6 @@ ice_dpll_tspll_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
->   	struct ice_dpll_pin *p = pin_priv;
->   	struct ice_pf *pf = p->pf;
->   	enum ice_clk_src clk_src;
-> -	bool changed = false;
->   	struct ice_dpll *tp;
->   	int ret;
->   
-> @@ -2947,15 +2946,12 @@ ice_dpll_tspll_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
->   		WRITE_ONCE(pf->ptp.tspll_locked,
->   			   new_state == DPLL_LOCK_STATUS_LOCKED);
->   
-> -		if (tp->prev_dpll_state != new_state) {
-> -			tp->dpll_state = new_state;
-> -			tp->prev_dpll_state = new_state;
-> -			changed = true;
-> -		}
-> +		/* ice_dpll_periodic_work_e825() compares the state with
-> +		 * prev_dpll_state and sends the notification.
-> +		 */
-> +		tp->dpll_state = new_state;
->   	}
->   	mutex_unlock(&pf->dplls.lock);
-> -	if (changed)
-> -		__dpll_device_change_ntf(tp->dpll);
->   	/* TSPLL reconfiguration may complete before lock is reacquired.
->   	 * PTP periodic monitoring tracks and restores the final lock state.
->   	 */
-> @@ -3372,8 +3368,8 @@ static void ice_dpll_periodic_work_e825(struct ice_pf *pf)
->   	mutex_lock(&pf->dplls.lock);
->   	new_state = ice_dpll_tspll_lock_status_get(pf, true);
->   
-> +	tp->dpll_state = new_state;
->   	if (tp->prev_dpll_state != new_state) {
-> -		tp->dpll_state = new_state;
->   		tp->prev_dpll_state = new_state;
->   		changed = true;
->   	}
+> --
+> 
+> selftests: drv-net: pause: Avoid cleanup failures for unsupported link settings
+> 
+> This patch changes pause_setup() so that the forced-link restore is queued
+> only after setup has successfully enabled link autonegotiation. The goal is
+> to avoid EOPNOTSUPP cleanup failures on devices such as fbnic. It also makes
+> pause_test_support() fall back to checking forced MAC pause on the current
+> link when no link configuration change is accepted.
+> 
+> > diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
+> > index ca4a55e59c30f..99ce6a59dfcd6 100755
+> > --- a/tools/testing/selftests/drivers/net/hw/pause.py
+> > +++ b/tools/testing/selftests/drivers/net/hw/pause.py
+> > @@ -404,14 +404,14 @@ def pause_setup(cfg):
+> >  
+> >      if link["auto-negotiation"]:
+> >          defer(cmd, f"ethtool -s {cfg.ifname} autoneg on")
+> 
+> [Severity: High]
+> Can the same cleanup failure still happen on this branch?
+> 
+> This restore is still queued whenever the device reports link autoneg on,
+> even when setup never changes the link. The remote interface has the same
+> unconditional defer further down in pause_setup().
+> 
+> When the driver has no set_link_ksettings, ethnl_set_linkmodes_validate()
+> rejects every LINKMODES_SET before it checks for a no-op:
+> 
+> net/ethtool/linkmodes.c:ethnl_set_linkmodes_validate() {
+>     ...
+> 	if (!ops->get_link_ksettings || !ops->set_link_ksettings)
+> 		return -EOPNOTSUPP;
+>     ...
+> }
+> 
+> That means a restore to the same autoneg on value also fails with
+> EOPNOTSUPP.
+> 
+> Some in-tree drivers report autoneg on and provide only get_link_ksettings.
+> nicvf_get_link_ksettings() sets cmd->base.autoneg = AUTONEG_ENABLE.
+> be_get_link_ksettings() does the same when auto speeds are supported.
+> fbnic also has get_link_ksettings and no set_link_ksettings.
+> 
+> On these devices pause_test_support() takes the new "current link"
+> fallback. The deferred "ethtool -s <if> autoneg on" then fails in
+> ksft_flush_defer() and the test ends in a cleanup failure. The subject
+> line says the patch avoids exactly this.
+> 
+> Every other test that calls pause_setup() would hit it too, because the
+> defer is flushed even when the test skips.
+> 
+> Dropping the autoneg on restore isn't an option, since pause_test_support()
+> and pause_autoneg_link_autoneg() force the link and rely on it. Would it
+> work to queue the restore only where a link change is accepted? One place
+> is after a successful "autoneg off {forced}" in pause_test_support().
+> Another option is to let the restore tolerate EOPNOTSUPP.
 
-Reviewed-by: Petr Oros <poros@redhat.com>
+This looks like a legitimate concern that warrants a v3.
 
+> 
+> >  
+> >      # Local interface admin up, link aneg on
+> >      ip(f"link set {cfg.ifname} up")
+> >      if link["supports-auto-negotiation"] and not link["auto-negotiation"]:
+> >          ethtool(f"-s {cfg.ifname} autoneg on")
+> > +        if "speed" in link and "duplex" in link:
+> > +            defer(cmd, f"ethtool -s {cfg.ifname} autoneg off speed {link['speed']} "
+> > +                       f"duplex {link['duplex'].lower()}")
+> 
+> [Severity: Low]
+> Could this leave a forced link in autoneg state if the ethtool call fails
+> partway through?
+> 
+> ethtool() raises on a non-zero exit. With the defer now registered after
+> the call, nothing restores the original forced speed/duplex if the driver
+> commits part of the change and then returns an error.
+> 
+> bnxt_set_link_ksettings() is one example. It sets
+> link_info->autoneg |= BNXT_AUTONEG_SPEED before calling
+> bnxt_hwrm_set_link_setting(), and returns that call's error without
+> rolling back.
+> 
+> This branch only runs when the device supports autoneg. Would queuing the
+> restore just before the ethtool call still avoid the fbnic cleanup
+> failure? The same ordering applies to the remote interface later in
+> pause_setup().
+> 
+> [ ... ]
+
+This one I'm less sure about, but I think it should at least be considered.
+
+-- 
+pw-bot: cr
