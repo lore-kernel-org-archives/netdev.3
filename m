@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794281964;
-	b=YdyV638IwAhtAYiSzkAxEHKJilqHn+GqrOE4W50DJao6NU4rmFhiukJ1/sof/uVcFNEP
-	 X/lzWzjid10KANlA4rmcCLFTVm+MVBcQDFmrtaEVjN6qGPdVohUi1syrYjHH/8exB+uS4
-	 sfKIb6zK3UF7ltlmOYkf8DSYROknl/PcO32/ShiOF/8uGl8GcVJWSUlakSuVJjcBFTina
-	 F3zzQRWpC/is5bOnFeHGMO1NtUAlKj3ZX4QON34oEHJYhQSfh19OkDvQwAvucZW3O+p6A
-	 a/SRcU36TkI4GjladmiSiATXCQ+Hq6dGC9Fl8uDAN3ScWs29eESm8IKuBocj1KkwU9Q==
+	t=1794281965;
+	b=SYdjbYVGeJcA4GV0+z29RrLGUVnO7dGpmp9Wre9pt7tHliQyCxPonu2pNrXRTsWHuHa4
+	 smF9Ovzy2ufo4Ga6ca5ivTxCAGFUP9Oy850wWxk9qrQmk/QXjPBTwAWE5SLWKqI0Ku+zr
+	 dZIvCN0A1eyR69P/uf9jT/+DN1JV7Q9GB8cN0CVU0Z5qjBew09pBZJxvarrnM+mdMCxB1
+	 968O/WrNbUC8VvXe6mMi73E/LuMdI4sH3PmsV16Ahy9I4RVI8OquElKH/qCvMw9DYYlUS
+	 ESb0aOEwbKDlLGXg3do4Kt4OyVO2StG4qrzpWGFS6eOWaS+zXMLvGlRniZWnH/be6qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794281964;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794281965;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
 	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=UoSroO5PJS1iv1tggvSKiCANxgfYCumSpAM4R3/WqNg=;
-	b=yiY9zM+fRZdh/yo+bL6hjpf+rHLnVUd6t0o4rwvym/cd/3lNRxCBBSgvjTj+hvevvhP8
-	 GwjcsrdhiR9ML36E4yWGn+ODiqpFpX+A2OTocdrej7GRUByCLU69cjnNHtsnsvBlw+VbO
-	 biITVYMQxkBRDIEL0Bnw3k2/s/ttA3K4HJORgehP/I0g4LZUN7oCkxzPHCn1g1amr38u3
-	 miJJOsSQShzMxS82Kad/Y1wqU+w6MbRmjAqowcJz90idAyNmRoRfbXKr0XD4eFORWsSs+
-	 H7qX9H6NfTBBua5IZKET4l3IP118n5R3bIQGa9I6u+Of8Rkw0RZuJ8qj2/m/9mfX4Ng==
+	bh=0mcs64hFOOg16tK9UtpPTT/uBG5g8APxM8xraB8fagU=;
+	b=Xl5MmBTR8tMrOGfmlDWCxGbgHJDANeaGf8t7OWiuLpJxdu4yMsB2Nz+h4rsxB6Xhzgx4
+	 Ogwu1chi17/50cVJRmzkjhpqRoZJ/nq0h5bhYo+4V6dho4zIoE95XIW9NKCFq4RJYuR3F
+	 B/gYnXRod571aMnwOMqBtXoJjHEHaqnJabNfVT7KowNAmBIdntid9cP+Ihd4qjBH3Yu4/
+	 /sgDm4ffOJIObDDBJIisVrVzZpWtXueENRIe02Fnn2KSeEp6mLbv+4tCNLvjKmGhNH653
+	 seOaGgPeS2j3Zro66uZfOd41/rf28RSzB9NLzVYbD1yr/C9E8ejjkTaGVFjNwkdlcTA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zizu4idA;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OHHQBst9;
 	arc=none smtp.remote-ip=111.22.67.137
 Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A9606A31C;
-	Tue, 10 Nov 2026 03:39:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 389A9606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C1E606A338;
+	Tue, 10 Nov 2026 03:39:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7C1E606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zizu4idA
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OHHQBst9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=zizu4idAUlgHYFJcGeDX7I3HC67ChGTwhjiuy97uCmrBG9QEmIT8+CF7rWJwv0T7R0gsVcUXtKRXa
-	 XBqzR07dv3q5rb03rb2TFdTotMe7nZcte4ok7qR74D+ESjoUZooJ4BVyeAp9W+hinMulRdggFOUP8A
-	 Q6GurjOLXfuWoWp0=
+	b=OHHQBst9nNvzMQIF9OKyRaPvb5dj9j+GEbDqxiD7MjAO8PTsuY+nZa+5NjKzQ9Gs+o5P3SW1dNjk7
+	 N0Kaj7fqiavGVXiVrDqHBj7ABn/KnZUDkR2p2uJNx7aub4RQk4QQ7I50iEKv+gSuB2eDkUbqbOA/vS
+	 Xh9znBYVpgGOD/yg=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86af291e83f4-6a4e0;
-	Tue, 10 Nov 2026 11:39:20 +0800 (CST)
-X-RM-TRANSID:2ee86af291e83f4-6a4e0
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af291e9425-6a21d;
+	Tue, 10 Nov 2026 11:39:22 +0800 (CST)
+X-RM-TRANSID:2ee46af291e9425-6a21d
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from home-ubuntu-251 (unknown[180.106.244.228])
-	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46af291e5925-a562d;
-	Tue, 10 Nov 2026 11:39:20 +0800 (CST)
-X-RM-TRANSID:2ee46af291e5925-a562d
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af291e8add-a5777;
+	Tue, 10 Nov 2026 11:39:22 +0800 (CST)
+X-RM-TRANSID:2ee66af291e8add-a5777
 From: Jingjing Xu <xujingjing@cmss.chinamobile.com>
 To: netdev@vger.kernel.org
 Cc: willemb@google.com,
@@ -60,9 +60,9 @@ Cc: willemb@google.com,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org
-Subject: [PATCH net] selftests: net: cmsg_sender: retain the resolved address family
-Date: Tue, 10 Nov 2026 03:39:18 +0000
-Message-ID: <20261110033918.49238-1-xujingjing@cmss.chinamobile.com>
+Subject: [PATCH net] selftests: net: udpgso_bench_tx: honor CPU zero in the affinity option
+Date: Tue, 10 Nov 2026 03:39:20 +0000
+Message-ID: <20261110033920.49267-1-xujingjing@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,43 +75,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When neither -4 nor -6 is supplied, getaddrinfo() selects the socket
-family but opt.sock.family remains AF_UNSPEC. The cmsg and socket option
-helpers then take the IPv6 branch even for an IPv4 socket.
+The -C option accepts a CPU number, with -1 meaning that affinity was
+not requested. Testing cfg_cpu > 0 ignores an explicit -C 0, so the
+benchmark can run on other CPUs despite the requested pinning.
 
-For example, an IPv4 loopback packet sent with -l 11 arrived with the
-default TTL of 64 on the test host. Using -L 11 instead failed with
-ENOPROTOOPT because the tool tried IPV6_UNICAST_HOPS on an IPv4 socket.
-Explicit -4 works in both cases.
+Accept zero as well, keeping the negative default unchanged.
 
-Record the selected ai_family after successful address resolution so the
-helpers use the same family as the socket.
+Discovered by Codex-assisted code inspection. Validated before and after
+the fix with loopback UDP traffic, inheriting CPUs 0 and 1 and reading
+the process affinity with sched_getaffinity(). Before the fix, -C 0
+retains both CPUs; after it, only CPU 0 is allowed. The default and -C 1
+cases retain their expected masks. Built with GCC using -Wall -Werror.
 
-Discovered by Codex-assisted code inspection and tested with real
-loopback UDP traffic, without kernel instrumentation. Covered IPv4 and
-IPv6, automatic and explicit family selection, and cmsg and setsockopt
-hop limits. All eight cases receive the requested value after the fix.
-Built through the net selftest Makefile and with GCC -Wall -Werror.
+No kernel instrumentation or fault injection was used.
 
-Fixes: 2e5584e0f913 ("selftests/net: expand cmsg_ipv6.sh with ipv4")
+Fixes: 3a687bef148d ("selftests: udp gso benchmark")
 Signed-off-by: Jingjing Xu <xujingjing@cmss.chinamobile.com>
 ---
- tools/testing/selftests/net/cmsg_sender.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/udpgso_bench_tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
-index 67a72b1a2f3d..01617a021338 100644
---- a/tools/testing/selftests/net/cmsg_sender.c
-+++ b/tools/testing/selftests/net/cmsg_sender.c
-@@ -495,6 +495,7 @@ int main(int argc, char *argv[])
- 		goto err_free_buff;
- 	}
+diff --git a/tools/testing/selftests/net/udpgso_bench_tx.c b/tools/testing/selftests/net/udpgso_bench_tx.c
+index 86d80cce55b4..797c8d6800f0 100644
+--- a/tools/testing/selftests/net/udpgso_bench_tx.c
++++ b/tools/testing/selftests/net/udpgso_bench_tx.c
+@@ -642,7 +642,7 @@ int main(int argc, char **argv)
  
-+	opt.sock.family = ai->ai_family;
- 	if (ai->ai_family == AF_INET6 && opt.sock.proto == IPPROTO_ICMP)
- 		opt.sock.proto = IPPROTO_ICMPV6;
+ 	parse_opts(argc, argv);
  
-base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
+-	if (cfg_cpu > 0)
++	if (cfg_cpu >= 0)
+ 		set_cpu(cfg_cpu);
+ 
+ 	for (i = 0; i < sizeof(buf[0]); i++)
+base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
 -- 
 2.53.0
 
