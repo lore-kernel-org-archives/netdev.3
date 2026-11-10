@@ -1,55 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794294311;
-	b=buAes+X8qQWUrA2bOowsp8DTMHz1Leh/EvcEJo4q9niHpzNrCgPbC+OWMq1uyjPPAAK7
-	 PONUwpzp2Tyyd16cihloN64MpragoIIRk1+KdQbBU5KCLO/mIxLrPRo/zNk80KHsuWogG
-	 4R/V2Nmx7xf7ltRed7eRsKRzUzymBBBku8CXkGyaAKkNpDWZJF7YlE+a+rlxhx45jfL/p
-	 v5Lo6sH9lIrxG29XoFIkziQgEAGD0zK59BwbXH9KmeK2kFD+Kdbx1Ajo9HVmHCL2fFJHN
-	 +PBKwXxPZ6eM59YA22/QJ0YobSkjmFl2CtaHpl5BlFcEIMVedJt3hI2RelE6/A1EPnA==
+	t=1794294490;
+	b=GjfZo+WwsunpoCfoXf865pDX5jhK4lSPFIK+9q2pxj+xvP7rQXVxEpg24DjqT1Ga5wRm
+	 ar3iRTPbWPywmR7Xn0rLkf3Q/v+17Vh67sGo1GKtTvaimqvd8OoAB5C5/mqlJYSKzdJN4
+	 N+Q/UYGAyjD2P707SLEhmBY5U2BBOBl03LkqjES4uqhsmGfp7R6AaRfZfNyqRa36eo9Ak
+	 UY4KytiOYTZp+R7FZ/CsDvoGa6ZQzwoJMwo2ghbPGcmvce8vyxlnmNKWwR+UxQdy20/nQ
+	 JPCUhCp296JfJLKfY/KkAwmR+1GsOrX6eej4Jf9zddrS0pX7B/qqisST82EEYHqlD6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794294311;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=BnNedezTioyADzuMpCOdCnuZokX80G9WaFneDTb10vQ=;
-	b=jWgcCVLGWJ1DpqmaqD4SVGWulouVuU/ualOGQdVefwb3risGTGDtjc+Br8lA7Px/vl4G
-	 P32cGtOGsU5yu3S+SbAd0Z4Ftg3QnbYXReSAQqpxFrTn1d0ikTq/GFSmmJ64MVBkAgW5c
-	 HdGii6CJzA2mdssI1aCswyK9Nuhk02THemJu7KU8oZBiA/D+T0mpwtEz+l6uEj35tXQC6
-	 IZg017OqWJWr2XCmIouulukTc1u00q8urZjMPMWVCITyKRzz+pNN0saudlvEFFT4eJ4zB
-	 n54ji+8AN+YGDntlEHk6dKvhjieV/+6zdY+DBW1LIrPKc0V08GzKBPwqtRVpHI2Phiw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794294490;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=U2+SodBIaHMuWdorFSAdkZgaGLGBkZxWWlyQ/kLwRFc=;
+	b=ZJqAcuFt1dF61ar/Wi/yPKFQHwoCNtM/N0bbW7sy2HGK0xjG7tnfRHWzxlKKaIR5gC23
+	 xr86kpEP3LAx0xbQRfJeP2QrVuiy6sPAdec7T0XUp51SGGqvXkaK4Umz8WWhZjMY8lNN3
+	 kHA9+Q6jfVZqUi88s0ANPhG5AwqjCF2tyWHOk6QXnE7wLxOGd3LbD4BAPIbMqyMANZ+fT
+	 TV0SR1dHuVrggv3bHdJ0T0a9m6BwjrhyVJwiH3LmQx+SudStD6KUYBrFEnyXXmNIebC4y
+	 Ei9D2aWu18hMWkySbhBjduqGA8U5ev/LIfN2/7dgdt6og7p0uHfWRLBArE2lQkFggyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofIwHVx8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435A4606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:05:11 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=NFfvQe2s;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB1A606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:08:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADB1A606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofIwHVx8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C7A1F008A3
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:05:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794294310;
-	bh=BnNedezTioyADzuMpCOdCnuZokX80G9WaFneDTb10vQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ofIwHVx8MbkgSNQVhfD72a+9EIzFn9QH/Ap9XuqX+xMBd/RDeIfHpR/hHjj3tRcMm
-	 lm7INK8ZwlFm6I6yTnJdORYxrdlj+FjPyf5Hr51UDTCmcd1xhoCFiJEYbiyE8VFBGl
-	 RdjeWt1LkEScnrP2YeG1s1mMUVFLBuqM55plz7yVN5Vbni+hzMzk0eGN0d6wQaQBLo
-	 3ac1wUXZUzTtaXupzznW6q89QWibbxEJGFX9DUpJ4sacp8PBfQJ5Zn4vnKKAK4h3K+
-	 usZBLbjJ30SWnbO1BiAdplljz95OGEMovLnKr9xy7o+9yOwGA+WxSJcfXfvoxTBIRW
-	 icZumDJwQV/lg==
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-7190d9bdb2cso47269eaf.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 23:05:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFjq14WhTYtbRroVTPs+nbENI1YcTgQDte/OEopLIi1hjDYXsUmMtZtfneEBNpvMJAdfoGQXBc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+tYvOVvpseG0vuVt8wVjuWRBdeO6o+MU+yOHiEOyjin2nbICDn
-	Ij7JCIdU7epP8G/cNtPDNnQnbCKaKtObPMmTKS9vZfWqX7vQALrOHjuVeidk0p3EZxbJxal7mHb
-	7VBqDP1ycyfKDK3VphXS2crkBP7c4Spw=
-X-Received: by 2002:a05:6820:240b:b0:6dd:9701:6305 with SMTP id
- 006d021491bc7-718a6e2ddd4mr641568eaf.65.1794294310126; Mon, 09 Nov 2026
- 23:05:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=NFfvQe2s
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=NFfvQe2sOhMcO+ZvSyyGf3r0YdZqbWhOyQtsn04cLnvDGQWpvQulU+7GlVSK4nppi6de5j8dPuSL3
+	 L1wM1G3SfXkJi2sDB9o6FMcUgSmuk7hTT9vnPV3OiSMiQRb4tHOyq03wHm9Kz56S0U7TuG3mv0p9Gf
+	 ynkrYb3IZjp+8Y1E=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96af2c2d81b3-d148d;
+	Tue, 10 Nov 2026 15:08:08 +0800 (CST)
+X-RM-TRANSID:2ee96af2c2d81b3-d148d
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from  (unknown[10.55.1.71])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af2c2d35b4-ab42e;
+	Tue, 10 Nov 2026 15:08:08 +0800 (CST)
+X-RM-TRANSID:2ee16af2c2d35b4-ab42e
+From: zhaofeng2 <zhaofeng2@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Zhao Feng <zhaofeng2@cmss.chinamobile.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Imre Kaloz <kaloz@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net-next 2/2] net: ixp4xx_hss: fix OF node leaks in ixp4xx_hss_probe()
+Date: Tue, 10 Nov 2026 15:08:02 +0800
+Message-ID: <20261110070803.1099-3-zhaofeng2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <20261110070803.1099-1-zhaofeng2@cmss.chinamobile.com>
+References: <20261110070803.1099-1-zhaofeng2@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,52 +75,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106171442.31811-1-baditaflorin@gmail.com>
- <20261106171442.31811-2-baditaflorin@gmail.com> <avK8iXcNfXSt1_CQ@google.com>
-In-Reply-To: <avK8iXcNfXSt1_CQ@google.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 10 Nov 2026 08:04:58 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioPRW-SxsKbOC3aOtZg8ZJpA28Xva0qM4375cTygfVHgA@mail.gmail.com>
-X-Gm-Features: AclHuK-NJxidM8lNPtjHGZ7TEVWKZvAA6snjm_p1ThNmdP7HN_Zn2F8YrWLmn4I
-Message-ID: <CAL4WiioPRW-SxsKbOC3aOtZg8ZJpA28Xva0qM4375cTygfVHgA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] tcp: avoid false bind exhaustion with
- odd-sized port ranges
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Florin Badita-Nistor <baditaflorin@gmail.com>, netdev@vger.kernel.org, ncardwell@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	shuah@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le mar. 10 nov. 2026 =C3=A0 07:45, Kuniyuki Iwashima <kuniyu@google.com> a =
-=C3=A9crit :
->
-> On Fri, 06 Nov 2026 19:14:41 +0200, Florin Badita-Nistor wrote:
-> > inet_csk_find_open_port() rounds the range length down to an even
-> > number but keeps the original exclusive upper bound for wrapping.
-> > For an odd-sized range, the two scans can therefore miss a valid port
-> > and return EADDRINUSE while an eligible port remains free.
-> >
-> > For example, restrict a TCP socket to IP_LOCAL_PORT_RANGE [40000, 40002=
-]
-> > and hold explicit binds on 40000 and 40001. bind(..., 0) always fails,
-> > although an explicit bind to 40002 succeeds. Both IPv4 and IPv6 TCP and
->
-> This is the reason of warning in set_local_port_range(),
-> so kind of WAI to me.
->
-> The change should be fine, but we should remove the warning.
+From: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
 
-I would keep the warning.
+ixp4xx_hss_probe() resolves the NPE and the six TX/RX queue phandles
+with of_parse_phandle_with_fixed_args(), which takes a reference on
+the resolved device node, but the references are never dropped, so
+the NPE and queue manager device nodes are leaked on every probe.
 
-It was added in commit ed2dfd900992 ("tcp/dccp: warn user for preferred
-ip_local_port_range") because connect() wants an even number of ports.
-This is still the case: __inet_hash_connect() rounds an odd-sized netns
-range down to an even size, so connect() can still miss one port there.
+Drop the references with of_node_put() once the phandle argument has
+been consumed.
 
-The per-socket IP_LOCAL_PORT_RANGE case has no warning at all, and
-bind() can miss a free port there without any hint to the user.
-This patch fixes that.
+Fixes: 35aefaad326b ("net: ixp4xx_hss: Convert to use DT probing")
+Signed-off-by: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+---
+ drivers/net/wan/ixp4xx_hss.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+diff --git a/drivers/net/wan/ixp4xx_hss.c b/drivers/net/wan/ixp4xx_hss.c
+--- a/drivers/net/wan/ixp4xx_hss.c
++++ b/drivers/net/wan/ixp4xx_hss.c
+@@ -1426,6 +1426,7 @@
+ 		return dev_err_probe(dev, err, "no NPE engine specified\n");
+ 	/* NPE ID 0x00, 0x10, 0x20... */
+ 	port->npe = npe_request(npe_spec.args[0] << 4);
++	of_node_put(npe_spec.np);
+ 	if (!port->npe) {
+ 		dev_err(dev, "unable to obtain NPE instance\n");
+ 		return -ENODEV;
+@@ -1437,36 +1438,42 @@
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no txready queue phandle\n");
+ 	port->txreadyq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 	/* Get the RX trig queue as resource from queue manager */
+ 	err = of_parse_phandle_with_fixed_args(np, "intek,queue-chl-rxtrig", 1, 0,
+ 					       &queue_spec);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no rxtrig queue phandle\n");
+ 	port->rxtrigq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 	/* Get the RX queue as resource from queue manager */
+ 	err = of_parse_phandle_with_fixed_args(np, "intek,queue-pkt-rx", 1, 0,
+ 					       &queue_spec);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no RX queue phandle\n");
+ 	port->rxq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 	/* Get the TX queue as resource from queue manager */
+ 	err = of_parse_phandle_with_fixed_args(np, "intek,queue-pkt-tx", 1, 0,
+ 					       &queue_spec);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no RX queue phandle\n");
+ 	port->txq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 	/* Get the RX free queue as resource from queue manager */
+ 	err = of_parse_phandle_with_fixed_args(np, "intek,queue-pkt-rxfree", 1, 0,
+ 					       &queue_spec);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no RX free queue phandle\n");
+ 	port->rxfreeq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 	/* Get the TX done queue as resource from queue manager */
+ 	err = of_parse_phandle_with_fixed_args(np, "intek,queue-pkt-txdone", 1, 0,
+ 					       &queue_spec);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "no TX done queue phandle\n");
+ 	port->txdoneq = queue_spec.args[0];
++	of_node_put(queue_spec.np);
+ 
+ 	/* Obtain all the line control GPIOs */
+ 	port->cts = devm_gpiod_get(dev, "cts", GPIOD_OUT_LOW);
+
+
