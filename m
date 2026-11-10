@@ -1,49 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794332407;
-	b=dM2T9f67S1OfT+zDjzvNeTFRBgDcKmJcr4p3YLg2eyPOaalHDIgzB13g4QnwJ63aIj4B
-	 rfmQlaUDc8VSA8YSfoxES0Fc71t5kATFuopdm1eHfrIMf7W6uDV0UfB4ejMLdGFu/4BNa
-	 nF2zYmytTm4qsyLETNMV1l2S/z0eSE6xZIFA9o4vBFzvpE/8G2qEgmTD0tkbfEfxb7nUe
-	 xPvtTx49lSIqDPfpqVd/BQ0qEMFxxcwz5cMhK27FQ+925yDqvJOw5O0WamSbKm7duA/5F
-	 AsYWqZ24tfKPi7Zq7/oBSoZ+iIYU/DSiFKG8WCmxh0f6OGYH9JVqU6RQYebi5veacZQ==
+	t=1794332555;
+	b=0epUUxDuNDYD3aBgHUZJk5d+AOFLmiy12xZaOGrIPdeTqSCJDxussOCPoOwD+4H/m6Zn
+	 s+FW4G/KK1qmXKpuxfU28kyT37YIJ1G8LXOobTQNFgMFBA3xLr1irUATpfQzOTl7Sewix
+	 6/dqpAb0uXnB2aL0MlwDLKGBo2pOSCz61/eBwsP8SJyZE9QbQXoDjbSee5w17LojG2h56
+	 kjcqxzkfneAx0Z+oAoUzz0vlLcgd2DcsExd2JPytXLKCIeykT9UIhTYwuAZRQ9E1ESZLx
+	 3EpMKFV00UeQyeaNRMKrkJpImoGAGdDHJ1p8BqfWc3ZksLeME0Sp5zu9/D/py1S6Ieg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794332407;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=vDIdWDqCs7bQzZm4Myzs55AdA8xj+ko5T/nZrnXBCKE=;
-	b=G8ayJaZPf3W0ipD8e2ULmoTKXJxqS42mXCOX36GvFXdyVU0Zo6hiAD4cTNNfbPj9JQvl
-	 Ocki7xZslxtQCvfBAyxSV3tiocu3PY23epghK9UfaWgImJko5UXFLP07qxTvXHkRzKVh7
-	 MFs0KcdluXhgrDhwN09qXB4lTN6/hk9RfhqSOEvkcm19DwCq5PhR/9uGvEAG2gkUP3Am4
-	 +VNJs3nCm0LvGuNn7PpnWxBxIZvzSret1a76oXue0FsqKiRDrdMqV+1ZcJnttqCHeLSsF
-	 OHBJx3w3eOC2i+Dp8ccBbUXuSBcifuMqC32D4fAvuz04KcuWNj0BgzdYCUgfiZyqOVg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794332555;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=jbgSuxD4CgBXy0cbPyYVRCuYyNpAOZN/+jBRNG++0S4=;
+	b=sZfg4UEi1/3OTL8fWaf6ppXDNmo8wjIw9A2XmornjQYbU4Iu9p096iDYp1tSswHNDaGv
+	 yRGYgcSBImBhWveB7KUKEDKeW1K4BTau5xeIr/Eb4Ax77nypvbN/YHfFiTyzcjKe9oQO3
+	 JVEpNQCNiAWd/lbI38GLDYTwq6i60nmO+vEHPXnMQfxdi8++Q7hz3XwvE/MWNEqntg5oH
+	 w07LYB4opBfKyiTXCaskWBr5/GcSl6RBLxBQANNKxEQW0NNfLSpoPn2I4oY4Ye7TRe7fC
+	 /lgtSl6VZ0L6wX/tHMAEyb8zadhSbQS22GBbpZHvxuOhTI3z2Cy3fSgyJXqawr2aX5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XnvYMYZ4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhTxZB6I;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E490460A5BD4;
-	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC0160A380D;
+	Tue, 10 Nov 2026 17:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XnvYMYZ4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAE31F00937;
-	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhTxZB6I
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CB61F008BC;
+	Tue, 10 Nov 2026 17:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794332406;
-	bh=vDIdWDqCs7bQzZm4Myzs55AdA8xj+ko5T/nZrnXBCKE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XnvYMYZ4G8cIRDuO7q4ftQDGNfQCYbcw4Y0r+Sx9Ury9+EeXu1Ofk80fTxwxNRu7Z
-	 EIT4s+RAXmlsN2Dvpu/tkOpnjC+REH2LhaEaF4gyOki/5LJzMBps6l3RyLf/CYU2El
-	 jLNRFePMY25wEJ1AV+DvvmiJmclMZs7SHlChygHHzsgqpIlH+vhIWBM6osWL+mD89H
-	 9tBXhTdjLEkmP16EpsNPWzCpAwX4BsGLyHQ1yh5I++DR4aCCmziJJcvATJ1iWP2N8g
-	 ud5byP66KBVWAcND/DXN4y2eSfTH56fw8ZUZaZ5+gw16gVE++mJMw0exNIHSUO8aQM
-	 Z88Xri6zAsfYA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2111839D6088;
-	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794332554;
+	bh=jbgSuxD4CgBXy0cbPyYVRCuYyNpAOZN/+jBRNG++0S4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NhTxZB6IUedUgovEJg9k6mNFtic5HShCTAb6tXk4BdWSsCiIN1b6LDe6G1FFY5Fxd
+	 CUS74SGGPpbCakr6xBU0nermj8YvhF1OdK6PrY4t+ZYwfySr/dktF8GC+xvIV+ae1I
+	 ZdkVQgIeMT09omFxbgO44Yv4EE24Pq1ADmYYT8r5invSLkATq0ms1UCUhBRk/68XWW
+	 rqC0UK552RYWxSvGpy25Gy8CihoB/taDsFkBXlTI7WfxksrtnbY7Jg0LnepX3josy2
+	 QesjmYIF+h4Zs5Xhjxo8OC5zvRvrhNEhLPR8H9IL4UDnLusWa/KCkxh4a7GOcy8rlc
+	 nrkLfAjHSwzcg==
+From: Chuck Lever <cel@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"kernelci.org bot" <bot@kernelci.org>
+Subject: Re: [PATCH] SUNRPC: Load the GSS module by OID only when the mechanism is missing
+Date: Tue, 10 Nov 2026 12:42:29 -0500
+Message-ID: <179433250776.39465.13251097480716731768.b4-ty@b4>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261110030947.179738-1-sashal@kernel.org>
+References: <20261110030947.179738-1-sashal@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,55 +68,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] net: pass the XDP action to generic_xdp_tx() for
- tracing
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179433240494.4112524.1031731452606255276.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 17:40:04 +0000
-References: <20261030114753.185281-1-vladimir.oltean@nxp.com>
-In-Reply-To: <20261030114753.185281-1-vladimir.oltean@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, kuniyu@google.com, wang.zhan@smartx.com,
- mkarsten@uwaterloo.ca, makita.toshiaki@lab.ntt.co.jp,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- virtualization@lists.linux.dev, willemdebruijn.kernel@gmail.com
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 30 Oct 2026 13:47:52 +0200 you wrote:
-> When generic_xdp_tx() fails to transmit an skb, it reports the drop
-> through trace_xdp_exception() with the action hardcoded to XDP_TX.
-> That was right when generic XDP was added, and XDP_TX was the only
-> caller. Since then, two XDP_REDIRECT paths have started to transmit
-> through generic_xdp_tx() as well:
+On Mon, 09 Nov 2026 22:09:47 -0500, Sasha Levin wrote:
+> gss_mech_get_by_OID() calls request_module() before it looks at the
+> list of registered mechanisms, so every lookup forks a modprobe, even
+> when the mechanism is already registered or built in.
+> gss_mech_get_by_name() and gss_mech_get_by_pseudoflavor() only load
+> the module when the lookup fails.
 > 
-> - xdp_do_generic_redirect(), for a redirect to an ifindex
-> - dev_map_generic_redirect(), for DEVMAP and DEVMAP_HASH redirects,
->   including broadcast
+> The read handler of /proc/net/rpc/gss_krb5_enctypes uses this lookup,
+> so every read() of that file runs modprobe, two per cat. The file is
+> present in every /proc/<pid>/net/rpc and /proc/<pid>/task/<tid>/net/rpc
+> directory, and LTP read_all gives each read one second. On a slow board
+> in KernelCI its workers stall on this file and the test times out.
 > 
 > [...]
 
-Here is the summary with links:
-  - [net,1/2] net: pass the XDP action to generic_xdp_tx() for tracing
-    https://git.kernel.org/netdev/net-next/c/655978fc71fa
-  - [net,2/2] net: validate xmit skbs in generic_xdp_tx()
-    https://git.kernel.org/netdev/net-next/c/67b0cca9ba88
+Applied to nfsd-testing, thanks!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1/1] SUNRPC: Load the GSS module by OID only when the mechanism is missing
+      commit: f7ef2ce48812080b87572a2f0fdec93cb2d2a629
 
-
+--
+Chuck Lever <cel@kernel.org>
