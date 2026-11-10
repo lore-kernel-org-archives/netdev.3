@@ -1,60 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794353371;
-	b=X6dP113IyhTsEOwWmrlZJwAAr13J2gWuKdQhoRjBmQc2e6ez9A51F0xnsGQcfrLjCVkV
-	 HDC2qFMyJEdp/x1DFlW7UzPNOXOxflZWvA1V0nyxfIHYvhz7z5wjPUq15vwBItOCe5Iuo
-	 ARICEKi9886s1g1VMffN3UJkNZB4O5A5A9NwhAaBXa6ktYWW9gwa+wFiq64owUJeS2SP7
-	 HgBIdRv9OhK7fBbMCpvFO1iWBGZ15SRjnGHYSsvKX70DtzbqlwqXFuD9R4OcfSVuwW8SS
-	 zbMgL3jBny3qgJO732Goo3oTxJUKP9r7JccVQ7J7JERGHMPnnMGyPtdgZBoreoYjJZw==
+	t=1794353407;
+	b=Y5KXmjLjeR9uGLohq35puxjGw0JDCRBO7xmVq7F9hSGXexTbvL9ZH799qAszFjIyD+J7
+	 hxEtsmoofRXbTdzkKNlkYt57eANVqrMcBnrQZzYnQmQ+7HTYxvAi89ZvDZzQnlct5lebm
+	 DTq9jjOJHdAjGrxrVURvPvi9riLzzwCGv7dvUG9plZH3kESsRBDOjgeGw01yvg3np+uJ7
+	 TVX9CtM5A6w3sQE+d/mbguhherVyYrOr1KJAbbCDkUQPJZ0PTICpaIGtRFXdhnCgVltDO
+	 KS/wXXkE1eK0T3wMNJQhpphrww4BMekgRHvbYoH1NTPXuq4ZHYZEC/vIj9DuxRjlidA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794353371;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=3plFqBhv7mqK/bTMlJqYc1WrC5orRwSPyfBz9QvARiY=;
-	b=F2UwKgUG6tcyfldJNirQY94E5tZftTwDHzyFGj5osjM2cuymzUXHyGcp840Fp+xVD4GE
-	 Q7GsgBOsN227QqRiqZfqwbSThNQaQEP1p3a3WhJOX6d4DVo8eZl55sz9JseNEp37YUiJl
-	 0czaRb8Eyuja9praJBGWwkhDMSLNy/DjWSPMozgggAcC+nF6Zj5pT28g6BcBuB9tQDnlj
-	 9Uh2oe9UzTt1Wmu3Ba+LBOvKh6JAczQ5MnoburxPU4p8KykV+rfrdtrhfhyjXPG3SuJpK
-	 c2fAF5k39z0jK/p7Xx5ej4kLQrw88M4lJP9ADbcGlBow67JUOogfrQujsO6SzJOL3aA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794353407;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=c1AWRcmgTlov/MoPcAcayEMLmx43nYydduS3bM/HlYU=;
+	b=R9bskZoSNL+fEJVcSVkt5XG02BA/pp8OZxPvcoynn/rJPjPZhJ8EH15yon7pj8q661o7
+	 DQ7ZE+8bO7OUFeuj3Cov6/2nzuXrELxszSKln0XXe251E+Wd1i5SGawPLJTzWYZBDknMF
+	 vb5ZPsVgMXQqwqeO4su8mk5KSBJf4lr96pUuFp/eJeB5YElyKwjPizIEMxfntuQytr4x6
+	 iS3J04OVaUUdw1C7eTSsJ1dETyDoBVNGyM9vyB31UEaRV4Rnc3GTvAgRcqB/XSIF5N/G3
+	 gRBHZRuYOTBMXM3C2ThgZUXpixZllg7bm0EKSNxBAcaeuG5FYcacd5hP2ZvWJRKQvVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DU+VLoOF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cVxt5k2e;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F34C606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEAD606A326
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DU+VLoOF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F851F0093C;
-	Tue, 10 Nov 2026 23:29:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cVxt5k2e
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F51F0093D;
+	Tue, 10 Nov 2026 23:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794353370;
-	bh=3plFqBhv7mqK/bTMlJqYc1WrC5orRwSPyfBz9QvARiY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DU+VLoOF5HwgT7Z7/Jd8EWWGbxwibXwiZYew1ey5TGi9mBPgCAOMFLLk7IZlipWoe
-	 tFwja6ZMYnFqdPtwvFNDYyidFdTyTKcnTkxjGU/3zMxXOi3Ptel0aZkYPDAJoRONEG
-	 5ssOZcxv9OfYoDM2bIQtaB83//2vndUXQXYHHn+L7VjU/QMsCQ19rRmwAbmroKacET
-	 kBywPRMWrw5zYYCKkdFcvp5f6nueBAvsxYxSh96yTbBO3vD1V2m0BGKNKQJVCCssgE
-	 ZbPDRtL4SuxbHokYl6zz9Ew/k0SILQp6o7ZHoEaCAqTiY/1enztfXhaBmDNvYyjtkK
-	 SBxuMz8o8peJQ==
-Date: Tue, 10 Nov 2026 15:29:28 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ralf Lici <ralf@mandelbit.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Florian Westphal <fw@strlen.de>,
- Sabrina Dubroca <sd@queasysnail.net>
-Subject: Re: [PATCH net-next 2/3] ipv6: add ip6_dst_lookup_flow_cookie
-Message-ID: <20261110152928.4ef1bf6b@kernel.org>
-In-Reply-To: <e40f48e925a0950eac99a3f084e485e82cabe88f.1793806941.git.ralf@mandelbit.com>
-References: <cover.1793806941.git.ralf@mandelbit.com>
-	<e40f48e925a0950eac99a3f084e485e82cabe88f.1793806941.git.ralf@mandelbit.com>
+	s=k20260515; t=1794353406;
+	bh=c1AWRcmgTlov/MoPcAcayEMLmx43nYydduS3bM/HlYU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=cVxt5k2epkz/Gj0BCmNIY30FfScFktCIOFOUqydQwAbKFPXGxHGUBdcMn/yu7BN4a
+	 J35O9tTvHfU0Y+XK/eR5CSVKg8Xhni5fjQqKWcEiHrYNlnl60qGhTzRlf6tq+4YPXp
+	 O/EHhkOzNzC87Nne04WUXkmcFFWkrnwVcwZRGKDGSxiv/3t0HbIKLDdb5SHf28Fqls
+	 tj9v4SLKJDVofo8BWBbA3ZjHiQH2Au6Bg7XwXggUTUhX8xAYC3qNw1n6qRNdc+lrD3
+	 sLuJZ+CQQzD3LN812Niuceh1wS4DWFQicwMAW4S52ARDBQFAAKAkNDPl9DEpDHTChc
+	 0LI4+r35o6UlA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B19239E8A40;
+	Tue, 10 Nov 2026 23:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,30 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: skbuff: uncharge trimmed zerocopy frags on error
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179435340543.113833.8281856662943688738.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 23:30:05 +0000
+References: <20261105223512.3647504-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20261105223512.3647504-1-willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, mason@kernel.org,
+ kylebot@openai.com, willemb@google.com
 
-On Wed,  4 Nov 2026 16:53:30 +0100 Ralf Lici wrote:
-> +/**
-> + *	ip6_dst_lookup_flow_cookie - perform route lookup on flow with ipsec
-> + *				     and return the matching dst cookie
-> + *	@net: Network namespace to perform lookup in
-> + *	@sk: socket which provides route info
-> + *	@fl6: flow to lookup
-> + *	@final_dst: final destination address for ipsec lookup
-> + *	@cookie: where to store the cookie for the returned dst
-> + *
-> + *	Same as ip6_dst_lookup_flow(), but also returns the cookie describing
-> + *	the routing state the dst was obtained from. A caller caching the dst
-> + *	should use this cookie when validating it with dst_check(). If the
-> + *	IPv6 FIB changed during the lookup, a route dst no longer validates
-> + *	with it. An xfrm bundle is validated by xfrm and ignores the cookie.
-> + *
-> + *	It returns a valid dst pointer on success, or a pointer encoded
-> + *	error code.
+Hello:
 
-Warning: net/ipv6/ip6_output.c:1325 No description found for return value of 'ip6_dst_lookup_flow_cookie'
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-You need to use the appropriate keyword (Return: or Returns:)
+On Thu,  5 Nov 2026 17:35:06 -0500 you wrote:
+> From: Chris Mason <mason@kernel.org>
+> 
+> __zerocopy_sg_from_iter() accounts for the frags that it adds even when
+> it returns an error: it adds the growth of skb->truesize to
+> sk_wmem_queued and, unless the skb is pure zerocopy, charges it to the
+> socket.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: skbuff: uncharge trimmed zerocopy frags on error
+    https://git.kernel.org/netdev/net/c/8b67debdfbf6
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
