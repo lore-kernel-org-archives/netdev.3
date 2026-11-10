@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794343064;
-	b=k2DmXM+7ApucagLQWYwFrO90wF7f2BK689FQn/hk6OPUY9iFx5AgzDHD/5XKt17qx1di
-	 0Ofw7QwZt1vSRmc17jkW+AkckmqzRGHLBGR2LCjuCAmv6o19mDHfEuH4u6j8G5zzZnen+
-	 pCKXPsf5sysHroEZNV/4MD2LcRl3migAqWBHGT4b1XHofLRRKjgDUnO6DjD0Cl1QOoAeB
-	 7hBFHo1eejQXHnuVx/LorETOqLQF6KXV19hKrGUlS0fTk6zUWY/OE+Y4cmj+iAX5jj6Q3
-	 5Qz7IjsqDEqkzLFI7TNVVJy5jpq89QyP25b6OE95SZSd1cxl4gzqb7TKK5BsznMinZQ==
+	t=1794343095;
+	b=M0K1RBc1r87v1GJkjV2Zxq+hiVd9vtamJquCdYtHys21s1kjeSUBGLsR6rSl7TtJYzFr
+	 /upi1LW1PKjUeC4GiylFQDAt/e8k7ZyZGfWPrYT317/s/IzEOzmeQsntwIHjZsu7XTWTg
+	 +V4divVco9bYzsQVwC9f2sG551iqVe8wrHyDvsmYagrRIF4nu58/igSI9Jx+GwrjSxq9s
+	 OR9TEwSElC/4aPnJ+QMWObgzp8wQ/LUgkrCoirqD/m7R4QukiGnJ6E+lv9+oeB48TPu1w
+	 yTqb2JQ4Ju0Lxk81aLAMrBFlX++OlK5w1GjM+A/seWqRqOdYUQ7efxulSkfMJ3FIv5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794343064;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794343095;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=wrSJEhIQdsnATG/TZUF9OCJMIcBwpL3C7sc2OmMxaig=;
-	b=Uli0rRiu5bMxI5n+Q4E+tR8E3WEIos9PCBZqQ9uf82yFjNITjuppDh6ZnqNdP/d2GW9x
-	 oDNcsqLvPmOhxbVktQEdCSKQvrnUcPmWG8VUTRn/UYLH/zjprMenRO091OTddIKI94aAk
-	 aNYn65zgvv8KPvbc4kqCX/DzB6r9U7+eaH/422qDfd/FrDp2w5Wc3Zw8aSFzBzAYYXEFb
-	 HZWA34RzghhUWFwjsOIprDQCfFRTHla9+bwB2/iUJ1IlTobNJ7orlT3HX9PwWRXxikcej
-	 zz+h099epq9dOOmJ7AWPc0rA57IIq5NT7Q9BnfxKhNN7q5E44Ojm66lbHRkmbMj1GkA==
+	bh=TQhZr4bKzH1yYf83YlQikJs/ouU09iimk/Cgl1T4SEk=;
+	b=e0cxcX2pph0UWRtE3fvnkB4Ic/KMN4krSRhNEure3o9uwoSGeeKFX2pEKyQ8OyGJ5HaP
+	 0ngyYXPioQYtJBzTUxmfThbvQUEUAvH5O/J6HM3LPssfkgfnf4I6cQoKmIKTFZbNUD4yb
+	 WYA80SC/Z6d6uYURtTgjki3ESMrroNZOpy45gQ+l8Ex82CeybMS8U1WaBzU8cnRLrMIOy
+	 xbCmTsUwq/DUoFL6Lcm6xmdH+e30BPz4tqwOh/zGEywYQO8yqUK06/CbJs4t99cCuh2+1
+	 iO7EQ4gkicIh1OLgFo1hPtp1tB83p6Du2uqlS4ttKWJ2Hl+/a/MMyz9Xzum2mUCjcww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eqWuCZXJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DHPcEkzb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BFB60A260C;
-	Tue, 10 Nov 2026 20:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900F4606A327;
+	Tue, 10 Nov 2026 20:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eqWuCZXJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF381F008A2;
-	Tue, 10 Nov 2026 20:37:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DHPcEkzb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153321F008A1;
+	Tue, 10 Nov 2026 20:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794343064;
-	bh=wrSJEhIQdsnATG/TZUF9OCJMIcBwpL3C7sc2OmMxaig=;
+	s=k20260515; t=1794343095;
+	bh=TQhZr4bKzH1yYf83YlQikJs/ouU09iimk/Cgl1T4SEk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=eqWuCZXJtOsZOej4Wnl3pn804Je0QoNGmJXam1b8c07SE5FueZ2WUt3/dBp8vqNky
-	 0EYLnUASK32t0OJFcSDdyBROAYBEh+zOCCsr5mViX+9vYXqdfhlIbx58E9Tqjrb1MA
-	 iDBSMjKZZGGT8BQ0HtIHj7QUJn3ICZ1siqlGeeqabHGn+/NHoFgwoSwkXLDBDRUf0u
-	 hG2ChowSyeANPo6aomnttKJ2p8gnJaeyFVzAovb3NwQ3t/3uv4TDd8pCn/R6pCQY+v
-	 3buU0UC6lwkjAUCS1WCtkW98WZiLxiofDrGsIS6hqy5AQdbZh4jO4WpgjIrGQ9kDCI
-	 go4yn+eVGZJYA==
+	b=DHPcEkzbho85PvDiXuH1Qd5lFyC5q8gv5xBGffOubCgfOWWV7lqek7lvYfLRpSA0t
+	 IQhTVJa4D+18lGt7AH2soR542b0oAlCR8P7LrIYpK31KzO7WrEG5dh9vxvNnyOQM/S
+	 Zzp0LW4h/4rd/y6B/YdEiEzjYrWRL++7W+rtuk1+Hj57yFgXvgIdV4CQiW+ldPSf67
+	 6GKEdhSSGHlGPBXfai6+VBlvQkQwf+pS+xWNq8luXH6gsQU2QOgxTB3fEnlfzzRiiM
+	 NiKA0VJ1SYCOE+9P07p5d1RFLT20ramI6Mni0mRodbWhV4r9rKIOncSV1qxGF1Jmt+
+	 y25nKd0tEPckw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 10 Nov 2026 21:35:43 +0100
-Subject: [PATCH v3 3/9] mm/mmu_gather: flush pending references early
- before the folio limit
+Date: Tue, 10 Nov 2026 21:35:45 +0100
+Subject: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
+ grabbing references
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-refcount_overflow_stable-v3-3-318625d63a98@kernel.org>
+Message-Id: <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 In-Reply-To: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -93,119 +93,130 @@ To: Lorenzo Stoakes <ljs@kernel.org>,
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
- iommu@lists.linux.dev, netdev@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+ iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4480; i=david@kernel.org;
- h=from:subject:message-id; bh=4dJ/m1FVSvgW3CYjdpbAHjLF5sx3MyByqT1mM21gZhc=;
- b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BDOdU52ZZZNSNXSk3m3zzPeZO3/vmzD8q3qWffb7
- bdlfVU51lHKwiDGwSArpshybV1OavCaVseyKEM3mDmsTCBDGLg4BWAisrsY/led5pFhDz4ldDDv
- gcl275B5gj66HusyZh2aPdcwdYe4KDfD/2SFsu6JXro3HCT/8UxmLF/+rv6QXMPiQ80zzzhWV1h
- +ZQAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4131; i=david@kernel.org;
+ h=from:subject:message-id; bh=U2nJUUKzo83lirIS+DNqGFEsPfDiTB+27qyVWt6EY4E=;
+ b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BC+Xi7jxvm37RO/J0ZcYPGTjOO+dHWBuLZc/bcgh
+ UsBpnZzO0pZGMQ4GGTFFFmurctJDV7T6lgWZegGM4eVCWQIAxenAEzkbDkjw5fAS44nfZnacuf5
+ MJ/NztLk33np7QlN1nMf71/7dsjK7CIjwzXxOSLLW+9qfzk1I/lYa8CL/dqKjX0dMxnj5fuu9x6
+ 5zQUA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 
-When a task zaps mappings (e.g., MADV_DONTNEED), it can drop the PT lock
-and defer dropping the folio references. In the meantime, page faults
-can refault pagecache folios, creating more references for the same
-folios. These deferred references can build up over multiple VMAs.
+Let's add a folio_ref_count_over_limit() check in fast and slow GUP
+before acquiring additional references or pins.
 
-Let's just request a flush after enqueueing a pagecache folio whose
-refcount reached a certain threshold. Start flushing well before new
-references are refused, regardless of the caller's privileges.
+Keep it simple and use the check for all folio types.
 
-When returning "true" from __tlb_remove_folio_pages_size(), PTE zapping
-will flush the TLB before dropping the PT lock, but drop the references
-afterwards. Refaults can still race with that, but flushing early reduces
-the risk of letting others hit the limit.
+Also propagate try_grab_folio() errors when grabbing additional
+references in __get_user_pages() and in memfd_pin_folios(), so hitting
+the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
 
-This is a temporary measure until we have something better.
+Keep the existing invalid-refcount warnings.
 
-Reported-by: Chris Mason <mason@kernel.org>
 Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
 Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 Cc: stable@vger.kernel.org
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/asm-generic/tlb.h |  4 ++--
- include/linux/mm.h        |  1 +
- mm/memory.c               |  4 ++--
- mm/mmu_gather.c           | 10 ++++++----
- 4 files changed, 11 insertions(+), 8 deletions(-)
+ include/linux/mm.h | 11 +++++------
+ mm/gup.c           | 24 +++++++++++++++---------
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 3f4a180b48f3c..4bba02fd5d543 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -75,8 +75,8 @@
-  *  - __tlb_remove_folio_pages_size()
-  *
-  *    __tlb_remove_folio_pages_size() is the basic primitive that queues pages
-- *    for freeing. It will return a boolean indicating if the queue is (now)
-- *    full and a call to tlb_flush_mmu() is required.
-+ *    for freeing. It returns true when a call to tlb_flush_mmu() is required,
-+ *    either because the queue is full or a folio is near its refcount limit.
-  *
-  *    tlb_remove_page() and tlb_remove_page_size() imply the call to
-  *    tlb_flush_mmu() when required and has no return value.
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 33bc57342590c..a36ff83589c61 100644
+index a36ff83589c61..9b11af88de2b9 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2232,6 +2232,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
- /* Leave separate reserves for administrators and concurrent reference gains. */
- #define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
- #define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
-+#define FOLIO_REF_COUNT_FLUSH_LIMIT	(INT_MAX - (1U << 27))
- 
- bool __folio_ref_count_over_limit(unsigned int ref_count);
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 977e037388963..a1a9ba2430f83 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2072,8 +2072,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	pte_unmap_unlock(start_pte, ptl);
+@@ -2244,6 +2244,9 @@ bool __folio_ref_count_over_limit(unsigned int ref_count);
+  * to pagecache folios (!hugetlb), either before acquiring references or
+  * afterwards with rollback if the operation is refused.
+  *
++ * Also required when pinning folios without a dedicated pincount that use
++ * GUP_PIN_COUNTING_BIAS.
++ *
+  * Checking other folios does no harm.
+  *
+  * This check is an approximation; we leave some headroom such that concurrent
+@@ -2951,12 +2954,8 @@ static inline bool folio_maybe_dma_pinned(struct folio *folio)
+ 		return atomic_read(&folio->_pincount) > 0;
  
  	/*
--	 * If we forced a TLB flush (either due to running out of
--	 * batch buffers or because we needed to flush dirty TLB
-+	 * If we forced a TLB flush (either to release batched
-+	 * references or because we needed to flush dirty TLB
- 	 * entries before releasing the ptl), free the batched
- 	 * memory too. Come back again if we didn't do everything.
+-	 * folio_ref_count() is signed. If that refcount overflows, then
+-	 * folio_ref_count() returns a negative value, and callers will avoid
+-	 * further incrementing the refcount.
+-	 *
+-	 * Here, for that overflow case, use the sign bit to count a little
+-	 * bit higher via unsigned math, and thus still get an accurate result.
++	 * Use unsigned math so even an unexpected negative refcount is
++	 * treated as possibly pinned.
  	 */
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 9f353f0e2ef4d..e98397ac577c4 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -179,10 +179,7 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
- #endif
+ 	return ((unsigned int)folio_ref_count(folio)) >=
+ 		GUP_PIN_COUNTING_BIAS;
+diff --git a/mm/gup.c b/mm/gup.c
+index ebbfee09b7278..531ef2469228e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -79,6 +79,8 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
+ 	folio = page_folio(page);
+ 	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
+ 		return NULL;
++	if (unlikely(folio_ref_count_over_limit(folio)))
++		return NULL;
+ 	if (unlikely(!folio_ref_try_add(folio, refs)))
+ 		return NULL;
  
- 	batch = tlb->active;
--	/*
--	 * Add the page and check if we are full. If so
--	 * force a flush.
--	 */
-+	/* Add the pages before deciding whether we need to flush. */
- 	if (likely(nr_pages == 1)) {
- 		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
- 	} else {
-@@ -190,6 +187,11 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
- 		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
- 		batch->encoded_pages[batch->nr++] = encode_nr_pages(nr_pages);
- 	}
-+	/* Flush pending references well before new references are refused. */
-+	if (unlikely((unsigned int)folio_ref_count(page_folio(page)) >=
-+		     FOLIO_REF_COUNT_FLUSH_LIMIT))
-+		return true;
+@@ -143,6 +145,10 @@ int __must_check try_grab_folio(struct folio *folio, int refs,
+ 	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+ 		return -ENOMEM;
+ 
++	if ((flags & (FOLL_GET | FOLL_PIN)) &&
++	    unlikely(folio_ref_count_over_limit(folio)))
++		return -ENOMEM;
 +
- 	/*
- 	 * Make sure that we can always add another "page" + "nr_pages",
- 	 * requiring two entries instead of only a single one.
+ 	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && folio_is_pci_p2pdma(folio)))
+ 		return -EREMOTEIO;
+ 
+@@ -1482,17 +1488,17 @@ static long __get_user_pages(struct mm_struct *mm,
+ 				struct folio *folio = page_folio(page);
+ 
+ 				/*
+-				 * Since we already hold refcount on the
+-				 * large folio, this should never fail.
++				 * Grabbing more references can fail once we
++				 * hit folio refcount limits.
+ 				 */
+-				if (try_grab_folio(folio, page_increm - 1,
+-						   gup_flags)) {
++				ret = try_grab_folio(folio, page_increm - 1,
++						     gup_flags);
++				if (ret) {
+ 					/*
+-					 * Release the 1st page ref if the
+-					 * folio is problematic, fail hard.
++					 * Release the folio reference we
++					 * already took.
+ 					 */
+ 					gup_put_folio(folio, 1, gup_flags);
+-					ret = -EFAULT;
+ 					goto out;
+ 				}
+ 			}
+@@ -3541,10 +3547,10 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 					break;
+ 				}
+ 
+-				if (try_grab_folio(folio, 1, FOLL_PIN)) {
++				ret = try_grab_folio(folio, 1, FOLL_PIN);
++				if (ret) {
+ 					folio_unlock(folio);
+ 					folio_batch_release(&fbatch);
+-					ret = -EINVAL;
+ 					goto err;
+ 				}
+ 
 
 -- 
 2.56.0
