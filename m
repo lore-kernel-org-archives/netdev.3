@@ -1,68 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794349833;
-	b=oJ9vN3uJQKMkmYW66fcDwClKAVeaUocdj+iTyKTXUFlnMmYEaudqezS98HfJHXINl5/m
-	 5KSJHyZEkmbbDlr+eh2oJFNB2FCB/eXJhCjI97Z/KE6RhXF0QkdpJvQ7a1Xz8H+g2QHiW
-	 v3gMzi32n/NcaoQWb0ADffSaK6H2EliYLwVQNFnYXi2J/idGFv2NErvFFHB03DwImd/wG
-	 zlP8oja/MFCRXIklwEekEQpk7TxyVPKRlXwSeb1qlGjc/zW8Z4yx9pnNwGsU6+cU6nL8N
-	 PGb07IGuM9SUkkK+eyQEqT82rzwmcQehgbOV9FmiQdXq7caBCgvMjSoqghVJYRwxEGg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794349833;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=z7FiR8aYlJ/B/h48kT0MY6E1EuyBPljuK907hwXFxOM=;
-	b=fxWYEH8pXoYE0o1P9PPm3aYZosCwJNwwQU1RDsV7W4/vdIxMRP8uTrTnJR2sydu0MYFx
-	 vdp7XMzVsvVAJGsrEkB/n5YdvlcU6YNm4YxE6btSEMJhpEgBIZIYKDjH4BpGbZcub5fRe
-	 9LhvNbFksxSxCd3cW6zQ23G8uLVrVN6py86eFQWfaRbymWsrL0IE2kYgB57FojUJu+ECT
-	 tD4RLrzsryFQb/46ijgJ8gCbZekyJ36sE7GqOZMV8b4GcnHNIllkJrxUjBhGaf6xw1yiO
-	 XcPjNSuUcsPmSNNf6Ah0AG5fbcKEunz9c3TFDkfqrIBzFNw3qS32raeQgHj7KOx1SlQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=Zm3zYVY1;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794349990;
+	b=kUp2X6uKSTfEJIYoh1vm6g6M1tAhPzkXzMFLVHQNOzcqWfA02O/hqINLW5OuiImewjkF
+	 QuTtU0U4PWDBOd19xrzsC/3S6xRMnpVqXSv3JyHPHg/8hd+hoKyBOnx+bgvN7l/82HsQ5
+	 lc6wnYk1V8dFTftdvhu0FGQ0pvWIV+yKQXD2aU+nUPWgcvZIP+7LWKOEqezl5+6ayu9wb
+	 CnNefjHYtM6/lKfE5b1Qx0oojKGjBrzSuCgD1NiJ4X9DGkigfWI3GNfhWHnpmVZ/4lqHP
+	 2WJB1o3dI8pJ146Yp3Nl6dcHtdYRShZPBY3uuVCzyCYw7eE9eVTZ4f2r9pzjRNFz+sA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794349990;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=flsDl0AnNHUvCcoNHLrrBISfJL3XvqvIoHllO7zT8b4=;
+	b=ijQs/FdSPKjlPyFwSgE33pXQoi/b65U1hucmmMHLK8tsCZhAMDYGHCY6LLwdv1mpz941
+	 dXPbeHehytxfcb3huvA2HFunILvFV9BDbHSMSKcgK5krg0bM55b3uM2544q5cjUuo6THT
+	 JhtGKpYIto1DBm0o8RwGFulWQcs9/1OXpkmDMHoUWExwO3nW0Rt3vIYHSlM2LpzRoooP9
+	 XOb2qH2LYLIOn0vJs5LDZR9LoYuVFAki9I3KwTue3uh4trSWvQcNnv9pj6YcvPtxS15Rg
+	 eJLWOQXXpxplRYs1JEPVd85E0eIVkLMXZF3UFvVrSWvSTGLf2nYPGUz2oFFdxHmSYMA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=F08+EJEU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEB7606A321;
-	Tue, 10 Nov 2026 22:30:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFEB7606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D0606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:33:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 220D0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=Zm3zYVY1
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=z7FiR8aYlJ/B/h48kT0MY6E1EuyBPljuK907hwXFxOM=; b=Zm3zYVY19mC2K1jfIZmHe0WYOJ
-	+2vXpSVKUabQcSTOLxoNuVasPCbnifelYbUEAcvv9YAt/nO3ZURkUfX5mI21hhZhGJt/9gfP7qgo+
-	IJHIxRe6GenkJzMX9pvkmhXuLVsZtgZRK26KyFYBfkk/TWdPlmdIICanZuqx30Rync8LpLGNx+h4T
-	4pUtkpivb+6Lc3XMj8wOQR6l+XNOtRxft1hd6Xvba+XpzbvJajHJ5noguxLP6D86fwaNxGXy3clPR
-	viZQEkhd3HdoaYhTAS1HqHhMCWF+LVx5MH+D++bqFurMFgDSko5Zzrwlnllnd5I64hNrpyac3gRbE
-	HdBsyDOA==;
-Received: from [151.115.150.205] (port=60782 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xQuMC-00000006Xkc-2vLj;
-	Tue, 10 Nov 2026 23:30:24 +0100
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/sched: sch_qfq: revalidate aggregate after peek
-Date: Tue, 10 Nov 2026 22:29:47 +0000
-Message-ID: <20261110222946.2147440-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=F08+EJEU
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8b6399ebb41so2275284b3a.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:33:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794349989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LhWZsQE7ltsjsZjf1V6zd8/KI/E3RP1DKgwC2Z4KoxiRmPa2jvC3v/EpFtEV18mk0t
+         gtWXgcBNAU9zSv+gUuEsmNZqHplejI3CK7zX2k1e3nsbIh5C+QA6171guST86CjBEQts
+         EEQr7fj60BJf0M1ajRIh2Ng48qS4hh5VjaVlXY714Gm+ry/ewpRIyBEu84EEOg+hnzxN
+         U1sP+mS9yeDPAPgkVHPaJzIdEIYKzE0BhNYIyzO0ZraoGQ4cszQ/n9nzRpDTgpqnCF9B
+         0tph4XCY+NearkCXwxXqe+ymjduHHFZSITfKorw5gNOyqvFQHr4+dMwYOx/el3S7I35J
+         A9wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=flsDl0AnNHUvCcoNHLrrBISfJL3XvqvIoHllO7zT8b4=;
+        fh=dgMgm1FXvYzhY1YvXqN+AqIaKvT6t5/VoZaIiv+S5+M=;
+        b=MrHTY0OqZL9YvwFQCwd7bOTVa3fyVaknHx2QBcDsCL8/+Vz5HYqI3kXeSFMdR0QCe0
+         3ztOlTRYJfHlpqUvNQJi0wQJnMRjUzLRl881dQaF7E0DFS3n3M1Sjweb4l/5Srx41I7M
+         gILeVQ6+FZI0dEQa/13AaTbtOfqfNhonWAI1m4Ueq310AnKp1xtVWUhJUErDpmuQBUgl
+         itx2pCjrF7TM2EMyH0i+wkRX7D7riov8TS5ZdghQBlOmScJPjetagMmorMKErX9su0PH
+         ufei6vVknJuGaUsvos0gWkt++9+hiembntSysYJjItJJlBAAFtW7VXQU3eHXqLqYRcLI
+         rrHA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1794349989; x=1794954789; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=flsDl0AnNHUvCcoNHLrrBISfJL3XvqvIoHllO7zT8b4=;
+        b=F08+EJEUK9fLW14ynykYrijoOtoZIm522aGAqISOKyP25nkzWgQnYh9gOgz67huMW5
+         UWNiC1aylaXv0KQdyVnIi+Sz04RdFjtdPHsDlfjkplFHs1iojLDmTV7LwV+H3mKacDpT
+         uxDeS/MVzItzzLdCBmiFghU8EyGWWUQwoUUqU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794349989; x=1794954789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=flsDl0AnNHUvCcoNHLrrBISfJL3XvqvIoHllO7zT8b4=;
+        b=Ipni4bMetS6H2hhCoiqt6o0D9jMkHw3xajtag3E6tWdVjsou1le8CUCCSSBZL1AFhO
+         PiAjCzKIg9puG8V6uQB67Q5C+LM1R+LhDJVVygaCleR4owEb3O3DsDcg3a1LzwUFn7Sq
+         a5+vB0BMDeQOTx9/WufnsM3D6JvB92RsxV59M/iOMPWjCOJtbXT2QWa/HkvMcR89a5pc
+         8zGByYc2vG97yt74nnotXYxmu0c29lnE8dLQ6MI+F3hado1shHB7aAjCGPq9m8a8qM2D
+         hFb5ozraRbOcs+2QHrQRnaOrE2hUZEjadje5unU6FQR65ycuw/IbZ4u+wbUxvnUq4/2d
+         HMSg==
+X-Forwarded-Encrypted: i=1; AL+hErGMslXk/od2Q8YtdBWX7JRK4GKyvczRG/aaGk0Rp8YWwsozExPW6T+SjQ1Z7ZQ3H3snHifistE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9O3O5QCL1E5M300iT+0vLoqxSB3mgpJevNEEygU6BXTrsTDH4m
+	QHI8RtmuDY2WgslmfumNnfI7l1ckfW8078r9j31q29jZqF2Ci/Yzkf77a131fw+aooiaTSdAiGB
+	xH0iau5/bkj883+ogus9oWEzl+HshDWbiFL7he6UR
+X-Gm-Gg: AYBFou1eP6NRNKQVbLKqzkc4YOwbXtiQqSIJYx2Gj/HTCYxhqvo+Vp7WHd7rPsMknej
+	3sMKvc7oBh6I/mOmKiurC9+9Pb4f3cUkPX/172I7lvwnms7D+q7ABTKMruiAwfY+0xwny971aqQ
+	zDfJiV4GjxRy5lTmrZzUZFuAAR5rQXp2RwyknrRO396DSkzaUoo9R8zqt6PcjW3jyhwN97Lq97h
+	R/elaqK9xvhhIgK4lEJ3MbtewzxPJBVniUVBCX0eP4qvbQq16m6RWsIUQKdglnc56rO2XxewE3y
+	FRQbiAGKdFlBXKMGQ3YqJ/jMmJKbTGwOwgd9AhDF6A2GHD+jfHRYju/ehO8SlxWxLwMaJZeOqnu
+	d8TNWu2phTJoudE8nqMIeou2VrbXRpzKYm/MvhjLHYxMlllM1TC3VEwrgkxY5ujg6AJvvG2yf0L
+	l1zfZDu3u/fpvMKKFaLcVE0ZQNZB6H/y9TmWuM
+X-Received: by 2002:a05:6a00:2e12:b0:887:17f3:94f7 with SMTP id
+ d2e1a72fcca58-8bc19503faamr552145b3a.1.1794349989347; Tue, 10 Nov 2026
+ 14:33:09 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,136 +102,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com> <e0f4776a-0457-4069-9f79-3c97de2a54d0@redhat.com>
+In-Reply-To: <e0f4776a-0457-4069-9f79-3c97de2a54d0@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 10 Nov 2026 17:32:57 -0500
+X-Gm-Features: AclHuK-spBA862Eovuh6pnQugV-XHvQo1100LNnKmhxZjTsPAXGBi8ayTmt5Q2c
+Message-ID: <CAM0EoMkX66gxD1Q+8eONLfDgSmrYwNnOxm6eaBkeAD9ZE4E6cw@mail.gmail.com>
+Subject: Re: [PATCH net-next] net/sched: em_text: pad the text pattern in the
+ ematch dump
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, horms@kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A netem child can re-enter qfq_enqueue() through a duplicating netem.
-If lmax was lowered with packets queued, qfq_change_agg() can move the
-class and free its old aggregate. This can cause a UAF or put the
-class on the wrong active list.
+Hi Paolo,
 
-Restart qfq_dequeue() if a selection peek changes the aggregate. Charge
-the serving aggregate before the post-dequeue peek. After this peek,
-requeue only an active class using cl->agg. Recheck activity and use
-cl->agg after the peek in qfq_enqueue().
+On Wed, Oct 21, 2026 at 9:42=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 10/16/26 17:01, Victor Nogueira wrote:
+> > This is a follow-up to commit 9c572a83037a ("net/sched: fix potential
+> > stack infoleak in em_text_dump()"), which zero-initialised the dump-sid=
+e
+> > struct.  Sashiko separately pointed at the unaligned pattern tail on th=
+e
+> > same dump path.
+> >
+> > em_text_dump() appends the text pattern with nla_append(), which is a b=
+are
+> > skb_put_data() and does not pad the attribute to a 4-byte boundary.  Wh=
+en
+> > pattern_len is not a multiple of four the skb tail is left unaligned.
+> >
+> > tcf_em_tree_dump() records the raw span as the ematch entry's nla_len a=
+nd
+> > then writes the next ematch's nlattr header at that unaligned tail.
+> > Userspace walks the list with RTA_NEXT()/NLA_NEXT(), which rounds each
+> > attribute length up to four bytes, so it looks for the next entry at an
+> > aligned offset the kernel did not write.  The ematch list is therefore
+> > misparsed as soon as a text ematch has a pattern length that is not a
+> > multiple of four.
+> >
+> > Append the pattern with nla_put_nohdr(), which reserves NLA_ALIGN(attrl=
+en)
+> > bytes and zero-fills the padding, so the following ematch stays aligned=
+.
+> > The emitted ematch entry then carries the padding in its nla_len, which=
+ is
+> > what NLA_NEXT() already assumes.  em_text_change() only checks that len
+> > covers the struct and the pattern, so a dump replayed as a request is s=
+till
+> > accepted.  This also removes the last variable-length nla_append() call=
+er
+> > (sch_gred's is a fixed-size, already aligned struct).
+> >
+> > Conditions to recreate the bug:
+> > - CAP_NET_ADMIN on the target netns (namespace-local via unshare -Urn i=
+s
+> >    enough)
+> > - add a basic filter with two text ematches whose pattern_len is not a
+> >    multiple of 4 (e.g. 1 and 2), then dump it with RTM_GETTFILTER
+> > - the first ematch entry comes back with an unaligned nla_len and the n=
+ext
+> >    entry's nlattr header is written at that raw offset, while RTA_NEXT(=
+)
+> >    reads an aligned offset three bytes later
+> >
+> > Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> > Closes: https://sashiko.dev/#/patchset/20260918133953.12494-1-bernard.l=
+adenthin%40gmail.com
+> > Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> > ---
+> >   net/sched/em_text.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/sched/em_text.c b/net/sched/em_text.c
+> > index 4132f8c3c5fc..fbf78d61f109 100644
+> > --- a/net/sched/em_text.c
+> > +++ b/net/sched/em_text.c
+> > @@ -125,8 +125,8 @@ static int em_text_dump(struct sk_buff *skb, struct=
+ tcf_ematch *m)
+> >
+> >       if (nla_put_nohdr(skb, sizeof(conf), &conf) < 0)
+> >               goto nla_put_failure;
+> > -     if (nla_append(skb, conf.pattern_len,
+> > -                    textsearch_get_pattern(tm->config)) < 0)
+> > +     if (nla_put_nohdr(skb, conf.pattern_len,
+> > +                       textsearch_get_pattern(tm->config)) < 0)
+> >               goto nla_put_failure;
+> >       return 0;
+> Sashiko suspects this can introduce another issue:
+>
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-7SHE.v1.r0.2026=
+1016101330-1@mojatatu.com
+>
+> (the 2nd concern)
+>
+> I think it should be addressed in the same patch.
 
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
-Changes in v2 after review from Sashiko:
-- Cover the post-dequeue peek without moving service accounting.
-- Clarify the trigger.
+We looked closely at this, sashiko premise that pattern_len  65477
+will cause the issue is false.
+at most pattern_len =3D 65476, which yields TCA_OPTIONS =3D 65532 is
+accepted. 65477 is already rejected with -EINVAL by the existing u16
+wrap of the request attribute, before even tcf_em_tree_validate() runs
+So that code is simply unreachable.
 
-v1: https://lore.kernel.org/all/20261106200236.716641-2-Jeremy.Jean@oss.cyber.gouv.fr/
-Sashiko: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106200236.716641-2-Jeremy.Jean%40oss.cyber.gouv.fr
+For that reason it doesnt make sense to send a v2.
 
- net/sched/sch_qfq.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
-
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index e900890..82903f9 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -992,8 +992,7 @@ static void qfq_update_eligible(struct qfq_sched *q)
- }
- 
- /* Dequeue head packet of the head class in the DRR queue of the aggregate. */
--static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
--				   struct qfq_class *cl, unsigned int len)
-+static struct sk_buff *agg_dequeue(struct qfq_class *cl, unsigned int len)
- {
- 	struct sk_buff *skb = qdisc_dequeue_peeked(cl->qdisc);
- 
-@@ -1002,13 +1001,6 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
- 
- 	cl->deficit -= (int) len;
- 
--	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
--		list_del_init(&cl->alist);
--	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
--		cl->deficit += agg->lmax;
--		list_move_tail(&cl->alist, &agg->active);
--	}
--
- 	return skb;
- }
- 
-@@ -1103,6 +1095,7 @@ static void qfq_schedule_agg(struct qfq_sched *q, struct qfq_aggregate *agg);
- static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-+restart:;
- 	struct qfq_aggregate *in_serv_agg = q->in_serv_agg;
- 	struct qfq_class *cl;
- 	struct sk_buff *skb = NULL;
-@@ -1112,8 +1105,11 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- 	if (in_serv_agg == NULL)
- 		return NULL;
- 
--	if (!list_empty(&in_serv_agg->active))
-+	if (!list_empty(&in_serv_agg->active)) {
- 		skb = qfq_peek_skb(in_serv_agg, &cl, &len);
-+		if (unlikely(in_serv_agg != q->in_serv_agg || cl->agg != in_serv_agg))
-+			goto restart;
-+	}
- 
- 	/*
- 	 * If there are no active classes in the in-service aggregate,
-@@ -1151,13 +1147,15 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- 		 */
- 		in_serv_agg = q->in_serv_agg = qfq_choose_next_agg(q);
- 		skb = qfq_peek_skb(in_serv_agg, &cl, &len);
-+		if (unlikely(in_serv_agg != q->in_serv_agg || cl->agg != in_serv_agg))
-+			goto restart;
- 	}
- 	if (!skb)
- 		return NULL;
- 
- 	qdisc_qlen_dec(sch);
- 
--	skb = agg_dequeue(in_serv_agg, cl, len);
-+	skb = agg_dequeue(cl, len);
- 
- 	if (!skb) {
- 		qdisc_qlen_inc(sch);
-@@ -1181,6 +1179,13 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- 		 len, (unsigned long long) in_serv_agg->F,
- 		 (unsigned long long) q->V);
- 
-+	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
-+		list_del_init(&cl->alist);
-+	else if (cl->deficit < qdisc_peek_len(cl->qdisc) && cl_is_active(cl)) {
-+		cl->deficit += cl->agg->lmax;
-+		list_move_tail(&cl->alist, &cl->agg->active);
-+	}
-+
- 	return skb;
- }
- 
-@@ -1274,9 +1279,10 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	/* if the class is active, then done here */
- 	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
--		    list_first_entry(&agg->active, struct qfq_class, alist)
-+		    cl_is_active(cl) &&
-+		    list_first_entry(&cl->agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
--			list_move_tail(&cl->alist, &agg->active);
-+			list_move_tail(&cl->alist, &cl->agg->active);
- 
- 		return err;
- 	}
--- 
-2.47.3
-
+cheers,
+jamal
+pattern_len =3D 65476, which yields TCA_OPTIONS =3D 65532; 65477 is
+already rejected with -EINVAL
+> /P
+>
