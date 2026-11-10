@@ -1,92 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321807;
-	b=rrmtP9oDnHSaD8YBUW3IfcRAvwDk5xwHD/mRPgOcgSuQyMIJV+c3a/dNMyEFfr+yw9ya
-	 x3J75BBRo2lo3PW4b7QL14nOx24UT/R70grPoDyIRJJ1BZ3mKWMFqL5ronH9OWZFHZFGr
-	 l8ydswoztz99+5nWEzuk0JH4XSjeVi/xK+7XpcYllayfBO6BsTWf4xxCRjINLfGzGtdf1
-	 yuvsgcKuyhIgXldGOAadOf0rRqiMWwTGy5qdvjl7iQ9mHgpezNazVWc0ttwSDU2g66ZB5
-	 GGI92P3+IEVgNWpfYAVzEsuyUXk8IE9HqYD2FdHc8jMkaiGnlKEMxS6u6Q20f2M8d/g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321807;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=mM3pdVJ3VXYsnpMOnpdPV3PZO6IU7YAVH5Ue5cX7ARE=;
-	b=BRBpxJ+KvTL3HpE0VDXYNoM91qsb3nWTD5CSX27gZwMS0y/nALhmLkdRe5guyl5M0pCr
-	 jHtO7C+VkH+qlgPz88MaiWu61BYaF3kLKfi92DEBLBBCnlfvkIZYiPnYszJawL7agiDoY
-	 BnqOOjB8DdOCkvMAoVM52+fLg/o4I5z0bF+9NgfFKUxK2MrYfh7znaTO6tczprIc3ep0g
-	 MDuku5nKGRZkB+1Q/KsiEuRBqobcTMhY7WgMdjaedj6FpQh1q3pJRjyTZy8PGLvlYHxB4
-	 8czCUl1dRBGC+JEinJzJlrZveH2lsXoCN7sYOONx2RT5QEPE18W6EsnEIyyOSQzHNFw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B0FXeJct;
-	arc=none smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794321940;
+	b=eNBsdjex6TCN3WPkh413/1nsD29cKzus6vXSXJD19wtXsxotuWeX4A4PwS8quXfOH4wi
+	 YFqffgbl5JJx8FE5W9rUtgRBA9iS9g7Y2GiZDEAiubxNa/0C8JjWfduuT01RNNzp19HGi
+	 OGZV6R2ERKy657pyJbD7K888Hsab7pKrIWLCqlC4wZLX2dDnEQReFtgxS6YK19j6RXnon
+	 hjlidmRDiyjSkiXKwDqxHsKx/fQgT0/U43IchBTSnBCuj/GDWrsgT7mQ5Dw5aDRW5uwcg
+	 9a4ig5ZAESy696bgEpaPuaRYLkTLxakyFmNqu5kxQaER80kXvHHOqQh219oS+l0mN/g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794321940;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=KwhHN6og26iZpiNRf8PcnS79OR7OdPoX1f5BXPzAn+w=;
+	b=iAlbRJomIuI3SiWsrMuK00RabA06i5VyFR1Ht+ubEAkKZDOmtPaijzQJWyGr4iARS/xF
+	 mmq5e/7F3acpW8X8c5YoTEOj4lfYdgerwqmej495vKLd1Sjlc7gp2qXq2ElBfUP/tT11R
+	 +ahqy8ucwaiR6V0WwHiUeM+WEgvv+wBpyB7m39VBc8K8W63+4rlEgVtbQwchMkQ9KpnMb
+	 PwUMtUbrHd5LcyTtNkCn0MS3HZFCjh9BUYfjpGgGEHKBOGvYpdGMthr/4HAmdvvXvtx2O
+	 p3bba5J1eehObuOHpqIaalx0Jp7JjpgDWJVEb+EWs0wCfl9M34oa0S6DmrztEQimVDA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U+xoK84B;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.37
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012037.outbound.protection.outlook.com [52.101.43.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1060A2613
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:43:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69F1060A2613
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B6260A2619
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:45:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27B6260A2619
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B0FXeJct
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b5c3288e6cso894176b3a.3
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 06:43:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794321807; x=1794926607; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mM3pdVJ3VXYsnpMOnpdPV3PZO6IU7YAVH5Ue5cX7ARE=;
-        b=B0FXeJctmgOti0Zd6hNIfAW2U7FZxgcc6Np414mIz7g9aahzBQs0mnf1vyWKe5qbzJ
-         aDXvPu/GbvkeEZxTSBILCRKbcMGz40jHvdqi1mhY+lPDFgyFw30X61JpfJGsn3mh8/TR
-         HdgDtr8W0qTAPeJP45kZB1zeAXbuU6HHsRd1BNHzyo10MGhG3hi4XXndPwVV5X6dGk2w
-         isisbx3J4gPtyy61p3udwG/UVXL6FB2OzHv7uck23mMevkJfNd4IE567KRWZBme33b1l
-         Gl94qRAhoHihoOfcrfDFwwypN3hvmfjdp0e2hByJ9Zrn6LiuEeJuAOHXraIKWr1MpDPD
-         AS7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794321807; x=1794926607;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mM3pdVJ3VXYsnpMOnpdPV3PZO6IU7YAVH5Ue5cX7ARE=;
-        b=hUg537jQd44+pDYtVg5jvG+NtbY9hbof6+ccOy2AzPmYcUiYsLGMIpiebCxmU0tgMs
-         Z019mu4vXsBY+85+W7ggECwUSs1CaMoep1AfOpmz79gCa+DoiSPygUk4AaoTqu36mady
-         w1gdwbRqW6yzOSA+3f8+BuutRaBJnuWkPVcjbyzG6j1SD+Sz8e2d2eUI8CupFCZV9cmV
-         vAQsrAxsSOoGmN++wohcC8Eg2rthk2edBI256znp5iUdA15fy4WBGEKSurWxhGYpZyyD
-         fHg1+sT3aKCh7LXaM0EJM9u/AhCZkXwntGdJbOl+36Orbuz8W0p38BaU+ofR/qI5d//F
-         dFdg==
-X-Forwarded-Encrypted: i=1; AL+hErF+58Mfu7qyMtu4MEamb3se8s+8hl8KSIlrdUD6+dnYjFtrr4Gh+vLm8XUuYvel2780ObwWn9w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z851a50HtS2OPltM+kn7ffOtu3Q0REQSi4AbFGi7/JMA//UCFNy
-	7WT14VQKK4jq1wzL2FV4cjvWzPxsVVKH68NWGhIFPL9kIptR7ut9ZS25
-X-Gm-Gg: AYBFou2nP6k6QGqh4cXfxS/0oHmqs4WXvrOMdwCxN+GKo4QizUgtS52ak19FJNi73Dk
-	JwlMcBb5K4/g2in55dMUkRQUuSdpzWnL+VS+hErYvFoKfxM5L+WLCpu/gXvOljh1fxjhxpfNq6H
-	dXXGOfMVUUHxqXYsope1S2SI4v+08I3XIIBXRbIHsKTgvcvFBAuLhPB7slJoDXMjLhJ9VZJMtXp
-	H/9gq4R2BJC3/RRFslbl12US+8b08ALoal8xdLbheuRK1aMjol/TieKCfzYcmE6IMHMY2hqWqC3
-	m90eLzbVqSOLkcpxTvL3KeSYRPpWil6H111iuRIMAwt9CFGfCeHOOKUnG1+g1ehduvM4QnYlHs9
-	iourufpTR+wTOrl2HhbnXimbZ5NIkf8/tV3Q2quobHb5IIP4HNzLbyrd46eJ4Z2DFuvjZQa5BEr
-	KlYYqDOF5Xr75tHFuumA93bbAzae6xdIxc66911CiWBwNPZkqhci+XGbD+dxvNyBgyBS5fzTfpx
-	Pb/4EqmyFUeaE++enQBl0TWDbsuUAQO5itr7ZRyKjX7otZGqoV3mmA+4iusi+FRm/kYtQrO3DrS
-	NhW+dWiz5Y+t5tziBRnlq4j3DLB64qeL1BjsQ0Qh959Y4A==
-X-Received: by 2002:a05:6a00:3902:b0:8a0:5de3:a170 with SMTP id d2e1a72fcca58-8ba87929c4bmr3000140b3a.45.1794321806473;
-        Tue, 10 Nov 2026 06:43:26 -0800 (PST)
-Received: from asahi.tail4da9e3.ts.net ([218.48.198.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de232csm1018049b3a.2.2026.11.10.06.43.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 06:43:24 -0800 (PST)
-From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net] xfrm: reschedule NAT keepalive work for new states
-Date: Tue, 10 Nov 2026 23:43:21 +0900
-Message-ID: <20261110144321.94096-1-pocj8ur4in@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U+xoK84B
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UbOO+eW0H6KjeIgjDaqc+5CUKcAgOTDRpqXDpd8fTNR9GF3D6XuBHDfiGe47plXn6e/K4K0uE5xUvBLLhlc4fmRbUUN2bX27x7owwxdOGtRgJzv8fv+Wx/qXa6Q3bvL1m+a77S2SZ+FWXe7Zp35d+KIIrBsmzE4gvWo1kRTWdST3k2bxEVkpMrKlL6WFN/gwK0/IQ3xfszlbKeQdh2scbalp5sRC+hTgkDLq2h12KGoIgdQv3PxhC841G3Y/0VOO14cjOKKSTU2RBpL7U0Wn1jfc/6sC0pKxreORZfIYr2YvUMgkL3IPTVe4DZvp2wt8egzjXZ/+2Yr6+NCwZq84Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KwhHN6og26iZpiNRf8PcnS79OR7OdPoX1f5BXPzAn+w=;
+ b=R32BAKXDW3cbgoJMvVwRnHaNpQglyiwk9ipCWuV+LCL9jucPkaJd6c9tg8N9x+mw1RgFJG/7+6gQIcEa4KEtekyRPvNh9aGtlDpdcqhX01IHg8pkMciwwCnOGHKXTRboEaBDlNEuzrGhWDDs5dNx7pn7mlZcrLeotM7jkVxyurPeBpbaHOzPKhU/IJgeAVMOfJIhrgNYIWsF2bGrRbHxsP3l7PxGmnnDJh+E+FX1cHIFW95G3fOdkF/CulGXAbs+uyTRDvZc9tdIhj9dWcoT4okIvlXn++Zp6iiR/XWRVJ3vjv5xpE0Crk6GjX8qWE6GASKjlCXODGv6ZbfyiKMyaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KwhHN6og26iZpiNRf8PcnS79OR7OdPoX1f5BXPzAn+w=;
+ b=U+xoK84BafN32upO5rdSjbDodlD9PDkuP/Wv7TwveA0Usqmgk1a+6HQoAwzmfWqALRvk1E1xDJp7GPshLWGDTOzdJ0oe4BO0Aiih+zFcnk3GuiHPMvTj/D+5QJkOLi4DswMSee50IHZ2xHngtqQfYX0/ki0CZOMb5eusUtvYs5PYbIKphAN4/9pqSJbzq9HnkG3QdQ0QIpGnVLmSnwSwxIN+uJYeIN64D1Bb+IuljUeLEdg9i8ZgvG0MoxIxUj5H9o5i79BHAyfjOkLbZnsw+OczExFHYtJAhilBb6btr+hkQlZyG5y1+1Ue/h+BnxjtpsOfsXL2mTN4EA2/Z4sMww==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15) by PH7PR12MB6719.namprd12.prod.outlook.com
+ (2603:10b6:510:1b2::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 14:45:35 +0000
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 14:45:35 +0000
+Message-ID: <4271b227-a36d-4856-a297-b1fa678eb187@nvidia.com>
+Date: Tue, 10 Nov 2026 16:45:30 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: Question: net/mlx5e kTLS TX TIS reuse vs in-flight WQEs
+To: Rishikesh Jethwani <rjethwani@everpuredata.com>,
+ Tariq Toukan <tariqt@nvidia.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+ Boris Pismenny <borisp@nvidia.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org
+References: <20261022181751.1349984-1-rjethwani@purestorage.com>
+ <fc0da060-5bf5-4289-8814-d25e6c422673@nvidia.com>
+ <CAKaoeS1hj9XuM7ojLBCjGA=EXc2M-b+eRjC2Sk=8L_8XYeJ18w@mail.gmail.com>
+ <4796023b-10ae-4172-afa8-9c7541844314@nvidia.com>
+ <CAKaoeS3hDE5q7XGtPy4XKmGL54-+7Y-H9JyMcdz94FiQW2_ffw@mail.gmail.com>
+ <9a8e3e1a-977a-4e48-ba9a-2b71700f6924@nvidia.com>
+ <CAKaoeS2YkHyrLHwbF0SAE7UtmhknmKEy+16VedDNLt5AMwthZg@mail.gmail.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <CAKaoeS2YkHyrLHwbF0SAE7UtmhknmKEy+16VedDNLt5AMwthZg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MI1PEPF000008C6.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:298:1::428) To IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,46 +106,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|PH7PR12MB6719:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a772db6-fa02-4233-9e19-08df3f394716
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|4143699003|56012099006|22082099003|18002099003|11063799006|10067099003|261026140227099003|261026121527099003|261021123027099003|261022105027099003|261022113327099003|261028144727099003;
+X-Microsoft-Antispam-Message-Info:
+	+RMr8zcsBIvY3+saY95b+TNCr8Q2q5HRQ7bEWO1czwBrJZ28kq/g1VqUwxjY4rXlUfeUDzjvyr2yxuOLhd7bBZiprmyhqWAdKL6ebvYEorYnNOQ7LWiaxWSonQ7APoYOEeVclcISwAxhxgBho1XRxY81tjanAQwh0MO7MYl9/IPInSr6XzKwNLhIesi31++Jry1SRAEjwgzT2I2v/auFhwriotIn49nUzzWNY0ClSWIg5hxDPrBxEKw/NJLs4AJofEWA3Sbq28ropvNBsthdDyPeIXqDcgWqtYhtZYnRN8WDj2lk81IQMtGnxt49zBBISZAN2ON6On5Q2QcspAt0s31mzLZq1GD61ehxlW4tQ4Z6SmKRzCpvZNnXuLeIWeJs2uBlaB8XdsVmKYWcx84y6pkBfDwTgyGBOqfd+vnIou0YP5WUoDK7LuDaKC62HbMiC8ek82XZ1xDoFmfXOt9WGw25Gd+pl9kBKXT5WW+U50lpWi9PmUFWS08Lv17iVNwzAXK5hOmV/cy6JNkl7vZpCHFKIPQ5d/RGrPc3Xagl1aAfXl/Z4n1WWKXOo2lEuv/I6oBvoI6dQrii5sMfapvUnFbS6Nd9uEZMeZmt6uN7mUmYWpI4A7hSHVd4pLAMwsctBrdfix1qWUzvVd6aPFkTBtCZJ/fCJ+QKfhR48JY2P5E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(4143699003)(56012099006)(22082099003)(18002099003)(11063799006)(10067099003)(261026140227099003)(261026121527099003)(261021123027099003)(261022105027099003)(261022113327099003)(261028144727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bnhVVHhVd0hHOFpoOS9wclVyUkYreWFxRFJVRXQzRDdxdnIvSFJiUEVGQkY3?=
+ =?utf-8?B?SXNHWjdwNHdkdEI4OWV3SG9mQnRNblZUamcxTjkvOVlHUThIK3JwZURubFBm?=
+ =?utf-8?B?T0N2aHU2YXJob1kyTkQ1NEZCRDJTZUg5OGFkMm9YQWpRUmM2YTR2UHU3ZnNu?=
+ =?utf-8?B?UkZMUVlyT2phd01kU2dLWW9uQnJZMDdCcHMvbFplWXZnUFAxTzFabGJGUU5j?=
+ =?utf-8?B?SEJoVXg0VWxxaW5kZmlxZ21BcXVIbDJCbGRuZWpPejVrd0hEMDBsZHFwdytC?=
+ =?utf-8?B?UjFMenl6NWVCMWZ3WGhrUDNBSFJRRmpVOXB0dFR5Q1l3MlhhbVhncW41OUdv?=
+ =?utf-8?B?akxsOHE0QmZWb2Y2OEtvdEp3Sm5Cb0hoSnd3NWtBRTVIaVZUS1gyUFkzc0VW?=
+ =?utf-8?B?WjRLQlIvVytzMHpxUnNWMVRPVFNxMkVSQlF6TFoyMlRaTFZ4VHRmaDFwaURi?=
+ =?utf-8?B?UXgyYzhYQzVqUW5LQ0VCUVRoMFNrSmg2dUdER3pxNVc3M2Z2ZWdBMWlxSFR3?=
+ =?utf-8?B?MTlkQ2V6VTkrc0NLUnpJRVNQenEwRTVWQXBMQXlTeGEzenQ1RnJyc2JnaExT?=
+ =?utf-8?B?c2Q4Ymh6Qk5EM1l3U1JWdnRVVURMeUFteHNGSndJQWFrZ3Z1OEhZU0JGelNv?=
+ =?utf-8?B?OUl0VGtieWxmdlFaV0xycERiT090K21GbTB5QjJlL2tySm9QT0crUmZHcmV5?=
+ =?utf-8?B?RE1rT1hJTWZaMVRTcC9BR1UzeS92KzJzdStTQnorZHhVc2FLRTJmWTF4bkxz?=
+ =?utf-8?B?U1AxUmtLN2NnWXlOcVptdmE1bjQ3Y0Fta2ZhdkJSY0pCVTZzQjg5T05vQWNV?=
+ =?utf-8?B?VEt4ZlIwTU5FWkx1TnlTL3BVS05CUjlmdTFGdFpmNUh1S3hKUDhqbjA5RUZ6?=
+ =?utf-8?B?WGJwUGc4VzFDT2ZpY2VGaFg4MzdURjJReWJ5YnU4VUFzcThGWGY2dWdzaGYv?=
+ =?utf-8?B?dlhqK2E0NllRV014aUF3SG51Y3d6eFNYbjBjVGh1cWhsMU1SYWRxeThyd1Zr?=
+ =?utf-8?B?bVd2MUlQMDRxeFJXbFczNEsyYzRrK1c0Z1lNdDBYR2tXdVNrckRIeDJaZ0d3?=
+ =?utf-8?B?NU9VamNIamsvQUUxdXNUU2tvSldTTmRYVDhBdGZ6U1E3ME4yVFZxRHphODJq?=
+ =?utf-8?B?TWp4WGpLMGhKb04vY1BHOHcvSVFIdFBmSXY0OGlWK3lQYjRPeFhvenFOeG9a?=
+ =?utf-8?B?VUFORkdUN3VneFJFUW1IT1ZTcmQySGFYa3hsT1RYSkpNcXBzK1lvVjViRkVE?=
+ =?utf-8?B?dVgyeS90RVkvT0lnN2t2TWY1ZFBVcFpTZE5TWlZiMGFpNzVzQzRnQ2hnQnEw?=
+ =?utf-8?B?dElQby9TK0xVclgrQkZYWmVjVGJWL1ErcjBQRWhoQzZPdjJlbnR4UVpmSFZx?=
+ =?utf-8?B?aXpSNzZMSjhyb1BCeUwzOUJZNWhvTTd0c3VXeVJtNWFrbjI5emJxdkdoZlcx?=
+ =?utf-8?B?MGpxNHZRVkJLYW9TMzIwV3VyYWo0SktKTWJ0b01ab1RzTFFUc3g1VnQzZjQx?=
+ =?utf-8?B?Ni85RUdCbVY3eFBDWVdFWGVXeHViK3JqZjlnaEczS1g1QTJpNG5wUnc2czBR?=
+ =?utf-8?B?UFpWWm5sTU1RdjcvZDNZNjd5NUUvRXVwK1M0SmhmUlovTmp4OThLWXZBMWhs?=
+ =?utf-8?B?NVhqai9ENjBhdWl2enBGdktaUmR5MFhHNlZMcURSaG82UHAxWjlyek1sdmta?=
+ =?utf-8?B?dlZpVjRvbFlzOHdXOVFBcWhBZjVQWjgxVE55UlBmdGhqeEpCWWNMOE5teGkr?=
+ =?utf-8?B?WGdtVEtrV3ozNWRxa3F5bTVRZEJZZDA1S3J5RG5PNFdRbDJ4M2JTSzZVQkpa?=
+ =?utf-8?B?NXBzWDB5WFdiMzBuK202WmtaODUwakplUmlSVjdaUlVjdFNUT25sZmRJYzht?=
+ =?utf-8?B?emhzcVlXRFpCeFcvekMwZmpkQ2JUUnVWMGtZYUdMcEFSOVQzYXArUU9wRm50?=
+ =?utf-8?B?NElIckJqVHY4VlJRQlBCRmRaSURKajVoOHVWZmF3RFRUZFBraG5VT0J3L0Vz?=
+ =?utf-8?B?L2NNREFmM3MzN2pFQUdIVnlmVlRGS0FremIwVE9tT0ZPKy9uQkZJUDRlR3Jh?=
+ =?utf-8?B?SjBjWFBtd2FPM2RFQW14UmllaXpJTk1WQndOVTBXaVEzOG9uT2NQNjlRbS9u?=
+ =?utf-8?B?YXFvV3BnZzFyVDQzNmlTa3B3TjQxU3JoaDY5ZEwxck9tdTRVNTJsZDhqVk1N?=
+ =?utf-8?B?SmNlVFZIK29vYzZ0TlNDcHRkMmw0WHIzdmk3cDNLSmV3L0h2Z2tyU0NpcUNz?=
+ =?utf-8?B?ODhzbnN6WktrVUZCODhMMXZxTTAzOVk1dysxYjdOZnV4OFdkcFUwc3luT2Rl?=
+ =?utf-8?Q?8QKKTdw9o0kMvkLgYR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a772db6-fa02-4233-9e19-08df3f394716
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 14:45:34.9456
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0pNIFNO5EZFVakn+gkLeyYuiqkZElbPPugUNnHZmglfjWeMoDX8DzGmkKxCZGdrNqNDVaDyZUYct1tQZMo3vxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6719
 
-The per-net NAT keepalive work can already be pending for a state with a
-long interval when a new state with a shorter interval is added.
-schedule_delayed_work(..., 0) does not move the pending deadline, so the
-new state's keepalive waits for the older state's deadline.
 
-Use mod_delayed_work() for a newly added state to run the worker
-immediately and recalculate the next deadline. Keep the existing
-schedule_delayed_work() behavior when a state is deleted. States without
-a keepalive interval still return early.
+On 10/11/2026 1:21, Rishikesh Jethwani wrote:
+ > Thanks. I've now reviewed the seven-patch RFC [1]. The held-skb,
+ > full-resync and pass-through changes cover the points I raised. I've
+ > replied on patches 7 and 4 with two remaining holes in the one-SQ
+ > guarantee: the selection-time ownership transfer, and the PTP SQs in
+ > the drain.
 
-Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
-Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
----
-An arm64 QEMU/KVM test of the immediate-reschedule change showed that a
-new 2-second SA sent a keepalive immediately while the original kernel
-sent none for five seconds. With a virtual NAT gateway, the original
-mapping expired and a 9-second inbound UDP packet was lost; the changed
-kernel retained the mapping and received it. A boot test of the final
-patch confirmed an immediate keepalive for the new SA and no immediate
-workqueue event or later keepalive for the deleted SA. An arm64 W=1
-object build passed. No physical NAT device or ESP payload was tested.
+Thanks for the review. Agreed on both, replied there.
 
- net/xfrm/xfrm_nat_keepalive.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ > The DEK question is still open: once all old-key WQEs have retired, may
+ > the old DEK be destroyed or returned for reuse while an idle TIS still
+ > names it? This needs to cover both standalone DEKs and pooled IDs reused
+ > by another connection. A flushed replacement need not have installed
+ > the new key, and deletion can return the still-bound TIS to its pool.
+ > The resync fix restores the context on its next use, but does not by
+ > itself establish that releasing the old DEK before then is safe.
+ >
+ > Please keep that HW/FW answer explicit. Until it is settled, I cannot
+ > treat a flush/close alone as sufficient to release a still-named DEK;
+ > the conservative alternative is to retain the possible bindings until
+ > a successful replacement or TIS destruction, including through pooling.
 
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index 8ed30e6c263b66..6814f9063969ef 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -288,7 +288,10 @@ void xfrm_nat_keepalive_state_updated(struct xfrm_state *x)
- 		return;
- 
- 	net = xs_net(x);
--	schedule_delayed_work(&net->xfrm.nat_keepalive_work, 0);
-+	if (x->km.state == XFRM_STATE_DEAD)
-+		schedule_delayed_work(&net->xfrm.nat_keepalive_work, 0);
-+	else
-+		mod_delayed_work(system_wq, &net->xfrm.nat_keepalive_work, 0);
- }
- 
- int __net_init xfrm_nat_keepalive_net_init(struct net *net)
+Double checking. Will update.
+
+ > Agreed. I'll replace v18's live TX del+add with the new callback and
+ > implement mlx5e_ktls_rekey_tx() on the revised fixes.
+
+Sounds good.
+
+ > The delayed decrypted-clone case remains a separate core follow-up.
+
+[...]
+
+ > I'll Cc you when I post it.
+
+Thanks, please do.
+
+ > I do need patch 7, with the selection-time fix from my reply to it, as
+ > a rekey dependency. Patches 1-6 alone do not cover egress skbedit or a
+ > cached queue overwritten by another device on the route. A fenced
+ > replacement on SQ B cannot order itself against old-key WQEs still on
+ > SQ A. Keeping patch 7 in net-next is fine; I'll base rekey on it as
+ > well as the net fixes.
+
+Right, I missed those cases. Rekey depends on patch 7 too, and v2 of
+the RFC will carry the selection-time fix.
+
+Thanks,
+Tariq
