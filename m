@@ -1,90 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322572;
-	b=MJvMITrmY/POKwjRrNhReQkQ3moy3zf2Qpw+QnmawK3sC5hc1g9OT+/5vVDF6+qQpAM7
-	 /k05yPqeYtfNFIKWZHtN0G1yfqrEN5cK5YZ6j63/keWvUIFbunD1SK1pb68FCRNMky3rJ
-	 PoLpKYFKRtvF1hbcmPcfuND9gTya3NjZoJWMGyBZyk4+yZmHEZthPNGQP9Wt18Yi7YBIy
-	 ez5nNHo9fKD5Xs+Dnz3qd5Z72F+2ArM35m+lQ8G1ejAepimMtgjOGLCVJ9SZjM5kggHxl
-	 QKHgGujwjUO/dGhdRCDjkm2UJffeLEqEIMu/1Dxb1eVnvkh/NzdwmNt3PhHqgPmvk6Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322572;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=oORDmuKjipQctS12DwaKaR7VWThQmhuzt9K9csDftBc=;
-	b=g5kg//0poO3ex0Omm79ZYPWVDQd9rTCO+SalDFyusqPdzSyYl/+B1CSolBTG59uVh9PD
-	 XDMmcq+mk53SSakStjV2Y5PprAgzSP3B1a9z1U1NpDuIBgabCJyBt/7wI16+MYf2lv9KH
-	 yoh7+LodXTh11vjIBPgv+WnI2elZ9UBe4XXBE85N5fpxrrBEFvR2sMwwxtgnguh+/iBok
-	 aFg/Xg2fRJuHQy9epCjqoPqFn3uiv+rShn1YBOs2+OZh/ByvTuRerl4dWqCXipDpD4hQu
-	 uRt3obniUYcKlEe6Sj/EIgfcpbbItJB7a59+PpjRqIaKSxl0x7ODBkOzovMo3j3AmDg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G16I+S+7;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.69
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794322708;
+	b=oUtsY8gOcl4cFFUfKAEnzvGHnXayWIC8qgQGZLV6JKZ/pNEfxFKssCwWakUniA0iS3kr
+	 f0aUaoQbC9o0DpQBFDkiydC0C4qeTBW7HEQjkCDKcSCNS5ppVgARsLHaUilM+T4SOqPr8
+	 pAtwfkEbWef4nFMmzFqW4M+Xl1klLgZFgDTzsCY0ImbuChgg0xn5o3FJpmcAjIVo1OHxm
+	 ZGnTj2DZbsRzihleStLDuhKzHF0v+y/XrI5PNTELM9kg4KSYGiIGo2fYEUECEr/djfGcP
+	 Lai7PeS9LP4cxouc2U4UrvPHQteR/521HUQKKGhQwZ/RII9pH15y9ZAxoIy2FjmAlhg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322708;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=1fEWVB4s8dxpy7WKjeYRypYyTAh25nN2QNj1LosPIjA=;
+	b=DiE3WS+M7eBzzqJBQZviyCg08CpPAesMLzwcUtgi8DqW5cBPxBlhU1lC2ZQi59tqHP3H
+	 Ufn59vgOjivvExrxr1YjZiPqNpmOhNHp6dDRNLUsOz2dqHnwDLESt/XEhFZooCf54KxAX
+	 ipEQoxbBOe+DK9GSIDkOW2IdV/+3hOjqwAxCmAYRviMkJDhkQDHy2Z72n15rrZZoQYacY
+	 xjL7GfyybqlcGrDm+Dxkqt9pU8Yf+jBk2C8n6+iG6YotfxEcRzQhs3yP+YzSZ1zrx/vjG
+	 lNht8foe1lMpD3iTdZkKDRYWDYtaS6Cf5X9agxHYMaAG7CIgEi70EhLfLZAuukce7sg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZT2Vdl+F;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.69
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013069.outbound.protection.outlook.com [40.93.201.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A988C606A331
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:56:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A988C606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288EF606A32E;
+	Tue, 10 Nov 2026 14:58:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 288EF606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G16I+S+7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794322570;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oORDmuKjipQctS12DwaKaR7VWThQmhuzt9K9csDftBc=;
-	b=G16I+S+7e7n0velEkLYv+Y93xdfPh6ps4VGz/NbLiH77G+8/fSaIoj8MW9d2FCSNzLGgb2
-	abtNUlwEgemtwZPYmXy1Es7+KBNcbBC6xsPR0xBiq8E6npEFCyCvHWGC0ufb8Wjl0eMvAq
-	FbYtTTEO5pKDHb+u45FVa7jB0eBHvsk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-_cjHZJsTOjCn06W9wlcITA-1; Tue,
- 10 Nov 2026 09:56:08 -0500
-X-MC-Unique: _cjHZJsTOjCn06W9wlcITA-1
-X-Mimecast-MFC-AGG-ID: _cjHZJsTOjCn06W9wlcITA_1794322566
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A51861956057;
-	Tue, 10 Nov 2026 14:56:05 +0000 (UTC)
-Received: from pabeni-thinkpadp1gen8.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 912FA7E2;
-	Tue, 10 Nov 2026 14:55:58 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: kyle.switch@motor-comm.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	Frank.Sae@motor-comm.com,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com
-Subject: Re: [PATCH net-next v28 3/3] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-Date: Tue, 10 Nov 2026 15:55:41 +0100
-Message-ID: <20261110145541.265328-1-pabeni@redhat.com>
-In-Reply-To: <20261104060636.3901918-4-kyle.switch@motor-comm.com>
-References: <20261104060636.3901918-4-kyle.switch@motor-comm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZT2Vdl+F
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YW1soDX1RI1GjOOfOFd24YcXUpY+yb2XumymfVOErJPCjLWxJ+OP9r6pGdkpQMdIroZPbgsSZ5QNm0CdiV26yyMS2vy4M2+Y+w3S0mDidvstNq1KWx6sN2ITS+PIKnvtJJcu89W/9t8DPKi+2jvW/OL+xNwteYeRfsmmYXi4SUVqjL9kh4JWri4Mz0wB8A7DoWVw1/d3INOJ/Z9/0s2/tNt8UtOrXGYHhonIpFvdvxqUaEGkNkegEe9pzoNdC68Sr6zQAVw3z5xDLf1zUKmVT4M/Gywy82V21buAB6Nikgb6eC91MVPTyjt/m0pxXTPhOG5wzvzTqDqmhHMcnK+dwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1fEWVB4s8dxpy7WKjeYRypYyTAh25nN2QNj1LosPIjA=;
+ b=bdVpa/bOV3/38Uft3+ZmuMB8oPm8FvQMbz0JFxfjomPRGzChqEkYqTrFZsFDQ0AR05BFh3CCjgY2/hP1SO5+E3wH1vMAPeNJP/nbfYdmkiSH8uDIKs2H4PlNRTmVm8sDYq78pHuj+4ZnL9oxbFQeuDS3ISPlNca9OSLZKZDCnmcKbW4Gna72XOwo9HXPQ3TJGK/buczXg+WO1FPP6S9EV0sy/4WuiOzaag9c22a70mjlCFnBzuQljj2HwfOqLPLQj3S3aPpxyYkn2CzlgBfcCkLlrSCUJfbhPIHoipLSZIDnDO4aX8efjxgzb10z+9ZUTqQWs0oeQ0W0v8KMhycuVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1fEWVB4s8dxpy7WKjeYRypYyTAh25nN2QNj1LosPIjA=;
+ b=ZT2Vdl+Fx9I8nrxMMMCc0og39ud24jw11IlnhGJKm0N6eryRIudOybN2JZ4QcjwQ/90CMF8Y0O6SUxN7D13uPWH9zaLQp0E8R/YFewULTrZTXrsxp7bQdh4BMdEPAEgovFi50GN0JwLAhtzHM1nAiUDU3nrSFLGq7V6XCQ/MBSNQuKf5GTK3uTn2Hnfo8yxjcVBU43m7zRqOvD5WiinHBwGr50jca1l1OvAphA7lZVFkyvJaOscd0xnxap7pXkqbk5Z45Q3koR/EZgznZX5q40jce1IkpUZvmTtptq9D5k2zF3lrKIIC89v6ym7WUyvEdqklI4i0APppP1KHk1H7cA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15) by SJ0PR12MB6990.namprd12.prod.outlook.com
+ (2603:10b6:a03:449::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 14:58:19 +0000
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 14:58:19 +0000
+Message-ID: <a483f6bd-3fbc-4b9c-9262-5e4dc0d5e849@nvidia.com>
+Date: Tue, 10 Nov 2026 16:58:08 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next 7/7] net/mlx5e: kTLS, Keep a TX connection on one
+ SQ at a time
+To: Rishikesh Jethwani <rjethwani@everpuredata.com>,
+ Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Neal Cardwell <ncardwell@google.com>,
+ netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Willem de Bruijn <willemb@google.com>,
+ Alexander Graf <graf@amazon.com>, Aviad Yehezkel <aviadye@mellanox.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>, Boris Pismenny
+ <borisp@mellanox.com>, Boris Pismenny <borisp@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Costa Shulyupin
+ <costa.shul@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Eran Ben Elisha <eranbe@mellanox.com>, Gal Pressman <gal@nvidia.com>,
+ Ilya Lesokhin <ilyal@mellanox.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky <leon@kernel.org>,
+ linux-doc@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Martin Karsten <mkarsten@uwaterloo.ca>, Randy Dunlap
+ <rdunlap@infradead.org>, Richard Cochran <richardcochran@gmail.com>,
+ Saeed Mahameed <saeedm@mellanox.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ Stanislav Fomichev <sdf.kernel@gmail.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Tariq Toukan
+ <tariqt@mellanox.com>, Wang Zhan <wang.zhan@smartx.com>,
+ William Tu <witu@nvidia.com>
+References: <20261109114734.2087878-1-tariqt@nvidia.com>
+ <20261109114734.2087878-8-tariqt@nvidia.com>
+ <CAKaoeS2w15yqv-yd9t8KC3aZMJH1VXM=oepk4sR9h1pPjerKOw@mail.gmail.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <CAKaoeS2w15yqv-yd9t8KC3aZMJH1VXM=oepk4sR9h1pPjerKOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MI2P293CA0006.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:45::18) To IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,285 +124,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|SJ0PR12MB6990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 91e85f05-98d3-4ba0-f91f-08df3f3b0e7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|7416014|1800799024|11063799006|4143699003|261022105027099003|261026121527099003|261026140227099003|261028144727099003|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	BcVI3kgi/ff/RSJ8JVsbmt5TcmlMCfM4TAuSUf9wSEQ4mUNhsQZ0f+SP+7xxwgkVP8n/JJ8OTF2wbeNLKvECRtky3pNYP2+xKc4rn1Y47gojTJtY7hibeVTvhvPF35C74YGOGc+0311OlmC+VuKLT2GUejPH8I3W6RdR7dSGf9akUVaoOORZfpwBSIWNRF4Ft46kPH8euBen2w1YJC5Dkk/iEXikTNLdNSqJP586Aos5yQfJsJBobcFmwxwEgArc6+7OVNxkYRJoRpkX2yvig7FE/YdOs2CDP2LZkH8cG2wW2NYRqFAqQZnkB5aHQzK3fBQ1Qbnk95JCBP/yopLiHnnUMe8Q/UTaInPUnaAt6WeZuYGR39wF8Hdo+sX0oaT8o40YA3NuMsZ8RjKB+PIexNXhz+ElULeSL6hLrW2ILRbF2heczQCslaGmn4vIzmfDT+6OjtmrqBORx+4xs9sXsbnfVqT8Blgzu4WEpFn9A37tkVb2w0Ssy3INkrNhbi+RdTa3hcjVXQ8Ekj2doffKLt0ixIfUNaM9NsWPkiZ9uwiom95gOlZr0W35fnbvZxYPgNSh16vcVxH4Ppq91/7XxhcNlfpiNARIOqYbHogOYATJiGkbLUliR623Ih4lgniyLDVm3OwWuexLBW9vw2HK12rt1uMXJZjEGJ+epkapVDY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(7416014)(1800799024)(11063799006)(4143699003)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bE41aUQxV01UbktJNE8xYWRwb01QTDlSemlGNUhsYktxeGZwRmM1VUowQ3J6?=
+ =?utf-8?B?T1ZqVFJ4WFZsRFg0WCttWk1KOWY5WEY3bVQvRHRtNERqNCt4dWpTUWlKbW55?=
+ =?utf-8?B?NHk4Vy9Uc0REcncwMFNiZVBCSjF1c0xOanlxMDFaMDExdEVjd2M3M1JBOTMr?=
+ =?utf-8?B?aGVBM0pRaUJnVlRQcTZXNU9INS9LY1JESXhxdkN1d3RHRW9LR2VKaVVJS0RD?=
+ =?utf-8?B?UDdXL0lPRGRKa05PUGxGMFJsaVZjOFNzMUpWOTNXYTdROEhidW1BTVRxTUZT?=
+ =?utf-8?B?cGlPMXlPRDYrdjZJejVVeHU5Mk5TWmNPZUZKRG43NkgvTUZLTFVBL3I1aWNY?=
+ =?utf-8?B?b3BJNjM4V2pCbE5CYnZUWEwwa1ljNnRhR2w2L1NmRXErWDYzVzk0U2lYcDNr?=
+ =?utf-8?B?RmxjM3h5YTRzRUZVcnJ2L3N6dmRGSk8wdGVCeUhQMDZDbVBRTURjUTFRMHdX?=
+ =?utf-8?B?TW9RNDMycmY0WktjTHI4T056ckgzSWRXM29mbnI4ZXBWWWxqWTE2R2YzMlh5?=
+ =?utf-8?B?Ty9ZTlFza3ZOZUdtUjJWU0hFMVlTazduK2pMUXF4VC9raGZoYmdKQVk0VWlM?=
+ =?utf-8?B?ajl6SGJMY1BXODlhZ21NRE1BZHYvYUMrRW1LRTNlT2VTSGlqR0lIcVpCdGJJ?=
+ =?utf-8?B?M1NEMHM5N0QwbU9BUS8yck9RT21RQ09aMFRXS2VERHZBRFJRTDBzNExjSEJD?=
+ =?utf-8?B?cHQ5eEJQcWc2eXhVUVBrV1NxYm1ia00waU9QNHd4SFhqMDY3M2FxNmNLaGd2?=
+ =?utf-8?B?RlVwSytwRnM1Nm1IQmNueEcvcVQwbWFaeEQyVDZZbHZkaUN5eEllaU9jalh5?=
+ =?utf-8?B?VHJOM1p3Rmt0bmgrMFI5dGF2amJ3NkUxT3hPUTdsSy9ydFhIenl4UUNGaGRn?=
+ =?utf-8?B?c1F1eUQxZkxwemZpRWNQVGVHNjBqeUFJSkNZQjVYWTFVOWRrWWNLaDJYTzNn?=
+ =?utf-8?B?TVB5RG9zS3BzWGdmSkVXalJsWmIzZjcvc2ZVbmE2c2ViamtrSWRWS2lKZnNz?=
+ =?utf-8?B?UUJHZGhhUWJwMXplaHhQSzJzU1V1aG9sS3VlTFZoNjdoc1VUTWRaY09NcWJZ?=
+ =?utf-8?B?YU1uMjR4TDVDS2drQWV2QU51TzkwV3dkQUJqSitxUWx2VXcvNlE2UDdlb0hX?=
+ =?utf-8?B?amZSK01kUUZONm1QZXJaQU9wM00zRVFTNzQvTWU2SWpkUDhraURwTkprd3dN?=
+ =?utf-8?B?VnRLSHBaOUx0SE83WjgrKzBqcGdrZG5VMGRnZEJ4L1dzZ1ExSk9McFBPajdo?=
+ =?utf-8?B?dXQrNmIwTEVBZTFWSGttUkVIMGNoeTJkc01OdEN5bnVwY0xPcTg0TWNYWXdK?=
+ =?utf-8?B?VFNNeVdmT0tsNjdsYTlpRXFpTUMyNFBRTy9PZlppTEduZ3JsMi9RWTgyVWdI?=
+ =?utf-8?B?ZSsxa1VicHdxTFpJTFlCampIS3VQL1BkYkN1T3RBaXVMVXdLQ1EwVDBablhj?=
+ =?utf-8?B?UTFtTW5vNkw5RDNjWndraHhabmRrVXBXWWRSa0pqMSsrUjV3a0gvVjVMUFNO?=
+ =?utf-8?B?WHQrZzZmemR0a3RYOGpuMjIzbDBBTzcrMzJtWkhUL2F3UnJzdnZ3R2NOSE1G?=
+ =?utf-8?B?Njl0V1EwU0VFQzFhYldsVWRVMzRybVhaYUZ5bmRYeG94cjZ6b0NwNW1ORnYw?=
+ =?utf-8?B?dkMxSUNXYmQ0elVyOTZBWUhUZTlwMCs1N1ZBQjBxZUYyeUU0Zk5VY2xOcDJ1?=
+ =?utf-8?B?VW9Fd1gxY3hqeGtrVEdoSjNGdmRNKzY4N3VobmFJNXlqS3BsMEVmYnEvZE1W?=
+ =?utf-8?B?ZFJaM1AwZFhzdzlHajl0UGFSMUFtcWFsUXh3ZS9EclZOTUt2bm9mYXVaVFJy?=
+ =?utf-8?B?ZzNScVJhdkFSY3lad01KdU05aDRNNE1Mbm1YWkxBMkhMV0psKytYZ2dqcVIz?=
+ =?utf-8?B?MDVrSUdQSTA5Q2lqM2JjNzZCbVNHekFnNEpvaUlOUWlUUXEvVk1VTU9uamE5?=
+ =?utf-8?B?b2pxYnBUbjlGZW5EZzdzdzdYRitKdTlWUC9yaDlRTUo0YjB0aVRaYXl1TWhV?=
+ =?utf-8?B?dXNTdjF0elRqak1IK3pPQW92ZkcxQWN1L3pZVG5hS3BDaW1yY2tyalNDZ2xs?=
+ =?utf-8?B?QVlIakU5S0dFVmNPamlCR2JGZDNHRlRzZ21Cb1JFai91aFVhblNGdkxVOXBX?=
+ =?utf-8?B?VnBJcEU0Vi93ekp6SjFJZGJ5QlpUNTFOWVRPTjRZSFJ6TVZYQzY4K1dBRGk0?=
+ =?utf-8?B?OCtsaDE1OE5IYlRiL21FOGxRb0Urcjc5aldzajdpaU1WVzhKbEs0aWpsNG9q?=
+ =?utf-8?B?bko2ZzN3OENHQklQQXltaDcwTnR3d2lHTS9PY0lXdDFFQTd1V0tXcHpmM0lh?=
+ =?utf-8?Q?M6ZWZzd4dbxQTQ0k+D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91e85f05-98d3-4ba0-f91f-08df3f3b0e7c
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 14:58:19.0921
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CfjCFefMzXC9VjvgVfAawK+peprI3qgFrsLFfq1YstEFJJXx5LdHU0w3+KVacG1yyhMj2rBCWibsq/njUteD8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6990
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
---- Patch [3]: [PATCH net-next v28 3/3] net: phy: Add driver for Motorcomm Quad 2.5GbE phy ---
-commit 7395dc0c40b1873da64b3582ad548b846fa382f0
-Author: Kyle Switch <kyle.switch@motor-comm.com>
 
-net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+On 10/11/2026 0:15, Rishikesh Jethwani wrote:
+ > This write relies on an earlier may_move check in mlx5e_select_queue(),
+ > without locking the old queue or rechecking wmem.
 
-This adds support for the Motorcomm YT8824 quad-port 2.5G PHY to the
-existing motorcomm driver. The phy_package helpers give access to the
-shared top extended register space, and the four ports share a mutex, the
-package mode and a SerDes init flag.
+Right, I assumed the socket lock serializes selection, which doesn't
+hold with an upper device's qdisc in between.
 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 463e1ea3efc93..492e236ec9e31 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
+ > Selection needs the same initial-claim CAS and locked handoff: recheck
+ > the owner and current wmem under the old queue's lock, and leave
+ > ownership unchanged on failure. Locking only the write leaves the wmem
+ > check stale. Preserve zero self-charge for non-decrypted, possibly
+ > partially orphaned skbs.
+ >
+ > A failed transfer can fall back to the owner's queue, updating the
+ > cache, if the index is in [0, real_num_tx_queues), still maps to a live
+ > SQ and is not a PTP index. Keep the xmit ownership guard.
 
-[ ... ]
+Agreed, v2 does that. Selection and xmit move the connection through
+one helper, as you describe, and a failed move falls back to the
+owner's TX queue under those conditions. The xmit guard stays.
 
-> @@ -33,6 +39,18 @@
->   *  ------------------------------------------------------------
->   */
->  
-> +/* YT8824 Register Overview
-> + * UTP Register space	| SERDES Register space
-> + *  ------------------------------------------------------------
-> + * | UTP MII		| SERDES MII		|
-> + * | UTP MMD		|			|
-> + * | UTP Extended	| SERDES Extended	|
-> + * | UTP Top Extended	| SERDES Top Extended	|
-> + *  ------------------------------------------------------------
-> + * |   Common Top Extended			|
-> + *  ------------------------------------------------------------
-> + */
-
-[Severity: Low]
-[Finding: main-2-3]
-[Sources: opus-5-5]
-Is this overview accurate for the SerDes extended registers? It puts
-"SERDES Extended" among the per-PHY spaces, and only "Common Top Extended"
-is shown as shared across the package.
-
-yt8824_extern_config_sds_init_paged() writes all of its SerDes tuning
-registers (PLL VCO/FBDIV, CDR, AFE, DFE, TX pre-emphasis, calibration
-restart) through the calling PHY's own address:
-
-ytphy_modify_ext() / ytphy_write_ext()
-    __phy_write(phydev, YTPHY_PAGE_SELECT, regnum)
-        __mdiobus_write(phydev->mdio.bus, phydev->mdio.addr, ...)
-
-Only the efuse reads go through ytphy_read_top_ext() and the package
-address. yt8824_config_init() runs this sequence for just one port per
-package, gated by priv->sds_initialized.
-
-If the SERDES Extended space really is per port, would ports 1-3 never get
-their SerDes tuning? If it is aliased package-wide, which seems likely with
-a single QXGMII lane, could the overview say so?
-
-[ ... ]
-
-> @@ -642,11 +950,1168 @@ static int ytphy_set_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
-
-[ ... ]
-
-> +static int yt8824_config_utp_init_paged(struct phy_device *phydev)
-> +{
-
-[ ... ]
-
-> +	ctrl = FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH0, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH1, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH2, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH3, 0);
-> +	mask  = YT8824_U0_CSR_RESETB_TX_CH0 | YT8824_U0_CSR_RESETB_TX_CH1 |
-> +		YT8824_U0_CSR_RESETB_TX_CH2 | YT8824_U0_CSR_RESETB_TX_CH3;
-> +	ret = ytphy_modify_ext_with_lock(phydev, YT8824_U0_CSR_RESET_REG,
-> +					 mask, ctrl);
-> +	if (ret < 0)
-> +		goto err_restore;
-> +
-> +	ctrl = FIELD_PREP(YT8824_U1_CSR_RESETB_TX_CH0, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U1_CSR_RESETB_TX_CH1, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U1_CSR_RESETB_TX_CH2, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U1_CSR_RESETB_TX_CH3, 0);
-> +	mask = YT8824_U1_CSR_RESETB_TX_CH0 | YT8824_U1_CSR_RESETB_TX_CH1 |
-> +	       YT8824_U1_CSR_RESETB_TX_CH2 | YT8824_U1_CSR_RESETB_TX_CH3;
-> +	ret = ytphy_modify_ext_with_lock(phydev, YT8824_U1_CSR_RESET_REG,
-> +					 mask, ctrl);
-> +	if (ret < 0)
-> +		goto err_restore;
-
-[Severity: Medium]
-[Finding: main-7-9]
-[Sources: opus-5-5]
-Are these U0/U1 TX channel resets local to the calling port?
-
-yt8824_config_utp_init_paged() runs from every port's config_init: on each
-attach, each system resume, and the MII BMCR_RESET ioctl path. There is no
-phy_package_init_once() or similar guard around it.
-
-Going by their names, several registers written here through the per-port
-address may cover more than one port:
-
-  YT8824_PLL_DAC_RST in 0xa2b6 (toggled 0 then 1)
-  YT8824_U0_CSR_RESET_REG 0xa01d and YT8824_U1_CSR_RESET_REG 0xa01e
-  YT8824_P01_PLL_EN_REG 0xa218
-  the P0/P1 DAC bias registers 0xa2d5-0xa2d8
-  YT8824_U0_U1_ENABLE_ODD_PREAMBLE in 0xa003
-  the PLL VCO registers 0xa20a/0xa20c/0xa20e
-
-The same patch treats 0xa000 (space select) and 0xa13e-0xa140 (efuse) as
-shared top extended registers, reached through the package address.
-
-If the U0/U1 and P0/P1/P01 registers do cover sibling ports, attaching or
-resuming one port would briefly hold the neighbouring ports' TX channels
-and PLL DAC in reset. Wouldn't that drop links that are already up? This
-is based only on the register names and address range.
-
-[ ... ]
-
-> +static int yt8824_config_init(struct phy_device *phydev)
-> +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	int ret;
-> +
-> +	mutex_lock(&priv->shared_lock);
-> +	if (priv->package_mode == PHY_INTERFACE_MODE_INTERNAL) {
-> +		ret = yt8824_config_utp_init_paged(phydev);
-> +		if (ret < 0)
-> +			goto err;
-> +	} else {
-> +		if (!priv->sds_initialized) {
-> +			ret = yt8824_extern_config_sds_init_paged(phydev);
-> +			if (ret < 0)
-> +				goto err;
-> +			priv->sds_initialized = true;
-> +		}
-
-[ ... ]
-
-> @@ -3240,6 +4705,455 @@ static int yt8821_resume(struct phy_device *phydev)
-
-[ ... ]
-
-> +static int yt8824_resume(struct phy_device *phydev)
-> +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	int ret;
-> +
-> +	mutex_lock(&priv->shared_lock);
-> +	ret = yt8824_power_on(phydev);
-> +	if (!ret)
-> +		priv->sds_initialized = false;
-> +	mutex_unlock(&priv->shared_lock);
-> +
-> +	return ret;
-> +}
-
-[Severity: Medium]
-[Finding: main-1-1]
-[Sources: opus-5-5]
-Does clearing sds_initialized here defeat the once-per-package check in
-yt8824_config_init() above?
-
-phylib calls config_init before resume in each of these paths:
-
-  phy_attach_direct()
-    phy_init_hw()      -> yt8824_config_init(), flag set to true
-    phy_resume()       -> yt8824_resume(), flag cleared
-
-  mdio_bus_phy_resume()
-    phy_init_hw()
-    phy_resume()
-
-  phy_start()
-    __phy_resume()     -> yt8824_resume(), flag cleared
-
-So the flag is false again as soon as port A is attached. The next
-config_init on any port of the package reruns
-yt8824_extern_config_sds_init_paged(). That happens on port B attach, and
-on each port's mdio_bus_phy_resume().
-
-That sequence clears YT8824_CSR_US_GLB_RESET_N and reprograms the PLL
-VCO/FBDIV/spare registers. It also writes CALIB_SEQ_SW_RST and pulses
-YT8824_RESTART_CAL_CTRL_REG (0x40, then 0). In 10G-QXGMII mode all four
-ports share that lane.
-
-Can bringing up one port re-calibrate the SerDes while the sibling ports
-are carrying traffic?
-
-The opposite case looks possible too. Suppose config_init runs with no
-resume after it, for example phy_init_hw() from the MII ioctl BMCR_RESET
-path. The flag then stays true across suspend, and the first config_init
-after system resume would skip the SerDes init.
-
-In both cases the flag no longer matches the struct comment "true once the
-package-wide SERDES init has been done".
-
-[ ... ]
-
-> +static int yt8824_phy_package_probe_once(struct phy_device *phydev)
-> +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	struct device_node *np = phy_package_get_node(phydev);
-> +	const char *mode;
-> +
-
-[ ... ]
-
-> +	/* Initialise shared lock for YT8824 */
-> +	mutex_init(&priv->shared_lock);
-> +	priv->sds_initialized = false;
-> +	priv->package_mode = PHY_INTERFACE_MODE_INTERNAL;
-> +	if (!of_property_read_string(np, "motorcomm,package-mode",
-> +				     &mode)) {
-
-[ ... ]
-
-> +	} else {
-> +		phydev_err(phydev, "missing package-mode in PHY package node.\n");
-> +		return -EINVAL;
-> +	}
-
-[ ... ]
-
-> +static int yt8824_probe(struct phy_device *phydev)
-> +{
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct yt8824_shared_priv *shared_priv;
-> +	int ret;
-> +
-> +	ret = devm_of_phy_package_join(dev, phydev, sizeof(*shared_priv));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Ensure other PHY probes wait for shared mutex initialization. */
-> +	phy_package_lock(phydev);
-> +	if (phy_package_probe_once(phydev)) {
-> +		ret = yt8824_phy_package_probe_once(phydev);
-> +		if (ret) {
-> +			phy_package_unlock(phydev);
-> +			return ret;
-> +		}
-> +	}
-> +	phy_package_unlock(phydev);
-
-[Severity: Low]
-[Finding: main-4-5]
-[Sources: opus-5-5]
-phy_package_probe_once() uses up the package's once bit before the DT has
-been validated, and nothing clears it again:
-
-__phy_package_set_once()
-    return !test_and_set_bit(b, &shared->flags);
-
-yt8824_phy_package_probe_once() also sets package_mode to
-PHY_INTERFACE_MODE_INTERNAL before it reads "motorcomm,package-mode".
-
-If that property is missing or unsupported, this PHY returns -EINVAL. Its
-devm_phy_package_leave() only drops its own reference. If a sibling has
-already joined the package (overlapping probes, for example with async
-probing), the shared struct survives with the once bit still set.
-
-Would that sibling then see phy_package_probe_once() return false, skip the
-DT check, and bind in INTERNAL mode, even though the DT is invalid or asks
-for 10G-QXGMII?
-
-Could a successful package init be tracked in a separate flag under
-phy_package_lock(), so siblings fail or retry when it isn't set?
-
-The !priv || !np early return can't happen once of_phy_package_join() has
-succeeded, so an uninitialized shared_lock isn't reachable. The concern is
-only the unvalidated package mode.
--- 
-This is an AI-generated review.
-
+Thanks,
+Tariq
