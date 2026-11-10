@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794282637;
-	b=0phq2gBqo8c4zNoA7NwMXkMKfWhUzAIn1Ue7DiVxOYclR4o2txhztqZe/+VtkGf5NdEH
-	 9N9kgkBx/fTGx+tgre2xrm2NzNXMQq4LoEi8Vmc6gPc/dBhuron1pD3BsMNRableHj6d2
-	 9ZPDBPC2y7qL2+QyCRkdWaRtcDB8eFXVLwI2vUihkyYSAbPIr858fQLr0O1NCP1iN2G5+
-	 WPvJAFOCpc0BKJJIi+XCJUGJO4PBRBBHi6Msr+/IWgLFALqTp66EBX46roV3vkP7zbnSa
-	 i0cBBbY+zEFjgaLz0cNGX/GWTEgMU3YmoPMyFKYEUrc04iD5W4nO5ElaYegUNrlSqoQ==
+	t=1794282639;
+	b=WNcfTvx0nClC6W4Dwe0nigRJ8vXT6s45MN8xK5oJ1kZ0K20YJ1oTJ8c4w7a88ebQazXe
+	 E7ObKnXtRImdszXMNP750GkWkbPLRWK6FDkJzeKMa6Rg9pXXr/0FIPcpSAqiDdDwG5m0e
+	 Q7EEOhjD7hJ3h8dc2h5tTpN/nRsVLyD6KXepCioEkuzqUeYbkkZzynnfNx2QrnJqMWQhE
+	 3nDQBqF2qbTPdpDWBdX9MDH/N5JUg59pkHp55JLEUB7/tqXMxVCjcgVwYGF/hr52hE1dU
+	 FrzCFZeWMT3UjjD0f/Uk6PMfm2kA3vDGwuIGZaSSGJzFdvosiJikEAF6eTcl/wVANmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794282637;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794282639;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=ViXjqbT3KRWfvHNHJYyPeRSyMlk/teSxYJxUWIJYwOc=;
-	b=SKOAgoi2cw/dw+M04zW5MoPuiV9mmmj/3qQTZtsFPSRpyal5opC7TH12svhPZyrSy0YJ
-	 IHKHigc1qb2pCcKeiAJ73x2QbHRLyJolCceEhxhuebXy1xWo2JFusEgTcPUCUSxXA4aIW
-	 T6Bg4CuKnw99mCyJWPByIe3IILWiRjbHWHtPosABe0TfvIC2LZFR2d3hoolWy5SP9fWw6
-	 Q/vchMTfvBhEoEmsErtFdKBs/pV7uQRnYd0nuSz0wSGmSujYgHxAfPI4a55Y1njCddYGQ
-	 XwZ3a892Hf7bwnA8lEmRuSB/OEKTiKHTFJIPhM7PGwo/S22+juGLu2a9WfX6waf1u1Q==
+	bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
+	b=iCJXVs1jvWUyAeuTfQV1IW4W3rG6DHNGRR9EJ3RFzVKjBze98s3MnjARSs3PdCtrAAW8
+	 wbAFX+Fm4MLBXPDXY7FBAgOYI/B+Hrmn2hJJEApB8c7Ue0KQ9I55lzFM3piMbwV6HwYqQ
+	 AESbKU8JrPgoTit1c9lqos5l7CEIZUaR2An7CvJHnET5L7yuL4Pw1ZZbFTzHzNc2fJXIi
+	 O5pVORdHbpSl2vcHX1DFLWpcrbbl8pcON8Coi/DNW6qvqwRvfkevIUONrEMaRebAceeZh
+	 FgX1lF0bc+ufps2NLtOZyRWcyAe3CD+dXm/EIp680weh5Das28799Y5B9hFQ77LRMOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MvwoizyX;
-	arc=none smtp.remote-ip=209.85.216.99
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=azDNewJy;
+	arc=none smtp.remote-ip=209.85.219.99
+Received: from mail-qv1-f99.google.com (mail-qv1-f99.google.com [209.85.219.99])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86E160A3811
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:50:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B86E160A3811
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C4960A2602
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:50:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87C4960A2602
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MvwoizyX
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ae691283ecso869256a91.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:50:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=azDNewJy
+Received: by mail-qv1-f99.google.com with SMTP id 6a1803df08f44-91c6ce60697so19957106d6.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:50:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794282636; x=1794887436;
+        d=1e100.net; s=20260707; t=1794282638; x=1794887438;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ViXjqbT3KRWfvHNHJYyPeRSyMlk/teSxYJxUWIJYwOc=;
-        b=P/5ZHmIBynWGTLC3jt+hWKgcedNQvVV7Oj94FNlqKZXGfOaHxAqKKCjXrfwp4nlVXS
-         YVy7c8jRV0IbIP5LRR4U/na7qZIMnGAjLvaEdstabysDqWMGAb7pxPDOkDxIMVDm40rc
-         bFH5rElkK9Nu/ibAD3rcFTw+Ngn4gGz7CWC8clfWOAaM78lXNN/Fw8kDfEaLfXW99E/p
-         NmxnDV/XgO05F+SJkLSUMPOjyCpoHo4GjG0jm9Ex1gzCh5mfPpURljxSR4j6tGVm4JEk
-         mdythMA4uKktXomY0s8pWQLau56dCfYZ5bd96P0rkwRvEaB5oQJ6gOUq2cyGOR+BePDS
-         zZZg==
-X-Gm-Message-State: APuU4Z8ZPZiLfq3elQLQ1wjZCHko7CLtnfQvePZWI0SsjG5R5tcueP09
-	mXIDtdgYJQoIBh2y1Tu4HQOgpso7jqpjriVkUhu6wZ2rGqJGpo+UghuyvRvsjyECH4T4IuRlMK4
-	/aPzV+yB22jkSAX0IkvZRnptQQ/XO3oTCjAolIDQ1mD3y1zr7ykd52PNouS4gjGBTjeItSsnsDc
-	XmE7PYqYj7j/tUEk4wRiUpe9jsOfIdmNEn40rdfN4zbDo569LlMbl1IQAIQBvO7ODrlbZWoAa/z
-	mxsz7Jypl9rXxNG
-X-Gm-Gg: AYBFou3spYTC68IYOqMM0sy2rAkoM0Cc+v+wgGtM+/ctEDOKNclo969vf3OW0BAmp4G
-	rpKKVFWsPzXJWRDBBO+iF9yIPzuYWQjfVk6/qX97+IO/vJWwkh8VpcOPWnDDQOLNZFDewRFx0jD
-	nTvRQYb05Uus3StrRjPmf45fC2Kegw5SJRfWD4FEozUgZ1iOvmKZQ+TQuOKEyaPHna4QTkRQ6l8
-	dtZxOdmOb/aG0+eSiCmznJFw/PZXtbDXxYoaAZpf4hTSeTp8WbLcRCb1XpbeoVkFNhuxfV8lD9T
-	MpdL4O3Id1eLTEvmsCUoI5dT9MXtRcEOkm1uA9VwdGJDx3GMu+dN1QlCW7+un83rcPVrXGAPqGi
-	snkpGbPVAYZ94tnyoLdeBPwH29fF+dlC0yXPeKVKPtv364k/UJN02jZMYQ2IPlLLFyk+mB0vO59
-	WG8ws+fbjTft9KAC94A5JdeMWTQeabIOzllKd9Zqx/
-X-Received: by 2002:a17:90a:e7cf:b0:3b0:9bfa:72ac with SMTP id 98e67ed59e1d1-3b16797cd8dmr1122284a91.21.1794282636043;
-        Mon, 09 Nov 2026 19:50:36 -0800 (PST)
+        bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
+        b=U3vuotkV3gWPVmx3OEk4tcQ4PL7vboGewSjeZp33Q8O6HorUYEATIiqo6A9dZDDrI0
+         myiIhUj0xl6uFQBwe0jO/VaPHuyeRephNRUDGRFe2Q51lUNVl+dAoR8wFrb4Qe335KEq
+         YIWKZBqUmI1B/u1a8WbeKtcrEOCaGOkRGsPRuBFDW9jPZU3CmaI/y2rCbJgpCa7C/pii
+         Zh1aurXelvTpzby0Ok4d0xJ+FbiLbX8GEo3pRQIb1qjhaKv4JdbNirpIbvnqEOrAIXmj
+         tZlGvzFXKhwgEdBoFuU6pqeSFNJFpa1ZV7Yf0SrzcPHoR6qHjJurVQDs2BjF2RqjGi3k
+         bKKw==
+X-Gm-Message-State: APuU4Z84XpNbsEsrek6lsU/r9bSDHt5bCPLeiENlz+khbT1NN9Tpk0Ob
+	q4lSC0+EKHispEWoGCzuvnyoLA/8UwU6IMaXhIJa8t4tnYcC76pPmEG3Ao/GYAlsvFecv4uh/FB
+	ArdiqgzHKOsC1FJflYEyUOgitQLNf2wAFTB94VxsK/Yo+mqMWR8NJcqLL+RyDstTp6opUpy3e7D
+	Q0rd9spkdSIBEeM8errb5fP8LIX/yxyb+iSkZDV2pwx5xSkQ4zD1ybIWTBg2EUEaFb+suvwUcx8
+	3Cl8NZE+p+mzk4a
+X-Gm-Gg: AYBFou1KglPwMHGTCGAenJd4AOtwpgxD4rQOYbHYAETR7JWRW8F6+AgeM1tjbOHDW6+
+	guOQ/VNkk6irO2F/1lTQLa6ruc67becNpra75GaN9JUbHjqxnwKG1SBS+3Qx2JMWz4hJy8BTJsq
+	E9+lB/wihCabzKoW2sayQzmKVBExeDKN06i3ajIO8jYn758Fh4KMtDRWkHvAvrwypbqgyh1QPOu
+	ApE41VrA4Cs8Ptl2IHYqh+nviZDzxPQYXtnjAWmFP8wIq/YYnRGYAEzI9qGEgKahOOyNs04VMfc
+	pKHtmJYW+Ikwii2AS7f4vG47A/ZwDyi0Ud4DaRkRtyCO1TAzNp8SCg0QDZoCp/bfjo13XtgkD6s
+	NvDL34OgCyONsZZ+U5ug6KRRPMF9ydQOKGrj6mERCaMCCgu4XCtmXY/B6KOr0sZSAGKJoXKv4xJ
+	fVXGgAzZKbhvn/VtUqhZHPcWjfX/7K/eBjKkNiKTqj
+X-Received: by 2002:a05:620a:4049:b0:93f:11ee:ba5f with SMTP id af79cd13be357-9479f3f7537mr252351285a.79.1794282638443;
+        Mon, 09 Nov 2026 19:50:38 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b168acb09csm449294a91.0.2026.11.09.19.50.35
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-9479efb239csm17460085a.10.2026.11.09.19.50.38
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 19:50:36 -0800 (PST)
+        Mon, 09 Nov 2026 19:50:38 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-54af6c38073so37250441cf.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:50:35 -0800 (PST)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-535252004e9so27340691cf.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:50:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794282635; x=1794887435; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794282638; x=1794887438; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ViXjqbT3KRWfvHNHJYyPeRSyMlk/teSxYJxUWIJYwOc=;
-        b=MvwoizyXKfMO4Db+T9062xwYWax8x5jC/M0086Eq8wj8ZcyPsT3uRYDsfeP2b92XwY
-         RaOm9T4eIbNa9n4VFjfHbyyFRutbq8qOtWKUWytZxQJWhrxH863CpVOier7Y0SvGjiSO
-         No01ojc5nx0WQWWxUwE5BLztgRgZ41SGksJXI=
-X-Received: by 2002:ac8:5a51:0:b0:535:ba01:d95 with SMTP id d75a77b69052e-55519b63639mr23961261cf.19.1794282634741;
-        Mon, 09 Nov 2026 19:50:34 -0800 (PST)
-X-Received: by 2002:ac8:5a51:0:b0:535:ba01:d95 with SMTP id d75a77b69052e-55519b63639mr23961011cf.19.1794282634197;
-        Mon, 09 Nov 2026 19:50:34 -0800 (PST)
+        bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
+        b=azDNewJylkRUjxeooK7T1bYjeweLbDfPPsbnIQRMJ3ewgm3JrVKIIlGAzLsr0oeXZJ
+         uErGrNxwSA7AowqNzePwtsRVAowFAQpQUIwn5uY921tQysf6favt8SkpAsf0ilWAMPEF
+         d+D5ZDDEaZV+G3lC3Hy4ijPPbidswteVqnTIA=
+X-Received: by 2002:a05:622a:1f95:b0:536:645f:c901 with SMTP id d75a77b69052e-55528ec3f5bmr20311651cf.67.1794282637698;
+        Mon, 09 Nov 2026 19:50:37 -0800 (PST)
+X-Received: by 2002:a05:622a:1f95:b0:536:645f:c901 with SMTP id d75a77b69052e-55528ec3f5bmr20311401cf.67.1794282637209;
+        Mon, 09 Nov 2026 19:50:37 -0800 (PST)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550af612dfsm13740951cf.8.2026.11.09.19.50.32
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550af612dfsm13740951cf.8.2026.11.09.19.50.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 19:50:33 -0800 (PST)
+        Mon, 09 Nov 2026 19:50:35 -0800 (PST)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -102,9 +102,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Vivien Didelot <vivien.didelot@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v4 4/8] net: dsa: b53: reject conflicting mirror destinations
-Date: Mon,  9 Nov 2026 19:50:14 -0800
-Message-ID: <20261110035018.2169370-5-florian.fainelli@broadcom.com>
+Subject: [PATCH net v4 5/8] net: dsa: b53: use the correct override register 2 Gbps bit
+Date: Mon,  9 Nov 2026 19:50:15 -0800
+Message-ID: <20261110035018.2169370-6-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261110035018.2169370-1-florian.fainelli@broadcom.com>
 References: <20261110035018.2169370-1-florian.fainelli@broadcom.com>
@@ -120,83 +120,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The mirror capture control register selects one destination for all
-ingress and egress mirror sources. Adding a rule for a different capture
-port currently overwrites that field and silently redirects all existing
-mirror rules.
+The IMP and per-port GMII override registers swap the override-enable and 2
+Gbps speed bits. Using the IMP speed bit on a GMII port clears its override
+enable and leaves any previous 2 Gbps selection intact. Select the speed
+bit alongside the register and enable bit so lower speeds clear the correct
+bit and 2 Gbps sets it.
 
-Read the capture control before changing any source masks and reject a
-different destination while mirroring is enabled. Return an extack which
-describes the hardware limitation, and propagate a failed capture-control
-read rather than making the decision from uninitialized data.
-
-Clear the capture-port field when the final source is removed so a later
-rule can select a new destination. This also fixes b53_mirror_del(),
-which tried to clear the destination with ~mirror->to_local_port. That
-only cleared the bits set in the port number, so a stale capture port
-could remain after the last source was removed.
-
-Fixes: ed3af5fd08eb ("net: dsa: b53: Add support for port mirroring")
+Fixes: b6a8a5477fe9 ("net: dsa: b53: fix resetting speed and pause on forced link")
 Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/dsa/b53/b53_common.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index cc42b2a4870a..715a0969eacb 100644
+index 715a0969eacb..6b4a94a97d66 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2606,7 +2606,19 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 		   struct netlink_ext_ack *extack)
+@@ -1427,17 +1427,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 				  int speed, int duplex,
+ 				  bool tx_pause, bool rx_pause)
  {
- 	struct b53_device *dev = ds->priv;
--	u16 reg, loc;
-+	u16 reg, loc, cap_ctl;
-+	int ret;
-+
-+	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &cap_ctl);
-+	if (ret)
-+		return ret;
-+
-+	if ((cap_ctl & MIRROR_EN) &&
-+	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Only one mirroring destination is supported");
-+		return -EOPNOTSUPP;
-+	}
+-	u8 reg, val, off;
++	u8 reg, val, off, speed2000;
  
- 	if (ingress)
- 		loc = B53_IG_MIR_CTL;
-@@ -2617,11 +2629,10 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 	reg |= BIT(port);
- 	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
+ 	/* Override the port settings */
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++		speed2000 = PORT_OVERRIDE_SPEED_2000M;
+ 	} else if (is5325(dev)) {
+ 		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
++		speed2000 = GMII_PO_SPEED_2000M;
+ 	}
  
--	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
--	reg &= ~CAP_PORT_MASK;
--	reg |= mirror->to_local_port;
--	reg |= MIRROR_EN;
--	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-+	cap_ctl &= ~CAP_PORT_MASK;
-+	cap_ctl |= mirror->to_local_port;
-+	cap_ctl |= MIRROR_EN;
-+	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
+ 	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
+@@ -1449,11 +1451,12 @@ static void b53_force_port_config(struct b53_device *dev, int port,
  
- 	return 0;
- }
-@@ -2658,10 +2669,8 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
+ 	reg &= ~(0x3 << GMII_PO_SPEED_S);
+ 	if (is5301x(dev) || is58xx(dev))
+-		reg &= ~PORT_OVERRIDE_SPEED_2000M;
++		reg &= ~speed2000;
  
- 	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
- 	/* Both no longer have ports, let's disable mirroring */
--	if (loc_disable && other_loc_disable) {
--		reg &= ~MIRROR_EN;
--		reg &= ~mirror->to_local_port;
--	}
-+	if (loc_disable && other_loc_disable)
-+		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
- 	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
- }
- EXPORT_SYMBOL(b53_mirror_del);
+ 	switch (speed) {
+ 	case 2000:
+-		reg |= PORT_OVERRIDE_SPEED_2000M;
++		if (is5301x(dev) || is58xx(dev))
++			reg |= speed2000;
+ 		fallthrough;
+ 	case SPEED_1000:
+ 		reg |= PORT_OVERRIDE_SPEED_1000M;
 -- 
 2.53.0
 
