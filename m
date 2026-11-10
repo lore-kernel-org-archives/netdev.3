@@ -1,102 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794332368;
-	b=sE7RPepPu0OFgO9B7EKIcd0ZwRrzu0gGFF96ylIphuzEnf32lOFevQbhWFjcCS0ezQTm
-	 wZvPa5E0CsPko4rlZpQscorjyUYOWyF9nIb872flPw1PCoZjUgVhbG+u+tvd6kpZxy87k
-	 ScJgoLZED2XFxK6SfuRXDi9/ECEG3KeILQpgnQViCE7P4sGUMfN+ZB1HtrI2ze0Z/ukcL
-	 u2GFkIXEFyz4x0Hyt8sNdoRX8i+wFO4q1nzumynf7l/U/IFGNKq9ux521F1BAFl7KfQmk
-	 ZgufSDMg5sEJB3U8Tp2n+IIjSFHZdwjHgYgLsCw7IbP81IpiV3mihhqAQOvOPq/L50Q==
+	t=1794332407;
+	b=dM2T9f67S1OfT+zDjzvNeTFRBgDcKmJcr4p3YLg2eyPOaalHDIgzB13g4QnwJ63aIj4B
+	 rfmQlaUDc8VSA8YSfoxES0Fc71t5kATFuopdm1eHfrIMf7W6uDV0UfB4ejMLdGFu/4BNa
+	 nF2zYmytTm4qsyLETNMV1l2S/z0eSE6xZIFA9o4vBFzvpE/8G2qEgmTD0tkbfEfxb7nUe
+	 xPvtTx49lSIqDPfpqVd/BQ0qEMFxxcwz5cMhK27FQ+925yDqvJOw5O0WamSbKm7duA/5F
+	 AsYWqZ24tfKPi7Zq7/oBSoZ+iIYU/DSiFKG8WCmxh0f6OGYH9JVqU6RQYebi5veacZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794332368;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:Mail-Followup-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=2nzMZHKj3hE5fscinAAUlVlDiG5XpzZxcETT0RVQ/Lw=;
-	b=Bfavs2GaLHdhJa68YbFyvqB3tbI3w/HIxvyIzUtUUvWrFnrf8xs1rAxgCY7JJVePqn2c
-	 nq/xMX1htZgtE9e+fkT9PWbMtTc45Z9JHFKmL6LDNaQboTjKd9ekarHa8rrFVJFa6rOWS
-	 W44sFLX/AI9u59ejQFGDXI+SYTY1zyBvOQugBzaEPcCOG8my5hpHuwTGxI+CqI+6dNDXw
-	 9xx5ifc4vp4j/8iCNErQTz1wy9E+/Sqilh8tJaTL8aduIfrI1v+fzE+crU3Oo+MneYZkD
-	 KpSMH357F2H6Ngd+nyYDCUeXy0syNp/4LjFJxzf2wITY+SNMO/f3jJF/r103rqZF96Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794332407;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=vDIdWDqCs7bQzZm4Myzs55AdA8xj+ko5T/nZrnXBCKE=;
+	b=G8ayJaZPf3W0ipD8e2ULmoTKXJxqS42mXCOX36GvFXdyVU0Zo6hiAD4cTNNfbPj9JQvl
+	 Ocki7xZslxtQCvfBAyxSV3tiocu3PY23epghK9UfaWgImJko5UXFLP07qxTvXHkRzKVh7
+	 MFs0KcdluXhgrDhwN09qXB4lTN6/hk9RfhqSOEvkcm19DwCq5PhR/9uGvEAG2gkUP3Am4
+	 +VNJs3nCm0LvGuNn7PpnWxBxIZvzSret1a76oXue0FsqKiRDrdMqV+1ZcJnttqCHeLSsF
+	 OHBJx3w3eOC2i+Dp8ccBbUXuSBcifuMqC32D4fAvuz04KcuWNj0BgzdYCUgfiZyqOVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=dama.to;
-	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jkpr6sIz;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XnvYMYZ4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7096B606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:39:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7096B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E490460A5BD4;
+	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jkpr6sIz
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3b10ca4e3f9so1336846a91.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:39:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1794332367; x=1794937167; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2nzMZHKj3hE5fscinAAUlVlDiG5XpzZxcETT0RVQ/Lw=;
-        b=jkpr6sIz1EGGbjXotdPensVeUlAmmDlAkCQ6QiTWJt3NAgl0ri4jpyPmP1OGOBXmS5
-         SeN5R85WCkoFcOwPUkrLiwwhH9SitsWu+QQxGrcodtP4GWO6neQusNsel7Gw5yKd9Fit
-         Pl7fX1kRauVJh6MlnjL4qsvi1+/JxyQjYZxClaSireoRlDOzEuD2HhgWZF/YR7+F8g5E
-         KGoOozXEuQh+4yGzRpwi/yZDcK5ja75bmkPdpKNvQMfUpxBcEu6FwdPnBVkfXx5BD471
-         bnz9iBRN0awKMWMiJrZWYdqJmO14MspBZvALUcZYn182LCVGVrij/JSVwqEhh7SafI0b
-         +5Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794332367; x=1794937167;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=2nzMZHKj3hE5fscinAAUlVlDiG5XpzZxcETT0RVQ/Lw=;
-        b=WbD+EUWdp9O6l8L7IVSiXEeEOXCKZyathZJj1fl8mOzZLQCHkDBnUmj9IHe6MffP39
-         AOBC1j2b8APuxV9Yt6gvPWL2U/3c8/T2hDiXNc1Ppu7uj/8rYXDTvW4pe7NLzv1T6BL5
-         Fe+YQld7qkMNmHXNoyuKpj7/9XDo78Vt0/hMQAL/quszFeeSkLHoKJ9snFXHLA+qCVEu
-         CuMxQ6Qt0zttumO9sG0PGYn+vGftzQuXknl7UBmBx3l7gUh0ZHo/dkT4Q0U5rgE4BZDx
-         eK3mPPbFLO2aG28U7lMr2INeWODv2Q63sXbhW+Mw89O2rEpwTgnto6q2nE3hJuvqcbAL
-         WyWg==
-X-Gm-Message-State: APuU4Z9UudFI0C1DcACwd10t0hH72FWsX74AXKSv3ZwV+2YDJ2mcJX9v
-	Zy182bhqeq/7PsfOguF3qWtnvBkTNyne4VIDYEQWgEKAV+gL0pu914OvbU/VpDA26pU=
-X-Gm-Gg: AYBFou3EL2iaymjRN25oqz3KTNLY4RutpFgzcA2aaHZMGbIT5lZdTRRRsTxg69ivi7F
-	LmNvxcI5W/y7NiiMO0X+gmLjM1yii5pl+AtnVlMKORKLHwig7XfUHkXw8tlqsVhZuOUtsJjuOFh
-	+1zfNc77knBewM7003WQ/t5Ex5/3RgoyaucQcJuYAV4ZktPrABIs6mgXPPhjFzoUoTJnXAhjZg+
-	spoJiEnoi7GWdICb2Y+QGYbfZDZpu+CEFyThaULnF39DzU6OWAxp4Ez+ohw1ICZt96LTl6b9jgn
-	up5PaVNbQMKUVzF507PA6oiu54Op9pLXiaEeo24qhP8XlNQNn1//Qt/0zQMgDYOTGTGElds47xu
-	/eLxio5wT7uk0jAgrLN7iTeu5YFtp/rvFT5FfU3pVSnAvCsidZV6lJ1Nf1gJg2RD8a6TLUrL/rd
-	jNhrP3nWNwF/OvRTwqSA3RRM+CB0V3xZFsxTWigqnMZMjYvy9hUGHCrl7bWJjgbmY4snGM6j1px
-	EA9l3mQpKZQUBIegIuMzi3cq991f/mKAGg3Dj51tjQ8XEEg9+Fp/7EeAOxYsN5g1rrbZ3epPG7H
-	JhafC2L/hYV8mxiQeZFo4IZ5bEBbIsnmv4FbKCKrpg==
-X-Received: by 2002:a17:90b:4d8d:b0:3ac:af8b:6f3 with SMTP id 98e67ed59e1d1-3b166d1e021mr3103752a91.52.1794332366522;
-        Tue, 10 Nov 2026 09:39:26 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:1::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17dfb9827sm580993a91.1.2026.11.10.09.39.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 09:39:25 -0800 (PST)
-Date: Tue, 10 Nov 2026 09:39:25 -0800
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pavan.chebbi@broadcom.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5 0/4] bnxt_en: Make RING FREE more robust
-Message-ID: <avNWzavrxJSasfp5@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
-References: <20261106191423.4194081-1-joe@dama.to>
- <avIpEpoCYvLHYl3j@devvm20253.cco0.facebook.com>
- <CACKFLinPK+wR=TMA3zNJDKQR_=HfMFUHPxKS+yhvv9SegZw7Ow@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XnvYMYZ4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAE31F00937;
+	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794332406;
+	bh=vDIdWDqCs7bQzZm4Myzs55AdA8xj+ko5T/nZrnXBCKE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=XnvYMYZ4G8cIRDuO7q4ftQDGNfQCYbcw4Y0r+Sx9Ury9+EeXu1Ofk80fTxwxNRu7Z
+	 EIT4s+RAXmlsN2Dvpu/tkOpnjC+REH2LhaEaF4gyOki/5LJzMBps6l3RyLf/CYU2El
+	 jLNRFePMY25wEJ1AV+DvvmiJmclMZs7SHlChygHHzsgqpIlH+vhIWBM6osWL+mD89H
+	 9tBXhTdjLEkmP16EpsNPWzCpAwX4BsGLyHQ1yh5I++DR4aCCmziJJcvATJ1iWP2N8g
+	 ud5byP66KBVWAcND/DXN4y2eSfTH56fw8ZUZaZ5+gw16gVE++mJMw0exNIHSUO8aQM
+	 Z88Xri6zAsfYA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2111839D6088;
+	Tue, 10 Nov 2026 17:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,41 +53,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLinPK+wR=TMA3zNJDKQR_=HfMFUHPxKS+yhvv9SegZw7Ow@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: pass the XDP action to generic_xdp_tx() for
+ tracing
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179433240494.4112524.1031731452606255276.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 17:40:04 +0000
+References: <20261030114753.185281-1-vladimir.oltean@nxp.com>
+In-Reply-To: <20261030114753.185281-1-vladimir.oltean@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, kuniyu@google.com, wang.zhan@smartx.com,
+ mkarsten@uwaterloo.ca, makita.toshiaki@lab.ntt.co.jp,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ virtualization@lists.linux.dev, willemdebruijn.kernel@gmail.com
 
-On Mon, Nov 09, 2026 at 04:13:57PM -0800, Michael Chan wrote:
-> On Mon, Nov 9, 2026 at 12:12 PM Joe Damato <joe@dama.to> wrote:
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 30 Oct 2026 13:47:52 +0200 you wrote:
+> When generic_xdp_tx() fails to transmit an skb, it reports the drop
+> through trace_xdp_exception() with the action hardcoded to XDP_TX.
+> That was right when generic XDP was added, and XDP_TX was the only
+> caller. Since then, two XDP_REDIRECT paths have started to transmit
+> through generic_xdp_tx() as well:
 > 
-> >   - Notifying bnxt_re when DMA is stopped.
+> - xdp_do_generic_redirect(), for a redirect to an ifindex
+> - dev_map_generic_redirect(), for DEVMAP and DEVMAP_HASH redirects,
+>   including broadcast
 > 
-> I think this is probably the one item that should be added to the
-> patchset.  When DMA is disabled, RoCE will not work at all so adding
-> this will make the series more complete.  It may be as simple as
-> calling bnxt_ulp_stop(), but I haven't looked into it in detail.
+> [...]
 
-Hm. bnxt_stop_dma runs with rtnl and the netdev instance lock held and
-bnxt_ulp_stop -> bnxt_re_suspend takes both. So, I don't think calling
-bnxt_ulp_stop is going to work.
+Here is the summary with links:
+  - [net,1/2] net: pass the XDP action to generic_xdp_tx() for tracing
+    https://git.kernel.org/netdev/net-next/c/655978fc71fa
+  - [net,2/2] net: validate xmit skbs in generic_xdp_tx()
+    https://git.kernel.org/netdev/net-next/c/67b0cca9ba88
 
-Maybe I need to make a new patch where bnxt_stop_dma queues a work item that
-calls bnxt_ulp_stop without locks being held? Not sure.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Also: would you be OK with bnxt_re treating BNXT_STATE_DMA_STOPPED as
-detached? I'm probably getting this wrong but I think with DMA off
-bnxt_re_suspend only takes the detach path when FW_FATAL_COND is set.
 
-LMK if I am missing something here. Just trying to limit the number of
-revisions it takes to get something reasonable :)
-
-> We have tested your patches by purposely unmapping the TX buffer early
-> to simulate the IOMMU fault.  When the number of rings is small, the
-> fall back logic to check the HWRM_RING_FREE response during message
-> timeout works most of the time.  With a large number of rings, some of
-> the HWRM_RING_FREE messages do not come back at all and DMA will then
-> be disabled.  The FW team is still looking into this to understand it
-> better.  Thanks.
-
-Thanks for testing.
