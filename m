@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794352408;
-	b=NfzXhPx+UgAcssSXolw9mu2Py6BJAGZ1PAvzWX+agSbbxNlN+Z80z+WZi4IlN38wK7B9
-	 cpHXbT6yMAKKpoPX2ZJTi00HnozzRq1MbZZP1xAixQE7wKlMFpUXYpeWAU/MVwLB50bJZ
-	 zA5ATEPLQ9EziPqa+HjT1uXlYrVVOxCF5avnIZjNsXjqva+HYpRYHXh34agnUFAoaqF4Y
-	 SgAhoCw0KudbEFfG3KdmURJry08kWgDeSU+Rk85WfCVMTga7Fklcnc4lnQPFat9+7q+G/
-	 NhQlFmweOAHp9h51mLW9uJDJxF/IY2xI2sjKikMo1wAgRTP5UQbYgqIMIaz+nt7swlA==
+	t=1794352398;
+	b=KeEtav+Z8tBEqniscDzUdK9IzeT68l+boAZa186Dwf6WZnM0sap79vhmiYNWUZv9249u
+	 LMOYv9YBM8T/M9Ex81vTfAgtQ8rv/hXFaZmzcaL94i2HvG9hamQSlnHbqMxrd6rW37d/n
+	 JszSOaxTRuZkotqohLcjGFBjRnYE3mzorSG2/btAYXbqeITGzikhZe5JaNe/1gDht1ody
+	 Cx38kUqSjgivDszW4doCRLK1wDAxumutzU6dj3UnBBfKvG5mYGokr44CTc1LBAxhPCcqR
+	 djrGcKPLldcq62etUnWF7xlaZVNDlUA5AuGkb73CwvscGoH65bBAgonjlYVTs3n70Cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794352408;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794352398;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=KPjjNdzNNe62t+wzBfTzcH4sAdNUBvRnqarPrYBxLuM=;
-	b=vkoJ2pSVZiEmoTTnzAy9YObIsXdxqIJZ40tttEUvkWA4MwAnjbhaVa0eFZu8KSVLaOGv
-	 cXI22f/sNr6aWvpUq8d2RMcQbYpxFl7N6YwnCp3LlzaLocsSpO1z/EDtThOeekpBC6olJ
-	 UCkKPZzdXPB71VA6M6mI0Aaw5zHXw56EqKeXvO1MJ3HHC6t5fr33N40CD5TmtMIJPJ7Dt
-	 pZCsUQms7kPHAWNoDObg3DtJEAqq/xrsmTU3E7AmzlfLcyhFukc9ypqK7qt//OgDWp8gf
-	 ZVxf46ph+SdsNpbvlDwsgfjW770H7ZflxLFI+wzDL82mpdpoDZoXOfZCBVpqqIWUdGA==
+	bh=WNPvGEKQXav9VSZ3J7/386PWbh2deprE17GmLSUj3BQ=;
+	b=3aQvACa+hIh4ST7fturvrC9LvBndA/mpgr2ak8B4XYCH1vfu0U6eaM2RRbeMQy8Nmh1Z
+	 QmyY926EM9gF8iBHNxA67E29qjnj0k5um0nOoMztJWnexNAFd0ffhYVHlFMxRa6EiejJJ
+	 OFoCMDC91TleRyoycYzxb34oXg+utC2P8nyPkb5oVOLDAfaV+AYjccQgNShPQmmkRWMTB
+	 G+UcgUw39mVpcpg2Ng/upB+C6PyXQt7ztw5/l+bNvYF7zbBvFkj9pmud9r+xvvTju2s2O
+	 6S11uVH4dtDHzpxSFivmBtnvJvGl0XRBBvjHZ9GVJ6u0PcVAkbtPQaxwef5e+IosRTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=dama.to;
 	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=lOisifqB;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kSOtdwcf;
+	arc=none smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8187606A330
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:13:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8187606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89191606A338
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:13:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89191606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=lOisifqB
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e940d5d2beso10157885ad.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:13:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kSOtdwcf
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a9f9473029so2098715b3a.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:13:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1794352406; x=1794957206; darn=vger.kernel.org;
+        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1794352398; x=1794957198; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KPjjNdzNNe62t+wzBfTzcH4sAdNUBvRnqarPrYBxLuM=;
-        b=lOisifqBTO8ch8f+y85SanimyAgxf04DC8JmmHbuR4oySMJ7k67CQOulv4Pmz9hQDJ
-         H+0kfYZIqUdc1VHGS0vheJs8VPLXkOhr88rM9RBPwAo3thVxFwhp3Q2SIz25PqeLMNb7
-         BT6uEoDLYFlNTmnDNdLFcKtCfVCnabonrZxGnkea0sMLuVJ4WWggPHp8+4nNhHyV+VfN
-         lVFJTYyAFWCnDrfz0BYTeVzBEVCT5AV85UrUMHCH8tT0FKY7QgFSC9kd3ecduNyrFJuk
-         5wXjgiwKXIBx2XxCMebD3yCeArq8mgIOSlvvJ8FuXtMfZtWqQFZMR9/5SX3sp2obEyI3
-         7Lzg==
+        bh=WNPvGEKQXav9VSZ3J7/386PWbh2deprE17GmLSUj3BQ=;
+        b=kSOtdwcflrPTYOJkmiuF1ig4Gx7po9JWw0+rkgtDjdQhuPJEj3dJCcsicLlHPeWxQV
+         8HF5JC6ZMi7dBxkoETsI1t9vz/ghr2gsgZ8UVwXjHeAB2Y6KU5eaInzFaGs0/G/Y5eCW
+         zF/SpM1eLZ/O+vx06KLGL2swCjxEl2MSban0MpTZaCQEhUqmtmxfsvldqcX4duHfxvVl
+         HCjgawbylZyc/msT/UQG1mO6Ykc1SyGApMJBlfxR9EgtNzQnfhdGj0b5suSMITWCtQd0
+         UOmg7cjMSdjr3MfKvwP2GKpia65QcXcPJ9h8iBs/2rk6ZAwFMkXs+EdntslcJPCl0WFw
+         Y0eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794352406; x=1794957206;
+        d=1e100.net; s=20260707; t=1794352398; x=1794957198;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KPjjNdzNNe62t+wzBfTzcH4sAdNUBvRnqarPrYBxLuM=;
-        b=gFes1OKe6YQsqTGvPn7ZEbYtiyEgl08WusL21DRhGFiT+K7STQt+1Z2QpvNeqbbVCH
-         xFtOwoQtnPpTDDphAttxG97xQezIrlVa+K2RVCT+2bl2QiYx05QW4o1JyboXJOzRYa5Q
-         E4qOnmGfoyJmd+18jDs538zGQRXfJ/r7S9PLcX8F6uTmQZjUL1CX5eMw7+5OfjuQbL0a
-         kbQppd2mDDkE3M3+zEJVzfWeSmUjS7O5KtM20qg2EhFNWOOPsOv39D4b+WBlfvrP43zw
-         1SOgIHyLokt4lrCgdan1KsQS/XUEhbIZbtwKkc0p+OotagJz0au5Z4e/xjm7oRA9UL9f
-         T69Q==
-X-Gm-Message-State: APuU4Z9Y2ABzuWVAyosS8LI1gzXA4FU01f/mrk1NfOXzH07X3Pq6lZ9O
-	N640/Q5lbAtdOPKAQOO+O2IMviJf2qAOjPg172icerfRJB7P3+pjJtZWwZRGP1j35rZmVMpqdK/
-	abSiw
-X-Gm-Gg: AYBFou1akdKZWoovxhJNvN8xoABiVvyiGOPDbSdAIlGlT3XgVQY6v9ze0Yv8QfKvNlC
-	L2Dl9yIqbnWAG0DuTIrXNskOKcIp8f2J0GxE/J4er4BEsKMNbHCAdIF/0y4+LfQbPd5swkSN9zl
-	82+4CrGpYLmQjCDpn/rq1BgRZj8nqu3t3cTjSfiQjtOeE9mys1s1s5qldfCUciZzd2vafULOgtI
-	IYMURnZp2qv77UspC2HpFRNiRUrWIt+7lSQ18xShQvAZcL7u8JMTTjbB5c85zcDUgpauu42dpVB
-	ZQQ3HWvgjdfn+14HuYC0vx3/yykwNeGTnszws9z2aaEWmjMdYSQjQ+b7AEEG5D9tHlE6t1cK4Jf
-	yJuT96ClgZ05x9J3kT9wmh0P33L8NbmYNYCGXe6YEddq8XVeYlZQdjlnhORxV/lX/PTU5zvDASZ
-	JdnhSwJuleWYwmVqMRfhpAPt7dLcmG+eNGowzkxa/hueB5QUVkkE9g3zHY8D0Q6o6I3L6Z2oEDP
-	CoTL81tyCwGwezCXt0EGxahKbixp305qFiNQfBNhT4pRKUmHhGcS+DNoF0SkTzQHS0UyGfWQAw/
-	6bnS1q8Y19gGxg1gqNzFon14qg1Gy2XNVsST/57gAp/774WRuPaQQY/gz+ZdCd4W
-X-Received: by 2002:a17:903:1b27:b0:2e9:7dda:bfce with SMTP id d9443c01a7336-2edd7b85ea9mr5458855ad.74.1794352406223;
-        Tue, 10 Nov 2026 15:13:26 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:53::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edbc1b81f3sm11989765ad.26.2026.11.10.15.13.24
+        bh=WNPvGEKQXav9VSZ3J7/386PWbh2deprE17GmLSUj3BQ=;
+        b=qEHUWjOePJftQ3BrdvI4q34nRlr5TqrNtWdgkEoG3L4VEdHdqj4fvUM67P0QE+gCp7
+         klGmBDWFNYRHExFB55o2Kdoc1x9kbEVcFsJup+GWo1VMfH6Y10kvia5uDW/EeO4/EGGo
+         t9OB3YXdLmOGdWqDxiXK16eLCtsz/tCVY+irsCixehthwT1jem39U6FFKWql5T1Pu/D5
+         Q23uuqA6218YAYg8tAcrRQx7yAxqZ2gcuqIlXAsvbdKud2rjGhQ0vvCTL5Dzoya/ueVj
+         g/tPEb5scqTUuDLy7QqyLKQqBdqF+6mQbVutlDfEEZqcT+CqBdoUEcV8X7ROG8qkvxXY
+         TkJg==
+X-Gm-Message-State: APuU4Z/HYCZMD0Rn7UubKVnUMNPVHF3I9ioixSNegMcszA9Igg2XVKgp
+	89BcPo281siTXPjulvvJDYJAvbLcDu+Yt5e8wUtkTFCkBmI4ZbcNgmgnk4czAZZ2JtuoRGs9ILU
+	AkLqo
+X-Gm-Gg: AYBFou0kzWflDrvpsGOuT2v39LKAY7uZ94X6JJTCJNKa9hGCYPcdoxFjYIar3wWNk0B
+	0NqzOVaD9ptbcop7WpXSX4iHAm4yAgNEaUC5s1BnJRppWf8Z6NpmEHzBJ9V/mEl4/K6yYhPMwrh
+	l0CKFq8ph3rq1MYpSa/uZ+tp4r2QeHZoXzuBMolqUs3oTJfiTGc/MPJq95EyGCn4pn038GfWSPF
+	HfZzj3ippFkOL9LC7rHugFYBl4TK2ehRGFIBSYfT9zf73rGuSFOBcBQQwK3YqBfCQUnz4cGNK29
+	+rTyyQWycclwGTQo//YAU6KhIb3OAgMMrmWNVGSazDHfk4CgdwqC9wkBbeeZjGtPTe6P7aan1qH
+	ElWwldNvC4acK7UfFe8+E+O+cw9s4hBbICKyfVgZEFBnYwA85q7RM41kNRNKuDXzP8nBeSv7V/y
+	6BXYUDtIKI9d623HjqJGIpmYqwLqHLIfbrOlPns9tqG6AxvvG6+QJSe4q6lj4CCS+OEu/lGQlui
+	BUFHx5WzR9tIYXMHJl4FzEBultyaGqk4xUhEOvDF1Iz+a0u4TwjZ+iVRrVem0VzU61diELaG5xL
+	yyq1LQwswxw7SgIK3XbH6nuNgBrik14lUjmgWZxMk1g=
+X-Received: by 2002:a05:6a20:914b:b0:3e2:5d7f:f630 with SMTP id adf61e73a8af0-3f2feedbe75mr719252637.54.1794352397968;
+        Tue, 10 Nov 2026 15:13:17 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:56::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdd8d7cf07dsm1173961a12.28.2026.11.10.15.13.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 15:13:24 -0800 (PST)
+        Tue, 10 Nov 2026 15:13:17 -0800 (PST)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	Tariq Toukan <tariqt@nvidia.com>,
@@ -91,9 +91,9 @@ Cc: edumazet@google.com,
 	linux-kernel@vger.kernel.org,
 	Joe Damato <joe@dama.to>,
 	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next 4/5] net/mlx4: track whether a TX doorbell is pending
-Date: Tue, 10 Nov 2026 15:12:58 -0800
-Message-ID: <20261110231304.1859217-5-joe@dama.to>
+Subject: [PATCH net-next 1/5] net/mlx4: factor VLAN parsing into mlx4_en_prep_vlan()
+Date: Tue, 10 Nov 2026 15:12:55 -0800
+Message-ID: <20261110231304.1859217-2-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261110231304.1859217-1-joe@dama.to>
 References: <20261110231304.1859217-1-joe@dama.to>
@@ -108,75 +108,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the stack sets xmit_more, mlx4_en_xmit() skips the doorbell and
-relies on a later call in the same batch to write it. Nothing records
-that a doorbell is owed, so a path that ends the batch without writing
-the doorbell leaves the WQEs posted before it unannounced to HW.
-
-Add ring->doorbell_pending, set when the doorbell is deferred and
-cleared whenever a doorbell or a BlueFlame write is issued, so such a
-path can flush the deferred doorbell.
+Extract the code which converts an skb VLAN tag into WQE fields into a
+small helper. This helper will be used by a follow-up series implementing
+software USO, to avoid code duplication.
 
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_tx.c   | 9 +++++++--
- drivers/net/ethernet/mellanox/mlx4/mlx4_en.h | 1 +
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/en_tx.c | 33 ++++++++++++++--------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index 97f27e005810..123071a47bed 100644
+index c5d564e5a581..00210dbae1c3 100644
 --- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
 +++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -194,6 +194,7 @@ int mlx4_en_activate_tx_ring(struct mlx4_en_priv *priv,
- 	ring->prod = 0;
- 	ring->cons = 0xffffffff;
- 	ring->last_nr_txbb = 1;
-+	ring->doorbell_pending = false;
- 	memset(ring->tx_info, 0, ring->size * sizeof(struct mlx4_en_tx_info));
- 	memset(ring->buf, 0, ring->buf_size);
- 	ring->free_tx_desc = mlx4_en_free_tx_desc;
-@@ -757,6 +758,7 @@ void mlx4_en_xmit_doorbell(struct mlx4_en_tx_ring *ring)
- 	iowrite32be(
- #endif
- 		  (__force u32)ring->doorbell_qpn, ring->doorbell_address);
-+	ring->doorbell_pending = false;
+@@ -861,6 +861,26 @@ static bool mlx4_en_build_dma_wqe(struct mlx4_en_priv *priv,
+ 	return false;
  }
  
- static void mlx4_en_tx_write_desc(struct mlx4_en_tx_ring *ring,
-@@ -784,16 +786,19 @@ static void mlx4_en_tx_write_desc(struct mlx4_en_tx_ring *ring,
- 		wmb();
++static bool mlx4_en_prep_vlan(const struct sk_buff *skb,
++			      union mlx4_wqe_qpn_vlan *qpn_vlan)
++{
++	u16 vlan_proto;
++
++	if (!skb_vlan_tag_present(skb))
++		return false;
++
++	qpn_vlan->vlan_tag = cpu_to_be16(skb_vlan_tag_get(skb));
++	vlan_proto = be16_to_cpu(skb->vlan_proto);
++	if (vlan_proto == ETH_P_8021AD)
++		qpn_vlan->ins_vlan = MLX4_WQE_CTRL_INS_SVLAN;
++	else if (vlan_proto == ETH_P_8021Q)
++		qpn_vlan->ins_vlan = MLX4_WQE_CTRL_INS_CVLAN;
++	else
++		qpn_vlan->ins_vlan = 0;
++
++	return true;
++}
++
+ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+@@ -902,19 +922,8 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	nr_txbb = desc_size >> LOG_TXBB_SIZE;
  
- 		ring->bf.offset ^= ring->bf.buf_size;
-+		ring->doorbell_pending = false;
- 	} else {
- 		/* Ensure new descriptor hits memory
- 		 * before setting ownership of this descriptor to HW
- 		 */
- 		dma_wmb();
- 		tx_desc->ctrl.owner_opcode = op_own;
--		if (send_doorbell)
-+		if (send_doorbell) {
- 			mlx4_en_xmit_doorbell(ring);
+ 	bf_ok = ring->bf_enabled;
+-	if (skb_vlan_tag_present(skb)) {
+-		u16 vlan_proto;
+-
+-		qpn_vlan.vlan_tag = cpu_to_be16(skb_vlan_tag_get(skb));
+-		vlan_proto = be16_to_cpu(skb->vlan_proto);
+-		if (vlan_proto == ETH_P_8021AD)
+-			qpn_vlan.ins_vlan = MLX4_WQE_CTRL_INS_SVLAN;
+-		else if (vlan_proto == ETH_P_8021Q)
+-			qpn_vlan.ins_vlan = MLX4_WQE_CTRL_INS_CVLAN;
 -		else
-+		} else {
- 			ring->xmit_more++;
-+			ring->doorbell_pending = true;
-+		}
- 	}
- }
+-			qpn_vlan.ins_vlan = 0;
++	if (mlx4_en_prep_vlan(skb, &qpn_vlan))
+ 		bf_ok = false;
+-	}
  
-diff --git a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-index aab97694f86b..601c09020f38 100644
---- a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-+++ b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-@@ -281,6 +281,7 @@ struct mlx4_en_tx_ring {
- 	unsigned long		tso_packets;
- 	unsigned long		xmit_more;
- 	struct mlx4_bf		bf;
-+	bool			doorbell_pending;
+ 	netdev_txq_bql_enqueue_prefetchw(ring->tx_queue);
  
- 	/* Following part should be mostly read */
- 	void __iomem		*doorbell_address;
 -- 
 2.53.0-Meta
 
