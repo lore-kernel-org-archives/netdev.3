@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322310;
-	b=1UocXMnZv3la6BUES2P+pRx9LDES0xSTmrGZU2pb43CfXUyPIPlNJdciNim7xm9CHBh0
-	 dhpYkoApjSZ4AUUmNfCdRasYq/R9NyyfTa6A+C6GOsZUhzEif307xO8kqirwn1yJiVPnG
-	 b9u49W8oSBQtUNYL45iC9AoMQJFH2vboPL4aQ5T6/k0x9qayXYq2RmYBfWpWRj4SWDNcr
-	 YvHYzd1dFosWWTi4/DXQK7UF+1cNMOaPEh/w/OaY6MBW4X5SunJftxQiXx9i34Paz8KyX
-	 12nRd5wPKGMehXDbQ16N00Ql794++NqOeVsrj/JuEm621is0neMrkUnsvsGuTTmPtjw==
+	t=1794322305;
+	b=s87oUcOYUCxPEPDOPGECSMQ202b5VINGzxii3zNlEebHRUlQ6u3RgYcBS/hIUTpEeNUQ
+	 hs4GWbAMM9dNnzHySbA1YybU1bpGDGzKAPL+s0NKziEe6IrLgFJZiYPSnh2OOfv1RxJ/d
+	 07k7wxk9Zjj45Q8zz6BljsTEWlgJckV+hmVSWdfUj0st2CnqZT7Ciu+4cX6638y72Gacv
+	 +A4fb2Y1oLF4L6hY+rJKAqe09Tei6aPNpebgUBnIyBhI0Lq5H1Z4nkOB1/D7J4ACjVPy/
+	 vv0fNju4ZoEuAnq7Fs0x/3BqrUAfQkFSlsH7mfx5IUIW3xHnh/7sAYD6hnRmjlnXsfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322310;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322305;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=JBLMHOy93b+9Nvr8eqOI15BxH40j8JgNWQdFK0WAYQ4=;
-	b=s89KSboKUkL9gx50eiFRA/n4o1rPB4voGwlILeOitYhh0gyMGQWRrrQaiHF/GsVmbNpW
-	 1rjcEZdAeY+7m4B+AbqDjxtUutMJlPSP5dVr+54uF/xNVmlLILUVMrQI9U3CtyaN4EOkH
-	 lb6cbjctE6OnT7xO5wWgJrjyGpz/5u3E7gJ3FfVABKYMqMFSwaYTGEXdtDPCgXm9VuqMl
-	 mCrF+bsW80xyUVU6Fhj+gaTPZoEdoWVbkSldDXhahZ9smHzGazrpNo+K2Atr0IzK/ywNQ
-	 wyiRMYhS4n0Kr1cVjV2BkBlGdsypMxXz/hN9UUKJq/7rnhNFOWw/K0az2SbLipImXjg==
+	bh=cwpX+dVpu5CaxbPP6Ln2m2mFL8thjfoLF0vm+KYF0Hs=;
+	b=pyVpdJ48myq0PJnHGM4WNpPUBNvepmrJcf4+kULnSPf3zvWFknUn1LbV1wvO6l06Hb8Q
+	 JX6gdgdLRSWDikM1htOTRHpxQIIWXteMXg7p25FT6+SfpFZQrfpjE547I9G++B/An+Gm6
+	 FrdMfX++tQEoVduDH5w29ePC+3GrtACgEtIBf/alWpRMjiP1fWHcYWrjBUxV/YT+7Sfxc
+	 /jfTnLQ9Owg1eSIv9sGiu/iv81Q5rW9D4cf8wQ8SEmCUEgrJEXjG131yLpbhi1OIhXnKY
+	 Xjj6hM6npW1bHTLN029JK94z59UNSFwpiSBS98Hg+LaWnsn81UbrB4JyPoLSAPOCMTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fhx0Gybi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=betAamhu;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D0F60A3815;
-	Tue, 10 Nov 2026 14:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B4A606A321;
+	Tue, 10 Nov 2026 14:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fhx0Gybi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B371F008BD;
-	Tue, 10 Nov 2026 14:51:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=betAamhu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E8E1F008A1;
+	Tue, 10 Nov 2026 14:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322309;
-	bh=JBLMHOy93b+9Nvr8eqOI15BxH40j8JgNWQdFK0WAYQ4=;
+	s=k20260515; t=1794322304;
+	bh=cwpX+dVpu5CaxbPP6Ln2m2mFL8thjfoLF0vm+KYF0Hs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Fhx0Gybivt7x/W9nm80hLA8uOC9enaK2iisytmdqXJQBVZcHZe7Hnh83HCl9T4QBJ
-	 KPnWsxdxrHIfXYNSN05m66u6KmHddnwz74MekKkDwlLBjCDtB1NJdl4SOPTRTZncpT
-	 By9xOLIWjd9RQnm3zYOLbw5LVw/Y+borgtPcohfPYX/jbu7Q1jv1wzRxczBZbapSz8
-	 XdWr8FRXhQ9UnlJw/ydIb1qnkj+fs4KNGQVwO5cpxyecsCyoaDqZ9JOj/8doddlR9z
-	 usffncLXNScJx4mW+SR4MmKT92L4TXyP1e/4ttPuFBL61l33GbElK+dLtWckOWsEab
-	 SDyEcaJQRCQeA==
-Subject: Re: [PATCH v33 net-next 8/8] net/nebula-matrix: add common dev
- start/stop operation
+	b=betAamhuof+jQGiiMoYLmp7QLOMbPR8dMLfdi33tXl/MdFbrO9taJf3kPCXH1EUW+
+	 J9pgL0qxm1tgpBAKvBwTEsDko1VGr5V+Jsh8Ghfo5L/tqrMdeXks/vs8C+A58Sd//S
+	 5iqHxpzs+5ZxBUm1HLbx5Cxai8Zz7GyTCnL8aXYfj/8uvzBGY1gYD7hYMyUkSXgTHr
+	 ah2JMDT1F4d96bMj5svCihDCQFefGDX2uV27lgHHQBijxzaH3mnTlzMWOsDrpes8h3
+	 OREny81/ehHJaJaIRiaRP005+Ne010lYQdUP0I8AA8wt5VEXT+IsNBI1MYiwXr+vt0
+	 ke5Rf/5Vi/QEQ==
+Subject: Re: [PATCH v33 net-next 2/8] net/nebula-matrix: add common resource
+ implementation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
  andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
  horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 14:51:48 +0000
-Message-ID: <179432230893.994134.2573901838169497544@kernel.org>
-In-Reply-To: <20261106045631.2224-9-illusion.wang@nebula-matrix.com>
-References: <20261106045631.2224-9-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: Medium
+Date: Tue, 10 Nov 2026 14:51:43 +0000
+Message-ID: <179432230306.994134.15975682994342856597@kernel.org>
+In-Reply-To: <20261106045631.2224-3-illusion.wang@nebula-matrix.com>
+References: <20261106045631.2224-3-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,319 +65,459 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 6
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] On the control PF, this patch frees the PF's own coherent
-  MSI-X map table while Bus Master Enable is still set.
-- [Low] The new nbl_probe() error unwind calls nbl_core_remove() and then
-  pci_clear_master().
-- [Low] The new comment above nbl_core_start()/nbl_core_stop() in
-  nbl_core.h says start/stop are not repeatable because 'MSI-X vectors…
-- [Low] The commit message justifies the new -EOPNOTSUPP check by saying
-  the neither-ctrl-nor-net state is reached by binding to a function…
-- [Low] The comment in nbl_dev_init_msix_cnt() says vectors are allocated
-  and the handler attached 'when the device is started, after probe,…
-- [Low] The err_destroy_map comment in nbl_dev_start() says the map
-  entry, the bitmap bits, the kcalloc()ed vector array and 'the coherent…
-- [Low] The new nbl_probe() comment says 'nbl_get_func_param() gives any
-  func 0 device has_ctrl'.
+- [Low] This commit adds the k_pf_mask validator, nbl_res_init_pf_num(),
+  but two comments about it are wrong.
+- [Low] net/nebula-matrix: redundant single-implementation resource and
+  hw ops tables
 
 --
 
-net/nebula-matrix: add common dev start/stop operation
+net/nebula-matrix: add common resource implementation
 
-This patch adds nbl_dev_start() and nbl_dev_stop(), which nbl_probe() and
-nbl_remove() call through nbl_core_start() and nbl_core_stop().  Start
-programs the MSI-X map, fetches the VSI/ETH ids, allocates the MSI-X
-vectors and arms the mailbox interrupt; stop undoes these steps.
-nbl_probe() also now rejects a function that has neither the ctrl nor the
-net capability.
+This commit adds a chip-agnostic resource layer to the Nebula Matrix
+driver. On the control PF at probe time it validates the firmware PF
+mask, builds per-PF BDF, Ethernet port and VSI tables, and provides
+VSI/PF/Eth ID conversion helpers.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-> index c3c4dd685bf6f..655dfb43e3653 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-> @@ -40,4 +40,12 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
->  				  struct nbl_init_param *param);
->  void nbl_core_remove(struct nbl_adapter *adapter);
->  
-> +/*
-> + * Single-shot start/stop pair, called once each from PCI probe/remove.
-> + * Not repeatable: MSI-X vectors stay allocated until device detach, so
-> + * a second start on a bound device is rejected by the MSI-X core.
-> + */
+The resource layer is hooked into nbl_core_init() after the channel
+layer.
 
-[Severity: Low]
-Is this the right reason?  nbl_dev_stop() and the nbl_dev_start() rollback
-both call nbl_dev_clear_interrupt_scheme(), which does:
-
-	pci_free_irq_vectors(common->pdev);
-
-That frees the vectors and clears msix_enabled at stop time, not at
-detach.  The commit message relies on the same thing when it explains why
-the pcim_msi_release devres action is harmless.
-
-After stop, a second pci_alloc_irq_vectors_affinity() would not be
-rejected by the MSI-X core.  Should this comment give a different reason
-for the pair being single-shot?
-
-> +int nbl_core_start(struct nbl_adapter *adapter);
-> +void nbl_core_stop(struct nbl_adapter *adapter);
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+> new file mode 100644
+> index 0000000000000..dd8cf9e514960
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> index 01287c39a9655..c25def18a9e68 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-
-[ ... ]
-
-> @@ -19,6 +30,243 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
->  	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
->  }
-
-[Severity: Low]
-This patch makes the existing comment just above, in
-nbl_dev_init_msix_cnt(), out of date:
-
-	/* Reserve one MSI-X vector for the mailbox.  Nothing here
-	 * allocates or requests it: vectors are allocated and the handler
-	 * attached when the device is started, after probe, from this
-	 * count.
-	 */
-
-nbl_core_start() is now called at the end of nbl_probe().  That means
-pci_alloc_irq_vectors_affinity() and request_irq() run inside probe,
-before it returns.  Should "after probe" be updated?
-
-[ ... ]
-
-> @@ -301,3 +557,171 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
-
-[ ... ]
-
-> +/* ----------  Dev start process  ---------- */
-> +int nbl_dev_start(struct nbl_adapter *adapter)
+> +static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
 > +{
 
 [ ... ]
 
-> +err_destroy_map:
-> +	/*
-> +	 * Always ask the peer to drop this function's MSI-X map, even when
-> +	 * the cfg RPC above failed: the teardown prepare phase returns 0
-> +	 * for a function that is not NBL_INTR_FUNC_CONFIGURED, so it is a
-> +	 * no-op when nothing landed, but a -ETIMEDOUT only means the ACK
-> +	 * never arrived - the responder runs to completion before it ACKs.
-> +	 * In that case the map entry, the intr_net/other_bmap bits, the
-> +	 * kcalloc()ed vector array and the coherent map table are all
-> +	 * still owned by the control PF, i.e. host resources of its
-> +	 * driver, released only when this function is configured again or
-> +	 * when nbl_intr_mgt_stop() tears the control PF down.  They are not
-
-[Severity: Low]
-Does configuring the function again really release the coherent map
-table?  nbl_res_intr_cfg_msix_map() allocates the table only when
-!official_tbl->base_addr, and its had_config branch says:
-
-	 * NOTE: NO DMA table free here.
-	 */
-	if (had_config) {
-
-That path releases the old bitmap bits and kfree()s the old interrupts
-array.  It then rewrites the existing table in place.
-
-The coherent table is freed only by
-__nbl_res_intr_complete_destroy_msix_map(), which runs on a destroy or
-from nbl_intr_mgt_stop().  Could this comment be reworded to match?  The
-version in nbl_dev_stop() ("invalidates and rewrites the entry") already
-describes this correctly.
-
-> +	 * firmware state, so skipping the destroy would strand them for a
-> +	 * PF that has no driver to ever ask for them again.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> index a3e599f57137e..0bdc7f9940fcb 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-
-[ ... ]
-
-> @@ -277,6 +286,25 @@ static int nbl_probe(struct pci_dev *pdev,
->  	int err;
->  
->  	nbl_get_func_param(pdev, id->driver_data, &param);
-> +	/*
-> +	 * Reject a function with neither capability before touching any
-> +	 * hardware.  nbl_disp_refresh_ctrl_ops() leaves every dispatch op NULL
-> +	 * for such a function, while nbl_dev_start() reaches cfg_msix_map,
-> +	 * get_vsi_id, get_eth_id and (on unwind) destroy_msix_map through
-> +	 * those pointers.  The state is reachable through driver_override:
-> +	 * binding this driver to a function that is not in nbl_id_table (a VF,
-> +	 * or a non-func-0 PF) makes pci_match_device() pass the dummy ID whose
-> +	 * driver_data 0 leaves has_ctrl and has_net both clear.  A foreign
-
-[Severity: Low]
-Can a non-func-0 PF of this device reach this state?  All PFs share the
-same PCI device ID, and every nbl_id_table entry sets the net bit:
-
-	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110),
-	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-
-pci_match_device() returns the matching static entry before it falls back
-to the dummy ID with driver_data 0.  new_id also rejects driver_data that
-matches no table entry.  So sibling PFs always get has_net.  Only foreign
-devices, or VFs whose IDs are not in the table, end up with neither
-capability.
-
-The commit message makes the same claim:
-
-    driver_override: binding this driver to a function that is absent from
-    nbl_id_table (a VF, or a non-func-0 PF of this device) makes
-
-The commit message also says a foreign func 0 device is "unaffected ...
-as it did before this check existed".  That is true of the check itself.
-However, this same patch now runs nbl_dev_start() on such a device: MSI-X
-map programming, vector allocation and mailbox IRQ arming.
-
-Should the comment and the commit message be updated?
-
-> +	 * device at func 0 is unaffected: nbl_get_func_param() gives any
-> +	 * func 0 device has_ctrl, so it is not rejected here and still runs
-
-[Severity: Low]
-Is this description of nbl_get_func_param() accurate?  It only sets
-has_ctrl when the device is not a VF:
-
-	if ((PCI_FUNC(pdev->devfn) == 0) && !pdev->is_virtfn)
-		param->caps.has_ctrl = 1;
-
-As nbl_probe_chip_deps() notes, under ARI a VF's devfn can decode to
-function 0.  A VF like that, bound through driver_override, gets neither
-capability and is rejected by this check.  The code does the right thing;
-only the comment is wrong.
-
-> +	 * nbl_core_init() with the local control dispatch ops, as it did
-> +	 * before this check existed.
+> +	 * This is the only validation of the mask in the driver.  The channel
+> +	 * layer reads the same raw register value to program the mailbox
+> +	 * QINFO table and assumes the layout checked here, so it depends on
+> +	 * this running first: resource init completes before the channel
+> +	 * layer is set up.
 > +	 */
-> +	if (!param.caps.has_ctrl && !param.caps.has_net) {
-> +		dev_err(dev, "Function has neither ctrl nor net capability\n");
-> +		return -EOPNOTSUPP;
-> +	}
+
+[Severity: Low]
+This isn't a bug, but is this ordering description accurate? In this same
+patch, nbl_core_init() sets up the channel layer before the resource
+layer:
+
+nbl_core_init()
+    nbl_hw_init_leonis()
+    nbl_chan_init_common()
+    nbl_res_init_leonis()
+        nbl_res_start()
+            nbl_res_init_pf_num()
+
+The ordering that actually protects QINFO programming looks different.
+The only user of the raw mask is nbl_chan_cfg_qinfo_map_table(). Later in
+the series it is called from nbl_dev_setup_chan_qinfo(), inside
+nbl_dev_init(), on the control PF only. That happens after
+nbl_res_init_leonis(), but well after channel layer setup.
+
+Would it be more accurate to say the validation has to run before QINFO is
+first programmed, rather than before the channel layer is set up?
+
+Also, the existing comment in nbl_chan_cfg_qinfo_map_table() in
+nbl_channel.c still says:
+
+	 * 0xfe/0xfc/0xf0.  Nothing enforces that here: the resource layer
+	 * that validates the mask, and every caller of this op, arrive in
+	 * later patches of this series.
+
+This patch adds that resource layer. Should this comment be updated as
+well?
+
+The code behaves correctly as it stands, so this only concerns the
+comments. Both comments are still unchanged at the end of the series.
 
 [ ... ]
 
-> @@ -314,8 +342,12 @@ static int nbl_probe(struct pci_dev *pdev,
->  
->  	pci_set_master(pdev);
->  	pci_set_drvdata(pdev, adapter);
-> -
-> -	return 0;
-> +	err = nbl_core_start(adapter);
-> +	if (err) {
-> +		nbl_core_remove(adapter);
-> +		pci_clear_master(pdev);
+> @@ -0,0 +1,335 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2026 Nebula Matrix Limited.
+> + */
+> +#include <linux/device.h>
+> +#include <linux/pci.h>
+> +#include <linux/bits.h>
+> +#include "nbl_resource_leonis.h"
+> +
+> +static struct nbl_resource_ops res_ops = {
+> +	.get_vsi_id = nbl_res_func_id_to_vsi_id,
+> +	.get_eth_id = nbl_res_get_eth_id,
+> +};
+> +
+> +static struct nbl_resource_mgt *
+> +nbl_res_setup_res_mgt(struct nbl_common_info *common)
+> +{
+> +	struct nbl_resource_info *resource_info;
+> +	struct nbl_resource_mgt *res_mgt;
+> +	struct device *dev = common->dev;
+> +
+> +	res_mgt = devm_kzalloc(dev, sizeof(*res_mgt), GFP_KERNEL);
+> +	if (!res_mgt)
+> +		return ERR_PTR(-ENOMEM);
+> +	res_mgt->common = common;
+> +
+> +	resource_info =
+> +		devm_kzalloc(dev, sizeof(*resource_info), GFP_KERNEL);
+> +	if (!resource_info)
+> +		return ERR_PTR(-ENOMEM);
+> +	res_mgt->resource_info = resource_info;
+> +
+> +	return res_mgt;
+> +}
+> +
+> +static struct nbl_resource_ops_tbl *
+> +nbl_res_setup_ops(struct device *dev, struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_resource_ops_tbl *res_ops_tbl;
+> +
+> +	res_ops_tbl = devm_kzalloc(dev, sizeof(*res_ops_tbl), GFP_KERNEL);
+> +	if (!res_ops_tbl)
+> +		return ERR_PTR(-ENOMEM);
+> +	if (!res_ops.get_vsi_id || !res_ops.get_eth_id)
+> +		return ERR_PTR(-EINVAL);
+> +	res_ops_tbl->ops = &res_ops;
+> +	res_ops_tbl->priv = res_mgt;
+> +
+> +	return res_ops_tbl;
+> +}
+> +
+> +static int nbl_res_ctrl_dev_setup_eth_info(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+> +	struct device *dev = res_mgt->common->dev;
+> +	struct nbl_eth_info *eth_info;
+> +	u32 eth_bitmap = 0;
+> +	u32 eth_num = 0;
+> +	u32 fw_port_num;
+> +	int i;
+> +
+> +	eth_info = devm_kzalloc(dev, sizeof(*eth_info), GFP_KERNEL);
+> +	if (!eth_info)
+> +		return -ENOMEM;
+> +
+> +	res_mgt->resource_info->eth_info = eth_info;
+> +
+> +	fw_port_num = res_mgt->resource_info->board_info.eth_num;
+> +
+> +	hw_ops->get_fw_eth_map(res_mgt->hw_ops_tbl->priv, &eth_bitmap);
+> +	if (eth_bitmap & ~((1 << NBL_MAX_ETHERNET) - 1)) {
+> +		dev_err(dev, "FW reported invalid eth_bitmap 0x%x\n",
+> +			eth_bitmap);
+> +		return -EINVAL;
 > +	}
+> +	if (fw_port_num != hweight32(eth_bitmap)) {
+> +		dev_err(dev, "FW inconsistency: port_num=%u, bitmap=0x%x\n",
+> +			fw_port_num, eth_bitmap);
+> +		return -EINVAL;
+> +	}
+> +	/*
+> +	 * Firmware is ready before probe. Valid port counts are 1/2/4;
+> +	 * 0 (invalid config), 3 (unsupported topology), and >4 (exceeds
+> +	 * hardware max) are all rejected with -EINVAL.
+> +	 */
+> +	if (fw_port_num == 0 || fw_port_num == 3 ||
+> +	    fw_port_num > NBL_MAX_ETHERNET) {
+> +		dev_err(dev, "FW reports %u Ethernet ports, unsupported (valid: 1/2/4)\n",
+> +			fw_port_num);
+> +		return -EINVAL;
+> +	}
+> +	eth_info->eth_num = fw_port_num;
+> +	/* Intentional design constraint: each PF maps to exactly one
+> +	 * Ethernet port. This couples PF identity to port identity
+> +	 * and is required by nbl_res_get_eth_id() which indexes
+> +	 * eth_info->eth_id[] by relative PF id.
+> +	 */
+> +	if (res_mgt->common->max_pf != eth_info->eth_num) {
+> +		dev_err(dev, "Invalid PF-to-port topology: max_pf=%u, eth_num=%u\n",
+> +			res_mgt->common->max_pf, eth_info->eth_num);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * Any subset of valid bitmap bits is accepted (e.g. 0/1, 0/2,
+> +	 * 1/3, etc.).  Firmware only needs to report the correct count
+> +	 * of active ports; no hard-coded fixed bit positions required.
+> +	 * eth_id[] is filled in ascending bitmap-bit order, so the Nth
+> +	 * relative PF owns the Nth logical port (max_pf == eth_num is
+> +	 * enforced above).
+> +	 */
+> +	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
+> +		if ((1 << i) & eth_bitmap) {
+> +			eth_info->eth_id[eth_num] = i;
+> +			eth_num++;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int nbl_res_ctrl_dev_sriov_info_init(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+> +	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
+> +	struct nbl_common_info *common = res_mgt->common;
+> +	struct nbl_sriov_info *sriov_info;
+> +	struct device *dev = common->dev;
+> +	u8 hw_bus = 0;
+> +	u16 function;
+> +	u16 func_id;
+> +
+> +	hw_ops->get_real_bus(p, &hw_bus);
+> +	if (common->function + common->max_pf > NBL_MAX_PF) {
+> +		dev_err(dev, "PF count exceeds available function space\n");
+> +		return -EINVAL;
+> +	}
+> +	sriov_info = devm_kcalloc(dev, common->max_pf,
+> +				  sizeof(*sriov_info), GFP_KERNEL);
+> +	if (!sriov_info)
+> +		return -ENOMEM;
+> +
+> +	res_mgt->resource_info->sriov_info = sriov_info;
+> +	/*
+> +	 * Real bus number of the control PF;
+> +	 * the BDF table below is built from it.
+> +	 */
+> +	common->hw_bus = hw_bus;
+> +
+> +	for (func_id = 0; func_id < common->max_pf; func_id++) {
+> +		sriov_info = res_mgt->resource_info->sriov_info + func_id;
+> +		function = common->function + func_id;
+> +		sriov_info->bdf = PCI_DEVID(common->hw_bus,
+> +					    PCI_DEVFN(common->devid, function));
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int nbl_res_ctrl_dev_vsi_info_init(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
+> +	struct nbl_common_info *common = res_mgt->common;
+> +	struct device *dev = common->dev;
+> +	struct nbl_vsi_info *vsi_info;
+> +	int i;
+> +
+> +	vsi_info = devm_kzalloc(dev, sizeof(*vsi_info), GFP_KERNEL);
+> +	if (!vsi_info)
+> +		return -ENOMEM;
+> +
+> +	res_mgt->resource_info->vsi_info = vsi_info;
+> +	/*
+> +	 * case 1 one port(1pf)
+> +	 * pf0 (NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0
+> +	 * case 2 two port(2pf)
+> +	 * pf0,pf1(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,512
+> +	 * case 3 four port(4pf)
+> +	 * pf0,pf1,pf2,pf3(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,256,512,768
+> +	 */
+> +
+> +	vsi_info->num = eth_info->eth_num;
+> +	/*
+> +	 * eth_num can be 1/2/4:
+> +	 * - 2/4 ports use dedicated gap constants;
+> +	 * - 1 port falls back to NBL_DEFAULT_VSI_ID_GAP (1024).
+> +	 * All three values produce valid base_id offsets.
+> +	 */
+> +	for (i = 0; i < vsi_info->num; i++) {
+> +		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].base_id =
+> +			i * nbl_vsi_id_gap(vsi_info->num);
+> +		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].num = 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+> +	u32 exp_contiguous_mask = 0;
+> +	u32 pf_mask = 0;
+> +	u32 pf_num = 0;
+> +	int i;
+> +
+> +	hw_ops->get_host_pf_mask(res_mgt->hw_ops_tbl->priv, &pf_mask);
+> +
+> +	/*
+> +	 * k_pf_mask register rule:
+> +	 * bit N == 0  -> PF#N enabled; bit N == 1 -> PF#N masked out.
+> +	 * Hardware constraint: bit0 is PF0's mask bit; driver requires
+> +	 * PF0 enabled as management PF, so bit0 must be clear.
+> +	 * All-zero pf_mask means all PF0~PF7 are enabled, which is unsupported
+> +	 * by the driver
+> +	 *
+> +	 * Product firmware constraint: only 3 valid configurations supported:
+> +	 * 1 PF  (PF0 only): pf_num = 1, mask = 0xfe
+> +	 * 2 PFs (PF0,PF1):  pf_num = 2, mask = 0xfc
+> +	 * 4 PFs (PF0~PF3): pf_num = 4, mask = 0xf0
+> +	 * No other PF count or sparse/non-contiguous PF layout is allowed.
+> +	 *
+> +	 * This is the only validation of the mask in the driver.  The channel
+> +	 * layer reads the same raw register value to program the mailbox
+> +	 * QINFO table and assumes the layout checked here, so it depends on
+> +	 * this running first: resource init completes before the channel
+> +	 * layer is set up.
+> +	 */
+> +	for (i = 0; i < NBL_MAX_PF; i++) {
+> +		if (!(pf_mask & (1 << i)))
+> +			pf_num++;
+> +	}
+> +
+> +	/*
+> +	 * Sanity check: enabled PFs must be contiguous starting from PF0.
+> +	 * Current resource framework uses relative PF id, sparse PF layout
+> +	 * will cause mismatch between resource layer and hardware func_id.
+> +	 */
+> +	for (i = 0; i < pf_num; i++)
+> +		exp_contiguous_mask |= BIT(i);
+> +	if ((pf_mask & exp_contiguous_mask) != 0) {
+> +		dev_err(res_mgt->common->dev,
+> +			"pf_mask 0x%08x: non-contiguous enabled PF, unsupported\n",
+> +			pf_mask);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Only allow product-specified PF count: 1 / 2 / 4 */
+> +	if (pf_num != 1 && pf_num != 2 && pf_num != 4) {
+> +		dev_err(res_mgt->common->dev,
+> +			"Invalid pf_num=%u (mask=0x%08x), only 1/2/4 PFs supported\n",
+> +			pf_num, pf_mask);
+> +		return -EINVAL;
+> +	}
+> +
+> +	res_mgt->common->max_pf = pf_num;
+> +
+> +	return 0;
+> +}
+> +
+> +static void nbl_res_init_board_info(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+> +
+> +	hw_ops->get_board_info(res_mgt->hw_ops_tbl->priv,
+> +			       &res_mgt->resource_info->board_info);
+> +}
+> +
+> +static int nbl_res_start(struct nbl_resource_mgt *res_mgt)
+> +{
+> +	struct nbl_common_info *common = res_mgt->common;
+> +	int ret = 0;
+> +
+> +	if (common->has_ctrl) {
+> +		nbl_res_init_board_info(res_mgt);
+> +
+> +		ret = nbl_res_init_pf_num(res_mgt);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = nbl_res_ctrl_dev_sriov_info_init(res_mgt);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = nbl_res_ctrl_dev_setup_eth_info(res_mgt);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = nbl_res_ctrl_dev_vsi_info_init(res_mgt);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int nbl_res_init_leonis(struct nbl_adapter *adap)
+> +{
+> +	struct nbl_channel_ops_tbl *chan_ops_tbl = adap->intf.channel_ops_tbl;
+> +	struct nbl_hw_ops_tbl *hw_ops_tbl = adap->intf.hw_ops_tbl;
+> +	struct nbl_common_info *common = &adap->common;
+> +	struct nbl_resource_ops_tbl *res_ops_tbl;
+> +	struct device *dev = &adap->pdev->dev;
+> +	struct nbl_resource_mgt *res_mgt;
+> +	int ret;
+> +
+> +	res_mgt = nbl_res_setup_res_mgt(common);
+> +	if (IS_ERR(res_mgt)) {
+> +		ret = PTR_ERR(res_mgt);
+> +		return ret;
+> +	}
+> +	res_mgt->chan_ops_tbl = chan_ops_tbl;
+> +	res_mgt->hw_ops_tbl = hw_ops_tbl;
+> +
+> +	ret = nbl_res_start(res_mgt);
+> +	if (ret)
+> +		return ret;
+> +
+> +	res_ops_tbl = nbl_res_setup_ops(dev, res_mgt);
+> +	if (IS_ERR(res_ops_tbl)) {
+> +		ret = PTR_ERR(res_ops_tbl);
+> +		return ret;
+> +	}
+> +	adap->intf.resource_ops_tbl = res_ops_tbl;
+> +	adap->core.res_mgt = res_mgt;
+> +
+> +	return 0;
+> +}
+> +
+> +void nbl_res_remove_leonis(struct nbl_adapter *adap)
+> +{
+> +	/*
+> +	 * No resource release here because all memory uses devm managed
+> +	 * allocation
+> +	 */
+> +}
 
 [Severity: Low]
-Should this unwind clear bus mastering before nbl_core_remove(), as
-nbl_remove() does?  nbl_remove() uses the opposite order:
+Does the resource layer need its own ops table? struct
+nbl_resource_ops and struct nbl_resource_ops_tbl have exactly one
+implementation, res_ops in nbl_resource_leonis.c, and that is still the
+only one at the end of the series.
 
-	pci_clear_master(pdev);
+nbl_res_setup_ops() devm-allocates a wrapper whose only job is to hold
+&res_ops and res_mgt. It then checks get_vsi_id and get_eth_id for
+NULL, but both are statically initialized a few lines above in the same
+file, so the -EINVAL branch can never be taken.
 
-	nbl_core_remove(adapter);
+The same applies to struct nbl_hw_ops, which this patch extends with
+flush_write, get_real_bus, get_fw_eth_map and get_board_info:
 
-Its comment says bus mastering has to be stopped before nbl_core_remove()
-frees the MSI-X map tables.
+  - hw_ops in nbl_hw_leonis.c is its only implementation.
+  - nbl_hw_setup_ops() adds more NULL checks on static callbacks.
+  - nbl_resource_leonis.c calls the leonis hardware helpers indirectly
+    through res_mgt->hw_ops_tbl->ops and ->priv instead of directly.
+  - res_mgt->chan_ops_tbl is stored but never used in this patch.
 
-I could not find a runtime effect in this unwind.  After the
-nbl_dev_start() rollback, the control PF's own entry is already idle.
-Sibling PFs cannot be configured yet, because nbl_probe_chip_deps() defers
-them.  The mailbox rings are devres managed.  So this is mostly a
-consistency issue.
+On v22 Jakub asked for abstractions with a single implementation to be
+removed until a second implementation actually exists:
 
-The new err_destroy_map comment in nbl_dev_start() also says:
+https://lore.kernel.org/r/20260730182956.5cbe613a@kernel.org
 
-	 * Note: pci_clear_master() runs in nbl_probe() core_start_err path;
+The dispatch layer later in the series does have two real backends.
+It makes local calls on the control PF and mailbox RPCs on the other
+PFs, so that indirection looks justified.
 
-There is no core_start_err label.  This pci_clear_master() also only runs
-after nbl_dev_start() has freed the table and nbl_core_remove() has
-returned.  Could that comment be corrected as well?
+Could the series keep only that layer? The dispatch code would call
+nbl_res_func_id_to_vsi_id() and nbl_res_get_eth_id() directly, and the
+resource code would call the leonis hw helpers directly. That would
+drop nbl_resource_ops_tbl, nbl_hw_ops_tbl and the setup_ops() NULL
+checks.
 
-> +	return err;
->  }
->  
->  static void nbl_remove(struct pci_dev *pdev)
-> @@ -326,6 +358,7 @@ static void nbl_remove(struct pci_dev *pdev)
->  		return;
->  	pci_set_drvdata(pdev, NULL);
->  
-> +	nbl_core_stop(adapter);
->  	/*
->  	 * Stop bus mastering before any teardown runs.
->  	 *
-
-[Severity: Medium]
-On the control PF, does this free the PF's own coherent MSI-X map table
-while Bus Master Enable is still set?
-
-nbl_core_stop() now runs before pci_clear_master().  On the control PF the
-call chain is:
-
-nbl_remove()
-  nbl_core_stop()
-    nbl_dev_stop()
-      nbl_dev_destroy_msix_map()
-        nbl_disp_destroy_msix_map()             /* local op */
-          nbl_res_intr_destroy_msix_map()
-            __nbl_res_intr_destroy_msix_map()
-              /* clear valid bit, flush */
-              nbl_intr_quiesce_wait()           /* usleep_range(1000, 1200) */
-              __nbl_res_intr_complete_destroy_msix_map()
-                dma_free_coherent(dev, msix_map_table->size, ...)
-
-The map is programmed with the control PF's own BDF, so the pcompleter's
-table fetches are bus-master reads from this same PF.
-
-The comment above nbl_intr_quiesce_wait() says the delay "is not a
-guarantee".  It relies on this for extra protection:
-
- * pci_clear_master() is the only other lever, and nbl_remove() pulls it
- * before any teardown runs: that keeps the device from starting a new
- * fetch inside this window.
-
-The "Stop bus mastering before any teardown runs" comment just above no
-longer holds for the control PF either.
-
-The err_destroy_map rollback in nbl_dev_start() has the same ordering on
-probe failure, because nbl_probe() calls pci_set_master() before
-nbl_core_start():
-
-	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
-
-This can happen, for example, when pci_alloc_irq_vectors_affinity() or
-request_irq() fails after cfg_msix_map succeeded.
-
-The commit message only says that pci_clear_master() is no safety net on a
-non-control PF.  It does not mention that the control PF loses this
-protection.
-
-The control PF's stop path uses local MMIO ops and does not need bus
-mastering.  When has_ctrl is set, could bus mastering be cleared before
-the own-map destroy?  Alternatively, could the free of this PF's own map
-be left to nbl_intr_mgt_stop(), after pci_clear_master()?
+If a second chip that needs these tables is planned, could the commit
+message say so?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106045631.2224-1-illusion.wang%40nebula-matrix.com
