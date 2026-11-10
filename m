@@ -1,80 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794306012;
-	b=BjbnMrsIsZEYttafcHSgnAn7ubg1KTiYJSw/EnVbRu5xKuyYDfWqTMVWRMEVeIbtCrHN
-	 hVf5RC+EpURIoFnbiSsgEBmmqxbZQcYDYuD+JpT1F1/AGaNabvXEnzqybrCXsUwVUOKeg
-	 6jAjVkCpFBUihrXzCTZL0X6qHs5+TBaiBEagDlkzR4kT1gd0xSfx+noMeP/KUDvuDalCk
-	 yfvm7jZGhi6z5iQd2ojkmedrr+rzjm8WXr6fUjDqBFb6EbpOL3hxznhf1U5I0A79+zU9g
-	 1aVDwxaKNuEob3wvQrtzVr9VPuc6YYZtnHls18r9hfTbN0Ql8vo1c55VDA/tHpXGM9g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794306012;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
-	b=ty4Kw9h0yIzpxDf55hHnaBxrq1m0XrQdmeK4IMRwjr6W4TsgOrGPloa18q9+didKOnrM
-	 OYpY53g+BifxJXcB5CvMlrK07gDTBBe06MjJfbFCrhGrV3nlLGFe39StnmX+W5EN81st+
-	 /9G5i521TLx1+0BXcuA3b63YJkQvf6nswxjljFmNRXm5wMrKukf/0WjQUSP5W1aTuA6sm
-	 m8NQdfGfflgnBjzyFG9cZGh+P4Coa0jhvh7zcEI6Bb/KLCe+vWM1rNYIJkfcI0t5P1Ic0
-	 dcU9GXSuGfnl/YiueTsDLMSmA06R4vCzjUKQ1zZSkHNJYuJJMf/lsRsKpLUpcUadtww==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LBBHAHTj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794306020;
+	b=EFI5Md3F21PevPem05w+7FU1eiY5CLZ2WHBvenPxteN+ww27g9PKL62m9OnljZVi+oVc
+	 iSU/CQWTfzG8+a8+BSZvBULhXH1hdkNLUOm6CovkTo98+Vg2kItvUWusVcx0tKETmYc49
+	 fhwC0gXdNg2OFdEBxxNHFHlCzqzdmmwW+Q6oZRHCqbnRiLyXZPAdLEGDX6pbEmO67FA5D
+	 bajLpCtB26Trwi/JouAoTSicdU8Rb+i39oMgoAv+r8WnZ5F/cb7IiQCMmhYvnvnuZ7qkJ
+	 xvdRTUwvzALCprTPQU1VU7hoM1caJsMe2wVakulrX8MwLtE8qpxErpyTPquupZTvOHQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794306020;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 DKIM-Signature;
+	bh=aJR2Iqh0SywcSqzamY28JKadQIexO83nq3mwxFgjKto=;
+	b=wUgYN/Os0te2LJw3RXd+a+RsAOMR7ZNXILGeoYalUh3u96FrvR8OfFi3Rj9CkDJzXh63
+	 0bQQGoVscK8FJ2WzsKONULiPfqmj8yqNeI7Cc7oT8MRfUVG7i5ldNxxD/YaNjxBG4z6Fk
+	 8kA8x2iwkeZjdDwblyqIZXK+0g4pYKg053/4so02Ij6Lz8yHXL19eC5D9+tHd8g5xhgJu
+	 bGthE6K4oMWrcYIoKxupBMABt6znVI6/platoZUpA97xTEiKQYl1pPCg67YoWIEQx01kR
+	 OqdYw/2eYCqF1EW8L0+q84AnS9GOPDcwcNAQW91MxHcQt/JtjCeD43+rc5tnTazYvaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=poczta.fm;
+	spf=pass smtp.mailfrom=poczta.fm;
+	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=kaYiwyHl;
+	arc=none smtp.remote-ip=217.74.67.49
+Received: from smtpo49.interia.pl (smtpo49.interia.pl [217.74.67.49])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A57606A33D;
-	Tue, 10 Nov 2026 10:20:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79A57606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403ED60A260F
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:20:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 403ED60A260F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LBBHAHTj
-Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7D23A202334;
+	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=kaYiwyHl
+Received: from localhost (unknown [80.68.231.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
 	Tue, 10 Nov 2026 11:20:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794306009;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
-	b=LBBHAHTjxSBG5vWXjBTxzNQDmVlT/3z8SV+EjnvrJFvZA/orPWjlatDRm/8lGMNJKRB3vR
-	oWWYK0uiNEHxSMJCUrWrR3xumpf+kviq2itccmWgodfq2aCcchqIMwFxhsUl7rnMQKWfpE
-	HekRWc4mk5JR4xoOMSG+jsb8y2chigYpcfdixAAbF3H5YkHnYKhhdN1tvp9RdFQPgYZFXD
-	O3pyQDzo3G2bbRzvi3ansey5waGyV206/qMbZ75fOSqDmtc7SEo1py9hunARFv0xsMiAqt
-	4fJjVbqBjMRbd49W3D7xh+c0HTy3mMFiKp5uxA6hJTWD60Df/ohx0g3Bpp0rsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794306009;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
-	b=dlCR3GGuEvv2Tvokka6cNsfW1ooDI2swQ1LrMCEwVuHyQmED/dWHMoJyfg/HSLjIgr3XlD
-	ls2XDA51iZChcY8x7aPSPG7sHclaj4P+uwULBAS0HJZIdS89JonG6l0rlqXsH9c9mcjpBU
-	qkA78wWEbAPvbotJn2okqqzPe7lveA5/5TFa9xIq8L1+LQXSqixW6oVj4tSLWzuv9pGpUD
-	nXnEVUC1l26DO78RRJZJrv4/eDmV4L1RR0wYTtEiHYAB0dY4Z8MLP88HHTG+RS0HCCRqMt
-	tkeTvrTIsyy5lhErqsdFUqGOsNjoJXdbjip2Yli1oQcKRqGa3zCvUykTNKf6ww==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794306009; a=rsa-sha256;
-	cv=none;
-	b=B6wXaZdnlCqtzJ28tfhpEk3L+rL44BdHguN/+XaK0g/xQl+hRvruOFGgtvGSF/brUfMtEY
-	9UlhGGMDz4RwJNQA/5ObMh6xUBVfUc7YnZsV9J2Y+CrINtdyL0Vk9Cv6k6edO7x+U8LbsX
-	bIs/IjNNmyV6mnIXDYHIzVIen0IcdgkCp75AAF9MJgqxQHwzDiYZcrQivFVdLISOBzcxfI
-	pwGEAjuqzfA8adQEyAHyKm+gce7byqjtOGku2VwRPnCrkwK7t72qtrsrgd38CvHYYo+C9B
-	UGpCIPrzjV3QUx5QU507aPOEB+IuuhlBpnu82ut+eicS3WoDwtGGVZ/WOhHLcA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 10 Nov 2026 11:20:07 +0100
-Subject: [PATCH net-next v4 3/4] dt-bindings: net: dp83867: Add
- ti,output-impedance-ohms
+From: Slawomir Stepien <sst@poczta.fm>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Tianyi Gao <tianyi@cloudflare.com>,
+	Liang Chen <liangchen.linux@gmail.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	"huangjie . albert" <huangjie.albert@bytedance.com>,
+	Slawomir Stepien <sst@poczta.fm>
+Subject: [PATCH RFC net-next v2 3/4] xdp: split generic XDP skb handling
+Date: Tue, 10 Nov 2026 11:19:40 +0100
+Message-ID: <20261110101941.1059662-4-sst@poczta.fm>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261110101941.1059662-1-sst@poczta.fm>
+References: <20261110101941.1059662-1-sst@poczta.fm>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,83 +87,274 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-v7-2-topic-dp83867-v4-3-a268f83b1ec1@pengutronix.de>
-References: <20261110-v7-2-topic-dp83867-v4-0-a268f83b1ec1@pengutronix.de>
-In-Reply-To: <20261110-v7-2-topic-dp83867-v4-0-a268f83b1ec1@pengutronix.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Michal Simek <michal.simek@amd.com>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1906;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=DCzVebg+SU/ONPpSp5yog7UKs35KdC0TeKWiCOdSZP4=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9an99f/3fJXn7dwnfrOKd1z06c83Lf0zxre8pK9mhfVz
- 6VMD83m7yhlYRDjYpAVU2RRWVjBJ+rxwTNymggXzBxWJpAhDFycAjAR9uWMDLMT10xaG8GQKKc5
- 9d482blKOTwLuR2efvfI2cP2Zfqcui+MDH8OzPcWvLvv5mpXRYYp/x0lzWXnJMiacBWsluXbvjb
- rEAcA
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=24A1780E1548F0495996140A1ABD20720A5E5622
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
+	t=1794306011; bh=aJR2Iqh0SywcSqzamY28JKadQIexO83nq3mwxFgjKto=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=kaYiwyHleqZuCu5UlPuivXippBNuFeyBt2iKMXmbDLW6Y201TOqcZJV5IQxREaQve
+	 qZ4JUg7nA66yUFyJOIROfXgmUrn5yZxb4E6uKATMSCwfH5NTsG/zm5d8Ho43Y+loLM
+	 xk7ihZVDWpmNADIG0JahHbRaegucB6jB4QZhzwE8=
 
-Currently, the output-impedance can only be set to default, minimum or
-maximum or via a nvmem cell.
-In cases where there is no backend for a nvmem cell, a value can not be
-set.
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-Add a DT binding, 'ti,output-impedance-ohms', for specifying the
-output-impedance in ohms, between 35 and 70. Like the existing
-properties, it is mutually exclusive with the nvmem cell and with
-ti,{min,max}-output-impedance.
+veth has its own page_pool and xdp_rxq_info and also embeds struct
+xdp_buff into a larger context used by its metadata kfuncs. At the same
+time, the skb-backed veth XDP path currently open-codes most of what
+generic XDP already does and then converts skb-backed xdp_buffs into
+xdp_frames for XDP_TX and XDP_REDIRECT.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Add a lower-level generic XDP helper, __do_xdp_generic(), that lets
+callers provide a small context object. The context carries the
+caller-provided xdp_buff storage, optional page_pool and optional
+xdp_rxq_info, and returns the actual XDP action and redirect error to
+the caller. A NULL page_pool keeps the existing behaviour and uses the
+per-CPU system page_pool. A NULL xdp_rxq_info keeps deriving the rxq
+from the skb device/rx queue.
+
+This lets drivers such as veth preserve stats and redirect flush
+decisions while using the generic skb XDP action handling.
+
+Address also existing bpf_prog_run_generic_xdp() callsites
+({cpu,dev}map) so they can keep on using netdev's xdp_rxq_info.
+
+Both users decide with one predicate whether the program has to run on a
+page_pool-backed copy of the skb: when it is shared or cloned, when it
+has frags (XDP helpers must be able to release them), or when the XDP
+headroom is too small. veth also used to require a page-frag head
+(skb_head_is_locked()) because it turned the head into an xdp_frame;
+skb-backed XDP does not do that, so this check is not needed. Generic
+XDP now also copies shared skbs, which it previously ran on in place.
+
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+[sst: merge the generic and veth CoW predicates into one
+ skb_needs_xdp_cow() and drop the per-caller callback (Jakub); copy
+ into a caller-provided page_pool with skb_pp_cow_data() as veth did,
+ also for programs without frags support (fixes xdp_metadata)]
+Signed-off-by: Slawomir Stepien <sst@poczta.fm>
 ---
- Documentation/devicetree/bindings/net/ti,dp83867.yaml | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/linux/netdevice.h | 29 ++++++++++++
+ net/core/dev.c            | 99 +++++++++++++++++++++++++++++----------
+ 2 files changed, 102 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
-index 833540743bdf6..557d2517a72ed 100644
---- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
-+++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
-@@ -53,6 +53,16 @@ properties:
-     items:
-       - const: io_impedance_ctrl
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index b251c4b5c9ce..56a77c8c67ba 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4355,10 +4355,39 @@ static inline void dev_consume_skb_any(struct sk_buff *skb)
+ 	dev_kfree_skb_any_reason(skb, SKB_CONSUMED);
+ }
  
-+  ti,output-impedance-ohms:
-+    description: |
-+      MAC Interface Impedance control to set the programmable output impedance
-+      to a value between minimum (35 ohms) and maximum (70 ohms). The PHY
-+      has 32 settings in this range; the datasheet does not specify the
-+      impedance of each setting, so the value is mapped linearly to the
-+      nearest one.
-+    minimum: 35
-+    maximum: 70
++struct page_pool;
++struct xdp_rxq_info;
 +
-   ti,min-output-impedance:
-     type: boolean
-     description: |
-@@ -133,6 +143,12 @@ allOf:
-       required: [nvmem-cells, "ti,max-output-impedance"]
-   - not:
-       required: ["ti,min-output-impedance", "ti,max-output-impedance"]
-+  - not:
-+      required: [nvmem-cells, "ti,output-impedance-ohms"]
-+  - not:
-+      required: ["ti,output-impedance-ohms", "ti,min-output-impedance"]
-+  - not:
-+      required: ["ti,output-impedance-ohms", "ti,max-output-impedance"]
++/**
++ * struct xdp_generic_ctx - caller context for skb-backed generic XDP
++ * @xdp: caller-provided xdp_buff storage
++ * @page_pool: optional page_pool used when skb COW is needed; the caller
++ *	must keep packets for programs without frags support within one page
++ * @xdp_rxq: optional rxq used to initialise @xdp
++ * @xdp_skb: optional pointer updated with the skb used for the XDP run
++ * @act: actual XDP action returned by the program
++ * @err: transmit or redirect error, valid when @act is XDP_TX or XDP_REDIRECT
++ *
++ * If @page_pool is NULL, the generic path uses the per-CPU system
++ * page_pool. If @xdp_rxq is NULL, the generic path derives the rxq
++ * from the skb device/rx-queue, preserving existing do_xdp_generic()
++ * behaviour.
++ */
++struct xdp_generic_ctx {
++	struct xdp_buff *xdp;
++	struct page_pool *page_pool;
++	struct xdp_rxq_info *xdp_rxq;
++	struct sk_buff **xdp_skb;
++	u32 act;
++	int err;
++};
++
+ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
+ 			     const struct bpf_prog *xdp_prog);
+ int generic_xdp_tx(struct sk_buff *skb, const struct bpf_prog *xdp_prog,
+ 		   u32 act);
++int __do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb,
++		     struct xdp_generic_ctx *ctx);
+ int do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb);
+ int netif_rx(struct sk_buff *skb);
+ int __netif_rx(struct sk_buff *skb);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 12595f6b9eba..81848e638173 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5668,11 +5668,11 @@ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
+ 	return rxqueue;
+ }
  
- required:
-   - reg
-
+-u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
+-			     const struct bpf_prog *xdp_prog)
++static u32 __bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
++				      const struct bpf_prog *xdp_prog,
++				      struct xdp_rxq_info *xdp_rxq)
+ {
+ 	void *orig_data, *orig_data_end, *hard_start;
+-	struct netdev_rx_queue *rxqueue;
+ 	bool orig_bcast, orig_host;
+ 	u32 mac_len, frame_sz;
+ 	__be16 orig_eth_type;
+@@ -5690,8 +5690,13 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
+ 	frame_sz = (void *)skb_end_pointer(skb) - hard_start;
+ 	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+ 
+-	rxqueue = netif_get_rxqueue(skb);
+-	xdp_init_buff(xdp, frame_sz, &rxqueue->xdp_rxq);
++	if (!xdp_rxq) {
++		struct netdev_rx_queue *rxqueue;
++
++		rxqueue = netif_get_rxqueue(skb);
++		xdp_rxq = &rxqueue->xdp_rxq;
++	}
++	xdp_init_buff(xdp, frame_sz, xdp_rxq);
+ 	xdp_prepare_buff(xdp, hard_start, skb_headroom(skb) - mac_len,
+ 			 skb_headlen(skb) + mac_len, true);
+ 	if (skb_is_nonlinear(skb)) {
+@@ -5774,15 +5779,31 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
+ 	return act;
+ }
+ 
++u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
++			     const struct bpf_prog *xdp_prog)
++{
++	return __bpf_prog_run_generic_xdp(skb, xdp, xdp_prog, NULL);
++}
++
+ static int
+-netif_skb_check_for_xdp(struct sk_buff **pskb, const struct bpf_prog *prog)
++netif_skb_check_for_xdp(struct sk_buff **pskb, const struct bpf_prog *prog,
++			struct page_pool *page_pool)
+ {
+ 	struct sk_buff *skb = *pskb;
+ 	int err, hroom, troom;
+ 
+-	local_lock_nested_bh(&system_page_pool.bh_lock);
+-	err = skb_cow_data_for_xdp(this_cpu_read(system_page_pool.pool), pskb, prog);
+-	local_unlock_nested_bh(&system_page_pool.bh_lock);
++	if (page_pool) {
++		/* veth, the caller with its own page_pool, limits the MTU so
++		 * that the copy is linear even for programs without frags
++		 * support, and always copied into its page_pool.
++		 */
++		err = skb_pp_cow_data(page_pool, pskb, XDP_PACKET_HEADROOM);
++	} else {
++		local_lock_nested_bh(&system_page_pool.bh_lock);
++		err = skb_cow_data_for_xdp(this_cpu_read(system_page_pool.pool),
++					   pskb, prog);
++		local_unlock_nested_bh(&system_page_pool.bh_lock);
++	}
+ 	if (!err)
+ 		return 0;
+ 
+@@ -5800,9 +5821,22 @@ netif_skb_check_for_xdp(struct sk_buff **pskb, const struct bpf_prog *prog)
+ 	return skb_linearize(skb);
+ }
+ 
++/* Run the program on a private, page_pool-backed copy when it could otherwise
++ * change data someone else sees (shared or cloned skb), when frags have to be
++ * page_pool-backed so that XDP helpers can release them, or when the XDP
++ * headroom contract is not met. The head does not have to be a page frag:
++ * skb-backed XDP never turns the head into an xdp_frame.
++ */
++static bool skb_needs_xdp_cow(const struct sk_buff *skb)
++{
++	return skb_shared(skb) || skb_cloned(skb) || skb_is_nonlinear(skb) ||
++	       skb_headroom(skb) < XDP_PACKET_HEADROOM;
++}
++
+ static u32 netif_receive_generic_xdp(struct sk_buff **pskb,
+ 				     struct xdp_buff *xdp,
+-				     const struct bpf_prog *xdp_prog)
++				     const struct bpf_prog *xdp_prog,
++				     struct xdp_generic_ctx *ctx)
+ {
+ 	struct sk_buff *skb = *pskb;
+ 	u32 mac_len, act = XDP_DROP;
+@@ -5820,15 +5854,17 @@ static u32 netif_receive_generic_xdp(struct sk_buff **pskb,
+ 	mac_len = skb->data - skb_mac_header(skb);
+ 	__skb_push(skb, mac_len);
+ 
+-	if (skb_cloned(skb) || skb_is_nonlinear(skb) ||
+-	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
+-		if (netif_skb_check_for_xdp(pskb, xdp_prog))
++	if (skb_needs_xdp_cow(skb)) {
++		if (netif_skb_check_for_xdp(pskb, xdp_prog, ctx->page_pool))
+ 			goto do_drop;
+ 	}
+ 
+ 	__skb_pull(*pskb, mac_len);
+ 
+-	act = bpf_prog_run_generic_xdp(*pskb, xdp, xdp_prog);
++	if (ctx->xdp_skb)
++		*ctx->xdp_skb = *pskb;
++
++	act = __bpf_prog_run_generic_xdp(*pskb, xdp, xdp_prog, ctx->xdp_rxq);
+ 	switch (act) {
+ 	case XDP_REDIRECT:
+ 	case XDP_TX:
+@@ -5910,27 +5946,27 @@ int generic_xdp_tx(struct sk_buff *skb, const struct bpf_prog *xdp_prog,
+ 
+ static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
+ 
+-int do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb)
++int __do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb,
++		     struct xdp_generic_ctx *ctx)
+ {
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+ 
+-	if (xdp_prog) {
+-		struct xdp_buff xdp;
+-		u32 act;
+-		int err;
++	ctx->act = XDP_PASS;
++	ctx->err = 0;
+ 
++	if (xdp_prog) {
+ 		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
+-		act = netif_receive_generic_xdp(pskb, &xdp, xdp_prog);
+-		if (act != XDP_PASS) {
+-			switch (act) {
++		ctx->act = netif_receive_generic_xdp(pskb, ctx->xdp, xdp_prog, ctx);
++		if (ctx->act != XDP_PASS) {
++			switch (ctx->act) {
+ 			case XDP_REDIRECT:
+-				err = xdp_do_generic_redirect((*pskb)->dev, *pskb,
+-							      &xdp, xdp_prog);
+-				if (err)
++				ctx->err = xdp_do_generic_redirect((*pskb)->dev, *pskb,
++								   ctx->xdp, xdp_prog);
++				if (ctx->err)
+ 					goto out_redir;
+ 				break;
+ 			case XDP_TX:
+-				generic_xdp_tx(*pskb, xdp_prog, XDP_TX);
++				ctx->err = generic_xdp_tx(*pskb, xdp_prog, XDP_TX);
+ 				break;
+ 			}
+ 			bpf_net_ctx_clear(bpf_net_ctx);
+@@ -5944,6 +5980,17 @@ int do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb)
+ 	kfree_skb_reason(*pskb, SKB_DROP_REASON_XDP);
+ 	return XDP_DROP;
+ }
++EXPORT_SYMBOL_GPL(__do_xdp_generic);
++
++int do_xdp_generic(const struct bpf_prog *xdp_prog, struct sk_buff **pskb)
++{
++	struct xdp_generic_ctx ctx = {};
++	struct xdp_buff xdp;
++
++	ctx.xdp = &xdp;
++
++	return __do_xdp_generic(xdp_prog, pskb, &ctx);
++}
+ EXPORT_SYMBOL_GPL(do_xdp_generic);
+ 
+ static int netif_rx_internal(struct sk_buff *skb)
 -- 
 2.56.0
 
