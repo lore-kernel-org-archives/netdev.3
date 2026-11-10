@@ -1,49 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794335436;
-	b=YUedTYxLYye1r0U1RXb2gbuDdGQwtVqZBcGYeXwMmZOdvVN5fYJdD+ACMlmlBLyRubBD
-	 KEd4Gvh6H75Dv5wvr+qNTAbR6EUk0bdLSHbYMDiyz99Y/3QcHf/jQUVDeB+A/1lq1+pLq
-	 hASTg94UVppVq+jrIjHPuKOH2GKskhjH25J1GLSZJjTiaLMlE4x/vPgjNGux5UlnSEr5Y
-	 9P7jIhRlzOWNW9B2975unkUYrigqjJEN/jvoL4UYgbR/grAyvc/GsMnRSLgcJ5e1/9HOa
-	 unESvCmOzZ+jNt3dY0rKDi7OjeRvKRPTOlzTzoSl6k5M48TWwfRkDnFs+Odre84rLow==
+	t=1794335766;
+	b=lrxOzYKZinUG3dsIVh/PNdp3cblGX/RPKbK2JEDzukc4Wvvr6g3Jvae4RgbomnXIylsL
+	 oivOy8NtUtHzkNivNGtQGe9LV2ra/A3tCWIOiWzcKLGpBo7R0d2U+UVSMKdmSlPMy8Bwr
+	 GX/Sef/t0N1+zOv19TMDc0KQ1EN6WL69yqexeHAiQHveNKFyxFIj5QNyp8eYtyoi8m+In
+	 gNOpu2F1XzMTS1izWKmGb8qMmpw341Mcev6HSiZOGwpEDCCSxeFbbC8XXm9UFkz50Hhia
+	 ZLgtvxSt3JgctSldzVE3lJTFVFDJQbd7nA1AwtmuwPlXo3VSYXD4doRkq10hB2A3d3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794335436;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=s6BKUa7u4FDMuG4jud5vphMkBSBkv24ieHFnZ2nquQM=;
-	b=TWVPE3/Cg5H9jPY7cASeQqhz3nsNrNcc5bVHUexCdXZ7X6UBUU9gm/xtFzyGvnLeN0Xp
-	 OuOBhCuXSoMGv2Dyi7eqkSbbSYbFPxFv3vkKNfr5ivYEofBZqFDnCgenfs+3X+kNgB6EP
-	 6Lw45nXIPA5MzRJODB45K1DVfNBFlSnoboaMF1JLMwF+F1rqYfPf4UTXLBTSlC9LzCQWR
-	 4hEO8O4fzTrfgNx90k1CEJQymqVNGzHKtzly8q4tAI2HE0IqIBjOQ8cyuyo3gGD22EbpT
-	 /p1GXZLn+RtFUWtiCswUdulOpfISTGiraCwVgfSySd0QpDXJoZSXhF9v7Vrv3Tt4XoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794335766;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Tn7lonQfS7EeySjdPzobFE0NrPIJGEwMFpYBf1OhsrY=;
+	b=uSoqIie3/kcnIQ+02qdeCTJOMD186up6ilPjm3hUt9uAm7a/lDluRd/qaIJ0CYdSvwT1
+	 lWQ6gicqsEpachhhK+6iYFAgg8tYTHbjNZBWOptw76m3/NG+DyHaoTL807atIFSQ1h2ZK
+	 o4tno6KE5UpMZoHalVIbKHEf1Uy+Ua8M8UuJfBr46w8eJKsG75xhaTfevSkcjDulQepJK
+	 KrPvAJMGQbk15rI4Ou7J5MgscVf6hpfqOZF0fg+s6dZxcaLaeuMTOw1NNOA/lz/KzazHj
+	 sPm6PNCU1pKNQgsGz+L/3+Fg/EqQLK5W8fX3nSgh3B7pNerzddCdT2O0NcMmggD5tdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nmn6jdKu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HpjdJGSj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75CC606A31C;
-	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D09606A325;
+	Tue, 10 Nov 2026 18:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nmn6jdKu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5664F1F0089F;
-	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HpjdJGSj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A1E1F0089F;
+	Tue, 10 Nov 2026 18:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794335435;
-	bh=s6BKUa7u4FDMuG4jud5vphMkBSBkv24ieHFnZ2nquQM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Nmn6jdKu/g7Q54jYIu3uLMRQCPjdKbdcCsMnvk7mnnEeUahUZQ1lsJ7SfIQCJgtB3
-	 b8Yv5m6q3sWWeOe0OaAB3zCZaGiov0PCBNo+PuW/JkxXZtIwVAXLnVDlHGVf5L9tps
-	 B9vFh7OHoYDGeB3K9sgQ1Mo7eNpQKnzebQoHU/xJGX8U2FjLJpgTI9LmSr01Q72COd
-	 c6m43VOOFdS/GD+NwLK2Yfpk3muyw0jrIKU+LTbpjaKlmWxsQ4VXVS9VH2QjKD93ub
-	 WTSycRnUHCU1CD0ZcnzhHUYpLUNx3d9on+9g6y7O8A564aAD9gnCDBFB1v3GMSsZDn
-	 roI7lxHysPcfA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4AA6F39D608B;
-	Tue, 10 Nov 2026 18:30:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794335765;
+	bh=Tn7lonQfS7EeySjdPzobFE0NrPIJGEwMFpYBf1OhsrY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HpjdJGSjhBuA2WwjnLbFRsqr6B/TkZPFFJ4mFatHjrQCMXrhYRkJ4oNxiA1nw8k3d
+	 fSuMfRU7PpMBCPfjsILliRq4BRE6aLDK3Br/M44DI8z0C62fSZPPhWMwRmgc3N4xyu
+	 fRKJ7JfZRXnddOdn/mkSnJaaXlsFJM04ALW7y6pKaJPoSpGQhFFeco2x5aaBArUNFN
+	 q7CqFJd3CQtcBa0Qbf50zZK94UJSzcSP9fWLkY+/1tUTE3mS/k/E84nK2J22G/murG
+	 TRqy89yZs7UCaeR9oFfPqMf1d5jhySx/UdjDDrXvda6L1opivteaY3FLHxYxQrF0/I
+	 i++ETrIEaOQJQ==
+Date: Tue, 10 Nov 2026 10:36:04 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: Potnuri Bharat Teja <bharat@chelsio.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Hariprasad
+ Shenai <hariprasad@chelsio.com>, netdev@vger.kernel.org (open list:CXGB4
+ ETHERNET DRIVER (CXGB4)), linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH net] cxgb4: clear the sge maps and bitmaps freed on
+ adap_init0()  failure
+Message-ID: <20261110103604.3e841182@kernel.org>
+In-Reply-To: <20261104103309.24360-2-fourier.thomas@gmail.com>
+References: <20261104103309.24360-2-fourier.thomas@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,54 +62,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/4] ionic: report on-board sensors through an
- hwmon auxiliary driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179433543409.4180948.5401934262378267297.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 18:30:34 +0000
-References: <20261103-pr46-b4-v1-0-850ab7fbec19@amd.com>
-In-Reply-To: <20261103-pr46-b4-v1-0-850ab7fbec19@amd.com>
-To: Nikhil P. Rao <nikhil.rao@amd.com>
-Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, linux@roeck-us.net,
- corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- kees@kernel.org, gustavoars@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
- abhijit.gangurde@amd.com, ArunKumar.Prakash@amd.com, eric.joyner@amd.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed,  4 Nov 2026 11:33:08 +0100 Thomas Fourier wrote:
+> This bug is theoretical and was found statically.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 3 Nov 2026 18:14:45 +0000 you wrote:
-> AMD Pensando adapters can report board and ASIC sensors (temperature,
-> voltage and power) through the device firmware. This series exposes
-> them through hwmon.
-> 
-> Following the discussion in [1], ionic creates an "ionic.hwmon"
-> auxiliary device and a new driver in drivers/hwmon/ binds to it.
-> Guenter suggested taking the series through net-next with his Ack on
-> the hwmon driver, and agreed to his off-list reply being quoted here:
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,1/4] ionic: register auxiliary devices from a table of device types
-    https://git.kernel.org/netdev/net-next/c/ead2c8476c46
-  - [net-next,2/4] ionic: add device interface definitions for hardware monitoring
-    https://git.kernel.org/netdev/net-next/c/5794c810b920
-  - [net-next,3/4] ionic: add an auxiliary device for hardware monitoring
-    https://git.kernel.org/netdev/net-next/c/ae5d56bb947e
-  - [net-next,4/4] hwmon: add AMD Pensando ionic sensor driver
-    https://git.kernel.org/netdev/net-next/c/007548a7238d
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Please don't bother sending such fixes, there's too many of such bugs
+for us to handle. And clearly nobody cares.
