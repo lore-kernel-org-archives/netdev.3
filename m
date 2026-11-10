@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794343112;
-	b=gvuey+9iZgPrwgo74rqVI60E+54/zJpVl+K6wkqKftNZZHK5e3K+uNzrtvqxQ4JD5g5y
-	 Jj7awltQ5T5qF6MR+BZUEXhHVJs14IqPdtWOkPHTwpelZUsM3AnZOyVlmMlviMXzx7dIF
-	 vtokPf5VY2PxjwXxHv2GpHHK1lCYcG7u9bO8B3Ya83HUk3/8abIijvIHhRk28JkmGLvF5
-	 jToNJz4bRRsL+RmBmpwbvpl6z5BF6cw0GZ7pFu0pRBmho5lb1oYdv09JPIrpADP9hwJIi
-	 nc232QNvolMG2oe0F0lUQsAgf6R8FwNT4yTkephUsF1UO0SgDn23GC67EsXAt7y6IdQ==
+	t=1794343144;
+	b=ixmFlP3mp65RbY6dQZgEW8Q8EmFo0OSDVWGTB/VxFGGT5yDX6sfLYQnbKz8Jb1ZpfBzU
+	 23Ar2N58osYQ/8PjPdFDKVhahlS1YLAW0y1gbWRHW422kWOXC9ZU7YMXrbMKEejLQI3YA
+	 sjicSaZP8vOymiY/h8/mjqy9FYNfI7N6kPZGdHexyrczFS4dyJw0WRls1ORCW+3hdeDAl
+	 3Knozs7yk4GCh0hA+6wF4iP1aBeCVMByqkhzBRTjaWF+SLTX5q+ywAFU+D4N7TagLTyph
+	 Xucunae0QYbSL4MZt+aeNsOmDqRYupc9A3QUhvqoHcJKDinz86HlxvCqwXyQCuh/m1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794343112;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794343144;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=rWL1Kmv7mAHkdWfEPS1Zn8rv1uvTakq1n0zWir5tjAY=;
-	b=wdWXmJrYZlyOljYfUqLj3QwMAs/S21w/OLYtiacbqSXg4Ga2MB5wV6QjAgNCtRpuflZe
-	 iboONFKMEaTjiVmBlHkvyhGBF8ICORFHH35uCknE0bUN0PVQu2SQOcxfgTUgo7Sff9BNt
-	 MmgqvA1C0LjIuNT63gdvZnfVIRMCwMRkNBeoBkueDJvaHtNqkcbSv/WrwydWULYfifDlS
-	 H1+Ae2FM8RpuETBAZ4Xc4NX/Oa4lENvPmaH4CbWoI0kVO8xrdfQ0wg4IXRuRXAZqQQrTS
-	 dUj+GYq+M8+7ilw2kaCaia+ihcckOYFFWlK0jj12Ov2YmWUei9r4HrfQVW5IgFqdhkA==
+	bh=oGQPfOg6ypaB3MwmOwwiljkRXcAJPxgwK/FqKLjVxlQ=;
+	b=CVYwNUkC2YJptdE4xc4/QbC9TevdAacN1ZPVYxr0qwtWsOpi+AxZ2WMoDFyuCFsXSLND
+	 wGm9Kw+TQ1g96xGBMyYWuEqTXilLrsJyJO/1wGHQZgylnzX/3V4r7VBIJfpqctGC8Jn8O
+	 9V2tcivV9+K95TznGFbtNzJNFFlOVMae9ikqzCp88NGpcOgJ0O005BxjpyUJO/qCxN1vh
+	 D+uUL0oa6uvohmzSy/2P7UVdyWGHtEOSmPCcFh6tX50PSHyN3Aizqi3igfOdqCa3S5mo1
+	 m+KhkMN1L8tYsw2LLCWSWUSoCyAnmms9Isr/YPat2sBdCLihrUYn/D0HNHYApRU8mow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S0cniXBB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MOGUErbv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F1760A262D;
-	Tue, 10 Nov 2026 20:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFCB606A333;
+	Tue, 10 Nov 2026 20:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S0cniXBB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5091F0089F;
-	Tue, 10 Nov 2026 20:38:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MOGUErbv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B9D1F0089F;
+	Tue, 10 Nov 2026 20:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794343111;
-	bh=rWL1Kmv7mAHkdWfEPS1Zn8rv1uvTakq1n0zWir5tjAY=;
+	s=k20260515; t=1794343143;
+	bh=oGQPfOg6ypaB3MwmOwwiljkRXcAJPxgwK/FqKLjVxlQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=S0cniXBBSbAKwPU5LJmTHsLUkrO1HqQv11rasfD/psGONH8eC80I8KSQwkTkjLI6b
-	 XnkUDdUwQnPhFRf2NLkslK6dq3W/sAqOlctTZBNTtzKtrcfAsDU6JIqa1ONcsRkjgv
-	 oZhy/GycQfPdplQGnKDAco8MZO1QEF1y4gDVcgwljEOrzxVNfhGDM+L1brF3OjeFGW
-	 Zek42g0D77m/bI2HQuIdj7GTt1YdDVJsuBNyyYK4hFERt4aqts0zSPkbR7mmVcMFr+
-	 IX9vlzjAJBEbkwd36sFrboVpmjb5aeMSmLXcWCM4WIXFboWhg3b4QF0SRVHERCrX47
-	 Db6onH4qFIZsw==
+	b=MOGUErbvI0NvPlBiP+xxxwfFj1wVMhgr7y5RxYFEXlyXRLoxvIaIKVHnkiUdo9RvK
+	 WzwmDenCUmqGgqM7XHmXxRoFjMXIuObHesj9LHJI30honJ+APfTMx9mXKt9hjvRfWc
+	 wJ4Za7u1jgx07/Wl48rTasHVieQlc01YlGyCYUl+nvfPEijD16kvSpCx9Vse5CK0xp
+	 cADxT6tpzyDgJ3sA3+wvz06Sm96tHhOhehudH7CPhHJ5kyQXb06ggzEpMAzCeYqViI
+	 e31TkInsQIDQjuNExVGsUDwSnI322VWg+tdHiU1nsrwNaRHBndgceyCoeDSHdnpvxG
+	 aHHxSSUgpweGg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 10 Nov 2026 21:35:46 +0100
-Subject: [PATCH v3 6/9] RFC: net: limit folio refcount when copying skb
- frag references
+Date: Tue, 10 Nov 2026 21:35:48 +0100
+Subject: [PATCH v3 8/9] RFC: net: limit folio refcount when splicing pages
+ into skbs
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-refcount_overflow_stable-v3-6-318625d63a98@kernel.org>
+Message-Id: <20261110-refcount_overflow_stable-v3-8-318625d63a98@kernel.org>
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 In-Reply-To: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -95,29 +95,28 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
  iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7051; i=david@kernel.org;
- h=from:subject:message-id; bh=8WcF+eMICV96yVCjGSTifLoav7b/cDE4tGUfm9+Di/I=;
- b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BDO94xPoTdwnfeynl5fLReXSVd9StZMtGd1+rXHe
- 63no4h1HaUsDGIcDLJiiizX1uWkBq9pdSyLMnSDmcPKBDKEgYtTACbiMY3hf/WMGttfF3rMLma/
- XXOe52Bjneaq3cyslXH7s2YorZuunMHwT2uhp6DtOVubC/MdjD+V3zGZvuVu0H6XfV4LvofabH0
- RwA0A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2393; i=david@kernel.org;
+ h=from:subject:message-id; bh=ZTvUAfCXgF6VHkCx5yhusApI2I6MRRFPDQZm7ACvtSg=;
+ b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BARr2C5gT/TOFGtNsFcr8dkU0J8T/CVv7b3BARqy
+ 0K3M/7uKGVhEONgkBVTZLm2Lic1eE2rY1mUoRvMHFYmkCEMXJwCMJGjSgz/C2sz11hNsZiv+jX6
+ puFJ90nRQTn1qR+czHUk/cs4Qn6wMjLcsW3Z+EH4X/zKc6xr01da3/bvq5e6efGt/DS2V9eYK55
+ xAwA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 
-Various networking features copy frag references of an skb, for example
-when unsharing a cloned skb (AF_PACKET trimming a clone), when copying an
-skb (nft dup) or when building NFQUEUE messages. This is an effective
-way for multiplying folio references held by an skb, allowing for
-exceeding folio refcount limits.
+Various networking features use MSG_SPLICE_PAGES to add pages to skbs,
+whereby skb_append_pagefrags() takes a page reference for each fragment it
+adds. Pages spliced from pipes were already checked when entering the
+pipe, but in-kernel users like sunrpc pass pagecache pages directly. This
+allows for exceeding folio refcount limits.
 
 This is not specific to large pagecache folios, but with them it is a
 lot easier to reach the refcount limit, as page table mappings can cheaply
 create many references.
 
-Let's introduce skb_frag_try_ref() and skb_frags_try_ref(), which use
-try_get_page(), and use them in pskb_expand_head(), __pskb_copy_fclone(),
-skb_zerocopy() and pskb_carve_inside_*(). All of these can already fail,
-and their callers handle that.
+Let's use try_get_page() in skb_append_pagefrags() and fail with -EFAULT.
+Don't use -EMSGSIZE, as TCP would just retry with a new skb. The only
+caller, skb_splice_from_iter(), handles that.
 
 Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
@@ -125,182 +124,40 @@ Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 Cc: stable@vger.kernel.org
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/skbuff_ref.h | 53 ++++++++++++++++++++++++++++++++++++++++++++++
- net/core/skbuff.c          | 35 +++++++++++++++++++-----------
- 2 files changed, 76 insertions(+), 12 deletions(-)
+ net/core/skbuff.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/skbuff_ref.h b/include/linux/skbuff_ref.h
-index b6f6da556ee90..560ddc863bbec 100644
---- a/include/linux/skbuff_ref.h
-+++ b/include/linux/skbuff_ref.h
-@@ -44,6 +44,33 @@ static __always_inline void skb_frag_ref(struct sk_buff *skb, int f)
- 		       skb->pp_recycle);
- }
- 
-+/**
-+ * skb_frag_try_ref - try to acquire a reference on a paged fragment of an skb
-+ * @skb: the buffer
-+ * @f: the fragment offset
-+ *
-+ * Like skb_frag_ref(), but acquires non-page_pool page references using
-+ * try_get_page(), refusing additional references to a page whose refcount is
-+ * at its limit.
-+ *
-+ * Return: True if a reference was acquired, otherwise false.
-+ */
-+static __always_inline __must_check bool skb_frag_try_ref(struct sk_buff *skb,
-+							  int f)
-+{
-+	netmem_ref netmem = skb_frag_netmem(&skb_shinfo(skb)->frags[f]);
-+
-+#ifdef CONFIG_PAGE_POOL
-+	if (skb->pp_recycle && napi_pp_get_page(netmem))
-+		return true;
-+#endif
-+	if (netmem_is_net_iov(netmem)) {
-+		net_iov_inc_ref(netmem_to_net_iov(netmem));
-+		return true;
-+	}
-+	return try_get_page(netmem_to_page(netmem));
-+}
-+
- bool napi_pp_put_page(netmem_ref netmem);
- 
- /**
-@@ -83,4 +110,30 @@ static __always_inline void skb_frag_unref(struct sk_buff *skb, int f)
- 				 skb->pp_recycle);
- }
- 
-+/**
-+ * skb_frags_try_ref - try to acquire references on all paged fragments
-+ * @skb: the buffer
-+ *
-+ * Try to acquire a reference on each paged fragment of @skb using
-+ * skb_frag_try_ref(). On failure, acquired references are dropped.
-+ *
-+ * Must not be used on skbs with managed frag references.
-+ *
-+ * Return: True if all references were acquired, otherwise false.
-+ */
-+static inline __must_check bool skb_frags_try_ref(struct sk_buff *skb)
-+{
-+	int i;
-+
-+	DEBUG_NET_WARN_ON_ONCE(skb_zcopy_managed(skb));
-+	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
-+		if (unlikely(!skb_frag_try_ref(skb, i))) {
-+			while (i--)
-+				skb_frag_unref(skb, i);
-+			return false;
-+		}
-+	}
-+	return true;
-+}
-+
- #endif	/* _LINUX_SKBUFF_REF_H */
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 8da53d5b76fc2..1d44e9a4152e5 100644
+index f473c74956b8b..5e3f910eeea0b 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -2254,7 +2254,13 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *skb, int headroom,
- 		n->pp_recycle = skb->pp_recycle;
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
- 			skb_shinfo(n)->frags[i] = skb_shinfo(skb)->frags[i];
--			skb_frag_ref(n, i);
-+			if (!skb_frag_try_ref(n, i)) {
-+				/* Drop the references acquired so far. */
-+				skb_shinfo(n)->nr_frags = i;
-+				kfree_skb(n);
-+				n = NULL;
-+				goto out;
-+			}
- 		}
- 		skb_shinfo(n)->nr_frags = i;
- 		skb_shinfo(n)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-@@ -2298,7 +2304,6 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	unsigned int size = osize + nhead + ntail;
- 	long off;
- 	u8 *data;
--	int i;
- 
- 	if (unlikely(nhead < 0)) {
- 		DEBUG_NET_WARN_ON_ONCE(1);
-@@ -2335,12 +2340,10 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	 * be since all we did is relocate the values
- 	 */
- 	if (skb_cloned(skb)) {
--		if (skb_orphan_frags(skb, gfp_mask))
-+		if (skb_orphan_frags(skb, gfp_mask) || !skb_frags_try_ref(skb))
- 			goto nofrags;
- 		if (skb_zcopy(skb))
- 			net_zcopy_get(skb_uarg(skb));
--		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
--			skb_frag_ref(skb, i);
- 
- 		if (skb_has_frag_list(skb))
- 			skb_clone_fraglist(skb);
-@@ -3896,7 +3899,8 @@ EXPORT_SYMBOL_GPL(skb_zerocopy_headlen);
+@@ -4702,8 +4702,13 @@ int skb_append_pagefrags(struct sk_buff *skb, struct page *page,
+ 	if (skb_can_coalesce(skb, i, page, offset)) {
+ 		skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], size);
+ 	} else if (i < max_frags) {
++		/*
++		 * Don't use -EMSGSIZE, as callers would just retry with a new
++		 * skb.
++		 */
++		if (!try_get_page(page))
++			return -EFAULT;
+ 		skb_zcopy_downgrade_managed(skb);
+-		get_page(page);
+ 		skb_fill_page_desc_noacc(skb, i, page, offset, size);
+ 	} else {
+ 		return -EMSGSIZE;
+@@ -7575,8 +7580,9 @@ static void skb_splice_csum_page(struct sk_buff *skb, struct page *page,
+  * possible, copying them to fragments if not possible (such as if they're slab
+  * pages).
   *
-  *	Return value:
-  *	0: everything is OK
-- *	-ENOMEM: couldn't orphan frags of @from due to lack of memory
-+ *	-ENOMEM: couldn't orphan frags of @from due to lack of memory, or
-+ *	         couldn't take additional references to the frags of @from
-  *	-EFAULT: skb_copy_bits() found some problem with skb geometry, or readable head
-  *      payload would be mixed with unreadable frags.
+- * Returns the amount of data spliced/copied or -EMSGSIZE if there's
+- * insufficient space in the buffer to transfer anything.
++ * Returns the amount of data spliced/copied, -EMSGSIZE if there's
++ * insufficient space in the buffer to transfer anything, or -EFAULT if we
++ * could not take a page reference.
   */
-@@ -3961,7 +3965,11 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 					len);
- 		skb_frag_size_set(&skb_shinfo(to)->frags[j], size);
- 		len -= size;
--		skb_frag_ref(to, j);
-+		if (!skb_frag_try_ref(to, j)) {
-+			/* The caller frees @to, dropping the acquired refs. */
-+			skb_shinfo(to)->nr_frags = j;
-+			return -ENOMEM;
-+		}
- 		j++;
- 	}
- 	skb_shinfo(to)->nr_frags = j;
-@@ -6966,7 +6974,6 @@ static void skb_carve_reset_headers(struct sk_buff *skb)
- static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 				    const int headlen, gfp_t gfp_mask)
- {
--	int i;
- 	unsigned int size = skb_end_offset(skb);
- 	int new_hlen = headlen - off;
- 	u8 *data;
-@@ -6994,14 +7001,12 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 			frags[skb_shinfo(skb)->nr_frags]));
- 	if (skb_cloned(skb)) {
- 		/* drop the old head gracefully */
--		if (skb_orphan_frags(skb, gfp_mask)) {
-+		if (skb_orphan_frags(skb, gfp_mask) || !skb_frags_try_ref(skb)) {
- 			skb_kfree_head(data);
- 			return -ENOMEM;
- 		}
- 		if (skb_zcopy(skb))
- 			net_zcopy_get(skb_uarg(skb));
--		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
--			skb_frag_ref(skb, i);
- 		if (skb_has_frag_list(skb))
- 			skb_clone_fraglist(skb);
- 		skb_release_data(skb, SKB_CONSUMED);
-@@ -7131,7 +7136,13 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 				skb_frag_off_add(&shinfo->frags[0], off - pos);
- 				skb_frag_size_sub(&shinfo->frags[0], off - pos);
- 			}
--			skb_frag_ref(skb, i);
-+			if (!skb_frag_try_ref(skb, i)) {
-+				/* We referenced frags i - k ... i - 1 so far. */
-+				while (k--)
-+					skb_frag_unref(skb, --i);
-+				skb_kfree_head(data);
-+				return -ENOMEM;
-+			}
- 			k++;
- 		}
- 		pos += fsize;
+ ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
+ 			     ssize_t maxsize)
 
 -- 
 2.56.0
