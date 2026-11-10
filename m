@@ -1,80 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794327240;
-	b=IWFT87fZHspwT0MSdF3WaukFRSKtbNzwqXEso3E8w71DYmmfORfvRiEnVrpsSRANUu/L
-	 /+KXn5efN4S/PVTit18RRo06cZyjfAzfomEWA7196aGhLkWtRzR6YvJv290CCYDiehyJ0
-	 fOJ9dLOZ0LRVVMNen+ZxbEiUGad/zXpHgk0quUYR2kIOUxMgUTJ0RBd3pPQnrm9XyVoB0
-	 NHmTu4kkcUUlHgkM78j21cMIizjYp0wF+61SVK8KEjBikquh/MTeTP8LqKwem2KCVdqXP
-	 IUY+10Ja6yxXkgp++bR6GsGIk2kpXDj5Swdf7m5alEq0WitJz8jGNG1pXaA/5a3dA/g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794327240;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=g3puA/Rs8Op3gQUg0J/vl+syCCZwXxu4Foqvmyce9W4=;
-	b=bC6xzHoajW8+ulg5GkiLAJf+nho9jJqHzhDM5P6VgRCgQ2G7Wv6ncl597X1Ibs/tGddU
-	 dWu+E6xy1e19CphnfgEa0mGz6YCwHmU/Lsres7NdQOtuA+Dfx/VrW9+su+d9DfkFBRYJW
-	 K4Qiy8nZb4tKyQ+cIUIYmj9IjCEFmobO3Fk5OTbx3bxPr3KZ4ojoFrsOw0Pzab2o1AZmK
-	 YZNBZ93KsczuPVG04a20IWUejq+lKNdb4COgoEZzpjr2rs30ENEoiLP0ozybPkd9wvsFF
-	 ViiJYozhOOv/BqVT/wvutFFvuB6qKvzli/hamoSbDmA5th8DVTT7heDHoUoy0+Hfrug==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=schaufler-ca.com;
-	spf=pass smtp.mailfrom=schaufler-ca.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RDGd6J64;
-	arc=none smtp.remote-ip=66.163.184.49
-Received: from sonic317-38.consmr.mail.ne1.yahoo.com (sonic317-38.consmr.mail.ne1.yahoo.com [66.163.184.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794327227;
+	b=n0bEI2BKV/172hYmHf7VAet/DBeGvLMH3loZ9Dz1ibguWmIv0HOYN27yUhxB3KNUYrxP
+	 X0YTt6NT/xQSPv/Lt90+ikw1IEvLN1c/DwLFY7TWso7RhP+L6V66BaIs2WTUeNMzpYfnP
+	 4KlpNbStFX9kb0F047kPdaaVVHsqtJyMHMhxwNBPStm6oCHKNN0m38duh89IVb+CbqB0Q
+	 7oVpEwgxUte51tA1UKesjghaTQ32N88c1VvB3l3vjdWW+tEX/1C6Cz+tOQ7KWI7sl04zm
+	 VAeodHcbf54B+FmUGlaBtrFZXoTfNMXsG4bnjGr+QcFSNh7FtCr13bHBDMQjloLLG8Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794327227;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:X-Sent-From:
+	 X-URL:X-Accept-Language:X-Accept-Content-Type;
+	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
+	b=Lur/ks3BDapTHotLYBHl2IK192e7Swb7zbHSvRYW+7mf/3MP1sTgGhj2ltAZR4B1yzfi
+	 feZpLNeFfsoXUr0wNnruAy2950pkFGXFev8Z7j+M3ab6T3XT+Wypptx8eKRpT6bFTYJIp
+	 jBsk61yChvuhJf67pSq5wqtyVgo1HUkogKd8iv8eFZ1pBUbqEU04JOyE80FkhWvMN71zE
+	 OY2rUkqZjDm98VKesS127/pFEeRqPx9LtNpjcK9AcpDygKduAwCdlq9wM4wFGoJx9pYtB
+	 2qgpEt5QS4txh4jMJmiIVN6ESnPBmGMGAsm5GMqSSOiOzjCGzV17ESVOMaxm3m4l8Bg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Lg1kQnDK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98585606A332
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:13:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98585606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schaufler-ca.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87335606A31C;
+	Tue, 10 Nov 2026 16:13:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87335606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RDGd6J64
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794327238; bh=g3puA/Rs8Op3gQUg0J/vl+syCCZwXxu4Foqvmyce9W4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=RDGd6J64KFdUM7VGvUfJOJ8S39HfQojQbc02rHRHnll4+eFp09C8JD6kW8aBOQLyrqcKGr09PqSQWggmf2bfP9Vhj6Ope4/1O7EHKejyYQi59nBV5GLSE0Mt47vDBq8/eSYpTzOP065mJIuWwTzB8Frbmzr1bRSNaNCceXs6fsVHkW5xQcnUh3twnWE32aF9l35SVlz0GPlOQdhXi8a1Lv7heecxMJuENe5Mm07v/XnTfVhUI90f81+5pxtKs16ZyZ1dBHONujX86KEr8oFHMAXmZZWU796BbMWTn0fb4rLGhoyytHv1F0nrVY3xsiJrZOTdtlfpVEy3yMrKFWNwEw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794327238; bh=sYEQKp0KtFvQAK0J3M4QRw/Tkxc1uvwLJaeWJQ8gWyZ=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=BwudvB+03jhVnO10NtONX7aiHcEuZP5bhu5eG/BN0jxXhZmUudkpUnYCE1m7KXbFIBoi5+m1c4k0Jkh3LdYjJm/Jp2lo7/5h3H7GJwL+cSj5G0LQ3rC02xp+Db0QAoeHdKgoVCzGep5TVAqC3Yq4uYu9qBiMTU4x444Ysy/OaSw9+yGk8nbHmxvUKuMqlpoKwmsy7sbGhMpQA27xXFQovpYTxcDOclmuAadh+IhsAQFlkB/PDw3uPsMVwpbJVbSsn0iQWd6YSvx7pYYWz5VAQsnU738WymI8Z4LIo1aK/908HH7j4MmuOOP07fBh7jrpoWGIi7Ads5qsXEbvUFTkqg==
-X-YMail-OSG: 4a8g204VM1n9PqiRa7yv3CpcO8VH9DBXllKXBFIvB8iIKOCdy1oyCJDXz.qc1xz
- pikdKsSa0vyEI_0VrAIE.SJA80Wb.KBtgC49c6.wmwlO1amPEf0yHRhYnABpmItnZOEsIKqpGPCA
- oFFeOEUyit70BQmpM1.kjy7Vm17d54mv1rfu8lS6v.xU.PwtD6Bp.tfE3ojQbM.C6X7rGGLNKRNa
- zetOw2TVFmA1A.wnSWTwZiIEEl_rEKknXXH6u7TXA_6_.XOKDDySO..E28RubUtd74UWM2Uv8aZ_
- v0qezE8MJ9WFmzj_9i481qgsj9tyGjXb.awkKulhb9NgB.GhHC1L5FcOxOYG36TOWScQXrKWEq8m
- m3A26J2RlJroVkRXbo2HrImRvDzsXe.jNd8qxSAqoInFulAmasIRdTkavo9UabjpDQLtm3bJMHdV
- ravk_TH6Xa9rSX5Xg4m4azf2JyThWCMO1DZI2Iwm27HSv6E8wWqivGCVTmA.XhwJdW0Zndq4OxfE
- nKxwlOCbPgcB3_BAsWxXug80z.gwtjyk3LfFwbEPzwfgF0m92XC_AOaDemlFRwDWj2XeFcvo8.7c
- PH3XDwJ5SykDe_Ic_2r9Bpet52fWyXiaOzqJO7STLFBNRoJp1dklQesTH2iX0n48cKb8wst_HBYS
- 1.NXayAYbPR6lCIkccrKXMOCPKu6rLinl.w3jm7XMf7TdAj81lrNRaj54SQt4JDxl3_er44tSj6e
- vVZsV.6stxY21Xpe12CsWtuJ9i0W.CSkIK8txHnnWvh._cdVb6EyulHbkskfu3hPwFovNR75EV_R
- Xt4rZscdTC6VPrG2kU.P8MyZWjz_fcvHR0dZyBP5KlCTTtjhXRk9kRy3QjNsorL5.A6B1cfFEaAk
- _AEKEYP8BruqiPLlAgyFM8Z.8u_2OGdd1jDvSovuE8xLfaEyirmGRLyEfD_XyKP7wTK.PqW4K932
- lAsWrGoJLGjTa_ZbrjXR0igCzNFg_3hq1yU82MXS0kNXiCi3KmKaj1K51gy0s9lK1BeBk1OM5xNY
- Hutcgt47SRJCIBJucehLSDs3cOIM9YvPDQ5d0WIqaVApG7PETw0Qa9zJzQFUVgRersz5BDaUL5DV
- as3fiZVF.ftPgP5q9imZs_5DBiNy16gaqiyu6Clsoxd3B8HJ3FXDMCMfP.KNaWKbI5fkZ0nvs85Z
- L1bYXbd0G3G5W51iQjtuAIokuU94jV6NquWJPuJfGg.kx9axW0MnCJEAVdaqvaIK6dYG29Hzoq0y
- _siDbT2UVD.SC_Ai7d7GRsGNuuS8Xf1IDNCAqq._UIyl36r1V4JeNck45lHJwh1wC.UyM9PJ3IgU
- cXD5Yef270fy_7uj6dJxB9we1gQ6.GdeQLh.uM35x_9iidC3zFdGLJB08ZieRG.zX5EweOVHoV29
- w8pLRtlJq6aVZzaYD_eLA.4v_pg1H3zbqG_6FZwReQ3aRu__yALuggSZTDZBge5z4DD3cyCKdXuJ
- fdAXYhvzhfgYFV7ebT7Jepsh0QgK_USUXRHyKus5c5eSqqTfnDOmiq8IuOoWzvWRM.ttHHmPtEX_
- tnucnxdlFSvCuxYNs.FRn0g6mvqli4vnzySQq1yUfqopylR8eNQmr2AX2o.xF5fu2KxVwE3P5vWM
- aGNGu70BGvxgkIEGTXdBBlh_3XQI5U0HwzNfP38mdUhjjGqNThgAHW9.eDNG05hJsPKCtt4QV18c
- rqcJKhYzwhPSY74xsUslsJa6orTvPYlbC0xgIVi98r34bEEa7c_TGBfIhp41p6fsHkEt6uu.p64w
- Eq77mjiPzmnx54fHtet_cyCF6RbW15Rm3_o4syW9iXsVKyhCGdL_3ZVp32E284C2FFy_leaYePZJ
- 87zzdzIRQCNxYkPXQF8QiWVms3NaGb4xfgV67vTbBKeyaB2W9RPIAzGoqfqS9maZDETnLp6oKgOu
- 3j7Cb9WsrP2sfJ3tIt229KLDQoA_CZshPnym48HYnJaVivYYeM2j7zdFKsYy8KKwbWH4Hixz86lP
- 7CW1LIX.T0a_eUIXxlUOjPr1Otm.QLTeQ__8p_.5prn1LJeG5eueWUUJ7ybnYqsjFOHBxUG8hZHk
- xdpHjuFhEIy7ilpVYrOEIu5pP7qD9KVwJ6wI0npIhNiJHyMQudG2.G.mWXxgaX48oKnM8gJvG6o1
- CnEd3mACQAjw79eZXQh1OKhbiKuskcH05P2CxD3iKGkvPzxmlVmQQ35xAZJ9HzZy6Z9KPZ1rRIfv
- yNhawAEJ1APH1m125O0E7u6qAmo3C30Xw180TcsLCbqiSZiW69D8IBf05Vp1NrB9JfAW1IUiUXZy
- gsmLO8BBi_PZmmcdoWZRwhFNlX8GNtbao
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: cfdf2d2a-b498-44b5-958c-5f67e753d496
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Tue, 10 Nov 2026 16:13:58 +0000
-Received: by hermes--production-gq1-fd7994565-nddcd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 477e123a5d70e851d8294a1398b4519e;
-          Tue, 10 Nov 2026 16:13:53 +0000 (UTC)
-Message-ID: <b943c17c-32a2-4c59-9037-a7f41bd163ea@schaufler-ca.com>
-Date: Tue, 10 Nov 2026 08:13:50 -0800
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Lg1kQnDK
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 58C18201F43;
+	Tue, 10 Nov 2026 17:13:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794327219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
+	b=Lg1kQnDKiBlvjcWBFMbu85dr5l5u6fFurA9o3sJXI9SAWON9h/OOne0FEmmCHdbryqbxmO
+	jsgxsQdjVbe29xlBEtTpULQ6ksbqKuh2JpKJ08Pqez8vRV7/f49zbztLdhLERxurSAkXNP
+	0hMk8JhzuIa8qOauKMCTAJPXUq5tLQJZ2C23W4T6pxncl03hKtDz4Z9Zjrd7hPOjQlvv56
+	PS+ctYgG3U7GLTrxAFPpsJmRRLwFG/Xup+AJcmWumxnH1h38WShMbVfir5iBg38Si1+VRy
+	ghPwKSxQ23EmJQsT9pKlwgG5oeQhlQ7waScSxVZlZJ1eD+YwToNLRzg5NsLJcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794327219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
+	b=Dt1ZXJeCmMJeQkI8G2Dgguhg5uzlcHH2wHlvlJIPxtccXZjn1EAMB407WlpTZlDzQ/WBoT
+	5P7DKJTgS6fo3rxK5eIPH4ZcJd4f69gjpqudyc2LJIQxGppK6Yx9BzV5e/1C2vVfMFAXCF
+	n+yRBVQvjtHZkOntNgLLiSviSm02oTQroXnpAWQR/NkQqc5khdqKly7at7U4kYMObUy88f
+	QTrrxj6ck/B6GGWl8p8lU6/WBq6WpVLXpyFrsseHhOrMQx8fXk1ByWlE5LnBshphv9K1m/
+	peamLPy3aaoMm542pHmhir+/QJl7ecdouQZLA4k1d/G9VD2bKUwwFlXJjruDfQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794327219; a=rsa-sha256;
+	cv=none;
+	b=gO1u6YbOidmUa2BIAMYAWcMyzESRTFVrR7SEyjKj8RqsYeXHpynQGTMxe7rQRNGsEncpIw
+	if0lc2I+bXT2OMdc1HStb+jWqwpXLo0ZzZn+5lLWY+Dnp9N0cx1/T8U5gTdqz3UZDP3lDM
+	9XzCFLqVBIoVKtmq/mhzyUL+sC2ulQDiqpJ5qbNHDbLXWM/hJHgJAJq/qdpbZnLyn0HtO+
+	I0EJ7WylsYeurWvueKsKNqeJRe9IEYs5DyH5EqYwx5lrIyXhqptGHMY81BATJ6QbKLz9H/
+	4xtwi40sKwFweveSIja+ANO60cpyo54D50F3IFbEhDNQYNwTE9Vedfg9OVn+XA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xQoTb-003WP0-0v;
+	Tue, 10 Nov 2026 17:13:39 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xQoTb-0000000CVHQ-0iZS;
+	Tue, 10 Nov 2026 17:13:39 +0100
+Date: Tue, 10 Nov 2026 17:13:39 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v1 6/8] net: dsa: realtek: rtl8365mb: add QoS
+ baseline and DCB default priority
+Message-ID: <avNCswwpqAHHpAma@pengutronix.de>
+References: <20261002115850.962676-1-o.rempel@pengutronix.de>
+ <20261002115850.962676-7-o.rempel@pengutronix.de>
+ <CAD++jL=tuGRjbKqLhSLTobRC00UJkG0XhWxguxRRwDOTQLHd2w@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,65 +108,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] cipso: stop modifying live ip_options_rcu
-To: Paul Moore <paul@paul-moore.com>, Jann Horn <jannh@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Simon Horman <horms@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
- netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
- stable@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
-References: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
- <CAHC9VhR+U3i8xNce8Ps8k76EZr_AeVf+fHET_Ncu1+yO1G2zSQ@mail.gmail.com>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <CAHC9VhR+U3i8xNce8Ps8k76EZr_AeVf+fHET_Ncu1+yO1G2zSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+In-Reply-To: <CAD++jL=tuGRjbKqLhSLTobRC00UJkG0XhWxguxRRwDOTQLHd2w@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On 11/9/2026 12:13 PM, Paul Moore wrote:
-> On Fri, Nov 6, 2026 at 4:40 PM Jann Horn <jannh@google.com> wrote:
->> cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
->> socket, and tries to remove CIPSO options from the middle by moving all
->> subsequent options.
->> That's not allowed - ip_options_rcu can be read locklessly and must always
->> be consistent. For example, ip_options_undo() reads trusted offsets and
->> length values from the options buffer.
->> Fix it by doing the modification in a copy.
->>
->> The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
->> propagate memory allocation failures.
->>
->> Triggering this bug requires that the system is configured to use CIPSO.
->> (Setting up CIPSO requires privileges in init_user_ns.)
->>
->> Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jann Horn <jannh@google.com>
->> ---
->> I've sent a separate mail with a reproducer to Paul Moore.
->> ---
->>  include/net/cipso_ipv4.h     | 11 ++++++-----
->>  include/net/netlabel.h       | 11 ++++++-----
->>  net/ipv4/cipso_ipv4.c        | 16 +++++++++++++---
->>  net/netlabel/netlabel_kapi.c | 24 ++++++++++--------------
->>  security/selinux/netlabel.c  |  5 +++--
->>  security/smack/smack_lsm.c   | 14 +++++++++-----
->>  6 files changed, 47 insertions(+), 34 deletions(-)
-> Thanks Jann, this looks good to me.  In a perfect world it would be
-> nice to get Casey's ACK on the Smack changes, but since they are very
-> minor and basically just pass the return code through I think it's
-> okay to merge this in another day or so if we don't hear from him.
+Hi Linus,
 
-I don't see any reason to wait for my testing to complete. I'll shout
-if anything fails.
+On Tue, Oct 06, 2026 at 01:18:11AM +0200, Linus Walleij wrote:
+> Hi Oleksij,
+> 
+> thanks for your patch!
+> 
+> As mentioned I think the main logic of this DCB stuff needs to go into
+> common code.
+> 
+> Whether to use rtl83xx.c or create a new file rtl83xx-dcb.c with just this
+> QoS DCB stuff is up to you.
+> 
+> Some detailed comments:
+> 
+> On Fri, Oct 2, 2026 at 1:58 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> 
+> > +#define RTL8365MB_QOS_QMAP_IDX(_nq)                    ((_nq) & 0x7)
+> > +
+> > +/* Internal priority -> queue-id map. Eight tables (one per queue count),
+> > + * indexed [table][prio]; four priorities per register, 3-bit qid. An N-queue
+> > + * configuration uses table N-1 (1Q is table 0 at 0x0904, 8Q is table 7).
+> > + */
+> > +#define RTL8365MB_QOS_PRI_TO_QID_TABLE(_nq)            ((_nq) - 1)
+> > +#define RTL8365MB_QOS_PRI_TO_QID_REG(_t, _pri) \
+> > +       (0x0904 + ((_t) << 1) + ((_pri) >> 2))
+> 
+> (...)
+> 
+> > +static int rtl8365mb_qos_setup_queues(struct realtek_priv *priv,
+> > +                                     unsigned int nq)
+> > +{
+> > +       int table = RTL8365MB_QOS_PRI_TO_QID_TABLE(nq);
+> 
+> Prio to qid table is nq-1
+> 
+> > +       struct dsa_switch *ds = &priv->ds;
+> > +       struct dsa_port *dp;
+> > +       int tt, ret;
+> > +
+> > +       dsa_switch_for_each_port(dp, ds) {
+> > +               u32 reg = RTL8365MB_QOS_PORT_QUEUE_NUMBER_REG(dp->index);
+> > +               int off = RTL8365MB_QOS_PORT_QUEUE_NUMBER_OFFSET(dp->index);
+> > +
+> > +               ret = rtl8365mb_set_field(priv, reg,
+> > +                                         rtl8365mb_qos_sel_field_mask(off),
+> > +                                         RTL8365MB_QOS_QMAP_IDX(nq));
+> 
+> This sets qos port queue number to RTL8365MB_QOS_QMAP_IDX(nq)
+> which is nq & 7.
+> 
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> > +
+> > +       for (tt = 0; tt < IEEE8021Q_TT_MAX; tt++) {
+> > +               u32 reg = RTL8365MB_QOS_PRI_TO_QID_REG(table, tt);
+> 
+> This finds the reg for table nq-1
+> 
+> > +               int off = RTL8365MB_QOS_PRI_TO_QID_OFFSET(tt);
+> > +               int tc = ieee8021q_tt_to_tc(tt, nq);
+> > +
+> > +               if (tc < 0)
+> > +                       return tc;
+> > +
+> > +               /* QID field holds the traffic class */
+> > +               ret = rtl8365mb_set_field(priv, reg,
+> > +                                         rtl8365mb_qos_sel_field_mask(off), tc);
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> 
+> And sets it.
+> 
+> In a code dump I have for RTL8370 writes the same index into both registers,
+> so something like:
+> 
+> {
+>    int qmapidx = RTL8365MB_QOS_QMAP_IDX(nq);
+> 
+>     ret = rtl8365mb_set_field(priv, reg,
+>      rtl8365mb_qos_sel_field_mask(off),
+>      qmapidx);
+> 
+> (...)
+> 
+>     for (tt = 0; tt < IEEE8021Q_TT_MAX; tt++) {
+>       u32 reg = RTL8365MB_QOS_PRI_TO_QID_REG(qmapidx, tt);
+>       int off = RTL8365MB_QOS_PRI_TO_QID_OFFSET(tt);
+>       int tc = ieee8021q_tt_to_tc(tt, nq);
+> (...)
+> 
+> So we compute index once and use it both for port selection and
+> table programming.
+> 
+> Can you check this in the RTL8365MB manual, this old RTL8370 code
+> could be wrong but it's also the way RTL8366RB does things.
 
+Hm... good question. After some investigation, I think the register
+naming is misleading, and maybe the RTL8370 code too.
 
->
-> Acked-by: Paul Moore <paul@paul-moore.com>
->
+The switch has a pool of 8 prio-to-qid tables, and the 3-bit port
+field is an index into it, not a queue count: field value v selects
+table v - 1, and 0 selects table 7. I tested all field values on HW
+(RTL8365MB-VC). The field does not limit the queues either: with field
+value 1 the port uses whatever queues table 0 holds.
+
+See e.g.:
+https://github.com/openwrt/openwrt/blob/c46ccb69d17e584479df849a107423175a143c83/target/linux/mediatek/files-5.10/drivers/net/phy/rtk/rtl8367c/qos.c#L45-L92
+
+In v2 I'll treat the field as a table index.
+
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
