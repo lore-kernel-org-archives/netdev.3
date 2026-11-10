@@ -1,100 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794312126;
-	b=5pbOQWaMLzjsroBGuDjuIwCqE//9otszllWRfaBfFYH0htt2vPiODPSsq3JN9lYAYs1K
-	 ePbbcCn6qmO3CMFcS95bXCjSlmX0sSe0riTTwCMLoGXeNhNDCNH6exQFZJUeJEkiRK6SE
-	 5ImyrqHH4LalzHdUedsUhyL7VDO2GCNKLRSOKnoG6mbk4IGSE7qC4DWm0mwSedjWAUZ0C
-	 6LRNmTjxer9YBjsv43ZIS/xEbeIExi87SYUMi7h2QOSxUZkffbm42JGIKfzTOaVP3ddah
-	 71XU2KmKEyS/b1+xp+/r9qQiT+JlDpKT7MOmMN/YAp6qwirhZr/6b3tNc59pP9jwHmQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312126;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=c7Bl+YGszqCuzVBCUY8SnSGUM1w0dzAscktRMso/r9Y=;
-	b=txf8CkKMs3IqrqXw+4jo6DFwcxc2cAjHkc98sE+RAwHPeIyEQf8/lV51FVn3c6ITufUX
-	 DemRUbLLXDAHFWiH+RqLbDMI1n1bgEeZisof9svxLaHSS6cOY2Pv7ObBoxwkGXtTM2q1r
-	 lo2UJRiQzL2HRo5OKpfZxJENKhpz+xj9hIvNvinpEIu5fQqK/h9Ch0ozCL1SEAQjXhekN
-	 wba7pj1+I8gf6T2tR7VI+r8J9IKS3jpeTP4IVWSYqW+TbJm55JXt/rNEHJdW6gwRRYCjT
-	 k+j+jUvt5SWMg1sCKQTdPMoACJKq+mxQjQfs+UbuQ80CiD/VPcfMjbj/UP/VlxlykOw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AMnSWIDh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.45
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794312161;
+	b=AzRlnR9Wx+G4WP5LgKgLSDnhuPF0l+QB5fTldR97eE0w6DeutqK97ZotefBQ4Zu0TfEx
+	 aqoq7L8XWXGZm90oNIV+rjuDTw5DnxRVXAszoYiFIUIgL0It09bIt4iI7R8iOPTro/7QN
+	 ovmN37YdcnNsFEc+P+uJD7m0r6GT9zVvCjkDH/aguOVy0GZbPuKMihylPGzPu+Y7uUz6N
+	 2SUk9bBW8L3FnJREH6o3AtyVHMS45/PRckBtl+y3og/azEAFzswKs+o4dUezNHlM83Z1D
+	 rNy0/T6D/YZMBggV831YnJBKt9kYyuErwjyURw/8WeSEkPRGr688GP/2W9eBnzKYXvQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312161;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:
+	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
+	bh=SH/FoN6uZbvhXWx+mjNqxG+5UNI9GCQnZ6S37gnELZA=;
+	b=fBwTqWAwvVLPfMMTc+2PDh+orDURJcBgvoXun4RhsnBltlvIvhai1e8+Kvd8LSK5bM4n
+	 OHv1JngOZRINR0ovhVybyEv1W3Td4DWWCga/QrIrbCI/dGpFrhwNXBimL0T5m9l/H7IGK
+	 VInh6A7W8iofLOy4C3S5Xq1OcV7pz3u1G8DyqCi+9Q596qzFuU15X0skg+HEM7sEU2/TV
+	 DRW4R5G0Js25aTUDh4E8deif3hjU5MUFEm1mIKae2t+jf1uTVhRV/2PCoSrJOwCI3/S/i
+	 P6XOUlhv5l5plrkp8UMJn7sAL5p7QJBUi+YZb5j6M9R7+XmLAadPCSk0i8S+vGQ0GVg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kUZTMrNx;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C261E606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:02:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C261E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB425606A31C;
+	Tue, 10 Nov 2026 12:02:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB425606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AMnSWIDh
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4d473cfff6so271282266b.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:02:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794312124; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qLqoJLUu41pDh1qy4oioGrW6e49q+YNkmYX+sA3afNCO8QkfP0na5Tr7zHvW6B7wcC
-         8ZwZ2cZfEL03BhseOOfboPkFEXis+2vtlb61eEVs4JbykS3/IHS7AxLtpu6tZD5DIR3B
-         +QuJM6iKEg3+agbyE4MB2EZ2JC9tPsmASJskXutly6jA274Qh9bTqu7wH/ik8DABSEsG
-         qKmHrkQzupy3TbVdDVoJUCyuQfVlShuAC6eUU620FphQkAUYS6n6u3WR66klNYdKCi4j
-         onSRnZ1y5AJqvWHPZN89IR2gKVOaW/rtQAMfZpvan2OIpcBJFUcY5xtmfhdQHfLtDSrU
-         wp5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=c7Bl+YGszqCuzVBCUY8SnSGUM1w0dzAscktRMso/r9Y=;
-        fh=FdtHwaz8qJKUTHNeubhW/81PwichVRAIc2vANP4hQI0=;
-        b=hPLPFVQVctwT8D2hVkmbfGwJSJtW4fiPT8Y1Klxa7+bxqJbj8Azb/Hc4aDGY6NqEej
-         dgg+Pg3g7/lU9rJ7qq1+6h40KK0mrH0B6fvCOJNSAyFI1qDih4TieKc+lGmu6+cJpQQM
-         JUd6BxX999LpanpuP/eSEBopaCzL/jwZfgkr0Xu/4VV7vjkmmtSFsSAMFg3TB2vflkbW
-         MaUyavhrirBn+2haiZonxQcJOSUxTjS2tfl8vyj3o4gHpTapJ+IlAbsWYteG9HzJbFWU
-         g0AwYOjFaXbe20rdDsUeF9+s8m3szdLQ6iothVpvdfAkhi+5NpmmHFiEbEy3eaCnGPII
-         8HjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794312124; x=1794916924; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c7Bl+YGszqCuzVBCUY8SnSGUM1w0dzAscktRMso/r9Y=;
-        b=AMnSWIDhWielMFiButlvuEHVLmK4B9OId55+zEF8ky/Re8eeYl2lFLsV8CwqUbyLyB
-         Eb6uSfzXxt4fmAkFARHqpsv1zq3pINmPinDIhdiMFAZTkct0hSrsrmENEwKxwSDRkHrB
-         QhJg66qbfdGucDM84o7nKwhNUs3uBQ614CpFgjqAzCAxlP6Z77Z/oLyJQVPoqn/10BsX
-         3OLyXCmY9SclyHseShw1c6JGjTKBSdtlCUlhDLRdCGgsEjTsWFBPMs8NFmBPdrPWUIWh
-         q63Nu8NOJlWR9GTjmfu6mXO5DF01grCHvJy1+Jm1nqCAeL/Fl8beNlIcZ4McnkYCHF9x
-         xgww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794312124; x=1794916924;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=c7Bl+YGszqCuzVBCUY8SnSGUM1w0dzAscktRMso/r9Y=;
-        b=pqcwrfyGvWTS3OYW3xSsjUef2xJC9JgLI6NSh09StVyHqmVkfYZeLzdQiG/aZDnXnX
-         zI6gYqeoH8c69m0CwtIArEFF1mwpMcYxpzr9P05iOBtvPcKMqjwg2CPnru8wFcek3QRz
-         UGfi8+RBHmxtjwymcWSctBRUmFGvuQ4eFi1T15CGkfiCdSt78BjPlcK70lXvgP3HKKju
-         +axUnhNKeT7abNBRfOnd+0P1i1V6leY741aAUION9hjiUG6vZU9yv3/Kg+6YB9tDGF2W
-         0HT1HQHrsSqbChE4FaNGrAkjztZuxYCVGI7y7HMzQ+dYGYMg/IoT5nnaNJ9UiJKX2+Y6
-         DACg==
-X-Forwarded-Encrypted: i=1; AL+hErFnh6EqHiIN3PlO4ddOoLPYP59LmPsuXsjXFiy1z2emZmMh99PaR+IiiDfJtGalAI/J/VRRZQg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9S4EOHxJJ4W/KsOz29q8xtidccsIrZrq2ZaKi7HOFfEXltgyEC
-	0367xozdRzDQKuHSh2XfQBcI1PYSphMTMj+k8gbciiWgaWmSRLP/ThZTQ6buYgMavsoM8hZkAHk
-	ix3Ir0Z+fL+xEVbbvpdOG7gnfnRLFkCg=
-X-Gm-Gg: AYBFou0qbz7AtCrNjnO5fobM8hjTi5Gk62V5FXrEmV4uuDFHmpMANR/n5lywzSz+Q7t
-	94d5mcZfbcXoUMf6s6pkakDjAcTtb4HCZPn0mOvpQcW6TrYXVeO3/jUTd6Je4P4trrUaB6pXhzg
-	RXYW/D2cP5GOVJUO2l1O3ueOTFHqQE2WNVQZ1Zn+ok9OLIS/iT2mac6J2wjMGuMylNfcaE/A/23
-	MTRK3ErXDm2SOhs/rw9YqNdbIMltbPOJjzoBrMK5p/py2/zq9SLb8hQr714kvC6X8oKy4cZUXg3
-	NRIwe3dWbzGI3l/PjTNECUcZsDOiJhd42JwzGF05SIArd1LUGQ5ySdWb2EVP2lTO/tO3Puk20ZD
-	RhsLEhE6FCPZ1m+RGcrYaOVgSrKXes3lMm4zYqjGXA3FKPpPDDuUr6dF0Z23rM/fo6FJFQ9iZf1
-	a28MXtSyI=
-X-Received: by 2002:a17:906:ee8d:b0:c46:9ca9:f524 with SMTP id
- a640c23a62f3a-c50495eff36mr210641366b.32.1794312123731; Tue, 10 Nov 2026
- 04:02:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kUZTMrNx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794312161; x=1825848161;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=eMdM21hEmkcP8lpu6VNP1r22o5MSqJ/EL0i7jh9A8CU=;
+  b=kUZTMrNxJtILykmCCaIXMcwKq3QkLvaW0LIpMR1fXQY62mFaTQGHT5QD
+   rDBW0hlZwjAiw0z7w6xzqxUTfQzf/9a/oE23kojFP5LmugEEEp+1usTTd
+   kWe/Fb8xxlcsycjuEuBX8ZUMCWAcs1AkWOz82LahPdJkDHM0KBJ+mTGp1
+   kRYGV3H5qih5Crm/2YekOVHlwVrJSxhnIiEnxH1UGPO5SgB4vBMwg1h8x
+   8O7efVfrBV71obIM0mkE/FfS/Czz2Ygjj/6ds0he6rwuwvAbn410mCmEx
+   oMNuHk2pdC8+dLZJZIUk4cKFBQDxnfekP9JtTJ+in/eiaKsQ/VSN3XV79
+   Q==;
+X-CSE-ConnectionGUID: eVnBbn3bRc+y8uyAB+YlEA==
+X-CSE-MsgGUID: XhuOpTUeTUWURYnlL8hycA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3138909"
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="3138909"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 04:02:40 -0800
+X-CSE-ConnectionGUID: xGdkc45iT5eGhiHxJBsghA==
+X-CSE-MsgGUID: 6/P5oL78RfKEQtOZQyxoMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="8459686"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.34])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 04:02:32 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 10 Nov 2026 14:02:28 +0200 (EET)
+To: Lee Jones <lee@kernel.org>
+cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+    Shuah Khan <skhan@linuxfoundation.org>, 
+    =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <linux@weissschuh.net>, 
+    Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+    =?ISO-8859-15?Q?Marek_Beh=FAn?= <kabel@kernel.org>, 
+    Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+    Hans de Goede <hansg@kernel.org>, Ike Panhc <ikepanhc@gmail.com>, 
+    Rong Zhang <i@rong.moe>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    Jakub Kicinski <kuba@kernel.org>, Vishnu Sankar <vishnuocv@gmail.com>, 
+    Vishnu Sankar <vsankar@lenovo.com>, linux-leds@vger.kernel.org, 
+    Netdev <netdev@vger.kernel.org>, linux-doc@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, chrome-platform@lists.linux.dev, 
+    platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v7 00/13] leds: Add support for hardware-initiated hardware
+ control trigger transition
+In-Reply-To: <20261110090105.GA6323@joneslee-macbookpro.roam.internal>
+Message-ID: <b19ef65f-c563-07f8-1be8-9a0a0689da22@linux.intel.com>
+References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe> <179425319974.10927.7190572777719580956.b4-ty@b4> <20261110090105.GA6323@joneslee-macbookpro.roam.internal>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,33 +91,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109231739.2561930-1-kudzo51@gmail.com> <db90cf8c-191f-4576-8b19-00b1b92c47e2@broadcom.com>
- <CAM0KYu0_fH6Z0RUGCG7swSPRQNnsMfL5m3EvRscfPf2ZBXvwOQ@mail.gmail.com> <CAHi4H7GcoXkAWESE9hsbJK5frAMsX3FNya7EWdWn9yC4E02izw@mail.gmail.com>
-In-Reply-To: <CAHi4H7GcoXkAWESE9hsbJK5frAMsX3FNya7EWdWn9yC4E02izw@mail.gmail.com>
-From: Mlody12 mlody12 <kudzo51@gmail.com>
-Date: Tue, 10 Nov 2026 13:01:52 +0100
-X-Gm-Features: AclHuK8Mwjx9cE6kqiTpcsq5lytQCIT2eaKm-jtrNlwOilVk2yAAlZa4_KUYeFk
-Message-ID: <CAM0KYu3CifjqETEvncaFttV96GX1vxUYoTbfWO23wO6faasi1Q@mail.gmail.com>
-Subject: Re: BCM4908 Ethernet and 2.5G WAN: upstreaming plan and two questions
-To: William Zhang <william.zhang@broadcom.com>
-Cc: Anil Chaudhary <anil.chaudhary@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org, 
-	Jonas Gorski <jonas.gorski@gmail.com>, Doug Berger <opendmb@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	bcm-kernel-feedback-list@broadcom.com, Justin Chen <justin.chen@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="8323328-1170544091-1794312148=:1229"
 
-Hi,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-A correction to my earlier mail: the MDIO_CFG bit for Clause 45 was not
-found by testing. It is bit 0, already defined as MDIO_C22/MDIO_C45 in
-mdio-bcm-unimac.c. The Clause 45 access sequence follows
-mdio_cmd_read_45() and mdio_cmd_write_45() from Broadcom's GPL
-mdio_drv_common.c.
+--8323328-1170544091-1794312148=:1229
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-What I did establish by testing is that the BCM54991E can set
-MDIO_READ_FAIL even when a Clause 45 read returns valid data, so my
-patch ignores that flag for those reads.
+On Tue, 10 Nov 2026, Lee Jones wrote:
 
-Kordian Chmielewski (mlody1212)
+> On Mon, 09 Nov 2026, Ilpo J=E4rvinen wrote:
+>=20
+> > On Mon, 21 Sep 2026 03:40:14 +0800, Rong Zhang wrote:
+> >=20
+> > > Some laptops can tune their keyboard backlight according to ambient
+> > > light sensors (auto mode). This capability is essentially a hardware
+> > > control trigger. Meanwhile, such laptops also offer a shrotcut for
+> > > cycling through brightness levels and auto mode. For example, on
+> > > ThinkBook, pressing Fn+Space ("shortcut") cycles keyboard backlight
+> > > levels in the following sequence:
+> > >=20
+> > > [...]
+> >=20
+> > Thank you for your contribution, it has been applied to my local
+> > review-ilpo-next branch. Note it will show up in the public
+> > platform-drivers-x86/review-ilpo-next branch only once I've pushed my
+> > local branch there, which might take a while.
+> >=20
+> > FYI [if applicable to your patch], as per Linus' policy change, also
+> > fixes are mostly routed through for-next unless the fix is for a
+> > commit introduced in the most recent cycle or is clearly a regression
+> > fix.
+> >=20
+> > The list of commits applied:
+> > [01/13] leds: class: Always protect brightness_show() with led_access
+> >         (no commit info)
+> > [02/13] leds: trigger: Move led_trigger_is_hw_controlled() to the right=
+ place
+> >         (no commit info)
+> > [03/13] leds: class: Remove hardware control trigger when writing brigh=
+tness
+> >         (no commit info)
+> > [04/13] leds: trigger: Move led_trigger_group to the right place
+> >         (no commit info)
+> > [05/13] leds: trigger: Add hw_offloaded() callback and provide trigger_=
+may_offload_to_hw attribute
+> >         (no commit info)
+> > [06/13] leds: cros_ec: Implement hw_offloaded() trigger callback
+> >         (no commit info)
+> > [07/13] leds: turris-omnia: Implement hw_offloaded() trigger callback a=
+nd declare hw_control_trigger
+> >         (no commit info)
+> > [08/13] leds: trigger: netdev: Implement hw_offloaded() callback
+> >         (no commit info)
+> > [09/13] leds: trigger: Enforce strict checks in led_trigger_is_hw_contr=
+olled()
+> >         (no commit info)
+> > [10/13] leds: trigger: Add led_trigger_notify_hw_control_changed() inte=
+rface
+> >         (no commit info)
+>=20
+> This is super confusing!
+
+I know it is but it's how b4 thankyou mails appear.
+
+> Where does this list come from?
+
+The list comes from the original series that b4 caches somewhere.
+I deleted the patches 1-10 and only applied mbox that contained patches=20
+11-13.
+
+When constructing thankyou mail, b4 seems to take the cached list of=20
+patches the series had and does not find 1-10 applied into my tree by me=20
+so it says (no commit info). The rest appear as expected:
+
+> > [11/13] platform/x86: ideapad-laptop: Serialize keyboard backlight trac=
+king
+> >         commit: d288a6f989b7b9e6a730140c601987b886af327e
+> > [12/13] platform/x86: ideapad-laptop: Decouple hardware & classdev brig=
+htness for keyboard backlight
+> >         commit: 7d6c073d181d7855561831cb4bba17dc9b7d4aa9
+> > [13/13] platform/x86: ideapad-laptop: Fully support auto keyboard backl=
+ight
+> >         commit: 5d805ca01382d63d54c9984e7f19922c4ae6f3dc
+
+Of course it would be much less confusing if it never showed those no=20
+commit info entries at all but unfortunately I don't think I can control=20
+that, sorry.
+
+--=20
+ i.
+
+--8323328-1170544091-1794312148=:1229--
