@@ -1,59 +1,152 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794299670;
-	b=qfjLz72zhxbQ95rxMBkOViFQZypexw0whlYhWEJF7TQx2Xm5ws4J6lW7SdQ0uJEpA/xI
-	 JykVcHTJ+HSTHuTcT4hRdARZ417bfg30fyYA9UqzZ5Qq2dH+NoymYkli+ZM9eeSTnsJH5
-	 UmCI3a8ENr1wF7Zvp/Juxi3mJs8e6MKJChcuoA41+R5+d+LQiKXSzFuimPtuRfYElqT2O
-	 Htk1luFfweMO2aBpcuzBGV71tRH9K8Q/c3zLk2YDSVOAajo/jZDWKsttr95Woa6KkpWLz
-	 wi82s8fojVZOFJOqyFDap88e0BPFXJgq1C/PNZ1EYEwJiPMIwcYvMKpoxJWh2/UrT7A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794299670;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=IoHg76qdWGX0YXGKv6gKymH4VgSnyA022n4X6S0GYTU=;
-	b=a/2VMteUMKVqlTjv9Y9c3qr1BEgilj9AmNIBRXuoFQaqM3PWabgHW/gbJUg+V1vd+hZ6
-	 DsuV7fEvw9iTjhSuwzBv2pDCD8hb5Mp+RM/iKtyZB93S2NeQ84dmf0CNTSybZqVe2ddue
-	 euU2NjEoUMm/yQySGaFdhLiBOge9PcpcF6dfymNfMlHA30xpkuqrkKtQ+2+k1y3PKWa/t
-	 8uJxLHQ9ED5Q+ZTBx2g3vPgz+YVKUIc8n3MSLqMXwwEvxwocVhEIOgFXfTRVjKXQsfak0
-	 jGRwSGFhpLXiqxJDq/+N2qxRgKFmEY/jfp8Ch6QkrD9GO+QFs/TySb768uKecIBa5AA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxqFF+xr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794300384;
+	b=2ZN1a2LzY9ixkH7mYaOsIenXV6Wk0oNMAIvIUkFC9Vpa8/Y+NkTht1RWXYVOSaTDRLRR
+	 qlS5tH8b+7ciIVwxG5htfuB9l+DqyRaH4ApP/aGC2HRF7xDUaMRuqCpNjyiEGqeUaSxQR
+	 9h3zTkCe5hwVznyfh2ZuIFVf3DjLXv0a3naqAwvTTyRPfKswbt0IPJp0+srlztPCKsIIZ
+	 HANGEdzM/PHXWSXjYnMQPahaSv1GqHQmi4O9MSX0uMEmGRduMJkGcy6zZxQWInMBpNbvz
+	 NrGHJAR7YObj6IoLQmfYNXKZpNuhwdYdGy0HMKa+bC+4tuU05xzR2xi6B3QTLEJ/k6Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794300384;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
+	b=GaUccOK/S4q9PUaVk7X98GmPnocDHmvmUz4y2fI4LFRS5oFf1JKKwlhkrW0IxlQv21rQ
+	 6XAQGW6qxEz0W3Tdnn6PDTkE3FRLkSqXaZtrab7MuRCDFEpKiiu4qiBwNv9e0i99CdlbF
+	 r9l/lqSNd1BTlBIL4WhO5aDpixoEaz/uK9PWBp3rx/m5CHqHB/2KgvKWzaQleftcIt2mZ
+	 3BZR0HdrcQoIMl58puHwUjc98r469znfOkW3kvMKmqFZ2RwO+aPMjbzK9+vjHCEAIn3Xf
+	 h7Ystsi/xRypviofp0Ts/kJr/knthwxDRmZ1iL9pQAyQtsm1yi6+p61g5XgmfcAfA6Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.53
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013053.outbound.protection.outlook.com [52.101.83.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD0606A321;
-	Tue, 10 Nov 2026 08:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EB1606A321;
+	Tue, 10 Nov 2026 08:46:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28EB1606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxqFF+xr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B951F0089F;
-	Tue, 10 Nov 2026 08:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794299669;
-	bh=IoHg76qdWGX0YXGKv6gKymH4VgSnyA022n4X6S0GYTU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WxqFF+xr13/a/ySiR+kNLzUaa1Xs/h9B2YkHZXEvv7EByE9agjd1GbIdV07abAi1+
-	 8kVNCtn5MUV+bISGWuwiNjhqJaUT6Sa3FzaN/+Y8fjCtT1jWehSFbGGFHDS/0IHcTK
-	 GG1077WC7X00ODBSWKHfAswU2bagVTyTgawOl57DBvpSNQOWZg8o3er2CblBSXgWEt
-	 Aigvlwy4CSzv6nX+iXZ1+cT2KfxQEM0lCygnwOfy0jPDaIS4PzfQrDevlCsUwl65NQ
-	 MaGDQtA7A0vsb7qxKkc9qqRixUZghKeyJhJxP9Dmv7y1NDVTJfRVQvxZ31LudrR51F
-	 ooRTNPq9adiGA==
-Subject: Re: [PATCH net-next v4] net: phy: realtek: Add support for JLSemi
- JL2101 and JL2121 PHYs
-From: netdev-bot+sashiko@kernel.org
-To: cyan2254650260@gmail.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 08:34:28 +0000
-Message-ID: <179429966829.994134.15582667508213020583@kernel.org>
-In-Reply-To: <20261105173350.159060-1-cyan2254650260@gmail.com>
-References: <20261105173350.159060-1-cyan2254650260@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g7QtENwmK6mU50nvTRHj+5gepYI7nu2deLB5LCONvt6UNIT4WZJOm46wcYmTVz5n0ochCu0OuTARdi+tb6S3/lq7XhnF0lvqgf6obcOghtvHHXNrhLDWLZP1fHlarZlfpkF/+xeK4uvP3dwJQoEgniMq1AVl93Jh6Ei6c/Vk+fFVhRLAZz+gvKRWAt6ZK7N4aHPeEZN6c21vrzeqRrpqWIGQ6CEbF61j+lFwc7Ok0bMy+BApQ7FeWNLa6KDk6UZW9UmiEmjdLk3aIdxM/elJ7Mxvu/Sa37nrLxYTWxGWSnHU1bntXCQBkDz99HJpCeE8GadFAknpV9uKrerphpabvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
+ b=NX3AhUm3T+8a+1/b8HDRuRxrNlKy7M7wIPUKAro9ZLHH3vZ2dHGLe6+fgSTwQyYi72j1ovcNxA2es4E+zsmY24i555oW/W6U/DAJDbrSXVj7ASWD+L+fwrlLFHrWJEWg8KTVcDeqAep7No04PVT8hTGr5vxZdnbRkIpet6uvahB+VJK7ozlb79zcQI0qIcLZkMR0YprIby2qCl8ceAZ4yfRI6G2xL8wbhSsqnMk0SDGptivfGkiUaVdSd4L3x8ghASdDKIEy/q4lJzyNqarzRbwEifLm7EeoAbJUy33EjA6XjcjDjM4y5N8ODe0Be8NW4ZnzySbJNJoRALcoCJdNIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
+ b=WMKlusXWuXdZy0XnYg56h+HwWS42G98lAlYan7Z0p+EbyFoKm31WibED9jkSYc3pkcHn0nR3WNAv7TfS6hKtBO/1yDUPOEDRg8BYfiuK771vMcPtIkGCv9tNwDeJsJ7g/NMnWRYZ3TZoJB5OiZMmX5yj0brEekA4BEbQwUQjAH//yglYHmDQZ2UiC7GmhHekyypcT+JbbXb57VK/pJzqBBJPxtnU9iDFBxyZ8blAdagz7Gn62rVQDs7E0Xo9mP9JJX1iSk3mGLdbSzlHiwl100ceVe0r5hGPWZZwAAhDfdNi50svNYtlVO8qNF68JYaKajtZ2Lk7ELT8iLkyKE6x0Q==
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ by AS8PR04MB8851.eurprd04.prod.outlook.com (2603:10a6:20b:42e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Tue, 10 Nov
+ 2026 08:46:20 +0000
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680%7]) with mapi id 15.21.0592.012; Tue, 10 Nov 2026
+ 08:46:20 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
+ switch
+Thread-Topic: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
+ switch
+Thread-Index: AQHdazfZzWTjAGf+JkC6X61TwLJlT7cnCJ4A
+Date: Tue, 10 Nov 2026 08:46:20 +0000
+Message-ID:
+ <AS4PR04MB9338322C1A3ADEDCE79D9F3188722@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-11-10T08:43:15.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|AS8PR04MB8851:EE_
+x-ms-office365-filtering-correlation-id: d68afd5a-22e6-4c47-618d-08df3f071775
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|376014|366016|7416014|23010399003|1800799024|6133799003|10067099003|18002099003|22082099003|38070700021|921020|261021121427099003|56012099006|261022105027099003|261026121527099003|261026140227099003|261028144727099003|261009223027099003|261102130727099003|11063799006|261102123227099003;
+x-microsoft-antispam-message-info:
+ +AAeBiCIofBwdhYirJIyYa6b33qIj5EbmDwmjkdWcjT6Na0wLGAJ7S1xWJ4McYEuLaee56RcfaIAi5Tv50PoL4/sZSM7iWauHc2hGYiKWWBOH1ArUSqiv+s3opGDDXdBE4gkhDQffevvAJNHJsHhRtXyS4FojC9t61N/xOfp4p6QYmWBnLETG9zB5yaRvr7+7OVzREQ5HJmw8hpoAagBevdO89dMGgqZFcha/j8b5DoF5OOnoMgT7/OqeCwk+WZlTlEG7OMEqHxdnXH52aMNNX3Y6COgw90CfHgMJt9Shi+G+AvNDW27GmqOz+8QYzc2bUFTJY4Fer4O2YBULndrjMQQgWhZc3Dgkokx88tQ+KFEzse/K82ApYWlMlXIHU4j5tiopRZy32lEBTYxi7HuqqilmIxCqmYZSZuZBvYzZd4E8xxNNygj+Em7FqBvZTqWYIPn1pACBif871GviZf72mZ++GGWVfuSNypP9fSX9yDiCnxebdF77BZ44O/N2m3ajDskbtRacxTD1uRlIq7sfV/gi9jZH06Ux4ben4cMLciOlt7w8gUUOsUUSvzNBzhFo1Qvp9LpLW0wHxRuctZmpjzfyeQe7hD7NdX0p0Au7lsjRbqeXEtW4jv19SI4qjHEm3vv+GObksZ7kxdQaWo74ieVrD8yMxwcjpvuizMqCWzN8EGNtXbxFxHkrZ7GoYzP
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(7416014)(23010399003)(1800799024)(6133799003)(10067099003)(18002099003)(22082099003)(38070700021)(921020)(261021121427099003)(56012099006)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261009223027099003)(261102130727099003)(11063799006)(261102123227099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4bDSI1tALlioVnLzxk4eD0fvnbIB5t7BMMPrptxwOEV2U6susj0nOG5IG/D3?=
+ =?us-ascii?Q?ZS+ADcuU7/RHQ6QSPnugxpoixRp6A8U7a0DUEnQ18knKaFHVARRHPBR67WlV?=
+ =?us-ascii?Q?nJilwDyewhx8kbf/GaQV6v9txMrIjCmDsH0NHbwTGQ/27C0jltw/QupkJl7Y?=
+ =?us-ascii?Q?vZw/O7QdTulRP9pCBIozackzSP6WBkmkqOGDFIPpN6FAHNqG7A9r/6mKchlj?=
+ =?us-ascii?Q?hoWuxlFVSexf5WGUo5In8g8Z79EJG8J2pGxrpWaumfGqrA9c3f4erFK/QEyW?=
+ =?us-ascii?Q?ROMb+rSMrCyDgn2Nhl6ao5uxnQwMpXK75E/8G5fDmRUhgEqqWttc0AZJvQRx?=
+ =?us-ascii?Q?rfChvSOvFDTPfhmRDGUg2gCNbAK6Vmn9p6hn8PfXJTNR/MKkjuiNMVJgjC97?=
+ =?us-ascii?Q?QG8RuPcn3iGUcMWVEMrxfzAT+sbJulvN7U2r/vv9e/d8tXkhYch5eKn4W6O7?=
+ =?us-ascii?Q?qAzHyyMu/T8+Wvw29RxXZ6M5FIt+6Oq6PZzLXDlLfg/akzy6ZChqwfUILwZL?=
+ =?us-ascii?Q?+3mAST0mt9quSMavadrzQ2IcP5qZAqX0sbW18y65qetKlHi+ChIQxe4T9BW9?=
+ =?us-ascii?Q?G1/2i+fsKG6GhlIk2pi45HrCNO3f0noz6+TTN2Q4E9rSaUGtzJdbOPn7Rx3B?=
+ =?us-ascii?Q?CxEGawtNykX0HrC7t4iY1snkuxkNLSf+WMH4+crmBq1EKBZQwlKUoD0Aig7l?=
+ =?us-ascii?Q?w6m8gjvqVKx8isW2EJQMcjH4Wk1AXF2ZEK91jvmnlsbsj7odc4PyUITOMMlE?=
+ =?us-ascii?Q?L6UAg+163PztdpaSu8B7XdrdjgGx4ERLlniAhJ49DnoPvfDswybf65hd/1uG?=
+ =?us-ascii?Q?+nnRjNX8pmNxsnHVHPquRGrSdCGR6texCUVQA/AUOIecuqBR2V6aofVa/RYv?=
+ =?us-ascii?Q?CWdD2BcioiZGxTSTKFeNvGZLWZDIvviHCv0xjjKlj4EZ0Mr5NNPn7IBRTTlE?=
+ =?us-ascii?Q?87J54PmPzlv6E7OUcltuROvdY5um5UFXRpJIZ9HnziHR1h+w5NYxJ3/s1ftK?=
+ =?us-ascii?Q?SkkUudsaue0ZVOUONIHt4ECyUO5nbzrJRz2qwiZq7Svyvf9389nBfSfHQGZH?=
+ =?us-ascii?Q?SbkEVDWbkL1FcIqe5SP8VI1gvFhb1SZrzcd5m28MQBK6ChNhcXbbdREh/9sH?=
+ =?us-ascii?Q?2KFTzi+1ypPMmAQiEKkOO37F/2SR1XS5YVCaYdBvNER1HnqwcFgWmz3XTTzR?=
+ =?us-ascii?Q?PRrwRT5AtFf5Hh36IeAJvvlTSIFq0nyYPZGjg/CG6NUKRpyn7iyBw6KVJuvs?=
+ =?us-ascii?Q?LRg5bIqmXTCkEDeSqF/Z1yMXLEsgO+gc642jl9Lr2/unl/KN8xD6+dngJihz?=
+ =?us-ascii?Q?NCq+sg1VCw6L8S7DqMtGE8L9RKwyXpMLrNvtxqmatSawTbpL37KTHlvFFyml?=
+ =?us-ascii?Q?XTajP+6tQZYKzbNzkL51JfKLSc7HrmcXbBKpMF+Fa51n+JKX5ddiAbsB3PeW?=
+ =?us-ascii?Q?jdNd8joQ8TSpjKVcV8xQHWLHu/5Oa6tiW4pHW7+xeTcbQhc2LW/FRVfMxFSZ?=
+ =?us-ascii?Q?d/ScKrZLoTVhyYleZv+B7CZoqGNVJ3GOZLi+KVkwtFzbF09yH4TmBgMipwpY?=
+ =?us-ascii?Q?ZwR6NsmlvK8KdugIovCwYNRPe6ByS9v/VL5WBDMxJsucbyPNiUx8TKD14lLU?=
+ =?us-ascii?Q?Sug+LFoBvGPqt0qzLBem6dFUaKUISQnscU+Dklla5ohx3D8nsxBzrr3fWP+H?=
+ =?us-ascii?Q?KcLAnoxVoG/y+4cby53tFbcxVoW720nvKd1Wp9+Fs/ADSaps?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,179 +156,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d68afd5a-22e6-4c47-618d-08df3f071775
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 08:46:20.0362
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tqAGki/DtAjMazJQMph0Oj7YZcpVbdCGYTWKWMLilxvzkbVOnahXTmXrtnuDGRO5C2yqbIBaPOFsQuZbLIA0gA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8851
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+> This patch set adds PTP timestamping support to the NETC switch, so that
+> the switch ports can be used for IEEE 1588 PTP synchronization.
+>
+> The NETC switch has no time registers of its own and instead shares the
+> PTP time of the NETC Timer, which is a separate PCIe function driven by
+> its own driver. The first 3 patches prepare the Timer driver for this
+> role: tidy up its 64-bit register access, drop an ineffective reset, and
+> export netc_timer_get_current_time() so the switch driver can read the
+> current PTP time across the driver boundary in a race-free way.
+>
+> The switch redirects PTP frames to the CPU through the ingress port
+> filter table (IPFT). A few patches harden and simplify the existing IPFT
+> and host flood handling first, then enable the ingress port filtering
+> lookup by default so PTP filter rules take effect without extra software
+> tracking.
+>
+> On top of that groundwork, the switch driver gains RX timestamping and
+> both flavours of TX timestamping. Timestamps are carried between the
+> hardware and the driver through dedicated switch tags: the ingress and
+> transmit timestamps ride in To_Host tags, and per-frame requests ride in
+> To_Port tags. Two-step TX matches a queued skb clone against the
+> timestamp response echoed back by the hardware. One-step TX defers the
+> Sync frame to a per-port work, where the driver reads a fresh PTP time
+> and writes it into the Sync frame's timestamp field, then programs the
+> single-step register and transmits the frame so the hardware can add the
+> residence time to the correction field on the wire.
+>
+> Together these changes let standard user-space PTP stacks drive hardware
+> timestamping on the NETC switch ports.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+I saw netdev's Sashiko reported some issues [1], and I think some of them
+should be fixed or improved.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The JLSemi entry in realtek_drvs[] uses two incompatible
-  register-access models.
-- [Low] REALTEK_PHY's Kconfig help (drivers/net/phy/realtek/Kconfig line
-  6: 'Currently supports RTL821x/RTL822x and fast ethernet PHYs') was…
-- [Low] The concern says realtek,rtl82xx.yaml forbids LEDs for JL21xx
-  (allOf: leds: false unless compatible contains ethernet-phy-…
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103021024.3121=
+936-1-wei.fang%40oss.nxp.com
 
 --
+pw-bot: cr
 
-net: phy: realtek: Add support for JLSemi JL2101 and JL2121 PHYs
 
-This adds a realtek_drvs[] entry that matches the JLSemi JL21xx model ID
-(0x937c4030) and reuses the RTL8211F callbacks. It also adds
-jlsemi_read_status(), which reads PHYSR from page 0xa43, and adds the ID
-to the MDIO module device table.
-
-> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-> index 4927ee838de21..355135143fb98 100644
-> --- a/drivers/net/phy/realtek/realtek_main.c
-> +++ b/drivers/net/phy/realtek/realtek_main.c
-
-[ ... ]
-
-> @@ -1755,6 +1758,23 @@ static int rtlgen_read_status(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int jlsemi_read_status(struct phy_device *phydev)
-> +{
-> +	int ret, val;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret < 0 || !phydev->link)
-> +		return ret;
-> +
-> +	val = phy_read_paged(phydev, JLSEMI_STATUS_PAGE, RTL_PHYSR);
-
-[Severity: Medium]
-The commit message says that on JL21xx, reading 0x1a on page 0 returns
-0x0000. That is why PHYSR is read here through page 0xa43, and it means
-0x1a depends on the page select on this chip.
-
-Commit 650e55f224a5 ("net: phy: realtek: simplify bogus paged operations")
-changed every 0x18-0x1f access in this driver into a plain phy_read() or
-phy_modify(). It did so because only 0x10-0x17 depend on the page select
-register. The RTL8211F callbacks bound to the new entry still follow that
-model for registers next to 0x1a.
-
-rtl8211f_ack_interrupt() and rtl8211f_handle_interrupt() read INSR (0x1d)
-unpaged:
-
-    irq_status = phy_read(phydev, RTL8211F_INSR);
-
-rtl8211f_disable_autonomous_eee() modifies PHYCR2 (0x19) unpaged:
-
-    return phy_modify(phydev, RTL8211F_PHYCR2,
-                      RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
-
-rtl8211f_config_aldps() modifies PHYCR1 (0x18) unpaged:
-
-    return phy_modify(phydev, RTL8211F_PHYCR1, mask, mask);
-
-rtl8211f_config_clk_out(), rtl8211f_config_clkout_ssc() and
-rtl8211f_config_sysclk_ssc() also access PHYCR2 with phy_modify() or
-phy_set_bits().
-
-Suppose JL21xx pages 0x18, 0x19 and 0x1d the same way it pages 0x1a.
-Would these accesses then hit the default page instead of the real
-registers?
-
-For interrupts, rtl8211f_config_intr() enables INER with a paged write,
-which does reach the hardware:
-
-    err = phy_write_paged(phydev, 0xa42, RTL821x_INER, val);
-
-rtl8211f_handle_interrupt() then checks the unpaged 0x1d read:
-
-    if (irq_status & RTL8211F_INER_LINK_STATUS) {
-    ...
-    if (irq_status & RTL8211F_INER_PME) {
-    ...
-    return IRQ_NONE;
-
-Could this return IRQ_NONE without ever clearing the latched INSR? On a
-level-triggered INTB line, that could cause an interrupt storm. The IRQ
-would then get disabled and link changes would be lost.
-
-For EEE, phylink_bringup_phy()->phy_support_eee() calls
-disable_autonomous_eee whenever the MAC supports EEE. It sets
-autonomous_eee_disabled as soon as the MDIO write succeeds. Could phylib
-then believe autonomous EEE is off while the PHY still has it on? The
-same write is repeated after each soft reset in phy_init_hw().
-
-The ALDPS and CLKOUT-disable paths would also report success without
-reaching PHYCR1 or PHYCR2. The clk_out path soft-resets the PHY as well.
-
-Now suppose 0x18-0x1f are not paged on JL21xx. Then
-phy_read_paged(phydev, 0xa43, RTL_PHYSR) is the same as an unpaged read.
-In that case, how does jlsemi_read_status() avoid the 10/Half downshift
-it was added to fix?
-
-The changelog says PHYSR, the RGMII delays and the LEDs were tested on
-hardware. v4 drops WoL as unverified but keeps the interrupt, EEE, ALDPS
-and CLKOUT paths. Were those also checked on JL21xx?
-
-> +	if (val < 0)
-> +		return val;
-> +
-> +	rtlgen_decode_physr(phydev, val);
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> @@ -3283,6 +3303,23 @@ static struct phy_driver realtek_drvs[] = {
->  		.led_hw_control_get = rtl8211f_led_hw_control_get,
->  		.led_hw_control_set = rtl8211f_led_hw_control_set,
->  		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
->  	}, {
-> +		PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID),
-> +		.name		= "JLSemi JL2101/JL2121 Gigabit Ethernet",
-> +		.probe		= rtl821x_probe,
-
-[Severity: Low]
-This isn't a bug, but rtl821x_probe() now parses vendor DT properties for
-this PHY, for example:
-
-    priv->enable_aldps = of_property_read_bool(dev->of_node,
-                                               "realtek,aldps-enable");
-
-Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml has no select:
-section, and its compatible enum only lists ethernet-phy-id001c.cXXX
-entries. So a JL21xx node (no compatible, or ethernet-phy-id937c.4030) is
-never validated against that schema. Its leds: false rule therefore does
-not affect JL21xx either.
-
-The realtek,* properties only do anything if a DT author sets them.
-Should the binding say that they also apply to JL21xx?
-
-[ ... ]
-
-> @@ -3527,6 +3564,7 @@ module_phy_driver(realtek_drvs);
->  
->  static const struct mdio_device_id __maybe_unused realtek_tbl[] = {
->  	{ PHY_ID_MATCH_VENDOR(0x001cc800) },
-> +	{ PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID) },
-
-[Severity: Low]
-This isn't a bug, but the module now binds and autoloads a non-Realtek
-OUI. The REALTEK_PHY help text in drivers/net/phy/realtek/Kconfig still
-says:
-
-    Currently supports RTL821x/RTL822x and fast ethernet PHYs
-
-MODULE_DESCRIPTION() is also still "Realtek PHY driver". Could the help
-text mention JLSemi JL2101/JL2121, so that people building for that
-hardware know to enable CONFIG_REALTEK_PHY?
-
->  	{ }
->  };
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105173350.159060-1-cyan2254650260%40gmail.com
+NXP Confidential
