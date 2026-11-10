@@ -1,61 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794303452;
-	b=Et1L/K8djvl6nW8WuGMvBrK36J9fWs61CqwCTiTeNFMXieYH31UG6UuKJw3nI/y4nMn9
-	 F14SRkf3tkgG4XI1/HgTDMVONgtPxZqBUKoea/jpbKdj7sTjPzEgaWq3wQXClFKXxxsVV
-	 FFOAbs5CoZsaiV8ZCjC1tShTp9cCGRU7rpkiRukACe9C7lr311EgpBBmyAJEC/KbrikPm
-	 WZIsla06R14386iZeY5PylDmDIj7B78KKKPLqetiIIbouC+W+JCk+ZkBJJERY1keUDN3d
-	 /ZfaCsS0WCj7Nt6ZGofdyiFa2HVuAhxWuF/ajy+W0mVHUefV6lqjN4ARyuDsblup8Jw==
+	t=1794303606;
+	b=d/btrdvx/dnRlfMx8gkWml1KiW7uhINVxmnCnLojcTKtA2i4xDTUe6WJKZ/zcas6zMOj
+	 VtwMiBOH96MowhIGg53xiuttT3akfn5lW8xJS1dKIUOWWA2u13yzf703en1luwFo31jT2
+	 Md5szqJVW72sCsvwZKKCXGmxuXXalefLio35g+M5kVQ0G3wOSu16PBpHH9HNFnr5rAxSo
+	 jFyrrERkklkgaypVabkfy1S6Cl2Cg1aaGUIBnOOfjnhK5qs/zL0bR6PmwWfjJkzrVw+F9
+	 CiWNA01f6817P17jGWqoGHtvAyRxHBvSDMb3J1C6bIYCEqcWmKxQuobrbZQeuxLEcVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794303452;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=kS7nubamV8gOBMgsZDEML31xlkinLAFRBkCqbcdYeBY=;
-	b=ZGxysWG7ZNFPneXFnsYTP3V8wGGVB2MGZE6OATasUTxEDUUU5todrWcRP3+93APSJomH
-	 YchBWgW4M1/CdCocAmhXgCqkG6ZKX8ZNfsSN77x3GiEGWAGr6C9bqkJB09ThnRnmuoilf
-	 d3O4Bzlk4gH7Vm3kHGjVKOy8W3csfwC2tRvKq6wSvCS1DBaF/iL742qjyxbsdYpqBblb3
-	 CkLFGutw2IiBKoCv80zJRvEUSGshguU1g6sNyAGiapJBw8dk/CXzxZCqPTbRigojEsryy
-	 hPmK1/ifvUKT18IxFPlOkLRjzVzT8loiI0+Gmpkjwsx64QW2JARBlRce6nmI00hJi3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794303606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=tFQNt3ivtoe7K1Ptp4p8DNZgJcuNMHi/yPPBNkB1AoE=;
+	b=gF/jAl6+36A8rQb1b41WU3kw+meqwKyGkYCvlZe+hJ99fjq2cRWI7a3VqGup6G8kCavY
+	 pha+UqOEscfUk/XTmAgCNgSqxR2g69qe+uVqFrAFKnWPv7RrUdcOeBpJiiTJB4Q//TEdN
+	 V0HuXMhGFpDrTEOohZyXJuMfWjOibL4wJL55eWo8GW2/BSSYlhUgLegNoVgRJi0JJ0sQ/
+	 Ps3/6LkC4Nw7rproircait6Lgvhs3MJi0A8lSWa78nHZ+m4ehkjnAlWFFjybuAIv/WBZ/
+	 Xh6Z7rMpPjtSbOWAM+N6phg70MQTqv8VK09fgIve+X82pig0HSW2NO3ScCq2QqGtLmQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="G5V/BY5R";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GKSrfZmB;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54945606A90E
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AB36071E42;
+	Tue, 10 Nov 2026 09:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G5V/BY5R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1826E1F0089F;
-	Tue, 10 Nov 2026 09:37:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GKSrfZmB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE0C1F008BD;
+	Tue, 10 Nov 2026 09:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794303451;
-	bh=kS7nubamV8gOBMgsZDEML31xlkinLAFRBkCqbcdYeBY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=G5V/BY5RFXUn+ytEm36F8l4jsz9zSjQxpD8jvcuSlDkhnRiDdblF9WIaRygnR9w0t
-	 ppfi/0PhIcy+6iuLs79MKmDrd1SUO6fkDm54sdUFDvvjmYKCeKl5PJMtWlUhLyPgT6
-	 3NI79nYmtpUidfk+KEiccTf3vuSuucPDua2whQOZwZUf6oOTVk+jVFtpG4vBFbkr70
-	 BeDIiQBA6v7Q+FxCWoqnaoEq2Dgp15LIk+cl4RvlkLB8QVYK2Ad3+NTDPzLX6Dp1sS
-	 OS+etUQ7X94N52NsO+eVnAxpSrbcqoFaMh52QFvy6+5fa3vGnrdMqBQa3W4pxXgjlQ
-	 mVj5LOZQVuBFQ==
-Subject:
- Re: [PATCH net] xfrm: reject duplicate state resolution in xfrm_migrate()
-From: netdev-bot+sashiko@kernel.org
-To: juny24602@gmail.com
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, nakam@linux-ipv6.org, shinta.sugimoto@ericsson.com,
- yoshfuji@linux-ipv6.org, netdev@vger.kernel.org, junvyyang@tencent.com,
- stable@kernel.org, corvus@tencent.com
-Date: Tue, 10 Nov 2026 09:37:30 +0000
-Message-ID: <179430345062.994134.8366892764007604715@kernel.org>
-In-Reply-To: <20261106091929.52067-1-juny24602@gmail.com>
-References: <20261106091929.52067-1-juny24602@gmail.com>
-X-sashiko-severity: High
+	s=k20260515; t=1794303606;
+	bh=tFQNt3ivtoe7K1Ptp4p8DNZgJcuNMHi/yPPBNkB1AoE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=GKSrfZmBDYxyv2DaFV1a/UMIsjykf2nb29nJ+IVaI9xUOOMQES3pHFG+jEMRNROjv
+	 3w792sXfmswAHsf20coZHv84O9uII3PSxR3RqY7uDQh/utigJ88XXtiwriJEJjIlmM
+	 iiLQTu1A8rSeMyh2Yl+5No/92GbMx8itLas103Nt5wClx0Pdls9eE7usSnCVDqZJMi
+	 jo8cWpRq620MRQcHt4J/+EYou8wkALqdL9mMhqHsOlOxlDGIv6uqYagbj46iMEMMdI
+	 Z2V+OJMy1gtLWpI9rPIXOkTDe+5M7tzVqTBeWmwwv7KiX3oyOsiet2VTPmP2j1ZZ7J
+	 FRY1EefGap5Ew==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2106F391B0AB;
+	Tue, 10 Nov 2026 09:40:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,150 +53,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] ipv6: Add NETCONFA_FORCE_FORWARDING to
+ netconf
+ messages
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179430360493.3827472.16080431818953682646.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 09:40:04 +0000
+References: <20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com>
+In-Reply-To: <20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com>
+To: Gabriel Goller <g.goller@proxmox.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ nicolas.dichtel@6wind.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hello:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Wed, 04 Nov 2026 10:46:10 +0100 you wrote:
+> Since force_forwarding was added, changing the sysctl sends an
+> RTM_NEWNETCONF notification of type NETCONFA_FORCE_FORWARDING, but
+> inet6_netconf_fill_devconf() never emits the attribute. Listeners only
+> receive NETCONFA_IFINDEX without the new value, and RTM_GETNETCONF
+> replies and dumps omit it as well.
+> 
+> Also send a notification when disabling all.forwarding resets
+> force_forwarding on an interface, which previously happened silently.
+> 
+> [...]
 
-- [High] The patch leaves the use-after-free it describes reachable,
-  because it removes only one trigger.
-- [Low] The commit message understates when duplicate state resolution
-  can happen.
+Here is the summary with links:
+  - [net-next,v2] ipv6: Add NETCONFA_FORCE_FORWARDING to netconf messages
+    https://git.kernel.org/netdev/net-next/c/2d916a8c307c
 
---
-
-xfrm: reject duplicate state resolution in xfrm_migrate()
-
-This patch makes xfrm_migrate() reject a migration entry that resolves to
-an SA already stored in x_cur[]. It drops the extra lookup reference and
-goes through the existing restore_state rollback. The goal is to prevent
-the Stage 4 put-then-delete sequence from accessing a state after its
-last reference is gone.
-
-> xfrm_migrate_check() rejects identical migration entries, but entries
-> with different old_reqid values can still resolve to the same state.
-> In particular, old_reqid == 0 is a wildcard, so it can match the same SA
-> as an entry carrying that SA's reqid.
-
-[Severity: Low]
-Is this description complete? Two entries with the same non-zero
-old_reqid can also resolve to the same SA.
-
-xfrm_migrate_check() compares the addresses with memcmp() over the whole
-xfrm_address_t:
-
-net/xfrm/xfrm_policy.c:xfrm_migrate_check() {
-    ...
-	if (!memcmp(&m[i].old_daddr, &m[j].old_daddr,
-		    sizeof(m[i].old_daddr)) &&
-	    !memcmp(&m[i].old_saddr, &m[j].old_saddr,
-		    sizeof(m[i].old_saddr)) &&
-    ...
-}
-
-copy_from_user_migrate() copies all 16 bytes from userspace:
-
-net/xfrm/xfrm_user.c:copy_from_user_migrate() {
-    ...
-	memcpy(&ma->old_daddr, &um->old_daddr, sizeof(ma->old_daddr));
-	memcpy(&ma->old_saddr, &um->old_saddr, sizeof(ma->old_saddr));
-    ...
-}
-
-For AF_INET, xfrm_migrate_state_find() uses the family-aware hash
-functions and xfrm_addr_equal(..., m->old_family), so only a4 is
-compared. Two entries that differ only in the unused upper 12 address
-bytes pass xfrm_migrate_check() and still resolve to the same SA.
-
-The new x_cur[j] == x check catches this case too, so the code is fine
-here. Could the commit message describe the more general mismatch between
-the memcmp() based uniqueness check and the lookup semantics? That would
-help stable backporters see which inputs trigger the bug.
-
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index cea6842e6454d..41ea5da825b64 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-
-[ ... ]
-
-> @@ -4702,6 +4702,17 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
->  	/* Stage 2 - find and update state(s) */
->  	for (i = 0, mp = m; i < num_migrate; i++, mp++) {
->  		if ((x = xfrm_migrate_state_find(mp, net, if_id))) {
-> +			for (j = 0; j < nx_cur; j++) {
-> +				if (x_cur[j] == x)
-> +					break;
-> +			}
-> +			if (j < nx_cur) {
-> +				xfrm_state_put(x);
-> +				NL_SET_ERR_MSG(extack,
-> +					       "Multiple MIGRATE entries resolve to the same SA");
-> +				err = -EINVAL;
-> +				goto restore_state;
-> +			}
-
-[Severity: High]
-Does this fully close the use-after-free in Stage 4? Stage 4 still drops
-every lookup reference before it deletes the same states:
-
-net/xfrm/xfrm_policy.c:xfrm_migrate() {
-    ...
-	/* Stage 4 - delete old state(s) */
-	if (nx_cur) {
-		xfrm_states_put(x_cur, nx_cur);
-		xfrm_states_delete(x_cur, nx_cur);
-	}
-    ...
-}
-
-Duplicates in x_cur[] are one way for an entry to have no table reference
-left at that point. A concurrent hard expiry looks like another.
-xfrm_timer_handler() takes only x->lock, not xfrm_cfg_mutex, and on hard
-expiry does:
-
-	err = __xfrm_state_delete(x);
-
-The data path can arm this right away. xfrm_state_check_expire() sets
-XFRM_STATE_EXPIRED and starts mtimer with a zero delay once the hard byte
-or packet limit is reached.
-
-If __xfrm_state_delete() runs between the Stage 2 lookup and Stage 4, the
-lookup hold is the only reference left. The sequence would then be:
-
-xfrm_migrate()
-  xfrm_states_put()
-    xfrm_state_put()          /* refcnt -> 0 */
-      __xfrm_state_destroy()  /* queue on gc list, schedule gc */
-  <task preempted>
-                              xfrm_state_gc_task()
-                                synchronize_rcu()
-                                xfrm_state_gc_destroy(x)  /* freed */
-  xfrm_states_delete()
-    xfrm_state_delete()
-      spin_lock_bh(&x->lock)  /* freed memory */
-
-Could Stage 4 call xfrm_states_delete() first and xfrm_states_put()
-afterwards? With that order the lookup holds keep each state alive across
-xfrm_state_delete(), and a second delete of a state that is already DEAD
-just returns -ESRCH. xfrm_do_migrate_state() in xfrm_user.c already
-follows this order: it calls __xfrm_state_delete(x) and then
-xfrm_state_put(x).
-
-Rejecting duplicates still seems worth keeping so one SA is not cloned
-twice. On its own, though, it does not seem to cover the concurrent
-expiry case.
-
->  			x_cur[nx_cur] = x;
->  			nx_cur++;
->  			mp->encap = encap;
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106091929.52067-1-juny24602%40gmail.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
