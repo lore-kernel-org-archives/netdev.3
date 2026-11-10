@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279316;
-	b=LiiE8jJUd3m6PR+XLPrRfuJGEqFkD1P7Wxq/qfPFb16RsS8cSuckS+eV2ujHfcq9pfKk
-	 LicrvthgxGMXa67MoNXA/rFvHv0M2aag+FMR7vyN5gIbF3LZFbnAXxVooGIX1+jyHDFDV
-	 eUZtMEef7F6lBngfN2tq4lwY+ME9fQ3lccYeB572QcJHguKnEhgvtOEfAdEWDmHUFJoKU
-	 Mf1qM2SXGRHLbTS+LsKy+rUcO6u6EAIV00AKrETyUw2JcWJGzg0w+LsX1bM5B7BI1HYH1
-	 yjcYsRkVak+WSqrdRNABqjBTWvInsye3aA2YiCJ/22HbOJwVnbqAUGjLdKEzfmVIPsw==
+	t=1794279303;
+	b=STTLfgvx0obsnMQaBihtepnXsa4AMTw0j+kX839ypjMMEsL0iwp2vaqoSglTQCocVAYu
+	 Ori7r3RBYAHbe2C82LSia36pfCoz0B0vHSLrPdKCt7rSwZPQby5tCiKcXxAGaDtB1Ziro
+	 0RYBrTwT2CGtDbiTa7PNMAZEox7o/9pfVhJFDZjrEqcms1FciVa1OhtVXKE88/zvUWv5l
+	 gldchwSC5O7dJXhzM4MYR4ygTAFEfQTi2AykYi2BgtamdOO/HvvwzccEP6bCfz1qb8Grn
+	 4uS1X+g0XCIY9OhrH8Recd+mxxmKAQdYmli+u7bM7G8a0tEJRiuSy9ALX6UErz1Lb7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279316;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279303;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=oJaEuoFNLVSbavjQsEt3AA3w6CDlj0c674f+jDJSa18=;
-	b=4L0t3vmNDmUMVFY6Oh+6Zuesp660VB+2QWxK4OE1J73mo4nXwFnjqxF1x63Rt2EatSJX
-	 HGq0mQ4d6Wi32mBbryMiXF5fcWMvsJc+Mz9xBwFDQigqF2/LKRbrqmz/FGTSnJEoiAEyh
-	 56B0HXjt4lfs57wt8vRd7bvo7N0IGkKRujfnhRsUFxqdKY2Atdx/5ODNkqoZk9OgQib6V
-	 lv4l5Na+NrKlPJAwk8zQRGpw15VrMS+AOqaw9W1VkTWb3LU6jkDpbLQ/yI3cvjlz024PG
-	 dtmcDjQnbtOsMJ8qnGiRTKU/KmzgU7agqXviNkxRO3nIQrXw3vPLx3MxS/OQ04TtBCA==
+	bh=dP0+wjyOwX9AjuPhQG9DeKIc+ii1jJ//qhhRI1Y+lHo=;
+	b=Z4UjfbR6ExhFb/ozB4C+/IXo4Vyxv6/rYkm702ul0ts2SLphwBZMfgNplcmcxAIlvsoo
+	 O2+EJ+zaTN9CJH4sHnEMe21soeHC3c/1Dk4daXCLwmcjMtaHX7wV3XDon2J1jiN38HW8w
+	 rEJODFx78DQ7BRq5MQi/fXSND5ofAlghzBlMXf/uxjE/4bdYTtViruNWAYoud47Ujtghq
+	 qA6IGiClPvRT2+clybTkkJ7dPjaBCKRQ8qas19YqbDUFYAuqS2SUWlPLeyRcFCleS9E4/
+	 vegBwwoaJT8fHfTImcok6l/Rksik+dOXXW8iP7YDv6zX9M5Fv7u6Fy5drju4dzfllOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="aM/H+2BN";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJeN6jKQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFFF606B0FD;
-	Tue, 10 Nov 2026 02:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82144606A338;
+	Tue, 10 Nov 2026 02:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aM/H+2BN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F401F0089F;
-	Tue, 10 Nov 2026 02:55:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJeN6jKQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86D11F008A1;
+	Tue, 10 Nov 2026 02:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279316;
-	bh=oJaEuoFNLVSbavjQsEt3AA3w6CDlj0c674f+jDJSa18=;
+	s=k20260515; t=1794279303;
+	bh=dP0+wjyOwX9AjuPhQG9DeKIc+ii1jJ//qhhRI1Y+lHo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aM/H+2BNJs9cSn6tDl85nJsvj5sxjfAFnSN7kshrWMgjBE5ZERnOsuk8n3ky8zMaW
-	 bbgf1ABOR6a2MK06Gzp87FKXDvGF44EOhendcL1tKygax7lAdluiDMPA1t6duggv7x
-	 Ii/UOASLzhbB4YSRaA/mT069TeX3Szykldmcb8hQW5zpxBwWlHyj9uz6hd8XakY2rI
-	 TznoWeSWhW668cjxZORyRcAeyLmEzaufh+2R1GH1CDISRea5L5HrrSw9G7edt4tcuB
-	 jfu65XbgQOrgmuYp3m5AdZFp1sDnh1WT1hIOwwmCr0H/wgoRUlFdMiyfYEMex402N0
-	 Ic1/yKq5J+ggA==
+	b=GJeN6jKQzhyj09OP6dHKracKVVZV0ist/9C/93qMZkV/rv+SZVIi4TVAXGWqNN/7V
+	 CMfG82PYV+UKsxkhKZInCbUoLG7g3wtWmr35dMdswBcIC8dNWsl997s2a1w4zlZwT5
+	 UiTwOrIlXTu7ztcgb0P20Zj3Xdq8gSdfHG3jtxlBvGJAErIZ3pgXqLd+Fwko4awBWG
+	 7+nEG0wYaf1XiY/yV6mmSALhNxqwQxONJPbgcre0QXd3H1oOrqajm4LB0fNh4UUYPz
+	 TGioHGJ/MWSr7gUSHaNvh2TXT7CwlQ+hrSwKtEdNwZNxdZBIEXdVKW7+Kw0MciHmeI
+	 5km3lt0HVvXaA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20F91391AFCB;
-	Tue, 10 Nov 2026 02:55:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8359391AFCB;
+	Tue, 10 Nov 2026 02:55:02 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/3] net/sched: taprio: fix RCU stall from replayed
- schedule entries
+Subject: Re: [PATCH net v2 0/2] ipv6: ignore link state in gateway check
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427931466.3612825.9604247532140652999.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:14 +0000
-References: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
-In-Reply-To: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
-To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-Cc: vinicius.gomes@intel.com, jhs@mojatatu.com, jiri@resnulli.us,
+ <179427930167.3612825.11874749097898139774.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:01 +0000
+References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+In-Reply-To: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, vladimir.oltean@nxp.com, vedang.patel@intel.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ horms@kernel.org, shuah@kernel.org, weiwan@google.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  4 Nov 2026 15:17:10 +0100 you wrote:
-> syzbot reported an RCU stall with a software taprio schedule made of a
-> single 127 ns entry. When advance_sched() falls behind, it replays every
-> missed entry inside the timer interrupt and the backlog only grows.
-> Patch 3 makes it continue from the entry in progress instead.
+On Wed,  4 Nov 2026 19:56:53 +0000 you wrote:
+> IPv6 gateway validation can reject routes in non-main tables when
+> ignore_routes_with_linkdown is enabled and the nexthop device has
+> no carrier, even though these routes should be added.
 > 
-> Patch 2 fixes a pre-existing wrap of the cycle-time-extension sum in the
-> software and txtime-assist paths. Patch 3 relies on it. Patch 1 prevents
-> a saturated extension from handing over to an admin schedule whose
-> software timestamps cannot be represented.
+> Fix this by ignoring link state during gateway validation and add a
+> regression selftest covering IPv4 and IPv6 route installation.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/3] net/sched: taprio: reject software schedules that overflow their timestamps
-    https://git.kernel.org/netdev/net-next/c/57fb90fed7d9
-  - [net,v3,2/3] net/sched: taprio: prevent cycle time extension overflow
-    https://git.kernel.org/netdev/net-next/c/593632c1e1f5
-  - [net,v3,3/3] net/sched: taprio: do not replay missed entries in advance_sched()
-    https://git.kernel.org/netdev/net-next/c/7a48731e43e3
+  - [net,v2,1/2] ipv6: ignore link state in gateway check
+    https://git.kernel.org/netdev/net/c/b76bcf3fff93
+  - [net,v2,2/2] selftests: fib_tests: Add carrier gateway test
+    https://git.kernel.org/netdev/net/c/d1b6b27005b4
 
 You are awesome, thank you!
 -- 
