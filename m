@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279297;
-	b=zmM75R+8tqPpPKU1YuJCudaj/uZEZyuNalTM28iu1PQVACA5Kyerk96fqXXILiqUNB3j
-	 Ie/fVOdQ6i3nVIB0okz5dq0ud+LdkMw25rO2L/9HrCr5Y5AZINej8d0zH2WBpdatkOWux
-	 RQqAaXkMufPbsEG4xWkk9jF3+Ryi33b9+MJm9BRWAU2fR+PdSblynOtjV7g4j1euwPtNi
-	 MFLN0raKYeBn0H5E4z9c3pbBotI/vGRvdBCySQPtF0lGIxYhsvJoMH1FdTEh+tLHuYfma
-	 0/+slozpP2V68Uv50zaBcOJCvfnz2A1kIaStai2nwoD9N8MLGClz5eJJ4f2DW3MzMtQ==
+	t=1794279314;
+	b=oaZ/5K/9ikYAMxMOaqkViqW9jUU0X3C0DppEN15rvxMIMwCaTS2o3j893MuloVTX8QSM
+	 0YMlUOMy+K4g5gR93bSUSqNmq9gWwmq2V33v02N6KP5A4f8lHvDtUqxiECbtCKeNgFZhG
+	 daZJKre+Oi2tGJUTnLxBTDsviJcItyF6cz58cGzBOG431fKILxHcGS7lvCrw2rHIX9Nz0
+	 3kTUmrKjuRWc2MXSHEvqr1/rhWPfYhKbyllPAWaqx0RBvwbUGJUSIz2iQFzoWQIo59Tah
+	 5jsbwSHA4zS8kpS05FZ9OXDllRWHsfJYKyTUrcGSKw92KGhOAVxcC66tEmQV+2+a05g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279297;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279314;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=220IttDuUK2+qmE+iRwEDRnwj9/vtgmDl7HUfJ3Mg7U=;
-	b=IeQRKN8W6KBOeSnXNKUQBZJR/WNUg4rNeTRRGd2w0UX8od0cBbBMYGg2LTTNq9wGnlqd
-	 BERqw8QwjbmwUgqo3J7pFzUaEwZmuvil7FVJkN2d1uehTLdMTGun5xRcDV0geVEVwAgPL
-	 LTh2D4+SmbA0p+Q0Sb1HLIVNc4n6vNOYD1YASQJJSMWjS9E/qjkAEQiUQFlhrTYIKP2aL
-	 KfaP4yxc5b0tWlTHOj183/yJV2fzxQmUJhTxLs0xMBsB9csndPQYP9oqCJ4seIkIonDUY
-	 3rmeT0zWAFnBaKyzRFz10oCM9S9/42ouH0QLu0c15dsYRKEhWxMUYAum1CmPKNJS0Kg==
+	bh=9vkjXGj8E1tCNlK6OgtPkP9eLc/ViU7DdLFLKuqN8to=;
+	b=241YIqYBOfBNuBsVmEJmOxBbt8e6g9plopJb8CPQk4EqJmkdJWmbP1ll2YYvJ6CxtrYV
+	 g/mQVApxtSQ8AuQZquDRBkz/qNSgD3ZKRx7olYKmi4TKqF3K17C6AxI6WVgafkZqNCvbQ
+	 pOGdw5AYZBw4B8NNGf5mk6DvRDrC+SezaxslcQNuXbLB286V7GHw0QcPNIzMIscR7BjxV
+	 vDC9Kf3L5bQ4coAg4r1QY8IrOs10kznObXgWogVjue8E65lLajLprf1d+SA59llHyKEPC
+	 HudeVWaSSUAAn90x/BmVhXVnZIdKKm4HRpkR6x1k+Vz0EXEWQUi5fug1gg7E3cBOSfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iP6T/Oeu";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUAEMr8b;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF7060A2619;
-	Tue, 10 Nov 2026 02:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1951606B0FD
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iP6T/Oeu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2611F0089F;
-	Tue, 10 Nov 2026 02:54:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUAEMr8b
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFAF1F008A1;
+	Tue, 10 Nov 2026 02:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279297;
-	bh=220IttDuUK2+qmE+iRwEDRnwj9/vtgmDl7HUfJ3Mg7U=;
+	s=k20260515; t=1794279313;
+	bh=9vkjXGj8E1tCNlK6OgtPkP9eLc/ViU7DdLFLKuqN8to=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iP6T/Oeu3NeSaN5uH9Rk2agn2vNR1efLa1Z4y4cHVv1N6nV1uDKDo0EBBfZtp4u86
-	 BGIew7PX90RQyQBVyVMxQKKzYZPvhoTb3QkbCeY01brgQgmqe82C63qLavWxkf305Y
-	 gUcfRQiWsKQSNowNOx6f9g3/YgaDGjqF9Dvc178ID1CGWqSCJs83nzJRqxC3vkG2c9
-	 o2k/Tnty27XDl0aaaY70QWNO5aZY3mJKOGKadwQUlktmr2neRF81hJT8y6tezX4Ikl
-	 ssZnrzP+GlcYoRLgiwsNX+T+Qcn1ogXbp5YYpTbflVawIALqnPvTa1do71v8ydVymL
-	 C1zpgvX3wP+VQ==
+	b=cUAEMr8b64rh70D72PomBwr2MzTeqij9ATCHIUOQjtCMakmsEPqsJM0WwmXG4SyhW
+	 76okAytmrvxTZ5H1/sbDr2i+KgoJyCHoamNjilRivfJt+RbbBvdIS8jff+2e/vF6S0
+	 +BJw2XZavkKKfC6zTcMWq2iUGAbN57m1untgackBKVzNugZQUMhQqUZb9S0ShLF8LX
+	 k88qaIGyJsyj1lYsO0CKNzGFukK8ZV6oEwkysiNx15pnWDCyHAaaKOyu6a8Ns6xpBm
+	 dtFG21iX4HH4rHatekH06i19kwG1/UHR2HqMPpd8xj705XJCGIv3qpjfXyPw8gUX/A
+	 Abj5vR7+p+4KQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20F2C391AFCB;
-	Tue, 10 Nov 2026 02:54:57 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 21110391AFCB;
+	Tue, 10 Nov 2026 02:55:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5: Lag,
- free steering resources on LAG destroy failure
+Subject: Re: [PATCH net] net: stmmac: keep est_lock across PTP clock
+ adjustment
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427929567.3612825.14562641689410614120.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:54:55 +0000
-References: <20261104183947.772195-1-tariqt@nvidia.com>
-In-Reply-To: <20261104183947.772195-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, gal@nvidia.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- maorg@nvidia.com, mbloch@nvidia.com, ohartoov@nvidia.com, saeedm@nvidia.com,
- shayd@nvidia.com
+ <179427931167.3612825.9963746260177679514.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:11 +0000
+References: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+In-Reply-To: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 4 Nov 2026 20:39:47 +0200 you wrote:
-> From: Mark Bloch <mbloch@nvidia.com>
+On Mon, 02 Nov 2026 18:37:56 +0100 you wrote:
+> stmmac_adjust_time() disables EST, drops est_lock to step the PTP clock,
+> and then reacquires the lock to reprogram EST using a base time computed
+> from the new clock value.
 > 
-> When firmware fails to destroy LAG, driver returns before releasing the
-> steering resources, leaking the associated software objects.
-> 
-> The bond is no longer eligible for offload, and the driver cannot
-> prevent its teardown. Release the steering resources even if LAG
-> destruction fails. Preserve the error logging and return the original
-> error after cleanup.
+> That leaves a window where a concurrent tc_taprio_configure() can program
+> EST enabled with a base time derived from the pre-step clock.  The gate
+> schedule then runs across the PTP step with a stale base time until
+> stmmac_adjust_time() reprograms it.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/mlx5: Lag, free steering resources on LAG destroy failure
-    https://git.kernel.org/netdev/net/c/deceb70d1303
+  - [net] net: stmmac: keep est_lock across PTP clock adjustment
+    https://git.kernel.org/netdev/net-next/c/b0816917a4f7
 
 You are awesome, thank you!
 -- 
