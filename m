@@ -1,92 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312232;
-	b=WIwS8R4Z1nYT5knnfAOd2bXGnZJzDqekd7KLHH2UtoI2aYssXfE39MLtt2sJ0yITpVyZ
-	 5h8fuXiTS9NG5FsRiZh81MxY7gMS8t3W5bHKl5n5RlO6Ijp01q5tm3o6Y3fgDBrsFcLnK
-	 5pdLcFa9Snl2hFFGvQth+qIjcLIgo3PaTHA1c31ShLErPfw/XSP3YwHMbazSUJ7ZDlKpM
-	 kRB5BUpSnITWGGoO/r+PhiXhvjL0r+N8nXyrMOcO/SFtN2dQMeIY5wai7VaZ3bltPk4iE
-	 tjxwAHFftl4hXU2mLcEpJ2XBaUG7PFEmbBhjPelvkQnugzrV2q8rwgusOqq9ED6f0fQ==
+	t=1794312300;
+	b=h3GTYcReOVCEnBgyE3+6sJ6+egGw9ojnmewLWED6H9sS7Zb409jB1tqYFjt3B9/0QQJE
+	 cxUy71GvM+dItstoOHMNQz2bupRD0b8E4SKfte7YxH+0JOrMhlARr8Xep2SPVH6BA/ytX
+	 TsNjVIt+m57pHvchQzb5YbeBLumUm1qqjjUT/esPDodkLPHkQTl3GxqN6E1zfvSw6d/mU
+	 oHC4ehEGLbF8w3e2pEysEtNPO892Dhk+86aek/GRjGEym25DjrpTLy/+kO9Z1gvUrqUnl
+	 u/ReXfyp5mwGu6kEY/30ZSaD7hDAy2r8Tfs/df5OMY0uyDuzbfJyirs/3zZ7SFOLo9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312232;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
-	b=m2QFPhidx1xV3drPKPEgqfrQcLaPXDHmyTBCdzr4vUA9dSIbpK6ghYHhZHZGPMEvkSxV
-	 wr4XSp7NLOXTyNqf+Vq3nr8HJciRbC/7Cpv4+MbB59DNp/7XGr6Syl6QWhVmBHkqlzFj1
-	 QXlmKZaL21CAn4RE1DbxQplfwIKRPerFnE7iGC78rXx4Xq/vnv0yyABX473/HZxYAVjZJ
-	 OpuFIwNG6921rTppTdE5D3xCtl5RBO9jG2qIo3rLOdmbCCFHVcUOIsA5qWekoU64pbokV
-	 nWj3ZTsVYNNHHC3Z3bs6DzR9Bu4OcAhLO95zBcC6nmN44sRUbadQBiL3tQISMd30M3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312300;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=2qzoTU2V3PL2+1NGWeEx3c05JhHhlLHtfGf2r6hPE0M=;
+	b=PwVQtCm28cBXvSGwrE30OjN2oJ8QYBAnswGZbstP2A2wMt9x81i3mQz0NsBnm6zGYt7f
+	 a8iSLUZ+pAw54WH9KkEOl1CEyCtfWeFZ10lOz+GuFM2X9uIqShTJpLBKMfygJpJOEcK0/
+	 EWFx1opQidTpONoCT+udIMq2MebwOFRw6SYHHpsKxotY1tBW/6HCQgsdbD6Zd22FjzvJw
+	 xB2bp6ragy2a8yQv+ysH0AunhpRMb/AJ5WbjwFVf097KSEHImAdY4VC9yDNxZz3qxtaAt
+	 tQGvXFKDaq7ikZTMb85uTarwiygpHyuaaS1uzs7I0uEgjJggYRMjR0KpeJz3jGP8aUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V47ELy0a;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtbsJ3Sx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122F8606A32A
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:03:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 122F8606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC0A606A321;
+	Tue, 10 Nov 2026 12:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V47ELy0a
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ea7987517aso10831045ad.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:03:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794312227; x=1794917027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
-        b=V47ELy0aMx3z2Naonb3DmCacCrfE7SIE+sy9aaEqq27CpcKuobe1/sQSA24LvM+KbW
-         kI14xII7Y3V6GLo8TLXqrq0hXgs7gLANMkiIfFBR1ERJBNMl1t4wg5zsB9cMBqRXTjbo
-         8af5B/blUUZJ1j334r+TOINRHsdZXrfr1TUx8Mc48e5ADmIyusvLo4XMllqu1SjQzkdq
-         Sof75grKyHLcBHDjUHZFLDWRZRPUNV0EouLhmxwBC9P17kC1t6BjqzWNlqi+MNWbYh7O
-         AfrEvpr8+6KMyqRZUrTO5GmRm2dZl9JxF18mY19c1bmWyH7caZo9QgtblsDmxbS8MkYb
-         nptg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794312227; x=1794917027;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
-        b=sw6JwCu8nQXnDVYBxunw/tuKkiJNblaVn4CdJ4qFBP4C+vcK+MuiCodRPEhlSGXupl
-         F6yjJAtMxnGVwKr7aFQwLb62p7sKtm8rNPA/Qb1vV9lg9IhvBdAzqOnl8g2tuFAziX6w
-         IOffvDoMqOIspxsRfMbEd1R4vxA6RLMQhjG8XcIo9/lad4UpHTaeqDxhgkuys0ox3G3T
-         rcmKv9r2xyCd1CErK9b8ZT2GaNc6fkz+Of4YjwwQD0juokNrklQKFqSBJDIb7qYD8lUt
-         x05VyS6ICnn4jgTji1ESSxo8ju5KgxvV3/206JnmjgqroMJLWYvo3Gzx9++qk3yWifjb
-         WZPw==
-X-Forwarded-Encrypted: i=1; AL+hErGi3M2tGfb9o6FKpYgS8f6snQmmN4fOxcCTygXB/ftpTXqh/Ff8dT8bfNes+aPPQ6l3x4GzvaI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8uCh+D9XQTH95Adpgjte4ICOQIcfPIFIguJNgsmsAFRfxHA2R+
-	pjEN1k5T60Om6HZdMyCtdxGwLr0zqQLH2g2aGQ+j5W1fNWQfRHlnV4Kv
-X-Gm-Gg: AYBFou0nZv7S+uaSHyePuLZYNiy6/OlHCpQgY/qAEs5fZyQoOSk4tkE3N2bH76f9HmB
-	3YeEDbdySlNmPp2G0FBAtoyieNevj7Up1EDCMzb8kFL9ke7UfQ82U1EUrwGiE1aPeTrcPWtwg3I
-	WHPuT9/iyMHi63FdUr3VhN9G3vF8LoFHe9DK0h6nmtiuQ7H2aeQmqxDkOUAttyrr82dt03tVxHL
-	jM58scarODNdmR5tstgTm5Qo+59Y/GCy2OK2z4Cmi8ZHES9GH0qG1Wmab9p3LftFpxuD7jP1NQC
-	gWYo1osobwHS2MfuCNfoZFEr0IY24Ha/IfpEclfuEyC7cWeaxifoA5aWJTcrO7lDq3EXpujsJ6F
-	IGSVGC9EBQFy/c9rQ4UY5Xxo9EeG46/IcjruAhJk+/wnxp0rVYpKRWz3S0q/zNvQn+mSfQVz/7K
-	sNWaXq8CoBNO/IcAxUmjZVzl0nhj9LAzA5GeaHRcvAbI4Y0fcRQl2JISioRNDHiMJ0hFbJXU5sz
-	RKiLU6UGd8E/IjYV+p5QGbHYbU+lFWRo9MnZ3/kC+zvVumcNKfu4U9af0kp2IAvsr1FlcVVgsAY
-	qqf8PQI8mdIW0uDDWSXlmokOzJoxROpDjluBcUBsMw==
-X-Received: by 2002:a17:90a:e7c8:b0:3ac:da41:ef7e with SMTP id 98e67ed59e1d1-3b166d1a008mr2560989a91.52.1794312227260;
-        Tue, 10 Nov 2026 04:03:47 -0800 (PST)
-Received: from localhost.localdomain ([183.62.176.219])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b16771705asm3693853a91.12.2026.11.10.04.03.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 04:03:46 -0800 (PST)
-From: liuyong <pkfxxxing@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/1] sctp: fix timer locking across association migration
-Date: Tue, 10 Nov 2026 20:02:08 +0800
-Message-ID: <20261110120212.1110283-1-pkfxxxing@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtbsJ3Sx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1280E1F008A1;
+	Tue, 10 Nov 2026 12:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794312299;
+	bh=2qzoTU2V3PL2+1NGWeEx3c05JhHhlLHtfGf2r6hPE0M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EtbsJ3SxdC/ckG+wU9hRtJMtS4NlZD9+I8GM4sKfA0M77RKgrVk4eH6D7qDasFtQI
+	 1q3RpvRwG7twOybAs7hWmpdPpgJ8xEKMCBB//Zui6VXAmt3DI2w5vBPIIiLWEq2RLp
+	 bK6olxKMnfwa/vQCqP1zZZFUinZ6+tWAlDKrFxB2jdQCZ1V0VITV/1jEmRP3balK1a
+	 k9ghO6rvQYLscpahahKVWneQUGcbe9ljsumNNw358KqgKIrfCH8I4LikRHpXdwsQQK
+	 UjyzetYvcMf7LxUgScArMN8PEfvVETjOstoZ9xXg/84O0krRrgD5ndOqgvqyn2Eo+E
+	 0Kv9w/shvYk6w==
+Subject: Re: [PATCH net v4 1/2] gve: block XDP on the DQO-QPL queue format
+From: netdev-bot+sashiko@kernel.org
+To: amaan.cheval@gmail.com
+Cc: netdev@vger.kernel.org, joshwash@google.com, hramamurthy@google.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, bcf@google.com, jordanrhee@google.com,
+ przemyslaw.kitszel@intel.com, maciej.fijalkowski@intel.com,
+ pkaligineedi@google.com, maolson@google.com, csully@google.com,
+ willemb@google.com, yangchun@google.com, npl@google.com,
+ awogbemila@google.com, shailend@google.com, nktgrg@google.com,
+ maxyuan@google.com, bpf@vger.kernel.org, john.fastabend@gmail.com,
+ hawk@kernel.org, sdf@fomichev.me, daniel@iogearbox.net, ast@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 10 Nov 2026 12:04:57 +0000
+Message-ID: <179431229760.994134.9605192478932025271@kernel.org>
+In-Reply-To: <20261106114551.212675-2-amaan.cheval@gmail.com>
+References: <20261106114551.212675-2-amaan.cheval@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,181 +69,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This patch makes SCTP timer callbacks revalidate the association's socket
-after taking its BH lock. If accept or peeloff moves the association before
-the callback acquires the lock, the callback can otherwise process queues
-under the old socket's lock while abortive close tears them down under the
-new socket's lock. The T3 retransmit path then reads a freed chunk.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-One possible interleaving on the unfixed kernel (time flows downward):
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-  CPU 0: sctp_generate_t3_rtx_event()  CPU 1 (peeloff / abortive close)
-  -----------------------------------  ------------------------------------
-  sk = asoc->base.sk; /* oldsk */
-                                       lock_sock(oldsk);
-                                       lock_sock_nested(newsk, ...);
-                                       asoc->base.sk = newsk;
-                                       release_sock(newsk);
-                                       release_sock(oldsk);
-  bh_lock_sock(sk); /* oldsk */
-  sock_owned_by_user(sk) == false
-  sctp_retransmit_mark(...);
-  chunk = list_entry(...);
-                                       lock_sock(newsk);
-                                       sctp_primitive_ABORT(...);
-                                       sctp_association_free(asoc);
-                                       sctp_outq_free(&asoc->outqueue);
-                                       __sctp_outq_teardown(...);
-                                       /* chunk is freed */
-  sctp_chunk_abandoned(chunk);
-  /* reads freed chunk: UAF */
-  bh_unlock_sock(sk);
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The development and reproduction baseline is Linux 7.4.0-rc2 at commit
-b3dfbde62cf1981c4638939c159dfd087b7a72e9. The UAF was reproduced with an
-mdelay() instrumentation patch widening the windows between the T3
-callback caching the socket and locking it, and between the retransmit
-path obtaining a queued chunk and using it. With unacknowledged
-DATA pending, peeloff moves the association to a new socket; abortive close
-of that socket frees the chunks while the timer is still running.
+- [High] The patch is incomplete for GVE_GQI_RDA_FORMAT.
 
-The patch treats an association/socket mismatch like a busy socket and
-reschedules the timer through the existing reference-counted retry path.
-The next callback reads the current socket again. The check is applied to
-the six timer entry points with this locking pattern.
+--
 
-KASAN report:
+gve: block XDP on the DQO-QPL queue format
 
-[  417.538580] ==================================================================
-[  417.538597] BUG: KASAN: slab-use-after-free in sctp_chunk_abandoned+0x706/0x840
-[  417.538674] Read of size 8 at addr ffff8881079c8a90 by task swapper/0/0
+This patch adds a queue_format check to gve_verify_xdp_configuration()
+that refuses XDP program setup on DQO-QPL. That check was lost when
+d8a8ca14c937 enabled XDP on DQO-RDA. The DQO-QPL RX page accounting can
+free a page that is still DMA-mapped when a redirect target releases the
+buffer synchronously.
 
-[  417.538684] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.4.0-rc2-gb3dfbde62cf1-dirty #2 PREEMPT(lazy) 
-[  417.538687] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  417.538691] Call Trace:
-[  417.538698]  <IRQ>
-[  417.538700]  dump_stack_lvl+0x53/0x70
-[  417.538710]  print_report+0xd0/0x630
-[  417.538737]  kasan_report+0xce/0x100
-[  417.538741]  sctp_chunk_abandoned+0x706/0x840
-[  417.538746]  sctp_retransmit_mark+0x107/0xb00
-[  417.538749]  sctp_retransmit+0x25a/0x5b0
-[  417.538751]  sctp_do_sm+0x3c01/0x5c30
-[  417.538810]  sctp_generate_t3_rtx_event+0x174/0x270
-[  417.538814]  call_timer_fn+0x29/0x230
-[  417.538818]  __run_timers+0x56a/0x8d0
-[  417.538861]  timer_expire_remote+0xd3/0x120
-[  417.538872]  tmigr_handle_remote_up+0x4e0/0xa60
-[  417.538890]  __walk_groups_from+0x40/0x150
-[  417.538892]  tmigr_handle_remote+0x229/0x2c0
-[  417.538901]  run_timer_softirq+0x1f5/0x250
-[  417.538908]  handle_softirqs+0x1b3/0x600
-[  417.538917]  __irq_exit_rcu+0xfc/0x160
-[  417.538919]  sysvec_apic_timer_interrupt+0x6b/0x80
-[  417.538923]  </IRQ>
-[  417.538924]  <TASK>
-[  417.538925]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-[  417.538928] RIP: 0010:pv_native_safe_halt+0xf/0x20
-[  417.538931] Code: 44 de 00 c3 cc cc cc cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d 73 44 16 00 fb f4 <c3> cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
-[  417.538933] RSP: 0018:ffffffff85e07d10 EFLAGS: 00000212
-[  417.538939] RAX: ffff88819372e000 RBX: ffffffff85e18700 RCX: ffffffff84ef0c0b
-[  417.538940] RDX: ffffed10236062a3 RSI: 0000000000000004 RDI: 00000000000324bc
-[  417.538942] RBP: fffffbfff0bc30e0 R08: 0000000000000001 R09: ffffed10236062a2
-[  417.538943] R10: ffff88811b031513 R11: 0000000000000002 R12: 0000000000000000
-[  417.538944] R13: 0000000000000000 R14: 1ffffffff0bc0fa6 R15: dffffc0000000000
-[  417.538948]  default_idle+0x9/0x10
-[  417.538952]  default_idle_call+0x39/0x60
-[  417.538954]  do_idle+0x37b/0x560
-[  417.538960]  cpu_startup_entry+0x4f/0x60
-[  417.538962]  rest_init+0x186/0x1b0
-[  417.538997]  start_kernel+0x354/0x3b0
-[  417.539009]  x86_64_start_reservations+0x18/0x30
-[  417.539013]  x86_64_start_kernel+0x111/0x120
-[  417.539015]  common_startup_64+0x13e/0x158
-[  417.539023]  </TASK>
+> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+> index 2437cd8ba6331..4e9e692a0ed0a 100644
+> --- a/drivers/net/ethernet/google/gve/gve_main.c
+> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> @@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct net_device *dev,
+>  	struct gve_priv *priv = netdev_priv(dev);
+>  	u16 max_xdp_mtu;
+>  
+> +	if (priv->queue_format == GVE_DQO_QPL_FORMAT) {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "XDP is not supported in DQO QPL queue format.");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
 
-[  417.539024] Allocated by task 255:
-[  417.539027]  kasan_save_stack+0x33/0x60
-[  417.539031]  kasan_save_track+0x14/0x30
-[  417.539032]  __kasan_slab_alloc+0x6e/0x70
-[  417.539034]  kmem_cache_alloc_noprof+0x10e/0x340
-[  417.539039]  sctp_chunkify+0x42/0x270
-[  417.539041]  _sctp_make_chunk+0x11c/0x230
-[  417.539042]  sctp_make_datafrag_empty+0x134/0x200
-[  417.539044]  sctp_datamsg_from_user+0x49d/0xf70
-[  417.539046]  sctp_sendmsg_to_asoc+0x6cb/0x16b0
-[  417.539049]  sctp_sendmsg+0x5c8/0x1960
-[  417.539051]  __sys_sendto+0x31c/0x390
-[  417.539061]  __x64_sys_sendto+0xdb/0x1b0
-[  417.539063]  do_syscall_64+0xdf/0x4c0
-[  417.539065]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Severity: High]
+Does this leave GVE_GQI_RDA_FORMAT uncovered? The commit message says the
+check removed by d8a8ca14c937 "refused every format but GQI-QPL", so it
+blocked GQI-RDA as well as DQO-QPL. Only DQO-QPL is added back here.
 
-[  417.539068] Freed by task 255:
-[  417.539069]  kasan_save_stack+0x33/0x60
-[  417.539070]  kasan_save_track+0x14/0x30
-[  417.539072]  kasan_save_free_info+0x3b/0x60
-[  417.539075]  __kasan_slab_free+0x43/0x70
-[  417.539077]  kmem_cache_free+0xba/0x3a0
-[  417.539078]  __sctp_outq_teardown+0x16c/0x960
-[  417.539080]  sctp_association_free+0x157/0x5e0
-[  417.539082]  sctp_do_sm+0x31c7/0x5c30
-[  417.539085]  sctp_primitive_ABORT+0x7c/0xd0
-[  417.539086]  sctp_close+0x203/0x810
-[  417.539088]  inet_release+0xc9/0x1c0
-[  417.539096]  __sock_release+0xa1/0x260
-[  417.539098]  sock_close+0x10/0x20
-[  417.539100]  __fput+0x2f8/0x9e0
-[  417.539107]  fput_close_sync+0xe2/0x190
-[  417.539109]  __x64_sys_close+0x78/0xd0
-[  417.539111]  do_syscall_64+0xdf/0x4c0
-[  417.539113]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+GQI-RDA also falls into the else branch of gve_set_netdev_xdp_features():
 
-[  417.539115] The buggy address belongs to the object at ffff8881079c8a00
-                which belongs to the cache sctp_chunk of size 256
-[  417.539117] The buggy address is located 144 bytes inside of
-                freed 256-byte region [ffff8881079c8a00, ffff8881079c8b00)
+	} else {
+		xdp_features = 0;
+	}
 
-[  417.539120] The buggy address belongs to the physical page:
-[  417.539122] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1079c8
-[  417.539125] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  417.539126] flags: 0x200000000000040(head|node=0|zone=2)
-[  417.539132] page_type: f5(slab)
-[  417.539134] raw: 0200000000000040 ffff8881017d5040 dead000000000100 dead000000000122
-[  417.539139] raw: 0000000000000000 0000000000190019 00000000f5000000 0000000000000000
-[  417.539140] head: 0200000000000040 ffff8881017d5040 dead000000000100 dead000000000122
-[  417.539142] head: 0000000000000000 0000000000190019 00000000f5000000 0000000000000000
-[  417.539143] head: 0200000000000001 ffffffffffffff81 00000000ffffffff 00000000ffffffff
-[  417.539145] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-[  417.539146] page dumped because: kasan: bad access detected
+and gve_xdp_xmit() rejects it too:
 
-[  417.539147] Memory state around the buggy address:
-[  417.539148]  ffff8881079c8980: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-[  417.539149]  ffff8881079c8a00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  417.539150] >ffff8881079c8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  417.539151]                          ^
-[  417.539152]  ffff8881079c8b00: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
-[  417.539153]  ffff8881079c8b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  417.539154] ==================================================================
-[  417.539179] Disabling lock debugging due to kernel taint
+	if (priv->queue_format == GVE_GQI_QPL_FORMAT)
+		return gve_xdp_xmit_gqi(dev, n, frames, flags);
+	else if (priv->queue_format == GVE_DQO_RDA_FORMAT)
+		return gve_xdp_xmit_dqo(dev, n, frames, flags);
 
-The issue was discovered and fixed by Qihoo 360's Tulongfeng multi-agent system.
+	return -EOPNOTSUPP;
 
-A reproducer and additional reproduction materials are available. Please
-contact me privately if you need them.
+On GQI-RDA, though, every remaining check in this function can pass:
 
-Regards,
-liuyong
-360 Vulnerability Research Institute
+  - GQI has no NETIF_F_GRO_HW.
+  - Header split is DQO-RDA only.
+  - packet_buffer_size defaults to 2K.
+  - GVE_RX_PAD is only subtracted for GQI-QPL.
+  - The rx/tx queue count condition can be met with ethtool -L.
 
-liuyong (1):
-  sctp: revalidate the association socket in timer callbacks
+Once verification passes on a running interface, the path is:
 
- net/sctp/associola.c     |  4 ++--
- net/sctp/sm_sideeffect.c | 41 ++++++++++++++++++++--------------------
- 2 files changed, 22 insertions(+), 23 deletions(-)
+gve_xdp()->gve_set_xdp()->gve_configure_rings_xdp()->gve_adjust_config()
+  ->gve_queues_start()->gve_reg_xdp_info()
+
+On GQI-RDA, gve_is_qpl() is false, so gve_reg_xdp_info() takes this
+branch:
+
+		else
+			err = xdp_rxq_info_reg_mem_model(&rx->xdp_rxq,
+							 MEM_TYPE_PAGE_POOL,
+							 rx->dqo.page_pool);
+
+On a GQI ring, rx->dqo.page_pool is NULL because gve_rx_alloc_ring_gqi()
+memsets the ring. __xdp_reg_mem_model() therefore returns -EINVAL. By
+then gve_adjust_config() has already closed the old queues, so it logs
+"!!! DISABLING ALL QUEUES !!!" and turns the device down.
+
+Before that failure, gve_queues_start() has already set:
+
+	priv->tx_cfg.num_xdp_queues = tx_alloc_cfg->num_xdp_rings;
+
+and nothing rolls it back. A later ifdown/ifup goes through
+gve_open()->gve_get_curr_alloc_cfgs(), rebuilds the XDP rings, and fails
+in gve_reg_xdp_info() again. Does the NIC then stay down until a device
+reset? If the interface is already down at attach time, gve_set_xdp()
+installs the program, and every later gve_open() fails with -EINVAL.
+
+There is also a NULL dereference that only this failure hides.
+gve_tx_fill_xdp() uses tx->tx_fifo.base and
+tx->tx_fifo.qpl->page_buses. On raw-addressing GQI TX rings these are
+never set up: gve_tx_alloc_ring_gqi() skips the FIFO/QPL setup, and
+gve_can_tx() skips the FIFO check. That dereference would become
+reachable if GQI-RDA mem model registration ever succeeded.
+
+Would an allowlist (accept only GQI_QPL and DQO_RDA) be a closer match to
+"matching the features the driver advertises"? Checking for
+NETDEV_XDP_ACT_BASIC in dev->xdp_features would also work.
+
+With the Fixes: d8a8ca14c937 and Cc: stable tags, backporters may assume
+that regression is fully closed. The later patch in the series ("gve: fix
+RX page refcount overflow from the pagecnt bias") does not touch
+gve_verify_xdp_configuration().
+
+>  	if (dev->features & NETIF_F_GRO_HW) {
+>  		NL_SET_ERR_MSG_MOD(extack,
+>  				   "XDP is not supported when HW-GRO is on.");
+
+[ ... ]
 
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106114551.212675-1-amaan.cheval%40gmail.com
