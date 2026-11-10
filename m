@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346811;
-	b=PckV/Vr4KPqltHQlgisa6YDTZJx09QTr3U3JRb4pjCVt+y13XmN6BdA0y2xjFFiRdVTr
-	 LCTNSwlB5lH2HHzeDDp4VFaD6KyotaopL6yzIva90eiZtwj6/BYk19j3iNIrLP88iV1uq
-	 kDXPKUerDvkQYx/Ogkt9bRDAtn1ctm38Fict5fSknpi8z3nyBvd32faunSH5C/fN7UBha
-	 0AyWu/OGkFT31zobhLhmjWb2HfNEyzWy6wvKD53G3iMGBMKwc2P0Z6GwYVQWwPhUXm0vW
-	 QHFSYzR+cJ5L2yhdVQiYIN2D9ygJmTNBH746uzF4BBtyC2Ao7w4XckHIgrfH5i5rgcA==
+	t=1794346813;
+	b=uk17UJn/24JNnDpVUjkNE9aVVGmBFzVnCEUzS08hE4+gRRgMFf7pAek5reI/mwgsI1A8
+	 h4XGP6QY3fkx2PWxSdBuLenkg0OWnFmyt8DGyMh84b84lnYF2Aer7rOYaEzdy60cQj2gt
+	 1n5onF8kT5zaSliP8gr3eKU5O4uP9JB4lZCZJgPUsE36Od7WAChzi64hoOo/XnAPSa+FX
+	 tzqD/WUBFiKMBamZyxzWvG/piTJOGcWVm8lR5a4//1vmpWaRKz6KcxN8mRtP6BwTpbpp5
+	 Q0EMG/tT2RqNU55WVLPc3g94O5/dMPn0z6UTM6yKH83qW3Ptqi921XMov5EExa/ikLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346811;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346813;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=H2zQQpARwnq+vf+Mp/QmtkzAppeZMOu3L3E13bjdY2s=;
-	b=e62I0YKLUUXQ5MQGw+PANRz+xKeI+aQPosU68yM4spsXRTRiBYT2n9TscWjHcVsg3pHD
-	 Bxvb5qtngtUomTVbE1KVaX2FkrpdHbkumgI1HNuoxht+XVKLi+JZanwU8pFADPzrv+gb9
-	 U0VJNlFGOD1dQbkn+01Si4Dkp0ftGXczH/vM2g4+X9JNXACCL3M8zeXXiyuK8Jj2kRW24
-	 kCjKgFnCDiAwbC5OvySoj9nkiNrPWXl7ixcdlJgWZzC6DkbBLEZicVS5bit4itP1FvsYE
-	 8Jqy0o+wafL1lsX+g6MoV8JhHFRI30DgnFEwV27v9/PeaXEj2eG7RDZzpzkro7uwmYw==
+	bh=PDM5AgYQk1VEu2QNvRVlY3EllPW/RzaW6vtCCatFRG8=;
+	b=Ie8gAKiaDgA6X1fyxcd7SwAMZN94wtF5MgkyO57Ak72sckZrB+pxIMuDn9wdr1YkgnoY
+	 v5yDzZwnH2pVV4JaD+3vJaTxthDJQx8hoa6tYxRgpUveO5q/RZuo78E9JiSiyk1dIhyU3
+	 JXDjZB3W00Nc5hG88akDN6mVSG5JUfWpsZ32P+0kF5EqWL7f7O3ZwYPCLREsUwdJ/CI+f
+	 /KTnoCi4NcHErIQM+6J/Sfz0JgX9sJ4tF6gf/LXGe4POT5N6pnIH98C7aiW5jMiTThbfG
+	 4DEHlM867i3FlJ9MyG+pgKM5Wid/xzlQc19Oa5Cj4kRI1ZQmGcBMi9i9XTochwki8Ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhkHfCvf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=No6qXKuG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C8F606A332;
-	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7342360A2608;
+	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhkHfCvf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6D91F008A2;
-	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=No6qXKuG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A670E1F008A4;
+	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794346811;
-	bh=H2zQQpARwnq+vf+Mp/QmtkzAppeZMOu3L3E13bjdY2s=;
+	s=k20260515; t=1794346812;
+	bh=PDM5AgYQk1VEu2QNvRVlY3EllPW/RzaW6vtCCatFRG8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BhkHfCvfglc88Qqknr2GUZoSd5jv5susrcb7l38IO2bokVDGoppYczf/JdDgJjxR4
-	 q+xalbY2wRfo6Yd9LI9PKWjapVtcO2Lx7Y5Fo4XYHK5CNM2Zwa20QZ9nJOtNWAMMyW
-	 uuRsM+/RVWDlClNbzqlxDQAlRg1ufIpCdA1qBwaX0q8VZ3BD0fWnSTebvGvCZLVxAU
-	 fNgRIPwB6wK2yWHN8oqp0vh56yj+I/nziHGIEuDK1weCmcWWAJ8v1PVyVELkvd58Kb
-	 hDns6136/i7IWM9+qY95EVK6JwwuV0KoCRmFHyb617kHVtnEqnve41M88AcfMXYHmT
-	 CmYr0onmNL0qA==
+	b=No6qXKuGIgxW/umR4tQjz/YQzKEhccJssBOP1mPW9FDBPuWcodzTGiZGK8K8yY64/
+	 SWRm4u/otm2/UpeWUgPXtG1N85+bFCXbQk8dIepaEDLBBWanmM28UaPhH7/Vk4QCvv
+	 8xXHMFG0OlX4RSdPbdrhrgKn5WjfddxCLy7rbeycNcy+2EL2B+b7kp5pUmhwFEghEE
+	 +q7kx03FbZC1ii5Cp235LifrJBj3hyKV1m017rOEmDCddCDmkM7Nhay1oqTyrVZ/KV
+	 K91hxcjyuEK92cNXRFccqaHIbiPmUfpePxZBvrFz2AxVXp8GUMpmg74YcLPwlaMDjI
+	 iDaSWQ6U0zFzQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210D439E8A40;
-	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B25139E8A40;
+	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,36 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: stmmac: rebuild VLAN priority steering when
- filters change
+Subject: Re: [PATCH net-next] sfc: avoid truncating MCDI hwmon attribute names
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179434680967.71955.2289215330785245096.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 21:40:09 +0000
-References: <20261104-submit-stmmac-vlan-prio-v1-v2-1-6cfc71e636ad@gmail.com>
-In-Reply-To: <20261104-submit-stmmac-vlan-prio-v1-v2-1-6cfc71e636ad@gmail.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- piotrwejman90@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+ <179434681117.71955.13887158887547075759.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 21:40:11 +0000
+References: <20261105020115.278-1-xujiahao@cmss.chinamobile.com>
+In-Reply-To: <20261105020115.278-1-xujiahao@cmss.chinamobile.com>
+To: xujiahao <xujiahao@cmss.chinamobile.com>
+Cc: ecree.xilinx@gmail.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-net-drivers@amd.com, linux-kernel@vger.kernel.org, lkp@intel.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 04 Nov 2026 11:51:41 -0700 you wrote:
-> The RX queue priority callbacks preserve previously assigned priorities.
-> Passing zero from tc_del_vlan_flow() therefore leaves the deleted rule's
-> priority mapped to its RX queue. Clearing the whole queue instead would
-> also remove priorities belonging to other installed rules.
+On Thu,  5 Nov 2026 10:01:15 +0800 you wrote:
+> The name of each MCDI hwmon attribute is built in a 12-byte buffer as
+> prefix + 1-based per-type index + suffix, with prefixes up to "power"
+> and suffixes up to "_input".  With W=1 gcc reports:
 > 
-> Save each VLAN rule's priority and rebuild the complete per-queue masks
-> after insertion and deletion, starting from the platform assignments.
-> Resolve overlapping platform masks with the same last-queue-wins ordering
-> used during initialization.
+>   warning: 'snprintf' output may be truncated before the last format
+>   character [-Wformat-truncation=]
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: stmmac: rebuild VLAN priority steering when filters change
-    https://git.kernel.org/netdev/net-next/c/edf10f5c2513
+  - [net-next] sfc: avoid truncating MCDI hwmon attribute names
+    https://git.kernel.org/netdev/net-next/c/97ced2c090bf
 
 You are awesome, thank you!
 -- 
