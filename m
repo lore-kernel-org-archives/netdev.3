@@ -1,49 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346807;
-	b=KomiUOI2Of/FlcCTivuzMmInBMwjFYkWbGRNqBR2seuU5teVssrqaezJYmLzDc/SdWkV
-	 stTsMOtkyrsjzg3cihyAxURn/yEelHiz7mRHZqNe1Lsh1wR2DfLtUppaVdoyOl0WXC5yD
-	 f3OwV9Z4fimbwJF/h0SDT1F+5y1ZUKkCv2QWCeloJ/yTsC3LhuaqshhI5u7Z8tXYOFNie
-	 NVts1oqI0KgdHDllk5fsYhaqsBAiRbeE257DazKyweACVVKbrzOHwVHmf/yVGy17ipiHQ
-	 BHZhlnpz2fLM1vVpXE2MbgtPugaHYbxKhpcUBE9s5N9EFnU85qwB+Eiv03i+v36jyAw==
+	t=1794347143;
+	b=do3XZy9icFCgxE0JP76XCdJUmtgMcagPDyI7CPISjoBeN2lfVKq1DoJHlEis1hwygQku
+	 XgX4KC1ET8cwqsLnid4nZj1J4mvdN9JoupZJdIX8atiVK2uV0ka6BlHTeEC0A2bOBGcGb
+	 CJ+ZdGXed4klNxXlqOYTr5qjH1oIp2NU+2G0ZE8vEYJsIC7AseiBQ02Btto/TaPxrydGY
+	 7M49u/pXs6RNtIwpN9m2OUCiTyxVw6DNmdx9iYp3rDbLSeZpCa78z+27Y2KU9eGXd7J8P
+	 0KW5wplB+eQwt617fvceoJNeYj2wdE+5oI/tcietgbXjHca1JKCCiguKkXrK1TQ3nlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346807;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=lSL4MFB6bw4CVme3VOrLqejrCKOFv1AQMa1yqiN4Hvk=;
-	b=hJ51dHeG5xKvhDb46gooU6QBajyej/KyevJwJi76GqmWDxP0VFRBIdssFrVhu44s1WQf
-	 51wiZy3bwZi75vnNyvBMBsw+J9MDcByim7zWJfZbUIXqXzZNYPKllXqEXm9MyUhLiKeE8
-	 lOxZXGTq22KFizgE5Y+X1rznUfHwT6x5id2hPVya1wkrTjemPYj1Xp9uLZ8EOa54YQf3/
-	 bMvfQZY6tUEJRbya1jEdq7Mywk3GQduegwBcnZQWy+l/s7evn665mHkeK6snB6fX4KziM
-	 02373naMwF/QHa0UYh8+a24qE1KxyADtBBHMKkoDonMrDL/kZY2sFZQBciYFcwpj92g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794347143;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=35fQk2prx0lBB02/47r4mEUB8fpBOI29YWOfBrE+Kf0=;
+	b=kMaNSjdu44hStqcU+0GE+wmxhODw62KKr+FO3Be+rLExyefVf3YJcE2STcTnpahaKsRh
+	 Owe08Bn89tNsI1FGm9EXZ7jLNLwpOg9Qgm39BJmfBnZrO1Bvs6r03/VNhnjYsUGHbsc07
+	 Jb2pkTtAmogcC/0pG5vghz02GbEz/bsEItTOZYecctCoIMTuHVtA969NSo3fYZ//7E2EA
+	 rzqgQLJl1eMseubAsPz3XtCzUPF3wF099sV/xFodcDr7xUx8BlPGApzve3Amvr6DLgWAw
+	 Z7P2wFiusyrsj7iTrdsNL2UDzAIH25RW7snzROfEYZfuRsO8h1o1nzfG9Yq4y2Km8wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKMkm9Tw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kymx3Z5Q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67C8606A32E;
-	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DF606A321;
+	Tue, 10 Nov 2026 21:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKMkm9Tw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE11F0089F;
-	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kymx3Z5Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBBE1F0089F;
+	Tue, 10 Nov 2026 21:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794346806;
-	bh=lSL4MFB6bw4CVme3VOrLqejrCKOFv1AQMa1yqiN4Hvk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kKMkm9Tw/G93fphFFXpmPP0i8JIqETNFzdnddLwNF0clo0ifW9Rta/RvIb1bcNJpX
-	 ZBvI69esXPK+Ttm39S7RPE4fgIaiLCQxaRMUAooylKlPz2chQamv4fodb+ESWqLQQ0
-	 x+Zzglck7XBNtyKB7bmDLNB/vm26NX09vXuT0pTrFxBuNLrsfuHqdPfDRkTd2/ZXdT
-	 0OZZDRnsu5ZcOA6lulyM7SWyE3JYPr3MGx1U67gtNXzdZEaxR+E6hABmHoB4eQpvjH
-	 ShJVnpdQ338hV+ysM+9FEYSrAvXR/FE0lJghDrYzWfbOpvuQ/SxSZ7ikTzJIAGbt88
-	 MqxAdbTlGIHfg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2118439E8A40;
-	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794347142;
+	bh=35fQk2prx0lBB02/47r4mEUB8fpBOI29YWOfBrE+Kf0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kymx3Z5QuLjhVt9c5TXAk+kfoV9+Q69m2rh6gKaY2iciQySjWz776ENyyzO76ntE/
+	 /uzWTdV8hdYbQdh1l4IyeQ5fyyv9r2cCWu0qjO5wH2a+J4S0bzy6nNaTA6trhTE0GW
+	 /L1dwdPvEztraG/h+sVCOy641h7Uk/TMwO2q4hRzVBg/Rkxmb7cReJ+LatfFNQPTkP
+	 6patrVaXaDmYcM/GxuvUQx3acPjDDOm/3QA23frVW+hN4rGRkeHMgbj+Hzf1wrVZRK
+	 Mzim6bafAA11Nz4YojXw6wG9MXECjIaGYV2Ai4JM+kIAL0NrS4PfdlrklEcr67vMyR
+	 y6wV8M99tyxhQ==
+Date: Tue, 10 Nov 2026 13:45:39 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ding Meng <meng.ding@siemens.com>
+Cc: netdev@vger.kernel.org, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony
+ Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii
+ Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
+ Kartikeya Dwivedi <memxor@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, florian.bezdeka@siemens.com,
+ jan.kiszka@siemens.com, wq.wang@siemens.com, p@1g4.org,
+ gerhard@engleder-embedded.com, Jason Xing <kerneljasonxing@gmail.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Martin KaFai Lau <martin.lau@linux.dev>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri
+ Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor
+ Solodrai <ihor.solodrai@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
+Message-ID: <20261110134539.12d860ef@kernel.org>
+In-Reply-To: <20261105071706.7043-1-meng.ding@siemens.com>
+References: <20261105071706.7043-1-meng.ding@siemens.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,49 +79,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5: macsec: Don't remove fs_id when adding a
- rule
- fails
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179434680493.71955.13043518489882065579.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 21:40:04 +0000
-References: <20261105003419.4016283-1-lcy8047@gmail.com>
-In-Reply-To: <20261105003419.4016283-1-lcy8047@gmail.com>
-To: Changyul Lee <lcy8047@gmail.com>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, sd@queasysnail.net, horms@kernel.org,
- joasantonio108@gmail.com, phaddad@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu,  5 Nov 2026 15:16:08 +0800 Ding Meng wrote:
+> +  interface index will be returned only if CONFIG_SKB_MARK_NAPI_ID is
+> +  enabled and the driver is using NAPI. This hidden configuration is
+> +  selected automatically by busy-poll support and by drivers that need
+> +  skb NAPI IDs to resolve deferred hardware timestamps. Drivers that
+> +  use deferred timestamp conversion must select it so the networking
+> +  stack can find the device and call its timestamp callback even when
+> +  busy polling is disabled. The struct contains also two other fields,
+> +  but they are reserved and undefined.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed,  4 Nov 2026 19:34:19 -0500 you wrote:
-> macsec_fs_tx_add_rule() and macsec_fs_rx_add_rule() clean up a failed
-> rule with macsec_fs_{tx,rx}_del_rule(), which also calls
-> macsec_fs_id_del(). The fs_id is never in the xarray at that point:
-> macsec_fs_id_add() is the last step of adding a rule and removes its
-> own entry when it fails.
-> 
-> macsec_fs_id_del() then dereferences NULL, through macsec_device for
-> the first SA of a MACsec netdev and through fs_id_found otherwise. On
-> RX, the SAs of one SC share an fs_id, so a failure while adding another
-> SA drops the reference that an existing SA holds.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net/mlx5: macsec: Don't remove fs_id when adding a rule fails
-    https://git.kernel.org/netdev/net/c/5175da73dd12
-
-You are awesome, thank you!
+Just take napi_id from under CONFIG_NET_RX_BUSY_POLL instead of
+complicating everyone's lives.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
