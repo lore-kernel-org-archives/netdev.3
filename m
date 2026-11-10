@@ -1,114 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.70
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794305883;
-	b=LeJ8K+GlYmF2xXlpY9hLTRVEv106KlXXGwID+vDOtutRZfm6nUMhIEYK4paRBtiy+sA/
-	 oChBjIcYnqBMLBfjRVlHXfsnpauY2kvUqzsw6nblYTx0Hlu4UmwNAn3//lYludkTAfE+x
-	 NRTLS815xkq6JlqZvY78XRo+kaXFVBUKPO6v0I9n6oycKEgGmDjMyvILyJaSPq2l5FOzM
-	 uJbqT5/+PmL1tygIS0U2qc18vtQtGQdNjqfli7sA+vXXLvOodWJms1ZyvN0SzweJJwh8a
-	 sOwh2aeGXSZQxLA0Lic+sX1MqcLIgMdEJ0tnqb45u5YO8PTQtSyIltXGzHwPXFGrAdQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794305883;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=kEgiTWIbSoBITTpBWrPePkWXvBPwetzFKfjFaHfjBgI=;
-	b=aHJ/+/qJn2/dB+GSBlf3zpBdZVbLxGFY5OOA96uU7jkUspjoZAxHp1bcvqQEyaGztOfK
-	 hgiry4kgFawztPjcOusTD9WlLgjumXQJgkaLKP90GpXT1oDwiiiDf7hxORKZwEekA5RA/
-	 sd3VKd+A5azyebPjt283fa6ynn4ezCGIzAKmgLqLA2PkM5WonAsTTJubO/J1Sx8QIWcqC
-	 Z4HiLCi+ipiJuW80+jYN/KEzpFYl1YY3rrn4c9PRUdsDABLDuI8xPk4Ps8dGqBJU+lTp3
-	 w98oalS03Go+gZXPkPEzRCj5D59OqfOqLrPDQb77DO9UpsJrZPVopDZnrPcnfrKbhLQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=icktxFsL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.70
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010070.outbound.protection.outlook.com [52.101.46.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.75
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794306005;
+	b=mwPpOIJmA6h7uesr5FhgMVVnJRD0ZL7UEdBZ7EVyZiP0Tr8h0U8a2HnsSQG5tdVnjFr2
+	 gem+2UyZrSFcri0XoNhMSGAdBlv6VtNTfDTJVilDWzrmGxPjLOm1rsaRhpX19tN7zkIgL
+	 6oGnpTxBYpiRFNSEZqiqCIZnZBwMuR97GOJeLNYwC8gXxQ7OelZQJ/27vlIhBilAY9SNN
+	 X6Hq+3OwhyOLAuKko6BDRzYa8EPsaZ4lmX9w5Y0lRCidKRbqHaAo+eXozrT3aS9Mepe+A
+	 /f/ybC2B7Ij7O89onHJypWCWq/ZUTeOfEBed74/kEPa9fZy8IduD0kHKhAuSGCcgFaw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794306005;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:DKIM-Signature;
+	bh=coFjlQL4o71VpOaQUnOjY92jOAjx1XEtEHb6FBMSxL0=;
+	b=xg8QdYpQoat3HYjgStDzcQ9pcCNXYZrOLXNoFhrXLV0iKb4ykCK4SXCDv+t5TobPiCaE
+	 ay6hAWiuPFthQV2YT2TJ80hH9v9cCwRH5n90PDspq2IREO6VNVoqUKqR1TynipyD8ShTm
+	 oJ/+HAph+15SLSu5ua5Cz+GMxYhUjJrMbKr3QVchPnoLCXmYJcUdfpUup3vTeQ27FcS5x
+	 6ZPUbsxizUJWOAa048IE/f1A1hufP4CowBLimJ2aWpkCD9Pc9DBLWDpCB9XEPx96IQfuk
+	 cWjLB/kjuCRZ5P1H3sNW/KWWaws3jSn/hLo2ly0dTbdM2Eb67bOYWB5ASmA4Wh5RMeA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=poczta.fm;
+	spf=pass smtp.mailfrom=poczta.fm;
+	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=F6x0Wt2I;
+	arc=none smtp.remote-ip=217.74.67.75
+Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7665A606A31C;
-	Tue, 10 Nov 2026 10:18:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7665A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A8F606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:20:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0A8F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=icktxFsL
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pI0wYIsCib5s0BRvHaxOh07sE5jCydRvBmhG3UYZtnmVf9zsrrsus14jGo2G7E5jriKuSFZH/CZpyU5YZEFbGpH7SkhacGmHSEZg6KrmjxNUK/DNbzUm9TGCYAQpovT7obu3ql5GEzP/64NHlrzpGGoX8Qvsf4WmVtVWCO/9KYkU51M9i9hQM1+0e/8qhT+4fpmiRXu91RBwzRXzkTskRx7kue+O4iA3Xq8eK7+ZDgoH4+zaOZPl/wUFzO8XhnuNtTYue4Bw7Q1j+uC8M4bVCsKyXZiES2kRRQ9spGa/IceIGXlpnVGCduqH5wEVbakLFRX00jFOFiLgKWkFGlLKXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kEgiTWIbSoBITTpBWrPePkWXvBPwetzFKfjFaHfjBgI=;
- b=Y66FIJbkf3yecXYJuHVwLdhYe43sBQRq7X5qaQX2/0BWhVRCuJ6QlsFLHsE1cKnXWjnyrOKqblcqFRalhyvoVaNaXN2fQVUfhR4ZQeBP/hnBzrSMSvMklXulGDrpjWGdRMMnIiuMeKJPyTLy/9pADZECQUvQzoy6+jd/pC0LZHFpk1oeG0j0/QVGwqvhK7zniiHD62TqQ574KGUyzGdGVcHfCabBLn46gadULGtTenTaDSulmskJ1tmh6zLZZHq0CLrIGArIRlOaD/qFugRAYAJQlb3uATXgG9ehZo5b5e3js4sZ8mhl1+d0B/9ytdfXSZSSB133I2Wg07Ox3qIqLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kEgiTWIbSoBITTpBWrPePkWXvBPwetzFKfjFaHfjBgI=;
- b=icktxFsLcQHow8wBTFtt6rD9VS0RLHLZlQleum+Nhb1XA0iKMuh3sTWDNUY07ZxST9YFGWO8dLsi8+SMH1L+VQrGCERmx13lnnbYAqL8WWfN36qm390DPb8eiyOzAdbBxQCv+RKym86JsJWhau6Nos5XAnUk9AndOppkGRktA+y3/lel3cybm1S8eG3HY6M/3Cko6VMuVmDBXtnBRNEzgi9DwZc25qVjeEkMkVaMbxEpKRPca45ryYMMQi4+W6LZCAMASycZ/ixNLhFPG59UwpbJarTtTsUQn6EQ5DSAG4NnqhvstXuQ5AgSgpFipRFjNbPFzJHuJ6v4TtEOYpkDSQ==
-Received: from PH7P221CA0013.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:32a::9)
- by CH1PR12MB9645.namprd12.prod.outlook.com (2603:10b6:610:2af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 10:17:56 +0000
-Received: from SN1PEPF000397B0.namprd05.prod.outlook.com
- (2603:10b6:510:32a:cafe::3f) by PH7P221CA0013.outlook.office365.com
- (2603:10b6:510:32a::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Tue, 10
- Nov 2026 10:17:56 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF000397B0.mail.protection.outlook.com (10.167.248.54) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 10 Nov 2026 10:17:55 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 10 Nov
- 2026 02:17:36 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 10 Nov
- 2026 02:17:36 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Tue, 10
- Nov 2026 02:17:31 -0800
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Boris Pismenny <borisp@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Simon Horman <horms@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, William Tu <witu@nvidia.com>, Xuanqiang Luo
-	<luoxuanqiang@kylinos.cn>
-Subject: [PATCH net RESEND] net/mlx5e: kTLS, Fix missing error unwind when enabling RX offload
-Date: Tue, 10 Nov 2026 12:17:09 +0200
-Message-ID: <20261110101709.2589088-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=F6x0Wt2I
+Received: from localhost (unknown [80.68.231.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
+	Tue, 10 Nov 2026 11:19:50 +0100 (CET)
+From: Slawomir Stepien <sst@poczta.fm>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Tianyi Gao <tianyi@cloudflare.com>,
+	Liang Chen <liangchen.linux@gmail.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	"huangjie . albert" <huangjie.albert@bytedance.com>,
+	Slawomir Stepien <sst@poczta.fm>
+Subject: [PATCH RFC net-next v2 0/4] xdp: reuse generic skb XDP handling for veth
+Date: Tue, 10 Nov 2026 11:19:37 +0100
+Message-ID: <20261110101941.1059662-1-sst@poczta.fm>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,83 +84,159 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B0:EE_|CH1PR12MB9645:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3db2f79-f732-4b92-f045-08df3f13e307
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|7416014|23010399003|56012099006|11063799006|18002099003|10067099003|261009223027099003|261102123227099003|261026121527099003|261026140227099003|261021123027099003|261021121427099003|261022105027099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	hlflFSg1+xlvCp2cCnV6HWswmVtRRr6n2KnONrQU4lNWvAHFdShzIOpRZ6cIqE9dYaH57VH28BCiJrTmrM2g8jPGJqN2a/6D5wKTXJZZsMQDgO3xe02N6ZkgZQPmI2EZY7KnLRjpqJe0basdPqSuXr0a+ZPgPERKh2SdsNBnQiL78vW0K1TE2oiDPLZbQkTkFrP8l5521UMJgzZrhrT/5Y5SD1B26TFtb49a+rCZ+EA940XKHYsliI4pYXRknQEr1v8UH3NkQdPgkU+ElHjWZojnhLWyZJS+OOUFBjSvxDGXpipHPBNSxKtPIT0oPiPepYrL2/XhsLuS32LWwtM3hMp+8iusA1UeKO9owq51pRJJjXYmAhdc2VetbNsUPhE63xYpcSIKNK2/QhS2C6/zNcuzBzzt5tOJORt4zwAWVqKZxHJCmHE3JCW1y3sHclfGL5XHmKFR6c45A2YatDS/d9CoJSlWEPoGE3DYbu+crqCIvph4HnbKO8trW8oGo2EMqWkuOAH5obzDg+5RkkwnqHa6deTtY1vdp9TQ9NY8Z12LfKOXSmreic9IJ9uAdwxkhXZlOhcVMzW5ea4InDgcJNETeTwNKCMzIqnZXR1j5PvX5R4wkCvFAd9CBMQ5i7j7zMtlsGVnkJXCyR2UgP6RQx6zKv8z6ZrfdItXfvjwKRi8pA0cpU+r3OYVQaxI8V8AsrXb2Crd4sWQJwn0v0q+ZQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(7416014)(23010399003)(56012099006)(11063799006)(18002099003)(10067099003)(261009223027099003)(261102123227099003)(261026121527099003)(261026140227099003)(261021123027099003)(261021121427099003)(261022105027099003)(261028144727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Z4mi4Mv77AbiYGcCQ/fQ3a5Zv9sIv051HlWLkqZr+cu6mDInra+F7B3I9R2Qnmr/ZwVJlEiGa76gAqN3jfBD4APdGWU2YfP+LvmdXaQe08vXg49/TjCbApRUEqIs93Pu694OP/UCHIThQLkNy2D7QOJV0Z3B9mEOL1yottfcGUFxeGk62oKQ/US26Z9uCvBtuKzEoFL0H5nkWvcFD3DYUKQWK9WM3KqkNT9iEAV3XZlAHBbMGzqRcyDgpWd8Y/E9nfSNlUUYoRQw+AFNwZAdZciSYBREPCVJl3Z0+yWc2z3+H4uMCJLlG6ld0dmYc/4S3gz7PxJmQma7RlF4b6DBc1ohAwqonQru98YwC5HCmqbZALTRh4wjAVM2tLQAMgKo+gRNLysr3Wn99ybVFzeFUuREd/RnusQnMDdGqBk36IDwSoZ30inccYj1R+X4Xqxt
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 10:17:55.4526
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3db2f79-f732-4b92-f045-08df3f13e307
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9645
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
+	t=1794305994; bh=coFjlQL4o71VpOaQUnOjY92jOAjx1XEtEHb6FBMSxL0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=F6x0Wt2IsFfRNdpuBAtfMnBNoUYTsjT92sKdENJ+3JE+bVXz/6+Y3eE5mqrB/7ieo
+	 mzcPBSapgxUOMKWU24NgjrijE8v1mjB5xnyWurRJ80M4udAy/eGwcDZ56pds7VaqLX
+	 GGJbbHpyVZZ6i9IajWU/a9h2fEfhey8PBerXc9XY=
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Hi,
 
-Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
-ICOSQ"), the async ICOSQ is only created when an XDP program is attached
-or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
-the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
-the channels so that they get the queue, but it ignores the return value
-of mlx5e_safe_reopen_channels().
+this is v2 of Maciej's RFC [1], which makes veth run XDP on skb-backed
+packets through the generic skb XDP path instead of converting them
+into xdp_frames for XDP_TX and XDP_REDIRECT. The patches are Maciej's;
+I addressed the review of v1 and measured the performance, which was
+the main open question there. Changes I made are noted in [sst: ...]
+lines in each commit message.
 
-If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
-which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
-enabled. The next offloaded RX connection then dereferences the NULL
-c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
-not help, as the flag is already set and the reopen is skipped.
+The motivation is unchanged: veth pins the skb data with plain page
+references (veth_xdp_get()) to build an xdp_frame from an skb, and the
+rxq memory type it reports does not match memory that was copied into
+a page_pool, which makes the AF_XDP selftests splat when a program
+shrinks a multi-buffer packet. With this series, pages copied into
+veth's page_pool are recycled (0 rx_pp_recycle_released_ref, was
+~4.8M/s in the benchmark below).
 
-Propagate the error, clear the flag and destroy the accel TCP flow
-tables again, so that the feature stays disabled and the next attempt
-retries the reopen.
+Dependencies
+============
 
-Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+The series applies to net-next with these two net series applied
+first (prerequisite-patch-id below):
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-index 337201f12895..3cc1213c2f68 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-@@ -139,7 +139,11 @@ int mlx5e_ktls_set_feature_rx(struct net_device *netdev, bool enable)
- 		err = mlx5e_accel_fs_tcp_create(priv->fs);
- 		if (!err && !priv->ktls_rx_was_enabled) {
- 			priv->ktls_rx_was_enabled = true;
--			mlx5e_safe_reopen_channels(priv);
-+			err = mlx5e_safe_reopen_channels(priv);
-+			if (err) {
-+				priv->ktls_rx_was_enabled = false;
-+				mlx5e_accel_fs_tcp_destroy(priv->fs);
-+			}
- 		}
- 	} else {
- 		mlx5e_accel_fs_tcp_destroy(priv->fs);
+ - Tianyi Gao, "net: fix mac_len of skbs copied by generic XDP" (1/2)
+   [2]. Without it, cpumap redirect of skbs that veth copied drops
+   every packet once veth uses the generic path.
+ - Vladimir Oltean, "net: pass the XDP action to generic_xdp_tx() for
+   tracing" and "net: validate xmit skbs in generic_xdp_tx()" [3].
+   Patch 2/4 changes the same function.
 
-base-commit: b71c101bbb9814d163c00234d43c41f0a17907d4
+Changes in v2
+=============
+
+1/4: MEM_TYPE_PAGE_POOL_OR_SHARED renamed to MEM_TYPE_MIXED (Björn);
+     comment on what the type means.
+2/4: Rebased on Vladimir's series. The redirect callers in devmap and
+     filter still return success: generic_xdp_tx() frees and counts a
+     failed skb itself, so propagating the error would free it twice
+     (Björn asked why the error is not propagated).
+3/4: One skb_needs_xdp_cow() predicate for generic XDP and veth
+     (shared, cloned, nonlinear or headroom too small) instead of a
+     per-caller callback and INDIRECT_CALL_2 (Jakub). The
+     skb_head_is_locked() check is gone, it would copy every locally
+     generated skb. Copies go to the caller's page_pool with
+     skb_pp_cow_data() also for programs without frags support (found
+     by the xdp_metadata selftest).
+4/4: Commit message describes how XDP_TX/XDP_REDIRECT change for
+     skb-backed packets (Björn's table). A failed skb XDP_TX is counted
+     once, in the device's tx_dropped (Sashiko). veth sets
+     skb->mac_len before running generic XDP, as
+     __netif_receive_skb_core() does; without it cpumap redirect of
+     veth skbs is dropped.
+
+Performance
+===========
+
+QEMU/KVM, 8 vCPUs, minimal config without debug options. pktgen sends
+skbs into veth v0, the XDP program runs on the peer v1 (skb path).
+Packets/s delivered to the destination, median of 12 runs of 8 s over
+4 alternating boots per kernel, 95% bootstrap confidence intervals
+within about +-2%. Base: v7.4-rc1+ (f66469d9905b) with the
+dependencies above.
+
+                              64 B                      8000 B (3 frags)
+  XDP_TX                      4.49 -> 4.04 Mpps (-10%)  2.25 -> 1.87 (-17%)
+  REDIRECT devmap -> veth     4.30 -> 3.95 (-8%)        2.18 -> 1.81 (-17%)
+  REDIRECT cpumap             4.49 -> 4.47 (0%)         2.02 -> 2.27 (+12%)
+  XDP_DROP (native veth)      5.65 -> 5.42 (-4%)        2.82 -> 2.71 (-4%)
+  XDP_DROP (xdpgeneric)       5.63 -> 5.83 (+4%)        2.94 -> 3.00 (+2%)
+
+(cpumap 8000 B base: base without Vladimir's series, which does not
+touch that path; 3 of the 12 runs of the other base kernel stalled.)
+
+cpumap avoids the skb -> xdp_frame -> skb round trip. XDP_TX and
+devmap redirect to veth are slower for two reasons:
+
+ - no bulking: one ndo_start_xmit() per skb instead of ndo_xdp_xmit()
+   with up to 16 frames;
+ - at 8000 B the receiving veth copies the packet a second time.
+   Before, it got an xdp_frame; now it gets an skb with frags, and
+   nonlinear skbs are always copied (kprobe on skb_pp_cow_data(): 1
+   copy per packet before, 2 after).
+
+Vladimir's validation itself costs about 3% at 64 B on these two
+paths and nothing measurable elsewhere.
+
+Questions
+=========
+
+ - Is the XDP_TX/devmap regression acceptable for the simpler and
+   correct memory handling, or should it be fixed first? Options we
+   see: skb-list bulking in the generic TX path (Jesper measured +30%
+   with xmit_more), and not copying nonlinear skbs whose frags are
+   already page_pool pages. Raising veth's needed_headroom (Jesper)
+   only helps linear skbs from senders that honour it; pktgen skbs are
+   shared and always copied, so the benchmark above cannot show it.
+   We left all three for follow-ups.
+ - MEM_TYPE_MIXED vs. separate memory types per source (Jesper).
+ - The redirect semantics change in 4/4 (Björn).
+
+Testing
+=======
+
+Each commit builds with W=1 without new warnings, checkpatch --strict is
+clean. test_progs -t ns_xsk,xdp passes; test_xsk.sh shows the same DRV
+XDP_ADJUST_TAIL_GROW failures (also with busy poll) as without the
+series. Reproducers for shrinking frags in generic and veth XDP, XDP_TX
+of multi-buffer packets, devmap egress programs and bpf_prog_test_run
+after generic XDP on lo pass without kernel warnings.
+
+The scripts, kernel configs and raw logs behind the numbers and tests
+above are in [4], with instructions to rerun them.
+
+AI disclosure: the review changes, the tests and the benchmark were
+prepared with help from an AI coding assistant (Claude); I reviewed
+and tested all changes.
+
+[1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
+[2] https://lore.kernel.org/all/20261103200036.65764-3-tianyi@cloudflare.com/
+[3] https://lore.kernel.org/all/20261030114753.185281-1-vladimir.oltean@nxp.com/
+[4] https://github.com/s-stepien/xdp-rfc
+
+Thanks,
+Slawomir
+
+Maciej Fijalkowski (4):
+  xdp: add mixed page_pool/page_shared memory type
+  xdp: return status from generic_xdp_tx()
+  xdp: split generic XDP skb handling
+  veth: use generic skb XDP handling
+
+ drivers/net/veth.c        | 191 +++++++++-----------------------------
+ include/linux/netdevice.h |  33 ++++++-
+ include/net/xdp.h         |   1 +
+ net/core/dev.c            | 122 ++++++++++++++++++------
+ net/core/filter.c         |   7 ++
+ net/core/xdp.c            |  54 ++++++++++-
+ 6 files changed, 222 insertions(+), 186 deletions(-)
+
+
+base-commit: fa5196392691051963726787944db872420dfa75
+prerequisite-patch-id: 7db3107f14b28c509845871045e6af93b7e267bc
+prerequisite-patch-id: 40350101232837c5a38ba1662825228d01734b39
+prerequisite-patch-id: 0b57f8c2a409470b1ddf8df747d906d5d3dbd9f3
 -- 
-2.44.0
+2.56.0
 
