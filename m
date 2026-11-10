@@ -1,85 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794296364;
-	b=amEIUw5xTzTzxpFNvYfyF2pPAlcInmfsFMcVeeX6dTG3KrElCUDY/4GOh5+CudDgpiHK
-	 fwl987UaynHn1ChnyJzMXgsBmOSPzw0YSzKd9JosEDUiLHSQqD5c8m/3dxg1bxwe+tuFL
-	 9nI+8fuho4UjOwZFIKzhpAwhqgUOnhMd9Ppfu/kc1aZ6N0I2UyvACFq1y26p/Jd9FxlmV
-	 yAWSv0QkIKvnlbU3PL1scefQP4ZWl44gChBcHnhmxAXXz3X+0ag91ny2l2Dw4HG6rPfYo
-	 LCLFp7qpkCzQDmL+TN9CHZiZai944MnPIfUkMeUoWwd1R2NbfgwWfHJJqbgrITyNkgg==
+	t=1794297209;
+	b=EGMfALqxikwABBhjW1zP7lV73foPnooL0RR8Boujje8sEPPn8TKYC74KQVDlsTXmvs9o
+	 02Soa0HhlyY84hcjAmhGFRma8rQlNzY6eTES4PSQ37KwQAg1tts4Fo0We+Wbr+5U7yA0W
+	 WJ+tp/uukCXV5e8GgCbUnPbp7aI+F2l1KS6lK6m+PhLQuzmIxvEBVjPMt/tPEiazHeUzk
+	 dbKI060xj+pih16zKESBNMd481V3Qa6i9ryQoQkqWaCQhT/D0n8DuoJyJRI1cySYynkhr
+	 Hh/NgMCjc7dl3p1Rrt5l3XsLy3u4U9bFwh95Rz6yzzRgSXBAAyXzxGP2BYf+fuYx9oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794296364;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=DSBlFGn4E205gXuccBzZwAAPl+yDbfuCcd3h0VNHPkE=;
-	b=Ye92w12yqLwPR0BzL7dvlJW1tsryX5c/jTvgNuJfrT/WDNXA+PYHusOvKFMhiVZh63qv
-	 s84dQNdF51lq4ULHOS9Z2i6gQP+wmCeuUglK8R/D4Pw0RKwongEnPfN+rIke8OkVkc2PF
-	 JfPbaCvff5VlaAT1uZ4rz3NFbvxXWOhtNSR96jPUebHNwWWYN3Sm0q1Zgy60s/Z2Zp8eh
-	 0E9C3xaMa9WbMxBME/QGhDTIgzjTmxz/v+7+/nfw7l/IQW1zyu2eS9SEIG9DaLQ/P4ydi
-	 G8jEw9ovVkjBO00FQTHoZSTcHY90uWdtjBdpONnLvnTb752othy8JRdc9qUvlRVEA4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794297209;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=VHS9PME+lj3sobM0nuC4YjIOUceVBhWAlwGY7ffSBGc=;
+	b=qZJ1Bmg8bj6QEkl1xpNoIN9m3q3UZUQO73C3e9BFLxoW55ze7nMAa2eyKHPS8yTA/XG/
+	 TOGjVHt0Xf06hFXprc9BpD4frxcb54JaBvMWS8Rfkr5zpv0R+5dVwYtBnKrV9Q+eIpAn5
+	 uK+GG2rEdL7oy1FqdFZm/ORXxoa+4gEj9Em5ax76ij6nnmDzwnhdVh3wpS7PkKz7eMCnd
+	 8mDNNB+8dgoNotoSTOJyD4L2kHywHz3TX/ESuNCAzLJQC/mSYsYH/y1azCCG762Z7Zf+U
+	 LnmjAbKD3odNOv6rtW2AarAz8Du6L626n+qN5B5zRIKNJlHMtSSJvMYjwGEI3aKGucg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cua8L9GY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E2F606A31C;
-	Tue, 10 Nov 2026 07:39:23 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="mW9Vdaz/";
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E8F606A334;
+	Tue, 10 Nov 2026 07:53:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47E8F606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cua8L9GY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DB1F0089F;
-	Tue, 10 Nov 2026 07:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794296363;
-	bh=DSBlFGn4E205gXuccBzZwAAPl+yDbfuCcd3h0VNHPkE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Cua8L9GY35tzd1wvxIkoHZWoj4b+Jnc4MmmXSS4xz1DMOhF7fnMzyvLCmrsGBqGj1
-	 Jb3832ICvaaSkhpxHKzVktwY0VN55YFhe3ayOJkh72n1kK3xADULAH5Ox4aWZpDvso
-	 SSbBNIbDYBnbE0pl1xpHF+Szz6q8g2PUN/I44F2G4akFrGsrJgkxavsbYV78rdzpjx
-	 zQNz+Gl7ioYOpICsUTt7r4k8bgeTs/LlSH/W8tT7ufcmOxtPXhedsyuDUNY/5l3SKw
-	 qP4k1ZQswUJUdtBBrFidqv9eamm01YnDLo/xUXPHRAgRbSU5FtK+emGYhLCVNfCVFg
-	 cz+s7VuHGQF/w==
-Date: Tue, 10 Nov 2026 09:39:19 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 10/19] net: phy: Use the compatibility driver
- attachment API
-Message-ID: <20261110073919.GF8635@unreal>
-References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
- <20261109-device-trust-core-v2-10-3b12d9a9f861@nvidia.com>
- <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=mW9Vdaz/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=mW9Vdaz/XA64uN17RQ32bPeGIIjIymPZen9zbHpQhcnKphIVWNrXqQI87jol9aa9OHd/sDHIwLkU+
+	 Q6Xsq3th3d78FGntJMNlfvXbJmenqhc1cpN2lLHKNEEz2WYpfu/KLrvZjzdV/ItPQe5NidzXQuJDvf
+	 SsmfGU/4TrgYLW9c=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af2cd76a68-c9fd9;
+	Tue, 10 Nov 2026 15:53:26 +0800 (CST)
+X-RM-TRANSID:2ee56af2cd76a68-c9fd9
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03.03 (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af2cd6bd67-acb02;
+	Tue, 10 Nov 2026 15:53:26 +0800 (CST)
+X-RM-TRANSID:2ee76af2cd6bd67-acb02
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: yanhaishuang@cmss.chinamobile.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	almasrymina@google.com,
+	daniel@iogearbox.net,
+	willemb@google.com,
+	willemdebruijn.kernel@gmail.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	narcisav.kernel@gmail.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 0/2] net: do not run out of frags in alloc_skb_with_frags()
+Date: Wed, 11 Nov 2026 00:46:59 +0900
+Message-ID: <20261110154701.26310-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,41 +80,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
 
-On Mon, Nov 09, 2026 at 02:45:35PM +0100, Andrew Lunn wrote:
-> > @@ -1956,11 +1958,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
-> >  	}
-> >  	phydev->drv_owner = drv_owner;
-> >  
-> > -	if (phydev->is_genphy_driven) {
-> > -		err = d->driver->probe(d);
-> > -		if (err >= 0)
-> > -			err = device_bind_driver(d);
-> > -
-> > +	if (bind_genphy) {
-> > +		err = device_driver_attach_full(drv, d);
-> > +		if (err == -EBUSY)
-> > +			irq = phydev->irq;
-> 
-> Just looking at this, it is not clear where the EBUSY can from? 
+alloc_skb_with_frags() can fail with -ENOBUFS for a data_len that passed
+its own size check: it splits the tail into one frag per bit set in its
+page count, and when a high-order allocation fails it lowers the order
+without checking that the frags left can still hold the rest. With
+vhost-net + tun, a guest that sends a GSO packet above 64K can then make
+the vhost worker retry that packet forever (100% CPU, device dead).
+Patch 1 fixes both cases; patch 2 adds a KUnit test for the tail case.
 
-I relied on the comment above: “Assume that if there is no driver, ...”.
-Since PHYs do not use the standard automatic probing mechanism, I have no
-way to tell whether a driver is already bound.
+The issues were found with the help of an AI coding assistant.
 
-> And why set irq to phydev->irq?
+Changes in v2:
+- Patch 1: also fix the fallback after a failed high-order allocation:
+  only lower the order while the frags left can hold the rest, else
+  retry the same order once with direct reclaim (reported by the netdev
+  AI review of v1). Changelog and test notes updated, including fault
+  injection results.
+- Patch 1: reword the comment as suggested by Narcisa, and compute the
+  page count with DIV_ROUND_UP() to keep the line within 80 columns.
+- Patch 1: say in the changelog that this only fixes the frag accounting;
+  larger frames failing in tun_alloc_skb() are a separate problem.
+- Patch 2: skip the test instead of failing it when no order-3 page can
+  be had, and name the fix by its subject. Dropped Narcisa's Reviewed-by
+  since the test changed.
 
-If the above operation can fail with -EBUSY, the wrong IRQ was restored.
+v1: https://lore.kernel.org/netdev/20261108100617.23840-1-yanhaishuang@cmss.chinamobile.com/
 
-I checked this with AI, which says that -EBUSY can originate deep in the
-driver core. It may be better to remove this special case and rely on the
-PHY's guarantee that no driver can be bound concurrently.
+Haishuang Yan (2):
+  net: do not run out of frags in alloc_skb_with_frags()
+  net: add a KUnit test for the alloc_skb_with_frags() tail split
 
-Thanks
+ net/core/net_test.c | 35 +++++++++++++++++++++++++++++++++++
+ net/core/skbuff.c   | 30 ++++++++++++++++++++++++++++--
+ 2 files changed, 63 insertions(+), 2 deletions(-)
 
-> 
->     Andrew
+
+base-commit: a45dbf182137275f44ad7c8bc8acd23f7af6b2cf
+-- 
+2.43.0
+
+
+
