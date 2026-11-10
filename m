@@ -1,54 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794343491;
-	b=mAWRJmTUm9WPc4FNy5hXobHfoffGhx48dc+uZFKopDylF5f+en+Wm9pDY0u6ZxT42D23
-	 HFDdPI2z9uLFvXCYhkZk/98+jfqn0ybNfX6F3SeRF0lHP73xTweiJe80O7LhW3RnocrW4
-	 TqnsZYqBjLRafMIwN8Stq9ZSxGbDjBHGWqgJ7+IxTvmJQEZZ1mx4xPMp/erEycaI6NjpY
-	 AJ1mBrgRA2wk1/aQiavQajHYhQZQljd+2/9YFJKIXNtCZpOhjrjvAUh/IGWHL1xzvjasu
-	 NsD+Fkrnjb2BVLcxMTqfTOutQtO3mthB1Mpi/3YK2SFYJofZapgG915YG1o/MqkHHmg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794343491;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ZohoMailClient;
-	bh=9iGjQx46W2MXVrCn0wgOootEUnd2i1SnVfH6gaH4IH0=;
-	b=icPDGAn6DSDgM5STPGbbBMCMSQsgCyG4usqgACS+22MkuGL+DG/9ZohbpfYeV/PC1n2k
-	 bpiNugAwqOytqaGuuGzmPOiw85idzjnxz/NFcgaGISYyXNw38Uopiks4/SySGuayKOxI4
-	 ceNr3XYm8uJ4t/jDKIkJedit7y2HW0JHJbaJhONHcTCd/nNg6J/fp5Iaaplg7VXKHyh8f
-	 2Yf2BZ3hBWzI+upJz8yVem53jB4+e+/gtUVVO4i0VrSUhEj1IgnZ1HpxUNSll1+ty/hpI
-	 lG2+b8Oy6dLCtdxFO8cIfhlKA4qX/uhdlpPznsOFrpE/Zo6xdm0QuJ8rN9XhlSF++DQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=machnikowski.net;
-	spf=pass smtp.mailfrom=machnikowski.net;
-	dkim=pass header.d=machnikowski.net header.i=@machnikowski.net header.a=rsa-sha256 header.s=zoho header.b=AFoWXKKn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
-Received: from sender6-of-o54.zoho.com (sender6-of-o54.zoho.com [165.173.180.54])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794343540;
+	b=4aklEueHKLMbS8lAVA2wr2PR/z/pXKrRZ34CFFleZ+qM6TeTPYpGLrjEy8ZSUwPNfLQb
+	 xVrlcOSd4bqUGUmn6t5DbIp4DeVYVExdy3AZ5mZ7+kliTm4JvhFIBACcQIUojmk6fpjBK
+	 N0/M6wVm5CVDheCCTRQPCmVoeB3Lsy/yKt03u4W7E8FbV6fZ38/roq5XzE67sIV7SCZMB
+	 3a3ZDn7JCsFBkUDBOsVgWGG3Ans4hvCV47ejhvzxm/625SiiC1moImvSQ3sVSMLL1MVJy
+	 XulVtMK+utR7OxUlw8bQDPD047OfAefTLVEl+aUY4RKHatoY8abcp7ztn+n2zuk60cg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794343540;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=QS6tIBWeQpAVCHgZ00Ay33RlDxsOh5tAnN1shI1GpNk=;
+	b=sCWxEjwiqQ8f+5J8lb9hveZuqfPwWD3KG+dsMJSVcdXG8K/2Npk87FuYUiS9iIF9Hpq0
+	 FtkIwTLTgsmqKQW9ooSRrI+aC6k6lfkcnsY6WuTVtO4bW6NZQ5my5UGbWnhaPrilboKa7
+	 MTPy4X8SRvDECGmzLxtgoa4SQcIBYd4oZLauvUdzzSKR4JvGe4K97LH/YvspiJrB0vCCU
+	 QUVLH7DTaWhGAnb7AHct3ycTWr+OPumpJWVLMcSGbut6E+Hf4oIwlTd/OKCdGaycX21Aq
+	 1jVqPNTI3VElqmtY2ePV3ltB2BQKTILOEO7/Qs8i+I+Y2JH5UAobJzCRRYgyw+yLGmQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="jd/wTADe";
+	arc=none smtp.remote-ip=209.85.222.181
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66049606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:44:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66049606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F1F606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:45:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02F1F606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=machnikowski.net header.i=@machnikowski.net header.a=rsa-sha256 header.s=zoho header.b=AFoWXKKn
-ARC-Seal: i=1; a=rsa-sha256; t=1794343477; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZhHi1Wh7KYeljlQO5vINeCPbgKjEhQVkzSx39zxt1JjcZ7fIdgwL9JKL1X5YKN4kFXIw4CiqpGKoFvinPY+CZTJD+FZGCccuUYREPbIhOdO8aBzkyYvrmtHslqfPVtA2k8M7sB+VMqW2E088q6bEjm9YH5qg1qs2tYuVF6WcFUw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1794343477; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9iGjQx46W2MXVrCn0wgOootEUnd2i1SnVfH6gaH4IH0=; 
-	b=aNcgVpJbLLaq5NiFkX1poPjT+HjETebPZb8zgNRat7bdZU8GjHFtuQxle1IBKuFsLAhB7wO8kVMdp1Ri2ik9La1qxKud7TYmL4/zaSRrRMScwIgiYceOgOIN42sPZ2D3gcaohL6E50Tfqos2eN2kVPAmTsmOCg0nkyyLsjRCihE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: a=rsa-sha256; b=AFoWXKKn35kQBe6kLa033wHmyNGXDThlbthHfW2nUD97XKJGPRME+VXrkGF35EKlF99UDQFLJv4dLuhz3oO7ikG0nzht8IW50CIW1VGf1VMFGQVOoWIrC6l14krbjO0uaFFbPCWvDCA2vECh1HPpg04bQRBAM317d1fSkY1oeF/wdkADcHcw66uqUnzgXzOa2/JYFmCTGFn3amBOtwQANC369HdMefZWE6jY1ykyBJLAhyq2kfmks/FY7uFh94+JwMmXzk81N5wuiqvYH5Wsh+GATT7AMrl+rXlwSWxb8MRY772kWWSafYU5amr6g6sCMVkMBkXHpUWmdHgimIG+Uw==; c=relaxed/relaxed; s=zoho; d=machnikowski.net; v=1; bh=9iGjQx46W2MXVrCn0wgOootEUnd2i1SnVfH6gaH4IH0=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1794343474245711.2446390091858;
-	Tue, 10 Nov 2026 12:44:34 -0800 (PST)
-Message-ID: <88fa8559-6253-4bfd-ae42-55a127c25c27@machnikowski.net>
-Date: Tue, 10 Nov 2026 21:44:31 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jd/wTADe
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e503815adso199137985a.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:45:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794343539; x=1794948339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QS6tIBWeQpAVCHgZ00Ay33RlDxsOh5tAnN1shI1GpNk=;
+        b=jd/wTADe/IxW5y1Tu8cRX8JzyYPR6XEB6pfxYXD5Zw+BxBSCBuHXoD+f+7/DcNfeVd
+         7vQI5eYY++AeurZGed9B4uWy9AB3AkxtPCFei4RYAKcN3/jNPvsqi/YmCysThDqXgq1p
+         mF5oIvMenr+c2GTJfYFo/JSgvif83Ss3xwM1lCcZZoTZBKP6vyChtY/KiF0+Vd0wn/ok
+         B+vwvt3mBnEvSpN6PMOeFB8EY6d9O/Cnor+cTjAGoxb1LV4+AUAJezS1Wkl8rTY+R5CQ
+         vbQGncEwFBUuEUJJeI0IosgrEKsRXgruvnRaBI33+iJbM1lMGOvFQhNuDSrrBXIC9C8o
+         4cBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794343539; x=1794948339;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QS6tIBWeQpAVCHgZ00Ay33RlDxsOh5tAnN1shI1GpNk=;
+        b=lLtFbocLCAlGyKU8ZXIGg3zuf9W9ZEri1kMeDkRnJv6gaP7iJosgSyoiDbujvcnP1K
+         1V+F9mH6L9Jgr1YQsKzlKgn8tgR0feu3hZkveOqDLMQTo5wJ4biWZZO1eQ1/s4i4Zblb
+         R1u3pXgFKNhvqryps+a5chZNjlBMgxxs6F2hOgAV5axVosL/+qxffA/H2jQBSZCo0q4S
+         7TkByTT4QNs5k2dwAK6S+JGkYQpUKejnB4qEgE9JxSETgG7O6YbZUMXNqVdapf0f4OTB
+         8JjZJr7WDBNPuSQ2JECxtx/S3kTU9HG93UytjlpAjQ6mdZzTN2oRvSfQiCdKYGQgIMQq
+         FjkQ==
+X-Forwarded-Encrypted: i=1; AL+hErGB218AY2KqPr2aKWp9TJVDLP+pNnLG/D+7FrxiXzuS0CVmIvN/mL/pROjBCIh6RserveJRHas=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8fv4T1BGHT8qhOBSgXZiYD7d8RZD971roZptBX3jSIq5wIhJbW
+	Ao0Q/1rpgO/X2wgTd6EuIP4bEQMiS4CWMR18YE1SUq+0xvIZX2wyGfag
+X-Gm-Gg: AYBFou1FzJEaX+wqSn+W5b1ivzkT5bCuTqoVQBus3b8AdJL53fEURjX06Ltc9ILpEiN
+	KN6F+BQKi5BNMGVfPqyG2v/zOOfsdwGlX3wr46YOWT/BKrOk+kORIfXOAjCjeeoZJLbLdmn0MVb
+	o+JB1XOUb1xtCPnUp5Y6sAfctz4usntxnpw/J635f9wCFzT19lRjMpxozDwYd8P1i6HJdaq5m1b
+	E9qrUc6/V5xINu4cqiAOL9AjqeTplSEXPCNhXqcyIJIAqdnG5i9m0iMtzDXGlcxGkD2v0x6GYQA
+	lnfqbRfG4PU8bvMIPQJmrx7h57c44A/QzCCfG0Z0gR4EIFtu/A5bkaPJDdu2xjZk6Vi3nf0Vv9D
+	UBLjNa6axOP+93cpr15D505ZUEpiYUMxCt9evjFw/cb1OU/rl6+OpnnoZf+pMa/4rY7sgAEP6wM
+	6v6u9VG0+sP6AF02m2fwvElFecof01fwrgcSiACWew2C021UsrAvMJOP194Dfhnm4fXv8w+/r30
+	C6PNsLJeqIKZzlYNhCaZgxkBSuLK9wMm7FNNDOveAiT96nHGTp92OgFnFMPF+UpOCCachPiMoRM
+	3kuO+C5eA1PMHQl4wdMbckK4H5kdbEfxZmGPtEHy7dZ8q90Q6AgpgO/vaFeNEPOTK0rDF5pCZKs
+	63eV62K8QGbtUDk1FKHYqo40yBHSE7pp51cHSvrc+eEuypi4=
+X-Received: by 2002:a05:620a:1b94:b0:947:832b:5527 with SMTP id af79cd13be357-947b003f9b6mr20573885a.42.1794343538943;
+        Tue, 10 Nov 2026 12:45:38 -0800 (PST)
+Received: from localhost.localdomain ([2601:140:9000:ea70:4d94:8f0c:83a0:5c76])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f02fcc4b7sm5204076d6.44.2026.11.10.12.45.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 10 Nov 2026 12:45:38 -0800 (PST)
+From: Ethan Ferguson <ethanf108@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ethan Ferguson <ethanf108@gmail.com>
+Subject: [PATCH] net: remove CONFIG_NETDEVICES requirement for SO_BINDTODEVICE and SO_BINDTOIFINDEX
+Date: Tue, 10 Nov 2026 15:45:24 -0500
+Message-ID: <20261110204524.82341-1-ethanf108@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,61 +102,156 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 net-next 3/3] selftests: drivers/net: Implement ptp4l
- sync test using netdevsim
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com,
- milena.olech@intel.com, willemdebruijn.kernel@gmail.com, andrew@lunn.ch,
- vadim.fedorenko@linux.dev, horms@kernel.org, almasrymina@google.com
-References: <20261108201503.85000-4-maciek@machnikowski.net>
- <179425610058.994134.1147534198857672730@kernel.org>
-Content-Language: en-US
-From: Maciek Machnikowski <maciek@machnikowski.net>
-In-Reply-To: <179425610058.994134.1147534198857672730@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
+The SO_BINDTODEVICE and SO_BINDTOIFINDEX sockopts return -ENOPROTOOPT
+if CONFIG_NETDEVICES is disabled, even if the lo interface exists. I
+believe it would be prudent to allow for valid bindings even if
+CONFIG_NETDEVICES were disabled, as an error here would be inconsistent.
 
+Signed-off-by: Ethan Ferguson <ethanf108@gmail.com>
 
-On 09/11/2026 21:28, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 5
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] When ptp4l fails to start, ptp_sync_test() in
->   tools/testing/selftests/drivers/net/ptp.py reports it as a sync…
-We may improve that once we implement more advanced tests. For this
-version I consider it a non-issue. If the ptp4l fails, the test fails too.
+---
+ net/core/sock.c | 56 +++++++++++++------------------------------------
+ 1 file changed, 15 insertions(+), 41 deletions(-)
 
-> - [Low] The test says it checks that 'the follower locks onto the
->   leader'.
-This is as designed, s2 means they are relatively close which is enough
-to prove the mechanism works.
-
-> - [Low] In ptp_sync_test(), the local temp directory is created at line
->   75 (`cmd("mktemp -d")`).
-Nit. May be improved later, but not a dealbreaker - worst that could
-happen is we'll have a temp dir after running the test
-
-> - [Low] Both ptp4l instances turn on hardware timestamping on their
->   interfaces (tx_type=HWTSTAMP_TX_ON, a PTP rx_filter; netdevsim…
-That's how it always work. Next ptp4l instance will clean it anyway
-
-> - [Low] _require_hw_timestamping() only checks `ethtool -T` for the
->   'hardware-transmit' and 'hardware-receive' strings.
-This is only a safe check. Irrelevant
-
-> - [Low] Both ptp4l command lines in ptp_sync_test() use the default
->   tx_timestamp_timeout (no --tx_timestamp_timeout and no config file).
-That may be relevant if we ever plan using some non-compatible NICs in
-the HW setup, but we won't enable all ptp4l arguments.
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e8551df8330f..d2da59700ecf 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -634,18 +634,14 @@ EXPORT_SYMBOL(sk_dst_check);
+ 
+ static int sock_bindtoindex_locked(struct sock *sk, int ifindex)
+ {
+-	int ret = -ENOPROTOOPT;
+-#ifdef CONFIG_NETDEVICES
+ 	struct net *net = sock_net(sk);
+ 
+ 	/* Sorry... */
+-	ret = -EPERM;
+ 	if (sk->sk_bound_dev_if && !ns_capable(net->user_ns, CAP_NET_RAW))
+-		goto out;
++		return -EPERM;
+ 
+-	ret = -EINVAL;
+ 	if (ifindex < 0)
+-		goto out;
++		return -EINVAL;
+ 
+ 	/* Paired with all READ_ONCE() done locklessly. */
+ 	WRITE_ONCE(sk->sk_bound_dev_if, ifindex);
+@@ -654,12 +650,7 @@ static int sock_bindtoindex_locked(struct sock *sk, int ifindex)
+ 		sk->sk_prot->rehash(sk);
+ 	sk_dst_reset(sk);
+ 
+-	ret = 0;
+-
+-out:
+-#endif
+-
+-	return ret;
++	return 0;
+ }
+ 
+ int sock_bindtoindex(struct sock *sk, int ifindex, bool lock_sk)
+@@ -678,15 +669,12 @@ EXPORT_SYMBOL(sock_bindtoindex);
+ 
+ static int sock_setbindtodevice(struct sock *sk, sockptr_t optval, int optlen)
+ {
+-	int ret = -ENOPROTOOPT;
+-#ifdef CONFIG_NETDEVICES
++	int ret, index;
+ 	struct net *net = sock_net(sk);
+ 	char devname[IFNAMSIZ];
+-	int index;
+ 
+-	ret = -EINVAL;
+ 	if (optlen < 0)
+-		goto out;
++		return -EINVAL;
+ 
+ 	/* Bind this socket to a particular device like "eth0",
+ 	 * as specified in the passed interface name. If the
+@@ -697,9 +685,8 @@ static int sock_setbindtodevice(struct sock *sk, sockptr_t optval, int optlen)
+ 		optlen = IFNAMSIZ - 1;
+ 	memset(devname, 0, sizeof(devname));
+ 
+-	ret = -EFAULT;
+ 	if (copy_from_sockptr(devname, optval, optlen))
+-		goto out;
++		return -EFAULT;
+ 
+ 	index = 0;
+ 	if (devname[0] != '\0') {
+@@ -710,16 +697,13 @@ static int sock_setbindtodevice(struct sock *sk, sockptr_t optval, int optlen)
+ 		if (dev)
+ 			index = dev->ifindex;
+ 		rcu_read_unlock();
+-		ret = -ENODEV;
+ 		if (!dev)
+-			goto out;
++			return -ENODEV;
+ 	}
+ 
+ 	sockopt_lock_sock(sk);
+ 	ret = sock_bindtoindex_locked(sk, index);
+ 	sockopt_release_sock(sk);
+-out:
+-#endif
+ 
+ 	return ret;
+ }
+@@ -727,42 +711,32 @@ static int sock_setbindtodevice(struct sock *sk, sockptr_t optval, int optlen)
+ static int sock_getbindtodevice(struct sock *sk, sockptr_t optval,
+ 				sockptr_t optlen, int len)
+ {
+-	int ret = -ENOPROTOOPT;
+-#ifdef CONFIG_NETDEVICES
+-	int bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
++	int ret, bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
+ 	struct net *net = sock_net(sk);
+ 	char devname[IFNAMSIZ];
+ 
+ 	if (bound_dev_if == 0) {
+ 		len = 0;
+-		goto zero;
++		goto copy_len;
+ 	}
+ 
+-	ret = -EINVAL;
+ 	if (len < IFNAMSIZ)
+-		goto out;
++		return -EINVAL;
+ 
+ 	ret = netdev_get_name(net, devname, bound_dev_if);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	len = strlen(devname) + 1;
+ 
+-	ret = -EFAULT;
+ 	if (copy_to_sockptr(optval, devname, len))
+-		goto out;
++		return -EFAULT;
+ 
+-zero:
+-	ret = -EFAULT;
++copy_len:
+ 	if (copy_to_sockptr(optlen, &len, sizeof(int)))
+-		goto out;
+-
+-	ret = 0;
+-
+-out:
+-#endif
++		return -EFAULT;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ bool sk_mc_loop(const struct sock *sk)
+-- 
+2.56.0
 
