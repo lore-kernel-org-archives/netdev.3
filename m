@@ -1,99 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794285009;
-	b=yFB/Hvj7e53wv6nfaw35DqX0JByIQgM54mh03OHWuj9bnT9LrOOT1yGEpe5QA0+AXJI/
-	 CVMIRyzZLvs9VUZw1akBFI9tB5opLTFLDXtLeIJnWh4dcvgTbf6QI5Gi6DEHIrnQd9DII
-	 KNpQ/GbDuSzkpUWdW6PGsXP62NfN6cdvIsg6j7bKqAfrs+rDG0t20g0iD+30BfIoxAJrR
-	 Y8mDKRIvGX4njbp+UXczUxZZsRt0xvF41B5STtBRcPeSoSP0n0ZF2itRIVna7QuQINHsV
-	 wcazmiQ0ANCUCK8hiD/UeFjO7fNaCwElfP/2I3E0wF1wG3tJ9NLECdIUMEb8GjSoUyQ==
+	t=1794285021;
+	b=udvoqvqmeDXZbqTsLeySN9PuPu7iM6HAdBqyO0UdbTMP6iw5bc6e+4X7WxYIEoZFcXlQ
+	 ObM1AXYj0tPXRAhLGl+K2ABvfSIJTCOw025rGCbMjdBKjD0LJKHO5NmCXXlN5AY9MN0DC
+	 2VnzmCLyYPZeaxdg8nZzlk5M9w1h4PhKOuBmGzsFOXnNGKeqTYtwvf+h7ulrM80DPfpIH
+	 oZoxn8sRpzNdCxADCvujUnoIE2FyJRXHgXfVfDV/iMq/aC2rv4BBLfM4Rr/y0RGUWBW0F
+	 nb8CwH8HrvldaebALInJ/fecbc3euGkG6W4e7HKoo7jfCgjexnSAear2NU4Ev/WdezA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794285009;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794285021;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Mc6rPhZtcy7thF6jBsEppMpKqkoctKS795gM28YkdhA=;
-	b=vnfIAE3r/WwXYDN7eQQoMKhZrHJU2IHazsJHmVMczSlaHcCPbFGg13257bgQIpe1S0FF
-	 86s1hs8HEHhGlaYZmGGgoGMRkpfzZD6NMyN4ZKwy+r3jZXaikElZn4OWv+sOQM9BSDnUh
-	 xo7OmuZYUbpEEeVJN7rEmo2RPTD4A+qMhQeANd66WJwU7o5r2TmS1ecwL+PJoD5/ZQDKj
-	 0cmMt9R4MIicQaD7ckSGvasp7uw6FS+YvXTMNnQ9K2VrNJ0i3zzVKMZsMYU0I6fqjsSA9
-	 cXZZycsrJWS0J3HIWug3XgDMoiKnuw1W5FZbyGTKRCA51kGltCqYIbpu2IwyXgRhZiQ==
+	bh=lyxNlKJrr7VosEoWkysr9zOPM5Qv8W1t3PwxQZCtDdg=;
+	b=265jYhMx50jGAqb31Zdo5Z6Ciuhyy+yGVlr6dqaQkV7CvfyANiPjJS7c+HDuSw1D5l9C
+	 yMNfUvjEgeH4CQnPdazxsUQLKxoe4e2n4YQt1Qr9VVzsMHZfnXWrzVXExEzVU8rzYQ0nM
+	 gdemQSUYhzjjbkgDOSvmo6rERG0YYlhRTIRw6j1M6Y6VGC7Kf9VbfjJ5qI7UETvasDhCu
+	 nkZyqxAJy3aXAkwhZZyCh8wNyG++wqcGqxSIcErmcFjE8Ug2cID3YnvNzKEwJV7vHh9iy
+	 dSzjYeixCv1RY15FuBa8JYCFjoVlVgdDej+2DyciUCYAv1UFyiyICsFeQ0SJrIBws5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tw2goD4R;
-	arc=none smtp.remote-ip=209.85.222.178
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yhLF37tq;
+	arc=none smtp.remote-ip=209.85.219.41
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F38D606A33B
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:30:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F38D606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2774606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:30:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2774606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tw2goD4R
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f079a63b8so162602285a.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 20:30:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yhLF37tq
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91ccfb88e4dso20671626d6.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 20:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794285008; x=1794889808; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794285020; x=1794889820; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mc6rPhZtcy7thF6jBsEppMpKqkoctKS795gM28YkdhA=;
-        b=tw2goD4RZ/2tu7CCKcYLAvxfmyz4f4QYQ8A7OsaW1utqAFZAgbziDtsVqBNMvlpGET
-         Te/vSDKbzo7q34BTmS9Pv5r4ds6z8orc8yvXnA6ne9M0GHXvP2jb9nbUY55IHFTrT7aH
-         Wq3yVa1K4rG+nWmTA2nXQQfVW/rBtVkwjcx1INqPFxby1BShW16l4Z1Q7TGDYB2rfK1Q
-         waw083QR7XlXSD5eolV1pZnKaOjXibjWhvN8JN0q/bZ6GgIh0zQgJmKQc9/26bM9rx35
-         1HMbOchXb288maFkZD7b1GCiD+a3RLsvXYpMVV0IhUZevw2CPeddi2Ya68FZnklwUmc7
-         PMig==
+        bh=lyxNlKJrr7VosEoWkysr9zOPM5Qv8W1t3PwxQZCtDdg=;
+        b=yhLF37tqJVy0RfoNOIf341vWvPM2VDB5/dEMhzJJI3vGi5Rv89+jEKjPQLGvAd9+EE
+         B136HDRR2rEQSDkoJEXw3SjIp/h8jyoz7IFvxJ/N7oaaNQvJfagJt0d6CcURrIi/LlRZ
+         ggYx0BKb8mxQ0nYbwkFgg9+sEBPGIt7Iy9c9Obg0g+ARQKLkJ0qiSHKMBiTJt3vDA0Ze
+         b3vh6CD1rRKiF0Qx6tPeGkb1QYRW4fwGtemv/fN4QLEr+SBoI+1gGK6ihzmqSAw33wKk
+         nzRkugrVd25XwNdm+pPLt7n60ejuUE924YhaGX1QAsI4vl4RZza8hQKR3UMfrV0h/uyl
+         d/QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794285008; x=1794889808;
+        d=1e100.net; s=20260707; t=1794285020; x=1794889820;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Mc6rPhZtcy7thF6jBsEppMpKqkoctKS795gM28YkdhA=;
-        b=Sodn5Gc9Bir4V6ZBysUqOCEg58AEBbTupWaWwOnDPN4kATClEkOHg2JNBNb3JJgdPl
-         AsAJhQqfbGAkwbd++vK57kWIZglNUajNvJS71wC5WeQKHgjP2IvGbaml+dR/fsXlrF0C
-         7j8s2zORlRQP6NW5NK6K7gqeJZic/1v1GI3TLPIhbO8RJn0HNDBJiL0dEoBx9nvGS565
-         pdjp+AOHluitQQ/nWm7OCzpwNJuWOcUm3xtgyAsoNGOLk+lNmsLznWRQIgL79a2nMiYT
-         BiJXZh4B5b9b67ymtVQWCUlEOpgFgalcqscvgnN3eaqXgFo0DmvDoPQaszqma8a8a/o/
-         6BQw==
-X-Forwarded-Encrypted: i=1; AL+hErGN40xKUycD+6fvmzZcOWzZakFdBjnYrlSI5qZG0CJhe6eyNNMU7+kxYntb+G2UXU+79txhYGE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8V2uvwCnXjHKQd7ZJqBMktRT+dnwjDsazB6WBLiiBrUIl7Bo9j
-	P0BmJicdYKndWZhE6iy2byny47AGwQkcBEMZdMK9PJ1mUDqzxiY3jlI=
-X-Gm-Gg: AYBFou1VqHbO+kggZ8aPhYjxLlJR1ygDd+N90lqPgugnJQ/dQLq9cdXP9xjTj/5OADR
-	4Bbff/+EqFYf3PwNaXiC5B/atXTmNAijUmONEMzW0oOSiA3DimvzOMjfBvP6LMaFp3Vlltakarn
-	kYo+KUjoW42zr0A2KKyaLwq9NST6PlLs6+P07eTbnuc6EAmH5/J6VPlI0igGKfSuMIAyx5+zNNj
-	1OZOnSCLB9dAZMHBGFBEcTF93v/TThrG+w2SrU7JnCY4sDN5L0qjcBjUFZ52GyeVjkPExT1iCOr
-	Zizf0McU9OUD8Ng749Ly1GFCZuOmbXTd/DKXmMeVpHm78vUXE6ugM0baapW4N6rsFnsqmRGjuPq
-	LhrXPZOxD12WDDHs0bCpqElut658lOpk3LEeQ+CSneT+PD3I+UvK+ms/js7Rvc8j7mvjD20OJSP
-	GOgXUhCkztbYToXhfsQUcQwCDUp7+poPxaK5fPAAtkpHI+0zAQmRIFsvv6OP2URCuywHBmY+Qmj
-	T5G8ubk6McOAy//JIp9e+4RFkv6Vvx0782XTxBTdQbOMCfP0xONQaCxdkDa/h7/XIBI99Rgkajy
-	ea9jlkITTMRxHO3pMNOQLVP4i8lxEH0RjM0XrAQaNT7AJNTeU1pp86pDdTQQ5vmZcyefqMQDlff
-	rNfGCibwRcXSdXjFPya/b75/Lpx5em3ldRvHodv2ks8Wf/MFUK9MSeCgI/4gRYeZF
-X-Received: by 2002:a05:620a:6496:b0:945:d852:1618 with SMTP id af79cd13be357-9479f3eda61mr223680085a.70.1794285008081;
-        Mon, 09 Nov 2026 20:30:08 -0800 (PST)
+        bh=lyxNlKJrr7VosEoWkysr9zOPM5Qv8W1t3PwxQZCtDdg=;
+        b=L42lriNMXT3VjWGbXFFNRVdOLaTYznSoX+Sk8FrBwM0XY1iaMB9DME6CUB2vvYHaFH
+         XOORnqc0nkc6GMVT8kRfYAWBjPhtp0WsV9w5pQupMTV2O80QPrERIU1gbor01UQjBCUm
+         xW96F6yi4JbwS9RDapp2fHw5345TQy4+1haCgMc+XI07D5VDOA1rEuvYGauApulFVYuM
+         xrosmkLAD7hhD0URaYwhorzs2L7FKoYtbXHJ7Nkob+bdkfju/MHQpqEm9VS/RlWtyWQt
+         M/xRcnUgXlNxq+OwIzvBsW0vhITdwNivPtLlL5CEF3rZCNc2KtKv/nA6cqe2M6HzIFLQ
+         sFJA==
+X-Forwarded-Encrypted: i=1; AL+hErE4+NkumwfIsgym4SzphQ5ME8hsrCuSeG2ypotjb+JJav8g3YtXvdYju1ywmxgwge307geCHn0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/j3Ips3l80S+O5arZWp9ueW52LmksDsejQETJmdEXgZ95ZVWW5
+	e5VzsdglTbHlx59kYdJfgPtyhFCoBvaujKkI2vobp+ew0ppAGRv6yV4=
+X-Gm-Gg: AYBFou3EgIm5V1y5M0GWycgv1WAfodLWxEcBw8R2elwEKNcAyL9n7tfOXEYOOR6nn/h
+	y2nZK1w6mLsul30u0uPzIB8Kyb2XqCy3ggyjdrbrBIGXAHkj1nzX0iIpufKg1BJflKmK4ZhRwDv
+	1xUDsilmqPiamCOopX4daHxJiTAGf/7Ndu6vt4wpmEOKRbIKF6x6E87s/1M30Bt7Jqnl9eH9TSr
+	jFq1pNVJhZBc9wwWdADWSLlNAAHZTpGB9o2i7Yhmiy94Dw+rmNikx5alu/Eh+me7C7GdrIASWGM
+	GqSJzAl2FXOV/9z5RXBRa6so7hWPpO7OGUPrkKydcfQjHGnbY1UpThKm8pNS8UdP/+6lCck3O5h
+	DuVcFKvCgYmZHwXK/f+ePl0JgOYr4XO5chFoTfOFlWnnX7B8sysAz8ZZGY1gs1b9Yx6dOmqAFgy
+	bRU/9ahg5dwQWN+tDCei3OUP+3Hwa4ekoA+s3cEcxjXfMLbCP4hdXta7QAQFqqs8re11Du+IJUh
+	CLcZ7cUhWJgJZTCgiP6usak4Z8csAeAt3LQjyIh3JoL8zJTMyUiwU2O6B9izKFLAOz/EWX5dqrP
+	REx95M/YrlAdtnYjDQcKVmWQmdxFfKzIait1nthIEK6JbWtoyyqhVhVJmH/q8x1Wix8td/WUgMQ
+	mEmezzuUM3D9IoHwiTkjKgIj/ApA9+tjyeSbtjV2e9LxciDVqud7RVZqJ69UYrDQe
+X-Received: by 2002:a05:620a:2a08:b0:93e:c12c:9b6b with SMTP id af79cd13be357-9479f3e4359mr239464285a.70.1794285019816;
+        Mon, 09 Nov 2026 20:30:19 -0800 (PST)
 Received: from localhost.localdomain ([104.39.152.7])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e73b2d2sm134917585a.10.2026.11.09.20.30.06
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e619affsm136779285a.4.2026.11.09.20.30.17
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 20:30:07 -0800 (PST)
+        Mon, 09 Nov 2026 20:30:19 -0800 (PST)
 From: Myeonghun Pak <mhun512@gmail.com>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+To: Petko Manolov <petkan@nucleusys.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
+Cc: linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net] net: wwan: mhi_wwan_mbim: disable rx_refill work on removal
-Date: Mon,  9 Nov 2026 23:30:06 -0500
-Message-ID: <20261110043006.56681-1-mhun512@gmail.com>
+Subject: [PATCH net] net: usb: rtl8150: fix rx tasklet use-after-free on disconnect
+Date: Mon,  9 Nov 2026 23:30:16 -0500
+Message-ID: <20261110043016.56986-1-mhun512@gmail.com>
 X-Mailer: git-send-email 2.47.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -106,38 +105,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mhi_mbim_remove() cancels rx_refill before wwan_unregister_ops()
-removes the links. Bringing a link up in between calls mhi_mbim_ndo_open()
-and queues the work again. With the MHI channels already reset, the
-work cannot refill RX buffers and keeps re-arming itself, eventually
-running after devres frees the context.
+rtl8150_disconnect() kills the RX tasklet before killing the URBs.
+Endpoint flushing does not wait for completion handlers: a
+read_bulk_callback() that passed the unplug check can still schedule
+the tasklet after the first kill. During driver unbind, disabled
+endpoints make RX resubmissions fail, so rx_fixup() can keep
+rescheduling itself and access freed driver data after free_netdev().
 
-Use disable_delayed_work_sync() to drain the work and reject later
-queueing. Probe initializes fresh work on rebind.
+Kill the tasklet again after unlink_all_urbs() has waited for all
+completion handlers. tasklet_kill() drains any late tasklet and prevents
+self-rescheduling; disabled endpoints prevent it from leaving an RX
+URB in flight. Keep the first kill to stop an existing reschedule loop
+before unregister_netdev().
 
 Found by a static analysis tool under development.
 
-Fixes: aa730a9905b7 ("net: wwan: Add MHI MBIM network driver")
-Cc: stable@vger.kernel.org # v6.10+
+Fixes: eff674a514bd ("USB: rtl8150_disconnect() needs tasklet_kill()")
+Cc: stable@vger.kernel.org
 Co-developed-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 
 ---
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index 336f89756f10..3b6b0066f673 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -650,7 +650,7 @@ static void mhi_mbim_remove(struct mhi_device *mhi_dev)
- 	struct mhi_controller *cntrl = mhi_dev->mhi_cntrl;
- 
- 	mhi_unprepare_from_transfer(mhi_dev);
--	cancel_delayed_work_sync(&mbim->rx_refill);
-+	disable_delayed_work_sync(&mbim->rx_refill);
- 	wwan_unregister_ops(&cntrl->mhi_dev->dev);
- 	kfree_skb(mbim->skbagg_head);
- 	dev_set_drvdata(&mhi_dev->dev, NULL);
+ drivers/net/usb/rtl8150.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index d51e43170e03..98c36c377956 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -971,6 +971,8 @@ static void rtl8150_disconnect(struct usb_interface *intf)
+ 		tasklet_kill(&dev->tl);
+ 		unregister_netdev(dev->netdev);
+ 		unlink_all_urbs(dev);
++		/* A completion may have scheduled it after the first kill. */
++		tasklet_kill(&dev->tl);
+ 		free_all_urbs(dev);
+ 		free_skb_pool(dev);
+ 		dev_kfree_skb(dev->rx_skb);
 
 base-commit: 0edbc945eb9edd0086f25b151a79cfe4adc0dfa8
 -- 
