@@ -1,50 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794306235;
-	b=pGHsqpqJtpMDXaupCKL5+fQH3CCf8OM8OTepgWCbu62quHt04OqoF7TrkV2B9bSSkAE9
-	 YlfL3aNMyg9JTE4o3Sir2P2CAm58kOLmrbf0rM5l+fkYRX8IJ5ppML88MZRVNh8LjtQS0
-	 VwYkDCEhzOSNx88/PZ8fWndtWu6etm0uMJBpuNc5FUZNTUm9Jlmjbf/nLME7wEMPmy59U
-	 gHjJuwCBZQ4qrrB/l+CKpE+CD2IOQ1rECrJltI6kYPpFbiMjZT6Aea6YZw4a6XAgAkjQ0
-	 DqhIpQufHkBwNc5PZxA67iC/2BZJg7OmD+bQKuCwKHNswHLf6wWBjC6kPBsqk8SxNXA==
+	t=1794306570;
+	b=GI/LcRLZStIz3p7jifA8jgugMUXn7Mos/YMYaLhmdjk7xmZQXRv5rhpcFTlPweovqABk
+	 wCU8psQRRRc4TLgIaEg5wCB9olajtE5S3XY2X6CCsyg1O+Kj3/0Jzjm/DrUgPVfODL82X
+	 YTjxaAKJP3ivPIEZx1TFr1/WFrLKJDCy861rb0CTTAkWSzDK8QY5mCUYWzB8DrvWvSBQS
+	 TpRHEWia0UwEVsj+UVtoV4setiXNr1PjPtsxqESfkIkVgC7kxMA+BqWmJMDu4pqA4YMO/
+	 ZZEuaPBAqwfkoKltbQIf23OlvIE4UT5+5MaqFuc5Fluh8PFBgbmTt3D7H4gz7S0fY5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794306235;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent:
-	 X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
-	bh=h6kwJieY+oGcWyDMxdNXVOCZPKC8m+HXb6SspZnkgEM=;
-	b=KyrnqiIZBZoB5kR0KIX0LdnN6BjQHCfO3ZwUWm+AoCeN9vubFHkV40j2sCnhLoymJn5B
-	 R5XsgXDbhCsRG49DR80VW86suENeV/dR7xe4sd8Ovcee8kLu1UkX9RTUwg3OwKG1G5WDA
-	 GFyBXEuGtTLAhd8iYL7u3ZonNJm3OImkwbo78aXNGycuM3RhOvrpr7t+1IDZB8zRLOCK6
-	 PvJBwXCyHK8jGt8djMo/QK0cMI5czEi/zu1guCeQuN5knIBIt5HMcjbyiVoxBscnR+2gl
-	 +tKVJPQWmeL8Y5wadzKUydzm5MGYjU3uFdwQhqoUKb+invtvRUGNE6rNHlmIk8P/GAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794306570;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=v2xg6hOG8tJYsiUIo+rhQhOmRkcdSZdLofEQMTd+hPQ=;
+	b=DFV292m8Go6vgKVSYdMPB+Uv15j5TlDVnhsNhrEbfoACAqnr/9j6ucOkY/KMLwvdMwkt
+	 /49luA8zTX2/MKXiDVutjkr49znN0BIdaOa6C4PT8se6S7AedlsVEUnynvLrCCeatm2XV
+	 BlxBf1SexkMCtNg5+8i+3ecVs2bVpF3hCQaqLk7aYa8zNxE3Fo9FTkvtFis2Du75UYFw9
+	 76OI61eWsmMEk20AXveMXMsVItfVgBecRcz164GCX6fLALTnpVdoA2ft/Uu7YfHXAvlFs
+	 phkNHpoUEirmWSGCLv1iEVySB9syw7K2+3yIzNUacTQE3o3CpICD5tjMgDztUK2Gvbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dRDbb0vQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B044606A41F;
-	Tue, 10 Nov 2026 10:23:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B044606A41F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D3522421B3;
-	Tue, 10 Nov 2026 11:23:50 +0100 (CET)
-Date: Tue, 10 Nov 2026 11:23:41 +0100
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: David Ahern <dsahern@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] ipv6: Add NETCONFA_FORCE_FORWARDING to
- netconf messages
-Message-ID: <avLwfaWRs5Gsdy3z@luna.proxmox.com>
-References: <20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com>
- <20261109090505.GA1495012@shredder>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C227606A321;
+	Tue, 10 Nov 2026 10:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dRDbb0vQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F74D1F0089F;
+	Tue, 10 Nov 2026 10:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794306570;
+	bh=v2xg6hOG8tJYsiUIo+rhQhOmRkcdSZdLofEQMTd+hPQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dRDbb0vQ8jSYjC/bRQf5405AJBZL/knalNcpL9AkFq7HXcvXtq4nkKhO35Gs4hbY5
+	 3yos0alKhziqWixpucq823yVO0RzTwVZBZGU3jiaQLIiIoOy7j3Tjy2CXrsr4xSP9G
+	 BX1h41irrZGGIYJH1TQl1ttMvIvpkS4OFMf0lVuscQMFR4Y2pQHZxmaEEnxJddMX+3
+	 vxptwezsMREU31A22+c2g22+J00h3AfRub4F7RNuZICQ+k8vSC76EEjvJkRK9BMH8w
+	 I2GjP3kDUPBTYTHzAK1HMqhBBL0M4RgIgZUh+F/iE81fapMH5EmohVwystsgplRTf3
+	 ZaYQGiosXqrug==
+Date: Tue, 10 Nov 2026 11:29:26 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Michal Simek <michal.simek@amd.com>, 
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v3 3/5] dt-bindings: net: dp83867: make
+ exclusivity explicit
+Message-ID: <20261110-ecstatic-affable-mackerel-db9cb7@quoll>
+References: <20261106-v7-2-topic-dp83867-v3-0-45e1d3adf1bf@pengutronix.de>
+ <20261106-v7-2-topic-dp83867-v3-3-45e1d3adf1bf@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,49 +66,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261109090505.GA1495012@shredder>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1794306229935
+In-Reply-To: <20261106-v7-2-topic-dp83867-v3-3-45e1d3adf1bf@pengutronix.de>
 
-On 09.11.2026 11:05, Ido Schimmel wrote:
-> On Wed, Nov 04, 2026 at 10:46:10AM +0100, Gabriel Goller wrote:
-> > Since force_forwarding was added, changing the sysctl sends an
-> > RTM_NEWNETCONF notification of type NETCONFA_FORCE_FORWARDING, but
-> > inet6_netconf_fill_devconf() never emits the attribute. Listeners only
-> > receive NETCONFA_IFINDEX without the new value, and RTM_GETNETCONF
-> > replies and dumps omit it as well.
-> > 
-> > Also send a notification when disabling all.forwarding resets
-> > force_forwarding on an interface, which previously happened silently.
-> > 
-> > Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
-> 
-> Fixes tag on net-next is only valid when the blamed commit is only in
-> net-next, but maybe Paolo / Jakub will agree to strip it, so wait with
-> v3.
-> 
-> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
-> 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> 
-> There's a report from Sashiko [1] about a pre-existing issue:
-> all.force_forwarding not being cleared when all.forwarding is cleared.
-> 
-> # ip link add name dummy1 type dummy
-> # sysctl -wq net.ipv6.conf.all.forwarding=1
-> # sysctl -wq net.ipv6.conf.all.force_forwarding=1
-> # sysctl -wq net.ipv6.conf.all.forwarding=0
-> # sysctl net.ipv6.conf.dummy1.force_forwarding
-> net.ipv6.conf.dummy1.force_forwarding = 0
-> # sysctl net.ipv6.conf.all.force_forwarding
-> net.ipv6.conf.all.force_forwarding = 1
-> 
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com
+On Fri, Nov 06, 2026 at 08:47:27AM +0100, Steffen Trumtrar wrote:
+> The io_impedance_ctrl nvmem cell and the properties
+> ti,{min,max}-output-impedance are mutually exclusive, as noted in the
+> ti,max-output-impedance description.
 
-Thanks, sent a patch:
+But it also said it is allowed and one will be chosen over other, if
+both present.
 
-https://lore.kernel.org/netdev/20261109-ipv6_reset_all-v1-1-815dfd508246@proxmox.com/
+> 
+> As this is only stated in the description and not made explicit in the
+> schema, the binding checker will not catch if this condition is ignored.
+> 
+> Make it explicit in the schema that only one of them can be used. With
+> that, drop the note, which also described a precedence for device trees
+> that the schema now rejects.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  Documentation/devicetree/bindings/net/ti,dp83867.yaml | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> index 2cd8311ece5e..833540743bdf 100644
+> --- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> @@ -7,9 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: TI DP83867 ethernet PHY
+>  
+> -allOf:
+> -  - $ref: ethernet-phy.yaml#
 
-Gabriel
+You just added it, so instead place it at the end in previous patch.
+
+Best regards,
+Krzysztof
 
