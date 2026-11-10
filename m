@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794283042;
-	b=spVNWZCTE0/P+5DlAoY016nXkOnB+0xe1awFnV3XglRxgcUXRJ27pfUb3fP50ieu7SB5
-	 sHkgDbVwEoR6LKkf1S9jQB3GOQJ0QvcSfGCpx85TI5/i+6D3iAbBgWFaWKyTRNiJVOHSF
-	 EIZXGa6sI/mzX7+LWzvxQOuP03keeixRR18KXO5IwBQnDWrisxnXb5tGvglzfDkhmNVn3
-	 9vL5gYVcISOO35jY3hQDbfi2h9jBll85+HCdBJN6dr/m0KavWw3aBx3MB+cj2LprZNlnI
-	 5OIIE+gX4XtzvAcuSX+Ej5h0cZJmYttqoSiKKdT/WzqtZicUANghDYnbIwNYd6mTxIg==
+	t=1794283045;
+	b=0oc2bU+77z4elva46DwlrqN1ox4F3BLuD9sCdNiwB+ZlepQkyBzKtfvspNViPK2nSkep
+	 ZQhbRSaV2885yXyCWlUGzSNuMCPjkLgdvyLpA/IzLBgKHGE1iVNaxVgpr6KX0GCsEmncu
+	 Z+HaARdPSFyOWFnbmRg62bagHEjzrpk3Jj5RV1mreUcCYHW4PoccAT/tjnmga7urinu1S
+	 G6l4biRW64Q7Uqdivwwte8XxUVuRZthZtJExAY50CoShlTAaSd0fLjz0cVLpPzizOS5QR
+	 +YfYST08fT78nponmgWS1ZeXMVeclDTU/8NpLH62nYEkueTy97nDj6hMU/7k/gcqdZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794283042;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794283045;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=eceI8dL07kv9yfwsc+DTSqIVxIuF3lFqQT3hh7B4xzA=;
-	b=r2MoRi/h4v4/fG5eYWDvjClPQu1nXCds80vZV6mfTAQmSmKyDbJLMKgcG82dVkkChJxE
-	 qG1eLo4Kgedcgs3vn05V0BhfPqkQA3QqSS5KWEbRUHfkVJ/VuirUmQpxXE7UMcVHZaFv1
-	 ApqTXOt2d8OhCAcVIL+rWlyQKRRd7PhD1JU/yo2oZw/MgvHlYlXdiKCPHrN6RJ8k8hJrl
-	 Dr9tBFEdAROhGQHfwnqmfmwRfoFeUnaO5ukmlYDiTOhb0MgMucIeN8IT2sSA/iLwcFrsK
-	 AOUZPxbX7lGRvuQxWUI/BaV/c7UPrJ4QRHCtD5XNm1D6bh0ETrGp26a89ft+FpbGvyw==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=oKixK7Jwu6TCrx7SV2g9n1KdVg0f5barw8E7pwYTzBI=;
+	b=z8shGvl6/7/6ewX27K7nZNGmpphwRHMu7MOY7TTE1ZTdkRlEt4UIj0IIuxilZ/rYKPiC
+	 R5iYqtmBG1tcut1dldFJLgPI1K+ny1X6QSd9+OpQVI+yI7S+MTTrevHlcxHXN/tfWcQVA
+	 6xMfgiDwTlXsZXAaQOwsfKMxb6AMd3impUvLEqtLZu66LEkL6kyJyEdKnDRA6jNOrR9sA
+	 Apk8G0Val8vYuW/4CiYfvUCXjrkmGkI01fK7FvGSp16aw59x2m/U6j18T9fnO/s3UYQh4
+	 j1Qkm/VTPJnRvhzL7NkinVs1FPDoSdDTvCoBaqSsIw6mgW7Ej2kIdF5pKjWPmvWVeEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cloudflare.com;
 	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=Sjhac5WE;
-	arc=none smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=QaraZEkx;
+	arc=none smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E854606A325
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:57:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E854606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C9B606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:57:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7C9B606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=Sjhac5WE
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b47c1a3c74so1927663a12.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:57:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=QaraZEkx
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6ae305e3bd9so2609123a12.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:57:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794283040; x=1794887840; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eceI8dL07kv9yfwsc+DTSqIVxIuF3lFqQT3hh7B4xzA=;
-        b=Sjhac5WEpLMCRdzSW227ZB0OGfUzyJQ+60RcTN/gXuPK3juyGLV2WRUal9Bd3hSPBk
-         6Uzhd+Xr0DGNQFarvdrHtHyK2F+vDZARjeCc2R2NHeWmWLeA8EzDQO11az8jAzjgu6iJ
-         0ogHzqmzPWnJ2xNTste74JJxgrQ0le2++J3gwoFyD3BRNdb3IUGb6dd3N8tdM3GS4+SH
-         JIAdaAgmFU0oBWiwIszafWVzI7+Ijj/qPraflFBY8JhoAYZLdqVLQGI+F3bm5PhrAGio
-         dusDcN5L9YZ65U4n2MK38Y2NIBxfSlPTFjotQHiccK/K/8/kiT0OrwQyl50knQF5U4Fb
-         QZbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794283040; x=1794887840;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=cloudflare.com; s=google09082023; t=1794283043; x=1794887843; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eceI8dL07kv9yfwsc+DTSqIVxIuF3lFqQT3hh7B4xzA=;
-        b=VUs02sodFwJ3VOFQkCY2wYMacDBJmPZk/NdN7bob5YhhgbCEi/x4XrSbklZiZVGa5e
-         JhjA7BDUQcGvSQT18mur215O1zoCYaHVZVzbT4+nDUC+O04yfcbRUZ2M7ifiH3LCsZWU
-         EqHGQhomNf7goGkH81mWbmnTVmoGFXmWcf39wntLtqmJR9B39mJaxvtQGOkL31mWHI9h
-         MJMPoqe224mwPGSGj4yEgOgzO4Vhpqvt5641E6pfpKUN1vggmo9f9WT8EWNwDs+F87NL
-         AcjDJPPOxrUbjhHmnOnplcbXW49rFzjuj6csrMTJyjToNz0FhjbxUI16fkcLfouEMJik
-         UHgA==
-X-Forwarded-Encrypted: i=1; AL+hErEWgzyQ4D90hn3yJDd9bSrDSY81m2HGN9yCONY7v+QniHqs08iX0voNofWnwYkfeTfEeUMbbaw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+LzJNdId4RCugO5SENvvPJYLcdr8nYcMiTcjGdHtbs7ulblwUb
-	fMrWKC38U8S1q7WyALCugdYmec/sk7l3qF81zI93vehFXB03SZVx5ykUVWKbKvgVwMA=
-X-Gm-Gg: AYBFou2cO4wQdC11pBJtrB/pEyuShywVt3MEoOYtLyrrFFwILLZ/uy7j4FBRCKm3tmU
-	Z3nIgmVwy+WwCx/yxONshduEtRnd475skrPkQlLuxhPJo2NfMxJ4KP+KuxoLGdILW93GF6WChvy
-	ulIaibcijz51BAVvpYx8FZG0HQ0uqQUzh+89zgGsaZv1c5eCfPV6ZeDVLwgW4W1C6HTO1JXFkAj
-	bgsbzFT12Kv8zZEMssn8hkdnqCJTTXCcyfnc5CogoIyWVhSRtr6NkSgOzgEBoZr/0WG473j/cmq
-	T8QiIOK24zvZn+lRJRkHt8VIzwP5YMlszh68j865MHeMxS6Zyw/VGAnNxVENn6ZAybaO0XI0j1f
-	pB9gUo+0rKMkNt1XWwf5eUTKLkxXEuDX2Hm68fiJ6CXeSCee5ONlivKEvmP3dMRXa/BVO/Z0x9p
-	ilHZmWQcS33SZeXlej9wR7yPQcEITUFwn+NrIxW9Q13hwfXn0yysp/Xkt6t3OSkkZpwK2VBTMKo
-	bYbHygoRgqZg9Uod/OoFD4gD8v7ob6656S3Eir2ae5OGd/zxP8D/3PPfr7UJQCJD/F5746Vqvle
-	HmaQowATP6EQP9YI9wnLxtHYD/dMXFSc/kpA+J+zZ1Rh3jgNoG5Ltv6VCr7/YFNx
-X-Received: by 2002:a05:6402:205b:b0:6b7:1d62:3916 with SMTP id 4fb4d7f45d1cf-6b755626b9dmr778195a12.0.1794283039727;
-        Mon, 09 Nov 2026 19:57:19 -0800 (PST)
+        bh=oKixK7Jwu6TCrx7SV2g9n1KdVg0f5barw8E7pwYTzBI=;
+        b=QaraZEkxayhccY6b502Tx2lOCXD6td300StkCrEzkQTRPruXRrO8lL0XZm1bNWe4g6
+         R1MKBfce5GYhWuTGwI8vZXMp1e1hXvUinF3fwjoXYsNfDuiI+adZ/cMFC6pYqxf9rrfz
+         F5zPy/psKAn8RLKWFcJH+RLcXRuk/neSHRXomMDf57JqLmqyUO3Af+r40vbZyDcUztta
+         FAJvg7+4AmxnWnEXvliVBm/vVRScv/pYvz5nctuvXgZ0y1zg9zdsp4JdevTT31gCsTjH
+         6+W4+WpQsMi9UlYFY59LkFue2R6D+z+pTePNoFWw9iUm55mCFT9xSm0SzYlSzdTrEaMW
+         Ic9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794283043; x=1794887843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oKixK7Jwu6TCrx7SV2g9n1KdVg0f5barw8E7pwYTzBI=;
+        b=y9f6lvbRG5JSOodNO6SkCjEFbDW0CwkXS3ZCNtqE3V520DdpWGYQaf3bN8nVK6v2HK
+         9Wo7YM7C/1SY8EjA19gXWUnpRuLL37F9Q/ec5F+KbKncbFm/AZMwEncWy2lba67w/hnA
+         LFBvmwsJZrhg2hm5lmolSJyJH70lgsXqrNIQSOyJQYy2IjjVng9DQMjIRxmFfsyL0s4W
+         v3sHjC72CKmFHfAvdSsKe6dG0DV2JQ3LtKpZtHoJv8cvtKilUJweRggL63jjcr7sZPVF
+         3Z+7jL65Xm5qTLzw3wBPJ41oGS0CT+YVJgzjFmEhZlqDRADoDciYx+uKh1tSvfnPXSmD
+         s8cw==
+X-Forwarded-Encrypted: i=1; AL+hErE+rB4Hpxj7dJexgMVzYcL5/pBMtayCtZQX2GnL5/2Yjb8Fw/HJdyYPjxofWdV40eNVUMi2Wyk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+p6mYUMbVDCesykYKf1h30/7enDUADOqTqP06nNlY3EN0obPmR
+	86siVXOheHiqlAMRRFjygO8WL1ssf4FrS5BtmENEwEwd8P09RMTyot3h5VjEP97smwI=
+X-Gm-Gg: AYBFou2fIZmsehC88bvtDRdAinQBAmfkwyuAb4z5K3NKlL/ePo+kwzBOOqYi36vUJCJ
+	lA9VMqQ/8RFTkvWrM2cLyAQXh8CK3QrCt5lLqU+ElaS65jDawt4w5ljB5s05SWfogt0dggzaACm
+	pOTYLAb+PjkQloQoKp9ca8W/pjcHqeEDpuHv1I9BbUj0AT2PePDhpOe4PjExe7u6AO25Z7xDKcT
+	eihXd/zT9+C+8jeEFhcZI+rbJ2fK//t4PehMw50Qm8i6wDyEQgy+JYh6HsxiUVQC7N18eYBwO+7
+	+Mbe00XELAyw3M7ZZD/+LWS4Dxzkd8nyrKCxw+8E2T6ZTzdl8MQryelOa7Os1Otg9hkbEYh1Rxr
+	OSrfhKssORGhjqnCdvyv7orkrhWmGtBAAKE0kCFDGfn6qEjrTYMJR/JOU/2k6YzOhiMHClmWtJw
+	EzJv3Pede6oe0U9Fi7r4L/oX5Wl+imOQGNSPMyaWIApZbb9S3uy/uNQ1va0vVHbF1MdrcYkgJ1v
+	9lkHzBCpuuw7LCN9k3DmFd09Cj9B29/ydgRFYldDQyvXdSTFv4O/45cGZUqnLzcdqP8GMfA6sTw
+	YkhJpW0ptVBuMtIPUmLrhLmdzw8JwgrCvpVM6L8/fQy+ZOZxSZfzVD2Miq94m4M=
+X-Received: by 2002:a05:6402:a6c7:10b0:6ac:73f8:2e4f with SMTP id 4fb4d7f45d1cf-6b756aeaf80mr752992a12.29.1794283043237;
+        Mon, 09 Nov 2026 19:57:23 -0800 (PST)
 Received: from L9JK9NPFH9.lan ([104.28.20.56])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7579047c9sm548801a12.33.2026.11.09.19.57.16
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7579047c9sm548801a12.33.2026.11.09.19.57.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 19:57:18 -0800 (PST)
+        Mon, 09 Nov 2026 19:57:21 -0800 (PST)
 From: Tianyi Gao <tianyi@cloudflare.com>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
@@ -129,10 +130,12 @@ Cc: John Fastabend <john.fastabend@gmail.com>,
 	llvm@lists.linux.dev,
 	kernel-team@cloudflare.com,
 	Tianyi Gao <tianyi@cloudflare.com>
-Subject: [PATCH bpf-next 00/15] xdp: add SKB core extensions to keep RX metadata until skb creation
-Date: Tue, 10 Nov 2026 03:56:58 +0000
-Message-ID: <cover.1794281983.git.tianyi@cloudflare.com>
+Subject: [PATCH bpf-next 01/15] xdp: reserve an skb core extension area after the xdp_frame
+Date: Tue, 10 Nov 2026 03:56:59 +0000
+Message-ID: <115997f55d63b507ce54fbe9e22900b59016f3c3.1794281983.git.tianyi@cloudflare.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <cover.1794281983.git.tianyi@cloudflare.com>
+References: <cover.1794281983.git.tianyi@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -144,172 +147,168 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An skb gets its RX hash, VLAN tag and checksum status from the RX
-descriptor, which describes the packet before the XDP program ran.
+Reserve the skb core extension area in the headroom, right after the
+xdp_frame. An XDP program stores RX metadata there for the skb that is
+built later.
 
-Without this series:
+The area begins with a header, struct xdp_skb_ext. It records the offset
+of each entry and the end of the last entry, in 4-byte units.
+bpf_xdp_adjust_head(), bpf_xdp_adjust_meta() and bpf_xdp_pull_data() use
+xdp_skb_ext_end() as their lower bound, so packet data and metadata
+cannot overwrite the entries.
 
-- On XDP_PASS, the values are stale. After the program strips a UDP
-  tunnel header, the stack applies the outer CHECKSUM_UNNECESSARY to the
-  inner packet [1]. If the outer UDP checksum is 0, a packet with a bad
-  inner checksum reaches the socket.
-- On XDP_REDIRECT, the values are lost. The skb that cpumap or veth
-  builds from the xdp_frame has no RX hash and no VLAN tag, and its
-  checksum status is CHECKSUM_NONE.
+The XDP_FLAGS_HAS_SKB_EXT flag indicates that the header is valid. Most
+drivers reuse the xdp_buff between packets, so xdp_prepare_buff() clears
+it. With BPF_F_TEST_XDP_LIVE_FRAMES, reset_ctx() restores the flags
+before each run, and ctx_was_changed() compares them.
 
-In one use case, an XDP program redirects packets into a veth device.
-The checksum status is lost, so GRO verifies every checksum in software.
-With one TCP flow, this costs 34% of the receiving CPU.
+Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/all/1d5521eb-84fc-4417-a3f5-6366694d160a@kernel.org/
+Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
+---
+ include/net/xdp.h  | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ net/bpf/test_run.c |  4 +++-
+ net/core/filter.c  |  8 +++-----
+ 3 files changed, 51 insertions(+), 6 deletions(-)
 
-Another use case [2] is load balancing IPsec tunnel traffic with cpumap.
-Without the RX hash, GRO on cpumap puts all flows into the same bucket.
-In a cpumap test with 16 TCP flows and no IPsec, the throughput is
-17.6 Gbit/s instead of 23.4.
-
-This series introduces SKB core extensions for XDP. It reserves an skb
-core extension area in the headroom, right after the space for struct
-xdp_frame. An XDP program stores RX metadata in the area with kfuncs,
-and the kernel sets the skb fields from it. This design was initially
-proposed in [3].
-
-The layout of the area follows skb extensions (struct skb_ext). A small
-header gives the offset of each entry. An entry takes headroom only when
-the program stores it, so the area does not grow with each new type of
-RX metadata, unlike [4]. Unlike skb_ext, the area needs no allocation.
-
-This series supports three types of RX metadata. Each type has a store
-kfunc, and bpf_xdp_skb_ext_del() deletes an entry:
-
-- The RX hash and its type: bpf_xdp_skb_ext_store_rx_hash().
-- The VLAN tag and its protocol: bpf_xdp_skb_ext_store_rx_vlan().
-- The checksum status: bpf_xdp_skb_ext_store_rx_csum(). Only
-  XDP_CHECKSUM_NONE, or XDP_CHECKSUM_UNNECESSARY with a csum_level up to
-  SKB_MAX_CSUM_LEVEL, are allowed [5][6].
-
-The kernel sets the skb fields from the area:
-
-- After XDP_REDIRECT, in __xdp_build_skb_from_frame().
-- On XDP_PASS, in the NIC driver. A driver that does this sets the new
-  XDP feature skb-ext-pass. On other native XDP drivers, the kernel
-  warns once when the program returns XDP_PASS with stored values, and
-  ignores the area. This series adds the support to ice.
-
-The existing XDP RX metadata kfuncs are bpf_xdp_metadata_rx_*(). Only
-a device-bound program can call them. Programs on cpumap and devmap are
-not device-bound, so they cannot call them. Relaxing this check would
-change their semantics. So this series adds three load kfuncs,
-bpf_xdp_skb_ext_load_rx_*(). They read the stored values.
-
-bpf_xdp_adjust_head(), bpf_xdp_adjust_meta() and bpf_xdp_pull_data() do
-not move the packet or the metadata into the area. In this series, the
-area takes at most 20 bytes of headroom. With the hardware RX timestamp,
-the RX queue index and CHECKSUM_COMPLETE, it would take up to 40 bytes.
-
-Lorenzo's RX checksum kfunc series v5 [7] also defines enum
-xdp_checksum. The series that is merged second drops its copy.
-
-Performance:
-
-We measured on ice (E810, 25 Gbit/s) with bpf-next 0fb18ce8a2e9, patches
-1-3 of [7] and this series. In the RX metadata column, the XDP program
-reads a value with bpf_xdp_metadata_rx_*() and stores it. The veth test
-stores the checksum status, and the cpumap test stores the RX hash. The
-kernel then sets the value on the skb. Baseline does not store it. Each
-value is the median of 5 rounds:
-
-test                  metric          baseline     RX metadata
-veth, 1 TCP flow      RX CPU busy     100%         66% (-34%)
-veth, 1 TCP flow      RX cycles/pkt   2027         1343 (-34%)
-cpumap, 16 TCP flows  throughput      17.6 Gbit/s  23.4 (+33%)
-cpumap, 16 TCP flows  pkts/GRO skb    3.4          7.5 (+122%)
-
-Both veth columns reach line rate, so the gain is in CPU time. A store
-kfunc takes 2.9 to 4.9 ns. Details are in [8].
-
-Not in this series:
-
-- XDP_PASS support in mlx5 and bnxt. To align with Lorenzo's series [7],
-  we plan to add xmo_rx_checksum and XDP_PASS support to them together,
-  one driver at a time.
-- AF_XDP zero-copy. User space can write the headroom of zero-copy
-  buffers, so the store kfuncs return -EOPNOTSUPP there.
-- Packets that enter XDP as an skb and leave it as an skb. This happens
-  in generic XDP, and on XDP_PASS in veth when its peer sends it an skb.
-  The series only sets the stored values on an skb that the kernel
-  builds from an xdp_buff or an xdp_frame.
-- Stored entries on frames that dpaa and dpaa2 redirect. These drivers
-  move data_hard_start before XDP_REDIRECT, so patch 2 clears the flag
-  of the area.
-
-[1] https://lore.kernel.org/all/20260227153231.78d16b69@kernel.org/
-[2] https://lore.kernel.org/all/ca38f2ed-999f-4ce1-8035-8ee9247f27f2@kernel.org/
-[3] https://lore.kernel.org/all/1d5521eb-84fc-4417-a3f5-6366694d160a@kernel.org/
-[4] https://lore.kernel.org/all/175146824674.1421237.18351246421763677468.stgit@firesoul/
-[5] https://lore.kernel.org/all/20260722113525.34092660@kernel.org/
-[6] https://lore.kernel.org/all/20260721183256.6f49d6e1@kernel.org/
-[7] https://lore.kernel.org/all/20260715-bpf-xdp-meta-rxcksum-v5-0-623d5c0d0ab7@kernel.org/
-[8] https://github.com/tgao-cf/skb-core-extensions-bench
-
-Tianyi Gao (15):
-  xdp: reserve an skb core extension area after the xdp_frame
-  net: dpaa, dpaa2: clear the skb core extension flag
-  xdp: add kfuncs to store RX hash and VLAN tag
-  xdp: add a kfunc to delete skb core extension entries
-  xdp: add a kfunc to store the RX checksum status
-  selftests/bpf: Test the skb core extension kfuncs
-  xdp: set skb RX metadata from the skb core extension area of xdp_frame
-  selftests/bpf: Test RX metadata on skbs built from xdp_frames
-  xdp: add the skb-ext-pass XDP feature and warn without it
-  xdp: warn on XDP_PASS with stored values when XDP runs on an skb
-  ice: set skb RX metadata from the skb core extension area of xdp_buff
-  selftests: drv-net: xdp: test the stored RX metadata on XDP_PASS
-  xdp: add kfuncs to load the stored RX metadata
-  selftests/bpf: Test the load kfuncs on cpumap and veth
-  docs: net: document the skb core extension area
-
- Documentation/netlink/specs/netdev.yaml       |   5 +
- Documentation/networking/xdp-rx-metadata.rst  | 127 +++++-
- .../net/ethernet/freescale/dpaa/dpaa_eth.c    |   2 +
- .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  |   2 +
- drivers/net/ethernet/intel/ice/ice_main.c     |   3 +-
- drivers/net/ethernet/intel/ice/ice_sf_eth.c   |   3 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c     |   4 +-
- drivers/net/ethernet/intel/ice/ice_txrx_lib.c |   7 +-
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h |   3 +-
- drivers/net/ethernet/intel/ice/ice_xsk.c      |   2 +-
- drivers/net/veth.c                            |   5 +-
- include/net/xdp.h                             |  74 +++
- include/uapi/linux/netdev.h                   |   6 +-
- net/bpf/test_run.c                            |   4 +-
- net/core/dev.c                                |   2 +
- net/core/filter.c                             |   8 +-
- net/core/xdp.c                                | 428 +++++++++++++++++-
- tools/include/uapi/linux/netdev.h             |   6 +-
- .../selftests/bpf/prog_tests/test_xsk.c       |  25 +
- .../selftests/bpf/prog_tests/test_xsk.h       |   2 +
- .../selftests/bpf/prog_tests/xdp_bonding.c    |   8 +-
- .../bpf/prog_tests/xdp_do_redirect.c          |   8 +-
- .../selftests/bpf/prog_tests/xdp_pull_data.c  |  12 +-
- .../selftests/bpf/prog_tests/xdp_skb_ext.c    | 375 +++++++++++++++
- .../selftests/bpf/progs/test_xdp_pull_data.c  |   7 +
- .../selftests/bpf/progs/test_xdp_skb_ext.c    | 173 +++++++
- .../selftests/bpf/progs/xdp_skb_ext_failure.c |  16 +
- .../selftests/bpf/progs/xdp_skb_ext_success.c | 245 ++++++++++
- .../selftests/bpf/progs/xsk_xdp_progs.c       |  13 +
- tools/testing/selftests/bpf/xdp_skb_ext.h     |  53 +++
- .../drivers/net/hw/lib/py/__init__.py         |   3 +-
- .../selftests/drivers/net/hw/xdp_metadata.py  | 118 ++++-
- .../drivers/net/hw/xdp_skb_ext.bpf.c          | 166 +++++++
- 33 files changed, 1873 insertions(+), 42 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/xdp_skb_ext.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_xdp_skb_ext.c
- create mode 100644 tools/testing/selftests/bpf/progs/xdp_skb_ext_failure.c
- create mode 100644 tools/testing/selftests/bpf/progs/xdp_skb_ext_success.c
- create mode 100644 tools/testing/selftests/bpf/xdp_skb_ext.h
- create mode 100644 tools/testing/selftests/drivers/net/hw/xdp_skb_ext.bpf.c
-
-
-base-commit: 0fb18ce8a2e9de830433923cf65838933d615359
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index 07231adfb5f8..c888353425d4 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -81,6 +81,9 @@ enum xdp_buff_flags {
+ 	 * XDP program is not attached.
+ 	 */
+ 	XDP_FLAGS_FRAGS_UNREADABLE	= BIT(2),
++	XDP_FLAGS_HAS_SKB_EXT		= BIT(3), /* skb core extension header
++						   * is valid
++						   */
+ };
+ 
+ struct xdp_buff {
+@@ -146,6 +149,16 @@ static __always_inline void xdp_buff_clear_frag_pfmemalloc(struct xdp_buff *xdp)
+ 	xdp->flags &= ~XDP_FLAGS_FRAGS_PF_MEMALLOC;
+ }
+ 
++static __always_inline bool xdp_buff_has_skb_ext(const struct xdp_buff *xdp)
++{
++	return !!(xdp->flags & XDP_FLAGS_HAS_SKB_EXT);
++}
++
++static __always_inline void xdp_buff_clear_skb_ext_flag(struct xdp_buff *xdp)
++{
++	xdp->flags &= ~XDP_FLAGS_HAS_SKB_EXT;
++}
++
+ static __always_inline void
+ xdp_init_buff(struct xdp_buff *xdp, u32 frame_sz, struct xdp_rxq_info *rxq)
+ {
+@@ -174,6 +187,7 @@ xdp_prepare_buff(struct xdp_buff *xdp, unsigned char *hard_start,
+ 	xdp->data = data;
+ 	xdp->data_end = data + data_len;
+ 	xdp->data_meta = meta_valid ? data : data + 1;
++	xdp_buff_clear_skb_ext_flag(xdp);
+ }
+ 
+ /* Reserve memory area at end-of data area.
+@@ -450,6 +464,37 @@ struct xdp_frame *xdp_convert_buff_to_frame(struct xdp_buff *xdp)
+ 	return xdp_frame;
+ }
+ 
++/* skb core extensions: RX metadata that an XDP program stores in the
++ * headroom right after the xdp_frame, for the skb that is built later.
++ */
++enum xdp_skb_ext_id {
++	XDP_SKB_EXT_HASH,
++	XDP_SKB_EXT_VLAN,
++	XDP_SKB_EXT_CSUM,
++	XDP_SKB_EXT_NUM,
++};
++
++#define XDP_SKB_EXT_ALIGN	4
++
++struct xdp_skb_ext {
++	u8 offset[XDP_SKB_EXT_NUM];	/* in chunks of 4 bytes */
++	u8 chunks;			/* same */
++};
++
++static __always_inline struct xdp_skb_ext *xdp_skb_ext(struct xdp_frame *frame)
++{
++	return (void *)(frame + 1);
++}
++
++static __always_inline void *xdp_skb_ext_end(const struct xdp_buff *xdp)
++{
++	struct xdp_skb_ext *ext = xdp_skb_ext(xdp->data_hard_start);
++
++	if (!xdp_buff_has_skb_ext(xdp))
++		return ext;
++	return (void *)ext + ext->chunks * XDP_SKB_EXT_ALIGN;
++}
++
+ void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+ 		  bool napi_direct, struct xdp_buff *xdp);
+ void xdp_return_frame(struct xdp_frame *xdpf);
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index d6c9dc62182e..f25581851339 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -223,7 +223,8 @@ static bool ctx_was_changed(struct xdp_page_head *head)
+ {
+ 	return head->orig_ctx.data != head->ctx.data ||
+ 		head->orig_ctx.data_meta != head->ctx.data_meta ||
+-		head->orig_ctx.data_end != head->ctx.data_end;
++		head->orig_ctx.data_end != head->ctx.data_end ||
++		head->orig_ctx.flags != head->ctx.flags;
+ }
+ 
+ static void reset_ctx(struct xdp_page_head *head)
+@@ -234,6 +235,7 @@ static void reset_ctx(struct xdp_page_head *head)
+ 	head->ctx.data = head->orig_ctx.data;
+ 	head->ctx.data_meta = head->orig_ctx.data_meta;
+ 	head->ctx.data_end = head->orig_ctx.data_end;
++	head->ctx.flags = head->orig_ctx.flags;
+ 	xdp_update_frame_from_buff(&head->ctx, head->frame);
+ 	head->frame->mem_type = head->orig_ctx.rxq->mem.type;
+ }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9245009d9f1e..4f6698f75d90 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4243,9 +4243,8 @@ static unsigned long xdp_get_metalen(const struct xdp_buff *xdp)
+ 
+ BPF_CALL_2(bpf_xdp_adjust_head, struct xdp_buff *, xdp, int, offset)
+ {
+-	void *xdp_frame_end = xdp->data_hard_start + sizeof(struct xdp_frame);
+ 	unsigned long metalen = xdp_get_metalen(xdp);
+-	void *data_start = xdp_frame_end + metalen;
++	void *data_start = xdp_skb_ext_end(xdp) + metalen;
+ 	void *data = xdp->data + offset;
+ 
+ 	if (unlikely(data < data_start ||
+@@ -4547,13 +4546,12 @@ static const struct bpf_func_proto bpf_xdp_adjust_tail_proto = {
+ 
+ BPF_CALL_2(bpf_xdp_adjust_meta, struct xdp_buff *, xdp, int, offset)
+ {
+-	void *xdp_frame_end = xdp->data_hard_start + sizeof(struct xdp_frame);
+ 	void *meta = xdp->data_meta + offset;
+ 	unsigned long metalen = xdp->data - meta;
+ 
+ 	if (xdp_data_meta_unsupported(xdp))
+ 		return -ENOTSUPP;
+-	if (unlikely(meta < xdp_frame_end ||
++	if (unlikely(meta < xdp_skb_ext_end(xdp) ||
+ 		     meta > xdp->data))
+ 		return -EINVAL;
+ 	if (unlikely(xdp_metalen_invalid(metalen)))
+@@ -12794,7 +12792,7 @@ __bpf_kfunc int bpf_xdp_pull_data(struct xdp_md *x, u32 len)
+ 
+ 	start = xdp_data_meta_unsupported(xdp) ? xdp->data : xdp->data_meta;
+ 
+-	headroom = start - xdp->data_hard_start - sizeof(struct xdp_frame);
++	headroom = start - xdp_skb_ext_end(xdp);
+ 	tailroom = data_hard_end - xdp->data_end;
+ 
+ 	delta = len - data_len;
 -- 
 2.56.0
 
