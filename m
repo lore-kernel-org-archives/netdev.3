@@ -1,152 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794300384;
-	b=2ZN1a2LzY9ixkH7mYaOsIenXV6Wk0oNMAIvIUkFC9Vpa8/Y+NkTht1RWXYVOSaTDRLRR
-	 qlS5tH8b+7ciIVwxG5htfuB9l+DqyRaH4ApP/aGC2HRF7xDUaMRuqCpNjyiEGqeUaSxQR
-	 9h3zTkCe5hwVznyfh2ZuIFVf3DjLXv0a3naqAwvTTyRPfKswbt0IPJp0+srlztPCKsIIZ
-	 HANGEdzM/PHXWSXjYnMQPahaSv1GqHQmi4O9MSX0uMEmGRduMJkGcy6zZxQWInMBpNbvz
-	 NrGHJAR7YObj6IoLQmfYNXKZpNuhwdYdGy0HMKa+bC+4tuU05xzR2xi6B3QTLEJ/k6Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794300384;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
-	b=GaUccOK/S4q9PUaVk7X98GmPnocDHmvmUz4y2fI4LFRS5oFf1JKKwlhkrW0IxlQv21rQ
-	 6XAQGW6qxEz0W3Tdnn6PDTkE3FRLkSqXaZtrab7MuRCDFEpKiiu4qiBwNv9e0i99CdlbF
-	 r9l/lqSNd1BTlBIL4WhO5aDpixoEaz/uK9PWBp3rx/m5CHqHB/2KgvKWzaQleftcIt2mZ
-	 3BZR0HdrcQoIMl58puHwUjc98r469znfOkW3kvMKmqFZ2RwO+aPMjbzK9+vjHCEAIn3Xf
-	 h7Ystsi/xRypviofp0Ts/kJr/knthwxDRmZ1iL9pQAyQtsm1yi6+p61g5XgmfcAfA6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.53
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013053.outbound.protection.outlook.com [52.101.83.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.225
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794300914;
+	b=uLHiosOfb40FJGsHPwGs3hNWp2Jyfsd1G2Inbxv1CalKCVNwR+d1jtAU37U32qMhKmdV
+	 RMUYt0AmRKAF/Iyp1WgGCAPWTdaPXr5H19NPfuD3lVxU40NcYSiK/tXAs5iqBQXghWP3d
+	 cd93NK3fl8C7Pb3ATH8Ap6OcuvEU0Xa1cNDpDakiHkphI78xpWIBSOcRKekC4YD3EPWqg
+	 PauFG2sE5AJWoXNTB7v2mS7l2kx5nyJ/VTJVnawb7dxtCWxPrIb/dNVV+0d0uTMHjbeeS
+	 SwBqCsZbu6VmyJdAkw428a5nh+ZHumq0/VEOX569JZu7afoCz0re5YT8ajHGt+q90oQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794300914;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Ltnrl5vOydYNrkG1W6BlZzeak+z3Krfn2QWz7/Z+RyM=;
+	b=SysB/q1Dz/w3s+CHawMtomQ/0Bmv5mM4IUS9IOLg6HDWWxywV7MQbl+seZyF9DvwfDdJ
+	 35m0+KAFZ2qE0YZrXkid0/eG+BuczexY2O4G36wzHmXKQ8tK2//PBt0Fvrv73M+P1Sirt
+	 nZSQlJlS3++cRogUgZom1A+/RVaJ6N2Jl+ORDiPNGxu40YpctQ6vqEABUsDpeXF9N0GCm
+	 T8EUVtQBHpij87qXLtzY1ykU4QkhxOFdUmrWiETYpOaV5LjRybG4JHAJ8Y/aqMwoQjMcC
+	 k526p4A5L8jhAOzixdD/utmfPx1+RI3DOQApTxI8PUCHr8rjwEUuRsZ3WPIMa2K7ggg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6Uzr5y8;
+	arc=none smtp.remote-ip=91.218.175.225
+Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EB1606A321;
-	Tue, 10 Nov 2026 08:46:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28EB1606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE46606A336
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:55:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FE46606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g7QtENwmK6mU50nvTRHj+5gepYI7nu2deLB5LCONvt6UNIT4WZJOm46wcYmTVz5n0ochCu0OuTARdi+tb6S3/lq7XhnF0lvqgf6obcOghtvHHXNrhLDWLZP1fHlarZlfpkF/+xeK4uvP3dwJQoEgniMq1AVl93Jh6Ei6c/Vk+fFVhRLAZz+gvKRWAt6ZK7N4aHPeEZN6c21vrzeqRrpqWIGQ6CEbF61j+lFwc7Ok0bMy+BApQ7FeWNLa6KDk6UZW9UmiEmjdLk3aIdxM/elJ7Mxvu/Sa37nrLxYTWxGWSnHU1bntXCQBkDz99HJpCeE8GadFAknpV9uKrerphpabvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
- b=NX3AhUm3T+8a+1/b8HDRuRxrNlKy7M7wIPUKAro9ZLHH3vZ2dHGLe6+fgSTwQyYi72j1ovcNxA2es4E+zsmY24i555oW/W6U/DAJDbrSXVj7ASWD+L+fwrlLFHrWJEWg8KTVcDeqAep7No04PVT8hTGr5vxZdnbRkIpet6uvahB+VJK7ozlb79zcQI0qIcLZkMR0YprIby2qCl8ceAZ4yfRI6G2xL8wbhSsqnMk0SDGptivfGkiUaVdSd4L3x8ghASdDKIEy/q4lJzyNqarzRbwEifLm7EeoAbJUy33EjA6XjcjDjM4y5N8ODe0Be8NW4ZnzySbJNJoRALcoCJdNIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
- b=WMKlusXWuXdZy0XnYg56h+HwWS42G98lAlYan7Z0p+EbyFoKm31WibED9jkSYc3pkcHn0nR3WNAv7TfS6hKtBO/1yDUPOEDRg8BYfiuK771vMcPtIkGCv9tNwDeJsJ7g/NMnWRYZ3TZoJB5OiZMmX5yj0brEekA4BEbQwUQjAH//yglYHmDQZ2UiC7GmhHekyypcT+JbbXb57VK/pJzqBBJPxtnU9iDFBxyZ8blAdagz7Gn62rVQDs7E0Xo9mP9JJX1iSk3mGLdbSzlHiwl100ceVe0r5hGPWZZwAAhDfdNi50svNYtlVO8qNF68JYaKajtZ2Lk7ELT8iLkyKE6x0Q==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by AS8PR04MB8851.eurprd04.prod.outlook.com (2603:10a6:20b:42e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Tue, 10 Nov
- 2026 08:46:20 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%7]) with mapi id 15.21.0592.012; Tue, 10 Nov 2026
- 08:46:20 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
- switch
-Thread-Topic: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
- switch
-Thread-Index: AQHdazfZzWTjAGf+JkC6X61TwLJlT7cnCJ4A
-Date: Tue, 10 Nov 2026 08:46:20 +0000
-Message-ID:
- <AS4PR04MB9338322C1A3ADEDCE79D9F3188722@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-11-10T08:43:15.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|AS8PR04MB8851:EE_
-x-ms-office365-filtering-correlation-id: d68afd5a-22e6-4c47-618d-08df3f071775
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|376014|366016|7416014|23010399003|1800799024|6133799003|10067099003|18002099003|22082099003|38070700021|921020|261021121427099003|56012099006|261022105027099003|261026121527099003|261026140227099003|261028144727099003|261009223027099003|261102130727099003|11063799006|261102123227099003;
-x-microsoft-antispam-message-info:
- +AAeBiCIofBwdhYirJIyYa6b33qIj5EbmDwmjkdWcjT6Na0wLGAJ7S1xWJ4McYEuLaee56RcfaIAi5Tv50PoL4/sZSM7iWauHc2hGYiKWWBOH1ArUSqiv+s3opGDDXdBE4gkhDQffevvAJNHJsHhRtXyS4FojC9t61N/xOfp4p6QYmWBnLETG9zB5yaRvr7+7OVzREQ5HJmw8hpoAagBevdO89dMGgqZFcha/j8b5DoF5OOnoMgT7/OqeCwk+WZlTlEG7OMEqHxdnXH52aMNNX3Y6COgw90CfHgMJt9Shi+G+AvNDW27GmqOz+8QYzc2bUFTJY4Fer4O2YBULndrjMQQgWhZc3Dgkokx88tQ+KFEzse/K82ApYWlMlXIHU4j5tiopRZy32lEBTYxi7HuqqilmIxCqmYZSZuZBvYzZd4E8xxNNygj+Em7FqBvZTqWYIPn1pACBif871GviZf72mZ++GGWVfuSNypP9fSX9yDiCnxebdF77BZ44O/N2m3ajDskbtRacxTD1uRlIq7sfV/gi9jZH06Ux4ben4cMLciOlt7w8gUUOsUUSvzNBzhFo1Qvp9LpLW0wHxRuctZmpjzfyeQe7hD7NdX0p0Au7lsjRbqeXEtW4jv19SI4qjHEm3vv+GObksZ7kxdQaWo74ieVrD8yMxwcjpvuizMqCWzN8EGNtXbxFxHkrZ7GoYzP
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(7416014)(23010399003)(1800799024)(6133799003)(10067099003)(18002099003)(22082099003)(38070700021)(921020)(261021121427099003)(56012099006)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261009223027099003)(261102130727099003)(11063799006)(261102123227099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4bDSI1tALlioVnLzxk4eD0fvnbIB5t7BMMPrptxwOEV2U6susj0nOG5IG/D3?=
- =?us-ascii?Q?ZS+ADcuU7/RHQ6QSPnugxpoixRp6A8U7a0DUEnQ18knKaFHVARRHPBR67WlV?=
- =?us-ascii?Q?nJilwDyewhx8kbf/GaQV6v9txMrIjCmDsH0NHbwTGQ/27C0jltw/QupkJl7Y?=
- =?us-ascii?Q?vZw/O7QdTulRP9pCBIozackzSP6WBkmkqOGDFIPpN6FAHNqG7A9r/6mKchlj?=
- =?us-ascii?Q?hoWuxlFVSexf5WGUo5In8g8Z79EJG8J2pGxrpWaumfGqrA9c3f4erFK/QEyW?=
- =?us-ascii?Q?ROMb+rSMrCyDgn2Nhl6ao5uxnQwMpXK75E/8G5fDmRUhgEqqWttc0AZJvQRx?=
- =?us-ascii?Q?rfChvSOvFDTPfhmRDGUg2gCNbAK6Vmn9p6hn8PfXJTNR/MKkjuiNMVJgjC97?=
- =?us-ascii?Q?QG8RuPcn3iGUcMWVEMrxfzAT+sbJulvN7U2r/vv9e/d8tXkhYch5eKn4W6O7?=
- =?us-ascii?Q?qAzHyyMu/T8+Wvw29RxXZ6M5FIt+6Oq6PZzLXDlLfg/akzy6ZChqwfUILwZL?=
- =?us-ascii?Q?+3mAST0mt9quSMavadrzQ2IcP5qZAqX0sbW18y65qetKlHi+ChIQxe4T9BW9?=
- =?us-ascii?Q?G1/2i+fsKG6GhlIk2pi45HrCNO3f0noz6+TTN2Q4E9rSaUGtzJdbOPn7Rx3B?=
- =?us-ascii?Q?CxEGawtNykX0HrC7t4iY1snkuxkNLSf+WMH4+crmBq1EKBZQwlKUoD0Aig7l?=
- =?us-ascii?Q?w6m8gjvqVKx8isW2EJQMcjH4Wk1AXF2ZEK91jvmnlsbsj7odc4PyUITOMMlE?=
- =?us-ascii?Q?L6UAg+163PztdpaSu8B7XdrdjgGx4ERLlniAhJ49DnoPvfDswybf65hd/1uG?=
- =?us-ascii?Q?+nnRjNX8pmNxsnHVHPquRGrSdCGR6texCUVQA/AUOIecuqBR2V6aofVa/RYv?=
- =?us-ascii?Q?CWdD2BcioiZGxTSTKFeNvGZLWZDIvviHCv0xjjKlj4EZ0Mr5NNPn7IBRTTlE?=
- =?us-ascii?Q?87J54PmPzlv6E7OUcltuROvdY5um5UFXRpJIZ9HnziHR1h+w5NYxJ3/s1ftK?=
- =?us-ascii?Q?SkkUudsaue0ZVOUONIHt4ECyUO5nbzrJRz2qwiZq7Svyvf9389nBfSfHQGZH?=
- =?us-ascii?Q?SbkEVDWbkL1FcIqe5SP8VI1gvFhb1SZrzcd5m28MQBK6ChNhcXbbdREh/9sH?=
- =?us-ascii?Q?2KFTzi+1ypPMmAQiEKkOO37F/2SR1XS5YVCaYdBvNER1HnqwcFgWmz3XTTzR?=
- =?us-ascii?Q?PRrwRT5AtFf5Hh36IeAJvvlTSIFq0nyYPZGjg/CG6NUKRpyn7iyBw6KVJuvs?=
- =?us-ascii?Q?LRg5bIqmXTCkEDeSqF/Z1yMXLEsgO+gc642jl9Lr2/unl/KN8xD6+dngJihz?=
- =?us-ascii?Q?NCq+sg1VCw6L8S7DqMtGE8L9RKwyXpMLrNvtxqmatSawTbpL37KTHlvFFyml?=
- =?us-ascii?Q?XTajP+6tQZYKzbNzkL51JfKLSc7HrmcXbBKpMF+Fa51n+JKX5ddiAbsB3PeW?=
- =?us-ascii?Q?jdNd8joQ8TSpjKVcV8xQHWLHu/5Oa6tiW4pHW7+xeTcbQhc2LW/FRVfMxFSZ?=
- =?us-ascii?Q?d/ScKrZLoTVhyYleZv+B7CZoqGNVJ3GOZLi+KVkwtFzbF09yH4TmBgMipwpY?=
- =?us-ascii?Q?ZwR6NsmlvK8KdugIovCwYNRPe6ByS9v/VL5WBDMxJsucbyPNiUx8TKD14lLU?=
- =?us-ascii?Q?Sug+LFoBvGPqt0qzLBem6dFUaKUISQnscU+Dklla5ohx3D8nsxBzrr3fWP+H?=
- =?us-ascii?Q?KcLAnoxVoG/y+4cby53tFbcxVoW720nvKd1Wp9+Fs/ADSaps?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6Uzr5y8
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=IPpB6p5683CzzqjuuxRDVIP/NIBp4A9AE4YYcXHpKx0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794300911; v=1; x=1794905711;
+ b=l6Uzr5y89+SSC5OSkdujKHwXnI5JCVykoDgXJ0Yx2RaGFro6fFRn9z+4OANLNLrNmzlAyIgz
+ /JZ+T3Xowrty7mayD+bQSk0eG6AHLcdTm9UnD0SRUheojhk+2+RJc0Q/7bmr8Vgql9+lKA3d+H4
+ eGjDLitbleUeu8TdioIWoSlU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 3a49c9df13cb8ee4;
+	Tue, 10 Nov 2026 08:55:09 +0000
+X-Mizu-Trace-ID: 3a49c9df13cb8ee4
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 16:54:50 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Gabriel Goller <g.goller@proxmox.com>
+Subject: Re: [PATCH net-next v5 2/2] seg6: skip the route refcount in
+ seg6local IPv4 lookups
+Message-ID: <avLb2q9RfJsxhHHL@fedora>
+References: <20261109-seg6-lookup-noref-v5-0-96dc6a652c7e@gmail.com>
+ <20261109-seg6-lookup-noref-v5-2-96dc6a652c7e@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -156,56 +69,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d68afd5a-22e6-4c47-618d-08df3f071775
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 08:46:20.0362
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tqAGki/DtAjMazJQMph0Oj7YZcpVbdCGYTWKWMLilxvzkbVOnahXTmXrtnuDGRO5C2yqbIBaPOFsQuZbLIA0gA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8851
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109-seg6-lookup-noref-v5-2-96dc6a652c7e@gmail.com>
 
-> This patch set adds PTP timestamping support to the NETC switch, so that
-> the switch ports can be used for IEEE 1588 PTP synchronization.
->
-> The NETC switch has no time registers of its own and instead shares the
-> PTP time of the NETC Timer, which is a separate PCIe function driven by
-> its own driver. The first 3 patches prepare the Timer driver for this
-> role: tidy up its 64-bit register access, drop an ineffective reset, and
-> export netc_timer_get_current_time() so the switch driver can read the
-> current PTP time across the driver boundary in a race-free way.
->
-> The switch redirects PTP frames to the CPU through the ingress port
-> filter table (IPFT). A few patches harden and simplify the existing IPFT
-> and host flood handling first, then enable the ingress port filtering
-> lookup by default so PTP filter rules take effect without extra software
-> tracking.
->
-> On top of that groundwork, the switch driver gains RX timestamping and
-> both flavours of TX timestamping. Timestamps are carried between the
-> hardware and the driver through dedicated switch tags: the ingress and
-> transmit timestamps ride in To_Host tags, and per-frame requests ride in
-> To_Port tags. Two-step TX matches a queued skb clone against the
-> timestamp response echoed back by the hardware. One-step TX defers the
-> Sync frame to a per-port work, where the driver reads a fresh PTP time
-> and writes it into the Sync frame's timestamp field, then programs the
-> single-step register and transmits the frame so the hardware can add the
-> residence time to the correction field on the wire.
->
-> Together these changes let standard user-space PTP stacks drive hardware
-> timestamping on the NETC switch ports.
+On Mon, Nov 09, 2026 at 09:10:15AM +0900, Yuya Kusakabe wrote:
+> ip_route_input() looks the input route up with ip_route_input_noref()
+> and then forces a reference on it, which is dropped again when the
+> packet is transmitted.  End.DX4 and End.DT4 call it and hand the skb
+> to dst_input() within one RCU read-side section: the one of the
+> receive path, or that of the nfnetlink verdict handler for a packet
+> reinjected from NFQUEUE.
+> 
+> Use ip_route_input_noref(), as ip_rcv_finish() does.
+> 
+> Throughput at 0.5% packet loss of 82-byte IPv4-in-IPv6 UDP packets
+> (no SRH), spread by RSS on an ixgbe 82599ES across two 10-core Xeon
+> E5-2650 v3, offered by TRex over 10 runs of 10 s, in Mpps:
+> 
+>   End.DX4
+>   queues  cores                   before   after
+>   1       1                        0.791   0.811  (+2.5%)
+>   10      10 on the NIC's socket   6.118   7.394  (+20.9%)
+>   16      10 + 6 on two sockets    3.305  10.205  (+208.8%)
+> 
+>   End.DT4
+>   queues  cores                   before   after
+>   1       1                        0.481   0.489  (+1.6%)
+>   10      10 on the NIC's socket   4.328   4.588  (+6.0%)
+>   16      10 + 6 on two sockets    3.351   7.153  (+113.5%)
+> 
+> Every CPU takes and drops a reference on the same input route, the
+> one cached on the nexthop.  At 16 queues that cache line bounces
+> between the sockets, and skb_dst_force() and dst_release() together
+> take more than half of the cycles for End.DX4 and over 40% for End.DT4.
+> 
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+> ---
+>  net/ipv6/seg6_local.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 7fbcf590297d..209e31c21e33 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -1096,7 +1096,7 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+>  
+>  	skb_dst_drop(skb);
+>  
+> -	reason = ip_route_input(skb, nhaddr, iph->saddr, 0, skb->dev);
+> +	reason = ip_route_input_noref(skb, nhaddr, iph->saddr, 0, skb->dev);
+>  	if (reason) {
+>  		kfree_skb_reason(skb, reason);
+>  		return -EINVAL;
+> @@ -1322,7 +1322,7 @@ static int input_action_end_dt4(struct sk_buff *skb,
+>  
+>  	iph = ip_hdr(skb);
+>  
+> -	reason = ip_route_input(skb, iph->daddr, iph->saddr, 0, skb->dev);
+> +	reason = ip_route_input_noref(skb, iph->daddr, iph->saddr, 0, skb->dev);
+>  	if (unlikely(reason))
+>  		goto drop;
+>  
+> 
+> -- 
+> 2.50.1
+> 
 
-I saw netdev's Sashiko reported some issues [1], and I think some of them
-should be fixed or improved.
-
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103021024.3121=
-936-1-wei.fang%40oss.nxp.com
-
---
-pw-bot: cr
-
-
-NXP Confidential
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
