@@ -1,73 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794331233;
-	b=j10EeYtMy9scygOgi7EALKKweAdWVgoKhoExang4dDOcrGtqlpkNxQeSazXuSB+M3csC
-	 kIp7pCORODK1BYULx19N5GdvyIaeeSeopJm/tDq4qp1Zzmlip5P0vZkjE7tq2pfc3E9i3
-	 K29nxgvT+WLMl7uk7lsgBNoDX8jI9WtjFFP76a+ckfepf4HnlerJet6kohk60YqAj8hN8
-	 pakrSxNRDXiWB2Z3YyW8ykbD9CnxDFoDG+xJmUSlbz7BGk5HBnjXT9+Lv4ruk7/EeGbPg
-	 +fLBT1B/z9rnY2I3oCEY4NJAZkmohcnyqxCQ1dprIzuUV/qwoeQQIccieoTbWm6Ko3A==
+	t=1794331768;
+	b=vF43WguE9yP92z63RvER1OpG8IYguN5R8zzBOzBCWmz42Z02ISbxP8DkpuWtV4tgNOPh
+	 FYKy1Qpo5WDXGNsiwd5t9qeejAtHTx/4a3dOa6YHA6LJWpgxOgTX2NgHYBykMHFm09ach
+	 PbEtu2HBlxZTmZTchctlHQ/3XIn6tSG0T2x/NQzkj7NUk4j+bhD8aNgsIYZvkU1mrROzZ
+	 wBz0uG4wbwxb4hBb7IxrF7YcUxAXU/eEs4SGDKkP7qZdwWzk3uqmqccq4MG6Nas1zjT4u
+	 wr66zM8oh1eQa2rFLVyB+jtT9PwEMQCwEBximc4zP2psypTI1iJYYofJntrirKxbrGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794331233;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=yHvW5njeG1MxJaBgN4O40YX1fGhfL3blpOLr1O0pWBQ=;
-	b=AkPL+39sthxb984ZVjj3WqLsoSRbVgTUwDnj24SA4aDb6aTEuyH8ygiq/WleFAyp2KM7
-	 CBV8RLEKed5dx6eQnWnu0tq34IDXlXTsHyQQqbLkt5HFms94JSEewJYP/W/YktIa4nNcR
-	 Hl9dC9v3oPDqhoLv+e1QNNFPt0d08Uc2EbAMe/EJ1XKnep/cOr8R1CR+YcaS6Etjxgx54
-	 Hgokcrc8Rh2vk0szkxl+N3hR65ztK4ac/iYWMIKUs+oe1PP7xDTt2jz8xh2wiBiu+6ENg
-	 hThZ6GmOqf73DGKZVuGSWnDmJI5hCr3fTyxmcTMNqaP0Qiqi3FPO8g2OIKLdvyYUS2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794331768;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=PnoGUBmcCKYpJpTuM/bZynOVu3n/2EAja2xWlLiG5M8=;
+	b=cUpf4b8zMKEs8XEv7bikvoZVRyEJU49iPI6R6pWMO3JY0ujrTo8VSdslWR433Lsvdsm0
+	 ZYTM7U0SEUkdvbtA3eCHtgSjK92FuD5IC0WJwzVRVCF/RQmQi63E6OJwNNFghe7bdGWAX
+	 RVihdU2Vfxr+K5hfEh3Fr7xbMhShQSdrNDQJJb7pAHbQDetcmlxfGTOdLEbuzy+kZHKVi
+	 0hyvM012/iTQQOCvCwcAlna6OUpCbjBRk8B1tGLuBWSvmLdrYCAe2OT8pNd3Hc6k1YsRe
+	 wdqBDR7CDI3b6jxW0ZlhsscsTT4w+MAeVIGztUvQliX/RKBxO0QFToiTJuCtiborfbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jK8QudxU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Q2dQG5AO;
+	arc=none smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837D8606A321;
-	Tue, 10 Nov 2026 17:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6F8606A323
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:29:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB6F8606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jK8QudxU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263771F0089F;
-	Tue, 10 Nov 2026 17:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794331233;
-	bh=yHvW5njeG1MxJaBgN4O40YX1fGhfL3blpOLr1O0pWBQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jK8QudxU4M8qY7vi+WbGn9jwZwpPtwJ6Jo9/SIDrF6AqD6AHm5+WTMw/s8hK7UCJo
-	 1fCDrXGe2UqNSFtkiYyLhX+AfY8uVv6IqTZypuozdNdrOnz4RM4MzIaLkGzIYBcsQl
-	 EXadyfuo/1PJfWyrGxXxp8cHT51y9j6pjexCv/yWYtwfhpjhxuGkQ1PvQOa9M4owT1
-	 29DkvzCSRORubByfZLAPRjrB40n9yffMU3NKALqyIStD15C+Lu82NpipCNGS64/HZS
-	 GYsVRpcHdmtw7FWgKYkz47e2ngugLNxNZeJVH2KlUMQJdPB+U9nLvrEG3aSb4awsmH
-	 cu6ckGsFebROA==
-Date: Tue, 10 Nov 2026 09:20:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stefan Metzmacher
- <metze@samba.org>, Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli
- <tfanelli@redhat.com>, Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz
- <dreibh@simula.no>, linux-cifs@vger.kernel.org, Paulo Alcantara
- <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, Tom Talpey
- <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev, Chuck Lever
- <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, Steve Dickson
- <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, Alexander Aring
- <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, Matthieu Baerts
- <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, Cong Wang
- <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, Jason
- Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, Sabrina
- Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Daniel Stenberg <daniel@haxx.se>, Andy
- Gospodarek <andrew.gospodarek@broadcom.com>, mef@scarletmail.rutgers.edu,
- paul@jakma.org, Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH net-next v18 00/15] net: introduce QUIC infrastructure
- and core subcomponents
-Message-ID: <20261110092031.71f4e691@kernel.org>
-In-Reply-To: <CADvbK_e3aoDOyk3hbPtS8pk3U0QSiLtYafpH2oaoNbbR9mV9aw@mail.gmail.com>
-References: <cover.1794241654.git.lucien.xin@gmail.com>
-	<20261110074153.4b895bb6@kernel.org>
-	<CADvbK_e3aoDOyk3hbPtS8pk3U0QSiLtYafpH2oaoNbbR9mV9aw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Q2dQG5AO
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a06e79e152so1277014b3a.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:29:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794331767; x=1794936567; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PnoGUBmcCKYpJpTuM/bZynOVu3n/2EAja2xWlLiG5M8=;
+        b=Q2dQG5AOTVHgcOUbsMR3RGaD+Txvpe51iB/VR1cTbbceBpqdML+T/dAQCIfcnMHp5t
+         Sc8cl+WwPNTi65okVmFYw9B6RlY+Dk/rKMEOBFf9E+U7Nn+n2kPITQS3/JJyScYKV816
+         tSPQbEBfKqrE40eD7VEUUoNFbNXs5bPem8odsBUSsDf2iPwyDaETFCDQp4jMYODQKBvp
+         zUakFSZoeYYVotY0Y8Mx0c7WohKZNPGWFz9BPV8kNZu8f2FP4K/N6F7UkoOOdvEM78mV
+         GRKC5YtrJAYsYt0yZjIEMoUQgji1tcsFVRnTNzevWEURk6Mq3xCbzhDdjToMMwpqU/L4
+         JyTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794331767; x=1794936567;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PnoGUBmcCKYpJpTuM/bZynOVu3n/2EAja2xWlLiG5M8=;
+        b=DQkevlNx+3WtPYaIzXL3yaFSKQLu7Yy3lvMMlcaLaO62IQqVUWrRq1G3NSRHuzGkxo
+         nW8/lTK0FZWBg3Tt3rhhNZxCED6YAdjkttK80MQFEPd4nH098eCSQuIqXw0yXENHojPo
+         n0MhclucX/OYVscF/fPGSDW00J/M6uzVBMZgunLjI/32/7BMnM8iplroUQqaIHItT2BH
+         wQ+9pLPcIM2fnd8aiux2pVV1gUJIMFCsXNMe+gy5uyqEGk+vnMDxsLEk/K1LrQtnKI8l
+         V5CGOQu54JoJve6pkeT+eS01a/FQe8djFqrBQz7H3k3pmR+TilnYdYR9ndCZd/TkLPzY
+         Dw+A==
+X-Gm-Message-State: APuU4Z8sytvr3Y6A4C5Ad/n5TqJLXwb3vIiSosEXqrUZKomaxbloBDEz
+	ym9WbKuN8aJcBQuv0wx01YFOFP3JEOHgbWkm/tNzzsQbmEMisjduOZnv9Jd6TGtt6e+nxb1S72x
+	Ct8bWA2M=
+X-Gm-Gg: AYBFou220AxXx28EdXeBszvjVfXGr2NcTsEkWuyhNVMX0HngFpxEpaxz88/VTFf4i0R
+	5+QtTIVY4PGFsRvUVRK61C6wBehmIGJMK4O4nHafusPP0iKG0zGInLQwyXleU629Qv9FVXqg8OZ
+	E1phjFzuBTNfoS+ignDG1gWogu1KNXcnOfgmsg+qZphTC7rexcgi8VNkBioFPLO7Y6dNbAIglwC
+	+NiajLjUIDWKH1EZ0r/3GdBaZ7CC9E7YGdD393lzwicT44oVaCP5T6cFFFZQNRJyLHb8wMo5Jei
+	L0BFKjt22BHKD5LuMmhbLSgh0/c34RYtXpzwcCxgO4DMtPDN6f+aQIVj/sn8ie9bbivThtPMooY
+	IWLthDfGvz3XjZ6jZcLTVT/eXEX4os0yNOOyDJRpR8atv2MmtG1e+OV9ZYW4HAdPZum2GQJ6xVa
+	uvQXZVIrYlpn/lAokZfpG4RoCA74f4uq4wSu9fj3K7ZrjjmzIcD/5sDw9dFH6e3Bzqm/mbg6J2/
+	LL5LyE5r66Kea1Way5WVMCbGBakcI2Bw2TE1f6ceXPwjwjTtGZWx+fk2IH9nXth4Cjmmc39agKz
+	J1nYzucUFgHMjzBfAKlFi3KHbGnx7xbsIP7ng8kgJoFOQDf5i2pc/9RkFhDIiJbmABrOzwqWku/
+	eCJtSVaFtThns7g==
+X-Received: by 2002:a05:6a00:1d15:b0:8b1:e8cd:49cf with SMTP id d2e1a72fcca58-8ba88c8faeamr3069042b3a.22.1794331767075;
+        Tue, 10 Nov 2026 09:29:27 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab5f1effsm1197939b3a.49.2026.11.10.09.29.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 09:29:26 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH net v2 0/3] rtnetlink: fix truncation of dump entry
+Date: Tue, 10 Nov 2026 09:26:15 -0800
+Message-ID: <20261110172925.3293312-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,34 +94,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Nov 2026 11:57:48 -0500 Xin Long wrote:
-> On Tue, Nov 10, 2026 at 10:42=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
- wrote:
-> >
-> > On Mon,  9 Nov 2026 11:27:21 -0500 Xin Long wrote: =20
-> > > The QUIC protocol, defined in RFC 9000, is a secure, multiplexed tran=
-sport
-> > > built on top of UDP. It enables low-latency connection establishment,
-> > > stream-based communication with flow control, and supports connection
-> > > migration across network paths, while ensuring confidentiality, integ=
-rity,
-> > > and availability. =20
-> >
-> > coccicheck says:
-> >
-> > v:250:19-25: ERROR: invalid reference to the index variable of the iter=
-ator on line 241
-> > net/quic/connid.c:252:16-22: ERROR: invalid reference to the index vari=
-able of the iterator on line 241
-> > --
-> > pw-bot: cr =20
->=20
-> This is a code pattern concern, not a real bug though, as the use_count <=
-=3D 1
-> check guarantees the loop always hits break.
+While analyzing one of the OSS Scanner dump reports for iproute2,
+a bug was uncovered in netlink route dump.
+A route dump whose first entry is too large for the dump skb ends with
+NLMSG_DONE and status 0. The route and everything after it is silently
+dropped; "ip route show table 100" prints nothing and exits 0.
 
-AFAIU you must save the iterator to a different variable explicitly,
-you can't just use the iterator variable after the loop.
+It takes some non real world stuff to do this 
+like a 500 way multipath route is enough to trigger this.
+
+The series is broken into three parts:
+  1. Fix regression in rtnl_dumpit().
+     Do not hide EMSGSIZE on empty skb case.
+  2. Fix IPv6 FIB dump to propagate error properly
+  3. Add a test for this bug.
+
+v2 - drop Assisted-by
+   - correct commit message about "ip route get"
+
+Stephen Hemminger (3):
+  rtnetlink: return EMSGSIZE when first dump entry does not fit
+  ipv6: return EMSGSIZE when first route in dump does not fit
+  selftests: net: netlink-dumps: test dump of route larger than skb
+
+ net/core/rtnetlink.c                        |   5 +-
+ net/ipv6/ip6_fib.c                          |   6 +
+ tools/testing/selftests/net/config          |   3 +
+ tools/testing/selftests/net/netlink-dumps.c | 271 +++++++++++++++++++-
+ 4 files changed, 280 insertions(+), 5 deletions(-)
+
+-- 
+2.53.0
+
