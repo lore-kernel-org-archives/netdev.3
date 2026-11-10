@@ -1,101 +1,151 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.7.83
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794325666;
-	b=RFMM/yPonPUhKuywG2ALf/UvzM1lJ8V0dVnG086eHOtmQqFuzb3+bDlO85nVvADElDtl
-	 0th7qavS+NNQD7NzYoCfYiCKQGIn7vnfsLtP+eQd8Fzpw2pkqyPRnNjLSuM85b3P/zq57
-	 k1qAXWnZ6mLpX4NW0tydDO2U1cYAJmBNb+sDmMzSqjGg+uMikmR4Y+5vzJXj+IkKp4DVI
-	 x9w/xhHXmSooEQcHmFLLscEt6dzamjERpPlXHQ8lAIN5K1CqPEFveDm8BuLNsp4PffK+o
-	 CQC8/CnhbTG/adfM29VRXEQ4w1IiFmK+rhVv4KMIClCy4uxu5VMwkePRS61Jya2u3vw==
+	t=1794325679;
+	b=4eIiAGEL3yvDx5z3xZygsR5BPMULsFDPNNUvDbwpGfpymFBuvHFlMT5+TvX2dK+9pS/d
+	 OqoHaRxEIlM/JTP3jb5oK/CFJRXiSOt0FSKjZ1msYWl7yVl4ZQh6+i/9B1MpfitU0V1kc
+	 Hv1YbORJ2T9yKljtBvqVrKYszZXj9Z7qMejuTuD3HreIuj+/7imsATgWkx0tA0H+omG57
+	 ++IT/M6s709F7kwYT+kKDxPcQ2T3VmzyjT6WFKxxjFimvjgIy2Sr6MWUrjVss2CLwZNqq
+	 a8slMIlIxsxADIalDNcgEO4AJoMincpJB3GvQkSTkVC8A9VUL58ontW4af2ztfAY9kQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325666;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
-	b=FHcu0R1SAAQ+Op52aNRBsGPLFF4zE9/ZjTNd6LlJZBcSJlO7Dt9JEtC2aLnNpCiUGN6z
-	 MPxO2ZffBBxczLIGNkJOzvZt6YU2/lAmpAbX0xT42/r1aE9AB7CaC4kgvCC17uuJBxTqp
-	 4bzABwuGOxqMuhdgdJIHzCHdFQFMauAPzgcCsLxc4AlUcbyPL9FmVhTHKtlHM4LW35Apr
-	 OID3G4NhVqBapsNUbV2SqYtDkKqKFpqYJWmKyt6CcqTH8oCaYiEm1XfmN+ZH+hdKo+gW9
-	 VrNYWWjtpbZkQ7DLDMsNtkP10xSa00C17I3fZRh2YRj3e44uHLnavl85YxQRQdiwgGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325679;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:
+	 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=MBD8OTpbfb3Cko2+Fm7mVxj/RngcPsjPd/G7Mkm6GU4=;
+	b=ReMkUPkvmiEjjabDo5vX/zjxpSFJAx3Tvdg+uThDWWc//sdcwxbv6GDZlretG+ZWXFlD
+	 a4FyowXwTFH+FXPQyuLpMvkCLNPiUHOSCfbGY/5cG9Jo0LBSgbwgPHDheao6+Mw83LYtt
+	 FBfQDRTajXBFxb50MCDGaNU9Gjs5EHJ8GmO00CqyzRPONR+5cjYIjIJ8qBr3oC2Q536MR
+	 5zG0BXI5eXO+t0bZ324/ZrGr5f7PgDxfLMi8ThBUZuRh3CCuJvVN+gic33Z1ugXYsDkrl
+	 y+XqhEAPI9UCQhCMTRmciDeXy3OuAWfRdge2CQM3IcZ/CoeYBAoc5+A6KdglPb9cI8A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="I/Lw8i/b";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.44
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=outlook.com;
+	spf=pass smtp.mailfrom=outlook.com;
+	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=OCWtTKBl;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.7.83
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazolkn19013083.outbound.protection.outlook.com [52.103.7.83])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9EE606A323
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:47:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A9EE606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3CD606A320;
+	Tue, 10 Nov 2026 15:47:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D3CD606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I/Lw8i/b
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-7ce6cb4c6faso1026814137.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:47:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794325665; cv=none;
-        d=google.com; s=arc-20260327;
-        b=J0H/gvGRqGt7WPEKdUFq2OtI3wk9kZExwYaCNVs8n+wlzTxEVuQ8bxWiYTbTM2z673
-         jNYibF086TMjEbyqAcsrLEcpJWUxJP0NTESFchWfRJPcydaXlBNQqKlKrUjSsCHYqafS
-         chUgO+BF2c945r2bYLUT4SBIBFii4Opfmz+HAjKf+Vcc6QwZeqUSHwdq98noWYtpQNkR
-         a0VY+vrcGQaXlUZlItlvGnNlmpTZMxSmwxCPhfGXTbBzSQ0sDPH11TkgYbeCzaVpCcic
-         m+obQFqVP6nu23BMTIAwZ2X1klhC6haGYCPzZtXQddk9Tv6vu2iSRbtm9OKFx0hXgUie
-         0CXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
-        fh=decuLPkoSrYHn/UAuyrZIKclB/9cIMEXfc79VtDtkY0=;
-        b=Aiw7mQJ9tmdzT7aRoNhAjb/K0/BfgisgdQ4GIbBXVGTJ4bSyWSZL5amMqFUx9Y2iBt
-         VxjMTClfl4kex//Gvo+QYhy24qhuZ9j8LnYaextSWrSN+7hDrYwvrvjcSORQOjJtm4JH
-         PxggeXA40Vo2OKGZULHnxyrthEPLQlzeOecZXWDOLg7CKjVTWTWxB+eyTb2CM3bJ9T4G
-         j7h3w8CJ8rvFf1ef7pYOMRUOmNEqrU3/8d1v9yL9TwBcSxZSFYvhAVWNSNJ4zXah6Jxs
-         KPSwex0iJ0eLqeYIQTvaLcsvX2vZsqrYMm7mnZLk3YNWmQPIr5LXZNkDd7cfrM4B4xeN
-         N+sw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794325665; x=1794930465; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
-        b=I/Lw8i/bwk9+5IhcqVCZ//ULNLAb1ddsCuYGASvGUAtyPg5imkQGj7iIi6g9XzOHft
-         BYd8pOWh//XX/U7aTv1AlumnSHl2fuaM336e/9B/kNktK/7WZQdorEuxWpAQETEf3v8l
-         ZHO0/DHb/+jabyFywg3NjkTKHajEtGyJ/mmKwAr/U804Ezjph5uK8BSRbopqU+PfHJGg
-         G1zQdTsvH8ZEma9FpollCfKMGD0QMGV25R4SD94smgtLwY3tp9Vwzmqc0dNmSvKjCBAq
-         brmaxPH7SXPwJw9514sCKmzKCvZ5YxW9h8FSc6P8fRzgNGJvIM5b1dfu7Tj90kbhErfg
-         Ajug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794325665; x=1794930465;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=czf6TxvkDXLy/zkO0/xTOB61Eq7kaspeLRCs9D7lhNo=;
-        b=K+VRo5bz2ztKzIsDPJcwn4T3ckComnIWeiCBrqFNHdCiWtWs+CvPh01et8AMJlSW6q
-         qdavCyOyNO0aLCcSoM2KHhnocRGVlquPb54qbJYVxWsjCqcPqNJVsYVJU/7hyp2gVGv5
-         3ciqvfLPFvxdK9KdUl/NW4SaXueBn5XF3Vm6G4M6gw2RvRY/d2T9y5P//rMIHqVsBI23
-         jD1wuI83hjPS/wxonIDT8Nqo7WQTHHrVFkI73O/3M+r/pkhPg7qCVWySTEZv6nx5+8nt
-         rVIc4YbuE+pZIAkslhApEkDNDxas9UGL9zTSvTsyAvBVF/A4+R7GothEcHvQ2VcT1Y6W
-         rIzQ==
-X-Forwarded-Encrypted: i=1; AL+hErFXP8QqraM9aHFZDX+8L4HtwxG9LefEYidi7qCDJLtUWCbhFQyWY94CihzBzBE3ozMtFYOpRII=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9rug8sBid14OIN23lH26M7NEX0rYzdydfmEsDae9eHtK19zjWe
-	bnXHp6ewqqdMb6LVHG9RzXM6NTjYEry4B32NwcvDTrfE1d0IuT3EHkkOOADcbK/HmtAt86oxMqC
-	mc8/Y3r8zfJj/8SFq9+/imN/MwhGMlVY=
-X-Gm-Gg: AYBFou2+5qedrqRcwMDDP1pXsbD+XEAcxHhtNrIckH7SHAOGu1zLahPr0I+EX3lrlHK
-	kRsJwNYJcbOubdhwdqCUAH7HX/lA8e5z0nGsHQ0zqwlJw0RZGlI4FsBRB78J9MstqzU4ksF1DGJ
-	ElcqSbPTJHSznTxSOgnM61cOQNoyeJiyrCLuSrALb+iOCc17mngNhqquFgscxoPYImJTxF+M3MX
-	GgxFPt53F0zT41oKvlV7tPZXpdI8BTQINM0Uvs+2tKFOF+80suRGcfc5A9oczFVIVwgBmy6+bFp
-	8zJpxKh2WZwKuFlx5NBJs9qQIWvKkYtK1k3x6/od0SV6+pkheFA1Z48oMZLluPjg1pbc956RIJE
-	7+WpSGMbAcsiNHcMTeFfJcwE4tR/3RLRlhIw3yjGnygdd8dXuxEIJ3Y164FX3F8vuHTjqpIugvm
-	AWQI70Q0tIu+ox4rJGNlVhPIy2sZCTBv4HUNYzIg==
-X-Received: by 2002:a05:6102:1606:b0:7d0:5688:f4fd with SMTP id
- ada2fe7eead31-7d301bdfadcmr1347648137.17.1794325665086; Tue, 10 Nov 2026
- 07:47:45 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=OCWtTKBl
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j0dJi+llzbxTSnG3Ew789tKmTuTjZut/9oVaFFbTE6MFjaH9ocmGatzOCaxKOuu8/gwQDOcZEMumrdogGA0BiTyeIYkjVRZsl3S70YC9TvmGnePYM1JClqpKjXx6dd+9EvNcaMJBxMjo5qqV4OmYuzXd92MGt5yRJiJYxTL8+7s2YNduTqiF2lTxRv2cW1u7sVDZ1T7rsIcU8WfxWoadAzK7jW+LJP8q2ICxmSCMtjUo7ibPFeq+UxJ+VpxQxYu68fund6sjj1eEHRK5HaxNP3jTa2rPna+CSNkZyQDKXJGqY8BF9qkDeXLpcSUxz4Zq84RrocIAap3tt4YAYAV0Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=MBD8OTpbfb3Cko2+Fm7mVxj/RngcPsjPd/G7Mkm6GU4=;
+ b=wJOUB/CQH+0a71qZoNN/ZEYDlHTVfxg/zyCD8GAfeXqe+AiP/t6e3269pmIPyiUUSptEHtsun6Fm+YTgNj8pfFNF4Rp02tAFMSu+B0JQFDjOryE/jyQ4XtnvamhRroIC8U+Gq1sxFU3OpK+/zq+LMkVI7iVIqOYRFW+e84+E2KR20MDTp3gkAGb1JAzad1oV5Basz6RK1aFQTkzk7pAlDIfho8p5EghpnHY/o+wiJEL1Ev6SQ+SIukWX1YDzU2grnwJKQKUqsg7Gwer/7UjPEQ6Cq9gS0gg5ljFiU1byj3CJXsebX4pC1LxWTit8UJEKqxr5bc0d+YU0MzTyExlE2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MBD8OTpbfb3Cko2+Fm7mVxj/RngcPsjPd/G7Mkm6GU4=;
+ b=OCWtTKBlhDHruBf/HMRL39gVopRWos4ubjqgbhyW2xAw7zGmEyflJFtdRQiz1DnYBNVymo/2fG2vEiy/Gf3WvV9GaMLdluzo7yRSicrtjH83SZjWwo0qG7hzWuPoC7kSTEt7l8V+Wv3E3ugxf24qtq6dxItRItfIbec25l/WAH7S9RtNE9mBQr7xS5WdlmczFukzhY8m83udBeAFLakhuPpDzySm1jsCMWL3uBejN8F/ufAtb/IoLaTUMrHSNTQlqs99iBciXfcN/HnMyWWmJCx9RdFQIK5I+VOnCinjagFZ6hXq0rxJsrelJQbOzVHJK6D3CnPxjFCGvv+jY3vcPQ==
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ (2603:10b6:806:39d::17) by SN7PR05MB7775.namprd05.prod.outlook.com
+ (2603:10b6:806:105::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 15:47:56 +0000
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d]) by SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d%6]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 15:47:56 +0000
+From: Yingjie Wang <x-professor@outlook.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "mptcp@lists.linux.dev" <mptcp@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "ncardwell@google.com"
+	<ncardwell@google.com>, "kuniyu@google.com" <kuniyu@google.com>,
+	"davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "matttbe@kernel.org"
+	<matttbe@kernel.org>, "martineau@kernel.org" <martineau@kernel.org>,
+	"geliang@kernel.org" <geliang@kernel.org>, "ycheng@google.com"
+	<ycheng@google.com>, "weiwan@google.com" <weiwan@google.com>
+Subject: [PATCH net 0/2] tcp/mptcp: prevent blackhole timeout arithmetic
+ wraparound
+Thread-Topic: [PATCH net 0/2] tcp/mptcp: prevent blackhole timeout arithmetic
+ wraparound
+Thread-Index: AQHdcSra+844o4e65Uy62frlOoREyg==
+Date: Tue, 10 Nov 2026 15:47:56 +0000
+Message-ID: <cover.1794325665.git.x-professor@outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR05MB10385:EE_|SN7PR05MB7775:EE_
+x-ms-office365-filtering-correlation-id: 1df778a8-30c3-476d-ba65-08df3f41fd37
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|4140399003|24021099003|25010399006|31061999003|38102599003|24121999003|22091999003|8060799015|8062599012|19110799012|15080799012|40105399003|52005399003|26121999007|102099032|440099028|3412199025;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?1p0aNObSCSr6A9SiHIEGL9Yzf8ecjrw0I5Z2kCU3hrugVbRsHbQPC/oZXB?=
+ =?iso-8859-1?Q?Apz1HG1MyjmJxI4UvryeFthpIl/hFfJW/NkTrvs39HCd+hcQ0JiRruBv/f?=
+ =?iso-8859-1?Q?mP07UFiQ/3RY3Ftv7m5TNgrgJKypSTeK4bzzBkMcKmeEea8Lch39E+nSCi?=
+ =?iso-8859-1?Q?9j5k3SyNqArpe6CDVozpy8v0+P64eRiDpxLJfKT1n8htZN3goU+WyJL+xs?=
+ =?iso-8859-1?Q?6SY8+0VZ6Wx3NhhliIsRv8JOxjLENf4TW5FuG8Jyc0ZD5+ZhVCrmO2scfZ?=
+ =?iso-8859-1?Q?Slg+rgbctMm4+GHvR4EpHSeKAQsvA/P+OT+jQsBOsZmbZqgsI2wk+NK7U9?=
+ =?iso-8859-1?Q?OxtwOeuu7WDWaEQuQfZJrYrzAe1UKzdDxM5IZZ5IZpkRHtzHe52TMo3HuJ?=
+ =?iso-8859-1?Q?o3gJqT/mQuItFR1rTD/68LKyrNJR8zuqbq4R9TEZLCS/HgrV2zAEYzLYRe?=
+ =?iso-8859-1?Q?TJuP/1LwgnmiaOZ5ASW7U1GPnAHIEuYA6OeLAFFBXV6KHxh3B4VdpbL8wG?=
+ =?iso-8859-1?Q?a76NWiJHA/hmkJVthatNBgEoakJVeDdPj4uNChRIwM2BhA6X5Ihh/RCpBc?=
+ =?iso-8859-1?Q?4ynaNlAAr35/2BgZiegBEGJ2R0roujD9fjDd9tbDaQp/nTik0GwqvB2tyf?=
+ =?iso-8859-1?Q?Okb8mUcB2YRHvSbBsqgnXgoP7p/n/LapqrRjFJ4WPOK+I0WzxkrKorPAhS?=
+ =?iso-8859-1?Q?dfUzZMNXqQsNYkXkrL0HdxRU++j72zIksWnN+vtU6uRAhv+K0HIWGeEEnA?=
+ =?iso-8859-1?Q?piE/GZkcfHkwyHaDrsszbOkOKcBgIjchEMxksaFzOFBFaQpTJT6zJLfkVD?=
+ =?iso-8859-1?Q?G1Z9bAW/I5K2T1bQDzrr/zLx+yJYTF6BOwbEaW1rUZz/cD2cSVi53+56t1?=
+ =?iso-8859-1?Q?CgKxTsAzBI1EACx8S4jwrPIcKkqCOkVty4RatYufVi+eAsT35OydTZSqU9?=
+ =?iso-8859-1?Q?uNRrc7+Uaw3aB4ouI/JsZUpk+e/sqPuJFhEQ0VRKG2HSIy7u1qQZDkcATh?=
+ =?iso-8859-1?Q?OCeYj7wfepZa43LqocQIRWX7KLWg4mTcr2JMcJlofU3BpTYlGNhKZ9XmTr?=
+ =?iso-8859-1?Q?HZsJnENySHm+fg6LB7OocZpaVY2GP80hV+kFpyQLWrTR?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?p65eNPpE7+CFndWZb+ea7AUikqMPCfC9Zw56DkvIeU+zx1bpqghewsGC9o?=
+ =?iso-8859-1?Q?8E6Hgq6+SbpfN1cJmrdWWJkroECpo2i8Pruris63VGb8VcAzz5SgobEsHN?=
+ =?iso-8859-1?Q?TRpjLetsI8TSkPXhrVjvObGO079zT252q4kUSKg6/Rol50iUAw/zmADctz?=
+ =?iso-8859-1?Q?+RAaBggQxM4iFXBQAG9Dxd0OscTlP8Y/N8HNyL/AYANx8b0bJ3jyOAjmPn?=
+ =?iso-8859-1?Q?N/54IW950lGulHoUOY7LeV1z3si2iIkv0g0OUywnrEOJgLZUXA4bs7EBOn?=
+ =?iso-8859-1?Q?g/u3QbzElvJyRTi0WcY2T/qDP1tNI6lqTCjPCWt3F6asnevNLFfHzWu5oo?=
+ =?iso-8859-1?Q?AzouHIRGDysMrH8L3qwwTQX/xKHcIcsESKbXWVMeXnS+gic+xPGYAQrQUQ?=
+ =?iso-8859-1?Q?g2ymwr8AJXJOj7VnCpxWjrCsogrJ7F5pMpBjBqcotxhyffnFCtqAdlIMKq?=
+ =?iso-8859-1?Q?cOCqHO6DavV3JqSsF36HyKItusfGlLNaBCGGUUoSg2+JqkRhTb1UXJQ/9C?=
+ =?iso-8859-1?Q?Ke8FfPyRsqgDXTGKG7KdBHyQOErNMW7At0STLWe5yGEOb9H5bcOCSj0o7g?=
+ =?iso-8859-1?Q?YUsxe2RAh3u4m0kuq4nVWx+Bebv6oHQJc1EjRzkn4z+AvN4xMHypJtxpV0?=
+ =?iso-8859-1?Q?la//CBn05UODRSNULfMrww6uNbbqxfk9WsEqv9ldiwr5mzK8Vqs0ges0vE?=
+ =?iso-8859-1?Q?2b6+noWJ/paxA1CxhLuT0H5ZiP7gv5v+VGkE1ZCQrtrLPPz3UiGkI/ynKW?=
+ =?iso-8859-1?Q?OgxR7wsCPgx4tfX8ptg1zoiua7sDHTIGXdDh9b7KtUFwViImutKyWf+5sZ?=
+ =?iso-8859-1?Q?XqJXIMG1I6QhsWQMYh3mU6HlJvcusCGHX3Zefxh6+mCYv0tvfVnmTG+5Ri?=
+ =?iso-8859-1?Q?vEGLL49Nd3gSeavuoO8OuEuopfAxqzVHAdpTWtmKOGZXliXTXmCmomgms3?=
+ =?iso-8859-1?Q?rFUMHOeja5yLTQaPEZom2Vd1T/nLTtZ8XX0Aw6i1D1P8QkWiD/Z+9NRHgr?=
+ =?iso-8859-1?Q?sbMsfDwNm6lN+87JfSIh82fz7NYBWUl7BRRGuGyMoytr8sB+buJER1leGX?=
+ =?iso-8859-1?Q?g+/RENuqRsC4PCnMly/r1TNMCkhIquiJSnMoXzl3usO5DGxn40rGOEBjwy?=
+ =?iso-8859-1?Q?RaOrOddKSGXmoKnXnmwQu2IoVER0H6sXbIIwoVroC/m2zdPigG8n3PwlsF?=
+ =?iso-8859-1?Q?QU9WuNf2BLT7wLUvPZvK57ypgs4Rju8HrgvYhrLkHi07DcGOq0svc+DrAX?=
+ =?iso-8859-1?Q?iB+iJ13fvZhMgYVqdauOEWB1/1AGqw+8d/xevvLspRQhrCaS2qowGC4cWN?=
+ =?iso-8859-1?Q?jsNQsAYTDvAXZ4S2CfJDB6h0hX8/DcPW0shFllcd0xILHW6eSsO22OrZaW?=
+ =?iso-8859-1?Q?95f8HumO7jfg3cbhKhEhhraxjcR2NwVAeyVxG31amdK7i9MwPdokryr6ud?=
+ =?iso-8859-1?Q?gbAAmxB7hF7MxWdn?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,92 +155,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106185203.3326303-1-bsdhenrymartin@gmail.com>
-In-Reply-To: <20261106185203.3326303-1-bsdhenrymartin@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 10 Nov 2026 10:47:32 -0500
-X-Gm-Features: AclHuK-W2zfpJA0Fe0m-8dv7qSw468L0XRBR04aNiVAdKPvb2KSOSY4FgSHidEw
-Message-ID: <CADvbK_daN6zZNPckkGh=r70ooNwTz59VViJy5jPp1w18SDPrzw@mail.gmail.com>
-Subject: Re: [PATCH] sctp: fix skb_over_panic when adding addresses with a
- pending delete of another family
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: marcelo.leitner@gmail.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, edumazet@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR05MB10385.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1df778a8-30c3-476d-ba65-08df3f41fd37
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 15:47:56.3146
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR05MB7775
 
-On Fri, Nov 6, 2026 at 1:52=E2=80=AFPM Henry Martin <bsdhenrymartin@gmail.c=
-om> wrote:
->
-> sctp_make_asconf_update_ip() accounts for a pending DEL_IP
-> parameter by reusing the length of the address being added. The
-> write-back side instead serializes the pending address itself,
-> with its own address family. If the pending delete is IPv6
-> (20-byte parameter) while the added addresses are IPv4 (8-byte),
-> the chunk is allocated 12 bytes short and sctp_addto_chunk()
-> writes past the end of the skb. E.g. on mainline (05441d697f7f):
->
->     skbuff: skb_over_panic: text:ffffffff84859c77 len:392 put:20
->         tail:0x188 end:0x180 dev:<NULL>
->     kernel BUG at net/core/skbuff.c:215!
->     CPU: 0 UID: 1000 PID: 379 Comm: poc_sctp
->     Call Trace:
->      skb_panic
->      skb_put
->      sctp_addto_chunk
->      sctp_make_asconf_update_ip
->      sctp_send_asconf_add_ip
->      sctp_setsockopt_bindx
->      __x64_sys_setsockopt
->
-> Requires addip enabled on the endpoint (net.sctp.addip_enable=3D1).
->
-> Account for the pending delete with its own address family, as
-> the write-back side already does.
->
-> This issue was discovered by Tencent CodeBuddy Security.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host=
-")
-> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-> ---
->  net/sctp/sm_make_chunk.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index 90de272842512..18947ec5ff9f9 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -2886,9 +2886,17 @@ struct sctp_chunk *sctp_make_asconf_update_ip(stru=
-ct sctp_association *asoc,
->
->                 addr_buf +=3D af->sockaddr_len;
->                 if (asoc->asconf_addr_del_pending && !del_pickup) {
-> -                       /* reuse the parameter length from the same scope=
- one */
-> +                       /* The DEL_IP parameter is serialized from the
-> +                        * pending address itself below; account for its
-> +                        * own address family, which may differ from the
-> +                        * added one.
-> +                        */
-> +                       addr =3D asoc->asconf_addr_del_pending;
-> +                       af =3D sctp_get_af_specific(addr->v4.sin_family);
-> +
->                         totallen +=3D paramlen;
-> -                       totallen +=3D addr_param_len;
-> +                       totallen +=3D af->to_addr_param(addr, &addr_param=
-);
-> +
->                         del_pickup =3D 1;
->
->                         pr_debug("%s: picked same-scope del_pending addr,=
- "
-> --
-> 2.43.7
->
-I think with no longer using addr_param_len, you can move the
-if (asoc->asconf_addr_del_pending) branch out of this loop.
-
-Thanks.
+The TCP Fast Open and MPTCP blackhole handlers multiply writable timeout=0A=
+sysctl values before adding the result to a jiffies timestamp. The=0A=
+multiplication is performed in 32-bit unsigned arithmetic, so a large=0A=
+value can wrap into a short delay even on a 64-bit kernel.=0A=
+=0A=
+With HZ=3D1000, a timeout of 6912213 seconds and the maximum multiplier of=
+=0A=
+64 should produce 442381632000 jiffies, but the current calculations=0A=
+truncate the result to 512 jiffies. Both patches compute the delay in u64=
+=0A=
+and cap it at MAX_JIFFY_OFFSET before adding it to the saved timestamp.=0A=
+=0A=
+The issues were found using a static analysis tool. A loopback reproducer=
+=0A=
+induced 12 blackholes, waited 1.2 seconds, and then made a new connection:=
+=0A=
+=0A=
+  TFO:   base probe 1.026 s, TCPFastOpenActiveFail +1;=0A=
+         fixed probe 0.000 s, TCPFastOpenActiveFail +0.=0A=
+  MPTCP: base probe 3.087 s, MPCapableSYNTXDisabled +0;=0A=
+         fixed probe 0.000 s, MPCapableSYNTXDisabled +1.=0A=
+=0A=
+The TFO counter records another failed active Fast Open attempt. The=0A=
+MPTCP counter records a connection that skips MP_CAPABLE and falls back=0A=
+to TCP while active MPTCP is disabled.=0A=
+=0A=
+The base and fixed kernels used the same x86-64 HZ=3D1000 configuration.=0A=
+The changed objects also build cleanly with W=3D1 under i386 defconfig,=0A=
+with MPTCP, IPv6, and sysctl enabled. The i386 objects have no undefined=0A=
+64-bit multiplication or division helper.=0A=
+=0A=
+The current objects have identical disassembly and relocations to the=0A=
+min_t() version on both architectures; the x86-64 objects also match=0A=
+those from the runtime-tested kernel.=0A=
+=0A=
+The runtime configuration had KASAN and UBSAN disabled. No BUG, WARNING,=0A=
+or Oops diagnostic appeared. TCP and MPTCP selftests were not run.=0A=
+=0A=
+The patches are independent and have separate Fixes tags.=0A=
+=0A=
+Yingjie Wang (2):=0A=
+  tcp: avoid wrapping Fast Open blackhole timeout=0A=
+  mptcp: avoid wrapping blackhole timeout=0A=
+=0A=
+ net/ipv4/tcp_fastopen.c | 4 +++-=0A=
+ net/mptcp/ctrl.c        | 4 +++-=0A=
+ 2 files changed, 6 insertions(+), 2 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
