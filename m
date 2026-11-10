@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794343210;
-	b=vR3FDiK0KinIPCXOM1TekuWmvFahvGf69DIhVkb5nrY0XwXPbirNs3cn0VOg9/VcEg62
-	 DIew56X5hcvs8Zk3F1tv+OOus41iCdPwbpgfrkvQ+okOAkJqbBUCYMpLUXB9clFi61w6x
-	 Kq36SwU7yOw0LaR/4JyHoS2tbOQ1oSKLScb5ygZUwKhQ4dgRoCOPiSXJ5/CS2g9QOeeAo
-	 h4PhZEBIO5NASlKbfcE2zkVuq5SZtCyHoEZEghHLbZrh32N+OhVCdt8iJMKYg8xt/daZH
-	 rJWZhHcshxuM0UR6zH30eIU2ao0gunXB/KWcpEAXzl3ZBC6cstjp0A++aTaBNElizOA==
+	t=1794343241;
+	b=QV6Ei3wKM2O5u8AALnpzWYCskPeyEwqJeJ0ki68XaelqMcFdT7YXN5Qo66bKkgHpwXV9
+	 afCBfj5jqyYHFzIOCwRTNbiy3y9ySRs6WwY0Vjvre6ZmQgpM/fTobFhRjCiF3nEi6VAsK
+	 Yn/GQpif0Sy18GBe/I4iuX5TauJb1lwoHMJb2J63w6nvs8O8qRBULhVfnCSg7aiFxhn3d
+	 XUMGI8l93S9s6TGlPYcABM8b52lW28p4xVkaDQgBhX1Y3C01ZaOa/utEvPS52IzTASmAA
+	 654EScBujBCt8a9CRhl/B/rW2cmKsVHKZHs3dmnBmLZEdl+a0Mx73QmSB3rdf1LsCpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794343210;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=tH7VEUdf+F5G4QVeqrk092cc8aMIfb8V1vO/1TFqi0s=;
-	b=E2TOK1Rl5c+t4J/kL4cJESEXk1WutG47MoEr2uan/jzLyXhaTGEZ7eV5w8HlumP3oa2L
-	 63biIt1X+yRhO007BotnUI+aDddNikLgmfKHHDJuMs8lO1tRr6two+ZT5enLHFpgDe9aA
-	 fz99HqtZygHaVNCkivwWXFbCU0hXYxZz668phEJxS6JZvKUWmCmrKuyF1hHtQfFBXoLop
-	 0/4tEXWD7QZBLay5Mws9qHBjcZdxH3lVLcXyPdrAGllbn6rP1AHo8ief67ATXIMHI3d9t
-	 pf0tntH7dpMsDTU6bVZHeAc+ZXTfojjkJOQKamSt2D3AmwzjgMZTYxxhuyDZz+tfeIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794343241;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=K89r/EqgxbIJB4IakU4wt5769iMdNHy5eBMzP7CcDRM=;
+	b=L1MSJeKYAPpnzuf7blx/2Oz+R8C2PCeYUqQ2fOkxUeo4BnVn0MCAYshGKGEgOWHhDGmV
+	 nLauxGYGEOtP7TSH3TP9E+GVC3GaO/WiF2iOq5NccpZZ7ojz/LbkU/fdaMiIJmG5tOhuc
+	 Fc0WPxGQC95s8cDkFF+WhKL2aLBgjj0eb80h1I4XtUpRLyRLfdupY1nFE+0o5dEo3SjcZ
+	 WvjJPAVAI4ioJY0TRymmWJfkuA+WznVsbWCGwfxJwK1cAFaXmbayieJaeM71yzboj3axg
+	 IhN14mcsTnJoki6wnFLkoFY0AVVfae/ZnBxY7MHck4iSgOIsnZ4nb/jt+73/SCoYuCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DwnCAze0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JuktnnDy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E10D60A3812;
-	Tue, 10 Nov 2026 20:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364E606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DwnCAze0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B14B1F0089F;
-	Tue, 10 Nov 2026 20:40:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JuktnnDy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA121F0089F;
+	Tue, 10 Nov 2026 20:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794343210;
-	bh=tH7VEUdf+F5G4QVeqrk092cc8aMIfb8V1vO/1TFqi0s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DwnCAze0sSTut+Dgb4VfT/uuQuZyOMhw5X6/Xejt/ODP6tUm1/nJt4qclP0LUD45/
-	 WsuHhJRkg+BJ3purSl/wxLt/Q9utnuZehp1mB9+auMaV6eTZgJDv6US3M0MVqa76N2
-	 yUr4wKX2zMvsKcgGfO4HYjh5wuYrHkbXc8FGbmKgLfClP7xeKFAv98EQ68O/NFeTb/
-	 W/AlTYq22g9dpsE5393qqFFgNRfsJvUzpDbADHZRbLq9ZiYGy/K6MOQcFGzICxYFWr
-	 glfSJdhX6Cvu+qSfFwKCJC0LnYjRg7h0rkzpdhgNuzvR1xjeAJR4KPpowtif9lJLfR
-	 naYGrHFXdynqw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2110239D6577;
-	Tue, 10 Nov 2026 20:40:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794343240;
+	bh=K89r/EqgxbIJB4IakU4wt5769iMdNHy5eBMzP7CcDRM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JuktnnDyV/EI5Q+B7KX9TBKvYaMvDJjkTeT0lXthPYj47oy6pvcazlizl2eQDCUlP
+	 Ox3rsNAIbwhkz9Beq/K9n9wtm4cDBurbg9gVmYtS28mR81mIxW4XV5+J0BFSywvf9I
+	 p3z8sxEWTjgrAeE1oozBDvaOBLlkSY7246yG7CspjvqO1GYlYEEP20Fo/jqxmwKWzS
+	 +15165nvE5inbrC2B+/z2FlzTqK2mgWtYWfYycHG/c5V9ypEVo5rvrGzGeTghg3BXk
+	 +xzwjgNRx+GivJj5zmqTysaG159E5LihpNGNVl85XmM9CJVOTMD/QD8fv0nRJ4NaF9
+	 utdAXjBfVsANA==
+Date: Tue, 10 Nov 2026 12:40:40 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, kernel-team@meta.com,
+ pabeni@redhat.com, tactii@gmail.com
+Subject: Re: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other
+ than fraglist
+Message-ID: <20261110124040.2c70b43a@kernel.org>
+In-Reply-To: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
+References: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +60,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tun: delete the flow entries of the moved queue on
- detach
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179434320867.48129.7633247531885586539.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 20:40:08 +0000
-References: <20261104174240.138491-1-umangpokhriyall@gmail.com>
-In-Reply-To: <20261104174240.138491-1-umangpokhriyall@gmail.com>
-To: Umang Pokhriyal <umangpokhriyall@gmail.com>
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 03 Nov 2026 09:09:36 -0800 Alexander Duyck wrote:
+> Have the validate_xmit_skb function mark any CHECKSUM_UNNECESSARY GSO
+> skb other than fraglist as CHECKSUM_NONE, which means the same on
+> transmit. The netif_needs_gso function then segments it in software,
+> and the __skb_gso_segment function unshares the header before the
+> protocol code rewrites the L4 checksum field. The callers of the
+> netif_needs_gso function that decide on segmentation for themselves,
+> such as tap, are left as they are.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed,  4 Nov 2026 23:12:40 +0530 you wrote:
-> When a queue is detached, __tun_detach() moves the last queue into the
-> freed slot and decrements tun->numqueues. The flow entries that point at
-> the old index of the moved queue, now tun->numqueues, are meant to be
-> deleted, but the call passes tun->numqueues + 1, an index that never
-> exists, so nothing is deleted.
-> 
-> Until those entries are refreshed by a write on their flow or age out,
-> tun_automq_select_queue() returns an index past the last queue, and
-> netdev_core_pick_tx() sends every such flow to queue 0 and warns:
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] tun: delete the flow entries of the moved queue on detach
-    https://git.kernel.org/netdev/net/c/4cc0a3f89707
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Applied with some massaging of the commit msg and the comment.
+Thanks!
