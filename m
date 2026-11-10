@@ -1,90 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.33
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794271129;
-	b=FUvNvKH3PaN8C3rn156dHZorGMzdAKbv3JqDmRIDbRQWg8TCcjre1zJfZIXZiC/D7TR6
-	 rI2RLsO51UahU5T2UOyrFu3UALkyzXdTUWu3BzMR7yP60Uh+CjE3lrXItpGgmqcj1z7a3
-	 Dk38J+H89aqdax3+cuzX/o9OannK1VDmbCznPMc+72GGI5MbNfS/TT6G1nksof+pZKMEp
-	 2umB/lo9fx1usYgexjDQOCLua0aJ4TnXucNYCyY7t9c/CZ3XolM63Hzz577VkM9SLZeAU
-	 gaeoIbdXNNpQkdg2YHJVJ/KTnp3M15BbVa4WNLXXadPUz2gBxrzDQbt76+q+o+SJUnQ==
+	t=1794271456;
+	b=QUgjTPKGmJ5KTOUzaXmcvcRB05vtkqGESNl+J4zLF5QaNQwkdrnmmGJOntJyJYcYMrtK
+	 xQERhoWyWs6DJ2xL1BrWJVQ2d3OPDWh3IkRNfkCuIosjJKbVysyW5Q/xIqNvgG7Km1Fhy
+	 7AxZmip3XVvZXtd7ulQf3EA+VY1J+jqTb0HqB9KUp12KuSGpPWpTLv87rFS8pNlv/GYkA
+	 duh/dhIUM/cxnObPz2iPgwIqqYemyyFWfzN1ntEEOZzg6pBqJ3RD4sLYTJl6QfaX0EEph
+	 jaxoUFnCPKR4Y/eqXHvty5kD6bWBZoQjeVpzVjaTZl5jJ13nFD/LdoW2BxkHfZNByIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794271129;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=L7XouM7EVXaoZdZC7OVtr6c7wMxTLOEjkY0PkptczXk=;
-	b=CY6xzryvk4A4EIp8oBhRL8aaPJ84j8IJQ5JWfpabSOqzwZXQNW9Qnj7v//ZTY7VS1bNp
-	 uSRdigRdpk9hICqIA3phnn/3Tr3CTm+7WFIp+4X0Lz3o8ZCO1Wc8DVw3YGwalsYYX1idT
-	 s+IT4aMM2jq0E9eIlvDspFMFjFgvocJlPRUcOuEA0WfC9Cqg1AHobJ3j1dwDx0o3UlVj/
-	 cNOZmZ3uPcD7QVMy3Gsnnb1kZOA772Jg8XXDcQ0J8nEgfVO86f8nXlXG9qVDyphXHlDHg
-	 TJr2evThJv5pSTwlw8BMI6BEyXlTxzCzs5k5Elq/r/979XW4y6w4xpIZaETz0/95Ccg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794271456;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=X7vRBwY1YVP+YsmylbzJovNrvWSg1Yr0Awx7ynFxjKQ=;
+	b=1ZEksR90+6DwhBHDVMuYxF98RRLAXuF83y3tMSF35r+gBb0xK6zLodtdPF0ZzKL+P2Md
+	 okVPDH0dPq8jiki2sUNHgWAyHpviJi4Gvs2bihgt5ZkiK9W6gX+mE3fqJbkJvq9c45lDd
+	 rOG0ZWqlp2FAAA4czfflN1fXNe1B2V+2WalXZSi/+c2LGdry8MYCiKvg99aOiEFABejiE
+	 zZOC9l0cxbYLnsgAhCQoFPCR9Irl2e+DEPzW72QZ8itipVDwwxYXsHGKVDE02HltyOaPf
+	 d37E9bMKc+fa7jD9ZHv2HIvtQljuDguUkSiBxY73dbD2t6hncQ4ef7jVip6FYYeaF5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=bWNrIjHH;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=LLiBWgJX;
-	arc=none smtp.remote-ip=160.80.4.33
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.33])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FCB606A338;
-	Tue, 10 Nov 2026 00:38:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16FCB606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fYwpeXq7;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 61D2F606A321;
+	Tue, 10 Nov 2026 00:44:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61D2F606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=bWNrIjHH;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=LLiBWgJX
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6AA0brej020849;
-	Tue, 10 Nov 2026 01:37:58 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 3367D122868;
-	Tue, 10 Nov 2026 01:37:49 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1794271069; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L7XouM7EVXaoZdZC7OVtr6c7wMxTLOEjkY0PkptczXk=;
-	b=bWNrIjHHBlCQ+KuNOs8ozU9lOJXNuK2Lx1JjVJbpOSLRBvakp6WFlD6fQlpKPz0yFd6G1n
-	vWqa47+MT/5PQTCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1794271069; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L7XouM7EVXaoZdZC7OVtr6c7wMxTLOEjkY0PkptczXk=;
-	b=LLiBWgJXpj7jAKeCjG2puASJxSokuN962CN8kLyIDUM6d1ZhiXYPxfwVtr2b9TzYIkULss
-	0fOknra0Cw7ApgUSxbqs+zikfpe+Ghzj9BvDCAO/hIXbOSP5aOXoyb6QVarOOCYTXh+m5i
-	E5FRpexPYQe64xt4l/ZrT4BeGoApU1r11CcROf4Sh9Rvi08goILjNVywW6PeSugPIhXrkB
-	99rgMN2g3Bt/AWioKqu/t3IUvuVGIBb5faTmNxPlhP34MuxoSudMs4nat7S1b4ECvg89yb
-	mcY4W11uxDKqLa8xsRvc3XO8CrI4f8JY7SdQFtq37zCfn826xp8bqH3dsoLbCw==
-Date: Tue, 10 Nov 2026 01:37:43 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Boyan Liu <yymhvert@gmail.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>, David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        co+98d7de09cd94fec5@bugs.sh, co+cdeaa2edb6897680@bugs.sh,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Hangbin Liu <hangbin.liu@linux.dev>,
-        Andrea Mayer <andrea@common-net.org>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF
- decapsulation
-Message-Id: <20261110013743.101dc3309db53ade8d6bb24e@uniroma2.it>
-In-Reply-To: <20261106065607.3372-1-yymhvert@gmail.com>
-References: <20261021024738.17266-1-yymhvert@gmail.com>
- <20261024015811.a995b7cab417cac2f41689de@uniroma2.it>
- <20261106065607.3372-1-yymhvert@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fYwpeXq7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1794271452;
+	bh=X7vRBwY1YVP+YsmylbzJovNrvWSg1Yr0Awx7ynFxjKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fYwpeXq7MHbhkmAE9/6mASGiHNWLPD/BBzKdUdgs9L3DoLl0WjwoHaZbj8eAEaHLm
+	 XsnyBydw8vrqKuBZhsw1PDe/bHSEx3TBEMpsTidQNOhVokFfsaXflQLcadPGkLPN8y
+	 PtJIw9HfU9XFf+T6dUYT+Q/zBTB0nhXPoUVOOBcx63KN7qn2w2gVr34KYdFgiyP0b6
+	 gYaTDBwjSVSQqUFRFyQk7yIiLfo9yQu+K5v8jK5luV+UWOn3uu6vnXkswbTy3mmmX2
+	 wW39nDuHHBrmFT/rpD6yI6gcAwrqbH1mP3Pg3K7nk+EX2DL6HoiDg+eqmZRpQCzlEd
+	 VVqcpw5wSQ5gw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A9F3A60058;
+	Tue, 10 Nov 2026 01:44:12 +0100 (CET)
+Date: Tue, 10 Nov 2026 01:44:10 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Laveesh Bansal <laveeshb@laveeshbansal.com>
+Cc: Florian Westphal <fw@strlen.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+a8ba738fe2db6b4bb27f@syzkaller.appspotmail.com,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	bridge@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH nf-next 0/2] netfilter: bridge: refragment packets with a
+ vlan tag moved by the bridge
+Message-ID: <avJo2nhgnulY776l@chamomile>
+References: <20261109191842.57359-1-laveeshb@laveeshbansal.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,36 +67,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261109191842.57359-1-laveeshb@laveeshbansal.com>
 
-On Fri,  6 Nov 2026 14:56:07 +0800
-Boyan Liu <yymhvert@gmail.com> wrote:
+Hi,
 
-> Hi Andrea,
->
-> It has been about two weeks since you mentioned that you were
-> looking into the NFQUEUE case.
+On Mon, Nov 09, 2026 at 11:18:40AM -0800, Laveesh Bansal wrote:
+> Fragmented packets are dropped on a vlan filtering bridge with bridge
+> conntrack when the protocol of their vlan tag differs from the bridge's
+> vlan_protocol, an 802.1Q tag on an 802.1ad bridge for instance. Patch 1
+> handles the tag when refragmenting. Patch 2 adds a selftest.
+> 
+> As discussed with Pablo in the first posting
+> (https://lore.kernel.org/r/atck-NoWvemxIsF6@chamomile), the
+> DEBUG_NET_WARN_ON_ONCE() change went to nf on its own and is now in the net
+> tree as 683ff28ab18a. This series is based on that commit and is meant
+> for nf-next, which does not have it yet.
+> 
+> Changes since the first posting
+> (https://lore.kernel.org/r/20261020000308.37362-1-laveeshb@laveeshbansal.com):
+> patch 1 keeps the tag together with the ethernet header instead of in
+> separate fields, and the selftest runs its checks even if the kernel had
+> warned before.
+> 
+> I used an LLM tool for the analysis, the code and the test runs.
 
-Hi Boyan,
+Do you have a usecase for this?
 
-I followed up on the NFQUEUE case on 26 Oct, in this reply to the v3:
-
-https://lore.kernel.org/netdev/20261026003415.f7c46fa5a495144c29c03a07@uniroma2.it/
-
-> My understanding is that NFQUEUE is the remaining open question
-> for v3. Did you get a chance to check it? Should I prepare a v4
-> to address that case, or is the current approach acceptable?
-
-As I wrote there, setting the mac header at the network header with
-mac_len 0 looks fine, and the reported crash is gone with v3 in my
-tests. The NFQUEUE case in the Sashiko review also exists without this
-patch, so it is not introduced by v3. On the SRv6 side, I think the
-current approach is acceptable, and the NFQUEUE case can be handled
-separately.
-
-Ciao,
-Andrea
+> I tested the series on arm64 and x86_64, with and without KASAN, lockdep
+> and kmemleak. The selftest fails without patch 1.
+> 
+> Laveesh Bansal (2):
+>   netfilter: bridge: refragment packets with a vlan tag moved by the
+>     bridge
+>   selftests: netfilter: add bridge conntrack test for vlan protocol
+>     mismatch
+> 
+>  include/linux/netfilter_bridge.h              |   4 +-
+>  net/bridge/netfilter/nf_conntrack_bridge.c    |  46 +++-
+>  .../testing/selftests/net/netfilter/Makefile  |   1 +
+>  .../net/netfilter/bridge_ct_vlan_proto.sh     | 198 ++++++++++++++++++
+>  tools/testing/selftests/net/netfilter/config  |   1 +
+>  5 files changed, 241 insertions(+), 9 deletions(-)
+>  create mode 100755 tools/testing/selftests/net/netfilter/bridge_ct_vlan_proto.sh
+> 
+> 
+> base-commit: 683ff28ab18accb25268741a724645eee839d41a
+> -- 
+> 2.43.0
+> 
