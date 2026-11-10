@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322306;
-	b=RbKwdUGxjX+qpPCwMxRbsx+Jv222n3yVKhTNCbPwkJqKWL9kwA4cP3b1qAAhm+LAPKdu
-	 IsteObnhHd+FQlY2Wyq+6VlzOM9yG2qyqT9Kr2+qwk7A7/P5OT9L0O9WNUIYigDiwTON2
-	 ZVkoo5Qgl6ZcJcxVWFP1pbYvQ1KQqq3vu5EU1DYFRNI0npL1zAhB3H9x1kf2OKF4Nyx5n
-	 f6L18v+5cRE6fP6Gz8jvGmR8+Pyr5fYTk0uniMnfQHkJ5rhQtg2OgT8TbgQQxnmNCvAyq
-	 zIQMkpjHORDdwYOxF9MENW0bFaTA7uwkgzurzDObEZFoljMzE/G1zVy9TIrGQ7FZI6Q==
+	t=1794322308;
+	b=W6B6vfNUaXtv7NFXFMQHITKiq3FA6HtlGB2Htyr9mlmfWHFdV5PcS9IT4AkobMzSCXIR
+	 b5y76qoS7c54+5lXp9iYLy79RUfNCoZGbFKn/kI8xTKqJdMqDX+LLoviupFZTHF2aKRgO
+	 eegv7GLnLygZpHr6J+AHIqCWnYcvFnDY3KXuF3hOYHPLq+I+bx5Yd97WRyc7Kll9y0CR9
+	 aPYA9mi6rpg5amZFgl1FDPZRj4Lj3HFYrFKyFH4pWR0967jpO4WHvphQfeCXVIDAVN8fw
+	 U4/aFj2Z93LZTRyDvdBGxqAC7G8uYzY7iybT47vDBR1npdwDgkbu5Rh4Ijouz++q/fA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322306;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322308;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=buqZEZjWv/CuOhvpfn3bLKl+wDA/z75kMCodt1O5PGo=;
-	b=GfXOJjnyUKwvyuQg8kEAcm2UD0dSOjL0e1Jgp1Q244yV34WXOz2gJFuEKiIJksBRSEDH
-	 WDwCO4TQYp2+R0Oro2xpAYjLacO3Ng461HE3NXJxyFwSJnEqRuDKmS/1++gBYGqA9f1If
-	 P45ozQ4asVAgXjP1IUO4moAhNeIqDjewYHrfzY3AQ3Fuwb7Q8qq7L/1zpcBUsS7uhQIsX
-	 04joY5Kl7fxX/pIeeSsxcvqCJeP9rDgiqJDAMSNCi3/gMtP9RPEDHUAyO6EG50VTpd4a2
-	 +z56bzLAfAIwuT1HlqLAZhx+fpBnTBMdnwoNAtdIeov3+MeojRPT3AzvWCUx9epAE0w==
+	bh=D1Vu7xfdQF4eR4hyPgmWTlPYuWOE0VKf4S3hs2sAvyY=;
+	b=L0jhK/n1b8b6gH4McltzOgmgqQWyHK7R+SaJhM+JTr5P/esMKuLlbRonU6DTU8CJ6fRE
+	 jLsmWZUp5PJft0+kDAuKCu0oER1QBCTTgC9jVBnwFcI2oC9FQ+XyrzRAahyav04J7c9JA
+	 oNW+HzCiDEtA/UH0Auhl53Z922P3miUGLc2HCfJYSRATB6LRiP2+hWUqY0FBBH1PzazNV
+	 bufwGMfXv865vquil/82XH0ra1uQ9f3iSS57XkbaAZUtsaVz0YPN0zqkKa4DPq0V6fNbC
+	 o/I5HsU6cjn+1JSxogW90ildbRzvI5UTtu17c444v991OS556EgQfE8WnAfQMoMvvFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mU0EHLUP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L75IIeDI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9048C60A2611;
-	Tue, 10 Nov 2026 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30D60A2630;
+	Tue, 10 Nov 2026 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mU0EHLUP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81361F008A1;
-	Tue, 10 Nov 2026 14:51:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L75IIeDI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FB61F008A3;
+	Tue, 10 Nov 2026 14:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322306;
-	bh=buqZEZjWv/CuOhvpfn3bLKl+wDA/z75kMCodt1O5PGo=;
+	s=k20260515; t=1794322307;
+	bh=D1Vu7xfdQF4eR4hyPgmWTlPYuWOE0VKf4S3hs2sAvyY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mU0EHLUPFtdTnlLMSRLnbhxj3OS4Xny+JOYThVKdO2oogPcfSma425HAgbaz2oLs4
-	 L/8TRf9s4HSBQXxWvNB8OMKk9hA7hvzxeO7buoLF5jKKD4a+ckQKFNaoIj3epppmVS
-	 NdkDJ7LgVKaosR/i7xUFUB6amSMafh6IwPuO9XqVwKvhGnydEufVJEgyPtebnC2chG
-	 R5odv2RRQ7uNoZEbKnfdk0WD2bbVlBAYQfcDB4dm9VGcLHNmdEYTp7+d5puX/y7Sbx
-	 UHQSyuMC6PCoWhrzaDPEfKiT0r0Fw+OFyZ9V32vvhVKrNhctWDuU8mH5Bc/7uxSKZT
-	 ksg7SrakSMGaA==
-Subject: Re: [PATCH v33 net-next 4/8] net/nebula-matrix: add chip-wide
- hardware init/deinit implementation
+	b=L75IIeDI4FcIvAHtztGd7gJLu0ZS06G5ckGf2x+jJfHs4/xO2VljpY/tAdT3XYzeq
+	 D82VsBlbZFvZQ1RftVAiHzY/tUBhn4Efb3KcSzbOagGCinFKnSQewLVFkpe3nWMiCP
+	 wYuSAd5+Vx27OnKNIye32VtLkZuPxuGLNmX0qcNMTpcPGS7yPCkaorPA/m+itLHmdU
+	 EfFn0nRMwlov8li/OmIjEjeNKVUrYdjJwDEibmHnetQHfknRT5qypgsEqotrQXxv2a
+	 2giI7Xw41BP5KzZ1S9i0CLHIyas3IQyXaVIqnrm3ca6xDf2bHtxWcFYQaADqvKZW51
+	 x5wRzgcCgb3TA==
+Subject: Re: [PATCH v33 net-next 6/8] net/nebula-matrix: dispatch: implement
+ channel RPC framework and serialize hardware ops
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
  andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
  horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 14:51:45 +0000
-Message-ID: <179432230546.994134.4294945675510273127@kernel.org>
-In-Reply-To: <20261106045631.2224-5-illusion.wang@nebula-matrix.com>
-References: <20261106045631.2224-5-illusion.wang@nebula-matrix.com>
+Date: Tue, 10 Nov 2026 14:51:46 +0000
+Message-ID: <179432230658.994134.11954971726039862043@kernel.org>
+In-Reply-To: <20261106045631.2224-7-illusion.wang@nebula-matrix.com>
+References: <20261106045631.2224-7-illusion.wang@nebula-matrix.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 4
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,113 +76,237 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] nbl_dvn_init() and nbl_uvn_init() in nbl_hw_leonis.c turn the
-  relaxed-ordering (RO) enables in two chip-wide registers on or off:…
+- [Medium] This patch makes it possible for a sibling PF to trigger
+  runtime teardown of its own MSI-X map on the control PF, and that…
+- [Low] The subject line says "dispatch: implement channel RPC framework
+  and serialize hardware ops", but the patch does neither of those…
+- [Low] The struct nbl_dispatch_ops kernel-doc in nbl_def_dispatch.h
+  justifies the empty nbl_disp_remove() like this: "the teardown order…
+- [Low] nbl_disp_chan_cfg_msix_map_req(),
+  nbl_disp_chan_destroy_msix_map_req() and…
+- [Low] The commit message says cfg_msix_map, destroy_msix_map and
+  set_mailbox_irq "carry a caller precondition": clear mailbox IRQ_RDY…
 
 --
 
-net/nebula-matrix: add chip-wide hardware init/deinit implementation
+net/nebula-matrix: dispatch: implement channel RPC framework and serialize hardware ops
 
-This adds the Leonis chip-wide init_module() and deinit_module() hooks
-in the hw and resource layers. They run only on the control PF. They
-program the DP datapath registers (DPED, UPED, SHAPING, DSCH, USTORE,
-DSTORE, DVN, UVN, UQM, PADPT) and drive the driver_status handshake
-with firmware.
+This patch adds mailbox RPC request and response handlers for five
+dispatch ops: cfg_msix_map, destroy_msix_map, set_mailbox_irq, get_vsi_id
+and get_eth_id. Based on has_ctrl/has_net, each op becomes either a local
+resource call or a channel RPC to the management PF. The five responders
+are registered with the channel layer.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index 75d6982ae1e83..2b55f2c2518b4 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+> net/nebula-matrix: dispatch: implement channel RPC framework and serialize hardware ops
+
+[Severity: Low]
+This isn't a bug, but does the subject line match what the patch does?
+
+The patch adds no lock, mutex or other serialization. The body says "No
+dispatch-layer lock is taken around these ops", and the comment in
+nbl_disp_cfg_msix_map() says the same thing. The only serialization is
+intr_mgt->lock, which an earlier patch, "net/nebula-matrix: add intr
+resource implementation", added to the resource layer.
+
+The channel RPC framework (send_msg, send_ack, register_msg and the ACK
+errno plumbing) was also added earlier, in "net/nebula-matrix: add channel
+layer". This patch adds five request/response handlers on top of it.
+
+Could the subject describe that instead, for example "dispatch: add
+mailbox RPCs for msix map, mailbox irq and vsi/eth id"?
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> index 966fee2dec8b0..cb68544e02723 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
 
 [ ... ]
 
-> @@ -150,6 +175,719 @@ static void nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt, u32 *eth_map)
+> @@ -25,6 +193,353 @@ static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
+>  	return -EOPNOTSUPP;
+>  }
+>  
 
 [ ... ]
 
-> +static void nbl_dvn_init(struct nbl_hw_mgt *hw_mgt, u8 speed)
+> +/*
+> + * Precondition: caller must disable mailbox IRQ_RDY and switch send_msg
+> + * to the polling path before issuing this RPC. The responder rewrites
+> + * the requester's mailbox MSI-X routing during the resource op, so the
+> + * ACK cannot rely on interrupt wakeup while routing is in flux.
+> + */
+> +static int
+> +nbl_disp_chan_cfg_msix_map_req(struct nbl_dispatch_mgt *disp_mgt,
+> +			       u16 num_net_msix, u16 num_others_msix,
+> +			       bool net_msix_mask_en)
 > +{
-> +	u32 timeout = 0;
-> +	u32 ro_flag = 0;
-> +
 
 [ ... ]
 
-> +	spin_lock(&hw_mgt->reg_lock);
-> +	nbl_hw_rd_regs(hw_mgt, NBL_DVN_DIF_REQ_RD_RO_FLAG, &ro_flag,
-> +		       sizeof(ro_flag));
-> +	if (pcie_relaxed_ordering_enabled(hw_mgt->common->pdev)) {
-> +		ro_flag |=
-> +			FIELD_PREP(NBL_DVN_DIF_REQ_RD_RO_FLAG_DESC_RO_EN_MASK,
-> +				   1) |
-> +			FIELD_PREP(NBL_DVN_DIF_REQ_RD_RO_FLAG_DATA_RO_EN_MASK,
-> +				   1) |
-> +			FIELD_PREP(NBL_DVN_DIF_REQ_RD_RO_FLAG_AVRING_RO_EN_MASK,
-> +				   1);
-> +	} else {
+> +	nbl_chan_fill_send_info(&chan_send, common->mgt_pf,
+> +				NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,
+> +				&param, sizeof(param),
+> +				NULL, 0, 1);
+> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
+
+[Severity: Low]
+This precondition appears only as a comment, here and above
+nbl_disp_chan_destroy_msix_map_req() and
+nbl_disp_chan_set_mailbox_irq_req(). Could it be enforced in code instead?
+
+Suppose one of these RPCs were sent with NBL_CHAN_IRQ_RDY set. The
+responder would rewrite the requester's mailbox MSI-X routing before it
+writes the ACK. The requester would then wait in the interrupt-mode path
+of nbl_chan_send_msg(), which has no RX polling fallback:
+
+nbl_chan_send_msg() {
+    ...
+	if (test_bit(NBL_CHAN_IRQ_RDY, chan_info->state)) {
+		while (!READ_ONCE(wait_head->acked)) {
+    ...
+			ret = wait_event_timeout(wait_head->wait_queue,
+    ...
+}
+
+In that case the call would return -ETIMEDOUT even though the hardware
+state had already changed.
+
+No in-tree caller later in the series does this. nbl_dev_start(),
+nbl_dev_enable_mailbox_irq(), nbl_dev_disable_mailbox_irq(),
+nbl_dev_stop() and the err_destroy_map rollback in nbl_dev_start() all
+follow the precondition. A check would only be defensive.
 
 [ ... ]
 
-> +	}
-> +	nbl_hw_wr_regs(hw_mgt, NBL_DVN_DIF_REQ_RD_RO_FLAG, &ro_flag,
-> +		       sizeof(ro_flag));
-> +	spin_unlock(&hw_mgt->reg_lock);
-
-[ ... ]
-
-> +static void nbl_uvn_init(struct nbl_hw_mgt *hw_mgt)
+> +static void nbl_disp_chan_destroy_msix_map_resp(void *priv, u16 src_id,
+> +						u16 msg_id, void *data,
+> +						u32 data_len)
 > +{
 
 [ ... ]
 
-> +	ro_enabled = pcie_relaxed_ordering_enabled(hw_mgt->common->pdev);
-> +
-> +	nbl_hw_rd_regs(hw_mgt, NBL_UVN_DIF_REQ_RO_FLAG, &flag, sizeof(flag));
-> +	if (ro_enabled) {
-> +		flag |= FIELD_PREP(NBL_UVN_DIF_REQ_RO_FLAG_AVAIL_RD_MASK, 1) |
-> +		FIELD_PREP(NBL_UVN_DIF_REQ_RO_FLAG_DESC_RD_MASK, 1) |
-> +		FIELD_PREP(NBL_UVN_DIF_REQ_RO_FLAG_PKT_WR_MASK, 1);
-> +		flag &= ~FIELD_PREP(NBL_UVN_DIF_REQ_RO_FLAG_DESC_WR_MASK, 1);
-> +	} else {
-
-[ ... ]
-
-> +	}
-> +	nbl_hw_wr_regs(hw_mgt, NBL_UVN_DIF_REQ_RO_FLAG, &flag, sizeof(flag));
+> +	if (res_ops->destroy_msix_map) {
+> +		ret = res_ops->destroy_msix_map(p, src_id);
 
 [Severity: Medium]
-Both of these RO flag registers seem to be single chip-wide registers
-in the DP block, not per-function ones:
+Can this let the device fetch a sibling PF's MSI-X map table after the
+table has been freed?
 
-#define NBL_DVN_DIF_REQ_RD_RO_FLAG		(NBL_DP_DVN_BASE + 0x0000045C)
-#define NBL_UVN_DIF_REQ_RO_FLAG			(NBL_DP_UVN_BASE + 0x00000250)
+This responder is the first way a sibling PF can trigger a runtime
+teardown of its map on the control PF:
 
-nbl_res_chip_init_module() in nbl_chip.c runs this only on the
-control PF:
+nbl_dev_destroy_msix_map()                        (sibling PF)
+  -> NBL_CHAN_MSG_DESTROY_MSIX_MAP
+    -> nbl_disp_chan_destroy_msix_map_resp()      (control PF)
+      -> nbl_res_intr_destroy_msix_map()
+        -> __nbl_res_intr_prepare_destroy_msix_map()   clears VALID
+        -> nbl_intr_quiesce_wait()                     usleep_range()
+        -> __nbl_res_intr_complete_destroy_msix_map()  dma_free_coherent()
 
-	if (!common->has_ctrl)
-		return -EINVAL;
+The comment above nbl_intr_quiesce_wait() in nbl_interrupt.c says the
+window "is not a guarantee", and continues:
 
-That means nbl_dvn_init() and nbl_uvn_init() check
-PCI_EXP_DEVCTL_RELAX_EN only on the control PF's pdev, and that one bit
-sets relaxed ordering for every function's queues on the chip.
+ * A future caller that cannot tolerate the residual risk must keep the
+ * table allocated for the lifetime of the function instead of relying on
+ * this delay.
+ ...
+ * fetch inside this window.  It cannot help a sibling PF's map destroyed
+ * at runtime, because those fetches carry the control PF's BDF and so
+ * are unaffected by clearing bus mastering on the sibling.  Runtime
+ * destroys of sibling maps only become reachable with the mailbox RPC
+ * added later in this series.
 
-In PCIe, Enable Relaxed Ordering is a per-function permission. Suppose
-a sibling PF has RO cleared in its own DEVCTL, for example by a guest
-that owns it through vfio-pci, by setpci, or by a driver applying an
-erratum. If the control PF has RO enabled, would the DVN/UVN engines
-still issue RO-tagged descriptor and avail-ring reads, and RO packet
-writes, for that sibling's queues?
+This responder is that mailbox RPC, but the table is still freed right
+after the roughly 1ms delay. The control PF stays bus master the whole
+time. A pcompleter fetch that is still in flight would read freed or
+reused memory. With an IOMMU that is a fault. Without one, the device
+could use stale gvec routing and deliver an interrupt to the wrong
+function.
 
-The value is also read only once, here. deinit_module() leaves it
-programmed, so later DEVCTL changes on any function are never picked
-up.
+nbl_disp_chan_cfg_msix_map_resp() has the same exposure when it reaches
+the had_config path of nbl_res_intr_cfg_msix_map(). That path returns the
+old global vectors to the shared pool via nbl_intr_release_bitmap() after
+the same window.
 
-Does the hardware also gate the RO attribute on each requester
-function's own DEVCTL? If not, could this use the AND of RO enable
-across all functions on the chip, or program RO per function if the
-hardware supports that? If the hardware does gate it per function,
-could a comment here say so?
+Later in the series, the sibling frees its vectors with
+pci_free_irq_vectors() (via nbl_dev_clear_interrupt_scheme()) before it
+sends destroy_msix_map. That makes new fetches unlikely, but it still
+gives no hardware completion guarantee.
+
+Would it be safer to keep sibling map tables allocated for the lifetime
+of the function, as the resource layer comment suggests?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+> index b5a695164cbcd..7da9e242c621e 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+
+[ ... ]
+
+> @@ -32,16 +33,44 @@ enum {
+>   *               mailbox DMA before calling it, see nbl_dev_remove().
+>   *               Returns void.  Control-PF exclusive, same NULL rule as
+>   *               @init_module.
+> + * @cfg_msix_map: configure function msix mapping table
+> + * @destroy_msix_map: tear down msix mapping resource
+> + * @set_mailbox_irq: bind mailbox interrupt to specified msix vector
+
+[Severity: Low]
+The commit message says cfg_msix_map, destroy_msix_map and
+set_mailbox_irq "carry a caller precondition": IRQ_RDY must be cleared
+and the polling send path used. That rule is only written above the
+static *_req functions in nbl_dispatch.c.
+
+Should the precondition also go in this kernel-doc? Callers program
+against struct nbl_dispatch_ops, and from there they cannot tell whether
+an op will be a local call or an RPC.
+
+> + * @get_vsi_id: resolve VSI ID by type
+> + * @get_eth_id: resolve eth port info from VSI ID
+>   *
+>   * These callbacks are not dispatch-layer setup/teardown: the dispatch
+> - * structures are devm-allocated in nbl_disp_init(), and nbl_disp_remove()
+> - * only documents why no explicit teardown is needed. They forward
+> - * chip/firmware control down to the layers below instead: a control-PF
+> - * function calls the resource ops directly.
+> + * structures are devm-allocated in nbl_disp_init(), so nbl_disp_remove()
+> + * has nothing to undo. The five responders registered by
+> + * nbl_disp_setup_msg() are owned by the channel layer and go away with
+> + * it, so they need no explicit unregistration either; the teardown order
+> + * that makes that safe is documented with the code that performs it, in
+> + * the next patch in this series. They forward chip/firmware control down
+
+[Severity: Low]
+This isn't a bug, but won't "the next patch in this series" be
+meaningless once this is merged?
+
+At this commit, the code that performs the teardown is:
+
+void nbl_core_remove(struct nbl_adapter *adapter)
+{
+	nbl_disp_remove(adapter);
+	nbl_res_remove_leonis(adapter);
+	nbl_chan_remove_common(adapter);
+	nbl_hw_remove_leonis(adapter);
+}
+
+Neither this function nor the nbl_core_init() error unwind documents the
+ordering. Nothing breaks at runtime yet, because setup_queue() has no
+callers, so no responder can run.
+
+Later, "net/nebula-matrix: add common/ctrl dev init/remove operation"
+makes nbl_core_remove() call nbl_dev_remove() first. That tears down the
+mailbox channel queue before the resource layer is removed.
+
+Even so, this header comment is unchanged at the end of the series. The
+"Teardown order" comment in nbl_dev_remove() also never mentions the
+responders or handler_xa.
+
+Could this comment name nbl_dev_remove() and state the invariant
+directly, i.e. that the channel queue is torn down before the resource
+layer is removed?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106045631.2224-1-illusion.wang%40nebula-matrix.com
