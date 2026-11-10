@@ -1,59 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794313983;
-	b=jpUYPuwmNK/6oh+DuhqyCvxPJYP5lpxIP/vFkVHWusVZIXCSU0c84Yf0gs3OVN+++TVu
-	 2F8SCgs1zC0+ktacmo9HZc9/THr7eOVIHilf2bRlFz3VDM4gNJBZi7BywcXzRzR/Ak0v8
-	 DmHFN8BbYMsDtQXU6S0DV8P479s+ruopRSP+v5kNUP8s+j9JbEkNlQHJt08zWRQ99t671
-	 Nanos3qbQEGYs7tg5cwm6dr64OZQaEo7EUQr9/JGnHVvg5Tmzx4NbGj7LTvxnt8AK2vIO
-	 m+Bylw6EDscWLaaGqaRJwErc0JeuJ5wC2NNDULzMdKBIJEkUdU9PJQGgxN+iankOKuQ==
+	t=1794314416;
+	b=5actdsrr4hFySrsX8qqd7SZqoE/MOrrOPy7iiq3ikMLWT1yDuSZsSMXRa1gwZNlcGd/X
+	 bPzBO2uXoKzaa3lDWI9m1A5qj5AovfMKuhbPJZXBq9WOVERvd1UaKvvWHA86ClMbmpXe9
+	 Ggm3Q43nZs9PEU1AAEmm4zbU29QRmSzTSyaCrlrYCWCmKuhXmZfUzT8jPvtlrwSZ4UUZv
+	 Z4ymOrdpMK5KKsuwf2i1CrzpFQ2dx2N8yDix/WRjXfgBTuJ5rg3sCfXxTM+HayLZpNE/3
+	 3/D0TnU+nWFzrjFvnn7Uojyg0MhKPAjH5NflFP35gsWZAe+hkwWYUVeqcIeUjhIxMgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794313983;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Debian-User;
-	bh=uXHrdWcqiHpJ/+X7spV4X+YSqEs4YGoqydo4TrppAyA=;
-	b=gXxrFHATUSuSYHTdZJ8PbJks86IDdb85/ViHd+gYAet2jvgJK1s4RrhZnm7RaTwop8E1
-	 IOHaij0NFEW+IDKfkIOrz4F5SeJYKoA66ZM7ByuKx0vNVYs8Cow3vdbAM1W5vylAxrXNq
-	 UDEMZC7PsRZyQOpzAtkdOWfMe2bgB2N2D1NaWWKiuZTmG/xBF/X25mmy7LYMp1xS5YwBM
-	 0z2JzHmSWd569HMyk6Psw2UAKCg/1G875Fug70T0QTTG7IN9txZb3602bFegvwfoFnx9S
-	 l1YweXG3qT3uhVH5O4PnHIsQ7TSnNGghmRARyzHE8MwQsVNWVQv2Qsq+cfwWMhIC2JQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794314416;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=2pKjOnB7thorowgyXI58dtDZeDUgnklgN0ioGos6ajU=;
+	b=PYhPiV2FQYEyvQlvjFdat3D5Tkn61ZBnN8vwtH0YBJnJj8YS7vtMwqJ5F2FAEYXtK/78
+	 5C9ZvFyI+tiaJrGj2KBO+j5MLsD2kzQ1Z7UjEgXEKiIHLnkeyi25Q4nE0aYj/cpEkEZmv
+	 pRmlEImrIOGSmqlRQlKCmOIjCzdX5Ae+jR1PIxDf9/5f0I1cKvavFgrRqL8p3wRoLv/p9
+	 6zCFcMdaQ/fDBP/KaOJuo5cQgNuZWEfN4uTkwREMVlN2LyeNLHIZ8JLiCMPEoHEK/toaS
+	 IAcgID5rhLfEyUsBO76qO5ap0D1t9uKOxXI2oj7e5NQU5BJzgx/jKI9sPGEJDDIiriw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b="suwBrA/n";
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="eZa/Gow/";
+	arc=none smtp.remote-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BACE606A326;
-	Tue, 10 Nov 2026 12:33:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BACE606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F421B606A31C;
+	Tue, 10 Nov 2026 12:40:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F421B606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=suwBrA/n
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=uXHrdWcqiHpJ/+X7spV4X+YSqEs4YGoqydo4TrppAyA=; b=suwBrA/nAsthm2JS9BiVooHsyZ
-	VmGmrgtUn8GSiRlcSV8Bn7v4lkqYoSzypMnCvGkwESfSmjDRl+X+2ezZhc9slm4hVDdu15a1oqC8y
-	FQ5WsAHx99+UI67Hv3vZHjrV9Nfs9l30fKxquAH86xlFzTEYRhM3D+3OuzPeVZplI6YeqKj//B4zG
-	QN5Ml3Id34TXvSkkMz1XvtvCKAtrEY8ftyxXrC6dmxZm3d7WfNNuVbE55e/AXX8Sx4+PVRrn7936R
-	hujqIkNiKWlgSc8ql2gP1z7JeBRbqhviJ9vnRvbF5zP3eDMiuSnv40ZfLDl+mrY88fb6plA9X2PXx
-	u6CMO4qg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xQl21-00COyt-2d;
-	Tue, 10 Nov 2026 12:32:58 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 10 Nov 2026 04:32:25 -0800
-Subject: [PATCH net] selftests: netconsole: enable the targets created by
- the torture test
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=eZa/Gow/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=2p
+	KjOnB7thorowgyXI58dtDZeDUgnklgN0ioGos6ajU=; b=eZa/Gow/VLJcjcx3V8
+	ds2ts8qL4APY0xIP7xfxVbMvHiOqtuO8rprxUBeZBllnTbhBpK1d8CHNa1hoQlvT
+	kDa+d8SjUNhXQe7EBBLopyntAylUxheakO1i8eVnUjSCMpS37kvLnMpvUm1AAm1B
+	vw40mGMI4g+H0JpVy86J4xf+U=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3X4hjEPNqevk+Eg--.59821S2;
+	Tue, 10 Nov 2026 20:39:07 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org (open list:STMMAC ETHERNET DRIVER),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: dinghui@lixiang.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com,
+	liuxuanjun@lixiang.com
+Subject: [PATCH net v6 0/4] net: stmmac: fix RX descriptors and XSK TX on resume
+Date: Tue, 10 Nov 2026 20:38:51 +0800
+Message-Id: <cover.1794311618.git.dinghui@lixiang.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,76 +72,135 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-netcons_selftest_fix-v1-1-86643b837216@debian.org>
-X-B4-Tracking: v=1; b=H4sIAN0O82oC/x3MYQqDMAwG0KuE77cFW52wXmUM2bpkC4w4miKCe
- PeB7wBvh3NVdmTaUXlV18WQKXaE8nnYm4O+kAmpT1OMsQ/GrSzms/NXGnubRbcwlqdMw5CuFxZ
- 0hF9l0e1sbzBuuB/HH/DU14drAAAA
-X-Change-ID: 20261110-netcons_selftest_fix-4cbf633295ef
-To: Gustavo Luiz Duarte <gustavold@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1706; i=leitao@debian.org;
- h=from:subject:message-id; bh=zSq8AOVPqKnj/9CHTFOYb9X/z7p6pl2TpOdMOIPN+og=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8w71zvOB+X5okMZEU9Ai0aXgzKngHTwprGRqF
- FostGn+XC+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMO9QAKCRA1o5Of/Hh3
- bW1kD/4i/esf76C3fPut8KLl6FD9Ac8fm3Tn/C6cUztJyqnqwfd43nVET+taoAitIB5dKCDOxNf
- 6UzzV4s2+Q9CIiA6LbhTZkajmI/LIuRzhDl9FkKWiDIpfVkASUb757A/DORDkNLbiWYeuFtDcsp
- vKdkMR7bC9dptkdiC8FZLSs8KsUZqxoAFfYscoMK+lzraP3r05bddR+Oz6cunEvsyW+HdEFGRyp
- 5mmTQSn5u8QkToZR9LPI1tWBl8tgWxwkMXmJ5jPGvJ8Q9o2dGas7bYKA5HajuVR1gvb3nfog8AM
- wz4yxC4pCa5U4VkveHcLzz7IBkz26xZVvM4/YwxDMErQ8MMpko3RA4AE7p5cEEKrv1EiSBTIRa0
- 1Nw9f75hmYP1pssPGiSS4cMaJ28LMVz95nGMUjAPzinlVsE6gX1wvlA5TXJ/vJ5DxcSV+CspaoF
- AHR5rJKS9N7TbdNXtqCExLwx66tlVIoMP6FeghV9zgSkwJAAGisEIQNKktxCk2VvokSFOCz7sJG
- HjL4nbG1UB28fuUIYGezCbV4M5Sx0fi+uZMHJjsC9lRnRrwVmRfMowcddwjON9JEE6jpv0elrp1
- B6uc6QJZ7CCFQs+xuDa2WYmEU92JGOFi22iCB1d1US0MbuqftDpI/u5edGl42nlHq7T+xqQbcwI
- GHGVwN3fa/oUD9A==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgD3X4hjEPNqevk+Eg--.59821S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuFWfGw4xJry7Cw4kJry5Jwb_yoWxGrWkpr
+	Z5Kan0yw1kGr18Aws5uw4xXFyrKa1rAr43WrW5X3yF9FW5Wr1aqr4akF4Yqa4DCrs7G3W2
+	yr4UuwsrCF15Zr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j289NUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC9A224mrzEG159QAA3F
 
-create_and_delete_random_target() is meant to create, enable and remove
-targets while messages are sent, but it only creates and removes them.
-The helper it calls, _create_dynamic_target(), stopped enabling the
-target when the bonding test moved that step into
-create_dynamic_target().
+From: Ding Hui <dinghui@lixiang.com>
 
-Enable the targets again, so they come up while messages flow and are
-disabled before being removed. Like toggle_netcons_target(), ignore a
-failed enable, which would otherwise end the function and leave the
-targets behind. With a console per target, this also registers and
-unregisters their consoles under load.
+This series restores RX descriptor addresses overwritten by hardware
+writeback between disabling NAPI and stopping RX DMA during suspend. It
+also fixes an AF_XDP TX-only resume stall found while testing the series.
 
-Fixes: 236682db3b6f ("selftest: netcons: add test for netconsole over bonded interfaces")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/drivers/net/netconsole/netcons_torture.sh | 1 +
- 1 file changed, 1 insertion(+)
+Patch 1 honors RX allocation flags. Patch 2 keeps unfilled XSK slots
+CPU-owned and tracks pending refills explicitly, including an empty ring
+and short refills. Patch 3 restores RX addresses from retained buffers,
+rebuilds chain pointers and initializes descriptor control fields. It
+publishes a contiguous XSK prefix and recomputes the tail and pending
+region. Patch 4 restores the bound XSK TX pool after TX buffer cleanup;
+otherwise zero-copy transmission can stop after resume.
 
-diff --git a/tools/testing/selftests/drivers/net/netconsole/netcons_torture.sh b/tools/testing/selftests/drivers/net/netconsole/netcons_torture.sh
-index 33a44adb6f8f3a..3dfab0bf1b0756 100755
---- a/tools/testing/selftests/drivers/net/netconsole/netcons_torture.sh
-+++ b/tools/testing/selftests/drivers/net/netconsole/netcons_torture.sh
-@@ -46,6 +46,7 @@ create_and_delete_random_target() {
- 
- 		# Basic population so the target can come up
- 		_create_dynamic_target "${FORMAT}" "${RND_TARGET_PATH}"
-+		echo 1 > "${RND_TARGET_PATH}"/enabled 2> /dev/null || true
- 	done
- 
- 	echo "netconsole selftest: ${COUNT} additional targets were created" > /dev/kmsg
+The earlier commit 9c63faaa931e ("net: stmmac: re-init rx buffers when mac
+resume back") was reverted by 00423969d806 after a Jetson TX2 suspend/resume
+regression. This series retains existing buffers and DMA mappings instead
+of recycling and reallocating every buffer. Jetson TX2 has not been tested.
 
----
-base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-change-id: 20261110-netcons_selftest_fix-4cbf633295ef
+Hardware validation used backports on our XGMAC platform with a vendor
+kernel based on Linux 6.12.41, not these upstream commits as-is:
+- Receiving iperf traffic from a PC while suspending and resuming caused a
+  fatal bus error after resume in almost every run without the RX fix.
+  The same test no longer showed that failure with the fix.
+- Native XDP/AF_XDP zero-copy RX continued after two suspend/resume cycles
+  with the receive socket kept open.
+- Zero-copy TX-only, with no RX fill buffers, is tested ok after one suspend/resume
+  cycle, with no fatal bus error.
+- Pausing the receive application with SIGSTOP and resuming it with SIGCONT
+  recovered RX without recreating the socket.
+- xdpsock is used for native XDP testing.
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+Additional testing would be welcome for RX sockets initially supplied with
+0/1/8/15 fill buffers, replenishment in batches below 16, and those states
+across suspend/resume. These differ from TX-only with no RX fill buffers.
+Legacy descriptor cores, GMAC4, chain mode, timestamp-specific descriptor
+paths, multiple XSK queues and long suspend/resume runs remain untested.
+
+Missing page_pool buffers are still allocated during resume. Allocation
+failure returns -ENOMEM without restarting DMA and leaves the device
+detached. This adds a trigger for existing resume error-recovery problems;
+full close/open recovery, including NAPI and platform power handling, is
+separate work. The Medium-severity AI review on failure recovery is not
+fully resolved by this revision.
+
+Changes in v6:
+- Add a separate fix to restore the bound XSK TX pool after resume cleanup,
+  addressing TX-only stalls found during XGMAC validation.
+- Factor resume descriptor work into one TX queue loop and one RX loop,
+  following Thomas's review, and use common error cleanup.
+- Restore addresses and chain pointers before initializing RX control fields,
+  preserving legacy fields and RIWT/IOC policy without a separate OWN loop.
+- Add format-specific RX ownership clearing for unfilled XSK descriptors.
+- Track pending XSK refills independently of circular index equality; retry
+  short refills and prevent consumption of unfilled descriptors.
+- Restore a populated XSK prefix and retain later attached buffers for refill;
+  recompute the allocation count, initial tail and pending region.
+- Select XSK buffer size independently of the initial allocation count.
+- Discard any partially assembled RX frame before resetting the RX ring after resume.
+
+Link to v5:
+https://lore.kernel.org/netdev/20261025100636.613670-1-dinghui1111@163.com/
+
+Changes in v5:
+- Target net and add Fixes tags to both patches.
+- Split the allocation-flags fix into a separate patch, with a Fixes tag
+  identifying the page_pool conversion that stopped honoring the flags.
+- Share page_pool and XSK buffer preparation with the RX refill paths.
+- Allocate missing secondary pages even when the primary page exists,
+  using the current baseline's buffer2 capability check.
+- Condense the reinitialization kernel-doc to two paragraphs.
+- Restore descriptor addresses before the final dma_wmb()/OWN pass.
+- Clarify that unavailable XSK slots remain CPU-owned and may stop DMA
+  with RBU, rather than claiming that hardware skips them.
+- Power down legacy SerDes if RX descriptor restoration fails.
+
+Link to v4:
+https://lore.kernel.org/netdev/20260627122533.1165324-1-dinghui1111@163.com/
+
+Changes in v4:
+- Document the return value of stmmac_reinit_rx_descriptors().
+
+Link to v3:
+https://lore.kernel.org/netdev/20260604144557.3175399-1-dinghui1111@163.com/
+
+Changes in v3:
+- Allocate missing page_pool buffers with GFP_KERNEL and abort resume
+  on allocation failure.
+- Try to allocate missing XSK buffers and clear descriptors when the
+  fill ring cannot supply a buffer.
+- Restore OWN after programming addresses and rebuilding chain pointers.
+- Honor the flags argument of stmmac_init_rx_buffers().
+- Restore RX descriptors after stmmac_clear_descriptors().
+
+Link to v2:
+https://lore.kernel.org/netdev/20260526022620.501229-1-dinghui1111@163.com/
+
+Changes in v2:
+- Introduce a helper to restore addresses from existing RX buffers.
+- Update the commit message.
+
+Link to v1:
+https://lore.kernel.org/netdev/20260515053856.2310369-1-dinghui1111@163.com/
+
+Ding Hui (4):
+  net: stmmac: honor allocation flags when initializing RX buffers
+  net: stmmac: track unfilled XSK RX descriptors explicitly
+  net: stmmac: restore RX descriptor buffer addresses on resume
+  net: stmmac: restore the XSK TX pool on resume
+
+ .../ethernet/stmicro/stmmac/dwmac4_descs.c    |   6 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_descs.c  |   6 +
+ .../net/ethernet/stmicro/stmmac/enh_desc.c    |   6 +
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |   3 +
+ .../net/ethernet/stmicro/stmmac/norm_desc.c   |   6 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |   2 +
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 277 +++++++++++++-----
+ 7 files changed, 228 insertions(+), 78 deletions(-)
+
+
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+-- 
+2.34.1
 
