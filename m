@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794333210;
-	b=U+9qVhIU2QTEoK20ED11O95yoSMapKzs1MTeVUp6d6q4zy9gBTv9qMaj9j//82uG7QLt
-	 7qVXvYJYBuB3FjWsJmpY2bBHxiBXncU1gQ7pU4L9/3/+t8BeC8YI+CFQhFXuDUIpnxP6N
-	 DMHmKeonj8lnE6vFXYUEDiM74QQfMw/DYGTP/f9KI9n3Mnqgw+9p7MbV626sDS2t04I4L
-	 R8BSfz3ONiuoNdYdBXnhrLzmVe0l/4u4qaEr7RLujFeJSp0vHlWUFjmg+VaGa/l9DPrZK
-	 8PvPgwNeyT0DDy17+wd7uD2kYlEYPleUBYNA1BuN4nAolSLVyzF6Zw50rZ6FkrzM4NA==
+	t=1794333201;
+	b=hEbySvD2DmtSFCRLPqCqd5x4tKNt3MTsIEPaS0GiYytqDwn+s/JCouLu3fPDdrxrjub/
+	 nzEGb8ksT/kJ2c4GwuBQUI3iFJiE50feCfTZlAzKq5BlUQhhwvmyxTWrjvWtWGr+o6Zhp
+	 vMOsELKxlKtVTr4dI2joTSk/afYlqTwvUyOlHPQW3MHRVG/D3TWOIYqgyJATKRwryOvCV
+	 u6ltNwEGUkrHG3lJFuloCqkn9W5+YdiIQKLQBquTv63eOigtvLNC5q2pIPgpPTlb5tcsP
+	 Gymkzt9KhoNHJn7rngLnzstHFshsdzeZq7ejZDRwRb87JA9dUbUf3stuwmyo1+yQahw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794333210;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794333201;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=hI4Ha1kxt9IoMVYOSTGtQXQwpIXjsw2bWliwYAlRPPg=;
-	b=Rf7txOcRwUcmP9eSGeb/or2gJ9cCfVmMz5V9UPzJhaHb1Z2yrhp+EWIA2JTHX71hk5Gq
-	 /VSV44tHx29z4YKNi1zY9yo6Y8VvJEWsa6hzxS1XjCJbLodJQVqdY/IjjPLtNE6tDfGY6
-	 vlV62qFrxWI9iBX3OUqyNkbMTxjPbZK0NOMSchaUo8rK0BRap+fMWdFMC5BFl9+9s6D4d
-	 mYNp5ZZ9TiNchEn8yq8AX3TQnM2A5iQYOvnB3MVKjcN5pysDDxjmxF7S+3dLeQP1q/xKI
-	 xliAO5fvx48NgL42i2xoL9vJjeZgmAEtY5HxCn5SBl5mcmhr9BhSvOsP/f+qr+Cr5GA==
+	bh=6MQvK9HWwZWHwV5/ACER8rs2MpoHm1YL0h+P0A0LB84=;
+	b=qCZOFLpwkInAH1bfMxk/AzTltScWO/XdFdsecjnS1SPv6fLMRJC02241R+3advoxAt6H
+	 kPH907rIL0IbrhZ7+JUBmYiNcIrpmwU3ReGih4N3Tem+mN0/Rb8dJ4MVVje1VOB27TLqS
+	 0LaCPTw5zaOccYnHcJI3S21NEXYzKaSNmMuMTzI8+VV67PfBo8iqPr8TkOSyhrIcyFfu/
+	 ttrtyLRLvWw/DHAkc7BPa1f8NUXA4F957Qo8+oVqYONHwV8vOayJPUnOF2cmm+z+Oj1Xu
+	 Ugn5Myzh/F9P0s2C7xY/UGSTL7UfLhjHi3eGMs3x4nSefVxlea6qVZ+jhUz3UiBFoOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FydZvlHo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ouneHihr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F93260A3822;
-	Tue, 10 Nov 2026 17:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484EC606A31C;
+	Tue, 10 Nov 2026 17:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FydZvlHo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D971F008A1;
-	Tue, 10 Nov 2026 17:53:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ouneHihr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48D01F0089F;
+	Tue, 10 Nov 2026 17:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794333210;
-	bh=hI4Ha1kxt9IoMVYOSTGtQXQwpIXjsw2bWliwYAlRPPg=;
+	s=k20260515; t=1794333200;
+	bh=6MQvK9HWwZWHwV5/ACER8rs2MpoHm1YL0h+P0A0LB84=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FydZvlHoIgAht0xMmulA4f5PoyF7lYoKg/cKKVcSunAa4QmK7nihh+MARdFVA02wW
-	 WlckplXlmEZYnDfodWDl+qr5zExS8Pe/UJhDECYzExQp0pCQuUk1qbfSvL3plwmZBD
-	 kbeXnsyWG9Q6MgtGvhf9uSqqRQGZpMEsHVvmy/eB4iP4HmkHBWF9FjptHJgLFkeF7c
-	 PFBP4sN6bLvmhZI6KMjjdHcLjOJZdexUrk+k1sGrSfsmITUZSVmqkdmu6Tu/IPE9M3
-	 KIeSR97nwg6F9hRdX/FCVEIcMZp5dtkADK7Qr7lgCXkBYSCgB9tNf/nJe8EmoRHCl8
-	 k4Blb2juux4KA==
-Subject: Re: [PATCH net-next 09/10] ice: dpll: update locking comments
+	b=ouneHihrCG3paXR7Ptpn3Lx6Wvz8tQZc3rajD77OTxzog01M9G8DIlQrR0PlosCoK
+	 dK7EBIK42+YA1f/e9BxrblvrbCvGoa7/BHbl32Be1QFK9DLFB+cLuOIB/T9Bwj66Yd
+	 1jg+ed88eWOWGndCVkkrvrooV7/ZxiIDWdJ/28F+JOwP9Xt0kPepnEIRLcOLFOhZTS
+	 PrduKLSb4RsLMNFFA9s8Q75OapieXdiIOuHMkBgFi98g5v+weyVxMMZ6fBTNA1GTq1
+	 poTl/zVfvu98L5iPdhMnbbpzsxHW9t04hSJGoiqbIIWUltS02JrcGDGByzpoEY/kN3
+	 RQIMYYmU0wQoQ==
+Subject: Re: [PATCH net-next 01/10] ice: dpll: notify TSPLL lock status from
+ the periodic work only
 From: netdev-bot+sashiko@kernel.org
 To: ivecera@redhat.com
 Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
@@ -53,10 +54,10 @@ Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
  intel-wired-lan@lists.osuosl.org, grzegorz.nitka@intel.com,
  karol.kolacinski@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
  poros@redhat.com
-Date: Tue, 10 Nov 2026 17:53:28 +0000
-Message-ID: <179433320858.994134.3648996641880038315@kernel.org>
-In-Reply-To: <20261106121005.1327603-10-ivecera@redhat.com>
-References: <20261106121005.1327603-10-ivecera@redhat.com>
+Date: Tue, 10 Nov 2026 17:53:19 +0000
+Message-ID: <179433319925.994134.5092477928749468374@kernel.org>
+In-Reply-To: <20261106121005.1327603-2-ivecera@redhat.com>
+References: <20261106121005.1327603-2-ivecera@redhat.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -76,79 +77,88 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The locking note this patch adds to the struct ice_dplls kernel-
-  doc (drivers/net/ethernet/intel/ice/ice_dpll.h, lines 168-170) is…
+- [Low] This patch leaves the comments in
+  ice_dpll_tspll_state_on_dpll_set()…
 
 --
 
-ice: dpll: update locking comments
+ice: dpll: notify TSPLL lock status from the periodic work only
 
-This commit updates the ice DPLL locking comments now that callbacks run
-under the DPLL core domain locks instead of dpll_lock. It also adds a note
-saying that callbacks of the external DPLL's pins run under that DPLL's
-domain, so only pf->dplls.lock serializes them with the rest of the
-driver.
+This patch stops ice_dpll_tspll_state_on_dpll_set() from sending a TSPLL
+device change notification from the TIME_REF pin callback. The callback
+now only updates dpll_state. ice_dpll_periodic_work_e825() refreshes
+dpll_state on every run and sends the notification when the state differs
+from prev_dpll_state.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
-> index 4ba76e2e2e0b0..39e041a30090d 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_dpll.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
-> @@ -165,6 +165,9 @@ struct ice_dpll {
->   *     tx_refclks usage map), acquire pf->dplls.lock first, then
->   *     ctrl_pf->dplls.lock. Skip the second acquire when pf == ctrl_pf
->   *     to avoid recursive locking.
-> + *   - Callbacks of the SYNCE and TIME_REF pins of an external DPLL run under
-> + *     the DPLL core domain lock of that DPLL, not of the TXC and TSPLL DPLLs,
-> + *     so only @lock serializes them with the callbacks of these DPLLs.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index ade1fb3dd0674..bdbcf7af296eb 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+
+[ ... ]
+
+> @@ -2947,15 +2946,12 @@ ice_dpll_tspll_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
+>  		WRITE_ONCE(pf->ptp.tspll_locked,
+>  			   new_state == DPLL_LOCK_STATUS_LOCKED);
+>  
+> -		if (tp->prev_dpll_state != new_state) {
+> -			tp->dpll_state = new_state;
+> -			tp->prev_dpll_state = new_state;
+> -			changed = true;
+> -		}
+> +		/* ice_dpll_periodic_work_e825() compares the state with
+> +		 * prev_dpll_state and sends the notification.
+> +		 */
+> +		tp->dpll_state = new_state;
 
 [Severity: Low]
-Could this note be clearer that TXC and TSPLL are not in the same core
-domain either?
+This isn't a bug, but do the comments in ice_dpll_tspll_state_on_dpll_set()
+still match how the notification path works after this change?
 
-As written, it presents the external fwnode pins as the special case. A
-reader could take that to mean the other ice objects share one core
-domain, which would serialize their callbacks against each other.
+The new comment reads as if the periodic work compares the tp->dpll_state
+written here. In ice_dpll_periodic_work_e825() that value is never read.
+The work recomputes the state from the cache and overwrites dpll_state
+before it compares:
 
-Looking at ice_generate_dpll_clock_id(), each PF gets three different
-clock_ids:
+ice_dpll_periodic_work_e825() {
+	...
+	new_state = ice_dpll_tspll_lock_status_get(pf, true);
 
-drivers/net/ethernet/intel/ice/ice_dpll.c:ice_generate_dpll_clock_id() {
-    ...
-		if (d->dpll_idx >= E825_DPLL_TXCLK_BASE_IDX)
-			return mac_clock_id;
-
-		if (d->dpll_idx == E825_DPLL_TSPLL_BASE_IDX)
-			return mac_clock_id | BIT_ULL(63);
-	}
-
-	return pf->dplls.clock_id;
+	tp->dpll_state = new_state;
+	if (tp->prev_dpll_state != new_state) {
+	...
 }
 
-dpll_domain_get() keys domains on (clock_id, module). That gives three
-separate domains on one PF:
+The older comment just above the WRITE_ONCE() was not changed:
 
-  - TXC, plus the EXT_EREF0 pin, which ice_dpll_init_txclk_pins() creates
-    with the TXC clock_id
-  - TSPLL
-  - the DSN-based objects, such as the rclk pin
+	/* Sync the cached lock state to what we just observed from HW
+	 * so ice_dpll_periodic_work_e825() (cached path) does not emit
+	 * a spurious UNLOCKED notification between now and the next
+	 * PTP monitor tick.
+	 */
 
-Each PF's TXC and TSPLL domains are also separate from those of other PFs.
-The struct dpll_domain comment in dpll_core.h says only one domain lock is
-held at a time.
+That reason applied when the callback also set prev_dpll_state. Now that
+it doesn't, the WRITE_ONCE() to pf->ptp.tspll_locked is the only way the
+callback's HW reading gets to the periodic work.
 
-So the core does not serialize TXC callbacks against TSPLL callbacks, or
-either of them against rclk callbacks. pf->dplls.lock (with
-ctrl_pf->dplls.lock and cgu_synce_lock) is what does that, and the fwnode
-pins are one more case of the same thing.
+Without it, take a switch from TCXO (prev_dpll_state is UNLOCKED) to
+TIME_REF where the HW reports LOCKED but the cache still holds false. The
+next periodic run would compute UNLOCKED, which matches prev_dpll_state.
+No notification would be sent, and dpll_state would go back to UNLOCKED.
+The result would be a lost notification, not a spurious one.
 
-The new sentence is accurate per DPLL, and the first bullet still says
-@lock serializes all DPLL state mutations. Since this patch exists to
-document the domain-lock rules, though, would it make sense to say that
-TXC, TSPLL and the DSN-domain objects are each in their own domain?
+Could both comments say that the periodic work picks up the new state
+through pf->ptp.tspll_locked? Then a later change is less likely to drop
+the WRITE_ONCE() as just a way to avoid spurious notifications. As far as
+I can tell, the comments are still unchanged at the end of the series,
+after "ice: dpll: update locking comments".
 
->   *   - @txclk_notify_rwsem is held for read across
->   *     ice_txclk_update_and_notify(), including the out-of-lock
->   *     dpll_*_change_ntf() calls. ice_dpll_deinit() takes the write side
+>  	}
+>  	mutex_unlock(&pf->dplls.lock);
+> -	if (changed)
+> -		__dpll_device_change_ntf(tp->dpll);
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106121005.1327603-1-ivecera%40redhat.com
