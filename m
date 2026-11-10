@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346452;
-	b=4gVrEDaGp/nzETSEZCrzcHik28cJ1Y0Q3XOocq4mqzKfMEeaIwhQezuFCIBPejT11Px/
-	 FNBgbinWqhnRjZf7xNc5VjaIRMWN5dNK+Fe7I4gOxSOFbCWMbsSpqld3oAL/h38MDx5dJ
-	 2GDWKk0D1Izxbdjjflvo4CJL1iUepkKQi642VTyNSCno7Y9sa6TNzIqk0yYNT9b4Qhq2/
-	 oQMHQ9BhsrBXqgrsqxkb42HI/aQFRxI3kNKyyi8rZNNfuZcC7iFHZO3uG1QjbwPMwK+Bb
-	 mP37Eld51w3GxYe5FD7qvDgcQ1SRW6wEj1QxuyxBupHt5JNbvjBAelIjNHnJPMgeh+w==
+	t=1794346468;
+	b=x+xzvGa5yQ/6GOaMNP20UYAjQSxsz+9tPuH1MD166DvkjLnxYUSHkmEL3CEtGuz9Hh7N
+	 0UdiGDEJBPSOnWH2xpcH4NTiFkY/XYGStdSWrXswAaJbfbusmk8zdeLxhf9gwx3TgK0JQ
+	 J3+L/sCsrs01k7CwOfNvOitAmiZB4xIKOhXP3U8RWlSYJSaDMr34mdxlje8cc/bzsB12f
+	 wMcTdtCgKgMd9Xf/PYSZj7L6/2X4uYtfeGmMTFoy1kFbZAf8eGRhdaAweavRS9ReTN6mF
+	 R19hdXIukXlls5vxozbSxX3WwDksqZTix/G+0PK4dCc0/EeN+9X/SUeUMrBlDYZKWZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346452;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346468;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=CVShPwIWAV5qwwsj+Z2XqB1Q8HnkHs+NiQo31OhVS38=;
-	b=AjlGO1KH007PI7ZDDjI3XsU5pR1yTj18+AiAcD1eOy4uoyDwS/PvlIln1DPH/FdtOJx5
-	 BHwMu71KatZn09Le1So/A05JidWNoFiAB62rAPYx0n0NxRDxMe7n/W3ldB2Z1FkXm2lAy
-	 0nZ0WXRP5QeX/6sonknf+IApyugPRotyiKsX4UV623+ek+XSz1aAPhBxj6NbgkqXNAhE+
-	 9v6hNqSRwdAshYyD09f/DSkNzM5qs9vpF3wxSfYUQbU2REsCTcsgB6/qyfKzgfEGQHmF/
-	 TFUz+lpR3i5fYVI7My603KyfyceMhNTAANqWyuMjiEV4tr9RzZN8BCL1O3iHQfhUX6A==
+	bh=V6Tl8jl24zYxlm+57dMLO03BuUESJwgnOTR4Q4o0xNk=;
+	b=VJklkY5OrV7IydvYSGf84KSdIIAyHjJCeUVDlHXvWZ6eHdPes+i7N6vI947XNBKPO4o3
+	 yCJbPv0M2pLCTV3mjXBWgEB2wPzk78oygOifoFth+xLv3HYvvcOIlsh8/munJNz42yG8p
+	 dxynPnhjxwTGaoiANqJ9LWYoJXyXvNeQe/Kx2Zxx+94ek9CfzQQVfwkfH1oPLUSe7z4N0
+	 VIjRiofoO8ZAcwZabn084/ovZnMSwBUyDWQxfAJ47O9Rp/Ycby0m9Sq8pvaNKz8nxf/lq
+	 MV7dWGXsnH3kawTO8T94naMKuRQRbShjA9DdlLeSpY4cI4qEO0zckkndOd8JrBGHHGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uDR7776I;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lh2EpddF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47864606A335
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:34:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47864606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E3D606A321;
+	Tue, 10 Nov 2026 21:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uDR7776I
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3282db206d3so1834701eec.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:34:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794346451; x=1794951251; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CVShPwIWAV5qwwsj+Z2XqB1Q8HnkHs+NiQo31OhVS38=;
-        b=uDR7776IP3uEKAslpCIeXdaKbnLRp8gh5yPnFSCW47oe7XXmmOzxKN9QREJ3Ji7Jbb
-         VFagbxL1FTRS90OlUraftAkjD6pDdnL0Qci6W+nNvujWUvGlzlmjkFIGkE4eGreOf5KW
-         F3YxKxH0Pwk9Iq5acfhSUMul/aMhoz9P4q7rc0naT13WR+4TaHpfFrIAVGpkVsHT/xzS
-         yi0vBbXJRkNoYejBV4rMDFowAbi7L61+hInZaKAD6tlx9Q5ONqkj5esdp3/YZOAARYgc
-         ZYKwA+jdFNwdZyhm4O+LlRsrm8g8vrjTw5r0ZMCrUw4w6+OWhL5ewB5BnJH/bf5UEySG
-         OERw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794346451; x=1794951251;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CVShPwIWAV5qwwsj+Z2XqB1Q8HnkHs+NiQo31OhVS38=;
-        b=ElSJS4m/v706o2mEYTZjLUuyUpsRfz6UIdkA+eIKY9r1wHjWZdpphfkWulG+zfkX8g
-         oIzBuJvqVzyMOsQK3DyskGkJaD21qdRd4F9t4B712b48D8Zy3pDiZ2v46nohqWwPQkLr
-         JSPzBi16R+sL22Hq/BViGKR7tyXDVZBnUWwPcTRSIw6FhPe4iag77xE67aqmriyVt4lN
-         jl9OwXLXrY+U6bOfe8dWJxIqOfEWFgyq3tgcxJtQC2d24oHXuGqIulbhtyXq0RA0SUFN
-         77HhwTzXwFdT8ZgKVOA9dM9wqjCjeMPs1Z/zH0UzNVVN75/Dltyu88DOwGJIuxEz9TbX
-         Wzdg==
-X-Gm-Message-State: APuU4Z9fqQ9bhJS5B95hcj7nibA9N1JOw5o7qV4vag8Wwm0sBxBmfmO6
-	/fVseLxgDSab5vaL/ouhlNNgaTAh1kH6TuspyNcx4sQZqW5oFiuRyYi2
-X-Gm-Gg: AYBFou3peWvWQ3xXSg2RQaGlnZBRvWn+ql+KSfy75secQ3yxTtqIs4NSUMyNR/9O2A3
-	/FvwqVdMZ9Px+e/W2pPEFZZEgQw3y4vGZSgmns0oyoXMXHZv4phDVdubWTQPAwY3XQhbmhaUOX3
-	WjJsv/y12UuQCYpHGCAibqJ3D2OrGezJyvq6bPQCCIM1V08j+EXSzrxB4HSRiLMO60Bjc0U3bmC
-	mTUCF5bjQFn8zQTKEkgwwYpyL4mmpSzAQ8IX9riRv3rhsCr6baPAB8ZH8VmDT5zQSYZBuao0e/y
-	+9J06R+PbBgER0kzLT9w0kY3wt+WlwDQkUGprjZclxlOyrt/VjQWhtJUCUqyCklaYIacZ1QA+Dr
-	GeJFoD23O1kZh4AxBlRVoPEnDChjF5Y7BSm3TvDSXM8m3iEb8g9cJnRTrSZAq7zH8kNILSda8wR
-	EAU/AJILKT4N3wkVI7rCQ403bZDKXMbiRcz+bgM4CKkveXKyRCFRkOOOImIs4klULMIccahQZG6
-	oFXClfH1FNRqEmSP13UOjITG0H9JkJAheUVJqtCqdApK57Iktx1RRDntzoJxb5MtN1B6tvHNtk4
-	UD8hOOO/A3fYC5hAa+GHcklW8fhXMh975p8quGWB0nd8xLnbCHGLNZZ8U1Xfdz9XHNRZ03S5OII
-	ebKs=
-X-Received: by 2002:a05:701b:2905:b0:16c:4eef:a526 with SMTP id a92af1059eb24-1b3c02f3f0dmr147061c88.15.1794346450891;
-        Tue, 10 Nov 2026 13:34:10 -0800 (PST)
-Received: from localhost.localdomain ([116.88.205.165])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11346sm11245716c88.7.2026.11.10.13.34.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Nov 2026 13:34:10 -0800 (PST)
-From: Zhefu Peng <ilskdw@gmail.com>
-To: nicolas.dichtel@6wind.com
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kuniyu@google.com,
-	mschiffer@universe-factory.net
-Subject: Re: [PATCH net v2] vxlan: reset the remote's dst cache when snooping moves a MAC
-Date: Wed, 11 Nov 2026 05:34:05 +0800
-Message-ID: <20261110213405.70741-1-ilskdw@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <e8066ad7-7a0c-4789-8859-371aa04fd652@6wind.com>
-References: <20261110153020.9635-1-ilskdw@gmail.com> <e8066ad7-7a0c-4789-8859-371aa04fd652@6wind.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lh2EpddF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D45B1F0089F;
+	Tue, 10 Nov 2026 21:34:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794346467;
+	bh=V6Tl8jl24zYxlm+57dMLO03BuUESJwgnOTR4Q4o0xNk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=lh2EpddF3MhewMQKWurH9APt5wthayQpag884l7v2m+j2yVXF7dXyTS67KnaKUaWj
+	 gWCgQNj3c9RbJpXYHp9jWw/NIr7GnOaJDScl3MC48H84nKnInTEYjVVC2Kw/ahP2Om
+	 1oxYfGir+mEzbGURa9Fo/1DNs8pCmW09cxNC3OqRpkWNoyd1Zj4PPKSmx7sDRsyf7A
+	 fQyyoaGZW/TrvE4Nl28JtKGIfXVuShZ8DAt9KoJIChjqibpGY7mWTbNmujmF0V/grU
+	 cPXIe5Dh1LU3kXRlFe4WZaRtnDpfyHUsxPtd3hj7+8sg5KfP1Dt2urHsGmLD2jsx/h
+	 mzYz8uCA5afMA==
+Date: Tue, 10 Nov 2026 13:34:25 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Rishikesh Jethwani <rjethwani@purestorage.com>
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alice Mikityanska
+ <alice.kernel@fastmail.im>, Tariq Toukan <tariqt@nvidia.com>, Boris
+ Pismenny <borisp@mellanox.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] tls: restrict device-down TX fallback to
+ hardware TX sockets
+Message-ID: <20261110133425.3bdcd98f@kernel.org>
+In-Reply-To: <20261104214853.659378-1-rjethwani@purestorage.com>
+References: <20261104214853.659378-1-rjethwani@purestorage.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,12 +63,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 10/11/2026 16:44, Nicolas Dichtel wrote:
-> You should put your real name.
+On Wed,  4 Nov 2026 14:48:52 -0700 Rishikesh Jethwani wrote:
+> +		/* Stop offloaded TX and switch to the fallback.
+> +		 * tls_is_skb_tx_device_offloaded will return false.
+> +		 * Only HW TX sockets have the context it needs. Do it under
+> +		 * tls_device_lock: the reference pins ctx, not ctx->sk.
+> +		 */
+> +		if (ctx->tx_conf == TLS_HW)
+> +			WRITE_ONCE(ctx->sk->sk_validate_xmit_skb,
+> +				   tls_validate_xmit_skb_sw);
 
-Thanks, I'll resend with my real name in From: and Signed-off-by:
-as v3.
-
+The locking in this patch looks way too coincidental.
+-- 
 pw-bot: cr
