@@ -1,87 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322724;
-	b=lWnrTLMsksh/elxxGURgrZyMWybzeqxhyiNpaIuGzqRzYSRnk6M13jDaXojI46qq+efb
-	 qMTlIch+ml5jHZ4fb8DmqkR0cJFmfNyXlcELEGT6Tf1fYM1+JPUh4GconFAedB5JrHbHj
-	 R3nBBtdkpYBamCntJrdi1UCaERFqDS45sdPclsfIGdxSFoDsPLzzlEZjCn6GioCpfsab0
-	 yTV0C903vUnjwDfgOKcRAt2Xwg6o4M4gMKJh/UQQqNecD+EWpV5dNVo6PS9fAENBkoVzA
-	 UUvGWy6qq0x5oA1GXo14AZIt2HnzggKwZgPf495Ph4zAzD6qJ9h7s/tW8YErhIo/uCA==
+	t=1794322814;
+	b=tY0NUlqN4hkMDoUWv4q9/dSOFYbj+OQmvOkkpN6aXUxj6jRjVxiMFXdmwtYEBBfBHu1z
+	 Uum3Ux4SXRoqef3/0uMtNOEPSSRgEVBjKeHEfbT1sv2pJdE+xv2eSJBgxEgd0haQ5mMP+
+	 y0D5rq/ZPvv+2nW08P4ljrj+0cq5b7vWIjGvi2w8ltkbRCzlPrH8OiRK9fCZlpF8siNS2
+	 O4l8PyQGMrOgLAIlk0MJbeqCDU324xQp0c/B6uXdQnxqC738ay1/nMezhlqqqfPAxC4iS
+	 icVi/MlpkqE2AjRlBtqXvE9oRjyybjg47xCPv5k5fUL27jq8nGI5rVV8CUS1ajiJfww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322724;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=tM0VlaEE8Hm4AV2LmNn9XxetntusdncCzYCV4dQnv+I=;
-	b=I8XogMkJxcxvfDQbyuy9mWKmHXbssvct/ZwPGnkby4RqoVA22pHbstNTqJnvuL+64cCS
-	 qKuEa3lrVZJmwA5VrX4oy4PBM8vROl31639mKmoyyx6ix7RtJHInMoEuLevrj71H5/Vps
-	 aLQn/6Gl/Yytp7BccV5btZUNYVBxpMS/ej+FQJXl/WJ8oH2CJCNoLhcko4ME4JbFgr5Oa
-	 GaIP3hRlarlsfYcC8fuV56VB6z3td8VM4k85/4ioJXswxD+s3uY106/5w59gV8F+1B0QB
-	 coatnUgKJNJSIoRlx3O1acdzb4Tbn8G/Duq4/0oPPZ4HfDwpHKtuWghTmaWaDcA8lJg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322814;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=NWbDXuMdgBu6j69IKRt2xG5uhI7J0aBn93nLNFInZYE=;
+	b=IrcMgSC7l/ZKB2SpOBe1coQsaibSt1l7bfE6ZAyCbhj49UYR8JE70RJTQob+fESWdW/y
+	 beONjuLeJa/YMKS9WUjx4ZEzP1YpaqD5DCzYapfr1lf2DhXm4YdmBBZU+D3w0SFbf+fzS
+	 LOFzML2pUlfwzAHYMWWY3H4X5y6Prtw5DzNiyJgvCWNO2QECfOrFIwBWnonXLLrT+JHxE
+	 V4Ok0gJ2USOLhQO0caapXwxqOtD5eCKx9w2he105l6vRXnJkSSe4G7TxpyJzAWdHqPWfU
+	 57iLNmcyV/WkG380iXDNsMhvjdM2aYlpwFIok6NVcbaJ0i+Wd4xYCpo6zrCuPk0kNqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQA9PJv0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=z8luqVPi;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A7D60A2624;
-	Tue, 10 Nov 2026 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99360606A33B;
+	Tue, 10 Nov 2026 15:00:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99360606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQA9PJv0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BDE1F0089F;
-	Tue, 10 Nov 2026 14:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322723;
-	bh=tM0VlaEE8Hm4AV2LmNn9XxetntusdncCzYCV4dQnv+I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AQA9PJv0ksr0R09Jj0CUrcfkHSXYBK4F28o8m6CiMYTG/g9/KCHzw3ScFpsl8KHBn
-	 IqR5F+5PdZW/FmiQE5hyG29Lzeqw+6oVbvf/T66VmVbH6qX4xDQsmnQP4JL1Zxz1cG
-	 HcVR6UVWB0lPyXOuO2W13chI8iBCDoJd9h9o6HPo0VeGfRKefSE8g3rzFtW3SMz0ih
-	 SzoL60sWHcZpYx9A8pICN24SG9Tfxgo9VRI3IPRWNgLxW2qBUU3IN0fzxr85x+mxlk
-	 gJ8kIj0CwgkJ7pNfVNYYt2T2RfA/IEeZ9/nu+9CpJ89HiVlO9DCubyth7h4DhZygs9
-	 tG+SC80+N19Dg==
-Date: Tue, 10 Nov 2026 16:58:39 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 10/19] net: phy: Use the compatibility driver
- attachment API
-Message-ID: <20261110145839.GL8635@unreal>
-References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
- <20261109-device-trust-core-v2-10-3b12d9a9f861@nvidia.com>
- <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
- <20261110073919.GF8635@unreal>
- <019fceab-1b0b-44a5-8cef-1f77d7d6ac07@lunn.ch>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=z8luqVPi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1794322813; x=1825858813;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fJamJnudBxHh9vtC+9fJIZ1mUbVOyFbHiqJYrgy7T38=;
+  b=z8luqVPic8yy0OlEWfkDzifSatntA7xW7bctLyPCUC7vQpYV5mM+FHBb
+   FcfllDY/7l2A7bl44+QQduyM44hTcj9AuuD2T0clPcDFnHA/ZT7Zyn8rf
+   Ic/ZEbH56kFeXdXPSmTTe1xU3L6vY4X7pW2/RVcJfXoQlFBHi2gLASY/E
+   j50GZSfbnXC2EpGSy0pWc3Vff6S6/R9I0EQ1uViA5PP/kANcRK0wQfzz1
+   Jd3om9eTs+91wJHq6AOxxwapKOnX///2AYMzjwE5rO4Fr6LiDACovhGGY
+   bhrubq7cXnnaqG6/3ORHENWC+QAhBEyznk3lcEPs0B+7OBH8znvHFoa/4
+   A==;
+X-CSE-ConnectionGUID: czGyAmpsRqm+vSONHsZMKg==
+X-CSE-MsgGUID: 3J81H9xXTrekv7ZQ5eXaFA==
+X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
+   d="scan'208";a="65330202"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 08:00:07 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Tue, 10 Nov 2026 07:59:44 -0700
+Received: from MON-LT-C78453.mchp-main.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Tue, 10 Nov 2026 07:59:42 -0700
+Date: Tue, 10 Nov 2026 09:59:40 -0500
+From: Charles Perry <charles.perry@microchip.com>
+To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+CC: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <git@amd.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<charles.perry@microchip.com>
+Subject: Re: [PATCH net-next v2 4/4] net: macb: Add TSN CBS TC offload support
+Message-ID: <avMxXCDMQMh5180r@MON-LT-C78453.mchp-main.com>
+References: <20260909142056.1433875-1-vineeth.karumanchi@amd.com>
+ <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,126 +83,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <019fceab-1b0b-44a5-8cef-1f77d7d6ac07@lunn.ch>
+In-Reply-To: <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
 
-On Tue, Nov 10, 2026 at 03:31:15PM +0100, Andrew Lunn wrote:
-> On Tue, Nov 10, 2026 at 09:39:19AM +0200, Leon Romanovsky wrote:
-> > On Mon, Nov 09, 2026 at 02:45:35PM +0100, Andrew Lunn wrote:
-> > > > @@ -1956,11 +1958,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
-> > > >  	}
-> > > >  	phydev->drv_owner = drv_owner;
-> > > >  
-> > > > -	if (phydev->is_genphy_driven) {
-> > > > -		err = d->driver->probe(d);
-> > > > -		if (err >= 0)
-> > > > -			err = device_bind_driver(d);
-> > > > -
-> > > > +	if (bind_genphy) {
-> > > > +		err = device_driver_attach_full(drv, d);
-> > > > +		if (err == -EBUSY)
-> > > > +			irq = phydev->irq;
-> > > 
-> > > Just looking at this, it is not clear where the EBUSY can from? 
-> > 
-> > I relied on the comment above: “Assume that if there is no driver, ...”.
-> > Since PHYs do not use the standard automatic probing mechanism, I have no
-> > way to tell whether a driver is already bound.
-> 
-> They do use the automatic probe mechanism. But also extend it.
-> 
-> Maybe some background will help.
-> 
-> IEEE 802.3 specifies how PHYs should operate, it list all the
-> registers which are needed for basic operation etc. If a PHY follows
-> the standard, genphy is sufficient to drive the PHY.
-> 
-> Now. Networking vendors like to do two things:
-> 
-> 1) Do more than what the standard specifies, like interrupts and
-> blinking LEDs.
-> 
-> 2) Don't closely read the standard, and break their implementation
-> 
-> These two cases require a specific driver.
-> 
-> There is a lot of history to phylib, from before my time. It seems
-> like the current model was retrofitted around earlier code. The result
-> is that when the MDIO bus is enumerated, PHYs can be found on the bus
-> and are registered to the bus in the normal way. The driver core will
-> look to see if there is a driver which matches the ID values in
-> registers 2 and 3, and if so probe that driver. If there is no
-> matching driver, a call is made to user space to ask it to load the
-> driver with the given IDs.  That operates asynchronous, when such a
-> driver is loaded, the driver core will run the match again and probe
-> the device with the driver.
-> 
-> Because there can be up to 32 devices on the MDIO bus, the MAC driver
-> often knows which PHY device it should use. If not, MAC drivers
-> sometimes use the first PHY on the bus. It does not really matter, the
-> point is, we know the device exists, even if it has not been probed
-> yet, so we can get a reference to it.
-> 
-> The MAC most often connects to its PHY during open(). At that point,
-> if the driver core has bound a PHY driver to the PHY device, it is
-> good to go.
-> 
-> If however, there is no PHY driver for the PHY device, it can mean a
-> few different things:
-> 
-> There is no driver of that PHY because it follows 802.3, and genphy is
-> expected to be used. However, genphy does not have a list of IDs it
-> can drive, so the usual probing mechanism does not match it to the
-> device. It would be nice if it did actually have such a list, but it
-> does not.
-> 
-> There is driver, but it has not been built, or is missing from the
-> initramfs, or is not part of the image, etc. So we just use the genphy
-> driver and hope for the best.
-> 
-> So, if we have got this far, there is no driver for the PHY, we make
-> use of genphy.
-> 
-> > > And why set irq to phydev->irq?
-> > 
-> > If the above operation can fail with -EBUSY, the wrong IRQ was restored.
-> 
-> How has it got the wrong interrupt?
-> 
-> genphy cannot use interrupts, because interrupts are not part of
-> 802.3. Device tree can list an interrupt for the device, and if the
-> device specific driver is used, phylib can use that
-> interrupt. However, since interrupts are optional, phylib defaults to
-> polling.  phydev->irq is over powered and set to PHY_POLL to indicate
-> polling should be used. The phylib core will look at the PHY driver,
-> see if it supports interrupts, and if not, set phydev->irq ==
-> PHY_POLL.
-> 
-> The binding of genphy to the device cannot fail, at least in the
-> current phylib code. So up until recently, setting phydev->irq to
-> PHY_POLL was fine. However, that is changing. There is a use case,
-> because of bad hardware design, that genphy is initially used to get
-> the device up. But later, the real driver module becomes available and
-> gets loaded. /sysfs is then used to unbind genphy and bind the
-> specific driver. Because phylib has set phydev->irq to PHY_POLL, the
-> specific driver cannot use interrupts. So on unbind, phydev->irq is
-> set back to the value in the MDIO bus.
+Hello Vineeth, 
 
-Thanks for the explanation, I definitely lack knowledge in phylib
-history.
-
+On Wed, Sep 09, 2026 at 07:50:56PM +0530, Vineeth Karumanchi wrote:
+> Add Credit-Based Shaper (CBS/IEEE 802.1Qav) TC offload support for
+> time-sensitive networking on GEM hardware. CBS is restricted to the
+> two highest-priority queues: Queue A (num_queues - 1) and Queue B
+> (num_queues - 2), matching hardware capability.
 > 
-> As is said, this code is fragile, and complex. You have to assume your
-> LLM is producing slop, and really take a close look at the code, if
-> you want to get it correct.
-
-The problem is that I also assume that the code preceding the change is wrong
-too. People often produce code that's even worse than what a properly guided
-LLM produces.
-
-Thanks
-
+> Validate that idleslope is positive and does not exceed the link
+> speed, preventing negative values from bypassing the bounds check
+> due to signed-to-unsigned promotion.
 > 
->     Andrew
+> The idle slope register value is computed differently based on hardware
+> variant:
+> 
+>   High-speed GEM: scale idleslope linearly to the full 32-bit register
+>   range relative to link speed.
+> 
+>   Standard MACB: convert the kbps idleslope into the register's native
+>   unit, which depends on the interface width:
+>     - 1G (8-bit GMII):    bytes/sec,   scale kbps by 1000/8 (125)
+>     - 10/100M (4-bit MII): nibbles/sec, scale kbps by 1000/4 (250)
+> 
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> ---
+> Changes in v2:
+> - macb_cbs_get_queue_params() now returns the idleslope register offset
+>   (u32 *idleslope_reg) instead of a bool flag, and the idleslope is
+>   programmed via bp->macb_reg_writel(), dropping the per-queue if/else
+>   that open-coded gem_writel(CBS_IDLESLOPE_Q_A/Q_B).
+> - Expanded the idleslope kbps-to-hardware-unit conversion comment.
+> - Zero-initialize kset in macb_cbs_add() so an unpopulated link speed
+>   reads as 0 and is rejected; reorder locals to keep the declarations
+>   in reverse-christmas-tree order.
+> - Rebased on net-next, which renamed the struct net_device pointer to
+>   "netdev" (was "dev"/"ndev").
+> 
+>  drivers/net/ethernet/cadence/macb.h      |   9 ++
+>  drivers/net/ethernet/cadence/macb_main.c | 116 +++++++++++++++++++++++
+>  2 files changed, 125 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index f5359549f3d4..20faeba77d6d 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -184,6 +184,9 @@
+>  #define GEM_DCFG8		0x029C /* Design Config 8 */
+>  #define GEM_DCFG10		0x02A4 /* Design Config 10 */
+>  #define GEM_DCFG12		0x02AC /* Design Config 12 */
+> +#define GEM_CBS_CONTROL		0x04BC /* CBS Control Register */
+> +#define GEM_CBS_IDLESLOPE_Q_A	0x04C0 /* CBS IdleSlope Queue A */
+> +#define GEM_CBS_IDLESLOPE_Q_B	0x04C4 /* CBS IdleSlope Queue B */
+>  #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
+>  #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
+>  #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
+> @@ -224,6 +227,12 @@
+>  #define GEM_ENST_ON_TIME(hw_q)		(0x0820 + ((hw_q) << 2))
+>  #define GEM_ENST_OFF_TIME(hw_q)		(0x0840 + ((hw_q) << 2))
+>  
+> +/* Bitfields in CBS_CONTROL */
+> +#define GEM_CBS_ENABLE_QUEUE_A_OFFSET	0
+> +#define GEM_CBS_ENABLE_QUEUE_A_SIZE	1
+> +#define GEM_CBS_ENABLE_QUEUE_B_OFFSET	1
+> +#define GEM_CBS_ENABLE_QUEUE_B_SIZE	1
+> +
+>  /* Bitfields in ENST_CONTROL */
+>  #define GEM_ENST_DISABLE_QUEUE_OFFSET	16
+>  
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 67150ff03066..00c1c619dea8 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -99,6 +99,10 @@ struct sifive_fu540_macb_mgmt {
+>  
+>  #define MACB_MDIO_TIMEOUT	1000000 /* in usecs */
+>  
+> +/* CBS port transmit rate factors: 1000/interface_width */
+> +#define MACB_CBS_PORT_RATE_1G		125	/* 1000/8 for GMII (8-bit) */
+> +#define MACB_CBS_PORT_RATE_10_100M	250	/* 1000/4 for MII (4-bit) */
+> +
+>  /* DMA buffer descriptor might be different size
+>   * depends on hardware configuration:
+>   *
+> @@ -4492,6 +4496,116 @@ static int macb_setup_taprio(struct net_device *netdev,
+>  	return err;
+>  }
+>  
+> +static int macb_cbs_get_queue_params(struct macb *bp, u8 queue_num,
+> +				     u32 *enable_bit, u32 *idleslope_reg)
+> +{
+> +	/* Queue A is highest priority (num_queues - 1) */
+> +	if (queue_num == bp->num_queues - 1) {
+> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_A);
+> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_A;
+> +		return 0;
+> +	}
+> +
+> +	/* Queue B is second highest priority (num_queues - 2) */
+> +	if (queue_num == bp->num_queues - 2) {
+> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_B);
+> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_B;
+> +		return 0;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int macb_cbs_add(struct net_device *netdev,
+> +			struct tc_cbs_qopt_offload *qopt)
+> +{
+> +	u32 enable_bit, idleslope, speed_kbps, ctrl, idleslope_reg;
+> +	struct ethtool_link_ksettings kset = {};
+> +	struct macb *bp = netdev_priv(netdev);
+> +	int err;
+> +
+> +	err = macb_cbs_get_queue_params(bp, qopt->queue, &enable_bit, &idleslope_reg);
+> +	if (err) {
+> +		netdev_err(netdev, "CBS: Queue %d not eligible (only top 2 queues support CBS)\n",
+> +			   qopt->queue);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* idleslope is calibrated for the current link speed; CBS is not
+> +	 * reprogrammed on link-speed changes, so it must be reconfigured
+> +	 * if the link speed changes.
+> +	 */
+> +	phylink_ethtool_ksettings_get(bp->phylink, &kset);
+> +
+> +	if (!kset.base.speed || kset.base.speed == SPEED_UNKNOWN) {
+> +		netdev_err(netdev, "CBS: Invalid link speed\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	speed_kbps = kset.base.speed * 1000;
+> +
+> +	if (qopt->idleslope <= 0 || (u32)qopt->idleslope > speed_kbps) {
+> +		netdev_err(netdev, "CBS: invalid idleslope %d (must be 1..%u kbps)\n",
+> +			   qopt->idleslope, speed_kbps);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* qopt->idleslope is in kbps; convert to the units the hardware
+> +	 * register expects:
+> +	 * - High-speed GEM: fraction of port bandwidth, scaled to the full
+> +	 *   32-bit register range
+> +	 * - Standard MACB: the register counts bytes/sec in 1G (8-bit GMII)
+> +	 *   mode and nibbles/sec in 10/100 (4-bit MII) mode, so scale kbps
+> +	 *   by 1000/8 (125) or 1000/4 (250) respectively
+> +	 */
+> +	if (bp->caps & MACB_CAPS_HIGH_SPEED)
+> +		idleslope = DIV_ROUND_UP_ULL((u64)qopt->idleslope * U32_MAX, speed_kbps);
+> +	else
+> +		idleslope = (u32)qopt->idleslope * (kset.base.speed >= 1000 ?
+> +					       MACB_CBS_PORT_RATE_1G : MACB_CBS_PORT_RATE_10_100M);
+> +
+
+PIC64-HPSC, which has MACB_CAPS_HIGH_SPEED, doesn't have the first idle
+slope calculation method which scales to the full 32 bits register range.
+It uses nibble/sec for 10/100M, byte/sec for 1G, 2.5bytes/sec for 2.5G,
+5bytes/sec for 5G and 10bytes/sec for 10G.
+
+Is it possible that you have another design config bit for the "full 32
+bits register range" method used here?
+
+-- 
+Thanks,
+Charles
