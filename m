@@ -1,65 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794272911;
-	b=iTWvThgxpy/RDUyZf7HVTJKt9LsddqoB4ivG266W+7XLCcCZH2cIKuAEdCfTXQ9H22Jm
-	 RIPg9ybUIFda9Q5UjjwAdFmpXjGwVv1OXfICiuOyzhkgjq0hwgo08nPiyMJhdUxGGssVv
-	 gfAYgfMMGmiYw/taGv7iCK+YuBd6FgWbv5lflYqqLwQX0h2tRsIdh+T8wPHAMN8Cm3Tsd
-	 +cccIAGC2EKcNq7rdyYKN+nZ/A7c0rv7IHeSSHfh0ME4xGAFiMUOI7sq1w2vwxWBN6RlL
-	 iDwgkpNeYoXZiIl26RvqcTy3VgmuPjsiHUkNxKZCA0Ch9JkseKavls0E+Z/rzcvGeqg==
+	t=1794273374;
+	b=YY4tP/d9pTl4r2s9XiW/nhqlurK3x+9CJXnIW6j9OEJkcQEriTZ+AviUtx1fUMUaAN9z
+	 aBDNekkx3BXiCwR/+oMQ6rqEN4DeVFVdMkBrRhb0uaIxYfLVMTMilOIXOTvtENqYzMgQz
+	 WTUvexCvoqHDQ4rHYR3tLyK3gGV/4LppUhKZQpy6KFJEgykxa8wHdFfHnMk6DQYWdRn+o
+	 c+oDvU39HB4qfrWV55x5hOXq/gu7NYLkS41SYEzFEBqK2wob+J+kDmnZgztnk2ve66V8v
+	 IpCLzYzis7eQ7UZ9ZZXEVlvXMq1MHfbghNmhlguYDmzuS3AHTwBzfp0UlYSd+klfhTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794272911;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=x36i1u1Ug+CsRO14sJNtHgtErxuuo8Mk9cH4G1xa/s4=;
-	b=zcFEodlSwVQB8hDdlneCEnMKLEAuzS41+l60wHTMWq24yGIZzzIGn2e4ItEeGh/stxb5
-	 PLM9w8JhY/2BRZsZqXOecokanmBYuFjxbcOGLn3FbQNGFAybBKIzkeVOETXbKEXCrdsCQ
-	 vIhhjZkndUIT1fW9qT2wxxcP/ZE5ezPZ5NNKhNB+9kBCTc/WrG4sc26gR/vqtpRTKD4pY
-	 X3A0Er4kgxXvIBnNNTtqdsjko5YbCH2dUHVRW3jVU24bLTtE9D6GXaQIGi9OsCNAnT5bS
-	 bsHqBy9TqHNmzb1NbmemPcG6gpl8iVz6N7pKo1xOVZM5isadSyuWQjd6kjakQvjY8YA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794273374;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=iLc81dlIMgk2M36hvoTrJto1aOwZcteM9MGtiO2fY2M=;
+	b=wl8oS8i5jT44bow4D6mjRN91iTC4TutKMOdkJJQrk2MozZcJ69+X2JvNqdGIWeA3yPvZ
+	 Wrei7JTlhwn7ESdkLUeF0ycGEUae1SJBE7Ul6u3etdQpQvBHJynuVpMUbuc2DLCq6i8km
+	 nshubMouViDUGWUvz7srN0FU+QiJ45i5HAQYvpRiIzOYT4d20nzjiztgvRS92z+xxQxnb
+	 vhtNg/t/p0Y9crILFRdXzjlFPNy0tL/IAKepi9p+NTJXU+yRF/QDYf5atR05epiEwBOL0
+	 htr4UTnizzxiZ/Tidoo7eBZCXFurT/MjjZO8B5iYXbankL2HMH9ro1AStjEQBFFWlQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=MdsVN4E4;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlYCuXP5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id EA943606A325;
-	Tue, 10 Nov 2026 01:08:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA943606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04824606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 01:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=MdsVN4E4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794272909;
-	bh=x36i1u1Ug+CsRO14sJNtHgtErxuuo8Mk9cH4G1xa/s4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MdsVN4E4iogadZhZ7ORSwt0JptmXZKE9Us7gR3oCWvLOqMMkL+9bl6sQEoYNBy38p
-	 qPE6DOfvXgo+w6Y8hupDpGG8gSet1Lw17pKNtG/V8awdSWb5YBloR0Mk1I8i7qQelq
-	 Dfb0HLiH88Fcvr8ZxvyaaV730A+RBly4n09VMRHxc1g82EStp0LrLx02IY4zZAL/wT
-	 QG8tyqcwgqdoBhxUMCNyYqBgDTQR35vfv6vGiQh7VsJOsh8hVa4NBIwQ12CqCdh0GJ
-	 ftuEAnqjcPyEjhk4496fHKAdGiKaevYwdy56CVDU8WC70XFJ7bz6Poq10UnWeO8hz+
-	 /vpxzE/zToGxg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id F28146005B;
-	Tue, 10 Nov 2026 02:08:28 +0100 (CET)
-Date: Tue, 10 Nov 2026 02:08:26 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Laveesh Bansal <laveeshb@laveeshbansal.com>
-Cc: Florian Westphal <fw@strlen.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+a8ba738fe2db6b4bb27f@syzkaller.appspotmail.com,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH nf-next 0/2] netfilter: bridge: refragment packets with a
- vlan tag moved by the bridge
-Message-ID: <avJuijtALFuuk7yd@chamomile>
-References: <avJo2nhgnulY776l@chamomile>
- <20261110010450.68995-1-laveeshb@laveeshbansal.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlYCuXP5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D9D1F008A1;
+	Tue, 10 Nov 2026 01:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794273373;
+	bh=iLc81dlIMgk2M36hvoTrJto1aOwZcteM9MGtiO2fY2M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UlYCuXP5qUbNGVuXojiiiMM/LZU5CtEReERVS6T/FE14g2XvIU8dxGcA4pjkCn8Jc
+	 391xfNoQN4G9IUko709333YrENN3H6WWN87UCDLBwD26Me4leFURGXEgLNh7VHa4Sy
+	 7tRfacETls+qGTwDJ0MtOveNzEtgFvXoOryTOkOh1KPP1MFe2Iyc9aq1fLtxAtP6yn
+	 w/1vpYKIaDKZO+UhfMUGpNRkslGHSmK6Mmbrb57TzN8gVJKh29TB5v7i2HsCkwKu/W
+	 RgcoKPVNmc8XOnjNy8/ISRf23flRaR5+dydAqVP1Tkf94QTStV7db+lCMp0QF0GtZe
+	 GJNK8m9cVc0og==
+From: Jakub Kicinski <kuba@kernel.org>
+To: linusw@kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	ulli.kroll@googlemail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	mirq-linux@rere.qmqm.pl,
+	mhun512@gmail.com,
+	edumazet@kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v6 01/15] net: ethernet: cortina: Keep shared free queue parent-owned
+Date: Mon,  9 Nov 2026 17:16:11 -0800
+Message-ID: <20261110011611.1733276-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261103-gemini-ethernet-fixes-3-v6-1-c4b5ff8a65d8@kernel.org>
+References: <20261103-gemini-ethernet-fixes-3-v6-1-c4b5ff8a65d8@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,21 +65,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261110010450.68995-1-laveeshb@laveeshbansal.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 09, 2026 at 05:04:50PM -0800, Laveesh Bansal wrote:
-> On Tue, Nov 10, 2026 at 01:44:10AM +0100, Pablo Neira Ayuso wrote:
-> > Do you have a usecase for this?
-> 
-> I found this through the syzbot report and haven't seen a user report of
-> it.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> --- a/drivers/net/ethernet/cortina/gemini.c
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+> @@ -2683,6 +2686,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+>  {
+>  	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+>  
+> +	devm_of_platform_depopulate(&pdev->dev);
+> +	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
+>  	geth_cleanup_freeq(geth);
+>  	geth->initialized = false;
+>  }
+>
 
-Yes, there is a patch to fix replace the WARN_ON_ONCE() that could be
-found. But does it make sense what syzbot is trying in real life?
+[Severity: High]
+devm_of_platform_depopulate() unbinds both port devices synchronously,
+and gemini_port_remove() ends with clk_disable_unprepare(port->pclk).
+By the time we get here both GMAC gate clocks are therefore off. That
+includes this writel() to GLOBAL_INTERRUPT_ENABLE_4_REG and the
+readw()/writew()/writel() of GLOBAL_SWFQ_RWPTR_REG and
+GLOBAL_SW_FREEQ_BASE_SIZE_REG in geth_cleanup_freeq(). All of them
+access geth->base while the block is unclocked.
 
-> This is the follow-up for nf-next we discussed in
-> https://lore.kernel.org/r/atck-NoWvemxIsF6@chamomile.
+The parent cortina,gemini-ethernet device does not hold a clock of its
+own, and the global registers need at least one port clocked. On ARM
+that means one of two things. The writes may be silently lost, which
+leaves SWFQ_EMPTY_INT_BIT enabled and the old free queue base
+programmed. Or the access takes an external abort on unbind or module
+unload.
 
-Yes, I remember, thanks for the link.
+The child path has a similar window. The clock is gated in .remove,
+but devres frees the devm threaded IRQ (gemini_port_irq() and
+gemini_port_irq_thread()) only after .remove returns.
+SWFQ_EMPTY_INT_BIT is still enabled at that point. The thread can
+therefore still run geth_fill_freeq() and rewrite
+GLOBAL_INTERRUPT_ENABLE_4_REG on an unclocked block.
+
+Could the free queue interrupt be masked, and the queue torn down,
+while at least one port clock is still running? Another option is for
+the parent to hold its own enable on a port clock across remove. Which
+ordering did you have in mind, given that port 1 owns the refill IRQ?
+-- 
+pw-bot: cr
