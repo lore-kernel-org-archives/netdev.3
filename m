@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794308637;
-	b=QV9DRY+x52f3YodhAI+KH6zRmbYCr7ew9VGquDUpSbdtNNr0NVH89m6gnbgNNNB9pgX7
-	 F315iFPuwnqyWDxUe2cgTwse9wodk+ih7i101AwxzP5PqbaclJ9IO68Qotnko3/bTj+QL
-	 5Dh98lPh52wrFMspUpEU3p680J932vPrf7r6VAZauVBPjWAG6cQHt95lzMirQoDuqZQXe
-	 8nOprSkFkcYsKJvCuD8BfI/McvP8Sa311Mu4fGeJB76GahVFW1gmS+PuAS45UVQ6meH8/
-	 9aWo9me69Txdye7CterJftdLhU/aOhQexXoaTdppZsxdTuyfTMgHNe4fYl1KRaqta3A==
+	t=1794308634;
+	b=mj4pRTqlkiDZyH4A/ez8oEGaGcA3G+KzCgP20M7rqBkLUZbpeBMA2pbstCpFltaWbi9w
+	 L0Mbpm2YLypZsAMOcqQkORnCuMYdGT1z7nDNZ7/WNwlyYtTOzi004EEJAohhPTN4qYh+x
+	 Vtk1N37jcmmyZHdR5df5ziVcRCysmQ8EvqKPNFonJzozHzatBIeE9s0Faphv9qt1WNDQa
+	 q1w5D6dI+sL4ydlxID9/Qhyk29eyhy8PrQRqBzMfx9QcXwXS8O7dLT8pSwx0Y1C5JNAU9
+	 CVzuYibOb06rlDpng345IAExwcRrem2QX7ujQaqckzLvk6M5OB7TL5nKiesNOcZ3WUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794308637;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794308634;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=gBaRZPyJTX0vGBHDFrBjUpvgfOXhHnVeShEMkW6baMk=;
-	b=4Z1Lv47Re7G/z+AVVi6UdMNzWA0orDYXRkxJyw8wj7/2o7OYvf5PSUueea/IIllX3bb9
-	 pv9RvzVzqF+A3utQYxuupcqdoPdj7aWtalXZANcUr0sYIZGTo0nUWkbMSxIwSweDbMLkc
-	 40tzsFPXOYZh5O+twhvEkkybjlVWRBWhRix4D4wNXuc3VCIpP1UXkwNpz5zsnFBvEUiGi
-	 BsH2tfvQ5uPD5bjF9M/MMDu+L/puCPkgN0c1kzTV8FgS7DwVrnSQl8azbfcmGdMVHjuvD
-	 Lntb5y3+rpOTPKWscB3H358H2eEtUAmtQVwUugMDik1sX2lmDrhquzJPfUGpwY+o2Jg==
+	bh=QNzDDU0a6i2LEAcjYqhv6FOLU8rHbK1ng1Hzgb9fTtQ=;
+	b=jY9LAmA0/EGR8TEm7PP8E3BdJwQ579tXzpp8vXs5nN0Lo4jeP3KtOke8ehRZYUxRHW6J
+	 cnbU9CUZh6nxrWsXvpOWoXfiYmIqYdOWDH+v15tbbTgx2lushdADuyRZoRVmdCRRUZxNG
+	 3fwnMqEZPrhP7Kev1L6MtWPFozLUsl33XhD/F6mB80ByYxkeBOkQ6rwb4lmcsIuvs16lb
+	 XufWhssT4rEcA15IuI7DwSKI60cyhchdNOiMO+Auu0q7suy2HgjE/1+olzK7sJGonjSQ6
+	 QX6oPZTI0bw03mJNttLzM6Qga68XSAMmws9hLg9RrDbA8u8v9MTMtTbnynpS9zyy71w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZKj/5PY5";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QbZk5ay6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E062606A33D;
-	Tue, 10 Nov 2026 11:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7857606A31C;
+	Tue, 10 Nov 2026 11:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZKj/5PY5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090861F008A1;
-	Tue, 10 Nov 2026 11:03:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QbZk5ay6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465EA1F008A1;
+	Tue, 10 Nov 2026 11:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794308637;
-	bh=gBaRZPyJTX0vGBHDFrBjUpvgfOXhHnVeShEMkW6baMk=;
+	s=k20260515; t=1794308633;
+	bh=QNzDDU0a6i2LEAcjYqhv6FOLU8rHbK1ng1Hzgb9fTtQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZKj/5PY5g2mRk7ixIGpNVYsamJFsXyppTpT5aG12JpVs938iHS+XsZqb2NA05HSyb
-	 QevnkuJ3yRg5yZf0qj0rVV5seDWkFfcNNjOOCfog8fYAepqmjWwTwAhGVDo3ozRU4L
-	 s9qFVuRgcbUL2RFzFIQGIfIgU64VP0dosj1NW+PIh1fzfh93+StrkKLkM/vMMQZkL7
-	 ek3quQaueUHBANia6NJQFy/7+g2llDmIWaJJcF9q1C5lXLAomAulzd+KFR/LOCfNmb
-	 4m7ug83kqf+Ewo4/nQeAlMDxbfxMwj7I2uaWXvv4YZaDrtAlx6qc989K5Ur5jhB1tP
-	 MAI6ROiQil4eA==
-Subject: Re: [PATCH v11 4/6] net: wwan: t9xx: Add control port
+	b=QbZk5ay6twrd8p0CDlxAK1Z8Zqud9jDaFsgVHp8H/+m5PBCqy6NH7uj8QVQDttyta
+	 YttuwgxWuRxME2Vv+hZpqNCUEsvBhVy683lqf25Fw9KZT8FfE7I24nhCdQH8TG1pCj
+	 hiYnb7W/JFHh5WYVRAKuOh/0mC7zhN7ub4kxF1jGyiWf2aEeSIypk+SZb10wp3SDLv
+	 k0+qpZDQD67W2isy3kqmGO7r5ONveF9NwAb0zM7rn8sBccNsv8jR5Fu6IgDeledqzt
+	 HugCki5GjW4bH7xAshvg9a67algPeGfPyk22ELSRVZGKLxrBiAADj68SV+KlPAi0mi
+	 ncYuUbqnokvng==
+Subject: Re: [PATCH v11 1/6] net: wwan: t9xx: Add PCIe core
 From: netdev-bot+sashiko@kernel.org
 To: jackbb_wu@compal.com
 Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
@@ -53,11 +53,11 @@ Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  linux-doc@vger.kernel.org
-Date: Tue, 10 Nov 2026 11:03:55 +0000
-Message-ID: <179430863558.994134.1789647998017952188@kernel.org>
-In-Reply-To: <20261105-t9xx_driver_v1-v11-4-2084aa512864@compal.com>
-References: <20261105-t9xx_driver_v1-v11-4-2084aa512864@compal.com>
-X-sashiko-severity: Low
+Date: Tue, 10 Nov 2026 11:03:51 +0000
+Message-ID: <179430863179.994134.3831157543887487578@kernel.org>
+In-Reply-To: <20261105-t9xx_driver_v1-v11-1-2084aa512864@compal.com>
+References: <20261105-t9xx_driver_v1-v11-1-2084aa512864@compal.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -70,156 +70,299 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 4 · Low: 2
 
-- [Low] The struct mtk_port comment in drivers/net/wwan/t9xx/mtk_port.h
-  (lines 83-86) says tx_seq and rx_seq "are reset while the channel is…
-- [Low] mtk_port_rx_dispatch() (drivers/net/wwan/t9xx/mtk_port.c:408-409)
-  picks the destination port from the CCCI header channel, which the…
-- [Low] Concern: mtk_port_status_update() and the port->enable field it
-  writes are dead code at this commit and are not mentioned in the…
-- [Low] Concern: mtk_port_internal_enable() sends a compensating DISABLE
-  for every ENABLE failure other than -EBUSY, including failures before…
-- [Low] Concern: mtk_port_send_data() never checks skb->len against
-  port->tx_mtu, and mtk_cldma_submit_tx() writes cpu_to_le16(skb->len)…
-- [Low] Concern: mtk_port_internal_close() runs
-  test_and_clear_bit(PORT_S_OPEN) and then mtk_port_common_close() runs…
-- [Low] Concern: the radix-tree port table has no consistent lock or RCU
-  scheme.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The modem is reset only on the way down, in mtk_pci_remove()
+  and in mtk_pci_shutdown() (which calls mtk_pci_remove()).
+- [Medium] In mtk_pci_remove(), which every shutdown also reaches through
+  mtk_pci_shutdown(), the MHCCIF doorbell fallback runs when…
+- [Medium] mtk_pci_bar_init() maps BAR0/1 and BAR2/3 with
+  pcim_iomap_region(), which maps exactly the BAR length the device…
+- [Medium] mtk_pci_request_irq() allocates exactly 32 MSI-X vectors.
+- [Low] mtk_pci_bar_init() passes mdev->dev_str as the @name argument to
+  both pcim_iomap_region() calls.
+- [Low] mtk_pci_remove() writes U32_MAX to
+  REG_IMASK_HOST_MSIX_CLR_GRP0_0, then calls mtk_pci_free_irq(), and…
 
 --
 
-net: wwan: t9xx: Add control port
+net: wwan: t9xx: Add PCIe core
 
-This patch adds the t9xx control port layer. A port manager builds a
-radix-tree port table and passes TRBs between port I/O and CLDMA, and an
-internal port type provides open/close/write/recv_register. struct trb
-gets a kref so mtk_ctrl_trb_handler() can hold a reference across a
-dispatch, and TX sequence numbers are stamped at hardware hand-off.
+This adds the PCIe core of the MediaTek T9xx 5G WWAN modem driver. It
+covers probe and remove, MSI-X setup, the MHCCIF event interface and the
+register access helpers. Remove and shutdown reset the modem through the
+ACPI MRST._RST method, with an MHCCIF reset doorbell as the fallback.
 
-> diff --git a/drivers/net/wwan/t9xx/mtk_port.c b/drivers/net/wwan/t9xx/mtk_port.c
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
 > new file mode 100644
-> index 0000000000000..7fec696bd6db1
+> index 0000000000000..902bcbe1512e9
 > --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/mtk_port.c
-> @@ -0,0 +1,667 @@
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> @@ -0,0 +1,1044 @@
 
 [ ... ]
 
-> +static int mtk_port_rx_dispatch(struct sk_buff *skb, void *priv)
+> +static int mtk_pci_bar_init(struct mtk_md_dev *mdev)
 > +{
-
-[ ... ]
-
-> +	channel = FIELD_GET(MTK_HDR_FLD_CHN, le32_to_cpu(ccci_h->status));
-> +	/* A CLDMA instance carries the channels of one peer only (sAP or MD),
-> +	 * the peer of the port that armed this queue.
+> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +
+> +	/* Fixed offsets used on these mappings (MSI-X registers up to
+> +	 * 0x3103 on BAR0/1, the ATR-biased MHCCIF window on BAR2/3) are
+> +	 * guaranteed by the only two devices this driver binds (0x0900,
+> +	 * 0x01CA), whose BAR sizes are fixed by hardware.  A device that
+> +	 * misreports them is out of scope rather than impossible, so no
+> +	 * pci_resource_len() checks.
 > +	 */
-> +	if (MTK_PEER_ID(channel) == MTK_PEER_ID(port->info.rx_ch))
-> +		port = mtk_port_search_by_id(port_mngr, channel);
-> +	else
-> +		port = NULL;
-> +	if (unlikely(!port)) {
-> +		dev_warn_ratelimited(port_mngr->ctrl_blk->mdev->dev,
-> +				     "Failed to find port by channel:%d\n", channel);
-> +		goto drop_data;
+> +	priv->mac_reg_base = pcim_iomap_region(pdev, MTK_BAR_0_1_IDX,
+> +					       mdev->dev_str);
+
+[Severity: Medium]
+pcim_iomap_region() maps exactly the BAR length the device reports. Binding
+only needs a vendor/device/class match. So what happens with a device that
+spoofs 14c3:0900 or 03f0:01ca and reports small BARs, for example a
+hot-plugged Thunderbolt/USB4 device? It would get these fixed-offset
+accesses:
+
+  mtk_pci_probe() writes U32_MAX at BAR0 + 0x3080
+  mtk_pci_irq_msix() reads BAR0 + 0x0F00 and BAR0 + 0x3100
+  mtk_mhccif_init() writes U32_MAX at bar23_addr + 0xA030 (via ext_reg_base)
+
+The comment treats such a device as out of scope. Still, can these writes
+land past the ioremap area and its guard page, in neighbouring ioremap or
+vmalloc mappings?
+
+Two pci_resource_len() checks (BAR0 >= 0x3104, BAR2 >= 0xA044) look like
+enough to rule this out.
+
+> +	if (IS_ERR(priv->mac_reg_base)) {
+> +		dev_err(mdev->dev, "Failed to map BAR0/1\n");
+> +		return PTR_ERR(priv->mac_reg_base);
 > +	}
 > +
-> +	mtk_port_check_rx_seq(port, ccci_h);
-> +	port->rx_seq = FIELD_GET(MTK_HDR_FLD_SEQ, le32_to_cpu(ccci_h->status));
+> +	priv->bar23_addr = pcim_iomap_region(pdev, MTK_BAR_2_3_IDX,
+> +					     mdev->dev_str);
 
 [Severity: Low]
-Should this also check that the channel belongs to the queue the frame
-arrived on?
+Is mdev->dev_str the intended name argument for both pcim_iomap_region()
+calls? The kernel-doc in drivers/pci/devres.c describes @name as "Name of
+the driver requesting the resource". It becomes the resource name in
+/proc/iomem and in resource conflict messages.
 
-The destination port is taken from the channel field of the CCCI header,
-and the device writes that field. The only check is that its peer ID
-matches the peer of the port that armed this RX queue.
-
-Later in the series the MD peer has three ports, each on its own queue:
-MDCTRL on CLDMA1 RXQ0, MBIM on CLDMA1 RXQ2 and AT on CLDMA1 RXQ5. If a
-frame arrives on the MBIM or AT queue carrying channel CCCI_CONTROL_RX,
-it goes to the MDCTRL internal port's ->recv().
-
-Each queue has its own CLDMA RX work item on a WQ_UNBOUND workqueue. Two
-queues' workers can therefore run mtk_port_check_rx_seq(), write
-port->rx_seq and call ->recv() for the same port at the same time. That
-breaks the rule in struct mtk_port that rx_seq is written "only from the
-rx_done callback of the one queue serving this channel". That rule is
-the reason rx_seq has no lock.
-
-Could the frame be dropped unless MTK_CH_ID(channel) matches the arming
-port's channel, or unless the channel's queue matches the receiving
-queue? t7xx does this by matching rxq_index.
+dev_str is a copy of pci_name(pdev), so the BARs get labelled with the PCI
+address (e.g. 0000:01:00.0) instead of mtk_t9xx. t7xx passes DRIVER_NAME
+to the same API. Would KBUILD_MODNAME work here?
 
 [ ... ]
 
-> +int mtk_port_ch_enable(struct mtk_port *port)
+> +static int mtk_pci_request_irq(struct mtk_md_dev *mdev)
 > +{
-> +	struct mtk_port_mngr *port_mngr = port->port_mngr;
-> +	struct trb_open_priv *trb_open_priv;
-> +	struct sk_buff *skb;
-> +	struct trb *trb;
+> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
 > +	int ret;
 > +
-> +	/* The modem restarts its sequence numbering with the channel, and
-> +	 * the first packet after it is not checked.
+> +	ret = pci_alloc_irq_vectors(pdev, MTK_IRQ_CNT_MAX,
+> +				    MTK_IRQ_CNT_MAX, PCI_IRQ_MSIX);
+> +	if (ret < 0) {
+> +		dev_err(mdev->dev,
+> +			"Unable to alloc %d MSI-X vectors: ret=%d\n",
+> +			MTK_IRQ_CNT_MAX, ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = mtk_pci_request_irq_msix(mdev);
+> +	if (ret)
+> +		pci_free_irq_vectors(pdev);
+> +
+> +	return ret;
+> +}
+
+[Severity: Medium]
+Should the device's MSI-X vector configuration be programmed here? The
+handler only takes status bit i on vector i:
+
+mtk_pci_irq_msix() {
+    ...
+	irq_state &= irq_desc->msix_bits; /* scope to this vector */
+	if (unlikely(!irq_state))
+		return IRQ_NONE;
+    ...
+}
+
+Nothing writes the MAC register that tells the device how many host
+vectors exist.
+
+The register map matches t7xx: ISTATUS at 0x0F00, IMASK SET/CLR at
+0x3000/0x3080, and the status dummy register at 0x0D1C. t7xx writes
+T7XX_PCIE_CFG_MSIX (0x03ec) with ffs(irq_count) * 2 - 1 after allocating
+its vectors:
+
+t7xx_setup_msix()
+  t7xx_pcie_set_mac_msix_cfg(t7xx_dev, EXT_INT_NUM)
+
+It writes it again in t7xx_pcie_interrupt_reinit().
+
+Here the 1:1 layout depends on the register's reset or leftover value. If
+that value merges sources onto fewer vectors, would the MHCCIF source
+(bit 28) land on a vector whose handler drops it and returns IRQ_NONE?
+
+That would leave the boot handshake unserviced. The spurious IRQ detector
+could also end up disabling the line.
+
+[ ... ]
+
+> +static void mtk_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	struct device *dev = &pdev->dev;
+> +	int i, ret;
+> +
+> +	/* Silence every source before tearing anything down. */
+> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX);
+> +
+> +	/* Free the vectors first: once no handler can run, the unmask at the
+> +	 * tail of mtk_mhccif_isr_work() cannot re-open the source behind
+> +	 * mtk_mhccif_exit()'s back.
 > +	 */
-> +	port->tx_seq = 0;
-> +	port->rx_seq = MTK_INVALID_RX_SEQ;
+> +	mtk_pci_free_irq(mdev);
+> +	mtk_mhccif_exit(mdev);
 
 [Severity: Low]
-Is the channel always closed when these counters are reset? The comment
-in struct mtk_port in mtk_port.h depends on it:
+Does this ordering give the guarantee the comment describes?
+cancel_work_sync() only runs later, inside mtk_mhccif_exit(). So a
+mhccif_work queued before the mask-all write can still run after
+mtk_pci_free_irq(), and it ends with:
 
-	/* tx_seq is stamped and advanced only at hardware hand-off, by the one
-	 * thread serving this port's TX queue; rx_seq only from the rx_done
-	 * callback of the one queue serving this channel.  Both are reset
-	 * while the channel is disabled, so neither needs a lock.
-	 */
+mtk_mhccif_isr_work() {
+    ...
+	mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
+}
 
-These are plain stores, made before the ENABLE is submitted. Nothing
-checks that the CLDMA queue is closed. I can see two ways the queue can
-still be live at this point.
+This writes BIT(28) to REG_IMASK_HOST_MSIX_SET_GRP0_0. By then
+pci_free_irq_vectors()->pci_msix_shutdown() has cleared
+PCI_MSIX_FLAGS_ENABLE and called pci_intx_for_msi(dev, 1). The source is
+unmasked with INTx enabled until mtk_mhccif_exit() masks it again.
 
-The first is a retry after a timeout. On -ETIMEDOUT,
-mtk_port_internal_enable() does this:
+There is a second window between the mask-all write and
+mtk_pci_free_irq(). A pending work can unmask the source there, take a new
+MSI-X interrupt and requeue itself.
 
-	ret = mtk_port_ch_enable(port);
-	if (ret && ret != -EBUSY) {
-		...
-		mtk_port_ch_disable(port);
-		clear_bit(PORT_S_ENABLE, &port->status);
-		return;
-	}
+The end state is masked. Would calling mtk_mhccif_exit() before
+mtk_pci_free_irq() close both windows? While the vectors still exist,
+mtk_pci_unregister_irq() gets a valid virq for synchronize_irq(), and
+cancel_work_sync() plus the final mask finish before the vectors are
+freed.
 
-The ENABLE trb is still queued, with the DISABLE behind it. With "Add
-FSM thread" later in the series, the handshake then fails in
-mtk_fsm_ctrl_ch_start()->mtk_port_internal_open() with -ENODEV. The
-device sends HS1 again, and mtk_port_mngr_fsm_state_handler_late() calls
-->enable() a second time.
+> +	pci_clear_master(pdev);
+> +	pci_disable_device(pdev);
+> +
+> +	/* Reset last: the endpoint comes back at power-on defaults, so no MMIO
+> +	 * and no MSI-X teardown may follow it.
+> +	 */
+> +	ret = mtk_pci_pldr(mdev);
+> +	if (!ret) {
+> +		/* MRST._RST may return before the link has retrained, and a
+> +		 * config write the device does not take is simply lost.
+> +		 */
+> +		for (i = 0; i < MTK_PLDR_READY_POLLS && !mtk_pci_link_check(mdev); i++)
+> +			msleep(MTK_PLDR_READY_POLL_MS);
+> +		if (!mtk_pci_link_check(mdev))
+> +			dev_warn(dev, "device not back %d ms after reset, its config space may not be restored\n",
+> +				 MTK_PLDR_READY_POLLS * MTK_PLDR_READY_POLL_MS);
+> +	} else if (!mtk_pci_link_check(mdev)) {
+> +		dev_warn(dev, "PLDR failed (%d) and link is down, modem not reset\n", ret);
+> +	} else {
+> +		dev_warn(dev, "PLDR failed (%d), trying MHCCIF reset\n", ret);
+> +		if (mtk_pci_send_ext_evt(mdev, DEV_EVT_H2D_DEVICE_RESET)) {
+> +			dev_err(dev, "MHCCIF reset failed\n");
+> +		} else {
+> +			/* Unlike MRST._RST the doorbell returns before the device
+> +			 * has reset, so let it settle before the restore below.
+> +			 */
+> +			msleep(MTK_MHCCIF_RESET_DELAY_MS);
+> +		}
+> +	}
 
-Suppose the trb thread has already run the first ENABLE. The RX queue is
-then armed with rxq->arg = port, and the DISABLE has not closed it yet.
-mtk_port_rx_dispatch() can then write port->rx_seq while this function
-resets it.
+[Severity: Medium]
+The PLDR branch polls mtk_pci_link_check() because "a config write the
+device does not take is simply lost", and it warns if the device has not
+come back. The doorbell branch only sleeps a fixed 2000 ms and then goes
+on to the restore.
 
-The second is -EBUSY, which mtk_port_ch_enable() treats as success.
-Suppose the queue was left open, for example because an earlier DISABLE
-submit failed with -ENOMEM. Both counters are then reset while the queue
-is live. The trb thread may still be running mtk_port_tx_seq_stamp() and
-mtk_port_tx_seq_advance() on queued TX packets.
+If the doorbell reset takes the endpoint off the link and it has not
+retrained within 2 s, are the pci_restore_state() writes below silently
+dropped?
 
-rx_seq only feeds the rate-limited warning in mtk_port_check_rx_seq(),
-so the visible effect is a spurious or missed out-of-order warning.
-KCSAN would still report the race.
+pci_load_and_free_saved_state() has already freed priv->saved_state and
+set it to NULL, and pci_restore_state() clears dev->state_saved. Nothing
+is left to retry with. Would the next bind then see BARs the device does
+not decode, with nothing in the log?
 
-Could the guarantee in the comment be enforced, or could the comment be
-reworded to match what the code actually ensures?
+Probe allows platforms without MRST._RST, and there every remove and
+shutdown takes this branch. Could it use the same link poll and warning
+as the PLDR branch?
+
+> +
+> +	/* Without this a runtime-PM suspend after unbind would snapshot the
+> +	 * reset state over our copy, and whoever binds next finds BARs the
+> +	 * device does not decode.
+> +	 */
+> +	pci_load_and_free_saved_state(pdev, &priv->saved_state);
+> +	pci_restore_state(pdev);
+> +}
+> +
+> +/* A kexec reboot neither resets nor powers down the slot, and the boot
+> + * notification the next kernel waits for is one-shot, so reset the modem
+> + * on the way down the same way remove() does.
+> + */
+> +static void mtk_pci_shutdown(struct pci_dev *pdev)
+> +{
+> +	mtk_pci_remove(pdev);
+> +}
+
+[Severity: Medium]
+The commit message says the shutdown reset is needed because "a kexec
+reboot gets no platform reset and the next kernel would otherwise find
+that firmware still running". Is crash kexec (kdump, kexec -p) covered?
+That path is:
+
+__crash_kexec()
+  machine_crash_shutdown()
+  machine_kexec()
+
+It never calls device_shutdown(), so mtk_pci_shutdown() does not run. The
+capture kernel then probes a modem whose firmware is still running.
+
+By then the crashed kernel's mtk_mhccif_isr_work() has already acked
+BOOT_FLOW_SYNC, and the comment in mtk_mhccif_init() says:
+
+	 * Do NOT ack here: EP2RC status bits are latched one-shot
+	 * notifications (e.g. BOOT_FLOW_SYNC raised before the driver
+	 * loads) that the device never re-sends.
+
+mtk_pci_probe() neither resets the modem nor checks whether firmware is
+already running. Would the boot flow wait for a BOOT_FLOW_SYNC that never
+comes? Later in the series, mtk_fsm_dev_add_act() moves to FSM_STATE_ON,
+unmasks BOOT_FLOW_SYNC and waits.
+
+The same state also seems reachable after mtk_pci_remove() if the reset
+does not take effect. That covers a down link, or no MRST._RST combined
+with firmware that ignores the doorbell. The commit message says the
+doorbell "cannot recover firmware that has stopped responding - the case
+the reset exists for".
+
+Resetting the modem, or detecting running firmware, in probe would cover
+these cases. It would also remove the 1-2 s wait that every reboot and
+power-off now has, which still does not help kdump.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105-t9xx_driver_v1-v11-0-2084aa512864%40compal.com
