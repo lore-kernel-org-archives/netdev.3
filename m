@@ -1,59 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794295584;
-	b=fMXTvEdnQwzt9S/eSr6exWu47T9d/X2GdLdRW6u4szLgKHH+HD7HxuSiimmgjRD0QslS
-	 t3Rls0ngA3FM48pFGIfwkwrRinuJ3LDbXAE3b83PwajIOfAlB4rl+9DSR3R9uARnI+dsr
-	 xtcT813f5vA0m6JSOdUUKCiPFdKyrEkBn5XOVNUgzMIjScdAyIaB2O1E1oAZ3xTjrL7K0
-	 4XXjzoNpz+JKczTQzU51QpSly8AXMts1K6k8pqabYkWkBNQOoYI0HRhiqVsXeaZHK0uSK
-	 6b0ICskSt6cjKUw5uxOfxQ7bxnmb4ZWTGM0AYuWshXhkcJx3PwymTVQ4CLDuqMFIFJA==
+	t=1794295906;
+	b=sQwGOqjJK4yTiRnk7l7Zmil4uyTXlCJa2XmF4/mrs94DwT+s8j945kWnqhyYmWAL7gC8
+	 Cc2PEfiTHXQAVX+BsCwguR83mJkL5qUfpWbwuQfxVoKujDMZiUs4knxWzC7uCjgL2mT91
+	 d9bQtgcKWDt7ffgYjSd59/Nqj3ExKrk3Q8MPzaBNE33w2akIjaK1Nb+ANul/n/KpqVEya
+	 sQX6EG3xC+6HwD0JFdt6YpXuYwFGrgI9tFnqGHWeYMSn8N80KnZeE8lTfcLBMDaBRRcD7
+	 MfqOK7d8vBffLz/tAEP4Vd5fShbEC0YLfXq7m8JiYtay3PiIp61jLvUKbi4yEL+6P1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794295584;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=KcQCSoWUsqhtH4oZRIUkp+1SLMOyovEgQ1hsRHq2HuYR+q5U/xjUKxevaIvvMpORvSB7
-	 NJqFBhiYUdfEom91qzXvhcX8kkLmfkqW78nKOlfmgiPbWo4ik9BqFDT8GfYPwd+4ck7sh
-	 mrJiuO322IeR8cyppe8OZtGf0D3Jr6YEYu5Zfz99qtEcCmHvLF3EDjtarFKHEP+M12b2k
-	 IC8V0EfvCy1e0t1RuHdQBoJtol8CON+4NTehElzEA3fJHwO3RY2N6ybLeaYPBZSwCUuPF
-	 PD2e3snWaalJNhIGQN0bqpffNNwytUoUy9tBA2GQvSk+7YVR9TFqtziamACRkCxglVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794295906;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=n7wwb0uzmhfZxhSJHZrgJrb4K/zWUbcQx/RDNUytUQA=;
+	b=W65C25rbJ6bu5lpGffPDBIXtDJaQIeeeUoWMsNrkE4qZ5lDQYXVig48I+th1+PbvDpMc
+	 gmQ7yFyBWpi+7uBbY/nQEImexnAf8zkp+A/Xw2Ic8Nnhjf892kk2LuM8Xo/mc4gKACEzR
+	 38H3mXFzFT9I9pUlAjGhwXFYcO6z79O0dJcFAMIc873nRv5eZKtexXmRmqfO5fbCbKaXc
+	 m8Jua66EVMAseDPI+ivlprg+GRC2S0Lb5IDwWnDJr0y1JV+aozk5VtNEofzgEnUxjrxMa
+	 W6AtmH3uDzKsWChPXFXhHvFOXyR0zwS8gYy8IqbCDJQsA5EUlJWcDJAs0NBsOCkgATw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V6OyKl3z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F9D606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:26:24 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ZEKGhX1A;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8753C606A31C;
+	Tue, 10 Nov 2026 07:31:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8753C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V6OyKl3z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50DA1F0089F;
-	Tue, 10 Nov 2026 07:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794295584;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V6OyKl3z0PDI7PaoruCO1+uMQTqbYbeQD3nFgrEBdGj80dzvMUakvmcXeZn2ffU8v
-	 WSiDRtDGI086F5xWIbm6urSV0EmBsOZEnIpIVBOIS2a6Uvs+0M/GEBc/SURM3EFIDB
-	 YgrbPXIatyu0oqEGHj1Fin5x97V44HG+H+02/nmHw7XQefHsQ31iGZ6dEeUwentbaS
-	 RzFay144DTYbZXraD5dXd/VD/cAD9WRdPSUs/hObNpMdrgJ9qqP3motLXqugvWOe3g
-	 Y4WqCeJEQtWlHNf6+HGOxEObApyAAdz9c5aA1HQ5n61t/H2eEiiZi3lJT8WPWjnesl
-	 lFH/Zr9k/Vjmg==
-From: netdev-bot+sinfo@kernel.org
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org
-Subject: 
- Re: [PATCH net] vxlan: annotate lockless accesses to rdst->remote_ifindex
-Date: Tue, 10 Nov 2026 07:26:23 +0000
-Message-ID: <179429558345.488859.16534342073147950836@kernel.org>
-In-Reply-To: <20261110072208.3273638-1-edumazet@kernel.org>
-References: <20261110072208.3273638-1-edumazet@kernel.org>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ZEKGhX1A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=ZEKGhX1Avnq50VfJEKCf1mOb+GdCs5V1+zERw14z0wP9wjbMo79dnJKcLbdpAwX3+SkCrc03X05Op
+	 HYPoWKIQceTWA+iCKDpHYf1Fs/I0+wkeRl2IAV/3bQGN7cbwPZvxj9mif9kt7S5nM6i2svQjH+5BAw
+	 dhmsV4nzjc/nBs88=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96af2c85e69f-d197c;
+	Tue, 10 Nov 2026 15:31:43 +0800 (CST)
+X-RM-TRANSID:2ee96af2c85e69f-d197c
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af2c85c276-ac084;
+	Tue, 10 Nov 2026 15:31:42 +0800 (CST)
+X-RM-TRANSID:2ee26af2c85c276-ac084
+From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>,
+	netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	jan.kiszka@siemens.com,
+	diogo.ivo@siemens.com,
+	haokexin@gmail.com,
+	horms@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net 0/4] net: ti: icssg: Fix device_node handling in prueth_probe()
+Date: Tue, 10 Nov 2026 15:31:38 +0800
+Message-ID: <20261110150500.3142-laixiangwu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <179429318364.488859.2256720144223130993@kernel.org>
+References: <179429318364.488859.2256720144223130993@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,25 +82,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+Hi,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Please find below the additional information requested for this
+series. The same information was provided for the v1 postings of
+patches 1 and 2 here:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+https://lore.kernel.org/netdev/20261109093000.54321-laixiangwu@cmss.chinamobile.com/
+https://lore.kernel.org/netdev/20261109093500.54322-laixiangwu@cmss.chinamobile.com/
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+How the issues were discovered: manual code inspection of the error
+paths in prueth_probe() while auditing both ICSSG drivers for
+probe-time resource leaks. The port scan issues addressed by
+patches 3 and 4 were found in the same audit; the use of the
+uninitialized reg value was also raised during the review of v1.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Whether the issues were actually triggered: no, they are purely
+theoretical, all of them require a malformed device tree:
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+- Patches 1 and 2: the leak triggers only when the "ti,mii-g-rt" or
+  "ti,mii-rt" syscon regmap lookup fails, which does not happen on
+  a valid DT. probe() then fails with -ENODEV and the references
+  taken on eth0_node/eth1_node are leaked silently; there is no
+  stack trace or error message pointing at the leak itself.
+
+- Patches 3 and 4: the uninitialized reg value is only used when a
+  port node has no reg property, and a reference is only leaked for
+  port nodes with a reg value outside 0/1 or with a duplicate reg
+  value. On a valid DT (one port with reg 0 and one with reg 1) the
+  loop behaves as before, with identical reference accounting for
+  the accepted ports.
+
+Hardware the change was tested on: none, the series was not tested
+on real hardware. Patches 1 and 2 only re-route two error branches
+to the existing put_cores label, which is already exercised by the
+other failure paths in the same function (e.g. prueth_get_cores()
+failures). Patches 3 and 4 move of_node_get() from an unconditional
+call on every port child to the assignment points, so for ports
+that are accepted the reference accounting is unchanged, and the
+new error path only releases references it has just taken.
+
+Best regards,
+Xiangwu Lai
+
+
