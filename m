@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794308639;
-	b=WjzdfqHOa1G5rlYm5rlvnhKRTrRH5iLnHtzFosV6JC+wEZI8iUeV95KEwvydT53ZZUN5
-	 UnX/gf3VgJ61JebPG1FOdB0VhuEQbAVHnewPUORZH6/0oEFP3JG+l7f3rpLun7biUamd7
-	 m+RqSNBBfN8dcMJ3L0304n+Vq6Y49gM7kZE1emL4bNe+AKgwttjwGHWyMcFYLJ1kNJGyl
-	 437sDUYp5AfR5SVVkeHg0msaUbQgnY6Hfd+WXjJ0krB8FDmeLdXdeTbQHzi/oCTZobcJC
-	 R0l9+jm4rn1ljt5hnaLitXD7MIBFtEO45r1N0EpIe08Nna1who3tBvCLfre5H4PflXQ==
+	t=1794308637;
+	b=Fiy5Grm9R8HCiOO0oC4HXEwc8l/JZuFeiVOdNy3Luvpksa+OEaL0Pcpu2I7RJxYqNIZ9
+	 /+PdSnrq83UJ7Wq/i4hNkHOm9xvbrpbFnFpKmAeltnImZO/e8ragL2B48z4uSyBDyIh31
+	 TpwWybHI9lleWdTb+o1uTKxsUn+rKnUD9ZPp5Kt1a71F7cq3+FNHEhTSPoWSWmGicFGYJ
+	 EnsBFv8uBm+bzaLPLIuiwj1I3AE4F2/j3/HR5Vx1naQ812akpmFcQTThhn88n+UdgKDUP
+	 Y0B08EkMjpm5qrMo0yvrVUHj5jQBbI+NPNDR4xSgLH3UuvDJ3dArf6uNgvsl6k80SZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794308639;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794308637;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z+ytI9wavvMw+zLcwrAzpV1MNvJGWqbv85CxsVoh33I=;
-	b=d4JZ8tBcd2bwS+QP7QT0kR2cIYsmxKbyUMxu04nSz7MRf9naLEny3QmajHy7UGOm5XeT
-	 qs1HdVUFiUi/5fGtekqedXeDm57hoExMBZzW+QNBSK+Aql2zmX+tc/3zo/1Q5/RuBdOkW
-	 6KOoF7WV4AhfJ8mrO4fe8YX2fpFu7Dg8ouZ59fhbWRcjGwapCOTpgEeae2bYvJB6NBMFu
-	 yKFBSxJhMsyfW/Dncyz3pggBZ9mn0Ap2gNydD9wS0B2qTLVYGrVJ0tiZFMtJbsRrfCCMM
-	 bT3+oSUXX/CyMPWueWQvCBHeEP2eQi6KUs1xMZ52/D9nOjv2txxoDRek6aVhn4Y4kaQ==
+	bh=tYrAKUjMVseWpZFjYAufzGg5Bx9k1ettsvUbEdclTF4=;
+	b=Uu+E6KqnNsBDabLsTyE4qsEGZEZkqzeKYwoFKi55rvtPYxW7hgB/ogm4hOdCXfboF3Qn
+	 07RlARRaKHnZLlknAOJeUYGkVsw9sb0XWw/Mip/HCX3QihC1cYVhuDSrfPuLI4s45uPE5
+	 D56OxsS60XM1oeQx4Hn//wh8Bi/NSSlVKFXrorW+kRyXHcVijKXVh7UYz7egCMcUGOOIr
+	 9CMbmI7EVMfPn7lXqGTKRecnKCJ7ws3W2/gV8bJZVKIXs5grn4O1uhB5+6ZAoqH7976/R
+	 ucTE/oj0dicBXIWKHu+Ts4S1/gjluG+KOJfLW5/DeYV/6Ni6jegEjK5KmOdOzKHlavw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jBaTn144;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JnUZJHBp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615AB60A261F;
-	Tue, 10 Nov 2026 11:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424ED606A326;
+	Tue, 10 Nov 2026 11:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jBaTn144
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79D91F0089F;
-	Tue, 10 Nov 2026 11:03:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JnUZJHBp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FC21F0089F;
+	Tue, 10 Nov 2026 11:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794308639;
-	bh=Z+ytI9wavvMw+zLcwrAzpV1MNvJGWqbv85CxsVoh33I=;
+	s=k20260515; t=1794308635;
+	bh=tYrAKUjMVseWpZFjYAufzGg5Bx9k1ettsvUbEdclTF4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jBaTn144YJp7KoPTLQbhZ8GkpZExfCIHBa4Y4iC68uDtRdUrrSnQtBRnpKFX2y+6p
-	 54hgpuLx3jwsKvE9mM/HP7eOd1wGHmbKkEaI1Q5XnPu+unQPFq5hM4mopYb3UvaQTo
-	 lKDJFtNl+vlilYwkLiZlCClztXd5alJ1Lf8oHG27WGWIJmCSPmN+393+FViW9QXfNg
-	 tHIMuBNckryMXsVdY8KOa9X6dE4287p8mYSqYnaWaBg3OQi+J078zWeFN5+DxMFAnN
-	 TqeUaIB5KG9SKHATHH0uSe23p5m4RLOIvofz0AkOumyfdmKHKdqGlfEyqnThbJx639
-	 bYfn8bz6JuhiA==
-Subject: Re: [PATCH v11 5/6] net: wwan: t9xx: Add FSM thread
+	b=JnUZJHBpUm2jirEBPXeG+U3utExrYXO/HrqdQWHcDpsynaSU/OePr+xrDL3KYEU6G
+	 Q9GSEexBmwVNgrgzwJdqwetIoy8YGyIqQECuITRBsHxR7SiGjJnhTzw98/qvU5JLgS
+	 RBwt5GyUHuX7kL2ZB92kRsbNvYdnHvoiAYzOvCo4YQzYiL40jaeoEGPsdu/PBN/WQR
+	 U1/iVdP9118j+8aXGG5X7fmDkNhVN/RKBwz6s/NSg2xeb6+beMzXcmIl0WQ8xU4Psz
+	 y3iK6DPQbrvD6h+VluBltZUc4Jd/51e2t6g1METgOfmF2tsPVA9LUb5eSSt0B9/cL/
+	 7myNsnTqGTPfg==
+Subject: Re: [PATCH v11 3/6] net: wwan: t9xx: Add control DMA interface
 From: netdev-bot+sashiko@kernel.org
 To: jackbb_wu@compal.com
 Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
@@ -53,10 +53,10 @@ Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  linux-doc@vger.kernel.org
-Date: Tue, 10 Nov 2026 11:03:57 +0000
-Message-ID: <179430863746.994134.15827653788526776199@kernel.org>
-In-Reply-To: <20261105-t9xx_driver_v1-v11-5-2084aa512864@compal.com>
-References: <20261105-t9xx_driver_v1-v11-5-2084aa512864@compal.com>
+Date: Tue, 10 Nov 2026 11:03:53 +0000
+Message-ID: <179430863371.994134.14489528586446224706@kernel.org>
+In-Reply-To: <20261105-t9xx_driver_v1-v11-3-2084aa512864@compal.com>
+References: <20261105-t9xx_driver_v1-v11-3-2084aa512864@compal.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,10 +70,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 3
+Critical: 0 · High: 1 · Medium: 3 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,327 +81,1507 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] net: wwan: t9xx: late is_stopping check in
-  mtk_cldma_start_xfer()
-- [Medium] When READY is refused, mtk_fsm_startup_act() has no way to
-  recover.
-- [Medium] In mtk_fsm_feature_set_match(), the
-  RTFT_TYPE_SUPPORT_BACKWARD_COMPAT case (line 163) compares only…
-- [Low] mtk_fsm_parse_hs2_msg() runs the runtime-feature actions before
-  the HS2 framing has been checked.
-- [Low] Two comments say the FSM kthread is "parked", but nothing in this
-  code ever parks it.
-- [Low] When mtk_cldma_err_tx_one() cannot stop a TX queue
-  (mtk_cldma_stop_queue returns something other than 0 or -ENODEV), it…
+- [High] net: wwan: t9xx: RX queue stall on reset race in
+  mtk_cldma_rx_done_work()
+- [Medium] mtk_cldma_rearm_queues() can leave a started TX queue stopped
+  with descriptors still pending.
+- [Medium] mtk_cldma_hw_recovery() is called from mtk_cldma_start_xfer()
+  when one TX queue's start-address register reads back 0.
+- [Medium] When a single queue fails to stop while its channel is closing
+  (mtk_cldma_stop_queue() returns -ETIMEDOUT), mtk_cldma_txq_free() and…
+- [Low] mtk_cldma_drv_init() writes 1 to REG_CLDMA_UL_DUMMY_0 and
+  REG_CLDMA_SO_DUMMY_0 under the comment "disable illegal memory check".
 
 --
 
-net: wwan: t9xx: Add FSM thread
+net: wwan: t9xx: Add control DMA interface
 
-This commit adds an FSM kthread to the t9xx WWAN driver and wires the
-HS1/HS2/HS3 runtime feature handshake into it. CLDMA bring-up and teardown
-are driven from FSM state transitions, including registering the IRQ and
-adding err_work for queue error recovery.
+This adds the CLDMA (Cross Layer DMA) layer for the t9xx WWAN control
+plane. It covers GPD ring handling for the TX and RX queues, the TRB
+service thread, and register access for the two CLDMA instances. Probe
+now attaches the transaction context to the control plane through
+mtk_pci_dev_init() and mtk_pci_dev_exit().
 
-> diff --git a/drivers/net/wwan/t9xx/mtk_fsm.c b/drivers/net/wwan/t9xx/mtk_fsm.c
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
 > new file mode 100644
-> index 0000000000000..3350f6df5064a
+> index 0000000000000..d8763cdd67dac
 > --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/mtk_fsm.c
-> @@ -0,0 +1,1085 @@
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
+> @@ -0,0 +1,1207 @@
 
 [ ... ]
 
-> +static int mtk_fsm_feature_set_match(enum runtime_feature_support_type *cur_ft_spt,
-> +				     struct runtime_feature_info rtft_info_st,
-> +				     struct runtime_feature_info rtft_info_cfg)
+> +static void mtk_cldma_rearm_queues(struct cldma_drv_info *drv_info)
 > +{
 
 [ ... ]
 
-> +	case RTFT_TYPE_SUPPORT_BACKWARD_COMPAT:
-> +		/* Decided on the device's declaration alone: the host's
-> +		 * configured type can be the older of the two, and gating on
-> +		 * it would keep off a feature the device just called
-> +		 * compatible.
-> +		 */
-> +		if (FIELD_GET(FEATURE_VER, rtft_info_st.feature) >=
-> +		    FIELD_GET(FEATURE_VER, rtft_info_cfg.feature))
-> +			*cur_ft_spt = RTFT_TYPE_MUST_SUPPORT;
-> +		else
-> +			*cur_ft_spt = RTFT_TYPE_NOT_EXIST;
-> +		break;
+> +	mtk_cldma_drv_init(drv_info);
+> +
+> +	for (i = 0; i < HW_QUE_NUM; i++) {
+> +		txq = drv_info->txq[i];
+> +		if (txq) {
+> +			spin_lock(&txq->ring_lock);
+> +			/* The device halts on an HWO=0 descriptor and RESUME
+> +			 * never moves the cursor past it, so do not restart
+> +			 * from free_idx - which recovery usually finds behind
+> +			 * the hardware. Leave the queue stopped and let the
+> +			 * next start_xfer() issue a fresh START.
+> +			 */
+> +			req = txq->req_pool + txq->free_idx;
+> +			if (READ_ONCE(txq->tx_started) &&
+> +			    !(req->gpd->tx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO)) {
+> +				WRITE_ONCE(txq->tx_started, false);
+> +				/* Its XFER_DONE may have been lost in the
+> +				 * reset; without this free_idx never advances.
+> +				 */
+> +				queue_work(drv_info->wq, &txq->tx_done_work);
+> +			} else {
+> +				mtk_cldma_setup_start_addr(drv_info, DIR_TX, i,
+> +							   req->gpd_dma_addr);
+> +			}
 
 [Severity: Medium]
-Should this case also check the host's configured type?
+Can this branch leave a started TX queue stopped while it still has
+descriptors pending?
 
-Every host query entry is version 0. The entries the host never configured
-are zero, because the fsm comes from devm_kzalloc(). So the version test is
-always true. Any feature the device marks BACKWARD_COMPAT gets promoted to
-RTFT_TYPE_MUST_SUPPORT, even when the host set it to NOT_EXIST or
-NOT_SUPPORT. The MUST_SUPPORT case returns -EPROTO for that host config,
-and the OPTIONAL case downgrades it.
+Suppose the instance reset comes from another queue's
+mtk_cldma_txq_free() or mtk_cldma_rxq_free() -ETIMEDOUT path, or from
+mtk_cldma_hw_recovery(). Suppose also that this queue's slot at free_idx
+is completed but not yet reaped (HWO=0, req->skb set), and later slots
+still have HWO=1.
 
-In mtk_fsm_hs_info_init_by_hsid(), the MD handshake leaves
-query_ft_set[QUERY_RTFT_ID_SAP_PORT_ENUM] as NOT_EXIST. The SAP handshake
-leaves query_ft_set[QUERY_RTFT_ID_MD_PORT_ENUM] as NOT_EXIST. Both slots
-have a handler in query_rtft_action[]. So mtk_fsm_parse_hs2_msg() would
-run mtk_port_status_update() on port data the host never asked for:
+In that case this branch sets tx_started to false and only queues
+tx_done_work. It programs no start address and issues no UL START.
 
-    if (cur_ft_spt == RTFT_TYPE_MUST_SUPPORT && query_rtft_action[ft_id]) {
-        if (!data_len) {
-            ...
-            ret = -EPROTO;
-            break;
-        }
+mtk_cldma_tx_done_work() then reaps the completed slot and stops at the
+first HWO=1 slot:
 
-If that entry has data_len == 0, the whole HS2 fails with -EPROTO. No HS3
-is sent and the FSM never reaches READY.
+	if (!req->skb || (req->gpd->tx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO)) {
+		spin_unlock(&txq->ring_lock);
+		break;
+	}
 
-The comment says the host's type is ignored because it "can be the older
-of the two". That is about versions. Does it really cover a host that
-never queried the feature, or one that explicitly refused it?
+Nothing restarts the engine after that. The remaining descriptors and
+their TRBs seem to stay stuck until another TX is submitted on this
+queue. Later in the series, a blocking writer in mtk_port_send_data()
+waits for these TRBs with no timeout.
 
-> +static int (*query_rtft_action[FEATURE_CNT])(struct mtk_md_dev *mdev,
-> +					     void *rt_data, u32 data_len) = {
-> +	[QUERY_RTFT_ID_MD_PORT_ENUM] = mtk_port_status_update,
-> +	[QUERY_RTFT_ID_SAP_PORT_ENUM] = mtk_port_status_update,
-> +};
+When the next TX does arrive, mtk_cldma_start_xfer() reads a start
+address of 0, which this branch left unprogrammed on purpose. It treats
+that as lost device state:
 
-[ ... ]
+	if (unlikely(!val)) {
+		ret = mtk_cldma_hw_recovery(drv_info, txq, qno);
 
-> +static int mtk_fsm_parse_hs2_msg(struct mtk_md_fsm *fsm, struct fsm_hs_info *hs_info,
-> +				 struct sk_buff *skb)
-> +{
+That logs "lost its queue state", runs mtk_cldma_drv_init() again and
+sets need_restart on every RX queue of the instance.
 
-[ ... ]
+mtk_cldma_tx_start_idx() already finds the first slot the device still
+owns. Could it be used here, under the ring_lock already held, to
+program that slot and keep the queue running?
 
-> +	rt_data = skb->data;
-> +	rt_data_len = skb->len;
-> +
-> +	offset = sizeof(struct feature_query);
-> +	for (ft_id = 0; ft_id < FEATURE_CNT; ft_id++) {
+This branch is unchanged at the end of the series. The "Add FSM thread"
+patch only adds an is_stopping check.
 
-[Severity: Low]
-This skips the feature_query header without checking head_pattern or
-tail_pattern. It then runs query_rtft_action[] on the entries, and
-mtk_port_status_update() writes port->enable. The FEATURE_QUERY_PATTERN
-check on the same skb only runs later:
-
-mtk_fsm_startup_act()
-  mtk_fsm_parse_hs2_msg()          <- actions applied
-  mtk_fsm_send_hs3_msg()
-    mtk_fsm_append_rtft_entries()  <- -EPROTO on bad patterns
-
-So an HS2 with a bad header but valid entries updates the port table
-first, and only then is rejected. mtk_fsm_startup_act() goes to hs_err
-and re-arms the channel. The port enable state from the rejected message
-stays in place, and any port the retried HS2 does not list keeps that
-value.
-
-Could the pattern check move into mtk_fsm_parse_hs2_msg(), before any
-action runs?
-
-[ ... ]
-
-> +static int mtk_fsm_startup_act(struct mtk_md_fsm *fsm, struct mtk_fsm_evt *event)
-> +{
-
-[ ... ]
-
-> +	hs_done_flag = READ_ONCE(fsm->hs_done_flag);
-> +	if (((fsm->fsm_flag | event->fsm_flag) & hs_done_flag) == hs_done_flag) {
-> +		int user;
-> +
-> +		for (user = 0; user < MTK_FSM_HIF_USER_MAX; user++) {
-> +			if (fsm->hif_err[user]) {
-> +				dev_err(mdev->dev,
-> +					"Refusing READY: HIF user %d init failed with %d\n",
-> +					user, fsm->hif_err[user]);
-> +				return fsm->hif_err[user];
-> +			}
+> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_ERROR);
+> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_XFER_DONE);
+> +			if (READ_ONCE(txq->tx_started))
+> +				mtk_cldma_start_queue(drv_info, DIR_TX, i);
+> +			spin_unlock(&txq->ring_lock);
 > +		}
 
-[Severity: Medium]
-Once READY is refused here, how does the FSM recover?
+[ ... ]
 
-This returns directly and does not go through hs_err, so no handshake
-channel is re-armed. Both channels were masked by their HS1 handlers. No
-further STARTUP can arrive, and the FSM stays in BOOTUP until the driver
-is rebound.
-
-One way to get here is a DEV_CFG_MD_ONLY device. mtk_fsm_idle_evt_handler()
-sets hs_done_flag to the MD bits only, but it still unmasks both channels:
-
-    for (hs_id = 0; hs_id < HS_ID_MAX; hs_id++)
-        mtk_fsm_unmask_ext_evt(fsm, fsm->hs_info[hs_id].mhccif_ch);
-
-If a SAP HS1 arrives and mtk_cldma_dev_init(CLDMA0) fails,
-hif_err[MTK_FSM_HIF_USER_CLDMA0] stays set. When the MD handshake
-completes, READY is refused for good, even though SAP is not required in
-that configuration. Can firmware send a SAP HS1 in MD-only mode?
-
-Separately, the comment above mtk_fsm_hif_err_record() says:
-
-    so a retried init that succeeds clears the failure it recorded before.
-
-The MTK_FSM_HIF_USER_CTRL slot is only written by
-mtk_ctrl_trans_fsm_state_handler(), on the transition to FSM_STATE_ON.
-mtk_fsm_dev_add_act() allows that transition only once, from
-FSM_STATE_INVALID. Is there any retry path for that slot?
-
-The commit message says "the FSM advances to READY only after both
-complete". It does not mention the MD-only case or the hif_err gate.
+> +static void mtk_cldma_txq_free(struct cldma_drv_info *drv_info, u32 txqno)
+> +{
 
 [ ... ]
 
-> +err_unregister_evt:
-> +	mtk_pci_unregister_ext_evt(mdev, DEV_EVT_D2H_BOOT_FLOW_SYNC);
-> +err_stop_thread:
-> +	/* mdev->fsm is never published on failure, so mtk_fsm_exit() cannot
-> +	 * stop the parked kthread for us; it must be stopped here.
-> +	 */
-> +	kthread_stop(fsm->fsm_handler);
-> +	put_task_struct(fsm->fsm_handler);
-> +	return ret;
+> +	ret = mtk_cldma_stop_queue(drv_info, DIR_TX, txqno);
+> +	if (ret == -ETIMEDOUT) {
+> +		dev_err(mdev->dev, "TX queue %u stop timed out, resetting CLDMA%d\n",
+> +			txqno, drv_info->hw_id);
+> +		/* One rearm_lock section from the reset to the re-arm: no queue
+> +		 * may be resumed or started in between, while it has no address.
+> +		 */
+> +		mutex_lock(&drv_info->rearm_lock);
+> +		mtk_cldma_drv_reset(drv_info);
+> +		ret = mtk_cldma_stop_queue(drv_info, DIR_TX, txqno);
+> +		/* the reset took the whole instance down with this queue */
+> +		mtk_cldma_rearm_queues(drv_info);
+> +		mutex_unlock(&drv_info->rearm_lock);
+> +	}
+
+[Severity: Medium]
+If one queue fails to stop while its channel is closing, this pulses the
+infra reset for the whole CLDMA instance. Is that safe while other
+channels on the same instance may have DMA in flight?
+
+The other queues are not stopped before mtk_cldma_drv_reset(). At the
+end of the series CLDMA1 carries three channels (TXQ 0, 2 and 5 in
+mtk_queue_info[]).
+
+A TX GPD that another queue was sending keeps HWO=1, and
+mtk_cldma_rearm_queues() restarts it from free_idx. Could the modem then
+receive a partial copy followed by a full resend? An RX GPD that was
+being filled would be left half-written.
+
+mtk_cldma_rxq_free() reaches the same reset.
+
+Also, mtk_cldma_drv_reset() returns right after releasing the reset:
+
+	mtk_pci_write32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_clr, val);
+	mtk_pci_read32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_clr);
+
+The next accesses are the mtk_cldma_stop_queue() poll and the
+read-modify-write of UL_CFG and SO_CFG in mtk_cldma_drv_init(), which
+selects 64-bit GPD mode.
+
+Does the IP need a settle delay or a readiness check after RST0_CLR
+before those accesses?
+
+[ ... ]
+
+> +/* The device reported a zero TX start address: it lost its queue state. */
+> +static int mtk_cldma_hw_recovery(struct cldma_drv_info *drv_info, struct txq *txq, u32 qno)
+> +{
+> +	u64 val;
+> +
+> +	dev_err(drv_info->mdev->dev,
+> +		"CLDMA%d lost its queue state, re-initializing\n",
+> +		drv_info->hw_id);
+> +
+> +	mtk_cldma_rearm_queues(drv_info);
+
+[Severity: Medium]
+mtk_cldma_start_xfer() calls this when one TX queue's start address
+reads back 0. It then calls mtk_cldma_rearm_queues() without resetting
+or stopping the instance first. Is the re-arm safe on an IP that may
+still be running?
+
+mtk_cldma_rearm_queues() looks written for the state right after
+mtk_cldma_drv_reset(). On this path it read-modify-writes UL_CFG and
+SO_CFG and rewrites the interrupt and busy masks on a live IP.
+
+For every other published TX queue with tx_started set and HWO=1 at
+free_idx, it also does:
+
+	mtk_cldma_setup_start_addr(drv_info, DIR_TX, i,
+				   req->gpd_dma_addr);
+	...
+	if (READ_ONCE(txq->tx_started))
+		mtk_cldma_start_queue(drv_info, DIR_TX, i);
+
+Nothing shows those engines are idle. Could a running queue be
+reprogrammed and restarted mid-transfer, so a descriptor is processed
+twice or a transfer is cut short?
+
+The RX side has the same pattern in this patch. need_restart makes
+mtk_cldma_rxq_restart() program SO_START_ADDR and issue START without
+stopping the queue.
+
+The later "Add FSM thread" patch adds mtk_cldma_stop_queue() to
+mtk_cldma_rxq_restart(), but the TX side is unchanged at the end of the
+series.
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c
+> new file mode 100644
+> index 0000000000000..65e78421f9cf1
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c
+> @@ -0,0 +1,505 @@
+
+[ ... ]
+
+> +void mtk_cldma_drv_init(struct cldma_drv_info *drv_info)
+> +{
+
+[ ... ]
+
+> +	/* enable interrupt to PCIe */
+> +	mtk_pci_write32(mdev, base + hw_regs->reg_cldma_int_mask, 0);
+> +
+> +	/* disable illegal memory check */
+> +	mtk_pci_write32(mdev, base + hw_regs->reg_cldma_ul_dummy_0, 1);
+> +	mtk_pci_write32(mdev, base + hw_regs->reg_cldma_so_dummy_0, 1);
 > +}
 
 [Severity: Low]
-This isn't a bug, but this thread is not parked. It was only created by
-kthread_create() and never woken, and nothing in mtk_fsm.c calls
-kthread_park().
+This may not be a bug, but could the reason for disabling the illegal
+memory check be documented? Neither the code nor the commit message
+explains it.
 
-The comment in mtk_pci_dev_exit() has the same problem:
+The write runs on every instance init and on every
+mtk_cldma_rearm_queues() recovery.
 
-    /* Close the event gate and park the FSM thread before the transport
-     * plane it drives is torn down.
-     */
-    mtk_fsm_stop(mdev);
+Some paths can leave a stale buffer address in a GPD. One is the re-arm
+after a reset. Another is an RX slot in mtk_cldma_rx_done_work() whose
+skb was freed after a mapping failure while data_buff_ptr still holds
+the old address.
 
-mtk_fsm_stop() clears fsm->fsm_handler and calls kthread_stop() and
-put_task_struct(). The thread is terminated, not parked.
+With the check turned off, the device would not catch such an address.
+Without an IOMMU, it could turn into a stray DMA to host memory.
 
-[ ... ]
-
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> index d8763cdd67dac..4893edfebf79e 100644
-> --- a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
+The t7xx CLDMA driver does not appear to do this. Does the hardware
+require this write?
 
 [ ... ]
 
-> @@ -967,15 +1318,94 @@ static void mtk_cldma_txq_flush(struct cldma_drv_info *drv_info,
-
-[ ... ]
-
-> +static void mtk_cldma_err_tx_one(struct cldma_drv_info *drv_info, u32 qno)
+> @@ -0,0 +1,1207 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2022, MediaTek Inc.
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/dmapool.h>
+> +#include <linux/err.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/kdev_t.h>
+> +#include <linux/kernel.h>
+> +#include <linux/kthread.h>
+> +#include <linux/list.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/sched.h>
+> +#include <linux/skbuff.h>
+> +#include <linux/slab.h>
+> +#include <linux/timer.h>
+> +#include <linux/wait.h>
+> +#include <linux/workqueue.h>
+> +#include "mtk_pci.h"
+> +#include "mtk_cldma.h"
+> +#include "mtk_cldma_drv.h"
+> +#include "mtk_dev.h"
+> +
+> +#define WAIT_HWO_ROUND		(10)
+> +#define WAIT_HWO_TIME		(5)
+> +#define NO_BUDGET		(0)
+> +
+> +static const int mtk_cldma_hw_id_tbl[NR_CLDMA] = {
+> +	[CLDMA0] = CLDMA0_HW_ID,
+> +	[CLDMA1] = CLDMA1_HW_ID,
+> +};
+> +
+> +static void mtk_cldma_tx_done_work(struct work_struct *work)
 > +{
+> +	struct txq *txq = container_of(work, struct txq, tx_done_work);
+> +	struct cldma_drv_info *drv_info;
+> +	struct mtk_ctrl_trans *trans;
+> +	struct mtk_md_dev *mdev;
+> +	struct sk_buff *skb;
+> +	struct trb_srv *srv;
+> +	struct tx_req *req;
+> +	unsigned int state;
+> +	bool was_starved;
+> +	struct trb *trb;
+> +	int i, hif_id;
+> +	u32 txqno;
+> +
+> +	drv_info = txq->drv_info;
+> +	hif_id = drv_info->hif_id;
+> +	txqno = txq->txqno;
+> +	mdev = drv_info->mdev;
+> +	trans = drv_info->cd->trans;
+> +
+> +again:
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		spin_lock(&txq->ring_lock);
+> +
+> +		req = txq->req_pool + txq->free_idx;
+> +
+> +		/* Ownership is decided by the slot alone: an empty slot has no
+> +		 * skb, and one the hardware still owns has HWO set. The
+> +		 * producer publishes both under ring_lock, so a slot can never
+> +		 * be observed half-filled and there is no need to bound the
+> +		 * walk by wr_idx.
+> +		 */
+> +		if (!req->skb || (req->gpd->tx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO)) {
+> +			spin_unlock(&txq->ring_lock);
+> +			break;
+> +		}
+> +
+> +		dma_rmb(); /* read descriptor fields after HWO check */
+> +
+> +		dma_unmap_single(mdev->dev, req->data_dma_addr,
+> +				 req->data_len, DMA_TO_DEVICE);
+> +
+> +		skb = req->skb;
+> +		req->data_dma_addr = 0;
+> +		req->data_len = 0;
+> +		req->skb = NULL;
+> +
+> +		txq->free_idx = (txq->free_idx + 1) % txq->nr_gpds;
+> +		was_starved = atomic_fetch_inc(&txq->req_budget) == NO_BUDGET;
+> +
+> +		spin_unlock(&txq->ring_lock);
+> +
+> +		trb = (struct trb *)skb->cb;
+> +		trb->status = 0;
+> +		trb->trb_complete(skb);
+> +
+> +		/* The service may already have been torn down; completing the
+> +		 * TRB is still correct, there is just nobody left to wake.
+> +		 */
+> +		srv = trans->trb_srv[trans->srv_cfg[hif_id][txqno]];
+> +		if (was_starved && srv)
+> +			wake_up(&srv->trb_waitq);
+> +	}
+> +
+> +	state = mtk_cldma_check_intr_status(drv_info, DIR_TX, txqno, QUEUE_XFER_DONE);
+> +	if (state) {
+> +		if (unlikely(state == LINK_ERROR_VAL))
+> +			goto out;
+> +
+> +		mtk_cldma_clr_intr_status(drv_info, DIR_TX, txqno, QUEUE_XFER_DONE);
+> +
+> +		cond_resched();
+> +
+> +		goto again;
+> +	}
+> +
+> +out:
+> +	mtk_cldma_unmask_intr(drv_info, DIR_TX, txqno, QUEUE_XFER_DONE);
+> +}
+> +
+> +/* data_recv_len is read back from a buffer the device writes, so it is
+> + * clamped against req->mtu before it reaches skb_put().
+> + *
+> + * Returns -EPROTO when the device over-reports so the caller drops the packet
+> + * instead of delivering a malformed skb.
+> + */
+> +static int mtk_cldma_rx_skb_adjust(struct mtk_md_dev *mdev, struct rx_req *req)
+> +{
+> +	u32 recv_len;
+> +	int ret = 0;
+> +
+> +	if (req->data_dma_addr) {
+> +		dma_unmap_single(mdev->dev, req->data_dma_addr,
+> +				 req->mtu, DMA_FROM_DEVICE);
+> +		req->data_dma_addr = 0;
+> +	}
+> +	recv_len = le16_to_cpu(req->gpd->rx_gpd.data_recv_len);
+> +	if (recv_len > req->mtu) {
+> +		ret = -EPROTO;
+> +		recv_len = req->mtu;
+> +	}
+> +	req->skb->len = 0;
+> +	skb_reset_tail_pointer(req->skb);
+> +	skb_put(req->skb, recv_len);
+> +
+> +	req->gpd->rx_gpd.data_recv_len = 0;
+> +
+> +	return ret;
+> +}
+> +
+> +static int mtk_cldma_reload_rx_skb(struct mtk_md_dev *mdev, struct rx_req *req)
+> +{
+> +	int ret;
+> +
+> +	req->skb = __dev_alloc_skb(req->mtu, GFP_KERNEL);
+> +	if (!req->skb)
+> +		return -ENOMEM;
+> +
+> +	req->data_dma_addr = dma_map_single(mdev->dev, req->skb->data,
+> +					    req->mtu, DMA_FROM_DEVICE);
+> +	ret = dma_mapping_error(mdev->dev, req->data_dma_addr);
+> +	if (unlikely(ret)) {
+> +		dev_warn_ratelimited(mdev->dev, "Failed to map SKB data\n");
+> +		req->data_dma_addr = 0;
+> +		dev_kfree_skb_any(req->skb);
+> +		req->skb = NULL;
+> +		return -EFAULT;
+> +	}
+> +	req->gpd->rx_gpd.data_buff_ptr_h = cpu_to_le32((u64)req->data_dma_addr >> 32);
+> +	req->gpd->rx_gpd.data_buff_ptr_l = cpu_to_le32(req->data_dma_addr);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mtk_cldma_check_rx_req(struct cldma_drv_info *drv_info, struct rxq *rxq)
+> +{
+> +	struct rx_req *req = rxq->req_pool + rxq->free_idx;
+> +	u64 curr_addr;
+> +	int i;
+> +
+> +	curr_addr = mtk_cldma_get_rx_curr_addr(drv_info, rxq->rxqno);
+> +	if (unlikely(!curr_addr))
+> +		return -ENXIO;
+> +
+> +	if (req->gpd_dma_addr == curr_addr)
+> +		return -EAGAIN;
+> +	for (i = 0; i < WAIT_HWO_ROUND; i++) {
+> +		udelay(WAIT_HWO_TIME);
+> +		if (!(READ_ONCE(req->gpd->rx_gpd.gpd_flags) & CLDMA_GPD_FLAG_HWO))
+> +			break;
+> +	}
+> +	if (i == WAIT_HWO_ROUND) {
+> +		dev_err((drv_info->mdev)->dev, "Failed to check HWO=0\n");
+> +		return -EAGAIN;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static bool mtk_cldma_rx_check_again(struct rxq *rxq)
+> +{
+> +	struct cldma_drv_info *drv_info;
+> +	u32 state;
+> +	int rxqno;
+> +
+> +	drv_info = rxq->drv_info;
+> +	rxqno = rxq->rxqno;
+> +
+> +	state = mtk_cldma_check_intr_status(drv_info, DIR_RX,
+> +					    rxqno, QUEUE_XFER_DONE);
+> +	if (!state || unlikely(state == LINK_ERROR_VAL))
+> +		return false;
+> +
+> +	mtk_cldma_clr_intr_status(drv_info, DIR_RX, rxqno, QUEUE_XFER_DONE);
+> +	cond_resched();
+> +	return true;
+> +}
+> +
+> +/* Point the device at the GPD it should fill next and start the queue.
+> + * free_idx is owned by mtk_cldma_rx_done_work(), so this may only run
+> + * from that worker, at a point where every consumed GPD is re-armed.
+> + */
+> +static void mtk_cldma_rxq_restart(struct cldma_drv_info *drv_info, struct rxq *rxq)
+> +{
+> +	mtk_cldma_setup_start_addr(drv_info, DIR_RX, rxq->rxqno,
+> +				   rxq->req_pool[rxq->free_idx].gpd_dma_addr);
+> +	mtk_cldma_start_queue(drv_info, DIR_RX, rxq->rxqno);
+> +}
+> +
+> +static void mtk_cldma_rx_done_work(struct work_struct *work)
+> +{
+> +	struct rx_req *req = NULL, *pre_req = NULL;
+> +	struct rxq *rxq = container_of(work, struct rxq, rx_done_work);
+> +	struct cldma_drv_info *drv_info;
+> +	struct mtk_md_dev *mdev;
+> +	struct sk_buff *rx_skb;
+> +	int i, ret, idx, len_err;
+> +
+> +	drv_info = rxq->drv_info;
+> +	mdev = drv_info->mdev;
+> +
+> +again:
+> +	for (i = 0; i < rxq->nr_gpds; i++) {
+> +		req = rxq->req_pool + rxq->free_idx;
+> +		if (!req->skb) {
+> +			/* An empty slot means an earlier pass could not refill
+> +			 * it and re-queued this work to retry it.
+> +			 */
+> +			if (mtk_cldma_reload_rx_skb(mdev, req))
+> +				goto out_retry;
+> +			goto arm_slot;
+> +		}
+> +
+> +		if (req->gpd->rx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO)
+> +			break;
+> +
+> +		dma_rmb(); /* read descriptor fields after HWO check */
+> +
+> +		len_err = mtk_cldma_rx_skb_adjust(mdev, req);
+> +		rx_skb = req->skb;
+> +		req->skb = NULL;
+> +
+> +		ret = mtk_cldma_reload_rx_skb(mdev, req);
+> +		if (ret) {
+> +			/* Alloc failed — recycle old buffer, drop packet. */
+> +			skb_trim(rx_skb, 0);
+> +			req->skb = rx_skb;
+> +			req->data_dma_addr = dma_map_single(mdev->dev,
+> +							    rx_skb->data,
+> +							    req->mtu,
+> +							    DMA_FROM_DEVICE);
+> +			if (dma_mapping_error(mdev->dev, req->data_dma_addr)) {
+> +				/* An unmapped skb left in the slot would be
+> +				 * read back as a completed descriptor.
+> +				 */
+> +				dev_kfree_skb_any(rx_skb);
+> +				req->skb = NULL;
+> +				req->data_dma_addr = 0;
+> +				goto out_retry;
+> +			} else {
+> +				req->gpd->rx_gpd.data_buff_ptr_h =
+> +					cpu_to_le32((u64)req->data_dma_addr >> 32);
+> +				req->gpd->rx_gpd.data_buff_ptr_l =
+> +					cpu_to_le32(req->data_dma_addr);
+> +			}
+> +		} else if (len_err) {
+> +			dev_err_ratelimited(mdev->dev,
+> +					    "Drop oversized packet on cldma%d rxq%u\n",
+> +					    drv_info->hw_id, rxq->rxqno);
+> +			dev_kfree_skb_any(rx_skb);
+> +		} else {
+> +			rxq->rx_done(rx_skb, rxq->arg);
+> +		}
+> +
+> +arm_slot:
+> +		wmb(); /* ensure addr set done before HWO setup done  */
+> +
+> +		idx = rxq->free_idx == 0 ? rxq->nr_gpds - 1 : rxq->free_idx - 1;
+> +		pre_req = rxq->req_pool + idx;
+> +		pre_req->gpd->rx_gpd.gpd_flags |= CLDMA_GPD_FLAG_HWO;
+> +		rxq->free_idx = (rxq->free_idx + 1) % rxq->nr_gpds;
+> +	}
+> +
+> +	ret = mtk_cldma_check_rx_req(drv_info, rxq);
+> +	if (!ret)
+> +		goto again;
+> +
+> +	/* -ENXIO means the queue has no start address programmed, which is
+> +	 * exactly what a restart installs, so consume need_restart first.
+> +	 * Only the resume below is skipped in that case.
+> +	 */
+> +	mutex_lock(&drv_info->rearm_lock);
+> +	if (!atomic_read(&rxq->need_exit)) {
+> +		if (atomic_xchg(&rxq->need_restart, 0))
+> +			mtk_cldma_rxq_restart(drv_info, rxq);
+> +		else if (ret != -ENXIO)
+> +			mtk_cldma_resume_queue(drv_info, DIR_RX, rxq->rxqno);
+> +	}
+> +	mutex_unlock(&drv_info->rearm_lock);
+> +
+> +	if (ret == -ENXIO)
+> +		goto out;
+> +
+> +	if (mtk_cldma_rx_check_again(rxq))
+> +		goto again;
+> +	goto out;
+> +
+> +out_retry:
+> +	/* The empty slot keeps the GPD before it unarmed: once the device
+> +	 * has used up the armed ones, no XFER_DONE comes to run this work
+> +	 * again, so retry from here.  The sleep paces a failure that does
+> +	 * not wait, such as a DMA mapping one.
+> +	 */
+> +	usleep_range(1000, 2000);
+> +	if (!atomic_read(&rxq->need_exit))
+> +		queue_work(drv_info->wq, &rxq->rx_done_work);
+> +out:
+> +	mtk_cldma_unmask_intr(drv_info, DIR_RX, rxq->rxqno, QUEUE_XFER_DONE);
+> +	mtk_cldma_clear_ip_busy(drv_info);
+> +}
+> +
+> +static struct txq *mtk_cldma_txq_alloc(struct cldma_drv_info *drv_info, struct queue_info *que)
+> +{
+> +	struct mtk_md_dev *mdev;
+> +	struct tx_req *next;
+> +	struct tx_req *req;
+> +	struct txq *txq;
+> +	int i, ret;
+> +
+> +	mdev = drv_info->mdev;
+> +
+> +	txq = kzalloc_obj(*txq);
+> +	if (!txq)
+> +		return NULL;
+> +
+> +	txq->que = que;
+> +	txq->drv_info = drv_info;
+> +	txq->txqno = txq->que->txqno;
+> +	txq->nr_gpds = txq->que->tx_nr_gpds;
+> +	atomic_set(&txq->req_budget, txq->que->tx_nr_gpds);
+> +	spin_lock_init(&txq->ring_lock);
+> +
+> +	txq->req_pool = kcalloc(txq->nr_gpds, sizeof(*req), GFP_KERNEL);
+> +	if (!txq->req_pool)
+> +		goto err_free_txq;
+> +
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		req = txq->req_pool + i;
+> +		req->mtu = txq->que->tx_mtu;
+> +		req->gpd = dma_pool_zalloc(drv_info->gpd_dma_pool, GFP_KERNEL, &req->gpd_dma_addr);
+> +		if (!req->gpd)
+> +			goto err_free_req;
+> +	}
+> +
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		req = txq->req_pool + i;
+> +		next = txq->req_pool + ((i + 1) % txq->nr_gpds);
+> +		req->gpd->tx_gpd.gpd_flags |= CLDMA_GPD_FLAG_IOC;
+> +		req->gpd->tx_gpd.next_gpd_ptr_h = cpu_to_le32((u64)(next->gpd_dma_addr) >> 32);
+> +		req->gpd->tx_gpd.next_gpd_ptr_l = cpu_to_le32(next->gpd_dma_addr);
+> +	}
+> +
+> +	INIT_WORK(&txq->tx_done_work, mtk_cldma_tx_done_work);
+> +
+> +	ret = mtk_cldma_stop_queue(drv_info, DIR_TX, txq->txqno);
+> +	if (ret) {
+> +		dev_warn(mdev->dev, "Failed to stop TX queue %u before alloc\n", txq->txqno);
+> +		goto err_free_req;
+> +	}
+> +	/* Publish the queue before unmasking its interrupts: an interrupt
+> +	 * that fires in between must find a valid txq, or the sources it
+> +	 * masks are never unmasked again.  Not before the stop: the error
+> +	 * path above frees the queue, so it must never have been visible.
+> +	 * The release pairs with the acquire load in the ISR.
+> +	 */
+> +	smp_store_release(&drv_info->txq[txq->txqno], txq);
+> +	txq->tx_started = false;
+> +	mtk_cldma_setup_start_addr(drv_info, DIR_TX, txq->txqno,
+> +				   txq->req_pool[0].gpd_dma_addr);
+> +	mtk_cldma_unmask_intr(drv_info, DIR_TX, txq->txqno, QUEUE_ERROR);
+> +	mtk_cldma_unmask_intr(drv_info, DIR_TX, txq->txqno, QUEUE_XFER_DONE);
+> +
+> +	return txq;
+> +
+> +err_free_req:
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		req = txq->req_pool + i;
+> +		if (!req->gpd)
+> +			break;
+> +		dma_pool_free(drv_info->gpd_dma_pool, req->gpd, req->gpd_dma_addr);
+> +	}
+> +	kfree(txq->req_pool);
+> +err_free_txq:
+> +	kfree(txq);
+> +	return NULL;
+> +}
+> +
+> +/* mtk_cldma_drv_init() rewrites IP-global configuration (including the interrupt
+> + * mask) and mtk_cldma_drv_reset() wipes every queue of the instance, so all
+> + * queues still published in drv_info have to be re-armed, not only the one
+> + * that triggered the reset.  A queue already unpublished (NULL slot) is being
+> + * torn down and is deliberately left stopped.
+> + */
+> +static void mtk_cldma_rearm_queues(struct cldma_drv_info *drv_info)
+> +{
+> +	struct tx_req *req;
+> +	struct txq *txq;
+> +	struct rxq *rxq;
+> +	int i;
+> +
+> +	/* The caller holds rearm_lock from the reset to the end of the re-arm:
+> +	 * no queue is kicked or resumed while the instance has no addresses.
+> +	 */
+> +	lockdep_assert_held(&drv_info->rearm_lock);
+> +
+> +	mtk_cldma_drv_init(drv_info);
+> +
+> +	for (i = 0; i < HW_QUE_NUM; i++) {
+> +		txq = drv_info->txq[i];
+> +		if (txq) {
+> +			spin_lock(&txq->ring_lock);
+> +			/* The device halts on an HWO=0 descriptor and RESUME
+> +			 * never moves the cursor past it, so do not restart
+> +			 * from free_idx - which recovery usually finds behind
+> +			 * the hardware. Leave the queue stopped and let the
+> +			 * next start_xfer() issue a fresh START.
+> +			 */
+> +			req = txq->req_pool + txq->free_idx;
+> +			if (READ_ONCE(txq->tx_started) &&
+> +			    !(req->gpd->tx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO)) {
+> +				WRITE_ONCE(txq->tx_started, false);
+> +				/* Its XFER_DONE may have been lost in the
+> +				 * reset; without this free_idx never advances.
+> +				 */
+> +				queue_work(drv_info->wq, &txq->tx_done_work);
+> +			} else {
+> +				mtk_cldma_setup_start_addr(drv_info, DIR_TX, i,
+> +							   req->gpd_dma_addr);
+> +			}
+> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_ERROR);
+> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_XFER_DONE);
+> +			if (READ_ONCE(txq->tx_started))
+> +				mtk_cldma_start_queue(drv_info, DIR_TX, i);
+> +			spin_unlock(&txq->ring_lock);
+> +		}
+> +
+> +		rxq = drv_info->rxq[i];
+> +		if (rxq) {
+> +			mtk_cldma_unmask_intr(drv_info, DIR_RX, i, QUEUE_ERROR);
+> +			mtk_cldma_unmask_intr(drv_info, DIR_RX, i, QUEUE_XFER_DONE);
+> +			/* free_idx belongs to rx_done_work, which may be halfway
+> +			 * through a packet: let it program the start address
+> +			 * once it reaches a consistent point.
+> +			 */
+> +			atomic_set(&rxq->need_restart, 1);
+> +			queue_work(drv_info->wq, &rxq->rx_done_work);
+> +		}
+> +	}
+> +}
+> +
+> +static void mtk_cldma_txq_free(struct cldma_drv_info *drv_info, u32 txqno)
+> +{
+> +	struct mtk_md_dev *mdev;
+> +	struct tx_req *req;
+> +	struct txq *txq;
+> +	struct trb *trb;
+> +	int irq_id;
+> +	int i, ret;
+> +
+> +	mdev = drv_info->mdev;
+> +
+> +	txq = drv_info->txq[txqno];
+> +	/* Unpublish before teardown; pairs with the acquire loads of this
+> +	 * slot. No release is needed, there is no prior store to expose.
+> +	 */
+> +	WRITE_ONCE(drv_info->txq[txqno], NULL);
+> +	/* stop HW tx transaction; -ENODEV means the link is dead, so the
+> +	 * device cannot be walking the ring and the free may proceed.
+> +	 */
+> +	ret = mtk_cldma_stop_queue(drv_info, DIR_TX, txqno);
+> +	if (ret == -ETIMEDOUT) {
+> +		dev_err(mdev->dev, "TX queue %u stop timed out, resetting CLDMA%d\n",
+> +			txqno, drv_info->hw_id);
+> +		/* One rearm_lock section from the reset to the re-arm: no queue
+> +		 * may be resumed or started in between, while it has no address.
+> +		 */
+> +		mutex_lock(&drv_info->rearm_lock);
+> +		mtk_cldma_drv_reset(drv_info);
+> +		ret = mtk_cldma_stop_queue(drv_info, DIR_TX, txqno);
+> +		/* the reset took the whole instance down with this queue */
+> +		mtk_cldma_rearm_queues(drv_info);
+> +		mutex_unlock(&drv_info->rearm_lock);
+> +	}
+> +	txq->tx_started = false;
+> +
+> +	irq_id = mtk_pci_get_virq_id(mdev, drv_info->pci_ext_irq_id);
+> +	synchronize_irq(irq_id);
+> +	/* flush on-going work */
+> +	flush_work(&txq->tx_done_work);
+> +	mtk_cldma_mask_intr(drv_info, DIR_TX, txqno, QUEUE_XFER_DONE);
+> +	mtk_cldma_mask_intr(drv_info, DIR_TX, txqno, QUEUE_ERROR);
+> +
+> +	if (ret == -ETIMEDOUT) {
+> +		/* Still a live DMA target: leak the ring rather than hand it
+> +		 * back to the allocator.
+> +		 */
+> +		dev_err(mdev->dev, "TX queue %u cannot be stopped, leaking its ring\n",
+> +			txqno);
+> +		return;
+> +	}
+> +
+> +	/* Free tx req resource. No ring_lock is taken here: txq was already
+> +	 * unpublished from drv_info->txq[] above, so no new producer can enter,
+> +	 * and synchronize_irq() plus flush_work() have retired the consumer.
+> +	 */
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		req = txq->req_pool + txq->free_idx;
+> +		if (req->skb) {
+> +			dma_unmap_single(mdev->dev, req->data_dma_addr,
+> +					 req->data_len, DMA_TO_DEVICE);
+> +			trb = (struct trb *)req->skb->cb;
+> +			trb->status = -EPIPE;
+> +			trb->trb_complete(req->skb);
+> +		}
+> +		dma_pool_free(drv_info->gpd_dma_pool, req->gpd, req->gpd_dma_addr);
+> +		txq->free_idx = (txq->free_idx + 1) % txq->nr_gpds;
+> +	}
+> +
+> +	kfree(txq->req_pool);
+> +	kfree(txq);
+> +}
+> +
+> +static void mtk_cldma_rxq_alloc_cancel(struct cldma_drv_info *drv_info, struct rx_req *req)
+> +{
+> +	struct mtk_md_dev *mdev = drv_info->mdev;
+> +
+> +	if (req->skb) {
+> +		if (!dma_mapping_error(mdev->dev, req->data_dma_addr))
+> +			dma_unmap_single(mdev->dev, req->data_dma_addr,
+> +					 req->mtu, DMA_FROM_DEVICE);
+> +		req->data_dma_addr = 0;
+> +		dev_kfree_skb_any(req->skb);
+> +	}
+> +	dma_pool_free(drv_info->gpd_dma_pool, req->gpd, req->gpd_dma_addr);
+> +}
+> +
+> +static struct rxq *mtk_cldma_rxq_alloc(struct cldma_drv_info *drv_info, struct queue_info *que,
+> +				       struct sk_buff *skb)
+> +{
+> +	struct trb_open_priv *trb_open_priv = (struct trb_open_priv *)skb->data;
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct mtk_md_dev *mdev;
+> +	struct rx_req *next;
+> +	struct rx_req *req;
+> +	struct rxq *rxq;
+> +	int ret;
+> +	int i;
+> +
+> +	mdev = drv_info->mdev;
+> +
+> +	rxq = kzalloc_obj(*rxq);
+> +	if (!rxq)
+> +		return NULL;
+> +
+> +	rxq->que = que;
+> +	rxq->drv_info = drv_info;
+> +	rxq->rxqno = rxq->que->rxqno;
+> +	if (rxq->que->rx_nr_gpds < MIN_GPD_NUM) {
+> +		dev_err(mdev->dev,
+> +			"Failed to alloc cldma%d rxq%u due to gpd number < 2\n",
+> +			drv_info->hw_id, rxq->rxqno);
+> +		goto err_free_rxq;
+> +	}
+> +	rxq->nr_gpds = rxq->que->rx_nr_gpds;
+> +	rxq->arg = trb->priv;
+> +	rxq->rx_done = trb_open_priv->rx_done;
+> +	atomic_set(&rxq->need_exit, 0);
+> +	atomic_set(&rxq->need_restart, 0);
+> +
+> +	rxq->req_pool = kcalloc(rxq->nr_gpds, sizeof(*req), GFP_KERNEL);
+> +	if (!rxq->req_pool)
+> +		goto err_free_rxq;
+> +
+> +	/* setup rx request */
+> +	for (i = 0; i < rxq->nr_gpds; i++) {
+> +		req = rxq->req_pool + i;
+> +		req->mtu = rxq->que->rx_mtu;
+> +		req->gpd = dma_pool_zalloc(drv_info->gpd_dma_pool, GFP_KERNEL, &req->gpd_dma_addr);
+> +		if (!req->gpd)
+> +			goto err_free_req;
+> +		req->skb = __dev_alloc_skb(req->mtu, GFP_KERNEL);
+> +		if (!req->skb)
+> +			goto err_free_req;
+> +		req->data_dma_addr = dma_map_single(mdev->dev, req->skb->data,
+> +						    req->mtu, DMA_FROM_DEVICE);
+> +		ret = dma_mapping_error(mdev->dev, req->data_dma_addr);
+> +		if (unlikely(ret))
+> +			goto err_free_req;
+> +	}
+> +
+> +	for (i = 0; i < rxq->nr_gpds; i++) {
+> +		req = rxq->req_pool + i;
+> +		next = rxq->req_pool + ((i + 1) % rxq->nr_gpds);
+> +		req->gpd->rx_gpd.gpd_flags |= CLDMA_GPD_FLAG_IOC;
+> +		req->gpd->rx_gpd.data_allow_len = cpu_to_le16(req->mtu);
+> +		req->gpd->rx_gpd.next_gpd_ptr_h = cpu_to_le32((u64)(next->gpd_dma_addr) >> 32);
+> +		req->gpd->rx_gpd.next_gpd_ptr_l = cpu_to_le32(next->gpd_dma_addr);
+> +		req->gpd->rx_gpd.data_buff_ptr_h = cpu_to_le32((u64)(req->data_dma_addr) >> 32);
+> +		req->gpd->rx_gpd.data_buff_ptr_l = cpu_to_le32(req->data_dma_addr);
+> +		if (i != rxq->nr_gpds - 1)
+> +			req->gpd->rx_gpd.gpd_flags |= CLDMA_GPD_FLAG_HWO;
+> +	}
+> +
+> +	INIT_WORK(&rxq->rx_done_work, mtk_cldma_rx_done_work);
+> +
+> +	ret = mtk_cldma_stop_queue(drv_info, DIR_RX, rxq->rxqno);
+> +	if (ret) {
+> +		dev_warn(mdev->dev, "Failed to stop RX queue %u before alloc\n", rxq->rxqno);
+> +		goto err_free_req;
+> +	}
+> +	/* Pairs with the acquire load in the ISR, as for txq above. */
+> +	smp_store_release(&drv_info->rxq[rxq->rxqno], rxq);
+> +	mtk_cldma_setup_start_addr(drv_info, DIR_RX,
+> +				   rxq->rxqno, rxq->req_pool[0].gpd_dma_addr);
+> +	mtk_cldma_start_queue(drv_info, DIR_RX, rxq->rxqno);
+> +	mtk_cldma_unmask_intr(drv_info, DIR_RX, rxq->rxqno, QUEUE_ERROR);
+> +	mtk_cldma_unmask_intr(drv_info, DIR_RX, rxq->rxqno, QUEUE_XFER_DONE);
+> +
+> +	return rxq;
+> +
+> +err_free_req:
+> +	for (i = 0; i < rxq->nr_gpds; i++) {
+> +		req = rxq->req_pool + i;
+> +		if (!req->gpd)
+> +			break;
+> +		mtk_cldma_rxq_alloc_cancel(drv_info, req);
+> +	}
+> +
+> +	kfree(rxq->req_pool);
+> +err_free_rxq:
+> +	kfree(rxq);
+> +	return NULL;
+> +}
+> +
+> +static void mtk_cldma_rxq_free(struct cldma_drv_info *drv_info, u32 rxqno)
+> +{
+> +	struct mtk_md_dev *mdev;
+> +	struct rx_req *req;
+> +	struct rxq *rxq;
+> +	int irq_id;
+> +	int i, ret;
+> +
+> +	mdev = drv_info->mdev;
+> +
+> +	rxq = drv_info->rxq[rxqno];
+> +	/* Unpublish before teardown; pairs with the acquire loads of this
+> +	 * slot. No release is needed, there is no prior store to expose.
+> +	 */
+> +	WRITE_ONCE(drv_info->rxq[rxqno], NULL);
+> +
+> +	/* stop HW rx transaction; -ENODEV means the link is dead, so the
+> +	 * device cannot be walking the ring and the free may proceed.
+> +	 */
+> +	atomic_set(&rxq->need_exit, 1);
+> +	ret = mtk_cldma_stop_queue(drv_info, DIR_RX, rxqno);
+> +	if (ret == -ETIMEDOUT) {
+> +		dev_err(mdev->dev, "RX queue %u stop timed out, resetting CLDMA%d\n",
+> +			rxqno, drv_info->hw_id);
+> +		/* One rearm_lock section from the reset to the re-arm: no queue
+> +		 * may be resumed or started in between, while it has no address.
+> +		 */
+> +		mutex_lock(&drv_info->rearm_lock);
+> +		mtk_cldma_drv_reset(drv_info);
+> +		ret = mtk_cldma_stop_queue(drv_info, DIR_RX, rxqno);
+> +		/* the reset took the whole instance down with this queue */
+> +		mtk_cldma_rearm_queues(drv_info);
+> +		mutex_unlock(&drv_info->rearm_lock);
+> +	}
+> +
+> +	irq_id = mtk_pci_get_virq_id(mdev, drv_info->pci_ext_irq_id);
+> +	synchronize_irq(irq_id);
+> +	/* not flush_work(): the worker re-queues itself on a refill failure */
+> +	cancel_work_sync(&rxq->rx_done_work);
+> +	/* a cancelled pass would have cleared it on its way out */
+> +	mtk_cldma_clear_ip_busy(drv_info);
+> +	/* only now: a worker retired by the cancel unmasks XFER_DONE on its
+> +	 * way out
+> +	 */
+> +	mtk_cldma_mask_intr(drv_info, DIR_RX, rxqno, QUEUE_XFER_DONE);
+> +	mtk_cldma_mask_intr(drv_info, DIR_RX, rxqno, QUEUE_ERROR);
+> +
+> +	/* The worker can resume or restart the queue between its need_exit
+> +	 * check and the MMIO write that follows it, so cancel_work_sync() does
+> +	 * not prove the engine was left stopped. Stopping again is idempotent.
+> +	 */
+> +	if (ret != -ETIMEDOUT)
+> +		ret = mtk_cldma_stop_queue(drv_info, DIR_RX, rxqno);
+> +
+> +	if (ret == -ETIMEDOUT) {
+> +		/* Still a live DMA target: leak the ring rather than hand it
+> +		 * back to the allocator.
+> +		 */
+> +		dev_err(mdev->dev, "RX queue %u cannot be stopped, leaking its ring\n",
+> +			rxqno);
+> +		return;
+> +	}
+> +
+> +	/* free rx req resource */
+> +	for (i = 0; i < rxq->nr_gpds; i++) {
+> +		req = rxq->req_pool + rxq->free_idx;
+> +		if (!(req->gpd->rx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO) &&
+> +		    le16_to_cpu(req->gpd->rx_gpd.data_recv_len)) {
+> +			if (!mtk_cldma_rx_skb_adjust(mdev, req)) {
+> +				rxq->rx_done(req->skb, rxq->arg);
+> +				req->skb = NULL;
+> +			}
+> +		}
+> +		if (req->skb) {
+> +			if (req->data_dma_addr)
+> +				dma_unmap_single(mdev->dev, req->data_dma_addr,
+> +						 req->mtu, DMA_FROM_DEVICE);
+> +			dev_kfree_skb_any(req->skb);
+> +			req->skb = NULL;
+> +		}
+> +		dma_pool_free(drv_info->gpd_dma_pool, req->gpd, req->gpd_dma_addr);
+> +		rxq->free_idx = (rxq->free_idx + 1) % rxq->nr_gpds;
+> +	}
+> +
+> +	kfree(rxq->req_pool);
+> +	kfree(rxq);
+> +}
+> +
+> +/* The device reported a zero TX start address: it lost its queue state. */
+> +static int mtk_cldma_hw_recovery(struct cldma_drv_info *drv_info, struct txq *txq, u32 qno)
+> +{
+> +	u64 val;
+> +
+> +	dev_err(drv_info->mdev->dev,
+> +		"CLDMA%d lost its queue state, re-initializing\n",
+> +		drv_info->hw_id);
+> +
+> +	mtk_cldma_rearm_queues(drv_info);
+> +
+> +	/* A started queue the re-arm left stopped has no address yet, on
+> +	 * purpose: the caller programs one.  Only a dead link, or a 0 on a
+> +	 * queue still marked started, means the re-init failed.
+> +	 */
+> +	val = mtk_cldma_get_tx_start_addr(drv_info, qno);
+> +	if (val == U64_MAX || (!val && READ_ONCE(txq->tx_started)))
+> +		return -EIO;
+> +
+> +	return 0;
+> +}
+> +
+> +/* After a re-arm the slot at free_idx may hold a descriptor the device
+> + * completed but tx_done_work has not reaped yet; a START there parks the
+> + * engine on HWO=0.  Start at the first slot the device still owns.
+> + */
+> +static u32 mtk_cldma_tx_start_idx(struct txq *txq)
+> +{
+> +	u32 idx = txq->free_idx;
+> +	struct tx_req *req;
+> +	int i;
+> +
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		req = txq->req_pool + idx;
+> +		if (!req->skb || (req->gpd->tx_gpd.gpd_flags & CLDMA_GPD_FLAG_HWO))
+> +			return idx;
+> +		idx = (idx + 1) % txq->nr_gpds;
+> +	}
+> +
+> +	return txq->free_idx;
+> +}
+> +
+> +static int mtk_cldma_start_xfer(struct cldma_drv_info *drv_info, u32 qno)
+> +{
+> +	struct txq *txq;
+> +	int ret = 0;
+> +	u64 val;
+> +
+> +	txq = drv_info->txq[qno];
+> +
+> +	/* a reset in another queue's teardown must not land between the
+> +	 * address check and the kick
+> +	 */
+> +	mutex_lock(&drv_info->rearm_lock);
+> +	val = mtk_cldma_get_tx_start_addr(drv_info, qno);
+> +	if (unlikely(val == U64_MAX)) {
+> +		ret = -EIO;
+> +		goto out;
+> +	}
+> +
+> +	if (unlikely(!val)) {
+> +		ret = mtk_cldma_hw_recovery(drv_info, txq, qno);
+> +		if (ret)
+> +			goto out;
+> +	}
+> +
+> +	/* Hold ring_lock across programming and kicking the queue so the
+> +	 * start address given to the device is the one free_idx still
+> +	 * names; tx_done_work advances free_idx under the same lock.
+> +	 */
+> +	spin_lock(&txq->ring_lock);
+> +	if (unlikely(!READ_ONCE(txq->tx_started))) {
+> +		mtk_cldma_setup_start_addr(drv_info, DIR_TX, qno,
+> +					   txq->req_pool[mtk_cldma_tx_start_idx(txq)].gpd_dma_addr);
+> +		mtk_cldma_start_queue(drv_info, DIR_TX, qno);
+> +		WRITE_ONCE(txq->tx_started, true);
+> +	} else {
+> +		mtk_cldma_resume_queue(drv_info, DIR_TX, qno);
+> +	}
+> +	spin_unlock(&txq->ring_lock);
+> +out:
+> +	mutex_unlock(&drv_info->rearm_lock);
+> +	return ret;
+> +}
+> +
+> +int mtk_cldma_init(struct mtk_ctrl_trans *trans)
+> +{
+> +	struct cldma_dev *cd;
+> +
+> +	cd = kzalloc_obj(*cd);
+> +	if (!cd)
+> +		return -ENOMEM;
+> +
+> +	cd->trans = trans;
+> +	trans->dev = cd;
+> +
+> +	return 0;
+> +}
+> +
+> +void mtk_cldma_exit(struct mtk_ctrl_trans *trans)
+> +{
+> +	if (!trans->dev)
+> +		return;
+> +
+> +	kfree(trans->dev);
+> +	trans->dev = NULL;
+> +}
+> +
+> +static int mtk_cldma_open(struct cldma_dev *cd, struct sk_buff *skb)
+> +{
+> +	struct trb_open_priv *trb_open_priv = (struct trb_open_priv *)skb->data;
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct cldma_drv_info *drv_info;
+> +	struct queue_info *que;
+> +	struct txq *txq;
+> +	struct rxq *rxq;
+> +	int ret = 0;
+> +
+> +	que = xa_load(&cd->trans->queue_tbl, trb->channel_id & 0xFFFF);
+> +	if (unlikely(!que)) {
+> +		trb->status = -EINVAL;
+> +		trb->trb_complete(skb);
+> +		return -EINVAL;
+> +	}
+> +	drv_info = cd->cldma_drv_info[que->hif_id];
+> +	if (!drv_info) {
+> +		ret = -EIO;
+> +		goto out;
+> +	}
+> +
+> +	if (que->tx_mtu == 0 || que->rx_mtu == 0) {
+> +		dev_err((cd->trans->mdev)->dev,
+> +			"Failed to enable cldma%d txq%u rxq%u due to wrong mtu\n",
+> +			drv_info->hw_id, que->txqno, que->rxqno);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	trb_open_priv->tx_mtu = que->tx_mtu;
+> +
+> +	if (drv_info->txq[que->txqno] || drv_info->rxq[que->rxqno]) {
+> +		ret = -EBUSY;
+> +		goto out;
+> +	}
+> +
+> +	txq = mtk_cldma_txq_alloc(drv_info, que);
+> +	if (!txq) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+> +
+> +	rxq = mtk_cldma_rxq_alloc(drv_info, que, skb);
+> +	if (!rxq) {
+> +		ret = -ENOMEM;
+> +		mtk_cldma_txq_free(drv_info, txq->txqno);
+> +		goto out;
+> +	}
+> +
+> +out:
+> +	/* -EBUSY leaves the channel open to the submitter, so the count this
+> +	 * ENABLE added is released by its eventual DISABLE instead.
+> +	 */
+> +	if (ret && ret != -EBUSY)
+> +		cd->trans->usr_cnt[que->hif_id][que->txqno]--;
+> +
+> +	/* Pairs with the acquire load of status on the submitting side: the
+> +	 * payload written to the skb above must be visible with it.
+> +	 */
+> +	smp_store_release(&trb->status, ret);
+> +	trb->trb_complete(skb);
+> +
+> +	return ret;
+> +}
+> +
+> +/* Complete every submitted-but-unkicked request with an error so no TRB
+> + * is stranded in the ring when the doorbell cannot be rung.
+> + */
+> +static void mtk_cldma_txq_flush(struct cldma_drv_info *drv_info,
+> +				struct txq *txq, int err)
+> +{
+> +	struct mtk_ctrl_trans *trans = drv_info->cd->trans;
+> +	int hif_id = drv_info->hif_id;
+> +	u32 txqno = txq->txqno;
+> +	struct sk_buff *skb;
+> +	struct trb_srv *srv;
+> +	struct tx_req *req;
+> +	bool was_starved;
+> +	struct trb *trb;
+> +	int i;
+> +
+> +	for (i = 0; i < txq->nr_gpds; i++) {
+> +		spin_lock(&txq->ring_lock);
+> +
+> +		req = txq->req_pool + txq->free_idx;
+> +		if (!req->skb) {
+> +			spin_unlock(&txq->ring_lock);
+> +			break;
+> +		}
+> +
+> +		req->gpd->tx_gpd.gpd_flags &= ~CLDMA_GPD_FLAG_HWO;
+> +
+> +		dma_unmap_single(drv_info->mdev->dev, req->data_dma_addr,
+> +				 req->data_len, DMA_TO_DEVICE);
+> +
+> +		skb = req->skb;
+> +		req->data_dma_addr = 0;
+> +		req->data_len = 0;
+> +		req->skb = NULL;
+> +
+> +		txq->free_idx = (txq->free_idx + 1) % txq->nr_gpds;
+> +		was_starved = atomic_fetch_inc(&txq->req_budget) == NO_BUDGET;
+> +
+> +		spin_unlock(&txq->ring_lock);
+> +
+> +		trb = (struct trb *)skb->cb;
+> +		trb->status = err;
+> +		trb->trb_complete(skb);
+> +
+> +		/* The service may already have been torn down; completing the
+> +		 * TRB is still correct, there is just nobody left to wake.
+> +		 */
+> +		srv = trans->trb_srv[trans->srv_cfg[hif_id][txqno]];
+> +		if (was_starved && srv)
+> +			wake_up(&srv->trb_waitq);
+> +	}
+> +}
+> +
+> +static int mtk_cldma_tx(struct cldma_dev *cd, struct sk_buff *skb)
+> +{
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct cldma_drv_info *drv_info;
+> +	struct mtk_md_dev *mdev;
+> +	struct queue_info *que;
+> +	struct txq *txq;
+> +	int ret, err;
+> +
+> +	que = xa_load(&cd->trans->queue_tbl, trb->channel_id & 0xFFFF);
+> +	if (unlikely(!que))
+> +		return -EPIPE;
+> +	drv_info = cd->cldma_drv_info[que->hif_id];
+> +	if (unlikely(!drv_info))
+> +		return -EPIPE;
+> +	txq = drv_info->txq[que->txqno];
+> +	if (unlikely(!txq))
+> +		return -EPIPE;
+> +
+> +	mdev = drv_info->mdev;
+> +
+> +	ret = mtk_cldma_start_xfer(drv_info, que->txqno);
+> +	if (unlikely(ret)) {
+> +		dev_err(mdev->dev, "Failed to trigger cldma tx\n");
+> +		/* A failed start does not mean the engine is idle - recovery
+> +		 * may already have issued UL_START - and the flush below
+> +		 * unmaps the buffers. If the queue cannot be stopped, leak the
+> +		 * requests rather than unmap memory the device still owns.
+> +		 */
+> +		err = mtk_cldma_stop_queue(drv_info, DIR_TX, que->txqno);
+> +		/* -ENODEV: the link is dead, nothing is walking the ring */
+> +		if (err && err != -ENODEV) {
+> +			dev_err(mdev->dev,
+> +				"TX queue %u stop failed, keeping its requests\n",
+> +				que->txqno);
+> +			return ret;
+> +		}
+> +
+> +		spin_lock(&txq->ring_lock);
+> +		WRITE_ONCE(txq->tx_started, false);
+> +		spin_unlock(&txq->ring_lock);
+> +		mtk_cldma_txq_flush(drv_info, txq, ret);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int mtk_cldma_close(struct cldma_dev *cd, struct sk_buff *skb)
+> +{
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct cldma_drv_info *drv_info;
+> +	struct queue_info *que;
+> +
+> +	que = xa_load(&cd->trans->queue_tbl, trb->channel_id & 0xFFFF);
+> +	if (unlikely(!que)) {
+> +		trb->status = -EPIPE;
+> +		trb->trb_complete(skb);
+> +		return -EPIPE;
+> +	}
+> +	drv_info = cd->cldma_drv_info[que->hif_id];
+> +	if (unlikely(!drv_info)) {
+> +		trb->status = -EPIPE;
+> +		trb->trb_complete(skb);
+> +		return -EPIPE;
+> +	}
+> +
+> +	if (drv_info->txq[que->txqno])
+> +		mtk_cldma_txq_free(drv_info, que->txqno);
+> +	if (drv_info->rxq[que->rxqno])
+> +		mtk_cldma_rxq_free(drv_info, que->rxqno);
+> +
+> +	trb->status = 0;
+> +	trb->trb_complete(skb);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mtk_cldma_txbuf_set(struct cldma_drv_info *drv_info, struct sk_buff *skb,
+> +			       struct tx_req *req)
+> +{
+> +	struct mtk_md_dev *mdev = drv_info->mdev;
+> +	int ret;
+> +
+> +	/* Only the linear area is mapped; a nonlinear SKB here would be
+> +	 * silently truncated to skb_headlen().
+> +	 */
+> +	if (WARN_ON_ONCE(skb_is_nonlinear(skb)))
+> +		return -EINVAL;
+> +
+> +	req->data_dma_addr = dma_map_single(mdev->dev, skb->data,
+> +					    skb_headlen(skb), DMA_TO_DEVICE);
+> +	ret = dma_mapping_error(mdev->dev, req->data_dma_addr);
+> +	if (unlikely(ret)) {
+> +		req->data_dma_addr = 0;
+> +		dev_err_ratelimited(mdev->dev, "Failed to map dma! error:%d\n", ret);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	req->gpd->tx_gpd.data_buff_ptr_h = cpu_to_le32((u64)(req->data_dma_addr) >> 32);
+> +	req->gpd->tx_gpd.data_buff_ptr_l = cpu_to_le32(req->data_dma_addr);
+> +
+> +	return 0;
+> +}
+> +
+> +int mtk_cldma_submit_tx(void *dev, struct sk_buff *skb)
+> +{
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct cldma_drv_info *drv_info;
+> +	struct cldma_dev *cd = dev;
+> +	struct queue_info *que;
+> +	struct tx_req *req;
 > +	struct txq *txq;
 > +	int ret;
 > +
-
-[ ... ]
-
+> +	if (unlikely(!cd))
+> +		return -EINVAL;
+> +
+> +	que = xa_load(&cd->trans->queue_tbl, trb->channel_id & 0xFFFF);
+> +	if (unlikely(!que))
+> +		return -EINVAL;
+> +	drv_info = cd->cldma_drv_info[que->hif_id];
+> +	if (unlikely(!drv_info))
+> +		return -EINVAL;
+> +
+> +	txq = drv_info->txq[que->txqno];
+> +	if (unlikely(!txq))
+> +		return -EINVAL;
+> +
 > +	spin_lock(&txq->ring_lock);
-> +	txq->is_stopping = true;
+> +
+> +	if (!atomic_read(&txq->req_budget)) {
+> +		spin_unlock(&txq->ring_lock);
+> +		return -EAGAIN;
+> +	}
+> +
+> +	req = txq->req_pool + txq->wr_idx;
+> +	req->gpd->tx_gpd.debug_id = 0x01;
+> +	ret = mtk_cldma_txbuf_set(drv_info, skb, req);
+> +	if (ret) {
+> +		spin_unlock(&txq->ring_lock);
+> +		return ret;
+> +	}
+> +
+> +	req->gpd->tx_gpd.data_buff_len = cpu_to_le16(skb->len);
+> +
+> +	req->data_len = skb->len;
+> +	req->skb = skb;
+> +
+> +	dma_wmb(); /* ensure req and data msg set done before HWO setup */
+> +
+> +	req->gpd->tx_gpd.gpd_flags |= CLDMA_GPD_FLAG_HWO;
+> +
+> +	txq->wr_idx = (txq->wr_idx + 1) % txq->nr_gpds;
+> +	atomic_dec(&txq->req_budget);
+> +
 > +	spin_unlock(&txq->ring_lock);
 > +
-> +	ret = mtk_cldma_stop_queue(drv_info, DIR_TX, qno);
-> +	/* -ENODEV: the link is dead, nothing is walking the ring */
-> +	if (ret && ret != -ENODEV) {
-> +		/* the device may still be walking the ring: unmapping its
-> +		 * buffers here would leave it writing into unmapped memory.
-> +		 * is_stopping is left set so nothing submits to it again,
-> +		 * and QUEUE_ERROR masked until an instance re-arm.
-> +		 */
-> +		dev_err(drv_info->mdev->dev,
-> +			"TX queue %u stop failed (%d), keeping its requests\n",
-> +			qno, ret);
-> +		return;
+> +	return 0;
+> +}
+> +
+> +int mtk_cldma_get_tx_budget(void *dev, enum mtk_hif_id hif_id, u32 qno)
+> +{
+> +	struct cldma_drv_info *drv_info;
+> +	struct cldma_dev *cd = dev;
+> +	struct txq *txq;
+> +
+> +	if (unlikely(hif_id >= NR_CLDMA || qno >= HW_QUE_NUM || !cd))
+> +		return -EINVAL;
+> +
+> +	drv_info = cd->cldma_drv_info[hif_id];
+> +	if (!drv_info)
+> +		return -EINVAL;
+> +	txq = drv_info->txq[qno];
+> +	if (!txq)
+> +		return -EINVAL;
+> +	return atomic_read(&txq->req_budget);
+> +}
+> +
+> +static int (*trb_act_tbl[TRB_CMD_MAX])(struct cldma_dev *cd, struct sk_buff *skb) = {
+> +	[TRB_CMD_ENABLE] = mtk_cldma_open,
+> +	[TRB_CMD_TX] = mtk_cldma_tx,
+> +	[TRB_CMD_DISABLE] = mtk_cldma_close,
+> +};
+> +
+> +int mtk_cldma_trb_process(void *dev, struct sk_buff *skb)
+> +{
+> +	struct cldma_dev *cd;
+> +	struct trb *trb;
+> +
+> +	if (!dev || !skb)
+> +		return -EINVAL;
+> +
+> +	cd = (struct cldma_dev *)dev;
+> +	trb = (struct trb *)skb->cb;
+> +
+> +	if (!(trb->cmd > TRB_CMD_MIN && trb->cmd < TRB_CMD_STOP))
+> +		return -EINVAL;
+> +
+> +	return trb_act_tbl[trb->cmd](cd, skb);
+> +}
+> +
+> +int mtk_cldma_check_ch_cfg(void *dev, struct queue_info *que)
+> +{
+> +	struct cldma_drv_info *drv_info;
+> +	struct cldma_dev *cd = dev;
+> +	struct mtk_md_dev *mdev;
+> +	struct txq *txq;
+> +	struct rxq *rxq;
+> +
+> +	mdev = cd->trans->mdev;
+> +	drv_info = cd->cldma_drv_info[que->hif_id];
+> +
+> +	if (!drv_info) {
+> +		dev_err(mdev->dev, "CLDMA%d has not been initialized\n",
+> +			mtk_cldma_hw_id_tbl[que->hif_id]);
+> +		return -EINVAL;
 > +	}
+> +
+> +	txq = drv_info->txq[que->txqno];
+> +	rxq = drv_info->rxq[que->rxqno];
+> +	if (!txq || !rxq) {
+> +		dev_err(mdev->dev,
+> +			"CLDMA%d txq%u rxq%u has not been enabled\n",
+> +			mtk_cldma_hw_id_tbl[que->hif_id], que->txqno, que->rxqno);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
 
 [Severity: High]
-The is_stopping test only runs after the start address has been read.
-If that address was zero, mtk_cldma_hw_recovery() has also already
-re-armed the whole instance by this point. Shouldn't a queue that
-err_work owns be turned away before any of that?
+Can this restart the RX engine on a descriptor the device has already
+completed?
 
-Take a queue whose stop timed out in mtk_cldma_err_tx_one(). It keeps
-is_stopping set and tx_started true. Later, a stop timeout in another
-queue's mtk_cldma_txq_free() or mtk_cldma_rxq_free() resets the
-instance. mtk_cldma_rearm_queues() then skips this queue on purpose and
-leaves its start address at 0. The next mtk_cldma_tx() on it goes:
+mtk_cldma_rx_done_work() leaves the descriptor loop when the slot at
+rxq->free_idx still has CLDMA_GPD_FLAG_HWO set. In that case
+mtk_cldma_check_rx_req() returns -EAGAIN because SO_CUR_ADDR points at
+that slot.
 
-mtk_cldma_tx()
-  mtk_cldma_start_xfer()
-    mtk_cldma_get_tx_start_addr()  <- reads 0
-    mtk_cldma_hw_recovery()
-      mtk_cldma_rearm_queues()     <- instance re-armed again
-    returns -EIO                   <- tx_started is still true
-  mtk_cldma_stop_queue()
-  mtk_cldma_txq_flush(..., -EIO)
+Between that check and mutex_lock(&drv_info->rearm_lock), the device
+can finish the packet and clear HWO. Another context can then take
+rearm_lock to reset the instance. Possible callers are the -ETIMEDOUT
+paths in mtk_cldma_txq_free() and mtk_cldma_rxq_free() for another
+queue on the same instance, or mtk_cldma_hw_recovery(). The worker may
+also just be blocked on rearm_lock while the reset runs. Either way,
+mtk_cldma_rearm_queues() sets need_restart and queues rx_done_work
+again.
 
-A U64_MAX read on a dead link takes the same early -EIO exit. The same
-thing can also happen while mtk_cldma_err_tx_one() is still polling its
-stop, if the device lost its queue state along with the error.
+When the worker gets the lock, it consumes need_restart. Then
+mtk_cldma_rxq_restart() programs SO_START_ADDR with
+req_pool[free_idx].gpd_dma_addr and issues SO START. Nothing checks
+HWO on that slot again, so the engine stops at once on an HWO=0
+descriptor.
 
-The error is -EIO, not -EPIPE, so the new -EPIPE check in
-mtk_cldma_tx() does not catch it. mtk_cldma_tx() then stops the queue,
-clears tx_started and flushes the ring itself. Meanwhile
-mtk_cldma_err_tx_one() is either doing the same thing or has decided
-to keep those requests. The flushed TRBs complete with -EIO, not the
--EPIPE that recovery promises. Nothing clears is_stopping afterwards,
-so the queue keeps refusing new submissions.
+The re-queued pass then reaps that slot. Its arm_slot step sets HWO on
+the previous slot and leaves the reaped one as the new HWO=0 tail. That
+is where the device cursor is parked.
 
-There is also a gap in the other direction. If the stop inside
-mtk_cldma_tx() times out, it keeps the requests just as
-mtk_cldma_err_tx_one() does, but it never sets is_stopping. So
-mtk_cldma_submit_tx() keeps publishing HWO descriptors into a ring the
-device may still be walking. That is exactly what is_stopping was
-added to prevent.
+The next slot never completes, so mtk_cldma_check_rx_req() times out
+with "Failed to check HWO=0" and returns -EAGAIN. need_restart is
+already 0, so only mtk_cldma_resume_queue() is issued. As the comment
+in mtk_cldma_rearm_queues() notes, RESUME never moves the cursor past
+an HWO=0 descriptor. No further XFER_DONE comes to run the worker.
 
-Would it work to test is_stopping under ring_lock before the start
-address read and the recovery? The stop-timeout path in mtk_cldma_tx()
-could then set is_stopping the same way err_work does.
+That seems to leave the RX queue wedged until the channel is closed.
+On the MD and sAP control channels, that would stop all handshake
+messages from the device.
 
-[Severity: Low]
-What clears is_stopping after this return? The only place that clears it
-is the end of a later mtk_cldma_err_tx_one() pass whose stop succeeds, and
-that pass needs a new QUEUE_ERROR.
-
-Another queue's stop can later time out in mtk_cldma_txq_free() or
-mtk_cldma_rxq_free(). The instance is then reset with
-mtk_cldma_drv_reset(), so the engine is idle. But mtk_cldma_rearm_queues()
-skips this queue:
-
-    if (txq->is_stopping) {
-        /* Being stopped: restarting it would let the
-         * device walk buffers the stopper is unmapping.
-         */
-    } else if (...
-
-It programs no start address and issues no START. It does not flush the
-kept requests, and it does not clear the flag. QUEUE_ERROR is unmasked,
-but a reset queue that is not started will not raise one, so err_work
-never runs for it again.
-
-After that, mtk_cldma_submit_tx() keeps returning -EPIPE. The kept TRBs
-stay incomplete until the channel is closed via mtk_cldma_txq_free(),
-even though the reset made it safe to flush them. Is that intended? The
-comment's "until an instance re-arm" suggests the re-arm should recover
-this queue.
-
-> +
-> +	spin_lock(&txq->ring_lock);
-> +	WRITE_ONCE(txq->tx_started, false);
-> +	spin_unlock(&txq->ring_lock);
-> +	mtk_cldma_txq_flush(drv_info, txq, -EPIPE);
-> +
-> +	spin_lock(&txq->ring_lock);
-> +	txq->is_stopping = false;
-> +	spin_unlock(&txq->ring_lock);
-
-[ ... ]
+Should the worker re-check the slot at free_idx after taking
+rearm_lock? If the device has completed it, the worker could set
+need_restart again and loop to reap it before restarting. After a
+reset, the RX engine should stay idle until mtk_cldma_rxq_restart()
+issues START, so that check would be stable under the lock.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105-t9xx_driver_v1-v11-0-2084aa512864%40compal.com
