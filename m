@@ -1,98 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322132;
-	b=S6vXUytrmcjFbfcMAX+5Z/CAEyx7QUTrxJoj5Ue18+h0LBPl0YfX7gnSNxHEumGdIOWW
-	 IFxoRKejbYsuKw4veVFVNd/WGA8ZsEJ5GPV6SowsarzJg52cC1scHyp3HfDPPda99kymC
-	 3DxMojpMzqfHhMhED/jN0Jd+N+WQ83sF1zkTfV5p+CdsCJZzjX7iRFkzEcvYX9e1eQjj/
-	 DwsShmOFEEx5urUWJaRja/3abdLPjRWlJ9Gb1vR5Xrou6MWKTGPOLVHSz//T+lOV8ZgMl
-	 5KtNCy8eUAJ8KUo2OcYWVJH1V3nAOf+Sb3RK157CbLh1lfFHvp31+1W1IqAI0UBnthA==
+	t=1794322305;
+	b=bRAQ6lp2HM/3RsI7eDTS7SVUdZDHk2HMpzsJWO/K7m5JdHqifx4wLRGB6pOaapCYkTDh
+	 /VXydmgskOtmZxFPaman+MzmnmUCnl9yTVUsVS+XHcQU5bhs9Fkb546w+tpSHCXdTZTzX
+	 Dz3A4KhVhIMEDo0wPNeHZPITHB2vws7QGdpO7SNiEnMjvuZwHIx7FvJr9dXlHSfPxoZ/w
+	 UqQr6U71HTu5V8+H1ZJSvd5608kwxlccJFqcmsDlXfDAUjnrLAcvrF2tV0KzYQTsS6FV2
+	 4xrpZ3fbYYN8o/t9iaMAzR1vPMkavFFtECRt+3yUXOhDV+NhYoW+x2+ULVx9AkrqzaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322132;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=fAbYIaMbKYCKHf2gfjmqZLM0xjJUGwU3yVMDiOxjgH4=;
-	b=mCCDvsaJqa4YzoOVaw5Eye76KwAdsQICr44xd/ynKH2dmcGaax/3j9YVzpbdVGnWU96a
-	 UwjA5KtdXrvl5Udm0k/puCvps892nJya3JRQkxCHZsC0a8q9JGDzGsklm6GpSWqd0W2jF
-	 dufoV6LUxbZ7WVHRE73f8E8rXeRJvMqmQxslJXE46NdN7iZhx8z0mQfHmqtYA3D6kq0Wf
-	 vR+3kMCxcbyZJBt9xNlHE+3dnohb92aBBJD7QBZlWt9VWh6sB5E84lj4rw0lCmdVSJMdm
-	 AjcrfTfCJt+Jyhee/8Rtb2dzWLzw2SJ/XWXMh1/YblvT2lUWjYBXdMQS2AzMZcosujQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322305;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=oYILpWaYX4mYcYlSh1ZMq8HoO0Hj20LrKZ5ZNs2Zyyw=;
+	b=SkmS5qkC6ucRZwYb72jQmK8jHh0jSAl03GHWyAQxWofq6A1AXU2tZtbrMu8J+RXpqNad
+	 QTEa22aYelBGijGziTqI+8tKjYV7AGS2P3z7Pd6zWd/LoqayK26KZPK7i9TU06c4otQGe
+	 EUSyB+Nv7n9p2ImR20WlGX7zSFAjskRPaFgsV9m20qUqcjNUBZEiqhDoZ5nNk2Be3QKJq
+	 G6PzE2DZVjQFzicgAdpYrJJOGYc5SAlJ5aNerCrVfUb6GvdDIF4PH/vGOIbsgdqwwEWho
+	 nl89iCQDm9PSk8rge6ETvBU6GLOFuSe3Bimv4EugajoVO6P11jtieNj8ZWzhHid8w9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=gygQx+22;
-	arc=none smtp.remote-ip=209.85.208.178
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CopE6Uud;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BE2606A331
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:48:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62BE2606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0EA60A2606;
+	Tue, 10 Nov 2026 14:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=gygQx+22
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3adf9b1f5aeso18508661fa.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 06:48:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1794322129; x=1794926929; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fAbYIaMbKYCKHf2gfjmqZLM0xjJUGwU3yVMDiOxjgH4=;
-        b=gygQx+22MiGb8A12jCIVoodFPcmkefSsixa37wHTEhT1MzxWq6BzL8o48XEuR8mSNK
-         MUjfbYYu7scXCQJTQKBd+fcRxqxiNr6iUShKHjbrkIftJ9BhueTEUpBpURRfPiSYn1ti
-         AuW3CvR7TAPBqa7/E6022B39ojmDEFmB3PHks3dgDh3v5yC9VBJBgvlIlOYVvC9lDhnZ
-         /USMQwp9dQfP4gwdefKXnQcMzsQrCL6Um7QAwsNWj+UGr5ILYY9ccQm0DWHUIoDLJ7wo
-         jinuppRG0dzlXidwnwSbgBj813A8aMW8SL9oJidZBgvNMsFQ5WVE545jk1Si/dX1aeY5
-         /miw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794322129; x=1794926929;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fAbYIaMbKYCKHf2gfjmqZLM0xjJUGwU3yVMDiOxjgH4=;
-        b=fE284qwFi+gikmBimMhMUD93p3PE646e8NiGVZrRNtIeuKSlLKVzlA/Qc8OL5XVgwN
-         hG8Pv+wuY2e9aXC/TH/TaYr4+x7e5zjj+JC66XXUXkJlCW8XZnlKechaK4oKQtsxBOXD
-         TbF+XtQPQr35+tx5U8zaJtUpIIFpJHAiJtr/At/+Eo6l566g9UE0rBLB4Mqw5v7w2ii/
-         pnz+ff8RT3BXmJFQoB0AB4xx6dxre/oYgyV302CxKUGi2EcpmxVndE7C7v7JbEXr6QrX
-         f8Y3iQcPW3C1CUuygBPnpvjbYX994bHu+MoBXACBCMsXb3cLmlkINnXe3sBLS/QxYh3z
-         lAlw==
-X-Gm-Message-State: APuU4Z8IfEYIV3ps4JMp2lTG0df2tuM6Bxi9/J/YU0aL5SaC7rOKDMhd
-	youQxE9zC/3TTVVYuQzZJQcpx61dzgNz+5HJCrZlvKbVzu8grtlrlaH/ew6CAaBtBOo=
-X-Gm-Gg: AYBFou2JcwKjVj4niHqQn7C3mMHKFYD3y9hsQAjPVbX5pHnwA4/hf2/or2dy6vn/O6G
-	Gvy7P3PN5tfMoRsh0e80lz0oGWHsOBJyUEh/NaZjrh6gTl1bFBQa0xZWFqEguDSBXGmRE7hYX7B
-	EPi4FjGJcI88EdTQsPuTvzfxYLqk3MTeqIlc9STepPIGlamN0iWwFs05FNfCxKNycEnVlF39gXm
-	QyGw9cRkug3MtzkoN4Gmq5Y9WNILPRYkM8eGEQty0k37KCMA5ObJnT9LqQlyneM4Esh9F9FKy2U
-	5cGxkbN4UOhdkdRO8wYURCn9U4vhFGzoT2FkD55PVhIKl0duhdWYUYWYXcLseyEYSpiqGn0csJZ
-	JSd8TyZNZ2WhJ+GNYbNr7Zd2tvOF/rs+rmD/YvRr4TFglW/OyYeyj7aUk4Lo6TzmQKbMZwl/Img
-	M2UOJkoh7TB+c8eVptmaCh+wFXCoA57QSoIiSVznpvpT6d3oaHhKB18tMz7s4F7EtT+ZBxmP0U4
-	NulQsFlHucXHMdeO23JWj91fH8vK0kULKfxdiwwFiLz+v0GUuYre7eWOrctWXG72ws2ZPnGJjly
-	ZEoxgLr75yfdL1swJSixrLE5im1Fbh1BhVt0SXIl
-X-Received: by 2002:a05:651c:1502:b0:3a8:7caa:cd4b with SMTP id 38308e7fff4ca-3ae0962656cmr4623601fa.7.1794322129299;
-        Tue, 10 Nov 2026 06:48:49 -0800 (PST)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae0928b945sm5356381fa.35.2026.11.10.06.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 06:48:48 -0800 (PST)
-Date: Tue, 10 Nov 2026 15:48:45 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
-	Michal Schmidt <mschmidt@redhat.com>, edumazet@kernel.org, horms@kernel.org, pabeni@redhat.com, 
-	davem@davemloft.net, Jonathan Corbet <corbet@lwn.net>, skhan@linuxfoundation.org, 
-	rdunlap@infradead.org, andrew+netdev@lunn.ch, saeedm@nvidia.com, tariqt@nvidia.com, 
-	leon@kernel.org, mbloch@nvidia.com, jacob.e.keller@intel.com, 
-	jedrzej.jagielski@intel.com, anzaki@gmail.com, brett.creeley@amd.com, ohartoov@nvidia.com, 
-	Petr Oros <poros@redhat.com>
-Subject: Re: [PATCH net-next v5 14/15] devlink: add devlink_alloc_drv()
-Message-ID: <avMuxjQKh0ryA_G2@FV6GYCPJ69>
-References: <20261110141534.95614-1-przemyslaw.kitszel@intel.com>
- <20261110141534.95614-15-przemyslaw.kitszel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CopE6Uud
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB461F008A3;
+	Tue, 10 Nov 2026 14:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794322305;
+	bh=oYILpWaYX4mYcYlSh1ZMq8HoO0Hj20LrKZ5ZNs2Zyyw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CopE6UudIT5C6sRLUh5FUX+EIVh3BQ5Elpv+/1GcoDA8vWp3+V6VYpGnupooCCDbs
+	 dEO1KLeeQrcxkL2c+Xsu4vxf4jWzEA+ZBZa60/dQ4IvILBZaYGs62Qfp+mlHaHyQXZ
+	 EXEZ8Q+pQXxf6xHvJUXeyzxGlIa8D6RQVtii4SacIUuii7VuEeCPNODtsJ8m8v6P/7
+	 B4moqvegHMRQ4GVvV3T3UAAzm0O6VnPN+LNo8Eiv+o2unRFmRuJ+IV1T6Zr/MzWbRm
+	 oxxlbfp55t13lAiBwttdBJyaN7nnsK4OlbUxuwODwAfbkPtqAjEMLVnrKDjWO+k384
+	 M5xOevU+loPRw==
+Subject: Re: [PATCH v33 net-next 3/8] net/nebula-matrix: add intr resource
+ implementation
+From: netdev-bot+sashiko@kernel.org
+To: illusion.wang@nebula-matrix.com
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
+ andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 10 Nov 2026 14:51:44 +0000
+Message-ID: <179432230424.994134.9323146724334618440@kernel.org>
+In-Reply-To: <20261106045631.2224-4-illusion.wang@nebula-matrix.com>
+References: <20261106045631.2224-4-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,33 +64,162 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110141534.95614-15-przemyslaw.kitszel@intel.com>
 
-Tue, Nov 10, 2026 at 03:07:23PM +0100, przemyslaw.kitszel@intel.com wrote:
->devlink_alloc() records the driver bound to @dev at the time of the
->call as the owner of the new instance. That fits the common case of
->a driver creating an instance for the device it is bound to, but not
->a PF driver that creates instances for its VFs, as the VF device could
->be:
-> * not bound to any driver yet (VF driver not loaded, or
->   sriov_drivers_autoprobe disabled), what triggers the WARN_ON() in
->   __devlink_alloc();
-> * bound to another driver (VF driver, or vfio-pci), which could be
->   unloaded while the instance is still registered, leaving the stored
->   driver pointer dangling (it is used to report the driver name in
->   devlink dev info).
->
->Add devlink_alloc_drv(), a variant of devlink_alloc() that takes the
->owning driver explicitly, as devlink_shd_get() already does.
->
->The first user is ice, in the next patch, which creates a devlink
->instance for each of its VFs.
->
->Such an instance reports the owning driver in devlink dev info, not the
->one bound to the device in sysfs. Document that in devlink-info.rst.
->
->Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message and an in-code comment describe the
+  reconfiguration path the opposite way from how the code behaves.
+
+--
+
+net/nebula-matrix: add intr resource implementation
+
+This adds an nbl_interrupt module that manages the chip-internal MSI-X
+vector index space for the control PF. It also programs the
+FUNCTION_MSIX_MAP, HOST_MSIX_INFO and MSIX_FID tables, using a
+clear-VALID, flush, delay sequence for teardown. The patch also moves
+pci_set_master() to after nbl_core_init() and clears bus mastering
+before teardown in nbl_remove().
+
+> 1. cfg_msix_map: Allocate global hardware MSI-X vectors from the separate
+>    net/other interrupt bitmaps.  Reuse the per-function coherent DMA map
+>    table on reconfig, so a reconfiguration neither frees and reallocates
+>    the table nor has to take the destroy-path quiesce window before the
+>    old vectors are recycled.  The first configuration of a function still
+>    takes one invalidate + flush + quiesce window before the table is
+>    written; that window belongs to the first configuration only and is
+>    not part of the reconfiguration path.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+> new file mode 100644
+> index 0000000000000..3969392abdc64
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+> @@ -0,0 +1,851 @@
+
+[ ... ]
+
+> +/**
+> + * nbl_res_intr_cfg_msix_map - allocate & program MSI-X mapping table
+
+[ ... ]
+
+> + * Allocate interrupt vectors; MSIX coherent DMA table is allocated once
+> + * per function on first configuration, entries are rewritten while the
+> + * map is invalidated on subsequent reconfigurations. No free/realloc of
+> + * DMA table on vector count changes. This removes the DMA table
+> + * free/realloc cycle. On reconfiguration the map VALID bit is cleared
+> + * and the hardware-DMA quiesce window is observed (lock held) before old
+> + * vectors are recycled and the table is rewritten.
+
+[ ... ]
+
+> +	if (had_config) {
+> +		old_interrupts =
+> +			intr_mgt->func_intr_res[func_id].interrupts;
+> +		old_num = intr_mgt->func_intr_res[func_id].num_interrupts;
+> +
+> +		ret = __nbl_res_intr_set_mailbox_irq(intr_mgt, res_mgt, func_id,
+> +						     0, false);
+
+[ ... ]
+
+> +		for (j = 0; j < old_num; j++) {
+> +			hw_ops->cfg_msix_info(res_mgt->hw_ops_tbl->priv,
+> +					      func_id, false,
+> +					      old_interrupts[j],
+> +					      0, 0, 0, false);
+> +		}
+> +		hw_ops->cfg_msix_map(res_mgt->hw_ops_tbl->priv, func_id,
+> +				     false, official_tbl->dma,
+> +				     0, 0, 0);
+> +		hw_ops->flush_write(res_mgt->hw_ops_tbl->priv);
+> +
+> +		nbl_intr_quiesce_wait();
+> +
+> +		nbl_intr_release_bitmap(intr_mgt, res_mgt, old_interrupts,
+> +					old_num);
+
+[ ... ]
+
+> +	/*
+> +	 * First configuration of this function.  Re-invalidate the entry
+> +	 * and take a quiesce window before the table below is rewritten:
+> +	 * while the entry is VALID the pcompleter could fetch a table
+> +	 * that is being written and route stale gvecs.
+> +	 *
+> +	 * This is a second, real quiesce window rather than part of the
+> +	 * reconfiguration path, and it costs one delay per function on the
+> +	 * first configuration only.  Reusing the table removes the
+> +	 * free/realloc cycle and the destroy-path quiesce window from
+> +	 * every *re*configuration; it does not remove this one.
+> +	 */
+> +	if (!had_config) {
+> +		hw_ops->cfg_msix_map(res_mgt->hw_ops_tbl->priv, func_id,
+> +				     false, 0, 0, 0, 0);
+> +		hw_ops->flush_write(res_mgt->hw_ops_tbl->priv);
+> +		nbl_intr_quiesce_wait();
+> +	}
+
+[Severity: Medium]
+The commit message says a reconfiguration does not "take the
+destroy-path quiesce window before the old vectors are recycled". The
+comment above the !had_config block in nbl_res_intr_cfg_msix_map() says
+the same thing.
+
+The had_config branch above seems to do the opposite, though. It runs the
+destroy sequence:
+
+  __nbl_res_intr_set_mailbox_irq(..., false)
+  cfg_msix_info(false) for each old gvec
+  cfg_msix_map(false, official_tbl->dma)
+  flush_write()
+
+It then calls nbl_intr_quiesce_wait(), the same usleep_range(1000, 1200)
+the destroy path uses. Only after that does it call
+nbl_intr_release_bitmap() on the old vectors.
+
+The kerneldoc for nbl_res_intr_cfg_msix_map() matches the code: "On
+reconfiguration the map VALID bit is cleared and the hardware-DMA quiesce
+window is observed (lock held) before old vectors are recycled". So the
+two in-file comments contradict each other. The only quiesce a
+reconfiguration skips is the extra first-configuration one.
+
+Could the commit message and the !had_config comment be updated to match
+the code?
+
+The !had_config comment also justifies its extra invalidate and quiesce
+with "while the entry is VALID the pcompleter could fetch a table that is
+being written". Can the entry be VALID when had_config is false?
+
+- nbl_intr_setup_mgt() clears VALID on all NBL_MAX_PF entries at start.
+- A failed fresh configuration exits before any hardware write.
+- __nbl_res_intr_complete_destroy_msix_map() leaves VALID cleared.
+- DESTROYING can't be seen here, because the single-function destroy
+  holds the lock and nbl_intr_mgt_stop() sets stopping.
+
+Separately, the commit message says:
+
+  Everything between pci_set_master() and the scrub is host-side setup
+  plus MMIO and does not wait for the device.
+
+This patch moves pci_set_master() in nbl_probe() to after
+nbl_core_init(), so it now runs after the scrub in nbl_intr_setup_mgt().
+Does this sentence describe the old ordering?
+
+nbl_interrupt.c is not changed by the later patches in the series, so
+this mismatch is still there at the end of the series.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106045631.2224-1-illusion.wang%40nebula-matrix.com
