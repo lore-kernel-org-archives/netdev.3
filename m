@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292885;
-	b=IKHqE5CLhFwXeSAe8e1WhyO6NB3br0e01MSTAqZwLbIiBbQEH9dDP3JuRn+e79c1B2t4
-	 CzNca+yk50G36XGJ5I8yZB67hc4whez6rwSPE4I5PSAbMhr3uQQsedB5dwTCU7pTtLW5Z
-	 UvMTT0SNZNhu4D9wTXpBxm4y04eNEcn0Z9zYOmZMfZXwX+Telbhkj7kzeLOrRfrQIYM8Q
-	 fXtlFOWIl4d8w8OH1+tRg5C8y1ryoVjo4rBNh5AG3Mh9fd7/00+zrwKTbduSu2Xm1z4bb
-	 3iqCQl2l/LefGjnpVuYghzKODbkDbRJr5rRZ5THToig1LKaiyB/LaiA9jIVuP56rV5Q==
+	t=1794292887;
+	b=E9nTK+YRICP8sKwoHTz/CLgMsBIS/N2+YvIaV8kRUxTRgkh8sqhMqxEEX833L528SUQF
+	 hyvC+m/pdM1dZ/3GzTrHYO5NwGZEbMFyPYjqmfGnQQanBIbjvkYlW+cXwvtZBooiZsyOC
+	 dW51z5xRMPBukhikTjfDT/wvCavWabO7WBLtLIyNPJOpce3k1ekGl2ua5ZxpoCWWjWH8g
+	 +yzmc8mdh8xwMro0wyu7AJSmpgDN6Ju3sWxUWruTuFi98fEmw1k+5O4vKiD6XGZRE9AG4
+	 bFsgR2baXE72dOnE19miNTiwdfikUFEfjKtPVyaHMkfYQ5MPvTK8bJNTC7EWmMN633w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292885;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292887;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=nqrKlaQeTl4WKKKVqA7nnyA6CfFqXKex3ZpEO+A2IBE=;
-	b=fEGmqMhHucoQKyzhyUrjUr0ZdxHzoBLswz6hPT2CkwjaaGyx7+gPKRf2PyvVMpS0Qsi1
-	 L4VmrImMOMtYOwkfnvr9bn83iAsQYG7sCDFdCuqRv12uZjie0sH4CHqnTegfZOPagvBc4
-	 soUrA/Tfx/8n4Bm0sJRwSWZfGeQFV14k/SzbNRLr58HOgaBe3ZXrO+tJwhCseEUCJCADC
-	 yKszzh8i8lp67wBQ4xfRsG7cJ2xPeHOsnYyR8kjiH+LqMVfVaMtegMLWQBmyeenw1Ytan
-	 r34Ca928peJBdbarcl0E1YUbqrY6dz44+ad/6d9rWi/2bcQ39VLho4B08AKEt8oJyoA==
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=5Jm8CmWCS+409DVRpY2+DlWVRbEH4X3VIeQI4VAZvY8=;
+	b=CFkD6x8bm7U8NElP3hUiuChn+iptLLLxhfid2tysi3fLE4PofpgzJwfmgJPtLFfWOJGs
+	 N3nPKaFl9BV1aDQ6tV9FRIhBO+4FxYqTe6hHon8DXNWE3IfG2KnswYdK1aU4Y0UYHAxuX
+	 flOMBaBeNkwJnOGZSbTmusEyuyQVLEVRjhD1ptD+ZzvsKEDMk90YRixCbH22IHIZSv2eE
+	 5HRVWg1BJFwZlEAGfP2Q55VP8E/zpZo9uM25yYq+ddsRcJ1wejd5g7reCGPFzHtuxfOVh
+	 2yGbQwHP0F8vp6WrCduq+wviFroQwQ8JAAXVcbB17PlFpv3GfuNfhNOaA6OkyBx7nng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="gANfaS/U";
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E12160A6F70;
-	Tue, 10 Nov 2026 06:41:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E12160A6F70
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ku6oRIVn;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5115860A6F7B;
+	Tue, 10 Nov 2026 06:41:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5115860A6F7B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gANfaS/U
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ku6oRIVn
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=gANfaS/UWWdXR08x+aDCE54qPEJ4CfFC6jv2c/+eRudejEQ1i6KPOJ91D1bUIizMIXj+GSMA/jA4d
-	 AI8KTa3FqGHaJHAsMb+Vi8AegNapLbLhy8bVrG4nEAWveSGIhN4Wq+w/XzePr8IAlY6LjkIiy9U2sY
-	 IHDORU3LkeUfpD2M=
+	b=ku6oRIVnWj9CiJzoeVUSods1NYk5PStssoE5vzfE/94wBRvbZU9U/LKZuztZFb3d4CoEJGxsXeex0
+	 fi4hG6owCWLzigAK0gOIR+jXie0EtGUG7V9NoiC2FnNYyX3neTVQ9m1YWD3ngguXAIobpsuV0mTG3T
+	 72aoJ/1MlR0yPby8=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af2bc92205-a75f8;
-	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
-X-RM-TRANSID:2ee16af2bc92205-a75f8
+	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26af2bc91c8e-07a60;
+	Tue, 10 Nov 2026 14:41:21 +0800 (CST)
+X-RM-TRANSID:2ee26af2bc91c8e-07a60
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[223.108.79.98])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5d7;
-	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
-X-RM-TRANSID:2ee66af2bc8e8a1-aa5d7
+Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5cb;
+	Tue, 10 Nov 2026 14:41:20 +0800 (CST)
+X-RM-TRANSID:2ee66af2bc8e8a1-aa5cb
 From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -66,12 +66,10 @@ Cc: andrew+netdev@lunn.ch,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
-Subject: [PATCH v2 net 2/4] net: ti: icssg-prueth-sr1: Fix device_node refcount leak in prueth_probe()
-Date: Tue, 10 Nov 2026 14:41:15 +0800
-Message-ID: <20261110064118.1138-3-laixiangwu@cmss.chinamobile.com>
+Subject: [PATCH v2 net 0/4] net: ti: icssg: Fix device_node handling in prueth_probe()
+Date: Tue, 10 Nov 2026 14:41:13 +0800
+Message-ID: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
-References: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,53 +81,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-prueth_probe() takes references on the eth0_node/eth1_node device nodes
-with of_node_get() and stores them in prueth->eth_node[]. If either of
-the "ti,mii-g-rt" or "ti,mii-rt" syscon regmap lookups fails, probe()
-returns -ENODEV without dropping those references, leaking the device
-nodes.
+Hello,
 
-Jump to the existing put_cores label so the error path releases the
-eth0_node/eth1_node references like all the other failure paths in the
-function do.
+This series fixes the device_node handling in prueth_probe() of both
+ICSSG drivers.
 
-Fixes: e654b85a693e ("net: ti: icssg-prueth: Add ICSSG Ethernet driver for AM65x SR1.0 platforms")
-Signed-off-by: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
----
+Patches 1 and 2, carried over from v1 unchanged, fix a device_node
+refcount leak on the "ti,mii-g-rt" and "ti,mii-rt" syscon lookup
+failure paths. Patches 3 and 4 fix the port scan loop that is shared
+by both drivers: a port whose reg property cannot be read is skipped
+instead of being routed based on the uninitialized value, the node
+reference is taken only for a port that is actually accepted so an
+out-of-range reg value no longer leaks it, duplicate reg values are
+rejected, which is what the existing "port0 and port1 can't have
+same reg" check intended but never caught, and that unreachable
+check is dropped.
+
+Thanks to Simon Horman for the review of v1 [1][2] and for suggesting
+to collect the fixes into one series.
+
 Changes in v2:
 
 - Collect the two independent fixes into one series (suggested by
   Simon Horman).
 
-- No code change since v1.
+- Add the port scan fixes for both drivers.
 
-Link: https://lore.kernel.org/netdev/20261030085851.2019-1-laixiangwu@cmss.chinamobile.com/
+[1] https://lore.kernel.org/netdev/20261109165235.GR18859@horms.kernel.org/
+[2] https://lore.kernel.org/netdev/20261109170036.GT18859@horms.kernel.org/
 
- drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Xiangwu Lai (4):
+  net: ti: icssg-prueth: Fix device_node refcount leak in prueth_probe()
+  net: ti: icssg-prueth-sr1: Fix device_node refcount leak in
+    prueth_probe()
+  net: ti: icssg-prueth: Fix port scan issues in prueth_probe()
+  net: ti: icssg-prueth-sr1: Fix port scan issues in prueth_probe()
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-index b8115ca47..ef1dc32ff 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-@@ -963,13 +963,15 @@ static int prueth_probe(struct platform_device *pdev)
- 	prueth->miig_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-g-rt");
- 	if (IS_ERR(prueth->miig_rt)) {
- 		dev_err(dev, "couldn't get ti,mii-g-rt syscon regmap\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto put_cores;
- 	}
- 
- 	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
- 	if (IS_ERR(prueth->mii_rt)) {
- 		dev_err(dev, "couldn't get ti,mii-rt syscon regmap\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto put_cores;
- 	}
- 
- 	if (eth0_node) {
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 32 +++++++++++--------
+ .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  | 32 +++++++++++--------
+ 2 files changed, 38 insertions(+), 26 deletions(-)
+
 -- 
 2.50.1.windows.1
 
