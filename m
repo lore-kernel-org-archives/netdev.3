@@ -1,64 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.143.172.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794316525;
-	b=Y1cjxiFbKneX15Nux/RXt0sNpcMWNbC0vzhvz7eLmTg3XBROy95gq3fjfdOP+iV2aRaF
-	 hl/o9SFSI0btp00ZzOj6oxfi4pDRs/bMjzsDLylzh/YlxAMluGwoivBu6OqwUFSCRFObL
-	 SaEoR/WWuo+qiOsBHyIn9xNh+mfrVQh7D/LMAz7fSVIirvR9jsfuzBZHTqG+8+2V6ESlF
-	 dQleLFrsQ960dDbT4sPnX0Khdg5cRQ7DWxXWxRoEVytDwOXhqFEHU/H6LxUd7YskaJeQi
-	 BQTBg00Iy6SaT3pQ8d6XXA2BhwsB4cl1pUaK52h7bkQb3jmf3v2iF3mbgt1cr1fiPsA==
+	t=1794316647;
+	b=jiEiS+EijHtKvw0KJnXw7Qxm+XlJiKCsSQ6EKuxiCdrJ/SSmMD3hC5jjVeKsk93e/s/y
+	 I6vLxeje9Bm+m8kyNErx5kBHy3ahME+CztJJ5YbI/dILIMqj1aYcsSbLku4QpLigAKoT8
+	 cQ+P/QUXSAqNHkIPMgz7W3wKD15xxwCAchwc/2BSmQig8pD6SAsvHS/kmUdxWq3G3xF9/
+	 92tVHErBVsvSyQzZrdZwp6tHBICu/4QFLAcyIWRpCvVbtXFMNO4N43bVRVzmliBlGZ3+Z
+	 n/0nPIPYy7oNp70JsH6ClBse48P9JnLWLmd1zCPvA3g+eOx31nHAPV+TamcXz9xrUzA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794316525;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=D15Eu+ajxeeIDXHCqmfCYpfdhqr+t0pJpZfF3KXQSIs=;
-	b=sCHd4XS4fDHl6c3XEYzoZNaY35/dQYCe0ljBN8T80WzC/jY5eazVO3wSCuGG3RAJxU3q
-	 0SX3jTRZ+n3pMtUDw8f2FJ0BXi/CD8dThnS8s64Zfgzwxs/nyfIHChEvVyKGjs9/5AGx7
-	 tCTdchA0RhaOssyMzpxcYrkn8c+QkrmgJzbxMebAls5/Pgmlh5gVfSNpRUCH9RurXLlCf
-	 sw0ZU3RQ1S5hNCGkQszWKroyhewXHA3AOx1YQIwttOjokBs75ZuLNdmeBff31aWGg65Ij
-	 VfB7uXuOD80QgMR85VXoq37PCaAN1sZefr8OcuPVxJbL7zQ6uds7PNUX9A3BTQI6hxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794316647;
+	h=DMARC-Filter:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Bar:X-Rspamd-Report:X-Rspamd-Score:DKIM-Signature;
+	bh=Xz69vwdlgbH2AiksoxbbdfVj3ichWtpOW5WINr/u1E8=;
+	b=43i82noUmSqyhyjrtjmkWHQpb2j3ErMp5LfJVzu4iq+P1n+drjcAQHsUpU6I4wsIcvn3
+	 iqKsvu8ySluFeX1bVcOlk3EPZktHzzBXwrbM8Tk9HkeNiWAB+FD5PT0OnnuRizxXtOaPK
+	 r9sT1T1ARbdbVdaUqswG3xFjfcZK+6H22VfktjTi6HeXMJQe23JQXubJRB5WPtTt6FmC3
+	 mN7q5rKx2K6mlTNzPSjS3c9TIRJTrAAYKYiQ/fyJm+t9sryQInfeBlF7j6UMISjCORMs0
+	 w38FyuZQ5El0eZPerNoam4llWo7/m/t4+IVjDDfYZoTaoQ3tMC6ENqAs66hptSpFsUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=PExuW3zb;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=lausen.nl;
+	spf=pass smtp.mailfrom=lausen.nl;
+	dkim=pass header.d=lausen.nl header.i=@lausen.nl header.a=rsa-sha256 header.s=uberspace header.b=qEMbmOVZ;
+	arc=none smtp.remote-ip=95.143.172.20
+Received: from mailgate01.uberspace.is (mailgate01.uberspace.is [95.143.172.20])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A96606A7F7;
-	Tue, 10 Nov 2026 13:15:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09A96606A7F7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450B6071E50
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:17:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B450B6071E50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lausen.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lausen.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=PExuW3zb
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=D15Eu+ajxeeIDXHCqmfCYpfdhqr+t0pJpZfF3KXQSIs=; b=PE
-	xuW3zbf6G3AaxaJnxKPZYxEMTXpiW1ly2MvOY9Z077PKtNMIL53j0vEQnB1G1GeW3hh6AV/eFSUZK
-	AGuq8B4o3bGCYOe5zHcyCuSzdDO5ck8L8XtCpm5Gg5lcZ+NR9XPKAV9B/t3pDakdvaAeWw1AbVCcn
-	zEHNUn+IZJBwsIc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xQlh0-00FTzo-S4; Tue, 10 Nov 2026 14:15:18 +0100
-Date: Tue, 10 Nov 2026 14:15:18 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (4096-bit key, unprotected) header.d=lausen.nl header.i=@lausen.nl header.a=rsa-sha256 header.s=uberspace header.b=qEMbmOVZ
+Received: from devico.uberspace.de (devico.uberspace.de [185.26.156.185])
+	by mailgate01.uberspace.is (Postfix) with ESMTPS id EFE5660884
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:17:17 +0100 (CET)
+Received: (qmail 18734 invoked by uid 990); 10 Nov 2026 13:17:17 -0000
+Authentication-Results: devico.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unknown) (::1)
+	by devico.uberspace.de (Haraka/3.1.1) with ESMTPSA; Tue, 10 Nov 2026 14:17:17 +0100
+From: Leonard Lausen <leonard@lausen.nl>
+To: netdev@vger.kernel.org
+Cc: leonard@lausen.nl,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Shuah Khan <shuah@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: dsa: motorcomm: Prevent rx_bytes/tx_bytes
- underflow
-Message-ID: <60bec8d3-7a0f-45d4-bc6c-a43ce92d1884@lunn.ch>
-References: <20261107015447.335056-1-mmyangfl@gmail.com>
- <91357461-8056-4b1d-a06e-6f1db5eeaaa4@lunn.ch>
- <CAAXyoMOwtQB01SFo+o2UPZZtw3Dhkpq94h8N55ZEas81z6VWUA@mail.gmail.com>
+Subject: [PATCH net 0/2] ipv6: honor rule suppression in raw FIB lookups
+Date: Tue, 10 Nov 2026 13:16:36 +0000
+Message-ID: <20261110131638.15004-3-leonard@lausen.nl>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,32 +73,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAXyoMOwtQB01SFo+o2UPZZtw3Dhkpq94h8N55ZEas81z6VWUA@mail.gmail.com>
+X-Rspamd-Bar: -
+X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-2.996444) MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -1.596444
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=lausen.nl; s=uberspace;
+	h=from:to:cc:subject:date;
+	bh=4jabfNk/+Si/BEhfu5MnAq/+ZlUBEjAIZzdfp/sdPnU=;
+	b=qEMbmOVZF0bxGo/52K9MwG4xc0nsDg9y6Jfdko5itxLM892vRRoqMGTAgEkd2mg2XPc0d1taCA
+	r157Erj6MXjgvg5dgPYR/t9+g+TMInPbnPbLSUX8tqgEfog8idPABSa/BoSnlImaz40hMCfwvVzr
+	/gl5qS37QzAWMcc8Zo7/CXXCJtyVkMcdhQhZd2uYgihhxFNnDXmXj4FCopPgVxDhDeX0tX43he9B
+	ysU7D1cDSQNeIpjcGG3wcpVQFlLI/3Cmh6EGxoCa6/aCSk27dSk6MDGn9NwTNQNIFPS4L3xR8X/f
+	ZIKwqHqcaM6rI8m6o9DODamoMgMAXEPGccoROX5CsKR5SBAtTkrY54p43qbps0E4YIv82jzxae/y
+	WMkzuNJYUtCDC0FH749MgHZhaiWMMbEkUMBkzCUZVF37o4YwHkg7aW94+efbp5X3OxjbxJOQ6N/o
+	p15f7WdDVKJHA+XYgqKtGajHVAa5VVrOPlcLi/POG08L1etIbhasycdQle4NbStWA9IAD++WplNw
+	CnEW1/0jYmE6V99nUp3QjzBhcFnbyhBmkJK5JrAHi9iDAZwmZglKC99bufx4N9wEOnf2mgA8OEeX
+	xlkVYxoHbqjJg5T3k4+V91NnioG286wLGTudqxd5RkZrQt4B5ieX6s3JhZ8oe+OGcJT3AwiBS5ui
+	Q=
 
-On Sun, Nov 08, 2026 at 02:07:34PM +0800, David Yang wrote:
-> On Sun, Nov 8, 2026 at 1:26 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > +     if (res) {
-> > > +             dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
-> > > +                     port, res);
-> >
-> > Please don't break strings like that. The reason we allow lines with
-> > strings to be longer than 80 is because somebody is likely to grep the
-> > error message in the code to find out why it is being printed.
-> >
-> > grep -r "Failed to read stats for" is not going to match.
-> >
-> >     Andrew
-> >
-> > ---
-> > pw-bot: cr
-> 
-> Hmm that would be more than a pure code movement...
+IPv6 raw FIB lookups ignore suppress_prefixlength and suppress_ifgroup
+because the suppression callback only examines the dst-based result.
+This can make nftables select a suppressed main-table default instead of
+a VPN route, causing strict reverse-path filtering to drop VPN replies.
 
-True. So add a patch which glues this string, and any other broken
-string, back together again.
+Patch 1 supplies the prefix length and output device from the appropriate
+result representation. It preserves reject results: raw lookups can
+return success with RTF_REJECT set, whereas dst-based lookups report an
+error and skip suppression. Destination-reference handling is unchanged.
 
-	Andrew
+Patch 2 extends the existing nft_fib.sh fixture with unicast suppression
+and retention checks, plus a loop covering all three terminal reject
+route types under both suppression attributes.
+
+The series targets net and is based on v7.4-rc2 (7475ea8b5861).
+
+Validation:
+- The original VPN failure was reproduced on unmodified v7.4-rc2 in QEMU
+  without kernel instrumentation.
+- The final fib6_rules.c compiles without warnings with the laptop's
+  existing configuration. Its extracted suppression callback passes 17
+  ASan/UBSan checks, including reject results from blackhole nexthops and
+  destination-reference handling.
+- On the rebuilt v7.4-rc2-based laptop kernel, all ten added selftest
+  cases pass and nft_fib.sh exits successfully. A separate twelve-probe
+  test confirms that blackhole, unreachable, prohibit and blackhole
+  nexthop results remain terminal with no suppression, prefix suppression
+  and matching interface-group suppression.
+
+OpenAI Codex assisted with investigation, reproduction, implementation,
+testing and these descriptions. The prompts asked it to investigate the
+VPN failure, validate on v7.4-rc2, simplify the series and preserve
+terminal reject routes. Both patches carry Assisted-by: LLM.
+
+Leonard Lausen (2):
+  ipv6: honor rule suppression in raw FIB lookups
+  selftests: netfilter: cover IPv6 FIB rule suppression
+
+ net/ipv6/fib6_rules.c                         | 32 ++++++---
+ .../selftests/net/netfilter/nft_fib.sh        | 68 +++++++++++++++++++
+ 2 files changed, 90 insertions(+), 10 deletions(-)
+
+
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+-- 
+2.55.0
+
