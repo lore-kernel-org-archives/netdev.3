@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794329159;
-	b=gLErduubQspcivPiLahEiQkRSSCjV+uxiK/CnCBZQZE3YglYtTbR+2Tg2B7v0Rb5Ta03
-	 PrvaXZcBtuH7ZjSMAtlQzDCqGo4NY8GapuGlUCSAEZxjjk6TG7SC8u7TUWcwL1V7E/FCt
-	 cD2xXeOudnTXg/Hcf2PW3yBbNsqjPAT4SQRcbYP48GeRkqp7oU7f4zLi9o5BZ+uMMf/OK
-	 dotDHa2LPw9OQmrvwx7Sp9g4yuog9ztuPyaup6E2hMoR1MxZ/+MoF6rfG8dIOileaCoD9
-	 rQJ5cLcKCM3SgcWxkdzhTm3/KYfHhFxL8QYVvQtl9aK8IdHrWzJht0u+lYr32UnS92g==
+	t=1794329160;
+	b=ZAWqETLVHedpNcTtUQi0z8/Faz0+OCFTqGt31U1MFFI8E3Au+H3vVe9eHJUfS54+KX3h
+	 qbLiIDZlSzIXf2X+joaMTObw5/SZJu/C+1QtkXZKOJaK2kJsNo2K6gxHFMmH0UiENxKhl
+	 BfUFmb+zrixq+9zBWJ4K9H+L7a5GdSPMlGmxNIMjZobTeKfl1ZnAQi8x6HCcsOmWziHdj
+	 7vjLTkQs2mBGuOLArkYJ29N3j2NzSFznCW9VJXPROXfP7nkcVzKQvl5ymMWvwwexcvc7E
+	 HK92Y8ElYsJUdd7Y7bIE3L9ldz1efPVP8iNi5R7riFBoZSd9d4pVaq17OU6nOjfXm7A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794329159;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794329160;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=yHGcCbfrpGwBJxir5Cx0kWqq2YkGcMrums3mCpUF4D4=;
-	b=IkX/RnLY8mffabHIVgSDZny+TrD4KYZCmkC2XJf/P+gs4tbhOeBOtQIN1/X+6CbteMNr
-	 Mmnl9XmJuAdlzXjSo7H3jvXhBvnAjlbi6EBeaiEeK8OXb/KQWS+XmtD+q9F+SU2Qw4Eay
-	 OwoeAFd4rojy/X26XfXooftP8XnP5fuLzrASYSEZaL4xGiVHOIg3TBlV0Eq4XBTgpnxV2
-	 S423d/UprkDwnhgkZ9/aT3kwhoJSTILmnE1RtktKywsB/BJAgyuLdjxtsnUuURa5vrlzi
-	 fyjODefhP9Z8fbxs9w2Sj1Dn77Hi3v0wuPgxKCwZgZAa6AfIF2608wPrr+OpihQvp8Q==
+	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
+	b=oayLlQ2X0ooar91BXWwhE5UbcXR87+WDVE8o9wcvfR7DG8JH6gxFRxXm1GMk+rdLSuYT
+	 ypIJRZyLDzibXpr3ZRbpZHXHVMolVMZcfrOZumVUfuPOrJgXtQEvrFORctQVORCt7+7wp
+	 AaYTenJLEttxLJbKurK9mpr8qv0xBjO4YgmnLSc5ITfvNmIb8/1Z0D1kufpBZ6pxrsV0T
+	 GD2PPIZGRQqdv2jd2M7OTZwyCLK48CBmE8h65m3XTUIqVI0HCDCiilPjxLBartV1+XWAw
+	 kUw9Zgb7d4MflHyMEofRcC8cnNldjJcfL6Yo3GtChBKyn5/HONxwYElkF1xJXR94zsg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D4zUEH3w;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdMCV8b2;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B1D606A321;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B50606A331;
 	Tue, 10 Nov 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D4zUEH3w
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdMCV8b2
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794329159;
-	b=3Rw/N3iYyZFku7BFhxoqxI221HsrNOmxHGN6NhwigBQ/AG2CQcSoPVD0J3fV25+ofXDi
-	 QJdoWOyrAdLrsFEQka1HmQGn8sgweYWEXfs8D0mkBjH/RBitc0EmHzlrbpMqjLFnXwA1H
-	 1eF9NiKqx678xF6mdXeLWvzpOhXhQ00rzMDgaKFPuFjGbNHd4Z0dcrYIi0oerHptk0I5M
-	 Jfe/96/odvuQvQDtm1j5fxHa4s7OXjSuZuNicsC4JFjMd4CiqVlegqYr0ndF5ybW1sDff
-	 0PUJqAXBqtTnFnRGi88H03qJ1spzNn/5XwBofJTVbiffW0eppDtG3JSbql9I3G/FfMA==
+	b=BtBVdW/SIdabtaR4QZTCqTCexw4doMTe90kGMP18KkpIFWvgmG8rSHNtOvoimw4Aw0RK
+	 IxqrI+EcifIt1xQFn2KppaCsE0x38i2YIquT6q4nuvlP6UenkGzLzzVeKEZirTG0NaSvH
+	 A971jcVDOhjbHh5xVgjjqcayxn4laqGhscEEelbKte1Oa7ddGW4cRUSRmlZ6d0HC2fwY1
+	 f2fquGs1aagImE07pdqzNQ6jfnZx23hwYifo0yTrh/t4jZc45Hxu3Lg/IEmymmQG4mMaw
+	 UZb3q/syA2ixFgnCi2XJRaI0QQHxPGo54LbKxR8yb2RH8ZBrAoPCa/a5I38rev6lUfA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794329159;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=yHGcCbfrpGwBJxir5Cx0kWqq2YkGcMrums3mCpUF4D4=;
-	b=QGCpB4AnZr4YXrXMZgJ0YkqzGhWGQhEHgBTjA9lpr7gsAAzoeNjEUfIuhr8JKL/YJ93z
-	 6yS4TXkbvyGJISn72h6gnq88Sq5GUSSgMuhJYSLYsmTNK+mFkAKvDmH9y0RmPA+eVcqzm
-	 mZxqcsDAfo5oWmZKRO2bYyagmRuDxWEzf54fIPjvlU1ZWXHF2eBeQhaJV2c/PuW1EU+4k
-	 UK0uoIGbyDaOyzOA//RZYIxBBWVD4nRbPvowH02alEtLh5zAIvH69WHT5WlWtTa/89w6s
-	 mLQiG4qu6ZxMcAZjLQr+I+4vCoZp4Ix5myFlbHyZ92ueBKpAczzju8lgCZAtoa2gM0g==
+	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
+	b=Em7QOTY6hJnV/4jZfmil6OqJijqYjJVbI8vLOG3Yw0XiM9vETNSmf4eTmP8TFaYSlHU2
+	 gZ9ZTzuytLOQASLH9GpUOAryhkErR4LkMcZJYj2NFPQKuIfn+4vqVzaEobQD7DpLqU5Tj
+	 czMr7B8lmlNqheoMlBwT9PP0jBdcpT6mA4CTKfsBhVNJ8rrb7zW/cncdmSJgCYs65TTZ7
+	 ouaL9lBicxxnOJZ9UemxQXyuPR2lVTuCI5nIYVCNTuLmuX6KojfI0E1k7PO3heme3kG+O
+	 LwgvXv0Qe3VGIXLenvne+cpnR637aK+/mze8CtGdAKg/OEsusOEdCpeQcySQQXmEnUA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 691C31F008A2;
+	by smtp.kernel.org (Postfix) with ESMTPS id 5D5071F0089F;
 	Tue, 10 Nov 2026 16:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329158;
-	bh=yHGcCbfrpGwBJxir5Cx0kWqq2YkGcMrums3mCpUF4D4=;
+	s=k20260515; t=1794329159;
+	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=D4zUEH3wYhhNPjKpEsf9OGhIAXc0+y5ATdeDUDMxLJSmi9ykOxNfke54vzbD76K1t
-	 YCHQvc+LBrkTxPp6DGNQXEANFuU1EkzqO60deGan53UsoBbwCCBOIDrFoggnZ7hfv1
-	 RMTJ8sJIXQFdPH9MhlHn05UrZjmMcVQFUkEutWnSOutYs6Zmz2C7uCWQRp1C8OeBHR
-	 7PqMxqncTv3gFBPn0ZFX+K/J7CHjkvsUrkLW7Af4GshcyrLKnQFcxtuqPG1Q7l1oYT
-	 e/M0FZ/I0HuILRB5RckfVxT8GwT1NNOue271lK5aWh6PgF4mG+UwztG5nzawO2fcuV
-	 2llefB7pBR1vQ==
+	b=UdMCV8b2VeoM3w+D732bVQdtMCSluvH5LcKS4jctOWeuYgJUM/BIoVB9nx/qEhgN/
+	 UkdoA6JjUQE275VRFPngMjutTwgBR0wtAZ7N+Jick1DDeThcBRMG1NPg6ZLpd4A78U
+	 lh76R7o97dx1i+iyCSv5+BwcZUWT9+d/PQdPIRkpedjt0jOqp/8i/yZNUbrxAhGRT+
+	 vbpv9qpra/6L5DzLqzn5yj4kP2qFXuwvGiTnuc49fZSMwK7JBrTBAzYGU7ngs3scWi
+	 zQq9kIuXc6VRVLtMCnlGSm+vFDf/5XyWjjVLcUw64DlLPv9/rhwfB9wU1IHlomHTvT
+	 ChFgr4a2zAq8g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id EA33348BFC;
+	by lkml.kernel.org (Postfix) with ESMTP id D725348BE0;
 	Tue, 10 Nov 2026 16:45:57 +0000 (UTC)
 From: Yongjian Wang via B4 Relay <devnull+echoowall.gmail.com@kernel.org>
-Date: Wed, 11 Nov 2026 00:45:56 +0800
-Subject: [PATCH net-next v4 2/4] selftests/net: packetdrill: test
- tcp_base_mss on passive connections
+Date: Wed, 11 Nov 2026 00:45:55 +0800
+Subject: [PATCH net-next v4 1/4] tcp: initialize MTU probing before syncing
+ MSS at connection setup
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261111-mtu-probing-series-v4-2-6f2e484ca8ea@gmail.com>
+Message-Id: <20261111-mtu-probing-series-v4-1-6f2e484ca8ea@gmail.com>
 References: <20261111-mtu-probing-series-v4-0-6f2e484ca8ea@gmail.com>
 In-Reply-To: <20261111-mtu-probing-series-v4-0-6f2e484ca8ea@gmail.com>
 To: pabeni@redhat.com, kuba@kernel.org, shuah@kernel.org, 
@@ -94,11 +94,11 @@ Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
  netdev@vger.kernel.org, panweiping3@gmail.com, 
  Yongjian Wang <echoowall@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794329156; l=1599;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794329156; l=3243;
  i=echoowall@gmail.com; s=20261026; h=from:subject:message-id;
- bh=3lQsY78vSTiBOpqp4bdac9scSAkC/asJAFx3o/C4nk4=;
- b=KlldzqTr+zVzxlntQk6qL3845h9aSVYsDMJB7yZ+xOEeVyu5/nQTgumE/1UvAkJnrWzaeoJsI
- dv651n3WLjlA4RQ3jCzJFjwofZsYaDxxIZUSau/vUpeDfmsPiP2xN3+
+ bh=fc7GUdhcvf9vRkZ3ScF2x8cdgOAMENFCNY8ojAS8WTM=;
+ b=wKZ+Ok+q/a8mkHceG56FgZXCEjtucb1MXa1ZWmh9WCQ+d8VksNSwEGcZ+i6rhSDL1yQz+RJzb
+ 25sZVzwNdUaA6i/v5L1Qu+XEtsUlr2UYzCj6luNe0+EjO0xGqUZmsKT
 X-Developer-Key: i=echoowall@gmail.com; a=ed25519;
  pk=9XP6JhqjjPsHCF6UZZZTeqTRnXIa4+ufggnxXtTJ+no=
 X-Endpoint-Received: by B4 Relay for echoowall@gmail.com/20261026 with
@@ -109,47 +109,86 @@ Content-Transfer-Encoding: 7bit
 
 From: Yongjian Wang <echoowall@gmail.com>
 
-Check that a passive connection starts at tcp_base_mss with
-net.ipv4.tcp_mtu_probing=2, as an active connection does.
+With tcp_mtu_probing=2, a passive connection starts at the full MSS
+rather than tcp_base_mss. The IPv4 and IPv6 syn_recv_sock() paths
+call tcp_sync_mss() before tcp_init_transfer() enables MTU probing.
+With tcp_base_mss=1024, the first successful probe can therefore lower
+the MSS from 1460 to 1242. On a black hole path, the first reduction
+skips 1024 and goes straight to 512.
 
+The issue surfaced while developing packetdrill coverage for MTU
+probing and comparing the initial send MSS on active and passive
+IPv4 connections.
+
+Commit 4d83e1773031 ("tcp: delete redundant calls of tcp_mtup_init()")
+removed tcp_mtup_init() from the passive setup paths.
+Commit 27204aaa9dc6
+("tcp: uniform the set up of sockets after successful connection")
+later moved MTU probing initialization into tcp_init_transfer(),
+away from tcp_sync_mss().
+
+Initialize MTU probing immediately before the existing tcp_sync_mss()
+calls in the IPv4 and IPv6 passive setup paths and when processing
+a SYN-ACK for an active connection. Remove the late initialization
+from tcp_init_transfer(). This lets tcp_sync_mss() apply tcp_base_mss
+without adding another MSS calculation to connection setup. The
+crossed-SYN path already uses this order.
+
+Fixes: 4d83e1773031 ("tcp: delete redundant calls of tcp_mtup_init()")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: Yongjian Wang <echoowall@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- .../net/packetdrill/tcp_mtu_probing_passive.pkt    | 27 ++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ net/ipv4/tcp_input.c | 2 +-
+ net/ipv4/tcp_ipv4.c  | 1 +
+ net/ipv6/tcp_ipv6.c  | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_passive.pkt b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_passive.pkt
-new file mode 100644
-index 000000000000..14bae144cce2
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_passive.pkt
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Test that a passive connection starts at tcp_base_mss with tcp_mtu_probing=2,
-+// the same way as an active connection.
-+
-+`./defaults.sh
-+sysctl -q net.ipv4.tcp_mtu_probing=2
-+sysctl -q net.ipv4.tcp_base_mss=1024
-+sysctl -q net.ipv4.tcp_timestamps=0`
-+
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 1460,nop,nop,sackOK>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK>
-+  +.1 < . 1:1(0) ack 1 win 65535
-+   +0 accept(3, ..., ...) = 4
-+
-+// The initial window is sent with tcp_base_mss, not the peer's MSS.
-+   +0 write(4, ..., 10240) = 10240
-+   +0 > P. 1:2049(2048) ack 1
-+   +0 > P. 2049:4097(2048) ack 1
-+   +0 > P. 4097:6145(2048) ack 1
-+   +0 > P. 6145:8193(2048) ack 1
-+   +0 > P. 8193:10241(2048) ack 1
-+  +.1 < . 1:1(0) ack 10241 win 65535
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 3fd0e215324d..2b54b99f1f45 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6763,7 +6763,6 @@ void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 
+-	tcp_mtup_init(sk);
+ 	icsk->icsk_af_ops->rebuild_header(sk);
+ 	tcp_init_metrics(sk);
+ 
+@@ -7020,6 +7019,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
+ 			tp->tcp_header_len = sizeof(struct tcphdr);
+ 		}
+ 
++		tcp_mtup_init(sk);
+ 		tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
+ 		tcp_initialize_rcv_mss(sk);
+ 
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 0dc3b087665d..fb968798be36 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1740,6 +1740,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ 
+ 	tcp_ca_openreq_child(newsk, dst);
+ 
++	tcp_mtup_init(newsk);
+ 	tcp_sync_mss(newsk, dst4_mtu(dst));
+ 	newtp->advmss = tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
+ 
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index b1dec5d86d63..8ea1ae1ad2b2 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1490,6 +1490,7 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 
+ 	tcp_ca_openreq_child(newsk, dst);
+ 
++	tcp_mtup_init(newsk);
+ 	tcp_sync_mss(newsk, dst6_mtu(dst));
+ 	newtp->advmss = tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
+ 
 
 -- 
 Git-157)
