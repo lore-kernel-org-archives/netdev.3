@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794281107;
-	b=d36nRlfey3mPxSkFuEQHallnJm3TqdnItTt2gQWkLIQRAbOqYeM6t8eTsj4aQYbmbdIX
-	 Q0JV7KJmz7AgPtiOlKk72Jh/ahc2G/pX+OXobfl9F0Fnz02DPu6esYl+VXdmeAgztZ0Lf
-	 YC0iC9YxxQUsSRKSxqmKUTXtloQnCLD7vsOGII8P6fyLC/RmwlX2m97rESed3cs1h+JAl
-	 g/gSOo+uS8/Kjaq6NPODBniaf1zhwybWzCOkTSuoQWoIW+5eJkN54C3TELXaVcJ793VV+
-	 WxJhGjqM5PzqmzsceRzIlCKHQ9QkeO4HV0RyVSB2P0K7KQMmhfJOpAM07BFGiMaZPeQ==
+	t=1794281115;
+	b=MV+Np84ncOVPknPdBGd8a8mdTbcucPnR3yFYfU3fncNti7I4pYszeXdZCF+qiM3BFsaM
+	 8t5/DSl/gByzR2jyxzheQLwhcX5ugEoAkwa9oEwIWEovgrCDqxCny9xoljaDFDRzlo2li
+	 PJD/CiPjRiVWjSG1sibWPQn4Pr9KvGPHUP40/6H8t8aSGJjQzKPYz9VoLLEvtcO0i6QyX
+	 Y8MfvdnmjiZeJpz3m6BZL2hWWuwCb5t805hhl9jMz7u6DUPdHFHUj7pS+pBJ1YjKnhJG9
+	 xGrftC5osMSZIAVU9/P0UOt6/C3Y8ib81laqBW+gUG4k6lzGnH2cUylPZYFtdv3Y6ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794281107;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794281115;
 	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
 	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
 	 Content-Type;
-	bh=LHfrTOMBua6GXQUw0lFn7woJp3q39K7l7mtv+0KaE8A=;
-	b=r3Icned1GZw4mFT2N7PN6cFQWd9HT/GDyYbyT4/4AJ3o8RnUi7fVy9qcSWrMOyejhga5
-	 JeHgAcauvsUdlH61x55D4IbjSLVcipijP+NuwdvJI+Do8/OS81Lqu1ExqnAE3zzVpEfDo
-	 AmA5NBn2f7/7zlOD1lUtuRaKqXyLtvmIGxfNno8ZYNwZVBGsK1LvX24PLdCXikqnekgK7
-	 H5tEOmha/R60rw0uWPFlq+3yKJGDY8K/Wq/wZh07XadH/sVeBwNuf6dfMrSYA5aHYfJwM
-	 EtRglMVwTYPzdyEPIqdwSOG0MpLfrjecE5+GNcsiYieKYhuISA1xewNBAocAWzstryA==
+	bh=KxNz16v6fBPYQdauV++0n3a4d4VPr01b+nPZgJaXAVY=;
+	b=P02v0WI+BVgZXv56LkAHSlRK9i0aPX1eGvIPSOPp/fKGkDITj5GaCTh1dlURQXWB3BK1
+	 PsWO1Z40pCwdOC9OVVseGRuXubniPANIoeGdLSE+o/IEtoxpiRB4A4qBMJQa/H1dmisQG
+	 Mp8fP6DrvmHMyCsnWVINupP4w4TGAfIcMDk8Ul0lI6U5PhHV9komMsfHNhfcFF3ZtkHJ5
+	 yxyAP1rsAObbHKcrbCFsoaq7zQlsFmItlAJQPMbvs7ZHOI9V4lf8vv8qiSDGpRY5IxeC/
+	 qt5CecabbMRDiIJNpb13csaM3/w0IWRL9C4P2fFVeppkTon/jOKVoL7DsM93FMvMsEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=realtek.com;
 	spf=pass smtp.mailfrom=realtek.com;
-	dkim=pass header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=qAelGHH3;
+	dkim=pass header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=Bbznc4Gz;
 	arc=none smtp.remote-ip=211.75.126.72
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC4F606A326;
-	Tue, 10 Nov 2026 03:25:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AC4F606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281B360A6F56;
+	Tue, 10 Nov 2026 03:25:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 281B360A6F56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=qAelGHH3
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6AA3ONO00884407, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=Bbznc4Gz
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6AA3OOQy8884638, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1794281063; bh=LHfrTOMBua6GXQUw0lFn7woJp3q39K7l7mtv+0KaE8A=;
+	t=1794281064; bh=KxNz16v6fBPYQdauV++0n3a4d4VPr01b+nPZgJaXAVY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=qAelGHH3h3gAyjI6bzAKDhKAvPY5fZlDeTq14R1bDseH5X8VC9FI9OeUpSyWEfX0O
-	 5TPKjuwvAm8wpCeQ54HKQD+8hU/ieSHsWOnwfPsXORxrFSOEeZ3vjNTh85acD0bp7/
-	 lmukf/kxeX4OtyJs5Gb2nEbokH2ZDap02uN2cmbnJtZCbgZKXvCKi/iDjQpT3/YqMP
-	 H04DIRU2YlfX75fyFo5oO4qdX5TZiVvUiYtvCgM9271UuQeHsFlXrQBGbCXDtMqjGP
-	 nIZ0kKSppTBW7bMOPcAcAQHOBPf06OTUmAr6otCYUQ5jTYxWz37b6pj9kW9uj4102I
-	 b/RSKJfBPzSdA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6AA3ONO00884407
+	b=Bbznc4GzQ34cuOVuZumlq2pg2fGP8bR7EHObv0vfY7F2Rzu+sdHibVly5XBWv3csW
+	 BN79IKdMIvq980zyjXbfEKs+9tE7bpX2OuISG6QEygUIBcLuTwF8p4dn0yVTrLrl1G
+	 Ldlr98qs1pUGPMe1YXX/0LvXV9ObaPVAbiIbw+JSHMjbF0cNStN72+ZAjtGjCcG0pt
+	 tMHujEvqqxZmbAxDOLc553vCvXE+lS1lxjA4cPk2S2QqIcKSolDjyrZSZ8ITu87TLP
+	 aczCjwG9lhc+Ast+lkcTy99F3a3W6v+LEih500/XYAccR+Fv1G1R++WkeJeJr4krFn
+	 31bebkFCXZlhQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6AA3OOQy8884638
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 10 Nov 2026 11:24:23 +0800
+	Tue, 10 Nov 2026 11:24:24 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 11:24:22 +0800
+ 15.2.2562.56; Tue, 10 Nov 2026 11:24:25 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 11:24:19 +0800
+ 15.2.2562.56; Tue, 10 Nov 2026 11:24:21 +0800
 Received: from fc44.realtek.com.tw (172.22.241.7) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server id
- 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 11:24:19 +0800
+ 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 11:24:21 +0800
 From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>
 CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
 	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
 	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
 	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>, <mail@birger-koblitz.de>
-Subject: [PATCH net-next v8 03/11] r8152: add rtl8157_change_mtu() for RTL8157 and RTL8159
-Date: Tue, 10 Nov 2026 11:24:08 +0800
-Message-ID: <20261110032416.16968-4-nic_swsd@realtek.com>
+Subject: [PATCH net-next v8 11/11] r8152: enable UPS for RTL8157 and RTL8159 QFN68
+Date: Tue, 10 Nov 2026 11:24:16 +0800
+Message-ID: <20261110032416.16968-12-nic_swsd@realtek.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261110032416.16968-1-nic_swsd@realtek.com>
 References: <20261110032416.16968-1-nic_swsd@realtek.com>
@@ -84,82 +84,231 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-RTL8157 and RTL8159 used rtl8156_change_mtu(), which programs a fixed
-MTPS_JUMBO. Per the datasheet they need an MTPS scaled from the
-configured MTU instead: max_pkt_size / 64, at least 10K and capped
-at 0xff.
+RTL8157 and RTL8159 QFN68 support UPS, but rtl8157_runtime_enable()
+never toggled it on runtime suspend/resume, and r8156_ups_flags()
+used the older per-chip EEE/lite_mode encoding instead of the
+per-speed EEE flags their UPS firmware expects. RTL8159 QFN100 does
+not support UPS.
 
-Add rtl8157_change_mtu() for them. Since rtl8156_up() is shared with
-these chips, have it call tp->rtl_ops.change_mtu() instead of
-rtl8156_change_mtu() directly so each chip gets its own helper.
+Add r8157_ups_en(), mirroring r8156_ups_en(), and call it from
+rtl8157_runtime_enable() for VER_16/QFN68 only; QFN100 keeps its
+existing no-UPS behaviour there. Use r8157_ups_en(tp, false) in
+r8157_init() in place of r8156_ups_en(tp, false).
 
-Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
-Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
+Extend r8156_ups_flags() with per-speed EEE flags
+(UPS_FLAGS_EN_100M_EEE/1000M_EEE/2500M_EEE/5000M_EEE/10G_EEE) and
+skip the lite_mode bits[6:5] encoding for VER_16/QFN68. Add
+ups_flags_speed() entries 10 and 11 for NWAY_5000M_FULL and
+NWAY_10000M_FULL, previously unmapped.
+
+Add the USB_FW_USB_VER register (0xcfd7), used by the new
+r8157_ups_en() disable path.
+
+If the backup-restore wait in r8157_ups_en() times out, it marks the
+device inaccessible and logs, without queuing a reset, as
+r8157_init() does for the same wait. During runtime resume the
+interface then stays unusable until a replug or an unrelated reset,
+since r8157_ups_en() returns void and the error is not passed back.
+Recovery for these timeouts is left to a follow-up series.
+
 Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 ---
- drivers/net/usb/r8152.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ drivers/net/usb/r8152.c | 131 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 120 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index bb4106f238a3a..1517753f843ef 100644
+index 703ec5483778b..9c7031f938bc2 100644
 --- a/drivers/net/usb/r8152.c
 +++ b/drivers/net/usb/r8152.c
-@@ -6800,6 +6800,28 @@ static void rtl8156_change_mtu(struct r8152 *tp)
- 		       ALIGN(rx_max_size + tp->tx_desc.size, 1024) / 16);
+@@ -132,6 +132,7 @@
+ #define USB_BURST_SIZE		0xcfc0
+ #define USB_FW_FIX_EN0		0xcfca
+ #define USB_FW_FIX_EN1		0xcfcc
++#define USB_FW_USB_VER          0xcfd7
+ #define USB_LPM_CONFIG		0xcfd8
+ #define USB_ECM_OPTION		0xcfee
+ #define USB_CSTMR		0xcfef	/* RTL8153A */
+@@ -619,6 +620,11 @@
+ #define UPS_FLAGS_250M_CKDIV		BIT(2)
+ #define UPS_FLAGS_EN_ALDPS		BIT(3)
+ #define UPS_FLAGS_CTAP_SHORT_DIS	BIT(4)
++#define UPS_FLAGS_EN_100M_EEE		BIT(9)
++#define UPS_FLAGS_EN_1000M_EEE		BIT(10)
++#define UPS_FLAGS_EN_2500M_EEE		BIT(11)
++#define UPS_FLAGS_EN_5000M_EEE		BIT(12)
++#define UPS_FLAGS_EN_10G_EEE		BIT(13)
+ #define UPS_FLAGS_SPEED_MASK		(0xf << 16)
+ #define ups_flags_speed(x)		((x) << 16)
+ #define UPS_FLAGS_EN_EEE		BIT(20)
+@@ -4256,8 +4262,27 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	if (tp->ups_info.aldps)
+ 		ups_flags |= UPS_FLAGS_EN_ALDPS;
+ 
+-	if (tp->ups_info.eee)
+-		ups_flags |= UPS_FLAGS_EN_EEE;
++	if (tp->ups_info.eee) {
++		switch (tp->version) {
++		case RTL_VER_17_QFN68:
++			if (tp->eee_adv & MDIO_EEE_10GT)
++				ups_flags |= UPS_FLAGS_EN_10G_EEE;
++			fallthrough;
++		case RTL_VER_16:
++			if (tp->eee_adv & MDIO_EEE_100TX)
++				ups_flags |= UPS_FLAGS_EN_100M_EEE;
++			if (tp->eee_adv & MDIO_EEE_1000T)
++				ups_flags |= UPS_FLAGS_EN_1000M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_2_5GT)
++				ups_flags |= UPS_FLAGS_EN_2500M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_5GT)
++				ups_flags |= UPS_FLAGS_EN_5000M_EEE;
++			break;
++		default:
++			ups_flags |= UPS_FLAGS_EN_EEE;
++			break;
++		}
++	}
+ 
+ 	if (tp->ups_info.flow_control)
+ 		ups_flags |= UPS_FLAGS_EN_FLOW_CTR;
+@@ -4308,20 +4333,33 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	case NWAY_2500M_FULL:
+ 		ups_flags |= ups_flags_speed(9);
+ 		break;
++	case NWAY_5000M_FULL:
++		ups_flags |= ups_flags_speed(10);
++		break;
++	case NWAY_10000M_FULL:
++		ups_flags |= ups_flags_speed(11);
++		break;
+ 	default:
+ 		break;
+ 	}
+ 
+-	switch (tp->ups_info.lite_mode) {
+-	case 1:
+-		ups_flags |= 0 << 5;
+-		break;
+-	case 2:
+-		ups_flags |= 2 << 5;
++	switch (tp->version) {
++	case RTL_VER_16:
++	case RTL_VER_17_QFN68:
+ 		break;
+-	case 0:
+ 	default:
+-		ups_flags |= 1 << 5;
++		switch (tp->ups_info.lite_mode) {
++		case 1:
++			ups_flags |= 0 << 5;
++			break;
++		case 2:
++			ups_flags |= 2 << 5;
++			break;
++		case 0:
++		default:
++			ups_flags |= 1 << 5;
++			break;
++		}
+ 		break;
+ 	}
+ 
+@@ -4496,6 +4534,58 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 	}
  }
  
-+static void rtl8157_change_mtu(struct r8152 *tp)
++static void r8157_ups_en(struct r8152 *tp, bool enable)
 +{
-+	u32 max_pkt_size = mtu_to_size(tp->netdev->mtu);
 +	u32 ocp_data;
++	int ret;
 +
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, max_pkt_size);
++	if (enable) {
++		r8156_ups_flags(tp);
 +
-+	/* Use at least 10K for MTPS */
-+	ocp_data = max_t(u32, max_pkt_size, 10 * 1024) / 64;
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE | PHASE2_EN);
 +
-+	/* 16 * 1024 / 64 = 0x100, so the max is 0xff for 8 bits data */
-+	ocp_data = min_t(u32, ocp_data, 0xff);
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
++	} else {
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE);
 +
-+	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, ocp_data);
-+	r8156_fc_parameter(tp);
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
 +
-+	/* TX share fifo free credit full threshold */
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_TXFIFO_CTRL, 512 / 64);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_TXFIFO_FULL,
-+		       ALIGN(max_pkt_size + tp->tx_desc.size, 1024) / 16);
++		ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
++		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++			return;
++
++		if (ocp_data & PCUT_STATUS) {
++			ret = read_poll_timeout(ocp_read_word, ocp_data,
++						test_bit(RTL8152_INACCESSIBLE,
++							 &tp->flags) ||
++						(ocp_data & BACKUP_RESTRORE),
++						200, 20000, false, tp,
++						MCU_TYPE_USB, USB_GPHY_CTRL);
++			if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++				return;
++
++			if (ret) {
++				rtl_set_inaccessible(tp);
++				dev_err(&tp->intf->dev,
++					"backup-restore timed out\n");
++				return;
++			}
++
++			/* clear USB fw_ver_reg */
++			ocp_write_byte(tp, MCU_TYPE_USB, USB_FW_USB_VER, 0);
++
++			tp->rtl_ops.hw_phy_cfg(tp);
++
++			rtl8152_set_speed(tp, tp->autoneg, tp->speed,
++					  tp->duplex, tp->advertising);
++		}
++	}
 +}
 +
- static void rtl8156_up(struct r8152 *tp)
+ static void r8153_power_cut_en(struct r8152 *tp, bool enable)
  {
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-@@ -6826,7 +6848,7 @@ static void rtl8156_up(struct r8152 *tp)
+ 	if (enable)
+@@ -4654,9 +4744,28 @@ static void rtl8157_runtime_enable(struct r8152 *tp, bool enable)
+ 		r8153b_u1u2en(tp, false);
+ 		r8157_u2p3en(tp, false);
+ 		rtl_runtime_suspend_enable(tp, true);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, true);
++			break;
++		default:
++			break;
++		}
+ 	} else {
+ 		r8153_queue_wake(tp, false);
+ 		rtl_runtime_suspend_enable(tp, false);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, false);
++			break;
++		default:
++			break;
++		}
++
+ 		r8157_u2p3en(tp, true);
+ 		if (tp->udev->speed >= USB_SPEED_SUPER)
+ 			r8153b_u1u2en(tp, true);
+@@ -9120,7 +9229,7 @@ static void r8157_init(struct r8152 *tp)
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
  
- 	rtl_rx_vlan_en(tp, tp->netdev->features & NETIF_F_HW_VLAN_CTAG_RX);
+ 	r8157_power_cut_en(tp, false);
+-	r8156_ups_en(tp, false);
++	r8157_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
  
--	rtl8156_change_mtu(tp);
-+	tp->rtl_ops.change_mtu(tp);
- 
- 	switch (tp->version) {
- 	case RTL_TEST_01:
-@@ -9900,7 +9922,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 		ops->in_nway		= rtl8153_in_nway;
- 		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
- 		ops->autosuspend_en	= rtl8157_runtime_enable;
--		ops->change_mtu		= rtl8156_change_mtu;
-+		ops->change_mtu		= rtl8157_change_mtu;
- 		tp->rx_buf_sz		= 32 * 1024;
- 		tp->support_2500full	= 1;
- 		tp->support_5000full	= 1;
-@@ -9922,7 +9944,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 		ops->in_nway		= rtl8153_in_nway;
- 		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
- 		ops->autosuspend_en	= rtl8157_runtime_enable;
--		ops->change_mtu		= rtl8156_change_mtu;
-+		ops->change_mtu		= rtl8157_change_mtu;
- 		tp->rx_buf_sz		= 48 * 1024;
- 		tp->support_2500full	= 1;
- 		tp->support_5000full	= 1;
 -- 
 2.34.1
 
