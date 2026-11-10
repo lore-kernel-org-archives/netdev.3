@@ -1,70 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.245.243.92
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794336165;
-	b=ZZj7k1XhE0+ouIAJO5Y3AAE8OZznFR8hjOhzacVLiKeMlF1hObiQfvcimeRgQTIscTBG
-	 DpEACyZ0r0oSJOO8HjnVsF4Gxv78fqO6RSVsTUN7vseB8XCXMA8LU0v+OW6Y4IKLAzR67
-	 5rSufVEQ+RCuyi5U2aCRPCHnmV1wmCD24H+lrW99r4zaXb38ujjy3cQUBRbylPFoUz2A7
-	 j2A+8dkR25j0OuCWaCjdhSjCUFeRaE+ejw5urF0ZxqloFeSleDkvtC3TLuZKz9mXZnsFF
-	 GtZBD6m3goXH/+tpWMmzKlBdToOTSBjvViaYCNro0ylfS+rBRFM6Sc3NPfSi3mqPugw==
+	t=1794336387;
+	b=FbAeDZvSMHRigUwcv99CwmV8MAwPcjAdNuBtLCvo0l47eskzN+Fe+caeHb2jRyLBx6hV
+	 8mffTr5xFuL5l2m+DBOchPk2Jlae0sieyyU9jgb0mQZUOKiCLXKC9xPSMSgJb4zpV7ou/
+	 h2dpYf/V3XIA9BL/cRzcoI55jqqCKp/szCOo7ZVnVcbPYWN4pbJ1Ye+adT+AMfIf4YwoG
+	 NPpkv3y2ZuQ0hFioamaZlgUCbPHCosOg5ShdUCjWvqZsbd4UOcd+z3BUs2bCP85ROjk3b
+	 y7ZjjRSQFwyjNpWH60j/fyBM7H0bN2UiV/RDKbqdCl6Xb7MDmmYhF+OiXsc+zrdazVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794336165;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
-	 CC:In-Reply-To:References:Date:Message-ID:X-Mailer:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=RNCN5fuEZC8EX4CP/oT0x0PyhNw1msLPDBkN5IfGv0w=;
-	b=KNrmCfWGtJ2jHsLMBYD72T2q0z46n0dahVCe0ibyncaNAGaN+YCdEVDtq2/TF4Q1Z3Vr
-	 Kzc9j001QYiOTWW7bszuLFwGTUdVWcHpM5YJIgW1KhO0LpvTZiNABVY2fGdMyOldF9YLx
-	 5KuS6KBVG5mi+ZvoKx++djHl3gHEFEo5cjFksTcJHNlkAWK8oGOWricLSnlHTEC5aMaHR
-	 tHKvakqNb7VhWRXEvaUOfdyiu7wDLZpeOGAvGe9+LyyunHTI9JYqZsIwgcl3hqGpvqDDB
-	 QKUQUOsAFIhNYk+zHcbeAQ+bh1wsqbPC9So2yE0ljz47QUVqHQ26INPqjzzPbftaAwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794336387;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=oyI17NyOJM0kt1UrI0kaEX09J0O+FpQi8tnW/h78oqA=;
+	b=gFBR1lZstcJAG5Q6dqNEtFEIPubyfGugp6+AL+wleL9OhpphHV2C8u99Z5TUZmF6Dsgr
+	 yptncNlPX16Ph5XMokkK5OFmYHoOcpuc0460ukD8a2LimNlw9zy6stExCUi68F03DMZGW
+	 4y9QUpODY3VMCX8d3cILepmgk1UBO4ehfeM7BulnbvhylIUbCPTLn+4DhM5XVp+S9aMlk
+	 uena/fC3iP/N4OH9Azv4xpg2Kh5ljQUo284E2REvXCNh68wHL3RsYldP/Tmk2HfDMBPAg
+	 sGm60UwH2HvBzQvbLldws6WbL8uDo36jWtyGv0Pg6hA7BdLSqnr6GhUxJmlOWZ8lmPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amazon.com;
-	spf=pass smtp.mailfrom=amazon.com;
-	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=trmuTPwI;
-	arc=none smtp.remote-ip=44.245.243.92
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baIC7iy4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A86606B58F
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:42:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32A86606B58F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E99606A32A
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=trmuTPwI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794336165; x=1825872165;
-  h=mime-version:content-transfer-encoding:subject:from:to:
-   cc:in-reply-to:references:date:message-id;
-  bh=RNCN5fuEZC8EX4CP/oT0x0PyhNw1msLPDBkN5IfGv0w=;
-  b=trmuTPwIGLFaHbp5hdtlEmdv64jeiSUrcedwhxQlvJ8M2i9PXOxuxPQ6
-   KUPn7CDmujfYAtTKqBBhvygsEzrXpfxshifo5n5LaQCCl1iuNXYlWsJQe
-   Q2Y0AavtU/ribt7t/qFUYo4UnfFTEyabcCmb3zdlYtsqaMr4lykTPvbSk
-   a+XCuXkzQgTX0phVDgvmR/7P6oIvcEssNv3EaETz1SoNZHYj/wHck2ah/
-   +NVAbqvtkyTSVIAWPy2jUAy09X/GKAm9+saXq6vPZ8qUouEXSnS+LyL7n
-   INZIxnqHWBks6v/kCkcwK+ZXMK0yDoDKNjev+gPV57yDA2/FhICNyfOf7
-   g==;
-X-CSE-ConnectionGUID: GP394pLQSIWkZ/f9BBiKZg==
-X-CSE-MsgGUID: usXPLy52Qk6rNEOUQx6+yA==
-X-IronPort-AV: E=Sophos;i="6.27,206,1787011200"; 
-   d="scan'208";a="33154865"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 18:42:42 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:13983]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
- id c058846e-4201-4e3f-a525-390f069ee567; Tue, 10 Nov 2026 18:42:42 +0000 (UTC)
-X-Farcaster-Flow-ID: c058846e-4201-4e3f-a525-390f069ee567
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Tue, 10 Nov 2026 18:42:42 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Tue, 10 Nov 2026 18:42:40 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baIC7iy4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEAE1F0089F;
+	Tue, 10 Nov 2026 18:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794336386;
+	bh=oyI17NyOJM0kt1UrI0kaEX09J0O+FpQi8tnW/h78oqA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=baIC7iy4wwywttcDxGBgNQ5REey7p8iFkRhnAN+dmwLq8FSpOYs1Yqg6Pfc8FamGq
+	 eFyMamXvqcyGCEFIKtqSmJUE4vE3z3u3tDqHPU616dxDNhgw/MsuNkvrrzYzQI10dd
+	 2LEOnZ+V0ZilWZ+rau4eryXuivZIiXe/KO+8z8PDHW0ruvQ1xvsmB63qwLrI9i3MyT
+	 nRUXSGJXC2udzQY3VKIbOUQXnAZKp9VVurfWqi2ZrAEjGjy5RaF6Rb7b566rX9W2Jd
+	 5wANSbKnYd5mcTfXsIZ7Q57WtMzu6ky10e28EawERvPDwY5LdnEcMCZ0wqbwwSdt/p
+	 b7oYlHsPXvPOQ==
+Message-ID: <8362f907-4e8e-4514-bff6-f0bf8fd22f57@kernel.org>
+Date: Tue, 10 Nov 2026 19:46:19 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,65 +51,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v1 net 1/3] tcp: Clear DEFER_CONNECT before tcp_connect()
+ and in tcp_abort().
+Content-Language: fr
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Yuchung Cheng <ycheng@google.com>,
+ Wei Wang <weiwan@google.com>, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Simon Horman <horms@kernel.org>,
+ Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+References: <20261107235720.3129212-1-kuniyu@google.com>
+ <20261107235720.3129212-2-kuniyu@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20261107235720.3129212-2-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] net: ena: set admin device pointer before
- queue allocations
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: Avi Weiss <thnkslprpt@gmail.com>
-CC: <netdev@vger.kernel.org>, <akiyano@amazon.com>, <darinzon@amazon.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-In-Reply-To: <20261109071126.87125-2-thnkslprpt@gmail.com>
-References: <20261109071126.87125-2-thnkslprpt@gmail.com>
-Date: Tue, 10 Nov 2026 18:42:32 +0000
-Message-ID: <179433615241.3327.1653126166147440177.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Mon, 09 Nov 2026 09:11:27 +0200, Avi Weiss <thnkslprpt@gmail.com> wrote:
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-> index 297fb36ab8c1..23b3ef50b8b6 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_com.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-> @@ -2045,7 +2047,6 @@ int ena_com_admin_init(struct ena_com_dev *ena_dev,
->  	if (ret)
->  		goto error;
->  
-> -	admin_queue->ena_dev = ena_dev;
->  	admin_queue->running_state = true;
->  
->  	return 0;
+Hi Kuniyuki,
 
-1. This is a bug fix, so it should go to net and not net-next.
+On 08/11/2026 00:56, Kuniyuki Iwashima wrote:
+> When TFO is enabled, tcp_v[46]_connect() sets sk->sk_state to
+> TCP_SYN_SENT and puts the socket into ehash without calling
+> tcp_connect().
+> 
+> Then, tcp_fastopen_defer_connect() sets DEFER_CONNECT, and
+> the first write()/sendmsg() will call tcp_connect() and send
+> SYN with data if possible.
+> 
+> If tcp_abort() kills a socket before the first write()/sendmsg(),
+> the unhashed socket can still call it and send SYN in TCP_CLOSE.
+> 
+> Also, DEFER_CONNECT is cleared after __inet_stream_connect().
+> 
+> So, blocking write()/sendmsg() can release lock_sock() in
+> inet_wait_for_connect() while DEFER_CONNECT is set, and
+> tcp_poll() could set EPOLLOUT even after SYN is sent.
+> 
+> Let's clear DEFER_CONNECT in tcp_abort() and right before
+> tcp_connect() in tcp_sendmsg_fastopen().
 
-2. Like your other patches, this one has already been applied to the
-amzn-drivers repository:
+Thank you for the fix!
 
-https://github.com/amzn/amzn-drivers/commit/7d1dc4341d4f8376c7affdc2a97c7e012118beaa
+It looks like we can still have the race with MPTCP:
 
-Therefore please do the following:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107235720.3129212-1-kuniyu%40google.com
 
-2.1. Add a From: tag to give credit to Wajeeh Atrash, who wrote this fix:
+But that's not blocking this series here, so for the MPTCP part:
 
-From: Wajeeh Atrash <atrwajee@amazon.com>
-
-2.2. Wajeeh has agreed, please also add:
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
-It should be added before your Signed-off-by:
+Just to avoid a deadlock, are you planning to fix the issue on MPTCP
+side as well? If not, I can look at that later on when I can.
 
-2.3. Move "admin_queue->ena_dev = ena_dev;" to the same place as in the
-github commit, which is directly above the q_dmadev assignment:
+(Perhaps by checking if the msk and ssk's DEFER_CONNECT flag is no
+longer aligned in mptcp_sendmsg_fastopen(), under the ssk lock? If not,
+clear the msk one, report the error, release the lock and return? BTW,
+it looks like we also forgot to clear the DEFER_CONNECT flag in
+mptcp_disconnect() as well...)
 
-        admin_queue->ena_dev = ena_dev;
-        admin_queue->q_dmadev = ena_dev->dmadev;
-
-I don't see a clear advantage to the location in your patch, so I would
-rather have both drivers aligned.
-
-Signed-off-by: Wajeeh Atrash <atrwajee@amazon.com>
-
+Cheers,
+Matt
 -- 
-Arthur Kiyanovski <akiyano@amazon.com>
+Sponsored by the NGI0 Core fund.
+
