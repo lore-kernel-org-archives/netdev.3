@@ -1,62 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292397;
-	b=QvlmPuzisIGWnvUcC6Myb2ul29Cm0QiM5dJIewBdPNhEBHmIR/nQV+zbLqkvQsUXwWy/
-	 fkipPUqnTf0Q1Aq8hp7FNAqVSlafkwP8vvoaAOD05AyAMaw2+G4yBL63LElurGvANrbxS
-	 ZFOOs77opIHqtUk9UWBZF6UUxuGutyMg4JIVwY8WnXqMjKoyM0lZdFV8KdD9zVt0vesyp
-	 l39Oh9Bq+OdfvRpbEA/oD0yzI0qcY0nO82n/BHoN/V/z1nms+ji1LB2XaDDoVVX6W3ioz
-	 5E+4jSRQ4sKSBlNLJQYxy+KiDnmuxvDsiCxxEToDi2qp0Pfe/wUtliVxrbX1R4Y8UeQ==
+	t=1794292581;
+	b=zyWoD66mItugmCjn52rtoRqCpEb7GgLO+jJeewX2RP/SHsBnQUcTAiPmXXfIvaf68AUF
+	 KD7mSbP7hepdBOftp6dZpgMsdBm318y2BDH9rpg3GRpd50Rv+zzakpSTAu8z/ewIQ6Rfb
+	 xtBtK7qbXQL7wceUJtBICIfvm/tGcMK8L4JcHToq9BIYwiXpbnpCoTppTwi4a0Xg4hYX6
+	 Fh4M2x4l7ywj90jsS6SP/tuWKTUNck6O8BnzHy9txyInLqFZInB77btSw4p66oLN4lVWd
+	 xSMKviLBddpa2ORb9gdKsVaegNjROBFOVUyuGaYi1sgKcI45kPLMRac9FWVlBowxBWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292397;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=i+lmjC4vZ/ZbsebCUsOQFcxcG1XDCYVhjquJWR5ibM4=;
-	b=Em3LTa88vIJ/TzICBTdb9PHzEpv1KtlFh1EHzF4wBcsnriwbk6jZEffVe9/lQyHds6gU
-	 PsybcENkvoUqlXOHSnFR/jrqgm8Wy8vqNbKNQ6U6v3TySHxqyMeJPs89WYyRL4zfOaeQh
-	 1uQK0yUyC8raA+rxOZqhn1l8uv+33aBmQl0uKriuD2FXV7bgeihrjut7sKxQ8WfXIlx9O
-	 BfLGe06xXozMvyQRuf5q7t4LFJG9GxU/bWGuV86rmW+A569Go2Gxttf4mGbNJiiGKAKHM
-	 /BZVcgwGUtYbcHqGxW97qhswJFBWes8aUM4ikHrxsJ0Pr9DBRQ5pgk7uOuF4N8ifgPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292581;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=IwZOJTDMawQ4UNnA78gZHvTpYkIrlTeCJJMbG+5ZzWY=;
+	b=U/5hUhYCYlSxFHIHVdlunKUEzvT7FDf/kkz4LCC8rOZ4VlQiTbe/TfHI1eJ/KE1ri5HV
+	 mbssJHiTT8pV63k5ct+Q4haU7bF0TVvNcjWFUl/leLM8e8/qVBJYSwOputri03+l5mEJ2
+	 ZfVCs2iHKbpANwTjgbhnS/gZENjK6T2aqCAv1VA5VrW/PIRdOLn1yFSio6RIuGE1Bp7s6
+	 JL2vDlCsYzv/R4XxQdAn1xArKHs5ozc187cc+w/vmqP7lcl4gIgMR1dGemRZAddczu6DS
+	 ExAEC1hWPGsOaoSjzgLi6z4O1u4szn7a31f/x3NwC/N+nnKYi1/+Wb4/nwdyjOddSfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BRcRC40f;
-	arc=none smtp.remote-ip=95.215.58.98
-Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ii8G05K+;
+	arc=none smtp.remote-ip=115.124.30.98
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49F5606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 06:33:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A49F5606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B76606A326;
+	Tue, 10 Nov 2026 06:36:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33B76606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BRcRC40f
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9yp3BYFOdlf8QDUU5iOP1ir0Cm0wnydHnLiwt8bTGpA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794292393; v=1; x=1794897193;
- b=BRcRC40fyAwJkedk6w0E446g3WDdGmTR6gxzNAcQ+IWudIWxJWTvrjzmuGvixNIsvfRmzwS0
- 8iqP+b51EbW1NmrWsSYqClm+za6NSQXh0TCBJsBFOrXONdjRPvJPJmpT0BiZMRSabRffQ54fUIK
- UIqN5gTYn4noI5WG4uWgv7S4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id ed16973ca3104501;
-	Tue, 10 Nov 2026 06:33:13 +0000
-X-Mizu-Trace-ID: ed16973ca3104501
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 10 Nov 2026 14:33:02 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jingjing Xu <xujingjing@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, willemb@google.com, kuba@kernel.org,
-	shuah@kernel.org, linux-kselftest@vger.kernel.org,
-	davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
-	horms@kernel.org
-Subject: Re: [PATCH net] selftests: net: cmsg_sender: retain the resolved
- address family
-Message-ID: <avK6ngiakOhpKYbg@fedora>
-References: <20261110033918.49238-1-xujingjing@cmss.chinamobile.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ii8G05K+
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794292575; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=IwZOJTDMawQ4UNnA78gZHvTpYkIrlTeCJJMbG+5ZzWY=;
+	b=ii8G05K+IsAD3FmxhhLMbpYIsLJkyiliSZhUQnCskY+NahyXG8GPuLP4qClgu+vS4GLTgfKWOyTU83NVPVTLnXKpHjVpziN+8zALZaSGoWGQObxhyBqNFIX66jbaMmp9b+xT/7VVr5kaKiPsY3MhpPP/75Wc4iD5I+wS3qyEu5o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XEUO5Jc_1794292574;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XEUO5Jc_1794292574 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Nov 2026 14:36:14 +0800
+Date: Tue, 10 Nov 2026 14:36:14 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: stable@vger.kernel.org
+Cc: Breno Leitao <leitao@debian.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] net: free_netdev: exit earlier if dummy
+Message-ID: <avK7XqLvdaeWlp8o@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20261107161415.1917665-1-dust.li@linux.alibaba.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,47 +67,77 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110033918.49238-1-xujingjing@cmss.chinamobile.com>
+In-Reply-To: <20261107161415.1917665-1-dust.li@linux.alibaba.com>
 
-On Tue, Nov 10, 2026 at 03:39:18AM +0000, Jingjing Xu wrote:
-> When neither -4 nor -6 is supplied, getaddrinfo() selects the socket
-> family but opt.sock.family remains AF_UNSPEC. The cmsg and socket option
-> helpers then take the IPv6 branch even for an IPv4 socket.
-> 
-> For example, an IPv4 loopback packet sent with -l 11 arrived with the
-> default TTL of 64 on the test host. Using -L 11 instead failed with
-> ENOPROTOOPT because the tool tried IPV6_UNICAST_HOPS on an IPv4 socket.
-> Explicit -4 works in both cases.
-> 
-> Record the selected ai_family after successful address resolution so the
-> helpers use the same family as the socket.
-> 
-> Discovered by Codex-assisted code inspection and tested with real
-> loopback UDP traffic, without kernel instrumentation. Covered IPv4 and
-> IPv6, automatic and explicit family selection, and cmsg and setsockopt
-> hop limits. All eight cases receive the requested value after the fix.
-> Built through the net selftest Makefile and with GCC -Wall -Werror.
-> 
-> Fixes: 2e5584e0f913 ("selftests/net: expand cmsg_ipv6.sh with ipv4")
-> Signed-off-by: Jingjing Xu <xujingjing@cmss.chinamobile.com>
-> ---
->  tools/testing/selftests/net/cmsg_sender.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
-> index 67a72b1a2f3d..01617a021338 100644
-> --- a/tools/testing/selftests/net/cmsg_sender.c
-> +++ b/tools/testing/selftests/net/cmsg_sender.c
-> @@ -495,6 +495,7 @@ int main(int argc, char *argv[])
->  		goto err_free_buff;
->  	}
->  
-> +	opt.sock.family = ai->ai_family;
->  	if (ai->ai_family == AF_INET6 && opt.sock.proto == IPPROTO_ICMP)
->  		opt.sock.proto = IPPROTO_ICMPV6;
->  
-> base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
-> -- 
-> 2.53.0
+On 2026-11-08 00:14:15, Dust Li wrote:
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Hi Greg, Sasha
+
+Can you pick up this patch for 6.6 ?
+
+This is a prerequisite that was missed when 6.6.y picked up the
+dummy-net_device conversion of the mediatek driver.
+
+6.6.158 took b209bd6d0bff ("net: mediatek: mtk_eth_sock: allocate dummy
+net_device dynamically") as d5d57501f543, followed by 16f3a28cf5f8
+(as 81e82340170ae) and "allocate dummy netdev sooner" (efc91ab1d97bd).
+
+alloc_netdev_dummy() -> init_dummy_netdev_core() sets
+dev->reg_state = NETREG_DUMMY, but 6.6.y free_netdev() only special
+cases NETREG_UNREGISTERING and NETREG_UNINITIALIZED.  So every
+free_netdev(eth->dummy_dev) -- mtk_remove() at
+drivers/net/ethernet/mediatek/mtk_eth_soc.c and the probe error
+path -- walks into
+
+    BUG_ON(dev->reg_state != NETREG_UNREGISTERED);
+
+Upstream f8d05679fb3f and b209bd6d0bff both landed in v6.10-rc1, so
+mainline was never broken.
+
+5.10.y / 5.15.y / 6.1.y - alloc_netdev_dummy() does not exist and no
+                          driver creates a dynamically allocated
+                          dummy net_device
+
+So only 6.6.y need this.
+
+Best regards,
+Dust
+
+
+>From: Breno Leitao <leitao@debian.org>
+>
+>For dummy devices, exit earlier at free_netdev() instead of executing
+>the whole function. This is necessary, because dummy devices are
+>special, and shouldn't have the second part of the function executed.
+>
+>Otherwise reg_state, which is NETREG_DUMMY, will be overwritten and
+>there will be no way to identify that this is a dummy device. Also, this
+>device do not need the final put_device(), since dummy devices are not
+>registered (through register_netdevice()), where the device reference is
+>increased (at netdev_register_kobject()/device_add()).
+>
+>Suggested-by: Jakub Kicinski <kuba@kernel.org>
+>Signed-off-by: Breno Leitao <leitao@debian.org>
+>Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+>Signed-off-by: David S. Miller <davem@davemloft.net>
+>Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
+>---
+> net/core/dev.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/core/dev.c b/net/core/dev.c
+>index f9436563a2e84..0d88d285c713f 100644
+>--- a/net/core/dev.c
+>+++ b/net/core/dev.c
+>@@ -11093,7 +11093,8 @@ void free_netdev(struct net_device *dev)
+> 	dev->xdp_bulkq = NULL;
+> 
+> 	/*  Compatibility with error handling in drivers */
+>-	if (dev->reg_state == NETREG_UNINITIALIZED) {
+>+	if (dev->reg_state == NETREG_UNINITIALIZED ||
+>+	    dev->reg_state == NETREG_DUMMY) {
+> 		netdev_freemem(dev);
+> 		return;
+> 	}
+>-- 
+>2.43.7
