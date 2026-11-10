@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794301407;
-	b=2rmfbB6PGl7Wo1tLXlsH324+6KHiZDq7AflMQW7KyZ/jMCzKnRYVfSX6EWP6GlgvzI1e
-	 A9kjtKc7l7eg9vr2dcQS0+nF4LrOXNbX5JN/m5dnMqQyMkZdfrvkOTkbhYiTQz+bVk5gQ
-	 dhMKwcXywtaQ54xl3/pJIdtKWQVCn6xlqBvN8JadqxszfEtOc0atvuQAasH9x5DP36h32
-	 +1cY/30RB8OGclJjXIukkbsSTZ3RRbF2Z5HoXI4KMlQMjF/p9gC0xs7Mugyz9sFP4xoR0
-	 T/zdhceRPI5fLmijM5WZS7zSav6isxtnsVLJTuobVBIRo/mZ9/1GrHULFwzDt965Z5A==
+	t=1794301402;
+	b=EVSymZDtsGHDH7ac6M5Ml4WBrw/mFwhuAbw4NIiD6CiwLvpPDnea81gIbgrFItDpcTlM
+	 Ac2z4JRytrGW+2zRdHj8GbnVmx+TxSqB7f7BqntsPXnQL5acVIG2XKlQFPr3dQKhghA2h
+	 P3DrcK0mps2R7z4glR/9mH30UqRkFBy1FKMUOKXfeT70HLaa7Yb9n0mhugIQL+l8F5Vam
+	 c2fYJbGxvtk1VG0bHhdhpnm+CfM5l3+5bU/YXBUGoH6aCsBQ//N/nG8fxcMwY9dSpukNZ
+	 /1m+oz6LvMK2AG2d642pSzHCWupO+nMZ0FS3eYej6ZWpc5GOPr89rADcKFLtrIyDxsA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794301407;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794301402;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Iq1nJKDhrKzbagGZuuPD9GpgY8AW8Ce7+/1CYqXDwc8=;
-	b=l6/Wm+++SUoWS8Ud/YF/jkHIfz3FNkp549nv/oeJg+Mamzpxs9dE9A2OvR0cbLvSmvi9
-	 8m/enEH7EdGLx4xSW7cmX/t3hdeN8WZFgXsbz+1fClLUamU1b6bGeIins3tlswvjF1JzY
-	 StEI6MiKfvPlqklWpBorooHNsKn9ZbBVH0vb764syZfQzYYVURQN07Ul5ZVg4OgANcBPa
-	 cKvGtD4O+5N6XLrlomyfKxfKnm5bdjH5SniCQ5YW1wmjSakYDpfAsp8kQhPKUsrF5JIQ8
-	 J74BejMHobxjo6wfvelSBIavbTkXxVf89v4UujWhyposBzonusp++NdiTw6Ykxln9EA==
+	bh=cBdLGql5qq7PJAdgce+bLZBSDKa16JrnsVeVNrIquuM=;
+	b=ZEWLPQBdXlcx8BRT385b/mNI4E3bB6EdYpR5sfbe2YdSqhs25Aqsxo7oXuxfPAfmwDCl
+	 HFId5H7rmIAS4Gnj39PyJ1vyvOZRd30lDzeelc3zIORNdEPQHLUizBYKGUtS5uFz8XytT
+	 rxndetm9V7dwho9unnO4AOePa98u5irZsN69BzxK0FipTnscc+EOJOm4DleKlXD58a4Kt
+	 mtbP9XYIsur21HRMCSxRUI3sFOZjcRp9hrAwaYc9+Gr/0k+lfL+5l7Ua1FKW4mv7dhiol
+	 XxnJzbApLqeYUNs2liZ6CikqWE6O2Mn7LqcWORC1OP6VrLIAsubICTyiOpUrcMHBVBQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k36dh6iD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PaZc33gW;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734E7606A321;
-	Tue, 10 Nov 2026 09:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7091C60A260D;
+	Tue, 10 Nov 2026 09:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k36dh6iD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PaZc33gW
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794301407;
-	b=rKX0OX0hMepRHCMfc+Mk2PWDPtvFo/y5wemS8M989MosE1mySnlLpxcC8/Y6SfjINIv+
-	 RTVw+hdRQvb6+EoXADHVp5J8X2Rv1EQIf5ogdA5aALHbMwiU3sPMgFLERnV0UN2+jjbpU
-	 iPHcP9y2XfHWp8hP9UiWN9ShRsU4RaO53Al2hkXJQq9FeGg+gLgKkQC4/s+SJ09skad3/
-	 8V0jBO0snqJU7FMLEwm2v4W9Gxnv2dmNMiHDUUux/rUrScA7s3ygsMCka3eEwO/kTq587
-	 L6HUztBxHnZevY/jPS7XohGs66a/vF0hGJufsLzRMx68nbI3/ELCuLy/2doWn8eQs0Q==
+	t=1794301402;
+	b=uv+xUwLbFqd5NbNB/qeLBKWueU5s/9+B37zcr+z9eCne4k8NBu2qWVRIflQsHDHp0mUS
+	 na0FmYGZTsflnjbfoMIzUM8rzARU+9mnM7ksUdeOw/pOeE7xyWc1XfdgLuTvFYIntORXU
+	 sAS7+Emav4LTHGd+kEdKCSl//a1R3EiGWDPAGEXJmNIWflYbBR4BddNWdr8/1ULIwNzou
+	 ixucQ/EToV2uZy3hjX7gr4OyRtNuZNVtJ3gg4NuDLLYxc1fkBAltqnMN6WhaudV+Ug95/
+	 KHyK9bDoeC+N3bOYf1CyoeW6qUoROXirh+62XYQ/dG63ll7Se4v8PM76ZaY7RL3chlw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794301407;
+	c=relaxed/relaxed; t=1794301402;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
 	 Content-Transfer-Encoding;
-	bh=Iq1nJKDhrKzbagGZuuPD9GpgY8AW8Ce7+/1CYqXDwc8=;
-	b=DFuxtGeOzxhNDcZKdO/4iOK+5UX4rp/vGtsUV+gYsn3bSVqHFLu9H8zdaYyUbN6QuZV3
-	 Ossh8LTqndIoR3BtATNFxz7J6Y2f2cp4jOBWgr8aKYs1IbQ+ykxUWTlk/W0P8DS4v+BB5
-	 zMdW641gnJjIfmAa0PeIaW9d0b6fAsxfsDZ+YgyRynW4coAWwxAV720xJ9WyPFu3mm/Qi
-	 bnCm5xayYsAHv7JSDmRPr/oNVjSfWSz/h9oE0kQZ318CSWlzzek7ZulE/GqxjvZgnHHub
-	 MTRGZonDPCLwazc2tTFfA7V3jwuKWk+HJMAmpZRnCT0lrxJNeWgUvV1hi42XCYqG6LA==
+	bh=cBdLGql5qq7PJAdgce+bLZBSDKa16JrnsVeVNrIquuM=;
+	b=sCqLMuDa0snlcSMHYkJJNojGMTbPKYXrU1u6zepvHaZpjxRz6jJQg+U/7VbYbA3Ysbrv
+	 zVrKwegwAAodts3+LOeGXWrENeKZGrA4J8LKdsZ/5/a4BnGoU5/qOygnRErnVLevvv8bT
+	 6P7i0hvqGsrfKTaPOvFUMf8AHjSbsReucKBAT2aIOk2wMcky+HccN0tkx8jHNSnGp/RDm
+	 cedSa2cVGp14JtL/Yncg0PP8dQmrs9y8eXPNOd0EFwpAQNgkUZaTT7ONJXV6E43eeKB9p
+	 cXzmABQ+oKybSr68fmvIJ68hWpg3gqsu0w2tDmR9gdMEc9KAKhrW6cQPq3F3ATzBv9Q==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B7C541F008AB;
-	Tue, 10 Nov 2026 09:03:26 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 8DF671F008A4;
+	Tue, 10 Nov 2026 09:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794301407;
-	bh=Iq1nJKDhrKzbagGZuuPD9GpgY8AW8Ce7+/1CYqXDwc8=;
+	s=k20260515; t=1794301402;
+	bh=cBdLGql5qq7PJAdgce+bLZBSDKa16JrnsVeVNrIquuM=;
 	h=From:Date:Subject:To:Cc:Reply-To;
-	b=k36dh6iDdVvvAa3/qZ0yNWwlkRnSDdY/StCsP0nrMRnp4Ac/Lhgkp4B/U/yFKg4TO
-	 82EYAijRN2sTqfORWiKwaizVXmPyGHe8Ia6wuHbJgLHIqH3Bnkr84A0aLlvsBYE+pq
-	 MjyV3JYYBYZMme+Mdho9vwJg8qF/nSNHTDxNHErQPzCbdFaVqOFUF20XTdij75HX8U
-	 Q9IzVqyK133uV68ykf3SFV9UnCHFBPRoo5ozJX6CYNqqq53UVyEp0o390Dj0cpfo6d
-	 YfpzM1qjpVQHezw74DfAMAgkBqxhHfGKlFqrAL+Hjj4r0Tq13YQrdy5O0axvE1yaRC
-	 yPeZfedb0hAow==
+	b=PaZc33gWB1OtK0/tMHG8mbymqqShas6FfY70ncQ+AHyzsSv0oGG30u2v7VecK05Ue
+	 eSpAJWvlsfTivGG1uaiOgJEnNLx1QkTGZsq+WJh9qq3jGhY0OmVsCeP5hv1oro7xYK
+	 I9L6YMg4XzwaKlHr8PmYEk01CnclWsTt8H9ZJen9nZctSWR0pZSqmArEoLEMGMtff2
+	 0hsl5SwnXikU0rNUpghx5S3d59NC3oDDT83QPmtf4/4qD1U3IBYQKkSet22vhMX8M8
+	 lhi7asrA+8zt75z3L8zrkCr0EXLmes9xNzTaC986qBUiaXAXmqfMTlDD7Io45R/sM6
+	 HVDFEpVOd56Pg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4921D48A57;
-	Tue, 10 Nov 2026 09:03:26 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id E28B148A4B;
+	Tue, 10 Nov 2026 09:03:20 +0000 (UTC)
 From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
-Date: Tue, 10 Nov 2026 09:03:26 +0000
-Subject: [PATCH net] gtp: free the skb after handling an echo response
+Date: Tue, 10 Nov 2026 09:03:21 +0000
+Subject: [PATCH net] net: usb: smsc75xx: reject frames shorter than the FCS
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,21 +83,21 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261110-gtp-echo-rsp-leak-v1-1-192c032f3dfa@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAN3d8moC/x3MQQqAIBBA0avErBtQg4KuEi3MJh0KFZUIwrsnL
- d/i/xcyJaYMc/dCopszB98g+w6M094S8t4MSqhRSinQlohkXMCUI16kT5z0cGgzqm0fDLQuJjr
- 4+Z8LeCqw1voBEyRO/2gAAAA=
-To: pablo@netfilter.org, laforge@gnumonks.org, andrew+netdev@lunn.ch, 
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
- pabeni@redhat.com, joasantonio108@gmail.com
-Cc: osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org, 
+Message-Id: <20261110-smsc75xx-rx-fcs-v1-1-4e048bfc28f3@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANjd8moC/x2MuwqAMAwAf6VkNmAKPn9FHKRNNYNVGpGC+O8Wh
+ xtuuHtAOQkrjOaBxLeoHLEIVQbctsSVUXxxsLVtiahG3dV1Tc6YMganhWVoex/IO4ZSnYmD5P8
+ 4QeQL5vf9AAyj1IhmAAAA
+To: joasantonio108@gmail.com, steve.glendinning@shawell.net, 
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
+ kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794301405; l=3733;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794301400; l=2363;
  i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
- bh=R9TcIxYRIQLC36eXFKBEQ/zbPTM2JwmdjnAqri7utlE=;
- b=USEiUSTtzqnSdLf/+y3HR6JuvI4VGG9bRKewqbXKarWNZBPZtmD7tPcE1rq5inbOwayXH3Xhc
- QUiacOqhnsZDNrw2Y+AxQyPrTEc3pzMt1uxH2zbeqM4MqTRWLdXJhPK
+ bh=G1cAL4e/Pmr3AzCsbxnGrjhhPlyOjfRjUMp1/pULOYE=;
+ b=p47NHnLvmlqjWX1hzQxuofh7VEdXnFhY3NCjZj6MpBzk3zeO8NcmasCQR8/uUCoyO2fKF92W7
+ aHXxY9fV06dAOPQfEnMx8MrmlR/DWsrO407E5TgGXibSp0E65RTRccb
 X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
  pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
 X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
@@ -108,46 +108,29 @@ Content-Transfer-Encoding: 7bit
 
 From: Joas Antonio dos Santos <joasantonio108@gmail.com>
 
-gtp0_handle_echo_resp() and gtp1u_handle_echo_resp() return the result
-of genlmsg_multicast_netns() to gtp_encap_recv().  When the netlink
-notification is delivered that result is 0, and gtp_encap_recv() treats
-0 as "the skb has been consumed":
+smsc75xx_rx_fixup() takes the frame length from the RX command word
+supplied by the device and strips the FCS by using "size - 4" for the
+allocation, skb_put() and memcpy() of each frame that is not the last
+one in the URB.  The length is only checked against an upper bound and
+against skb->len, so a device can report a length field of 2..5, which
+gives a size of 0..3 after RXW_PADDING is subtracted.
 
-	switch (ret) {
-	case 1:
-		netdev_dbg(gtp->dev, "pass up to the process\n");
-		break;
-	case 0:
-		break;
-	case -1:
-		netdev_dbg(gtp->dev, "GTP packet has been dropped\n");
-		kfree_skb(skb);
-		ret = 0;
-		break;
-	}
+size is a u32, so "size - 4" then wraps to 0xfffffffc..0xffffffff.
+__netdev_alloc_skb() adds NET_SKB_PAD to the unsigned length, which
+wraps back to a small value and the allocation succeeds.  skb_put()
+adds the length to the 32-bit skb->tail and skb->len, which also wrap,
+so the skb_over_panic() check does not fire.  The following memcpy()
+then tries to copy almost 4 GiB from the URB buffer into that small
+allocation and writes far beyond it.
 
-The echo response handlers only read from the skb and never free it or
-pass it on, so every echo response that is reported to a listener on the
-gtp multicast group leaks the skb.  Echo responses are handled for any
-peer when the UDP sockets were created by the kernel, so a remote host
-can leak memory on the receiver by sending GTP echo responses while a
-process with CAP_NET_ADMIN is subscribed to the gtp multicast group, for
-example a daemon that monitors echo responses.
+A malicious or malfunctioning USB device can use this to corrupt
+kernel memory or crash the machine.
 
-The error paths do not leak but have a related problem.  -ENOMEM and the error from
-genlmsg_multicast_netns() (-ESRCH when nobody listens) are not -1, so
-they are returned unchanged to the UDP stack, which takes a negative
-value from encap_rcv() as a request to resubmit the packet to the
-protocol with that number.
-
-Return -1 when the notification cannot be built, so that
-gtp_encap_recv() drops the skb, and consume the skb once the
-notification has been handed to netlink, whether or not anybody is
-listening.
+Reject frames that are too short to hold an FCS, as lan78xx_rx() does.
 
 Found by LLM-assisted source review.
 
-Fixes: d33bd757d362 ("gtp: Implement GTP echo request")
+Fixes: 1b3b2d9e772b ("net: usb: smsc75xx: stop lying about skb->truesize")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 ---
@@ -156,65 +139,31 @@ This issue was found with the help of an LLM-based code review tool
 reviewed the fix myself.  It is build-tested only (W=1, arm64); I do
 not have the hardware to test it at runtime.
 ---
- drivers/net/gtp.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/net/usb/smsc75xx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 1dd32e979cf5..85d1b0c46ecf 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -561,16 +561,19 @@ static int gtp0_handle_echo_resp(struct gtp_dev *gtp, struct sk_buff *skb)
+diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
+index 6f72a3f15907..e923fa6c1785 100644
+--- a/drivers/net/usb/smsc75xx.c
++++ b/drivers/net/usb/smsc75xx.c
+@@ -2217,6 +2217,13 @@ static int smsc75xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 				return 0;
+ 			}
  
- 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
- 	if (!msg)
--		return -ENOMEM;
-+		return -1;
- 
- 	ret = gtp_genl_fill_echo(msg, 0, 0, 0, GTP_CMD_ECHOREQ, echo);
- 	if (ret < 0) {
- 		nlmsg_free(msg);
--		return ret;
-+		return -1;
- 	}
- 
--	return genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev),
--				       msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC);
-+	genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev),
-+				msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC);
-+	consume_skb(skb);
++			if (unlikely(size < ETH_FCS_LEN)) {
++				netif_dbg(dev, rx_err, dev->net,
++					  "size err rx_cmd_a=0x%08x\n",
++					  rx_cmd_a);
++				return 0;
++			}
 +
-+	return 0;
- }
- 
- static int gtp_proto_to_family(__u16 proto)
-@@ -748,16 +751,19 @@ static int gtp1u_handle_echo_resp(struct gtp_dev *gtp, struct sk_buff *skb)
- 
- 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
- 	if (!msg)
--		return -ENOMEM;
-+		return -1;
- 
- 	ret = gtp_genl_fill_echo(msg, 0, 0, 0, GTP_CMD_ECHOREQ, echo);
- 	if (ret < 0) {
- 		nlmsg_free(msg);
--		return ret;
-+		return -1;
- 	}
- 
--	return genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev),
--				       msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC);
-+	genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev),
-+				msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC);
-+	consume_skb(skb);
-+
-+	return 0;
- }
- 
- static int gtp_parse_exthdrs(struct sk_buff *skb, unsigned int *hdrlen)
+ 			/* last frame in this batch */
+ 			if (skb->len == size) {
+ 				smsc75xx_rx_csum_offload(dev, skb, rx_cmd_a,
 
 ---
 base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-change-id: 20261110-gtp-echo-rsp-leak-7a3fac62bd3c
+change-id: 20261110-smsc75xx-rx-fcs-fca968df1dce
 
 Best regards,
 -- 
