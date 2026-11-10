@@ -1,65 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794344322;
-	b=zdkTGu9pcWE7K5EhqQWHPXzUc3gSAh2TIv9wcQXNndj1c4KKcDQ5JPlYRPYplMG7ZcT1
-	 qwfoWTjFA7NZ+Zve6u/4BUI+w9kkVJagrs2SwLE7CKDqxhki2apqU+OB8dIN7PmiwWZk+
-	 8NUZS4C5jRC0FVDVU31V/OtmNT1WFyhflTZ/TrHu2sGw33oTZ8qMjds1dqCEfydx/5OzL
-	 +IQ6YwI0vPqv/YLNH3JkPQZRLSDH7+zNFNkHZyp9jo2rC9NHnpYGZCb1pmFh8ueFGkgH5
-	 VJB1gwvY/XPPrqVZBz069l29RY50jyFt+LuLqoLmezn4HJ5Ip6l14p8tNX37juGxrgw==
+	t=1794344513;
+	b=0AEoGZig+XPb0L2UWBiTt/RlXg84EejuP3mOhTmE/AP2WJHiPp+hWrqX6lMkXSUSvPZE
+	 XiifWFUzjRG4l/ePwZ0mQUP57cfd+3m1E42vv7xBqcDWKpGofOj2hbP6W4jPYoG4g49Ro
+	 EJJOpVqeMDuGpacZDKX5jRcAnbzJKDTLVUUmEk1If5FtjHbGPCv884mKJw/Mq0Gra/8gO
+	 1MtFFAJOOZEV3eMD3AGL//H/REkP8nc/cQdRQ7HA4D3Z96CRQPdiy/N5VNy61H3Jf0Nve
+	 sQaLm2CNB3Rmo9ddqvvmmh9D9CAzceCYLaISgf0R/SoNItemyZQMi28dhNrLVfuB2Ag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794344322;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=ab1Y4a2opdPjndxb5YBYW98/QiDJ0m0oBjPEITs6l+E=;
-	b=ljUWyIpi4WSalZ76kvjy5JuKKCAFUwQIA0zkXM2jeaubRHD8GTj6s4VgaUzWkDtlqhVe
-	 2euX3fQClkk3UB8bBeok07dbimiDZ4BuvQNYHroMI8CqswGZmQH6FWCHnmtJCm0BEArog
-	 vA66Nbi8KJJBSV38wAJ3AFIc9V4YKKUMkvvzDWQRCzEAy0PfcaFZcLcdqFb+5WpbiF1Dq
-	 OBXkYbf9A8QSEauzMd4rak+bLKrQcY3jb1EuggKLg5U3W/yYp1u0JA4v0hdUQDX5HVkvT
-	 9DiIKlnokCFFkO1ylP1kJyDr6qQ17PV6Gj+7MNWakZozjXyCB7Jtk2NVo3aiU12odsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794344513;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=M7R8N2eXWD6+EHKfny1HAblM/aky2ALTwQRlCwbdbPY=;
+	b=FV+e0EOsTaBZPqxyibAFt8QvPyxtbdj7ehcvjUYyDNP9ib3l1hrOuZEVR/glRTY+EQxa
+	 loLUe5vjMAf8FiU1J/48b4HNyocySnBZvJFCKDljK5i9VvZuNgBvCsv58VRoVbu8kZ7bv
+	 yWFDr2uEsF13xy6/lyqCGj1dsa6dxvoGXar8iUaMx5I3R4/aAweb/YHBhXpQXGojT2kNE
+	 OwhFdYFAhzI33S8iAnPbZh4Z6Fw8S7R/lBN1SDpcihJAI4JL8PWV0exS1EFPofT4aNiUJ
+	 dcpC2VpKyjcH1izCupotmICvXMEasUvcOKzDjLb+/7q07lQfqHevBRHGTElotHFEqDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D1+s5ZC9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=blockcast.net;
+	spf=pass smtp.mailfrom=blockcast.net;
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=CSJ9Dgp0;
+	arc=none smtp.remote-ip=74.125.82.45
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF7A606A32E;
-	Tue, 10 Nov 2026 20:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE69C606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:01:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE69C606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D1+s5ZC9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88A31F0089F;
-	Tue, 10 Nov 2026 20:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794344321;
-	bh=ab1Y4a2opdPjndxb5YBYW98/QiDJ0m0oBjPEITs6l+E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D1+s5ZC9NaCe/pXn8/7c8nfH560r5x6nbafR5BAbOh5MxKbPeY4ZNopGSNnaKhUUl
-	 VrxX4Jx3PS/6ICacp+7wf+T7g/r78U5oiDMxJ+2e/TFRPOO5JctOKnZBkdy5uebWE0
-	 UXT8GoiGsd1q/NKQpjh3hDmsU1DZGAy/yfR2x4RRMF84LQZKut9WvVRAcLtIfCvMPJ
-	 hwHIzAC/DzFFD4cs94VDUlYwN09iksM7LI+mXvkJJHSyBQbHnap7ByyuIFuLWDB4Rc
-	 Jr6BTSvxFmJ0rAaOBHfOOxfN2tZVUs+4W+inKTcVZJr2BYe2pcwCmfKPvCbOjp1Kvg
-	 uAgQX7yytUrQQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: yanxia@cmss.chinamobile.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
+	dkim=pass (2048-bit key, unprotected) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=CSJ9Dgp0
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-18818daa3e7so794305c88.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:01:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blockcast.net; s=google; t=1794344512; x=1794949312; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M7R8N2eXWD6+EHKfny1HAblM/aky2ALTwQRlCwbdbPY=;
+        b=CSJ9Dgp0zGlrS9GT0Yb7zoj6ITj6pka3nrha22Lru7iJfbhyzdeBhzBHWat74WMNtO
+         6I7fNFUxnihp+OiK6I4FRUbbuzOmWZig8TzXInUMD4q82joiV8MMV7bPZ5itH+GxgLLI
+         /2STzSYDYWj41+0g/1DnGSRu/Q9ONfSdCbUvBnxZ/8pWVf145+nbhldcjBbi2kkMHJd4
+         pZNiRQ5MQlHFYCyKBQMngh56SCV47a9T7N9W97bXOnZZlt2hWWn9X6NBKP0Vi0d6emIN
+         t3xR8T6qT4F5vB9asfdyn6rukpaXEP+J3H4ACd0uK6VRHkXkrbgBkCg9pnZ2hAMy7kIP
+         EtLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794344512; x=1794949312;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M7R8N2eXWD6+EHKfny1HAblM/aky2ALTwQRlCwbdbPY=;
+        b=FlYIyMeP8c+DFqKTdEQR9OpC3SUlT2ciXC86vEzL8ub5mOzod0K81Lnh2u4NnlOP6U
+         WwAdoVhTB46iQwCCZrx3k0e4+LKDY1P2p7gDR7b/07SrllobCiw+CY/19GCMOcqXuRyk
+         je4yDHJaZPEQ4s3RPw26KJAUq1JeYS9Wz2mC2oMN9LXT+AOKxRm16T+r5r3Pw2LrvUXM
+         3W+YbA2ifRS2x/uQYMaojy6roetF6Llhd1F5xVwzmsDb5Lk59pOkraTEFON03or2rY1X
+         Xw8rVqbSj/Qa69lfeAWEcbKSleqHM+P8OyXbMxl08zW0/fBZJ2K2GhwURDIh/RK+eXqh
+         kjTw==
+X-Forwarded-Encrypted: i=1; AL+hErEjqZNhonzdYgPXf/aQnbrSM/jMmGOKfaUN9RUDDpoMsWE2ZmMw3EdV8e7EYiOgD+swrz4UPLA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+G9L2XzXcnJ4FsPxOikBJ7V0XB5+JzJbzZS3OVkt30KVnHbgnG
+	lQ4LQ1kkvZdnveTcpFgcGU32aDTivKaHdd6x+99l4R6r9CZTMHeI4zF8a2/Bi6mSr2g=
+X-Gm-Gg: AYBFou3vhQA2C5Ahfrtd0rcTQoX+iFewYYtTKg/Iy5tg+YitjORC3mjuh/A8unwZ907
+	t8nsi1maOd7VOru9xaBfFTnphwwOSu/qssJTgbDtLTwO0U2YNtosNpW0mMgGUMfE9UIgS1i0xOT
+	Nw/4QbJ781qMJTksIsNITkhD96TzBkA7EsTyESYwVVCEqI1qTLOEG2rb1/YLEf3wAXkR0vHS7H2
+	4Jtzl36Kst49qHFKuc1efDrThpONvVrnky234FhId0GpbArx839waiyePBWVIPCAhVvACe+5f+Y
+	BEWCIXzNFsqSlsl18TLNoNCifGlQIO5HJndG4xd6WFzJi7VMmcq0dgsTfS1rOtpGsXshaWeQRpx
+	D61RDZS3Id3Sc2rFNqI2Xc72TVP9XxkZh59a+Evv711iEXsi/neAX+ZCOQPUIHcUnfxsSYljv5N
+	Bd/Qk7HiqMFNMj5OytGe0mpFDkh5cVd1pOnnokc4SC64hbvZ/xTqRVbZwja05IhPWFWVSJWEvO1
+	8JUOAypKudCVCMavSW7IwQiTCnFOUzU4y+vv6xbTzU9y53A8Pob7ayPvdLp9dtbirg5ZA4E+YjE
+	OEEYTFd1Tft95YWj0pZFfuuBGpQF04sRTmmbun1kRe4nnp5MAENX9/lJoUTbzbzDOKWDkYtvWIT
+	0Ll/103QCus+EeM70
+X-Received: by 2002:a05:701b:4516:20b0:14b:1ef8:698d with SMTP id a92af1059eb24-1b3c036c2c0mr73201c88.15.1794344511472;
+        Tue, 10 Nov 2026 13:01:51 -0800 (PST)
+Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b4efc2sm8017033c88.15.2026.11.10.13.01.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 13:01:50 -0800 (PST)
+From: Omar Ramadan <omar@blockcast.net>
+To: netdev-bot+sashiko@kernel.org
+Cc: ap420073@gmail.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kuniyu@google.com,
-	xeb@mail.ru,
-	yana06070@163.com,
-	netdev-bot+sashiko@kernel.org
-Subject: Re: [PATCH net-next v2] ip6_gre: fix changelink conflict checks for L2 tunnels
-Date: Tue, 10 Nov 2026 12:58:38 -0800
-Message-ID: <20261110205838.2246603-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261104150330.70963-1-yanxia@cmss.chinamobile.com>
-References: <20261104150330.70963-1-yanxia@cmss.chinamobile.com>
+	horms@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net v5 1/5] amt: fix use-after-free when a Membership Update re-arms a freed tunnel
+Date: Tue, 10 Nov 2026 21:01:46 +0000
+Message-ID: <20261110210147.100396-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179423575689.994134.7687724928848317687@kernel.org>
+References: <20261105125010.1107546-2-omar@blockcast.net> <179423575689.994134.7687724928848317687@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,179 +111,71 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ip6_gre: fix changelink conflict checks for L2 tunnels
+On Mon, 09 Nov 2026 14:49:16 +0000, netdev-bot+sashiko@kernel.org wrote:
+> - [High] amt_tunnel_expire() (drivers/net/amt.c:1412) runs on amt_wq.
+> - [High] amt_del_group() (drivers/net/amt.c:293) used to free the group
+>   node with kfree_rcu().
 
-This commit changes ip6gre_changelink_common() to use ip6gre_tunnel_find()
-with dev->type instead of ip6gre_tunnel_locate(). That way, L2 tunnels are
-checked against tunnels of their own type. It also makes
-ip6gre_tunnel_find() skip collect_md entries while walking the bucket.
+v6 has superseded this posting; this patch is v6 2/6:
+https://lore.kernel.org/netdev/20261107004935.2627329-3-omar@blockcast.net/
 
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index b5d6ed8f0c369..07f7220df938f 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -306,6 +306,9 @@ static struct ip6_tnl *ip6gre_tunnel_find(struct net *net,
->  	head = __ip6gre_bucket(ign, parms);
->  
->  	hlist_for_each_entry(t, head, hash_node) {
-> +		if (t->parms.collect_md)
-> +			continue;
-> +
+Answers below are against v6 and the v7 I am about to post.
 
-[Severity: Medium]
-Could skipping collect_md entries here reopen the misdelivery this commit
-is meant to close, in the case where the other tunnel is collect_md?
+> Can this flush deadlock amt_wq? amt_tunnel_expire() runs on amt_wq, and
+> so do group_gc_wq and source_gc_wq.
 
-ip6gre_tunnel_link() still links collect_md tunnels into the hash buckets
-with hlist_add_head_rcu(). The receive walk in ip6gre_tunnel_lookup()
-never checks collect_md:
+Fixed in v6, and v7 keeps it. Both flushes are gone:
+amt_tunnel_expire() and amt_dev_stop() call __amt_group_gc_work()
+directly, and the group GC calls __amt_source_gc_work() directly
+instead of flushing source_gc_wq. The cancel_delayed_work_sync() calls
+left in the GC queue nothing: each takes a pending timer work off its
+timer or queue, or waits for a running one on a barrier that
+max_active does not count.
 
-	head = &ign->tunnels_wc[h1];
-	hlist_for_each_entry_rcu(t, head, hash_node) {
-		if (t->parms.i_key != key ||
-		    !(t->dev->flags & IFF_UP))
-			continue;
+> What limits the number of deleted group nodes waiting on group_gc_list?
 
-		if (ip6gre_tunnel_match(t, dev_type, link, &cand_score, &cand))
-			return cand;
-	}
+Nothing, and v6 still has this. max_groups bounds live groups, not
+parked ones, and before this series a deleted group went to
+kfree_rcu(), so the series introduces the regression.
 
-When two entries score the same, the first one in the bucket wins. That
-is normally the one linked most recently.
+v7 counts the nodes parked on both GC lists, under the one lock that
+now protects both, and queues the drain of both lists at once when the
+count reaches AMT_GC_KICK (2048). A parked group keeps its 256 source
+hash heads, so it is a kmalloc-4k object, and 2048 of them is about
+8 MiB; the kick keeps the backlog near that instead of letting it grow
+for up to 30 seconds. A periodic drain that ends with that many parked
+again re-arms at 0 rather than after the interval.
 
-For example:
+> When the GC finally runs, __amt_group_gc_work() walks the whole spliced
+> list with no cond_resched():
 
-  ip link add md0 type ip6gretap external
-  ip link add tap1 type ip6gretap
+v7 adds cond_resched() after each node in both drains. They run only in
+process context, with no spinlock or RCU read-side section held. The
+kick also bounds what amt_dev_stop() frees in its drain under RTNL.
 
-Before this patch, the second command failed with EEXIST because
-ip6gre_tunnel_find(..., ARPHRD_ETHER) matched md0. Changing an existing
-ordinary ip6gretap to zero params with changelink was rejected too,
-because locate matched ip6gre0.
+> Is 0 safe to use here as the "never refreshed" value for last_seen?
 
-With this patch both succeed. tap1 ends up at the head of tunnels_wc[0]
-and takes the keyless traffic md0 used to get, without the metadata dst.
+Fixed in v6: 2/6 stores "jiffies ?: 1", and 6/6, where every tunnel is
+stamped at creation, drops the special case.
 
-The same looks possible for ip6erspan. It also looks possible for L3
-ip6gre collect_md tunnels with explicit params, through
-SIOCADDTUNNEL/SIOCCHGTUNNEL and ip6gre_tunnel_locate().
+> Could the commit message describe each of these failures? Alternatively,
+> could they be split into separate patches, each with its own Fixes tag,
 
-The commit message says:
+v7 keeps one patch, since the tunnel and node fixes share the same
+helpers and the same tunnel->lock rules, but its message now names each
+failure: (1) as the amt_dev_stop()/amt_tunnel_expire() double
+list_del_rcu() and free, (3) and (4) as frees after only
+cancel_delayed_work(), and two more races in the timer work: parent
+pointers read before tunnel->lock or RCU, and a second destroy or
+delete after waiting on tunnel->lock. It carries both tags:
 
-  Skip collect_md entries while walking the bucket: they can coexist with
-  ordinary tunnels with the same lookup parameters
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+Fixes: bc54e49c140b ("amt: add multicast(IGMP) report message handler")
 
-That holds for the per-net collect_md_tun pointers. Does it also hold for
-the receive demux in ip6gre_tunnel_lookup()?
+Both went into v5.16, so stable reach is unchanged.
 
-Before this patch, that coexistence could only happen if the ordinary
-tunnel was created first.
-
-[Severity: Medium]
-The subject and message describe a change to changelink only:
-
-  ip6_gre: fix changelink conflict checks for L2 tunnels
-  ...
-  Use ip6gre_tunnel_find() with dev->type, as the newlink paths do.
-
-The skip is in the shared helper, though. Doesn't it also change
-ip6gre_newlink(), ip6erspan_newlink(), and every legacy ioctl that goes
-through ip6gre_tunnel_locate()?
-
-These are some differences users can see:
-
-- newlink of an ordinary tunnel whose laddr/raddr/i_key/link/type match an
-  existing collect_md tunnel used to fail with -EEXIST. It now succeeds.
-
-- SIOCADDTUNNEL with params that match a collect_md ip6gre device used to
-  return -ENOBUFS through this code in ip6gre_tunnel_locate():
-
-	t = ip6gre_tunnel_find(net, parms, ARPHRD_IP6GRE);
-	if (t && create)
-		return NULL;
-
-  It now registers a new ip6gre%d device.
-
-- SIOCDELTUNNEL on the fallback device with params that match a
-  collect_md device used to delete that device. It now returns -ENOENT,
-  or -EPERM for zero params, because the lookup finds ip6gre0 itself.
-
-- SIOCGETTUNNEL on the fallback device used to return the collect_md
-  tunnel's parms. It now returns the fallback device's own parms.
-
-This also differs from ip_tunnel_find() in net/ipv4/ip_tunnel.c, which
-does not skip collect_md entries.
-
-If only changelink should ignore collect_md entries, could the skip go at
-that call site, or behind a parameter? If not, could the commit message
-describe the newlink and ioctl changes?
-
-[ ... ]
-
-> @@ -2055,7 +2058,7 @@ ip6gre_changelink_common(struct net_device *dev, struct nlattr *tb[],
->  
->  	ip6gre_netlink_parms(data, p_p);
->  
-> -	t = ip6gre_tunnel_locate(net, p_p, 0);
-> +	t = ip6gre_tunnel_find(net, p_p, dev->type);
->  
->  	if (t) {
->  		if (t->dev != dev)
-
-[Severity: High]
-Can this return -EEXIST when a collect_md device changes its own
-parameters?
-
-ip6gre_tunnel_find() now skips every collect_md entry. A collect_md
-device therefore no longer matches its own hash entry, and the walk moves
-on to the next entries.
-
-In every netns, the fallback ip6gre0 sits in tunnels_wc[0] with all-zero
-parms and dev->type set to ARPHRD_IP6GRE:
-
-net/ipv6/ip6_gre.c:ip6gre_init_net() {
-    ...
-	t = netdev_priv(ign->fb_tunnel_dev);
-	hlist_add_head_rcu(&t->hash_node, &ign->tunnels_wc[0]);
-    ...
-}
-
-ip6gre_newlink() never calls ip6gre_tunnel_find() for collect_md devices:
-
-	if (nt->parms.collect_md) {
-		if (rtnl_dereference(ign->collect_md_tun))
-			err = -EEXIST;
-	} else {
-		if (ip6gre_tunnel_find(net, &nt->parms, dev->type))
-			err = -EEXIST;
-	}
-
-So "ip link add md0 type ip6gre external" creates md0 with zero params
-and links it into tunnels_wc[0] ahead of ip6gre0. A later
-"ip link set md0 type ip6gre external ..." then goes:
-
-ip6gre_changelink()
-  ip6gre_changelink_common()
-    ip6gre_tunnel_find(net, p_p, ARPHRD_IP6GRE)
-      skips md0, matches ip6gre0
-    t->dev != dev -> ERR_PTR(-EEXIST)
-
-Before this patch, ip6gre_tunnel_locate() found md0 first, so
-t->dev == dev and the update succeeded.
-
-SIOCCHGTUNNEL on md0 looks affected the same way. In
-ip6gre_tunnel_siocdevprivate(), ip6gre_tunnel_locate(net, &p1, 0) now
-returns the fallback tunnel, and the t->dev != dev branch sets -EEXIST.
-
-The L2 kinds can hit this too, when a collect_md ip6gretap or ip6erspan
-device shares lookup params with an ordinary L2 tunnel. newlink allows
-that.
-
-Would it work to skip the ordinary duplicate search when
-nt->parms.collect_md is set, as newlink does? Another option is to accept
-a match on the device's own entry.
--- 
-pw-bot: cr
+On (2): every walker of a group's source hash, the report handlers and
+amt_group_work(), holds tunnel->lock, as does every caller of
+amt_destroy_source(), so I don't find a reader that can follow
+snode->node onto the GC list. v7 still gives sources and groups a
+gc_node of their own, and says it is hardening.
