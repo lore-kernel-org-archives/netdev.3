@@ -1,102 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794330236;
-	b=No1VEs8HR4DsiU8+EAvJBlZxRv0iL51ke+cb0ucJArW00vTT5jy4qFW8lLiSA3L1Prhe
-	 V1kqcpML019AdrKeQ160BaHBnAv97MGWDsWr4bQnYq6nZTlMzpIzSzdzMghXateZYOJYA
-	 u5otJcVXChsrIcL/jo4IZvt5/PPnoqU50j+4g0Oxx8jTtiU1wnLeYBxviv/fHCfZDXA1I
-	 lXSjX+9pW0Dayirp7QIgPvt0ioEbsLLr/CI7g/MwXWiDYjJY3/bl9oPvZyiVflnp1OtOA
-	 15Iq4y5dUtQLyFuQB6UXLAMZhBbZZ9pdiQ7y6TDC2TDbSs+GY9b1vr+k783A2yOs4Cg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794330236;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=hw7I9hsZ96oGDaDIXsGw69ed3kXOBiJKDxRNYwwzkh8=;
-	b=AjVa6xCg34oE/PsGJf8ZFXImgRFRFT6hvjYCwF0o6CtHFrUz1m6nZdzc3GOEZsYhFZIM
-	 qo0wbnc1xJXByI7DyAHqo6NK87egGbznPkG9E62wlEtSLTjNotmIKlEwR2yxhPzSnjoDe
-	 s4qC8Z+o3evhE5n6p4E+k8yH+TbgEVgW/x6ChsMOZ5vuGRrxZUHe3bicex96nJDqmzRmV
-	 rDZNMNX8TC1P150MlxjIj078ShubggKIiWTK4dzcdVzwfgI1mB9waklS5kz1EDuZPC0iU
-	 c+pSq+Urr/9rMYUA8KvMonLOh6RFFQmJz5QugPAzvNMOaJ7FpFpBXkhzlemKZdFtP0Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=C+xX50Mf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.51
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794330359;
+	b=w7fcrRxdqQM+uOqrMkPFnHCxfFHlfA6ztC3mfC+AUYjvsV6d3bMdjpVNNid03cDeH1Be
+	 RGFaT5ArmGb5ucC715A5TtyoRa3rPng9NDd9DS8xBhDr9voXe2QIK+dOi04Oqm+S1tvwz
+	 HHVzu8gAUtKnGHt6jhUUaM4mYoP7QF4rroMapigXc+oCUbOIOL4lCur4uxWfWxT1aCyeS
+	 FxYVooN15a90onms6cQ7WIjtzS4REkAitZd2yrbtByjjhVL0C2jJJuLhLT1zJphdbFLa0
+	 vzG7bUaeuMKM9+cO+JxkXNhOPkr8Ur45dJnrSiHkyHCHzYUg5QxdFxvBTbREVBeog/A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794330359;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition;
+	bh=cOkyLY+HHPV792y3EULbkq0WHoTNtx8PyIwoa+v2U74=;
+	b=AIFb6RYwpcEXKH9u0cxaT+5eKzJ0IyjtMml/u+F4ok/GM375P0BDCdUcQKOPTwO5aj8H
+	 o5OxqvMedpWniTTnhb2V3A5dcbd7SE1qmL58nM0R17+KP9KWwP+PZgM5zoDbCH5urwc+C
+	 gbZgfcLH8LG3VNGhF+go2upaUnTLiiaCKKFEl2fXCYCaC5k2Y/2J6L7nBKjrHOG6hYLWL
+	 +EkXSdBd2JulvdoyaShY8TLVA5UV3Kw2NoOcDer8KQaSE49jrB0w5uMGzjbI51yy176nN
+	 tf/e4jMtwE1X0EC1X+uC6jqLx2/Ej5rOItLU6TOvoewWt0HebpwBs8v6t/FXy+TMxfg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxjiym76;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC1F60A2619
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:03:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DC1F60A2619
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C1B606A31C;
+	Tue, 10 Nov 2026 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=C+xX50Mf
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-9999f21f617so607127241.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:03:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794330234; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XcvtNyqMf+rpfzeqXify60tTrD0LKZyXxXPvYOId++x4wlc6POqY8Fuy+nvmfq9uuo
-         d/5saxABwVsvIUgr0muPJtNkc95oCYYYQ6uBxKwErEkZfmfTuCCPFV5c8dXqplrwVJKW
-         57MmxyJ/FSp9uxAGbCHg8GNiAmhXmHrqJ77o8g6S9UWiDZ4mTtmJla7Rg9/Y2jIIfRLy
-         qtI57ddOgt6jswEn9GFleEnfT5kn3z71Rk7IF8JSOg3Ty9DrCeS9Q2Y3DwwvRS9G26co
-         kskg5LvtCT3D9zCYv5UsJibjY8bTt/uHbUt5iDALpvQhHmc+GCkaqs/mUKi1a9JZowLd
-         qN/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hw7I9hsZ96oGDaDIXsGw69ed3kXOBiJKDxRNYwwzkh8=;
-        fh=o7xh9sEkgEjxA+KVvVnB3nN1ndcjWNY2Sc2YJgMXNMI=;
-        b=ZBOgv5clcboUSzD04y3BDnB2su6Mpwk/D6COR+d7zDVyqOUS6X8o4fFeKI9N/IBhaq
-         KC/9TyhVGqHZ+2uu2BMaqa3lYD67TeT6UknGa4R/1Es5cNsFFbo9qnOhxSUdC4ljLZqA
-         GikVelg4EvXq8KHof5RgLy8J4uzlt40HdXZI1exE7FOdlEdA0VPXZblV+RqpZqleJyw9
-         gu6qAdrWUzhIkuwRkvciU2MijFaG7q+sbW7cM8sXcE/jqH/BuWPaLWwwgvpAeTLnqfpB
-         44Y9S4WbMuSzHahWba/L/X7ZVzJeigfEmszlzeY/Usi8AwjdhPTAq1xAibHfT6ysO52k
-         hIKQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794330234; x=1794935034; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hw7I9hsZ96oGDaDIXsGw69ed3kXOBiJKDxRNYwwzkh8=;
-        b=C+xX50MfFTGRaLCaw9FCaInNiqow40dLU19oaQBavHjb+6XrBt6q5sKQHiuEugVcVF
-         6dCjelwB8xYfoa3CzbED4beBrLsGTMseiC/8fr5bPwBJZvsrNT06rIAAS8neYM7BHGHM
-         P3E351uwr4bel1Dc9qVMvfrOfa1tGbBnH41QTdLlmpkUE2s1pag8FS5cZDhI00c0hdxo
-         Qm5TXecpCjQ0ZcYq9oHYFNQUxaL0JkvhC+OHpd/YOL6+GCN+lG3WioxepeUWRo7Fp+dv
-         fJowupWxKyXx+iyOsHP0LDloYU6lidBpKgKh2GVx9b69lwqS7z892ojtGlMU8RzePXeS
-         r6+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794330234; x=1794935034;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hw7I9hsZ96oGDaDIXsGw69ed3kXOBiJKDxRNYwwzkh8=;
-        b=twsd+e/QT2mxS8WheWG/XX4bVfmITYwLuxk1zpdzbP6f5++rZq+vyKE6K9ELlyuKhz
-         57qAuAKjGbjRz34gJAw5+ksaqqHfI4bZ/mt1WGZ2xQO4k2lh7VPth90fIcrcQ1UjqvsY
-         sz1vnX7QGa0+qvuNRPjI9wEeRXcR9CSEg6IbA0yLkIW6laNTTS0GsetsAKYGDHpzLpuR
-         w1d4Y7nVE15Y0f55zWRvIqJGtNTq/xx/9K3Ng9x3NUwCU1i6IOAEZgidJ1YiCVT3MHbO
-         wj/rpgPDtpgi6NqlHTAFRUlLhN4fJNPo/jKkZuFuz1VVU6NxMb+SfnLuHJ+o4xKOf8gm
-         Za3A==
-X-Forwarded-Encrypted: i=1; AL+hErHNjo3B+kBeutPPgExJGStNsAaRqstxam0X2qVPtEjJ7u1edwaG+IuV6TUwau2vxLrN3bX8JeQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/UIYkbaT4QBz3nUH7wywQYrdFeCv0VUTuIqQNgaw537z0jt2RL
-	ELkrDeSPmN2pb70brLlUMe+sRNko39mEqqv541qbvn8ladUBI+fV2eGmXxU7S/5/ACXL6GGsXlU
-	OIgwVXFC9nEDbmWZAy01Xb1GET5joi+k=
-X-Gm-Gg: AYBFou2EbTV5klKIId0YvU1bMCLmpflJ3HGwxhTQj2Wt7NERbQwgdaSZqRhiV+UBb1b
-	QR26qmmxayFsmD449vsrExArQ4Xkv0ey0OTOt6g4cb7ELL89JxawX4D7mBqJB5qRDegnWIfwg8P
-	HCevk0A0ZF377RGaAHkfcdBbW9ARhx6phowOAd3T5LJ2NoEemQmFWtCfPzaw7uxxFXFUTfA9+Lw
-	gBbQ3UHhjaLp/uwRICtoGHpVqHG+yFc/EkyK3em5W3PvXpbJK4MFH1ifcDIQJP4YfRg5hvaST09
-	y/kMjrWPAG6GLdJ9TtnL9U/Kli5tz8nzaiN8+jLkd3tAE3ncdbTUF0+Je/uIzsRr6XZXjJS5W0S
-	soUftmtRyVjnCRo58SNWr6kWMD2Ye9UWNEPktLGXQbbhpjyHnr0J9+MXfVsxvv+1AoU32FP8gk0
-	zINqcmak+RUTjmSSP6gcGGWo0kcmgm1LxGvVKP9Yi5h92c5lSKc94YZaH+kDT7zTOLJTVI6nVbq
-	lM90sgEV61O+GPFkYnQX5cbE/0ZqA==
-X-Received: by 2002:a67:e103:0:b0:7cc:2152:4f72 with SMTP id
- ada2fe7eead31-7d301ab17a8mr1041991137.1.1794330234180; Tue, 10 Nov 2026
- 09:03:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxjiym76
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3281F0089F;
+	Tue, 10 Nov 2026 17:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794330358;
+	bh=cOkyLY+HHPV792y3EULbkq0WHoTNtx8PyIwoa+v2U74=;
+	h=Date:From:To:Cc:Subject;
+	b=fxjiym76NZPxB+OK3srSzHcS/w9hTBnDIqw69BGPquQuc++VR6MUJbq1P6BTnH9BF
+	 3sYBN+RkXBNfXruFd43woqJXD59wgT+iLpi8+b0JZ53nuUpoTwOoXW2JYBGCu8cF/N
+	 r3l7v6D5DoAFgS7TSJ6g/kX/a36sad8O2xsf8gm2JgxPlvaqfGL6h/J4ktB400r07t
+	 1YTeYRcV+4ttwdqrIxkeXEafTNA0EzOYZQCR7SmKgxMmoJdYXKNM0YiponDWH4bd26
+	 qQXPsMx5w5jCcBFSR9BH7QV9s2Jn0sdzsVFjS4l+1sj8O0HV3PLBdR7mYFGJh+SGNB
+	 6ALkQSZKuWXHg==
+Date: Tue, 10 Nov 2026 17:05:53 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Kees Cook <kees+treewide@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the bpf-next tree with the origin tree
+Message-ID: <avNO8cuAdnwv9D_5@sirena.org.uk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,159 +61,484 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109-submit-acx00-phy-stats-v1-v3-0-fbc6327c5be4@gmail.com>
- <20261109-submit-acx00-phy-stats-v1-v3-1-fbc6327c5be4@gmail.com> <348f19e7-120e-4b41-adab-be016c7a6083@lunn.ch>
-In-Reply-To: <348f19e7-120e-4b41-adab-be016c7a6083@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 10 Nov 2026 10:03:41 -0700
-X-Gm-Features: AclHuK9Z8HBeiil6sej5BA1Wz9f4abX4Dg7pGqCo1nUmbA_AdXdQ7J-TZIt3lPw
-Message-ID: <CADvTj4p6q_-QT1R6CAVnhnWerzF3qsPhi8rPTcZBjbrbRCdtnA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] ethtool: add PHY receive frame and byte totals
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="L/Ic/TP4yfNtWQry"
+Content-Disposition: inline
+
+
+--L/Ic/TP4yfNtWQry
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 9:42=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Mon, Nov 09, 2026 at 07:48:32PM -0700, James Hilliard wrote:
-> > The generic PHY receive packet and byte counters describe successfully
-> > received traffic. Some PHYs instead count all received frames and bytes=
-,
-> > including frames with errors. A frame error count cannot recover the
-> > number of successfully received bytes because damaged frames have
-> > different lengths.
-> >
-> > Add optional receive-total counters to ethtool_phy_stats and the phydev
-> > statistics group. Count frame bytes including the Ethernet header, padd=
-ing
-> > and FCS, and excluding the preamble and start frame delimiter. These
-> > counters describe reception at the PHY, before MAC or host filtering.
-> >
-> > Append the new attributes so existing statistic IDs and their meanings
-> > remain unchanged. Publish the names through the existing statistics str=
-ing
-> > set, and retain the unset-counter convention so drivers can report eith=
-er
-> > set of counters independently.
-> >
-> > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> > ---
-> >  Documentation/networking/ethtool-netlink.rst | 16 +++++++++++++++-
-> >  include/linux/ethtool.h                      |  6 ++++++
-> >  include/uapi/linux/ethtool_netlink.h         |  2 ++
-> >  net/ethtool/stats.c                          |  8 +++++++-
-> >  4 files changed, 30 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentati=
-on/networking/ethtool-netlink.rst
-> > index eba226c79ec3..5528d0f7afdd 100644
-> > --- a/Documentation/networking/ethtool-netlink.rst
-> > +++ b/Documentation/networking/ethtool-netlink.rst
-> > @@ -1665,7 +1665,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currently =
-defined values are:
-> >   ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30.3=
-.2.1.*)
-> >   ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistics =
-(30.3.3.*)
-> >   ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
-> > - ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not define=
-d by IEEE
-> > + ETHTOOL_STATS_PHY      phydev   Additional PHY statistics, not define=
-d by IEEE
-> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-> >
-> >  Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in the =
-reply.
-> > @@ -1683,6 +1683,20 @@ by ``ETHTOOL_A_STATS_GRP_SS_ID``. Complex statis=
-tics (such as RMON histogram
-> >  entries) are also listed inside ``ETHTOOL_A_STATS_GRP`` and do not hav=
-e
-> >  a string defined in the string set.
-> >
-> > +The ``phydev`` group provides separate counters for successfully recei=
-ved
-> > +traffic and total received traffic.
->
-> You need to be careful with naming here. This is a
-> kAPI. phydev/phylib/phylink are implementation details, a set of
-> helpers which some MAC drivers use to implement PHYs. But MAC driver
-> can implement PHYs in different ways, and don't need to use a phydev.
+Hi all,
 
-"phydev" is already the name exported for ETHTOOL_STATS_PHY by
-stats_std_names[] in net/ethtool/stats.c. That documentation change
-matches the existing group name; it does not rename the interface.
-The proposed counters describe PHY reception independently of how
-the driver implements PHY support.
+Today's linux-next merge of the bpf-next tree got a conflict in:
 
->
-> ``ETHTOOL_A_STATS_PHY_RX_PKTS``
-> > +(``RxFrames``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES`` (``RxOctets``) cou=
-nt
-> > +successfully received frames and bytes. ``ETHTOOL_A_STATS_PHY_RX_PKTS_=
-TOTAL``
-> > +(``RxFramesTotal``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES_TOTAL`` (``RxOc=
-tetsTotal``)
-> > +include frames with errors. The total byte count includes the Ethernet=
- header,
-> > +padding and FCS, but excludes the preamble and start frame delimiter.
->
-> And what would you call it when the counter does include the preamble
-> and start frame delimiter?
->
-> Take a step back. Just because this PHY has these counters, do we need
-> to support them? And what happens when the next PHY comes along with
-> slightly different counters? Do we add them as well?
->
-> It is vendor SDK syndrome. The hardware can do this, so lets expose
-> it.
->
-> What is your use case here which justifies these specific counters.
+  kernel/bpf/cfg.c
 
-The use case is the same traffic monitoring and error diagnosis served
-by the existing PHY packet, byte and error counters. The difference is
-what the hardware measures: successful reception versus total reception,
-including frames with errors.
+between commit:
 
-This appears to be a recurring accounting model across vendors, rather
-than an ACx00-specific definition. TI's DP83TG720 provides another PHY
-example, which is why this series also updates its existing receive
-packet statistic [1].
+  0af298e62e5cf ("treewide: refresh kmalloc_obj() conversions")
 
-There are examples elsewhere in Ethernet hardware too. Microchip's
-LAN9303 explicitly distinguishes received bytes including bad packets
-from received bytes in good packets [2]. Those are MAC counters in a
-switch, not PHY counters, but they illustrate the same distinction.
-That supports a shared total-versus-successful abstraction, although
-each device's exact error and byte-accounting rules still need checking.
+=66rom the origin tree and commit:
 
-The v2 review identified that ACx00's inclusive measurements do not
-match the existing successful-only fields [0]. The successful byte
-count cannot be derived by subtracting an error count, because damaged
-frames have different lengths. The proposed fields preserve that
-traffic accounting without changing the existing fields' meaning.
+  6771f70a47332 ("bpf: Remove is_state_visited(), bpf_compute_scc() and ite=
+r.depth")
 
-For the preamble/SFD case, a counter including those bytes would not
-match the proposed definition unchanged. A driver could use the field
-only if it can accurately normalize its measurement to the same
-frame-byte definition; otherwise it would leave that field unset.
+=66rom the bpf-next tree.
 
-The intent is to represent a recurring measurement with consistent
-semantics, rather than add a generic counter for every variation in
-vendor register accounting.
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-[0] https://lore.kernel.org/r/20261109235715.1618218-1-kuba@kernel.org/
-[1] https://www.ti.com/lit/ds/symlink/dp83tg720s-q1.pdf
-[2] https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductD=
-ocuments/DataSheets/00002308A.pdf
+diff --combined kernel/bpf/cfg.c
+index 1b04538351a1f,bbcf42eae9d92..0000000000000
+--- a/kernel/bpf/cfg.c
++++ b/kernel/bpf/cfg.c
+@@@ -75,21 -75,28 +75,28 @@@ static void mark_subprog_might_throw(st
+  	subprog->might_throw =3D true;
+  }
+ =20
+- /* 't' is an index of a call-site.
++ /*
++  * 't' is an index of a call-site.
+   * 'w' is a callee entry point.
+   * Eventually this function would be called when env->cfg.insn_state[w] =
+=3D=3D EXPLORED.
+-  * Rely on DFS traversal order and absence of recursive calls to guarante=
+e that
+-  * callee's effect marks would be correct at that moment.
++  * DFS traversal order guarantees that callee's effect marks are correct =
+at that
++  * moment, unless the callee calls one of its callers: see close_callee_e=
+ffects().
++  * Returns true if the marks of the caller changed.
+   */
+- static void merge_callee_effects(struct bpf_verifier_env *env, int t, int=
+ w)
++ static bool merge_callee_effects(struct bpf_verifier_env *env, int t, int=
+ w)
+  {
+  	struct bpf_subprog_info *caller, *callee;
+ =20
+  	caller =3D bpf_find_containing_subprog(env, t);
+  	callee =3D bpf_find_containing_subprog(env, w);
++ 	if (caller->changes_pkt_data >=3D callee->changes_pkt_data &&
++ 	    caller->might_sleep >=3D callee->might_sleep &&
++ 	    caller->might_throw >=3D callee->might_throw)
++ 		return false;
+  	caller->changes_pkt_data |=3D callee->changes_pkt_data;
+  	caller->might_sleep |=3D callee->might_sleep;
+  	caller->might_throw |=3D callee->might_throw;
++ 	return true;
+  }
+ =20
+  enum {
+@@@ -123,12 -130,8 +130,8 @@@ static int push_insn(int t, int w, int=20
+  		return -EINVAL;
+  	}
+ =20
+- 	if (e =3D=3D BRANCH) {
+- 		/* mark branch target for state pruning */
+- 		mark_prune_point(env, w);
+- 		mark_jmp_point(env, w);
++ 	if (e =3D=3D BRANCH)
+  		mark_jump_target(env, w);
+- 	}
+ =20
+  	if (insn_state[w] =3D=3D 0) {
+  		/* tree-edge */
+@@@ -172,13 -175,8 +175,8 @@@ static int visit_func_call_insn(int t,=20
+  	if (ret)
+  		return ret;
+ =20
+- 	mark_prune_point(env, t + insn_sz);
+- 	/* when we exit from subprog, we need to record non-linear history */
+- 	mark_jmp_point(env, t + insn_sz);
+-=20
+  	if (visit_callee) {
+  		w =3D t + insns[t].imm + 1;
+- 		mark_prune_point(env, t);
+  		merge_callee_effects(env, t, w);
+  		ret =3D push_insn(t, w, BRANCH, env);
+  	}
+@@@ -439,14 -437,12 +437,12 @@@ static int visit_gotox_insn(int t, stru
+  		return -E2BIG;
+  	}
+ =20
+- 	mark_prune_point(env, t);
+  	for (i =3D 0; i < jt->cnt; i++) {
+  		w =3D jt->items[i];
+  		if (verifier_bug_if(w < 0 || w >=3D env->prog->len, env,
+  				    "indirect jump from insn %d to %d out of range", t, w))
+  			return -EFAULT;
+ =20
+- 		mark_jmp_point(env, w);
+  		mark_jump_target(env, w);
+ =20
+  		/* EXPLORED || DISCOVERED */
+@@@ -521,19 -517,43 +517,43 @@@ static int visit_func_ptrs_insn(int t,=20
+  	}
+ =20
+  	/* all functions are explored, their effects are known */
+- 	mark_prune_point(env, t);
+  	for (i =3D 0; i < cnt; i++) {
+  		w =3D ptrs[i].xlated_off;
+  		merge_callee_effects(env, t, w);
+ =20
+- 		/* the same marks as push_insn() leaves on a branch target */
+- 		mark_prune_point(env, w);
+- 		mark_jmp_point(env, w);
++ 		/* the same mark as push_insn() leaves on a branch target */
+  		mark_jump_target(env, w);
+  	}
+  	return DONE_EXPLORING;
+  }
+ =20
++ /*
++  * A subprog that calls one of its callers is EXPLORED before that caller=
+ is: it
++  * took the marks that the caller had so far, and so did everybody who ca=
+lled it
++  * since. Merge again at every call until nothing changes.
++  */
++ static void close_callee_effects(struct bpf_verifier_env *env)
++ {
++ 	struct bpf_insn *insn =3D env->prog->insnsi;
++ 	struct bpf_func_ptr *ptrs;
++ 	bool changed;
++ 	u32 cnt, j;
++ 	int t;
++=20
++ 	do {
++ 		changed =3D false;
++ 		for (t =3D 0; t < env->prog->len; t++) {
++ 			if (bpf_pseudo_call(&insn[t]) || bpf_pseudo_func(&insn[t]))
++ 				changed |=3D merge_callee_effects(env, t, t + insn[t].imm + 1);
++ 			ptrs =3D insn_func_ptrs(env, t, &cnt);
++ 			for (j =3D 0; j < cnt; j++)
++ 				changed |=3D merge_callee_effects(env, t, ptrs[j].xlated_off);
++ 			if (bpf_is_ldimm64(&insn[t]))
++ 				t++;
++ 		}
++ 	} while (changed);
++ }
++=20
+  /* Visits the instruction at index t and returns one of the following:
+   *  < 0 - an error occurred
+   *  DONE_EXPLORING - the instruction was fully explored
+@@@ -565,28 -585,13 +585,13 @@@ static int visit_insn(int t, struct bpf
+  		return DONE_EXPLORING;
+ =20
+  	case BPF_CALL:
+- 		if (bpf_is_async_callback_calling_insn(insn))
+- 			/* Mark this call insn as a prune point to trigger
+- 			 * is_state_visited() check before call itself is
+- 			 * processed by __check_func_call(). Otherwise new
+- 			 * async state will be pushed for further exploration.
+- 			 */
+- 			mark_prune_point(env, t);
+  		/* For functions that invoke callbacks it is not known how many times
+  		 * callback would be called. Verifier models callback calling functions
+  		 * by repeatedly visiting callback bodies and returning to origin call
+  		 * instruction.
+- 		 * In order to stop such iteration verifier needs to identify when a
+- 		 * state identical some state from a previous iteration is reached.
+- 		 * Check below forces creation of checkpoint before callback calling
+- 		 * instruction to allow search for such identical states.
+  		 */
+- 		if (bpf_is_sync_callback_calling_insn(insn)) {
++ 		if (bpf_is_sync_callback_calling_insn(insn))
+  			mark_calls_callback(env, t);
+- 			mark_force_checkpoint(env, t);
+- 			mark_prune_point(env, t);
+- 			mark_jmp_point(env, t);
+- 		}
+  		if (bpf_helper_call(insn)) {
+  			const struct bpf_func_proto *fp;
+ =20
+@@@ -606,21 -611,6 +611,6 @@@
+  			struct bpf_call_arg_meta meta;
+ =20
+  			ret =3D bpf_fetch_kfunc_arg_meta(env, insn->imm, insn->off, &meta);
+- 			if (ret =3D=3D 0 && bpf_is_iter_next_kfunc(&meta)) {
+- 				mark_prune_point(env, t);
+- 				/* Checking and saving state checkpoints at iter_next() call
+- 				 * is crucial for fast convergence of open-coded iterator loop
+- 				 * logic, so we need to force it. If we don't do that,
+- 				 * is_state_visited() might skip saving a checkpoint, causing
+- 				 * unnecessarily long sequence of not checkpointed
+- 				 * instructions and jumps, leading to exhaustion of jump
+- 				 * history buffer, and potentially other undesired outcomes.
+- 				 * It is expected that with correct open-coded iterators
+- 				 * convergence will happen quickly, so we don't run a risk of
+- 				 * exhausting memory.
+- 				 */
+- 				mark_force_checkpoint(env, t);
+- 			}
+  			/* Same as helpers, if called in a non-sleepable context
+  			 * program will be rejected anyway, so we should end up
+  			 * with precise sleepable marks on subprogs, except for
+@@@ -649,18 -639,12 +639,12 @@@
+  		if (ret)
+  			return ret;
+ =20
+- 		mark_prune_point(env, t + off + 1);
+- 		mark_jmp_point(env, t + off + 1);
+  		mark_jump_target(env, t + off + 1);
+ =20
+  		return ret;
+ =20
+  	default:
+  		/* conditional jump with two edges */
+- 		mark_prune_point(env, t);
+- 		if (bpf_is_may_goto_insn(insn))
+- 			mark_force_checkpoint(env, t);
+-=20
+  		ret =3D push_insn(t, t + 1, FALLTHROUGH, env);
+  		if (ret)
+  			return ret;
+@@@ -759,6 -743,7 +743,7 @@@ walk_cfg
+  		}
+  	}
+  	ret =3D 0; /* cfg looks good */
++ 	close_callee_effects(env);
+  	env->prog->aux->changes_pkt_data =3D env->subprog_info[0].changes_pkt_da=
+ta;
+  	env->prog->aux->might_sleep =3D env->subprog_info[0].might_sleep;
+ =20
+@@@ -833,201 -818,3 +818,3 @@@ int bpf_compute_postorder(struct bpf_ve
+  	kvfree(state);
+  	return 0;
+  }
+-=20
+- /*
+-  * Compute strongly connected components (SCCs) on the CFG.
+-  * Assign an SCC number to each instruction, recorded in env->insn_aux[*]=
+=2Escc.
+-  * If instruction is a sole member of its SCC and there are no self edges,
+-  * assign it SCC number of zero.
+-  * Uses a non-recursive adaptation of Tarjan's algorithm for SCC computat=
+ion.
+-  */
+- int bpf_compute_scc(struct bpf_verifier_env *env)
+- {
+- 	const u32 NOT_ON_STACK =3D U32_MAX;
+-=20
+- 	struct bpf_insn_aux_data *aux =3D env->insn_aux_data;
+- 	const u32 insn_cnt =3D env->prog->len;
+- 	int stack_sz, dfs_sz, err =3D 0;
+- 	u32 *stack, *pre, *low, *dfs, *dfs_pos;
+- 	u32 i, j, t, w;
+- 	u32 next_preorder_num;
+- 	u32 next_scc_id;
+- 	bool assign_scc;
+- 	struct bpf_iarray *succ;
+-=20
+- 	next_preorder_num =3D 1;
+- 	next_scc_id =3D 1;
+- 	/*
+- 	 * - 'stack' accumulates vertices in DFS order, see invariant comment be=
+low;
+- 	 * - 'pre[t] =3D=3D p' =3D> preorder number of vertex 't' is 'p';
+- 	 * - 'low[t] =3D=3D n' =3D> smallest preorder number of the vertex reach=
+able from 't' is 'n';
+- 	 * - 'dfs' DFS traversal stack, used to emulate explicit recursion;
+- 	 * - 'dfs_pos[k] =3D=3D j' =3D> the frame 'dfs[k]' resumes visiting its
+- 	 *   successors at index 'j'.
+- 	 */
+- 	stack =3D kvcalloc(insn_cnt, sizeof(int), GFP_KERNEL_ACCOUNT);
+- 	pre =3D kvcalloc(insn_cnt, sizeof(int), GFP_KERNEL_ACCOUNT);
+- 	low =3D kvcalloc(insn_cnt, sizeof(int), GFP_KERNEL_ACCOUNT);
+- 	dfs =3D kvzalloc_objs(*dfs, insn_cnt, GFP_KERNEL_ACCOUNT);
+- 	dfs_pos =3D kvzalloc_objs(*dfs_pos, insn_cnt, GFP_KERNEL_ACCOUNT);
+- 	if (!stack || !pre || !low || !dfs || !dfs_pos) {
+- 		err =3D -ENOMEM;
+- 		goto exit;
+- 	}
+- 	/*
+- 	 * References:
+- 	 * [1] R. Tarjan "Depth-First Search and Linear Graph Algorithms"
+- 	 * [2] D. J. Pearce "A Space-Efficient Algorithm for Finding Strongly Co=
+nnected Components"
+- 	 *
+- 	 * The algorithm maintains the following invariant:
+- 	 * - suppose there is a path 'u' ~> 'v', such that 'pre[v] < pre[u]';
+- 	 * - then, vertex 'u' remains on stack while vertex 'v' is on stack.
+- 	 *
+- 	 * Consequently:
+- 	 * - If 'low[v] < pre[v]', there is a path from 'v' to some vertex 'u',
+- 	 *   such that 'pre[u] =3D=3D low[v]'; vertex 'u' is currently on the st=
+ack,
+- 	 *   and thus there is an SCC (loop) containing both 'u' and 'v'.
+- 	 * - If 'low[v] =3D=3D pre[v]', loops containing 'v' have been explored,
+- 	 *   and 'v' can be considered the root of some SCC.
+- 	 *
+- 	 * Here is a pseudo-code for an explicitly recursive version of the algo=
+rithm:
+- 	 *
+- 	 *    NOT_ON_STACK =3D insn_cnt + 1
+- 	 *    pre =3D [0] * insn_cnt
+- 	 *    low =3D [0] * insn_cnt
+- 	 *    scc =3D [0] * insn_cnt
+- 	 *    stack =3D []
+- 	 *
+- 	 *    next_preorder_num =3D 1
+- 	 *    next_scc_id =3D 1
+- 	 *
+- 	 *    def recur(w):
+- 	 *        nonlocal next_preorder_num
+- 	 *        nonlocal next_scc_id
+- 	 *
+- 	 *        pre[w] =3D next_preorder_num
+- 	 *        low[w] =3D next_preorder_num
+- 	 *        next_preorder_num +=3D 1
+- 	 *        stack.append(w)
+- 	 *        for s in successors(w):
+- 	 *            # Note: for classic algorithm the block below should look =
+as:
+- 	 *            #
+- 	 *            # if pre[s] =3D=3D 0:
+- 	 *            #     recur(s)
+- 	 *            #     low[w] =3D min(low[w], low[s])
+- 	 *            # elif low[s] !=3D NOT_ON_STACK:
+- 	 *            #     low[w] =3D min(low[w], pre[s])
+- 	 *            #
+- 	 *            # But replacing both 'min' instructions with 'low[w] =3D m=
+in(low[w], low[s])'
+- 	 *            # does not break the invariant and makes iterative version=
+ of the algorithm
+- 	 *            # simpler. See 'Algorithm #3' from [2].
+- 	 *
+- 	 *            # 's' not yet visited
+- 	 *            if pre[s] =3D=3D 0:
+- 	 *                recur(s)
+- 	 *            # if 's' is on stack, pick lowest reachable preorder numbe=
+r from it;
+- 	 *            # if 's' is not on stack 'low[s] =3D=3D NOT_ON_STACK > low=
+[w]',
+- 	 *            # so 'min' would be a noop.
+- 	 *            low[w] =3D min(low[w], low[s])
+- 	 *
+- 	 *        if low[w] =3D=3D pre[w]:
+- 	 *            # 'w' is the root of an SCC, pop all vertices
+- 	 *            # below 'w' on stack and assign same SCC to them.
+- 	 *            while True:
+- 	 *                t =3D stack.pop()
+- 	 *                low[t] =3D NOT_ON_STACK
+- 	 *                scc[t] =3D next_scc_id
+- 	 *                if t =3D=3D w:
+- 	 *                    break
+- 	 *            next_scc_id +=3D 1
+- 	 *
+- 	 *    for i in range(0, insn_cnt):
+- 	 *        if pre[i] =3D=3D 0:
+- 	 *            recur(i)
+- 	 *
+- 	 * Below implementation replaces explicit recursion with array 'dfs'.
+- 	 */
+- 	for (i =3D 0; i < insn_cnt; i++) {
+- 		if (pre[i])
+- 			continue;
+- 		stack_sz =3D 0;
+- 		dfs_sz =3D 1;
+- 		dfs[0] =3D i;
+- 		dfs_pos[0] =3D 0;
+- dfs_continue:
+- 		while (dfs_sz) {
+- 			w =3D dfs[dfs_sz - 1];
+- 			if (pre[w] =3D=3D 0) {
+- 				low[w] =3D next_preorder_num;
+- 				pre[w] =3D next_preorder_num;
+- 				next_preorder_num++;
+- 				stack[stack_sz++] =3D w;
+- 			}
+- 			/* Visit remaining 'w' successors */
+- 			succ =3D bpf_insn_successors(env, w);
+- 			for (j =3D dfs_pos[dfs_sz - 1]; j < succ->cnt; ++j) {
+- 				if (pre[succ->items[j]]) {
+- 					low[w] =3D min(low[w], low[succ->items[j]]);
+- 				} else {
+- 					/*
+- 					 * Once DFS for succ->items[j] is complete,
+- 					 * pre[succ->items[j]] is non-zero, hence
+- 					 * resuming at 'j' allows to follow the
+- 					 * low[w] =3D min(...) update branch above.
+- 					 */
+- 					dfs_pos[dfs_sz - 1] =3D j;
+- 					dfs_pos[dfs_sz] =3D 0;
+- 					dfs[dfs_sz] =3D succ->items[j];
+- 					dfs_sz++;
+- 					goto dfs_continue;
+- 				}
+- 			}
+- 			/*
+- 			 * Preserve the invariant: if some vertex above in the stack
+- 			 * is reachable from 'w', keep 'w' on the stack.
+- 			 */
+- 			if (low[w] < pre[w]) {
+- 				dfs_sz--;
+- 				goto dfs_continue;
+- 			}
+- 			/*
+- 			 * Assign SCC number only if component has two or more elements,
+- 			 * or if component has a self reference, or if instruction is a
+- 			 * callback calling function (implicit loop).
+- 			 */
+- 			assign_scc =3D stack[stack_sz - 1] !=3D w;	/* two or more elements? */
+- 			for (j =3D 0; j < succ->cnt; ++j) {	/* self reference? */
+- 				if (succ->items[j] =3D=3D w) {
+- 					assign_scc =3D true;
+- 					break;
+- 				}
+- 			}
+- 			if (bpf_calls_callback(env, w)) /* implicit loop? */
+- 				assign_scc =3D true;
+- 			/* Pop component elements from stack */
+- 			do {
+- 				t =3D stack[--stack_sz];
+- 				low[t] =3D NOT_ON_STACK;
+- 				if (assign_scc)
+- 					aux[t].scc =3D next_scc_id;
+- 			} while (t !=3D w);
+- 			if (assign_scc)
+- 				next_scc_id++;
+- 			dfs_sz--;
+- 		}
+- 	}
+- 	env->scc_info =3D kvzalloc_objs(*env->scc_info, next_scc_id,
+- 				      GFP_KERNEL_ACCOUNT);
+- 	if (!env->scc_info) {
+- 		err =3D -ENOMEM;
+- 		goto exit;
+- 	}
+- 	env->scc_cnt =3D next_scc_id;
+- exit:
+- 	kvfree(stack);
+- 	kvfree(pre);
+- 	kvfree(low);
+- 	kvfree(dfs);
+- 	kvfree(dfs_pos);
+- 	return err;
+- }
 
->
->      Andrew
+--L/Ic/TP4yfNtWQry
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzTvEACgkQJNaLcl1U
+h9BfYQf/YA8V7NBSbRzM9lidQpHtF1mN3KNcVG405b2VuAe3RO/HrF5i5Im9FqcU
+5pRrtmK2Ed8EcZxOd5t6a/2GA4A9mFvUVWW+rHCmr4uvcNYNB9gDjrDylzpp683A
+mhHQMp9Y96D1T4AYs5hWyC447qfMpLWtxVychkpGLHaweIVqa4IWtaxg5vUgoPob
+XoNK+YGkH3/TIiZ4oX48ET5oLhi/hQ9TnULOG6JYwsG2aHGLdDgY7WU64RSJIr14
+P5RAPTBQxz9Pt4upECv2LckTFoCkW1mFU9Or6qC1st1Ht1HkO5YQ1so4g3FW1gRV
+OxwvexG5veU27i2AQ2sY1fca9Szf4Q==
+=Z056
+-----END PGP SIGNATURE-----
+
+--L/Ic/TP4yfNtWQry--
