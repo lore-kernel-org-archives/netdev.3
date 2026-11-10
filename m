@@ -1,102 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794352409;
-	b=YAegsptVpsFB4N0EjD819Wua7Sdcx4BEeBQr631Vy5HA23UwlTIuFz5or+Hrm/7eLhR7
-	 qqBR8pQNAxrkVriRzBxD+NH4/Kc/HG60IC8IBTLiaeQvXkbSkmGb+Fhiye0lav2Z5Jcmt
-	 p8ErlCPK0YFlPQ4+p2ZbNW2SC5OLBVvBU3apmYwu/BYFOobvNdhXICYNq4pUUiD0Py9Gk
-	 VTT5K9ZAEfA27xrJ3V3W7eLYmki4obAr3s7iWHpuEgU/+3i1L9Wybi0WbjGtC82iDYzpy
-	 Zm/aBpJCEx+zrzkMxYl7/NK65dIuyFQsqlFahepl/i5qJNLASYgvdvhUBjbfC8PhjJg==
+	t=1794352565;
+	b=zIC8NP5CaY/K0Z2FO3WEyAkNLUcQDptMMjaLks5z4FdQUDnlx3gKKk0hdAmpw8mcjy6i
+	 SU8VduixvqBTcVsWH6e/gWgyv0qMvDRNFOgBqlEFDj+Ztev5ZLkZE3NMFxEkfrQ+vQ1DS
+	 DHvQDGYkWqSCA0pEHTB9pCVbUcZsoi+TWvL4RMjZCJ+lrrJdJRURFGY6pCL1Q0ngzc6IA
+	 PuBJS8HyQ57EsN/+QytFOJzwDvkzbOYzTffL+IdAFh3WyfhF8WdsD0xuyA0Ly+G7rx7kJ
+	 l1gs4jkl6edvguUnI+M63DLHGw9zfnoSDuEwGOxF3hmk6jU648tGn73qEFTkCyKPAlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794352409;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794352565;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=O1zdEmSlr6e17xANOXeUw7jgKI8hal4IZfaLSwVHO/Y=;
-	b=Dfh0L0gnfk65+0oQV/64eQqJWlTotP57ef33m8e70aQNmq8U+tpTvPVRrMYqHYU+4VFh
-	 g8cgPVrB/LNp8IG9Nog5XTqS26h0meF5Uu3miKdKNntaX/iyYGKQ9edWL6lbJHYpPgWDa
-	 gVkyMtbXk45fHhH0Ln6b4IrlUxcba3hJjKJsUlv+EoztwuqLixoc9zyeT4tLl3duQsNj9
-	 mg3YuvbkeHg/8mvNrpxtMcL9XLes/zYj59UqcwXPuMhrFVamdy5QJtEY9c2RXyOxaJ2ix
-	 qrKkVqe3Di5H2exEuxrjDmaUOh1jY74uehbyf3+6m2eYvd7FlskRReaI/ZvkHDweVJg==
+	bh=aXOcZXRZG9W9cTt57WRkxGPk1ieKxWzcKQyjGslnx3U=;
+	b=GkFR2NT0Y2DPwgV8sTiqTfrpoWyZu6utX/5LKQWfRtEhmpOn0jT9wEiK3yyDCt/e95H1
+	 NNrLP/ayuPPEsPrnOUH0sqc9DU1cjhcKGdU0NqGd92GdHYJtSqMUZi8QA0L1cd4C86jae
+	 l39uYPOF6qKOKJ7M1qW2nKn3yDUZzU4MvZ3X8kpLgu0OTr11JobmZ/qyqUfvy6/jsMykZ
+	 TmFvlaWn8zhNdG6qD3M5V3ngXarGzKoUQLKAowp3rZ6Vygj9zPgGat0ZTvgsQHRX1dkXk
+	 d836KqMijtJb2CKa7XpAln7pKYXD2mZpptsIrSUyZrnjvWBRv1hRGYgMlXRhznFiFWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=dama.to;
-	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=WUrW97WJ;
-	arc=none smtp.remote-ip=209.85.210.177
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=goArgeLC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B6B60A2606
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:13:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1B6B60A2606
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DBE606A31C;
+	Tue, 10 Nov 2026 23:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=WUrW97WJ
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0880a46e7so1514743b3a.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:13:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1794352408; x=1794957208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O1zdEmSlr6e17xANOXeUw7jgKI8hal4IZfaLSwVHO/Y=;
-        b=WUrW97WJPkkiDyaPWBt/Yf86zlfQv6juXMNpHIHZOhnwO4n4cNdZ+rK8h+FAesSqPe
-         wRKPVqoPPK51UhGdI1UDJti3+62RmC8UhKVhGWrZabQ9YxO2gHglKNDgQE7fmzsXN03d
-         VndWLWwHM09scELUwC2ghDDVqkUR3Futp6OVXvZaNTTqLtJ0Dq6VHMcaZRP0/fUhKmSw
-         2kBVtF6qDId2RQqe5g7v5k+XNurLhy/dI4ynNKAIki0DjV0JxZ6jIZdZoJvMzC20kpvj
-         8sFOEX85P/Gu7KtP9/mY1NQ2aXlSeg+8LFbsM0IakzpH+jQpc9vwc/zz5Hq2rp9+PoB2
-         EscQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794352408; x=1794957208;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O1zdEmSlr6e17xANOXeUw7jgKI8hal4IZfaLSwVHO/Y=;
-        b=pVc0h4N5mH3kj9EQvewabBkNmQUWLhYVJZgkt8kUCnnKzOEvGU3CHdlADrEkBZ0G+N
-         x0wtSCAsU8dhOQJtHLjbMnDQ+fJJkbUuNLK2oC6+jPaa4sNTI7zZjXwb/PGVJE6QYHrI
-         xKEIjeM8WSOOWELEhHE3x8LduFph/3yGlBO3YlfkKzf6K/sR5tOu2c4K393+g3rg5XvH
-         6E/moOrwtO1ThRDbit/7WYqnWWHhdfhd5qbKy/YXtBFyfYbLOHCpnVfaWUbSxsTtKo01
-         ZmRybHnS2OlReYMCt/x6KpulIx1fR8P1redQN2dJyx4LpTpS/8y+EK8WrothwVsVwBTI
-         eFGA==
-X-Gm-Message-State: APuU4Z9z6XRr8pdbuIPfRsAlota1aEJNqf6TW05X78p+5NukLhWQN4RF
-	oxFHTud7eA7BPNxX75Fjog+bpNtcpVlAP8jBBbSW2yT9AYnVxWgd88n3fCFAVTlBFkQ8Jnz+PD7
-	Nkn1n
-X-Gm-Gg: AYBFou2VEbLFYu+p5fQv70yTPRp/EPtjv1E7AFk5wfPukyZzhVQpsJcSiw4OYYnHYnE
-	IF440p2kCSSVdlI36H0re7ptdj2rIdaFLw0P8nXi89tk/Cmrl4J9F14QisFY/bbNIzeSb0oU0Jk
-	qq9eDtvepe2D+Vhrm10wM03brnBmNtMcuchSu/BIPqRcMULSjKgkGaNvSYCHkckL6EW3kP+bd2t
-	qr2QKGJDQI697iYbioDa0KyTWbqAaCLTfb75gG5NKS8DJ1HkZsMj7FDPMkib1ZUYuq3Y525BIGo
-	FacMtEAfIpg6tZQZbyfqQev2IAIR8PxQvgT6IVtmPGjFx3LDQAUMJ8IPZBfWqWpFHaxSuZQyNN/
-	CZ5q31QMD/FNeGVmu3oDVe7DDn3E/Hdk5kqvYfrmiWtYi/fl4ENLMTuHPtr+AdY83V1iKxQ3tg5
-	tJHu95oVX2VI+z6Nr7Ng/9YAtAnEqHuuQOb4nqk2GVdcSlk5LRsyRlnulLLyepfARmF6PUlgkoE
-	wCOZHqr7UmrF83UfRICybGEMRO/YDoV08KwHdhWYc+EGMf+ick8pcpfm7JgL3a29goDu+NOwo7F
-	2IhTaEaRqsMVOPkMHtEicgg+hd+0H89jRNHZMGF53FE=
-X-Received: by 2002:a05:6a00:4605:b0:89b:6041:2348 with SMTP id d2e1a72fcca58-8bc1c2a9089mr440796b3a.7.1794352408016;
-        Tue, 10 Nov 2026 15:13:28 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:70::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa1b2887sm1432058b3a.20.2026.11.10.15.13.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 15:13:27 -0800 (PST)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next 5/5] net/mlx4: flush pending doorbell when dropping a TX skb
-Date: Tue, 10 Nov 2026 15:12:59 -0800
-Message-ID: <20261110231304.1859217-6-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261110231304.1859217-1-joe@dama.to>
-References: <20261110231304.1859217-1-joe@dama.to>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=goArgeLC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D531F0093C;
+	Tue, 10 Nov 2026 23:16:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794352564;
+	bh=aXOcZXRZG9W9cTt57WRkxGPk1ieKxWzcKQyjGslnx3U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=goArgeLCqTdLh1pc3Du1L2cgqIMUG4ujmouYTqhWdu//9Dxngx2x4ncWfM7v+qVTY
+	 Kpg+i8NLYpO9RV19S//2Zy0get7IG37AB5AUVwQajojjnoHj08Hv2h53ARAdbyys/T
+	 nDgB28HVfTT0dJynSquxooDiEsjfO7eiUjKUSXNA1Fb4STSRHDpLnsyXdto9HN9ecB
+	 ssM8wVYEQsxxqKRxy47RNefAZ2NihcRCT0viSc87xJnEblWYxJH6Ce9U45LJXDfd8F
+	 WWGC2eE1SUx31xN48rUBTcJ0DS8Cvsk3LtfEK2gnUeXL/4OGa9RVO8vI6mBQaIWzIn
+	 afBpEx2nAUUog==
+Date: Tue, 10 Nov 2026 15:16:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: James Clark <jjc@jclark.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Richard
+ Cochran <richardcochran@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Doug Berger <opendmb@gmail.com>, Nicolai
+ Buchwitz <nb@tipi-net.de>, =?UTF-8?B?VGjDqW8=?= Lebrun
+ <theo.lebrun@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Russell King
+ <linux@armlinux.org.uk>, Conor Dooley <conor.dooley@microchip.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>,
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miroslav
+ Lichvar <mlichvar@redhat.com>, Vladimir Oltean <olteanv@gmail.com>, Hubert
+ Feurstein <h.feurstein@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/6] net: mdio: add timestamped MDIO writes
+ for PHY gettimex64
+Message-ID: <20261110151602.7a065b73@kernel.org>
+In-Reply-To: <20261105054839.2248046-1-jjc@jclark.com>
+References: <20261105054839.2248046-1-jjc@jclark.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,37 +71,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-If mlx4_en_xmit drops an skb (for example because DMA mapping fails) and
-that skb happens to be the last one in the batch, the doorbell for the
-WQEs posted earlier in the batch isn't written.
+On Thu,  5 Nov 2026 12:48:33 +0700 James Clark wrote:
+> PTP_SYS_OFFSET_EXTENDED uses gettimex64 to bracket each PHC read with
+> system clock reads. Some PHYs have a PTP hardware clock (PHC) that is
+> read over MDIO and sometimes multiple MDIO transfers are needed to read
+> the clock. This leads to brackets in the tens of microseconds.
+> Applications that synchronize the system clock from the PHC typically
+> use the midpoint of the bracket as the system time of the PHC reading.
+> With multiple transfers, the midpoint of the bracket is typically far
+> from the time when the PHC reading actually occurred.
 
-The queue stays awake, though, so those WQEs are eventually announced to
-the HW after the next TX, but that depends on traffic and could induce
-latency.
-
-Avoid all of that by writing the pending doorbell in the drop path.
-
-Signed-off-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/mellanox/mlx4/en_tx.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index 123071a47bed..3166837711be 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -1135,6 +1135,9 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- tx_drop_count:
- 	ring->tx_dropped++;
-+	/* an earlier skb in this batch may have deferred the doorbell */
-+	if (ring->doorbell_pending)
-+		mlx4_en_xmit_doorbell(ring);
- tx_drop:
- 	dev_kfree_skb_any(skb);
- 	return NETDEV_TX_OK;
--- 
-2.53.0-Meta
-
+There are some AI nit picks available:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105054839.2248046-1-jjc@jclark.com
+But frankly unless someone with time expertise reviews this it is going
+nowhere.
