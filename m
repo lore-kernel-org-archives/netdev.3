@@ -1,49 +1,67 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348854;
-	b=U2+rDcwR4aY627YC7u+zryCxRk3UPuXFQQ/BOA91n0o+mzKKCzNjzy9rT8hif0qaWB/x
-	 OASaxt7TUyMjAZ72c7KYb46nT79g6hq1r0fnncTDsGAdTFvEea9QXNkMY5D9wWhqfGaPy
-	 RQXgnURed3H42aRbJ1S986fLea64ECJxx+owd3ZvQV4X9ajW7GKW4zOIx6xOuoc1EAmtJ
-	 q4FjBfieq9dyfYVyQPrfnw8Y5ukaA2gNhh0ibZWPcge0MSaJLDq3RxdJ8h/3zvcKAqidY
-	 pvGzI9kiMkh9P0EZmJbycRjRYPNoV4wtbRJWQD3g/nkbxlchUKu0vJFHNTRrxH1pa7A==
+	t=1794349773;
+	b=tt2sGHOAmXZxWOcXTleSgn5Hb23I9Rpk9vE3clUX7d5P2weiRXmvlCbnuG97SUmOB0K+
+	 KHz+9DX7GaCp0fyT8uGgF3Q5ucjj8hd0iHavthG5qbUDnZnoJWZRuLYafke0QwUuHVrRU
+	 dCl1y6FRIHx9/JrdQF1Q1v5hFHfZszqUYlv2SUXsc37GBRsBv7F0ZuAJVcHmIZILA5uBP
+	 7UNgP63VAczAklZkF6UJJRy5j39nWTh0TF/jItQ6ByHo1YPQ0+WaOlh32FHXrFJRx5djd
+	 m/zamFxu3mxoksBZe5X6Up5/y8ewT/zGiB/WAXptAof8lGF1iP/u5kFZa3m/JsODDjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348854;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer;
-	bh=ipOVGl3yLVo1UiASl3+4WMedgv0UE7c6VM/RwbbR3cI=;
-	b=mxf5+7phn6i0ed4VXZVAUZt5/RXh0vLZ/t+ddQaWbjott9czkhkKbYfT4togmhoPKZr8
-	 6vnC7+mRH7ON6CthM0dv6mez+HFtWREZAlMw01ibISkH6fk/hO5MkFNP1iBs8+iHelSmp
-	 3+WrH0+prj9BMxMUHvxkTcmMumGjuc2593e9qCnWHsMus9AgGJotl6OvBeMsOaE/xO1p7
-	 mknA89fI/0a5v0WX6Cv0HDtgOtuTmBICMdqj36+XQZEY9yjsqjkmQpXggo6HjsUJ4JILR
-	 BfiQHIqagAF7yTpnDaiasYDmetKjgYggzfvEGK8WjlBkUb9v6B3gTQD8SqYOqjrKZtg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794349773;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=12aZd4VVZmazmO2LqNFc3EaBHnp9dr+S95mvD22St/k=;
+	b=lxtF3JIW+t2+S1vdVwIXe/g5d1Uge4YSOS+pHsIIIZ+w7vz4fY0EXnVVNmTxnv4S7Jc/
+	 hjNchnh8EPoRL74BukalVN0Jr+fTTKd3zLdLJmnLmzmkxOnkdWIT8KjXHLeyBSPzxR8q6
+	 6yIWUC87pnXSOlj+xAmZOgINozXgcFMDMFS18xgt9aC6BpA5qkHlJEtVRHhL+oE41UDKs
+	 Q/3+ktJHk8jgFfkBS07eGXYgwWaZ6OrAUGhiAeET6MXTsRlF4mgNN4Nyi3EDrzCu4+S6T
+	 29cvI0Qfl3xZ2f9u7xrlRgaT4zF5+kurYKK70sBo9g9UQ95yl/9RLXrPm171aS2zpSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mNt/+IB/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ivezAf21;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917B7606A335
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0399606A31C;
+	Tue, 10 Nov 2026 22:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mNt/+IB/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CEE1F008BD;
-	Tue, 10 Nov 2026 22:14:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ivezAf21
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4F1F008A2;
+	Tue, 10 Nov 2026 22:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348854;
-	bh=ipOVGl3yLVo1UiASl3+4WMedgv0UE7c6VM/RwbbR3cI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mNt/+IB/dYFgx8QgdhUMkDr2USAFi5l0+rEiTbHHxBfjNjI/ojnSyARwKlG4wDBRC
-	 xlWFX6EKGuyUEkqgpSycWf6Z+7GhaQZCL1CvTS3gzPHE9QvAggTJ0WZIa0LMQIDFLW
-	 MtcH1bWvc+kEZHlT+402V/p1xRXDvgi8efvGmUbeFTBEVb5+w0+mXSBkv1cLsMj45n
-	 UBe2EZKj6dIRCBTpud32I883us+xzPKbns2QWJugykxboJHRG19Y8VOLzDO5aFxlyo
-	 6tWeVELCsug3eNmSIV5GzxQqTwkzt3F7dA5HSaC46tvylu5HhRSxTlSmNsB22J7SbT
-	 RNyUAL0nUXNXQ==
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 10 Nov 2026 23:13:33 +0100
-Subject: [PATCH net-next v7 18/18] net: ethernet: cortina: Fix ethtool
- statistics reads
+	s=k20260515; t=1794349772;
+	bh=12aZd4VVZmazmO2LqNFc3EaBHnp9dr+S95mvD22St/k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ivezAf21BC5uxVSyWLO8nK/O+uPoddW4Sj29qqKHnmIkpppWEWnjyIiMmWIKfDWc8
+	 rnowyCy/clYGQ0yX9QBZeFvu5j3spGAF9MG1I1ZpVtFpJqFdATaMb1r4gJVmXbvePJ
+	 oEsZ1FTf3Fua2N0hwbc3I4mG4oRuXkQOhrSQs9nH88r6tfHdV8XhdczdbI7s4Xhdsu
+	 ARZ3FqOAughIbNH2tEE8fUNXGVq8JX3ispl7PgFHFnwzOlMMG/V/y+FR8RLagovRpN
+	 wXffMzcO5UowLrhQVPcUkgSJGqvmpcC5/86xVY/0eRQqgVNY/Ckz0g8WrKj85XkSLA
+	 2civDFz0pU74Q==
+Subject: Re: [PATCH net-next v18 02/15] net: build socket infrastructure for
+ QUIC protocol
+From: netdev-bot+sashiko@kernel.org
+To: lucien.xin@gmail.com
+Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com,
+ dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org,
+ linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev,
+ cel@kernel.org, jlayton@kernel.org, steved@redhat.com, hare@suse.de,
+ aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org,
+ mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com,
+ jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net,
+ marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com,
+ mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
+Date: Tue, 10 Nov 2026 22:29:30 +0000
+Message-ID: <179434977013.994134.13824008759137549463@kernel.org>
+In-Reply-To: <1e1b85634f2cb7d625785edfe50b68a9af6508c7.1794241655.git.lucien.xin@gmail.com>
+References: <1e1b85634f2cb7d625785edfe50b68a9af6508c7.1794241655.git.lucien.xin@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,82 +71,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-gemini-ethernet-fixes-3-v7-18-9c32a1a46aec@kernel.org>
-References: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
-In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
-To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
- Myeonghun Pak <mhun512@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.16.0
 
-The TX statistics reader resets p on a seqcount retry but writes through
-values instead. A retry on 32-bit systems therefore writes another 18
-counters past the end of the ethtool statistics array. ETHTOOL_GSTATS
-does not require privileges.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Write through p so each retry overwrites the same output slots. Stop
-clearing the fragment counters from the reader, which races with TX
-updates and resets the counters on each read. Snapshot tx_hw_csummed
-under ir_stats_syncp, matching its writer, and retain its output position.
+Low priority / nit picks for your consideration:
 
-Found during Sashiko review and checked with an extracted-reader host
-harness that forces seqcount retries. The old reader overwrote guard
-entries and cleared counters; the fixed reader stays within the output
-array and preserves counters.
+- [Low] The tag block of commit "net: build socket infrastructure for
+  QUIC protocol" reads 'Signed-off-by: Xin Long <lucien.xin@gmail.com>',…
 
-Tested on the D-Link DIR-685 with intense transfers and ping storms,
-reading out stats with ethtool at the same time.
+--
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+net: build socket infrastructure for QUIC protocol
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 1007fd54cb05..b586205a7e20 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2478,6 +2478,7 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	unsigned int start;
-+	u64 tx_hw_csummed;
- 	u64 *p;
- 	int i;
- 
-@@ -2490,6 +2491,7 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- 
- 		for (i = 0; i < RX_STATS_NUM; i++)
- 			*p++ = port->hw_stats[i];
-+		tx_hw_csummed = port->tx_hw_csummed;
- 
- 	} while (u64_stats_fetch_retry(&port->ir_stats_syncp, start));
- 	values = p;
-@@ -2513,12 +2515,10 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- 		p = values;
- 		start = u64_stats_fetch_begin(&port->tx_stats_syncp);
- 
--		for (i = 0; i < TX_MAX_FRAGS; i++) {
--			*values++ = port->tx_frag_stats[i];
--			port->tx_frag_stats[i] = 0;
--		}
--		*values++ = port->tx_frags_linearized;
--		*values++ = port->tx_hw_csummed;
-+		for (i = 0; i < TX_MAX_FRAGS; i++)
-+			*p++ = port->tx_frag_stats[i];
-+		*p++ = port->tx_frags_linearized;
-+		*p++ = tx_hw_csummed;
- 
- 	} while (u64_stats_fetch_retry(&port->tx_stats_syncp, start));
- }
+This patch adds the base socket infrastructure for QUIC: Kconfig and
+Makefile integration, proto and proto_ops registration for IPv4 and IPv6,
+per-net SNMP counters in procfs, and sysctl knobs for memory limits. Most
+protocol operations are placeholders that later patches in the series fill
+in.
+
+> Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> Signed-off-by: Pengtao He <hepengtao@xiaomi.com>
+> Acked-by: Paolo Abeni <pabeni@redhat.com>
+
+[Severity: Low]
+This isn't a bug, but are the sign-off tags in the right order?
+
+Documentation/process/submitting-patches.rst gives two rules here:
+
+  - A Co-developed-by tag must come directly before each co-author's
+    Signed-off-by.
+
+  - "the last Signed-off-by: must always be that of the developer
+    submitting the patch."
+
+Xin Long is the author, and he also appears to be the one submitting the
+series. The last patch, "quic: add packet parser base", has only his
+Signed-off-by.
+
+If Pengtao He co-developed this patch, the tags should look like this:
+
+  Co-developed-by: Pengtao He <hepengtao@xiaomi.com>
+  Signed-off-by: Pengtao He <hepengtao@xiaomi.com>
+  Signed-off-by: Xin Long <lucien.xin@gmail.com>
+
+If he only handled the patch, the current chain does not match the route
+the patch actually took.
+
+Other patches in the series follow the same pattern, for example "quic:
+add crypto key derivation and installation" and "quic: provide quic.h
+header files for kernel and userspace".
 
 -- 
-2.56.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1794241654.git.lucien.xin%40gmail.com
