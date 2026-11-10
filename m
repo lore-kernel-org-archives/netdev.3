@@ -1,41 +1,41 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794311482;
-	b=Psi9kq+ZxbsgiCMzHkWg35O1gK7HOBznGcFNeXbugbckAT8YGcDkzj6b7fAfLv2gFkyr
-	 JlPUy0io0ZFa1GoIBK7XfI0Avq0O7t6Bonh09klXYaRwTHvVbMflT1aNFvVdDQYoDS/Qh
-	 CANK+8IC3vDNLs9CL0FqPF1vTf1FAFfjbHKImpCqbtjUhGdPfm65GTh21f/nWWiXDA2L6
-	 D4zKnOBd06QtveXJzU4SQzG42E6mqJsuDPAPKH1CXNlpb48Om66Qox0wI3LrG584PGkcm
-	 IPszyYrSiMfgU0t9boTnk4HSKWadRwQTq3WDRqkZWEJFeVRTNsHlOdj0G7h09q1FK4w==
+	t=1794311483;
+	b=HtcN/NGKmwJ4pSCTXUk4SQPY565x2LhQ5DXy7MY57gDLmkezUN7zTPkl3rUVopKVtMos
+	 qjrOkX88o2cls0JWCvwn4ZDtBkZ+5M4DeYkJ4kJP0gDdVxJCkts4eGP3sfqAlW69hiNfa
+	 fIuE0tbVxhwwR6NP0azRqKX4/0+EapoutQGAlbam7VFSoQ0ptxx9kkgkujtTRdF5EsZVW
+	 wxTLw82PR8wp5UWZJtWO2eEEA4xzRlV/CEdZfcArW0jZx71O+JxMOo+LHePSmnMK4+/2L
+	 JPHdLuaode41Cb+lshx5RlxjpJl2OX67VfSGBCz7ShSOGk+76xTGNboi3ZObMiBI+4Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794311482;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794311483;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=07D+ZqL+AxGOoZb0TLP/9FjHhX79ToOWxsLpEGb4hNg=;
-	b=FUudjLbF+vqDltqTDIZrYTcI7EG2TjZyu2MH6Mq9jqBeUXQTIkOOazvNqCZYukcRr9A7
-	 SPPNyaT74wHSu+TqRzFl/1qdtJWhTe2e1o2bu1Y3j784OGSyxUz0eRVBqwcbDwNpRGrmw
-	 ZVSORGDIjL3w9IS8GcKX34jqLklUneHvL1yPKNAJVmn/IiWENZOmljlbTpDB/KJpuBSqE
-	 S1qdPZnxRSKSyQcIQcTNcPkngEPUAnDuLPSGABfP+rxT98Si7szoTCGMUOIC2oq1Ym2Aq
-	 RLn0Yc66WY9J1fqXvtys5yezv1/1FTxMHBH9lWGNf27QowZnaitgZ4gDrSj8AG0EcmQ==
+	bh=WUUlY8KP9jx98U40j4Bemb2QM8e8n/qq7NwYn8gTWGQ=;
+	b=vwPO27vy/merE6uTmY0vzkA/d63xfHJwEnKwUT80AgjXV1ea7JXvf8aHJGcJEKuBs2te
+	 mw1l5WFX62i8YeNC9mrkgYsnDj+q33gV1hw8z+uPMuSfpjELKgbfi/mRRvJ1vRwatfk2f
+	 Hr7bl5Ur7fRUQd1WkF8H91z2UzEh6v5WG/+tjwe4l19JAcUG03iQDmAVgmxwAxY65WJEw
+	 TkzIeQTom/XnS9PBzxZ8WOpLP54spbNSYiCk9mDFCv9DHKt8jtG6dnNyXGc4f5AHdMrXV
+	 3S/VdSe4Uv9onP5b/SfGtefU04Gwa8MDraTlGLohpm5uhwsuWndOsU74lDuGlLQJ+3w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=WwqHZVV+;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=PmZ8+lk7;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E4060A3817;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20EA60A381B;
 	Tue, 10 Nov 2026 11:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6E4060A3817
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F20EA60A381B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=WwqHZVV+
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=PmZ8+lk7
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2AC9C202826;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 387BF20282E;
 	Tue, 10 Nov 2026 12:51:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794311477;
@@ -43,31 +43,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=07D+ZqL+AxGOoZb0TLP/9FjHhX79ToOWxsLpEGb4hNg=;
-	b=WwqHZVV+XpJGJm5bw/nQsbsCp3pZEerdLBCUm1Xz4thzd5lcskn62+7yfnWAmPLA4UM20P
-	+/lPrklulKenLfptVqoQVvjjxgmRaaVYYu3nQvQ7GK6BuqF2YOWayvY3TdH0VAhOIK66mO
-	TnzNhFZ7Lxy42FUS8l4qRZtLPhd6gihbkDkq97wkXboBj5sIeLJgiATrszLdUv3D6pvAEv
-	ZseeiSXrFiG64W4f/m0iyKobo0dfv52VQEzdwK8PvG4/DJ+HHocrLiFMQtM4M6qwUkJcxP
-	NKdWEE5+1oUOP9rJoFPIH22ZXxJy27gVuS91Ep2E4LOOkMMMuq6KVnAVBSL/cA==
+	bh=WUUlY8KP9jx98U40j4Bemb2QM8e8n/qq7NwYn8gTWGQ=;
+	b=PmZ8+lk71kmSiuup5gFRkhE8rWfZ2qhNH2Rr0C/sPjn9Bp2UtIczVfNhqjJRbozasRc0Vw
+	97+UyAYpGmo01ZynCQ51ysWsfBGc+hsOAwJMJp+kY22bl607vL8Ah47yAAHACRRi+wYQYg
+	c4LaeGD0LfzIW5fELOna1geD5qiC3lG86JTG0/PWHRsjyt0ERQ87chPWwQ0cTVFDaqpXwa
+	h6y94NV2mDOgZg39EEEu5vSPItP/9Rz8ljjD5ddhLKXmAwPmoVUsbfQ8pkpMdn9i2Bvx4X
+	7JCw/BOtFZ0GpP7lEMyu9IHLi1ffh8vQnIzrSd9Q0VOH2PV4dnRmCUT0y4WBQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794311477;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=07D+ZqL+AxGOoZb0TLP/9FjHhX79ToOWxsLpEGb4hNg=;
-	b=VZohHaB8nP1FsfDn4wSMN2FuHKxfD3S70w2bskvvYqzdFtry8kTNLdgAOVpUJf7FiU5/QT
-	MxdSaYwcyitRYfpBTEBjr8P3cYNJUiWi+VIBKQZz65JUYjML+fiVgrKfa4LEpfCyC/tHk/
-	s+ZKd1hbFS/iIvAwM4F8kmKETUWaz2NBMnOMd5xECQeNPeQeXEv0f0MbesNk8UM03SS+XN
-	/Ajy6Kjc7aP0eSXpDXV0sUwLrz9Fom5UV9Xp8To42WVgJCm0o3bq5L+a0K+VFy50KJ95EO
-	AFNzUm7nytrjGMIG1nwcxoBKrfCgFKEJlhwYT5ktayF8QZqiyNRASjGY45GAow==
+	bh=WUUlY8KP9jx98U40j4Bemb2QM8e8n/qq7NwYn8gTWGQ=;
+	b=Tg8wxBwDr7Sg0LuaLN/sPjJRjJa0iNSHB7G0nfPcyEANz7Zk3eoMhI4ac7v7qHp/ajP6yi
+	wzcBr2S2gNg+lVF7gqYaktgZw1pJku4FX0HyUoB7R7tcNiq3qDR+X8OrubZ2kt3ksXnLZC
+	MqX4Ig+SUYjN66rzg3J3pw1OZiBy0Jbw/okna6TcqKMwrBgzTZRuzvY+waDWNWVXr+6WUS
+	Uu1wLo+5VuPsyBY5dHVJtpRRAqzEikmTTX8eOrBVfyV7khPDax7wbg5oyuOabyHhjMpROm
+	3ijE8NJJsV/UpGAEVhOh1x1+DBOZ02ObkiPTov+mHMqexZBiPh1/vEjNXFEJrA==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794311477; a=rsa-sha256;
 	cv=none;
-	b=A/5a2gJo2GJ6Pf1KVLg+Ko725g+ynfMgD+nIGjD5jnnIILetJUQuWDM0LTpcLIGdJejLMv
-	vcxgAAHndF4i9JgNOAFlr9G6Y6NYTsWD/bzZeVR/21G0dVZlNalvSUQllR5436vjVhQB44
-	4WckfgAVXvbLf+OwjWHX3zUdZhHfvq0WjpRqEcpzkQRWgwgfQBy9LFLdP/dBCBXO68+ORE
-	HWIvDIxynrp38bTAFp40xdNu7VQxLTLDy8kh3es9pPRUZv95GA05cpsc+bDU0ufPWmOFf0
-	MGN5aXUzOtUl94w9XJvB6+bsSEXFNI12tzThWryxN4dqEWPquaVnuT7tQL7FHA==
+	b=fJmk2l07SZ4o6NC+5Jq7QxwE5DkbSuaSIMO0x7yh5HKsMzcNcETCQIhHESiL5L3p0LhWrz
+	n1kvH9/ATE3ffE98NZNT8UVlvILPjKx7lt0AHNBfhaUADujePFCFc3/zFGssweVxVJb0jy
+	LaQhD592nu6hVxot3juQ25578jfb020ZpB3UMBSpb+zWULm0aKDl3SCtxiVUGVffIxt/ja
+	FvWNgIaojEVoQLk5fq3SNWouog9WFQBkIy2kwdcl7ktE/D/zIGZLQnvbpCBSaOctvCoRdQ
+	dZ0YP2SCwDO73PhjVPxnx6PFmo46f0TZe0k/ss/KcNXjTDqqaQHcOrzE2Q1bRw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
@@ -75,14 +75,14 @@ Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjor
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xQkNh-003UEw-00;
+	id 1xQkNh-003UF4-0N;
 	Tue, 10 Nov 2026 12:51:17 +0100
 Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8FEF85E688F;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id ADE585E6892;
 	Tue, 10 Nov 2026 11:51:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -90,11 +90,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 06/12] can: rcar_canfd: Check can_clk request for errors
-Date: Tue, 10 Nov 2026 12:41:29 +0100
-Message-ID: <20261110115112.3807247-7-mkl@pengutronix.de>
+Subject: [PATCH net-next 09/12] dt-bindings: can: renesas,rcar-canfd: Simplify renesas,no-can-fd description
+Date: Tue, 10 Nov 2026 12:41:32 +0100
+Message-ID: <20261110115112.3807247-10-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261110115112.3807247-1-mkl@pengutronix.de>
 References: <20261110115112.3807247-1-mkl@pengutronix.de>
@@ -109,48 +111,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Biju Das <biju.das.au@gmail.com>
 
-If the provider of can_clk is not yet probed, devm_clk_get() returns
--EPROBE_DEFER. The driver treats any error as can_clk being absent and
-falls back to the other clocking options, so the wrong clock may be
-selected instead of deferring the probe.
+The description of renesas,no-can-fd lists the operating modes
+(CAN-FD, FD-Only and Classical CAN) and which SoCs support each one.
+This is not accurate for every supported SoC, for example RZ/G3S, whose
+CAN-FD controller has no Classical CAN mode.
 
-Request can_clk with devm_clk_get_optional() and propagate its errors.
-While at it, add a comment mentioning that the canfd or fck clocks are
-used as a fallbacks when the external clock is not available or it is
-described in device tree with a rate of 0.
+Drop the mode list and keep only the statement of what the property
+does, so the description no longer implies that all SoCs can operate in
+Classical CAN mode.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20261019121356.2421761-2-claudiu.beznea@kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20261021-canfd_rzg3l-v6-1-b4abfdba8e70@bp.renesas.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ .../devicetree/bindings/net/can/renesas,rcar-canfd.yaml       | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 74c3c3f20991..bb2d03b75142 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -2220,11 +2220,14 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(gpriv->clkp),
- 				     "cannot get peripheral clock\n");
+diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+index 1a7a9ce45e97..81674ea4bef4 100644
+--- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
++++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+@@ -145,9 +145,7 @@ properties:
+   renesas,no-can-fd:
+     $ref: /schemas/types.yaml#/definitions/flag
+     description:
+-      The controller can operate in either CAN-FD mode (default) or FD-Only
+-      mode (RZ/{G2L,G3E} and R-Car Gen4) or Classical CAN mode. Specify this
+-      property to put the controller in Classical CAN mode.
++      Specify this property to put the controller in Classical CAN mode.
  
--	/* fCAN clock: Pick External clock. If not available fallback to
--	 * CANFD clock
-+	/* fCAN clock: Pick External clock. If not available or its rate is
-+	 * zero fallback to CANFD clock or fck (when info->fcan_pclk = 1).
- 	 */
--	gpriv->can_clk = devm_clk_get(dev, "can_clk");
--	if (IS_ERR(gpriv->can_clk) || (clk_get_rate(gpriv->can_clk) == 0)) {
-+	gpriv->can_clk = devm_clk_get_optional(dev, "can_clk");
-+	if (IS_ERR(gpriv->can_clk))
-+		return dev_err_probe(dev, PTR_ERR(gpriv->can_clk), "cannot get can_clk");
-+
-+	if (!gpriv->can_clk || (clk_get_rate(gpriv->can_clk) == 0)) {
- 		if (info->fcan_pclk) {
- 			fcan_freq = clk_get_rate(gpriv->clkp);
- 			gpriv->can_clk = NULL;
+   renesas,fd-only:
+     $ref: /schemas/types.yaml#/definitions/flag
 -- 
 2.53.0
 
