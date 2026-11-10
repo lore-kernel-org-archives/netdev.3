@@ -1,42 +1,43 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.75
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794306005;
-	b=mwPpOIJmA6h7uesr5FhgMVVnJRD0ZL7UEdBZ7EVyZiP0Tr8h0U8a2HnsSQG5tdVnjFr2
-	 gem+2UyZrSFcri0XoNhMSGAdBlv6VtNTfDTJVilDWzrmGxPjLOm1rsaRhpX19tN7zkIgL
-	 6oGnpTxBYpiRFNSEZqiqCIZnZBwMuR97GOJeLNYwC8gXxQ7OelZQJ/27vlIhBilAY9SNN
-	 X6Hq+3OwhyOLAuKko6BDRzYa8EPsaZ4lmX9w5Y0lRCidKRbqHaAo+eXozrT3aS9Mepe+A
-	 /f/ybC2B7Ij7O89onHJypWCWq/ZUTeOfEBed74/kEPa9fZy8IduD0kHKhAuSGCcgFaw==
+	t=1794306008;
+	b=UuMjxdeQHpNteHEEIZwI4XFLemyoQaLrqlVM9iTn9Ebg95NBMLXpURRVSleMhM0C0PRp
+	 SWnu5dyTGeKl0P0wCBojPPKPBZ76VZ92M7LceXFyQAoBPow1Spx+JDkLQ0zySYtB0Wv3t
+	 ef6x96REPLzqXDua5cr8qegDzTA3vDdf/MQgtB0wiBwlvK8VeY2umwdizBf1NM+AsZNFj
+	 BLOaBQEa2J1uNmXZ6efSbd0maeoo67aZ/K5uBQyUrFMUuQTr12/PaemzM/lPThcaAGLqo
+	 qSzoxbdc1M84jji1FyVipLyYdx1vBrIo0fYqym7AmH1UW3DrdznYrwojKEBQjTQlfDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794306005;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794306008;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:DKIM-Signature;
-	bh=coFjlQL4o71VpOaQUnOjY92jOAjx1XEtEHb6FBMSxL0=;
-	b=xg8QdYpQoat3HYjgStDzcQ9pcCNXYZrOLXNoFhrXLV0iKb4ykCK4SXCDv+t5TobPiCaE
-	 ay6hAWiuPFthQV2YT2TJ80hH9v9cCwRH5n90PDspq2IREO6VNVoqUKqR1TynipyD8ShTm
-	 oJ/+HAph+15SLSu5ua5Cz+GMxYhUjJrMbKr3QVchPnoLCXmYJcUdfpUup3vTeQ27FcS5x
-	 6ZPUbsxizUJWOAa048IE/f1A1hufP4CowBLimJ2aWpkCD9Pc9DBLWDpCB9XEPx96IQfuk
-	 cWjLB/kjuCRZ5P1H3sNW/KWWaws3jSn/hLo2ly0dTbdM2Eb67bOYWB5ASmA4Wh5RMeA==
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:DKIM-Signature;
+	bh=M8ILNV3ot9wZQoa2UhnQDc7NOfIz0w/9kC5JL/dcSGg=;
+	b=ZyzUwDrgW6ckpKJJpdwtnW6QDderM3oLipsT8z2eL4SxEzDV/sPUCAqwy7m1qEKvG4B6
+	 JILDjbLNM1e/FkXMFGxIfUn/GIqKqZfce1/jLXhCqm/T+hFWeuBWYlge+5xpjw8WYdRGH
+	 4HqBh0J46/sYJAbCA4Cu/3nmNHs/QT73LN/op11bv5Qclz0TZLqWTlpbzFvQhdBBZemfF
+	 prMIFDn5GFxC8zenRSSw3WQLZre8r+k1xg4f6lo88YgVjJNlz5UmiCL8B+HYIIwDiap7t
+	 jAE4QNELp2eeOgkVgltpmT1CL1PjHbNGVPcvrAfCMgnOOjY1IhScinvGojrNB0IE/qA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=poczta.fm;
 	spf=pass smtp.mailfrom=poczta.fm;
-	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=F6x0Wt2I;
+	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=KpBXWzW4;
 	arc=none smtp.remote-ip=217.74.67.75
 Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A8F606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:20:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0A8F606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BFD606A32E
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:20:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90BFD606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=F6x0Wt2I
+	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=KpBXWzW4
 Received: from localhost (unknown [80.68.231.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
 	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Tue, 10 Nov 2026 11:19:50 +0100 (CET)
+	Tue, 10 Nov 2026 11:20:01 +0100 (CET)
 From: Slawomir Stepien <sst@poczta.fm>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -71,10 +72,12 @@ Cc: bpf@vger.kernel.org,
 	Yunsheng Lin <linyunsheng@huawei.com>,
 	"huangjie . albert" <huangjie.albert@bytedance.com>,
 	Slawomir Stepien <sst@poczta.fm>
-Subject: [PATCH RFC net-next v2 0/4] xdp: reuse generic skb XDP handling for veth
-Date: Tue, 10 Nov 2026 11:19:37 +0100
-Message-ID: <20261110101941.1059662-1-sst@poczta.fm>
+Subject: [PATCH RFC net-next v2 1/4] xdp: add mixed page_pool/page_shared memory type
+Date: Tue, 10 Nov 2026 11:19:38 +0100
+Message-ID: <20261110101941.1059662-2-sst@poczta.fm>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261110101941.1059662-1-sst@poczta.fm>
+References: <20261110101941.1059662-1-sst@poczta.fm>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,156 +90,187 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1794305994; bh=coFjlQL4o71VpOaQUnOjY92jOAjx1XEtEHb6FBMSxL0=;
+	t=1794306004; bh=M8ILNV3ot9wZQoa2UhnQDc7NOfIz0w/9kC5JL/dcSGg=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=F6x0Wt2IsFfRNdpuBAtfMnBNoUYTsjT92sKdENJ+3JE+bVXz/6+Y3eE5mqrB/7ieo
-	 mzcPBSapgxUOMKWU24NgjrijE8v1mjB5xnyWurRJ80M4udAy/eGwcDZ56pds7VaqLX
-	 GGJbbHpyVZZ6i9IajWU/a9h2fEfhey8PBerXc9XY=
+	b=KpBXWzW4876uUrlznwGy0IabYfyeEt7b1cje5Jo60pVdw7ld2lhkk0VfdxHGOiF4n
+	 0ATtdmGLMDhMneHR5IZyfbWdWunpVXWL/ZXZoYg0YRm+Oaq1P7UzEbyuTemb++quny
+	 tcLWznz979MdLKgPDcBgcp+BqfQa7AV5eNY7hPcQ=
 
-Hi,
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-this is v2 of Maciej's RFC [1], which makes veth run XDP on skb-backed
-packets through the generic skb XDP path instead of converting them
-into xdp_frames for XDP_TX and XDP_REDIRECT. The patches are Maciej's;
-I addressed the review of v1 and measured the performance, which was
-the main open question there. Changes I made are noted in [sst: ...]
-lines in each commit message.
+Generic XDP runs on skb-backed data. In that mode the skb head remains
+owned by the skb, but XDP helpers may still release frags, for example
+when a program trims a non-linear packet.
 
-The motivation is unchanged: veth pins the skb data with plain page
-references (veth_xdp_get()) to build an xdp_frame from an skb, and the
-rxq memory type it reports does not match memory that was copied into
-a page_pool, which makes the AF_XDP selftests splat when a program
-shrinks a multi-buffer packet. With this series, pages copied into
-veth's page_pool are recycled (0 rx_pp_recycle_released_ref, was
-~4.8M/s in the benchmark below).
+With the generic page_pool CoW path, the frags visible to XDP may be
+backed by the generic system page_pool. In the fallback path, or for
+other skb-backed memory, the same generic XDP rxq may still describe
+page-frag based memory. Selecting MEM_TYPE_PAGE_POOL or
+MEM_TYPE_PAGE_SHARED purely from the rxq therefore either lies about
+page_pool ownership or misses recycling opportunities.
 
-Dependencies
-============
+Add MEM_TYPE_MIXED for skb-backed generic XDP users. The
+return path inspects the actual netmem: page_pool-backed netmems are
+returned through their page_pool, and everything else falls back to
+page_frag_free(). Transition netdev_rx_queue's xdp_rxq_info from
+MEM_TYPE_PAGE_SHARED to MEM_TYPE_MIXED.
 
-The series applies to net-next with these two net series applied
-first (prerequisite-patch-id below):
+This keeps rxq identity stable for users which inspect xdp->rxq->dev and
+xdp->rxq->queue_index, while avoiding per-packet rxq->mem mutation.
 
- - Tianyi Gao, "net: fix mac_len of skbs copied by generic XDP" (1/2)
-   [2]. Without it, cpumap redirect of skbs that veth copied drops
-   every packet once veth uses the generic path.
- - Vladimir Oltean, "net: pass the XDP action to generic_xdp_tx() for
-   tracing" and "net: validate xmit skbs in generic_xdp_tx()" [3].
-   Patch 2/4 changes the same function.
+Respect new mem_type in __xdp_build_skb_from_frame() as veth could
+redirect xdp_frame onto cpumap.
 
-Changes in v2
-=============
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+[sst: rename MEM_TYPE_PAGE_POOL_OR_SHARED to MEM_TYPE_MIXED (Björn asked
+ for a new name, MEM_TYPE_MIXED was Maciej's proposal), document the type]
+Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+---
+ include/net/xdp.h |  1 +
+ net/core/dev.c    |  7 ++++++
+ net/core/xdp.c    | 54 ++++++++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 57 insertions(+), 5 deletions(-)
 
-1/4: MEM_TYPE_PAGE_POOL_OR_SHARED renamed to MEM_TYPE_MIXED (Björn);
-     comment on what the type means.
-2/4: Rebased on Vladimir's series. The redirect callers in devmap and
-     filter still return success: generic_xdp_tx() frees and counts a
-     failed skb itself, so propagating the error would free it twice
-     (Björn asked why the error is not propagated).
-3/4: One skb_needs_xdp_cow() predicate for generic XDP and veth
-     (shared, cloned, nonlinear or headroom too small) instead of a
-     per-caller callback and INDIRECT_CALL_2 (Jakub). The
-     skb_head_is_locked() check is gone, it would copy every locally
-     generated skb. Copies go to the caller's page_pool with
-     skb_pp_cow_data() also for programs without frags support (found
-     by the xdp_metadata selftest).
-4/4: Commit message describes how XDP_TX/XDP_REDIRECT change for
-     skb-backed packets (Björn's table). A failed skb XDP_TX is counted
-     once, in the device's tx_dropped (Sashiko). veth sets
-     skb->mac_len before running generic XDP, as
-     __netif_receive_skb_core() does; without it cpumap redirect of
-     veth skbs is dropped.
-
-Performance
-===========
-
-QEMU/KVM, 8 vCPUs, minimal config without debug options. pktgen sends
-skbs into veth v0, the XDP program runs on the peer v1 (skb path).
-Packets/s delivered to the destination, median of 12 runs of 8 s over
-4 alternating boots per kernel, 95% bootstrap confidence intervals
-within about +-2%. Base: v7.4-rc1+ (f66469d9905b) with the
-dependencies above.
-
-                              64 B                      8000 B (3 frags)
-  XDP_TX                      4.49 -> 4.04 Mpps (-10%)  2.25 -> 1.87 (-17%)
-  REDIRECT devmap -> veth     4.30 -> 3.95 (-8%)        2.18 -> 1.81 (-17%)
-  REDIRECT cpumap             4.49 -> 4.47 (0%)         2.02 -> 2.27 (+12%)
-  XDP_DROP (native veth)      5.65 -> 5.42 (-4%)        2.82 -> 2.71 (-4%)
-  XDP_DROP (xdpgeneric)       5.63 -> 5.83 (+4%)        2.94 -> 3.00 (+2%)
-
-(cpumap 8000 B base: base without Vladimir's series, which does not
-touch that path; 3 of the 12 runs of the other base kernel stalled.)
-
-cpumap avoids the skb -> xdp_frame -> skb round trip. XDP_TX and
-devmap redirect to veth are slower for two reasons:
-
- - no bulking: one ndo_start_xmit() per skb instead of ndo_xdp_xmit()
-   with up to 16 frames;
- - at 8000 B the receiving veth copies the packet a second time.
-   Before, it got an xdp_frame; now it gets an skb with frags, and
-   nonlinear skbs are always copied (kprobe on skb_pp_cow_data(): 1
-   copy per packet before, 2 after).
-
-Vladimir's validation itself costs about 3% at 64 B on these two
-paths and nothing measurable elsewhere.
-
-Questions
-=========
-
- - Is the XDP_TX/devmap regression acceptable for the simpler and
-   correct memory handling, or should it be fixed first? Options we
-   see: skb-list bulking in the generic TX path (Jesper measured +30%
-   with xmit_more), and not copying nonlinear skbs whose frags are
-   already page_pool pages. Raising veth's needed_headroom (Jesper)
-   only helps linear skbs from senders that honour it; pktgen skbs are
-   shared and always copied, so the benchmark above cannot show it.
-   We left all three for follow-ups.
- - MEM_TYPE_MIXED vs. separate memory types per source (Jesper).
- - The redirect semantics change in 4/4 (Björn).
-
-Testing
-=======
-
-Each commit builds with W=1 without new warnings, checkpatch --strict is
-clean. test_progs -t ns_xsk,xdp passes; test_xsk.sh shows the same DRV
-XDP_ADJUST_TAIL_GROW failures (also with busy poll) as without the
-series. Reproducers for shrinking frags in generic and veth XDP, XDP_TX
-of multi-buffer packets, devmap egress programs and bpf_prog_test_run
-after generic XDP on lo pass without kernel warnings.
-
-The scripts, kernel configs and raw logs behind the numbers and tests
-above are in [4], with instructions to rerun them.
-
-AI disclosure: the review changes, the tests and the benchmark were
-prepared with help from an AI coding assistant (Claude); I reviewed
-and tested all changes.
-
-[1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
-[2] https://lore.kernel.org/all/20261103200036.65764-3-tianyi@cloudflare.com/
-[3] https://lore.kernel.org/all/20261030114753.185281-1-vladimir.oltean@nxp.com/
-[4] https://github.com/s-stepien/xdp-rfc
-
-Thanks,
-Slawomir
-
-Maciej Fijalkowski (4):
-  xdp: add mixed page_pool/page_shared memory type
-  xdp: return status from generic_xdp_tx()
-  xdp: split generic XDP skb handling
-  veth: use generic skb XDP handling
-
- drivers/net/veth.c        | 191 +++++++++-----------------------------
- include/linux/netdevice.h |  33 ++++++-
- include/net/xdp.h         |   1 +
- net/core/dev.c            | 122 ++++++++++++++++++------
- net/core/filter.c         |   7 ++
- net/core/xdp.c            |  54 ++++++++++-
- 6 files changed, 222 insertions(+), 186 deletions(-)
-
-
-base-commit: fa5196392691051963726787944db872420dfa75
-prerequisite-patch-id: 7db3107f14b28c509845871045e6af93b7e267bc
-prerequisite-patch-id: 40350101232837c5a38ba1662825228d01734b39
-prerequisite-patch-id: 0b57f8c2a409470b1ddf8df747d906d5d3dbd9f3
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index 07231adfb5f8..ba055439e497 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -45,6 +45,7 @@ enum xdp_mem_type {
+ 	MEM_TYPE_PAGE_ORDER0,     /* Orig XDP full page model */
+ 	MEM_TYPE_PAGE_POOL,
+ 	MEM_TYPE_XSK_BUFF_POOL,
++	MEM_TYPE_MIXED,           /* skb memory: page_pool or page_frag, per page */
+ 	MEM_TYPE_MAX,
+ };
+ 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 9665f3b2f5cb..6e330fc415cb 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11459,6 +11459,13 @@ static int netif_alloc_rx_queues(struct net_device *dev)
+ 		err = xdp_rxq_info_reg(&rx[i].xdp_rxq, dev, i, 0);
+ 		if (err < 0)
+ 			goto err_rxq_info;
++		err = xdp_rxq_info_reg_mem_model(&rx[i].xdp_rxq,
++						 MEM_TYPE_MIXED,
++						 NULL);
++		if (err < 0) {
++			xdp_rxq_info_unreg(&rx[i].xdp_rxq);
++			goto err_rxq_info;
++		}
+ 	}
+ 	return 0;
+ 
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index 1d679e8fd649..7077bc54d7d5 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -22,6 +22,7 @@
+ #include <net/xdp_priv.h> /* struct xdp_mem_allocator */
+ #include <trace/events/xdp.h>
+ #include <net/xdp_sock_drv.h>
++#include "netmem_priv.h"
+ 
+ #define REG_STATE_NEW		0x0
+ #define REG_STATE_REGISTERED	0x1
+@@ -280,6 +281,12 @@ static struct xdp_mem_allocator *__xdp_reg_mem_model(struct xdp_mem_info *mem,
+ 	if (!__is_supported_mem_type(type))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
++	/* MEM_TYPE_MIXED has no allocator of its own: __xdp_return()
++	 * checks every page and returns page_pool pages to their pool.
++	 */
++	if (type == MEM_TYPE_MIXED && allocator)
++		return ERR_PTR(-EINVAL);
++
+ 	mem->type = type;
+ 
+ 	if (!allocator) {
+@@ -424,6 +431,23 @@ void xdp_rxq_info_attach_page_pool(struct xdp_rxq_info *xdp_rxq,
+ }
+ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
+ 
++static bool xdp_netmem_is_pp(netmem_ref netmem)
++{
++#if IS_ENABLED(CONFIG_PAGE_POOL)
++	return netmem_is_pp(netmem);
++#else
++	return false;
++#endif
++}
++
++static void __xdp_return_page_pool(netmem_ref netmem, bool napi_direct)
++{
++	if (napi_direct && xdp_return_frame_no_direct())
++		napi_direct = false;
++
++	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, napi_direct);
++}
++
+ /* XDP RX runs under NAPI protection, and in different delivery error
+  * scenarios (e.g. queue full), it is possible to return the xdp_frame
+  * while still leveraging this protection.  The @napi_direct boolean
+@@ -433,20 +457,26 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
+ void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+ 		  bool napi_direct, struct xdp_buff *xdp)
+ {
++	netmem_ref head;
++
+ 	switch (mem_type) {
+ 	case MEM_TYPE_PAGE_POOL:
+ 		netmem = netmem_compound_head(netmem);
+-		if (napi_direct && xdp_return_frame_no_direct())
+-			napi_direct = false;
+ 		/* No need to check netmem_is_pp() as mem->type knows this a
+ 		 * page_pool page
+ 		 */
+-		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+-					  napi_direct);
++		__xdp_return_page_pool(netmem, napi_direct);
+ 		break;
+ 	case MEM_TYPE_PAGE_SHARED:
+ 		page_frag_free(__netmem_address(netmem));
+ 		break;
++	case MEM_TYPE_MIXED:
++		head = netmem_compound_head(netmem);
++		if (xdp_netmem_is_pp(head))
++			__xdp_return_page_pool(head, napi_direct);
++		else
++			page_frag_free(__netmem_address(netmem));
++		break;
+ 	case MEM_TYPE_PAGE_ORDER0:
+ 		put_page(__netmem_to_page(netmem));
+ 		break;
+@@ -791,6 +821,19 @@ struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *xdp)
+ }
+ EXPORT_SYMBOL_GPL(xdp_build_skb_from_zc);
+ 
++static bool xdp_mem_is_page_pool_backed(enum xdp_mem_type mem_type,
++					netmem_ref netmem)
++{
++	switch (mem_type) {
++	case MEM_TYPE_PAGE_POOL:
++		return true;
++	case MEM_TYPE_MIXED:
++		return xdp_netmem_is_pp(netmem_compound_head(netmem));
++	default:
++		return false;
++	}
++}
++
+ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+ 					   struct sk_buff *skb,
+ 					   struct net_device *dev)
+@@ -836,7 +879,8 @@ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+ 	 * - RX ring dev queue index	(skb_record_rx_queue)
+ 	 */
+ 
+-	if (xdpf->mem_type == MEM_TYPE_PAGE_POOL)
++	if (xdp_mem_is_page_pool_backed(xdpf->mem_type,
++					virt_to_netmem(xdpf->data)))
+ 		skb_mark_for_recycle(skb);
+ 
+ 	/* Allow SKB to reuse area used by xdp_frame */
 -- 
 2.56.0
 
