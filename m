@@ -1,104 +1,104 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794309816;
-	b=Wmi7Ez/s1OoaHQ1iu0dzKkGWA99fwYZ3bhtgkhsjixZSeD6AMKML+Kaf1WjVreusRFkQ
-	 3+f4GmRQKNJ/LSa230ld6OByOsMl7pSIf+g7ieaWhsakR/kzjHlkYNMm+kw3eG2lZEi9L
-	 ELWDRoiFrcARyE4YQUSv64HDZqI7+oM3u3ghHQjGibToeBvS6SupUxiB1Lem2UH2WZcDA
-	 OhLtbLzJwbgTCEE3dOnUfN4xqrFduYaWvwi6Iohg+DAG4utQOTUs41a0xwSdLBwvm40qL
-	 CvmknQxI3C2o0tUQmtBkhL1JT4T/Ac/6hYMySDpWcpcV8AkOLj++HFiD1q0pgY3MtZw==
+	t=1794309813;
+	b=sQrgkq1ZxURYFgY0aU1ox35KbhKS74F5dreLSFqDwLHaamuiKl2RsozAoFX6E7MM8x9M
+	 qr/nAh0RdbKsq9OeJhZOf1suTDTeQ9viyI6Gr7ebL3Y2FFOzrpg/MaE+gMYk2g1lw21mh
+	 dFj+fbGAFL3R+Jo6TBjyf0GHM9xAZXbUx/Ws6atkOgi2kYD7SROzvjYgjsYlNvJX8m175
+	 gz/bsyJst5hgItFIDaB6XZZ2GvSwAJbl5skxRx7Z6JnQPzsmhJLp/S/Y1KMhvUTZCKNsA
+	 Up+UNZMhc6xI2hmVczymhWcvYjlirGd1ZSAWzlRzG5kwc/L0qsjrF+Wc/uUuthbrrKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794309816;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794309813;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=FRqMllTEOoXf38Ur+jEqpl2zFBttJn4Z0H2rz9zpLxE=;
-	b=EQ8mYosPNkPs9kbcLzMBb3qAzLE1twmtEtuwG0qZLyHlg3JcvfjBVEUYjVYva9oJ6GAq
-	 lqErNegMb6cuPpn/v//wmMh70yX/gZzLtJTVJsc2GcjQ0m17lvuE0JSq6y5WICpnYwt7V
-	 FV8XB3lLJEGKYy49+mulCbghGe9tAARJ7JdB8AVQ7Y6Zsg776nqMhOIeI1qUIT4V4Rag2
-	 oropJqoWr7QjrV81xXQOgFQ/gSwAlvjG2eEcBzI5U6GK/iKxkjU1eKjvDZowGBe7IQPDb
-	 ve87LH9Ky2S3ZYqZK0ZrNGT2GV092Ab9AzPGthknd6YlYW/LfFM6jvHgq7EPLDs2+uQ==
+	bh=nV9RvqWkqqUe9ueUa8RJ8XBgYpSS/wqmTlJFvrZtdGY=;
+	b=vyUlfjsVFnF/ViDu/DqW7LmqLLsXxMI4rfOMqhZ1T+qosq7w/fQvFjSoXfu4RVNGMzUF
+	 WEDqWGgfeRsfSiVedkse7GTouq120Qjyf/MuvxGcz12YKZYsQ3E1IgZYXV9puip7RIbCz
+	 rWbhR2R6o8/RwIXG+vcUn3BMntRtAQ7YvSARS/FSa7p5S5ZpBR+SNODov1sgRypfdiZ6/
+	 9WaNiBipHVK86R38khEjP+7Uqwq0MaetVAJYe0+kBN+K+I8FHhbt7GhfVfXN3IJdhvkPA
+	 WbOp/RFL46/dWC9jgMecGw74JqUn8qMCeHy3oRpz3R/ksmoPEVld+wdwiulIYDssfLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LhDCIGFM;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=IOtlQFFT;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WZyWx7RL;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=QWkKDBsD;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375D760A2627
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 11:23:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 375D760A2627
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BEC606A33D
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 11:23:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26BEC606A33D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LhDCIGFM;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=IOtlQFFT
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WZyWx7RL;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=QWkKDBsD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794309815;
+	s=mimecast20190719; t=1794309812;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FRqMllTEOoXf38Ur+jEqpl2zFBttJn4Z0H2rz9zpLxE=;
-	b=LhDCIGFMiGIv/SFxU/zB0H9OlW++9EoXoa8Rfn5kXOA8O7VwkK7yPJgo5AU5ikwLcThcSA
-	GZv6M0WVUjRuGf1IyXkCkaX6oXPxxY78KyAHdinyUIO+UaPFKb8WVdLGXhGQnzB4fVCDnG
-	wPrJTymyWCCYpThNQRbTZd/DDj7MWwo=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nV9RvqWkqqUe9ueUa8RJ8XBgYpSS/wqmTlJFvrZtdGY=;
+	b=WZyWx7RLZl8/87J+rl0GXTRSdMWDaee47nzWclSU2pErmahfP+9WTKvw51Tf7P+AZe0zY2
+	YB809PL/xCnXYgIuWLOu/BYdsoVEfv2I+gg9HtHdjsxDi9O8ZoT9eOCqkXrvuJKopMnbod
+	Tys/yAooFKO6GDSmSgUCVLSrhhHriOQ=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-N0yk6aq7NjWm1ypieJLa3A-1; Tue, 10 Nov 2026 06:23:33 -0500
-X-MC-Unique: N0yk6aq7NjWm1ypieJLa3A-1
-X-Mimecast-MFC-AGG-ID: N0yk6aq7NjWm1ypieJLa3A_1794309813
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-94776ee7bf0so311132985a.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:23:33 -0800 (PST)
+ us-mta-332-CdKrA6NSOgqoTllDEEtg9A-1; Tue, 10 Nov 2026 06:23:30 -0500
+X-MC-Unique: CdKrA6NSOgqoTllDEEtg9A-1
+X-Mimecast-MFC-AGG-ID: CdKrA6NSOgqoTllDEEtg9A_1794309810
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91c7bf2d734so41400506d6.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:23:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794309813; x=1794914613; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1794309810; x=1794914610; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FRqMllTEOoXf38Ur+jEqpl2zFBttJn4Z0H2rz9zpLxE=;
-        b=IOtlQFFTPRypoQpqqtWsExkTtYKYL2sQY5dTaOdOnIBNjcYlnsvdoJmhgTQO1b2QU3
-         NQbupWDdoIB1TdS/NiE83Szx48XQwt1qLFTvUyko+oGDQGOBMGwWC+LORGbFFdBKQrXg
-         8i4WFp5ytwjVO9lay0H46S3QLuHGb2wpGbs+BBoOZBYgj5J8quZoN+NNI0R04xlXuXRb
-         nw2LK4SkTcw+JTHiwFGqJR/nl3QUBgPSCK4XnYpfBX/9spRQ0SIveS65Ra2LFrRHFKyi
-         7fNM/LK6KMOJqEO1eHzRg8fBJyJT+kgO7hAHix6+OH92+1BX5bgP6GF+JeOJ6djaVyOE
-         LPWQ==
+        bh=nV9RvqWkqqUe9ueUa8RJ8XBgYpSS/wqmTlJFvrZtdGY=;
+        b=QWkKDBsD0uJYwZXf23UgXt4i2t1fP81+Zl8jbuaC64YRBRMTmY07eb6Ylz93KcUXfq
+         gBuLXREvTCVXqL1aZ/BE4xPh/xBhnQH1MQ3Jzk9zz8McrKMZVl1KHZPy/dRVggh9jtgO
+         K/3ytAFg3LGfHZdO3LF/HBa6ajBlHXB7MCbJV79zMVqt6zlay1XOP12eOLkJ5fbYg/qM
+         IyefqyoS9+LO0c5OkkQhrrjyv4ZzuBYyk5V3TiPx5C3c/D3IGU/T4iPrWJH+TRZbyQTH
+         3XmIDqpwlhKNlqoaHJF6dTWtpYSwmOZagBENPlibF4zU3cIacfDrd9SZUvF9kIImvO/n
+         6NpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794309813; x=1794914613;
+        d=1e100.net; s=20260707; t=1794309810; x=1794914610;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FRqMllTEOoXf38Ur+jEqpl2zFBttJn4Z0H2rz9zpLxE=;
-        b=i8wNvrA7BfcYD0PQYhloCy7rxRGcNO4GLGiKgxYbkImylVDGljuK6hNT4mJk/SDwdA
-         9FXrUzwkPbBoKxwWrIxUZ4BieMscUbP7ZQDDD49wXY9Gk+WMur0b7Qb74SyUEsQ9s8kS
-         j+7AUfjMiA+ASxkis9BUOJmQhgC9JX7ZHEn5fkIKD8mKruP4fLMnSPF04pUPfeH+l405
-         0uEuk3oHUirA82pYMpA/k7sOBuO37Jx6Mlzv7lE8v1ldOgfGGXiFevwLyQ0WqrShOQIQ
-         5eC/QCMjK/mOYQ9AGud99nOT+V1BMKTlcC6hZGx1K1R7fxYBurrMdOpcTf7IHFr3hHgY
-         GauQ==
-X-Forwarded-Encrypted: i=1; AL+hErHBFvNjOu2ummDLk+8eMlxcc2nFaMBpdp+iZf+UywXJj0y2geQrzx1qlckhwQAqkssuBAoEYYk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9m8SaSrx2Fzc+4EWtp248CVio2P/yI3q3c9fIAIZDJ+s1MrUEr
-	BV0gRtwi72R3qp17qqf4w8oZOmY6Zre22+Of+BY0RCNZHAxjWStq5ebWi1XtHsEFZp0R+CO11gj
-	BX0Se8kHlBlFODt5XmdT8JqJmcm2fJytaUM2h9tdnUxzzNNQllUlesDJvpw==
-X-Gm-Gg: AYBFou3VpjZUKmPh8DUQk6uFhXj11aFmh3QXm98c57C4JMSs/CMwNINhfH6XPoiUH0W
-	d4StPto4mKMii6REXa3PsZAkAflvk8MHWrmAIB+BH9V1m8/Y6Bjv8uwYQf2UKs0YTzkfu5tEeuG
-	M2SSvtjMnd97IPsVXU76II/3iXd1X86z3SPXeafGFwyaTd1XKfB9b7qyR+cTtbGvTcMvvHNhT+P
-	K2ylgKYw/FWQvqMmRe5fxcDHKd/+unp+9aOEM/xJY9m+vy3dF1ZuEeLQ/5lEH5EwYhMCj4IacAu
-	86CCtThMqO+E7uYBKoekeCwP43P7bJuklearuDQ0RgDeBoq8SsZOGCBp3l9pX+kVz5Fco3BRe1I
-	sJjSxGqo1GQtQRAz5M1Z5IHP/oN1OW+E2LgfJoGqj45UfQlM+c21iAsSStOVkCq3fUGZ/u6uZNO
-	h+41vyKP9bQxYr6s8K7GsDjJNGhzI8AOgCsnGzKpx5h1p4YYrzQujVO1thM3TNU3+puF+V7bfO2
-	6KKmgZs6BM6Hb8kqgXLwWupquWKajSKucKRyQ42NLpY5QcrptH9
-X-Received: by 2002:ac8:5e06:0:b0:535:a5fb:6459 with SMTP id d75a77b69052e-5552a06e5a8mr30912921cf.68.1794309813122;
-        Tue, 10 Nov 2026 03:23:33 -0800 (PST)
-X-Received: by 2002:ac8:5e06:0:b0:535:a5fb:6459 with SMTP id d75a77b69052e-5552a06e5a8mr30912491cf.68.1794309812421;
-        Tue, 10 Nov 2026 03:23:32 -0800 (PST)
+        bh=nV9RvqWkqqUe9ueUa8RJ8XBgYpSS/wqmTlJFvrZtdGY=;
+        b=SKk2uFTH4oNo2CasYLs4eBnZMQaQZlzEhHOOauRcNgalMOJvajhJH5vw+CAL41TS+n
+         H05TMh/Zi1Jw6efVTH42LoA4qP/MfeYgKhDSSkazy5ebsGlF45XubFVhvTG/JE6Lto6V
+         6di4OUQebhLukjJ1VF6093Ag6xzvC8y9xeWoSWw17z8wgOlbZOalaGVg9egWpIIIgyr3
+         9y0iEY4jGGCsWCzcumq1MTQ3ip2CMyryXw06Fls1C9t6HobRnQQggIr7zruTZNm0wGGr
+         ZoX7VXCfTbGDtV/nCc593yOAqmJ5bBwizbDg0XpHBPwJgn1Y98d1hywgyQzN5osu+mPY
+         7O4g==
+X-Forwarded-Encrypted: i=1; AL+hErGXgbcBO0/2UTD1RA1ibYIVHmJgC8aXZMpK7rGwkYUdy5/LrsgxkrqgVkDEWlmQ4ouUB4VtNr4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8NRiTsePJJtWbVr0tcAKF/+ACnE6olYkE/uWBwNL5V6bKg5plb
+	Tvt1JkOQNhFi+3ag9wE7tpo9CxIPMp7t6XMYd1MWHtkxNBlWDVbauo497dxK1PDsXlxIvs9T/dA
+	Txx6Pynx90CPRrnGCk7HJcIZVAFvg5po0YBmVNfKW+1vA4nARhHQvHTvqZg==
+X-Gm-Gg: AYBFou1TLJ4bNNrgyznqN7aspfZmLKRzB4ZT+CfFJ8Kp9witkd+o3UB40y8GvkM7LXK
+	VhOLoC6IfJMCkrBCgien6QPFbDaU2FwprcCnUJ/pbRVJnB6gyjrKsdQvtyji3rTZBnP6X8E8W4I
+	3bw8pVx3wwIRYi6KGqS6yeTvkuitwQSzijZejVVT+y3NSxZavOVLzyqsQdOOMnRSHK1VCayoEqt
+	C1fXg75PpzbRvCBQDICCKsz7OAeU3eRsObeRIJz3D7Uwz5li/2UQOWTSjX424ngrFZu096cHY3K
+	Zv16v2iE38NRQENgFNb74GQbt8RuyQsNH2hvhd2255KP4VW0/ImER0AFr3DwevO9foXfxvIQHc7
+	mJ3kbP3VdtsGQ8+x9At4oiLfkKu1p/zkYoLiVuPxTyzHybsroJRuL+oZ2B5G1QriodHuhn3ApN8
+	5aM4033zL2jyVI5PHYhgjJS7iblxHTgAodaYgrJjmfV5qmI7wDug77gVAfatKQxSBjrl5bjS7es
+	lD/EAwoZTg9zjiR2TjwPLdduheRzvda9tYOXdu1VPAdM8wX4TNw
+X-Received: by 2002:a05:6214:21e5:b0:91c:cd1f:2471 with SMTP id 6a1803df08f44-91eef81b291mr39213946d6.22.1794309810084;
+        Tue, 10 Nov 2026 03:23:30 -0800 (PST)
+X-Received: by 2002:a05:6214:21e5:b0:91c:cd1f:2471 with SMTP id 6a1803df08f44-91eef81b291mr39213586d6.22.1794309809498;
+        Tue, 10 Nov 2026 03:23:29 -0800 (PST)
 Received: from cluster.. (4f.55.790d.ip4.static.sl-reverse.com. [13.121.85.79])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04e7315sm18569186d6.22.2026.11.10.03.23.31
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04e7315sm18569186d6.22.2026.11.10.03.23.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 03:23:32 -0800 (PST)
+        Tue, 10 Nov 2026 03:23:29 -0800 (PST)
 From: Alex Markuze <amarkuze@redhat.com>
 To: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
@@ -107,9 +107,9 @@ To: "David S . Miller" <davem@davemloft.net>,
 Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next 3/4] net: skb_splice_from_iter(): walk ITER_BVEC segments directly
-Date: Tue, 10 Nov 2026 11:23:24 +0000
-Message-Id: <20261110112325.3263078-4-amarkuze@redhat.com>
+Subject: [RFC PATCH net-next 1/4] net: preserve splice iterator progress on rejection
+Date: Tue, 10 Nov 2026 11:23:22 +0000
+Message-Id: <20261110112325.3263078-2-amarkuze@redhat.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261110112325.3263078-1-amarkuze@redhat.com>
 References: <20261110112325.3263078-1-amarkuze@redhat.com>
@@ -124,121 +124,49 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ITER_BVEC already describes source pages and byte ranges. Walk its
-segments directly instead of extracting a temporary page array and
-reconstructing those ranges.
+When the iterator is nonempty and the maximum length is zero, the generic
+extraction path reports -EIO instead of performing a no-op. Return zero
+before attempting extraction.
 
-Split at folio and representation boundaries, retaining page-bounded
-fragments on HIGHMEM. Reuse the fragment append and checksum helpers.
-Advance only by appended bytes, leaving a short request's remainder
-available for another skb. Compare a positive limit with the unsigned
-iterator count before assigning the bounded result to ssize_t.
+The extractor advances the iterator before checking whether the pages can
+be sent. If a page is rejected, revert the unappended extraction
+remainder, as the fragment-append failure path already does. This keeps
+an accepted prefix and leaves the rejected suffix available to the caller.
 
-Other iterator types keep the page-extraction path.
-
+Fixes: 2e910b95329c ("net: Add a function to splice pages into an skbuff for MSG_SPLICE_PAGES")
 Signed-off-by: Alex Markuze <amarkuze@redhat.com>
 ---
- net/core/skbuff.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+ net/core/skbuff.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 3a66a50513a3..189fe25293ac 100644
+index 48f676411724..ee7a1bc72cc2 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -7550,6 +7550,75 @@ static void skb_splice_csum_range(struct sk_buff *skb, struct page *page,
- 	}
- }
+@@ -7554,6 +7554,9 @@ ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
+ 	ssize_t spliced = 0, ret = 0;
+ 	unsigned int i;
  
-+/*
-+ * Splice from an ITER_BVEC by walking its segments: there is no page array
-+ * to fill.  Direct-mapped folio runs are split only at representation
-+ * boundaries; CONFIG_HIGHMEM builds retain page-bounded fragments.
-+ */
-+static ssize_t skb_splice_from_bvec(struct sk_buff *skb, struct iov_iter *iter,
-+				    ssize_t maxsize, size_t frag_limit)
-+{
-+	const struct bio_vec *bv = iter->bvec;
-+	size_t skip = iter->iov_offset;
-+	ssize_t spliced = 0, ret = 0;
-+	unsigned long seg;
-+
-+	if (maxsize <= 0)
++	if (!maxsize)
 +		return 0;
-+	maxsize = min_t(size_t, maxsize, iter->count);
-+	for (seg = 0; seg < iter->nr_segs && maxsize > 0; seg++, skip = 0) {
-+		size_t boff = bv[seg].bv_offset + skip;
-+		size_t blen = min_t(size_t, bv[seg].bv_len - skip, maxsize);
-+
-+		while (blen) {
-+			struct page *page, *fpage;
-+			struct folio *folio;
-+			size_t foff, part;
-+
-+			page = bv[seg].bv_page + (boff >> PAGE_SHIFT);
-+			folio = page_folio(page);
-+			if (IS_ENABLED(CONFIG_HIGHMEM)) {
-+				fpage = page;
-+				foff = offset_in_page(boff);
-+				part = min_t(size_t, blen, PAGE_SIZE - foff);
-+			} else {
-+				struct skb_splice_frag range;
-+				u64 pos = ((u64)folio_page_idx(folio, page) << PAGE_SHIFT) +
-+					  offset_in_page(boff);
-+
-+				part = min_t(u64, blen, folio_size(folio) - pos);
-+				range = skb_splice_frag_normalize(pos, part);
-+				fpage = folio_page(folio, range.anchor >> PAGE_SHIFT);
-+				foff = range.offset;
-+				part = range.len;
-+			}
-+
-+			ret = -EIO;
-+			if (WARN_ON_ONCE(!sendpage_ok(fpage)))
-+				goto out;
-+
-+			ret = skb_append_pagefrags(skb, fpage, foff, part, frag_limit);
-+			if (ret < 0)
-+				goto out;
-+
-+			if (skb->ip_summed == CHECKSUM_NONE)
-+				skb_splice_csum_range(skb, page,
-+						      offset_in_page(boff),
-+						      part, skb->len + spliced);
-+
-+			boff += part;
-+			blen -= part;
-+			spliced += part;
-+			maxsize -= part;
-+		}
-+	}
-+
-+out:
-+	iov_iter_advance(iter, spliced);
-+	skb_len_add(skb, spliced);
-+	return spliced ?: ret;
-+}
-+
- /**
-  * skb_splice_from_iter - Splice (or copy) pages to skbuff
-  * @skb: The buffer to add pages to
-@@ -7564,6 +7633,7 @@ static void skb_splice_csum_range(struct sk_buff *skb, struct page *page,
-  * or a tail page of that folio and holds one reference on the folio either
-  * way.  On CONFIG_HIGHMEM builds a fragment stays within one actual page
-  * of the folio, because kmap_local_page() maps only one page.
-+ * A bvec iterator is walked directly, without extracting a page array.
-  *
-  * Returns the amount of data spliced/copied or -EMSGSIZE if there's
-  * insufficient space in the buffer to transfer anything.
-@@ -7579,6 +7649,9 @@ ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
- 	if (!maxsize)
- 		return 0;
- 
-+	if (iov_iter_is_bvec(iter))
-+		return skb_splice_from_bvec(skb, iter, maxsize, frag_limit);
 +
  	while (iter->count > 0) {
  		ssize_t space, nr, len;
  		size_t off;
+@@ -7578,8 +7581,10 @@ ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
+ 			size_t part = min_t(size_t, PAGE_SIZE - off, len);
+ 
+ 			ret = -EIO;
+-			if (WARN_ON_ONCE(!sendpage_ok(page)))
++			if (WARN_ON_ONCE(!sendpage_ok(page))) {
++				iov_iter_revert(iter, len);
+ 				goto out;
++			}
+ 
+ 			ret = skb_append_pagefrags(skb, page, off, part,
+ 						   frag_limit);
+
+base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
 -- 
 2.34.1
 
