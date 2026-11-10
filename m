@@ -1,51 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794301462;
-	b=DbgQpCLgSgpDkIw6oG4sW75/mPYnVOkaD9pnJY95KkdxxjBaEqWJXfA+jM08qwl7QiYg
-	 2Ly3Rjg7Lm677J/F+LP8eel/Qz/mxvIx/V57Id1OhyY2AdpBl4xv/AV3s+u9CTEkqKr08
-	 dXS1ud1EaCqBDR1fp4ylnWJs0l1T2tq+n8Wd6PVp7C8SHvmLw9NU/g8JdIT3rgv+lN69n
-	 7Lce3/Q9kV+ZSwItKa7svP+SVjCGte39lzV/nuhYoW1Aif6Gj5fdeyxpCH1gKq1TIg0/G
-	 wcQ75Tf3knfzJ51URNGT2BmAHmVQGm6RORFtgFNeZx0Bmrb6MLLEtafi9QOzvsYuv2Q==
+	t=1794301752;
+	b=fzW5BLLu/bTcaICMncg6ivOk7dCmbk+2caiz3PFQOoj4jjiAuOPOo5zI+n52JDMZm+su
+	 FKpeH7mqrfsEITTld+LQgi4zumoKPv5EBcwXhjOkFhuvhwW/ct4iUCeM/xTkHTj1XS9VA
+	 iK9pTS51KXDJmbsN+Z2uyzK90Ha8Smz7lc42tB1IXdO6U1lDUR36Y621f4a+RvgMsuIGE
+	 OaN5y7PzNc//QGCH0FnE07MNyCIw/7bf4rTmwdhkyJsA79CytU+lE9Q2wfmqcJcdvAiTT
+	 hkp77mXV+aMlLPIQLK7sIr0njsFz067HYY5hvfszRBW1XXXJtmXX2VtZVLeljMiGzSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794301462;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version:Date:Message-ID:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=QjOWBD2wK9FWKJjffqgJNIwrhO5izEVXWqMljHBOgpY=;
-	b=AIN8RvMo0O0B7MdAhRRnzEinjPimE0Kg6UcWEVeuV1X6hfjM+qqV791+arhjylBLVLi3
-	 uNdFG94i9/dnpny3Uju7h97+KNTlop2SQDp3I43gTIf2XtJOMbHTAx+JLV5dGr7D9JiEi
-	 kP8f+7jsTAPrgnWe6mHWIQ1xWy5NL+EqCYUmjUOHfDjrLXfYOCSCfvmPNjlm3VkN7uDYP
-	 DvRqKhfstsZPGPZBRnwzq3/JMdLBREGUHqxGThbnFjipfIrLNElamoRwf5bxQvilAjdpY
-	 nd/2h+WeiSPRllWL8CiaeleKw/EC/08TlTxuBGWdNqVYG3W4BqIfeYHkx1zZDE0SlwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794301752;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=QkExN09GPNCRK1/4OD2uNzfHx3wdxf9rC1N19wXJ3Yk=;
+	b=QuPM9ZUFVusBZY/tAF/sg+gHqMzvihW5KRLSJYm7K3UYSpEgoS5cJXk2SetAvYK7wAL5
+	 /FRYDRgonTp+XPa7c8f921djx4cFMsa3LiczSlJgJ19Mh/SLMuZdeBWVQaY1u9oMt+SSw
+	 noNVtLKf8bmM6NrMDELVhCmiyWEpR+HMfSldQPRJPK5oRn0XiruhNDt2pzgzHs94dqPsX
+	 HhlGbJtT9XO6wParcE7+kxty2MjLeEcNAp8NKKG7BeciS5/eFMB55MDNj+mC+yCertque
+	 O4m74tHpUVM9fxEeHIpaDxaLKT+YV20pT/GXYqa3K7DytzAJ2B6CNXDUtK4954okKHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.21
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="d/blhxDZ";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eopXaAHP;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C776E606BA2F;
-	Tue, 10 Nov 2026 09:04:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C776E606BA2F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowAC34PoA3vJqGSuzAA--.1413S2;
-	Tue, 10 Nov 2026 17:04:00 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Simon Horman <horms@kernel.org>
-Cc: Bryan Whitehead <bryan.whitehead@microchip.com>,
- UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: lan743x: disconnect the PHY when PTP setup fails
-In-Reply-To: <20261109163715.GQ18859@horms.kernel.org>
-References: <20261103102852.1340530-1-vulab@iscas.ac.cn>
- <20261109163715.GQ18859@horms.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F49C606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:09:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F49C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d/blhxDZ;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eopXaAHP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794301751;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QkExN09GPNCRK1/4OD2uNzfHx3wdxf9rC1N19wXJ3Yk=;
+	b=d/blhxDZYDh8ZCaRul1CIqzUG7eA0t+1qtkbMR7Z0NZ5eCXT95fXN4wT5FoWewi92V34qu
+	nQfPj1FqF9Ojuc+adfKWgpn3D5vKd34sR6oBLP/bee7956AzbnO5zWl9JVCibqlZ42Ia9e
+	Gn+VbVdOTPm4AsiDVc1mCIJ40tAuiiI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-pvcrvfHUNzO_DJ0IEWFbfg-1; Tue, 10 Nov 2026 04:09:09 -0500
+X-MC-Unique: pvcrvfHUNzO_DJ0IEWFbfg-1
+X-Mimecast-MFC-AGG-ID: pvcrvfHUNzO_DJ0IEWFbfg_1794301748
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-49166c8a60dso1370888f8f.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 01:09:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794301748; x=1794906548; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QkExN09GPNCRK1/4OD2uNzfHx3wdxf9rC1N19wXJ3Yk=;
+        b=eopXaAHPb+A+3+XUaR5PVZCDdczE9BjsEgFKqdaMcxTjE/gpFATLvYIhKrzOmKpq6+
+         RMhF48LWTJvgEGo27OIKUfbgQ5hOIHodEWR5Yp0zzOPvAAG9ugpUCAnaHqKWWfiWMdG4
+         GT+Z3lGTbW6VpaNysCSiEFns6dlgj0tTYYKO1jEOdci2EyrXgZ1B3bnwsUXy5ZjZgMSB
+         cD845qR0SSnaAvVPR3x3Us0t0F7aTAD9/qogO3BfZhTNxgt/DGYTfKIxWCYb4fXOwKze
+         jNUkVS4cba4RLV0BANbzk6kwUSttF/FOb/N5e3CGIWCqLucISsKeAn3QjDFzDgTZ+Wqq
+         Hn3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794301748; x=1794906548;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QkExN09GPNCRK1/4OD2uNzfHx3wdxf9rC1N19wXJ3Yk=;
+        b=GHNp82W7W9Jk3ed1Rsb8Gm/8MW269hhHCDMjcP6zZUT3kEZPztfLzXSCb9sd0NsUgr
+         Yy0zGx7FOLPVOWERNWCvFMqPD/9FP9PNHOXco1c8ITSmKEe9lKbWc3g4VTqda51A14HY
+         +Wbdqry173gyfD373N2bCkeS4IaYOccNwINDj5ZNnqCSp+h+tufy333X7+4eZeVifnap
+         VRR4Vhx4E8dYQFOIpDz5G6PUOWawhkodIBD88D8w/Bf9dYeTHJdctw8PbuIM7Li8RS7u
+         UPapbIZ/qH+982+iS0BskPUJNYptfTY12QZ8vbrJ8FLpAgGYYDVTOR9ZJnCwTbRvvxqn
+         It1A==
+X-Forwarded-Encrypted: i=1; AL+hErF9XoDBflxHnFC6VNTQMleYi8MGxNuYbwPimfIZD46bQK6RD7V1FsI7/w43yTav4wG1Ky6nfO4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9+VS1+dGkm4CwWNH3i9nfoinVBLm1sVIVAd9MyogExRBH8I9tS
+	xHOVx+UjIQdgQbJCW/az4ly+By0DDRoJTBCZmd7TDbZECSacw/m9HVeWfowMo37M13WXQNKrZ+8
+	zlX+K6fnzrVUnKBtODZutImNoUc7VC7yTw0wUvjvT8jkhqMkGeJK+kaK2+A==
+X-Gm-Gg: AYBFou2ndNh2/QZUnka+DCbSnufaFxyQSmm9hT/2Vyne3XnnNO4nl4xelUa+OWtnBvc
+	hNXjxEFFwVRdQgSNPUSPDxPPgYF3opS5NqVZ6T1kNpauZD1yL5HdQ7e/DLet5gMYeyXseGECsPQ
+	Ivbj4ciq4ajKvyFGme0YoCtVbylkNuSQUUNH/0FUefuRGRZOenymIdh8RMQ8/8uKPv7gITJOE2f
+	XDK8LiruZC814iB7/zi154DjSgYlGM11B8yI4PyW62qPJ4Dbp/WWBhgKZWL7iKJzDvOQ4ngeJIl
+	wUj7he5Zm0rCxH5F25aqBVeM5RNsrklrA3YDZBzxgyY1bXciMoSNC6w+xn00L9gr2Gfe3qial5C
+	Wwc+P+sHQLLGsN309bbccIfHHp2sb9yp0BY/R3YhYz2OTfo8vSE+SLd9HZhUoZraQDYgGk8y46o
+	GGf3EYgzHvVw0o4aAVfnf9SuBWpFb9jP2e7UB5bnKEc16/
+X-Received: by 2002:a05:600c:3b92:b0:4a2:180b:3153 with SMTP id 5b1f17b1804b1-4ba0233e8b0mr37840735e9.14.1794301748030;
+        Tue, 10 Nov 2026 01:09:08 -0800 (PST)
+X-Received: by 2002:a05:600c:3b92:b0:4a2:180b:3153 with SMTP id 5b1f17b1804b1-4ba0233e8b0mr37840145e9.14.1794301747662;
+        Tue, 10 Nov 2026 01:09:07 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01feee1asm64708965e9.12.2026.11.10.01.09.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 01:09:07 -0800 (PST)
+Message-ID: <533f97dc-f63a-45d1-b678-3962f5de316c@redhat.com>
+Date: Tue, 10 Nov 2026 10:09:06 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,54 +112,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 10 Nov 2026 09:03:52 -0000
-Message-ID: <179430143289.3004751.18290661828922794973@iscas.ac.cn>
-X-CM-TRANSID:qwCowAC34PoA3vJqGSuzAA--.1413S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrZFy8Xr1xtr1fWFWftryxXwb_yoW8Jr45pa
-	9aqa15Kryvy3WxG3sFva1kJa47tF93JFy7Jrn8Gry7ArWDWr1kJF4S9w1q9a43Wr95G3y0
-	qw47ua97ZF47WaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Ib7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxV
-	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWU
-	tVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMxC20s026x
-	CaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_
-	JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
-	1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_
-	Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8Jb
-	IYCTnIWIevJa73UjIFyTuYvjxUDdgADUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRUHA2rylNU3RQABsy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] ipv6: Add NETCONFA_FORCE_FORWARDING to
+ netconf messages
+To: Ido Schimmel <idosch@nvidia.com>, Gabriel Goller <g.goller@proxmox.com>
+Cc: David Ahern <dsahern@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Nicolas Dichtel <nicolas.dichtel@6wind.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com>
+ <20261109090505.GA1495012@shredder>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261109090505.GA1495012@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Simon,
+On 11/9/26 10:05, Ido Schimmel wrote:
+> On Wed, Nov 04, 2026 at 10:46:10AM +0100, Gabriel Goller wrote:
+>> Since force_forwarding was added, changing the sysctl sends an
+>> RTM_NEWNETCONF notification of type NETCONFA_FORCE_FORWARDING, but
+>> inet6_netconf_fill_devconf() never emits the attribute. Listeners only
+>> receive NETCONFA_IFINDEX without the new value, and RTM_GETNETCONF
+>> replies and dumps omit it as well.
+>>
+>> Also send a notification when disabling all.forwarding resets
+>> force_forwarding on an interface, which previously happened silently.
+>>
+>> Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
+> 
+> Fixes tag on net-next is only valid when the blamed commit is only in
+> net-next, but maybe Paolo / Jakub will agree to strip it, so wait with
+> v3.
 
-Sorry for the slow follow-up on this patch, and thanks for reviewing it.
+I agreed the tag should be stripped here, but just for completeness general
+guidance above is slightly changed again. Due to the incoming fixes influx
+we are redirecting actual, low prio, fixes from net to net-next, retaining
+the fixes tag.
 
-I checked a5f199a8d8a0 again. Before the conversion, a failure in
-lan743x_ptp_open() went to close_phy. The conversion redirected that
-failure to close_mac, while the RX and TX setup failure paths still
-reach lan743x_phylink_disconnect(). I also agree about the NULL check.
-Probe creates phylink before registering the netdev, and this error
-path is reached only after lan743x_phylink_connect() succeeds.
+>> Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> 
+> There's a report from Sashiko [1] about a pre-existing issue:
+> all.force_forwarding not being cleared when all.forwarding is cleared.
+> 
+> # ip link add name dummy1 type dummy
+> # sysctl -wq net.ipv6.conf.all.forwarding=1
+> # sysctl -wq net.ipv6.conf.all.force_forwarding=1
+> # sysctl -wq net.ipv6.conf.all.forwarding=0
+> # sysctl net.ipv6.conf.dummy1.force_forwarding
+> net.ipv6.conf.dummy1.force_forwarding = 0
+> # sysctl net.ipv6.conf.all.force_forwarding
+> net.ipv6.conf.all.force_forwarding = 1
+> 
+> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104-ipv6_add_netconfa-v2-1-6f660990062f@proxmox.com
 
-I missed Chris Babroski's earlier patch, which covers the same failure
-path by connecting and starting phylink after PTP and the rings are set
-up:
+Thanks, I agree that is separate topic, again IMHO suitable for net-next.
 
-https://lore.kernel.org/netdev/84c495b24206953fb799d4070c4d99ff27efb829.17920=
-08404.git.cbabroski@nvidia.com/
-
-Please drop my standalone patch. I also withdraw the stable backport
-request for it.
-
-To answer the discovery and testing questions, static analysis flagged
-this error path as a candidate. We used DeepSeek and GPT-6.1 Sol to
-assist with reviewing the candidate and preparing the fix. The finding
-is based on source inspection. I did not reproduce the PTP initialization
-failure or test the patch on real LAN743x hardware.
-
-Thanks,
-Wentao
+/P
 
