@@ -1,69 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794338482;
-	b=cw+jYCPruWiszXt21PiiYJLuZhi4lBdFN/DR+J0zr4m6rVia6yRYJ2rbk9guauK4qCvO
-	 26NtY3NS8F6KXMvinOMf0zTXtDeE+v8d+bu3+FhAag9dWkAIrYBFnTD+5gSb463AybHxp
-	 OmWKLAx1i8JUsxCkLOyhsdPJTZ2EjnzVUqAwss93q8HixpHbatc2aN99TN50493pisicR
-	 AvkptwRRJFp3RrYJVB3xygXtde2caukPg+Yy/BTWAd71NRXFVg0GF9pqOMYevIivE9xDY
-	 dda9tWZ5XUr6HbDyFwSNt1OBJ6t5RaVlwSaA2D3J49fyumzfvons3UIV8BRihYBoNIw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794338482;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ipzqKLT3bXDi2K7TgqyUFEqF9jz2ws5uKIrfihQAYNk=;
-	b=N/zkhXHf+CL/gC6NjBuG9FJcoq7oRmvtJPHYV2JJFKtAOk2Qu3BEGo9mdUW4oujt94xg
-	 ofnMbgIX2Js2aw/4a81PllrWNADzJomhmWNFId7F/6tkfJHKc5GO2x+BMaETyFWX9+pJ8
-	 48DfbTppwxSFQ2fjvW/rF+ba9oDZA8/sYjUYb1jRaCjPtVOFg5qSnFB7YT1+bfrZJ7U7x
-	 oKCZBSQ8IR808rznNQiULkFg6Q+iQal3OcLYYb9kmHGDjDhKWWPwNFViF7nqO3rYeVd7R
-	 eeQgd7iMjpu5Q8r2DIVKz5Gv0/2U8dipqxKKy7k+LvT34+JM10K0wmOzz1UXaXs2Gzg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O4asWOrs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794338596;
+	b=kB2SUb+W0LO7hDeNtqoL5tzAJQ85TdQWAvbwGncyJcdmIikn4eTJZyl+GwBxQ58X8yVT
+	 W5tjzmQYut2EWDk8wZB8+EMnz8rPTRA/FKzmIKksVOPee5aJJrWHYSSigzA0e3r6SxaBK
+	 F87fBPvNHsSd5onaXhqzzwnbohG+hVgL7DQroE4b03wL3aYVCx/MQVGnzES40FqsDfZ/z
+	 viVrXbqPM/u21gppODH7ikznx0c15sSrzJDbscBk0u2xHIlU/w1upE1rCUjdIxl7L7fIo
+	 1OHCntuhP1rZNeR20WaoURVycDdcV9mbaVvaiOle8gW0HT+KoedoyDwIbPRBbqebvNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794338596;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
+	 References:User-Agent:Date:Message-ID:MIME-Version:Content-Type;
+	bh=iPKx18V270dl9l4OtB/Y/MxcQ9Z2Zk3biIxOyRYrkNI=;
+	b=SMkCOcisjEP246hjWGniQEinNbLf9eO81Vbjqp9rVgvhrUAfBDvmy/Na2ZMOnWXiZ/7X
+	 WD5egWhrJxioux2h9A0T1EfTgi0nOTxHA6jYKEOCAOwG4z4NXO6O0s0FjO1UP5jgkPwiH
+	 29Fx4E/VozFZA2jsERcDrgd+rvjK93aTpp9Sc65V0+/EOan9/MHjboBw4PYdEYODLb1VE
+	 TnEx6PtPhu+Q6SHHQpmbyVsEr2AICMLRZE44x3hQOR91aV4GJgbxSOZIs4bXuL5Di3hAr
+	 bZ6i3t4OkpqnBEKBfuGE1HyuTJxFa4WK+IWlXWFHgFEUmniHLkHJv6SRkvKPWow8CmA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ad2kTkaY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8D4606A321;
-	Tue, 10 Nov 2026 19:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70371606A323;
+	Tue, 10 Nov 2026 19:23:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70371606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O4asWOrs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE2B1F0089F;
-	Tue, 10 Nov 2026 19:21:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794338482;
-	bh=ipzqKLT3bXDi2K7TgqyUFEqF9jz2ws5uKIrfihQAYNk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O4asWOrs71kDKItINGDb69h2cMmmBPIkNpLScXxYL4gTaOpKcEQ/NOh7yWfQs2rPE
-	 Cxe7qVk8qEbQ7lfNgVKV0XvK8C2+I4BCEBvN9XW0Sl/LAOlEF/oIi8MKfj0sMWKqpr
-	 SSHU+stYcG0oZsMYltgD/62bMY/tBDvLFNbG8TGi6IhCItvCezXvbNdrR4fEuWB+d/
-	 6Sar5gZwF0wUpqSFHhyEeh338JDAGrGYyQbaGfMw2to73AnPqYLdaabSI7+fkv5BO2
-	 DGYTmgRTV7qehodBAIrxZUdBR+zXvRfVUSozs52LLuK00P+l8utTtqSaIsRBEMowYu
-	 CLPhjgoKZWF6A==
-Date: Tue, 10 Nov 2026 13:21:18 -0600
-From: Rob Herring <robh@kernel.org>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Eric Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, mfd@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
-Message-ID: <20261110192118.GA1412882-robh@kernel.org>
-References: <20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
- <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
- <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
- <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
- <cc35b2127b04772f05948ac51c8faa5ef07da0b0.camel@linutronix.de>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ad2kTkaY
+Received: from ratatoskr.pengutronix.de (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
+	(Authenticated sender: str@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 62C69200912;
+	Tue, 10 Nov 2026 20:23:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794338587;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iPKx18V270dl9l4OtB/Y/MxcQ9Z2Zk3biIxOyRYrkNI=;
+	b=ad2kTkaY76tsMkTt+onWR5PN2aKA0XKobO4S8lvFuJok+4OvS3TNiT02awZnsn0LN7UnMl
+	zEuj9RQPeQ/Ek2iWA+c+Tbnglyzcjtt1KWInsRHTLBv+fZC6wKfkHgLOo+n43brFpzAKCh
+	mwjf0g1GKgO6QyN0NRLMsn0x+G7EdOqWU4paXBCvcSa+GIKO2JyWnhB3FsNrdzOiRWoaVF
+	LrJg/8S0/Szi0KICni0p5/FiYFTM9Loif1FDPjyNNQV66jbnRa7H9RBPr6CXRItOfMP4S2
+	N/m7gZ23QU6nss06fH2RawV+9J+Q6AdqjWDN32ST0JX7sZEppYuc0HS0DgAJaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794338587;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iPKx18V270dl9l4OtB/Y/MxcQ9Z2Zk3biIxOyRYrkNI=;
+	b=DZhaii5FfLOmOJSKmF1ZdtDdw0FP+NcYWPZ87oXuBOT7oT51WkJ3e+pvWPSXDDGOqfVz7B
+	0zGf0Cizh0awSB0MJmE1ZCbR+R8RbO+rmfPpqxyz+nBFgP6G0Ff4LbZPlHQreabSR43Phu
+	aGaRIWQQ8T+OMJFAoTPjBvagS6g2vjyD2W6e03FBpLiHWPRCcFEakpdbhQ3BrMHPNGVYr6
+	s4E7hJ84jKKOxyS0ViV9ItVCsyCaahSCiNSdHy5Nsf8qdkJ0Aus0qXV+jZXv1GZc6cBfm6
+	XncupiZVOg9WhVzKhtr6kdQtlPBHARGroupu2ZeRz40f8hiXfBe6vBlaXpKAuw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794338587; a=rsa-sha256;
+	cv=none;
+	b=Gv1TfpYWYNfgkfi+YH0dunOFKrJ9Ove7jvwVoYUyUJVUEY5dZoP4XPggYN8odgpD8XN8Zz
+	3vroncbnCpIptWLEOkAgFDSIg9X+FhKwsnIAqkaaaSWvLWbgbIZNPvZtLdUh36RsNwl7xP
+	X0S4uA0WR8otMcdCdgzS/x2ytzLGNcg/oJxqA1J4PGMG8NgTs7n4TbbCAzNsDYvEZrZ1D7
+	h0iAM9EJ4bfFnktXSZ4bl+PdTeAVVXjlNSGjgwswtDpIdaGydsrm91HX01+LiGoU6a4nLD
+	RbSEkS2BP+234M+rHpH4lQTLlhF1V4a46G2b6Fr461f2KCLC4/vAmy/QdPHNgw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>,  "David S. Miller" <davem@davemloft.net>,
+  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
+  Richard Cochran <richardcochran@gmail.com>,  Andrew Lunn
+ <andrew+netdev@lunn.ch>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,  Jason Wang
+ <jasowangio@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,  Daniel
+ Borkmann <daniel@iogearbox.net>,  Jesper Dangaard Brouer
+ <hawk@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Stanislav
+ Fomichev <sdf@fomichev.me>,  Eric Dumazet <edumazet@kernel.org>,
+  virtualization@lists.linux.dev,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  bpf@vger.kernel.org,  kvm@vger.kernel.org
+Subject: Re: [PATCH RFC v4 2/6] virtio-net: support receive timestamp
+In-Reply-To: <willemdebruijn.kernel.2adf5c78ee0e8@gmail.com>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+	<20261026-v6-7-topic-virtio-net-ptp-v4-2-008af03cd43b@pengutronix.de>
+	<willemdebruijn.kernel.2adf5c78ee0e8@gmail.com>
+User-Agent: mu4e 1.14.3; emacs 31.1
+Date: Tue, 10 Nov 2026 20:23:06 +0100
+Message-ID: <87v764ze1x.fsf@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,102 +99,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cc35b2127b04772f05948ac51c8faa5ef07da0b0.camel@linutronix.de>
+Content-Type: text/plain
 
-On Tue, Nov 10, 2026 at 05:10:15PM +0100, Vasilij Strassheim wrote:
-> On Fri, 2026-11-06 at 22:51 +0100, Vasilij Strassheim wrote:
-> > On Fri, 2026-11-06 at 12:13 +0100, Krzysztof Kozlowski wrote:
-> > > On Thu, Nov 05, 2026 at 03:16:48PM +0100, Vasilij Strassheim wrote:
-> > > > Add a binding for the SoC-e SWIP multifunction FPGA IP core.
-> > > > 
-> > > > Describe the shared MMIO address space and address translation for
-> > > > the required Ethernet switch child and the optional integrated MDIO
-> > > > controller and MMIO-controlled MDIO multiplexer.
-> > > > 
-> > > > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
-> > > > ---
-> > > >  .../devicetree/bindings/mfd/soce,swip.yaml         | 137 +++++++++++++++++++++
-> > > >  1 file changed, 137 insertions(+)
-> > > > 
-> > > > diff --git a/Documentation/devicetree/bindings/mfd/soce,swip.yaml b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..625be299e262
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
-> > > > @@ -0,0 +1,137 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/mfd/soce,swip.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: SoC-e SWIP multifunction Ethernet switch FPGA IP core
-> > > > +
-> > > > +maintainers:
-> > > > +  - Vasilij Strassheim <v.strassheim@linutronix.de>
-> > > > +
-> > > > +description:
-> > > > +  SoC-e Switch IP (SWIP) cores integrate Ethernet switching logic, an
-> > > > +  MDIO controller, and an MDIO bus multiplexer in one memory-mapped device.
-> > > > +  The MDIO bus multiplexer is wired to the integrated MDIO controller.
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    const: soce,swip
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  '#address-cells':
-> > > > +    const: 1
-> > > > +
-> > > > +  '#size-cells':
-> > > > +    const: 1
-> > > > +
-> > > > +  ranges: true
-> > > > +
-> > > > +  mdio@204:
-> > > > +    $ref: /schemas/net/soce,swip-mdio.yaml#
-> > > > +    unevaluatedProperties: false
-> > > > +
-> > > > +  mdio-mux@202:
-> > > > +    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
-> > > > +    unevaluatedProperties: false
+On 2026-11-01 at 10:04 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
 
-Given the MDIO bus and mux registers are adjacent, I don't know that 
-putting the mux into its own node and driver really buys you anything. 
-Can't your MDIO driver handle the muxing directly? mdio-mux-mmioreg was 
-created for when you have mux registers in some completely unrelated 
-block.
-
-> > > > +
-> > > > +  ethernet-switch:
-> > > 
-> > > Why are you mixing children with and without bus addresses? This is
-> > > discouraged and shows that device is not correctly represented, e.g. if
-> > > the ethernet-switch does not have resources, then THIS device is the
-> > > ethernet switch.
-> > > 
+> Steffen Trumtrar wrote:
+> > Add optional hardware rx timestamp offload for virtio-net.
 > > 
-> > There is no hardware reason for leaving the switch child unaddressed.
-> > Just an error that occurred while converting the binding to the MFD
-> > model.
-> > I will describe the switch function as an ethernet-switch@0 child node
-> > with a reg property for it's register resources, like the ocelot MFD
-> > binding.
+> > Introduce the virtio feature VIRTIO_NET_F_RX_TSTAMP. If negotiated, the
+> > virtio-net header grows by room for a 64 bit TAI timestamp (header
+> > size 40 bytes), stored in struct virtio_net_common_hdr. The layout is
+> > cumulative: the field is at the same offset whether or not the
+> > features before it were negotiated. The fixed layout needs
+> > VIRTIO_F_VERSION_1, so the feature is cleared without it.
+> > 
+> > Implement ndo_hwtstamp_get/set so the timestamping can be enabled
+> > and disabled at runtime with SIOCSHWTSTAMP. The driver cannot filter
+> > what the device timestamps, so any rx filter other than NONE becomes
+> > ALL. The timestamp is read before the packet is handed to the XDP
+> > program or the stack, and attached to the skb with skb_hwtstamps().
+> > It is a raw TAI value; there is no PHC.
+> > 
+> > The header size is negotiated per device and also applies to
+> > transmitted packets. On transmit, zero the header behind the fields
+> > the driver fills in, so the device sees a zero tstamp and no stale
+> > skb->cb or headroom bytes.
+> > 
+> > On receive in big packet mode, the header is placed in front of the
+> > data in the first page. Grow padded_vnet_hdr to 48 bytes so the
+> > 40 byte header still fits there.
+> > 
+> > Tested in a guest with a patched QEMU:
+> >   guest: ./timestamping eth0 \
+> >           SOF_TIMESTAMPING_RAW_HARDWARE \
+> >           SOF_TIMESTAMPING_RX_HARDWARE
+> >   host:  nc -4 -u 192.168.1.1 319
+> > 
+> > Based on work by Willem de Bruijn.
+> > 
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > Assisted-by: Claude:claude-opus-5-5
+> > ---
+> >  drivers/net/virtio_net.c        | 136 +++++++++++++++++++++++++++++++++++-----
+> >  include/linux/virtio_net.h      |  10 +++
+> >  include/uapi/linux/virtio_net.h |   1 +
+> >  3 files changed, 131 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > index 17d3e32eed9d6..23af10c613b48 100644
+> > --- a/drivers/net/virtio_net.c
+> > +++ b/drivers/net/virtio_net.c
+> > @@ -20,6 +20,7 @@
+> >  #include <linux/filter.h>
+> >  #include <linux/kernel.h>
+> >  #include <linux/dim.h>
+> > +#include <linux/unaligned.h>
+> >  #include <net/route.h>
+> >  #include <net/xdp.h>
+> >  #include <net/net_failover.h>
+> > @@ -416,6 +417,12 @@ struct virtnet_info {
+> >  	u32 rss_hash_types_supported;
+> >  	u32 rss_hash_types_saved;
+> >  
+> > +	/* Device passes time stamps to the driver */
+> > +	bool has_rx_tstamp;
+> > +	bool hwts_rx_en;
 > 
-> It looks like I need a different name for the MFD parent to avoid a
-> naming collision with the ethernet-switch@0 child. I checked other
-> bindings but could not find a suitable example.
+> nit: cryptic name. rx_tstamp_supported and rx_tstamp_enabled or so?
+
+Sure, I'll rename them.
+
+> > +
+> > +	struct kernel_hwtstamp_config tstamp_config;
+> > +
+> >  	/* Has control virtqueue */
+> >  	bool has_cvq;  
 > 
-> I would appreciate any suggestions for a suitable name for the parent
-> node representing the FPGA IP core. It mainly acts as a container for
-> its child devices. I am considering "bus", "ip-core" or "shell".
+> > +static int virtnet_get_ts_info(struct net_device *dev,
+> > +			       struct kernel_ethtool_ts_info *info)
+> > +{
+> > +	struct virtnet_info *vi = netdev_priv(dev);
+> > +
+> > +	/* setup default software timestamp */
+> > +	ethtool_op_get_ts_info(dev, info);
+> > +
+> > +	if (vi->has_rx_tstamp) {
+> > +		info->so_timestamping |=
+> > +			SOF_TIMESTAMPING_RX_HARDWARE |
+> > +			SOF_TIMESTAMPING_RAW_HARDWARE;
+> > +
+> > +		info->tx_types = BIT(HWTSTAMP_TX_OFF);
+> > +		info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
+> > +				   BIT(HWTSTAMP_FILTER_ALL);
+> > +	}
+> 
+>     `ethtool_op_get_ts_info()` leaves `info->phc_index = -1`, which breaks Ethtool
+>     Netlink `ETHTOOL_MSG_TSCONFIG_GET` and `ETHTOOL_MSG_TSCONFIG_SET`
+>     (`ethtool --show-hwtstamp-cfg` / `--set-hwtstamp-cfg`): `tsconfig_prepare_data()`
+>     in `net/ethtool/tsconfig.c` rejects `ts_info.phc_index == -1` with `-ENODEV`.
+> 
+>     Either `net/ethtool/tsconfig.c` must be taught to allow PHC-less `ndo_hwtstamp_*`
+>     drivers, or the device needs an associated PHC (e.g. `virtio_rtc`).
+>
 
-Krzysztof's point was combine the child and parent nodes into the 
-parent. This is not really an MFD. Almost every ethernet MAC has an MDIO 
-controller in it and none of those bindings are MFDs.
+Right. (explanation mostly for myself to understand the problem)
+The PHC-less case looks easy to allow in tsconfig: tsconfig_reply_size()
+and tsconfig_fill_reply() already leave out
+ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER when the index is -1, only
+tsconfig_prepare_data() refuses it with -ENODEV.
 
-Rob
+For TSCONFIG_SET it is worse than for GET: ethnl_set_tsconfig() calls
+dev_set_hwtstamp_phylib(), so the driver's ndo_hwtstamp_set() has
+already applied the config, and only then tsconfig_send_reply() fails
+in tsconfig_prepare_data(). Userspace gets -ENODEV although
+timestamping is now on.
+
+virtio-net is not the only one there: ngbe/txgbe (libwx) report
+hardware timestamping with phc_index -1 if CONFIG_PTP_1588_CLOCK=n,
+and dpaa does the same without a ptimer-handle. I can send that as a
+separate patch.
+
+Which clock the timestamps are in is a separate question, see my answer
+to the cover letter.
+
+> 
+> > @@ -7250,7 +7353,8 @@ static struct virtio_device_id id_table[] = {
+> >  	VIRTIO_NET_F_SPEED_DUPLEX, VIRTIO_NET_F_STANDBY, \
+> >  	VIRTIO_NET_F_RSS, VIRTIO_NET_F_HASH_REPORT, VIRTIO_NET_F_NOTF_COAL, \
+> >  	VIRTIO_NET_F_VQ_NOTF_COAL, \
+> > -	VIRTIO_NET_F_GUEST_HDRLEN, VIRTIO_NET_F_DEVICE_STATS
+> > +	VIRTIO_NET_F_GUEST_HDRLEN, VIRTIO_NET_F_DEVICE_STATS, \
+> > +	VIRTIO_NET_F_RX_TSTAMP
+> 
+>     `VIRTNET_FEATURES` expands into `features_legacy[]` as well as `features[]`.
+>     Legacy virtio only supports 32 feature bits (`0..31`) and never has
+>     `VIRTIO_F_VERSION_1`. Move `VIRTIO_NET_F_RX_TSTAMP` (bit 49) into `features[]`
+>     alongside `VIRTIO_NET_F_*_UDP_TUNNEL_GSO*`.
+>
+
+Oops, yes. Will move it to features[].
+
+
+Steffen
+
+-- 
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
