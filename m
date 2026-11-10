@@ -1,104 +1,104 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794316814;
-	b=ek7+nGD3ho2Apup53b2XyogmGKuEoJc+7qcGMCJ+siG4XZJP2t1F5xDqfSGb4W5mrT4U
-	 +bV1tvpBe1zT7FZ5PU6auXfuMt26G0aYOsEjgQ73YwYGN3B9ZYCn27LyYLZ4m9RtnUJeX
-	 0OsjNE69VjHUVNtrkUIqIaG1jZ6htFmJf7GfUcuWmnkKd18lqRXDozY9QyKIzf/OHtN1a
-	 pXb/cGCFZ8PRF9DLSF9nQ8Io14DppZ5BSQ7AHyjmXxF51Z0gi2U8mwDYLwABYjuEabYwD
-	 DyFOJ1u32Fh0ct8R0iESBJCd6ZZJjjnD11ucBMBdPAssO54W/2cKsoTjlGN1abvrZSA==
+	t=1794316816;
+	b=aVnzxo80m0/+pYJmLkNLatmwp0WN3oLMvMuc/NEpm6v5VT6o/8Ezd8ZFIqlcshR2v6Gt
+	 alXN+M9EJG8nQ7114zm7QN9bD7Xg+gpZfIERkQmAhJDKEGE7fuLJLf4m+Na6rykPRaVFn
+	 6OX7xTPpAqdO2Jo8zcTtORI6CyCDC+CJQufyFmwfOzpCvauP9VbugQPzV2FEC70ZBTcTS
+	 WbXTs7wVRDlnpEzIxtgwDlVL7rSpXeujr0AQ7S2+ShvGyjt6HVAWCd0Cy0g7+orWTYyjJ
+	 AKEa7vCvD0KWy/ACzNLGqUB3ZRn+7K1yOIjL1rKg2Blh66yNCG7CCsDdA29SCKj3w7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794316814;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794316816;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=V3SupQCUvShL5hemamw4OCFifD8mbsdvbkYgJ4KaD9g=;
-	b=s5DgPW206euuM68VXHfwh3lRKs6gmjnjQejzIwlmattiMc2KLWH/zysh6sHMp3YnHbw0
-	 57Lgvq8U/C24VxRFlRo5cTNXZwbAPvgPygeKG3B9/pqex2tJbpaE/RsmmDIKLQQB0t87Z
-	 WbV/Jkk28gSGbAnlgkalqDITgEZV0FK/UWUfhXPXVKBEnnVjUb4qRNOCGY1aN+gIhqOEy
-	 dTtb3e7k0d9d/Jym55jA8OKlt7Inq0nAhDpr1nMqMalfXVp2I+q+dDLeBorHcaFQTm38V
-	 J3Z/vIEEtQdH20tXWTAIRYIs9R+Mggfw5wBrC04FqNMGWlWxIxqsZYFVLSnIpgA4k9A==
+	bh=vkQf0bsdN84NMZ6Q6aPSL5Z4srcg0iBviv4rLWVoxQM=;
+	b=3IMgBF2XiVqtLiN1Y3qePn7zuZS8AkvLZM2FF9DR4vyWdidkBn9zJQwZzOts/8NgnFqB
+	 w87qQLGemSeJjayRS8pGnuYKWBK/DMSDL2smqq0gchZOTUSd+FYML7ROeJ9SHaZFUdY8f
+	 trkru1vX5P72g6yzMbL3hG5Zg6mJiPte5Ppj7P9uCWWOaJnSyX851Gz08qsc5Z4asBfEs
+	 4fADeWuWVl6MU6A5aTziqB/b/Q5MPfsS4e0CNd69IM1KOtGphX3MSjcHwW3KQyiDnExvy
+	 QhVv7/mEEDAOY6ekoxSw/lSpqDqpxtOcXmjHCzwtyvrAWylKwMxFjTq5jdCdlVTge4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GFm5GsrD;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XGdwYZQo;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BqDI+uJb;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ay2g2CmS;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318DC606A7FF
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:20:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 318DC606A7FF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60353606BFE9
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:20:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60353606BFE9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GFm5GsrD;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XGdwYZQo
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BqDI+uJb;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ay2g2CmS
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794316813;
+	s=mimecast20190719; t=1794316814;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V3SupQCUvShL5hemamw4OCFifD8mbsdvbkYgJ4KaD9g=;
-	b=GFm5GsrD0V3kXHhJ0OXQsxrygYTq4qc0M+jDg7A5bKirZl5cRdJ8YLriU+rcSHIWAEVmPJ
-	Wub84PdsnaQ5gC4Jxza4w28YJPPdOf49AndsFpLHnDyLp4RPW954VAE7G7LJCex1cqXyeg
-	ks/rwgWO+gMl2g7uw6JM8zXafNydQs0=
+	bh=vkQf0bsdN84NMZ6Q6aPSL5Z4srcg0iBviv4rLWVoxQM=;
+	b=BqDI+uJbskGFLklfpVtC9wFVU9N6uHFNtPO05iCJcB4Cb+KhEDChmDUX1L7BvM8kJfcb7M
+	FEuD6y5KOFkvn7fQV0Ivg0CPDpEssRDnDC5Gvk2g10SpnOmcBrOBP8S9s+gCnweZJk0wtY
+	NTRNKGd/niIGORNc947Ou6C+7M/ymjs=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-T9ADq6xJMpucK-uOEGgVgw-1; Tue, 10 Nov 2026 08:20:11 -0500
-X-MC-Unique: T9ADq6xJMpucK-uOEGgVgw-1
-X-Mimecast-MFC-AGG-ID: T9ADq6xJMpucK-uOEGgVgw_1794316810
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c504b52eed3so84258966b.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:20:11 -0800 (PST)
+ us-mta-626-rKEyrp_NMbmHYV7sZF8MDQ-1; Tue, 10 Nov 2026 08:20:13 -0500
+X-MC-Unique: rKEyrp_NMbmHYV7sZF8MDQ-1
+X-Mimecast-MFC-AGG-ID: rKEyrp_NMbmHYV7sZF8MDQ_1794316812
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c505eecba6cso12386766b.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:20:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794316810; x=1794921610; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1794316812; x=1794921612; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V3SupQCUvShL5hemamw4OCFifD8mbsdvbkYgJ4KaD9g=;
-        b=XGdwYZQoAXgJGr1dovvHtrSPdPG4lxeKUgqjap58HUwSQrVpQjE/cpavmV8xcLhZY3
-         vo74pdLgNB0GlB61R+HwDi1wSH3KO9pnJOOkWb2QFEIvr6Wx3dhLIWae7jL09Wz/vrZv
-         GARdMwEAEF2TkzBI35F+vSMd12MOaed68bKRtw9w58+TPSuqDBLSlQbucvOVUSiKJy+j
-         bUUU+a34JxJC/K7KTj2GYgeLEUFfFtWFZmny809Imfc8X66J89bcAqnVv09fMNhaZp+G
-         RdsNU0hpSWW62rlSZK5v9yxylI52twwE2/2+ueO9foY+OP1Bfc+BUVZHVYPFBSZ+KR+w
-         FAlA==
+        bh=vkQf0bsdN84NMZ6Q6aPSL5Z4srcg0iBviv4rLWVoxQM=;
+        b=Ay2g2CmSDGhfYv1HZpyR0gbQmRZPeb5Lugq7IS/RpaYt1hOKT0xm1F2blDKOUQwW12
+         49bf89wmIvl9/lt5cbaFd07CQ9jl9XT7NOxNeXq+7hNcPTNXy9EREQdmRDqRRJCP076b
+         mBwFl1BbuRUMxyhSzm7RPO78j1NNpGpidO/A6VBogP12ZgxRVelElW6rkN2KnuNNQiD8
+         OeY6lDB+DzYvZBTYweiN7BjKb4nDrqBbdTWZ/5np6/yZZgVzfao0O4u1FdualM3RufnG
+         ea/znoUgVwu9/JFdji3I/jsUZ9d7byqA8rs+iSQZGRIHqy/RDTQP5fH2aIjvWhPpe3+x
+         kRig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794316810; x=1794921610;
+        d=1e100.net; s=20260707; t=1794316812; x=1794921612;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V3SupQCUvShL5hemamw4OCFifD8mbsdvbkYgJ4KaD9g=;
-        b=WkM/37/81tDFLWO+E5xhFnxHgE01ATFCuRLwe76l5KWq/41SX49JuxL8nJMvgklmJD
-         GJeqWMLd06EH9JVPFgrpCIHn8w5xrkFv4M7q9JSSGLHjCYZ0OSe9gX4YSdiVyLNNfMEu
-         O37cS4W+PhDwiGIfzfax1THThJGjpQqne5pcWwhINBbFvz4Q0YOpWM8SljOzFfvLnGnn
-         AY6t7WumSQYq4M/5wJ97dCAFUhu2UARv0FALhdoClgS+gEHk3KzXuSZNUSztzVWyN4EO
-         szLjo5niKb1u6Tjb5U+o4gGEKZBNNmOFGIodSSPXw7DSVAb7jCd4rAZk9bvQWIW5DQ3b
-         uAmQ==
-X-Forwarded-Encrypted: i=1; AL+hErH1DMHKfELhHZ6vvUfPHY/FoDLLRHenIOhkTju1KKI/FSPEcX7p4x7Nok7bo1g5C0/UTGrGNMI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9F39lytH5GA/HWrUFR5gXlgHid1ctHIbOUOV8UITQV9+NItE9g
-	wvvUkCSrqRB0nTr7zGkjZpT0gspHSXvpCdWeKK0DsqG88JV0sthgymtrHdoSDFxAPe1MIaA0BbA
-	xvoIG6XMSQpvxQODmWwEmCixRrQ4rnMbSKKtOaUgZ5eDhJYD9Ni7abdv/fw==
-X-Gm-Gg: AYBFou2CPYBTMS5o0tGFpH38y/WqVeXHnpiaOS8lPk2HpQCu+lciojEftHPT9YqeG7o
-	/F1fwpRBq5FbX43MdIMhAPusPelXvha3nlSFA9llneNKdnHrhbpC/HRto2P7kI2FMROoj1oOygA
-	9OlHH2obUQaCQeqhWkBEaFvRHPfkj30EevhQ56D02bH6jK2PNL/DV5Bckc5aAZD4AHnqQBXWW3q
-	TEyHXTfMYD7SPHVbNixKvca+7AgD9hmicLeCJ2st1nBoa8JG5FQet2PtcifJTOdrPxvd3LRqapI
-	aLjyCDv3bkmulI9zk6wZZjlfawfz3r1s9v4z40YgVnwxwThDjKbV9j6JoRRW10j52kFu0ucUgBd
-	ytVCcVuoXoz9nsKfgp0IrTT+/9iO7s/JoVXUT9GYiWaRvGI0EIK4m6hvgToLCHm93DKz6CErLfo
-	GiSKOphLoaKh1q9sJMN5keCF5LydIQm3+bTdCX/YpS0CmaTZFl+o+UWIeq5Gz0sJ+mMJgH5o1/g
-	uvCZrGu3lR2+nd8q2rKLJc2W2WanAQ6XOhK95K2CQwqq+0lZJWZ
-X-Received: by 2002:a17:906:794f:b0:c49:a539:aa45 with SMTP id a640c23a62f3a-c50496b6556mr199669166b.42.1794316810107;
-        Tue, 10 Nov 2026 05:20:10 -0800 (PST)
-X-Received: by 2002:a17:906:794f:b0:c49:a539:aa45 with SMTP id a640c23a62f3a-c50496b6556mr199666066b.42.1794316809640;
-        Tue, 10 Nov 2026 05:20:09 -0800 (PST)
+        bh=vkQf0bsdN84NMZ6Q6aPSL5Z4srcg0iBviv4rLWVoxQM=;
+        b=nSsimYefM7fRIZ0sSuNlRlr8XG238bG0mw0zWLAEm/2TWLO/OYR4RbD9qUcIx8Xz1C
+         WCLfhZEC1T1MUH21eykgWeOwVe2W2WV9W6Jr8gZvyJDVaPZyyV3ixniK4bknQnG9wat8
+         Zv6x1dFTOD8+s4ppKB5aO1VH8yJQP9URT5Fh5oGAx8KUixJr65P1qaSFGL2XXsdx1uDa
+         T2tcdYq6g4uJTeN4v3fdrLdlm0k5ANQiYmPEeXmXPpMhapEIvMrJDYXIDE7LWGRUxwpW
+         g0cxFSTzJLHmNOgstJCdCDCm+dzln5qUOz+DvyttZ6z038x+P7vYlDkWiyGlDPX+fBjo
+         MiUA==
+X-Forwarded-Encrypted: i=1; AL+hErHi5ad3XVBds7WtHfyOHwQMHrSvExkQwVnMIpG3+xfcIKkniGXHEbdIJam1b3wabeXgEx4ealA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8LvIexGQhexsUozFyiH9DcMDmKzoA5vF5X7v3qZovHgRj3OZX4
+	j3JTDKAYAZKvmNO/Cwd2fukHmunXDoRZvdZ+LmvHBB7suBCGqN0PBfnB1+1c4Li5YNt2Mb8itwR
+	AB+KFW8gAs54p6mtojhCFDmI/zHLIsCiShLBAsezW8sZJ9fXL9dpcbhY54Q==
+X-Gm-Gg: AYBFou2xU5XhQxy9dMpR73V0cF1G8kbIOpiug29LcluHim0r1wxtQjubnmo62ymtupt
+	2Dqd0xiKcZbzFar72Gw1IawhT5nJ66VMn6+3lu8ASinbbYDG+7CmDBCGyJcLp+Kb9iydCzcOOtk
+	P85L6BxYk8viJKr+z8oeeVh/U+mA6N4PROGmt/sPbwRWjEIQYWZ4RG8SJTDB8POB7S/1Z4wfNxD
+	TkA96zyuJ3qtrQel+TYYBcW9u30QclSqSZ5RfTLABs0UhgrL5k+yTudqcm09FpKQlwcg9f1Qaak
+	DiTKU0j4jI/INEXdKyEEkyzDLKSNlpaTlbF9FbUb3qLZ9Omqd8WOsGo8/msgn2C93hjzNeh9XDV
+	kMd7MXZ9n9UVNlQDMiEV5JKR6tx6x4FU9BQrvUKai29JF/78i09iHuTB8/PzynjM2RLj6uyLyw8
+	B7hesmUeVxR4AAePgCdNItHKWOvJ0ceZOsGRfh+mgqMZEbQgWDIWHP6pQJw3Z5Oj6MUJar4J/j6
+	beElyjFG+3G93uRJe8ZGQGYCHcQ0cIMwJV7AjqIy63SKL6PM+ZR
+X-Received: by 2002:a17:907:cbc5:b0:c4c:d6a3:f4bb with SMTP id a640c23a62f3a-c504951e429mr197752566b.10.1794316811565;
+        Tue, 10 Nov 2026 05:20:11 -0800 (PST)
+X-Received: by 2002:a17:907:cbc5:b0:c4c:d6a3:f4bb with SMTP id a640c23a62f3a-c504951e429mr197749666b.10.1794316811010;
+        Tue, 10 Nov 2026 05:20:11 -0800 (PST)
 Received: from cluster.. (4f.55.790d.ip4.static.sl-reverse.com. [13.121.85.79])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a5d54bbsm107791166b.48.2026.11.10.05.20.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a5d54bbsm107791166b.48.2026.11.10.05.20.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 05:20:09 -0800 (PST)
+        Tue, 10 Nov 2026 05:20:10 -0800 (PST)
 From: Alex Markuze <amarkuze@redhat.com>
 To: Jens Axboe <axboe@kernel.dk>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -117,9 +117,9 @@ Cc: Pavel Begunkov <asml.silence@gmail.com>,
 	netdev@vger.kernel.org,
 	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next 01/12] net: add an exclusive TCP receive claim
-Date: Tue, 10 Nov 2026 13:19:55 +0000
-Message-Id: <20261110132006.3280986-2-amarkuze@redhat.com>
+Subject: [RFC PATCH net-next 02/12] io_uring/opaque: add data structures and the UAPI header
+Date: Tue, 10 Nov 2026 13:19:56 +0000
+Message-Id: <20261110132006.3280986-3-amarkuze@redhat.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261110132006.3280986-1-amarkuze@redhat.com>
 References: <20261110132006.3280986-1-amarkuze@redhat.com>
@@ -134,327 +134,625 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The io_uring opaque object collector, added later in this series,
-consumes the receive queue of a TCP socket through tcp_read_sock() with
-its own actor. It reports stream offsets that count from the first byte
-that was unread when it attached. If another reader consumes bytes while
-the collector is attached, those offsets no longer match the data, and
-the application selects the wrong ranges.
-
-Add a receive owner to struct sock: a pointer to a struct sock_rx_owner
-that names a tcp_read_sock() actor and its data. The owner is published
-and cleared under the socket lock and sk_callback_lock. While an owner is
-set:
-
-- tcp_read_sock() and tcp_read_sock_noack() return -EBUSY unless the
-  caller passes the owning actor and data. This also stops splice().
-- tcp_recvmsg_locked(), tcp_zerocopy_receive() and tcp_read_skb() return
-  -EBUSY.
-- sk_wait_data() also returns when an owner appears. A reader that sleeps
-  in tcp_recvmsg_locked() then stops with the bytes that it copied, or
-  with -EBUSY. The claimant wakes sleeping readers after it publishes the
-  owner.
-- tcp_disconnect(), connect(AF_UNSPEC), tcp_set_ulp(), sk_psock_init()
-  and TCP_REPAIR return -EBUSY, because each of them resets or takes
-  over the receive sequence. TCP_REPAIR checks the owner before its
-  permission check, so a caller without the permission also gets -EBUSY.
-- sk_clone() starts the child socket without an owner.
-
-CONFIG_SOCK_RX_OWNER is a hidden option that the io_uring feature
-selects. Without it, struct sock does not change and the checks compile
-away. With it, struct sock grows by one pointer. Each affected receive
-path reads the pointer once with READ_ONCE(), and tcp_recvmsg_locked()
-reads it once per loop iteration.
-
-An optional data_ready callback notifies the owner independently of
-ordinary TCP low-water readiness. TCP invokes it under the read side
-of sk_callback_lock, which pins the owner and its data; the callback
-must not sleep. With receive ownership disabled, the helper is empty.
-
-This patch adds no user of the claim or callback.
+Define immutable versions, backing extents, stores and request state.
+TX queues record FIFO positions ordered by enqueue under the store's TX
+lock, including positions with reference acquisition still pending, and
+carry a busy socket identity pin.
 
 Signed-off-by: Alex Markuze <amarkuze@redhat.com>
 ---
- include/linux/net.h  |  8 ++++++++
- include/net/sock.h   | 46 ++++++++++++++++++++++++++++++++++++++++++++
- net/Kconfig          |  7 +++++++
- net/core/skmsg.c     |  4 ++++
- net/core/sock.c      |  6 +++++-
- net/ipv4/af_inet.c   |  2 ++
- net/ipv4/tcp.c       | 22 ++++++++++++++++++++-
- net/ipv4/tcp_input.c |  1 +
- net/ipv4/tcp_ulp.c   |  2 ++
- 9 files changed, 96 insertions(+), 2 deletions(-)
+ include/linux/io_uring_types.h       |  10 +
+ include/uapi/linux/io_uring/opaque.h | 126 +++++++++++++
+ io_uring/opaque.h                    | 155 +++++++++++++++
+ io_uring/opaque_internal.h           | 269 +++++++++++++++++++++++++++
+ 4 files changed, 560 insertions(+)
+ create mode 100644 include/uapi/linux/io_uring/opaque.h
+ create mode 100644 io_uring/opaque.h
+ create mode 100644 io_uring/opaque_internal.h
 
-diff --git a/include/linux/net.h b/include/linux/net.h
-index e2a866fbcfa5..d8fe1812e02b 100644
---- a/include/linux/net.h
-+++ b/include/linux/net.h
-@@ -230,6 +230,14 @@ struct sk_buff;
- struct proto_accept_arg;
- typedef int (*sk_read_actor_t)(read_descriptor_t *, struct sk_buff *,
- 			       unsigned int, size_t);
+diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+index 9140c21ca819..198c6bdb3e2c 100644
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -412,6 +412,9 @@ struct io_ring_ctx {
+ 		struct io_alloc_cache	netmsg_cache;
+ 		struct io_alloc_cache	rw_cache;
+ 		struct io_alloc_cache	cmd_cache;
++#ifdef CONFIG_IO_URING_OPAQUE_OBJ
++		struct io_alloc_cache	opaque_cache;
++#endif
+ 
+ 		int (*loop_step)(struct iou_ctx *,
+ 				 struct iou_loop_params *);
+@@ -421,6 +424,9 @@ struct io_ring_ctx {
+ 		 * ->uring_cmd() by io_uring_cmd_insert_cancelable()
+ 		 */
+ 		struct hlist_head	cancelable_uring_cmd;
++#ifdef CONFIG_IO_URING_OPAQUE_OBJ
++		struct list_head	opaque_waits;
++#endif
+ 		/*
+ 		 * For Hybrid IOPOLL, runtime in hybrid polling, without
+ 		 * scheduling time
+@@ -491,6 +497,10 @@ struct io_ring_ctx {
+ 
+ 	/* Stores zcrx object pointers of type struct io_zcrx_ifq */
+ 	struct xarray			zcrx_ctxs;
++#ifdef CONFIG_IO_URING_OPAQUE_OBJ
++	struct xarray			opaque_stores;
++	bool				opaque_stores_dying;
++#endif
+ 
+ 	/* Used for accounting references on pages in registered buffers */
+ 	struct xarray		hpage_acct;
+diff --git a/include/uapi/linux/io_uring/opaque.h b/include/uapi/linux/io_uring/opaque.h
+new file mode 100644
+index 000000000000..692daa7d7e32
+--- /dev/null
++++ b/include/uapi/linux/io_uring/opaque.h
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR MIT */
++#ifndef LINUX_IO_URING_OPAQUE_H
++#define LINUX_IO_URING_OPAQUE_H
 +
-+/* Published under socket and callback locks; controls the receive sequence. */
-+struct sock_rx_owner {
-+	sk_read_actor_t actor;
-+	void *data;
-+	/* TCP receive context, under sk_callback_lock: must not sleep. */
-+	void (*data_ready)(struct sock *sk, void *data);
++#include <linux/types.h>
++
++/* IORING_REGISTER_OPAQUE_STORE, nr_args == 1. size includes reserved bytes. */
++struct io_uring_opaque_register {
++	__u32 size;
++	__u32 flags;
++	__s32 fd;
++	__u32 store_id;
++	__u64 config;
++	__u32 config_size;
++	__u32 __resv0;
++	__u64 __resv[2];
 +};
- typedef int (*skb_read_actor_t)(struct sock *, struct sk_buff *);
- 
- 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 173b37b2b8bb..4da1796b3b8c 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -326,6 +326,7 @@ struct sk_filter;
-   *	@sk_zckey: counter to order MSG_ZEROCOPY notifications
-   *	@sk_socket: Identd and reporting IO signals
-   *	@sk_user_data: RPC layer private data. Write-protected by @sk_callback_lock.
-+  *	@sk_rx_owner: Exclusive receive owner under socket and callback locks.
-   *	@sk_frag: cached page frag
-   *	@sk_peek_off: current peek_offset value
-   *	@sk_send_head: front of stuff to transmit
-@@ -575,6 +576,9 @@ struct sock {
- 	u8			sk_bpf_cb_flags;
- 
- 	void			*sk_user_data;
-+#ifdef CONFIG_SOCK_RX_OWNER
-+	struct sock_rx_owner	*sk_rx_owner;
-+#endif
- #ifdef CONFIG_SECURITY
- 	void			*sk_security;
- #endif
-@@ -617,6 +621,48 @@ enum sk_pacing {
- 	SK_PACING_FQ		= 2,
- };
- 
-+static inline bool sock_rx_owned(const struct sock *sk)
-+{
-+#ifdef CONFIG_SOCK_RX_OWNER
-+	return unlikely(READ_ONCE(sk->sk_rx_owner));
++
++/* config/config_size select a size-versioned configuration on creation. */
++struct io_uring_opaque_config {
++	__u64 hard_limit;
++	__u64 compact_headroom;
++	__u32 max_object_size;
++	__u32 max_objects;
++	__u32 max_streams;
++	__u32 max_extents;
++	__u32 flags;
++	__u32 __resv0;
++	__u64 __resv[2];
++	__u64 high_watermark;
++	__u64 low_watermark;
++	__u64 reply_reserve;
++	__u32 __resv2;
++	__u32 __resv1;
++};
++
++/* IORING_OP_OPAQUE_OBJ: sqe->ioprio selects the operation. */
++enum io_uring_opaque_op {
++	/* Nonconsuming available window; len is capacity, never WAITALL. */
++	IORING_OPAQUE_INSPECT,
++	/* Complete-only object-ready CQE for the declared future stream range. */
++	IORING_OPAQUE_RECV_OBJECT,
++	IORING_OPAQUE_DISCARD,
++	/* Copy from an already complete immutable object. */
++	IORING_OPAQUE_READ_OBJECT,
++	IORING_OPAQUE_FREE,
++	IORING_OPAQUE_STAT,
++	IORING_OPAQUE_OBJECT_STAT,
++	IORING_OPAQUE_STREAM_STAT,
++	IORING_OPAQUE_STREAM_CLOSE,
++	IORING_OPAQUE_COMPACT,
++	IORING_OPAQUE_SET_POLICY,
++	/* Copy userspace bytes into a new complete immutable object. */
++	IORING_OPAQUE_CREATE,
++	/* Nonconsuming contiguous byte count, without copying payload. */
++	IORING_OPAQUE_AVAILABLE,
++};
++
++/* Optional SEND sqe->addr3 framing; size includes zero reserved extensions. */
++struct io_uring_opaque_frame {
++	__u32 size;
++	__u32 flags;
++	__u64 prefix;
++	__u64 suffix;
++	__u32 prefix_length;
++	__u32 suffix_length;
++	__u64 __resv[2];
++};
++
++/* Combined copied prefix and suffix, independently of object body length. */
++#define IORING_OPAQUE_FRAME_MAX	(64U * 1024U)
++
++#define IORING_OPAQUE_OBJECT_F_COMPACTED	(1U << 0)
++#define IORING_OPAQUE_OBJECT_F_COMPACTING	(1U << 1)
++#define IORING_OPAQUE_OBJECT_F_FORWARD_ONLY (1U << 2)
++#define IORING_OPAQUE_STREAM_F_EOF		(1U << 0)
++
++enum io_uring_opaque_memory_mode {
++	IORING_OPAQUE_MEMORY_NORMAL,
++	IORING_OPAQUE_MEMORY_LOWMEM,
++};
++
++struct io_uring_opaque_stat {
++	__u32 size;
++	__u32 __resv;
++	__u64 backing_bytes;
++	__u64 hard_limit;
++	__u64 copied_bytes;
++	__u64 compacted_bytes;
++	__u64 compact_count;
++	__u32 objects;
++	__u32 streams;
++	__u32 extents;
++	__u32 memory_mode;
++	__u64 framing_bytes;
++	__u64 framing_copied_bytes;
++};
++
++struct io_uring_opaque_object_stat {
++	__u32 size;
++	__u32 flags;
++	__u64 length;
++	__u64 backing_bytes;
++	__u32 extents;
++	__u32 __resv;
++};
++
++struct io_uring_opaque_stream_stat {
++	__u32 size;
++	__u32 flags;
++	__u64 rx_next;
++	__u64 undecided_bytes;
++	__s32 error;
++	__u32 __resv;
++};
++
++struct io_uring_opaque_policy {
++	__u32 flags;
++	__u32 __resv0;
++	__u64 bytes_per_second;
++	__u64 burst_bytes;
++	__u64 max_temporary_bytes;
++	__u64 __resv[2];
++};
++
++#endif /* LINUX_IO_URING_OPAQUE_H */
+diff --git a/io_uring/opaque.h b/io_uring/opaque.h
+new file mode 100644
+index 000000000000..a7210f4bee5e
+--- /dev/null
++++ b/io_uring/opaque.h
+@@ -0,0 +1,155 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef IO_URING_OPAQUE_H
++#define IO_URING_OPAQUE_H
++
++#include <linux/io_uring_types.h>
++#include <linux/rbtree.h>
++#include <linux/uio.h>
++#include <uapi/linux/io_uring/opaque.h>
++
++struct io_opaque_store;
++struct io_cancel_data;
++struct io_uring_opaque_config;
++
++#ifdef CONFIG_IO_URING_OPAQUE_OBJ
++struct io_opaque_stream;
++struct io_opaque_data;
++struct io_opaque_tx;
++struct io_opaque_vec;
++
++enum io_opaque_phase {
++	IO_OPAQUE_IDLE,
++	IO_OPAQUE_RANGE_WAIT,
++	IO_OPAQUE_BUDGET_POLL,
++	IO_OPAQUE_SEND_WAIT,
++	IO_OPAQUE_COPY_WORK,
++	IO_OPAQUE_QUEUED,
++};
++
++struct io_opaque_req {
++	struct io_kiocb *req;
++	struct io_opaque_store *store;
++	struct io_opaque_stream *stream;
++	struct io_opaque_data *data;
++	struct list_head wait;
++	struct list_head cancel;
++	u64 handle;
++	u64 offset;
++	u64 progress;
++	u64 need_bytes;
++	/* Unallocated CREATE charge; must coexist with the reserved slot. */
++	u64 create_reserved;
++	unsigned long retry_at;
++	void __user *addr;
++	u32 length;
++	int result;
++	u16 op;
++	u16 collect_flags;
++	enum io_opaque_phase phase;
++	bool canceled;
++	bool slot_reserved;
++	bool consumed;
++	bool resolved;
++	bool budget_reported;
++	union {
++		struct {
++			struct rb_node decision;
++			struct list_head read;
++			u32 slot;
++		};
++		struct {
++			struct iov_iter iter;
++			struct list_head send;
++			struct io_opaque_tx *tx;
++			void *framing;
++			u64 prefix;
++			u64 suffix;
++			u32 frame_charge;
++			u32 prefix_length;
++			u32 suffix_length;
++			u32 total_length;
++			u32 msg_flags;
++			u16 send_flags;
++			bool frame_reserved;
++		};
++		struct {
++			struct io_opaque_data *replacement;
++			u64 reserved;
++			u64 transient;
++		};
++		struct io_uring_opaque_policy policy;
++	};
++	/*
++	 * Block of a vectored send, kept when the request returns to the ring's
++	 * cache so that the next one has none to allocate. It is not part of the
++	 * union and is the last member: allocation clears everything before it.
++	 * Only a request with IORING_OPAQUE_SEND_VECTOR uses it, whatever it holds.
++	 */
++	struct io_opaque_vec *vec;
++};
++
++bool io_opaque_cache_init(struct io_ring_ctx *ctx);
++void io_opaque_cache_free(struct io_ring_ctx *ctx);
++struct io_opaque_store *io_opaque_alloc(struct io_ring_ctx *ctx,
++					const struct io_uring_opaque_config *config);
++void io_opaque_get(struct io_opaque_store *store);
++void io_opaque_user_put(struct io_opaque_store *store);
++void io_opaque_put(struct io_opaque_store *store);
++int io_register_opaque(struct io_ring_ctx *ctx, void __user *arg);
++void io_terminate_opaque(struct io_ring_ctx *ctx);
++void io_unregister_opaque(struct io_ring_ctx *ctx);
++void io_opaque_stop(struct io_opaque_store *store);
++void io_opaque_free(struct io_opaque_store *store);
++int io_opaque_recv_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
++int io_opaque_recv(struct io_kiocb *req, unsigned int issue_flags);
++int io_opaque_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
++int io_opaque_issue(struct io_kiocb *req, unsigned int issue_flags);
++int io_opaque_send_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
++int io_opaque_send(struct io_kiocb *req, unsigned int issue_flags);
++void io_opaque_cleanup(struct io_kiocb *req);
++void io_opaque_fail(struct io_kiocb *req);
++int io_opaque_cancel(struct io_ring_ctx *ctx, struct io_cancel_data *cd,
++		     unsigned int issue_flags);
++bool io_opaque_cancel_all(struct io_ring_ctx *ctx, struct io_uring_task *tctx,
++			  bool cancel_all);
 +#else
++static inline bool io_opaque_cache_init(struct io_ring_ctx *ctx)
++{
 +	return false;
-+#endif
 +}
++
++static inline void io_opaque_cache_free(struct io_ring_ctx *ctx)
++{
++}
++
++static inline int io_register_opaque(struct io_ring_ctx *ctx, void __user *arg)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline void io_terminate_opaque(struct io_ring_ctx *ctx)
++{
++}
++
++static inline void io_unregister_opaque(struct io_ring_ctx *ctx)
++{
++}
++
++static inline void io_opaque_cleanup(struct io_kiocb *req)
++{
++}
++
++static inline int io_opaque_cancel(struct io_ring_ctx *ctx,
++				   struct io_cancel_data *cd,
++				   unsigned int issue_flags)
++{
++	return -ENOENT;
++}
++
++static inline bool io_opaque_cancel_all(struct io_ring_ctx *ctx,
++					struct io_uring_task *tctx, bool cancel_all)
++{
++	return false;
++}
++#endif
++#endif
+diff --git a/io_uring/opaque_internal.h b/io_uring/opaque_internal.h
+new file mode 100644
+index 000000000000..f6b372800c76
+--- /dev/null
++++ b/io_uring/opaque_internal.h
+@@ -0,0 +1,269 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef IO_URING_OPAQUE_INTERNAL_H
++#define IO_URING_OPAQUE_INTERNAL_H
++
++#include <linux/bitmap.h>
++#include <linux/bvec.h>
++#include <linux/net.h>
++#include <linux/sizes.h>
++#include <linux/workqueue.h>
++#include <uapi/linux/io_uring/opaque.h>
++
++#include "opaque.h"
++
++#define IO_OPAQUE_READ_MAX	SZ_64K
++#define IO_OPAQUE_RX_BATCH	SZ_256K
++#define IO_OPAQUE_MAX_ORDER	(PAGE_SHIFT < 16 ? 16 - PAGE_SHIFT : 0)
++#define IO_OPAQUE_ALLOC_RETRY_MS	50
++#define IO_OPAQUE_WAKE_BATCH	32
++#define IO_OPAQUE_INDEX_BITS	14
++#define IO_OPAQUE_INDEX_MASK	((1U << IO_OPAQUE_INDEX_BITS) - 1)
++/* Stream tokens carry the tag bit; object handles and generations never do. */
++#define IO_OPAQUE_TOKEN_TAG	BIT_ULL(63)
++#define IO_OPAQUE_GENERATION_MAX	(U64_MAX >> (IO_OPAQUE_INDEX_BITS + 1))
++/* Unused per-socket TX queues kept per store; the oldest is freed beyond this. */
++#define IO_OPAQUE_TX_IDLE_MAX	64
++/* Backing segments all ranges of one vectored send may span; more is EMSGSIZE. */
++#define IO_OPAQUE_SEND_VEC_SEGS	4096
++/*
++ * A version of more segments than this records where every this-many-th of
++ * them starts, so that a range is found with a walk of about this many steps
++ * and a binary search, however large the version is and wherever the walk
++ * began. A smaller one is walked, which is as short.
++ */
++#define IO_OPAQUE_SEEK_STRIDE	16
++/* Slots of the table of handles that a policy change walks while it holds tables. */
++#define IO_OPAQUE_POLICY_CHUNK	256
++
++/* What io_opaque_tx_join() returns besides an error. */
++/* Queued behind another frame and parked, with its references taken. */
++#define IO_OPAQUE_TX_WAIT	0
++/* The head of its queue, with its references taken. */
++#define IO_OPAQUE_TX_HEAD	1
++/* The head of its queue, still to take its references. */
++#define IO_OPAQUE_TX_SETTLE	2
++
++struct io_opaque_backing {
++	refcount_t refs;
++	struct page *page;
++	u64 charge;
++	u32 filled;
++	bool copied;
++	bool accounted;
++};
++
++struct io_opaque_extent {
++	struct list_head list;
++	struct io_opaque_backing *backing;
++	u64 start;
++	u32 offset;
++	u32 length;
++	bool embedded;
++};
++
++/* One allocation for the common capture; splits allocate only an extent. */
++struct io_opaque_chunk {
++	struct io_opaque_backing backing;
++	struct io_opaque_extent extent;
++};
++
++struct io_opaque_data {
++	refcount_t refs;
++	struct list_head extents;
++	struct bio_vec *bvec;
++	/*
++	 * Where segments 0, IO_OPAQUE_SEEK_STRIDE, twice that and so on start,
++	 * as bytes into the object, when it has more than that many segments;
++	 * else NULL. It is allocated with bvec and freed with it.
++	 */
++	u64 *anchor;
++	u64 length;
++	u64 charge;
++	u32 nr;
++	bool dense;
++	bool forward_only;
++};
++
++struct io_opaque_slot {
++	struct io_opaque_data *data;
++	u64 generation;
++	bool reserved;
++	bool compacting;
++	struct list_head candidate;
++	unsigned long born;
++	unsigned long retry;
++};
++
++struct io_opaque_stream_slot {
++	struct io_opaque_stream *stream;
++	u64 generation;
++};
++
++struct io_opaque_tx {
++	struct rb_node node;
++	struct sock *sk;
++	/* First-issue order, including pending admissions; only the head sends. */
++	struct list_head requests;
++	/* On store->txs_idle while no request is queued. */
++	struct list_head idle;
++	bool failed;
++	/* A busy queue owns its socket identity independently of request files. */
++	bool sk_held;
++};
 +
 +/*
-+ * Notify the receive owner independently of ordinary socket low-water wakes.
-+ * The callback lock pins both owner and data until the callback returns;
-+ * publication and removal take its write side while owning the socket.
++ * Where one range of a vectored send starts in the version it pins. Admission
++ * finds it under tables; the cursor is built from it once tables is dropped.
 + */
-+static inline void sock_rx_owner_data_ready(struct sock *sk)
-+{
-+#ifdef CONFIG_SOCK_RX_OWNER
-+	struct sock_rx_owner *owner;
++struct io_opaque_vec_start {
++	/* The first segment of the range. */
++	u32 seg;
++	/* Bytes of that segment before the range. */
++	u32 skip;
++};
 +
-+	if (!sock_rx_owned(sk))
-+		return;
-+	read_lock_bh(&sk->sk_callback_lock);
-+	owner = sk->sk_rx_owner;
-+	if (owner && owner->data_ready)
-+		owner->data_ready(sk, owner->data);
-+	read_unlock_bh(&sk->sk_callback_lock);
-+#endif
++/*
++ * What a vectored send needs besides the request: its entries, copied at prep,
++ * the version each pins, where each starts in it and the segments of the
++ * combined cursor. One block holds the header and the four arrays, so that
++ * growing it is one allocation.
++ */
++struct io_opaque_vec {
++	/* Entries, from the SQE. */
++	u32 nr;
++	/*
++	 * Entries of pin[] that admission has set. The version of each is kept
++	 * alive by the send, by a reference of the entry's own or, unless the
++	 * vector is LAST, by that of the entry before it when both name the
++	 * same handle.
++	 */
++	u32 pinned;
++	u32 cap_nr;
++	u32 cap_segs;
++	struct io_uring_opaque_send_entry *ent;
++	struct io_opaque_data **pin;
++	struct io_opaque_vec_start *start;
++	struct bio_vec *bv;
++};
++
++struct io_opaque_stream {
++	refcount_t refs;
++	/* Extents, range decisions and collector state. */
++	struct mutex lock;
++	struct io_opaque_store *store;
++	struct file *file;
++	struct sock_rx_owner owner;
++	struct list_head extents;
++	struct list_head reads;
++	struct rb_root_cached decisions;
++	struct io_opaque_req *collector;
++	u64 token;
++	u64 next;
++	u64 undecided;
++	u64 need_bytes;
++	int error;
++	bool eof;
++	bool closed;
++	/* Collection pass may not take undecided bytes off the socket. */
++	bool hold_undecided;
++};
++
++struct io_opaque_store {
++	refcount_t refs;
++	refcount_t users;
++	struct io_uring_opaque_config config;
++	/*
++	 * Handles and candidates; never held during copies or I/O, and for a time
++	 * that the request bounds: what admission does under it is a lookup per
++	 * entry, the segments its ranges span up to the limit, and for each range
++	 * a walk that the version's anchors keep to about two strides and a
++	 * binary search. Attach and the admission of a send take it with the
++	 * socket owned, so nothing may take a socket lock while holding it, or
++	 * wait for anything that holds one for long.
++	 */
++	struct mutex tables;
++	struct io_opaque_slot *objects;
++	struct io_opaque_stream_slot *streams;
++	unsigned long *object_used;
++	unsigned long *stream_used;
++	u32 object_cursor;
++	u32 stream_cursor;
++	u32 nr_objects;
++	u32 nr_streams;
++	struct rb_root txs;
++	struct list_head txs_idle;
++	u32 nr_txs_idle;
++	struct user_struct *user;
++	struct mm_struct *mm;
++	struct mem_cgroup *memcg;
++	struct obj_cgroup *objcg;
++	atomic64_t bytes;
++	atomic64_t copied;
++	atomic64_t compacted;
++	atomic64_t compactions;
++	atomic64_t framing;
++	atomic64_t framing_copied;
++	/* Framing held in the reply reserve, outside bytes. */
++	atomic64_t reserve_framing;
++	/*
++	 * Charged in bytes but not payload held: unpublished compaction copies
++	 * and framing in ordinary capacity. Watermarks subtract it. Changes
++	 * that move bytes and transient together are one seqcount write.
++	 */
++	atomic64_t transient;
++	/* Serializes transient_seq writers. */
++	spinlock_t transient_lock;
++	seqcount_spinlock_t transient_seq;
++	atomic_t extents;
++	atomic_t memory_mode;
++	/* Budget waiters and remote wakeup/cancellation arbitration. */
++	spinlock_t wait_lock;
++	/* TX queues: the tree, every queue's requests and failed flag. Never with tables. */
++	spinlock_t tx_lock;
++	struct list_head budget_waits;
++	struct list_head copies;
++	/* One dispatcher serializes manual and automatic copies. */
++	struct delayed_work compact_work;
++	struct delayed_work retry_work;
++	struct list_head candidates;
++	struct io_uring_opaque_policy policy;
++	/* Counts policy changes; a walk of the table that is overtaken by another stops. */
++	u32 policy_seq;
++	u64 tokens;
++	unsigned long token_time;
++	unsigned long auto_at;
++	int dead;
++};
++
++bool io_opaque_charge(struct io_opaque_store *store, u64 bytes, bool rx);
++void io_opaque_uncharge(struct io_opaque_store *store, u64 bytes);
++bool io_opaque_charge_transient(struct io_opaque_store *store, u64 bytes, u64 limit);
++void io_opaque_release_transient(struct io_opaque_store *store, u64 uncharge,
++				 u64 transient);
++bool io_opaque_charge_frame(struct io_opaque_store *store, u64 bytes, bool *reserved);
++void io_opaque_uncharge_frame(struct io_opaque_store *store, u64 bytes, bool reserved);
++int io_opaque_memory_mode(struct io_opaque_store *store);
++
++static inline u64 io_opaque_rx_limit(struct io_opaque_store *store)
++{
++	return store->config.hard_limit - store->config.compact_headroom -
++	       store->config.reply_reserve;
 +}
 +
-+static inline bool sock_rx_owner_conflict(const struct sock *sk,
-+					  read_descriptor_t *desc,
-+					  sk_read_actor_t actor)
-+{
-+#ifdef CONFIG_SOCK_RX_OWNER
-+	const struct sock_rx_owner *owner = READ_ONCE(sk->sk_rx_owner);
-+
-+	return owner && (owner->actor != actor || owner->data != desc->arg.data);
-+#else
-+	return false;
++struct io_opaque_extent *io_opaque_extent_new(struct io_opaque_store *store,
++					      struct page *page, u32 offset,
++					      u32 length, u64 start,
++					      bool reserved);
++struct io_opaque_data *io_opaque_data_alloc(void);
++void io_opaque_data_put(struct io_opaque_store *store,
++			struct io_opaque_data *data);
++int io_opaque_vector(struct io_opaque_data *data);
++struct page *io_opaque_owned_page(unsigned int *order);
++struct page *io_opaque_dest_page(struct io_opaque_store *store, u64 pages_left,
++				 unsigned int *order);
++u64 io_opaque_handle(u32 index, u64 generation);
++struct io_opaque_slot *io_opaque_lookup(struct io_opaque_store *store,
++					u64 handle);
++void io_opaque_wait(struct io_opaque_req *op, enum io_opaque_phase phase);
++void io_opaque_queue_ready(struct io_opaque_req *op, int result);
 +#endif
-+}
-+
- /* flag bits in sk_user_data
-  *
-  * - SK_USER_DATA_NOCOPY:      Pointer stored in sk_user_data might
-diff --git a/net/Kconfig b/net/Kconfig
-index 76ab44aa439a..6ece51ab26ba 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -26,6 +26,13 @@ menuconfig NET
- 
- if NET
- 
-+config SOCK_RX_OWNER
-+	bool
-+	depends on INET
-+	help
-+	  Allow a TCP stream actor to claim exclusive receive sequence access.
-+	  Receive paths reject competing readers while the claim is held.
-+
- config WANT_COMPAT_NETLINK_MESSAGES
- 	bool
- 	help
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index df385a5a961e..5c753bcb808c 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -754,6 +754,10 @@ struct sk_psock *sk_psock_init(struct sock *sk, int node)
- 
- 	write_lock_bh(&sk->sk_callback_lock);
- 
-+	if (sock_rx_owned(sk)) {
-+		psock = ERR_PTR(-EBUSY);
-+		goto out;
-+	}
- 	if (sk_is_inet(sk) && inet_csk_has_ulp(sk)) {
- 		psock = ERR_PTR(-EINVAL);
- 		goto out;
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e7405be8941f..3fcdc56e624e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2614,6 +2614,9 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
- 	 */
- 	if (sk_user_data_is_nocopy(newsk))
- 		newsk->sk_user_data = NULL;
-+#ifdef CONFIG_SOCK_RX_OWNER
-+	newsk->sk_rx_owner = NULL;
-+#endif
- 
- 	newsk->sk_err	   = 0;
- 	newsk->sk_err_soft = 0;
-@@ -3389,7 +3392,8 @@ int sk_wait_data(struct sock *sk, long *timeo, const struct sk_buff *skb)
- 
- 	add_wait_queue(sk_sleep(sk), &wait);
- 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--	rc = sk_wait_event(sk, timeo, skb_peek_tail(&sk->sk_receive_queue) != skb, &wait);
-+	rc = sk_wait_event(sk, timeo, sock_rx_owned(sk) ||
-+			   skb_peek_tail(&sk->sk_receive_queue) != skb, &wait);
- 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 	remove_wait_queue(sk_sleep(sk), &wait);
- 	return rc;
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 7677b0343abd..54c30a59bbce 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -649,6 +649,8 @@ int __inet_stream_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
- 			return -EINVAL;
- 
- 		if (uaddr->sa_family == AF_UNSPEC) {
-+			if (sock_rx_owned(sk))
-+				return -EBUSY;
- 			sk->sk_disconnects++;
- 			err = sk->sk_prot->disconnect(sk, flags);
- 			sock->state = err ? SS_DISCONNECTING : SS_UNCONNECTED;
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b9de7c302ba8..6de6ce153fda 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1753,6 +1753,8 @@ out:
- int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
- 		  sk_read_actor_t recv_actor)
- {
-+	if (sock_rx_owner_conflict(sk, desc, recv_actor))
-+		return -EBUSY;
- 	return __tcp_read_sock(sk, desc, recv_actor, false,
- 			       &tcp_sk(sk)->copied_seq);
- }
-@@ -1762,6 +1764,8 @@ int tcp_read_sock_noack(struct sock *sk, read_descriptor_t *desc,
- 			sk_read_actor_t recv_actor, bool noack,
- 			u32 *copied_seq)
- {
-+	if (sock_rx_owner_conflict(sk, desc, recv_actor))
-+		return -EBUSY;
- 	return __tcp_read_sock(sk, desc, recv_actor, noack, copied_seq);
- }
- 
-@@ -1770,6 +1774,8 @@ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 	struct sk_buff *skb;
- 	int copied = 0;
- 
-+	if (sock_rx_owned(sk))
-+		return -EBUSY;
- 	if (sk->sk_state == TCP_LISTEN)
- 		return -ENOTCONN;
- 
-@@ -2224,6 +2230,8 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 
- 	zc->copybuf_len = 0;
- 	zc->msg_flags = 0;
-+	if (sock_rx_owned(sk))
-+		return -EBUSY;
- 
- 	if (address & (PAGE_SIZE - 1) || address != zc->address)
- 		return -EINVAL;
-@@ -2678,6 +2686,8 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
- 	u32 peek_offset = 0;
- 	u32 urg_hole = 0;
- 
-+	if (sock_rx_owned(sk))
-+		return -EBUSY;
- 	err = -ENOTCONN;
- 	if (sk->sk_state == TCP_LISTEN)
- 		goto out;
-@@ -2717,6 +2727,11 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
- 	do {
- 		u32 offset;
- 
-+		/* Ownership may have changed while this reader slept for data. */
-+		if (sock_rx_owned(sk)) {
-+			copied = copied ?: -EBUSY;
-+			break;
-+		}
- 		/* Are we at urgent data? Stop if we have read anything or have SIGURG pending. */
- 		if (unlikely(tp->urg_data) && tp->urg_seq == *seq) {
- 			if (copied)
-@@ -3374,6 +3389,9 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	struct request_sock *req;
- 	u32 seq;
- 
-+	if (sock_rx_owned(sk))
-+		return -EBUSY;
-+
- 	if (old_state != TCP_CLOSE)
- 		tcp_set_state(sk, TCP_CLOSE);
- 
-@@ -3988,7 +4006,9 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case TCP_REPAIR:
--		if (!tcp_can_repair_sock(sk))
-+		if (sock_rx_owned(sk))
-+			err = -EBUSY;
-+		else if (!tcp_can_repair_sock(sk))
- 			err = -EPERM;
- 		else if (val == TCP_REPAIR_ON) {
- 			tp->repair = 1;
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e1f2d9765f81..2d17fcdf73dd 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5637,6 +5637,7 @@ err:
- 
- void tcp_data_ready(struct sock *sk)
- {
-+	sock_rx_owner_data_ready(sk);
- 	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
- 		READ_ONCE(sk->sk_data_ready)(sk);
- }
-diff --git a/net/ipv4/tcp_ulp.c b/net/ipv4/tcp_ulp.c
-index b58045df101e..77abc21bcb63 100644
---- a/net/ipv4/tcp_ulp.c
-+++ b/net/ipv4/tcp_ulp.c
-@@ -164,6 +164,8 @@ int tcp_set_ulp(struct sock *sk, const char *name)
- 
- 	sock_owned_by_me(sk);
- 
-+	if (sock_rx_owned(sk))
-+		return -EBUSY;
- 	ulp_ops = __tcp_ulp_find_autoload(name);
- 	if (!ulp_ops)
- 		return -ENOENT;
-
-base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
 -- 
 2.34.1
 
