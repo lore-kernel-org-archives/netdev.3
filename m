@@ -1,66 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.210
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794299317;
-	b=wTXe9Va6lbjqPjKa4s5VK867CmBi4KOBSoZXPhPhq+Fisqd7c5waVSoTcyN0pQwNdzFo
-	 g6KMSEgKAqV/b18D2IgDyg13eFJDuJ9hc8nEQRp6asO213O6EYcy7WNn9+fER6PbIuR3T
-	 OtBwO/JLzwiXuCHJhkNtd7YR1L5b7Aw2yTo3zA3m3IDJU0sMsNCtlrtP2Ia4NbXdvBhTg
-	 JwOVT2ezx0JqsIJqiwL2PVwcb6DYz4VxMOyz14cRr3b9C7DDIgYGVzFdZkT3sU1OXIqLo
-	 9VDHhFGg/g+xxtNB0FixgZFgxzB87LWorYtS2sm2Es41FDuxhV8t2FGscTZDUNQzwXQ==
+	t=1794299466;
+	b=1El+LJBvHVzDR/YUAKPvxMUeFPnqL7ojFiYzhlYRW0mpkhLxgkFxHpDWngQ+yZEqoRJZ
+	 jS649Z9V9+Bj1lOv3uFW3wi9vUmkddAVtt/YTXfGnPHdFDUlWlf3YNomN+b5Vl8aM31AZ
+	 2OcQwxba7XF3fswvn+1f1J3U38mGwtqQitsGdIZ/CECUPryoenKvdQwm29R4KrOAmS+72
+	 m7RTOn81zOJZoikN6ZuYdKh4t56W3REJOn6ja8l3W63zr6Edj7ggyTsJ1f95aTSc2JyH9
+	 Tu0FzDdReNpiHwQklLfAS9UWFmCZhMK5i74zr54Dry+oXYkXuVhqvqOmDnW0SYDL8Ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794299317;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=UXWSddbnxoIoGsiCn3Ri/uMZNROiH7zZ5ZghjrWmXBQ=;
-	b=YBpu9ulHod1jr30hOv1Huq9j9J+/Z1JiTSSMLDegk/1vJNdeFA7erOrnKepTiIoFbuoh
-	 Vr4wXI18g/EReiqeK15MlUzrF28keOUbbKIVyQ7mUyS6XcOZmvTXAohUw5rKN8wJBRleU
-	 lcAsft52TBnUBtTCq8wvLMEzT4qI1SdQnpcr4JsLwHgcQodOXxOA0WHyfJKqMVpa6hlBD
-	 Zc0DQF3jEkYwRUJ33Z2+AbtPGIh3DsWH45YBkX+ArxSOJRft1Wi5o+52Gqanj6MVTyDw8
-	 PCV7HnRrDL9pxXcWrCbJSlega7h/PHasu5iwovky1M6QBTFCKa+G0ImcGcWW4WP1ZLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794299466;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=PI2PKfoJt0rvenbJLW+04PG2yF6v5rLbE6RaSFwnr3Y=;
+	b=crPVH/s3OdJfolL/DJ257RvaCAmuetXyv1GZpv6o6wcZf/XOwtOjxAUZLBL2lrpD/bkH
+	 JRFCrDaXhy+RZFpEfQ6KYdBIPVMIh+jSmbm64zZYmyCSCfrRxhGmpFVrWeJ6Xatz4BJdQ
+	 BNLV0fAbnCObMMXciYD1tZw2PEipDa3QMg1/gK4e3QEkLQuN5fpcAdMgcdKrWHMsOjira
+	 fm9UE57m7Pkpq38dDPcmPs7I2iLGsgHqVAwglZfcKxe9L9ErgyakypYR4jMz/iuU7L4Hj
+	 9+Y4EYxLn/ok2bnJUyn5EC+Nuu/JrhTvXxnAHN4alFDnEH8JmEyhyNTFlp+FPpCY+OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v3i+y+BP;
-	arc=none smtp.remote-ip=91.218.175.210
-Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KssVo+Za;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RlLSCZl1;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3B9606A339
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:28:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F3B9606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9252B60A3839
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:31:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9252B60A3839
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v3i+y+BP
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=m8rf5DYN0i2d+usWteyvNzrEUNWAD6DpiRcNC6PhNxw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794299314; v=1; x=1794904114;
- b=v3i+y+BPQo3lEubyTKtmTu0ePONXZEWZYyqC8Nz7Y7UN/ZRRmpRd9lTG4+Hg/hDQkVhO0vJF
- vKUgx+LUJUKNF4bHgNhmwgTtnyTma4JSZ39mOMoX4t+df0ABAl6pEsm4luDCju/6Oye3Izm3xNr
- BJHmSA1ibELc2sVztzPyouMs=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 31d984c00931474b;
-	Tue, 10 Nov 2026 08:28:34 +0000
-X-Mizu-Trace-ID: 31d984c00931474b
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 10 Nov 2026 16:28:25 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] ipv6: return EMSGSIZE when first route in dump does
- not fit
-Message-ID: <avLVqWNqjN88WVRN@fedora>
-References: <20261109012115.11898-1-stephen@networkplumber.org>
- <20261109012115.11898-3-stephen@networkplumber.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KssVo+Za;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RlLSCZl1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794299464;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PI2PKfoJt0rvenbJLW+04PG2yF6v5rLbE6RaSFwnr3Y=;
+	b=KssVo+ZaJ7rLj0MPnEMu3Fbeaq2N1FMfjXGHBOvvG0TKDI/D9eWAg6Xsn4rOqMk5m96MJ4
+	abyHI0N1t9nSae4nALFn1oRLWJgCTI0Gn5H0WpxtLk/LZeQJtp3a4cRXHQfSE28ZstiCos
+	8147xRtqW01MUTxiMHtTSMZERTCCBUQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512-BSnwTMGKMpujBB4HE1iZHQ-1; Tue, 10 Nov 2026 03:31:02 -0500
+X-MC-Unique: BSnwTMGKMpujBB4HE1iZHQ-1
+X-Mimecast-MFC-AGG-ID: BSnwTMGKMpujBB4HE1iZHQ_1794299461
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a2063be141so16491185e9.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794299461; x=1794904261; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PI2PKfoJt0rvenbJLW+04PG2yF6v5rLbE6RaSFwnr3Y=;
+        b=RlLSCZl1f2ieYE0nuRo3ks6hpd/xhYiHJ8P5g0Ypa4rV99Nwm29STv/yE8VqrjVQQW
+         gLvPr0sYZ492EZnEKGfzu5V6dCA0GI48Z5QoHF/H0w3sXQKq80qq93ySsVEs26JkUcuV
+         rMV2fjCENBk8qtUKl6stIXvFt8T3FrH1n5Vv83wwYT79Scs8Vgof98GhCpbuv4PROwu+
+         YrlLHXzAFs23ih5xiuRwjbkJq/t4ujKhvqUrkvr8+2K93OCiCACkraSDz6J5PV+Lwrsy
+         t1DFw/829L9egt5kuG9BhyJKyiqtDjzywOlR7/xx/A0Xbd48JaFVfLSbSD6JvxbYZjJv
+         a8Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794299461; x=1794904261;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PI2PKfoJt0rvenbJLW+04PG2yF6v5rLbE6RaSFwnr3Y=;
+        b=a7t2HnUr8qNvDYzwEu12s04scceFxC7QdlHPefAflZYOSxUCSEvx3v4WO8OaPNzY5A
+         FnbGyxN5JI7McxTAl2I4BtzH2nOoxMN2KY880vQfnM4R0+sYDh1hLSaj8TgCOWBQuqpE
+         cHet60roLW8ZJc6ITl2umRtNWLuLEoxR6dJzkzN51sKCCO2UcRjTCB+oLYkcGiJtfIVj
+         8SNnM4aBeofBlIUI5WpE1JHlByKSUoZ3ZegOdQ58wNZpqrCWYFpzX3kDxAntWparRL54
+         woiQB9rnBX8Rqc3quj4wUZ2wfEwE6QtHTOUJnCez8Qngnnnm03YHjkQfpKOPLGb3NuR0
+         9BtA==
+X-Forwarded-Encrypted: i=1; AL+hErEy5d0EZZxtHBKlt1J14FWl2kiQz3v3yKJwr8zC/vlltxjv9TrIhWiQ2X/Bx+Bd3KF+BMIU3+Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ivub/j01s4mIBQJGRHkONBroPQp7vwcXEE/z9XBp64uO1D9ko
+	ZVovSceyoDPKUwkA6ewQBrendTvTvJOhAXc/9CLt1BO+px857SZUn6m5srlllVG3Y625e55a9Pz
+	qsIRsro+IYSVjiTkdKfdv4a9qzvAU0fKoaLCXPrANW+PSg4tkVB3vXxMQ1A==
+X-Gm-Gg: AYBFou1xNQfGIwgIKmHZtrqDSuc4x/igkbZYb73w1Ar0ylYPJifZi/gGe98rW9gEnXD
+	lgxZHVjWyFkQffQkPQvbWYaB9MNxchQGdFtQOazDzNvRBCA+jzHaXN9ugq7q6G9/mDD01lGNX5M
+	4/xTX040+7qdWBwewwNfENO8+cyVR4g8Z82Kh+bMU5ETOQEh+2KSXQHB3uMidtQ57n6u4hsc5L2
+	0omEr1stYB3P5nJOKX8TZitqkC11XMbeSQZw+FVWYcbZClErKZHVpVFY+vJ5QusFn+KoOCRneke
+	3UzpJ2jpxhJb9O+BIek2khDAI/NZvOy632YC2PuFmoZWEbnqRsqLoxce/yHw77l3byaWZS8bNy4
+	pkfaLBZzENjjT9ry6N38E4DH3IDJ2v+B8wjNlGYH+0ytRp12z14JQplWX/ceINdl1+GJKHae4Cm
+	by7IczH3bf0n9hyvJBUQvJL9yijZ+aDwLeVj9TxBHTooAA
+X-Received: by 2002:a05:600c:4f4b:b0:4b1:32c8:27db with SMTP id 5b1f17b1804b1-4ba0234bd12mr37428045e9.22.1794299461235;
+        Tue, 10 Nov 2026 00:31:01 -0800 (PST)
+X-Received: by 2002:a05:600c:4f4b:b0:4b1:32c8:27db with SMTP id 5b1f17b1804b1-4ba0234bd12mr37427425e9.22.1794299460813;
+        Tue, 10 Nov 2026 00:31:00 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0204e22csm44017445e9.12.2026.11.10.00.30.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 00:31:00 -0800 (PST)
+Message-ID: <817d2bd1-64fa-4a6f-bec6-5a4dd4d3a76f@redhat.com>
+Date: Tue, 10 Nov 2026 09:30:58 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,49 +112,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109012115.11898-3-stephen@networkplumber.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel
+ interrupts
+To: Magnus Leatti <magnusleatti@kernelriot.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, thomas.petazzoni@bootlin.com,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
+ <179379704484.488856.2140619507341432623@kernel.org>
+ <20261107100140.8279-1-magnusleatti@kernelriot.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261107100140.8279-1-magnusleatti@kernelriot.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Nov 08, 2026 at 05:13:13PM -0800, Stephen Hemminger wrote:
-> If a route does not fit in an empty dump skb, fib6_dump_node()
-> suspends the walker and inet6_dump_fib() returns 1. rtnl_dumpit()
-> then returns skb->len, which is 0, and the dump ends with NLMSG_DONE
-> and status 0, silently dropping the route and those after it.
+On 11/7/26 11:01, Magnus Leatti wrote:
+>> Should the Fixes: tag point at 1b9707e6f1a9 instead, or also include it?
+>> As written, stable may backport this to 5.13+ trees that cannot hit these
+>> storms.
 > 
-> This became reachable when multipath routes started being dumped as a
-> single message with an RTA_MULTIPATH attribute; a wide enough route no
-> longer fits.
+> A data point for the RBU case from the YT6801, same 64-byte UDP RX
+> flood, all on the same 7.0.13 kernel:
 > 
-> Return -EMSGSIZE in this case, as IPv4 does. This depends on the
-> rtnl_dumpit() fix in the previous patch.
+>    stmmac from 7.0.13 (has 6ccf12ae111e, not 1b9707e6f1a9):
+>      no storm; the MAC interrupt never fires (4 streams for 10 s,
+>      and 8 streams plus TX for 30 s)
+>    stmmac from 7.2.11, built for 7.0.13:
+>      storm, the machine hangs
+>    the same, with only 1b9707e6f1a9 reverted:
+>      no storm
 > 
-> Fixes: beb1afac518d ("net: ipv6: Add support to dump multipath routes via RTA_MULTIPATH attribute")
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-> ---
->  net/ipv6/ip6_fib.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> So on this hardware the RBU storm needs 1b9707e6f1a9. I did not test
+> the RPS case.
 > 
-> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-> index e1d49897d6ab..1025267992f0 100644
-> --- a/net/ipv6/ip6_fib.c
-> +++ b/net/ipv6/ip6_fib.c
-> @@ -755,6 +755,12 @@ static int inet6_dump_fib(struct sk_buff *skb, struct netlink_callback *cb)
->  
->  unlock:
->  	rcu_read_unlock();
-> +	/* The walker stopped before adding anything, so the next route
-> +	 * is too large for this skb. Report that instead of letting an
-> +	 * empty skb look like the end of the dump.
-> +	 */
-> +	if (err > 0 && !skb->len)
-> +		err = -EMSGSIZE;
->  	if (err <= 0)
->  		fib6_dump_end(cb);
->  	return err;
-> -- 
-> 2.53.0
-> 
+>> Since RBU and RPS were enabled only for statistics, was masking them in
+>> multi-MSI mode considered as an alternative?
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+AFAICS 'statistics' here means accounting of some corner cases errors. I
+guess this could be a preferable route.
+
+/P
+
