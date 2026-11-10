@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.154.184
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794342403;
-	b=aiTRnER0B85cE0lXTnrHrZLCIpt21JNuCfPj9rMrNGFBdgNz58r6G5FmR/ji59MiVAj/
-	 vZwcK6QdDGLw7JLZmNdMMXliZ9S2sDXSf3KYt1kqMRTkR25+DezDgP3J/eZxaXCbYo/+K
-	 8de8BlP5QM2QTSJJE4S1kKr4qP/RgZ8fIsHw1FRUpsTOF8A7dBdvXd8Bz99NFgAolqf8n
-	 FUOWGUUiNDnm4tPFYY1IUqOQMeogWZeGk/Vm7BZBw8giMtq1yVM5xRd0a9DEiQICretVL
-	 bP7OeJRochQESHMNyXn5dwkYEoAMKshHVLPDG1iabBtZKQxz+j57Cr1CpcBmGvaN2XA==
+	t=1794342407;
+	b=N17YcsjdD3r64LNC/gd2RiWE/VdU6h7FCoj8muggdLXCjGfb3cqBfM6b7tFo+iCgAT9A
+	 c8SGUpqK+ZPqvqxQEHElqi2eO6RGwLgfj0iB7uZAm0ZR/ZeNO8RhnrybnwxxbYCnB+bTL
+	 FVI7NPSbHXgYVMbekFfSuvW7Mlj2HlzU7IE+sAkaX+gmSZ/B6zsmGSPDC0BPqBEH0L7O1
+	 7dwcBMlEAo8i3RmHqcQ9XWsP59DCHu1V0RIkcnuP+1/nv4mxHD/6hrLTRhioSWlALXwBn
+	 aU/X8p/kpw8Y6OzdAGoZY4ilS0+J3jBPF14BfXvPwKP3i2366uoZhi8bwoQenRWQZOw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794342403;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794342407;
 	h=DMARC-Filter:DKIM-Signature:X-Virus-Scanned:Received:DKIM-Signature:
 	 Received:Received:From:To:CC:Subject:Thread-Topic:Thread-Index:Date:
 	 Message-ID:References:In-Reply-To:Accept-Language:Content-Language:
@@ -28,65 +28,65 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-userprincipalname:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-MDID:X-PPE-STACK:
 	 X-MDID-O:X-PPE-TRUSTED;
-	bh=kZQa6EXLRdxWH1vwZGO5KhW8ImUdfZRiNY3oApqhYtU=;
-	b=D8buVnJA14rHEG8mZKCQTd2J6KeXMCd9HLgVEQ+acoHo/cvghh5ToT8iJHs3fjHg4sMi
-	 31BgJ5WXMQn06QMLF1rRkTlHN4wRgw6a0mrO4kWQcUaLYsdFJBVfOwDq1B7yrPS476KkZ
-	 x+1mJ4HVNzMgrqkddWE9rrXWALP+BbLQjAmo5GwQxadzV+ntUkdVJhtA7J6Q9VUK4ywXN
-	 6Im1hIPBTlsl7cAGq79ZHWdq5SwUCBEFyo5nbyyr9KHHzsdO4Cn+UUZ2FX9Zr9JxBNcoM
-	 k8EsLGaiy+r0l+vR77ja7NGmA8LcCtG/ZIIulwmVRV/nt219y3oa4TN/Zzq3AgUqRFg==
+	bh=/FQklct48N0eSNfCYo3n9D5hIv4z5pVOAjWudgdIF1E=;
+	b=YhUJKRBP/28KzqRAzzXLDEryyQpVhasjV2Qb7UNl6nQpVXTvtMVYnTgHaSX0LfW85jWU
+	 GBS4jT5Vcwshw8M5hMkjCzcpVZ+rdeH4VvLx9q6V3CJGUOTgZ1Gfz9t46T7+09ARPsvYn
+	 KZDVwrKUJ7apaf6s11mjP+bUAmvuPquhR0Jn6RrCnkm5kIpT1+O3rC/JtOmhQc6OFX22G
+	 YqA73l87iE/vFajcQg9pG0z4nwWTc2Aho0uMGULu+BBjWBj26JNqYmP0wi8Ro7u1Pj4Vb
+	 8GWSiP+5yOKcJIy0ExG9HX07UawVMphopieHo7SU/H5N3/KikZurFx3S3/DH6oEVZJw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=sitime.com;
 	spf=pass smtp.mailfrom=sitime.com;
-	dkim=pass header.d=sitime.com header.i=@sitime.com header.a=rsa-sha256 header.s=mail header.b="mTs/CcYX";
-	dkim=pass header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-Sitime-onmicrosoft-com header.b=x6hbQci+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.129.52
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+	dkim=pass header.d=sitime.com header.i=@sitime.com header.a=rsa-sha256 header.s=mail header.b=BdJUZHAG;
+	dkim=pass header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-Sitime-onmicrosoft-com header.b=uLqjSrhP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.154.184
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB56606BA5A;
-	Tue, 10 Nov 2026 20:26:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AB56606BA5A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C0F606D393;
+	Tue, 10 Nov 2026 20:26:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83C0F606D393
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.a=rsa-sha256 header.s=mail header.b=mTs/CcYX;
-	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-Sitime-onmicrosoft-com header.b=x6hbQci+
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.a=rsa-sha256 header.s=mail header.b=BdJUZHAG;
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-Sitime-onmicrosoft-com header.b=uLqjSrhP
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
  h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=mail; bh=kZQa6EXLRdxWH1vwZGO5KhW8ImUdfZRiNY3oApqhYtU=;
- b=mTs/CcYXP4AaFOWATUNXMTMJE7QV2EZ0XrJRlo0fw0eKpLlk9ibqPrDoA+S1kHWfEnQ2Fz6tLc2sTNoNDRmyzrtLFhYSGpc+P6BiReyp6axHvPwfzV8WrT3gPYRLbmFxHobdyl4TDi7D1U+LOzXP8UuT04xVeYLDhdC6NOqT1HygnkW6p7QfC7vaZIdfEmCwHH7NsfLKutKc62CTRBlLfrtsyKc3G/aDY+i0O1YL6TzgZ5Vf7wwl0Afsh6xVkZqNMbhFwyKKXlGJEDJ2MztspMtFXq4/1BZZDEqF9WeQTVhtBkeXdOY1f8dJAGGQen9/akYZ5sKYCnr+NkVbzDoNog==
+ s=mail; bh=/FQklct48N0eSNfCYo3n9D5hIv4z5pVOAjWudgdIF1E=;
+ b=BdJUZHAGmbm1p0MSwyYi9ojz/Jc7Vb0zptIu6dfF3iddM2l+pBOujak6nTgEAJHc9mnIZmxddfLCwC2VltSyel7+yRpruC7pMn2KAH122k7RTQZ3ZSxn/9pa27ZiE8VRSTSHO0yfOtNfaQOL35EqZmfd8pHTRtEnXOz4el8WhervScFtqPvQ4aQjb5fHfY/Yfh29FsXc8hz3+gUXDEHuZP4FkmCqjIOA/onWwnknUxOO3yWNXCkznflJcabsOE+1/1/XrbP/tH6GOe4iXxmwbkHGPb6lUsTo2aDKkLv35h7DqTE2bSP46oBNQeZxg6NYO9KlvkYC06pqW7ECJYZJGQ==
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11020092.outbound.protection.outlook.com [40.93.198.92])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023085.outbound.protection.outlook.com [40.107.201.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 711DD28007D;
-	Tue, 10 Nov 2026 20:26:40 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D18DE3C006D;
+	Tue, 10 Nov 2026 20:26:35 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e7jkDXVNvJfe2+xtzKQQKcto6EjKc6Vcm/H65feuXKNikDkXw4KzH8dUacWaQOGHdBtpmc4ECjV5736MItX1PVUogdX4ZOp79K5b7VvNGA31DFrxI4LopBOnGzcc6zYoXRiQA7wCF3Tgdr98dgkHaE8lzDe9AfKJwmUBkmbzgL1+3xINcdqV8gib+cf69tKIBInouDu2XiUwnX8JLiarrbBOg7kXe1H74V19olB6oiIvINSu09hBupePf+9YeBYNB9kp9tAC/2pWMAi5yiayWe47jm4rnboCRG6Cz+b+sXK8f/Y3NXvCWROLMk7SZwkcgKcu6fXdUC+gfUv/KkBInw==
+ b=Qk5+oDZDuQGewWP5TDHBWbqcG3rU0+Ubj5rtZNtMlQL4p1UQ8vHD6sdTKnWW6K5rkroyaFFi9WOmkXwwA8fzn0hU3/dYl3JD0S6zs/qATrVwx9sPUa6q5UWXQ6/DVBluJyUszXdZ6awrQ2Q3+C5sWUw3m5PV2wUa8CczMeZ2cufLuA0iBUM7EYaw8SgEWAhdg6dinCw8+MIN+Gy/INBjMlsB8Pasq4Q/IOTwfQLTUJI6RmQEg5p+8dv4wbqnXfw/303ggxNFVgovQ8UwhLGUcYaIOYeKFhiEbMbfatmGvxhquRAf54AE2lB2vEsBsJf9rZRn/D/TqHPW6aJpcd/Vww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kZQa6EXLRdxWH1vwZGO5KhW8ImUdfZRiNY3oApqhYtU=;
- b=aKexA+7+ma8fZH/yTfqW/M2emAWVpWsOBM9NiWuj6FDY0PzS5GKnEmATN8FvkxyrJ8jxo8iE5VEsv1OpKnKmaxHBXA1QMsA5id/I3OVttZ6f6i/9+RempxZhBF2eJI9xZ5tPju+Msna9BWQnuYm0Q2EgqcLPOpAVdJ3Wjs8jhp1KgHuOogL0y8+KXk4ss8b5DXz5+iJoi0NLo6B1RHSiSA/hzWr62UT6kqkcIk6o3Suq7+OCowX9yxGzb9WUNEXL0AxaX4UpjusBKVrnoVF8dpZX7q3hqO96EMtiDCV/yjP47B8nZ6zpez3Mdxz/I66In6P+Zlj+nPFze1WaAvIAcQ==
+ bh=/FQklct48N0eSNfCYo3n9D5hIv4z5pVOAjWudgdIF1E=;
+ b=ott16DQ0Yz+SpRiMzbffuYAdb7sRAq65/82nDwSfOGKH+b/vKzzyAZCSAVSTWc3THbadzGSppdUMilp+WKL5OeLzUvPFolGe/2UiI18INkQ5X8kql5OuN33OE2FR22VP41VCxOGUx0UzgyaAchG+Tg88Tesqq6kWrht1mx60bPtW0FEMV5yz0O8QR1me2D+srRtHk7Ms1m6ixWWXYabUpRRaprzQlzE8aPS0aPCp8aeDH5Ok98UujPoUmLuRfJpu3p2YC5Ta9nYiHRvwq0rI8WLrh9yjE9stdxmXzLGN6lqS3G69F/a1/aVTyTkQFfWVv1BBCr+XQZBKfDiKpLn0Tw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
  dkim=pass header.d=sitime.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kZQa6EXLRdxWH1vwZGO5KhW8ImUdfZRiNY3oApqhYtU=;
- b=x6hbQci+I08NVzx0rMXFBiLZz5D1Vq8bl6oZhfin6i49+IzZWqHfHB8U3L/A/7096JXyHYzXfq8HJmNHook1aTwUiT/YgaNR1rNOOVkAfMrP+oe4ei3S9VRapM0Z+BmoixgqMe+mfXASUM6uOt5tWzxnDY/rBHo4aXQIcloEFugJk+tZmoZnkOrrluWIRxLZUMyzITm+oPKlYwdnltk6B8uDljpuKx6LJugr8KIMhmMRSr/QoeE2yAI93X7C1RcFB1KV2Mrlr6EwjlJjA5nbkcYPOa2ldcketecZ/QklMfgP0PJKOmIKLY2+oy6ThMImEBUsIYqzUQANJeJMB/8sew==
+ bh=/FQklct48N0eSNfCYo3n9D5hIv4z5pVOAjWudgdIF1E=;
+ b=uLqjSrhPCVJRHlWG5ftym/tFaM2GEFBZgz+8+pxScf50qEdittzGU2oTQ3y0Pdecli/0PwJko9WXO9M3jm8jHsx2Gt+HCHrr7FlbQI+5wMrwu/HtaEO28+UqqwuzMb6yQiWfYpazRqJGYap4xVt/ANnblHmA/6pAYoEUoT9JM6QDLA0cvsnh6czwuJtFqr76AukhKO+QEhs3bTa29iH3iPKenEIfXDRimCr+1ASqKF6eskFEOL73rnP3YyaJcjdqVlfqHP60OkBoTB/zwu+18A4XjC0CDKiEGAuhsEb3ayKCKJHEAon2RfSQdVHCtJIrtKBSk+QAIyIaXmbP/sKiEA==
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  (2603:10b6:408:3bf::16) by CH3PR20MB5745.namprd20.prod.outlook.com
  (2603:10b6:610:14d::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 20:26:14 +0000
+ 2026 20:26:13 +0000
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
- 20:26:14 +0000
+ 20:26:13 +0000
 From: Ali Rouhi <arouhi@sitime.com>
 To: "jiri@resnulli.us" <jiri@resnulli.us>
 CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
@@ -102,13 +102,13 @@ CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
 	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
 	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v15 05/13] dpll: sit9531x: read DPLL types and pin
- properties from system firmware
-Thread-Topic: [PATCH net-next v15 05/13] dpll: sit9531x: read DPLL types and
- pin properties from system firmware
-Thread-Index: AQHdcVG6os7n7zdz2k+870xKcjJwIQ==
-Date: Tue, 10 Nov 2026 20:26:12 +0000
-Message-ID: <20261110202607.55744-6-arouhi@sitime.com>
+Subject: [PATCH net-next v15 03/13] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
+Thread-Topic: [PATCH net-next v15 03/13] dt-bindings: dpll: add SiTime
+ SiT95316 clock generator
+Thread-Index: AQHdcVG5WuhEZDdDyUyqCiz643b54Q==
+Date: Tue, 10 Nov 2026 20:26:11 +0000
+Message-ID: <20261110202607.55744-4-arouhi@sitime.com>
 References: <20261110202607.55744-1-arouhi@sitime.com>
 In-Reply-To: <20261110202607.55744-1-arouhi@sitime.com>
 Accept-Language: en-US
@@ -119,47 +119,47 @@ authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=sitime.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|CH3PR20MB5745:EE_
-x-ms-office365-filtering-correlation-id: 16208005-9736-45c2-8af4-08df3f68de23
+x-ms-office365-filtering-correlation-id: afa2aa6b-e5e7-4cef-ad92-08df3f68dda4
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|38070700021|260925021911599003|260925021311599003|260925022911599003|56012099006|5023799004|18002099003|22082099003|6133799003|10067099003|261009223027099003|261009223327099003|261009220027099003|261009221227099003|261009221727099003|261021121427099003|261028144727099003|261021123027099003|261102123227099003|261022105027099003|261026140227099003|261026121527099003|3023799007;
+ BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|38070700021|56012099006|5023799004|18002099003|22082099003|6133799003|10067099003|261009223027099003|261009223327099003|261009220027099003|261009221227099003|261009221727099003|261021121427099003|261028144727099003|261102123227099003|261022075727099003|261022105027099003|261026140227099003|261026121527099003|3023799007;
 x-microsoft-antispam-message-info:
- V2paDyNskhlcubZZpT5kJnYWA/Y4dwuUbyBNHlhp0ldbJAyejJA3RDm7AgnPiQadB+KjpGMjUTxSAr27e2ClmfqdkqJVxUSfkWqRefNItvR8fqBxz0DTLbpaWRIN+Rt2z7POlaVWveTe3vgifSFbWplTVzK+jnjYxQpPFMN4V28X0IZ9/uphx6Cer1vu9ziJtSTtqOeeRwCiRm0jRHhqNeb30bOFkQOMJIRyM0TQn5pYsj8zi7vdPyuKmXMy1NRFSK1KLatnCoza3AlCVfF//Rxo3nwgmTnJZl1+VJ1NwFLDI8KsIM55sllHQ/ExQSdxjgXwjseWzf6loBQ9BizWi8JaZC0mz6OdBtOk3VY6U2hPzQhh+5gYVujQPXuiZVoeW8aUhSRFuHDsyx7sxV+rNutFV2WVgEYmbOmyFpq53IRL+LE5dKyLL/C78Ed4DuizIszoWAF/1xyys7pdgrIs+wmROVYXxXDppgW8dOsE7sh7oFz837PzNjn/P/Wwd/ne1ezw/SmoO977TuELLuS/DTZwXu/j3WWQfO3RVfQ+vvamACscl9+ZkYvwZS/cLYNLBAK7zigepUefj8VwhRrMKQNH0KjG26TovGbD1wudyxnxO5H9TS/v1IEZvLtbp8uEBw9y79525P73pcTokBISpFD8n1DtcrYRD2y0tEbZkROmBf9ngN9Uh+UY3AIGzV5HsBGXBRJzvDJ1Iec5DdgH1oFCMioITGcQwnCI5OzDcYc=
+ cDmEzNObsdteYwgeoFALVA1O+LRNm71vZIXFO9/brFklYYI9VUeTjFO+RAw1xhOpKNtI8cSG2/offRhxbciz049IC69lscx4zsABBJlWJZG2r+8LplVZfnKPzhLQzpXI4J2OYHQrmUPUxpjy7/1C93yhMiNBhehouBGqmGdsnTjRw9dgj1mBK2Nxe/Q45SokbZt1mQEVwCnIbCB1HGrNZ2igGhbeL3c5iNh6YNgkXm7wt1GQkd+1Wrgj01nr9PkFdUbXXUrMkVdL5RDiIue53hNxuDs37jqgiM+/8096V4+LHZ3Q+wholshFP6Q8vw+5Az/F3rpCNRzSnyX7wlUCE2aa/0wK4OOma/4CtC3mLJwHXZDQrrtX6HtgsnPcP+U42pNG2M7duzmW50wHBMdeCXLlKofvhmFLdiljQ8EojQUXdUHJ73Ba1spQuvWfe2MvbLsvUnei3hJj6nhH4PQfujcg2qxRywFox9hsDczerrU4n6de7cGiAYJFrWw8RUNg5lwr4VPwUPt0BFnYBOlLvdA0WHz4FPzy2ZZfa7NpsTvFkPwDE1GupubSS8uohYDBufnA5CQkzhLSQnDPA53oQL4GAMhJsIgofugSH9TR5Zy+MvbSsfdAccQvmXm7zzTHp2rVqX48ublAdeXpbDatgcqNK0Hjksa8ZbMEnok4PDU=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(38070700021)(260925021911599003)(260925021311599003)(260925022911599003)(56012099006)(5023799004)(18002099003)(22082099003)(6133799003)(10067099003)(261009223027099003)(261009223327099003)(261009220027099003)(261009221227099003)(261009221727099003)(261021121427099003)(261028144727099003)(261021123027099003)(261102123227099003)(261022105027099003)(261026140227099003)(261026121527099003)(3023799007);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(38070700021)(56012099006)(5023799004)(18002099003)(22082099003)(6133799003)(10067099003)(261009223027099003)(261009223327099003)(261009220027099003)(261009221227099003)(261009221727099003)(261021121427099003)(261028144727099003)(261102123227099003)(261022075727099003)(261022105027099003)(261026140227099003)(261026121527099003)(3023799007);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?XB+fLG/y69fRX0JpmMh4OH51u1575amYZeJhJGPkYblHBupU0TihVeFuKC?=
- =?iso-8859-1?Q?7fbWDKwliWKw8S3RS3taCDuASo+tdzdd0CeA9p9nZcwpAOgeV0prYEiwwJ?=
- =?iso-8859-1?Q?DWSv218/LPan9jjt3W1qthzR7GQXSI+OqjRqK9eIXpRwvmLsGFKFZfB4OP?=
- =?iso-8859-1?Q?xJXlj+Yp1k1EL0lusbpoEu2GKzUhPMDaKWNcxddkOOpBcFXYVqA5BeKKKw?=
- =?iso-8859-1?Q?BBRscMxMmi1TJM/i+mCw06xcB+pZnU6IW8HDGaDUKCE+s1lcpLxogz/dKn?=
- =?iso-8859-1?Q?Z/WsmPVkzwhDz8BbdAZpe0VSPU+KWlrAS+Xut7KURREXl/yD9CjvJBejjq?=
- =?iso-8859-1?Q?3DhiYmt+l84PqJd9htRzkp2qHXQU1WeZYJVZ7/k5+ss/NPETo7+XQdsdil?=
- =?iso-8859-1?Q?Km3xC2CLGRYCt28TaeKwOgRalJmoiVNp8U3NXz1TD+32i3VPOx+0RhcHwZ?=
- =?iso-8859-1?Q?/QCfUrdkwwkEYSiUhKD0dxfi7UvUh7P1eQjWltFDIUFsjElSzNpa6EhoGd?=
- =?iso-8859-1?Q?1+gP2cUKyXVRfvbI3G6Oty1BXPOEsY6ZOkq2X6sCYPuECOhUf87wYXdaSj?=
- =?iso-8859-1?Q?usZRf0yIP77oh4POwmJFvlbl/w9olVi3dsns2t90/X0+XD30p7SEBfacxO?=
- =?iso-8859-1?Q?Ecb5hrjS1DEuFoDi2piby1+Vu5h1WLDIGQJ9VChKUcBkEpi4Q+IEWwC32P?=
- =?iso-8859-1?Q?93ilV4Lnim9hvcfpB1AeIkVd2RJw19hx4oaqHXYHhmidFW9FjX8REAzfhk?=
- =?iso-8859-1?Q?8hNANLLpo1HWMnhWMnFw7TXKljUSXPCf794PB8ICH4yJ/iCWfZLkygFL84?=
- =?iso-8859-1?Q?eBCpJwXX61GF/POUCqXYkRHZmqtiRYfb2TtNO9urNjwvlU+4DJvCXft42+?=
- =?iso-8859-1?Q?7QmTEdRr5rjMn6oGTuM+jyvZnW811Rp/8HlYEPzcG9j100OCmZbH2b3I5Q?=
- =?iso-8859-1?Q?HHr+z+iG3DZ5X6QEBCyMNaBL20M20ENaUILi0oafxhGO/aHMgS1HVp2sA3?=
- =?iso-8859-1?Q?jb7vLTGuN5eD2M1uNZVCdl8ifxaeolq9CgexIDjhoLwo78U4nfpJt239yn?=
- =?iso-8859-1?Q?/OylsZCWqn7IyFwtwpZ9cM3ecrby5cvgM+6P2MiyLCdiJRvxx+drgCoEL4?=
- =?iso-8859-1?Q?PaXOWNTkb+EcNNO84kEHigOdzUAV5DCZMvnOK+rEDTX1xCGdujgbX28YK9?=
- =?iso-8859-1?Q?h67xryzE9s2D/t3U5zU2cDKJAzZC/PSPiyckZv03aJw17uMTPTa6ixYov2?=
- =?iso-8859-1?Q?65sdm5FitGhlpoqJzyR3X85teHDdSheb5tvZ6AEFpJ+iw4/rz1qfxMLtcO?=
- =?iso-8859-1?Q?U5buucLt8Qk9IFdNdxsgXUaK/XdapuF3LAFn5mAXnoPX9CuNTdFxAeDo1B?=
- =?iso-8859-1?Q?MdUh4xKGvn59yvhfyBamQI5DXCA5w1kIIBw2o7JN18graUp3uXXrLcb4p3?=
- =?iso-8859-1?Q?W+ac5J+aHVofks7wP6+8D1EaEnl5y25gfAqDcXUNRpsBtjsi3ZU9pO4Nb6?=
- =?iso-8859-1?Q?tTFsyNOO4exRpGXwnoDg6dLBkEMHFlNfuxWQhnSIXhTQoDBMV11CT7AuX3?=
- =?iso-8859-1?Q?SlnbLB3C421hbCv5/NzAcQkIvrX0fbNOKkZ3+P+ZUMVrEPJ10RBve6H+N6?=
- =?iso-8859-1?Q?PiAGT7lGo4aX0LcWqTgaR5CKvgVINZwn1mz59o+PUdZqTyFCR7Vi6D0LDa?=
- =?iso-8859-1?Q?xHW7J8pqEUrM86sup5CAipVEPVf81QVeqi0V+kOwJjNjY0EY0qxRRMzya1?=
- =?iso-8859-1?Q?No5jUOXrFY/xC7mP+LDZaXEYHEteF0B6KkPxGCiJNptACv?=
+ =?iso-8859-1?Q?ThZD/nUWKEMdaJOb/Sa4Nl5eld5Yx2ypFkU6gthsUpE4tvxo8S1YycJDeo?=
+ =?iso-8859-1?Q?kCoXp5Bfz7cQHshLvd+5Un18XqSMD+9FZE/HxD7a/ScCSl6h3Ndx1ifFp+?=
+ =?iso-8859-1?Q?17tUGAlniZiz4bW9fuXglkVggw3GoTzJE4AtxYQ8w+FyNvtEos7ALEBSgk?=
+ =?iso-8859-1?Q?nX8tIeYSrHt+J/+QJWiudbFVxTQ1kKtba3gT9n8XBjyA9UCugy7edeplgC?=
+ =?iso-8859-1?Q?l265+duAfZ1loKS6oFyEEs2BzGuuO9Fk7VbnaFNvIWb2s+Xopp5rj7naB+?=
+ =?iso-8859-1?Q?amsHwrJdgUExdgf+LLoymAnPclhvmyzTR1RmSHzLEoXxceMCpma5eZOwJL?=
+ =?iso-8859-1?Q?18ynlG+WFqr0gKF3NxsYEcChXDiuTXvDkuz1nWt4aO47JgUcOUjlCnBJXM?=
+ =?iso-8859-1?Q?2o991JKZIeJWp5w8DeCCGlrBA/F4WpO6aR3lILq5y7M4FYBGFgzsQjJfRU?=
+ =?iso-8859-1?Q?U9FFZHSSDr8OaPm/5nY5PeXiazqgBKG1YKFRq7UKLulXK9/zBFyid5LHDD?=
+ =?iso-8859-1?Q?5jp1yGM5fqZdGKcYhRusZ1NZJJozuAFzmYjWpBcIgEaq2uSzGphs5XLSh1?=
+ =?iso-8859-1?Q?ZYFRmYw+lyjCGIZnhX5m5Qj2w7uIq4mwsXy43BH+1an2a2KYK6P3DK3wsZ?=
+ =?iso-8859-1?Q?MGGMVTkmvsb6C6KCxnInj166jUdLLqHzaulZqzBkMClfGOt3I77lAdXn5k?=
+ =?iso-8859-1?Q?0TH/FGdWcCIxXe0R506OFmNVAy9vk1mYkTIH++sLj1Ajxg4eV++5RWeYq5?=
+ =?iso-8859-1?Q?c9P7qsIGzNhRyk2iKp8k16kWbIVrHk/Mru4/l/vALapH3o/j5K2iL8ukOz?=
+ =?iso-8859-1?Q?MR73ISCKlPkwKMAvYtwV8Ffa3nj3Uc872+DnveZmsRWpyKHX9qwhdHghxd?=
+ =?iso-8859-1?Q?2FwEVHjQM0Gn0FsoTOyuOq9n7ErSZoQngKMn6dJna6Q7hHZa3Prz1+vIpT?=
+ =?iso-8859-1?Q?GPakX2CmwC6Fh8ag9J6FJY9HTob8ykUyUCP0vzqClkGG/z+3vJMtYYVfJ+?=
+ =?iso-8859-1?Q?wl3XYm3lkGekgTUrPIITDE2Y06O7cSt0wbgSSRDy2n/WQPsT47z1GFmUhw?=
+ =?iso-8859-1?Q?aSf1/LEhFy97uoH5RVidLAPfKvmbMcD+3/G8Z8fAzeATKAXaYvDA+gSLvl?=
+ =?iso-8859-1?Q?G4+ZhcewQzinpxO7QuWsYjb5r4IPj82F3eUsNjHcqXUsCz2D6CrUOMozMO?=
+ =?iso-8859-1?Q?5uW3Egg//7u0yAhTW9B8hnAcEwx794gfWk8p7chn33MOuhw4P8Rz3p+sxn?=
+ =?iso-8859-1?Q?byKfQ6osWDeJ2dBcF6Jpbx6zCzZH+ZlSUiivD6Uw17LMvdl/IUzSOPIySx?=
+ =?iso-8859-1?Q?V6YdS6HXI9QqFs6jFX/sXYJW57XVenM4VcQuhO4hSDZ5BMpoBTA5Gzpp+x?=
+ =?iso-8859-1?Q?oSHNpgiNZYGDzUto7SaSsBNHNktkfd/o5j+QFVYEhllXE3gNAhAOpo8q39?=
+ =?iso-8859-1?Q?92muq6abYo2Ypw82wPHB0+dw3RA7YMBoRzp+Y5ukhkAhBJIg9Qf49ovQLR?=
+ =?iso-8859-1?Q?xAn/GgDbmUoEYEwga8i+Q+QrOGk2TReOPhPbgXIey6IdUHHU8INcE57ZAT?=
+ =?iso-8859-1?Q?acKwGOF1IRTAcENJCDjf4q5DGMkhMSHiewCNYo7J5AExXJGtfbcfbgUZ1U?=
+ =?iso-8859-1?Q?3kZKawlxhQKkrH/58LbYwlaytOWj7W7idspbpdj0GOvfN+UDcGKYq6r8B4?=
+ =?iso-8859-1?Q?UREwR/vfNmakzxaR8zSqBlnI6Brl16fD2ZW2WbiY808VSb/9XK0OS9B12h?=
+ =?iso-8859-1?Q?mwPcOQCoZ5oq947jKb5TXINZxkT/8GhNHgeY/tn7Ni0kDU?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
@@ -172,538 +172,296 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-Exchange-RoutingPolicyChecked:
-	p26U7l/6/qm2IfpHapUjP9ykFQ2Rx/AKAIHYvbQkOtiIgvLOKgtY2YmKGpmVUkUy7Vo7uaKM3Vp27SvS9rbsU06PvfGh3yHJ5mRP1y5+3C/BEsFXa+AqMX9FD9bZ4esNlQMytWkBU9pyvHxPPmjPhAhdysJi1nyofSNzFJRRyn+lcb0Jq9G7UNebEQqi4rlDRmPJyahTn9iXP7EQ523BZaWntRDHokylSul+H3UX4Ud/I29tYGGh8akr/E5IXFKk5xWwkl4Dychy/P8/FrQaA0f9S0zKDtOmks4R+MAvG2jxvkMOHf8GG7RsrqqRYTy7lQhcV8cJufrz07RZHn/yqQ==
+	XGq8XoEdQn5M5+6HnYRKG7id9vXowILnwpJ/q7of3RwvhBVJKYANEtAqY3C1Z/iCAuMrvjWFBI0+X8Ea4lIS2/fI5/p7ZLUtn5sz4hLsa4bF80/k7LPgRr5slP26+N3irUIvxps+/o65vvFzUndlr0+PzCXfsR3TUuaTT0p1cZNGmKjWBQAnJdDT6INvOoAiKrba3W7i5AbOjZGGcilx2JJiVxjtvL9RHgnIL5Vr630TUylfviQN7rVDU+pU25a122MO8TW/Lgmf/FnsHy08Fo1qgGkChxDuvDR2h9n41sKTgvnpyj9NbBELsLmtbaMfD2UmgTqkA2WiggmvgT0CUQ==
 X-OriginatorOrg: sitime.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16208005-9736-45c2-8af4-08df3f68de23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 20:26:12.2877
+X-MS-Exchange-CrossTenant-Network-Message-Id: afa2aa6b-e5e7-4cef-ad92-08df3f68dda4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 20:26:11.0535
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zVzzCeorYc25QCanrgvubK7f0wG7Pp8eCFPt64FQLqdI8+2uYggRxX+NhLhnqhl7557Aijqq6YJqsavqiA2tpw==
+X-MS-Exchange-CrossTenant-userprincipalname: 1VkfJAd4y8mdQjR0K4wf2G0K+NEF55fFJ2XVfL2PWx6elALbkhdC8LvWxXLXvV9PhAQDVyoVlfc+2gkRU253YA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR20MB5745
-X-MDID: 1794342401-JKn5ltP9OeET
+X-MDID: 1794342399-9iZywjbtBT6M
 X-PPE-STACK: {"stack":"us1"}
 X-MDID-O:
- us1;ut7;1794342401;JKn5ltP9OeET;<arouhi@sitime.com>;ba04557de9d2da8490f5f1e6de07b967
+ us1;at1;1794342399;9iZywjbtBT6M;<arouhi@sitime.com>;ba04557de9d2da8490f5f1e6de07b967
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
-From: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
+Add a binding for the SiTime SiT9531x family of clock generators: an=0A=
+I2C-controlled device with four independent PLLs, up to eight input=0A=
+clocks and up to twelve outputs, described as a DPLL provider.=0A=
 =0A=
-Read the DPLL type and, for each pin, its label, direction, capabilities=0A=
-and supported frequencies from the firmware node, with defaults for a=0A=
-node that gives none.=0A=
+The XO is given either as a clock or, for firmware that describes the=0A=
+oscillator as a property rather than as a clock provider, such as ACPI,=0A=
+as clock-frequency.=0A=
 =0A=
-Inputs are the P and N lanes of four pairs: a pair run single-ended=0A=
-gives two inputs, a differential pair one. Outputs are labeled OUTn by=0A=
-the driver's index, while reg stays the die slot the binding defines, so=0A=
-one binding serves both variants.=0A=
+The supplies are described by their pin names: the core and input rails,=0A=
+the GPIO rail the SiT95317 has, and one per output-driver pin: VDDO0 to=0A=
+VDDO7 on the SiT95317, VDDO0_1, VDDO2 to VDDO9 and VDDO10_11 on the=0A=
+SiT95316.  The driver does not enable them, since the boards so far=0A=
+power the part permanently; describing them gives a board with=0A=
+switchable rails a way to say so.=0A=
 =0A=
-An output with no supported-frequencies-hz is advertised as a continuous=0A=
-range, since the core refuses every frequency request on a pin with=0A=
-none.=0A=
-=0A=
-Signed-off-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
 Signed-off-by: Ali Rouhi <arouhi@sitime.com>=0A=
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>=0A=
 ---=0A=
- drivers/dpll/sit9531x/Makefile |   2 +-=0A=
- drivers/dpll/sit9531x/core.h   |  56 ++++++=0A=
- drivers/dpll/sit9531x/prop.c   | 327 +++++++++++++++++++++++++++++++++=0A=
- drivers/dpll/sit9531x/prop.h   |  37 ++++=0A=
- 4 files changed, 421 insertions(+), 1 deletion(-)=0A=
- create mode 100644 drivers/dpll/sit9531x/prop.c=0A=
- create mode 100644 drivers/dpll/sit9531x/prop.h=0A=
+ .../bindings/dpll/sitime,sit95316.yaml        | 214 ++++++++++++++++++=0A=
+ MAINTAINERS                                   |   6 +=0A=
+ 2 files changed, 220 insertions(+)=0A=
+ create mode 100644 Documentation/devicetree/bindings/dpll/sitime,sit95316.=
+yaml=0A=
 =0A=
-diff --git a/drivers/dpll/sit9531x/Makefile b/drivers/dpll/sit9531x/Makefil=
-e=0A=
-index a221fe55386a..819af61123f5 100644=0A=
---- a/drivers/dpll/sit9531x/Makefile=0A=
-+++ b/drivers/dpll/sit9531x/Makefile=0A=
-@@ -1,4 +1,4 @@=0A=
- # SPDX-License-Identifier: GPL-2.0-only=0A=
- =0A=
- obj-$(CONFIG_SIT9531X_DPLL) +=3D sit9531x.o=0A=
--sit9531x-y :=3D core.o=0A=
-+sit9531x-y :=3D core.o prop.o=0A=
-diff --git a/drivers/dpll/sit9531x/core.h b/drivers/dpll/sit9531x/core.h=0A=
-index 0f826313eff8..7a81c9b14b7f 100644=0A=
---- a/drivers/dpll/sit9531x/core.h=0A=
-+++ b/drivers/dpll/sit9531x/core.h=0A=
-@@ -23,7 +23,15 @@=0A=
- =0A=
- #define SIT9531X_NUM_PLLS		4=0A=
- #define SIT9531X_MAX_INPUTS		8=0A=
-+#define SIT9531X_NUM_INPUT_PAIRS	(SIT9531X_MAX_INPUTS / 2)=0A=
- #define SIT9531X_MAX_OUTPUTS		12=0A=
-+/*=0A=
-+ * INTSYNC, the inter-PLL sync line, is two pins: an input pin on the PLL =
-that=0A=
-+ * locks to it, numbered after the inputs and the xtal, and an output pin =
-on the=0A=
-+ * PLL that drives it, numbered after the outputs.=0A=
-+ */=0A=
-+#define SIT9531X_INTSYNC_PIN_ID		(SIT9531X_MAX_INPUTS + 1)=0A=
-+#define SIT9531X_INTSYNC_OUT_PIN_ID	SIT9531X_MAX_OUTPUTS=0A=
- =0A=
- /*=0A=
-  * struct sit9531x_chip_info - chip variant identification=0A=
-@@ -41,6 +49,35 @@ struct sit9531x_chip_info {=0A=
- 	const u8	*clkout_map;=0A=
- };=0A=
- =0A=
-+/*=0A=
-+ * enum sit9531x_signal_mode - input signal electrical mode=0A=
-+ * @SIT9531X_MODE_SE: single-ended=0A=
-+ * @SIT9531X_MODE_DE: differential=0A=
-+ */=0A=
-+enum sit9531x_signal_mode {=0A=
-+	SIT9531X_MODE_SE =3D 0,=0A=
-+	SIT9531X_MODE_DE,=0A=
-+};=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_ref - input reference state=0A=
-+ * @freq: configured frequency in Hz=0A=
-+ * @sig_mode: signal mode of the input pair, read from CLKINx_INPUT_MODE a=
-t=0A=
-+ *   probe=0A=
-+ */=0A=
-+struct sit9531x_ref {=0A=
-+	u64		freq;=0A=
-+	enum sit9531x_signal_mode	sig_mode;=0A=
-+};=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_out - output state=0A=
-+ * @freq: output frequency in Hz=0A=
-+ */=0A=
-+struct sit9531x_out {=0A=
-+	u64		freq;=0A=
-+};=0A=
-+=0A=
- /*=0A=
-  * struct sit9531x_dev - SiT9531x device instance=0A=
-  * @dev: parent device=0A=
-@@ -51,6 +88,8 @@ struct sit9531x_chip_info {=0A=
-  * @page_lock: held across a page select and its transfer; nests inside=0A=
-  *   @multiop_lock=0A=
-  * @page: current page, -1 when unknown=0A=
-+ * @ref: input reference states=0A=
-+ * @out: output states=0A=
-  * @xtal_freq: crystal frequency in Hz=0A=
-  * @reset_gpio: optional reset line, NULL if absent=0A=
-  */=0A=
-@@ -65,11 +104,28 @@ struct sit9531x_dev {=0A=
- 	struct mutex			page_lock;=0A=
- 	int				page;=0A=
- =0A=
-+	struct sit9531x_ref	ref[SIT9531X_MAX_INPUTS + 1]; /* +1 for xtal */=0A=
-+	struct sit9531x_out	out[SIT9531X_MAX_OUTPUTS];=0A=
- 	u32			xtal_freq;=0A=
- =0A=
- 	struct gpio_desc	*reset_gpio;=0A=
- };=0A=
- =0A=
-+/*=0A=
-+ * Input index 2n is the P lane and 2n + 1 the N lane of pair n; index=0A=
-+ * SIT9531X_MAX_INPUTS is the XO.=0A=
-+ */=0A=
-+=0A=
-+static inline u8 sit9531x_input_pair(u8 index)=0A=
-+{=0A=
-+	return index >> 1;=0A=
-+}=0A=
-+=0A=
-+static inline bool sit9531x_input_is_n(u8 index)=0A=
-+{=0A=
-+	return index & 1;=0A=
-+}=0A=
-+=0A=
- /* Register page of PLL @pll_idx (0 =3D PLLA, 3 =3D PLLD). */=0A=
- static inline u8 sit9531x_pll_page(u8 pll_idx)=0A=
- {=0A=
-diff --git a/drivers/dpll/sit9531x/prop.c b/drivers/dpll/sit9531x/prop.c=0A=
+diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/=
+Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
 new file mode 100644=0A=
-index 000000000000..b9405eba49a3=0A=
+index 000000000000..5356a73a8062=0A=
 --- /dev/null=0A=
-+++ b/drivers/dpll/sit9531x/prop.c=0A=
-@@ -0,0 +1,327 @@=0A=
-+// SPDX-License-Identifier: GPL-2.0=0A=
-+/*=0A=
-+ * SiTime SiT9531x firmware node property parsing=0A=
-+ *=0A=
-+ * Copyright (C) 2026 SiTime Corp.=0A=
-+ * Author: Ali Rouhi <arouhi@sitime.com>=0A=
-+ * Author: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
-+ *=0A=
-+ * Retrieves pin properties from Device Tree firmware nodes (or=0A=
-+ * applies defaults when no firmware node exists).=0A=
-+ */=0A=
++++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
+@@ -0,0 +1,214 @@=0A=
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)=0A=
++%YAML 1.2=0A=
++---=0A=
++$id: http://devicetree.org/schemas/dpll/sitime,sit95316.yaml#=0A=
++$schema: http://devicetree.org/meta-schemas/core.yaml#=0A=
 +=0A=
-+#include <linux/dev_printk.h>=0A=
-+#include <linux/dpll.h>=0A=
-+#include <linux/err.h>=0A=
-+#include <linux/fwnode.h>=0A=
-+#include <linux/property.h>=0A=
-+#include <linux/slab.h>=0A=
-+#include <linux/string.h>=0A=
++title: SiTime SiT95316/SiT95317 DPLL Clock Generator=0A=
 +=0A=
-+#include "core.h"=0A=
-+#include "prop.h"=0A=
++maintainers:=0A=
++  - Ali Rouhi <arouhi@sitime.com>=0A=
 +=0A=
-+static void sit9531x_input_pin_label(struct sit9531x_dev *sitdev,=0A=
-+				     struct sit9531x_pin_props *props, u8 id)=0A=
-+{=0A=
-+	u8 pair =3D sit9531x_input_pair(id);=0A=
-+=0A=
-+	if (sitdev->ref[id].sig_mode =3D=3D SIT9531X_MODE_DE)=0A=
-+		snprintf(props->package_label,=0A=
-+			 sizeof(props->package_label), "IN%u", pair);=0A=
-+	else=0A=
-+		snprintf(props->package_label,=0A=
-+			 sizeof(props->package_label), "IN%u%c", pair,=0A=
-+			 sit9531x_input_is_n(id) ? 'N' : 'P');=0A=
-+}=0A=
-+=0A=
-+/* A differential input pair is labeled IN<n>; its N lane is not registere=
-d. */=0A=
-+static void=0A=
-+sit9531x_prop_pin_package_label_set(struct sit9531x_dev *sitdev,=0A=
-+				    struct sit9531x_pin_props *props,=0A=
-+				    enum dpll_pin_direction dir, u8 id)=0A=
-+{=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+	    id =3D=3D SIT9531X_INTSYNC_PIN_ID) {=0A=
-+		strscpy(props->package_label, "INTSYNC",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT && id =3D=3D SIT9531X_MAX_INPUTS)=
- {=0A=
-+		strscpy(props->package_label, "XO",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+	    id =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID) {=0A=
-+		strscpy(props->package_label, "SYNCOUT",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT)=0A=
-+		sit9531x_input_pin_label(sitdev, props, id);=0A=
-+	else=0A=
-+		/*=0A=
-+		 * Package numbering; on the SiT95317 it differs from the chip=0A=
-+		 * slot that the registers and the binding's reg use.=0A=
-+		 */=0A=
-+		snprintf(props->package_label, sizeof(props->package_label),=0A=
-+			 "OUT%u", id);=0A=
-+=0A=
-+	props->dpll_props.package_label =3D props->package_label;=0A=
-+}=0A=
-+=0A=
-+/* An output's reg is the chip slot it drives, not the driver's index. */=
++description: |=0A=
++  SiTime SiT95316 and SiT95317 are I2C-controlled programmable clock=0A=
++  generators with integrated DPLL for synchronization applications.  Both=
 =0A=
-+static int=0A=
-+sit9531x_prop_pin_fwnode_get(struct sit9531x_dev *sitdev,=0A=
-+			     struct sit9531x_pin_props *props,=0A=
-+			     enum dpll_pin_direction dir, u8 id)=0A=
-+{=0A=
-+	struct fwnode_handle *pins_node, *pin_node;=0A=
-+	const char *node_name;=0A=
++  variants contain four PLLs with automatic/manual reference selection,=0A=
++  DCO frequency adjustment, and phase offset measurement via an on-chip=0A=
++  TDC (Time-to-Digital Converter).=0A=
 +=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT) {=0A=
-+		node_name =3D "input-pins";=0A=
-+	} else {=0A=
-+		node_name =3D "output-pins";=0A=
-+		if (id < sitdev->info->num_outputs)=0A=
-+			id =3D sitdev->info->clkout_map[id];=0A=
-+	}=0A=
++  Both parts have 4 differential input pairs whose lanes can also be=0A=
++  driven independently as single-ended references, so 8 inputs are=0A=
++  individually selectable.  SiT95317 drives 8 outputs, SiT95316=0A=
++  drives 12.=0A=
 +=0A=
-+	pins_node =3D device_get_named_child_node(sitdev->dev, node_name);=0A=
-+	if (!pins_node) {=0A=
-+		dev_dbg(sitdev->dev, "'%s' sub-node is missing\n", node_name);=0A=
-+		return -ENOENT;=0A=
-+	}=0A=
++  Pin numbering.  An input pin's reg is its lane: 2k is INkP and 2k + 1=0A=
++  is INkN, 0 to 7.  A pair the loaded configuration runs differential is=
+=0A=
++  one input, described at 2k.  An output pin's reg is its physical output=
+=0A=
++  OUTn, 0 to 11; the SiT95317 bonds out the die's outputs 0, 3, 4, 5, 7, 8=
+,=0A=
++  9 and 11, which its datasheet names OUT0 to OUT7 in that order.=0A=
 +=0A=
-+	fwnode_for_each_child_node(pins_node, pin_node) {=0A=
-+		u32 reg;=0A=
++properties:=0A=
++  compatible:=0A=
++    enum:=0A=
++      - sitime,sit95316=0A=
++      - sitime,sit95317=0A=
 +=0A=
-+		if (fwnode_property_read_u32(pin_node, "reg", &reg))=0A=
-+			continue;=0A=
++  reg:=0A=
++    maxItems: 1=0A=
 +=0A=
-+		if (id =3D=3D reg)=0A=
-+			break;=0A=
-+	}=0A=
++  clocks:=0A=
++    maxItems: 1=0A=
 +=0A=
-+	fwnode_handle_put(pins_node);=0A=
++  clock-names:=0A=
++    items:=0A=
++      - const: xtal=0A=
 +=0A=
-+	props->fwnode =3D pin_node;=0A=
++  clock-frequency:=0A=
++    description:=0A=
++      XO rate in Hz feeding XIN/XO_CLK, for firmware that describes the=0A=
++      oscillator as a property rather than as a clock provider, such as=0A=
++      ACPI.  Use either this or "clocks", not both.=0A=
 +=0A=
-+	dev_dbg(sitdev->dev, "Firmware node for %s %sfound\n",=0A=
-+		props->package_label, pin_node ? "" : "NOT ");=0A=
++  reset-gpios:=0A=
++    maxItems: 1=0A=
++    description:=0A=
++      GPIO connected to the chip's active-low reset pin (RESETB).=0A=
 +=0A=
-+	return pin_node ? 0 : -ENOENT;=0A=
-+}=0A=
++  interrupts:=0A=
++    maxItems: 1=0A=
++    description:=0A=
++      Interrupt from the chip's active-low INTRB output.  Asserted when=0A=
++      the device detects a status change such as lock acquisition or loss.=
+=0A=
 +=0A=
-+/* Free the result with sit9531x_pin_props_put(). */=0A=
-+struct sit9531x_pin_props *=0A=
-+sit9531x_pin_props_get(struct sit9531x_dev *sitdev,=0A=
-+		       enum dpll_pin_direction dir, u8 index)=0A=
-+{=0A=
-+	bool sync_in =3D dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+		       index =3D=3D SIT9531X_INTSYNC_PIN_ID;=0A=
-+	bool sync_out =3D dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+			index =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID;=0A=
-+	bool xo =3D dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+		  index =3D=3D SIT9531X_MAX_INPUTS;=0A=
-+	struct dpll_pin_frequency *ranges;=0A=
-+	struct sit9531x_pin_props *props;=0A=
-+	int i, j, num_freqs =3D 0, rc;=0A=
-+	u32 *freqs =3D NULL;=0A=
-+	const char *type;=0A=
-+	u64 curr_freq;=0A=
++  dpll-types:=0A=
++    maxItems: 4=0A=
 +=0A=
-+	props =3D kzalloc_obj(*props, GFP_KERNEL);=0A=
-+	if (!props)=0A=
-+		return ERR_PTR(-ENOMEM);=0A=
++  vdd-supply:=0A=
++    description: Core supply of the PLLs, 1.8 V (the VDD pins).=0A=
 +=0A=
-+	if (sync_in) {=0A=
-+		/* INTSYNC destination: a reference the PLL can lock to. */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D 0;=0A=
-+	} else if (sync_out) {=0A=
-+		/* INTSYNC source: driving it is not a reference selection */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D 0;=0A=
-+	} else if (xo) {=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D 0;=0A=
-+		curr_freq =3D sitdev->xtal_freq;=0A=
-+	} else if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT) {=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D sitdev->ref[index].freq;=0A=
-+	} else {=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D 0;=0A=
-+	}=0A=
++  vddin-supply:=0A=
++    description:=0A=
++      Supply of the input receivers and dividers, 3.3 V (VDDIN).=0A=
 +=0A=
-+	sit9531x_prop_pin_package_label_set(sitdev, props, dir, index);=0A=
++  vdds-supply:=0A=
++    description:=0A=
++      Supply of the two GPIO pins that have their own rail (VDDS).  The=0A=
++      SiT95316 has no such pin.=0A=
 +=0A=
-+	/* Internal pins take no properties from the firmware node. */=0A=
-+	if (sync_in || sync_out || xo)=0A=
-+		goto skip_fwnode_props;=0A=
++  input-pins:=0A=
++    type: object=0A=
++    patternProperties:=0A=
++      "^pin@[0-9a-f]+$":=0A=
++        type: object=0A=
++        properties:=0A=
++          reg:=0A=
++            maximum: 7=0A=
 +=0A=
-+	rc =3D sit9531x_prop_pin_fwnode_get(sitdev, props, dir, index);=0A=
-+	if (rc)=0A=
-+		goto skip_fwnode_props;=0A=
++          supported-frequencies-hz:=0A=
++            maxItems: 1=0A=
++            description:=0A=
++              The rate wired to the input, in Hz, as a single entry.  An=
+=0A=
++              input runs at the rate the board feeds it and has no=0A=
++              frequency to select, so that entry is what the pin reports=
+=0A=
++              as its frequency.=0A=
 +=0A=
-+	fwnode_property_read_string(props->fwnode, "label",=0A=
-+				    &props->dpll_props.board_label);=0A=
++patternProperties:=0A=
++  "^vddo([0-9]|1[01]|0_1|10_11)-supply$":=0A=
++    description: |=0A=
++      Supply of an output driver, named after its VDDO pin.  The SiT95317=
+=0A=
++      has one per output, VDDO0 to VDDO7, numbered as that part's=0A=
++      datasheet numbers its outputs; in the pin numbering of this binding=
+=0A=
++      those are outputs 0, 3, 4, 5, 7, 8, 9 and 11, in that order.  The=0A=
++      SiT95316 has VDDO0_1, VDDO2 to VDDO9 and VDDO10_11, the two shared=
+=0A=
++      pins each powering the pair of outputs they are named after.=0A=
 +=0A=
-+	if (!fwnode_property_read_string(props->fwnode, "connection-type",=0A=
-+					 &type)) {=0A=
-+		if (!strcmp(type, "ext"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		else if (!strcmp(type, "gnss"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_GNSS;=0A=
-+		else if (!strcmp(type, "int"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		else if (!strcmp(type, "synce"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_SYNCE_ETH_PORT;=0A=
-+		else if (!strcmp(type, "mux"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_MUX;=0A=
-+		else=0A=
-+			dev_warn(sitdev->dev,=0A=
-+				 "Unknown pin type '%s'\n", type);=0A=
-+	}=0A=
++required:=0A=
++  - compatible=0A=
++  - reg=0A=
 +=0A=
-+	if (!fwnode_property_present(props->fwnode,=0A=
-+				     "supported-frequencies-hz"))=0A=
-+		goto skip_fwnode_props;=0A=
++dependencies:=0A=
++  clocks: [ clock-names ]=0A=
 +=0A=
-+	/* A -hz property is 32-bit; no rate of this part needs more. */=0A=
-+	num_freqs =3D fwnode_property_count_u32(props->fwnode,=0A=
-+					      "supported-frequencies-hz");=0A=
-+	if (num_freqs <=3D 0) {=0A=
-+		rc =3D num_freqs ? num_freqs : -EINVAL;=0A=
-+		dev_err(sitdev->dev,=0A=
-+			"malformed supported-frequencies-hz for %s: %d\n",=0A=
-+			props->package_label, rc);=0A=
-+		goto err_alloc_freqs;=0A=
-+	}=0A=
++oneOf:=0A=
++  - required:=0A=
++      - clocks=0A=
++  - required:=0A=
++      - clock-frequency=0A=
 +=0A=
-+	freqs =3D kcalloc(num_freqs, sizeof(*freqs), GFP_KERNEL);=0A=
-+	if (!freqs) {=0A=
-+		rc =3D -ENOMEM;=0A=
-+		goto err_alloc_freqs;=0A=
-+	}=0A=
++allOf:=0A=
++  - $ref: /schemas/dpll/dpll-device.yaml#=0A=
++  - if:=0A=
++      properties:=0A=
++        compatible:=0A=
++          const: sitime,sit95317=0A=
++    then:=0A=
++      properties:=0A=
++        output-pins:=0A=
++          patternProperties:=0A=
++            "^pin@[0-9a-f]+$":=0A=
++              properties:=0A=
++                reg:=0A=
++                  enum: [0, 3, 4, 5, 7, 8, 9, 11]=0A=
++      patternProperties:=0A=
++        "^vddo(8|9|1[01]|0_1|10_11)-supply$": false=0A=
++    else:=0A=
++      properties:=0A=
++        vdds-supply: false=0A=
++        output-pins:=0A=
++          patternProperties:=0A=
++            "^pin@[0-9a-f]+$":=0A=
++              properties:=0A=
++                reg:=0A=
++                  maximum: 11=0A=
++      patternProperties:=0A=
++        "^vddo(1[01]|[01])-supply$": false=0A=
 +=0A=
-+	rc =3D fwnode_property_read_u32_array(props->fwnode,=0A=
-+					    "supported-frequencies-hz",=0A=
-+					    freqs, num_freqs);=0A=
-+	if (rc) {=0A=
-+		dev_warn(sitdev->dev,=0A=
-+			 "failed to parse supported-frequencies-hz for %s: %d\n",=0A=
-+			 props->package_label, rc);=0A=
-+		goto err_alloc_ranges;=0A=
-+	}=0A=
++unevaluatedProperties: false=0A=
 +=0A=
-+	/* The first listed rate seeds the input's rate */=0A=
-+	if (num_freqs > 0 && dir =3D=3D DPLL_PIN_DIRECTION_INPUT && !xo)=0A=
-+		curr_freq =3D freqs[0];=0A=
++examples:=0A=
++  - |=0A=
++    #include <dt-bindings/gpio/gpio.h>=0A=
++    #include <dt-bindings/interrupt-controller/irq.h>=0A=
 +=0A=
-+skip_fwnode_props:=0A=
-+	if (sync_in || sync_out)=0A=
-+		return props;=0A=
++    i2c {=0A=
++        #address-cells =3D <1>;=0A=
++        #size-cells =3D <0>;=0A=
 +=0A=
-+	/*=0A=
-+	 * An output with no listed rates gets one wide range, as the setter=0A=
-+	 * checks Fvco/N; the XO gets its one rate.=0A=
-+	 */=0A=
-+	ranges =3D kcalloc(num_freqs + 1, sizeof(*ranges), GFP_KERNEL);=0A=
-+	if (!ranges) {=0A=
-+		rc =3D -ENOMEM;=0A=
-+		goto err_alloc_ranges;=0A=
-+	}=0A=
++        dpll@68 {=0A=
++            compatible =3D "sitime,sit95316";=0A=
++            reg =3D <0x68>;=0A=
++            clocks =3D <&xo2>;=0A=
++            clock-names =3D "xtal";=0A=
++            reset-gpios =3D <&gpio 78 GPIO_ACTIVE_LOW>;=0A=
++            interrupts =3D <12 IRQ_TYPE_LEVEL_LOW>;=0A=
++            vdd-supply =3D <&reg_1v8>;=0A=
++            vddin-supply =3D <&reg_3v3>;=0A=
++            vddo0_1-supply =3D <&reg_3v3>;=0A=
++            vddo10_11-supply =3D <&reg_1v8>;=0A=
++            dpll-types =3D "eec", "eec", "eec", "eec";=0A=
 +=0A=
-+	/* Set after the last allocation that can fail */=0A=
-+	if (curr_freq && dir =3D=3D DPLL_PIN_DIRECTION_INPUT)=0A=
-+		sitdev->ref[index].freq =3D curr_freq;=0A=
++            input-pins {=0A=
++                #address-cells =3D <1>;=0A=
++                #size-cells =3D <0>;=0A=
 +=0A=
-+	j =3D 0;=0A=
++                /* IN0P and IN0N: pair 0 runs single-ended */=0A=
++                pin@0 {=0A=
++                    reg =3D <0>;=0A=
++                    label =3D "clkin0";=0A=
++                    connection-type =3D "ext";=0A=
++                    supported-frequencies-hz =3D <10000000>;=0A=
++                };=0A=
 +=0A=
-+	for (i =3D 0; i < num_freqs; i++) {=0A=
-+		struct dpll_pin_frequency freq =3D DPLL_PIN_FREQUENCY(freqs[i]);=0A=
++                pin@1 {=0A=
++                    reg =3D <1>;=0A=
++                    label =3D "clkin1";=0A=
++                    connection-type =3D "synce";=0A=
++                    supported-frequencies-hz =3D <156250000>;=0A=
++                };=0A=
++            };=0A=
 +=0A=
-+		ranges[j++] =3D freq;=0A=
-+	}=0A=
++            output-pins {=0A=
++                #address-cells =3D <1>;=0A=
++                #size-cells =3D <0>;=0A=
 +=0A=
-+	if (!num_freqs && dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT) {=0A=
-+		ranges[j].min =3D 1;=0A=
-+		ranges[j].max =3D 1000000000ULL; /* 1 GHz */=0A=
-+		j++;=0A=
-+	} else if (!num_freqs && curr_freq) {=0A=
-+		struct dpll_pin_frequency f =3D DPLL_PIN_FREQUENCY(curr_freq);=0A=
++                pin@0 {=0A=
++                    reg =3D <0>;=0A=
++                    label =3D "clkout0";=0A=
++                    supported-frequencies-hz =3D <156250000>;=0A=
++                };=0A=
 +=0A=
-+		ranges[j++] =3D f;=0A=
-+	}=0A=
++                pin@1 {=0A=
++                    reg =3D <1>;=0A=
++                    label =3D "clkout1";=0A=
++                    supported-frequencies-hz =3D <25000000>;=0A=
++                };=0A=
 +=0A=
-+	if (j > 0) {=0A=
-+		props->dpll_props.freq_supported =3D ranges;=0A=
-+		props->dpll_props.freq_supported_num =3D j;=0A=
-+	} else {=0A=
-+		kfree(ranges);=0A=
-+		props->dpll_props.freq_supported =3D NULL;=0A=
-+		props->dpll_props.freq_supported_num =3D 0;=0A=
-+	}=0A=
++                pin@a {=0A=
++                    reg =3D <10>;=0A=
++                    label =3D "clkout10";=0A=
++                    supported-frequencies-hz =3D <10000000>;=0A=
++                };=0A=
++            };=0A=
++        };=0A=
++    };=0A=
++...=0A=
+diff --git a/MAINTAINERS b/MAINTAINERS=0A=
+index fe23913b1e43..6c831bf9e812 100644=0A=
+--- a/MAINTAINERS=0A=
++++ b/MAINTAINERS=0A=
+@@ -25870,6 +25870,12 @@ S:	Maintained=0A=
+ W:	http://www.winischhofer.at/linuxsisusbvga.shtml=0A=
+ F:	drivers/usb/misc/sisusbvga/=0A=
+ =0A=
++SITIME SIT9531X DPLL DRIVER=0A=
++M:	Ali Rouhi <arouhi@sitime.com>=0A=
++L:	netdev@vger.kernel.org=0A=
++S:	Maintained=0A=
++F:	Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
 +=0A=
-+	kfree(freqs);=0A=
-+=0A=
-+	return props;=0A=
-+=0A=
-+err_alloc_ranges:=0A=
-+	kfree(freqs);=0A=
-+err_alloc_freqs:=0A=
-+	fwnode_handle_put(props->fwnode);=0A=
-+	kfree(props);=0A=
-+=0A=
-+	return ERR_PTR(rc);=0A=
-+}=0A=
-+=0A=
-+void sit9531x_pin_props_put(struct sit9531x_pin_props *props)=0A=
-+{=0A=
-+	kfree(props->dpll_props.freq_supported);=0A=
-+=0A=
-+	if (props->fwnode)=0A=
-+		fwnode_handle_put(props->fwnode);=0A=
-+=0A=
-+	kfree(props);=0A=
-+}=0A=
-+=0A=
-+enum dpll_type=0A=
-+sit9531x_prop_dpll_type_get(struct sit9531x_dev *sitdev, u8 index)=0A=
-+{=0A=
-+	const char *types[SIT9531X_NUM_PLLS];=0A=
-+	int count;=0A=
-+=0A=
-+	count =3D device_property_read_string_array(sitdev->dev, "dpll-types",=0A=
-+						  types, ARRAY_SIZE(types));=0A=
-+=0A=
-+	if (index >=3D count || !types[index])=0A=
-+		return DPLL_TYPE_PPS;=0A=
-+=0A=
-+	if (!strcmp(types[index], "pps"))=0A=
-+		return DPLL_TYPE_PPS;=0A=
-+	else if (!strcmp(types[index], "eec"))=0A=
-+		return DPLL_TYPE_EEC;=0A=
-+=0A=
-+	dev_warn(sitdev->dev, "Unknown DPLL type '%s', using default\n",=0A=
-+		 types[index]);=0A=
-+=0A=
-+	return DPLL_TYPE_PPS;=0A=
-+}=0A=
-diff --git a/drivers/dpll/sit9531x/prop.h b/drivers/dpll/sit9531x/prop.h=0A=
-new file mode 100644=0A=
-index 000000000000..b16db0bc51c6=0A=
---- /dev/null=0A=
-+++ b/drivers/dpll/sit9531x/prop.h=0A=
-@@ -0,0 +1,37 @@=0A=
-+/* SPDX-License-Identifier: GPL-2.0 */=0A=
-+/*=0A=
-+ * SiTime SiT9531x firmware node property parsing=0A=
-+ *=0A=
-+ * Copyright (C) 2026 SiTime Corp.=0A=
-+ * Author: Ali Rouhi <arouhi@sitime.com>=0A=
-+ * Author: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
-+ */=0A=
-+=0A=
-+#ifndef _SIT9531X_PROP_H=0A=
-+#define _SIT9531X_PROP_H=0A=
-+=0A=
-+#include <linux/dpll.h>=0A=
-+#include <linux/fwnode.h>=0A=
-+=0A=
-+struct sit9531x_dev;=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_pin_props - pin properties from firmware=0A=
-+ * @fwnode: firmware node handle, NULL if no DT node=0A=
-+ * @dpll_props: DPLL core pin properties=0A=
-+ * @package_label: pin package label (e.g. "IN0", "OUT3")=0A=
-+ */=0A=
-+struct sit9531x_pin_props {=0A=
-+	struct fwnode_handle		*fwnode;=0A=
-+	struct dpll_pin_properties	dpll_props;=0A=
-+	char				package_label[8];=0A=
-+};=0A=
-+=0A=
-+enum dpll_type sit9531x_prop_dpll_type_get(struct sit9531x_dev *sitdev,=0A=
-+					   u8 index);=0A=
-+struct sit9531x_pin_props *sit9531x_pin_props_get(struct sit9531x_dev *sit=
-dev,=0A=
-+						  enum dpll_pin_direction dir,=0A=
-+						  u8 index);=0A=
-+void sit9531x_pin_props_put(struct sit9531x_pin_props *props);=0A=
-+=0A=
-+#endif /* _SIT9531X_PROP_H */=0A=
+ SL28 CPLD MFD DRIVER=0A=
+ M:	Michael Walle <mwalle@kernel.org>=0A=
+ S:	Maintained=0A=
 -- =0A=
 2.39.2 (Apple Git-143)=0A=
 =0A=
