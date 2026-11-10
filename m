@@ -1,47 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322115;
-	b=fe2ad6Uhdkz7SmDuFW1fLqGIEV7zcvUiFapmK7TU2EDUHI9JFyZV757VO9su/ZPZCt5Y
-	 dFdWS+WBDe9n+xL/WW+O98SKQ/8y0BJCG52mZUV97z4drG1lZ8id2F+pwZujD4pAQZ0A1
-	 eWaRor+jjPtU0NeH+kDHXcxC8wV9M8qNMn5yRRf7PAtzIkQQkfAmg2JCpiVAoYA7F0Q8k
-	 8wHH5CqCo0KlTIMCbUJxiKIlfWzRyKqix4h28+Pih7vHN4x/rGV9GJoTHQiaMRtmwZ9bN
-	 MeMTru1IfZX33UpGhvfdoMb0DE1OSGLfms0QIPd5pbi04BFU6dmdQtHl6Bmp0LtDeZw==
+	t=1794322126;
+	b=vrnTAoX4E5zuT31VfpefNMwwDUACH3ggVdqeBXFFOeo8R7GPZXD8OoS5mdPceYpysoRY
+	 oab5qqQyiILUdJ8OIg6O9Fz97x/x3UPFloWpJSbMIO9Rwa1b3p2qYFTf5tAfXQkgLPbtz
+	 GaLW22gVJ8sDulboC0y2YFSIxXZ3aA4eWqSnQ/idQ+wwgkFI2y2SOCHzzZyMInrhbZuna
+	 pVhg0fFO+OOOq9xCmOaZ94Tb5DCq/Y316//8H6GPak06K52uEZyKfbCrMBGNvEoDLHK7m
+	 ZIj/1xzr4XYLEPnsRqLh497XOU5mAyq+QnjVa+WZDVXCZcM/nKK3lTu70TzL6or+y+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322115;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=XUiTD1fHkup0xMFyFzR4iaCQdh2qSDIS2CmJZXGFfHc=;
-	b=nYwWVIDdglXrqT448os8w58hzaHZRu2XJJwo0pBKOOAyG0XvOxixdF4c/OFvuOtA2Hux
-	 U5r62wEWMiojnELD2ms0fhyyAf2hARr/EY5qHb3vaH6TaZhD5KtN1NXpwK0nelpiFs6ch
-	 3S/EqRNWIdbfQ0Eo5ihPLbYphY5TU1o81Z1rXPjfNvoQs7b0J2rRaw64CvC6O8WgcbQKs
-	 bowwMBo7Gf2AW0VyfURxRCvEwW9Qj8eZgO8pd1qc4nxL4a0E+4MP/NAZtULssgz6ZbZ+j
-	 NHXMRoGEaFj/3V0JLrt6Vpqvfiy+BSt76rctiq7oRnxbEDLwq8az0s4IIwrptXPU4Og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322126;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=YHOWSzBYEeT0XkyHE5eg98zTT/FM3f1qF9Pogxz7NlM=;
+	b=bMnEbOe5J0Y34GejZCUGv9QQI+wgYDfxPELLPM2C5Xl9tDLFInQo5/ZeWjXEHvQ3682g
+	 SyQl0GKGmNUQGN2H1wvbKA2TAfNmd4ywjZZrqEZ/m3jTqWtI4U41atnW2YAdgQkjm8iaZ
+	 0Z6LEfW0GeZMJJmwNmq6i1cDe0DyIvEdDGYEX3HbCPGEJFmmXIq2J9Kla7FlFRDSpYWYy
+	 c60qm745tjCnrSIwkl3iZHTbRu5k3h0S+U7wYIOsEb1zTOWZe2AeBs7avkwm4sg5fewFQ
+	 UQpDiogENWyijDLzmdgZDWQAPdkI9CoxI2UMwLRycq1s/F41VQ0FrtOAioxvXfzLg8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tz+aZbtE;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C+sBCsiR;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939F760A2616;
-	Tue, 10 Nov 2026 14:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE29D60A382F
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:48:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE29D60A382F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tz+aZbtE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00331F008A7;
-	Tue, 10 Nov 2026 14:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322115;
-	bh=XUiTD1fHkup0xMFyFzR4iaCQdh2qSDIS2CmJZXGFfHc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tz+aZbtEGDK1QeZJeYbLnEZYmje0CJnu22t/oJiUygPZWL6rL95MaUq+EDzRA/J5W
-	 U7SpamNtitK/6CszxsR0T/vfLajLMLybZ+aGme3du9zszoQ94NDMkLCimVZvegBAY2
-	 boILBaHaux2iUDtP1DykJhbtEmtGprT+V3i08pq3xpYNZKhlXyikTssqrM3C6t8Zhb
-	 0d4/eHMRdAqjlh7gc/Y/I1/MeB08yHDxlDSvGre4L6ldn6vXZTepOvmC6vZU0BNxpv
-	 1b3CtlKBAH/FGDnOT31GUx+plXev4992gbBQHqq4ate3fBAL5vik8N9LjmCPQer1rH
-	 F65zIM+qKU4dQ==
-Message-ID: <afe441ca-d616-4132-ae68-95d3ae5e111f@kernel.org>
-Date: Tue, 10 Nov 2026 15:48:26 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C+sBCsiR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794322125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YHOWSzBYEeT0XkyHE5eg98zTT/FM3f1qF9Pogxz7NlM=;
+	b=C+sBCsiRGQ8YFndxB9NLkTKhDwHYz1iurkPktBnlU14h5X3BV+uTtWiwBU35X6EEx4C+91
+	KPk3M7b1/kpNYqxmV9V0cLGMwVoh2I6jWBqtKeMq4PluMmfr9tfrdanAJ/IuFIIe62auEI
+	1N/1yffTTd6MNtuIlxSJX8Z1h7ooUtk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-vC-TTDbwOza7AusNkcychA-1; Tue,
+ 10 Nov 2026 09:48:40 -0500
+X-MC-Unique: vC-TTDbwOza7AusNkcychA-1
+X-Mimecast-MFC-AGG-ID: vC-TTDbwOza7AusNkcychA_1794322119
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 668D41956043;
+	Tue, 10 Nov 2026 14:48:38 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 57D0F30000E7;
+	Tue, 10 Nov 2026 14:48:34 +0000 (UTC)
+Message-ID: <e16342c4-bfb8-489c-9785-f78a3dfdfc17@redhat.com>
+Date: Tue, 10 Nov 2026 15:48:32 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,58 +72,68 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and
- LL_ALLOC_SPACE()
-To: Tianyi Gao <tianyi@cloudflare.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- David Keogh <dkeogh@amazon.com>, Daniel Borkmann <daniel@iogearbox.net>,
- David Woodhouse <dwmw2@infradead.org>, Dragos Tatulea <dtatulea@nvidia.com>,
- Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam <alasdair@mcwilliam.dev>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Magnus Karlsson <magnus.karlsson@intel.com>, David Ahern
- <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Alexei Starovoitov <ast@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Donald Hunter <donald.hunter@gmail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Breno Leitao <leitao@debian.org>,
- =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
- Danielle Ratson <danieller@nvidia.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, bpf@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kernel-team@cloudflare.com,
- nh-open-source@amazon.com
-References: <cover.1794020868.git.tianyi@cloudflare.com>
- <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
- <willemdebruijn.kernel.1d64e7848503b@gmail.com>
- <20261107182526.69543-1-tianyi@cloudflare.com>
- <willemdebruijn.kernel.2c6a653eb65fa@gmail.com>
- <20261108214356.95406-1-tianyi@cloudflare.com>
+Subject: Re: [PATCH iwl-net] ice: dpll: refuse pin states that are not valid
+ for the pin
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Michal Michalik <michal.michalik@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Milena Olech <milena.olech@intel.com>, intel-wired-lan@lists.osuosl.org,
+ linux-kernel@vger.kernel.org
+References: <20261110143119.2313907-1-poros@redhat.com>
 Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20261108214356.95406-1-tianyi@cloudflare.com>
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20261110143119.2313907-1-poros@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+On 11/10/26 15:31, Petr Oros wrote:
+> The DPLL core checks only that a pin may change its state, which states
+> a pin accepts is left to the driver. The ice callbacks turn the
+> requested state into an enable flag by comparing it with the one state
+> that enables the pin, so every other state disables it, including the
+> one that has no meaning for the pin.
+> 
+> The inputs of the EEC and PPS DPLLs are enabled by selectable, as these
+> DPLLs select their reference automatically. A request for connected,
+> which Documentation/driver-api/dpll.rst reserves for manual mode and
+> for pins with the state-connected-override capability, disables the
+> input. On an E810:
+> 
+>    # dpll pin set id 1 parent-device 0 state connected
+>    # dpll pin show id 1
+>    ... state disconnected on both DPLLs
+> 
+> A recovered clock pin is connected to or disconnected from its parent
+> pin, and a request for selectable disconnects it:
+> 
+>    # dpll pin set id 2109 parent-pin 2094 state selectable
+>    # dpll pin show id 2109
+>    ... state disconnected on parent 2094
+> 
+> Add a helper that translates the state for a pin given the state that
+> enables it. Disconnected disables the pin and anything else is refused
+> with -EINVAL and an extack message. Use it for the input and recovered
+> clock pins, and for the output pins, which already refused selectable
+> and now tell the user why.
+> 
+> The SMA pins have the same problem. It is left out here, as the rework
+> of the SMA and U.FL pin control that is queued for net-next refuses the
+> states these pins cannot serve.
+> 
+> Found with the pin state selftest of the dpllsim series running against
+> an ice E810.
 
-On 11/8/26 22:43, Tianyi Gao wrote:
-> - That growth can move skbs into a larger kmalloc size without anyone
->    deciding it. On x86_64, for 1500-byte MTU UDP over IPv4 on an
->    Ethernet device, 194 bytes or more moves the skb head from
->    kmalloc-2048 to kmalloc-4096. That adds 2048 bytes to the memory and
->    the truesize of each such skb. The IFLA_TX_EXTRA_HEADROOM UAPI can
->    do the same, but then the operator chose to pay that cost.
+;-) good catch!
+> 
+> Fixes: d7999f5ea64bb1 ("ice: implement dpll interface to control cgu")
+> Signed-off-by: Petr Oros<poros@redhat.com>
 
-This reminds me that I have previously proposed changing both the
-generic XDP and veth headroom check to use 192 bytes instead of 256
-bytes.  This makes sense because Intel driver for native XDP already set
-this to 192 bytes.  Exactly due to 1500 MTU packets will fit into a 2048
-alignment. e.g. 2048 -192 -320 (shared_info) = 1536 bytes left.
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
 
-Reading about, this would also translate into a performance benefit?
-
---Jesper
