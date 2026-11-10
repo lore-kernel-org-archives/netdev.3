@@ -1,74 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292738;
-	b=c4FwTJoHI/RiFMacD6/tQBbNWDJqIXTP1tm6tSi2P/+z0Q+w50sUS8JRd/AQeTqbQKZz
-	 /6pC9neEux27KqLlkVC9gZj4lv5WbXZ9Ud5ntR++zC/snoJHrDsJdeRcz6jPoSXqLXnSE
-	 8hNBWpBg3JRNBMbZKKeh4hU0UWZ78PJkjiDtHWch32ZDLcgPXidDXSJLx5c3ex8Sf+f1L
-	 eBmFGD+JAuPml0uWqE0iRzGoVoldm0ewIIdQIUc2RNhu96wPchOA/ehMrxJmEykM10bkW
-	 eRJwMudkHijMLZn70QEkSDFfWaC8e/XzFrrAIPwttLLMDhxWLFzPVCVevvYhFBeKoEw==
+	t=1794292885;
+	b=IKHqE5CLhFwXeSAe8e1WhyO6NB3br0e01MSTAqZwLbIiBbQEH9dDP3JuRn+e79c1B2t4
+	 CzNca+yk50G36XGJ5I8yZB67hc4whez6rwSPE4I5PSAbMhr3uQQsedB5dwTCU7pTtLW5Z
+	 UvMTT0SNZNhu4D9wTXpBxm4y04eNEcn0Z9zYOmZMfZXwX+Telbhkj7kzeLOrRfrQIYM8Q
+	 fXtlFOWIl4d8w8OH1+tRg5C8y1ryoVjo4rBNh5AG3Mh9fd7/00+zrwKTbduSu2Xm1z4bb
+	 3iqCQl2l/LefGjnpVuYghzKODbkDbRJr5rRZ5THToig1LKaiyB/LaiA9jIVuP56rV5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292738;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=xGnzNpbW5HBJowHbelE8TIAH0CHLKv+3lpr5Rd0UybU=;
-	b=x2kgVQdCJrHu9flVPXQKKxp5jY1rLp+FFodPBYfHnU74ZWn0M99miODsfjBQ9yMo2aFp
-	 PXHV2YPrAevI+Ldz1wO2QjBxCqNH43rjsl8mhefhGgSvLnsXRC5EQJEREK+TwWbEcEc5l
-	 LvGB7sLzMwHUWytYpgdBmr3ppN5Hh2C6jAM+afIMKSXnQFn2CpmPcg4DM5eX+lUvbgirN
-	 iUmhpV6Ev01ut2Dg64PoWKl6w+GT6EmUABbkpXhV9IvMTdwB0vtui4JKqS/WnxazW1icj
-	 fbkJuJaSfgk5eJBKp9v2ZREuJ62wS1+0UKujHthyprdi5AyG8TUPAXhQFprrub0JYrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292885;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=nqrKlaQeTl4WKKKVqA7nnyA6CfFqXKex3ZpEO+A2IBE=;
+	b=fEGmqMhHucoQKyzhyUrjUr0ZdxHzoBLswz6hPT2CkwjaaGyx7+gPKRf2PyvVMpS0Qsi1
+	 L4VmrImMOMtYOwkfnvr9bn83iAsQYG7sCDFdCuqRv12uZjie0sH4CHqnTegfZOPagvBc4
+	 soUrA/Tfx/8n4Bm0sJRwSWZfGeQFV14k/SzbNRLr58HOgaBe3ZXrO+tJwhCseEUCJCADC
+	 yKszzh8i8lp67wBQ4xfRsG7cJ2xPeHOsnYyR8kjiH+LqMVfVaMtegMLWQBmyeenw1Ytan
+	 r34Ca928peJBdbarcl0E1YUbqrY6dz44+ad/6d9rWi/2bcQ39VLho4B08AKEt8oJyoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lUjbyjdq;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A0C606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 06:38:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9A0C606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="gANfaS/U";
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E12160A6F70;
+	Tue, 10 Nov 2026 06:41:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E12160A6F70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lUjbyjdq
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd5ca3840c5so1854964a12.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 22:38:57 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gANfaS/U
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794292737; x=1794897537; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xGnzNpbW5HBJowHbelE8TIAH0CHLKv+3lpr5Rd0UybU=;
-        b=lUjbyjdq0Cdy/5hmHfWdhJaKgFI7fDoSFMrmNdT1apdPUGgqHYEJPpK602EQgZubA8
-         lI5KHZU8Baq2CSU7na/Plt9wQEnHzajJ1QzZlUEi34qjWkKzxqExnCpGW0YHA4AljIvg
-         wX3ZtrFSbSGq46i6xgqbhdxIyzwP6i0o2Mw3d4DdZsOqIw57bS5eVSo2GbBKFCFgEcdK
-         AlvrGGoqmqcR3R0LDxkFNvbnlEIpdT9im9A37TihAhOjc5WTrd65PRbnrZvdM8WZvVGB
-         +aqz47nKcu3/P9gsdfAhMVxiY4EN1qK+NBbQF1ahO+m2wUwYjqZVDjvBR0ZGLTNAl49+
-         mNgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794292737; x=1794897537;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xGnzNpbW5HBJowHbelE8TIAH0CHLKv+3lpr5Rd0UybU=;
-        b=04FnEA1jXC03uJzrBPUwXB/mSRzDpvGnwK0RwkhWOLbd7S1jwvOKkx3j4NPlJWjNLj
-         j+L/lWJ14T88e5oQrnxE0StPTGbr2Qi+yIpp83A8i/GKB7HobXA8JgleiUn2i4GikNRZ
-         aUZ6QeVPF42AJOOce9qu9dEsMBpS0N8bq/ygyOUaJ1MEj+jR69w34Oox1KTmIuxyjjtH
-         c7wOzqm8xBxA2voRaNbyippei6rxxEs5kn2mp64hzzsPmUKA+8EjGqmqveVOj9nM61jL
-         51+hm/F7bg/VfqXYAbW3dxvWqkkWEEWm/Qj2HpJqN32J55kafRyB/sziupae/jErl7Lp
-         Lm1Q==
-X-Forwarded-Encrypted: i=1; AL+hErHi4fAnkA23lf9x/Ulkz4ob4t7oIeuidDMPUY1IiO2+Up8DKDwjw+W+qv9Ct4SVx4NChNDjTvQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8zztCSoWlxF1GJUik2XEAnLiYldz7/v/eWSVibJyY3D/hI9wxy
-	Yl+noED/joHGpyoHl0xpDc3UyKKRlUw3Tlb+OeH3IwDs02V7Mtb+PIrNGJHDMuUlQBL6GUtEbg+
-	P4YhErw==
-X-Received: from pjsd12.prod.google.com ([2002:a17:90a:bf8c:b0:3b0:994b:db90])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3889:b0:3ac:3e42:60a2
- with SMTP id 98e67ed59e1d1-3b166cebaa7mr2018376a91.33.1794292736895; Mon, 09
- Nov 2026 22:38:56 -0800 (PST)
-Date: Tue, 10 Nov 2026 06:38:56 +0000
-In-Reply-To: <20261106051905.218638-1-sidchintamaneni@gmail.com>
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=gANfaS/UWWdXR08x+aDCE54qPEJ4CfFC6jv2c/+eRudejEQ1i6KPOJ91D1bUIizMIXj+GSMA/jA4d
+	 AI8KTa3FqGHaJHAsMb+Vi8AegNapLbLhy8bVrG4nEAWveSGIhN4Wq+w/XzePr8IAlY6LjkIiy9U2sY
+	 IHDORU3LkeUfpD2M=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af2bc92205-a75f8;
+	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
+X-RM-TRANSID:2ee16af2bc92205-a75f8
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from  (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5d7;
+	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
+X-RM-TRANSID:2ee66af2bc8e8a1-aa5d7
+From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	jan.kiszka@siemens.com,
+	diogo.ivo@siemens.com,
+	haokexin@gmail.com,
+	horms@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+Subject: [PATCH v2 net 2/4] net: ti: icssg-prueth-sr1: Fix device_node refcount leak in prueth_probe()
+Date: Tue, 10 Nov 2026 14:41:15 +0800
+Message-ID: <20261110064118.1138-3-laixiangwu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
+References: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,53 +80,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261106051905.218638-1-sidchintamaneni@gmail.com>
-Message-ID: <avK7nGo4aGxJ7QiU@google.com>
-Subject: Re: [PATCH net 0/4] af_unix: Fix inq_len and scm_stat.nr_fds
- accounting leaks
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Jann Horn <jannh@google.com>, Kirill Tkhai <tkhai@ya.ru>, 
-	apais@microsoft.com, rlmenge@gmail.com, hargar@linux.microsoft.com, 
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 06 Nov 2026 05:19:01 +0000, Siddharth Chintamaneni wrote:
-> This series fixes receive-queue accounting leaks of u->inq_len and
-> u->scm_stat.nr_fds in AF_UNIX sockets, along with selftests:
-> 
-> - Patch 1 fixes a u->inq_len leak in manage_oob() when an unconsumed
->   out-of-band (MSG_OOB) skb is skipped and dropped during a normal read.
-> - Patch 2 fixes u->scm_stat.nr_fds leaks when an OOB skb is skipped or
->   freed in manage_oob(), unix_stream_recv_urg(), and
->   unix_stream_read_skb().
-> - Patch 3 fixes a u->scm_stat.nr_fds leak in unix_dgram_disconnected()
->   when purging queued skbs from sk->sk_receive_queue on disconnect.
-> - Patch 4 adds SIOCINQ and scm_fds (/proc/self/fdinfo/<fd>) checks to
->   the msg_oob and scm_rights selftests.
+prueth_probe() takes references on the eth0_node/eth1_node device nodes
+with of_node_get() and stores them in prueth->eth_node[]. If either of
+the "ti,mii-g-rt" or "ti,mii-rt" syscon regmap lookups fails, probe()
+returns -ENODEV without dropping those references, leaking the device
+nodes.
 
-I planed to drop MSG_OOB support in this cycle.
+Jump to the existing put_cores label so the error path releases the
+eth0_node/eth1_node references like all the other failure paths in the
+function do.
 
-Could you repost without OOB changes ?
+Fixes: e654b85a693e ("net: ti: icssg-prueth: Add ICSSG Ethernet driver for AM65x SR1.0 platforms")
+Signed-off-by: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+---
+Changes in v2:
+
+- Collect the two independent fixes into one series (suggested by
+  Simon Horman).
+
+- No code change since v1.
+
+Link: https://lore.kernel.org/netdev/20261030085851.2019-1-laixiangwu@cmss.chinamobile.com/
+
+ drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+index b8115ca47..ef1dc32ff 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+@@ -963,13 +963,15 @@ static int prueth_probe(struct platform_device *pdev)
+ 	prueth->miig_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-g-rt");
+ 	if (IS_ERR(prueth->miig_rt)) {
+ 		dev_err(dev, "couldn't get ti,mii-g-rt syscon regmap\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto put_cores;
+ 	}
+ 
+ 	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
+ 	if (IS_ERR(prueth->mii_rt)) {
+ 		dev_err(dev, "couldn't get ti,mii-rt syscon regmap\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto put_cores;
+ 	}
+ 
+ 	if (eth0_node) {
+-- 
+2.50.1.windows.1
 
 
-> 
-> Siddharth Chintamaneni (4):
->   af_unix: Fix inq_len leak when skipping unread OOB skb.
->   af_unix: Fix scm_stat.nr_fds leaks for OOB skb.
->   af_unix: Fix scm_stat.nr_fds leak in unix_dgram_disconnected().
->   selftest: af_unix: Test SIOCINQ and scm_fds with OOB and dgram
->     disconnect.
-> 
->  net/unix/af_unix.c                            |  69 ++++++-----
->  tools/testing/selftests/net/af_unix/msg_oob.c |  12 +-
->  .../selftests/net/af_unix/scm_rights.c        | 108 ++++++++++++++++++
->  3 files changed, 161 insertions(+), 28 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+
