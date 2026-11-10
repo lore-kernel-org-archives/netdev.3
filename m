@@ -1,97 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.102
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794328442;
-	b=MFIPnHJnJ4r46JaCiOq1q3nCJDqBoi3+EskyAKEAZuLtuGy5Rdtij2XpnXzW4+jVKH/c
-	 cSjK3ILoqEST6GZtk7Oc6itLDO8pAIj0Pdo88kgqlKjIkS1BLBScaoOew7/CGVcZfVy49
-	 dwZ2VRW7+qDVcQ1H5ZnTYwahD2EljwarG/m/g5fud3grlOjJE/v7QKp+pC2ywvBabxMBS
-	 c6dygrt3tLaicZTdycvupMVal8ybou1LwHH57hPE1XnfT/imxlcuj7FltbV4JdeZ6OPtL
-	 J0Bqo/2DKFf4mPGJ5pw2aAD2Gw9fUh6zqJpOG5PPDcrr17xZB8OKD08s8R4oW2A5LEQ==
+	t=1794328467;
+	b=c8TCwvu/2o5IS5Ia1K0Q2FGJ8cN3fOoso1q7l2zAxSWn+8poVYhtxvUM/mNtSipGlp6F
+	 BQ9OSZiGd3brRCrLfYW5Rhyl2ahclaV6zVnqFuJV6/tqOPsowferoPf4rjnDqgYRVu0Ur
+	 yRXrjkIuqoV0uLd/d5I7pw1sENZnDw2y7Cd5l32IwbKOQBPGr0ezTyyuoowsxpv0CIlP8
+	 GiLtRzMqWhtoMUkBNwdHgPhkcGMlloVhbzRSRTOOKOa3AYwDIc8SdVwKDrABUNmueUG+R
+	 CU6Ix/GpphRKMCyf/Jv2NkB1QChv2GG0Vz+Nikwx4Es/IJf/5XVZF8lFI2We/blnXeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794328442;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=xYEq8HbwUXEbqfAYqiylUR/1VTWi5Y1t3UUmnG8Hobw=;
-	b=qsofpqhD5WwrFChlzT8z5O8YSv2gMSlPvKpaxGZYdRMHKD+D+uK041h1eU+uk45gHXii
-	 p6EqEDS2+N3wNxJmEJcIAAHgNpOSznNS+M4OjS49ONMcpO/OmWQjLkWQsj6wMkGYSeuG6
-	 Nx2JX7TI0wS9/NrizKQHsHI5fMddIvzgc9EPm7VAccxdtU1qOvyt4/rUqIrDLYyF2d0Tk
-	 vetzQfUNRLmqXeEOA0uSOaMHpC21wl6cCdma/8G9/9mIITz5gHVzBMSax5vjd6rNdLy7s
-	 mYvPEAVxBCXdgCFxm6ijvUIP9eJ6GwT2uTbeu2MEXGV+GCfqdGnhBpm9MbJgKDfvo+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794328467;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+	b=u5BtI41BQnWHYL3c2VmKOyYuhbarCGQRlIGRFIgZcnd62KlMza49QK6RpmvlU4seoeMa
+	 iqjOjpUFjL2EpVDQCWhCHfBBTQGcPR1MF+GosBcRFVPRfDbCZJXu/aJ9bN9YDAreWOeAj
+	 l9ZFD4XlbkkDS7uHhf/QWww8im6BK7C1eVHO9mWu5v5E9buso1cYTUTvi4aSMRvsCNphD
+	 66tE7WATmK+mMeUYVPjQU5GrD5iOicCgSxOFv3lO43JiNnhMwk5GMjyRkbiL5JliG21ks
+	 ItHrqxmORyf7guW3lRbpaV3+r/S09PX6YJJ688iG3XG9XxU3ozn/ROjsdyBBrUOJB/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zx2c4.com;
-	spf=pass smtp.mailfrom=zx2c4.com;
-	dkim=pass header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=NjXWYsqU;
-	arc=none smtp.remote-ip=209.85.216.102
-Received: from mail-pj1-f102.google.com (mail-pj1-f102.google.com [209.85.216.102])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5;
+	arc=none smtp.remote-ip=209.85.217.43
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07A4606A204
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:34:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E07A4606A204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zx2c4.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CB7606A227
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:34:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52CB7606A227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=NjXWYsqU
-Received: by mail-pj1-f102.google.com with SMTP id 98e67ed59e1d1-3b09a65c76dso1671137a91.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:34:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7d2ca055399so716853137.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:34:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794328466; x=1794933266; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+        b=fSy8tcC5IqRPJ8T9YRj22z1qFAkPgpRi2kcT3apWfgMEplaE1W0onrcdvaL/BL/ywE
+         rOSS0ydfaat3r8gteyf5+yftpLD+2I78ebj6isd5tSmAO9uXKA6drfZE2fPbEDLgB8tv
+         4nj5eU6BbFuMME+jx7QiJhMbdOwnH56XkB3/HT/fr1ZGQooLEtuVaD6KLZUnJ4xbTN5H
+         VkTk3pY/yOZ/w9fPvBKK5wNUDrb1f6zcpKrwD0C4hM87Oys5nnQ81EVXkI7GaiyDb9rK
+         5iOj/aarsL/qQFbE1WK3Ho0Kl6BxOfVqScOWNlF4Xqlcyi87wAdVUnIdMg2NDVulzXnv
+         hkjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794328441; x=1794933241;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xYEq8HbwUXEbqfAYqiylUR/1VTWi5Y1t3UUmnG8Hobw=;
-        b=PGRB7tS/Sc8Mo5ZiuKGShDypYx5H2qc/l/NfZufA8ha12AVwS6WOZ6GE3H6zpnbv7d
-         pUeQESGiZORIwRZQWUZwZ/QC8He+8SLVZkqzvV0rqQ4yrhkq9X5WTE65+OFKe1E9FPI9
-         QXiWRWlKF6nqvVKotr5Dln9MJ/TzFeNlXX3qhlxi6KKuQjDqzLafLL+t/EvvCSFoXsuw
-         kovHZbxH57cQbabzjCrC7ZcZn9iz1bkADKWokID7iCuuq4JQGbT29i0GvzkTa8BbNWXm
-         3SODnup9ijH6tS8P9aI5BUwX2ALHKA4ueZ40RU7dRZ9z27+4Rd/yG4YWJrQPauJTCXGO
-         qWgw==
-X-Forwarded-Encrypted: i=1; AL+hErHGCXjleYdxMUU6066IfeiUNyQ8P3XuYCo/RH6pLb0XNt2q+Xmj1dyfOcuzPhYw/IJAEif+1iY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/RDwNjf3zeIZgv9GlGbkyYjO2JkNs6sAb8/5wpn2+Wj+n0CVZh
-	5DN3HyGNRPpTOWoNR02q/rd7DhUucjyYpIMTrNbNToehGjVq9n4R5eYRuky/ntDsWEuzrDDNVdG
-	vpJI6xi4+0YDhSUw16F8Pfo4lEyn3ynuh3IQ7Jos=
-X-Gm-Gg: AYBFou1U6kKPq00YvxlOGjUBDtBrBA2eCjArR6QsmbtK1tfZa1JsT2/lVabetBY4NAr
-	o3P3kTzJxd3O5KFGyPOBEJ/20J/hk/dTqxDE+pFxxgEqxdljhvN4x3y0irS/rUd99eItgfJ3ygA
-	fjTgiFgDziqBz0cWPzipbnLU7SDK6MPRM3+8ensSLLUXcZtsMyjvKb9io+EQUzj/b8fwhl/eet1
-	Ds1wrMpGcS07jxL2LUp1i8TWBCyPt4c+iMnNAcpmfumK/IopsuFxfBQYCWPOB/Dzj8PiO4kMlZc
-	XgDM2lUEnQMxRjldoLrHjCw885vInO3C1C0i3rTyKXjFsDvSRrY+MyslKfw9aCyvthNc9RIFp7I
-	vtw==
-X-Received: by 2002:a17:90b:2b86:b0:39d:84af:a0b3 with SMTP id 98e67ed59e1d1-3b166cc1492mr3132138a91.18.1794328441135;
-        Tue, 10 Nov 2026 08:34:01 -0800 (PST)
-Received: from zx2c4.com (mail.zx2c4.com. [104.131.123.232])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b17db39f76sm230466a91.3.2026.11.10.08.33.59
+        d=1e100.net; s=20260707; t=1794328466; x=1794933266;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+        b=MAERsZI6QL/KzW8dFeCI8xpAdXC2SP5F/JaYe/Fe8KBXANfJYG8fc4GkH2N2NeRmiX
+         Om46buG3RRybSzqQizfFYD8caz2noJwyFR0V5spldX4XAV47YyDW78TQGHpoam5vhGyp
+         H9PP/fBQNxDlgIuDaW6SHvEVQw40VePbepz51rU1tyc3giFhq+/M58cN7rqNiX+oo9lQ
+         qAmPhguOqKRglRG5ysKhjwFLY4uQ3KuTaFjBF8K586W3r8ujsy1HOBOqn52yF3cZnaxV
+         24NY0Yqsqr0CJVTqj8USFFDCXk8G4lCOfA6LiBUfM6mSd+fFiuLHL/8b3xb88e/jV09n
+         XBgQ==
+X-Forwarded-Encrypted: i=1; AL+hErE9fkvxvn893YZiXZwlYcadAISh4lnwallEAQiII03Kc+tS5761kNlErPpMSUOo15JJtIsDFG8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+eZAqn9DwQvzv53cGhF0taQdQ9uYHetZN4dw6jJKyZ0rCU0WRX
+	lXwjrKZgbZ6tIbmXRRy/LP71xXjNDRXlGFMPBYN+xXQL1j2RvX5/pNhw
+X-Gm-Gg: AYBFou34FF6LZsXwiSBm4XMzqilbo/6bj/Felhs0Vv3BPWGY+rVi58yIiir8FI0s4ym
+	Ro9ElCPmlyLvUUX2BGyPXpZfQ3j0JholIbFS6XckRlUar4rmBomcp2pwItX+6ngComg6pLJyenl
+	2URSem+eWcguLZ0+lEwGU7RPlo8l2AyKsmQm4EiPdA68oQaUWmYO0mi5FZ8tRNqX2DcGAbwWtPC
+	WKt9ofjJhNpSiQoiK9LGaUFpk/CPAnQ9Fo4QaFNx+sCOVawQS+/OVUmHFvvyL446unToKO8p1Pb
+	M8TF2xUAIjV048Nku3FnJMyX5sBhqSxKSWoI9smIAmg7Dq4TjhXqx1nVI5O5M/Cg9dSfPJ0vA5d
+	hAitinOfF4q0BiEeUUH2ulVIuA1ovGwEJ+eVklxs9XAC/5dbFDpJS1sMRCiw2KcSChU5suCV17A
+	1PcX2dO+R2FYo4u9k6FgXtv6j5KnyItd8OyQqZFr3bmCnn/2sGtVFjx0tBDl/atlujtEwWMneIA
+	xYAFSEALSNjKvDO84agWn9dT+WUS7JmcVa2Mq/ocSWRNucvewTwsmabkJ/awF4RL6a50wvlETLy
+	c6qEiH4ZepRVb9R70Re1zbfYx4F2f6U7NrTPs3EBgx2DS8NmOBKHYwISyRKpO8mJufRuNpAjX8b
+	S6Ain4uxCjK62f3/00Z4tAcvqrxTpxeKjDG+Dwg7te3guPg5paaVMiRDFccU2RQUTpubnJr5Ia/
+	N7eZlZPFN0BojgD3nQ
+X-Received: by 2002:a05:6102:c54:b0:7b5:7cd5:2a1b with SMTP id ada2fe7eead31-7d301b9d79fmr866580137.10.1794328466169;
+        Tue, 10 Nov 2026 08:34:26 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c200838f0sm2147394241.9.2026.11.10.08.34.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:34:01 -0800 (PST)
-X-Relaying-Domain: zx2c4.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1794328438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xYEq8HbwUXEbqfAYqiylUR/1VTWi5Y1t3UUmnG8Hobw=;
-	b=NjXWYsqUesUoBb2Op846E0r3AyPiJ/nASZJaxW4MJZHcJSVe63eNzfVRxBodLtwKIO07fZ
-	OGHokAm3OieWlB++q3OW7jcowp6Dlns0Su0gH8549/u85RwDnDxeVlOZ4JlL4h+hudRPpS
-	YQ89M7sHVvCPkUqKhlM6t/YdSVJgrAY=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id d39f359f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 10 Nov 2026 16:33:58 +0000 (UTC)
-Date: Tue, 10 Nov 2026 17:33:56 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Chris Arges <carges@cloudflare.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCH net v2] wireguard: wait for per-peer crypto during removal
-Message-ID: <avNHdEw2zHGyBe_U@zx2c4.com>
-References: <20260913-fix-wg-peer-removal-v2-1-0cade985245a@cloudflare.com>
- <aqpqEIy_h0DIywRy@zx2c4.com>
- <aq2jp8lXwSIqihaj@20HS2G4>
+        Tue, 10 Nov 2026 08:34:25 -0800 (PST)
+Date: Tue, 10 Nov 2026 11:34:25 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ kuba@kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, 
+ kvm@vger.kernel.org, 
+ namangulati@google.com
+Message-ID: <willemdebruijn.kernel.4096b48e9e59@gmail.com>
+In-Reply-To: <874ido29iy.fsf@pengutronix.de>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+ <willemdebruijn.kernel.1d6388f036c46@gmail.com>
+ <874ido29iy.fsf@pengutronix.de>
+Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,82 +122,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aq2jp8lXwSIqihaj@20HS2G4>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2026 at 03:48:39PM -0500, Chris Arges wrote:
-> On 2026-09-16 12:06:08, Jason A. Donenfeld wrote:
-> > On Sun, Sep 13, 2026 at 07:19:08AM -0500, Chris J Arges wrote:
-> > > Calling peer_remove_after_dead() currently flushes device-wide packet
-> > > crypto and handshake workqueues while holding RTNL. This is problematic as
-> > > unrelated peers can continue adding work to those queues, blocking other
-> > > tasks that want to take the RTNL lock.
+Steffen Trumtrar wrote:
+> 
+> Hi Willem,
+> 
+> On 2026-11-01 at 09:57 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> 
+> > Steffen Trumtrar wrote:
+> > > This series picks up Willem de Bruijn's work on a virtio-net receive
+> > > timestamp. The device puts the time of arrival (TAI, ns) into the
+> > > virtio-net header so the guest can use it for PTP and RTT estimation
+> > > without taking the timestamp itself after the host-to-guest latency.
 > > > 
-> > > Instead, this patch tracks pending crypto handoffs for each peer using a
-> > > counter. After marking the peer dead, synchronize_net() prevents new
-> > > submissions. Next, wait for pending crypto workers to schedule TX work and
-> > > for RX NAPI to drain the peer's RX queue. Then flush only the peer's TX
-> > > packet and handshake work.
+> > > The series is an RFC. I am mostly interested in feedback on the
+> > > approach and on the wire format:
+> > 
+> > At a high level +1 from me.
+> 
+> Thanks!
+> 
+> > 
+> > Some comments inline.
 > > > 
-> > > This scopes teardown synchronization to the removed peer and prevents
-> > > unrelated peers from extending the RTNL hold time.
-> > >  struct wg_device;
-> > > @@ -161,6 +162,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
-> > >  	 */
-> > >  	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
-> > >  		return -ENOSPC;
-> > > +	atomic_inc(&PACKET_PEER(skb)->packet_crypt_pending);
-> > >  
-> > >  	/* Then we queue it up in the device queue, which consumes the
-> > >  	 * packet as soon as it can.
-> > > @@ -182,6 +184,8 @@ static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet
-> > >  	atomic_set_release(&PACKET_CB(skb)->state, state);
-> > >  	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
-> > >  		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
-> > > +	if (atomic_dec_and_test(&peer->packet_crypt_pending))
-> > > +		wake_up_var(&peer->packet_crypt_pending);
-> > >  	wg_peer_put(peer);
-> > >  }
-> > >  
-> > > diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
-> > > index 824bbefce61c..bb35e3205491 100644
-> > > --- a/drivers/net/wireguard/receive.c
-> > > +++ b/drivers/net/wireguard/receive.c
-> > > @@ -476,9 +476,11 @@ int wg_packet_rx_poll(struct napi_struct *napi, int budget)
-> > >  
-> > >  next:
-> > >  		wg_noise_keypair_put(keypair, false);
-> > > -		wg_peer_put(peer);
-> > >  		if (unlikely(free))
-> > >  			dev_kfree_skb(skb);
-> > > +		if (atomic_dec_and_test(&peer->packet_crypt_pending))
-> > > +			wake_up_var(&peer->packet_crypt_pending);
-> > > +		wg_peer_put(peer);
+> > >  - The timestamp is a new field at the end of virtio_net_common_hdr
+> > >    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
+> > >    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
+> > >    bytes.
+> > >    Willem noted on v3 that virtio_net_common_hdr was not meant to be
+> > >    extended this way; I kept it as the simplest approach, but a
+> > >    separate struct for the timestamp header is an option.
+> > >  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
+> > >    supported rx filters behave the same for now.
+> > >  - XDP programs can read the timestamp with
+> > >    bpf_xdp_metadata_rx_timestamp().
+> > >  - vhost-net passes the feature through; the timestamp itself is
+> > >    written by tun. The tun patch is only meant as a reference
+> > >    implementation for the device side.
+> > >  - The timestamp is in TAI.
 > > 
-> > This adds two atomic updates to a per-peer counter for every RX packet
-> > and TX batch. That could introduce contention across crypto workers. I
-> > suppose it'd be good to see some measurements in if this changes
-> > anything. Certainly it should change _something_. Question is by how
-> > much.
-> > 
-> > Jason
+> > Is this a requirement? It is common for PHCs to be synced to TAI,
+> > but not 100% the case. Does virtio need to specify this.
+> >
 > 
-> Jason,
+> No, I don't think it has to be TAI. TAI is only what the tun reference
+> implementation does (ktime_get_clocktai_ns()). What the guest really
+> needs is to know which clock the timestamp comes from, so it can compare
+> it with something.
 > 
-> I benchmarked a wg peer on a 2 vCPU and 8 vCPU setup with 1200 byte
-> UDP payloads. Goal was stressing the path where these atomics are getting
-> incremented.
-> - patched 2 vCPU test showed ~1-2% reduction in throughput
-> - patched 8 vCPU test showed ~6% reduction in throughput (more contention)
+> One idea for the spec change: don't fix the time base in virtio-net at
+> all, only say the timestamp is in nanoseconds of some device clock, and
+> let the device tell the driver which clock that is. virtio_rtc already
+> has clock ids with a type (UTC, TAI, monotonic, ...), and the Linux
+> driver registers a PHC for each of them (with VIRTIO_RTC_PTP).
+> virtio-net could carry the virtio_rtc clock id in its config space, and
+> the driver reports the index of that PHC in get_ts_info. That would also
+> fix the phc_index == -1 problem you pointed out in 2/6.
 > 
-> My main goal is reducing the amount of time holding rtnl_lock when we remove a
-> peer. In our systems we frequently get hangs due to workloads bringing up and
-> tearing down wg peers. So perhaps I'll need to look into another approach
-> where we're not introducing something like a counter into the hotpath.
+> What I don't like about it: virtio-net then depends on a second device
+> being there, and with more than one virtio_rtc device the clock id alone
+> is not enough to find the right one. Without virtio_rtc the driver would
+> not offer hardware timestamps at all.
+> 
+> The alternative is a PHC in virtio-net itself (gettime over the control
+> vq), which is a lot more spec for one timestamp field.
+> 
+> Do you think the virtio_rtc way is reasonable, or is there something
+> simpler I'm missing?
 
-Did you have any luck with other approaches? I'm still interested in
-this.
+I don't have an obvious answer. This needs consensus.
 
-Thanks,
-Jason
+Hardcoding clock base to TAI is definitely easiest.
+
+Outside of virtio, the relationship between PHY RX timestamps and PHC
+is well understood. It would make some sense for virtio to follow that
+model.
+
+But indeed when having multiple NICs and multiple PHCs, how to map them
+I think is an unresolved issue in general? Of course, aslo moot if they
+are all synced, which I think may be an implicit assumption especially
+in the world of spec compliant PTP.
+
+And, if virtualizing anyway, it is feasible to do the clock conversion
+in the software device, not having to bother with all this complexity
+inside the VM. Though maybe not for direct HW virtio-net queues.
+
