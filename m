@@ -1,47 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794314416;
-	b=5actdsrr4hFySrsX8qqd7SZqoE/MOrrOPy7iiq3ikMLWT1yDuSZsSMXRa1gwZNlcGd/X
-	 bPzBO2uXoKzaa3lDWI9m1A5qj5AovfMKuhbPJZXBq9WOVERvd1UaKvvWHA86ClMbmpXe9
-	 Ggm3Q43nZs9PEU1AAEmm4zbU29QRmSzTSyaCrlrYCWCmKuhXmZfUzT8jPvtlrwSZ4UUZv
-	 Z4ymOrdpMK5KKsuwf2i1CrzpFQ2dx2N8yDix/WRjXfgBTuJ5rg3sCfXxTM+HayLZpNE/3
-	 3/D0TnU+nWFzrjFvnn7Uojyg0MhKPAjH5NflFP35gsWZAe+hkwWYUVeqcIeUjhIxMgA==
+	t=1794314417;
+	b=qP2+7rLe+DTwHU1K0AgR4GiK3doRzzthz723pGFQKxyerfrIkQNlNwt43hdv0mtHJqpK
+	 8uLLjgYzHTQJo2vyen5mK/p72Abe0kDSsDUAYMiDvHUqGcR8lxCs3XnvBgpkQm1Ag+2Sz
+	 sATElsYBQKFQVtG9IoaQqkEkpkToS/hYyIVpESsLE6rd26Hmrn+6LYNrM6y9MBXYPl9aX
+	 qoPFvfDKFONYN7P/hlsOtvumn0843HMhkZIil/hjtYvmbXdRh4E3s00XPnz58R+Jku+aB
+	 XmEFCxp9zOH4ELD4XZBPiiLdkzcGNA/nEaunyN+TBAaikYRMF28NTZkdBXyhBCS2bWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794314416;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794314417;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=2pKjOnB7thorowgyXI58dtDZeDUgnklgN0ioGos6ajU=;
-	b=PYhPiV2FQYEyvQlvjFdat3D5Tkn61ZBnN8vwtH0YBJnJj8YS7vtMwqJ5F2FAEYXtK/78
-	 5C9ZvFyI+tiaJrGj2KBO+j5MLsD2kzQ1Z7UjEgXEKiIHLnkeyi25Q4nE0aYj/cpEkEZmv
-	 pRmlEImrIOGSmqlRQlKCmOIjCzdX5Ae+jR1PIxDf9/5f0I1cKvavFgrRqL8p3wRoLv/p9
-	 6zCFcMdaQ/fDBP/KaOJuo5cQgNuZWEfN4uTkwREMVlN2LyeNLHIZ8JLiCMPEoHEK/toaS
-	 IAcgID5rhLfEyUsBO76qO5ap0D1t9uKOxXI2oj7e5NQU5BJzgx/jKI9sPGEJDDIiriw==
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=hHa7gwovaGq2qPsePHSwgyJGObUXffBdX43HsZeVkrU=;
+	b=FGvNaqOpxiEBz9WivSo5U/5kHOjaaGV5KhkA1gTWBSl7NpG3X24gNzbVcl8C5NqQcQjS
+	 tNKhfR1ONMeabCj5FXUVFW5oeNaHnepdkCq2zIrA4CehuFdxs7XkGvxy5X8k61IokUdOW
+	 2IEtk3cSbP+YrWqbE4E7DsO2MOOpTR+FFqRB/b31bbK7gY6VZkVRGFEvGyIj5vGNaNcrz
+	 /7WjjZptGDjNYttLpmUo4/6XloS0MSyaArJsF1VN+vu2NR8dO4ibXH7xjbkgRVjR1GBsy
+	 MIQ5Le5AJGzvBO7vphQxpRAJwDPH+DMtnnYgNl7u02k5Nd2mmkDaWJ59/IPMILFWAQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="eZa/Gow/";
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=jwdQWqJr;
+	arc=none smtp.remote-ip=117.135.210.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F421B606A31C;
-	Tue, 10 Nov 2026 12:40:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F421B606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54221606A326;
+	Tue, 10 Nov 2026 12:40:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54221606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=eZa/Gow/
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=jwdQWqJr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=2p
-	KjOnB7thorowgyXI58dtDZeDUgnklgN0ioGos6ajU=; b=eZa/Gow/VLJcjcx3V8
-	ds2ts8qL4APY0xIP7xfxVbMvHiOqtuO8rprxUBeZBllnTbhBpK1d8CHNa1hoQlvT
-	kDa+d8SjUNhXQe7EBBLopyntAylUxheakO1i8eVnUjSCMpS37kvLnMpvUm1AAm1B
-	vw40mGMI4g+H0JpVy86J4xf+U=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=hH
+	a7gwovaGq2qPsePHSwgyJGObUXffBdX43HsZeVkrU=; b=jwdQWqJrJIKtW4LYjd
+	3HO+pT0Kwiu5/N8Ruc0jpvsj46StrVcexE74fsq11aeJUxSMYLpkWDnKY/dxbpRE
+	JncPQ4FxxvVXURoFsW9NPFNpk+hzAB6xtTlsRJVumtuBe/jrqTDAONsgICBdyyM0
+	FFhBQsKaszvDfI4ClZTsToGJs=
 Received: from 4CV529F122.company.local (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3X4hjEPNqevk+Eg--.59821S2;
-	Tue, 10 Nov 2026 20:39:07 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3X4hjEPNqevk+Eg--.59821S3;
+	Tue, 10 Nov 2026 20:39:12 +0800 (CST)
 From: Ding Hui <dinghui1111@163.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -59,10 +60,12 @@ Cc: dinghui@lixiang.com,
 	xiasanbo@lixiang.com,
 	yangchen11@lixiang.com,
 	liuxuanjun@lixiang.com
-Subject: [PATCH net v6 0/4] net: stmmac: fix RX descriptors and XSK TX on resume
-Date: Tue, 10 Nov 2026 20:38:51 +0800
-Message-Id: <cover.1794311618.git.dinghui@lixiang.com>
+Subject: [PATCH net v6 1/4] net: stmmac: honor allocation flags when initializing RX buffers
+Date: Tue, 10 Nov 2026 20:38:52 +0800
+Message-Id: <278074f91b9c11ed8a6517e2d400fb199ac2bd71.1794311618.git.dinghui@lixiang.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1794311618.git.dinghui@lixiang.com>
+References: <cover.1794311618.git.dinghui@lixiang.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,134 +76,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgD3X4hjEPNqevk+Eg--.59821S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuFWfGw4xJry7Cw4kJry5Jwb_yoWxGrWkpr
-	Z5Kan0yw1kGr18Aws5uw4xXFyrKa1rAr43WrW5X3yF9FW5Wr1aqr4akF4Yqa4DCrs7G3W2
-	yr4UuwsrCF15Zr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j289NUUUUU=
-X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC9A224mrzEG159QAA3F
+X-CM-TRANSID:PCgvCgD3X4hjEPNqevk+Eg--.59821S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4Dtw1rZrWxWr17WrWxWFg_yoW8GrWfpa
+	9rAa409r1kXr17Jw4DGw4xZFW3Ka4UKFWUuw4xGrW3ZF4xKF9IqryaqFy5Zr1xCr48ZFWS
+	qr1jk3s8uF1DAwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jQUUUUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0RG342rzEHFNBwAA3m
 
 From: Ding Hui <dinghui@lixiang.com>
 
-This series restores RX descriptor addresses overwritten by hardware
-writeback between disabling NAPI and stopping RX DMA during suspend. It
-also fixes an AF_XDP TX-only resume stall found while testing the series.
+stmmac_init_rx_buffers() accepts allocation flags but stopped using them
+when RX buffers were converted to page_pool. As a result, callers passing
+GFP_KERNEL still allocate with GFP_ATOMIC | __GFP_NOWARN and cannot use
+reclaim to satisfy an allocation.
 
-Patch 1 honors RX allocation flags. Patch 2 keeps unfilled XSK slots
-CPU-owned and tracks pending refills explicitly, including an empty ring
-and short refills. Patch 3 restores RX addresses from retained buffers,
-rebuilds chain pointers and initializes descriptor control fields. It
-publishes a contiguous XSK prefix and recomputes the tail and pending
-region. Patch 4 restores the bound XSK TX pool after TX buffer cleanup;
-otherwise zero-copy transmission can stop after resume.
+Use the supplied flags while retaining GFP_DMA32 for hardware without
+64-bit DMA addressing. This also allows the resume path to allocate
+missing RX pages with GFP_KERNEL.
 
-The earlier commit 9c63faaa931e ("net: stmmac: re-init rx buffers when mac
-resume back") was reverted by 00423969d806 after a Jetson TX2 suspend/resume
-regression. This series retains existing buffers and DMA mappings instead
-of recycling and reallocating every buffer. Jetson TX2 has not been tested.
+Fixes: 2af6106ae949 ("net: stmmac: Introducing support for Page Pool")
+Signed-off-by: Ding Hui <dinghui@lixiang.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hardware validation used backports on our XGMAC platform with a vendor
-kernel based on Linux 6.12.41, not these upstream commits as-is:
-- Receiving iperf traffic from a PC while suspending and resuming caused a
-  fatal bus error after resume in almost every run without the RX fix.
-  The same test no longer showed that failure with the fix.
-- Native XDP/AF_XDP zero-copy RX continued after two suspend/resume cycles
-  with the receive socket kept open.
-- Zero-copy TX-only, with no RX fill buffers, is tested ok after one suspend/resume
-  cycle, with no fatal bus error.
-- Pausing the receive application with SIGSTOP and resuming it with SIGCONT
-  recovered RX without recreating the socket.
-- xdpsock is used for native XDP testing.
-
-Additional testing would be welcome for RX sockets initially supplied with
-0/1/8/15 fill buffers, replenishment in batches below 16, and those states
-across suspend/resume. These differ from TX-only with no RX fill buffers.
-Legacy descriptor cores, GMAC4, chain mode, timestamp-specific descriptor
-paths, multiple XSK queues and long suspend/resume runs remain untested.
-
-Missing page_pool buffers are still allocated during resume. Allocation
-failure returns -ENOMEM without restarting DMA and leaves the device
-detached. This adds a trigger for existing resume error-recovery problems;
-full close/open recovery, including NAPI and platform power handling, is
-separate work. The Medium-severity AI review on failure recovery is not
-fully resolved by this revision.
-
-Changes in v6:
-- Add a separate fix to restore the bound XSK TX pool after resume cleanup,
-  addressing TX-only stalls found during XGMAC validation.
-- Factor resume descriptor work into one TX queue loop and one RX loop,
-  following Thomas's review, and use common error cleanup.
-- Restore addresses and chain pointers before initializing RX control fields,
-  preserving legacy fields and RIWT/IOC policy without a separate OWN loop.
-- Add format-specific RX ownership clearing for unfilled XSK descriptors.
-- Track pending XSK refills independently of circular index equality; retry
-  short refills and prevent consumption of unfilled descriptors.
-- Restore a populated XSK prefix and retain later attached buffers for refill;
-  recompute the allocation count, initial tail and pending region.
-- Select XSK buffer size independently of the initial allocation count.
-- Discard any partially assembled RX frame before resetting the RX ring after resume.
-
-Link to v5:
-https://lore.kernel.org/netdev/20261025100636.613670-1-dinghui1111@163.com/
-
-Changes in v5:
-- Target net and add Fixes tags to both patches.
-- Split the allocation-flags fix into a separate patch, with a Fixes tag
-  identifying the page_pool conversion that stopped honoring the flags.
-- Share page_pool and XSK buffer preparation with the RX refill paths.
-- Allocate missing secondary pages even when the primary page exists,
-  using the current baseline's buffer2 capability check.
-- Condense the reinitialization kernel-doc to two paragraphs.
-- Restore descriptor addresses before the final dma_wmb()/OWN pass.
-- Clarify that unavailable XSK slots remain CPU-owned and may stop DMA
-  with RBU, rather than claiming that hardware skips them.
-- Power down legacy SerDes if RX descriptor restoration fails.
-
-Link to v4:
-https://lore.kernel.org/netdev/20260627122533.1165324-1-dinghui1111@163.com/
-
-Changes in v4:
-- Document the return value of stmmac_reinit_rx_descriptors().
-
-Link to v3:
-https://lore.kernel.org/netdev/20260604144557.3175399-1-dinghui1111@163.com/
-
-Changes in v3:
-- Allocate missing page_pool buffers with GFP_KERNEL and abort resume
-  on allocation failure.
-- Try to allocate missing XSK buffers and clear descriptors when the
-  fill ring cannot supply a buffer.
-- Restore OWN after programming addresses and rebuilding chain pointers.
-- Honor the flags argument of stmmac_init_rx_buffers().
-- Restore RX descriptors after stmmac_clear_descriptors().
-
-Link to v2:
-https://lore.kernel.org/netdev/20260526022620.501229-1-dinghui1111@163.com/
-
-Changes in v2:
-- Introduce a helper to restore addresses from existing RX buffers.
-- Update the commit message.
-
-Link to v1:
-https://lore.kernel.org/netdev/20260515053856.2310369-1-dinghui1111@163.com/
-
-Ding Hui (4):
-  net: stmmac: honor allocation flags when initializing RX buffers
-  net: stmmac: track unfilled XSK RX descriptors explicitly
-  net: stmmac: restore RX descriptor buffer addresses on resume
-  net: stmmac: restore the XSK TX pool on resume
-
- .../ethernet/stmicro/stmmac/dwmac4_descs.c    |   6 +
- .../ethernet/stmicro/stmmac/dwxgmac2_descs.c  |   6 +
- .../net/ethernet/stmicro/stmmac/enh_desc.c    |   6 +
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |   3 +
- .../net/ethernet/stmicro/stmmac/norm_desc.c   |   6 +
- drivers/net/ethernet/stmicro/stmmac/stmmac.h  |   2 +
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 277 +++++++++++++-----
- 7 files changed, 228 insertions(+), 78 deletions(-)
-
-
-base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b20e5038eead..f5ae12208e85 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1688,7 +1688,7 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
+ {
+ 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+ 	struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
+-	gfp_t gfp = (GFP_ATOMIC | __GFP_NOWARN);
++	gfp_t gfp = flags;
+ 
+ 	if (priv->dma_cap.host_dma_width <= 32)
+ 		gfp |= GFP_DMA32;
 -- 
 2.34.1
 
