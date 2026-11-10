@@ -1,61 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794280190;
-	b=PrxgBsHw5eE3aYDN5eCkOa5lnEOEpVryWcYy/ZwpFWoE1kLYWpGx8yiJmE7+ErhFcgG+
-	 HrqQFbfpEyUmqk6mH1kh1pQmoLMah0h7gEAbMWyMB8ZpSZ5wbOz6J4IKjlMizhIDW8Zxg
-	 8tfjCHrWvkp+3hL65KtN4NpAI7xKCbVXplkbUDPGZnqGaflo43K0ZDLmUQcTBY2GPamiP
-	 qZ0MTi0YLCMKBUtDNuk/T3lx9lCfPd4n9RSI1ha61kmo5DUYkYb9BHWhGEWVofYM65ZLj
-	 Aq1XulIvNx6TeDmKLxIDumAA19pXNRw8B7UYrB+i8PMcFe3nxjGx+/Q4sqrZ2hFe5RQ==
+	t=1794280865;
+	b=b0BqThgGKj6Obyxbk+BFdy5N2sUQR3e1O6YbWiag20IXMKDIwWdP0KHFOzI8id3jlOz9
+	 yQdmjYxsP8CeKERId10MEvVPtSkZmsTSeD7cM7GghPBm53YkK8GA+uve1z3iUsp9i6Vw1
+	 i2fZPml+9UV0DL4GmLLFmFW88zrShQcsSz88cmiBbNFUMDarc4GMWsuW81MZ3gE488dpR
+	 ujNlR1byOcnJXsTwWtJ7qlE4rXwPreEh4h/wss/NrSNKarN1iI4okCf+aBu9XLRe1GeyU
+	 BSfTweugehpPGFrYD06qpmMXR1Ly1UiH6Nytu+vM1UJlgUGaQq94LLW56EgfhCc5boQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794280190;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794280865;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=VUFq2C59ndwIVjZ+OIzzgnrcXIa9Z5t3JDYw0GWU3SA=;
-	b=STYAxu/9ZNsm8Zz1Kr41zGMgGdPkFTB+ixx7Ne7izKIblDrLnMztoM8rGpKW3MxOyLoP
-	 O6OPFpBt5nAR8aW+8xYvrZ8B1C6rFEJGFd3rgmaIW2a4tJI8tjmqcPlWwug4+jA0T/yoR
-	 gKERU+R9VvbJtn5NSkXplBIn+5NMHyZOuaI7GzDt5O8NoPQ79xc4ZrZ1Zg57a5Tum6FK1
-	 iVokQEzMau6FXIO4boNmAdL67sn9rJ+neIwFzafF7mnX2IDZLtlCs/iUDnsPbqj3Hp7r3
-	 o+RoS0K+hIY+iV5evskC00jShQ607tJ1LYuQZAbi1qxSzszpmJHqLuI9S9RFbvsg8Vw==
+	bh=QQYq9UN0ymiPTQymz+UkJfbvfMGgvjzLlUXXSTgUt70=;
+	b=i/rR7iy4obOrMRDa+8EBFsqnevI9hU6Gx/yOKFJlrosbURoe7enQd+5ZeSiU7R6zfz2v
+	 XXT7Aj3jmbYgYYoRG/dkDbBrZ1SMYsx7G9XYyBbUzel2yeKVCGPgz/2h03CYYiQpZNr4f
+	 2zjykN7/Jo3Yy4oGcpCSZIqQnOc4WlHpau6whTZ8ToJAQjSHdfNHzeLkfY75ueEk9hDKn
+	 YZebTfHc1y4b3/oxu3R/EwT6Z5kuV5XrH9qWi9E1qbkZPk+riE+GCi6IIYPSaQ2AYZd1v
+	 pSHm97D/TZe2eedVQwToOU2vO6VCHsWdQwlUfJ0/a8l+OIQcp3qMg8Vk6YJEh6pNS6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZ8Nkq1L;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63913606A32E;
-	Tue, 10 Nov 2026 03:09:50 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=qlMRuqXO;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B061F606A321;
+	Tue, 10 Nov 2026 03:21:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B061F606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZ8Nkq1L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73281F0089F;
-	Tue, 10 Nov 2026 03:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794280190;
-	bh=VUFq2C59ndwIVjZ+OIzzgnrcXIa9Z5t3JDYw0GWU3SA=;
-	h=From:To:Cc:Subject:Date;
-	b=BZ8Nkq1Lt8V/1+6mAsxz3mNgJEE8KhFMy/ahrgjs+bLw7FnHeOP2dyas5MdoOxi2y
-	 Rchc+Na4uM5QB7y/DAvaqcPRUjBq+5/ZiIBRl0HRrT2mPKON3NVwJKmljuPpkT6tcL
-	 iZHU0qwXwBJXP9Xd+MD0Q6hryT5mEq9rCUypDBr+WDXHWh3iF6dV+jo70zeujG6xv7
-	 t/wZGIWpSH/3MZYN95tCQd8DFKfbXgmDp+2GjGfCyEv2QgTNyKGAf8fV2ubweNVyiv
-	 qdiZq7+rp1HrAk4CqMgVbzzZJug0FUgJnZQaIpZReJKFsIUNhFKhGO/pxfRXPpAqq4
-	 GdtT3t2Kj76hA==
-From: Sasha Levin <sashal@kernel.org>
-To: Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-nfs@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=qlMRuqXO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=qlMRuqXOptJ17RYY0rNr1Zu1onjRr4pOhvNzWXVzO9BuNvGV02fm6fIyIZZ07tk3vzT6P3Ya2TwSX
+	 Qd4w/O1w8SMEe+ZOAcf48R7Pz+QnaVwb7A4Ah825mv/AvJVAcWE+yl4khh+ajWBcgEwd+puhP6nufW
+	 b9wDq3w4+FxWfSzM=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af28d9b55e-c7ab6;
+	Tue, 10 Nov 2026 11:21:00 +0800 (CST)
+X-RM-TRANSID:2ee56af28d9b55e-c7ab6
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03.03 (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86af28d91c9a-a496c;
+	Tue, 10 Nov 2026 11:21:00 +0800 (CST)
+X-RM-TRANSID:2ee86af28d91c9a-a496c
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"kernelci.org bot" <bot@kernelci.org>
-Subject: [PATCH] SUNRPC: Load the GSS module by OID only when the mechanism is missing
-Date: Mon,  9 Nov 2026 22:09:47 -0500
-Message-ID: <20261110030947.179738-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	virtualization@lists.linux.dev,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/3] virtio_net: Disable AF_XDP pools on queues above curr_queue_pairs
+Date: Tue, 10 Nov 2026 20:20:47 +0900
+Message-ID: <20261110112049.11228-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179422769501.994134.8613940611095428101@kernel.org>
+References: <20261108193845.73621-1-yanhaishuang@cmss.chinamobile.com> <20261108193845.73621-3-yanhaishuang@cmss.chinamobile.com> <179422769501.994134.8613940611095428101@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,72 +87,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-gss_mech_get_by_OID() calls request_module() before it looks at the
-list of registered mechanisms, so every lookup forks a modprobe, even
-when the mechanism is already registered or built in.
-gss_mech_get_by_name() and gss_mech_get_by_pseudoflavor() only load
-the module when the lookup fails.
+On Mon, Nov 09, 2026 at 12:34:55PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> [Severity: Low]
+>
+> Is explicit XDP removal followed by closing the socket the only trigger?
+>
+> Ordinary netdev unregistration looks like it ends in the same failed
+> disable. Examples are virtio-net hot-unplug, driver unbind and module
+> unload.
 
-The read handler of /proc/net/rpc/gss_krb5_enctypes uses this lookup,
-so every read() of that file runs modprobe, two per cat. The file is
-present in every /proc/<pid>/net/rpc and /proc/<pid>/task/<tid>/net/rpc
-directory, and LTP read_all gives each read one second. On a slow board
-in KernelCI its workers stall on this file and the test times out.
+[ ... ]
 
-Look up the mechanism first and call request_module() only when it is
-not found, as the other two lookup functions do.
+> The new max_queue_pairs bound fixes this path as well. The commit message
+> only hints at it with "Removing XDP must not fail". Could the message
+> also mention the unregister path?
 
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://d.kernelci.org/test/maestro:6af225865b429d354e253b9b
-Fixes: f783288f0cf4 ("SUNRPC: Load GSS kernel module by OID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/sunrpc/auth_gss/gss_mech_switch.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+Yes. Unbinding the device from virtio_net with XDP attached and a
+socket bound to an XDP queue gives "Failed to disable zero-copy!"
+without this patch and no warning with it. I'll mention that path in
+the changelog.
 
-diff --git a/net/sunrpc/auth_gss/gss_mech_switch.c b/net/sunrpc/auth_gss/gss_mech_switch.c
-index 78eab245f94a7..d8b6ff9505399 100644
---- a/net/sunrpc/auth_gss/gss_mech_switch.c
-+++ b/net/sunrpc/auth_gss/gss_mech_switch.c
-@@ -157,14 +157,9 @@ struct gss_api_mech * gss_mech_get_by_name(const char *name)
- 	return gm;
- }
- 
--struct gss_api_mech *gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
-+static struct gss_api_mech *_gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
- {
- 	struct gss_api_mech	*pos, *gm = NULL;
--	char buf[32];
--
--	if (sprint_oid(obj->data, obj->len, buf, sizeof(buf)) < 0)
--		return NULL;
--	request_module("rpc-auth-gss-%s", buf);
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(pos, &registered_mechs, gm_list) {
-@@ -177,6 +172,22 @@ struct gss_api_mech *gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
- 		}
- 	}
- 	rcu_read_unlock();
-+	return gm;
-+}
-+
-+struct gss_api_mech *gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
-+{
-+	struct gss_api_mech *gm;
-+	char buf[32];
-+
-+	if (sprint_oid(obj->data, obj->len, buf, sizeof(buf)) < 0)
-+		return NULL;
-+
-+	gm = _gss_mech_get_by_OID(obj);
-+	if (!gm) {
-+		request_module("rpc-auth-gss-%s", buf);
-+		gm = _gss_mech_get_by_OID(obj);
-+	}
- 	if (!gm)
- 		trace_rpcgss_oid_to_mech(buf);
- 	return gm;
--- 
-2.53.0
+> [Severity: Medium]
+>
+> How does this wider qid range interact with the restore fallback that a
+> later patch in this series adds to this function?
+
+[ ... ]
+
+> Does this leak the xsk_dma_map, its dma_pages array and the DMA or IOMMU
+> mappings of the umem pages?
+
+It does, but only together with the restore fallback of patch 3, which
+looks the pool up with xsk_get_pool_from_qid(). Patch 3 has other
+problems for pools above curr_queue_pairs too, so I'll drop it from the
+series and resend patches 1 and 2 as v3. The reworked patch 3 will keep
+track of the pools in the driver instead of looking them up by queue
+id.
+
+pw-bot: cr
+
 
