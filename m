@@ -1,69 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286022;
-	b=rhuMZhJUxtYm0G8HGKf+wY/pOo7HCp1nbiyBvdYakXnDMQTIbB56bDJuO4be4zIIXhbq
-	 +3ZfWXAQzcMf7u4ggpanRYOjST8OUgqrD7eyvrXTz6fw+Jt991TrpWQYDXYsZcwyFQT6a
-	 2t1CJbu4dWmWhlLo/sy/BlsREe/XXzK7NrD4CJwX1VVaml5SnSaYCNdicgMpaQ0I3W9Mr
-	 2PcTD2vWEMQ8Yc9R0lfagvej+HkXjyEq+OBo+l/Mb7wCTYXJ5qli/nVyVkKENAXtZHG6n
-	 U89PYCFPyjJmaBAPdy9pGqQDnaVAq95h1+dkgkNiu2BN0KbnsToJW8FkGkFao3UDZtA==
+	t=1794286389;
+	b=yvohGxFcLMzatlXUtvtIo6KXVX3CP632RKGPLHsMzib3ckROqYDyBFVIVvgmfb631GZH
+	 nbeRtrYOGoUKWjdX3Vt75CHVrXfok53YCueF2k33J7l+QnqrWQUF/CIDQ49+SYwj44zi9
+	 OIp1XTuzv0gHWxSZ0eeFRugS84K6n2/zMaxUyGDBFFTanBLg382ZLjTm8kOqWp4Dd0YhH
+	 /Zq49k2hr1MpjeCUVAiIy9QaUJAIacTKGRyoqUyXkMjGAK9x4lqd66BGNFtgJRQSMpWls
+	 2D5tsCU61XFgOeXj+QaeSlJE1/xjTINm5oxDaegCVmC33QBye35bFVdx+ZU5NFUa5QA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286022;
-	h=DMARC-Filter:DKIM-Signature:Received:X-Spam-Checker-Version:
-	 X-Spam-Level:X-Spam-Status:DKIM-Signature:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=qeHwILNQGply0KqQmlcAkFwCx/TwT+bJHyeDxiQI18U=;
-	b=hMm+tKPmY0wiz9QQjPIFnBmYPKK9/5Vf2zcoxfAuenzLO9KP7XQYv2lnkQjIPwQh9md3
-	 jlFJR+c5SPNyEwE7SVUe6aiKcHutziO0JMj1qT/mqjJh6lbB7HoEBrtxdj+2OovOZWjEK
-	 5NmIZOV8m0e61iCwQOw/ERqklwYsjmSwiy8rvTTEb6SLJDHVsUQzr9H8ZqD99Vj7MHfuJ
-	 tl0x+Iqnin2jbcDPlWNsizwKzqlRNiWMsIrrU6DKKzrBFQrBA15SGiACT+5Ev32SVh3CF
-	 TDAXC6z1cOoh2JcKGKRsYJHvrRVBXcbSWiX0eoTZjhUZaCCMDLGX8Oadn/kLwp5KwAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794286389;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=kqmjBtXE7ujUmwu/F7BLQZ3+Q+KZAoq8PrY6Vye5p3k=;
+	b=GLQrZPJhyOuqOY0Ri2OGRPGqCGbXCm2u33lJXK7H9rqCjtdONTuywMgD11lkCuiSTjaK
+	 9edxKAXX49OTMuhn2n6waLX551XXhaEYHQ0lxcnwSnPiowfrpLi2+JJps8Jx8LH7uKfLD
+	 t6YQ5sRPfZ8fx0WsKK6nMMkhKXDl4vnjuSCYWQUITOTa7xAti9qVsAalQogbdYxF2V/Mm
+	 ajGQ2CyZg5RtCW/IGX5DknzGJNURQ0TStf47iF0/5r8HnjGnPoiSWZrlnJjPXG68mmdsO
+	 3IAQQRuM8EtUu1eN6c23IBR5akMU6tAAc93yLDAHfPp4JSkuqHKwE0y+HNSlHL1KlVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=birger-koblitz.de;
-	spf=pass smtp.mailfrom=birger-koblitz.de;
-	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=WrT1BvF8;
-	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=WrT1BvF8;
-	arc=none smtp.remote-ip=23.88.97.239
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	dkim=fail reason="signature verification failed" header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d7fB0Ilp;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646E7606A325;
-	Tue, 10 Nov 2026 04:47:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 646E7606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928B9606A31C;
+	Tue, 10 Nov 2026 04:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=WrT1BvF8;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=WrT1BvF8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1794286013;
-	bh=ZB63gzCuOHYpjLLMilJz9otldB10xXorS9YPyJ3fmfE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WrT1BvF84pm5hCTmr5G04ulNCFZToyJ8qH1j+W9zQI0i2R1GZl5W13R9u9R0TQtP0
-	 6/2DeFbKxSj0iSU2mNyRHIM8heTSSjK5DDWIoclxdkiHSqS5RSEgEsb/n+i9hxNDhd
-	 VIQ4eplV4CHMRcgRdQBDYNs59roQD/YX9aE2LEibl4mGyHSSD530QZw657S6ttedEF
-	 oQVl3d6m2zgWEilUtdpMOoGqH+Tbpr01PCYnURdcBwmu0NS/FyV0WYv/WAXpcVuHKJ
-	 41GHSJNbw6dtHlLceoC6JWJ2Iaf14ySRqN9WUYW9vs2t3uqIRm20AVXV4FIKWTbaPp
-	 oCKLBPuBTDG3w==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id A517748C0E; Tue, 10 Nov 2026 04:46:53 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1794286013;
-	bh=ZB63gzCuOHYpjLLMilJz9otldB10xXorS9YPyJ3fmfE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WrT1BvF84pm5hCTmr5G04ulNCFZToyJ8qH1j+W9zQI0i2R1GZl5W13R9u9R0TQtP0
-	 6/2DeFbKxSj0iSU2mNyRHIM8heTSSjK5DDWIoclxdkiHSqS5RSEgEsb/n+i9hxNDhd
-	 VIQ4eplV4CHMRcgRdQBDYNs59roQD/YX9aE2LEibl4mGyHSSD530QZw657S6ttedEF
-	 oQVl3d6m2zgWEilUtdpMOoGqH+Tbpr01PCYnURdcBwmu0NS/FyV0WYv/WAXpcVuHKJ
-	 41GHSJNbw6dtHlLceoC6JWJ2Iaf14ySRqN9WUYW9vs2t3uqIRm20AVXV4FIKWTbaPp
-	 oCKLBPuBTDG3w==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 9EDFD48C07;
-	Tue, 10 Nov 2026 04:46:52 +0000 (UTC)
-Message-ID: <64d05861-c4e1-4506-ac2f-4109f1062932@birger-koblitz.de>
-Date: Tue, 10 Nov 2026 05:46:42 +0100
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d7fB0Ilp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E061F0089F;
+	Tue, 10 Nov 2026 04:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794286388;
+	bh=kqmjBtXE7ujUmwu/F7BLQZ3+Q+KZAoq8PrY6Vye5p3k=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=d7fB0IlpLWmUwbDnryvM5899pnrNTy5uNETPNZo840EgVLOP5+et3DY1L1Qn+goyY
+	 jC65QlAsFDaZ8Cg0+U64X87GX9rI5gST4yjS8h1vyOu82+J/UjtCoDDZe7Mx62gDus
+	 vaOgk9mRXZzvLBC/r3kQf+BvBzLZ/LCCBmJvmvFaZ/WFNN5VqU54YypfozcpAQWFhP
+	 NZIPFQ+scHgXZXkTxXRYTzYy+NH23fpvr+0/q0LO/CBEpvF2NYAjb9eQVZol7uYg7z
+	 IQ3x2uwPyORm64Zt4T5y9R+4knhriqmU+dhQiYwyw30sjzyYFfi6teX8lYRPY1WFd+
+	 lSi9fBytYHlRQ==
+Content-Type: multipart/mixed; boundary="===============6053616401328202004=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,46 +49,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
- hkallweit1@gmail.com, chenhuacai@kernel.org, kernel@xen0n.name,
- edumazet@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- neuromoments@gmail.com, beganovic.emir@gmail.com
-References: <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
- <179427470922.994134.16776316201780098943@kernel.org>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <179427470922.994134.16776316201780098943@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-Id: <7ac9f990a73ce7a3fb3eaca0830962acb0b4ef0585c7429c89b22b7244a2925e@mail.kernel.org>
+In-Reply-To: <a37a908598e396446c1a389e3a58a1fe44a514ac.1794281983.git.tianyi@cloudflare.com>
+References: <a37a908598e396446c1a389e3a58a1fe44a514ac.1794281983.git.tianyi@cloudflare.com>
+Subject: Re: [PATCH bpf-next 15/15] docs: net: document the skb core extension area
+From: bot+bpf-ci@kernel.org
+To: tianyi@cloudflare.com,bpf@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,kuba@kernel.org,hawk@kernel.org
+Cc: john.fastabend@gmail.com,sdf@fomichev.me,lorenzo@kernel.org,deliran@verdict.gg,davem@davemloft.net,edumazet@kernel.org,pabeni@redhat.com,horms@kernel.org,andrew+netdev@lunn.ch,donald.hunter@gmail.com,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,anthony.l.nguyen@intel.com,przemyslaw.kitszel@intel.com,maciej.fijalkowski@intel.com,aleksander.lobakin@intel.com,magnus.karlsson@intel.com,tushar.vyavahare@intel.com,kerneljasonxing@gmail.com,razor@blackwall.org,madalin.bucur@nxp.com,ioana.ciornei@nxp.com,corbet@lwn.net,skhan@linuxfoundation.org,shuah@kernel.org,rdunlap@infradead.org,nathan@kernel.org,ndesaulniers@google.com,morbo@google.com,justinstitt@google.com,carges@cloudflare.com,jakub@cloudflare.com,linux-doc@vger.kernel.org,linux-kselftest@vger.kernel.org,intel-wired-lan@lists.osuosl.org,llvm@lists.linux.dev,kernel-team@cloudflare.com,tianyi@cloudflare.com,ast@kernel.org,andrii@kernel.org,d
+ aniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 10 Nov 2026 04:53:07 +0000 (UTC)
 
-On 10/11/2026 2:38 am, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] phylink_mac_interrupt() (drivers/net/phy/phylink.c:1629-1637)
->    loads pl->phydev with no lock, no RCU and no reference, then calls…
-> - [Low] phylink_mac_interrupt() reads pl->phydev with a plain load (`phy
->    = pl->phydev;`) and no lock.
-> 
-The possible issues for the series have all been raised before and I 
-have answered to them, some of them more than 4 times. None of these 
-answers are being referred to by the AI, so it does not appear to make 
-sense to provide such answers. Asking nevertheless to answer them again 
-(all medium and above!) constitutes harassment in my eyes.
-At this point I am asking a human to intervene and tell me whether 
-anything really still needs to be done.
+--===============6053616401328202004==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Birger
+> docs: net: document the skb core extension area
+
+TL;DR: The docs don't match the code: the "lost metadata" warning may fire
+spuriously for BPF_PROG_RUN live frames on native drivers lacking
+skb-ext-pass, and may hide a later real warning. Fix the code or the docs?
+
+> diff --git a/Documentation/networking/xdp-rx-metadata.rst b/Documentation/networking/xdp-rx-metadata.rst
+> --- a/Documentation/networking/xdp-rx-metadata.rst
+> +++ b/Documentation/networking/xdp-rx-metadata.rst
+
+[ ... ]
+
+> +The kernel sets the stored values on the ``skb`` in these cases:
+> +
+> +- When cpumap or veth builds the ``skb`` from an ``xdp_frame`` after
+> +  ``XDP_REDIRECT``.
+> +- When ``BPF_PROG_RUN`` with ``BPF_F_TEST_XDP_LIVE_FRAMES`` builds the
+> +  ``skb`` after ``XDP_PASS``.
+> +- On ``XDP_PASS``, in a driver with the ``skb-ext-pass`` XDP feature,
+> +  see `Supported Devices`_.
+> +
+> +On ``XDP_PASS``, the stored values replace the values that the driver
+> +sets from the RX descriptor. On a native XDP driver without the feature,
+> +the kernel warns once when the program returns ``XDP_PASS`` with stored
+> +values.
+
+This isn't a bug in the text itself, but it doesn't match the code.  Can the
+warning fire for BPF_PROG_RUN with BPF_F_TEST_XDP_LIVE_FRAMES even though the
+kernel does set the stored values there?
+
+xdp_skb_ext_warn_pass() in net/core/xdp.c skips BPF_PROG_RUN only by testing
+for the netdev_rx_queue xdp_rxq:
+
+	/* Generic XDP and BPF_PROG_RUN use the netdev_rx_queue xdp_rxq */
+	if (rxq->queue_index < dev->num_rx_queues &&
+	    rxq == &dev->_rx[rxq->queue_index].xdp_rxq)
+		return;
+	/* No native XDP, so only generic XDP or BPF_PROG_RUN runs on dev */
+	if (!(dev->xdp_features & NETDEV_XDP_ACT_BASIC))
+		return;
+
+In live frames mode the buffers use a private rxq instead.
+xdp_test_run_setup() in net/bpf/test_run.c does:
+
+	xdp_rxq_info_reg(&xdp->rxq, orig_ctx->rxq->dev, 0, 0);
+
+and xdp_test_run_init_page() passes &xdp->rxq to xdp_init_buff().
+
+So with ctx_in.ingress_ifindex set to a native XDP device that lacks
+NETDEV_XDP_ACT_SKB_EXT_PASS (any native driver other than ice or veth), a
+program that calls bpf_xdp_skb_ext_store_rx_hash() and returns XDP_PASS gets:
+
+  bpf_prog_run_xdp()
+    xdp_skb_ext_warn_pass()
+      pr_warn_once("... the stored RX metadata is lost")
+
+while xdp_test_run_batch()->xdp_recv_frames()->__xdp_build_skb_from_frame()
+->xdp_skb_ext_to_skb() still applies the values to the skb.
+
+Since this is pr_warn_once(), the false report also uses up the one warning,
+so a later real loss on a native driver without the feature is not reported.
+
+Should the warning skip the live frames rxq, or should the documentation say
+that BPF_PROG_RUN live frames can warn?  The code comes from f5e7dade0555
+("xdp: add the skb-ext-pass XDP feature and warn without it"), and no later
+commit in the series changes it.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/42755842687
+--===============6053616401328202004==--
