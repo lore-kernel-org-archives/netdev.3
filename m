@@ -1,48 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794302349;
-	b=EBqVlKXUfxkzdUDUNcH/VnVr4C5v62hiEHxTlC6w1xlI9qV59lseJCRzbvJW0H2n9PUX
-	 AuB5qj+Gn8P80DuIcl8NpgQsMNYd1VGASluuiaji2OMKWUMO/atNPOXeEohDZEuGrRL74
-	 mQFowCynnMsYS5T9jCjOKryhcRVwokE3Dzf+jonoyvgYcFMogvWcc2ul8A+mU3rGnwaDk
-	 ym/Csc9rivOEOz3+fSWu2vV56MbWrwfyx+1j/LTQng7m4NJpdDYccTiBxo0zy41tUFXm6
-	 5wbRFjk5sn+Dk+7YYj3R5/EgjbtJNwF+MVeo9g110xSatGjgP4zpBy62tCcXKVzRpCw==
+	t=1794302362;
+	b=E9aF8WL8zsqOxnfSyl8q+uYIGnjgNktxtBYSn9Ym6nqnC6iiye5PlIOX5wMX9QCaTD7A
+	 9Vav0qW2qXqPIsRtqdz0z89+v/jE9sJ5zsfaBLFn5LjOuK4d1hpu1bK8iyZgo5mZOdMec
+	 +vr9pGabCS9jBDP+fw1e/pCoLugfxjJSjOLoPtAcAA35BvgJHmH102iWrqK+MeqKD5zAS
+	 7n89DzEru6RDHBsnknA3XJPdQProWAXOc3mPbAT8yKKiHPKhe6PUvykIqLEGMt/N09EHi
+	 z+2edxZYk5aykRlgENjzKeB5fDT6sSst72FXbLY/AkD3y5LRRfrYXSYd35qDOe5WuTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794302349;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=5VuE4/weECRM9eIO6+lamMRzkXENJc2tSdRrjKtP/6E=;
-	b=kPuCc6B2gUdSO5G+kaQpVP7Zg5TAg32gJg3G+/h7fjqnOuqtWVF+8KpaidnYx5bYTB5/
-	 Gt/dBZbTeiQ+VgLe3drFs8cYHYO5Mnw/73j7csHzqFWZu5cQ7WIKF3OcIehf01eW30eas
-	 5JxEdvDKdLVPm+9pqn8tA3ikJvfuXDzjaQjxGTzuuD/HV3MXa4aq+90F0brc/z4pXFN23
-	 b0gcr964hxvuA+NMhPT6d3ztSEI389GPV2mJpMOhVHDFshug/MowuFT4y0jAAfzHEv2uD
-	 yU/TrRhw/n+Z7Ctve+nBf/SVQGb7uQGwf8log8EIwcWt/GCYoWExTisZRnPyns1mhkw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794302362;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=1lgSH5IuSLix0Y5Q87huJLSem8KubFPPy50MySmjKP8=;
+	b=R7zK9db2l45SvJAGBVTS7u/MkYesPLpsxWUwEXM1qH2aT2KVhEKopx8BFjQYShyz71pA
+	 BILH/MGhEUGaGhM7WMeZE56VCT7agdttlVQs7LMVsIZ4eSYOFvjAS8/KeON/avdq3WAAC
+	 4lKvZnKKEKYSvxhBfxOXZcd4ggUu16lDfT7+0P50zFqSoxyMvAlgubmF/KtfS5BjrTQ0H
+	 0xwila+MTZytbUWb6p+Mw4igrcDYW4qDhbEm8J0EhUEocknphPYmkLQ5OYfVIFv+dodKF
+	 SYUvbpgY+59meJq93RCPBSwHJFe1NzO0n2fJo2GXlGqHm4/137wGjUaA1sxYFh9fh6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iQA/sxsh";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgUEMCiU;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2F607695D;
-	Tue, 10 Nov 2026 09:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003AD606C664
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iQA/sxsh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77511F008A3;
-	Tue, 10 Nov 2026 09:19:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgUEMCiU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A851F008A1;
+	Tue, 10 Nov 2026 09:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302349;
-	bh=5VuE4/weECRM9eIO6+lamMRzkXENJc2tSdRrjKtP/6E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iQA/sxshAM8lgjVZtwQBlBlt6Ccgq/KLZUd+ak37Q2oUOuNb3EKD2IEz5QKL7HSuJ
-	 PzfYZUUU9t4mHJQyXpGh/FegWtFPckXXEaWIZpe18Dzveuhdh412cFkoYX9U6GHhAs
-	 FA3mIwVRbXfRG/foFS7hgF8f2XdzXBVoA2mbPV/1dW+mNpe42vnBoqn1KQUo3a7IH3
-	 OShJM3zaQPTgLbpL8PYQYa3MhajH2yuDWbFWTSzcixuX/GpsV21irhlminf8YwjK3i
-	 FcMM/10RV269QdY1WwY6VGtRQ1P449Wk5bY3A8Uk5z3MdBjKp3IUMwp4dCZ2nOAdUX
-	 a+oxx0hQk158g==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 10 Nov 2026 10:14:44 +0100
-Subject: [PATCH RFC 28/41] ocfs2: use fc_init_pseudo() for dlmfs
+	s=k20260515; t=1794302361;
+	bh=1lgSH5IuSLix0Y5Q87huJLSem8KubFPPy50MySmjKP8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=LgUEMCiUH2lU8GtyM2P3dC/cJl6bV1TVHO5hk3KByLZ90bsVLRMFUi7jpANyh/wVG
+	 YVRfk18tHXTX9iqGxzK/CaHM1vd9MIbrf8uF/NkcTe63v4OeanR6zwYN1qL4EB/vxx
+	 kPvU1NvCAkIRA/288HfFguyLdO1+hNOUCt4oXedIoU3cYkBaDmivVAqXBuz2zn4p23
+	 V3c38rCT00uxd81iuF+CvOUOL3mrDDZAF+HQZTO6MRz5DpWeT8bzo1pwrKIMZTgd0s
+	 EP92SXJT2fpuLHbFfB5knewq5ZNqBZIOon8hGfLGZoo1lKvbp4UyViFRoDF5+E1vYZ
+	 HWlXbttV8+26w==
+Subject: Re: [PATCH net] xfrm: delete migrated old states before dropping
+ their references
+From: netdev-bot+sashiko@kernel.org
+To: juny24602@gmail.com
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shinta.sugimoto@ericsson.com, yoshfuji@linux-ipv6.org,
+ nakam@linux-ipv6.org, netdev@vger.kernel.org, junvyyang@tencent.com,
+ stable@kernel.org, corvus@tencent.com
+Date: Tue, 10 Nov 2026 09:19:20 +0000
+Message-ID: <179430236030.994134.16814357178144716775@kernel.org>
+In-Reply-To: <20261106090300.29203-1-juny24602@gmail.com>
+References: <20261106090300.29203-1-juny24602@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,68 +65,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-work-loop-pseudo-v1-28-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-In-Reply-To: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
- target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-mm@kvack.org, bpf@vger.kernel.org, 
- linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
- apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
- netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
- linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
- ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
- Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
- linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=909; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IdNufAsq5EGNNcdE9WV9rVN1DCJjWbb8v/riZT7kRA0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9erDl3LqF3BIxnOW7s6R69N3au4r1m0WSo7rUW0tPb
- d3ziC+no5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJLTjEydK1aEV6R03Dp6Qur
- 9ReajrtK9AT09OsHms5fHf0wofDSUkaGzj38rmzbCz87b5+14Zu8c8plz01rglO+aJ1tSLofN8u
- eDQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Initialize dlmfs as a pseudo filesystem. This raises SB_I_PSEUDO and
-also SB_I_NOEXEC and SB_I_NODEV. dlmfs never holds executables or
-device nodes.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/ocfs2/dlmfs/dlmfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-diff --git a/fs/ocfs2/dlmfs/dlmfs.c b/fs/ocfs2/dlmfs/dlmfs.c
-index d3bfcada3e3b..1789ec96dc13 100644
---- a/fs/ocfs2/dlmfs/dlmfs.c
-+++ b/fs/ocfs2/dlmfs/dlmfs.c
-@@ -21,6 +21,7 @@
- #include <linux/module.h>
- #include <linux/fs.h>
- #include <linux/fs_context.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
- #include <linux/types.h>
- #include <linux/slab.h>
-@@ -563,6 +564,7 @@ static const struct fs_context_operations dlmfs_context_ops = {
- 
- static int dlmfs_init_fs_context(struct fs_context *fc)
- {
-+	fc_init_pseudo(fc);
- 	fc->ops = &dlmfs_context_ops;
- 
- 	return 0;
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] This patch fixes the Stage 4 x_cur[] path but leaves a matching
+  use-after-free on the restore_state error path in xfrm_migrate()…
+
+--
+
+xfrm: delete migrated old states before dropping their references
+
+This patch reorders Stage 4 of xfrm_migrate() so the old states in x_cur[]
+are deleted before their lookup references are dropped. The states then
+stay alive during xfrm_states_delete(), even if an expiry timer or a
+concurrent deletion has already removed them from the state tables.
+
+> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> index cea6842e6454d..39ca04432220b 100644
+> --- a/net/xfrm/xfrm_policy.c
+> +++ b/net/xfrm/xfrm_policy.c
+> @@ -4726,8 +4726,8 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+>  
+>  	/* Stage 4 - delete old state(s) */
+>  	if (nx_cur) {
+> -		xfrm_states_put(x_cur, nx_cur);
+>  		xfrm_states_delete(x_cur, nx_cur);
+> +		xfrm_states_put(x_cur, nx_cur);
+>  	}
+
+[Severity: High]
+This fixes the x_cur[] path. Does the restore_state error path in
+xfrm_migrate() still have the same use-after-free for the x_new[] states?
+
+net/xfrm/xfrm_policy.c:xfrm_migrate() {
+    ...
+restore_state:
+	if (pol)
+		xfrm_pol_put(pol);
+	if (nx_cur)
+		xfrm_states_put(x_cur, nx_cur);
+	if (nx_new)
+		xfrm_states_delete(x_new, nx_new);
+    ...
+}
+
+In Stage 2 the new state is stored without taking a reference:
+
+	xc = xfrm_state_migrate(x, mp, net, extack);
+	if (xc) {
+		x_new[nx_new] = xc;
+		nx_new++;
+
+By this point xfrm_state_migrate()->xfrm_state_migrate_install() has
+already published xc with xfrm_state_insert() or xfrm_state_add(). The
+state tables now own its only reference, and __xfrm_state_insert() has
+armed mtimer.
+
+Once published, xc can be found by SPI lookup on the data path. Its curlft
+was copied from the old SA by xfrm_migrate_sync(). That means it can be
+deleted without xfrm_cfg_mutex, for example:
+
+  xfrm_state_check_expire()   /* hard byte/packet limit reached */
+    hrtimer_start(&x->mtimer, 0, HRTIMER_MODE_REL_SOFT);
+  xfrm_timer_handler()
+    __xfrm_state_delete()
+      xfrm_state_put()        /* drops the only reference */
+
+The 1s mtimer reaching hard_add_expires with the copied add_time has the
+same effect.
+
+Userspace can still reach restore_state after xc has been published. One
+way is xfrm_policy_migrate() returning -ENODATA (no template matches) or
+-ENOENT (dead policy). Another is a later entry's xfrm_state_migrate()
+returning NULL, for example -EEXIST from xfrm_state_add(). That later
+entry's xfrm_state_migrate_create() allocates with GFP_KERNEL and can
+sleep, which makes the window wider.
+
+If xc has already been freed by then, xfrm_state_delete(xc) would take
+xc->lock and read xc->km.state on freed memory. If the slab has been
+reused, this could also lead to list corruption and another put.
+
+Reordering cannot fix this one, because xfrm_migrate() never holds its own
+reference on the x_new[] entries. Could a reference be taken on xc before
+it is installed? The parallel path xfrm_do_migrate_state() in xfrm_user.c
+already does this:
+
+	xfrm_state_hold(xc);
+	err = xfrm_state_migrate_install(x, xc, &m, extack);
+
+That reference would then be dropped after xfrm_states_delete() in
+restore_state, or on the success path.
 
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106090300.29203-1-juny24602%40gmail.com
