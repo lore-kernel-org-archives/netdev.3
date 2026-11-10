@@ -1,112 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794319897;
-	b=YHDW2do0HoX7mVfsHRUIQqcuL603h5UMaEDP/sG2DvUu7F+wAS4zYPB94jIXxnwvEL5K
-	 OPE6fIdY9dEJlb7th8flcT9igZs2QWEYcWCcdNH/YEHzzSY6T+qzyHTcRGXEoKG3h842P
-	 dBCJ/PBxEoIaf9Sf2tvbdMRugBJvd8rmSX69YDsUQkdsM8/xeMOPEbn0Fg3pN3v4LwaBH
-	 xhCm8eJhDkE/3MJy+Pwa0Z//6e3WePoykZmliBAm0f+G00M+0wiXHZHAqio8qhwjq78oh
-	 tMVezNI3dzTcsqjGZHc1rdPyiD34krOTTWu3gmGj/MkqzTDDpCF7uSkX6i3kw1dO02w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794319897;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=BivtSQqIUwWNq3ZVsrdCMmnwulN+HBv0CJU4axuq6+U=;
-	b=G9xVB2STNJ2edjSTuOUF9KMlpJC4nRAhvVypO/wqog+qoMcV6IeUIs4EhvlGszMc2VTt
-	 ZfE2A8m3KuoGQEEjcz5AGQs84A7MkI2k7e4/tqiv2x1H/n3RmV8TliKkhl+OD19C1HvFO
-	 mpUrcXW8S394sYRjNV60xCwf7JURj9BZgSc44aGm8Gpgngy5exVoSkas8ZqNqeDTS2KsO
-	 XNYv0gZhULkPwWnu3tDdDHUVo4xdrayvZEpk6S4sbm3mI+Yz2OZk/o4aCGVysR2HHOspR
-	 5fhlLu1l6ZeP+3bnL3FDI+sknAGXyWP4LbQ1n5UtCl01rKMktUHDe2i1qNV/hf6uOrw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="Dim0J/oQ";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.45
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012045.outbound.protection.outlook.com [52.101.53.45])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794320034;
+	b=HODBLeZpvqUnuHKcpoN49fgBFoF+sf2pnRIdfuqx2FcYXTChYOCh5R4Q+cxuo4jJ7sHk
+	 DV2Tfx2HnAJoUq9aEJ5z5s6lil8DURRMw6yrZURhhhq8O1mArAtYYkDQ8gvxrbm+LYb/c
+	 UXpaScYypNdiYyynQo2yilFPUIpThdAu0idvidpGeqTfw8wWejYTxpDyKKHdFcZ+I1GGK
+	 W0m+NLj6l/Nj/5sX68CtjIEsaoW3hNgoXUt05bR1ncHsreDilBDm2JxssLwlhAJDTbYOI
+	 Uz/A70dnUrbq9b+/FxglcyNeVwph0Q00Norcjfh/6qhZ90XHqbKWKZzj4MboICLClXQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794320034;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Xd4nTp86cW9MidEl4iHRTLTDM3LxuvmF0DAhfS6CjOQ=;
+	b=dPypWLYKZ6OFvNZKinW0ZjuTxlcMOjd8MYl9TtUaAe2c7ew7YlMi4dzqgkY3SQo9kbOT
+	 6EVPNILznwAqZGpI2DsPgSW4qjCm1fQWk1iDiOkcfcNnHovmcRHaT/E7wpU3V0FXGuqfG
+	 SQAsFZG3KP6JzORy0MdYPcWO3OKX9kRE3GhtSyfFPyiiRCktuAIgONICAIi2atmKhWQLO
+	 QrY6c1nYMwSAkoRPmr7Lt0jVQn6AhNdQUltNOHQXUMuZXEDTnq3ywB117AT5pJ9FMLYpI
+	 oSit1LUfr7it5Hl0NKeaU8sn0sXtJ8tttEjJCXuzRUgNzeCxgLPd7xZetQFdDRHKcaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="f8Mt1/7r";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC13606A31C;
-	Tue, 10 Nov 2026 14:11:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BC13606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD959606A32E;
+	Tue, 10 Nov 2026 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Dim0J/oQ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tsyrOJKy+1nKP6aEgl/129Rq3H2Hob3B/BEjd3lfuKelHmKxzctwLx4pBt7T+s9lD0KNlLHEe00fFz6q99j+bEHJX5Mr/qTjdEO0i7NoMXLCA7muA0CGxy/oa9/J0grYlCF+cA0Dab8EF4fvHDDZiwYraggzb8wDS6ZXr/JJkE4L4X2V3/tN+Iz9TgJ88WQMMj4AC1Tf/DVNjVWmxftn1VU1ASj9l/W1mVP+3tt672BJg4EXmWNeG3YAeVTddUT2p9tW8aQLUniFA3lTmabhf3LaTVVqtvCklm5J5lsukMEHIkql1+dT0AQRCZU9MOOHm/pQ1PV1gOeoE8dGnwB6MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BivtSQqIUwWNq3ZVsrdCMmnwulN+HBv0CJU4axuq6+U=;
- b=Brcat6h3Z054Z9yAZteVuEegO3masdm/hsfBo3q0nO0Mh+uGYiC5VdwP2OhFFBVfNUuFYXPBlUilh3T14FkEJ5ZlJBhFGi1583SkOWakFXvCB/5RCMuryAa1rPz+jdgihF1HdXtBRaUrCKrL3F68StArVTuinbDJXL+hfJZ200TV6t2LtRn6YzOrIInUDeTQDyoVk+08nanq4dj0j46fnRPHKOp24W97v0RcWuS4/5DLK/PiXVDXjkBmMobGlp/3Vic6zFbz5yMThSdu6OWqQ2ukg1eP45FYko6mmUneyZVM7AnT2bzlqYq+06nzUt7bQsFhdE5GV/hmP09KvK+5RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BivtSQqIUwWNq3ZVsrdCMmnwulN+HBv0CJU4axuq6+U=;
- b=Dim0J/oQpVb9A15RoQ8K3fWtTDNXlLpiziXF5/lkJ6oSz1bAv5pYdHLWjuli0kexHyfSFRnXTjje/yBwG/1JeaJvMHiDlxUsk7BCDsfsKYqMM/FkvZfbNHsUfxkkya2D8cvuaWvfn8BJ4pogOHzvZWMXUo3ywPXFVCC9fh5d7sqQbqYmORncyw5jv/ljXOzuJqoliWJER02AJhwM3phsB/AbVfW1XHvJT2Xg7SeRLben8IqH496CKJBDXxA0m+kOy5+C4vPXZLxjlc7EHvPEN8IoR7NLA2uOyaoC3+2Zly5C3U3TXUA98YhLhOuDXvf2baX+g81n6jjG5Jno2rjpcg==
-Received: from PH8PR21CA0001.namprd21.prod.outlook.com (2603:10b6:510:2ce::25)
- by CH2PR12MB4248.namprd12.prod.outlook.com (2603:10b6:610:7a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 14:11:27 +0000
-Received: from PH7PEPF0000000A.namprd04.prod.outlook.com
- (2603:10b6:510:2ce:cafe::76) by PH8PR21CA0001.outlook.office365.com
- (2603:10b6:510:2ce::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.0 via Frontend Transport; Tue, 10
- Nov 2026 14:11:27 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- PH7PEPF0000000A.mail.protection.outlook.com (10.167.243.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 10 Nov 2026 14:11:27 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 10 Nov
- 2026 06:11:06 -0800
-Received: from nps-server-23.mtl.nbulabs.nvidia.com (10.126.230.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 06:11:00 -0800
-From: Shay Drory <shayd@nvidia.com>
-To: <pabeni@redhat.com>
-CC: <tariqt@nvidia.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@kernel.org>, <kuba@kernel.org>, <netdev@vger.kernel.org>,
-	<agoldberger@nvidia.com>, <cjubran@nvidia.com>, <cratiu@nvidia.com>,
-	<edwards@nvidia.com>, <gal@nvidia.com>, <leon@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<mbloch@nvidia.com>, <moshe@nvidia.com>, <ohartoov@nvidia.com>,
-	<phaddad@nvidia.com>, <saeedm@nvidia.com>
-Subject: Re: [PATCH net-next 05/15] net/mlx5: LAG, decouple iteration end-of-walk from MLX5_MAX_PORTS
-Date: Tue, 10 Nov 2026 16:10:52 +0200
-Message-ID: <20261110141052.433725-1-shayd@nvidia.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <e15d78be-1e80-469d-96e1-dd83cd90a929@redhat.com>
-References: <20261103171009.563034-1-tariqt@nvidia.com> <20261103171009.563034-6-tariqt@nvidia.com> <e15d78be-1e80-469d-96e1-dd83cd90a929@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f8Mt1/7r
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850981F0089F;
+	Tue, 10 Nov 2026 14:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794320033;
+	bh=Xd4nTp86cW9MidEl4iHRTLTDM3LxuvmF0DAhfS6CjOQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=f8Mt1/7rCa1pZCIKwEJ+QowRw7WQd2Mil3HemNjtaswi4u+d03aYrTi40TLXxnCKw
+	 pauvn8khQlPZ8R0mn/xay1EkuRTlVn70VcrXZAEZWngUsD6lexjShgO4SZjUnAw+Y7
+	 IkXLs633FXY+yrUe4/bR9QruYsg3I9GAvk92vUcOMAd/goWCPfS5TkZXmAZlDQU2Xl
+	 CDTMbuumkOVilTAQVmB07pRXPfjrja83JxOczK9RnNr+hOr3Y+05WFCevz3qvEFves
+	 +l5bSjPbG1HZLdG4bfwyu9UpYy3uV/pWeW9XheFevIn2LpwSkiOXknAXotskv9WmEt
+	 hGecO3L5DbctA==
+Message-ID: <2f0e411d-d29a-487a-b7d3-2cd7dd92e456@kernel.org>
+Date: Tue, 10 Nov 2026 15:13:41 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,101 +51,274 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PEPF0000000A:EE_|CH2PR12MB4248:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef4844ad-8e02-4844-9142-08df3f34829e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|23010399003|4143699003|56012099006|11063799006|22082099003|18002099003|10067099003|261009223027099003|261028144727099003|261026140227099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	raRp2I6RwotfMOYWRcXOf9IscNkjX0aOZalAQP2E7+lZKUiqDz/LpbKWgJtGqNNDhP169W1LK0Yn8N03FeUtkpXeX9ijn+386Ol2IHcPmgrHcAq3jNkfO5MPtDRjZl7PlBKy+9KMTQHRyAd8SgB0tZWQxz0BgMKkpcnSHfiiPJhRglk389T8A4AgjTK3qExwQ9Qkb6UGsujbcA0n96M9dUgV1ilxT9cbkP5QsY9cHs53yOUBPQ1UZn8EX/iav7ukHi9HV1BaYN1fN+ZpuuS/XTrpvPCJz17m1I9wO9dAwK0JBsJw2Hj8YP679pZvUq7cWVH0/av+uwQeM/3P+0Yak3Zet2KKl+xFhD/Bt0TKqki614pm6qZRnjd1dTy34eAsT+xF9tGmnunn0wVntQkxlXXDBK5nYzVRhV3x2c+1m4SClsH3A08f1tApsvvTj78SGZ1JsN1V+MWOa7YTYuR6vfXn9xA1HQPHyDWGHtf1o32zFJeHDlomW39H7LCWdWgzoNRRlpn3j++acTUPVEXNa/7UyahtqMmjkMibhO+aeUlkm0MBSvBGLvZXiKmN5JhAiOlyAepuusaDkz03320bWDy4kcZBIQYLKfHHFx5TkeQi24dmCXG/h+6FvoM/PjCYbwhka0WoAUiQ0Zr1hkuTPWa04SpLY2HBV+qRgSWT3Axec1+mja0T5ePyUC5sF5vtRMrqU1rjIn9w351b5hQ1Ag==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003)(10067099003)(261009223027099003)(261028144727099003)(261026140227099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	g+5mENEJglTCu8UFXOp0yXjvXMTSaGIvEz/RCiz/VWzy6euF+u0gSvnFHLUSJ745zIzt4COER5dWXR5eJguxraAb8sGXMU/FS7OppLt0ONmlTlJsQNggzN9AEPCK2h+a63ek9/lRg9lI4W1mJn1r96F6V/v14iRwBVK3HEmKSO1wut0TeyEu6laBltAcGkPvFSFxbx6omIWUgf6D3jaVR2N9CdDH8AduFNR9mYuKD/74/KKw/ykytq6Rq/gAPg+IU4dT4LspvFGgMQMpA17DJEprz70YXe4NIDV7i90cLjiRQ9e1K6ukA+v5ezDrjIaPB5cpivpPIbu8MJrOsyD6Q/CH1eFrdFWYV3AZAeU2ZL9J2OiMVZgNSzUyS9aGrRmv7ViewZuZS+nQOaMjdw8BiU6QfJ1KcawdaIWugQPiLM6Rtv7dpIE0HxdmZUc6lAzt
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 14:11:27.1285
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef4844ad-8e02-4844-9142-08df3f34829e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH7PEPF0000000A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4248
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next 03/15] xdp: add kfuncs to store RX hash and VLAN
+ tag
+To: Tianyi Gao <tianyi@cloudflare.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Jakub Kicinski <kuba@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Vladimir Vdovin <deliran@verdict.gg>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter
+ <donald.hunter@gmail.com>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Magnus Karlsson <magnus.karlsson@intel.com>,
+ Tushar Vyavahare <tushar.vyavahare@intel.com>,
+ Jason Xing <kerneljasonxing@gmail.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Ioana Ciornei
+ <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Chris J Arges <carges@cloudflare.com>, Jakub Sitnicki
+ <jakub@cloudflare.com>, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+ llvm@lists.linux.dev, kernel-team@cloudflare.com
+References: <cover.1794281983.git.tianyi@cloudflare.com>
+ <f865ab08e7e0343bcd6eb380f7003ddd32d177e2.1794281983.git.tianyi@cloudflare.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <f865ab08e7e0343bcd6eb380f7003ddd32d177e2.1794281983.git.tianyi@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 10/11/2026 13:00, Paolo Abeni wrote:
-> Hi,
->
-> there are a couple of unanswered comments here...
->
-> On 11/3/26 18:09, Tariq Toukan wrote:
-> > @@ -2095,7 +2096,7 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
-> >   				break;
-> >   			}
-> >   		}
-> > -		if (i < MLX5_MAX_PORTS) {
-> > +		if (i < ldev->ports) {
->
-> [medium]
-> Should this compare against ldev->max_funcs, like the other converted call
-> sites?
-> The iterator's end-of-walk value is now ldev->max_funcs. That holds both in
-> mlx5_get_next_lag_func() and in the mlx5_lag_for_each() condition.
-> Indices are never compacted and max_funcs never shrinks. So a PORT-marked
-> member can sit at an index in [ldev->ports, max_funcs) while the ldev still
-> has ldev->ports members. One way to get there: more PFs than num_lag_ports
-> join the ldev, and a lower-index one is removed later.
-> In that case the inner loop finds the matching pf and breaks with
-> i >= ldev->ports. idx has already been incremented, but this block is
-> skipped, so the bond_status |= (1 << idx) and has_inactive updates are
-> lost. The later check would then fail:
-> 	is_in_lag = num_slaves == ldev->ports &&
-> 		bond_status == GENMASK(ldev->ports - 1, 0);
-> Wouldn't that leave this bond silently not offloaded?
-> The old i < MLX5_MAX_PORTS check covered the whole index range that the old
-> xa_alloc() limit allowed. This code is unchanged at the end of the series.
->
-> This looks valid to me.
 
-This is answered in the cover letter: mlx5 creates an ldev per sw_guid,
-and PFs have a different sw_guid than VFs/SFs, so only PFs share this
-ldev. The only case with more PFs than num_lag_ports in one ldev is SD,
-and for SD the netdev notifier, and with it
-mlx5_handle_changeupper_event(), is not registered. So a PORT-marked
-member here always sits at an index below ldev->ports.
 
-> >   			if (netif_is_bond_master(upper)) {
-> >   				slave = bond_slave_get_rcu(ndev_tmp);
-> >   				if (slave)
-> > @@ -2360,13 +2361,16 @@ int mlx5_ldev_add_mdev(struct mlx5_lag *ldev,
-> >   	if (!pf)
-> >   		return -ENOMEM;
-> >   
-> > -	err = xa_alloc(&ldev->pfs, &idx, pf, XA_LIMIT(0, MLX5_MAX_PORTS - 1),
-> > +	err = xa_alloc(&ldev->pfs, &idx, pf, XA_LIMIT(0, U8_MAX - 1),
-> >   		       GFP_KERNEL);
->
-> [high]
-> Can this let member indices reach 8 or more while several arrays are still
-> sized MLX5_MAX_PORTS?
->
-> this is solved at the end of the series, so not really a problem.
->
-> Note that there are more unanswered comments on patch 15/15.
->
-> I think a v2 is need. For the future I suggest using smaller series:
-> 15 non trivial patches will have increasingly hard time with AI
-> reviews.
+On 11/10/26 04:57, Tianyi Gao wrote:
+> Add bpf_xdp_skb_ext_store_rx_hash() and bpf_xdp_skb_ext_store_rx_vlan().
+> They store the RX hash and the VLAN tag in the skb core extension area.
+> A later patch sets the stored values on the skb built from the
+> xdp_frame.
+> 
+> Both kfuncs call xdp_skb_ext_add(), which reserves the entry for an id.
+> On the first store for a packet, it clears the header and sets
+> XDP_FLAGS_HAS_SKB_EXT, so stale headroom is never read as a header. A
+> second store of the same id, also after a delete, reuses its offset.
+> 
+> xdp_skb_ext_add() returns -EOPNOTSUPP for AF_XDP zero-copy buffers. User
+> space can write their headroom while the program runs, and could change
+> the header between two stores.
+> 
+> The store kfuncs are in their own kfunc set. They do not need a
+> device-bound program, so programs on cpumap and veth can call them.
+> 
+> bpf_xdp_skb_ext_store_rx_vlan() accepts only ETH_P_8021Q and
+> ETH_P_8021AD, because vlan_proto_idx() warns on any other TPID.
+> 
+> A BUILD_BUG_ON() in xdp_skb_ext_struct_check() limits the area to 64
+> bytes. As in skb_extensions_init(), the function is noinline
+> __no_profile so that it builds with CONFIG_GCOV_PROFILE_ALL.
+> 
+> The two kfuncs are based on bpf_xdp_store_rx_hash() and
+> bpf_xdp_store_rx_vlan() by Lorenzo Bianconi in Jesper's XDP_REDIRECT RX
+> hints series V2 [1].
+> 
+> Link: https://lore.kernel.org/all/175146831297.1421237.17665319427079757435.stgit@firesoul/ [1]
+> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
+> ---
+>   net/core/xdp.c | 154 ++++++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 151 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/core/xdp.c b/net/core/xdp.c
+> index 1d679e8fd649..97dc0e403a78 100644
+> --- a/net/core/xdp.c
+> +++ b/net/core/xdp.c
+> @@ -990,11 +990,159 @@ bool bpf_dev_bound_kfunc_id(u32 btf_id)
+>   	return btf_id_set8_contains(&xdp_metadata_kfunc_ids, btf_id);
+>   }
+>   
+> -static int __init xdp_metadata_init(void)
+> +#define XDP_SKB_EXT_CHUNKSIZEOF(x) DIV_ROUND_UP(sizeof(x), XDP_SKB_EXT_ALIGN)
+> +#define XDP_SKB_EXT_ENTRY_ACTIVE BIT(7)
+> +
+> +struct xdp_skb_ext_hash {
+> +	u32 val;
+> +	u32 type; /* enum xdp_rss_hash_type */
+> +};
+> +
+> +struct xdp_skb_ext_vlan {
+> +	__be16 proto;
+> +	u16 tci;
+> +};
+> +
+> +static const u8 xdp_skb_ext_type_len[] = {
+> +	[XDP_SKB_EXT_HASH] = XDP_SKB_EXT_CHUNKSIZEOF(struct xdp_skb_ext_hash),
+> +	[XDP_SKB_EXT_VLAN] = XDP_SKB_EXT_CHUNKSIZEOF(struct xdp_skb_ext_vlan),
+> +};
+> +
+> +/* Limit the header and all entries to 64 bytes, so that a new entry
+> + * cannot grow the area without notice.
+> + */
+> +static noinline void __init __no_profile xdp_skb_ext_struct_check(void)
+> +{
+> +	unsigned int chunks = XDP_SKB_EXT_CHUNKSIZEOF(struct xdp_skb_ext);
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(xdp_skb_ext_type_len); i++)
+> +		chunks += xdp_skb_ext_type_len[i];
+> +
+> +	BUILD_BUG_ON(chunks * XDP_SKB_EXT_ALIGN > 64);
+> +}
+> +
+> +static void *xdp_skb_ext_add(struct xdp_buff *xdp, enum xdp_skb_ext_id id)
+> +{
+> +	struct xdp_skb_ext *ext = xdp_skb_ext(xdp->data_hard_start);
+> +	bool valid = xdp_buff_has_skb_ext(xdp);
+> +	unsigned int newlen, newoff;
+> +	void *start;
+> +
+> +	/* User space can write the headroom of AF_XDP zero-copy buffers */
+> +	if (xdp->rxq->mem.type == MEM_TYPE_XSK_BUFF_POOL)
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	if (!valid) {
+> +		newoff = XDP_SKB_EXT_CHUNKSIZEOF(*ext);
+> +		newlen = newoff + xdp_skb_ext_type_len[id];
+> +	} else if (ext->offset[id]) {
+> +		newoff = ext->offset[id] & ~XDP_SKB_EXT_ENTRY_ACTIVE;
 
-Ack, will prepare a v2.
 
-> /P
+Given the recent run of security bugs caused by manipulated offsets, I
+would like to limit how far a bad offset can reach here. The offset is
+read back from the packet headroom and is trusted only because
+XDP_FLAGS_HAS_SKB_EXT is set; nothing checks it against ext->chunks or
+the buffer. With the 7-bit mask it can point up to 508 bytes past the
+ext header, beyond the default headroom and into packet data, and in
+this branch the caller then writes the entry (up to 8 bytes) there. I
+have not found a way to get a bad header with this series, but the
+invariant depends on every driver leaving this area alone while the
+flag is set.
+
+The BUILD_BUG_ON() in xdp_skb_ext_struct_check() limits the header plus
+all entries to 64 bytes, which is 16 chunks, so a 4-bit mask covers
+every valid offset. A bad offset then starts at most 60 bytes after the
+ext header. It is the same AND with another constant, so it costs
+nothing in the fast path. The same mask should be used in
+xdp_skb_ext_get() in patch 7.
+
+--Jesper
+
+> +		newlen = ext->chunks;
+> +	} else {
+> +		newoff = ext->chunks;
+> +		newlen = newoff + xdp_skb_ext_type_len[id];
+> +	}
+> +
+> +	start = xdp_data_meta_unsupported(xdp) ? xdp->data : xdp->data_meta;
+> +	if ((void *)ext + newlen * XDP_SKB_EXT_ALIGN > start)
+> +		return ERR_PTR(-ENOSPC);
+> +
+> +	if (!valid) {
+> +		memset(ext->offset, 0, sizeof(ext->offset));
+> +		xdp->flags |= XDP_FLAGS_HAS_SKB_EXT;
+> +	}
+> +	ext->offset[id] = newoff | XDP_SKB_EXT_ENTRY_ACTIVE;
+> +	ext->chunks = newlen;
+> +
+> +	return (void *)ext + newoff * XDP_SKB_EXT_ALIGN;
+> +}
+> +
+> +__bpf_kfunc_start_defs();
+> +
+> +/**
+> + * bpf_xdp_skb_ext_store_rx_hash - Store the RX hash of this packet.
+> + * @ctx: XDP context pointer.
+> + * @hash: RX hash value.
+> + * @rss_type: RSS hash type, see &enum xdp_rss_hash_type.
+> + *
+> + * Return:
+> + * * Returns 0 on success or ``-errno`` on error.
+> + * * ``-ENOSPC`` : not enough headroom for the entry
+> + * * ``-EOPNOTSUPP`` : AF_XDP zero-copy buffer
+> + */
+> +__bpf_kfunc int bpf_xdp_skb_ext_store_rx_hash(struct xdp_md *ctx, u32 hash,
+> +					      enum xdp_rss_hash_type rss_type)
+>   {
+> -	return register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &xdp_metadata_kfunc_set);
+> +	struct xdp_buff *xdp = (struct xdp_buff *)ctx;
+> +	struct xdp_skb_ext_hash *entry;
+> +
+> +	entry = xdp_skb_ext_add(xdp, XDP_SKB_EXT_HASH);
+> +	if (IS_ERR(entry))
+> +		return PTR_ERR(entry);
+> +
+> +	entry->val = hash;
+> +	entry->type = rss_type;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * bpf_xdp_skb_ext_store_rx_vlan - Store the VLAN tag of this packet.
+> + * @ctx: XDP context pointer.
+> + * @vlan_proto: VLAN tag protocol identifier (TPID), in network byte order.
+> + * @vlan_tci: VLAN TCI, in host byte order.
+> + *
+> + * Return:
+> + * * Returns 0 on success or ``-errno`` on error.
+> + * * ``-EINVAL`` : @vlan_proto is not 802.1Q or 802.1AD
+> + * * ``-ENOSPC`` : not enough headroom for the entry
+> + * * ``-EOPNOTSUPP`` : AF_XDP zero-copy buffer
+> + */
+> +__bpf_kfunc int bpf_xdp_skb_ext_store_rx_vlan(struct xdp_md *ctx,
+> +					      __be16 vlan_proto, u16 vlan_tci)
+> +{
+> +	struct xdp_buff *xdp = (struct xdp_buff *)ctx;
+> +	struct xdp_skb_ext_vlan *entry;
+> +
+> +	if (vlan_proto != htons(ETH_P_8021Q) &&
+> +	    vlan_proto != htons(ETH_P_8021AD))
+> +		return -EINVAL;
+> +
+> +	entry = xdp_skb_ext_add(xdp, XDP_SKB_EXT_VLAN);
+> +	if (IS_ERR(entry))
+> +		return PTR_ERR(entry);
+> +
+> +	entry->proto = vlan_proto;
+> +	entry->tci = vlan_tci;
+> +
+> +	return 0;
+> +}
+> +
+> +__bpf_kfunc_end_defs();
+> +
+> +BTF_KFUNCS_START(xdp_skb_ext_kfunc_ids)
+> +BTF_ID_FLAGS(func, bpf_xdp_skb_ext_store_rx_hash)
+> +BTF_ID_FLAGS(func, bpf_xdp_skb_ext_store_rx_vlan)
+> +BTF_KFUNCS_END(xdp_skb_ext_kfunc_ids)
+> +
+> +static const struct btf_kfunc_id_set xdp_skb_ext_kfunc_set = {
+> +	.owner = THIS_MODULE,
+> +	.set   = &xdp_skb_ext_kfunc_ids,
+> +};
+> +
+> +static int __init xdp_kfunc_init(void)
+> +{
+> +	int ret;
+> +
+> +	xdp_skb_ext_struct_check();
+> +
+> +	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP,
+> +					&xdp_skb_ext_kfunc_set);
+> +	return ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP,
+> +						&xdp_metadata_kfunc_set);
+>   }
+> -late_initcall(xdp_metadata_init);
+> +late_initcall(xdp_kfunc_init);
+>   
+>   void xdp_set_features_flag_locked(struct net_device *dev, xdp_features_t val)
+>   {
+
