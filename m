@@ -1,72 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312228;
-	b=nByvNi37Pmt3h9q+TyqQ/jiY6pUlgtAV5xEz9Jr5676R9Mu67smn2ULquzRk//ld9oab
-	 7vFRL3dBw+H6tWYjKaEeEeUfqHd5MnmvASFuUs1+CNtZsZFHw3BwB6hzDTWycZcePyH6I
-	 relJsngpIV4MRTvptnDuhxR5Nc5VGiQaCd9LJRUmrT/Gpo4GTPTZhRgE4YhcIJGkQH6nj
-	 ULn1j9tQAbbDOP+5jLWDNkWWE8eiZSRCnqOKBWwa5ce5gsNUzSn33szpZ7YNd2LY5l2S1
-	 k1CjjF/2Z1spCatNFW/5hCzmb/Tsba8YQDzdIgNVTZtvRd0shXSrK6I2pbJiiAZUjCw==
+	t=1794312232;
+	b=WIwS8R4Z1nYT5knnfAOd2bXGnZJzDqekd7KLHH2UtoI2aYssXfE39MLtt2sJ0yITpVyZ
+	 5h8fuXiTS9NG5FsRiZh81MxY7gMS8t3W5bHKl5n5RlO6Ijp01q5tm3o6Y3fgDBrsFcLnK
+	 5pdLcFa9Snl2hFFGvQth+qIjcLIgo3PaTHA1c31ShLErPfw/XSP3YwHMbazSUJ7ZDlKpM
+	 kRB5BUpSnITWGGoO/r+PhiXhvjL0r+N8nXyrMOcO/SFtN2dQMeIY5wai7VaZ3bltPk4iE
+	 tjxwAHFftl4hXU2mLcEpJ2XBaUG7PFEmbBhjPelvkQnugzrV2q8rwgusOqq9ED6f0fQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312228;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312232;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=3E/3zyMD+uPVnyErCUd0kjVVb+CCwIBN0VKu1A3yz3k=;
-	b=pjmR6XFjW8/hUnF5jz+LsSqNIbVI7mSNwQNJmIfWzGO+OmWV+7kKUyUxc7AWoQD564Ii
-	 dFIJFIl1VYuPNvBP8rm160oQMG3kq3avOdkiaaypiO2Dz5nEJb2Sa+s6GfhnmpLAH/wKm
-	 4AzvPtw2EBn83mGtYP34pwBqUUDLQbvZv9DbEqbY4RvFLKzsaPea6bMd8yUy/5vQ7hLIa
-	 GNLc6jhz9wi/Ljw3+sYQcpJBaIE1aEe1LhrOSO07jzSNdT0dskATtB3+pn9aB0tiOKXaM
-	 k81Xprile56iUDDdRokL0c13HVpOAvXebpvLu5OPnfF9stXBydE5iEFOxh09jP+gxjA==
+	bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
+	b=m2QFPhidx1xV3drPKPEgqfrQcLaPXDHmyTBCdzr4vUA9dSIbpK6ghYHhZHZGPMEvkSxV
+	 wr4XSp7NLOXTyNqf+Vq3nr8HJciRbC/7Cpv4+MbB59DNp/7XGr6Syl6QWhVmBHkqlzFj1
+	 QXlmKZaL21CAn4RE1DbxQplfwIKRPerFnE7iGC78rXx4Xq/vnv0yyABX473/HZxYAVjZJ
+	 OpuFIwNG6921rTppTdE5D3xCtl5RBO9jG2qIo3rLOdmbCCFHVcUOIsA5qWekoU64pbokV
+	 nWj3ZTsVYNNHHC3Z3bs6DzR9Bu4OcAhLO95zBcC6nmN44sRUbadQBiL3tQISMd30M3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="QZI/xXHn";
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D995606A330;
-	Tue, 10 Nov 2026 12:03:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D995606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V47ELy0a;
+	arc=none smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122F8606A32A
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 12:03:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 122F8606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QZI/xXHn
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V47ELy0a
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ea7987517aso10831045ad.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:03:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=QZI/xXHn2UryHTaHUO2CJN2MDc023a+/qCjSYAdOIs8X7tsltxvZ3/DCGetBTcZYt0kTpefhzGsuw
-	 Quj1f69Hum8VgLgKNQvdI/HyJAvTCYKVz6D1WfhQbQX+zevrvcKn88Ktn1OT5mM5U4k2CY8NbZUdnW
-	 Um3Xwk5EH7oKqzL4=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af3081aad1-aaed1;
-	Tue, 10 Nov 2026 20:03:42 +0800 (CST)
-X-RM-TRANSID:2ee16af3081aad1-aaed1
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36af3081dd3e-b3c6a;
-	Tue, 10 Nov 2026 20:03:42 +0800 (CST)
-X-RM-TRANSID:2ee36af3081dd3e-b3c6a
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@kernel.org,
-	kuniyu@google.com,
-	pabeni@redhat.com,
-	willemb@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	horms@kernel.org,
-	asml.silence@gmail.com,
-	kaiyuanz@google.com,
-	linux-kernel@vger.kernel.org,
-	almasrymina@google.com,
-	yana06070@163.com
-Subject: [PATCH net-next] net: fix token index wraparound in SO_DEVMEM_DONTNEED
-Date: Tue, 10 Nov 2026 20:03:31 +0800
-Message-ID: <20261110120331.13661-1-yanxia@cmss.chinamobile.com>
+        d=gmail.com; s=20260707; t=1794312227; x=1794917027; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
+        b=V47ELy0aMx3z2Naonb3DmCacCrfE7SIE+sy9aaEqq27CpcKuobe1/sQSA24LvM+KbW
+         kI14xII7Y3V6GLo8TLXqrq0hXgs7gLANMkiIfFBR1ERJBNMl1t4wg5zsB9cMBqRXTjbo
+         8af5B/blUUZJ1j334r+TOINRHsdZXrfr1TUx8Mc48e5ADmIyusvLo4XMllqu1SjQzkdq
+         Sof75grKyHLcBHDjUHZFLDWRZRPUNV0EouLhmxwBC9P17kC1t6BjqzWNlqi+MNWbYh7O
+         AfrEvpr8+6KMyqRZUrTO5GmRm2dZl9JxF18mY19c1bmWyH7caZo9QgtblsDmxbS8MkYb
+         nptg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794312227; x=1794917027;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pqLHXawZlGErQii6rLTx7gLohrIRe5nAcrcd/ce+DdU=;
+        b=sw6JwCu8nQXnDVYBxunw/tuKkiJNblaVn4CdJ4qFBP4C+vcK+MuiCodRPEhlSGXupl
+         F6yjJAtMxnGVwKr7aFQwLb62p7sKtm8rNPA/Qb1vV9lg9IhvBdAzqOnl8g2tuFAziX6w
+         IOffvDoMqOIspxsRfMbEd1R4vxA6RLMQhjG8XcIo9/lad4UpHTaeqDxhgkuys0ox3G3T
+         rcmKv9r2xyCd1CErK9b8ZT2GaNc6fkz+Of4YjwwQD0juokNrklQKFqSBJDIb7qYD8lUt
+         x05VyS6ICnn4jgTji1ESSxo8ju5KgxvV3/206JnmjgqroMJLWYvo3Gzx9++qk3yWifjb
+         WZPw==
+X-Forwarded-Encrypted: i=1; AL+hErGi3M2tGfb9o6FKpYgS8f6snQmmN4fOxcCTygXB/ftpTXqh/Ff8dT8bfNes+aPPQ6l3x4GzvaI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8uCh+D9XQTH95Adpgjte4ICOQIcfPIFIguJNgsmsAFRfxHA2R+
+	pjEN1k5T60Om6HZdMyCtdxGwLr0zqQLH2g2aGQ+j5W1fNWQfRHlnV4Kv
+X-Gm-Gg: AYBFou0nZv7S+uaSHyePuLZYNiy6/OlHCpQgY/qAEs5fZyQoOSk4tkE3N2bH76f9HmB
+	3YeEDbdySlNmPp2G0FBAtoyieNevj7Up1EDCMzb8kFL9ke7UfQ82U1EUrwGiE1aPeTrcPWtwg3I
+	WHPuT9/iyMHi63FdUr3VhN9G3vF8LoFHe9DK0h6nmtiuQ7H2aeQmqxDkOUAttyrr82dt03tVxHL
+	jM58scarODNdmR5tstgTm5Qo+59Y/GCy2OK2z4Cmi8ZHES9GH0qG1Wmab9p3LftFpxuD7jP1NQC
+	gWYo1osobwHS2MfuCNfoZFEr0IY24Ha/IfpEclfuEyC7cWeaxifoA5aWJTcrO7lDq3EXpujsJ6F
+	IGSVGC9EBQFy/c9rQ4UY5Xxo9EeG46/IcjruAhJk+/wnxp0rVYpKRWz3S0q/zNvQn+mSfQVz/7K
+	sNWaXq8CoBNO/IcAxUmjZVzl0nhj9LAzA5GeaHRcvAbI4Y0fcRQl2JISioRNDHiMJ0hFbJXU5sz
+	RKiLU6UGd8E/IjYV+p5QGbHYbU+lFWRo9MnZ3/kC+zvVumcNKfu4U9af0kp2IAvsr1FlcVVgsAY
+	qqf8PQI8mdIW0uDDWSXlmokOzJoxROpDjluBcUBsMw==
+X-Received: by 2002:a17:90a:e7c8:b0:3ac:da41:ef7e with SMTP id 98e67ed59e1d1-3b166d1a008mr2560989a91.52.1794312227260;
+        Tue, 10 Nov 2026 04:03:47 -0800 (PST)
+Received: from localhost.localdomain ([183.62.176.219])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b16771705asm3693853a91.12.2026.11.10.04.03.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 04:03:46 -0800 (PST)
+From: liuyong <pkfxxxing@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/1] sctp: fix timer locking across association migration
+Date: Tue, 10 Nov 2026 20:02:08 +0800
+Message-ID: <20261110120212.1110283-1-pkfxxxing@gmail.com>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,41 +98,179 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-SO_DEVMEM_DONTNEED computes each index as token_start + j, in 32-bit
-unsigned arithmetic. A start of 0xfffffffe and a count of 4 produce
-indices 0xfffffffe, 0xffffffff, 0 and 1. Once the sum wraps, the loop
-can erase an existing low-numbered token from the same socket.
+This patch makes SCTP timer callbacks revalidate the association's socket
+after taking its BH lock. If accept or peeloff moves the association before
+the callback acquires the lock, the callback can otherwise process queues
+under the old socket's lock while abortive close tears them down under the
+new socket's lock. The T3 retransmit path then reads a freed chunk.
 
-Skip an index when the sum wraps below token_start. The check runs
-after the MAX_DONTNEED_FRAGS test; skipped indices still consume the
-1024-item budget. Tokens allocated with xa_limit_31b are unaffected.
+One possible interleaving on the unfixed kernel (time flows downward):
 
-Found during a code review of the devmem token release path.
+  CPU 0: sctp_generate_t3_rtx_event()  CPU 1 (peeloff / abortive close)
+  -----------------------------------  ------------------------------------
+  sk = asoc->base.sk; /* oldsk */
+                                       lock_sock(oldsk);
+                                       lock_sock_nested(newsk, ...);
+                                       asoc->base.sk = newsk;
+                                       release_sock(newsk);
+                                       release_sock(oldsk);
+  bh_lock_sock(sk); /* oldsk */
+  sock_owned_by_user(sk) == false
+  sctp_retransmit_mark(...);
+  chunk = list_entry(...);
+                                       lock_sock(newsk);
+                                       sctp_primitive_ABORT(...);
+                                       sctp_association_free(asoc);
+                                       sctp_outq_free(&asoc->outqueue);
+                                       __sctp_outq_teardown(...);
+                                       /* chunk is freed */
+  sctp_chunk_abandoned(chunk);
+  /* reads freed chunk: UAF */
+  bh_unlock_sock(sk);
 
-Built net/core/sock.o for i386 and x86_64 with W=1.
+The development and reproduction baseline is Linux 7.4.0-rc2 at commit
+b3dfbde62cf1981c4638939c159dfd087b7a72e9. The UAF was reproduced with an
+mdelay() instrumentation patch widening the windows between the T3
+callback caching the socket and locking it, and between the retransmit
+path obtaining a queued chunk and using it. With unacknowledged
+DATA pending, peeloff moves the association to a new socket; abortive close
+of that socket frees the chunks while the timer is still running.
 
-A temporary UML module tested copies of both loops against a real
-XArray. All five cases passed. The wrapping case deleted one entry
-with the original loop and none with the guard.
+The patch treats an association/socket mismatch like a busy socket and
+reschedules the timer through the existing reference-counted retry path.
+The next callback reads the current socket again. The check is applied to
+the six timer entry points with this locking pattern.
 
-Fixes: 678f6e28b5f6 ("net: add SO_DEVMEM_DONTNEED setsockopt to release RX frags")
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
- net/core/sock.c | 2 ++
- 1 file changed, 2 insertions(+)
+KASAN report:
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e2401d7..90f59b9 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1115,6 +1115,8 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- 		for (j = 0; j < tokens[i].token_count; j++) {
- 			if (++num_frags > MAX_DONTNEED_FRAGS)
- 				goto frag_limit_reached;
-+			if (tokens[i].token_start + j < tokens[i].token_start)
-+				continue;
- 
- 			netmem_ref netmem = (__force netmem_ref)__xa_erase(
- 				&sk->sk_user_frags, tokens[i].token_start + j);
+[  417.538580] ==================================================================
+[  417.538597] BUG: KASAN: slab-use-after-free in sctp_chunk_abandoned+0x706/0x840
+[  417.538674] Read of size 8 at addr ffff8881079c8a90 by task swapper/0/0
 
+[  417.538684] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.4.0-rc2-gb3dfbde62cf1-dirty #2 PREEMPT(lazy) 
+[  417.538687] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  417.538691] Call Trace:
+[  417.538698]  <IRQ>
+[  417.538700]  dump_stack_lvl+0x53/0x70
+[  417.538710]  print_report+0xd0/0x630
+[  417.538737]  kasan_report+0xce/0x100
+[  417.538741]  sctp_chunk_abandoned+0x706/0x840
+[  417.538746]  sctp_retransmit_mark+0x107/0xb00
+[  417.538749]  sctp_retransmit+0x25a/0x5b0
+[  417.538751]  sctp_do_sm+0x3c01/0x5c30
+[  417.538810]  sctp_generate_t3_rtx_event+0x174/0x270
+[  417.538814]  call_timer_fn+0x29/0x230
+[  417.538818]  __run_timers+0x56a/0x8d0
+[  417.538861]  timer_expire_remote+0xd3/0x120
+[  417.538872]  tmigr_handle_remote_up+0x4e0/0xa60
+[  417.538890]  __walk_groups_from+0x40/0x150
+[  417.538892]  tmigr_handle_remote+0x229/0x2c0
+[  417.538901]  run_timer_softirq+0x1f5/0x250
+[  417.538908]  handle_softirqs+0x1b3/0x600
+[  417.538917]  __irq_exit_rcu+0xfc/0x160
+[  417.538919]  sysvec_apic_timer_interrupt+0x6b/0x80
+[  417.538923]  </IRQ>
+[  417.538924]  <TASK>
+[  417.538925]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+[  417.538928] RIP: 0010:pv_native_safe_halt+0xf/0x20
+[  417.538931] Code: 44 de 00 c3 cc cc cc cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d 73 44 16 00 fb f4 <c3> cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
+[  417.538933] RSP: 0018:ffffffff85e07d10 EFLAGS: 00000212
+[  417.538939] RAX: ffff88819372e000 RBX: ffffffff85e18700 RCX: ffffffff84ef0c0b
+[  417.538940] RDX: ffffed10236062a3 RSI: 0000000000000004 RDI: 00000000000324bc
+[  417.538942] RBP: fffffbfff0bc30e0 R08: 0000000000000001 R09: ffffed10236062a2
+[  417.538943] R10: ffff88811b031513 R11: 0000000000000002 R12: 0000000000000000
+[  417.538944] R13: 0000000000000000 R14: 1ffffffff0bc0fa6 R15: dffffc0000000000
+[  417.538948]  default_idle+0x9/0x10
+[  417.538952]  default_idle_call+0x39/0x60
+[  417.538954]  do_idle+0x37b/0x560
+[  417.538960]  cpu_startup_entry+0x4f/0x60
+[  417.538962]  rest_init+0x186/0x1b0
+[  417.538997]  start_kernel+0x354/0x3b0
+[  417.539009]  x86_64_start_reservations+0x18/0x30
+[  417.539013]  x86_64_start_kernel+0x111/0x120
+[  417.539015]  common_startup_64+0x13e/0x158
+[  417.539023]  </TASK>
+
+[  417.539024] Allocated by task 255:
+[  417.539027]  kasan_save_stack+0x33/0x60
+[  417.539031]  kasan_save_track+0x14/0x30
+[  417.539032]  __kasan_slab_alloc+0x6e/0x70
+[  417.539034]  kmem_cache_alloc_noprof+0x10e/0x340
+[  417.539039]  sctp_chunkify+0x42/0x270
+[  417.539041]  _sctp_make_chunk+0x11c/0x230
+[  417.539042]  sctp_make_datafrag_empty+0x134/0x200
+[  417.539044]  sctp_datamsg_from_user+0x49d/0xf70
+[  417.539046]  sctp_sendmsg_to_asoc+0x6cb/0x16b0
+[  417.539049]  sctp_sendmsg+0x5c8/0x1960
+[  417.539051]  __sys_sendto+0x31c/0x390
+[  417.539061]  __x64_sys_sendto+0xdb/0x1b0
+[  417.539063]  do_syscall_64+0xdf/0x4c0
+[  417.539065]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[  417.539068] Freed by task 255:
+[  417.539069]  kasan_save_stack+0x33/0x60
+[  417.539070]  kasan_save_track+0x14/0x30
+[  417.539072]  kasan_save_free_info+0x3b/0x60
+[  417.539075]  __kasan_slab_free+0x43/0x70
+[  417.539077]  kmem_cache_free+0xba/0x3a0
+[  417.539078]  __sctp_outq_teardown+0x16c/0x960
+[  417.539080]  sctp_association_free+0x157/0x5e0
+[  417.539082]  sctp_do_sm+0x31c7/0x5c30
+[  417.539085]  sctp_primitive_ABORT+0x7c/0xd0
+[  417.539086]  sctp_close+0x203/0x810
+[  417.539088]  inet_release+0xc9/0x1c0
+[  417.539096]  __sock_release+0xa1/0x260
+[  417.539098]  sock_close+0x10/0x20
+[  417.539100]  __fput+0x2f8/0x9e0
+[  417.539107]  fput_close_sync+0xe2/0x190
+[  417.539109]  __x64_sys_close+0x78/0xd0
+[  417.539111]  do_syscall_64+0xdf/0x4c0
+[  417.539113]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[  417.539115] The buggy address belongs to the object at ffff8881079c8a00
+                which belongs to the cache sctp_chunk of size 256
+[  417.539117] The buggy address is located 144 bytes inside of
+                freed 256-byte region [ffff8881079c8a00, ffff8881079c8b00)
+
+[  417.539120] The buggy address belongs to the physical page:
+[  417.539122] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1079c8
+[  417.539125] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  417.539126] flags: 0x200000000000040(head|node=0|zone=2)
+[  417.539132] page_type: f5(slab)
+[  417.539134] raw: 0200000000000040 ffff8881017d5040 dead000000000100 dead000000000122
+[  417.539139] raw: 0000000000000000 0000000000190019 00000000f5000000 0000000000000000
+[  417.539140] head: 0200000000000040 ffff8881017d5040 dead000000000100 dead000000000122
+[  417.539142] head: 0000000000000000 0000000000190019 00000000f5000000 0000000000000000
+[  417.539143] head: 0200000000000001 ffffffffffffff81 00000000ffffffff 00000000ffffffff
+[  417.539145] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+[  417.539146] page dumped because: kasan: bad access detected
+
+[  417.539147] Memory state around the buggy address:
+[  417.539148]  ffff8881079c8980: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+[  417.539149]  ffff8881079c8a00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  417.539150] >ffff8881079c8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  417.539151]                          ^
+[  417.539152]  ffff8881079c8b00: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+[  417.539153]  ffff8881079c8b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  417.539154] ==================================================================
+[  417.539179] Disabling lock debugging due to kernel taint
+
+The issue was discovered and fixed by Qihoo 360's Tulongfeng multi-agent system.
+
+A reproducer and additional reproduction materials are available. Please
+contact me privately if you need them.
+
+Regards,
+liuyong
+360 Vulnerability Research Institute
+
+liuyong (1):
+  sctp: revalidate the association socket in timer callbacks
+
+ net/sctp/associola.c     |  4 ++--
+ net/sctp/sm_sideeffect.c | 41 ++++++++++++++++++++--------------------
+ 2 files changed, 22 insertions(+), 23 deletions(-)
+
+-- 
+2.43.0
 
