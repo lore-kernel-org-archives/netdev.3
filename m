@@ -1,98 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794333141;
-	b=NUHpSGcKn5eMjZuVfVeEY1VH+0LfsH8qXHHBoJAMDluXLWhS2kRezMyoEumAKgsxE9zq
-	 ax1W6DtJEGyU43Xxr1ICrs7QMf3K7SsX8Y8RZc+Go3/czRXTSrFjJzECB6NCWDC4y9oMr
-	 DlBHZhKpxnQ+VYUpEMPTNaz9tyopjdHfuB3rLQ9n7ETkm8XIg62fCVFPIbc022723V+lf
-	 Npc2zWoKqYhpWIRTTEc3rWRkpkpbXSn3RcK7+6n07S/t5viy6SjgqVOMermUdpLukO4H9
-	 dwYgtx7a46j8IIYXjEMaEGt3NEY1rUbZpYz1CABmQtCBnEWBEadKQikl81GSpzU6ugw==
+	t=1794333203;
+	b=spzcs7wOQ1SotLnWrfl8fuqdFxqASLOf59BFvA1S+qPr5IpHYAV8Vhizz+GKnrNZ//+W
+	 t+01JCSOTtWMMv8Q6HeuhWk+AzWto8rqnXRtPVeV2pa1cwaTCXuwxfwPP37WPQZWlksgr
+	 vpF/KAcjHp16Pi1P7oZ41Em9a6hBE9MNvd/glSSN6Kw0YmG/wpd77NohJundBvmz2uGZw
+	 W6AjVfeM+fYSKX1yGvRFIFUtF0UtcHqjFfSL15X/tzchS8/2H1SrYa8HBb43qZQzmedP/
+	 9nDjqsb770xj0R8ASSzdQI9geE1Fh3f0GBGosMTSyFSdki1oSOqrANKYX/vCgVrpLHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794333141;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=rdOmAeG6poyov//lJ4VIygTia9///k0Lcnf6KqKTndk=;
-	b=KKXXDVb2j0AUOhJ0woQOAO8oOeeOtW9sCtSVkwcQoIo5/n2lhfc+C/lTAHW56T7DVtpB
-	 i3OKmPnA+1jjAEd5tjugaRv1CUbZjQRVXOkXuyBhEzLnnjwxcBE3m6XSk10OrL+q/x7jo
-	 iXNVPCQ9jxCNOGym/ejcgOdMGqDnRAq0fRMHyki4nP/U5t3mn+24I9ZW7tMVWRoD91+jO
-	 O0LsTqjmLGsZx75qrNzz+XsJaNWQxzIIf+9P6lAQDRLDrayVJ0QGXvSRbSnt2BxwQQKpU
-	 NGAG41MunWbEDrp1XXytGXZVANKtrtVaaEUiVMfr+C3sqMJTs2uWrmfDcKIfCQNRS0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794333203;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vewQ1rC3gNo47kqP/Hx51b9scv8rhIYW439HT73ccWY=;
+	b=sEIaS5YIpBaotHFAkBaGUgkV9vzSTB4fXsK7JOu3X2emdhlm2l+t0i/sX0J5aLBMCwlV
+	 gmW03gOc6Cnh0kGntLOHc0XBuoCQA0JfufpCUpD5ym9k8yxb7kbCiPUM1WaQTZPVlqqdl
+	 gMplPnhTmvBWIzwKYN6Ouq2lacMZmSjJQJ+klWLioAOLRnVwCYO4E+0h6sFBL49XXrWUI
+	 +CtDFO2zhyAXQEDp15knpOj3TiRSt9h+0s1sl/WLM7VDghJcOQC4GV9bPM4h5uIehSgcF
+	 95TaMMq8tHnH5FcdGkvgNmyofUe2Q3hVjyy1SSRxOvhymp9iEJ3t1mA56H+zweCxkmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Upm/kl2W";
-	arc=none smtp.remote-ip=209.85.161.52
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUmQjUpo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52554606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:52:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52554606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B75606A331;
+	Tue, 10 Nov 2026 17:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Upm/kl2W
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6df7f544919so1221222eaf.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:52:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794333140; x=1794937940; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rdOmAeG6poyov//lJ4VIygTia9///k0Lcnf6KqKTndk=;
-        b=Upm/kl2WFo2qWXjipnwhP45CQUSdz0AUAlQ2ZTR4etmokvCbHB4jviat920uvatp8h
-         u2gtBwHNzwJdmKmXLlgcidnbUaVlwayDRzdO38pYgO2NF4EsCpyJF0+Z3TAcSfyviW9X
-         Zk7NQH79Aq1nkMeCEabh9QNaE5RBSP2+6b0a4mRBnQSHDHscFfRGINJSmb0TPHL40ci0
-         y0oelyZWXj71erHj6F4E4IknPJwl4hDMjVA6ykh/9X80tREM90kP0IhRxxuMedCGYgvQ
-         DxUnm3wj1Sgv32HzMgfgN3GpttgPv34XVQvEc+o37hCy5q46vIwcwc/G2gDbo51MohtK
-         lafw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794333140; x=1794937940;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rdOmAeG6poyov//lJ4VIygTia9///k0Lcnf6KqKTndk=;
-        b=yFE4YSC7LyN/LJ3THaXeJX2ShLvO2WWvxhHGL61ScNmcBJickUqf36yU/5E2ClUArr
-         hbuxpxOo2Yyr1e0h28aFB16QktSc10QxSRNcg1TEa1IQKUL7doDEdPPuIGyQ5JZUYqDL
-         vFBRa4BaTD9jZi/9YwpXwZrkzvVT65q52IS0/LB0sJ0VlY0F0bXnn9YbPAGP/Z3pGK35
-         uQKEz0uhb9sUy6nQ5opfnrUoKg6eMO6UbkaG1dfOJnUMbA2ZlqW5inKUF+YtxWgTZR+n
-         eYn1YCn4gL8IFuVNtOOctw44yiUfs2Z4eq0a95tlCdijb/iSp5/pMcfdXKpm7gvGXv86
-         YUwQ==
-X-Gm-Message-State: APuU4Z+zbJWPwnO+bNRmGBUftRtwzG5OyU6+kZgtNki4GREzbmV9pCiR
-	6jrGoz2oAPLSD3Rm+nX4Rk5dA0/twjvEsMKdMMWxWoN85Kyji7cz0qesFmPAuePR
-X-Gm-Gg: AYBFou2VltCLaGdFC/7WzxdWUR2WnxLkU7LiAYf3we4pOK2TbQ2oVrqLVufPVPbEtrE
-	McDOsOyYCmBqUy3BkCw5zPJHMJzMZ+8nSIP7pnfoLnLCjKgct3ZmQLQr7zrghUs/nrtRwvGpoKE
-	EYZIg1dkP71PP+XEEP2jOVyGU7ILSf8WqG33szszgXusjnluhHnOumDIk7oMwoKIt+HKSeK65+Z
-	SFMDsdwn+8OonylD+QDnCUOkb7hYVSFzrWzJzjWEQXdRJ87nrwIioeb3GrRBRlm4aUTiOZ3kWIj
-	qDllsIUIQi1XgrUY7DLle1lmKM+yRmUNVSwebNQoy+6cXGSCtjP6bhvXUK1puz0RJn2Oj0mOofM
-	IKkoesFsXTGDPTjQxOXlaDpUQbVl7C9RzhmJjd/latCLTax9OD1xrh5UIYzg9JdAlMVIXkbxZx+
-	S/sGL1GY3OLzxMxOPV7hK1z/VOuROVYLC/KcOZMAGEiLiYTaMtPZn9IAslThMxFxiAvm/+I10kA
-	cT1Awci0ExfiPjtPR+mv79yPVWAsey5G9IFBt4rk011yP0EqIVL1Va00WvM8tFPbErFGzL9ouKX
-	CDHEA2BWHjrCXTYJpuMN9w+w
-X-Received: by 2002:a05:6820:839c:b0:6cd:3ffc:ad01 with SMTP id 006d021491bc7-718a721c7f6mr1281321eaf.81.1794333140171;
-        Tue, 10 Nov 2026 09:52:20 -0800 (PST)
-Received: from houminxi ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-718a8f660b2sm2127174eaf.4.2026.11.10.09.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 09:52:19 -0800 (PST)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org
-Subject: Re: [PATCH net-next v6 2/2] netlink: specs: add ovs datapath and vport set operations
-Date: Tue, 10 Nov 2026 12:52:05 -0500
-Message-ID: <20261110175205.978410-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <179414156884.994134.5015506800657224516@kernel.org>
-References: <179414156884.994134.5015506800657224516@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUmQjUpo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D721F008A2;
+	Tue, 10 Nov 2026 17:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794333202;
+	bh=vewQ1rC3gNo47kqP/Hx51b9scv8rhIYW439HT73ccWY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PUmQjUpoKeuGYcTvVsLI8aIfuaSttlsA2XHp/0wiEgY9Ld5vXFlAH8p5lkEA5+VOi
+	 UMFR3NMc19579X5GFYdkY2qwikGztNB/TNKkas/T8GnDCdqfiMieQzAyeQI+/j0zOm
+	 9bwRsDAkE8cIxyNJejyh+NeSmlhTi+mPOmYbJJdbQbvNV7xlMsrpcg8n2R5qpoF+q4
+	 ia4UAI6T+n+/wxf6fhbtSfjnEAN8TX9iKByUh4qjj70BYdvoMJimAmU0aXlPp7mAwB
+	 QJlzaR2YToBw6UBNA8x0wNacddFsIuuY8szdqTh1LGmL/q0vzr1JpAy6tHrklI+s//
+	 eRco5r4T4R1jw==
+Subject: Re: [PATCH net-next 02/10] ice: dpll: serialize changes of the SyncE
+ CGU registers
+From: netdev-bot+sashiko@kernel.org
+To: ivecera@redhat.com
+Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, min.li@microchip.com,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, grzegorz.nitka@intel.com,
+ karol.kolacinski@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
+ poros@redhat.com
+Date: Tue, 10 Nov 2026 17:53:21 +0000
+Message-ID: <179433320107.994134.16333323653199953270@kernel.org>
+In-Reply-To: <20261106121005.1327603-3-ivecera@redhat.com>
+References: <20261106121005.1327603-3-ivecera@redhat.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,26 +70,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On 2026-11-08 12:39, Sashiko wrote:
-> [Low] The min length has no effect for this family.
-> [Low] The vport set list names attributes the kernel rejects.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-On the first one, the mechanism is in the generator: TypeScalar.__init__
-calls _init_checks() only when the family is not classic
-(tools/net/ynl/pyynl/ynl_gen_c.py:375), so for these families a check
-documents the kernel policy and nothing else. The kernel enforces it with
-NLA_POLICY_MIN(NLA_S32, 0). v7 keeps the declaration and changes the type
-to s32, which does reach the generated request code: it now calls
-ynl_attr_put_s32() for the attribute.
+Low priority / nit picks for your consideration:
 
-One disclosure on the same point. v7 also adds a max check on
-masks-cache-size, for the same reason, and it does not reach the
-generated code either. If a check that generates nothing is worse than no
-check, say so and I will drop both rather than leave them in the spec.
+- [Low] The commit fixes a race that already exists in the tree, but it
+  has no Fixes: tag and no stable Cc.
 
-The vport set list no longer carries the ifindex or the options, and the
-doc says that a request with either of them is rejected.
+--
 
-pw-bot: cr
+ice: dpll: serialize changes of the SyncE CGU registers
+
+This patch adds a cgu_synce_lock mutex to struct ice_adapter, which all
+E825C PFs share. It holds that lock around the CGU R10/R11
+read-modify-write sequences in ice_dpll_synce_update_e825c(), and around
+the ice_tspll_cfg_synce_ethdiv_e825c() call in ice_ptp_link_change().
+
+> ice_ptp_link_change() does not hold dpll_lock, so it can already overwrite
+> an update of another PF. RCLK callbacks are serialized by dpll_lock, but
+> the DPLL core is going to serialize callbacks per (module, clock_id), and
+> each complex has its own DSN and so its own clock_id. With that change, a
+> test toggling RCLK pins of both complexes lost an update.
+
+[ ... ]
+
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+
+[Severity: Low]
+Should this patch have a Fixes: tag?
+
+The commit message says this race already exists in the tree. Before
+this patch, ice_ptp_link_change() on one PF calls
+ice_tspll_cfg_synce_ethdiv_e825c(). That function reads ICE_CGU_R10 once
+and writes the whole register back twice.
+
+At the same time, on another PF, the path
+ice_dpll_rclk_state_on_pin_set()->ice_dpll_synce_update_e825c() does a
+read-modify-write of R10 and R11. Each of these paths holds only its own
+PF's pf->dplls.lock.
+
+Both paths reach the same CGU. All E825C PFs share one ice_adapter, and
+the secondary complex reaches the primary CGU through
+ice_sbq_dev_cgu_peer. So a link flap on one port can write back a stale
+R10. That undoes a mux or divider change that another PF just made
+(S_REF_CLK, ETHCLKO_SEL, CLKO_SEL, *_DIV_M1).
+
+Both racing sequences seem to come from commit ad1df4f2d591 ("ice: dpll:
+Support E825-C SyncE and dynamic pin discovery"). A related fix,
+bf6dbadb72b9 ("ice: fix PTP timestamping broken by SyncE code on
+E825C"), already has a Fixes: tag for that commit.
+
+Without the tag, stable kernels that carry ad1df4f2d591 would probably
+not get the fix for this race. Could you add the following tag?
+
+Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+
+Another option is to split this patch out of the series and send it to
+net.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106121005.1327603-1-ivecera%40redhat.com
