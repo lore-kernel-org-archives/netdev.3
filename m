@@ -1,106 +1,106 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794324338;
-	b=K4aZNx5lMbc+6uQVNosfPFNWbAuBk3l4N6rxnE1ygtIrcCRL7n9OnSd9UOnGfR657W3r
-	 yk9UUORAfIIlgi/FuGBFwccDX7HN7PgvvzJXtdkYkRY86XUaasHqdJ73zsSnUY8U0Akb+
-	 QHjMDxAeOoWQLPzQiudzzUzzTQWG+tsUiBHMZ51rsUbnI8grLNg4bun1ACaETtGJksz6g
-	 GXbCFeoNqXdUxfNeYrCXt0LpkbEs8bm8B83FdU5pBJY5rJpiHQvV1JjE8sCD7D65v/pmg
-	 o2hccyIkJpMGIILuOgWwVOUHUt0jxOIJd/yggGNuOqTJtiHPQLFSoxFFo1iPbK7tGkQ==
+	t=1794324363;
+	b=GU0P2YNMoTBhIeXETwlEYqUPoqDfD2bQjGlRmI2fkiw2JtVSMzUrT535WxwVuPbtkgR5
+	 bysi4ezZO6VH3+dtk2qifdLLzeQm1NghsACTtYNqPL5bPEm8uSqkbQ+DGvwhBM0RC3GF/
+	 VVOBxaSH0m5E6gAq7CM14ekUiqrPoufxfit97SjQhildULd6Q20MYfFlqscW7+4PO334+
+	 TBhb7wk7B/GpGZtzrBXNkgWqK9QrqPCYPezYe2Uqx+DoThqqeAdfhAEpUEE6yftAcn6Sp
+	 E9LW3u3hGQhPq2CA7IVmctT7DQAhg5Bg8dh0mVSPhGchtOGYvwoz4FQu5WNfTdrxz1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794324338;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794324363;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
 	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=wfzKELCAp0cqmrsetofqgnVnCBGLz4JZTetKNjquJ78=;
-	b=pBluZ3EFYxkXfMvM4TIjYtIqUC2vSJNbUMZeVSRAeh0s507McS4fE0g1YwqfV/JnmQwF
-	 h5GMRp8fsXXevGbtwpu+eKq8O05IGEcqkEMRJ2Le8ET+KXGyvDNFt0Bf37gvxIb10Z+KD
-	 iD/0nEMLBmH+njqCsGSTLFh1qaiIQr8MrhRExXo+FO8gmxvuBaNmDfrX4BISuKFmf/GqF
-	 JMUW24YA4Yv9emld0d78nX74dpm5e9wPdHz4i8N95j3Dz6meCBRbBLKagYn3Lm73/qN3j
-	 S1h0IWPR4oiTMQdzpFxirS7IhFPZyEhuGLUfK/Sao5WOBc3kF1rT0XZS774RLHFKpig==
+	bh=ZtndkHAk1bvYJbBuKV5N1mcI+hl9IGHF+CaWL7eypxA=;
+	b=iEyZfOZDmQRuKKfDaz80nt7NcxtOkM8jseJZPsp/4q9uyhuzCh5kuXvjlwn/931TAtNl
+	 +pKW96nHPWSa2vwVdwEWX5EQ+n3XIJb29TxdS1kji//RagTdyP1Lq4iM9GD4IborL0mON
+	 9Jm9bruf7Eqp93Gw/RPhOxZ6/RKXgMo8/V3I1+K0h9/fTUGn3X+VySwtu3R31wUT7ktLn
+	 9V/J6AgaTiWe/4SOYXPM/PUuFIJ32/1+Dz7Op9/+D4llYi44UWT0OJOVa3IxsXDXKDh++
+	 +1I4clCfKBh+GITGqRACmR+x2aCZdiN6yqK6HaH5IRDNZRmxmH0KbwKCc3EiKkDyHLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WIO2qeaX;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=DDnyK00v;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cUMB1SHx;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=L4Rs3Ouo;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD44606A325
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:25:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FD44606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DBD606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:26:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78DBD606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WIO2qeaX;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=DDnyK00v
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cUMB1SHx;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=L4Rs3Ouo
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794324337;
+	s=mimecast20190719; t=1794324361;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wfzKELCAp0cqmrsetofqgnVnCBGLz4JZTetKNjquJ78=;
-	b=WIO2qeaXBEvhhhVh0G2jozaBfS4mlxQNW18Q85w/+wGEzdBb/1g4F+aHiyLtRwzsgk7zKN
-	0pfmwJBvKwArn6x5p+pmvNc7thCsZUPrRqcgB4Hj+zrhBFIcmFIsZ66kOiqGY27sJUChCs
-	Ap90lS6YXBUbgF3o2x5N2oSfUPcaYME=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZtndkHAk1bvYJbBuKV5N1mcI+hl9IGHF+CaWL7eypxA=;
+	b=cUMB1SHxe9+Z6pbSpK2EqAF/MLPGRF12G+KlLvcCo3kNesFEyOPaA1sF1otxp2vhSXXRHY
+	crSuAVRdgY9fAYAgk3kkob9vJxU+UB0Ef5k+xdofoCMadSpKy6+eHKT0/zA2yZLsE0dSBv
+	wmlDEEEwXsRuyo3NzUUAHtKxpJQ2dIY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-v6pBMVrgNHaB8ioRDwNv7Q-1; Tue, 10 Nov 2026 10:25:32 -0500
-X-MC-Unique: v6pBMVrgNHaB8ioRDwNv7Q-1
-X-Mimecast-MFC-AGG-ID: v6pBMVrgNHaB8ioRDwNv7Q_1794324331
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4ba078abd70so2603755e9.3
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:25:32 -0800 (PST)
+ us-mta-711-MYSQoei3PauHs7Q_Yig3bA-1; Tue, 10 Nov 2026 10:25:59 -0500
+X-MC-Unique: MYSQoei3PauHs7Q_Yig3bA-1
+X-Mimecast-MFC-AGG-ID: MYSQoei3PauHs7Q_Yig3bA_1794324358
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-49323e268aeso1700011f8f.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:25:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794324331; x=1794929131; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1794324358; x=1794929158; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wfzKELCAp0cqmrsetofqgnVnCBGLz4JZTetKNjquJ78=;
-        b=DDnyK00vImLWL+Q0AZwLrkWX9auIPGPQiM6c1SnILlCCdDdj3XokEj8m1bXrv7riHz
-         /gIyGCLoqA59Arsmmta0VDl0VUtwNmsF7+nU82u26P3Y/8kgE+BTbVoFBwXsSt9B3GVf
-         swFcnXVMbuq0FcX/NeqX2SUweiQd4LxI3SMI3vbZ0YaRnRm6X04YH4vsfE6/5roC/6aE
-         SEVcejmudHFSMFIOC4bUhJ4USDOy4JjQl9rL5TT1528aSZ9zF6oqDEqzuqHw2yDWqiF6
-         tfQfVBSGd00b6+94hDkCsVz7YxNvkOSoi6DDk5InWq56N0o8iOBsL38C0gFo6u4JVDk8
-         h/xw==
+        bh=ZtndkHAk1bvYJbBuKV5N1mcI+hl9IGHF+CaWL7eypxA=;
+        b=L4Rs3OuoXE9XIAvPnSU74JssR8pR6dLQW0UmTeE/TcxiGahMTQZBUTIcaBlgxIKQdJ
+         o9T//zE/b8/v4aOgiCrk7WyqVNk9KfyYwpU6ZUcNaK3/WkIWf8OA8a/OzUc26xaWQcsm
+         JiIMwhAkDYoIGIoBhMnHHUmOHkcPsHRmVZHi7jUXQmgwNI6XJIAY4KaXBtyjLodJT6pv
+         rqsWifSaJmRE6uskfRxU9S8VBeyJqNWkglRWAONhR9c/RCSdPqGIpGrjRSfbf0boW6Hn
+         X67oNAk9lB5l0Cpy9Hb99Mr/4yffnVM9zo439ch6ovPO1B4NeclU7vGF+1p083gnzON8
+         TBCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794324331; x=1794929131;
+        d=1e100.net; s=20260707; t=1794324358; x=1794929158;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wfzKELCAp0cqmrsetofqgnVnCBGLz4JZTetKNjquJ78=;
-        b=BDABdr0Vk5/w2tfCTnAndcWNvVM1WnF+TJyvadijcB8h9gmYAOJh3YX8jxjLaqWaAV
-         0I6O3T3Kl4unb3vBbTUlVhmRL4G9BQ53cdMxR9nJOy+hqHPEj2VumQUyC70jiHl6AtYq
-         BZdd9axCJ+0xJBhhzzKwVkFFvNjEc97zMWfqUUbgBH+gtaCCDPDlBD5fXNg1/5iCDOcS
-         U3joq+8OjtGoYYjaX9xcVR5CQQWy1CgEBBFL32tUZMKqCXb9iD1joZnK2b9/GSFFKPoM
-         TS7g0NUfUNbwTX/YYz1UxBO3d54FG+3VG6lQoK0HkmFSOqTV5G8LtH+Cfn+xbcutqxo4
-         zk4g==
-X-Forwarded-Encrypted: i=1; AL+hErF1JYElqvBgNUbS7qWoi4jKcawPI32qSgwGyOXKgzx9cFwMYuuA1y362QaR5RkALN2WYvmft+E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9NFO2otGDndC1iZkANrWNqLlywwSjkC6tdKW9UJBOkgYZPAKAt
-	hkwTKmwKhayPy+BkhU71PyxV9ZtxEjqRkx67gct6WaKbmiOtayMeNY48nxqF5gnsankEe1chpag
-	BYCv5lFlebkFpqDgnG9KUnqWk4r7Bu9v1uFeD181mQBPE9d0F+Qw2GEuu2w==
-X-Gm-Gg: AYBFou0MjFtgjdy7RZLyWqkQBDuF9p2pEiQDq2LuX0N1ZRNbVAcyRfr33Rt3fgG9+XU
-	iNQtJX07j4JKL4dsFgRxjlTnccz8/OC/qBn3UONJyNeZSKlqiaJEYCSQp0KEjdEitFD5eQT54e0
-	4WFbe0RtM4n16bHYxNkDptYh9Thf3yQUfbbNps7CFpcwXaQ6zJw5HrmQYBR0yuLATiOYRG8ZuHR
-	2Ph4MX5ljIuAUWDC2vvEzaM4GOADLkoZvt7XPh5pfU31jgudxcAT4UWeLGF6uPjW1zFu45jkmqT
-	QF7hhArZu+1g1Qbxi4+3TJKkLTH/RbfBPBFff7FG60Lb+Spg4OV/oxSH3ZjT+Q0XKh9QIAmfu8J
-	JSLCNC1hqxNdXqHMuQ5FrFFhl2sM6Fc4LNvQ=
-X-Received: by 2002:a05:600c:524e:b0:4a3:59c7:f226 with SMTP id 5b1f17b1804b1-4ba02337989mr51499505e9.6.1794324331032;
-        Tue, 10 Nov 2026 07:25:31 -0800 (PST)
-X-Received: by 2002:a05:600c:524e:b0:4a3:59c7:f226 with SMTP id 5b1f17b1804b1-4ba02337989mr51499015e9.6.1794324330573;
-        Tue, 10 Nov 2026 07:25:30 -0800 (PST)
-Received: from [10.43.3.161] ([213.175.46.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01fba476sm83278055e9.2.2026.11.10.07.25.29
+        bh=ZtndkHAk1bvYJbBuKV5N1mcI+hl9IGHF+CaWL7eypxA=;
+        b=roCABz0S4q6nU2tBw05krbrUCn5pgnOZf3CXE1GPRGRfWgzv47k5su609h7cybZvza
+         xouFZkHitPUGzLIW/8AKYawZ2YehgU99Ln4lWG8BRREJ+wEmJ3QmaEg8bnigGoHVr68W
+         Oobsbhmnu4YcZ9okuDxwWXDLOiKp8OiIG7WbUpgIZ5ixgL78lAk0fjw375lyG2HlYjGg
+         EAS0btSocuCVHhD5QQi1vqATITlL6BibzCz/S+twTm/vCNkWqiGaB3qT4Joe62vLULJV
+         m/0iKe+WQGvwZAusa7esGsedhJ5LJIBDZgCztNFTCZqk/ZNFrBNzFUJ6NugRqDVkyULW
+         tb+w==
+X-Forwarded-Encrypted: i=1; AL+hErFBO9z5sUYAZ2+9vQ1qKPb2aD5Vm8SzU2MwICxXOkSA6UUTomaY8YXLFpFe2T3sL4mXL9Xx8DM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8xuYHGXesKaCpbEc+wqf82ez6OZ2bsdLD1J4EuWNcPj7t8+RDF
+	vju1kk3qtMvN7Bi15XF2QrUTMij8tpJ3EQAVymUAPircXb4yBoYsIffPeXvIAIZMXqIhK2/xNjN
+	xKlDTdGkj5f1wK51J0VARFy9MFePfDj/ZuRfCkiMXyA/cj5914N1/StvABg==
+X-Gm-Gg: AYBFou1ZE+wAU/CCa67erJuXM7s2j7WhaJE1RSSXq1SYGtxi/oOBo8SZ4KK/XxFOTkJ
+	qv076LY7aV7mD6agDXAEvBZ9wqoAJiHZy51N0bAWQkfOcilb1C6q2Oy7yoNmKyH8LATAtwMVEKU
+	uOKT9a8UJqB1Fc8rw5ggUn8kx64m2PZ23wBFOCQkp+1bh/W6mUVI3+GJ/KBtNilg3cE9yNFf1tI
+	sWVewyWIo01IFZlUnmSNcLOB1xr3PHQiWSc6p186CD0CPxp/WVhQV2dJTTF0rNRlVZqJh1NAVu1
+	WQboXrtVPGHUsLHaJ+OcV7RGHPR/UeQ4i38+Zv2dKe5Gv5LUKph69k9t0zDPcvIlUjy35fY39Va
+	qoY1UTnWiZwhDz/FuRscLVsFBTgvTRD42V8E=
+X-Received: by 2002:a05:6000:4555:b0:48d:f160:efad with SMTP id ffacd0b85a97d-49830b97cbdmr4156321f8f.30.1794324357975;
+        Tue, 10 Nov 2026 07:25:57 -0800 (PST)
+X-Received: by 2002:a05:6000:4555:b0:48d:f160:efad with SMTP id ffacd0b85a97d-49830b97cbdmr4156255f8f.30.1794324357353;
+        Tue, 10 Nov 2026 07:25:57 -0800 (PST)
+Received: from [10.43.3.161] ([213.175.37.14])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cbbe5sm6123261f8f.42.2026.11.10.07.25.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 07:25:29 -0800 (PST)
-Message-ID: <cccade50-26b2-49e5-9d06-bde1c4f1c004@redhat.com>
-Date: Tue, 10 Nov 2026 16:25:28 +0100
+        Tue, 10 Nov 2026 07:25:56 -0800 (PST)
+Message-ID: <c4b7421f-be84-49b8-8d42-9a4b3050ee28@redhat.com>
+Date: Tue, 10 Nov 2026 16:25:55 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,8 +111,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] dpll: notify about a reference sync pair only if
- it was added
+Subject: Re: [PATCH net 2/2] dpll: report dumps interrupted by topology
+ changes
 Content-Language: en-US
 To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
 Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
@@ -122,48 +122,166 @@ Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
  Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
  Michal Michalik <michal.michalik@intel.com>, linux-kernel@vger.kernel.org
 References: <20261105131145.1010406-1-ivecera@redhat.com>
- <20261105131145.1010406-2-ivecera@redhat.com>
+ <20261105131145.1010406-3-ivecera@redhat.com>
 From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20261105131145.1010406-2-ivecera@redhat.com>
+In-Reply-To: <20261105131145.1010406-3-ivecera@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 11/5/26 2:11 PM, Ivan Vecera wrote:
-> dpll_pin_ref_sync_pair_add() sends a pin change notification even when
-> xa_insert() fails and nothing has changed. zl3073x gets -EBUSY when
-> another channel has already added the same pair and ignores it, so user
-> space is notified about a change that did not happen.
+> Pin and device dumps release dpll_lock between parts and resume from the
+> id saved by the previous part. An object registered in between is missed
+> if its id is below that one, as is the case for an object allocated
+> before the dump started. User space gets an incomplete dump and has no
+> way to tell.
 > 
-> Send the notification only after a successful insert.
+> Count registrations and unregistrations in a generation counter and pass
+> it to genl_dump_check_consistent() to set NLM_F_DUMP_INTR. Check it only
+> after a message is built, a cancelled message would consume the change.
 > 
-> Found by code review. Reproduced on a ZL30732A board with kprobes on
-> dpll_pin_ref_sync_pair_add() and __dpll_pin_change_ntf(): loading the
-> driver adds one pair twice and the add failing with -EBUSY sends a
-> notification. With this patch it does not, and the successful add still
-> does. A test module adding one pair twice shows the same on the monitor
-> group.
+> Found by code review. Reproduced with a test module registering a device
+> or a pin with a low id between parts of a raw netlink dump: the object was
+> missing and no message had the flag set. With this patch the flag is set
+> when an object is registered or unregistered during a dump, and is not
+> set on dumps without such a change. Tested in QEMU and on a ZL30732A
+> board, where unbinding the driver during a dump sets the flag as well.
 > 
-> Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
+> Fixes: 9d71b54b65b1 ("dpll: netlink: Add DPLL framework base functions")
 > Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 > ---
->   drivers/dpll/dpll_core.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   drivers/dpll/dpll_core.c    | 19 +++++++++++++++++++
+>   drivers/dpll/dpll_core.h    |  1 +
+>   drivers/dpll/dpll_netlink.c |  4 ++++
+>   3 files changed, 24 insertions(+)
 > 
 > diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-> index 8389983f425695..277692d12d3d1e 100644
+> index 277692d12d3d1e..a68e8f5b609db8 100644
 > --- a/drivers/dpll/dpll_core.c
 > +++ b/drivers/dpll/dpll_core.c
-> @@ -1081,7 +1081,8 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
->   	mutex_lock(&dpll_lock);
->   	ret = xa_insert(&pin->ref_sync_pins, ref_sync_pin->id,
->   			ref_sync_pin, GFP_KERNEL);
-> -	__dpll_pin_change_ntf(pin);
-> +	if (!ret)
-> +		__dpll_pin_change_ntf(pin);
+> @@ -22,6 +22,12 @@
+>   /* Mutex lock to protect DPLL subsystem devices and pins */
+>   DEFINE_MUTEX(dpll_lock);
+>   
+> +/* Changes with the topology of devices and pins, so that netlink dumps can
+> + * detect it. Never 0, as netlink takes that for no sequence. Protected by
+> + * dpll_lock.
+> + */
+> +unsigned int dpll_generation = 1;
+> +
+>   DEFINE_XARRAY_FLAGS(dpll_device_xa, XA_FLAGS_ALLOC);
+>   DEFINE_XARRAY_FLAGS(dpll_pin_xa, XA_FLAGS_ALLOC);
+>   
+> @@ -53,6 +59,13 @@ struct dpll_pin_registration {
+>   	dpll_tracker tracker;
+>   };
+>   
+> +static void dpll_generation_inc(void)
+> +{
+> +	lockdep_assert_held(&dpll_lock);
+> +	while (++dpll_generation == 0)
+> +		;
+> +}
+> +
+>   static int call_dpll_notifiers(unsigned long action, void *info)
+>   {
+>   	lockdep_assert_held(&dpll_lock);
+> @@ -510,6 +523,7 @@ int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
+>   	}
+>   
+>   	xa_set_mark(&dpll_device_xa, dpll->id, DPLL_REGISTERED);
+> +	dpll_generation_inc();
+>   	dpll_device_create_ntf(dpll);
 >   	mutex_unlock(&dpll_lock);
 >   
+> @@ -549,6 +563,7 @@ void dpll_device_unregister(struct dpll_device *dpll,
+>   		return;
+>   	}
+>   	xa_clear_mark(&dpll_device_xa, dpll->id, DPLL_REGISTERED);
+> +	dpll_generation_inc();
+>   	mutex_unlock(&dpll_lock);
+>   }
+>   EXPORT_SYMBOL_GPL(dpll_device_unregister);
+> @@ -851,6 +866,7 @@ __dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
+>   	if (ret)
+>   		goto ref_pin_del;
+>   	xa_set_mark(&dpll_pin_xa, pin->id, DPLL_REGISTERED);
+> +	dpll_generation_inc();
+>   	dpll_pin_create_ntf(pin, dpll->clock_id);
+>   
 >   	return ret;
+> @@ -941,6 +957,7 @@ __dpll_pin_unregister(struct dpll_device *dpll, struct dpll_pin *pin,
+>   	dpll_pin_delete_ntf(pin, dpll->clock_id);
+>   	dpll_xa_ref_pin_del(&dpll->pin_refs, pin, ops, priv, cookie);
+>   	dpll_xa_ref_dpll_del(&pin->dpll_refs, dpll, ops, priv, cookie);
+> +	dpll_generation_inc();
+>   	if (xa_empty(&pin->dpll_refs)) {
+>   		dpll_pin_ref_sync_pair_del(pin->id);
+>   		xa_clear_mark(&dpll_pin_xa, pin->id, DPLL_REGISTERED);
+> @@ -1005,6 +1022,7 @@ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
+>   	ret = dpll_xa_ref_pin_add(&pin->parent_refs, parent, ops, priv, pin);
+>   	if (ret)
+>   		goto unlock;
+> +	dpll_generation_inc();
+>   	xa_for_each(&parent->dpll_refs, i, ref) {
+>   		ret = __dpll_pin_register(ref->dpll, pin, ops, priv, parent);
+>   		if (ret) {
+> @@ -1057,6 +1075,7 @@ void dpll_pin_on_pin_unregister(struct dpll_pin *parent, struct dpll_pin *pin,
+>   		__dpll_pin_unregister(ref->dpll, pin, ops, priv, parent);
+>   	}
+>   	dpll_xa_ref_pin_del(&pin->parent_refs, parent, ops, priv, pin);
+> +	dpll_generation_inc();
+>   	mutex_unlock(&dpll_lock);
+>   }
+>   EXPORT_SYMBOL_GPL(dpll_pin_on_pin_unregister);
+> diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
+> index da8a369556ed11..c2ed0926de1b95 100644
+> --- a/drivers/dpll/dpll_core.h
+> +++ b/drivers/dpll/dpll_core.h
+> @@ -99,6 +99,7 @@ struct dpll_pin_ref *dpll_xa_ref_dpll_first(struct xarray *xa_refs);
+>   extern struct xarray dpll_device_xa;
+>   extern struct xarray dpll_pin_xa;
+>   extern struct mutex dpll_lock;
+> +extern unsigned int dpll_generation;
+>   
+>   void dpll_device_notify(struct dpll_device *dpll, unsigned long action);
+>   void dpll_pin_notify(struct dpll_pin *pin, u64 src_clock_id,
+> diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+> index e5380d95f238b3..87c8caef0f574b 100644
+> --- a/drivers/dpll/dpll_netlink.c
+> +++ b/drivers/dpll/dpll_netlink.c
+> @@ -1768,6 +1768,7 @@ int dpll_nl_pin_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>   	int ret = 0;
+>   
+>   	mutex_lock(&dpll_lock);
+> +	cb->seq = dpll_generation;
+>   	xa_for_each_marked_start(&dpll_pin_xa, i, pin, DPLL_REGISTERED,
+>   				 ctx->idx) {
+>   		if (!dpll_pin_available(pin))
+> @@ -1789,6 +1790,7 @@ int dpll_nl_pin_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>   			}
+>   			break;
+>   		}
+> +		genl_dump_check_consistent(cb, hdr);
+>   		genlmsg_end(skb, hdr);
+>   	}
+>   	mutex_unlock(&dpll_lock);
+> @@ -1990,6 +1992,7 @@ int dpll_nl_device_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>   	int ret = 0;
+>   
+>   	mutex_lock(&dpll_lock);
+> +	cb->seq = dpll_generation;
+>   	xa_for_each_marked_start(&dpll_device_xa, i, dpll, DPLL_REGISTERED,
+>   				 ctx->idx) {
+>   		hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid,
+> @@ -2004,6 +2007,7 @@ int dpll_nl_device_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>   			genlmsg_cancel(skb, hdr);
+>   			break;
+>   		}
+> +		genl_dump_check_consistent(cb, hdr);
+>   		genlmsg_end(skb, hdr);
+>   	}
+>   	mutex_unlock(&dpll_lock);
 Reviewed-by: Petr Oros <poros@redhat.com>
 
