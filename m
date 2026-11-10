@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794349783;
-	b=qLd8ja9VsMhgQy/3EcqEWXQ0MEba3uSq9piXLzw97wBKYfT71ZIm0JINzBXsoqj0JhUX
-	 71Jun/6OkJL9YUnnYuCv/1TWN13COmEGBtpiJPk0DpTes8ObHFVN+NTi7zHRwNVuuTI4b
-	 Rpo4Ts+3G4kaSAxa37ye8k6u3hEr+PJRScOl4np/tivsXeycQtKlZyofdjb3MWXDgfURP
-	 emq28tO5zWPnVqhz4waYjfap05G4VkNH6gN08ezbiba2i0PortPuDhbVu+mysdF+9MTkX
-	 +4FggLo9Jk3/tDlX8qdgXCRszssI7ebx+9una0Yx00aTIHINRv2jqfAV+DteWlltUPA==
+	t=1794349785;
+	b=u5iOw8SoeZ5mcRejo+DaoKcP9ZZNa1CEy98/tQNc+BVDhNEEJEB1LB0gKZGNL/d95fhu
+	 nRtsTmhehib8/L5bj8pUQBbwLVd5pI7eZKZKQ72tzcNuRqbdYDVFFXEy5MHXZkFbz+Tbo
+	 3wE5uQQJAZkTVo+GgfuQEEJtpvOEgxayuKHzsx3RTmuMPQMmPq/u0Uf5h97kHtI9HlNdw
+	 PpMImtpi6pKI0lXdSwvbUHKpxkafsqwFj/4BU38dzjW/8DvDv2rNEhih7ug7vDbz9WaCn
+	 mwhQvSmICJ8/R9HgSuAtVLzzBGvglQmeeUut9A8CpsdzPP8UbIIj5VHl0TdQFh01Hpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794349783;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794349785;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=k4ry2FuKm6/wn7zPNOWjR0bvBTiFyxSL17iQ8UC47ho=;
-	b=TNKbm4kX56WQmdytdWMA+JP6hTPFBpG9K0WpElaPWZZrGSc7DWV+Zg8HslE8QkQXXW1a
-	 yqnRNB9SCbIsDzdSycZj5tDSL2huOxSCqihCDP7pp8VnfHxmO3HDdZKiXHOGhql2NXtgq
-	 vjpqdGuBBxYSqDkNaSHXY3UCz7HxH/n/mTvSbDGoZYrwW/kU8cVp0oImkXeqNrNmjlUaS
-	 Jw2wimJDLHBeRJd7X8mccIZPm3wwbKiXURmWcfBl4o58D0b4+zS+jFy/HhNgxqbCTOBZH
-	 T4ujz1A4uIspX3NhXnk0P0m58KD+zJWxRVRxjP/TYqu2T1FxzyoHcFfdbbHWJXVXtmw==
+	bh=2RM5L0J9ASXfxGtNkAy/ZUMRHcMdMwZoeqzGABMR650=;
+	b=p/rtwQKwxbGRI5TP6ljuDvcJySR9ghbLmDnxkNEiRWH+VY7GPeZxZHg+C2bRymjsK3u7
+	 GLYsDO1Guv3QIxbhZ4j+j9kHwCVGvnQWBuouWDVeeIkvSDHHR0nBktJi8PS3QSx8hTjOT
+	 iInYEcfFOTUjVagPn+ZzcFhmazhpJOoHuUNW29Q/UL0YDbKKfsEQX1T1eNBlmoYl8MLQc
+	 AYpFmQZgPWLIA4+Nnb9YGK3JHGoNxyQ6/7g54Mnal8fg3PcOog2MF96jcFFnyKgbz5Be6
+	 kZgyfncGCDfZBfZmukKV2lRwqgPO/6LzpYpcS7qOODRHpnVjROMxSy7aBivoOIwei+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="H//nUfTT";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjIblDlg;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFCB606A320;
-	Tue, 10 Nov 2026 22:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959F1606A326;
+	Tue, 10 Nov 2026 22:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H//nUfTT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C461F008A4;
-	Tue, 10 Nov 2026 22:29:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjIblDlg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A431F008A4;
+	Tue, 10 Nov 2026 22:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794349782;
-	bh=k4ry2FuKm6/wn7zPNOWjR0bvBTiFyxSL17iQ8UC47ho=;
+	s=k20260515; t=1794349785;
+	bh=2RM5L0J9ASXfxGtNkAy/ZUMRHcMdMwZoeqzGABMR650=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H//nUfTT3XeX3t9DwE+A4CWvNomW24yOHa6FTkkvKVtsa/peQfm6PclxIk6Jguaem
-	 mZNpmlJJ3IqlIglJviJ2qW5XjBYByTpmZGCRAIX388ZhB+oWWOkl3PoTOsXc2DMmJI
-	 NafuWLvrb9RyY58CF3TKh4726hmAYhmGQ+I4lQJrzTmiAyq+TfZinZE766gzv1d/AW
-	 MOm9NMNAnKvZ/Tm1t0NHeDrO5KolAfhoEdC2LKYIIcqXtws3t1l44UZKtPYIikKLip
-	 uR+4uHX3VFejym88zuvfxPWUXlAsLIbBtkr5Q2ZYc5QZdQu1UanaHnmDbV9KkmyPEI
-	 90rawtZjiTZ+w==
-Subject: Re: [PATCH net-next v18 08/15] quic: add path management
+	b=DjIblDlgguUKBNPv0H7mn9/gbpxwz77YUzwfCwRn1q5DWWQQIOXnczVChGmtX3iga
+	 Q6RtW/gF7AhYHo87ODkBM0vyz+z/WTVTRg/z4e7tuQIaOtsDbtuPGncv4/kLM7eCcp
+	 zBPQoeMWNO73zsqL+8m5OTUKzVuslqEDiT1bfemZ5UzevFIRrflMaZKWdS7AeWJFNQ
+	 38KDasCZsrP7L04Su37SbdkKxIP6W1htvvou7/V2ELzdvC05wRaPxfBhahHNrJK+80
+	 UoGrPTPSpKurQ3kBG4eDNJ+AaGDGHVq7RrPpVAhm/JdJ2s1bxPt8HwxysFBVH62znm
+	 k7toFJ/glbY8g==
+Subject: Re: [PATCH net-next v18 09/15] quic: add congestion control
 From: netdev-bot+sashiko@kernel.org
 To: lucien.xin@gmail.com
 Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
@@ -54,10 +54,10 @@ Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
  jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net,
  marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com,
  mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
-Date: Tue, 10 Nov 2026 22:29:40 +0000
-Message-ID: <179434978039.994134.3389995581310140385@kernel.org>
-In-Reply-To: <a9a2d4c0a8fc6b0d9e8abe804aac0b25d2459532.1794241656.git.lucien.xin@gmail.com>
-References: <a9a2d4c0a8fc6b0d9e8abe804aac0b25d2459532.1794241656.git.lucien.xin@gmail.com>
+Date: Tue, 10 Nov 2026 22:29:43 +0000
+Message-ID: <179434978300.994134.8100379458297117131@kernel.org>
+In-Reply-To: <059c6b92785dcc2983956ff2dcd441285362aa03.1794241656.git.lucien.xin@gmail.com>
+References: <059c6b92785dcc2983956ff2dcd441285362aa03.1794241656.git.lucien.xin@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -71,10 +71,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -82,106 +82,115 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] quic_udp_sock_create() in net/quic/path.c (line 100) always
-  takes an active netns reference with get_net_track(net,…
+- [Medium] quic_reno_on_packet_acked() (net/quic/cong.c) grows
+  cong->window on every acknowledged packet, in slow start and in…
+- [Low] The commit message does not describe the pacing logic this patch
+  adds, and it overstates what happens on transmit.
 
 --
 
-quic: add path management
+quic: add congestion control
 
-This patch adds struct quic_path_group to manage the active and alternate
-QUIC paths. Each path is bound to a UDP tunnel socket, which is wrapped in
-a refcounted struct quic_udp_sock and stored in a global hash table. The
-patch also adds connection migration helpers and basic PLPMTUD state
-handling.
+This commit adds struct quic_cong for RTT measurement and congestion
+control, with struct quic_cong_ops as the hook interface for
+congestion control algorithms. Only New Reno is implemented. The
+patch also adds pacing rate and pacing time helpers.
 
-> diff --git a/net/quic/path.c b/net/quic/path.c
+> The implementation updates RTT estimates when packets are acknowledged,
+> reacts to loss and ECN signals, and adjusts the congestion window
+> accordingly during packet transmission or acknowledgment processing.
+
+[Severity: Low]
+Is this accurate for the transmit side? quic_cong_on_packet_sent() never
+changes cong->window. New Reno leaves ops->on_packet_sent as NULL, so the
+transmit path only calls quic_cong_update_pacing_time().
+
+The commit body also leaves out the pacing logic this patch adds:
+
+  - quic_cong_pace_update() sets pacing_rate = 2 * window / smoothed_rtt,
+    capped at max_rate.
+  - quic_cong_update_pacing_time() schedules the next send in nanoseconds
+    using ktime_get_ns(), with a jitter credit of up to len_ns / 2.
+    The other timestamps in struct quic_cong are in microseconds.
+
+The function list also leaves out quic_cong_pace_update(),
+quic_cong_set_srtt() and quic_cong_set_algo(). Pacing is only mentioned
+in the v5/v16 changelog notes, and those are dropped when the patch is
+applied.
+
+Could the commit message describe the pacing behavior, and drop the
+claim that the window is adjusted on transmit?
+
+> diff --git a/net/quic/cong.c b/net/quic/cong.c
 > new file mode 100644
-> index 0000000000000..e24968376f6b1
+> index 0000000000000..b829755e8ac9e
 > --- /dev/null
-> +++ b/net/quic/path.c
-> @@ -0,0 +1,596 @@
+> +++ b/net/quic/cong.c
+> @@ -0,0 +1,292 @@
 
 [ ... ]
 
-> +static void quic_udp_sock_put_work(struct work_struct *work)
+> +static void quic_reno_on_packet_acked(struct quic_cong *cong, u64 time,
+> +				      u32 bytes, s64 number)
 > +{
-
-[ ... ]
-
-> +	head = quic_udp_sock_head(sock_net(sk), ntohs(us->addr.v4.sin_port));
-> +	mutex_lock(&head->lock);
-> +	__hlist_del(&us->node);
-> +	mutex_unlock(&head->lock);
+> +	u64 new_window;
 > +
-> +	put_net_track(sock_net(sk), &us->ns_tracker);
-> +	sock_put(sk);
-> +	kfree(us);
+> +	if (quic_cong_in_slow_start(cong)) { /* Slow start */
+> +		new_window = (u64)cong->window + bytes;
+> +		cong->window = min_t(u64, new_window, cong->max_window);
+> +		return;
+> +	}
+> +	/* Congestion avoidance - cong->window is never zero; it is initialized
+> +	 * by quic_packet_route() during connect/accept.
+> +	 */
+> +	new_window = div64_ul((u64)cong->mss * bytes, cong->window) +
+> +		     cong->window;
+> +	cong->window = min_t(u64, new_window, cong->max_window);
 > +}
-> +
-> +static struct quic_udp_sock *quic_udp_sock_create(struct sock *sk,
-> +						  union quic_addr *a)
-> +{
 
 [ ... ]
 
-> +	refcount_set(&us->refcnt, 1);
-> +	us->sk = sock->sk;
-> +	memcpy(&us->addr, a, sizeof(*a));
-> +	us->bind_ifindex = udp_conf.bind_ifindex;
-> +	get_net_track(net, &us->ns_tracker, GFP_KERNEL);
+> +void quic_cong_on_packet_acked(struct quic_cong *cong, u64 time, u32 bytes,
+> +			       s64 number)
+> +{
+> +	if (quic_cong_in_recovery(cong, time))
+> +		return;
+> +	cong->ops->on_packet_acked(cong, time, bytes, number);
+> +}
 
 [Severity: Medium]
-If the QUIC socket doing the bind is a kernel socket, can this active
-netns reference keep the namespace alive forever?
+Can cong->window keep growing while the sender is application-limited
+or flow-control-limited?
 
-quic_udp_sock_create() calls get_net_track() for every quic_udp_sock. The
-only matching put_net_track() is in quic_udp_sock_put_work(). That work
-runs only after the last path using the tunnel is unbound, which happens
-through quic_destroy_sock()->quic_path_unbind() when the QUIC socket is
-closed.
+RFC 9002 section 7.8 says the window should not grow when it is
+underused. The OnPacketAcked() pseudocode in Appendix B.5 has:
 
-Kernel sockets are deliberately kept from holding an active netns
-reference. sk_alloc() does:
+    if (IsAppOrFlowControlLimited())
+      return
 
-	sk->sk_net_refcnt = kern ? 0 : 1;
-	if (likely(sk->sk_net_refcnt)) {
-		get_net_track(net, &sk->ns_tracker, priority);
-		sock_inuse_add(net, 1);
-	} else {
-		net_passive_inc(net);
-		...
+quic_cong_on_packet_acked() only checks quic_cong_in_recovery() before
+it calls ops->on_packet_acked(). struct quic_cong has no bytes-in-flight
+field, and the hooks never receive one, so neither the wrapper nor
+quic_reno_on_packet_acked() can apply this check.
 
-The UDP tunnel socket created by udp_sock_create() follows that rule, but
-the reference held by quic_udp_sock does not.
+In slow start the window grows by bytes on every ACK. A long-lived
+connection that sends small request/response traffic could push
+cong->window up by roughly the total bytes ever acked, toward
+max_window (S32_MAX / 4, about 512MB).
 
-Consider an in-kernel user that creates a QUIC socket with
-sock_create_kern() in a non-init netns. It then closes that socket from
-its pernet ->exit handler, which is the usual pattern for netns-scoped
-kernel sockets:
+quic_cong_pace_update() then computes the pacing rate from that window:
 
-  quic_path_bind()->quic_udp_sock_create()
-    get_net_track()            /* active netns ref taken */
+    rate = div64_ul((u64)cong->window * USEC_PER_SEC * 2,
+                    cong->smoothed_rtt);
 
-  netns teardown:
-    active netns count never drops to zero
-      cleanup_net() and pernet ->exit never run
-        kernel QUIC socket is never closed
-          quic_udp_sock_put_work() never runs
-            put_net_track() never runs
+When bulk data arrives, would the burst then be limited only by the
+caller's max_rate?
 
-In that case, wouldn't the namespace and everything it owns be leaked?
-
-No in-tree code creates IPPROTO_QUIC kernel sockets yet, either at this
-commit or at the end of the series. So this depends on a future
-in-kernel user. The code is still the same at the end of the series.
-
-For user sockets, the extra active reference adds nothing while the
-socket is alive, because the socket already holds one. Would a passive
-reference (net_passive_inc()/net_passive_dec()) be enough to keep struct
-net valid for sock_net() and quic_udp_sock_head() in the deferred work?
-Another option would be to follow the owning socket's sk_net_refcnt
-semantics.
+Nothing in this series calls quic_cong_on_packet_acked() yet, so a later
+caller could skip the call when app-limited. If that is the plan, could
+the requirement be documented here? For comparison, TCP does this check
+inside the algorithm: tcp_reno_cong_avoid() checks
+tcp_is_cwnd_limited().
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1794241654.git.lucien.xin%40gmail.com
