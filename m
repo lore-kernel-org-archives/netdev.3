@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794329160;
-	b=ZAWqETLVHedpNcTtUQi0z8/Faz0+OCFTqGt31U1MFFI8E3Au+H3vVe9eHJUfS54+KX3h
-	 qbLiIDZlSzIXf2X+joaMTObw5/SZJu/C+1QtkXZKOJaK2kJsNo2K6gxHFMmH0UiENxKhl
-	 BfUFmb+zrixq+9zBWJ4K9H+L7a5GdSPMlGmxNIMjZobTeKfl1ZnAQi8x6HCcsOmWziHdj
-	 7vjLTkQs2mBGuOLArkYJ29N3j2NzSFznCW9VJXPROXfP7nkcVzKQvl5ymMWvwwexcvc7E
-	 HK92Y8ElYsJUdd7Y7bIE3L9ldz1efPVP8iNi5R7riFBoZSd9d4pVaq17OU6nOjfXm7A==
+	b=vxB5B8OIXfC+b04s9GdtN/+ktVfdzlZhlRNsIIOSUVfFeitH41UUYHcWfaFVCPqLeiPx
+	 Vh+/Cg+5KD1K0WyJnXMuYEzcUvWtyvCblre3006uXl/kQxG3Ni3HeIyPyS4InBMs5iJk9
+	 Ri50cbRp00nQXzC5HLhtXDnAwQeTb9bSxIcSyBq1Xh4ihFd51I+NHwoxr9n9LhDL8NSEa
+	 wgQTAbSDjuZd0B2XAb6VoIX79vFnvoedaTi5UpXXruhZm59kTq0AoDO7AwH/sMJQBkK+P
+	 cbYLTGHxtPGZQ2Udmo3JeFRu22IYgCgeb4KufR6U0FHnNt8kr3ruamlfiRrhztwOLoQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794329160;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
-	b=oayLlQ2X0ooar91BXWwhE5UbcXR87+WDVE8o9wcvfR7DG8JH6gxFRxXm1GMk+rdLSuYT
-	 ypIJRZyLDzibXpr3ZRbpZHXHVMolVMZcfrOZumVUfuPOrJgXtQEvrFORctQVORCt7+7wp
-	 AaYTenJLEttxLJbKurK9mpr8qv0xBjO4YgmnLSc5ITfvNmIb8/1Z0D1kufpBZ6pxrsV0T
-	 GD2PPIZGRQqdv2jd2M7OTZwyCLK48CBmE8h65m3XTUIqVI0HCDCiilPjxLBartV1+XWAw
-	 kUw9Zgb7d4MflHyMEofRcC8cnNldjJcfL6Yo3GtChBKyn5/HONxwYElkF1xJXR94zsg==
+	bh=8y9Jl+1LJ8OoB5nJzl2Bt+QCd/i+vREbZWGx+2qkt5U=;
+	b=iXP6EOofHlt2Ho13xit9HTe5sHb82GtjmSvK0P0J3NK5ZpMnlHKaoKYuuhaCCAhwpHTs
+	 XhsTpLaTexw6BZ2kjYOsNOcwlBQt6CGm01Gqm/ufqjJUIn9DEBDdR5sgxf4YQs/PYQhO2
+	 dNrMHzYzO8A0O1H5dJCZAvpTZ7fGzCxiaa6chGS1x2hMOr6uBNwO39UeG0iFqWWwxb/LB
+	 PID7h6vFvwR58KX/5sEscbUGfFdTLJQSVssyPHFV2XOlTLv49IqTu2oLIKa5tvwaY9tty
+	 xM3/pNliPpW3YiLNCVZ3ZMw0/0OYd36+iP7Izu3lc6yVFVnjzDQi4l5aWsOPj9m2KuA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdMCV8b2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TbvaiESJ;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B50606A331;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B345A606A326;
 	Tue, 10 Nov 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdMCV8b2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TbvaiESJ
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794329159;
-	b=BtBVdW/SIdabtaR4QZTCqTCexw4doMTe90kGMP18KkpIFWvgmG8rSHNtOvoimw4Aw0RK
-	 IxqrI+EcifIt1xQFn2KppaCsE0x38i2YIquT6q4nuvlP6UenkGzLzzVeKEZirTG0NaSvH
-	 A971jcVDOhjbHh5xVgjjqcayxn4laqGhscEEelbKte1Oa7ddGW4cRUSRmlZ6d0HC2fwY1
-	 f2fquGs1aagImE07pdqzNQ6jfnZx23hwYifo0yTrh/t4jZc45Hxu3Lg/IEmymmQG4mMaw
-	 UZb3q/syA2ixFgnCi2XJRaI0QQHxPGo54LbKxR8yb2RH8ZBrAoPCa/a5I38rev6lUfA==
+	b=OW2cT8y4rHbKXKYFoaw1WuABUpMP6xpZkvJyL4jg6J3OhyNyzkBJjgKVmxNSGDtr1XYu
+	 FDad64x1X5aBvjlPYO9jKPk0tR+Vs8bM449pi2aAam4vmVZkhsIRzquuBU0zZgfO/vKQi
+	 7ZB7jr79DDBkKya7i5J1Ere0IVKrEmfH/WrSsrxlyTQpkQ0LXD6gRE+iP9+u0cDmRSYtY
+	 67Tmp/O7aBP0xFvGiXs2k2+tasK1Ynv01L8VhIxb4fUXCzfNc/SVI8UxB+RS14fUqRBa5
+	 Zk92+eD0DJcvAAB9PtTj67EpqL/ICwmJlAmDnmxGHqb+OENt30DuALVvtpuphmSuafQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794329159;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
-	b=Em7QOTY6hJnV/4jZfmil6OqJijqYjJVbI8vLOG3Yw0XiM9vETNSmf4eTmP8TFaYSlHU2
-	 gZ9ZTzuytLOQASLH9GpUOAryhkErR4LkMcZJYj2NFPQKuIfn+4vqVzaEobQD7DpLqU5Tj
-	 czMr7B8lmlNqheoMlBwT9PP0jBdcpT6mA4CTKfsBhVNJ8rrb7zW/cncdmSJgCYs65TTZ7
-	 ouaL9lBicxxnOJZ9UemxQXyuPR2lVTuCI5nIYVCNTuLmuX6KojfI0E1k7PO3heme3kG+O
-	 LwgvXv0Qe3VGIXLenvne+cpnR637aK+/mze8CtGdAKg/OEsusOEdCpeQcySQQXmEnUA==
+	bh=8y9Jl+1LJ8OoB5nJzl2Bt+QCd/i+vREbZWGx+2qkt5U=;
+	b=uEXa50z/O9yHAr7UHpy5zTccjfiZj/fVAxNWKRPqcRas3Xg4vdOetG3VByjyDN1CbfBQ
+	 GMFNL5C5R3u6Foc6skEL2wh2pulJpNa+8wXst3ocbUqLVXgnuzwfWEfwr/ppyk2vgoSB7
+	 IIurG95BOuAvoBFtwj3aNVGwtYCqcK3GGaxNYYjlf2hXHZBkAxwMlWtwMy+vaxOyrTcyd
+	 xEgX4S03AiX/x4sNpj/WGnD9CH7TKktz80IOF52I1XajEV5Auxc/Bn/JmiSZ5XE8XAnBo
+	 /zEwkKermUEr+BnYuvxvyPviyT85KPPIzIOrzeVDmQG81vKDlRgMfuj5g+NPNhNMpyw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 5D5071F0089F;
+	by smtp.kernel.org (Postfix) with ESMTPS id 8D3E81F008A4;
 	Tue, 10 Nov 2026 16:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794329159;
-	bh=Ex4CIgJnnaVzBcgad3HZ6oNEALo0xHeE/NCSIrezaqg=;
+	bh=8y9Jl+1LJ8OoB5nJzl2Bt+QCd/i+vREbZWGx+2qkt5U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=UdMCV8b2VeoM3w+D732bVQdtMCSluvH5LcKS4jctOWeuYgJUM/BIoVB9nx/qEhgN/
-	 UkdoA6JjUQE275VRFPngMjutTwgBR0wtAZ7N+Jick1DDeThcBRMG1NPg6ZLpd4A78U
-	 lh76R7o97dx1i+iyCSv5+BwcZUWT9+d/PQdPIRkpedjt0jOqp/8i/yZNUbrxAhGRT+
-	 vbpv9qpra/6L5DzLqzn5yj4kP2qFXuwvGiTnuc49fZSMwK7JBrTBAzYGU7ngs3scWi
-	 zQq9kIuXc6VRVLtMCnlGSm+vFDf/5XyWjjVLcUw64DlLPv9/rhwfB9wU1IHlomHTvT
-	 ChFgr4a2zAq8g==
+	b=TbvaiESJodq/aM66lzkT0iKL49Jnd6+dKpI4B2kOUhV8PgokGrR0sXCWtEnxDU5dF
+	 Oz2TR2V2mLE7Z/ryEMIWU5YhewBTfzVHFsR0x4KRMG9WGRWpKbIMR39j6oZpgvgd/r
+	 +HACooefLp8SEEcgyEzjtPFlOs0v7wzFPGFrdj0sz72Ncyl00is2J5MiYadIc/HgrP
+	 KJldOuThvIIwef9AxEWlgeUvt8tgRIgceCMkIZ3i8zu4HaBqDk84/3jhA++YYr/6Av
+	 jjo2TjzO4jj2aWYP1TsuLubxwdktVObDMQmVIJ9ctMYrpRv0vXlg0QRbJwYipkFCN9
+	 xYIF0QStOLk1w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D725348BE0;
-	Tue, 10 Nov 2026 16:45:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 19A0C48C04;
+	Tue, 10 Nov 2026 16:45:58 +0000 (UTC)
 From: Yongjian Wang via B4 Relay <devnull+echoowall.gmail.com@kernel.org>
-Date: Wed, 11 Nov 2026 00:45:55 +0800
-Subject: [PATCH net-next v4 1/4] tcp: initialize MTU probing before syncing
- MSS at connection setup
+Date: Wed, 11 Nov 2026 00:45:58 +0800
+Subject: [PATCH net-next v4 4/4] selftests/net: packetdrill: add TCP MTU
+ probing test
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261111-mtu-probing-series-v4-1-6f2e484ca8ea@gmail.com>
+Message-Id: <20261111-mtu-probing-series-v4-4-6f2e484ca8ea@gmail.com>
 References: <20261111-mtu-probing-series-v4-0-6f2e484ca8ea@gmail.com>
 In-Reply-To: <20261111-mtu-probing-series-v4-0-6f2e484ca8ea@gmail.com>
 To: pabeni@redhat.com, kuba@kernel.org, shuah@kernel.org, 
@@ -94,11 +94,11 @@ Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
  netdev@vger.kernel.org, panweiping3@gmail.com, 
  Yongjian Wang <echoowall@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794329156; l=3243;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794329156; l=2652;
  i=echoowall@gmail.com; s=20261026; h=from:subject:message-id;
- bh=fc7GUdhcvf9vRkZ3ScF2x8cdgOAMENFCNY8ojAS8WTM=;
- b=wKZ+Ok+q/a8mkHceG56FgZXCEjtucb1MXa1ZWmh9WCQ+d8VksNSwEGcZ+i6rhSDL1yQz+RJzb
- 25sZVzwNdUaA6i/v5L1Qu+XEtsUlr2UYzCj6luNe0+EjO0xGqUZmsKT
+ bh=Mz0+KsqQBxhWJlyZhAiEUnDL/oZgfrLTgEwG3eDqtks=;
+ b=lOpdu2t1/HknQKiDM/kdhS7CxpI1N/KpY8LGOPTA4RpuY8k9oW0b5KlqX4DjyPun0QyF1jm0b
+ jbQmw4a57rlDT03JuPtCt9xKnT40UwcTC3Kf5/gdWkkx7L9O/JPHXKk
 X-Developer-Key: i=echoowall@gmail.com; a=ed25519;
  pk=9XP6JhqjjPsHCF6UZZZTeqTRnXIa4+ufggnxXtTJ+no=
 X-Endpoint-Received: by B4 Relay for echoowall@gmail.com/20261026 with
@@ -109,86 +109,71 @@ Content-Transfer-Encoding: 7bit
 
 From: Yongjian Wang <echoowall@gmail.com>
 
-With tcp_mtu_probing=2, a passive connection starts at the full MSS
-rather than tcp_base_mss. The IPv4 and IPv6 syn_recv_sock() paths
-call tcp_sync_mss() before tcp_init_transfer() enables MTU probing.
-With tcp_base_mss=1024, the first successful probe can therefore lower
-the MSS from 1460 to 1242. On a black hole path, the first reduction
-skips 1024 and goes straight to 512.
+Packetization layer path MTU discovery (net.ipv4.tcp_mtu_probing=2) has
+no selftest coverage.
 
-The issue surfaced while developing packetdrill coverage for MTU
-probing and comparing the initial send MSS on active and passive
-IPv4 connections.
+Add a test for an active connection. Check that it starts at
+tcp_base_mss, that it sends the first probe half way between
+tcp_base_mss and the peer's MSS once cwnd allows it, and that an
+acknowledged probe raises the MSS and leads to a larger probe.
 
-Commit 4d83e1773031 ("tcp: delete redundant calls of tcp_mtup_init()")
-removed tcp_mtup_init() from the passive setup paths.
-Commit 27204aaa9dc6
-("tcp: uniform the set up of sockets after successful connection")
-later moved MTU probing initialization into tcp_init_transfer(),
-away from tcp_sync_mss().
+The SYN offers timestamps and the scripted SYN-ACK declines them.
+This also checks that MTU probing uses the negotiated header length
+for the initial send MSS.
 
-Initialize MTU probing immediately before the existing tcp_sync_mss()
-calls in the IPv4 and IPv6 passive setup paths and when processing
-a SYN-ACK for an active connection. Remove the late initialization
-from tcp_init_transfer(). This lets tcp_sync_mss() apply tcp_base_mss
-without adding another MSS calculation to connection setup. The
-crossed-SYN path already uses this order.
-
-Fixes: 4d83e1773031 ("tcp: delete redundant calls of tcp_mtup_init()")
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Suggested-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: Yongjian Wang <echoowall@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv4/tcp_input.c | 2 +-
- net/ipv4/tcp_ipv4.c  | 1 +
- net/ipv6/tcp_ipv6.c  | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ .../net/packetdrill/tcp_mtu_probing_search.pkt     | 42 ++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 3fd0e215324d..2b54b99f1f45 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6763,7 +6763,6 @@ void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
--	tcp_mtup_init(sk);
- 	icsk->icsk_af_ops->rebuild_header(sk);
- 	tcp_init_metrics(sk);
- 
-@@ -7020,6 +7019,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
- 			tp->tcp_header_len = sizeof(struct tcphdr);
- 		}
- 
-+		tcp_mtup_init(sk);
- 		tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
- 		tcp_initialize_rcv_mss(sk);
- 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 0dc3b087665d..fb968798be36 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1740,6 +1740,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 
- 	tcp_ca_openreq_child(newsk, dst);
- 
-+	tcp_mtup_init(newsk);
- 	tcp_sync_mss(newsk, dst4_mtu(dst));
- 	newtp->advmss = tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
- 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index b1dec5d86d63..8ea1ae1ad2b2 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1490,6 +1490,7 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 
- 	tcp_ca_openreq_child(newsk, dst);
- 
-+	tcp_mtup_init(newsk);
- 	tcp_sync_mss(newsk, dst6_mtu(dst));
- 	newtp->advmss = tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
- 
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_search.pkt b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_search.pkt
+new file mode 100644
+index 000000000000..a48acff8685e
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_search.pkt
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: GPL-2.0
++// Test packetization layer path MTU discovery with tcp_mtu_probing=2: an
++// active connection starts at tcp_base_mss and raises its MSS by binary search
++// as probes are acknowledged.
++
++`./defaults.sh
++sysctl -q net.ipv4.tcp_mtu_probing=2
++sysctl -q net.ipv4.tcp_base_mss=1024`
++
++    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
++   +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation is now in progress)
++   +0 > S 0:0(0) <...>
++  +.1 < S. 0:0(0) ack 1 win 65535 <mss 1460,nop,nop,sackOK>
++   +0 > . 1:1(0) ack 1
++   +0 fcntl(3, F_SETFL, O_RDWR) = 0
++
++// The initial window is sent with tcp_base_mss. No probe yet, cwnd is below 11.
++   +0 write(3, ..., 40000) = 40000
++   +0 > P. 1:2049(2048) ack 1
++   +0 > P. 2049:4097(2048) ack 1
++   +0 > P. 4097:6145(2048) ack 1
++   +0 > P. 6145:8193(2048) ack 1
++   +0 > P. 8193:10241(2048) ack 1
++
++// The first probe is half way between tcp_base_mss and the peer's MSS.
++  +.1 < . 1:1(0) ack 10241 win 65535
++   +0 > . 10241:11483(1242) ack 1
++   +0 > P. 11483:13531(2048) ack 1
++   +0 > P. 13531:15579(2048) ack 1
++   +0 > P. 15579:17627(2048) ack 1
++   +0 > P. 17627:19675(2048) ack 1
++   +0 > P. 19675:21723(2048) ack 1
++   +0 > P. 21723:23771(2048) ack 1
++   +0 > P. 23771:25819(2048) ack 1
++   +0 > P. 25819:27867(2048) ack 1
++   +0 > P. 27867:29915(2048) ack 1
++
++// Acknowledging the probe raises the MSS, and the next probe is larger.
++  +.1 < . 1:1(0) ack 29915 win 65535
++   +0 > . 29915:31266(1351) ack 1
++   +0 > P. 31266:33750(2484) ack 1
 
 -- 
 Git-157)
