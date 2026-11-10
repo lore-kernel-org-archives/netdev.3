@@ -1,61 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794302362;
-	b=E9aF8WL8zsqOxnfSyl8q+uYIGnjgNktxtBYSn9Ym6nqnC6iiye5PlIOX5wMX9QCaTD7A
-	 9Vav0qW2qXqPIsRtqdz0z89+v/jE9sJ5zsfaBLFn5LjOuK4d1hpu1bK8iyZgo5mZOdMec
-	 +vr9pGabCS9jBDP+fw1e/pCoLugfxjJSjOLoPtAcAA35BvgJHmH102iWrqK+MeqKD5zAS
-	 7n89DzEru6RDHBsnknA3XJPdQProWAXOc3mPbAT8yKKiHPKhe6PUvykIqLEGMt/N09EHi
-	 z+2edxZYk5aykRlgENjzKeB5fDT6sSst72FXbLY/AkD3y5LRRfrYXSYd35qDOe5WuTg==
+	t=1794302363;
+	b=dnwZ87CTBhuJWhHgVW3KHcODGjrbr5XnLWZX7IlYJX3xJMg2yBRqcNAJnxosa+KTS8YZ
+	 HGeuEDmiSHZfw+Owo/KbKVl9Ef64jb9zyNPtVN4K4oYLjxGBiUwocJvJRAMl6ZvdOBo6n
+	 3AHv5mYCcGFlaLno5rFHKOd71D0KaqBXiQQTVZprlZ34BZY3Gpaevdq2J8NA5HPAlUZHj
+	 MmQ0MdINULy91VjRzxyjItJq3OQTtL7R1f2vmEOhT3s0aGBXz2bVQub2/SxQ6IFaLuNTj
+	 /cyhjmR7LuzwtuQduGEf3DFeMTSms6KYtssjarTRF2a3EIUfz0PNqU/vOCd5jnnR8Lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794302362;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=1lgSH5IuSLix0Y5Q87huJLSem8KubFPPy50MySmjKP8=;
-	b=R7zK9db2l45SvJAGBVTS7u/MkYesPLpsxWUwEXM1qH2aT2KVhEKopx8BFjQYShyz71pA
-	 BILH/MGhEUGaGhM7WMeZE56VCT7agdttlVQs7LMVsIZ4eSYOFvjAS8/KeON/avdq3WAAC
-	 4lKvZnKKEKYSvxhBfxOXZcd4ggUu16lDfT7+0P50zFqSoxyMvAlgubmF/KtfS5BjrTQ0H
-	 0xwila+MTZytbUWb6p+Mw4igrcDYW4qDhbEm8J0EhUEocknphPYmkLQ5OYfVIFv+dodKF
-	 SYUvbpgY+59meJq93RCPBSwHJFe1NzO0n2fJo2GXlGqHm4/137wGjUaA1sxYFh9fh6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794302363;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=JIdhS4jftRPy5dmxkGvzK/pMKfIiaESXVrYafcc8TvI=;
+	b=Yq40f77nhGnfG68byRDXDwm+jGbsm1TdXAPTVvvh4rRI8aMBA02rXw+4/ORQhXolwnQX
+	 iJSp1zkuZSw0K1XX1KF0ghyQ3oSOU9F0YKNcxs3qvZI2DTtgIXlt2ThqkHxnqbY5JlqFZ
+	 KKfT6/5M78AOyrW2L9PWF4M/w/XBZd092NoXO9WN8DjuyZuHt+HxmaDpa+RZH3c/kUPrk
+	 rqMm3m/VhEJChQuwke0hk7cKKiMp4gdwsY70WqwGyTczjw/rcL8JBXNr3607xlSu8t5Ed
+	 1hpkgdmuwZjM62PiA7V8pwx3T0cdBEJMBLe2cBb6ML8ts5On7wD+ymmAtvMI1d1xpKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgUEMCiU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYHHEVUH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003AD606C664
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D795606C66D;
+	Tue, 10 Nov 2026 09:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgUEMCiU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A851F008A1;
-	Tue, 10 Nov 2026 09:19:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYHHEVUH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C363E1F008A2;
+	Tue, 10 Nov 2026 09:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302361;
-	bh=1lgSH5IuSLix0Y5Q87huJLSem8KubFPPy50MySmjKP8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LgUEMCiUH2lU8GtyM2P3dC/cJl6bV1TVHO5hk3KByLZ90bsVLRMFUi7jpANyh/wVG
-	 YVRfk18tHXTX9iqGxzK/CaHM1vd9MIbrf8uF/NkcTe63v4OeanR6zwYN1qL4EB/vxx
-	 kPvU1NvCAkIRA/288HfFguyLdO1+hNOUCt4oXedIoU3cYkBaDmivVAqXBuz2zn4p23
-	 V3c38rCT00uxd81iuF+CvOUOL3mrDDZAF+HQZTO6MRz5DpWeT8bzo1pwrKIMZTgd0s
-	 EP92SXJT2fpuLHbFfB5knewq5ZNqBZIOon8hGfLGZoo1lKvbp4UyViFRoDF5+E1vYZ
-	 HWlXbttV8+26w==
-Subject: Re: [PATCH net] xfrm: delete migrated old states before dropping
- their references
-From: netdev-bot+sashiko@kernel.org
-To: juny24602@gmail.com
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shinta.sugimoto@ericsson.com, yoshfuji@linux-ipv6.org,
- nakam@linux-ipv6.org, netdev@vger.kernel.org, junvyyang@tencent.com,
- stable@kernel.org, corvus@tencent.com
-Date: Tue, 10 Nov 2026 09:19:20 +0000
-Message-ID: <179430236030.994134.16814357178144716775@kernel.org>
-In-Reply-To: <20261106090300.29203-1-juny24602@gmail.com>
-References: <20261106090300.29203-1-juny24602@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794302363;
+	bh=JIdhS4jftRPy5dmxkGvzK/pMKfIiaESXVrYafcc8TvI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=mYHHEVUHk7mqBzZMRRcGK3fZI9JsYBE1ZTG0cjDKv2LFlPJXQyDrPAKc8bfKf0tGr
+	 20cWdlmj2e6r9qTNntdUZ9fi9cszimzNeELmIamI9OuH+mBqpijs9/s789F34csANJ
+	 fgWDE11qgNW8E9wTIgD1km9GI/swk+tLAKgjcvqUYxAEaRLAlzh/ZKAHlBj0Ky1PjG
+	 0v/WkxNUgqmlKJXpJY525QsBtQhynnTkAMo0QExBKteka4qwdTE2za1SUpdJj+FcNu
+	 WkR6hVqwaMbvytyvpFnjFRkLcYmdydpW0DidQOFfml4GF2k8PUvSil9bGhPenPlkb0
+	 TdQ33wkV+qEig==
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 10 Nov 2026 10:14:46 +0100
+Subject: [PATCH RFC 30/41] powerpc/spufs: use fc_init_pseudo()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,105 +52,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-work-loop-pseudo-v1-30-4c998976c6c7@kernel.org>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+In-Reply-To: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1159; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=wZMRP8kJpVwewK9De4Tzgbv2SYhdkU5PV6eswxkQBIY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9erDtr+T2Qx2zP0qG7677LHLr7pKfRQf+MM64HrclZ
+ SuL9FO7KR2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQATOWLA8IebTSHoxg9+k5c/
+ HuRK8bM3/ZTN6c4W5XKTeHVB/4Zwcyojw/uS1Y6aDdePS9jN2MxSI7BiksRHOZ0gg9pTf6p5VkQ
+ e4gIA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Initialize spufs as a pseudo filesystem. This raises SB_I_PSEUDO and
+also SB_I_NOEXEC and SB_I_NODEV. spufs never holds executables or
+device nodes.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+SB_I_NOEXEC also refuses PROT_EXEC mappings. The spufs files that can
+be mapped expose local store and problem state areas of the SPU,
+nothing the PPU executes.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ arch/powerpc/platforms/cell/spufs/inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-- [High] This patch fixes the Stage 4 x_cur[] path but leaves a matching
-  use-after-free on the restore_state error path in xfrm_migrate()…
-
---
-
-xfrm: delete migrated old states before dropping their references
-
-This patch reorders Stage 4 of xfrm_migrate() so the old states in x_cur[]
-are deleted before their lookup references are dropped. The states then
-stay alive during xfrm_states_delete(), even if an expiry timer or a
-concurrent deletion has already removed them from the state tables.
-
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index cea6842e6454d..39ca04432220b 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -4726,8 +4726,8 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
->  
->  	/* Stage 4 - delete old state(s) */
->  	if (nx_cur) {
-> -		xfrm_states_put(x_cur, nx_cur);
->  		xfrm_states_delete(x_cur, nx_cur);
-> +		xfrm_states_put(x_cur, nx_cur);
->  	}
-
-[Severity: High]
-This fixes the x_cur[] path. Does the restore_state error path in
-xfrm_migrate() still have the same use-after-free for the x_new[] states?
-
-net/xfrm/xfrm_policy.c:xfrm_migrate() {
-    ...
-restore_state:
-	if (pol)
-		xfrm_pol_put(pol);
-	if (nx_cur)
-		xfrm_states_put(x_cur, nx_cur);
-	if (nx_new)
-		xfrm_states_delete(x_new, nx_new);
-    ...
-}
-
-In Stage 2 the new state is stored without taking a reference:
-
-	xc = xfrm_state_migrate(x, mp, net, extack);
-	if (xc) {
-		x_new[nx_new] = xc;
-		nx_new++;
-
-By this point xfrm_state_migrate()->xfrm_state_migrate_install() has
-already published xc with xfrm_state_insert() or xfrm_state_add(). The
-state tables now own its only reference, and __xfrm_state_insert() has
-armed mtimer.
-
-Once published, xc can be found by SPI lookup on the data path. Its curlft
-was copied from the old SA by xfrm_migrate_sync(). That means it can be
-deleted without xfrm_cfg_mutex, for example:
-
-  xfrm_state_check_expire()   /* hard byte/packet limit reached */
-    hrtimer_start(&x->mtimer, 0, HRTIMER_MODE_REL_SOFT);
-  xfrm_timer_handler()
-    __xfrm_state_delete()
-      xfrm_state_put()        /* drops the only reference */
-
-The 1s mtimer reaching hard_add_expires with the copied add_time has the
-same effect.
-
-Userspace can still reach restore_state after xc has been published. One
-way is xfrm_policy_migrate() returning -ENODATA (no template matches) or
--ENOENT (dead policy). Another is a later entry's xfrm_state_migrate()
-returning NULL, for example -EEXIST from xfrm_state_add(). That later
-entry's xfrm_state_migrate_create() allocates with GFP_KERNEL and can
-sleep, which makes the window wider.
-
-If xc has already been freed by then, xfrm_state_delete(xc) would take
-xc->lock and read xc->km.state on freed memory. If the slab has been
-reused, this could also lead to list corruption and another put.
-
-Reordering cannot fix this one, because xfrm_migrate() never holds its own
-reference on the x_new[] entries. Could a reference be taken on xc before
-it is installed? The parallel path xfrm_do_migrate_state() in xfrm_user.c
-already does this:
-
-	xfrm_state_hold(xc);
-	err = xfrm_state_migrate_install(x, xc, &m, extack);
-
-That reference would then be dropped after xfrm_states_delete() in
-restore_state, or on the success path.
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index f066d9c7344d..54b45932aecd 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -11,6 +11,7 @@
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
++#include <linux/pseudo_fs.h>
+ #include <linux/fs_parser.h>
+ #include <linux/fsnotify.h>
+ #include <linux/backing-dev.h>
+@@ -741,6 +742,7 @@ static int spufs_init_fs_context(struct fs_context *fc)
+ 
+ 	fc->fs_private = ctx;
+ 	fc->s_fs_info = sbi;
++	fc_init_pseudo(fc);
+ 	fc->ops = &spufs_context_ops;
+ 	return 0;
+ 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106090300.29203-1-juny24602%40gmail.com
+2.53.0
+
