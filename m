@@ -1,73 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.238
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794295448;
-	b=zBKTbfGg+QGFUssGpyEtUo7ZSxtvAuXrgk6oVPHTs1MTQzSMgstM5VSlnblUoHP432Q4
-	 Hb89LIWYSZtjP0FPo6pd6uBCA2QqSReAP0EY6xCgFkUymkFrc9Fd0WeZ1UL9IQniCpfUF
-	 QeqUvvZ19F0StpfUyYJRFUXQHBqMpJNnAEgmc/EHYHRQgQfeaqLXPTJCqSYToZl5gozxD
-	 TKYJj3k4I1qrGseGHsAsIWaYAqVmct129yZBFjp4ZW4qRDH1SbDkHSZHF/fERqEK/u/Se
-	 On6I/N0Lc/UuBwtfSJhyOJ4sZW+GWIr1o/w/xjlPsM3OgRjI3FbE52GIvor/QKU9PUw==
+	t=1794295564;
+	b=FSnho97UMmmeKTo3tncWYYMQki/+EIaJ8XjBMyYUbWeZvl1ayxseOafYtSxoCrpsbZeG
+	 CukHlETAlb2BggnZn+vCLSljwEryxCs0geseqWyJ1kAuw/vNvoitt0itGCJIw+2KEddy6
+	 zMIxqDYZxzm2KIFRhvtZObEQ3ge1/y7kJZUnBhwlVRiVdozl5Vuk61QgC5PjHHRmd0qTr
+	 1NAbCRCW/+qbVEbxAzuVNn1I6+NchD76fWwdT0YyrR1ujTSVckyxAsQK6l2ht5eJhSf/H
+	 TcbHvMQosWVj9onullBDtPw+kSEbT9tGu666mcG9pPvf6xTN07vEpqufhRjfxl8wlKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794295448;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=NSZoFUu6O8ixTtkZVDN0mU18cE9zXsccDQTW2Dn17D8=;
-	b=S3Hff4zOYKAyLojACQ3S6Ei55jCjaOGtlLcVDFexT5GzcbcERXrU0uUv+PhAXfmlBHYW
-	 vJvXObyWtoLNL8TeI9nKUbhGBvsFZRv1i5mLZnWffjsa9R3D0br1x34eadCeJ/kaUwgKT
-	 Xp2hwHz4U8W1KkSHtQGxGyEmkTjDgYrvP1bQ3W/j26BqKx4Gsv/KrTqV0Fg6Z5BBF2ER9
-	 nn5wz9dz8ocuCQAqxqmMdjdSQPblgBXNJGckZ2A/+6X8a9DB5FQwfrPgqqC8V5vfBXsAW
-	 NdKXQlEtekOZ3XPgYL+A7E8rx0x3P/ijoDGz5D1Eo0KGiBO8CY7yBAt3AA+XNZVizBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794295564;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=aT8+tDcFqR2grJlSVWzWUtCzKjv6fftf0ezYMjAx/94=;
+	b=xeUWj5/7hQJ74YYiTij3TLfbcI85YdeK9DmDTvNAOolyl/rvTniDrvvMSDf1hZAvb63D
+	 jvmUrEluCjB6xwSF+bBAheno/poC6/dEZTiawBwpyqIMQiUB4VitxUxTMAOecd5aJUoGH
+	 NEYPiA2qAVyilSesIvsz/AfritgPMh+YoNZav/YVqC1gpBYsPN2XR5D8XTJ5370skyExL
+	 gUJFgLFD+6qzg2tGyv2X2yNzrz5PkoYIq7aiHkq5qu40W2nyAcvj396bxf91K3H99fVXx
+	 bf2DgTlrwZ2bw04GBF1RaInzQH2s5YhsNMR0Ukb8ohisdHB/hvrfpy5ByRoherbeTew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=obqhgN+v;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D81606A31C;
-	Tue, 10 Nov 2026 07:24:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2D81606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TD1V5XV3;
+	arc=none smtp.remote-ip=95.215.58.238
+Received: from mta1.migadu.com (out-238.mta1.migadu.com [95.215.58.238])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498B9606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:26:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 498B9606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=obqhgN+v
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=obqhgN+vOUd+g67FXf8vOAtxIGCCDZIHqIxpLkJrq1Mvk/YoDHOFodovG9iTnS+pZl4iQjYjarRxm
-	 eWq3jWz+ybMu8Z5zOsR/NIBQYbat9J74F/RTTnlkPDMaI658bJyqRO4psMh9DqSrwANGkSel3xIiex
-	 wL8Qsn8pRjGjIGWk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af2c692552-c9ac3;
-	Tue, 10 Nov 2026 15:24:04 +0800 (CST)
-X-RM-TRANSID:2ee56af2c692552-c9ac3
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [25.255.2.225] (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af2c692cff-aba86;
-	Tue, 10 Nov 2026 15:24:04 +0800 (CST)
-X-RM-TRANSID:2ee76af2c692cff-aba86
-From: xujiahao <xujiahao@cmss.chinamobile.com>
-To: Oliver Neukum <oliver@neukum.org>,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TD1V5XV3
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NGP5NSQ1l+1OBRJX/cyPTA+lt5a7xUc8WPRfGUDUNJU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794295560; v=1; x=1794900360;
+ b=TD1V5XV3eq4O0hRzN8leEuT7sGyWsn7Q/7JH2mAyXiKbbhswqFrrlhAQuB42CMdvAQSvPh+2
+ K8GC3lnh/hrumeMLGnvz48vgpW79evasyrC6G03WLI/sVRjMD+vlqwFHb9xuX2Q8NVJGHqjgQXv
+ /xvefT2JXdhZgR9tek2t12gI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id ecbbf582530854b4;
+	Tue, 10 Nov 2026 07:26:00 +0000
+X-Mizu-Trace-ID: ecbbf582530854b4
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 15:25:46 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com,
-	xujiahao <xujiahao@cmss.chinamobile.com>
-Subject: [PATCH net v2] net: usb: cdc_ncm: don't underflow the NDP room check
-Date: Tue, 10 Nov 2026 15:16:24 +0800
-Message-ID: <20261110151624.696101-1-xujiahao@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261109060913.526268-1-xujiahao@cmss.chinamobile.com>
-References: <20261109060913.526268-1-xujiahao@cmss.chinamobile.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Nikolaos Gkarlis <nickgarlis@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] rtnetlink: return EMSGSIZE when first dump entry
+ does not fit
+Message-ID: <avLG-gH71kT9Zewc@fedora>
+References: <20261109012115.11898-1-stephen@networkplumber.org>
+ <20261109012115.11898-2-stephen@networkplumber.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,73 +76,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109012115.11898-2-stephen@networkplumber.org>
 
-cdc_ncm_ndp16() and cdc_ncm_ndp32() verify that the new NDP and the
-datagram fit into the NTB with an unsigned subtraction:
+On Sun, Nov 08, 2026 at 05:13:12PM -0800, Stephen Hemminger wrote:
+> If a route entry is too large for the dump skb, the dump is silently
+> truncated and no error is returned.
+> 
+> For handlers with RTNL_FLAG_DUMP_SPLIT_NLM_DONE, rtnl_dumpit() drops
+> -EMSGSIZE and returns skb->len. With an empty skb this is 0, so the
+> dump ends with NLMSG_DONE and status 0, and the remaining entries are
+> lost.
+> 
+> The first dump skb is allocated from __netlink_dump_start() while
+> max_recvmsg_len is still 0, so it is only NLMSG_GOODSIZE. On a 4K page
+> kernel that is under 4000 bytes, and a 500 way multipath route does not
+> fit:
+> 
+>   ip link add dummy0 type dummy
+>   ip link set dummy0 up
+>   ip route add 198.51.100.0/24 table 100 \
+> 	$(for i in $(seq 500); do echo -n "nexthop dev dummy0 "; done)
+>   ip route show table 100
+> 
+> The dump prints nothing and exits 0, although "ip route get
+> 198.51.100.1 table 100" still shows the route.
+> 
+> Only ignore -EMSGSIZE when the skb has data, so that an entry which
+> does not fit in an empty skb reports the error to user space.
+> 
+> Fixes: 5b4b62a169e1 ("rtnetlink: make the "split" NLM_DONE handling generic")
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> ---
+>  net/core/rtnetlink.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index e141340172ce..2777796a4ed2 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -7043,7 +7043,10 @@ static int rtnl_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>  	 * Some applications which parse netlink manually depend on this.
+>  	 */
+>  	if (cb->flags & RTNL_FLAG_DUMP_SPLIT_NLM_DONE) {
+> -		if (err < 0 && err != -EMSGSIZE)
+> +		/* -EMSGSIZE with nothing in the skb is an error, as returning
+> +		 * a length of 0 would end the dump as if it was complete.
+> +		 */
+> +		if (err < 0 && (err != -EMSGSIZE || !skb->len))
+>  			return err;
+>  		if (!err)
+>  			cb->data = NULL;
+> -- 
+> 2.53.0
+> 
 
-	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-		return NULL;
-
-tx_max is only clamped to max_datagram_size + max_ndp_size + the NTH
-header size, so tx_curr_size is just big enough for one datagram and
-one NDP.  A second datagram in the same NTB is therefore exactly the
-case this check has to reject, and that is also the case where
-skb->len + reserve exceeds tx_curr_size: the subtraction wraps around to
-a huge value, the check passes, and the skb_put_zero() of max_ndp_size
-bytes that follows overruns the buffer:
-
-  skbuff: skb_over_panic: text:ffff80000db33558 len:428 put:172
-  head:ffff0000c2c66100 tail:0x1ac end:0x140
-  kernel BUG at net/core/skbuff.c:200
-  skb_put_zero include/linux/skbuff.h:2595 [inline]
-  cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1132 [inline]
-  cdc_ncm_fill_tx_frame+0xdf0/0x30e0 drivers/net/usb/cdc_ncm.c:1309
-
-Here end is 0x140 = 320 = 140 + 172 + 8, i.e. the one-datagram minimum.
-
-The room check in the aggregation loop cannot catch this, because it is
-done after the NDP has already been pushed.
-
-Rewrite the test as an addition, which cannot underflow and gives the
-same answer whenever the original subtraction did not wrap.
-
-Fixes: c78b7c586657 ("net: cdc_ncm: refactoring for tx multiplexing")
-Fixes: 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
-Reported-by: syzbot+1994e2ecf323ed90f255@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1994e2ecf323ed90f255
-Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
----
-v2:
- - Add the Fixes: tags reported by sashiko-bot below.  No code change.
-
- drivers/net/usb/cdc_ncm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 19db5a668..e92dc7f01 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1125,7 +1125,7 @@ static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp16(struct cdc_ncm_ctx *ctx, struct s
- 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
- 
- 	/* verify that there is room for the NDP and the datagram (reserve) */
--	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-+	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
- 		return NULL;
- 
- 	/* link to it */
-@@ -1180,7 +1180,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct cdc_ncm_ctx *ctx, struct s
- 		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
- 
- 	/* verify that there is room for the NDP and the datagram (reserve) */
--	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
-+	if (skb->len + reserve + ctx->max_ndp_size > ctx->tx_curr_size)
- 		return NULL;
- 
- 	/* link to it */
--- 
-2.43.0
-
-
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
