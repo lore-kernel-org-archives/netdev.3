@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794287070;
-	b=w9/lVi2X0V3OXZ/f82D4KYBru9L3KTqyCeBKBbk4LCGnE15SenlyKj3UuSnuj2sDKaRI
-	 diA9LUixQNiuA9kkK8mqE7yYB2sQ9dcmS/GUg5aZpTU3YjzJ9fdyBPwM38nwseR+Q7amv
-	 SzMfGNAWdJVmSHvpXROxjE0lagcd3i59j3GKTwxdNQkPcBx3CzKWWlf5EMFBc1zl/yUtY
-	 sAUI1iJNPfKv7zOHLCDe5n1yjtA0W+uHZBS3wMs+sBmmp2fESDL7H4C2M5ZlM5nIlx52F
-	 yODg+zDNUa77+mzdEpVt9/BvXMMtBmJDVfknH1cgE0mK9IVLBl0hOg2LY2PRz54rVaw==
+	t=1794287078;
+	b=RdU3XW5ghvOzLc8p2BJdS2wWgISVj70bZCY4t1Qv4JRlYa0I6MioKe3OyzpasO9+GWLA
+	 o6njcL0XvcL4cv6A/b9Rg639qoI+82ZMGje+SoWQwp7Cq5mbRQ42aGJNt3TO054KAgAcq
+	 NeupJcjfDcKBdlI5TQ6eqcmNkH0JsG3XMynto7u+w9l0iSWVUMGB98rTlYgADvFpIrC4S
+	 f5xdHTmktRRrgmTdN82kMCxcLo1t/c3ziKhtYitTr9hzPeE5lJK6FjeGAxRRim/WUkiUH
+	 Bv2ZeYECD93Col1pqCwaZSt5t+dGkKPZy6F8LnK6oHEViJHz9t7cQPxgjeV2sFZRhnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794287070;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794287078;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=TJ2tQSV2aODET047aWOJttNDlY9nVLYhmxGIgo5uh2yoxSyDtjosAdE252Zmvl68ti3H
-	 XZsxrUUBmNLqNnqZZ/84fGDSRokD9XlylWP9WUaQd2a79nmanQl74g3AgQb9DBahTbYme
-	 mAQpQJpNUsYSh2xdS8Rxw2ZcrkXUUb+R3XOzhgpUC0gB64ROWZEnyOuJmLPqs72YoR+vI
-	 ZojaQA1BejWjX12XOXqdFXc3Ibr+qSiUh9kwCx8r+Fuk20gY2JEDn4EIOJ6sXomsjJ8rh
-	 fhByhB4HXDfnSi5SKLTYv1w0GdhWfPuqN/wupyJrZJcDNwlRxLqnjxks0jQxJGCgFLg==
+	b=A7VAmT/5Fjf2UiwXcrHSxHtn7vt9TlSiYB2Kmii8p9ZCcwp0IpbgvhEja9sCb6xobMaB
+	 sBXw1YozxKg192QtBV20cuFf/mU/DjwJIDBgAviZy7GdKG38A81zbDqfkRhKe8mzsiL0H
+	 ThcqQwiR4ioYcJ3lXMPUM5AlZH3+OhHbz9b/4X+d2gJFZ/zlxOV9sn64vhpLBBG70co/7
+	 O2cZkweJt2GZBpDRn3NauuSRcZIe5xRk/vxQaE41N4dV4uouf1AyMVw4VGzhbQJAWun/W
+	 ZEbAvi613q0sPYl7ck3DhJ9iKzbxeDRJfQjoOG76Pr2G1UqOaQ86aYBeeRzlpZ2BR2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VI6U7Ef5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V543rgRt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36E0606A331;
-	Tue, 10 Nov 2026 05:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D9606A331;
+	Tue, 10 Nov 2026 05:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VI6U7Ef5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060371F008A1;
-	Tue, 10 Nov 2026 05:04:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V543rgRt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7CF1F008A3;
+	Tue, 10 Nov 2026 05:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794287069;
+	s=k20260515; t=1794287077;
 	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VI6U7Ef5c2wUCHQEjC4GnCxthSlTWcrDdiK3cG/R7hegLGNEKWE4pDg2D/ABSgPZK
-	 GICAhqS+g0Lang1sZDvQ27vwArZl04S0aorkphH8fxQrI7mrJ2JXeuIc4PU2vvHBqm
-	 tm4VmkdIROKrk2ki/kl89+VS4BZvUad2sQt+v5XE3UpGFJko6hAU5+X4qBP0soKt+X
-	 G+46jvYiZgXSKiwHLexURsCYphsm+ilMUB2tTJyun3dAdmPoL0XhUqgf1IGLvpUKQ9
-	 JCcNyvFbirxreEDD+IRpSJu9i3BhDk8+ZMUhfVdxyjtpVrTFDINvs+DiCnp+7ZKRyC
-	 7MxkY6gdseJGg==
+	b=V543rgRtMchqg9yVcmkLQFPKzHTcPL30ryMDIZcfY5drnfr6Lx8RBk6u3oSoQ1Lde
+	 V0VV0AH+/U1w6YmxGDYTswXQO0Jw2cfj/+O430bUPPvqQD1dGfs5CKYEbZ/WCM7o6K
+	 viliuVgFma09zK+bRrgJgrcOPGP7dB/GVd6fNzE+d3rSO84iGNrTivig4lKOI35ZBS
+	 3ro1qIQ9MLzu+/S3CQUJXyxKm+36NQgyY/v/v3fDZbThwafiTNqBiesdWRfkY10+n3
+	 VWqmtU/HHhTD9gWAOgtMKVqtvvf4fqTB+fqmXmuscJYu3/b/si+dAu5XdZbTP6PSfh
+	 NBkNQKuxaT+OQ==
 From: netdev-bot+sinfo@kernel.org
 To: joasantonio108@gmail.com
 Cc: david@ixit.cz, krzk@kernel.org, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org
-Subject: 
- Re: [PATCH RESEND v2 0/2] nfc: st21nfca: fix SE APDU request race condition
-Date: Tue, 10 Nov 2026 05:04:28 +0000
-Message-ID: <179428706850.488859.13999450246707929195@kernel.org>
-In-Reply-To: <20261110-st21nfca-v2-v2-0-cf9102b314cb@gmail.com>
-References: <20261110-st21nfca-v2-v2-0-cf9102b314cb@gmail.com>
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND v2] nfc: s3fwrn5: validate firmware header pointers
+ against file size
+Date: Tue, 10 Nov 2026 05:04:36 +0000
+Message-ID: <179428707695.488859.7152705179257041373@kernel.org>
+In-Reply-To: <20261110-s3fwrn5-v2-v2-1-e8f154a5613e@gmail.com>
+References: <20261110-s3fwrn5-v2-v2-1-e8f154a5613e@gmail.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
