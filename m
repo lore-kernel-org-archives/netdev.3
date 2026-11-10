@@ -1,112 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794333392;
-	b=CO1M5f3peAig/Q19jCMuhXVwR57YbEcLDgZQ2FYQjfLDZSPW7/3ksfWxUHJqkm/3WuUZ
-	 vA2WbpnD2cXOsyegqXcOzdIVamYvSAAY3hrI46rzbZ5Xq0UEdpAG+LNpyt+2n0uDBFxcU
-	 l4Qv1qqhjEXXyRMtCupYLcdZF8O27+/Sz3f6mXNjkqYJb1jL3rKzMNJjoQAg1dnWP8pQN
-	 5JyRhSxLODtl6w5WILZn9YniVzBLVrJqkhhinNsrAV5L+jt5G3JY3RdYpE27vP7o2LRBn
-	 I8XF6k09slwX3K4aETrwf4lSB/S1TGAo5YcpZz20FpbsqwldwjMZhd9VP0dO0yzZHdA==
+	t=1794333638;
+	b=DOFsMqzz4owpqoq+T6x0ZRqfd5NY0ZdheKZ6KYjvW2mA72KhHqnhIo9M7J5vReq8zxLU
+	 RdHivdKI74AbxnhHHMKmxujlZhpCKK4jrZHGGa4kBLboISw2lDb71ohdCJTk03UZ08gEF
+	 8JWFo5+BNzWZHu7ndy+SwPyl7aTEf/DA5LNpEFKcTo1MIyIm5jr6wZwPnRjGlp6rZ+WmK
+	 7J3GCkv8tOoA+YQd2vcy/7syaxoOMMUboJXnlffVHJoKwwVdaNInUPkwFBYfOul+ABpLb
+	 8Ajut5o2tvXwS+82j1bmF+QWwhcEPMqG7mFeGwDFGmFxHGMwKdOaqsDytIpyk0HaI4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794333392;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=M1nAtzlpeHXUapfmKhu366PtPUt/GiB1Ra4Z9QPV3Ko=;
-	b=rO+2sbpQKWpQTX7fDKg5bWdHXkH5MruPZQRedXnJO20rQkiurCoXZy3y77Lmx2FWsP61
-	 T1dkywezKcXwH4GLMzLZ/4WQF4b+x4hpBLMits0NwlNws9Sa/MGAioq42Rz+uCkDOuI5k
-	 t9QwDgevs1Ox7n3isR2ZLCGk9ZqpefVorEPGBO8I4fiWqfBrR9MNr1opWcTWrPSeRQhY5
-	 gEQphajuJHDNeh5XsUffs7VLmYnlbWWJHBAwGwOu3tJDhxEZpFti7YBrqqLzuDAcAYKPc
-	 i2f1c4P+9IxS8TaBvRZEGTy7rxOvQFVcDIyFaJkZagA1BmvQWo0SHJn47OzQKB3Wp3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794333638;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=9LuItXp5s8cFtxPZ9H5FlDtsQK3I8Ay0nxSYFMAUyVk=;
+	b=CkIrMGsNc1ZdthUEgWV06xcbl4TEQgF8b7/ZJuK91UyQlOYfR3j3O4njF6Kj61HDU7kP
+	 0xlk6DFhFPWOfj+SW45tTPfDegsBR8VfPXpQcabFc/DG/JlviP/NBPWGOeCz8THNJQGJB
+	 HjIcrhPEF51VAPePd7wCiHCmCsakTz3kKGUdlAGzlQpsVuVRUAN+8spyjiVLuBbhqLE6z
+	 8DfjEnIx/W65iBc1vtIsrNAF9OklvJaRPpv6Y2XzYaRVncDnW+nLhoOolk/Pdp1U2Pmr1
+	 D1j0V9uIJAeGE22g5b6TPfrRHiR3vwlJn6850sTRhlg026CrduH0/Wp0ZGZjOw8EwPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=IkeSWgG1;
-	arc=none smtp.remote-ip=209.85.215.228
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QClyyri8;
+	arc=none smtp.remote-ip=209.85.218.54
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385F606A21E
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:56:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6385F606A21E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34968606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:00:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34968606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=IkeSWgG1
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cdb2dfcca94so1073131a12.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:56:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QClyyri8
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c4d473cfff6so333045766b.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:00:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794333637; x=1794938437; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9LuItXp5s8cFtxPZ9H5FlDtsQK3I8Ay0nxSYFMAUyVk=;
+        b=QClyyri8MkVapcikBH87n/uuQNzP60fqChANntJ3ziDZdO1/muz3JPTQnI9+dnIWGW
+         krWveAsXgNtJ+6rZO0LBkhP9hiHu+NJrC7r2vqGYszAl+3tUeO+PLdgfkiLw9ZXhNl4v
+         +Ol/vrn6v7ayIWCwZPkFRkx3wn9GN2PgOZMQo1TyXlL16cUteA05D3ZwvDbzruo1XSu3
+         QSkA4LEljNLQ4Mk/ufyBM1g2NK7Zbw1nwXTFtWoOHcmlYbp/W52VWZND91c7xwZoo1Ad
+         UhO/caV3NrZpsGjh6+kqKbPPdQCLCzCIykR/Jl5Ku+NWwN5VaOTeZBjGVJbeHEZmrP4f
+         tTkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794333392; x=1794938192;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+        d=1e100.net; s=20260707; t=1794333637; x=1794938437;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M1nAtzlpeHXUapfmKhu366PtPUt/GiB1Ra4Z9QPV3Ko=;
-        b=CVq8HkylnDZXqmGAdgGUHKYD4p8XJKc7upvtsl+JNJCXYewTir5dlbfl8y3DZNhg4z
-         d3L2Wczu56F0Sq3UT2uWjSs8JUnVcTw5De1zD42bVpgA12AMgZitcJQFMnPYtk5Vt1RL
-         cqMi1Nb1G8VrMXPIyhOPaY4WkZdICtsALjTbRnihV1c4ZBRUyGwk0LMu3AKprP1+DpP9
-         YWS9cgk5yz0LyyJcLFHZbgWMUQ35jkl1oqO4u3QF3e5AUMNUbZI/FT3V6eDJJu1QJDn4
-         dMCFeF+sybslQHiIRSV7YSc9EP1ye4+dEHOB46LU1FLbLQZ236TD7+9/MaULnG7UmaCd
-         PppQ==
-X-Gm-Message-State: APuU4Z9oyqPOO1DB+PTof8V9ctl+09LLpaw6u1QwoDZ8/7sxptxB49Su
-	Y+DXxSEUtqr6k+46a4SaKMIMztkqaRHnkUNwg/t9UuHVaOL/OjFW8Kp1CAOM5VoH7utNe6NnonJ
-	8jlH3FISkH/oHxeeOG8zCa37P7VaDBwj1tIKGg+qkygiLVJ8edl+yrvpzCLYOl6zuqsbeCkdgrX
-	r+TpMkvEBKVfCshh6oo5TWrXYUo8Opa1llEpY2lWKNWzMUffGLQj3zw+1p6xv7Ix6AnCEfW2xyC
-	N1zA1VggN4=
-X-Gm-Gg: AYBFou0o5EeqeAxLAfDZ325O8U8eX4dBortn7gKCZ2/5kJvKOukV6CHTYEOl7ySN7Va
-	hYNfJimOxDFh6JCRi2O+AwZr4MsuUF34RsXc+kTuWFquMm73VP/3uUXz7g5uUDofdatuYBzsL5F
-	rJzsvqkO0HgumLmU25yeqKiSxooHM70JmQVTLSdLkw2+kmNXenWeKj1GL+Y6W0t1qtXY4M/HGUC
-	mqGb9rl8AZpwEL3bLoh+ItpgQkZC/QtlDjz2160Q2bhPn90jNwIIF7F46pLs0Twc4PBV8F0jgUc
-	hfzkNJhid75xPj/c4mazDXNY5WGLBeQgEKW7cMDbhXogfrO0LBvKX7DkmvvAbNfYKXtAu3JLnhf
-	JrcIJw8ITT7BmF4DEeFD4///RhzDaVhsDxIs2ZeohkBtlCVFfCm2tLLAn8yHUYS6Dq0NCPRZd1H
-	HOwreYx87b8OHW/HQgTn6Kps2td3eQwpw1EFY=
-X-Received: by 2002:a17:90a:dfc8:b0:3ab:36c4:b4ff with SMTP id 98e67ed59e1d1-3b166cf786fmr3743258a91.24.1794333391650;
-        Tue, 10 Nov 2026 09:56:31 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b17d915366sm347562a91.0.2026.11.10.09.56.31
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 10 Nov 2026 09:56:31 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-91e9a0eae11so34169156d6.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:56:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794333390; x=1794938190; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M1nAtzlpeHXUapfmKhu366PtPUt/GiB1Ra4Z9QPV3Ko=;
-        b=IkeSWgG1eaFhVJWSJVNylTyrQtIvZIkkcp65pT+kGQTu91pZUk+BzHTymo0GGpoO2U
-         eL5AKDrvk1SJLLzDsmKLvH/SyPsmbB9vM5r+O4JoQXUO4NM6t+dlWFsIuv5tjAdybAqo
-         lD7tcW8a/68V6ohy2C0VMhH0GGoifv9Cm8zkg=
-X-Received: by 2002:a05:6a00:1915:b0:8b4:b88a:c2d5 with SMTP id d2e1a72fcca58-8ba860d9305mr4054412b3a.13.1794333014629;
-        Tue, 10 Nov 2026 09:50:14 -0800 (PST)
-X-Received: by 2002:a05:6a00:1915:b0:8b4:b88a:c2d5 with SMTP id d2e1a72fcca58-8ba860d9305mr4054386b3a.13.1794333014152;
-        Tue, 10 Nov 2026 09:50:14 -0800 (PST)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm1241256b3a.0.2026.11.10.09.50.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 09:50:13 -0800 (PST)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
+        bh=9LuItXp5s8cFtxPZ9H5FlDtsQK3I8Ay0nxSYFMAUyVk=;
+        b=MQylKAlBeKuxCDmmdWZSWpBUH3Jm6fyfIntv3erSDERk7mxXtHq79izCjNmdcz6Hjw
+         zgR2F6XvT/yT14bZCw7wgJA8xHCf7LX5Ln1DvkUELNJfJGnUKHJQ4P1TNwzDdSt4mq/7
+         T/jHplNOZ+hDTKGCjx21wzO9KPoexqkQoT6xRR9RUR4EaApIImgDzmxrQw4bmvcdAcZZ
+         NvbmC6esaiVojXxwTxR1DSS8itWMhQoOkBCsfqX+/ZuoGTtF/Wq6he/hIYVkiOl6QKsp
+         hzOtGV7UaE4LEwaA2ba+onLgR9IhVtNzc8Huo+snUgKZLrLZyyXwOkzUT27NJRoSZFsW
+         UIZQ==
+X-Gm-Message-State: APuU4Z/JFpzheg5xkcmHUOqkH3jlXhiFqQbOvY+m2/XFWr5IEXWSYhNr
+	oy94c1R/7182sG5DrudVBoFvynhzj+T0XC1VY2kOS2YY7+3nOS0XOHx1
+X-Gm-Gg: AYBFou2iqg4a3s1213Ij24wk53w6sgqVN6V7+CPYVmz+QBPrhV+nfHvR8A7OikF1fwQ
+	bjtu0Qsz0dw9xU/e8eF/2eXSeX1WMjE6RtVFGmgZhSg0GXfv44bCQkluA1rEaU2Vk/uDz1A6U/E
+	rmOgJiJzzieFztQNsLN+iZzbVOOpHCgHZe+iuBCRrNJaR0QtXkxMH/xfYG/WTOs3aYvc6jL/K1w
+	oNYZmctD5UozO3wHRuflrVDhE6rLBiwQMdnCP6667JWcdjsukwhcPglLNsOt9shDIXaxIjhq+ul
+	fa1HDAMJ25yB84ScZ/aGaRZ1vRqxkwZ5O5u2GONDaa4l87IpcWA48YYIH2Ey4HEnI/Rqwt1vlaz
+	3Sda3Rm/oPfVpVsehHIlkqFIZASVP7H8Gy/+5TYX0E6hR7Id2bWSdeBiTGWXbZ2xfXFfg3/DMGI
+	slA8QmZBvGY7gI0bkBVLf7mbY7kI76C+x5JcBdVC+DVSJ6j4FIhjSZtvUsabxLofW5jN8rzSEyP
+	CyOivV6rZAUExCefZL36LyKosTHzmi7fXiugW0cKbt7u9CY4t/oWumF2Q2ynDFhn+rEcBVDuyvz
+	B8Mhb7e91MoJzmtRy+9JUBkb4Tca/WsljNfumQbAA/kOdWJS
+X-Received: by 2002:a17:906:830c:b0:c42:102f:15df with SMTP id a640c23a62f3a-c504951eb29mr193190866b.8.1794333636284;
+        Tue, 10 Nov 2026 10:00:36 -0800 (PST)
+Received: from Air-pasichndev ([188.163.8.107])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a59fd2csm141668066b.44.2026.11.10.10.00.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 10 Nov 2026 10:00:35 -0800 (PST)
+From: Andrii Pasichnyk <apasichnik9@gmail.com>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Cc: netdev@vger.kernel.org,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	keegan.freyhof@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH net 1/2] bnxt_en: Map HWRM_ERR_CODE_PF_UNAVAILABLE to -ECOMM
-Date: Tue, 10 Nov 2026 09:49:42 -0800
-Message-ID: <20261110174943.2106347-2-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261110174943.2106347-1-michael.chan@broadcom.com>
-References: <20261110174943.2106347-1-michael.chan@broadcom.com>
+	wireguard@lists.zx2c4.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] wireguard: peer: free packets left on the per-peer queues on removal
+Date: Tue, 10 Nov 2026 20:00:34 +0200
+Message-ID: <20261110180034.76136-1-apasichnik9@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <avNIS67grg_Qc5Vy@zx2c4.com>
+References: <20261003201625.4572-1-apasichnik9@gmail.com> <avNIS67grg_Qc5Vy@zx2c4.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,121 +103,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Keegan Freyhof <keegan.freyhof@broadcom.com>
+On Tue, Nov 10, 2026 at 05:37:31PM +0100, Jason A. Donenfeld wrote:
+> I'd be interested in seeing your adjustment to netns.sh so that I can
+> test this myself and validate various approaches. Do you have something
+> really minimal? Also, is this a test case that could be implemented
+> minimally enough that we could integrate this into netns.sh permanently?
 
-The current use of -ENODEV for both PCI being disabled and FW's
-HWRM_ERR_CODE_PF_UNAVAILABLE errors makes it impossible for the
-caller to distinguish between the 2 errors.  As a result, a disabled
-VF device will cause the driver to pointlessly retry setting L2
-filters believing that the PF is down.
+Here is a minimal version. It relies on the created/destroyed object
+check netns.sh already does at the end:
 
-Fix it by using -ECOMM instead for HWRM_ERR_CODE_PF_UNAVAILABLE
-which means that the FW is failing the command on the VF because the
-PF is down.  This new -ECOMM error code which is more accurate will
-now propagate to userspace instead of -ENODEV on some VF failure
-paths when the PF is down.
-
-Fixes: 662c9b22f5b5 ("bnxt_en: improve VF error messages when PF is unavailable")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Keegan Freyhof <keegan.freyhof@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c      | 14 +++++++-------
- drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c |  4 +++-
- 2 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 33c4cacc8ffe..9d232d835758 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11319,7 +11319,7 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
- 	/* Filter for default vnic 0 */
- 	rc = bnxt_hwrm_set_vnic_filter(bp, 0, 0, bp->dev->dev_addr);
- 	if (rc) {
--		if (BNXT_VF(bp) && rc == -ENODEV)
-+		if (rc == -ECOMM)
- 			netdev_err(bp->dev, "Cannot configure L2 filter while PF is unavailable\n");
- 		else
- 			netdev_err(bp->dev, "HWRM vnic filter failure rc: %x\n", rc);
-@@ -12477,7 +12477,7 @@ int bnxt_update_link(struct bnxt *bp, bool chng_link_state)
- 	rc = hwrm_req_send(bp, req);
- 	if (rc) {
- 		hwrm_req_drop(bp, req);
--		if (BNXT_VF(bp) && rc == -ENODEV) {
-+		if (rc == -ECOMM) {
- 			netdev_warn(bp->dev, "Cannot obtain link state while PF unavailable.\n");
- 			rc = 0;
- 		}
-@@ -13954,7 +13954,7 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
- 	for (i = 1, off = 0; i < vnic->uc_filter_count; i++, off += ETH_ALEN) {
- 		rc = bnxt_hwrm_set_vnic_filter(bp, 0, i, vnic->uc_list + off);
- 		if (rc) {
--			if (BNXT_VF(bp) && rc == -ENODEV) {
-+			if (rc == -ECOMM) {
- 				netdev_warn(bp->dev, "Cannot configure L2 filters while PF is unavailable, will retry\n");
- 				rc = -EAGAIN;
- 			} else if (rc == -EAGAIN) {
-@@ -16997,7 +16997,7 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
- 	}
+diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
+index a8f550aec..8303802c0 100755
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -207,6 +207,20 @@ n0 iptables -F INPUT
+ ip1 link set wg0 mtu $orig_mtu
+ ip2 link set wg0 mtu $orig_mtu
  
- 	rc = __bnxt_reserve_rings(bp);
--	if (rc && rc != -ENODEV)
-+	if (rc && rc != -ECOMM)
- 		netdev_warn(bp->dev, "Unable to reserve tx rings\n");
- 
- 	bnxt_adj_tx_rings(bp);
-@@ -17007,7 +17007,7 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
- 	/* Rings may have been trimmed, re-reserve the trimmed rings. */
- 	if (bnxt_need_reserve_rings(bp)) {
- 		rc = __bnxt_reserve_rings(bp);
--		if (rc && rc != -ENODEV)
-+		if (rc && rc != -ECOMM)
- 			netdev_warn(bp->dev, "2nd rings reservation failed.\n");
- 		bnxt_adj_tx_rings(bp);
- 	}
-@@ -17033,7 +17033,7 @@ static int bnxt_init_dflt_ring_mode(struct bnxt *bp)
- 	bnxt_clear_int_mode(bp);
- 	rc = bnxt_set_dflt_rings(bp, true);
- 	if (rc) {
--		if (BNXT_VF(bp) && rc == -ENODEV)
-+		if (rc == -ECOMM)
- 			netdev_err(bp->dev, "Cannot configure VF rings while PF is unavailable.\n");
- 		else
- 			netdev_err(bp->dev, "Not enough rings available.\n");
-@@ -17411,7 +17411,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		bnxt_aux_devices_init(bp);
- 	rc = bnxt_set_dflt_rings(bp, true);
- 	if (rc) {
--		if (BNXT_VF(bp) && rc == -ENODEV) {
-+		if (rc == -ECOMM) {
- 			netdev_err(bp->dev, "Cannot configure VF rings while PF is unavailable.\n");
- 		} else {
- 			netdev_err(bp->dev, "Not enough rings available.\n");
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-index 5bfabdca7d0e..de02d1baa751 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-@@ -360,7 +360,7 @@ static int __hwrm_to_stderr(u32 hwrm_err)
- 	case HWRM_ERR_CODE_CMD_NOT_SUPPORTED:
- 		return -EOPNOTSUPP;
- 	case HWRM_ERR_CODE_PF_UNAVAILABLE:
--		return -ENODEV;
-+		return -ECOMM;
- 	default:
- 		return -EIO;
- 	}
-@@ -716,6 +716,8 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
-  *	ENOMEM: HWRM has no buffers.
-  *	EAGAIN: HWRM busy or reset in progress.
-  *	EOPNOTSUPP: Invalid request type.
-+ *	ENODEV: PCI device is disabled.
-+ *	ECOMM: The parent PF is unavailable when issued on VFs.
-  *	EIO: Any other error.
-  * Error handling is orthogonal to request ownership. An unowned request will
-  * still be consumed on error. If the caller owns the request, then the caller
--- 
-2.51.0
++# Remove a peer while a UDP flood keeps its receive queue busy, then re-add it;
++# packets left on the per-peer queues would keep it from being destroyed,
++# which the created/destroyed check at the end catches.
++for ((i = 0; i < 10; ++i)); do
++	n1 iperf3 -s -1 -B 192.168.241.1 &
++	pids=( $! ); waitiperf $netns1 $!
++	n2 iperf3 -Z -t 2 -b 0 -u -l 64 -P 4 -c 192.168.241.1 >/dev/null 2>&1 &
++	pids+=( $! ); sleep 1
++	n1 wg set wg0 peer "$pub2" remove
++	kill "${pids[@]}" 2>/dev/null || true; wait "${pids[@]}" || true
++	n1 wg set wg0 peer "$pub2" preshared-key <(echo "$psk") allowed-ips 192.168.241.2/32,fd00::2/128 endpoint 127.0.0.1:2
++	n1 ping -c 1 -W 1 192.168.241.2
++done
++
+ # Test using IPv4 that roaming works
+ ip0 -4 addr del 127.0.0.1/8 dev lo
+ ip0 -4 addr add 127.212.121.99/8 dev lo
+diff --git a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
+index 368fd9d60..c69a408a5 100644
+--- a/tools/testing/selftests/wireguard/qemu/kernel.config
++++ b/tools/testing/selftests/wireguard/qemu/kernel.config
+@@ -67,7 +67,7 @@ CONFIG_SYSCTL=y
+ CONFIG_SYSFS=y
+ CONFIG_TMPFS=y
+ CONFIG_CONSOLE_LOGLEVEL_DEFAULT=15
+-CONFIG_LOG_BUF_SHIFT=18
++CONFIG_LOG_BUF_SHIFT=20
+ CONFIG_PRINTK_TIME=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_LEGACY_VSYSCALL_NONE=y
 
+Two details matter:
+
+- The ping after the re-add. Without it the re-added peer has no
+  session while the other side keeps using the old keypair, so nothing
+  flows until the next handshake and only the first removal happens
+  under load. My original reproducer had this flaw, so the "5 in 2140"
+  in the commit message undercounts: most of those removals were idle.
+
+- The log buffer. With message_cost=0 each removal under load logs up
+  to ~1000 "Packet has unallowed src IP" lines, which overflow the
+  default 256 KB buffer; the object check then reports false "merely
+  destroyed" errors and can miss real leaks. 1 MB is enough for 10
+  iterations. Without the kernel.config change, 2 iterations fit in the
+  default buffer, but caught the leak in only 2 of 6 runs.
+
+Results on net-next 66974df65a0b, x86 KVM:
+
+  unpatched, 1 vCPU:  failed in all 3 runs; 25-40% of loaded removals
+                      leak a peer and its keypair
+  unpatched, 2 vCPUs: failed (1 run)
+  unpatched, 4 vCPUs: passed (1 run)
+  patched, 1 and 4 vCPUs: passed; 0 leaks in 212 loaded removals,
+                      including a 200-iteration run
+
+A leak shows as "Error: wg0: Peer N: merely created" plus a matching
+"Keypair M: merely created". One gotcha when switching NR_CPUS: the
+qemu Makefile does not regenerate the kernel .config, so delete
+build/<arch>/kernel/.config first.
+
+So yes, I think it can go into netns.sh permanently: 10 iterations add
+about 13 seconds and caught the bug on every 1-vCPU run of an unpatched
+kernel. I can send it as a separate patch, or fold it into a v2 of the
+fix, whichever you prefer.
+
+Thanks,
+Andrii
