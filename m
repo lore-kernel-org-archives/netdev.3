@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794273374;
-	b=YY4tP/d9pTl4r2s9XiW/nhqlurK3x+9CJXnIW6j9OEJkcQEriTZ+AviUtx1fUMUaAN9z
-	 aBDNekkx3BXiCwR/+oMQ6rqEN4DeVFVdMkBrRhb0uaIxYfLVMTMilOIXOTvtENqYzMgQz
-	 WTUvexCvoqHDQ4rHYR3tLyK3gGV/4LppUhKZQpy6KFJEgykxa8wHdFfHnMk6DQYWdRn+o
-	 c+oDvU39HB4qfrWV55x5hOXq/gu7NYLkS41SYEzFEBqK2wob+J+kDmnZgztnk2ve66V8v
-	 IpCLzYzis7eQ7UZ9ZZXEVlvXMq1MHfbghNmhlguYDmzuS3AHTwBzfp0UlYSd+klfhTg==
+	t=1794273377;
+	b=yNFWht37fnGRUx6qJ2FdCYPSoBio3ODX28O1aw3ryJeBnPlOWoO2lPLYEo7hIZJeXQal
+	 y0TDmcBjD0j7j8eHBiGr65dWlWQm6bijdQNtP9oOUL3Q6VO2flpoDoz+75VX/jX2LaZNY
+	 rRS9oJj/l8JpdOrn+dxZb+lEKpYLPTHUKxdJ2VPoVR8nfVPG1Xr5vcgmvokESMSV2Z409
+	 XpaZJ3kxWa3axqFhJ1Zy856BzfTNguK7NYUQI3dRcV3GW+uHZ6ugYyS6O38VRe3az1OJt
+	 2eKbTliEaQFSaEc9uJgJ9kWoq+NtDlTbh5S7eORandKchBaDP8c1M6+7+SHmJOqZ4WQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794273374;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794273377;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=iLc81dlIMgk2M36hvoTrJto1aOwZcteM9MGtiO2fY2M=;
-	b=wl8oS8i5jT44bow4D6mjRN91iTC4TutKMOdkJJQrk2MozZcJ69+X2JvNqdGIWeA3yPvZ
-	 Wrei7JTlhwn7ESdkLUeF0ycGEUae1SJBE7Ul6u3etdQpQvBHJynuVpMUbuc2DLCq6i8km
-	 nshubMouViDUGWUvz7srN0FU+QiJ45i5HAQYvpRiIzOYT4d20nzjiztgvRS92z+xxQxnb
-	 vhtNg/t/p0Y9crILFRdXzjlFPNy0tL/IAKepi9p+NTJXU+yRF/QDYf5atR05epiEwBOL0
-	 htr4UTnizzxiZ/Tidoo7eBZCXFurT/MjjZO8B5iYXbankL2HMH9ro1AStjEQBFFWlQg==
+	bh=MAiiscM7CAXaJM+Fc3kMybdqrpzytpvjPiVCbVKPxE0=;
+	b=rcK+YwMZLnyzT67SCyjEHXf9QiZT1KCC4wOAGFBkiAwJtftUssGm+spPA3ySwhBkxws+
+	 OIcs+0SCZBpZ+PuFzIlFxDCOuWJtvS0AnFVLvyhqjR1IWhruKhmSUeLJpcIgB5EximZ2n
+	 CIZ8C2yOpjTfOgO0OR3q/99HKOjzS65g1814k65gieiIQhvpFZFvMlbAtELipV1vOVcdk
+	 iVM/uq6SI621iWXQIpChVKLA+KT7ItwIsbukO9I34HkmENIKHchEb+FIqYN3HB1QaLiZR
+	 obnMCnxoXhKwZIfjicrxsFRvCe0Vv0KjLmETWvCzPG1sMErIiEYrjaozdtNUH5Gfl1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlYCuXP5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oEKD4HGX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04824606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 01:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42AE606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 01:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlYCuXP5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D9D1F008A1;
-	Tue, 10 Nov 2026 01:16:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oEKD4HGX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C96C1F008A3;
+	Tue, 10 Nov 2026 01:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794273373;
-	bh=iLc81dlIMgk2M36hvoTrJto1aOwZcteM9MGtiO2fY2M=;
+	s=k20260515; t=1794273376;
+	bh=MAiiscM7CAXaJM+Fc3kMybdqrpzytpvjPiVCbVKPxE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UlYCuXP5qUbNGVuXojiiiMM/LZU5CtEReERVS6T/FE14g2XvIU8dxGcA4pjkCn8Jc
-	 391xfNoQN4G9IUko709333YrENN3H6WWN87UCDLBwD26Me4leFURGXEgLNh7VHa4Sy
-	 7tRfacETls+qGTwDJ0MtOveNzEtgFvXoOryTOkOh1KPP1MFe2Iyc9aq1fLtxAtP6yn
-	 w/1vpYKIaDKZO+UhfMUGpNRkslGHSmK6Mmbrb57TzN8gVJKh29TB5v7i2HsCkwKu/W
-	 RgcoKPVNmc8XOnjNy8/ISRf23flRaR5+dydAqVP1Tkf94QTStV7db+lCMp0QF0GtZe
-	 GJNK8m9cVc0og==
+	b=oEKD4HGXF/6yCfp/Phx2NFJcPI4hAeQe/hmDP7scNJB8Kb/JdZkFH5l9tWY0nTQpB
+	 bOjRyPlvdsr4mAtW+OTi3HJXSeXrShGcm1bUTAPzRrJq93x5uGPaU9m2UZ9z0tdwh0
+	 dryu5CBYLiUu3r6oSMWrdhfpr6r60E0K9eFDRRJUuDp+2ZTdfpMfcaCbv+nSetTTma
+	 tfJDmjgm9COxe++lJ+yW/H9zRI+TxsTjVGPBS+aCaNjMdMa9HsfhsHoFiccDViLjc9
+	 R8DJrdeS8kyhbUmMDAr3bfTJCXOKuygmck2Ind1ztWFS+5V3TYNlSUKEZRYX2qW3W3
+	 dK9E9QqAP9pfw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: linusw@kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -50,12 +50,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	mhun512@gmail.com,
 	edumazet@kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v6 01/15] net: ethernet: cortina: Keep shared free queue parent-owned
-Date: Mon,  9 Nov 2026 17:16:11 -0800
-Message-ID: <20261110011611.1733276-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v6 02/15] net: ethernet: cortina: Keep PHY-less port bound for shared IRQ
+Date: Mon,  9 Nov 2026 17:16:14 -0800
+Message-ID: <20261110011614.1733382-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103-gemini-ethernet-fixes-3-v6-1-c4b5ff8a65d8@kernel.org>
-References: <20261103-gemini-ethernet-fixes-3-v6-1-c4b5ff8a65d8@kernel.org>
+In-Reply-To: <20261103-gemini-ethernet-fixes-3-v6-2-c4b5ff8a65d8@kernel.org>
+References: <20261103-gemini-ethernet-fixes-3-v6-2-c4b5ff8a65d8@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,46 +70,145 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
+net: ethernet: cortina: Keep PHY-less port bound for shared IRQ
+
+This patch keeps a Gemini port child bound as an IRQ-only port when its
+DT node has neither phy-handle nor fixed-link. That way the threaded
+software free queue handler on port 1 stays registered. Ports are now
+published to the parent under RTNL only after their IRQ and optional
+netdev are ready, and geth_resize_freeq() refuses to run until both ports
+are published.
+
+> The software free queue interrupt is routed through port 1 even on
+> boards which only connect a PHY to port 0. Since PHY setup was moved
+> into probe, the PHY-less port fails to bind and releases the threaded
+> handler needed by the shared queue.
+
+[Severity: Low]
+Does this description understate what happens on the parent tree?
+
+Before this patch, gemini_ethernet_port_probe() published the port before
+PHY setup:
+
+	if (!id)
+		geth->port0 = port;
+	else
+		geth->port1 = port;
+
+	gemini_ethernet_init(geth);
+	...
+	ret = gmac_setup_phy(netdev);
+
+port is embedded in netdev_priv() of a devm_alloc_etherdev_mqs() netdev.
+On dns-313, nas4210b, nas4220b, rut1xx, wbd111 and dir-685,
+ethernet-port@1 has no phy-mode or phy-handle. gmac_setup_phy() therefore
+fails, and devres frees the netdev while geth->port1 still points into it.
+
+The next gmac_open() on port 0 then reaches geth_resize_freeq(), which
+used to do:
+
+	other_netdev = geth->port1->netdev;
+
+	if (other_netdev && netif_running(other_netdev))
+		return -EBUSY;
+
+Isn't that a use-after-free of the port 1 private data?
+
+The commit message also doesn't mention the new phy_disconnect() on the
+register_netdevice() failure path. Before this patch, a register_netdev()
+failure jumped to unprepare with the PHY still attached to a netdev that
+devres was about to free.
+
+Could the commit message describe the dangling geth->port1 pointer and
+the phy_disconnect() fix?
+
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> index bf7652b04f1ba..79c0463642928 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -2683,6 +2686,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
->  {
->  	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+
+[ ... ]
+
+> @@ -2600,6 +2632,16 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto unprepare;
 >  
-> +	devm_of_platform_depopulate(&pdev->dev);
-> +	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
->  	geth_cleanup_freeq(geth);
->  	geth->initialized = false;
->  }
->
+> +	if (!of_property_present(np, "phy-handle") &&
+> +	    !of_phy_is_fixed_link(np)) {
+> +		dev_info(dev, "no PHY, keeping port for shared IRQ\n");
+> +		port->netdev = NULL;
+> +		rtnl_lock();
+> +		gemini_port_publish(port);
+> +		rtnl_unlock();
+> +		return 0;
+> +	}
+> +
+>  	ret = gmac_setup_phy(netdev);
+>  	if (ret) {
+>  		netdev_err(netdev,
 
-[Severity: High]
-devm_of_platform_depopulate() unbinds both port devices synchronously,
-and gemini_port_remove() ends with clk_disable_unprepare(port->pclk).
-By the time we get here both GMAC gate clocks are therefore off. That
-includes this writel() to GLOBAL_INTERRUPT_ENABLE_4_REG and the
-readw()/writew()/writel() of GLOBAL_SWFQ_RWPTR_REG and
-GLOBAL_SW_FREEQ_BASE_SIZE_REG in geth_cleanup_freeq(). All of them
-access geth->base while the block is unclocked.
+[ ... ]
 
-The parent cortina,gemini-ethernet device does not hold a clock of its
-own, and the global registers need at least one port clocked. On ARM
-that means one of two things. The writes may be silently lost, which
-leaves SWFQ_EMPTY_INT_BIT enabled and the old free queue base
-programmed. Or the access takes an external abort on unbind or module
-unload.
+> @@ -2607,9 +2649,15 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+>  		goto unprepare;
+>  	}
+>  
+> -	ret = register_netdev(netdev);
+> -	if (ret)
+> +	rtnl_lock();
+> +	ret = register_netdevice(netdev);
+> +	if (!ret)
+> +		gemini_port_publish(port);
+> +	rtnl_unlock();
+> +	if (ret) {
+> +		phy_disconnect(netdev->phydev);
+>  		goto unprepare;
+> +	}
 
-The child path has a similar window. The clock is gated in .remove,
-but devres frees the devm threaded IRQ (gemini_port_irq() and
-gemini_port_irq_thread()) only after .remove returns.
-SWFQ_EMPTY_INT_BIT is still enabled at that point. The thread can
-therefore still run geth_fill_freeq() and rewrite
-GLOBAL_INTERRUPT_ENABLE_4_REG on an unclocked block.
+[Severity: Medium]
+Does this fully cover a port 1 that describes a PHY but fails to set it
+up?
 
-Could the free queue interrupt be masked, and the queue torn down,
-while at least one port clock is still running? Another option is for
-the parent to hold its own enable on a port clock across remove. Which
-ordering did you have in mind, given that port 1 owns the refill IRQ?
--- 
-pw-bot: cr
+Only a node with neither phy-handle nor fixed-link takes the IRQ-only
+publish path. Port 1 can instead have phy-handle (wbd222, ssi1328) or
+fixed-link (sl93512r, sq201). If gmac_setup_phy() then fails, probe still
+does goto unprepare without publishing the port. The register_netdevice()
+failure path above does the same.
+
+gmac_setup_phy() returns -ENODEV, not -EPROBE_DEFER, whenever
+of_phy_get_and_connect() returns NULL:
+
+	phy = of_phy_get_and_connect(netdev,
+				     dev->of_node,
+				     gmac_adjust_link);
+	if (!phy)
+		return -ENODEV;
+
+That covers a PHY that doesn't answer at its MDIO address, a PHY device
+that was never registered, and an unsupported phy-mode.
+
+In that case devres releases port 1's threaded software free queue
+handler, and geth->port1 stays NULL. The new check in geth_resize_freeq()
+then fails permanently:
+
+	if (!geth->initialized || !geth->port0 || !geth->port1)
+		return -ENODEV;
+
+gmac_open() only tolerates -EBUSY:
+
+	err = geth_resize_freeq(port);
+	...
+	if (err && (err != -EBUSY)) {
+		netdev_err(netdev, "could not resize freeq\n");
+		goto err_stop_phy;
+	}
+
+Wouldn't every open of the working port 0 then fail with "could not
+resize freeq"?
+
+This looks like the same port 0 breakage that 3e813d61401a introduced.
+Before that commit, a PHY failure was deferred to ifup and port 1 stayed
+bound.
+
+The gmac_setup_phy() failure path also appears to be unchanged in the
+final revision of the series.
