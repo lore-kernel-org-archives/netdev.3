@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292701;
-	b=pAKnVn0LIEdrKx5uB4iNo6+yY5vZ4hOiV/9jryH+tdH/QZEpSk0VzJpWOrf/OY5d2VVo
-	 1OA9MbFr1wd3Ydv7a7R0VBHBMnXnnG0uXOd4yFeE2VXHFdGreUDKVXvdHmTuWK5F1YBWf
-	 cKAbI2SBzFvhggnnYWwp4T6zxwAoK9PeIVmUzlqGo6F8N60eazO7HzYhgNOrlcIflMesP
-	 iMzNx9kXubP/E89fdUpxNkW0c0XbrkhQa2qz9f1RLeG14FBBtrJiZj7W1SzfJNEbVVZ3c
-	 F3+V2AD6LcuI+WiQmlkaImOI+GXLUqSa1GZcDrFeM13sbuX/5qthjPU9tZGOv8mQncA==
+	t=1794292703;
+	b=eVvy3BtmUHCPPbbcnHMaETx5k21HZ4UNj9TBa9kSL8E7WTrWVqQrtbO/OvfXpcBAxjPj
+	 22j3y+LnkaAAwxJQFObC1lWWNB0h+SbOCNV7X1KagtK+LTe924BlmVCVi8ANhCPJZbs5q
+	 NBQ2lxvKPeK9ijAA0ugrK9/nsIwb0FovKKDBVoKZJ2I75ZVaKkXfZqR8xKeV3YYnw4dBK
+	 J3GaBmko/EfElOa0YWKY9ZKZQh2gAVIYD0/2sSaEn4VPd3B5i83T8eiRCxP5T5VXNBAQb
+	 PUR6aCqc27jC5wbiCJJ4GTbvszAqtnzwMax6hdqPOEbLdNU3yLzs7r5msrW+yDslZwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292701;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292703;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=tb6492JbkmgtBmoAA1lWUlcjhbJx5wzf1aKynM8S9Rs=;
-	b=2teSafqQRAcCU68dzGT1zoD4+3/0VMcKM6/iRpuLZ9ChLasw5Ox5nf1FmPAB+OtAURPO
-	 q3WOd4FTfwqRycvKZBOkVe5FUs7eVpsGvJaMSv0Vyu9rZ6djagNab+ASw+SICxYtlWUIS
-	 Bj+IW2f4AdpaG5fIKpPKmolmiRc3vAeHYpn+k8ITgURadJoXc/hPv7wiS+gbR41TG+N9M
-	 nJzHn+HMcoEIG+dRzWNiiUfbioNwtOcdNTv+mYl93i5lAcjlF2aa27hK50xQXgqJz3YJF
-	 AD7wuOv2ZonybAtUxQaO+QcmUerhZhjnQUylbPx+FRiXfCAmt+wNPobrTvOv0NSzg5w==
+	bh=LOiKICujpBzPReN9GW/iERHG8sQmBIYj4fZnX5FM+J8=;
+	b=AImgA+4Zk/9SXgT74dWuYgOfBJahMkjIlUEmIxOWOyD9ihf8ZjD9sps9u+qUdAolgskw
+	 EsIRUi2LlzEZKAac3alY46R1Qde0VLvqWLZk85QeAKdu6CEZyrHXZM3ika/FCNplOJmJx
+	 ZipKDLx0F84ExEsBdn+vVKJY4UniETIUlF/FW49fULpr91VgYmS9V/KpnM5l9J+fpk4jy
+	 GikLEegLQdjgDtMXitXzfxxPqD7O6hdv+gbj0/FmrdEmoyi1E7Aw2zBCzgmmI0zjS1vuW
+	 IILXSGueB46uyEbuHTbfpy0XWxxSVJBxDz447M4E5lnn5aSkBNfgzVo4MYaRURkzjkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUepMDTX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=au9KblM6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D5606A334;
-	Tue, 10 Nov 2026 06:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BBE606A337;
+	Tue, 10 Nov 2026 06:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUepMDTX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCDB1F008A2;
-	Tue, 10 Nov 2026 06:38:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=au9KblM6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D53F1F00902;
+	Tue, 10 Nov 2026 06:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794292700;
-	bh=tb6492JbkmgtBmoAA1lWUlcjhbJx5wzf1aKynM8S9Rs=;
+	s=k20260515; t=1794292703;
+	bh=LOiKICujpBzPReN9GW/iERHG8sQmBIYj4fZnX5FM+J8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NUepMDTXMV1qSqxVZiGi7dTMF76kI6beGLfpgFoQm994HjHyQHhEo0pjgyNb2ThHM
-	 wXgUiUBUSxufsqt5BE8SrGxyRB43bLWCD0FDyJm0lgsh/IwTQBWro2gI7HS31ZqKoM
-	 h3PC3WQLXQkvmm9ZXljjtnJDGhTkoseoweHyUbq7RwzhATQ0OBH8Ko1QTaQHUK4QOY
-	 uuAucLUaaKv5yDEYu/APqwUDEbTZlFfg1rtJPmPQjM1jpNf0WZPKfWw0UEHhLdFtja
-	 34ytQjEC+WGd2G5jydmujjZnBa1E5CoqJjb1AApTCWEJYMTQE5m2mZUYNZGT8mVCTw
-	 Rq1qCSMykbTWg==
-Subject: Re: [PATCH net 2/4] af_unix: Fix scm_stat.nr_fds leaks for OOB skb.
+	b=au9KblM6MDvvUk3stFQgLY+uzYxsGZluR6/clV6WxupExmxurx0pg07ia67CUdvO0
+	 qJ7xZi70FU4EzYb7ZyOPFpfAC2WkZidW7KLwRZMpca0FXX/f9mBZyzCse8+6bYvDoQ
+	 gGU//R/X4+j6HriKgXiVkI666AJtiNihCwWTl7dXcB1V0paTCdEDOMOcwCDmNJb1aX
+	 oPvNuljJoBLG1jKYdNUXIsll+yaA/Ano9YuR/Le82tDRdz5cgzdvulgFqsRICnHmOo
+	 q/YdR7zQ5U54WbWB+PFQdgQ8QtZMIGSjOkwZR31d8TGkl7YaybgZw90RT9mSSREYVK
+	 uH22tOA5oqhaA==
+Subject: Re: [PATCH net 4/4] selftest: af_unix: Test SIOCINQ and scm_fds with
+ OOB and dgram disconnect.
 From: netdev-bot+sashiko@kernel.org
 To: sidchintamaneni@gmail.com
 Cc: kuniyu@google.com, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
@@ -48,10 +49,10 @@ Cc: kuniyu@google.com, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  tkhai@ya.ru, apais@microsoft.com, rlmenge@gmail.com,
  hargar@linux.microsoft.com, netdev@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 06:38:18 +0000
-Message-ID: <179429269890.994134.2299928525127713908@kernel.org>
-In-Reply-To: <20261106051905.218638-3-sidchintamaneni@gmail.com>
-References: <20261106051905.218638-3-sidchintamaneni@gmail.com>
+Date: Tue, 10 Nov 2026 06:38:21 +0000
+Message-ID: <179429270185.994134.9244218175897635555@kernel.org>
+In-Reply-To: <20261106051905.218638-5-sidchintamaneni@gmail.com>
+References: <20261106051905.218638-5-sidchintamaneni@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -71,97 +72,95 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message for "af_unix: Fix scm_stat.nr_fds leaks for
-  OOB skb." gives the wrong reason for the leak.
-
-Pre-existing issues:
-- [Medium] unix_dgram_disconnected() (net/unix/af_unix.c:616) purges a
-  datagram socket's receive queue with skb_queue_purge_reason() and…
+- [Low] Two new tests in
+  tools/testing/selftests/net/af_unix/scm_rights.c, oob_fdinfo() and…
 
 --
 
-af_unix: Fix scm_stat.nr_fds leaks for OOB skb.
+selftest: af_unix: Test SIOCINQ and scm_fds with OOB and dgram disconnect.
 
-This commit adds scm_stat_del() calls on the paths that free or skip an
-OOB skb. Those paths are in unix_stream_recv_urg(), manage_oob() and
-unix_stream_read_skb(). Without the calls, u->scm_stat.nr_fds stays
-elevated after an OOB skb carrying SCM_RIGHTS is dropped.
+This commit adds a SIOCINQ check to msg_oob's __resetpair() so that the
+drained stream receive queue reports 0 unread bytes. It also adds
+oob_fdinfo and dgram_disconnect_fdinfo tests to scm_rights.c. These check
+that scm_fds in /proc/self/fdinfo/<fd> goes back to 0 when OOB skbs carrying
+SCM_RIGHTS are skipped or freed, and when a dgram socket with queued
+SCM_RIGHTS skbs disconnects.
 
-> Because unix_destruct_scm() has no reference to the receiving socket when
-> passed descriptors are not AF_UNIX sockets, u->scm_stat.nr_fds (reported
-> as scm_fds in /proc/<pid>/fdinfo/<fd>) remains permanently elevated.
-
-[Severity: Low]
-Is this explanation accurate? It reads as if the leak only happens when
-the passed descriptors are not AF_UNIX sockets.
-
-The destructor path never decrements nr_fds for any fd type:
-
-unix_destruct_scm()->unix_detach_fds()->unix_destroy_fpl()->unix_del_edges()
-
-net/unix/garbage.c:unix_del_edges() {
-    ...
-	if (!fpl->dead) {
-		receiver = fpl->edges[0].successor;
-		receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
-	}
-out:
-	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
-    ...
-}
-
-The destructor can reach the receiver through the AF_UNIX edges, but it
-only updates nr_unix_fds and unix_inflight.
-
-The only decrement of nr_fds is the atomic_sub() in scm_stat_del(). So
-these OOB free paths leaked nr_fds for AF_UNIX descriptors too.
-
-The oob_fdinfo selftest in this series sends AF_UNIX socket fds
-(self->fd[inflight * 2]) over MSG_OOB. It expects scm_fds to go back to 0
-only with this fix applied.
-
-Could the commit message describe the cause as scm_stat_del() being the
-only place nr_fds is decremented, whatever the fd type?
-
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index bfaab7c6d7203..44c0a81dd423a 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
+> diff --git a/tools/testing/selftests/net/af_unix/scm_rights.c b/tools/testing/selftests/net/af_unix/scm_rights.c
+> index c165f250220a4..38a125d9f6e49 100644
+> --- a/tools/testing/selftests/net/af_unix/scm_rights.c
+> +++ b/tools/testing/selftests/net/af_unix/scm_rights.c
 
 [ ... ]
 
-> @@ -2906,6 +2915,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
->  		spin_unlock(&queue->lock);
->  		mutex_unlock(&u->iolock);
+> @@ -395,4 +425,82 @@ TEST_F(scm_rights, mixed_lowpoint)
+>  	close_sockets(6);
+>  }
 >  
-> +		scm_stat_del(sk, skb);
->  		kfree_skb_reason(skb, SKB_DROP_REASON_UNIX_SKIP_OOB);
->  		return -EAGAIN;
->  	}
+> +TEST_F(scm_rights, oob_fdinfo)
+> +{
+> +	int recv_fd, ret;
+> +	char buf[2];
+> +
+> +	if (!(variant->flags & MSG_OOB) || variant->disabled)
+> +		return;
 
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. Is
-there a similar nr_fds leak in unix_dgram_disconnected()?
+[Severity: Low]
+Should these early returns use SKIP() instead?
 
-net/unix/af_unix.c:unix_dgram_disconnected() {
-	if (!skb_queue_empty(&sk->sk_receive_queue)) {
-		skb_queue_purge_reason(&sk->sk_receive_queue,
-				       SKB_DROP_REASON_UNIX_DISCONNECT);
-    ...
-}
+In kselftest_harness, a plain return from a TEST_F body counts as a pass.
+The scm_rights fixture has 10 variants, and oob_fdinfo() only does real
+work on stream_oob and stream_listener_oob. The other 8 variants report
+"ok" even though nothing was checked.
 
-Each skb on that queue was counted by scm_stat_add() at send time. The
-queue is purged without scm_stat_del(), and the socket stays in use. This
-happens when unix_dgram_connect() gives it a new peer (or AF_UNSPEC), and
-also from unix_dgram_sendmsg().
+dgram_disconnect_fdinfo() later in this patch has the same pattern:
 
-Sending SCM_RIGHTS to a connected SOCK_DGRAM socket and then calling
-connect() on it before reading would leave scm_fds in fdinfo too high.
+	if (variant->type != SOCK_DGRAM || variant->disabled)
+		return;
 
-This is fixed later in the same series by "af_unix: Fix scm_stat.nr_fds
-leak in unix_dgram_disconnected()". That patch dequeues each skb and calls
-scm_stat_del() before kfree_skb_reason(), and the dgram_disconnect_fdinfo
-selftest covers it.
+It only runs on dgram and reports "ok" on the other 9 variants. That makes
+17 TAP results that show as passes rather than "# SKIP".
+
+The sibling test scm_rights_denial_lsm.c already uses this form:
+
+	SKIP(return, "requires root");
+
+Also, FIXTURE_SETUP and FIXTURE_TEARDOWN still run for these no-op cases.
+FIXTURE_TEARDOWN(scm_rights) does this:
+
+	if (variant->disabled)
+		return;
+
+	sleep(1);
+
+So the no-op runs on non-disabled variants add about 7 seconds of runtime.
+That is 3 for oob_fdinfo (dgram, stream, stream_listener) and 4 for
+dgram_disconnect_fdinfo (stream, stream_oob, stream_listener,
+stream_listener_oob).
+
+> +
+> +	create_sockets(2);
+> +
+> +	if (variant->test_listener) {
+> +		recv_fd = accept(self->fd[0], NULL, NULL);
+> +		ASSERT_LE(0, recv_fd);
+> +	} else {
+> +		recv_fd = self->fd[0];
+> +	}
+
+[ ... ]
+
+> +TEST_F(scm_rights, dgram_disconnect_fdinfo)
+> +{
+> +	struct sockaddr addr = {
+> +		.sa_family = AF_UNSPEC,
+> +	};
+> +	int ret;
+> +
+> +	if (variant->type != SOCK_DGRAM || variant->disabled)
+> +		return;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106051905.218638-1-sidchintamaneni%40gmail.com
