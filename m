@@ -1,49 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794347408;
-	b=o7eQdVfv7qlLaSg5HpgyVxwIVGb7ujIknVBYTrODIa+y7MXab8UX2PZZX16j66XNDOfv
-	 rBU49AXPCBCJYFFuYaIo7gMqtKE7FFeah8NiyEU1zOvkMm2EDW/eBeYJXr9jGHmKcY2tR
-	 laXHDD1RLXZc9qHXREN2hVmCZ9DMZowQRt16IqmhNXo9tRmnnH0F8zMiNaRifDIukD8IF
-	 dmAL6SwULKkU0+Z9DjTycTLQpqtcP97KJxaKG164KSKd6fQJL+nE9vb4TOkpUasaUnem2
-	 oggP6hghtII6Cmb79ZC18RkktZpeJOS2S597jitEcN3d5TisdBRFIT6wFM4SEgWktTA==
+	t=1794348162;
+	b=ZRfN/AXXlGwceusfXdtjNDS45JO8o0kZaCeaLlqqyOncAZsBI6QwK90P4abSx3TimbWb
+	 kaRs1YRyv43IimkZifwfLCWQIH8id78sk6hIhJK0PQOvYQk9ECRgOjdCxCs8H6uGaq6ic
+	 O2fNTlBGSC5mBfNhIxP5u+4eBOXKsLMzDeltImKqv31nMIsWAorb4CP++mafNd55D0OKB
+	 nd1/w1fmOZg26d4GwTrTl6ERsncyg2ofjjdHY4svYPP4c4NWsZr1amt5YggM6vmjoZ0c+
+	 /wzywUdGikNN+xXA/+1F9A5IIZQ35BFsxNYq96IPgPORSnfj4HGDsT84GrCDbYWTS2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794347408;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=Zfnbv4NHqZ/iJ6yvPkwCqRhv/U/5TwJHeVQPxKTt8gU=;
-	b=fjEt3iCphXurUnFbhxaJXu2Y04vnmBVeMme3KLVqkdsBLf8ePU3oePFV7AW0J1gfU8N0
-	 DF7C8zD3IhkUxajyNjp+cxslr3+Z6v5khWaY9KuDJw/gHQmLTL7/SsnhnSLhYLWQOM+3k
-	 +Di2uQg/oQoBPhgfurE/Ggw4g0JnrvLH60K3oB8jS5MLAHtD3YnCsbdKKi876AhqQO8Zw
-	 t0xB24AQhD9mZI7cqrM/JpD4qb6tQWvKcW6yXetp3ynkMzJcFCvl81d6eke9q4dcirbPz
-	 F7ZaNVpMN5OCsNe4OBjGApu8UyptCxtQGkw45ups6ACWVSQLQ8BZW0V9Lhs8Y0INgRQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348162;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=bHFRgpK0GhUOKpvqvTgbaax+1DonOevI+N7r462VLc0=;
+	b=YvjpMVa3UUBodsFuaKxagWuAmEqarl85aQMXxEbFc5zxjIbk9QJ/bKZHhW12SCf1VIRA
+	 c7yuCvf2f51QZl0PM5mQd46IzXbwQqVmB2rG9KuS9lDsGfX/XfejauWAwsIQ1n72R7/y1
+	 +zCGvdMpOvIU/gdsjMlDRia/hgaCs00effi6BSN5P5HXhLkWM6RKB07LgmBLwHrTu4Jk4
+	 ypxXeNVAV+muPU38zO0XQR4vEQmBuuam0VO92xe2qeHkk0nLA4iUyk8ewfz0Ivnzu4guE
+	 PnphNXt4NiwRcGpxdS08SIUXaJDyulvt40TOk/sDXDDhxASlnvP4LG4VdKmCLSAtKlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f692PXHP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bfgv9TAy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B14A606A327;
-	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32AA606A31C;
+	Tue, 10 Nov 2026 22:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f692PXHP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FE71F0089F;
-	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bfgv9TAy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8321F0089F;
+	Tue, 10 Nov 2026 22:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794347407;
-	bh=Zfnbv4NHqZ/iJ6yvPkwCqRhv/U/5TwJHeVQPxKTt8gU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=f692PXHPHu6rw3PRVyBHXqz0Yh+iZeR78VniGOUaZRgCveM74Js9pJHB10fS+iDPO
-	 3gKYToGLfOzn8LASgXrtmwvm5Hsu5HhMfyo2v/+DZHBEAk9AeaKJF3ER63GE1970G0
-	 et0THMjvzaVcZa/u9ZFiC5LrFcKa4Z2GNk4QznI4DmWeENUvUQxgoaXHJ9qO07suSh
-	 WGgkb7s2Y/EpL1rJImbhAX7LfSNGoxf6YCxGnLylolElvcdktNjQ66hjnx525cLfjZ
-	 WvpIE077sGekedHGpozvBiL/y73iavAruleJ0QgtaNLcH6mMYZIIw0vFQe5hmqRARs
-	 HXP+GBz/oby1g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0AF39E8A40;
-	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794348161;
+	bh=bHFRgpK0GhUOKpvqvTgbaax+1DonOevI+N7r462VLc0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Bfgv9TAyeOaEcNbYlVqu67lOlKxGWpwxtMYt91cZflFsGV7xzmjLYZcJqYy0tOLJz
+	 mPNszwgp4GPRd4OqFes2sTdEQiChNOTfVbNNr0sGY/Lrz+J53MESIqVJ6gWnfWRoRZ
+	 u9whiq7fZg3yWwM41vJLFWIt3YO+5cr68eCtcZphhvtRpyhjNvCMXwn9gzRrkDG1zm
+	 iW/R/e5fuFC+94k4I1B5LRRAYJywEdhKKDAIIg+7ffpqOkOwrBMfsUgGyb0y73r6ml
+	 w25L6dlMhIAaZxgdm3diLpTVpKKSFdpIaakzzVgr+COfjoOubJX8uVxqH2n0g7voZ1
+	 EMVSOVwshIE3w==
+Date: Tue, 10 Nov 2026 14:02:41 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko
+ <jiri@resnulli.us>, Milena Olech <milena.olech@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>,
+ Michal Michalik <michal.michalik@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/2] dpll: report dumps interrupted by topology
+ changes
+Message-ID: <20261110140241.422a981a@kernel.org>
+In-Reply-To: <20261105131145.1010406-3-ivecera@redhat.com>
+References: <20261105131145.1010406-1-ivecera@redhat.com>
+	<20261105131145.1010406-3-ivecera@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,58 +63,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/4] sctp: fix I-FORWARD-TSN handling with user
- message
- interleaving
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179434740642.75434.13080099921012201899.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 21:50:06 +0000
-References: <20261105050225.49292-1-tim.budding@gmail.com>
-In-Reply-To: <20261105050225.49292-1-tim.budding@gmail.com>
-To: Tim Budding <tim.budding@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, lucien.xin@gmail.com,
- marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu,  5 Nov 2026 14:11:45 +0100 Ivan Vecera wrote:
+> Pin and device dumps release dpll_lock between parts and resume from the
+> id saved by the previous part. An object registered in between is missed
+> if its id is below that one, as is the case for an object allocated
+> before the dump started. User space gets an incomplete dump and has no
+> way to tell.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This is not really a problem, just something AI loves to complain about.
+IMO dumps must be correct only wrt unmodified objects. If we have
+objects A B C, and A and C either get registered or removed during the
+dump - whether they appear in the dump does not matter. Only B must
+appear. If the IDs are from Xarray they are usually stable, the problems
+with dump consistency mostly come when dumping a list or a hash table.
 
-On Wed,  4 Nov 2026 21:02:21 -0800 you wrote:
-> With user message interleaving (RFC 8260), fragments of messages on
-> different streams share the TSN space. When a PR-SCTP message is
-> abandoned, the receiver still frees queued fragments by the
-> I-FORWARD-TSN's New Cumulative TSN, which loses fragments of messages
-> still being received on other streams:
-> 
->   TSN  stream  MID
->     0    0      0    B   64KB reliable message on stream 0
->   ...
->     5    0      0
->     6    1      0    BE  PR-SCTP message on stream 1, lost, abandoned
->     7    0      0
->   ...
->   I-FORWARD-TSN new_cum=6 skip=[sid=1 mid=0]
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2,1/4] sctp: abort unordered partial delivery when its message is skipped
-    https://git.kernel.org/netdev/net/c/05852c8b70f2
-  - [net,v2,2/4] sctp: report the partially delivered MID in PARTIAL_DELIVERY_ABORTED
-    https://git.kernel.org/netdev/net/c/3097fba86801
-  - [net,v2,3/4] sctp: fix I-FORWARD-TSN handling of fragments on other streams
-    https://git.kernel.org/netdev/net/c/5b9cfc6491a6
-  - [net,v2,4/4] selftests: net: add SCTP I-FORWARD-TSN tests with message interleaving
-    https://git.kernel.org/netdev/net/c/ee8568a834ac
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Please repost with a better commit msg if there's some list / hash table
+here that I'm not spotting. I'll take patch 1 as is.
