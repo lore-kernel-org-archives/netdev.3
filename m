@@ -1,49 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348608;
-	b=lsXQ4BuQwXC+/7rpk3bqEAeIgPC5MvolmGEbn4kc4hEvKIu0r11afwsl2zo0lCcf+exC
-	 xYrzWipuMk7F9pwPC3I2L3N9G020GW0K8vLn8qKMsaN26Qu/8IjOt9MaOq19P5xNC+w/C
-	 8WcHgryW2KoawW5TRvsaYM6aIf4udsvcQXcXovliPOb9klGXstyx7rxOOT4yNskbeQ6Tm
-	 B5eXieUIVpNtpzR6AW0ziCsSJfR/9/87QEn99FwjzmVRnAod5NMiCRMVP+G5SOgkCerwM
-	 sN40l93D9cVYZf2+cqD7JtSwLaCyCVrdNVS/kcaygCgmw35Oz+qLqksr9STLaw6GT9Q==
+	t=1794348722;
+	b=n6RoXCyqgJbwup7ulRjfr8E5eiMEJNkR3vsIbLNViM1J7VGKH/5NSvzpmk8a0wTdtDua
+	 lIKs4m7+A8fmJRjRSb+PkK/736dSR8v5rH1FGZPRKKdiap4ZjT0C1jRuuOLwomhiavKM8
+	 Pz5RC3YkEJyFVa4VC0WzUe09ttrv3tO0kSaxSweMn9jqvblEgo27hCNof7Kzg6uTEJvrp
+	 skzFG9KnmIEQnusr8x/o73SCcT2pu8kEz5SFnSVgSMS3uC/Fd5HgOM2obK2u95rPyP95J
+	 /Ai3lcRXne914eYY4sxK0wu0o8G3zLp8qvKtqy7TFaBpD2DMZo/z+6cv9itJYiUoluA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348608;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=PRpI9LvDPOy84Bmmq13srMKGzadJXBZiW8HLELC9wWA=;
-	b=crmn1SQd4xqEWgC/bcle+sTPgD7SKkVWWRC5Q/tHEcoqLqs/mxDuUv5/6B1o436rLBt+
-	 dS2dQYHIuxo68UZXSvgpnlGuuq9vFDXWITNhIAFTcMD/3Fj6kR9nILko0rIHdu+7z7Jve
-	 ZoMahg8ZgH27++Qq/5Ujo41Lf3PwSDRg1C1eQopL7ZT9qNy9CWf9Uv0EgCPyZFYhXLSFC
-	 cfmX0nSUFXPRXDoCmET1RlRzcSwV8s9plQJOl7SLPQz28y0g0sTzhXmmQ/0C78Sr5qDLY
-	 hMCnIKWQOXruqy7uzERLin3VBrRabOZ/XBlQ9dpVKpqhEzx7CBuPmK+aK0YULyUXqdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348722;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=JGa1Oj4p0o0q83dr7aZpo7ORI/BHrVMnyGgD2LyRVvI=;
+	b=scuyMKBRIJXaIXbuiXf930t4K/5OnirBr0w9zfgEAyu9JKBX4nQ/NOsQOSEurTztr5hR
+	 fWp1z97eES2HuG5fy5t25tCjlveA96TL5s2MJU5J9Cu/CFRQrLs0A7fchrOh8cedXaNj5
+	 yQB6PPIULenhZUIc0WPe90gD5J/AsfS/bY4f35evOfUZNC+tghfMumByN8F5Gzbf7V85e
+	 k2p9Vs9+Hzm4DCx/4veO84kyJ26WqRONBKGg9DfvE1U7HohWvi0q1EvwD3mVTQqHNA5iN
+	 G8f50wzO4cx/TY/GfqaY5s2tUGxIBDIOfJ32YOnszrUwQoUZW2CM4g9FxkFbNkzlsVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EQzfrDey;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eRUuMu6V;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0D9606FFF9;
-	Tue, 10 Nov 2026 22:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D1606A321;
+	Tue, 10 Nov 2026 22:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EQzfrDey
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60EB1F00900;
-	Tue, 10 Nov 2026 22:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eRUuMu6V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855261F008A3;
+	Tue, 10 Nov 2026 22:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348608;
-	bh=PRpI9LvDPOy84Bmmq13srMKGzadJXBZiW8HLELC9wWA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EQzfrDey98O2SaUeRRxoz8UeQZ0wp+5pobxP5LlQrmF32tBqOcd2cmeuq4Fj5LriE
-	 JsXOFCtkDWQDTGvAevqs8Hwxf2L/XfDUUCdQGTqlpdjRmUUslOnwHApfTg2jH8HY9Q
-	 LMp/PHRzVhtid/1Oxew8yHYNdOAlJP3tazsRQY5tv8qf4xShA/3lFIad1AO41RJalw
-	 2lQAQqtHunzmmHeNjmrP55oXap/6nrKmI1UMwKioekUvRdv9cIvwu27a8B8EtABAX2
-	 8omIWsmLKnc8+FZQ5qZT5S4/JkbX/Z2C+Iwc/qXmmiOu/B5UlXdkbl2oQZ0JoISQyb
-	 Ttp6HoaeNUxjQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81CC39E8A40;
-	Tue, 10 Nov 2026 22:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794348721;
+	bh=JGa1Oj4p0o0q83dr7aZpo7ORI/BHrVMnyGgD2LyRVvI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eRUuMu6Vh+BKJKhbBcdGDkIlLLU0t+B9x/iqSenDcXKLoz+CBcqqpcFml7Bme/Wg4
+	 jvhwcLJYRmArAu87U8B9mQSi9wgdr6+RWfS0YE3igRKllbAgCPatdLfeVYXRz6DYIk
+	 sdAQK9fk3rXjFlZXnLJeGqxRRXutwEyExT9qP3T3tYowSnLuihlqW11xQd9hrV5tD9
+	 MUZiCWTFSk7/pAW3keLatIJ8neG/sNwah6pOfnrqFSdUUMuZ+RRF9v42VIpwbTA1LG
+	 ZCHGBjYqFvJELKE73gxgT71SYyf26QQUoaJqfiLvfaJmwRJgC+3EQw0/R3pKoT9goU
+	 5JG09z2nuK53w==
+Date: Tue, 10 Nov 2026 14:11:59 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, macro@orcam.me.uk
+Subject: Re: [PATCH net-next 2/3] net: sb1250-mac: Advertise and honor RX
+ checksum offload
+Message-ID: <20261110141159.100d1028@kernel.org>
+In-Reply-To: <0f3510a1-a22d-409d-ac3a-854c9746eb81@gmail.com>
+References: <20261105193435.2050321-3-f.fainelli@gmail.com>
+	<179422063443.994134.7898125324608942943@kernel.org>
+	<0f3510a1-a22d-409d-ac3a-854c9746eb81@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,47 +62,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] dpll: fix a false notification and report
- interrupted
- dumps
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179434860642.85266.14474839732460083236.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 22:10:06 +0000
-References: <20261105131145.1010406-1-ivecera@redhat.com>
-In-Reply-To: <20261105131145.1010406-1-ivecera@redhat.com>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, milena.olech@intel.com,
- przemyslaw.kitszel@intel.com, kuba@kernel.org, davem@davemloft.net,
- michal.michalik@intel.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Mon, 9 Nov 2026 09:52:30 -0800 Florian Fainelli wrote:
+> Both issues are valid and predate this series. I=E2=80=99ll send separate=
+ fixes=20
+> for the descriptor word and IP header offset programming.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu,  5 Nov 2026 14:11:43 +0100 you wrote:
-> Two small fixes for the DPLL core, both found by code review:
-> 
-> - Patch 1 stops sending a pin change notification when adding a reference
->   sync pair fails. Reproduced on a ZL30732A board.
-> - Patch 2 sets NLM_F_DUMP_INTR on pin and device dumps that a registration
->   or unregistration interrupted. Such dumps can silently miss an object.
->   Reproduced with a test module.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,1/2] dpll: notify about a reference sync pair only if it was added
-    https://git.kernel.org/netdev/net/c/7a3837929d04
-  - [net,2/2] dpll: report dumps interrupted by topology changes
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+The High one really looks like something that should be fixed _first_
+--=20
+pw-bot: defer
