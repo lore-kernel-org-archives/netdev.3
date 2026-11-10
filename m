@@ -1,59 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794334794;
-	b=256dvlIqG2DtYWdikw380j6iP+M5dxdiW/EkgZlmYP3PiPS8dUtBI/CdeTyb6cBrEUMl
-	 J+sN0Uk/rg/2VsoocgyXD8UkuwJVa08iSvwgEScvTlDKRQBaOmhoe5ScRGyMDuVnZwsr6
-	 MmQ5k8Tp1HTegiwMOkdRhosj4j7NazXOAH4sM5bczrPsUZ06Q8KXlIio9l+bDeVMhNDrz
-	 A5nKc0RDhWITnJo/u5X+JNhcpy6srV+bQDq6h3Qco9b7ZEpq13qbgWpB0CAJdV4OoNJDb
-	 OJG5hyilQZfDGl1aaHNuvS4yMaWM8ZOiuQSxCD2OVVxR+DOBbBC8Raq0J1VOahHCHRw==
+	t=1794334985;
+	b=f3qZ54GbB4hkrPNNhTtgrykZhzsyaUIjL93Sbe91SE2Lm7kFZjHiAt9oxdAKUbZQDBju
+	 d0fgqVvl2OrC8u1vwl1MR8lVDo2m3f0kZ1XiOLodxjK4SHxQohvVVFMlfpnw18CTjgnYg
+	 2OZMppfwfI8g0Jsuh1SlGykYYfdHuy6JH1cNk0R66PSBqDSZBiiozpkfbq5v7ajvFEUXl
+	 mKOQDEMoTIjfc1oD1yIea4k5SIjb4jNJFD14ZVB+PN/qVZJcsmACBgpIsw8/pxPqG9+zH
+	 ProUbfEkFDvG/b8qYVr079GTh/CpF6F1qJ+8O/FjAD8PGCX3NsWFLI1+BxglLCYbXkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794334794;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=WTm+hFOJeybiFveuBeXB3QwAtnkwmJcq8lM+mZXSg1s=;
-	b=RofszfHlZs0/CzRthpqpotkC8MLCk08Rw9gL66+GkJCcdv4PtCeQzq0pn3tPDJAm1ZEK
-	 1h89ebjEEY1+JiNw0IsTEgwPcU3Q5Vhg3jaB9ItmcaOeVlSd05Dbgj2N2ts9iNbSZbVgr
-	 v+mDg6QdGAR4eIYmxSpYRSU5mtU2BplhIStygwFDKZQ/borws/WZCrmcOwJcJfSNEg87i
-	 0K5aBCwEg/+p8VsvxjfzOVXJS10kituQmSSiq+0y0h8cLZs4l5SwR8sOV6zIruEQ/H2vF
-	 9WniA6Vy2ndFBZculo/M/50UUzBud2TExOVDYlj7nXrO4b/5d0gwP4Dbdpr7tqR9m8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794334985;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=Lf1UOrn/59SxIWJYDfgHXSK5KpB9ctjHjG/DWAiJt/Q=;
+	b=xZfFAQpdjmAioaXaZX55Je2lZKZHcZjvjE+EKLHDe+/GLptiLP2M4D6mK+EM5AsB5xFO
+	 f0TFUcL8UL+S+Z0eFWN3lEzfNIeOwGtOSuZBaHJoqM6wjkQt8Sn9xhNlyS424WpHXfWLW
+	 pUmE/jVSppJyuNoRpocFuLbEkH8+RtH3PEjzzr1kmZ0/sGIuCDXfq1kbmbDLTBM5p9nC8
+	 PygzR4iZAQa+VEeAjTwcXjzFmbx5FlCvzh2U0A4IY+IObJKdeshZW4Tvo5X3+OC4qrLN5
+	 JPYjoZ/7DZlYg4qxARQxclaxIgJhhO0RbXeTXuVsUeXSB3u58qGJf6FYjm88K5V/Vbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq1W9XJj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y8HhYK4z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63895606A320;
-	Tue, 10 Nov 2026 18:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415DD606A334;
+	Tue, 10 Nov 2026 18:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq1W9XJj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7651F0089F;
-	Tue, 10 Nov 2026 18:19:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y8HhYK4z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73CA1F0089F;
+	Tue, 10 Nov 2026 18:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794334794;
-	bh=WTm+hFOJeybiFveuBeXB3QwAtnkwmJcq8lM+mZXSg1s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Dq1W9XJjEqRBcfe3ffdvMkyhIfRvgm/bO6XrHLAW286y2tXZRrt06ZIWKOr0NXEfT
-	 I12F0EA5QS/Vdwuysxo1dPgabDlh2RIQP2t0F+jIgtEW5MBP7k6l4BT0I7aK3K5QYh
-	 mcCremilMCzlLyc9HNroCIyEp+ohyPDZu0ublxI5wgS9rtj5U+bz5qy0EJXB8PQxx8
-	 L68EP9PXwXBC4OpigrKSxwRLBbyih7IBJODRc8gG/nSAf71y06IoLdXd1VjRGTZiQV
-	 zXtcUMQQqz541I+vrX+SP3MOyfp8AONZr0dA35A9S/EVwhKPg481lvAQrphxmPyhl7
-	 7fwo5M9SKXS8g==
-Date: Tue, 10 Nov 2026 10:19:53 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
- victor@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stable@vger.kernel.org, sashiko-bot@kernel.org
-Subject: Re: [PATCH net v3 2/2] net/sched: sch_teql: keep skb->dev
- consistent on the arp-queue path
-Message-ID: <20261110101953.6f7b6dac@kernel.org>
-In-Reply-To: <CAM0EoMnprPstSvZEj+FKtK_kM6JB-jkrhYRwSd_mmN3WAMFQFQ@mail.gmail.com>
-References: <QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com>
-	<179406458348.994134.6942745655171316289@kernel.org>
-	<CAM0EoMnprPstSvZEj+FKtK_kM6JB-jkrhYRwSd_mmN3WAMFQFQ@mail.gmail.com>
+	s=k20260515; t=1794334984;
+	bh=Lf1UOrn/59SxIWJYDfgHXSK5KpB9ctjHjG/DWAiJt/Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Y8HhYK4zDpEZDWObXQcT3KRsHZMvC+iJg/MpfZXcjo97qebaSWlos5oJDL1r97pDz
+	 XuJFS3vlR19fQY/LY1n434lXSsgK5kwwJWDsMDpz5H1p/+Xl6LP1+1TOfSxc7a0z7w
+	 XXorq9CX4+QOUQq0lVsvJjjsalPiMg2Ft/q7oLpBwkwCckM7lIARLsAQADmqWGEyEh
+	 Yv9MdKIugvILWvdHBkB+lYuT8i3qsoXSqPHOsVSwhEPwxM/9OqNBks+zBwk/DbL8ci
+	 d6ws9I5yLHHmTVNqJA9ZTY7G/0zrHrku48s02O+KX+WzhosuY1agNddpixc9nxj0tE
+	 RscaQygSLHb3w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B16B39D608B;
+	Tue, 10 Nov 2026 18:23:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,15 +53,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v15] net/smc: fix lgr/lnk lifetime vs diag reader race
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179433498318.4118637.3265445978564570852.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 18:23:03 +0000
+References: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
+In-Reply-To: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+ pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
 
-On Mon, 9 Nov 2026 06:44:09 -0500 Jamal Hadi Salim wrote:
-> I think i missed responding to this one. Sashiko-nipa responses are
-> very erratic. For some threads (not mine) a review shows up 2-3 days
-> later. For mine the average time seems to be 7 days and sometimes a vN
-> review appears a few days later after a vN+1.
+Hello:
 
-Response time is based on contributor score, you are pretty deep in
-the red given that you basically stopped reviewing patches from other
-people, and keep mis-posting stuff.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  2 Nov 2026 09:31:22 +0100 you wrote:
+> The diag dump walks the socket hash table under a read_lock and
+> dereferences conn->lgr and conn->lnk. Several paths expose a window
+> where a hashed socket has freed or partially freed conn/lgr/lnk state.
+> 
+> First, smc_conn_abort() calls smc_conn_free() during early handshake
+> aborts while the socket is still hashed in SMC_INIT, synchronously
+> freeing the lgr on the smc_lgr_cleanup_early() path without holding the
+> hash write_lock. A concurrent diag reader can load a non-NULL conn->lgr
+> and dereference it after the kfree. Skip the connection, link group and
+> DMB attributes in __smc_diag_dump() for sockets in SMC_INIT or
+> SMC_CLOSED or fallen back to TCP, and take diag_mode from an is_smcd
+> flag cached at connection creation.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v15] net/smc: fix lgr/lnk lifetime vs diag reader race
+    https://git.kernel.org/netdev/net/c/d7900fa51642
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
