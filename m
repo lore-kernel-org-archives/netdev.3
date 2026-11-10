@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794269017;
-	b=29Qv26bPTnFeerey0R5ryxx0Lm34ELC6uAALTOaAb+wctifbI9GDKpzk27AFrQsTFWU5
-	 gOwnsXXHXwp0gAy1EnQq4WnAvWawOCpWpEciSbOwZO3XCWToCAroVZQBYGKOQQi6Oy5v4
-	 4H30c+7ohprtPGBW/EErUnVBcVPFbjRlZAFb1KcMfYPnQltMgTCrOwaBGEgfk1ITqdhBw
-	 AuoXG4zZW0fSj2gqd1shg5hrdt9jgOobgxBZdJwJVZFO3W4QJZKU0SpsALBP7l/ioi5UP
-	 GehuyFVIrbHqIizzLKfi9TmAS4T/jw65ooeRt60lMlso36FuewYJrhZxRHHv1CJJY7A==
+	t=1794269211;
+	b=WK1Q6Z+fglGqIxQkMUhABLEaHTCWCZiOAG5azsGJPnEy0LVpVMMHAckQwP3brmf4Mcnb
+	 +bwF5x5z6BMKMxc6xiDfa9k1d6G7WZJysWbttRLnd+0GOI/5Xs9xHPGZmPENNrS7+uuTa
+	 FkRMqAeymQryIBBaXCltBCu93PfPbrFrNkgirCFfFNxGJeIQEr2WUJyuJinCe/gKaua+R
+	 oiqqJLnf+8uq5QaAo0xmd7SsuDoC0AaqZbxn+uKJ+FHEx/egzaZpSLAHRJ9Odm6v7JnEv
+	 U0Nci/EkwShal3tip/s+y1hnM+lQD5PMS2lsFVaz3Vbdtp+6GYSfUn2vofmfKO9vx/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794269017;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794269211;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 X-DetectorID-Processed;
-	bh=tJd3VnZ0yei7ubLx3kXd/82473H1gHXrkj2v6vgi4M4=;
-	b=z68CotBzD1ASJHBsAIA5hppSf8ozyG7L67vH3AXU/DzA4LwLP/AwTOBv59PrJrPustEw
-	 hsusnhTx4rYIvd4Q/ALPckI/Dtht4+BQKEJE6wLFRelyfI5PTUi3WmMosAEpP3BEttFTA
-	 gLo7v2vZcFda5eo56xXsUDkJULPICmoB7i3377HMG0XC1wT8gV4o1+q4bjr8gl3W0LTXP
-	 jvOKTWdv0cPOvciTdEDL/1+3y93Z9jsWLMGuObFjCVfZuR23BYYSpCbxjBb0wzecGR0NP
-	 GqDV/xwT3QEu7URDA+3VH7cRGgSjZsskau9WEUqCmGV4Wbd77tz6lrwzNjeeqjnNgtw==
+	bh=x0P1H/cl9zHd+ndLPCIFgltm4Djk00Xp5e5TtdI9M8E=;
+	b=FAdoiCTfmXe615hw/3TNu9Iqx8waPmPOLGNdz5I4aAX1uMyiWq6qXJxcxMR7R1SwgbRv
+	 6om+OHkD+ZU4UIDwoQ2AZU1DxfpfudiqddT/Is6D29sPZSXEStc1+M0bYqSxHdqow/AIl
+	 +pHX/fFk7sEGC77jSBrfQTm5WaxktcOAKCJNe4561KmrEakkStGSYY4Nz9RHYUBhqNNs0
+	 KmMbWS0sSSWgdVvBjK2FnPriIbe7u3EGg5JUkiarOZTES93A164sMxPS215/Ya8dL941C
+	 0zQ1beOMhjbLaCmOcUeiyGGJ+EXXXVjD4zN1ub5McQ/pi/G+V86BX5bDJsMm5Iuav7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=L7Xe0Dcs;
-	arc=none smtp.remote-ip=209.85.222.225
-Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=InpQN7Lo;
+	arc=none smtp.remote-ip=74.125.82.228
+Received: from mail-dy1-f228.google.com (mail-dy1-f228.google.com [74.125.82.228])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0A3606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:03:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE0A3606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E127F606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:06:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E127F606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=L7Xe0Dcs
-Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-93f3c89594cso109412985a.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:03:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=InpQN7Lo
+Received: by mail-dy1-f228.google.com with SMTP id 5a478bee46e88-36fb88ea38cso1776610eec.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:06:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794269016; x=1794873816;
+        d=1e100.net; s=20260707; t=1794269210; x=1794874010;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=tJd3VnZ0yei7ubLx3kXd/82473H1gHXrkj2v6vgi4M4=;
-        b=a7Kf9jXIWRINdrbHn7puYI6mKOJ0FFyP+o/Ar2tMEm5GQt88EwPc7YE5dQYQxHuUuI
-         rp8T6+vUvRMNvskZlSUDGrd3bWroE+JJNVdvYEy5USXIERbgZOBP/690fSboUzENcqkM
-         tWZfXb7TcX2XeDIUCo3WaLTNxyWO2Y1hp6wKdPCR2+3oBSgBJkegzaTYUtByVA89jvws
-         EXYMDoEinSbxHTHPx1mQMVgJHRpcYYVQEhI+xfXJFub3uWPoTXPM5COoMR0OnMS8nm2m
-         Yoe9xmM5FrdTb2lXkTAbKDUNg/Pqfnsio1VBLfIxKYZIMRhcEpYA8/R7KQ5Sn3osEwuK
-         WUkQ==
-X-Gm-Message-State: APuU4Z8AHW9re8YnGfKCONr61TsPGsakUNqq0wJ7xgl3hcaak9uakQh1
-	wN7Fy+tCd9LMwOAWqGP1NAsp/IVJvrDjsS9fTTL6B5PLxU3OGz5AUA6tdDLJ0aGGyH3jo2K/K1u
-	V8SVfN8ikjRzofRztkVsKth9SGexnQyP3qTcKyYm88snvNT+DsXxiLN0N3S7M/t08DJzrMO7TB3
-	NTQDRyk6n+YfXLcHuvmOMBJqDggh+GCdWVIjVjY0bIibrZLqLeuecp47Wl03+GzEmNfjLMrna06
-	xb1cDMzZpTlm8EZ
-X-Gm-Gg: AYBFou1k4sjSZc2K4Ci4fjh9PqHRtrIFM+cLVa1x8TlF2XQIAgahKuFr0Us8g0dwu6a
-	/DsOctGLO3pa0wUmFBxZ92BaVXBHBKVPjJzAgditZYvq+5LrMo4306wAMDTSHUIKVJYQwfsDQvT
-	nROJ9rp8W2RA/72Ue/nbMNThzA+6EL18MwlTN6qEje6XGslgfugIDcPb/fWS5DGJtuq+8ZuntOT
-	xZpCOM+4cv9ZAhyB2rHuPiCgVoQ/ALanNfiLvKIVNQ9E52OCS9Vp+0b+EYAKN7HSOt3YGIKDjYT
-	+rGlwHlIbO+raZS2m9FQRG/cYbe/SMWEwRsFfAKYYuHv2+pG2UZsMXDiaxyHaKvnbuh2tM69QDO
-	0e1C7fcqQMcZTV5zUy/hFkVEVsD9Y+yAtBbic1yqwYSYjDSRf7SiH4EvE0LkDMk+BLsYYi8wyKf
-	j0OC8LJhl+t3Qv2tJvhlz3wIoE8Fv3vSmwwUPP86ri
-X-Received: by 2002:a05:620a:2b94:b0:944:192:85f1 with SMTP id af79cd13be357-9479f37b795mr178940385a.48.1794269015685;
-        Mon, 09 Nov 2026 16:03:35 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-9479ee6d10asm11672985a.3.2026.11.09.16.03.35
+        bh=x0P1H/cl9zHd+ndLPCIFgltm4Djk00Xp5e5TtdI9M8E=;
+        b=JMWPz9lY+RAWN50eGCgrmlkhUj4x+SsE6c84e7+XN8EVyQ61qAMSV4u4y2XeddFe64
+         gTOv7GBu/qrmJE4dQOdXiCPdpqGJdvWZbBnf2KiSIb1QVOw+0rIKrUGp6iNapOAbVWSD
+         DxOS0Ag0xcYYuIzEQoXNFN7MnedzArDeO9fgtJMYQbxucF+N5s8P+S4lWyQBwnGqlV7M
+         0rOM9GYQBo+XvLEjwtgZ1pa1+ic8Jg7weDmI1uummn/jFwoSB6aNGMTcMGB2SNWD72P9
+         gQKb25My2ZV+kmrXp/1AlxEna97ahurdFMflLnVktPo7sU9yPcI6JrzuRfXuV0TdzE2+
+         je3w==
+X-Gm-Message-State: APuU4Z9H/OrtYNVDnfmhUKOdmJboUO+nm0V9khAwM0izciiBgeiD53XX
+	+QN+v6Fvue4ejKDQLgijaAs1MN0cD9sSfvSbE4M5dtIEq/oZIKlwVjjIvt58WTVi8LdySEHxEwv
+	bLKHyjmAt3aD915CqepkWP0/tu+bbCt9mc6nMG1qbp3uv+5ociI+q61rx2xcFS5CN9cBmf9KKwE
+	Am0r7pDbVymMFyI8DlpjpKhyjhhglcBHgRzhqOtSN2Z3Y+vihYaIDQjmturh+h+Sze7kKVP7oh5
+	qQwjqp4tD165JuG
+X-Gm-Gg: AYBFou3pPHRuIpXf8em2pRtU3Hy+q/B7Uvfsvb1iWJ/tASK0elD6f6Tyo/8igBM5GKv
+	HEUVBTY5evZ/hYXcFWtmLOyohsoE0yZXhM6buKfLUhwIV7P+hHGQh1iiLJF3tWU5ibE5BgFRwaw
+	CB2wKxxbgB3j+muuGfnodIvn5m7XWN7hZIU1fRc6FH7AIb7ruQM+hL0xPq6Rsa8v7AHtiOwwIV0
+	6mduCcYTE3xnwh0/zwW4fwNJhyljmPQjyiasQ3Nbz/NtxvS4R9JQ4f9+rzzxNi6lw2ysDerp8RY
+	YwaktWyu3WXumSrXO2d/nDRfg18ex/Kt36PxEpvggMQ6E/X1U3EhOr4kOTbXN6iExVs1Nn8r0Df
+	g39TET7jsx0zFVziZAqAmU9V7XjAerLbpKV+/tH7ez4qGDgTHNjdSIuVL4BxA5EfVTquk2hJLFU
+	OnYzXhuiGevW4pe1+qJnySLXXmDsFIsEtWJLWgQ2eH
+X-Received: by 2002:a05:701b:4502:10b0:1ab:90a8:87a2 with SMTP id a92af1059eb24-1b3b5e25dbcmr1330268c88.11.1794269209677;
+        Mon, 09 Nov 2026 16:06:49 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-1b3b565ec92sm51339c88.15.2026.11.09.16.06.49
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 16:03:35 -0800 (PST)
+        Mon, 09 Nov 2026 16:06:49 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f5844e383so286140185a.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:03:35 -0800 (PST)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-91eb3a63064so31085696d6.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:06:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794269015; x=1794873815; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794269208; x=1794874008; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tJd3VnZ0yei7ubLx3kXd/82473H1gHXrkj2v6vgi4M4=;
-        b=L7Xe0Dcsg3acKarBmuK9AmWdtOgiFTmwl1Naa061UgoHg8hjKzJ5cb5F7Y/X1rrD/Z
-         F5l4ZvRhP0YlyiRuzyLFHMe7cw1Af00wvfd/04PpnmQmW1OP3HW/7Qz8iewWKL5lo98e
-         7zk5q1jAvFwMW3Moci085Vj/Upaoa9QQ18DYc=
-X-Received: by 2002:a05:620a:28c8:b0:945:fb2e:ef72 with SMTP id af79cd13be357-9479f3105e2mr183579285a.29.1794269014910;
-        Mon, 09 Nov 2026 16:03:34 -0800 (PST)
-X-Received: by 2002:a05:620a:28c8:b0:945:fb2e:ef72 with SMTP id af79cd13be357-9479f3105e2mr183574985a.29.1794269014474;
-        Mon, 09 Nov 2026 16:03:34 -0800 (PST)
+        bh=x0P1H/cl9zHd+ndLPCIFgltm4Djk00Xp5e5TtdI9M8E=;
+        b=InpQN7Lo6FLqojekA7ykEq8lrW6PyBA/8X5XDjiMx5t5E6kcNjQj66R5Fm83gqrW6S
+         QLC0TEebtbreGiaTeeAPCEChg/Ayv+a3MP9hDBesvMrBgz2432cKHosWMDu53ZKJ6iL0
+         W+JYilBcwN8zTNprZDTZa6oo8AqY+bqPFpvK4=
+X-Received: by 2002:a05:6214:598c:b0:91e:b57e:5426 with SMTP id 6a1803df08f44-91ef03aa40emr17656566d6.12.1794269208100;
+        Mon, 09 Nov 2026 16:06:48 -0800 (PST)
+X-Received: by 2002:a05:6214:598c:b0:91e:b57e:5426 with SMTP id 6a1803df08f44-91ef03aa40emr17656066d6.12.1794269207538;
+        Mon, 09 Nov 2026 16:06:47 -0800 (PST)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e7aa5fdsm93758885a.24.2026.11.09.16.03.31
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef054f382sm7934206d6.43.2026.11.09.16.06.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 16:03:33 -0800 (PST)
-Message-ID: <75190f6e-35c2-42ba-b894-d7810a913adb@broadcom.com>
-Date: Mon, 9 Nov 2026 16:03:29 -0800
+        Mon, 09 Nov 2026 16:06:46 -0800 (PST)
+Message-ID: <d2fa8027-53da-42e2-a7eb-f666ed6bb4e0@broadcom.com>
+Date: Mon, 9 Nov 2026 16:06:44 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,15 +104,15 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 6/8] net: dsa: b53: reference count shared mirror
- source bits
+Subject: Re: [PATCH net v3 7/8] net: dsa: b53: harden mirror register
+ programming
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
  kuba@kernel.org, pabeni@redhat.com, vivien.didelot@gmail.com,
  linux-kernel@vger.kernel.org
-References: <20261030211617.288562-7-florian.fainelli@broadcom.com>
- <179348376420.3131.8153125267393893230@kernel.org>
+References: <20261030211617.288562-8-florian.fainelli@broadcom.com>
+ <179348376557.3131.9793537339199409475@kernel.org>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -147,16 +147,16 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <179348376420.3131.8153125267393893230@kernel.org>
+In-Reply-To: <179348376557.3131.9793537339199409475@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 10/31/26 14:56, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
+> Thank you for your contribution! Sashiko AI review found 1 potential
 > issue(s) to consider.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
 > 
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -164,125 +164,105 @@ On 10/31/26 14:56, netdev-bot+sashiko@kernel.org wrote:
 > know by including "pw-bot: cr" as a separate line at the end of your reply
 > (one such reply per series is enough).
 > 
-> - [Medium] This patch adds a per-port software counter of mirror source
->    references (struct b53_port::mirror_count[2]).
-> - [Low] At this commit, the first-reference path in b53_mirror_add()
->    (b53_common.c:2573-2582) ignores the return values of b53_read16(loc),…
+> - [Medium] This patch adds an unconditional b53_mirror_init() call to
+>    bcm_sf2_sw_setup() (drivers/net/dsa/bcm_sf2.c).
 > 
 > --
 > 
-> net: dsa: b53: reference count shared mirror source bits
+> net: dsa: b53: harden mirror register programming
 > 
-> This commit adds a per-port, per-direction reference count for the b53
-> mirror source bits. The hardware bit is programmed on the first
-> reference and cleared only when the last reference is removed. A
-> delete with no matching reference is ignored.
+> This commit clears the mirror capture control register and both
+> source-control registers during b53 and bcm_sf2 setup. It checks every
+> mirror register access and only increments the source reference count
+> once hardware programming has succeeded. It also decides whether the
+> destination is occupied from the source masks instead of MIRROR_EN.
 > 
->> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
->> index 75033b28100ec..b16167c9510b8 100644
->> --- a/drivers/net/dsa/b53/b53_common.c
->> +++ b/drivers/net/dsa/b53/b53_common.c
-> 
-> [ ... ]
-> 
->> @@ -2559,6 +2560,11 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->>   		return -EOPNOTSUPP;
->>   	}
->>   
->> +	if (*mirror_count) {
->> +		(*mirror_count)++;
->> +		return 0;
->> +	}
+>> diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+>> index 9e5713015187b..9f54cd414c18f 100644
+>> --- a/drivers/net/dsa/bcm_sf2.c
+>> +++ b/drivers/net/dsa/bcm_sf2.c
+>> @@ -1059,6 +1059,11 @@ static int bcm_sf2_sw_setup(struct dsa_switch *ds)
+>>   {
+>>   	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+>>   	unsigned int port;
+>> +	int ret;
 >> +
+>> +	ret = b53_mirror_init(ds);
+>> +	if (ret)
+>> +		return ret;
+>>   
+>>   	/* Enable all valid ports and disable those unused */
+>>   	for (port = 0; port < priv->hw_params.num_ports; port++) {
 > 
 > [Severity: Medium]
-> Can mirror_count get out of sync with the hardware after a suspend/resume
-> on bcm_sf2?
+> Can this lose the installed mirror rules across suspend/resume?
 > 
-> On resume, the switch is reset and setup runs again:
+> The resume path also calls bcm_sf2_sw_setup():
 > 
 > drivers/net/dsa/bcm_sf2.c:bcm_sf2_sw_resume() {
->      ...
-> 	ret = bcm_sf2_sw_rst(priv);
 >      ...
 > 	ret = bcm_sf2_cfp_resume(ds);
 >      ...
 > 	ds->ops->setup(ds);
->      ...
+> 
+> 	return 0;
 > }
 > 
-> bcm_sf2_sw_rst() does a watchdog chip reset, or a reset_control
-> assert/deassert on BCM7278. That puts B53_MIR_CAP_CTL, B53_IG_MIR_CTL
-> and B53_EG_MIR_CTL back to their defaults. Later in the series,
-> bcm_sf2_sw_setup() also calls b53_mirror_init(), which writes 0 to all
-> three registers.
+> So every resume now writes 0 to B53_MIR_CAP_CTL, B53_IG_MIR_CTL and
+> B53_EG_MIR_CTL. The tc matchall mirror rules stay installed.
 > 
-> The only place dev->ports[] gets cleared is in b53_reset_switch():
+> dev->ports[].mirror_count[] also keeps its value. The only thing that
+> clears it is the memset in b53_reset_switch(), and the bcm_sf2 path never
+> calls that.
 > 
-> 	memset(priv->ports, 0, sizeof(*priv->ports) * priv->num_ports);
+> CFP gets restored by bcm_sf2_cfp_resume(), but nothing reprograms the
+> mirror registers after resume.
 > 
-> and only b53_setup() reaches that, not bcm_sf2_sw_setup(). Unlike CFP
-> with bcm_sf2_cfp_resume(), nothing replays the mirror configuration.
-> DSA also keeps the tc matchall filters installed across resume.
+> After resume, b53_mirror_add() would hit this:
 > 
-> So after resume, a port can have mirror_count[dir] >= 1 while its source
-> bit and MIRROR_EN are both clear. If a new matchall mirror filter is
-> added on that port and direction, the destination check passes because
-> the registers read back as 0. It then reaches the early return above
-> and reports success without programming any register.
+> 	if (*mirror_count) {
+> 		(*mirror_count)++;
+> 		return 0;
+> 	}
 > 
-> Wouldn't the filter show as offloaded while nothing is mirrored, until
-> every filter on that port and direction is removed?
+> A new rule for a port and direction that already has a reference would
+> then return success without programming the hardware.
 > 
-> Before this patch, every add did the full read-modify-write, so adding a
-> filter after resume reprogrammed the hardware. The later patches
-> "net: dsa: b53: harden mirror register programming" and "net: dsa: b53:
-> fix mirror port encoding on BCM5325 and BCM5365" keep this early return.
+> The new occupancy check would also read all-zero source masks:
 > 
->>   	if (ingress)
->>   		loc = B53_IG_MIR_CTL;
->>   	else
->> @@ -2573,6 +2579,8 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->>   	cap_ctl |= MIRROR_EN;
->>   	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
->>   
->> +	(*mirror_count)++;
->> +
+> 	if (((reg | other_reg) & MIRROR_MASK) &&
+> 	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
 > 
-> [Severity: Low]
-> At this commit, b53_mirror_add() ignores the return values of
-> b53_read16(loc), b53_write16(loc) and b53_write16(B53_MIR_CAP_CTL), and
-> then increments mirror_count anyway.
+> That would accept a rule with a different destination while software
+> still tracks rules for the old one.
 > 
-> If one of those bus accesses fails, the count says the source is
-> programmed when it isn't. Every later add on that port and direction
-> then takes the if (*mirror_count) shortcut. Will that keep the source
-> unprogrammed?
+> Doesn't this break the rule that mirror_count[] follows the hardware
+> source mask bits? The commit message relies on that when it says
+> "Reference counting must not record a first source reference until
+> hardware programming has succeeded".
 > 
-> In b53_mirror_del(), the count is also decremented before the unchecked
-> clear.
+> bcm_sf2_sw_rst() may already clear these registers through EN_CHIP_RST.
+> If so, the stale count came from the earlier patch in this series, "net:
+> dsa: b53: reference count shared mirror source bits", and this patch makes
+> the wipe unconditional.
 > 
-> The later patch "net: dsa: b53: harden mirror register programming" in
-> this series fixes this. It checks every read and write and only
-> increments mirror_count after programming succeeds. On the delete side
-> it logs failures, since .port_mirror_del returns void. A failed clear
-> there leaves a stale bit with a count of 0. That can be recovered,
-> because the next add goes from 0 to 1 and reprograms the bit.
+> If the reset does not clear them, which is the case the commit message
+> describes, this patch causes the loss on resume.
 > 
->>   	return 0;
->>   }
->>   EXPORT_SYMBOL(b53_mirror_add);
+> The problem is still there at the end of the series. "net: dsa: b53: fix
+> mirror port encoding on BCM5325 and BCM5365" only changes the port and
+> capture encoding.
 > 
-> [ ... ]
+> A related question: bcm_sf2_sw_resume() ignores the return value of
+> ds->ops->setup(). If b53_mirror_init() fails during resume, the new early
+> return skips the port, VLAN and ACB setup below and no error is reported.
+> Is that intended?
 > 
 
-Agreed. The reference counts survive SF2 resume while hardware mirror 
-state is cleared. I’ll restore the destination and active source masks 
-during setup, preserving the counts for filters DSA retains, and 
-propagate setup failures from resume.
-
-I’ll also fold in the register-access hardening so counts advance only 
-after successful programming.
+Agreed. This overlaps with the patch #6 finding. The respin will restore 
+the destination and source masks from retained software state during 
+setup, preserving reference counts for installed filters. It will also 
+propagate setup failures from bcm_sf2_sw_resume().
 
 pw-bot: cr
 -- 
