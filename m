@@ -1,80 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794296192;
-	b=TyVeGWESF6D+qN6nJ0NaA5ZnBgLBg5W6ibSmc7upRCmjxkI8sRQO3wQpLtgXEiO+fawC
-	 8ZPEkM8PHTDL/fd5jXtLlkpMqOOuo8/DzxciBJo8vaDqYGYSMud6ZfV49GLbwR1ICWHbq
-	 KLLofFUdfPZVCDnz4jiyxMxQrYKuO80lyfngook+KmyubcEbxfMWu3Cd7o5SiFE69sQUh
-	 Ga6lJh/PObIDkXvC0yZF5r8YTKArYHlswUoIBcEdSl8JgAhKOYQN0xnJmuqUkAd6v5ct4
-	 2njaw3kxKcfn44STAlDpGPGH0mk9OgnhvmNIJU5Ond216yC0HH4nQPxxY2wFz1rIeDA==
+	t=1794296364;
+	b=amEIUw5xTzTzxpFNvYfyF2pPAlcInmfsFMcVeeX6dTG3KrElCUDY/4GOh5+CudDgpiHK
+	 fwl987UaynHn1ChnyJzMXgsBmOSPzw0YSzKd9JosEDUiLHSQqD5c8m/3dxg1bxwe+tuFL
+	 9nI+8fuho4UjOwZFIKzhpAwhqgUOnhMd9Ppfu/kc1aZ6N0I2UyvACFq1y26p/Jd9FxlmV
+	 yAWSv0QkIKvnlbU3PL1scefQP4ZWl44gChBcHnhmxAXXz3X+0ag91ny2l2Dw4HG6rPfYo
+	 LCLFp7qpkCzQDmL+TN9CHZiZai944MnPIfUkMeUoWwd1R2NbfgwWfHJJqbgrITyNkgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794296192;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=w28p4hLU+RTP4FheCaCDlrPaq5T0brMSRYM4zl5KN9Y=;
-	b=xGZLuiVXJf2OYB3nMiF2K59UP/GVEhpAoSNA624qmy68IzsWyiJvpirPCGel9D06AKWy
-	 upVLgnJ7pv0vkOqyDdoVJzRGVFVNRbpWFNawmVhwRlDIMEJQLX2MOlBbvMn/tyAGUnY/u
-	 LsiFITWwgreu2KYpqisxbLEQ1rQZh7PjoFdleIuiw+UWgjROe1/39oREbvZcHQB593ZB/
-	 1QQJYU0W9xPEP/N8j+M9A43iP/7T2XSOlEGFFJXahgS4HpHC28eXqidvBfHMUmUbh+Lgs
-	 Zw/NdPc623Rs8Bc4skc1cHIBSYQGHkmk89dCLgdD8kLyEvDLKVxcUN6rQGCcILtsArw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794296364;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=DSBlFGn4E205gXuccBzZwAAPl+yDbfuCcd3h0VNHPkE=;
+	b=Ye92w12yqLwPR0BzL7dvlJW1tsryX5c/jTvgNuJfrT/WDNXA+PYHusOvKFMhiVZh63qv
+	 s84dQNdF51lq4ULHOS9Z2i6gQP+wmCeuUglK8R/D4Pw0RKwongEnPfN+rIke8OkVkc2PF
+	 JfPbaCvff5VlaAT1uZ4rz3NFbvxXWOhtNSR96jPUebHNwWWYN3Sm0q1Zgy60s/Z2Zp8eh
+	 0E9C3xaMa9WbMxBME/QGhDTIgzjTmxz/v+7+/nfw7l/IQW1zyu2eS9SEIG9DaLQ/P4ydi
+	 G8jEw9ovVkjBO00FQTHoZSTcHY90uWdtjBdpONnLvnTb752othy8JRdc9qUvlRVEA4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ovJWfBMv;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29338606A33F;
-	Tue, 10 Nov 2026 07:36:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29338606A33F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cua8L9GY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E2F606A31C;
+	Tue, 10 Nov 2026 07:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ovJWfBMv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=ovJWfBMvfQFgoxfAaGrWLNK2qa4v4h9vKJuA5vHr+Sh/8NG+LT5PCdDLVfeQQhx9dOSv3mutY7Yhg
-	 eQvqRrTLkmMfnOHfWsDBAXKYw1NG1Ye74Ag4HvPTuw5P8vVwpM577XRlScEpLi4m1p1O8Y3V/KAKhg
-	 bKG3KhOGmGV7vV+k=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af2c97c786-c9cf7;
-	Tue, 10 Nov 2026 15:36:29 +0800 (CST)
-X-RM-TRANSID:2ee56af2c97c786-c9cf7
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36af2c970885-ab732;
-	Tue, 10 Nov 2026 15:36:29 +0800 (CST)
-X-RM-TRANSID:2ee36af2c970885-ab732
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cua8L9GY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DB1F0089F;
+	Tue, 10 Nov 2026 07:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794296363;
+	bh=DSBlFGn4E205gXuccBzZwAAPl+yDbfuCcd3h0VNHPkE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Cua8L9GY35tzd1wvxIkoHZWoj4b+Jnc4MmmXSS4xz1DMOhF7fnMzyvLCmrsGBqGj1
+	 Jb3832ICvaaSkhpxHKzVktwY0VN55YFhe3ayOJkh72n1kK3xADULAH5Ox4aWZpDvso
+	 SSbBNIbDYBnbE0pl1xpHF+Szz6q8g2PUN/I44F2G4akFrGsrJgkxavsbYV78rdzpjx
+	 zQNz+Gl7ioYOpICsUTt7r4k8bgeTs/LlSH/W8tT7ufcmOxtPXhedsyuDUNY/5l3SKw
+	 qP4k1ZQswUJUdtBBrFidqv9eamm01YnDLo/xUXPHRAgRbSU5FtK+emGYhLCVNfCVFg
+	 cz+s7VuHGQF/w==
+Date: Tue, 10 Nov 2026 09:39:19 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 1/2] virtio_net: Don't DMA map the kernel image for the AF_XDP TX header
-Date: Wed, 11 Nov 2026 00:30:00 +0900
-Message-ID: <20261110153003.23731-2-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261110153003.23731-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261110153003.23731-1-yanhaishuang@cmss.chinamobile.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v2 10/19] net: phy: Use the compatibility driver
+ attachment API
+Message-ID: <20261110073919.GF8635@unreal>
+References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
+ <20261109-device-trust-core-v2-10-3b12d9a9f861@nvidia.com>
+ <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,100 +89,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab062469-ece0-495e-8486-78404c580cdb@lunn.ch>
 
-virtnet_xsk_pool_enable() DMA maps the static xsk_hdr, which lives in
-the kernel image. On arm64 the kernel image is mapped in the vmalloc
-area, so when the device uses the DMA API the mapping is rejected:
+On Mon, Nov 09, 2026 at 02:45:35PM +0100, Andrew Lunn wrote:
+> > @@ -1956,11 +1958,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+> >  	}
+> >  	phydev->drv_owner = drv_owner;
+> >  
+> > -	if (phydev->is_genphy_driven) {
+> > -		err = d->driver->probe(d);
+> > -		if (err >= 0)
+> > -			err = device_bind_driver(d);
+> > -
+> > +	if (bind_genphy) {
+> > +		err = device_driver_attach_full(drv, d);
+> > +		if (err == -EBUSY)
+> > +			irq = phydev->irq;
+> 
+> Just looking at this, it is not clear where the EBUSY can from? 
 
-  virtio_net virtio0: rejecting DMA map of vmalloc memory
-  WARNING: drivers/virtio/virtio_ring.c:3882 ...
+I relied on the comment above: “Assume that if there is no driver, ...”.
+Since PHYs do not use the standard automatic probing mechanism, I have no
+way to tell whether a driver is already bound.
 
-and binding an AF_XDP zero-copy socket fails with -ENOMEM.
+> And why set irq to phydev->irq?
 
-Allocate the all-zero header per send queue when the pool is enabled
-and free it when it is disabled.
+If the above operation can fail with -EBUSY, the wrong IRQ was restored.
 
-This was found while testing AF_XDP in QEMU on arm64, not in
-production. Tested in QEMU (TCG, arm64 virt, virtio-net-pci with
-iommu_platform=on) with a KASAN kernel: binding an XDP_ZEROCOPY socket
-fails without this patch and succeeds with it.
+I checked this with AI, which says that -EBUSY can originate deep in the
+driver core. It may be better to remove this special case and rely on the
+PHY's guarantee that no driver can be bound concurrently.
 
-Fixes: 21a4e3ce6dc7 ("virtio_net: xsk: bind/unbind xsk for tx")
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
- drivers/net/virtio_net.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+Thanks
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index dd2c41ef6fbe..4f5d8812f75b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -315,6 +315,8 @@ struct send_queue {
- 
- 	struct xsk_buff_pool *xsk_pool;
- 
-+	/* All-zero header shared by the AF_XDP packets sent on this queue */
-+	struct virtio_net_common_hdr *xsk_hdr;
- 	dma_addr_t xsk_hdr_dma_addr;
- };
- 
-@@ -500,8 +502,6 @@ struct virtio_net_common_hdr {
- 	};
- };
- 
--static struct virtio_net_common_hdr xsk_hdr;
--
- static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
- static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq);
- static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
-@@ -5971,11 +5971,21 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
- 	if (!rq->xsk_buffs)
- 		return -ENOMEM;
- 
--	hdr_dma = virtqueue_map_single_attrs(sq->vq, &xsk_hdr, vi->hdr_len,
-+	/*
-+	 * Don't map a static header: the kernel image is not in the linear
-+	 * map on all architectures (e.g. arm64), so it can't be DMA mapped.
-+	 */
-+	sq->xsk_hdr = kzalloc_obj(*sq->xsk_hdr);
-+	if (!sq->xsk_hdr) {
-+		err = -ENOMEM;
-+		goto err_free_buffs;
-+	}
-+
-+	hdr_dma = virtqueue_map_single_attrs(sq->vq, sq->xsk_hdr, vi->hdr_len,
- 					     DMA_TO_DEVICE, 0);
- 	if (virtqueue_map_mapping_error(sq->vq, hdr_dma)) {
- 		err = -ENOMEM;
--		goto err_free_buffs;
-+		goto err_free_hdr;
- 	}
- 
- 	err = xsk_pool_dma_map(pool, dma_dev, 0);
-@@ -6004,6 +6014,9 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
- err_xsk_map:
- 	virtqueue_unmap_single_attrs(rq->vq, hdr_dma, vi->hdr_len,
- 				     DMA_TO_DEVICE, 0);
-+err_free_hdr:
-+	kfree(sq->xsk_hdr);
-+	sq->xsk_hdr = NULL;
- err_free_buffs:
- 	kvfree(rq->xsk_buffs);
- 	return err;
-@@ -6032,6 +6045,8 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
- 
- 	virtqueue_unmap_single_attrs(sq->vq, sq->xsk_hdr_dma_addr,
- 				     vi->hdr_len, DMA_TO_DEVICE, 0);
-+	kfree(sq->xsk_hdr);
-+	sq->xsk_hdr = NULL;
- 	kvfree(rq->xsk_buffs);
- 
- 	return err;
-
-base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
--- 
-2.43.0
-
-
-
+> 
+>     Andrew
