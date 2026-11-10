@@ -1,116 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794315802;
-	b=uCLByQljC/l08kH9TfWom6cjwV8PUXQI96SZL4kmTvEU+USMswxkiwcJGa8MMDrYoDqz
-	 dyG2oGVBnkR51sxAmC0I7Z+szOCVGYg3EDi65D5xqyc9B2kV3AvFvLDHqInWy4wCeoATY
-	 fIrxI6rykQq6X3d7OOXtJGAkXzSxz8BgvXADU6AcZH1NiWQ8TiK1rNR1w3gepktwokKn1
-	 u9LeFc4op7Uw5CIjTh16gVIIC3ZZpXHpBYweTkyZ2PL3fVdal2Sxb5fbL2ZTnsMBzC2Zn
-	 SZX0Sq2sDZGx1AAdtyXJZAHctd04/Hx/gKtUBiZ8ymI2v0sTfRx3y40yZKligA0gsjw==
+	t=1794315878;
+	b=mEIPzYGhiuJCY1cJ8pa4tqEtgH5JySCmgtHMZ5zkexUcDRoZf7PBI2TmeCNhRjFljeBZ
+	 VW8b+U1DE2YgMQmOcB17ry++bpuJRgh8Mi8UUPFQrhcPrYqJKAXAVq9XA6+1g0MuG5zsd
+	 4gKbHbHKQV1HrVElXPPfW/wv9eINANW/n6YjIaTcmuklJTPbpG9jFvzlrQ4A/giIbQ1Bv
+	 Tof0H7Csok1mK9iNO0eszeoMOooTI+H6BkaGVHVSuPVNnNLCXKCZVpgUG9hXeMzULaEW1
+	 XIxHdpWxNmeZ2zlrNWuV9r/fyfjlxLnUjh2Ki0SBw75KqqUZvfG/1OcT4XAYLfs+xwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794315802;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=DFbQ+mz6Xx6CA3XASYaFPM6Yn6qN9Ub78vKEXY6qCm8Y0mdL/kLpahcnw+wk2hrJMdZw
-	 ia0qgYyFJaV4i9JOTeBVZZicZ0tm4VFaBIGta7Nv4XnzjF/rIH2iPXB717S13KbjHdV78
-	 B8h/yr/w5T8DrD+yiubMM8+Mh3vxXbu/3P4iuDboF03h+LwQtFJe/f3UNHp+69C4TblzO
-	 /0Zr4Aw+5dw8zTMvt1W9p6CgCAriSYFVjAXcjFtZ29PxNclgFC/RyJK4hqae4oKSyqjlV
-	 IAAqXRsqOhm+zwHCrjrnlvui3jAm7tCBmxfhXq7PwxrFvl3W6+MccduJGwGwMO9G6FQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794315878;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=EnWbVDYQ/6puggi0QqXD0bxXsZrTtGcnJLqSymIBlOI=;
+	b=tTYli00ylTVCfTL1+M2Rc4/LLmdQw+0EG8G/9Nv6tVrfJ9fljmJc19G64mIyjwkmLz33
+	 kVKVLVqDGHv/4qwK+QuEdWpzhLwZJTyHdoqU4dkd+ucPfUmTPJQJ3RoigFCfKesYqi104
+	 qkDX3INJVSGpIzi6jCy+m2dnRb3jRIDhe4RZn//0mprHnKNcJ0/zhzQ17b1thrROtFjSy
+	 7sTXHahw38IG9tIMZUUgb1ltL1VJ9t07bDDWyduHsYzcSRYGW0Orknt8H8J5Xgzw4rmgH
+	 PXYm27s9CTlQgWxkXZIq0lqAcetRZMV05wIwN50MuxBbh4E9F5BZUK1VvxyxbT92/5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lDw8Liv9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A0C606A74B;
-	Tue, 10 Nov 2026 13:03:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88A0C606A74B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4E3606A336;
+	Tue, 10 Nov 2026 13:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0D9421F77;
-	Tue, 10 Nov 2026 13:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794315799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=nU4XxgALhU6j4K3Mxr5ngQH1kaedGJkQyEqwlGUplEx9hMxQ3fo4McMmOwr1ERv3Mkpxw3
-	gLCfI+EWYKzq/l9mRzhXb6GJ0h3nlI+5tsg9MpjQ2PJDBC1XC/U5s6EqGl5dlEXIEKPAnz
-	BBcKQlac9Q1+gcOvfNs3dKHhhfnARxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794315799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=Mnc4QrSZrRmpafaJe4iOnLi1RuOTcqJe/GGSNdftVub9UNeD+cHjavH2Su/fUJ6PuunSLs
-	aVyAWefkY3MWbuCw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794315799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=nU4XxgALhU6j4K3Mxr5ngQH1kaedGJkQyEqwlGUplEx9hMxQ3fo4McMmOwr1ERv3Mkpxw3
-	gLCfI+EWYKzq/l9mRzhXb6GJ0h3nlI+5tsg9MpjQ2PJDBC1XC/U5s6EqGl5dlEXIEKPAnz
-	BBcKQlac9Q1+gcOvfNs3dKHhhfnARxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794315799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=Mnc4QrSZrRmpafaJe4iOnLi1RuOTcqJe/GGSNdftVub9UNeD+cHjavH2Su/fUJ6PuunSLs
-	aVyAWefkY3MWbuCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 960C61339F;
-	Tue, 10 Nov 2026 13:03:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id e3rfGxcW82q6SgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 13:03:19 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 35CB1224F7; Tue, 10 Nov 2026 14:03:15 +0100 (CET)
-Date: Tue, 10 Nov 2026 14:03:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
-	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
-	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 34/41] loop: refuse files on pseudo filesystems as
- backing files
-Message-ID: <xlql7gc5uyvehjvin4ls3okfnv32xxdj45bjvamf2vdkrakvjx@u4iwy4ydmphs>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
- <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lDw8Liv9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459E01F0089F;
+	Tue, 10 Nov 2026 13:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794315877;
+	bh=EnWbVDYQ/6puggi0QqXD0bxXsZrTtGcnJLqSymIBlOI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lDw8Liv9Ggm6qVu6iULhp3dA8tGCXo1zz7IlG3Z1ClryFeLIADN2w499Nvu34XeKI
+	 tlcdHc+3bb1iQp4Xs4EEV32OVK/zqc0JXsl5qRJJr2F9tbjSG5JO27KHxUBL3nPyU7
+	 2KkatvBT/FN4EQDfUoITl3Boswqr44ktlPlA6N+x1AuqmugRrACbB/k7uWZ/al2DTn
+	 OFwhNNUr42DYI+72hCCzrLGtpZWMuNYpP8v/iKQZ2i8a/TA2bTNwqWjLpdhduLhZDU
+	 DRSEibh9cMMf/OyGpG+rTUaJKPoQu/P5mFo/s3fz9Sy2+B2qw80vhoD1pbuLqu2b9Z
+	 2l29J8hWdPOGg==
+Subject: Re: [PATCH net] vlan: prevent cross-netns MII register writes
+From: netdev-bot+sashiko@kernel.org
+To: dennylin0707@gmail.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, n05ec@lzu.edu.cn, ylong030@ucr.edu,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+Date: Tue, 10 Nov 2026 13:04:36 +0000
+Message-ID: <179431587680.994134.9895439231970781828@kernel.org>
+In-Reply-To: <20261106124639.12584-1-dennylin0707@gmail.com>
+References: <20261106124639.12584-1-dennylin0707@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,104 +63,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-12.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,kernel.org,toxicpanda.com,lst.de,lists.infradead.org,zeniv.linux.org.uk,suse.cz,lists.linux.dev,kvack.org,lists.ubuntu.com,lists.xenproject.org,lists.ozlabs.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -12.80
 
-On Tue 10-11-26 10:14:50, Christian Brauner wrote:
-> Currently loop accepts any regular file that implements ->read_iter() as
-> a backing file and any that also implements ->write_iter() as a writable
-> one. That includes files on procfs, sysfs and other pseudo filesystems.
-> For example, /proc/kcore attaches read-only as a loop device the size of
-> the kernel's virtual address space, 64 PiB with 5-level paging. sysfs
-> attributes attach read-write as 4096 byte loop devices. Writing a block
-> to the loop device of /sys/kernel/mm/transparent_hugepage/enabled
-> changes the THP setting.
-> 
-> That's not just nonsensical, it can be abused. Loop calls ->read_iter()
-> and ->write_iter() of the backing file directly from its worker which
-> runs with kernel credentials. But pseudo files enforce part of their
-> access rules at read and write time against current. Dozens of sysfs
-> ->show() and ->store() methods call capable(). Behind a loop device all
-> of these checks are done against the loop worker instead of the task
-> that opened the file. And setting up a loop device requires no
-> capabilities, only access to the device nodes. So on v7.4-rc1:
-> 
-> - uid 0 without any capabilities can't write to /sys/kernel/reboot/mode
->   as mode_store() requires CAP_SYS_BOOT. Writing "warm" through a loop
->   device works.
-> 
-> - uid 0 without any capabilities can't read the files in
->   /sys/firmware/dmi/entries/*/ as dmi_sysfs_attr_show() requires
->   CAP_SYS_ADMIN. Reading them through a loop device works.
-> 
-> - An unprivileged container that was handed a loop device can't change
->   gro_flush_timeout of its own network devices as
->   gro_flush_timeout_store() requires CAP_NET_ADMIN in the initial user
->   namespace. Writing it through a loop device works.
-> 
-> The same goes for hard_offline_page, the md and sd attributes, rfkill
-> and others.
-> 
-> Refuse files on pseudo filesystems as loop backing files. Note that
-> file_is_pseudo() looks through overlayfs so stacking overlayfs on top of
-> sysfs doesn't get around this.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Looks good. Feel free to add:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-								Honza
+- [Medium] The patch only partly isolates the host PHY from the VLAN's
+  network namespace.
 
-> ---
->  drivers/block/loop.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index c96e35c3ef42..1482580a1979 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -537,6 +537,9 @@ static int loop_check_backing_file(struct file *file)
->  	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
->  		return -EINVAL;
->  
-> +	if (file_is_pseudo(file))
-> +		return -EINVAL;
-> +
->  	return 0;
->  }
->  
-> 
-> -- 
-> 2.53.0
-> 
+--
+
+vlan: prevent cross-netns MII register writes
+
+This commit makes vlan_dev_ioctl() reject SIOCSMIIREG when the VLAN
+device and its real device are in different network namespaces.
+SIOCGMIIPHY and SIOCGMIIREG are still forwarded across namespaces on
+purpose, and writes are still allowed when both devices share a
+namespace.
+
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index bca0a3693636c..0d0904103302f 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -416,9 +416,12 @@ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+>  	ifrr.ifr_ifru = ifr->ifr_ifru;
+>
+>  	switch (cmd) {
+> +	case SIOCSMIIREG:
+> +		if (!net_eq(dev_net(dev), dev_net(real_dev)))
+> +			break;
+> +		fallthrough;
+>  	case SIOCGMIIPHY:
+>  	case SIOCGMIIREG:
+> -	case SIOCSMIIREG:
+>  		err = dev_eth_ioctl(real_dev, &ifrr, cmd);
+>  		break;
+
+[Severity: Medium]
+Can the VLAN's namespace still change host PHY state through
+SIOCGMIIREG?
+
+The commit message describes the threat as letting the VLAN namespace
+"modify PHY registers on the host's real device". It also says the
+patch will "Preserve MII reads across namespaces". MII reads are not
+always free of side effects, though.
+
+For phylib drivers, the read path ends in phy_mii_ioctl() in
+drivers/net/phy/phy.c. That function does a raw bus read at a phy_id
+and reg_num chosen by the caller:
+
+drivers/net/phy/phy.c:phy_mii_ioctl() {
+    ...
+	case SIOCGMIIREG:
+		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
+			...
+			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
+					       mii_data->reg_num);
+		} else {
+			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
+					   mii_data->reg_num);
+		}
+    ...
+}
+
+The BMSR link status bit is latched low, and genphy_update_link() in
+drivers/net/phy/phy_device.c depends on that latch:
+
+	/* The link state is latched low so that momentary link
+	 * drops can be detected. ...
+	 */
+
+Vendor interrupt and event status registers are also often
+clear-on-read. A read from inside the container could consume a
+latched link drop, or acknowledge a pending PHY interrupt, before the
+host's phylib state machine or IRQ handler sees it. Would the host
+then miss link-change events?
+
+The read also isn't limited to the PHY attached to real_dev.
+mii_data->phy_id can name any C22 or C45 address on the host's MDIO
+bus, including other PHYs or switches unrelated to the VLAN.
+
+The only privilege check on this path is in dev_ioctl() in
+net/core/dev_ioctl.c, and it is against the VLAN namespace's user
+namespace:
+
+	case SIOCGMIIPHY:
+	case SIOCGMIIREG:
+	case SIOCSIFNAME:
+		dev_load(net, ifr->ifr_name);
+		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+			return -EPERM;
+
+Container root can satisfy this check once the VLAN has been moved
+into its namespace.
+
+The write side here follows the vlan_dev_hwtstamp_set()/get split,
+where only set has a net_eq() check. Hardware timestamp get has no
+hardware side effects, but MII reads can.
+
+Should SIOCGMIIPHY and SIOCGMIIREG also be rejected when
+dev_net(dev) and dev_net(real_dev) differ? If not, could the commit
+message explain why these cross-namespace reads are acceptable?
+
+>  	}
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106124639.12584-1-dennylin0707%40gmail.com
