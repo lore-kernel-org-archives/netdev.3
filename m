@@ -1,85 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794347284;
-	b=hdgd6MiVNdDM/h8dL7ZQ5VHGQIPV2HlLAEc2mM7O90OCdAZVaNgmtpTM6Y7I07SIbiq7
-	 dYHa+UrPMd6VWSh8dD2Ue8ckEPMOsOmflD8aQHmFKY6KPBfZj817niEc0H5d1dsPWqhZY
-	 bIE2AeqlFBle+3THOlup7Oe6IOqKnHiWpbU3Oy0eK0FQ21MfsAotq9bU2gz36fnuKz6mB
-	 GLk8Cra/GXNCWo46c6C58PFMe/pDusG4IUnI2UOt+tPzLD8Q3JFIIusB4JBJcwBcAfZj6
-	 iErRfvV6jRQpeUgPYyw7lGzcy5Xgk7GsMmgQ+1d1gxqBy4ueZ7NsG8LPUI3vUJoQLIA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794347284;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=/WOcayzJUskhUHuQDojqHJCdJ99yTsrsphbc40waRqk=;
-	b=2HTbVlwfZ7+Z5Z5L/5ZBuTMzswgepOAP6+EIX8R/qnf3y1k2Pxf87RCGCSESxBG7gV5J
-	 BqAMviGJRuTAwhX8iX0oYtPDCcy2X+s2xn5Ri0iq+CKsVB7+K0+1Wr8XjtIN9vq0wSRQQ
-	 iwmVykdqwiFXKqxKeTLnYVczjS0LHWX534FWgkXxNIcVvyYXk7jwTWETISiPP5uX6l4rt
-	 iqeLBocC9CAfc6+KY+Z/PWdI7rZMulZ9lcPaSGIgA7eLSrlNhgh23LyqoROoFiuog7Dht
-	 +qgl6CuljvOzLvkn1FaLZP5bf8K8pDwqACjTmZjY5S4j2H+XfEth9cuEOIIt/acMOSw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=grische.xyz;
-	spf=pass smtp.mailfrom=grische.xyz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794347408;
+	b=o7eQdVfv7qlLaSg5HpgyVxwIVGb7ujIknVBYTrODIa+y7MXab8UX2PZZX16j66XNDOfv
+	 rBU49AXPCBCJYFFuYaIo7gMqtKE7FFeah8NiyEU1zOvkMm2EDW/eBeYJXr9jGHmKcY2tR
+	 laXHDD1RLXZc9qHXREN2hVmCZ9DMZowQRt16IqmhNXo9tRmnnH0F8zMiNaRifDIukD8IF
+	 dmAL6SwULKkU0+Z9DjTycTLQpqtcP97KJxaKG164KSKd6fQJL+nE9vb4TOkpUasaUnem2
+	 oggP6hghtII6Cmb79ZC18RkktZpeJOS2S597jitEcN3d5TisdBRFIT6wFM4SEgWktTA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794347408;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=Zfnbv4NHqZ/iJ6yvPkwCqRhv/U/5TwJHeVQPxKTt8gU=;
+	b=fjEt3iCphXurUnFbhxaJXu2Y04vnmBVeMme3KLVqkdsBLf8ePU3oePFV7AW0J1gfU8N0
+	 DF7C8zD3IhkUxajyNjp+cxslr3+Z6v5khWaY9KuDJw/gHQmLTL7/SsnhnSLhYLWQOM+3k
+	 +Di2uQg/oQoBPhgfurE/Ggw4g0JnrvLH60K3oB8jS5MLAHtD3YnCsbdKKi876AhqQO8Zw
+	 t0xB24AQhD9mZI7cqrM/JpD4qb6tQWvKcW6yXetp3ynkMzJcFCvl81d6eke9q4dcirbPz
+	 F7ZaNVpMN5OCsNe4OBjGApu8UyptCxtQGkw45ups6ACWVSQLQ8BZW0V9Lhs8Y0INgRQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f692PXHP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198CB606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:48:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 198CB606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grische.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grische.xyz
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b71b012e3cso1381621a12.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:48:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794347282; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kSzDswBDCv1teEPYzuUdgcUN+TTDs43+cFDxz8tDPYkn6rsEYHNSCBk8gcT8Ej+FGp
-         BYw+kBb2/9MvgdLIKK3cKKzPn9/SBgeijVTVWls9ILvfHN0rWCU7wW4T7YOJfDHaF024
-         LsRta5tp5QZD15OBm19AlnDUY2B6wYFiDAaMiAOAJSfYE5Ad3Vgu0kZOAuJ9XlCUaV0P
-         7/7WPOMfTKJnJd7Gb2/ftPWuRkYFq0b8F6cEPsF1ap0JxuP3fdK3lmRmCZD/cdk3yrWL
-         OlkROfhkRyylVQgmm1C0Xrj/Wl+fbJ63UT8OXSS/1EDZBaiRP9jvzyrLnjxH0iGNdyti
-         S75Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=/WOcayzJUskhUHuQDojqHJCdJ99yTsrsphbc40waRqk=;
-        fh=peAzZUUcgBViIJtETQMzy7ctgT3ZYf6PKwNxBk+i474=;
-        b=sCgs95vdbELk+mLiYt74Wc6ipbDIpkpKZtiY5lmvfVFg4l6xN7lXeKY92mX1wW//op
-         K3wbH/LnPqhZMtLgXYpCFx3y9LKzuY6GfKO/QbwtGiKDSnvIyji/ufHIFEp0cZ0KHXEn
-         KdSBPZ3CSePq4IlUoXCgNF1ibmeWCPUrrPzkQCmn9shTMzrcXdQ6j0E0KohQEBloecPA
-         oQ1XIxmuj6OG7Z7lBf81VMuOnO8h0vX2gjKiTU07ffNfzKVy/80TXev/U7KC0e1VVmYB
-         13FrDg7lMTYRTHcuDnOXJlkpxsUmupLyUKGyDhjD3Y7GQlxrh1BJGycg7ezzRquDZTZj
-         A1jg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794347282; x=1794952082;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/WOcayzJUskhUHuQDojqHJCdJ99yTsrsphbc40waRqk=;
-        b=MMOaYZ3PduFL1mK7AgPpv3p0oFhd5GyCj16npzJn4rRBrwyzdo8r7BrBI9cECibsa3
-         UEXDOJTw074Mi3jrSdiwOYDfA3IfgjICKGouI4Nbr2zyMoMw0wUOzNRA2UZ4hvDg/GFK
-         PjghQtyy0Ila4xiFyOOo2EwQMfrs5E09D0DVTusOv8H3uQfTS14MXOaSmEQR+mhAEBNX
-         4x8iGLTezOEKr7mmI2W8JNZ/DWezSSNPFhZoVVXnQUNr4FmdWsPBQvG3LdICvxQGMVJh
-         PhIBQ4sysac/4ap58JVXbmsJrrQhdqrjvkOd/AoYn6Urzz7hMCS2ITFw3ARCeq3ecKjO
-         uvuw==
-X-Gm-Message-State: APuU4Z+UmKWQBWIFcfDJtLNo2tZiOL3FSjWS6dI3LDTio7nhRyfp1ve1
-	S6baO11LCASIk0wcqkEeXLmFCNWJLveitHApqi4KOWWFVOR+CGkhIQOzX4sRd8XD/9C8XzcwcGp
-	Moq+h3fJ8KN2QRQz3Mi/Wm+8rsNQE23M2l6gsDBOCPA==
-X-Gm-Gg: AYBFou0Y7me02znDanEPHdBBMwOUyt28rrpf+u4+cjYLK+0fXpVGeCl4tS6NgWYT/E/
-	nIAyosZlH5ON8SJgtKpEKAsWq7jyiY2H0fFAHT8CihiKI+nvkiK/fo0j+IdaAe31lZ+bFEUOpYi
-	6/bKBeNfMoUr+SOwFbYY0/MytiMvEmSWzcpNhqhYdBqIQ8HPIBA1ln9Aq0t0Xb+LgI7/skkSd+M
-	ioDphYu9W+WxQxRMPkuW7sjOvvWPvM9yhomEXV8sL+8LQEORZtuyaxXMcwruO0c0rsqKFfqkiF1
-	h4kQBn5JPyHU2U1X0zYXsIDZ/FvsCfhg99xC+8RcVdbGEu2E3plCeAsPsqLKxPfPbj0BITX7HYr
-	IVjrjkumaDI8zGW9GBU+QxUCCDNNU/SWuIPYXn1T6m2I6mYET6zXPcp9d63B0ZCco9T3Azti1Nf
-	gFUxsRTE10x87g52U=
-X-Received: by 2002:a17:907:d311:b0:c40:cee7:3918 with SMTP id
- a640c23a62f3a-c5066d8cbc0mr27479766b.44.1794347281996; Tue, 10 Nov 2026
- 13:48:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B14A606A327;
+	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f692PXHP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FE71F0089F;
+	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794347407;
+	bh=Zfnbv4NHqZ/iJ6yvPkwCqRhv/U/5TwJHeVQPxKTt8gU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=f692PXHPHu6rw3PRVyBHXqz0Yh+iZeR78VniGOUaZRgCveM74Js9pJHB10fS+iDPO
+	 3gKYToGLfOzn8LASgXrtmwvm5Hsu5HhMfyo2v/+DZHBEAk9AeaKJF3ER63GE1970G0
+	 et0THMjvzaVcZa/u9ZFiC5LrFcKa4Z2GNk4QznI4DmWeENUvUQxgoaXHJ9qO07suSh
+	 WGgkb7s2Y/EpL1rJImbhAX7LfSNGoxf6YCxGnLylolElvcdktNjQ66hjnx525cLfjZ
+	 WvpIE077sGekedHGpozvBiL/y73iavAruleJ0QgtaNLcH6mMYZIIw0vFQe5hmqRARs
+	 HXP+GBz/oby1g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0AF39E8A40;
+	Tue, 10 Nov 2026 21:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,51 +53,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104151914.2651241-1-opensource@grische.xyz>
- <20261104151914.2651241-4-opensource@grische.xyz> <20261110122536.7cca85ce@kernel.org>
-In-Reply-To: <20261110122536.7cca85ce@kernel.org>
-From: Christian Schmidbauer <opensource@grische.xyz>
-Date: Tue, 10 Nov 2026 22:47:39 +0100
-X-Gm-Features: AclHuK-CLlMl769sSx84CkwDdaR-obj6arfB97PbP_3TdPcxS2uglw83nZZfEio
-Message-ID: <CALsH2cyxzm3OTzyyFhBk_LSkFk4sw+6xcAtUc3hVJoLr8WO03w@mail.gmail.com>
-Subject: Re: [PATCH net v2 3/3] net: stmmac: dwmac1000: stop hardware from
- dropping checksum-error packets
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	pabeni@redhat.com, Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/4] sctp: fix I-FORWARD-TSN handling with user
+ message
+ interleaving
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179434740642.75434.13080099921012201899.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 21:50:06 +0000
+References: <20261105050225.49292-1-tim.budding@gmail.com>
+In-Reply-To: <20261105050225.49292-1-tim.budding@gmail.com>
+To: Tim Budding <tim.budding@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, lucien.xin@gmail.com,
+ marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, Nov 10, 2026 at 9:25=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed,  4 Nov 2026 16:19:13 +0100 Christian Schmidbauer wrote:
-> >  /* DMA operation mode defines (start/stop tx/rx are placed in common h=
-eader)*/
-> >  /* Disable Drop TCP/IP csum error */
-> > +#define DMA_CONTROL_DT               0x04000000
->
-> Maybe just me, since I don't know the HW, but what does _DT stand for
-> in this context? Other bits seem to be documented with a comment,
-> let's document the new one as well.
->
-> Not sure what the comment above the new define is deferring to, either.
-> Should it be removed?
->
+Hello:
 
-DT is the Synopsys GMAC field name for bit 26 of the DMA Operation
-Mode register, see [1]. The line above the define is actually its
-description. The define was originally added in 47dd7a540b8a ("net:
-add support for STMicroelectronics Ethernet controllers.") with the
-comment on the same line, and when the define got removed in
-5a78fd3debad ("net: stmmac: remove unused definitions") earlier this
-year, the comment stayed behind.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I will move the comment back onto the line of the define in v3.
+On Wed,  4 Nov 2026 21:02:21 -0800 you wrote:
+> With user message interleaving (RFC 8260), fragments of messages on
+> different streams share the TSN space. When a PR-SCTP message is
+> abandoned, the receiver still frees queued fragments by the
+> I-FORWARD-TSN's New Cumulative TSN, which loses fragments of messages
+> still being received on other streams:
+> 
+>   TSN  stream  MID
+>     0    0      0    B   64KB reliable message on stream 0
+>   ...
+>     5    0      0
+>     6    1      0    BE  PR-SCTP message on stream 1, lost, abandoned
+>     7    0      0
+>   ...
+>   I-FORWARD-TSN new_cum=6 skip=[sid=1 mid=0]
+> 
+> [...]
 
-[1] https://docs.altera.com/v/u/resources/r642178/cyclone-v-hps-register-ma=
-p
+Here is the summary with links:
+  - [net,v2,1/4] sctp: abort unordered partial delivery when its message is skipped
+    https://git.kernel.org/netdev/net/c/05852c8b70f2
+  - [net,v2,2/4] sctp: report the partially delivered MID in PARTIAL_DELIVERY_ABORTED
+    https://git.kernel.org/netdev/net/c/3097fba86801
+  - [net,v2,3/4] sctp: fix I-FORWARD-TSN handling of fragments on other streams
+    https://git.kernel.org/netdev/net/c/5b9cfc6491a6
+  - [net,v2,4/4] selftests: net: add SCTP I-FORWARD-TSN tests with message interleaving
+    https://git.kernel.org/netdev/net/c/ee8568a834ac
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
