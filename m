@@ -1,90 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794326408;
-	b=RpXY5VB3ggEyYLj85jhgSipeetmH4jAkZuQHltT6DsT6mEeDBzqA8Mk8nnHqVbyyWm4/
-	 4Kmfkbi0jCXwmRugEYZhxVPNtA0EpeKf9G74yghFuU/dGNRYHLObO3dvZZRdddzYOeHm9
-	 JG2P92Yiq7aqM50Ic4UbKxPXdi4cZ1O16WDNzOAVKGlql6RvaN+yRcUYx3AAnUveBMjSY
-	 vCrJpzgQLUH+K7voEH2bo6hSt0HR6XxQTTxwLSfiWUSU8aemTiKJ03xZ8EXJHpnPsoYRC
-	 /wPH5CgCQG6pZKQdHsMBqrvIsWfN0HpflhiwF8iqlgAHXIFoyRgk6LbF5tSE/vIgM+Q==
+	t=1794326794;
+	b=Of0AS1q7cnE85lpK2zFKlp6BfSj5PQ+GCUUa2ntimZ1weWhcjpg5dFNWqmYol4QCOq4J
+	 +x3J7gOVzgeT9UE1x/18xT8hKUhsZS+86ugLYTgTUQj/KgqTpk0IWVR+f0R63VemTfpev
+	 h6wlqXzkwIN77bWCr4XqJHvD1TicPWJwPjLdT1rt16OIiGLobCl6efoJo8VaCPtolFcWW
+	 nDc5+2WsY1wlOYg9/EfB8rUnv46aRl++sT5Kop6PO/2nvejNDCwroNWlo6MDFYFIRVOjb
+	 k/fePG1GlQU/FDkpen6XFfG7pAsBL8n+tYmtd9ladwH9USiCKSUKIUHg7O5l1/7JW1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794326408;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794326794;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=yoTpJiTFsgbbX5VQxcP/im2cD0EvpkANc1CUM3UG8ys=;
-	b=SGRIe+8itY0NFC9pywhpAzcQoE/pRCL3nqtrpygB/w8EPwPLX3iJEFls1JdDHVQNb0YD
-	 d+5RQN4OPcs3JhNyF6xli+8h7jro8S/2Y/ShBN6VoWu2vCcTPsAxLriFKYW6uxsXekimG
-	 O6lxWtbnLymTD6EY3zKEOAbaDvIU0/T/VDa6ULB/zRZQzZ5ALfr6opQl9Fe4usAdxNO0l
-	 a0ErPm9owQX9K+Pv1Yl/zMHvYvgUytIxRj9NV+ScyZgIZR6QpFgJwi8UAFupmtu6N1Har
-	 WOW0x7TiiYAGs+iao+DWMwO6z0931LvAzHdY89FBfsKDfcBjdrve+QJ4wGgXh2YZ1KQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
+	b=UmVUzDpffQM87nADtYhc1DCk1ELGSpZ9afj9ck2mnPYtQ2+Mp9ALlU8WzfIlp9uBMhmX
+	 1g9MgljL1BejImPJQ2dNTx+DRHyKoZ+GRscSN2HNlHrfCTV4W0b252C3gPklLCuOgSkCR
+	 HpjiREH+E4AIfWCd94PWb75b9MekwvVEPthuNtmX/rR2uxQqc4MVi0P0grMpzXq7HOZyk
+	 JeCWBEsXIBr6TC5TSd85ytYqmKDCeYmgyQSp97JurtKlsXeW7bTe3fdQU7yXgCr8LDCGG
+	 6hTQbVLa3oD5L/hEqQvakF4z/Qss0/M4CrVgUJw2AMLszrwUawqgjM/LzafHU3LKVZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linux-foundation.org;
-	spf=pass smtp.mailfrom=linuxfoundation.org;
-	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DvcIfwri;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hYvFUIu8;
+	arc=none smtp.remote-ip=74.125.229.8
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8E560A2603
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:00:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE8E560A2603
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC19D606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:06:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC19D606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DvcIfwri
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c5059958d61so104584466b.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:00:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hYvFUIu8
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a6ce64b95so1483756eec.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:06:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1794326405; x=1794931205; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yoTpJiTFsgbbX5VQxcP/im2cD0EvpkANc1CUM3UG8ys=;
-        b=DvcIfwriAUUuPjSdpLzsJ8gSloH4OQBZq3Z4ASHrRxFIpkaR7z2V6SqLR3rsW6ZvRS
-         1/CWidvtSOgvC6LDNmwK3jq0z7CuZ4zIXtGvTruRF3anLCo1kk0rSQw42CnHkVEcynCr
-         Q7tap0STtq0u9NpBSQ7uvzg9XeN0ZFM/MjXNE=
+        d=gmail.com; s=20260707; t=1794326793; x=1794931593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
+        b=hYvFUIu8ZWv5dNB1GaL7fkMqJA6tevDFZDf3F1b5Cpi+lokAMJ3ZnlwuLs4P/904de
+         1HRWfAGVwhbAOkaKTzYAycjUdmIzM9viu4Nj+kYTSAqyRs+vq4d420OZDT+zyxmeq8Dp
+         yeKxSaRe6mugmCFATS1mXydwYbRIaqIa48ypthuFz1nG59/w76l6JsvT+jrkP09BTCZf
+         PEe5NJqC9qE/ZxK0udZIpnpdPtUhWAg4LLVUeYLG2YHFKLNgrnwMZKtK9ozOY/PIhk9z
+         iK2YnR0xoboRrFwetO6kN8gtarh5BdGZX2FLSJ1TKfHKbcCPTpOzn8xW2wVnRxd93j+u
+         yJSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794326405; x=1794931205;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yoTpJiTFsgbbX5VQxcP/im2cD0EvpkANc1CUM3UG8ys=;
-        b=Qx+LO5PJcGxEgJT/d4G9y0vTrZhtdXcfwZUE0Zhob28CX5DBnJCec86kppPQ+7L75V
-         WseOGi2T5+xSq6k/txHxBC/8bF4v8cvwybAg5ThdIH8OkLK1oJGr9c/xAN++RoVlxajv
-         RaMJq0tQfeHp3IqttgzZ9/I95VdbzrCv1HYGxoXPvARFELvWEQfyIyy7dPgumwWYSO2w
-         z4Xosxj29l4Wnsf5wjlos3EYlc3OBhz074umpmtrnz7Caz9pBG+UkwMJONBC7cuCpSp8
-         QcgQI0FoI5F+XCuYfTAYOB36nYQyrW+17+1lKfqN1JP956/Gz7W8y8/MizXAA8KfsUr0
-         Y4Yg==
-X-Forwarded-Encrypted: i=1; AL+hErEX3+qM6A548Y9SmjTvVeD0L1o8LSyVMmjHq0SZKQLTliFLYLDSy1Lfg72Lyg/DB7P66p+ifs8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/PTTl/a91dUiLq2noveoreSXkJ2dsB2KH8NxNOdmQvc+gtyeHl
-	4KRTgE2QZ24+QP4/tlpU6aIAAnDeuACHZwYJHzeI6DRfmak7CsIgB8VTZ8qYtXYWAYSLzmZTVtC
-	66PjeVdlBew==
-X-Gm-Gg: AYBFou2Ff8AsBKJgeRgcxcKSFi2C1z+zoQgI3H6UDyN4YWnfvXfVBO1INU5idGzb/8w
-	IlYJhIOp5etLos9q3xMztjeh9Epp6QDVl1aW4uNL9D0XXzsyDM3G2BfPT5iiDev9upaPM2NwwEC
-	2MstPh6k0/mzJ7+e53OM8uR6lWyjztRKE+w82UsNO8YXV8rJ1GbFXMEdUtnCLIHAOw2LbfZB1m/
-	rHOKOkcav+2l15tgJ9RLUvR8bbya4ByfTcmzUhjqOSnGCVNX/l+Y0kQPxpxHtK7h3VHfdT19hdI
-	jPNB6PygHjVtcisyJegaTrKJPmSCWkCqeFwsZVSuGEMfBk4HtEBin1kpwnF3kaMvCVeZvmqlm93
-	CMs9eUKuEeBlUIju923363/V7RnculFjI4BX9lNki1uhJjhuKfnHd3SY1AgyzsbbXtoCqdKLyTW
-	69nXuW9v0GG5h6ZJRzo9RMOBny/O7U6Fslf+WKNQz9Cv0FDs+85mICQ3o6dNFEidEXTMu5WuHCj
-	f+bz1Q5u96O/6qaZuBNjKg1wX2OBfc6y7bCQf4zdrJHeNRxEQQJAP1KI6WQteDQVIl7V/4LB6gi
-	v3cobUVBnQPBfBhl2OITGSNyfUPcE43AA7LerwxS3YgZWZjiwdi+UigBomZwbA7+2MVPr+rlB3A
-	VhhA=
-X-Received: by 2002:a17:907:ea94:b0:c2e:204d:9490 with SMTP id a640c23a62f3a-c50634220demr79966b.17.1794326405153;
-        Tue, 10 Nov 2026 08:00:05 -0800 (PST)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a63f8bbsm124966166b.60.2026.11.10.08.00.04
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 08:00:04 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c5059958d61so104568966b.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:00:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGVuBxb23tWJF+iS7CGfm6h8RQF/uk5kyDeGcXNs+Z2jvcaF9MMUAoGC0Ayxj8/i5WMj15ScE4=@vger.kernel.org
-X-Received: by 2002:a17:907:1b16:b0:c49:b6db:1 with SMTP id
- a640c23a62f3a-c50633ba346mr907966b.12.1794326403910; Tue, 10 Nov 2026
- 08:00:03 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794326793; x=1794931593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
+        b=q+JTem54T2I8q/ZxKu6nF7stTtFkRDbBs4mWdmw6xgj7HdhhFo17vZZtpYFAiss01s
+         BF9srCLMd+rbEzw/uOyJvsEeVQAmbROlVvDN5WeLzUZXxaMlDLzgD/3Ig8cD5bdPMPHB
+         D8wSW3L4P3SjYtTlGd9iJJOMzPNuqzuNT1waWYaWnkJnTh0O1u9r3JN28c+Qm9ezpw+H
+         kku3TWnyQohBIsRYZ8W/wHi9SEXluTEFRyBnNGxpdRdFYAn9dCdLnbaZY6v1mWFMR8Zn
+         Tk97PWTWSP2avRXTs/wNEQbAiP+hdG/f6FJYsbMbULGDx1vOG1gV9sldQ5u4hKWfZ/4b
+         +pow==
+X-Forwarded-Encrypted: i=1; AL+hErGzNtAtrUbOtvWmWzioBYe2XDIosaeMqWyKACeKR9Odm0csWa9B/+vYAO1Xpzq8x25l9Iu8LAg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9rHT4J7GmIdhr4JEYhTB38oYF3Y+1h8BEbP21b49VWGmUXdL4J
+	7KhagTzNjsHnLCkHH5FHT9Tj5mSsKuY1YO9L8g47J1Jj8ErEt/1bfkyV
+X-Gm-Gg: AYBFou3ynOVyWyHa/UOh34ctO1d1Qg7XDfZH4d+LZ4ZZgZTVRxLX6nqG9VDcCplEUIv
+	eZkGKoiPoblUZThvP1/9Sbff0tK9APK0P7amBf8aXlduq6vt/imPYl08wrm3L9uAVD71xlGh7l0
+	z1SyNXhaMS51E9jqqYVwshesMhdycDfQ8N25GGBP9zENWC5Dz+xN615OoFpGES3AhiAFntaTG+A
+	jtXEYghjBrqqOC6chbqVUZ60YNMUgjSxxiqpkVxgdAZoZm2AVkNFL/FsptdFjenjPbqzDuMGbmF
+	ZP1eEt51WIrzOjVX+66QqMROb6ObCbEWXvU6oKNAJdNC8UyO+kSwE8Ot9QKyl+A3cSo0GVb+5Jn
+	tby6mu/Un4d4vLQMz4xCxaHsSz2wgjj/2Hjyfkf+3k0Wc/p7PF8jYtUisvhacg5sYPeYGptYwWZ
+	cfk/mkMKaLeRQOa7ElIF8kMb+xRzUqQfzXoCRj0UskI7AKCbxOG/at4tcgmoaizLOzKQHv/RVHw
+	tqM5Wjt9AjWSrtNFZMlq5lSljZ2VeR5Y00xNNk7LpzZ/XWBHgYWcTR+80Cb/UE3aHbNhusxTRC8
+	gcE9GBTaahVYTdqdvClCIfFWPOo=
+X-Received: by 2002:a05:7301:4d05:b0:369:535f:4d12 with SMTP id 5a478bee46e88-3751c53edf2mr3716461eec.3.1794326792549;
+        Tue, 10 Nov 2026 08:06:32 -0800 (PST)
+Received: from server.lan ([168.138.199.194])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe306e3sm8453403eec.7.2026.11.10.08.06.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 08:06:31 -0800 (PST)
+From: Coia Prant <coiaprant@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Coia Prant <coiaprant@gmail.com>
+Subject: [PATCH net-next v4 0/2] net: phy: fix PHY interface mask initialization and XPCS usage
+Date: Wed, 11 Nov 2026 00:05:52 +0800
+Message-ID: <20261110160554.918652-1-coiaprant@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,33 +108,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110145241.536019-1-kas@kernel.org>
-In-Reply-To: <20261110145241.536019-1-kas@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 10 Nov 2026 07:59:47 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgPq1g-kt_n4-crr0qs3rBNkat5OgLxLLeMjKirevRuSA@mail.gmail.com>
-X-Gm-Features: AclHuK-OUBoi1ZcEDjO00AEWOGxItrkKuC6wgZXx5y_lLM7MJshUB6roN-XGzXI
-Message-ID: <CAHk-=wgPq1g-kt_n4-crr0qs3rBNkat5OgLxLLeMjKirevRuSA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] splice: remove pipe buffer stealing
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, 
-	Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Nov 2026 at 06:52, Kiryl Shutsemau (Meta) <kas@kernel.org> wrote:
->
->  11 files changed, 26 insertions(+), 360 deletions(-)
+This series fixes issues related to the handling of the PHY interface mask
+(supported_interfaces) at the core level and in the XPCS driver.
 
-Ack. Lovely. I'm considering just taking this as-is now, rather than
-delaying it. Comments?
+Patch 1 fixes a local macro in the txgbe driver.
+DECLARE_PHY_INTERFACE_MASK_ZERO() incorrectly uses PHY_INTERFACE_MODE_MAX
+as the array length instead of BITS_TO_LONGS(), which wastes stack space.
+Move it to include/linux/phy.h and base it on
+DECLARE_PHY_INTERFACE_MASK() so the bitmap is correctly sized while
+still being zero-initialized.
 
-               Linus
+Patch 2 makes the XPCS supported_interfaces mask authoritative. The
+generic compat table advertises modes that a specific integration may
+not support. The Rockchip glue now builds a platform mask (1000BASE-X,
+SGMII, QSGMII) and intersects it with the inherited core mask using
+phy_interface_and(). In addition, xpcs_find_compat() now checks
+supported_interfaces before looking up the compat table, ensuring the
+core respects the narrowed mask.
+
+Note: checkpatch.pl reports "Macros with complex values should be
+enclosed in parentheses" for the new macro in Patch 1. This is a known
+false positive for declarative macros that expand to variable
+declarations; wrapping it would break compilation.
+
+Changes since v3:
+- Rebased onto net-next as suggested by Paolo.
+- Patch 1: drop the Fixes tag, as this is a cleanup/optimization rather
+  than a bug fix.
+- Patch 2: move DECLARE_PHY_INTERFACE_MASK_ZERO() to the top of the
+  function to comply with the reverse Christmas tree order.
+- Patch 2: clarify in the commit message that QSGMII is currently a
+  no-op because the core does not support it, demonstrating the
+  intersection behavior.
+---
+Coia Prant (2):
+  net: phy: move DECLARE_PHY_INTERFACE_MASK_ZERO to core
+  net: pcs: xpcs: make supported_interfaces authoritative
+
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  3 ---
+ drivers/net/pcs/pcs-xpcs-rk.c                   | 10 ++++++++++
+ drivers/net/pcs/pcs-xpcs.c                      |  3 +++
+ include/linux/phy.h                             |  3 +++
+ 4 files changed, 16 insertions(+), 3 deletions(-)
+
+-- 
+2.47.3
+
