@@ -1,69 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794294490;
-	b=Jiu9B2Pbq5c2FEfOpILY04vqYCtyD+fNEouZS1A8V8d336CfV2ghrVDaeCMeoZL2rbE1
-	 LdNpvEMbzL0Htb896eCw0vNEnJ0KkV1eu9k2W2TQqfC+E1iqH5Rm65AIEvuJCqtTGbio6
-	 04P0w9Yqp9MNei90G4nCOtqJ1FVzKBYnGepE7jBIENAPDhdJlIaV2coH1ppnmLVMM2ATK
-	 AY0fhfDGD/FyQELD+Aic650oHM0uQGsML7Bnhf5fwPY4wODCpfDTqtHTKzA7cRR/zDRYj
-	 JWGsuiyHaLFnmIyy8QSUbCipNYzOcm/FjG6Zg8x9KBh6xPuokuVSNiaWKGj8Wih1rNg==
+	t=1794294749;
+	b=zQo7fh870MbiERKlJeq4NEbbUgdHhJJt9aH9pIgoa9JbV5yQvhGzmNqB8Sg8BIAemwRZ
+	 ggMNrMfHUXPw698/PFShKL9MvCuA4PhGSXnwR2fl0wlAs4L9z9l7wRcy4jwJAz8A1Pxs9
+	 WdPXmOR1WG+vnkGBeG+2E6VX8uxy5qQkMV+7P4SFkSg6//r1R6jel9QYsMYKuBEk+606v
+	 FuZCU4xuXDBhsfKM+y4gEzSJeSOvn7NKz7FjcoH214kkLtcV31cyMer0GeSm2Os+kHd7/
+	 MHap1ZlqXPJ9sb/OvPiWRGfou2FR6A75+DN2uNiz6C3PBWkNScgWZRC5VOghTK4bBNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794294490;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=FnUITX5l0rY4dD1guY4U8vouradcFBCyDlI8pSLx4qA=;
-	b=cObPgjnsr+T2BcNoJ5Wwc5jjKg0ktLEL02tlNfLKkwc7nJ0FP13SQxS9mrywxNl015il
-	 tYWgIx2id8kuA2XQt4eBP0AbtyKtXpK9HcX5ZvaAHKqRac/tiSnY5wD7pJYZzO762qk1w
-	 f4Xg2GKdwQ9uuxmB12bWoFdtor00IazCa07U3RTonwnt7syouzZFxn4GDzgTSll/NpoKO
-	 x73ZPeGtJvrd/Lhfp9tUQKEsTPsjNr2RRi9NrIKthM0xvVPUoPjzFOJsnaeY5/GATDv0B
-	 +kg+nuHdYsF/BCPol03dm3KgMk2Yv2hZlTKHtBIdG+JBGKMsOIKLFRD7t15pRvlyseg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794294749;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	b=wrQtxI2doXBpXx5SleQJkW8bPQKIxFnYohBM9XlQ5o6tOLVCZPfRKu5nsPtNZpRHeAue
+	 FSSBOdXfHwxSE84Pa/MJuCYgKrB85QJ2RgF3MjfSs2+BTvsEBOqvJOvKb+C0EXgIjpjk/
+	 N2R8U7gTNhtDB/4X0FeVnS+hNGlmHj5mFOsvVPxBGQKedq0sxVE3tjGw0fHSeLWSG7iCJ
+	 4JMHN3QAdZYHwtD7+nPGKklQPKVQ1Zd4Ps/5Dj3HoUtJFBCimDeThiFt3QL4skZffcoe8
+	 OhWbe2j1HTbzEmuSFw5PNTkBtDpxc+V/RSo9mmRNOvvGcjl9RUNc3OmJkH1Aon5VilQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="hB/AKAmC";
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC224606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:08:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC224606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VTE/rhP2";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE25606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=hB/AKAmC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=hB/AKAmCgJs7B3DDEy0Xbs2GVhGPu8UdOkasORU5pazMojtjlJwxYEF55kIY2vn9whzYsl0VGuRB1
-	 5oQHA99JMNQijU2vzjZgeyexa4JXbZU/9a10LhOC5yd+RMT2GrIKMfDYGb8/6/LQF9TLDcbX/PNNr6
-	 MJ8ZSgEpkEs9fvc8=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36af2c2d48d2-9807e;
-	Tue, 10 Nov 2026 15:08:07 +0800 (CST)
-X-RM-TRANSID:2ee36af2c2d48d2-9807e
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from Z04181456177947 (unknown[10.55.1.71])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af2c2d35b4-ab420;
-	Tue, 10 Nov 2026 15:08:07 +0800 (CST)
-X-RM-TRANSID:2ee16af2c2d35b4-ab420
-From: zhaofeng2 <zhaofeng2@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: Zhao Feng <zhaofeng2@cmss.chinamobile.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Imre Kaloz <kaloz@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 0/2] net: ixp4xx: fix OF node leaks
-Date: Tue, 10 Nov 2026 15:08:00 +0800
-Message-ID: <20261110070803.1099-1-zhaofeng2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.55.0.windows.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VTE/rhP2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E911F0089F;
+	Tue, 10 Nov 2026 07:12:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794294748;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VTE/rhP2nWPLpAKuD6hzSm6H3gMbad5mncMZx4MO/k3OM6GNu1xBOTedsuhWUdIm0
+	 j6Geylj/7oO5PGzEXHsbPMzBLUZP8rv7Q4diK/CCoCUpReLYIYtvzZcG9gQdzKRGvr
+	 bM9WfgTEetnKE7IaoGcm14B6aHolqPUiwmFYvjAwMdzYTGirKkedaGkGLAmTC5A3Z1
+	 h9GJ0x5+hNUiIUeDzNl4vNqTZPFiGDO8uglUvpXzxlT2GsVSPm7dbXvbj2qlarTM14
+	 c3IcI+1QGyVuPq3rcWoD8RAf+QNCt/Sxk3vQsGE1u7SIq29cXOs5iyALGymR12PFoJ
+	 Xk5OujLPDMzVQ==
+From: netdev-bot+sinfo@kernel.org
+To: zhaofeng2 <zhaofeng2@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Linus Walleij <linusw@kernel.org>,
+ Imre Kaloz <kaloz@kernel.org>, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next 0/2] net: ixp4xx: fix OF node leaks
+Date: Tue, 10 Nov 2026 07:12:27 +0000
+Message-ID: <179429474746.488859.11095401722001153896@kernel.org>
+In-Reply-To: <20261110070803.1099-1-zhaofeng2@cmss.chinamobile.com>
+References: <20261110070803.1099-1-zhaofeng2@cmss.chinamobile.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,20 +63,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+Hi!
 
-ixp4xx_eth and ixp4xx_hss resolve their NPE and queue phandles with
-of_parse_phandle_with_fixed_args(), which takes a reference on the
-resolved device node.  Neither driver ever drops that reference, so
-the NPE and queue manager device nodes are leaked on every probe
-(and on every -EPROBE_DEFER retry in the ixp4xx_eth case, as the MDIO
-check happens after the DT parsing).
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-This addresses part of the "bunch of pre-existing bugs in the area"
-noted when a related probe deferral patch was set aside earlier [1].
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-[1] https://lore.kernel.org/netdev/20260831170858.7e23643e@kernel.org/
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
