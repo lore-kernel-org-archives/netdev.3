@@ -1,62 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794345985;
-	b=eiU3g+mUnhHG50a3aLnaYE9w4EfuEo25noAZ/NTy4a/IftMlByZXgk0AIA8nRjuxwFEp
-	 7eH7JUjrZhf+Ll3oxm3bs1Ewy7qxdM1XluWZEoCaDfE7fAgCxWvbwyjsbh97OwiwvgnI7
-	 45xAXAaPRRhdo43PXMIZDDhDcvP5PgOAm/kgQDFEzuRNo/GLiHtcylgMp6fc+Wfbz9KcQ
-	 tEgJdXW5ENcO4rlAP22H7qgLI5XoyjOhKAqHnbwx1KWg/Yjw9X4lUbeA8XxVaLp+1l4lI
-	 lAjcU5hZ1BZsygRkdFIzDRK5hS+7E7bAaEtuME9e1IlcDKY99bXvRv7I92nV1fMUSRA==
+	t=1794346149;
+	b=cnBGA/W7yiHTQZqdGjRzbrnkCd45v3LT2L7Fya2FYbPmmuf6bLimPVwlCeVMZsy2jYRS
+	 T8C59n608k0mqV3i6EHxXSFSNs+E6o0Kz2Ig5JWsY2rh7RC59pNPVH8kXlUke6TXkhHCu
+	 CE7EMJkeUORWrFyaQMHd+FTnaoicAR9hO2he02n5rPoEMA/ft363Uzm0YoNbZNgFTLnWj
+	 IaFJUS1jxWJ1D2zt4h1uPTLCxDBryjNXroYqeSPP/ssKyvaAgmNZZe8PUFI3j8Q1Yo2m3
+	 MDR6HbVc2MLWFtPsRvWQibWj+2eHxhjxhbbQak6Wt/M00LQitKiOLFPaa8ic1VD5BfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794345985;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=WSLefdhIoTKuSBUWT7xkDzFrjEc0mfIIXjLONc470lA=;
-	b=eKH4r5Z+ow6N1t+y7ppTacoGamCXu8f1PqTZa52VUJGqqpzOSmeW0jXBmnF8LXU5zUOg
-	 +hO6a9YZ3/hHQiVWSwXO3oBYVZRMxBFJ8G2GmKb6Rtr4hy+5dUtcer/N2yBBAOtiaR407
-	 WSCj4IXn6hGLDVc7WnbZHo7Y2zvW4txRGMbIGSVXa1wHHCQ4aSiWYx/YpelFdMC/5/QCF
-	 uy0jytxXMIwh2+4GhZB9F27P7onhiPj7AcUtO+A9BNRmgmYvu1fm6s88sBJnKhUmdtFGk
-	 SW2TqitLD/RREad9jtYZK6IGaJgqWy4xFhD8F2HGibk769N+Ay+0J8fpzATYzaYkmpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346149;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=QvRngHIKvFqW6jRWzUlu52YQhDV4SuF4oJauIZT/Z4k=;
+	b=o38OAPK55uWxh9dhjFQK/W706+w/JnHXjBFKndnP7Vg1XCD6uOLB19YK8gFrKncYvRVK
+	 HI0fl6PKjRNNaESj9eqWUU8ngYTzgKBMlZNRGeHHic3xpew9y3xgEXztvW/0te49ee9bc
+	 4ZfZ4PO2kG62F4GIX0/4iRWOaBisEVVewwrwzI1niMPijLTsV2hUgNL8pmUOWA7eT9pHZ
+	 9oxd7ETaH3IWR146PK5no4QPMAPnNzN7PTfI44oMkdqX7g6tP14wQVUjOoFx6W3WRPzn8
+	 CmGMhUELA5w8mpL8mD3KKvA8S4rLIV2Yumpny8uNP/1fV2dsLZJRlOhCU1/ZaxZ00AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bKfOWZRV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P3Arx0qw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E535F606A32A
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA29C606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bKfOWZRV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE1F1F0089F;
-	Tue, 10 Nov 2026 21:26:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P3Arx0qw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820C31F008A2
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794345984;
-	bh=WSLefdhIoTKuSBUWT7xkDzFrjEc0mfIIXjLONc470lA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bKfOWZRVqTZ2Nl9aS5BDlu9vdsYUrlpLFIagpAAbtzhOx8MacbTE8oLnnuB9HHWE8
-	 ++z41NQH7cfxsIx7DYcnCzDqTCxMkQs5rjr1egIFfcs9oqebgEF2KbXiL4djBUVzkt
-	 8yZghaXg81vBumPImXmvPbuxfPhFonlJvbGDIvz5p4Ty1pRgF6dxnqBJYYULF8Vxve
-	 eF54pu2OXKzCDDNyQif2cq8A+hB1TjOO05iV/+7xDFBR5FwtOLDCLy+u1NrSKVlDXf
-	 RyF+ro9I1XaJ2o7UFPeUJVUjtkc1+n9BlDd3sWeoBnxtyQ1Sn0qy7EDd11dB04zXWR
-	 duY5FPi3oDr3g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: eric.joyner@amd.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	brett.creeley@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vadim.fedorenko@linux.dev,
-	nikhil.rao@amd.com,
-	edumazet@kernel.org
-Subject: Re: [PATCH net-next v3 4/5] ionic: report the operational FEC mode from ethtool --show-fec
-Date: Tue, 10 Nov 2026 13:26:23 -0800
-Message-ID: <20261110212623.2294818-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261104-ionic-get-fec-stats-v3-4-b261fd53d0a7@amd.com>
-References: <20261104-ionic-get-fec-stats-v3-4-b261fd53d0a7@amd.com>
+	s=k20260515; t=1794346148;
+	bh=QvRngHIKvFqW6jRWzUlu52YQhDV4SuF4oJauIZT/Z4k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=P3Arx0qwMLaoH7WBKEiWTBLyOxfs63vXV5cHfoZHHTqKLWZSq+NNDYxB3/qPbieoR
+	 Yq+Oy0HjM1n5PTu/A9FXi3ViNmWQNurAaWCdepQPRqGVazTDszbf+kAvfaUEYRLCd4
+	 N7MTVVSICCpiienm1RVrG5QmMYfvh7sh8oq6Nr6L2Rzp9cUplCDsB7Rt2YCjxFxIB3
+	 L7zZx8oHgLJFWVMMC0a1v4lOavDXCtqqMuz+xOii6W2Vxmwjf+JwKqVhHI3vmgHvsB
+	 TkOEuVqEeowBGQUZjADVukXDCDhKnW6hSja8Kluan7Dn8ao9mCKXwd+tOXJ5Mtdf/K
+	 Fam+zU5JMSLeQ==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6deb848ddd7so1533190eaf.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:29:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEXMBwberu2u5xfq3iYg0mwxri+ck9T3eYd7JXWfdRSk5Y5hWY+BjtBS0S6Lm2wYK4mBD62O/k=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9ex+Q6t1JcKjKCmKmJKADdNkearSgnu4j9n2YahvTPXr41uPis
+	yfdJLXWZaDj2aZ7MKsE4HeIw6elcDcw8cZt5sVvF8Bk8jW55YU6ie0HOXg+VG6XeG7KqG5HZURa
+	UOgcW+raG5L60Qh6N6xXdtgvOe0NlWaU=
+X-Received: by 2002:a05:6820:f02a:b0:709:f34e:e46e with SMTP id
+ 006d021491bc7-719175f8a1dmr288031eaf.1.1794346147805; Tue, 10 Nov 2026
+ 13:29:07 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,88 +59,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261109163507.3102091-2-edumazet@kernel.org> <179433950084.994134.15100186606737698605@kernel.org>
+In-Reply-To: <179433950084.994134.15100186606737698605@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 10 Nov 2026 22:28:56 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiir1500Vwthv6scfCDJVctY+PTMJ4wqJrbCXKKQ6TYFX4A@mail.gmail.com>
+X-Gm-Features: AclHuK9CfxUTeJWZvRx6zMN0no9V9o8h0w5l6bkIB8qo1g_uSkervMfs31U5krs
+Message-ID: <CAL4Wiir1500Vwthv6scfCDJVctY+PTMJ4wqJrbCXKKQ6TYFX4A@mail.gmail.com>
+Subject: Re: [PATCH net v5 1/3] net: virtio: account for the VLAN tag in UDP
+ tunnel GSO offsets
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, horms@kernel.org, willemb@google.com, mst@redhat.com, 
+	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
+	hassansultan@google.com, virtualization@lists.linux.dev, 
+	sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ionic: report the operational FEC mode from ethtool --show-fec
-
-This commit changes ionic_get_fecparam() to fill active_fec from the
-firmware-reported status.fec_type instead of the host-requested
-config.fec_type. The commit message notes that firmware older than the
-status.fec_type field will report FEC as off.
-
-> Poisoning the byte before PORT_INIT, the way the driver marks unwritten
-> extra_stats counters with IONIC_STAT_INVALID, does not work here:
-> firmware builds the whole port status block and writes it over the DMA
-> region, so the marker is gone whether or not that firmware knows the
-> field.  Accept the wrong answer on firmware that old.
+Le mar. 10 nov. 2026 =C3=A0 20:38, <netdev-bot+sashiko@kernel.org> a =C3=A9=
+crit :
 >
-> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] virtio_net_hdr_tnl_from_skb() (include/linux/virtio_net.h)
+>   chooses the outer-family GSO bit with `if (skb->protocol =3D=3D=E2=80=
+=A6
+>
+> --
+>
+> net: virtio: account for the VLAN tag in UDP tunnel GSO offsets
+>
+> This commit adds vlan_hlen to inner_nh_offset and outer_th_offset in
+> virtio_net_hdr_tnl_from_skb(), the same way virtio_net_hdr_from_skb()
+> already adjusts csum_start. It targets the case where tun_put_user()
+> inserts a hwaccel VLAN tag into the frame, which leaves both tunnel
+> offsets 4 bytes short.
+>
+> Closes: https://lore.kernel.org/netdev/179421814766.994134.36692281812511=
+58303@kernel.org/
+>
+> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> > index d6466f96cdd00..ab44342cf09f7 100644
+> > --- a/include/linux/virtio_net.h
+> > +++ b/include/linux/virtio_net.h
+> > @@ -461,8 +461,11 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *=
+skb,
+> >       if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_TUNNEL_CSUM)
+> >               hdr->flags |=3D VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM;
+> >
+> > -     inner_nh =3D skb->inner_network_header - skb_headroom(skb);
+> > -     outer_th =3D skb->transport_header - skb_headroom(skb);
+> > +     /* Like csum_start, the offsets must account for a VLAN tag
+> > +      * the caller inserts in the frame.
+> > +      */
+> > +     inner_nh =3D skb->inner_network_header - skb_headroom(skb) + vlan=
+_hlen;
+> > +     outer_th =3D skb->transport_header - skb_headroom(skb) + vlan_hle=
+n;
+>
+> [Severity: High]
+> This fixes the hwaccel case. There, vlan_hlen is VLAN_HLEN and
+> skb->protocol still holds the real L3 protocol. What happens when the
+> skb carries its VLAN tag inside the packet data?
+>
+> Just above this hunk, the outer family comes from skb->protocol:
+>
+> include/linux/virtio_net.h:virtio_net_hdr_tnl_from_skb() {
+>     ...
+>         if (skb->protocol =3D=3D htons(ETH_P_IPV6))
+>                 hdr->gso_type |=3D VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
+>         else
+>                 hdr->gso_type |=3D VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4;
+>     ...
+> }
+>
+> For an in-band tagged frame, vlan_insert_tag_set_proto() has already set
+> skb->protocol to ETH_P_8021Q or ETH_P_8021AD. Wouldn't an IPv6 outer
+> header then be reported as VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4?
+>
+> The commit message says:
+>
+>     virtio_net passes vlan_hlen =3D 0 and is not affected.
+>
+> virtio_net has no NETIF_F_HW_VLAN_CTAG_TX, so validate_xmit_vlan() pushes
+> every tag into the data:
+>
+> net/core/dev.c:validate_xmit_vlan() {
+>         if (skb_vlan_tag_present(skb) &&
+>             !vlan_hw_offload_capable(features, skb->vlan_proto))
+>                 skb =3D __vlan_hwaccel_push_inside(skb);
+>     ...
+> }
+>
+> Its vlan_features and hw_enc_features still include
+> NETIF_F_GSO_UDP_TUNNEL. Take a VXLAN or Geneve device over an IPv6
+> underlay on a VLAN subinterface: it sends unsegmented skbs with
+> skb->protocol =3D=3D ETH_P_8021Q into
+> xmit_skb()->virtio_net_hdr_tnl_from_skb(). Is virtio_net really
+> unaffected in that case?
+>
+> tun seems to reach the same path in three cases: ethtool -K tapX txvlan
+> off, QinQ (outer tag in hwaccel, inner tag in the data), and a vlan
+> device created with reorder_hdr off.
+>
+> Before this series, a Linux receiver used this bit only to compute a
+> looser outer_l3min, so the wrong value did no harm. Later in the series,
+> "net: virtio: validate outer protocol of UDP tunnel GSO packets" adds
+> virtio_net_tnl_offsets_ok(). That function walks the VLAN tags and
+> rejects the mismatch:
+>
+>         if (!virtio_net_l3_start(skb, has_eth, &nhoff, &proto))
+>                 return false;
+>         if (outer_isv6 !=3D (proto =3D=3D htons(ETH_P_IPV6)))
+>                 return false;
+>
+> Once that check is in place, will tun_get_user(), tun_xdp_one() and
+> virtnet_receive_done() drop every VLAN tagged UDP tunnel GSO packet with
+> an IPv6 outer header from these senders?
+>
+> Could the outer family be taken from vlan_get_protocol(skb) here instead
+> of skb->protocol?
 
-[Severity: Low]
-This isn't a bug, but should this have a Fixes: tag? Reporting
-config.fec_type as active_fec goes back to commit e95f922f4c2f ("ionic:
-implement ethtool set-fec").
+Right. When __vlan_hwaccel_push_inside() inserts the tag, skb->protocol
+becomes the VLAN protocol, and an outer IPv6 header is reported as
+IPv4. The offsets are correct in that case, only the family is wrong.
+This is the default for virtio_net, which has no VLAN TX offload, and
+happens with tun when VLAN TX offload is off or with QinQ.
 
-The sibling patch in this series, "ionic: report the configured FEC mode
-in ethtool_fecparam.fec", changes the same function and carries
-Fixes: e95f922f4c2f.
+v6 fixes both issues in this patch, using vlan_get_protocol() for the
+outer family. The patch is renamed to
+"net: virtio: fix UDP tunnel GSO header of VLAN tagged packets".
 
-If the tag was left off on purpose, for example to keep the old firmware
-behavior change out of stable backports, could the commit message say so?
-
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> index bf7c70438a8c3..2e067481bb153 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> @@ -442,8 +442,10 @@ static int ionic_get_fecparam(struct net_device *netdev,
->  	lif = netdev_priv(netdev);
->  	port_info = lif->ionic->idev.port_info;
->  
-> -	fec->active_fec = ionic_fec_type_to_ethtool(port_info->config.fec_type);
-> -	fec->fec = ionic_fec_type_to_ethtool(port_info->config.fec_type);
-> +	fec->active_fec =
-> +		ionic_fec_type_to_ethtool(READ_ONCE(port_info->status.fec_type));
-
-[Severity: Medium]
-Does this break forced-FEC links on firmware older than commit
-c4e7a75a096c ("ionic: updates to ionic FW api description")?
-
-On that firmware, status.fec_type is still a reserved byte that reads as
-0. That value is IONIC_PORT_FEC_TYPE_NONE, so ionic_fec_type_to_ethtool()
-returns ETHTOOL_FEC_OFF for every link.
-
-ionic_set_fecparam() only accepts FEC changes while autoneg is disabled:
-
-	if (lif->ionic->idev.port_info->config.an_enable) {
-		netdev_err(netdev, "FEC request not allowed while autoneg is enabled\n");
-		return -EINVAL;
-	}
-
-So when config.an_enable is clear, config.fec_type is the mode the port
-is running. Before this patch, links forced to RS or BaseR were reported
-correctly. With this change, they show "Active FEC encoding: Off" on old
-firmware.
-
-The driver has no minimum firmware version check (ionic_identify() only
-logs fw_version), so that firmware is still accepted. The rest of the
-series doesn't touch ionic_get_fecparam(), so this is still the behavior
-after the last patch.
-
-The commit message says "Accept the wrong answer on firmware that old",
-but it doesn't mention that forced-FEC links, which used to report
-correctly, now report the wrong mode too.
-
-Could active_fec fall back to config.fec_type when !config.an_enable, and
-use status.fec_type only on autoneg links? New firmware would give the
-same answer, and on old firmware the wrong answer would be limited to
-autoneg links.
-
-> +	fec->fec =
-> +		ionic_fec_type_to_ethtool(READ_ONCE(port_info->config.fec_type));
->  
->  	return 0;
->  }
+pw-bot: cr
