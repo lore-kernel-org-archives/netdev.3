@@ -1,68 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.37.83.207
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794325041;
-	b=vAfCGRHKWq4O+dS27iHnid/9DJ+9K1oV83ESp6Z5kTjo/rdBMfa8roAqDcJNUton/lMt
-	 gV+XZqfTaiR+Amt5Nc80UAkRBnttlapCQMctr8ZpQlYUUjyRjio3xHYiGjZiwNwtw7Ol4
-	 fnlI+Befcg36XuaL2Gm5CEtsvNRtnKDIMwpB6i5jg9l2T5e5itMFB1kMB6hog0Auu3kU+
-	 uRJK1BGcaLiQkeLzpbcokmEtGa/9JlcMwXe7INYbDcJJq9+VNOqCNHgVSQX8UW2mPVIZe
-	 +VS1lGjX+gNepzTSE/VrDPP+q5ohTTuTZDlsLslQbdliYWm3NgW+vLLMOhwLqSWJkug==
+	t=1794325089;
+	b=NTisToWK5iIrqOe+pQ6dpDogiUtp4SBCMqCbcsTaLfUcj9KDwyeDnTTiFYrQD5kHW/aw
+	 n7k5io7z2zOrvbPrt+/EdTiHkWBo2BR8XiMEg1Alhh9DwpWU05EGNfWqWPrM5ZMPzXicw
+	 WHIjNaFC0q1avPUie8pEUe3V9/hX1GEfp9x4ebHmG8IIN/aSnWzdzaLMYHQEk924Kho4a
+	 Q6PylLrU/GjRpXUbTs66Txl0E+zdAWSTJ17IGflAM30GHtuzVFtkfbn2z+spBJBLv7U5I
+	 JbTVv8vZEiMJ8SRIg5DscqH2oWs2XJhtg+4OR1fm/cgaSIZpeakn5/1n54LDNAxy+5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325041;
-	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325089;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=z2zJvtWSvsoPKBlouh1vBhxQqaiQUERZXakXN2vXVOQ=;
-	b=frJo4SZtG5sXv5g3ufFdti26WPiCkGxwYsrGbNxD1I+TZFzSsLdfbaiKsMk4M0j5sbib
-	 iHHwxPlx5UxReX4gYwjAytOnu7fjibXXflnf08I49JgFjQLXkntL1Mq4TJPO/PPbguaZj
-	 VxJg0lvJrnrkHh6kqaRc5ll0PjbsrIdUs9OI5/KPUFH2yM8otlaz+Zt5KV8dgxFVQ/TIN
-	 bJBIPaSP0EVUy41Cmech4QHbq5/PGUPbETteesu0G/mSQZdK3LFBoqk7dr0xe7fslHmko
-	 nqLVW9lDHCKAukTmSRa4ZiEl8/o61FPpiFUAEvrQqV8rpdysjqUTw7ebvpHLv5uxTOg==
+	bh=3gKubFJsAndnwMy+71Kh/vTDw3q4Y5FuAjFKOiBoGMU=;
+	b=m3BtGMaB0efwSDbdN+SqjlkRP5mHp0Ebfu/+9WdYHvSja7/jbNhAqk1xsRBX3SztT9T2
+	 FOAEVlizqF+Sz2Lmj5NC++//V9UGHW606XjZFpF2ifKntwNK79yvMO3n5IqqwvXZ3/TmX
+	 EfrqWVuJNZKNaM5GQF7ybOkuy4+t/Ynq2nOvsahk27BJYR2cmkuhGzYkE659xgbqe7KI8
+	 MslgX06PWmtVs6hBTpa1jG5KlyAKm1mU6Jozth882C7fsMmScWx/YgSKyWGFPF4CIbAtV
+	 2JmnE3F33rjhI+z0kw1gaqbkfpwhP/MLOFmJq6CMwgTPka7V4+XcJXmvD1TYd7UnWCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dfb.sh;
-	spf=pass smtp.mailfrom=dfb.sh;
-	dkim=pass header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=JPxWjCxK;
-	arc=none smtp.remote-ip=54.37.83.207
-Received: from frkn.dfb.sh (frkn.dfb.sh [54.37.83.207])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kWADNG/S";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989D6606A320;
-	Tue, 10 Nov 2026 15:37:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 989D6606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dfb.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dfb.sh
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F32C606A320;
+	Tue, 10 Nov 2026 15:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=JPxWjCxK
-DKIM-Signature: v=1; a=rsa-sha256; s=frkn; d=dfb.sh; c=relaxed/relaxed; r=y;
-	h=Message-ID:Date:Subject:To:From; t=1794325021; bh=z2zJvtWSvsoPKBlouh1vBhx
-	QqaiQUERZXakXN2vXVOQ=; b=JPxWjCxKBH8abNNVsGVlylt+XDYXUaqaaQonjUrp1z8FOc8/jH
-	UbZL8dOgHB1H7YtwbT7eP9UQz7uQDBUnc+KHFsBRe1vlPsvftj9MKuxRZn+ZWMiphH8U8LEMS41
-	kx0dCGuH3Id9Qxj10rMX5eymPmEs3ci5shVPQZ0uerrsZ5Z09g22W1kF/RNXidr9mbCORmmQE3d
-	6nXKJaBZZaCs5F+zs71Rh/yc58CCxQhgKvdNX5V2K8Gs7girC8u0DBTl4XsP52uSg/gEVyTzrz5
-	cY0zzpSi/KHx0H83apY4WrgBza4ZlKej0GyC/bOC6XJUj2Uuf7ySA66PLl5kKCK3OxA==;
-From: Vladimir Petrzhikovskii <vladimir@dfb.sh>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vishs@meta.com,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	nikolai@kalinidze.me
-Subject: Re: [PATCH net] virtio_net: check RX buffer length before DMA sync
-Date: Tue, 10 Nov 2026 16:36:57 +0100
-Message-ID: <20261110153657.599022-1-vladimir@dfb.sh>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <179425939711.994134.2719389056327615125@kernel.org>
-References: <20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14@dfb.sh> <179425939711.994134.2719389056327615125@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWADNG/S
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24761F0089F;
+	Tue, 10 Nov 2026 15:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794325088;
+	bh=3gKubFJsAndnwMy+71Kh/vTDw3q4Y5FuAjFKOiBoGMU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kWADNG/SAFTOBU7/W20qxtY1BfKFVTfX4B8in6u+pRNigbK3pR+rrgb0EJh4pRITv
+	 htVv7dXVeoUcJaeBjuCHwOFqnBqZYoawP54qVUPC484iCLbUPJUkgrftjNO8xK0UwS
+	 CEk8ko14HNuQAB3psAhB1vA+fejKb/oUziEc85nhFa1L2qeUUSE90Ebi7WkQLbfqC7
+	 7QLqMMAO5hH/dWbhWxZx38rAhZjmol6n4/HiTY6Eg4plmKZ66aUp9KyJZVppGS3lmQ
+	 yfnNtLvbc7e3WX9hmCJ+AaVqqiphykLPcugOcR60DSqz1PnY53jV4LwbkiSA4cQMrq
+	 bHP7ySUz8qm1Q==
+Date: Tue, 10 Nov 2026 07:38:07 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tianyi Gao <tianyi@cloudflare.com>
+Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, Simon
+ Horman <horms@kernel.org>, David Keogh <dkeogh@amazon.com>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, David
+ Woodhouse <dwmw2@infradead.org>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam
+ <alasdair@mcwilliam.dev>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Alexei Starovoitov
+ <ast@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Donald Hunter
+ <donald.hunter@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jonathan
+ Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
+ <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Breno Leitao
+ <leitao@debian.org>, =?UTF-8?B?QXNiasO4cm4=?= Sloth =?UTF-8?B?VMO4bm5l?=
+ =?UTF-8?B?c2Vu?= <ast@fiberby.net>, Danielle Ratson <danieller@nvidia.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, bpf@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-team@cloudflare.com, nh-open-source@amazon.com
+Subject: Re: [PATCH net-next 8/8] selftests: net: tx_extra_headroom: test
+ veth peer at creation
+Message-ID: <20261110073807.2fa62e6c@kernel.org>
+In-Reply-To: <73b9d23a4190cdd02e89d3a2ce8a1a21ad5feadb.1794020868.git.tianyi@cloudflare.com>
+References: <cover.1794020868.git.tianyi@cloudflare.com>
+	<73b9d23a4190cdd02e89d3a2ce8a1a21ad5feadb.1794020868.git.tianyi@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,19 +78,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 09 Nov 2026 21:23:17 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Should the Fixes: tag point at 295525e29a5b and/or fb22437c1ba3? It would
-> also help to say in the changelog that those trees need a separate fix,
-> for example limiting the sync in virtnet_rq_unmap() to the posted length.
+On Sat,  7 Nov 2026 03:34:27 +0000 Tianyi Gao wrote:
+> +def test_veth_peer_at_creation() -> None:
+> +    """ip can set a different value on each end of a new veth pair."""
+> +    if "tx_extra_headroom" not in cmd("ip link help", fail=False).stderr:
+> +        raise KsftSkipEx("iproute2 does not support tx_extra_headroom")
+> +
+> +    with NetNS() as ns, NetNSEnter(str(ns)):
+> +        ip("link add veth0 tx_extra_headroom 256 type veth "
+> +           "peer name veth1 tx_extra_headroom 128")
 
-Yes, this is right. Since 295525e29a5b virtnet_rq_unmap() syncs with the
-used length before any length check, and the mapping covers the whole
-frag, so those kernels have the same problem.
-
-v2 will carry Fixes: 295525e29a5b and say in the changelog that kernels
-before v7.1 need a separate backport. No code change. We will prepare
-that backport for stable separately.
-
-pw-bot: cr
+Please use Python YNL directly, we don't want the dependency on iproute2
