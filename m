@@ -1,59 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794315878;
-	b=mEIPzYGhiuJCY1cJ8pa4tqEtgH5JySCmgtHMZ5zkexUcDRoZf7PBI2TmeCNhRjFljeBZ
-	 VW8b+U1DE2YgMQmOcB17ry++bpuJRgh8Mi8UUPFQrhcPrYqJKAXAVq9XA6+1g0MuG5zsd
-	 4gKbHbHKQV1HrVElXPPfW/wv9eINANW/n6YjIaTcmuklJTPbpG9jFvzlrQ4A/giIbQ1Bv
-	 Tof0H7Csok1mK9iNO0eszeoMOooTI+H6BkaGVHVSuPVNnNLCXKCZVpgUG9hXeMzULaEW1
-	 XIxHdpWxNmeZ2zlrNWuV9r/fyfjlxLnUjh2Ki0SBw75KqqUZvfG/1OcT4XAYLfs+xwA==
+	t=1794316131;
+	b=Z5F+GbtMgMODTObO2sSBiO9D/r0J3x3bNio9ZtGVcsv1cz2f0CiFADxwvbcPS/eoI7mA
+	 rIh0Jqgg+OvYKc/vo9B5SWvI3LCPr5Zxwd9mE0/hTt5OF/XH7GGNeqNxTpmGyMxF8X3N0
+	 E4WKtTUUqvD6ZyFb9H0Zc1cQ0tq8M28+pBZOJbDf5AoEHrfCzCYanJupzc2qzWdcMIdgt
+	 utxlxo7e+FWZSLaxJOh1Cpt5IGCK5zEGE67t2XwZgRNkGKJBNUPQbEl0oXRAUYDlAki77
+	 qWlD7h2zKxs0uvy55U4xTaQQFRhvMuza+of8Yqd+LTRTnAOSt66+wZa34+L75mNGBQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794315878;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=EnWbVDYQ/6puggi0QqXD0bxXsZrTtGcnJLqSymIBlOI=;
-	b=tTYli00ylTVCfTL1+M2Rc4/LLmdQw+0EG8G/9Nv6tVrfJ9fljmJc19G64mIyjwkmLz33
-	 kVKVLVqDGHv/4qwK+QuEdWpzhLwZJTyHdoqU4dkd+ucPfUmTPJQJ3RoigFCfKesYqi104
-	 qkDX3INJVSGpIzi6jCy+m2dnRb3jRIDhe4RZn//0mprHnKNcJ0/zhzQ17b1thrROtFjSy
-	 7sTXHahw38IG9tIMZUUgb1ltL1VJ9t07bDDWyduHsYzcSRYGW0Orknt8H8J5Xgzw4rmgH
-	 PXYm27s9CTlQgWxkXZIq0lqAcetRZMV05wIwN50MuxBbh4E9F5BZUK1VvxyxbT92/5A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794316131;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=iydFZJoGqhyO/k/DLJ8mL411l6d6tNvyIk7ou9fRBkI=;
+	b=qTB2dgpg0FmSX0zvT3b9RXWFAwnjQLisweGMJceDrLqBzqRDKMvHPgNnrF3rCc7YD39t
+	 YTzFGo1T7vuT6D4EAJYg6lDxttO5pmVI3vXKXZiKwTVJbSuQbZMna52J722e5cUTgQcVo
+	 f9v1tgA3ie3yIpoFuAcK1WdPBSsjzoQfjExu9g8YLS969lpZ1aE1RDYZvG6UGvcl1EFL5
+	 rLw5nIa3mpolVrxwWbX0DBVilKi6pGVDK0fuRzCccMDeZ/vFGD+2GaVAh7ECNP0jLYnCK
+	 uR10Xx5GOIWvnMY7mLu2NE7qDL5UZDHs0O2glskKPL5r9/GXb0DV/nwodZOGGGgK/IQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lDw8Liv9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=f4iSLxER;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4E3606A336;
-	Tue, 10 Nov 2026 13:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F79606A76E;
+	Tue, 10 Nov 2026 13:08:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18F79606A76E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lDw8Liv9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459E01F0089F;
-	Tue, 10 Nov 2026 13:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794315877;
-	bh=EnWbVDYQ/6puggi0QqXD0bxXsZrTtGcnJLqSymIBlOI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lDw8Liv9Ggm6qVu6iULhp3dA8tGCXo1zz7IlG3Z1ClryFeLIADN2w499Nvu34XeKI
-	 tlcdHc+3bb1iQp4Xs4EEV32OVK/zqc0JXsl5qRJJr2F9tbjSG5JO27KHxUBL3nPyU7
-	 2KkatvBT/FN4EQDfUoITl3Boswqr44ktlPlA6N+x1AuqmugRrACbB/k7uWZ/al2DTn
-	 OFwhNNUr42DYI+72hCCzrLGtpZWMuNYpP8v/iKQZ2i8a/TA2bTNwqWjLpdhduLhZDU
-	 DRSEibh9cMMf/OyGpG+rTUaJKPoQu/P5mFo/s3fz9Sy2+B2qw80vhoD1pbuLqu2b9Z
-	 2l29J8hWdPOGg==
-Subject: Re: [PATCH net] vlan: prevent cross-netns MII register writes
-From: netdev-bot+sashiko@kernel.org
-To: dennylin0707@gmail.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, n05ec@lzu.edu.cn, ylong030@ucr.edu,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, sashiko-bot@kernel.org,
- stable@vger.kernel.org
-Date: Tue, 10 Nov 2026 13:04:36 +0000
-Message-ID: <179431587680.994134.9895439231970781828@kernel.org>
-In-Reply-To: <20261106124639.12584-1-dennylin0707@gmail.com>
-References: <20261106124639.12584-1-dennylin0707@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=f4iSLxER
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=iydFZJoGqhyO/k/DLJ8mL411l6d6tNvyIk7ou9fRBkI=; b=f4iSLxERH0pNwm+hI1lQTI1UQ9
+	N/Uh8yEXcREuDUlIvJHBy+0fT4o40Wzo8LyNt8l9q2zzqkJFhf7gxBqS/bCKLIncCFyhYRi3akAUD
+	UV9WrTxAqAfnFp5pKwZYZGwJ0PN2P7LNXb1T1op3Sm/iRaG9UDDQBb8yENLVp1KxX+xI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xQlaO-00FTqg-Go; Tue, 10 Nov 2026 14:08:28 +0100
+Date: Tue, 10 Nov 2026 14:08:28 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Michal Simek <michal.simek@amd.com>,
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v3 3/5] dt-bindings: net: dp83867: make
+ exclusivity explicit
+Message-ID: <dd8bc868-06e1-4f9b-9e1d-70eb0bcd8f0d@lunn.ch>
+References: <20261106-v7-2-topic-dp83867-v3-0-45e1d3adf1bf@pengutronix.de>
+ <20261106-v7-2-topic-dp83867-v3-3-45e1d3adf1bf@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,116 +73,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106-v7-2-topic-dp83867-v3-3-45e1d3adf1bf@pengutronix.de>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Fri, Nov 06, 2026 at 08:47:27AM +0100, Steffen Trumtrar wrote:
+> The io_impedance_ctrl nvmem cell and the properties
+> ti,{min,max}-output-impedance are mutually exclusive, as noted in the
+> ti,max-output-impedance description.
+> 
+> As this is only stated in the description and not made explicit in the
+> schema, the binding checker will not catch if this condition is ignored.
+> 
+> Make it explicit in the schema that only one of them can be used. With
+> that, drop the note, which also described a precedence for device trees
+> that the schema now rejects.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  Documentation/devicetree/bindings/net/ti,dp83867.yaml | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> index 2cd8311ece5e..833540743bdf 100644
+> --- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> @@ -7,9 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: TI DP83867 ethernet PHY
+>  
+> -allOf:
+> -  - $ref: ethernet-phy.yaml#
+> -
+>  # only the PHY ID, not every PHY with the c22 fallback
+>  select:
+>    properties:
+> @@ -67,11 +64,6 @@ properties:
+>      description: |
+>        MAC Interface Impedance control to set the programmable output impedance
+>        to a maximum value (70 ohms).
+> -      Note: Specifying an io_impedance_ctrl nvmem cell or one of the
+> -        ti,min-output-impedance, ti,max-output-impedance properties
+> -        are mutually exclusive. If more than one is present, an nvmem
+> -        cell takes precedence over ti,max-output-impedance, which in
+> -        turn takes precedence over ti,min-output-impedance.
+>  
+>    tx-fifo-depth:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> @@ -133,6 +125,15 @@ properties:
+>        Transmitt FIFO depth- see dt-bindings/net/ti-dp83867.h for applicable
+>        values.
+>  
+> +allOf:
+> +  - $ref: ethernet-phy.yaml#
+> +  - not:
+> +      required: [nvmem-cells, "ti,min-output-impedance"]
+> +  - not:
+> +      required: [nvmem-cells, "ti,max-output-impedance"]
+> +  - not:
+> +      required: ["ti,min-output-impedance", "ti,max-output-impedance"]
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+This is not very readable or obvious. So i suggest keeping the text,
+and moving it here.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch only partly isolates the host PHY from the VLAN's
-  network namespace.
-
---
-
-vlan: prevent cross-netns MII register writes
-
-This commit makes vlan_dev_ioctl() reject SIOCSMIIREG when the VLAN
-device and its real device are in different network namespaces.
-SIOCGMIIPHY and SIOCGMIIREG are still forwarded across namespaces on
-purpose, and writes are still allowed when both devices share a
-namespace.
-
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index bca0a3693636c..0d0904103302f 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
-> @@ -416,9 +416,12 @@ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
->  	ifrr.ifr_ifru = ifr->ifr_ifru;
->
->  	switch (cmd) {
-> +	case SIOCSMIIREG:
-> +		if (!net_eq(dev_net(dev), dev_net(real_dev)))
-> +			break;
-> +		fallthrough;
->  	case SIOCGMIIPHY:
->  	case SIOCGMIIREG:
-> -	case SIOCSMIIREG:
->  		err = dev_eth_ioctl(real_dev, &ifrr, cmd);
->  		break;
-
-[Severity: Medium]
-Can the VLAN's namespace still change host PHY state through
-SIOCGMIIREG?
-
-The commit message describes the threat as letting the VLAN namespace
-"modify PHY registers on the host's real device". It also says the
-patch will "Preserve MII reads across namespaces". MII reads are not
-always free of side effects, though.
-
-For phylib drivers, the read path ends in phy_mii_ioctl() in
-drivers/net/phy/phy.c. That function does a raw bus read at a phy_id
-and reg_num chosen by the caller:
-
-drivers/net/phy/phy.c:phy_mii_ioctl() {
-    ...
-	case SIOCGMIIREG:
-		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
-			...
-			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
-					       mii_data->reg_num);
-		} else {
-			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
-					   mii_data->reg_num);
-		}
-    ...
-}
-
-The BMSR link status bit is latched low, and genphy_update_link() in
-drivers/net/phy/phy_device.c depends on that latch:
-
-	/* The link state is latched low so that momentary link
-	 * drops can be detected. ...
-	 */
-
-Vendor interrupt and event status registers are also often
-clear-on-read. A read from inside the container could consume a
-latched link drop, or acknowledge a pending PHY interrupt, before the
-host's phylib state machine or IRQ handler sees it. Would the host
-then miss link-change events?
-
-The read also isn't limited to the PHY attached to real_dev.
-mii_data->phy_id can name any C22 or C45 address on the host's MDIO
-bus, including other PHYs or switches unrelated to the VLAN.
-
-The only privilege check on this path is in dev_ioctl() in
-net/core/dev_ioctl.c, and it is against the VLAN namespace's user
-namespace:
-
-	case SIOCGMIIPHY:
-	case SIOCGMIIREG:
-	case SIOCSIFNAME:
-		dev_load(net, ifr->ifr_name);
-		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-			return -EPERM;
-
-Container root can satisfy this check once the VLAN has been moved
-into its namespace.
-
-The write side here follows the vlan_dev_hwtstamp_set()/get split,
-where only set has a net_eq() check. Hardware timestamp get has no
-hardware side effects, but MII reads can.
-
-Should SIOCGMIIPHY and SIOCGMIIREG also be rejected when
-dev_net(dev) and dev_net(real_dev) differ? If not, could the commit
-message explain why these cross-namespace reads are acceptable?
-
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106124639.12584-1-dennylin0707%40gmail.com
+    Andrew
