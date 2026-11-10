@@ -1,104 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794327227;
-	b=n0bEI2BKV/172hYmHf7VAet/DBeGvLMH3loZ9Dz1ibguWmIv0HOYN27yUhxB3KNUYrxP
-	 X0YTt6NT/xQSPv/Lt90+ikw1IEvLN1c/DwLFY7TWso7RhP+L6V66BaIs2WTUeNMzpYfnP
-	 4KlpNbStFX9kb0F047kPdaaVVHsqtJyMHMhxwNBPStm6oCHKNN0m38duh89IVb+CbqB0Q
-	 7oVpEwgxUte51tA1UKesjghaTQ32N88c1VvB3l3vjdWW+tEX/1C6Cz+tOQ7KWI7sl04zm
-	 VAeodHcbf54B+FmUGlaBtrFZXoTfNMXsG4bnjGr+QcFSNh7FtCr13bHBDMQjloLLG8Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794327227;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:X-Sent-From:
-	 X-URL:X-Accept-Language:X-Accept-Content-Type;
-	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
-	b=Lur/ks3BDapTHotLYBHl2IK192e7Swb7zbHSvRYW+7mf/3MP1sTgGhj2ltAZR4B1yzfi
-	 feZpLNeFfsoXUr0wNnruAy2950pkFGXFev8Z7j+M3ab6T3XT+Wypptx8eKRpT6bFTYJIp
-	 jBsk61yChvuhJf67pSq5wqtyVgo1HUkogKd8iv8eFZ1pBUbqEU04JOyE80FkhWvMN71zE
-	 OY2rUkqZjDm98VKesS127/pFEeRqPx9LtNpjcK9AcpDygKduAwCdlq9wM4wFGoJx9pYtB
-	 2qgpEt5QS4txh4jMJmiIVN6ESnPBmGMGAsm5GMqSSOiOzjCGzV17ESVOMaxm3m4l8Bg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Lg1kQnDK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794327271;
+	b=v75nARXT77/Fkjswz6oDXLBRx2MIScXXL1puPpKRQR3qdT4son8UnZZ/OqKzfmY2QKlB
+	 rUmVp/VjCrxpwuWrX8Pcs/Q9FzGixuXIEc1vsU7P/aNAP92HLxlRdZKNg4+5ljYAp0wQR
+	 RV9HzBDStC56ua9pn/1r/cL0zUgFcWgK4ZRBUIg6c+mxKznSQfWQLJ40QsGisyAElgICJ
+	 Ii6I/ZL3FQ1yRGT9CyAF6RP+lAW1hH5rxwHslV6lYVFplIVStB7RztlJrkkowHz9ZZWGg
+	 dCbifdyvYtGCQDfI2oZkCcJATZXvsuuAMlRdD9ybZH6tjNpkVThXYtlhKd1R9+5HCWQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794327271;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=e25FFx/VLY9F8YuTS9P6G9MrlhtdZ/ItqJ/kjUZtCXA=;
+	b=2rNrMberiuBxQwKNEo498JVGjHKWpcZAsWjHkuv6lbQi044KJLV6fTkfYP392roUznaj
+	 2DkXQoPAYJzE/Z1JIWuxNCZGqETn3bd0Rtb+UVK5rifAHKd4aoCXA7J6S8tGBPrQw2lMN
+	 UUyTOMoer6eiVs+ZBF9xMNFAU7Uk7RK4c/h8q4A7xbCpDWQYDtEuYYwcLDnzcgn6ynDcg
+	 72Vbz4ddCaKsJkFj8+mfFXWzipRbYDxzzOfgQ1UG7ZdnA4Rss7+krvfCWu0jAtbxlSyKN
+	 FJ3XOvwNtZC0sgihxjqBPHexPXvvTAC+mgLs9dmmuVMREGZY1SgdrzYW9zduj5Fv/8Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQ+0au2;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87335606A31C;
-	Tue, 10 Nov 2026 16:13:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87335606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010D660A2606
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:14:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 010D660A2606
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Lg1kQnDK
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 58C18201F43;
-	Tue, 10 Nov 2026 17:13:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794327219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
-	b=Lg1kQnDKiBlvjcWBFMbu85dr5l5u6fFurA9o3sJXI9SAWON9h/OOne0FEmmCHdbryqbxmO
-	jsgxsQdjVbe29xlBEtTpULQ6ksbqKuh2JpKJ08Pqez8vRV7/f49zbztLdhLERxurSAkXNP
-	0hMk8JhzuIa8qOauKMCTAJPXUq5tLQJZ2C23W4T6pxncl03hKtDz4Z9Zjrd7hPOjQlvv56
-	PS+ctYgG3U7GLTrxAFPpsJmRRLwFG/Xup+AJcmWumxnH1h38WShMbVfir5iBg38Si1+VRy
-	ghPwKSxQ23EmJQsT9pKlwgG5oeQhlQ7waScSxVZlZJ1eD+YwToNLRzg5NsLJcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794327219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lFL08heJopZr805d+tHWGDO+sHIhnW9x2eSKI6krkuc=;
-	b=Dt1ZXJeCmMJeQkI8G2Dgguhg5uzlcHH2wHlvlJIPxtccXZjn1EAMB407WlpTZlDzQ/WBoT
-	5P7DKJTgS6fo3rxK5eIPH4ZcJd4f69gjpqudyc2LJIQxGppK6Yx9BzV5e/1C2vVfMFAXCF
-	n+yRBVQvjtHZkOntNgLLiSviSm02oTQroXnpAWQR/NkQqc5khdqKly7at7U4kYMObUy88f
-	QTrrxj6ck/B6GGWl8p8lU6/WBq6WpVLXpyFrsseHhOrMQx8fXk1ByWlE5LnBshphv9K1m/
-	peamLPy3aaoMm542pHmhir+/QJl7ecdouQZLA4k1d/G9VD2bKUwwFlXJjruDfQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794327219; a=rsa-sha256;
-	cv=none;
-	b=gO1u6YbOidmUa2BIAMYAWcMyzESRTFVrR7SEyjKj8RqsYeXHpynQGTMxe7rQRNGsEncpIw
-	if0lc2I+bXT2OMdc1HStb+jWqwpXLo0ZzZn+5lLWY+Dnp9N0cx1/T8U5gTdqz3UZDP3lDM
-	9XzCFLqVBIoVKtmq/mhzyUL+sC2ulQDiqpJ5qbNHDbLXWM/hJHgJAJq/qdpbZnLyn0HtO+
-	I0EJ7WylsYeurWvueKsKNqeJRe9IEYs5DyH5EqYwx5lrIyXhqptGHMY81BATJ6QbKLz9H/
-	4xtwi40sKwFweveSIja+ANO60cpyo54D50F3IFbEhDNQYNwTE9Vedfg9OVn+XA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xQoTb-003WP0-0v;
-	Tue, 10 Nov 2026 17:13:39 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xQoTb-0000000CVHQ-0iZS;
-	Tue, 10 Nov 2026 17:13:39 +0100
-Date: Tue, 10 Nov 2026 17:13:39 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQ+0au2
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4af52002471so3116155e9.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:14:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794327269; x=1794932069; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e25FFx/VLY9F8YuTS9P6G9MrlhtdZ/ItqJ/kjUZtCXA=;
+        b=LiQ+0au2fs2AIYPO+t0gImjc29SqZKC3KSmiSxIxXFAkNaE9g6FBmYxZHplOSsvdnm
+         68B2t+fVzRayt41s78HAW3sdj6z92DwiDP19/EpDNsh+piKfg+/b8is9DD5Zb/hkxnfV
+         jo/ewZ5DuOeBBlDmxkGbHn7HtIoFIMtOQMn2z31V1sJL1n6d0bqf7S0A39KLnV+IdKbg
+         VKvNXuhPuPfctkuX+UhverVPrndgILqwhT7GCDLtd6vsxQlBIHIO66VN6uSrpQzyFRkS
+         vPFCpjMIpJCoPUXXG6dC3ux5v1HcmOTWtpcMrQXxDVzUOaosJQ18XMld9WW+z3e1fC8q
+         maUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794327269; x=1794932069;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e25FFx/VLY9F8YuTS9P6G9MrlhtdZ/ItqJ/kjUZtCXA=;
+        b=ray1c2B2AmTGDHmRhdJuwC+PrW7Ae0ySO9Xl8MN7MM1HhXgysPzv1UTCGMHfmu6Mla
+         i3Z7qy5rzjcZC9RPTNv8jqRLQvOQiTUTB+N+dY87GJkd1OKGBOQ5VbN/MTdki/PwI7nV
+         HzhQm/4TZXR8LYRETVneqcnIfLVVw5oH/bfFgFCuGxhCp/bIpthuZq5dbvMfTAxFXHGQ
+         bkcTjWamTeUzDTXnW/fxkJqVlBkysF/iC58kKU/xiKiGuBvJ2RJe9GDNCbR9fh6cYcos
+         ZCPFwkDSikdWiP9RunnUuUeJ/P7natrqqyDta3r/xaHoRNMzOUhV/7nmOukFZtNk7aQL
+         eUBw==
+X-Gm-Message-State: APuU4Z/O19cQLTbYdexEn40pfMW9UDFSQDjRyf7QUHAluzJTuGE3+pQV
+	ltIFdvgUbmDEJa0Zap7HcQCVp8ocRGVtz5xrzk71VDKwL7TFuUSRcrXS2ET0nfHx
+X-Gm-Gg: AYBFou2CClxN6lD+8XpZmk3MpgLal3AzD8wfE1e2wDKBAkARI0rF9vKp3q8praJIXJR
+	iiJ6amBO10FV8B/YO6fSPJC9ADs+Ze0hSoIqZ8/dCN181mJJctmGprgfmINN8v3bH08VyobU5ac
+	QJC5Q1kFGgpwq23CImSQM313fCQP8pViozIHjpGxrlboMjkOCPccDRGwO5haeyTCZGMvQ4xH7KH
+	WhVGyqb5EL7222rCPXeAzV7fZ+etAhxqwztANO1UgGRfhDqf0hTc9DTuPlGBc1K68ikQI9DCNRR
+	1ht9+rRllFVeJZwHPofSwTHTA/0Sbl1K0sscXK4jSTwe4rWKlMAB6NgNOOWmgsKlv60Dqil+5w5
+	iwCdBElOLRiQlCk1pFKUxQSoxCWeyiplEzrlkrK72QfI9cSIVgM2wLoCaLMmP6nic0/q0i6FeqY
+	KarPtPQU5FbaLEdHHvDV0QJrSIstsuiub4nx27UmQnPK6VcIslb+fkSEPSOETEEAqfIT/0089I+
+	ZE8qc1L169+i62FdM1aOw2+GhRDYphL5L9hslZt4zG7tmbczo/x+ir77T0ZeyeU9Ew2C0IDYuRI
+	cYFg5R54QgzRIeQ58TARb+Lu1L55TvDg8Hpcuo022vqkVwuSWiPNDPWwYn/+Oj0F3hKGbPXX+go
+	PgnTj3UXNUQFu6OCAaw==
+X-Received: by 2002:a05:600c:6085:b0:4ad:5ec2:d3b3 with SMTP id 5b1f17b1804b1-4ba02320c8dmr51972045e9.1.1794327268945;
+        Tue, 10 Nov 2026 08:14:28 -0800 (PST)
+Received: from localhost.localdomain ([95.183.147.101])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0235ef62sm46825525e9.2.2026.11.10.08.14.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 10 Nov 2026 08:14:28 -0800 (PST)
+From: =?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next v1 6/8] net: dsa: realtek: rtl8365mb: add QoS
- baseline and DCB default priority
-Message-ID: <avNCswwpqAHHpAma@pengutronix.de>
-References: <20261002115850.962676-1-o.rempel@pengutronix.de>
- <20261002115850.962676-7-o.rempel@pengutronix.de>
- <CAD++jL=tuGRjbKqLhSLTobRC00UJkG0XhWxguxRRwDOTQLHd2w@mail.gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Mohsin Bashir <hmohsin@meta.com>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
+Subject: [PATCH net v2 0/2] selftests: drv-net: ring_reconfig: handle devices without channel config
+Date: Tue, 10 Nov 2026 19:14:21 +0300
+Message-ID: <20261110161423.77910-1-ahmetbilalyazicioglu@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,132 +103,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jL=tuGRjbKqLhSLTobRC00UJkG0XhWxguxRRwDOTQLHd2w@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 
-Hi Linus,
+ring_reconfig.py assumes that a device which supports ring parameters
+also supports changing its channels. Drivers without a get_channels op,
+such as e1000e, return -EOPNOTSUPP for the channel query, and drivers
+with get_channels but no set_channels, such as vmxnet3 and r8169,
+return it for every channel change. The resulting NlError makes the
+tests fail instead of skipping them.
 
-On Tue, Oct 06, 2026 at 01:18:11AM +0200, Linus Walleij wrote:
-> Hi Oleksij,
-> 
-> thanks for your patch!
-> 
-> As mentioned I think the main logic of this DCB stuff needs to go into
-> common code.
-> 
-> Whether to use rtl83xx.c or create a new file rtl83xx-dcb.c with just this
-> QoS DCB stuff is up to you.
-> 
-> Some detailed comments:
-> 
-> On Fri, Oct 2, 2026 at 1:58 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > +#define RTL8365MB_QOS_QMAP_IDX(_nq)                    ((_nq) & 0x7)
-> > +
-> > +/* Internal priority -> queue-id map. Eight tables (one per queue count),
-> > + * indexed [table][prio]; four priorities per register, 3-bit qid. An N-queue
-> > + * configuration uses table N-1 (1Q is table 0 at 0x0904, 8Q is table 7).
-> > + */
-> > +#define RTL8365MB_QOS_PRI_TO_QID_TABLE(_nq)            ((_nq) - 1)
-> > +#define RTL8365MB_QOS_PRI_TO_QID_REG(_t, _pri) \
-> > +       (0x0904 + ((_t) << 1) + ((_pri) >> 2))
-> 
-> (...)
-> 
-> > +static int rtl8365mb_qos_setup_queues(struct realtek_priv *priv,
-> > +                                     unsigned int nq)
-> > +{
-> > +       int table = RTL8365MB_QOS_PRI_TO_QID_TABLE(nq);
-> 
-> Prio to qid table is nq-1
-> 
-> > +       struct dsa_switch *ds = &priv->ds;
-> > +       struct dsa_port *dp;
-> > +       int tt, ret;
-> > +
-> > +       dsa_switch_for_each_port(dp, ds) {
-> > +               u32 reg = RTL8365MB_QOS_PORT_QUEUE_NUMBER_REG(dp->index);
-> > +               int off = RTL8365MB_QOS_PORT_QUEUE_NUMBER_OFFSET(dp->index);
-> > +
-> > +               ret = rtl8365mb_set_field(priv, reg,
-> > +                                         rtl8365mb_qos_sel_field_mask(off),
-> > +                                         RTL8365MB_QOS_QMAP_IDX(nq));
-> 
-> This sets qos port queue number to RTL8365MB_QOS_QMAP_IDX(nq)
-> which is nq & 7.
-> 
-> > +               if (ret)
-> > +                       return ret;
-> > +       }
-> > +
-> > +       for (tt = 0; tt < IEEE8021Q_TT_MAX; tt++) {
-> > +               u32 reg = RTL8365MB_QOS_PRI_TO_QID_REG(table, tt);
-> 
-> This finds the reg for table nq-1
-> 
-> > +               int off = RTL8365MB_QOS_PRI_TO_QID_OFFSET(tt);
-> > +               int tc = ieee8021q_tt_to_tc(tt, nq);
-> > +
-> > +               if (tc < 0)
-> > +                       return tc;
-> > +
-> > +               /* QID field holds the traffic class */
-> > +               ret = rtl8365mb_set_field(priv, reg,
-> > +                                         rtl8365mb_qos_sel_field_mask(off), tc);
-> > +               if (ret)
-> > +                       return ret;
-> > +       }
-> 
-> And sets it.
-> 
-> In a code dump I have for RTL8370 writes the same index into both registers,
-> so something like:
-> 
-> {
->    int qmapidx = RTL8365MB_QOS_QMAP_IDX(nq);
-> 
->     ret = rtl8365mb_set_field(priv, reg,
->      rtl8365mb_qos_sel_field_mask(off),
->      qmapidx);
-> 
-> (...)
-> 
->     for (tt = 0; tt < IEEE8021Q_TT_MAX; tt++) {
->       u32 reg = RTL8365MB_QOS_PRI_TO_QID_REG(qmapidx, tt);
->       int off = RTL8365MB_QOS_PRI_TO_QID_OFFSET(tt);
->       int tc = ieee8021q_tt_to_tc(tt, nq);
-> (...)
-> 
-> So we compute index once and use it both for port selection and
-> table programming.
-> 
-> Can you check this in the RTL8365MB manual, this old RTL8370 code
-> could be wrong but it's also the way RTL8366RB does things.
+On a ThinkPad T480 with an I219-V (e1000e) "ethtool -g" works while
+"ethtool -l" returns "Operation not supported", and running the test
+functions through the in-tree YNL library against the device shows
+the three failures.
 
-Hm... good question. After some investigation, I think the register
-naming is misleading, and maybe the RTL8370 code too.
+Patch 1 skips channels() on such devices and lets ringparam() continue
+without the optional channel reduction, patch 2 skips
+reconfig_tx_stall(). Only EOPNOTSUPP is handled; any other error still
+fails, and restores are only dropped when nothing was changed. The
+patches are split because the affected code came from two different
+commits.
 
-The switch has a pool of 8 prio-to-qid tables, and the 3-bit port
-field is an index into it, not a queue count: field value v selects
-table v - 1, and 0 selects table 7. I tested all field values on HW
-(RTL8365MB-VC). The field does not limit the queues either: with field
-value 1 the port uses whatever queues table 0 holds.
+Testing: there is no remote endpoint for the T480, so the full test
+was not run. With v1, the test functions were run against the real
+device under ksft_run with a stub environment and all ethtool set
+requests blocked: before the series all three fail, after it two are
+skipped and the channel helper returns after the query. v2 was not
+run on hardware; its new code is only reached after a successful
+channel query, which never happens on e1000e. Drivers with
+get_channels but no set_channels were not available; that part, and
+devices which support changing channels, were checked against an
+emulated ethtool family (unsupported query or change, other errors,
+drivers rejecting only some layouts, failing restores) to check that
+other errors still fail, restores still run after a change, and
+behaviour with channel support is unchanged. pylint and ruff report
+nothing new. Not tested: the full test with NETIF and a remote
+endpoint, and the rest of ringparam() on e1000e (see the note in
+patch 1 about ring size clamping).
 
-See e.g.:
-https://github.com/openwrt/openwrt/blob/c46ccb69d17e584479df849a107423175a143c83/target/linux/mediatek/files-5.10/drivers/net/phy/rtk/rtl8367c/qos.c#L45-L92
+I found this while looking for kernel tests I could validate on my
+ThinkPad T480. I investigated and validated the issue on that
+hardware, defined the scope of the fix, reviewed and refined the
+implementation, and extended the regression tests used to validate
+it.
 
-In v2 I'll treat the field as a table index.
+This work was AI-assisted: OpenAI Codex helped with the initial
+source analysis, and Claude Code drafted the implementation,
+changelogs and test tooling. I take responsibility for the submitted
+changes.
 
-Best Regards,
-Oleksij
+Changes in v2:
+- patch 1: also handle -EOPNOTSUPP from the channel change in
+  _configure_min_ring_cnt(), for drivers with get_channels but no
+  set_channels (reported by the Sashiko review of v1)
+- patch 1: skip channels() when every channel layout it tries is
+  rejected with -EOPNOTSUPP, dropping the restore of the unchanged
+  counts
+- patch 2: skip reconfig_tx_stall() when enabling a second combined
+  channel is rejected with -EOPNOTSUPP, dropping the restore for it
+v1: https://lore.kernel.org/all/20261106150509.30458-1-ahmetbilalyazicioglu@gmail.com/
+
+Bilal Yazıcıoğlu (2):
+  selftests: drv-net: ring_reconfig: handle devices without channel
+    config
+  selftests: drv-net: ring_reconfig: skip tx stall test without channel
+    config
+
+ .../selftests/drivers/net/ring_reconfig.py    | 65 ++++++++++++++++---
+ 1 file changed, 57 insertions(+), 8 deletions(-)
+
+
+base-commit: 19a227903e65c7a9c179156485660a4e017575fe
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.56.0
+
