@@ -1,100 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.102
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794327179;
-	b=M5A+fw1qz4ptsBgv9EW1YILj5jm64Zh3d1/CKFu0yy/aQvYXjNbeDeupMy/MEcy8BRH3
-	 Mjva4A4qyT7wtSJ1u1jmgq0eFuM4TCtLA9nl22rlLCv7fh6VcFkG6NWLY7q5PmTRqgRLG
-	 PvfRRNlfg50MV/cdrshWMqOBagBopRBpmsrchq+HcDxzXVrDAjm3lpMJHXSQRX+rJyzW+
-	 TNrtdVlIRY5SinuJTqBdI3AjH8yccOq56TkjeAYctCW89OHJ90T3zIIlQ2WQYV7TVWARb
-	 s4Xa/Ub+DoAzEk9120xUe1M1+q9EBnLEIW6euHUKU7m24NAKmypErvDZCoKf+O5j1KA==
+	t=1794327240;
+	b=IWFT87fZHspwT0MSdF3WaukFRSKtbNzwqXEso3E8w71DYmmfORfvRiEnVrpsSRANUu/L
+	 /+KXn5efN4S/PVTit18RRo06cZyjfAzfomEWA7196aGhLkWtRzR6YvJv290CCYDiehyJ0
+	 fOJ9dLOZ0LRVVMNen+ZxbEiUGad/zXpHgk0quUYR2kIOUxMgUTJ0RBd3pPQnrm9XyVoB0
+	 NHmTu4kkcUUlHgkM78j21cMIizjYp0wF+61SVK8KEjBikquh/MTeTP8LqKwem2KCVdqXP
+	 IUY+10Ja6yxXkgp++bR6GsGIk2kpXDj5Swdf7m5alEq0WitJz8jGNG1pXaA/5a3dA/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794327179;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=in2GRGedn8xujhUfMjqdyzbGddtgYvZlV+27x56RYsw=;
-	b=xf6RR1un8pkb3k8QZl5gUKJh+AjE4mIElZfCp7+PKzM/+B3CwF/e1A6geUZSlOFiSgd5
-	 FFgED9f8ptBF+CadcZT4lgrEF6Bovf0oCGXzm7gQ2sWda6pJAULD1rzaASTe9efu4Io8W
-	 VNu86d1dW3rWlRi23oHFxuYEeWkrZDXvTDHaYkPQbEEBgzgLdbSXJieMBgvM8fwW7fBWt
-	 sFkrxqATCFDMtlivW382YlhhcTyFwSs8VJ5C6qJB1utnx9MyIxAaaPYrfp1xiqKhfJjib
-	 wnrpNzfYHtg6kEJOMEV+ZO3I2N/M6kS+62tr5FBMaWxv+2q69E6z5iG5npwXMBddftg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794327240;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=g3puA/Rs8Op3gQUg0J/vl+syCCZwXxu4Foqvmyce9W4=;
+	b=bC6xzHoajW8+ulg5GkiLAJf+nho9jJqHzhDM5P6VgRCgQ2G7Wv6ncl597X1Ibs/tGddU
+	 dWu+E6xy1e19CphnfgEa0mGz6YCwHmU/Lsres7NdQOtuA+Dfx/VrW9+su+d9DfkFBRYJW
+	 K4Qiy8nZb4tKyQ+cIUIYmj9IjCEFmobO3Fk5OTbx3bxPr3KZ4ojoFrsOw0Pzab2o1AZmK
+	 YZNBZ93KsczuPVG04a20IWUejq+lKNdb4COgoEZzpjr2rs30ENEoiLP0ozybPkd9wvsFF
+	 ViiJYozhOOv/BqVT/wvutFFvuB6qKvzli/hamoSbDmA5th8DVTT7heDHoUoy0+Hfrug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zx2c4.com;
-	spf=pass smtp.mailfrom=zx2c4.com;
-	dkim=pass header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=WhZUmgXT;
-	arc=none smtp.remote-ip=209.85.216.102
-Received: from mail-pj1-f102.google.com (mail-pj1-f102.google.com [209.85.216.102])
+	dmarc=pass header.from=schaufler-ca.com;
+	spf=pass smtp.mailfrom=schaufler-ca.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RDGd6J64;
+	arc=none smtp.remote-ip=66.163.184.49
+Received: from sonic317-38.consmr.mail.ne1.yahoo.com (sonic317-38.consmr.mail.ne1.yahoo.com [66.163.184.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7BC606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:12:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB7BC606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zx2c4.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98585606A332
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:13:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98585606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=WhZUmgXT
-Received: by mail-pj1-f102.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso1413218a91.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:12:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794327172; x=1794931972;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=in2GRGedn8xujhUfMjqdyzbGddtgYvZlV+27x56RYsw=;
-        b=ZeetvWKr1lZ1u7gkDHwqzyIRLUnIfE4QvuReaxZdA5IDkx+5d4UPXl7a48ZJcNdndK
-         lpRjC0T//9gOraqEEI/u8WvuDXXMIC/kUYkk+M1pqnjcTnT1sWdh2ANexzThuM1Zqmzy
-         HPMdTEtA3NjZt9Odopreyxlaz/HBgkBb2nOYEZYwcJSPL3hnzQ/tu0u8/E8Fe6BGlB4z
-         4fRwWYkemTI8k8weV2oXltrTMgwPV5YapB30SBpHR2rfsIvEnAfBPoHX/Vn+oFZhZPik
-         sUSm9ZYSGq3D9OZ56r6+fmifapZgCgS7TXkzpGEZqW3kRAnlj9PusnguT4IsIjDHCcmo
-         t3RA==
-X-Forwarded-Encrypted: i=1; AL+hErEffAH1dBIakGAYf6Lm4MmJRV9YSxW/wKzVpaNhVdhR8E2DgQLvM5+3EF/iPrUfvJr/xeYfk2I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8jOiBbKob8Z/pCgiH2DNCFI72TcEJaTxyLESkxkvt1mueCEf/F
-	JuK35jD7kBhfat7Sx2swSX3NrDhwgn+Peh5Ai0QUdiuD83MeYlI+mkbWpx3kgWFMj6aU1muItPW
-	j1vnVR/z/5xweQpJMmoj12mvi98Ynj/GRtzvu+8S3Q21+GFTWvg==
-X-Gm-Gg: AYBFou1JtvhhvDKkeZD0iqeXLCRwT2qXLVU53y/eanC+MEzyHl7QUKEZ0xoRSdiBoZq
-	R0VptiZ+f1A3QLVW2tw/oqauW5jvukWhCcKK0zLNdhZZz7kAhu4G4/AjRxitPPUGi/2ublt0reB
-	XDPAkqXn+wGB8GLrFR1dAvVHRXzLIPZsJsOHoJGd3t2Fs1jucvzQfIl2tymdm1C01wtg7MBHaN0
-	6l0tN3c5HzohCuHrEBi47aaKs5QJpHQrSpeFxcMbreNlHrTKAnbZ9KJ+0n/Y/vsL75EcoLy15lv
-	JC6i+scAs+1IQ9OwHhMwxdVgmUsfWS+QDXY0Gzf5a5o6EfDtNv7H1jJDyN2DA23nCGg/77PKc2C
-	mHw==
-X-Received: by 2002:a17:90b:5625:b0:3ac:36c7:c144 with SMTP id 98e67ed59e1d1-3b1679ba42emr1924377a91.28.1794327172047;
-        Tue, 10 Nov 2026 08:12:52 -0800 (PST)
-Received: from zx2c4.com (mail.zx2c4.com. [104.131.123.232])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b17e0dccfesm170958a91.4.2026.11.10.08.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:12:52 -0800 (PST)
-X-Relaying-Domain: zx2c4.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1794327167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=in2GRGedn8xujhUfMjqdyzbGddtgYvZlV+27x56RYsw=;
-	b=WhZUmgXTiHPEQa5m8oXC9xJGHWmDVDhBJOCOKZ68i0JAgrryuJ2OpKISMMArTDvqKX9J3p
-	gly0mlrzj/PiWbAWnd57JXbMST0Ayd3lZxBjRTHC45wOgvxvTiqVvYN7mP52oUauJ3QI0S
-	qnL9KbBPK/0Od73r2/adXduAhczgmS4=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id b5d66eed (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 10 Nov 2026 16:12:46 +0000 (UTC)
-Date: Tue, 10 Nov 2026 17:12:37 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S.Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	openvpn-devel@lists.sourceforge.net
-Subject: Re: [PATCH] wireguard: socket: fix sticky source address on p2p
-Message-ID: <avNCdbpjxM752XSw@zx2c4.com>
-References: <116cec552f58748d434d4825c6c74f39266b265f.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RDGd6J64
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794327238; bh=g3puA/Rs8Op3gQUg0J/vl+syCCZwXxu4Foqvmyce9W4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=RDGd6J64KFdUM7VGvUfJOJ8S39HfQojQbc02rHRHnll4+eFp09C8JD6kW8aBOQLyrqcKGr09PqSQWggmf2bfP9Vhj6Ope4/1O7EHKejyYQi59nBV5GLSE0Mt47vDBq8/eSYpTzOP065mJIuWwTzB8Frbmzr1bRSNaNCceXs6fsVHkW5xQcnUh3twnWE32aF9l35SVlz0GPlOQdhXi8a1Lv7heecxMJuENe5Mm07v/XnTfVhUI90f81+5pxtKs16ZyZ1dBHONujX86KEr8oFHMAXmZZWU796BbMWTn0fb4rLGhoyytHv1F0nrVY3xsiJrZOTdtlfpVEy3yMrKFWNwEw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794327238; bh=sYEQKp0KtFvQAK0J3M4QRw/Tkxc1uvwLJaeWJQ8gWyZ=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=BwudvB+03jhVnO10NtONX7aiHcEuZP5bhu5eG/BN0jxXhZmUudkpUnYCE1m7KXbFIBoi5+m1c4k0Jkh3LdYjJm/Jp2lo7/5h3H7GJwL+cSj5G0LQ3rC02xp+Db0QAoeHdKgoVCzGep5TVAqC3Yq4uYu9qBiMTU4x444Ysy/OaSw9+yGk8nbHmxvUKuMqlpoKwmsy7sbGhMpQA27xXFQovpYTxcDOclmuAadh+IhsAQFlkB/PDw3uPsMVwpbJVbSsn0iQWd6YSvx7pYYWz5VAQsnU738WymI8Z4LIo1aK/908HH7j4MmuOOP07fBh7jrpoWGIi7Ads5qsXEbvUFTkqg==
+X-YMail-OSG: 4a8g204VM1n9PqiRa7yv3CpcO8VH9DBXllKXBFIvB8iIKOCdy1oyCJDXz.qc1xz
+ pikdKsSa0vyEI_0VrAIE.SJA80Wb.KBtgC49c6.wmwlO1amPEf0yHRhYnABpmItnZOEsIKqpGPCA
+ oFFeOEUyit70BQmpM1.kjy7Vm17d54mv1rfu8lS6v.xU.PwtD6Bp.tfE3ojQbM.C6X7rGGLNKRNa
+ zetOw2TVFmA1A.wnSWTwZiIEEl_rEKknXXH6u7TXA_6_.XOKDDySO..E28RubUtd74UWM2Uv8aZ_
+ v0qezE8MJ9WFmzj_9i481qgsj9tyGjXb.awkKulhb9NgB.GhHC1L5FcOxOYG36TOWScQXrKWEq8m
+ m3A26J2RlJroVkRXbo2HrImRvDzsXe.jNd8qxSAqoInFulAmasIRdTkavo9UabjpDQLtm3bJMHdV
+ ravk_TH6Xa9rSX5Xg4m4azf2JyThWCMO1DZI2Iwm27HSv6E8wWqivGCVTmA.XhwJdW0Zndq4OxfE
+ nKxwlOCbPgcB3_BAsWxXug80z.gwtjyk3LfFwbEPzwfgF0m92XC_AOaDemlFRwDWj2XeFcvo8.7c
+ PH3XDwJ5SykDe_Ic_2r9Bpet52fWyXiaOzqJO7STLFBNRoJp1dklQesTH2iX0n48cKb8wst_HBYS
+ 1.NXayAYbPR6lCIkccrKXMOCPKu6rLinl.w3jm7XMf7TdAj81lrNRaj54SQt4JDxl3_er44tSj6e
+ vVZsV.6stxY21Xpe12CsWtuJ9i0W.CSkIK8txHnnWvh._cdVb6EyulHbkskfu3hPwFovNR75EV_R
+ Xt4rZscdTC6VPrG2kU.P8MyZWjz_fcvHR0dZyBP5KlCTTtjhXRk9kRy3QjNsorL5.A6B1cfFEaAk
+ _AEKEYP8BruqiPLlAgyFM8Z.8u_2OGdd1jDvSovuE8xLfaEyirmGRLyEfD_XyKP7wTK.PqW4K932
+ lAsWrGoJLGjTa_ZbrjXR0igCzNFg_3hq1yU82MXS0kNXiCi3KmKaj1K51gy0s9lK1BeBk1OM5xNY
+ Hutcgt47SRJCIBJucehLSDs3cOIM9YvPDQ5d0WIqaVApG7PETw0Qa9zJzQFUVgRersz5BDaUL5DV
+ as3fiZVF.ftPgP5q9imZs_5DBiNy16gaqiyu6Clsoxd3B8HJ3FXDMCMfP.KNaWKbI5fkZ0nvs85Z
+ L1bYXbd0G3G5W51iQjtuAIokuU94jV6NquWJPuJfGg.kx9axW0MnCJEAVdaqvaIK6dYG29Hzoq0y
+ _siDbT2UVD.SC_Ai7d7GRsGNuuS8Xf1IDNCAqq._UIyl36r1V4JeNck45lHJwh1wC.UyM9PJ3IgU
+ cXD5Yef270fy_7uj6dJxB9we1gQ6.GdeQLh.uM35x_9iidC3zFdGLJB08ZieRG.zX5EweOVHoV29
+ w8pLRtlJq6aVZzaYD_eLA.4v_pg1H3zbqG_6FZwReQ3aRu__yALuggSZTDZBge5z4DD3cyCKdXuJ
+ fdAXYhvzhfgYFV7ebT7Jepsh0QgK_USUXRHyKus5c5eSqqTfnDOmiq8IuOoWzvWRM.ttHHmPtEX_
+ tnucnxdlFSvCuxYNs.FRn0g6mvqli4vnzySQq1yUfqopylR8eNQmr2AX2o.xF5fu2KxVwE3P5vWM
+ aGNGu70BGvxgkIEGTXdBBlh_3XQI5U0HwzNfP38mdUhjjGqNThgAHW9.eDNG05hJsPKCtt4QV18c
+ rqcJKhYzwhPSY74xsUslsJa6orTvPYlbC0xgIVi98r34bEEa7c_TGBfIhp41p6fsHkEt6uu.p64w
+ Eq77mjiPzmnx54fHtet_cyCF6RbW15Rm3_o4syW9iXsVKyhCGdL_3ZVp32E284C2FFy_leaYePZJ
+ 87zzdzIRQCNxYkPXQF8QiWVms3NaGb4xfgV67vTbBKeyaB2W9RPIAzGoqfqS9maZDETnLp6oKgOu
+ 3j7Cb9WsrP2sfJ3tIt229KLDQoA_CZshPnym48HYnJaVivYYeM2j7zdFKsYy8KKwbWH4Hixz86lP
+ 7CW1LIX.T0a_eUIXxlUOjPr1Otm.QLTeQ__8p_.5prn1LJeG5eueWUUJ7ybnYqsjFOHBxUG8hZHk
+ xdpHjuFhEIy7ilpVYrOEIu5pP7qD9KVwJ6wI0npIhNiJHyMQudG2.G.mWXxgaX48oKnM8gJvG6o1
+ CnEd3mACQAjw79eZXQh1OKhbiKuskcH05P2CxD3iKGkvPzxmlVmQQ35xAZJ9HzZy6Z9KPZ1rRIfv
+ yNhawAEJ1APH1m125O0E7u6qAmo3C30Xw180TcsLCbqiSZiW69D8IBf05Vp1NrB9JfAW1IUiUXZy
+ gsmLO8BBi_PZmmcdoWZRwhFNlX8GNtbao
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: cfdf2d2a-b498-44b5-958c-5f67e753d496
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Tue, 10 Nov 2026 16:13:58 +0000
+Received: by hermes--production-gq1-fd7994565-nddcd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 477e123a5d70e851d8294a1398b4519e;
+          Tue, 10 Nov 2026 16:13:53 +0000 (UTC)
+Message-ID: <b943c17c-32a2-4c59-9037-a7f41bd163ea@schaufler-ca.com>
+Date: Tue, 10 Nov 2026 08:13:50 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,39 +84,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] cipso: stop modifying live ip_options_rcu
+To: Paul Moore <paul@paul-moore.com>, Jann Horn <jannh@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Simon Horman <horms@kernel.org>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
+ netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
+ stable@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
+ <CAHC9VhR+U3i8xNce8Ps8k76EZr_AeVf+fHET_Ncu1+yO1G2zSQ@mail.gmail.com>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <CAHC9VhR+U3i8xNce8Ps8k76EZr_AeVf+fHET_Ncu1+yO1G2zSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <116cec552f58748d434d4825c6c74f39266b265f.camel@infradead.org>
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Fri, Oct 30, 2026 at 04:38:06PM +0000, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> WireGuard attempts to reply from the address to which the original
-> packet was sent, caching it in endpoint->src4 and validating it before
-> each use with inet_confirm_addr(..., RT_SCOPE_HOST).
-> 
-> For Legacy IP that validation always fails for an address on a point-
-> to-point interface, because confirm_addr_indev() insists on
-> inet_ifa_match(), which compares against ifa_address — the *peer*
-> address on a p2p link — under a /32 mask. The local address is never
-> within that "subnet", so a perfectly valid source address is discarded
-> and send4() falls back to kernel source address selection.
-> 
-> For peers on the far side of the p2p link, the fallback happens to
-> select the same address and nobody notices. But when a peer on a local
-> LAN sends to the p2p address (e.g. my OpenWrt box listening on its
-> external PPPoE address), the reply is sent from the LAN interface's own
-> address instead. A stateful firewall on the peer then drops the reply
-> as unrelated to the flow it originated, and the handshake never
-> completes.
-> 
-> inet_confirm_addr() is an ARP helper answering "do I have an address
-> on the same subnet as this"; what send4() wants to ask is only "is
-> this still a local address". Use __ip_dev_find() for that, matching
-> what send6() already does with ipv6_chk_addr(). IPv6 does not have
-> this problem.
+On 11/9/2026 12:13 PM, Paul Moore wrote:
+> On Fri, Nov 6, 2026 at 4:40 PM Jann Horn <jannh@google.com> wrote:
+>> cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
+>> socket, and tries to remove CIPSO options from the middle by moving all
+>> subsequent options.
+>> That's not allowed - ip_options_rcu can be read locklessly and must always
+>> be consistent. For example, ip_options_undo() reads trusted offsets and
+>> length values from the options buffer.
+>> Fix it by doing the modification in a copy.
+>>
+>> The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
+>> propagate memory allocation failures.
+>>
+>> Triggering this bug requires that the system is configured to use CIPSO.
+>> (Setting up CIPSO requires privileges in init_user_ns.)
+>>
+>> Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jann Horn <jannh@google.com>
+>> ---
+>> I've sent a separate mail with a reproducer to Paul Moore.
+>> ---
+>>  include/net/cipso_ipv4.h     | 11 ++++++-----
+>>  include/net/netlabel.h       | 11 ++++++-----
+>>  net/ipv4/cipso_ipv4.c        | 16 +++++++++++++---
+>>  net/netlabel/netlabel_kapi.c | 24 ++++++++++--------------
+>>  security/selinux/netlabel.c  |  5 +++--
+>>  security/smack/smack_lsm.c   | 14 +++++++++-----
+>>  6 files changed, 47 insertions(+), 34 deletions(-)
+> Thanks Jann, this looks good to me.  In a perfect world it would be
+> nice to get Casey's ACK on the Smack changes, but since they are very
+> minor and basically just pass the return code through I think it's
+> okay to merge this in another day or so if we don't hear from him.
 
-Hmm... How did you choose __ip_dev_find() over, say,
-inet_lookup_ifaddr_rcu(), which is structurally more similar to
-ipv6_chk_addr()?
+I don't see any reason to wait for my testing to complete. I'll shout
+if anything fails.
+
+
+>
+> Acked-by: Paul Moore <paul@paul-moore.com>
+>
