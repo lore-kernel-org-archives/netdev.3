@@ -1,83 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.75
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794306008;
-	b=UuMjxdeQHpNteHEEIZwI4XFLemyoQaLrqlVM9iTn9Ebg95NBMLXpURRVSleMhM0C0PRp
-	 SWnu5dyTGeKl0P0wCBojPPKPBZ76VZ92M7LceXFyQAoBPow1Spx+JDkLQ0zySYtB0Wv3t
-	 ef6x96REPLzqXDua5cr8qegDzTA3vDdf/MQgtB0wiBwlvK8VeY2umwdizBf1NM+AsZNFj
-	 BLOaBQEa2J1uNmXZ6efSbd0maeoo67aZ/K5uBQyUrFMUuQTr12/PaemzM/lPThcaAGLqo
-	 qSzoxbdc1M84jji1FyVipLyYdx1vBrIo0fYqym7AmH1UW3DrdznYrwojKEBQjTQlfDw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794306008;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:DKIM-Signature;
-	bh=M8ILNV3ot9wZQoa2UhnQDc7NOfIz0w/9kC5JL/dcSGg=;
-	b=ZyzUwDrgW6ckpKJJpdwtnW6QDderM3oLipsT8z2eL4SxEzDV/sPUCAqwy7m1qEKvG4B6
-	 JILDjbLNM1e/FkXMFGxIfUn/GIqKqZfce1/jLXhCqm/T+hFWeuBWYlge+5xpjw8WYdRGH
-	 4HqBh0J46/sYJAbCA4Cu/3nmNHs/QT73LN/op11bv5Qclz0TZLqWTlpbzFvQhdBBZemfF
-	 prMIFDn5GFxC8zenRSSw3WQLZre8r+k1xg4f6lo88YgVjJNlz5UmiCL8B+HYIIwDiap7t
-	 jAE4QNELp2eeOgkVgltpmT1CL1PjHbNGVPcvrAfCMgnOOjY1IhScinvGojrNB0IE/qA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=poczta.fm;
-	spf=pass smtp.mailfrom=poczta.fm;
-	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=KpBXWzW4;
-	arc=none smtp.remote-ip=217.74.67.75
-Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BFD606A32E
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:20:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90BFD606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=KpBXWzW4
-Received: from localhost (unknown [80.68.231.31])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794306012;
+	b=BjbnMrsIsZEYttafcHSgnAn7ubg1KTiYJSw/EnVbRu5xKuyYDfWqTMVWRMEVeIbtCrHN
+	 hVf5RC+EpURIoFnbiSsgEBmmqxbZQcYDYuD+JpT1F1/AGaNabvXEnzqybrCXsUwVUOKeg
+	 6jAjVkCpFBUihrXzCTZL0X6qHs5+TBaiBEagDlkzR4kT1gd0xSfx+noMeP/KUDvuDalCk
+	 yfvm7jZGhi6z5iQd2ojkmedrr+rzjm8WXr6fUjDqBFb6EbpOL3hxznhf1U5I0A79+zU9g
+	 1aVDwxaKNuEob3wvQrtzVr9VPuc6YYZtnHls18r9hfTbN0Ql8vo1c55VDA/tHpXGM9g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794306012;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
+	b=ty4Kw9h0yIzpxDf55hHnaBxrq1m0XrQdmeK4IMRwjr6W4TsgOrGPloa18q9+didKOnrM
+	 OYpY53g+BifxJXcB5CvMlrK07gDTBBe06MjJfbFCrhGrV3nlLGFe39StnmX+W5EN81st+
+	 /9G5i521TLx1+0BXcuA3b63YJkQvf6nswxjljFmNRXm5wMrKukf/0WjQUSP5W1aTuA6sm
+	 m8NQdfGfflgnBjzyFG9cZGh+P4Coa0jhvh7zcEI6Bb/KLCe+vWM1rNYIJkfcI0t5P1Ic0
+	 dcU9GXSuGfnl/YiueTsDLMSmA06R4vCzjUKQ1zZSkHNJYuJJMf/lsRsKpLUpcUadtww==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LBBHAHTj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Tue, 10 Nov 2026 11:20:01 +0100 (CET)
-From: Slawomir Stepien <sst@poczta.fm>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Tianyi Gao <tianyi@cloudflare.com>,
-	Liang Chen <liangchen.linux@gmail.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	"huangjie . albert" <huangjie.albert@bytedance.com>,
-	Slawomir Stepien <sst@poczta.fm>
-Subject: [PATCH RFC net-next v2 1/4] xdp: add mixed page_pool/page_shared memory type
-Date: Tue, 10 Nov 2026 11:19:38 +0100
-Message-ID: <20261110101941.1059662-2-sst@poczta.fm>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261110101941.1059662-1-sst@poczta.fm>
-References: <20261110101941.1059662-1-sst@poczta.fm>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A57606A33D;
+	Tue, 10 Nov 2026 10:20:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79A57606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LBBHAHTj
+Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
+	(Authenticated sender: str@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7D23A202334;
+	Tue, 10 Nov 2026 11:20:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794306009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
+	b=LBBHAHTjxSBG5vWXjBTxzNQDmVlT/3z8SV+EjnvrJFvZA/orPWjlatDRm/8lGMNJKRB3vR
+	oWWYK0uiNEHxSMJCUrWrR3xumpf+kviq2itccmWgodfq2aCcchqIMwFxhsUl7rnMQKWfpE
+	HekRWc4mk5JR4xoOMSG+jsb8y2chigYpcfdixAAbF3H5YkHnYKhhdN1tvp9RdFQPgYZFXD
+	O3pyQDzo3G2bbRzvi3ansey5waGyV206/qMbZ75fOSqDmtc7SEo1py9hunARFv0xsMiAqt
+	4fJjVbqBjMRbd49W3D7xh+c0HTy3mMFiKp5uxA6hJTWD60Df/ohx0g3Bpp0rsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794306009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v170zuzkWK5E8JogMW92ptltcMWFO5dDHSPC4KhWfJI=;
+	b=dlCR3GGuEvv2Tvokka6cNsfW1ooDI2swQ1LrMCEwVuHyQmED/dWHMoJyfg/HSLjIgr3XlD
+	ls2XDA51iZChcY8x7aPSPG7sHclaj4P+uwULBAS0HJZIdS89JonG6l0rlqXsH9c9mcjpBU
+	qkA78wWEbAPvbotJn2okqqzPe7lveA5/5TFa9xIq8L1+LQXSqixW6oVj4tSLWzuv9pGpUD
+	nXnEVUC1l26DO78RRJZJrv4/eDmV4L1RR0wYTtEiHYAB0dY4Z8MLP88HHTG+RS0HCCRqMt
+	tkeTvrTIsyy5lhErqsdFUqGOsNjoJXdbjip2Yli1oQcKRqGa3zCvUykTNKf6ww==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794306009; a=rsa-sha256;
+	cv=none;
+	b=B6wXaZdnlCqtzJ28tfhpEk3L+rL44BdHguN/+XaK0g/xQl+hRvruOFGgtvGSF/brUfMtEY
+	9UlhGGMDz4RwJNQA/5ObMh6xUBVfUc7YnZsV9J2Y+CrINtdyL0Vk9Cv6k6edO7x+U8LbsX
+	bIs/IjNNmyV6mnIXDYHIzVIen0IcdgkCp75AAF9MJgqxQHwzDiYZcrQivFVdLISOBzcxfI
+	pwGEAjuqzfA8adQEyAHyKm+gce7byqjtOGku2VwRPnCrkwK7t72qtrsrgd38CvHYYo+C9B
+	UGpCIPrzjV3QUx5QU507aPOEB+IuuhlBpnu82ut+eicS3WoDwtGGVZ/WOhHLcA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue, 10 Nov 2026 11:20:07 +0100
+Subject: [PATCH net-next v4 3/4] dt-bindings: net: dp83867: Add
+ ti,output-impedance-ohms
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,190 +84,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1794306004; bh=M8ILNV3ot9wZQoa2UhnQDc7NOfIz0w/9kC5JL/dcSGg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=KpBXWzW4876uUrlznwGy0IabYfyeEt7b1cje5Jo60pVdw7ld2lhkk0VfdxHGOiF4n
-	 0ATtdmGLMDhMneHR5IZyfbWdWunpVXWL/ZXZoYg0YRm+Oaq1P7UzEbyuTemb++quny
-	 tcLWznz979MdLKgPDcBgcp+BqfQa7AV5eNY7hPcQ=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-v7-2-topic-dp83867-v4-3-a268f83b1ec1@pengutronix.de>
+References: <20261110-v7-2-topic-dp83867-v4-0-a268f83b1ec1@pengutronix.de>
+In-Reply-To: <20261110-v7-2-topic-dp83867-v4-0-a268f83b1ec1@pengutronix.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Michal Simek <michal.simek@amd.com>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1906;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=DCzVebg+SU/ONPpSp5yog7UKs35KdC0TeKWiCOdSZP4=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9an99f/3fJXn7dwnfrOKd1z06c83Lf0zxre8pK9mhfVz
+ 6VMD83m7yhlYRDjYpAVU2RRWVjBJ+rxwTNymggXzBxWJpAhDFycAjAR9uWMDLMT10xaG8GQKKc5
+ 9d482blKOTwLuR2efvfI2cP2Zfqcui+MDH8OzPcWvLvv5mpXRYYp/x0lzWXnJMiacBWsluXbvjb
+ rEAcA
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Currently, the output-impedance can only be set to default, minimum or
+maximum or via a nvmem cell.
+In cases where there is no backend for a nvmem cell, a value can not be
+set.
 
-Generic XDP runs on skb-backed data. In that mode the skb head remains
-owned by the skb, but XDP helpers may still release frags, for example
-when a program trims a non-linear packet.
+Add a DT binding, 'ti,output-impedance-ohms', for specifying the
+output-impedance in ohms, between 35 and 70. Like the existing
+properties, it is mutually exclusive with the nvmem cell and with
+ti,{min,max}-output-impedance.
 
-With the generic page_pool CoW path, the frags visible to XDP may be
-backed by the generic system page_pool. In the fallback path, or for
-other skb-backed memory, the same generic XDP rxq may still describe
-page-frag based memory. Selecting MEM_TYPE_PAGE_POOL or
-MEM_TYPE_PAGE_SHARED purely from the rxq therefore either lies about
-page_pool ownership or misses recycling opportunities.
-
-Add MEM_TYPE_MIXED for skb-backed generic XDP users. The
-return path inspects the actual netmem: page_pool-backed netmems are
-returned through their page_pool, and everything else falls back to
-page_frag_free(). Transition netdev_rx_queue's xdp_rxq_info from
-MEM_TYPE_PAGE_SHARED to MEM_TYPE_MIXED.
-
-This keeps rxq identity stable for users which inspect xdp->rxq->dev and
-xdp->rxq->queue_index, while avoiding per-packet rxq->mem mutation.
-
-Respect new mem_type in __xdp_build_skb_from_frame() as veth could
-redirect xdp_frame onto cpumap.
-
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-[sst: rename MEM_TYPE_PAGE_POOL_OR_SHARED to MEM_TYPE_MIXED (Björn asked
- for a new name, MEM_TYPE_MIXED was Maciej's proposal), document the type]
-Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- include/net/xdp.h |  1 +
- net/core/dev.c    |  7 ++++++
- net/core/xdp.c    | 54 ++++++++++++++++++++++++++++++++++++++++++-----
- 3 files changed, 57 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/net/ti,dp83867.yaml | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index 07231adfb5f8..ba055439e497 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -45,6 +45,7 @@ enum xdp_mem_type {
- 	MEM_TYPE_PAGE_ORDER0,     /* Orig XDP full page model */
- 	MEM_TYPE_PAGE_POOL,
- 	MEM_TYPE_XSK_BUFF_POOL,
-+	MEM_TYPE_MIXED,           /* skb memory: page_pool or page_frag, per page */
- 	MEM_TYPE_MAX,
- };
+diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+index 833540743bdf6..557d2517a72ed 100644
+--- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
++++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+@@ -53,6 +53,16 @@ properties:
+     items:
+       - const: io_impedance_ctrl
  
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 9665f3b2f5cb..6e330fc415cb 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11459,6 +11459,13 @@ static int netif_alloc_rx_queues(struct net_device *dev)
- 		err = xdp_rxq_info_reg(&rx[i].xdp_rxq, dev, i, 0);
- 		if (err < 0)
- 			goto err_rxq_info;
-+		err = xdp_rxq_info_reg_mem_model(&rx[i].xdp_rxq,
-+						 MEM_TYPE_MIXED,
-+						 NULL);
-+		if (err < 0) {
-+			xdp_rxq_info_unreg(&rx[i].xdp_rxq);
-+			goto err_rxq_info;
-+		}
- 	}
- 	return 0;
- 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 1d679e8fd649..7077bc54d7d5 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -22,6 +22,7 @@
- #include <net/xdp_priv.h> /* struct xdp_mem_allocator */
- #include <trace/events/xdp.h>
- #include <net/xdp_sock_drv.h>
-+#include "netmem_priv.h"
- 
- #define REG_STATE_NEW		0x0
- #define REG_STATE_REGISTERED	0x1
-@@ -280,6 +281,12 @@ static struct xdp_mem_allocator *__xdp_reg_mem_model(struct xdp_mem_info *mem,
- 	if (!__is_supported_mem_type(type))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-+	/* MEM_TYPE_MIXED has no allocator of its own: __xdp_return()
-+	 * checks every page and returns page_pool pages to their pool.
-+	 */
-+	if (type == MEM_TYPE_MIXED && allocator)
-+		return ERR_PTR(-EINVAL);
++  ti,output-impedance-ohms:
++    description: |
++      MAC Interface Impedance control to set the programmable output impedance
++      to a value between minimum (35 ohms) and maximum (70 ohms). The PHY
++      has 32 settings in this range; the datasheet does not specify the
++      impedance of each setting, so the value is mapped linearly to the
++      nearest one.
++    minimum: 35
++    maximum: 70
 +
- 	mem->type = type;
+   ti,min-output-impedance:
+     type: boolean
+     description: |
+@@ -133,6 +143,12 @@ allOf:
+       required: [nvmem-cells, "ti,max-output-impedance"]
+   - not:
+       required: ["ti,min-output-impedance", "ti,max-output-impedance"]
++  - not:
++      required: [nvmem-cells, "ti,output-impedance-ohms"]
++  - not:
++      required: ["ti,output-impedance-ohms", "ti,min-output-impedance"]
++  - not:
++      required: ["ti,output-impedance-ohms", "ti,max-output-impedance"]
  
- 	if (!allocator) {
-@@ -424,6 +431,23 @@ void xdp_rxq_info_attach_page_pool(struct xdp_rxq_info *xdp_rxq,
- }
- EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
- 
-+static bool xdp_netmem_is_pp(netmem_ref netmem)
-+{
-+#if IS_ENABLED(CONFIG_PAGE_POOL)
-+	return netmem_is_pp(netmem);
-+#else
-+	return false;
-+#endif
-+}
-+
-+static void __xdp_return_page_pool(netmem_ref netmem, bool napi_direct)
-+{
-+	if (napi_direct && xdp_return_frame_no_direct())
-+		napi_direct = false;
-+
-+	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, napi_direct);
-+}
-+
- /* XDP RX runs under NAPI protection, and in different delivery error
-  * scenarios (e.g. queue full), it is possible to return the xdp_frame
-  * while still leveraging this protection.  The @napi_direct boolean
-@@ -433,20 +457,26 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
- void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
- 		  bool napi_direct, struct xdp_buff *xdp)
- {
-+	netmem_ref head;
-+
- 	switch (mem_type) {
- 	case MEM_TYPE_PAGE_POOL:
- 		netmem = netmem_compound_head(netmem);
--		if (napi_direct && xdp_return_frame_no_direct())
--			napi_direct = false;
- 		/* No need to check netmem_is_pp() as mem->type knows this a
- 		 * page_pool page
- 		 */
--		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
--					  napi_direct);
-+		__xdp_return_page_pool(netmem, napi_direct);
- 		break;
- 	case MEM_TYPE_PAGE_SHARED:
- 		page_frag_free(__netmem_address(netmem));
- 		break;
-+	case MEM_TYPE_MIXED:
-+		head = netmem_compound_head(netmem);
-+		if (xdp_netmem_is_pp(head))
-+			__xdp_return_page_pool(head, napi_direct);
-+		else
-+			page_frag_free(__netmem_address(netmem));
-+		break;
- 	case MEM_TYPE_PAGE_ORDER0:
- 		put_page(__netmem_to_page(netmem));
- 		break;
-@@ -791,6 +821,19 @@ struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *xdp)
- }
- EXPORT_SYMBOL_GPL(xdp_build_skb_from_zc);
- 
-+static bool xdp_mem_is_page_pool_backed(enum xdp_mem_type mem_type,
-+					netmem_ref netmem)
-+{
-+	switch (mem_type) {
-+	case MEM_TYPE_PAGE_POOL:
-+		return true;
-+	case MEM_TYPE_MIXED:
-+		return xdp_netmem_is_pp(netmem_compound_head(netmem));
-+	default:
-+		return false;
-+	}
-+}
-+
- struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
- 					   struct sk_buff *skb,
- 					   struct net_device *dev)
-@@ -836,7 +879,8 @@ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
- 	 * - RX ring dev queue index	(skb_record_rx_queue)
- 	 */
- 
--	if (xdpf->mem_type == MEM_TYPE_PAGE_POOL)
-+	if (xdp_mem_is_page_pool_backed(xdpf->mem_type,
-+					virt_to_netmem(xdpf->data)))
- 		skb_mark_for_recycle(skb);
- 
- 	/* Allow SKB to reuse area used by xdp_frame */
+ required:
+   - reg
+
 -- 
 2.56.0
 
