@@ -1,118 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794328467;
-	b=c8TCwvu/2o5IS5Ia1K0Q2FGJ8cN3fOoso1q7l2zAxSWn+8poVYhtxvUM/mNtSipGlp6F
-	 BQ9OSZiGd3brRCrLfYW5Rhyl2ahclaV6zVnqFuJV6/tqOPsowferoPf4rjnDqgYRVu0Ur
-	 yRXrjkIuqoV0uLd/d5I7pw1sENZnDw2y7Cd5l32IwbKOQBPGr0ezTyyuoowsxpv0CIlP8
-	 GiLtRzMqWhtoMUkBNwdHgPhkcGMlloVhbzRSRTOOKOa3AYwDIc8SdVwKDrABUNmueUG+R
-	 CU6Ix/GpphRKMCyf/Jv2NkB1QChv2GG0Vz+Nikwx4Es/IJf/5XVZF8lFI2We/blnXeQ==
+	t=1794328660;
+	b=JJQ9penU2Gi6RCGEByGNu9/mrHNzvGC8CL/AHTCzmgLlW2W/Kbg40gCxU6JQbwIVMiVL
+	 U743tkMlsoZKn5U69wVaDon+/5FExVH7KjOp9GNxRd0WrjxshXQdiZnp9SxBiDOULQnZQ
+	 pxJN/bFzILGyplGhrY2ggVZDTSswmwCcD1Gc3AY1SjpfhvpXTLqWduJBfBRLxYw9KEAzl
+	 v2eXc3J/32B08KQEnKdh+ge4Vkvl5acRXb3Rtb2Z0maYRBAG4Sl62WNfzk6yU1JoMUBSM
+	 ut2NMF0JOeSUWWt9z2BAkUe6Xd4QejvWRU5Ra2GyjaB5tPQ1KOiU9OnFxpFEnn0hVXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794328467;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-	b=u5BtI41BQnWHYL3c2VmKOyYuhbarCGQRlIGRFIgZcnd62KlMza49QK6RpmvlU4seoeMa
-	 iqjOjpUFjL2EpVDQCWhCHfBBTQGcPR1MF+GosBcRFVPRfDbCZJXu/aJ9bN9YDAreWOeAj
-	 l9ZFD4XlbkkDS7uHhf/QWww8im6BK7C1eVHO9mWu5v5E9buso1cYTUTvi4aSMRvsCNphD
-	 66tE7WATmK+mMeUYVPjQU5GrD5iOicCgSxOFv3lO43JiNnhMwk5GMjyRkbiL5JliG21ks
-	 ItHrqxmORyf7guW3lRbpaV3+r/S09PX6YJJ688iG3XG9XxU3ozn/ROjsdyBBrUOJB/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794328660;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:DKIM-Signature:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=mdHUO0VGLnueGxzHTpyhsQE1fh1WvgBQfjWRPSJDDzY=;
+	b=NKB9Ydtrkf9Eb64kHgxdD8bsxH8RSQJQ6djRWSlVLwmOyzGMcPKQUoFKBSX5Y/bl94tY
+	 BwFPDmwXSsAQzsoEh82SYVznjq/8C3z1BOzFzcbPeiu8oKESmd/OuDoWK6T+6slHj9y+d
+	 vNH96IDmMRzww3S1YXwWWs190ZXJjd2B6q9pYGfPKQLhhp4dQv7Ky1MrNH07geqPKHTYN
+	 0sEmVxIiKaf4P73Ut63q14SUc0rtzQfnmcm5IRZ3oKCCMw1ZwoCaZP+BZDozWij0Qoj2G
+	 W6iESU7N9tHwuHfgLUsyjX4WxVo1vIBokOdLeRcrMWJKsK7I6shyweiE27/m+r909Bw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5;
-	arc=none smtp.remote-ip=209.85.217.43
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	dmarc=pass header.from=zx2c4.com;
+	spf=pass smtp.mailfrom=zx2c4.com;
+	dkim=pass header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b="ZDZr0U1/";
+	arc=none smtp.remote-ip=209.85.216.101
+Received: from mail-pj1-f101.google.com (mail-pj1-f101.google.com [209.85.216.101])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CB7606A227
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:34:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52CB7606A227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E4E606A213
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:37:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58E4E606A213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zx2c4.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7d2ca055399so716853137.3
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:34:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794328466; x=1794933266; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-        b=fSy8tcC5IqRPJ8T9YRj22z1qFAkPgpRi2kcT3apWfgMEplaE1W0onrcdvaL/BL/ywE
-         rOSS0ydfaat3r8gteyf5+yftpLD+2I78ebj6isd5tSmAO9uXKA6drfZE2fPbEDLgB8tv
-         4nj5eU6BbFuMME+jx7QiJhMbdOwnH56XkB3/HT/fr1ZGQooLEtuVaD6KLZUnJ4xbTN5H
-         VkTk3pY/yOZ/w9fPvBKK5wNUDrb1f6zcpKrwD0C4hM87Oys5nnQ81EVXkI7GaiyDb9rK
-         5iOj/aarsL/qQFbE1WK3Ho0Kl6BxOfVqScOWNlF4Xqlcyi87wAdVUnIdMg2NDVulzXnv
-         hkjA==
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=ZDZr0U1/
+Received: by mail-pj1-f101.google.com with SMTP id 98e67ed59e1d1-3b17b277a68so173879a91.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:37:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794328466; x=1794933266;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-        b=MAERsZI6QL/KzW8dFeCI8xpAdXC2SP5F/JaYe/Fe8KBXANfJYG8fc4GkH2N2NeRmiX
-         Om46buG3RRybSzqQizfFYD8caz2noJwyFR0V5spldX4XAV47YyDW78TQGHpoam5vhGyp
-         H9PP/fBQNxDlgIuDaW6SHvEVQw40VePbepz51rU1tyc3giFhq+/M58cN7rqNiX+oo9lQ
-         qAmPhguOqKRglRG5ysKhjwFLY4uQ3KuTaFjBF8K586W3r8ujsy1HOBOqn52yF3cZnaxV
-         24NY0Yqsqr0CJVTqj8USFFDCXk8G4lCOfA6LiBUfM6mSd+fFiuLHL/8b3xb88e/jV09n
-         XBgQ==
-X-Forwarded-Encrypted: i=1; AL+hErE9fkvxvn893YZiXZwlYcadAISh4lnwallEAQiII03Kc+tS5761kNlErPpMSUOo15JJtIsDFG8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+eZAqn9DwQvzv53cGhF0taQdQ9uYHetZN4dw6jJKyZ0rCU0WRX
-	lXwjrKZgbZ6tIbmXRRy/LP71xXjNDRXlGFMPBYN+xXQL1j2RvX5/pNhw
-X-Gm-Gg: AYBFou34FF6LZsXwiSBm4XMzqilbo/6bj/Felhs0Vv3BPWGY+rVi58yIiir8FI0s4ym
-	Ro9ElCPmlyLvUUX2BGyPXpZfQ3j0JholIbFS6XckRlUar4rmBomcp2pwItX+6ngComg6pLJyenl
-	2URSem+eWcguLZ0+lEwGU7RPlo8l2AyKsmQm4EiPdA68oQaUWmYO0mi5FZ8tRNqX2DcGAbwWtPC
-	WKt9ofjJhNpSiQoiK9LGaUFpk/CPAnQ9Fo4QaFNx+sCOVawQS+/OVUmHFvvyL446unToKO8p1Pb
-	M8TF2xUAIjV048Nku3FnJMyX5sBhqSxKSWoI9smIAmg7Dq4TjhXqx1nVI5O5M/Cg9dSfPJ0vA5d
-	hAitinOfF4q0BiEeUUH2ulVIuA1ovGwEJ+eVklxs9XAC/5dbFDpJS1sMRCiw2KcSChU5suCV17A
-	1PcX2dO+R2FYo4u9k6FgXtv6j5KnyItd8OyQqZFr3bmCnn/2sGtVFjx0tBDl/atlujtEwWMneIA
-	xYAFSEALSNjKvDO84agWn9dT+WUS7JmcVa2Mq/ocSWRNucvewTwsmabkJ/awF4RL6a50wvlETLy
-	c6qEiH4ZepRVb9R70Re1zbfYx4F2f6U7NrTPs3EBgx2DS8NmOBKHYwISyRKpO8mJufRuNpAjX8b
-	S6Ain4uxCjK62f3/00Z4tAcvqrxTpxeKjDG+Dwg7te3guPg5paaVMiRDFccU2RQUTpubnJr5Ia/
-	N7eZlZPFN0BojgD3nQ
-X-Received: by 2002:a05:6102:c54:b0:7b5:7cd5:2a1b with SMTP id ada2fe7eead31-7d301b9d79fmr866580137.10.1794328466169;
-        Tue, 10 Nov 2026 08:34:26 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c200838f0sm2147394241.9.2026.11.10.08.34.25
+        d=1e100.net; s=20260707; t=1794328659; x=1794933459;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:dkim-signature
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=mdHUO0VGLnueGxzHTpyhsQE1fh1WvgBQfjWRPSJDDzY=;
+        b=YpjLZCgN5RsMk9kHBjSx8KoaVoPMKW3VK6jBZq0qs2VUZOpxsgNx/3S+J2ke7lVB/s
+         bZJdRlks7orYGe3KSufct/MKhSi6bQr71mL5vTV2lQlflmu0C1ITH9F3ZQO+sEhtSGE5
+         VZnXOYu6YkOKR0lpL4PcPqCyToH2nqZPQdhPr4tq9nQUfbIOBFjGTBi6rNesturzk2MP
+         J9t88SFJHwg9K0Xq1RDiZQRFSf2lY2r5Jv7fqsV9P863IIJJPEou3oU5a8sQqdSGZuA6
+         ny7JKZSdJ8cWd5wzIKiWSQmvncYIEbKNbof4/NDtnz379BCDMPUWo17PdlOVk6hGZu8u
+         IRew==
+X-Gm-Message-State: APuU4Z9rWvVrgifM/heKcLYo2hzRGngUX5Up1S+cSv4u4E7KsSvgoZRF
+	DMRJJaEjFTkY+Ks/Ik8yaOk083ON0NlIq4pSrnYVaGjVYr/aEQdLuGObu7cNxacKMW9CuQdspsu
+	Y8YS2x4S82JoLs34Ig9+2m6lBvV7I5aQGAy7yAro=
+X-Gm-Gg: AYBFou1WapIfiNZqDpcYrRRIr6HablGPtm7MVrjy/y249zhLY2kpqFs4XDcQQEp7Gg3
+	DwaHcfj+b5STNO888osVZOqk+9JXS7f/9hKPTywp9AXFWOaF1AVH81xZgmm8+4CM78ua34/ATLu
+	hP2tFfBobPiUghHrHA5q0WKYF1EMdn0JpamWI3mC3OHWQi/fDp2xYWXrgf5t2BL6q3u/tBOhKqD
+	NxY65Qk17jloQQFpKrKTI8JesU13b0QKTIkr/lBvXa50AVZ5CzN/rAhIJlC77z32Z/NCgCXXqnT
+	dOp1ZVF17gL2XK/Atl6+9vxxIiOsTQxxRAF05462jvcQJXPcbMopLawkLCZVOWsotdAMVUiPTrG
+	9zA==
+X-Received: by 2002:a17:90b:4cce:b0:396:41d1:cbc7 with SMTP id 98e67ed59e1d1-3b166aef2b6mr3328097a91.3.1794328658562;
+        Tue, 10 Nov 2026 08:37:38 -0800 (PST)
+Received: from zx2c4.com (mail.zx2c4.com. [104.131.123.232])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b168f056e7sm995427a91.1.2026.11.10.08.37.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:34:25 -0800 (PST)
-Date: Tue, 10 Nov 2026 11:34:25 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- kuba@kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Eric Dumazet <edumazet@kernel.org>, 
- virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- kvm@vger.kernel.org, 
- namangulati@google.com
-Message-ID: <willemdebruijn.kernel.4096b48e9e59@gmail.com>
-In-Reply-To: <874ido29iy.fsf@pengutronix.de>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
- <willemdebruijn.kernel.1d6388f036c46@gmail.com>
- <874ido29iy.fsf@pengutronix.de>
-Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
+        Tue, 10 Nov 2026 08:37:38 -0800 (PST)
+X-Relaying-Domain: zx2c4.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1794328654;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mdHUO0VGLnueGxzHTpyhsQE1fh1WvgBQfjWRPSJDDzY=;
+	b=ZDZr0U1/pHeEMipCNGli2iMRTX1nXQLbpRmDwcZEDOQ+B4SQBTWVNZw7weGFZUxjHl3Gs6
+	CMtZfiW5dbFxczAM63Wv9EWm5qrgXInVmcuokvE6TMadLQ6zQieK0QropTRsBjZ8DRH+nq
+	xTO39zvfYLBDk4s02DwIKPTGdFI373E=
+Received: 
+	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 07eb770e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 10 Nov 2026 16:37:33 +0000 (UTC)
+Date: Tue, 10 Nov 2026 17:37:31 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Andrii Pasichnyk <apasichnik9@gmail.com>
+Cc: netdev@vger.kernel.org, wireguard@lists.zx2c4.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] wireguard: peer: free packets left on the per-peer
+ queues on removal
+Message-ID: <avNIS67grg_Qc5Vy@zx2c4.com>
+References: <20261003201625.4572-1-apasichnik9@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,91 +99,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261003201625.4572-1-apasichnik9@gmail.com>
 
-Steffen Trumtrar wrote:
-> 
-> Hi Willem,
-> 
-> On 2026-11-01 at 09:57 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-> 
-> > Steffen Trumtrar wrote:
-> > > This series picks up Willem de Bruijn's work on a virtio-net receive
-> > > timestamp. The device puts the time of arrival (TAI, ns) into the
-> > > virtio-net header so the guest can use it for PTP and RTT estimation
-> > > without taking the timestamp itself after the host-to-guest latency.
-> > > 
-> > > The series is an RFC. I am mostly interested in feedback on the
-> > > approach and on the wire format:
-> > 
-> > At a high level +1 from me.
-> 
-> Thanks!
-> 
-> > 
-> > Some comments inline.
-> > > 
-> > >  - The timestamp is a new field at the end of virtio_net_common_hdr
-> > >    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
-> > >    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
-> > >    bytes.
-> > >    Willem noted on v3 that virtio_net_common_hdr was not meant to be
-> > >    extended this way; I kept it as the simplest approach, but a
-> > >    separate struct for the timestamp header is an option.
-> > >  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
-> > >    supported rx filters behave the same for now.
-> > >  - XDP programs can read the timestamp with
-> > >    bpf_xdp_metadata_rx_timestamp().
-> > >  - vhost-net passes the feature through; the timestamp itself is
-> > >    written by tun. The tun patch is only meant as a reference
-> > >    implementation for the device side.
-> > >  - The timestamp is in TAI.
-> > 
-> > Is this a requirement? It is common for PHCs to be synced to TAI,
-> > but not 100% the case. Does virtio need to specify this.
-> >
-> 
-> No, I don't think it has to be TAI. TAI is only what the tun reference
-> implementation does (ktime_get_clocktai_ns()). What the guest really
-> needs is to know which clock the timestamp comes from, so it can compare
-> it with something.
-> 
-> One idea for the spec change: don't fix the time base in virtio-net at
-> all, only say the timestamp is in nanoseconds of some device clock, and
-> let the device tell the driver which clock that is. virtio_rtc already
-> has clock ids with a type (UTC, TAI, monotonic, ...), and the Linux
-> driver registers a PHC for each of them (with VIRTIO_RTC_PTP).
-> virtio-net could carry the virtio_rtc clock id in its config space, and
-> the driver reports the index of that PHC in get_ts_info. That would also
-> fix the phc_index == -1 problem you pointed out in 2/6.
-> 
-> What I don't like about it: virtio-net then depends on a second device
-> being there, and with more than one virtio_rtc device the clock id alone
-> is not enough to find the right one. Without virtio_rtc the driver would
-> not offer hardware timestamps at all.
-> 
-> The alternative is a PHC in virtio-net itself (gettime over the control
-> vq), which is a lot more spec for one timestamp field.
-> 
-> Do you think the virtio_rtc way is reasonable, or is there something
-> simpler I'm missing?
+On Sat, Oct 03, 2026 at 11:16:25PM +0300, Andrii Pasichnyk wrote:
+> Reproduced with the WireGuard selftest VM (x86 KVM, 1 vCPU, net-next):
+> remove a peer while a UDP flood keeps its receive queue busy, re-add it,
+> repeat, then run the selftest's created/destroyed object check. Over
+> 2140 removals the unpatched kernel leaked a peer and its keypair 5
+> times ("wg0: Peer 27: merely created"); with this patch, 0 times in
+> another 2140.
 
-I don't have an obvious answer. This needs consensus.
-
-Hardcoding clock base to TAI is definitely easiest.
-
-Outside of virtio, the relationship between PHY RX timestamps and PHC
-is well understood. It would make some sense for virtio to follow that
-model.
-
-But indeed when having multiple NICs and multiple PHCs, how to map them
-I think is an unresolved issue in general? Of course, aslo moot if they
-are all synced, which I think may be an implicit assumption especially
-in the world of spec compliant PTP.
-
-And, if virtualizing anyway, it is feasible to do the clock conversion
-in the software device, not having to bother with all this complexity
-inside the VM. Though maybe not for direct HW virtio-net queues.
-
+I'd be interested in seeing your adjustment to netns.sh so that I can
+test this myself and validate various approaches. Do you have something
+really minimal? Also, is this a test case that could be implemented
+minimally enough that we could integrate this into netns.sh permanently?
