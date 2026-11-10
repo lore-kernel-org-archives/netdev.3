@@ -1,65 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.225
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794300914;
-	b=uLHiosOfb40FJGsHPwGs3hNWp2Jyfsd1G2Inbxv1CalKCVNwR+d1jtAU37U32qMhKmdV
-	 RMUYt0AmRKAF/Iyp1WgGCAPWTdaPXr5H19NPfuD3lVxU40NcYSiK/tXAs5iqBQXghWP3d
-	 cd93NK3fl8C7Pb3ATH8Ap6OcuvEU0Xa1cNDpDakiHkphI78xpWIBSOcRKekC4YD3EPWqg
-	 PauFG2sE5AJWoXNTB7v2mS7l2kx5nyJ/VTJVnawb7dxtCWxPrIb/dNVV+0d0uTMHjbeeS
-	 SwBqCsZbu6VmyJdAkw428a5nh+ZHumq0/VEOX569JZu7afoCz0re5YT8ajHGt+q90oQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794300914;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Ltnrl5vOydYNrkG1W6BlZzeak+z3Krfn2QWz7/Z+RyM=;
-	b=SysB/q1Dz/w3s+CHawMtomQ/0Bmv5mM4IUS9IOLg6HDWWxywV7MQbl+seZyF9DvwfDdJ
-	 35m0+KAFZ2qE0YZrXkid0/eG+BuczexY2O4G36wzHmXKQ8tK2//PBt0Fvrv73M+P1Sirt
-	 nZSQlJlS3++cRogUgZom1A+/RVaJ6N2Jl+ORDiPNGxu40YpctQ6vqEABUsDpeXF9N0GCm
-	 T8EUVtQBHpij87qXLtzY1ykU4QkhxOFdUmrWiETYpOaV5LjRybG4JHAJ8Y/aqMwoQjMcC
-	 k526p4A5L8jhAOzixdD/utmfPx1+RI3DOQApTxI8PUCHr8rjwEUuRsZ3WPIMa2K7ggg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6Uzr5y8;
-	arc=none smtp.remote-ip=91.218.175.225
-Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794301002;
+	b=yYv32uye7K3Um1jBwkwR2h6Uq8kfmWHBO0JCzyX/AEHm/0qtrOaRDzzzMnmlgChXVkh2
+	 8it60rZxnTg5pSF20AmSnJb276PKRUwhGNAt7YJ3y3Mmi9zemS5gPnug1Cl6w4sSxl5o6
+	 xPMsLd2ju7D16rFEH3qEfrVyoNGaY252HZlRzDFu2tzL07FRPDk3F9iD11fQ2y20jneK+
+	 Whh8nWOQQtMCxZzLMgp3F+LQHHp5pYc7dDBzY6wpKVeOLKOviUYegnLOxBgy06MKyNjze
+	 s0kSX4jkGs76Le2MS/+dgO2CBl6V+iNtzFWlylJpz1lRx6hsiWXs843Zn6gLJDXEw3g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794301002;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=bfYkXKftGpF5yfABS1UtuwUuTJGO6Y1zVSNuiv9+v4E=;
+	b=uFXhnDUUr5pXWnBgcfpbSMEKIugMlWmn3TFSq978jdLeylpKzF/gcB4+7UxkY8VlMVJT
+	 gnSEoqBC8DZQhk0aWfHYzY2o7+VJoDC3lH8d6eyy0Fb6KLgw4Lmb4XPS6iqXw1d3bEsC8
+	 3HaI4EiFpFy6rPNu3CVIijSqzYeaKLFkKO13bYcrLiIdnIdkip1h8jaU4qhXYLZ7kig5O
+	 zykL+5CQ0BapqEmarN1+CZ4iWOhA/A1nvgxnU4i3InwI1j+FYzezJ7ygfV+PLxkUOPi3l
+	 1SHG9cr1ZZ+97EaMNebEZGecNM8J4sEOd5pCY9lsX0UgarKOFV2tdnNkr+9ITT8+oKQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=NcVYKVcT;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=LYXWldO0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE46606A336
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:55:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FE46606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C014606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:56:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C014606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6Uzr5y8
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=IPpB6p5683CzzqjuuxRDVIP/NIBp4A9AE4YYcXHpKx0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794300911; v=1; x=1794905711;
- b=l6Uzr5y89+SSC5OSkdujKHwXnI5JCVykoDgXJ0Yx2RaGFro6fFRn9z+4OANLNLrNmzlAyIgz
- /JZ+T3Xowrty7mayD+bQSk0eG6AHLcdTm9UnD0SRUheojhk+2+RJc0Q/7bmr8Vgql9+lKA3d+H4
- eGjDLitbleUeu8TdioIWoSlU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 3a49c9df13cb8ee4;
-	Tue, 10 Nov 2026 08:55:09 +0000
-X-Mizu-Trace-ID: 3a49c9df13cb8ee4
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 10 Nov 2026 16:54:50 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Gabriel Goller <g.goller@proxmox.com>
-Subject: Re: [PATCH net-next v5 2/2] seg6: skip the route refcount in
- seg6local IPv4 lookups
-Message-ID: <avLb2q9RfJsxhHHL@fedora>
-References: <20261109-seg6-lookup-noref-v5-0-96dc6a652c7e@gmail.com>
- <20261109-seg6-lookup-noref-v5-2-96dc6a652c7e@gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=NcVYKVcT;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=LYXWldO0
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AA7l4Em1155033
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:56:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	bfYkXKftGpF5yfABS1UtuwUuTJGO6Y1zVSNuiv9+v4E=; b=NcVYKVcTuU177hG+
+	ArpYA8LSEzGHsMJugRQmXh9xVaC8dkypRx3jlMrTLrRq6LmqEHY7wpxzkbleek4s
+	MWaNTGJ5EVtdAUUqCP6H5DR8KZ4v7gWwExqvulvvHJ7MImIn72VKOem0Nk73T77X
+	GdbNFZF796f/ch+x4kkp4MwCgFlsrnXMj/+55NgW0/hljc/dwn8ss0fFK300J+G3
+	ud6i+QU5vkz6MoI42APFOr2z29ekPSG2/m5cEOroWx+WVJM6pJ8dO1V1ZD6tSK1P
+	Q9F9GTTN3PMh07zaFDGmlOhqIHrmw2fEPTXCcA4N9mPMyEircZl4ERqxK7jYreyo
+	6ultrw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hutv49b4c-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:56:40 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f32050e72so398304085a.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:56:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794300999; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pTc4TcooOr0xopHpKUEGnD+YpJplLOALRv7PPp8gswopeKsjSBRHtBCFz+cVd/Uqyj
+         Dwdas4wUUaoXKBd4e89Ipx7rUDNalFp5hYkH9hvW7UGPDossy2AsCS8w/urSFYq7U+aK
+         k7BsBMDkro+wOAU9/p6Oe/RTERka3GYgNbczyrJode5Gy23WrvjZ4JeL8WnnuoxyuGH8
+         sMe+4bu5+5J2MOIVdQBb9dHWPHrY5fh0mIKAxTHdlwhcD62mMLy3AdvmHe/bgbkIteQK
+         KMqspRtMw5+C+YJtA5uNnlLhtgvfRT62PF2flpSkmebDL4XIrLiTLwxxF9MZM+LGV0gc
+         y8Nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bfYkXKftGpF5yfABS1UtuwUuTJGO6Y1zVSNuiv9+v4E=;
+        fh=N1J0a6O8j4QdTQvFXvQzM5M1Y1LIjoTNIAzUQksr5UE=;
+        b=qM2JpX69KTEe4NPAROuSLUiJPNjPIvu4oNfqp8ojWQI/JPJRHXkPDNDCajNcyFmRxK
+         hOtE5bdXskcbsF1Ei58xQY3NsV+Rs9eRuZ/yAmWFMf/bySCICimUfNb0NHOoo5qXIBhD
+         LgKMgHXPiLurmT2gXb9cgWr/CBbmmeDCTYcGb33XIzjpjm5e4KvBSCDrY/Id13KGkoHC
+         NhFySoezC4z+V2sER8iN+AK3YM/VO3dp73WWKyHv7qNN7M8t4OtBIv23UOz2IQANWx95
+         46+K7ZhJFe3EXLH3fQndz5yk91zzo8jokZc0QVQEQTb8wE30lIxAyKn+r0EtZcYbrg3w
+         SQoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1794300999; x=1794905799; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bfYkXKftGpF5yfABS1UtuwUuTJGO6Y1zVSNuiv9+v4E=;
+        b=LYXWldO0c0vma7FyZr15NbRiXa35ihkswPHRtXQQ1W5Ze9bs35doGfEBxaer1nfpzC
+         bD/UTK49HmANCUZfCbW/I82oMeFRSge9KfDedtqZvpgX6K66QktnPDnrIYzCGiaQoDOr
+         7NSusd0d5U33/V+CdkT+NbdpHD3LxUtI4lXJtSYVcCO6x/AdW8cao+3AqGNxrBpQwsEu
+         3BTwUO6iDAdCMb3XP7Y5YmUubPe0NwRdlyufzK+uHkNOuqKWjSekbqnx/RL41xWLjwM9
+         d4ssCS1MYf/GdizKd2yaoQzL6+/ItVe+qPVngUL8ls6i4GCFsA9L1EdPkbMatCowYHCJ
+         2r3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794300999; x=1794905799;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bfYkXKftGpF5yfABS1UtuwUuTJGO6Y1zVSNuiv9+v4E=;
+        b=tY8lOwx0nU7LdWx4JTZUDpT05O+HlXKXrEwTmnTpj2ud8iM1A1bzyS3eXX6PftfUkS
+         VBUIzFSICX+mCI0FUyVjhb2G6wHISRsaoqj+0zCOtOVaKKZLJOx/i41inoCQ52QEwA6+
+         hzyRbVeQ2Tawam0kx9Bg5lTiuoRXuoTriDw9eCyQ7QFzPuthip+0fLN+iQkV7YkI0Qrc
+         I/ZKZrgrZp+Y8T6cnZ7z1rrrWEGDluXblB14VI7wF5AtSEnjyKZA4OAN0UMhgftwL79d
+         PUQcDZWAHVCOglyORYR56A4xgIfcPnltL+qMPm/0POJ6+DNza73BTEIJ3RvUSdecQRhT
+         hPIw==
+X-Forwarded-Encrypted: i=1; AL+hErHwXUNxzoc36Fnaalf2H3qznyGg6ICwBXiKPf+Fe+9shRJJONkWMdHLyCqxlznRIkEQipZFHyk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8D8Go6I4RIZ+fI1HeJ46CbUwL/uBZu51rdthvhcqGEt0C9q6Ol
+	mbJcr8CnPEzxz8k75QZ485fmRa6ByDw68tMU3y9gcUQ/m4YV90Gb5B+SnraCb0NfU5WN8hniRcN
+	HXs6V7PZHMm6qgZZ/F51Y/WSnJiITEwuw70FcEjaR192Zw5Nm3K+5rzSOUKKDc+PS0eVIQW5ACq
+	sKdE1XoFnS99qqN13ImrhmnAsLICPk/qrCxg==
+X-Gm-Gg: AYBFou0601H+42H2SW2bWRnz80aSGzX0v5KYKe8SjRQ0brqfdHhOdGEni+Qx7NbQ+iY
+	dwp5jDots8pP8Bj7HOELiA9ckK2vKoI4BjC+R9CErVtG2PAx56nwtQn+6fDhIyA82tKQ5GAHTmU
+	o4/fqu/xAjrxRfpShI1bqUzguq/qvYPR3YJPIlaDvqLBd46bJ9PL+jvGykVJ3ZACZIeh7PIv+LA
+	ouv/Oz0QJXI7TRZsq4J+BeKXr5cl5F0e5Sw1lTw/Y7LZCwaTjKYEIMB0XsUDezuw28JAKGTHDQ=
+X-Received: by 2002:a05:620a:1b99:b0:947:1d0a:c8b5 with SMTP id af79cd13be357-9479f376a32mr281793085a.54.1794300999431;
+        Tue, 10 Nov 2026 00:56:39 -0800 (PST)
+X-Received: by 2002:a05:620a:1b99:b0:947:1d0a:c8b5 with SMTP id
+ af79cd13be357-9479f376a32mr281790885a.54.1794300998919; Tue, 10 Nov 2026
+ 00:56:38 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,71 +128,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109-seg6-lookup-noref-v5-2-96dc6a652c7e@gmail.com>
+References: <20261110043006.56681-1-mhun512@gmail.com>
+In-Reply-To: <20261110043006.56681-1-mhun512@gmail.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Tue, 10 Nov 2026 09:56:26 +0100
+X-Gm-Features: AclHuK-N0de4R4VH80DI2aBSXz1-I_SLqkM14uwyZxhv9nGfyqNbeQpXZOsGSKI
+Message-ID: <CAFEp6-034hcHagE08zVahE4xPDxUcTbFNYR11N5N-mf2ojG4WA@mail.gmail.com>
+Subject: Re: [PATCH net] net: wwan: mhi_wwan_mbim: disable rx_refill work on removal
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Ijae Kim <ae878000@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDAzNSBTYWx0ZWRfXxQfNGE8s0nR8
+ f5NarEorah0mYa4ljdsLzN3oHWz68WIMuN0j8fZP+n3IeoNTK/M/mYCplXv2X6L2BsMtKLN0Z8i
+ 9ZvEQAa6HH/WC8mAv4FvCt57CxvuIuI=
+X-Proofpoint-ORIG-GUID: cPKHP2te_yiSkPt0iFEiANRPZCw_LfSu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDAzNSBTYWx0ZWRfX24ztgTaRi5qc
+ P0VBLYDuvcI+5Z8ZH7gQDSSBZNQT4lTG8BMwJSz0CZcdMPw25klmZghwLXqEOFmlfP5O861Uxnk
+ VIAz/hEzJyWcNWLk5CMpIcp9uGLuF3bDIBEWoCTjr8V8M5SbQl8grKrRsxfADOkpIeeSksCVrzF
+ FeArgEDyCpiU36ne/AbbvctT4h1SW6i2YI3ZT0qRpPOKNZXlnPqAmLYDtcBjiFFWJwPOBDArq/x
+ y2d8qphhAvXarhy15sT0bLIbRa8zTBa3b6dFw5t92bedBB3C9PSYL+QepmGG8bPOJ0cWoy2W7PE
+ HNeeX6L4LUAaQwKjnpN8V7rLnJZkCdU4+1hxv/honZ+lJrz9lOyAHhn28fqzH1k4K7PU695rAd+
+ CYPdTKbxHjXKu6OW1f/wr7mb0F/vPDlfGx0rrN2QDkf42mQ5tzejemEwc3hNw1799DxaaJSOe2C
+ cQJx82i/V3LbIw6dIYw==
+X-Authority-Analysis: v=2.4 cv=B54sQ+tM c=1 sm=1 tr=0 ts=6af2dc48 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=DJpcGTmdVt4CTyJn9g5Z:22 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=V0Bt14TRAW-i4m3jyEMA:9 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: cPKHP2te_yiSkPt0iFEiANRPZCw_LfSu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_03,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100035
 
-On Mon, Nov 09, 2026 at 09:10:15AM +0900, Yuya Kusakabe wrote:
-> ip_route_input() looks the input route up with ip_route_input_noref()
-> and then forces a reference on it, which is dropped again when the
-> packet is transmitted.  End.DX4 and End.DT4 call it and hand the skb
-> to dst_input() within one RCU read-side section: the one of the
-> receive path, or that of the nfnetlink verdict handler for a packet
-> reinjected from NFQUEUE.
-> 
-> Use ip_route_input_noref(), as ip_rcv_finish() does.
-> 
-> Throughput at 0.5% packet loss of 82-byte IPv4-in-IPv6 UDP packets
-> (no SRH), spread by RSS on an ixgbe 82599ES across two 10-core Xeon
-> E5-2650 v3, offered by TRex over 10 runs of 10 s, in Mpps:
-> 
->   End.DX4
->   queues  cores                   before   after
->   1       1                        0.791   0.811  (+2.5%)
->   10      10 on the NIC's socket   6.118   7.394  (+20.9%)
->   16      10 + 6 on two sockets    3.305  10.205  (+208.8%)
-> 
->   End.DT4
->   queues  cores                   before   after
->   1       1                        0.481   0.489  (+1.6%)
->   10      10 on the NIC's socket   4.328   4.588  (+6.0%)
->   16      10 + 6 on two sockets    3.351   7.153  (+113.5%)
-> 
-> Every CPU takes and drops a reference on the same input route, the
-> one cached on the nexthop.  At 16 queues that cache line bounces
-> between the sockets, and skb_dst_force() and dst_release() together
-> take more than half of the cycles for End.DX4 and over 40% for End.DT4.
-> 
-> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+On Tue, Nov 10, 2026 at 5:30=E2=80=AFAM Myeonghun Pak <mhun512@gmail.com> w=
+rote:
+>
+> mhi_mbim_remove() cancels rx_refill before wwan_unregister_ops()
+> removes the links. Bringing a link up in between calls mhi_mbim_ndo_open(=
+)
+> and queues the work again. With the MHI channels already reset, the
+> work cannot refill RX buffers and keeps re-arming itself, eventually
+> running after devres frees the context.
+>
+> Use disable_delayed_work_sync() to drain the work and reject later
+> queueing. Probe initializes fresh work on rebind.
+>
+> Found by a static analysis tool under development.
+>
+> Fixes: aa730a9905b7 ("net: wwan: Add MHI MBIM network driver")
+> Cc: stable@vger.kernel.org # v6.10+
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+
+>
 > ---
->  net/ipv6/seg6_local.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 7fbcf590297d..209e31c21e33 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -1096,7 +1096,7 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
->  
->  	skb_dst_drop(skb);
->  
-> -	reason = ip_route_input(skb, nhaddr, iph->saddr, 0, skb->dev);
-> +	reason = ip_route_input_noref(skb, nhaddr, iph->saddr, 0, skb->dev);
->  	if (reason) {
->  		kfree_skb_reason(skb, reason);
->  		return -EINVAL;
-> @@ -1322,7 +1322,7 @@ static int input_action_end_dt4(struct sk_buff *skb,
->  
->  	iph = ip_hdr(skb);
->  
-> -	reason = ip_route_input(skb, iph->daddr, iph->saddr, 0, skb->dev);
-> +	reason = ip_route_input_noref(skb, iph->daddr, iph->saddr, 0, skb->dev);
->  	if (unlikely(reason))
->  		goto drop;
->  
-> 
-> -- 
-> 2.50.1
-> 
-
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+>
+> diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan=
+_mbim.c
+> index 336f89756f10..3b6b0066f673 100644
+> --- a/drivers/net/wwan/mhi_wwan_mbim.c
+> +++ b/drivers/net/wwan/mhi_wwan_mbim.c
+> @@ -650,7 +650,7 @@ static void mhi_mbim_remove(struct mhi_device *mhi_de=
+v)
+>         struct mhi_controller *cntrl =3D mhi_dev->mhi_cntrl;
+>
+>         mhi_unprepare_from_transfer(mhi_dev);
+> -       cancel_delayed_work_sync(&mbim->rx_refill);
+> +       disable_delayed_work_sync(&mbim->rx_refill);
+>         wwan_unregister_ops(&cntrl->mhi_dev->dev);
+>         kfree_skb(mbim->skbagg_head);
+>         dev_set_drvdata(&mhi_dev->dev, NULL);
+>
+> base-commit: 0edbc945eb9edd0086f25b151a79cfe4adc0dfa8
+> --
+> 2.43.0
+>
