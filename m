@@ -1,100 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.225.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794350578;
-	b=CnnYuwRpBFV5Jb54hbUAXp2+FnQbjp94ugH+5FMzH/NdyWZUhV+baaPKqfuKEF2OgHzE
-	 dFWga247D5j5p+N0sbV739LYfeYW6n8tk86ADf6BQMs0VypIxGpe0o9op9IoD3whNZf6d
-	 sWUrvfS+3niDqSm7QJ6d6kebMdMuPVbqCsOi6MCBS3dPqOjdvJ491cUvbKwg2TBK9pLr2
-	 ACmVd9xQheaOEWQNhLua0/AvhTAY0C6quhhFR1sseqC2D/R+NuefiPSg6u3eTFaD6ir2P
-	 YQZFIBXItc4iJGaZD1Y8es6R4JMu+MWmAVxQXAzI6vtJvPV6joeCP59wvQyVVOntmKw==
+	t=1794351869;
+	b=XM8pcCMzxUJ0rRw7Bl9M1S+sCKNBQYpcX/N7T16DQrpmcfNTIc8C6b2qwkHWSGc61JTd
+	 ET9BoZu0pMbMWO0O9AuyPGs7ctuNodBlHvbNSOxOSeB7f+Bnhcy0ay4kkRYnauBVkgiPE
+	 bZl7N+k2eYA6V62YSNR9kCVWn75/AKcWERRK1t1QYGLwUbXtZZo4fip61SnJ1Icjklcbz
+	 asOkAEO4CKwZmKK29PLrp89JJuM2yoL4meQ1uknUndD9EX0pVyB710cNxGgM/xqq9i+Hg
+	 BfNWgXSFsHCfduzsJf1u8ozNQBGET0a8+o4lBeVnDWnxsxfxzNo6ohH07oO8vF9rN9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794350578;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=65ccBi3rzxm73dF4Hh1JDA1NcutcYotrBjNv9MyOyhM=;
-	b=2Z63nGjoCUd2RORk1uDdtVKooOkBxGLuQCk8iXkjOxJQOazr0bj2ZWBPkjlOnPSXAImT
-	 XAaTJkuxpOE8uFK99ROMJF3Tf+w8zoM6LeHtkCQocrXUV21hSguP+in2akep2Y6/ViaNc
-	 xQ+5tqRgh1LiYnUDoTygIr5rJD2h981atSNMzTR26RCbDRttSYNDCxnZ9FDJ4ypYhn6BO
-	 t5PwlGzbtahcrabZJEpBnIiG/spUSyRWMCr1IzNf/bA31pGwet5KYd2mjFaZUxnSD9O1K
-	 fTjFj69i0QSYWZ06YBztNKdcelASyasDS1VOul6ox/JQEH7FINLaA43D0MEfosN+tyA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794351869;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:X-DetectorID-Processed:
+	 Content-Type;
+	bh=nYq9pM6sTwrldFRXuQUjDR/R4e5lyTcU497hGAhNfO0=;
+	b=CELU7CkadX7AKt25BX1iiHZeRjREorqqQu6TgS5LwvqcmaMprBBn3iThig+BmA6x4EQZ
+	 dqp1rjWU3VsHmeOabbvlNFpHA+ojVpsCTGb6ZWZ5T0ojMVsJgH/BMk/tbWfFsPoGG7FrX
+	 Y0Rkqtrysd+QLUiN2NdonkLfp/Xc7RmOZwa7V0i2X7rSxN5vLJWRd/Frxq9GSx7jwDO9I
+	 CwLWcUfIJB3qqByUqOoSltFv0QSGs8dCgpvsveaQkPNCKh3M+1AOwhlrrofC6ZaxHTl3L
+	 eJdt0n6ZzMEjibSBnSZe8Nb/eozRDOuA9HLBb6OPZqfmvUTOBCNHLE1+Hi+SJtCaZ0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=theori.io;
-	spf=pass smtp.mailfrom=theori.io;
-	dkim=pass header.d=theori.io header.i=@theori.io header.a=rsa-sha256 header.s=google2026 header.b=B97Y8h0+;
-	arc=none smtp.remote-ip=74.125.225.71
-Received: from mail-wr2-f7.google.com (mail-wr2-f7.google.com [74.125.225.71])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=LRJNSsWY;
+	arc=none smtp.remote-ip=209.85.215.228
+Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6D4606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:42:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B6D4606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=theori.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBFA606A320
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:04:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DBFA606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=theori.io header.i=@theori.io header.a=rsa-sha256 header.s=google2026 header.b=B97Y8h0+
-Received: by mail-wr2-f7.google.com with SMTP id ffacd0b85a97d-48df951fd31so1048795f8f.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:42:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google2026; t=1794350575; x=1794955375; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=65ccBi3rzxm73dF4Hh1JDA1NcutcYotrBjNv9MyOyhM=;
-        b=B97Y8h0+lfe0/AHj05Oi62WQcXmqYayJBwOKgM1wVexj6YwUmIAqvFuBFFwUuqlfgS
-         IcISOfys3nOJeliQbQCcJI93jcdbdCp0miw66BPLtx4h+/++Za5uIfBKuLI3ATz3lC3j
-         HeqMIeq50joZTvZ26NwuKH5VbWUCHE66zQK6M3eYQ2ECiTJi8//6KaCbID4zOxfEgcu/
-         teqJcgi6kRX+vyvKE1n6iRdOchyPXoxjB5BhNTAjzDzu5FJNS2/I4f8zopNLKYtM+VV5
-         ee0+gKenqyZmr7UVHrh0ElNeP59/hS3F0+poENrwM70ne0tofjwHpS1Zkci6R7Y/Ok6L
-         jqDA==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=LRJNSsWY
+Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cdab9e9761cso1312917a12.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:04:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794350575; x=1794955375;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=65ccBi3rzxm73dF4Hh1JDA1NcutcYotrBjNv9MyOyhM=;
-        b=YUYabKEehyiV6/5WU8gwpYsFia93dEavcbRK+6Roo/n8qxETkVCFODtOPl7T2W8QVw
-         1VfFOb7DB7x9rPdqd0uRv2bhwS5GBf/kZPFWMD7TbH5/DzUKkO33uDZ/tenajr/8XIms
-         QGZmYiSowk2fd4d9kUfjeujDFz1JZDfcDNMgR/rnDFFLRcKRz3q/8mOQspvgltsm+UYP
-         NDKDn0jWOlD6otUo6hCa7OuGT9ADB57pXKotc5+G9N1Nw6knXtbZjOQN4aOUOAcPQom8
-         7db6Fq4YFXfYH8C/ei42VVD5cluoMkLfcIwvnhbjyaPMhHCTXJIALTP2SW/A7Sllbaw1
-         XoPw==
-X-Forwarded-Encrypted: i=1; AL+hErEnBCoFg7dBt01dSakeyVZgAXwsuSi3tOjdkzIbMzn0TTrZLXXEjV/13eXvMBgRkPWX7cDVSM0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/lNuCvXksvKtcY5akx8e9s8P3p+hWKarwPxn4dqeUCol9MEC+d
-	fa26/j/36rlAwTU9anlb/ecffzAWdw7mPZAUUE9CiJebOtiZHo72m+fsxfWomvumVl8=
-X-Gm-Gg: AYBFou1dVU30Yx9V9A2ZmLUXR9A2UIIPtt312ejZTCiCMklfcpLEH6rAm8+Rb30SBQ6
-	kNBNozuXJ4QD8taFRPrgNGMEifazIhfU/EwnM85zTKDJ6XsR4HKzNS6Blv90IdsjlOb2F5l24cB
-	OQTn1DvfspZXCCYfXOmCX5klw14xx5l8Rg2cycAloxvXRYu5gPx2twQ1eWXBTyOG5ACsXvLRK/m
-	qexFjJmW/W+wNvNfVC2vhYo/rDUY1ybg2f3LpBPaB24wE99OqRHqv2NPtfRV+Firuj1dfdKu649
-	+c2hHO0NubGlrX7lfPocEknYkPhQL6MHqmUPBUozpxXJQ/iCVTdI2mgWpiAevVFrihUJONbbklQ
-	pwWo4M9xc83kgBH5c+G67VM7kjELuQ/R9gOlFhH0JZGxHU6pBK5dN4xs+8nA1daPlXdlsMUiDYi
-	lzcrJYdQEM4CFQXpXBEWR0ynyLm3skDT0xTqd/TjMb8fgXSfrWA/xZpyHoROJ9j/fqx+uvWnvC4
-	vgw1EcSH1X6vVQwMQSFLVzNShBqncMLSWNtnl3/IOQpXTN/+rfxRQwzpLd6ILLCu/ycP7/Vkn6I
-	BrTMJN0cOtGnwJD9zXHZLX9x18q2IfTDDo/JO+ekOUwb7GJxoRjPwmmNLpNzMenYL1kAXvHL4tU
-	STU1/VQ==
-X-Received: by 2002:a05:6000:2308:b0:48e:6f76:de9c with SMTP id ffacd0b85a97d-499c6e9636amr523356f8f.28.1794350574841;
-        Tue, 10 Nov 2026 14:42:54 -0800 (PST)
-Received: from localhost.localdomain (bbcs-110-227.pub.wingo.ch. [144.2.110.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4983585923bsm7599946f8f.11.2026.11.10.14.42.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Nov 2026 14:42:53 -0800 (PST)
-From: Yves Bieri <yves.bieri@theori.io>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yves Bieri <yves.bieri@theori.io>,
-	stable@vger.kernel.org
-Subject: [PATCH net] sctp: do not free a new asoc peeled off while sendmsg slept
-Date: Tue, 10 Nov 2026 23:42:33 +0100
-Message-ID: <20261110224233.82977-1-yves.bieri@theori.io>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20260707; t=1794351868; x=1794956668;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nYq9pM6sTwrldFRXuQUjDR/R4e5lyTcU497hGAhNfO0=;
+        b=XL6msrZGH5ryvyfk4Mj4mK6Xl4OmOtcQ27GZSC0+Jz8IOHB3LhdmhyZ3w/qptTWdPU
+         Ws0CLXBvdmyisu4N5C73T9bOv/ebYs/zOHMFbL/k+QgSG7+RTLDX7EydjtemMD2D5gmX
+         rIY6YKITyKmyrHpvzFVyvFtni2Tkgf7TdEcOez2bckcilUjIkPdSZso2XQs3PuzJ+q1l
+         UG/cmWEKGGAtZm8MOl55x3JHtDmaj6yLmyHwOGMl41n/l/eUe0OJRr3RD3ldnS0acq4h
+         qf7JIPGUlM+ar4C+ovngIR7cA9KxRBVbEFhbbCEvrm+GHfaW+m8S+vf+QSe7RxVNIy1k
+         1FrA==
+X-Forwarded-Encrypted: i=1; AL+hErFEpQ4185y2ceD2TPeFOH/DyIH9dg40TC7i9cOPn2rCTFtFv1GfK8Pu4xBlpCJ3oA8kDZDT8mM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+m88Muj0nWoH80WiV2PuI5u1cYoEgT3QxxT0c61msF4gKKU/IS
+	EKpdZijlJZHnik6SMD5h7uceXfaMzJW75dc2HolF1k+4Y1drKTyyyYCOO8mTrvGjZxLKgHonFMi
+	fnh09l71gVRh0pbhfJsaY+hqYebvE7a6KQdLRjMdeITr461yTeWwTAlxeuwewIV8TnQCW2E32hg
+	MlC0zObq2XabBqbzUQm+pWgfLzq0pXv+skb8mZNkxSX1evsnJghGMlg0LkyNDzBX1sGnlIfnn/X
+	LA18hYdWN4=
+X-Gm-Gg: AYBFou22/kImoiaJ3UQLdmqD/EmM7IsnxEyYcUnG448YnUZVnHCTFFGakFSu69KUaJZ
+	wODWOunQfR85BLYN/7TkRm01xxylD6LybTiF4u5RKhLBHQxiKkbASAQ/KJI6AxObZzHZYd2XYj9
+	oK30o4OJNwpxQUplvJK3DnWyESvzmQja6wzGsvsKwD8NOYxL7/N/GcrUPtxP1GxnCp0cnshpfyq
+	USKR8Bi4sMmnxTZllCzwbz77F8G/4cDkO6p4x9peb+Hfx7PPavWSLPtaW8Er9PGb2NtuPz9fUxQ
+	XoW/iattx2uNSlBuD/p1LNiTi7fx7gXkcdxkDiMFhkUFTgeuds8avaCOUgObhFxJqP4wjaJn0Ec
+	8WnGGJ+9CuA+gQ4LG/EaN4yOgWhUz61Oz7xwv/IkQSMCa1UCRLUHa6u8QvGH4bGpxntUsKO+V34
+	TzNwZSQG3pjI6tesrMNmtAB7HB+/bsaQeSYEo=
+X-Received: by 2002:a17:90b:3ec5:b0:3ac:da41:ef7e with SMTP id 98e67ed59e1d1-3b182f298f7mr509161a91.52.1794351867597;
+        Tue, 10 Nov 2026 15:04:27 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b17da4b500sm790853a91.2.2026.11.10.15.04.27
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Nov 2026 15:04:27 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a5d57a8d51so3076602a12.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:04:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794351865; x=1794956665; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nYq9pM6sTwrldFRXuQUjDR/R4e5lyTcU497hGAhNfO0=;
+        b=LRJNSsWYqVXJGncmDxxdk9+vrQtDrPkrJLV25f3wjsZs3TMHEL0t3TbqnXuaQDhkpg
+         9utTaaIsq4uisx0TqgyKG8Lt/Rm7N/G86odFQ1IW7U4vu3M7Tr5SprB+KhXEbYmGaY4H
+         jqhJxiuRUrT4OjUbnuxAKaWvyLlVqVBvjcikA=
+X-Forwarded-Encrypted: i=1; AL+hErFtwcrZ1LVyM/gjQe+88nLHqPWCSVbKAsphy7xIvEEzyoybJlgVJS0JtvsBzHmkP0CHQ68hous=@vger.kernel.org
+X-Received: by 2002:aa7:d901:0:b0:6b1:b97b:745 with SMTP id 4fb4d7f45d1cf-6b7775ec3c7mr399100a12.29.1794351865408;
+        Tue, 10 Nov 2026 15:04:25 -0800 (PST)
+X-Received: by 2002:aa7:d901:0:b0:6b1:b97b:745 with SMTP id
+ 4fb4d7f45d1cf-6b7775ec3c7mr399086a12.29.1794351865049; Tue, 10 Nov 2026
+ 15:04:25 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,94 +98,175 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261106191423.4194081-1-joe@dama.to> <avIpEpoCYvLHYl3j@devvm20253.cco0.facebook.com>
+ <CACKFLinPK+wR=TMA3zNJDKQR_=HfMFUHPxKS+yhvv9SegZw7Ow@mail.gmail.com>
+ <avNWzavrxJSasfp5@devvm20253.cco0.facebook.com> <CACKFLikU8ax8-VN+EiAhrn_w+2=yex2TNHPxEYqni6g0BKHKKQ@mail.gmail.com>
+ <avOXJf5yl8ajf8Qr@devvm20253.cco0.facebook.com>
+In-Reply-To: <avOXJf5yl8ajf8Qr@devvm20253.cco0.facebook.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Tue, 10 Nov 2026 15:04:12 -0800
+X-Gm-Features: AclHuK_cW_HHwh2JJSfJN6ZxDLcIaDEDtetVv56JzQyB31my1TzTAGufMW1nTAI
+Message-ID: <CACKFLinsQdoZhEnhmZmMEMZVyGC10KZZRciBGLzA12W2iOK60Q@mail.gmail.com>
+Subject: Re: [PATCH net v5 0/4] bnxt_en: Make RING FREE more robust
+To: Joe Damato <joe@dama.to>, Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org, 
+	Selvin Xavier <selvin.xavier@broadcom.com>, 
+	Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000008e4a54065ff419fd"
 
-When sctp_sendmsg() creates a new association and sending on it fails
-with anything but -ESRCH, it frees the association. The send can
-sleep in sctp_wait_for_sndbuf(), which releases the socket lock, and
-meanwhile another thread can peel the new association off to a new
-socket. The wait then returns -EPIPE, and sctp_sendmsg() frees an
-association that now belongs to the peeled-off socket, without holding
-that socket's lock.
+--0000000000008e4a54065ff419fd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If the peeled-off socket frees the association first, e.g. on close(),
-sctp_sendmsg() frees it a second time. Otherwise a syscall running
-concurrently on the peeled-off socket can use it after sctp_sendmsg()
-freed it. Both are reachable by an unprivileged user. The double free
-on net with KASAN:
+On Tue, Nov 10, 2026 at 2:13=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
+>
+> On Tue, Nov 10, 2026 at 10:14:50AM -0800, Michael Chan wrote:
+> > I'm copying our RoCE developers Selvin and Kalesh.  I think that if
+> > you call bnxt_re_suspend() before you disable DMA, nothing special
+> > needs to be done because the chip is still functioning.  It will go
+> > through the normal removal process.
+>
+> I'm probably missing something but I think that the ring frees can only f=
+ail
+> in __bnxt_close_nic, where rtnl and the netdev instance lock are held. DM=
+A has
+> to be stopped before bnxt_free_mem. bnxt_re_suspend() takes both locks, s=
+o it
+> can't be called.
+>
+> I think there's two options:
+>
+> 1. Stop DMA as now, but queue a work item to run bnxt_ulp_stop without th=
+e
+> locks. bnxt_re_suspend would need to treat BNXT_STATE_DMA_STOPPED like
+> FW_FATAL_COND and take the detach path.
+>
+> or
+>
+> 2. Call bnxt_ulp_stop() in bnxt_reset() before taking the locks, the way
+> bnxt_fw_reset() does, and bnxt_ulp_start() after a successful reopen. Tha=
+t
+> covers the TX timeout reset, which is where all the ring free failves I'v=
+e
+> seen come from and it doesn't need any bnxt_re change, but it restarts Ro=
+CE on
+> every TX timeout and it wouldn't cover a case where the user triggers
+> close/open.
+>
 
-  BUG: KASAN: double-free in sctp_tsnmap_free+0x5c/0x80
-   sctp_association_free+0x1eb/0x750
-   sctp_sendmsg+0x15ff/0x2020
-  Freed by task 836:
-   sctp_association_free+0x1eb/0x750
-   sctp_primitive_ABORT+0x85/0xe0
-   sctp_close+0x22a/0x8d0
+I have a slight preference for option 2 because TX timeout ->
+bnxt_reset() should be rare and stopping RoCE briefly even if all the
+HWRM_RING_FREE calls succeed should be ok.  We don't want to stop RoCE
+unnecessarily during a user-initiated close/open though (failure
+should be very rare).  So we may still need option 1 to cover the
+other rare failure cases.
 
-Commit dfcb9f4f99f1 ("sctp: deny peeloff operation on asocs with threads
-sleeping on it") fixed this double free by denying the peeloff.
-Commit cea0cc80a677 ("sctp: use the right sk after waking up from
-wait_buf sleep") replaced that check, and commit a0ff660058b8 ("sctp:
-return error if the asoc has been peeled off in sctp_wait_for_sndbuf")
-reverted it to return -EPIPE, without restoring the check.
+Let's wait for Selvin's and Kalesh's feedback.
 
-Fix this by holding a reference on the new association while sending
-on it, and by freeing it on error only if this socket still owns it.
-asoc->base.sk only changes in sctp_sock_migrate(), which runs with this
-socket locked, so the ownership check is stable. The reference keeps
-the check safe if the new owner frees the association meanwhile.
-Userspace still gets -EPIPE, and the association stays with the socket
-it was peeled off to.
+--0000000000008e4a54065ff419fd
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-This was found by Xint Code, an AI code review agent, and reproduced as
-an unprivileged user on net with KASAN (trace above), without modifying
-the kernel or using error injection. With this patch the sender gets
--EPIPE and the association keeps working on the peeled-off socket.
-Without a peeloff, a failed send that created the association (EAGAIN,
-EINTR) still frees it, and a peer ABORT while the sender sleeps still
-frees it exactly once. The SCTP selftest sctp_vrf.sh passes. The
-reproducer is available on request.
-
-Fixes: a0ff660058b8 ("sctp: return error if the asoc has been peeled off in sctp_wait_for_sndbuf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yves Bieri <yves.bieri@theori.io>
----
-Tested on net at b71c101bbb98.
-
-The fix and this message were drafted with Claude, and reviewed and
-tested by me.
-
- net/sctp/socket.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index b5a57f6..e7e14a0 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2082,10 +2082,20 @@ static int sctp_sendmsg(struct sock *sk, struct msghdr *msg, size_t msg_len)
- 	/* Update snd_info with the asoc */
- 	sctp_sendmsg_update_sinfo(asoc, sinfo, &cmsgs);
- 
-+	/* sctp_sendmsg_to_asoc() may release the socket lock while waiting,
-+	 * and a new asoc can be peeled off to another socket meanwhile.  Hold
-+	 * it, and free it on error only if it is still owned by sk.
-+	 */
-+	if (new)
-+		sctp_association_hold(asoc);
-+
- 	/* Send msg to the asoc */
- 	err = sctp_sendmsg_to_asoc(asoc, msg, msg_len, transport, sinfo);
--	if (err < 0 && err != -ESRCH && new)
--		sctp_association_free(asoc);
-+	if (new) {
-+		if (err < 0 && err != -ESRCH && asoc->base.sk == sk)
-+			sctp_association_free(asoc);
-+		sctp_association_put(asoc);
-+	}
- 
- out_unlock:
- 	release_sock(sk);
-
-base-commit: b71c101bbb9814d163c00234d43c41f0a17907d4
--- 
-2.43.0
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCCxbv1W
+c38b1Jj+HMctxcqV8K/4+OEoCbPCTbHC71XD0zAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjExMTAyMzA0MjVaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBSnmJw9Q2BhoUDEClPex8S43xM8QvMJ66kgWiq3fMl
+iRcTtnXIPXRjYknqhuBq/POTHjuBA7oYCZnRm8+85XJzI8KWimbh1Dm3J6qRD9SbBhRemcBzUAjK
+4HBEX/8JyotR/LM4dO3gIs/ZgH4y3U9Virp8Anysv3igOEzUxrpCWQRvaI1N+S8EF4zMHnX2Bi20
+Q6yN3J3MJXkVVdZf5znSdTXCGXMNYaDwlGAnqZ8uxYoObFn10X2FHpZAjVRWc9VcHaeIsg2DusBk
+MA1EygzCm+Qy/IabpqwDSsV60lX2PpNMd1uy/dE90ZC1ZttHuX/ErTBbIYSUpsS2Ij6aPLkR
+--0000000000008e4a54065ff419fd--
