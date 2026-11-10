@@ -1,49 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794324006;
-	b=Oq/xFYRJscRrAcfhxkVS3MsSLCFRDVtXgq5Em44m9gIrTxMuHaYmeVwYnTQ56tjRFdJL
-	 X/QOLwx73Em+xs6DAMI+WrkYkuxkzqIJLXc0s8IUMCOr0SbjBsYJJ+D6bKEBgCv0WF+HP
-	 6tkQgBNxb+4hP2npPr5UVJTZsXIrrF0z3EJVgMkInUxTx/fnghQaLFVuSzRawst9cVgES
-	 wwXEDf6etqEke2v7belN4yb5CWFWSqCCf2fOY96WVnTjDI2gvARyDPupCmR7F+oIq7aYb
-	 YB9vlOWbOJZFwpPtJ0p089L/IGdlZJZE2ja5iO7slx2KrXWlc5zMCMend5brsG5Apow==
+	t=1794324062;
+	b=GWKNtZI6v/mdUT8cICIwQ9r2Y6+aWU49NODKLIQ/Aq0915YjqGMVaC6Xm8sTWRAKYzhe
+	 2eynT8dYjtfWKqcsVjJlrgtNNnCBarYLwzkxwwu9UsVWZ2z2OgJllGffZIPPRkguKqShW
+	 CQNstNztKKXphp3/NoSYMMifdUNiO4PCwLZZXA/RLWiemmDj1hSacJF9fW2/7LXiUWr+N
+	 5oZI/V6BZG4IHED51WQX4+RoddEL6pSZt21vDCZa1QRNzsh5xrXxRTdx9aYFR4QooNs/2
+	 X7fWtvtoOtc2AXUtm497v3tDepTHQieS+jDOS83BicOL75QsQ70MWUHyUrSE9HcOSqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794324006;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=aeU67Qnv5ODKedtFLe52Ejeb5H8ZvbxqFopWCikeBNU=;
-	b=ZpdySWtdXZ66SRQHnvW/e5A1KOzb0bP7Zh9admW3RHbObm+barrXSl/dQ2clN6xwfMKY
-	 bvt4PmM3w3c5g8SrSQ3H0h38zm48uk2UjN9DG35Mz/2EXJc7UgeRNPoUPrm3p62YPKJbr
-	 TN1mHqByXd5WwjyG6JdLVOoAPMZmhQ2UE6IfkNCbgSrBfp2U8QJK1vf6CJ6dqWn28Xgwp
-	 L3+g/2VdtvTnFZ+fp5PeNSmcc/cM2p/qV6W+yPtdHR8uG+jyREMGehrLHQCgh3IbFb61b
-	 Ek0bbbkNyEDC+zAEICsIx5OCNz0qQxU3Dhw8w/c5AyTEA7xxeZgg9+pHy7MZOdgayjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794324062;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ZVBYgEQBx7S36JBdqc/gGq/Up2XFDyxjqi8JwFWQLPU=;
+	b=hvuXhySInJBkra3oBen57AUvcG1XW7EZ6e9+JtwaENRoi/+zBmAmuGwASN5+Dqjf6wcU
+	 ekBWS/H8KgGWeBg6Y5mg14eENOLstH48/qBn6gveINrafF79xG+wpUZD5Ys8xrfdtfEGm
+	 waCVt9MytvwkQmXFP45PSmE69Su+KbJ6zenw/CptmCrja8bj5WwdoISuBUgaLQm7UVOBF
+	 fIPUgcHs0Wsm7b6Pi2Uv7E0yhuV1Vi8A3bwyv+9yT/zdITyUR/jzYL4o1V2Jh54WdmXkE
+	 w7NDOesnEL924gRPh8+nPFvpNCVq43hcIjsbddgic1oOii/68YXax86KM7OPj0hHGBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JL877IxJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="g7w3hOs/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621A2606A321;
-	Tue, 10 Nov 2026 15:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32E8606A31C;
+	Tue, 10 Nov 2026 15:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JL877IxJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BEB1F0089F;
-	Tue, 10 Nov 2026 15:20:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g7w3hOs/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7251F0089F;
+	Tue, 10 Nov 2026 15:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794324005;
-	bh=aeU67Qnv5ODKedtFLe52Ejeb5H8ZvbxqFopWCikeBNU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JL877IxJ1EeRyvaEjo+0v0XDfLHyZxHuaICjN9VzDP+i7tVzcNbf6lR1T5OV/zJIA
-	 TZNv+11q1TtDJ7SQHiL044SXnTP9o6YzPKHQC7/AU/f26hXyghUVaM7gIF8lEcS7bF
-	 z/YeldvSmObrjAkK0O7oaoIwVyhLN6Pz0i4FENYfnec5GZrfeidIY3BJddATGJ6WwS
-	 sUbCYZQs/B6nvCRIDptM0CdYwvfdyfWnYOnfU9i4ar4igbFw6D3AaF36mnr57eLisM
-	 Zrov/HYLwdAotuX6g8tVEHrD2X8MMS1chMZm3qJGTpUVTqxVdKNhxoJVaHXtwcIYzy
-	 5lqbGZ9UENZkA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81BC39D2677;
-	Tue, 10 Nov 2026 15:20:05 +0000 (UTC)
+	s=k20260515; t=1794324061;
+	bh=ZVBYgEQBx7S36JBdqc/gGq/Up2XFDyxjqi8JwFWQLPU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=g7w3hOs/9ZDzwB/syYr+ROi/BctaeuECd9bptLycmt9GiDKLB15Hh34oTSHS/fesM
+	 DA07KxfUCuFKbGytlwX9v6BuazmDeSuOhYm+50fqZCxTLMthTHp6wVKnsN0oG1z8YX
+	 Zo68/95wuKDLiUzD6s5lzGeIzE1BFfJu/kaKEt4nHJUPoHi52pEG01mrihEFrSPSVI
+	 lMveTpNZ7qN6LcgnYc39qLnk6Pn75KFX+j1y3lpe+gQt1nNWyQ4prEyD8A7ldUZ1YN
+	 Q34BIFoWA1bZom3n77Y4Zu+gOmE6yGjazsmN1gJ+BFNvlZilarTPCGBrbMBCyBqk0o
+	 +KGpCFjCCAyvA==
+Subject:
+ Re: [PATCH net v2 1/2] net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+From: netdev-bot+sashiko@kernel.org
+To: stijncleynhens@gmail.com
+Cc: netdev@vger.kernel.org, linusw@kernel.org, luizluca@gmail.com,
+ alvin.sipraga@analog.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ namiltd@yahoo.com, linux-kernel@vger.kernel.org
+Date: Tue, 10 Nov 2026 15:21:00 +0000
+Message-ID: <179432406021.994134.1889530056154978088@kernel.org>
+In-Reply-To: <20261106150225.3700205-2-stijncleynhens@gmail.com>
+References: <20261106150225.3700205-2-stijncleynhens@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +64,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] MAINTAINERS: Add Hidayath as net/iucv maintainer
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179432400468.4036268.3651889022579763273.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 15:20:04 +0000
-References: <20261104085605.2040729-1-wintera@linux.ibm.com>
-In-Reply-To: <20261104085605.2040729-1-wintera@linux.ibm.com>
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, hidayath@linux.ibm.com, twinkler@linux.ibm.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com
 
-Hello:
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Low priority / nit picks for your consideration:
 
-On Wed,  4 Nov 2026 09:56:05 +0100 you wrote:
-> Hidayath Khan takes over maintership of s390's iucv transport mechanism and
-> af_iucv sockets from Thorsten Winkler.
-> 
-> Thank you for your support Thorsten, and thank you Hidayath for taking on
-> this task.
-> 
-> Acked-by: Hidayath Khan <hidayath@linux.ibm.com>
-> Acked-by: Thorsten Winkler <twinkler@linux.ibm.com>
-> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-> 
-> [...]
+- [Low] The commit message says the patch has no visible effect on its
+  own, but that is only true for standalone ports.
 
-Here is the summary with links:
-  - [net-next] MAINTAINERS: Add Hidayath as net/iucv maintainer
-    https://git.kernel.org/netdev/net/c/8373c4e8863a
+--
 
-You are awesome, thank you!
+net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+
+This commit sets up the VLAN4k entry of VID 0 with Independent VLAN
+Learning. The goal is for the IVL-keyed FDB and MDB entries that DSA
+installs with VID 0 to match frames classified to that VLAN. The commit
+message says the change has no visible effect on its own.
+
+> DSA installs the FDB and MDB entries of standalone ports and of
+> VLAN-unaware bridges with VID 0, and the driver writes them with
+> Independent VLAN Learning. No bridge VLAN sets up the VLAN4k entry of
+> VID 0 though, and it defaults to Shared VLAN Learning, so the switch
+> looks up and learns frames classified to VID 0 by FID. Lookups never hit
+> the IVL-keyed static entries, and a learned entry for the same MAC sits
+> alongside the static one.
+
+[ ... ]
+
+> On its own this has no visible effect: standalone ports do not learn and
+> the driver does not control host flooding, so the unused static entries
+> only meant that traffic was flooded to the CPU. The next patch, which
+> moves VLAN-unaware bridges onto VID 0, depends on it.
+
+[Severity: Low]
+Does the "no visible effect" claim hold for VLAN-unaware bridge ports
+that have no PVID?
+
+This can happen with a bridge created with vlan_default_pvid 0, or with a
+VLAN-unaware port whose PVID VLAN was deleted. In both cases
+rtl8365mb_vlan_pvid_port_clear() points the port at VLANMC index 0. The
+rtl8365mb_vlan_mc_find() kernel-doc describes that index like this:
+
+ * Although 0 is a valid VLAN MC index, it is reserved for ports without PVID,
+ * including standalone, non-member ports. It uses VID == 0.
+
+These ports do learn, because rtl83xx_port_bridge_join() turns learning
+on:
+
+	if (priv->ops->port_set_learning) {
+		ret = priv->ops->port_set_learning(priv, port, true);
+
+Before this patch, their untagged frames were learned and looked up in
+the SVL/FID key space of VLAN4k[0]. The static entries, however, are
+always IVL-keyed in rtl8365mb_l2_add_uc():
+
+	uc.key.ivl = true;
+	uc.key.vid = vid;
+
+So unicast to the host was flooded to the other bridge ports. Assisted
+learning on the CPU port also could not override learned entries.
+
+Once rtl8365mb_vlan_vlan_setup()->rtl8365mb_vlan_4k_setup_neutral() turns
+on IVL in VID 0, those static entries start to match for these ports.
+Learned entries then use the VID 0 IVL key. That changes forwarding
+behaviour and the FDB contents.
+
+The first paragraph also seems to contradict the "no visible effect"
+claim. "a learned entry for the same MAC sits alongside the static one"
+can only happen if some port learns on VID 0, and standalone ports do
+not learn.
+
+Could the commit message describe the effect on VLAN-unaware bridge ports
+without a PVID? The later patch in the series that keeps the neutral PVID
+in VLAN-unaware bridges does not mention this case either.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106150225.3700205-1-stijncleynhens%40gmail.com
