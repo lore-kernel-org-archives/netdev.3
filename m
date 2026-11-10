@@ -1,67 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794318558;
-	b=bYLKBxGwxhzG5zUszAM1GHF86ia3jHbrBEQ3Lk2f9/CIzH9zir2QJlNL2UVYBMwHKfsQ
-	 0yHoBllNM9FtR5EUTTBZvIhGVJ/FfxNMdsacgLabsroL4QvSJgUySlfni+ylCE/XwA5IN
-	 LBhFMvvMDamtgvhhbhCVML1/0rYKPghro5DY2gpVn4UVLEW/XALMvOi4/I9nMhPR0CX+y
-	 RAbZgSbfKTIY4LtzEsOZHpUCtsugFf6agOCwWIv6bt9s9irLACn8Q4WxyjVqdXhcKKABl
-	 K/E0361AFxE3CcoubD6cWBUJfj3HrJ9n0OWXtc99V51yIcwQsEjS+jaU4habkfsaJBA==
+	t=1794318870;
+	b=M8UjpJF9ksT95HTLJ/E8LcMSWimKO3t2TJ3PPD3IWbesGCyDMy2JSC6RtmpDR0t6LatF
+	 4dZb4NQ4QXuaeLoVRvmGptUnm49euDs1drY+olEUFQ6wToDIxzq3r2IIOns1Zu6tuoH4o
+	 HW6lfHIMNVYBLRKZRO7foyIuhKn5jxwVZCgr5GVXoFVaKWNm4kkufS6WTB3B6FtBmKVv5
+	 nTOFSjoA7vcPMkz3Vl7y0uUfznUbz7Qh44e8oVECH/phe6zqnHiCW36vwTDGhmeWA9l7z
+	 DstM5onxSeosNLz22ElC2p4FZvNh7Mhv2G7fCMO4vqlZTFyGGVwGtY/M0FAOnLrHVVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794318558;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-ID:CC:From:To:
-	 Subject:X-Mailer:References:In-Reply-To;
-	bh=WucAi45P7LFqiSe90dwgZKi3069Pbv0dkw7tkGVFfhg=;
-	b=lCBs8jSpdZ0tA0+xxBClkBYsxvgojHdCZZ1ADqiw4VFMno+0ua4KJoqVCLW0grxZQu7f
-	 jX3Pn/qbRfSCiFSj+NfpszI2EtwGX4Fx++6mxB8LE+DzpTTl4u7k3dOrYcQ6+W0HykiBU
-	 9gLvLNb57zka2bEI9WQDFc9QOQTFj9HuoxhfYnlYHBYt0cF19z26Rk0pFSU/5sneA73tl
-	 fWLCLVB0zmk0P+PdtJomIld+Alytpa7og7JQs1ZXrld1JNHTJjXQQA8dmLP1hF9Zf4nTR
-	 7m7zTT+0k8lPwb7hQVtMDwoobndz4pAoF3UAQLgqUCXkftmdNFuwaoK2pci3AUNyE6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794318870;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=C5jgHy1nXhTFAfsOl+lfPzRSNERj7WQscjo2eO2ih+g=;
+	b=WctsuCIcIGzgViwMu9re6SDXZd32kNtf13mTOzkHeA8ouCm1L7OpswNoLNP0hUEWdVG/
+	 LeGtwLD9ntnKk0UXnRdGALH5UzlnFOk6Dwa5HmYkViJD7BrqkkWZhcgln8hBJf/chykei
+	 v277zeMUWUZrsCaKddTophSg6Ml1LFcdqCpAoFhK3hpcfHP05Uh2fVOEbzgIJuboAzst/
+	 bd7GgUTMXwjmEQ8OBNfDkzxrm//9qEnyczBma0vmmy3ZKsVC0mRdTA2bu/bb7ExD0ERZ4
+	 mqsD//Pe+DTzWzgipbNj9EEDw9J143/WU3tc/57M92ANjGG8YmAEwMZjaYfoQTKw1BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=MmP7E7uD;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XwFeguy7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF816606A32E;
-	Tue, 10 Nov 2026 13:49:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF816606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE9606A31C;
+	Tue, 10 Nov 2026 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=MmP7E7uD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794318558; x=1825854558;
-  h=mime-version:content-transfer-encoding:date:message-id:
-   cc:from:to:subject:references:in-reply-to;
-  bh=4jDqGAE3KXmzi8NszJwL8KHelw3BtEwY4FX/0+qVaEE=;
-  b=MmP7E7uDBDQChjWI88OuF4huu/XeibAfLssw0WAEOW960xaEJlgMmQyU
-   1x8gUHXCi5Nyj0D8ri+G9mtfid9zGZ1K2e1UvNVkG2Fb5Xn9Dl3SjQW82
-   r6mnnDPf7HOSIhmcgnSAg+QeS+dbgji+tb+fYNFiisbRasLJ67yTkAx3J
-   yHYoTyfZEk0PI0UPehS2a95wyjBCfIwvVi40D94JTz7I24l7RtUmsw7b9
-   6dr0tlRYztY7xMp1MU7ds8ALizmzQPOFgAzZU66deG/UqzssK5n7+04pK
-   BGscDPWanGxISRXxnyjEGHHcdIQFWJEsOy1fuv0mn1CHRvRfAjMf4pAea
-   g==;
-X-CSE-ConnectionGUID: Nm8SpLRoQCKu6bAsD/8N9Q==
-X-CSE-MsgGUID: f8n1udbwQq+uOA+ZYLEFBg==
-X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="66290142"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 06:49:17 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Tue, 10 Nov 2026 06:49:16 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.58 via Frontend
- Transport; Tue, 10 Nov 2026 06:49:15 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XwFeguy7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844621F0089F;
+	Tue, 10 Nov 2026 13:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794318869;
+	bh=C5jgHy1nXhTFAfsOl+lfPzRSNERj7WQscjo2eO2ih+g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XwFeguy7OAl2B0xbZEZf+YNpbRPun6Uxy12IDapJUugAkfnMkJMQWrACI3LnYamvS
+	 sZ7QpagwdZSe2JBSLE/lYuBRyfQnngmWmP6ZH3stPJyDv6Rg7qptN27/8L8uX1Fvf+
+	 zT2GiHGpAI8WdjU0Nx1Pyc+3Guh5HO2o5ewC8vA7wigAewUpzEcQIjSnGCAzyvJQ/v
+	 sVSxam0PSbINufDpdJBaTDu2mBq7kmD513kzL7LTM/dwxDYrdBxnLv7AHU6cqE86PR
+	 Sn4WjxxefUuJelWxydwRIVb6dHLsocUJGeARSLJdiZZ3duTvqAkZIZjq0ZH3306O78
+	 roJsnXIWaMIAw==
+Subject: Re: [PATCH net-next v9] net: stmmac: rework stmmac_rx to support XDP
+ rx multi-buff
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ bpf@vger.kernel.org, nb@tipi-net.de
+Date: Tue, 10 Nov 2026 13:54:28 +0000
+Message-ID: <179431886808.994134.6784700644892681429@kernel.org>
+In-Reply-To: <20261106-stmmac-rx-mb-v9-1-c099c923664b@oss.qualcomm.com>
+References: <20261106-stmmac-rx-mb-v9-1-c099c923664b@oss.qualcomm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,262 +67,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Date: Tue, 10 Nov 2026 14:49:14 +0100
-Message-ID: <DMRKUCAN92TO.3J516XODSPDH3@microchip.com>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <horms@kernel.org>,
-	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
-	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
-	<geert+renesas@glider.be>, <magnus.damm@gmail.com>, <edumazet@kernel.org>,
-	<richardcochran@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>
-From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-To: Paolo Abeni <pabeni@redhat.com>, <jensemil.schulzostergaard@microchip.com>
-Subject: Re: [PATCH net-next v16 4/4] net: dsa: lan9645x: add basic dsa
- driver for LAN9645X
-X-Mailer: aerc 0.21.0
-References: <20261103-dsa_lan9645x_switch_driver_base-v16-4-781c96d735cf@microchip.com> <20261110112822.235243-1-pabeni@redhat.com>
-In-Reply-To: <20261110112822.235243-1-pabeni@redhat.com>
 
-On Tue Nov 10, 2026 at 12:28 PM CET, Paolo Abeni wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
-> ---
-> --- Patch [4]: [PATCH net-next v16 4/4] net: dsa: lan9645x: add basic dsa=
- driver for LAN9645X ---
-> commit 2bc50b43f8638df7f8c7d09bfad9a789fecdd370
-> Author: Jens Emil Schulz =C3=98stergaard <jensemil.schulzostergaard@micro=
-chip.com>
->
-> net: dsa: lan9645x: add basic dsa driver for LAN9645X
->
-> This adds a basic DSA driver for the LAN9645x switch. It covers switch
-> init, named regmap requests from a parent device, NPI, CPU and front
-> port setup, and phylink MAC configuration. Only the internal CuPHYs on
-> ports 0-4 and RGMII on ports 7-8 are wired up, and the parent MFD
-> driver that provides the regmaps is left for a later series.
->
->> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/driver=
-s/net/dsa/microchip/lan9645x/lan9645x_main.c
->> new file mode 100644
->> index 0000000000000..f91e825343353
->> --- /dev/null
->> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
->> @@ -0,0 +1,453 @@
->
-> [ ... ]
->
->> +static int lan9645x_tag_npi_setup(struct dsa_switch *ds)
->> +{
->> +	struct dsa_port *dp, *first_cpu_dp =3D NULL;
->> +	struct lan9645x *lan9645x =3D ds->priv;
->> +	struct phylink_config c =3D {};
->> +
->> +	dsa_switch_for_each_user_port(dp, ds) {
->> +		if (dp->cpu_dp->ds !=3D ds) {
->> +			dev_err(ds->dev,
->> +				"NPI port on a remote switch is not supported\n");
->> +			return -EINVAL;
->> +		}
->> +
->> +		if (first_cpu_dp && dp->cpu_dp !=3D first_cpu_dp) {
->> +			dev_err(ds->dev, "Multiple NPI ports not supported\n");
->> +			return -EINVAL;
->> +		}
->
-> [Severity: Medium]
-> [Finding: main-1-1]
-> [Sources: opus-5-5]
-> Can the "Multiple NPI ports not supported" branch in
-> lan9645x_tag_npi_setup() ever be taken?
->
-> dsa_tree_setup_cpu_ports() runs before .setup. This driver has no
-> preferred_default_local_cpu_port(), so that function gives every local
-> user port the first local CPU port:
->
-> net/dsa/dsa.c:dsa_tree_setup_cpu_ports() {
->     ...
-> 		dsa_switch_for_each_port(dp, cpu_dp->ds) {
-> 			/* Prefer the first local CPU port found */
-> 			if (dp->cpu_dp)
-> 				continue;
->
-> 			if (dsa_port_is_user(dp) || dsa_port_is_dsa(dp))
-> 				dp->cpu_dp =3D cpu_dp;
-> 		}
->     ...
-> }
->
-> That makes dp->cpu_dp !=3D first_cpu_dp unreachable. A second CPU port in
-> DT is accepted without any message, and only the first CPU port goes
-> through the phy_interface_empty() check.
->
-> If the second CPU port is port 5 or 6, probe would then fail later in
-> phylink_create(), and the driver's "Port %d has no usable interface
-> mode" message would not be printed. The commit message says:
->
->   "Declared as a CPU port there is no such fallback, and the probe
->   fails, and our driver logs an error including the port number."
->
-> If the second CPU port is port 7 or 8, DSA sets it up as a CPU port and
-> attaches its conduit, but lan9645x_npi_port_init() is never called for
-> it.
->
-> Would it work better to count ports with dsa_switch_for_each_cpu_port()
-> and reject anything above one?
->
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Correct, the check cannot trigger here.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
 
-This driver has no tagging protocol change and no port_change_conduit,
-so at setup every user port has the first local CPU port, and a second
-CPU port in DT is accepted silently.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The next version counts the local CPU ports with
-dsa_switch_for_each_cpu_port() and rejects anything but exactly one.
+- [Medium] The skb head truesize grows on every received frame, including
+  with no XDP program loaded, and the commit message does not say so.
+- [Low] The commit message overstates one change.
 
->> +
->> +		first_cpu_dp =3D dp->cpu_dp;
->> +	}
->
-> [ ... ]
->
->> +static int lan9645x_reset_switch(struct lan9645x *lan9645x)
->> +{
->> +	u32 val =3D 0;
->> +	int err;
->> +
->> +	/* The parent must reset the whole chip before instantiating its
->> +	 * children, so the switch core is disabled when we get here. The
->> +	 * sequence below must not run more than once: initializing the
->> +	 * memories on a running core corrupts pointers inside the queue
->> +	 * system, which eventually fills up and stops passing traffic. If the
->> +	 * core is already enabled the chip was not reset, so skip it.
->> +	 */
->> +	if (SYS_RESET_CFG_CORE_ENA_GET(lan_rd(lan9645x, SYS_RESET_CFG)))
->> +		return 0;
->
-> [Severity: Medium]
-> [Finding: fable-5-1-7-9]
-> [Sources: fable-5-1, opus-5-5]
-> What happens here if the register read fails? lan_rd() discards the
-> regmap_read() error and returns 0:
->
-> drivers/net/dsa/microchip/lan9645x/lan9645x_main.h:lan_rd() {
-> 	u32 addr, val =3D 0;
->     ...
-> 	WARN_ON_ONCE(regmap_read(lan_tgt2rmap(lan9645x, t, tinst), addr, &val));
->
-> 	return val;
-> }
->
-> If the read over the parent regmap fails (the intended parent is an SPI
-> bridge like ocelot-spi), the result looks the same as CORE_ENA =3D=3D 0. =
-The
-> RAM_INIT sequence would then run on a core that may already be enabled,
-> which the comment above says corrupts the queue system.
->
-> lan9645x_set_feat_dis() uses the same pattern:
->
-> 	feat_dis =3D lan_rd(lan9645x, GCB_FEAT_DISABLE);
->
-> A failed read there gives num_port_dis =3D 0, so the SKU port count check
-> in lan9645x_setup() is skipped without any error.
->
-> Should these two reads check the regmap_read() return value and fail
-> the probe?
->
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  makes it wider.
 
-Dismissed, intentional.
+--
 
-SPI itself has no ack or checksum, so an unresponsive device or a broken
-bus can complete the transfer successfully with all zeros or all ones,
-and checking the return value of these reads would not catch it.
+net: stmmac: rework stmmac_rx to support XDP rx multi-buff
 
-The parent verifies the register interface when it initializes it, by
-reading back the interface configuration, so a device that does not
-respond fails the parent probe before the switch is instantiated.
+This reworks stmmac_rx() to collect all the descriptors of a frame into an
+xdp_buff, so programs with frags support see the whole packet. On XDP_PASS
+the skb is built from the xdp_buff head and its fragments. The patch also
+saves the in-progress xdp_buff in rx_q->state across NAPI polls, advertises
+NETDEV_XDP_ACT_RX_SG, and strips the FCS with a driver-local tail shrink.
 
-What remains is a transfer error reported by the SPI controller itself,
-a host side failure, which lan_rd() reports with WARN_ON_ONCE().
+> - carry the XDP metadata written with bpf_xdp_adjust_meta() into the skb
+>   via skb_metadata_set(), so it is no longer dropped and TC/BPF programs
+>   can read it through data_meta;
 
->> +
->> +	lan_wr(SYS_RESET_CFG_CORE_ENA_SET(0), lan9645x, SYS_RESET_CFG);
->> +	lan_wr(SYS_RAM_INIT_RAM_INIT_SET(1), lan9645x, SYS_RAM_INIT);
->
-> [ ... ]
->
->> +	/* Setup flooding PGIDs for IPv4/IPv6 multicast. Control and dataplane
->> +	 * use the same masks. Control frames are redirected to CPU, and
->> +	 * the network stack is responsible for forwarding these.
->> +	 * The dataplane is forwarding according to the offloaded MDB entries.
->> +	 */
->> +	lan_wr(ANA_FLOODING_IPMC_FLD_MC4_DATA_SET(PGID_MCIPV4) |
->> +	       ANA_FLOODING_IPMC_FLD_MC4_CTRL_SET(PGID_MC) |
->> +	       ANA_FLOODING_IPMC_FLD_MC6_DATA_SET(PGID_MCIPV6) |
->> +	       ANA_FLOODING_IPMC_FLD_MC6_CTRL_SET(PGID_MC),
->> +	       lan9645x, ANA_FLOODING_IPMC);
->
-> [Severity: Low]
-> [Finding: fable-5-1-2-5]
-> [Sources: fable-5-1]
-> This isn't a bug, but this comment in lan9645x_setup() doesn't seem to
-> match what the patch does.
->
-> lan9645x_switch_ops has no .port_mdb_add or .port_mdb_del. Nothing in
-> this patch redirects IGMP/MLD control frames to the CPU either.
->
-> The comment also says "Control and dataplane use the same masks", but
-> control uses PGID_MC and data uses PGID_MCIPV4 and PGID_MCIPV6. These
-> are three separate PGIDs. They only end up with the same value because
-> of later writes in lan9645x_setup().
->
-> Is this comment left over from the bridge and MDB patches that were
-> dropped in v16?
->
-> [ ... ]
->
->> +static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
->> +{
->> +	const char *resource_name;
->> +	struct regmap *tgt_map;
->> +
->> +	for (int i =3D 0; i < NUM_TARGETS; i++) {
->> +		resource_name =3D lan9645x_resource_names[i];
->> +		if (!resource_name)
->> +			continue;
->> +
->> +		tgt_map =3D dev_get_regmap(lan9645x->dev->parent, resource_name);
->> +		if (IS_ERR_OR_NULL(tgt_map)) {
->> +			dev_err(lan9645x->dev, "Failed to get regmap=3D%s\n",
->> +				resource_name);
->> +			return -ENODEV;
->> +		}
->
-> [Severity: Low]
-> [Finding: fable-5-1-1-2]
-> [Sources: fable-5-1, opus-5-5]
-> This isn't a functional bug, but can this driver probe on any in-tree
-> configuration?
->
-> lan9645x_request_target_regmaps() needs 17 named regmaps from
-> dev->parent, and lan9645x_reset_switch() relies on the parent having
-> reset the chip. Nothing under drivers/mfd/ registers these regmaps or
-> creates a child with the "microchip,lan96455s-switch" compatible.
->
-> The commit message says:
->
->   "The MFD driver will come in a later series"
->
-> Until that series lands, this driver and the tagger it selects can be
-> built but never bound. Would it make sense to merge this together with
-> the parent driver?
->
-> [ ... ]
+[Severity: Low]
+Is this item accurate? The XDP_PASS path in stmmac_rx() already did this
+before the patch. The patch removes these lines from stmmac_rx():
 
+-			metasize = ctx.xdp.data - ctx.xdp.data_meta;
+-			if (metasize)
+-				skb_metadata_set(skb, metasize);
+
+The same logic now lives in stmmac_build_skb().
+
+Metadata on linear frames was not being dropped before. The only frames
+that never got metadata were multi-descriptor or buf2 frames, and XDP mode
+dropped those outright. The commit message already covers that elsewhere.
+
+Could this item be reworded so it does not read as a fix for a metadata
+loss bug?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index a2177777727ef..c215cc70caa19 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -2290,10 +2294,6 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+>  			 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+>  	num_pages = DIV_ROUND_UP(dma_buf_sz_pad, PAGE_SIZE);
+>  
+> -	rx_q->queue_index = queue;
+> -	rx_q->priv_data = priv;
+> -	rx_q->napi_skb_frag_size = num_pages * PAGE_SIZE;
+> -
+>  	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+>  	pp_params.pool_size = dma_conf->dma_rx_size;
+>  	pp_params.order = order_base_2(num_pages);
+> @@ -2321,6 +2321,10 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+>  	if (!addr)
+>  		return -ENOMEM;
+>  
+> +	rx_q->queue_index = queue;
+> +	rx_q->priv_data = priv;
+> +	rx_q->napi_skb_frag_size = PAGE_SIZE << pp_params.order;
+> +
+
+[Severity: Medium]
+Does this change the skb head truesize for every received frame, even when
+no XDP program is attached?
+
+Before the patch the head size was num_pages * PAGE_SIZE. Now it is rounded
+up to the page_pool allocation order, and skb->truesize is derived from it
+here:
+
+stmmac_rx()
+	bufsz = rx_q->napi_skb_frag_size;
+	...
+	xdp_init_buff(&ctx.xdp, bufsz, &rx_q->xdp_rxq);
+
+stmmac_build_skb()
+	skb = napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
+
+On 4K pages, a dma_buf_sz of 8188 (BUF_SIZE_8KiB) gives num_pages = 3, so
+the head grows from 12K to 16K. A dma_buf_sz of 16368 (BUF_SIZE_16KiB)
+gives num_pages = 5, so the head grows from 20K to 32K.
+
+That shrinks the effective socket receive buffer for jumbo MTU users who
+never load XDP. The commit message calls out the fragment truesize change
+as a behavior change, but not this one. Should this be mentioned too?
+
+[ ... ]
+
+> @@ -5962,120 +6073,79 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+
+[ ... ]
+
+> +		skb = stmmac_xdp_run_prog(priv, &ctx.xdp);
+> +		/* For Not XDP_PASS verdict */
+> +		if (IS_ERR(skb)) {
+> +			unsigned int xdp_res = -PTR_ERR(skb);
+> +
+> +			if (xdp_res & STMMAC_XDP_CONSUMED) {
+> +				stmmac_xdp_put_buff(rx_q, &ctx.xdp, true);
+> +				rx_dropped++;
+> +			} else if (xdp_res & (STMMAC_XDP_TX |
+> +					      STMMAC_XDP_REDIRECT)) {
+> +				xdp_status |= xdp_res;
+> +			}
+> +			goto next;
+> +		}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but multi-buffer frames can now
+reach XDP_TX, which makes it worse. Does XDP_TX completion recycle pages
+into this RX queue's page_pool direct cache from the wrong NAPI context?
+
+stmmac_xdp_xmit_back() picks the TX queue by CPU, not by RX queue:
+
+stmmac_xdp_get_tx_queue()
+	while (index >= priv->plat->tx_queues_to_use)
+		index -= priv->plat->tx_queues_to_use;
+
+Completion then runs in that channel's tx_napi:
+
+stmmac_napi_poll_tx()
+  stmmac_tx_clean()
+    xdp_return_frame_rx_napi(xdpf)
+      __xdp_return(..., napi_direct=true)    /* head and every frag */
+        page_pool_put_unrefed_netmem(..., allow_direct=true)
+          page_pool_recycle_in_cache()
+
+stmmac_tx_clean() {
+	...
+		if (xdpf &&
+		    tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XDP_TX) {
+			xdp_return_frame_rx_napi(xdpf);
+	...
+}
+
+When allow_direct is already true, page_pool_put_unrefed_netmem() skips the
+page_pool_napi_local() check. That means pool->alloc.cache and
+pool->alloc.count are updated without a lock.
+
+The tx_napi is a separate NAPI instance from the rx_napi that owns the
+pool. Meanwhile the owning rx_napi can be on another CPU running
+stmmac_rx_refill() or the allow_direct=true puts in stmmac_xdp_put_buff(),
+stmmac_build_xdp_frags() and stmmac_xdp_shrink_tail().
+
+Can this corrupt the alloc cache? If so, the same page could be handed to
+two RX descriptors, or recycled while an skb still holds it.
+
+The race dates back to XDP_TX support. With this patch, though, each
+XDP_TX frame can push the head plus several fragment pages down this path.
+Would returning XDP_TX frames with xdp_return_frame() in stmmac_tx_clean()
+avoid this?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-stmmac-rx-mb-v9-1-c099c923664b%40oss.qualcomm.com
