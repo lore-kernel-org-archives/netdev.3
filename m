@@ -1,70 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.68.222
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794304831;
-	b=vtM0aFXuKN7lX6UbK0WF4i0kORGOQVJsWCxkL6YSaCVRT4c3x6SjfalkI8oCMcJzO+mn
-	 vBfXqrHjdKGPL1VY0cV48zBRuaQaS3X2Od7z+/yASrsT8aI04YboMATJcIiXLgZbANJ+7
-	 NYHQH9D2lDLurC+2jWRhF37Y0L7Vr+/5kuTK9xyLxqpf57KWDwc3sW41XfvicOnqMmzvp
-	 s+eJQlQDyIBuN+42SNGA+5ScW/F4EpR0owEvbpn4MPZ0nSiVb2jDiuaaFM10xB6ir4wN/
-	 wyuJjfw5dzgaiuD43okBuXBTa1VV8vHWzPs8LFOR9/UdPZnNOGwC4j7AIgXHxwznPkA==
+	t=1794304894;
+	b=b+TB2gx7yId3pzMxHb2ZpYuAGMjcj9ixhLWEFzgqhV81/JumB/UZiSXV+ztYbHADYQfB
+	 oR7cCjG/DVPwdkV88ZyCrsZuLCxARrqwoVC10N2dT4yWGkpH4RCBUtB5XOXzSCxE/diuG
+	 3S/t4p+/nOCPX3Tpoh5/LVRkMudnFxZ9N4JZxr1rvLWxzuAVDHsAsVFpdBfdCeg4hvJ2/
+	 74iwX7N7zzaVm0hjToyO5tq6WfxvD2ykNiqCgIM8qeG/FVCSatrVxCovpD3/tUX8asDrX
+	 QTf3DGjzFdLBZnhdm23twCZGomlH2GYlgaSKKQ6zM6BLaSYE/0O0jRvm8rIyZdqnv/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794304831;
-	h=DMARC-Filter:Received:X-ICL-RepId:X-ICL-Out-Info:Dkim-Signature:
-	 mail-alias-created-date:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Authority-Info-Out:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-JNJ;
-	bh=MQj0QwuCrYtM4se9tYqwRptO8SmEOXvj2K8pv59RLX8=;
-	b=4KHj1uLSyvldJiA5BFLESE39kuJQjIODWyjMDyXhZQZJdXyTywF7XXiAHnGM6SVxEsaH
-	 nlEEJ4hsbiMAL5Moexay09RDFvkFAlO1IChM500TpYtBCAfxaqMhQCg0VKgbFpEY6+rDn
-	 JFl0wIzQ8QjG+6acb16Yo0IWfdga5sv6EeJskOllxVpp8xPU2oWqZdxSs70xNNFRvFkFD
-	 KIB3DfF/QOejOFQxMxdH1LkVQMAflwQ9vV8mdN3hHucTAqE1yY+2w2+9G/WVvEu1kNRal
-	 AxmXKgIIGXYHABxnG9Pr3u4dwlcoJqvSrx5y1U/F0OwQbebZdeiQTyjCVyjGoFtlNLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794304894;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=NV/n9QUrC7hJ5I6sA0qyjFunoR/tVEYb0g42BBmWAR4=;
+	b=lxVy/6BP+uj5VdtUQP8ov3hPe1yAwjEhKJunIqNpF59BkeOpDv3n4TjljLQIEykWvPdu
+	 WmtxwFN0ftgtEH4cQaYquTKpRJjex96hEsL+q6Zqj/RAQRR2uszFYrRCItf+DD2LLSJIK
+	 eZwFch9f6zgZAf72VUPsvrFyAW5kf2OlK4X8NZya+TXCwJHpUEzk2aULD4NyR2Min8TDt
+	 vwnEtKxH2lTCFQjtsy3VmpXmqNqrSX9OZe3mAz2BKN9YCe4rpJlXWAFI+Mb63kPS0UeTv
+	 OakJG980PW/enyioGpDmoPlPS0g5TSsY5uyglqWw/mJoA59y1jLOadm7v6ztFwGPXBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=verdict.gg;
-	spf=pass smtp.mailfrom=verdict.gg;
-	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=gbkkEG3m;
-	arc=none smtp.remote-ip=57.103.68.222
-Received: from outbound.mr.icloud.com (mr-2002l-snip4-10.eps.apple.com [57.103.68.222])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DM6ww2mY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6498C60A3803
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:00:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6498C60A3803
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C0E60A5BC0;
+	Tue, 10 Nov 2026 10:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=gbkkEG3m
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-1 (Postfix) with ESMTPS id DF0191800246;
-	Tue, 10 Nov 2026 10:00:28 +0000 (UTC)
-X-ICL-RepId: 01a1c4e6-e5ac-710f-9701-c1c61ca3c460
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1OHVwORQFEF0oBTVIPDxRcFFofVgVyBlwKVwRUHxwXXlhVCQodVwJdEVAZGQxVUEsbDlwFS1oVVRcOAkIfUB9MFldDWhkcGVoUXBhTRVEfVFhDGUVWaUELTx1dGVscQmRYVwkKHVcCXRFQGRkMVVBUEVdQC1kCQg9JAlwHWwtFAEgAQw9fCkEKVQBAUw5eGUsZXS1BDkAUUBtHQ1AMDFBNAUMICghHA00XXjJTBF8RUBY=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794304830; x=1825840830; bh=MQj0QwuCrYtM4se9tYqwRptO8SmEOXvj2K8pv59RLX8=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=gbkkEG3mKdrfeamnXDYB86ScqeST05aRpuM0k61A4HY73UbIE9KGUD4OoyfIrIqa896RhAkCoxpSoz512vrggVTlFxZBWLe+2sP4Hi9Nht9zpc8nmfXUk2Xr5zBY4+qMIussF9BI8t2XnSFvQ5Txtwum4A5HyigxqB+zjYDWfqxhgoD+kZFR2ZFrUXpA4Z9Xdf158BItWBy6pRSQwSxujPcXIiWl96enbyPEV7EKPlMvodyS4Aj1NyFL8Z55SPQWqdAngfSxn8cm9makPVe5drRcANBD+1p1R9ktYLTC8k88IonpUeaL04n+MnlqMX2U38wdAZIufoKi9vCzPLV1QA==
-mail-alias-created-date: 1621344842221
-Received: from DelNac.mail.msk (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-1 (Postfix) with ESMTPSA id DCF1C1800100;
-	Tue, 10 Nov 2026 10:00:25 +0000 (UTC)
-From: Vladimir Vdovin <deliran@verdict.gg>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DM6ww2mY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300191F0089F;
+	Tue, 10 Nov 2026 10:01:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794304894;
+	bh=NV/n9QUrC7hJ5I6sA0qyjFunoR/tVEYb0g42BBmWAR4=;
+	h=From:To:Cc:Subject:Date;
+	b=DM6ww2mYH13DcKy7AmjihvAMAcNoMQbrudRC6YIjWZVAcRjMBJW9b62/oehirxDK1
+	 aG1eszc+y3qx1lqI5vomerOBqGja+yJIclxrscxe+enN2cPG4zOREDTAdyLFzCubhL
+	 8FwQoEkv+6mDQh5ARq9OjLi2u7wiUdkpIpZLUZa3gOE96rHyYDrP9VoWNKPIRexccR
+	 ENFyUAI1ciozQM5BiYT0tyjU6FmGfeXdQgoGADCM87Y0m/a6CEXpePoy7VpR52tA7A
+	 QQ8tAYQBuWZw46Buqyjmv5PWiXXQb23IXpjicvaq2Ly2ZNscoL/8aaWgQLgSm6QHaa
+	 iGvTmPlM/LxtQ==
+Received: from johan by xi.lan with local (Exim 4.100.1)
+	(envelope-from <johan@kernel.org>)
+	id 1xQifT-0000000AlvD-2vbf;
+	Tue, 10 Nov 2026 11:01:31 +0100
+From: Johan Hovold <johan@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
+	Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [PATCH net-next v2 2/3] ipv6: Cache pmtu for all paths of a multipath route
-Date: Tue, 10 Nov 2026 12:59:02 +0300
-Message-ID: <20261110095903.84813-3-deliran@verdict.gg>
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Hans-Frieder Vogt <hfdevel@gmx.net>
+Subject: [PATCH net] net: tn40xx: fix swnode use-after-free on probe failure
+Date: Tue, 10 Nov 2026 11:00:51 +0100
+Message-ID: <20261110100051.2567443-1-johan@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261110095903.84813-1-deliran@verdict.gg>
-References: <20261110095903.84813-1-deliran@verdict.gg>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,205 +68,37 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Info-Out: v=2.4 cv=QYprf8bv c=1 sm=1 tr=0 ts=6af2eb3d
- cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
- a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yd4jPb-wh16-Q3oM4EAA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDAzOSBTYWx0ZWRfX020w+geYTy8S
- 7NYtrvh73AhfptRgbKNBgtMRgnVgHr6wOuy9sOKAxd2V2Sg/LErJBkV4I9m4EB9qdaVf4XGqHCs
- wvAnSY1oLxyHYZenV3JlBalDTDugjhGg7jdc/Yaa1Ii4bJO2qv04x3+7Xel3yu117Z1JX4C4K/K
- /OTFVcaTjm9L8lEWxKJ4SHnlxQuEZfr6CHxlZontQzY9NCvgAH8YZ042ktRiuDlbH51+a3sNXES
- D0n8WCPWFb1P9alqbLx2Eq0cQuyEEOBCqtZLl676H2GK5OSoBw95/2SLVlH2M/7BBCXo+KUDYD+
- ugrXlvSKDFr2gd3K8u9PK2R1QAeJvx5WBcP8cGUppkxxz8fZ8E4pc/5Xishrpo=
-X-Proofpoint-GUID: 5aFPLlcuAcD_1e8xGZYOOmtzNIeyVUYI
-X-Proofpoint-ORIG-GUID: 5aFPLlcuAcD_1e8xGZYOOmtzNIeyVUYI
-X-JNJ: AAAAAAABElknjHfav/h7JEi1N4W45cDUWyLfuwZ5b9q9qR8K171WJNSvGvMYCBJ/qggTSf
- SSzUg2GbNuZ913yj+xlYdFnDX4IiRoMkK3w+hv1ViqFTYS8+q//KoShf9VXIJs9oHG6jwJ
- 23KkdTJGhQBf2xfPQVAOMjNtwFqIQR8/8bdGzKSBnBeaJS2NqIrOu8OBraqW706Zo26dsB
- 99IQLuT6Ep2C5DHspP25WJZX9nRXFLjYftm3udsE29yfYe/9ZY0ZG2uxvSa5Ng6pzGzWZg
- LlNaocbJNoF3VxsHHKD4ZVJUb/Anbn4rD5biGeN2lga8IQP38xNJ3bUqtWq8Og1Tsw7sB+
- wv68Dqn75+zXuLUZIff9hDFT+6rAHpiZy4YCq94pVUVJThBtfI6r0sbHl5n7D0kfN3gCwr
- g97CwPr7fmVmGXhHcU2QeHD+6dLwc78LwTkLz7w7/JKVIpj0d9vbxOVwHkDhyNKf0P6pdH
- I/1gT4r6uOnlQiDMyrnmmXtINIlqhg2LQ0cn/f2t5VPtLRR3c8a/qCaWWAxDna35I6EaiA
- A5rk4K3BsKvWECn1+ebK4CasIdwcF5zM4jV2cGt1Y/VKfaj4qRcpMbqQmWPe6pNvy0SH1L
- xKx0sVhYNbQblvZGMHghLZ+z3bjGtf0dWnZyJp2rccxgtVKZX9rDgF7baMIHNG2HXS5fPr
- LGpK8OeY5mXqSkqvqeh7KLEosKBQhvWlTFSBT2FdLDGT5fJkMh9ZirRbQrXFymMrx1GZLd
- 0dF9cxTG/wcqDjuW50dxYae2A7jHEbHyr5Ukgw3mHNFLL0QFSOnpz/ATWGzfKrbaPfWElw
- PDYTKJ3d7g7TmsCp+VccjQjKfMsAZtoFNqcykHn3aXs=
 
-ip6_update_pmtu() looks the destination up without the protocol and
-ports the offending packet was hashed on, so with a multipath route the
-exception may be created on another path than the one the packet took.
-The flow then keeps sending too big packets on its path, every Packet
-Too Big lands on the same wrong path, and the flow blackholes.
+The mdiobus allocated by tn40_mdiobus_init() has no primary firmware
+node so its firmware node pointer points to the secondary software node
+added by device_add_software_node() and whose reference is released by
+device_remove_software_node().
 
-Same problem and same fix as for IPv4 in commit 7d3f3b4367f3 ("net:
-ipv4: Cache pmtu for all packet paths if multipath enabled"): cache the
-pmtu on every path of the route. For a nexthop object walk all of its
-fib6_nh, for a legacy multipath route walk the siblings of the fib6_info
-the dst came from. A path that already has an exception for the
-destination gets it updated in place, so its gateway from a redirect
-stays and its pmtu never goes up, and that also covers a dst that is
-itself a cached exception, which used to be updated alone.
+Drop the stray firmware node reference decrement on probe failure and
+driver unbind which leads to a use-after-free when deregistering the
+software node group as the parent MDIO node has been freed before the
+child PHY node.
 
-Link: https://lore.kernel.org/netdev/ad29493c-9e48-4a94-b327-e47af3a9d137@kernel.org/
-Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
+Fixes: 25b6a6d29d40 ("net: tn40xx: create swnode for mdio and aqr105 phy and add to mdiobus")
+Cc: stable@vger.kernel.org	# 6.15
+Cc: Hans-Frieder Vogt <hfdevel@gmx.net>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- net/ipv6/route.c | 124 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 82 insertions(+), 42 deletions(-)
+ drivers/net/ethernet/tehuti/tn40_mdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 04098cf32eab..dc982400fbab 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2911,12 +2911,52 @@ static bool rt6_cache_allowed_for_pmtu(const struct rt6_info *rt)
- 		(rt->rt6i_flags & RTF_PCPU || rcu_access_pointer(rt->from));
- }
- 
-+struct rt6_pmtu_arg {
-+	struct fib6_result	res;
-+	const struct in6_addr	*daddr;
-+	const struct in6_addr	*saddr;
-+	u32			mtu;
-+};
-+
-+/* Cache a pmtu on one path of a route: update the exception the path already
-+ * has for daddr, keeping its gateway and never raising its pmtu, or create one.
-+ */
-+static int rt6_nh_update_pmtu(struct fib6_nh *nh, void *_arg)
-+{
-+	struct rt6_pmtu_arg *arg = _arg;
-+	struct fib6_result *res = &arg->res;
-+	struct rt6_info *rt;
-+
-+	res->nh = nh;
-+	rt = rt6_find_cached_rt(res, arg->daddr, arg->saddr);
-+	if (rt) {
-+		u32 mtu = dst_metric_raw(&rt->dst, RTAX_MTU);
-+
-+		if (!mtu || arg->mtu < mtu) {
-+			rt6_do_update_pmtu(rt, arg->mtu);
-+			fib6_nh_update_exception(nh, res->f6i->fib6_src.plen, rt);
-+		}
-+		return 0;
-+	}
-+
-+	rt = ip6_rt_cache_alloc(res, arg->daddr, arg->saddr);
-+	if (rt) {
-+		rt6_do_update_pmtu(rt, arg->mtu);
-+		if (rt6_insert_exception(rt, res))
-+			dst_release_immediate(&rt->dst);
-+	}
-+
-+	return 0;
-+}
-+
- static void __ip6_rt_update_pmtu(struct dst_entry *dst, const struct sock *sk,
- 				 const struct ipv6hdr *iph, u32 mtu,
- 				 bool confirm_neigh)
+diff --git a/drivers/net/ethernet/tehuti/tn40_mdio.c b/drivers/net/ethernet/tehuti/tn40_mdio.c
+index fb1a4a2e4dbc..49951477ac05 100644
+--- a/drivers/net/ethernet/tehuti/tn40_mdio.c
++++ b/drivers/net/ethernet/tehuti/tn40_mdio.c
+@@ -157,7 +157,6 @@ void tn40_swnodes_cleanup(struct tn40_priv *priv)
  {
--	const struct in6_addr *daddr, *saddr;
-+	struct rt6_pmtu_arg arg = { .mtu = mtu };
- 	struct rt6_info *rt6 = dst_rt6_info(dst);
-+	const struct in6_addr *daddr, *saddr;
-+	struct fib6_info *f6i, *sibling;
- 
- 	/* Note: do *NOT* check dst_metric_locked(dst, RTAX_MTU)
- 	 * IPv6 pmtu discovery isn't optional, so 'mtu lock' cannot disable it.
-@@ -2942,52 +2982,52 @@ static void __ip6_rt_update_pmtu(struct dst_entry *dst, const struct sock *sk,
- 	if (mtu >= dst6_mtu(dst))
- 		return;
- 
--	if (!rt6_cache_allowed_for_pmtu(rt6)) {
--		rt6_do_update_pmtu(rt6, mtu);
--		/* update rt6_ex->stamp for cache */
--		if (rt6->rt6i_flags & RTF_CACHE)
--			rt6_update_exception_stamp_rt(rt6);
--	} else if (daddr) {
--		struct fib6_result res = {};
--		struct rt6_info *nrt6;
--
--		rcu_read_lock();
--		res.f6i = rcu_dereference(rt6->from);
--		if (!res.f6i)
--			goto out_unlock;
--
--		res.fib6_flags = res.f6i->fib6_flags;
--		res.fib6_type = res.f6i->fib6_type;
--
--		if (res.f6i->nh) {
--			struct fib6_nh_match_arg arg = {
--				.dev = dst_dev_rcu(dst),
--				.gw = &rt6->rt6i_gateway,
--			};
-+	rcu_read_lock();
-+	f6i = rcu_dereference(rt6->from);
-+	/* fib6_del_route() and a NLM_F_REPLACE clear fib6_node before the
-+	 * route and its siblings are released, don't walk them then.
-+	 */
-+	if (!daddr || !f6i || !rcu_access_pointer(f6i->fib6_node)) {
-+		if (!rt6_cache_allowed_for_pmtu(rt6)) {
-+			rt6_do_update_pmtu(rt6, mtu);
-+			/* update rt6_ex->stamp for cache */
-+			if (rt6->rt6i_flags & RTF_CACHE)
-+				rt6_update_exception_stamp_rt(rt6);
-+		}
-+		goto out;
-+	}
- 
--			nexthop_for_each_fib6_nh(res.f6i->nh,
--						 fib6_nh_find_match, &arg);
-+	arg.daddr = daddr;
-+	arg.saddr = saddr;
-+	arg.res.f6i = f6i;
-+	arg.res.fib6_flags = f6i->fib6_flags;
-+	arg.res.fib6_type = f6i->fib6_type;
- 
--			/* fib6_info uses a nexthop that does not have fib6_nh
--			 * using the dst->dev + gw. Should be impossible.
--			 */
--			if (!arg.match)
--				goto out_unlock;
-+	/* ip6_update_pmtu() looks dst up without the protocol and ports the
-+	 * too big packet was hashed on, so dst may be another path of a
-+	 * multipath route than the one that packet took. Cache the pmtu on
-+	 * every path, or that flow would keep sending too big packets.
-+	 */
-+	if (f6i->nh) {
-+		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_update_pmtu, &arg);
-+		goto out;
-+	}
- 
--			res.nh = arg.match;
--		} else {
--			res.nh = res.f6i->fib6_nh;
--		}
-+	rt6_nh_update_pmtu(f6i->fib6_nh, &arg);
- 
--		nrt6 = ip6_rt_cache_alloc(&res, daddr, saddr);
--		if (nrt6) {
--			rt6_do_update_pmtu(nrt6, mtu);
--			if (rt6_insert_exception(nrt6, &res))
--				dst_release_immediate(&nrt6->dst);
--		}
--out_unlock:
--		rcu_read_unlock();
-+	/* fib6_del_route() zeroes fib6_nsiblings before unlinking f6i, stop
-+	 * then as the walk would never get back to its head.
-+	 */
-+	list_for_each_entry_rcu(sibling, &f6i->fib6_siblings, fib6_siblings) {
-+		arg.res.f6i = sibling;
-+		arg.res.fib6_flags = sibling->fib6_flags;
-+		arg.res.fib6_type = sibling->fib6_type;
-+		rt6_nh_update_pmtu(sibling->fib6_nh, &arg);
-+		if (!READ_ONCE(f6i->fib6_nsiblings))
-+			break;
+ 	/* cleanup of swnodes is only needed for AQR105-based cards */
+ 	if (priv->pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
+-		fwnode_handle_put(dev_fwnode(&priv->mdio->dev));
+ 		device_remove_software_node(&priv->mdio->dev);
+ 		software_node_unregister_node_group(priv->nodes.group);
  	}
-+out:
-+	rcu_read_unlock();
- }
- 
- static void ip6_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
 -- 
 2.56.0
 
