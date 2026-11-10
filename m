@@ -1,123 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794283986;
-	b=NrsqH1gA2ZYElz1jcPkWTB5Zh7K2Hbbu4AWiLSj4LhhXEFVeJYPTQbgf5cjIVrhSBkbz
-	 PL2Q9LRDaSPnSCQhIO5kL0ihHU/FVyyZ0Hsfr0vC1v4Cwt/eGMBm5HjWHbR2PBgIUK7IN
-	 o6Wm0sevzdvau6e1rR1Gs8KhkqsU+dplfOG/wywl4cFnWznn3DoD4xPXDZhJVu9eTAfbE
-	 StrrOhDq9FiwTaSn6qxlmz7AIZbYoGmxhVlIPtUjckuzaC5rNRPOxUerMy7+BIzQYYhaU
-	 gcD/quK0mkEWOULbCE+Fdwki9MwTfpbVthDmUCECgbHukBQnwcEC0hrvfXRqX1NykrQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794283986;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=cCPtgOUClLidfslbB2P+0rQ+331P45eB5fyHHdLHlh4=;
-	b=3i/sC8GClZUp4ytJUvZUm/IfTyeuiZdZJgfNQ3bt4BLQfaOvKrOSsPKl7xHx4yYjK5zn
-	 bGEQsC/dIHYo10b+9Qin8oURpSgFuv7qlv961K9Mkg+KoNv14C4ea4ZspQdmlG1MKeTjQ
-	 C/hr6baUKk3AXwr00Jz/h/7tJnN/b5u6mwy0gWrAGTixrPFHdXI0oTCfe3mwXDrKRcv06
-	 sKoXA1/r0FqjvDXwP1lTnUch4bHBmWWGY/cRv0K6cy5eEiOIX0bLqmBft86rkMyNBxtmd
-	 zll8zHaDQxkKYOxiglpoYwCn9joq7tUo5eGNuke4yUE6cBr+gL1Gf/Q6PWeUEPw1e9g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=EBfqtfHb;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=OskcvjNS;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794284654;
+	b=oaoHvCyP46/Jd3kc4YTj7Ctqi04efWvlDih1gKBssceJjo8jSQ5byT6iShbIkv2aPxYN
+	 rNR0uxMmLH8cgJm+i1a3NYqN5XlQ2x+q99C5xB3oXfQtFEwQ25LBnE5MziZyxycoTLIHY
+	 kpgh8K6iQHZ5T7Pd8bYM+ZkC5JRfZfCIzws7iCOnglt/vEN250gcb6hBQh5g2SAK/Gzyo
+	 EEwhSt4b3F9w62ZbwVFeoVgeSJ2oGhScmZC1gVWo/fNDBGOfCPHQQnso2fXjQfUVj+UMp
+	 YLA9jcNcUo89n16priS7wP7xgSqi2tEaMrUaJcU3+BXB5B4NySgJtq50zOeNm9ZKaQw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794284654;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=KtQ7MYeLVAuI+S3wrzryY9ksbyCrYV9o4wIQkIktrO4=;
+	b=1t95CeaanszNeslLVQ2vnEPAg9PmJYfLSM5xkNKMV7ii4+ktNat+WQtswLfYjrXhceVw
+	 hdjQSQ2wwycPGghoG/zaT6LsoifCXIhlKWTr7prGtV++B4aPURcE26MsEXPkCC0S2+aiY
+	 CSb/SJP9ZmJuv/R2f6Lb9Forz7YX9ajIIJkj6UvWttiHocsRkwbhnuOuhoEK7NRTMhxmB
+	 d4CECQ+KmgnvG3kV4UJs/1XtETn71i2touXNoNYAZZQkAiS++VxAod+tB5FK6Q9xGV4jS
+	 mmfSwka6MPFyIMPoUbDWc1awe7BuCWygRj7MpMkQDu67uKHiqJpbJsYsd5M0quVVWMg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=jclark.com;
+	spf=pass smtp.mailfrom=jclark.com;
+	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=h9I8bgys;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F46606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:13:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72F46606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6641E606A33E
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:24:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6641E606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=EBfqtfHb;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=OskcvjNS
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AA4AEf42275648
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:13:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	cCPtgOUClLidfslbB2P+0rQ+331P45eB5fyHHdLHlh4=; b=EBfqtfHbAgl7tAAY
-	YgQqEoqqW4D2gW14J8UGOZ2ViRejdGVYjoDnKht5A3LKUHmrNOMfMIUpKVZxGr+q
-	jJNSo0b7f7YPahJskLPcS7WrMP8nkSw07Utk1+szS1WQ5NUthbIofbWJbWfQ3fN1
-	wyGRkzrQIf1SEeiYdnVINYb1XMntq2R7oidqbIf674BIoWo16C2IhLQ9gyDKD3Y7
-	mYoaB2xSXLiqnjIfZVqcjTAB0NS/hcFDS+od475aU5oYRbWst3MqqkVs//doYG17
-	WL6Cnip/rvHvReGtm89Y4IrQiwR6q2/qdk/TpVgcdXWBALu/g5g0PRlvLtTzpDTo
-	kisDPw==
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com [74.125.224.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hudf5bd1f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 04:13:05 +0000 (GMT)
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-679f81d5d7bso2963907d50.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 20:13:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794283985; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nVl0la5l3ft1NgfU9pBYgnDed52URGYNJk5/O0KegEy5KM/KtVtPqF9TqEoeZQb35l
-         AXp4nh90NiIoIi0+1auyCeZ4ysqYIS6KsG6Hw5HqaOg0V6QRHaGDFvgdgTkVfp4+j0kJ
-         hVudrIzXtFppAjpPvEvq5DivqM/x1XR5f5neJDMhf/K4e4ehhlJRzKhApXks4svxSBxm
-         DQBEUuPpknuZ2xEZ1Aqa9OLoXugYcMbryzUG96JQPAB4snt/RtXdREgFSqaZ/9gkCOrg
-         tRd36iMukmGE8aS+zD/z40k49PcVIUqFIBuH076hkfa047RjkeB3u9WpxkdKWJ7xegN5
-         OoYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cCPtgOUClLidfslbB2P+0rQ+331P45eB5fyHHdLHlh4=;
-        fh=Qr+eY0oEkrtumBNpwJDj6V43AVFp8d/f/eoP9Ure/SQ=;
-        b=eArrxc9TkDNS3XRth0FSFFFH4h1v65yHaGU4ldhN5VQnw/5SoGLuDFnrjWHJYqKaDC
-         L8rKO6ohLVIDweKO91T5FVbmfIpxowbXLOnrNUK2KFKu26qX7/jiyyiD9b7lXzUqI7CJ
-         nG6RB2v2hQmikOP2YBKrgu4WLhXCyq91NPYN8wkHEvFtVsdnE2/tGsPE82vbHST4bQbn
-         j/j+4/JBGssUFKCqqTNy6+nBALFeYeFS1Y167J0zpoF97w1x7UbzIzDaDjicGLWVZ52Q
-         dgPRzTTpwve/xiuV+br7//8VBTDzCFeb4RrE7D6syjg5kfIz9niw53UqWShK8eNv5KsC
-         SurQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=h9I8bgys
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36e99cf7bb3so2680085eec.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 20:24:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794283985; x=1794888785; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cCPtgOUClLidfslbB2P+0rQ+331P45eB5fyHHdLHlh4=;
-        b=OskcvjNSHi+7oFJRQzXHcZ1HPLV5J+R2LDTQDULTfkzbgxiNIEwAhWA7WZvbNSW36n
-         2HFqrF1uU+CQ8HG03GLwi5ke7nxg5rlyL/xn6MiyD03C9dCPI1cCmor+QRwKR9BFAgYv
-         6T2n4eIWmBZkBoMicVonvFHnQlfvJ9G94lh5VoIPnPAhFezc3VYkYf4YfqMc7oRXpjlB
-         EigcI25vfF9QYOQ6aufkMQbfxqArN0ayTXVcU28jzeESsqLbb2x8L8ZYrImepP7/HjMR
-         qsGt5Aj3E5UFxQt9h0V9ojLNSmo4RDTv9QxLlodXqARW1rv21LQeAUhvYkAixybbhnsf
-         GceQ==
+        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1794284652; x=1794889452; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KtQ7MYeLVAuI+S3wrzryY9ksbyCrYV9o4wIQkIktrO4=;
+        b=h9I8bgysoRZzEi6t8lGPtPIabGW/3UTAJ0n/QkNhXiqoivFsAFS1YplzBF1jBvdUyx
+         zPoGIa+DiMCVE5K8EOZiy3O10CLCiKvZFZhrxoxfPRQcgTTsZG8zOn/miUQf3pDAYlYQ
+         fWies2/r+vXax4gGGrS/rRRBouQNbMDe6ZoEKOXdUA4zZzUEUQ5xLlVh6F2f804fKzWW
+         kuBQhi8+J6dxpzeqwuZ7CNZIZA0UPEJkcjoY08+vJy3PcL7ZVtJhtP3y5FDWgYWyPJh6
+         566ZqNJQwshB2u35fhs3OiJBUhxK2YHgO6VcqlWyIbVwacOPNt1dNFw19ueLdS5cTQ7V
+         sWXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794283985; x=1794888785;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cCPtgOUClLidfslbB2P+0rQ+331P45eB5fyHHdLHlh4=;
-        b=xB+jD5vtYMlRE6F26IlmMQSjtdp822b7eAjLBkXZTSVTOnStnOGHqCQgqO6ZaQ55k4
-         6gTlATrM31qfQk8GvE8sJ3zcMHa4DFnJCVuUkMyCpfB4oVSvUOYuyfx6RdXPI6oqsFeC
-         0G3YeNxU5JUX/T4CpvsC5JDO2sHHXrtoxAxX6Wd3ASR/SnruJQEz1blFsMQcQlfuANOZ
-         GmN2vcd0GFejYvfE+kXXCRonhbULK1jqEbvssvqioaxghmugfQt48XOYBfuw8DTNDCBs
-         GjGihYVS2UhgRJSM1942F31/3udaK3DzgaF1dZR5wo3kCgfBs67VKS05f2ewq2XnGaCe
-         TR/Q==
-X-Forwarded-Encrypted: i=1; AL+hErHeltUeQ2enlnNPuvbmE3TygmnRVWTgpgr5jYFygSXuWf7DkXawKeW3cXpva5L3fKa9/UDgjHw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/aGIN4IfiLciTUnuajfrafNOaEdqWjbLtZ3DdE9vKMBKvHq/tX
-	YeJihB/N+CP/bGXxhEvmMXiMq2gH0bnnFRUntfVPqMEst9DeuPGjAxfPaOSZWJtafqcXfHMLGxW
-	SF1cMwC3Pd628A3/TWDEevQGv9hfyqXm3MKN363AyOU6DG2b2Sb3taFAjsFN0+EOuvau0qf9tKm
-	5SO2fcuHNEEf/QMFiy88D/S/nfbXlqQZk0CKka4PxE02p5
-X-Gm-Gg: AYBFou0y15xUQz/Q94VFrrbX5xS6M7JrY3hRT7e7/lkzIVxN7e3eTVPwnmyS3oglePl
-	e+Qaj+lLa//34l26pohYSrTYOm74+LH11InzJtwRmVeRR6lmxJiHgUnpVW6x1ozHwTXebPgYI2t
-	CAjQjhRGvlQ8UmcUpC9REgbL+ZJHwH87F/sH4NeXukR8aUB3K4x3zBqCDeNA==
-X-Received: by 2002:a05:690e:80b:10b0:67b:edf1:7294 with SMTP id 956f58d0204a3-67c567840d5mr549807d50.79.1794283984475;
-        Mon, 09 Nov 2026 20:13:04 -0800 (PST)
-X-Received: by 2002:a05:690e:80b:10b0:67b:edf1:7294 with SMTP id
- 956f58d0204a3-67c567840d5mr549804d50.79.1794283983988; Mon, 09 Nov 2026
- 20:13:03 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794284652; x=1794889452;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KtQ7MYeLVAuI+S3wrzryY9ksbyCrYV9o4wIQkIktrO4=;
+        b=d6G9bItQRTRbQVPhPSNHLtT6b7AfWBk8wgA6VHgF+j2ETs69uj5F++fjCI/cVEjxHI
+         XSYLgiPMyBsxgoBVnKXr1wKmTR57pXPPbB8o4Pxs5j0PcWy6sDwP0RUbBpE68JSr906O
+         /lhWoL2vz8bRPqhwcjXyzJccYieSUVfwA+e19Qj/ygdaH08WVC5jYTGq2dVdgZED4cL8
+         RfjeN8McnfyZphsSnVxBD4ndKdyFfKhcb1ScoEhkEV0wU+VP2WaZmSGN1xc8YSGqDsOu
+         1BKgNIxu8YO+c4fJ0jsWhyBr4xB3nCKNrT4mk+gZnmidWq5N+ipDyhr+lEUdasb5FOoa
+         Du7A==
+X-Forwarded-Encrypted: i=1; AL+hErE4/XaJ+3xFxINLP7S7RSSWeq/QqWcez4GbxJgt2fz1qTZBZS+PjAiqjKZXYo/1iBGHx9ejjKg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Eo2voVUXysnYbk7rcxmJpeSShkogK9qk11s+VKHQFHt2gSv71
+	6wRojvhYqjobBev+QhkyHr+GXjcWZPXdwqWcuinuQNQaFVvBIePpRUqJHtPKPtD7Tz94sVj3vpZ
+	ettN5tNyR
+X-Gm-Gg: AYBFou16uqAfGd1zFtEaBR0JcJZcwV6qWWpOV5m44OlQpoHICGhGDZLH3g9S4rWjwP8
+	sslPWBvfHsY1fn4TVUu27XITOmF9UsdAzGxOuqoHMR5IPSjx8/zhOYbZn9q9gsxnfFT7E+cNQ8U
+	Nwa01lZrvHNrbb8KTeQzbIlzqi8JQ3sw3/FXsQ9zIBSQQwIXoKNYcOZGs0fsKmHLoHYPbRLcR5t
+	kY45EcMe8MDzz/jW1uYR/qRJxXoCbzTkN80PT3wpaJj3Cx0QIFlJJUA7JSnaGl/3r8DtKMS2EDL
+	HH6xrNEuUXzWDor82uyoN/xREwz7CSUtsgwp25rFaBUDoC/K+uLlxYPoTYYUtnpblPZAbd1HZXn
+	1evSVh1qtCYxzZPWwlOy+gNyD0+fZ2GR4ij4csiHUorI3gbRe29NWa9kpLS+FJbY7LpSLinYcav
+	cigEUd7kjTdwcwsYKeEid37csbHKKpvaUYkq/aGfujPnDI11aSRbozMIfUZwrrVkleyfw1lDOpQ
+	T/XmwaRM7te+MS7hKBcxMq2ohfnVLyx2lyDctCDyDNBn3W1IVjHyWA00HBFtKUGUi4nTrMGE6Bc
+	omF6CleSRUfR8khCajhvSMcFajMo4tAhJE1fZNr0AAGXGp0M90vtZtUp8GB1bhFDF8JckZqGDCg
+	FNV2qs6/aEZ3jR1UP
+X-Received: by 2002:a05:7300:fe43:b0:360:d4c5:7243 with SMTP id 5a478bee46e88-3751ee7bee3mr1721070eec.11.1794284652163;
+        Mon, 09 Nov 2026 20:24:12 -0800 (PST)
+Received: from cantal.lan ([58.136.75.91])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe32276sm3116950eec.8.2026.11.09.20.24.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 20:24:11 -0800 (PST)
+From: James Clark <jjc@jclark.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Rahul Sharma <r-sharma3@ti.com>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	mfd@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net-next 0/3] net: ethernet: ti: am65-cpts: add PTP_SYS_OFFSET_PRECISE support
+Date: Tue, 10 Nov 2026 11:24:00 +0700
+Message-ID: <cover.1794284248.git.jjc@jclark.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,82 +118,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029-aquantia-poll-global-status-register-v1-1-808089824a3d@oss.qualcomm.com>
- <179326624025.3327.5471427454050749790@kernel.org>
-In-Reply-To: <179326624025.3327.5471427454050749790@kernel.org>
-From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Date: Tue, 10 Nov 2026 12:12:53 +0800
-X-Gm-Features: AclHuK-34PzkdjjV2B8UNP3izxEprRgMKp68GqqvuOTJfXarQQYQmDgBJr59fVQ
-Message-ID: <CAPTcHHQrL0HBVEmfqS=x+uOX6p2f7pbTe4j3-DqLs=jVm32dzQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: phy: aquantia: Poll global status register
- for provision ID
-To: netdev-bot+sinfo@kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: vPSNmyQk2Kcvjv6p81W39uHhsDd6kbWe
-X-Proofpoint-GUID: vPSNmyQk2Kcvjv6p81W39uHhsDd6kbWe
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDAxNiBTYWx0ZWRfX3eg3VmIbbaCJ
- uDxnUpCsw7xRZ7/WyZ2I7+arxWSVi/oF56cSDtqsrGAIaAGnYe1Eordrwcdi+BNz0/RJSHisyxu
- Bu6z5GxX9jFu7qaj6XXyXmEmsdsbLr8=
-X-Authority-Analysis: v=2.4 cv=bar+w+PB c=1 sm=1 tr=0 ts=6af299d1 cx=c_pps
- a=VEzVgl358Dq0xwHDEbsOzA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=rJkE3RaqiGZ5pbrm-msn:22 a=VwQbUJbxAAAA:8 a=khBgtfIvKfM5PKhOzWoA:9
- a=QEXdDO2ut3YA:10 a=uujmmnXaIg8lM0-o0HFK:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDAxNiBTYWx0ZWRfXxG4OW3ThUIuN
- /7BOvTVEpfFO2o0PCy5+VBxU1E+ohIvh41jbLxYQxBuVSwkbeHnTTqzXSd9V3EhBDE8sajkGFYC
- 4Rvrq98r3xGRysf8vEIHkxGNFj0+uw3gC8dddEyPi1IYdXNGL+reC4K94edQNuHUCbi5yon8jN/
- HzLD02gNi2GVkDXb0lfoBf4SriunLQxGKRXi3eHp4CkDMTrMceOR0XzoT0oitITCk2whpXtlfmO
- FG/UUcXwUu+t0qIYQnQXjerxvn/ljBQYW/necnM5xuJq7yLm3wYPV/f/Y/OKINfsMOux/CXBrna
- WJmf8Wf7B/+vrxKrbKagauDGipoXL34GpXpxdQ4mq6gK5EAudAMVC6aaK0E30pQFecf4ltsemmv
- Z/2MN7aDjqz7T4mJA91brJ52j5FzZll6r6VLLWE1YzE4y0tY8InGyZXzcS40H5JlZyqAYA2HQ5T
- bSgZpQHxh8XAvzySTUw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-10_02,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- spamscore=0 clxscore=1015 bulkscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100016
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 29, 2026 at 5:30=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-Yes, agree, will share the details in new version.
+This series adds PTP_SYS_OFFSET_PRECISE to the CPTS driver for TI K3
+SoCs. This brings a similar hardware-supported level of precision to the
+transfer of time from the PHC to the system clock as already exists for
+the transfer of time into the PHC, whether over the network using
+hardware timestamping of packets, or from a GNSS receiver using hardware
+timestamping of its PPS signal.
 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
-Yes, agree, will share the details in new version.
+The system counter of these SoCs, the Global Timebase Counter (GTC), can
+export one of its bits on a push event output. The Time Sync Router can
+route that output to a CPTS hardware timestamp input. The CPTS then
+timestamps edges that fall at known counter values, so each timestamp
+gives an exact pair of PHC time and system counter value. This is
+similar to the PCIe PTM integration on these SoCs, where a selected bit
+of the PTM timer drives a push input of the PCIe CPTS.
 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Patch 1 adds a syscon compatible for the GTC register frame that selects
+the bit. Patch 2 adds a ti,gtc-push property to the CPTS binding, which
+names that syscon and the CPTS input. Patch 3 implements getcrosststamp.
 
-pw-bot: cr
+The series does not set up the Time Sync Router. Mainline has no binding
+for it on the J722S, so for now a board overlay sets the route, as it
+does for ti,pps. With Rahul Sharma's proposed binding for the router
+[1], the CPTS node could select the route itself. ti,gtc-push would stay
+the same.
 
-Regards,
-Hongmei Xu
+Tested on a BeagleY-AI (AM67A / J722S), a BeagleBone AI-64 (TDA4VM /
+J721E) and a BeaglePlay (AM625).
+
+With this series, phc2sys steering the system clock from a free-running
+PHC sees an offset that never varies by more than 1ns, whether idle or
+under memory load. Since the PHC and the system counter run from the
+same oscillator, this is the noise of PTP_SYS_OFFSET_PRECISE itself.
+Without this series, phc2sys falls back to PTP_SYS_OFFSET_EXTENDED and
+the offset has a standard deviation of 2.5 to 10ns when idle and 22 to
+31ns under load, with excursions of up to 200ns.
+
+When the PHC is disciplined (by ptp4l or ts2phc, to within 4 to 7ns rms
+of its reference), the offset seen by phc2sys with this series has a
+standard deviation of 2 to 5ns, whether idle or under memory load.
+Without this series, it has a standard deviation of 5 to 12ns when idle
+and 22 to 29ns under load, again with excursions of up to 200ns.
+
+PTP_SYS_OFFSET_PRECISE has a fixed bias, the capture delay of the push
+event through the Time Sync Router and the CPTS input (about 11ns, plus
+an undocumented delay in the GTC), which did not measurably change under
+any load or CPU clock. This series does not correct for this bias. The
+driver similarly does not correct for timestamping delay on extts
+inputs, nor for ingress/egress latency in hardware timestamping of
+packets. It turns out that the bias in PTP_SYS_OFFSET_PRECISE and the
+delay in extts timestamping largely cancel each other out. The offset of
+PTP_SYS_OFFSET_EXTENDED relative to PTP_SYS_OFFSET_PRECISE is about
+-50ns when idle, and moves by up to 40ns with memory load and by up to
+60ns with CPU clock frequency.
+
+The implementation was also stress tested by using ntpperf to load the
+CPTS (-D 0 -M at 15,000/s and -N 0 at 5,000/s). No errors or wrong pairs
+were seen.
+
+To try it on a BeagleY-AI, apply this overlay:
+
+	// SPDX-License-Identifier: GPL-2.0-only OR MIT
+	/dts-v1/;
+	/plugin/;
+
+	&{/} {
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		wkup_gtc: syscon@a80000 {
+			compatible = "ti,am654-gtc", "syscon";
+			reg = <0x0 0xa80000 0x0 0x400>;
+		};
+	};
+
+	&cbass_main {
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		timesync_router: pinctrl@a40000 {
+			compatible = "pinctrl-single";
+			reg = <0x0 0xa40000 0x0 0x400>;
+			#pinctrl-cells = <1>;
+			pinctrl-single,register-width = <32>;
+			pinctrl-single,function-mask = <0x000107ff>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&gtc_push_route>;
+
+			gtc_push_route: gtc-push-route {
+				/* input 11 (GTC push event) -> output 14 (CPTS HW5_TS_PUSH) */
+				pinctrl-single,pins = <0x3c 0x1000b>;
+			};
+		};
+	};
+
+	&{/bus@f0000/ethernet@8000000/cpts@3d000} {
+		ti,gtc-push = <&wkup_gtc 4>;
+	};
+
+I used an LLM coding assistant to help prepare this series.
+
+[1] https://lore.kernel.org/all/20260828100615.1700223-1-r-sharma3@ti.com/
+
+James Clark (3):
+  dt-bindings: mfd: syscon: add ti,am654-gtc
+  dt-bindings: net: ti,k3-am654-cpts: add ti,gtc-push
+  net: ethernet: ti: am65-cpts: implement PTP_SYS_OFFSET_PRECISE
+
+ .../devicetree/bindings/mfd/syscon.yaml       |   1 +
+ .../bindings/net/ti,k3-am654-cpts.yaml        |  17 ++
+ drivers/net/ethernet/ti/am65-cpts.c           | 289 ++++++++++++++++++
+ 3 files changed, 307 insertions(+)
+
+
+base-commit: fa5196392691051963726787944db872420dfa75
+-- 
+2.56.0
+
