@@ -1,79 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794280991;
-	b=fYdCflzPe9Bez3pfWznxTuYAzWtpNvdjacnDQhoGa30fWbMDmfJpfpFc0TRW4iTo8P2o
-	 sk/7RzGcmdeUD5SA1ZpxFVbmxqFUfxMsxiqD38qsyyv7tcLddj180/B6kTbKnQhJQgR78
-	 d2SVc77BRxHZFUvhUfAV+DWSaM5RdffJ1STka9FWli8IsG/3gn9vgOYldzcY/1BFLn32s
-	 RdAK5TdMcPvolLCJwwJAK0qGybXcIqtPushKDg8kIvXeZtRUwa5EnxvGT6OpIImRWOuYd
-	 oth7NDhmBKZVLqw7n/gKfPw9kxWmMu2hnodNN51PiU2I9ws7YBFTHPU1D+vvCRuQD6w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794280991;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=xTuKFjOL9MLyUlSMODi8Yn1X8Zb1+J3mhD6YlkzKV8A=;
-	b=uzskKy8cvLnED9mXD7shX6kiaclGE+3GKRtaRfjwYPG4WxoimsPvenAfnFjIsPsMO6pc
-	 N6PyjjeRedsarVwYXOIsxDRDFktK8znAKKFLM5DIM2hBkAbv2S6yOutiyRniwcduXjEo5
-	 bCOdure6mehZna9KDyUtCX5lCuJadJgxOBxOkpjaVj/g9pVOLspH+yyEYNl8bMLtV1q0T
-	 4RhT/Mm8Ov+8P6wyjdgdzjjm8RW1KE5ahwZceJ8Sc9iCqsdsP1ZUNJpeZABWRJvHUQf95
-	 MXJt9k8cnI/riII/4DQK2IPjQuBKbDj3QWxYMfccsuPWECF49XMPpz42RLs5cFsCbKg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ryg05WLm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3502A60A2639;
-	Tue, 10 Nov 2026 03:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ryg05WLm
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794280990;
-	b=Q/5jBBc1olXGDe24M9axKgSeU8VwZxxw0U2QiVnKAipfDv92lMp5+ki5GK7paaJDwkmX
-	 YalwOZsta/oWGkj/YUFZj934/ymSRC9X6/C0IhAPJwuSaK/m3RyvH6LFYudJtSxg6q2Be
-	 D1UBAltJxkYxHlIMLJbOmU3+P2mhmjGRsuvyQxIRKYbputVscE+2hnSHiI6eRUzD8t1A+
-	 wNful94rFCiePIWGY/WTA5JaArWuEJSYJ2ktJwa/hMNfy5ms8VsFAA4js2A8ZMMyQQCtX
-	 o3JnJ7fQLFEJb4abLeslf7TWiZg73NX7rpT8IT08JG9Ez+96kWYsyQtjCvKNuXroF9w==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794280990;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=xTuKFjOL9MLyUlSMODi8Yn1X8Zb1+J3mhD6YlkzKV8A=;
-	b=3esVU2aSf0IhVsv4L+aIrmdWjUpUgZl0lNW7GGlm6IyKuONdG1Ep/Vs74uQ8DmUG9ZQo
-	 I4B1MUKu15Hkhaf57lUOUmP0TI043ufZ52VvH1PSGWs46HloZ0QpvDTssCHZsEDhFYELq
-	 7e5RHSrm3JJjg8MA7SmHUmyRDeWD2I4P68IAEC48M75xVXfUC+RNoeE0KvRdKeW/8fvqz
-	 1SnhlpYPWpp9wMlI5gmJVIxMA62ojv7lmFOEEYjmX/n4mAqCgE8sgFzXWmRErgET/EPJI
-	 ANEXQs5m91b4C0z0Af1LCUtKA+POkreTHKdGYe2a9/3hVrRcNF5xVtDPZVpj+HhAQoQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794281106;
+	b=oDthCxgGo9AmEUjyUC/zM0Cik3nJKe87QaWQVB2mLZqhUIqwv4hvlgrEM0Uok+0uuedL
+	 qdOd78IgOVpz6nKwKY0XsUfh3npOCyKYVSADzGlGvu88ebC5zr7xTCpxukPDLTct+gwvy
+	 0qwnKtAsZBiVYJ1EFZVPpLV05AWXKff3RYCrbsUhggZHaCw8VAe4BGfcBGn8Jvbs1owpH
+	 ZBpyJ8htn5hVYvEN0vW9K/27fB10YyrUVmEtvf9A+AFsddw480IdKNCkR5DewfZ4O6cry
+	 CYRQIF4Zxufnadgl/YRw/AmsjvFo5v2SV2oXHfYNI/+gzFtNv3vrrGVQeZE7xPPpPGA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794281106;
+	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type;
+	bh=MUWhkoLt5h47Jl2FnKXiZGou5uN67cVms54fLzD/6ZU=;
+	b=rKAoBVPGjxloW+Jfg0JOSTMoS7OqLzJwKqPX5tdpHqHPZQIx28eldxAzVIQ+6IFfobVO
+	 0HgtAZsXEALFKZYnEf1qsPXtDoYK4BZcmeZVvLIjfAjvwQwemLcmD0CTPfCWohEYV6i/P
+	 o7cMRjS7yzRPWX37/YkVgfsNIANHAeCYCzvLC1xSRI173eKBtjIkXTDnmrQOHPX1xH0Vk
+	 txAES4JqikbDeoSiXQRddMYty7M+dKXwX0mIDoWkWlAVK5HgJ2idwHF8NTsNbIBd/PobF
+	 ISV5KbcuRitMFlQXV9OXCvtDnpZ8ynF+ppF2pKugBkGueryLAxTO2f8PuHw1bYSpCRg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=realtek.com;
+	spf=pass smtp.mailfrom=realtek.com;
+	dkim=pass header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=ch8jxBPZ;
+	arc=none smtp.remote-ip=211.75.126.72
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 7460C1F00904;
-	Tue, 10 Nov 2026 03:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794280990;
-	bh=xTuKFjOL9MLyUlSMODi8Yn1X8Zb1+J3mhD6YlkzKV8A=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=Ryg05WLmpQX+r8e+OX0Qaiw31e+/MMoeF8SSpMkHJe1qAG4QsOJtC84qtbnuHKAcC
-	 68WrYyiYzcSr5UHJzXYHfY9h7QduPfQioalVzKJ8BPgSvAnLYgDp+MzqF7IpF8r3SS
-	 C1gJqA6J2fRyUDud3qSkkXqW4uCSIUlXvKGjFwIiVnKKtE68XCFKHHqNWOA4wOKrpF
-	 gXE2nwQq1dPupEOT+WDMdVHvEdZKUlb5Oy51LUVBz5cgSDIGS67JTbtHInJFjBk4cK
-	 IHSMJVNtJOl4X27N+wU5IWO1yFJ0/n48C8POyM76UK/Dxv7PdhQStRl+J2tCek2vjl
-	 kQ/7611KM2LqQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 0AD86487A2;
-	Tue, 10 Nov 2026 03:23:08 +0000 (UTC)
-From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
-Date: Tue, 10 Nov 2026 03:23:08 +0000
-Subject: [PATCH RESEND v2] nfc: s3fwrn5: validate firmware header pointers
- against file size
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB92606A321;
+	Tue, 10 Nov 2026 03:25:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AB92606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=ch8jxBPZ
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6AA3OJ2a8884546, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1794281059; bh=MUWhkoLt5h47Jl2FnKXiZGou5uN67cVms54fLzD/6ZU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ch8jxBPZopcs4L6zXGONrX5xQ54SBdPwlXtBhzdQlPTbjM7E/2kWCFhFUd50KsGzw
+	 o+IjWHxgxe29HywUEqdCa0J7nveYr6FhzIikaSQ9WjMFWDRrYe5AKGQ4r7aLmYGveO
+	 wTy50z+Zc75D3fmGDJb5LdBmCLHfbxwLfjSUiSVaBBGNZYIl0qOS9jK073W/aLHtDS
+	 i5/GNsClNDcT5y2r38wfwcpRwCmmmfRAPkkXBeh2QHNSRjuGDbIlQYKorsiQAgBT0l
+	 t/NezrnkpFZNLLYqmFS+UbG6DXzROiUMXcCfjapSG00XB88mKq4BsXpX2T4QhwE+l6
+	 vn6aAHhnbzsGw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6AA3OJ2a8884546
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 10 Nov 2026 11:24:19 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 10 Nov 2026 11:24:18 +0800
+Received: from fc44.realtek.com.tw (172.22.241.7) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server id
+ 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 11:24:17 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
+	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
+	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>, <mail@birger-koblitz.de>
+Subject: [PATCH net-next v8 01/11] r8152: fix RTL8156/RTL8156B/RTL8157/RTL8159 up and down settings
+Date: Tue, 10 Nov 2026 11:24:06 +0800
+Message-ID: <20261110032416.16968-2-nic_swsd@realtek.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261110032416.16968-1-nic_swsd@realtek.com>
+References: <20261110032416.16968-1-nic_swsd@realtek.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,162 +76,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261110-s3fwrn5-v2-v2-1-e8f154a5613e@gmail.com>
-To: joasantonio108@gmail.com, david@ixit.cz, krzk@kernel.org
-Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794280987; l=4877;
- i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
- bh=dxYNaHNtIiX2P2fjyRdVjd+WIyE9HNkEJiNNzya94jE=;
- b=J/wuNCjog6Vx3vtgf987hnzfOkLQu2fNFol5fIMuQrETBU6OQNPiTF+y6UbESV7JDU42on+in
- GFl2A7NttqNAuKi7SnnmkARJp/PscAnrnzy0z88t7SWKEbkY2EHPlr2
-X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
- pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
-X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
- auth_id=1371
-X-Original-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Reply-To: joasantonio108@gmail.com
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Several settings the datasheet requires for these chips were either
+missing or gated on the wrong version range in the shared
+rtl8156_up()/rtl8156_down():
 
-s3fwrn5_fw_request_firmware() reads six offsets and sizes from the
-firmware file header and uses them to set pointers and lengths without
-checking that they fall within the file:
+- PLA_RCR1 BIT(3) must be cleared on up for all of them. It was
+  cleared only for RTL_VER_16 and later, so RTL8156/RTL8156B never
+  reached it.
+- USB_SPEED_OPTION's RG_PWRDN_EN and ALL_SPEED_OFF must be cleared on
+  up for RTL8157/RTL8159 as well. The "version < RTL_VER_16" check
+  excluded precisely the chips that need it.
+- Clear_SDR must be enabled on up: USB 0xd3ca BIT(15) on RTL8156B
+  (VER_13/15), and USB 0xd378 BIT(7) set plus USB 0xcd06 BIT(15)
+  cleared on RTL8157/RTL8159.
+- Entering OOB needs PLA_BDC_CR's ALDPS_PROXY_MODE and PLA_OOB_CTRL's
+  DIS_MCU_CLROOB. Only r8152b_enter_oob() and r8153_enter_oob() set
+  them; the RTL8156 family down path set NOW_IS_OOB alone.
+- RTL8157/RTL8159 OOB RX settings are PLA_RMS 1526 and PLA_MTPS 10K,
+  not the 1522 and 6K they inherited.
+- PLA_MCU_SPDWN_EN is not used by RTL8157/RTL8159, so stop managing
+  it on up/down for them.
 
-  sig_off / sig_size       (0x14 / 0x18)
-  image_off / image_sectors (0x1C / 0x20)
-  custom_sig_off / custom_sig_size (0x24 / 0x28)
-
-s3fwrn5_fw_enter_update_mode() then sends sig_size bytes starting at
-sig_off through skb_put_data(), and s3fwrn5_fw_download() hashes and
-sends sector_size * image_sectors bytes starting at image_off.  A
-crafted firmware file with out-of-range offsets causes heap buffer
-over-reads.
-
-Validate that every offset + size pair fits within the firmware file
-before setting the pointers, using check_add_overflow() to prevent
-u32 wraparound.  Also check that the GET_BOOTINFO response is long
-enough before copying boot information out of it, and that the total
-image area (including the 16 * 256 bytes per sector that
-s3fwrn5_fw_update_sector() sends) lies within the file.
-
-Found by LLM-assisted source review.
-
-Fixes: c04c674fadeb ("nfc: s3fwrn5: Add driver for Samsung S3FWRN5 NFC Chip")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Fixes: 195aae321c82 ("r8152: support new chips")
+Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
+Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 ---
-s3fwrn5_fw_request_firmware() reads six offsets and sizes from the
-firmware file header and uses them to set pointers and lengths without
-checking that they fall within the file.  A crafted firmware file with
-out-of-range offsets causes heap buffer over-reads.
+ drivers/net/usb/r8152.c | 52 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
-Validate that every offset + size pair fits within the firmware file
-before setting the pointers, using check_add_overflow() to prevent
-u32 wraparound.
-
-    file size (sashiko); restructure request_firmware() to read all header
-    fields first, then validate, then set pointers
-
-v2: validate sig_off+sig_size and custom_sig_off+custom_sig_size against
----
- drivers/nfc/s3fwrn5/firmware.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
-index 9145deec7f6c..e2b1c932e039 100644
---- a/drivers/nfc/s3fwrn5/firmware.c
-+++ b/drivers/nfc/s3fwrn5/firmware.c
-@@ -12,6 +12,7 @@
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 4815235e8e730..d00cc911ae135 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -6820,8 +6820,7 @@ static void rtl8156_up(struct r8152 *tp)
  
- #include "s3fwrn5.h"
- #include "firmware.h"
-+#include <linux/overflow.h>
+ 	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_OOB_CTRL, NOW_IS_OOB);
  
- struct s3fwrn5_fw_version {
- 	__u8 major;
-@@ -93,7 +94,8 @@ static int s3fwrn5_fw_get_bootinfo(struct s3fwrn5_fw_info *fw_info,
- 		return ret;
+-	if (tp->version >= RTL_VER_16)
+-		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR1, BIT(3));
++	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR1, BIT(3));
  
- 	hdr = (struct s3fwrn5_fw_header *) rsp->data;
--	if (hdr->code != S3FWRN5_FW_RET_SUCCESS) {
-+	if (hdr->code != S3FWRN5_FW_RET_SUCCESS ||
-+	    rsp->len < S3FWRN5_FW_HDR_SIZE + 10) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -285,6 +287,7 @@ int s3fwrn5_fw_request_firmware(struct s3fwrn5_fw_info *fw_info)
- 	u32 sig_off;
- 	u32 image_off;
- 	u32 custom_sig_off;
-+	u32 end;
- 	int ret;
+ 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, MCU_BORW_EN);
  
- 	ret = request_firmware(&fw->fw, fw_info->fw_name,
-@@ -303,17 +306,27 @@ int s3fwrn5_fw_request_firmware(struct s3fwrn5_fw_info *fw_info)
- 	memcpy(&fw->version, fw->fw->data + 0x10, 4);
+@@ -6843,11 +6842,12 @@ static void rtl8156_up(struct r8152 *tp)
+ 	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
+ 		      0x08);
  
- 	memcpy(&sig_off, fw->fw->data + 0x14, 4);
--	fw->sig = fw->fw->data + sig_off;
- 	memcpy(&fw->sig_size, fw->fw->data + 0x18, 4);
+-	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
+-
+ 	if (tp->version < RTL_VER_16)
+-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
+-				  RG_PWRDN_EN | ALL_SPEED_OFF);
++		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
++				  PLA_MCU_SPDWN_EN);
++
++	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
++			  RG_PWRDN_EN | ALL_SPEED_OFF);
  
- 	memcpy(&image_off, fw->fw->data + 0x1C, 4);
--	fw->image = fw->fw->data + image_off;
- 	memcpy(&fw->image_sectors, fw->fw->data + 0x20, 4);
+ 	ocp_write_dword(tp, MCU_TYPE_USB, USB_RX_BUF_TH, 0x00600400);
  
- 	memcpy(&custom_sig_off, fw->fw->data + 0x24, 4);
--	fw->custom_sig = fw->fw->data + custom_sig_off;
- 	memcpy(&fw->custom_sig_size, fw->fw->data + 0x28, 4);
+@@ -6860,6 +6860,23 @@ static void rtl8156_up(struct r8152 *tp)
+ 	if (tp->version < RTL_VER_16)
+ 		r8153_u2p3en(tp, true);
  
-+	if (check_add_overflow(sig_off, fw->sig_size, &end) ||
-+	    end > fw->fw->size ||
-+	    image_off > fw->fw->size ||
-+	    check_add_overflow(custom_sig_off, fw->custom_sig_size, &end) ||
-+	    end > fw->fw->size) {
-+		release_firmware(fw->fw);
-+		return -EINVAL;
++	switch (tp->version) {
++	case RTL_VER_13:
++	case RTL_VER_15:
++		/* Enable Clear_SDR */
++		ocp_word_set_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(15));
++		break;
++	case RTL_VER_16:
++	case RTL_VER_17:
++		/* Enable Clear_SDR */
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xd378, BIT(7));
++		/* Clear SDR bit */
++		ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(15));
++		break;
++	default:
++		break;
 +	}
 +
-+	fw->sig = fw->fw->data + sig_off;
-+	fw->image = fw->fw->data + image_off;
-+	fw->custom_sig = fw->fw->data + custom_sig_off;
-+
- 	return 0;
+ 	if (tp->version < RTL_VER_16 && tp->udev->speed >= USB_SPEED_SUPER)
+ 		r8153b_u1u2en(tp, true);
  }
+@@ -6871,8 +6888,9 @@ static void rtl8156_down(struct r8152 *tp)
+ 		return;
+ 	}
  
-@@ -409,11 +422,21 @@ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
- {
- 	struct device *dev = &fw_info->ndev->nfc_dev->dev;
- 	struct s3fwrn5_fw_image *fw = &fw_info->fw;
-+	size_t image_avail = fw->fw->data + fw->fw->size -
-+			     (const u8 *)fw->image;
-+	u64 total = (u64)fw_info->sector_size * fw->image_sectors;
- 	u8 hash_data[SHA1_DIGEST_SIZE];
- 	u32 image_size, off;
- 	int ret;
+-	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
+-			  PLA_MCU_SPDWN_EN);
++	if (tp->version < RTL_VER_16)
++		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
++				  PLA_MCU_SPDWN_EN);
  
--	image_size = fw_info->sector_size * fw->image_sectors;
-+	if (!fw_info->sector_size || total > image_avail ||
-+	    (fw->image_sectors &&
-+	     total - fw_info->sector_size + 16 * 256 > image_avail)) {
-+		dev_err(dev, "Invalid firmware image size\n");
-+		return -EINVAL;
+ 	r8153b_u1u2en(tp, false);
+ 	if (tp->version < RTL_VER_16) {
+@@ -6891,8 +6909,17 @@ static void rtl8156_down(struct r8152 *tp)
+ 	rtl_disable(tp);
+ 	rtl_reset_bmu(tp);
+ 
+-	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1522);
+-	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, MTPS_DEFAULT);
++	switch (tp->version) {
++	case RTL_VER_16:
++	case RTL_VER_17:
++		ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1526);
++		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, 10 * 1024 / 64);
++		break;
++	default:
++		ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1522);
++		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, MTPS_DEFAULT);
++		break;
 +	}
-+
-+	image_size = total;
  
- 	/* Compute SHA of firmware data */
- 	sha1(fw->image, image_size, hash_data);
-
----
-base-commit: 602042bf29f6efde39cfb5fdd9289bf4854bc0c5
-change-id: 20261108-s3fwrn5-v2-001b98a2b6ac
-
-Best regards,
+ 	/* Clear teredo wake event. bit[15:8] is the teredo wakeup
+ 	 * type. Set it to zero. bits[7:0] are the W1C bits about
+@@ -6900,7 +6927,10 @@ static void rtl8156_down(struct r8152 *tp)
+ 	 */
+ 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_TEREDO_WAKE_BASE, 0x00ff);
+ 
+-	ocp_byte_set_bits(tp, MCU_TYPE_PLA, PLA_OOB_CTRL, NOW_IS_OOB);
++	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_BDC_CR, ALDPS_PROXY_MODE);
++
++	ocp_byte_set_bits(tp, MCU_TYPE_PLA, PLA_OOB_CTRL,
++			  NOW_IS_OOB | DIS_MCU_CLROOB);
+ 
+ 	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, MCU_BORW_EN);
+ 
 -- 
-Joas Antonio dos Santos <joasantonio108@gmail.com>
-
+2.34.1
 
