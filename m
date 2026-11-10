@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794334982;
-	b=3Gz30Szllv/fWBzsmL7+VIdQSKnRkpzDZVZxHM/m4HXf3T/P3h0nreCfQvhfeYS246jI
-	 6xMcxtyNKEVKmzunA/IpFM2PbPYbex46wtVSUyZJhcJ0U25e/1Ju1ZPt5z6R7yMmTJ8iN
-	 z0I4PZx3l0pc0RNWGgR3RLmMzPn/lbo9sB3NznZgBfozc39lq/R7h0fpJuLeYfXX5sCUQ
-	 z2ES7xYW4oUxRssjQIa4Pb2Qh0nMpflxfc2tqM4u3uim3KrcHdh6Ctj8pZY/y5Bifpy28
-	 OaPnWL4iRJStgl8NwTt5k0BYBI08skhtMq/ytRRhTmadRTwLlcRBQOPjOR309z7APhw==
+	t=1794334995;
+	b=MtMVXfZIv3dFYRA97NJjNqpJMKD7oBcS/FTXZDoss8kNJd8HDo65T6xBnPwHdvFxEYlJ
+	 Q0qmw+C4EpF9M/NGEZLrUlWbOdr+ywIiW/EbxylELm+f+ltW+VF51WAPE3u7e6YS2GBrS
+	 7hWgq78HBRaVcOy7xpvvg/2DbMQiZLSaw/j4cz2aCAd6ssX/vYSZSOlU4qV7aVii/YDez
+	 kXhGvZ7E9DwBTtqzq00PaF8Ed/Nfopf2geXQNMH58IY9QIlVDUF/U2YQE9G2ayL44rIIp
+	 lSkbb3m2C+xttYycMz7HHVarQth3GUDdt6cU9QpXCIoYtAZitfe1LByS+1Lbaa8kNEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794334982;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794334995;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=nM4EMErCeXJNQs+7ozPXWBVLaYZr0fUdSK86cNZxul0=;
-	b=Tk/9dfRsFnR2LJEYJHm+cFzV1z3MH60mHPODDX/gUZm9748FCLBHrWGiPXtWK0VYWPUn
-	 IMonKva487P5wcz+szZ5McUAAKYvvb13HFrme5HzutBD5ebk5iY/ZHqcwViG+uud6P60p
-	 zDQ/cBS9DI4enXk3py/9ivYQwsMtQ+VC19phtuUR4gpM7e2wpAvq53K1f5n7fVNk91v1D
-	 +PiHVy5ZVgdcho5KehsMh1P5jPVPzGkuxnHY6vQIDqbN56NItzoBScpQ+H8PH8cd8I5Lb
-	 MQwgo9NIiSpBD2SX7IhjWz2YYwhNLxI6JCtgQbcvksyFtXdNlHJJc3l858s3TI/I8gg==
+	bh=We72cBQExcEry0dpzv58lEZ3IS/nG1fvq2tyV0GkB9A=;
+	b=lf3oZ2iscooMpuzQQ5U9bqo3V/J4gye4fKwkdhrDzHYT8f3f9AnAvVQqEz5wXP45kIoU
+	 fDAXZ2AeIYKpNmGyE03PLoBShU2FSONiKGbL7Sjrq2xScTqZEPTs9YPgmNCCDfnWyTeRP
+	 cZ3a7R7IleyGWfXb414AS3jFUZK34sQCOOVTwCkrM1ZfcF8b2A6Ch6EGQeskxxYx+OrYs
+	 2JdkHy2D+9gHoGNhibdL7ll3pG66MagTD8jRYOdxEn8T2B5eFhtC4W2GpKv1Ms5hdxj0F
+	 +zgGGYK2hDA8r5HstwGcgohvVBGxNbb5ADsusMasuD3tH+SlzdIRnXO256UqWcZ5yig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FuHErv1g;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cldSBui0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D542606A320;
-	Tue, 10 Nov 2026 18:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1809C606A327;
+	Tue, 10 Nov 2026 18:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FuHErv1g
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04A31F008A1;
-	Tue, 10 Nov 2026 18:23:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cldSBui0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50161F008AB;
+	Tue, 10 Nov 2026 18:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794334981;
-	bh=nM4EMErCeXJNQs+7ozPXWBVLaYZr0fUdSK86cNZxul0=;
+	s=k20260515; t=1794334994;
+	bh=We72cBQExcEry0dpzv58lEZ3IS/nG1fvq2tyV0GkB9A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FuHErv1guC8Yh9nbEeBWMhChLKI+Kefs48Hz19+LPzcu7/KuyXGDfceKcbxYfCUB2
-	 YzPF84dwM/0ETHxVlsN3B1hyoucuFatp395mjRAZprR1DDh99pOiBTjx2z1WcfjnDW
-	 W9br8BLBLUq5QpBcpGfEszxaGHTk+2cEquZfjeC3WxA29gv630zWxEaIEGwIZ0uxOh
-	 Gqk8Yv1x3vLKgDJTQdQGiXYM7uCksrDaXcazPVOoNykR+kFXJ6anV9IcLLjp49bzE1
-	 Ej/Ztev/qtfqqdGGlewMLgEpAhiUssepi6NNs1my4/ADfUEEhRgXj8dA8HT8Z3cfuv
-	 /JUWGlBnLbNIA==
+	b=cldSBui0L+HHGmkjZa92Gf5hoKSc5DFfJZjU0c6UovfrDp6NPzQwQOIWk7kZvAcSs
+	 XE8eO7P/CxBGNvZMX1tja06MFooyZahbp2OpR5saavkr+nEo8pvru+t0pmQt1n+lqu
+	 5pBiyUa4Uuf6WYe0Ex8ec41UHZdVzI9QPoLtzSRaW5tTA20QEr4qZZoD0LE6dYz+rf
+	 PHguTH0KW6JtalXRTvusX1tIj2a+uQUt9Nl+ssM4o0Cc6r/RqeDmCosa8TtFVG4OL8
+	 No1MOiqt6+epjWfDyIVw7nUS7H3kVHXa1iRN2JNSsjywD7ktUFUFKZ6U+G1EK7ISJR
+	 FYbQhk7+8fo3A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B31439D608B;
-	Tue, 10 Nov 2026 18:23:01 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0D039D608B;
+	Tue, 10 Nov 2026 18:23:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,47 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mana: fix XDP_REDIRECT of pre-allocated RX
- buffers
+Subject: Re: [PATCH] mlxsw: spectrum_ptp: release parsing depth on MTPPPC
+ write
+ failure
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179433498045.4118637.10096653969989484640.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 18:23:00 +0000
-References: <20261102064324.806414-1-orgads@gmail.com>
-In-Reply-To: <20261102064324.806414-1-orgads@gmail.com>
-To: Orgad Shaneh <orgads@gmail.com>
-Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, weh@microsoft.com,
- kotaranov@microsoft.com, horms@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, longli@microsoft.com, dipayanroy@linux.microsoft.com,
- hamzamahfooz@linux.microsoft.com, gargaditya@linux.microsoft.com,
- ernis@linux.microsoft.com, falakreyaz@gmail.com, jbrandeb@kernel.org
+ <179433499317.4118637.15079674330639490953.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 18:23:13 +0000
+References: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: idosch@nvidia.com, petrm@nvidia.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Nov 2026 06:43:24 +0000 you wrote:
-> mana_pre_alloc_rxbufs() fills the RX rings with plain pages from
-> dev_alloc_pages() (from_pool == false), but the rxq is registered with
-> MEM_TYPE_PAGE_POOL and mana_run_xdp() builds every xdp_buff with that
-> rxq info. mana_rx_skb() frees a !from_pool buffer correctly on
-> XDP_PASS, XDP_TX and XDP_DROP, but a redirected buffer is freed through
-> its memory model: __xdp_return() hands the plain page to
-> page_pool_put_full_netmem(). This triggers the WARN in
-> include/net/page_pool/helpers.h, breaks the page refcount, RX refills
-> fail and the queue stops receiving.
+On Tue,  3 Nov 2026 10:28:51 +0000 you wrote:
+> mlxsw_sp1_ptp_mtpppc_update() increases the global parsing depth
+> reference count before writing the MTPPPC register when timestamping
+> is enabled for the first time. If the register write fails, the
+> reference count remains elevated even though no timestamping
+> configuration was installed, and nothing will ever release it.
+> 
+> Drop the reference count again when the write fails. Also only drop it
+> when disabling timestamping after the write succeeded, so that the
+> reference count always matches the programmed state.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: mana: fix XDP_REDIRECT of pre-allocated RX buffers
-    https://git.kernel.org/netdev/net/c/67869597fab0
+  - mlxsw: spectrum_ptp: release parsing depth on MTPPPC write failure
+    https://git.kernel.org/netdev/net-next/c/1dadb4afc18c
 
 You are awesome, thank you!
 -- 
