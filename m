@@ -1,66 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794350234;
-	b=r5U+v77JfqagBgL0k1zTBAdyhWF53fuHkW44k7RdQsq+fHie18qBWGm6sIoxj0Ao+IxW
-	 ugSzvBJ8wTc93sa9TvLlpeYt1Bj+/IkJeOwrf8/AX0cIXYN3HATebndzTVJTGS5YymM2E
-	 Yn/EVXRD1D9hjSWu7AUPPBHe+Qp+SvSqBwk6NE/RFmtIFWATcXJGayI+YSaik9GmGT1x7
-	 biUwTd36r1inlBt64w1cH1ADvhs+HmWJJdZih6Wzcz0Kz0pfb86OALcuXgH9e+/uQnlgL
-	 plM6/o9oPH6r/jlDYZxXdIuMFFTvOMugJZ/MrTfAC10CXnX6C/OwjPfWwu8/RVmAVAw==
+	t=1794350235;
+	b=5Y3knueWSQJUVo3zd6IkBkX1Ec3uzk9PlPDfX02piWn0TASpoR52yp/sM7FNwEYAEZOi
+	 hdS+sZpgRp7T5AFxpmGWRTqTFwunFPppGhnBsO22EA0bzPFlmiatucrl2Labn7obOuvLC
+	 zMXM64kPlBWYO/NHy7QGfDXL9KCI0b33GYJvMrC1f404r1d/5J/RQSS/T91LW6LTEE+5N
+	 +K0lBRlIoKxVn2lHh3TNLGHzux6FKjWJ24oabMUgArFU3c4CYStjLeRux+6CTfKiLia4Z
+	 hY4A8F6OTFkU5PGZId33JyWXOxyK0daxSp0frSdKgYDmFBwb+/InddoMuP08Ty+V+iw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794350234;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=iMS4Ufw6oLz0jxlRn0HZ4WRoRoCLrOY1iIoKp6s0bcg=;
-	b=sAUWqXxr6unvyVyGtf1mctOdAUncQeMpTQ5vRRvlCTToNG+fyukPo7oJz18q79b1pIfH
-	 IYGx1PuYrAzXB2Cfvab5gHHcVKy48ixd9ihdV9GCydPaIOnE+6gmvlbEkgR3BRTElm5BC
-	 7h9lXgLg25Hfq3lt9M4mJsH7IFgC33CRAtjgK/yQC4MmT3G5Kn8clQrRoaMPH/cjbs7lj
-	 8ctYdQKpApXIpUHQed0xnGvEaNV00WItkVfhy/+EzQ7i4SECYc68En4pfqzYpKgzN+4V9
-	 H2Z4C7vlcJyNflxVRZtAKhv1H0t/NlacDKLSbA21ONQLAOkgYF4J8znt/bG9k8P/DsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794350235;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=UjsJrZ1pJJ5hdlIjL7oELqGtdNx6GVq1xde+Cdl2rherhfShOxrCLgFTvLqgiTLBHwt0
+	 gnw4+MOmvZ0ledO8ifmYLR3qJJwyMC+Bl0uIj37QaQRoK5nkTe00fKfSW1crpN4TT1deu
+	 EEZ4OvAAmERr9zkG431yCdDpmSC3ghbs3sY1gFoaNMB+w5Nob4qjMqZQgYFopvoovuaso
+	 1GziKNUh8OhdGjwNt5NxoDXdaw0Ci2mkUIXbhmX6ZQC+wcgRYqMuXXFO8FLwnh41/jQ9C
+	 VSW4AEx7FH7+XbDfQFPJ186AZYg/W6+HhCHYznj9uRskX4MjXY8PKW5DoJRVoZ12RBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSrafjLU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I1FUiVmo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2AE606A31C;
-	Tue, 10 Nov 2026 22:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180B6606A320;
+	Tue, 10 Nov 2026 22:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSrafjLU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5561F008A2;
-	Tue, 10 Nov 2026 22:37:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I1FUiVmo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9818A1F008A3;
+	Tue, 10 Nov 2026 22:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794350233;
-	bh=iMS4Ufw6oLz0jxlRn0HZ4WRoRoCLrOY1iIoKp6s0bcg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XSrafjLUY47PUGSIDCgHxp8gdbmVLU2OR2SY2FmhaEWsenRuM432FQAGVenZvU0D4
-	 HTAFn1EOHS4zMJBVOWehiTkfLwhDZAxJ17Gw0xldhMGHo5fLsAnSCvGW+ZltKfq0jV
-	 MQI0V1bMYEvaTD8SXU9RD8+88iaMymTzkoxpLpELe5zaulvAEKXIvBBOzWFcGFRgc9
-	 mPHwpwEizkkJ2VQK6KkH61FnlA7GyGKRjOlAD7/VnUvfBF6GDLzmu00vNbyiEoO+5C
-	 YPxkv/zbA+4kwvQwTpoFiAO5twLPjn1hc22xJFSdOgUL8YIl46hBCw4XTwzMW8HXOo
-	 PC+GCdZjo93cA==
-Date: Tue, 10 Nov 2026 14:37:11 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, edumazet@kernel.org, horms@kernel.org,
- corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com, saeedm@nvidia.com,
- tariqt@nvidia.com, mbloch@nvidia.com, alexanderduyck@fb.com,
- kernel-team@meta.com, sdf@fomichev.me, dimitri.daskalakis1@gmail.com,
- almasrymina@google.com, dtatulea@nvidia.com, bobbyeshleman@meta.com,
- asml.silence@gmail.com, daniel@iogearbox.net, razor@blackwall.org,
- leitao@debian.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org,
- leon@kernel.org
-Subject: Re: [PATCH net-next v3 1/9] bnxt_en: let the stack segment GSO skbs
- with too many frags
-Message-ID: <20261110143711.1421385b@kernel.org>
-In-Reply-To: <e4def2839d68382fd50e4fe1e6b4f116@gmail.com>
-References: <179418737248.994134.10509157155829463489@kernel.org>
-	<e4def2839d68382fd50e4fe1e6b4f116@gmail.com>
+	s=k20260515; t=1794350234;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I1FUiVmoNEBbz4wmMe6/PuBnKWz0AAIBZH/ToqJSBHRAj73ZA9ka+hNWMJL/9QE2n
+	 /n7soxVfhbGFK0oySAYEnc+UyR3MImS4XBwHRfDPQSYbzGdzrrrEEjX+L95NDhGJlx
+	 yuBMEOEnSR/8z9caYRn+NYAvfIMcUPx7wLeKW0LkVd2mDdpMiINMqVhHvWSJMrnv3U
+	 SAg3xUtilqvJ6d5bqRlCuVpy4ocI/7nNkUxxWfZc0G8dTmJi9N4VFbPWlynVlM6IbZ
+	 bjjPWpg61Ok1dMdZy8XTy0hYTbh4r4vQvrRxkQg+aOKkN/8/K/vTVrkB7x30ZT7a/J
+	 /GSkQ/DJkic2g==
+From: netdev-bot+sinfo@kernel.org
+To: =?utf-8?q?J=C3=A9r=C3=A9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: 
+ Re: [PATCH net v2] net/sched: sch_qfq: revalidate aggregate after peek
+Date: Tue, 10 Nov 2026 22:37:14 +0000
+Message-ID: <179435023413.488859.11967227218496669505@kernel.org>
+In-Reply-To: <20261110222946.2147440-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261110222946.2147440-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,14 +62,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 09 Nov 2026 10:29:20 -0800 Stanislav Fomichev wrote:
-> > The commit message describes both problems. Without a Fixes: tag, stable
-> > kernels that carry b91e82129400 won't pick up this fix.  
-> 
-> Will add a Fixes tag, but not sure it's worth the backports..
+Hi!
 
-Either it doesn't matter and targets net-next or it needs a Fixes tag
-and targets net. Ignore the bot.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
+
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
