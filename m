@@ -1,138 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794323689;
-	b=V3GidQbZ7Mpisi681OB52Q2RuIPLWR2Tt48cSoGyEzQW+bQuKixMy89HAWDdQvj92575
-	 UBtbUoQu3Vqe2GbpCQ+gbpffnJoYoFVV1fGBdY6v3Ey3XO25UT0beNNsS2yU4rW+io8YA
-	 56+QnzgciExZ4pzabwmwK4a5MBmStYpvqyJSF98obL02QTj2hzUZJ5BLO0mESVgNIRJFK
-	 WezYZjCyZ7vVUD9+DpDR0ntFV+qABsEAxsk5oT91izV45I8pSW0JV0PFUmdI0LIQxCxC5
-	 6N5rsO3q/Qocgf716QmmBQHeWIocmxPGglxQPTGYOcCd6IshgFuXxZoHvHr0ZhtvryA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323689;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=TMQpbWXRMXvMDMJ+QMM/RAAdpW1HCOkEavEIrrS7hZ8=;
-	b=Xp7epo92qvcwdADA3MRaqY3FwfUDYX35OdjfMID+KJmg4CxD/gpMhANOpIsMs4L+I7XG
-	 q9xga4BywIlsJbt1ceSree8qC6SZt3A0GeW5PhIJDkKdLY//WJALsDhTuqnLwctZy/qwp
-	 Fq3IE7h4ldhJHFfiRR2L++MMNFCIbbxZNFhBeJdBe/qjeyXPKSKBfC2AlClzZL0WBTAu4
-	 rQickk4GvW0Wj+kYXodY/bYjo3gmVySLaHwDXQMXtupYiAIx25ijYk836Xqf9OCz9Jzza
-	 Qyr2jiofEBQ6Q8XdXYPQwjaVGxw57xf1O9lsEiPY5AJXxZVllZpO/akplA8QnFfIoJA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IODdf578;
-	arc=fail smtp.remote-ip=198.175.65.11
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794323972;
+	b=H6+stTaFPjCzT57EVcquWXCCxr6AVaQUyHzFNBFZ+TSjkWx1aGYYquj0G6DfQdgFlfdW
+	 Ufe4DuMDM5WIwZpLH70aKPHqS4riNcBNXCPZlBwIrktvafAntyYXbEd74VxQarf7rXziE
+	 ff94NHHU0Vul/4KQ5513jtxrGoUPun3044jfOQaD15J+fmErr2zwlsdrqKkzNaWqTO41+
+	 iTYuQhEQylE82DWn6bz+OwNdPrhZ/oh1o64PqqyzgFP6zERtNzoOld1Xzleqq5P4d8xZS
+	 vGI4ohekDE13xFXiph750rgwaLfrwLclnVvnb17LPxwvgHgQYa5YQjSpLA+d6ep/L9g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323972;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=pAB7/fvVZ95YxomLelu+IUsi/7sQRWLNuwSNWCsfc7A=;
+	b=WXCfnOxHpys1FAvSIUhEMl1lRyjPOI1+D3Vlr7NFoPFWMz0AfHkSQPSmDuTdb1sNTQvm
+	 TOsDhYYw0Atq9nby3ZZaqpVEz00BuCmDMUh1ckrGOCQ9GFWlyTq3jMAJZDFQ91cd4pg7C
+	 ickRsyzkROIWEnSb7UAF8jBpqFj0lf64G8pStLHyAJdVdiRMUtQQ0BaS6IkCyvodncZQW
+	 b0Ab0zZnsPMR5jWmdFcE7VCx0GmS9N9G3ozFQiz3WaK5fc7u4vNpt5gmLGaIfyybFX1sx
+	 JKXwV2SZ5UeZgZnnvFvhfybnJ5mZKmVBQ97tpPe0hP3pPG3aRMa0KO25lrn5yhm76qw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=HlICEDVX;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8042606A338;
-	Tue, 10 Nov 2026 15:14:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8042606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48604606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:19:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48604606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IODdf578
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794323688; x=1825859688;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=AJvuzfsogg/vm9OBwFqRHyUMhF2t2Cyi7alQUsc0tag=;
-  b=IODdf578mp4/g+n283470wnGBxMmzlfT4ELffB7aeyoqX74q+mnvHAyK
-   qp6V4qC7w61HoAbknrB2qLuKLjynzMa2YVoq1YLRCx6mm5WEY/ganw/jh
-   46ZRSRB4WA68i+zZodO/vCGSXKAejWDqeGrcQXxDA8lGMGhoux4bYnhZh
-   Hfx8HOfTvjttGP3edX9yTSHk8FC6VQ7/7mPCqxcv3JQ2FtL8n3U97mG/S
-   3rZnQpfZr2mG/+ex+jhUC5S2sv1hSXshHDDGQO/2NRfxHF0KzwGKNnAFS
-   JcQG5Q4VDTl/e1cabAflOhaxrcpWaFAIOakiyACOvIDqL2E/l+TfNIzas
-   w==;
-X-CSE-ConnectionGUID: yPpBMva8QVemxgxb6Bvgmg==
-X-CSE-MsgGUID: NecTzN3MQGunf4OraOAwwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="2961317"
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="2961317"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 07:14:47 -0800
-X-CSE-ConnectionGUID: 13A8pPafS6S6IxlqoSLKKQ==
-X-CSE-MsgGUID: bHAY97L6S7qWaaiDLKu4pQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="8195771"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 07:14:47 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 07:14:46 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 07:14:46 -0800
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.14) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 07:14:45 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k/0Iyh89WZWycUQwKQmvaaLtzxydZBT6CPBAwfwXE5ERS4cLRg/GYyPyHMO8p5pIiSIi1u/Fu0WQG8e2grkqNjtajh57smHjq755X7z5IZWCxkjB9E/byW7+L1OE5W108iX694qqj9Ezqt2r59LGNDMGvoyA9PbW4P/pVo6sldh5kphWIufgkO5V3qk/l+FoukhEEc1QwFG5mcmlORtPR46CGV9Dh6+30zGUJREeYvp5M6EGnKv1mQX8kpXO3V/EXDi0icg+L9Yi3nmBhhPs3PJsWmOpgXmyNY03NsQwo4dT8K96MohGsfmpunMXLUyIXDuLvbxy1O10D+dA7rgkvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TMQpbWXRMXvMDMJ+QMM/RAAdpW1HCOkEavEIrrS7hZ8=;
- b=pAqnG+wAj1Mykvq2+fGn814bo88F43WnU4sr/wmTK5bgZOz9bimlBVPhk/2C2DafHBKKY5uyc6b6I2Szdnz9/GBSlWLLukQV3sxeCdUu51cjn2J2Nv4CpfGvItJZj+1QGoiR8y+Tsic4an3h8MYKYehhVbdDdXpIqMXGQxzZoWz+eb1TdyWwT9Ki0/D07jMvs9eJeEaovpcR7hFquSRnlP+jXme8ejnCbhYqghXUHTKLM76s05OOZoIfEU12KOYoHMoaMhyvq7tBbB1vLTt8zarP+vx3bEz8qRaq5wwWc/1rNoNpaT0kcjs5EYObANba4xYy68BXsjmSd3xZgCOReQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by PH8PR11MB9722.namprd11.prod.outlook.com (2603:10b6:510:3a5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
- 2026 15:14:43 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0592.009; Tue, 10 Nov 2026
- 15:14:42 +0000
-Message-ID: <3d14c32a-62cc-40cb-bd60-2dc13b9a2e41@intel.com>
-Date: Tue, 10 Nov 2026 16:14:33 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v3 0/2] libeth, idpf: use GFP_KERNEL for the
- initial Rx ring fill
-To: Luigi Rizzo <lrizzo@google.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Luigi Rizzo
-	<rizzo.unipi@gmail.com>, Brian Vazquez <brianvv@google.com>, Joshua Hay
-	<joshua.a.hay@intel.com>, Larysa Zaremba <larysa.zaremba@intel.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20261103162326.3615979-1-lrizzo@google.com>
- <1cfe950e-50af-4120-87c8-375f67eb3e01@intel.com>
- <CAMOZA0KTYjRGuD3axNKaNb-o5=c8Zt=zG4Q3JFxPbWuBVu5MKg@mail.gmail.com>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <CAMOZA0KTYjRGuD3axNKaNb-o5=c8Zt=zG4Q3JFxPbWuBVu5MKg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL0P290CA0001.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::15) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=HlICEDVX
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e9d1114320so16952885ad.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:19:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794323971; x=1794928771; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pAB7/fvVZ95YxomLelu+IUsi/7sQRWLNuwSNWCsfc7A=;
+        b=HlICEDVXxHfK5otqLwk8U8Wunu2XWClI0Q0ReeNvl7DBjdgB+Dn5hxhOdJejFHfZZj
+         NXblgliU9kDcQn1NEzBtX3IBbISmDuTZYrSEnJA2+2LNzT6IINBDJ/IhGTG7TYUrp3+a
+         u6WRO2QUIXr3sSNUllom3ctI5W/nEekOiYfLQ5gYjJGEQFTxAiAUwmjSfZX7ixz/FMyd
+         VsYRHyLLWrsihY6Fnvowk59pjNRZUt1pHiOlg6D1DKYiK/YeHBmsUukHvygq/hy2N42g
+         2i+HVx2tfZRYaqjH1tTBptkcsV/2bS9ta4Vi28ZaYefaKTZ6jlDYQT+rH23pz/SAyga+
+         CYNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794323971; x=1794928771;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pAB7/fvVZ95YxomLelu+IUsi/7sQRWLNuwSNWCsfc7A=;
+        b=I4VA/950mLhPy6C1j+XYLydjbnbJEY8CZfS0GXll2CNnnWBcCgKuGx+hZMeJPKb/fh
+         YUHX5ErrZPQUKZkFzjzQFUPS6YmY1m1p1FIynaAuBt+O2UvVMm/DwtRnMkolDdRmIcCv
+         GIkBeS5ehK2uVm/d2phohbSAmSV4dshDFV+OqQunLrQsNX7r5moyZDZuuido1mtarrNV
+         0EW5v67sw+hooZKVyHonNKkySbLhNRiCRvtHfNMODYAYRB0cts+CbQ6bCgb4APe0oN6o
+         X9Bv9daCoX+gzrrvdx1hX7GaJn/z2TuOYSHbizvmatPcFnGRfFhpvroMMdKrgjNbGd2G
+         eNJQ==
+X-Gm-Message-State: APuU4Z9aVoALzHP9i48XNvYNAxNLl7D+IHjaX1MCd3AOEPl+1qFfcuc8
+	43GFLh6goKNxzoni8jF/DayUQlZLjkG778LWjgx9hlf0rCyHow15r3LdRvZypkS62wY=
+X-Gm-Gg: AYBFou20VI/QK7lGMofwC0CYnhQlAEJ31XusU32x0M3IarEayZsHWzqlTzbNw8SGXz+
+	SiZ+PMSZeBLuidsSE6gWCbgJwlZqcR7Sm6PWCktHrMLWEHhv4NTA/YUu2yphZgxSX7tazkwWXrd
+	nFJw25db71Ib5GNxq0yun9yqVYKVBhbgrtzMHPKwGbxgMHS+nkrsJyAH8TE9yCZrO4oKwA16ItB
+	FAdY0QMyrLwXIxEd73O3jCyD9UTVInqanekybFyBnnZ/EMgoEeL32ebKGSOUmR9txC5yg9xbwoQ
+	L4Bv3V/ChKX0r4mczvCk3NI8sihvKSguegOvOKR6FZTQEOAjBCS2c5ItH7jMJjaNepOn7cYJnCL
+	adHkQ7rS+wNmWCCw7dM+vj+92BMKQ3E0USc28ObRGbjZinY4/lGb0rkljuqgov8mE8JeJvuCo0o
+	RR6O6HuxoflmImnACrUOngDJr5hN6PY1jCmppNolz0WC2FRKPQ+1F9dWvPDfCqpAdgmnl4tQtGT
+	Kmus0d4nRGp6js3rLWsqgYyuuxynZPX3CA8G7VLM1PxwmOMEzcnc6255jFRekzNrAiyuL1o/8vQ
+	S+CfImi6gOSSdXRuXHmIVtbc/T/QE0bEt8EehaAmhdS1UvJj/Wpc86qTyeu96nrLNNM0h88=
+X-Received: by 2002:a17:903:228e:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2edb912b301mr29703235ad.14.1794323971526;
+        Tue, 10 Nov 2026 07:19:31 -0800 (PST)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d906e4sm10414035ad.40.2026.11.10.07.19.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 07:19:31 -0800 (PST)
+Date: Tue, 10 Nov 2026 07:19:28 -0800
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Ido Schimmel
+ <idosch@nvidia.com>, Sabrina Dubroca <sd@queasysnail.net>, Andrea Parri
+ <parri.andrea@gmail.com>, Stanislav Fomichev <sdf.kernel@gmail.com>,
+ Nikolaos Gkarlis <nickgarlis@gmail.com>, Willem de Bruijn
+ <willemb@google.com>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] rtnetlink: return EMSGSIZE when first dump entry
+ does not fit
+Message-ID: <20261110071928.6e8aebd7@phoenix.local>
+In-Reply-To: <avLVfWQEtsLH4BUA@fedora>
+References: <20261109012115.11898-1-stephen@networkplumber.org>
+	<20261109012115.11898-2-stephen@networkplumber.org>
+	<avLVfWQEtsLH4BUA@fedora>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -142,144 +105,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH8PR11MB9722:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b06ff0f-7fc4-4155-912e-08df3f3d5845
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|261026121527099003|261028144727099003|11063799006|4143699003|56012099006|261021121427099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261102123227099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 37o/CD21WQWsiT2D072o20hXWHde3d57EQRveVbdPd8baCO9KYUeYeMEzYJMzLV/2F/GGox+vNhJRjIwHrLo5B0Lgyw/nAmi7EirsncZ/BWs0G2+eByLcJOJRhD57c3D8FM7nt2MWD9/4uJpNNccI37JDzE6ju3tq1AzYZ5MJfR9uJqHuQ5QoWMc9anQVYgAKlvhhaH8p+P7wyk7zcZrH9UiU/vN1HzKL6QgwN10ZGiKNWSc6FteNxxvep4sKBZoU4b5JA1su3TqMFx9gofuEfzXlDCO59ppCDCSE/vbeOZjbMx410SP+xPRma5bet4TzCoBl3PWYNSAoKb1Hg1TlLQiXmcFcHR9R05AGjZSw6RWeum0z/ijNVRMg3fD7qItT4N+NtossJ6Lj+5MClqbO/ItHCXNvQBbfS5PmIdIa0gcNJjrk0Cvz+s/SfNlh5/Ytt5yM/A9L/Gzi8bPnNlNGY4Qgp4JL7d/ejLkzI6YH0+w3NOItV5gZckx7WgzsnzNqDuML3430xRQp+4eMM3H47Nqwl9Qy3m4fP0WUABHWBqIkjkpZG2zU6pYj6pULRM2Qq4P6DDsiUeGGGKKnNWvONQV4RdSABknRURVhsM7YD8qpnwVG5t9lrXMiXxXcr44
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(261026121527099003)(261028144727099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261102123227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3pZSGhGQmtGYWhiQ0w4ZWtKMzQwbzhzYXNGWFQ5UHBZcWNaNHU5YjQ3V1NK?=
- =?utf-8?B?a3BoVlJzZ094VGdLK0RzMG9oTmltVzdCRTZJU09RNzBHV1BTMFZkNXZLK2do?=
- =?utf-8?B?N3h6M1VvYUlMdSs1WjF4UVJER1g2VU1JdEZLN0NQL0IraTFVVWVpemRnN0tH?=
- =?utf-8?B?QkhSR2NSckZ0SCtrM1gwZUpkY00wYUdMUlJzU0FYMFFuNkVyZ0ttRU52ZG5x?=
- =?utf-8?B?L25nb1RvVEZvZmEwVS9NZ3cxWUwvcndBcmNlWnYyY3FleFlBNXRTdnFmQVBk?=
- =?utf-8?B?Qkg2VlRta2xRRWExTkM1dldPUXVXMHRpclVFSVFhazZsY2IzTWs5MEJOb3NU?=
- =?utf-8?B?RlJpQTUwYnl0UEhpdk04R1MwZHdqOUFKWk9nYXdCTzVZdS9aZ0FjZy9oUjJL?=
- =?utf-8?B?NkQ3Q2FVS3kvd2JHTlhkZGhoMURJWDl6aUlyRXVYVFJXblJIS3VkOTJWZmRI?=
- =?utf-8?B?b05MZEpjZTAvTUkrRnFFdVhxQ3dEYnlDVDhLY2hjZUU4MWhQODFIL1J5eHdP?=
- =?utf-8?B?VVF5YnlGZDVrTWdCcitxSitRZVdET2tWb1g0ZUZSZDFQeXJLQWZaTnZuK1A2?=
- =?utf-8?B?VUpSRWJweENKVWxUQkxzZUtkbGxJdWRsbE1Cd2hvdHN4Q1l0YmhNNGdSdnZY?=
- =?utf-8?B?emFKS3dnemR6VkNseWtTR2hHeXRSOVcwejB3blh6SkZGZDUzNFl4VDg5MVhH?=
- =?utf-8?B?bkVrSDRXSFA2Sm1MYzNSemNtbHlicHNQRVVTRVdJSE9RK1lFWktNZVFPMEtv?=
- =?utf-8?B?d2hGZmRvTUNDUkUrSGd4RDZ6WFNESi9ndjIzSWE3YTFSQUc0Qm5KWWxidzdT?=
- =?utf-8?B?OFJmRi9URG0yU0F3bTFiSzVDRGdwUWt0bHhteWhSamc1N1EwdWlMUEw3RmJQ?=
- =?utf-8?B?ZDRHaFUvRnFLa0VaME5UK1VrOEN5ZVhFYWxNSlBpYitydXJiKzdGNG84SURt?=
- =?utf-8?B?NHV4ZjlHdDRzVm0zWEZ3SVNVRTl1Ry9RS3BLV2xYUVpIK2hEZDlsckFhYm14?=
- =?utf-8?B?UFErMXBRYXRuU2R5OGFIRElzQ0hpK01XTTJYRG9EWnZkM1BuYS8zNTBmOEdT?=
- =?utf-8?B?R1FRSlZFeTdBbVUwbFcyRG90Qmd1RnJxcnJQMlZISDFHdVpDNUhSSUIvSlRH?=
- =?utf-8?B?NWZOKzdOKzZzZVR1dlBzd1NlNnptdmFHU2pBRDN4RkE2ajBVWlA0UDVHcVFZ?=
- =?utf-8?B?bzBMVmx3NE8xWmJ2czVJYWdtWUYzbWdQaUJtTkVvTldGRVVwL29XUU95enRu?=
- =?utf-8?B?Smd0blN5dXowajdTRGJVeEhCeGtQZkViT1hZZ2laaWxYUDQzUFVGRm5VVEJq?=
- =?utf-8?B?dU5qR2dha3dzRHluWGpZek9ZbnZTUDg2a0tmSGExUnljNEhuUVJ5dkY2WWFO?=
- =?utf-8?B?NEptZ1lWVEZrQkZJYUNBU1FJK09vRzJhWHJic2Y0azkreC9kMC9qUm5DMk1x?=
- =?utf-8?B?YnFTSXVvL05OeW1IQWxoeTB4Y2pCbUUrVFZKTHFFNm5YZHh3b1NEaW9wUmla?=
- =?utf-8?B?VWJsTW1ZandoN212RGVrNnczeGtjZmpmMjNoMHVMc1h5TFUzWnNUbXBoZS9l?=
- =?utf-8?B?TDBkV3RZTlBIRDAxUW92K0d4U3QxWU9oUUNCdHFlM1F3Q3Eyamo1L2JiUGkv?=
- =?utf-8?B?UmxMTVZzdHU5TEpGM3Vpb0JFNGQyS2xQbGxyS3hCbHprZStRUUIwazJUNys2?=
- =?utf-8?B?N2NyeWw3NjFXQms0aFhqeHpEU3pwcXVYY1pOeFJ5MGV4TFdqMGhpR0tlc0o2?=
- =?utf-8?B?R3k3UTU5Nmc0TEV4MEpPNHppVk1ZdlByRTlsL0NaMnJmS0NVTlJlNkladkVM?=
- =?utf-8?B?TmtHOFJHbWxvVUNVSmZoRllCRHJTN01OU3A1K1lBTDljckpaaVZBa1l5TmNO?=
- =?utf-8?B?T1VFV0txTDBpNHFHaFlUVld4VTNicVQ0S1Y1WTR5c1RaWkJQYTM4akp2Z01E?=
- =?utf-8?B?WHRsRW1EZ2syb3ZONmVINHRXTVVJa3VnZjc0SFZWM1BmK0F1djB1MGZZemtS?=
- =?utf-8?B?MXp4VHBwWVd5STdyTm12TVgybEkzZjV0ZEcrWlZiaTZDOHpUa2dmSmpidVVp?=
- =?utf-8?B?SFo2NmgxMVd5T0NxYWdjd2FwcUJHRXVCNU12NkNPTXVzVTBkNzNEaHJ1Z2ZY?=
- =?utf-8?B?WkN1Y1ZVSUhuaHJoOWtGYis0N0NFRXZMLzFrYVg3YnNRZmR0ZXNHbDVvZEk2?=
- =?utf-8?B?N2pidVcydW8vellJeDBNZFBCY0ErZlowWFltNUkzQmRGODQwb2JZZ01kYWRV?=
- =?utf-8?B?U1VjWVBCdllzeWJTVkNMNmZucTc5MXkzbXkxemFjbXpCbVBJODVaUXdyb2tE?=
- =?utf-8?B?N2s3dVpmdEdDNXZUT1dJb29UVHRIM0lTUW1uMHE0S2w2Q2dtelBvQkdxVnMx?=
- =?utf-8?Q?Ky/cLYAtuKJuuMso=3D?=
-X-Exchange-RoutingPolicyChecked: UIJlz6RQTVGZiOHom+LG4dBm0e+D8Zx21ApTk92sATVxnzhmHKh/wOYDyYxQfDumuQJBD4sq/CQ6EIt1qNqhbr1tVJBFpMADHpN2uGUqO6kokxNoK0A62i29tAh+T1BBSzy7iqu5AVVirQHGndShFUqzMayPFLMupHTkVLJvju/CAr8iYzSzMAOlemeqJgIu1o5tC03W7TuMVPbUtnX3JwW7Cc2xnUFCnDPOfy/uTE1sDPJgfHkgM5WjJkxvl5J6gTLQOVhkW68A/EUZgncMIsB62bplrznRhhgrDH6lPo/nHCT9xEPWLMDOLSwx4BWiOCORpvoditHFYdN9ANJl0A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b06ff0f-7fc4-4155-912e-08df3f3d5845
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 15:14:42.0411
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WVTfcPUEuMhOugqO3MVYlVVkPrLVWlyEoSlNINMs3tsOqHRZLjp/3KeTm7dIX5Flj4u4xLSCYXWvKGzFWTfDSF00gY039G5o2erDi0Dcv6U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9722
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Mon, 9 Nov 2026 15:53:55 +0100
+On Tue, 10 Nov 2026 16:27:41 +0800
+Hangbin Liu <hangbin.liu@linux.dev> wrote:
 
-> On Thu, Nov 5, 2026 at 7:08 PM Alexander Lobakin
-> <aleksander.lobakin@intel.com> wrote:
->>
->> From: Luigi Rizzo <lrizzo@google.com>
->> Date: Tue,  3 Nov 2026 16:23:23 +0000
->>
->>> libeth_rx_alloc() always allocates with GFP_ATOMIC, including when a
->>> driver fills its Rx rings at open or on queue reconfiguration. That
->>> fill runs in process context, right after page_pool_create() and before
->>> the queues' NAPI is enabled, so it may sleep, and GFP_ATOMIC is
->>> needlessly restrictive there: it can neither reclaim nor compact, while
->>> the initial fill can allocate tens of thousands of buffers across all
->>> queues.
->>>
->>> Patch 1 adds __libeth_rx_alloc() taking a gfp_t parameter and turns
->>> libeth_rx_alloc() into its GFP_ATOMIC wrapper.
->>> Patch 2 switches idpf's initial Rx ring fill (both splitq and singleq)
->>> to GFP_KERNEL.
->>>
->>> v3:
->>>   - rename libeth_rx_alloc_gfp() to __libeth_rx_alloc() and put the gfp
->>>     argument on its own line in page_pool_alloc_netmem() (Alexander Lobakin)
->>> v2: https://lore.kernel.org/r/20261019210604.2433620-1-lrizzo@google.com/
->>>   - split into two patches (libeth helper and idpf consumer)
->>> v1: https://lore.kernel.org/r/20261016151835.2500807-1-lrizzo@google.com/
->>>
->>> Luigi Rizzo (2):
->>>   libeth: add __libeth_rx_alloc() to specify allocation flags
->>>   idpf: use GFP_KERNEL for the initial Rx ring fill
->>
->> For the series:
->>
->> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Hi Stephen,
+> On Sun, Nov 08, 2026 at 05:13:12PM -0800, Stephen Hemminger wrote:
+> > If a route entry is too large for the dump skb, the dump is silently
+> > truncated and no error is returned.
+> > 
+> > For handlers with RTNL_FLAG_DUMP_SPLIT_NLM_DONE, rtnl_dumpit() drops
+> > -EMSGSIZE and returns skb->len. With an empty skb this is 0, so the
+> > dump ends with NLMSG_DONE and status 0, and the remaining entries are
+> > lost.
+> > 
+> > The first dump skb is allocated from __netlink_dump_start() while
+> > max_recvmsg_len is still 0, so it is only NLMSG_GOODSIZE. On a 4K page
+> > kernel that is under 4000 bytes, and a 500 way multipath route does not
+> > fit:
+> > 
+> >   ip link add dummy0 type dummy
+> >   ip link set dummy0 up
+> >   ip route add 198.51.100.0/24 table 100 \
+> > 	$(for i in $(seq 500); do echo -n "nexthop dev dummy0 "; done)
+> >   ip route show table 100
+> > 
+> > The dump prints nothing and exits 0, although "ip route get
+> > 198.51.100.1 table 100" still shows the route.
 > 
-> Looking further at the problem, gemini pointed out that libeth_rx_alloc()
-> is called in a way that makes it easy and robust to tell when it
-> can use GFP_KERNEL. This would greatly simplify the patch.
+> One question. AFAIK, `ip route get` doesn't support "table" parameter. No?
 > 
-> Alexander, do you like this version better perhaps ?
-> 
-> cheers
-> luigi
-> 
-> diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-> index 5d991404845e6..38c0e5066f0ef 100644
-> --- a/include/net/libeth/rx.h
-> +++ b/include/net/libeth/rx.h
-> @@ -104,10 +104,17 @@ void libeth_rx_fq_destroy(struct libeth_fq *fq);
->  static inline dma_addr_t libeth_rx_alloc(const struct libeth_fq_fp *fq, u32 i)
->  {
->         struct libeth_fqe *buf = &fq->fqes[i];
-> +       /* fq->fqes is zero-allocated and pre-filled in process context for
-> +        * indices [0 .. fq->count - 2]; slot fq->count - 1 is first allocated
-> +        * in NAPI. Use GFP_KERNEL for initial pre-fill and GFP_ATOMIC after.
-> +        */
-> +       gfp_t gfp = (buf->truesize || i == fq->count - 1) ?
-> +                   GFP_ATOMIC : GFP_KERNEL;
+> Thanks
+> Hangbin
 
-The fact that `fq->count - 1` is only allocated from the NAPI context is
-idpf's detail that doesn't belong to libeth.
-Even though this is way shorter diffstat than the original series, I
-prefer the original as it doesn't change anything for drivers other than
-idpf and allows specifying GFP flags manually without such guesses. This
-change introduces new branches on hotpath for each driver that uses libeth.
-> 
->         buf->truesize = fq->truesize;
-> -       buf->netmem = page_pool_dev_alloc_netmem(fq->pp, &buf->offset,
-> -                                                &buf->truesize);
-> +       buf->netmem = page_pool_alloc_netmem(fq->pp, &buf->offset,
-> +                                            &buf->truesize,
-> +                                            gfp | __GFP_NOWARN);
->         if (unlikely(!buf->netmem))
->                 return DMA_MAPPING_ERROR;
+Your right AI is wrong in the commit message.
+A way to use get is to add a rule.
 
-Thanks,
-Olek
+#   ip rule add to 198.51.100.0/24 lookup 100
+#   ip route get 198.51.100.1
+198.51.100.1 dev dummy0 table 100 src 192.168.50.131 uid 0 
+    cache 
+
+But best to just drop the incorrect wording there.
