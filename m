@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279318;
-	b=jdb0YwN2286R3azqgPu1+Io3FFDyEyzamX3sHIiSXxTUgyZYfKuSsoCCwQSg3qvGSrvU
-	 BfQ/1EGmRRq0spTDNg2a3tx5nEK8QTmFJlzklUkK1PuUeZtkWaTYobBuYLpAbRjHIeXkO
-	 o716TZHBwPR7dd9y9WKfT37vKkHRQ825wH1zYQdGvZ+9nInHagFucyoBTwFlWIzB3widi
-	 kCPOphhEG1f3q46xMdEgH0COP5ufMn77nJzylEsuo2+uowNjw/kNKOCNgjXD6QuWAYNmj
-	 RYn2ISWwWX6XLVG7onUj0iZFcJ584bpDMBAZBTYDpGXYrrG8uh9wavk5dx3L4n9YmYQ==
+	t=1794279315;
+	b=uZ4lKi+STTUHHPRmKSPzlbaoReQRHpKrdAI3lRdEBTaTyt/ZyUPtHQ3WblRVdp/VpHA8
+	 0jtJaczmiLRrWth17ehp4zgHxjaG6cjfCfhgp1jJWYkbzqgjqlJvRaLFP+06QpM3m1Cr2
+	 DqQjTg5scVfsJx8hMKxD6Lh30UGfSeC3i+3G4r8VHaOBWfRRyEHl5f+CXqDapyUPvm51t
+	 WBEI+U3dhV5z2olDKlELIcFYcqZHNcazfiqLZh8Ofujl55I0BxxJRfuWSI3R2sCmGKMl4
+	 BYCnwQW5uiTiyZQyzKKtGJhFnTnzDIqrfQF586rVNN/fYIyqB8ThJoH3DLmxitmhFYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279318;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279315;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Ryr/YCOGfr9nvO+2suuQw9qH3lv+dRckup4q1WryHSw=;
-	b=KcPjrWbNy17eZhGgGhTnNc18VId7XjHtBrD1EcYF5G2QFnYgcAIrwcddSOymS4kZrlju
-	 k1MD3WY747ymkZI+BQmCxOA48U1xqV8moLm8Pizuf1IyZNu7POqf8GCCwvicY5E8eeZ88
-	 DCRqhRNEuQ45vA5vBqIIA3c3BMAVlRyU2auPgctL/TUV4xXTQ3ywLXZnb7VlGDc+6LTOz
-	 OusgJ0ms3WIfLM2QmkL/wnTLxhbuoO1dWzjfYo788Lud+w585s+6aFU6IB7JDhhz+vtaJ
-	 FbH23DhAQUaUlaEwf+wziXJJ+nN5M/L6mB1rAMA52fmMJI1DNyrg65i+fFLj8kRrLAQ==
+	bh=lMUy+oeVAvoh6ufrm1galjkJuu4L+8997wZoAZsX6xs=;
+	b=mrR/H3Bvtq83II3Gseq2iohQVUmuvE39gaWoLMHXuYFKkcctI3Dl6FeHljsGpwq60PwN
+	 fHNr5S4t5yr8coiEXNYazezgEDjrySyCktM+jPDh+vogIrlcy4Ek+/RIYQ2lIXwMvQ/HP
+	 /H7JA9q88kvdJqQZlbLNNYLt5Q9LZRBoCX8kLwRAdvTD8gJR/Rl/o+WSSl81/08aKwazI
+	 MVBuEzGuwj8ZwHX9qQhQsQQ6X+anz3Hj/KOIOuLkxTxEiRWUrLW269uaggJkCzkCPggTB
+	 94zAAOyuWsRZCsHlocJaE1yDVQEvnV/g1s6NGT04gor273CexM21tKc6ajZ0RYQ3BjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6jxqqyq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AdkceB9p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5F3606BADF;
-	Tue, 10 Nov 2026 02:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA68D60A263B;
+	Tue, 10 Nov 2026 02:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6jxqqyq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41231F0089F;
-	Tue, 10 Nov 2026 02:55:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AdkceB9p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50D11F008A2;
+	Tue, 10 Nov 2026 02:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279317;
-	bh=Ryr/YCOGfr9nvO+2suuQw9qH3lv+dRckup4q1WryHSw=;
+	s=k20260515; t=1794279314;
+	bh=lMUy+oeVAvoh6ufrm1galjkJuu4L+8997wZoAZsX6xs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=X6jxqqyq/IgETTMLUb99phG6ZI2B7KwBOVeJkRE2MWOyqIkHs37JDWSpdU39dozn5
-	 ybZhN3PoVAkP16CtDhdg5ZvmMH4Y4SAiLsomEVcVeVh3CblToPOWB+LalPpaeqhVnI
-	 u4pYDvGzOh3YTkgc6B9gdZVz70yR2DxNIM+EIQ7rg3wyS06NRlVV+ZSZdoL/n0j32E
-	 cGZFHiGMAj3ZUzzkeSc91llnHHev1IaJfZzCSdCKTE/G2j4JMVOKD1NTOp63qNJ3uB
-	 Hu03GAHDfRC3HA7erTP3GyVPraA00/ktBS8FUTvXNlgQNxlUTCMd5Rb/NbMd1rE48B
-	 FIDTGlGKFmUAA==
+	b=AdkceB9p6DMXd1n07vYXkmDl1KBNYyDkRjZ0TvvPcYjQ7Nh8VQaGxqaPuqWtfH8W4
+	 4aDXy8NtqDo/7zbEW29fQ/RJU6RFmRxFKxp+/auMWqgutEaqsREJSQdRm7HkTP1myI
+	 lweIYEgB3aViQRwopDlMt2dHzvcQTBaZiKtPSiXRN6F8hSfxWQCk0wY1emGgW268DH
+	 siq2MshbhBdkFEXd91pRMeCJlK2BV9rKVhTc6aq08yMhOWL1Jt+p8nZcPoIQaQP+Qh
+	 2WrPfWAoXTJR1io+VbXVK31z9YXGh7h3l66JcECamzIaJyYLe9ooASuQY/JaS+Mxt6
+	 zcn0HZ7ecrfeg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B200391AFCB;
-	Tue, 10 Nov 2026 02:55:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B09E391AFCB;
+	Tue, 10 Nov 2026 02:55:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,37 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] l2tp: bump tunnel stats before dropping the
- session reference
+Subject: Re: [PATCH net] net: qualcomm: rmnet: fix TX aggregation teardown
+ race
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427931617.3612825.8081282959489295835.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:16 +0000
-References: <20261103084249.1337657-1-xiaolinkui@126.com>
-In-Reply-To: <20261103084249.1337657-1-xiaolinkui@126.com>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, michael.bommarito@gmail.com,
- gnault@redhat.com, alice.kernel@fastmail.im, kuniyu@google.com,
- nicoyip.dev@gmail.com, mail@david-bauer.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn
+ <179427931317.3612825.6946637670658534464.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:55:13 +0000
+References: <20261101233427.2050688-2-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20261101233427.2050688-2-Jeremy.Jean@oss.cyber.gouv.fr>
+To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+ sean.tranchetti@oss.qualcomm.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  3 Nov 2026 16:42:49 +0800 you wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> l2tp_udp_encap_recv() derives the tunnel pointer from the session it
-> has just looked up, so the session reference is the only thing keeping
-> the tunnel alive.  Both error paths of the function drop the reference
-> before jumping to the invalid label, which still dereferences the
-> tunnel:
+On Sun,  1 Nov 2026 23:34:28 +0000 you wrote:
+> There is a race in rmnet_unregister_real_device() because it cancels TX
+> aggregation before unregistering the rx handler. A transmit that already
+> obtained the port through rmnet_get_port_rcu() can wait on port->agg_lock,
+> then create a new aggregate and rearm the timer after
+> rmnet_map_tx_aggregate_exit() has drained it. The timer can later queue
+> work on the freed port.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] l2tp: bump tunnel stats before dropping the session reference
-    https://git.kernel.org/netdev/net-next/c/0276fa554ca7
+  - [net] net: qualcomm: rmnet: fix TX aggregation teardown race
+    https://git.kernel.org/netdev/net-next/c/0af0e210b5bd
 
 You are awesome, thank you!
 -- 
