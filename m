@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348285;
-	b=BxckaVwvhP8UuZ2QXQtleyKz1Bxj1Ewb5f6F/QWpIsdOKI3iQjbGsf6dDCQK4s0J0JJS
-	 rxv2p88vPUl2PnYbZwdM66Wk72dPWS3UAhnrutRt6WTXcRgcA7hDku07dPfMLvMqpvHkU
-	 9EaEAcJzUzALJyufb5hIea3P9QHqYfZX8XODCx6ae/627YL1aw8AjyiPHIWiibsTKDF+l
-	 dHUDKJ8ayjVB6axBmOFay8mPuHPwmqKg3MZSGjs8bXyoq/lShq5/9wp6N9ZH7v2QThCjK
-	 kKYVAlfxQbM9JXDyggXmMAeSmQq5w49Lvam8xyzEl9Wnrv4gtDXVM8XxfhahEo+0nhw==
+	t=1794348286;
+	b=nUylLKb+UhR5JX5Bne55OFiUYR9Xm1ZRn5fS5wo069wQoBchLjEIrkX8ugo4t6AhSl8E
+	 cEmZpHTrQOrR1rW7WVnCRW+yc6cgVhvzd5Fgn/dXrIXPvQQkpLtW1+I7Y8/qxAVai8Pte
+	 GQUasA0X32YuzLRjGan6M8rgE93rvKfVXq5HKVwklwYC3fenevFOmPofSOLC81UsId3ho
+	 5pi3YazvQUVv3skTFBbNxsL75UfFvDIGTrxvX/m0JIBNUPNv4eSnY+2PsosFBLppOITZo
+	 FuL4sDHYYO3MtCM/ksY8y2vAqmv2RrF2Dtzh8V1F6q2SLSeeXUSE2GuDDuXByQ2Hmog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348285;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348286;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=fwRuhVu8Ld3SI2wO0WRsv2fa9LOBGhpg24WjC0hp/so=;
-	b=kzgMzkbesko7wMqWPWqp+lUACyTd4tNMTpnhC8w2oVA6k08nDIR1zsHLx/QXhVMeFJb4
-	 TmPALQVJv/h2kHu2uz3pulFR4H+9vO8uF4yT/ZKQB1w5cXz40JZeqCzlJB13yRB9aOKhV
-	 mbUtG4kcAPepFKBuV1AhbnhzPL7Aoj4c+8qvW/QHWb5+6lPo6cnxc4ROeY5aMzm48N4DY
-	 dzU/j3ENQ54FQW6eB/0dYJnFgiM6zK65fTPISIG5D4kj6QYqnH8cRIyDtwQu3RxY0qY3s
-	 3QbbcZVdQ4MW6NfHRuANZFZII9YmzchUyHCzpJy5eLlDxy8QhbPJq7sSFR/NXwzhoHQ==
+	bh=FE9OFEAREbObkeiG8+NcXSlXqb0BjD28xvU3A8qsv8w=;
+	b=mnkbMAtJJN8QCNkX/K9VDTZWBrP6HdDQOyGMJdoJs2lzq06Xgz9HMTj2aid5EgMsS3dA
+	 SncKYtHkC+yUvd7W4G+cNKo0NV94RDNfF1QqDcslZ60ieL8n22DfVDikNIQpI4lqTzRjX
+	 qWD3hh0UhEpc+i+ZjmXeTegFSD5+Asq/TSejqhancxEaJl2AtObdsKwd2cX8zDu1u5Prz
+	 X9N+Xgk/0ovWzPO6jraMJE6U1y2w8ryvM10vPd5F8xzevSLmEjCUceMVKpDqscKnYS4gV
+	 sO2PQsO4JFI1jxkX50qHadcrgW9FJaofKDsB+e5PY78KYmiNfnp9UhZIG6i/17tgQBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hpBBh3U+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q7OkKIJZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACB060A2601;
-	Tue, 10 Nov 2026 22:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5873660A2600;
+	Tue, 10 Nov 2026 22:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hpBBh3U+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798C81F008AB;
-	Tue, 10 Nov 2026 22:04:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q7OkKIJZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C457B1F008A7;
+	Tue, 10 Nov 2026 22:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348284;
-	bh=fwRuhVu8Ld3SI2wO0WRsv2fa9LOBGhpg24WjC0hp/so=;
+	s=k20260515; t=1794348286;
+	bh=FE9OFEAREbObkeiG8+NcXSlXqb0BjD28xvU3A8qsv8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hpBBh3U+jBeHihVLKZderol7qrEyzsy7mZMtPAPZCC72hkhQT7n9Hik98R7qv16oY
-	 tNKz4gYIoexMwgCrGnnMcuRQo30HvVaqJjZ0HZC26MbqqgjCtlP+y6SZSa2IGhlBkA
-	 SQ0dMgxzf08XLzT2/uS29a/QPehvmO50BnAOxfqneIQGBn+7zjyogqx+/vLEA+Rjj3
-	 TJg36zBZt4NmhW0ahM1kRx7WQCGk/d31vCGNkPbhB3e7PgmpLggwg82k+5LMSCs/Oy
-	 fG9jyuX00hfUZXBjPVQQBhO1PBibLw/M0Lv2Cp7UjXLuhukf0yiyYCXkB0ZGnMQ0ZB
-	 UcbnlaqHgy+bw==
+	b=Q7OkKIJZoB32e/DO+QRShttvfvaNb+H2rcUAD/ccdTvRX5NHXVrJcSmTvnATuQfB9
+	 u4QbYhHg0D36RaOrI8t64THeRsBUpb1U4/LEdfvPrkJb3t3hC0Wv7p5SRWVVoRI4dI
+	 lvxi4nZX5Q8mOEbNJl9oOTjJGGytFafMO9vUyfTTEiDCpKcu575ZmC7gHXJ9ESDaM5
+	 4dYYjzdsCwIVgbMrWWGgvwRnSBYsg9lKSKaDATFCAtfDc8lnD+yE1FFg9L6tKH13wX
+	 eZEOF2PQD3GrO0fQTiXS94qDX02YkoreO5Jo2czxFn3KFSaERiVMNQRBhhqfeHD+7s
+	 g3JpGLsQ6Lyzw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: daniel.machon@microchip.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -54,12 +54,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	robert.marko@sartura.hr
-Subject: Re: [PATCH net-next 6/9] net: sparx5/lan969x: add support for resizing the FDMA buffers
-Date: Tue, 10 Nov 2026 14:04:43 -0800
-Message-ID: <20261110220443.2337242-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 9/9] net: sparx5/lan969x: add support for changing the MTU
+Date: Tue, 10 Nov 2026 14:04:45 -0800
+Message-ID: <20261110220445.2337277-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105-sparx5-mtu-change-v1-6-f27bab580463@microchip.com>
-References: <20261105-sparx5-mtu-change-v1-6-f27bab580463@microchip.com>
+In-Reply-To: <20261105-sparx5-mtu-change-v1-9-f27bab580463@microchip.com>
+References: <20261105-sparx5-mtu-change-v1-9-f27bab580463@microchip.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,294 +74,285 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: sparx5/lan969x: add support for resizing the FDMA buffers
+net: sparx5/lan969x: add support for changing the MTU
 
-This adds an fdma_resize operation for Sparx5 and lan969x. It allocates
-new FDMA buffers sized for a new MTU, pauses the FDMA and port TX queues,
-swaps in the new buffers and resumes. Before the FDMA is stopped, CPU port
-forwarding is disabled and the CPU queues are drained. On lan969x the RX
-page slot is now cleared once the page has been passed to the stack.
+This commit adds an ndo_change_mtu callback for sparx5 and lan969x ports.
+It programs the MAC maximum frame length, resizes the shared FDMA buffers,
+and updates the queue watermarks and the TAS guard band. MTU changes are
+only allowed when the FDMA is used, and max_mtu is raised to 13982 in that
+case.
 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-> index 26a0815a0173b..d84663da35891 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-> @@ -153,6 +153,12 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
->  	skb->dev->stats.rx_bytes += skb->len;
->  	skb->dev->stats.rx_packets++;
+> The MTU of a port is currently fixed to 1500, as the MAC maximum frame
+> length, the FDMA buffers, the queue watermarks and the TAS guard band
+> are all sized for a 1518 byte frame.
+
+[Severity: Low]
+Is "fixed to 1500" accurate? Before this patch, sparx5_netdev.c had no
+ndo_change_mtu. The netdevs come from devm_alloc_etherdev_mqs(), so
+ether_setup() gives min_mtu 68 and max_mtu 1500, and __netif_set_mtu()
+just does:
+
+net/core/dev.c:__netif_set_mtu() {
+    ...
+	if (ops->ndo_change_mtu)
+		return ops->ndo_change_mtu(dev, new_mtu);
+
+	/* Pairs with all the lockless reads of dev->mtu in the stack */
+	WRITE_ONCE(dev->mtu, new_mtu);
+    ...
+}
+
+So every board accepted any MTU from 68 to 1500.
+
+With the new sparx5_port_change_mtu(), every system using register based
+extraction now gets -EOPNOTSUPP for every MTU change. That includes
+decreases such as "ip link set ethX mtu 1400", which used to work. These
+systems are:
+
+  - Sparx5 rev 0, because sparx5_frame_io_init() only requests the FDMA
+    IRQ when GCB_CHIP_ID_REV_ID_GET(chip_id) > 0 || !is_sparx5()
+  - boards without an fdma IRQ
+  - boards where FDMA init failed
+
+Could the commit message describe this as a removed capability, and give
+the actual reason for it (see the sparx5_xtr_grp() comment below)?
+
+> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c b/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
+> index b3725cf2dd44c..095925752f5f6 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
+> @@ -250,6 +250,44 @@ static int sparx5_port_hwtstamp_set(struct net_device *dev,
+>  	return sparx5_ptp_hwtstamp_set(sparx5_port, cfg, extack);
+>  }
 >  
-> +	/* The page is passed to the stack in the skb, so clear its slot in the
-> +	 * ring, so that lan969x_fdma_rx_free() does not return it to the
-> +	 * page_pool.
-> +	 */
-> +	rx->page[fdma->dcb_index][fdma->db_index] = NULL;
+> +static int sparx5_port_change_mtu(struct net_device *dev, int new_mtu)
+> +{
+> +	struct sparx5_port *port = netdev_priv(dev);
+> +	struct sparx5 *sparx5 = port->sparx5;
+> +	bool resize = new_mtu > dev->mtu;
+> +	int err;
 > +
->  	return skb;
->  
->  free_page:
+> +	/* Register based extraction sizes its skbs from the MTU at the time
+> +	 * a frame is read, so it cannot handle frames queued before an MTU
+> +	 * decrease.
+> +	 */
+> +	if (sparx5->fdma_irq <= 0)
+> +		return -EOPNOTSUPP;
 
 [Severity: High]
-What happens to the slot on the free_page error path just below?
+This isn't a bug introduced by this patch, but this check also quietly
+closes a heap overflow in register based extraction. That overflow is
+still present in current and stable kernels.
 
-lan969x_fdma_rx_get_frame() takes that path on WARN_ON(!port) for a bad
-IFH src_port, or when build_skb() fails:
+sparx5_xtr_grp() in sparx5_packet.c sizes the skb from the current MTU. It
+then copies extraction words until EOF without checking tailroom:
 
-free_page:
-	page_pool_recycle_direct(rx->page_pool, page);
+drivers/net/ethernet/microchip/sparx5/sparx5_packet.c:sparx5_xtr_grp() {
+    ...
+	skb = netdev_alloc_skb(netdev, netdev->mtu + ETH_HLEN);
+    ...
+		default:
+			*rxbuf = val;
+			byte_cnt += 4;
+			rxbuf++;
+    ...
+	skb_put(skb, byte_cnt - ETH_FCS_LEN);
+    ...
+}
 
-	return NULL;
+Without this patch, sparx5_port_init() programs MAC_MAXLEN_CFG with the
+fixed ETH_MAXLEN (1518), whatever dev->mtu is set to. There is also no
+ndo_change_mtu, so "ip link set ethX mtu 68" succeeds.
 
-The page goes back to the page_pool, but
-rx->page[fdma->dcb_index][fdma->db_index] still points at it.
-lan969x_fdma_napi_poll() then breaks without calling fdma_db_advance(),
-so the stale slot stays in the ring:
+After that, a normal 1518 byte frame to the CPU (larger with VLAN tags)
+would be copied into an skb with only about 256 bytes of tailroom. Wouldn't
+that overrun skb_shared_info and the neighbouring slab objects before
+skb_put() reaches skb_over_panic() and BUG() in the xtr IRQ handler?
 
-	skb = lan969x_fdma_rx_get_frame(sparx5, rx);
-	if (!skb)
-		break;
+The commit message presents this check as a feature limit ("frames queued
+before an MTU decrease would not fit"). There is no Fixes: tag, so stable
+kernels remain exposed.
 
-Later, lan969x_fdma_resize() calls lan969x_fdma_rx_free() on the live
-ring. lan969x_fdma_free_pages() treats every non-NULL slot as owned by
-the driver:
+Would a separate net fix with a Fixes: tag make sense, for example
+bounding the copy loop in sparx5_xtr_grp() against the skb tailroom? The
+loop itself is unchanged here, so it is still only safe while the MAC
+maxlen fits within the slack of an skb sized from dev->mtu.
 
-	if (!rx->page[i][j])
-		continue;
-
-	page_pool_put_full_page(rx->page_pool,
-				rx->page[i][j], false);
-
-Can this put the already recycled page a second time? With
-pp_ref_count == 1, page_pool_unref_netmem() returns 0 without
-decrementing. The pool then seems to accept the page again, and
-page_pool_destroy() would DMA unmap it and call put_page() on it twice.
-
-The refill loop in the same poll could also take the recycled page from
-the alloc cache for another DCB. Two slots would then reference the same
-page, and it would be put once for each slot.
-
-Clearing the slot in free_page alone does not look like enough, because
-the next poll would then call page_address(NULL) for that slot. Should
-the error path drop the frame and advance or re-arm the DB instead?
-
-[ ... ]
-
-> @@ -437,3 +445,87 @@ int lan969x_fdma_deinit(struct sparx5 *sparx5)
->  
->  	return 0;
->  }
 > +
-> +/* Release the TX buffers that were in flight when the FDMA was reset, and
-> + * initialize the TX DCBs again.
-> + */
-> +static void lan969x_fdma_tx_reset(struct sparx5 *sparx5)
-> +{
-
-[ ... ]
-
-> +	for (int i = 0; i < fdma->n_dcbs; ++i) {
-> +		db = &tx->dbs[i];
+> +	/* Never let the MAC accept frames larger than the RX buffers */
+> +	if (!resize)
+> +		sparx5_port_max_len_set(sparx5, port, SPX5_HW_MTU(new_mtu));
 > +
-> +		if (!db->used)
-> +			continue;
-> +
-> +		db->dev->stats.tx_dropped++;
-> +		sparx5->tx.dropped++;
+> +	err = sparx5->data->ops->fdma_resize(sparx5, port, new_mtu);
 
 [Severity: Medium]
-What happens to two-step PTP frames that are still in the ring here?
+Can an MTU change leak the two-step PTP state on lan969x?
 
-sparx5_port_xmit_impl() calls sparx5_ptp_txtstamp_request() before
-ops->fdma_xmit(). That call sets SKBTX_IN_PROGRESS, queues the skb on
-port->tx_skbs and increments sparx5->ptp_skbs. lan969x_fdma_xmit() then
-sets db->ptp = true. Normally the PTP timestamp interrupt releases the
-skb once the frame has gone out.
+When sparx5_port_change_mtu() resizes the buffers,
+lan969x_fdma_resize() pauses and resets the FDMA. Then
+lan969x_fdma_tx_reset() walks the TX descriptors that are still marked
+used after lan969x_fdma_tx_clear_buf(). Those frames were never
+injected, but for a two-step PTP frame the loop only does:
 
-This loop only visits entries that lan969x_fdma_tx_clear_buf() did not
-complete. Those frames were never injected, so no timestamp interrupt
-will ever arrive for them. For a ptp entry the loop just skips
-dev_kfree_skb_any() and clears db->used. The skb stays on
-port->tx_skbs, and sparx5->ptp_skbs is never decremented.
+	if (!db->ptp)
+		dev_kfree_skb_any(db->skb);
 
-sparx5_ptp_txtstamp_old_release() may later unlink and free the stale
-skb, but it does not touch sparx5->ptp_skbs. So every MTU change that
-catches a two-step frame in flight leaks one slot. Once ptp_skbs
-reaches SPARX5_MAX_PTP_ID, every later two-step timestamp request on
-any port fails with -EBUSY.
+	db->used = false;
 
-The NETDEV_TX_BUSY path in sparx5_port_xmit_impl() uses
-sparx5_ptp_txtstamp_release() for the same situation. That helper
-also decrements port->ts_id and does not free the skb, though. It may
-therefore not be usable as-is for a frame in the middle of the queue.
-How should a dropped two-step frame be unwound here?
+The skb was queued on port->tx_skbs by sparx5_ptp_txtstamp_request(),
+which also incremented sparx5->ptp_skbs. As the frame never reached the
+rewriter, sparx5_ptp_irq_handler() will never get a timestamp for it,
+so nothing releases that state.
 
-[ ... ]
+The skb itself is eventually freed by
+sparx5_ptp_txtstamp_old_release() once SPARX5_PTP_TIMEOUT has passed
+and another two-step frame is sent. That function does not decrement
+sparx5->ptp_skbs, though. So every MTU change under two-step PTP load
+can leak slots. Once ptp_skbs reaches SPARX5_MAX_PTP_ID, every further
+two-step timestamp request fails with -EBUSY until the driver is
+reloaded.
 
-> +	fdma_dcbs_init(fdma,
-> +		       FDMA_DCB_INFO_DATAL(fdma->db_size),
-> +		       FDMA_DCB_STATUS_DONE);
-> +}
+sparx5_ptp_txtstamp_release() fixes up ptp_skbs and unlinks the skb,
+but it also decrements port->ts_id. That is only correct for the most
+recently requested skb. How should the dropped PTP descriptors be
+released here? Would it work to unlink them from port->tx_skbs,
+decrement ptp_skbs under ptp_ts_id_lock and then free them? Freeing
+them without the unlink would leave a dangling skb on port->tx_skbs.
 
-[Severity: Low]
-This isn't a bug, but the commit message says:
+[Severity: High]
+Can the resize path double free an RX page on lan969x?
 
-  On lan969x, where TX frames are mapped directly from the skbs, only the
-  RX buffers and page_pool are replaced.
+With ndo_change_mtu, lan969x_fdma_resize() can now run at any time,
+and it goes through lan969x_fdma_rx_free() and
+lan969x_fdma_free_pages(). That function returns every non-NULL
+rx->page[i][j] to rx->page_pool with page_pool_put_full_page().
 
-lan969x_fdma_tx_reset() drops every TX skb still in flight, counts each
-one as tx_dropped and re-initialises the TX DCB ring.
+To make that safe, lan969x_fdma_rx_get_frame() clears
+rx->page[fdma->dcb_index][fdma->db_index] before it returns the skb.
+The free_page error path does not:
 
-On both chips, sparx5_fdma_pause() waits at most 5 ms for TX to drain
-and at most 100 ms for the CPU queues to drain. Whatever is left is then
-lost to the reset or discarded by sparx5_xtr_flush().
+	free_page:
+		page_pool_recycle_direct(rx->page_pool, page);
 
-Could the commit message say that an MTU change can drop TX frames and
-CPU-bound RX frames on all ports?
+		return NULL;
 
-[ ... ]
+That path is taken when build_skb() fails under memory pressure, or
+when the IFH carries an invalid source port. The page goes back to the
+pool, but the slot still points to it. lan969x_fdma_napi_poll() then
+breaks out of its loop without advancing fdma->dcb_index, so the DB is
+not refilled and the stale pointer stays in place.
 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-> index 3a74a305d55d4..f4bb420d3f27b 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+A later MTU change on any port, or lan969x_fdma_deinit() on teardown,
+would then call page_pool_put_full_page() on a page the pool may
+already have handed out again, to another DB or to an skb that is still
+in flight in the stack. Wouldn't that corrupt the page_pool and lead to
+a use-after-free?
 
-[ ... ]
-
-> +void sparx5_fdma_pause(struct sparx5 *sparx5)
-> +{
-
-[ ... ]
-
-> +	sparx5_fdma_cpu_fwd_set(sparx5, false);
-> +	if (read_poll_timeout(sparx5_fdma_cpu_queue_use,
-> +			      use,
-> +			      !use,
-> +			      SPX5_FDMA_XTR_DRAIN_SLEEP_US,
-> +			      SPX5_FDMA_XTR_DRAIN_TIMEOUT_US,
-> +			      false,
-> +			      sparx5))
-> +		dev_warn(sparx5->dev, "CPU queue not drained, frames dropped\n");
-> +
-> +	sparx5_fdma_stop(sparx5);
-> +
-> +	/* Reset FDMA state */
-> +	spx5_wr(FDMA_CTRL_NRESET_SET(0), sparx5, FDMA_CTRL);
-> +	spx5_wr(FDMA_CTRL_NRESET_SET(1), sparx5, FDMA_CTRL);
+Simply clearing the slot in the free_page path doesn't look sufficient
+either. If I read lan969x_fdma_napi_poll() correctly, the next poll
+calls lan969x_fdma_rx_get_frame() on the same DB again. It would then
+pass a NULL page to page_address(). As the code stands, it re-reads the
+page that was just recycled. Should the error path drop the frame,
+advance past the DB and let the refill loop replace the page? That way
+each slot is always either owned by the ring or NULL.
 
 [Severity: Medium]
-If this drain times out, is it safe to continue with sparx5_fdma_stop()
-and the NRESET pulse?
+Can this resize allocate the whole RX ring with GFP_ATOMIC from sleepable
+context?
 
-The commit message says that stopping the FDMA while frames are still
-arriving for the CPU can stop extraction for good after the restart. On
-a timeout CUR_INUSE is still non-zero, which looks like exactly that
-state.
+sparx5_port_change_mtu() runs under RTNL. On Sparx5 the call chain is:
 
-The TX drain timeout above is handled the same way. The channel-inactive
-and XTR_BUF_IS_EMPTY poll results inside sparx5_fdma_stop() are also
-ignored.
+sparx5_port_change_mtu()
+  sparx5_fdma_resize()
+    sparx5_fdma_rx_alloc(rx_new)
+      fdma_dcbs_init()
+        sparx5_fdma_rx_dataptr_cb()
 
-A timeout looks reachable whenever RX extraction stalls. One example is
-lan969x_fdma_napi_poll() breaking on the get_frame error path without
-advancing. Another is sparx5_fdma_rx_get_frame() returning false for
-"Data on inactive port" without advancing.
-
-sparx5_fdma_pause() returns void, so neither sparx5_fdma_resize() nor
-lan969x_fdma_resize() can back out here, even though the old buffers are
-still intact. Instead they free the old rings, resume and report
-success. Should pause() return an error so the resize can fail cleanly?
-
-> +
-> +	/* Discard frames queued for the CPU, as they may not fit the new
-> +	 * buffers.
-> +	 */
-> +	sparx5_xtr_flush(sparx5, XTR_QUEUE);
-> +}
-> +
-> +/* Restart the FDMA and the port TX queues after sparx5_fdma_pause() */
-> +void sparx5_fdma_resume(struct sparx5 *sparx5)
-> +{
-> +	struct sparx5_rx *rx = &sparx5->rx;
-> +	struct sparx5_tx *tx = &sparx5->tx;
-> +
-> +	/* Enable NAPI before the RX interrupt is enabled, as the interrupt
-> +	 * handler schedules NAPI, as in sparx5_fdma_start().
-> +	 */
-> +	napi_enable(&rx->napi);
-> +
-> +	sparx5_fdma_rx_activate(sparx5, rx);
-> +	sparx5_fdma_tx_activate(sparx5, tx);
-
-[Severity: Low]
-On lan969x, can the TX completion interrupt stay masked after this?
-
-sparx5_fdma_rx_activate() only sets the RX channel bit in
-FDMA_INTR_DB_ENA:
-
-	spx5_rmw(BIT(fdma->channel_id),
-		 BIT(fdma->channel_id) & FDMA_INTR_DB_ENA_INTR_DB_ENA,
-		 sparx5, FDMA_INTR_DB_ENA);
-
-sparx5_fdma_tx_activate() does not touch this register. While the device
-is running, lan969x_fdma_napi_poll() re-enables the full mask, which
-includes the TX channel:
-
-	if (counter < weight && napi_complete_done(napi, counter))
-		spx5_wr(0xff, sparx5, FDMA_INTR_DB_ENA);
-
-The TX bit can be left cleared during the resize in three ways:
-
-  - sparx5_fdma_handler() writes 0 to FDMA_INTR_DB_ENA when it schedules
-    NAPI.
-  - napi_disable() can complete a poll that used its full budget without
-    the driver writing 0xff.
-  - sparx5_fdma_rx_deactivate() only clears the RX bit.
-
-On lan969x, TX descriptors are only reclaimed from NAPI. With TX-only
-traffic and no CPU-bound RX, the 64-entry ring could fill.
-lan969x_fdma_get_next_dcb() would then return -ENOSPC, and
-sparx5_port_xmit_impl() would keep returning NETDEV_TX_BUSY until some
-RX frame triggers NAPI.
-
-[ ... ]
-
-> +int sparx5_fdma_resize(struct sparx5 *sparx5, struct sparx5_port *port,
-> +		       int new_mtu)
-> +{
-
-[ ... ]
-
-> +	sparx5_fdma_rx_init(sparx5, rx_new, FDMA_XTR_CHANNEL, db_size);
-> +	sparx5_fdma_tx_init(sparx5, &tx_new, FDMA_INJ_CHANNEL, db_size);
-> +
-> +	err = sparx5_fdma_rx_alloc(rx_new);
-> +	if (err)
-> +		goto out;
-
-[Severity: Medium]
-This runs from ndo_change_mtu in process context. The whole new RX ring
-is still filled through this chain:
-
-sparx5_fdma_rx_alloc()->fdma_dcbs_init()->fdma_dcb_add()->
-    sparx5_fdma_rx_dataptr_cb()
-
-and that callback hard-codes GFP_ATOMIC:
+For each of the 64 x 15 = 960 buffers, sparx5_fdma_rx_dataptr_cb() does:
 
 	skb = __netdev_alloc_skb(rx->ndev, fdma->db_size, GFP_ATOMIC);
 
-That is 64 * 15 = 960 skbs. For jumbo MTUs each skb head is a
-kmalloc-16k object, so this is roughly 15 MB of high-order allocations
-with no direct reclaim or compaction. The old ring stays allocated the
-whole time.
+With the new max_mtu of 13982, db_size becomes 14080 bytes. Each skb head
+is then an order-2 kmalloc allocation, so the ring needs roughly 15 MB of
+GFP_ATOMIC memory in total, and the old ring is still allocated while this
+happens.
 
-Could this make MTU increases fail with -ENOMEM on fragmented systems?
-Could it also drain the atomic reserves that the NAPI refill of the
-still-running old ring depends on?
+Without __GFP_DIRECT_RECLAIM this can neither reclaim nor compact. It could
+drain the atomic reserves that NAPI refills rely on. It could also fail
+with -ENOMEM on fragmented memory where GFP_KERNEL would have succeeded.
 
-The callback is shared with the NAPI refill path. Would it be better to
-give the resize path a sleepable gfp mask, or a separate allocation
-callback?
+Could the RX allocation used for resize take a gfp argument, so that
+GFP_KERNEL is used here?
 
-lan969x_fdma_rx_dataptr_cb() also allocates with GFP_ATOMIC, through
-page_pool_dev_alloc_pages(), but only for 64 pages.
+The TX ring in the same path comes from fdma_alloc_phys(), which does a
+kzalloc(GFP_KERNEL) of about 900 KB (order-8) without __GFP_NOWARN. A
+failure there would also print an allocation failure warning.
+
+> +	if (err) {
+> +		if (resize)
+> +			return err;
+> +
+> +		/* The current, larger, buffers still fit all frames */
+> +		netdev_warn(dev, "Failed to resize FDMA buffers: %d\n", err);
+> +	}
 
 [ ... ]
+
+> @@ -306,7 +345,14 @@ int sparx5_register_netdevs(struct sparx5 *sparx5)
+>  
+>  	for (portno = 0; portno < sparx5->data->consts->n_ports; portno++)
+>  		if (sparx5->ports[portno]) {
+> -			err = register_netdev(sparx5->ports[portno]->ndev);
+> +			struct net_device *ndev = sparx5->ports[portno]->ndev;
+> +
+> +			/* The MTU can only be changed when FDMA is used */
+> +			if (sparx5->fdma_irq > 0)
+> +				ndev->max_mtu = SPX5_MAX_FRAME_LEN - ETH_HLEN -
+> +						ETH_FCS_LEN;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but raising max_mtu here makes
+an existing RX refill problem much more likely to trigger.
+
+sparx5_fdma_napi_callback() ignores the return value of fdma_dcb_add():
+
+	fdma_dcb_add(fdma, fdma->dcb_index,
+		     FDMA_DCB_INFO_DATAL(fdma->db_size),
+		     FDMA_DCB_STATUS_INTR);
+	fdma_db_reset(fdma);
+	fdma_dcb_advance(fdma);
+
+lan969x_fdma_napi_poll() does the same in its refill loop.
+
+If the dataptr callback fails for any DB, __fdma_dcb_add() returns early:
+
+	for (i = 0; i < fdma->n_dbs; i++) {
+		err = __fdma_db_add(fdma, dcb_idx, i, status, db_cb);
+		if (unlikely(err))
+			return err;
+	}
+
+At that point the DB's status has already been reset (DONE cleared), but
+the DCB has not been linked after fdma->last_dcb. The next successful
+fdma_dcb_add() then links DCB k-1 directly to DCB k+1, so the hardware
+never visits DCB k again.
+
+Once the software dcb_index wraps back to k, wouldn't
+sparx5_fdma_rx_get_frame() (or fdma_has_frames() on lan969x) keep
+returning false? That would stop CPU RX on the shared FDMA for all ports
+until another resize or a driver reload.
+
+Before this series, a Sparx5 refill was roughly a 4 KB request and a
+lan969x refill was order-0. With max_mtu at 13982, each Sparx5 refill
+becomes an order-2 GFP_ATOMIC allocation, and lan969x page_pool pages
+become order-2. Those allocations can realistically fail in NAPI context
+on a fragmented system.
+
+Should refill failures be handled, for example by retrying the refill
+later, before jumbo MTUs are allowed?
+
+> +
+> +			err = register_netdev(ndev);
+>  			if (err) {
+>  				dev_err(sparx5->dev,
+>  					"port: %02u: netdev registration failed\n",
