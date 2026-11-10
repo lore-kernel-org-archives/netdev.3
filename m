@@ -1,59 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794298289;
-	b=HUuy6hJoVYCXEkt7HT0WyWVc+EaefuZcGIfb89x1JjBINPJbV3Q1IKSmluxOsLYL5zUR
-	 Y9qmpxtlgcYLIo85mJ5Rab6gVO3hR3ELnfdhZKMLZDVqYwWLJLh/7ROauauQ5RGmQEUix
-	 5hooYlZiM/4fLUt7KinIHBsf7T1gcolSecc3wcE9Azx8mIa9gcHmD0/iu0NlBbA3COuiw
-	 IFoyOb8O2j+y5g3TvD8S5kim5hPi/IHTfVVUUOSVqOUgQO23I3nlImEz6ZflhNSbvQZt6
-	 UyORzM4Vs6u4iuTkvAWUpcdU3ZGatOosguWul/TupVMsXFzNvT+8UqxKHTYfTGo8Qtg==
+	t=1794298835;
+	b=QSPM8Abm4fRe55k4UUDycXbQcminkc3W6yQVUp304QBUMyo98vQb440cLkdhg5LB7o98
+	 wG39NiSa9phi9PNubwegpVWNU4snwGBRHCsA/jnzFWDCiglUH8r3rQ8OOUrQxPxLE5b9u
+	 Oasnrt0BnaUTOAo2vbuBxxCyUfT3EDkInLbokAFmkdwt0a+MVECPtY2FDfbLFH2wZQXxW
+	 xF6ahP7tu+jdnd4Xlz+aJg9xkEItMiiHQHeHKnFdpmJh8e8adzQKB82kp/0ESDoivxNHR
+	 vKTXpV5/uYF9WcnuRsQUQS/eQZg4RI9mkCnOdkuJi5tqJlzUQvbapbT0xo/LLL5+LQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794298289;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=jOh7ZgnccO4L8Qeh1oaXwjE5S2FwXwDj1PkxCIz2bvQ=;
-	b=M4R4Xmlz5Qx6oQ6zpbV3JFCSIWRxAUENp2/FdWlYx7oWcRu3u8ZC/aeuFY2ZYPRggjAS
-	 /XjGhBRmZbp65t3SFs5BAXb5ozjCG9AP1okQjjBh/Hp2Z1pCwjZi50rXBoVd2OMYv2JCR
-	 TtO11U7PTb+H6Dyyw6MwTXcivZF0br1mgOFzx5wwNb4WN/Mp+//+gWF2XkPUv477GAMqN
-	 lb6IAWgVaLWZb+bydY8BtCNlQxixi/ixayTaTUWvH9pDi0rBuvc/FJdI6EVna3rpEGNIo
-	 Y5ZhBRcH1Rg2IeGXpIxo+BVtrqiSn/+9PAKujY8dotu8ohLYE5u7Fll4XAQzIEt5bzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794298835;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=GJJBtOoZyfbcw9vYJ3AjIwJnWc5wtaVwm6uJ1XWEjiw=;
+	b=NBY/DmUhWn8vPXplrNbijGQZxF4dd2XIeZ2OY4S67xzs7WuMoqeJKbmoGHmr3jtHzl9o
+	 xJImgu+RA8j9NOzQx4Zb7BAmcb6HLBzaQcb9iKCmSVT3NRxgsBtsHgUgcddTKl0xN0Yyy
+	 dH+NsMDHOEuF7GTSFrrhoipIBNQ8HAMlnRf2hAbGn68tjI/BZsD4tKa4Q8GgKaetpgpH3
+	 QrnBfu6v1ZVuArsS3ymSgl/I8vsCTB/hCsHyFwM3Gb9766tzXCjRxgqeu/Xw+R4KdtZ0e
+	 DvNMx52OJ+Bmt30tVGVbYEsPqUNVcYEKJHTvGVjA2sZ8E6WEZGPqcerHb1LsiBPWCqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXwyv7k7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hBjpGpqd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822FE606A31C;
-	Tue, 10 Nov 2026 08:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE07E606A326
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXwyv7k7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ED01F0089F;
-	Tue, 10 Nov 2026 08:11:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hBjpGpqd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680271F008A4
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794298288;
-	bh=jOh7ZgnccO4L8Qeh1oaXwjE5S2FwXwDj1PkxCIz2bvQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lXwyv7k7RCG1HZme74th2ZxaF60JVoYGpIkmDSEOIFN6vqgK3Yccn5edW3L5+wkJK
-	 Ul7q5eJUI7wSyqpf8Aet2p/e+2pirXuVxKhFMW60jLth/4+LneVxd+08xmCVaC8nFd
-	 AghlxIPxCVm8HXERn1OkiAIZkP7PxINXaKr8FNX9/NjH42Z53DuD8Ptt+jkBe5QlDw
-	 ZbJ9ON9vwXSxNNQrwpNrxaQ2gS6PTFsWBIBOAIht7NNucADubplptxADnmkfem79aQ
-	 GMfEqqmDZqvrB2+PFgxCGiHvdxJOZQ2uKxthP+mrjlzsCICwt2DUac77opsFue9xrX
-	 Xow4LQrsrJLLQ==
-Subject: Re: [PATCH net v3 2/3] net: dsa: motorcomm: Resolve the flower action
- list to one ACL verdict
-From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 08:11:27 +0000
-Message-ID: <179429828784.994134.6502837547336557554@kernel.org>
-In-Reply-To: <20261106073806.112122-3-mmyangfl@gmail.com>
-References: <20261106073806.112122-3-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794298834;
+	bh=GJJBtOoZyfbcw9vYJ3AjIwJnWc5wtaVwm6uJ1XWEjiw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hBjpGpqddtvfd3/+do0ngbGw/TGaW8acIZrmbE0IlUaJE8IoV7M29f3Ilv+Y5INTe
+	 bfVtqbJFmzc6wiTdYSfPAFYAoYwYKuYjnOQ9nBP0mtHYvnjOBCmxTP7sAUOEBnpD7B
+	 Dq8Ecgp+O/T4hiXIHrWWYU7mg2uHcU6qmsCQbDjGeCLFncWeFCsWhxiV4I3uR13EDA
+	 q1dMOuQgn2bgNaRTXiErpxLwr3sFSe9oKa0fGyyvK0Ib5cNIOK1JUD3ZUQ/d5d51lV
+	 7yeqtG6DUNQqtc29PrX7zddEkzk5P7pPQ3gH1JSyDKSOEGAxjnl9XPNbU+Tc3Pm7cq
+	 oaPBSOppePO2w==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4adae187d94so1060664fac.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:20:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHZid4bDq12UzQGpdhKighJ0fPd/i3enWYhIenJbpjN8Ej3CF/DRD5nHztgaI02y9m8rd8bjwk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/8f3aRnJdS3j/cCyGL2sCJwhWXIqDkSUTsPxn9AMtLtGJeIAHw
+	sc7oPAbcWX8nqBvY04C5hnQJD1F4FtkTMmTghgQ+tZNZxYK92/fD0kKeAqFgHii/h/i6+Y/TRs7
+	BZ4CF1vS6PR3ud/ClbRBHOTrf9soDwWY=
+X-Received: by 2002:a05:6870:241e:b0:49d:e4ee:659e with SMTP id
+ 586e51a60fabf-4ae2262135dmr1084844fac.30.1794298833635; Tue, 10 Nov 2026
+ 00:20:33 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,123 +59,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261110072208.3273638-1-edumazet@kernel.org> <179429558345.488859.16534342073147950836@kernel.org>
+In-Reply-To: <179429558345.488859.16534342073147950836@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 10 Nov 2026 09:20:22 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiio+i3nwZxK1AyvEvoNjRCv8rBC+3ggvzo_7DbOnts-YnQ@mail.gmail.com>
+X-Gm-Features: AclHuK_rmdJX-rTYUQYX1H1-pUnjjkvd_Rf2CiSdSVrVSTeW5T8P9EZaVG8j0OA
+Message-ID: <CAL4Wiio+i3nwZxK1AyvEvoNjRCv8rBC+3ggvzo_7DbOnts-YnQ@mail.gmail.com>
+Subject: Re: [PATCH net] vxlan: annotate lockless accesses to rdst->remote_ifindex
+To: netdev-bot+sinfo@kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Le mar. 10 nov. 2026 =C3=A0 08:26, <netdev-bot+sinfo@kernel.org> a =C3=A9cr=
+it :
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Manual code inspection, I am not aware of a syzbot report.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] This patch adds a claim to both the commit message and a new
-  comment in yt921x_acl_rule_ext_parse_flow_action()…
-
---
-
-net: dsa: motorcomm: Resolve the flower action list to one ACL verdict
-
-This commit changes yt921x_acl_rule_ext_parse_flow_action() so the flower
-action list resolves to its first terminal action. Before, every action was
-accumulated into the ACL verdict. After a redirect only a drop is allowed.
-Any other action after a redirect falls back to a CPU trap, or is rejected
-when skip_sw is set.
-
-> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-> index 90b017a11a1b1..5c82719e461f3 100644
-> --- a/drivers/net/dsa/motorcomm/tc.c
-> +++ b/drivers/net/dsa/motorcomm/tc.c
-> @@ -1030,55 +1030,56 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
-
-[ ... ]
-
->  	memset(action, 0, 3 * sizeof(*action));
-> -	flow_action_for_each(i, act, flow_action)
-> +	flow_action_for_each(i, act, flow_action) {
-> +		/* Only a drop can follow a redirect: a drop is an empty
-> +		 * destination set, so the software verdict is the same
-> +		 * whichever control the redirect carries. A second redirect
-> +		 * would only extend it if software continued past the first
-> +		 * one, and the flow action entry carries no mirred control
-> +		 * verdict to tell that.
-> +		 */
-> +		if (redir && act->id != FLOW_ACTION_DROP) {
-> +			reason = "Action after redirect";
-> +			goto fallback;
-> +		}
-> +
->  		switch (act->id) {
->  		case FLOW_ACTION_ACCEPT:
-> +			action[2] |= YT921X_ACL_ACTc_FWD_EN |
-> +				     YT921X_ACL_ACTc_FWD_FWD;
-> +			terminal = true;
-> +			break;
->  		case FLOW_ACTION_DROP:
-> -		case FLOW_ACTION_REDIRECT:
-> -			if (redir_act != NUM_FLOW_ACTIONS &&
-> -			    redir_act != act->id) {
-> -				reason = "Different redirect actions";
-> +			action[2] |= YT921X_ACL_ACTc_FWD_EN |
-> +				     YT921X_ACL_ACTc_FWD_REDIR;
-> +			terminal = true;
-> +			break;
-
-[Severity: Medium]
-Is the software verdict really the same "whichever control the redirect
-carries"? The commit message makes the same claim:
-
-  Only a drop can follow a redirect: a drop is an empty
-  destination set, so the software verdict is the same
-  whichever control the redirect carries
-
-This seems to hold for pipe, and for the controls that
-tcf_mirred_can_reinsert() accepts (shot, stolen, queued, trap). For pass,
-continue, reclassify, goto chain and jump, software looks different.
-
-In net/sched/act_mirred.c:tcf_mirred_to_dev():
-
-	dont_clone = skb_at_tc_ingress(skb) && is_redirect &&
-		tcf_mirred_can_reinsert(retval);
-	if (!dont_clone) {
-		skb_to_send = skb_clone(skb, GFP_ATOMIC);
-
-With these controls a clone is redirected and the control is returned
-unchanged. Then net/sched/act_api.c:tcf_action_exec() ends the action list:
-
-	if (ret != TC_ACT_PIPE)
-		break;
-
-So the trailing drop never runs in software. A jump control skips over it.
-
-Take a rule like this:
-
-  flower ... action mirred egress redirect dev swp1 pass action drop
-
-Software sends a copy to swp1, and the original frame continues into the
-stack or on to the next filter. In hardware, the FLOW_ACTION_DROP case keeps
-FWD_REDIR together with the DPORTn bit set by the redirect. The rule is
-therefore programmed as a pure redirect, and the original frame is only
-forwarded to swp1.
-
-Before this patch, this action list hit the "Different redirect actions"
-fallback. It was trapped to the CPU, or rejected under skip_sw. Does the
-patch now offload a combination where hardware and software behave
-differently?
-
-A standalone redirect with one of these controls already had a similar
-mismatch, as the second half of the comment says. But
-tcf_mirred_offload_act_setup() only fills in entry->id =
-FLOW_ACTION_REDIRECT and the device, not the mirred control. That means the
-driver cannot check the equivalence this gate relies on.
-
-Should a drop after a redirect go through the fallback path as well? And
-could the comment and the commit message be narrowed to the controls where
-the equivalence actually holds?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106073806.112122-1-mmyangfl%40gmail.com
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
