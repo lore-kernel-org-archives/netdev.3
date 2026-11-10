@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794341327;
-	b=BigorPkiOnhXR6MTXa3DMM3hcgUpjp4SVWSAD5K2svPqVsCaR2JcmN0C7ZaMO6qRO0ut
-	 l9Q7/VfrohoRe0hG13LBIq+8z0PQdK1WNUPC+3klXZu/OSIRcA4FfOD3veRDbC38JKeFe
-	 x3zCWM321hnj+WfG7SFmr3No73HaFOg7a4UMkHzkGMrtvnYhGIDCAtnIYNX0Ur1v5pxkd
-	 R0UHl59Lz4h2JDkmlTlk8+490lJBqcXWIqyUx3pevHfoc29b7JpaVkLQ/1y5Pa0CPCK72
-	 n5XltNSLhiAp2Ui1rPTH99gwciZO9maUMiJnAoWFRabsNM7oP8ANEGblDt/Qp1ADIlg==
+	t=1794341460;
+	b=W5ybWM0hsW8i4Kz0M61T34qgP/9AC/OpsMmZtPl+eq/M08yUlYV2yoeUqEZg5z3AKBgx
+	 3ErOyUlVRmKXaeAdkHCsquEPrPb4OYphie75RAixCKreHlvC5xYGmySqpnYLmoxUiL0T2
+	 s0N7TOOTe54bDtTe5OexLwkwQb4OjpgIbLT2NAbHqDs7A+zINjs69EbVsoFa68tpnNLvP
+	 MVhPXTs0haGpk6LkAz/BmF54X938PThYib1YTuq6EYD9+Rvc6kRTtz/7EZZdu2/qY1YbW
+	 zA9N6iN1qOhN36D3V75976g+INpm2h6eMdbtW79Jwn6lkdbNEEGEbZAIAkDvEDJszBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794341327;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794341460;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=RLqXByamkZhJZ65JXbFgm2scLbRUIk2K/YyB3fLw6kI=;
-	b=JWsqf39VoNxCGl8FUlsM+Oi9sUHupfBFf/Qq1zf2sq2Y5rPF2Oefp33+vCnGDTLeqWxO
-	 +CzTL2bh5+hcrS8qy2fxozjtDLORNmTremer84j6A7BUDfpRS4/rrPcr5fqKLox0egCwy
-	 grd8m3iEB5sAiVNrKAjBGVWzN73U6sUZvpc7zwZLLRYOY4ZU7O3ikO0GdqyE8Nrc0bukD
-	 Mj8oL/6r1/cCVYiZfe9BA67mzcJS8bs8zaN7DdxNQBgXL4+TXIU6yAZFLnYL4Qb/LXsBE
-	 Q+/PGL4X51iTyR3z3aPt95gVWcNkebKYpVt1FQucBe+Y5rkJMgH76Hcx88oqb/PCI+g==
+	bh=mxCY5jULcq806FBpmKvlAyB+AipmXS+vIOXKWN7ePTI=;
+	b=b3DYGckRDH8lRxWuZPdFJjzZm/++X7EP5KYWwd167FbblTQTuwANsC8frI8qi6pFwGTU
+	 Lti9ATxhnvcxZPkXAk0GLfNMiaoYyxM/ATPiJtHqezmfNndv+HBQPCqHmYmva+KQ0EGlE
+	 ob1Ak01ETFUZHOGLCU7oJHHa0TvP1h1Nz9v1DfrsbkejtcW+JDDENoRsaZLIBjMCoImx1
+	 fVEav9nHstEy/fEkCnhfQn39tEWOlVZs7iAHyNnRF3nAEeTYjViHPjY73gYAxSUqg6UUN
+	 L5xOe6NiBE0VCdGGwIS5DCeO56YRnk4uVV3EzIXjkMZKpjIYO1B7IWybf/3ksxOGQ7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Inoqt/Y6";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cX9M1DZ2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D8606A320;
-	Tue, 10 Nov 2026 20:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092DF606A31C;
+	Tue, 10 Nov 2026 20:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Inoqt/Y6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCB41F008A1;
-	Tue, 10 Nov 2026 20:08:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cX9M1DZ2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722CD1F0089F;
+	Tue, 10 Nov 2026 20:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794341327;
-	bh=RLqXByamkZhJZ65JXbFgm2scLbRUIk2K/YyB3fLw6kI=;
+	s=k20260515; t=1794341459;
+	bh=mxCY5jULcq806FBpmKvlAyB+AipmXS+vIOXKWN7ePTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Inoqt/Y6Ud+R20HCM4wfUapvecOwDM/U2H6VjptTnjQj/O01GUkxAbinHYO7ck9+J
-	 56LHS4ItjN8gCoeTjrqSR8XmBgjzqT+Wu/dg67DHPve+WwC+PE2qhNnmon/K3zA6fY
-	 B61xzmUB+fzuvC/jaiZDry5jVAkHhSw8wrNxt2Ri9ptBZ2+mxMv5b42eOISOq34qco
-	 h6O0AizjOlJaFQzuqG2Maq4iBZMa0RAUfjN87ifHlSr4P/q2xf7nRjBFoT2hwHVuB/
-	 1DFAibUWAZcHqLvCQrXzLKZLh8Xi4BFLU9swlvdccGNmJX1kXcvJFRsxBTWCSczutj
-	 k8qQQynPgW0+w==
+	b=cX9M1DZ2BGcFZLBnamilKY4u+2efJAWrbvTX/hT6MurtCtEXejtOAkDI+QDTAxp5v
+	 wfC4vnzSUtCcOITfo+S2dlIwRyOdoUgJLNLlXPr8ydwFuT2slNUdD3A3MHBVOLwRZF
+	 ZhtWbAVZecXgrxErI6EBFpSt9dtgS4WWlViighh7PK0If+F083++h4eh+eLn9Loh5c
+	 w45qwmZKjdrxg4f4IxbNkOtm/o46k++xFIdmRNBZwNGxgUaVH9N0ecTXKEHy04dYQY
+	 DA1ZxgYxk+9wwKGCGYTdce+mc6MV7PbrUKGa5G69eSXSbaxYefR7jjmlVYqIOaH8+7
+	 HzP46Th6KiUyA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: muhammad.nazim.amirul.nazle.asmade@altera.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -46,24 +46,20 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	maxime.chevallier@bootlin.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	edumazet@google.com,
+	edumazet@kernel.org,
 	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	dinguyen@kernel.org,
 	mcoquelin.stm32@gmail.com,
 	alexandre.torgue@foss.st.com,
-	devicetree@vger.kernel.org,
+	rohan.g.thomas@altera.com,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA converter
-Date: Tue, 10 Nov 2026 12:08:44 -0800
-Message-ID: <20261110200844.2190972-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v3 1/2] net: stmmac: fpe: Enforce pmac_enabled in set_mm and keep it on at init
+Date: Tue, 10 Nov 2026 12:10:58 -0800
+Message-ID: <20261110201058.2193402-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261104040320.18077-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References: <20261104040320.18077-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
+In-Reply-To: <20261104081234.10153-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+References: <20261104081234.10153-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,139 +74,141 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA converter
+net: stmmac: fpe: Enforce pmac_enabled in set_mm and keep it on at init
 
-This adds the "altr,socfpga-stmmac-agilex5-tsn" compatible for Agilex5
-boards where an FPGA GMII-to-RGMII converter between the MAC and the PHY
-supplies the RGMII delays. socfpga_get_plat_phymode() now returns a new
-mac_interface field. The new setup_plat_dat callback forces that field
-to GMII and rewrites any RGMII phy_interface to plain RGMII.
+This patch sets the FPE pMAC state to enabled in stmmac_fpe_init() when
+FPE is supported. It also makes stmmac_set_mm() reject requests that try
+to disable the pMAC, and adds an fpesel capability check to
+stmmac_set_mm().
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> index 6d4bc1fe8f751..131d2a98c863f 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-
-[ ... ]
-
->  static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
->  {
-> -	return dwmac->plat_dat->phy_interface;
-> +	return dwmac->mac_interface;
->  }
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index c616a1c95e5dd..0dfb312d72f15 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> @@ -1066,6 +1066,13 @@ static int stmmac_set_mm(struct net_device *ndev, struct ethtool_mm_cfg *cfg,
+>  	if (err)
+>  		return err;
+>  
+> +	if (!priv->dma_cap.fpesel)
+> +		return -EOPNOTSUPP;
+> +
 
 [Severity: Low]
-This isn't a bug, but socfpga_gen5_set_phy_mode() and
-socfpga_gen10_set_phy_mode() both still have this comment:
 
-	/* Overwrite val to GMII if splitter core is enabled. The phymode here
-	 * is the actual phy mode on phy hardware, but phy interface from
-	 * EMAC core is GMII.
-	 */
+The commit message says:
 
-After this change, phymode comes from dwmac->mac_interface, which is the
-MAC-side mode. For the agilex5-tsn compatible it is GMII while the PHY
-runs RGMII, so the comment now says the opposite of what phymode holds.
+  Also add a missing fpesel capability check in stmmac_set_mm() to return
+  -EOPNOTSUPP early on hardware without FPE support.
 
-Should the comment be updated to match the new meaning? The same applies
-to the name socfpga_get_plat_phymode().
+Can this check ever be reached? The only caller of ->set_mm() is
+ethnl_set_mm(). It calls ->get_mm() first and returns if that fails:
 
-[ ... ]
+net/ethtool/mm.c:ethnl_set_mm() {
+    ...
+	ret = dev->ethtool_ops->get_mm(dev, &state);
+	if (ret)
+		return ret;
+    ...
+	ret = dev->ethtool_ops->set_mm(dev, &cfg, extack);
+    ...
+}
 
-> @@ -673,10 +676,28 @@ static const struct socfpga_dwmac_ops socfpga_agilex5_ops = {
->  	.setup_plat_dat = socfpga_agilex5_setup_plat_dat,
->  };
->  
-> +static void socfpga_agilex5_tsn_gmac_setup_plat_dat(struct socfpga_dwmac *dwmac)
-> +{
-> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
-> +
-> +	socfpga_agilex5_setup_plat_dat(dwmac);
-> +
-> +	/* FPGA converter supplies RGMII delays; MAC uses GMII, PHY gets plain RGMII */
-> +	dwmac->mac_interface = PHY_INTERFACE_MODE_GMII;
+stmmac_get_mm() already rejects this case with a stricter test:
 
-[Severity: Medium]
-mac_interface is forced to GMII for every phy-mode. phy_interface is only
-rewritten for RGMII variants. What happens with phy-mode "sgmii" or
-"1000base-x"? The altr,socfpga-stmmac.yaml phy-mode enum allows both for
-this compatible.
+drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c:stmmac_get_mm() {
+    ...
+	if (!stmmac_fpe_supported(priv))
+		return -EOPNOTSUPP;
+    ...
+}
 
-In that case socfpga_get_plat_phymode() returns GMII.
-socfpga_dwmac_fix_mac_speed() then disables the SGMII adapter on every
-link-up and never turns it back on:
+stmmac_fpe_supported() checks fpesel && fpe_cfg.reg &&
+fpe_map_preemption_class. So stmmac_set_mm() is never called when fpesel
+is clear.
 
-	if (sgmii_adapter_base)
-		socfpga_sgmii_config(dwmac, false);
-	...
-	if ((phymode == PHY_INTERFACE_MODE_SGMII ||
-	     phymode == PHY_INTERFACE_MODE_1000BASEX) && sgmii_adapter_base)
-		socfpga_sgmii_config(dwmac, true);
+The new test is also weaker than stmmac_fpe_supported(), which this same
+patch uses in stmmac_fpe_init(). Suppose fpesel is set but the driver has
+no FPE register map. Even if this check could run, it would not stop
+stmmac_fpe_set_add_frag_size() from dereferencing a NULL fpe_cfg.reg.
 
-socfpga_gen10_set_phy_mode() also skips its final enable:
+Should this check be dropped or changed to use stmmac_fpe_supported(),
+with the commit message updated to match?
 
-	if (phymode == PHY_INTERFACE_MODE_SGMII)
-		socfpga_sgmii_config(dwmac, true);
-
-Meanwhile phylink and the Lynx PCS keep using the DT mode. The
-GMII-to-SGMII adapter would stay disabled while an SGMII or 1000base-x
-link comes up, and nothing reports the problem.
-
-Should the GMII override also be guarded by phy_interface_mode_is_rgmii()?
-The other option would be to reject non-RGMII modes for this compatible.
-
-> +	if (phy_interface_mode_is_rgmii(plat_dat->phy_interface))
-> +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
+> +	/* DWMAC always have preemptible MAC enabled */
+> +	if (!cfg->pmac_enabled)
+> +		return -EINVAL;
 
 [Severity: Medium]
-If the converter always adds both the TX and RX delays, rgmii-id seems to
-be the only phy-mode that describes the board consistently. Is that
-right?
 
-"rgmii", "rgmii-txid" and "rgmii-rxid" each describe the PCB as providing
-the delay in at least one direction. The converter would then add its
-delay on top of that. This code rewrites all of them to plain RGMII
-without a warning, so the link could fail with no diagnostic.
+Does this change the ethtool MM uAPI behaviour in a way that breaks
+existing users?
 
-The stmmac core already handles MACs with fixed internal delays. With
-plat_dat->has_internal_tx_delay and has_internal_rx_delay set (as
-dwmac-ultrarisc.c does), stmmac_pltfr_probe() runs:
+Before this patch, pmac-enabled off had a real effect on stmmac.
+ethtool_mmsv_event_handle() does not send Respond mPackets while the pMAC
+is disabled:
 
-	if (plat->has_internal_tx_delay || plat->has_internal_rx_delay) {
-		plat->phy_interface =
-			phy_fix_phy_mode_for_mac_delays(plat->phy_interface,
-							plat->has_internal_tx_delay,
-							plat->has_internal_rx_delay);
-		if (plat->phy_interface == PHY_INTERFACE_MODE_NA)
-			return dev_err_probe(&pdev->dev, -EINVAL,
-					     "unsupported phy interface mode\n");
+net/ethtool/mm.c:ethtool_mmsv_event_handle() {
+    ...
+	if (!mmsv->pmac_enabled)
+		goto unlock;
+    ...
+}
+
+stmmac_fpe_configure_pmac(false) also masks the FPE interrupt. Now
+stmmac_fpe_init() sets pmac_enabled to true and nothing can clear it. On
+every link-up the FPE IRQ is unmasked, and the device answers any link
+partner's Verify mPacket.
+
+The rejection also happens before ethtool_mmsv_set_mm() runs, so the
+whole request is dropped. ethnl_set_mm() only rejects tx_enabled combined
+with !pmac_enabled, so a request like this one reaches stmmac_set_mm():
+
+  ethtool --set-mm $dev pmac-enabled off tx-enabled off verify-enabled off
+
+It gets -EINVAL, and tx_enabled and verify_enabled stay unchanged.
+
+h1_destroy() and h2_destroy() in
+tools/testing/selftests/drivers/net/hw/ethtool_mm.sh use exactly this
+request. The lldp test has lldpad enable MM TX, and afterwards the cleanup
+cannot clear tx-enabled or verify-enabled on stmmac.
+
+manual_failed_verification() in the same script relies on this command to
+make the peer's verification fail:
+
+  ethtool --set-mm $rx pmac-enabled off
+
+The script does not check its exit code, so the rx side keeps
+pmac_enabled set. If the DWMAC still sends a Respond mPacket in that
+state, verification succeeds and check_fail fires. Whether the hardware
+does that could not be confirmed from the code.
+
+The other set_mm implementations in drivers/net (enetc, ocelot,
+am65-cpsw) accept pmac_enabled=false. Would it be better to keep
+accepting it here as well?
+
+[Severity: Low]
+
+This isn't a bug, but stmmac_set_mm() is passed an extack and this new
+-EINVAL leaves it empty. The other rejections on the ETHTOOL_MSG_MM_SET
+path all set a message. For example, in ethnl_set_mm():
+
+	if (cfg.tx_enabled && !cfg.pmac_enabled) {
+		NL_SET_ERR_MSG(extack, "TX enabled requires pMAC enabled");
+		return -EINVAL;
 	}
 
-When both delays are set, phy_fix_phy_mode_for_mac_delays() maps rgmii-id
-to rgmii and returns PHY_INTERFACE_MODE_NA for the other three modes:
+ethtool_mm_frag_size_min_to_add(), called a few lines earlier in
+stmmac_set_mm(), fills in extack too.
 
-	if (mac_txid && mac_rxid) {
-		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-			return PHY_INTERFACE_MODE_RGMII;
-		return PHY_INTERFACE_MODE_NA;
-	}
+Userspace gets a plain "Invalid argument" for a bool that the uAPI
+documents as settable. Could something like
+NL_SET_ERR_MSG_MOD(extack, "pMAC cannot be disabled on DWMAC") be added
+here?
 
-Documentation/devicetree/bindings/net/ethernet-controller.yaml says this
-about MACs with hard coded delays:
-
-  It does however mean that a 'phy-mode' of 'rgmii' is now invalid, it
-  cannot be supported, [...] Thus the MAC should report a fatal error for
-  any modes which cannot be supported.
-
-Could has_internal_tx_delay and has_internal_rx_delay replace the
-open-coded rewrite here? Then inconsistent phy-modes would be rejected at
-probe time.
-
-> +}
 > +
-> +static const struct socfpga_dwmac_ops socfpga_agilex5_tsn_gmac_ops = {
-> +	.set_phy_mode = socfpga_gen10_set_phy_mode,
-> +	.setup_plat_dat = socfpga_agilex5_tsn_gmac_setup_plat_dat,
-> +};
+>  	stmmac_fpe_set_add_frag_size(priv, frag_size);
+>  	ethtool_mmsv_set_mm(&priv->fpe_cfg.mmsv, cfg);
 
 [ ... ]
+-- 
+pw-bot: cr
