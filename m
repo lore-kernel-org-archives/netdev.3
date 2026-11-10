@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279294;
-	b=BTmq0z8r6i3MLzdaAi6iXVCll5JxtfIEwnN7DjEDE7+5ahdugrKRhrVqMni4JgOzaBfc
-	 JWRg1+ZLac+kDkxULoW43ToQPcuuqCLr1C4R+c30M59Jd4dpKGu5D5aVA/m7ryxGc7ocN
-	 VbgggBDGU15lo0n/ljhNNfjwavZ/Szi7AveOGR2DyGwX4sbO+K36iNMwk3hEJhyWcwOYG
-	 zrZY4D9cCUBx3E/0aU16Y8N4GyOGkHlzj1PPKzXSnogotqLZnrPdostEue/K0B638QzJh
-	 PmVOE5a62YYDa5t6OmfknJbZaDaplOe/XIPNP9H8/jSvE8L8MVNnVNsI/z/dcLJ5yTQ==
+	t=1794279288;
+	b=h6XD5jth2R2STagdU+D6p0QUkDsFLMaTrcI7fbaXJ1k3H6f0/GZxKCWqgY7ln4+ypj/R
+	 CvdZDvuDJebWf6qVFTFRMJ8mtftr3bbk4R9jPCH7/MV1ABiRGBW2BbqkhOvtUk+BTnwCh
+	 3viZfj4SBIG8kpOdJJnFj/c+wz6bowFaUypR65TVm2t4USUk+ugGD8Cp6/WOy9KHPCgv2
+	 OTa7BHG7Jeb6O6lZKLewLpb6toijbiudvFzqcNDT6ClFCBgfSqW3HJsF40sWDhCVx0VIH
+	 EUytLi80WfVrjDF9YUek1oz8ix9XIffh//kiLP4tLNjuzLP7oURvAk3SMWA4dNMINMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279294;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279288;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=jv+vF3++GwgqpQ1PH4C9bCjUHyBWz4gvH4XJmA0knyY=;
-	b=jtik7AnCp0XIM334RuBUKQaFsv6ufRxWZdtCGhQvy4MH8dSTAIkrdqRstOnuDxmeeXpE
-	 E7rXrQMrW1a1SjszzsqT2hnol/cEf+oRupQcQBAH9vYvb6Yz/hkIUCbl8Moe/zuV0hVoi
-	 CUqBDBh6YT3BcYztZz1zLKOH7/TJIk63GnllOAPP6ySKHd7mCA5PrsBcj7oJ09kJdk4Dp
-	 WT9v2wESmIMmHpIG/9P1bJEVRbp8iPM3sAYBQiVRvNHAdN6rUfXMusPXgNzcU0e29NsCF
-	 Q+dcK4B8HSz/0avQRdM8GMNUrgENR4xLruR5qNMPYqBCrzi3ClXtBQw7lIQoVZreBkw==
+	bh=8yxDfyv18qDvNg1W6pwArXTK5hmwdgTQr84WXyNyi6o=;
+	b=Jfp6ew4ycPTGSL3mYfVTw0vLxA1zzdNtuCtRrcjJpu21iISFRdfI9lMbt7IU+yMnm1AX
+	 T8DLNG6Pn7HVoa6JEHCO49NyP+Yy3NtePZB1hmYZlaj8rHj7dLYDHP4JAB4qq6S+unGwO
+	 rNiu4DToakr2PlQ9gxrPJldM/1mI6VP85o6g/CxZ2z6MaBGFBSChVPcGJofQwW9xChhFF
+	 r5NrmifrOXlrtXjKdvTjyygf1FOuqq/j5Wpvz8N3XCiLmrpiwODkX+8FByqKtGTDHf7jN
+	 u3p4ZmeigBLjk1jFyDZy/XP6ZMiMQE9SEIrVTgZjMoLGvzN9BnY8DjNDRyNAhRlJlBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gbKJ2Csy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2DOo5hY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545DD606A337;
-	Tue, 10 Nov 2026 02:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D2F60A3801;
+	Tue, 10 Nov 2026 02:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gbKJ2Csy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C51D1F008A2;
-	Tue, 10 Nov 2026 02:54:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2DOo5hY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBD51F008AB;
+	Tue, 10 Nov 2026 02:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279294;
-	bh=jv+vF3++GwgqpQ1PH4C9bCjUHyBWz4gvH4XJmA0knyY=;
+	s=k20260515; t=1794279288;
+	bh=8yxDfyv18qDvNg1W6pwArXTK5hmwdgTQr84WXyNyi6o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gbKJ2Csy1FIT4dmShDTHmvbS1oaTqSWKenfibZkUYiNnzKxe/NCQagYP9mOWv5s6V
-	 1DapM4PRl2C6QLbdqKa959wVFIaBJUmaS0gn+ucag68AiAkzhS3ISSk6HgroS5UC6W
-	 ND6aM3rjLSPlitySwOq0q7M+vVlwrSCPVPqKzb5SWwTTyQ4zb+GiiI1Nwx8enXlYOr
-	 SIpnPznbP/7ios88peVrsf5AbgFpu/WMQZLg8D5N8kOV262ZqWIayxcrem+7GB/rO0
-	 gbt1959LzVM66lXb+Q3cS9BaP7y+WTpB9BtYCvHirDnm2xpKgu8ZURpqggF6mQKp8b
-	 UQ8a6LBrirM2w==
+	b=K2DOo5hY+O1lPtmaIIvnHCO3v5Evbxi1n+jX2+8XWLuJ2rLaoYsqSzSxndyBYxZdF
+	 jY62uoymR6hL4Iw6BZdrNqbK85TBQIg/KOYztQUjSsTatZTS3ZjpSdG8d/3LbsgARU
+	 7Y0PGas8JFvSbbcMzLoS8Gt62DVkYcPKFOYxRA8Un9q8vAUlhAXHtpOCinqF4mXLW1
+	 o3buZGhRmEdtgGiH+oWCw/hfkdGaq2W2dDJbiXksfm1ncbrMfldksWEhJmmZni3l8S
+	 xuJc2sJE6Pf3xIyitSUCS7NoMcaf5n68QznmAU3V91enfx45/lNeuc7dPc6a0mNpmA
+	 CFMUwSbbd78AQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20FCA391AFCB;
-	Tue, 10 Nov 2026 02:54:54 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 21110391AFCB;
+	Tue, 10 Nov 2026 02:54:48 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: bridge: use one headroom snapshot for ND replies
+Subject: Re: [PATCH] [v2] net: octeontx2: fix building without DEBUGFS
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427929267.3612825.9041747036599625059.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:54:52 +0000
-References: <20261103075439.43644-1-juny24602@gmail.com>
-In-Reply-To: <20261103075439.43644-1-juny24602@gmail.com>
-To: Jun Yang <juny24602@gmail.com>
-Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- roopa@cumulusnetworks.com, bridge@lists.linux.dev, netdev@vger.kernel.org,
- junvyyang@tencent.com, stable@kernel.org, corvus@tencent.com
+ <179427928667.3612825.16491551761620638970.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:54:46 +0000
+References: <20261105161945.1658464-1-arnd@kernel.org>
+In-Reply-To: <20261105161945.1658464-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, arnd@arndb.de,
+ sumang@marvell.com, hkelam@marvell.com, nshettyj@marvell.com,
+ kirankumark@marvell.com, michael.bommarito@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  3 Nov 2026 15:54:37 +0800 you wrote:
-> From: Jun Yang <junvyyang@tencent.com>
+On Thu,  5 Nov 2026 17:19:13 +0100 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> br_nd_send() calls LL_RESERVED_SPACE(dev) once to size the reply skb and
-> again to reserve its headroom. When a port requiring more headroom is
-> added to the bridge, br_add_if() can increase dev->needed_headroom
-> between the two calls. The reserved headroom can then exceed the space
-> accounted for by alloc_skb().
+> This error came up on my randconfig tests this week:
+> 
+> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c: In function 'npc_cn20k_debugfs_init':
+> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c:392:55: error: 'struct rvu' has no member named 'rvu_dbg'; did you mean 'rvu_dl'?
+>   392 |         debugfs_create_file("mcam_layout", 0444, rvu->rvu_dbg.npc,
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: bridge: use one headroom snapshot for ND replies
-    https://git.kernel.org/netdev/net/c/e573df093ef8
+  - [v2] net: octeontx2: fix building without DEBUGFS
+    https://git.kernel.org/netdev/net/c/2007f7e37142
 
 You are awesome, thank you!
 -- 
