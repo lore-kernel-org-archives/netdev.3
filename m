@@ -1,95 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794289978;
-	b=OQY5D7Wtro99ZicvPSdx23UL8E5gVejf+D6jpKNQXRJjHBR5lDU1cOWzAxSSzE3vVyN3
-	 D+SeyEovB9Cdc5XmDZ0CwY3YdKmaDeay8sg9tMaFPOZ+X6aJEp9vH/fHFmijdplQUQ2PS
-	 3Zq3nrSMXPQh6nB9xyWCfB8I4VAzJV2KtOrkB6RloFH0Ln5AVakRiSRFCNqEf2PiBQIS7
-	 5/pmV4djJz+RTcf7XQH3ucux+V/9RkOkC6j9rH2pYeoUxOEw6QtV7htb/JQQXeXZBFqV4
-	 YX5/t6W+rn8Q6IwaDf0JkyfBwfNNvg/nJ13z7+z/cr+2fgUMA0v/T5UGMXtWYy5LHhA==
+	t=1794290000;
+	b=KKxBg+BwNx0M0ohQrO6dQb8xcsiPEy+WnGx1P58xzWrbS9rTpCv0IpWMiI7Xb/qtBl/O
+	 aex8ySMgJBfoKRwzco4xgxNaCRhnfV7x2tVVNCOOLzpw9PPoyeI/mq5RUB4DkShpgTwqq
+	 2wXIQQdWybTHl5NJA/HKnJtzMeV3EELcZHGAMTjDDM0smdG4JPaqDkS0ak7NCSZjktqAK
+	 petx8+iwx5eSIyaHdvBwa3G4KUrddmtJFEXK1PR7W7JUQh6GN8Ya88XDIj87ezvpm3Fb+
+	 Oz5zaFoyJTfCud03FYLS+1es11nFONjW0w+Pc2HDiic1YEi4M7nqpOyyHAkH6xMB0yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794289978;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
-	b=JhUo8JbE6hxHHpyXiC8eOCznzCpWUDPeDkrxlcLoIy3R7PQEmYEVTBq1d49tbjPtgCaH
-	 8SJAybGKCaKNDHbTXfS5GyRZT6KBrGFSYdsieq6qkWVPnarLn3dYj0WOkGkzi7PIEiINH
-	 5EQCyIMIySLTyOON8K/prI6n/EXPvdrQZ3XLPBWLx/+l/6l4CS+InBjL4d0MAQLmHyTOL
-	 vn9iZifnna1ZkVR0dVNPw8hnlVxCG5qIEFgwJ2R1xaHU73QudbclWzyac0qkBunlFsdNj
-	 f3hKYlstSfvmHMcyyb/sO1HqKR1QOJrs5y7n4NKrQH4g4CA84uKE4Bq8Eh2IDi5fMtg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794290000;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z89xSOnIYbQe/BnbwEDddihQE8DlZZ6KBDFpfIcDInE=;
+	b=E7UQK56IF1CRdYnM2A0egTNzONHiwrTEYb/J6XQh6yb2v1c21FpFqQOCJDCk2+8v3r+a
+	 FvKz52ZgaUti7bWWjlPDdPb+XgUGk4AK76Pb0HHzpWloyoy9O23yWSbA4IZ9FH3HoM/I9
+	 ozc+JlLeSySpIdK4OcjKMFzVrpM4CK19kR5OPA6rxvmFL+7hQiB0YQfi3Sc/6McOphzv9
+	 FEWjL6vDdjl66HfnMmkUE2oId1VlrDEtu7YNmgf7Gc6U2jSrUN/lWN8yr2JZk+tm5lYKB
+	 GSoRvT0VMQkdZp8rVJ9dewMn4elK2VtfmH05Qp9KyysnkbpKBv+RIadgnm53ZsMd57Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=openai.com;
-	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b="Op/3BlOO";
-	arc=none smtp.remote-ip=209.85.161.42
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lyQ9UJ+R;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288D606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:52:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6288D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70C2606A33D;
+	Tue, 10 Nov 2026 05:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Op/3BlOO
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-705cb6ceebaso1115891eaf.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 21:52:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1794289977; x=1794894777; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
-        b=Op/3BlOO5z1BVXx8CV6wx6CDJnKOg71o7r9Ke1h29kA1yqLRpjpZIXFPRnuO00WP8m
-         rO8XX15QY5OYnH8FbvQDa/mqNMu4E6+EeltmIYz6bzcs84SrLmoKdwtED7BEmR8/Csk3
-         Og3onNDQBSABbkmLIijS/epBsfnzk+3nMnRPg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794289977; x=1794894777;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
-        b=PgwwIvC8byvM8lUPCDj06Zbe+2mlUtIjyj65wGDhEVO09CkvFU7190waOWaOerTPIX
-         TtbmEV1fRTUwegGeJe4ur8SlWcOrd4vuC5Sujk4pNRAisg3h8aNErzhBL8RzYS5s0tZr
-         UeCD4gHhKugf1HAfZSUUHhaudQlzFT7+1Ad6v1aLGOsUK1Yu+abz+5CpbNMP9+Jrn1Wm
-         Vq17joTCvIVevNH4fW0EXATNjxHjVFmBl5UfxRy9oWM7ZQMVdQYpPsleMZGo2U1VL5AJ
-         s3eEAMXb+qmcQq3WElug8sUpXLgVBZUcCQ0AaiKU9CK0D2aDa+UFaOO0VRtOXEa5qFKc
-         oU4A==
-X-Forwarded-Encrypted: i=1; AL+hErHDcPsjdvp1QWY2ZdoCvf1+Nxt+tpRh/CmaR73RhwUxqM2+dAyv9J5rFCG0xIzUu+i5VfzaB3c=@vger.kernel.org
-X-Gm-Message-State: APuU4Z85MzngYiQTO4HcxVT5iiYg58I9ULk7UD1amKkQKEeNCxffsOck
-	mWmD3HwTgJ9sQ62nD4CnNvbRIT9OQF0tizEHgC6LlfVMzRmYtlZvCjtakZG4rfVQQxc=
-X-Gm-Gg: AYBFou1MMPp+tc5kIJrz65dhnQmATE83ArqEaVA2yl6DmhriqSS64vD3h/ElaKmtsX/
-	M2J4A7R6xJtyQjazyOYiFJEvYnTi5p0O2SSfp9M8FplhVvCc8T7zbF/1wIGpzjmCR31GqvK4T3k
-	Cw4LY0FF+QykAZvstkSvUXT/MZGShclWyimMJYxFhMsUH7VuFpofPKbfqBMCwMBYsxLSHpdGpgI
-	x605ttLHGFk4+DK5SDn4S8uwYJNFdrb7fo8NjGujGxs8waViB2/moUDRO5qXQS7muH+FQP4MWeZ
-	FtvqIR4Spk4N5rjURzzNZhQeZmJBNCeGiQmxulhRnlZ614hptsZFzHtRXjgvmrQXl1ktJfoA9ZC
-	Q1zCUsPjxhcWUNeuPaYizelsEYdVZh0UkW94gLC/ACkc8f6mg4JGS5iGy5AVaGY06ZCRpG2NX0B
-	hKOfeqxIqn5pt6uKPUdW5rJS07HPkFOVIvKKuGNOLBDzILTPsAIz86XK8Y4McogQXirrSGwOoJN
-	cOuyjMOGnfA9E3uuSdD0OrhedIH2/Q0I93D8C2H3rFrODB5ba+h8GhrK+QOhcsX+lFzz+5ZdLeX
-	XBztRj8LOokvPEzT+vP2U3OdSvR7OuOW58OgCBfpMoys1dR2e7wOChR+7q5LH5431OAFqIMtq7p
-	f5QcBu+0=
-X-Received: by 2002:a05:6820:a702:10b0:713:da3b:8fdc with SMTP id 006d021491bc7-718a55719d0mr535752eaf.32.1794289977231;
-        Mon, 09 Nov 2026 21:52:57 -0800 (PST)
-Received: from com-75606 ([199.47.143.1])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-718a40b8a9fsm1038285eaf.0.2026.11.09.21.52.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 21:52:57 -0800 (PST)
-Date: Mon, 9 Nov 2026 21:52:53 -0800
-From: Kyle Zeng <kylebot@openai.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: dev@openvswitch.org, netdev@vger.kernel.org, aconole@redhat.com,
-	echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: openvswitch: make transport checksums
- writable
-Message-ID: <avKxNfqPgY6roDJy@com-75606>
-References: <20261107040238.27606-1-kylebot@openai.com>
- <179411065171.994134.7555620955521911858@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lyQ9UJ+R
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FC11F008A1;
+	Tue, 10 Nov 2026 05:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794289999;
+	bh=Z89xSOnIYbQe/BnbwEDddihQE8DlZZ6KBDFpfIcDInE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lyQ9UJ+RnJfZYHoAs6Z6tYh7JPfwTK3ToP1JPzFXHVxRoGly7DdXrxmH8BkTgETl/
+	 Obeh0mUbgS/9wHFArLQHNJbDUBgCKXQSlvTaWY79Ji4XmGotyU05XuFkzwhC4WBCzj
+	 +9+UuLPufHMh9G0g5ohqhboSCWLSpUGD7a+jna9Fs/VkP+pzpv5mAlQUTLJJFd4I+q
+	 e8dDiUk75aoT2UJ9hFCSJWvRtlwGTmKa8naEaX8es02v59SLHeqnzJq9+z6rhjZ5wq
+	 k3Pv1LDYHv/WqQJZFk3Wj3opFF2+oCRjqFjIG4XzRUq5ucUrD7lUfqbJ+GtqEZNDS1
+	 wzIkaWWQN7pGw==
+Subject:
+ Re: [PATCH net-next 01/14] ipv4: annotate data-races around ip_rt_* sysctls
+From: netdev-bot+sashiko@kernel.org
+To: jiayuan.chen@linux.dev
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ razor@blackwall.org, paul@paul-moore.com, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, ja@ssi.bg, achender@kernel.org,
+ marcelo.leitner@gmail.com, lucien.xin@gmail.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, bridge@lists.linux.dev,
+ linux-security-module@vger.kernel.org, mptcp@lists.linux.dev,
+ lvs-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org
+Date: Tue, 10 Nov 2026 05:53:17 +0000
+Message-ID: <179428999715.994134.14310277652030711794@kernel.org>
+In-Reply-To: <20261109025425.328445-2-jiayuan.chen@linux.dev>
+References: <20261109025425.328445-2-jiayuan.chen@linux.dev>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,138 +74,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179411065171.994134.7555620955521911858@kernel.org>
 
-On Sun, Nov 08, 2026 at 04:04:11AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The patch handles every skb_ensure_writable() failure in
->   update_ip_l4_checksum() and update_ipv6_checksum()...
-> 
-> --
-> 
-> net: openvswitch: make transport checksums writable
-> 
-> This patch changes the IPv4 and IPv6 address rewrite helpers in Open
-> vSwitch. Each L4 checksum update now calls skb_ensure_writable() first,
-> instead of checking skb->len. A failure stays nonfatal, and packet
-> pointers are reloaded afterwards because the skb head may have moved.
-> 
-> Link: https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
-> 
-> > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> > index 12e339cbf7912..fe472e950cb1a 100644
-> > --- a/net/openvswitch/actions.c
-> > +++ b/net/openvswitch/actions.c
-> > @@ -319,20 +319,22 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
-> >  	return 0;
-> >  }
-> >  
-> > -static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
-> > -				  __be32 addr, __be32 new_addr)
-> > +static void update_ip_l4_checksum(struct sk_buff *skb, __be32 addr,
-> > +				  __be32 new_addr)
-> >  {
-> > -	int transport_len = skb->len - skb_transport_offset(skb);
-> > +	struct iphdr *nh = ip_hdr(skb);
-> >  
-> >  	if (nh->frag_off & htons(IP_OFFSET))
-> >  		return;
-> >  
-> >  	if (nh->protocol == IPPROTO_TCP) {
-> > -		if (likely(transport_len >= sizeof(struct tcphdr)))
-> > +		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-> > +					       sizeof(struct tcphdr))))
-> >  			inet_proto_csum_replace4(&tcp_hdr(skb)->check, skb,
-> >  						 addr, new_addr, true);
-> 
-> [Severity: Medium]
-> Is it intended that every skb_ensure_writable() failure here is handled
-> the same way as a truncated transport header?
-> 
-> skb_ensure_writable() can fail even when the full TCP header is in the
-> packet. pskb_may_pull()->__pskb_pull_tail() returns NULL in three cases:
-> pskb_expand_head(GFP_ATOMIC) fails, a frag_list skb_clone() fails, or the
-> frags are unreadable:
-> 
-> net/core/skbuff.c:__pskb_pull_tail() {
->     ...
-> 	if (!skb_frags_readable(skb))
-> 		return NULL;
-> 
-> 	if (eat > 0 || skb_cloned(skb)) {
-> 		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
-> 				     GFP_ATOMIC))
-> 			return NULL;
-> 	}
->     ...
-> }
-> 
-> pskb_expand_head(GFP_ATOMIC) can also fail later for a cloned skb.
-> 
-> In those cases the L4 checksum update is skipped. set_ip_addr() still
-> updates the IP header checksum and writes the new address:
-> 
-> 	update_ip_l4_checksum(skb, old_addr, new_addr);
-> 	addr = (__be32 *)(skb_network_header(skb) + addr_offset);
-> 	csum_replace4(&ip_hdr(skb)->check, old_addr, new_addr);
-> 	...
-> 	*addr = new_addr;
-> 
-> set_ipv6_addr() does the same with memcpy(addr, new_addr, ...). Then
-> set_ipv4() or set_ipv6() returns 0.
-> 
-> Would the packet then be forwarded with a rewritten pseudo-header and a
-> stale TCP/UDP/ICMPv6 checksum?
-> 
-> With CHECKSUM_NONE or CHECKSUM_COMPLETE the checksum on the wire would be
-> wrong. With CHECKSUM_PARTIAL (including GSO), the stale seed in th->check
-> or uh->check would give a wrong final checksum for every segment.
-> 
-> The commit message says the reproducer relies on "natural allocation
-> pressure". That is the same condition that would make this new
-> skb_ensure_writable() call fail.
-> 
-> Other writers in the same file treat this failure as fatal. For example,
-> set_tcp():
-> 
-> 	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
-> 				  sizeof(struct tcphdr));
-> 	if (unlikely(err))
-> 		return err;
-> 
-> set_udp() and set_sctp() do the same, so do_execute_actions() drops the
-> skb with OVS_DROP_ACTION_ERROR.
-> 
-> Could the update be skipped only when skb->len - skb_transport_offset(skb)
-> is smaller than the header size, with the skb_ensure_writable() error
-> returned in all other cases? That would need set_ip_addr() and
-> set_ipv6_addr() to return int.
-> 
-> The same pattern applies to the UDP branch here, and to the TCP, UDP and
-> ICMPv6 branches in update_ipv6_checksum().
-> 
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107040238.27606-1-kylebot%40openai.com
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-The full-header case is valid: if skb_ensure_writable() fails, the address rewrite can leave the transport checksum or CHECKSUM_PARTIAL seed stale.
+Low priority / nit picks for your consideration:
 
-But v2 intentionally keeps this failure nonfatal following the earlier review discussion:
-https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
+- [Low] In __ip_rt_update_pmtu() (net/ipv4/route.c), the patch adds two
+  separate READ_ONCE() loads of net->ipv4.ip_rt_min_pmtu.
 
-Best,
-Kyle
+--
+
+ipv4: annotate data-races around ip_rt_* sysctls
+
+This adds READ_ONCE() to the lockless readers of several ip_rt_* route
+sysctls in net/ipv4/route.c. Their sysctl handlers write them with
+WRITE_ONCE(). The change was prompted by a KCSAN report on
+net.ipv4.route.min_adv_mss in ipv4_default_advmss().
+
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index d0a5f6d77094c..83f49b2d4c36a 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+
+[ ... ]
+
+> @@ -1063,14 +1066,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+>  
+>  	rcu_read_lock();
+>  	net = dst_dev_net_rcu(dst);
+> -	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+> +	if (mtu < READ_ONCE(net->ipv4.ip_rt_min_pmtu)) {
+>  		lock = true;
+> -		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+> +		mtu = min(old_mtu, READ_ONCE(net->ipv4.ip_rt_min_pmtu));
+
+[Severity: Low]
+READ_ONCE() is volatile, so __ip_rt_update_pmtu() now always does two
+separate loads of ip_rt_min_pmtu. If net.ipv4.route.min_pmtu is written
+between them, can the check and the clamp see different values?
+
+For example, take old_mtu=1500 and an ICMP FRAG_NEEDED carrying mtu=300:
+
+  first load sees min_pmtu=552   -> lock = true
+  sysctl write sets min_pmtu=68  (accepted, extra1 is ip_min_valid_pmtu)
+  second load sees 68            -> mtu = min(1500, 68) = 68
+
+update_or_create_fnhe() would then store pmtu=68 with fnhe_mtu_locked set,
+and it stays that way for ip_rt_mtu_expires. The old setting would give
+552 locked, and the new setting would give 300 unlocked.
+
+Before this patch, the compiler could merge the two plain loads into one.
+Only a privileged writer can trigger this, because min_pmtu is not exported
+to netns owned by non-init user namespaces. Later patches in the series
+don't seem to change this.
+
+Could the value be read once into a local? This patch already does that
+in ip_error() with burst and cost.
+
+A smaller case of the same pattern affects ip_rt_mtu_expires in the same
+function. It is re-read for the freshness check:
+
+	    time_before(jiffies, READ_ONCE(dst->expires) -
+				 READ_ONCE(net->ipv4.ip_rt_mtu_expires) / 2))
+
+It is read again for each nexthop in the multipath loop, and once more for
+the single-path update_or_create_fnhe() call. Could nexthops updated in
+one call get different expiries?
+
+ip_rt_redirect_number is also read twice in ip_rt_send_redirect():
+
+	if (peer->n_redirects >= READ_ONCE(ip_rt_redirect_number)) {
+	...
+		    peer->n_redirects == READ_ONCE(ip_rt_redirect_number))
+
+The second read only gates the "ignores redirects" warning, so there the
+only effect is on logging. Should these be loaded into locals once as
+well?
+
+>  	}
+>  
+>  	if (rt->rt_pmtu == mtu && !lock &&
+
+[ ... ]
+
+-- 
+Sashiko AI review Â· https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109025425.328445-1-jiayuan.chen%40linux.dev
