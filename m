@@ -1,80 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794320132;
-	b=xUApseu1aQDwkBQMdUqtJkgRVJGOW/w0S11duKgXFCmTRdPT1kVp6AvudSY6iuaibaDa
-	 eAhSjwCdMwJw4D6HsswZeu133qPSzEq0KZUb4leowcKzQrAofxpXL4WaPpkLAQw0LTwaK
-	 3hmPkqeClRruI7yrPgbOIqanTMSaUNeVSl3cwbfhTIIFZn2Oun2YgLdDPrKQ9MI0jE5Sq
-	 XQEP9/IhBlGLZ2srJTeeso6HMVH6cWRDeHnOR3BU2vUBtY6LIWVXDE+LGIryFQJhjlRgJ
-	 A5B7yLVuqNI2xXCO8mIQ/ZHo4quiCx46Gzy/7zq3zxjdZEpV5JliePguiHpw5TPwxGA==
+	t=1794320151;
+	b=S2/zNtNsWy4XOhoMSriKoNCItuPQrPhcj3U0uvHzr1ABrB16aO3r4Q2XpWahzulwyLnZ
+	 rIrYdaQr3RDnxF3wITqPDtpz/27N+iAlz1R9hTRFTMVBxU/EwHz3StAuG47snAyjnPpR8
+	 mAnr90ObCdG7uDe2Z/0wyTRwIs+gMYkep9QbQ+Gn6zqJJTPfkWNUrNtRO9Iq91sssl5tU
+	 7w3T9SkHKl2ZGUASEWTGYH0+Uo46zL0upvsZk27AGoicQg4mJGlNjknY+r9x6vafFIii5
+	 Wmc3LUW4B1tQWJer1N84s4fyg+sPOfCL7I5jgB2QqxLa5lKlR8gRQbzfUKgjrYBewiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794320132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794320151;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=GxIvKSga2N66MM4PPKy/zEU2KBU8daUXspv11nGly7g=;
-	b=nK4J39nQDeKUUV8qfE0c3OuLKUCJNPWlE6krjyQXf9orwN/no5SAT+sYXwoGf3w9F6Uu
-	 R6SevGsA5tms7Fiy1Z+5vLE417e3+ZVXOAGDCTueJNwnVzy5Lu1cB5Am6sdWnpGDFgIZ1
-	 4ILoSvWsrKvxZKKcbGol4MfgjaMEoT2hC3/TcHVqJs/JkTodVJl1RLDcTY7puKR004nnI
-	 O5YQAcqTSZBejdx4cQ5X1jofRrkX6mLUyf7SlWn4+GtgNDW0ozOcURspiiPTiCRyx0mW2
-	 m6L4VZAOa7puAvl2VqUypCnvyI7cC4RAFyPEz37NcoxfXqk35n/Msy7i6U7Q9G0JA5Q==
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=lZqHmlleVetYIIy9vDzoqAk9PA0Ow+ICZj0DnzS32DQ=;
+	b=ibVKIINJEJm0YAtZUnOUcedb1x/Px5mbQh2PYLLJ28MPMJ9ng71oiGo0XQJDcfd8R6JY
+	 lK9sXRnnBsnLh8U2shvgBhZP/xZEOiiV965kjdh8WuZ2atM7b7BKWlws6kjFhmIy6m/NM
+	 52RRI13SmsB/g16CYOm40U91vBtB8chOWR3kZQpf7qzMnbzEIM77rKdEJ6kl0rL2anXTd
+	 rLTbTKUljdnFWGzgUsi+fxj2sfzRmvCcEChdxRn7enluTgd3pORp8IQlrPAQdwMeswRnX
+	 64k4KqmyOSfs1HvpqjGKqVswP0Jt3XWD9KFeItl+JjQapNG4ejEsErdJDP+djZkDSEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GxARJiRs;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Stzp2FBr;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F8606A321;
-	Tue, 10 Nov 2026 14:15:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C00F8606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703D7606A330
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:15:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 703D7606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GxARJiRs
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Stzp2FBr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794320132; x=1825856132;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TmN61axYmllJcj7cTJcrh3bkPcrCqfZguo5XcJlLpcc=;
-  b=GxARJiRs9Go5BP5+n0QGo1EpP9k7UO0SRaAkTUfYZTcZjuzbnM1/O9g1
-   awac/OkyZ1cZ7yuxuXy/4jJvjOZxlLFny2IXLM2O3PuiEOmUsHSVGggRl
-   XxoMlmlDTUbQifnQE+g8B8TWLmyiY48Gon6NV9P1nF9yi/pklffD8m33D
-   hBBHQBpilr+z0surG4yH3IVNY/N206VMxNnoec2w/QMK0MJvv9BWZQVy7
-   +nb5y0vFgv97n2Ga63lwt5bJZQ8E/kYADQ/svJQV46xwrxn3ZZpiBnoaV
-   N3zeOKwdcXkR+fe8AqcnyrRw9Qp5dfhDTLwvgE75EBV5fd7ZabjPEuQcZ
-   A==;
-X-CSE-ConnectionGUID: Ypqqyf9OQACwO9R7XijXTQ==
-X-CSE-MsgGUID: zYH9iI/AQ8CHo5BHXL+x/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3082567"
+  t=1794320150; x=1825856150;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=tdRukgDboIp14vsttrsU9nCBlzBL2kZ0KocE1CmqIk8=;
+  b=Stzp2FBrujD0J+xYr5Yk0ReVIvb97VaLiHxPecGOoP5bWPu7jssv7DHS
+   2iv+Ffpz1fsKV770WJpWvIdccjDox9ZqEWfgKyZT8EGDt0MGwoUlAnQA7
+   S5CSYSGwwV59ybaSZHqLjbKMUKcBMicmrGGH+wGuFbkFnps9QolZOb7V9
+   l5t/aF6vhBw49f5/ItUcnAEJe6SQ/RG8fLoikAVUiGqVaidDreKQ3QkKM
+   xKDJ9mqPUAfWQE6/wRo+lV+416Le6en6SW/5IT0noQXYQyuh0R+P/MOT+
+   REO47xsYkpE4oueY6pZYbdAkKKjI73Pa1XGs9jrm/tOoNjBGgu7iv06mt
+   Q==;
+X-CSE-ConnectionGUID: yGkL2QnbS2+XE1wUqtN5bg==
+X-CSE-MsgGUID: bpNdUj8nQB+EtXpOSunLsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3091054"
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="3082567"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 06:15:31 -0800
-X-CSE-ConnectionGUID: Scheq46MTLWRyxadEA8KpQ==
-X-CSE-MsgGUID: 4kTFNcGLS8eqjxHmDzBYGw==
+   d="scan'208";a="3091054"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 06:15:50 -0800
+X-CSE-ConnectionGUID: JhrL37qDTWSSjqb1rqVY/w==
+X-CSE-MsgGUID: BNTJkWrDTRmhNJY8TcBQlQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="8039505"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 06:15:27 -0800
-Date: Tue, 10 Nov 2026 16:15:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: liuc63@xiaopeng.com, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	khtsai@google.com, fangxy@xiaopeng.com, rdunlap@infradead.org,
-	dbrownell@users.sourceforge.net, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] lib/net_utils: allow mac_pton() to take a custom
- delimiter
-Message-ID: <avMm_f2-2PZOU9v5@ashevche-desk.local>
-References: <20261106030605.576584-2-liuc63@xiaopeng.com>
- <179431528628.994134.9205744622940373491@kernel.org>
+   d="scan'208";a="8327577"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa003.fm.intel.com with ESMTP; 10 Nov 2026 06:15:45 -0800
+Received: from pkitszel-desk.tendawifi.com (unknown [10.245.244.251])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id BB1812FC58;
+	Tue, 10 Nov 2026 14:15:41 +0000 (GMT)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jonathan Corbet <corbet@lwn.net>,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	andrew+netdev@lunn.ch,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	jacob.e.keller@intel.com,
+	jedrzej.jagielski@intel.com,
+	anzaki@gmail.com,
+	brett.creeley@amd.com,
+	ohartoov@nvidia.com,
+	Petr Oros <poros@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v5 01/15] devlink, mlx5: add init/fini ops for shared devlink
+Date: Tue, 10 Nov 2026 15:07:10 +0100
+Message-ID: <20261110141534.95614-2-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20261110141534.95614-1-przemyslaw.kitszel@intel.com>
+References: <20261110141534.95614-1-przemyslaw.kitszel@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,63 +105,327 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179431528628.994134.9205744622940373491@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 10, 2026 at 12:54:46PM +0000, netdev-bot+sashiko@kernel.org wrote:
+Add .shd_init() and .shd_fini() ops, that will be called for the first
+devlink_shd_get() (to initialize driver's priv data) and on the last
+devlink_shd_put() (to allow for the cleanup). Both ops are optional.
 
-> > +/**
-> > + * parse_mac_pton - convert a MAC address string using a custom delimiter
-> > + * @s: string to be parsed
-> > + * @mac: buffer to store the result, left untouched if @s is malformed
-> > + * @delim: characters accepted as a separator between the byte pairs
-> > + *
-> > + * @s must be MAC_ADDR_STR_LEN characters long and use a character from
-> > + * @delim at every separator position, e.g. "aa.bb:cc.dd:ee.ff" with ".:".
-> > + *
-> > + * Return: true on success, false if @s is malformed.
-> > + */
-> 
-> [Severity: Low]
-> This isn't a bug, but does this kernel-doc describe what parse_mac_pton()
-> actually does?
-> 
-> The only length check in the function is:
-> 
-> 	if (strnlen(s, MAC_ADDR_STR_LEN) < MAC_ADDR_STR_LEN)
-> 		return false;
-> 
-> strnlen() is capped at MAC_ADDR_STR_LEN, so this check only rejects
-> strings that are too short. The parsing loops read only s[0] through
-> s[16], and nothing checks that s[MAC_ADDR_STR_LEN] is '\0'.
-> 
-> So input such as "aa:bb:cc:dd:ee:ffJUNK", or the 7-octet
-> "aa:bb:cc:dd:ee:ff:00", returns true and fills @mac with the first six
-> octets. That doesn't fit "@s must be MAC_ADDR_STR_LEN characters long"
-> or "false if @s is malformed".
+.shd_init() could return an error, which will stop creation of shd
+instance. The initializer also gets an additional, optional param,
+that driver could use for any needs.
 
-> The runtime behaviour is the same as the old mac_pton(). The current
-> callers (the mac_pton() wrapper, and get_ether_addr() in u_ether.c later
-> in this series) don't depend on long strings being rejected. However, a
-> new caller that trusts this doc could skip its own end-of-string check.
+devlink_shd_get() now returns ERR_PTR() on failure instead of NULL, so
+the error from .shd_init() reaches the caller. Adjust mlx5, the only
+user, to that and to the new param.
 
-> Could the doc say instead that @s must have at least MAC_ADDR_STR_LEN
-> characters and that anything after them is ignored?
+If any of the callbacks will need to get devlink instance, it could
+be accessed by shd_priv_to_devlink().
 
-Yes, this needs to be fixed in v5. Adding two words "at least" into the
-mentioned line of the kernel-doc.
+Both callbacks are called with devl_lock held, .shd_init() before
+devlink is registered, .shd_fini() after it is unregistered.
 
-> The other option is
-> to reject strings where s[MAC_ADDR_STR_LEN] != '\0', but that would
-> change behaviour for existing mac_pton() callers.
+Next commit will make use of the callbacks, a later one will make use
+also of the additional param.
 
-Yep, that's why it's a bad idea.
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+(v0) first discussed at:
+https://lore.kernel.org/netdev/20260325063143.261806-3-przemyslaw.kitszel@intel.com
 
+v1: remove redundant added blank line (Jiri)
+
+v2:
+ * call devl_register() only after .shd_init(), so there is no NEW/DEL
+   notification pair when the init callback fails; adjust the order of
+   devl_unregister() in devlink_shd_destroy() (Sashiko)
+ * return the error from .shd_init() to the caller instead of
+   collapsing every failure into -ENOMEM, devlink_shd_get() returns
+   ERR_PTR() now (Sashiko)
+ * commit message: .shd_init()/.shd_fini() are called outside of
+   devlink registration; the init param is used within this series
+ * kdoc: use @shd_init/@shd_fini member tags, fix the "shd_devlink'
+   priv" wording, document the calling context (locks, before
+   registration/after unregistration) and that a failed .shd_init()
+   is retried on the next devlink_shd_get() (Sashiko)
+ * devlink-shared.rst: document .shd_init()/.shd_fini(), init_param,
+   ERR_PTR() return and shd_priv_to_devlink() (Sashiko)
+---
+ .../networking/devlink/devlink-shared.rst     | 19 ++++++-
+ include/net/devlink.h                         | 30 ++++++++++
+ .../ethernet/mellanox/mlx5/core/sh_devlink.c  |  6 +-
+ net/devlink/sh_dev.c                          | 57 ++++++++++++++++---
+ 4 files changed, 98 insertions(+), 14 deletions(-)
+
+diff --git a/Documentation/networking/devlink/devlink-shared.rst b/Documentation/networking/devlink/devlink-shared.rst
+index 16bf6a7d25d9..f8b2a3d8aa82 100644
+--- a/Documentation/networking/devlink/devlink-shared.rst
++++ b/Documentation/networking/devlink/devlink-shared.rst
+@@ -45,6 +45,14 @@ The following functions are provided for managing shared devlink instances:
+ * ``devlink_shd_get()``: Get or create a shared devlink instance identified by a string ID
+ * ``devlink_shd_put()``: Release a reference on a shared devlink instance
+ * ``devlink_shd_get_priv()``: Get private data from shared devlink instance
++* ``shd_priv_to_devlink()``: Get shared devlink instance from its private data
++
++``devlink_shd_get()`` returns ``ERR_PTR()`` on failure.
++
++The driver may initialize and clean up its private data of the shared
++instance in the optional ``shd_init()`` and ``shd_fini()`` callbacks of
++``struct devlink_ops``. The ``init_param`` argument of ``devlink_shd_get()``
++is passed to ``shd_init()``.
+ 
+ Initialization Flow
+ -------------------
+@@ -55,7 +63,9 @@ Initialization Flow
+ 
+    * The function looks up existing instance by identifier
+    * If none exists, creates new instance:
+-     - Allocates and registers devlink instance
++     - Allocates devlink instance
++     - Calls ``shd_init()`` (if set), on failure frees it and returns the error
++     - Registers devlink instance
+      - Adds to global shared instances list
+      - Increments reference count
+ 
+@@ -67,7 +77,8 @@ Cleanup Flow
+ 
+ 1. **Cleanup** when PF is removed
+ 2. **Call** ``devlink_shd_put()`` to release reference (decrements reference count)
+-3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero)
++3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero),
++   ``shd_fini()`` (if set) is called after unregistering it
+ 
+ Chip Identification
+ -------------------
+@@ -85,6 +96,10 @@ Locking
+ 
+ A global mutex (``shd_mutex``) protects the shared instances list during registration/deregistration.
+ 
++``shd_init()`` and ``shd_fini()`` are called with ``shd_mutex`` and the devlink
++lock of the shared instance held, thus must not call ``devlink_shd_get()`` nor
++``devlink_shd_put()``, and must use ``devl_*()`` variants of devlink API.
++
+ Similarly to other nested devlink instance relationships, devlink lock of
+ the shared instance should be always taken after the devlink lock of PF.
+ 
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 7abd23376319..98bdde4f72ca 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -1607,6 +1607,34 @@ struct devlink_ops {
+ 	 * with other operations.
+ 	 */
+ 	bool supported_cross_device_rate_nodes;
++	/**
++	 * @shd_init: Shared devlink instance initializer.
++	 *
++	 * Gets the driver's priv data of the shared instance (the same as
++	 * devlink_shd_get_priv() returns) and the init_param passed to
++	 * devlink_shd_get(). Should initialize the priv data. May be NULL.
++	 *
++	 * Called when devlink_shd_get() creates the shared instance, before
++	 * it is registered. If it fails, the instance is freed without calling
++	 * @shd_fini, and the next devlink_shd_get() for the same id will try to
++	 * create it (and call @shd_init) again.
++	 *
++	 * Called with the global shared devlink mutex and the devlink lock of
++	 * the shared instance held, thus must not call devlink_shd_get() nor
++	 * devlink_shd_put(), and must use devl_*() variants of devlink API.
++	 *
++	 * Return: 0 on success, negative errno to fail the creation.
++	 */
++	int (*shd_init)(void *priv, void *init_param);
++	/**
++	 * @shd_fini: Shared devlink instance finalizer.
++	 *
++	 * Gets the driver's priv data of the shared instance. Called when the
++	 * last reference is dropped, after the shared instance is unregistered,
++	 * in the same locking context as @shd_init. Should clean up the priv
++	 * data. May be NULL.
++	 */
++	void (*shd_fini)(void *priv);
+ 	/**
+ 	 * selftests_check() - queries if selftest is supported
+ 	 * @devlink: devlink instance
+@@ -1672,9 +1700,11 @@ void devlink_free(struct devlink *devlink);
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver);
+ void devlink_shd_put(struct devlink *devlink);
+ void *devlink_shd_get_priv(struct devlink *devlink);
++struct devlink *shd_priv_to_devlink(void *priv);
+ 
+ /**
+  * struct devlink_port_ops - Port operations
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+index b925364765ac..2c58f820b018 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+@@ -43,10 +43,10 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
+ 	*end = '\0';
+ 
+ 	/* Get or create shared devlink instance */
+-	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, pdev->dev.driver);
++	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, NULL, pdev->dev.driver);
+ 	kfree(sn);
+-	if (!devlink)
+-		return -ENOMEM;
++	if (IS_ERR(devlink))
++		return PTR_ERR(devlink);
+ 
+ 	dev->shd = devlink;
+ 	return 0;
+diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
+index 85acce97e788..4f1b2f24b755 100644
+--- a/net/devlink/sh_dev.c
++++ b/net/devlink/sh_dev.c
+@@ -34,43 +34,61 @@ static struct devlink_shd *devlink_shd_lookup(const char *id)
+ static struct devlink_shd *devlink_shd_create(const char *id,
+ 					      const struct devlink_ops *ops,
+ 					      size_t priv_size,
++					      void *init_param,
+ 					      const struct device_driver *driver)
+ {
+ 	struct devlink_shd *shd;
+ 	struct devlink *devlink;
++	int err;
+ 
+ 	devlink = __devlink_alloc(ops, sizeof(struct devlink_shd) + priv_size,
+ 				  &init_net, NULL, driver);
+ 	if (!devlink)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	shd = devlink_priv(devlink);
+ 
+ 	shd->id = kstrdup(id, GFP_KERNEL);
+-	if (!shd->id)
++	if (!shd->id) {
++		err = -ENOMEM;
+ 		goto err_devlink_free;
++	}
+ 	shd->priv_size = priv_size;
+-	refcount_set(&shd->refcount, 1);
+ 
+ 	devl_lock(devlink);
++
++	if (ops->shd_init) {
++		err = ops->shd_init(shd->priv, init_param);
++		if (err)
++			goto err_unlock;
++	}
+ 	devl_register(devlink);
+ 	devl_unlock(devlink);
+ 
++	refcount_set(&shd->refcount, 1);
+ 	list_add_tail(&shd->list, &shd_list);
+ 
+ 	return shd;
+ 
++err_unlock:
++	devl_unlock(devlink);
++	kfree(shd->id);
++
+ err_devlink_free:
+ 	devlink_free(devlink);
+-	return NULL;
++	return ERR_PTR(err);
+ }
+ 
+ static void devlink_shd_destroy(struct devlink_shd *shd)
+ {
+ 	struct devlink *devlink = priv_to_devlink(shd);
+ 
+ 	list_del(&shd->list);
+ 	devl_lock(devlink);
+ 	devl_unregister(devlink);
++
++	if (devlink->ops->shd_fini)
++		devlink->ops->shd_fini(shd->priv);
++
+ 	devl_unlock(devlink);
+ 	kfree(shd->id);
+ 	devlink_free(devlink);
+@@ -81,46 +99,53 @@ static void devlink_shd_destroy(struct devlink_shd *shd)
+  * @id: Identifier string (e.g., serial number) for the shared instance
+  * @ops: Devlink operations structure
+  * @priv_size: Size of private data structure
++ * @init_param: Passed to .shd_init() callback alongside driver's priv;
++ *              this value need not match across all users of the shared
++ *              instance
+  * @driver: Driver associated with the shared devlink instance
+  *
+  * Get an existing shared devlink instance identified by @id, or create
+  * a new one if it doesn't exist. Return the devlink instance with a
+  * reference held. The caller must call devlink_shd_put() when done.
+  *
++ * On creation, @ops->shd_init() is called (if set), see its description
++ * for the calling context. Its error is returned to the caller.
++ *
+  * All callers sharing the same @id must pass identical @ops, @priv_size
+- * and @driver. A mismatch triggers a warning and returns NULL.
++ * and @driver. A mismatch triggers a warning and returns ERR_PTR(-EINVAL).
+  *
+  * Return: Pointer to the shared devlink instance on success,
+- *         NULL on failure
++ *         ERR_PTR() on failure
+  */
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver)
+ {
+ 	struct devlink *devlink;
+ 	struct devlink_shd *shd;
+ 
+ 	mutex_lock(&shd_mutex);
+ 
+ 	shd = devlink_shd_lookup(id);
+ 	if (!shd) {
+-		shd = devlink_shd_create(id, ops, priv_size, driver);
++		shd = devlink_shd_create(id, ops, priv_size, init_param, driver);
+ 		goto unlock;
+ 	}
+ 
+ 	devlink = priv_to_devlink(shd);
+ 	if (WARN_ON_ONCE(devlink->ops != ops ||
+ 			 shd->priv_size != priv_size ||
+ 			 devlink->dev_driver != driver)) {
+-		shd = NULL;
++		shd = ERR_PTR(-EINVAL);
+ 		goto unlock;
+ 	}
+ 	refcount_inc(&shd->refcount);
+ 
+ unlock:
+ 	mutex_unlock(&shd_mutex);
+-	return shd ? priv_to_devlink(shd) : NULL;
++	return IS_ERR(shd) ? ERR_CAST(shd) : priv_to_devlink(shd);
+ }
+ EXPORT_SYMBOL_GPL(devlink_shd_get);
+ 
+@@ -159,3 +184,17 @@ void *devlink_shd_get_priv(struct devlink *devlink)
+ 	return shd->priv;
+ }
+ EXPORT_SYMBOL_GPL(devlink_shd_get_priv);
++
++/**
++ * shd_priv_to_devlink - Get shared devlink instance from its priv data
++ * @priv: Driver's priv data, as returned by devlink_shd_get_priv()
++ *
++ * Return: pointer to shared devlink instance the @priv belongs to.
++ */
++struct devlink *shd_priv_to_devlink(void *priv)
++{
++	struct devlink_shd *shd = container_of(priv, struct devlink_shd, priv);
++
++	return priv_to_devlink(shd);
++}
++EXPORT_SYMBOL_GPL(shd_priv_to_devlink);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.1
 
