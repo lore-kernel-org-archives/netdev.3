@@ -1,47 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794340538;
-	b=S91QAwL9pJFIfa5TYUwUPPDBOVWEWF9kxrjmvacOvnbEbEd6mJkwSDbTip6nSprnUrRK
-	 T8Y0+VPsWVMnh+YvKAwfCm+NrIeeKTUhI2NAsKJs2QnGaH7KsEdh+1bwLIzbxRCw0w7Lj
-	 Ici+6YNeeYO3kG5LlGQSFF5NvQSjZqrZGBqOcJSDMmZb1cU9c66w8VVjkbBATK8jsf64E
-	 szUJ4TdZ2PKyEWA5yqxLVlD0VXNiCpNKOiZE38EjPU9gquJ7+qMjuayx7oF4ZeEFTQrDa
-	 EB0H8Sbad+YWnOKv7ZDsUq30CIhUqeiZyaWf786RPmRvd3sBlMzeH7ttilW6WMVW/wg==
+	t=1794341327;
+	b=BigorPkiOnhXR6MTXa3DMM3hcgUpjp4SVWSAD5K2svPqVsCaR2JcmN0C7ZaMO6qRO0ut
+	 l9Q7/VfrohoRe0hG13LBIq+8z0PQdK1WNUPC+3klXZu/OSIRcA4FfOD3veRDbC38JKeFe
+	 x3zCWM321hnj+WfG7SFmr3No73HaFOg7a4UMkHzkGMrtvnYhGIDCAtnIYNX0Ur1v5pxkd
+	 R0UHl59Lz4h2JDkmlTlk8+490lJBqcXWIqyUx3pevHfoc29b7JpaVkLQ/1y5Pa0CPCK72
+	 n5XltNSLhiAp2Ui1rPTH99gwciZO9maUMiJnAoWFRabsNM7oP8ANEGblDt/Qp1ADIlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794340538;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=tGsyn6cBYQWHlRc0Pjun7KRP7xgqWNhLoxnpByP/QJg=;
-	b=W03um0UeXcQlHDfSUf96unnQatD1yII6qDpcO5661WBe7MCyoTiREiVDZKRDh2NxAMDL
-	 oP6t6yRwoc0dD5sJNvfg5AEyUbjRAgUeBbXVep3z/m4sIjtKNyycEI/PweICoqlZR65Iz
-	 KKvg2aoVhDuYlcHlXzr7oRyGcwflkJwW/s3h9pQSehGowQnIAgO3w4R53i7YSjXm2gt3x
-	 zv3Hl2LPwL/X/BpPC0x+S+oWbDW7OZBN2Y2rtSJ/9DzoCMN5Xrpn/KepYNyyyBD3CR3iL
-	 FkkKjZAgViLPXerbxJtdbwPUmuaK4sgkY7fLKRsItkAPRUG4PTcp4+B70qI+fJv1dRw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794341327;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=RLqXByamkZhJZ65JXbFgm2scLbRUIk2K/YyB3fLw6kI=;
+	b=JWsqf39VoNxCGl8FUlsM+Oi9sUHupfBFf/Qq1zf2sq2Y5rPF2Oefp33+vCnGDTLeqWxO
+	 +CzTL2bh5+hcrS8qy2fxozjtDLORNmTremer84j6A7BUDfpRS4/rrPcr5fqKLox0egCwy
+	 grd8m3iEB5sAiVNrKAjBGVWzN73U6sUZvpc7zwZLLRYOY4ZU7O3ikO0GdqyE8Nrc0bukD
+	 Mj8oL/6r1/cCVYiZfe9BA67mzcJS8bs8zaN7DdxNQBgXL4+TXIU6yAZFLnYL4Qb/LXsBE
+	 Q+/PGL4X51iTyR3z3aPt95gVWcNkebKYpVt1FQucBe+Y5rkJMgH76Hcx88oqb/PCI+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eCe6dwDJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Inoqt/Y6";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD17606A32D;
-	Tue, 10 Nov 2026 19:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D8606A320;
+	Tue, 10 Nov 2026 20:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eCe6dwDJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2201F008A5;
-	Tue, 10 Nov 2026 19:55:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Inoqt/Y6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCB41F008A1;
+	Tue, 10 Nov 2026 20:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794340537;
-	bh=tGsyn6cBYQWHlRc0Pjun7KRP7xgqWNhLoxnpByP/QJg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eCe6dwDJznq4t2McipRNYVH/BOMBn1c6ZkXThJkc+V/vqaYVVcHyspzFiwFGjgiUT
-	 kmzUOUTlxxu/dE+A0Vu8N8CKEjdcJy3n9/vWyAgaP4iFzHUbI+/91mhTMbdfbDAthQ
-	 NPr8VCvIUefbyOdeOXzGHhSUDtelvvPns4UqyV9uI3Q3zxKlq/UM39wcteITIoh9RY
-	 OcteQNccFZ0r88qCSL8ufV8uomS6bvx+yJuHk1LjSdwIE4R8pVYHHd6ymGtV8p9v6U
-	 uPY1fmWYGI5JRB1gOebyU/ThIktMJT45cLMFztE194xITqo4cNkbE4vVNABEgKB1SM
-	 9MQEdI73nnn1A==
-Message-ID: <8eab68bb-9886-4990-bcdd-bfe0f0496045@kernel.org>
-Date: Tue, 10 Nov 2026 20:55:31 +0100
+	s=k20260515; t=1794341327;
+	bh=RLqXByamkZhJZ65JXbFgm2scLbRUIk2K/YyB3fLw6kI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Inoqt/Y6Ud+R20HCM4wfUapvecOwDM/U2H6VjptTnjQj/O01GUkxAbinHYO7ck9+J
+	 56LHS4ItjN8gCoeTjrqSR8XmBgjzqT+Wu/dg67DHPve+WwC+PE2qhNnmon/K3zA6fY
+	 B61xzmUB+fzuvC/jaiZDry5jVAkHhSw8wrNxt2Ri9ptBZ2+mxMv5b42eOISOq34qco
+	 h6O0AizjOlJaFQzuqG2Maq4iBZMa0RAUfjN87ifHlSr4P/q2xf7nRjBFoT2hwHVuB/
+	 1DFAibUWAZcHqLvCQrXzLKZLh8Xi4BFLU9swlvdccGNmJX1kXcvJFRsxBTWCSczutj
+	 k8qQQynPgW0+w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: muhammad.nazim.amirul.nazle.asmade@altera.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	dinguyen@kernel.org,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA converter
+Date: Tue, 10 Nov 2026 12:08:44 -0800
+Message-ID: <20261110200844.2190972-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261104040320.18077-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
+References: <20261104040320.18077-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,83 +73,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] mptcp: reject DATA_ACKs against a reversed send
- interval
-Content-Language: fr
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>,
- MPTCP Linux <mptcp@lists.linux.dev>
-References: <20261104130747.1045741-1-edumazet@kernel.org>
- <aaf8b538-7897-40ae-ba2c-7eede4bef819@kernel.org>
- <20261110113300.620d900d@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20261110113300.620d900d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/11/2026 20:33, Jakub Kicinski wrote:
-> On Tue, 10 Nov 2026 20:10:37 +0100 Matthieu Baerts wrote:
->> @Net Maintainers: this patch can be applied to the net tree directly,
->> thank you! (Or did I miss my review window?)
-> 
-> Next time just look at patchwork state instead of asking.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA converter
 
-Sorry, it was in awaiting-upstream one and not listed in suie (which
-makes sense): I wasn't sure if I had to do something else to get it back
-in suie or if it meant I had to take it in our tree first. It looks like
-not, so that's understood now!
+This adds the "altr,socfpga-stmmac-agilex5-tsn" compatible for Agilex5
+boards where an FPGA GMII-to-RGMII converter between the MAC and the PHY
+supplies the RGMII delays. socfpga_get_plat_phymode() now returns a new
+mac_interface field. The new setup_plat_dat callback forces that field
+to GMII and rewrites any RGMII phy_interface to plain RGMII.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> index 6d4bc1fe8f751..131d2a98c863f 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
 
+[ ... ]
+
+>  static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
+>  {
+> -	return dwmac->plat_dat->phy_interface;
+> +	return dwmac->mac_interface;
+>  }
+
+[Severity: Low]
+This isn't a bug, but socfpga_gen5_set_phy_mode() and
+socfpga_gen10_set_phy_mode() both still have this comment:
+
+	/* Overwrite val to GMII if splitter core is enabled. The phymode here
+	 * is the actual phy mode on phy hardware, but phy interface from
+	 * EMAC core is GMII.
+	 */
+
+After this change, phymode comes from dwmac->mac_interface, which is the
+MAC-side mode. For the agilex5-tsn compatible it is GMII while the PHY
+runs RGMII, so the comment now says the opposite of what phymode holds.
+
+Should the comment be updated to match the new meaning? The same applies
+to the name socfpga_get_plat_phymode().
+
+[ ... ]
+
+> @@ -673,10 +676,28 @@ static const struct socfpga_dwmac_ops socfpga_agilex5_ops = {
+>  	.setup_plat_dat = socfpga_agilex5_setup_plat_dat,
+>  };
+>  
+> +static void socfpga_agilex5_tsn_gmac_setup_plat_dat(struct socfpga_dwmac *dwmac)
+> +{
+> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+> +
+> +	socfpga_agilex5_setup_plat_dat(dwmac);
+> +
+> +	/* FPGA converter supplies RGMII delays; MAC uses GMII, PHY gets plain RGMII */
+> +	dwmac->mac_interface = PHY_INTERFACE_MODE_GMII;
+
+[Severity: Medium]
+mac_interface is forced to GMII for every phy-mode. phy_interface is only
+rewritten for RGMII variants. What happens with phy-mode "sgmii" or
+"1000base-x"? The altr,socfpga-stmmac.yaml phy-mode enum allows both for
+this compatible.
+
+In that case socfpga_get_plat_phymode() returns GMII.
+socfpga_dwmac_fix_mac_speed() then disables the SGMII adapter on every
+link-up and never turns it back on:
+
+	if (sgmii_adapter_base)
+		socfpga_sgmii_config(dwmac, false);
+	...
+	if ((phymode == PHY_INTERFACE_MODE_SGMII ||
+	     phymode == PHY_INTERFACE_MODE_1000BASEX) && sgmii_adapter_base)
+		socfpga_sgmii_config(dwmac, true);
+
+socfpga_gen10_set_phy_mode() also skips its final enable:
+
+	if (phymode == PHY_INTERFACE_MODE_SGMII)
+		socfpga_sgmii_config(dwmac, true);
+
+Meanwhile phylink and the Lynx PCS keep using the DT mode. The
+GMII-to-SGMII adapter would stay disabled while an SGMII or 1000base-x
+link comes up, and nothing reports the problem.
+
+Should the GMII override also be guarded by phy_interface_mode_is_rgmii()?
+The other option would be to reject non-RGMII modes for this compatible.
+
+> +	if (phy_interface_mode_is_rgmii(plat_dat->phy_interface))
+> +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
+
+[Severity: Medium]
+If the converter always adds both the TX and RX delays, rgmii-id seems to
+be the only phy-mode that describes the board consistently. Is that
+right?
+
+"rgmii", "rgmii-txid" and "rgmii-rxid" each describe the PCB as providing
+the delay in at least one direction. The converter would then add its
+delay on top of that. This code rewrites all of them to plain RGMII
+without a warning, so the link could fail with no diagnostic.
+
+The stmmac core already handles MACs with fixed internal delays. With
+plat_dat->has_internal_tx_delay and has_internal_rx_delay set (as
+dwmac-ultrarisc.c does), stmmac_pltfr_probe() runs:
+
+	if (plat->has_internal_tx_delay || plat->has_internal_rx_delay) {
+		plat->phy_interface =
+			phy_fix_phy_mode_for_mac_delays(plat->phy_interface,
+							plat->has_internal_tx_delay,
+							plat->has_internal_rx_delay);
+		if (plat->phy_interface == PHY_INTERFACE_MODE_NA)
+			return dev_err_probe(&pdev->dev, -EINVAL,
+					     "unsupported phy interface mode\n");
+	}
+
+When both delays are set, phy_fix_phy_mode_for_mac_delays() maps rgmii-id
+to rgmii and returns PHY_INTERFACE_MODE_NA for the other three modes:
+
+	if (mac_txid && mac_rxid) {
+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
+			return PHY_INTERFACE_MODE_RGMII;
+		return PHY_INTERFACE_MODE_NA;
+	}
+
+Documentation/devicetree/bindings/net/ethernet-controller.yaml says this
+about MACs with hard coded delays:
+
+  It does however mean that a 'phy-mode' of 'rgmii' is now invalid, it
+  cannot be supported, [...] Thus the MAC should report a fatal error for
+  any modes which cannot be supported.
+
+Could has_internal_tx_delay and has_internal_rx_delay replace the
+open-coded rewrite here? Then inconsistent phy-modes would be rejected at
+probe time.
+
+> +}
+> +
+> +static const struct socfpga_dwmac_ops socfpga_agilex5_tsn_gmac_ops = {
+> +	.set_phy_mode = socfpga_gen10_set_phy_mode,
+> +	.setup_plat_dat = socfpga_agilex5_tsn_gmac_setup_plat_dat,
+> +};
+
+[ ... ]
