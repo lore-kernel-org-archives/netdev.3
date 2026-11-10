@@ -1,100 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.215.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794329881;
-	b=oPYNsBPlsVHAUMWJUN7yzVw3vi3oPvHmyxJNXnDt2rdhV51aDnZ+5JcNyWuDKjyLuYxh
-	 otPIvmE+HjvcX1DxY1r7287mUS0Kkxkjghvp0uJPxLum7NGRYN0hT+WmFOHTotoan7hhw
-	 3axj0ZCNpeCUnmvonl66LlVaZSSyClYF/wL3nIHqhBZNUC91rtsZzI8v3Rkuvjda83xgw
-	 wrK+sTFuJlgCq/zPmRqTl0DTR/YnubAQwwCKPRxq46IgAIEtMawiRSNivzfoM2txgfus4
-	 hKN92afHZTboXWTGO5ip9n07/FmblpZNKJsZMryHzfbn0EHUXLQ+U8I2UCMndUSQD3A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794329881;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=1HlRMg2f8VT1EI4K27T8+cqMdE7ojzLtyN9VMRiohws=;
-	b=y3o/9Ty/NotlleWACB+nmXw6fVqH6BBZygvIoJSJRodTJMYTBIz+kVeVp2ZaSBjsNAaY
-	 SBQLLO1cnt7qJYSagohBgDGyy4mFULtJIzMgQ9iyAhm5eru/MV3HnuQsjVcdwRAGkiAxT
-	 bhDy+yfG/Zwu024qoxs/BwKeXSbw7MxLJjlJuxlcJdX/7flZyw5pimn9jqWr8LYUbmIPb
-	 R3TqgBB5vcsdzNWo4s7wTxAZvGxR1HU7e3wTOC10YAQwg3m2MFIUqt775ubNvHe03qSiw
-	 i99UPZaZFmO1Y3fVum8ZqOXveAp279qDZ1rK08j81KWerRjkEkbQH3OF7Tr+SYRe1Xg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t8iT54ru;
-	arc=fail smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.97.239
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794329894;
+	b=a0xS6hfVOZ8zNOzy6/H/ihoYdz0geJcu5jyh/HDXq5TAR0ifdwGewjmLCfH++f+OhAoW
+	 BHXj8+kUS5vG0PZaL5oeiI35/ooS3CY7Oo82OcL89WMvdyU1UafI6UHkNuG7hFeNkZaEF
+	 NPTcbfJOAtN26agV80jm0MqURSS8SifKJL3XSw+GaIGh2fS1rXNmzzSp3k8YdhNcy/HkE
+	 Iah4YNwMb/HFC2T/egEln8rFMfChA0s87WsdC5RxI/dFnZEOjiW2+bK1KD0jcZuwMlJti
+	 rZfX1nwSt6ogEPNl5oz8mIJcIw0XB9RJtxtmUSUmq/tVCEx8INzslLd8u+BAX9I+DnQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794329894;
+	h=DMARC-Filter:DKIM-Signature:Received:X-Spam-Checker-Version:
+	 X-Spam-Level:X-Spam-Status:DKIM-Signature:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=s3ZpsLefq0PS3uaqYJOnZLAzmDkCm1zInxr8ygQtDk4=;
+	b=Jahf6HYpQcaUaqNmGYOpUd8xoGyf93NHrzz9imXj6VkBrb2bRuMANinKVFZfwBVYZHQC
+	 BDe41oQlmud8xCutj6uUx6lmJhRwt87DNxjdAxfvJb0NCNEJ0arV7uz+iLX8cn+7wbN67
+	 PXQ1ysETW3nQs39buwu7b4GkJuiHYeOsFZtAocxIk4Bg8pKAWMd+JhyLO9sfMbq4h94TS
+	 ga7tFAlExToWl8W1FchdU8G86qvPcheQRt4bcnDZ5idZlrXeqpiMPp6kAZmmgEoTBqL+b
+	 mAwFu4Q9VLAQ4yd9kI0UaYmgcVJRkMzQPux2eN3UXZfoFTtpspcyq0WNou9kXEuVEbg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=birger-koblitz.de;
+	spf=pass smtp.mailfrom=birger-koblitz.de;
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=riiQUoNY;
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=aAkSBjnr;
+	arc=none smtp.remote-ip=23.88.97.239
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA528606A9D8
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:58:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA528606A9D8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173C8606A326;
+	Tue, 10 Nov 2026 16:58:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 173C8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t8iT54ru
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd62c570b5dso1379330a12.2
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:58:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794329880; cv=none;
-        d=google.com; s=arc-20260327;
-        b=a3BaaT1Pld7Od3AyBP8eADXKv8H9ar3AIFsgJ+WXybXZvxK1Ao9Pz1HBFOChfK+UDK
-         o4uom1ss9Q9TyCphqhDaVBSj8H3Rc05gQuNWTklZAMSygUf445w+Wv26eJEalZs0DvHK
-         lnJ84HPX1akHLF0sR8g7KXHe2DuWCq1Xt5cTpy3AHvkQM8/mecEa0Tu9Ugvoxx2UvJ9i
-         ZWHcJ6S2b/fLPrqMicmEL4oRs9s0avSsCGMnnt6sLBFyDgNcjhNr48V+bdYW12xy/u55
-         YcM5y59bU8IJkJOQO7VEcb2fR4KRGIxO7bl83WSFMfMZdd+oLEVTkmfYttGSnLWs6Osi
-         JZ+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1HlRMg2f8VT1EI4K27T8+cqMdE7ojzLtyN9VMRiohws=;
-        fh=qGoVm5M3GT7ykalCWRDtCMedfcdcL9azXiMiylvAcDA=;
-        b=S6oFHJv+nuo1fXz7pbLuHcahpW42P0fmp+bTdUk+0tp66T73xPz9UwVGxj96MYF5ar
-         spJ2HH2S1zHjbbMWcaYPGZGtpsewQuokgnOL8st4uyuepAepQwTZbpsByhlQKHi1E4jC
-         SlaVaDtDBoQDopZGVntPQUpfu2uDCLkamWHrmd4WecifewmeswCfOiMFSx3iUocspvAY
-         +UqAczF9IaPKT0pCL9kPfiaVtLtE6pTdZOUmlgavDVUxcLtJiL1LmH0mPH4NoeGJmWMo
-         lFoQeiuIGvMQhaysoa7dIGKu2CGf9L74OQQwRQWg/8BsgUeGW/R2r6yF9WQgY83Vuutz
-         NOMQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794329880; x=1794934680; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1HlRMg2f8VT1EI4K27T8+cqMdE7ojzLtyN9VMRiohws=;
-        b=t8iT54ruLSMY3csAPAgojvVYw8cwh2154xKRj95sLz8EdPdBZx8f41EcmmLGuC1F1l
-         ElLJg1Coj8V/Ns9BmZZDFhRsax5ulWClrHftzpsakovCHNkHPvpuPf8qyGPMEvS+ZBpx
-         /8pV8ycjMItO8GluGRwVeuxn5Niim18numJAMJCOkn2GtDYz8TXf89kGi9r++cn8vuAx
-         pUhime1PYdjP5LkIeHAA3e/gHsvVtzNNo30B7FiujRhOh3tTqAzd98atJr4QoUaBJFsF
-         lyo11wt0d95LzOafUNNzZOifg0sIxvglqaOuSTlWwJc5A1Bs05wNjJEnYABaNIonOyUI
-         V+OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794329880; x=1794934680;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1HlRMg2f8VT1EI4K27T8+cqMdE7ojzLtyN9VMRiohws=;
-        b=gSS6hemff+NKcjjxa3KekagYeiy1Dak5PG1TNuYuJQD/9rcIzzT4YAlIWfk4n4KN1n
-         dUchi2hVHXjiU0cDgQ3y5aw13DCv0txYavfPKhBnNcHzAp64JajFywv88LPP65GQWzSW
-         scdaHZPOqk1VMBpPMFxsaIE2urIBd59vW1DFDnHOfse8MhlYfybfPggNVX7+PbSZJVFI
-         4dLI/SVeV6HeE9a/y35japxIEOMMMyS6BDstY4DEfXH0UthQi/prt3znvvv9pfI9Sdc4
-         ntXz+0dmBiENWIx2IKVf6JB9oId6TVby0Z70BUJCI4nf+nAAVEvE5bFgPXSrbPa3N9yC
-         lYsA==
-X-Gm-Message-State: APuU4Z8J7CyNs/SrQ5wjVHE92DedMhG1d5i8nnEanbP/gQBR1rskzw6H
-	NXLKKgObvH96OdIBdqOmnOw2WBdgQy6Ur3bSm/jVdd3YYjgqjdybGvvXV9/3jAnEXLNkzufwuo0
-	esqbM9EUxNMCEdIUCLb3Co4xZ322YyV2BeWVr/EM=
-X-Gm-Gg: AYBFou0bhhcPU0g4f8Ez3FrunsB3WZpwcL/+4XqqDbFexljdcyHkIcgdBiM2kDZxTh3
-	pPYzEe0H/e8oFH/SZOEDfv8Tvp7M5YtKa4oc4Zbe6fk0G+xPXBptN8B4fX3g0dZ+NXaCughwMRw
-	3bflA8Or57nNZTvkGMXZ2OiSmM0LigJeeMb43IF0L9PlzGO2j5Ln90pxavM2Eo1bpfglIGrAf0I
-	83ZJcOzVd+uzBh4g5Lawh5W6lwrGOhbuUfA1RNiV3o0hpxJvq0+bS9+jh8wqebEW/LKYePA3e8n
-	guNv6SCH2BhxRM/jI4Nd9CL07oc6c415jf4b019AW/XHDLh5PCJVISPkA4FGA/rT5PUEy5RCQaP
-	sUhMoQY+pPOnq+JkNpS1h52PdGOe7+HXJX1XMbxr+YOZsF6VbyCMNRd7oXuF7FatY2ukmuaIKod
-	MgpiBGyuLBBeiuSbgQlZgzkU99cimUj0oV3yo9Wg==
-X-Received: by 2002:a05:6a21:4d92:b0:3eb:292d:6667 with SMTP id
- adf61e73a8af0-3f18fc7916bmr3102272637.45.1794329880120; Tue, 10 Nov 2026
- 08:58:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=riiQUoNY;
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=aAkSBjnr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1794329892;
+	bh=lwXpiQWNsd10Fs35VIZ488kyDttlHk6T6F9tVKnC+TY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=riiQUoNYeaWTF5rnjmzgAPzYASJAB/80t+W5xkpyo7ivzIHRDEI74VqMDs/1HSPeb
+	 6AdInDHlo7hIYfFFOmfr23olRAJ57aBfU/zJNS0qRLU/smMzvgrn0K+Z6Z+DAcBwFp
+	 9epDPX6PaCn+hH1nZ90eig9U5dn9iOO6RuJhB4/T2TK9enIfXtFIMw3JfHgX/ouyWj
+	 igLpWMo7sEeUanrOJGuhD4yzAYD51dxaNa3njqezVdGuhjzV50XVP1Ng5gkVnfYoX0
+	 N6wIpPDAJIAVoXnGDrgXwb+WDFQOwZfY6JEyzKD2mCoVWufjtkXSPXGpQ/Z+pt6yCk
+	 +ChtT0BaDXNhQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 3A2EB48C38; Tue, 10 Nov 2026 16:58:12 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1794329891;
+	bh=lwXpiQWNsd10Fs35VIZ488kyDttlHk6T6F9tVKnC+TY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aAkSBjnryZUzF5b5kst1ruM6mNj04NduSil4+W11e2bQwS0JgiH4A+Il+RgtVwgmb
+	 5sO+jRGkEbVTYQQMh0A76Lw4f8cA1fBvZ+AzdAUa90HempNLeWV5cRymmnQ8pyn8Hh
+	 JIB7tm87jEYKsA5gC9PB9f/lkjoo0/nIIH11k8AaY/hygravG5zqGDM2fx7DMvt5Wt
+	 hxlinDt5rkZXX54LOThio+AIgY7El5nhKOl395Al2moYBsgJwKH384EbjHY1Aj8mcb
+	 3JBSqzWB1a89N84UGdTmsh1vxDYmZG7Vbugyb94zhglopHua8+5F3BJcZtvlPQoIlI
+	 yPg6glaMJnclw==
+Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 0D6AC48C1C;
+	Tue, 10 Nov 2026 16:58:11 +0000 (UTC)
+Message-ID: <b1aba44e-754a-4968-873e-d7db88fa70dc@birger-koblitz.de>
+Date: Tue, 10 Nov 2026 17:58:07 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,56 +73,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794241654.git.lucien.xin@gmail.com> <20261110074153.4b895bb6@kernel.org>
-In-Reply-To: <20261110074153.4b895bb6@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 10 Nov 2026 11:57:48 -0500
-X-Gm-Features: AclHuK_HpW_I6LMxVTgDVIWnA6pZgPm7vgrtWceSe67s1c1ZnBXYAOFgqXCnPVE
-Message-ID: <CADvbK_e3aoDOyk3hbPtS8pk3U0QSiLtYafpH2oaoNbbR9mV9aw@mail.gmail.com>
-Subject: Re: [PATCH net-next v18 00/15] net: introduce QUIC infrastructure and
- core subcomponents
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Metzmacher <metze@samba.org>, Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli <tfanelli@redhat.com>, 
-	Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz <dreibh@simula.no>, linux-cifs@vger.kernel.org, 
-	Paulo Alcantara <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, Tom Talpey <tom@talpey.com>, 
-	kernel-tls-handshake@lists.linux.dev, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, Steve Dickson <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, 
-	Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, 
-	Jason Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Daniel Stenberg <daniel@haxx.se>, Andy Gospodarek <andrew.gospodarek@broadcom.com>, 
-	mef@scarletmail.rutgers.edu, paul@jakma.org, 
-	Kuniyuki Iwashima <kuniyu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, hkallweit1@gmail.com, chenhuacai@kernel.org,
+ kernel@xen0n.name, edumazet@kernel.org, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, neuromoments@gmail.com, beganovic.emir@gmail.com
+References: <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
+ <179427470922.994134.16776316201780098943@kernel.org>
+ <64d05861-c4e1-4506-ac2f-4109f1062932@birger-koblitz.de>
+ <7c78c868-efe4-4b0a-b09a-c196210644e7@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <7c78c868-efe4-4b0a-b09a-c196210644e7@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 10, 2026 at 10:42=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Mon,  9 Nov 2026 11:27:21 -0500 Xin Long wrote:
-> > The QUIC protocol, defined in RFC 9000, is a secure, multiplexed transp=
-ort
-> > built on top of UDP. It enables low-latency connection establishment,
-> > stream-based communication with flow control, and supports connection
-> > migration across network paths, while ensuring confidentiality, integri=
-ty,
-> > and availability.
->
-> coccicheck says:
->
-> v:250:19-25: ERROR: invalid reference to the index variable of the iterat=
-or on line 241
-> net/quic/connid.c:252:16-22: ERROR: invalid reference to the index variab=
-le of the iterator on line 241
-> --
-> pw-bot: cr
+On 10/11/2026 5:30 pm, Andrew Lunn wrote:
+>> At this point I am asking a human to intervene and tell me whether anything
+>> really still needs to be done.
+> 
+> Do any of the patches not have a Reviewed-by: from me?
+> I thought i had given such tags.
+No. They are all reviewed by you. Many additionally by Nicolai.
 
-This is a code pattern concern, not a real bug though, as the use_count <=
-=3D 1
-check guarantees the loop always hits break.
+Birger
 
-Thanks.
+> 
+> We should merge this code.
+> 
+>     Andrew
+
