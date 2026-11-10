@@ -1,62 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794289933;
-	b=zpcrCk8GMirZjT9fDM+HMPWl6Z2vGaF8mvV8KiIrjBaiPEqNAySh3E8IlfLMY1R+XG59
-	 lfl5b+LNR4zbgxFi9D0D9wiXLmdmqXrd1oXQSiOTji9BIZ22KpeDipDvt1kMfYT/1xPc0
-	 MPRmime4OTZXo1YxeOZNdy0G0sE2oviasNPAFlBJOXx9uy9vh5Wr92qHC5HLyJ65DNImx
-	 MGrMLlVaj5Imj1S0NyfQ2cgqSxHCeSTg42Ccm8bbuGTLqjJarf/8FiHSo7cHj9k0d9dSn
-	 4IhI/i+CO9AqCUAO0K0qgpA0M9nsguApmFxHjf+FCVGJreEL8TwNRydr509jIfDE/KA==
+	t=1794289978;
+	b=OQY5D7Wtro99ZicvPSdx23UL8E5gVejf+D6jpKNQXRJjHBR5lDU1cOWzAxSSzE3vVyN3
+	 D+SeyEovB9Cdc5XmDZ0CwY3YdKmaDeay8sg9tMaFPOZ+X6aJEp9vH/fHFmijdplQUQ2PS
+	 3Zq3nrSMXPQh6nB9xyWCfB8I4VAzJV2KtOrkB6RloFH0Ln5AVakRiSRFCNqEf2PiBQIS7
+	 5/pmV4djJz+RTcf7XQH3ucux+V/9RkOkC6j9rH2pYeoUxOEw6QtV7htb/JQQXeXZBFqV4
+	 YX5/t6W+rn8Q6IwaDf0JkyfBwfNNvg/nJ13z7+z/cr+2fgUMA0v/T5UGMXtWYy5LHhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794289933;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
-	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-MIME-Autoconverted;
-	bh=4JZAEtYqPFrwC/8qAirNEgHSzMtDW3/O5Apnst+Mdk8=;
-	b=YupcjnPBoDRHMyfKZEkx/TlDikcq5BIDOOJN0xV7dsHcNa3S718Pbw+5lhTlsV4cVpPM
-	 O3BKrQZ5LW459IBizY+2sRE69g8EOoAWUpImz4bc+5YL0kU+lxo+OHkMUBSqhQbBS719u
-	 ENjYfEe6nq8W42s8veJHaJBzInz00cirSW61074ASGWl4E6vmbCuwz7xOFQRwnzzKbYCN
-	 hIq9H5eptD9xLidpS90kMi6QDucRyncGp63VwLxXQi8Dwyq0OhjTTm49+vGLPUm6lN/MJ
-	 kwj7y6eI4WnVnMURuJi0dHl1j4lrP5wX3LNbH1bu3YnJ7x1HuIKE0C7HDl+kyF6B2bQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794289978;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
+	b=JhUo8JbE6hxHHpyXiC8eOCznzCpWUDPeDkrxlcLoIy3R7PQEmYEVTBq1d49tbjPtgCaH
+	 8SJAybGKCaKNDHbTXfS5GyRZT6KBrGFSYdsieq6qkWVPnarLn3dYj0WOkGkzi7PIEiINH
+	 5EQCyIMIySLTyOON8K/prI6n/EXPvdrQZ3XLPBWLx/+l/6l4CS+InBjL4d0MAQLmHyTOL
+	 vn9iZifnna1ZkVR0dVNPw8hnlVxCG5qIEFgwJ2R1xaHU73QudbclWzyac0qkBunlFsdNj
+	 f3hKYlstSfvmHMcyyb/sO1HqKR1QOJrs5y7n4NKrQH4g4CA84uKE4Bq8Eh2IDi5fMtg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=c127.dev;
-	spf=pass smtp.mailfrom=c127.dev;
-	dkim=pass header.d=c127.dev header.i=@c127.dev header.a=rsa-sha256 header.s=purelymail3 header.b=bjIABIrG;
-	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b=BXnCPBwS;
-	arc=none smtp.remote-ip=34.202.193.197
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=openai.com;
+	spf=pass smtp.mailfrom=openai.com;
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b="Op/3BlOO";
+	arc=none smtp.remote-ip=209.85.161.42
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7B5606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D7B5606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c127.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288D606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:52:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6288D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=c127.dev header.i=@c127.dev header.a=rsa-sha256 header.s=purelymail3 header.b=bjIABIrG;
-	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b=BXnCPBwS
-DKIM-Signature: a=rsa-sha256; b=bjIABIrGKK6lXPOCsOrXraQ3IRlEgp7dZSpQPQVVFgYU7xc983rhMYQUYs1oEivRD2BU8x6PUnqF/C7KygmlOvjfQMPjYryLgDFEuhTMF7rVj23l8Qh5Ajs+u0JAaiSVTT1tqmnqA3PJn0A+eAFG9A5uFtFGgHo7S3LU58lq4BVYAQwq+6eu2bhL4b9wgBa/uU7sSbrB8QutKOe7eUhA0V4+rgXDKJ9g35iClV5o4SwjkuRg4ikJFkSdkdVw3TKa+vbdNZ+O54QyTL/dcgroC1eCbvQkzfpHSc1ilbVP8OdmttLfQO84hbkws/zxJmQmL8jGBi2imzVzWxW9SU2XLg==; s=purelymail3; d=c127.dev; v=1; bh=K96Fskd4Fd0L1SPd3ZPv0ae4Ff7EzA/lbaX3fURV3dY=; h=Received:From:To:Subject:Date:Message-ID;
-DKIM-Signature: a=rsa-sha256; b=BXnCPBwSQbaYXyWxWkc6WLJ8O4CVk0zsYmSw5HuJATvbdANo31RuyKtwMDFxFKIsJwZATCTWcmOHhMvT/YI/NUnVSa8XAAQPx4+rNSFMaSfOfWg2BlN2u/soIKX7p3RTWWiNJeQs9un42NmjsilqwO8PRB05ihejKzRfD1ViSL0AlQwiyb9pmC2/ASgXqWNspHO3/4JcoKcUaPpL/EDWqApUInovfzB1p+pL9fO0ZoHuCOObdyDVn28y3Ie7XGc5z7nEMpFjLY04ZHHbW3BVRhBxRFKHKtiu1/d+82paPJYi8zRaQ/wPMsFcZ+XXNMrprg8W6GLkoY/1kEZ7Ycts+w==; s=purelymail3; d=purelymail.com; v=1; bh=K96Fskd4Fd0L1SPd3ZPv0ae4Ff7EzA/lbaX3fURV3dY=; h=Feedback-ID:Received:From:To:Subject:Date:Message-ID;
-Feedback-ID: 1017243:43747:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Authentication-Results: purelymail.com; auth=pass
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -969220285;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Tue, 10 Nov 2026 05:51:33 +0000 (UTC)
-From: Johan Alvarado <contact@c127.dev>
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>, alvin.sipraga@analog.com
-Cc: gabonpivovich@gmail.com, linusw@kernel.org, andrew@lunn.ch,
- olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk,
- luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- gusfmora@gmail.com, kuncy7@gmail.com, fabianotassotti@gmail.com
-Subject: Re: [PATCH net-next v9 08/11] net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
-Date: Tue, 10 Nov 2026 00:49:04 -0500
-Message-ID: <b68807e4-1470-4f4b-8975-e8a70dffd011@c127.dev>
-In-Reply-To: <f84cfedb-b551-4316-8d2b-4d6e06fc151b@yahoo.com>
-References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com> <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com> <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev> <f84cfedb-b551-4316-8d2b-4d6e06fc151b@yahoo.com>
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Op/3BlOO
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-705cb6ceebaso1115891eaf.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 21:52:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1794289977; x=1794894777; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
+        b=Op/3BlOO5z1BVXx8CV6wx6CDJnKOg71o7r9Ke1h29kA1yqLRpjpZIXFPRnuO00WP8m
+         rO8XX15QY5OYnH8FbvQDa/mqNMu4E6+EeltmIYz6bzcs84SrLmoKdwtED7BEmR8/Csk3
+         Og3onNDQBSABbkmLIijS/epBsfnzk+3nMnRPg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794289977; x=1794894777;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=W/ybTFMlizm6vgELuodGneY9jKwk3Dl6mMLfT2fPBOI=;
+        b=PgwwIvC8byvM8lUPCDj06Zbe+2mlUtIjyj65wGDhEVO09CkvFU7190waOWaOerTPIX
+         TtbmEV1fRTUwegGeJe4ur8SlWcOrd4vuC5Sujk4pNRAisg3h8aNErzhBL8RzYS5s0tZr
+         UeCD4gHhKugf1HAfZSUUHhaudQlzFT7+1Ad6v1aLGOsUK1Yu+abz+5CpbNMP9+Jrn1Wm
+         Vq17joTCvIVevNH4fW0EXATNjxHjVFmBl5UfxRy9oWM7ZQMVdQYpPsleMZGo2U1VL5AJ
+         s3eEAMXb+qmcQq3WElug8sUpXLgVBZUcCQ0AaiKU9CK0D2aDa+UFaOO0VRtOXEa5qFKc
+         oU4A==
+X-Forwarded-Encrypted: i=1; AL+hErHDcPsjdvp1QWY2ZdoCvf1+Nxt+tpRh/CmaR73RhwUxqM2+dAyv9J5rFCG0xIzUu+i5VfzaB3c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z85MzngYiQTO4HcxVT5iiYg58I9ULk7UD1amKkQKEeNCxffsOck
+	mWmD3HwTgJ9sQ62nD4CnNvbRIT9OQF0tizEHgC6LlfVMzRmYtlZvCjtakZG4rfVQQxc=
+X-Gm-Gg: AYBFou1MMPp+tc5kIJrz65dhnQmATE83ArqEaVA2yl6DmhriqSS64vD3h/ElaKmtsX/
+	M2J4A7R6xJtyQjazyOYiFJEvYnTi5p0O2SSfp9M8FplhVvCc8T7zbF/1wIGpzjmCR31GqvK4T3k
+	Cw4LY0FF+QykAZvstkSvUXT/MZGShclWyimMJYxFhMsUH7VuFpofPKbfqBMCwMBYsxLSHpdGpgI
+	x605ttLHGFk4+DK5SDn4S8uwYJNFdrb7fo8NjGujGxs8waViB2/moUDRO5qXQS7muH+FQP4MWeZ
+	FtvqIR4Spk4N5rjURzzNZhQeZmJBNCeGiQmxulhRnlZ614hptsZFzHtRXjgvmrQXl1ktJfoA9ZC
+	Q1zCUsPjxhcWUNeuPaYizelsEYdVZh0UkW94gLC/ACkc8f6mg4JGS5iGy5AVaGY06ZCRpG2NX0B
+	hKOfeqxIqn5pt6uKPUdW5rJS07HPkFOVIvKKuGNOLBDzILTPsAIz86XK8Y4McogQXirrSGwOoJN
+	cOuyjMOGnfA9E3uuSdD0OrhedIH2/Q0I93D8C2H3rFrODB5ba+h8GhrK+QOhcsX+lFzz+5ZdLeX
+	XBztRj8LOokvPEzT+vP2U3OdSvR7OuOW58OgCBfpMoys1dR2e7wOChR+7q5LH5431OAFqIMtq7p
+	f5QcBu+0=
+X-Received: by 2002:a05:6820:a702:10b0:713:da3b:8fdc with SMTP id 006d021491bc7-718a55719d0mr535752eaf.32.1794289977231;
+        Mon, 09 Nov 2026 21:52:57 -0800 (PST)
+Received: from com-75606 ([199.47.143.1])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-718a40b8a9fsm1038285eaf.0.2026.11.09.21.52.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 21:52:57 -0800 (PST)
+Date: Mon, 9 Nov 2026 21:52:53 -0800
+From: Kyle Zeng <kylebot@openai.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: dev@openvswitch.org, netdev@vger.kernel.org, aconole@redhat.com,
+	echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: openvswitch: make transport checksums
+ writable
+Message-ID: <avKxNfqPgY6roDJy@com-75606>
+References: <20261107040238.27606-1-kylebot@openai.com>
+ <179411065171.994134.7555620955521911858@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,81 +99,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179411065171.994134.7555620955521911858@kernel.org>
 
-Hi Mieczyslaw, Alvin, Oleg,
+On Sun, Nov 08, 2026 at 04:04:11AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 � High: 0 � Medium: 1 � Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The patch handles every skb_ensure_writable() failure in
+>   update_ip_l4_checksum() and update_ipv6_checksum()...
+> 
+> --
+> 
+> net: openvswitch: make transport checksums writable
+> 
+> This patch changes the IPv4 and IPv6 address rewrite helpers in Open
+> vSwitch. Each L4 checksum update now calls skb_ensure_writable() first,
+> instead of checking skb->len. A failure stays nonfatal, and packet
+> pointers are reloaded afterwards because the skb head may have moved.
+> 
+> Link: https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
+> 
+> > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> > index 12e339cbf7912..fe472e950cb1a 100644
+> > --- a/net/openvswitch/actions.c
+> > +++ b/net/openvswitch/actions.c
+> > @@ -319,20 +319,22 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
+> >  	return 0;
+> >  }
+> >  
+> > -static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
+> > -				  __be32 addr, __be32 new_addr)
+> > +static void update_ip_l4_checksum(struct sk_buff *skb, __be32 addr,
+> > +				  __be32 new_addr)
+> >  {
+> > -	int transport_len = skb->len - skb_transport_offset(skb);
+> > +	struct iphdr *nh = ip_hdr(skb);
+> >  
+> >  	if (nh->frag_off & htons(IP_OFFSET))
+> >  		return;
+> >  
+> >  	if (nh->protocol == IPPROTO_TCP) {
+> > -		if (likely(transport_len >= sizeof(struct tcphdr)))
+> > +		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
+> > +					       sizeof(struct tcphdr))))
+> >  			inet_proto_csum_replace4(&tcp_hdr(skb)->check, skb,
+> >  						 addr, new_addr, true);
+> 
+> [Severity: Medium]
+> Is it intended that every skb_ensure_writable() failure here is handled
+> the same way as a truncated transport header?
+> 
+> skb_ensure_writable() can fail even when the full TCP header is in the
+> packet. pskb_may_pull()->__pskb_pull_tail() returns NULL in three cases:
+> pskb_expand_head(GFP_ATOMIC) fails, a frag_list skb_clone() fails, or the
+> frags are unreadable:
+> 
+> net/core/skbuff.c:__pskb_pull_tail() {
+>     ...
+> 	if (!skb_frags_readable(skb))
+> 		return NULL;
+> 
+> 	if (eat > 0 || skb_cloned(skb)) {
+> 		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
+> 				     GFP_ATOMIC))
+> 			return NULL;
+> 	}
+>     ...
+> }
+> 
+> pskb_expand_head(GFP_ATOMIC) can also fail later for a cloned skb.
+> 
+> In those cases the L4 checksum update is skipped. set_ip_addr() still
+> updates the IP header checksum and writes the new address:
+> 
+> 	update_ip_l4_checksum(skb, old_addr, new_addr);
+> 	addr = (__be32 *)(skb_network_header(skb) + addr_offset);
+> 	csum_replace4(&ip_hdr(skb)->check, old_addr, new_addr);
+> 	...
+> 	*addr = new_addr;
+> 
+> set_ipv6_addr() does the same with memcpy(addr, new_addr, ...). Then
+> set_ipv4() or set_ipv6() returns 0.
+> 
+> Would the packet then be forwarded with a rewritten pseudo-header and a
+> stale TCP/UDP/ICMPv6 checksum?
+> 
+> With CHECKSUM_NONE or CHECKSUM_COMPLETE the checksum on the wire would be
+> wrong. With CHECKSUM_PARTIAL (including GSO), the stale seed in th->check
+> or uh->check would give a wrong final checksum for every segment.
+> 
+> The commit message says the reproducer relies on "natural allocation
+> pressure". That is the same condition that would make this new
+> skb_ensure_writable() call fail.
+> 
+> Other writers in the same file treat this failure as fatal. For example,
+> set_tcp():
+> 
+> 	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
+> 				  sizeof(struct tcphdr));
+> 	if (unlikely(err))
+> 		return err;
+> 
+> set_udp() and set_sctp() do the same, so do_execute_actions() drops the
+> skb with OVS_DROP_ACTION_ERROR.
+> 
+> Could the update be skipped only when skb->len - skb_transport_offset(skb)
+> is smaller than the header size, with the skb_ensure_writable() error
+> returned in all other cases? That would need set_ip_addr() and
+> set_ipv6_addr() to return int.
+> 
+> The same pattern applies to the UDP branch here, and to the TCP, UDP and
+> ICMPv6 branches in update_ipv6_checksum().
+> 
+> [ ... ]
+> 
+> -- 
+> Sashiko AI review � https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107040238.27606-1-kylebot%40openai.com
 
-Thanks for holding off. I could reproduce the symptom here and I'm now
-fairly sure the cause is on the SoC side, not in rtl8365mb.
+The full-header case is valid: if skb_ensure_writable() fails, the address rewrite can leave the transport checksum or CHECKSUM_PARTIAL seed stale.
 
-Setup: Mercusys MR80X v2 (IPQ5018 + RTL8367S, family C), CPU port 6 at
-2500base-x, booting from NAND with a real config in a reboot loop. A
-boot counts as broken when CPU port receives nothing, or frames with FCS
-errors, while both ends report 2.5Gbps/Full. Both flavours happen.
+But v2 intentionally keeps this failure nonfatal following the earlier review discussion:
+https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
 
-Results, same rtl8365mb code in all of them:
-- OpenWrt 6.18 stack (stmmac dwmac-ipq5018 + the qca-uniphy PCS):
-  18 of 51 boots broken.
-- Older stack (qca-nss-dp + qca-ssdk, 6.12): 0 of 16.
-- 6.18 stack, switch SerDes brought up only once the conduit is up
-  (the OpenWrt ordering patch): 0 of 16.
-- 6.18 stack, UNIPHY mode sequence moved to the GMAC probe, nothing
-  changed in the switch driver: 0 of 32.
-
-The bootloader hands the UNIPHY over in SGMII (1.25G line rate), and the
-qca-uniphy PCS only programs it from pcs_config(), which on this board
-runs at the first ndo_open of the conduit. The switch
-brings its SerDes up in HSGMII at DSA setup, about two seconds earlier,
-so its receiver trains against a transmitter at the wrong line rate.
-I read the UNIPHY mode registers at probe and at each pcs_config() on
-every boot: SGMII until the first open, SGMII+ after it, identical on
-good and broken boots. About a third of the boots end up with a
-receiver that does not recover when the far end later switches to
-SGMII+.
-
-Some checks that point at the switch receiver, not at the MAC/PCS:
-- Broken boot: A full UNIPHY re-sequence on the SoC side does not cure
-  it. Unbinding and binding the switch driver cures it every time.
-- Switch SerDes brought up against an already programmed UNIPHY: 21 of
-  21 good, even with a UNIPHY PLL reset one second later. The PLL
-  reset on a settled link is harmless (12 of 12), so I don't think the
-  10 s health check in patch 8 covers a real case.
-
-So the "far end not up yet" in the commit message is, at least on this
-SoC, "far end up at the wrong line rate". Once the far end is in the
-right mode before the switch comes up, the receiver latches on the first
-try and nothing needs to be re-latched. The two second gap in the
-reported timeline (5.27 switch pcs_config, 7.72 eth0 configuring) is the
-same window I see.
-
-This is a family C board and I can't say whether the family D receiver
-behaves the same. But the reported log is the same SoC with the same
-OpenWrt stack, so the wrong-mode far end is present in that setup too.
-Oleg, could you check this on the AX55 before the first ifup of the
-conduit? A single register read tells:
-
-  devmem 0x98218    # UNIPHY MISC2: 0x70 =3D SGMII, 0x50 =3D SGMII+
-
-If it reads 0x70 there, patch 8 is working around the same thing.
-
-The fix on the SoC side is one commit in the OpenWrt PCS driver, about
-50 lines: run the mode sequence at GMAC probe, before the switch
-probes. Rebased on current OpenWrt main, so it should apply to the
-AX55 tree as is:
-
-  https://github.com/c127dev/openwrt/commit/50e49862d2ba1abd0c93b64403c776a=
-f200323fb
-
-Oleg, if the AX55 can take it, a reboot loop with that commit and
-without patch 8 would settle this. I'll open the OpenWrt PR once that
-is confirmed.
-
-Neither dwmac-ipq5018 nor pcs-qca-uniphy is in mainline, so none of
-this can be reproduced on a mainline kernel. That's why I'd rather not
-have the workqueue, the extra locks and the reboot notifier in
-rtl8365mb for it.
-
-Best regards,
-Johan Alvarado
+Best,
+Kyle
