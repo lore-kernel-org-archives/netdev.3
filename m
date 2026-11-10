@@ -1,62 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794305206;
-	b=ujpxqM5Pq0tghTkE0Evd2FOqxwv10HemtJJDpgENi8p39aCLrkYnj9G2J1q+XoCwTS8M
-	 Mo+VLZ15VlG5AAFoGglj8L5iM3gdFts1hr/S2gdwX4lt1TL7+TIrI/kwCZvK7gP86v8n3
-	 tzblWzD2NwCcabQjzhzFYTFOi4G71svFGUSXL3GjKorHsvyR0iZGU8+ET2Xas53hFcRhm
-	 rhNd81vHFiUgvTUTqdmoxRRRpOYbnSj3w6vonkcGtStDvf/HrutDoIhFGMI9XSscY6kLc
-	 bo0BhZp8+xY5I2TYfz9+dpi/maWOwmRy0xdVORm5TLdlKynK2mDfZIvWwYcwQaekL8w==
+	t=1794305338;
+	b=Bwj+v1mKJcHRm8h3pOhLQYHh5IWC8updbP/hym4K7Uh+D7RqqspOoonPmAk0244W6snl
+	 /6Xp/KspOsX7s8n5uVgXRUWAPjJFT1juks5sJAlI0eihdVMHPlBZyyhUQd/iunC+/MJK9
+	 N1F2o/ynEG8Hn0icSGRsVl7uaVfbiPm4VIIblXTP/icGCTqGmGfUnSI0KFSGk7dwHo7Yg
+	 F0dANSURD7v8BJcU8kHhUI43OnVwBBwdWtHki4UOlCB3yhOMsSkhQnr5jL0Gv0JVAc9GI
+	 OyldCI7RBa9z/qZv9OA/3puImGb5AGdFq0ZsrJ3N08uZ8SXIL1PpAMK8Ur4muA15pIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794305206;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=aAAHhazZNdLURUvsRCYJSUXyyGeHzA5R62p6EIhkh0dZBQQh+4JiniOqfh3wpunZzRrG
-	 oe23t0S9IcPKZScyoWbwIxmvGqEhHmPQQRCF9GLevzBneOARuYwEqLXOkfXAG9OrBPKzn
-	 ULH4NfvJKOb88M6EcpWEiKCWQlKt+FLPCrWH4nVB8VDYXjwcCy8Mh2DI+cc3amYPOyEW/
-	 UJRRI8SdQHoPl2nLZ/tfrd/gTf83xBsIiyz9rtr5C3J+9iGuXV3tt0RX3IKSzBhhJ2yUF
-	 tRS4CW054xLGop9QwWt07wfh/9qSH89uwjqv0+c+/OW/SPneRbRiZNNCTGIJdo9Mkfw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794305338;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=gbyyxf8uWozu76g1DlG1FTKkvc6uMXZetFOUWZFFywU=;
+	b=SBv86/15QGNVgc6G7CYfV1SsLoh7pUxs/5SjJzH/9o/RJsyrSpC011oxhxm73khpmRyQ
+	 o4fcXI0daxhYdIawHJ8Vc09fS09j4PC3qHGKxhRORCuHxpzHd8NrFDM1pGGpXA4XEB/r4
+	 j5schmdRrcOEC7IOuDmQvu+5NvpoYUK+Fg7knERlMqHwaXIPOfpIMxEYX+j3CFg6t2F5a
+	 8aXYyyLA0iQ5hQ1nRA/a6h1Fp/PvmLsKEmiI6SgnBXez0KdoeN+s6B0NUIeoAP1XsevZU
+	 n8m4y7ysh900hq/JZM62PnhxLorNof/0qe/bs0UCYw8mkRMHAqIt4fvce0FSvPUj9LA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Bd/O4OE6";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TQEcIIm5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4997D606A334;
-	Tue, 10 Nov 2026 10:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C060710A2
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd/O4OE6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635DD1F008A1;
-	Tue, 10 Nov 2026 10:06:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TQEcIIm5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074AB1F0089F
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794305206;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bd/O4OE6MVr49LvzckZIOT3Vx4Yb0e8kDzhGTyiXv1R4vp6D6dalN3KkTwfaC36ie
-	 g4KRPEEdnNSFSQXsyNU1hWgxpa0mYODLwg2jH5Q3+ffMNQLG1dq5nGw+yQOgMAY5au
-	 67bxNITA7ew3Qo60vB/iAG7Zav2fteTeLF710lZJAUYx9MMmw5+8yNuOuUsUZ/dc/u
-	 8+80vcbFCGcT1cZaviXMFNMZU26i2UAYTa5lHnQdpQAzBUsHE9Iho0G3rXymTgQ6ye
-	 w3MXEHiGmgR0wtaQONsJp9cKa0BDPw9dUdXQSG7MwoC8Kd/ofhEFWOTYo+ewenNLJB
-	 r1EH+px47+JNQ==
-From: netdev-bot+sinfo@kernel.org
-To: Vladimir Vdovin <deliran@verdict.gg>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/3] ipv4/ipv6: Cache pmtu on all paths of a
- multipath route
-Date: Tue, 10 Nov 2026 10:06:44 +0000
-Message-ID: <179430520494.488859.8396860489135491042@kernel.org>
-In-Reply-To: <20261110095903.84813-1-deliran@verdict.gg>
-References: <20261110095903.84813-1-deliran@verdict.gg>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1794305338;
+	bh=gbyyxf8uWozu76g1DlG1FTKkvc6uMXZetFOUWZFFywU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TQEcIIm5uSvHVYRO5/HJgp1t7AX6bUuWJhaYIF3Kcex3e27e8EwhHQqY4M23+yA4i
+	 wL2GQpizNFa8Of1WkxTcCsFJxzIBQIjLYvKQjeBuSvEJHDct1yhVTqKcSpO2VyPzn9
+	 ZLsRm/5fLLyuc1b1Q0mCvMgByQH/SRFMjlkZm95X68ECdBxiOLjFsCMkt+LpWQlgeR
+	 y6RAy5tWpWZRKL7qSDqgD2KxMqDayiaTm2+mb7D2pDCHRv/EXzvzYhgqUwc72PxJaj
+	 H5hRaL8VCFhWcbIHFcBHeM4HRHHOA9YaPjDQQxKov500AtHZLjhoT5z+cumX7qUA5h
+	 MLuo+OGkv1w2w==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5c126fa1e3aso1183146e87.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:08:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGfTHi04VZvVNmzol6yV1bsijVMNF7nGbVUePSdpRRAdp2Hu7XuUNewnjw8qz6b8cGzt2GxWsM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Jj1KRBjKucPDb4SMcOv86kY54e6/iitG7uXUzbt9bcEcK7IHb
+	bGEosOsygpxtnDPVkTm6uKUW+UmF6DU7KoYodLg+2bz3k0/dSxhJoWsIOS9sNpy5zYtN65ntQce
+	bueeAIORbQjWFuG6M/jbVb9xVjoYk0OQ=
+X-Received: by 2002:a05:6512:3f0a:b0:5bf:d60a:5c60 with SMTP id
+ 2adb3069b0e04-5c156ee2615mr731259e87.55.1794305336791; Tue, 10 Nov 2026
+ 02:08:56 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,21 +59,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261103-gemini-ethernet-fixes-3-v6-1-c4b5ff8a65d8@kernel.org> <20261110011611.1733276-1-kuba@kernel.org>
+In-Reply-To: <20261110011611.1733276-1-kuba@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 10 Nov 2026 11:08:44 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=C96Zh0vNMnAjSQELMerZTvkmo=gTcn5Qj_ybiqdmVMA@mail.gmail.com>
+X-Gm-Features: AclHuK9S2bNVBTOMO0NPvMUxlRLJTa3NNcYQOtpep3gpLfuGjNKjABfy0FIhvOE
+Message-ID: <CAD++jL=C96Zh0vNMnAjSQELMerZTvkmo=gTcn5Qj_ybiqdmVMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 01/15] net: ethernet: cortina: Keep shared
+ free queue parent-owned
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	pabeni@redhat.com, mirq-linux@rere.qmqm.pl, mhun512@gmail.com, 
+	edumazet@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Tue, Nov 10, 2026 at 2:16=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+> [Severity: High]
+> devm_of_platform_depopulate() unbinds both port devices synchronously,
+> and gemini_port_remove() ends with clk_disable_unprepare(port->pclk).
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Hmmmm the bots nitpicks in that we need devm_of_platform_depopulate()
+then find that this causes new hard to predict semantic
+bugs .... OK rinse repeat I guess.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+I'll get to it.
+Linus Walleij
