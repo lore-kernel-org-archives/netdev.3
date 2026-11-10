@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794333088;
-	b=yx1LukAwvlFk5MR05RIROotY9NLeENFv3K33BnvE+P748xq+DEIk5a1zmm6K99SjI/fe
-	 foE9zQByZgIhp2xKKDnsMaADY+kIyHPNR8ovvvjJOvBGtjT0nscya0qRRR2wtudq0YaSv
-	 o2LF6W916hdPEx+nT7Y7H1Bs/EI4qrEjQHAzPvx8KxZ5waYKHfH9V0naxxQwx/rVDkH4Q
-	 0aAI5ii2L4UQYgF7m68KhdbDByUA0EtUvNuBuL9TIk/1Hf6mp8m+t2HOYpPI7/h6iqwvX
-	 rfEoO25r6sw5z3CJQjUsFMAykKpntoWo6xWlXqpzL3/S45SjBcP8EuUvqityzDliMoA==
+	t=1794333111;
+	b=M4Qi4cQfQkS5HafKofGpCTmDKIE9F89Eh7ac17geOvzl2EIKIVqHVtYwZAdmoL8FbIQH
+	 YptAtetAt2tfiwA5HPF8p3srCO8qB2c2GE7XmI9+etHx5HBIqpLvPsFrRzmF5VNP+yc3Q
+	 1C6Xz79vRXXxQ6wBCLGTKo95nbRk2pYWypihYUeD7gMsrJNNGFeQ36YnMRI5vq2Ibz6dx
+	 ecdOlZFlh592W9AuxxnNycinGChabYNcc61W6fQ0abYI1tun9RDKYFwEXdEetooohSwvO
+	 EARscOGuVfo9q4VVwH4C5VgFeffTYwTYDZaXHqJNFL6OSBbWw32rJDiac6ETgIokG4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794333088;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794333111;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=CPvvNXqIc6NQ9tcR5dDa5483AHCobeaIvRqiuxHAwj0=;
-	b=IS44KN86wkn9T2kONmAU9yVRcxl8zRqcut5nCNKffxYJvjTy1HdtYbf9tQPFmS1x4byr
-	 +Nn7qB8g1Hg4xx3SS4wd9vpLuYZ+Y+U2qUc36P7M0fGIhs353ddGZzpjsDGkhzZnrbopY
-	 SGQ+uy0K2JRSSRgXIZc+gKiiWXYNHpAmk9IeriXeacJuEE7uz5YshL0vLGhDbXJROiBGg
-	 98eXaGreqBeajZknXs0+YylGXFXEeV3fCoyhx86eYNeKWNv7zkNDpOflhE0E6wvADM2BB
-	 O7wYsf12g2VeXt88YgM98N/7ysgqMtTrztTjIbCbbK3pWU4ExQcCFTuyn9uN6CCFHhA==
+	bh=Bhispul0ewCHbq4vsceQr04zf2nGwRb6CQZ0KQ//7CM=;
+	b=TwCOFf7G2rhS2zGf0V2Ybpwj1gSIN/1MfYrAgQV5h9W+NSR6Y+v1SlCkB9icr8hUYUYc
+	 foWvoNvlOhBmJAQXNKQKqzHE9nhQPqgkd3mNP+eQ/qRp+60tUdJq17dgjGsOG4/8nIDpa
+	 HtsUNXM9CNPBzM/qoy8bx80++URvLtpSnjnnqyFKZQSNDc3cj4Ow9s2nUZ+2R61mjlYQu
+	 KNk+WOnU+fSWl5KHYzSWk6VDyC2GGZAVYgdN6KLor4VIPIjL/kPUUemHXHJGO7uVEjw+u
+	 PWx7QPGYRoC8gIrsTSM5CZZCL9iPZKJ+gs7t6t/YeRu/nDUwa98vGwmvsgUTKAz2pEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GVp6fDuy;
-	arc=none smtp.remote-ip=209.85.161.47
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="UbRj4/l1";
+	arc=none smtp.remote-ip=209.85.167.178
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C958606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:51:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C958606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78D6606A33E
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:51:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B78D6606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GVp6fDuy
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-7190d9bdb2cso448983eaf.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:51:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UbRj4/l1
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4b28d9537bcso1600630b6e.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:51:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794333087; x=1794937887; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794333110; x=1794937910; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CPvvNXqIc6NQ9tcR5dDa5483AHCobeaIvRqiuxHAwj0=;
-        b=GVp6fDuyjzyTBe4gqu8/YTJc+c4sASOl8xSrw4IySu13ZcrDDjEEmp4DRBUGxNUuq/
-         UTNz30ASl8tNE8acIwD8aE6qeOJQ3Qb6BNsvbu1HQ/vAW3WI+A3dwFgz6k1PLpyXdAMw
-         kiFBiuUUB12yfFPNbbI1oyvVbeKUYigCvs2Kd1kpOq737kVX269yZtr/KNC8iFBzJXdo
-         WfE2gmxbRUAiNANnr9Vh2YzVSQeneB64bsGR1DZkyALEI1i2d1BbHXnolIv73dOrdUSx
-         IQY+aS+8BsdPVedmdsIWj/1WifSPeso7fXSMKEEp0jCnG8vLFKpRQ5ZHTfjfN43Nol+0
-         LdTQ==
+        bh=Bhispul0ewCHbq4vsceQr04zf2nGwRb6CQZ0KQ//7CM=;
+        b=UbRj4/l1Aj8sYlatj5ZhTuvffrU1a+6SW/l3AZEwT/GlvNFEOUvbDI4M5UtFPoaS7n
+         A/F/PMwebScx3Wva4W2OXAwak7ow6QMUZgzyQKersUeBJp5dBDKbiHEdmcrmR0GWnbNT
+         nWatWVlyydfwqnCeUBGE44vm++7n59w873D0KwfP8zqXgKF5U5LP9Z7WWe4rprGXXPOF
+         ypPNuO/0H0RWlZCEXuytcu70l/moqqz5v1/Mq+FGjKQi7IWfFPmBwCYGtJOgZmCUfAS0
+         XuwaL1/kgF/rj/+lOFYfigmMjOa5wEP0IzuJhLTEPjWXkII1MtpZ3JbQroRYvxBdSwwP
+         D60w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794333087; x=1794937887;
+        d=1e100.net; s=20260707; t=1794333110; x=1794937910;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CPvvNXqIc6NQ9tcR5dDa5483AHCobeaIvRqiuxHAwj0=;
-        b=Z8dc63C5LmhMH8wWiF1ikJelSDTQFDAM6BjBmBCw6vrVGhUSptLyBf9hfF+xjd51yM
-         VbdREAdCd1RhrtY8rBkbBEQaSUzUnpzYKSf2pobISlog9nHfnBMPgGqBkDHc4tj5sHLc
-         poy/EkgvmlYWUdE81+TW65Vxay1nlksUcK5erUS/sgXy8i/ea6aKhq1S0IcJ2WTXeWDc
-         elmZ1xK+mzIZdU/LknRwfuU3TN3j/7D+XDIT+r1fc43gMLf0RqILQNBIpYjthmQ0/sKw
-         6rF2RCEVfJpUTTxjhUPFIufMBDd7tEptoaQM9WL9zMZUeM3Pr//VI3+Fj1I8rL5WDr+c
-         lgWQ==
-X-Gm-Message-State: APuU4Z/gZnAv7DRdyvyS8EtrUQE1l7GJbJMJ5CBGhr+32Ta9DEW43oMN
-	eP+RbTdjIocPrqyQuo+4yt3++jH2IgbILPauUpOIrMdhYDg5DGuVldGgLDdxWt5f
-X-Gm-Gg: AYBFou2M49Fm23zs2frzZ+wY03EsdVn9FG9ICg1I8L5JYiiTbbZef3LKohAlWyY7gpM
-	xZjR24aqii3z8USkhJvOXOIQ2WGn3Xw5TTBcRmd1L//O68KMIAid4lA6P8y2TQALEhxtcFQ5Yga
-	zk+r1gN/yMLEa1omm6/5BTSpMm9Zh7/2EMaKJKk6+FF09HZf1xA5GGKqhBbqUokenN1jyXDGYCC
-	H3xGWZt/kNJ69aVa9UUmwiu/Dh4FFsUJdPGdaArvnto6ETgkbR2o7ZlRYZ2x2rq/WYLRfXrFVb6
-	Vh+5kCBjdqnZX2RoKI7DtThhQhOE/tHWuBMoPzOkBHGl8Arnu3rjgbVpmGE2IReK2HQt2UTrpJz
-	1NJLdz8zoTEjEXdAR637TAbaYj6MefM5URAMfLdSksLf24amaP2GB/2PGt74AhxWK9NWoJJrBZ6
-	7ZUty185GWKVHx7M7opVrq/5IWIZsxMdDCFUIby61+ootcIR6vWCrg45yh4lrtF4qwIXcKeJnwm
-	qrWT/SJ/ZFAwbz2GWJZbPrcD+WtmATdMoNi+2N+iN5zoICcLMR7Cd44fBuFZ/dNX6QdQ+znrsup
-	FJOz+38lB0b2pKvPvlYqftsT
-X-Received: by 2002:a05:6820:c5cf:10b0:6f7:75ab:f969 with SMTP id 006d021491bc7-718a6e32db4mr1160034eaf.66.1794333087028;
-        Tue, 10 Nov 2026 09:51:27 -0800 (PST)
+        bh=Bhispul0ewCHbq4vsceQr04zf2nGwRb6CQZ0KQ//7CM=;
+        b=grwupRy3ke1Ad568YSzwGBBIdWq+l4tYO+77Xo5klOp0FbSihOnHp3hBGdJyDuiAC+
+         H9ZsRMoF0Ck5eKfdKFjdMNrYN1bqVKuKDZhy23l0cQkmublG3InOyWzCx4RLcILlZD/V
+         0cuF0G4TnkdtzEG22+ZjtiY4r8BXXmIkDNWj7dnZXotUjmvQOw3ztVAI0DyaTJ2Jii3W
+         9UYAlUXsP0RsZSAdRk/a4yXfTz24UEs0dT+YQtWuYU19eFX51fAgMgPSy27JLPWBDfPn
+         TlTtNAOpmpMAp8W+GmiWlSYbQQkxyHHqD49D44P7OLx7jGfCy7Ch2rLcFDLCoBq5/hnE
+         N9Og==
+X-Gm-Message-State: APuU4Z9KegBC/SWjB65+nbYJnZxmX/VAsgIV0M++wNARl51Bd7LVLSKg
+	TnlrJfOCqtpEQIRV8OGcBCWaA9NOkcvKHSQeuULraNljDeMBBjXXmo2oknImTlJH
+X-Gm-Gg: AYBFou15UXoejdDK972wcDdHjGIij8JrUsC6aHRG2OY5EhcKb606gn8IlWrj4P0jWr/
+	WOy4vUtnw6V69xZQbZXqMCHwhgsAS/M+7r/hMFbjB3WMOWSrZKbrr9f05tQLgmYkOxj/QQ4WqS5
+	slww+ziHbFVQOtBXicqPK+0mJyiXvaZKBNU3vWmHpfiCLl2mzgU4V7PFo9ZQKJfpjNCelHRWmLA
+	vsJnxq6TLwj3WFYSX8MjZ28klgd1h+zvAGVKnTvPYq7F+0xlsyK2JXShXJAlE9/jgaIHUYGA+pn
+	rsuaSU54bzP20xV80C5MhbmChVYvi2zZtUgaorSjoXpCYAIMoNOdtzTzXsFO4SF+562Tagz9IG5
+	aCtQcSNX0VSWSB0n6iNGaMAPoA6+g2wp7QH8J8L7uEzCVLesZnLj5vaNuWRe3LuNPo0jT+N0Pw/
+	IDoZ6P8mP+g7SJg9EJ3gnhQGXvVL8ytusx8NdJz0ZZvlbfpOCLK9CFwhGwdedM6qksUUZXn5a/A
+	ZRbcOs78yMO7g9g6XGNNGG5TlJ4+igtQpM3GpVK1+4bvLYzvWlvnwBJfRU+WXQf7PFN83NYi8Dd
+	0aU1NlVrwBB8w61zL6rzrK6G
+X-Received: by 2002:a05:6808:c093:b0:4a4:c95a:38d1 with SMTP id 5614622812f47-56872839720mr1542650b6e.4.1794333109664;
+        Tue, 10 Nov 2026 09:51:49 -0800 (PST)
 Received: from houminxi ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-718aa132e65sm1873741eaf.14.2026.11.10.09.51.22
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-56905d3bab2sm2712060b6e.12.2026.11.10.09.51.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 09:51:25 -0800 (PST)
+        Tue, 10 Nov 2026 09:51:48 -0800 (PST)
 From: Minxi Hou <houminxi@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Aaron Conole <aconole@redhat.com>,
@@ -85,15 +85,15 @@ Cc: Aaron Conole <aconole@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Paul Blakey <paulb@nvidia.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	dev@openvswitch.org
-Subject: Re: [PATCH net v2 1/2] net: openvswitch: do not record user features when the change fails
-Date: Tue, 10 Nov 2026 12:51:11 -0500
-Message-ID: <20261110175111.977451-1-houminxi@gmail.com>
+	Shuah Khan <shuah@kernel.org>,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] selftests/net/openvswitch: check that a failed set keeps the features
+Date: Tue, 10 Nov 2026 12:51:34 -0500
+Message-ID: <20261110175134.977835-1-houminxi@gmail.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <179423057882.994134.14676780013911062883@kernel.org>
-References: <179423057882.994134.14676780013911062883@kernel.org>
+In-Reply-To: <179423058020.994134.14656142555028492016@kernel.org>
+References: <179423058020.994134.14656142555028492016@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,28 +106,21 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 On 2026-11-09 08:23, Sashiko wrote:
-> [Low] Is this list of reference holders accurate? Only cls_flower and
-> openvswitch call tc_skb_ext_tc_enable() and tc_skb_ext_tc_disable().
+> [Medium] In test_dp_features, the skip path does not call ovs_exit_sig.
+> [Low] CONFIG_NET_TC_SKB_EXT is not in sort order.
+> [Low] Should CONFIG_NET_SCHED=y be added to the fragment too?
 
-Correct, and v3 says it that way: cls_flower and OVS take and drop
-references, and the bridge, the flow dissector and the OVS flow path only
-read the key and depend on it staying on while they do.
+All three are in v3. The recirc round is a test of its own now, and it
+calls ovs_exit_sig before it returns the skip code, like the other skips
+in the middle of a test in that file.
 
-> [High] Can every failed OVS_DP_CMD_NEW leak one tc_skb_ext_tc reference?
-> [High] ovs_dp_reset_user_features() has the same gap.
-> Would it make sense to add a tc_skb_ext_tc_disable() to the
-> ovs_dp_cmd_new() error path and to ovs_dp_reset_user_features()?
+The fragment has CONFIG_NET_SCHED=y, CONFIG_NET_CLS_ACT=y and
+CONFIG_NET_TC_SKB_EXT=y, with the last one after CONFIG_NET_IPGRE_DEMUX
+in the order that ignores underscores.
 
-Both are real, and v3 fixes them along with the one the series started
-with. All the paths that change or clear the bit now go through
-ovs_dp_set_user_features(), which takes or drops the reference as it
-records the field, so the four places that write it can no longer
-disagree with the count. The failing NEW is the datapath that never
-reaches __dp_destroy(), and the reset runs ahead of it for the name that
-already exists.
-
-The two tests cover the reset path: an outdated client sends NEW for a
-datapath that exists, and the test checks that the datapath keeps
-answering sets afterwards.
-
-pw-bot: cr
+Two more changes on the way. The skip reason is printed to stdout, so a
+run that skipped the recirc round no longer ends as a plain pass with no
+sign that the round did not run. And the expected errno is read from
+python rather than written as 95, because EOPNOTSUPP is 45 on alpha and
+sparc, 122 on mips and 223 on parisc, where a hardcoded number would
+turn a real failure into a skip.
