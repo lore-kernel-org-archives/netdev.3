@@ -1,111 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794298200;
-	b=w03VmC5s4FQRvHQFqRcJZY5NpIn7r37iCMPdXZ5ZK3BBHIQXQGm10u3Cq4FxQYOT6Ctr
-	 RDM2UQAQLu0Is1PilsNnSmhwqZTbAz8azQBRSOSrVUlPzHvWmSYGaZdo0c4k7uxGb3o/2
-	 y5GrQLpEtEp7tXTSQgjo1bk4NNFkSxHdPv7SmUGeqoqyP3O/qmg6OaaHipIy8m+fddLFd
-	 bYeXNsD0CombMKKDAitYZ1r6I5TaKV3fCwqRuebjUlrpVMy2RXJSy83OoSlPLxV0er8C5
-	 Jrl6qrpQxvtXap3gthyaGGFv6PHmpITbIGjbOzA0rU3m3TDrVIBLifXrab9qw47CC5Q==
+	t=1794298196;
+	b=kLNP9dp++Oj71pnY7urHNtk+roSZ7lunDdkwov3qZg42WkSX4FTTDzag+OMv7Q6hXsmM
+	 E3PZ/rbIH8ICPc5/DBpbH5p0cksghJXkA+DAouew5JpEeLW4tP61/NQwBxKy8/3gIb3uX
+	 bs5WyWzL8/Ejv3c7ylfnCGisQDUOy6tfMwaO1m7I75Wang87Ne4Jj13kktdkXq+HEomh6
+	 pLIR7LmrX08wzijwqkkkcm70FZvnKpJIDHm1eFVTlzJthv7z4strjLdFR4nMiVzIWuozg
+	 PFcTb11WrogGOUs2/FOOwx5/sEjHYmQ1Ys0uOVNxQubFCV7w9f4p/yeuShviZqIgLfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794298200;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794298196;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=XLq6hLDYm8MJrvEEqRgLlm3f5t67xvwXUwG/sLacj+Y=;
-	b=uddoS2TicXuTY08KnAIXH8S4pp2KzNEPnnUTBYIyyAZyql5l1BB+WPFYdpThn5bbbo1z
-	 JpdW1NSyMPyk6C6BrbKLClmeyQje2l9X7090cNFPVKPgzDKaY3uYQvX8udoBwMmXS1+Sf
-	 J70+/1Ag5JS0M//sn5AUm+dFwKNzl9kU3JyinL0OVF3cumuwLfdMlZYOtgqWjynql3ijY
-	 GdKIAqrJj+5zeW3HCKmHyuFmPX+y7RKhkfIeFmVJnNW+22GufvNjAXfeorJK+6cgsn1qj
-	 eFXVdOt2YU+mBzeYbglyGW7QpCIRPCMH4SgYIFwBmCwAx+FzMIQX0ck5c9qy1y+YIcg==
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=eu67nKrl8thChRWWxwnPMWk5WRVt8b81znEUdh6QWzI=;
+	b=Ln4jRSqX6WnEz0UPO/Sc6hl8TMMlqBTQhj0rjtwyzgb1YyqM89R+9/6D00A7VUplKYH3
+	 c18C2EgYYRJfuWVfEfqJ6zxJBgXkCNJcppPqgBgt155+n8Vv+VFRs2UuEg028v0i0RmL8
+	 U77cRekWQGhCl6Ii66CsKMRLIL2mA1OwVJ234CiWmLJfrL6rBW6mv8lzrfiXk+Rb/qgOd
+	 fYuZrnUEjqEaF0uA/vT8iNsCbYOFsZ2s9BLC+w6aAJF4yL5LMawGpYtl7dQanlNbmHciv
+	 n1HwSyq+Udun7qpor8u8SXEFNizczaCjaQcfATtULk8fiRcVUC8Kp5PrAKXlxkpiAgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=ragnatech.se;
 	spf=pass smtp.mailfrom=ragnatech.se;
-	dkim=pass header.d=ragnatech.se header.i=@ragnatech.se header.a=rsa-sha256 header.s=fm2 header.b=Yig8NHSj;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=5C5vbCcg;
-	arc=none smtp.remote-ip=103.168.172.149
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	dkim=pass header.d=ragnatech.se header.i=@ragnatech.se header.a=rsa-sha256 header.s=fm2 header.b="y/syhfkP";
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=XdjsUDVE;
+	arc=none smtp.remote-ip=103.168.172.156
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A2C60A261C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:10:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47A2C60A261C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE556606A331
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:09:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE556606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ragnatech.se header.i=@ragnatech.se header.a=rsa-sha256 header.s=fm2 header.b=Yig8NHSj;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=5C5vbCcg
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8EDFAEC05DC
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:09:59 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 10 Nov 2026 03:09:59 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=ragnatech.se header.i=@ragnatech.se header.a=rsa-sha256 header.s=fm2 header.b=y/syhfkP;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=XdjsUDVE
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 156DB14001F4
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:09:55 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 10 Nov 2026 03:09:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794298199;
-	 x=1794384599; bh=XLq6hLDYm8MJrvEEqRgLlm3f5t67xvwXUwG/sLacj+Y=; b=
-	Yig8NHSj9lHLIZLKjNe8fxpumVVn2Qa9xUvP/5SkTbC86yw3oCfCUmqjrJXcbevN
-	lfwSpNyg44Uo5SxKNvY+WVSW+q9vODVA51oGgaewXI/Cz9ZLCqWtEu1z7jGk3flq
-	SnR33h16jKqqgNe9lp1CFeakP3jOnFu16ISDto/VrpuQ0Tul/c6moyldyRMf09EN
-	EaR6Sok+pf+Gn2tjidG6Z8rmrcDCqWnMXdSrSpsko4jEgEn9yvHQ/L/e5Ev6KOJi
-	GSPrk1ZwH2FdZIYnXVL1Ycz83/CGtNdC15lWIYyNQY4Ma7e3nysw+NLIIBne8y6h
-	FLd03ewWUSDXtsYECabavg==
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1794298195; x=1794384595; bh=eu
+	67nKrl8thChRWWxwnPMWk5WRVt8b81znEUdh6QWzI=; b=y/syhfkP403rxRY5aW
+	4UpgzANsj8E0MAbkBBPA07ISUS4KydP15mLBcHzK0ZmlkxJwcAG2Ji5lo3TBE7lp
+	j8EaHEeHEDHBOxpzF5oizS5LkQbeut0djMESJ9gGCv/OHjjucmUFJ38gsOMWbGAy
+	kXwnn0o1pNEXKIENmebdYfFAmdIMgdYPfzlRCx5iAPVjTbSprZp0i9Idt2dAjhbq
+	9jru00HSL3rDyCW/y6vI+zRPuhsqJQtqvcqsdLhkpD0F8kGveOSxVCtE4BEo3+dA
+	C0QsbRukKIPEWl7VfpPusI7LtmIV+Pc1Wvf21F1I/4ZyOYTiW0oCCP4ZHs2BMJ7Y
+	pr7g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794298199; x=
-	1794384599; bh=XLq6hLDYm8MJrvEEqRgLlm3f5t67xvwXUwG/sLacj+Y=; b=5
-	C5vbCcgwi5Brmi6bOsSqvhgsYMtvVq/hIuaRR7gWek1hVHEul2h9IGCxO8k9U2EW
-	2l0QdlpEdOyBgUlMl50WHU6Q5wkIub0KE+AReZTOi/HoDwuUDDDSXdB4arkgqh1C
-	gCMalnoUpsuVtoRp49AHppflJyLytTA/Z4PllcUuOhouBgRuhX1/NVRaezrebRET
-	IMSxHY4yO5kWDLXTSvLuNOSCMO6aSyxyzPXAgNvuk7mT9C/CBhLPB0X2yvq+mYBy
-	PQ4x3UBYBCT5kkMiTjcpRgs0trmQeObCabohvvZt/XiArve2Ozh1QR5xv+i7OCMI
-	XpNumqEgSIGllaQmLGIRA==
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1794298195; x=1794384595; bh=eu67nKrl8thChRWWxwnPMWk5WRVt
+	8b81znEUdh6QWzI=; b=XdjsUDVEf94E3xANi69dMR1naQqB8VwLV/BO+9thFopH
+	pXW0opbhG56tua/opc2AOjR9YqqSPkWs9s/F0GHNQv47/MWsxJl92SM+FboY8/ug
+	4RtWB/To5MIb6coAb5pbR5mSHYExjIoXOPI548UgCvE8zLIMlOVAy0zsI93FLCyM
+	71l9HaHjBzXSQfk2UxNAiCN3EisPRmhMKnoYMR/aVnJEkBkXfR3Y+DI72HTRIWTP
+	k/cAcC+7+/5FUpVBhk+6+OsCMqHF9pl3DEC3TlViPPolD+Tlm6tvDYVx1zyM1vFL
+	AxGlsRwdC+Z8lpgKAUFkg3noEql7iRoyTg4hoy7yOA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=ragnatech.se a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794298199; d=ragnatech.se;
+DKIM2-Signature: i=1; m=1; t=1794298195; d=ragnatech.se;
 	mf=PG5pa2xhcy5zb2Rlcmx1bmRAcmFnbmF0ZWNoLnNlPg==;
 	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:io1MoOAw5V2D8dSUBlPKe94+CtCiSWV/FksV65Bv0AbSi0r
-	GTka6NkqQat4wGolzmC44uWhG/CmNvJQx2fSLAGT6+EMTeC8CgN5N96hz59f6H2b
-	80t/k+GyrA4mlCE3q+ve4qaSKjLjp8eu/QAHESkQ6LE1XD8g0NC4+i7L8G7TXAWI
-	4NmbVmmORZEwnKVvoEO2JTkr8OXI2ThLbpp/g71B25EDPaVYgRBik0nkEHwF3RXk
-	NWrwrhIyg1wX1J0swnkrJswMMq8+115YZiaO+0EPsSpIGpo+mCUryUR7T/3hjJ6x
-	9UOGsUsmwj6YtI3i4UIulQM2/kZMFWJtKsUleoQ==;
+	s=fm2:rsa-sha256:QGR/tkrC/Nqh+ZzN19DTtCn3ha41P0mJ86JTa/hMdvcfZyg
+	melBUWnGO5rf7s2l/FYg6XTd8E8gluo/COknn9yO7kcBirOIOeB8nJQ52rHs+Jph
+	o8jFj3h6LnaFZTA0cb/veQFhMvhTJtUPMm83aGZF2AGpH+b40XLyYPR0QDaj6B2/
+	7VtXk5pfenZ6n3relxOrQ9tmGHwDzWyQts23EjLvoa6ElTXZZGpnr/BejmYs4lqi
+	D8SzqTqF+Ev42d5GcdeJuIu/cKy4lrLXuPXMHB9jPi3oU5RQeNwJ9NtJj95W5Odi
+	ABP2mxR3yUa2xfS8UdZrCe6dd0T0nbmWmQ3tH4A==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
+	action=mi-m=1; hc=10;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:S2YMFbmXBLsOoqovpzknScuW+8i2emKK60YjCc7jDY8=:7r8iapYyDxj+zufD1N6tyXRhJir12RNFslJQ+3bmxqA=;
-X-ME-Sender: <xms:V9HyakMdbq9ZRrZOmZ_MK6AJVjLchWJvctvavtyX3jyB9r6MZjGCUQ>
-    <xme:V9HyajtDGVF55gGrSK8kmZhAKBxv6tHQbqAlafS7fuoaU60HFKMl30bGWWdf_Y_8s
-    SfT2LH9GbqtAsPYBbPgeIP6neRgOv9DxklM-qKqglt8TBab3L4kTODS>
-X-ME-Received: <xmr:V9Hyap_BK6mH3A6vKjz8NODkptfeD9jYtOlrlQD0NBejOLHgof6GS8AnA9vWExAjOE9CQEgCK80S0XxxExHffHNvKYleAt0>
-X-ME-Proxy-Cause: dmFkZTGuOLErSs1l+S276B+qKPBR6I6yAmnkdBv7NuWWQbHTIy5o96o4kikxhojnDzOvan
-    HrDafnOp4ba81usUsSW5/04LzzAQtwveWm1YoC1JFBnMLieqEfN82NXlxDSbT3Hn8iryXs
-    nGxaa5J4aJxISAHyf78+hjfY00lsF6F8mfMAUyd2Y7xwlTSqej5k9lExGsrmsk/p5l16ea
-    PZZkKBEhUBem8C3X3b4L0bMFvDgPjYhkLTqS7sr+dl6hJ4kHbuxDuQ4hVMeYESD0rD0/eS
-    7AtUJuVETqaQvhe/moLSUh8sJzyk9bNASUP+GeDiGmpS+yAPHTOPWP9hRPE8zGnGgRlmrh
-    7eJV3sDW5GSfBQ6lXSjaFRk0gpUL7nntcddtJ6WCuLe0oEsLG2WBbbGB1O96sZcONCamdn
-    8XA/d8jogA8tSfuqAETgn3y/aBlekNwXWUBNSqTnWJLHk5y7L1TLQrhJUTfkJS0qyW1DSJ
-    5FurZDtwnS6P2WTv4c2kDtMO+TZQpD6i9Pi+LxFhHzWNJaO6bftfykAHMYsJT+o5i0Rb54
-    DPqfqMYRGKolasv7DHWGu9xqvR1I2wAJN39Ikm8tND+rKYcceWIPfFtSMgAaBI5BKAF6bc
-    5KmJLzzm+T9rP/OjDgM43p5lPlX25qLrQ5YJPAn0oV7unCiVktlc2AEsQ3tQ
-X-ME-Proxy: <xmx:V9HyavHhRBqm8GjooX-BvWOMeE94ur9om8IYt5rUCeCYOVantPTPfw>
-    <xmx:V9HyagR5Nfafz9PyyVHlhxkkFWb7tG4xTjVmdmmJiB7mwZIcgg1--A>
-    <xmx:V9HyalvVJOs6rEGoDU89-frOS69OA-gUAQXXAPSI5h3_BvDdG3u06A>
-    <xmx:V9HyalCj6OV9GmlAgUmNlMQboeg8CkYfH-xcDizABqbj-NFTiHOjCg>
-    <xmx:V9HyatGqsBwiSZ1kbPvkMudtbCaYs-1yiK6UtxTt04vUHM0YA_Y8Os0L>
+	from,message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:vFlTB+7NMWqbCiHv5a8jcx5fz7fA1PmDFOeLrmACpRQ=:tSe0HwHwGaHBzXco/aL/zhpyFQADcXLLOcWq3KMpRAQ=;
+X-ME-Sender: <xms:UtHyal8qHkLquz6HXdJ661IwLGe00OeyJSZWXCAX2FxclTE420yvCA>
+    <xme:UtHyaicApk8cepSRVOPCaVwuUZHwn4s_QN3Y2kLz5_PgD7Xz-9E0HWlawALlNAruM
+    1XQRN8FqPW36ddfyIYrUb63P1AcPY4xKkiKIpJU1ZERrVyQ1H_gGKDZ>
+X-ME-Received: <xmr:UtHyahs6ZE5Y2D4-ssKkED4gyV6MGZfpdD6EdpswQYO_Ee8Rus2C7v9jE_0WPPmT4LAX0Ib0T2wrCDOueKETryQOiejuH2I>
+X-ME-Proxy-Cause: dmFkZTFr2ruVCGVVVj8QksznlxJg6gwOFgezUDl1jMUM3ma1FT5YDj99x6ZnMvG8hkIPZr
+    MzAirAuCzS9Ycyz/RQ0an3sTy0qEt0qVCAx+Kk7aGwRWpaW7N+a6jUK8KQUJzrhvjodvvA
+    3Hw6iAkJYfzz52z/GKaukH7PTr90ixclE5/MdoGz80uUf6h0SOrxvedEsL1NAljjo2FviW
+    FiQahowzpwh6HHwd8BClJ+PkcRsFz8WYSODvQ8Wxwaos7SD47T9IzDNZgelT8fe+Gu7mKr
+    ga4Wlw4tMifT0zxFLfgq1KLT9oMETOKhy6HJSRk+spfsNjKTyTN0cYucCRRho087J0mFCk
+    pOfNh8uxMUvJNDbrcFA7FKabwpcSBsissSjN6XdnhicJsT3J5FnWhR4NCKzAMcLdyl6R7k
+    CLfQDupqUoQFPl+mejQ/oSDt6pKYIaBvzrN1QNLRwpvaq7Zj0WrR+TF/eUNUbNwS3Lxr0F
+    z4sjkB1Nvs2lJ6rIGlwNphOwvDnS3r2REkelkcgYfBcgTzG4jZqTb4S7vJJ+BvMTuF4O9v
+    1trBb3ftSHGTQ7jrE/b1fYbEk7PPDnrikGaf8WyOxOHQD41WO9YRRELih3+xEC+ti+VuL+
+    Uzar+/SKbWnoARMKcVaYbtcHk30ZQG74K8WM4jc7WDxBlt43/rdshk82gDZg
+X-ME-Proxy: <xmx:UtHyar2W38kQlI24Y1u5Oxa0rVI0bgGZnFNC9g2bdDDSH__jssTPaA>
+    <xmx:UtHyauC7k02q_c6sPNjX-CA_9l9_YgOeeBGPNO1xdWra11kP8cr-hw>
+    <xmx:UtHyagf1KDkGDMV3qvYuUkNY3UleTR9VSmozN8gWO2SrD0vElt5BHw>
+    <xmx:UtHyaoynriwIB6gK7FuEwkonN1EGrXCvIvdKlc03Z86L-29eV6kH-Q>
+    <xmx:U9HyakVCsHC1EEqW-XWidwzMYf1YA-7Kuxu6ni33wQgweAutp0XFE7iT>
 Feedback-ID: i80c9496c:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Nov 2026 03:09:58 -0500 (EST)
+ 10 Nov 2026 03:09:53 -0500 (EST)
 From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -125,12 +124,10 @@ To: Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH net-next v8 2/3] ptp: Add driver for R-Car Gen4
-Date: Tue, 10 Nov 2026 09:07:26 +0100
-Message-ID: <20261110080727.2377040-3-niklas.soderlund+renesas@ragnatech.se>
+Subject: [PATCH net-next v8 0/3] ptp: Add driver for R-Car Gen4
+Date: Tue, 10 Nov 2026 09:07:24 +0100
+Message-ID: <20261110080727.2377040-1-niklas.soderlund+renesas@ragnatech.se>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261110080727.2377040-1-niklas.soderlund+renesas@ragnatech.se>
-References: <20261110080727.2377040-1-niklas.soderlund+renesas@ragnatech.se>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -143,318 +140,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add driver for the gPTP timer found on R-Car Gen4 devices. The timer is
-system-wide and shared by different Ethernet devices on each Gen4
-platform. The operation of the timer is however not completely in
-depended of the systems Ethernet devices.
+Hello,
 
-  - On R-Car S4 is gated by the RSWITCH Ethernet module clock.
+This series is the first part cleaning up how PTP timer support is
+implemented on R-Car Gen4. Currently there is partial support for it in
+some of the Ethernet devices that can use it, but not all.
 
-  - On R-Car V4H is gated by the RTSN Ethernet module clock.
+The partial support have been implemented by hacking the gPTP module
+directly into the first Ethernet device driver that used it, RTSN for
+V4H and RSWITCH for S4. This is understandable as earlier R-Car
+generations had a dedicated gPTP timer for each Ethernet device, but on
+Gen4 there is a single system-wide PTP timer shared by all.
 
-  - On R-Car V4M is gated by its own module clock, the system have
-    neither RTSN or RSWITCH device. But the module clock is the same as
-    RTSN on V4H and the documentation referees to it as tsn (EtherTSN).
+The current implementation makes it impossible for other Ethernet
+devices on the platform to use the PTP timer without messing around with
+other Ethernet device drivers.
 
-The gPTP device do have its own register space on all three platforms.
-But on S4 and V4H it will share its clock and reset property with
-RSWITCH or RTSN, respectively.
+The effort to clean this up starts with this series which adds the
+system-wide gPTP timer as its own driver and device tree node.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
-* Changes since v5
-- Use pm_runtime_resume_and_get() instead of pm_runtime_get_sync().
+This series will be followed by work to the RTSN and RSWITCH drivers
+will be be switched from its current partial support by mapping the gPTP
+address space directly to instead use this driver.
 
-* Changes since v4
-- Drop mod_devicetable.h include.
-- Remove clap of register value as .max_adj prevents any overflow.
+Having both this and RTSN/RSWITCH described and enabled (!) in device
+tree will not work as they will try to use the same memory region. For
+this reason this new solution will only be enabled on platforms
+after all user's of the gPTP clock have moved to only use the new
+centralized timer. But in the interim both devices will be described
+(but not enabled) in the platforms base dtsi file.
 
-* Changes since v3
-- Clamp increment calculated to register limitations.
-- Check return value of clk_get_rate().
-- Disable PM if ptp_clock_register() fails.
----
- MAINTAINERS                 |   1 +
- drivers/ptp/Kconfig         |  12 ++
- drivers/ptp/Makefile        |   1 +
- drivers/ptp/ptp_rcar_gen4.c | 225 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 239 insertions(+)
+For some platforms this is straight forward, such as V4H Sparrow Hawk,
+which only have the RAVB Ethernet interface. This platform currently
+have no users of the PTP timer, but still advertise it supports it. This
+and the soon to be posted RAVB patches solves that.
+
+The gPTP driver itself is heavily influence by the existing partial
+support for gPTP in the RTSN and RSWITCH drivers and the Renesas BSP.
+
+Niklas Söderlund (3):
+  dt-bindings: ptp: renesas,rcar-gen4-gptp: Add R-Car Gen4
+  ptp: Add driver for R-Car Gen4
+  arm64: dts: renesas: r8a779g0: Add gPTP node
+
+ .../bindings/ptp/renesas,rcar-gen4-gptp.yaml  |  64 +++++
+ MAINTAINERS                                   |   7 +
+ arch/arm64/boot/dts/renesas/r8a779g0.dtsi     |   9 +
+ drivers/ptp/Kconfig                           |  12 +
+ drivers/ptp/Makefile                          |   1 +
+ drivers/ptp/ptp_rcar_gen4.c                   | 225 ++++++++++++++++++
+ 6 files changed, 318 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/ptp/renesas,rcar-gen4-gptp.yaml
  create mode 100644 drivers/ptp/ptp_rcar_gen4.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 085fedac38ef..d7ad3e1b5295 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23827,6 +23827,7 @@ M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
- L:	linux-renesas-soc@vger.kernel.org
- S:	Supported
- F:	Documentation/devicetree/bindings/ptp/renesas,rcar-gen4-gptp.yaml
-+F:	drivers/ptp/ptp_rcar_gen4.c
- 
- RENESAS R-CAR GYROADC DRIVER
- M:	Marek Vasut <marek.vasut+renesas@mailbox.org>
-diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
-index feb50f8cc406..573334a66557 100644
---- a/drivers/ptp/Kconfig
-+++ b/drivers/ptp/Kconfig
-@@ -264,4 +264,16 @@ config PTP_NETC_V4_TIMER
- 	  synchronization. It also supports periodic output signal (e.g. PPS)
- 	  and external trigger timestamping.
- 
-+config PTP_RCAR_GEN4
-+	tristate "Renesas R-Car Gen4 PTP Driver"
-+	depends on ARCH_RENESAS || COMPILE_TEST
-+	depends on PTP_1588_CLOCK
-+	help
-+	  This driver adds support for using the Renesas R-Car Gen4 gPTP timer
-+	  as a PTP clock, the clock can then be used by Gen4 Ethernet drivers
-+	  for PTP time synchronization.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called ptp_rcar_gen4.
-+
- endmenu
-diff --git a/drivers/ptp/Makefile b/drivers/ptp/Makefile
-index bdc47e284f14..0464a586bed2 100644
---- a/drivers/ptp/Makefile
-+++ b/drivers/ptp/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_PTP_1588_CLOCK_OCP)	+= ptp_ocp.o
- obj-$(CONFIG_PTP_DFL_TOD)		+= ptp_dfl_tod.o
- obj-$(CONFIG_PTP_S390)			+= ptp_s390.o
- obj-$(CONFIG_PTP_NETC_V4_TIMER)		+= ptp_netc.o
-+obj-$(CONFIG_PTP_RCAR_GEN4)		+= ptp_rcar_gen4.o
-diff --git a/drivers/ptp/ptp_rcar_gen4.c b/drivers/ptp/ptp_rcar_gen4.c
-new file mode 100644
-index 000000000000..e82b6c5abc30
---- /dev/null
-+++ b/drivers/ptp/ptp_rcar_gen4.c
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Renesas R-Car Gen4 gPTP device driver
-+ *
-+ * Copyright (C) 2026 Renesas Electronics Corporation
-+ * Copyright (C) 2026 Niklas Söderlund <niklas.soderlund@ragnatech.se>
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/ptp_clock_kernel.h>
-+#include <linux/types.h>
-+
-+#define PTPTMEC_REG		0x0010
-+#define PTPTMDC_REG		0x0014
-+#define PTPTIVC0_REG		0x0020
-+#define PTPTOVC00_REG		0x0030
-+#define PTPTOVC10_REG		0x0034
-+#define PTPTOVC20_REG		0x0038
-+#define PTPGPTPTM00_REG		0x0050
-+#define PTPGPTPTM10_REG		0x0054
-+#define PTPGPTPTM20_REG		0x0058
-+
-+struct ptp_rcar_gen4_priv {
-+	void __iomem *base;
-+	struct clk *clk;
-+
-+	struct ptp_clock *clock;
-+	struct ptp_clock_info info;
-+
-+	spinlock_t lock;	/* Registers access. */
-+	s64 default_addend;
-+};
-+
-+#define ptp_to_priv(ptp) container_of(ptp, struct ptp_rcar_gen4_priv, info)
-+
-+static int ptp_rcar_gen4_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+	s64 addend = priv->default_addend;
-+	bool neg_adj = scaled_ppm < 0;
-+	unsigned long flags;
-+	s64 diff;
-+
-+	if (neg_adj)
-+		scaled_ppm = -scaled_ppm;
-+	diff = div_s64(addend * scaled_ppm_to_ppb(scaled_ppm), NSEC_PER_SEC);
-+	addend = neg_adj ? addend - diff : addend + diff;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+	iowrite32(addend, priv->base + PTPTIVC0_REG);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static void _ptp_rcar_gen4_gettime(struct ptp_clock_info *ptp,
-+				   struct timespec64 *ts)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	ts->tv_nsec = ioread32(priv->base + PTPGPTPTM00_REG);
-+	ts->tv_sec = ioread32(priv->base + PTPGPTPTM10_REG) |
-+		((s64)ioread32(priv->base + PTPGPTPTM20_REG) << 32);
-+}
-+
-+static int ptp_rcar_gen4_gettime(struct ptp_clock_info *ptp,
-+				 struct timespec64 *ts)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+	_ptp_rcar_gen4_gettime(ptp, ts);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static void _ptp_rcar_gen4_settime(struct ptp_clock_info *ptp,
-+				   const struct timespec64 *ts)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	iowrite32(1, priv->base + PTPTMDC_REG);
-+	iowrite32(0, priv->base + PTPTOVC20_REG);
-+	iowrite32(0, priv->base + PTPTOVC10_REG);
-+	iowrite32(0, priv->base + PTPTOVC00_REG);
-+	iowrite32(1, priv->base + PTPTMEC_REG);
-+	iowrite32(ts->tv_sec >> 32, priv->base + PTPTOVC20_REG);
-+	iowrite32(ts->tv_sec, priv->base + PTPTOVC10_REG);
-+	iowrite32(ts->tv_nsec, priv->base + PTPTOVC00_REG);
-+}
-+
-+static int ptp_rcar_gen4_settime(struct ptp_clock_info *ptp,
-+				 const struct timespec64 *ts)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+	_ptp_rcar_gen4_settime(ptp, ts);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static int ptp_rcar_gen4_adjtime(struct ptp_clock_info *ptp, s64 delta)
-+{
-+	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
-+	struct timespec64 ts;
-+	unsigned long flags;
-+	s64 now;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+	_ptp_rcar_gen4_gettime(ptp, &ts);
-+	now = ktime_to_ns(timespec64_to_ktime(ts));
-+	ts = ns_to_timespec64(now + delta);
-+	_ptp_rcar_gen4_settime(ptp, &ts);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static struct ptp_clock_info ptp_rcar_gen4_info = {
-+	.owner = THIS_MODULE,
-+	.name = "R-Car Gen4 gPTP",
-+	.max_adj = 50000000,
-+	.adjfine = ptp_rcar_gen4_adjfine,
-+	.adjtime = ptp_rcar_gen4_adjtime,
-+	.gettime64 = ptp_rcar_gen4_gettime,
-+	.settime64 = ptp_rcar_gen4_settime,
-+};
-+
-+static int ptp_rcar_gen4_probe(struct platform_device *pdev)
-+{
-+	struct ptp_rcar_gen4_priv *priv;
-+	struct device *dev = &pdev->dev;
-+	unsigned long rate;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	priv->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
-+
-+	priv->clk = devm_clk_get(dev, NULL);
-+	if (IS_ERR(priv->clk))
-+		return PTR_ERR(priv->clk);
-+
-+	rate = clk_get_rate(priv->clk);
-+	if (!rate)
-+		return -ENODEV;
-+
-+	spin_lock_init(&priv->lock);
-+
-+	priv->info = ptp_rcar_gen4_info;
-+
-+	/* Default timer increment in ns.
-+	 * bit[31:27] - integer
-+	 * bit[26:0]  - decimal
-+	 * increment[ns] = perid[ns] * 2^27 => (1ns * 2^27) / rate[hz]
-+	 */
-+
-+	priv->default_addend = div_s64(1000000000LL << 27, rate);
-+
-+	pm_runtime_enable(dev);
-+	pm_runtime_resume_and_get(dev);
-+
-+	iowrite32(priv->default_addend, priv->base + PTPTIVC0_REG);
-+	iowrite32(1, priv->base + PTPTMEC_REG);
-+
-+	priv->clock = ptp_clock_register(&priv->info, dev);
-+	if (IS_ERR(priv->clock)) {
-+		pm_runtime_put_sync(dev);
-+		pm_runtime_disable(dev);
-+		return PTR_ERR(priv->clock);
-+	}
-+
-+	return 0;
-+}
-+
-+static void ptp_rcar_gen4_remove(struct platform_device *pdev)
-+{
-+	struct ptp_rcar_gen4_priv *priv = platform_get_drvdata(pdev);
-+	struct device *dev = &pdev->dev;
-+
-+	ptp_clock_unregister(priv->clock);
-+
-+	iowrite32(1, priv->base + PTPTMDC_REG);
-+
-+	pm_runtime_put_sync(dev);
-+	pm_runtime_disable(dev);
-+}
-+
-+static const struct of_device_id ptp_rcar_gen4_of_match[] = {
-+	{ .compatible = "renesas,rcar-gen4-gptp", },
-+	{ /* Sentinel */ },
-+};
-+MODULE_DEVICE_TABLE(of, ptp_rcar_gen4_of_match);
-+
-+static struct platform_driver ptp_rcar_gen4_driver = {
-+	.driver = {
-+		.name = "ptp-rcar-gen4",
-+		.of_match_table = ptp_rcar_gen4_of_match,
-+	},
-+	.probe    = ptp_rcar_gen4_probe,
-+	.remove   = ptp_rcar_gen4_remove,
-+};
-+module_platform_driver(ptp_rcar_gen4_driver);
-+
-+MODULE_AUTHOR("Niklas Söderlund");
-+MODULE_DESCRIPTION("Renesas R-Car Gen4 gPTP driver");
-+MODULE_LICENSE("GPL");
 -- 
 2.55.0
 
