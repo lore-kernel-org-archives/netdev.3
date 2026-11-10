@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794274717;
-	b=qWLF0JxIIoCtJzAw23cEjpicl7wnSMAL/8FOYdD3IbK7ascs0RKv0l3qaHbDsSS8KyLn
-	 G5xITert2g4W1SOG0zgnirmlBJbWU21xshAhh2RH0ADOrchVNqijOrxWwJdYzfdJBHA7R
-	 CGwiV5dXTQySS7KQ75yOE+rvHQEhw42GSvppf5Q1L9UCijrtiSj52POXePSYgRZ2psobG
-	 738g6wUA114hANDKKGS4S0Easj3lJhK3wc33uGt/rvsYT3WxCIQ7dEr3JDdY9UqNneslg
-	 1rv3cEu66MNFprl9XXn2XbbQcgi3K/ZbMVXn0hdqCpPJJ0GKpiJn326mIu8Wky49/qw==
+	t=1794274726;
+	b=zZE35qwso4r7vbBQ+z3j45vnGLFOmWTrUSICNebX9ZSlEUq6O23pHT5ajf5+MUeCwXRS
+	 DhmAKaMvdPFzeIbTRxUeASZ8NACKNWkPEv63enZAgsUBjH2icB5+OYm2uANdjBeoQSfAb
+	 c9jWh7RwfpNuS9e3VzGptBfC/ETCVLdfU3GQG9YcgYr0D3cSYtTx7fmlh9tYb6cOSJnuJ
+	 MURe2p2SWIaODWijSutw3BPIA+r1g6psrAY+9j5koX5oyj5GY1q03DTk4qgOUiWs4kRW+
+	 sm+Pf+nKFMIv6klapHmZgsJxV6i011iNYLBRpwFswc1iIju3iJYJJ4JQQitGO09ybzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794274717;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794274726;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=mgZWax0CROPTd0jbS/MexNgXxV705CGMTqZEFbzUWic=;
-	b=kjs9DAS0oyr/tOm4YWn8ZpQFaTJRw6JcqDJD5woVZb15COMm9ZpWEPrck+g5sTbGerJk
-	 3/iYhDrwEmo4Rl7+87EQGH2X49PlF6q2+Bf2WLBiMGIBqTZpmNQ80PjeXtouMFjiANiMy
-	 f8mOI1XfCefyRza03l5FW5xzAIwygVZni7guN6mqU6qWTgyaJTOgsa+yL1YtmBlqX6gZ2
-	 ieruWt/ErPCt3ydoCkrFf1Ko3WfYmh6dElUm/yL00bq/I7QsDLTEXB8CFhVJexpfQO3WB
-	 wWT+Dc8r6wGqDPmSfJqPIP4+IXtr5b1+z5IiA5S8VLLDucpkmPmC/L8jYwBzaELNk6Q==
+	bh=2gT4xkmYTZQ1QAjCys64b42dgibXNxZEFuSdlN9sffs=;
+	b=bk9IfGCVcsICggyk5Y0kjGJ91eqKiJakOk9iv5RswfxT5iu1AQTpEgzXPMBUA0SmknGg
+	 TGanZE0+bV2FkOOupJEM7+rwCTwSKW+b8feunjg9kvV8i9lqd/Pyq/ZZ7MRKLfaqlRx/2
+	 3qJuLsBoYdKSzzXomBOULvuDgycpkiqneqjkCFmdxRi3s0RQo7tb0N7f0PdL+3XgpuSr0
+	 nqOzx9bye9H92pLn304RA10Z4077sb8OYAq19F/91LZLNAH+XE+T7KKF5KegZfrIaAVjS
+	 4vZ+l0EVVB3Qdv1YS/q/V/xwapHiT3soISbhtghRd4qaLfhY/b0gT2PBAtw6LYmZ3ZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g6ZVy11U;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gLz4jP3i;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237F460A6F59;
-	Tue, 10 Nov 2026 01:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E34260A380C;
+	Tue, 10 Nov 2026 01:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g6ZVy11U
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37001F00901;
-	Tue, 10 Nov 2026 01:38:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gLz4jP3i
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39021F0089F;
+	Tue, 10 Nov 2026 01:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794274716;
-	bh=mgZWax0CROPTd0jbS/MexNgXxV705CGMTqZEFbzUWic=;
+	s=k20260515; t=1794274725;
+	bh=2gT4xkmYTZQ1QAjCys64b42dgibXNxZEFuSdlN9sffs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=g6ZVy11UqhrRhTWPfoRAJn5l992aRTZOg4P1jBrp7xZQGlEFF/451z3Mpzj3x/mZr
-	 02Ed6nmE7riDabHLRGfa4x9fx6u+D+pSgHtqxyDxmMsihQAs8QmTEcgHfMR3PzFEk9
-	 Nh91NDhGQnoVsRsN3tzyaH2YEortqm8+rKHGBGVuhbgHTQWTQ+G753o0eiVFwkWvI3
-	 3FI1BMxrRPv5K7nhdD4sHKqfcwb8DOmgFpvsjOUEVbuqxRuWW4Xv5tQHt99ldZgpPx
-	 JQyshGvMZ82yk3CH1ThgrAGzf/K1ZrUdadIVIU35r7wvK4OqzT8BWJCHzzD1KYCbFY
-	 Sc5yIhdGKZs8A==
-Subject: Re: [PATCH net-next v20 06/13] ax88179_178a: Add EEE configuration
- support for AX88179A PHYs
+	b=gLz4jP3iyleYaVGjPMkdPys2zSbH1I6rbzb22Rtr28kAVdZewFJVM1S5oqwkJJMLk
+	 39zhsSyX1ZuhQ2cUXtuZGb/LAqyYiLB4WF70ed0V23DxPvKr3UU9NxUJ1n9ZwxVz81
+	 SYlLZFRJiQAjhIXtRgS8wN3/vrw8x/gw/s6gXzF2jcy9db9NKY58rw8oNJnpBEnuP0
+	 zBtl7kbUkMuVSsP57MUVcyUApjOWxnChPIOACNM4nQyODbslVyKazSouIUpjGTauuC
+	 XkbBJweLnwTPb9+WaPmY+DjTQ459TFHKPPWnJkNkPEqMQhlUJtMH4zPA7qHcb/bBWP
+	 oGRExSre9AKOg==
+Subject: Re: [PATCH net-next v20 12/13] ax88179_178a: Add support for
+ AX88179A/772D/279 EEPROM access
 From: netdev-bot+sashiko@kernel.org
 To: mail@birger-koblitz.de
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -50,10 +50,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
  neuromoments@gmail.com, beganovic.emir@gmail.com
-Date: Tue, 10 Nov 2026 01:38:35 +0000
-Message-ID: <179427471542.994134.8751513782745732734@kernel.org>
-In-Reply-To: <20261106-ax88179a-v20-6-37b5a1189983@birger-koblitz.de>
-References: <20261106-ax88179a-v20-6-37b5a1189983@birger-koblitz.de>
+Date: Tue, 10 Nov 2026 01:38:44 +0000
+Message-ID: <179427472449.994134.11592093531851838540@kernel.org>
+In-Reply-To: <20261106-ax88179a-v20-12-37b5a1189983@birger-koblitz.de>
+References: <20261106-ax88179a-v20-12-37b5a1189983@birger-koblitz.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -78,155 +78,174 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] This patch fills phylink_config.lpi_interfaces in
-  ax88179a_phylink_setup() (drivers/net/usb/ax88179a_devices.c).
-- [Low] The new ax88179a_set_eee()
-  (drivers/net/usb/ax88179a_devices.c:235-240) passes the user's struct…
+- [Medium] The EEPROM request encoding is split across two independent
+  sources that can disagree.
+- [Low] struct ax88179_data has two fields, eeprom_write_cmd and
+  eeprom_wen, that both bind routines set and nothing ever reads.
 
 --
 
-ax88179_178a: Add EEE configuration support for AX88179A PHYs
+ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
 
-This commit copies supported_interfaces into phylink_config.lpi_interfaces
-in ax88179a_phylink_setup(), so phylink now treats the MAC as supporting
-EEE. It also adds get_eee/set_eee ethtool ops that forward to
-phylink_ethtool_get_eee() and phylink_ethtool_set_eee().
+This patch extends ax88179_get_eeprom() to read the efuses on the
+AX88179A/772D and the FLASH on the AX88279. The opcode and block size
+come from per-bind state, and a new helper computes wValue/wIndex.
+ax88179_set_eeprom() now returns -EOPNOTSUPP for AX88179A and later
+chips.
 
-> diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-> index 62619fd68c408..272e923656832 100644
-> --- a/drivers/net/usb/ax88179a_devices.c
-> +++ b/drivers/net/usb/ax88179a_devices.c
-> @@ -225,6 +225,20 @@ static int ax88179a_get_eeprom_len(struct net_device *net)
->  		return AX88179A_EEPROM_LEN;
+> diff --git a/drivers/net/usb/ax88179_lib.c b/drivers/net/usb/ax88179_lib.c
+> index b54e98e781f33..d5bbaa0c4e4c6 100644
+> --- a/drivers/net/usb/ax88179_lib.c
+> +++ b/drivers/net/usb/ax88179_lib.c
+> @@ -210,36 +210,61 @@ int ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
+>  	return 0;
 >  }
->  
-> +static int ax88179a_get_eee(struct net_device *net, struct ethtool_keee *edata)
+>
+> +static void
+> +ax88179_eeprom_access_params(struct ax88179_data *ax179_data, int i, u16 *value, u16 *idx)
 > +{
-> +	struct ax88179_data *ax179_data = netdev2data(net);
-> +
-> +	return phylink_ethtool_get_eee(ax179_data->phylink, edata);
+> +	/* AX88179 has a word-addressable EEPROM
+> +	 * AX88179A uses EFUSES with 20 bytes length
+> +	 * AX88279 has an EEPROM addressable in 256 byte blocks
+> +	 */
+> +	if (ax179_data->chip_version < AX_VERSION_AX88179A) {
+> +		*value = i;
+> +		*idx = 1;
+> +	} else if (ax179_data->chip_version == AX_VERSION_AX88279) {
+> +		*value = (i * ax179_data->eeprom_block) >> 16;
+> +		*idx = (i * ax179_data->eeprom_block) & 0xffff;
+> +	} else {
+> +		*value = i << 4;
+> +		*idx = 0;
+> +	}
 > +}
-> +
-> +static int ax88179a_set_eee(struct net_device *net, struct ethtool_keee *edata)
-> +{
-> +	struct ax88179_data *ax179_data = netdev2data(net);
-> +
-> +	return phylink_ethtool_set_eee(ax179_data->phylink, edata);
-> +}
-
-[Severity: Low]
-Should ax88179a_set_eee() reject a tx_lpi_timer that the hardware cannot
-apply?
-
-Neither ax88179a_set_eee() nor phylink_ethtool_set_eee() checks
-edata->tx_lpi_timer. The value is stored in pl->eee_cfg and
-phydev->eee_cfg, and get_eee reports it back. The MAC callback ignores
-the timer, though:
-
-drivers/net/usb/ax88179a_devices.c:ax88179a_mac_enable_tx_lpi() {
-    ...
-	/* AX88179A does not provide LPI timer registers */
-	return ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, true, 0, NULL);
-}
-
-The phylink_mac_ops documentation for mac_enable_tx_lpi() says
-"Configure the LPI timeout accordingly".
-
-As a result, "ethtool --set-eee ethX tx-timer N" succeeds and
-"--show-eee" reports N, but the hardware never uses it.
-phylink_config.lpi_timer_default is never set either, so the reported
-default timer is 0.
-
-Other drivers whose LPI timer cannot be changed reject this request.
-e1000e_set_eee() and ixgbe_validate_keee() both return an error when
-tx_lpi_timer differs from the fixed value.
-
-Could the wrapper do the same here? Another option is to set
-lpi_timer_default to the real hardware value and refuse changes. The
-last commit in the series still has this code unchanged.
-
-> +
->  static const struct ethtool_ops ax88179a_ethtool_ops = {
 
 [ ... ]
 
-> @@ -451,6 +467,10 @@ static int ax88179a_phylink_setup(struct usbnet *dev)
->  		phy_if_mode = PHY_INTERFACE_MODE_SGMII;
->  	}
->  
-> +	memcpy(data->phylink_config.lpi_interfaces,
-> +	       data->phylink_config.supported_interfaces,
-> +	       sizeof(data->phylink_config.lpi_interfaces));
+> +	for (i = first; i <= last; i++) {
+> +		u16 value, idx;
 > +
+> +		ax88179_eeprom_access_params(ax179_data, i, &value, &idx);
+> +		ret = __ax88179_read_cmd(dev, ax179_data->eeprom_read_cmd,
+> +					 value, idx, ax179_data->eeprom_block,
+> +					 eeprom_buff + (i - first) * ax179_data->eeprom_block);
 
 [Severity: Medium]
-Does this change the default EEE advertisement on the wire for every
-non-AX88772D chip, including AX88279?
 
-Before this patch lpi_interfaces was empty. phylink_create() therefore
-set mac_supports_eee to false while mac_supports_eee_ops was true, and
-phylink_bringup_phy() called phy_disable_eee().
+Can the addressing mode and the rest of this request disagree?
 
-With lpi_interfaces filled in, mac_supports_eee becomes true. This
-earlier setup also applies:
+ax88179_eeprom_access_params() picks value/idx from chip_version alone.
+The opcode and transfer length passed to __ax88179_read_cmd() come from
+eeprom_read_cmd and eeprom_block, which are set at bind time. chip_version
+is the raw upper nibble of AX_CHIP_STATUS, and neither bind routine
+validates it.
 
-	if (!data->is_ax88772d) {
-		data->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD;
-		data->phylink_config.eee_enabled_default = false;
-	}
+In ax88179_bind() in ax88179_178a.c:
 
-So pl->eee_cfg.eee_enabled is false, and phylink_bringup_phy() takes
-neither branch that changes the PHY's EEE enable:
+	ax179_data->chip_version = (ax179_data->chip_version & 0xf0) >> 4;
+	...
+	ax179_data->eeprom_read_cmd = AX_ACCESS_EEPROM;
+	ax179_data->eeprom_write_cmd = AX_ACCESS_EEPROM;
+	ax179_data->eeprom_block = 2;
 
-drivers/net/phy/phylink.c:phylink_bringup_phy() {
-    ...
-	if (pl->mac_supports_eee) {
+Suppose a device bound by ax88179_bind() (generic 0b95:1790, AX88178A,
+Cypress GX3, or one of the OEM IDs) reports a nibble >= 6. Would it then
+get AX_ACCESS_EEPROM requests with efuse or FLASH style value/idx? Before
+this patch the value=i, idx=1 encoding was always used.
+
+The loop only checks ret == eeprom_block, so that data would go back to
+userspace as EEPROM contents. ax88179_set_eeprom() would also start
+returning -EOPNOTSUPP for a device that bind set up for word EEPROM
+writes.
+
+In ax88179a_bind() in ax88179a_devices.c, the geometry is chosen by
+== AX_VERSION_AX88279 versus everything else:
+
+	if (ax179_data->chip_version == AX_VERSION_AX88279) {
 		...
-		if (pl->eee_cfg.eee_enabled)
-			phy_support_eee(phy);
+		ax179_data->eeprom_read_cmd = AX88179A_FLASH_READ;
 		...
-	} else if (pl->mac_supports_eee_ops) {
-		/* MAC supports phylink EEE, but wants EEE always disabled. */
-		phy_disable_eee(phy);
-	}
-    ...
-}
+		ax179_data->eeprom_block = 256;
+	} else {
+		...
+		ax179_data->eeprom_read_cmd = AX_ACCESS_EFUS;
+		...
+		ax179_data->eeprom_block = 20;
 
-phydev->eee_cfg.eee_enabled keeps the value phy_probe() derived from the
-PHY's power-on advertisement:
+ax88179a_get_eeprom_len() uses >= instead:
 
-	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
+	if (ax179_data->chip_version >= AX_VERSION_AX88279)
+		return AX88279_EEPROM_LEN;
 
-If the internal GPHY advertises EEE at reset, genphy_c45_an_config_eee_aneg()
-will keep advertising the 100FD/1000FD EEE modes on every autoneg. That
-includes after the PHY power-cycle in resume and reset. The link partner
-then negotiates EEE while MAC TX LPI stays off.
+With chip_version > 7, ethtool would see 16 KiB while the reads use the
+20-byte efuse geometry. Couldn't that request efuse indices up to 819
+when only 32 efuses exist?
 
-The legacy ax88179_178a.c reset path explicitly disables EEE and clears
-the EEE advertisement. That suggests this family does advertise EEE by
-default, but this was not confirmed for the AX88179A/AX88279 PHYs.
+ax88179a_get_drvinfo() and ax88179a_reset() both check for
+chip_version < AX_VERSION_AX88179A. If that case happens under
+ax88179a_bind(), this helper would send AX_ACCESS_EFUS with word EEPROM
+value/idx and a 20-byte length.
 
-This also seems to conflict with the comment in ax88179a_reset():
+ax88179_set_eeprom() doesn't block that case either. The legacy
+AX_ACCESS_EEPROM word write loop and AX_RELOAD_EEPROM_EFUSE would then run
+against the advertised 640-byte length.
 
-	/* Ensure EEE state is off, consistent with phylink setup */
-	ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, false, 0, NULL);
+Would it be more robust to store an explicit addressing mode in
+ax88179_data at bind time, next to eeprom_read_cmd and eeprom_block?
+ax88179_eeprom_access_params(), ax88179_set_eeprom() and the
+get_eeprom_len callbacks could all use it. ax88179a_bind() could also
+reject unknown chip versions, or default them consistently.
 
-That only clears the MAC-side LPI control. phylink_ethtool_get_eee()
-would then report the PHY's eee_enabled as true together with
-tx_lpi_enabled as false, which does not match phylink's own eee_cfg.
+> +
+> +		if (ret != ax179_data->eeprom_block) {
+>  			kfree(eeprom_buff);
+>  			return -EIO;
+>  		}
+>  	}
 
-Was this default change intended? If not, should the PHY's EEE
-advertisement be disabled explicitly when eee_enabled_default is false?
+[ ... ]
 
-The commit message also does not mention that AX88279 gets
-phylink-managed EEE (lpi_capabilities is set for all !is_ax88772d chips).
-Nor does it mention that AX88772D now has get_eee/set_eee ops that always
-return -EOPNOTSUPP. The final commit in the series has the same code, so
-nothing later in the series changes this.
+> @@ -247,12 +272,17 @@ int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8
+>  int ax88179_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+>  {
+>  	struct usbnet *dev = netdev_priv(net);
+> +	struct ax88179_data *ax179_data;
+>  	u16 *eeprom_buff;
+>  	int first_word;
+>  	int last_word;
+>  	int ret;
+>  	int i;
+>
+> +	ax179_data = dev->driver_priv;
+> +	if (ax179_data->chip_version >= AX_VERSION_AX88179A)
+> +		return -EOPNOTSUPP;
+> +
 
->  	phylink = phylink_create(&data->phylink_config, dev->net->dev.fwnode,
->  				 phy_if_mode, &ax88179a_phylink_mac_ops);
->  	if (IS_ERR(phylink))
+[Severity: Low]
+
+This isn't a bug, but with writes disabled here for AX88179A/AX88279, are
+the eeprom_write_cmd and eeprom_wen fields in struct ax88179_data used
+anywhere?
+
+Both bind routines set them. For example, ax88179a_bind() does this for
+the AX88279:
+
+	ax179_data->eeprom_write_cmd = AX88179A_FLASH_WRITE;
+	ax179_data->eeprom_block = 256;
+	ax179_data->eeprom_wen = 1;
+
+There don't seem to be any readers, though. The only write path,
+ax88179_set_eeprom(), still hard-codes AX_ACCESS_EEPROM:
+
+	ret = ax88179_write_cmd(dev, AX_ACCESS_EEPROM, i, 1, 2,
+				&eeprom_buff[i - first_word]);
+
+The commit message says "no write access is provided". Should these
+fields be dropped until a write implementation actually uses them?
+
+>  	netdev_dbg(net, "write EEPROM len %d, offset %d, magic 0x%x\n",
+>  		   eeprom->len, eeprom->offset, eeprom->magic);
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-ax88179a-v20-0-37b5a1189983%40birger-koblitz.de
