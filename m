@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794354609;
-	b=ynnJ3xljW25yEt4RUF46cuT69QdQ7dDkQ0YRhguDjOeeEPbihNZu8Lxw8Xpf5saXrAHZ
-	 DRejaWFJqFIBIJe31oc3xlIn9DTz7vT7A00sJCt8KDG4Fyl82ZCp5A+YwzVkhSmRF0eFr
-	 IBceVUTDdq3SMWyeItRT7JlP9BBoFvSysUGmQ+dgA9Av6Or6hZtGLt0hN28Iva5xWtaDO
-	 79S04qQkL71crGcTja/JNkTbdJ2l+9SUQ/2skx+wCJHXOtEC0KgeyJ07GgVJGKi4ZNjae
-	 pSlRPq5tD9IT3h3r26rHP4esf39A2234R1boJU4mzX+i7fgunrvL57weZ+DIP9S+U0g==
+	t=1794354610;
+	b=onCNYpAtaKTojSwkaW3nPdAl0kNIWcFAJjUpddswfbchG7TWUt63LyriZ0I9qTyaJQOQ
+	 MkBxSTEFVyU5buHvqQ51NcivVFt8CerVv1f9SbFQA6iLFfLQC/iT6nVPKMzPSQEU9Tn9g
+	 PVASxry6jQeEGYaFVsaxHYXJcBeWQSXBnfMZr7tpHkYATAYiUPpMkzMhdani0bTYyvSzE
+	 e/ZhhjaI/HX1hCmeHo/WIIW/SsC6EtNMdyXPxcsMpDkJjG3p1MA+L3obtF0BDa+8kfxvw
+	 xm5Fi0RZupkWapruQjJ+eXucFhgtKlECxzP4YhXf+g/FpC/1lrjFR9Gnxab4GkF4lPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794354609;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794354610;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=ORiZhmsmazgd5twv5ZLERqcX7skdOqLbxUSpfPlCjGQ=;
-	b=e77cErWHgYgv2WREKvzrVayHz5aZ5kVhluPOq+YbpT392Md9CxOP95USQrsKZzjXw4xX
-	 M16c+SuyJuYF5Gm5b1Ur4Gy6RSrNT7Dbji90ABQCHYz7LUSVl5Ld9iD0f/e+Os4bXGebq
-	 TvUB5P3OBr2sWWZ4geUou9NMUBrJkwwuta9A0Nv276sTAPbNqQUKzv3YgjFGTrpwwaQSF
-	 8pxvBogdk/1ViRuizgQVTe1k0I7L54ja0dBD4VIRTvwNDPngRkvFXUx5jqHov54iYCcEJ
-	 uuM55adjC2vRkuk+JsH2QUSANWb+xtxmgJblZ8ByY9qPnW+elQ/G8sC0PU/gMP8FK0w==
+	bh=BlFhzc5ZGN08zmXM4I/NfmBwaM8fELgmngk5KfNoj8Q=;
+	b=v9KfRoNToSMM/VU3tgLurcHjo03SZGWt93NsFfMvSZ/F7sUplQw2B2iMD8N5FODdk7X+
+	 LpSaezZhIcfh1OaG7M4W1ivr/YmlIS3knjRKn/oMb2OWR9YqNN/RwAw50kFgQ5skNTzfe
+	 BtG6a+rwMUh5VcjuKr8sNBK4lur9DtSKoEhYtJ29cuWWPhE6UrRTdfF7Shsmp6p8198QW
+	 OLgzg15IAYYed1zTBPKWYZwmZMhJEdlhmcjSKJDAMf22FHFq//0qJlJjLxj9meJwoAZhh
+	 +Zqsra2AIL+Ls31nZQBgnHg/TpzE6B66aT0sH1Ro37xn1lTwp5QsDhdi1CbkPUtWGdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ilZOCDzI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PsJdQyRK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F60606A31C;
-	Tue, 10 Nov 2026 23:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C4C606A333
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 23:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ilZOCDzI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6833F1F0093C;
-	Tue, 10 Nov 2026 23:50:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PsJdQyRK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E241F0093C;
+	Tue, 10 Nov 2026 23:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794354608;
-	bh=ORiZhmsmazgd5twv5ZLERqcX7skdOqLbxUSpfPlCjGQ=;
+	s=k20260515; t=1794354609;
+	bh=BlFhzc5ZGN08zmXM4I/NfmBwaM8fELgmngk5KfNoj8Q=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ilZOCDzIWsInnhM+sQBYgS8P7NS8z06U7AlTSuf/NB28sgUkDpWJHktlJti6KBPEu
-	 wv219egHlcZTv7TJF/IEhJ3fcheWY8YyV4yIGGEb1HQ/5LtThKczYN01XYGP1embjp
-	 rivwxGLaHoTUDZj5erDcevub+Ys5nQARP7Rf7hVx4ga12CzF7EMVVaRUsBaw7UkNLY
-	 hDWaeZfp47svbcZCO9/5XdZ4NtkASefhnokdzDfkQ+j/BhXSBthIZowlx0qRRFQfd+
-	 7VoM7oybCNxO2d5yNzKWpV4GOlw5HWiLiUvnnSiS6W3sJQ/I87B6vwfO3pZegwi1MA
-	 GvgE+jDW7A89g==
+	b=PsJdQyRKsaNxINiIwUdZ/e7PMi0JNM8zYd1qjysZtf3xaa6z9OVy/6wRXqUfyJXEq
+	 JByoPpnYT/ZXDS0OyJd7yPSCm7bQvmPwolMCm0dNud23EU8EMTXQk5k3RsUWpXDL56
+	 prH7dghmNn0HaSweE0ttw9JwRmDHKLOu9uydHbirZ8V6wv+ltePiR+N9eZ42Tu8h6S
+	 162ceuBfxlpTGvBPoZB9+a3uEWvbuecpPTu/DvDefryA85OYgIGkZ8bf/IsI/ctwpT
+	 zz9ufmQE5rFx+LTADqw8mrzmo22h0zTnvPAHPLo3k28jsQggKYVfUPtjoLho55519F
+	 duxKhy7fwTuzg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E11639E8A49;
-	Tue, 10 Nov 2026 23:50:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D838139E8A49;
+	Tue, 10 Nov 2026 23:50:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: macb: two fixes for macb_tx_error_task()
+Subject: Re: [PATCH v2 net-next 0/2] tcp/mptcp: Don't call
+ tcp_update_recv_tstamps()
+ if not needed.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435460717.120887.12617923076900913409.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 23:50:07 +0000
-References: <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
-In-Reply-To: 
- <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, sean.anderson@linux.dev,
- robert.hancock@calian.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179435460842.120887.1387158068394130012.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 23:50:08 +0000
+References: <20261105215209.3160316-1-kuniyu@google.com>
+In-Reply-To: <20261105215209.3160316-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: edumazet@kernel.org, ncardwell@google.com, matttbe@kernel.org,
+ martineau@kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, geliang@kernel.org, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 07 Nov 2026 21:58:46 +0100 you wrote:
-> Both pre-existing bugs were flagged during the clashiko review of my
-> software FCS patch [1]. These are the promised follow-up patches.
+On Thu,  5 Nov 2026 21:51:44 +0000 you wrote:
+> When RX HWtstamp is enabled on NIC, skb_hwtstamps(skb)->hwtstamp
+> is set.  It is also set when one socket enables software timestamp.
 > 
-> Patch 1 credits the frames dropped on a TX error to BQL. Patch 2 takes
-> tx_ptr_lock in the task, as macb_start_xmit() moves the same pointers
-> under it.
+> Then, recvmsg() always calls tcp_recv_timestamp() even when
+> sockets do not need timestamp.
+> 
+> Since it is called after release_sock() and touches sk->sk_tsflags,
+> which shares the same cacheline with sk->sk_forward_alloc, it stalls:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: macb: credit unsent frames to BQL in macb_tx_error_task()
-    https://git.kernel.org/netdev/net-next/c/7b42f4a88e76
-  - [net,2/2] net: macb: take tx_ptr_lock in macb_tx_error_task()
-    https://git.kernel.org/netdev/net-next/c/c45ceb26e0dc
+  - [v2,net-next,1/2] tcp: Don't call tcp_update_recv_tstamps() if not needed.
+    https://git.kernel.org/netdev/net-next/c/f8143639f2e6
+  - [v2,net-next,2/2] mptcp: Don't call tcp_update_recv_tstamps() if not needed.
+    https://git.kernel.org/netdev/net-next/c/59e3434a73c8
 
 You are awesome, thank you!
 -- 
