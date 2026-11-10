@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794274722;
-	b=cMxavjSSZmKqCF+1QXce77rD+JhSR8tLzXY0IEzTtHe/RJGA+THp+UZTexBbtUq80AVs
-	 GiCj+x6Jmj+tGsZywIEISYrFez2z3fHljg8+Z9MrKYTpiwMb2ET/USfgLxqALbtPTCxOk
-	 iD4CEVpQkAK96aVMoKfE1qkq1VBGdi4FTliHZQzIDED1shNxpcH6PtAT5kfwxy2syIrR7
-	 KIsHmBgtApCokjtd0JEAwTFlALHs7fG+6+eyJswynp7RvbI/cpgGDTm1hDbO19XU0s7fy
-	 h1ORiNHwY4a8+rDH9lCj8xIjZnQwT80X+lVHsL5SVumDS70NQkyZ67WmYCyNs4ONc7w==
+	t=1794274728;
+	b=XXfderq2YEcfJljlfuEJZIiL3Z45qBNMeMiLLyUmBB70xd/a7Ilk8gC/b/kVqW47wfKo
+	 fKvgukD7C7FUcnlC91wc6kNfGwsJSVP8XFWOyDFbb0NJNKml/3fdKiFUBtC0eIyC6NiZA
+	 htRBdfHMR0X4Fr3ZZw2NpBnZjfN7NbZlgqsF7sxn0DrbCyUVjAfMf6AfDMuv2VFG4SZ9Z
+	 iKsMtvec+aLpHSCJ3MVSbj/rMQTBEqTdxJTYVWqQFM3p/0Ait5hlqXTBu7GLsEcPBu2Pf
+	 Bb/paAIq3T264e9j8ouoEI/H58WYvFygZEYXPhuhhE02/++LGYnx9bTjuJ60b4BKcOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794274722;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794274728;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=kyMu+c9WPiMfR1J/e9fy8+94zlLB1ydhIf2rwAsAFio=;
-	b=amaOg55JYATnqWLoPpn6jlURvujI+RM1iEQaiADceKzD+MTgEvZ3d5G72cxN3kvZZGhK
-	 QFW3Nji7cyWfIM+EEdxUf3YGA8igJG2ikySh4hVdkMSHFgvX+tZacGgGsuLck7zNEll1f
-	 AYOA+KiJ1cA6usKWbYSexTvzUwb8Bqe0lw3c/aPLEEw8fLn/bLZ6TZAblSmTy7NI/PNF3
-	 clOOx0iqbBrxVFs/MQl/3ZrT4zSdfeobwLWqYSSAdr5c03QrzPL26yp02o1AneELS+BZD
-	 B3KqnhdcybFwiW5XfhoyWGtFN9AbhcdiAsbALzkm4agM4r73joc6dNCzJQi9JKtMVIA==
+	bh=yHdaa5SHknrKYMQ9LgMfKhfAdpZAC1oCwJJhw6z/bsM=;
+	b=MTeSuXR9A5x83iUDmVxWuExCGhl/bKM1jHYUwqiW933A9QWh7rZfjLGWtvMHcqkIaSb+
+	 E9ysEpHO7kKPEK5tVAZRFPRLypKYfd+nKgsthuz8PsKgT5AoGy+MKasBvFF2PNH0kzUtk
+	 gZvxFi9J6aTO/PPdK1MoXsTSZMMKXwlpo2FYQnQR7LD0NKW3k6T6/UhG1YNbS5ql++MkK
+	 P4D6kjvWKw8icolvgxdXd6pgFZWCN7NhSZFbc9MN0UBvf3BEHVFbVzJarusSgoGG9IzSU
+	 4+X59UXlYZyVUZsNin/RZ6wTAeTPVPGG5w+ZE0BCSQOS0D+KBQ4KcC6o96gFZ1Ato1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mx+vMoIn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+jqwou0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C8D60718A8;
-	Tue, 10 Nov 2026 01:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A795E606B511;
+	Tue, 10 Nov 2026 01:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mx+vMoIn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835181F00902;
-	Tue, 10 Nov 2026 01:38:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+jqwou0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BBB1F008A1;
+	Tue, 10 Nov 2026 01:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794274721;
-	bh=kyMu+c9WPiMfR1J/e9fy8+94zlLB1ydhIf2rwAsAFio=;
+	s=k20260515; t=1794274727;
+	bh=yHdaa5SHknrKYMQ9LgMfKhfAdpZAC1oCwJJhw6z/bsM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mx+vMoInE3WWH3V1gwwrzuhsAIHwBtBzyN4H0bLNzYVQFusoRTJ3SVl78gjePSCxJ
-	 ASwye4TwzA+djXl2dNopc2bfHXN5B5JnJkN7WeaCuculFcm1YMPi/jFU1fo6CWTaYb
-	 Ur//ZW7j/4filF/8RseKU1S9x7sg1hXpygFieXzqZ+WXiENE1fmmnZ7avIw2hUyDtr
-	 8G5yMgUBX3KQ6hnKBgHoAKVCF3PzD+tovazHiga6zhQb/ZYZP9NNiwPAymhiultu4V
-	 WQbYnVjfjsqQOOEgEoCigfCQQTO7auHr0yMXJpYLn4Yn400cCvpWTWrlaL81dPbk1r
-	 zww9f4DCjyF8Q==
-Subject: Re: [PATCH net-next v20 09/13] ax88179_178a: Add Suspend/resume
- support for AX88179A/772D/279
+	b=V+jqwou0lnEXxpN8Be9ZUm88IoXRkxRnb8OwjYp1kZzTLf5EmGphPXb/93efMuLLi
+	 7jter6X5rZz3RM6R6t5BakyDXDxRtUxkhZJ7BzZpfaQPXOHDTxJbQO+S3nk38nHuFb
+	 K3dhfaBARB7py3UOOJLuvpcTlm2TgyQU1jDg2YEerlq7nUm1vEgflKp4arDBQoMBu2
+	 fC8Sj7PDzP5R3/XSADmmzmF2YpErtjVk0mtJ9SBGGXOfvEhwMKxVMtXtXV14ilwbaT
+	 MnJKACiM+M1Yrm7NX5TBL7lkj5vwZ/SPdoBPgw6uQXgwyapMqu+nN+VR6qt4dcyDS+
+	 7JmtlCk/FE/Zw==
+Subject: Re: [PATCH net-next v20 13/13] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
 From: netdev-bot+sashiko@kernel.org
 To: mail@birger-koblitz.de
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -50,10 +50,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
  neuromoments@gmail.com, beganovic.emir@gmail.com
-Date: Tue, 10 Nov 2026 01:38:40 +0000
-Message-ID: <179427472012.994134.9257520567051014453@kernel.org>
-In-Reply-To: <20261106-ax88179a-v20-9-37b5a1189983@birger-koblitz.de>
-References: <20261106-ax88179a-v20-9-37b5a1189983@birger-koblitz.de>
+Date: Tue, 10 Nov 2026 01:38:45 +0000
+Message-ID: <179427472591.994134.4882634953420736856@kernel.org>
+In-Reply-To: <20261106-ax88179a-v20-13-37b5a1189983@birger-koblitz.de>
+References: <20261106-ax88179a-v20-13-37b5a1189983@birger-koblitz.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 9 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 5 · Low: 4
+Critical: 0 · High: 0 · Medium: 2 · Low: 5
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,361 +78,275 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In ax88179a_reset(), the new `if (!ax179_data->in_pm)` guard
-  (ax88179a_devices.c:1172-1175) skips the whole ax88179_get_mac_addr()…
-- [Medium] On resume, ax88179a_reset() re-enables the hardware VLAN
-  filter (AX_VLAN_CONTROL_VFE written to AX88179A_VLAN_ID_CONTROL,…
-- [Medium] The series is not bisectable.
-- [Medium] ax88179a_resume() calls ax88179a_reset() whether or not the
-  interface is running (ax88179a_devices.c:207-224).
-- [Medium] On every resume, ax88179a_resume() power-cycles the PHY
-  through AX88179A_PHY_POWER: it writes 0 at line 221, sleeps 250 ms,…
-- [Low] The patch turns off USB runtime PM (autosuspend) for every
-  AX88179A/AX88772D/AX88279 device and the commit message does not say…
-- [Low] In ax88179a_resume(), if the first control read of
-  AX88179A_PHY_POWER fails (lines 207-209), the code jumps to err_out.
-- [Low] ax88179a_reset() always arms magic-packet wake (AX_MONITOR_MOD =
-  AX_MONITOR_MODE_RWMP, lines 1213-1217).
-- [Low] In the WoL branch of ax88179a_suspend() (lines 168-170), the
-  return value of ax88179_read_cmd(dev, AX_ACCESS_MAC,…
+- [Medium] The new AX88772D/AX88179A/AX88279 PHY support is added only to
+  the C driver, ax88796b.c.
+- [Medium] asix_ax88279_read_status() returns early on `if
+  (!phydev->link) return 0;` before it reaches…
+- [Low] Series ordering breaks bisection.
+- [Low] The commit message only says the three PHYs exist.
+- [Low] asix_ax88772D_get_features() sets phydev->c45_ids.mmds_present |=
+  MDIO_DEVS_PMAPMD | MDIO_DEVS_AN with the comment "to allow reading…
+- [Low] The AX88796B_PHY Kconfig help still says it "Currently supports
+  the Asix Electronics PHY found in the X-Surf 100 AX88796B package."…
+- [Low] The three new PHY IDs are synthetic.
 
 --
 
-ax88179_178a: Add Suspend/resume support for AX88179A/772D/279
+ax88796b: Add support for AX88772D, AX88179A and AX88279
 
-This patch adds per-chip suspend/resume function pointers to struct
-ax88179_data and sends the usb_driver suspend/resume/reset_resume
-callbacks through new wrappers in ax88179_lib.c. It implements
-ax88179a_suspend() and ax88179a_resume() for the AX179A family. When
-called from resume, ax88179a_reset() now skips the MAC address read and
-phylink_start().
+This patch adds PHY driver entries for the AX88772D (100M), AX88179A (1G)
+and AX88279 (2.5G) PHYs found in ASIX USB-Ethernet controllers. The
+AX88279 gets its own get_features, config_aneg, read_status and
+config_init callbacks, and the AX88772D gets a get_features fixup.
 
-> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-> index f78ad344c1c4f..b077b7153f0c0 100644
-> --- a/drivers/net/usb/ax88179_178a.c
-> +++ b/drivers/net/usb/ax88179_178a.c
-
-[ ... ]
-
-> @@ -1362,9 +1365,9 @@ static struct usb_driver ax88179_178a_driver = {
->  	.name =		"ax88179_178a",
->  	.id_table =	products,
->  	.probe =	usbnet_probe,
-> -	.suspend =	ax88179_suspend,
-> -	.resume =	ax88179_resume,
-> -	.reset_resume =	ax88179_resume,
-> +	.suspend =	ax88179_suspend_wrapper,
-> +	.resume =	ax88179_resume_wrapper,
-> +	.reset_resume =	ax88179_resume_wrapper,
-
-[Severity: Medium]
-Is the series bisectable at this point? From "ax88179_178a: Add HW support
-for AX179A-based chips" through "ax88179_178a: Add AX179A/AX279 multicast
-configuration", the AX179A-family products entries are bound to this
-usb_driver. In those commits .suspend/.resume/.reset_resume still point
-at the classic ax88179_suspend()/ax88179_resume().
-
-In those intermediate commits, a system resume runs:
-
-ax88179_resume()
-  ax88179_reset()
-    mii_nway_restart(&dev->mii)
-      mii->mdio_read(...)
-
-ax88179a_bind() never sets dev->mii.mdio_read. Wouldn't the first resume
-of an AX88179A/772D/279 device then call a NULL function pointer?
-
-This patch fixes that by sending AX179A devices to ax88179a_resume(), but
-the commit message presents the patch only as a new feature. Could the
-patches be reordered or merged so that no intermediate commit registers
-these callbacks for the new chips? Could the changelog also mention the
-fix?
-
->  	.disconnect =	ax88179_disconnect,
->  	.supports_autosuspend = 1,
-
-[ ... ]
-
-> diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-> index a6b0a3f47118c..01d6a35f68b2c 100644
-> --- a/drivers/net/usb/ax88179a_devices.c
-> +++ b/drivers/net/usb/ax88179a_devices.c
-
-[ ... ]
-
-> @@ -126,6 +128,63 @@ static void ax88179a_status(struct usbnet *dev, struct urb *urb)
->  	phylink_mac_interrupt(data->phylink);
->  }
->  
-> +static int ax88179a_suspend(struct usb_interface *intf, pm_message_t message)
-> +{
-
-[ ... ]
-
-> +	/* Enable WoL */
-> +	if (priv->wolopts) {
-> +		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD, 1, 1, &tmp8);
-> +		tmp8 &= ~(AX_MONITOR_MODE_RWLC | AX_MONITOR_MODE_RWMP);
-> +		if (priv->wolopts & WAKE_PHY)
-> +			tmp8 |= AX_MONITOR_MODE_RWLC;
-> +		if (priv->wolopts & WAKE_MAGIC)
-> +			tmp8 |= AX_MONITOR_MODE_RWMP;
-> +
-> +		ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD, 1, 1, &tmp8);
-> +
-> +		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE, 2, 2, &tmp16);
-> +		tmp16 |= AX_MEDIUM_RECEIVE_EN;
-> +		ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE, 2, 2, &tmp16);
+> ax88796b: Add support for AX88772D, AX88179A and AX88279
+>
+> The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
+> 2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
+> same name.
 
 [Severity: Low]
-What happens if this AX_MEDIUM_STATUS_MODE read fails? For size 2,
-ax88179_read_cmd() starts with u16 buf = 0 and copies buf into *data even
-on error, so tmp16 ends up as just AX_MEDIUM_RECEIVE_EN.
+Could the commit message describe the restrictions and quirks this patch
+adds? It only says the three PHYs exist, but the patch also:
 
-Writing that value back clears AX_MEDIUM_GIGAMODE, AX_MEDIUM_FULL_DUPLEX,
-the flow control enables and AX_MEDIUM_JUMBO_EN. Meanwhile the PHY keeps
-its link up for WoL.
+  - refuses AUTONEG_DISABLE with -EOPNOTSUPP in asix_ax88279_config_aneg()
+    and sets PHY_BROKEN_FORCED, so "ethtool -s <if> autoneg off" fails
+  - advertises 2.5G through vendor bit 0x1000 in MII_ADVERTISE
+  - infers the link partner's 2.5G ability in asix_ax88279_read_status()
+    because MDIO_AN_10GBT_STAT_LP2_5G is broken
+  - always reports DUPLEX_FULL and switches phydev->interface between
+    SGMII and 2500BASE-X
+  - removes 100baseT-Half from the AX88279 and 1000baseT/X from the
+    AX88772D
 
-Could the MAC medium mode then disagree with the link, so that wake frames
-are not received? Should the return value be checked here?
+This isn't a bug, but the subject is missing the usual "net: phy:"
+prefix.
 
-> +
-> +		if (priv->chip_version == AX_VERSION_AX88279)
-> +			ax88179_write_cmd(dev, AX88179A_WAKEUP_SETTING, 8,
-> +					  EPHY_LOW_POWER_EN | S5_WOL_EN
-> +					  | S5_WOL_LOW_POWER | 0x8000, 0, NULL);
-> +		else
-> +			ax88179_write_cmd(dev, AX88179A_WAKEUP_SETTING, 0,
-> +					  EPHY_LOW_POWER_EN, 0, NULL);
-> +
-> +	} else if (priv->chip_version == AX_VERSION_AX88279) {
-> +		ax88179_write_cmd(dev, AX88179A_WAKEUP_SETTING, 8, 0x8000, 0, NULL);
-> +	}
+> diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
+> index f20ddf6491499..0df44e0e236ab 100644
+> --- a/drivers/net/phy/ax88796b.c
+> +++ b/drivers/net/phy/ax88796b.c
+> @@ -13,6 +13,19 @@
+>  #define PHY_ID_ASIX_AX88772A		0x003b1861
+>  #define PHY_ID_ASIX_AX88772C		0x003b1881
+>  #define PHY_ID_ASIX_AX88796B		0x003b1841
+> +#define PHY_ID_ASIX_AX88772D		0x003b772d
+> +#define PHY_ID_ASIX_AX88179A		0x003b179a
+> +#define PHY_ID_ASIX_AX88279		0x003b2790
 
 [Severity: Low]
-Is magic packet wake really turned off when WoL is disabled?
-ax88179a_reset() always arms it:
+Are these IDs actually inside the ASIX identifier block? The MAC side
+fakes them in ax88179_mdiobus_read() in drivers/net/usb/ax88179a_devices.c
+(added earlier in the series), with this comment:
 
-	if (ax179_data->chip_version < AX_VERSION_AX88179A)
-		*tmp = AX_MONITOR_MODE_PMETYPE | AX_MONITOR_MODE_PMEPOL | AX_MONITOR_MODE_RWMP;
-	else
-		*tmp = AX_MONITOR_MODE_RWMP;
-	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD, 1, 1, tmp);
+	/* When reading PHYSID, return unused PHY-IDs from the ASIX vendor range */
 
-AX_MONITOR_MOD is only rewritten here, inside if (priv->wolopts). The
-chip therefore suspends with RWMP still set, even when ethtool reports
-WoL as off.
+In the C22 identifier layout, bits [31:10] carry the OUI. The existing
+ASIX IDs 0x003b1861, 0x003b1881 and 0x003b1841 all give phy_id >> 10 ==
+0xec6, which means PHYSID2 values in the 0x1800-0x1bff range.
 
-For AX88179A/AX88772D, a WoL suspend also writes AX88179A_WAKEUP_SETTING
-with EPHY_LOW_POWER_EN. The else branch only covers AX88279, and nothing
-on resume clears the register.
+The new IDs give:
 
-For a running interface, phy_suspend() powers the PHY down, which hides
-this. The PHY can still have link during a WoL-off suspend, for example
-in the down-interface resume case below. If USB wakeup is enabled in
-sysfs in that case, could a magic packet wake the host?
+  0x003b772d >> 10 == 0xedd
+  0x003b179a >> 10 == 0xec5
+  0x003b2790 >> 10 == 0xec9
 
-> +
-> +	ax88179_set_pm_mode(dev, false);
-> +	return 0;
-> +}
+so all three fall outside that block.
+
+asix_tbl is a MODULE_DEVICE_TABLE. A PHY from another vendor that reports
+one of these exact IDs would autoload this module and bind to callbacks
+that assume MII_ADVERTISE bit 12, vendor register 0x1d and full duplex
+only.
+
+Would model values inside 0x18xx-0x1bxx be a better choice?
 
 [ ... ]
 
-> @@ -135,6 +194,47 @@ static int ax88179a_auto_detach(struct usbnet *dev)
+> @@ -83,6 +96,107 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
 >  	return 0;
 >  }
 >  
-> +static int ax88179a_resume(struct usb_interface *intf)
+> +static int asix_ax88279_read_status(struct phy_device *phydev)
 > +{
-> +	struct usbnet *dev = usb_get_intfdata(intf);
-> +	struct ax88179_data *ax179_data;
-> +	u8 reg8 = 0;
+> +	int ret, val;
+> +
+> +	ret = genphy_read_status(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!phydev->link)
+> +		return 0;
+
+[Severity: Medium]
+Does this early return leave a stale 2500baseT_Full bit in
+phydev->lp_advertising after a 2.5G link goes down?
+
+The bit is only cleared further down in this function:
+
+	linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->lp_advertising);
+
+On link down with autoneg enabled, genphy_read_status()->genphy_read_lpa()
+only clears the C22 derived bits:
+
+	if (!phydev->autoneg_complete) {
+		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising,
+						0);
+		mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+		return 0;
+	}
+
+Neither phy_check_link_status() nor phy_link_down() clears lp_advertising.
+
+phy_ethtool_ksettings_get() then copies the stale bit to userspace, so
+ethtool would show the partner advertising 2500baseT/Full while the link
+is down.
+
+On the next link-up, phy_resolve_aneg_linkmode() also runs with the stale
+bit set, before the AX_CTRL_STATUS read overwrites phydev->speed.
+
+Would clearing the bit before the !phydev->link return fix this?
+
+[ ... ]
+
+> @@ -94,6 +208,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
+>  	}
+>  }
+>  
+> +static int asix_ax88772D_get_features(struct phy_device *phydev)
+> +{
 > +	int ret;
 > +
-> +	ax179_data = dev->driver_priv;
-> +	ax88179_set_pm_mode(dev, true);
+> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
+> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
 > +
-> +	ret = ax88179_read_cmd(dev, AX88179A_PHY_POWER, 0, 0, 1, &reg8);
+> +	ret = genphy_read_abilities(phydev);
 > +	if (ret < 0)
-> +		goto err_out;
+> +		return ret;
+> +
+> +	/* AX88772D does not support (possibly) reported 1000baseT modes */
+> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
+> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT, phydev->supported);
+> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, phydev->supported);
 
 [Severity: Low]
-If this first read fails, the goto skips the AX_FW_MODE_179A write, the
-PHY power cycle and all of ax88179a_reset(). err_out still calls
-phylink_resume(), which in the non-WoL case starts phylink on hardware
-that was never re-initialised. It then does:
+Does the mmds_present assignment do anything here? genphy_read_abilities()
+only reads MII_BMSR and MII_ESTATUS and never looks at
+c45_ids.mmds_present.
 
-	return usbnet_resume(intf);
+In drivers/net/phy, only genphy_c45_read_link(),
+genphy_c45_pma_read_abilities() and the phylink C45 MII emulation check
+mmds_present, and none of them run for this C22 PHY. The line and its
+comment look like they were copied from asix_ax88279_get_features().
 
-usbnet_resume() always returns 0, so ret is lost. Would the interface then
-look resumed but pass no traffic until it is brought down and up again?
-Should the error be propagated here?
+There is also an ordering question for EEE. genphy_read_abilities() ends
+with genphy_c45_read_eee_abilities()->genphy_c45_read_eee_cap1(), which
+masks supported_eee against supported:
 
-> +
-> +	if (!(reg8 & AX_PHY_POWER)) {
-> +		reg8 = AX_PHY_POWER;
-> +		ax88179_write_cmd(dev, AX88179A_PHY_POWER, 0, 0, 1, &reg8);
-> +		msleep(250);
-> +	}
-> +	ax88179_write_cmd(dev, AX_FW_MODE, AX_FW_MODE_179A, 0, 0, NULL);
-> +
-> +	/* Now, that AX_FW_MODE_179A is enabled, the PHY needs a power-cycle.
-> +	 * PHY-power is re-enabled in ax88179a_reset()
-> +	 */
-> +	ax88179_write_u8(dev, AX88179A_PHY_POWER, 0, 0, 0);
-> +	msleep(250);
+	linkmode_and(phydev->supported_eee, phydev->supported_eee,
+		     phydev->supported);
 
-[Severity: Medium]
-Does this unconditional power cycle lose the PHY configuration when WoL is
-enabled? The comment suggests it resets the PHY registers to their
-defaults: BMCR, MII_ADVERTISE (including AX_ADVERTISE_2500 on AX88279) and
-the EEE advertisement.
+At that point 1000baseT_Full can still be set in supported, and it is
+only cleared here afterwards.
 
-With wolopts set, ax88179a_suspend() calls phylink_suspend(pl, true). That
-takes the MAC WoL branch, which sets PHYLINK_DISABLE_MAC_WOL and does not
-call phylink_stop(). On resume, phylink_resume() then only does:
+If ESTATUS reports 1000T and MDIO_PCS_EEE_ABLE reports 1000T EEE, can
+supported_eee keep 1000baseT_Full after it has been removed from
+supported?
 
-		phylink_mac_initial_config(pl, true);
-		phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_MAC_WOL);
-
-It never reaches phylink_start()/phy_start(). ax88179a_init_phy() sets
-phydev->mac_managed_pm, so MDIO bus PM does not call phy_init_hw() either.
-
-Would the PHY then negotiate using its power-on defaults, while
-phydev->advertising and the phylink EEE state still reflect what was set
-with ethtool?
-
-> +
-> +	ax88179a_reset(dev);
-
-[Severity: Medium]
-Should this also be gated on netif_running()? Only phylink_resume() below
-checks it. ax88179a_reset() powers the PHY, writes AX_RX_CTL_START, sets
-AX_MEDIUM_RECEIVE_EN and arms AX_MONITOR_MODE_RWMP whether or not the
-interface is up.
-
-If the interface was down at suspend, ax88179a_stop() had left the
-hardware like this:
-
-	phylink_stop(ax179_data->phylink);
-	...
-	reg16 &= ~AX_MEDIUM_RECEIVE_EN;
-	...
-	ax88179_write_u16(dev, AX_ACCESS_MAC, AX_RX_CTL, 2, 0);
-
-	ax88179_write_u8(dev, AX88179A_PHY_POWER, 0, 0, 0);
-
-After resume, the PHY is powered and can bring up a link with the peer,
-and MAC RX is enabled, but phylink is not started. The new comment in
-ax88179a_reset(), "phylink_resume() will start phylink, then", does not
-hold for down interfaces.
-
-A later suspend of the still-down interface does not power the PHY off
-again. With USB wakeup enabled, could RWMP then wake the host while WoL
-is off?
-
-[Severity: Medium]
-Is the VLAN filter table restored on this path? ax88179a_reset() turns
-VFE back on whenever the feature is set:
-
-	if (dev->net->features & NETIF_F_HW_VLAN_CTAG_FILTER)
-		*tmp |= AX_VLAN_CONTROL_VFE;
-
-The per-VID bitmap, though, is only written by
-ax88179a_vlan_rx_add_vid() and ax88179a_vlan_rx_kill_vid(), and the
-driver keeps no software copy of it. ax88179a_set_features() also clears
-all 256 entries when it enables the filter, which suggests the table
-contents can't be relied on.
-
-The chip can lose its registers across suspend, for example on
-reset_resume or when VBUS is cut in S3. Would the hardware filter then
-drop frames on the configured VLANs until the VIDs are added again?
-
-> +
-> +err_out:
-> +	if (netif_running(dev->net)) {
-> +		rtnl_lock();
-> +		phylink_resume(ax179_data->phylink);
-> +		rtnl_unlock();
-> +	}
-> +
-> +	ax88179_set_pm_mode(dev, false);
-> +
-> +	return usbnet_resume(intf);
-> +}
+With the in-tree MAC, lpi_capabilities is 0 for the AX88772D, so phylink
+disables EEE and users don't see this today.
 
 [ ... ]
 
-> @@ -802,6 +905,13 @@ static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
->  	if (ret)
->  		goto initphy_err;
->  
-> +	/* Keep this interface runtime-PM active by taking a usage ref.
-> +	 * Prevents runtime suspend while bound and avoids resume paths
-> +	 * that could deadlock (autoresume under RTNL while USB PM lock
-> +	 * is held, phylink/MDIO wants RTNL).
-> +	 */
-> +	pm_runtime_get_noresume(&intf->dev);
+> @@ -111,6 +244,35 @@ static struct phy_driver asix_driver[] = {
+>  	.suspend	= genphy_suspend,
+>  	.resume		= genphy_resume,
+>  	.soft_reset	= asix_soft_reset,
+
+[ ... ]
+
+> +}, {
+> +	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
+> +	.name		= "Asix Electronics AX88279",
+> +	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
+> +	.get_features	= asix_ax88279_get_features,
+> +	.read_status	= asix_ax88279_read_status,
+> +	.config_aneg	= asix_ax88279_config_aneg,
+> +	.config_init	= asix_ax88279_config_init,
 
 [Severity: Low]
-This turns off USB autosuspend for every AX88179A/772D/279 device while it
-is bound. The usage count only drops when ax88179a_unbind() calls
-pm_runtime_put_noidle().
+Can a bisect stop on a commit where the AX88279 doesn't work? This patch
+is the last one in the series. The earlier patch "ax88179_178a: Add HW
+support for AX179A-based chips" already returns PHYSID1/2 of
+0x003b/0x2790 (and 0x179a/0x772d) from ax88179_mdiobus_read().
 
-As the comment says, the new ax88179a_suspend()/ax88179a_resume() take
-rtnl_lock() around the phylink calls. An autoresume under RTNL, such as
-usbnet_open() -> usb_autopm_get_interface(), would therefore deadlock, so
-the new callbacks only work for system sleep.
+That patch also sets up phylink for the AX88279 in
+ax88179a_phylink_setup() with only 2500BASEX and SGMII in
+supported_interfaces, and an initial interface of 2500BASEX.
 
-The commit message only talks about adding the suspend/resume wrappers.
-Could it mention that runtime PM is disabled for the AX179A family, and
-why? The shared ax88179_178a_driver also still sets
-.supports_autosuspend = 1 without any note about this exception.
+Between that patch and this one, nothing matches these IDs, so genphy
+binds. It fills supported with C22 10/100/1000 modes only and leaves
+possible_interfaces empty.
 
-> +
->  	return 0;
+phylink_validate_phy() then validates against 2500BASEX, because is_c45
+is false and it does not fall back to PHY_INTERFACE_MODE_NA. The only
+capability for 2500BASEX is 2500 full duplex, so no mode is left and the
+PHY fails to attach once ax88179 binds instead of cdc_ncm.
+
+The AX88179A and AX88772D also run on genphy without the quirks added
+here.
+
+Could this patch be moved ahead of the MAC patch that depends on it?
 
 [ ... ]
 
-> @@ -1055,9 +1166,13 @@ static int ax88179a_reset(struct usbnet *dev)
->  	ax88179_write_u8(dev, AX_ACCESS_MAC, AX88179A_MAC_SWP_CTRL, 1, 0);
->  	ax88179_write_u8(dev, AX_ACCESS_MAC, AX88179A_MAC_TX_HDR_CKSUM, 1, 0);
->  
-> -	/* Read MAC address from DTB or asix chip */
-> -	ax88179_get_mac_addr(dev);
-> -	memcpy(dev->net->perm_addr, dev->net->dev_addr, ETH_ALEN);
-> +	/* Read MAC address from DTB or asix chip, except when called
-> +	 * from resume context.
-> +	 */
-> +	if (!ax179_data->in_pm) {
-> +		ax88179_get_mac_addr(dev);
-> +		memcpy(dev->net->perm_addr, dev->net->dev_addr, ETH_ALEN);
-> +	}
+> @@ -124,6 +286,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
+>  	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
+>  	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
+>  	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
+> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
+> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
+> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
+>  	{ }
+>  };
 
 [Severity: Medium]
-Does skipping ax88179_get_mac_addr() on resume also skip programming the
-unicast address into the chip? ax88179_get_mac_addr() ends with:
+What happens to these PHYs when CONFIG_AX88796B_RUST_PHY=y?
+drivers/net/phy/Makefile builds only one of the two drivers:
 
-	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_NODE_ID, ETH_ALEN, ETH_ALEN,
-			  dev->net->dev_addr);
+ifdef CONFIG_AX88796B_RUST_PHY
+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
+else
+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
+endif
 
-That is the only AX_NODE_ID write on the reset path.
+drivers/net/phy/ax88796b_rust.rs still registers only the old three:
 
-ax88179a_resume() rewrites AX_FW_MODE_179A and power-cycles the PHY, so
-the driver seems to expect chip state to be lost, for example on
-.reset_resume. In that case AX_NODE_ID would go back to the efuse
-default. dev_addr, however, still holds a user-set address (from
-ax88179_set_mac_addr()), a DT-provided address or the random fallback.
+    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
 
-RX_CTL is programmed with AX_RX_CTL_AP and without AX_RX_CTL_PRO. Would
-unicast frames to the interface's own MAC then be filtered out after
-resume?
+USB_NET_AX88179 selects AX88796B_PHY so that this module provides the
+PHY driver for the new chips. With the Rust variant, genphy binds to
+0x003b2790, and the AX88279 fails phylink_validate_phy() against
+2500BASEX as described above.
 
-Could the AX_NODE_ID write of dev_addr be kept for the in_pm case, with
-only the read/selection step skipped?
+The AX88179A and AX88772D also lose the read_mmd/write_mmd hooks, and the
+AX88772D loses its feature fixup.
 
-[ ... ]
+The AX88796B_RUST_PHY help text also still says "The features are
+equivalent", which is no longer the case.
+
+Does the Rust driver need the same entries? Alternatively, could the
+Kconfig dependencies reflect that it doesn't cover these PHYs?
+
+[Severity: Low]
+This isn't a bug, but the AX88796B_PHY help text in
+drivers/net/phy/Kconfig still says:
+
+	  Currently supports the Asix Electronics PHY found in the X-Surf 100
+	  AX88796B package.
+
+It already left out the AX88772A/C. Now it also leaves out the AX88772D,
+AX88179A and AX88279 used by USB adapters, and USB_NET_AX88179 selects
+this symbol. Could the help text be updated?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-ax88179a-v20-0-37b5a1189983%40birger-koblitz.de
