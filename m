@@ -1,58 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794274439;
-	b=VSZfEXw9DIbgEN9Gk81jw9jK+j8WyV0C58HOkHYax6RXuvuKa37PSK4r61uHdmUssWVa
-	 nJCE63+lwj/RUTXg2qdoicd6VXVSiYHZUskgk3MczAc48af57prJUI9jtns7uohSwlD7W
-	 jHN4HAvr5SVEr6+M+rpQQZYsIJG6p1/Gn3LLsR44KoV6jYoySelkUdwsYPufsAtnobu1s
-	 mdantNr/isAQU6RzLvSZ9A9z4pxNyr6YoA8RS+0e8wAPOhcU4j+8Ku44DeFiV37L/z+3y
-	 jqWxHHXlKBTid5ccuB39eeMVcCn/akYg0Xdj+T0UaZtEomREbf5Axz34vGu18fOyTMA==
+	t=1794274712;
+	b=XlQ8x1Ti1EujNUPTkNKGlxNAEVzMrnIBjhO8QMtmgeZ+MSkshpTFUSP+2zt8iBP6F5d0
+	 WlmteTjZa4v2fRTyxjGZsXDfxYqs7fvfLq7MOYB2zApyV44OVH4e2+0z4mbsYnKZuk0Tw
+	 HrqqmVrzPwEqzY4NUqr933wnQh60N12Fixb8O0Tvc413PnbWzKGNi7xmrrgbnRm3K+fbv
+	 GjAFyx051cHWuULGUtgUGn69vUISSF5/y+oact55UZomDa2VTvJgBLAQ/doEoqAYRJYq0
+	 Ptjr/Wcqkesr4ca9OeSHx+TPCd+kCOR1FPeQ9kEVsJlJCk2sPSCDNlkV7ATYLuxWIjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794274439;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794274712;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=IPEvodokfAyud/YruPH/rS1l37Gq1EzJHqG0mFFK13M=;
-	b=Ir3Gdlku3o0kB/kA4iRplVAV2XgLsM15L2Pw4neb3IyRbGIWx0mhQT2UuUeWQRQ3ggBp
-	 yjx4RW8vSUObc9rZeOBdVf1ndm7JboMbYJv4GJeuf8FPv97tOL3ZEH/G8FGNaF6kiOju5
-	 oS1TrqAMt0WP6bka/nLljSuytLQjj5cLHCibLjEa/931kmPBRtov5aSgpyF5TsEUWy1sV
-	 BCM4EStBJ49imAl4qcPXdXKqrKKN352kekeekPd9V+kX6n8adgmKPX4xBR15Xm5Ito4nf
-	 aosQw9iqxL9CaKCZzFEcjIHCH95c4O7xWASYXJwAkvSQFy4uE6nvlQLJp4xFdvKwBOA==
+	bh=Y7tdQjym8J95a6/U7vV5Laz+tn2VaoFtzuNilhh5ksk=;
+	b=XuEdWLOV9vdo/kT+lIHZCN1h0zy9L20cYKPnvfVfe0n4vfgb/Zl+I3yuMrMKFdUF6Rf6
+	 delCe9+e6jVQmcI2wE2Qyi6wKZuz8v3PSneFgAi9QADVBcM3Ck4EbYUZCMEARbvqYKNUl
+	 R8hP9SHg3AJ9xhhgFRHLgrO3z1JkE/yMIDrTceA9oKFddK0slsrvh2UUqk/9c+VzAFKuj
+	 b92MBYp/Ocb2b1dvY/aqbr2AMUj/oHkqKc6ppS/dYmexh3Gf/YHVs5lmFzvenwDR/RHm2
+	 UX2ZbpWcrY1/EIrV/I3vuFRLirtkL8UKGP3AuFFNLbry0VfWi+dATXXKw5Gg9BW/zqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NmxX5Xwk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T9iwtHTS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13639606A31C;
-	Tue, 10 Nov 2026 01:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892FD60A2638;
+	Tue, 10 Nov 2026 01:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NmxX5Xwk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B6C1F008A1;
-	Tue, 10 Nov 2026 01:33:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T9iwtHTS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464F61F008A6;
+	Tue, 10 Nov 2026 01:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794274438;
-	bh=IPEvodokfAyud/YruPH/rS1l37Gq1EzJHqG0mFFK13M=;
+	s=k20260515; t=1794274712;
+	bh=Y7tdQjym8J95a6/U7vV5Laz+tn2VaoFtzuNilhh5ksk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NmxX5Xwke0Mhw1t5LuMxSOzjyYgn/2s0bpNYTWX2XPaD3XN1Xpq0BOjhodXrNhXtC
-	 XVx/FOJ/xPomOcGdTbZNWx04fQ10EPuGh867ab2fvEzAQN/dahfI+k7TMpMLp1Y9CQ
-	 yqs58/2jl3brCaCbg/bm2HObMZinkBCOUFZSviS8V9vM66qX2wGpbivogAX4Kj4G/x
-	 DutwpeeiiFArbhX60Y2uT+subW8O+2iP/m1v43QuUb2mJcJZA3CDyHCnhuNxwdcbgZ
-	 dPSIpxEI6hEWTpFtmBtWbBmYyObs18Dr3KD2W6usmqa8WBjC2tLus3bH9OdpwXk13M
-	 9o31emCx4RhzA==
-Subject: Re: [PATCH net] rxrpc: Fix rxrpc_sock UAF caused by missing poke in
- rxrpc_abort_eproto()
+	b=T9iwtHTSmGwuxvHxrInQGPul4KPymMJNuF3MT725oS+oZMYUrKIssTUxzFPcus5uD
+	 UMvGwyk5oMJnSpzGr7v7LF5BJmMrIyRNleX+6cBQ5+E2DOJQ22VRNutLnDZhxfzUJ+
+	 6kEIhKPKul7dOnzAHg1U7eixVW9S2rbINTI1oDSMd6PS95+KrBOi8aKjlDiNJPhmJy
+	 9w4wiUwd4NDUDVhkmZSBluD9HoOB6T/fwcwCQyyIAuqWuFjuX1yuyu4Bq6vMa+w3kR
+	 k1Pphlg3KogGyc8/uyoSTrOvyu0JkzVvbr5h4PbXmgHXPSFzHVWgc27S4ZcwVfYrop
+	 H5p8ibCA16+Jg==
+Subject: Re: [PATCH net-next v20 03/13] ax88179_178a: Split driver into
+ library and device specific code
 From: netdev-bot+sashiko@kernel.org
-To: juanagusnicco@gmail.com
-Cc: netdev@vger.kernel.org, linux-afs@lists.infradead.org, dhowells@redhat.com,
- marc.dionne@auristor.com, kuba@kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, davem@davemloft.net, horms@kernel.org,
- jaltman@auristor.com, linux-kernel@vger.kernel.org
-Date: Tue, 10 Nov 2026 01:33:57 +0000
-Message-ID: <179427443746.994134.16851409559930782509@kernel.org>
-In-Reply-To: <20261106011550.59902-1-juanagusnicco@gmail.com>
-References: <20261106011550.59902-1-juanagusnicco@gmail.com>
-X-sashiko-severity: Critical
+To: mail@birger-koblitz.de
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
+ hkallweit1@gmail.com, chenhuacai@kernel.org, kernel@xen0n.name,
+ edumazet@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ neuromoments@gmail.com, beganovic.emir@gmail.com
+Date: Tue, 10 Nov 2026 01:38:30 +0000
+Message-ID: <179427471082.994134.5058142083124643699@kernel.org>
+In-Reply-To: <20261106-ax88179a-v20-3-37b5a1189983@birger-koblitz.de>
+References: <20261106-ax88179a-v20-3-37b5a1189983@birger-koblitz.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 1 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 4 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,175 +78,309 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] The patch only makes the stranded-call UAF a race.
-- [High] rxrpc: race on call->_state in rxrpc_abort_eproto() outside I/O
-  thread
+- [Medium] The commit message describes a pure code move plus a module
+  rename ('Split the ax88179_178a module code into code common to ...…
+- [Medium] The new `medium_status_mutex` is documented as protecting
+  AX_MEDIUM_STATUS_MODE (ax88179_lib.h:161), but in this commit only…
+- [Medium] `ax88179_change_mtu()` (ax88179_lib.c:396-438) now returns an
+  error from the new `err_out` path, but only after it has already done…
+- [Medium] The patch renames the kernel module from ax88179_178a.ko to
+  ax88179.ko (Makefile lines 15-16: `obj-$(CONFIG_USB_NET_AX88179_178A)…
+
+Pre-existing issues:
+- [Medium] In the moved `ax88179_get_eeprom()` (ax88179_lib.c:191-223),
+  `eeprom_buff` comes from `kmalloc_array()` (line 205, not zeroed).
+- [Medium] `ax88179_set_features()` (ax88179_lib.c:339-366, moved
+  unchanged) toggles the checksum-offload registers by XOR on the…
 
 --
 
-rxrpc: Fix rxrpc_sock UAF caused by missing poke in rxrpc_abort_eproto()
+ax88179_178a: Split driver into library and device specific code
 
-This commit adds a call to rxrpc_poke_call() in rxrpc_abort_eproto(). A
-call aborted with EPROTO from recvmsg() or rxrpc_kernel_recv_data() then
-gets queued for the I/O thread, which disconnects it from its connection
-channel. Without the poke the call stays in conn->channels[] and its
-call->socket pointer dangles after the socket is freed.
+This commit moves the register definitions, the USB command helpers and
+the common ethtool/netdev callbacks of the ax88179_178a driver into a new
+ax88179_lib.c and ax88179_lib.h. It also renames the module to ax88179 and
+adds MODULE_ALIAS("ax88179_178a") for the old name.
 
-> diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-> index 865f05fe37ab9..31528b5e34cbe 100644
-> --- a/net/rxrpc/ar-internal.h
-> +++ b/net/rxrpc/ar-internal.h
-> @@ -1455,6 +1455,7 @@ static inline int rxrpc_abort_eproto(struct rxrpc_call *call,
->  	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
->  
->  	rxrpc_abort_call(call, sp->hdr.seq, abort_code, -EPROTO, why);
-> +	rxrpc_poke_call(call, rxrpc_call_poke_abort);
+> diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
+> index 4964f7b326fbc..ddd76fa71e2ee 100644
+> --- a/drivers/net/usb/Makefile
+> +++ b/drivers/net/usb/Makefile
+> @@ -12,7 +12,8 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
+>  obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
+>  obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
+>  asix-y := asix_devices.o asix_common.o ax88172a.o
+> -obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179_178a.o
+> +obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
+> +ax88179-y := ax88179_178a.o ax88179_lib.o
 
-[Severity: High]
-Is it safe for rxrpc_abort_eproto() to complete the call itself here?
-The alternative is to ask the I/O thread to do it.
+[Severity: Medium]
+This renames ax88179_178a.ko to ax88179.ko. The only compatibility added
+is MODULE_ALIAS("ax88179_178a") in ax88179_178a.c.
 
-Since commit a343b174b4bd ("rxrpc: Only set/transmit aborts in the I/O
-thread") and commit 96b4059f43ce ("rxrpc: Remove call->state_lock"),
-rxrpc_set_call_completion() takes no lock when it writes:
+The alias keeps "modprobe ax88179_178a" working. Will configuration that
+matches on the real module name still take effect? For example:
 
-  call->_state
-  call->completion
-  call->abort_code
-  call->error
+  - "blacklist ax88179_178a" in modprobe.d. kmod compares the blacklist
+    against the resolved module name, and the usb:v0B95p1790... modalias
+    now resolves directly to ax88179.
+  - module_blacklist=ax88179_178a on the kernel command line, which is
+    compared against mod->name.
+  - Anything that checks /sys/module/ax88179_178a.
 
-This relies on only the I/O thread changing call state. Other contexts
-are meant to use rxrpc_propose_abort(), which sets call->send_abort and
-pokes the call.
+Users of this device family often blacklist the vendor driver so that
+cdc_ncm binds instead. The later patch "ax88179_178a: Add HW support for
+AX179A-based chips" also relies on OS configuration to choose between this
+module and cdc_ncm.
 
-rxrpc_abort_eproto() runs in process context and holds only
-call->user_mutex, which the I/O thread never takes:
+After an upgrade, could such systems quietly end up with this driver bound
+again?
 
-rxrpc_recvmsg() / rxrpc_kernel_recv_data()
-  rxrpc_recvmsg_data()
-    rxrpc_verify_data()
-      call->security->verify_packet()
-        rxrpc_abort_eproto()
-          rxrpc_abort_call()
-            rxrpc_set_call_completion()  /* _state = COMPLETE */
+The rename is still there at the end of the series, which also renames the
+Kconfig symbol and the usb_driver name to ax88179. Could the commit message
+mention this limitation of the alias?
 
-For a multi-packet service request, the I/O thread can be handling the
-DATA packet with RXRPC_LAST_PACKET at the same moment:
+[ ... ]
 
-rxrpc_input_queue_data()
-  rxrpc_end_rx_phase()
-    /* reads _state == RXRPC_CALL_SERVER_RECV_REQUEST */
-    rxrpc_set_call_state(call, RXRPC_CALL_SERVER_ACK_REQUEST);
+> diff --git a/drivers/net/usb/ax88179_lib.c b/drivers/net/usb/ax88179_lib.c
+> new file mode 100644
+> index 0000000000000..063427ff55e42
+> --- /dev/null
+> +++ b/drivers/net/usb/ax88179_lib.c
+> @@ -0,0 +1,461 @@
 
-Suppose rxrpc_end_rx_phase() reads the old state before the abort and
-writes after it. RXRPC_CALL_COMPLETE is then overwritten with
-RXRPC_CALL_SERVER_ACK_REQUEST. call->completion and call->error still
-say the call failed.
+[ ... ]
 
-The poke added here then runs rxrpc_input_call_event(). call->send_abort
-is 0 and __rxrpc_call_is_complete() is false, so the call never reaches
-rxrpc_disconnect_call().
+> +int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+> +{
 
-Userspace may have seen rxrpc_call_has_failed() before the overwrite and
-released the call. In that case the call is gone from rx->sock_calls, so
-rxrpc_release_calls_on_socket() won't abort it at close either.
+[ ... ]
 
-Doesn't that leave the call stranded in conn->channels[] with a dangling
-call->socket? That is the situation this patch is meant to fix. The
-direct rxrpc_abort_call() predates this patch, but the poke relies on
-the state staying RXRPC_CALL_COMPLETE.
+> +	first_word = eeprom->offset >> 1;
+> +	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+> +	eeprom_buff = kmalloc_array(last_word - first_word + 1, sizeof(u16),
+> +				    GFP_KERNEL);
+> +	if (!eeprom_buff)
+> +		return -ENOMEM;
+> +
+> +	/* ax88179/178A returns 2 bytes from eeprom on read */
+> +	for (i = first_word; i <= last_word; i++) {
+> +		ret = __ax88179_read_cmd(dev, AX_ACCESS_EEPROM, i, 1, 2,
+> +					 &eeprom_buff[i - first_word]);
+> +		if (ret < 0) {
+> +			kfree(eeprom_buff);
+> +			return -EIO;
+> +		}
+> +	}
+> +
+> +	memcpy(data, (u8 *)eeprom_buff + (eeprom->offset & 1), eeprom->len);
 
-There is a second problem even without the race. The poke wakes
-rxrpc_input_call_event() with send_abort == 0 and often an empty
-call->rx_queue. __rxrpc_call_is_complete() is only checked inside the
-if (skb) block. So the timer expiry, delayed ACK/ping and retransmission
-code all run on the aborted call before it reaches the out: label that
-disconnects it. Is that intended?
+[Severity: Medium]
+This is a pre-existing issue that this patch moves without changes. Can
+this memcpy() hand stale heap bytes from eeprom_buff to userspace?
 
-Would it be better for rxrpc_abort_eproto() to use
-rxrpc_propose_abort(call, abort_code, -EPROTO, why)? The state change
-would then happen in the I/O thread, as for other aborts made outside
-it. That changes when recvmsg() sees the call as complete, though. What
-should the caller observe after the -EPROTO return?
+eeprom_buff comes from kmalloc_array() and is not zeroed. Only ret < 0
+counts as a failure. __usbnet_read_cmd() copies only the bytes that were
+actually transferred and returns that short count:
 
-[Severity: Critical]
-Does this close the use-after-free in rxrpc_post_challenge(), or does it
-turn it into a race?
-
-rxrpc_poke_call() only adds the call to local->call_attend_q. The call
-leaves conn->channels[] only later, when the I/O thread runs
-rxrpc_input_call_event()->rxrpc_disconnect_call(). Nothing in the close
-path waits for that to happen:
-
-close()
-  rxrpc_release_sock()
-    rxrpc_release_calls_on_socket(rx)
-      rxrpc_release_call()   /* sets RXRPC_CALL_RELEASED, call->socket kept */
-    flush_workqueue(rxrpc_workqueue)   /* not the I/O thread */
-    rxrpc_unuse_local()   /* I/O thread keeps running if another
-                             client socket shares this rxrpc_local */
-    sock_put(sk)   /* SOCK_RCU_FREE, freed after a grace period */
-
-call->socket is set with rcu_assign_pointer() and never set back to
-NULL, and the call holds no reference on the socket.
-
-rxrpc_io_thread() also handles the whole rx batch before it splices and
-processes local->call_attend_q. No RCU read section covers the batch, so
-a grace period can end partway through it.
-
-The peer can make the batch longer by flooding packets. Suppose a
-CHALLENGE in that batch is handled after the socket has been freed but
-before the poked call is disconnected:
-
-rxrpc_io_thread()
-  rxrpc_input_packet()
-    rxrpc_input_packet_on_conn()
-      rxrpc_input_conn_packet()
-        rxrpc_post_challenge()
-
-net/rxrpc/conn_event.c:rxrpc_post_challenge() {
+drivers/net/usb/usbnet.c:__usbnet_read_cmd() {
     ...
-	rcu_read_lock();
-
-	for (int i = 0; i < ARRAY_SIZE(conn->channels); i++) {
-		if (conn->channels[i].call) {
-			call = conn->channels[i].call;
-			rx = rcu_dereference(call->socket);
-			if (!rx) {
-    ...
-			if (test_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags))
-				break;
-    ...
-	if (call)
-		queued = rxrpc_notify_socket_oob(call, skb);
+	if (err > 0 && err <= size) {
+		if (data)
+			memcpy(data, buf, err);
     ...
 }
 
-Wouldn't this still read rx->flags from the freed rxrpc_sock? Couldn't
-it then reach rxrpc_notify_socket_oob(), which takes rx->recvmsg_lock and
-may call function pointers from the freed object? That is the same
-use-after-free the commit message describes.
+If a device answers a 2-byte read with 0 or 1 bytes, eeprom_buff keeps
+uninitialised bytes, and ETHTOOL_GEEPROM returns them to the caller.
 
-The same window looks like it exists in the generic close path too,
-where rxrpc_propose_abort() pokes calls that are not yet complete. That
-predates this patch, but it is the same rxrpc_post_challenge() access
-this patch is meant to fix.
+ax88179_set_features() has a similar problem. Its u8 tmp is never
+initialised, so a failed 1-byte read leads to a stack byte being XORed and
+written to the COE register.
 
-Would it make sense to remove the stale pointer as well? One option is
-RCU_INIT_POINTER(call->socket, NULL) in rxrpc_release_call(), since
-rxrpc_post_challenge(), rxrpc_notify_socket_oob() and
-rxrpc_notify_socket() already handle a NULL rx. Another is to have
-rxrpc_post_challenge() skip calls that are RXRPC_CALL_RELEASED or
-complete. A third is to make release wait for the I/O thread to
-disconnect the call.
+A later patch in the series, "ax88179_178a: Add support for
+AX88179A/772D/279 EEPROM access", fixes the get_eeprom part. It switches to
+kzalloc() and checks ret != ax179_data->eeprom_block. The set_features part
+is still present at the end of the series.
 
-The poke itself still looks needed for the call leak and the
-rxrpc_destroy_client_conn_ids() BUG() and netns teardown hang described
-in the commit message.
+[ ... ]
 
->  	return -EPROTO;
->  }
->
+> +int ax88179_set_features(struct net_device *net, netdev_features_t features)
+> +{
+> +	u8 tmp;
+> +	struct usbnet *dev = netdev_priv(net);
+> +	netdev_features_t changed = net->features ^ features;
+> +
+> +	if (changed & NETIF_F_IP_CSUM) {
+> +		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_TXCOE_CTL, 1, 1, &tmp);
+> +		tmp ^= AX_TXCOE_TCP | AX_TXCOE_UDP;
+> +		ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_TXCOE_CTL, 1, 1, &tmp);
+> +	}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, since the function moves
+unchanged. Can the XOR toggle leave the hardware checksum offload out of
+sync with net->features?
+
+ax88179_reset() always turns on every COE bit, whatever net->features says:
+
+drivers/net/usb/ax88179_178a.c:ax88179_reset() {
+    ...
+	*tmp = AX_TXCOE_IP | AX_TXCOE_TCP | AX_TXCOE_UDP |
+	       AX_TXCOE_TCPV6 | AX_TXCOE_UDPV6;
+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_TXCOE_CTL, 1, 1, tmp);
+    ...
+}
+
+ax88179_reset() runs from ax88179_resume() and from ax88179_net_reset().
+Consider this sequence:
+
+  ethtool -K tx off   -> TXCOE TCP/UDP cleared
+  suspend/resume      -> ax88179_reset() sets all TXCOE bits again
+  ethtool -K tx on    -> tmp ^= AX_TXCOE_TCP | AX_TXCOE_UDP clears them
+
+NETIF_F_IP_CSUM ends up set while the MAC no longer fills in IPv4 TCP/UDP
+checksums. Would CHECKSUM_PARTIAL frames then go out with bad L4 checksums?
+
+Writing the absolute state derived from features, instead of toggling,
+would avoid this. The code is still the same at the end of the series.
+
+[ ... ]
+
+> +int ax88179_change_mtu(struct net_device *net, int new_mtu)
+> +{
+> +	struct usbnet *dev = netdev_priv(net);
+> +	struct ax88179_data *data;
+> +	u16 tmp16;
+> +	int err;
+> +
+> +	data = dev->driver_priv;
+> +	mutex_lock(&data->medium_status_mutex);
+
+[Severity: Medium]
+The commit message describes this as a split of existing code plus a module
+rename, but some of it is not a straight move. Compared with the code
+removed from ax88179_178a.c:
+
+  - struct ax88179_data gains medium_status_mutex, which ax88179_bind()
+    initialises.
+  - ax88179_change_mtu() now takes that mutex, checks every register
+    access and can return an error. The old version had no lock and always
+    returned 0.
+  - The BUG_ON(!dev) checks in __ax88179_read_cmd() and
+    __ax88179_write_cmd() are dropped.
+
+Should these behaviour changes go in a separate patch with their own
+justification, or at least be described in the commit message?
+
+> +	WRITE_ONCE(net->mtu, new_mtu);
+> +	dev->hard_mtu = net->mtu + net->hard_header_len;
+> +	if (net->mtu > 1500) {
+> +		err = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+> +				       2, 2, &tmp16);
+> +		if (err < 0)
+> +			goto err_out;
+
+[ ... ]
+
+> +	mutex_unlock(&data->medium_status_mutex);
+> +
+> +	/* max qlen depend on hard_mtu and rx_urb_size */
+> +	usbnet_update_max_qlen(dev);
+> +
+> +	return 0;
+> +
+> +err_out:
+> +	mutex_unlock(&data->medium_status_mutex);
+> +	return err;
+> +}
+
+[Severity: Medium]
+On this error path, do net->mtu and dev->hard_mtu keep the new value even
+though the MTU change is reported as failed?
+
+Both are updated before any AX_MEDIUM_STATUS_MODE access. err_out does not
+restore them and does not call usbnet_update_max_qlen(). The core does not
+roll back on error either:
+
+net/core/dev.c:netif_set_mtu_ext() {
+    ...
+	orig_mtu = dev->mtu;
+	err = __netif_set_mtu(dev, new_mtu);
+
+	if (!err) {
+    ...
+	return err;
+}
+
+So after a failed USB transfer:
+
+  - userspace gets an error, but dev->mtu shows the new value
+  - the NETDEV_CHANGEMTU notifiers are skipped
+  - rx_qlen/tx_qlen no longer match hard_mtu
+
+A retry with the same MTU then hits this check in netif_set_mtu_ext():
+
+	if (new_mtu == dev->mtu)
+		return 0;
+
+It succeeds without touching the hardware, so AX_MEDIUM_JUMBO_EN stays
+wrong for that MTU.
+
+The old code always returned 0, so this inconsistency is new in this patch.
+The function is the same at the end of the series.
+
+[ ... ]
+
+> diff --git a/drivers/net/usb/ax88179_lib.h b/drivers/net/usb/ax88179_lib.h
+> new file mode 100644
+> index 0000000000000..9111a1395eb2f
+> --- /dev/null
+> +++ b/drivers/net/usb/ax88179_lib.h
+> @@ -0,0 +1,195 @@
+
+[ ... ]
+
+> +struct ax88179_data {
+> +	struct mutex medium_status_mutex;  /* protect AX_MEDIUM_STATUS_MODE */
+
+[Severity: Medium]
+The comment says this mutex protects AX_MEDIUM_STATUS_MODE, but
+ax88179_change_mtu() is the only function that takes it. Is that enough to
+protect the register?
+
+None of the other accessors in ax88179_178a.c take the mutex:
+ax88179_suspend(), ax88179_link_reset(), ax88179_reset(),
+ax88179_net_reset() and ax88179_stop().
+
+ax88179_link_reset() runs from the kevent work without RTNL:
+
+usbnet_deferred_kevent()
+  info->link_reset(dev)
+    ax88179_link_reset()
+
+That means it can run at the same time as ax88179_change_mtu(), which runs
+under RTNL. One possible interleaving:
+
+  ax88179_change_mtu()              ax88179_link_reset()
+  read AX_MEDIUM_STATUS_MODE
+                                    write new speed/duplex mode
+  write stale mode | JUMBO_EN
+
+The MAC speed and duplex would then disagree with the PHY until the next
+link event.
+
+It can also go the other way. ax88179_link_reset() reads
+dev->net->mtu <= 1500, then ax88179_change_mtu() sets JUMBO_EN, then
+ax88179_link_reset() overwrites the register without JUMBO_EN. Would jumbo
+frames then be dropped?
+
+By the end of the series the AX88179A mac_link_up path in
+ax88179a_devices.c also takes the mutex. The legacy accessors in
+ax88179_178a.c and several accessors in ax88179a_devices.c still do not.
+
+Should the other accessors take the mutex too, or should the comment say
+what the mutex actually serialises?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106011550.59902-1-juanagusnicco%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-ax88179a-v20-0-37b5a1189983%40birger-koblitz.de
