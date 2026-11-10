@@ -1,98 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794283078;
-	b=2i6mzdeMEUzB5B2JzNDuFDAWtZPuRweZmmD+IEVQhQfMjE5E0ft59UqZT7X8HsPcTM1h
-	 YZfX8cEdC1uow52BWXasHApOjx8XKvcO7lhJDjgPSZ6BIKsQGAxYACDCgNpVYdk3WH6qw
-	 5XUqzgp9fDAaAa+haHQR6ZZup3d3FTTWhRnEBrEx84JwfHFtK1HjHRibC7+4KssyvB21K
-	 zZWYYoywB0/fwc9j2EyO3146YrVRO+RqAbxs8UOZtqENAdceXygPwB1UYvRU0BKaotrhD
-	 P1/NAnvABztyK0DXDS/lDJlYvqKNLxL4NLFil0+iea2eqvt/bMBIQy71KXo6vd7v2Jw==
+	t=1794283082;
+	b=RQJvNeJ/fsPYiZKw34GxCip3C2F5PtnUeSGuZi2yXpEEnA92Fu+hG7m5HM/prHHKpIg6
+	 3v+pdGbGZotXOuLCbXFkeTXBvI1D43hDxQPAC6fPx1E4lTI6RnSxvdOchVLiji4Sl+LZp
+	 boFr5kp7rP0NDkNqsx7MnVHNEeQtsAtjOzPDtTtEnFXu5DqHCr9l1f3LodIaA7ZaxUVvD
+	 CsDxjtzcck/8qJa97dCCQGYsZX7QkrYqhrlSIwL1m/v7DKiU5iwfhKwzwmW2wfecF7lKN
+	 qHJpJ5NUsTzv95N3rz+VjmNyWh7Wjx56wVVZQtvX1KiLZJMmefqkZg3VUisBCEIYt9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794283078;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794283082;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=CXkr2SuKnzOJFNr+1uuWJMDmIGWuxbgW0PPb+hSRh9s=;
-	b=em1hvPY7GngT10/Rox5NMHUmRxlcNVummXmVqkn62XwsYi58UMyX3zpxWFffbsDuBNS/
-	 Ebvgn18YZx0eGm8YFdM8pnm5PIhTryvJjqj8xz+XgZE+2kK7yokeppPzwVy8hPmD+WZHR
-	 poZ/iBietVKzVro6PMMbtwLbgEdd2oaQeTARMzw8jGrjbnjFN1SLyxxw8AP6S1J4dIP00
-	 aCBogss5E/xJ5Jtn5Po3UULlTpdmmDixcQSrYA9z29u2kNa99oJsGptwDuM0L82lOC9uY
-	 A0r59y5eeJD8ApftWYL6yP00wSri6asgsA0tq4jRZ55lfaWbx666QlKBRGAAzz4oWBg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
+	b=FxQ7k/tWRIcFgAXnwAoXcR2+WKT0KrggXuxqQp7ztfrAwQpMhh2XYWhOqNjvGuqTSxER
+	 JAgj4a9SkXLXDaxvfrxPYbbzVuNbbppgnd9zyaww+ym/4cRdZzwEw2fWLLwvVkLxB2DxP
+	 ZGc32+QfdhmwhhoAFVj6RW56XfXYRn8j6UYY606eSPnRtRRU16wdogfvg4+WZsIcwZih3
+	 HAzgzQQdOHZVsfESl+NW3vfZki0yMVYLTgorHhhGkQA2j2Jon0h4qZn4tXW3ZYt5YA6/V
+	 AuGB4rYMmMqrFzCG55eUdLwtDjECE61aUuCF6L/8X43BHTO7NQY5mJBc0/ChfWSdIRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWioS0GS;
-	arc=none smtp.remote-ip=74.125.227.139
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b="Zunm+lH/";
+	arc=none smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019B660A2604
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:57:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 019B660A2604
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DA060A261F
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:58:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95DA060A261F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWioS0GS
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3adfd217146so584286a91.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:57:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=Zunm+lH/
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b75712fb57so693494a12.2
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:58:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794283077; x=1794887877; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CXkr2SuKnzOJFNr+1uuWJMDmIGWuxbgW0PPb+hSRh9s=;
-        b=eWioS0GSjJlvh6ZHCBGxaaeRsfQzkJcz33RP+AaoFNuh3hDMddsz7w5znvRQzJ3Dls
-         n+Fg0ZOheqMQcJc8Q1ya9lPIqyKWWgjAjKOQmXd7s340JImqVg5F9F4RUxdITsykRs9P
-         jV9CUDMEkySfso4mcRKycLxZnApuuoxPWjmekbsYqg2akOLS+2tbI/jH4KehIv7IwDb6
-         2RaVvTZegBY6dX+8qAyKHxsHqCSZ0ti8aBCLCPEiAimi4Q/mU5i3/x0xdSNTeRataRu6
-         m/ZMf43HMHWsEfeym+ATo4mX3nBntTDnUgOq+qsJJZJUEPkrEArzQjHCZxTFPZYI6sBO
-         676A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794283077; x=1794887877;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=cloudflare.com; s=google09082023; t=1794283080; x=1794887880; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CXkr2SuKnzOJFNr+1uuWJMDmIGWuxbgW0PPb+hSRh9s=;
-        b=jD0aZWfse3N9if5SQpSvoUCumcmM4vUvhMAY3DTJZzWxy/bJ7PtDWPwrAy4vISftM4
-         TV6o/UdNYQNB7islZouXeZiunJVVPkjGNu0W/49O8K9JzwMq6RwryN9iR1bQnwAVNjdf
-         l0Man+inOiCwNy4WGs0rUJi7gCPpaQwyQVYyaNoB81IWgkHQ3klCoAUtEW17dQ7oErYy
-         xpk7EXXl/4hR94e+AIU8LoGq3EVTOsLa9/jztPRTmM7AMaKAwqB8UwWrVoGWO3hdf2Zr
-         NTeYfjKhsUTDMk07IjqMFHl9qj0UV1WBMEqVYKGVLmY8A43WJmGaqXrS3AfL2qenoqdk
-         uM+g==
-X-Gm-Message-State: APuU4Z8lZZl+K2dzvZIbSuhYzI8ZLJF67WdQnipyL6ugk19iBXDibxc8
-	sAaxlGDdj8BLDSjiQ1EjL8oEXD0XFbaFgY8uvije8efYE8T0W+ORzDZ4V7mLEWlUae2VUQ==
-X-Gm-Gg: AYBFou1Hr7F8AFp1nWfim2LY5hrdX5gJsQ/Gg5b6tRUzMxVz2Njt2OlTnUAFcuQhULr
-	4jx2w6q8XOtNK3/2EbLFok5PjSFBsiazYqO0EwlkY/NKRXW7ipds9hO0cRTVc66OhY4PylgGu9a
-	HGJ1358yJ1NQK3l4HoalJvF/L/NasSQ9OcXUmbDSCJ++zH/wxZPcl7HY3wiKUFMDbTPyi07d/vk
-	RyNomDbj+IxbkmquVx3Bkq3SNSbrWhfAkqM3A6vulA9KP4OUec1NxWvep9hDKgRl+d1FX+YrIB0
-	y+8qFCXzh64TJS+34XdVhWrU9+8j/RGEKqDVAwOHnob5qDLjo51Scd27BvSnG9hueRdB7hoNUJC
-	TyrNazig2nbf6rNBR96xKQ5a2osiF8BzmVCCwNx8rm21c+TAxT2owYMVQrOodvZQQDk2YsPK7NP
-	ZiBb66JTwhU7+wU/2uG4shU0CQ+SCYYJkWx4JZNSWjU7bK1f12ns41XQSD+0he7ckmj8XBM3z3q
-	5YJ6jAdNCZg73qmD3dU/oxTcBjeJlOUS/wOe0Y/ApCXhLdscNkFnPtqJEoxwPgR14ToOBEH7gS8
-	xkjXgSROVQwe6gX9zWZkbwR2Hc3dNBnjA0D3dO6usBh3qxs=
-X-Received: by 2002:a17:90b:4a48:b0:3b0:d365:f8ed with SMTP id 98e67ed59e1d1-3b166cd7209mr1698733a91.21.1794283077269;
-        Mon, 09 Nov 2026 19:57:57 -0800 (PST)
-Received: from localhost ([164.52.124.84])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdd8d7b37casm322833a12.22.2026.11.09.19.57.51
+        bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
+        b=Zunm+lH/GCbrTUEtY30BW+R2BvU+2cGVOn79diffD/96JVNfHqCMaR5Gvvf1gsiQR6
+         8K76zX1a8+Yh0L2CwsGxZPV8nUAMB+5w5Mm2MCgUMZlSCAEOfZgTki5qqXCp8mJUi8H3
+         LuogYuTe3LX1ZCf6xxr7jaIlq6UqvCIrssX2U+lTHLsDy96Ui6AqusBcWrPzeruJ88YR
+         /WMhErncCHO3cb8+1zwRpUullxN4yczarlTpXd5JcivujI0fDeVcEqJNPPwMrN68pevA
+         Lx4AkP1fiMtHSuXKIJJQw0iIts5da1+6sBlWiXD7EvGQiIWRqgKUOxZqBjj3SECm1nA3
+         YVOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794283080; x=1794887880;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
+        b=xYHsMOIlc8j4eXhMT6ObDicS3Ol60ylSs347STY9evbMi9OKHjnG7UCwqG/KMXYJRr
+         oGwf78p+BluZ0QANeDp3wJ5JTp3c5sajzXf26tVu3xZEzHChY6E55rggytEnX8LCbSVr
+         iKhH5cMpy7xtj6JjDkQAPrf7B4LnK+oVSV2D+O6GQ1Fg9Go41+dsd7u9m26zhfXA/gxW
+         4SObD2ujVqUT2nnWviYiIh9iF1akiup2UNtR39X+XWHtDBezfTSjJ07a9Q4hgD4zmmh7
+         gQrLtmf3vzbYLQFyuhc+sW10+8exRuUjvubuJf9VQ6Hwl61ikZcxG7++tRr3UsT/b6KW
+         MH6g==
+X-Forwarded-Encrypted: i=1; AL+hErF1A5Lchf37Mz+gDPtgFnTXjYvy4YpIlDFCYZipYX/p/EtJJp7gaWm4uLDLBLd139pR6Hl62t8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8TAKZSZliK/Usi3ezwJvTdB/O4FdC6zbmlCA1AmgFku1XW6wTu
+	NjfZnmjWstnc1hJ09ziZCPrZkc225s2ocoIFn6MPX2SGFsM4oANOUcRhWfkeWcNnqig=
+X-Gm-Gg: AYBFou1iRlpLAV3K+W0IBxJ4AebIbp7rCxH1JSj5n+uB9C5HrCal8rjjA5XrTPzIwU/
+	Qn0aJdzxt9wnmJZqu+hIA6xygvw0exVnB+QE1W69je+gmirFtdA2za8OEd6ogy4A4e+izEAgyDT
+	+xT54oqgyLK3JV7jR4wQvZ+3Fq+JiMMbLT33JqnywJloGfqSCL308zMBRzaPYQ/KQTbF13RUvUM
+	a+3AiPzwklZ0FkrmIa076BkyexEKr2LyScnzvYiBrxM6f1C6pkn7jERcwyA2B/qIgOnphw1y3Vz
+	ZC3J+Wt7rS44dGGvPkCGhJsr+k7Clpy2o/zgP7N6/iK6imJPfjAbkPQFe19qjPUMh1IpKyuWbRD
+	IBH3k1QiaxXcEPId32T+uTHNabJFN2KTrT6dMqoWto8X3s5QLv+HKmPtznkFn+Wc/R5zuRzDab3
+	p1fIFgQCJzsr2C9kutlHBl+o6n3EePSbxg/w7+gmk0VoFqbZbXBD8gtQXyfS4goypNXXXvxN4hA
+	1N3hrMJnTVAFsBVt85/WrQNAavuttKekHJmvlQviL/GVm11c8/zVVHyUCZnhJZpebJE4Cy275Cw
+	A9UDJujKhbrrnu5ZN9iRh2j52uHkPnGF4zw0FC0fbS8Rm2UkUmnk0BzknRFmQbc=
+X-Received: by 2002:aa7:cd92:0:b0:6af:a64f:bd44 with SMTP id 4fb4d7f45d1cf-6b756b0d218mr745095a12.45.1794283080043;
+        Mon, 09 Nov 2026 19:58:00 -0800 (PST)
+Received: from L9JK9NPFH9.lan ([104.28.20.56])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7579047c9sm548801a12.33.2026.11.09.19.57.56
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 19:57:56 -0800 (PST)
-From: Jiabin Deng <dengjiabin2023@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+        Mon, 09 Nov 2026 19:57:58 -0800 (PST)
+From: Tianyi Gao <tianyi@cloudflare.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vladimir Vdovin <deliran@verdict.gg>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] net/mlx5e: SHAMPO, Disable end padding when relaxed ordering is supported
-Date: Tue, 10 Nov 2026 11:57:23 +0800
-Message-ID: <20261110035723.26587-1-dengjiabin2023@gmail.com>
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Tushar Vyavahare <tushar.vyavahare@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Chris J Arges <carges@cloudflare.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	llvm@lists.linux.dev,
+	kernel-team@cloudflare.com,
+	Tianyi Gao <tianyi@cloudflare.com>
+Subject: [PATCH bpf-next 11/15] ice: set skb RX metadata from the skb core extension area of xdp_buff
+Date: Tue, 10 Nov 2026 03:57:09 +0000
+Message-ID: <ae488c057454cd57fb01ac01aefc3e97d6271ada.1794281983.git.tianyi@cloudflare.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <cover.1794281983.git.tianyi@cloudflare.com>
+References: <cover.1794281983.git.tianyi@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,73 +147,168 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When SHAMPO and relaxed ordering writes are enabled, aligned RQ end
-padding can corrupt received TCP data. Due to reordering, alignment
-padding written at the end of one packet can overwrite data from the
-next packet.
+On XDP_PASS, ice builds the skb with xdp_build_skb_from_buff(). Then
+ice_process_skb_fields() sets the hash and ip_summed from the RX
+descriptor, and ice_receive_skb() adds the VLAN tag. The values that the
+XDP program stored in the skb core extension area are not used.
 
-The current RQ end padding selection avoids alignment padding for LRO,
-but not for SHAMPO. Extend the condition to SHAMPO to prevent this
-corruption.
+ice_clean_rx_irq() takes the skb core extension pointer from the
+xdp_buff before it builds the skb, and passes it to ice_receive_skb().
+ice_receive_skb() calls xdp_skb_ext_to_skb() right before GRO. The
+stored values then replace the values from the descriptor before the skb
+leaves the driver. ice now sets the skb-ext-pass XDP feature.
 
-The issue was observed in a two-host test using a BlueField-3 NIC and
-an NVIDIA H20 GPU. In the original test with MTU 1500, 354 of 400
-transfers contained corrupted data before the fix. After applying this
-change, all 400 transfers across eight message sizes from 32 KiB to
-4 MiB, with 50 transfers per size, completed successfully, with no
-incorrect bytes or corrupted intervals.
+Zero-copy is not supported in this patch. ice_clean_rx_irq_zc() passes
+NULL for the skb core extension pointer to ice_receive_skb(). Hence the
+skb-ext-pass feature does not cover AF_XDP zero-copy queues.
 
-Fixes: e5ca8fb08ab2 ("net/mlx5e: Add control path for SHAMPO feature")
-Closes: https://lore.kernel.org/r/CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com
-Link: https://lore.kernel.org/r/atZKOtjrb9HKSNHF@dtatulea-c5.nvidia.com
-Suggested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiabin Deng <dengjiabin2023@gmail.com>
+Export xdp_skb_ext_to_skb(), because ice can be a module.
+
+Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
 ---
+ drivers/net/ethernet/intel/ice/ice_main.c     | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_sf_eth.c   | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_txrx.c     | 4 +++-
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c | 7 ++++++-
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_xsk.c      | 2 +-
+ net/core/xdp.c                                | 5 ++++-
+ 7 files changed, 20 insertions(+), 7 deletions(-)
 
-Notes (shampo-submission):
-    Changes in v3:
-    - Use lore.kernel.org links for the original report and fix discussion.
-    - Add Tariq Toukan's Reviewed-by tag.
-    - Cc the netdev maintainers and linux-rdma mailing list.
-    - No code changes.
-    
-    v2: https://lore.kernel.org/netdev/20261109034444.11241-1-dengjiabin2023@gmail.com/
-    
-    Changes in v2:
-    - Clarify that the corruption is not specific to GPU or DMA-BUF memory.
-    - Explain how reordered alignment padding can overwrite the next
-      packet's data.
-    - Add Dragos Tatulea's Reviewed-by tag.
-    - No code changes.
-    
-    v1: https://lore.kernel.org/netdev/20261106083719.22798-1-dengjiabin2023@gmail.com/
-
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 5caf7820a136..159f79302a08 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -911,10 +911,11 @@ static void mlx5e_build_rx_cq_param(struct mlx5_core_dev *mdev,
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 454fba07d4ec..cb619689d11a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3461,7 +3461,8 @@ static void ice_set_ops(struct ice_vsi *vsi)
  
- static u8 rq_end_pad_mode(struct mlx5_core_dev *mdev, struct mlx5e_params *params)
- {
--	bool lro_en = params->packet_merge.type == MLX5E_PACKET_MERGE_LRO;
-+	bool no_pad = params->packet_merge.type == MLX5E_PACKET_MERGE_LRO ||
-+		      params->packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO;
- 	bool ro = MLX5_CAP_GEN(mdev, relaxed_ordering_write);
- 
--	return ro && lro_en ?
-+	return ro && no_pad ?
- 		MLX5_WQ_END_PAD_MODE_NONE : MLX5_WQ_END_PAD_MODE_ALIGN;
+ 	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+ 			       NETDEV_XDP_ACT_XSK_ZEROCOPY |
+-			       NETDEV_XDP_ACT_RX_SG;
++			       NETDEV_XDP_ACT_RX_SG |
++			       NETDEV_XDP_ACT_SKB_EXT_PASS;
+ 	netdev->xdp_zc_max_segs = ICE_MAX_BUF_TXD;
  }
  
-
-base-commit: fafbc4051123d5459ea6950899cec08ed946e278
+diff --git a/drivers/net/ethernet/intel/ice/ice_sf_eth.c b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
+index a730aa368c92..90f2ce5da022 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
++++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
+@@ -52,7 +52,8 @@ static int ice_sf_cfg_netdev(struct ice_dynamic_port *dyn_port,
+ 
+ 	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+ 			       NETDEV_XDP_ACT_XSK_ZEROCOPY |
+-			       NETDEV_XDP_ACT_RX_SG;
++			       NETDEV_XDP_ACT_RX_SG |
++			       NETDEV_XDP_ACT_SKB_EXT_PASS;
+ 	netdev->xdp_zc_max_segs = ICE_MAX_BUF_TXD;
+ 
+ 	eth_hw_addr_set(netdev, dyn_port->hw_addr);
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index a2c7c4962882..06a1a5fdc43b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -966,6 +966,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 	/* start the loop to process Rx packets bounded by 'budget' */
+ 	while (likely(total_rx_pkts < (unsigned int)budget)) {
+ 		union ice_32b_rx_flex_desc *rx_desc;
++		const struct xdp_skb_ext *ext;
+ 		struct libeth_fqe *rx_buf;
+ 		struct sk_buff *skb;
+ 		unsigned int size;
+@@ -1041,6 +1042,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		continue;
+ 
+ construct_skb:
++		ext = xdp_buff_skb_ext(&xdp->base);
+ 		skb = xdp_build_skb_from_buff(&xdp->base);
+ 		xdp->data = NULL;
+ 
+@@ -1061,7 +1063,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 
+ 		ice_trace(clean_rx_irq_indicate, rx_ring, rx_desc, skb);
+ 		/* send completed skb up the stack */
+-		ice_receive_skb(rx_ring, skb, vlan_tci);
++		ice_receive_skb(rx_ring, skb, vlan_tci, ext);
+ 
+ 		/* update budget accounting */
+ 		total_rx_pkts++;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
+index e695a664e53d..85439853596f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
+@@ -247,17 +247,22 @@ ice_process_skb_fields(struct ice_rx_ring *rx_ring,
+  * @rx_ring: Rx ring in play
+  * @skb: packet to send up
+  * @vlan_tci: VLAN TCI for packet
++ * @ext: skb core extension area of the packet, or NULL
+  *
+  * This function sends the completed packet (via. skb) up the stack using
+  * gro receive functions (with/without VLAN tag)
+  */
+ void
+-ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci)
++ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci,
++		const struct xdp_skb_ext *ext)
+ {
+ 	if ((vlan_tci & VLAN_VID_MASK) && rx_ring->vlan_proto)
+ 		__vlan_hwaccel_put_tag(skb, rx_ring->vlan_proto,
+ 				       vlan_tci);
+ 
++	if (ext)
++		xdp_skb_ext_to_skb(skb, ext);
++
+ 	napi_gro_receive(&rx_ring->q_vector->napi, skb);
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+index f17990b68b62..cfc77847696e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+@@ -133,6 +133,7 @@ ice_process_skb_fields(struct ice_rx_ring *rx_ring,
+ 		       union ice_32b_rx_flex_desc *rx_desc,
+ 		       struct sk_buff *skb);
+ void
+-ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci);
++ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci,
++		const struct xdp_skb_ext *ext);
+ 
+ #endif /* !_ICE_TXRX_LIB_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 0643017541c3..f64659dc8313 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -670,7 +670,7 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
+ 		vlan_tci = ice_get_vlan_tci(rx_desc);
+ 
+ 		ice_process_skb_fields(rx_ring, rx_desc, skb);
+-		ice_receive_skb(rx_ring, skb, vlan_tci);
++		ice_receive_skb(rx_ring, skb, vlan_tci, NULL);
+ 	}
+ 
+ 	rx_ring->next_to_clean = ntc;
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index 984299199906..fdda072a5858 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -1086,7 +1086,9 @@ static const void *xdp_skb_ext_get(const struct xdp_skb_ext *ext,
+  * @skb: The skb that is built from the packet.
+  * @ext: The skb core extension area of the packet.
+  *
+- * Call it only when the packet has the XDP_FLAGS_HAS_SKB_EXT flag.
++ * Call it only when the packet has the XDP_FLAGS_HAS_SKB_EXT flag. A driver
++ * calls it after it sets the skb fields from the RX descriptor, and sets
++ * NETDEV_XDP_ACT_SKB_EXT_PASS.
+  */
+ void xdp_skb_ext_to_skb(struct sk_buff *skb, const struct xdp_skb_ext *ext)
+ {
+@@ -1115,6 +1117,7 @@ void xdp_skb_ext_to_skb(struct sk_buff *skb, const struct xdp_skb_ext *ext)
+ 		skb->csum_level = csum->level;
+ 	}
+ }
++EXPORT_SYMBOL_GPL(xdp_skb_ext_to_skb);
+ 
+ /**
+  * xdp_skb_ext_warn_pass - Warn if XDP_PASS does not use the stored values.
 -- 
-2.51.0
+2.56.0
 
