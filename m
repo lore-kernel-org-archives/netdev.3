@@ -1,59 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321299;
-	b=Ga2ctiuPnVVEUgH/vcFQ0KJlYIh3JLuPUmedVfxHfeCTHlaDy5UWfz0JnN4QqO80HGv0
-	 uD34bQwlgGYwxyacoq+ytXDYSkCcNkhDHDvHtZHkYzovbN6NUvc0fL/U6FndaAz1Pw2hX
-	 eiH8S9QKwtjtuBy9L+GkOwu3wsP3WmncrhHL4rvFyNArk0JT0HebgEE30m53SAG8GLi8j
-	 jmdpi5tJdceIjfia3ZLeFJce4BXmxNFUD8BUIZDKOuFmJoJADx+sqfaJwMkoozTRNZqPR
-	 ijvAN2ma10b8EoKd6a2A21jXmOfVkSEZHrVnscc4/e9Iq3dBAohUXeDxs42iP86r+IQ==
+	t=1794321302;
+	b=MOZDACy+Xb2W094nY0pEQtImzXkSnM22F+ajs8CL4qi4vIjzF34NUfoUNIZLrctHAXFh
+	 ZIn0n/4tlqeXG0l3ANhKL2CJfKQ27T39tevHW0z5BV1Sg/nncYjMmrBjapnhsL3/yyVgj
+	 1fmgNZfV0waA7rY8ijRV9Dfc4L4xwjYX/gkTj2Wk5Wh1BhjpQYxvdm745Pt3/9l1Ca7tn
+	 T2ryZh4EOr3dqmmqAMK3Px9jzwVsky2ezmXtT13oT+0bJO7V5TIXMpEHc9lUMF12i7bs4
+	 o26TV2aaLH9TbD3NTIY4J32fObJItkKnjNGhlz2xEIPB71dPNO1Glk2HYskDcYcL9uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321299;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=CepZrkPALFnlxU/+TT1Chrq97rvGlc5mPklH9zNyl1k=;
-	b=xg1cUEpEuOKqsUXUFSiQnph0sNkjnLO75hFHlX+Y0LW8ebGlK5d6DF1sJClj8tYDpNyN
-	 GC/SmoZqiylcTcA3mRYlkz4Wl2DmCWwHqbzjL1eCt/N8VfSfJr3KDTS6eRI89JSgJeme3
-	 vcXw2vjoZA4mWYBCjjwh9BBFIEwdKVeBlfs9vi6EeFbDdr21n5qTSuaItM/rRXU3gN+Li
-	 326y+/SR1JrBpQ3q/kZqaGy1wQBixGy7MtnZO9BI6q97BpT7OMRGJt3fJZNc7BjUVQ+6f
-	 bsqaA52pep7SPA0ezwTPdbGNO8TddOlH6X8fGOF+JWc+j4CCznMtcPh05PxTkjC5ryA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794321302;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
+	bh=8GztbmdPIq1W7yvyzWknacNZFNOoqhx0Fy+nAHd0FJc=;
+	b=UFJ10eV9HUnq/WWkf5LbbJBO8vB+dZJaZeP2aWkNuX1u1bdBoVcrBTeFP471lDFLCjPu
+	 Xum71ib0DEvaCOzunYtR/+zmcuKnjAnnemPGkkUp7j7cy4wrZD0j1si+kMyB7vx77sTMI
+	 jdOudcWeuTdytk2DjHCX8BC2K9CbfEZk+vEQinVkM0Vx71UsXfKdWYcAjTzFPvyhQeHv+
+	 9yeQClzag3Xis2Y6Rdf+68tWCKA595l5sn9Jfr9zunL62ThFniIZH6Ng/U3mnDYFhcAWJ
+	 r6QRH9zzJOzR9aWSWLyrZixVx+sVO9EJf+bICsjN8Wt8Gt7PPuGFbuBQuPN5psDu5Wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTgUog2L;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=suse.cz;
+	spf=pass smtp.mailfrom=suse.cz;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="Kf4/V3k7";
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0sClAhd5;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="Kf4/V3k7";
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0sClAhd5;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FE8606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5D3606A334;
+	Tue, 10 Nov 2026 14:35:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB5D3606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTgUog2L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FF71F0089F;
-	Tue, 10 Nov 2026 14:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321298;
-	bh=CepZrkPALFnlxU/+TT1Chrq97rvGlc5mPklH9zNyl1k=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gTgUog2LQeeoEPmoiEG0S/Nc35Yw5y0F7HRs5gfqhj3sado+oCHnmERA9Wseim4dR
-	 IhhLrn3efd7ZT2vrlg0G3yhazdGliJ0ThiOq3DIb/8y/svYqwANsVJkzWxQlAF/mER
-	 afFrhminu3SGC5Bj16U3gcX+HiHjKgTp1/CXVvJvSCr97bote3TSraX1+CPDE3UsEC
-	 bSPLlKjdSyy0gJz+2ExtLDvTqHj/sDNFij4/KgVdzCdJ9RD2Idu5yRGBeNiTzvgReX
-	 RmnPvog5ySq4V+I/MTXEV3PYm4NvibdnbwZSb09TPPUCd5ht5uD5E/ntxKHDuzUeIh
-	 Pbkijhq15uMnA==
-Subject: Re: [PATCH net] udp: check frag_list IP family before using
- skb_segment_list()
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
- kylebot@openai.com
-Date: Tue, 10 Nov 2026 14:34:57 +0000
-Message-ID: <179432129763.994134.12930210895338778196@kernel.org>
-In-Reply-To: <20261106141727.2303218-1-edumazet@kernel.org>
-References: <20261106141727.2303218-1-edumazet@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Kf4/V3k7;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0sClAhd5;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Kf4/V3k7;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0sClAhd5
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 23E091F7EE;
+	Tue, 10 Nov 2026 14:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794321300; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8GztbmdPIq1W7yvyzWknacNZFNOoqhx0Fy+nAHd0FJc=;
+	b=Kf4/V3k7uJ3/e8gJIc8Yq2RfTu9sqtfttw7+/XtgLjAgzqpseC8KVY0cIt3vE7gewsFtgS
+	Ul25YQuPGcy+MdjCiZ01nYNZL6oIl9h+7CtWLxqD0DCE7dLCT4LVtl2+MaCEOzBnO5VmYl
+	TqvBQPF83X/L0SH3n0hrFLzjLD0A3pk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794321300;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8GztbmdPIq1W7yvyzWknacNZFNOoqhx0Fy+nAHd0FJc=;
+	b=0sClAhd5uG01XGSIXIU41VEvI9NfiuUN4ZK34eq4spWakFMk8sOp9e0DDfiJbg/Z9APkfg
+	hTmYlGV16kkIijCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794321300; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8GztbmdPIq1W7yvyzWknacNZFNOoqhx0Fy+nAHd0FJc=;
+	b=Kf4/V3k7uJ3/e8gJIc8Yq2RfTu9sqtfttw7+/XtgLjAgzqpseC8KVY0cIt3vE7gewsFtgS
+	Ul25YQuPGcy+MdjCiZ01nYNZL6oIl9h+7CtWLxqD0DCE7dLCT4LVtl2+MaCEOzBnO5VmYl
+	TqvBQPF83X/L0SH3n0hrFLzjLD0A3pk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794321300;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8GztbmdPIq1W7yvyzWknacNZFNOoqhx0Fy+nAHd0FJc=;
+	b=0sClAhd5uG01XGSIXIU41VEvI9NfiuUN4ZK34eq4spWakFMk8sOp9e0DDfiJbg/Z9APkfg
+	hTmYlGV16kkIijCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1AE5134F4;
+	Tue, 10 Nov 2026 14:34:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id k/XPLZMr82ptKwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 14:34:59 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 5190222543; Tue, 10 Nov 2026 15:34:59 +0100 (CET)
+Date: Tue, 10 Nov 2026 15:34:59 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 32/51] proc: resume readdir after the last name it
+ returned
+Message-ID: <67qeb525vqah4cjisunzwemua7rf2xj4esnlo2xl3t6crnqmzc@lsuqyjwenpx4>
+References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-32-bbf7d5546809@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,148 +131,252 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-32-bbf7d5546809@kernel.org>
+X-Spamd-Result: default: False [-11.30 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[60];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,suse.cz:email]
+X-Spam-Score: -11.30
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed 04-11-26 18:47:18, Christian Brauner wrote:
+> proc_readdir_de() counts the entries of a directory and resumes a
+> listing at the number getdents64() stopped at. The entries are sorted
+> by name, so one that is added or removed in between shifts everything
+> behind it by one. Listing /proc/net/dev_snmp6 with a buffer that holds
+> ".", ".." and "lo" and adding a device whose name sorts before "lo"
+> makes the next call return "lo" a second time. Removing one that sorted
+> before the position makes the next call skip an entry instead.
+> 
+> Since commit 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()") an
+> entry that is removed while it is being emitted also ends the listing
+> right there. pde_subdir_next() finds nothing after an erased entry, so
+> proc_readdir_de() reports the end of the directory and the next call
+> resumes by number, skipping another entry. For /proc itself
+> proc_root_readdir() takes that as the end of the static entries and
+> moves on to the pids, so the rest of the static entries is missing.
+> And if the position is behind the last entry when a call starts
+> proc_readdir_de() returns 0, so /proc then lists no pids at all.
+> 
+> So remember the name of the last entry a call emitted in the file and
+> resume at the first entry after it, like kernfs resumes after the node
+> it stopped at. An entry that was removed while it was emitted is
+> continued after by its name as well. If the position was moved by a
+> seek in between the listing counts from the start like before.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fixes: 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Looks good to me. Feel free to add:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-- [High] The fix in net/ipv4/udp_offload.c:__udp_gso_segment() is
-  incomplete.
-- [Low] The comment added in net/ipv4/udp_offload.c:__udp_gso_segment()
-  (lines 517-521) says the code makes sure "the frag_list skbs still…
+								Honza
 
---
-
-udp: check frag_list IP family before using skb_segment_list()
-
-This patch adds a check to __udp_gso_segment(). The fraglist fast path,
-__udp_gso_segment_list(), is now taken only when the IP version of the
-first frag_list skb matches the family being segmented. On a mismatch
-the code falls back to __skb_linearize() and skb_segment(), so that
-__udpv6_gso_segment_list_csum() does not treat an IPv4 header as a
-struct ipv6hdr.
-
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index cf07c3c6611a2..802365b4780fd 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -514,9 +514,14 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+> ---
+>  fs/proc/generic.c  | 89 ++++++++++++++++++++++++++++++++++++++++++++++--------
+>  fs/proc/internal.h |  1 +
+>  fs/proc/proc_net.c |  1 +
+>  fs/proc/root.c     |  1 +
+>  4 files changed, 80 insertions(+), 12 deletions(-)
+> 
+> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+> index 9e59796349e1..588999058e66 100644
+> --- a/fs/proc/generic.c
+> +++ b/fs/proc/generic.c
+> @@ -87,6 +87,28 @@ static struct proc_dir_entry *pde_subdir_find(struct proc_dir_entry *dir,
+>  	return NULL;
+>  }
+>  
+> +/* The first entry of @dir that sorts after @name. */
+> +static struct proc_dir_entry *pde_subdir_after(struct proc_dir_entry *dir,
+> +					       const char *name,
+> +					       unsigned int len)
+> +{
+> +	struct rb_node *node = dir->subdir.rb_node, *after = NULL;
+> +
+> +	while (node) {
+> +		struct proc_dir_entry *de = rb_entry(node,
+> +						     struct proc_dir_entry,
+> +						     subdir_node);
+> +
+> +		if (proc_match(name, de, len) < 0) {
+> +			after = node;
+> +			node = node->rb_left;
+> +		} else {
+> +			node = node->rb_right;
+> +		}
+> +	}
+> +	return rb_entry_safe(after, struct proc_dir_entry, subdir_node);
+> +}
+> +
+>  static bool pde_subdir_insert(struct proc_dir_entry *dir,
+>  			      struct proc_dir_entry *de)
+>  {
+> @@ -278,6 +300,40 @@ struct dentry *proc_lookup(struct inode *dir, struct dentry *dentry,
+>  	return proc_lookup_de(dir, dentry, PDE(dir));
+>  }
+>  
+> +/*
+> + * Where the next readdir resumes. The entries are counted, so one that is
+> + * added or removed in front of the position would shift what the next call
+> + * returns. The name of the last entry emitted doesn't move.
+> + */
+> +struct proc_dir_cursor {
+> +	loff_t pos;			/* the position behind the entry */
+> +	unsigned int len;
+> +	char name[NAME_MAX + 1];
+> +};
+> +
+> +/* If this can't remember the entry the next call counts from the start. */
+> +static void proc_dir_cursor_set(struct file *file, struct proc_dir_entry *de,
+> +				loff_t pos)
+> +{
+> +	struct proc_dir_cursor *cursor = file->private_data;
+> +
+> +	if (!cursor) {
+> +		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL);
+> +		if (!cursor)
+> +			return;
+> +		file->private_data = cursor;
+> +	}
+> +	cursor->pos = pos;
+> +	cursor->len = de->namelen;
+> +	memcpy(cursor->name, de->name, de->namelen);
+> +}
+> +
+> +int proc_dir_release(struct inode *inode, struct file *file)
+> +{
+> +	kfree(file->private_data);
+> +	return 0;
+> +}
+> +
+>  /*
+>   * This returns non-zero if at EOF, so that the /proc
+>   * root directory can use this and check if it should
+> @@ -290,23 +346,26 @@ struct dentry *proc_lookup(struct inode *dir, struct dentry *dentry,
+>  int proc_readdir_de(struct file *file, struct dir_context *ctx,
+>  		    struct proc_dir_entry *de)
+>  {
+> +	struct proc_dir_cursor *cursor = file->private_data;
+> +	struct proc_dir_entry *dir = de;
+>  	int i;
+>  
+>  	if (!dir_emit_dots(file, ctx))
+>  		return 0;
+>  
+> -	i = ctx->pos - 2;
+>  	read_lock(&proc_subdir_lock);
+> -	de = pde_subdir_first(de);
+> -	for (;;) {
+> -		if (!de) {
+> -			read_unlock(&proc_subdir_lock);
+> -			return 0;
+> -		}
+> -		if (!i)
+> -			break;
+> -		de = pde_subdir_next(de);
+> -		i--;
+> +	if (cursor && cursor->pos == ctx->pos) {
+> +		/* Resume after the last entry emitted, wherever it is now. */
+> +		de = pde_subdir_after(dir, cursor->name, cursor->len);
+> +	} else {
+> +		/* Moved by a seek, count from the start like always. */
+> +		de = pde_subdir_first(dir);
+> +		for (i = ctx->pos - 2; de && i; i--)
+> +			de = pde_subdir_next(de);
+> +	}
+> +	if (!de) {
+> +		read_unlock(&proc_subdir_lock);
+> +		return 1;
 >  	}
 >  
->  	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-> -		 /* Detect modified geometry and pass those to skb_segment. */
-> +		/* Detect modified geometry and pass those to skb_segment.
-> +		 * SKB_GSO_UDP_L4 is used by both IPv4 and IPv6: also make sure
-> +		 * the frag_list skbs still have the IP family we segment for,
-> +		 * as their network headers are not rebuilt.
-> +		 */
-
-[Severity: Low]
-This isn't a bug, but the comment says the code makes sure "the frag_list
-skbs still have the IP family we segment for". The condition below only
-looks at skb_shinfo(gso_skb)->frag_list, which is the first member.
-
-The idea that every member has the same family as the first one is only
-stated in the changelog. Could the comment say that only the first
-frag_list skb is checked, and why that is enough?
-
->  		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
-> -		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
-> +		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY) &&
-> +		    ip_hdr(skb_shinfo(gso_skb)->frag_list)->version == (is_ipv6 ? 6 : 4))
->  			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-
-[Severity: High]
-Is it enough to check only the first frag_list skb here? The changelog
-says "All skbs in the list belong to the same flow, so they share the
-same IP family". On devices with hard_header_len == 0, though, GRO seems
-able to append an IPv4 skb to an IPv6 head.
-
-In gro_list_prepare(), maclen comes from skb->dev->hard_header_len. For
-tun in IFF_TUN mode and for wireguard this is 0, so the memcmp() compares
-nothing. skb->protocol is never compared:
-
-net/core/gro.c:gro_list_prepare() {
-    unsigned int maclen = skb->dev->hard_header_len;
-    ...
-		else if (!diffs)
-			diffs = memcmp(skb_mac_header(p),
-				       skb_mac_header(skb),
-				       maclen);
-    ...
-}
-
-inet_gro_receive() then checks only the version of the new skb. When p
-is an IPv6 skb, it reads p at IPv4 offsets and never checks
-iph2->version:
-
-net/ipv4/af_inet.c:inet_gro_receive() {
-    ...
-		iph2 = (struct iphdr *)(p->data + off);
-    ...
-		if ((iph->protocol ^ iph2->protocol) |
-		    ((__force u32)iph->saddr ^ (__force u32)iph2->saddr) |
-		    ((__force u32)iph->daddr ^ (__force u32)iph2->daddr)) {
-    ...
-}
-
-On an IPv6 head these bytes are saddr[1] and saddr[4..11], and the
-sender chooses them. The reverse direction is blocked, because
-ipv6_gro_receive() masks first_word with 0xF00FFFFF, and that mask
-covers the version nibble.
-
-udp_gro_receive_segment() checks ports, is_flist, ip_summed/csum_level
-and gro_receive_network_flush(). It then calls skb_gro_receive_list(p,
-skb), which does not check the family.
-
-So an IPv6 head A could end up with frag_list = [B (IPv6), C (IPv4)].
-The new check passes because B is version 6. skb_segment_list() keeps
-C's own 20 byte IPv4 header and only adjusts the transport header.
-
-If the head's addresses or ports were changed, for example by NAT66, tc
-pedit or BPF, the early return in __udpv6_gso_segment_list_csum() is not
-taken. The loop then treats C as IPv6:
-
-net/ipv4/udp_offload.c:__udpv6_gso_segment_list_csum() {
-    ...
-	while ((seg = seg->next)) {
-		uh2 = udp_hdr(seg);
-		iph2 = ipv6_hdr(seg);
-
-		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
-					 &uh2->source, uh->source);
-		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
-					 &uh2->dest, uh->dest);
-	}
-    ...
-}
-
-The *oldip = *newip stores in __udpv6_gso_segment_csum() write offsets
-8-23 and 24-39 of C's network header. pskb_may_pull(skb,
-skb_gro_offset(skb)) only guarantees 28 bytes are linear, up to the end
-of the UDP header. That allows a write of up to 12 bytes past the linear
-part, into tailroom or skb_shared_info.
-
-With rx-gro-list enabled, a tun device in an unprivileged user namespace
-appears to be enough to reach this path. Remote peers on wireguard or
-point-to-point tunnels may also be able to send such packets.
-
-Isn't this the same write past the linear part that the patch is meant
-to fix? Would it be better to check every frag_list member here? Another
-option is to block cross-family merges in GRO, for example by checking
-p's IP version in inet_gro_receive().
-
+>  	do {
+> @@ -319,8 +378,13 @@ int proc_readdir_de(struct file *file, struct dir_context *ctx,
+>  			return 0;
+>  		}
+>  		ctx->pos++;
+> +		proc_dir_cursor_set(file, de, ctx->pos);
+>  		read_lock(&proc_subdir_lock);
+> -		next = pde_subdir_next(de);
+> +		/* Removed in the meantime, go on after its name. */
+> +		if (RB_EMPTY_NODE(&de->subdir_node))
+> +			next = pde_subdir_after(dir, de->name, de->namelen);
+> +		else
+> +			next = pde_subdir_next(de);
+>  		pde_put(de);
+>  		de = next;
+>  	} while (de);
+> @@ -348,6 +412,7 @@ static const struct file_operations proc_dir_operations = {
+>  	.llseek			= generic_file_llseek,
+>  	.read			= generic_read_dir,
+>  	.iterate_shared		= proc_readdir,
+> +	.release		= proc_dir_release,
+>  };
 >  
->  		ret = __skb_linearize(gso_skb);
-
-[ ... ]
-
+>  static int proc_net_d_revalidate(struct inode *dir, const struct qstr *name,
+> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+> index df873df9afc5..04f7ce2b24ed 100644
+> --- a/fs/proc/internal.h
+> +++ b/fs/proc/internal.h
+> @@ -287,6 +287,7 @@ extern struct dentry *proc_lookup(struct inode *, struct dentry *, unsigned int)
+>  struct dentry *proc_lookup_de(struct inode *, struct dentry *, struct proc_dir_entry *);
+>  extern int proc_readdir(struct file *, struct dir_context *);
+>  int proc_readdir_de(struct file *, struct dir_context *, struct proc_dir_entry *);
+> +int proc_dir_release(struct inode *, struct file *);
+>  
+>  static inline void pde_get(struct proc_dir_entry *pde)
+>  {
+> diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+> index b1f5eafb069a..dbcf87a257e1 100644
+> --- a/fs/proc/proc_net.c
+> +++ b/fs/proc/proc_net.c
+> @@ -351,6 +351,7 @@ const struct file_operations proc_net_operations = {
+>  	.llseek		= generic_file_llseek,
+>  	.read		= generic_read_dir,
+>  	.iterate_shared	= proc_tgid_net_readdir,
+> +	.release	= proc_dir_release,
+>  };
+>  
+>  static __net_init int proc_net_ns_init(struct net *net)
+> diff --git a/fs/proc/root.c b/fs/proc/root.c
+> index 7fbbe92bf73a..dfee1caa26f7 100644
+> --- a/fs/proc/root.c
+> +++ b/fs/proc/root.c
+> @@ -441,6 +441,7 @@ static const struct file_operations proc_root_operations = {
+>  	.read		 = generic_read_dir,
+>  	.iterate_shared	 = proc_root_readdir,
+>  	.llseek		= generic_file_llseek,
+> +	.release	= proc_dir_release,
+>  };
+>  
+>  /*
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106141727.2303218-1-edumazet%40kernel.org
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
