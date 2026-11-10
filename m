@@ -1,54 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794295313;
-	b=Ctk1AnyO6AeaVxpg0fnZ+BVRZ2J6vuNipyPZLQcrTgGIRQO4XTy1EOVYc5/jfFKMTYyr
-	 XANTGClyCgiFLzIFS+t3l5fmHBEYwEP4mHCRumL8nLOF9EXUqrsLu2PV/Yk7zlIJN0WBH
-	 pc9nvm42T01lS4D+QrvSklDYNaqHZRIHAOEgpM8rgTJKlY4i1HdTkWLo5+ALzIGsi9xPD
-	 PPEcSCe+B67GjYb68C9IQ5rZVBSs13OxlU+6zijiWnS4OkBs/udYqJCHBgK0XWvmckl6X
-	 9PzhW9h8sq0VxLR0HJkeYJGVKLcL+Dj0qrN48d/BjtunNf2GfcljCXBJ0DZ5EQZ3LSw==
+	t=1794295333;
+	b=P31w3PjrSqPT4n/4eI6gjA4FxeHM4j9riktLXoARGsuCRqR88VlnKfDEwNzA3HEOf2LO
+	 VjRwDbm2Jq+nDlPQ7vvFDj5vduPmbq243P9y7tN168h/09NyV6Mn07rQ9LdkOUwZbDXCw
+	 QsSMah2uCJUA3BSQyeGlneqlLyYmj3DIdEans4fjMmnglUvggugN5Mi6on2WsTwLvqSdY
+	 cwNNy5V8h7MKuy/7fhSkSmxtztYM+C3TVrZIvhjduYyKtM8F4hH8Sc26UYfI2hPSquNoZ
+	 ANMDL2Uh0maC1nPneAa/cwUYsrH4UJUscXJDwUgv6Qgat5uxOduxmUBnq3QFYe/q2zQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794295313;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=BZAybHKPrp5cabZgbPg7Wb9TVLxchkkoh8bos8p+zE4=;
-	b=EilIv96SD4FBTeHHNTX0thUyJ4KK3xV5TGWuyZ7+cuXaMQMA/SU10XnPnT157nkA1GbN
-	 4w3fQyGXsXSXPK+ZxsTgVtrD/z9umCLLt85i3dfqGC0uTzzfgEkaizt5ZqXJKl6VCqR5m
-	 kNpUK7bvGLNAXdoKPval+Siqj4ziA+3J7HQ4JJRqhQWVY4DdkTQ4aK5U5oRGuK+2eMMF9
-	 KEn9dBZ72Me6QoOPEjvMUORjyizqbvr12WnixqFW7m3qWDjs8hijavpCc6lDieQL33TSS
-	 KQ8ohEqmbtl00o+EpMmaWFA1N1KidWmgudHI72LNzgJKs0NR7cWiQRwW11/23YDYakw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794295333;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=zja2eMNGFiEkBZuH4kjMHFhhzIaxVJH4a94KyNvHTDk=;
+	b=X5Z9o7MHTKZlCxJby+e15zdNNPklFb3DbXB9PgSCxUJFeNTMZG3fSSvGrlzlVOZSUUEI
+	 34EphU0iDaniw3nskdfTJlm/+oj9v2R98zlYwb6U2dPUj1+oZBEhAENv8npVvafdz15JO
+	 pvavwJCvAcIkPzkkqsi2UpkrQ+594hhF8oDhLsReoXMBNJ05IByWD/L8JGLx9MIC4stiT
+	 AcT5J7JmGxgBk6+uSvu8upzVioZuTJdGKJ0zfXzlVQVCkeApXVECCk/8fyVQWInmFjtqX
+	 mHCJxkbFkUEkOZ6C8BgIlV+oe/mqnBs7/psA7P7+icxK7DHJbWRk66GEtGa9E50rqNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.199
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zto+oPJQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845E606A879
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:21:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0845E606A879
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-5682eb98dafso1852764b6e.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 23:21:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794295312; x=1794900112;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BZAybHKPrp5cabZgbPg7Wb9TVLxchkkoh8bos8p+zE4=;
-        b=mJ+q67tjF9lvJyehn/wta6gIj0ZZJ+JlFbJKsVl9c2uiIvqycmOsBOeKkeeowlkuSB
-         Rq1B/CREHeY6i6a4T+7VqseungEbo9xilVPeDYdR/5Yq2gOx22aTGtscpAPy7fsYMNu+
-         A+kAUOS9G0tRmAll+LoQsNgQoH2cJgv0hM4Z6Js05S4B2RJLIKfsmmW2mJquCw9E1M36
-         vtgyn7z0Bf1ysWbatutQ6/buK7+KdzrbtckF6Xx5TQ9tQE4LYm1x1ckkzCJShZhNJ4+9
-         8WPmDTiWH4dFm1lD3NpZh54/XZ/annMODMO29gnnQm72LCR4jr+jr56RSCUkt++izZXO
-         wuag==
-X-Forwarded-Encrypted: i=1; AL+hErFwohYLD++yjx5fxrOjfqVuhU8a+AA2AFFZxNKwTTOY7aVcxY7QfMZ8i5eCuZyZE9nZCtD31vY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8sh8QUC9lJhaOVB398H1BEypYvhKfHr+/THCmSvWJVziIxDa6d
-	twdsdXJQUzJroezNM3upSMg9JNrJEHcEtlmQ7J8ll5wEXRO0WaiioxHf2YuwqRIJ/ILSHB/5F9X
-	J5m4JQsKmzwjYE0qZai6wxdRuoGReFSY8kGJKyPELU3Elg8y3yn3XAn5m0bI=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2FB606A325
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zto+oPJQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BB11F0089F;
+	Tue, 10 Nov 2026 07:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794295332;
+	bh=zja2eMNGFiEkBZuH4kjMHFhhzIaxVJH4a94KyNvHTDk=;
+	h=From:To:Cc:Subject:Date;
+	b=Zto+oPJQ1+a6Qg95BBg0sfY4N6K1Bts7Uchj9COTnSq4Sc51Nid7AEPcXpS4wFjX1
+	 gzmVzD6oDdEq4lIfB09KAo+8awCwAToWjl9AtMGOBc13WtBR2oG/Gs6ol8PMP+0+Cr
+	 YHAj2wGrOtav9dNIAFVEjpidDrYeWLzi2uYHykiHxqEEoXzov0PiY082QTlp+SEIi0
+	 DhmzHKhKhe0hxvrsFL9bIcH7/IKZLZf8ZRemfqXkpeAuVb/L1GhGiip2wvZTbEv+Zh
+	 0c812A/cRLfxSDiGayDYh2z3xzVJmZUlvuFv6HfYQMxhK9+NJjIU3fUgnWLl78T0xv
+	 6C/bFLFA+XSeg==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] vxlan: annotate lockless accesses to rdst->remote_ifindex
+Date: Tue, 10 Nov 2026 08:22:08 +0100
+Message-ID: <20261110072208.3273638-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,110 +59,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:15a6:b0:540:5827:6d8c with SMTP id
- 5614622812f47-5683cacf790mr1530702b6e.57.1794295311977; Mon, 09 Nov 2026
- 23:21:51 -0800 (PST)
-Date: Mon, 09 Nov 2026 23:21:51 -0800
-In-Reply-To: <20261106202910.723098-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6af2c60f.5a668245.1aceb6.02ce.GAE@google.com>
-Subject: [syzbot ci] Re: xfrm: fix IPv6 atomic fragment policy handling
-From: syzbot ci <syzbot+ci38d3d40fc327a9e2@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, herbert@gondor.apana.org.au, 
-	idosch@nvidia.com, jeremy.jean@oss.cyber.gouv.fr, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org, 
-	steffen.klassert@secunet.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+vxlan_fdb_replace() can update rd->remote_ifindex in place while
+the destination entry is visible to concurrent lockless RCU readers:
 
-[v3] xfrm: fix IPv6 atomic fragment policy handling
-https://lore.kernel.org/all/20261106202910.723098-2-Jeremy.Jean@oss.cyber.gouv.fr
-* [PATCH net v3 1/2] xfrm: fix IPv6 first-fragment protocol decode
-* [PATCH net v3 2/2] xfrm: fix selector matching for IPv6 atomic fragments
+- vxlan_fdb_info() reads rdst->remote_ifindex during RCU-protected
+  FDB dumps and gets.
+- vxlan_fdb_switchdev_notifier_info() reads rd->remote_ifindex from
+  vxlan_fdb_find_uc().
+- vxlan_snoop() reads rdst->remote_ifindex on the RX path.
+- vxlan_xmit_one() reads rdst->remote_ifindex on the TX path.
 
-and found the following issue:
-WARNING in __xfrm_decode_session
+Annotate these accesses with READ_ONCE() and WRITE_ONCE().
 
-Full report is available here:
-https://ci.syzbot.org/series/9d92ff08-0b82-4440-b345-9628353f5181
-
-***
-
-WARNING in __xfrm_decode_session
-
-tree:      net
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
-base:      2d2200551ccc3b9e444aecb59c4b53287e169266
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/fe2ead38-2a3d-497a-9bae-e5da0ee59933/config
-
-------------[ cut here ]------------
-len > ((int)(~0U >> 1))
-WARNING: ./include/linux/skbuff.h:2856 at __xfrm_decode_session+0xafb/0xed0, CPU#0: syz.0.121/6184
-Modules linked in:
-CPU: 0 UID: 0 PID: 6184 Comm: syz.0.121 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:__xfrm_decode_session+0xafb/0xed0
-Code: bf e0 00 00 00 4d 03 3e 4c 89 f8 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 11 03 00 00 45 8b 37 e9 33 fd ff ff e8 c6 c7 30 f7 90 <0f> 0b 90 e9 8c f7 ff ff 44 89 ef 8b 5c 24 20 89 de e8 bf c9 30 f7
-RSP: 0018:ffffc9000e926b60 EFLAGS: 00010283
-RAX: ffffffff8a9849aa RBX: 1ffff92001d24d74 RCX: 0000000000080000
-RDX: ffffc90006ec1000 RSI: 0000000000000c7f RDI: 0000000000000c80
-RBP: ffffc9000e926c90 R08: ffff88816dd8bc00 R09: 0000000000000002
-R10: 000000000000000a R11: 0000000000000002 R12: ffffc9000e926bc0
-R13: 00000000fffffff8 R14: ffff888105f226d8 R15: dffffc0000000000
-FS:  00007fc136da96c0(0000) GS:ffff88818be0d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000002cc0 CR3: 000000017256e000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- icmpv6_route_lookup+0x44a/0x610
- icmp6_send+0x114c/0x1b50
- icmpv6_param_prob_reason+0x32/0x50
- ipv6_frag_rcv+0x927/0x2b40
- ip6_protocol_deliver_rcu+0xe8c/0x1680
- ip6_input_finish+0x191/0x370
- NF_HOOK+0x336/0x3c0
- ip6_input+0x16a/0x270
- NF_HOOK+0x336/0x3c0
- netif_receive_skb+0x278/0xbf0
- tun_rx_batched+0x1de/0x790
- tun_get_user+0x2b78/0x4470
- tun_chr_write_iter+0x113/0x200
- vfs_write+0x612/0xba0
- ksys_write+0x150/0x270
- do_syscall_64+0x166/0x520
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc135f6974e
-Code: 08 0f 85 a5 a8 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 80 00 00 00 00 48 83 ec 08
-RSP: 002b:00007fc136da8fb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fc136da96c0 RCX: 00007fc135f6974e
-RDX: 000000000000004a RSI: 0000200000000700 RDI: 00000000000000c8
-RBP: 00007fc136037f6d R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc136226038 R14: 00007fc136225fa0 R15: 00007ffcfeaad798
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Fixes: 906dc186e020 ("vxlan fdb replace an existing entry")
+Fixes: 87613de95041 ("vxlan: fix snooping for link-local IPv6 addresses")
+Fixes: 49f810f00fa3 ("vxlan: allow multiple VXLANs with same VNI for IPv6 link-local addresses")
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Cc: Andrew Lunn <andrew+netdev@lunn.ch
+---
+ drivers/net/vxlan/vxlan_core.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index d11028b374721c9f4691254edb61a55c679fd2f2..13bfb1bb11b7be4d4e224d7f892c960512301b2e 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -215,6 +215,8 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 		if (nla_put_u32(skb, NDA_NH_ID, nh_id))
+ 			goto nla_put_failure;
+ 	} else if (rdst) {
++		u32 remote_ifindex;
++
+ 		if (send_ip && vxlan_nla_put_addr(skb, NDA_DST,
+ 						  &rdst->remote_ip))
+ 			goto nla_put_failure;
+@@ -226,8 +228,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 		if (rdst->remote_vni != cfg->vni &&
+ 		    nla_put_u32(skb, NDA_VNI, be32_to_cpu(rdst->remote_vni)))
+ 			goto nla_put_failure;
+-		if (rdst->remote_ifindex &&
+-		    nla_put_u32(skb, NDA_IFINDEX, rdst->remote_ifindex))
++		remote_ifindex = READ_ONCE(rdst->remote_ifindex);
++		if (remote_ifindex &&
++		    nla_put_u32(skb, NDA_IFINDEX, remote_ifindex))
+ 			goto nla_put_failure;
+ 	}
+ 
+@@ -300,7 +303,7 @@ static void vxlan_fdb_switchdev_notifier_info(const struct vxlan_dev *vxlan,
+ 	fdb_info->remote_ip = rd->remote_ip;
+ 	fdb_info->remote_port = rd->remote_port;
+ 	fdb_info->remote_vni = rd->remote_vni;
+-	fdb_info->remote_ifindex = rd->remote_ifindex;
++	fdb_info->remote_ifindex = READ_ONCE(rd->remote_ifindex);
+ 	memcpy(fdb_info->eth_addr, fdb->key.eth_addr, ETH_ALEN);
+ 	fdb_info->vni = fdb->key.vni;
+ 	fdb_info->offloaded = rd->offloaded;
+@@ -569,7 +572,7 @@ static int vxlan_fdb_replace(struct vxlan_fdb *f,
+ 	rd->remote_ip = *ip;
+ 	rd->remote_port = port;
+ 	rd->remote_vni = vni;
+-	rd->remote_ifindex = ifindex;
++	WRITE_ONCE(rd->remote_ifindex, ifindex);
+ 	rd->offloaded = false;
+ 	return 1;
+ }
+@@ -1470,7 +1473,7 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+ 
+ 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
+-			   rdst->remote_ifindex == ifindex))
++			   READ_ONCE(rdst->remote_ifindex) == ifindex))
+ 			return SKB_NOT_DROPPED_YET;
+ 
+ 		/* Don't migrate static entries, drop packets */
+@@ -2442,7 +2445,7 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 		addr_family = cfg->saddr.sa.sa_family;
+ 		dst_port = rdst->remote_port ? rdst->remote_port : cfg->dst_port;
+ 		vni = (rdst->remote_vni) ? : default_vni;
+-		ifindex = rdst->remote_ifindex;
++		ifindex = READ_ONCE(rdst->remote_ifindex);
+ 
+ 		if (addr_family == AF_INET) {
+ 			key.u.ipv4.src = cfg->saddr.sin.sin_addr.s_addr;
+-- 
+2.53.0
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
