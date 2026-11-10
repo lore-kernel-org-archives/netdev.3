@@ -1,76 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794324697;
-	b=pLvMkwsmPEcpwzrqmgZfw2teAbOJZUq4ndp1xCM6iNjmquWUZQR3ve+nR/jedoanwkpl
-	 aJ/PZcyYCe3Bve/27/w+RSL0aRk5yOoLDKVaW0/iqov7jMjqljUNUjohbQ6bMsc08YjC6
-	 hUlwx1v6+zis1a5Ae5ZRi1n9xEhMG8pinuPitfWQH9Du3CKESFjIwd/+eyUE4DQpOCXnZ
-	 jC0HosJ58OeBYdxAXYiDoNvRqft8L4DPqmNrG7snoAxTuT64zq3o5HaXiYh2CDcKVbO6J
-	 tdeGuF+O3fh6XCDMHeQW9wg2QWuphYPv3zKA+8JUGyw4SIj/TdsHSH/fJUKfsb2FDdQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794324697;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794324709;
+	b=T7SWUEPVxGYCZIubqbF9TlHPOTCjyxuQXT9xLV4XmRhQf1yGfFnb1u0/dnFBo+YMltFT
+	 YctQLT6yjkP2J6RyxKHOX1DMKNbMUDOf5wQoiDtnPuayurt5fuaFq9LtcYhOqJy8hmieG
+	 S09mFDDC/hrcESBFoekRyWxn1oQ0wOgIU36rcb5M0RaoCpZUQerv+FUStyszcFjTV9BRM
+	 HpM3y68z+EKXpjX5gPjUNe13OqZYSHSES+he8HrVvymjrpDsEY/87ZShAJIzGfmg+6dJV
+	 AYB1J2uzF5S2VkIOSSDvuy7EiDLdBvmUCgqz+R9bBpjzC4GoFGF9IJFrwlceDS6SQsA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794324709;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=SJjtzkP+sBHxUstFA6XSyOLuoy/E3cjaVl7XAdp7TZ4=;
-	b=ZsIH9HrgmUPilWvbck1eb3/B+s5XylKGp4qpB85TQ06SnahF66NtUYp8NLuIiD9baqFa
-	 i7uWSwdHqk6yJUms+TXnaCFUz8CqcZPFHDlMft+hCW6QvJz/M6jhtGIGTDwrwCT4wJOsW
-	 GGvFrQaoAPHpwDqy0zOIBa0ilvPdGLQ9m4SOUpEbpuNxee18+oY71vLdCZyVJdBG7MC5r
-	 umLHea3MJM8c1UzBhqNVS5Ph20FCaH25gsdRhsohr3aZc5ZmvHPzp5S4GDRI0tZSwbEEd
-	 uDRsNgVh8n/NprlqTNrUUezfPohF9VTPodo4mHDgDKhbOGkdfhP3r9qEQdiKXs+ulfw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--halg.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EbaSWAnJ;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=K1/d2NyIuCP6NUn/LZuS44tPxEN2bj+/f16ojUcHMk4=;
+	b=hpUgVfxOKtoHIJV4T2qCfzKFKR8unqXpF8Vyh1bvECovUHNxXgSzI9UL4x6qQAbq8Uv2
+	 Vb0fczFHTsr3Ue2IlwZxBzs2xWrETEDNk8Mi5Xb6gcQmdwkpEBtkkhQJAaz3jOzkUp8Yf
+	 yh2wicclovWCVAEKpDh3a0nAkd6ZD/kUe0z1v9KtC0jJJhfDKWLgbWEUx5ogvpqutxQms
+	 AMpNWfTF8aTDH+paqDiSKwvkYOkEJ5iCjeI9/sS9HU2yXaiRG4jHmjrbQSi4d8AN6C94V
+	 sWnH2NFrAN66lXgXH4fNE57B3RxX0tZ4+gZBxVD5UHhxQVWKALWGOM+OOceXzNgkpuQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sOnALV4R;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.43
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9422C606A330
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:31:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9422C606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--halg.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E2960A261D
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:31:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2E2960A261D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EbaSWAnJ
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c44903d6927so236405766b.3
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:31:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sOnALV4R
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7d2dc9a7b52so1173804137.3
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:31:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794324708; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LJCS8KaN4nAttT2RMkTN1dMGNuQRamZoccz2Aq38/graCAfr0EifMJiJQeem56SVm0
+         wtXvu2TiE7IWnJjOvHRxX0Ns2RJVaHpPl1xFGLt79wrabDe9Vjy49sVpkHiH42P9YUlv
+         +u04ePc1YYAVXFwXtNCbKgoOmDbR8sBsrc70DRqJGpShd9ETdyUvAPIATY/Pzn4/rGD9
+         UV5rE+AoP3ikNvri/0DxT+pdPWYx/djOUmPMjF8NsfLjkY95qdlbx9PU9+pRbtAf9EXV
+         yCkTu4MaBGpNWBgJazv+9vhUO6upeoM8duSurCd7tK2B2307BROvrn810GJbDHKu4NV4
+         wejQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=K1/d2NyIuCP6NUn/LZuS44tPxEN2bj+/f16ojUcHMk4=;
+        fh=54G8zaY9GdOdccVNod0zIgsABYS0R2X/IHnWcRheuFQ=;
+        b=Fw1jVA2peZuGx+pOUyKzW0esYie4zX3c4PJBOyZtvCasnYwhkcpE7vX3qZp7irgpBz
+         XNTgySo1CtIU2IgZ3Zo1eA9VwlsIPiFeZy1LRbOVGPszi6jrNs71ZYXDRqgnzIPLP0br
+         SGQG0ggFVTeG5KD37I9o7UkGCbWtU2nGVj3R6imzX9aJ5Gi013OeyLo/J1p8LzBYEl43
+         /Mvr2N6XOCCB89lQqNv5GARXvOk2QsU7rWsFxcgn1TVBbNa44e8QAgdapL2/O+SyCaA3
+         sPa1pQkfCGHvmU2qjmmhQ6ZRGG0uhLv5FkfBvr1tLcM8hYgF/hHkPG4I3/TC8qHAwZfH
+         YVvw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794324695; x=1794929495; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SJjtzkP+sBHxUstFA6XSyOLuoy/E3cjaVl7XAdp7TZ4=;
-        b=EbaSWAnJ7A533qGpAvii2NS3I9zxkDKlvnsqDPtzIBKMTuzOPF5jRLHhwfsyK6diIL
-         2En3fr/6Wz2Zy14HVjG0BjTT6HzN+p6NPYlr8unPhlA6m2umktQnoqp2AYSjldSAJssk
-         xHzbOcqVaFfuuKFkgO7UgDfRrsaoBkRPDiUM6rHPYGDOR3M31dOOpz5vbhmi2t4d+DUT
-         jeFEACxiutXh0J7ifsM5tXZOXkDouo9+ARx8MVQmgZYMid1HxFVWY6jc0+kGfKGLmr9K
-         dwtVL5ln+2ptHee8NSHeS1SxVprCYBr2xvsLYm8F3UiIKYeFqvbgvqwm4UzA816ruQV6
-         HNoA==
+        d=gmail.com; s=20260707; t=1794324708; x=1794929508; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=K1/d2NyIuCP6NUn/LZuS44tPxEN2bj+/f16ojUcHMk4=;
+        b=sOnALV4RabTW7TXx7rjmDTNsf5tHHAYmUXJwgfUDq5UM5W3BHjN5iBQXvAvIlZdHDT
+         RunsTaxFGOmPsBVI/UWUQRUU61lGTeSOTV7Ls4oDevMfljfbDaejNb2p5o/je/oUzQVN
+         ODiTECjiawd9dA5ApJKl1GPG+snrlUdzTJMDx8+vzHyuEIH8h5PdZF+FRvrol+Yj/3gJ
+         vRHo4q1oHwQ11AsQGydfRlFpUdIMf33G3Tui7lBp/+FbxkDoWkLiGS2AisC+jeSvVL+J
+         uMeijdhrcOXb3WUOVkGaNpFRye90vYvFGNsOPsPzp+zSZMQDurT6HH2hkHYZo/OmfCgj
+         omvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794324695; x=1794929495;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20260707; t=1794324708; x=1794929508;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SJjtzkP+sBHxUstFA6XSyOLuoy/E3cjaVl7XAdp7TZ4=;
-        b=XNvcsrN3j1bOVl3LAPsxH+TqaMk2OGw4rBnXbU72IzwmVfAVqX0qE1oK6uSvkTUFnh
-         x7Q3U7tF9zEXElfoObQW4parZCQwaHuAvCJsEQoicqAHXKFcs0ix+PPOvHTOPIoSRAUM
-         uNcIZfpp9w/0VDlmyD0h/spASOTSqwkqyVofoAE2KdxoGmG3l/iRZB9kgduxt3RlYsbV
-         zB6yEh83UYS4yl/M/8qaVajIAsNcsnGM4tSDUtJv/LZsoqUr87u0Ugwpvvlmkv1xOUT/
-         FJsgNZm0nEUcjpzfw71Ql6ZAxfg9Uv9SepU9zrP8Ydr3qH5muRB0o9AJ0ceJ1X/j4w8B
-         B4ow==
-X-Forwarded-Encrypted: i=1; AL+hErGylADNcS57wEWrYm8fifu71C/v4Nyr1JBBVUtSduugFEYXyA2ju/7ymmSkwX9w0Ta6rgYOa+4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9NPnZYzfXo9B6UX6vV5Uqq0VD6416TbNtZoClLh1lEKwF5MNlJ
-	W4c69jmCyaC5/hQyKn5YkubDgKc35FPyQO7CcGcscCJOo/4CR1MhYJ3cEcC7MCpIYnPUCFWVJQ=
-	=
-X-Received: from edsw12.prod.google.com ([2002:aa7:da4c:0:b0:6b7:834:31d9])
- (user=halg job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:68a:b0:6b7:675e:7a2f
- with SMTP id 4fb4d7f45d1cf-6b7675e7a95mr879624a12.1.1794324694693; Tue, 10
- Nov 2026 07:31:34 -0800 (PST)
-Date: Tue, 10 Nov 2026 15:31:33 +0000
-In-Reply-To: <CALCETrWa1SBLcb5oWjqjgzZvKvCoHjmYFk=Lf5ytEM9uqm5jYA@mail.gmail.com>
+        bh=K1/d2NyIuCP6NUn/LZuS44tPxEN2bj+/f16ojUcHMk4=;
+        b=Tu5oc/JE3dEDlZ9yB8P7QKcZyScvXFMANpw7J56GwENFVXw4eoVfdZlayDzbKj2t/d
+         jLwsPi2gWNQqEtMp28tU1WvoVQgh/a6kJTPR3q65uLl244QstkIyI98sDZD3991Ve441
+         oySAm8BS+CACYcONKUxp+iR184W9hW55o6cPZcr+GsSPYt4GNetdK98YeXnrcR4s+YkX
+         bxpBDC3Gilu4/TdKI8mr+UXHZZyof+CLbE98q1AoibMO17Cuu/hnDAhkKUQZl3D+ZdSl
+         L2dboYOrq3brnoGT43KVifLQ0H8nL3GENlEM2rcywzgsa5rZLpDiDFmQcnncSXvh6l0B
+         2sbA==
+X-Forwarded-Encrypted: i=1; AL+hErG5y6VTVyI87xCvJ1pDPxG564aQfVcO2Jdsc4NM6MepGnJYu0ERpnXAfj6WsKCobB1ShIvD+00=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8S5w9xBK/u/isWfvxk9XEPe0HyXQV1/kQuyjckjRUQebQtErIs
+	P2XI7vLqLbVUKv0I77tD+1VlETBuZhRY4BmEbrElqbmK2d0RHJhPemz+BWD3fB3bWP/w/vk1DWq
+	GQ/1zW6HRjZJYhjpWnJylo8HVtf+gH6M=
+X-Gm-Gg: AYBFou1dQPsZOuHB9vqbIo4wbp+FllhAvNGvxFH2eGjMWomdjMnXOgsyidHNp4pf4IT
+	mu5llynlOgpRkdTYsLLffvnsriBgmcjfzouFjxaEKnLzWfVG7/lV1OtsAsHbMGs4EJRkH9FSZ1B
+	zp7uQfA/aJQEsW3y5RLEFR3JiNl8/NAQd6JqBgpqdLk2aE8gcRQSZm4pz1V1hX9nOmWDPXy1yXj
+	Y+h2vRfe6o4k51tYsicAzIvfMcc/f6qH0lFFJ3TA2WkS7mldCEeCw+vf6zbotIvAnztefcpDFcp
+	wNDUuTKOJakas4VpN/cmZxrFKb/0bcfSphscdmymGEyEXsWdZuvFP9TbarbOw+InZeeOFXtqUxJ
+	6I4ItusXvlhSex17IyewAJlW1SSX+VOyaT1ifWdBpaUrxGhZTY/8LuPedpJhuRSmLh186Xk7yB1
+	CdlA5RFpuRVxNdVsU4sLKGmVBdOUwzyURotnZvzQ==
+X-Received: by 2002:a05:6102:1629:b0:7a7:19aa:8a88 with SMTP id
+ ada2fe7eead31-7d301c1ac50mr1147212137.35.1794324707817; Tue, 10 Nov 2026
+ 07:31:47 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,152 +104,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261028221705.3915340-1-halg@google.com> <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
- <20261106-befreien-addieren-eislauf-e09212803534@brauner> <CALCETrWa1SBLcb5oWjqjgzZvKvCoHjmYFk=Lf5ytEM9uqm5jYA@mail.gmail.com>
-Message-ID: <avM41a80aig2de-R@google.com>
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-From: "Hallgrimur H. Gunnarsson" <halg@google.com>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, "=?utf-8?Q?G=C3=BCnther?= Noack" <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-api@vger.kernel.org, containers@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20261108161149.2774119-1-bestswngs@gmail.com>
+In-Reply-To: <20261108161149.2774119-1-bestswngs@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 10 Nov 2026 10:31:35 -0500
+X-Gm-Features: AclHuK9iYVUMVhjgMP1YORbw_EmIVcS02-pRhlLXyvezE7vMUFhkCvMgT7r-RmU
+Message-ID: <CADvbK_fGfv2k5rB1Q4Q-OwzJicXbKzs1ofW48F2prx6Z15CQZg@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: reset stored flag for each association
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Wei Yongjun <yjwei@cn.fujitsu.com>, 
+	Michio Honda <micchie@sfc.wide.ad.jp>, YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>, 
+	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 07, 2026 at 10:47:41AM -0800, Andy Lutomirski wrote:
-> On Fri, Nov 6, 2026 at 5:13=E2=80=AFAM Christian Brauner <brauner@kernel.=
-org> wrote:
-> >
-> > On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
-> > > The whole unshare/clone flag situation is getting out of hand, IMO.
-> > > And this new thing makes logical sense but is really about reducing
-> > > exposure.
-> > >
-> > > Perhaps we should instead have a small list associated with a userns
-> > > (extensible in the future) of things that the ns's admin (i.e. whoeve=
-r
-> > > has CAP_SYS_ADMIN relative to the ns) may do.  That list could
-> > > include:
-> > >
-> > > - Create loopback with sensible defaults for ipv4 and/or ipv6 (i see
-> > > no obvious reason to separate them)
-> > > - Create tun/tap interfaces in that ns (and attach them, etc)
-> > >
-> > > And add a very simple new API to do these things.  Actually, the
-> >
-> > We've had this idea in the past and I think it is reasonable. I had
-> > always thought that we should expose a system call to create empty
-> > namespaces ot any type. Usually I'd be excited about that but I think
-> > that point is a bit moot and I'd really like see whether we can turn
-> > cells (or whatever other name) into a first class api.
-> >
-> > The problem I have with the patchset as written is that adds a lot of
-> > moving parts. And yes, I find the CLONE_* and UNSHARE_* flags plus
-> > sysctl to be suboptimal as well.
-> >
-> > So the TL;DR is that CAP_NET_ADMIN + userns =3D
-> > CAP_NET_PRIVILEGE_ESCALATION 10+ years later. And this patchset wants t=
-o
-> > put it back on a leash.
-> >
-> > So why isn't an aggressively stupid solution to this problem to split a
-> > new capability out of CAP_NET_ADMIN so it covers the absolute minimal
-> > set of things that should be allowed instead of doing effectively the
-> > same thing but split over multiple apis?
->=20
-> Because we don't actually have a clean way to make a list of
-> privileges that are, in theory, harmless but are hazardous from an
-> attack surface perspective and assign them only to tasks that ought to
-> have them.
+On Sun, Nov 8, 2026 at 11:12=E2=80=AFAM Weiming Shi <bestswngs@gmail.com> w=
+rote:
+>
+> sctp_send_asconf_del_ip() walks every association on an endpoint. The
+> stored flag records that the current association took the single-homed
+> deferral path and therefore did not allocate an ASCONF chunk. It is
+> currently scoped to the whole function. Once one association sets it,
+> later eligible multihomed associations allocate chunks but skip
+> sctp_send_asconf(), leaking each chunk and its skb.
+>
+> Reset stored for every association so only an association taking the
+> deferral path skips transmission. In an A/B kmemleak test, the
+> vulnerable kernel reported 210 leaked objects from this call path and the
+> fixed kernel reported none.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host=
+")
+> Reported-by: Xiang Mei <xmei5@asu.edu>
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> ---
+>  net/sctp/socket.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index c7b9e325ec1c..ed91ceff45a9 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -771,7 +771,6 @@ static int sctp_send_asconf_del_ip(struct sock       =
+       *sk,
+>         struct sctp_sockaddr_entry *saddr;
+>         int                     i;
+>         int                     retval =3D 0;
+> -       int                     stored =3D 0;
+>
+>         chunk =3D NULL;
+>         sp =3D sctp_sk(sk);
+> @@ -784,6 +783,7 @@ static int sctp_send_asconf_del_ip(struct sock       =
+       *sk,
+>                  __func__, sk, addrs, addrcnt);
+>
+>         list_for_each_entry(asoc, &ep->asocs, asocs) {
+> +               int stored =3D 0;
+>
+>                 if (!asoc->peer.asconf_capable)
+>                         continue;
+> --
+> 2.56.0
+>
 
-Exactly. Furthermore, even if we split a minimal capability out of
-CAP_NET_ADMIN, create_user_ns() still grants CAP_FULL_SET to new
-unprivileged user namespaces by default. Without a mechanism to
-withhold capabilities that are namespaced in scope but carry high
-attack surface risk (like CAP_NET_ADMIN and CAP_NET_RAW) and only
-selectively grant them to tasks that really need them, an unprivileged
-userns would still receive the full set of capabilities.
-
-Providing that mechanism is the core goal of the per-userns capability
-bounding set in this series. Even on its own, without any loopback
-changes, it can be configured to prevent unprivileged users from acquiring
-CAP_NET_ADMIN and CAP_NET_RAW when creating a new userns + netns, while
-still supporting sandboxes that use a completely disconnected netns or
-containers whose networking is configured externally.
-
-Finding a solution for loopback simply makes this bounding set more
-practical, as it allows us to also support sandboxes that rely on
-localhost networking without forcing them to retain full CAP_NET_ADMIN.
-
-With a way to withhold CAP_NET_ADMIN from unprivileged userns, splitting
-out a minimal capability (as Christian suggests) is a very appealing way
-to handle the allowed subset for loopback, though the main challenge is
-defining a scope that justifies a capability bit without re-introducing
-LPE risk.
-
-Looking at the CAP_NET_ADMIN LPEs from Google's kernelCTF, most are
-concentrated in netfilter and tc, with a smaller number in virtual
-interfaces and routing. Simply bringing up loopback at netns init
-shouldn't carry any LPE risk, but something like CAP_NET_LOOPBACK_UP
-is obviously too specific to warrant a capability bit. Conversely,
-broadening it into something like CAP_NET_IFCONFIG (allowing link state,
-L3 address and basic route configuration on existing interfaces) might
-justify a bit, but even such a basic subset would still re-introduce
-some LPE risk (see e.g. CVE-2026-53259 / commit f723ccaff2fb),
-although it would drastically reduce the risk by excluding the most
-high-risk components.
-
-Furthermore, I think splitting out a smaller CAP_NET_ADMIN would also
-run into some practical difficulties when it comes to clean enforcement
-in rtnetlink. Currently, rtnetlink_rcv_msg() relies on a coarse
-CAP_NET_ADMIN check at the beginning before any complex message parsing
-occurs. To support more fine-grained capabilities, we would have to push
-these checks much deeper into the stack, spreading security checks
-across many locations, which could easily lead to mistakes.
-
-Given this, I was hoping to have a minimal mechanism to just allow
-bringing up loopback without going for a new capability bit. Ultimately,
-it's a pragmatic judgment call. Maybe something like CAP_NET_IFCONFIG
-offers enough value and risk reduction to be worth the trade-off.
-
-Otherwise, if we want to avoid consuming a capability bit just for
-loopback, we could also consider other alternatives, e.g. a small nsfs
-ioctl on the netns fd (e.g. NS_NET_LOOPBACK_UP). This would align with
-Andy's earlier suggestion of adding a "very simple new API" dedicated
-to these safely scoped operations.
-
-If we drop CLONE_NEWNET_LOOPBACK / UNSHARE_NEWNET_LOOPBACK from this
-series and handle loopback separately, do you think the per-userns
-bounding set is a reasonable approach for withholding capabilities
-(e.g. CAP_NET_ADMIN and CAP_NET_RAW) from unprivileged userns, or
-would you prefer a different mechanism?
-
-I think the single-deep case we were discussing on the other thread
-could also be cleanly built on top of this. The per-userns bounding
-set provides the underlying enforcement mechanism. How we configure
-and trigger that bounding, whether via sysctl and clone3() as proposed
-in this series, or via a per-task securebit to handle single-deep
-containers in init_user_ns as discussed on the other thread, is a
-policy control interface decision that can feed directly into the
-same mechanism.
-
-To address the concern about the number of moving parts, I am also
-happy to simplify the control interfaces. If we decide a per-task
-securebit is the cleanest way to drive this configuration for both
-single-deep and nested cases, we could focus on that and drop the
-clone3() and sysctl from this series entirely, or only expose whatever
-subset you prefer.
-
-Thanks!
-
+Acked-by: Xin Long <lucien.xin@gmail.com>
