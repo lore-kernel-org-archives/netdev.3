@@ -1,89 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794287582;
-	b=U9Hbb8Lvg7T6Rgyq0y8FABmPVzfy3Q1ib763TTYifbOSAdeX3UuXxfc7Op/F6nGnPZdu
-	 c19G1J5uQsemq5mmqgB0gVnDn7rGWkOQqWAsGk3G+prvz4tFA1HF5vMxljZPwe4cI++mX
-	 pbXhmOctRpkf/DYqkhn/lhM/X1gl5V39Q4eCOX6yYmM6xQU6lYxaSh6EmDpDJezBHZ8BK
-	 upoXWMV6evRVZFuoKrF9sKmB1eX7aZKItYdd/MP+mV3vcEI3zVUOjch8Yza/EDbg8Zmqb
-	 VCmsvvSXT3HjOQGl1Fy4GiEylIXv6MfuYGx9dHQRYMDJVDV/4r13WrpRXIT709KWZ4A==
+	t=1794287893;
+	b=q0TGf2dWO4ZZDpjRjCXUaSuMMbOauKBN3JXK4pHTq3xqPFhsY8knFWVYofQ1E0syBuAv
+	 KuKlbNeaBIT/dnEyTruA5G7Dmn/zRGCKhJJu6p65ABowo6epUW2sI+gsbzx3Eu1B70g67
+	 icBmgOiPLQc9IRiGFYDCzoMjeRlrv6vVWgfHTuiKzN7ipQlZ2+wrtfmcvrSo5cUKnmy9n
+	 HthPSvW5iHZ8TWj4M1jwYsXHbuGeTqzHKcPwi7yzaNv/GJYRp0KRyKJpNKj3pr6Mz5YG6
+	 CEhZZFZfh5a/VoQ3OlACkIr9GpNoIF7TcTZN2VE0qzSI67QYq6bJGiVDbAjAsBVS6ZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794287582;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=CQzpgVc/oheunZLPAVoKj6i/IlJ4YnhoDZwgYdq5g1I=;
-	b=LE0dH/KVXCMsYNGb0saUgqSL233ASjm60KZWNx0eSnPN0/gUXm8N1v/Ttlcbn6BTrXkO
-	 LmrWMkMfr6TNmsrLRMvnaSb6W/Fsg5626MQE5hRk1IMNY9u4yxglu15hoPLDKvPHy5z7e
-	 APkumLzUbQ9j+3Na5OVIXFrwr23qJor0Elwwb5MEBfGRmAxVlbxbbVcSqKYEOIfOgKpqb
-	 wBOlnVfhDzmMHqmi279Zi4cgqaToV6XnzfxBtc3OW7ZljMWlyQmm4Nikrm3uyqa5RaGmz
-	 7+Zu+dwK6MiuX+GKCgm1/iUxkClkHGVfnTMmpTkumiNMOMPrpfgCfytwT1cvTi1jDOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794287893;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=RYuj0RbzDVYqd9a5QRRV4ncCL0piQYBzmAGWnsVK4O0=;
+	b=ChGVbwu9RjJvYYXYOIQEsxeVk72s/6od3Gx4TXndn8F25eNxk0DSyP/q4A+4uMmrdY/n
+	 dPulVfFiwk/OMnK4hmAgTxiK8iC/8HabWRQofCW0j5QIZaK7kr+TW7Se9x16VKppucA07
+	 yc7sbUCp8Qvrj1esYbwv5aF7xRb2i6qPlBjTXj3e2KfMluPX2oCS4/AM1ElFw5upCt9Zi
+	 q51ABUeGaFyBvvyIVIZBdRId8SCWW4swDSFQvZfrCAxisZyulzV6LKB4oauQUSSZvSi1v
+	 hi7GND1W0YLAKU9QzVE6i2PFi0rmQ1wFG9HPBI3jB6zb3kNt0XCLM4vAYh8I01GraiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=openai.com;
-	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=BBM2jElv;
-	arc=none smtp.remote-ip=209.85.160.49
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqcJKQwi;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E311606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:13:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E311606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB46B606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 05:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=BBM2jElv
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-483c607ccb4so854098fac.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 21:13:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1794287580; x=1794892380; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CQzpgVc/oheunZLPAVoKj6i/IlJ4YnhoDZwgYdq5g1I=;
-        b=BBM2jElvIB24gifQzUXiFY9ZSwjwEJzhwWpSMU9m4Vge7y2NrVDjW4RhQXFef3ZcTi
-         E36Vzh2x/OoBVkyyyydONvq8xyo3mBRP7bt8ocAjMDt7qFvDoCvpsQwaEE/RcSuNWnyC
-         6JtA21bNkGcMLPux11uEzKXLdi04qP8GETQSE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794287580; x=1794892380;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CQzpgVc/oheunZLPAVoKj6i/IlJ4YnhoDZwgYdq5g1I=;
-        b=VHajLNNf4HKNUQejUZ8rh87YpFdtuSP8s6m8N3b2Kmpz8k+YDHqPeRYhKWURPzExc4
-         8IqxJPVMajAmKNn30E5x2mC7CL89ekkwnvnhuFsmoq1ABcEAcD3CcLx35fRn+UYxRRpG
-         tk1/xPmoHIC/2pv4lrI8bx1N+AvNq8W+oPbS7LO4sFlGeCjeb5sNXTBDD/+YUBG7Z4BI
-         YlbuYfKGXNg0D8eDoxTGZiXzjfK9MYUl0VVoiH1uFJ7pv1C3+i9GLorHi7+nTxcxA28n
-         aweY6feEQOIPxnys//jXIlz5fZVrhQUlsOPHbaI5amh5NH5CPoIzmNCNhtQm9OIshgki
-         USLw==
-X-Gm-Message-State: APuU4Z8yp/lxA/2nglr0hXzhvqiS0k7N1+HWp2coyV029hI4S2Nm7PeF
-	I7RvfL10GMjKvGDS3+VBW+VTJsIj8GjRpLMjyxuszsQgr63UMxYQScOJHifuV0oC6gYn2aUo+q4
-	eQUO8b6w=
-X-Gm-Gg: AYBFou1cL8Y+36t2Mp5HYUgVc2Qj5XyhrZeYhEQNcsXRZP8xJswGpCLXwCw54yTJbjT
-	XRIein64hmx3DRZNimjSIeNFVoUsg1KfI9HZTkOIsBSAik6qNuW94UCqKYziKQOrVrZu0EkzD1L
-	lp5bKphLTPr2qTeE+1pRhuMt26/Xv7jT8vo6lu5ScB6jjyBwZN783AuY7Qej+9vRRurJZfThlzT
-	HF9uTYydUTDbuWlD7M6OITEI97Qhod7G20qlWN1KTM69eaS/7CEgT0Wf+mmmOIdx6Ng0CtdkD0R
-	xcnJGrgUO+HwuTeJ+U1Lol3PBQOlg1bw6pBG5Po5OrZJWNjRG7ZYSF2+F45pHzr7UfyCxofafdc
-	fUifkn6G1dog+FbqTlvi9HFS65p+OAMzYjuUQSi7NKY2QcUZcGo8t9znhZMC2f3k6os3p7ZJrFq
-	21K8JUgBbQp/C5QSusBl133O37YI4ZXV+AtH9d/sVG2XqY9bS3kWcxLbprgtIAjwb5NYsHN0CrO
-	vU6S34Q+dKS3CeLYkPzhu6vRbiPO0nzIQU1v6XikmWmCowMLn2SsySLgeUm95GCze8gzf9jPkUO
-	YBOp6JOqU3NC0y1ABnqgLf5SGFXM6rxFgRoezkeE0ULgJRo+txvnM2Qpd0BH3F3Qrv8Nxsb9H1R
-	hBBknZVoftLcMVXVnXQ8Upe3BLoAEHg==
-X-Received: by 2002:a05:6870:701f:b0:4a2:4e0c:593d with SMTP id 586e51a60fabf-4ae2274babcmr813526fac.31.1794287580407;
-        Mon, 09 Nov 2026 21:13:00 -0800 (PST)
-Received: from com-75606.corp.openai.org ([199.47.143.1])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ae2308e3ccsm881504fac.15.2026.11.09.21.12.59
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 21:13:00 -0800 (PST)
-From: Kyle Zeng <kylebot@openai.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: preserve skb header offsets during headroom changes
-Date: Mon,  9 Nov 2026 21:12:58 -0800
-Message-ID: <20261110051258.64350-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqcJKQwi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C261F0089F;
+	Tue, 10 Nov 2026 05:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794287892;
+	bh=RYuj0RbzDVYqd9a5QRRV4ncCL0piQYBzmAGWnsVK4O0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fqcJKQwiqVZXKMWIUogO9YtL3Q4u69tKE1qT3AjidGNOPx7m+yeJw2SqbBYZY5sE2
+	 qm/uKqLO0se2F5SMCDTF7UhZRw+hqwEcW8Fm/hzz0uuF7OCJ1qUnICZh8mdPFJLjWv
+	 EVA37w/4iC4b4+g07t0Dou0LYWyfvJjvHVyCsC3sK9OkiKTTseBWgTweAkpgmZhe4J
+	 nBwmlRXpkDQ0tFu7skmdl5JRTZqzufVBEh4K8KQjt007HjVXr60QRHbsrO9hBafxZu
+	 +68k4KEb5Oy8T+dkT/zu5gzrWQ7bfUR7zgytd0zaP5jjtdB9rxP94NLqqiIIJXDVQp
+	 S2g0KQkIZbzLQ==
+Subject: Re: [PATCH net] net/sched: hold the tree lock while resetting a qdisc
+ being destroyed
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us
+Date: Tue, 10 Nov 2026 05:18:11 +0000
+Message-ID: <179428789134.994134.1074259658602861219@kernel.org>
+In-Reply-To: <20261106161455.2412769-1-edumazet@kernel.org>
+References: <20261106161455.2412769-1-edumazet@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,132 +62,260 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Large device headroom can make aligned skb expansion wrap the u16
-network, transport or checksum-start offsets. An MPLS LWT/netkit
-reproducer reaches an out-of-bounds Ethernet-header write when
-neighbour output converts the wrapped network offset into an unsigned
-pull length. Bounding skb->data alone misses the later offsets.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Reject unsafe growth in pskb_expand_head() and skb_copy_expand() before
-the offsets change, preserving the transport-header sentinel. Also
-bound native MPLS's initial label pop, LWT's inner-header reset, and
-the TC/Open vSwitch MPLS-pop helper, which can wrap without expanding
-the allocation.
+Critical: 0 · High: 1 · Medium: 3 · Low: 0
 
-The issue was found by an LLM.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 1a37e412a022 ("net: Use 16bits for *_headers fields of struct skbuff")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
-Changes in v2:
-- Validate native MPLS headroom before the first label pop/reset.
-- Check the actual shared expansion before network, live transport or
-  partial-checksum offsets can wrap; retain unset-header semantics.
-- Cover TC/Open vSwitch MPLS pop as well.
+- [High] The new sch_tree_lock(qdisc) in __qdisc_destroy()
+  (net/sched/sch_generic.c:1161-1163) does not reliably exclude the…
+- [Medium] In the common case where a destroyed qdisc's
+  dev_queue->qdisc_sleeping is already &noop_qdisc, the new…
+- [Medium] net/sched: qdisc_reset() after parent unlinking races with
+  sfq_rehash()
+- [Medium] net/sched: taprio_reset() in __qdisc_destroy() misses per-
+  queue locks
 
-v1: https://lists.openwall.net/netdev/2026/10/30/51
-Review: https://lkml.rescloud.iu.edu/hypermail/linux/kernel/2611.0/05339.html
+--
 
-I have a reproducer for this issue and can share via DM
+net/sched: hold the tree lock while resetting a qdisc being destroyed
 
- net/core/skbuff.c        | 27 +++++++++++++++++++++++++++
- net/mpls/af_mpls.c       |  3 +++
- net/mpls/mpls_iptunnel.c |  4 ++++
- 3 files changed, 34 insertions(+)
+Graft operations no longer purge the qdisc they remove. Because of
+that, __qdisc_destroy() can call qdisc_reset() on a non-empty qdisc
+while its timers, such as sfq_perturbation(), are still running. This
+patch takes sch_tree_lock() around qdisc_reset() in __qdisc_destroy()
+and updates the qdisc_reset() comment to match.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 8da53d5b76fc..6e0205f923f3 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2118,6 +2118,22 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
- }
- EXPORT_SYMBOL(skb_clone);
- 
-+static bool skb_header_offsets_fit(const struct sk_buff *skb,
-+				   unsigned int nhead)
-+{
-+	if (!nhead)
-+		return true;
-+	if (nhead > U16_MAX - skb->network_header)
-+		return false;
-+	if (skb_transport_header_was_set(skb) &&
-+	    nhead >= U16_MAX - skb->transport_header)
-+		return false;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+	    nhead > U16_MAX - skb->csum_start)
-+		return false;
-+	return true;
-+}
-+
- void skb_headers_offset_update(struct sk_buff *skb, int off)
- {
- 	/* Only adjust this if it actually is csum_start rather than csum */
-@@ -2305,6 +2321,9 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 		return -EINVAL;
- 	}
- 
-+	if (unlikely(!skb_header_offsets_fit(skb, nhead)))
-+		return -EINVAL;
-+
- 	if (unlikely(skb_shared(skb))) {
- 		DEBUG_NET_WARN_ON_ONCE(1);
- 		return -EINVAL;
-@@ -2523,6 +2542,11 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
- 		return NULL;
- 
- 	oldheadroom = skb_headroom(skb);
-+	if (unlikely(newheadroom > oldheadroom &&
-+		     !skb_header_offsets_fit(skb, (unsigned int)newheadroom -
-+						  oldheadroom)))
-+		return NULL;
-+
- 	n = __alloc_skb(newheadroom + skb->len + newtailroom,
- 			gfp_mask, skb_alloc_rx_flag(skb),
- 			NUMA_NO_NODE);
-@@ -6771,6 +6795,9 @@ int skb_mpls_pop(struct sk_buff *skb, __be16 next_proto, int mac_len,
- 	if (unlikely(!eth_p_mpls(skb->protocol)))
- 		return 0;
- 
-+	if (unlikely(skb->network_header > U16_MAX - MPLS_HLEN))
-+		return -EINVAL;
-+
- 	err = skb_ensure_writable(skb, mac_len + MPLS_HLEN);
- 	if (unlikely(err))
- 		return err;
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index ad4ad6f2001a..18c9654a6b36 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -419,6 +419,9 @@ static int mpls_forward(struct sk_buff *skb, struct net_device *dev,
- 	if (!nh)
- 		goto err;
- 
-+	if (unlikely(skb_headroom(skb) > U16_MAX - sizeof(*hdr)))
-+		goto err;
-+
- 	/* Pop the label */
- 	skb_pull(skb, sizeof(*hdr));
- 	skb_reset_network_header(skb);
-diff --git a/net/mpls/mpls_iptunnel.c b/net/mpls/mpls_iptunnel.c
-index 1a1a0eb5b787..4eccbd911fe1 100644
---- a/net/mpls/mpls_iptunnel.c
-+++ b/net/mpls/mpls_iptunnel.c
-@@ -109,6 +109,10 @@ static int mpls_xmit(struct sk_buff *skb)
- 	if (skb_cow_head(skb, hh_len + new_header_size))
- 		goto drop;
- 
-+	/* The aligned expansion must still fit the u16 header offsets. */
-+	if (unlikely(skb_headroom(skb) > U16_MAX))
-+		goto drop;
-+
- 	skb_set_inner_protocol(skb, skb->protocol);
- 	skb_reset_inner_network_header(skb);
- 
+> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> index d2e0d20f3ba1c..e39745d58bfcd 100644
+> --- a/net/sched/sch_generic.c
+> +++ b/net/sched/sch_generic.c
 
-base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
+[ ... ]
+
+> @@ -1154,8 +1154,13 @@ static void __qdisc_destroy(struct Qdisc *qdisc)
+>  #endif
+>  	gen_kill_estimator(&qdisc->rate_est);
+>  
+> +	/* A detached qdisc can still hold packets, and its timers
+> +	 * (sfq_perturbation(), ...) may run until ops->destroy() stops
+> +	 * them. They hold the sleeping root lock, take it here as well.
+> +	 */
+> +	sch_tree_lock(qdisc);
+> +	qdisc_reset(qdisc);
+> +	sch_tree_unlock(qdisc);
+
+[Severity: Medium]
+Does sch_tree_lock() cover everything that qdisc_reset() touches
+when the qdisc is a fully offloaded taprio root?
+
+In full offload mode, taprio_attach() grafts each q->qdiscs[ntx]
+directly as the qdisc_sleeping of TX queue ntx. The taprio root does
+not set TCQ_F_MQROOT. So sch_tree_lock() on the root takes the lock
+of TX queue 0's sleeping qdisc, which is q->qdiscs[0].
+
+Suppose the taprio root is replaced by a qdisc with ops->attach,
+such as mq, mqprio, taprio or htb. qdisc_graft() then jumps to skip
+and destroys the old root before the new one attaches:
+
+net/sched/sch_api.c:qdisc_graft() {
+	...
+	notify_and_destroy(net, skb, n, classid, old, new, extack);
+
+	if (new && new->ops->attach)
+		new->ops->attach(new);
+	...
+}
+
+So the taprio children are still the sleeping qdiscs of their TX
+queues when __qdisc_destroy() runs qdisc_reset() on the root. That
+reset walks all of them:
+
+net/sched/sch_taprio.c:taprio_reset() {
+	...
+	if (q->qdiscs) {
+		for (i = 0; i < dev->num_tx_queues; i++)
+			if (q->qdiscs[i])
+				qdisc_reset(q->qdiscs[i]);
+	}
+}
+
+For i > 0, a timer in that queue's hierarchy takes the lock of TX
+queue i's sleeping qdisc, not the lock of q->qdiscs[0]. One example
+is sfq_perturbation() on an sfq grafted to taprio class i. The rehash
+and taprio_reset() can then work on the same skb lists under
+different locks. That is the corruption this patch is meant to fix.
+
+This needs a device with TC_SETUP_QDISC_TAPRIO full offload. On such
+a device, a plain tc qdisc replace of the root is enough.
+
+Would it work for taprio_reset() to take each child's root lock
+around its reset when full offload is enabled? Or should the
+per-queue children be left to be reset later under their own locks?
+
+[Severity: Medium]
+The new lock orders qdisc_reset() against the timers. Can they still
+run on the detached, non-empty hierarchy before the reset is reached?
+Before 47e8dbb6e763 the old qdisc was purged before it was unlinked,
+so sfq_perturbation() found q->tail == NULL and skipped sfq_rehash().
+
+With the changelog's tbf + sfq setup, qdisc_graft() replaces
+dev->qdisc first. notify_and_destroy() then runs qdisc_notify() and
+qdisc_put(). __qdisc_destroy() then runs qdisc_hash_del(),
+qdisc_put_stab() and gen_kill_estimator(), and the last of these can
+wait in timer_shutdown_sync(). Only after that is the hierarchy
+reset.
+
+If sfq_perturbation() fires in that window, sfq_rehash() calls
+qdisc_tree_reduce_backlog(), which walks up through sch->parent:
+
+net/sched/sch_api.c:qdisc_tree_reduce_backlog() {
+	...
+	sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
+	if (sch == NULL) {
+		WARN_ON_ONCE(parentid != TC_H_ROOT);
+		break;
+	}
+	...
+}
+
+The tbf parent can no longer be reached from dev->qdisc or from the
+qdisc hash. After tc qdisc del, the lookup returns NULL and the
+WARN_ON_ONCE() fires. After tc qdisc replace with the same 1:
+handle, the lookup finds the new root instead. qlen_notify() can then
+run on one of its classes. Its q.qlen, qstats.backlog and drops are
+reduced by packets that sfq_rehash() dropped, which the new root
+never held.
+
+The same applies under mq or mqprio. There, qdisc_hash_del() at the
+top of __qdisc_destroy() unlinks the sfq's parent before the reset.
+
+Should the hierarchy be emptied, or its timers stopped, before the
+qdisc is unlinked, as the graft-time purge did before 47e8dbb6e763?
+
+[Severity: High]
+Is this the same lock that a running timer is holding?
+
+For a qdisc without TCQ_F_MQROOT, sch_tree_lock() looks up the lock at
+the moment it is called:
+
+	spin_lock_bh(qdisc_root_sleeping_lock(q));
+
+That lock is qdisc_lock(q->dev_queue->qdisc_sleeping). For a detached
+qdisc, dev_graft_qdisc() has already pointed qdisc_sleeping at the new
+root or at &noop_qdisc before __qdisc_destroy() runs:
+
+net/sched/sch_generic.c:dev_graft_qdisc() {
+	root_lock = qdisc_lock(oqdisc);
+	spin_lock_bh(root_lock);
+	...
+	rcu_assign_pointer(dev_queue->qdisc_sleeping, qdisc);
+	rcu_assign_pointer(dev_queue->qdisc, &noop_qdisc);
+
+	spin_unlock_bh(root_lock);
+}
+
+The timers read the pointer and then take the lock as two separate
+steps. They never check the pointer again after locking:
+
+net/sched/sch_sfq.c:sfq_perturbation() {
+	root_lock = qdisc_lock(qdisc_root_sleeping(sch));
+	spin_lock(root_lock);
+	q->perturbation = nkey;
+	if (!q->filter_list && q->tail)
+		sfq_rehash(sch);
+	spin_unlock(root_lock);
+}
+
+Take the changelog's reproducer: a tbf root, an sfq child with perturb
+set, then tc qdisc del dev $d root. Can this sequence happen?
+
+CPU0 (sfq_perturbation)          CPU1 (qdisc_graft)
+                                 dev_graft_qdisc()
+                                   spin_lock_bh(&tbf->q.lock)
+root_lock = &tbf->q.lock
+spin_lock(root_lock) spins
+                                   qdisc_sleeping = &noop_qdisc
+                                   spin_unlock_bh(&tbf->q.lock)
+spin_lock(root_lock) succeeds
+sfq_rehash()                     notify_and_destroy()
+                                   __qdisc_destroy(tbf)
+                                     sch_tree_lock(tbf)
+                                       takes noop_qdisc.q.lock
+                                     qdisc_reset(tbf)
+                                       tbf_reset()
+                                         qdisc_reset(sfq)
+                                           sfq_reset() frees skbs
+
+In that case sfq_rehash() and sfq_reset() work on the same skb lists
+while holding two different spinlocks. That looks like the same
+use-after-free this patch is trying to fix.
+
+Nothing in qdisc_graft() puts an RCU grace period between
+dev_graft_qdisc() and __qdisc_destroy(). The synchronize_net() in
+dev_deactivate() runs before the graft.
+
+The timer can also wait on the old root lock for a while. One example
+is an htb root with several sfq leaves, where one leaf's rehash holds
+the root lock while dev_graft_qdisc() and a sibling's timer both wait.
+On PREEMPT_RT the timer can also be preempted between reading the
+pointer and calling spin_lock().
+
+red_adaptative_timer(), pie_timer(), fq_pie_timer() and dualpi2_timer()
+read and then lock in the same way.
+
+mq_graft() has the same mismatch. The old mq child's timer may hold
+the child's own lock, while __qdisc_destroy() takes the lock of the
+new child or of noop_qdisc.
+
+Would it work better to stop the timers before the reset, to do the
+reset under the old root lock before the graft, or to have the timers
+check the lock again after taking it?
+
+[Severity: Medium]
+qdisc_sleeping is often already &noop_qdisc when we get here: after tc
+qdisc del ... root, when ingress or clsact is deleted, and in
+dev_shutdown(). In those cases, does sch_tree_lock(qdisc) end up
+taking noop_qdisc.q.lock?
+
+That is one static spinlock, shared by every device in every netns:
+
+net/sched/sch_generic.c:noop_qdisc
+	.q.lock		=	__SPIN_LOCK_UNLOCKED(noop_qdisc.q.lock),
+
+With this patch, that lock is held with BH disabled for the whole
+qdisc_reset()->ops->reset() walk over the hierarchy being destroyed.
+The cost grows with the configured backlog; the changelog's
+reproducer uses limit 100000.
+
+Other code takes the same lock:
+
+- __dev_xmit_skb() takes qdisc_lock(q) for every TX queue whose qdisc
+  is &noop_qdisc. One example is a carrier-down or deactivated device
+  in another netns that still receives IP or AF_PACKET traffic.
+- Timers of other detached qdiscs whose qdisc_sleeping is noop.
+- dev_graft_qdisc() calls whose old sleeping qdisc is noop.
+
+Before this patch the reset here ran without any lock. The earlier
+purge in dev_reset_queue() only took the old qdisc's own per-device
+lock.
+
+Can transmits on unrelated devices and namespaces now spin behind the
+purge of another device's queues?
+
+The lock taken here also doesn't belong to the hierarchy being
+destroyed, which is the same mismatch as in the race above.
+
+>  
+>  	if (ops->destroy)
+>  		ops->destroy(qdisc);
+
 -- 
-2.55.0.openai.911.g06873a30d2f3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106161455.2412769-1-edumazet%40kernel.org
