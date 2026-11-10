@@ -1,48 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.37.83.207
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794325120;
-	b=LUJguFI/f9qO26cts2BHLoLOAapjA8MyHpXBEjIkVn5vUhuEBV92CB/TF2gZnjPSASHF
-	 uIhxYPC08BauunkDddum1FtH3cTyvyTe5ctukVrKHPP00rWj23Mh7jiaTAg0D8V7+WPRn
-	 JVNcmKdEmdQMNhyPccPlBKGrLsrEn8ZOI/S0nNRswTBu0qd8WVgXJQsPNnVKf/DK4ahDD
-	 4BnUrONIlK5YjQaiY7zcvp5+Y7rdt+Ff7eCuJCWaFek2rKvqFWLHjfShoLnbXgG8BHcEj
-	 WRk+u2UUfIHGIwV7/uy/WUxBA/0unJHRY7Edwi+kTzYRdcPy68hm1QWPL5XrONqG1cg==
+	t=1794325259;
+	b=tT3hKrCWcV3bchJJjN1PICvGJjMNa0VGa2mr+ACBjWKganA54dUSgvtNNyAdnwOumZOS
+	 o8FOUxby+OnkTfV2hULKXcJGNKjJqIYn6SIp2b0WSE8y6yxS09YgcAJeLZVJB9BjF20dJ
+	 BtmjxCKEgl/kdKjW03pAk4T+UUsDx7+dR2wSsVeJeDIMT531rrsL2pSjVeX5TzWaj8v6Q
+	 BHz+0PpeXCR8d+H88qkXW7JzA8tmPHra254MV0aKCBtdpU73EzJxFN70DUY8IUK4dwXD2
+	 pbWNU6zvGN9uxuzBcQgz9lVAX70EGD5NY3a1eAjsoJwCxnatjyUdsUp2HP6Klykk4LQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325120;
-	h=DMARC-Filter:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=a+b6plMgXSXLiuUlwRC4rMTwgZnel2CSaDqDpaJt/Vg=;
-	b=sj9qa3O21fRjRr3Yr92F2jT0wHRSdaTGku9kyL5PwYWufcOXyYZHIFF3ScBRMnKOO17j
-	 WZ6i96ThZ4XNDiIp+ETGr1nZ1Imu6eLcbgGQby73IyUc9ye/b45ewoUvkAn8MFfC6j3JZ
-	 dmAel2msoe2W6dt36tGePQUdVjstBynBCwzVipNozAcWaY1JNCmY929kbMHFv48JOoD4U
-	 LqwB9+OF+w/5ZJ7xAwrRYcWeru3Y2tYNMopf9EM9DGabcHuqoa9b69fiifjDsEbZvUecF
-	 Y72yQ/cuzHhJzVjMsZeyIgjvGoiTFgtCAFaw+Y6CpzQdDnAAOd3ziseVTqmsbg5h0AA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325259;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=pEh2q+SQxGTFTicWzoJ7e3G2PCnq6llm/Gr90hwdzVM=;
+	b=1bezXrbJT7jFJMPcrssVhpcDccNn93wGLqS930ooiulmg8Ic5XxNz628X28kgajOkJqL
+	 W8HdnhzFaHX9CEekCnGP1E5inV7jpy1rrtAOal6CEINLzm6yJ2+nzZ6k2MCDbrxwPI1iI
+	 OcBl9xQRxMyu0Uhg9s0wdNkMUs4m1DUt86mJQha33o8dw7ObCWQ2JIvVs0TxylVBisDCr
+	 oedC0YjHx2ClecHsoFFJaoD5GFhsHJWwQ8ER3kfCaxFp1bCTzYmcFNHa+i7cBQMpcsqEE
+	 0UdgIX4ZYi0wxVkbRcPpFaNOG1D1xs2ExaBZv7nxXK8yic+FsFwStaIaSNwPtRyMLqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dfb.sh;
-	spf=pass smtp.mailfrom=dfb.sh;
-	dkim=pass header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=dkGYE3PV;
-	arc=none smtp.remote-ip=54.37.83.207
-Received: from frkn.dfb.sh (frkn.dfb.sh [54.37.83.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="te2rN/EU";
+	arc=none smtp.remote-ip=74.125.82.43
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E07E606A323;
-	Tue, 10 Nov 2026 15:38:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E07E606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dfb.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dfb.sh
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389FA60A2600
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 15:40:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 389FA60A2600
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=dkGYE3PV
-DKIM-Signature: v=1; a=rsa-sha256; s=frkn; d=dfb.sh; c=relaxed/relaxed; r=y;
-	h=To:Message-Id:Subject:Date:From; t=1794325108; bh=a+b6plMgXSXLiuUlwRC4rMT
-	wgZnel2CSaDqDpaJt/Vg=; b=dkGYE3PVuh9Glbed+E1/a2dx1Pow0Yz6xZ3+ygBiwSvXrIWLYg
-	kNAy7uZhQXVS1F1PXOt43Fk7/tuLkpNvjq/DFI4PyI5vg0nLGkot7YgZr9aQ9uLfjbaEF8h2j8I
-	XJc/OK4PjIJbh8dM44ENH38GdGsOiHxT+o06N285xTLTP/ruNAJyJRGg+kYn++RVGPVBA4bNJ3N
-	YbadWyBMeKoLqZvYrDk312y3R5nsK/IkfjOJTbx9gE32rtLRSlaCjyp5aX6UN3a72I6mWeR9Nz1
-	VE9jkCeRQdZicVssCpspV4n3gw5Q8x5ukhzjqUIJ6YpAEXhZTSLCaJZqezt4aLOjp6Q==;
-From: Vladimir Petrzhikovskii <vladimir@dfb.sh>
-Date: Tue, 10 Nov 2026 16:38:27 +0100
-Subject: [PATCH net v2] virtio_net: check RX buffer length before DMA sync
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=te2rN/EU
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1b1ce85287aso2275990c88.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:40:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794325257; x=1794930057; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pEh2q+SQxGTFTicWzoJ7e3G2PCnq6llm/Gr90hwdzVM=;
+        b=te2rN/EU2GdvcDM/OlJqGNZZdgxT8FjRp7O9Y9FDlBc3zGieP19AFAFhffFfG+WQiK
+         94ptcHN25f3CHEpmj+6oECHy2TsAWF09+eCVGw8KIno53XOqN5gZzJK8NebdkbAERiis
+         zpo014YhQtUE/DcTL6YBjJKoxfD9bZDBhJ3LT/OpCBR8kWkGa03WO2h8tZizkTm1ExNh
+         7HaSlBoCe0iA0pCUdkVKmEY7rmLXWItDAASHQad4SSyOGKbHN7Q0gyp3i93r2npjpi2y
+         P1PwLhNLGa1K9cFukbX/nchwWaoytY2NcaV4XwCvDWdhk5H057O2Q7bdj4dNCJDMmg3V
+         fvRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794325257; x=1794930057;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pEh2q+SQxGTFTicWzoJ7e3G2PCnq6llm/Gr90hwdzVM=;
+        b=GwKQ+EXqPYohJhJinPt92yQDq25sBeFZlgFciOsGz9I4QIMuUL+3S6D418A1e76TN0
+         x+G5NWsbYLGxB5IkHCmPHiuhDGSnXNDMWh96kmcNQ+JMGnTs527yeFX+t193UoDYTKPM
+         wD7BQr+a6NFbl0GGPWSFMiYlWsaK1AUG4/XO0c0BpWCZzqAIWGuO9fs3bGoArnTq/xYB
+         Z4qhwEc3Ixhlc9LXygYx4ULEjmQEX3CUVclqNJouv1NdoXEN/oTacoeiQNbVZ4qkp2Tb
+         R1AsZyKBfOn38g9+x31FefllPBKZ12hBK3p9juVXvyrJYsrVUEOWoFP404UMeS5GGRnV
+         DUZg==
+X-Forwarded-Encrypted: i=1; AL+hErFaNqtNnDNwS5IPpSE1w9H8UCQhdi+C1v8e7+A0peW/u/AHDlvkizW5oJp/ePCjM/KWj1ncVmE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/yJfzcmJK33Pt8IN318DSBHWsxTUlbWfwCkPR+bPxMh+PxAzu1
+	nA90EhADniqECXkAWXw66x460roTthtHPTYapdhyuxf3U8ayAeHIkqg6
+X-Gm-Gg: AYBFou3BRwvmytub4MDH/wgHNWsFoJ3bVSP9fSH1LO4znTLYWFid7i/G7FguoG+3O4R
+	3DEmxRueho4W+KWHHWoQAUatWBqAZZ6resStA27M3Ik2xIinU1GoceYwC5bUhpvR46vkAfijTgq
+	rpT5/VVaOBom7QEIbpefA6wxQOj5kQKqGorF9Vdttcpi6L5cgfeYF5+9GYh5BA00E5S6WGJQluO
+	B9QiqEm37KqgXucE0VBZVWa5qHunuYUu4dlyn0rYQk8LbxlamtXzhu5DJ+Yc6xBaWbsjI792CA/
+	kz+IgLslyD/9B2TkLf60rp9ziY1/d/9O0Mp2ZaAtxk/iozoOTUEfMSAjuALbo2rlVr+SDg99ZdG
+	SWfZVnLsTmFyy0RThgxy5+s/5nRIbaj75NgNCFD1YIxIwcQbd8JknXBPw4wlmOz7HM4t30UNO3J
+	yyOSUP+WMUmJ3XR9AnyjcH6RA6Yimb1rmU9IHjT4u3JitIj4dl54wkBBXvu8yngqez59FntROfQ
+	2u4QxxLaVGDZApFTEtjmBu9P/DZkB58jN+jLf1EdMdc0uO0RjfD9/hVH/wGxvYIebgyTSlW1UKU
+	NiAs1L9RqMNWwbcpIMeqfgfdCaYUqVniazUlIN/COWkS8uMsusr8/XqWFP3mpQs+BuYOcKd4D57
+	fBm8MKcphun79YToBoF95EV/UfAHCUi27Cmu23T0sFb8VF2TYvawkwkWbW1YejJUxyo6uK9wk60
+	jIT3q4BjrGH6mGW6BUw8+WWc9y00AVQgbqUoiQXN0tOw==
+X-Received: by 2002:a05:7023:a4c:b0:1b2:60ab:1e9a with SMTP id a92af1059eb24-1b3b605b765mr3487347c88.10.1794325257070;
+        Tue, 10 Nov 2026 07:40:57 -0800 (PST)
+Received: from kapoor.iiserb.ac.in ([203.18.51.239])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b72ce0sm8746958c88.18.2026.11.10.07.40.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 07:40:56 -0800 (PST)
+From: Arnav Kapoor <kapoorarnav43@gmail.com>
+To: Ronak Doshi <ronak.doshi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arnav Kapoor <kapoorarnav43@gmail.com>,
+	syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+Subject: [PATCH net-next v2] vmxnet3: stop DMA mapping the adapter structure
+Date: Tue, 10 Nov 2026 21:10:29 +0530
+Message-ID: <20261110154048.143227-1-kapoorarnav43@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,238 +105,121 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-b4-virtionet-rxlen-v2-1-6ec5aa0edf9f@dfb.sh>
-X-B4-Tracking: v=1; b=H4sIAHI682oC/32OQQ6CMBBFr0JmbZUCCrjyHoZFW6Z2jBbT1gZDu
- Lst7l3+P29e/gIeHaGHc7GAw0ieJptCtStAGWFvyGhMGaqyOnFedkw2LJILCcPA3PxAy4SWuh7
- 7HutOQnp8OdQ0b9IrJAyGX+nf8o4qZF3GpPDIpBNWmVwl8PAUZPPJkA+T+2yrIt88/wZEzjgry
- 7ZTRyFb5M1l1HLvDQzrun4BgE2meuMAAAA=
-X-Change-ID: 20261108-b4-virtionet-rxlen-afbf3d99e38b
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vishwanath Seshagiri <vishs@meta.com>, virtualization@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Nikolai Kalinin <nikolai@kalinidze.me>, 
- Vladimir Petrzhikovskii <vladimir@dfb.sh>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-An RX queue that uses the DMA API (rq->use_page_pool_dma, for example
-with VIRTIO_F_ACCESS_PLATFORM) syncs each received buffer with
-page_pool_dma_sync_for_cpu() using the length the device wrote to the
-used ring, and checks that length against the posted buffer only after
-the sync.
+vmxnet3_probe_device() maps the whole struct vmxnet3_adapter with
+dma_map_single() and passes its address to the device as the "driver
+data" (misc.ddPA/ddLen) in the shared area.
 
-With SWIOTLB bouncing (swiotlb=force, or a confidential-computing
-guest), the sync copies from the shared bounce buffer into the guest's
-private page, so an oversized length also copies the bytes the device
-wrote past the posted buffer over the neighbouring page pool fragments.
-The later check drops the packet, but the copy has already happened. A
-malicious device, such as a host the confidential guest does not
-trust, can overwrite guest kernel memory next to an RX buffer with
-bytes it chooses, which is enough to take an unprivileged guest
-process to root.
+The adapter is the netdev private area, and alloc_netdev_mqs() allocates
+it with kvzalloc(). struct vmxnet3_adapter embeds 32 tx and 32 rx queues
+and is well above PAGE_SIZE, so when a high-order allocation fails the
+adapter ends up in vmalloc memory. dma_map_single() then warns
+("rejecting DMA map of vmalloc memory") and returns DMA_MAPPING_ERROR,
+and probe fails with -EFAULT. syzbot hit this with page allocation
+fault injection.
 
-Check the length before the sync in the per-fragment loops.
-receive_buf() has to sync the header before the length check, because
-the mergeable error path reads num_buffers from it, so limit that sync
-to the posted length. A device that reports correct lengths sees no
-change.
+The driver data is only informational. The per-queue descriptors in
+this driver already report no driver data with ddPA = ~0ULL and
+ddLen = 0, and other vmxnet3 drivers, such as the one in DPDK, never set
+misc.ddPA at all.
 
-The driver has synced with the device's length since
-commit 295525e29a5b ("virtio_net: merge dma operations when filling
-mergeable buffers"), at first in virtnet_rq_unmap(). Commit 24fbd3967f3f
-("virtio_net: add page_pool support for buffer allocation") moved the
-sync to the page_pool call sites that this patch changes, so the patch
-applies to v7.1 and later. Older kernels need a separate backport that
-limits the sync in virtnet_rq_unmap().
+Drop the mapping and report no driver data in the shared area as well.
+This also removes a probe failure path and the adapter_pa field.
 
-Found by an LLM code review agent auditing users of the DMA API; the
-fix and this changelog were also written with an LLM coding assistant
-and reviewed by us. Reproduced in QEMU with swiotlb=force and
-iommu_platform=on, a test-only device change that reports a used length
-64 bytes past the posted buffer and writes a marker there, and a guest
-kprobe module that reads the buffer after the sync: without this patch
-the marker reaches the guest page for small and mergeable buffers; with
-it the packets are dropped and counted in rx_length_errors. The
-virtio_net selftest basic_features.sh passes with and without mergeable
-buffers.
-
-Fixes: 295525e29a5b ("virtio_net: merge dma operations when filling mergeable buffers")
-Cc: stable@vger.kernel.org
-Co-developed-by: Nikolai Kalinin <nikolai@kalinidze.me>
-Signed-off-by: Nikolai Kalinin <nikolai@kalinidze.me>
-Signed-off-by: Vladimir Petrzhikovskii <vladimir@dfb.sh>
----
-The QEMU change and the guest probe are available on request.
-
-We also have a working exploit for an unmodified v7.3-rc7 guest with
-KASLR and IBT enabled: a malicious backend takes an unprivileged
-process in the guest to root in the guest's initial user namespace.
-We can share it privately with the maintainers on request.
-
-An alternative is one sync helper bounded by the posted length for all
-four call sites; we kept the per-site change to keep the net and
-stable backport small.
+Reported-by: syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8eed6f83440ecdaf4be6
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
 ---
 Changes in v2:
-- Fixes: now names 295525e29a5b, which introduced the sync with the
-  device's length; 24fbd3967f3f only moved it (Sashiko review).
-- Say in the changelog that kernels before v7.1 need a separate
-  backport.
-- No code change.
-- Link to v1: https://patch.msgid.link/20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14@dfb.sh
----
- drivers/net/virtio_net.c | 63 +++++++++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 20 deletions(-)
+- Retarget to net-next and drop the Fixes tag (Jakub)
+- Drop the "never synced" part of the commit message (Jakub)
+- Add Simon's Reviewed-by
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index dd2c41ef6fbe..5aee4351dc4b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -792,19 +792,32 @@ static unsigned int mergeable_ctx_to_truesize(void *mrg_ctx)
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
+v1: https://lore.kernel.org/all/20261021221221.502428-1-kapoorarnav43@gmail.com/
+
+v1 was tested in QEMU (q35, KVM) with KASAN, CONFIG_DMA_API_DEBUG and
+fail_page_alloc: the syzbot reproducer no longer warns, and the emulated
+vmxnet3 probes, gets link and pings, also with order>=4 allocations
+failing. The code is unchanged since v1. Not tested on ESXi.
+
+ drivers/net/vmxnet3/vmxnet3_drv.c | 19 +++----------------
+ drivers/net/vmxnet3/vmxnet3_int.h |  1 -
+ 2 files changed, 3 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index f8df83f9965d..3a9fb5b63e9d 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -2921,8 +2921,8 @@ vmxnet3_setup_driver_shared(struct vmxnet3_adapter *adapter)
+ 	devRead->misc.driverInfo.vmxnet3RevSpt = cpu_to_le32(1);
+ 	devRead->misc.driverInfo.uptVerSpt = cpu_to_le32(1);
+ 
+-	devRead->misc.ddPA = cpu_to_le64(adapter->adapter_pa);
+-	devRead->misc.ddLen = cpu_to_le32(sizeof(struct vmxnet3_adapter));
++	devRead->misc.ddPA = cpu_to_le64(~0ULL);
++	devRead->misc.ddLen = cpu_to_le32(0);
+ 
+ 	/* set up feature flags */
+ 	if (adapter->netdev->features & NETIF_F_RXCSUM)
+@@ -4044,14 +4044,6 @@ vmxnet3_probe_device(struct pci_dev *pdev,
+ 	}
+ 
+ 	spin_lock_init(&adapter->cmd_lock);
+-	adapter->adapter_pa = dma_map_single(&adapter->pdev->dev, adapter,
+-					     sizeof(struct vmxnet3_adapter),
+-					     DMA_TO_DEVICE);
+-	if (dma_mapping_error(&adapter->pdev->dev, adapter->adapter_pa)) {
+-		dev_err(&pdev->dev, "Failed to map dma\n");
+-		err = -EFAULT;
+-		goto err_set_mask;
+-	}
+ 	adapter->shared = dma_alloc_coherent(
+ 				&adapter->pdev->dev,
+ 				sizeof(struct Vmxnet3_DriverShared),
+@@ -4059,7 +4051,7 @@ vmxnet3_probe_device(struct pci_dev *pdev,
+ 	if (!adapter->shared) {
+ 		dev_err(&pdev->dev, "Failed to allocate memory\n");
+ 		err = -ENOMEM;
+-		goto err_alloc_shared;
++		goto err_set_mask;
+ 	}
+ 
+ 	err = vmxnet3_alloc_pci_resources(adapter);
+@@ -4312,9 +4304,6 @@ vmxnet3_probe_device(struct pci_dev *pdev,
+ 	dma_free_coherent(&adapter->pdev->dev,
+ 			  sizeof(struct Vmxnet3_DriverShared),
+ 			  adapter->shared, adapter->shared_pa);
+-err_alloc_shared:
+-	dma_unmap_single(&adapter->pdev->dev, adapter->adapter_pa,
+-			 sizeof(struct vmxnet3_adapter), DMA_TO_DEVICE);
+ err_set_mask:
+ 	free_netdev(netdev);
+ 	return err;
+@@ -4381,8 +4370,6 @@ vmxnet3_remove_device(struct pci_dev *pdev)
+ 	dma_free_coherent(&adapter->pdev->dev,
+ 			  sizeof(struct Vmxnet3_DriverShared),
+ 			  adapter->shared, adapter->shared_pa);
+-	dma_unmap_single(&adapter->pdev->dev, adapter->adapter_pa,
+-			 sizeof(struct vmxnet3_adapter), DMA_TO_DEVICE);
+ 	free_netdev(netdev);
  }
  
--static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
--			       unsigned int len)
-+/* Length of the mergeable buffer that add_recvbuf_mergeable() posted. */
-+static unsigned int mergeable_ctx_to_buflen(void *mrg_ctx)
- {
--	unsigned int headroom, tailroom, room, truesize;
-+	unsigned int headroom, tailroom, room;
+diff --git a/drivers/net/vmxnet3/vmxnet3_int.h b/drivers/net/vmxnet3/vmxnet3_int.h
+index 9f24d66dbb27..2c2a446a8e4a 100644
+--- a/drivers/net/vmxnet3/vmxnet3_int.h
++++ b/drivers/net/vmxnet3/vmxnet3_int.h
+@@ -438,7 +438,6 @@ struct vmxnet3_adapter {
+ 	struct Vmxnet3_CoalesceScheme *coal_conf;
+ 	bool   default_coal_mode;
  
--	truesize = mergeable_ctx_to_truesize(mrg_ctx);
- 	headroom = mergeable_ctx_to_headroom(mrg_ctx);
- 	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
- 	room = SKB_DATA_ALIGN(headroom + tailroom);
- 
--	if (len > truesize - room) {
--		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
--			 dev->name, len, (unsigned long)(truesize - room));
-+	return mergeable_ctx_to_truesize(mrg_ctx) - room;
-+}
-+
-+/* Length of the small buffer that add_recvbuf_small() posts. */
-+static unsigned int small_buflen(const struct virtnet_info *vi)
-+{
-+	return vi->hdr_len + GOOD_PACKET_LEN;
-+}
-+
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int buflen = mergeable_ctx_to_buflen(mrg_ctx);
-+
-+	if (len > buflen) {
-+		pr_debug("%s: rx error: len %u exceeds buffer length %u\n",
-+			 dev->name, len, buflen);
- 		DEV_STATS_INC(dev, rx_length_errors);
- 		return -1;
- 	}
-@@ -1797,15 +1810,15 @@ static struct page *xdp_linearize_page(struct net_device *dev,
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
--		if (rq->use_page_pool_dma)
--			page_pool_dma_sync_for_cpu(rq->page_pool, p,
--						   off, buflen);
--
- 		if (check_mergeable_len(dev, ctx, buflen)) {
- 			page_pool_put_page(rq->page_pool, p, -1, true);
- 			goto err_buf;
- 		}
- 
-+		if (rq->use_page_pool_dma)
-+			page_pool_dma_sync_for_cpu(rq->page_pool, p,
-+						   off, buflen);
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -2165,15 +2178,15 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
- 		page = virt_to_head_page(buf);
- 		offset = buf - page_address(page);
- 
--		if (rq->use_page_pool_dma)
--			page_pool_dma_sync_for_cpu(rq->page_pool, page,
--						   offset, len);
--
- 		if (check_mergeable_len(dev, ctx, len)) {
- 			page_pool_put_page(rq->page_pool, page, -1, true);
- 			goto err;
- 		}
- 
-+		if (rq->use_page_pool_dma)
-+			page_pool_dma_sync_for_cpu(rq->page_pool, page,
-+						   offset, len);
-+
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		xdp_frags_truesz += truesize;
- 
-@@ -2446,15 +2459,15 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		u64_stats_add(&stats->bytes, len);
- 		page = virt_to_head_page(buf);
- 
-+		if (check_mergeable_len(dev, ctx, len))
-+			goto err_skb;
-+
- 		if (rq->use_page_pool_dma) {
- 			offset = buf - page_address(page);
- 			page_pool_dma_sync_for_cpu(rq->page_pool, page,
- 						   offset, len);
- 		}
- 
--		if (check_mergeable_len(dev, ctx, len))
--			goto err_skb;
--
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
- 						    buf, len, truesize);
-@@ -2574,12 +2587,22 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 
- 	/* Sync the memory before touching anything through buf,
- 	 * unless virtio core did it already.
-+	 *
-+	 * len comes from the device and is checked against the buffer
-+	 * only later, so never sync past the buffer posted to the device.
-+	 * The sync still covers the header, which receive_buf() and the
-+	 * mergeable drop path read. Big buffers never come from the page
-+	 * pool, so a buffer here is either mergeable or small.
- 	 */
- 	if (rq->use_page_pool_dma) {
- 		struct page *page = virt_to_head_page(buf);
- 		int offset = buf - page_address(page);
-+		unsigned int buflen = vi->mergeable_rx_bufs ?
-+				      mergeable_ctx_to_buflen(ctx) :
-+				      small_buflen(vi);
- 
--		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
-+		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset,
-+					   min(len, buflen));
- 	}
- 
- 	/* About the flags below:
-@@ -2655,7 +2678,7 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
- 	buf += VIRTNET_RX_PAD + xdp_headroom;
- 
- 	ctx = mergeable_len_to_ctx(alloc_len, xdp_headroom);
--	err = virtnet_rq_submit(rq, buf, vi->hdr_len + GOOD_PACKET_LEN, ctx, gfp);
-+	err = virtnet_rq_submit(rq, buf, small_buflen(vi), ctx, gfp);
- 
- 	if (err < 0)
- 		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+-	dma_addr_t adapter_pa;
+ 	dma_addr_t pm_conf_pa;
+ 	dma_addr_t rss_conf_pa;
+ 	bool   queuesExtEnabled;
 
----
-base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
-change-id: 20261108-b4-virtionet-rxlen-afbf3d99e38b
-
-Best regards,
---  
-Vladimir Petrzhikovskii <vladimir@dfb.sh>
+base-commit: 6db9448a443afde26231aaed7b112ed17b33f468
+-- 
+2.53.0
 
