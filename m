@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794274728;
-	b=XXfderq2YEcfJljlfuEJZIiL3Z45qBNMeMiLLyUmBB70xd/a7Ilk8gC/b/kVqW47wfKo
-	 fKvgukD7C7FUcnlC91wc6kNfGwsJSVP8XFWOyDFbb0NJNKml/3fdKiFUBtC0eIyC6NiZA
-	 htRBdfHMR0X4Fr3ZZw2NpBnZjfN7NbZlgqsF7sxn0DrbCyUVjAfMf6AfDMuv2VFG4SZ9Z
-	 iKsMtvec+aLpHSCJ3MVSbj/rMQTBEqTdxJTYVWqQFM3p/0Ait5hlqXTBu7GLsEcPBu2Pf
-	 Bb/paAIq3T264e9j8ouoEI/H58WYvFygZEYXPhuhhE02/++LGYnx9bTjuJ60b4BKcOQ==
+	t=1794274719;
+	b=n8Ys/UXHK5xZBBX7emeqlPV/NDWOQeThN8ugUfYJCCHqW0ITvl5XoARRzyAGf4SxsFAS
+	 nYbEun9bRm3kGQXJqh18j8mai17A6bQVT1yL8PcIY71KZJNkwyUI3KeiKbfQ5F4BhJw41
+	 1dcoEauW2l5x31me3PNw4tLMEI3a1vG+IMRnwkljI8JW+IJxr96KVy2KIUomSleYhvXR0
+	 V/9Dy3uj+hGOw5haFe0g4f4KAEPzV6m6ur62+H2I/KH+7lsvqm8vK7B9TWvwi7nBwopRG
+	 hghXh82z3kJ398Nx3Uimr3bkSuY0l0jKkr1s8MGS/5Z6G8Ndj/5YfcVhFxeOS++vW1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794274728;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794274719;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=yHdaa5SHknrKYMQ9LgMfKhfAdpZAC1oCwJJhw6z/bsM=;
-	b=MTeSuXR9A5x83iUDmVxWuExCGhl/bKM1jHYUwqiW933A9QWh7rZfjLGWtvMHcqkIaSb+
-	 E9ysEpHO7kKPEK5tVAZRFPRLypKYfd+nKgsthuz8PsKgT5AoGy+MKasBvFF2PNH0kzUtk
-	 gZvxFi9J6aTO/PPdK1MoXsTSZMMKXwlpo2FYQnQR7LD0NKW3k6T6/UhG1YNbS5ql++MkK
-	 P4D6kjvWKw8icolvgxdXd6pgFZWCN7NhSZFbc9MN0UBvf3BEHVFbVzJarusSgoGG9IzSU
-	 4+X59UXlYZyVUZsNin/RZ6wTAeTPVPGG5w+ZE0BCSQOS0D+KBQ4KcC6o96gFZ1Ato1A==
+	bh=fkEE9d9MsSVbLsZ0o5u4ofj8b41Zhq4TGWUC/Rs9SMM=;
+	b=2pZfBasEyMTRnKppkqlNx7UFjTT6wL77ox7b/HRe/ztBsRDRPOfdZbMoasX54aqzJQ0i
+	 msPmhVNLviGkdyHroNiPf42TIlBMvrMG294MSuHed0rAYA00MeFBV8ITCdlYSSbanMSpg
+	 +5emlQgvs8ka/jX3ls2A2SvhfJfNkHzq8PpA2deTX2peg61l8Wb4jQsndQyynn4tSCqKY
+	 fVEvmRIJFr1Y6G1r8CbciLOmYtZprq+ib4DA99zspC2GuJwhMj5G8Ov7eroTetOUM7GWU
+	 ZSEqlncNlcFSDNs2ntY48mt6TSbkivn4vOD0HO2uAHaAVhV9OW4ysAxzAGuzYVpnmGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+jqwou0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mS9YQLpS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A795E606B511;
-	Tue, 10 Nov 2026 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9AB60A6F71;
+	Tue, 10 Nov 2026 01:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+jqwou0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BBB1F008A1;
-	Tue, 10 Nov 2026 01:38:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mS9YQLpS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B091F008A7;
+	Tue, 10 Nov 2026 01:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794274727;
-	bh=yHdaa5SHknrKYMQ9LgMfKhfAdpZAC1oCwJJhw6z/bsM=;
+	s=k20260515; t=1794274718;
+	bh=fkEE9d9MsSVbLsZ0o5u4ofj8b41Zhq4TGWUC/Rs9SMM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V+jqwou0lnEXxpN8Be9ZUm88IoXRkxRnb8OwjYp1kZzTLf5EmGphPXb/93efMuLLi
-	 7jter6X5rZz3RM6R6t5BakyDXDxRtUxkhZJ7BzZpfaQPXOHDTxJbQO+S3nk38nHuFb
-	 K3dhfaBARB7py3UOOJLuvpcTlm2TgyQU1jDg2YEerlq7nUm1vEgflKp4arDBQoMBu2
-	 fC8Sj7PDzP5R3/XSADmmzmF2YpErtjVk0mtJ9SBGGXOfvEhwMKxVMtXtXV14ilwbaT
-	 MnJKACiM+M1Yrm7NX5TBL7lkj5vwZ/SPdoBPgw6uQXgwyapMqu+nN+VR6qt4dcyDS+
-	 7JmtlCk/FE/Zw==
-Subject: Re: [PATCH net-next v20 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
+	b=mS9YQLpSzMzyWIX9IoQLtKBbJ0yNb4UWk11IbvFgMRP8mSnSqDN5JW4X55zR3cKHX
+	 lDLbt3AJ/QnMoP/EHhkr5qZlmvTgnq/p3cdURulkjHdAJyLhW4k+j0oEhR01FbgQWG
+	 IkOnE22pa4nKdA3Gux3vZe/zlNXKiS9KCH9+EMAWTx9lsiPDEVlO3Agq0cTjCxWe9h
+	 75qXtXUVqQJ/vKaZsQ7eZsnLwKqLmJoN33J0x/BMhNhmjwRq1AmVwX92hanH5u0Mb5
+	 laimHkjHvAxM/UKLH9Rg+k0SgVXFpNcte4SknLnhSIMCqq22G+5Ekptxke4TPzhikJ
+	 RY/jnQJ04weeg==
+Subject: Re: [PATCH net-next v20 07/13] ax88179_178a: Add VLAN offload support
+ for AX88179A
 From: netdev-bot+sashiko@kernel.org
 To: mail@birger-koblitz.de
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -50,10 +50,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
  neuromoments@gmail.com, beganovic.emir@gmail.com
-Date: Tue, 10 Nov 2026 01:38:45 +0000
-Message-ID: <179427472591.994134.4882634953420736856@kernel.org>
-In-Reply-To: <20261106-ax88179a-v20-13-37b5a1189983@birger-koblitz.de>
-References: <20261106-ax88179a-v20-13-37b5a1189983@birger-koblitz.de>
+Date: Tue, 10 Nov 2026 01:38:36 +0000
+Message-ID: <179427471692.994134.3914237997430196941@kernel.org>
+In-Reply-To: <20261106-ax88179a-v20-7-37b5a1189983@birger-koblitz.de>
+References: <20261106-ax88179a-v20-7-37b5a1189983@birger-koblitz.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,7 +70,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 5
+Critical: 0 · High: 0 · Medium: 5 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,275 +78,292 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new AX88772D/AX88179A/AX88279 PHY support is added only to
-  the C driver, ax88796b.c.
-- [Medium] asix_ax88279_read_status() returns early on `if
-  (!phydev->link) return 0;` before it reaches…
-- [Low] Series ordering breaks bisection.
-- [Low] The commit message only says the three PHYs exist.
-- [Low] asix_ax88772D_get_features() sets phydev->c45_ids.mmds_present |=
-  MDIO_DEVS_PMAPMD | MDIO_DEVS_AN with the comment "to allow reading…
-- [Low] The AX88796B_PHY Kconfig help still says it "Currently supports
-  the Asix Electronics PHY found in the X-Surf 100 AX88796B package."…
-- [Low] The three new PHY IDs are synthetic.
+- [Medium] ax88179a_set_features() calls ax88179_set_features() first.
+- [Medium] The patch makes NETIF_F_HW_VLAN_CTAG_RX user-toggleable and
+  off by default: it is added to hw_features only…
+- [Medium] ax88179a_reset() rebuilds AX88179A_VLAN_ID_CONTROL from
+  dev->features: VFE if CTAG_FILTER is set, VSO if CTAG_RX is set…
+- [Medium] When CTAG_FILTER is enabled, ax88179a_set_features() clears
+  the VLAN table with 256 iterations of…
+- [Medium] The new VLAN code treats any non-negative return from
+  ax88179_read_cmd() as success.
+- [Low] The last line of the commit message, "Error-checking fixes
+  Suggested-by: Jianhui Xu <neuromoments@gmail.com>", is not a valid…
+- [Low] The patch turns on NETIF_F_HW_VLAN_CTAG_TX by default and makes
+  it toggleable (`hw_features |= features`, ax88179a_devices.c:768-772).
 
 --
 
-ax88796b: Add support for AX88772D, AX88179A and AX88279
+ax88179_178a: Add VLAN offload support for AX88179A
 
-This patch adds PHY driver entries for the AX88772D (100M), AX88179A (1G)
-and AX88279 (2.5G) PHYs found in ASIX USB-Ethernet controllers. The
-AX88279 gets its own get_features, config_aneg, read_status and
-config_init callbacks, and the AX88772D gets a get_features fixup.
+This adds VLAN offload support for the AX88179A-based chips by wiring up
+ndo_set_features, ndo_vlan_rx_add_vid and ndo_vlan_rx_kill_vid. It enables
+NETIF_F_HW_VLAN_CTAG_TX by default. It also exposes NETIF_F_HW_VLAN_CTAG_RX
+and NETIF_F_HW_VLAN_CTAG_FILTER as toggleable hw_features.
 
-> ax88796b: Add support for AX88772D, AX88179A and AX88279
->
-> The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
-> 2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
-> same name.
+> Error-checking fixes Suggested-by: Jianhui Xu <neuromoments@gmail.com>
 
 [Severity: Low]
-Could the commit message describe the restrictions and quirks this patch
-adds? It only says the three PHYs exist, but the patch also:
+This isn't a bug, but is this meant to be a Suggested-by: trailer? With
+"Error-checking fixes" in front of it, git interpret-trailers, b4 and
+checkpatch won't parse it as a tag. A per-version change note would
+normally go below the '---' line.
 
-  - refuses AUTONEG_DISABLE with -EOPNOTSUPP in asix_ax88279_config_aneg()
-    and sets PHY_BROKEN_FORCED, so "ethtool -s <if> autoneg off" fails
-  - advertises 2.5G through vendor bit 0x1000 in MII_ADVERTISE
-  - infers the link partner's 2.5G ability in asix_ax88279_read_status()
-    because MDIO_AN_10GBT_STAT_LP2_5G is broken
-  - always reports DUPLEX_FULL and switches phydev->interface between
-    SGMII and 2500BASE-X
-  - removes 100baseT-Half from the AX88279 and 1000baseT/X from the
-    AX88772D
+The note also claims more error checking than the code has. The
+256-iteration table clear loop in ax88179a_set_features() doesn't check
+any of its ax88179_write_cmd(), ax88179_write_u16() or ax88179_write_u8()
+return values (see the comment on that loop below).
 
-This isn't a bug, but the subject is missing the usual "net: phy:"
-prefix.
-
-> diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-> index f20ddf6491499..0df44e0e236ab 100644
-> --- a/drivers/net/phy/ax88796b.c
-> +++ b/drivers/net/phy/ax88796b.c
-> @@ -13,6 +13,19 @@
->  #define PHY_ID_ASIX_AX88772A		0x003b1861
->  #define PHY_ID_ASIX_AX88772C		0x003b1881
->  #define PHY_ID_ASIX_AX88796B		0x003b1841
-> +#define PHY_ID_ASIX_AX88772D		0x003b772d
-> +#define PHY_ID_ASIX_AX88179A		0x003b179a
-> +#define PHY_ID_ASIX_AX88279		0x003b2790
-
-[Severity: Low]
-Are these IDs actually inside the ASIX identifier block? The MAC side
-fakes them in ax88179_mdiobus_read() in drivers/net/usb/ax88179a_devices.c
-(added earlier in the series), with this comment:
-
-	/* When reading PHYSID, return unused PHY-IDs from the ASIX vendor range */
-
-In the C22 identifier layout, bits [31:10] carry the OUI. The existing
-ASIX IDs 0x003b1861, 0x003b1881 and 0x003b1841 all give phy_id >> 10 ==
-0xec6, which means PHYSID2 values in the 0x1800-0x1bff range.
-
-The new IDs give:
-
-  0x003b772d >> 10 == 0xedd
-  0x003b179a >> 10 == 0xec5
-  0x003b2790 >> 10 == 0xec9
-
-so all three fall outside that block.
-
-asix_tbl is a MODULE_DEVICE_TABLE. A PHY from another vendor that reports
-one of these exact IDs would autoload this module and bind to callbacks
-that assume MII_ADVERTISE bit 12, vendor register 0x1d and full duplex
-only.
-
-Would model values inside 0x18xx-0x1bxx be a better choice?
+> diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
+> index 272e923656832..4207d2cc2b865 100644
+> --- a/drivers/net/usb/ax88179a_devices.c
+> +++ b/drivers/net/usb/ax88179a_devices.c
+> @@ -258,6 +258,88 @@ static const struct ethtool_ops ax88179a_ethtool_ops = {
 
 [ ... ]
 
-> @@ -83,6 +96,107 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int asix_ax88279_read_status(struct phy_device *phydev)
+> +static int ax88179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vid)
 > +{
-> +	int ret, val;
+> +	struct usbnet *dev = netdev_priv(net);
+> +	u8 vlan_ctrl;
+> +	int ret = 0;
+> +	u16 reg16;
+> +	u8 reg8;
 > +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!phydev->link)
-> +		return 0;
-
-[Severity: Medium]
-Does this early return leave a stale 2500baseT_Full bit in
-phydev->lp_advertising after a 2.5G link goes down?
-
-The bit is only cleared further down in this function:
-
-	linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->lp_advertising);
-
-On link down with autoneg enabled, genphy_read_status()->genphy_read_lpa()
-only clears the C22 derived bits:
-
-	if (!phydev->autoneg_complete) {
-		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising,
-						0);
-		mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-		return 0;
-	}
-
-Neither phy_check_link_status() nor phy_link_down() clears lp_advertising.
-
-phy_ethtool_ksettings_get() then copies the stale bit to userspace, so
-ethtool would show the partner advertising 2500baseT/Full while the link
-is down.
-
-On the next link-up, phy_resolve_aneg_linkmode() also runs with the stale
-bit set, before the AX_CTRL_STATUS read overwrites phydev->speed.
-
-Would clearing the bit before the !phydev->link return fix this?
-
-[ ... ]
-
-> @@ -94,6 +208,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
->  	}
->  }
->  
-> +static int asix_ax88772D_get_features(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +
-> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-> +
-> +	ret = genphy_read_abilities(phydev);
+> +	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
 > +	if (ret < 0)
 > +		return ret;
-> +
-> +	/* AX88772D does not support (possibly) reported 1000baseT modes */
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT, phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, phydev->supported);
-
-[Severity: Low]
-Does the mmds_present assignment do anything here? genphy_read_abilities()
-only reads MII_BMSR and MII_ESTATUS and never looks at
-c45_ids.mmds_present.
-
-In drivers/net/phy, only genphy_c45_read_link(),
-genphy_c45_pma_read_abilities() and the phylink C45 MII emulation check
-mmds_present, and none of them run for this C22 PHY. The line and its
-comment look like they were copied from asix_ax88279_get_features().
-
-There is also an ordering question for EEE. genphy_read_abilities() ends
-with genphy_c45_read_eee_abilities()->genphy_c45_read_eee_cap1(), which
-masks supported_eee against supported:
-
-	linkmode_and(phydev->supported_eee, phydev->supported_eee,
-		     phydev->supported);
-
-At that point 1000baseT_Full can still be set in supported, and it is
-only cleared here afterwards.
-
-If ESTATUS reports 1000T and MDIO_PCS_EEE_ABLE reports 1000T EEE, can
-supported_eee keep 1000baseT_Full after it has been removed from
-supported?
-
-With the in-tree MAC, lpi_capabilities is 0 for the AX88772D, so phylink
-disables EEE and users don't see this today.
-
-[ ... ]
-
-> @@ -111,6 +244,35 @@ static struct phy_driver asix_driver[] = {
->  	.suspend	= genphy_suspend,
->  	.resume		= genphy_resume,
->  	.soft_reset	= asix_soft_reset,
-
-[ ... ]
-
-> +}, {
-> +	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
-> +	.name		= "Asix Electronics AX88279",
-> +	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
-> +	.get_features	= asix_ax88279_get_features,
-> +	.read_status	= asix_ax88279_read_status,
-> +	.config_aneg	= asix_ax88279_config_aneg,
-> +	.config_init	= asix_ax88279_config_init,
-
-[Severity: Low]
-Can a bisect stop on a commit where the AX88279 doesn't work? This patch
-is the last one in the series. The earlier patch "ax88179_178a: Add HW
-support for AX179A-based chips" already returns PHYSID1/2 of
-0x003b/0x2790 (and 0x179a/0x772d) from ax88179_mdiobus_read().
-
-That patch also sets up phylink for the AX88279 in
-ax88179a_phylink_setup() with only 2500BASEX and SGMII in
-supported_interfaces, and an initial interface of 2500BASEX.
-
-Between that patch and this one, nothing matches these IDs, so genphy
-binds. It fills supported with C22 10/100/1000 modes only and leaves
-possible_interfaces empty.
-
-phylink_validate_phy() then validates against 2500BASEX, because is_c45
-is false and it does not fall back to PHY_INTERFACE_MODE_NA. The only
-capability for 2500BASEX is 2500 full duplex, so no mode is left and the
-PHY fails to attach once ax88179 binds instead of cdc_ncm.
-
-The AX88179A and AX88772D also run on genphy without the quirks added
-here.
-
-Could this patch be moved ahead of the MAC patch that depends on it?
-
-[ ... ]
-
-> @@ -124,6 +286,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
->  	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
->  	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
->  	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
-> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
-> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
-> +	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
->  	{ }
->  };
+> +	vlan_ctrl = reg8;
 
 [Severity: Medium]
-What happens to these PHYs when CONFIG_AX88796B_RUST_PHY=y?
-drivers/net/phy/Makefile builds only one of the two drivers:
+Can vlan_ctrl end up holding uninitialized stack data here?
 
-ifdef CONFIG_AX88796B_RUST_PHY
-  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
-else
-  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
-endif
+__usbnet_read_cmd() only copies into the caller's buffer when the
+transfer returned a positive length:
 
-drivers/net/phy/ax88796b_rust.rs still registers only the old three:
+drivers/net/usb/usbnet.c:__usbnet_read_cmd() {
+    ...
+	if (err > 0 && err <= size) {
+		if (data)
+			memcpy(data, buf, err);
+    ...
+}
 
-    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
+For size == 1, ax88179_read_cmd() passes &reg8 straight through. A
+zero-length reply from the device returns 0. That passes the ret < 0
+check while reg8 is still uninitialized.
 
-USB_NET_AX88179 selects AX88796B_PHY so that this module provides the
-PHY driver for the new chips. With the Rust variant, genphy binds to
-0x003b2790, and the AX88279 fails phylink_validate_phy() against
-2500BASEX as described above.
+The value is then ORed with AX_VLAN_CONTROL_RD and AX_VLAN_CONTROL_WE and
+written back to AX88179A_VLAN_ID_CONTROL twice. That sends a stack byte
+to the device and programs arbitrary VFE/VSO bits.
 
-The AX88179A and AX88772D also lose the read_mmd/write_mmd hooks, and the
-AX88772D loses its feature fixup.
+This also doesn't match the rest of the patch.
+ax88179a_vlan_rx_kill_vid() zero-initializes reg8 and reg16, and
+ax88179a_reset() checks its reads with > 0.
 
-The AX88796B_RUST_PHY help text also still says "The features are
-equivalent", which is no longer the case.
+The same pattern applies to u8 tmp in ax88179a_set_features(). It is
+uninitialized on the VFE-disable branch and on the CTAG_RX branch. If the
+filter-enable loop ran first, tmp is left at 255, so a short read would
+write 0xff | AX_VLAN_CONTROL_VSO.
 
-Does the Rust driver need the same entries? Alternatively, could the
-Kconfig dependencies reflect that it doesn't cover these PHYs?
+Both add_vid and kill_vid read AX88179A_VLAN_ID_DATA0 with a 2-byte read.
+A short reply there leaves reg16 at 0, because ax88179_read_cmd() uses a
+zeroed bounce buffer. Wouldn't the write-back then clear the other 15
+VIDs in that 16-VID group?
+
+Should these checks treat anything shorter than a full-length read as an
+error?
+
+[ ... ]
+
+> +	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
+> +	if (ret < 0)
+> +		return ret;
+> +	reg16 |= (1 << (vid % 16));
+> +	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
+
+[Severity: Medium]
+The VID bitmap only lives in device SRAM here, and the driver keeps no
+software copy. What restores it after the device loses power?
+
+ax88179a_reset() rebuilds AX88179A_VLAN_ID_CONTROL from dev->features
+but doesn't touch the table:
+
+drivers/net/usb/ax88179a_devices.c:ax88179a_reset() {
+    ...
+	*tmp = 0;
+	if (dev->net->features & NETIF_F_HW_VLAN_CTAG_FILTER)
+		*tmp |= AX_VLAN_CONTROL_VFE;
+	if (dev->net->features & NETIF_F_HW_VLAN_CTAG_RX)
+		*tmp |= AX_VLAN_CONTROL_VSO;
+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, tmp);
+    ...
+}
+
+Later in this series, "ax88179_178a: Add Suspend/resume support for
+AX88179A/772D/279" wires .resume and .reset_resume to ax88179a_resume().
+That function power-cycles the PHY and calls ax88179a_reset(). The vlan
+core doesn't push existing VIDs to the driver again on open or resume.
+
+After a power-losing suspend or a reset_resume with rx-vlan-filter on,
+VFE would be set again on top of the power-on table contents.
+ax88179a_set_features() clears all 256 entries before enabling VFE, which
+suggests those power-on contents can't be trusted.
+
+Wouldn't traffic for the configured VLANs then be dropped until
+rx-vlan-filter is toggled?
+
+> @@ -517,6 +599,75 @@ static int ax88179a_mii_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
+>  	return phylink_mii_ioctl(data->phylink, rq, cmd);
+>  }
+>  
+> +static int ax88179a_set_features(struct net_device *net, netdev_features_t features)
+> +{
+> +	struct usbnet *dev = netdev_priv(net);
+> +	netdev_features_t changed;
+> +	int ret;
+> +	u8 tmp;
+> +
+> +	changed = net->features ^ features;
+> +
+> +	ret = ax88179_set_features(net, features);
+> +	if (ret)
+> +		return ret;
+
+[Severity: Medium]
+What happens to the checksum offload state if one of the VLAN register
+accesses below fails?
+
+By the time we get here, ax88179_set_features() has already XOR-toggled
+AX_TXCOE_CTL and AX_RXCOE_CTL in hardware and updated
+data->rx_checksum. It also always returns 0:
+
+drivers/net/usb/ax88179_lib.c:ax88179_set_features() {
+    ...
+	tmp ^= AX_TXCOE_TCP | AX_TXCOE_UDP;
+    ...
+}
+
+If the VLAN FILTER or CTAG_RX sequence then returns a negative error,
+__netdev_update_features() returns early. dev->features keeps its old
+value, and nothing rolls back the hardware.
+
+Take ethtool -K ethX tx on rxvlan on as an example. TXCOE gets toggled
+on, then the VSO read fails, so NETIF_F_IP_CSUM stays off in
+dev->features. On retry, changed still contains IP_CSUM, so the XOR turns
+TXCOE back off, and this time the call succeeds.
+
+Wouldn't CHECKSUM_PARTIAL frames then go out without hardware checksums?
+RXCSUM can get out of sync the same way.
+
+The VLAN-only case has a similar problem. Suppose the FILTER-on block
+clears the table and sets VFE, and then the CTAG_RX block fails. Hardware
+filtering is now on with an empty table. dev->features still has FILTER
+off, so ndo_vlan_rx_add_vid is never called.
+
+Would all tagged traffic be dropped in that state?
+
+> +
+> +	if (changed & NETIF_F_HW_VLAN_CTAG_FILTER) {
+> +		if (features & NETIF_F_HW_VLAN_CTAG_FILTER) {
+> +			u8 vlan_state = 0;
+> +
+> +			ret = ax88179_read_cmd(dev, AX_ACCESS_MAC,
+> +					       AX88179A_VLAN_ID_CONTROL, 1, 1, &vlan_state);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			for (int i = 0; i < 256; i++) {
+> +				/* Address */
+> +				tmp = i;
+> +				ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS,
+> +						  1, 1, &tmp);
+> +				/* Data */
+> +				ax88179_write_u16(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0,
+> +						  2, 0);
+> +				/* Write-Execute */
+> +				ax88179_write_u8(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
+> +						 1, vlan_state | AX_VLAN_CONTROL_WE);
+> +			}
+> +			vlan_state |= AX_VLAN_CONTROL_VFE;
+> +			ret = ax88179_write_cmd(dev, AX_ACCESS_MAC,
+> +						AX88179A_VLAN_ID_CONTROL, 1, 1, &vlan_state);
+
+[Severity: Medium]
+Should the return values in this loop be checked? The read before the
+loop and the VFE write after it are checked. None of the 768 synchronous
+control transfers inside the loop are.
+
+If the device stops responding, each transfer can block for
+USB_CTRL_SET_TIMEOUT (5 seconds). This runs under RTNL from
+__netdev_update_features(). Wouldn't RTNL be held for about an hour?
+
+Errors that come back quickly, such as -EPIPE, would leave some 16-VID
+groups with stale bits. VFE is still enabled and 0 is returned, so could
+the hardware filter accept VIDs the stack never registered?
+
+[ ... ]
+
+> @@ -612,9 +766,11 @@ static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
+>  		dev->mii.supports_gmii = 1;
+>  
+>  	dev->net->features |= NETIF_F_SG | NETIF_F_IP_CSUM |
+> -			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO;
+> +			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO |
+> +			      NETIF_F_HW_VLAN_CTAG_TX;
 
 [Severity: Low]
-This isn't a bug, but the AX88796B_PHY help text in
-drivers/net/phy/Kconfig still says:
+Enabling NETIF_F_HW_VLAN_CTAG_TX here, and making it toggleable through
+hw_features, makes the existing tag insertion in ax88179a_tx_fixup()
+reachable:
 
-	  Currently supports the Asix Electronics PHY found in the X-Surf 100
-	  AX88796B package.
+drivers/net/usb/ax88179a_devices.c:ax88179a_tx_fixup() {
+    ...
+	if ((dev->net->features & NETIF_F_HW_VLAN_CTAG_TX) && (vlan_get_tag(skb, &tci) >= 0)) {
+		tx_desc |= AX179A_TX_DESC_VLAN;
+		tx_desc |= FIELD_PREP(AX179A_TX_DESC_VLAN_ID, (u64)tci);
+	}
+    ...
+}
 
-It already left out the AX88772A/C. Now it also leaves out the AX88772D,
-AX88179A and AX88279 used by USB adapters, and USB_NET_AX88179 selects
-this symbol. Could the help text be updated?
+This checks dev->net->features again at transmit time, and vlan_get_tag()
+also looks at skb->dev->features. By then validate_xmit_vlan() has
+already decided to keep the tag in skb->vlan_tci.
+
+__netdev_update_features() doesn't quiesce the TX queue, and
+ax88179a_set_features() doesn't stop it either. If txvlan is switched off
+while a tagged skb is between validate_xmit_skb() and tx_fixup, can the
+frame go out untagged on the native VLAN?
+
+The lan78xx TX path only checks skb_vlan_tag_present() and
+skb_vlan_tag_get().
+
+>  
+>  	dev->net->hw_features |= dev->net->features;
+> +	dev->net->hw_features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER;
+
+[Severity: Medium]
+Since NETIF_F_HW_VLAN_CTAG_RX is only added to hw_features, it is off by
+default and can be toggled. Its only hardware effect is the
+AX_VLAN_CONTROL_VSO strip bit. The RX path, however, tags frames based
+only on the descriptor bit:
+
+drivers/net/usb/ax88179a_devices.c:ax88179a_rx_fixup() {
+    ...
+		if (pkt_desc & AX179A_RX_PD_VLAN) {
+			vlan_tag = pkt_desc >> AX179A_RX_PD_VLAN_SHIFT;
+			__vlan_hwaccel_put_tag(ax_skb, htons(ETH_P_8021Q), vlan_tag);
+		}
+    ...
+}
+
+The chip may set AX179A_RX_PD_VLAN for tagged frames even when VSO is
+clear. In that case the frame would keep its in-band 802.1Q header and
+also get a hwaccel tag. Would the stack then treat it as double tagged?
+
+Should this be gated on dev->net->features & NETIF_F_HW_VLAN_CTAG_RX, as
+lan78xx_rx_vlan_offload() does? aqc111 can skip that check only because
+aqc111_reset() always sets VSO.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-ax88179a-v20-0-37b5a1189983%40birger-koblitz.de
