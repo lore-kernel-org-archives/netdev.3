@@ -1,55 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794299560;
-	b=Ye+noJ2X/vEQ7T1yQDrNgzlMNJzUOkBspsACVCcYTOdMm/4Tf0Ze2oPDi3QqFnxHiTQ5
-	 WMP1JtUAj7cqxHrmhKE+vKrfi2SzODk+NI9UcMXlfw4HsB8ZCkeXo/iksuMOHd7zeAzcK
-	 vol+ULFRFnFDxBfYru3s+a3P+Y3Oe5pO8s2DJndVQEVDG1fR6cfB8MCmRQkoAAw1aRg0y
-	 h5XhessqYiJgH9134InE4SRcUuTtppePMmBkvEvysJcOBESotNOHfljT7eKHUy1RlbDtJ
-	 Aw1Mvc0sjMNthjHi4OGlnN70V8QeYH3cq76n2tLVhDZxv2wEDozs/F8fRj1h7NUJAnQ==
+	t=1794299670;
+	b=qfjLz72zhxbQ95rxMBkOViFQZypexw0whlYhWEJF7TQx2Xm5ws4J6lW7SdQ0uJEpA/xI
+	 JykVcHTJ+HSTHuTcT4hRdARZ417bfg30fyYA9UqzZ5Qq2dH+NoymYkli+ZM9eeSTnsJH5
+	 UmCI3a8ENr1wF7Zvp/Juxi3mJs8e6MKJChcuoA41+R5+d+LQiKXSzFuimPtuRfYElqT2O
+	 Htk1luFfweMO2aBpcuzBGV71tRH9K8Q/c3zLk2YDSVOAajo/jZDWKsttr95Woa6KkpWLz
+	 wi82s8fojVZOFJOqyFDap88e0BPFXJgq1C/PNZ1EYEwJiPMIwcYvMKpoxJWh2/UrT7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794299560;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=yWoENu3vdPAXkVmF04rFciz3oscKPZMb928MIrltCNQ=;
-	b=YGtMN10vc7aI8WLgdCvbnR3VQ0NfY1ZM/v8aiQz8bp2GWKKyJ8zj1pjCHt0TtPN2LH7B
-	 gFEEJoWtwCD12L2X0JT0u7fJjl2LD3lVyB1k40LqCl1ubcjcw/zLZ2E+Y1ZAqKdsjYuAa
-	 5mZOAKk7+jaTBX8YK4iLxwRBkio6FSSgz9WsS0L0DBGfDW05e+Wu42mj2eMOpRgUJNELZ
-	 rRoE9mbs7XacvIZWUygWdOhoTQcunKZyfbP66vIHMhk4RgoZmt0aHoaYureKBoj2vOAw6
-	 PhtwYex034p8CP6NksHUobICge43mO4RbWAHOF4qOzFb6BfSZv0K88yHmdkA8Y5N9ow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794299670;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=IoHg76qdWGX0YXGKv6gKymH4VgSnyA022n4X6S0GYTU=;
+	b=a/2VMteUMKVqlTjv9Y9c3qr1BEgilj9AmNIBRXuoFQaqM3PWabgHW/gbJUg+V1vd+hZ6
+	 DsuV7fEvw9iTjhSuwzBv2pDCD8hb5Mp+RM/iKtyZB93S2NeQ84dmf0CNTSybZqVe2ddue
+	 euU2NjEoUMm/yQySGaFdhLiBOge9PcpcF6dfymNfMlHA30xpkuqrkKtQ+2+k1y3PKWa/t
+	 8uJxLHQ9ED5Q+ZTBx2g3vPgz+YVKUIc8n3MSLqMXwwEvxwocVhEIOgFXfTRVjKXQsfak0
+	 jGRwSGFhpLXiqxJDq/+N2qxRgKFmEY/jfp8Ch6QkrD9GO+QFs/TySb768uKecIBa5AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUjDp199;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxqFF+xr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268A606A32E
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD0606A321;
+	Tue, 10 Nov 2026 08:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUjDp199
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D63A1F00900
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:32:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxqFF+xr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B951F0089F;
+	Tue, 10 Nov 2026 08:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794299559;
-	bh=yWoENu3vdPAXkVmF04rFciz3oscKPZMb928MIrltCNQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NUjDp199rgoMf15I6BwY1khUUUkpxVvOx5cV7Tlg2V55/WlmlIZzomXent7fnmJWl
-	 C3FjpDwoQL1E92bh0dWZi0G6mI53pnvVirZnaOLnFdRCDhlzNlEgHERh/enCZracdv
-	 A/dyYrMr20ra7QC+cK46BhdyifM5IjXoav0KyJbZpqzcuWAjntHatrQCpvM8fjtSBc
-	 IM2/7PRYSl9RHs3GykS2lN6cab13dhAWY5+cF3ZKPqKCEB2gKRDhnN+TYBRZ8Hg1JA
-	 pbxOScD/MlL9lj4AUYWTQdrkljrYpbnRYVisbbodiqiF2YWCVr3wECpRJcn8jhfyUi
-	 Hn3w+Kv23NviA==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-717080a2d50so1176988eaf.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:32:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHtQjyvwwJA9RTKw+8Qt1yjFZZEmjmAynr4AI81FWhJKQ0L8gzCDoE3nDPHLNQ1AjTmJwAFrs4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9WQyvlXhUZDGaSwWKddcfQfk6hcyex3td1OOj5PuMlPcAspKQn
-	67Wmhysl+NfyAeGD7BZeZ6JF7DAR9EPQId6neSsLNVhoOdofySv6+dgMNHHybbQM7tQCVFeMQ/1
-	ObxwVXODtlZv1kqSBI8mDioEPB9zFLgg=
-X-Received: by 2002:a05:6820:a703:10b0:70b:af3d:2b6d with SMTP id
- 006d021491bc7-718a2a44c83mr565319eaf.3.1794299558721; Tue, 10 Nov 2026
- 00:32:38 -0800 (PST)
+	s=k20260515; t=1794299669;
+	bh=IoHg76qdWGX0YXGKv6gKymH4VgSnyA022n4X6S0GYTU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WxqFF+xr13/a/ySiR+kNLzUaa1Xs/h9B2YkHZXEvv7EByE9agjd1GbIdV07abAi1+
+	 8kVNCtn5MUV+bISGWuwiNjhqJaUT6Sa3FzaN/+Y8fjCtT1jWehSFbGGFHDS/0IHcTK
+	 GG1077WC7X00ODBSWKHfAswU2bagVTyTgawOl57DBvpSNQOWZg8o3er2CblBSXgWEt
+	 Aigvlwy4CSzv6nX+iXZ1+cT2KfxQEM0lCygnwOfy0jPDaIS4PzfQrDevlCsUwl65NQ
+	 MaGDQtA7A0vsb7qxKkc9qqRixUZghKeyJhJxP9Dmv7y1NDVTJfRVQvxZ31LudrR51F
+	 ooRTNPq9adiGA==
+Subject: Re: [PATCH net-next v4] net: phy: realtek: Add support for JLSemi
+ JL2101 and JL2121 PHYs
+From: netdev-bot+sashiko@kernel.org
+To: cyan2254650260@gmail.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 10 Nov 2026 08:34:28 +0000
+Message-ID: <179429966829.994134.15582667508213020583@kernel.org>
+In-Reply-To: <20261105173350.159060-1-cyan2254650260@gmail.com>
+References: <20261105173350.159060-1-cyan2254650260@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,291 +63,179 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110080008.26112-1-juanagusnicco@gmail.com>
-In-Reply-To: <20261110080008.26112-1-juanagusnicco@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 10 Nov 2026 09:32:27 +0100
-X-Gmail-Original-Message-ID: <CAL4WiipniV9TJh8S+Ab220eZ5MYRP464j8DuHcU_t5z8FLRmLA@mail.gmail.com>
-X-Gm-Features: AclHuK99lUFen8SFcVLfifXn3KKnfmNdlM5jzxBpYposVoovQ4A5o0h_6Bk2Qxs
-Message-ID: <CAL4WiipniV9TJh8S+Ab220eZ5MYRP464j8DuHcU_t5z8FLRmLA@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: Fix the SO_REUSEPORT bind cache admitting a
- conflicting socket
-To: Juan Agustin Niccolini <juanagusnicco@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	ncardwell@google.com, kuniyu@google.com, josef@toxicpanda.com, jbacik@fb.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le mar. 10 nov. 2026 =C3=A0 09:00, Juan Agustin Niccolini
-<juanagusnicco@gmail.com> a =C3=A9crit :
->
-> Since commit 637bc8bbe6c0 ("inet: reset tb->fastreuseport when adding a
-> reuseport sk"), inet_csk_get_port() skips the full bind conflict check
-> for an SO_REUSEPORT socket when sk_reuseport_match() finds its address
-> covered by the port's SO_REUSEPORT bind cache (tb->fastreuseport and
-> tb->fast*).
->
-> In the FASTREUSEPORT_STRICT state that cache holds the owner, family,
-> IPV6_V6ONLY and address of one socket on the port. The assumption is
-> that if the cached socket conflicts with nothing on the port, neither
-> does a new socket whose address it covers. That assumption is wrong and
-> it lets an unprivileged process bind to ports already in use by other
-> users and hijack their traffic.
->
-> The assumption would only hold if the two sockets agreed on everything
-> else the conflict check reads, and the cache falls short of that in two
-> ways.
->
-> First, it does not record, and hence does not compare, either the bound
-> device or the cached socket's SO_REUSEADDR. A socket bound to one device
-> passes the full check against another user's listener bound to a
-> different device, and becomes the cached socket; a later socket on the
-> same address with no device is covered by it, skips the check, and binds
-> and listens on that listener's address and port. This lets an
-> unprivileged process take over all the traffic of a service bound to a
-> device. The missing SO_REUSEADDR fails in the same way: two sockets with
-> SO_REUSEADDR do not conflict while the existing one is not listening, so
-> a socket with SO_REUSEADDR can pass the full check against another
-> user's bound, non-listening socket that also has SO_REUSEADDR, and
-> become the cached socket; a later socket without SO_REUSEADDR is then
-> covered by it and skips the check that would have refused it.
->
-> Second, it records the family and IPV6_V6ONLY but does not require the
-> new socket to match them. The address comparison in sk_reuseport_match()
-> lets a dual-stack wildcard socket match a cached IPv4 or IPv6-only
-> wildcard socket, although the dual-stack socket also accepts the other
-> family. A socket on the IPv6-only wildcard passes the full check against
-> another user's listener on the IPv4 wildcard, 0.0.0.0, and becomes the
-> cached socket; a later dual-stack wildcard socket is covered by it,
-> skips the check, and binds and listens on that listener's address and
-> port. This mistake lets unprivileged processes hijack traffic from
-> services that listen only on 0.0.0.0, which is very common.
->
-> Fix this by only using the cache for a socket that matches the cached
-> one in everything else the conflict check reads: family, IPV6_V6ONLY,
-> bound device and SO_REUSEADDR, besides the owner and SO_REUSEPORT, which
-> sk_reuseport_match() already checks. A cached wildcard still covers a
-> new socket on a specific address of the same family: once those
-> properties match, the conflict check treats the two sockets alike except
-> for the address, and every socket the specific address overlaps, the
-> wildcard overlaps too.
->
-> Note that, as this patch intends, bind() and listen() now fail with
-> EADDRINUSE in cases where the cache used to admit them, including for
-> sockets of a single user. For example, a user who binds an IPv6-only
-> wildcard socket without SO_REUSEPORT and then an IPv4 wildcard socket
-> with SO_REUSEPORT to a port previously could add a dual-stack wildcard
-> SO_REUSEPORT socket; that bind now fails, matching what the full check
-> would do.
->
-> The FASTREUSEPORT_STRICT state was added to speed up one workload: a
-> service binding many identical SO_REUSEPORT listeners to a port that
-> holds, or has held, a socket without SO_REUSEPORT, such as an earlier
-> instance of the same service that did not set the option. Without it
-> each of those binds compares the new socket with every socket on the
-> port, under the port's lock; it was added after a load balancer
-> restarted this way on a port holding about 100k TIME_WAIT sockets and
-> hit soft lockups. This patch keeps that workload on the fast path:
->
->              N     current   full check  this patch
->            256     0.13 ms      0.58 ms     0.15 ms
->           1024     0.63 ms      8.07 ms     0.69 ms
->           4096     2.63 ms    154.32 ms     2.83 ms
->          16384     9.80 ms   5874.11 ms     9.86 ms
->
-> N is the number of identical SO_REUSEPORT sockets, bound after one
-> socket without SO_REUSEPORT so that the port is in the
-> FASTREUSEPORT_STRICT state; the times are of their bind() and listen()
-> calls from a single thread, median of 5 runs on a build without KASAN.
-> "Full check" is the simplest alternative to this patch: never skipping
-> the checks. As N grows the full check slows down sharply, while this
-> patch stays as fast as the current kernel, so it keeps the benefit of
-> FASTREUSEPORT_STRICT.
->
-> Sockets that differ from the cached one in device, SO_REUSEADDR, family
-> or IPV6_V6ONLY now take the full check, so binding many such sockets in
-> alternation on one port is slower; the common mix of wildcard and
-> specific addresses stays on the fast path.
->
-> The two new fields, fast_bound_dev_if and fast_sk_reuse, fit in existing
-> padding: struct inet_bind_bucket stays 88 bytes on x86_64 and arm64.
->
-> Fixes: 637bc8bbe6c0 ("inet: reset tb->fastreuseport when adding a reusepo=
-rt sk")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Juan Agustin Niccolini <juanagusnicco@gmail.com>
-> ---
-> Here is a minimal reproducer for the issue addressed by this patch. Line
-> 10 should have failed with "OSError: [Errno 98] Address already in use"
-> but it succeeds. It works independently of what process or user created
-> the victim socket. An unprivileged process can exploit it to hijack
-> traffic on ports that are already in use by other processes.
->
-> import socket
-> P =3D 29341
-> v =3D socket.socket(); v.bind(("0.0.0.0", P)); v.listen(1)
-> s =3D socket.socket(socket.AF_INET6)
-> s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 1)
-> s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-> s.bind(("::", P))
-> h =3D socket.socket(socket.AF_INET6)
-> h.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-> h.bind(("::", P))
-> h.listen(1)
->
-> Skipping line 3 and setting P to the port of another process that
-> listens only on IPv4 (P >=3D 1024) works as well. With one such socket
-> the attacker answers the service's IPv6 clients; one copy per CPU
-> with SO_INCOMING_CPU also takes its IPv4 clients.
->
-> I conducted several tests on the patch to assess that it fixes the
-> vulnerability, that it keeps the workload the cache was added for fast,
-> and that it only changes the behaviour it intended to change. The tests
-> and results are available here:
-> https://github.com/AgusNicco/tcp-hijack-patch-testing
->
-> '1-attack' is the attack scenario where an unprivileged process exploits
-> the bug to hijack TCP traffic from other processes and users. It also
-> tests that the patch successfully stops the attack.
->
-> '2-reachability' tests how often the code modified by this patch runs,
-> to assess how much it could matter for performance. It runs during
-> startup and not during traffic.
->
-> '3-bind-behaviour' tests that the patch only changes the behaviour it
-> intended to change. It compares behaviour across 29.8 million tests
-> among 3 kernels: unpatched, patched, and one with an alternative patch
-> that always performs a full scan. The full scan kernel and the patched
-> kernel behaved identically in all 29.8 million tests. The unpatched one
-> behaved differently in 697,367 tests.
->
-> '4-performance' tests and confirms that the patch does not regress the
-> performance benefits of the commit that introduced the bug. That's where
-> the results shown on my commit message come from.
->
-> inet_csk_update_fastreuse() has filled the tb->fast_* fields in two
-> places since 637bc8bbe6c0, and this patch adds the two new fields to
-> both. A helper would remove the duplication, but I left it out to keep
-> this fix small for stable; the duplicated code is minimal and predates
-> this patch.
->
-> This bug was found by an LLM-based bug discovery pipeline.
->
->  include/net/inet_hashtables.h   |  2 ++
->  net/ipv4/inet_connection_sock.c | 15 ++++++++++++---
->  2 files changed, 14 insertions(+), 3 deletions(-)
->
-> diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.=
-h
-> index 6e2fe186d0dc..44b7e39a1245 100644
-> --- a/include/net/inet_hashtables.h
-> +++ b/include/net/inet_hashtables.h
-> @@ -87,6 +87,8 @@ struct inet_bind_bucket {
->         __be32                  fast_rcv_saddr;
->         unsigned short          fast_sk_family;
->         bool                    fast_ipv6_only;
-> +       unsigned char           fast_sk_reuse;
-> +       int                     fast_bound_dev_if;
->         struct hlist_node       node;
->         struct hlist_head       bhash2;
->         struct rcu_head         rcu;
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_s=
-ock.c
-> index e56beec43877..70b8662b3004 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -420,13 +420,18 @@ static inline int sk_reuseport_match(struct inet_bi=
-nd_bucket *tb,
->                 return 0;
->         if (!uid_eq(tb->fastuid, sk_uid(sk)))
->                 return 0;
-> -       /* We only need to check the rcv_saddr if this tb was once marked
-> +       /* We only need to check the fast_* fields if this tb was once ma=
-rked
->          * without fastreuseport and then was reset, as we can only know =
-that
-> -        * the fast_*rcv_saddr doesn't have any conflicts with the socks =
-on the
-> -        * owners list.
-> +        * the socket they describe doesn't have any conflicts with the s=
-ocks
-> +        * on the owners list.
->          */
->         if (tb->fastreuseport =3D=3D FASTREUSEPORT_ANY)
->                 return 1;
-> +       if (tb->fast_sk_family !=3D sk->sk_family ||
-> +           tb->fast_ipv6_only !=3D ipv6_only_sock(sk) ||
-> +           tb->fast_bound_dev_if !=3D sk->sk_bound_dev_if ||
-> +           tb->fast_sk_reuse !=3D sk->sk_reuse)
-> +               return 0;
->  #if IS_ENABLED(CONFIG_IPV6)
->         if (tb->fast_sk_family =3D=3D AF_INET6)
->                 return ipv6_rcv_saddr_equal(&tb->fast_v6_rcv_saddr,
-> @@ -455,6 +460,8 @@ void inet_csk_update_fastreuse(const struct sock *sk,
->                         tb->fast_rcv_saddr =3D sk->sk_rcv_saddr;
->                         tb->fast_ipv6_only =3D ipv6_only_sock(sk);
->                         tb->fast_sk_family =3D sk->sk_family;
-> +                       tb->fast_sk_reuse =3D sk->sk_reuse;
-> +                       tb->fast_bound_dev_if =3D sk->sk_bound_dev_if;
->  #if IS_ENABLED(CONFIG_IPV6)
->                         tb->fast_v6_rcv_saddr =3D sk->sk_v6_rcv_saddr;
->  #endif
-> @@ -482,6 +489,8 @@ void inet_csk_update_fastreuse(const struct sock *sk,
->                                 tb->fast_rcv_saddr =3D sk->sk_rcv_saddr;
->                                 tb->fast_ipv6_only =3D ipv6_only_sock(sk)=
-;
->                                 tb->fast_sk_family =3D sk->sk_family;
-> +                               tb->fast_sk_reuse =3D sk->sk_reuse;
-> +                               tb->fast_bound_dev_if =3D sk->sk_bound_de=
-v_if;
->  #if IS_ENABLED(CONFIG_IPV6)
->                                 tb->fast_v6_rcv_saddr =3D sk->sk_v6_rcv_s=
-addr;
->  #endif
->
-> base-commit: 19a227903e65c7a9c179156485660a4e017575fe
-> --
-> 2.43.0
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-OK, but
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-1) The changelog is way too long for human use. I would suggest :
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-When the port is in the FASTREUSEPORT_STRICT state, inet_csk_get_port()
-skips the bind conflict check if sk_reuseport_match() finds the new
-socket's address covered by the socket cached in tb->fast_*.
+- [Medium] The JLSemi entry in realtek_drvs[] uses two incompatible
+  register-access models.
+- [Low] REALTEK_PHY's Kconfig help (drivers/net/phy/realtek/Kconfig line
+  6: 'Currently supports RTL821x/RTL822x and fast ethernet PHYs') was…
+- [Low] The concern says realtek,rtl82xx.yaml forbids LEDs for JL21xx
+  (allOf: leds: false unless compatible contains ethernet-phy-…
 
-This is only safe if both sockets match on everything
-inet_bind_conflict() reads. The cache misses some of it:
+--
 
-- It does not record sk_bound_dev_if or sk_reuse.
-- It records the family and IPV6_V6ONLY but never compares them with
-  the new socket, so a cached v6only [::] (or 0.0.0.0) socket covers
-  a dual-stack [::] socket.
+net: phy: realtek: Add support for JLSemi JL2101 and JL2121 PHYs
 
-As a result, an unprivileged user can bind and listen on a port that
-another user is listening on, for example a dual-stack [::] socket on
-top of a 0.0.0.0 listener:
+This adds a realtek_drvs[] entry that matches the JLSemi JL21xx model ID
+(0x937c4030) and reuses the RTL8211F callbacks. It also adds
+jlsemi_read_status(), which reads PHYSR from page 0xa43, and adds the ID
+to the MDIO module device table.
 
-  victim:   bind(0.0.0.0:P), listen()
-  attacker: SO_REUSEPORT + IPV6_V6ONLY, bind([::]:P)   /* fills cache */
-  attacker: SO_REUSEPORT, bind([::]:P), listen()       /* should fail */
+> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+> index 4927ee838de21..355135143fb98 100644
+> --- a/drivers/net/phy/realtek/realtek_main.c
+> +++ b/drivers/net/phy/realtek/realtek_main.c
 
-Only take the fast path when the new socket matches the cached one in
-family, IPV6_V6ONLY, bound device and SO_REUSEADDR. Identical
-SO_REUSEPORT listeners, the workload this cache was added for, still
-skip the scan (binding 16384 of them: 9.80 ms before, 9.86 ms after,
-5874 ms with the full check every time).
+[ ... ]
 
+> @@ -1755,6 +1758,23 @@ static int rtlgen_read_status(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int jlsemi_read_status(struct phy_device *phydev)
+> +{
+> +	int ret, val;
+> +
+> +	ret = genphy_read_status(phydev);
+> +	if (ret < 0 || !phydev->link)
+> +		return ret;
+> +
+> +	val = phy_read_paged(phydev, JLSEMI_STATUS_PAGE, RTL_PHYSR);
 
-2)  The reproducer is about 10 lines and would fit in
-tools/testing/selftests/net/bind_wildcard.c
-     or next to reuseport_dualstack.c.
+[Severity: Medium]
+The commit message says that on JL21xx, reading 0x1a on page 0 returns
+0x0000. That is why PHYSR is read here through page 0xa43, and it means
+0x1a depends on the page select on this chip.
 
-3) We do not need details and LLM generated GitHub, any LLM
-  can build this instantly just looking at the commit.
+Commit 650e55f224a5 ("net: phy: realtek: simplify bogus paged operations")
+changed every 0x18-0x1f access in this driver into a plain phy_read() or
+phy_modify(). It did so because only 0x10-0x17 depend on the page select
+register. The RTL8211F callbacks bound to the new entry still follow that
+model for registers next to 0x1a.
 
-Thanks.
+rtl8211f_ack_interrupt() and rtl8211f_handle_interrupt() read INSR (0x1d)
+unpaged:
 
-pw-bot: cr
+    irq_status = phy_read(phydev, RTL8211F_INSR);
+
+rtl8211f_disable_autonomous_eee() modifies PHYCR2 (0x19) unpaged:
+
+    return phy_modify(phydev, RTL8211F_PHYCR2,
+                      RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
+
+rtl8211f_config_aldps() modifies PHYCR1 (0x18) unpaged:
+
+    return phy_modify(phydev, RTL8211F_PHYCR1, mask, mask);
+
+rtl8211f_config_clk_out(), rtl8211f_config_clkout_ssc() and
+rtl8211f_config_sysclk_ssc() also access PHYCR2 with phy_modify() or
+phy_set_bits().
+
+Suppose JL21xx pages 0x18, 0x19 and 0x1d the same way it pages 0x1a.
+Would these accesses then hit the default page instead of the real
+registers?
+
+For interrupts, rtl8211f_config_intr() enables INER with a paged write,
+which does reach the hardware:
+
+    err = phy_write_paged(phydev, 0xa42, RTL821x_INER, val);
+
+rtl8211f_handle_interrupt() then checks the unpaged 0x1d read:
+
+    if (irq_status & RTL8211F_INER_LINK_STATUS) {
+    ...
+    if (irq_status & RTL8211F_INER_PME) {
+    ...
+    return IRQ_NONE;
+
+Could this return IRQ_NONE without ever clearing the latched INSR? On a
+level-triggered INTB line, that could cause an interrupt storm. The IRQ
+would then get disabled and link changes would be lost.
+
+For EEE, phylink_bringup_phy()->phy_support_eee() calls
+disable_autonomous_eee whenever the MAC supports EEE. It sets
+autonomous_eee_disabled as soon as the MDIO write succeeds. Could phylib
+then believe autonomous EEE is off while the PHY still has it on? The
+same write is repeated after each soft reset in phy_init_hw().
+
+The ALDPS and CLKOUT-disable paths would also report success without
+reaching PHYCR1 or PHYCR2. The clk_out path soft-resets the PHY as well.
+
+Now suppose 0x18-0x1f are not paged on JL21xx. Then
+phy_read_paged(phydev, 0xa43, RTL_PHYSR) is the same as an unpaged read.
+In that case, how does jlsemi_read_status() avoid the 10/Half downshift
+it was added to fix?
+
+The changelog says PHYSR, the RGMII delays and the LEDs were tested on
+hardware. v4 drops WoL as unverified but keeps the interrupt, EEE, ALDPS
+and CLKOUT paths. Were those also checked on JL21xx?
+
+> +	if (val < 0)
+> +		return val;
+> +
+> +	rtlgen_decode_physr(phydev, val);
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> @@ -3283,6 +3303,23 @@ static struct phy_driver realtek_drvs[] = {
+>  		.led_hw_control_get = rtl8211f_led_hw_control_get,
+>  		.led_hw_control_set = rtl8211f_led_hw_control_set,
+>  		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+>  	}, {
+> +		PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID),
+> +		.name		= "JLSemi JL2101/JL2121 Gigabit Ethernet",
+> +		.probe		= rtl821x_probe,
+
+[Severity: Low]
+This isn't a bug, but rtl821x_probe() now parses vendor DT properties for
+this PHY, for example:
+
+    priv->enable_aldps = of_property_read_bool(dev->of_node,
+                                               "realtek,aldps-enable");
+
+Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml has no select:
+section, and its compatible enum only lists ethernet-phy-id001c.cXXX
+entries. So a JL21xx node (no compatible, or ethernet-phy-id937c.4030) is
+never validated against that schema. Its leds: false rule therefore does
+not affect JL21xx either.
+
+The realtek,* properties only do anything if a DT author sets them.
+Should the binding say that they also apply to JL21xx?
+
+[ ... ]
+
+> @@ -3527,6 +3564,7 @@ module_phy_driver(realtek_drvs);
+>  
+>  static const struct mdio_device_id __maybe_unused realtek_tbl[] = {
+>  	{ PHY_ID_MATCH_VENDOR(0x001cc800) },
+> +	{ PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID) },
+
+[Severity: Low]
+This isn't a bug, but the module now binds and autoloads a non-Realtek
+OUI. The REALTEK_PHY help text in drivers/net/phy/realtek/Kconfig still
+says:
+
+    Currently supports RTL821x/RTL822x and fast ethernet PHYs
+
+MODULE_DESCRIPTION() is also still "Realtek PHY driver". Could the help
+text mention JLSemi JL2101/JL2121, so that people building for that
+hardware know to enable CONFIG_REALTEK_PHY?
+
+>  	{ }
+>  };
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105173350.159060-1-cyan2254650260%40gmail.com
