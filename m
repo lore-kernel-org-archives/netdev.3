@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794319703;
-	b=3nm61lbrob37tFkw7BCZH8PxOWpywL3VO/4sa6WckDzYS9/Gq+5BeRTryCGoReGfYscl
-	 WH3zFkoxlv6JZgKMtIxT0EZ1GU8jJXha+PvKNkvqr0BAPF10YnR9wYu3aq/ak7QqQ6gy9
-	 r8MhQ1IWA+gf/rMCdahm9Zv+qWumj7XnI+mgS67h4yGT3feqUw/hn9lHDodoEDBDOfk1c
-	 loEiPY8fRJecSPN7b9WB5shnwkaSjQ2qTKkgD6ZXPVUIfCjA4JgXHkwFc3gta2MFMP1J/
-	 7VpD4QEq87J7DB1bfPGCpGx7mjPm7gI7f5ULhebPXgl1amz9kRL3XW6QBF+1TkXYl/g==
+	t=1794319704;
+	b=NK5BcBOgxb4/wxdXdcgCiiFPsYaahk2zaCOe7ckKqCOz/vHhnq+nJI6w5XHZNpZ+Lep3
+	 b7FH1p829gaYCmUdXNJp6Tdj8ryTE98VacFSeY7rA5cGUi5DHvZHVVokT2FPY40hCyA10
+	 71Joue3tTdF174TgJXAHBoelvUgKOKvgAFX5f7S+RPStqeN81nQ6qeKUlIp8P+JAWDMuV
+	 8ls8XgQPnbM5gBnOGRFhjFiyp8BVReYKUwqJK3qpZGeDd7B9Hmx4wKTZlD48XhAn8sNwQ
+	 kusG71wmsfQNOsQ0o3cLWYYT38zHw6huJ/H7CnoLJnrSZbivn3q/qfU8l948Fj8N6Aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794319703;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794319704;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=AMlP8MhWT0A44wY6Zfl/NC3suMHryx6lMzzXNAXNtAM=;
-	b=E5ySbNCUdyH8HXHYNq6k/YsZA4jZ4fYwL9uxZLLn/SoWVDTKPbRrMJHiEllHdQQUaIJV
-	 T/mZXQvtPGG7zm9PtBBKO8r+hKXCYnvOAa47KNOY1OVSTgPtgsV0ZD51MmPmw6AjFsjAS
-	 62ZUcr8S8eCUKudgxRdZAGJqh8Bc/6JIvAHOMrClPSdKSl96niFcd5gZQagCc/ZT2mbUo
-	 MJjSpWz6FaF+LVLURB6lMebCM3BSCW1/2ltH5EcQ4eTgMAMe5HajNttrEwTKC5xTpAQ8p
-	 gXru+6wI6yF6drTnXYJjCiJHpl3otHviJB0tXSikYbNeMZM7JV4tZo/exRkbtXq2b8g==
+	bh=eQXUSO3tD6FtpjY8mUmkDBmF4Xb2KD8HDk5m4EfpuVE=;
+	b=bI8UtWA3If6a5HM3dkoTBWG64eHSzKXeqJiU+Q3BILCjh20K0iObzIHY9ZaUqUdUxzOR
+	 Wo5KMGWzKJEiCSVHBgblvku8MrvbDVXMDH0p7H36/uXicTLWeEqrLuJTaq2Jr9Q0teEC2
+	 qAjId6UyreI2MxwBFCKFJXTL9O4p8Z7ai+mhegdgsIQw9QTzDLl/7gMBNbN+XUks06uNw
+	 d40AMsnZ0fDpSPbu5U0rg0FKf3GPMZp8nKovLvRpjCHHuk/YodCK6cMabBo7U7Q+qL76J
+	 jIfwimUghTpjlCLIunjl9DNVevRW/B4m8W7p4pXKuVarXdeSnVHGTCm4Bu1+ydWv40w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LeynbQJL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yb1xDJcs;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78CB606A31C;
-	Tue, 10 Nov 2026 14:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B94606A325;
+	Tue, 10 Nov 2026 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LeynbQJL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E8C1F0089F;
-	Tue, 10 Nov 2026 14:08:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yb1xDJcs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059901F008A1;
+	Tue, 10 Nov 2026 14:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794319702;
-	bh=AMlP8MhWT0A44wY6Zfl/NC3suMHryx6lMzzXNAXNtAM=;
+	s=k20260515; t=1794319704;
+	bh=eQXUSO3tD6FtpjY8mUmkDBmF4Xb2KD8HDk5m4EfpuVE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LeynbQJLhX0P1z177u20dH7TR+BQEJxEAkdIcrK32MFm2zQ4NNxA/6OOHYPOHshSE
-	 KRFUGTlvpx6sgu7ex7C86htJpvc5Y9jZAV7Kh7btiEI3ADjVRkIpYaldm3ZFPN2dsS
-	 YPwhbUHnbGG9S3IAGueWh2WdqwVdRzh/hWxs1ZjY9LLaE05QMxOcpmXdcXo/nFQD/6
-	 VpKWCP+cDLaHyA3rBuJqGIoVSuFgA/VpDDbdol+DXkD/3dJQ3eZLbYDjJPb5kIhuTn
-	 Y+U3X3jEiJKrVn4JcyEaGSAwR0EUOjtHBnvdz4sQCP1N66IvmpJlfs5ceRA2rqXmrn
-	 uVuSp91muGVdQ==
-Subject: Re: [PATCH net-next v01 1/4] Fixes: Solve an LRO stall issue
+	b=Yb1xDJcsK9Cl7ZQCpnEm0uHJBNRwtHA/gffqwy/wgBCZKzOKqErGfxVlNHUxrXK2/
+	 aLySzy2YuJptpHv+RvTvBtyZbWZ8y++bRxgpLOie73W8iKCEgSTHzS0rB015dUEvYO
+	 mHW56QZxr+1UeOJWS6gwkNPQA93nuEwut+o82MYgCK+xWHm1mk16cX7JmQJ5v+8NPU
+	 0AIQjNYLXynzeluygPZK4jrArzar1JwNiT8vrmY+1LKx25C6nbeZ5sNN7OBzD1U5iJ
+	 XRPbzvs0jbxnEV5h3nhbzkXBNVo5KE0BARotvkZNsucmK6mOzf+sa98qXDjIn1+eGI
+	 oqjUQ7ZkXemSA==
+Subject: Re: [PATCH net-next v01 2/4] Fixes: Avoid concurrent updates on
+ 32-bit systems.
 From: netdev-bot+sashiko@kernel.org
 To: gongfan1@huawei.com
 Cc: wudi234@huawei.com, tengpeisen@huawei.com, netdev@vger.kernel.org,
@@ -51,10 +52,10 @@ Cc: wudi234@huawei.com, tengpeisen@huawei.com, netdev@vger.kernel.org,
  larysa.zaremba@intel.com, vadim.fedorenko@linux.dev,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  zhoushuai28@huawei.com, wulike1@huawei.com
-Date: Tue, 10 Nov 2026 14:08:20 +0000
-Message-ID: <179431970098.994134.1550238733009979837@kernel.org>
-In-Reply-To: <6b3a98338e27fbfa923069686b7cd472f30f5033.1793946318.git.gongfan1@huawei.com>
-References: <6b3a98338e27fbfa923069686b7cd472f30f5033.1793946318.git.gongfan1@huawei.com>
+Date: Tue, 10 Nov 2026 14:08:22 +0000
+Message-ID: <179431970260.994134.17324633020016556437@kernel.org>
+In-Reply-To: <bebc65bd3d1af9d6f3cb0c8dcf9421bd6a432c58.1793946318.git.gongfan1@huawei.com>
+References: <bebc65bd3d1af9d6f3cb0c8dcf9421bd6a432c58.1793946318.git.gongfan1@huawei.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -79,102 +80,226 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message does not describe the change.
-- [Low] The patch says it fixes a user-visible RX stall ("Solve an LRO
-  stall issue") and the reviewer text it quotes asks for a Fixes: tag,…
+- [Medium] The subject and body of commit "Fixes: Avoid concurrent
+  updates on 32-bit systems." do not match the change.
+- [Medium] hinic3_get_stats64()
+  (drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c) quietly…
+- [Low] The patch fixes a double-counting bug that cannot happen at this
+  tree state, or at the end of the series.
+- [Low] hinic3: dead counter initializations in hinic3_get_stats64()
 
 --
 
-Fixes: Solve an LRO stall issue
+Fixes: Avoid concurrent updates on 32-bit systems.
 
-This patch changes hinic3_rx_poll() to return budget instead of nr_pkts
-when the RX loop exits on the LRO replenish threshold. As a result,
-hinic3_poll() stays in polling mode and does not complete NAPI or
-re-enable the MSI-X vector.
+This commit changes the u64_stats reader retry loops in
+hinic3_get_stats64(). The per-queue values are now assigned inside the
+loop and added into the rtnl_link_stats64 fields after it. It also drops
+the nic_dev->txqs and nic_dev->rxqs NULL checks and stops adding
+csum_errors into rx_errors.
 
-> Fixes: Solve an LRO stall issue
->
-> As noted in the subsequent review.
->
-> This changes the return value when the loop exits on the LRO
-> replenish threshold. It used to return nr_pkts and now returns budget.
-
-[ ... ]
-
-> This seems unrelated to statistics, and the commit message does not
-> mention it. Was it intended? If it fixes an LRO stall, could it go in
-> a separate patch with its own explanation and a Fixes: tag?
+> Fixes: Avoid concurrent updates on 32-bit systems.
 
 [Severity: Medium]
-Could the commit message be rewritten so it describes this change on its
-own?
+Could the subject be reworked?
 
-The subject has no "hinic3:" prefix. It also starts with "Fixes:", and
-tools that grep for Fixes: trailers can misread that.
+It has no subsystem prefix. Something like "net: hinic3:" would be
+expected.
 
-"As noted in the subsequent review." points to a mailing list thread that
-won't be in git history.
+It also starts with "Fixes:", which is a trailer tag. That text isn't
+followed by a commit reference, and the tags have no real
+Fixes: <sha> ("...") trailer. Tools that grep for '^Fixes:' may also
+match this subject.
 
-The rest of the body is the review text copied word for word. That
-includes the questions "Was it intended?" and "could it go in a separate
-patch with its own explanation and a Fixes: tag?", and they are left
-unanswered.
+The subject says the patch avoids concurrent updates, but none of the
+writers are changed. The only change is on the reader side of
+hinic3_get_stats64(), where '+=' becomes '=' inside the retry loop.
 
-The message doesn't say what stalls, when it stalls, or why returning
-budget from hinic3_rx_poll() on the lro_replenish_thld exit fixes it. The
-threshold defaults to HINIC3_LRO_REPLENISH_THLD, which is 256.
+> As noted in the subsequent review.
 
-Is this the mechanism? Before the patch, the threshold break returned
-nr_pkts < budget, so hinic3_poll() went on to run:
+The body starts with this line, then repeats a reviewer's comment about
+the old code. It never says what this patch does. Could the changelog
+describe the change itself?
 
-	if (likely(napi_complete_done(napi, work_done))) {
-		hinic3_net_dim(nic_dev, irq_cfg);
-		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
-				      HINIC3_MSIX_ENABLE);
+The other patches in the series use the same layout. In "Fixes: Solve an
+LRO stall issue" the body even keeps the reviewer's question "Was it
+intended? ... could it go in a separate patch".
 
-At that point, CQEs with RXDONE already set could still be in the ring.
-If the device doesn't raise a new interrupt for CQEs it wrote before the
-vector was re-enabled, those packets would stay there until more traffic
-arrives.
+Were these review fixups meant to be folded into the patches they
+address, rather than sent as standalone commits?
 
-Could the message say whether this device behaviour is what the patch
-works around? The change was split out as the review asked, but the
-explanation the review asked for seems to be missing.
+> If the loop retries due to concurrent updates on 32-bit systems,
+> the counters are added multiple times. This was previously benign
+> since the fields weren't populated by the driver, but these new
+> updates will cause incorrect statistics on 32-bit platforms.
 
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> index 309ab59013797..9c4ab88998d47 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+[Severity: Low]
+Which new updates does this refer to?
+
+In drivers/net/ethernet/huawei/hinic3/, the only writers of txq_stats
+and rxq_stats are hinic3_txq_clean_stats() and hinic3_rxq_clean_stats().
+Both only zero the counters:
+
+hinic3_rx.c:hinic3_rxq_clean_stats() {
+	u64_stats_update_begin(&rxq_stats->syncp);
+	rxq_stats->bytes = 0;
+	rxq_stats->packets = 0;
+	...
+}
+
+The rx checksum error path in hinic3_rx_csum() doesn't count anything
+either:
+
+	if (unlikely(csum_err)) {
+		/* pkt type is recognized by HW, and csum is wrong */
+		skb->ip_summed = CHECKSUM_NONE;
+		return;
+	}
+
+So a retry of the old '+=' loop would only add zeros. No per-packet
+updates are added by this patch, by the baseline, or by any later patch
+in the series.
+
+Should this be squashed into the patch that starts populating the
+counters, instead of being a standalone fix?
+
+> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+> index da73811641a9d..474ea81f17508 100644
+> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+> @@ -795,45 +795,38 @@ static void hinic3_get_stats64(struct net_device *netdev,
 
 [ ... ]
 
-> @@ -581,12 +582,14 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
->  
->  		rx_cqe->status = 0;
->  
-> -		if (num_wqe >= nic_dev->lro_replenish_thld)
-> +		if (num_wqe >= nic_dev->lro_replenish_thld) {
-> +			poll_again = true;
->  			break;
-> +		}
+>  	for (i = 0; i < nic_dev->max_qps; i++) {
+> -		if (!nic_dev->rxqs)
+> -			break;
+> -
+>  		rxq = &nic_dev->rxqs[i];
+>  		rxq_stats = &rxq->rxq_stats;
+>  		do {
+>  			start = u64_stats_fetch_begin(&rxq_stats->syncp);
+> -			bytes += rxq_stats->bytes;
+> -			packets += rxq_stats->packets;
+> -			errors += rxq_stats->csum_errors +
+> -				rxq_stats->other_errors;
+> -			dropped += rxq_stats->dropped;
+> +			bytes = rxq_stats->bytes;
+> +			packets = rxq_stats->packets;
+> +			errors = rxq_stats->other_errors;
+> +			dropped = rxq_stats->dropped;
+
+[Severity: Medium]
+Is dropping csum_errors from rx_errors intended here? The old code did:
+
+	errors += rxq_stats->csum_errors + rxq_stats->other_errors;
+
+The new code reads only other_errors, so rtnl_link_stats64.rx_errors no
+longer includes checksum errors. The retry fix didn't need this, and the
+commit message doesn't mention it.
+
+struct hinic3_rxq_stats still declares csum_errors, and
+hinic3_rxq_clean_stats() still resets it under the syncp. After this
+patch, nothing reads it.
+
+The sibling hinic driver still reports errors = csum_errors +
+other_errors in hinic_rxq_get_stats(), which is what hinic3 did before
+this patch.
+
+Once the rx path starts populating csum_errors, would checksum failures
+drop out of rx_errors in 'ip -s link', with no other counter reporting
+them? hinic3_get_stats64() is unchanged at the end of the series, so no
+later patch restores it.
+
+The same patch also removes the nic_dev->txqs and nic_dev->rxqs NULL
+checks. That looks safe: hinic3_sw_init() allocates txqs and rxqs before
+register_netdev(). In hinic3_nic_remove(), hinic3_sw_uninit() frees them
+after unregister_netdev().
+
+It's still unrelated to the stated fix, though. Could these two changes
+be explained in the changelog or moved into separate patches?
+
+[ ... ]
+
+> @@ -795,45 +795,38 @@ static void hinic3_get_stats64(struct net_device *netdev,
+>  	packets = 0;
+>  	dropped = 0;
+>  	for (i = 0; i < nic_dev->max_qps; i++) {
+> -		if (!nic_dev->txqs)
+> -			break;
+> -
+>  		txq = &nic_dev->txqs[i];
+>  		txq_stats = &txq->txq_stats;
+>  		do {
+>  			start = u64_stats_fetch_begin(&txq_stats->syncp);
+> -			bytes += txq_stats->bytes;
+> -			packets += txq_stats->packets;
+> -			dropped += txq_stats->dropped;
+> +			bytes = txq_stats->bytes;
+> +			packets = txq_stats->packets;
+> +			dropped = txq_stats->dropped;
+>  		} while (u64_stats_fetch_retry(&txq_stats->syncp, start));
+> +		stats->tx_packets += packets;
+> +		stats->tx_bytes   += bytes;
+> +		stats->tx_dropped += dropped;
 >  	}
+> -	stats->tx_packets = packets;
+> -	stats->tx_bytes   = bytes;
+> -	stats->tx_dropped = dropped;
 >  
->  	if (rxq->delta >= HINIC3_RX_BUFFER_WRITE)
->  		hinic3_rx_fill_buffers(rxq);
->  
-> -	return nr_pkts;
-> +	return poll_again ? budget : nr_pkts;
+>  	bytes = 0;
+>  	packets = 0;
+>  	errors = 0;
+>  	dropped = 0;
+>  	for (i = 0; i < nic_dev->max_qps; i++) {
+> -		if (!nic_dev->rxqs)
+> -			break;
+> -
+>  		rxq = &nic_dev->rxqs[i];
+>  		rxq_stats = &rxq->rxq_stats;
+>  		do {
+>  			start = u64_stats_fetch_begin(&rxq_stats->syncp);
+> -			bytes += rxq_stats->bytes;
+> -			packets += rxq_stats->packets;
+> -			errors += rxq_stats->csum_errors +
+> -				rxq_stats->other_errors;
+> -			dropped += rxq_stats->dropped;
+> +			bytes = rxq_stats->bytes;
+> +			packets = rxq_stats->packets;
+> +			errors = rxq_stats->other_errors;
+> +			dropped = rxq_stats->dropped;
+>  		} while (u64_stats_fetch_retry(&rxq_stats->syncp, start));
+> +		stats->rx_packets += packets;
+> +		stats->rx_bytes   += bytes;
+> +		stats->rx_errors  += errors;
+> +		stats->rx_dropped += dropped;
+>  	}
+> -	stats->rx_packets = packets;
+> -	stats->rx_bytes   = bytes;
+> -	stats->rx_errors  = errors;
+> -	stats->rx_dropped = dropped;
 >  }
+>  
+>  static void hinic3_nic_set_rx_mode(struct net_device *netdev)
 
 [Severity: Low]
-The patch is described as a fix for an RX stall, so should it carry a
-Fixes: tag? The threshold early exit in hinic3_rx_poll(), and the
-return nr_pkts it reaches, came in with:
+Now that the reads inside both retry loops use '=' instead of '+=',
+the resets before the loops are dead stores. That is bytes, packets and
+dropped before the tx loop, and bytes, packets, errors and dropped
+before the rx loop.
 
-Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Every iteration of the for loop overwrites those locals in the do/while
+before anything reads them. The per-queue values are then summed into
+the rtnl_link_stats64 fields, which dev_get_stats() has already cleared
+before it calls ndo_get_stats64. Nothing reads the zero values.
 
-Without that tag and a net tree target, stable kernels that ship hinic3
-won't pick up the fix.
+This causes no functional problem. The leftover resets still make the
+locals look like accumulators, which is the pattern this patch is
+removing.
+
+Could the resets be dropped? Alternatively, the locals could be declared
+inside the loop bodies, so it's clear they only hold one queue's
+snapshot.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1793946318.git.gongfan1%40huawei.com
