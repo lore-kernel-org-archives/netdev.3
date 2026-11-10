@@ -1,84 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794301077;
-	b=fQTKA8UmkragsV1lb+MAeZe1MwQWIiTF6FpfwpBK0v2UHpIYDVSCX+Bb9FBwMqna+1kq
-	 ysP244ZADaMowPiOUFf8IsAS7hyYeUbfYGk+QPLgDkfJwEx7w9IA5WKuoXbEKEQacEIPE
-	 g5Dj5H9VG+kWPuu1Ak8fWuHeieL7PNG14QTB4RY8yYz5NWEX6QRnDBvJB1yLYLUWOLtsP
-	 loJ5GFcw/iEr+Sd8L6tLYs/U1CEk//TnBnWEe83wYzdba66xlq0Il7Yi51zzmt5KgiUVf
-	 5nh6d2UrsXcaI+Mwjf2UNlM6qDDp9spGPLJyrH6wrMqAdmDKROQWChk1tepkIwvfIZg==
+	t=1794301100;
+	b=2H0ums9lIO+lryEhC8MBLVNwc8rs0sPEo/UPxTQu74h1GR26jQZe5c8u/E8mAxh9r2NN
+	 dnXm98kFnzobcNix3R4ZPSeV3Y8Igz8e60D2WD9ls7Evj7vsMU8KDQJkHb+61UVvm3MmQ
+	 c1hfgEQlKxeEy8axS83MZEO9i3d/ePL3GTNaIba87ZdFJk9o16S5zRM0jtNNpnnZVpl1P
+	 dLW4okH5RqM9D6GI7J8P5vxDZctHpGHk5xs+oALvKTN86AT/DhoXLzDKl3uE11jJO/T0S
+	 Xt2XP10Ueg1FYUpIrylYrdZym1DLUeIYdh20aKYx8TJVeCJWu3eWzcx8bx+Yb8zdTaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794301077;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References;
-	bh=WAWFcZzAavoqXZtTTeDNZQbABpe3c5D5vKbyqr1uSrs=;
-	b=s30NG3TnfPvxHbnnATvPviWjqY9/e1tbGo21VdtUwZ1oXKn2a/iAYsYyNBXIHvMaII3L
-	 feackV8+3tvLLniNY3dl1imP4IRbC17oLsteje+cuCGPOZAgdvoZKC1NNQGRm2oIGVfyq
-	 0eIw974p6X0Egkpk83NVhecjfW548CxytBS0sV2pX2Dp8Id7D7RjF6YtmGQYZTI5K7K0p
-	 Xmc2LmlYUhj8T3aT6fqzMWGVwGD7ytBDUxVZBSJ26bLB/0zGKPWSJHRbKLDJpSrV75PCy
-	 hQuJXYpTUfz99eYLd+Kr52CqzRMhuWC4d/Svi32xParkkg72GC9vwLw2c51RLvU0RkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794301100;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=AKhrhDde+zeBNLPRYslkMeyaWbMgjnPsZgQx7lt5jPM=;
+	b=FnJVNHUvb/iYxSqZQ7z+1utmT8thD4nu9OgR8hrbvZ5qy8IsOq9GlKE6vvWlVdFf9XVW
+	 k33Rn7NdO4DdChQ4a3fLdaDk/I4sP7yKYm92b1YNGNkr2r64U9UaPA8LIrIBzu6Ky2XBn
+	 s3d7h8ehF+AhYtdOxxSX1JOt7JQG1OjRwZgE2tf2gAU/28qRmrqmIUgd+4BYrfi9PmbI3
+	 Qb6C8kKMtZ/oR5sVIGjE6068i93ltHdDjtDWuyP323WRLPcSkfE4bWPxQrQZx8BuYhfMo
+	 g9rZg1zidHu1lv4YKVo1dj/0ZLKhEg1AyGGx3Dn/hx66ohw8uXwVt3BbeNYSPuJa4PA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tgEeLSdK;
-	arc=none smtp.remote-ip=209.85.216.47
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b6yqshmt;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDB9606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:57:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FDB9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DBA606A31C;
+	Tue, 10 Nov 2026 08:58:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5DBA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tgEeLSdK
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b0bbdeae06so1088393a91.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:57:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794301076; x=1794905876; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=WAWFcZzAavoqXZtTTeDNZQbABpe3c5D5vKbyqr1uSrs=;
-        b=tgEeLSdKySVm3DMm7UTi2HP0rQQPoDAs5J5OG9JIZ5GPF9eKnWh/kBv0Fv/0sHJC6Z
-         4NLEQgHrernh/kil81AHgU952uLWi5d2ARUNTiChvf810/8TemOdECAbaAT53ksBazjt
-         8WeXVoNu3zOaGFL31/MKGRlOvf3K/mPbdmkE0tc0Wp0uPuC0/ZzJZ97WRus43XpZUwEN
-         K94FlGGBMl23OuuBrbP7DSPE5vae2OQJWxvBG5V35DOo16uJWStYwoJrYFf7wqzzjXBD
-         foik35QGaZKWQv5/F2MRNaz37kV9ZL5m7lqo9GzPYpR4mQ0i+LDrFmShv4j/kjIIHyJJ
-         LRwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794301076; x=1794905876;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WAWFcZzAavoqXZtTTeDNZQbABpe3c5D5vKbyqr1uSrs=;
-        b=c05ZO0dffreq4wWaA/Gm6LmajDAqdatpf/uFwOMiAStqdZ6pdsafjqQ969/L+t1T8r
-         1gdvxDT9WTkJyvdRWIjefd92I2O45x8YdE8+0cNzgenFi4zX91UrrvQ2Y2cJaUpQVPFv
-         Y4sJ+EzIvTvA4EEtY/2c7GZhGB8pdmJy+X7875eFVy+9FKzpDp4Ggp79pOePvNsrliGh
-         8JwuXuLtB1gejry3VwrokHL+t6tqMqeiMrL+jfZ9BpLqJN/Lh+BuBUJPk+raFv0raYX7
-         zfGo9718dSScdp9wtCOmRPDZaS3oOi7VU4TqxdxIWRqD41M5tK8NO8H3xO7YxCDVn9pE
-         jRpQ==
-X-Forwarded-Encrypted: i=1; AL+hErFd0xGUq6sEW/rgwYzvy/JILcBpfYZDAMA8fZSFjoZsxuNzNU/QyYLi/r48sVVW6LF9gXvVlmE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Y41P7ZYK6ZbFx/5QI2Vy72kFMX5IvvrZ+7xmZYu5NHzeDqn+S
-	m8k+cIqjUIbIEgI4Ju/SmJxcyGBExc1KV4GeA1Ed0UIjuy/LVlZbe0ZE
-X-Gm-Gg: AYBFou2rqRN+qleXTNEs9cpBVJHplUDaPlrb0aGnNYg7XoyGHPL+iSjt2+KZewvDuU6
-	DxPz51UAJzgcsLfTrd2Ub8RWtgid8Qo5wwuxg01akROt3ofG5qFI2PLYDMy/6VFZG+DqioiGAU5
-	RU9JKpkHu2ZdwmBj7NfuDMWIlEBT2q1+/dwvpEdivNwRF7MAkTDph5EltkoNUMgB3k2bfQpWw6j
-	BC6sMT8yR1AwMf+v91jxY09Ho07QCcWZsSO1vA+js+hmuNKboADc9/99HHuXxbd4F19UYCpwfn8
-	mc8xwMMJk+l7xlE6KWgjRIbshZk1vKLDWgbIgIZLwtqJqIhaMfvRgc5sRvcbd6M8XpbN0kcTqL5
-	3uq6yp6UaDhx09a4wx/bgTBx+Imt8PVQOo0WiZTzWALh0s2G+cJNplDqQ0MDHqHsuAI5ri6UduO
-	Ui7PNDW2JB//w7kdNWPE1I/hnO1k9JUyvzyu4Ifl6YCpfDmRtwb1Q5+bXatb0AXOlX6UwlKUIKh
-	k/yPbWwh4qp1tIZgpHm/jZRETj3SzWda+8VFH2LOjIlNnxU2MHKSEuk1Ofwv05hLhqGpSoZQFNI
-	PithIhWAvX5xdOSzhqdii21Sn2AessYC0SBz
-X-Received: by 2002:a17:90b:3b8f:b0:3ae:521e:767f with SMTP id 98e67ed59e1d1-3b166cf69f6mr2140714a91.36.1794301075907;
-        Tue, 10 Nov 2026 00:57:55 -0800 (PST)
-Received: from [58.206.202.11] ([104.28.215.68])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b16769c195sm3071030a91.3.2026.11.10.00.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 00:57:55 -0800 (PST)
-Content-Type: multipart/mixed; boundary="===============3289614648381437450=="
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b6yqshmt
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AA8EkGc603129;
+	Tue, 10 Nov 2026 08:58:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=AKhrhD
+	de+zeBNLPRYslkMeyaWbMgjnPsZgQx7lt5jPM=; b=b6yqshmti4JvabJqcKKvFR
+	IT+FTvO2MTZCf3WQEHFJRTKWHImI51EXRkM8y4YgD66Qqa5KeLUNZkRBLqFqPgvu
+	6uqkAaUEKxOlb1cg5Ssb50/7EtvvHD5MebMYNyvUpWXsNcEmQPpEY8Qdj70L8XEM
+	52RyGJywCaKEOFDggAfVSKUAHqrnats6TBbubk87MfvlTPHzDUiKScr2YPliZSUf
+	3Us4XH/xcj6XtD2Yy0cim9Fd3bH3TBXtol3aJE8UZPdchc3xaDlnKXVp2yCctZwn
+	U6Ni5RvnVBtuwvYvreth4W6XSyW/tS1loEpcvL84yCA/jrjZjsswPxVJ3HfZBXwA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hstdg3m01-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 08:58:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AA7nuBi1541655;
+	Tue, 10 Nov 2026 08:58:10 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htfthnrf4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 08:58:09 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AA8w5S044761588
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Nov 2026 08:58:06 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2BF620043;
+	Tue, 10 Nov 2026 08:58:05 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C6782004B;
+	Tue, 10 Nov 2026 08:58:02 +0000 (GMT)
+Received: from [9.123.13.84] (unknown [9.123.13.84])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Nov 2026 08:58:02 +0000 (GMT)
+Message-ID: <a1580381-e2a2-4b89-8014-4839e9f9b7be@linux.ibm.com>
+Date: Tue, 10 Nov 2026 14:28:01 +0530
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,396 +86,516 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Haoran Wang <haoranwangsec@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, rostedt@goodmis.org, haoranwangsec@gmail.com
-Subject: [PATCH v4] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-Date: Tue, 10 Nov 2026 16:57:51 +0800
-Message-ID: <20261110165742.1204-1-haoranwangsec@gmail.com>
-In-Reply-To: <20261109200332.52e2fc0e@pumpkin>
-References: <179241614797.5916.13928836073297916808@whr> <CANZ3JQQrrntu0TefPZC79pKSmsOfwAngRJyuaVm81DYaJNFHFQ@mail.gmail.com> <20261109180748.33682-1-haoranwangsec@gmail.com> <20261109200332.52e2fc0e@pumpkin>
-
---===============3289614648381437450==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v15] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com
+Cc: hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
+Content-Language: en-US
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=J+M/fwnS c=1 sm=1 tr=0 ts=6af2dca3 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=A18B6vshVeObqJlLmTMA:9 a=t49UGZ5PcdqPmRO1:21
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDAzNCBTYWx0ZWRfXxDqzr+Xx11NY
+ EPtZpX+lWVkvXhc5rJeXb9GNYBT9fIeYvb6c1ZkWhYCGGtEFNXvBY55tHj/+fl5VvLcu9mvjEbX
+ 0eM3MxBhl+Pbhdmj8FF/2T9s5CYnVRQLqCaW1P9ZYx8wCxr7owsCSRqc3dsSr4fne14C0/2h610
+ dMqZv5Z4gghAgLvS5HQZQB9+6m/7e5gIJDbUt29MEBw44+Lux07eYUtFOPvq6rOAJ3v4ALTq8CX
+ 7RtJM4tIvMW2owbXOJ5Us/KQLRzYK8+ECc6c7uaJpUoe6CW0Gw9I1m6LGPJwU5z4nocRl4gnNwt
+ N3lHfOl3JUwyy30CixWvr9fqLwlMhmP6vg4IOoUV6nhi10vXuKTMqyDHCMcELmcRz8tQoJKSTR3
+ aLsmYJtWKlec+FAGkBoFhT0KqrAfgr2QoELbS0Ht0g4Atr1snI8TzhIMtCn1iTeEeo15D6Edtpg
+ 6LjuGuP/oF9vpcCT6vQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDAzNCBTYWx0ZWRfX2RdvAc25MjUq
+ lgdYJl+aQPk24gGZIBk3ANXaRwQi6t5AvVfzTpDm2KGjO4WWUWgsGTqYuOok2DPnv33NZ8nb5vI
+ Vodyz/sP5jfVCfpLD1ks3x/OpSm9KTA=
+X-Proofpoint-GUID: zunmSTqOYlabiqT7arIJRM0E5ezkDnQL
+X-Proofpoint-ORIG-GUID: mXGpMYYXWQvr8cX1DTw1VMMesGbZ58oX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_03,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 suspectscore=0
+ malwarescore=0 clxscore=1011 priorityscore=1501 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100034
 
-ppm_get_cpu_entries() must not acquire a sleeping lock while preemption
-is disabled: get_cpu() raises preempt_count and spin_lock_bh() may sleep
-on PREEMPT_RT kernels.  Read the current CPU with raw_cpu_ptr() instead,
-which keeps the per-CPU accessor stable without disabling preemption.
 
-Using the pool of a CPU the thread has since migrated away from is
-harmless: the per-CPU pools are shards of the global ppod index space,
-and the free path ppm_unmark_entries() derives the owning pool from the
-index instead of from the running CPU, so any thread can service any
-shard.  Derive the global index base from pool->base so it always
-matches the pool that was locked.
 
-Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
+On 02/11/26 2:01 pm, Mahanta Jambigi wrote:
+> The diag dump walks the socket hash table under a read_lock and
+> dereferences conn->lgr and conn->lnk. Several paths expose a window
+> where a hashed socket has freed or partially freed conn/lgr/lnk state.
+> 
+> First, smc_conn_abort() calls smc_conn_free() during early handshake
+> aborts while the socket is still hashed in SMC_INIT, synchronously
+> freeing the lgr on the smc_lgr_cleanup_early() path without holding the
+> hash write_lock. A concurrent diag reader can load a non-NULL conn->lgr
+> and dereference it after the kfree. Skip the connection, link group and
+> DMB attributes in __smc_diag_dump() for sockets in SMC_INIT or
+> SMC_CLOSED or fallen back to TCP, and take diag_mode from an is_smcd
+> flag cached at connection creation.
+> 
+> The state filter alone does not close the race. A connection aborted by
+> a failed handshake can keep its alert token, because smc_conn_free()
+> skips the unregister when smc_lgr_terminate_sched() has emptied
+> lgr->list; close_work may also have been queued before the abort, as the
+> CDC receive path is not excluded by the handshake's socket lock.
+> smc_close_passive_work() would then move the hashed socket from SMC_INIT
+> to SMC_APPCLOSEWAIT1 or SMC_PROCESSABORT, states the filter does not
+> cover, and later run a passive-closing sock_put() that
+> smc_connect_decline_fallback() dropped already. Return early from
+> smc_close_passive_work() when the connection was freed; the check holds
+> the socket lock that every smc_conn_free() caller holds as well, so a
+> hashed socket with a freed connection stays in SMC_INIT or SMC_CLOSED
+> until release.
+> 
+> This changes the sock_diag output for such sockets: the connection, link
+> group and DMB attributes are omitted, which smcss does not read for
+> sockets in these states, while SMC_DIAG_FALLBACK is still reported and
+> an SMC-D socket in SMC_INIT or SMC_CLOSED still reports
+> SMC_DIAG_MODE_SMCD from the cached flag. A fallback socket is a plain
+> TCP socket with no SMC connection state to report; the stale conn fields
+> left behind by smc_conn_abort() must not be read.
+> 
+> Second, in smc_conn_kill() on SMC-D with dmb_nocopy, smcd_buf_detach()
+> NULLs and frees conn->sndbuf_desc while the socket is still hashed. A
+> concurrent diag reader entering the CONNINFO block can dereference the
+> freed descriptor. Unhash the socket right before smcd_buf_detach(). As a
+> result, killed ACTIVE and APPCLOSEWAIT sockets that are still open are
+> no longer visible to smcss on loopback-ism devices.
+> 
+> Third, in the terminal teardown branches of smc_close_active_abort()
+> (PEERCLOSEWAIT and PROCESSABORT groups) and in smc_close_passive_work(),
+> smc_conn_free() drops lgr and lnk references while the socket is still
+> hashed. Unhash immediately before each smc_conn_free() call at those
+> sites. Sockets killed in those close states are therefore unhashed, and
+> their inuse accounting dropped, before close(), even if the fd is still
+> open.
+> 
+> Fourth, use smp_load_acquire() / smp_store_release() on sk_state to
+> order these checks on weakly ordered CPUs. A reader that observes
+> SMC_ACTIVE is guaranteed to see the connection setup that preceded the
+> store; a reader that observes SMC_CLOSED from smc_listen_out_err() skips
+> the connection fields in any case, so that particular store is hardening
+> kept for uniformity, not a required ordering.
+> 
+> Additionally, in __smc_diag_dump(), use the cached link->ibname instead
+> of link->smcibdev->ibdev->name, avoiding a NULL pointer dereference or
+> use-after-free of the IB device when __smcr_link_clear() zeroes the link
+> during concurrent SMC-R link failover. The link data is still read
+> without conns_lock or send_lock, so a dump racing a failover may
+> transiently report zeroed or mixed link fields; this does not affect
+> memory safety and the next dump reports the new link. Like the SMC
+> netlink link dump and the tracepoints, the name is the one cached at
+> link creation time.
+> 
+> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+> Fixes: 2a0674fffb6b ("net/smc: improve abnormal termination of link groups")
+> Fixes: 46c28dbd4c23 ("net/smc: no socket state changes in tasklet context")
+> Fixes: 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R connections")
+> Fixes: ae2be35cbed2 ("net/smc: {at|de}tach sndbuf to peer DMB if supported")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+> ---
+> Changes in v15:
+> - smc_close.c: return early from smc_close_passive_work() when
+>   conn->freed is set; the check runs under lock_sock and every
+>   smc_conn_free() caller holds the socket lock, so it cannot race with
+>   the free. A connection whose unregister was skipped because
+>   smc_lgr_terminate_sched() had emptied lgr->list keeps its alert token
+>   after a failed handshake, and a late peer CDC close or abort
+>   (smc_cdc_rx_handler() does not check conn->freed) queues close_work,
+>   which runs once the handshake thread has dropped the socket lock; it
+>   could move the hashed socket from SMC_INIT to SMC_APPCLOSEWAIT1 or
+>   SMC_PROCESSABORT, states the SMC_INIT/SMC_CLOSED filter in
+>   __smc_diag_dump() does not cover, with conn->lgr pointing at a link
+>   group whose last reference smc_conn_free() already dropped, and later
+>   run a passive-closing sock_put() although
+>   smc_connect_decline_fallback() already dropped that reference on the
+>   failed handshake; add the Fixes tag for 2a0674fffb6b, which
+>   introduced the unregister skip in smc_conn_free(); close_work is also
+>   reachable without a stale token, because the CDC receive path queues
+>   it under bh_lock_sock(), which does not exclude the handshake
+>   thread's lock_sock(), so a close_work queued before the abort runs on
+>   the freed connection as well; that variant exists since close_work
+>   was introduced, hence the additional Fixes tag for 46c28dbd4c23
+> - smc.h, smc_core.c, smc_diag.c: cache the connection type in
+>   conn->is_smcd at smc_conn_create() and take diag_mode from it instead
+>   of dereferencing conn->lgr->is_smcd; v14 reported every non-fallback
+>   socket in SMC_INIT or SMC_CLOSED as SMC_DIAG_MODE_SMCR, including
+>   SMC-D connections, which puts them in the wrong smcss -D / -R group;
+>   SMC-D sockets in SMC_INIT after smc_conn_create() and SMC-D sockets
+>   moved to SMC_CLOSED by smc_close_passive_work() or
+>   smc_close_passive_abort_received() while the fd is still open are
+>   affected; the v14 condition on diag_state in the diag_mode test is
+>   dropped together with the lgr deref
+> - commit message: reword the fourth item; with the SMC_CLOSED check in
+>   __smc_diag_dump() a reader that observes SMC_CLOSED never reads
+>   alert_token_local or conn->lgr, whatever the state was before
+>   smc_listen_out_err() stored it, so the smp_store_release() there is
+>   hardening, not a required ordering, and stable backporters should not
+>   treat it as a standalone fix
+> 
+> Changes in v14:
+> - smc_diag.c: also exclude SMC_CLOSED before dereferencing conn->lgr to
+>   determine diag_mode; a server socket that fails in
+>   smc_listen_decline() with rc < 0 reaches SMC_CLOSED hashed, with a
+>   stale alert_token_local left by smc_conn_free() when
+>   smc_lgr_terminate_sched() had already emptied lgr->list, and the lgr
+>   can be freed by terminate_work while a diag reader still holds the
+>   hash read_lock
+> - commit message: document the diag_mode change for SMC_CLOSED and the
+>   limits of the smp_store_release() in smc_listen_out_err()
+> 
+> Changes in v13:
+> - smc_diag.c: also skip the CONNINFO/LGRINFO/DMBINFO blocks for sockets
+>   with use_fallback set; the SMC_DIAG_FALLBACK attribute is still
+>   reported. After smc_lgr_terminate_sched() emptied lgr->list,
+>   smc_conn_free() skips smc_lgr_unregister_conn(), so a socket that then
+>   falls back and reaches SMC_ACTIVE can keep a stale alert_token_local
+>   and a diag reader could dereference the freed sndbuf/rmb/lgr; a
+>   fallback socket is a plain TCP socket with no SMC connection state to
+>   report
+> - smc_core.c: drop the v11 and v12 changes (unconditional
+>   smc_lgr_unregister_conn() in smc_conn_free() and the
+>   !lgr->terminating check in smc_lgr_schedule_free_work()); the v12
+>   check was racy against __smc_lgr_terminate() and the changes moved the
+>   patch away from the diag reader race, so smc_core.c is back to the v10
+>   change only; the Fixes tag for 2a0674fffb6b added in v11 is dropped
+>   with them
+> - commit message: state that using the cached link->ibname avoids the
+>   NULL pointer dereference and the IB device use-after-free, and that
+>   link fields may be transiently zeroed or mixed in a dump racing with a
+>   link failover, without affecting memory safety
+> - commit message: drop the claim that other kill paths leave the socket
+>   hashed; every smc_conn_kill() ends in smc_close_active_abort(), so
+>   sockets killed in the PEERCLOSEWAIT1/2, PEERFINCLOSEWAIT, PROCESSABORT
+>   and APPFINCLOSEWAIT states are unhashed before close() even if the fd
+>   is still open, and the dmb_nocopy unhash hides ACTIVE/APPCLOSEWAIT
+>   sockets on loopback-ism; smcss visibility thus depends on close state
+>   and device type; this supersedes the v10 entry below
+> 
+> Changes in v12:
+> - smc_core.c: guard smc_lgr_schedule_free_work() with !lgr->terminating
+>   in addition to !lgr->freeing, preventing free_work from being re-armed
+>   on a terminating LGR after smc_lgr_cleanup_early() has called
+>   __smc_lgr_terminate() (which sets terminating=1 and cancels free_work
+>   without setting freeing=1); without this a concurrent smc_conn_free()
+>   decrementing conns_num to 0 would re-arm free_work, and the subsequent
+>   kfree(lgr) in smc_lgr_free() would leave the armed work pointing at
+>   freed memory
+> 
+> Changes in v11:
+> - smc_core.c: unregister connection unconditionally in smc_conn_free()
+>   rather than gating it on !list_empty(&lgr->list), ensuring
+>   alert_token_local is always reset to 0
+> - commit message: add Fixes tag for 2a0674fffb6b and clarify that
+>   copying cached link->ibname eliminates the NULL dereference / UAF
+>   during concurrent link clearing
+> 
+> Changes in v10:
+> - smc_core.c: move the unhash out of the top of smc_conn_kill() into the
+>   smc_ism_support_dmb_nocopy() branch, right before smcd_buf_detach(); the
+>   other kill paths leave ACTIVE/APPCLOSEWAIT sockets open, so they must
+>   stay visible to smcss and keep their inuse accounting
+> - commit message: document the sock_diag output changes for sockets in
+>   SMC_INIT and SMC_CLOSED (extension attributes omitted, diag_mode of
+>   SMC-D in SMC_INIT) and that ibname is the name cached at link creation
+> 
+> Changes in v9:
+> - af_smc.c: change plain store in smc_listen_out_err() to
+>   smp_store_release(&newsmcsk->sk_state, SMC_CLOSED) to order the
+>   preceding alert_token_local clear (done under write_lock_bh() inside
+>   smc_conn_free()) before the sk_state write; pairs with the
+>   smp_load_acquire() in __smc_diag_dump() to close a use-after-free on
+>   weakly ordered CPUs where a diag reader could observe SMC_CLOSED while
+>   conn->lgr still appeared live
+> 
+> Changes in v8:
+> - smc_diag.c: use smp_load_acquire(&sk->sk_state) to prevent
+>   speculative load reordering on weakly ordered CPUs (such as arm64)
+>   during handshake abort fallback
+> - af_smc.c: pair with smp_store_release(&sk->sk_state, SMC_ACTIVE)
+>   when transitioning out of SMC_INIT
+> - smc_diag.c: copy cached link->ibname instead of chasing
+>   link->smcibdev->ibdev->name to prevent NULL pointer dereference / UAF
+>   if __smcr_link_clear() zeroes the link during link failover
+> 
+> Changes in v7:
+> - no code changes; commit message only
+> - document the SMC_CLOSED leg of the early-exit guard and the rationale
+>   that smcss already skips CLOSED sockets on the userspace side; add
+>   a Fixes tag for ae2be35cbed2 for the smc_conn_kill() hunk since
+>   smcd_buf_detach() was introduced by that commit
+> 
+> Changes in v6:
+> - smc_diag.c: inline sk->sk_state != SMC_INIT into the else-if
+>   condition so conn->lgr->is_smcd is never loaded for SMC_INIT sockets;
+>   retain the SMC_INIT || SMC_CLOSED early-exit guard and out: label
+>   from v5 to defensively skip the CONNINFO/LGRINFO/DMBINFO blocks for
+>   sockets with no live connection
+> - smc_close.c: remove the unconditional unhash from the top of
+>   smc_close_active_abort(); place it scoped immediately before each of
+>   the two smc_conn_free() calls in the PEERCLOSEWAIT and PROCESSABORT
+>   branches, and before smc_conn_free() in smc_close_passive_work();
+>   this avoids prematurely hiding live SMC_ACTIVE/APPCLOSEWAIT sockets
+>   from smcss
+> - smc_core.c: unhash at the top of smc_conn_kill(), before
+>   smcd_buf_detach(), so the socket is off the hash table before
+>   conn->sndbuf_desc is freed on the dmb_nocopy path
+> 
+> Changes in v5:
+> - guard conn/lgr/lnk blocks in __smc_diag_dump() with an
+>   (SMC_INIT || SMC_CLOSED) state check placed after the
+>   SMC_DIAG_FALLBACK nla_put; SMC_INIT can coexist with fallback
+>   (smc_sendmsg() MSG_FASTOPEN path), so the guard must not suppress
+>   the fallback reason
+> 
+> Changes in v4:
+> - dropped smc_conn_unhash() wrapper, conn->unhashed flag, and all
+>   changes to af_smc.c, smc.h, smc_core.c and smc_core.h;
+>   smc_unhash_sk() is already idempotent via sk_hashed(), so direct
+>   calls at the two teardown sites in smc_close.c are sufficient
+> - dropped the __smc_release() hunk: it needs no change since the
+>   subsequent unhash there is already a safe no-op
+> - fixed premature-unhash issue present in v3: smc_conn_free() must not
+>   unhash because smc_conn_abort() calls it before
+>   smc_switch_to_fallback() in both smc_listen_decline() and
+>   smc_connect_rdma() error paths; unhashing there would make live
+>   fallback sockets invisible to smcss
+> - likewise, the ISM/RDMA retry loops call smc_conn_abort() on a failed
+>   attempt and then smc_conn_create() on the next device; unhashing in
+>   smc_conn_free() would permanently hide the established connection from
+>   smc_diag since smc_conn_create() does not re-hash the socket
+> 
+> Changes in v3:
+> - redesigned as a single patch; dropped the lgr_lnk_lock spinlock
+>   approach and the 2-patch split
+> 
+> Changes in v2:
+> - split into a 2-patch series; patch 1/2 adds per-connection
+>   lgr_lnk_lock infrastructure to smc_core, patch 2/2 fixes the diag
+>   dump path using it
+> 
+> 
+>  net/smc/af_smc.c    | 10 +++++-----
+>  net/smc/smc.h       |  1 +
+>  net/smc/smc_close.c | 14 ++++++++++++++
+>  net/smc/smc_core.c  |  8 +++++++-
+>  net/smc/smc_diag.c  | 12 ++++++++----
+>  5 files changed, 35 insertions(+), 10 deletions(-)
+> 
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index d10244af5bd2..ec5980add7a9 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+> @@ -980,7 +980,7 @@ static int smc_connect_fallback(struct smc_sock *smc, int reason_code)
+>  	smc_copy_sock_settings_to_clc(smc);
+>  	smc->connect_nonblock = 0;
+>  	if (smc->sk.sk_state == SMC_INIT)
+> -		smc->sk.sk_state = SMC_ACTIVE;
+> +		smp_store_release(&smc->sk.sk_state, SMC_ACTIVE);
+>  	return 0;
+>  }
+> 
+> @@ -1385,7 +1385,7 @@ static int smc_connect_rdma(struct smc_sock *smc,
+>  	smc_copy_sock_settings_to_clc(smc);
+>  	smc->connect_nonblock = 0;
+>  	if (smc->sk.sk_state == SMC_INIT)
+> -		smc->sk.sk_state = SMC_ACTIVE;
+> +		smp_store_release(&smc->sk.sk_state, SMC_ACTIVE);
+> 
+>  	return 0;
+>  connect_abort:
+> @@ -1488,7 +1488,7 @@ static int smc_connect_ism(struct smc_sock *smc,
+>  	smc_copy_sock_settings_to_clc(smc);
+>  	smc->connect_nonblock = 0;
+>  	if (smc->sk.sk_state == SMC_INIT)
+> -		smc->sk.sk_state = SMC_ACTIVE;
+> +		smp_store_release(&smc->sk.sk_state, SMC_ACTIVE);
+> 
+>  	return 0;
+>  connect_abort:
+> @@ -1957,7 +1957,7 @@ static void smc_listen_out_connected(struct smc_sock *new_smc)
+>  	struct sock *newsmcsk = &new_smc->sk;
+> 
+>  	if (newsmcsk->sk_state == SMC_INIT)
+> -		newsmcsk->sk_state = SMC_ACTIVE;
+> +		smp_store_release(&newsmcsk->sk_state, SMC_ACTIVE);
+> 
+>  	smc_listen_out(new_smc);
+>  }
+> @@ -1971,7 +1971,7 @@ static void smc_listen_out_err(struct smc_sock *new_smc)
+>  	this_cpu_inc(net->smc.smc_stats->srv_hshake_err_cnt);
+>  	if (newsmcsk->sk_state == SMC_INIT)
+>  		sock_put(&new_smc->sk); /* passive closing */
+> -	newsmcsk->sk_state = SMC_CLOSED;
+> +	smp_store_release(&newsmcsk->sk_state, SMC_CLOSED);
+> 
+>  	smc_listen_out(new_smc);
+>  }
+> diff --git a/net/smc/smc.h b/net/smc/smc.h
+> index 427b6d63b993..36b243b34a9a 100644
+> --- a/net/smc/smc.h
+> +++ b/net/smc/smc.h
+> @@ -196,6 +196,7 @@ struct smc_connection {
+>  	struct rb_node		alert_node;
+>  	struct smc_link_group	*lgr;		/* link group of connection */
+>  	struct smc_link		*lnk;		/* assigned SMC-R link */
+> +	bool			is_smcd;	/* SMC-R or SMC-D connection */
+>  	u32			alert_token_local; /* unique conn. id */
+>  	u8			peer_rmbe_idx;	/* from tcp handshake */
+>  	int			peer_rmbe_size;	/* size of peer rx buffer */
+> diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+> index a8d4b4b65f24..dcb560f1947c 100644
+> --- a/net/smc/smc_close.c
+> +++ b/net/smc/smc_close.c
+> @@ -155,6 +155,7 @@ void smc_close_active_abort(struct smc_sock *smc)
+>  		if (sk->sk_state != SMC_PEERABORTWAIT)
+>  			break;
+>  		sk->sk_state = SMC_CLOSED;
+> +		sk->sk_prot->unhash(sk);
+>  		smc_conn_free(&smc->conn);
+>  		release_clcsock = true;
+>  		sock_put(sk); /* passive closing */
+> @@ -166,6 +167,7 @@ void smc_close_active_abort(struct smc_sock *smc)
+>  		if (sk->sk_state != SMC_PEERABORTWAIT)
+>  			break;
+>  		sk->sk_state = SMC_CLOSED;
+> +		sk->sk_prot->unhash(sk);
+>  		smc_conn_free(&smc->conn);
+>  		release_clcsock = true;
+>  		break;
+> @@ -370,6 +372,17 @@ static void smc_close_passive_work(struct work_struct *work)
+>  	lock_sock(sk);
+>  	old_state = sk->sk_state;
+> 
+> +	if (conn->freed) {
+> +		/* conn->freed is set under the socket lock, which is
+> +		 * held here as well, so this cannot race with the free; the
+> +		 * state machine and its postponed sock_put() are not owed
+> +		 * anymore
+> +		 */
+> +		release_sock(sk);
+> +		sock_put(sk); /* sock_hold done by schedulers of close_work */
+> +		return;
+> +	}
+> +
+>  	rxflags = &conn->local_rx_ctrl.conn_state_flags;
+>  	if (rxflags->peer_conn_abort) {
+>  		/* peer has not received all data */
+> @@ -437,6 +449,7 @@ static void smc_close_passive_work(struct work_struct *work)
+>  		sk->sk_state_change(sk);
+>  		if ((sk->sk_state == SMC_CLOSED) &&
+>  		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
+> +			sk->sk_prot->unhash(sk);
+>  			smc_conn_free(conn);
+>  			if (smc->clcsock)
+>  				release_clcsock = true;
+> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+> index 6021322253e9..0a9f5418329a 100644
+> --- a/net/smc/smc_core.c
+> +++ b/net/smc/smc_core.c
+> @@ -1532,8 +1532,10 @@ static void smc_conn_kill(struct smc_connection *conn, bool soft)
+>  			tasklet_kill(&conn->rx_tsklet);
+>  		else
+>  			tasklet_unlock_wait(&conn->rx_tsklet);
+> -		if (smc_ism_support_dmb_nocopy(conn->lgr->smcd))
+> +		if (smc_ism_support_dmb_nocopy(conn->lgr->smcd)) {
+> +			smc->sk.sk_prot->unhash(&smc->sk);
+>  			smcd_buf_detach(conn);
+> +		}
+>  	} else {
+>  		smc_cdc_wait_pend_tx_wr(conn);
+>  	}
+> @@ -2053,6 +2055,10 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+>  			goto out;
+>  		}
+>  	}
+> +	/* cache the connection type: smc_diag reads it after
+> +	 * smc_conn_free() dropped the link group reference
+> +	 */
+> +	conn->is_smcd = conn->lgr->is_smcd;
 
----
-Hi David,
+This could lead to stale value on failed retries. is_smcd is only
+assigned on the success path of smc_conn_create(). Take a listen side
+ISM v2 attempt that succeeds and then aborts, followed by an SMC-R
+attempt whose smc_conn_create() fails before reaching this line. If the
+socket then closes without falling back, it reports SMC_DIAG_MODE_SMCD
+for an SMC-R attempt. This is cosmetic, but you could clear it at the
+start of smc_conn_create().
 
-thanks for the comments.  v4 below:
+>  	smc_lgr_hold(conn->lgr); /* lgr_put in smc_conn_free() */
+>  	if (!conn->lgr->is_smcd)
+>  		smcr_link_hold(conn->lnk); /* link_put in smc_conn_free() */
+> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+> index bf0beaa23bdb..15485a08d9a0 100644
+> --- a/net/smc/smc_diag.c
+> +++ b/net/smc/smc_diag.c
+> @@ -87,10 +87,10 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+> 
+>  	r = nlmsg_data(nlh);
+>  	smc_diag_msg_common_fill(r, sk);
+> -	r->diag_state = sk->sk_state;
+> +	r->diag_state = smp_load_acquire(&sk->sk_state);
+>  	if (smc->use_fallback)
+>  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+> +	else if (smc->conn.is_smcd)
+>  		r->diag_mode = SMC_DIAG_MODE_SMCD;
+>  	else
+>  		r->diag_mode = SMC_DIAG_MODE_SMCR;
+> @@ -103,6 +103,10 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
+>  		goto errout;
+> 
+> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED ||
+> +	    smc->use_fallback)
+> +		goto out;
+> +
+>  	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
+>  	    smc->conn.alert_token_local) {
+>  		struct smc_connection *conn = &smc->conn;
+> @@ -154,8 +158,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  			.lnk[0].link_id = link->link_id,
+>  		};
+> 
+> -		memcpy(linfo.lnk[0].ibname, link->smcibdev->ibdev->name,
+> -		       sizeof(link->smcibdev->ibdev->name));
+> +		memcpy(linfo.lnk[0].ibname, link->ibname, sizeof(link->ibname));
+>  		smc_gid_be16_convert(linfo.lnk[0].gid, link->gid);
+>  		smc_gid_be16_convert(linfo.lnk[0].peer_gid, link->peer_gid);
+> 
+> @@ -185,6 +188,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  			goto errout;
+>  	}
+> 
+> +out:
+>  	nlmsg_end(skb, nlh);
+>  	return 0;
+> 
+> --
+> 2.50.1 (Apple Git-155)
+> 
+> 
 
-- The commit message now explains why using the pool of another CPU is
-  harmless, and the PREEMPT_RT problem statement is trimmed to two
-  sentences.
-- pr_debug() now labels the pool's owner as "pool cpu" and also prints
-  the running CPU, so a thread servicing a foreign shard is visible in
-  the log.
-- I also stress-tested the patched allocator itself: the unmodified
-  libcxgb_ppm.c with this patch applied, compiled into an out-of-tree
-  module and driven through the real cxgbi_ppm_ppods_reserve() /
-  cxgbi_ppm_ppod_release() API by 8 unbound kernel threads on a 2-CPU
-  QEMU x86_64 guest, with about half of the releases executed by
-  another thread (and so, usually, another CPU).  Across 7 runs
-  totalling 1.12M allocations there was no double-issued index, no bad
-  free, and every pool drained back to empty each run; 4 allocations
-  were naturally served by another CPU's pool because the caller
-  migrated inside the allocator, and the accounting stayed exact.  The
-  test harness is AI-generated; module and logs are attached.
-- On the sharding granularity: agreed, the per-pool split only spreads
-  lock contention and cache-line bouncing; on systems with thousands of
-  CPUs a coarser sharding would serve the same purpose.  That is a
-  separate optimisation and does not affect this fix, so I left it
-  untouched here.
+I see that Checkpatch throws 6 warnings.
+Otherwise Patch looks good to me.
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
 
-Changes since v3:
-- Explain in the commit message why a foreign CPU's pool is harmless;
-  trim the PREEMPT_RT problem description (review).
-- pr_debug(): print the running CPU and the pool-owning CPU separately
-  and label them accordingly (review).
-- pr_debug(): the owning CPU keeps being derived from pool->base, so it
-  is always consistent with the locked pool.
-- Attach stress-test evidence for the foreign-pool argument.
 
-Changes since v2:
-- Keep the owning CPU in the pr_debug() output, derived from
-  pool->base / ppm->pool_index_max (suggested by Sebastian).
-- Reword the commit message to describe what the patch does and move
-  the review discussion into this changelog; spell PREEMPT_RT.
 
-Changes since v1:
-- Drop the cpu variable: read the global-index base from pool->base
-  (initialised at pool allocation) instead of a cpu captured before
-  the lock, so the base is always consistent with the pool that was
-  locked.
 
- drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
---- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-+++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-@@ -119,16 +119,13 @@
- 			       unsigned long caller_data)
- {
- 	struct cxgbi_ppm_pool *pool;
--	unsigned int cpu;
- 	int i;
- 
- 	if (!ppm->pool)
- 		return -EINVAL;
- 
--	cpu = get_cpu();
--	pool = per_cpu_ptr(ppm->pool, cpu);
-+	pool = raw_cpu_ptr(ppm->pool);
- 	spin_lock_bh(&pool->lock);
--	put_cpu();
- 
- 	i = ppm_find_unused_entries(pool->bmap, ppm->pool_index_max,
- 				    pool->next, count, 0);
-@@ -144,11 +141,12 @@
- 
- 	spin_unlock_bh(&pool->lock);
- 
--	pr_debug("%s: cpu %u, idx %d + %d (%d), next %u.\n",
--		 __func__, cpu, i, count, i + cpu * ppm->pool_index_max,
--		pool->next);
-+	pr_debug("%s: cpu %u, pool cpu %u, idx %d + %d (%d), next %u.\n",
-+		 __func__, raw_smp_processor_id(),
-+		 pool->base / ppm->pool_index_max, i, count, i + pool->base,
-+		 pool->next);
- 
--	i += cpu * ppm->pool_index_max;
-+	i += pool->base;
- 	ppm_mark_entries(ppm, i, count, caller_data);
- 
- 	return i;
-@@ -375,6 +373,7 @@
- 
- 		memset(ppool, 0, alloc_sz);
- 		spin_lock_init(&ppool->lock);
-+		ppool->base = count;
- 		count += ppmax;
- 	}
- 
---===============3289614648381437450==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="ppm_v4_stresstest.txt"
-
-bGliY3hnYiBwcG0gdjQgLS0gc3RyZXNzIHRlc3QgZm9yIHRoZSAid3JvbmcgQ1BVJ3MgcG9vbCIg
-cXVlc3Rpb24KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT0KCkRJU0NMT1NVUkUKLS0tLS0tLS0tLQpUaGUgdGVzdCBoYXJuZXNz
-IGJlbG93IChwb29sdGVzdF9yZWFsLmMsIE1ha2VmaWxlIGFuZCB0aGUgcnVuIHJlY2lwZSkKaXMg
-QUktZ2VuZXJhdGVkIGNvZGUgKENsYXVkZSkuICBUaGUgY29kZSB1bmRlciB0ZXN0IGlzIHRoZSB1
-bm1vZGlmaWVkCmRyaXZlcnMvbmV0L2V0aGVybmV0L2NoZWxzaW8vbGliY3hnYi9saWJjeGdiX3Bw
-bS5jIChMaW51eCA3LjMpLCB3aXRoCnRoZSBwcm9wb3NlZCB2NCBwYXRjaCBhcHBsaWVkIHZlcmJh
-dGltIHZpYSBgcGF0Y2ggLXAxYCwgY29tcGlsZWQgaW50bwp0aGUgdGVzdCBtb2R1bGUuCgpXSEFU
-IElUIFRFU1RTCi0tLS0tLS0tLS0tLS0KVGhlIHF1ZXN0aW9uIGZyb20gcmV2aWV3OiB3aHkgaXMg
-aXQgaGFybWxlc3Mgd2hlbiBwcG1fZ2V0X2NwdV9lbnRyaWVzKCkKZW5kcyB1cCB1c2luZyB0aGUg
-cG9vbCBvZiBhIENQVSB0aGUgY2FsbGVyIGhhcyBtaWdyYXRlZCBhd2F5IGZyb20/CgpUaGUgbW9k
-dWxlIGluY2x1ZGVzIHRoZSBwYXRjaGVkIGxpYmN4Z2JfcHBtLmMgYW5kIGV4ZXJjaXNlcyB0aGUg
-cmVhbApBUEkgb25seToKCiAgLSBjeGdiaV9wcG1faW5pdCgpICAgICAgICAgIHJlYWwgcHBtIHNl
-dHVwIChwcG1heCAxNjM4NCwgcmVzZXJ2ZQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBm
-YWN0b3IgMjogNDA5NiBwcG9kcyBwZXIgQ1BVIHBvb2wgcGx1cwogICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICA4MTkyIGluIHRoZSBnZW5lcmFsIHBvb2wpLAogIC0gY3hnYmlfcHBtX3Bwb2Rz
-X3Jlc2VydmUoKSBhbGxvY2F0ZXMgdmlhIHBwbV9nZXRfY3B1X2VudHJpZXMoKSAtLQogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB0aGUgZnVuY3Rpb24gdGhpcyBwYXRjaCB0b3VjaGVzIC0t
-IHdpdGgKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGhlIGdlbmVyYWwgcG9vbCBhcyBm
-YWxsYmFjaywgZXhhY3RseSBhcwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aGUgZHJp
-dmVycyB1c2UgaXQsCiAgLSBjeGdiaV9wcG1fcHBvZF9yZWxlYXNlKCkgIGZyZWVzIHZpYSBwcG1f
-dW5tYXJrX2VudHJpZXMoKSwgd2hpY2gKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVy
-aXZlcyB0aGUgb3duaW5nIHBvb2wgZnJvbSB0aGUgaW5kZXguCgo4IHVuYm91bmQga2VybmVsIHRo
-cmVhZHMgb3Zlci1zdWJzY3JpYmUgMiBDUFVzIHNvIHRoZSBzY2hlZHVsZXIKbWlncmF0ZXMgdGhl
-bSwgYW5kIGFib3V0IGhhbGYgb2YgdGhlIHBwb2RzIGFyZSBoYW5kZWQgdG8gYW5vdGhlcgp0aHJl
-YWQgKGFuZCBzbywgdXN1YWxseSwgYW5vdGhlciBDUFUpIGZvciByZWxlYXNlLiAgQSBnbG9iYWwg
-Yml0bWFwCm9yYWNsZSBmbGFncyBhbnkgaW5kZXggdGhhdCBpcyBpc3N1ZWQgdHdpY2Ugb3IgZnJl
-ZWQgdHdpY2UgLyBuZXZlcgppc3N1ZWQ7IGF0IHRoZSBlbmQgZXZlcnkgcG9vbCBiaXRtYXAgbXVz
-dCBiZSBlbXB0eSBhbmQgaXNzdWVkIG11c3QKZXF1YWwgZnJlZWQuICBFYWNoIGFsbG9jYXRpb24g
-YWxzbyByZWNvcmRzIHdoZXRoZXIgdGhlIHBvb2wgdGhhdApzZXJ2ZWQgaXQgYmVsb25ncyB0byB0
-aGUgQ1BVIHRoZSBjYWxsZXIgaXMgb24gd2hlbiB0aGUgY2FsbCByZXR1cm5zCigiZm9yZWlnbiBw
-b29sIG9ic2VydmF0aW9uIikuCgpSRVNVTFRTIChMaW51eCA3LjMsIHg4Nl82NCwgUUVNVSBxMzUs
-IDIgQ1BVcywgcHJpc3RpbmUga2VybmVsOyB0aGUKbW9kdWxlIGlzIHRoZSBvbmx5IG91dC1vZi10
-cmVlIGFydGlmYWN0KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMYXN0IGJvb3QsIDMgcm91bmRzIG9mIDggdGhyZWFkcyB4
-IDIwMDAwIHJlc2VydmF0aW9ucyBlYWNoOgoKbGliY3hnYjogaXBwbSBsbzogcHBtIDB4MDAwMDAw
-MDAxYTJjYzJmOCwgMHgwMDAwMDAwMDA3ODdiNWFlLCBiYXNlIDAvMTYzODQsIHBnIDQwOTYsMCwg
-cnN2ZCA4MTkyLDQwOTYuCnBvb2x0ZXN0X3JlYWw6IHJlYWwgcHBtOiBwcG1heCAxNjM4NCwgcG9v
-bF9yc3ZkIDgxOTIsIHBvb2xfaW5kZXhfbWF4IDQwOTYsIGJtYXBfaW5kZXhfbWF4IDgxOTIsIHBv
-c3NpYmxlIGNwdXMgMgpwb29sdGVzdF9yZWFsOiBjcHUwIHBvb2wgYmFzZSAwIChzZXQgYnkgdjQg
-aW5pdCBodW5rKQpwb29sdGVzdF9yZWFsOiBjcHUxIHBvb2wgYmFzZSA0MDk2IChzZXQgYnkgdjQg
-aW5pdCBodW5rKQpwb29sdGVzdF9yZWFsOiBSRVNVTFQ6IGFsbG9jcz0xNjAwMDAgKG93bi1mcmVl
-PTc5ODk3IGhhbmRvZmYtZnJlZT03OTg5NCkgbWlncmF0aW9ucz0wIGZvcmVpZ25fcG9vbF9vYnM9
-MCBlbm9zcGM9MApwb29sdGVzdF9yZWFsOiBPUkFDTEU6IGRvdWJsZV9hbGxvYz0wIGJhZF9mcmVl
-PTAgaXNzdWVkPTM5OTUwMSBmcmVlZD0zOTk1MDEgbGVmdF9pc3N1ZWQ9MCBwb29sX2xlYWs9MCBn
-ZW5lcmFsX2xlYWs9MApwb29sdGVzdF9yZWFsOiBSRUFMIENPREUgKHY0LXBhdGNoZWQpIEhPTERT
-IEFMTCBJTlZBUklBTlRTCmxpYmN4Z2I6IGlwcG0gbG86IHBwbSAweDAwMDAwMDAwMWEyY2MyZjgs
-IDB4MDAwMDAwMDAwNzg3YjVhZSwgYmFzZSAwLzE2Mzg0LCBwZyA0MDk2LDAsIHJzdmQgODE5Miw0
-MDk2Lgpwb29sdGVzdF9yZWFsOiByZWFsIHBwbTogcHBtYXggMTYzODQsIHBvb2xfcnN2ZCA4MTky
-LCBwb29sX2luZGV4X21heCA0MDk2LCBibWFwX2luZGV4X21heCA4MTkyLCBwb3NzaWJsZSBjcHVz
-IDIKcG9vbHRlc3RfcmVhbDogY3B1MCBwb29sIGJhc2UgMCAoc2V0IGJ5IHY0IGluaXQgaHVuaykK
-cG9vbHRlc3RfcmVhbDogY3B1MSBwb29sIGJhc2UgNDA5NiAoc2V0IGJ5IHY0IGluaXQgaHVuaykK
-cG9vbHRlc3RfcmVhbDogUkVTVUxUOiBhbGxvY3M9MTYwMDAwIChvd24tZnJlZT04MDQwNyBoYW5k
-b2ZmLWZyZWU9Nzk0ODgpIG1pZ3JhdGlvbnM9MSBmb3JlaWduX3Bvb2xfb2JzPTAgZW5vc3BjPTAK
-cG9vbHRlc3RfcmVhbDogT1JBQ0xFOiBkb3VibGVfYWxsb2M9MCBiYWRfZnJlZT0wIGlzc3VlZD0z
-OTk0ODMgZnJlZWQ9Mzk5NDgzIGxlZnRfaXNzdWVkPTAgcG9vbF9sZWFrPTAgZ2VuZXJhbF9sZWFr
-PTAKcG9vbHRlc3RfcmVhbDogUkVBTCBDT0RFICh2NC1wYXRjaGVkKSBIT0xEUyBBTEwgSU5WQVJJ
-QU5UUwpsaWJjeGdiOiBpcHBtIGxvOiBwcG0gMHgwMDAwMDAwMDFhMmNjMmY4LCAweDAwMDAwMDAw
-MDc4N2I1YWUsIGJhc2UgMC8xNjM4NCwgcGcgNDA5NiwwLCByc3ZkIDgxOTIsNDA5Ni4KcG9vbHRl
-c3RfcmVhbDogcmVhbCBwcG06IHBwbWF4IDE2Mzg0LCBwb29sX3JzdmQgODE5MiwgcG9vbF9pbmRl
-eF9tYXggNDA5NiwgYm1hcF9pbmRleF9tYXggODE5MiwgcG9zc2libGUgY3B1cyAyCnBvb2x0ZXN0
-X3JlYWw6IGNwdTAgcG9vbCBiYXNlIDAgKHNldCBieSB2NCBpbml0IGh1bmspCnBvb2x0ZXN0X3Jl
-YWw6IGNwdTEgcG9vbCBiYXNlIDQwOTYgKHNldCBieSB2NCBpbml0IGh1bmspCnBvb2x0ZXN0X3Jl
-YWw6IFJFU1VMVDogYWxsb2NzPTE2MDAwMCAob3duLWZyZWU9ODAxNzUgaGFuZG9mZi1mcmVlPTc5
-NjIxKSBtaWdyYXRpb25zPTAgZm9yZWlnbl9wb29sX29icz0wIGVub3NwYz0wCnBvb2x0ZXN0X3Jl
-YWw6IE9SQUNMRTogZG91YmxlX2FsbG9jPTAgYmFkX2ZyZWU9MCBpc3N1ZWQ9NDAwMTA3IGZyZWVk
-PTQwMDEwNyBsZWZ0X2lzc3VlZD0wIHBvb2xfbGVhaz0wIGdlbmVyYWxfbGVhaz0wCnBvb2x0ZXN0
-X3JlYWw6IFJFQUwgQ09ERSAodjQtcGF0Y2hlZCkgSE9MRFMgQUxMIElOVkFSSUFOVFMKCkN1bXVs
-YXRpdmUgb3ZlciA3IHJ1bnMgKHJvdW5kcykgb2YgdGhlIHNhbWUgbG9hZDoKCiAgYWxsb2NhdGlv
-bnMgICAgICAgICAgICAgICAgICAgIDEuMTJNICAoNyB4IDE2MGspCiAgdGhyZWFkIG1pZ3JhdGlv
-bnMgb2JzZXJ2ZWQgICAgICAgIDE0CiAgYWxsb2NhdGlvbnMgc2VydmVkIGJ5IGEgZm9yZWlnbgog
-IENQVSdzIHBvb2wgKG5hdHVyYWxseSBvY2N1cnJpbmcpICAgNAogIGRvdWJsZS1pc3N1ZWQgaW5k
-ZXggICAgICAgICAgICAgICAgMAogIGJhZCBmcmVlICAgICAgICAgICAgICAgICAgICAgICAgICAg
-MAogIGxlYWtlZCAvIGxvc3QgZW50cmllcyAgICAgICAgICAgICAgMCAgIChhbGwgcG9vbHMgZHJh
-aW5lZCB0byBlbXB0eQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBl
-dmVyeSBydW4sIGlzc3VlZCA9PSBmcmVlZCkKClNvIHRoZSAid3JvbmcgQ1BVJ3MgcG9vbCIgY2Fz
-ZSBkb2VzIG9jY3VyIG9uIHRoZSByZWFsLCBwYXRjaGVkIGNvZGUsCmFuZCB0aGUgYWNjb3VudGlu
-ZyBzdGF5cyBleGFjdC4gIFRoaXMgbWF0Y2hlcyB0aGUgYXJndW1lbnQgaW4gdGhlCmNvbW1pdCBt
-ZXNzYWdlOiB0aGUgcG9vbCB0aGF0IGlzIGxvY2tlZCBhbHdheXMgb3ducyB0aGUgaW5kZXggcmFu
-Z2UgaXQKaGFuZHMgb3V0LCBhbmQgdGhlIGZyZWUgcGF0aCBkZXJpdmVzIHRoZSBwb29sIGZyb20g
-dGhlIGluZGV4IGl0c2VsZiwKbmV2ZXIgZnJvbSB0aGUgcnVubmluZyBDUFUuCgpIT1cgVE8gUkVQ
-Uk9EVUNFCi0tLS0tLS0tLS0tLS0tLS0KICAgICMgMS4gcGF0Y2hlZCBjb3B5IG9mIHRoZSByZWFs
-IHNvdXJjZSAoc2luZ2xlIHNvdXJjZSBvZiB0cnV0aCBpcwogICAgIyAgICB0aGUgdjQgcGF0Y2gg
-aXRzZWxmKQogICAgbWtkaXIgLXAgci9kcml2ZXJzL25ldC9ldGhlcm5ldC9jaGVsc2lvL2xpYmN4
-Z2IKICAgIGNwIDxrZXJuZWw+L2RyaXZlcnMvbmV0L2V0aGVybmV0L2NoZWxzaW8vbGliY3hnYi9s
-aWJjeGdiX3BwbS57YyxofSBcCiAgICAgICByL2RyaXZlcnMvbmV0L2V0aGVybmV0L2NoZWxzaW8v
-bGliY3hnYi8KICAgICggY2QgciAmJiBwYXRjaCAtcDEgPCBsaWJjeGdiX3Y0LnBhdGNoICkKICAg
-IHNlZCAnL15NT0RVTEVfQVVUSE9SLywkZCcgXAogICAgICAgIHIvZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvY2hlbHNpby9saWJjeGdiL2xpYmN4Z2JfcHBtLmMgXAogICAgICAgID4gbGliY3hnYl9wcG1f
-cGF0Y2hlZC5jCiAgICBjcCByL2RyaXZlcnMvbmV0L2V0aGVybmV0L2NoZWxzaW8vbGliY3hnYi9s
-aWJjeGdiX3BwbS5oIC4KCiAgICAjIDIuIGJ1aWxkIGFzIGFuIG91dC1vZi10cmVlIG1vZHVsZSAo
-a2VybmVsIHN0YXlzIHByaXN0aW5lKQogICAgbWFrZSAtQyA8a2VybmVsLXNyYz4gTz08YnVpbGQt
-ZGlyPiBNPSRQV0QgS0JVSUxEX01PRFBPU1RfV0FSTj0xIG1vZHVsZXMKCiAgICAjIDMuIHJ1biBv
-biBhbnkgeDg2XzY0IGd1ZXN0IHdpdGggPj0gMiBDUFVzCiAgICBpbnNtb2QgcG9vbHRlc3RfcmVh
-bC5rbyB0aHJlYWRzPTggb3BzPTIwMDAwCiAgICBybW1vZCBwb29sdGVzdF9yZWFsLmtvICAgICAg
-ICAjIHJlc3VsdHMgaW4gZG1lc2cKCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KcG9vbHRlc3RfcmVhbC5jCj09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT0KLy8gcG9vbHRlc3RfcmVhbC5jIOKAlCBzdHJlc3MgdGhlIFJFQUwgbGliY3hnYl9w
-cG0uYyBjb2RlLCB2NCBwYXRjaCBhcHBsaWVkLAovLyBjb21waWxlZCBpbnRvIHRoaXMgb3V0LW9m
-LXRyZWUgbW9kdWxlIChrZXJuZWwgc3RheXMgcHJpc3RpbmUpLgovLwovLyBFdmVyeXRoaW5nIGJl
-bG93IHRoZSBBUEkgbGluZSBpcyB0aGUgdW50b3VjaGVkIGRyaXZlciBjb2RlIHBhdGg6Ci8vICAg
-Y3hnYmlfcHBtX2luaXQoKSAgICAgICAgICDigJQgcmVhbCBpbml0OiBjcmVhdGVzIHRoZSBwZXIt
-Y3B1IHBvb2xzCi8vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIChwcG1fYWxsb2NfY3B1
-X3Bvb2wsIGluY2wuIHY0J3MgYmFzZSBpbml0KQovLyAgIGN4Z2JpX3BwbV9wcG9kc19yZXNlcnZl
-KCkg4oCUIHJlYWwgYWxsb2M6IHBlci1jcHUgcG9vbCBmaXJzdCDigJQgdGhlIHZlcnkKLy8gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgZnVuY3Rpb24gdGhlIHBhdGNoIHRvdWNoZXMg4oCU
-IHRoZW4gdGhlCi8vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdlbmVyYWwgcG9vbCBh
-cyBmYWxsYmFjawovLyAgIGN4Z2JpX3BwbV9wcG9kX3JlbGVhc2UoKSAg4oCUIHJlYWwgZnJlZTog
-cHBtX3VubWFya19lbnRyaWVzKCkgZGVyaXZlcyB0aGUKLy8gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgb3duaW5nIHBvb2wgZnJvbSB0aGUgaW5kZXgsIG5ldmVyIHRoZSBDUFUKLy8KLy8g
-OCBVTkJPVU5EIGtlcm5lbCB0aHJlYWRzIG92ZXItc3Vic2NyaWJlIDIgQ1BVcywgc28gdGhlIHNj
-aGVkdWxlciBtaWdyYXRlcwovLyB0aGVtIGNvbnN0YW50bHksIGFuZCB0aWNrZXRzIGFyZSBoYW5k
-ZWQgYmV0d2VlbiB0aHJlYWRzLCBzbyBmcmVlcyBsYW5kIG9uCi8vIGZvcmVpZ24gQ1BVcyBhdCBh
-IGhpZ2ggcmF0ZS4gIE9yYWNsZXM6Ci8vICAgLSBnbG9iYWwgaXNzdWVkIGJpdG1hcDogYW4gaW5k
-ZXggaGFuZGVkIG91dCB0d2ljZSAoZG91YmxlX2FsbG9jKSBvcgovLyAgICAgZnJlZWQgdHdpY2Ug
-LyBuZXZlciBhbGxvY2F0ZWQgKGJhZF9mcmVlKSBpcyBjYXVnaHQgcmVnYXJkbGVzcyBvZgovLyAg
-ICAgd2hpY2ggcG9vbC9DUFUgd2FzIGludm9sdmVkOwovLyAgIC0gZXZlcnkgcGVyLWNwdSBwb29s
-IGFuZCB0aGUgZ2VuZXJhbCBwb29sIG11c3QgZHJhaW4gdG8gZW1wdHk7Ci8vICAgLSBpc3N1ZWQg
-PT0gZnJlZWQ7Ci8vICAgLSBlYWNoIHBlci1jcHUtcG9vbCBhbGxvY2F0aW9uIGlzIGNoZWNrZWQ6
-IG93bmluZyBwb29sIHZzIHJ1bm5pbmcgQ1BVCi8vICAgICBhdCByZXR1cm4gKGZvcmVpZ24tcG9v
-bCBvYnNlcnZhdGlvbikuCiNpbmNsdWRlICJsaWJjeGdiX3BwbV9wYXRjaGVkLmMiCgojdW5kZWYg
-cHJfZm10CiNkZWZpbmUgcHJfZm10KGZtdCkgInBvb2x0ZXN0X3JlYWw6ICIgZm10CgojaW5jbHVk
-ZSA8bGludXgvbW9kdWxlcGFyYW0uaD4KI2luY2x1ZGUgPGxpbnV4L2t0aHJlYWQuaD4KI2luY2x1
-ZGUgPGxpbnV4L2NvbXBsZXRpb24uaD4KI2luY2x1ZGUgPGxpbnV4L3JhbmRvbS5oPgojaW5jbHVk
-ZSA8bGludXgvc2NoZWQuaD4KI2luY2x1ZGUgPGxpbnV4L3NtcC5oPgoKc3RhdGljIHN0cnVjdCBj
-eGdiaV9wcG0gKmdfcHBtOwpzdGF0aWMgdm9pZCAqZ19wcG1fcHA7CnN0YXRpYyBzdHJ1Y3QgbmV0
-X2RldmljZSAqZ19uZGV2OwpzdGF0aWMgdW5zaWduZWQgbG9uZyAqaXNzdWVkOwoKc3RhdGljIGF0
-b21pY190IG5faXNzdWVkICAgPSBBVE9NSUNfSU5JVCgwKTsKc3RhdGljIGF0b21pY190IG5fZnJl
-ZWQgICAgPSBBVE9NSUNfSU5JVCgwKTsKc3RhdGljIGF0b21pY190IG5fZG91YmxlICAgPSBBVE9N
-SUNfSU5JVCgwKTsKc3RhdGljIGF0b21pY190IG5fYmFkY2xlYXIgPSBBVE9NSUNfSU5JVCgwKTsK
-c3RhdGljIGF0b21pY190IG5fZW5vc3BjICAgPSBBVE9NSUNfSU5JVCgwKTsKc3RhdGljIGF0b21p
-Y190IG5fZm9yZWlnbiAgPSBBVE9NSUNfSU5JVCgwKTsKCnN0YXRpYyBpbnQgb3BzID0gMjAwMDA7
-CnN0YXRpYyBpbnQgdGhyZWFkcyA9IDg7Cm1vZHVsZV9wYXJhbShvcHMsIGludCwgMDQ0NCk7Cm1v
-ZHVsZV9wYXJhbSh0aHJlYWRzLCBpbnQsIDA0NDQpOwoKc3RydWN0IHRpY2sgewoJdTMyIGlkeDsK
-CXVuc2lnbmVkIGludCBucG9kczsKfTsKCiNkZWZpbmUgUkhPTEQgMTYKCi8qIEZJRk8gcmluZzog
-dGlja2V0cyBoYW5kZWQgdG8gT1RIRVIgdGhyZWFkcywgZnJlZWQgb24gd2hhdGV2ZXIgQ1BVICov
-CnN0cnVjdCBocSB7CglzcGlubG9ja190IGxvY2s7CglpbnQgaGVhZCwgdGFpbCwgY2FwOwoJc3Ry
-dWN0IHRpY2sgKnJpbmc7Cn07CnN0YXRpYyBzdHJ1Y3QgaHEgaGFuZG9mZjsKCnN0YXRpYyBpbnQg
-aGFuZG9mZl9wdXNoKHUzMiBpZHgsIHVuc2lnbmVkIGludCBucG9kcykKewoJdW5zaWduZWQgbG9u
-ZyBmbGFnczsKCWludCByID0gLTE7CgoJc3Bpbl9sb2NrX2lycXNhdmUoJmhhbmRvZmYubG9jaywg
-ZmxhZ3MpOwoJaWYgKGhhbmRvZmYudGFpbCAtIGhhbmRvZmYuaGVhZCA8IGhhbmRvZmYuY2FwKSB7
-CgkJaGFuZG9mZi5yaW5nW2hhbmRvZmYudGFpbCAlIGhhbmRvZmYuY2FwXS5pZHggPSBpZHg7CgkJ
-aGFuZG9mZi5yaW5nW2hhbmRvZmYudGFpbCAlIGhhbmRvZmYuY2FwXS5ucG9kcyA9IG5wb2RzOwoJ
-CWhhbmRvZmYudGFpbCsrOwoJCXIgPSAwOwoJfQoJc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgmaGFu
-ZG9mZi5sb2NrLCBmbGFncyk7CglyZXR1cm4gcjsKfQoKc3RhdGljIGludCBoYW5kb2ZmX3BvcChz
-dHJ1Y3QgdGljayAqdCkKewoJdW5zaWduZWQgbG9uZyBmbGFnczsKCWludCByID0gLTE7CgoJc3Bp
-bl9sb2NrX2lycXNhdmUoJmhhbmRvZmYubG9jaywgZmxhZ3MpOwoJaWYgKGhhbmRvZmYudGFpbCA+
-IGhhbmRvZmYuaGVhZCkgewoJCSp0ID0gaGFuZG9mZi5yaW5nW2hhbmRvZmYuaGVhZCAlIGhhbmRv
-ZmYuY2FwXTsKCQloYW5kb2ZmLmhlYWQrKzsKCQlyID0gMDsKCX0KCXNwaW5fdW5sb2NrX2lycXJl
-c3RvcmUoJmhhbmRvZmYubG9jaywgZmxhZ3MpOwoJcmV0dXJuIHI7Cn0KCi8qIGZyZWUgdGhyb3Vn
-aCB0aGUgUkVBTCByZWxlYXNlIHBhdGggKyBvcmFjbGUgYm9va2tlZXBpbmcuCiAqIE9yYWNsZSBi
-aXRzIG11c3QgYmUgY2xlYXJlZCBCRUZPUkUgdGhlIHJlYWwgcmVsZWFzZTogYWZ0ZXIgdGhlIHJl
-YWwKICogZnJlZSBhbm90aGVyIHRocmVhZCBtYXkgbGVnaXRpbWF0ZWx5IHJlLWFsbG9jYXRlIHRo
-ZSBzYW1lIHJhbmdlLCBhbmQKICogaXRzIHRlc3RfYW5kX3NldCB3b3VsZCBjb2xsaWRlIHdpdGgg
-b3VyIG5vdC15ZXQtY2xlYXJlZCBiaXQgKGZhbHNlCiAqIGRvdWJsZSkuICBXaGlsZSBvdXIgYml0
-IGlzIGNsZWFyZWQgYnV0IHRoZSByZWFsIGFsbG9jYXRvciBzdGlsbCBvd25zCiAqIHRoZSByYW5n
-ZSwgbm9ib2R5IGNhbiBvYnRhaW4gaXQsIHNvIHRoZXJlIGlzIG5vIHdpbmRvdyBpbiB0aGlzIG9y
-ZGVyLgogKi8Kc3RhdGljIHZvaWQgcmVsZWFzZV90aWNrZXQoc3RydWN0IHRpY2sgKnQpCnsKCXVu
-c2lnbmVkIGludCBrOwoKCWZvciAoayA9IDA7IGsgPCB0LT5ucG9kczsgaysrKSB7CgkJaWYgKCF0
-ZXN0X2FuZF9jbGVhcl9iaXQodC0+aWR4ICsgaywgaXNzdWVkKSkKCQkJYXRvbWljX2luYygmbl9i
-YWRjbGVhcik7CgkJZWxzZQoJCQlhdG9taWNfaW5jKCZuX2ZyZWVkKTsKCX0KCWN4Z2JpX3BwbV9w
-cG9kX3JlbGVhc2UoZ19wcG0sIHQtPmlkeCk7Cn0KCnN0cnVjdCByYXJnIHsKCXN0cnVjdCBjb21w
-bGV0aW9uIGRvbmU7CglzdHJ1Y3QgdGljayBob2xkW1JIT0xEXTsKCWxvbmcgbl9hbGxvYywgbl9o
-b2ZyZWUsIG5fbWluZWZyZWUsIG1pZ3JhdGlvbnMsIGZvcmVpZ247Cn07CgpzdGF0aWMgaW50IHJ3
-b3JrZXIodm9pZCAqZGF0YSkKewoJc3RydWN0IHJhcmcgKmEgPSBkYXRhOwoJaW50IGksIGxhc3Qg
-PSByYXdfc21wX3Byb2Nlc3Nvcl9pZCgpOwoKCWZvciAoaSA9IDA7IGkgPCBvcHM7IGkrKykgewoJ
-CWludCBzbG90ID0gZ2V0X3JhbmRvbV91MzIoKSAlIFJIT0xEOwoJCWludCBjID0gcmF3X3NtcF9w
-cm9jZXNzb3JfaWQoKTsKCQl1MzIgaWR4LCB0YWc7CgkJaW50IHJjOwoKCQlpZiAoYyAhPSBsYXN0
-KSB7CgkJCWEtPm1pZ3JhdGlvbnMrKzsKCQkJbGFzdCA9IGM7CgkJfQoJCWlmICgoaSAmIDB4Zikg
-PT0gMCkKCQkJY29uZF9yZXNjaGVkKCk7CS8qIGxldCB0aGUgc2NoZWR1bGVyIG1vdmUgdXMgYXJv
-dW5kICovCgoJCS8qIG1ha2Ugcm9vbTogZ2l2ZSB0aGUgdGlja2V0IGF3YXksIG9yIGZyZWUgaXQg
-cmlnaHQgaGVyZSAqLwoJCWlmIChhLT5ob2xkW3Nsb3RdLm5wb2RzKSB7CgkJCWlmICgoZ2V0X3Jh
-bmRvbV91MzIoKSAmIDEpICYmCgkJCSAgICAhaGFuZG9mZl9wdXNoKGEtPmhvbGRbc2xvdF0uaWR4
-LCBhLT5ob2xkW3Nsb3RdLm5wb2RzKSkgewoJCQkJYS0+aG9sZFtzbG90XS5ucG9kcyA9IDA7CgkJ
-CX0gZWxzZSB7CgkJCQlyZWxlYXNlX3RpY2tldCgmYS0+aG9sZFtzbG90XSk7CgkJCQlhLT5ob2xk
-W3Nsb3RdLm5wb2RzID0gMDsKCQkJCWEtPm5fbWluZWZyZWUrKzsKCQkJfQoJCX0KCQkvKiBmcmVl
-IGEgdGlja2V0IHByb2R1Y2VkIG9uIHNvbWUgb3RoZXIgQ1BVL3RocmVhZCAqLwoJCWlmIChnZXRf
-cmFuZG9tX3UzMigpICYgMSkgewoJCQlzdHJ1Y3QgdGljayB0OwoKCQkJaWYgKCFoYW5kb2ZmX3Bv
-cCgmdCkpIHsKCQkJCXJlbGVhc2VfdGlja2V0KCZ0KTsKCQkJCWEtPm5faG9mcmVlKys7CgkJCX0K
-CQl9CgoJCS8qIHRoZSByZWFsIGFsbG9jIHBhdGggKi8KCQlyYyA9IGN4Z2JpX3BwbV9wcG9kc19y
-ZXNlcnZlKGdfcHBtLCAxICsgZ2V0X3JhbmRvbV91MzIoKSAlIDE2LAoJCQkJCSAgICAgMCwgJmlk
-eCwgJnRhZywgMCk7CgkJaWYgKHJjID4gMCkgewoJCQl1bnNpZ25lZCBpbnQgazsKCgkJCWZvciAo
-ayA9IDA7IGsgPCByYzsgaysrKSB7CgkJCQlpZiAodGVzdF9hbmRfc2V0X2JpdChpZHggKyBrLCBp
-c3N1ZWQpKQoJCQkJCWF0b21pY19pbmMoJm5fZG91YmxlKTsKCQkJCWF0b21pY19pbmMoJm5faXNz
-dWVkKTsKCQkJfQoJCQkvKiBmb3JlaWduLXBvb2wgb2JzZXJ2YXRpb246IHBvb2wgdGhhdCBzZXJ2
-ZWQgdXMgdnMKCQkJICogQ1BVIHdlIGFyZSBvbiB3aGVuIHRoZSBjYWxsIHJldHVybnMgKi8KCQkJ
-aWYgKGlkeCA8IGdfcHBtLT5wb29sX3JzdmQgJiYKCQkJICAgIGlkeCAvIGdfcHBtLT5wb29sX2lu
-ZGV4X21heCAhPQoJCQkgICAgcmF3X3NtcF9wcm9jZXNzb3JfaWQoKSkgewoJCQkJYXRvbWljX2lu
-Yygmbl9mb3JlaWduKTsKCQkJCWEtPmZvcmVpZ24rKzsKCQkJfQoJCQlhLT5ob2xkW3Nsb3RdLmlk
-eCA9IGlkeDsKCQkJYS0+aG9sZFtzbG90XS5ucG9kcyA9IHJjOwoJCQlhLT5uX2FsbG9jKys7CgkJ
-fSBlbHNlIHsKCQkJaW50IHMyID0gZ2V0X3JhbmRvbV91MzIoKSAlIFJIT0xEOwoKCQkJYXRvbWlj
-X2luYygmbl9lbm9zcGMpOwoJCQlpZiAoYS0+aG9sZFtzMl0ubnBvZHMpIHsKCQkJCXJlbGVhc2Vf
-dGlja2V0KCZhLT5ob2xkW3MyXSk7CgkJCQlhLT5ob2xkW3MyXS5ucG9kcyA9IDA7CgkJCX0KCQl9
-Cgl9Cglmb3IgKGkgPSAwOyBpIDwgUkhPTEQ7IGkrKykgewoJCWlmIChhLT5ob2xkW2ldLm5wb2Rz
-KSB7CgkJCXJlbGVhc2VfdGlja2V0KCZhLT5ob2xkW2ldKTsKCQkJYS0+aG9sZFtpXS5ucG9kcyA9
-IDA7CgkJCWEtPm5fbWluZWZyZWUrKzsKCQl9Cgl9Cgljb21wbGV0ZSgmYS0+ZG9uZSk7CglyZXR1
-cm4gMDsKfQoKc3RhdGljIGludCBfX2luaXQgcG9vbHRlc3RfcmVhbF9pbml0KHZvaWQpCnsKCXN0
-cnVjdCBjeGdiaV90YWdfZm9ybWF0IHRmb3JtYXQgPSB7MH07CglzdHJ1Y3QgdGFza19zdHJ1Y3Qg
-Kip0c2s7CglzdHJ1Y3QgcmFyZyAqd2E7Cglsb25nIG5fYWxsb2MgPSAwLCBuX2hvZnJlZSA9IDAs
-IG5fbWluZWZyZWUgPSAwLCBtaWdyID0gMCwgZm9yZWlnbiA9IDA7CglpbnQgY3B1LCBpLCByYywg
-bGVha19wb29sID0gMCwgbGVha19nZW4sIGlzc3VlZF9sZWZ0OwoJc3RydWN0IHRpY2sgdDsKCgln
-X25kZXYgPSBkZXZfZ2V0X2J5X25hbWUoJmluaXRfbmV0LCAibG8iKTsKCWlmICghZ19uZGV2KSB7
-CgkJcHJfZXJyKCJubyBsb29wYmFjayBuZXRkZXZcbiIpOwoJCXJldHVybiAtRU5PREVWOwoJfQoK
-CXRmb3JtYXQucGdzel9vcmRlclswXSA9IDA7Cgl0Zm9ybWF0LnBnc3pfb3JkZXJbMV0gPSAxOwoJ
-dGZvcm1hdC5wZ3N6X29yZGVyWzJdID0gMjsKCXRmb3JtYXQucGdzel9vcmRlclszXSA9IDM7CgoJ
-LyogcHBtYXggMTYzODQsIHJlc2VydmVfZmFjdG9yIDI6IGhhbGYgaW4gcGVyLWNwdSBwb29scywg
-aGFsZiBnZW5lcmFsICovCglyYyA9IGN4Z2JpX3BwbV9pbml0KCZnX3BwbV9wcCwgZ19uZGV2LCBO
-VUxMLCBOVUxMLCAmdGZvcm1hdCwKCQkJICAgIDE2Mzg0IDw8IFBQT0RfU0laRV9TSElGVCwgMCwg
-MCwgMiwgMCwgMCk7CglpZiAocmMgPCAwKSB7CgkJcHJfZXJyKCJjeGdiaV9wcG1faW5pdCBmYWls
-ZWQ6ICVkXG4iLCByYyk7CgkJZGV2X3B1dChnX25kZXYpOwoJCXJldHVybiByYzsKCX0KCWdfcHBt
-ID0gZ19wcG1fcHA7CgoJcHJfaW5mbygicmVhbCBwcG06IHBwbWF4ICV1LCBwb29sX3JzdmQgJXUs
-IHBvb2xfaW5kZXhfbWF4ICV1LCBibWFwX2luZGV4X21heCAldSwgcG9zc2libGUgY3B1cyAlZFxu
-IiwKCQlnX3BwbS0+cHBtYXgsIGdfcHBtLT5wb29sX3JzdmQsIGdfcHBtLT5wb29sX2luZGV4X21h
-eCwKCQlnX3BwbS0+Ym1hcF9pbmRleF9tYXgsIG51bV9wb3NzaWJsZV9jcHVzKCkpOwoJZm9yX2Vh
-Y2hfcG9zc2libGVfY3B1KGNwdSkgewoJCXN0cnVjdCBjeGdiaV9wcG1fcG9vbCAqcHAgPSBwZXJf
-Y3B1X3B0cihnX3BwbS0+cG9vbCwgY3B1KTsKCgkJcHJfaW5mbygiY3B1JWQgcG9vbCBiYXNlICV1
-IChzZXQgYnkgdjQgaW5pdCBodW5rKVxuIiwKCQkJY3B1LCBwcC0+YmFzZSk7Cgl9CgoJaXNzdWVk
-ID0gYml0bWFwX3phbGxvYyhnX3BwbS0+cHBtYXgsIEdGUF9LRVJORUwpOwoJaGFuZG9mZi5jYXAg
-PSA4MTkyOwoJaGFuZG9mZi5yaW5nID0ga2NhbGxvYyhoYW5kb2ZmLmNhcCwgc2l6ZW9mKCpoYW5k
-b2ZmLnJpbmcpLCBHRlBfS0VSTkVMKTsKCXNwaW5fbG9ja19pbml0KCZoYW5kb2ZmLmxvY2spOwoK
-CXdhID0ga2NhbGxvYyh0aHJlYWRzLCBzaXplb2YoKndhKSwgR0ZQX0tFUk5FTCk7Cgl0c2sgPSBr
-Y2FsbG9jKHRocmVhZHMsIHNpemVvZigqdHNrKSwgR0ZQX0tFUk5FTCk7Cglmb3IgKGkgPSAwOyBp
-IDwgdGhyZWFkczsgaSsrKSB7CgkJaW5pdF9jb21wbGV0aW9uKCZ3YVtpXS5kb25lKTsKCQl0c2tb
-aV0gPSBrdGhyZWFkX3J1bihyd29ya2VyLCAmd2FbaV0sICJwcG1yJWQiLCBpKTsKCQlpZiAoSVNf
-RVJSKHRza1tpXSkpCgkJCWNvbXBsZXRlKCZ3YVtpXS5kb25lKTsKCX0KCWZvciAoaSA9IDA7IGkg
-PCB0aHJlYWRzOyBpKyspIHsKCQl3YWl0X2Zvcl9jb21wbGV0aW9uKCZ3YVtpXS5kb25lKTsKCQlu
-X2FsbG9jICs9IHdhW2ldLm5fYWxsb2M7CgkJbl9ob2ZyZWUgKz0gd2FbaV0ubl9ob2ZyZWU7CgkJ
-bl9taW5lZnJlZSArPSB3YVtpXS5uX21pbmVmcmVlOwoJCW1pZ3IgKz0gd2FbaV0ubWlncmF0aW9u
-czsKCQlmb3JlaWduICs9IHdhW2ldLmZvcmVpZ247Cgl9Cgl3aGlsZSAoIWhhbmRvZmZfcG9wKCZ0
-KSkKCQlyZWxlYXNlX3RpY2tldCgmdCk7CgoJZm9yX2VhY2hfcG9zc2libGVfY3B1KGNwdSkKCQls
-ZWFrX3Bvb2wgKz0gYml0bWFwX3dlaWdodCgKCQkJcGVyX2NwdV9wdHIoZ19wcG0tPnBvb2wsIGNw
-dSktPmJtYXAsCgkJCWdfcHBtLT5wb29sX2luZGV4X21heCk7CglsZWFrX2dlbiA9IGJpdG1hcF93
-ZWlnaHQoZ19wcG0tPnBwb2RfYm1hcCwgZ19wcG0tPmJtYXBfaW5kZXhfbWF4KTsKCWlzc3VlZF9s
-ZWZ0ID0gYml0bWFwX3dlaWdodChpc3N1ZWQsIGdfcHBtLT5wcG1heCk7CgoJcHJfaW5mbygiUkVT
-VUxUOiBhbGxvY3M9JWxkIChvd24tZnJlZT0lbGQgaGFuZG9mZi1mcmVlPSVsZCkgbWlncmF0aW9u
-cz0lbGQgZm9yZWlnbl9wb29sX29icz0lZCBlbm9zcGM9JWRcbiIsCgkJbl9hbGxvYywgbl9taW5l
-ZnJlZSwgbl9ob2ZyZWUsIG1pZ3IsCgkJYXRvbWljX3JlYWQoJm5fZm9yZWlnbiksIGF0b21pY19y
-ZWFkKCZuX2Vub3NwYykpOwoJcHJfaW5mbygiT1JBQ0xFOiBkb3VibGVfYWxsb2M9JWQgYmFkX2Zy
-ZWU9JWQgaXNzdWVkPSVkIGZyZWVkPSVkIGxlZnRfaXNzdWVkPSVkIHBvb2xfbGVhaz0lZCBnZW5l
-cmFsX2xlYWs9JWRcbiIsCgkJYXRvbWljX3JlYWQoJm5fZG91YmxlKSwgYXRvbWljX3JlYWQoJm5f
-YmFkY2xlYXIpLAoJCWF0b21pY19yZWFkKCZuX2lzc3VlZCksIGF0b21pY19yZWFkKCZuX2ZyZWVk
-KSwgaXNzdWVkX2xlZnQsCgkJbGVha19wb29sLCBsZWFrX2dlbik7CglpZiAoIWF0b21pY19yZWFk
-KCZuX2RvdWJsZSkgJiYgIWF0b21pY19yZWFkKCZuX2JhZGNsZWFyKSAmJgoJICAgICFpc3N1ZWRf
-bGVmdCAmJiAhbGVha19wb29sICYmICFsZWFrX2dlbiAmJgoJICAgIGF0b21pY19yZWFkKCZuX2lz
-c3VlZCkgPT0gYXRvbWljX3JlYWQoJm5fZnJlZWQpKQoJCXByX2luZm8oIlJFQUwgQ09ERSAodjQt
-cGF0Y2hlZCkgSE9MRFMgQUxMIElOVkFSSUFOVFNcbiIpOwoJZWxzZQoJCXByX2luZm8oIklOVkFS
-SUFOVCBWSU9MQVRJT04gaW4gcmVhbCBjb2RlIHJ1blxuIik7CgoJYml0bWFwX2ZyZWUoaXNzdWVk
-KTsKCWtmcmVlKGhhbmRvZmYucmluZyk7CglrZnJlZSh3YSk7CglrZnJlZSh0c2spOwoJY3hnYmlf
-cHBtX3JlbGVhc2UoZ19wcG0pOwoJZGV2X3B1dChnX25kZXYpOwoJcmV0dXJuIDA7Cn0KCnN0YXRp
-YyB2b2lkIF9fZXhpdCBwb29sdGVzdF9yZWFsX2V4aXQodm9pZCkKewp9Cgptb2R1bGVfaW5pdChw
-b29sdGVzdF9yZWFsX2luaXQpOwptb2R1bGVfZXhpdChwb29sdGVzdF9yZWFsX2V4aXQpOwpNT0RV
-TEVfTElDRU5TRSgiR1BMIik7Ck1PRFVMRV9ERVNDUklQVElPTigic3RyZXNzIHRoZSByZWFsICh2
-NC1wYXRjaGVkKSBsaWJjeGdiX3BwbS5jIGFsbG9jIHBhdGhzIik7Cgo9PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ck1h
-a2VmaWxlCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT0Kb2JqLW0gOj0gcG9vbHRlc3QubyBwb29sdGVzdF9yZWFsLm8K
-CktESVIgIDo9IC9yb290L2xpbnV4LTcuMwpCVUlMRCA6PSAvcm9vdC9sa2J1aWxkNzMKCmFsbDoK
-CW1ha2UgLUMgJChLRElSKSBPPSQoQlVJTEQpIE09JChDVVJESVIpIEtCVUlMRF9NT0RQT1NUX1dB
-Uk49MSBtb2R1bGVzCg==
-
---===============3289614648381437450==--
