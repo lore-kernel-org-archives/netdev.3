@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794283082;
-	b=RQJvNeJ/fsPYiZKw34GxCip3C2F5PtnUeSGuZi2yXpEEnA92Fu+hG7m5HM/prHHKpIg6
-	 3v+pdGbGZotXOuLCbXFkeTXBvI1D43hDxQPAC6fPx1E4lTI6RnSxvdOchVLiji4Sl+LZp
-	 boFr5kp7rP0NDkNqsx7MnVHNEeQtsAtjOzPDtTtEnFXu5DqHCr9l1f3LodIaA7ZaxUVvD
-	 CsDxjtzcck/8qJa97dCCQGYsZX7QkrYqhrlSIwL1m/v7DKiU5iwfhKwzwmW2wfecF7lKN
-	 qHJpJ5NUsTzv95N3rz+VjmNyWh7Wjx56wVVZQtvX1KiLZJMmefqkZg3VUisBCEIYt9A==
+	t=1794283086;
+	b=C97XN/wf1Dvi08XMenS5A+bZVY0gmRsQgSxSIKxDm7qpjqjZaUhIiTQNjFTEE0OVPRD6
+	 Db0OyYSQnJbyPemJFt334GW1jUPhJTUIXwi+BEB/LdVBQjlSt9l+M6kU67hZ0jj0VnPHF
+	 l+IuHJ70nW/H+Z+G6sgP4CCxUN7ewNFLM2KxuLwJyC+wwyahCOeR6JK/eI+rTdpdgSROC
+	 MaBcSxBwAKWWXSHjiv1UPySb7DxqXyvdtrLpi2GCkaetWuBKDgDyiK3gqAYYApuW/jvNh
+	 FgJphDJb/c65QrMS3yM3v21BAROoa5CZc68/xhwQPGY1/c1ABWr7CRy6sEzt2fbJ9Ng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794283082;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794283086;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
-	b=FxQ7k/tWRIcFgAXnwAoXcR2+WKT0KrggXuxqQp7ztfrAwQpMhh2XYWhOqNjvGuqTSxER
-	 JAgj4a9SkXLXDaxvfrxPYbbzVuNbbppgnd9zyaww+ym/4cRdZzwEw2fWLLwvVkLxB2DxP
-	 ZGc32+QfdhmwhhoAFVj6RW56XfXYRn8j6UYY606eSPnRtRRU16wdogfvg4+WZsIcwZih3
-	 HAzgzQQdOHZVsfESl+NW3vfZki0yMVYLTgorHhhGkQA2j2Jon0h4qZn4tXW3ZYt5YA6/V
-	 AuGB4rYMmMqrFzCG55eUdLwtDjECE61aUuCF6L/8X43BHTO7NQY5mJBc0/ChfWSdIRg==
+	bh=4rDrfzTKAn5JJUV2U4EsYB5rN4eyfS8pXIocCOrWwmg=;
+	b=dUTB0/xvS4myyAwS0QXkOqIYVfrLnuG6RXrbMzOs1ekICyF11BqSEOMgwxeqjvNGelr2
+	 NTt3E1wmlbGmSPX8MdVAzU9vkQlxcb645y1Kqjh8tukxL0bgYiiD6jGksdGM+k4OwwDTy
+	 5UKcIoKUUqwWbGtjdDFM+GNdk6q0YNyb2at/iFCTPBs+syDakjV23+19iILmBL49RInZw
+	 JAAxN8oDw/Mf3uRT1+zgH6liaKMa7y+aXCQYk3zVPZBWUkNgqS9LEM8ZJpXDmUEDg1rSz
+	 U4I1YKeIBA6BohEIR5zKWTwF2rfIzjL3nYxNKXaXkynx89d6BYsXatnD3lKeOa+bBMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cloudflare.com;
 	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b="Zunm+lH/";
-	arc=none smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b="YlJhP/fy";
+	arc=none smtp.remote-ip=209.85.208.49
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DA060A261F
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:58:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95DA060A261F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4045B60A2618
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 03:58:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4045B60A2618
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=Zunm+lH/
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b75712fb57so693494a12.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:58:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=YlJhP/fy
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b571979178so2201197a12.2
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 19:58:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794283080; x=1794887880; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1794283084; x=1794887884; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
-        b=Zunm+lH/GCbrTUEtY30BW+R2BvU+2cGVOn79diffD/96JVNfHqCMaR5Gvvf1gsiQR6
-         8K76zX1a8+Yh0L2CwsGxZPV8nUAMB+5w5Mm2MCgUMZlSCAEOfZgTki5qqXCp8mJUi8H3
-         LuogYuTe3LX1ZCf6xxr7jaIlq6UqvCIrssX2U+lTHLsDy96Ui6AqusBcWrPzeruJ88YR
-         /WMhErncCHO3cb8+1zwRpUullxN4yczarlTpXd5JcivujI0fDeVcEqJNPPwMrN68pevA
-         Lx4AkP1fiMtHSuXKIJJQw0iIts5da1+6sBlWiXD7EvGQiIWRqgKUOxZqBjj3SECm1nA3
-         YVOQ==
+        bh=4rDrfzTKAn5JJUV2U4EsYB5rN4eyfS8pXIocCOrWwmg=;
+        b=YlJhP/fyr5bJQ6zCHtIl2ekox8FEumdIGMmeYidw2KIV+4dznM75wdivfSMxqNWIG4
+         t4r3iNHf3U8xKalsbqngniyaoMA3n5ioc2Q0mD+QgUzqTmQnMURaE6//VayZDjCw2y3C
+         iwbqD/7mN0/OFhZ6ZyCmTHV8Uvik445ZFmpIp33aiS79MOQhuGbFAa+w3DoFc1Kj7q27
+         hVWdxbU3pBlb7rGoXvsMuAYPkKW7hBY/ELPkJ/YUIXAfZGrrEG9417NGo9Q20pSDWRqF
+         PMTvHiVJIDrIUX4OuMz0nmi7h95z9HvJT8+BgG3Gm9VfgMfjMhRzYN9k5lwiuIQgZDMI
+         985A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794283080; x=1794887880;
+        d=1e100.net; s=20260707; t=1794283084; x=1794887884;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y1n75dlSKXk28YfIHQIdOaiTcHKQaKmSFDKJym+w+lI=;
-        b=xYHsMOIlc8j4eXhMT6ObDicS3Ol60ylSs347STY9evbMi9OKHjnG7UCwqG/KMXYJRr
-         oGwf78p+BluZ0QANeDp3wJ5JTp3c5sajzXf26tVu3xZEzHChY6E55rggytEnX8LCbSVr
-         iKhH5cMpy7xtj6JjDkQAPrf7B4LnK+oVSV2D+O6GQ1Fg9Go41+dsd7u9m26zhfXA/gxW
-         4SObD2ujVqUT2nnWviYiIh9iF1akiup2UNtR39X+XWHtDBezfTSjJ07a9Q4hgD4zmmh7
-         gQrLtmf3vzbYLQFyuhc+sW10+8exRuUjvubuJf9VQ6Hwl61ikZcxG7++tRr3UsT/b6KW
-         MH6g==
-X-Forwarded-Encrypted: i=1; AL+hErF1A5Lchf37Mz+gDPtgFnTXjYvy4YpIlDFCYZipYX/p/EtJJp7gaWm4uLDLBLd139pR6Hl62t8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8TAKZSZliK/Usi3ezwJvTdB/O4FdC6zbmlCA1AmgFku1XW6wTu
-	NjfZnmjWstnc1hJ09ziZCPrZkc225s2ocoIFn6MPX2SGFsM4oANOUcRhWfkeWcNnqig=
-X-Gm-Gg: AYBFou1iRlpLAV3K+W0IBxJ4AebIbp7rCxH1JSj5n+uB9C5HrCal8rjjA5XrTPzIwU/
-	Qn0aJdzxt9wnmJZqu+hIA6xygvw0exVnB+QE1W69je+gmirFtdA2za8OEd6ogy4A4e+izEAgyDT
-	+xT54oqgyLK3JV7jR4wQvZ+3Fq+JiMMbLT33JqnywJloGfqSCL308zMBRzaPYQ/KQTbF13RUvUM
-	a+3AiPzwklZ0FkrmIa076BkyexEKr2LyScnzvYiBrxM6f1C6pkn7jERcwyA2B/qIgOnphw1y3Vz
-	ZC3J+Wt7rS44dGGvPkCGhJsr+k7Clpy2o/zgP7N6/iK6imJPfjAbkPQFe19qjPUMh1IpKyuWbRD
-	IBH3k1QiaxXcEPId32T+uTHNabJFN2KTrT6dMqoWto8X3s5QLv+HKmPtznkFn+Wc/R5zuRzDab3
-	p1fIFgQCJzsr2C9kutlHBl+o6n3EePSbxg/w7+gmk0VoFqbZbXBD8gtQXyfS4goypNXXXvxN4hA
-	1N3hrMJnTVAFsBVt85/WrQNAavuttKekHJmvlQviL/GVm11c8/zVVHyUCZnhJZpebJE4Cy275Cw
-	A9UDJujKhbrrnu5ZN9iRh2j52uHkPnGF4zw0FC0fbS8Rm2UkUmnk0BzknRFmQbc=
-X-Received: by 2002:aa7:cd92:0:b0:6af:a64f:bd44 with SMTP id 4fb4d7f45d1cf-6b756b0d218mr745095a12.45.1794283080043;
-        Mon, 09 Nov 2026 19:58:00 -0800 (PST)
+        bh=4rDrfzTKAn5JJUV2U4EsYB5rN4eyfS8pXIocCOrWwmg=;
+        b=C9KAAfj5KGinn8aKDCQQgxkr7qd/8LkTuCZ15/9j+I5E1+4uIBGlvRG2+xmpmdDnlH
+         uKELnWOVK4WQELvQCDU+tlOZ7rTcOU5X8wJ2605IqH0ZMglcZXNZR7E1Y0e9tUrRJ1bO
+         iQ3sBkT46fJIb1tku2K6HT6jOk5xzdIDP+sWbvxlSRzXLI3F4efiTBj31fMOgcI23fUr
+         qBL7D60Tv70dFB8lhtlOm27nBjc7BXJkFgRiZ3zOvARPJWaoY5vXZMi0T6nG3YF7wON1
+         ePvmaO7r4cYg/RMHI2cHEVsmBtfTlnw/H7NlHMxjuQILR5x1nt1xLLDjwAJu1BIwCHae
+         qGCA==
+X-Forwarded-Encrypted: i=1; AL+hErHozFjLsWA0HPlEwarWC7lCWEL4sHasp1pgrVPm9ATf0gy2K774yDcc5TlJnHwr/d8aANIbt18=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8UC2d3TFj8rj22sFVlfNPJ7SM5I/7z8xOf8o8jM+yJCLmhU0Ru
+	HcSXEJ5yGN0FG4w6pDPeSau9ARbANBPlHlNLmQTiLY+esA+KWcG8XfKd0cOmDTaIcxM=
+X-Gm-Gg: AYBFou3Jzl/uNSJe1JBiRP11eg3p3C3IdBKDjEGHsHTRrh0bIvZ0KsBUP3wWGCOcqEy
+	zfOLx2jVYJNm5p/VItLulIhS3mEfd/HTgBBa0X7X4fbr/CYl0X9hEG93SMPAG1yWowaR81B1t8A
+	RChuR7uFP2gtq2NtC5HV6DTAo5/+MZUYZB2XJ9DnbyB+UMj4MQGIj690ogt3nvkS3BrfodS8crG
+	bDYDy6Og8GhtLRATRgLLDkCi4fl7KfNWt0+z1uDfcoJuDOoHv+OkOKS47knTx98+NxFIgUm1YME
+	PHoLopKc8sOAwbZ2gNBv3ojdA4NzqWnyJ+hEiNeIidQs6Dz5s64rIR3Uy1+GcHMjDPRRryBoGR1
+	YWFwoghRSjSkcMnV7zb4jjLLMdu2j5fU6XL8Kv0KSXTOK+xGOZpsrWPW6TFQjFYFq42OSXpQJMo
+	4JUsI4SNv5wy4l7/FqrigREfOHg05ZrmeyJy6mEOewrOe/VEcOaNhqUPdB/iieYj3ttoMY8Ub8i
+	9FYZmFzJ151XwWzs8K8tF/MtD1c/DSQLCBGVbhemPxOdrjtL6VhGh0EQ/tgqFSLxD1B8cvThGyo
+	5Ksxxl1bVrdcCoV95t5Md4/JfRqhsn4MJq6DsM3kGhLosmOE+oDEhm9YHrwnE9A=
+X-Received: by 2002:a05:6402:a3d9:b0:6b4:c971:589d with SMTP id 4fb4d7f45d1cf-6b7568d8082mr801558a12.13.1794283083619;
+        Mon, 09 Nov 2026 19:58:03 -0800 (PST)
 Received: from L9JK9NPFH9.lan ([104.28.20.56])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7579047c9sm548801a12.33.2026.11.09.19.57.56
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7579047c9sm548801a12.33.2026.11.09.19.58.00
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 19:57:58 -0800 (PST)
+        Mon, 09 Nov 2026 19:58:02 -0800 (PST)
 From: Tianyi Gao <tianyi@cloudflare.com>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
@@ -130,9 +130,9 @@ Cc: John Fastabend <john.fastabend@gmail.com>,
 	llvm@lists.linux.dev,
 	kernel-team@cloudflare.com,
 	Tianyi Gao <tianyi@cloudflare.com>
-Subject: [PATCH bpf-next 11/15] ice: set skb RX metadata from the skb core extension area of xdp_buff
-Date: Tue, 10 Nov 2026 03:57:09 +0000
-Message-ID: <ae488c057454cd57fb01ac01aefc3e97d6271ada.1794281983.git.tianyi@cloudflare.com>
+Subject: [PATCH bpf-next 12/15] selftests: drv-net: xdp: test the stored RX metadata on XDP_PASS
+Date: Tue, 10 Nov 2026 03:57:10 +0000
+Message-ID: <ecf282c14030e86f32ca4e3862baede3e5053142.1794281983.git.tianyi@cloudflare.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1794281983.git.tianyi@cloudflare.com>
 References: <cover.1794281983.git.tianyi@cloudflare.com>
@@ -147,168 +147,377 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On XDP_PASS, ice builds the skb with xdp_build_skb_from_buff(). Then
-ice_process_skb_fields() sets the hash and ip_summed from the RX
-descriptor, and ice_receive_skb() adds the VLAN tag. The values that the
-XDP program stored in the skb core extension area are not used.
+Add a drv-net test for the skb core extension area. An XDP program
+stores an RX hash, a VLAN tag and a checksum status. A tc program on
+ingress reads the skb fields, and the test compares them with the
+stored values.
 
-ice_clean_rx_irq() takes the skb core extension pointer from the
-xdp_buff before it builds the skb, and passes it to ice_receive_skb().
-ice_receive_skb() calls xdp_skb_ext_to_skb() right before GRO. The
-stored values then replace the values from the descriptor before the skb
-leaves the driver. ice now sets the skb-ext-pass XDP feature.
+The stored hash and VLAN tag are values that the NIC does not report:
+hash 0x12345678 and an 802.1ad tag with VID 0xabc. The checksum status
+is tested as CHECKSUM_NONE and as CHECKSUM_UNNECESSARY with csum_level
+1. The NIC reports only one of them, so a driver that ignores the
+stored values fails at least one case.
 
-Zero-copy is not supported in this patch. ice_clean_rx_irq_zc() passes
-NULL for the skb core extension pointer to ice_receive_skb(). Hence the
-skb-ext-pass feature does not cover AF_XDP zero-copy queues.
-
-Export xdp_skb_ext_to_skb(), because ice can be a module.
+The test runs only on devices with the skb-ext-pass XDP feature. GRO is
+off, because it can change ip_summed before the tc program runs. Like
+test_xdp_rss_hash, the test sets its config map by name with
+bpf_map_set().
 
 Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c     | 3 ++-
- drivers/net/ethernet/intel/ice/ice_sf_eth.c   | 3 ++-
- drivers/net/ethernet/intel/ice/ice_txrx.c     | 4 +++-
- drivers/net/ethernet/intel/ice/ice_txrx_lib.c | 7 ++++++-
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 3 ++-
- drivers/net/ethernet/intel/ice/ice_xsk.c      | 2 +-
- net/core/xdp.c                                | 5 ++++-
- 7 files changed, 20 insertions(+), 7 deletions(-)
+veth has the skb-ext-pass feature, but in drv-net the test packet reaches
+veth as an skb. The stored values are then lost, so the test fails on
+veth. NIPA runs drv-net on netdevsim, where the test skips, and on real
+NICs.
+---
+ .../drivers/net/hw/lib/py/__init__.py         |   3 +-
+ .../selftests/drivers/net/hw/xdp_metadata.py  | 118 ++++++++++++-
+ .../drivers/net/hw/xdp_skb_ext.bpf.c          | 166 ++++++++++++++++++
+ 3 files changed, 285 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/drivers/net/hw/xdp_skb_ext.bpf.c
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 454fba07d4ec..cb619689d11a 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3461,7 +3461,8 @@ static void ice_set_ops(struct ice_vsi *vsi)
- 
- 	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
- 			       NETDEV_XDP_ACT_XSK_ZEROCOPY |
--			       NETDEV_XDP_ACT_RX_SG;
-+			       NETDEV_XDP_ACT_RX_SG |
-+			       NETDEV_XDP_ACT_SKB_EXT_PASS;
- 	netdev->xdp_zc_max_segs = ICE_MAX_BUF_TXD;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sf_eth.c b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-index a730aa368c92..90f2ce5da022 100644
---- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-@@ -52,7 +52,8 @@ static int ice_sf_cfg_netdev(struct ice_dynamic_port *dyn_port,
- 
- 	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
- 			       NETDEV_XDP_ACT_XSK_ZEROCOPY |
--			       NETDEV_XDP_ACT_RX_SG;
-+			       NETDEV_XDP_ACT_RX_SG |
-+			       NETDEV_XDP_ACT_SKB_EXT_PASS;
- 	netdev->xdp_zc_max_segs = ICE_MAX_BUF_TXD;
- 
- 	eth_hw_addr_set(netdev, dyn_port->hw_addr);
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index a2c7c4962882..06a1a5fdc43b 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -966,6 +966,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 	/* start the loop to process Rx packets bounded by 'budget' */
- 	while (likely(total_rx_pkts < (unsigned int)budget)) {
- 		union ice_32b_rx_flex_desc *rx_desc;
-+		const struct xdp_skb_ext *ext;
- 		struct libeth_fqe *rx_buf;
- 		struct sk_buff *skb;
- 		unsigned int size;
-@@ -1041,6 +1042,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		continue;
- 
- construct_skb:
-+		ext = xdp_buff_skb_ext(&xdp->base);
- 		skb = xdp_build_skb_from_buff(&xdp->base);
- 		xdp->data = NULL;
- 
-@@ -1061,7 +1063,7 @@ static int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 
- 		ice_trace(clean_rx_irq_indicate, rx_ring, rx_desc, skb);
- 		/* send completed skb up the stack */
--		ice_receive_skb(rx_ring, skb, vlan_tci);
-+		ice_receive_skb(rx_ring, skb, vlan_tci, ext);
- 
- 		/* update budget accounting */
- 		total_rx_pkts++;
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-index e695a664e53d..85439853596f 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-@@ -247,17 +247,22 @@ ice_process_skb_fields(struct ice_rx_ring *rx_ring,
-  * @rx_ring: Rx ring in play
-  * @skb: packet to send up
-  * @vlan_tci: VLAN TCI for packet
-+ * @ext: skb core extension area of the packet, or NULL
-  *
-  * This function sends the completed packet (via. skb) up the stack using
-  * gro receive functions (with/without VLAN tag)
-  */
- void
--ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci)
-+ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci,
-+		const struct xdp_skb_ext *ext)
- {
- 	if ((vlan_tci & VLAN_VID_MASK) && rx_ring->vlan_proto)
- 		__vlan_hwaccel_put_tag(skb, rx_ring->vlan_proto,
- 				       vlan_tci);
- 
-+	if (ext)
-+		xdp_skb_ext_to_skb(skb, ext);
+diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+index 4077f5f1a1be..8a6702abcdbe 100644
+--- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+@@ -24,7 +24,7 @@ try:
+     from net.lib.py import CmdExitFailure
+     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+         fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
+-        wait_file, ctl_file_write, tool
++        wait_file, ctl_file_write, tool, tc
+     from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+@@ -42,6 +42,7 @@ try:
+                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+                "fd_read_timeout", "ip", "rand_port", "rand_ports",
+                "wait_port_listen", "wait_file", "ctl_file_write", "tool",
++               "tc",
+                "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+                "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+                "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+diff --git a/tools/testing/selftests/drivers/net/hw/xdp_metadata.py b/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
+index 33a1985356d9..88b242964cff 100644
+--- a/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
++++ b/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
+@@ -7,13 +7,18 @@ Tests for XDP metadata kfuncs (e.g. bpf_xdp_metadata_rx_hash).
+ These tests load device-bound XDP programs from xdp_metadata.bpf.o
+ that call metadata kfuncs, send traffic, and verify the extracted
+ metadata via BPF maps.
 +
- 	napi_gro_receive(&rx_ring->q_vector->napi, skb);
- }
++The skb core extension test loads xdp_skb_ext.bpf.o: an XDP program
++stores RX metadata and a tc program checks it on the skb.
+ """
++import socket
++
+ from lib.py import ksft_run, ksft_eq, ksft_exit, ksft_ge, ksft_ne, ksft_pr
+ from lib.py import KsftNamedVariant, ksft_variants
+ from lib.py import CmdExitFailure, KsftSkipEx, NetDrvEpEnv
+ from lib.py import NetdevFamily
+ from lib.py import bkg, cmd, rand_port, wait_port_listen
+-from lib.py import ip, bpftool, defer
++from lib.py import ip, bpftool, defer, ethtool, tc, set_ethtool_feat
+ from lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-index f17990b68b62..cfc77847696e 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-@@ -133,6 +133,7 @@ ice_process_skb_fields(struct ice_rx_ring *rx_ring,
- 		       union ice_32b_rx_flex_desc *rx_desc,
- 		       struct sk_buff *skb);
- void
--ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci);
-+ice_receive_skb(struct ice_rx_ring *rx_ring, struct sk_buff *skb, u16 vlan_tci,
-+		const struct xdp_skb_ext *ext);
  
- #endif /* !_ICE_TXRX_LIB_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 0643017541c3..f64659dc8313 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -670,7 +670,7 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
- 		vlan_tci = ice_get_vlan_tci(rx_desc);
+@@ -130,6 +135,116 @@ def test_xdp_rss_hash(cfg, proto):
+             f"RSS hash type should include L4 for {proto.upper()} traffic")
  
- 		ice_process_skb_fields(rx_ring, rx_desc, skb);
--		ice_receive_skb(rx_ring, skb, vlan_tci);
-+		ice_receive_skb(rx_ring, skb, vlan_tci, NULL);
- 	}
  
- 	rx_ring->next_to_clean = ntc;
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 984299199906..fdda072a5858 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -1086,7 +1086,9 @@ static const void *xdp_skb_ext_get(const struct xdp_skb_ext *ext,
-  * @skb: The skb that is built from the packet.
-  * @ext: The skb core extension area of the packet.
-  *
-- * Call it only when the packet has the XDP_FLAGS_HAS_SKB_EXT flag.
-+ * Call it only when the packet has the XDP_FLAGS_HAS_SKB_EXT flag. A driver
-+ * calls it after it sets the skb fields from the RX descriptor, and sets
-+ * NETDEV_XDP_ACT_SKB_EXT_PASS.
-  */
- void xdp_skb_ext_to_skb(struct sk_buff *skb, const struct xdp_skb_ext *ext)
- {
-@@ -1115,6 +1117,7 @@ void xdp_skb_ext_to_skb(struct sk_buff *skb, const struct xdp_skb_ext *ext)
- 		skb->csum_level = csum->level;
- 	}
- }
-+EXPORT_SYMBOL_GPL(xdp_skb_ext_to_skb);
- 
- /**
-  * xdp_skb_ext_warn_pass - Warn if XDP_PASS does not use the stored values.
++# BPF map keys matching the enums in xdp_skb_ext.bpf.c
++_CFG_PORT = 0
++_CFG_HASH = 1
++_CFG_VLAN_PROTO = 2
++_CFG_VLAN_TCI = 3
++_CFG_IP_SUMMED = 4
++_CFG_CSUM_LEVEL = 5
++
++_RES_PKT_CNT = 0
++_RES_STORE_ERR = 1
++_RES_HASH = 2
++_RES_L4_HASH = 3
++_RES_VLAN_PROTO = 4
++_RES_VLAN_TCI = 5
++_RES_IP_SUMMED = 6
++_RES_CSUM_LEVEL = 7
++
++ETH_P_8021AD = 0x88a8
++VLAN_PRIO_SHIFT = 13
++
++# Magic numbers the NIC does not report
++TEST_RX_HASH = 0x12345678
++TEST_VLAN_PCP = 5
++TEST_VLAN_VID = 0xabc
++TEST_VLAN_TCI = TEST_VLAN_PCP << VLAN_PRIO_SHIFT | TEST_VLAN_VID
++
++XDP_CHECKSUM_NONE = 1 << 0
++XDP_CHECKSUM_UNNECESSARY = 1 << 1
++CHECKSUM_NONE = 0
++CHECKSUM_UNNECESSARY = 1
++
++
++def _load_skb_ext_progs(cfg):
++    """Attach the store program to XDP and the check program to tc ingress.
++
++    Returns:
++        A dict mapping map name to map ID.
++    """
++    abs_path = cfg.test_dir / "xdp_skb_ext.bpf.o"
++    pin_dir = "/sys/fs/bpf/xdp_skb_ext_test"
++
++    cmd(f"rm -rf {pin_dir}", shell=True, fail=False)
++    cmd(f"mkdir -p {pin_dir}", shell=True)
++    defer(cmd, f"rm -rf {pin_dir}", shell=True, fail=False)
++
++    bpftool(f"prog loadall {abs_path} {pin_dir}")
++    ip(f"link set dev {cfg.ifname} xdpdrv pinned {pin_dir}/xdp_store")
++    defer(ip, f"link set dev {cfg.ifname} xdpdrv off")
++
++    qdiscs = tc(f"qdisc show dev {cfg.ifname}", json=True)
++    if not any(q["kind"] == "clsact" for q in qdiscs):
++        tc(f"qdisc add dev {cfg.ifname} clsact")
++        defer(tc, f"qdisc del dev {cfg.ifname} clsact")
++
++    tc(f"filter add dev {cfg.ifname} ingress bpf "
++       f"object-pinned {pin_dir}/tc_check direct-action")
++    prog_id = bpftool(f"prog show pinned {pin_dir}/tc_check", json=True)["id"]
++    for f in tc(f"filter show dev {cfg.ifname} ingress", json=True):
++        if f.get("options", {}).get("prog", {}).get("id") == prog_id:
++            defer(tc, f"filter del dev {cfg.ifname} ingress pref {f['pref']}")
++
++    return bpf_prog_map_ids(prog_id)
++
++
++@ksft_variants([
++    KsftNamedVariant("csum_none", XDP_CHECKSUM_NONE, 0, CHECKSUM_NONE),
++    KsftNamedVariant("csum_unnecessary", XDP_CHECKSUM_UNNECESSARY, 1,
++                     CHECKSUM_UNNECESSARY),
++])
++def test_xdp_skb_ext(cfg, xdp_csum, csum_level, ip_summed):
++    """Test that the skb gets the RX metadata stored on XDP_PASS.
++
++    The XDP program stores a hash, a VLAN tag and a checksum status that
++    differ from what the NIC reports. The tc program reads them from the
++    skb.
++    """
++    dev_info = cfg.netnl.dev_get({"ifindex": cfg.ifindex})
++    if "skb-ext-pass" not in dev_info.get("xdp-features", []):
++        raise KsftSkipEx("device does not support skb-ext-pass")
++
++    maps = _load_skb_ext_progs(cfg)
++
++    # GRO can change ip_summed before tc ingress
++    feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
++    set_ethtool_feat(cfg.ifname, feat, {"generic-receive-offload": False})
++
++    cfg_map = "map_store_cfg"
++    bpf_map_set(cfg_map, _CFG_HASH, TEST_RX_HASH)
++    bpf_map_set(cfg_map, _CFG_VLAN_PROTO, ETH_P_8021AD)
++    bpf_map_set(cfg_map, _CFG_VLAN_TCI, TEST_VLAN_TCI)
++    bpf_map_set(cfg_map, _CFG_IP_SUMMED, xdp_csum)
++    bpf_map_set(cfg_map, _CFG_CSUM_LEVEL, csum_level)
++    # The port goes last: it enables the store for the test packets
++    port = rand_port(socket.SOCK_DGRAM)
++    bpf_map_set(cfg_map, _CFG_PORT, port)
++
++    _send_probe(cfg, port, proto="udp")
++
++    res = bpf_map_dump(maps["map_store_res"])
++    ksft_ge(res.get(_RES_PKT_CNT, 0), 1, "tc saw the test packet")
++    ksft_eq(res.get(_RES_STORE_ERR, 0), 0, "store kfunc errors")
++
++    ksft_eq(res.get(_RES_HASH, 0), TEST_RX_HASH, "skb->hash")
++    ksft_eq(res.get(_RES_L4_HASH, 0), 1, "skb->l4_hash")
++    ksft_eq(res.get(_RES_VLAN_PROTO, 0), ETH_P_8021AD, "skb->vlan_proto")
++    ksft_eq(res.get(_RES_VLAN_TCI, 0), TEST_VLAN_TCI, "skb->vlan_tci")
++    ksft_eq(res.get(_RES_IP_SUMMED, 0), ip_summed, "skb->ip_summed")
++    ksft_eq(res.get(_RES_CSUM_LEVEL, 0), csum_level, "skb->csum_level")
++
++
+ def main():
+     """Run XDP metadata kfunc tests against a real device."""
+     with NetDrvEpEnv(__file__) as cfg:
+@@ -137,6 +252,7 @@ def main():
+         ksft_run(
+             [
+                 test_xdp_rss_hash,
++                test_xdp_skb_ext,
+             ],
+             args=(cfg,))
+     ksft_exit()
+diff --git a/tools/testing/selftests/drivers/net/hw/xdp_skb_ext.bpf.c b/tools/testing/selftests/drivers/net/hw/xdp_skb_ext.bpf.c
+new file mode 100644
+index 000000000000..b186bc1f7947
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/hw/xdp_skb_ext.bpf.c
+@@ -0,0 +1,166 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <stdbool.h>
++#include <linux/bpf.h>
++#include <linux/if_ether.h>
++#include <linux/in.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
++#include <linux/pkt_cls.h>
++#include <linux/udp.h>
++#include <bpf/bpf_core_read.h>
++#include <bpf/bpf_endian.h>
++#include <bpf/bpf_helpers.h>
++
++enum {
++	CFG_PORT,
++	CFG_HASH,
++	CFG_VLAN_PROTO,
++	CFG_VLAN_TCI,
++	CFG_IP_SUMMED,
++	CFG_CSUM_LEVEL,
++	CFG_MAX,
++};
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, CFG_MAX);
++	__type(key, __u32);
++	__type(value, __u32);
++} map_store_cfg SEC(".maps");
++
++enum {
++	RES_PKT_CNT,
++	RES_STORE_ERR,
++	RES_HASH,
++	RES_L4_HASH,
++	RES_VLAN_PROTO,
++	RES_VLAN_TCI,
++	RES_IP_SUMMED,
++	RES_CSUM_LEVEL,
++	RES_MAX,
++};
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, RES_MAX);
++	__type(key, __u32);
++	__type(value, __u32);
++} map_store_res SEC(".maps");
++
++/* Mirrors of include/net/xdp.h, not part of UAPI */
++enum xdp_rss_hash_type {
++	XDP_RSS_L4 = 1U << 3,
++};
++
++enum xdp_checksum {
++	XDP_CHECKSUM_NONE = 1U << 0,
++	XDP_CHECKSUM_UNNECESSARY = 1U << 1,
++};
++
++struct sk_buff {
++	__u8 ip_summed:2;
++	__u8 csum_level:2;
++	__u8 l4_hash:1;
++} __attribute__((preserve_access_index));
++
++extern int bpf_xdp_skb_ext_store_rx_hash(struct xdp_md *, __u32,
++					 enum xdp_rss_hash_type) __ksym;
++extern int bpf_xdp_skb_ext_store_rx_vlan(struct xdp_md *, __be16,
++					 __u16) __ksym;
++extern int bpf_xdp_skb_ext_store_rx_csum(struct xdp_md *, enum xdp_checksum,
++					 __u8) __ksym;
++extern void *bpf_cast_to_kern_ctx(void *obj) __ksym;
++
++static __u32 cfg_get(__u32 key)
++{
++	__u32 *val = bpf_map_lookup_elem(&map_store_cfg, &key);
++
++	return val ? *val : 0;
++}
++
++static void res_set(__u32 key, __u32 val)
++{
++	bpf_map_update_elem(&map_store_res, &key, &val, BPF_ANY);
++}
++
++static void res_inc(__u32 key)
++{
++	__u32 *cnt = bpf_map_lookup_elem(&map_store_res, &key);
++
++	if (cnt)
++		__sync_fetch_and_add(cnt, 1);
++}
++
++static bool is_test_pkt(void *data, void *data_end)
++{
++	struct ethhdr *eth = data;
++	struct udphdr *udp;
++
++	if ((void *)(eth + 1) > data_end)
++		return false;
++
++	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
++		struct iphdr *iph = (void *)(eth + 1);
++
++		if ((void *)(iph + 1) > data_end ||
++		    iph->protocol != IPPROTO_UDP)
++			return false;
++		udp = (void *)(iph + 1);
++	} else if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
++		struct ipv6hdr *ip6h = (void *)(eth + 1);
++
++		if ((void *)(ip6h + 1) > data_end ||
++		    ip6h->nexthdr != IPPROTO_UDP)
++			return false;
++		udp = (void *)(ip6h + 1);
++	} else {
++		return false;
++	}
++
++	if ((void *)(udp + 1) > data_end)
++		return false;
++
++	return bpf_ntohs(udp->dest) == cfg_get(CFG_PORT);
++}
++
++SEC("xdp")
++int xdp_store(struct xdp_md *ctx)
++{
++	if (!is_test_pkt((void *)(long)ctx->data, (void *)(long)ctx->data_end))
++		return XDP_PASS;
++
++	if (bpf_xdp_skb_ext_store_rx_hash(ctx, cfg_get(CFG_HASH), XDP_RSS_L4) ||
++	    bpf_xdp_skb_ext_store_rx_vlan(ctx,
++					  bpf_htons(cfg_get(CFG_VLAN_PROTO)),
++					  cfg_get(CFG_VLAN_TCI)) ||
++	    bpf_xdp_skb_ext_store_rx_csum(ctx, cfg_get(CFG_IP_SUMMED),
++					  cfg_get(CFG_CSUM_LEVEL)))
++		res_inc(RES_STORE_ERR);
++
++	return XDP_PASS;
++}
++
++SEC("tc")
++int tc_check(struct __sk_buff *skb)
++{
++	struct sk_buff *kskb;
++
++	if (!is_test_pkt((void *)(long)skb->data, (void *)(long)skb->data_end))
++		return TC_ACT_UNSPEC;
++
++	kskb = bpf_cast_to_kern_ctx(skb);
++	res_set(RES_HASH, skb->hash);
++	res_set(RES_L4_HASH, BPF_CORE_READ_BITFIELD(kskb, l4_hash));
++	if (skb->vlan_present) {
++		res_set(RES_VLAN_PROTO, bpf_ntohs(skb->vlan_proto));
++		res_set(RES_VLAN_TCI, skb->vlan_tci);
++	}
++	res_set(RES_IP_SUMMED, BPF_CORE_READ_BITFIELD(kskb, ip_summed));
++	res_set(RES_CSUM_LEVEL, BPF_CORE_READ_BITFIELD(kskb, csum_level));
++	res_inc(RES_PKT_CNT);
++
++	return TC_ACT_UNSPEC;
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.56.0
 
