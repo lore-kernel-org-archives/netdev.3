@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794326794;
-	b=Of0AS1q7cnE85lpK2zFKlp6BfSj5PQ+GCUUa2ntimZ1weWhcjpg5dFNWqmYol4QCOq4J
-	 +x3J7gOVzgeT9UE1x/18xT8hKUhsZS+86ugLYTgTUQj/KgqTpk0IWVR+f0R63VemTfpev
-	 h6wlqXzkwIN77bWCr4XqJHvD1TicPWJwPjLdT1rt16OIiGLobCl6efoJo8VaCPtolFcWW
-	 nDc5+2WsY1wlOYg9/EfB8rUnv46aRl++sT5Kop6PO/2nvejNDCwroNWlo6MDFYFIRVOjb
-	 k/fePG1GlQU/FDkpen6XFfG7pAsBL8n+tYmtd9ladwH9USiCKSUKIUHg7O5l1/7JW1w==
+	t=1794326799;
+	b=0Rsop1/L0tqEnMIiipBBMDeWfLXD9ESdcAceBRSUp2ljzCdXQrLjHMq25oR9J+2/EHs3
+	 5Fd+fP9YKqA/3u6snqY11P28OxUlqK0XrdKgiaONauRD4g0YofJ9OUu0a6ZQHoqLf5q+F
+	 Khor8LdUEThXCzfms39G+FHveVGk8DACJ5cG8oaA+lAgK6ijHDWrIS427scMqzAS9d0xg
+	 mFei7JPo7O/LMiA7d1UwnAQEyFHZ6FTGbFdEqJmmUgcWf5GYxJ1F+MXP6Z4o4Bkq7rwVc
+	 aSqCsuNX3IZycNRkKPx31AVw4yimKg0F2YFF2+lnX99bJtye2y7Ty1fwkY7SXEVgy0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794326794;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794326799;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
-	b=UmVUzDpffQM87nADtYhc1DCk1ELGSpZ9afj9ck2mnPYtQ2+Mp9ALlU8WzfIlp9uBMhmX
-	 1g9MgljL1BejImPJQ2dNTx+DRHyKoZ+GRscSN2HNlHrfCTV4W0b252C3gPklLCuOgSkCR
-	 HpjiREH+E4AIfWCd94PWb75b9MekwvVEPthuNtmX/rR2uxQqc4MVi0P0grMpzXq7HOZyk
-	 JeCWBEsXIBr6TC5TSd85ytYqmKDCeYmgyQSp97JurtKlsXeW7bTe3fdQU7yXgCr8LDCGG
-	 6hTQbVLa3oD5L/hEqQvakF4z/Qss0/M4CrVgUJw2AMLszrwUawqgjM/LzafHU3LKVZQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=kJO+2+1LAsC2NcBt84N3ty/qYLz68nqiItgXHSjfx20=;
+	b=v8oHX2Fvl1SLBL1a7ja0eayy+fY+JzcRjwodnDfzbPnxOP0HEKZUqRl4rc8i63StRTHp
+	 EtwCMQNg1IVw5YcMFIPaH52q0MB4ABWtnRyAAo6f4BlhCw0qDeVOE2bWNNaqUTDHLWhvG
+	 K4R/DK+BqlDr7GHoQGjZewgitrZG3ofqMoWSG7PKxUGXIPU7OMta5qqR5Z9GJhxyVUN+R
+	 51m5qH+WxILvWkmex+nHCC0FoeoNta1+K8lW8OjoTTF+YjdwRpDKVc4uBSgESreSzvNiY
+	 SEuYhiBzhTzhBTNChfXSFsBSyLZjIo4HZZ9yJuW9HpffvmTcMyNDWLGL+uQOC+DZGrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hYvFUIu8;
-	arc=none smtp.remote-ip=74.125.229.8
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w+kdlYun;
+	arc=none smtp.remote-ip=74.125.229.5
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC19D606A320
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:06:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC19D606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E7F606A321
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:06:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58E7F606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hYvFUIu8
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a6ce64b95so1483756eec.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:06:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w+kdlYun
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-36fe5944e9aso2285756eec.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:06:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794326793; x=1794931593; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
-        b=hYvFUIu8ZWv5dNB1GaL7fkMqJA6tevDFZDf3F1b5Cpi+lokAMJ3ZnlwuLs4P/904de
-         1HRWfAGVwhbAOkaKTzYAycjUdmIzM9viu4Nj+kYTSAqyRs+vq4d420OZDT+zyxmeq8Dp
-         yeKxSaRe6mugmCFATS1mXydwYbRIaqIa48ypthuFz1nG59/w76l6JsvT+jrkP09BTCZf
-         PEe5NJqC9qE/ZxK0udZIpnpdPtUhWAg4LLVUeYLG2YHFKLNgrnwMZKtK9ozOY/PIhk9z
-         iK2YnR0xoboRrFwetO6kN8gtarh5BdGZX2FLSJ1TKfHKbcCPTpOzn8xW2wVnRxd93j+u
-         yJSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794326793; x=1794931593;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794326798; x=1794931598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Vrfc2uaAwCa6vgkw7mtiQRrVI6iR2fXJpjV3Toth268=;
-        b=q+JTem54T2I8q/ZxKu6nF7stTtFkRDbBs4mWdmw6xgj7HdhhFo17vZZtpYFAiss01s
-         BF9srCLMd+rbEzw/uOyJvsEeVQAmbROlVvDN5WeLzUZXxaMlDLzgD/3Ig8cD5bdPMPHB
-         D8wSW3L4P3SjYtTlGd9iJJOMzPNuqzuNT1waWYaWnkJnTh0O1u9r3JN28c+Qm9ezpw+H
-         kku3TWnyQohBIsRYZ8W/wHi9SEXluTEFRyBnNGxpdRdFYAn9dCdLnbaZY6v1mWFMR8Zn
-         Tk97PWTWSP2avRXTs/wNEQbAiP+hdG/f6FJYsbMbULGDx1vOG1gV9sldQ5u4hKWfZ/4b
-         +pow==
-X-Forwarded-Encrypted: i=1; AL+hErGzNtAtrUbOtvWmWzioBYe2XDIosaeMqWyKACeKR9Odm0csWa9B/+vYAO1Xpzq8x25l9Iu8LAg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9rHT4J7GmIdhr4JEYhTB38oYF3Y+1h8BEbP21b49VWGmUXdL4J
-	7KhagTzNjsHnLCkHH5FHT9Tj5mSsKuY1YO9L8g47J1Jj8ErEt/1bfkyV
-X-Gm-Gg: AYBFou3ynOVyWyHa/UOh34ctO1d1Qg7XDfZH4d+LZ4ZZgZTVRxLX6nqG9VDcCplEUIv
-	eZkGKoiPoblUZThvP1/9Sbff0tK9APK0P7amBf8aXlduq6vt/imPYl08wrm3L9uAVD71xlGh7l0
-	z1SyNXhaMS51E9jqqYVwshesMhdycDfQ8N25GGBP9zENWC5Dz+xN615OoFpGES3AhiAFntaTG+A
-	jtXEYghjBrqqOC6chbqVUZ60YNMUgjSxxiqpkVxgdAZoZm2AVkNFL/FsptdFjenjPbqzDuMGbmF
-	ZP1eEt51WIrzOjVX+66QqMROb6ObCbEWXvU6oKNAJdNC8UyO+kSwE8Ot9QKyl+A3cSo0GVb+5Jn
-	tby6mu/Un4d4vLQMz4xCxaHsSz2wgjj/2Hjyfkf+3k0Wc/p7PF8jYtUisvhacg5sYPeYGptYwWZ
-	cfk/mkMKaLeRQOa7ElIF8kMb+xRzUqQfzXoCRj0UskI7AKCbxOG/at4tcgmoaizLOzKQHv/RVHw
-	tqM5Wjt9AjWSrtNFZMlq5lSljZ2VeR5Y00xNNk7LpzZ/XWBHgYWcTR+80Cb/UE3aHbNhusxTRC8
-	gcE9GBTaahVYTdqdvClCIfFWPOo=
-X-Received: by 2002:a05:7301:4d05:b0:369:535f:4d12 with SMTP id 5a478bee46e88-3751c53edf2mr3716461eec.3.1794326792549;
-        Tue, 10 Nov 2026 08:06:32 -0800 (PST)
+        bh=kJO+2+1LAsC2NcBt84N3ty/qYLz68nqiItgXHSjfx20=;
+        b=w+kdlYun1XgxamcR9SkDJYFCJTMM4Evboj/4Y1m2LNGYZhV3KqmS2dsWF9rLkAXWij
+         eJ94HOJ17aj+Ine1vZ7TaRuw5KX9uGGB6QKyquVAWuNMCgeJ5EBQq4V1afNGfUxUBH+0
+         SbhkxGDpWxxOA0TRr+I9ihrBVMYTdiCtNYuF0C0GXCbphGn82bbQ7r1WP3MTS1rb2esF
+         MvI89j+qe0aso1hG4soMbaLYHaDZatw7oYOPK3qIr8vgZVmLmOu3nuuPMS9rF14Q7VO2
+         psE0cYD5k8x/OjstEocqTD9YLO/JJygrvXiXbRlT4ZgicdP/EeljOERPbuby53ABBvIp
+         UGFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794326798; x=1794931598;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kJO+2+1LAsC2NcBt84N3ty/qYLz68nqiItgXHSjfx20=;
+        b=AxOUaMFXJ0tQEeZmgTQ3vcZHnV0VXNp0mylkKn5Fa2ubyCEbEo0Kg8Pfo1ELuz8EC6
+         +u+XmyZGY4iBUdZ5yu0wCp4FaEzAj2rU6eOg4WYwqs6et+huHPcZFj6HB4w25JZnEnio
+         7y5zcvnNYJS9WKYEGj1j7U/YWtMudx4qTmeVLrTFt8AeZzOPd1bzBZrhSoNzdHwoxohS
+         N9XqR+7p84Zn9ESsj0McURaxw+ZZTaoKmGW05HkaV6BR+wP/FW8VunxHZUybIl+I4A/D
+         pOc1W0U6VVCnbFYsGhV5TLfkYS72BwbZ+pw/pCP4ELwr2OsNidylg5zZhyrxH6BDGGCf
+         LkcA==
+X-Forwarded-Encrypted: i=1; AL+hErG72pPmz3CPwEzI0R9f25l2V9ceKJ4CnDjV5ea05j+dxv4EYsodD8Wb+rpIBK0mxcPu8wdbRpA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/DQm8bBJwxHxtSZTnn/JOyyPN1ctpxT+W5/arOVQc/kWukSx4H
+	egpfWKMc/iCiMbq1Jbygs9owHcKvBIhJePkJgjJjMbWvi09rZb9EZDbE
+X-Gm-Gg: AYBFou1Ef8WG4HbxLFD5dnmz0uMs35I4H2smskzfT2hfbEkEQ31g6L8aOF1tY+2KG+M
+	PNWL0DOQF63we0/fjJmShtR5YIwvOPBv3cYxHfsdYaaAlnt8fLnXsEDGbVh3zlmlQYX6CNKa4Ca
+	Dc+uI7yBHUsw0cRiwlY4VDf8U+xzVHABGUxb3jbpFrWOD73MbPtHHIK7Ahsi0CP3Jrq62zt/Ms/
+	ChP0+L44uqCK3tujAeec8kKV4rS7T+D8q4VxlPS2KHRN/AC/d39C8r1SeRBddyoVCK98i5CWhJX
+	mSJy6oXAd0Ejb7ZWm7MyTQx0ky06dPV0tBB4cAE0UuFWi1ih1kgcSOqpxxyRpT7LIcWQxcV5DJ5
+	xGrh9u2378hBS+ygz6P0ZmkNgkraNYBQ+QW+jQFYyjH9fKcREmRfXrIjEkzUf8K5HuBoib9EwRA
+	XTZFtn74EVeZn1zMQ9hQqkRcaYN3ZCk+E/6xtQy7qMgSrOHBQ+hjLM54MGa+g2ZUzBdI0gAS2Tg
+	qRSq8nuUL1EKhqvXL0xQWSZ0Z5zyfOCHPwV8omGVHIxffcRPEzeyLYkg9XyX4EDYjuJ+osRjIug
+	xw5GgM7X9UgBqFGO1OHcZno+4t0=
+X-Received: by 2002:a05:7301:d188:b0:36a:12bb:7f8e with SMTP id 5a478bee46e88-3751eb8ababmr3534905eec.13.1794326798150;
+        Tue, 10 Nov 2026 08:06:38 -0800 (PST)
 Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe306e3sm8453403eec.7.2026.11.10.08.06.26
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe306e3sm8453403eec.7.2026.11.10.08.06.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:06:31 -0800 (PST)
+        Tue, 10 Nov 2026 08:06:37 -0800 (PST)
 From: Coia Prant <coiaprant@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
@@ -95,10 +96,12 @@ Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Coia Prant <coiaprant@gmail.com>
-Subject: [PATCH net-next v4 0/2] net: phy: fix PHY interface mask initialization and XPCS usage
-Date: Wed, 11 Nov 2026 00:05:52 +0800
-Message-ID: <20261110160554.918652-1-coiaprant@gmail.com>
+Subject: [PATCH net-next v4 1/2] net: phy: move DECLARE_PHY_INTERFACE_MASK_ZERO to core
+Date: Wed, 11 Nov 2026 00:05:53 +0800
+Message-ID: <20261110160554.918652-2-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261110160554.918652-1-coiaprant@gmail.com>
+References: <20261110160554.918652-1-coiaprant@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,49 +113,50 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes issues related to the handling of the PHY interface mask
-(supported_interfaces) at the core level and in the XPCS driver.
+The txgbe driver currently defines DECLARE_PHY_INTERFACE_MASK_ZERO()
+locally, but incorrectly uses PHY_INTERFACE_MODE_MAX as the array
+length instead of BITS_TO_LONGS(). This allocates significantly more
+space on the stack than necessary.
 
-Patch 1 fixes a local macro in the txgbe driver.
-DECLARE_PHY_INTERFACE_MASK_ZERO() incorrectly uses PHY_INTERFACE_MODE_MAX
-as the array length instead of BITS_TO_LONGS(), which wastes stack space.
-Move it to include/linux/phy.h and base it on
-DECLARE_PHY_INTERFACE_MASK() so the bitmap is correctly sized while
-still being zero-initialized.
+Move the macro to include/linux/phy.h and build it on top of
+DECLARE_PHY_INTERFACE_MASK() to correctly size the bitmap, while still
+initializing the stack variable to zero.
 
-Patch 2 makes the XPCS supported_interfaces mask authoritative. The
-generic compat table advertises modes that a specific integration may
-not support. The Rockchip glue now builds a platform mask (1000BASE-X,
-SGMII, QSGMII) and intersects it with the inherited core mask using
-phy_interface_and(). In addition, xpcs_find_compat() now checks
-supported_interfaces before looking up the compat table, ensuring the
-core respects the narrowed mask.
-
-Note: checkpatch.pl reports "Macros with complex values should be
-enclosed in parentheses" for the new macro in Patch 1. This is a known
-false positive for declarative macros that expand to variable
-declarations; wrapping it would break compilation.
-
-Changes since v3:
-- Rebased onto net-next as suggested by Paolo.
-- Patch 1: drop the Fixes tag, as this is a cleanup/optimization rather
-  than a bug fix.
-- Patch 2: move DECLARE_PHY_INTERFACE_MASK_ZERO() to the top of the
-  function to comply with the reverse Christmas tree order.
-- Patch 2: clarify in the commit message that QSGMII is currently a
-  no-op because the core does not support it, demonstrating the
-  intersection behavior.
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Cc: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
-Coia Prant (2):
-  net: phy: move DECLARE_PHY_INTERFACE_MASK_ZERO to core
-  net: pcs: xpcs: make supported_interfaces authoritative
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 3 ---
+ include/linux/phy.h                             | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  3 ---
- drivers/net/pcs/pcs-xpcs-rk.c                   | 10 ++++++++++
- drivers/net/pcs/pcs-xpcs.c                      |  3 +++
- include/linux/phy.h                             |  3 +++
- 4 files changed, 16 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 757d1ce8d3ad..8071464c7b90 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -315,9 +315,6 @@ void txgbe_up(struct wx *wx);
+ int txgbe_setup_tc(struct net_device *dev, u8 tc);
+ void txgbe_do_reset(struct net_device *netdev, bool reinit);
+ 
+-#define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
+-	unsigned long name[PHY_INTERFACE_MODE_MAX] = { 0, }
+-
+ #define TXGBE_LINK_SPEED_UNKNOWN        0
+ #define TXGBE_LINK_SPEED_10GB_FULL      4
+ #define TXGBE_LINK_SPEED_25GB_FULL      0x10
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 21afc2082b17..43aba23109fa 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -159,6 +159,9 @@ typedef enum {
+ #define DECLARE_PHY_INTERFACE_MASK(name) \
+ 	DECLARE_BITMAP(name, PHY_INTERFACE_MODE_MAX)
+ 
++#define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
++	DECLARE_PHY_INTERFACE_MASK(name) = { 0, }
++
+ static inline void phy_interface_zero(unsigned long *intf)
+ {
+ 	bitmap_zero(intf, PHY_INTERFACE_MODE_MAX);
 -- 
 2.47.3
 
