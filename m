@@ -1,50 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348804;
-	b=b01Jt3CABBkz+emOasplZIbTrKMYe+582StZLzHtoyncTeZJP3bFTP4JBflPPX5hhu5I
-	 CyuBf8TXyLccRRxlXOh++t4xlr1yGmHAuU/f3KqswnYHTqZ6yDALmaH/C+ThKOPQ488Wr
-	 1pmRcXrQeke9+uatFe/cMkgsUv3jtdjwFf/iSicgp0QsnWTjts+ukjNuKORa8BX5C5hVW
-	 RJKLBogKT75H++5l1U1rnknk+M0Q8A1y7mHSTgHjuzlKASG2ptDHVuV5/xL+C1NR8OI6m
-	 9KtHt89JJUS9k9xBMaEaNrawJssjt5zwJuxNFaXm3MWi+1fkVnS16Wcnh29zfNzFEbA==
+	t=1794348807;
+	b=Ffl1Hf4FFdEwmX9X+pNp0D/nD7GBz4tDFyPDvRsg4osYENUtOqaTGFhCIJWCcg/CblSb
+	 IW3lYxZcjNnzBlDrWTVcTKG0B2wgwp+waRBS4ePAynjj/qhjfovZuUG1CIu1mVk1VBM/w
+	 MPGIQu2tFzRkguyXxf5/d0GzCU2a4+UOK2IASz/mITrot+dMw/Gqes+CgI2cNMdhcT34q
+	 DeaDGFJG6Wi86t83VZ4Ue0BJKcI4xnQ3ZFTeOo280qzjpq+aBNY98L2OQZUEDmkTyKNI0
+	 DPKLon0KCpQbVkY6RCSGO8uX5+beUHB4AxzLegB4Hf5MiTzb1eO9QhG2+/xlAbm2yCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348804;
-	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer;
-	bh=aL9JHTT2veTR8NyGvr96n4SYBueCUFdmabz2EXjCXCk=;
-	b=NyUJpGHU0U+WsjOHs1BFxrBhKmLy7vJOuEVtprCwhGX7p+jidR+auqMWMGeStMYSUqtn
-	 qEomYvD7RP6WB1HM9bH5xLkz2ZB/8luSjUNAa3foPooZBzpRj2JXEwthKh8fwK3xukUy/
-	 tKKYgNhAHJ5G+EKE4XPMY5xKQ4Ll9UVG2hql4DzX/uoPZv3cbxNdNng2KetiPOKm0+ZRF
-	 yYC2PASwbvIcYu9t43vSZDsrUrSessggVA5UScyXqUBFkOn3WH7hnbyZfCVNSGCH+e2Cb
-	 3t9KFisDBWy5ySvu5d1WYhILhWMnRbvSc9pPkn5po/TgB9QnTUGgtVD7WRma25nU/qw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348807;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer;
+	bh=M2hUWOgCedLe37XpMNsh1vER96Y5dhQC8IWrrxybGBw=;
+	b=UjRqaFWmAjgHPok01yOXs2Owz3Mijd2D/J1BzESnHrLXKcO3dDHeS4RRgy5EaU/2rmXz
+	 Q/r3xR5OqRE7fneQWCoY2TW2fr95zn81vwZTgfCTCBo3LUbtDnBrhiJzvdCik+eDyh2PD
+	 aYMkP+yr58+ykWlIOQG/lOj9LEzpp7GX5wo0peIgglhSB5mbCs5lRWsnvShMboP5pOh6X
+	 COWt7E13s9Gn+mKUbyyOut3GFQayhShoG+zobRdfuvNJNenTVSpzOm5OIoHQeVkqCPHdk
+	 m74RrevHzUfPkPmADB7+2onqnrnyLzG6Y6CC0XmrKkVsqad+EgHWyolr8LM6FxdMZ5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PeKBzMRW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TywxIp1k;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129E5606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5484606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PeKBzMRW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753221F0089F;
-	Tue, 10 Nov 2026 22:13:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TywxIp1k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354B11F008A1;
+	Tue, 10 Nov 2026 22:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348803;
-	bh=aL9JHTT2veTR8NyGvr96n4SYBueCUFdmabz2EXjCXCk=;
-	h=From:Subject:Date:To:Cc;
-	b=PeKBzMRWeDDgTfSmqJ2Gp/qaHkvcuQPN/kvgPCYbyecDhEKIBNWoux1uWdhziG3ie
-	 g9PSsbgrcfaIO7pVrXPdzSEzL45xIddSzsPlypZcLGgKUlupX5GlQJp6YKY4L3tZT9
-	 Ls1wzxpnWHrfnd5nkzptvIHrii4apnqopI6GYA+JCQYIRcXSc5sPkvO1rUNMBLfa6K
-	 adqgV+8QtP+n9r6odyMRVfKhzqXlsIG7tZkyMNBGD8d7W3alM9arDplgMDErHVn52z
-	 ddhIl0yoK90R9iTQzGG0jhmC/0PrSLnuwWPd5fW0JeNvTvF3ahzTepVNkoX93DUS1P
-	 gvUUv3iFaIhuA==
+	s=k20260515; t=1794348806;
+	bh=M2hUWOgCedLe37XpMNsh1vER96Y5dhQC8IWrrxybGBw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=TywxIp1ka5dxqo0HSSuOLAFO1H7E6Mz5er+BVGxhPyz2mmKMWc6FL+AniT9F8WC5x
+	 3oP91Pk6262lPstw7WnebMUluj2BzWaWwWuOI+q29ZtGJBbWYFCUyMnBEFdcAMhKHr
+	 wD94rko6475CGBZtdrzSRwQjSrun4bflPcoRl6SmLoPk6g2TDHvc0DB539uJAZHa9w
+	 eR1iED6P/ZcFpOGaX48wnm6No8ea9tAJTxQDuxJkrARwLMmHonaDkcTEHV8RLS/x9h
+	 X1b3x4uZE6VoV6b3kdDzFpFQObKiI/VajYVck4RsjDKKO/kAoGtSppvoKYMxLwBeCM
+	 i8RyqWI8ItpbA==
 From: Linus Walleij <linusw@kernel.org>
-Subject: [PATCH net-next v7 00/18] net: ethernet: cortina: Fix Gemini RX/TX
- buffer management
-Date: Tue, 10 Nov 2026 23:13:15 +0100
-Message-Id: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
+Date: Tue, 10 Nov 2026 23:13:16 +0100
+Subject: [PATCH net-next v7 01/18] net: ethernet: cortina: Keep shared free
+ queue parent-owned
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,12 +55,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3XPzWqFMBAF4FcJs75TJon50VXfo3QRdaKhrZYoc
- svFdy9aaC3i+hy+M/OAiXPiCSrxgMxLmtI4QCXcTUDTh6FjTC1UAhQpS6UsseOPNCTkuec88Iw
- x3XlCjZEK0tboqHSAm4DPzHsElXiBrTjwfYbXm4A+TfOYv/bJRe75j67oUl8kEuqggqHgdevL5
- 7et8P405m5HF3WE/DWkkNAZH1xpWhecP0H6F5JE6hrS20UsozK+pMBnqDhAUl5DBRIWtbRa1uS
- jaU+QOULmGjJIWJumZBVd7YM+QfYPkqSvIYuETVGbGH2wpv3/2rqu317nQZc2AgAA
-X-Change-ID: 20260919-gemini-ethernet-fixes-3-f0403653f23a
+Message-Id: <20261110-gemini-ethernet-fixes-3-v7-1-9c32a1a46aec@kernel.org>
+References: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
+In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
@@ -71,165 +67,134 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-The Gemini ethernet uses a custom software free queue shared by both
-ports. Its page metadata, DMA mappings and fragment references are not
-managed consistently as pages move through the free queue and RX queues.
+The software free queue is shared by both Ethernet ports, but teardown is
+not ordered around that ownership. On parent unbind or module unload, the
+parent remove callback runs before devres depopulates the child devices. It
+therefore destroys the queue while both child netdevs are still registered
+and can be doing DMA. Devres then removes each child, and both child remove
+callbacks destroy the same queue again, resulting in up to three cleanup
+attempts.
 
-Correct the DMA address bookkeeping and synchronization.
+Removal before the first interface has been opened is broken as well. The
+shared block initialization assigns a nonzero queue order, but allocation
+is deferred until open. Cleanup consequently derives a nonzero page count
+and dereferences the NULL queue ring.
 
-Track exact fragment mappings with an XArray and keep
-in-flight page metadata in bitmap-allocated slots until all hardware
-references have been claimed.
+Depopulate both port devices before cleaning up the queue, and perform that
+cleanup only from the parent. Disable the free-queue interrupt after the
+managed handlers have drained, since its threaded handler can re-enable it.
+Guard cleanup for paths where no queue was allocated.
 
-Serialize queue resize against the refill interrupt, harden fragment
-validation and teardown, then scale the default queue sizes for systems
-with 32 or 64 MiB of RAM.
+Hold parent-managed enables on the port clocks across child removal, IRQ
+draining and shared queue cleanup, so teardown never relies on clocks
+already released by the children.
 
-This series wasn't so complex to begin with but Sashiko and the other
-LLMs just find more and more corner cases. It's for the better I
-guess.
+Port 1 owns the shared refill interrupt, so prevent the children from being
+unbound independently. Unregister each netdev before detaching its PHY so
+ndo_stop can still access netdev->phydev.
 
-Before these patches the network driver would crash under strong load
-but it does not happen any more after. Tested on the D-Link DIR-685
-playing back media and transfering new media using ksmbd while
-issuing ping storms.
-
-Target the series for net-next, Sashiko keeps insisting to make some
-patches Fixes: tagged, and yeah maybe it's true but OpenWrt is the
-only user and I will surely backport all patches to OpenWrt anyway.
-
+Reported-by: Myeonghun Pak <mhun512@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260917192835.58126-1-mhun512@gmail.com/
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Changes in v7:
-- Bound free queue refill work and release surplus metadata on downsizing.
-- Serialize TX completion statistics with the IRQ-side writers.
-- Fix ethtool statistics retry bounds and counter synchronization.
-- Reject pfmemalloc pages when recycling RX buffers.
-- Document XArray dependency for lifetime and recycling backports.
-- Reject TX rings smaller than retained hardware pointers, so now the
-  series has also started to fix things on the TX path.
-- Document the retained SWFQ pointer shrink and allocation limits.
-- Keep ports IRQ-only after PHY setup or netdev registration failure.
-- Keep parent-held port clocks enabled through IRQ draining and queue teardown.
-- Link to v6: https://patch.msgid.link/20261103-gemini-ethernet-fixes-3-v6-0-c4b5ff8a65d8@kernel.org
+ drivers/net/ethernet/cortina/gemini.c | 40 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-Changes in v6:
-- Initialize statistics synchronization objects for lockdep.
-- Post free queue pages from the exact retained descriptor pointer.
-- Document replacement-page lookup failures and tag the DMA mapping fix.
-- Initialize and drain the RX coalescing timer around its IRQ lifetime.
-- Rebased on v7.4-rc1
-- Link to v5: https://patch.msgid.link/20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3@kernel.org
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 2fe7fd0202d2..0b05a1552983 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1004,6 +1004,9 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+ 	unsigned int pages = len >> fpp_order;
+ 	unsigned int pn;
+ 
++	if (!geth->freeq_ring)
++		return;
++
+ 	writew(readw(geth->base + GLOBAL_SWFQ_RWPTR_REG),
+ 	       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
+ 	writel(0, geth->base + GLOBAL_SW_FREEQ_BASE_SIZE_REG);
+@@ -2387,11 +2390,10 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
+ static void gemini_port_remove(struct gemini_ethernet_port *port)
+ {
+ 	if (port->netdev) {
+-		phy_disconnect(port->netdev->phydev);
+ 		unregister_netdev(port->netdev);
++		phy_disconnect(port->netdev->phydev);
+ 	}
+ 	clk_disable_unprepare(port->pclk);
+-	geth_cleanup_freeq(port->geth);
+ }
+ 
+ static void gemini_ethernet_init(struct gemini_ethernet *geth)
+@@ -2635,17 +2637,25 @@ static struct platform_driver gemini_ethernet_port_driver = {
+ 	.driver = {
+ 		.name = "gemini-ethernet-port",
+ 		.of_match_table = gemini_ethernet_port_of_match,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = gemini_ethernet_port_probe,
+ 	.remove = gemini_ethernet_port_remove,
+ };
+ 
++static void gemini_ethernet_disable_clk(void *data)
++{
++	clk_disable_unprepare(data);
++}
++
+ static int gemini_ethernet_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct gemini_ethernet *geth;
+ 	unsigned int retry = 5;
++	unsigned int clocks = 0;
+ 	u32 val;
++	int ret;
+ 
+ 	/* Global registers */
+ 	geth = devm_kzalloc(dev, sizeof(*geth), GFP_KERNEL);
+@@ -2656,6 +2666,30 @@ static int gemini_ethernet_probe(struct platform_device *pdev)
+ 		return PTR_ERR(geth->base);
+ 	geth->dev = dev;
+ 
++	/* Keep both port clocks enabled until the shared queue is torn down. */
++	for_each_available_child_of_node_scoped(dev->of_node, child) {
++		struct clk *clk;
++
++		if (!of_device_is_compatible(child, "cortina,gemini-ethernet-port"))
++			continue;
++
++		clk = devm_get_clk_from_child(dev, child, "PCLK");
++		if (IS_ERR(clk))
++			return dev_err_probe(dev, PTR_ERR(clk),
++					     "failed to get port clock\n");
++
++		ret = clk_prepare_enable(clk);
++		if (ret)
++			return ret;
++		ret = devm_add_action_or_reset(dev, gemini_ethernet_disable_clk,
++					       clk);
++		if (ret)
++			return ret;
++		clocks++;
++	}
++	if (!clocks)
++		return -ENODEV;
++
+ 	/* Wait for ports to stabilize */
+ 	do {
+ 		udelay(2);
+@@ -2683,6 +2717,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+ {
+ 	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+ 
++	devm_of_platform_depopulate(&pdev->dev);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
+ 	geth_cleanup_freeq(geth);
+ 	geth->initialized = false;
+ }
 
-Changes in v5:
-- Preserve complete frames terminated by an empty EOF descriptor.
-- Recheck concurrently retired pages before consuming fresh metadata slots.
-- Fold RX ring metadata sizing and resize rollback into the page lifetime
-  fix.
-- Match free queue teardown unmaps to the saved full-page DMA mapping.
-- Preserve the hardware-owned free queue read pointer across rebuilds and
-  keep replacement rings large enough for its retained position.
-- Keep shared initialization parent-owned, quiesce inherited IRQ state
-  before child handlers register and force first queue setup from ring
-  state.
-- Link to v4: https://patch.msgid.link/20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d@kernel.org
-
-Changes in v4:
-- Protect stop-path RX statistics updates against preemption on 32-bit systems.
-- Validate final RX lengths against the Ethernet minimum and descriptor
-  transfer size so malformed chains cannot pass short skbs to GRO.
-- Charge the full posted RX fragment size in skb truesize accounting.
-- Reject free queue geometries that cannot post one complete page and
-  document the changed refill and recycling behavior.
-- Reset the free queue allocation cursor with its bitmap during teardown.
-- Bound recycler IRQ latency and release retained mappings for stack-owned
-  pages before allocating replacements.
-- Rebuild oversized free queues while both ports are down so RX ring
-  downsizing releases the surplus pages.
-- Scope RX statistics writer sections to counter updates for PREEMPT_RT.
-- Restrict shared free queue handling to port 1 so IRQ draining covers
-  every registered handler path.
-- Reset and mask free queue pointers when rebuilding the queue.
-- Reorder the shared queue ownership fix before the port lifetime fix.
-- Publish ports only after setup, serialize their lifetime with RTNL and
-  suppress independent child unbind while port 1 owns the shared IRQ.
-- Move child-unbind suppression and PHY teardown ordering into the
-  parent-ownership patch.
-- Link to v3: https://patch.msgid.link/20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8@kernel.org
-
-Changes in v3:
-- Add Fixes tags throughout the series, using the original driver commit
-  where no more specific offending commit exists, and replace Resolves with
-  Closes on the lifetime fix. I did not retarget the series to net
-  because there are dependencies in net-next and we are getting closer
-  to the merge window.
-- Keep PHY-less port 1 bound as the shared free queue IRQ owner and clear
-  stale parent port pointers.
-- Disable the port 1 Linux IRQ throughout free queue resizing so no newly
-  woken threaded handler can race queue teardown or setup.
-- Keep failed queue rebuilds quiescent in the IRQ-drain patch.
-- Serialize linear DMA lookups before converting them to an XArray.
-- Keep all XArray mutation under the IRQ-safe free queue lock.
-- Defer page unmapping until fragment lifetime is tracked, and fold DMA
-  synchronization into that fix.
-- Check free queue space before allocating and mapping a candidate page.
-- Rebuild free queue metadata when RX rings grow and roll back rejected
-  ring changes.
-- Recycle released pages with explicit DMA synchronization using the
-  existing free queue allocator.
-- Account inconsistent RX descriptor lengths as drops rather than wire
-  length errors.
-- Count partial RX frames discarded during stop as dropped.
-- Drop the cleanup guard conversion because it is not recommended for
-  network drivers.
-- Link to v2: https://patch.msgid.link/20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org
-
-Changes in v2:
-- Replace the page_pool conversion with several smaller fixes using the
-  existing free queue page allocator.
-- Split DMA bookkeeping, XArray lookup, bitmap allocation, cursor rotation,
-  synchronization, validation and teardown into individual patches.
-- Drain the threaded free queue interrupt before resizing the shared queue.
-- Allocate and DMA-map refill pages outside the IRQ-disabled free queue
-  lock.
-- Reject and unwind partial initial free queue fills, reset their hardware
-  pointers and leave the refill interrupt masked so setup can be retried.
-- Avoid full-page CPU synchronization after fragments enter the network
-  stack.
-- Bound RX lengths to the posted fragment and account rejected lengths as
-  receive errors.
-- Keep the fixes, and keep the add-on RAM sizing patch.
-- Link to v1: https://patch.msgid.link/20260920-gemini-ethernet-fixes-3-v1-0-3a2a50a83d89@kernel.org
-
----
-Linus Walleij (18):
-      net: ethernet: cortina: Keep shared free queue parent-owned
-      net: ethernet: cortina: Keep ports bound for shared IRQ
-      net: ethernet: cortina: Drain free queue IRQ before resize
-      net: ethernet: cortina: Normalize free queue pointers on rebuild
-      net: ethernet: cortina: Correct free queue DMA mappings
-      net: ethernet: cortina: Index free queue fragments with XArray
-      net: ethernet: cortina: Preserve in-flight free queue pages
-      net: ethernet: cortina: Rotate free queue page allocation
-      net: ethernet: cortina: Recycle claimed free queue pages
-      net: ethernet: cortina: Validate RX fragment lengths
-      net: ethernet: cortina: Account RX buffer size in truesize
-      net: ethernet: cortina: Release partial RX frames on stop
-      net: ethernet: cortina: Scale Gemini RX queues to system memory
-      net: ethernet: cortina: Serialize TX completion statistics
-      net: ethernet: cortina: Scope RX statistics updates
-      net: ethernet: cortina: Drain RX coalescing timer on stop
-      net: ethernet: cortina: Reject TX rings smaller than retained pointers
-      net: ethernet: cortina: Fix ethtool statistics reads
-
- drivers/net/ethernet/cortina/gemini.c | 953 +++++++++++++++++++++++++---------
- drivers/net/ethernet/cortina/gemini.h |   2 +-
- 2 files changed, 718 insertions(+), 237 deletions(-)
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260919-gemini-ethernet-fixes-3-f0403653f23a
-
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+-- 
+2.56.0
 
