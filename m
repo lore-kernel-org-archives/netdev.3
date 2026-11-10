@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292886;
-	b=WG04QO4oUef7IkPyBH58gB4T/WJXp7u26hduXwTk7Z+RbA5q1jTX3w7BmmDfu218FJaj
-	 EwDAto6f4zxmTmB3yW8QSyP4+WT4Hy2CH5WfiwjS2YSQRcpudCFwr8JDHnpsmWzWlD+Rj
-	 OfaNl0U1asi1IALDISi/yrL1CDW10qhb1xSwtqENu/BPskukBsOOzwHPCYJRK47HVqzCk
-	 xTa1RX2Amehn6WRQCKczMB6u1Ky0ibfmvNJQO/j3aLBauCgFCYYCDKZkPj05k4CYedt5w
-	 UcLS3xlYa3aiIS60JRra6xYqx3WSy52fTcba/PmgkmmkpSX/HO9IlgzILHCzsVStBmQ==
+	t=1794292888;
+	b=Oi5ZkYx5RTwNdJAiZiRk6NWKgOovfHzI6O3ypfziibHDNS2q5QZ6jTiJJBOk/tjc5/eR
+	 LvGaqiyCiN+1UJYGTMsXxg8EWYbJOhN9ASAYo30lVDbqhrY7rm5qqr3sDYbrxWjsKfMed
+	 sa4hnoPsFaoOeiFb7Lg7mtmRCp8luJMQSxdApVbWgUVozk3JsNsfPtoV1c1OMTPZqGVFZ
+	 wDLoH0CzJsvNZGx6P3YEI0kqhZ+Xnto6Isemajg4Cm+wS6MJFMEKOcf7ZuaXQKK/2ko4t
+	 W+q8oA3c4JbzX9rJETkYenZxdGWZfB4QdNp1qo5GpZg0hMGa8q63TTGqm0Q9GqpYeVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292886;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292888;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
 	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=UQrPmqa5vGFJYVLC6y8HymZQPxgzYznuIdXlfYLtwdY=;
-	b=Pw1AK7KMh/TP15q0xh0DfTCAjM58yc0PzcSEcrKvpS6r1AYt4yi5APkIsaMnjbtXLePq
-	 l51HH1ECD0ZIaOqYTzDLnYqgPl6BkUPVY997Uc9N71iJjUZ6RQk6H4+e5JCVS4aXrXRO4
-	 Ew+XuzGR6yusQs587oZiOo8jhwzT+fVQxGdF6vhzgh6OSXE9+nAdtzuwzavYnOt0R0X6L
-	 frIojxNZCNmAfUqLO90XzK2c/+EAIUCu/uLtqgKE1D+0Bq50EVA4djsLyMFmjmB6uUY/n
-	 XgWgolAZIYDotYVtYuE23ry1POD8wlVmUHEKeaws/fIfZAe0RuvMm3oJxdT4uyI8sQA==
+	bh=WfIAYqdF6wZYpZzaWY38Xxjrq+wOS8yWfdzFcKWXmbc=;
+	b=PipeAvIpxoEqzqgtvULZGnz1SyiCbt1I0oGmYmfLyMauK7nw09P1NOkDQmHqRn4xxnjS
+	 IPgyXeleIhD20Qm95VLKphSjOi9AQ4XJ/3BZMq/ixv8UWHtI+B7mKsSHuFKBo+3neu6jV
+	 w+X6huCLuyiEhvHmRDI/BTN4xTr3jO3iH8shM0MXl+BEscF0Khhb6j/psWixCaqNwZlBN
+	 bWHNS++U0aJojJFe6tPa6zv1QoZsYoaFOflA4MFjvschk8qmvxFH6D0CYNM7r6lOsrCQK
+	 z9ucGjMzQ5+D1eSOrY8FOKz/9dQGpRa/CbNGhaYQMSElRrRq2RTeCvP7wSSqh4fTxfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gVGqBLC1;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D46B6070344;
-	Tue, 10 Nov 2026 06:41:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D46B6070344
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LkZG1Aaw;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9492A606A643;
+	Tue, 10 Nov 2026 06:41:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9492A606A643
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gVGqBLC1
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LkZG1Aaw
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=gVGqBLC1A/okOTXnaQtxFXNmrSr3ZEmYyIQxfVjrSKVHs8by5p6+WpYKHzEAnWqILfg7z1DbC4oY5
-	 paDIEF9NCLuNc5P2DTH9si64bcCWVhpzwClqIeLwprPxXcgp8Xznh0mKySpFIDKbgGq8o4BSRJ1gWE
-	 y6YVPd5FG56iMSWM=
+	b=LkZG1AawQASF5XJO37toqyMRyC6pBLcNVPI5P9kppwgBnI9iFh6P/aNgaDEqsV3uAtmw6qxocLngn
+	 xgZTbuw3n4D8ZYLtOM7gSNikmWPuRvD8jU10nYTYrClp0ZtTck+2inl7ic7LObxlz/YZkJB901Qiwu
+	 leyRyftDdEMioqA4=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af2bc93207-a75fa;
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af2bc92851-6b667;
 	Tue, 10 Nov 2026 14:41:23 +0800 (CST)
-X-RM-TRANSID:2ee16af2bc93207-a75fa
+X-RM-TRANSID:2ee46af2bc92851-6b667
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from  (unknown[223.108.79.98])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5dc;
-	Tue, 10 Nov 2026 14:41:23 +0800 (CST)
-X-RM-TRANSID:2ee66af2bc8e8a1-aa5dc
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5d9;
+	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
+X-RM-TRANSID:2ee66af2bc8e8a1-aa5d9
 From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -66,9 +66,9 @@ Cc: andrew+netdev@lunn.ch,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
-Subject: [PATCH v2 net 4/4] net: ti: icssg-prueth-sr1: Fix port scan issues in prueth_probe()
-Date: Tue, 10 Nov 2026 14:41:17 +0800
-Message-ID: <20261110064118.1138-5-laixiangwu@cmss.chinamobile.com>
+Subject: [PATCH v2 net 3/4] net: ti: icssg-prueth: Fix port scan issues in prueth_probe()
+Date: Tue, 10 Nov 2026 14:41:16 +0800
+Message-ID: <20261110064118.1138-4-laixiangwu@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 References: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
@@ -106,17 +106,17 @@ actually accepted. Reject duplicate reg values, which is what the
 existing check intended but never caught, and remove the unreachable
 check.
 
-Fixes: e654b85a693e ("net: ti: icssg-prueth: Add ICSSG Ethernet driver for AM65x SR1.0 platforms")
+Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
 Signed-off-by: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
 ---
- .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  | 26 +++++++++++--------
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 26 +++++++++++---------
  1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-index ef1dc32ff..1a9dd70b2 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-@@ -922,24 +922,34 @@ static int prueth_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 9b971d1df..c19a51174 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -2217,24 +2217,34 @@ static int prueth_probe(struct platform_device *pdev)
  		if (ret < 0) {
  			dev_err(dev, "%pOF error reading port_id %d\n",
  				eth_node, ret);
@@ -156,7 +156,7 @@ index ef1dc32ff..1a9dd70b2 100644
  		}
  	}
  
-@@ -951,12 +961,6 @@ static int prueth_probe(struct platform_device *pdev)
+@@ -2246,12 +2256,6 @@ static int prueth_probe(struct platform_device *pdev)
  		return -ENODEV;
  	}
  
