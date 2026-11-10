@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348807;
-	b=Ffl1Hf4FFdEwmX9X+pNp0D/nD7GBz4tDFyPDvRsg4osYENUtOqaTGFhCIJWCcg/CblSb
-	 IW3lYxZcjNnzBlDrWTVcTKG0B2wgwp+waRBS4ePAynjj/qhjfovZuUG1CIu1mVk1VBM/w
-	 MPGIQu2tFzRkguyXxf5/d0GzCU2a4+UOK2IASz/mITrot+dMw/Gqes+CgI2cNMdhcT34q
-	 DeaDGFJG6Wi86t83VZ4Ue0BJKcI4xnQ3ZFTeOo280qzjpq+aBNY98L2OQZUEDmkTyKNI0
-	 DPKLon0KCpQbVkY6RCSGO8uX5+beUHB4AxzLegB4Hf5MiTzb1eO9QhG2+/xlAbm2yCQ==
+	t=1794348810;
+	b=EiLdz1Z4e5XEbcURqIKuJPQp02qrtRudqbqf2LIV9ygTmsmvPMcKam6cT9aQhsSG5vGB
+	 LiWXfBmahNfB2xgVsUdgIrIuKHrgOVo1xJc3iGAVVLBym5SaOrDWDC1gXTIfp9HAnPBnq
+	 pGPxgcGOR2RMOn7LD5A9g5eeD+h6XTpbfZdY5BzcahFuZCnn30egRBAyCVZw6+7L2eB0u
+	 ZyV4dC5FReb1KFagPoZ70UBZqVBNuRxUvyd+FLqK5J19wWVFAT7rM775wxqKl+FbC2Xfm
+	 EVsBTJKQCKbwOa7YnE2CSJhd8Hk5PDkHMNx8s9GiS/2sp7Vm6tJKzViagIitk5BQU4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348810;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer;
-	bh=M2hUWOgCedLe37XpMNsh1vER96Y5dhQC8IWrrxybGBw=;
-	b=UjRqaFWmAjgHPok01yOXs2Owz3Mijd2D/J1BzESnHrLXKcO3dDHeS4RRgy5EaU/2rmXz
-	 Q/r3xR5OqRE7fneQWCoY2TW2fr95zn81vwZTgfCTCBo3LUbtDnBrhiJzvdCik+eDyh2PD
-	 aYMkP+yr58+ykWlIOQG/lOj9LEzpp7GX5wo0peIgglhSB5mbCs5lRWsnvShMboP5pOh6X
-	 COWt7E13s9Gn+mKUbyyOut3GFQayhShoG+zobRdfuvNJNenTVSpzOm5OIoHQeVkqCPHdk
-	 m74RrevHzUfPkPmADB7+2onqnrnyLzG6Y6CC0XmrKkVsqad+EgHWyolr8LM6FxdMZ5g==
+	bh=9IaBC6RXA0SY42F4SbdsKXij1YpIggrP7VrUWj5Ywe4=;
+	b=J4m6lC//IQ8x6FVvsAXet2f19Z4s4SHl/UwmxojXh0lJWTiyRP3f07OhGqk4rvW7onPo
+	 ghGiF7/hlvj1PKftiiwLL9dRH6ksLC1D55ycypBtyDmVSdPp+RMafIUaU+Z3aR24UntPX
+	 JMjAKydRK83Zmw06fNreBWbPgCtWsndfJA/xUca4bnrHCfWs7/PUeG45UbeeHMn7PRMJy
+	 7spExbzqhZsbM5lEEJK14XJrRs1QcSx4cpsaVefPo9JDAWoH1cfimMZNocSqfAMlCQpfI
+	 7SYnC9TGhIOJolFxf+b5Wv3s1VnulfkyQzrw/7fEPgi51FhaqXMOnOnLW2lItaN4YzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TywxIp1k;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AyrE2iv3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5484606A31C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE83606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TywxIp1k
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354B11F008A1;
-	Tue, 10 Nov 2026 22:13:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AyrE2iv3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F001F0089F;
+	Tue, 10 Nov 2026 22:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348806;
-	bh=M2hUWOgCedLe37XpMNsh1vER96Y5dhQC8IWrrxybGBw=;
+	s=k20260515; t=1794348809;
+	bh=9IaBC6RXA0SY42F4SbdsKXij1YpIggrP7VrUWj5Ywe4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TywxIp1ka5dxqo0HSSuOLAFO1H7E6Mz5er+BVGxhPyz2mmKMWc6FL+AniT9F8WC5x
-	 3oP91Pk6262lPstw7WnebMUluj2BzWaWwWuOI+q29ZtGJBbWYFCUyMnBEFdcAMhKHr
-	 wD94rko6475CGBZtdrzSRwQjSrun4bflPcoRl6SmLoPk6g2TDHvc0DB539uJAZHa9w
-	 eR1iED6P/ZcFpOGaX48wnm6No8ea9tAJTxQDuxJkrARwLMmHonaDkcTEHV8RLS/x9h
-	 X1b3x4uZE6VoV6b3kdDzFpFQObKiI/VajYVck4RsjDKKO/kAoGtSppvoKYMxLwBeCM
-	 i8RyqWI8ItpbA==
+	b=AyrE2iv3oGgQlXdH8B9q4Ct62iv6woFN/O12Yqz9oJ3hAaM751a/B67fZ1lQapbvr
+	 akuE7Mh8osxIOv3qo7y2eLGtbui+h3n786zPEJSak81a7ZIqXwsDKgf4FcUzzX34Nd
+	 KZB7qQSw6ouln01AAA3fLzyEsHLmEI3AlU/Wm94sY6A6L6rbMVWKy/u6ws6jpeyEmL
+	 M8ODF5OPwwYUgHJ8HViVONTS/BZQssBwkyNzOq0iK5Z/fElTmq+AutYrfoE3Jlj8z9
+	 b3Zf8Uekf3LLhdbIr4YbClxEqPoXlUrBTPEFymNtOgiy5df9NC9KbQY319flALsu5V
+	 tIhSB5dfhmDjA==
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 10 Nov 2026 23:13:16 +0100
-Subject: [PATCH net-next v7 01/18] net: ethernet: cortina: Keep shared free
- queue parent-owned
+Date: Tue, 10 Nov 2026 23:13:17 +0100
+Subject: [PATCH net-next v7 02/18] net: ethernet: cortina: Keep ports bound
+ for shared IRQ
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-gemini-ethernet-fixes-3-v7-1-9c32a1a46aec@kernel.org>
+Message-Id: <20261110-gemini-ethernet-fixes-3-v7-2-9c32a1a46aec@kernel.org>
 References: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
 In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -67,133 +67,268 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-The software free queue is shared by both Ethernet ports, but teardown is
-not ordered around that ownership. On parent unbind or module unload, the
-parent remove callback runs before devres depopulates the child devices. It
-therefore destroys the queue while both child netdevs are still registered
-and can be doing DMA. Devres then removes each child, and both child remove
-callbacks destroy the same queue again, resulting in up to three cleanup
-attempts.
+The software free queue interrupt is routed through port 1 even on
+boards which only connect a PHY to port 0. Since PHY setup was moved
+into probe, the PHY-less port fails to bind and releases the threaded
+handler needed by the shared queue.
 
-Removal before the first interface has been opened is broken as well. The
-shared block initialization assigns a nonzero queue order, but allocation
-is deferred until open. Cleanup consequently derives a nonzero page count
-and dereferences the NULL queue ring.
+Publishing the port before PHY setup also leaves a dangling parent pointer
+when probe fails and devres frees the netdev private data. Opening the
+sibling can then dereference freed memory.
 
-Depopulate both port devices before cleaning up the queue, and perform that
-cleanup only from the parent. Disable the free-queue interrupt after the
-managed handlers have drained, since its threaded handler can re-enable it.
-Guard cleanup for paths where no queue was allocated.
+Keep children bound as IRQ-only ports when no PHY is described or when PHY
+setup or netdev registration fails, so an unusable interface does not
+disable its sibling. Disconnect any attached PHY after registration
+failure. Continue to propagate deferred-probe and mandatory resource
+errors.
 
-Hold parent-managed enables on the port clocks across child removal, IRQ
-draining and shared queue cleanup, so teardown never relies on clocks
-already released by the children.
+Publish a port to the parent only after its IRQ and optional netdev are
+ready, and protect port lifetime with RTNL. Refuse shared queue setup
+until both ports have completed initialization.
 
-Port 1 owns the shared refill interrupt, so prevent the children from being
-unbound independently. Unregister each netdev before detaching its PHY so
-ndo_stop can still access netdev->phydev.
+Keep shared hardware initialization parent-owned across individual child
+removal so recreating one child cannot reset a live sibling. Mask
+firmware interrupt state before child IRQ handlers are registered, and
+use the allocated ring rather than an order sentinel to decide whether
+the queue still needs initial setup.
 
-Reported-by: Myeonghun Pak <mhun512@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260917192835.58126-1-mhun512@gmail.com/
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Fixes: 3e813d61401a ("net: gemini: Clean up phy registration")
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 40 +++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 126 +++++++++++++++++++++++++---------
+ 1 file changed, 94 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 2fe7fd0202d2..0b05a1552983 100644
+index 0b05a1552983..22c3b6b8e2db 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1004,6 +1004,9 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
- 	unsigned int pages = len >> fpp_order;
- 	unsigned int pn;
+@@ -25,6 +25,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/reset.h>
+ #include <linux/clk.h>
++#include <linux/rtnetlink.h>
+ #include <linux/of.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+@@ -155,6 +156,7 @@ struct gemini_ethernet_port {
+ struct gemini_ethernet {
+ 	struct device *dev;
+ 	void __iomem *base;
++	/* Protected by RTNL. */
+ 	struct gemini_ethernet_port *port0;
+ 	struct gemini_ethernet_port *port1;
+ 	bool initialized;
+@@ -1051,10 +1053,17 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
+ 	u32 en;
+ 	int ret;
  
-+	if (!geth->freeq_ring)
-+		return;
++	ASSERT_RTNL();
 +
- 	writew(readw(geth->base + GLOBAL_SWFQ_RWPTR_REG),
- 	       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
- 	writel(0, geth->base + GLOBAL_SW_FREEQ_BASE_SIZE_REG);
-@@ -2387,11 +2390,10 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
- static void gemini_port_remove(struct gemini_ethernet_port *port)
- {
- 	if (port->netdev) {
--		phy_disconnect(port->netdev->phydev);
- 		unregister_netdev(port->netdev);
-+		phy_disconnect(port->netdev->phydev);
- 	}
- 	clk_disable_unprepare(port->pclk);
--	geth_cleanup_freeq(port->geth);
- }
- 
- static void gemini_ethernet_init(struct gemini_ethernet *geth)
-@@ -2635,17 +2637,25 @@ static struct platform_driver gemini_ethernet_port_driver = {
- 	.driver = {
- 		.name = "gemini-ethernet-port",
- 		.of_match_table = gemini_ethernet_port_of_match,
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe = gemini_ethernet_port_probe,
- 	.remove = gemini_ethernet_port_remove,
- };
- 
-+static void gemini_ethernet_disable_clk(void *data)
-+{
-+	clk_disable_unprepare(data);
-+}
-+
- static int gemini_ethernet_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct gemini_ethernet *geth;
- 	unsigned int retry = 5;
-+	unsigned int clocks = 0;
- 	u32 val;
-+	int ret;
- 
- 	/* Global registers */
- 	geth = devm_kzalloc(dev, sizeof(*geth), GFP_KERNEL);
-@@ -2656,6 +2666,30 @@ static int gemini_ethernet_probe(struct platform_device *pdev)
- 		return PTR_ERR(geth->base);
- 	geth->dev = dev;
- 
-+	/* Keep both port clocks enabled until the shared queue is torn down. */
-+	for_each_available_child_of_node_scoped(dev->of_node, child) {
-+		struct clk *clk;
-+
-+		if (!of_device_is_compatible(child, "cortina,gemini-ethernet-port"))
-+			continue;
-+
-+		clk = devm_get_clk_from_child(dev, child, "PCLK");
-+		if (IS_ERR(clk))
-+			return dev_err_probe(dev, PTR_ERR(clk),
-+					     "failed to get port clock\n");
-+
-+		ret = clk_prepare_enable(clk);
-+		if (ret)
-+			return ret;
-+		ret = devm_add_action_or_reset(dev, gemini_ethernet_disable_clk,
-+					       clk);
-+		if (ret)
-+			return ret;
-+		clocks++;
-+	}
-+	if (!clocks)
++	/* The software free queue interrupt is routed through port 1. */
++	if (!geth->initialized || !geth->port0 || !geth->port1)
 +		return -ENODEV;
 +
- 	/* Wait for ports to stabilize */
- 	do {
- 		udelay(2);
-@@ -2683,6 +2717,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+ 	if (netdev->dev_id == 0)
+-		other_netdev = geth->port1->netdev;
++		other_port = geth->port1;
+ 	else
+-		other_netdev = geth->port0->netdev;
++		other_port = geth->port0;
++	other_netdev = other_port ? other_port->netdev : NULL;
+ 
+ 	if (other_netdev && netif_running(other_netdev))
+ 		return -EBUSY;
+@@ -1065,7 +1074,6 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
+ 		   new_size,
+ 		   port->rxq_order);
+ 	if (other_netdev) {
+-		other_port = netdev_priv(other_netdev);
+ 		new_size += 1 << (other_port->rxq_order + 1);
+ 		netdev_dbg(other_netdev, "port %d size: %d order %d\n",
+ 			   other_netdev->dev_id,
+@@ -1076,7 +1084,7 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
+ 	new_order = min(15, ilog2(new_size - 1) + 1);
+ 	dev_dbg(geth->dev, "set shared queue to size %d order %d\n",
+ 		new_size, new_order);
+-	if (geth->freeq_order == new_order)
++	if (geth->freeq_ring && geth->freeq_order == new_order)
+ 		return 0;
+ 
+ 	spin_lock_irqsave(&geth->irq_lock, flags);
+@@ -2387,8 +2395,35 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
+ 	return ret;
+ }
+ 
++static void gemini_port_clear(struct gemini_ethernet_port *port)
++{
++	struct gemini_ethernet *geth = port->geth;
++
++	ASSERT_RTNL();
++
++	if (!port->id && geth->port0 == port)
++		geth->port0 = NULL;
++	else if (port->id && geth->port1 == port)
++		geth->port1 = NULL;
++	else
++		return;
++}
++
++static void gemini_ethernet_disable_irqs(struct gemini_ethernet *geth)
++{
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_1_REG);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_2_REG);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_3_REG);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
++}
++
+ static void gemini_port_remove(struct gemini_ethernet_port *port)
+ {
++	rtnl_lock();
++	gemini_port_clear(port);
++	rtnl_unlock();
++
+ 	if (port->netdev) {
+ 		unregister_netdev(port->netdev);
+ 		phy_disconnect(port->netdev->phydev);
+@@ -2398,19 +2433,15 @@ static void gemini_port_remove(struct gemini_ethernet_port *port)
+ 
+ static void gemini_ethernet_init(struct gemini_ethernet *geth)
+ {
++	ASSERT_RTNL();
++
+ 	/* Only do this once both ports are online */
+ 	if (geth->initialized)
+ 		return;
+-	if (geth->port0 && geth->port1)
+-		geth->initialized = true;
+-	else
++	if (!geth->port0 || !geth->port1)
+ 		return;
+ 
+-	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
+-	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_1_REG);
+-	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_2_REG);
+-	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_3_REG);
+-	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
++	gemini_ethernet_disable_irqs(geth);
+ 
+ 	/* Interrupt config:
+ 	 *
+@@ -2442,10 +2473,20 @@ static void gemini_ethernet_init(struct gemini_ethernet *geth)
+ 	writel(0, geth->base + GLOBAL_HWFQ_RWPTR_REG);
+ 
+ 	geth->freeq_frag_order = DEFAULT_RX_BUF_ORDER;
+-	/* This makes the queue resize on probe() so that we
+-	 * set up and enable the queue IRQ. FIXME: fragile.
+-	 */
+-	geth->freeq_order = 1;
++	geth->initialized = true;
++}
++
++static void gemini_port_publish(struct gemini_ethernet_port *port)
++{
++	struct gemini_ethernet *geth = port->geth;
++
++	ASSERT_RTNL();
++
++	if (!port->id)
++		geth->port0 = port;
++	else
++		geth->port1 = port;
++	gemini_ethernet_init(geth);
+ }
+ 
+ static void gemini_port_save_mac_addr(struct gemini_ethernet_port *port)
+@@ -2541,15 +2582,6 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+ 	reset_control_reset(port->reset);
+ 	usleep_range(100, 500);
+ 
+-	/* Assign pointer in the main state container */
+-	if (!id)
+-		geth->port0 = port;
+-	else
+-		geth->port1 = port;
+-
+-	/* This will just be done once both ports are up and reset */
+-	gemini_ethernet_init(geth);
+-
+ 	platform_set_drvdata(pdev, port);
+ 
+ 	/* Set up and register the netdev */
+@@ -2600,17 +2632,41 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto unprepare;
+ 
++	if (!of_property_present(np, "phy-handle") &&
++	    !of_phy_is_fixed_link(np)) {
++		dev_info(dev, "no PHY\n");
++		goto irq_only;
++	}
++
+ 	ret = gmac_setup_phy(netdev);
+ 	if (ret) {
+-		netdev_err(netdev,
+-			   "PHY init failed\n");
+-		goto unprepare;
++		dev_err(dev, "PHY init failed: %d\n", ret);
++		if (ret == -EPROBE_DEFER)
++			goto unprepare;
++		goto irq_only;
+ 	}
+ 
+-	ret = register_netdev(netdev);
+-	if (ret)
+-		goto unprepare;
++	rtnl_lock();
++	ret = register_netdevice(netdev);
++	if (!ret)
++		gemini_port_publish(port);
++	rtnl_unlock();
++	if (ret) {
++		phy_disconnect(netdev->phydev);
++		dev_err(dev, "netdev registration failed: %d\n", ret);
++		if (ret == -EPROBE_DEFER)
++			goto unprepare;
++		goto irq_only;
++	}
++
++	return 0;
+ 
++irq_only:
++	dev_info(dev, "keeping port for shared IRQ\n");
++	port->netdev = NULL;
++	rtnl_lock();
++	gemini_port_publish(port);
++	rtnl_unlock();
+ 	return 0;
+ 
+ unprepare:
+@@ -2706,6 +2762,9 @@ static int gemini_ethernet_probe(struct platform_device *pdev)
+ 	spin_lock_init(&geth->irq_lock);
+ 	spin_lock_init(&geth->freeq_lock);
+ 
++	/* Quiesce firmware state before child IRQ handlers are registered. */
++	gemini_ethernet_disable_irqs(geth);
++
+ 	/* The children will use this */
+ 	platform_set_drvdata(pdev, geth);
+ 
+@@ -2717,10 +2776,13 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
  {
  	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
  
-+	devm_of_platform_depopulate(&pdev->dev);
-+	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
++	rtnl_lock();
++	geth->initialized = false;
++	rtnl_unlock();
++
+ 	devm_of_platform_depopulate(&pdev->dev);
+ 	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
  	geth_cleanup_freeq(geth);
- 	geth->initialized = false;
+-	geth->initialized = false;
  }
+ 
+ static const struct of_device_id gemini_ethernet_of_match[] = {
 
 -- 
 2.56.0
