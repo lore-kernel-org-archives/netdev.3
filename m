@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794349807;
-	b=4oJMj4ZDdMtNox3Rk41m0KynxJn5//B0x7jossgJexc5RXyV7nthAh58Fun6XArSPFEg
-	 hIFAZAkWg7N//cL88rjxzTQXLJzXoY4yyDUxTXiXQfQxk50JCKrknaclf1p2saBVjubPa
-	 Vb7WIhlmvzfwdK5fLmOpuqJN4/F+mMe4P96MjocgbWXVFBuL5fC+Q1a1CEEKebXlQI1wK
-	 Q+o1A/B0JmHs9oaxknPzttWh0Mtv3AB8HGIiglVDp9I2PNBXyTGtDv9wCtqVCZmpdXQT1
-	 q6GLX595yQJvyE/91qkbWiFSanoAlErIl7nWsoYAdtuemfpqZjQNtIkMjLMhx+k5UMg==
+	t=1794349808;
+	b=aBs0l39+5VnJQamG43Zb6XyBy6jLr9tvL8oWQCtVPFKvIilTwQPl8Dihsa7l+RoPTtk7
+	 +VAi/4sBsVnz1WU6VcsKDG0wfkmE3f+kofjz1YJ6rUXAojjTUnBOSRSeT7+xfweR652kv
+	 r0Gyo42MENUWxcjGDjU5GtmJIdw2OY9AGchGeCDn2lMPMkRcRd56nmVN0M9BSMT+gmZm+
+	 VaUe/ImrxUfXZHQSmPDwWEzL7Cd1v97On28CpWF+EbPnRT5WuSps04Jcs6x+sMx0KyhOt
+	 kscAjJaSj0tZpT1/h/zxFU8WIDhSm2gc26GQT7RsXxvQSOKq3F+UVNm5g5zWDuXvbjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794349807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794349808;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=OcvdW4c/Q+UyJmSfwnJS7XuOZhFjoXktZT+/B4vAk+I=;
-	b=mgirfJuwCENjEucZztfIltP7TAXiyDzaA441ABIWEsv/S2DRNSn0tkABtW6aLgo/cirA
-	 jvTiGVW7gKRnlBSFzf6/sfEWeTf8kgdlR9KH3o8uMm3+ZwgY2IerxBUHbHkxq+r71KFAU
-	 SUeuCC98OcIChBqMLn7I0xzqnvd0QajNsQ4koefc8zcbSHRxe3uSbNN4ezzBZ+ORA5+zn
-	 r9aibFh71eYDTtLBvLkDhhMInX9LfLDay9D6/KJkuyxO5QlbwXU89bU4KUXwx3Ao+pDhF
-	 GOx2sfhwz6oX59bwBzF8CeFEvunjwHbcTBr5iy4Qa9QLlSQfqG4i6Ns3KX8lmGWIM7Q==
+	bh=TQmL7gJJVDnf6A3aKnu179UsnBqP05f0Vw0xrhHXlVs=;
+	b=xcdpgxFC4cqCSJygTHRDI1MN9ImcpUrarn5Du9vLTT1l+NDnkViOa5Hv6mrGb+xPeATb
+	 p6+tZ/ZgU1NxtXOq+vojOzEf/TB6DFKp2PYRlnE2sPrEGZrAIeryhWY0scoJY+V02LsPB
+	 t/XAYgyYM8NZgwcVLXRdEroHzuByJFCK0CyVpzMcc/7mPd285p/W5ISpjJIRq7pFUOowF
+	 1LegQOhSijfYFbdNMHMxINcXaIO4sKVj4zVfo0O03NWgF7Mvi2OgKqxC/i/E4FZMQ9AkT
+	 a85F1/TJDfhhn+X1L0wnFhXC6O9KnxPuHuV54B8/jubxTaLQFEr19M5we143tBv1zbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3fCx+Zs;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOFvkVat;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CE6606A331
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D419606A33B;
+	Tue, 10 Nov 2026 22:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3fCx+Zs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E692F1F008A2;
-	Tue, 10 Nov 2026 22:30:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOFvkVat
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9BE1F008A2;
+	Tue, 10 Nov 2026 22:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794349807;
-	bh=OcvdW4c/Q+UyJmSfwnJS7XuOZhFjoXktZT+/B4vAk+I=;
+	s=k20260515; t=1794349808;
+	bh=TQmL7gJJVDnf6A3aKnu179UsnBqP05f0Vw0xrhHXlVs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K3fCx+Zs0yfmCVrJiuJCJqjS8nt2Z5gmuPFIOEd6c3JGyCMwGB6dpBjvL4lussjOL
-	 VFojnYNnOL7byFf4yANAwsePXRXD2jLi4Nf8jdoIEc9jsBRLgGGp+pCYA45DyMjSEl
-	 xz6yqdUBSlsDjZ9OlPrfJPP8UsDFrrdvZQQQjT/XQGvacg1qWKLgKKxQn2evI+UZ2F
-	 N5xK7fgXvNCtmlMsd+EnIsTMaYHClT+T26dmZC0rKXj0SFH8YFzhBjdcpZsBVZt9xO
-	 YzWvRclm4w0/7DvuU9YOaZptnzZy4C2l9+7U8zmAxyE1HNKie0cSyR+2O1tv5EPjX+
-	 tqCCoWyqoSdAA==
+	b=UOFvkVatJh7uJAKpoARxS2NDCGtBPaJVyI8wOUg63qOv5ulqQoelLgEctluLmO+6Q
+	 V60y3UeyvtG3QZc1wuGIECzjcH8ephq3RsaZJ1eDVDiWZkWjRhLS9FbdwopLd4x5O8
+	 3+nSQVJexkQVoH/7ciTiqGduFHaK+CBByT0V1g65Qg9PiiAbuGpzOZgHa16uMvWzDU
+	 lk1OHa8cMWRcK223t5n2wYcHNsJbsXB+yaz70s2//7/P/nr3YZoBDeSnGsfLTDWGha
+	 nZnubx+iVpFmEz0I2h9wk2Ya0iUqtSDlZsZRsjh1VC1kGUjSvuVqb/Dqexl3Sf1l5D
+	 f2g4+LjTcicLw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D829039E8A40;
-	Tue, 10 Nov 2026 22:30:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E17339E8A40;
+	Tue, 10 Nov 2026 22:30:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] seg6: validate state in netfilter continuations
+Subject: Re: [PATCH net] hv_sock: Report no unread data before a channel is
+ available
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179434980568.92301.4463264315328540233.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 22:30:05 +0000
-References: 
- <8574739acd6f5d9eb0a5640e893122619e9f79ef.1793726355.git.petalzu987@gmail.com>
-In-Reply-To: 
- <8574739acd6f5d9eb0a5640e893122619e9f79ef.1793726355.git.petalzu987@gmail.com>
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, andrea.mayer@uniroma2.it, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- contact@proelbtn.com, pablo@netfilter.org, vega@nebusec.ai,
- sashiko-bot@kernel.org, petalzu987@gmail.com, liuhangbin@kylinos.cn
+ <179434980692.92301.5684137736887990228.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 22:30:06 +0000
+References: <20261106123920.162131-1-parri.andrea@gmail.com>
+In-Reply-To: <20261106123920.162131-1-parri.andrea@gmail.com>
+To: Andrea Parri <parri.andrea@gmail.com>
+Cc: sgarzare@redhat.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, bobbyeshleman@meta.com, horms@kernel.org,
+ leonardi@redhat.com, niuxuewei.nxw@antgroup.com,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  6 Nov 2026 11:30:19 +0800 you wrote:
-> From: Zixuan Chai <petalzu987@gmail.com>
+On Fri,  6 Nov 2026 13:39:18 +0100 you wrote:
+> The Hyper-V transport is assigned before the asynchronous VMBus channel
+> offer completes.  Its zero-initialized hvsock therefore has a NULL chan
+> until hvs_open_connection() associates the channel with the socket.
 > 
-> When nf_hooks_lwtunnel is enabled, End.DX4 sends decapsulated packets
-> through NF_INET_PRE_ROUTING. If DNAT changes the inner destination,
-> nf_nat_ipv4_pre_routing() drops skb_dst(), and the continuation then
-> dereferences the missing dst's lwtstate. This causes a KASAN NULL
-> pointer dereference and fatal exception panic.
+> SIOCINQ can query the assigned transport while the socket is connecting,
+> or after connect() fails once the transport has been assigned.  Unlike
+> poll(), that path does not check stream_is_active() before calling the
+> transport's stream_has_data callback.  hvs_stream_has_data() then passes
+> the NULL channel to hvs_channel_readable_payload(), and any user in the
+> guest can trigger an oops:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v5] seg6: validate state in netfilter continuations
-    https://git.kernel.org/netdev/net/c/549484dd3e80
+  - [net] hv_sock: Report no unread data before a channel is available
+    https://git.kernel.org/netdev/net/c/71b06766b7c4
 
 You are awesome, thank you!
 -- 
