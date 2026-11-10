@@ -1,94 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794269652;
-	b=X9onEzxar3slmfCfnFVR6TcrTAcW+OvdCJbcLG4IXFbBOTOANP/Cj/GDGjSvFmBGQVMg
-	 Tmqutz5nSTYCbDtobUf0o6qIl+QvZ0iIz4gseywM3zIFEdJY29G8eN0nXiIs7hm4haM3l
-	 IDbqzHum49KK6uG0txsTAIAHNEKib1gfWzOl9yEu8JSMIkBakGQeCGbCbh7LfAvl83vIL
-	 9FGTIEscjJPeXQrCMnZkKtc8it+6RjlptaX8ViOyJ6PCR94TxQZ8IHHs24LtXa4ruI+l3
-	 WiFPaTT1Ef4xKN55yUkCxk035+bB2XdWRsPTOgEAA2ix4MgzBQXlgVgn05OyQMMJ9Ow==
+	t=1794269825;
+	b=4S6kcO3RAeV+HoYB0biRoNscCanKTXzqiwq/QrWhG3wGdlcKTQoGMEjR4x3eNyRx/Vh6
+	 1vRQm9PJQqb7/lwgJ+sX19ZrKjesbn8adL15R66DZ4lQlcoDTW8BcEEY7LcXwIjfRzH40
+	 MvRlazSij3u74Fnnj8/vyrpnw1rBhMnMBj/tCTvK2uhDZgpxKWd2B7F878VQ2T4H9fV1X
+	 IPAThuXmH8d3cbTyHSuoXa+Fqilq3A4iIqO5Ym5WyRSNJc1udg34tAedGDiobnDav1wHu
+	 4tnHenYkq0kAShWuQSV0CtqnXdnvN+0WKa7YJyuUBHyd/ISACSFd7ySQMdAnbQpJL2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794269652;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:X-DetectorID-Processed:
-	 Content-Type;
-	bh=eQ6Dimr58ga9gU3fCSOKYbD+Wp71UPE6Q/snf3eTB3g=;
-	b=rWdJi8gOrpObtWM/iU7tBJTrVCU5IwOszOY+hQ2+g9rtvx/EF8+jubSjE5UDyS8wrKTG
-	 a5G9bouUQCcmonv1BK5vAM2Eqf6dSgZuUk1Xj5xgnKl8jjKkykO5muIRY7EFhPuTSXe5E
-	 Ddmb7OqZPhTqraADIUZ/HuPYR8ifGGSehWjTyCOTuNpNJhUAsP9GU6+sxGbGBHCQqQ5uL
-	 3NWRlYWn1SnkoftxJh2kuWVNZ6GmaQp/aLIupQf/W0o5ftdBN15U8CJ0geg3AWLAzPJ/R
-	 R14jnnivBIt3FCpyYKXPwzrbRv1yPl7kD/Emx3Pr1RM9iXFqs6mcQJrnd7tOlwDu0YA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794269825;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=S8fHLhX1Wopu8reB9mEZz+dFQmeZd2AuByljTQ8bzQI=;
+	b=bba92cx7LHA9oUxGQsuDVd282JCJLmKC/oDyYYQL7yLQ1x8UKB1yFoHSPjcV7YjA6v+G
+	 oQIEoUug/ttLMG7upvajEeK95W82lYvBeK57MRY+cgl6o/ahjx18r1NkUOCunU44ocNtn
+	 KmOXa1la4T6/HYrbmE05/+yHbK9V+Lrhg8XeedyYETBoEzElGG95RxtePm3/cglRmBg88
+	 g8zShBexW2ShAM0udr2J9inASgZkdRaqw00ZIovMJDgTcTXni9lYn0GPr+AsnL7+GVD7Q
+	 FaoFYN94mTj/1wq8ks4z3B7ByUVGmpK4RYBbKZaAZUwlDFtYeemnRdWy1iyBzdGTaCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UxPM1PVM;
-	arc=none smtp.remote-ip=209.85.216.97
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3NI7Z3i;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B51606A325
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 00:14:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59B51606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8C1606A32A;
+	Tue, 10 Nov 2026 00:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UxPM1PVM
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso738724a91.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:14:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794269652; x=1794874452;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=eQ6Dimr58ga9gU3fCSOKYbD+Wp71UPE6Q/snf3eTB3g=;
-        b=V+yaAcMjFmInAZnA+Gu6mf6SxbND6/P/u7/7lbw7vXHu6CJM1nvye6QXaXir6DTfij
-         nm/1vcrnfVahGXLdroEofxcmyGioECQiW4zwSHLKbLDMGy5/6RQVk4BYK3iNjghil5+q
-         hslfZKli9Gyq8/iNndSnVrkO0QCqvJYeXPnhGIaB1kXwtGzao44zG394PwvyklIJBdYW
-         Hn1TRwyLgSJcIOyROlRxFvvJ6ly0xRtIhfx6em7YrORHDjsF1hU3vvW41ZpeAAAubGKP
-         OYcBbqYq0l+8J2f7zaDopvGjn6sZzn4lTyG5c8uG826vCrPh4NuD7/oMhZh7hKkle9xQ
-         92aA==
-X-Forwarded-Encrypted: i=1; AL+hErF4NFrev3fiHIlvutoyK7Yn/74dfFY2NvfgAX7Nu6jG/R2Fc7KtapH5NIs/5tRhO5NV0b2N/B0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8BO+/6DSdEH11JVz3On+OMUIgbgDOG/UsdiQ0o4LO0cj89tuFG
-	fbX1BWqwi83mUIaHRKp0jE0Dm6godiLHKD2CylkxrDxaVnqIsL2Y6LYvqdeYZslz6EHjHLTu1WM
-	ddF7OPc9v3tsXl9BZs5ZqkpntGE9W3ahrlQAZVRDMzzlSHeybmV4GGtH4cq6u5TAZB9EW7bsVjo
-	GpL4W4VkDjZ66+fdXKWSrn/h+wGv8BaIhA/Ing0KRjVybiRp/ASMOgPdSOdiAzFDwPJxwGDYBjO
-	zv/y8g4M/0=
-X-Gm-Gg: AYBFou3qG01y7n00yVt3p9qPLFwPczZD3u8Ziptxto7u+U75pmvv6LMPaGGCYhf3QQh
-	skhZnLLFx+T9mkzY6WiMVskj/ENIALoSILyi4jdqGSkA8B3Oyp6Q74SC8nRNTq29a6grXDHMpiQ
-	liyQxrAdZenxOvbe8Fr/3MUTmsPFD54Fey3tV1qLnyQeIPYHwIvf9TuwSgjh9tl++kF8hxc1p2s
-	rdQUwZqJfyLbHfBtMWWA+Y3T/yEU2yzi9iQeyyjAXtP2avWFfq5+c7T6o/EVkUxYUsvPS0vytfV
-	i2F4/LNUGAidWGnE6p6ziO/zeRuF1IsiIdhTsaOMq7a8Zql6Q6iWb1VDxT/S+mf8mn3/kU0KXQb
-	ypgr0baYNyCZaEXBoZbXqAWe3zBOsJCK6U6xoUK3fQQei5TRMRXU8hC49H/Lp5Rt056dY/F68F3
-	ol1W3vS6dqBOulxYo761zrs5iZVV/0EQglEN4=
-X-Received: by 2002:a17:90b:4d8f:b0:3ab:3437:554f with SMTP id 98e67ed59e1d1-3b166cf7a3cmr1240836a91.29.1794269651446;
-        Mon, 09 Nov 2026 16:14:11 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b166f52f5bsm726652a91.2.2026.11.09.16.14.10
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 16:14:11 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c504bdea834so12760466b.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 16:14:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794269649; x=1794874449; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eQ6Dimr58ga9gU3fCSOKYbD+Wp71UPE6Q/snf3eTB3g=;
-        b=UxPM1PVMOEx2xtm+JA0iIMpJvWkF80b4uCklZiZ+Pcj6S7GZWf/PqFuAk4+D4ZxS+2
-         Gf8wYbBeHlJesM6EpWIHOA4Neh+IAw6csc5vPntDba1EU+pQKZPXOwbKYj6fTgMGMTxh
-         r4w6x8Rawn9Eai31jXF4vy6OWOJM8DGq69c3A=
-X-Forwarded-Encrypted: i=1; AL+hErENezjSyjCunjJleLM51hPtcJY2plF4DQ2tXeFiU+orkoUTPz0evTSMEVeKK9v3l3wneUbkK1I=@vger.kernel.org
-X-Received: by 2002:a17:907:9694:b0:c2e:4e08:19ab with SMTP id a640c23a62f3a-c50494b5845mr74212966b.16.1794269649514;
-        Mon, 09 Nov 2026 16:14:09 -0800 (PST)
-X-Received: by 2002:a17:907:9694:b0:c2e:4e08:19ab with SMTP id
- a640c23a62f3a-c50494b5845mr74211466b.16.1794269649094; Mon, 09 Nov 2026
- 16:14:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3NI7Z3i
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6B01F008A2;
+	Tue, 10 Nov 2026 00:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794269825;
+	bh=S8fHLhX1Wopu8reB9mEZz+dFQmeZd2AuByljTQ8bzQI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=K3NI7Z3iugPRvehaaEwOnCYy2EpfDl5XTk0ShVHPtwIgRV8M2m+jKWxridyP75nnS
+	 ZLSvxFe9hEbAGD754Y2gFM5BDlzxM7/HFmJoHApbIgjxWIdxh3v+QVUoVPpa4F1uzJ
+	 ASdrBi3vRPZd0q8gbwAwP8TwRNd4zgRowedCfpDfUjtK5U1ehoaVaQ8gz8/KQ1vYnL
+	 VcOhPrDpQdk7jbGMx/7VfCIVSeoxI2zYmAtX3+dmVZYUjVq3tgpPnf4U66yMVA+4Oh
+	 CfaEFFkG9UdtMc6QAyPrAgcIf32MByoR+Lp7K5ygG/5/yanhctQuN0H/+OkOjGpI6y
+	 p5VaJDovNTGsg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: lian@is.s.u-tokyo.ac.jp
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	shina@is.s.u-tokyo.ac.jp,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] virtio_net: reject stats replies for queues outside the request
+Date: Mon,  9 Nov 2026 16:17:00 -0800
+Message-ID: <20261110001659.1654289-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261102205550.4148064-1-lian@is.s.u-tokyo.ac.jp>
+References: <20261102205550.4148064-1-lian@is.s.u-tokyo.ac.jp>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,142 +70,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106191423.4194081-1-joe@dama.to> <avIpEpoCYvLHYl3j@devvm20253.cco0.facebook.com>
-In-Reply-To: <avIpEpoCYvLHYl3j@devvm20253.cco0.facebook.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Mon, 9 Nov 2026 16:13:57 -0800
-X-Gm-Features: AclHuK-jrxOLfQRNf9fKaRtWtyZkfvLEw5DqyLpJjSJNfyjWAS85MvJZzM7AQ2M
-Message-ID: <CACKFLinPK+wR=TMA3zNJDKQR_=HfMFUHPxKS+yhvv9SegZw7Ow@mail.gmail.com>
-Subject: Re: [PATCH net v5 0/4] bnxt_en: Make RING FREE more robust
-To: Joe Damato <joe@dama.to>, netdev@vger.kernel.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	linux-kernel@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001c3e4c065fe0f585"
+Content-Transfer-Encoding: 8bit
 
---0000000000001c3e4c065fe0f585
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+virtio_net: reject stats replies for queues outside the request
 
-On Mon, Nov 9, 2026 at 12:12=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
+With this patch, __virtnet_get_hw_stats() rejects a device statistics
+reply if any record has a vq_index outside the range of queues in the
+request. The control vq is the one exception. This stops the device from
+steering writes in virtnet_fill_stats() past the end of the ethtool -S
+output array or the on-stack struct netdev_queue_stats_tx.
 
->   - Notifying bnxt_re when DMA is stopped.
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index dd2c41ef6fbe7..db56f984bb86a 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
 
-I think this is probably the one item that should be added to the
-patchset.  When DMA is disabled, RoCE will not work at all so adding
-this will make the series more complete.  It may be as simple as
-calling bnxt_ulp_stop(), but I haven't looked into it in detail.
+[ ... ]
 
-We have tested your patches by purposely unmapping the TX buffer early
-to simulate the IOMMU fault.  When the number of rings is small, the
-fall back logic to check the HWRM_RING_FREE response during message
-timeout works most of the time.  With a large number of rings, some of
-the HWRM_RING_FREE messages do not come back at all and DMA will then
-be disabled.  The FW team is still looking into this to understand it
-better.  Thanks.
+> @@ -4994,6 +4995,13 @@ static int __virtnet_get_hw_stats(struct virtnet_info *vi,
+>  	for (p = reply; p - reply < res_size; p += le16_to_cpu(hdr->size)) {
+>  		hdr = p;
+>  		qid = le16_to_cpu(hdr->vq_index);
 
---0000000000001c3e4c065fe0f585
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+[Severity: High]
+This isn't a bug introduced by this patch, but the new vq_index check only
+limits where the driver writes. Can the device still steer the parse
+through hdr->size?
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDMLavE
-u78gHAX24MJ19Wj7766eU23P1ZgVbNIkM7ZOWDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjExMTAwMDE0MDlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBVmUQGZFOSQL5/lKl/ROEEc8q6fqTUrT/rnMdduZfn
-8DsvCbO30cEUdEu5pCphGgYvW7YLHtbUBWQoNcIvrcXh0cDl5islURoIC8xN1Nrn3hnRgYB60/a5
-/4+RacNIo6+aSVOpLcAp84GF3SAnOqNaB+2p1rAgAzqxKnvSIT92CRcC0PTFbvnzfjxOlEHh+JKC
-F4PfE4pKHv4og3PqnB0SX3mV73Z9UMYBHWoxiG1FvSWPXtoW4v40jpBKOdHVNGZDvFES3XMRE3vl
-TEL6ifU1s7Sv9X7YmT24RBFQNxjoXWzHXtzVmjToSDNmzMAJYF5ab9Yl8JOk2ORsMbZLTtet
---0000000000001c3e4c065fe0f585--
+The loop in __virtnet_get_hw_stats() advances by hdr->size, which comes
+from the device. It only checks that each record starts below res_size.
+It does not check that hdr->size is non-zero, or that it covers the header
+plus the payload for hdr->type, or that the record ends inside the reply
+buffer.
+
+If hdr->size is 0 and vq_index is in range, p never advances. Will this
+loop then spin forever? The loop has no cond_resched(), and on the
+ethtool -S path it runs with rtnl held:
+
+  virtnet_get_ethtool_stats()
+    virtnet_get_hw_stats(vi, &ctx, -1)
+      __virtnet_get_hw_stats()
+
+If a short hdr->size puts a record near the end of the buffer, the found:
+loop in virtnet_fill_stats() still reads the whole payload for the reply
+type:
+
+	v = (const __le64 *)(base + desc[i].offset);
+	ctx->data[offset + i] = le64_to_cpu(*v);
+
+Can that read past the end of the kmalloc'd reply and copy slab bytes into
+the ethtool -S output? virtnet_fill_stats_qstat() does the same read for
+the per-queue netlink stats.
+
+The parser also has no way to know how much of the reply the device wrote.
+virtnet_send_command_reply() throws away the used length:
+
+	while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	       !virtqueue_is_broken(vi->cvq)) {
+
+and virtnet_get_hw_stats() allocates the reply with plain
+kmalloc(res_size, GFP_KERNEL). If the reply is short, the leftover heap
+bytes get parsed as records. Would they be reported as counters whenever a
+stale vq_index happens to fall in [first_vq, last_vq]?
+
+> +		/* The vqs of the queue pairs beyond curr_queue_pairs lie
+> +		 * between last_vq and the control vq.
+> +		 */
+> +		if ((qid < first_vq || qid > last_vq) &&
+> +		    !(enable_cvq && qid == vi->max_queue_pairs * 2))
+> +			return -EINVAL;
+
+[Severity: Medium]
+This is a pre-existing issue, but after this change a malformed reply
+returns -EINVAL while a failed command still returns 0. Just above the
+loop in __virtnet_get_hw_stats():
+
+	if (!ok)
+		return ok;
+
+virtnet_send_command_reply() returns a bool. So when the device answers
+with a status other than VIRTIO_NET_OK, or the kick fails, or the cvq is
+broken, __virtnet_get_hw_stats() returns 0.
+
+virtnet_get_ethtool_stats() only warns when the return value is non-zero:
+
+	if (virtnet_get_hw_stats(vi, &ctx, -1))
+		dev_warn(&vi->dev->dev, "Failed to get hw stats.\n");
+
+As it stands, a rejected command is not reported, and ethtool -S shows zero
+for every hardware counter. Should this path also return an errno?
+
+> +
+>  		virtnet_fill_stats(vi, qid, ctx, p, false, hdr->type);
+>  	}
+
+[ ... ]
+-- 
+pw-bot: cr
