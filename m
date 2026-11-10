@@ -1,64 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.222
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794294285;
-	b=AXC2Q5qEYMRgGWwJDysqgFEn2lCYqR2jMLdg+PBIbBQq+eMqY277azhwDbDV1U9TSFYi
-	 O2BRaqMmYZlkf0A2uV71b4vgnTSQs5BxDobHlZck89EQpdJqPUsEHk8Eg4uIqXqYFb04K
-	 zez36dG4gUO/I5mkzLrXewlwf076Bjk/9AU/Ekjdm8t1rALJ0WIZ82IGQpfzU4LYulvgf
-	 W+yWRh81yxuPEfr+11WKDgdh27qsxZtfotgUVqnGWwvbh4amd7REM9v3i/jmG3xN/D03T
-	 FKMXTk6BW8HKoDV5kxFr2cTO/0+fb/EuDGMLl7Npc+FdcjDLlkqsPEAFYSL3ynouGtw==
+	t=1794294311;
+	b=buAes+X8qQWUrA2bOowsp8DTMHz1Leh/EvcEJo4q9niHpzNrCgPbC+OWMq1uyjPPAAK7
+	 PONUwpzp2Tyyd16cihloN64MpragoIIRk1+KdQbBU5KCLO/mIxLrPRo/zNk80KHsuWogG
+	 4R/V2Nmx7xf7ltRed7eRsKRzUzymBBBku8CXkGyaAKkNpDWZJF7YlE+a+rlxhx45jfL/p
+	 v5Lo6sH9lIrxG29XoFIkziQgEAGD0zK59BwbXH9KmeK2kFD+Kdbx1Ajo9HVmHCL2fFJHN
+	 +PBKwXxPZ6eM59YA22/QJ0YobSkjmFl2CtaHpl5BlFcEIMVedJt3hI2RelE6/A1EPnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794294285;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=4Co5cP3OhjENN51pkmPHHF78b8usmBedVpbFq9HkR40=;
-	b=dH9Pekn7HGLA53v2RgrQjU8GhkLOG9OEwCTbGwHIxnlqx3owjkeKDDjqi0aP8BINkSas
-	 Pg3kRlglGi741KsAsOWezR3w/AvW81TGnvwNSjjZraorhC7svjZYKKghqNWTsHPjG58Q1
-	 gS2QFGhWBb5rJFuskEvMc7rmiy5px2i8h5aBE+sujL0ZKL92zLX/mn7OKDLd3xbtB/oYv
-	 oY39uvzgddprFdxbYlmn5QUPJQbGYkuvXsfSLw6CMG+cP1+tcIiQne9ss+0rRFtOvrbEW
-	 Z4R7jysGxqNxbFophKjzPWWCD8aXSzKA3T7p3il8ziAgBmndcI449QGWAoUrDfCO+1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794294311;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=BnNedezTioyADzuMpCOdCnuZokX80G9WaFneDTb10vQ=;
+	b=jWgcCVLGWJ1DpqmaqD4SVGWulouVuU/ualOGQdVefwb3risGTGDtjc+Br8lA7Px/vl4G
+	 P32cGtOGsU5yu3S+SbAd0Z4Ftg3QnbYXReSAQqpxFrTn1d0ikTq/GFSmmJ64MVBkAgW5c
+	 HdGii6CJzA2mdssI1aCswyK9Nuhk02THemJu7KU8oZBiA/D+T0mpwtEz+l6uEj35tXQC6
+	 IZg017OqWJWr2XCmIouulukTc1u00q8urZjMPMWVCITyKRzz+pNN0saudlvEFFT4eJ4zB
+	 n54ji+8AN+YGDntlEHk6dKvhjieV/+6zdY+DBW1LIrPKc0V08GzKBPwqtRVpHI2Phiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=w5XgBaD7;
-	arc=none smtp.remote-ip=91.218.175.222
-Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofIwHVx8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDBC606A321
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:04:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EDBC606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435A4606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=w5XgBaD7
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Tm2syNt3GrSRviynrIU29ViJ820u9ZICYwGTQfORw8M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794294278; v=1; x=1794899078;
- b=w5XgBaD7++BgTaeVYgehrgFX0Mt6ZPaWf9z9vFdudLVqDIAVP66Gzt21tmJix/bO375aCqtt
- uCR5mBnL/+652SkYxgNQgHbUG2k+dG/4HLfoKrrP4yMfc4BupioiBv8E7WI+dXWAxRoBwbCU5NS
- 04XlPAqBjyXjI7I+b0dlHsIE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 098aa03fce5f2b79;
-	Tue, 10 Nov 2026 07:04:37 +0000
-X-Mizu-Trace-ID: 098aa03fce5f2b79
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 10 Nov 2026 15:04:26 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: luyun <luyun_611@163.com>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v6] bonding: 3ad: update transmit arrays without
- waiting for RTNL
-Message-ID: <avLB-jIgPjtwiNu6@fedora>
-References: <20261105070132.385853-1-luyun_611@163.com>
- <avKIelQZ4rf0G7BN@fedora>
- <259ec87f-9c56-4bea-b2ea-6627b1913ef0@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofIwHVx8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C7A1F008A3
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 07:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794294310;
+	bh=BnNedezTioyADzuMpCOdCnuZokX80G9WaFneDTb10vQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ofIwHVx8MbkgSNQVhfD72a+9EIzFn9QH/Ap9XuqX+xMBd/RDeIfHpR/hHjj3tRcMm
+	 lm7INK8ZwlFm6I6yTnJdORYxrdlj+FjPyf5Hr51UDTCmcd1xhoCFiJEYbiyE8VFBGl
+	 RdjeWt1LkEScnrP2YeG1s1mMUVFLBuqM55plz7yVN5Vbni+hzMzk0eGN0d6wQaQBLo
+	 3ac1wUXZUzTtaXupzznW6q89QWibbxEJGFX9DUpJ4sacp8PBfQJ5Zn4vnKKAK4h3K+
+	 usZBLbjJ30SWnbO1BiAdplljz95OGEMovLnKr9xy7o+9yOwGA+WxSJcfXfvoxTBIRW
+	 icZumDJwQV/lg==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-7190d9bdb2cso47269eaf.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 23:05:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFjq14WhTYtbRroVTPs+nbENI1YcTgQDte/OEopLIi1hjDYXsUmMtZtfneEBNpvMJAdfoGQXBc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+tYvOVvpseG0vuVt8wVjuWRBdeO6o+MU+yOHiEOyjin2nbICDn
+	Ij7JCIdU7epP8G/cNtPDNnQnbCKaKtObPMmTKS9vZfWqX7vQALrOHjuVeidk0p3EZxbJxal7mHb
+	7VBqDP1ycyfKDK3VphXS2crkBP7c4Spw=
+X-Received: by 2002:a05:6820:240b:b0:6dd:9701:6305 with SMTP id
+ 006d021491bc7-718a6e2ddd4mr641568eaf.65.1794294310126; Mon, 09 Nov 2026
+ 23:05:10 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,83 +59,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <259ec87f-9c56-4bea-b2ea-6627b1913ef0@163.com>
+References: <20261106171442.31811-1-baditaflorin@gmail.com>
+ <20261106171442.31811-2-baditaflorin@gmail.com> <avK8iXcNfXSt1_CQ@google.com>
+In-Reply-To: <avK8iXcNfXSt1_CQ@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 10 Nov 2026 08:04:58 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioPRW-SxsKbOC3aOtZg8ZJpA28Xva0qM4375cTygfVHgA@mail.gmail.com>
+X-Gm-Features: AclHuK-NJxidM8lNPtjHGZ7TEVWKZvAA6snjm_p1ThNmdP7HN_Zn2F8YrWLmn4I
+Message-ID: <CAL4WiioPRW-SxsKbOC3aOtZg8ZJpA28Xva0qM4375cTygfVHgA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] tcp: avoid false bind exhaustion with
+ odd-sized port ranges
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Florin Badita-Nistor <baditaflorin@gmail.com>, netdev@vger.kernel.org, ncardwell@google.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Lu Yun,
-On Tue, Nov 10, 2026 at 02:13:57PM +0800, luyun wrote:
-> 
-> 在 2026/11/10 10:59, Hangbin Liu 写道:
-> > Hi Lu Yun,
-> > On Thu, Nov 05, 2026 at 03:01:32PM +0800, Yun Lu wrote:
-> > > From: Yun Lu <luyun@kylinos.cn>
-> > > 
-> > > During 802.3ad bring-up, packets can be dropped despite carrier being up
-> > > and LACP having enabled ports for distribution. This was observed on a
-> > > machine in real use.
-> > > 
-> > > The LACP worker enables ports before queuing slave_arr_work to rebuild
-> > > usable_slaves. The transmit path keeps using that array, which can
-> > > remain empty while the array worker retries rtnl_trylock(). Unrelated
-> > > RTNL contention can therefore prolong the packet loss.
-> 
-> Hi Hangbin,
-> 
-> Thanks for the review.
-> 
-> > The root issue is the usable_slaves are not available before LACP worker,
-> > right?
-> No, the real root issue is the delay between LACP enabling ports for
-> distribution and publishing those ports in usable_slaves.
+Le mar. 10 nov. 2026 =C3=A0 07:45, Kuniyuki Iwashima <kuniyu@google.com> a =
+=C3=A9crit :
+>
+> On Fri, 06 Nov 2026 19:14:41 +0200, Florin Badita-Nistor wrote:
+> > inet_csk_find_open_port() rounds the range length down to an even
+> > number but keeps the original exclusive upper bound for wrapping.
+> > For an odd-sized range, the two scans can therefore miss a valid port
+> > and return EADDRINUSE while an eligible port remains free.
+> >
+> > For example, restrict a TCP socket to IP_LOCAL_PORT_RANGE [40000, 40002=
+]
+> > and hold explicit binds on 40000 and 40001. bind(..., 0) always fails,
+> > although an explicit bind to 40002 succeeds. Both IPv4 and IPv6 TCP and
+>
+> This is the reason of warning in set_local_port_range(),
+> so kind of WAI to me.
+>
+> The change should be fine, but we should remove the warning.
 
-Got it, So the LACP entered distribution before the usable_slaves updated.
-right?
+I would keep the warning.
 
-[...]
+It was added in commit ed2dfd900992 ("tcp/dccp: warn user for preferred
+ip_local_port_range") because connect() wants an even number of ports.
+This is still the case: __inet_hash_connect() rounds an odd-sized netns
+range down to an even size, so connect() can still miss one port there.
 
-> > I still don't understand why we use such a complex approach to fix this
-> > small corner-case waiting issue. Can't we just wait for the usable slaves
-> > like the following way (not tested)?
-> > 
-> > diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-> > index d91533b80996..39ecf7f569d3 100644
-> > --- a/drivers/net/bonding/bond_3ad.c
-> > +++ b/drivers/net/bonding/bond_3ad.c
-> > @@ -2555,6 +2555,8 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
-> >          struct port *port;
-> >          bool should_notify_rtnl = BOND_SLAVE_NOTIFY_LATER;
-> >          bool update_slave_arr = false;
-> > +       struct bond_up_slave *usable;
-> > +       unsigned int count;
-> > 
-> >          /* Lock to protect data accessed by all (e.g., port->sm_vars) and
-> >           * against running with bond_3ad_unbind_slave. ad_rx_machine may run
-> > @@ -2564,8 +2566,12 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
-> >          rcu_read_lock();
-> > 
-> >          /* check if there are any slaves */
-> > -       if (!bond_has_slaves(bond))
-> > +       usable = rcu_dereference(bond->usable_slaves);
-> > +       count = usable ? READ_ONCE(usable->count) : 0;
-> > +       if (!bond_has_slaves(bond) || !count) {
-> > +               update_slave_arr = true;
-> >                  goto re_arm;
-> > +       }
-> > 
-> >          if (bond_agg_timer_advance(bond)) {
-> >                  slave = bond_first_slave_rcu(bond);
-> An empty array before LACP enables any ports is normal. Waiting for it to
-> become non-empty before running the state machines would introduce
-> a circular dependency: those state machines must first enable the ports
-> 
-> before the builder can populate the array.
+The per-socket IP_LOCAL_PORT_RANGE case has no warning at all, and
+bind() can miss a free port there without any hint to the user.
+This patch fixes that.
 
-OK, I checked bond_update_slave_arr(), we need to wait for the active
-aggregator to build usable slaves. I saw in ad_mux_machine(), it will
-check if aggregator->is_active in AD_MUX_ATTACHED. Can we add a usable
-slaves checking there before enter to next stage?
-
-Thanks
-Hangbin
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
