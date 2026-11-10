@@ -1,49 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.106
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794302438;
-	b=K3dcWz5WiMT2ECJu5FmcN5xFDNLp+QxpnX904vCAX6HMXU1xnpCD8ECPUHFGoT5CVE8b
-	 QDXhysdEZCdnEUEtWde5UXpBvr3xzG/7ihbzWSLcsbqwWJwccUvC//DHhdgsjJCWRNy27
-	 c9YNCFmOJb9EuKMjsYi4ODApyOUgozrzGdYRI5ZkYWAOjFPSy79CvaiX0M3s+IfqE/VkM
-	 1KJBt1/3vK2ef6l2EvaCIjVofvXrnmPGMdZQmIerx6emE6uXG15h+8mMyWsItrpTWK7oa
-	 HgzAB6ndgFGxHCKS+i4agxjrVahAW4ObuA4iqnsEYi3eHGNDR3QAoKjxPRtTh0jI2Sw==
+	t=1794302701;
+	b=5Uc6S7pH5S99+cEf9N9Ooez008aikvXejQU3H6apq+YRFMDlmpG/JZ4HL+O4tV6u3QSJ
+	 4ZjZdYgZzAZpl/xZeep6kGSUii9fvlN4c/X27L0kK2zp1QDplvIMBsInBinUxeEbdOLSp
+	 XubTScNdHYt2AH/xlR0JBfWAiBcKA2Quol8Ja7Nf53g6gdL4Vpy32O3Uhu6ocKEuTOtqi
+	 8GqX83093UmixvXVYtG2fC5+hUvwPgaVyLYtJERK9hIb1uM2VbHeHy1N0FkrVy+1ZbPpj
+	 /22nGa3SJXUtFhlAzLvkbNsSNjb5uNOXAsr6Vl2wSNGq2H6J1+rqqzI0DnKSuXc8uYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794302438;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=HcRXRAYOuW3Mg9I3hu0cD8PLY2YH/pH7TktBJyJSNx8=;
-	b=DILopGwmo+0E7uYCLSbC4U+LBlv4hH8+/paBMg8qVGQ8gxqxR+sC4jHW7Lvp7m3dGJNP
-	 jLKUCf4gy+VZaq57CnEtcvdAynhFoaI1LjunEU1Ytz26XZnxaWpVFOsyVWWOgEPzDU6SA
-	 tPKDEdfE9R366OfYpfo6ZNy8pSLmyyyzrOalJWEbgNCcmRrRtAYfwDML/wozde5ojOje1
-	 BXrdgOilosINsn5wzuP5V4u2TmR2dmIoepVcYejl8y+JzBE/eoF58XSHxwHc4QmWM85Xk
-	 AZaaedj1uQBH6v8CQXR+bOrUgzJawXBN7z+8IDwhiCwu8tRyT0fBdokWzYghiqWU2Mg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794302701;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=g59WXbMEVAC+rwbfPbusgYn9rCMYzsS/Ea1X6BmPoQk=;
+	b=owM2fwmjEsSs+I52SP9jyxYucZGhDdImJjN7PG6HQvXWajQzVJjRl8aaW2TdrtMs4kl6
+	 85CUh1IwTMo/QbUejBRDhcS4TgL0nN+srFYmuPkqnCnteT1uZwMRxILen6u/WTESwOnwh
+	 Fkto788a4K5YZrodyj3KvbaUvnB/ULx7C8kIHc1SMDMpEQJkbyOW/TvCMRoFIUgX/o3xv
+	 WsDOV7Xc6B+ilRoV8VRuWYDfToAeUd9QzN20tnS7V7G3h5Z9eL1o/ym7jV/Nh0sqLQ4tw
+	 NkZoqGZaRexph81uT/RZ+gjyaNg/bCRSXDsTvRxKN+86jeDfCWXoaW6sYrCpDd9yWKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZJA+k4jF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EST0+k10;
+	arc=none smtp.remote-ip=95.215.58.106
+Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD21606B9C6;
-	Tue, 10 Nov 2026 09:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68846070FE4
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:24:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C68846070FE4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZJA+k4jF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D341A1F008A2;
-	Tue, 10 Nov 2026 09:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302438;
-	bh=HcRXRAYOuW3Mg9I3hu0cD8PLY2YH/pH7TktBJyJSNx8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZJA+k4jFVB7QcXl0KFVo6FAm8XI4UkHhmuHM+xAo6A08HhRmiH/wYZOdlnlgLrh/9
-	 rcM+5k5rzdiLJi52fkaGO8lhYCA13C2aDo9CFXO/uzKhnDpIZ5rI/vU3Ljq7x3I7Bm
-	 MkhWlzcBR2LGti6K8n98z2uTbwDhWQPDuXr4DHrqemvTOVN3Tx4nNOe+6eX4Ml7Fyp
-	 9Vko9fTHjCHZ5NBoWCSVWvJBcx8Fv6eWP7XqdB6tuOAdRQweUL01pdhN1qREgq1HLW
-	 tKInp2gJ5HWhSiFiMhTw2dXTpS/ltNMOEyHElB6ILu033FIsaRQKmc4sbsA3Bxf7u6
-	 4uHy8e3VDnRvw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 10 Nov 2026 10:14:57 +0100
-Subject: [PATCH RFC 41/41] selftests/filesystems: add backing file tests
- for pseudo files
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EST0+k10
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NrDs8IswZxyvOKP1XWG0B7QQ4QtrBkDyBDj9/5w4lmc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794302692; v=1; x=1794907492;
+ b=EST0+k10vuCRS9mK88LCdPNshVrerqdrVms/Vbdro6W7LVQlLhrLixjGV9MDCE3pM85A0Spe
+ eGzsra5jCmeAdX4eptaWjpTKrqyCYqeEdsLcSFloxeK81y3lsBqz9AmYzppJ82FJATy9I/Uu7rK
+ wa9VY5fhzuXyj2dupH1g4BQc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 1ee9f6a1fae2868a;
+	Tue, 10 Nov 2026 09:24:52 +0000
+X-Mizu-Trace-ID: 1ee9f6a1fae2868a
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 17:24:33 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/3] selftests: net: netlink-dumps: test dump of route
+ larger than skb
+Message-ID: <avLi0W-uqKJvJeCR@fedora>
+References: <20261109012115.11898-1-stephen@networkplumber.org>
+ <20261109012115.11898-4-stephen@networkplumber.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,378 +70,350 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-work-loop-pseudo-v1-41-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-In-Reply-To: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
- target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-mm@kvack.org, bpf@vger.kernel.org, 
- linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
- apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
- netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
- linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
- ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
- Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
- linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9874; i=brauner@kernel.org;
- h=from:subject:message-id; bh=WrNqWZ7KkNp+RAbIFwB8NnBVD99KxYHQRcnlviAxa6g=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9enD4WbX5pPn5ziIC13kaPmfytEQmM0ZuPbw7WXPnm
- gSxsqe1HSUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNZ8ZHhf973fTs7218EO58x
- 7P0e6Ze9+P+LjPP3fh7Xiy851MXwVZ/hx12Ja4+3MNaXiaTntPJ9281nGrssMtLdPjC4ZaFVjDA
- DAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109012115.11898-4-stephen@networkplumber.org>
 
-Add tests that files on pseudo filesystems can't be used as storage:
+On Sun, Nov 08, 2026 at 05:13:14PM -0800, Stephen Hemminger wrote:
+> Add IPv4 and IPv6 multipath routes that do not fit in the first dump
+> skb of a fresh socket. The dump must return the route or fail with
+> -EMSGSIZE, not end with status 0.
+> 
+> IPv6 nexthops cannot use lo, so create a dummy device and generalize
+> lo_set_up() to if_set_up(). Add the IPv4 routing options to config.
+> 
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> ---
+>  tools/testing/selftests/net/config          |   3 +
+>  tools/testing/selftests/net/netlink-dumps.c | 271 +++++++++++++++++++-
+>  2 files changed, 270 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+> index d4416f8bdcfd..e2f136274e6d 100644
+> --- a/tools/testing/selftests/net/config
+> +++ b/tools/testing/selftests/net/config
+> @@ -29,6 +29,8 @@ CONFIG_IP6_NF_MATCH_RPFILTER=m
+>  CONFIG_IP6_NF_NAT=m
+>  CONFIG_IP6_NF_RAW=m
+>  CONFIG_IP6_NF_TARGET_REJECT=m
+> +CONFIG_IP_ADVANCED_ROUTER=y
+> +CONFIG_IP_MULTIPLE_TABLES=y
+>  CONFIG_IP_NF_FILTER=m
+>  CONFIG_IP_NF_IPTABLES=m
+>  CONFIG_IP_NF_IPTABLES_LEGACY=m
+> @@ -38,6 +40,7 @@ CONFIG_IP_NF_NAT=m
+>  CONFIG_IP_NF_RAW=m
+>  CONFIG_IP_NF_TARGET_REJECT=m
+>  CONFIG_IP_NF_TARGET_TTL=m
+> +CONFIG_IP_ROUTE_MULTIPATH=y
+>  CONFIG_IP_SCTP=m
+>  CONFIG_IPV6=y
+>  CONFIG_IPV6_FOU=m
+> diff --git a/tools/testing/selftests/net/netlink-dumps.c b/tools/testing/selftests/net/netlink-dumps.c
+> index 4a94a25167e2..43f63f3f2289 100644
+> --- a/tools/testing/selftests/net/netlink-dumps.c
+> +++ b/tools/testing/selftests/net/netlink-dumps.c
+> @@ -263,11 +263,11 @@ TEST(close_with_ref)
+>  	usleep(100 * 1000);
+>  }
+>  
+> -static int lo_set_up(int sock, bool up)
+> +static int if_set_up(int sock, const char *name, bool up)
+>  {
+>  	struct ifreq ifr = {};
+>  
+> -	strcpy(ifr.ifr_name, "lo");
+> +	strcpy(ifr.ifr_name, name);
+>  	if (ioctl(sock, SIOCGIFFLAGS, &ifr))
+>  		return -1;
+>  	if (up)
+> @@ -321,12 +321,12 @@ TEST(dump_with_queued_ntf)
+>  		       sizeof(addr)), 0);
+>  
+>  	// A large read makes the kernel attempt large dump skbs
+> -	ASSERT_EQ(lo_set_up(inet_sock, true), 0);
+> +	ASSERT_EQ(if_set_up(inet_sock, "lo", true), 0);
+>  	n = recv(netlink_sock, buf, sizeof(buf), 0);
+>  	ASSERT_GE(n, (ssize_t)sizeof(struct nlmsghdr));
+>  
+>  	// Leave one notification queued, then start the dump
+> -	ASSERT_EQ(lo_set_up(inet_sock, false), 0);
+> +	ASSERT_EQ(if_set_up(inet_sock, "lo", false), 0);
+>  	n = send(netlink_sock, &dump_links, sizeof(dump_links), 0);
+>  	ASSERT_EQ(n, sizeof(dump_links));
+>  
+> @@ -362,4 +362,267 @@ TEST(dump_with_queued_ntf)
+>  	close(inet_sock);
+>  }
+>  
+> +#define BIG_RT_TABLE	100
+> +#define BIG_RT_IFINDEX	100
+> +#define BIG_RT4_NH	1500
+> +#define BIG_RT6_NH	500
+> +
+> +static const struct {
+> +	struct nlmsghdr nlhdr;
+> +	struct ifinfomsg ifm;
+> +	struct nlattr name_hdr;
+> +	char name[8];
+> +	struct nlattr linkinfo_hdr;
+> +	struct nlattr kind_hdr;
+> +	char kind[8];
+> +} new_dummy = {
+> +	.nlhdr = {
+> +		.nlmsg_len	= sizeof(new_dummy),
+> +		.nlmsg_type	= RTM_NEWLINK,
+> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
+> +				  NLM_F_EXCL,
+> +		.nlmsg_seq	= 1,
+> +	},
+> +	.ifm = {
+> +		.ifi_family	= AF_UNSPEC,
+> +		.ifi_index	= BIG_RT_IFINDEX,
+> +	},
+> +	.name_hdr = {
+> +		.nla_len	= 4 + sizeof("dummy0"),
+> +		.nla_type	= IFLA_IFNAME,
+> +	},
+> +	.name = "dummy0",
+> +	.linkinfo_hdr = {
+> +		.nla_len	= 4 + 4 + 8,
+> +		.nla_type	= IFLA_LINKINFO,
+> +	},
+> +	.kind_hdr = {
+> +		.nla_len	= 4 + sizeof("dummy"),
+> +		.nla_type	= IFLA_INFO_KIND,
+> +	},
+> +	.kind = "dummy",
+> +};
+> +
+> +static struct {
+> +	struct nlmsghdr nlhdr;
+> +	struct rtmsg rtm;
+> +	struct nlattr dst_hdr;
+> +	__u8 dst[4];
+> +	struct nlattr table_hdr;
+> +	__u32 table;
+> +	struct nlattr mp_hdr;
+> +	struct rtnexthop nh[BIG_RT4_NH];
+> +} new_route4 = {
+> +	.nlhdr = {
+> +		.nlmsg_len	= sizeof(new_route4),
+> +		.nlmsg_type	= RTM_NEWROUTE,
+> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
+> +				  NLM_F_EXCL,
+> +		.nlmsg_seq	= 1,
+> +	},
+> +	.rtm = {
+> +		.rtm_family	= AF_INET,
+> +		.rtm_dst_len	= 24,
+> +		.rtm_protocol	= RTPROT_STATIC,
+> +		.rtm_scope	= RT_SCOPE_LINK,
+> +		.rtm_type	= RTN_UNICAST,
+> +	},
+> +	.dst_hdr = {
+> +		.nla_len	= 4 + 4,
+> +		.nla_type	= RTA_DST,
+> +	},
+> +	.dst = { 198, 51, 100, 0 },
+> +	.table_hdr = {
+> +		.nla_len	= 4 + 4,
+> +		.nla_type	= RTA_TABLE,
+> +	},
+> +	.table = BIG_RT_TABLE,
+> +	.mp_hdr = {
+> +		.nla_len	= 4 + sizeof(new_route4.nh),
+> +		.nla_type	= RTA_MULTIPATH,
+> +	},
+> +};
+> +
+> +struct rtnexthop6 {
+> +	struct rtnexthop rtnh;
+> +	struct nlattr gw_hdr;
+> +	__u8 gw[16];
+> +};
+> +
+> +static struct {
+> +	struct nlmsghdr nlhdr;
+> +	struct rtmsg rtm;
+> +	struct nlattr dst_hdr;
+> +	__u8 dst[16];
+> +	struct nlattr table_hdr;
+> +	__u32 table;
+> +	struct nlattr mp_hdr;
+> +	struct rtnexthop6 nh[BIG_RT6_NH];
+> +} new_route6 = {
+> +	.nlhdr = {
+> +		.nlmsg_len	= sizeof(new_route6),
+> +		.nlmsg_type	= RTM_NEWROUTE,
+> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
+> +				  NLM_F_EXCL,
+> +		.nlmsg_seq	= 1,
+> +	},
+> +	.rtm = {
+> +		.rtm_family	= AF_INET6,
+> +		.rtm_dst_len	= 64,
+> +		.rtm_protocol	= RTPROT_STATIC,
+> +		.rtm_scope	= RT_SCOPE_UNIVERSE,
+> +		.rtm_type	= RTN_UNICAST,
+> +	},
+> +	.dst_hdr = {
+> +		.nla_len	= 4 + 16,
+> +		.nla_type	= RTA_DST,
+> +	},
+> +	.dst = { 0x20, 0x01, 0x0d, 0xb8 }, // 2001:db8::/64
+> +	.table_hdr = {
+> +		.nla_len	= 4 + 4,
+> +		.nla_type	= RTA_TABLE,
+> +	},
+> +	.table = BIG_RT_TABLE,
+> +	.mp_hdr = {
+> +		.nla_len	= 4 + sizeof(new_route6.nh),
+> +		.nla_type	= RTA_MULTIPATH,
+> +	},
+> +};
+> +
+> +static struct {
+> +	struct nlmsghdr nlhdr;
+> +	struct rtmsg rtm;
+> +} dump_routes = {
+> +	.nlhdr = {
+> +		.nlmsg_len	= sizeof(dump_routes),
+> +		.nlmsg_type	= RTM_GETROUTE,
+> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_DUMP,
+> +		.nlmsg_seq	= 2,
+> +	},
+> +	.rtm = {
+> +		.rtm_table	= BIG_RT_TABLE,
+> +	},
+> +};
+> +
+> +static int nl_request_ack(int sock, const void *req, size_t len)
+> +{
+> +	struct nlmsghdr *nlh;
+> +	char buf[4096];
+> +	ssize_t n;
+> +
+> +	if (send(sock, req, len, 0) != (ssize_t)len)
+> +		return -errno;
+> +	n = recv(sock, buf, sizeof(buf), 0);
+> +	if (n < 0)
+> +		return -errno;
+> +	nlh = (struct nlmsghdr *)buf;
+> +	if (!NLMSG_OK(nlh, n) || nlh->nlmsg_type != NLMSG_ERROR)
+> +		return -EPROTO;
+> +	return *(int *)NLMSG_DATA(nlh);
+> +}
+> +
+> +// Dump table BIG_RT_TABLE on a fresh socket, so the first dump skb is
+> +// small, and count routes. The table holds only one route, too large for
+> +// that skb. Returns the status from NLMSG_DONE or NLMSG_ERROR.
+> +static int dump_big_table(struct __test_metadata *_metadata, int family,
+> +			  int *routes)
+> +{
+> +	int netlink_sock, i, ret = 1;
+> +	char buf[32768];
+> +	int one = 1;
+> +	ssize_t n;
+> +
+> +	netlink_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+> +	ASSERT_GE(netlink_sock, 0);
+> +	ASSERT_EQ(setsockopt(netlink_sock, SOL_NETLINK, NETLINK_GET_STRICT_CHK,
+> +			     &one, sizeof(one)), 0);
+> +
+> +	dump_routes.rtm.rtm_family = family;
+> +	n = send(netlink_sock, &dump_routes, sizeof(dump_routes), 0);
+> +	ASSERT_EQ(n, sizeof(dump_routes));
+> +
+> +	*routes = 0;
+> +	for (i = 0; i < 100 && ret > 0; i++) {
+> +		struct nlmsghdr *nlh;
+> +
+> +		n = recv(netlink_sock, buf, sizeof(buf), 0);
+> +		ASSERT_GE(n, 0);
+> +
+> +		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, n);
+> +		     nlh = NLMSG_NEXT(nlh, n)) {
+> +			if (nlh->nlmsg_type == RTM_NEWROUTE)
+> +				(*routes)++;
+> +			if (nlh->nlmsg_type == NLMSG_DONE ||
+> +			    nlh->nlmsg_type == NLMSG_ERROR) {
+> +				ret = *(int *)NLMSG_DATA(nlh);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +	EXPECT_LE(ret, 0);
+> +
+> +	close(netlink_sock);
+> +	return ret;
+> +}
+> +
+> +// A route that doesn't fit in the first dump skb must either be dumped or
+> +// end the dump with EMSGSIZE. It must not end the dump as if complete.
+> +TEST(dump_large_route)
+> +{
+> +	int netlink_sock, inet_sock, i, ret, routes;
+> +
+> +	ret = unshare(CLONE_NEWNET);
+> +	if (ret && errno == EPERM)
+> +		SKIP(return, "Needs CAP_SYS_ADMIN for a netns");
+> +	ASSERT_EQ(ret, 0);
+> +
+> +	inet_sock = socket(AF_INET, SOCK_DGRAM, 0);
+> +	ASSERT_GE(inet_sock, 0);
+> +	netlink_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+> +	ASSERT_GE(netlink_sock, 0);
+> +
+> +	ret = nl_request_ack(netlink_sock, &new_dummy, sizeof(new_dummy));
+> +	if (ret == -EOPNOTSUPP)
+> +		SKIP(return, "Needs CONFIG_DUMMY");
+> +	ASSERT_EQ(ret, 0);
+> +	ASSERT_EQ(if_set_up(inet_sock, "lo", true), 0);
+> +	ASSERT_EQ(if_set_up(inet_sock, "dummy0", true), 0);
+> +
+> +	for (i = 0; i < BIG_RT4_NH; i++) {
+> +		new_route4.nh[i].rtnh_len = sizeof(new_route4.nh[i]);
+> +		new_route4.nh[i].rtnh_ifindex = 1; // lo
+> +	}
+> +	ASSERT_EQ(nl_request_ack(netlink_sock, &new_route4,
+> +				 sizeof(new_route4)), 0);
+> +
+> +	for (i = 0; i < BIG_RT6_NH; i++) {
+> +		struct rtnexthop6 *nh = &new_route6.nh[i];
+> +
+> +		nh->rtnh.rtnh_len = sizeof(*nh);
+> +		nh->rtnh.rtnh_ifindex = BIG_RT_IFINDEX;
+> +		nh->gw_hdr.nla_len = sizeof(nh->gw_hdr) + sizeof(nh->gw);
+> +		nh->gw_hdr.nla_type = RTA_GATEWAY;
+> +		nh->gw[0] = 0xfe; // fe80::<i + 1>
+> +		nh->gw[1] = 0x80;
+> +		nh->gw[14] = (i + 1) >> 8;
+> +		nh->gw[15] = (i + 1) & 0xff;
+> +	}
+> +	ASSERT_EQ(nl_request_ack(netlink_sock, &new_route6,
+> +				 sizeof(new_route6)), 0);
+> +
+> +	// The ACK reads above used large buffers, which raise the dump
+> +	// skb size for this socket. Dump on fresh sockets instead.
+> +	close(netlink_sock);
+> +
+> +	ret = dump_big_table(_metadata, AF_INET, &routes);
+> +	if (ret != -EMSGSIZE)
+> +		EXPECT_EQ(routes, 1);
+> +
+> +	ret = dump_big_table(_metadata, AF_INET6, &routes);
+> +	if (ret != -EMSGSIZE)
+> +		EXPECT_EQ(routes, 1);
+> +
+> +	close(inet_sock);
+> +}
+> +
+>  TEST_HARNESS_MAIN
+> -- 
+> 2.53.0
+> 
 
-- a procfs file attached read-only to a loop device
-- sysfs files attached read-only and read-write to a loop device
-- a sysfs file behind a lower-only overlayfs attached to a loop device
-- a sysfs file as the backing file of a usb mass storage gadget LUN
-- a sysfs file as the source of a file-backed erofs mount
-
-And make sure that a memfd and another loop device still work as loop
-backing files and that loop refuses a backing file that isn't open for
-reading.
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- tools/testing/selftests/filesystems/.gitignore     |   1 +
- tools/testing/selftests/filesystems/Makefile       |   2 +-
- tools/testing/selftests/filesystems/config         |   9 +
- .../selftests/filesystems/pseudo_backing_test.c    | 274 +++++++++++++++++++++
- 4 files changed, 285 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/filesystems/.gitignore b/tools/testing/selftests/filesystems/.gitignore
-index cf79000e4092..8df38eabb125 100644
---- a/tools/testing/selftests/filesystems/.gitignore
-+++ b/tools/testing/selftests/filesystems/.gitignore
-@@ -7,3 +7,4 @@ kernfs_test
- idmapped_tmpfile
- ustat_test
- rw_hint_test
-+pseudo_backing_test
-diff --git a/tools/testing/selftests/filesystems/Makefile b/tools/testing/selftests/filesystems/Makefile
-index fbd5c27505ef..0ebb9005bcd2 100644
---- a/tools/testing/selftests/filesystems/Makefile
-+++ b/tools/testing/selftests/filesystems/Makefile
-@@ -2,7 +2,7 @@
- 
- CFLAGS += $(KHDR_INCLUDES)
- TEST_GEN_PROGS := devpts_pts anon_inode_test kernfs_test fclog ustat_test rw_hint_test
--TEST_GEN_PROGS += idmapped_tmpfile
-+TEST_GEN_PROGS += idmapped_tmpfile pseudo_backing_test
- TEST_GEN_PROGS_EXTENDED := dnotify_test
- 
- include ../lib.mk
-diff --git a/tools/testing/selftests/filesystems/config b/tools/testing/selftests/filesystems/config
-index 9f45bc493a30..228196160d29 100644
---- a/tools/testing/selftests/filesystems/config
-+++ b/tools/testing/selftests/filesystems/config
-@@ -6,3 +6,12 @@ CONFIG_NET=y
- CONFIG_NET_NS=y
- CONFIG_INET=y
- CONFIG_SYSFS=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_OVERLAY_FS=y
-+CONFIG_TMPFS=y
-+CONFIG_CONFIGFS_FS=y
-+CONFIG_USB_GADGET=y
-+CONFIG_USB_CONFIGFS=y
-+CONFIG_USB_CONFIGFS_MASS_STORAGE=y
-+CONFIG_EROFS_FS=y
-+CONFIG_EROFS_FS_BACKED_BY_FILE=y
-diff --git a/tools/testing/selftests/filesystems/pseudo_backing_test.c b/tools/testing/selftests/filesystems/pseudo_backing_test.c
-new file mode 100644
-index 000000000000..bc8e17ab8e6e
---- /dev/null
-+++ b/tools/testing/selftests/filesystems/pseudo_backing_test.c
-@@ -0,0 +1,274 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sched.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <linux/loop.h>
-+#include <linux/magic.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/mount.h>
-+#include <sys/stat.h>
-+#include <sys/vfs.h>
-+
-+#include "kselftest_harness.h"
-+#include "wrappers.h"
-+
-+/*
-+ * Put @fd behind a free loop device. The device is set up with
-+ * LO_FLAGS_AUTOCLEAR and goes away again when it is closed here.
-+ */
-+static int loop_attach(int fd, bool rw, char *dev, size_t len)
-+{
-+	struct loop_config cfg = {};
-+	int ctl, nr, lfd, ret = 0;
-+
-+	ctl = open("/dev/loop-control", O_RDWR | O_CLOEXEC);
-+	if (ctl < 0)
-+		return -errno;
-+	nr = ioctl(ctl, LOOP_CTL_GET_FREE);
-+	if (nr < 0)
-+		ret = -errno;
-+	close(ctl);
-+	if (ret)
-+		return ret;
-+
-+	snprintf(dev, len, "/dev/loop%d", nr);
-+	lfd = open(dev, (rw ? O_RDWR : O_RDONLY) | O_CLOEXEC);
-+	if (lfd < 0)
-+		return -errno;
-+
-+	cfg.fd = fd;
-+	cfg.info.lo_flags = LO_FLAGS_AUTOCLEAR;
-+	if (!rw)
-+		cfg.info.lo_flags |= LO_FLAGS_READ_ONLY;
-+	if (ioctl(lfd, LOOP_CONFIGURE, &cfg)) {
-+		ret = -errno;
-+		close(lfd);
-+	} else {
-+		ret = lfd;
-+	}
-+	return ret;
-+}
-+
-+static int attach_path(const char *path, bool rw)
-+{
-+	char dev[PATH_MAX];
-+	int fd, ret;
-+
-+	fd = open(path, (rw ? O_RDWR : O_RDONLY) | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	ret = loop_attach(fd, rw, dev, sizeof(dev));
-+	close(fd);
-+	if (ret >= 0) {
-+		close(ret);
-+		ret = 0;
-+	}
-+	return ret;
-+}
-+
-+static bool can_use_loop(void)
-+{
-+	return geteuid() == 0 && access("/dev/loop-control", R_OK | W_OK) == 0;
-+}
-+
-+TEST(memfd_backing_file)
-+{
-+	char dev[PATH_MAX];
-+	int fd, lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+
-+	lfd = loop_attach(fd, true, dev, sizeof(dev));
-+	ASSERT_GE(lfd, 0);
-+	EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(loop_device_backing_file)
-+{
-+	char dev[PATH_MAX], dev2[PATH_MAX];
-+	int fd, lfd, bfd, lfd2;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+	lfd = loop_attach(fd, true, dev, sizeof(dev));
-+	ASSERT_GE(lfd, 0);
-+
-+	/* A block device stays fine as a backing file. */
-+	bfd = open(dev, O_RDWR | O_CLOEXEC);
-+	ASSERT_GE(bfd, 0);
-+	lfd2 = loop_attach(bfd, true, dev2, sizeof(dev2));
-+	ASSERT_GE(lfd2, 0);
-+
-+	EXPECT_EQ(close(lfd2), 0);
-+	EXPECT_EQ(close(bfd), 0);
-+	EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(write_only_backing_file)
-+{
-+	char dev[PATH_MAX], path[PATH_MAX];
-+	int fd, wfd, lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+
-+	/* Loop reads from its backing file so it must be open for reading. */
-+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+	wfd = open(path, O_WRONLY | O_CLOEXEC);
-+	ASSERT_GE(wfd, 0);
-+
-+	lfd = loop_attach(wfd, true, dev, sizeof(dev));
-+	if (lfd >= 0)
-+		close(lfd);
-+	EXPECT_EQ(lfd, -EBADF);
-+	EXPECT_EQ(close(wfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(procfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(attach_path("/proc/cpuinfo", false), -EINVAL);
-+}
-+
-+TEST(sysfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(attach_path("/sys/kernel/warn_count", false), -EINVAL);
-+
-+	if (access("/sys/kernel/reboot/mode", F_OK))
-+		SKIP(return, "no /sys/kernel/reboot/mode");
-+	ASSERT_EQ(attach_path("/sys/kernel/reboot/mode", true), -EINVAL);
-+}
-+
-+TEST(overlayfs_on_sysfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(unshare(CLONE_NEWNS), 0);
-+	ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+	ASSERT_EQ(mount("tmpfs", "/tmp", "tmpfs", 0, NULL), 0);
-+	ASSERT_EQ(mkdir("/tmp/empty", 0755), 0);
-+	ASSERT_EQ(mkdir("/tmp/merged", 0755), 0);
-+
-+	/* A lower-only overlayfs serves reads from sysfs. */
-+	if (mount("overlay", "/tmp/merged", "overlay", MS_RDONLY,
-+		  "lowerdir=/sys/kernel:/tmp/empty"))
-+		SKIP(return, "no overlayfs on top of sysfs: %s", strerror(errno));
-+
-+	ASSERT_EQ(attach_path("/tmp/merged/warn_count", false), -EINVAL);
-+}
-+
-+#define CONFIGFS_DIR "/sys/kernel/config"
-+#define GADGET_DIR CONFIGFS_DIR "/usb_gadget/pseudo_backing_test"
-+#define MASS_STORAGE_DIR GADGET_DIR "/functions/mass_storage.0"
-+
-+TEST(usb_mass_storage_backing_file)
-+{
-+	const char *path = "/sys/kernel/warn_count";
-+	struct statfs sfs;
-+	ssize_t ret;
-+	int fd, err;
-+
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+
-+	/* Mounting configfs on top of itself fails with EBUSY. */
-+	if (statfs(CONFIGFS_DIR, &sfs) || sfs.f_type != CONFIGFS_MAGIC) {
-+		ASSERT_EQ(unshare(CLONE_NEWNS), 0);
-+		ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+		if (mount("configfs", CONFIGFS_DIR, "configfs", 0, NULL))
-+			SKIP(return, "no configfs: %s", strerror(errno));
-+	}
-+
-+	if (mkdir(GADGET_DIR, 0755))
-+		SKIP(return, "no usb gadget configfs: %s", strerror(errno));
-+	if (mkdir(MASS_STORAGE_DIR, 0755)) {
-+		err = errno;
-+		rmdir(GADGET_DIR);
-+		SKIP(return, "no usb mass storage function: %s", strerror(err));
-+	}
-+
-+	/* Writing the path opens the LUN's backing file right away. */
-+	fd = open(MASS_STORAGE_DIR "/lun.0/file", O_WRONLY | O_CLOEXEC);
-+	EXPECT_GE(fd, 0);
-+	if (fd >= 0) {
-+		ret = write(fd, path, strlen(path));
-+		err = errno;
-+		EXPECT_EQ(ret, -1);
-+		EXPECT_EQ(err, EINVAL);
-+		EXPECT_EQ(close(fd), 0);
-+	}
-+
-+	EXPECT_EQ(rmdir(MASS_STORAGE_DIR), 0);
-+	EXPECT_EQ(rmdir(GADGET_DIR), 0);
-+}
-+
-+TEST(erofs_backing_file)
-+{
-+	bool refused = false;
-+	char buf[256];
-+	int fsfd, ret, err;
-+	ssize_t n;
-+
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+
-+	fsfd = sys_fsopen("erofs", FSOPEN_CLOEXEC);
-+	if (fsfd < 0)
-+		SKIP(return, "no erofs: %s", strerror(errno));
-+
-+	ASSERT_EQ(sys_fsconfig(fsfd, FSCONFIG_SET_STRING, "source",
-+			       "/sys/kernel/warn_count", 0), 0);
-+	ret = sys_fsconfig(fsfd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-+	err = errno;
-+	if (ret && err == ENOTBLK) {
-+		close(fsfd);
-+		SKIP(return, "no file-backed erofs mounts");
-+	}
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(err, EINVAL);
-+
-+	/*
-+	 * Something that isn't an erofs image fails with EINVAL as well so
-+	 * check that the source itself was refused.
-+	 */
-+	while ((n = read(fsfd, buf, sizeof(buf) - 1)) > 0) {
-+		buf[n] = '\0';
-+		if (strstr(buf, "pseudo filesystem"))
-+			refused = true;
-+	}
-+	EXPECT_TRUE(refused);
-+	EXPECT_EQ(close(fsfd), 0);
-+}
-+
-+TEST_HARNESS_MAIN
-
--- 
-2.53.0
-
+Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
