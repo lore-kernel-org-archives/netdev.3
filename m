@@ -1,108 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794348840;
-	b=Ty4BT37LnFrWgMUt0+/WCiqPTdmEuxhc7FLr6dwVoMNBN2+L4WQYg9d+jQ3M88aF1X0e
-	 K2vBMIHJUZYutQigc81QZwfLa7FQNA+pfxD2Ml/3tLiiC9JRsAZxtFhDx2gwqbP+WhZ+C
-	 gyeg4TfeEwXuJ6C9qhqgThvkcE7aQ3XtdP0FFeSPZGNGaW211C3VynNmVl0y/iAVHSuHZ
-	 HEcJQP0kKFtCpMB5ibQVS3zOq9pOA6yFu5FQhiOKU/ndN0wmkh09lusLu/M6yo0O5sJ89
-	 yhF0uZUNJ4tR9cdvpPyQbfjJeKInH8irJKNT9VzCToO8PX/kJSEmQa0U69UDCZ8D/EQ==
+	b=bc7Y7irTWG8kN5n3vXCccQKiu/SZboqs3idnkACQ01iYBy5vibYhrYaCor20fgWk6wlX
+	 rS0x6hroy5TtsyfUxEJ+dSziEGI42125tYq/KuzaOt/LH9LVyNva4Y/qtPeD7xOlYNvLj
+	 8o2hRHWcnn7GmK5U7qLK+/dALDBvzEWIkznbeqWFitoaE6UDznCAhWweGGkJKzNGfoHCn
+	 Ig1tDO83hXaUDUzUg8loSJQTprX6d97lFxjoUMF+4ly8RrJp5e7D6ib3cgniKnAuXCKtg
+	 Up+8+7zStf9rKIyW6H1/lDuz19BRiNN41fjfsgdR4SQr0hCn+ey6eSw4MS+kQ6FF03Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794348840;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:Mail-Followup-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=o1TWetvXqmnZqe66iKDTc99BGiIMVM+8egrEZgCwU64=;
-	b=lMkyQKWDMn1vOVeadAmRzVISkNGSDJYkiHuhtQuWDVk/7k29r6uzxQM9Fu11BQ1dqCOm
-	 RJVgUt2G4r/VwsLC1Iav7WHWvLTC0Mz41uWDeYmTiaIdubQy6FDrCgQoWWPg5u6pDwYNq
-	 RWwsEFBV2faWr9PoMICmouWmakmE5E8pvqv7q1Sajgz3BXCX8f5X0yR0rTjCEx9FrUQ3b
-	 HRwBiy2Xd6RU5hkrPq8Ok6T3/S8Oke6PC6oHrecaD6uhZ86zik32ppPLHvZ1iyvTkSFqU
-	 oZgqVQzw+7PMKY92WZglrJOqFAcUlG142pfbyanud1LpJKDazVxt4AlJZeoqm21ogAw==
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer;
+	bh=aHT0oe+9666WqHA8sjUCxydzPLGhtXncbWuycSjH+/0=;
+	b=DRcICQAAmY6T5TOAMusGZG15iTHR+gPQZnOSX57ffBD2kB3JmdQlA8fnuMy/ipsDwNO3
+	 lxr6Jr+4qdQmu8+GguqFNxHNwB1i7lv9u6ZPgDAxWEnckXN857ognBasySj5kFQCNN6/y
+	 D0w24LLJc9jMcCZXGuqxfO2cfH/W2Y7wMiq6sxvqy9X50T1KEdJNXeObV6QWI/hNZUMYk
+	 vv2JhopRcfm0p4ChB+wa1NISQ5nXQM08/j+oXQdwd0OuJKqQct93OOfjOgvkNvjpi4HJ8
+	 PTGkMsrH6rXT5tHJxCOPyV/RnJISq4/VR151n7vnsAwhD+IGfzCtbap9jq/8GvAOWMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=dama.to;
-	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=sb7YHck2;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AvZUBnYW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E2B60A2627
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:13:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7E2B60A2627
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DA7606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=sb7YHck2
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ae691283ecso1422183a91.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:13:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1794348839; x=1794953639; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o1TWetvXqmnZqe66iKDTc99BGiIMVM+8egrEZgCwU64=;
-        b=sb7YHck2HEI3rzp3xBJIcgU9+z5nvBQcaCX6qGriHWzx0RqLUOjGs/eEmNmXX5cDKy
-         x1T/wdm8ATuTZC/ZMeK8MnCZZOAM5RcwTSfY4hREYVJAng9ZqJHz+oPaXoQtHGR/CYxl
-         Py6bwVna1z/c45jgSCqs0gdKbU9Ofg8+hC/K9QRNrkvCAzi+QaSMZ8D6u3YKqykLVgc1
-         iwriTemklGSLka8QVNp757TUmhoSQXXJOjiS0fZqEwntRr+n3SoAVlbbheOsq7mKs8yx
-         KfXN4SC0p2moI48sbO7j7nJepvZUixgW6XqkZjrxwHaXb996CgowhAKVJaSbJVQy3kgX
-         ygmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794348839; x=1794953639;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=o1TWetvXqmnZqe66iKDTc99BGiIMVM+8egrEZgCwU64=;
-        b=xnggN6FIgkS5lV8wgzuDJ87QqK1r+cH3wScaqTrWCYv7s9CyG1qgZCtwK/TKveJz7z
-         w1Qq650gYURSrjJtbdV/vPZXFkpAvou05JBEPbAkQ2MV73J9UjxMd7pOtjkhxsaCnUIh
-         d2xm7gNSoSrFrfce/AmrVlI2IsQgIbyEmjUcyQ1WodbYnpf8hHTg3s1kAR9J3YzipeAP
-         aLkaRqDNy2WWfOlsrsVAFD2kDCXAVEP2ZNdFbn8mbTemjheeUQqmIMDbnb4RQENk7CMN
-         QTTFwI6NGAP82a1vvQ105Zb5xoCtj0CuhU7jeiOyuXSggIvNYoohwigglY2BLfxqd2sM
-         0/yw==
-X-Gm-Message-State: APuU4Z9jnPXiiATCw4C7/DEsE3Caz/qRZ8wPPgJDiGaaW1TScte4Jfjo
-	lgaqIYwhPq9lpFkGgnWdJhIlTfSFScjtjDecqRtj1Y+UQUIaoDlFj+qNseQ3YUUfb+Q=
-X-Gm-Gg: AYBFou3TvwtZVEOOpHLPv8ot55KSWBljSWyjANW6DAfxl0+md4z2jybFMMV56bWFO2g
-	zqS3HWAFig1S9jsm5GuH/AkUbkeIX8YjnXBWd3+dA38aH2KUXK7lVh3LEJUaxyGdY0j7H2o9MDL
-	WAaT5L/OmIYKib3JDNw4nId9JSmU4XRAqpLoYOZPUjgO+sOkjFdLHmyne9ewrzdZ3NTAbOj/fSy
-	KFOtUmGfzhKkqRlWR2wWRyT89lti5DXeM/5I6G3sqc5rTFn8VX4uVFZq3/kKeutV8re5T7AemPf
-	sq4VmCIhpjp24Z40oYld1rYuNQo5RCGiqN8nO71dqj6yHenqq/cYIZmfqmZyYdTXR3bSAlK7FzF
-	v+WID4TJw4ilK7pUX6Ba6Huu2Eg/Ujkr+DICOtCTDffn5oyeAWKQ80YRvzNkvJgrM0T94yoUCRI
-	F2oWQHAHLhcymfwr4e1/x/sXrOH7y5WtegIgUMhfkNL7YUSvGVMHlGH7Hh2Bcw0rIzP2hEvO39E
-	PAnlaYfc8kTn15C0BgHrdwNiuNj4OWnogoYpvGXCDzyjTv+c7AdgcDkxOA3h8oV/orVKJ2Iwx2p
-	Bqy2Opij5JNPMCbQ1sBDPPQvCkfm6f5eZjZKYwHxkxw=
-X-Received: by 2002:a17:90b:2d85:b0:3b0:a1c6:95ae with SMTP id 98e67ed59e1d1-3b182f570cdmr210701a91.31.1794348838994;
-        Tue, 10 Nov 2026 14:13:58 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:42::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db4faacsm1519211a91.7.2026.11.10.14.13.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 14:13:58 -0800 (PST)
-Date: Tue, 10 Nov 2026 14:13:57 -0800
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pavan.chebbi@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Subject: Re: [PATCH net v5 0/4] bnxt_en: Make RING FREE more robust
-Message-ID: <avOXJf5yl8ajf8Qr@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-References: <20261106191423.4194081-1-joe@dama.to>
- <avIpEpoCYvLHYl3j@devvm20253.cco0.facebook.com>
- <CACKFLinPK+wR=TMA3zNJDKQR_=HfMFUHPxKS+yhvv9SegZw7Ow@mail.gmail.com>
- <avNWzavrxJSasfp5@devvm20253.cco0.facebook.com>
- <CACKFLikU8ax8-VN+EiAhrn_w+2=yex2TNHPxEYqni6g0BKHKKQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AvZUBnYW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8B01F008A3;
+	Tue, 10 Nov 2026 22:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794348840;
+	bh=aHT0oe+9666WqHA8sjUCxydzPLGhtXncbWuycSjH+/0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=AvZUBnYWeee4NBdzrPsn+bgzN5dxEbYaHHiwFjQqnmGjgTGfmxpL8XRmVp1jNfsLo
+	 3hkVVTaKq/TGB2EMHLtS21vBSNvBOXm3ollmU7US75KfIdXwDveBsUD+FoUkDTb0mm
+	 ES31TrH9EpvSHZWsT73uGXFhjcwU+m5kIDdAavHPA9aG4yugYyoYN+0NnPdi8A5Kih
+	 lCPiWlf9q6H53vPTOSnVpKHG9Z0e7ua07LCrtH6E22mr+wKXz5Vcpy6cbXa8r0kZLW
+	 Bs5mR+1AhmGC5nukEyHswG7dwk3Z3XXOCJgirP9jsOLzFeYhgZYrDc70mVtmr+Cf+n
+	 QMXf/W9DDlM6g==
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 10 Nov 2026 23:13:28 +0100
+Subject: [PATCH net-next v7 13/18] net: ethernet: cortina: Scale Gemini RX
+ queues to system memory
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,61 +53,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLikU8ax8-VN+EiAhrn_w+2=yex2TNHPxEYqni6g0BKHKKQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-gemini-ethernet-fixes-3-v7-13-9c32a1a46aec@kernel.org>
+References: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
+In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec@kernel.org>
+To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
+ Myeonghun Pak <mhun512@gmail.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.16.0
 
-On Tue, Nov 10, 2026 at 10:14:50AM -0800, Michael Chan wrote:
-> On Tue, Nov 10, 2026 at 9:39 AM Joe Damato <joe@dama.to> wrote:
-> >
-> > On Mon, Nov 09, 2026 at 04:13:57PM -0800, Michael Chan wrote:
-> > > On Mon, Nov 9, 2026 at 12:12 PM Joe Damato <joe@dama.to> wrote:
-> > >
-> > > >   - Notifying bnxt_re when DMA is stopped.
-> > >
-> > > I think this is probably the one item that should be added to the
-> > > patchset.  When DMA is disabled, RoCE will not work at all so adding
-> > > this will make the series more complete.  It may be as simple as
-> > > calling bnxt_ulp_stop(), but I haven't looked into it in detail.
-> >
-> > Hm. bnxt_stop_dma runs with rtnl and the netdev instance lock held and
-> > bnxt_ulp_stop -> bnxt_re_suspend takes both. So, I don't think calling
-> > bnxt_ulp_stop is going to work.
-> >
-> > Maybe I need to make a new patch where bnxt_stop_dma queues a work item that
-> > calls bnxt_ulp_stop without locks being held? Not sure.
-> >
-> > Also: would you be OK with bnxt_re treating BNXT_STATE_DMA_STOPPED as
-> > detached? I'm probably getting this wrong but I think with DMA off
-> > bnxt_re_suspend only takes the detach path when FW_FATAL_COND is set.
-> >
-> 
-> I'm copying our RoCE developers Selvin and Kalesh.  I think that if
-> you call bnxt_re_suspend() before you disable DMA, nothing special
-> needs to be done because the chip is still functioning.  It will go
-> through the normal removal process.
+The default RX queues contain 512 descriptors per port. The shared
+software free queue is sized at twice their combined capacity, requiring
+4 MiB of page fragments even on Gemini systems with only 32 or 64 MiB of
+RAM.
 
-I'm probably missing something but I think that the ring frees can only fail
-in __bnxt_close_nic, where rtnl and the netdev instance lock are held. DMA has
-to be stopped before bnxt_free_mem. bnxt_re_suspend() takes both locks, so it
-can't be called.
+Choose smaller default RX queues on memory-constrained systems. Use 256
+descriptors per port and a 2 MiB free queue with at most 64 MiB of RAM,
+and 128 descriptors per port with a 1 MiB free queue with at most 32 MiB.
+Keep the existing defaults on systems with more memory.
 
-I think there's two options:
+This preserves the existing relationship between RX descriptor capacity
+and the free queue. Users can still override the defaults with ethtool.
 
-1. Stop DMA as now, but queue a work item to run bnxt_ulp_stop without the
-locks. bnxt_re_suspend would need to treat BNXT_STATE_DMA_STOPPED like
-FW_FATAL_COND and take the detach path.
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+ drivers/net/ethernet/cortina/gemini.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-or 
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index d08dbb0aabcf..a96b6292820a 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -16,6 +16,7 @@
+ #include <linux/kernel.h>
+ #include <linux/bitmap.h>
+ #include <linux/init.h>
++#include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/net.h>
+ #include <linux/platform_device.h>
+@@ -37,6 +38,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/phy.h>
+ #include <linux/crc32.h>
++#include <linux/sizes.h>
+ #include <linux/ethtool.h>
+ #include <linux/tcp.h>
+ #include <linux/u64_stats_sync.h>
+@@ -475,6 +477,17 @@ static int gmac_pick_rx_max_len(unsigned int max_l3_len)
+ 	return -1;
+ }
+ 
++static unsigned int gmac_pick_rxq_order(void)
++{
++	if (totalram_pages() <= (SZ_32M >> PAGE_SHIFT))
++		return DEFAULT_GMAC_RXQ_ORDER - 2;
++
++	if (totalram_pages() <= (SZ_64M >> PAGE_SHIFT))
++		return DEFAULT_GMAC_RXQ_ORDER - 1;
++
++	return DEFAULT_GMAC_RXQ_ORDER;
++}
++
+ static int gmac_init(struct net_device *netdev)
+ {
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+@@ -543,7 +556,7 @@ static int gmac_init(struct net_device *netdev)
+ 	writel(sw_weigh.bits32,
+ 	       port->dma_base + GMAC_TX_WEIGHTING_CTRL_1_REG);
+ 
+-	port->rxq_order = DEFAULT_GMAC_RXQ_ORDER;
++	port->rxq_order = gmac_pick_rxq_order();
+ 	port->txq_order = DEFAULT_GMAC_TXQ_ORDER;
+ 	port->rx_coalesce_nsecs = DEFAULT_RX_COALESCE_NSECS;
+ 
 
-2. Call bnxt_ulp_stop() in bnxt_reset() before taking the locks, the way
-bnxt_fw_reset() does, and bnxt_ulp_start() after a successful reopen. That
-covers the TX timeout reset, which is where all the ring free failves I've
-seen come from and it doesn't need any bnxt_re change, but it restarts RoCE on
-every TX timeout and it wouldn't cover a case where the user triggers
-close/open.
+-- 
+2.56.0
 
-Not sure if I am getting that right; maybe Selvin or Kalesh can comment.
-
-If that is accurate, do you have a preference on how to handle this?
