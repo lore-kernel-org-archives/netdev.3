@@ -1,61 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.64
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292581;
-	b=zyWoD66mItugmCjn52rtoRqCpEb7GgLO+jJeewX2RP/SHsBnQUcTAiPmXXfIvaf68AUF
-	 KD7mSbP7hepdBOftp6dZpgMsdBm318y2BDH9rpg3GRpd50Rv+zzakpSTAu8z/ewIQ6Rfb
-	 xtBtK7qbXQL7wceUJtBICIfvm/tGcMK8L4JcHToq9BIYwiXpbnpCoTppTwi4a0Xg4hYX6
-	 Fh4M2x4l7ywj90jsS6SP/tuWKTUNck6O8BnzHy9txyInLqFZInB77btSw4p66oLN4lVWd
-	 xSMKviLBddpa2ORb9gdKsVaegNjROBFOVUyuGaYi1sgKcI45kPLMRac9FWVlBowxBWg==
+	t=1794292654;
+	b=yExqA9T885uy31jHv7K+FFJ2BtET6bEy1pFwHX7XmGe7zZluLxLKcfqBMYhcihEOHySC
+	 5cPBLGR3Ldmma3gwXvlze4OTs/IgeLHllX6csWmce5Z9radJM6PSxyjahoJXXRSAzKwiF
+	 SCtPdsNqEYXuOf2x0J5AweY8D9QJ6G3NJJclXRgsBx8JDj+pXezzWGL4gRPfzGAQa00PV
+	 lyzuGQJVoiOXsvRg4/90ihUn6BcTjhRDJAwtY/oqSnW3KmkfQtDwz9QLIgLblAc+beV3c
+	 zGBfanMlKx/OeO6bjF58pKd/7TaG//1upnUGvX5aoVZhc25h7KPvM6bJhRYu++DPvbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292581;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=IwZOJTDMawQ4UNnA78gZHvTpYkIrlTeCJJMbG+5ZzWY=;
-	b=U/5hUhYCYlSxFHIHVdlunKUEzvT7FDf/kkz4LCC8rOZ4VlQiTbe/TfHI1eJ/KE1ri5HV
-	 mbssJHiTT8pV63k5ct+Q4haU7bF0TVvNcjWFUl/leLM8e8/qVBJYSwOputri03+l5mEJ2
-	 ZfVCs2iHKbpANwTjgbhnS/gZENjK6T2aqCAv1VA5VrW/PIRdOLn1yFSio6RIuGE1Bp7s6
-	 JL2vDlCsYzv/R4XxQdAn1xArKHs5ozc187cc+w/vmqP7lcl4gIgMR1dGemRZAddczu6DS
-	 ExAEC1hWPGsOaoSjzgLi6z4O1u4szn7a31f/x3NwC/N+nnKYi1/+Wb4/nwdyjOddSfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292654;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Otp6rHHLbh7SWeIk6Dh9ZnKUDl+2T8Xlwlgu0O9xfKY=;
+	b=fHlMu1T80Yb87G1L8/8EJNhyO2BgF0LpFfbA6e3R5u/S9eDjm5ybTsJCY1BUvJ9jW2t8
+	 w23tuPO/tPfhtKfqny4T3QCjRuhFs//LzaqdOsKtCZKz+/XU8fV+h6dlvElAl3z799+vb
+	 uOeusOwRi/jvg+hlqrzOUxno5x6oxJKB5gd8SKwAzw7fzYBSOAdenIMJe6ZD/DSZlyNWW
+	 DsYhcj98G1Wv+EuM0Ts2OdKyGW6m9TwgKhRCE7W3ZsoW9gk9ZW7G7TD8L6jmZTwS6ilJs
+	 GzQ6t4C0Le4pvJWsw0WfwjJvCaavo9B8o3wmF3P20DqlGqALETsIqm5b41FecM+VCJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.alibaba.com;
-	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ii8G05K+;
-	arc=none smtp.remote-ip=115.124.30.98
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hpqi6ILY;
+	arc=none smtp.remote-ip=91.218.175.64
+Received: from mta0.migadu.com (out-64.mta0.migadu.com [91.218.175.64])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B76606A326;
-	Tue, 10 Nov 2026 06:36:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33B76606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ACA606A31C
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 06:37:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1ACA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ii8G05K+
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794292575; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=IwZOJTDMawQ4UNnA78gZHvTpYkIrlTeCJJMbG+5ZzWY=;
-	b=ii8G05K+IsAD3FmxhhLMbpYIsLJkyiliSZhUQnCskY+NahyXG8GPuLP4qClgu+vS4GLTgfKWOyTU83NVPVTLnXKpHjVpziN+8zALZaSGoWGQObxhyBqNFIX66jbaMmp9b+xT/7VVr5kaKiPsY3MhpPP/75Wc4iD5I+wS3qyEu5o=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XEUO5Jc_1794292574;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XEUO5Jc_1794292574 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Nov 2026 14:36:14 +0800
-Date: Tue, 10 Nov 2026 14:36:14 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] net: free_netdev: exit earlier if dummy
-Message-ID: <avK7XqLvdaeWlp8o@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20261107161415.1917665-1-dust.li@linux.alibaba.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hpqi6ILY
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=MEcLAKy7pZPHJ6KG807RxSolmDmWbdERHvyLsRAzMv0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794292650; v=1; x=1794897450;
+ b=hpqi6ILYJt8J+4TeYY9veXcjC344nYhWCCr3L5a4h1WE8nVytChz75st23pRPv6qmjEFDhOb
+ o9YEmqH43GEg4GKjoiryogg+pgvrz+Yl2AMlM1/L8svLYHKJjJF/ZiSYypbX+lMmTBTfrhHJOl8
+ enI8qBt/D8xx/1mYNnoFS6Nk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 520d86cabd9c72f5;
+	Tue, 10 Nov 2026 06:37:29 +0000
+X-Mizu-Trace-ID: 520d86cabd9c72f5
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 14:37:19 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jingjing Xu <xujingjing@cmss.chinamobile.com>
+Cc: donald.hunter@gmail.com, kuba@kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] tools: ynl: preserve non-ASCII string attribute bytes
+Message-ID: <avK7M8VNcWNXrNEw@fedora>
+References: <20261110033922.49297-1-xujingjing@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,77 +64,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261107161415.1917665-1-dust.li@linux.alibaba.com>
+In-Reply-To: <20261110033922.49297-1-xujingjing@cmss.chinamobile.com>
 
-On 2026-11-08 00:14:15, Dust Li wrote:
-
-Hi Greg, Sasha
-
-Can you pick up this patch for 6.6 ?
-
-This is a prerequisite that was missed when 6.6.y picked up the
-dummy-net_device conversion of the mediatek driver.
-
-6.6.158 took b209bd6d0bff ("net: mediatek: mtk_eth_sock: allocate dummy
-net_device dynamically") as d5d57501f543, followed by 16f3a28cf5f8
-(as 81e82340170ae) and "allocate dummy netdev sooner" (efc91ab1d97bd).
-
-alloc_netdev_dummy() -> init_dummy_netdev_core() sets
-dev->reg_state = NETREG_DUMMY, but 6.6.y free_netdev() only special
-cases NETREG_UNREGISTERING and NETREG_UNINITIALIZED.  So every
-free_netdev(eth->dummy_dev) -- mtk_remove() at
-drivers/net/ethernet/mediatek/mtk_eth_soc.c and the probe error
-path -- walks into
-
-    BUG_ON(dev->reg_state != NETREG_UNREGISTERED);
-
-Upstream f8d05679fb3f and b209bd6d0bff both landed in v6.10-rc1, so
-mainline was never broken.
-
-5.10.y / 5.15.y / 6.1.y - alloc_netdev_dummy() does not exist and no
-                          driver creates a dynamically allocated
-                          dummy net_device
-
-So only 6.6.y need this.
-
-Best regards,
-Dust
-
-
->From: Breno Leitao <leitao@debian.org>
->
->For dummy devices, exit earlier at free_netdev() instead of executing
->the whole function. This is necessary, because dummy devices are
->special, and shouldn't have the second part of the function executed.
->
->Otherwise reg_state, which is NETREG_DUMMY, will be overwritten and
->there will be no way to identify that this is a dummy device. Also, this
->device do not need the final put_device(), since dummy devices are not
->registered (through register_netdevice()), where the device reference is
->increased (at netdev_register_kobject()/device_add()).
->
->Suggested-by: Jakub Kicinski <kuba@kernel.org>
->Signed-off-by: Breno Leitao <leitao@debian.org>
->Reviewed-by: Ido Schimmel <idosch@nvidia.com>
->Signed-off-by: David S. Miller <davem@davemloft.net>
->Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
->---
-> net/core/dev.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->
->diff --git a/net/core/dev.c b/net/core/dev.c
->index f9436563a2e84..0d88d285c713f 100644
->--- a/net/core/dev.c
->+++ b/net/core/dev.c
->@@ -11093,7 +11093,8 @@ void free_netdev(struct net_device *dev)
-> 	dev->xdp_bulkq = NULL;
+On Tue, Nov 10, 2026 at 03:39:22AM +0000, Jingjing Xu wrote:
+> Netlink strings are not restricted to ASCII. A valid non-ASCII interface
+> name makes a getlink dump fail with UnicodeDecodeError, and encoding
+> such a name for a rename request raises UnicodeEncodeError.
 > 
-> 	/*  Compatibility with error handling in drivers */
->-	if (dev->reg_state == NETREG_UNINITIALIZED) {
->+	if (dev->reg_state == NETREG_UNINITIALIZED ||
->+	    dev->reg_state == NETREG_DUMMY) {
-> 		netdev_freemem(dev);
-> 		return;
-> 	}
->-- 
->2.43.7
+> Use UTF-8 with surrogateescape for both directions. This preserves ASCII
+> behavior, handles UTF-8 names and round-trips raw non-UTF-8 bytes that
+> Linux also permits in interface names. Do not replace invalid bytes and
+> lose the original name.
+> 
+> Discovered by Codex-assisted code inspection and reproduced using real
+> rtnetlink operations in a temporary network namespace. Tested ASCII
+> names, a UTF-8 name and a name containing byte 0xff in link dumps, plus
+> UTF-8 and non-UTF-8 rename requests. The original library fails on the
+> non-ASCII inputs; the fixed library reads and writes the names without
+> losing bytes. Python byte compilation passes. No kernel instrumentation
+> or hardware was needed.
+> 
+> Fixes: e4b48ed460d3 ("tools: ynl: add a completely generic client")
+> Signed-off-by: Jingjing Xu <xujingjing@cmss.chinamobile.com>
+> ---
+>  tools/net/ynl/pyynl/lib/ynl.py | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+> index fb5acb8acded..2402d7c383e7 100644
+> --- a/tools/net/ynl/pyynl/lib/ynl.py
+> +++ b/tools/net/ynl/pyynl/lib/ynl.py
+> @@ -301,7 +301,7 @@ class NlAttr:
+>          return format_.unpack(self.raw)[0]
+>  
+>      def as_strz(self):
+> -        return self.raw.decode('ascii')[:-1]
+> +        return self.raw.decode('utf-8', 'surrogateescape')[:-1]
+>  
+>      def as_bin(self):
+>          return self.raw
+> @@ -852,7 +852,7 @@ class YnlFamily(SpecFamily):
+>                  return b''
+>              attr_payload = b''
+>          elif attr["type"] == 'string':
+> -            attr_payload = str(value).encode('ascii') + b'\x00'
+> +            attr_payload = str(value).encode('utf-8', 'surrogateescape') + b'\x00'
+>          elif attr["type"] == 'binary':
+>              if value is None:
+>                  attr_payload = b''
+> base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
+> -- 
+> 2.53.0
+> 
+
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
