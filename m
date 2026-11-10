@@ -1,83 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794317079;
-	b=BpeDUCWU5vTJ7vaVTw0DpavXicHn9gZvlyOohmvSST5Iv9hBgrUeQQTQC0Xvuba1KC0m
-	 2LosmC+UjNymT2fO2DuVPhC9N+O8ND8AREIqlmXtvYNsoEtZUxaRW8VPvZB2HNI/v5ka6
-	 QD3LFaMwYhnIMbp1tvwOf4iADVomF2JozABJ4UYeY9V1WOWo24C4WceUpcqtfSMISCLeT
-	 M9BW9p0X0yDPYIlLpG22c3dm/n3Z4Kk7ryYzqwMrYE658xXIDztChxfwHhBQsrfTMUvq+
-	 lhSL82GYIhyZTpNLUeW9I1lGXNSbR6zuMr9fVU/YbODz0jfM6sbi7KD0o3O0Fqa1RQg==
+	t=1794317305;
+	b=NBAkaT7rCzHvp4Hr5dlbwl2gSAiqFZxfCMbkL38Amu9mP4UemVizbhtVJyeWdn+WHnD3
+	 WtkEo8i6OEkYBFaWiIqS/MExKHNbvr7NZvrIRvA1tlpWF6nqWWRdUgSTR1s+WqrDLS5/M
+	 qSqGFl1sWJqSHAYanaI94Ic+ZOyEuVtrkpdnHC9Mr38nr10lS93/SboqrtpK4sl9zaZ1G
+	 UMZXiKFvP/gdwFsakcG34Pj6YVnp5zzoxnxWHERDbu1iF0eakfR3Vt0kMTVHmxNvWZSsi
+	 jMTLoGUBqJJ/fxRPnXZ9zDFQjcxp1Lnb3gl66ZyCbeP9hWBBDMYCHomKUSQ4IUxWblw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794317079;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=ez/JCg58KR3ETRDnKPSAi5iS2CETEftIr/TvazZwHzk=;
-	b=DSXWbJIs1e9KcnZA8hxj0QPdytPsu0XpzjNw8xvhlioP9P73cLGGx/RnaslYKf0NGFdS
-	 dGNQi3toYX8W2nmL2cjDPVjS1GPZPLmyZdN2kNl0AJgvOp0M/fNzQLfNrnVZC1+6zHK5J
-	 XeaDIxhR/0NDrS34PFt9VWK1OO5FVk7DR6OLOxjHr+reMWw8ApjeDU3QG6D5/ZSyt4kqM
-	 iTre9o80Ivfb8bZNHqsPy6B2PpYYqtALSJQxB6iR8DoUb0ii3twmgk3x3rFic6et8dOEL
-	 QOuFBrIk32EY6gQiIE3OOsVtfRwgH1pC+Ulr+/Nckkc9547Bff65xKQoOO/jgw4F7Fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794317305;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=NjKqFsYHDe0kpWvSkOX9Vo+Ww2XtDII2dnV2pSzH82I=;
+	b=kIryQHNqqEIHylB/giNpMknJ8HFXVKvB6BVv9DBf/N1CTxIhs1Bqw3M4X3SfwCCpyxMe
+	 3F9AVBF6joS7UquNTiW8weiG5vwSaRQ3IFh5uFL57BOYCcK3Lp7GtCAek2SNnf7ISAlJG
+	 rOlUNPX7YI2dbZN7xhkDR0Cgw+nYfxvRhVgA35R+AVVCklnGo4ag2OPLjwtd7PSDBJZ5l
+	 qEfwulA515vWyPsQvGt7pLzLmHIuIe7pTZaR3n7LlCsOu0/IA/9yKEpkU+JNPPRjjr+di
+	 IbSZ7yXXh6v1eUAMYNCYAuEF2RcqS8d/SXz4NlO/M4D8s6BOi+fodJTatF4xm4joHnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=mTzyxezS;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=1wS4RB6A;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40508606A75E
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 13:24:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40508606A75E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A54606A747;
+	Tue, 10 Nov 2026 13:28:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6A54606A747
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=mTzyxezS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794317079; x=1825853079;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q0WM4IQNA+5HkUqTd6LkTN4cVtA3wujV9hn1BvMV2/o=;
-  b=mTzyxezS44aZvswxlO0ZYQMX/cFpPPhpXYa1Ovv6SQayIlZZ5+to1z9L
-   sDh3bO5V9Yh81H3hPCTqBd3n/RdXHCdtZl/ZCfDGXEx3dhncu3ISgUXqX
-   xlcw7Q3uiT0N/JpBaz/lw/uqu7fFxCDLQcYFt/ZwrOju4A6I2o28a62ql
-   7ZCywcy1WbLz7CsfbcPg87U6Zzo1v7gsarHh7L/jLHty5Hx6i+6Ici9fd
-   rgP2Wv6/KII5Fpfl5fQ6pd3Q596yl9g20h7Oi3/gkb06Qm83ZHtDAJRt2
-   HaatgcNjwEyolDtu6W9bKoIEx1Hoi9Tedmz/vXeSbxYjMDg3nQU4n0Lao
-   g==;
-X-CSE-ConnectionGUID: yWUbyzJJQaqnQpTDC39jPQ==
-X-CSE-MsgGUID: b7Wzm2JaQKG46PFNfGv5aw==
-X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="66534219"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Nov 2026 06:24:39 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 10 Nov 2026 06:24:37 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 10 Nov 2026 06:24:34 -0700
-Date: Tue, 10 Nov 2026 14:24:34 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: <netdev@vger.kernel.org>, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>, Danish
- Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S. Miller"
-	<davem@davemloft.net>, Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski
-	<kuba@kernel.org>, Neelima Muralidharan <neelima@ti.com>, Paolo Abeni
-	<pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>, Pratheesh Gangadhar
- TK <pratheesh@ti.com>, Richard Cochran <richardcochran@gmail.com>, Simon
- Horman <horms@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH net-next v10 7/8] hsr: Move struct hsr_ethhdr to a global
- header
-Message-ID: <20261110132434.uksd7ysdmntqx5bz@DEN-DL-M70577>
-References: <20261104-hsr_ptp-v10-0-2c4a38ad973c@linutronix.de>
- <20261104-hsr_ptp-v10-7-2c4a38ad973c@linutronix.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=1wS4RB6A
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=NjKqFsYHDe0kpWvSkOX9Vo+Ww2XtDII2dnV2pSzH82I=; b=1wS4RB6A4qiYD3td9X5Rp0IkNu
+	viUA6ZWn4P6mP0tJNNDTE3bl1YfMG2KxG8B1VeZskEhd2HK0k+A9DLs9nLdsCdOCHgd9R4hCXE0jp
+	4mF5lJYGb/WK+gnUaJs0VYHFFu36MUD/xswY2MLqcj8d7POLSzfZ/R4xCt1J+hX2a0Wc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xQltb-00FUEa-0t; Tue, 10 Nov 2026 14:28:19 +0100
+Date: Tue, 10 Nov 2026 14:28:19 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] net: dsa: motorcomm: Report error when
+ FDB fails to add
+Message-ID: <4f5b92b6-7dfc-4065-90bb-3f5398b0f2a0@lunn.ch>
+References: <20261108094512.1285796-1-mmyangfl@gmail.com>
+ <20261108094512.1285796-2-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,16 +66,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104-hsr_ptp-v10-7-2c4a38ad973c@linutronix.de>
+In-Reply-To: <20261108094512.1285796-2-mmyangfl@gmail.com>
 
-> In the offloading case the network driver needs to inspect the HSR
-> header to find out if the encapsulated type is a PTP packet where it
-> needs to suppress offloading of the packet.
+On Sun, Nov 08, 2026 at 05:45:09PM +0800, David Yang wrote:
+> fdb_add() ignored any errors returned by the hardware. Return error for
+> that case.
 > 
-> Move the header so it can be included by the driver.
+> In practice the 4096-entry table is hardly ever filled, and since
+> fdb_add() will automatically expel dynamic entries, something bad will
+> definitively happen before you fill it up with static entries. This,
+> however, is in preparation for the upcoming static entry counters.
 > 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
