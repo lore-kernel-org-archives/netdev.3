@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794279303;
-	b=STTLfgvx0obsnMQaBihtepnXsa4AMTw0j+kX839ypjMMEsL0iwp2vaqoSglTQCocVAYu
-	 Ori7r3RBYAHbe2C82LSia36pfCoz0B0vHSLrPdKCt7rSwZPQby5tCiKcXxAGaDtB1Ziro
-	 0RYBrTwT2CGtDbiTa7PNMAZEox7o/9pfVhJFDZjrEqcms1FciVa1OhtVXKE88/zvUWv5l
-	 gldchwSC5O7dJXhzM4MYR4ygTAFEfQTi2AykYi2BgtamdOO/HvvwzccEP6bCfz1qb8Grn
-	 4uS1X+g0XCIY9OhrH8Recd+mxxmKAQdYmli+u7bM7G8a0tEJRiuSy9ALX6UErz1Lb7Q==
+	t=1794279299;
+	b=XjU7S0iQwmmYUOluzg1S7qs/MonOV57t3K//QQ/RsKsH/NnY1O1VL7mHQMJ7pLXuMmTp
+	 X+p6aca7A7v46j2G9H1rcZomSAZlmoX/eeYlFkYIVViY1M1ja4Zg+8hrozZh753e7cD8V
+	 wKUQsqW0P/ZoV+FZoI63C811yj7MzfNFemJo4jqS02EvL4Q4ADNVXCWQI7/Czg+YZ+3db
+	 XUaH6aQtsf4OD1+UPnEy/Ke+7bA/Oxh1NMrX6K70cv9lXYXliin6VjB6lXQix5OKSm+Tr
+	 4Oi1RbuXn4vkau5K4k0XshtWSq7kfgNt2o9pJQ/lxq5GEfPFn6Djp27zF51l+Z0ezPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794279303;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794279299;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=dP0+wjyOwX9AjuPhQG9DeKIc+ii1jJ//qhhRI1Y+lHo=;
-	b=Z4UjfbR6ExhFb/ozB4C+/IXo4Vyxv6/rYkm702ul0ts2SLphwBZMfgNplcmcxAIlvsoo
-	 O2+EJ+zaTN9CJH4sHnEMe21soeHC3c/1Dk4daXCLwmcjMtaHX7wV3XDon2J1jiN38HW8w
-	 rEJODFx78DQ7BRq5MQi/fXSND5ofAlghzBlMXf/uxjE/4bdYTtViruNWAYoud47Ujtghq
-	 qA6IGiClPvRT2+clybTkkJ7dPjaBCKRQ8qas19YqbDUFYAuqS2SUWlPLeyRcFCleS9E4/
-	 vegBwwoaJT8fHfTImcok6l/Rksik+dOXXW8iP7YDv6zX9M5Fv7u6Fy5drju4dzfllOA==
+	bh=K8wsLWkWivP3YQSOo4H4IfV+hFon/0R2dO0BY9wWmTE=;
+	b=oGgiLwDKikW32bbhSnq66fxbGh0DYnS+8Q7mWM11RjnBdBiRKPR2WFG0pq8kRSRf8rG9
+	 GKge+dK2pfNB+/Z8AqZ7fYgejA71UhCj0JAogT+ugwgXAGjdG8Jq44FFHnBY9zzHmqXM9
+	 vIIDLa0W36p77yMy7ncHE25KTF5hjl3vBmx2IeuKcfrdkGI75/LnqV4ydYUyZfrzTBYIA
+	 y5WSFsCUWMXRhRnRE1gHuQ2u1YkNwjKcQw/+YnxRsibDS2X+xqbnB3TwoW4pzAKuzIcQ5
+	 3CcrMYMn9/SYKqiR+rWkgokL1zOf9mrdLw8Wp3OnAleGCxFF8GMB7Y7tQipl84sjBxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJeN6jKQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P0Kumk5j;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82144606A338;
-	Tue, 10 Nov 2026 02:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F072F60A5BD7
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJeN6jKQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86D11F008A1;
-	Tue, 10 Nov 2026 02:55:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P0Kumk5j
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BD61F0089F;
+	Tue, 10 Nov 2026 02:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794279303;
-	bh=dP0+wjyOwX9AjuPhQG9DeKIc+ii1jJ//qhhRI1Y+lHo=;
+	s=k20260515; t=1794279298;
+	bh=K8wsLWkWivP3YQSOo4H4IfV+hFon/0R2dO0BY9wWmTE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GJeN6jKQzhyj09OP6dHKracKVVZV0ist/9C/93qMZkV/rv+SZVIi4TVAXGWqNN/7V
-	 CMfG82PYV+UKsxkhKZInCbUoLG7g3wtWmr35dMdswBcIC8dNWsl997s2a1w4zlZwT5
-	 UiTwOrIlXTu7ztcgb0P20Zj3Xdq8gSdfHG3jtxlBvGJAErIZ3pgXqLd+Fwko4awBWG
-	 7+nEG0wYaf1XiY/yV6mmSALhNxqwQxONJPbgcre0QXd3H1oOrqajm4LB0fNh4UUYPz
-	 TGioHGJ/MWSr7gUSHaNvh2TXT7CwlQ+hrSwKtEdNwZNxdZBIEXdVKW7+Kw0MciHmeI
-	 5km3lt0HVvXaA==
+	b=P0Kumk5j8C/6MWSatyUgf0Q4kTNObPeqorT5kSeEmTSbzu+1slQ+kPwAlUxh0l6gp
+	 wuiP7/ZrtiiRhfDJdR3WHgUtFiO3BnWgwP6xU0fVcyL3I3igZCnWN5HMFhqxCUu0py
+	 QxSgNcUJv7YA7faU8NWl0TZ7w3sSBJFxatynMd1nojYNYp/LJJxswzYUoBKOiq2xVN
+	 VZvvy4R/XD36spe/UgmHE1SD+m8QIzOjfUsdniCo1g+lxEgzy9bzHlYunUtFxuprZU
+	 bvrNXMm99e9UwbXa3KMIc09dxtyMXWfaNKMz89obXMIPqvNF7GTCFxX4Z/VT3shRMj
+	 R+bmwAhqB480g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8359391AFCB;
-	Tue, 10 Nov 2026 02:55:02 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9AFC8391AFCB;
+	Tue, 10 Nov 2026 02:54:58 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,37 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] ipv6: ignore link state in gateway check
+Subject: Re: [PATCH v1 net] af_unix: Remove gc_in_progress check in
+ unix_peek_fpl().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179427930167.3612825.11874749097898139774.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 02:55:01 +0000
-References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
-In-Reply-To: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
-To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, weiwan@google.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+ <179427929717.3612825.2202404863084931818.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 02:54:57 +0000
+References: <20261104162858.991930-1-kuniyu@google.com>
+In-Reply-To: <20261104162858.991930-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org, q.h.hack.winter@gmail.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  4 Nov 2026 19:56:53 +0000 you wrote:
-> IPv6 gateway validation can reject routes in non-main tables when
-> ignore_routes_with_linkdown is enabled and the nexthop device has
-> no carrier, even though these routes should be added.
+On Wed,  4 Nov 2026 16:27:56 +0000 you wrote:
+> unix_vertex_dead() and unix_peek_fpl() are synchronised
+> with unix_peek_seq to prevent GC from purging a live
+> socket's recvq.
 > 
-> Fix this by ignoring link state during gateway validation and add a
-> regression selftest covering IPv4 and IPv6 route installation.
+> unix_peek_fpl() skips the synchronisation if gc_in_progress
+> is false.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/2] ipv6: ignore link state in gateway check
-    https://git.kernel.org/netdev/net/c/b76bcf3fff93
-  - [net,v2,2/2] selftests: fib_tests: Add carrier gateway test
-    https://git.kernel.org/netdev/net/c/d1b6b27005b4
+  - [v1,net] af_unix: Remove gc_in_progress check in unix_peek_fpl().
+    https://git.kernel.org/netdev/net/c/0edbc945eb9e
 
 You are awesome, thank you!
 -- 
