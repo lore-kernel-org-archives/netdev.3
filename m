@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794348417;
-	b=FNHQVshG4FA2a3FiJKSpysm/JkROXPAM4azYGJ3IrLM0aDZ7VosboDjf872ie1ap1sV8
-	 4ecMUDzB2OPmwURSIw93iqUH1L5AFqsTnWxwsD0OV/xrWntlcSVZ4WruwlhslKRxMGS3f
-	 RPp1nZXuzOP1pGGQRmEbFeR0P1ul1hmJcXD1dOsnBd2uNyNbzuFcGxCTp3Sy0mmPPGEh3
-	 jvj57oQh9vuLzIXcnU7tWZ6d07cZ4C6KdE+Qy7vwtZFFsEjkvvXQRBO8ixq3G3jBx7iU9
-	 mpLO3fE46W8P9++FA+HfDCrBjACXca4n6BelioD+rMxwxwHt1yZmRdp7VSvUraAwIZw==
+	t=1794348420;
+	b=J+t3fDA2IpXq9qeKkFjtFjfyyny8guGiuNETXKkQaDX8Y/43xC9CmLvQbjC1kTLMoyNa
+	 8q1pZWXC7N6pA7CbMCwaQKS+GAo4ie1e5kZSK5ygz3ob6Xsb2ODyunZO9w2Cx1W+pzncF
+	 zGzxVuy7IBUxPumAa/urMycQOVSnuGCU4cusIEKCtYwYNAHrxX8ngUBzbJm9XBnScf5yz
+	 drtSMFFfdz8aMZxCe5aIr73Ro8HF3yWkKH9VJ7CW0o2B1E8HKXYYUA+R8lwq8ZBS21jSj
+	 sqQlccazkG/caE+TvBEI01inz7prIeCwWb8sqmVCtpCDWqyfxvPgKu+ATXQDTnV4t/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794348417;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794348420;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=8Q93oeh1L0KA6JGez1rg80hL+KIbW3yolr0N99bCVZ4=;
-	b=2d1eo20Ax/ZOENioAhfaK/kTbbh5futeAcvJM1hub/nsH8HumlkTUbrF5HK6okrI5MKr
-	 47U35g0ozzIkwVGKFzoXfMDBt21ClW8rY/C9/xMAq8ysbMO+D+C9PCcd8N7PNiQl8JrJC
-	 VixXZsTUkFDyjQ8vivtLQmTrCk9gmRw7rjg1llZaw2MLTOSuSduqRWqyL9o+zHihRLHok
-	 TE8kTVQ1A8qJmtdNX+vi5W9rDzNfOLAVicjlh4M9wmhzYFmWNoS3qNSr1FDS2w/EK9vYW
-	 uYs25CIQ3Agjde72Zle74a/LGGYjG1ymfZ87Ra4m71mV0IHwD2v2eza+5qj8qmMF2zg==
+	bh=L1CME/PdqAtK6fTk+OjSyhi24vRJH8mOY9MTHCX4fQs=;
+	b=5Rqb5vSIUxh644VEztU9NJkDTD+G0XwWMfsiWpOBPmFfFg6TLMpMF0PoIsCNWhtbbYFM
+	 e2H7rc/gqjtHEzou1njaEfyjCxH2bi/NhACm63CurXWWyc2hxlHIclg/i0pJA6+KYwPwb
+	 gOfi//tmxKGRLt+l4dLzgftYbEFu8sbwY3XzwghPgbrjmFC6g7nq0P37pLLN2eZhRycCW
+	 v8Y6e9wjVpC8IGkZhFIbNNmmF2Z15JT5vfRjxSymwg3v3OtK9nNf0CIpf6s1OXuoSN016
+	 yuPZJwBpKN5di7jIsrIydg5qejHxriSooVi26GAp7TxlDjP+L+mLrymhN4lNRFeKBWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jj8MvWXQ;
-	arc=none smtp.remote-ip=209.85.128.177
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tu7chxr9;
+	arc=none smtp.remote-ip=209.85.128.169
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4C560A3820
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:06:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF4C560A3820
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A247760A383B
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:06:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A247760A383B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jj8MvWXQ
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b3653df740so9526767b3.2
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:06:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tu7chxr9
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b0d126f631so26981187b3.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 14:06:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794348416; x=1794953216; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794348419; x=1794953219; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8Q93oeh1L0KA6JGez1rg80hL+KIbW3yolr0N99bCVZ4=;
-        b=jj8MvWXQ2hHXgayXt1+hIWo82UTWLUX4ssuhLNOXY3gE6+zMMEktUxzxlvSu7p6H1w
-         L+0Klk6BuOvYHCnQgefVa2G1FouALQmWQMPsqRj1w1xh1EWLvUgCzWtXpQSxETfUH0NR
-         uUAGq8kfPHPF+qWa8lHNqkQka0BETfedUCcovYRwEnydmYVBMnz6woHe7B9E9hlcTqy2
-         tW3Cw/aAtvIrjprjzOG39MrdGQOVxLu22EhoyOIPBnLs+im9BQ87Di0EGXoyQf7Wkajo
-         /Pm0yIPv4MB3HjF4xMNXa7mP+Y8b8vNENp2E2v2SIcEbjSFRvVO+h7MAEi9UIZSRmYGO
-         dKWQ==
+        bh=L1CME/PdqAtK6fTk+OjSyhi24vRJH8mOY9MTHCX4fQs=;
+        b=tu7chxr9lTHSpeArUj0qxc48Q3LyVi/yMAQXybtp0NFwktdNshnDRyg7n7wTG0zJoQ
+         bhIiH6ehNWKKhfnTuEOH1l5EfvkgY6akXzg9xIuTMzgPuYHBVQJU5YWWeWdUZ9uKP+qu
+         gn5Nxl45ecVb1jNGLU9mO35veAd6qCRZILpjMwZJbZVoOprZ8RxpaiFGkRbHAJP+RVZj
+         /fF8sMdbE6KXHjptFfjw7CYUDRroQGJ+jiVWzU5fmeFt17I7DYh53UqF9+ZID5YKUBKi
+         lUUMXkzvdOy2mKHBO+xhQS43XoaY+5GmVm0sqIiR0yd08x6bh3KJNGuvCoz301ETNdu4
+         2zWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794348416; x=1794953216;
+        d=1e100.net; s=20260707; t=1794348419; x=1794953219;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8Q93oeh1L0KA6JGez1rg80hL+KIbW3yolr0N99bCVZ4=;
-        b=Blv1iHiQNRsUC3IsdOWFQvcLEoK2CQPjyNFF8kfVWz4potCgaRaEqvA/ucAY3fYXGO
-         FKERiwIvq3h4A6bSJStqziwmgNJcuIoJ28xgIlO+QduWY0/voR3jY71Rmt+RPmIqx35+
-         EpK+ZYXXyvFmsI2BrWMT2tVF2e3ALtiZTRdxusv3xp7xntjOnuAuHcTAzuQ8DmxiDgfh
-         V5PFOr2bMDfDAU2IiHW0yKqFNPXW7NtjrCTpZEwtwLjJ5xeGVqhg/CP2aRrfV7RJnyST
-         PBLovh0aaG5qiJRgpa0+oU1mqBVVGrnDqihIgfdH3uMF9pSWB1K4SF8AA2xuLHARZ7DS
-         ywxA==
-X-Gm-Message-State: APuU4Z+XLDtUYwe/s/way7TS2X4bhV5HrZ3E5mMatO6NQYM9LArvk7ZG
-	c0CaVWWe9WjV66gY688lbSNHfJHAtU6gWxa2PXZQUMKQmJUac3EV6uiC
-X-Gm-Gg: AYBFou3Pmy1uzLFsloOTmvnohN7fvGpA/x0rFtp2Slg6lescIJ771hCjTi7a1sA42/0
-	WEVF1POi0vx2b2Ca95KD6AjjTQF4TaBAq4BYiQIwjLQVTDxSNqy4KIG+ihRz8wLgjqLAyhOmZHb
-	WGrhwCCbVTICBLWjKvOxPxMgfd4HglsvXSGiou/Tu0dn5nCVplS6xDawdTYCk2i/hkreiYZ0LtC
-	GBkSs4OrSjwfwTtmgqeK5byfafThvqjKRh2cl06ytYh9vbwEXp1v8XEjOiJdtnGDMVhhh2GxdwS
-	zaYMXUoj9MBdAnh9ozUIGq4O3l7zAS6mWEnzVPpGtfllbmaUSmC9iM/AsPUYsuMOjNc68UXuUbr
-	fB3pylAcDq9YWW25gySfS46UsU1EDYSM15yqE0qXvvuE9IaLi3FOgQhqzSr7J5DblmOkVc47jSs
-	svA5BOnUJAI63NpOUbSlxudHITtzdVczSU9aJonXhPBfLrEp2nNG4/wLySHUPmlVxPROCAeagSY
-	wPZfCHZIJ7G8lV3Gbw/g7VO8bslZOeG/zfJBRBXYBk7GLsF8t/HEtC0zQyeDQftOVaPMlpZS+ZR
-	fnarSb82dBETpjYPx5pCi1dImMk=
-X-Received: by 2002:a05:690c:580c:b0:8b3:5a91:61e8 with SMTP id 00721157ae682-8b3a820eda8mr4166437b3.69.1794348415928;
-        Tue, 10 Nov 2026 14:06:55 -0800 (PST)
-Received: from localhost ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b3934542bdsm30063897b3.38.2026.11.10.14.06.55
+        bh=L1CME/PdqAtK6fTk+OjSyhi24vRJH8mOY9MTHCX4fQs=;
+        b=XANBbXtqSIqtHuctvVV3UDS3dIqL6JTrNNo3K0cL6+RVtr+v4cRealJFfOh2e+EQN8
+         SQXEPTcnoPKBPj26hczJC3AxlUjxx4H9MbMmOnb4nuy7+MK97H/1cc5+ca4WABxoUTNI
+         jq9SdhUXptBEMKoJt1o2FHgNEBCB1NoXLTWIQxJ0Esui4V+L0E1WtO68ciYat9Pag+8j
+         NRAdtSykLyW+hpz/rU2xwBTpHXH4/8EurNOUCgY2QbgqKRwaG1epKfuXJ1bZApW3kX7P
+         UqE3GxQooGMrQKiLClg2Mj2XCOIScWbfha8Qyko0lhHAmSuHsPutsM9sRib/aAQLz1wm
+         cjhA==
+X-Gm-Message-State: APuU4Z/PuwvtohAi9okEWkri/iVMtWFnC0yiBQrPt0ZgR/WkdiKiRkS1
+	L7BI6u+jaRXP0XtVNFT2vRiWuxNGa4uRF3rVnVghZWvcHdC56Y3Hxoju
+X-Gm-Gg: AYBFou2nCco1xXa1ZtyFH4rOcjV5Chiih/KZ4mJ6QctHM6lL0uqgoIHxFOG2Zs1SFb5
+	nqp9+mK+TMeUWpMYxdPeAwzrlu8n+OyAOWl9ONiLREh+TaN6DaI44oFEoesH3Ro8fJAru3yg/Mq
+	6A9T++YD8dv4Y15WYaOxla4+1y55TOtBI3vUFh0L07eqO9H/Nv4YNO+K/kQCumT/X1Y1iOJgKo2
+	mRq0bm77FXcAEWI8wg82Pp3hYbL/iEcG7w+EfLZw0ySC6amZyl/58rs2OYVqlRUhAzH4+JbIZUL
+	i8QbcPOAb1CKbemkipkYLivaHgFS/Oi5kEHiw3XzeqdRZ5HEZpTi3jzbzWBk+GdAIJo31/6S9Uv
+	/SLRQNJTDj7JqC/wdOi7JPoLGJ4uK+bwZ1+VcA+TsRfO7LajMlAHh/6AdQjBej3CcZALTDrcU4q
+	mQHHj/pz3hNdxTe1AwU6JyaO0WbUCpumKJ2emOnW1VLU6iDs2t1XmTmydvudWo+vNMmKKGFO1D+
+	U9unYCzNsRn/LEIX4qK1NRwalj/X6IJ+Ql1DfndXS6ScLanIIbSJuKbjpsGk2+x0vLGEb6VUIWn
+	ZodIkciXiqJcEbiw0R5e7lufNao=
+X-Received: by 2002:a05:690c:113:b0:8b1:e7c:cdcb with SMTP id 00721157ae682-8b3a7fe6a1amr5656197b3.23.1794348418497;
+        Tue, 10 Nov 2026 14:06:58 -0800 (PST)
+Received: from localhost ([2a03:2880:30ff:45::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b39324c076sm30025117b3.5.2026.11.10.14.06.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 14:06:55 -0800 (PST)
+        Tue, 10 Nov 2026 14:06:57 -0800 (PST)
 From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Tue, 10 Nov 2026 14:06:38 -0800
-Subject: [PATCH net-next v2 5/6] eth: mpnic: IPv4 and IPv6 in IPv6 tunnel
- segmentation
+Date: Tue, 10 Nov 2026 14:06:39 -0800
+Subject: [PATCH net-next v2 6/6] eth: mpnic: add GSO_PARTIAL for other
+ tunnels
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,7 +93,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-mpnic-lso-v2-5-ccd37b051d08@gmail.com>
+Message-Id: <20261110-mpnic-lso-v2-6-ccd37b051d08@gmail.com>
 References: <20261110-mpnic-lso-v2-0-ccd37b051d08@gmail.com>
 In-Reply-To: <20261110-mpnic-lso-v2-0-ccd37b051d08@gmail.com>
 To: Alexander Duyck <alexanderduyck@fb.com>, 
@@ -106,156 +106,109 @@ To: Alexander Duyck <alexanderduyck@fb.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-The device can fully segment 4-in-6 and 6-in-6 packet types. Add
-mpnic_features_check_encap_gso() to check the skb for some additional
-constraints, such as ip6 non-atomic frag ext header.
+Tunnels that are not natively supported for segmentation can be
+supported with GSO_PARTIAL. For GSO_PARTIAL, the driver uses L3 type
+OTHER, which tells the device to suppress any updates to the l3 headers
+of the packet. As a consequence of this, MANGLEID is required when the
+inner l3 is ipv4, and for tunnels that have an outer l3 of ipv4, we need
+to check if DF is set in mpnic_features_check_encap_gso(), because the
+device will not edit the IDs of the wire packets.
 
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 v2:
-- derive inner L3 header length from csum_start rather than
-  inner_transport_header, which can be stale for DODGY skbs
-- check the outer header is IPv6 in mpnic_ipxip6_gso_ok(), since
-  SKB_GSO_IPXIP6 can be set by a nested tunnel under an IPv4 outer
-- move hw_enc_features setup to the Tx checksum offload patch
+- derive the L3 header length from csum_start rather than
+  inner_transport_header, matching mpnic_features_check() and
+  mpnic_tx_lso()
 ---
- drivers/net/ethernet/meta/mpnic/mpnic_csr.h    |  3 ++
- drivers/net/ethernet/meta/mpnic/mpnic_netdev.c |  1 +
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.c   | 53 ++++++++++++++++++++++++--
- 3 files changed, 53 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/meta/mpnic/mpnic_csr.h    |  1 +
+ drivers/net/ethernet/meta/mpnic/mpnic_netdev.c |  9 +++++++++
+ drivers/net/ethernet/meta/mpnic/mpnic_txrx.c   | 21 ++++++++++++++++++++-
+ 3 files changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_csr.h b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
-index 2cd627d62bf5..63282916eb13 100644
+index 63282916eb13..03304e22d6ce 100644
 --- a/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
 +++ b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
-@@ -14,6 +14,7 @@
- 
- /* Transmit Work Descriptor Format */
- #define MPNIC_TWD_L2_HLEN		DESC_GENMASK(5, 0)
-+#define MPNIC_TWD_L3_OHLEN		DESC_GENMASK(15, 8)
- #define MPNIC_TWD_L3_IHLEN		DESC_GENMASK(23, 16)
- #define MPNIC_TWD_CSUM_OFFSET		DESC_GENMASK(27, 24)
- #define MPNIC_TWD_L4_HLEN		DESC_GENMASK(31, 28)
-@@ -30,6 +31,8 @@ enum {
+@@ -29,6 +29,7 @@ enum {
+ #define MPNIC_TWD_FLAG_REQ_COMPLETION	DESC_BIT(37)
+ #define MPNIC_TWD_L3_TYPE		DESC_GENMASK(42, 40)
  enum {
++	MPNIC_TWD_L3_TYPE_OTHER	= 0,
  	MPNIC_TWD_L3_TYPE_IPV4	= 1,
  	MPNIC_TWD_L3_TYPE_IPV6	= 2,
-+	MPNIC_TWD_L3_TYPE_V6V6	= 3,
-+	MPNIC_TWD_L3_TYPE_V6V4	= 4,
- };
- 
- #define MPNIC_TWD_FLAG_DEST_MAC		DESC_BIT(43)
+ 	MPNIC_TWD_L3_TYPE_V6V6	= 3,
 diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
-index bf3b459ba5be..032a5ee92a08 100644
+index 032a5ee92a08..198aad631c65 100644
 --- a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
 +++ b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
-@@ -323,6 +323,7 @@ struct net_device *mpnic_netdev_alloc(struct mpnic_dev *mpd)
+@@ -322,7 +322,15 @@ struct net_device *mpnic_netdev_alloc(struct mpnic_dev *mpd)
+ 	mpn->num_rx_queues = queues;
  	mpn->num_napi = queues;
  
++	netdev->gso_partial_features =
++		NETIF_F_GSO_GRE |
++		NETIF_F_GSO_GRE_CSUM |
++		NETIF_F_GSO_IPXIP4 |
++		NETIF_F_GSO_UDP_TUNNEL |
++		NETIF_F_GSO_UDP_TUNNEL_CSUM;
++
  	netdev->features |=
-+		NETIF_F_GSO_IPXIP6 |
++		netdev->gso_partial_features |
+ 		NETIF_F_GSO_IPXIP6 |
  		NETIF_F_SG |
  		NETIF_F_HW_CSUM |
- 		NETIF_F_RXCSUM |
+@@ -330,6 +338,7 @@ struct net_device *mpnic_netdev_alloc(struct mpnic_dev *mpd)
+ 		NETIF_F_TSO |
+ 		NETIF_F_TSO_ECN |
+ 		NETIF_F_TSO6 |
++		NETIF_F_GSO_PARTIAL |
+ 		NETIF_F_GSO_UDP_L4;
+ 
+ 	netdev->hw_features |= netdev->features;
 diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-index 2a0560b7dd19..839feb4716b6 100644
+index 839feb4716b6..af5e490c112d 100644
 --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
 +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-@@ -22,6 +22,7 @@ struct mpnic_xmit_cb {
- 
- struct mpnic_tx_hdrs {
- 	unsigned int i3len;
-+	unsigned int o3len;
- 	unsigned int l3_type;
- 	unsigned int l4_type;
- };
-@@ -218,6 +219,9 @@ mpnic_tx_map(struct mpnic_ring *ring, struct sk_buff *skb, __le64 *meta)
- 
- static void mpnic_tx_fill_hdrs(struct sk_buff *skb, struct mpnic_tx_hdrs *hdrs)
+@@ -236,6 +236,9 @@ static void mpnic_tx_fill_hdrs(struct sk_buff *skb, struct mpnic_tx_hdrs *hdrs)
+ 		hdrs->i3len = skb_transport_offset(skb) - net_off;
+ 		hdrs->l3_type = ip_hdr(skb)->version == 4 ?
+ 				MPNIC_TWD_L3_TYPE_IPV4 : MPNIC_TWD_L3_TYPE_IPV6;
++	} else if (skb_shinfo(skb)->gso_type & SKB_GSO_PARTIAL) {
++		hdrs->i3len = skb_checksum_start_offset(skb) - net_off;
++		hdrs->l3_type = MPNIC_TWD_L3_TYPE_OTHER;
+ 	} else {
+ 		inner_off = skb_inner_network_offset(skb);
+ 		hdrs->o3len = inner_off - net_off;
+@@ -397,11 +400,27 @@ static bool mpnic_ipxip6_gso_ok(struct sk_buff *skb)
+ static netdev_features_t
+ mpnic_features_check_encap_gso(struct sk_buff *skb, netdev_features_t features)
  {
-+	unsigned int net_off = skb_network_offset(skb);
-+	unsigned int inner_off;
++	struct iphdr *iph;
 +
- 	if (!skb_is_gso(skb)) {
- 		hdrs->i3len = skb_checksum_start(skb) - skb_network_header(skb);
- 		return;
-@@ -228,9 +232,17 @@ static void mpnic_tx_fill_hdrs(struct sk_buff *skb, struct mpnic_tx_hdrs *hdrs)
- 	else
- 		hdrs->l4_type = MPNIC_TWD_L4_TYPE_UDP;
+ 	if (skb_shinfo(skb)->gso_type & SKB_GSO_IPXIP6 &&
+ 	    mpnic_ipxip6_gso_ok(skb))
+ 		return features;
  
--	hdrs->i3len = skb_transport_offset(skb) - skb_network_offset(skb);
--	hdrs->l3_type = ip_hdr(skb)->version == 4 ?
--			MPNIC_TWD_L3_TYPE_IPV4 : MPNIC_TWD_L3_TYPE_IPV6;
-+	if (!skb->encapsulation) {
-+		hdrs->i3len = skb_transport_offset(skb) - net_off;
-+		hdrs->l3_type = ip_hdr(skb)->version == 4 ?
-+				MPNIC_TWD_L3_TYPE_IPV4 : MPNIC_TWD_L3_TYPE_IPV6;
-+	} else {
-+		inner_off = skb_inner_network_offset(skb);
-+		hdrs->o3len = inner_off - net_off;
-+		hdrs->i3len = skb_checksum_start_offset(skb) - inner_off;
-+		hdrs->l3_type = inner_ip_hdr(skb)->version == 4 ?
-+				MPNIC_TWD_L3_TYPE_V6V4 : MPNIC_TWD_L3_TYPE_V6V6;
-+	}
+-	return features & ~NETIF_F_GSO_IPXIP6;
++	features &= ~NETIF_F_GSO_IPXIP6;
++
++	iph = ip_hdr(skb);
++	if (iph->version == 4 && !(iph->frag_off & htons(IP_DF)))
++		return features & ~NETIF_F_GSO_MASK;
++
++	/* HW can segment inner udp4 with fixed IDs, but there is no UDP
++	 * analog for MANGLEID, so defer to SW GSO.
++	 */
++	if (inner_ip_hdr(skb)->version == 4)
++		features &= ~NETIF_F_GSO_UDP_L4;
++	if (!(features & NETIF_F_TSO_MANGLEID))
++		features &= ~NETIF_F_TSO;
++
++	return features;
  }
  
- static bool
-@@ -304,6 +316,7 @@ mpnic_tx_offloads(struct mpnic_ring *ring, struct sk_buff *skb, __le64 *meta)
- 	*meta |= cpu_to_le64(FIELD_PREP(MPNIC_TWD_L2_HLEN,
- 					skb_mac_header_len(skb) / 2) |
- 			     FIELD_PREP(MPNIC_TWD_L3_IHLEN, hdrs.i3len / 2) |
-+			     FIELD_PREP(MPNIC_TWD_L3_OHLEN, hdrs.o3len / 2) |
- 			     FIELD_PREP(MPNIC_TWD_L3_TYPE, hdrs.l3_type) |
- 			     FIELD_PREP(MPNIC_TWD_L4_TYPE, hdrs.l4_type));
- 
-@@ -362,6 +375,35 @@ netdev_tx_t mpnic_xmit_frame(struct sk_buff *skb, struct net_device *dev)
- 	return mpnic_xmit_frame_ring(skb, mpn->tx[skb_get_queue_mapping(skb)]);
- }
- 
-+static bool mpnic_ipxip6_gso_ok(struct sk_buff *skb)
-+{
-+	struct ipv6hdr *ip6h;
-+	__be16 frag_off;
-+	u8 nexthdr;
-+	int start;
-+
-+	ip6h = ipv6_hdr(skb);
-+	if (ip6h->version != 6)
-+		return false;
-+
-+	nexthdr = ip6h->nexthdr;
-+	start = skb_network_offset(skb) + sizeof(*ip6h);
-+	start = ipv6_skip_exthdr(skb, start, &nexthdr, &frag_off);
-+
-+	return !frag_off && start == skb_inner_network_offset(skb) &&
-+	       (nexthdr == IPPROTO_IPV6 || nexthdr == IPPROTO_IPIP);
-+}
-+
-+static netdev_features_t
-+mpnic_features_check_encap_gso(struct sk_buff *skb, netdev_features_t features)
-+{
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_IPXIP6 &&
-+	    mpnic_ipxip6_gso_ok(skb))
-+		return features;
-+
-+	return features & ~NETIF_F_GSO_IPXIP6;
-+}
-+
  netdev_features_t mpnic_features_check(struct sk_buff *skb,
- 				       struct net_device *dev,
- 				       netdev_features_t features)
-@@ -388,7 +430,10 @@ netdev_features_t mpnic_features_check(struct sk_buff *skb,
- 	     !FIELD_FIT(MPNIC_TWD_MSS, skb_shinfo(skb)->gso_size)))
- 		return features & ~NETIF_F_GSO_MASK;
- 
--	return features;
-+	if (!skb->encapsulation || !skb_is_gso(skb))
-+		return features;
-+
-+	return mpnic_features_check_encap_gso(skb, features);
- }
- 
- static void mpnic_clean_twq0(struct mpnic_napi_vector *nv, int napi_budget,
 
 -- 
 2.52.0
