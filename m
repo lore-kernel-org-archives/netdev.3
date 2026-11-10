@@ -1,98 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794307798;
-	b=C2E8vNHUAe1XN6Y4TQimqsBtUS+jknyBjPm5BN5JmVsz5kJCVTGCMkdGWBgGxS3T0ibZ
-	 XOWwChGzvLpyps2j22P/D4PqRZvyTpXHHPOcSKOCYs2zw6xT2xmwPp7BLuNPw4hAhj5U6
-	 2xjU+kfQDJubiMsQosNjorOjmrD49drPXGR6qyBub/ueO739wignrVFHUH8SrirAORGCG
-	 ccDoweuU8F2OY17No7FcQ2ShSJNRX4b5FUYjc0SEliPpqTpXNGK3JW5V3iyrkQbQGMF0r
-	 GdBpTO2RQWre8D8/5WKTHKAfQPfjBaVe/CTA0NgjngWlXSgGhX1E+8v79a02/p2XbCg==
+	t=1794307969;
+	b=IGyBpUlUuj4NTbhE+wkavpV3MHPUSVgPQltE+kHwm/2aUv7WsHcd11fNuvaDPVTJX7jR
+	 1z7YVqZw0DGGnwixtM7lgtMG81qDiYOxqIRvxQsbSXXz0BiTdIXJR5ZHg7eELeQHJNXvf
+	 P4eURhzA0EfR7ieLcdrQbGlJaJIDniD7QjjS7kLTSTfH+DkbqIZ3oiQwB3sZukLjy8L4P
+	 VUUDEKKnXehfFOJap8xugHXRBDukG5jMJ+KPIdPhUwSqMA/WtVsz0O7wIlLsqg2J/9ZyT
+	 xirL5vBWQNkzQOIdurQBmtevvjOl7rkrCV0GjnaA0O+ln/gBAI6jEDpftNQ/jZYYyOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794307798;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=uBuo3746wle39j4tB4qABMZkgvKNVlkfWjVtPlqyf5s=;
-	b=dZmhQa95+Y4iTQw5EOVLh73ilUCbv6WEbHQtiZrodFU+TU+OPZ9s3aPRfegUswxSW6eT
-	 77VN23B/UgqiswBt5IqGpSSrFbsv0lNN2saRjd7URGx/Ha00Px9k+Kwyjs3F/50nV2dPb
-	 VRJKozxbVMzfwlmkhRsTcQ1SIlgVJULWiUqIU+ChmAXWJUEgBRDhfWcqZPgiBq5EFdaPn
-	 1tAccTszZZZxPGtcjWGIpAL6wiKhi0NpyS+rcXJm24slcUQlA+LVnpdPkdjDH6aNhltRl
-	 PfEpkt/2esvnLdsx9vVaLEH0D70tlv6ehICKdsNkdslh24tYPaK6wsb1xcxFz5tHtRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794307969;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=of3Fz37lAI8kzghi7Thnsh/uOt27wyh82xH8Ye7dxpo=;
+	b=L+KWeESMdcsO4LhkFlevsdBAdWmRtPOTSQXMt2dKp+b71sZ4ZdW0r5f/Cpq32+19vutU
+	 XbrtVDD491MPDU43Quqs6o0FlAXxXRadzhyB6yKyV+XYUgar6RZvtwhg57VOiw5n9m1bv
+	 EazxHAWNrmZDbHYz0WP3I2ESav17w23aZhj2szT6l+XJy1MJksy3faDZP3Kpg8WjYwvrT
+	 U4pOWfMAefFSu/bVzmFz5jVNz4I9HySXRVcKFcGtdqd4dw+mUiJpaTQZPq2SXm+vKu1YF
+	 xWf2Xwsoq0D0bKx4mBhh9GyudB421tQ7rHuoqElDf1PkUN8r5FckcEPhw4S6LWWk/Wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="v+/BH2b5";
-	arc=none smtp.remote-ip=209.85.214.180
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=eIDUeLI4;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D393460A260C
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:49:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D393460A260C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDF8606A32A
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 10:52:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FDF8606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v+/BH2b5
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e96502e447so15400395ad.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:49:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794307797; x=1794912597; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uBuo3746wle39j4tB4qABMZkgvKNVlkfWjVtPlqyf5s=;
-        b=v+/BH2b54+pvoF1P6F3VrMhIi+jzBpaWE+ckSGRv/1lFtP55O+WAOTzxihP9ulZEoj
-         fjjz2tCnTDwNQQSutY7eXih6apzgiyLzikNZgLinD2ov2khIPu7bP0h2Wccc/TF5N0vL
-         beWZ132nnimNsHWdu+yTfyeir7JUZHRzSwYG4V1XirlW0YV7PA2+6FXfKM5XM+W0PSBM
-         /ynVx2IpOJFZ6nTWoVcYbpjw6hDkPUeSh/XN2uPFz1H3x8dPrua9SA54P2W60DlKltUC
-         VbQuRII7/YEMZbvGdeHwJLN6RCGHbYhOCYOHXBJJx65OQK+Oe7YefEmGQJM4cQk5gtoF
-         1U2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794307797; x=1794912597;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uBuo3746wle39j4tB4qABMZkgvKNVlkfWjVtPlqyf5s=;
-        b=bSR81QcWV20kwuivPlCcp692h7E09htVyb061ey/8vBQxcAWCfgdZLIgb0wKNvLjaC
-         OES1xwseE7RPRGmYiLrOsIbuq18lNDq0HC1EC0/GuEKs/s3Wvtkb2zOWEZDqCuOTQlXc
-         7hh9B+7rHNUt4XjxciL0dFeKXuSi6WhVhDmKOts0DJQQzKFlmkM0fX8x2L7g+3XeNpP5
-         zLJjrTbyvnEibfhdm1lCqeH2Gi9uypfpWRLtfSRWrGThRljydj/5WoOQySsffZR6qOEA
-         OIa/DFUsZc/UqiGSYK+BTFjHukfdVM3HNtdvERXEWlKvNutaPll7SRajpGVBNXgurCaM
-         RJew==
-X-Gm-Message-State: APuU4Z/Yeo0bpvaicpORi75+3SrPXZbuUe/0I2jPiyhnsZdwk8/GBx8+
-	l+Y3Pf+Pvkmxv9hGIY9E8raYWDErMLR1iREvuJEu1DSyeMWqzE4vGIKK05uTq7wU
-X-Gm-Gg: AYBFou3hU7/rwE1BBnKrYuFz+dk6KFRqP6vkj3HSRcPKJOdI4o+3tI0rdfEEgGmgp2v
-	+/7jR1vj97bLqFiqXdozyMhA+XGGv0w0zQ9c8OoqdrcHdQm4P9yeHM9dkypt4xWbTbxWz06nrJQ
-	G/xoozWPJtApPxhVqlYSx+KZVB7gN9tYsCC+BM9u0fS3G32KwNtFZ8GcYDSWXvDSv054s8Uk+6a
-	qvsigyusi9C75GysA6xfFqT6Z2RTa3TLlBfWEf5qvXFx5Z0kV502/I8thnQgMKQCYaqoxr/+prf
-	6fa+98l9ACd8quRa1AMM4Z+bpipWZXe/B1JOiihsmkCu8AJWMPutAoqczLbpJ0UeWQTJskro34Q
-	FOz3Go3KUFIqD0n+LuHuBfI+KxtkNB6CsRbxk/mZmUGH5HBLLeSLStFy/A9j9VHnRaC5CHrH3oj
-	C1ZtDjRKI0V1SSraHMiEUv1bVE6wDXZNlY1yLHnljwv0ppxkEhe6AorJcS1Y6GdLzGBUYCDHlZu
-	+qRr6MgybsVzPZ4UHUG8q3X6VHP4IJcYXHWqV6Ihl21BubJCvzLTAS1DghNc5HQgVml6pYtqbuz
-	vFYSCwtHgp9qdgoc3aIEIEeqpdl7uhS0C8ewxN6FaTSoHz2qOi1FLdzH
-X-Received: by 2002:a17:903:41cc:b0:2e9:776f:66b4 with SMTP id d9443c01a7336-2edb92f0722mr20908875ad.44.1794307797151;
-        Tue, 10 Nov 2026 02:49:57 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:6214:1250::1d3:d5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d906e4sm7337815ad.40.2026.11.10.02.49.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 02:49:56 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 3/3] net: dsa: motorcomm: Delete the ACL rule of the port being unbound
-Date: Tue, 10 Nov 2026 18:48:55 +0800
-Message-ID: <20261110104930.223598-4-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261110104930.223598-1-mmyangfl@gmail.com>
-References: <20261110104930.223598-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=eIDUeLI4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1794307975; x=1825843975;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UAkpE9AtLFqO/KB1GFIfc4JD6IZEN52pnU5iXG6gWpg=;
+  b=eIDUeLI4VRrfGhc5pRSNQs9+7SVxS7n5cYOixN/xA7Z8qjEyTQ2vMyge
+   WbNY9WAOKnJhRb56OfHSVU3z1+ICmCvrOOKOpTu2iKii3AZaZumDbVap+
+   jxr+xmGli0SwE4yLpOkV26n8Y7IJZmaf6+LW1W7L3CiHpEnbezjwQHXnc
+   8IqygKhDli7M9Vhl1m8JpxS2TCqfgi0CWbwd4NSMpCHGuxIrLqZCrPKZS
+   gOsHVPNEHQdd5YNV/p9zraDycEWWxIPyIgbJJHzaKuh7CIOwFfyhDTzKv
+   ER8rsTLYEcEOpLDSM76grvlc8gnH7TDpQqdW8MQunel3AOI2djqx2Iq+f
+   g==;
+X-CSE-ConnectionGUID: DrWI6Bi1QzGZSelXmfO6og==
+X-CSE-MsgGUID: 1bZ0z09CShuqj/lG0+LhZQ==
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="66528672"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 03:52:49 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Tue, 10 Nov 2026 03:52:41 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Tue, 10 Nov 2026 03:52:40 -0700
+Date: Tue, 10 Nov 2026 11:52:39 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: <memoriaru@foxmail.com>
+CC: <netdev@vger.kernel.org>, <Steen.Hegelund@microchip.com>,
+	<UNGLinuxDriver@microchip.com>
+Subject: Re: [PATCH net v3 2/2] net: lan969x: fix RX ring stall on frames
+ from inactive ports
+Message-ID: <20261110105239.5olhrlwa3mck74f4@DEN-DL-M70577>
+References: <20261109164100.8947-1-memoriaru@foxmail.com>
+ <tencent_95DA7493D2DB7AFE16C0B22A431E45295006@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,74 +80,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <tencent_95DA7493D2DB7AFE16C0B22A431E45295006@qq.com>
 
-A flower filter on a block shared across ports is offloaded as one
-hardware rule per port, all carrying the same classifier cookie.
-Deletion looked a rule up by cookie alone and could take another
-port's copy: with skip_sw, a filter silently stopped being enforced
-on a still-bound port, while the detached port kept enforcing it.
+Hi,
 
-Delete the rule matching the port being unbound instead.
+> From: Zhang Hewei <memoriaru@foxmail.com>
+> 
+> When a received frame's source port does not map to an active netdev,
+> lan969x_fdma_rx_get_frame() recycles the page via the page pool and
+> returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
+> loop without advancing the FDMA software cursor.
+> 
+> As on sparx5, the DCB still carries its hardware DONE bit, so every
+> following NAPI poll picks the same DCB, hits the same inactive-port
+> branch and breaks again: RX traffic stalls on all ports until the
+> module is reloaded.
+> 
+> A NULL return currently covers two different situations: a failed
+> build_skb() (allocation failure - breaking out and retrying the same
+> DCB later is correct) and a bogus frame (which must be dropped and
+> skipped). Split the two: recycle the page, log a ratelimited error and
+> return ERR_PTR(-EINVAL) for a bogus frame, and advance past such a DB
+> in the poll loop. The WARN_ON() is also dropped as the backtrace slows
+> RX to a crawl on every bad frame.
+> 
+> Found by code inspection; the stall needs the hardware to emit a frame
+> with an invalid source port, which cannot be triggered without hardware.
+> 
+> Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+> Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
+> ---
+>  .../microchip/sparx5/lan969x/lan969x_fdma.c     | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> index 053d125..5f5adb7 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> @@ -113,8 +113,12 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
+>  	sparx5_ifh_parse(sparx5, page_address(page), &fi);
+>  	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
+>  					       NULL;
+> -	if (WARN_ON(!port))
+> -		goto free_page;
+> +	if (!port) {
+> +		dev_err_ratelimited(sparx5->dev, "Data on inactive port %d\n",
+> +				    fi.src_port);
+> +		page_pool_recycle_direct(rx->page_pool, page);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+>  
+>  	skb = build_skb(page_address(page), fdma->db_size);
+>  	if (unlikely(!skb))
+> @@ -258,6 +262,15 @@ int lan969x_fdma_napi_poll(struct napi_struct *napi, int weight)
+>  			break;
+>  
+>  		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
+> +		if (IS_ERR(skb)) {
+> +			fdma_db_advance(fdma);
+> +			counter++;
+> +			if (fdma_dcb_is_reusable(fdma))
+> +				continue;
+> +			fdma_db_reset(fdma);
+> +			fdma_dcb_advance(fdma);
+> +			continue;
+> +		}
 
-Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/tc.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+It is still a copy of the advance at the end of the loop (as pointed out in v2).
+Drop it and do:
 
-diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-index 429345ad1eda..e3f057ed580f 100644
---- a/drivers/net/dsa/motorcomm/tc.c
-+++ b/drivers/net/dsa/motorcomm/tc.c
-@@ -1226,7 +1226,7 @@ static u16 yt921x_acl_activated_ports(const struct yt921x_priv *priv)
- 
- static unsigned int
- yt921x_acl_find(const struct yt921x_priv *priv, enum tc_setup_type type,
--		unsigned long tag)
-+		unsigned long tag, u16 ports_mask)
- {
- 	for (unsigned int blkid = 0; blkid < YT921X_ACL_BLK_NUM; blkid++) {
- 		const struct yt921x_acl_blk *aclblk = priv->acl_blks[blkid];
-@@ -1236,7 +1236,10 @@ yt921x_acl_find(const struct yt921x_priv *priv, enum tc_setup_type type,
- 
- 		for (unsigned int i = 0; i < YT921X_ACL_ENT_PER_BLK; i++)
- 			if (aclblk->rules[i] && aclblk->rules[i]->tag == tag &&
--			    aclblk->rules[i]->type == type)
-+			    aclblk->rules[i]->type == type &&
-+			    FIELD_GET(YT921X_ACL_KEYb_SPORTS_M,
-+				      aclblk->rules[i]->entries[0].key[1]) ==
-+			    ports_mask)
- 				return YT921X_ACL_ENT_PER_BLK * blkid + i;
- 	}
- 
-@@ -1364,7 +1367,7 @@ yt921x_acl_commit(struct yt921x_priv *priv, unsigned int entid, u8 entsmask)
- 
- static int
- yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
--	       unsigned long tag)
-+	       unsigned long tag, u16 ports_mask)
- {
- 	struct yt921x_acl_rule *aclrule;
- 	struct yt921x_acl_blk *aclblk;
-@@ -1378,7 +1381,7 @@ yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
- 	int res;
- 	int ret;
- 
--	entid = yt921x_acl_find(priv, type, tag);
-+	entid = yt921x_acl_find(priv, type, tag, ports_mask);
- 	if (entid == UINT_MAX)
- 		return -ENOENT;
- 
-@@ -1553,7 +1556,7 @@ yt921x_dsa_cls_flower_del(struct dsa_switch *ds, int port,
- 	int res;
- 
- 	mutex_lock(&priv->reg_lock);
--	res = yt921x_acl_del(priv, TC_SETUP_CLSFLOWER, cls->cookie);
-+	res = yt921x_acl_del(priv, TC_SETUP_CLSFLOWER, cls->cookie, BIT(port));
- 	mutex_unlock(&priv->reg_lock);
- 
- 	return res;
--- 
-2.53.0
+		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
+		if (skb)
+			napi_gro_receive(&rx->napi, skb);
+
+and let the loop advance as it does for any other frame. Then NULL always means
+"frame dropped, page recycled", which covers both the bad port and the
+build_skb() failure, and the ERR_PTR() goes away. I tested exactly this on
+lan969x: RX keeps working, and only the bad frames are dropped. With this, the
+page_pool_recycle_direct() and ERR_PTR changes further up becomes obsolete.
+
+>  		if (!skb)
+>  			break;
+>  
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
+
+Also, please wait at least 24 hours before resposting, and populate To and CC
+properly.
+
+/Daniel
+
+pw-bot: cr
 
