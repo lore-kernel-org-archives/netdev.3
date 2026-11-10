@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346813;
-	b=uk17UJn/24JNnDpVUjkNE9aVVGmBFzVnCEUzS08hE4+gRRgMFf7pAek5reI/mwgsI1A8
-	 h4XGP6QY3fkx2PWxSdBuLenkg0OWnFmyt8DGyMh84b84lnYF2Aer7rOYaEzdy60cQj2gt
-	 1n5onF8kT5zaSliP8gr3eKU5O4uP9JB4lZCZJgPUsE36Od7WAChzi64hoOo/XnAPSa+FX
-	 tzqD/WUBFiKMBamZyxzWvG/piTJOGcWVm8lR5a4//1vmpWaRKz6KcxN8mRtP6BwTpbpp5
-	 Q0EMG/tT2RqNU55WVLPc3g94O5/dMPn0z6UTM6yKH83qW3Ptqi921XMov5EExa/ikLg==
+	t=1794346807;
+	b=KomiUOI2Of/FlcCTivuzMmInBMwjFYkWbGRNqBR2seuU5teVssrqaezJYmLzDc/SdWkV
+	 stTsMOtkyrsjzg3cihyAxURn/yEelHiz7mRHZqNe1Lsh1wR2DfLtUppaVdoyOl0WXC5yD
+	 f3OwV9Z4fimbwJF/h0SDT1F+5y1ZUKkCv2QWCeloJ/yTsC3LhuaqshhI5u7Z8tXYOFNie
+	 NVts1oqI0KgdHDllk5fsYhaqsBAiRbeE257DazKyweACVVKbrzOHwVHmf/yVGy17ipiHQ
+	 BHZhlnpz2fLM1vVpXE2MbgtPugaHYbxKhpcUBE9s5N9EFnU85qwB+Eiv03i+v36jyAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346813;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346807;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=PDM5AgYQk1VEu2QNvRVlY3EllPW/RzaW6vtCCatFRG8=;
-	b=Ie8gAKiaDgA6X1fyxcd7SwAMZN94wtF5MgkyO57Ak72sckZrB+pxIMuDn9wdr1YkgnoY
-	 v5yDzZwnH2pVV4JaD+3vJaTxthDJQx8hoa6tYxRgpUveO5q/RZuo78E9JiSiyk1dIhyU3
-	 JXDjZB3W00Nc5hG88akDN6mVSG5JUfWpsZ32P+0kF5EqWL7f7O3ZwYPCLREsUwdJ/CI+f
-	 /KTnoCi4NcHErIQM+6J/Sfz0JgX9sJ4tF6gf/LXGe4POT5N6pnIH98C7aiW5jMiTThbfG
-	 4DEHlM867i3FlJ9MyG+pgKM5Wid/xzlQc19Oa5Cj4kRI1ZQmGcBMi9i9XTochwki8Ag==
+	bh=lSL4MFB6bw4CVme3VOrLqejrCKOFv1AQMa1yqiN4Hvk=;
+	b=hJ51dHeG5xKvhDb46gooU6QBajyej/KyevJwJi76GqmWDxP0VFRBIdssFrVhu44s1WQf
+	 51wiZy3bwZi75vnNyvBMBsw+J9MDcByim7zWJfZbUIXqXzZNYPKllXqEXm9MyUhLiKeE8
+	 lOxZXGTq22KFizgE5Y+X1rznUfHwT6x5id2hPVya1wkrTjemPYj1Xp9uLZ8EOa54YQf3/
+	 bMvfQZY6tUEJRbya1jEdq7Mywk3GQduegwBcnZQWy+l/s7evn665mHkeK6snB6fX4KziM
+	 02373naMwF/QHa0UYh8+a24qE1KxyADtBBHMKkoDonMrDL/kZY2sFZQBciYFcwpj92g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=No6qXKuG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKMkm9Tw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7342360A2608;
-	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67C8606A32E;
+	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=No6qXKuG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A670E1F008A4;
-	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKMkm9Tw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE11F0089F;
+	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794346812;
-	bh=PDM5AgYQk1VEu2QNvRVlY3EllPW/RzaW6vtCCatFRG8=;
+	s=k20260515; t=1794346806;
+	bh=lSL4MFB6bw4CVme3VOrLqejrCKOFv1AQMa1yqiN4Hvk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=No6qXKuGIgxW/umR4tQjz/YQzKEhccJssBOP1mPW9FDBPuWcodzTGiZGK8K8yY64/
-	 SWRm4u/otm2/UpeWUgPXtG1N85+bFCXbQk8dIepaEDLBBWanmM28UaPhH7/Vk4QCvv
-	 8xXHMFG0OlX4RSdPbdrhrgKn5WjfddxCLy7rbeycNcy+2EL2B+b7kp5pUmhwFEghEE
-	 +q7kx03FbZC1ii5Cp235LifrJBj3hyKV1m017rOEmDCddCDmkM7Nhay1oqTyrVZ/KV
-	 K91hxcjyuEK92cNXRFccqaHIbiPmUfpePxZBvrFz2AxVXp8GUMpmg74YcLPwlaMDjI
-	 iDaSWQ6U0zFzQ==
+	b=kKMkm9Tw/G93fphFFXpmPP0i8JIqETNFzdnddLwNF0clo0ifW9Rta/RvIb1bcNJpX
+	 ZBvI69esXPK+Ttm39S7RPE4fgIaiLCQxaRMUAooylKlPz2chQamv4fodb+ESWqLQQ0
+	 x+Zzglck7XBNtyKB7bmDLNB/vm26NX09vXuT0pTrFxBuNLrsfuHqdPfDRkTd2/ZXdT
+	 0OZZDRnsu5ZcOA6lulyM7SWyE3JYPr3MGx1U67gtNXzdZEaxR+E6hABmHoB4eQpvjH
+	 ShJVnpdQ338hV+ysM+9FEYSrAvXR/FE0lJghDrYzWfbOpvuQ/SxSZ7ikTzJIAGbt88
+	 MqxAdbTlGIHfg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B25139E8A40;
-	Tue, 10 Nov 2026 21:40:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2118439E8A40;
+	Tue, 10 Nov 2026 21:40:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] sfc: avoid truncating MCDI hwmon attribute names
+Subject: Re: [PATCH net] net/mlx5: macsec: Don't remove fs_id when adding a
+ rule
+ fails
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179434681117.71955.13887158887547075759.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 21:40:11 +0000
-References: <20261105020115.278-1-xujiahao@cmss.chinamobile.com>
-In-Reply-To: <20261105020115.278-1-xujiahao@cmss.chinamobile.com>
-To: xujiahao <xujiahao@cmss.chinamobile.com>
-Cc: ecree.xilinx@gmail.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-net-drivers@amd.com, linux-kernel@vger.kernel.org, lkp@intel.com
+ <179434680493.71955.13043518489882065579.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 21:40:04 +0000
+References: <20261105003419.4016283-1-lcy8047@gmail.com>
+In-Reply-To: <20261105003419.4016283-1-lcy8047@gmail.com>
+To: Changyul Lee <lcy8047@gmail.com>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, sd@queasysnail.net, horms@kernel.org,
+ joasantonio108@gmail.com, phaddad@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  5 Nov 2026 10:01:15 +0800 you wrote:
-> The name of each MCDI hwmon attribute is built in a 12-byte buffer as
-> prefix + 1-based per-type index + suffix, with prefixes up to "power"
-> and suffixes up to "_input".  With W=1 gcc reports:
+On Wed,  4 Nov 2026 19:34:19 -0500 you wrote:
+> macsec_fs_tx_add_rule() and macsec_fs_rx_add_rule() clean up a failed
+> rule with macsec_fs_{tx,rx}_del_rule(), which also calls
+> macsec_fs_id_del(). The fs_id is never in the xarray at that point:
+> macsec_fs_id_add() is the last step of adding a rule and removes its
+> own entry when it fails.
 > 
->   warning: 'snprintf' output may be truncated before the last format
->   character [-Wformat-truncation=]
+> macsec_fs_id_del() then dereferences NULL, through macsec_device for
+> the first SA of a MACsec netdev and through fs_id_found otherwise. On
+> RX, the SAs of one SC share an fs_id, so a failure while adding another
+> SA drops the reference that an existing SA holds.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] sfc: avoid truncating MCDI hwmon attribute names
-    https://git.kernel.org/netdev/net-next/c/97ced2c090bf
+  - [net] net/mlx5: macsec: Don't remove fs_id when adding a rule fails
+    https://git.kernel.org/netdev/net/c/5175da73dd12
 
 You are awesome, thank you!
 -- 
