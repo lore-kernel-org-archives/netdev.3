@@ -1,101 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794276634;
-	b=md9nUSPCcdeqZWFeLPnpZWSngUso4Mfh36rMGpOomOgUbigXiQh/TyttVTUmT7H4Oan9
-	 LBiXj+msou9e6dAHd4UaE8hllvxqEnfcDfXlDQuKDyrpLPYrZfH9J4gug5bQWx/nRWdAP
-	 TFu3HL0U7LoFCb/cbFqFwHbEUJ9DeOtPUGkUi4KiepOOkPORuvyrEKFT6jn6fAY0JoD7Y
-	 aabPKpnlrZh1aG1Rmh3qqZawv/jAJnpGgVm2eVBsEXJiLNatj189+//3ry4rbMsNNBT/p
-	 0Im6ErDPmDekbF9/v/l6kuIR2tcusGkbr/7ezy0p2CpZWqzs3HG++6YtxN6Wi2QI+9w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794276634;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.47
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794278036;
+	b=fAwR8sMzC6y67CXVxtPL8X0PSwr9bYsiDrQxrjdN/qPX8m/m3rukaqxOyDP0qlqqbEz5
+	 t3soeiMZdL19DW2CT+fu3MNikxCimatSe419ASfvDRtTCmPwQcE70qUSN687nbANmdtin
+	 pPycVAU0YSIciXpaxzovqTtPxv/25GSMW89dxbJzWtwt1DmZAIK4GT20wbr4WLjxEhRwR
+	 IMnmRkX4LDzQ81gZ/KSO16VQCcmOAdyORbQ7OyJNPCEW0yboOtBRUhYFv/QglLUjTxXjp
+	 hDOs5/EtAjl92LYSmHa/kv0tcodFXIFj3l+qqP2zWsueFL3G0AWw2gX3Ct8VEErjFMw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794278036;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=GU9EjYSQxV4eVGM8pi1wTcBqlYubWYJf24gfH5mqmRo=;
-	b=d6/ner6DtL5Z9eqvgEsT5ZqjasKpud9DViDn/TEE8/ul/HpubbejZNy48EHPm+F60ogJ
-	 D9O+JE2NEPEX6M01TGn/5FDL2YtMj0ZR4Ig1Sdv5EdCk+FvlZGmgRtGwdlwYEpGSIWgnU
-	 2QdK/zdupzCxEsmcw4GpB18Tht3SL1jZahQzC/v5p5jjtT/d3KsQ8tK44iz3+pokArm4L
-	 jOPrnpdWDFI4xdjCini9cJ6Y1id83krDUXjnulu9tGflP3KNad6qKUCoHVyoz0ywXnaMA
-	 5qdlBmYR1QFZfkJAvTnTa+l6Es1pxKPxvgIiwGj7p6Nl9MxYoi8VDjkUfAlkMX9boSg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=onDRaLguTUW2a83jMl1YZiAlaHNlpOxn5ahgZIssCS4=;
+	b=mvYzCuA8RE1+Pt6IcjJ5+kd5t6Yw8C2IXveYO44F4ohGUBBaaYahigqQ4hoaUJcQma5L
+	 ZfMwCGq8HS6olmgLbJoOFCnqTJU2jyw2wCHQq/EERhvKML6M4ovIdoR3uZeWmQYXwi77Z
+	 MCYgyG8pqbtgZA82ZFoWta6g9uIC3unsASxUnjtAIKGDuXefPpxEmT9NS7SMRRUEvyF9J
+	 yVs7XjwHQ6rT1aZIihut0vGjiNI4bIOjPS+/atZKrsmD/fdndibUd30roQEdk0IRW/jy3
+	 orkSUps7e4aO9U/w/oW9ZY1Wa7Upa3tYOBQQaPW/v5mm6O4Zv7OtPx9Yahv/xIXA+RA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jx6UBesi;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G1obDVAS;
+	arc=none smtp.remote-ip=209.85.217.47
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91946606A326
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:10:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91946606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928FA606A334
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 02:33:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 928FA606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jx6UBesi
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8b66d1a08ccso1439455b3a.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 18:10:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794276633; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AxXE5kNOYXa1fT+hjj/vA9u807Pqg3J5OQg/70YH5Auf6/LcNycdMwv9fve+NNiYe8
-         7GFm7FcWhWkU1dWGw7+KdCWHn5QcBEbvDcP66F5XCQDI7OP97vBSa9w/WSch6DWMgnoC
-         AIoQj3VJ2l4w6p0zS5EzxnR0b7UelqafwJfmt/ncK1tfgvnP0/wylbZXe8T53UEL9pFX
-         XZk1LQjv02wUwflAA98BLW0qcc585XVpqoNpIVoTTiNlfqze/Iu70n/IL7QniS0UaxcK
-         okrN2iuz6V+oKuc0gIfQD+7TsW6h61Jg411h6zmwNcyaDRFq4Ru8cTtOhOd2rAL9MPt0
-         ZOFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GU9EjYSQxV4eVGM8pi1wTcBqlYubWYJf24gfH5mqmRo=;
-        fh=RI2b6xavVCRL4fqM4NxVsrqvR3S0FDy+585T88BwhPk=;
-        b=gh7zUK1Zhk3xYF9NrCbtCNm7UMBBrCarRFsk8BxubCPtBmQTcL7E7JuYM3Bap1Jm5A
-         4JTMCHBDrL/f4mGshpnmSiFf5izgqFrsjimDTxVmYX6ccpytnCQUINrPFJvb7JySC3x9
-         lnzetG11sfSzPApe6jSy1sjxquHSsHZPe5LjUX2JNtjIdJ/7HZBCzbXsRH1HeGPnqDSS
-         qKR+j3oWVoaYdSiCkbG4Ad+zQyRlW3yi+NGvxwZgntrcDt3aSoM3Py72uHPZ108mQyTh
-         mA9CdmF7e9DXtOyD9t+TSPAm9HKk7YABslfqee/vkjOMZLr/soyLYpp+xPQlgdA0LcWS
-         2Y3A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G1obDVAS
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-7d2dbe5c4b0so525168137.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 18:33:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794276633; x=1794881433; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GU9EjYSQxV4eVGM8pi1wTcBqlYubWYJf24gfH5mqmRo=;
-        b=Jx6UBesibvKmFXUbiN1heQ0gwpowE3/vZ86/WkwBWZjvZ5aRIqEPr5NCXsRZN9FkGq
-         /zKHRJaBYarzlNszLkbDm7gBobre8/jK2rb9IaAb3Ip5Gusn+UHQFfXM7x8Mlia+QsZi
-         AftAcFbmRg7+SOxFGhXLSxbcBgwWQ+Z8tQsg3n1UjTo90zNKNkWLQAhTUA2mnu4CFDNh
-         a9z79bhvI7wmB3JBpmnURO9MvhIrCQ1jT6eiPCfDF1RlL+O2VSVeYn9iizYF2ynDoPYs
-         qR1R5FnAorCK2qjBBEuK7/gIaK8DOZJFOWVdHQGSlTYqOFPyALOtlxhNA9ZtnIEPbaDS
-         aoYg==
+        d=gmail.com; s=20260707; t=1794278035; x=1794882835; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=onDRaLguTUW2a83jMl1YZiAlaHNlpOxn5ahgZIssCS4=;
+        b=G1obDVASqefxB6poYdjSmxCFHjae9eYxJSNGGnlEYlbaEUEJivW7JDtmuGERQcgQmN
+         jLQt9g2DSx1yyia37PP/ykKwYVfjHoNMpAsBsWcx1xnqRLrrH9i6dHgRXVgwLRphQ3mg
+         Y6aMvkPKSa0PJn/FT/cPJaxDossiDDXv6D6d/28oQy6ndp/q9nQBiOQYer/iTR21B9JE
+         Xr+gk/exekmfyJoJTVs6SVqVjtObZYwFB8IzkdhjCRTYi9wYeI0qdVL1DDvdM8XQyPki
+         oglumqrNc6J2a2pRN8Z7kaLNm6XEJZwSAv7/NPRMsrQ1PX8GwtTNfs5q91PjawEY7Mxj
+         2T+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794276633; x=1794881433;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794278035; x=1794882835;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GU9EjYSQxV4eVGM8pi1wTcBqlYubWYJf24gfH5mqmRo=;
-        b=isCtEjIUS4SxW9kDfZhRqp1967Y53uw5x3Z7xUjIjzwb8lyP5AESqcHpdgB0PgwdHh
-         NOoqY7EHMjvII047NWPYbfqqC1hO5x30sAyY4dNmy9HBZwFDwjiK6I1MwRFY1JoS2G+3
-         /Sv98NhqWQ6j5CQU+MvO7C5noqhNTMdvOs0w0cW8xDxjP3ixS9v9IPFHG3fawIjqnc2O
-         5w5iFhM3remixVIquv4z7YUSUvdmVAGTJAqgs1ppyn/J9igk+5gO1C88vCOMl0TOx//e
-         aPSL239f7w2UwnaBbq9aVbjvgDf5fUCIKAhoYzN7psdBB0gLAwis9PQR9BzBD0AfqebR
-         XFlg==
-X-Forwarded-Encrypted: i=1; AL+hErGIY6g2SlLbDF/EhugZTQ5u1MTbnXKIUSbwwBRcswkDr71ebz2Y5oAEuScU0yLIHsT2UGrOKI0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z89PZeB7yVLifP9nbi0kPO3U139ggWj5oq+eveONFU71bwH1caR
-	0WJTmYerk2e+TuzZ996rgT1Iwk+Lw8mpbdvsA19w8vUxZB3cS5IBj+PaFqjAhi4mGpRyrNzyXQO
-	suuBj9UnhPekqbXekW2FSqsvRSN/fTiI=
-X-Gm-Gg: AYBFou0xHrYRjngJnYJ7IUt89s5uqt9/8sQX5qm6BmLlNMN/iFtgEVI+I/z9U7g+Ua/
-	VXlAzWK2DYzBpanLZhXuRRIZ9TG2+M8KbXMXQSRkj6aw/UJrO/ydUEcq3h1/NT2BDZg0UKa5doC
-	CtJy+a+XjZ76bRXFJPAhLKQed1gbcPQz4aSa0VQrptDnOU5J8qSu+HULyNb+fLFdZmFxtIdVLGo
-	1aXZfKgPlWG+dcqmFvT20dcrGg1XyLiulAEpv6CNSRSe3ZvGoSg1Q3uVl8Tv/xbL1PxQ97sZIsJ
-	TaNz1g/GASs2Jt/F2TT8V6zED0R9yGJgIT2zyiq/tEgOlSxG3v3U91YLzVhVTO7qgS8y7A0Lf9T
-	mqNRTTZVZ1+GYk/3ZEF6nKg37z/yHoh3N0JeIAPotj+QTRXouxPcmiLfV/2q+VODQVumaRUctSZ
-	DqJVJ03RxkrKGyxoe/VI7qX/dVJXNy7kyDdw==
-X-Received: by 2002:a05:6a00:391a:b0:8b4:b88a:c2d4 with SMTP id
- d2e1a72fcca58-8ba881e8931mr1491983b3a.59.1794276632703; Mon, 09 Nov 2026
- 18:10:32 -0800 (PST)
+        bh=onDRaLguTUW2a83jMl1YZiAlaHNlpOxn5ahgZIssCS4=;
+        b=cLtl0gJu10xcuFk1SJ1ACWuoV/49IKxDHc9jbNFQln5dovbNjTbDy5fiUp8My5BsN3
+         OTqPZDC9itHoCKdeYKdvZHguZqEfITZhDCuImLkZV+dLX00A4cjobOihhIfmEhof8MVm
+         PG7OF9CsFkt2Emkc5DJWslQpazMyuVNRfmsoyGFc3MiMs88yGCVDwKeUECg4Iq0wbmIn
+         nIPY/6ZJSmWbe2QbDVDdZRVw0BUM2gk91qN5/3XIWtccbK8mFV43WT9MYO+oBkJOxgIb
+         1Tj8wrWen+3TSPCHjjW2ADlOd0u9Q0h7UIfLuTynW52I1R8SYLbfEIJVMAC5MchjXtHX
+         CCxg==
+X-Forwarded-Encrypted: i=1; AL+hErGFUE9gHUjQGZmu/raAPNlGUoEXppz+RIqARfgG9edLsTAPsIRH2TKeU5oprTjX5a0A4xDMwZk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8G1h8Hi6I2LOGXB7Cwdys9VZVjkP4EUKWGjAzgQ94Dds/J/ytJ
+	kB8QUfjpQlLVTAPd2N7efUcpDp0VLMz//yZMcUkfUr5GeZXkwMlBBoMm
+X-Gm-Gg: AYBFou3K36OEytA44O9OzTSPmzTl6TtHaX4GHmscr1s8GqtbFnrcwV+ML/yBuY7TTO8
+	bUCQ1WHwIZoRZh8UgpKycuNmDYeFZeEj059p+iBBp9nuG2TcP77A8VMURk4260q9yFMVWDDuK0r
+	5ntJa0oPx/1p4Xo5Dc5l+OZpRy0jFqFs8p1DjGwWxCg7OLhxBdXZo5kIrT+woR/wPgZvGBFq4te
+	fcS/ODOdx5sK30WMhI79nRWLgt3CbBwFEmuFFtT8wwk8mPxYca0GrSxrMM76y4ENwqPnDG3MID9
+	DYnCzIofFWs4wNj9lRwNz0hEr3l5MxS3LAN3Zx8CvjsyT5MmatpXa1HFnIWazbiwRFzeT1jS3f1
+	cA496M6Kjj+HT5R8giIz3W4zwUIcjU+Qai6AwWKqkGbsUwHZQt0Y05700tusZDlFzrHKo+dpAnz
+	ba3v0y1XM74UsE5sgxDD4wV9JZQDhPCIhMBpyBLWkUqz3GY4rhyNmyWH2mxdqunPjVYx7Sv75ps
+	XmKErkFjUNk8u+381ijQPXkfkL4dMU9mXM9eL8eTNRKfABvPoKB1t8/fnlreij4Wgignk36GBgu
+	uyZ3zfN3wAERW1a8xWKPqQ7bEeL/I49kM+X+9NTkRXuRvu+bDWcukENQ8yPu0RvyI61E21n759n
+	Ypeg8TY6+8GbNzvnbiwvpsM8QAcM0MkGCj/S6vdGnB3Dakwwfq+kqIkoFWSh0z5Ra2xFPONs=
+X-Received: by 2002:a05:6102:2912:b0:7d2:7c63:5a0a with SMTP id ada2fe7eead31-7d301bcae2cmr373574137.23.1794278035436;
+        Mon, 09 Nov 2026 18:33:55 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d302359221sm877564137.6.2026.11.09.18.33.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 18:33:54 -0800 (PST)
+Date: Mon, 09 Nov 2026 21:33:54 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Xia Yan <yanxia@cmss.chinamobile.com>, 
+ netdev@vger.kernel.org
+Cc: dsahern@kernel.org, 
+ idosch@nvidia.com, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ willemdebruijn.kernel@gmail.com, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ yana06070@163.com, 
+ shuah@kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ willemb@google.com, 
+ tpluszz77@gmail.com
+Message-ID: <willemdebruijn.kernel.136b3b685931d@gmail.com>
+In-Reply-To: <20261109014400.9025-1-yanxia@cmss.chinamobile.com>
+References: <20261109014400.9025-1-yanxia@cmss.chinamobile.com>
+Subject: Re: [PATCH net v3 1/2] ipv6: fix cached route reuse for control
+ messages
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,108 +113,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
-In-Reply-To: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 9 Nov 2026 21:10:21 -0500
-X-Gm-Features: AclHuK_xDqAXw_TmBik1qZpjy57T3ZinrxmJok9KVaPZUDx9W2Oq2jkZuacmkfM
-Message-ID: <CADvbK_dNcVHxMQ4NhqZqVFCcCy0R_ufW=QbXXyVFdhV9B7O43A@mail.gmail.com>
-Subject: Re: [PATCH net v3] sctp: fix ASCONF address change on single-homed hosts
-To: Andrey Misiurov <andrey.misyrov@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Jun Yang <junvyyang@tencent.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 6, 2026 at 2:51=E2=80=AFPM Andrey Misiurov <andrey.misyrov@gmai=
-l.com> wrote:
->
-> Commit 9b2854f86f0b ("sctp: don't free the ASCONF's own transport in
-> DEL-IP processing") refuses a DEL-IP of the transport the ASCONF was
-> located by, so that a later wildcard DEL-IP cannot use it after free.
->
-> This also breaks the single-homed address change (RFC 5061 5.3.2). The
-> host sends [Address Parameter L] [ADD-IP S] [DEL-IP L], the association
-> is located by L, and DEL-IP L is now refused. The sender never gets an
-> all-success ASCONF-ACK, keeps src_out_of_asoc_ok set and stops sending
-> data, so the association stalls.
->
-> Fix the wildcard DEL-IP instead: look up the transport of the packet
-> source rather than reusing asconf->transport. Both DEL-IP paths can
-> now free asconf->transport, and chunks bundled after the ASCONF still
-> use it, so point it at a surviving transport: the packet source for the
-> wildcard delete, the primary path for a plain one.
->
-> Found by manual code inspection while reviewing a backport of commit
-> 9b2854f86f0b; reproduced on a two-namespace single-homed renumber.
->
-> Fixes: 9b2854f86f0b ("sctp: don't free the ASCONF's own transport in DEL-=
-IP processing")
+Xia Yan wrote:
+> A connected IPv6 UDP or ping socket can reuse its cached route when an
+> SO_MARK cmsg requests another mark. A packet can then bypass a prohibit
+> rule instead of failing with EACCES.
+> 
+> ip6_sk_dst_lookup_flow() reads the cache even when connected is false.
+> UDP clears connected after parsing IP or socket control messages. Ping
+> always passes false.
+> 
+> Only read the cache when connected is true. Ordinary connected UDP
+> sends keep using the cache. Ping sends do a fresh lookup.
+> 
+> Found during code review of IPv6 UDP route caching. On UML, the same
+> connected-socket selftest fails four IPv6 cases before the fix and
+> passes all 54 with it.
+> 
+> Fixes: c6af0c227a22 ("ip: support SO_MARK cmsg")
+> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.1e0038bcc3ef8@gmail.com/
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Andrey Misiurov <andrey.misyrov@gmail.com>
-> ---
-> v3: a plain DEL-IP of asconf->transport set it to NULL, but chunks
->     bundled after the ASCONF dereference chunk->transport (e.g.
->     sctp_vtag_verify()); point it at asoc->peer.primary_path instead,
->     as suggested by Xin Long. Reported by the netdev Sashiko AI review.
->     v2: https://lore.kernel.org/all/20261029193454.1028626-1-andrey.misyr=
-ov@gmail.com/
->
-> v2: the reworked wildcard DEL-IP branch could itself free
->     asconf->transport via sctp_assoc_del_nonprimary_peers() and leave it
->     dangling for a bundled DATA chunk (sctp_assoc_bh_rcv() ->
->     peer.last_data_from) and the following SACK; retarget
->     asconf->transport to the surviving peer. The pre-existing wildcard
->     SET_PRIMARY / sctp_source() point is left out of scope.
->     Reported by the netdev Sashiko AI review.
->     v1: https://lore.kernel.org/all/20261022163639.2566945-1-andrey.misyr=
-ov@gmail.com/
->
->  net/sctp/sm_make_chunk.c | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
->
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index ddc31a5..9719464 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -3151,9 +3151,12 @@ static __be16 sctp_process_asconf_param(struct sct=
-p_association *asoc,
->                  * packet MUST be deleted.
->                  */
->                 if (af->is_any(&addr)) {
-> -                       sctp_assoc_set_primary(asoc, asconf->transport);
-> -                       sctp_assoc_del_nonprimary_peers(asoc,
-> -                                                       asconf->transport=
-);
-> +                       peer =3D sctp_assoc_lookup_paddr(asoc, &asconf->s=
-ource);
-> +                       if (!peer)
-> +                               return SCTP_ERROR_REQ_REFUSED;
-> +                       sctp_assoc_set_primary(asoc, peer);
-> +                       sctp_assoc_del_nonprimary_peers(asoc, peer);
-> +                       asconf->transport =3D peer;
->                         return SCTP_ERROR_NO_ERROR;
->                 }
->
-> @@ -3166,13 +3169,9 @@ static __be16 sctp_process_asconf_param(struct sct=
-p_association *asoc,
->                 if (!peer)
->                         return SCTP_ERROR_DNS_FAILED;
->
-> -               /* Don't free asconf->transport; a later wildcard DEL-IP
-> -                * parameter reuses it.
-> -                */
-> -               if (peer =3D=3D asconf->transport)
-> -                       return SCTP_ERROR_REQ_REFUSED;
-> -
->                 sctp_assoc_rm_peer(asoc, peer);
-> +               if (asconf->transport =3D=3D peer)
-> +                       asconf->transport =3D asoc->peer.primary_path;
->                 break;
->         case SCTP_PARAM_SET_PRIMARY:
->                 /* ADDIP Section 4.2.4
+> Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
