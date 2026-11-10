@@ -1,66 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794302701;
-	b=5Uc6S7pH5S99+cEf9N9Ooez008aikvXejQU3H6apq+YRFMDlmpG/JZ4HL+O4tV6u3QSJ
-	 4ZjZdYgZzAZpl/xZeep6kGSUii9fvlN4c/X27L0kK2zp1QDplvIMBsInBinUxeEbdOLSp
-	 XubTScNdHYt2AH/xlR0JBfWAiBcKA2Quol8Ja7Nf53g6gdL4Vpy32O3Uhu6ocKEuTOtqi
-	 8GqX83093UmixvXVYtG2fC5+hUvwPgaVyLYtJERK9hIb1uM2VbHeHy1N0FkrVy+1ZbPpj
-	 /22nGa3SJXUtFhlAzLvkbNsSNjb5uNOXAsr6Vl2wSNGq2H6J1+rqqzI0DnKSuXc8uYw==
+	t=1794302716;
+	b=xcCPJTksLJ8hv5cIqpsr6CShfYZ6tSrXP/MlVRi5CdH19xpgTqsVSt9h5ZuLCvpPddk9
+	 3gZjeXBdBgD4xO+GluFvf9bB7b668fGBX5pFMlUOLtHZXu0pel4IG32DJsWYTpJtocJkI
+	 V8cOiu+L0nTAbF6uPdg4hnslhSRFLsx/xTDP7IK1Aqd7vNwuGkIH9kFJ7wsxDcbYjv5bL
+	 m+HCNAIcOtP2GFFPCUaCQxjwHPVHoaODCWYPNe8kT1sbT5QPWbuPMDo8fbHDz7TX+pfkT
+	 ZKPUoxKrk8o3ufR2ehVeno2ECT3dQRwqfVRtLtZeWTIUceRyiDyjmvQHaxW4V4XMsYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794302701;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=g59WXbMEVAC+rwbfPbusgYn9rCMYzsS/Ea1X6BmPoQk=;
-	b=owM2fwmjEsSs+I52SP9jyxYucZGhDdImJjN7PG6HQvXWajQzVJjRl8aaW2TdrtMs4kl6
-	 85CUh1IwTMo/QbUejBRDhcS4TgL0nN+srFYmuPkqnCnteT1uZwMRxILen6u/WTESwOnwh
-	 Fkto788a4K5YZrodyj3KvbaUvnB/ULx7C8kIHc1SMDMpEQJkbyOW/TvCMRoFIUgX/o3xv
-	 WsDOV7Xc6B+ilRoV8VRuWYDfToAeUd9QzN20tnS7V7G3h5Z9eL1o/ym7jV/Nh0sqLQ4tw
-	 NkZoqGZaRexph81uT/RZ+gjyaNg/bCRSXDsTvRxKN+86jeDfCWXoaW6sYrCpDd9yWKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794302716;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Iw96EVLy3uo7NO5SdGl826YFCr+7nw016vGeTrGSnIY=;
+	b=zqOs9CZQ5FsV92k1YQSclQ4PgQK4f05jCaRrzZXeiVizPXITwmSHId0Gz6dFhDhB6heu
+	 W410H3+V5dFbixunppK4ApJurPEPHQGfG4HPA6n1ZpcDK9YDywNcJoEYBHV6/eCFw5Fl0
+	 zNK5U2NMScDDNjX1c3XMVR6WDD2gXAPzeTfjYjBjebyE6lRmZR6owFDKGIGyDVNq67aqN
+	 pA5PS3otsrKIv0zISBoasRN/ccfdxLrMXhCeqzd2WU6OL7+DA2ureM5ilYW+zFpPbNQh2
+	 1CmC5wL1vQ91dMJyAX4lD2Y4mVHGp/TsD0JJB84lxWf97l+pNhvMrYUrYlyupsyrQCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EST0+k10;
-	arc=none smtp.remote-ip=95.215.58.106
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--sewookseo.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XY1Rck9u;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68846070FE4
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:24:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C68846070FE4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1E0606B141
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 09:25:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B1E0606B141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sewookseo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EST0+k10
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NrDs8IswZxyvOKP1XWG0B7QQ4QtrBkDyBDj9/5w4lmc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794302692; v=1; x=1794907492;
- b=EST0+k10vuCRS9mK88LCdPNshVrerqdrVms/Vbdro6W7LVQlLhrLixjGV9MDCE3pM85A0Spe
- eGzsra5jCmeAdX4eptaWjpTKrqyCYqeEdsLcSFloxeK81y3lsBqz9AmYzppJ82FJATy9I/Uu7rK
- wa9VY5fhzuXyj2dupH1g4BQc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 1ee9f6a1fae2868a;
-	Tue, 10 Nov 2026 09:24:52 +0000
-X-Mizu-Trace-ID: 1ee9f6a1fae2868a
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 10 Nov 2026 17:24:33 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] selftests: net: netlink-dumps: test dump of route
- larger than skb
-Message-ID: <avLi0W-uqKJvJeCR@fedora>
-References: <20261109012115.11898-1-stephen@networkplumber.org>
- <20261109012115.11898-4-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XY1Rck9u
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3b0f667a666so2707458a91.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 01:25:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794302716; x=1794907516; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Iw96EVLy3uo7NO5SdGl826YFCr+7nw016vGeTrGSnIY=;
+        b=XY1Rck9ucIY5y4i1J22jkm2YLbQip4P3wN/c7gTbA6FcOikGK48j9hDEcGuyG2rA8x
+         dJ2U8yt8TdnUv0p744gxoGf8js5JAXBEY8W3XAE4+42h/Vog2Gwe1r54gP0oUvcU4PRU
+         Xvo9ja+7TTrtCDFnL96fhmNFlBEFBtAhMAcdHi2H9fSKLCe+qfWL3D739t35sTcfMBgu
+         S7hHkWuov1cG2e84DJIAdZa5YYBUKcT+UnO7+JAymQVEB//t7uKVq/sLckbqb2UQecPT
+         RgO2fffJf48CsmorM1PdlHvbwaOR0PXIfUP3RNebwDwtd4y575Wc+d944+SnET1wMEif
+         W4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794302716; x=1794907516;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Iw96EVLy3uo7NO5SdGl826YFCr+7nw016vGeTrGSnIY=;
+        b=I6EAoCTJR8JbcGZilrWMFJlkYY4pa/+sRmam1FPAaELOBmnEbuAZNKpmoPTISXx0E2
+         hBlv2f005aNl6MYclPSS78cLxVDAZ1zoO2hEYluGysqQLNZGuLTTeTdhYK/IXrahOaIh
+         sclZmskJzY0Ha8ID8RIXoo1sW0QS94jmUM9uBjZOpn+2AkM20H4GDJtku/1iA5jsjWdJ
+         jhMTuYuDmf+ZhgfJyiayf66+DQwEFGOgf9KhTbNpC+sRKd4KjeJzN4jYAe7zh1ezrTJf
+         2A2HWgeOqGqz4nlHVTu/YZAnmVry/6onQmfXOwxAbC8dIMRLO9iIwNCLKPeiVkh+6oH5
+         wHqg==
+X-Forwarded-Encrypted: i=1; AL+hErFm2L3dEZTPzd92Xv7Y+j0IChK0rLbQ6qwMaWVNswok8d9yDNJrX3s1OpOAggtw/TLz13sq+sQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8WNGEU2tKfjZONbke2tYDEt0XQJvW14ZL3V+9YXllKkqLS6DXW
+	hA93i8xalSJ2NG5JzOnNvOELm+N8DKJgUT87E+BAA0gfh2tWKb/Kt74XX6xvh0JC55mUF5bIhS4
+	FHqra+RBjkptuVMU6Zw==
+X-Received: from pjbsv6.prod.google.com ([2002:a17:90b:5386:b0:3b0:a489:6e84])
+ (user=sewookseo job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:224c:b0:3ac:7f4c:a68c with SMTP id 98e67ed59e1d1-3b166fbd19dmr2275693a91.49.1794302715465;
+ Tue, 10 Nov 2026 01:25:15 -0800 (PST)
+Date: Tue, 10 Nov 2026 09:25:12 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,351 +77,88 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109012115.11898-4-stephen@networkplumber.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
+Message-ID: <20261110092513.2375648-1-sewookseo@google.com>
+Subject: [PATCH ipsec] xfrm: check inner family via skb_dst for small_ipv6 DF clearing
+From: Sewook Seo <sewookseo@google.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com, Sewook Seo <sewookseo@google.com>, stable@vger.kernel.org, 
+	"=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>, Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 08, 2026 at 05:13:14PM -0800, Stephen Hemminger wrote:
-> Add IPv4 and IPv6 multipath routes that do not fit in the first dump
-> skb of a fresh socket. The dump must return the route or fail with
-> -EMSGSIZE, not end with status 0.
-> 
-> IPv6 nexthops cannot use lo, so create a dummy device and generalize
-> lo_set_up() to if_set_up(). Add the IPv4 routing options to config.
-> 
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-> ---
->  tools/testing/selftests/net/config          |   3 +
->  tools/testing/selftests/net/netlink-dumps.c | 271 +++++++++++++++++++-
->  2 files changed, 270 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-> index d4416f8bdcfd..e2f136274e6d 100644
-> --- a/tools/testing/selftests/net/config
-> +++ b/tools/testing/selftests/net/config
-> @@ -29,6 +29,8 @@ CONFIG_IP6_NF_MATCH_RPFILTER=m
->  CONFIG_IP6_NF_NAT=m
->  CONFIG_IP6_NF_RAW=m
->  CONFIG_IP6_NF_TARGET_REJECT=m
-> +CONFIG_IP_ADVANCED_ROUTER=y
-> +CONFIG_IP_MULTIPLE_TABLES=y
->  CONFIG_IP_NF_FILTER=m
->  CONFIG_IP_NF_IPTABLES=m
->  CONFIG_IP_NF_IPTABLES_LEGACY=m
-> @@ -38,6 +40,7 @@ CONFIG_IP_NF_NAT=m
->  CONFIG_IP_NF_RAW=m
->  CONFIG_IP_NF_TARGET_REJECT=m
->  CONFIG_IP_NF_TARGET_TTL=m
-> +CONFIG_IP_ROUTE_MULTIPATH=y
->  CONFIG_IP_SCTP=m
->  CONFIG_IPV6=y
->  CONFIG_IPV6_FOU=m
-> diff --git a/tools/testing/selftests/net/netlink-dumps.c b/tools/testing/selftests/net/netlink-dumps.c
-> index 4a94a25167e2..43f63f3f2289 100644
-> --- a/tools/testing/selftests/net/netlink-dumps.c
-> +++ b/tools/testing/selftests/net/netlink-dumps.c
-> @@ -263,11 +263,11 @@ TEST(close_with_ref)
->  	usleep(100 * 1000);
->  }
->  
-> -static int lo_set_up(int sock, bool up)
-> +static int if_set_up(int sock, const char *name, bool up)
->  {
->  	struct ifreq ifr = {};
->  
-> -	strcpy(ifr.ifr_name, "lo");
-> +	strcpy(ifr.ifr_name, name);
->  	if (ioctl(sock, SIOCGIFFLAGS, &ifr))
->  		return -1;
->  	if (up)
-> @@ -321,12 +321,12 @@ TEST(dump_with_queued_ntf)
->  		       sizeof(addr)), 0);
->  
->  	// A large read makes the kernel attempt large dump skbs
-> -	ASSERT_EQ(lo_set_up(inet_sock, true), 0);
-> +	ASSERT_EQ(if_set_up(inet_sock, "lo", true), 0);
->  	n = recv(netlink_sock, buf, sizeof(buf), 0);
->  	ASSERT_GE(n, (ssize_t)sizeof(struct nlmsghdr));
->  
->  	// Leave one notification queued, then start the dump
-> -	ASSERT_EQ(lo_set_up(inet_sock, false), 0);
-> +	ASSERT_EQ(if_set_up(inet_sock, "lo", false), 0);
->  	n = send(netlink_sock, &dump_links, sizeof(dump_links), 0);
->  	ASSERT_EQ(n, sizeof(dump_links));
->  
-> @@ -362,4 +362,267 @@ TEST(dump_with_queued_ntf)
->  	close(inet_sock);
->  }
->  
-> +#define BIG_RT_TABLE	100
-> +#define BIG_RT_IFINDEX	100
-> +#define BIG_RT4_NH	1500
-> +#define BIG_RT6_NH	500
-> +
-> +static const struct {
-> +	struct nlmsghdr nlhdr;
-> +	struct ifinfomsg ifm;
-> +	struct nlattr name_hdr;
-> +	char name[8];
-> +	struct nlattr linkinfo_hdr;
-> +	struct nlattr kind_hdr;
-> +	char kind[8];
-> +} new_dummy = {
-> +	.nlhdr = {
-> +		.nlmsg_len	= sizeof(new_dummy),
-> +		.nlmsg_type	= RTM_NEWLINK,
-> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
-> +				  NLM_F_EXCL,
-> +		.nlmsg_seq	= 1,
-> +	},
-> +	.ifm = {
-> +		.ifi_family	= AF_UNSPEC,
-> +		.ifi_index	= BIG_RT_IFINDEX,
-> +	},
-> +	.name_hdr = {
-> +		.nla_len	= 4 + sizeof("dummy0"),
-> +		.nla_type	= IFLA_IFNAME,
-> +	},
-> +	.name = "dummy0",
-> +	.linkinfo_hdr = {
-> +		.nla_len	= 4 + 4 + 8,
-> +		.nla_type	= IFLA_LINKINFO,
-> +	},
-> +	.kind_hdr = {
-> +		.nla_len	= 4 + sizeof("dummy"),
-> +		.nla_type	= IFLA_INFO_KIND,
-> +	},
-> +	.kind = "dummy",
-> +};
-> +
-> +static struct {
-> +	struct nlmsghdr nlhdr;
-> +	struct rtmsg rtm;
-> +	struct nlattr dst_hdr;
-> +	__u8 dst[4];
-> +	struct nlattr table_hdr;
-> +	__u32 table;
-> +	struct nlattr mp_hdr;
-> +	struct rtnexthop nh[BIG_RT4_NH];
-> +} new_route4 = {
-> +	.nlhdr = {
-> +		.nlmsg_len	= sizeof(new_route4),
-> +		.nlmsg_type	= RTM_NEWROUTE,
-> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
-> +				  NLM_F_EXCL,
-> +		.nlmsg_seq	= 1,
-> +	},
-> +	.rtm = {
-> +		.rtm_family	= AF_INET,
-> +		.rtm_dst_len	= 24,
-> +		.rtm_protocol	= RTPROT_STATIC,
-> +		.rtm_scope	= RT_SCOPE_LINK,
-> +		.rtm_type	= RTN_UNICAST,
-> +	},
-> +	.dst_hdr = {
-> +		.nla_len	= 4 + 4,
-> +		.nla_type	= RTA_DST,
-> +	},
-> +	.dst = { 198, 51, 100, 0 },
-> +	.table_hdr = {
-> +		.nla_len	= 4 + 4,
-> +		.nla_type	= RTA_TABLE,
-> +	},
-> +	.table = BIG_RT_TABLE,
-> +	.mp_hdr = {
-> +		.nla_len	= 4 + sizeof(new_route4.nh),
-> +		.nla_type	= RTA_MULTIPATH,
-> +	},
-> +};
-> +
-> +struct rtnexthop6 {
-> +	struct rtnexthop rtnh;
-> +	struct nlattr gw_hdr;
-> +	__u8 gw[16];
-> +};
-> +
-> +static struct {
-> +	struct nlmsghdr nlhdr;
-> +	struct rtmsg rtm;
-> +	struct nlattr dst_hdr;
-> +	__u8 dst[16];
-> +	struct nlattr table_hdr;
-> +	__u32 table;
-> +	struct nlattr mp_hdr;
-> +	struct rtnexthop6 nh[BIG_RT6_NH];
-> +} new_route6 = {
-> +	.nlhdr = {
-> +		.nlmsg_len	= sizeof(new_route6),
-> +		.nlmsg_type	= RTM_NEWROUTE,
-> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
-> +				  NLM_F_EXCL,
-> +		.nlmsg_seq	= 1,
-> +	},
-> +	.rtm = {
-> +		.rtm_family	= AF_INET6,
-> +		.rtm_dst_len	= 64,
-> +		.rtm_protocol	= RTPROT_STATIC,
-> +		.rtm_scope	= RT_SCOPE_UNIVERSE,
-> +		.rtm_type	= RTN_UNICAST,
-> +	},
-> +	.dst_hdr = {
-> +		.nla_len	= 4 + 16,
-> +		.nla_type	= RTA_DST,
-> +	},
-> +	.dst = { 0x20, 0x01, 0x0d, 0xb8 }, // 2001:db8::/64
-> +	.table_hdr = {
-> +		.nla_len	= 4 + 4,
-> +		.nla_type	= RTA_TABLE,
-> +	},
-> +	.table = BIG_RT_TABLE,
-> +	.mp_hdr = {
-> +		.nla_len	= 4 + sizeof(new_route6.nh),
-> +		.nla_type	= RTA_MULTIPATH,
-> +	},
-> +};
-> +
-> +static struct {
-> +	struct nlmsghdr nlhdr;
-> +	struct rtmsg rtm;
-> +} dump_routes = {
-> +	.nlhdr = {
-> +		.nlmsg_len	= sizeof(dump_routes),
-> +		.nlmsg_type	= RTM_GETROUTE,
-> +		.nlmsg_flags	= NLM_F_REQUEST | NLM_F_DUMP,
-> +		.nlmsg_seq	= 2,
-> +	},
-> +	.rtm = {
-> +		.rtm_table	= BIG_RT_TABLE,
-> +	},
-> +};
-> +
-> +static int nl_request_ack(int sock, const void *req, size_t len)
-> +{
-> +	struct nlmsghdr *nlh;
-> +	char buf[4096];
-> +	ssize_t n;
-> +
-> +	if (send(sock, req, len, 0) != (ssize_t)len)
-> +		return -errno;
-> +	n = recv(sock, buf, sizeof(buf), 0);
-> +	if (n < 0)
-> +		return -errno;
-> +	nlh = (struct nlmsghdr *)buf;
-> +	if (!NLMSG_OK(nlh, n) || nlh->nlmsg_type != NLMSG_ERROR)
-> +		return -EPROTO;
-> +	return *(int *)NLMSG_DATA(nlh);
-> +}
-> +
-> +// Dump table BIG_RT_TABLE on a fresh socket, so the first dump skb is
-> +// small, and count routes. The table holds only one route, too large for
-> +// that skb. Returns the status from NLMSG_DONE or NLMSG_ERROR.
-> +static int dump_big_table(struct __test_metadata *_metadata, int family,
-> +			  int *routes)
-> +{
-> +	int netlink_sock, i, ret = 1;
-> +	char buf[32768];
-> +	int one = 1;
-> +	ssize_t n;
-> +
-> +	netlink_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
-> +	ASSERT_GE(netlink_sock, 0);
-> +	ASSERT_EQ(setsockopt(netlink_sock, SOL_NETLINK, NETLINK_GET_STRICT_CHK,
-> +			     &one, sizeof(one)), 0);
-> +
-> +	dump_routes.rtm.rtm_family = family;
-> +	n = send(netlink_sock, &dump_routes, sizeof(dump_routes), 0);
-> +	ASSERT_EQ(n, sizeof(dump_routes));
-> +
-> +	*routes = 0;
-> +	for (i = 0; i < 100 && ret > 0; i++) {
-> +		struct nlmsghdr *nlh;
-> +
-> +		n = recv(netlink_sock, buf, sizeof(buf), 0);
-> +		ASSERT_GE(n, 0);
-> +
-> +		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, n);
-> +		     nlh = NLMSG_NEXT(nlh, n)) {
-> +			if (nlh->nlmsg_type == RTM_NEWROUTE)
-> +				(*routes)++;
-> +			if (nlh->nlmsg_type == NLMSG_DONE ||
-> +			    nlh->nlmsg_type == NLMSG_ERROR) {
-> +				ret = *(int *)NLMSG_DATA(nlh);
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	EXPECT_LE(ret, 0);
-> +
-> +	close(netlink_sock);
-> +	return ret;
-> +}
-> +
-> +// A route that doesn't fit in the first dump skb must either be dumped or
-> +// end the dump with EMSGSIZE. It must not end the dump as if complete.
-> +TEST(dump_large_route)
-> +{
-> +	int netlink_sock, inet_sock, i, ret, routes;
-> +
-> +	ret = unshare(CLONE_NEWNET);
-> +	if (ret && errno == EPERM)
-> +		SKIP(return, "Needs CAP_SYS_ADMIN for a netns");
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	inet_sock = socket(AF_INET, SOCK_DGRAM, 0);
-> +	ASSERT_GE(inet_sock, 0);
-> +	netlink_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
-> +	ASSERT_GE(netlink_sock, 0);
-> +
-> +	ret = nl_request_ack(netlink_sock, &new_dummy, sizeof(new_dummy));
-> +	if (ret == -EOPNOTSUPP)
-> +		SKIP(return, "Needs CONFIG_DUMMY");
-> +	ASSERT_EQ(ret, 0);
-> +	ASSERT_EQ(if_set_up(inet_sock, "lo", true), 0);
-> +	ASSERT_EQ(if_set_up(inet_sock, "dummy0", true), 0);
-> +
-> +	for (i = 0; i < BIG_RT4_NH; i++) {
-> +		new_route4.nh[i].rtnh_len = sizeof(new_route4.nh[i]);
-> +		new_route4.nh[i].rtnh_ifindex = 1; // lo
-> +	}
-> +	ASSERT_EQ(nl_request_ack(netlink_sock, &new_route4,
-> +				 sizeof(new_route4)), 0);
-> +
-> +	for (i = 0; i < BIG_RT6_NH; i++) {
-> +		struct rtnexthop6 *nh = &new_route6.nh[i];
-> +
-> +		nh->rtnh.rtnh_len = sizeof(*nh);
-> +		nh->rtnh.rtnh_ifindex = BIG_RT_IFINDEX;
-> +		nh->gw_hdr.nla_len = sizeof(nh->gw_hdr) + sizeof(nh->gw);
-> +		nh->gw_hdr.nla_type = RTA_GATEWAY;
-> +		nh->gw[0] = 0xfe; // fe80::<i + 1>
-> +		nh->gw[1] = 0x80;
-> +		nh->gw[14] = (i + 1) >> 8;
-> +		nh->gw[15] = (i + 1) & 0xff;
-> +	}
-> +	ASSERT_EQ(nl_request_ack(netlink_sock, &new_route6,
-> +				 sizeof(new_route6)), 0);
-> +
-> +	// The ACK reads above used large buffers, which raise the dump
-> +	// skb size for this socket. Dump on fresh sockets instead.
-> +	close(netlink_sock);
-> +
-> +	ret = dump_big_table(_metadata, AF_INET, &routes);
-> +	if (ret != -EMSGSIZE)
-> +		EXPECT_EQ(routes, 1);
-> +
-> +	ret = dump_big_table(_metadata, AF_INET6, &routes);
-> +	if (ret != -EMSGSIZE)
-> +		EXPECT_EQ(routes, 1);
-> +
-> +	close(inet_sock);
-> +}
-> +
->  TEST_HARNESS_MAIN
-> -- 
-> 2.53.0
-> 
+Commit 6821ad877034 ("xfrm: do not set IPv4 DF flag when encapsulating
+IPv6 frames <=3D 1280 bytes.") intended to clear the outer IPv4 DF bit in
+xfrm4_tunnel_encap_add() when encapsulating inner IPv6 frames of at most
+IPV6_MIN_MTU (1280) bytes, by checking skb->protocol =3D=3D htons(ETH_P_IPV=
+6).
 
-Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+However, its caller xfrm4_prepare_output() overwrites skb->protocol with
+htons(ETH_P_IP) before invoking xfrm4_tunnel_encap_add(), since
+commit 0c620e97b349 ("xfrm: remove output indirection from xfrm_mode").
+As a result, small_ipv6 always evaluates to false, leaving IP_DF set on
+outer IPv4 tunnel packets even when encapsulating <=3D 1280-byte IPv6
+frames.
+
+This issue was observed on devices in production use over IPv6-in-IPv4
+ESP-in-UDP tunnels where an intermediate IPv4 link has an MTU smaller
+than the encapsulated packet size (e.g. < 1362 bytes) and ICMPv4
+Fragmentation Needed errors are either filtered or not actionable below
+IPV6_MIN_MTU, causing encapsulated <=3D 1280-byte IPv6 packets to be
+dropped instead of fragmented by the outer IPv4 router.
+
+At the time xfrm4_tunnel_encap_add() runs, skb_dst(skb) has not been
+popped yet and still represents the inner packet destination entry, as
+already used a few lines below to set top_iph->protocol via
+xfrm_af2proto(skb_dst(skb)->ops->family), while skb->len still holds the
+unencapsulated inner packet length. Check dst->ops->family =3D=3D AF_INET6
+instead of skb->protocol so small_ipv6 works as intended.
+
+Tested on User-Mode Linux (ARCH=3Dum) with a four-namespace IPv6-over-IPv4
+XFRM ESP tunnel reproducer across a 1300-byte MTU router link with ICMPv4
+Fragmentation Needed filtered (verifying 1280-byte inner IPv6 frames fail
+before the fix and pass via outer IPv4 fragmentation with the fix, while
+larger frames still preserve outer IP_DF), and verified all tests pass in
+tools/testing/selftests/net/xfrm_state.sh.
+
+Fixes: 6821ad877034 ("xfrm: do not set IPv4 DF flag when encapsulating IPv6=
+ frames <=3D 1280 bytes.")
+Cc: stable@vger.kernel.org
+Cc: Maciej =C5=BBenczykowski <maze@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Assisted-by: LLM
+Signed-off-by: Sewook Seo <sewookseo@google.com>
+---
+ net/xfrm/xfrm_output.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index f1f612cd7b43..60ffe9549c09 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -275,11 +275,14 @@ static int xfrm4_beet_encap_add(struct xfrm_state *x,=
+ struct sk_buff *skb)
+  */
+ static int xfrm4_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *sk=
+b)
+ {
+-	bool small_ipv6 =3D (skb->protocol =3D=3D htons(ETH_P_IPV6)) && (skb->len=
+ <=3D IPV6_MIN_MTU);
+ 	struct dst_entry *dst =3D skb_dst(skb);
+ 	struct iphdr *top_iph;
++	bool small_ipv6;
+ 	int flags;
+=20
++	small_ipv6 =3D (dst->ops->family =3D=3D AF_INET6) &&
++		     (skb->len <=3D IPV6_MIN_MTU);
++
+ 	if (!skb->inner_protocol) {
+ 		skb_set_inner_network_header(skb, skb_network_offset(skb));
+ 		skb_set_inner_transport_header(skb, skb_transport_offset(skb));
+--=20
+2.56.0.542.g3ef89b7020-goog
+
