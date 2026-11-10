@@ -1,135 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794313309;
-	b=Kr0xTTF1Ser7+qJ0grePrtRBT2u5Y9M58rhp9IE11cN+14Z/R8z3SLDxvgn53bQJ+2Ih
-	 56ib1L+orcPeUcHeHRyGqz7APODeivtBVzUuAYQ4iaVQn7p0HVJxc5xiTMygeYWy9zB3b
-	 G0FdDE44jLLsZiFyr6E+3sXY7MMwlfbBcRMnoM2bkvwbVvA8DMRaqInH3mtbC/hrLYinl
-	 FOeQGZ/H9gHNd2ljVIauj7UFGptWyxi2o2dO0b6qn61RHi2YLSVKFVkThoSI4Wb+7K4Zn
-	 gMKeTWMl03YsRuAWBDnAQDAqDmMDFajU54/mcnJCuq+I2WazpdbirindEe3hI/LI5+Q==
+	t=1794313317;
+	b=lWxxqUgZu1j5DMvHktF4m/KSixTYV3FK98GYIBclFHuxadMTSXYil3VemyIXIzuP0OC6
+	 KC8fkEJNtRllD28neSw5j+2s64fEN80X0Vv426PR2lq35FFs0f8ab5SKmE6vZszL5yv4U
+	 SdNTe8J79YKbG9hGH6sOrriyEV79KjKf3Ym82nleL4iuRauOr9CHVgGoQRsdvdNtoHseG
+	 I1fJxoPnnT6OrZT6T6wsnuBZ7BZfSt4UO6zUCru1kKkjyz+ixe2dEmjrwP2SyD5zL0XmS
+	 nwG+4NEaIzRrJXciwHqsy3zO2O1iOjlQ49fBctn2EyZkATg5GuwBA3F9o5+h9nB66IQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794313309;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=ILicECQ9zANN0An0v45y04zpUrUGB3SIAyGWP6qA6Mk=;
-	b=k0SjAaGlcPArmfF3y4oxi9cVEf78Xi6gFVVsenQ3i5oY2KSdIOHoUP8oqiN5bQc6+XNx
-	 1DEVZlfit+DH6hDYpvBq3PF6cAXTnnSfrdKddQTwcwokYivua5bVA3Ro7YxAbmTJcVZWz
-	 bD+78FXCJvPplCZOn0ll2QlxfdAjfF4LquminsKzi17/SlTgyW3wtgGqn90Nx6/pi72OH
-	 iWq524nLUEpwlVsQbXqGyFxU+qfEuW2k26e9RaCKNlOexDosGgXQNoQM/btCEIC4QX9FN
-	 JSnEL6cHdIOOUKjPa3mkWCCqXh4h16m8UphmhWqrIWRHy1SliZUQYN2QC6AHxlfjEJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794313317;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=meHmBKavj7ecdzNUmxZ1ttiSs1ApZCmKevahlkhwkjg=;
+	b=5oT9IK55RxWLt9PKNo6xf2dY0WxIh7eO4/cNY80rHDLlVUeBO/DHjDgPjpd/Y7BtVgbP
+	 SeP+aOcIgeOCOcxueR/60gzDWiVZ4T4sVxUAMS1qor1VKzSlhGbShTRenSxMb8fehaFez
+	 +f48VoVZeEY6Cpy211yFTpZJgxBlLJljWLTYjN0fDxR/gJMapTnhqOgJpMPlZhCQEW99h
+	 VvocCRDczT52YSPX4pmJS3KaqyXpRr79lhbLYIMQG0uW3mRKZRK1p03oztdGwYw4LZypt
+	 zLhlI/fnCqr4s/li3eq53U9VxYEqqDpUILMAha4f+y+xP5rSqJXqOg9pTIIFAoi6V/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iZr+C+Hs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ayugYrQX;
+	arc=none smtp.remote-ip=220.197.31.5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2100606A325;
-	Tue, 10 Nov 2026 12:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA2A606A321;
+	Tue, 10 Nov 2026 12:21:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EA2A606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iZr+C+Hs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6FF1F0089F;
-	Tue, 10 Nov 2026 12:21:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794313308;
-	bh=ILicECQ9zANN0An0v45y04zpUrUGB3SIAyGWP6qA6Mk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iZr+C+HsLndylzAK8sgjQuWsi/PR3RQXROFqUQiFg5KTC44IY3y+shcxYEyN/CmBv
-	 8+HpWHWQPp3D+LXt5m+jJSUr8KojIMpLXvBr2lQY5uzRPK+j5tMg5m1n1aX4EZoLre
-	 wIRyu49/SvrDmD8mVii/VevwGyYQtlSPmEhldHRFC2rJrqPzDRyTfAzW/X1PO1mfhe
-	 8hyLc6An2niCYDhDNH4zvJdl0NGM+E6CDmYNAISIGKytwZYKqs73+YY80GuK61RP2M
-	 upO+8J8ac1J3CJMskvB2cQYX8g9KLwrRLNB39VH/6sCv3fbK0hmcTjEvbciZszPwR/
-	 v2Xo9XCLmKA0w==
-Message-ID: <991d7a98e92d0a28f5b750b0a04226ea1d3f938a.camel@kernel.org>
-Subject: Re: [PATCH] SUNRPC: Load the GSS module by OID only when the
- mechanism is missing
-From: Jeff Layton <jlayton@kernel.org>
-To: Sasha Levin <sashal@kernel.org>, Chuck Lever <cel@kernel.org>, Trond
- Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>
-Cc: NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- linux-nfs@vger.kernel.org, 	netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, "kernelci.org bot"	 <bot@kernelci.org>
-Date: Tue, 10 Nov 2026 07:21:36 -0500
-In-Reply-To: <20261110030947.179738-1-sashal@kernel.org>
-References: <20261110030947.179738-1-sashal@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ayugYrQX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=meHmBKavj7ecdzNUmxZ1ttiSs1ApZCmKevahlkhwkjg=;
+	b=ayugYrQXg3Ew62KnQbyG2DNhoEEDRPLTw3Xt62tJmeuT09Fd1Ur283LvBLbics
+	7SW8x1ROO8vNR5ZfXkaMxQXxWsoL916UjkoCwVRIb2pYgvFbDOHyzZWNl69aGXEq
+	O7noU1wr/P9Nn4wC1b2JFA5Gc3f0LJDtpVg2Zh7GWGw1k=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgA3IJMADPNq1dB6FA--.54805S2;
+	Tue, 10 Nov 2026 20:20:25 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	dinghui1111@163.com,
+	dinghui@lixiang.com,
+	edumazet@kernel.org,
+	fujiahui@lixiang.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	liuxuanjun@lixiang.com,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com,
+	zhoujing3@lixiang.com
+Subject: Re:Re: [PATCH net v5 2/2] net: stmmac: restore RX descriptor buffer addresses on resume
+Date: Tue, 10 Nov 2026 20:20:16 +0800
+Message-Id: <20261110122016.60526-1-dinghui1111@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <179301303716.3134.2346618514026272618@kernel.org>
+References: <179301303716.3134.2346618514026272618@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -139,79 +79,328 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgA3IJMADPNq1dB6FA--.54805S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Zw1xCF1fXrykur1ftF1UJrb_yoWkAF1rpF
+	Way3yDtrWDXr13Gw4kXw48XFyYyFWSyF4UW3yrW39F9Fs0krn3ZF4fKrW5Za47Grna9w42
+	yr45u39rCF1UXrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_T5dJUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC8wmcyGrzDAlerwAA3D
 
-On Mon, 2026-11-09 at 22:09 -0500, Sasha Levin wrote:
-> gss_mech_get_by_OID() calls request_module() before it looks at the
-> list of registered mechanisms, so every lookup forks a modprobe, even
-> when the mechanism is already registered or built in.
-> gss_mech_get_by_name() and gss_mech_get_by_pseudoflavor() only load
-> the module when the lookup fails.
->=20
-> The read handler of /proc/net/rpc/gss_krb5_enctypes uses this lookup,
-> so every read() of that file runs modprobe, two per cat. The file is
-> present in every /proc/<pid>/net/rpc and /proc/<pid>/task/<tid>/net/rpc
-> directory, and LTP read_all gives each read one second. On a slow board
-> in KernelCI its workers stall on this file and the test times out.
->=20
-> Look up the mechanism first and call request_module() only when it is
-> not found, as the other two lookup functions do.
->=20
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> Closes: https://d.kernelci.org/test/maestro:6af225865b429d354e253b9b
-> Fixes: f783288f0cf4 ("SUNRPC: Load GSS kernel module by OID")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  net/sunrpc/auth_gss/gss_mech_switch.c | 23 +++++++++++++++++------
->  1 file changed, 17 insertions(+), 6 deletions(-)
->=20
-> diff --git a/net/sunrpc/auth_gss/gss_mech_switch.c b/net/sunrpc/auth_gss/=
-gss_mech_switch.c
-> index 78eab245f94a7..d8b6ff9505399 100644
-> --- a/net/sunrpc/auth_gss/gss_mech_switch.c
-> +++ b/net/sunrpc/auth_gss/gss_mech_switch.c
-> @@ -157,14 +157,9 @@ struct gss_api_mech * gss_mech_get_by_name(const cha=
-r *name)
->  	return gm;
->  }
-> =20
-> -struct gss_api_mech *gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
-> +static struct gss_api_mech *_gss_mech_get_by_OID(struct rpcsec_gss_oid *=
-obj)
->  {
->  	struct gss_api_mech	*pos, *gm =3D NULL;
-> -	char buf[32];
-> -
-> -	if (sprint_oid(obj->data, obj->len, buf, sizeof(buf)) < 0)
-> -		return NULL;
-> -	request_module("rpc-auth-gss-%s", buf);
-> =20
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(pos, &registered_mechs, gm_list) {
-> @@ -177,6 +172,22 @@ struct gss_api_mech *gss_mech_get_by_OID(struct rpcs=
-ec_gss_oid *obj)
->  		}
->  	}
->  	rcu_read_unlock();
-> +	return gm;
-> +}
-> +
-> +struct gss_api_mech *gss_mech_get_by_OID(struct rpcsec_gss_oid *obj)
-> +{
-> +	struct gss_api_mech *gm;
-> +	char buf[32];
-> +
-> +	if (sprint_oid(obj->data, obj->len, buf, sizeof(buf)) < 0)
-> +		return NULL;
-> +
-> +	gm =3D _gss_mech_get_by_OID(obj);
-> +	if (!gm) {
-> +		request_module("rpc-auth-gss-%s", buf);
-> +		gm =3D _gss_mech_get_by_OID(obj);
-> +	}
->  	if (!gm)
->  		trace_rpcgss_oid_to_mech(buf);
->  	return gm;
+Hello,
 
-Nice catch!
+Thank you for the review.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+At 2026-10-26 19:10:37, netdev-bot+sashiko@kernel.org wrote:
+>Thank you for your contribution! Sashiko AI review found 4 potential
+>issue(s) to consider.
+>
+>Critical: 0 · High: 2 · Medium: 1 · Low: 1 (1)
+>
+>If you believe none of the issues are legitimate, please reply to each
+>issue of Medium severity or higher and explain why the AI is wrong.
+>If any of them are legitimate and you plan to respin, please let patchwork
+>know by including "pw-bot: cr" as a separate line at the end of your reply
+>(one such reply per series is enough).
+>
+>- [High] On cores with legacy enhanced/normal descriptors (DWMAC100,
+>  DWMAC1000, DWMAC 3.x: enh_desc_ops and ndesc_ops), an XSK RX slot with…
+>- [High] On GMAC4/XGMAC, the XSK 'leave CPU-owned holes' approach puts
+>  unfilled slots in the middle of the ring, inside the region the RX…
+>- [Medium] The patch adds an allocation-dependent way for stmmac_resume()
+>  to fail, and that failure leaves the netdev unrecoverable.
+>- [Low] stmmac_reinit_rx_descriptors() publishes every restored
+>  descriptor with stmmac_set_rx_owner(priv, p, false), so…
+>
+>Pre-existing issues:
+>- [Low] stmmac_reinit_rx_descriptors() can attach XSK buffers to slots
+>  that had none at open or pool-enable time, but it never updates…
+>
+>--
+>
+>net: stmmac: restore RX descriptor buffer addresses on resume
+>
+>This patch restores RX descriptor buffer addresses in stmmac_resume() after
+>stmmac_clear_descriptors(). On GMAC4/XGMAC, hardware writeback can overwrite
+>those addresses for descriptors that completed but were not refilled before
+>suspend. It moves buffer setup into stmmac_prepare_rx_buffer() and
+>stmmac_prepare_rx_buffer_zc(), which the refill paths also use, allocates
+>missing pages with GFP_KERNEL, and leaves XSK slots that have no buffer
+>CPU-owned.
+>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index f5ae12208e85b..e56f5d044fc8a 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>
+>[ ... ]
+>
+>> @@ -1688,32 +1722,98 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
+>
+>[ ... ]
+>
+>> +static int stmmac_reinit_rx_descriptors(struct stmmac_priv *priv,
+>> +					struct stmmac_dma_conf *dma_conf,
+>> +					u32 queue)
+>> +{
+>> +	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+>> +	struct stmmac_rx_buffer *buf;
+>> +	struct dma_desc *p;
+>> +	int i, ret;
+>> +
+>> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
+>> +		buf = &rx_q->buf_pool[i];
+>> +		p = stmmac_get_rx_desc(priv, rx_q, i);
+>> +
+>> +		if (rx_q->xsk_pool) {
+>> +			ret = stmmac_prepare_rx_buffer_zc(priv, rx_q, buf, p);
+>
+>[Severity: Low]
+>This is a pre-existing issue, not one introduced by this patch, but
+>rx_q->buf_alloc_num is not updated when this loop attaches XSK buffers to
+>slots that had none at open time.
+>
+>stmmac_hw_setup()->stmmac_init_dma_engine() programs the RX tail from it:
+>
+>	stmmac_set_queue_rx_tail_ptr(priv, rx_q, chan,
+>				     rx_q->buf_alloc_num);
+>
+>Also, stmmac_set_queue_rx_buf_size() uses the XSK frame size only when
+>buf_alloc_num is non-zero.
+>
+>If the fill ring was short at open, slots filled here at index
+>buf_alloc_num or above may lie beyond the programmed tail. If
+>buf_alloc_num is 0, the buffer size falls back to dma_buf_sz.
+>
+>The open path uses the same stale value, and so did the code before this
+>patch, so this is only a bookkeeping mismatch.
+
+V6 recomputes buf_alloc_num from the contiguous slots restored during
+resume and uses it to initialize the tail and pending region. XSK buffer
+size selection also no longer depends on buf_alloc_num being nonzero.
+
+>
+>> +			if (ret) {
+>> +				/* An empty fill ring must not prevent TX-only use. */
+>> +				stmmac_clear_desc(priv, p);
+>> +				continue;
+>> +			}
+>
+>[Severity: High]
+>On cores with the legacy enh_desc_ops or ndesc_ops, does this leave the
+>slot DMA-owned with a buffer address of 0?
+>
+>stmmac_clear_descriptors() has just run init_rx_desc on every RX
+>descriptor, and that sets OWN in des0:
+>
+>enh_desc_init_rx_desc() {
+>    ...
+>	p->des0 |= cpu_to_le32(RDES0_OWN);
+>    ...
+>}
+>
+>On these cores, the ->clear op only clears des2:
+>
+>static void enh_desc_clear(struct dma_desc *p)
+>{
+>	p->des2 = 0;
+>}
+>
+>static void ndesc_clear(struct dma_desc *p)
+>{
+>	p->des2 = 0;
+>}
+>
+>The final loop below skips this slot when !buf->xdp, but nothing clears
+>OWN. These DMA engines have no RX tail pointer, so the DMA keeps walking
+>the ring while OWN is set. The next frame that lands in this slot would be
+>written to bus address 0.
+>
+>XSK zero-copy is advertised on every core (NETDEV_XDP_ACT_XSK_ZEROCOPY in
+>xdp_features), and stmmac_xdp_enable_pool() has no descriptor-format
+>check, so these cores can reach this path.
+>
+>Before this patch, des2 here still held the previous, still-mapped UMEM
+>chunk address. The commit message says such a slot "must not receive an
+>invalid buffer address".
+>
+>Could OWN be cleared explicitly here, for example RDES0_OWN in des0 on
+>enh/ndesc? Only dwmac4 and xgmac zero the whole descriptor in ->clear.
+
+Yes. stmmac_clear_desc() does not clear OWN on those descriptor formats.
+V6 adds a format-specific clear_rx_owner operation, preserving the buffer
+size and ring/chain control fields. RX addresses are restored before
+initializing descriptor control fields, and OWN is explicitly cleared for
+unfilled XSK slots before DMA restarts.
+
+>
+>[Severity: High]
+>On GMAC4/XGMAC, can a CPU-owned hole in the middle of the ring stall RX on
+>this queue permanently?
+>
+>stmmac_reset_queues_param() has set cur_rx = dirty_rx = 0, so a hole at
+>slot D sits in the region the RX path treats as hardware-owned. The DMA
+>fills slots 0 to D-1 and stops at D with an RBU event.
+>
+>In stmmac_rx_zc(), dwmac4_wrback_get_rx_status() does not report a fully
+>zeroed descriptor as dma_own. So cur_rx moves to D+1 before the missing
+>buffer is noticed:
+>
+>stmmac_rx_zc() {
+>    ...
+>	rx_q->cur_rx = next_entry;
+>    ...
+>	if (!buf->xdp)
+>		break;
+>    ...
+>}
+>
+>stmmac_rx_zc() is the only caller of the refill, and only once the dirty
+>count reaches STMMAC_RX_FILL_BATCH:
+>
+>	if (dirty >= STMMAC_RX_FILL_BATCH) {
+>		failure = failure ||
+>			  !stmmac_rx_refill_zc(priv, queue, dirty);
+>
+>If D < 15, dirty stays at D+1, the hole is never refilled, and the DMA
+>stays stopped at D. stmmac_xsk_wakeup() only schedules NAPI, so refilling
+>the fill ring from userspace does not recover the queue.
+>
+>If D >= 15, a later refill fills D and moves the tail. Software has already
+>moved past D, though, so that frame would be consumed a full ring later
+>and out of order.
+>
+>Could the holes be placed in the dirty region instead, for example by
+>setting dirty_rx and the tail to the first unfilled slot?
+>
+>> +		} else {
+>> +			ret = stmmac_init_rx_buffers(priv, dma_conf, p, i,
+>> +						     GFP_KERNEL, queue);
+>> +			if (ret)
+>> +				return ret;
+>> +		}
+>>  	}
+>
+>[ ... ]
+>
+>> +	/* GMAC4/XGMAC secondary address writes overwrite the OWN bit. */
+>> +	dma_wmb();
+>> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
+>> +		buf = &rx_q->buf_pool[i];
+>> +		if (rx_q->xsk_pool && !buf->xdp)
+>> +			continue;
+>> +
+>> +		p = stmmac_get_rx_desc(priv, rx_q, i);
+>> +		stmmac_set_rx_owner(priv, p, false);
+>
+Agreed. V6 publishes only the contiguous populated slots and places the
+remaining slots in the refill region. We track pending refills explicitly,
+so a wholly empty ring is distinguishable from one with no pending refills.
+The RX path stops before consuming the unfilled region.
+
+Pending refills are retried at poll entry and exit, including userspace
+wakeups, rather than relying only on the 16-descriptor batch threshold.
+Successful refills update the tail and kick DMA where required. Existing
+buffers beyond the initial prefix are retained for later refill.
+
+
+>[Severity: Low]
+>Should the disable_rx_ic argument here follow priv->use_riwt instead of
+>always being false?
+>
+>stmmac_clear_rx_descriptors() passes priv->use_riwt as disable_rx_ic. On
+>GMAC4/XGMAC that choice is lost, because dwmac4_set_sec_addr() assigns
+>des3 outright:
+>
+>	p->des2 = cpu_to_le32(lower_32_bits(addr));
+>	p->des3 = cpu_to_le32(upper_32_bits(addr));
+>
+>This loop then always sets IOC through dwmac4_set_rx_owner():
+>
+>	if (!disable_rx_ic)
+>		flags |= RDES3_INT_ON_COMPLETION_EN;
+>
+>With RIWT coalescing enabled, every descriptor in the first ring pass
+>after resume would raise a completion interrupt. That continues until
+>stmmac_rx_refill() or stmmac_rx_refill_zc() re-arm the descriptors using
+>stmmac_rx_need_ic().
+>
+>> +	}
+>>  
+>>  	return 0;
+>>  }
+>
+Yes. V6 uses the existing RX descriptor initializer, which passes priv->use_riwt.
+
+>[ ... ]
+>
+>> @@ -8503,6 +8577,18 @@ int stmmac_resume(struct device *dev)
+>>  	stmmac_free_tx_skbufs(priv);
+>>  	stmmac_clear_descriptors(priv, &priv->dma_conf);
+>>  
+>> +	for (queue = 0; queue < priv->plat->rx_queues_to_use; queue++) {
+>> +		ret = stmmac_reinit_rx_descriptors(priv, &priv->dma_conf, queue);
+>> +		if (ret) {
+>> +			netdev_err(ndev, "Failed to restore RX queue %u: %d\n",
+>> +				   queue, ret);
+>> +			stmmac_legacy_serdes_power_down(priv);
+>> +			mutex_unlock(&priv->lock);
+>> +			rtnl_unlock();
+>> +			return ret;
+>> +		}
+>> +	}
+>
+>[Severity: Medium]
+>If stmmac_reinit_rx_descriptors() returns -ENOMEM here, what state is the
+>netdev left in?
+>
+>This early return skips stmmac_enable_all_queues(), phylink_resume() and
+>netif_device_attach(). NAPI stays disabled from stmmac_suspend(), the
+>device stays detached, and phylink_prepare_resume() is never matched by
+>phylink_resume(). netif_running() is still true.
+>
+>A later close then runs:
+>
+>dev_close()
+>  stmmac_release()
+>    __stmmac_release()
+>      stmmac_disable_all_queues()
+>        napi_disable()
+>
+>on NAPI instances that are already disabled. napi_disable_locked() waits
+>for NAPIF_STATE_SCHED to clear, but that bit is still set from the first
+>disable, so the close would hang with RTNL held.
+>
+>The existing stmmac_hw_setup() failure path has the same problem. This
+>patch adds a new trigger that depends on a GFP_KERNEL allocation
+>succeeding during system resume.
+>
+>The XSK branch already tolerates missing buffers. Could the page_pool
+>branch do the same, for example by leaving the slot CPU-owned for the
+>refill path to retry, instead of failing the whole resume?
+>
+>>  	ret = stmmac_hw_setup(ndev);
+>>  	if (ret < 0) {
+>>  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+>
+
+This is a valid concern. The existing hardware-setup error path has related
+recovery problems, but v5 adds another way to reach a failed resume. V6
+still allocates missing page_pool buffers and returns -ENOMEM on failure;
+it does not provide complete close/open recovery. I will state this
+remaining limitation explicitly in the cover letter.
+
+Simply leaving page_pool slots CPU-owned would also require changes to
+that path's ring accounting and retry behavior. I have not implemented or
+validated those changes. Likewise, avoiding a second napi_disable() alone
+does not resolve device-detached and platform power-state recovery. I
+would like to handle failed-resume recovery separately, but I am not
+claiming that this report is resolved by v6.
+
+
+Best regards,
+Ding Hui
+
+pw-bot: cr
+
