@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346808;
-	b=Q9uTdF5Bws/WMqT4oZHxMiof51hzJ/skLUaghcHygd5aqcKug6kcOzDvSOdwXVUbDgaU
-	 TE3JKFmeN3Od4ASbJ7ssPBNIyv04A42z64kTQ9m+oi5fiBEqxkjUWupjcQlT8PlZGvARq
-	 LTFTO70n7NC3TgcrSjeQCkYlTK3yk087iF0UUX9uBp6v5lDp77OThqt3Ao3d5SXOFhjCO
-	 wDoaK5SGtA7HRj1muGAYphiLGlC+uinwjL1XqQdLWFHCTchHy3Gx3CoSEEejIKyVubSq+
-	 kUKNTxzVJluLqpAZ04BYQ8lwXq1ysHLxb5a6qTyygo+1TaH7Mr06+jbaLkr2vIF3Xmg==
+	t=1794346811;
+	b=PckV/Vr4KPqltHQlgisa6YDTZJx09QTr3U3JRb4pjCVt+y13XmN6BdA0y2xjFFiRdVTr
+	 LCTNSwlB5lH2HHzeDDp4VFaD6KyotaopL6yzIva90eiZtwj6/BYk19j3iNIrLP88iV1uq
+	 kDXPKUerDvkQYx/Ogkt9bRDAtn1ctm38Fict5fSknpi8z3nyBvd32faunSH5C/fN7UBha
+	 0AyWu/OGkFT31zobhLhmjWb2HfNEyzWy6wvKD53G3iMGBMKwc2P0Z6GwYVQWwPhUXm0vW
+	 QHFSYzR+cJ5L2yhdVQiYIN2D9ygJmTNBH746uzF4BBtyC2Ao7w4XckHIgrfH5i5rgcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346811;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=izWqIDu1MLZUfY7mHUtvRg3/UWowaZgxZTU46sEcixA=;
-	b=Cyuf0yBC3wksH0JCP6GCHs4nMVjMPFwPGoFT08rtGVaHp8WwNeJ4bzSs1NQnOk8fg9gK
-	 J21iHz/an/HludRhZseDgU+gz+4wP8awxMdfZmJFncnmZvWRUhJXc5lspE7LAcU4ScPXb
-	 Znm2HWzQtoJPo5WzuT7epETMSsF1ayYf8HDdJrbzfCTssa8HzKWHoiNccWo5SCjd/VEWQ
-	 Yjk6oRTd1aeOiIs9fAq3iCMK9Wk5duPBhdupSCXUM4d1QIc0GZpoA7RYDuU32+wMw8L4T
-	 4iGNTkWEnfmIVbIRCIQD3pJEsGMHOhR8DSfUN44YhT0qyZk6CW2CeqKwT6w8f7GuIKQ==
+	bh=H2zQQpARwnq+vf+Mp/QmtkzAppeZMOu3L3E13bjdY2s=;
+	b=e62I0YKLUUXQ5MQGw+PANRz+xKeI+aQPosU68yM4spsXRTRiBYT2n9TscWjHcVsg3pHD
+	 Bxvb5qtngtUomTVbE1KVaX2FkrpdHbkumgI1HNuoxht+XVKLi+JZanwU8pFADPzrv+gb9
+	 U0VJNlFGOD1dQbkn+01Si4Dkp0ftGXczH/vM2g4+X9JNXACCL3M8zeXXiyuK8Jj2kRW24
+	 kCjKgFnCDiAwbC5OvySoj9nkiNrPWXl7ixcdlJgWZzC6DkbBLEZicVS5bit4itP1FvsYE
+	 8Jqy0o+wafL1lsX+g6MoV8JhHFRI30DgnFEwV27v9/PeaXEj2eG7RDZzpzkro7uwmYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ExuMp3AP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhkHfCvf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5EA606A31C;
-	Tue, 10 Nov 2026 21:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C8F606A332;
+	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ExuMp3AP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50941F008A4;
-	Tue, 10 Nov 2026 21:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhkHfCvf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6D91F008A2;
+	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794346807;
-	bh=izWqIDu1MLZUfY7mHUtvRg3/UWowaZgxZTU46sEcixA=;
+	s=k20260515; t=1794346811;
+	bh=H2zQQpARwnq+vf+Mp/QmtkzAppeZMOu3L3E13bjdY2s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ExuMp3APC8DL6fpAH8LlnEHUAaZYSUf+6KLEGg4I9rPsDepuGBhcZKVf0kapCYMS5
-	 RjFuPwfVv66TEjQpOm/HfDFmdbX5FD1WE0VqHCbU+OdPhS7jMPGQahg8z99KOTNsJg
-	 039V8BOc5Spx7DLR/WHkiQ7XnknwLUC/G2I6N+vPGSC/DJBJzvGvIBGqQLaHkLwxbQ
-	 HvyFwoErMl8DSqkVeDv15uhed32RknCiKupqgivhFt8I0Q+HcbqQRi8rSf+KA4xJfN
-	 x5dv2AOH9l9JKfDwD2hgVO8xEMG/mnHyUBIhyi8sOgDvSn9fG+bEmWa/7bQtAJLvtd
-	 dTttKEnxdhxeA==
+	b=BhkHfCvfglc88Qqknr2GUZoSd5jv5susrcb7l38IO2bokVDGoppYczf/JdDgJjxR4
+	 q+xalbY2wRfo6Yd9LI9PKWjapVtcO2Lx7Y5Fo4XYHK5CNM2Zwa20QZ9nJOtNWAMMyW
+	 uuRsM+/RVWDlClNbzqlxDQAlRg1ufIpCdA1qBwaX0q8VZ3BD0fWnSTebvGvCZLVxAU
+	 fNgRIPwB6wK2yWHN8oqp0vh56yj+I/nziHGIEuDK1weCmcWWAJ8v1PVyVELkvd58Kb
+	 hDns6136/i7IWM9+qY95EVK6JwwuV0KoCRmFHyb617kHVtnEqnve41M88AcfMXYHmT
+	 CmYr0onmNL0qA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0EA39E8A40;
-	Tue, 10 Nov 2026 21:40:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210D439E8A40;
+	Tue, 10 Nov 2026 21:40:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5: E-switch,
- Restore host PF enable for ECPF that isn't E-switch manager
+Subject: Re: [PATCH net v2] net: stmmac: rebuild VLAN priority steering when
+ filters change
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179434680618.71955.12887058500414499208.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Nov 2026 21:40:06 +0000
-References: <20261104184756.773910-1-tariqt@nvidia.com>
-In-Reply-To: <20261104184756.773910-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, gal@nvidia.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, moshe@nvidia.com, parav@nvidia.com, saeedm@nvidia.com,
- shayd@nvidia.com
+ <179434680967.71955.2289215330785245096.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Nov 2026 21:40:09 +0000
+References: <20261104-submit-stmmac-vlan-prio-v1-v2-1-6cfc71e636ad@gmail.com>
+In-Reply-To: <20261104-submit-stmmac-vlan-prio-v1-v2-1-6cfc71e636ad@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ piotrwejman90@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 4 Nov 2026 20:47:56 +0200 you wrote:
-> From: Shay Drory <shayd@nvidia.com>
+On Wed, 04 Nov 2026 11:51:41 -0700 you wrote:
+> The RX queue priority callbacks preserve previously assigned priorities.
+> Passing zero from tc_del_vlan_flow() therefore leaves the deleted rule's
+> priority mapped to its RX queue. Clearing the whole queue instead would
+> also remove priorities belonging to other installed rules.
 > 
-> The cited commit breaks host PF enable_hca when the ECPF isn't E-switch
-> manager. For example, when the link layer is infiniband, the ECPF isn't
-> E-switch manager, so after the cited commit enable_hca is never issued
-> for the host PF, it stays in initializing state and fails to probe.
+> Save each VLAN rule's priority and rebuild the complete per-queue masks
+> after insertion and deletion, starting from the platform assignments.
+> Resolve overlapping platform masks with the same last-queue-wins ordering
+> used during initialization.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/mlx5: E-switch, Restore host PF enable for ECPF that isn't E-switch manager
-    https://git.kernel.org/netdev/net/c/4777203cc9af
+  - [net,v2] net: stmmac: rebuild VLAN priority steering when filters change
+    https://git.kernel.org/netdev/net-next/c/edf10f5c2513
 
 You are awesome, thank you!
 -- 
