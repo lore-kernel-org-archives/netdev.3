@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794292888;
-	b=Oi5ZkYx5RTwNdJAiZiRk6NWKgOovfHzI6O3ypfziibHDNS2q5QZ6jTiJJBOk/tjc5/eR
-	 LvGaqiyCiN+1UJYGTMsXxg8EWYbJOhN9ASAYo30lVDbqhrY7rm5qqr3sDYbrxWjsKfMed
-	 sa4hnoPsFaoOeiFb7Lg7mtmRCp8luJMQSxdApVbWgUVozk3JsNsfPtoV1c1OMTPZqGVFZ
-	 wDLoH0CzJsvNZGx6P3YEI0kqhZ+Xnto6Isemajg4Cm+wS6MJFMEKOcf7ZuaXQKK/2ko4t
-	 W+q8oA3c4JbzX9rJETkYenZxdGWZfB4QdNp1qo5GpZg0hMGa8q63TTGqm0Q9GqpYeVQ==
+	t=1794292885;
+	b=N0WOpabirjb7sznATpfDZaz2JMTKTfGvzkJAsOmZ6ThF5RQseJJJljI+rh2H4wDyznPz
+	 ONk6NizUoUUUWuMB9TjFdpjTs0Q5nouB2tMXq7vgxaERAuA198JNpUOkiWlU10aItl4zd
+	 slza9vStzI3RHqptql/J1KTikiueKg+Vf1fOd4QZBUwMwaxp5DGMi5ifzATo4GKpYnhCg
+	 k7xWu6EOzLceGQjXcJLSL32IITVslpOHzPA2efzEsMbYIqMEvQugcDmw2OT17AlWDp0dY
+	 WUakwki/k6H/cgB93EsA7jVU0bKbWeoRMA0970ATgriA9PWvh/uMHt5TqyErkk/u4ew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794292888;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794292885;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
 	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=WfIAYqdF6wZYpZzaWY38Xxjrq+wOS8yWfdzFcKWXmbc=;
-	b=PipeAvIpxoEqzqgtvULZGnz1SyiCbt1I0oGmYmfLyMauK7nw09P1NOkDQmHqRn4xxnjS
-	 IPgyXeleIhD20Qm95VLKphSjOi9AQ4XJ/3BZMq/ixv8UWHtI+B7mKsSHuFKBo+3neu6jV
-	 w+X6huCLuyiEhvHmRDI/BTN4xTr3jO3iH8shM0MXl+BEscF0Khhb6j/psWixCaqNwZlBN
-	 bWHNS++U0aJojJFe6tPa6zv1QoZsYoaFOflA4MFjvschk8qmvxFH6D0CYNM7r6lOsrCQK
-	 z9ucGjMzQ5+D1eSOrY8FOKz/9dQGpRa/CbNGhaYQMSElRrRq2RTeCvP7wSSqh4fTxfQ==
+	bh=AcfouenU4KIPThaRw9r968DyKfyGZV3RnZDZtnqf6zo=;
+	b=dnJw6tFNBLY/y3a11edp/eDUmI2q2W40Bhnlfv4ustR9C5ulQ7QGpYWvlesgIqY439xS
+	 5YYxGnyqRHKPE0kZ1XaXgCBeze4Bke1XgLlgxOtdE/NN5YKRE1jm668/LJ/u46Z/8CTW3
+	 y+mJJkaurG9QMiBnmdBe8+mVR/+fox1d+2fSJAGcTwBpf4ybZq8K3d1DNhiECqvorl9Wc
+	 fdb7/Vppn2A56N/YGG8i54QKrsZo4VKrPPO3nGi8dVfum6YbWfiLoJVuWLkNEZwwbyP3m
+	 BSnfPd4+FIY2nH/Y87BlIJQhBBAAd1OYdfS0bZZ6xMMC9Wyt6z84QxOxC8dsFYS+BJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LkZG1Aaw;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9492A606A643;
-	Tue, 10 Nov 2026 06:41:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9492A606A643
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=IzczfaiS;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2D560A6F47;
+	Tue, 10 Nov 2026 06:41:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC2D560A6F47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LkZG1Aaw
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=IzczfaiS
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=LkZG1AawQASF5XJO37toqyMRyC6pBLcNVPI5P9kppwgBnI9iFh6P/aNgaDEqsV3uAtmw6qxocLngn
-	 xgZTbuw3n4D8ZYLtOM7gSNikmWPuRvD8jU10nYTYrClp0ZtTck+2inl7ic7LObxlz/YZkJB901Qiwu
-	 leyRyftDdEMioqA4=
+	b=IzczfaiSQgI6fDN+NLxxBudjE63hv/B1HxrUmpyqJQUosMdCB8+Qmcf9+vMejuj39WFeIrjMf/kNT
+	 ljrmm6jewS04cjn6MZVBkBdHrbBziMgQK8pds39uCJAI83rQPZzDAqy1ZaB63cn9nwT7oNoYns6rOB
+	 sey85DuNumvTLY8E=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af2bc92851-6b667;
-	Tue, 10 Nov 2026 14:41:23 +0800 (CST)
-X-RM-TRANSID:2ee46af2bc92851-6b667
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36af2bc8e42f-97bdb;
+	Tue, 10 Nov 2026 14:41:21 +0800 (CST)
+X-RM-TRANSID:2ee36af2bc8e42f-97bdb
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from  (unknown[223.108.79.98])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5d9;
-	Tue, 10 Nov 2026 14:41:22 +0800 (CST)
-X-RM-TRANSID:2ee66af2bc8e8a1-aa5d9
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66af2bc8e8a1-aa5d2;
+	Tue, 10 Nov 2026 14:41:21 +0800 (CST)
+X-RM-TRANSID:2ee66af2bc8e8a1-aa5d2
 From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -66,9 +66,9 @@ Cc: andrew+netdev@lunn.ch,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
-Subject: [PATCH v2 net 3/4] net: ti: icssg-prueth: Fix port scan issues in prueth_probe()
-Date: Tue, 10 Nov 2026 14:41:16 +0800
-Message-ID: <20261110064118.1138-4-laixiangwu@cmss.chinamobile.com>
+Subject: [PATCH v2 net 1/4] net: ti: icssg-prueth: Fix device_node refcount leak in prueth_probe()
+Date: Tue, 10 Nov 2026 14:41:14 +0800
+Message-ID: <20261110064118.1138-2-laixiangwu@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 References: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
@@ -83,92 +83,53 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The port scan loop in prueth_probe() has several issues:
+prueth_probe() takes references on the eth0_node/eth1_node device nodes
+with of_node_get() and stores them in prueth->eth_node[]. If either of
+the "ti,mii-g-rt" or "ti,mii-rt" syscon regmap lookups fails, probe()
+returns -ENODEV without dropping those references, leaking the device
+nodes.
 
-- When reading the reg property of a port fails, the error is only
-  logged and the uninitialized value of reg is then used to decide
-  which slot the port node is stored in.
-
-- of_node_get() is called on every port child before the reg value is
-  validated. If reg is neither 0 nor 1, the reference is never
-  released. If two ports use the same reg value, the second
-  assignment overwrites the first pointer and its reference is lost.
-
-- The "port0 and port1 can't have same reg" check after the loop is
-  dead code: both variables are initialized to NULL, each iteration
-  assigns at most one of them, for_each_child_of_node() visits each
-  child exactly once, and the both-NULL case is handled by the
-  preceding check.
-
-Fix the first issue by skipping a port when its reg property cannot
-be read, and the second by taking the reference only when a port is
-actually accepted. Reject duplicate reg values, which is what the
-existing check intended but never caught, and remove the unreachable
-check.
+Jump to the existing put_cores label so the error path releases the
+eth0_node/eth1_node references like all the other failure paths in the
+function do.
 
 Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
 Signed-off-by: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 26 +++++++++++---------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+Changes in v2:
+
+- Collect the two independent fixes into one series (suggested by
+  Simon Horman).
+
+- No code change since v1.
+
+Link: https://lore.kernel.org/netdev/20261030085651.1944-1-laixiangwu@cmss.chinamobile.com/
+
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 9b971d1df..c19a51174 100644
+index 591be5c80..9b971d1df 100644
 --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
 +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -2217,24 +2217,34 @@ static int prueth_probe(struct platform_device *pdev)
- 		if (ret < 0) {
- 			dev_err(dev, "%pOF error reading port_id %d\n",
- 				eth_node, ret);
-+			continue;
- 		}
- 
--		of_node_get(eth_node);
-+		if (reg != 0 && reg != 1) {
-+			dev_err(dev, "port reg should be 0 or 1\n");
-+			continue;
-+		}
-+
-+		if ((reg == 0 && eth0_node) || (reg == 1 && eth1_node)) {
-+			dev_err(dev, "port reg %d already in use\n", reg);
-+			ret = -ENODEV;
-+			of_node_put(eth_node);
-+			of_node_put(eth_ports_node);
-+			goto put_cores;
-+		}
- 
- 		if (reg == 0) {
--			eth0_node = eth_node;
-+			eth0_node = of_node_get(eth_node);
- 			if (!of_device_is_available(eth0_node)) {
- 				of_node_put(eth0_node);
- 				eth0_node = NULL;
- 			}
- 		} else if (reg == 1) {
--			eth1_node = eth_node;
-+			eth1_node = of_node_get(eth_node);
- 			if (!of_device_is_available(eth1_node)) {
- 				of_node_put(eth1_node);
- 				eth1_node = NULL;
- 			}
--		} else {
--			dev_err(dev, "port reg should be 0 or 1\n");
- 		}
- 	}
- 
-@@ -2246,12 +2256,6 @@ static int prueth_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	if (eth0_node == eth1_node) {
--		dev_err(dev, "port0 and port1 can't have same reg\n");
--		of_node_put(eth0_node);
+@@ -2258,13 +2258,15 @@ static int prueth_probe(struct platform_device *pdev)
+ 	prueth->miig_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-g-rt");
+ 	if (IS_ERR(prueth->miig_rt)) {
+ 		dev_err(dev, "couldn't get ti,mii-g-rt syscon regmap\n");
 -		return -ENODEV;
--	}
--
- 	prueth->eth_node[PRUETH_MAC0] = eth0_node;
- 	prueth->eth_node[PRUETH_MAC1] = eth1_node;
++		ret = -ENODEV;
++		goto put_cores;
+ 	}
  
+ 	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
+ 	if (IS_ERR(prueth->mii_rt)) {
+ 		dev_err(dev, "couldn't get ti,mii-rt syscon regmap\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto put_cores;
+ 	}
+ 
+ 	prueth->pa_stats = syscon_regmap_lookup_by_phandle(np, "ti,pa-stats");
 -- 
 2.50.1.windows.1
 
