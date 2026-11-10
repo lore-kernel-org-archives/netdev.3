@@ -1,96 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.103
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794329263;
-	b=LeQRTwIfi2KKknP05g9MjQhPQcgZHpBBsjXxYMpeXvBssHOC8ALx4ChtUWSLR8vRrTHy
-	 cbSuEfConrS3sLlDM2MNfZ0yApZWyp/6aLULhPQqgNqow2q1lEFw6WzuupURnLuR4dDaR
-	 lELYX0G4oIi7DLW6SsHa6lyektq1i0dcU/C42cc9LIlhStujMyHe7qZ4pr+lAwtMlUpsV
-	 1ejcBY4eW7QTYA2cS/UBa5jwGLMEXENKTAn1IYj4QxuMIQzhwpOkTLsH3p3pImQ483dtM
-	 9DP1kY+GEsuWORDsdTHRP7eZhXRIBEM/M3H7q330Hxr4xLLBM3vsiIiDopYqZwVL07A==
+	t=1794329364;
+	b=h9SX+MPxEwFWtXObL8NtAkFRW1bRipKpFB2b1vCq8N8AZ2BGSGh9irO+PVEj0Q1qh/G0
+	 EpDpsKeZGE2tlkt8+d34m7ERL7suWxi7+yeeJ32xgq23ChOkKc7+yD24W9sSa7FgNGNVr
+	 mEshfhWl/6sA+8L8Djft2N4doDkO80XCsi/WEAIggqR7lWKEGVu3LngORHUe9/n+ydfn5
+	 yej7lhFBsGhc4WI64Rbc2JLmCwG7HTGLHuF9whnFdEfIsAWLtUfRcufYWmXO6FTlk9ZjI
+	 o9Q4qI5/afyb4mncG71uTe8ZqtL/OMB3lDqyPlW8Xi7gLtcfU4tQwg+Ot8RptKMqzfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794329263;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nG9stXQkwLVFlp/SM6Lzv9KwcbHb+1wfgq3qgejLqIQ=;
-	b=CLp3Yz5K3vFn8P5Th66h4Q6SqvyXNqXkdR0FJFjMTKKeWlMF9liHbJYe3H5hH2FB2Rxt
-	 RNL1ytmCiQh8oT4brJ3zr3O1YCo2a9sEsqv09+3CyI6Fctu4+Z+E4utv9X+erHFSIRGDl
-	 9OWQt1VFEjjz6hFMbxCY1TBaslU/5susRiMuiUQMpdrTXLXSTVdrQwc9SxuG+bR9goqFQ
-	 aa9jLkVfEs0tWAZPOeMstA6dkTp25IgazXrNzD4GYY78SRGgofJFJO9ZPSpeYOomzOtkm
-	 w9Ud6eoz37sWcfiBtDoejQ5ZEgk40SWHxahyHFaYrBxTTCRCeVZ6h7HKcYlGQfIIiLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794329364;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
+	bh=nPtrbd2Pn3rK1sw5Bc8c1fg7SY1qBfAR8Azz15uZZXI=;
+	b=IswXo9y9vtdrEbPaoYkJ9dvhskVpcRKCaj+cWRZ/tqIG97hS6ICO+ZqKgRCJCVrdc19w
+	 Dzk9wlads8fOty1stugBt5DbCGm1gqp+ufmCTDtbt3OrE5VkoQ7RwoE0fHe6i5VDADHts
+	 EUyfENQT9EwuKNwGYNM4R72PYhG7eLJkHIk5M/CmZoqOyrohZPqb/Xevkvpbj6QZBeol3
+	 PajjfJ4ET0Xqgrsy6ruvi5CcDT9bJD1C6mwBbbnE5KGEz3P7Zg8EtXDHbFVfjlf88Ot5s
+	 LHwhEsbVmh/t5lAEo5S4AJo8tcPMAdGB8BTmvCPrcDmruL6Ia8uUFt897H6j0oxF9eQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zx2c4.com;
-	spf=pass smtp.mailfrom=zx2c4.com;
-	dkim=pass header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b="IoRLkDg/";
-	arc=none smtp.remote-ip=209.85.216.103
-Received: from mail-pj1-f103.google.com (mail-pj1-f103.google.com [209.85.216.103])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=POE2dKJi;
+	arc=none smtp.remote-ip=74.125.82.49
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9A8606A323
-	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:47:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D9A8606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zx2c4.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79DD606A339
+	for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:49:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D79DD606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=IoRLkDg/
-Received: by mail-pj1-f103.google.com with SMTP id 98e67ed59e1d1-3b0bbdeae06so1405836a91.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:47:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=POE2dKJi
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1b24f4b15c4so594043c88.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 08:49:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794329363; x=1794934163; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nPtrbd2Pn3rK1sw5Bc8c1fg7SY1qBfAR8Azz15uZZXI=;
+        b=POE2dKJio14LyaDVkR+BmbhlmJfL3c+ppSMEYXAn68Zh1qMJQkRRgYrFpfcjoPIdxe
+         LKNTJZ+qLl5KycuQa/KBAa0V7qCYDceZ72rU4/d7aIOqMEqb76zw8F2kBmFjv/dkSrts
+         8KeVMjltoTlxis9vnEKSzF/mz0U2xBpQzv/CUbpoABR8TmmaIhAtN95GBKAYj0bQ5y4K
+         WTflcwHcbLFOlptFw+pVwlZcd51SidZ/s0KEYDXY1vnyaH6k3oFribB2jbDeLWBn3Dei
+         8tpKh9Mhgze0pDpKuFNQ/iUQl12ffQjfbg9Z47WfuKSCBcxZHxrCfv+ORkavKx8ydT5n
+         yrSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794329262; x=1794934062;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=nG9stXQkwLVFlp/SM6Lzv9KwcbHb+1wfgq3qgejLqIQ=;
-        b=k8BXJcTmgkJoLFF6q0QZK7xAOiqBUb3wD7gqGkGTlypUzKxeqycJP3qcy1MQh164Sq
-         EA7ZmQLie6sCA6lPJ2fl9EhyT77DXdBDpqSe51oCOQy6ISexcCPIvlh7rM5Y5+DWZOir
-         nH5VrWe+y3hbz6GCac5seEPz6twsZuZksV0EkWsyWl/5b7O2nQQK/xbZFgX2ROtRvVsr
-         RSJEh/e3tLy64VjgyKEjMsXiw4K4Bn6dqiXPWCe/q1w3zgAI8p+CsbO/AkVaxPMhs5vj
-         /BrAAZiwaWEIDJpPh2Mk87DFu6Qe52Kah44OU5Cc7RMddy2ZLBlevuKY+JsPPb9Fs2wy
-         5MPw==
-X-Forwarded-Encrypted: i=1; AL+hErF1/KwbfJAqDERmxgLQ7+alWURcElVMwhdH4FxBMH3UbGhRXc8OZxPQh1NRksuFyyoiJ2/g/gE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9wv6RV8mIwRZVQAx3TAFBbSR+m+D0H8U00eFdox6IdMzNkRsgj
-	cpXcUeInkVQX6O7O+VATLGHE8sROp3HLYn9sDuyRNP41naUwkr2QN/YIRKQX0YA0p5RlCWnCEfM
-	aGokpvavTO+d6hwfJyUKQWjd9IR5oWBro/f0wc60=
-X-Gm-Gg: AYBFou0CzjRsOTcQ6JNIT4eK3BPnTXYHkPPTaExd6s/brZwSVmaM0TV/b4WFkXXNlip
-	Kug1mJ68dTzRtqbgAPWjwatx4XFlC3H7eNju1/nIgEiaTuaosNe91yQz0Q72copT3TsVOQWbxLL
-	QY7UN+MbGWYDDKXAQ/QHfeiZx59RGITtFqA1rObo72MNY5jWAPIIWGYqaHDSX/eNQaXW0nI/UFl
-	axwjJeT1F/qZ5SkSmRZF0b34iBD5jVPntrahWOasJ9P9WpshReiJfFpTmMcFL5f/WCTHHovVTA5
-	D5ead3uzrRfoNgi9hmq/kPSSPIISTdh7+aAOsVq0A8YqjkzzPBui9zbylUZP56lSydIWpDJL8jQ
-	gmw==
-X-Received: by 2002:a17:90b:2707:b0:3b0:9e2c:9b61 with SMTP id 98e67ed59e1d1-3b166cf6979mr3264778a91.35.1794329262291;
-        Tue, 10 Nov 2026 08:47:42 -0800 (PST)
-Received: from zx2c4.com (mail.zx2c4.com. [104.131.123.232])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1690d291dsm990689a91.4.2026.11.10.08.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:47:42 -0800 (PST)
-X-Relaying-Domain: zx2c4.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1794329258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nG9stXQkwLVFlp/SM6Lzv9KwcbHb+1wfgq3qgejLqIQ=;
-	b=IoRLkDg/XdQGCsYApczobF0xNyOZOVRsSpJaAeYcx8Z4QeSgHjqeionaAzNoKZGOOgM+oL
-	LUN63e/LMgVxBdYJN+e5T0DV8vpyjFnXnv5/I8AeILJ1A8QyF5AC0xmKpQ2laIA3oeKy2D
-	2Wj2oRk0lyawSr8TLpuq0OlohsoH0do=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 6530d039 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 10 Nov 2026 16:47:37 +0000 (UTC)
-Date: Tue, 10 Nov 2026 17:47:35 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Roman Khromenok <roma55592@yandex.ru>
-Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH wireguard] wireguard: device: allow userspace to enable
- IPv6 link-local addresses
-Message-ID: <avNKp7OVA7d1X3fL@zx2c4.com>
-References: <20261022110039.270335-1-roma55592@yandex.ru>
+        d=1e100.net; s=20260707; t=1794329363; x=1794934163;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nPtrbd2Pn3rK1sw5Bc8c1fg7SY1qBfAR8Azz15uZZXI=;
+        b=nmmEesxx0a0me/Grvqr4UyZjDdwGlN5F+fs1NOr4OLVYPNSTNOJ77wP02+eyB8a2Ul
+         0D6JnRdu+J2At5AekPfVq0OWLeXL2UXQNVOSOOYjXELFqlFl+44OzN48Ar5+3ysdqjCV
+         jtz/mpL8sHGM5Gog37XFnGBezCRL2ETQiLSYEkzZgHeuOrBoEjwuDMVTSoOaYF3Am7V1
+         W16Na8T50P+6Yz9xseXbvRv5qTpAF3bLiWinkfde5zMYnH3KJZF/FU5I2exschg1AaSH
+         TkDjuHNlc112j3bOHoWJpdZm2Njul1GqKA2IZ1Z081AGu4hh1n9WdyRqvZrpjC9uslVt
+         ZaPA==
+X-Forwarded-Encrypted: i=1; AL+hErEV+I1WkN6NvURffFy/yKPNfOdY0+oJHyDs49L8k0Qj8Db0GVIYRLzkeySgCydYCyiHTRzBn7A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9/BI+3mEAewmHWAZ0fQEMpWw+lrxkM/t9YpngADaRM9BQDUa7t
+	JmPPTGXWc9iuEI05p4ggqBClrYfmmLvqsUEwtJ9dnvsNK2xhBssDYoHO
+X-Gm-Gg: AYBFou3+aSpp4EZzFzkAqhQSuyBk6FZz86yGf4lLUsmKWD6bcVCV3Jqe81SbHbJezxZ
+	57RG+o+SVaS5rpXBE+coaRcStSpBqnkQGoy0l5rKx33dBiH7eK26HLDmi35B1s/CyU2el0NeSm2
+	okXEAzrB4xfBwr7YlvF93ghwYJE4brrpPP5Dim6dtZjWSaY7YBCfRdQZcK0G4/7iFlqm/xOCz46
+	oHBeiXd/QeGIOAg0dMaSRytig0r+Hh615yuN9o+mDHJ5heCnZdSCyFxIl1jzMs3FZSnqfquwPbn
+	kpDrQ+NwrpqpeWqF0reG4XMQxqdSsDsMTGKdWH8HZYCDNVfJx3ligISpTCSDw4FGbqOz/lXZqE8
+	OfQq/S7Pp+DMKNjMlZoAaR1z8WX7XU5BOeOFLVpsS0PRYd1/6Qv+lJPP8o7cyE+7Gl4N9CjY3P7
+	Pn4+rKKXKUVb6cXHbEDYeOX2k/Fa7Kd97ZnR2IcJrS6qvuwULjS2iazCFuaBeDDvz04daVhZdTk
+	qTxKiyINoZn3vbjA+bVNrRTfpsizYV3Vn3W3oE0m5j5watnXGATf6zkX22i/nXO67xbl+bqnXgE
+	qsHSh0DCOBp+Dx0Gexp7NIIOkDvDO0QmeTXzCg/VWStMFRmnQSZqqAKYeAplScL1K3U=
+X-Received: by 2002:a05:7022:1586:b0:14e:d0ba:75af with SMTP id a92af1059eb24-1b3bee94f73mr67874c88.6.1794329362760;
+        Tue, 10 Nov 2026 08:49:22 -0800 (PST)
+Received: from smtpclient.apple (v133-18-180-162.vir.kagoya.net. [133.18.180.162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5ba8426sm7208003c88.23.2026.11.10.08.49.18
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Nov 2026 08:49:22 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,47 +89,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261022110039.270335-1-roma55592@yandex.ru>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH net-next v3 3/4] selftests/net: packetdrill: add TCP black
+ hole detection test
+From: Esko Mobius <echoowall@gmail.com>
+In-Reply-To: <CADVnQykoJWJL+vZ9GC=RqZuiSEypNtmTONBzV7XRQ1jsXy0X_A@mail.gmail.com>
+Date: Wed, 11 Nov 2026 00:49:06 +0800
+Cc: davem@davemloft.net,
+ edumazet@kernel.org,
+ pabeni@redhat.com,
+ shuah@kernel.org,
+ kuniyu@google.com,
+ horms@kernel.org,
+ kuba@kernel.org,
+ netdev@vger.kernel.org,
+ panweiping3@gmail.com,
+ linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <18B3E417-AC3D-4A70-88BD-4ADA9003ACAF@gmail.com>
+References: <20261110-mtu-probing-series-v3-0-dedfab25d641@gmail.com>
+ <20261110-mtu-probing-series-v3-3-dedfab25d641@gmail.com>
+ <CADVnQykoJWJL+vZ9GC=RqZuiSEypNtmTONBzV7XRQ1jsXy0X_A@mail.gmail.com>
+To: Neal Cardwell <ncardwell@google.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 
-On Thu, Oct 22, 2026 at 01:00:39PM +0200, Roman Khromenok wrote:
-> WireGuard interfaces do not get an IPv6 link-local address by default,
-> which wg_open() achieves by setting addr_gen_mode to
-> IN6_ADDR_GEN_MODE_NONE on every ndo_open. A side effect is that any mode
-> chosen by userspace, via sysctl or IFLA_INET6_ADDR_GEN_MODE, is silently
-> reset on the next down/up cycle. Users running routing protocols over
-> WireGuard, such as Babel or OSPFv3, need fe80::/64 addresses and today
-> have to set the mode again after every ifup, which network managers do
-> not expect to have to do. For example, systemd-networkd cannot honor
-> LinkLocalAddressing=ipv6 on WireGuard interfaces because of this.
-> 
-> Instead, set the default once, when the inet6_dev is created. That
-> happens on NETDEV_REGISTER, both when the device is created and every
-> time it is moved to another network namespace, since addrconf tears down
-> the inet6_dev on NETDEV_UNREGISTER. So register a netdevice notifier
-> with a priority just below addrconf's, so that it runs after the
-> inet6_dev exists. The default behavior is unchanged, but userspace can
-> now opt in and the setting persists across down/up.
-> 
-> An alternative approach using IFF_NO_ADDRCONF was proposed in [1], but
-> it removes the ability to have link-local addresses altogether, and it
-> was reverted because it broke the selftests.
-> 
-> Add a selftest checking that link-local addresses are off by default,
-> that they can be enabled and survive down/up, and that the default is
-> restored after moving the device to another namespace.
+> So I'd suggest renaming this case to be something like
+> tcp_mtu_probing_blackhole_no_tlp_retries1_is_1.pkt.
+>
+> Then I'd suggest creating a test like this, but with only the =
+following setting:
+>
+> `./defaults.sh
+> sysctl -q net.ipv4.tcp_mtu_probing=3D1`
 
-This is an old decision, but one I think I'm inclined to stick with. You
-can't use WireGuard with LL generated addresses, because AllowedIPs
-requires explicitly binding to public keys. So you wind up having to do
-coordination between the chosen IP address and the distribution of keys.
-The solution for Babel and the like is to add explicitly WireGuard
-support and use the neat mesh qualities of Babel for key distribution
-too. There has been some talk about implementing this for a long time.
-That's the direction I'd like this to go in, not breaking the whole
-allowedips model, which is what this moves toward. I hope that's
-understandable.
+Thanks, Neal. That makes sense.
 
-Jason
+I renamed this case and added a test that only sets tcp_mtu_probing=3D1
+on top of defaults.sh. With the default settings, the TLP and the first
+three RTO retransmissions keep the full size. The fourth RTO falls back
+to tcp_base_mss, about 4.8 seconds after the original transmission.
+
+The new test passes in all three IP modes on x86_64 KVM. v4 has both
+tests.
+
+Thanks,
+Yongjian=
