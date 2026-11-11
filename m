@@ -1,99 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794373670;
-	b=sWGVcrv7bjqy3zZo8UX6rLN8k8lkKZ3C3bKVRfLEkdi2b/pHpn0EtLeg2RIkKWgyzQ2N
-	 kogfAWG1DwCRPxBYsMyd8M1jntredftKvSzgQdpZCmiTRPrSd5KfJiZPPebp+K0XwE8ci
-	 LMna8jvfWkXwOFvKYKqwDK4w45chhfFVc6DOv3JsLN7tZXDgjafuLFaBjIjxvvdtgqUQR
-	 bwbJZN2zHaSjZOQT5Ri3VQxeWNdKTo5BhoYjnxb7gNRYqk+aU/h0j/gwz6iR7zYjFgJQf
-	 wa4GyR/dzVxLHBv0CTgdBz881OkVz0EydsUERPW0GYw8M1/NEv9GcCJiaRGfGj66Onw==
+	t=1794373997;
+	b=qZxqwG/TFC9HFtqPPIXXIiaEEmP6vjGwJiNuFMHLsXOeiOz3XU3rZToV/bLCPDBZT8D7
+	 PqhV8YoJRYdmMzNuGd2i0U6W6zKB900U3aY2n75YfBftGpdcie6C3yV/5EoDFEbmtUfn/
+	 1nzN6AZSGKlLItJ3aM3Jg5TvfJhh4dy4iucj21NgEPreXAv6Pq4rI1epGpmsxS5M+HwVQ
+	 TKmZAB4eXwr7Cjpk1ZGaKbxQBfegNON9CwmCnZbivy9sq5n558gEJgoWN2yEc6kv8Uy0t
+	 /99snVE6jDVPR8onwRXkJbBP0EC7oKcGLlbkBDLgCVQ188DXX4SZd7XMDovDRJ88nXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794373670;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794373997;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=4A6J667rSb3Y9gQQI6vYPwLfo1ZcBRjnfftz6dRgI0g=;
-	b=rPjDt72mVlkN32IJ/bRK24pO5/fvURvBGU/FfmHQ0wVXttQKjyweDVAWdAheyQyb/0n9
-	 OidJErCqokEn1qAEqz/uawDD8hgwyzA4p36jNx2njYr0XhYmuZa//86OuXGDyz0EzclZz
-	 Cl5v2ueIDH5EKSZ0ts9BxfeUBhMnPd4NtZcWILjjN3KdQcmBc1mOgjkRBQmP+gsBAIbaR
-	 EVINNK41fDVwKERwTg/2YRMsHN9xiizaTl8k0sGBmjcUe/6CpRC9kiMcFp+8igKcPjTuL
-	 V90y4ZUyfZRVJbmoK7l1xcbxEffGqAgDmPtV0Ppl5MlTwEcpc2fSuZ6ik1ny2u0qELQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=0NG6UskJZnXLULFny7dGQngvAoak4lXjAToaONwQPqw=;
+	b=Jb7YRK/91ptw/ioD2PH48d7OTdeCMynq4efpYmtoiMlu8c6e/6Bb41CmucgAaP9PRafd
+	 7Ohn6P5tUBj9JFTrtMbb03e7gGqJn1lEEN9YUyoapFVsVlYf0wgIXvCvXVt/njwzr7ZsO
+	 wn41vNICOUvU1I7OXVbBuqiO5Dc9GX5b0ZfXawpmhOt/to0JLeei6WPBimVvAN1XHto8x
+	 jmqPBpw2ln+bh2oH+HHSlp5cJuecEKAQfLyue38KJxWLdsNYZqcinVCaOSP2fEtfsqXkE
+	 flSBHj59ONKEtvu0P5Bpgips8JQEmdysHrwyHXzg9NhkhXTFfcy+gU5K5QSe2hGRvUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=smartx.com;
-	spf=pass smtp.mailfrom=smartx.com;
-	dkim=pass header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jYePaDA6;
-	arc=none smtp.remote-ip=74.125.82.180
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iU8Y5GF7;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A66606A327
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 05:07:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1A66606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E82606A31C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 05:13:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02E82606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jYePaDA6
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3704d30b84fso3574057eec.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:07:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iU8Y5GF7
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e954d87b48so43162745ad.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:13:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20260707.gappssmtp.com; s=20260707; t=1794373668; x=1794978468; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4A6J667rSb3Y9gQQI6vYPwLfo1ZcBRjnfftz6dRgI0g=;
-        b=jYePaDA6FAC435KsBdwicGiIKytsh/Lv7E/r5woVHInPAamUshJuOkBD6xdSL+mjO0
-         aKW1v14tOHLsf0hp5Ab+zHkdZbtZjB0vqxmDKQyC2nmkI/04tJrcHhiQfSTTZQoHwFRx
-         r2nbG3NjPh6Ly6GiRnKfoy9vcjDRDr/syYc4fxN3HszhyHuTNozIzLHOVVMx5fITyFhg
-         vTx7+QfX2yyq3SK5r6qsU8anmUqVJDb8f58FG0vn568G/4+xgn2W8DIk/zLeSLkXBMVJ
-         gECNyckcAs8h8ZnWWUFIO09fm9yvu/JaRgnWjM0JbNco0kW4k50YzVBU4pV54/cPzewj
-         yxMA==
+        d=google.com; s=20260707; t=1794373996; x=1794978796; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0NG6UskJZnXLULFny7dGQngvAoak4lXjAToaONwQPqw=;
+        b=iU8Y5GF7axDYomcZwrueQbbOLnOEokAi6WseF4J/K6WVgDZDNSwiQnyjDkAU8z0mQI
+         jx8AWtSvmYLjhjI7xkt2ep1+C/eSERUYUo4cOucnM8d5WtFl0SprT4f/noFFYZvvcg1S
+         8aNkX5kv9m+pFh5vySsVMAMD8v3ZK2lqD/sGRcuSGeiHXWlU1AtvgHVMCjW/EQJM+18k
+         cjcw+/UINvDo6ehbp/dqnofFnlJL3j8+nF6gLmNYzoVoeMjD8mfDlOgfts79GMJsPemS
+         oOdZROBJsBIJGPb23iKkOYWV5du0NM6h98+ML4yODbWOn92KzXE5hZliwTujRCp5MYez
+         QvzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794373668; x=1794978468;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4A6J667rSb3Y9gQQI6vYPwLfo1ZcBRjnfftz6dRgI0g=;
-        b=s0JGJFcJZAV6F9QVlb8S/lyhqZGI19SVUiIIkkFfUV3q52T76aqz56/UuJyypLxxfH
-         Xd68wOykexgpHFeEkezwCRsHQoVlO9LoF3FhzhOmKyTi1nMHux+e1NKl4CAjweZQFoMa
-         eSLESmuUsKk66YeIT+j6TL3CTGbOHV/74pbi4g9ZOZbFleJqVK483qCVPaFbY6lUS4z0
-         Y+e0q+njKPsnLfNVuUiEy+I4pjSMbgJBTgjTusQQzhJvRYJxPd7STRNKvDGY/a+jkqOr
-         lQZxpraKuBMhT7Sd6ZWNYVTnZyozFpNTQSDoX4t4CupUUOR4OYTcbgDAvThS2lmt5rc+
-         u5ZA==
-X-Gm-Message-State: APuU4Z8e36obAmbXVWifCa1iZu34YqpvuzDLTM7stCn/pKzh0+h3k06P
-	GU0BeI3VeiN/po2al2qqgvTvCOB8O9L+7GLXNdMlmpsCaRulJbzzYKLRXi/kfxx6IZK4h1Yr0tO
-	2lI1LEcJOb+oSp6w1lr7AYLKW5BI75+Q7ZebMdiHlVzjILceZ0ciHULnvaLATIhV8rvOBZkzr
-X-Gm-Gg: AYBFou27E2OjccPDuHowEaz1QnJrtA4mFREGdyx8ZzojuLE+PiDJDz7wqFzNLF21wGJ
-	SJxffx3z9r6hNwO18p8dVtT8q1x6h8DOin8r7jZ4JDUJ3nFsJiWMRmx12t6OS3V2n+8pnA5F2wP
-	iWi3n7Ejv6SdWXETWvChgB6ViX+BEjmM1DHolmgz4T4+KaRaLuy4Npi8Yc6i2Ier2N/TLxZkoFy
-	24LPlcjWj3Y4UxnmV/EmZQBlPZ59JExzwe/x388fSVA7GfoeF0+oEyMdfmI6GnhBbvRuOyeM1KF
-	nBn4BWrACNABzosRbvNtUKMYxrENjgjCn6KyOdgMl5xqyKMidRffU9PTif5wDjiAr0XSbFft2Js
-	0m3Ah3MgnGztVQPtW03hSaOZvn/nTrZKhym3aSm5WzmyzG1WyCVSI873hGuxqmBNAw/fW+RRooJ
-	OiY2iJmJUdnkxdf0pv8kWNmvgfEzsxnMjTVvRQz8ZmQ6H4YJtpwcnVtNIjZiDdcx5oYe36HOKJs
-	x3J1Pk94JLi3Rd6FiaLrOpngEuD0fRBY/zc/IvSNp7Q8XYzXIoDW7bJLPtNNdye+IlYDrNfZOpa
-	y4/mN2aJtw2IO/mG0+iHv2mhI/RSw59bBbfTuwaFoA==
-X-Received: by 2002:a05:693c:2d82:b0:376:b957:c08 with SMTP id 5a478bee46e88-376b9570f8dmr1847611eec.9.1794373667202;
-        Tue, 10 Nov 2026 21:07:47 -0800 (PST)
-Received: from localhost.localdomain ([174.136.204.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe306e3sm12510956eec.7.2026.11.10.21.07.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 21:07:46 -0800 (PST)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Wang Zhan <wang.zhan@smartx.com>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sdf@fomichev.me
-Subject: Re: [PATCH net-next] net: opt loopback into instance locking
-Date: Wed, 11 Nov 2026 13:07:27 +0800
-Message-ID: <20261111050727.643231-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261109173902.1225585-1-kuba@kernel.org>
-References: <20261109173902.1225585-1-kuba@kernel.org>
+        d=1e100.net; s=20260707; t=1794373996; x=1794978796;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0NG6UskJZnXLULFny7dGQngvAoak4lXjAToaONwQPqw=;
+        b=LZI++ahSZPbVve9tJqLbYUWnfSrKqXh6YYZu3o+N/v9IEqmuJv72Z5OwkLadRH6aU9
+         uaUQTuM084HPQyHslyZL8oQvYy2LuAD40XHNXBPTg3MsPGq+jEK9Xjt/rYYQHxKMsEWk
+         VbIG//mFNK2EoV22aKtE230Xz5EJhWJUmaqHi3oxTQv3rfTcLoFZl8AszMFFhsj806NO
+         I9sPYA18bTvtK3BhSFyenPcW375LlvIlzZ72+fdR9mk7QjUNokrBIfMc+51gAJMrfcxo
+         WQq1mc8GxtUFcn4zIMCViV/wNFT8j3uPix5wzbhFMuePVopBb29gohr4pJjz3U/uVGAI
+         K4ow==
+X-Forwarded-Encrypted: i=1; AL+hErHY+JNpRtMx3X45DU71+FIw3jDjRBeqgaQD8PGu1F4uXF08oyzCRLUuJzexnduKMz4LsukbjUM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8aeLuNQgWvJKeFJI1Ak5zsq+siOTN5CLYEEJyT3i/XzARA7jWq
+	F9o2rz87TQoVm6/ir9xgkI2cNJM3GOsiBj+8UvS06+kWUJgq6V2aohTsMS+ErWTJX5Jo06PrZgF
+	RRFgvIg==
+X-Received: from plbkk12.prod.google.com ([2002:a17:903:70c:b0:2ed:2ecd:f0ad])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4cd:b0:2e9:5eee:e087
+ with SMTP id d9443c01a7336-2edd79ffa35mr17633785ad.43.1794373996088; Tue, 10
+ Nov 2026 21:13:16 -0800 (PST)
+Date: Wed, 11 Nov 2026 05:13:15 +0000
+In-Reply-To: <avFoNgJENLYu4t7X@v4bel>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,41 +77,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <avFoNgJENLYu4t7X@v4bel>
+Message-ID: <avP5PfDz6WfnvckT@google.com>
+Subject: Re: [PATCH net] tcp: fix request_sock use-after-free during Fast Open accept()
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 09 Nov 2026 09:39:02 -0800 Jakub Kicinski wrote:
-> netdev netlink iterates over devices when dumping queues/NAPIs/qstats
-> etc. and takes rtnl_lock or instance lock depending on the underlying
-> device. Currently even if all the "real" devices in the system are ops
-> locked we still have to take rtnl_lock for lo (only to find out
-> that it doesn't even have queues or NAPIs to report).
-> Opt loopback into having control path under the ops lock.
+On Mon, 09 Nov 2026 15:29:10 +0900, Hyunwoo Kim wrote:
+> Commit e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
+> made inet_csk_accept() check tfo_listener before taking fastopenq.lock
+> to avoid taking the lock for connections that did not use Fast Open.
+> 
+> reqsk_fastopen_remove() clears tfo_listener while holding fastopenq.lock,
+> then reads req->sk. If inet_csk_accept() concurrently observes
+> tfo_listener after it has been cleared, it skips fastopenq.lock and
+> drops the last reference to the request_sock. This can free the
+> request_sock while reqsk_fastopen_remove() is still using it.
+> 
+> If the freed memory is reused for a new request_sock with req->sk ==
+> NULL, the reset path in reqsk_fastopen_remove() can append the new
+> request_sock to the original listener's list of requests that caused an
+> RST. After the new request_sock is freed, the next append writes through
+> the stale rskq_rst_tail into freed memory.
+> 
+> KASAN reported the following use-after-free when writing
+> fastopenq->rskq_rst_tail->dl_next = req:
+> 
+>   BUG: KASAN: slab-use-after-free in reqsk_fastopen_remove+0x142/0x210
+>   Write of size 8 at addr ffff888108230688 by task swapper/5/0
+>   ...
+>   Call Trace:
+>    <IRQ>
+>    ...
+>    reqsk_fastopen_remove+0x142/0x210
+>    tcp_check_req+0x96f/0xdd0
+>    ...
+>    tcp_rcv_state_process+0x19c/0x26b0
+>    ...
+>    tcp_v4_do_rcv+0x16e/0x490
+>    tcp_v4_rcv+0x14a0/0x1af0
+>    ...
+>    ip_protocol_deliver_rcu+0x39/0x1e0
+>    ip_local_deliver_finish+0x124/0x1e0
+>    ip_local_deliver+0xfb/0x1e0
+>    ...
+>    </IRQ>
+> 
+> To widen the race windows, mdelay(5) was added after newsk = req->sk,
+> mdelay(20) after the if (req) reqsk_put(req) block, and mdelay(100)
+> after tcp_rsk(req)->tfo_listener = false. The KASAN report above was
+> reproduced with this kernel.
+> 
+> For the lockless check, use tcp_sk(newsk)->syn_fastopen_child instead of
+> tfo_listener, which reqsk_fastopen_remove() clears.
+> 
+> syn_fastopen_child is a field of the Fast Open child TCP socket
+> referenced by newsk, not of the request_sock. It is set before the child
+> socket is added to the accept queue. The paths that call
+> reqsk_fastopen_remove() in response to a remote ACK or RST do not clear
+> this field.
+> 
+> inet_csk_accept() uses this field to take fastopenq.lock only for Fast
+> Open child sockets and rechecks tfo_listener while holding the lock.
+> Connections that did not use Fast Open continue to avoid the lock.
+> 
+> Other bitfields sharing the same byte can be modified concurrently, so
+> annotate the lockless read of syn_fastopen_child with data_race().
+> 
+> Fixes: e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  net/ipv4/inet_connection_sock.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> index e56beec438773..e5e7b844fed44 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -683,7 +683,8 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
+>  	newsk = req->sk;
+>  
+>  	if (sk->sk_protocol == IPPROTO_TCP &&
+> -	    tcp_rsk(req)->tfo_listener) {
+> +	    /* Stable while reqsk removal can race; adjacent bitfields may change. */
+> +	    data_race(!!tcp_sk(newsk)->syn_fastopen_child)) {
 
-nit: NAPI dump no longer takes RTNL since commit
-062e789172226 ("netdev-genl: remove rtnl_lock protection from NAPI
-ops"). "dumping queues/qstats" is enough, right?
+Are data_race() and !! necessary ?
 
-> This is a pretty obvious thing to do, I've held back this
-> patch because we used to only apply ops locking on physical devices.
-> netkit queue leasing made a precedent for (far more complex)
-> SW devices enabling ops locking. Now adding it to lo should
-> not create much new bug surface.
->
-> I considered an alternative of adding a "predicate" to the iteration
-> primitive so that we can skip the devices which obviously don't
-> support given API (eg qstat) without any locking. But it's more
-> LoC and real_num_.x_queues is not currently WRITE_ONCE()ed so
-> it doesn't work too well for queues.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Tested on x86_64 QEMU TCG with lockdep:
-- with RTNL held for 3 seconds, all-device queue and qstats dumps waited
-  before this patch and completed in about 4 ms after it
-- no lockdep warnings across lo up/down, MTU change, rename,
-  promisc/allmulti, ethtool get_link/get_ts_info and netns teardown
-
-Tested-by: Wang Zhan <wang.zhan@smartx.com>
-
-Thanks
+>  		spin_lock_bh(&queue->fastopenq.lock);
+>  		if (tcp_rsk(req)->tfo_listener) {
+>  			/* We are still waiting for the final ACK from 3WHS
+> -- 
+> 2.43.0
+> 
