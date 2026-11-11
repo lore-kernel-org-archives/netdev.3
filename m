@@ -1,68 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794410412;
-	b=gKAPmIAPdEbsZFsmZ9RrGjXE6SujuQSJOuhRC7LqcErh6w+LpWgzPqQlMVTF4ka702SG
-	 07ayTyAGJLuhUOH4uz8dMiWNj+NKmHdY2jNhS3uy4uGO6ufHPx04lZY4niSv9OMfh8wfY
-	 PzNxqSBNhqfIwUeOrA9bmjFGZ8fDTWAqtEdN/G0K/OYgRhes5QnBUKib9rV6Zy+saGZXQ
-	 KWKX0GRu0sETHkHMhdrWAbX3QtzMGdvi4VUyTn/Q7s660ZBWOrdl11ZNXRXSHFGveeTAV
-	 d0c9fB1GTKqbF0+CGcDBcuizuU36wQDp+DzWDJYC5i0KFuqYc/Aq6EXryQINmu2lcKw==
+	t=1794410514;
+	b=xsK10kuyH/+J2Yk4zRLxNlzxn7rVS6TS/cBX3QYjzZzZeowHAJTKIzy0W0RVQFM+8SWe
+	 s287bz4HmSqy6GA8gwpUiztV8HzZ3ucnhkAmomu+pX7KOReawNGE0jdRWlZRvIii333wR
+	 voejA9p/+i/rC2T5pPzkhpNFHfmL0s+Tx4Bt6n4rYBo5A4zd1dbHHP3lHJcywOtZpdTut
+	 JrSnpWoVSRZ2zwC3aLRbYLEYmJ2K6958FbAePqxVmm6PUbrQWBLjGM6AmSlqwLsE/g1qC
+	 I9GOGhXLhTXl1MEgfCNQYDRP7PqioSSnmGkRohq+0kVsQjy28+cylypjdx+EnzuzPpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794410412;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=+1DCBycizs0FNS95ffvn0ICcr0Hnn6SqaXL7oQg/o08=;
-	b=iB7046F2DBRObIsYNVhXAkFjfDTUb5lJWit6Lg7rNEtK2uUV1aAIG/42UN94ex4IIgH6
-	 k1uNL9x6+JJJLRqB+0sDKvqrGXYrJlyO2bvImh0ZiHichJ3EdTq8HXD0LqYBKCDLlIOFE
-	 LNcq0tTW38RPJxLoFMQH5TPnVb/1dvULlZMeV3WGR9qkXC4xWS8tZZxagNFria8fEv9F5
-	 rtqhr5dRDHvZ8UWfROjxQye7k8ALnQVR0x2ytO1Op0zcOFtZrXBv58eynuSGJVNPX3eXx
-	 2zBMOtuKCCIIJaa4Uz9zJvwsg+UnRedXtvAOqpznF3E1k8i7isebb0j4/G+mMYKNaEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794410514;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=81ZdOZI8AFzoY6Wjc1ZAc89k6QICeJEkg2KfANGYI3I=;
+	b=Zpo96lETfkAF1Gekm/THP9M/xlqq2bJIECyJyM/dhy3pRup8GlSt+VAhdjgCIMWHQAST
+	 dX7yAIWpbVpVfbHLdy+DAoHxFGDIqe3Hxl/k3G0VyzHoK+siercPiH+yyagZGA55wIH6d
+	 Gxh9aIeov2B3x9zI3Ub/XM9vY67u/AQOX1npmyqq/lZRLVTP3Qsib3q5RLGg7g990nR2a
+	 btkcGFPYW1qNi5b9RRVH56MJnex6XFCOUIVWw+lhM0w0C7R3I9Gnnq5JEVckG/DNr3akc
+	 xrOwSq478pbIFTVR2h3hAx/PgIcIU+P9l8TjFGmUnvRJYvaI70+Jbxudd6MczNMGP2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=InhjEDQu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=YsCD+kcs;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200EF606A326;
-	Wed, 11 Nov 2026 15:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 1F12F606A324;
+	Wed, 11 Nov 2026 15:21:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F12F606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=InhjEDQu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDF61F00A06;
-	Wed, 11 Nov 2026 15:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794410411;
-	bh=+1DCBycizs0FNS95ffvn0ICcr0Hnn6SqaXL7oQg/o08=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=InhjEDQuH1m2P9kFzlDGdbDOOuWxtH0LsXmXH060/PyJ7WeBfoqIXupaRw9R0UyRz
-	 ra9dv2xEUke2U+I3d5CM7krrKBbqMuElQStXbHoIUKtNATdV4Ckf5+rTZL+XDSuAko
-	 oEOBdaI0eXTQWfCH/2NUq4fLFNjx82m6IvjtXAO6wg7XcUHQ3T9FNre8K/WW8iecVy
-	 S5DARJ2l3aca1RkWHb6FD0SSQHfP2kPwWC+hH/lsvICBfFdzPav72dQL8z5zPN6ozW
-	 pLfxplSiET47nbs7gxpot8ejl0R1XQCUGMB6KTd/ucQ7CwA7TK09HSCG2CkgLOfso8
-	 bXuRslVF6fzSQ==
-Date: Wed, 11 Nov 2026 16:20:02 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: "Hallgrimur H. Gunnarsson" <halg@google.com>, 
-	Andy Lutomirski <luto@amacapital.net>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-Message-ID: <20261111-behagen-faktisch-entgegen-e2e714373895@brauner>
-References: <20261028221705.3915340-1-halg@google.com>
- <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
- <20261106-befreien-addieren-eislauf-e09212803534@brauner>
- <CALCETrWa1SBLcb5oWjqjgzZvKvCoHjmYFk=Lf5ytEM9uqm5jYA@mail.gmail.com>
- <avM41a80aig2de-R@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=YsCD+kcs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1794410504;
+	bh=81ZdOZI8AFzoY6Wjc1ZAc89k6QICeJEkg2KfANGYI3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YsCD+kcsxHtTV4zP34F7vLZ/ekCoGHlQC9NpKuHz10dcYsogCDKyCqf91wjZ/QUEv
+	 hpwVjxcXbT1BtRZJpBp9HE1eLMWRQrm/wqNVrLQTWJ2IvGv9SlQp6YlS+vHhq+d2AY
+	 LvEFaZrhBAizhh21XETNKqcXLIWY0UcFPLJHk7hFijuoAZkkf0eML9djQ7xPUteaOX
+	 WNyUPw3gATGFPlxghW2yUsrOAi1duAzB0wQsyri+hWQ/2UlVKljrHP8EPtxUvSN4ec
+	 AGOSuiz6z02GqVOUIrmOxb9X1lp6J9PQdQ4mNOnboRwGJ9PdeSY+/PKujwtQtc0RHK
+	 FIC8aJq+C3CoQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 0BD8660055;
+	Wed, 11 Nov 2026 16:21:44 +0100 (CET)
+Date: Wed, 11 Nov 2026 16:21:41 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: John <shffr@protonmail.com>
+Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] netfilter: flowtable: XMIT_NEIGH flows sent to
+ 00:00:00:00:00:00 once the next hop's neighbour entry is gone
+Message-ID: <avSIBUcLH4kZyISX@chamomile>
+References: <MAEpYNlWKRd7lM0j62YlEZ97Ux1h5AyjSuFRm4Lxk2Q6haeDGTKqX8lpDRZ8slvBu6qA7Bbt18zpr9fyF_jArrEemTgRqzqluxmsGH7UcFk=@protonmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,130 +67,273 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="AFckwEBk/Xj85OWv"
+Content-Disposition: inline
+In-Reply-To: <MAEpYNlWKRd7lM0j62YlEZ97Ux1h5AyjSuFRm4Lxk2Q6haeDGTKqX8lpDRZ8slvBu6qA7Bbt18zpr9fyF_jArrEemTgRqzqluxmsGH7UcFk=@protonmail.com>
+
+
+--AFckwEBk/Xj85OWv
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <avM41a80aig2de-R@google.com>
 
-On Tue, Nov 10, 2026 at 03:31:33PM +0000, Hallgrimur H. Gunnarsson wrote:
-> If we drop CLONE_NEWNET_LOOPBACK / UNSHARE_NEWNET_LOOPBACK from this
-> series and handle loopback separately, do you think the per-userns
-> bounding set is a reasonable approach for withholding capabilities
-> (e.g. CAP_NET_ADMIN and CAP_NET_RAW) from unprivileged userns, or
-> would you prefer a different mechanism?
+Hi,
 
-Seems ok to me.
+Would you give a try to this attached patch?
 
-> To address the concern about the number of moving parts, I am also
-> happy to simplify the control interfaces. If we decide a per-task
-> securebit is the cleanest way to drive this configuration for both
-> single-deep and nested cases, we could focus on that and drop the
-> clone3() and sysctl from this series entirely, or only expose whatever
-> subset you prefer.
+Thanks.
 
-Just a note on the essay I cut off. I really object to any arguments
-that amount to "it's too much work" propped up by a few thin arguments
-sprinkled in such as rtnetlink.
+On Mon, Nov 09, 2026 at 09:26:55PM +0000, John wrote:
+> Hi,
+> 
+> Since commit b5964aac51e0 ("netfilter: flowtable:
+> consolidate xmit path"), a flow offloaded with
+> FLOW_OFFLOAD_XMIT_NEIGH keeps being forwarded with
+> destination MAC 00:00:00:00:00:00 after the next hop's
+> neighbour entry has been removed. Nothing resolves the next
+> hop again, so the flow stays black-holed for as long as it
+> keeps sending.
+> 
+> Before that commit the XMIT_NEIGH case called neigh_xmit(),
+> which creates the entry if needed, sends a solicitation and
+> queues the packet. Now nf_flow_offload_ipv6_hook() does
+> 
+> 	neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(...));
+> 	if (IS_ERR(neigh)) { ... }
+> 	xmit.dest = neigh->ha;
+> 
+> and passes the skb to dev_queue_xmit() through
+> nf_flow_queue_xmit(), without looking at neigh->nud_state.
+> When ip_neigh_gw6() has just created the entry, ha is all
+> zeros, and since the neighbour output path is never used, no
+> solicitation goes out and the entry stays unresolved. The
+> IPv4 branch has the same construction with ip_neigh_gw4().
+> In v7.4-rc2 the code has moved into the per-family xmit
+> functions but is otherwise unchanged.
+> 
+> This hit a router here running 6.18.60, which has
+> b5964aac51e0 as a stable backport. A WireGuard endpoint
+> behind the router talks to nothing else through it, so its
+> neighbour entry on the router aged out while the tunnel's
+> flow was offloaded, and the endpoint's handshake retries
+> every 5 s kept the flow alive. On the router's egress
+> interface every forwarded packet of the flow then looked
+> like this (addresses replaced):
+> 
+>   02:0e:bd:92:63:28 > 00:00:00:00:00:00,
+>   ethertype IPv6 (0x86dd), length 154:
+>   2001:db8:1::51.60161 > 2001:db8:2::1f.59320:
+>   UDP, length 92
+> 
+> "ip -6 neigh" had no entry for the destination, conntrack
+> showed the flow as [OFFLOAD], and deleting the conntrack
+> entry restored the tunnel until the next time the entry aged
+> out, a few minutes later. Going back to 6.12.115 on the same
+> router fixed it.
+> 
+> The script below reproduces it with three network namespaces
+> and no special hardware (IPv6 only, needs iproute2, nft and
+> python3). The server has a permanent entry for the router,
+> so the router only knows the server from its own resolution.
+> The flow is offloaded while the router has no valid entry
+> for the server, which gives XMIT_NEIGH, and once it is
+> offloaded the script removes the router's entry again, which
+> is what neighbour GC does to an idle STALE entry.
+> 
+> 6.18.60:
+> 
+>   flow: [OFFLOAD]
+>   entry: fd00:2::2 lladdr a2:5b:b4:93:86:a9 REACHABLE
+>   entry removed, flow offloaded
+>   2 s later:
+>   echoes: 7 ok, 11 lost
+>   destination MAC of echoes to the server:
+>        10 00:00:00:00:00:00
+>         7 a2:5b:b4:93:86:a9
+> 
+> 6.12.116 (Debian 6.12.116+deb13):
+> 
+>   flow: [OFFLOAD]
+>   entry: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
+>   entry removed, flow offloaded
+>   2 s later: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
+>   echoes: 17 ok, 1 lost
+>   destination MAC of echoes to the server:
+>        18 de:9b:d1:db:19:4c
+> 
+> (Datagram 0 is lost on both kernels, during start-up.)
+> 
+> I have not run the reproducer on mainline. I compared the
+> code in v7.4-rc2 instead, and the IPv4 path is untested.
+> 
+> I don't know this code well enough to say which fix you
+> would want. Handing the packet to neigh_xmit() when the
+> entry is not NUD_VALID would restore the old behaviour for
+> that case, and tearing the flow down would also work, since
+> the next packet would then take the classic path and resolve
+> the neighbour. I can test a patch on the router or with the
+> script.
+> 
+> #regzbot introduced: b5964aac51e0
+> 
+> --- reproducer ---
+> 
+> #!/bin/bash
+> # Flowtable XMIT_NEIGH flow forwarded to 00:00:00:00:00:00
+> # after the next hop's neighbour entry goes away. Needs
+> # root, iproute2, nft and python3.
+> #
+> # Namespaces c (client), r (router with a flowtable) and s
+> # (server). The server has a permanent entry for the
+> # router, so it never solicits and the router only knows
+> # the server from its own resolution. The flow is set up
+> # before the flow-add rule exists, the router's entry for
+> # the server is removed, and only then is the rule added:
+> # the flow is offloaded while the next hop has no valid
+> # entry, which gives XMIT_NEIGH. Once it is offloaded the
+> # entry is removed again, as neighbour GC does with an
+> # idle STALE entry.
+> set -u
+> P=ftrepro
+> W=$(mktemp -d)
+> E() { local ns=$1; shift; ip netns exec "$P-$ns" "$@"; }
+> cleanup() {
+>   for j in $(jobs -p); do kill "$j" 2>/dev/null; done
+>   for n in c r s; do ip netns del "$P-$n" 2>/dev/null; done
+>   rm -rf "$W"
+> }
+> trap cleanup EXIT
+> trap 'exit 1' INT TERM
+> 
+> for n in c r s; do ip netns add "$P-$n"; done
+> ip link add rc netns "$P-r" type veth \
+>   peer name c0 netns "$P-c"
+> ip link add rs netns "$P-r" type veth \
+>   peer name s0 netns "$P-s"
+> for n in c r s; do E $n ip link set lo up; done
+> E c ip link set c0 up
+> E r ip link set rc up
+> E r ip link set rs up
+> E s ip link set s0 up
+> E c ip -6 addr add fd00:1::2/64 dev c0 nodad
+> E r ip -6 addr add fd00:1::1/64 dev rc nodad
+> E r ip -6 addr add fd00:2::1/64 dev rs nodad
+> E s ip -6 addr add fd00:2::2/64 dev s0 nodad
+> E c ip -6 route add default via fd00:1::1
+> E s ip -6 route add default via fd00:2::1
+> RMAC=$(E r cat /sys/class/net/rs/address)
+> E s ip -6 neigh replace fd00:2::1 lladdr "$RMAC" \
+>   dev s0 nud permanent
+> E r sysctl -qw net.ipv6.conf.all.forwarding=1
+> E r nft -f - <<'NFT'
+> table inet t {
+>   flowtable f {
+>     hook ingress priority 0; devices = { rc, rs };
+>   }
+>   chain fw {
+>     type filter hook forward priority 0; policy accept;
+>   }
+> }
+> NFT
+> 
+> # Client: UDP echo on port 6000.
+> E c python3 -c '
+> import socket
+> s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+> s.bind(("fd00:1::2", 6000))
+> while True:
+>     d, a = s.recvfrom(100)
+>     s.sendto(d, a)
+> ' >/dev/null 2>&1 &
+> 
+> # Server side of the wire: destination MAC of every echo
+> # coming back to the server.
+> E s python3 -c '
+> import socket, sys
+> r = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
+>                   socket.htons(3))
+> r.bind(("s0", 0))
+> f = open(sys.argv[1], "w")
+> port = (5000).to_bytes(2, "big")
+> while True:
+>     p = r.recv(2048)
+>     # IPv6, next header UDP, destination port 5000
+>     if p[12:14] == b"\x86\xdd" and p[20] == 17 \
+>             and p[56:58] == port:
+>         f.write(p[0:6].hex(":") + "\n")
+>         f.flush()
+> ' "$W/wire.log" >/dev/null 2>&1 &
+> sleep 1
+> 
+> # Server: one datagram a second to the client, port 5000.
+> E s python3 -c '
+> import socket, time, sys
+> c = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+> c.bind(("fd00:2::2", 5000))
+> c.settimeout(0.8)
+> f = open(sys.argv[1], "w")
+> for i in range(18):
+>     t = time.time()
+>     c.sendto(str(i).encode(), ("fd00:1::2", 6000))
+>     try:
+>         c.recvfrom(100)
+>         f.write("%d ok\n" % i)
+>     except socket.timeout:
+>         f.write("%d lost\n" % i)
+>     f.flush()
+>     time.sleep(max(0, 1.0 - (time.time() - t)))
+> ' "$W/server.log" >/dev/null 2>&1 &
+> SV=$!
+> 
+> sleep 4
+> E r ip -6 neigh del fd00:2::2 dev rs
+> E r nft add rule inet t fw ct state established \
+>   meta l4proto udp flow add @f
+> sleep 3
+> FLOW=$(E r grep -o '\[OFFLOAD\]' /proc/net/nf_conntrack |
+>   head -1)
+> echo "flow: $FLOW"
+> echo "entry: $(E r ip -6 neigh show fd00:2::2 dev rs)"
+> E r ip -6 neigh del fd00:2::2 dev rs &&
+>   echo "entry removed, flow offloaded"
+> sleep 2
+> echo "2 s later: $(E r ip -6 neigh show fd00:2::2 dev rs)"
+> wait $SV
+> echo "echoes: $(grep -c ok "$W/server.log") ok," \
+>   "$(grep -c lost "$W/server.log") lost"
+> echo "destination MAC of echoes to the server:"
+> sort "$W/wire.log" | uniq -c
+> 
+> Thanks,
+> John
+> 
 
-I also reject any arguments that amount to underscoping and overscoping
-of the new capability. The scope is clear: empty netns with brought up
-loop device.
+--AFckwEBk/Xj85OWv
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment; filename="fix.patch"
 
-I'm 180 patches deep into fixing procfs and 41 patches deep into
-preventing loop devices from abuse. Either we do the work and get
-something better or we do the same thing we've always done and hope we
-end up happily ever after.
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 19cafae748ab..73f49dc41157 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -873,7 +873,8 @@ static int nf_flow_queue_xmit4(struct sk_buff *skb,
+ 			return NF_DROP;
+ 		}
+ 		neigh = ip_neigh_gw4(rt->dst.dev, rt_nexthop(rt, ip_addr->ip));
+-		if (IS_ERR(neigh)) {
++		if (IS_ERR(neigh) ||
++		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
+ 			flow_offload_teardown(flow);
+ 			return NF_DROP;
+ 		}
+@@ -1202,7 +1203,8 @@ static int nf_flow_queue_xmit6(struct sk_buff *skb,
+ 			return NF_DROP;
+ 		}
+ 		neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(rt, &ip_addr->in6));
+-		if (IS_ERR(neigh)) {
++		if (IS_ERR(neigh) ||
++		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
+ 			flow_offload_teardown(flow);
+ 			return NF_DROP;
+ 		}
 
-But again, I'm more focussed on cells so here's what I find acceptable:
-
-I'd rather go back to what Jonathan proposed in 2024 (cf. [1]). A
-per-task userns capability mask. Serge acked the core of it back
-then. It's at least generic and not just the single securebit capability
-thing. And we'd burn a new bit for every capability that turns out to be
-a problem later.
-
-Jonathan's version had holes though. The restriction only lived in the
-task's creds so the owner rule and setns() blew this up. So it needs to
-be combined with your per-namespace set. Roughly:
-
-* every task carries a mask, cred->cap_userns, full by default
-  fork, exec, setuid and entering a namespace never change it
-* a new user namespace records
-
-        ns->cap_bset = parent->cap_bset &
-                       (cred->cap_userns | cred->cap_permitted);
-
-  once at creation and never changes it again => it's monotonic downwards
-* the creator gets ns->cap_bset instead of CAP_FULL_SET
-* a task that setns()es in later gets
-  ns->cap_bset & (cred->cap_userns | cred->cap_permitted)
-* the owner rule in cap_capable_helper() grants exactly what entering
-  would and otherwise falls through to what the owner has
-
-So caps a task actually has always count as allowed
-=> should check Andy's "only restrict creators that don't have
-   CAP_NET_ADMIN themselves" per capability.
-
-   This amounts to a host-wide default without a sysctl.
-   PID 1 drops CAP_NET_ADMIN and CAP_NET_RAW from its own mask at boot
-   and everything inherits that.
-
-   Root, sudo and setuid-root binaries have those capabilities so
-   nothing changes for them. A regular user doesn't and so their user
-   namespaces come without CAP_NET_ADMIN and CAP_NET_RAW.
-
-   This also covers newgrp, su and sudo -u shells which is where
-   resetting the mask on setuid exec (Which was raised by Serge in the
-   other thread.).
-
-* Root in a container has caps as well so for containers the exemption
-  would be wrong.
-
-  So here we need a a lockable SECURE_NO_USERNS_CAP_RAISE bit thingy.
-  This turns off the exemption and prevents raising the mask.
-
-  Docker lowers the mask, sets and locks the bit, and
-  unshare(CLONE_NEWUSER) in the container doesn't hand out CAP_NET_ADMIN
-  anymore.
-  
-  => no parent user namespace needed for the single-nesting case.
-
-  So a container with CAP_NET_ADMIN lowers its mask before it spawns the
-  nested container => should cover your (3) case.
-
-uAPI is a prctl modeled on the ambient capset:
-* PR_CAP_USERNS with IS_SET, RAISE, LOWER and CLEAR_ALL
-* lowering needs no_new_privs or CAP_SETPCAP
-
-=> handles sendmail-style problem Serge raised on Jonathan's series.
-
-* a new CapUns: line in /proc/<pid>/status
-* new audit mask in AUDIT_CAPSET record
-
-Raising needs the capability in the permitted set.
-
-Fwiw, neither series handles ptrace. A task with a restricted mask can
-attach a less restricted task of the same uid and then make it create
-the namespace.
-
-cap_ptrace_access_check() only compares permitted sets so far. So for
-PTRACE_MODE_ATTACH the tracer must be able to get whatever the tracee
-could get through user namespaces. A tracer that has CAP_SYS_PTRACE
-in its own creds can still attach to anything. But the CAP_SYS_PTRACE
-the caller gets over a user namespace just because it owns it must not
-count. Otherwise a restricted task could attach to a less restricted
-task inside a namespace it owns.
-
-That gets rid of the sysctl, the clone3() field and the clone flags,
-doesn't need a new capability bit, and nothing changes for anyone who
-doesn't opt in, I think.
-
-And that loopback thing should be its own series. Not as an nsfs ioctl
-though. All nsfs ioctls only report namespace state and I'd like to keep
-it that way.
-
-Pipe this through an LLM and make sure it makes sense and covers all
-holes.
-
-Thoughts?
-
-[1]: https://lore.kernel.org/all/20240609104355.442002-1-jcalmels@3xx0.net
+--AFckwEBk/Xj85OWv--
