@@ -1,73 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794385363;
-	b=gwKlM7DY4tsFGuF1cI5wAj3O9KlCsNP7slW98UzXVnz/dSUHTVgBJjUDtMsl65pzu9Tz
-	 UqgurPIkozwNM3XR2wO3KmjT49lBiSb2WOwwd3r2D/puUZOOw0kMGW3HV0w7qI77sft2r
-	 nbCQkI5jm5TkioFwkvsN8DHQuS3noJEzVCdkTU9xZ6fc1v5Y7dJipXTuTg4DyAUWS+HQY
-	 XysIfPBZuhFA/qOcYUTk/TKVE3a4HQMeOGbdAM++aOgKfFovJXSr+ms3TAxiTqf9JJbsI
-	 Nc72hjMu5e4lxzOjHJwnm1wTGFyvjtzi6SEXfItcUmfVi4AjIXBf03+MJYXTCjpYsiQ==
+	t=1794385374;
+	b=NvVZUiizwjhEJTlznKtsZKZ4ER3q9HdOD0uQhjx3Kysuq21BEBYQ/sqWS2PkVJAMZNsZ
+	 bamQue0kqPTnJtMcQnJtVOy3HjK4/QHVJtkYRz2Ev20IsdQTOwZPKJ1EweTYKTBGIN5Xn
+	 VlGrQQcy/5Qlb8qdAo6lfp1QoD6oHOIYz6+EQSgwQbZBfnySkXqMr4T+nEbfuwdfyvUGZ
+	 9/OlUT+e570FWuL1Ijz/9UfDt/J+IUFuoqaT+rHlRFhIRGXe4QYYefF1l3r+obafGa68w
+	 HIWkAA/mzhVhVke0ewDTpT5dwJ0l2CnMaw5tUTdgWhIpfDrxQEn5v2KjdwllPtA9ESQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794385363;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=6GK72AVuslSoKdLshEGf1+htRIfaqyHglB42kw/F2tE=;
-	b=gK3GOb/C35POdD2LaRuNAgljWUGD4/iJT5WFGnjtelou203mhCpLpmjvigkmpHp94pM6
-	 Ul5BnSoPGIGhEXFBCnWOXoSQbKVYxf4OPVSbbTK4ZPdfs+q/8K0SZfi89E0T2LH71rwT3
-	 lXTz2hlN4yU/vSj1CcQD11oCd25WraeVJ0CnO0YbqcJApfq4e3IHTk+Pe6z3eoLlu2fqv
-	 IvXDjAASF4yuw10/YU2KK3lSK0o1acre1rUO26wGQvPJxWy+T+jT3yVN9zVf1CjzUzaV0
-	 edXCvGvR0iJWkpvv0RjFDVPESzI0Z3/tvpyePW8pkbigEHNUO5n+hMunzFoEpBC7Hrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794385374;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=jOdCR7DybIvzy/7/bVj7X2472LW7lSSfULLnLbFNX14=;
+	b=2myYeXtSKPCMSgTyDCQXlbZlvicPQum2zw2phubWN1SiiBYU/lvD0N3Ngo3JImforSB0
+	 xSd9uRygxNBJZKZlS5XkHtuCFnO3nIkU2ujunLuN5jJYf9WMaDIbvf2qij2QmwO4MuQ1K
+	 ibvcWxu1TqkezgCr5znv5ymwdO1/kt6oD0LFiL+gGyQhU/hswsmjlDUWbKaLXTXerN4hc
+	 C8yiqFcVouwSTZKwHnOxPudj0cb0t0yt8LyWT5sh4vngEePGioKDzZrMvX4T7OaHcDcm4
+	 MlNZQaRrJkhl923syhZhZ9HxrvKEEPsIsY98kOgI3jawpBO3NiqtSkcP9i1bH6ltB3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=PAmuighm;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37743606A324;
-	Wed, 11 Nov 2026 08:22:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37743606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=yVrt5bP6;
+	arc=none smtp.remote-ip=195.10.208.47
+Received: from mout-b-107.mailbox.org (mout-b-107.mailbox.org [195.10.208.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CA4606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 08:22:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74CA4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=PAmuighm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=PAmuighmobnFROLMHN1WQJ1PWnBljLgPVkbpUVXg4shNibrsyQgLKJHFN86jywCVoaCk7ldNLznai
-	 PXO5wB9Rie+kkF8VcGQbpAmFOYQ4Kk4Sr9tRJagGGS83SkqSmP3AnDzECylpNYCkNfcyZDMAtTmRWR
-	 hR5aJtrZeq9Vdil4=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af425ca6af-7655d;
-	Wed, 11 Nov 2026 16:22:40 +0800 (CST)
-X-RM-TRANSID:2ee46af425ca6af-7655d
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[223.64.115.200])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af425ce061-d519d;
-	Wed, 11 Nov 2026 16:22:40 +0800 (CST)
-X-RM-TRANSID:2ee16af425ce061-d519d
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: David Ahern <dsahern@kernel.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=yVrt5bP6
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-107.mailbox.org (Postfix) with ESMTPS id 4jPc2x418nz3xv8;
+	Wed, 11 Nov 2026 09:22:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794385369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jOdCR7DybIvzy/7/bVj7X2472LW7lSSfULLnLbFNX14=;
+	b=yVrt5bP6/FzE4viGqKlsOX7wwzaCpycSeprJmjCSRj84LEkQD1Dhjt9KiKk5sqtlAW27LX
+	ohOiyMZQmcRjTBJiA0uOw/eB/qou74J8rV52M2ENB9JERpYjJ1Y2Ri+fA1VOOhOMdngzCD
+	0SRyZoDSLYawX4Xy9IHTMcoAp11CXYupz7WqfS81ZkPjrF4kB47XaVdWH3u6fmSJG1Q4iP
+	Sp19/8sFiAFLEWJfFEuANNDc74uvWJWcrdt55pUEcw+V34jboP5LWP1tOf1XprIrnALKVN
+	d2GKzii0fvedVn1XsZZwPijTB3Dyd+rECP87XO3zhKlcIimB+1KE/RZHu/hHEg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Yuyang Huang <yuyanghuang@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net] ipv4: igmp: report IFA_TARGET_NETNSID in multicast address dumps
-Date: Wed, 11 Nov 2026 16:22:22 +0800
-Message-Id: <20261111082222.327963-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Florian Westphal <fw@strlen.de>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Antonio Quartulli <antonio@mandelbit.com>
+Subject: [PATCH net-next v2 0/3] ipv6: tie the dst cookie to the lookup that returned the dst
+Date: Wed, 11 Nov 2026 09:22:34 +0100
+Message-ID: <cover.1794384146.git.ralf@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,68 +83,70 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4jPc2x418nz3xv8
 
-Commit eb4e17a1d915 ("netlink: support dumping IPv4 multicast addresses")
-extended RTM_GETMULTICAST to support dumping IPv4 multicast addresses.
-While inet_valid_dump_ifaddr_req() accepts IFA_TARGET_NETNSID in dump
-requests and dumps addresses from the target network namespace,
-inet_fill_ifmcaddr() never puts IFA_TARGET_NETNSID in the netlink
-replies.
+Hi,
 
-As a result, userspace applications querying multicast addresses in a
-target netns receive entries without IFA_TARGET_NETNSID, which may lead
-them to conclude that the kernel does not support netns-targeted dumps
-or to misattribute the returned addresses. In contrast, IPv4 unicast
-address dumps (inet_fill_ifaddr()), IPv6 multicast address dumps
-(inet6_fill_ifmcaddr()), and AF_PACKET multicast address dumps all
-report IFA_TARGET_NETNSID.
+This series implements a first part of the model proposed in [1] to
+address the late cookie sampling race: a dst can be stored together with
+a cookie read after a FIB change that its lookup did not see, and then
+passes dst_check until the next change.
 
-Add IFA_TARGET_NETNSID to inet_fill_ifmcaddr() when requested, and
-explicitly set fillargs.netnsid = -1 in inet_ifmcaddr_notify() to
-prevent notification messages from exceeding their preallocated skb
-size.
+The case that made me post it as a series is xfrm. Adding a policy
+restamps every fib6 node, so a socket whose lookup ran just before the
+insertion keeps its plain dst and leaks plaintext although the policy
+matches. I reproduced it for TCP connect and connected UDP, and the same
+window lets a more specific blackhole route be bypassed for routes using
+nexthop objects. The ovpn patch [2] hit the same pattern in
+dst_cache_set_ip6.
 
-This issue was identified with the assistance of an LLM-based code
-review tool, confirmed by reproducing in a User-Mode Linux (UML)
-environment where AF_INET RTM_GETMULTICAST dumps with IFA_TARGET_NETNSID
-omitted the attribute, and verified in UML that AF_INET multicast dumps
-now report IFA_TARGET_NETNSID, normal dumps without netnsid continue to
-work, and socket multicast join/leave notifications succeed without
-warning.
+The conversion is initially limited to tcp_v6_connect,
+ip6_datagram_dst_update and ip6_sk_dst_lookup_flow. Other TCP TX cache
+paths, including established-socket route refills, header rebuilds and
+accepted-socket setup, still use late cookie sampling. This gives the
+lookup-cookie API a small set of users and concrete fixes to review. If
+the approach is accepted, I plan to follow up with a broader conversion
+across the networking core and drivers.
 
-Fixes: eb4e17a1d915 ("netlink: support dumping IPv4 multicast addresses")
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+Compared to [1], the fallback cookie is 0 instead of the pre-lookup
+generation, so fib6_flush_trees is left alone, and nexthop-object dsts
+are checked in ip6_dst_check instead of passing the generation down to
+ip6_rt_pcpu_alloc. The other cache users (dst_cache, sctp, ipvs,
+flowtable, sk_rx_dst, the xfrm bundle cookies) are not converted and
+behave as before.
+
+I tested it in a VM with lockdep, PROVE_RCU and DEBUG_ATOMIC_SLEEP,
+using a debug-only delay after the lookup to hit the window: no
+warnings, and the plaintext and blackhole bypass are gone in these test
+cases.
+
+[1] https://lore.kernel.org/netdev/20260901122501.482920-1-ralf@mandelbit.com/
+[2] https://lore.kernel.org/netdev/cover.1789639346.git.ralf@mandelbit.com/
+
+Thanks,
+
+Ralf Lici
+Mandelbit Srl
+
 ---
- net/ipv4/igmp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes since v1 https://lore.kernel.org/netdev/cover.1793806941.git.ralf@mandelbit.com/
+- Fix kdoc return statements in patch 2/3. (NIPA)
 
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index 144fca158adc..831d003677ba 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -1517,6 +1517,12 @@ int inet_fill_ifmcaddr(struct sk_buff *skb, struct net_device *dev,
- 	ifm->ifa_scope = RT_SCOPE_UNIVERSE;
- 	ifm->ifa_index = dev->ifindex;
- 
-+	if (args->netnsid >= 0 &&
-+	    nla_put_s32(skb, IFA_TARGET_NETNSID, args->netnsid)) {
-+		nlmsg_cancel(skb, nlh);
-+		return -EMSGSIZE;
-+	}
-+
- 	ci.cstamp = (READ_ONCE(im->mca_cstamp) - INITIAL_JIFFIES) * 100UL / HZ;
- 	ci.tstamp = ci.cstamp;
- 	ci.ifa_prefered = INFINITY_LIFE_TIME;
-@@ -1538,6 +1544,7 @@ static void inet_ifmcaddr_notify(struct net_device *dev,
- {
- 	struct inet_fill_args fillargs = {
- 		.event = event,
-+		.netnsid = -1,
- 	};
- 	struct net *net = dev_net(dev);
- 	struct sk_buff *skb;
+Ralf Lici (3):
+  ipv6: stamp the default route node with a fresh serial on link failure
+  ipv6: add ip6_dst_lookup_flow_cookie
+  ipv6: use the lookup cookie when caching the dst in sockets
+
+ include/net/ip6_route.h | 18 +++++++++----
+ include/net/ipv6.h      | 13 ++++++++++
+ net/ipv6/datagram.c     |  6 +++--
+ net/ipv6/ip6_output.c   | 57 ++++++++++++++++++++++++++++++++++++++---
+ net/ipv6/route.c        | 24 ++++++++---------
+ net/ipv6/tcp_ipv6.c     |  5 ++--
+ 6 files changed, 98 insertions(+), 25 deletions(-)
+
+
+base-commit: c4c470912125ec8a1a427a70f4085d8a731b00e4
 -- 
-2.33.0
-
-
+2.56.0
 
