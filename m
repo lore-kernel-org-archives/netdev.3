@@ -1,99 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794410262;
-	b=A91wkS9PbbT2KYMy9aPa2QqE8jo7m41Fq+755tl5MEJZBYR8Nuy6SrsUENzQtFNwPHtL
-	 xnhFsEdS7rGihRd6rLVBBpI/FglSm3hsJgpXQzgazn/UpHKIL/+FoLPOoMt1MuYHg7Z7+
-	 KOVI+YXTAUe6QNEohKHh/cF0mzZlNIdxpmman/nTTmdqrA8BUQahJ00y2W8Rz18trbSEi
-	 DNOmireLY3QWe8xyk5RIlbB70DLlnea0wL7xSFdptP2ucurj/9mCQxr2A31uYvuBvaqMq
-	 kyaspLAY8cTaRmb051nJl65X8MrPjGWTm33Bc7sL9zPGyRpbpRkJDCrjNs+3Cj7B7Ig==
+	t=1794410412;
+	b=gKAPmIAPdEbsZFsmZ9RrGjXE6SujuQSJOuhRC7LqcErh6w+LpWgzPqQlMVTF4ka702SG
+	 07ayTyAGJLuhUOH4uz8dMiWNj+NKmHdY2jNhS3uy4uGO6ufHPx04lZY4niSv9OMfh8wfY
+	 PzNxqSBNhqfIwUeOrA9bmjFGZ8fDTWAqtEdN/G0K/OYgRhes5QnBUKib9rV6Zy+saGZXQ
+	 KWKX0GRu0sETHkHMhdrWAbX3QtzMGdvi4VUyTn/Q7s660ZBWOrdl11ZNXRXSHFGveeTAV
+	 d0c9fB1GTKqbF0+CGcDBcuizuU36wQDp+DzWDJYC5i0KFuqYc/Aq6EXryQINmu2lcKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794410262;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Fb1BuTd8Qdd5dScIxIahcjCU39aHCzq4j68dvvRT6cI=;
-	b=k/MmWOpE7y/XTIhd8iGJ7LvvPUvNetod91+HMjcYKCuFxQbc/8XAcb89kdjJNb/cBv94
-	 VrGQpsziBcf9VK4YSAckrmzQ6le+xSebVS6K/i0R7kglyzbd+cq60+CnmAvwSO+VWCd3y
-	 fJKfW25DL4gtns+wEBPesdAfDUSHIu+n47mTsnY+tu7w1EtZWjyTSey5tUNOs1CLtsNR4
-	 xr3nfFK3JsfkleDIj+7twCPKCQ0RWxL4aPMGWjgo2SSDYADHA0RGWZtsEPRKU/JrqgXko
-	 5yee42MLN9luMWAfMgZ9E8ZWVGSuXenv1k+sjNoego0JhiKS+KXbgLyTG480v/0xLDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794410412;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=+1DCBycizs0FNS95ffvn0ICcr0Hnn6SqaXL7oQg/o08=;
+	b=iB7046F2DBRObIsYNVhXAkFjfDTUb5lJWit6Lg7rNEtK2uUV1aAIG/42UN94ex4IIgH6
+	 k1uNL9x6+JJJLRqB+0sDKvqrGXYrJlyO2bvImh0ZiHichJ3EdTq8HXD0LqYBKCDLlIOFE
+	 LNcq0tTW38RPJxLoFMQH5TPnVb/1dvULlZMeV3WGR9qkXC4xWS8tZZxagNFria8fEv9F5
+	 rtqhr5dRDHvZ8UWfROjxQye7k8ALnQVR0x2ytO1Op0zcOFtZrXBv58eynuSGJVNPX3eXx
+	 2zBMOtuKCCIIJaa4Uz9zJvwsg+UnRedXtvAOqpznF3E1k8i7isebb0j4/G+mMYKNaEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=UkDLMs4f;
-	arc=none smtp.remote-ip=209.85.128.177
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=InhjEDQu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5809A606A898
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:17:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5809A606A898
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200EF606A326;
+	Wed, 11 Nov 2026 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=UkDLMs4f
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b308fca7c3so32958857b3.2
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 07:17:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1794410260; x=1795015060; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Fb1BuTd8Qdd5dScIxIahcjCU39aHCzq4j68dvvRT6cI=;
-        b=UkDLMs4frWeJNsVGLmw41nhNjVIS3eyumrw5kd1oiFdJ9939nYam6wsR9/3XYbhIpf
-         ZnVsORTMkhHXMgPoYzpdVCYR1T4QRPxBGSwuvLzntrDl8tfuURXa5oSqJwnlkDL4z1IP
-         lz7aJEwC10IMM2TMHQZILjgXJeB7MJeB32fKY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794410260; x=1795015060;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Fb1BuTd8Qdd5dScIxIahcjCU39aHCzq4j68dvvRT6cI=;
-        b=g8yAE5xJ0k2k/yTEa+Q7cc7ei2w2rt1hxx4FPLm1+jLSbyKXjiNxdzgNlFmD7skmLB
-         /SOA3f7PFxze3YM6pAN1qVAbw1ilX8PdH72JA8utUc9v2ZZCMEOB3ukap4JMPJt1ddpQ
-         k4NOLRBQybeyFlubVd9Hj2pLlv6fo4+b6uLK0VMX0Yr1f9ER56+HYu0X1ZUEOR5UTwRG
-         vTsK/C5QMDQ2c73M2ao207qfE+AUvmq7zSu+AkpS/An7KGAf0Nox8STmms7j0m/1ccpp
-         w3+S0t0r8clqLFDYGd3XyGxXB4EwUUgdB238LBQ/5TMprLPDj1hQMtCQA3+UJrSqBK+Y
-         eTjg==
-X-Gm-Message-State: APuU4Z/4+nH2He5i1O1kPz0bREAgB7Sm8J8egzzElY0E1PT0CbHk03Cr
-	/1p0t2uIEYys2zXrV6EDS+H0yxSDiOHdvJhgc2gOYJYB0rjRQCSrftW6lwJOVVbZ/GycJX2miP1
-	ujT4=
-X-Gm-Gg: AYBFou0tatfmEGi7tcYV34W0swq5BZCMLpETi48uef4L5sXct22MFJk06PFvjr7EDVV
-	69QbCYfzRsUasXf9uUA1nfxsM5pWc7PfQsFrBkf6c9SrQ4iFDvRRH+/ReDtmjzUC8ZYehSVo3cZ
-	3d8xFIf5kxxsAC4IRSKNRJeo1yifKNmixBRcC1hLiqEpDEtv1eaR0jb8GqojdB6aknjtqk6PjOL
-	Hgo/qO9GMJl70oV/EBx4SSTcAsFLvFgCXXzzLjbf9qAN0FJOg57q0JoXkWPu3F6F7CQ8uaQOKGP
-	25jgFhX+kgdar9btdec12k5Lrufees3Os+s0STBuzfBG1dsEWK/yH7cxIipOefKt0lpYCQ+fAtp
-	xSNV/Oz2A7soQAWQPldnTMzp3gKAsZWg5lqlrJLdLIkrOTYfcEV4WbuL71NbUUYuCIE8NR75RbQ
-	yP4kdtKsdrBSg6sKO/YyV8NqtNJlnKU/RJHdXuBwt4RF3s4GOaTWOy3V+rlC3bt1NI0m5Wc64d+
-	JCLyqPYW8KGSEkctag82xBxo5pXYhgsJwDv9vJHpF8pwe//cn3IrkfCrnYf0fo6N9O2NNAuNIkt
-	ndvkIxNUwLNKnn9iBsLjzVqQvqwrowdbu+ySGGJeAdVavad5/65axmvVEiNNmY4Sv9rvh3/S9kD
-	zyCEgUP/odh5czw==
-X-Received: by 2002:a05:690c:113:b0:8b0:ecb2:883a with SMTP id 00721157ae682-8b3a81d7fdbmr20123797b3.62.1794410260356;
-        Wed, 11 Nov 2026 07:17:40 -0800 (PST)
-Received: from localhost.localdomain ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b393409120sm46499187b3.27.2026.11.11.07.17.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 07:17:39 -0800 (PST)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: [PATCH net v4 3/3] net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
-Date: Wed, 11 Nov 2026 10:17:30 -0500
-Message-Id: <QDISC-6HS9.v4.r0.20261111094338-3@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-6HS9.v4.r0.20261111094338@mojatatu.com>
-References: <QDISC-6HS9.v4.r0.20261111094338@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=InhjEDQu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDF61F00A06;
+	Wed, 11 Nov 2026 15:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794410411;
+	bh=+1DCBycizs0FNS95ffvn0ICcr0Hnn6SqaXL7oQg/o08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=InhjEDQuH1m2P9kFzlDGdbDOOuWxtH0LsXmXH060/PyJ7WeBfoqIXupaRw9R0UyRz
+	 ra9dv2xEUke2U+I3d5CM7krrKBbqMuElQStXbHoIUKtNATdV4Ckf5+rTZL+XDSuAko
+	 oEOBdaI0eXTQWfCH/2NUq4fLFNjx82m6IvjtXAO6wg7XcUHQ3T9FNre8K/WW8iecVy
+	 S5DARJ2l3aca1RkWHb6FD0SSQHfP2kPwWC+hH/lsvICBfFdzPav72dQL8z5zPN6ozW
+	 pLfxplSiET47nbs7gxpot8ejl0R1XQCUGMB6KTd/ucQ7CwA7TK09HSCG2CkgLOfso8
+	 bXuRslVF6fzSQ==
+Date: Wed, 11 Nov 2026 16:20:02 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: "Hallgrimur H. Gunnarsson" <halg@google.com>, 
+	Andy Lutomirski <luto@amacapital.net>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
+	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+Message-ID: <20261111-behagen-faktisch-entgegen-e2e714373895@brauner>
+References: <20261028221705.3915340-1-halg@google.com>
+ <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
+ <20261106-befreien-addieren-eislauf-e09212803534@brauner>
+ <CALCETrWa1SBLcb5oWjqjgzZvKvCoHjmYFk=Lf5ytEM9uqm5jYA@mail.gmail.com>
+ <avM41a80aig2de-R@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,147 +72,130 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avM41a80aig2de-R@google.com>
 
-This is a follow-up to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
-skb->dev on the slave failure path") by Victor Nogueira, which covered the
-slave side of the same mismatch.
+On Tue, Nov 10, 2026 at 03:31:33PM +0000, Hallgrimur H. Gunnarsson wrote:
+> If we drop CLONE_NEWNET_LOOPBACK / UNSHARE_NEWNET_LOOPBACK from this
+> series and handle loopback separately, do you think the per-userns
+> bounding set is a reasonable approach for withholding capabilities
+> (e.g. CAP_NET_ADMIN and CAP_NET_RAW) from unprivileged userns, or
+> would you prefer a different mechanism?
 
-The issue:
-teql_master_xmit() sets skb->dev = slave only right before the slave's
-ndo_start_xmit(). If the slave's neighbour is unresolved, teql_resolve()
-parks the skb on the slave's arp_queue with skb->dev still naming the teql
-master. teql_exit() frees the masters on module unload and a slave can
-outlive them, so a queued skb can be reinjected through freed memory.
+Seems ok to me.
 
-The Fix:
-Set skb->dev = slave before teql_resolve() so the parked skb names the
-device whose neighbour owns it.
+> To address the concern about the number of moving parts, I am also
+> happy to simplify the control interfaces. If we decide a per-task
+> securebit is the cleanest way to drive this configuration for both
+> single-deep and nested cases, we could focus on that and drop the
+> clone3() and sysctl from this series entirely, or only expose whatever
+> subset you prefer.
 
-The parked skb has a second consumer: when the neighbour fails instead of
-resolving, neigh_invalidate() hands it to error_report() and
-dst_link_failure(), which read skb->dev to report the failure, so it names
-the slave on that path too.
+Just a note on the essay I cut off. I really object to any arguments
+that amount to "it's too much work" propped up by a few thin arguments
+sprinkled in such as rtnetlink.
 
-A parked skb is reinjected by neigh_update_process_arp_queue(), and a
-device that transmits straight on skb->dev has to be handed its skb back
-there. That is a change to net/core/neighbour.c, posted as its own fix,
-and it has to be applied before this one: without it the parked packet
-leaves the slave directly, with no link header, because teql_master_xmit()
-has already pulled it.
+I also reject any arguments that amount to underscoping and overscoping
+of the new capability. The scope is clear: empty netns with brought up
+loop device.
 
-Some context:
-Only a module unload frees a master. teql_master_setup() installs no
-rtnl_link_ops and default_device_exit_net() moves the device to init_net
-when its namespace exits, so the window is a parked skb plus CAP_SYS_MODULE
-on an unloaded sch_teql.
+I'm 180 patches deep into fixing procfs and 41 patches deep into
+preventing loop devices from abuse. Either we do the work and get
+something better or we do the same thing we've always done and hope we
+end up happily ever after.
 
-Conditions to recreate the bug:
-CONFIG_NET_SCH_TEQL=m and CONFIG_VETH=y, run as root. Create a veth pair,
-make one end a teql slave, give the master an address and a route, flush
-the slave's neighbour entry and send one packet:
+But again, I'm more focussed on cells so here's what I find acceptable:
 
-  ip link add v0 type veth peer name v0p
-  ip link set v0 up;  ip link set v0p up
-  tc qdisc add dev v0 root teql0
-  ip link set teql0 up
-  ip addr add 10.0.0.1/24 dev teql0
-  ip route add 10.0.0.99/32 dev teql0
-  ip neigh flush dev v0
-  ping -I teql0 -c 1 10.0.0.99 &
-  sleep 1
+I'd rather go back to what Jonathan proposed in 2024 (cf. [1]). A
+per-task userns capability mask. Serge acked the core of it back
+then. It's at least generic and not just the single securebit capability
+thing. And we'd burn a new bit for every capability that turns out to be
+a problem later.
 
-The skb waits on v0's arp_queue while the solicitation is in flight.
-Remove the qdisc, which drops the module reference it holds, and unload
-the module while the skb still waits:
+Jonathan's version had holes though. The restriction only lived in the
+task's creds so the owner rule and setns() blew this up. So it needs to
+be combined with your per-namespace set. Roughly:
 
-  tc qdisc del dev v0 root
-  rmmod sch_teql
+* every task carries a mask, cred->cap_userns, full by default
+  fork, exec, setuid and entering a namespace never change it
+* a new user namespace records
 
-teql_exit() frees teql0 there. When the solicitation then fails,
-neigh_invalidate() drains the queue through arp_error_report() and
-ipv4_link_failure(), whose __icmp_send() reads skb_in->dev; that is the
-freed master before this patch and v0 after it. A resolved neighbour
-drains the same queue through neigh_update_process_arp_queue().
+        ns->cap_bset = parent->cap_bset &
+                       (cred->cap_userns | cred->cap_permitted);
 
-On the unfixed tree the skb is parked on v0's arp_queue while skb->dev
-still names teql0, so the reinjection can reach a master that teql_exit()
-has freed.
+  once at creation and never changes it again => it's monotonic downwards
+* the creator gets ns->cap_bset instead of CAP_FULL_SET
+* a task that setns()es in later gets
+  ns->cap_bset & (cred->cap_userns | cred->cap_permitted)
+* the owner rule in cap_capable_helper() grants exactly what entering
+  would and otherwise falls through to what the owner has
 
-The park and the headerless delivery reproduce without the unload.
-Freeing the master while the skb waits needs sch_teql built as a module,
-as above.
+So caps a task actually has always count as allowed
+=> should check Andy's "only restrict creators that don't have
+   CAP_NET_ADMIN themselves" per capability.
 
-An unfixed kernel reports this when the timer drains that queue:
+   This amounts to a host-wide default without a sysctl.
+   PID 1 drops CAP_NET_ADMIN and CAP_NET_RAW from its own mask at boot
+   and everything inherits that.
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in __icmp_send+0x3f9/0x1680
-  Read of size 4 at addr ffff8880039bc0b0 by task swapper/3/0
+   Root, sudo and setuid-root binaries have those capabilities so
+   nothing changes for them. A regular user doesn't and so their user
+   namespaces come without CAP_NET_ADMIN and CAP_NET_RAW.
 
-  CPU: 3 UID: 0 PID: 0 Comm: swapper/3
-  Call Trace:
-   <IRQ>
-   ...
-   __icmp_send+0x3f9/0x1680
-   ipv4_link_failure+0x3a0/0x5b0
-   arp_error_report+0x5b/0xc0
-   neigh_invalidate+0x125/0x240
-   neigh_timer_handler+0x47d/0x750
-   call_timer_fn+0x138/0x410
-   ...
-  Allocated by task 307:
-   alloc_netdev_mqs+0x81/0x930
-   ...
-  Freed by task 335:
-   netdev_release+0x45/0x60
-   device_release+0x7d/0x120
-   kobject_put+0xf3/0x2e0
-   put_device+0x13/0x30
-   free_netdev+0x3b3/0x4a0
-   ...
+   This also covers newgrp, su and sudo -u shells which is where
+   resetting the mask on setuid exec (Which was raised by Serge in the
+   other thread.).
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824115928.4099988-1-victor@mojatatu.com
-Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
-Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel.org/
-Link: https://lore.kernel.org/netdev/20261031165925.780930-1-horms@kernel.org/
-Link: https://lore.kernel.org/netdev/179363700308.3131.11778179538290251434@kernel.org/
-Link: https://lore.kernel.org/netdev/20261110101908.2e64e8e9@kernel.org/
-Cc: stable@vger.kernel.org
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
+* Root in a container has caps as well so for containers the exemption
+  would be wrong.
 
-v3 -> v4:
-- Move the net/core/neighbour.c change out of this patch into its own fix,
-  as asked in the review. The sch_teql change is unchanged. Considered
-  comments from Jakub Kicinski.
+  So here we need a a lockable SECURE_NO_USERNS_CAP_RAISE bit thingy.
+  This turns off the exemption and prevents raising the mask.
 
----
- net/sched/sch_teql.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  Docker lowers the mask, sets and locks the bit, and
+  unshare(CLONE_NEWUSER) in the container doesn't hand out CAP_NET_ADMIN
+  anymore.
+  
+  => no parent user namespace needed for the single-nesting case.
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 3f781a3ffb41..2a8383546ce8 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -373,13 +373,13 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 			continue;
- 		}
- 
-+		skb->dev = slave;
- 		switch (teql_resolve(skb, skb_res, slave, slave_txq, &hlen)) {
- 		case 0:
- 			if (__netif_tx_trylock(slave_txq)) {
- 				unsigned int length = qdisc_pkt_len(skb);
- 				int rc = NETDEV_TX_BUSY;
- 
--				skb->dev = slave;
- 				if (!netif_xmit_frozen_or_stopped(slave_txq))
- 					rc = netdev_start_xmit(skb, slave, slave_txq, false);
- 				__netif_tx_unlock(slave_txq);
--- 
-2.34.1
+  So a container with CAP_NET_ADMIN lowers its mask before it spawns the
+  nested container => should cover your (3) case.
 
+uAPI is a prctl modeled on the ambient capset:
+* PR_CAP_USERNS with IS_SET, RAISE, LOWER and CLEAR_ALL
+* lowering needs no_new_privs or CAP_SETPCAP
+
+=> handles sendmail-style problem Serge raised on Jonathan's series.
+
+* a new CapUns: line in /proc/<pid>/status
+* new audit mask in AUDIT_CAPSET record
+
+Raising needs the capability in the permitted set.
+
+Fwiw, neither series handles ptrace. A task with a restricted mask can
+attach a less restricted task of the same uid and then make it create
+the namespace.
+
+cap_ptrace_access_check() only compares permitted sets so far. So for
+PTRACE_MODE_ATTACH the tracer must be able to get whatever the tracee
+could get through user namespaces. A tracer that has CAP_SYS_PTRACE
+in its own creds can still attach to anything. But the CAP_SYS_PTRACE
+the caller gets over a user namespace just because it owns it must not
+count. Otherwise a restricted task could attach to a less restricted
+task inside a namespace it owns.
+
+That gets rid of the sysctl, the clone3() field and the clone flags,
+doesn't need a new capability bit, and nothing changes for anyone who
+doesn't opt in, I think.
+
+And that loopback thing should be its own series. Not as an nsfs ioctl
+though. All nsfs ioctls only report namespace state and I'd like to keep
+it that way.
+
+Pipe this through an LLM and make sure it makes sense and covers all
+holes.
+
+Thoughts?
+
+[1]: https://lore.kernel.org/all/20240609104355.442002-1-jcalmels@3xx0.net
