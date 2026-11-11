@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.28
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794439922;
-	b=yzlR88FCtlMG2SiTAHbyklIiFFBYRJVzZmwqFpOZtIia7XWa4WZxK/lFc3/tjPvSSx6p
-	 raEnCjKC4WzAkSL9AXbNIu4EFL3Znh1x9YBS1L48sQ7f4cscJRrvT8DkekzYd6/KiegqQ
-	 UEpMau90mDTBgw3DAMTpgUWeB85v/LlUfsj91hud+Nu+s1UhwLS1Jy2S8RaWFbrPyAhfy
-	 TwDHq2cxY97BHcCSRblm50VT7N0tanIhyOTQ0T9o1Z3pm0R/l7HDJdD+2rPyUjjS7v0vD
-	 NEJl+cUsdQZWSJGgiiK9RdbLjJIt68zgcXPDGStAAM5IXXmDtS0J/1X94q26wKq9bLA==
+	t=1794439920;
+	b=P3a+5vTSr65OD/h77YFjcAZKGIJIU75WWziPJ81SCb5mcak6I3kGyC0vqKPwK7FHosWy
+	 Sg3VKfA7fMR76Dr2tqG6sTtz0UIq6LbeHllGeSdktPFRTAYtZZ8sGkuGgABRp2rHYvWR7
+	 XZ9VA3RURcTiw6SUpPqLfgbl8jcoNoGt7WaA33Id+52wjs5dXqpJD+fuf+skmKxRT+CuD
+	 Q8e+J5z4QvyCoVD9UPEGB/8lYkph9YH9qcAGiDf5Qjbb0TAhVTjEg6T4Q8xhWBbOtc06h
+	 loBglR58KZLXe98LPJ2n0qvG/TC+qVH9/RXei55XEv3eptv9QiWbTgZloQFbTAEVtcA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794439922;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794439920;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
@@ -25,53 +25,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eZ+cOMs/eKz5GtorVDjsGsXGdwxGuVJ8eb7y1I8ep7w=;
-	b=YYPA8cvbRb20Rl9di2+bW4jBJk+lfK8QW1shaRyv9JuolqiP+56Zcbu6pcO8oSKjb9rz
-	 MOVWUtVCMrDCJ/Ju6K2jnZGpg5YKM97jZfCNbdEUE0MuW0WtqPwVtck2+LayDeQphPhod
-	 U5MpuDchRA8QTNGTAo/FB1sw1eySgKX+rkJhDS9njGT0R4Y8q2F6RrHZa1JgO4AsqX4yZ
-	 ZHpLFKv0xhN9DlAg6XgCIz0jjRfez2mrQWBO3JSem+S26vG9kGfv6+klKjZFQKatjbhig
-	 NYy4mr9levn8A9uNNSY6m+VOSUfKkailNpRMbvJC7xRJnHjxDk3aM0h2vgUVwtou2LA==
+	bh=PUnr6QCBLj1gxkds1ZKvAJ7aZ6JIdbej6XLPSVoW400=;
+	b=F0G5ESFkL2alnzsdNPN+Bkl9BvCfAHm3gK4SBlOPnFOV34WMAQBsgzclCRn11SJ3mxhu
+	 VmpAAPgGQOcSFyIN1rg52KcxkIp1Pwkk++r8Mc07Pm/Pxwr6GK38OdPYf37P/oGuCUdx/
+	 o2/Xtq/4mlS90pAQ1FY/TMsiRPeGNV6b0RrU2Boq+O0lcAwuNwToAau6RCB2xTXe9Am/V
+	 MLGHctAOHQ/ys6VIxcUsDRU961p/6s7NS2uFXUbE/nvaN+Nwisu5PpBTL5cAWhPZeExh4
+	 JEpUm573cCrHKo/PXo1lPGMFQ86Nd7KE0lQjrtFZAQHD39Zcbv8bD8kk+FDKV7Hc+mQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nxp.com;
 	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=fq+WyFXk;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nVAeS5Nn;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.28
 Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010028.outbound.protection.outlook.com [52.101.84.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11D6606A88E;
-	Wed, 11 Nov 2026 23:32:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A11D6606A88E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C531606A327;
+	Wed, 11 Nov 2026 23:32:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C531606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=fq+WyFXk
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nVAeS5Nn
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yC3z2yUSrPtX3ZRDiSKrXrhxTDQsAQJNut29dNvplGIE17f4DIwZ7TDJcYy9OpPOaehEp8Qzk0axzNptTT5UrDdHogJYYR1VSGxjaw1vjeJFBaOXcZ3rPeMeIImAJgBywHCjYk3xCubuWTyGYu+FM6ACw5Eo1R8O1OqXfPX1/4isKEug/ibC0peBWNiAfBRRF9n8uASDHUf7mJBxeMZakVOX+p07owwXAkrdn+iT7ZHowQmc3PLsXHt1p7mpPDKqsCdHNbcdSregt/zsp49u52YniKrcnAXojWBUN71c3jbTexxfeVzHKgFrtloUPfkbAcjBi9rXzQiJb3GioU2olQ==
+ b=exjffNlvvimS4thDXPvHwL5eAvSopJgzGcqTNToULxjF8ZCw+wRGy7nX6EQUDgnWys9Uo16hovmvd79Fvn9AWTQGoW0Ano2EXLnVWqcmGiWAUuRQAfKTN7TAYSYxyZLzEN5tqlHKphn2/YQod+Hls1njD6IJZ0ADdm1gYpykXF67KGeBVbQFvnmUAK3IIGM8NuIvSmawDcoJyBmhNZ4uZFZP74gWYSb4i45DXnUpWFbybSzeCe2ybQ9ESgskS3BszoNC2UqZiCEqAuVLeEB/reveQb0MHR8mS/x81aFjZwGWsVaGT+xxhJQDY6AzS5RJn6ZePhcp9dPOLK4Mk7YWqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eZ+cOMs/eKz5GtorVDjsGsXGdwxGuVJ8eb7y1I8ep7w=;
- b=ixhqu4R2b3lNysufrqsYIr1wEQjwKDDuX3RhCP6FzWTz5GElMtiLnH022M+pd3XXHQzPhPNmwbFbbmbh3WIYrbM2xqg0REs7Yw8+r4ex4OC+LkMPDRzhfExjpXppoqAPzh5JbfGL9/1tufU/pGSDv/RFEre9Sk7EhnblX+Uk/JAR2HFC/08RpyhK+qAg65YTdPJ4F5//ASfVdYEbEo9OrDvpB15aODzn8Tg6ebXpA/bWnGJ4GEYC4quEo+6NZBZDIInl251IwAQE0YFGSTtECsMQnUeVr8vKpd5TslRuLBdTzgphyu4TKsUhuGqj+D0o4Evs1qTL/4W+Q7yye5v3Yg==
+ bh=PUnr6QCBLj1gxkds1ZKvAJ7aZ6JIdbej6XLPSVoW400=;
+ b=qS0/2xTtHbVgkNgS82DDlKcSn5ikCf+qrWDndA1BUy554E2ouxM3iwJiHyeL0kHMxAuOghu0wDgVwRc0twh2Qx/xWHz+wEFTczJbUDAj+sUtPD0NAkjWqJoOTPXDhELqZizPvoGoDNBgR2ogjmuldj6pjt2o4VOQaCUtd7nKg4FutgruhqMobIPIKBnE11WJP4bNSjZOWwCCZhDr4jZfcakw3BmVhwk6eQzXiWYNDvILuDMcLvpnI3ceIjrNJ/1c0bzglzp4bHHK1LbvHrLNDOQ/r/meuRbt6JTRJE049o4OJ7ZlHq3GperIaHPVpw5QEarUc0ySwmFb9BMWicm/iA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eZ+cOMs/eKz5GtorVDjsGsXGdwxGuVJ8eb7y1I8ep7w=;
- b=fq+WyFXkyU4Fr0Qja0HkYMhR6fgNioGnaJZlUPZCtAlxKdP6kJ7jO0Hk6YWDB4tLYeh5qIoj0ep/yh1EwJA1Ubh1RlwRv24VUqAemKHsUPYOz+Sg2Sbmkr8e5cvW1UMtCiflupnbAZu1Gq6+PDSnvus5dmMRvTetS0OTVTJLhlTvpbn34UVS/Fyem2FqWxEUs7cR9yJ4qhDuGA9ACMWYxyN1Wir0AIYGTVr3Jv7R1RgOd026Er8bMPGBGUgsdJ28PPuC1LTXA+ZBFJ8DJmNci0ATDvnIlwBYqrWG90yXwkcVqHCQdazP7HJ0/tD3SM2I+6+3l2XR5gfyvVhshRAv/g==
+ bh=PUnr6QCBLj1gxkds1ZKvAJ7aZ6JIdbej6XLPSVoW400=;
+ b=nVAeS5NnNqwm025euQbDusFkCe3Oitm3NBXiuw/nMCuuBEbCFJ2sSoMuMXXEB9VxuJ+QvGiQzSaN1NG2jm9iypwBxrHpugZZoOIxJIuQ/vhyosEW/9lvx7ZbpI145JEGS1G+f3fLgm8YgHIxO+qmW1g18BKn1ZmOGv2wttEuFgYes6HioaNa1gZLwkTu5e4G8Kdxk/ErrMtT1OMGYTtKRuUjhgaPFyDyFdo2CR1ZCg4uqYzhaEDpOaV91jsndnkPlbpUz9mhWL/0gB7G0OxkmZ1QXqGHJUYDkhDpUS+KBmXqVJLDAmCfZKkqbCP+qIlr16wXvahge1Q2b1GfPfLe5g==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
  by DU0PR04MB9249.eurprd04.prod.outlook.com (2603:10a6:10:350::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
- 2026 23:32:00 +0000
+ 2026 23:31:57 +0000
 Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
  ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
  ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 23:32:00 +0000
+ 23:31:57 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -86,16 +86,16 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/3] net: enetc: let core segment GSO super-skb when headers exceed TSO_HEADER_SIZE
-Date: Thu, 12 Nov 2026 01:31:49 +0200
-Message-ID: <20261111233149.479596-4-vladimir.oltean@nxp.com>
+Subject: [PATCH net 1/3] net: enetc: let core segment GSO super-skb when TSO would not fit the TX ring
+Date: Thu, 12 Nov 2026 01:31:47 +0200
+Message-ID: <20261111233149.479596-2-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261111233149.479596-1-vladimir.oltean@nxp.com>
 References: <20261111233149.479596-1-vladimir.oltean@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0119.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:bb::14) To AM0PR04MB6900.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR4P281CA0397.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cf::13) To AM0PR04MB6900.eurprd04.prod.outlook.com
  (2603:10a6:208:17d::10)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,160 +108,211 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|DU0PR04MB9249:EE_
-X-MS-Office365-Filtering-Correlation-Id: 999a2673-81bd-4eea-2872-08df404bfbba
+X-MS-Office365-Filtering-Correlation-Id: dd939dc5-f941-4492-3ddb-08df404bf9d6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|10070799003|366016|1800799024|19092799006|11063799006|261028144727099003|10067099003|5023799004|56012099006|261021135927099003|261021123027099003|261026121527099003|261021121427099003|261022075727099003|261026140227099003|261022105027099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
+	BCL:0;ARA:13230040|23010399003|376014|10070799003|366016|1800799024|19092799006|11063799006|261028144727099003|10067099003|5023799004|56012099006|261021123027099003|261026121527099003|261021121427099003|261022075727099003|261026140227099003|261022105027099003|261102123227099003|261102130727099003|261009223027099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	OAz3sKoISB/PKXMu3vMA1y0+ETYJytFYdF7lTLdbFYheHlxB/t4LqEhTm/6eJ+cjrluKCp8i6jQeTthJuI9HRgb8wNqeGTvGhDB63EOkFe7+YdIJp4TPSAK/+HNtQxWAZte3hNFZoy4gzxfJ+bSG2YbfK3v3rRmJdX8Gr4tl9UcTKF72IsoRq7JlhEnoUGpp9+pjsUu5urmLwKgqNzmCSJH5ZLczSdGussdvy3WblymNj49nqhp4/j79OIJ101gyXg8Idx9/W6kfR+JIJdpbAe5/lau/45kO4v/slZYEH4UaAwwYdoyK/s4rCBOU5yBdhWi/ULdPM5foHvFwbBOriGgk+g9+GXPkDu8aktSrPQxatjOKv0odNLtA8eRJGY/4jyfcl3yZwl4by2aReHnVpUtqavGk22lGnEcDgbp8t1oqgIOyW3VTEke35iQoNp1qtyEAPSmpD8Ky8/t46zO+OvtWoUq6/Lpi+Ll3vN5Eb1QNlE6zMamD6RzHaVkpLCc8c+bmVMW9SVf8XWOUuZoBHFhixsuBYzoG42y4JwBtRUfNjTaFQSW4gEzvJ2knbzk0MZQuyhumokyuvGljTfubYOTHc57yOXbYbA/nHn1ppcwK5NlIP7NvwFW9EmQg6UG/
+	jNKWkYZGPTXGgd+amIXWI45xoghOpn0V6UKPM9TjCZhzMx/2r2rTxwJdvc0DfsJ9DdZ3tInW444OxNQoXqSO3XFUla8aMEz9rWl3banQd11Es9kKgYEiD3q0FRXP2q52wOnQGt5+ptFyMj2X+ilerekR1ILlKvBj91kmsoOa7+InlkEwsm58xauctiFus+dc1Kcm81zv7/EuRgkGAmnyE/OsincBMFveWFo4xDKbhYsI5qWk6NdXDLp9wYW89DSTUPzBMuKD+hGBG5EnMV8OOlGdRPyKPhMyf0A3Ni4I8ouHZPyapXrMktJALcWHEWGJR2RhNVVp6+8eGb2CXsqk/87ePYyI0v/mbGpF8EWWpecuSl/h08OdOKPGFefbLoGfSXseHhzupx/J/BS/Fy8kzf3eBViROLfnOmF81VI4qmUuhTtbZwuFwMfjXJid2IFUatnrouC0DwT0vkPOTprbnztkIswJDXgDfu3bC2mbkpqwRa7EEvs+LeahdyP3zBUW+wcwdh2k69/iIy9zHBxdBfYnfHv4P+c92xQWSFo/g1Oy5vXeaYtyPU0EIvWmavsiPEMn8HLom+mcEFKlaR6AhgdYYaqyy2z5yrC0oiZPHv9kPFZUZy/65SUxLZ4JSNYgJunLbsS3kfixZdhDPgElXo04jFALlRtF+J2zrBsp4Z4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(10070799003)(366016)(1800799024)(19092799006)(11063799006)(261028144727099003)(10067099003)(5023799004)(56012099006)(261021135927099003)(261021123027099003)(261026121527099003)(261021121427099003)(261022075727099003)(261026140227099003)(261022105027099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(10070799003)(366016)(1800799024)(19092799006)(11063799006)(261028144727099003)(10067099003)(5023799004)(56012099006)(261021123027099003)(261026121527099003)(261021121427099003)(261022075727099003)(261026140227099003)(261022105027099003)(261102123227099003)(261102130727099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gdG4cTwhGWBgXYFEHE6wg2vWv2FKa82mHTy/+cRpw+hlkUO21Ix/EsMwAY8B?=
- =?us-ascii?Q?VVF0Zkur+r7pBUoQ+ux0rdT+ITYrKMTAECLVD2NRHLk52vYQwzm8yRjlvnZ8?=
- =?us-ascii?Q?Az+mFAUHohC17OfLglc7i7nf8FeefWRkowgdgjyNjlkLoeogFCNHEK8jXyip?=
- =?us-ascii?Q?U9J/YCMOhSC1WfR6OGziXS5/jzwJJUo4kt4WSUmSu9kr6ATSMoOX8yo+gj1k?=
- =?us-ascii?Q?mrcadk7/bF+Ax2uz+fLWqQGIP1LU3Q6hggE2+S+G+f3qYckaU4s5mVgmGYPG?=
- =?us-ascii?Q?Vl0/Gaid1pvqxoq3ayLTmIiHo9QoOSJEUXyX1WCCXYudsaWhu3z0/8rpXqFc?=
- =?us-ascii?Q?0OledVVcQW3kM87nd0NBU6EGwot48qPp2B8VIstQVNd5H7s9BYRDIB3zt+HW?=
- =?us-ascii?Q?26fB2FPyleSSx+oijRICBXXMhwmG8pxQ8SObd0W/Z8xlXW8rBKSBP2pfdR0/?=
- =?us-ascii?Q?wpMo6Rm0N6foMxj73vDIqBv/I+qOA/3KtxBTyOdEhkfodgoif+ME91YWMlwF?=
- =?us-ascii?Q?BTwbXgZ/8S+e1aQjOGdApmqj8Ga6FvDjCAJvVVEtFWw2WlSj7IS6L/XFEJ4o?=
- =?us-ascii?Q?WeLYSBOoLE1myKkpij/1Mejek41F7Ebq8K52NHf+hRK4g9zNYv871kcYz6/+?=
- =?us-ascii?Q?sdGwvenhLzRvqQ73dFNCGpeTLjkZuOL3Sm7LuHK7A4qqHtJuXo225KqhNRkD?=
- =?us-ascii?Q?BMjvScrVSytFmrVNDv6LlWa5EfRDxm1IPXfG5Yb0J9jPqzPJD8sPq13vTEMH?=
- =?us-ascii?Q?AJD7nzf3PUP+wP+I1UzV+0TVEV7XzDYzg8JY9MFSoXcFOgl6jexMP2QAI0I4?=
- =?us-ascii?Q?hfKbnliavdsRW/jrvzXAlnTtKyLjqrAwKQK9DuA7x+TxCk7r6FBTNtsvGb0l?=
- =?us-ascii?Q?pksbh/3lJmsB28OxZKlARwI+rH1Cn+cyEN0L3NYbLugGBtbvLq7JrIdrMTIl?=
- =?us-ascii?Q?HkH8GeBzUZ6X2xigBV1uKw/ukeBeyP8nCCFdsrpTClnCZP1dmARV0wEHaygl?=
- =?us-ascii?Q?r0tsKmgRhcS/IYOZtLE0MolS3e6FyzH5MwAsbs7PJmHSVXJWlIdjM7GV6FJw?=
- =?us-ascii?Q?3kODduZkkkxYubkgLkh27mFKviLCsNcYQOPdrmb9ZZjgFhDHp9oIJ+D+IiDg?=
- =?us-ascii?Q?89aimTSPzHtZ0LcHSfLcCEDGxOhdV6yLffFN4m9s5EVz3P+hV7ioWxbyvODT?=
- =?us-ascii?Q?Csjd7CmeQN7Y1dVqBX7vSXRnPGi7trfZH1B25S3SJ2JQe7Q4sfCpJK6a40s2?=
- =?us-ascii?Q?sUSJeFIJm3kTnWRLPHnXXhw/gwEb1yiqEFQapcthtidxAOO6xWW4x41aKU25?=
- =?us-ascii?Q?9KDepMAZEqr1zMw/kxiC4WNacGGJImH8r6Wpl7QUCgW23uxZD2yCR2tU9d0i?=
- =?us-ascii?Q?ggNPggQZAZJhdi0RVSb6trYMKiraef5HrAqjgwevW/anCud1Ryc0oi6LLjzF?=
- =?us-ascii?Q?50TFOomkV9QGo7qZ13I6pz+cE3IHOFeRcLQNGlUeWCxHUinOK+8oI4xed9rG?=
- =?us-ascii?Q?UOdoXx4dgtmfpBQlv40MWqaGzWJ6Yn68SC+7tZlD5diWhwwy+i/KymcNFEV1?=
- =?us-ascii?Q?++DJ+uaoGErz2WLJDzDsFd9oct9QFTiBwkQvVBc253NrbvFJUcHYHMl66AQu?=
- =?us-ascii?Q?yIT9N26knEFTbN9QwHPqqnQHZhx391etVUtgBljmEoIIZ0PpoIz8JkhqWpvb?=
- =?us-ascii?Q?rHQ1XbKDyuM0fjLGUaL1F8BJ1NH9HdlCNXYYp0pJcJoiJkQPaeEPJW4oO/kP?=
- =?us-ascii?Q?VwFbyq5rOqxZzM6Kc58doa5fh+7eA3rnX4ZW9vhdINghbR+iT/7DRMl6KEFv?=
-X-MS-Exchange-AntiSpam-MessageData-1: gbwOcUy62+Fc3A==
+	=?us-ascii?Q?i/GOi9EwZim3JgpX/CyZ5nKQ7rUp3rmnI2TRq+HzrwkyTTPKh0QxmyeV1njh?=
+ =?us-ascii?Q?+TRxGe+zkp2J5dDCUUYCKsWeqwJsvz494AbLCiBvqfsDDya5LZSGnCh1gme5?=
+ =?us-ascii?Q?psgd97P+4b546VMPxDupGLe//IwZe/9JV4Mo1yEzsl96Y2N5O8NV/CTH4Vck?=
+ =?us-ascii?Q?lSlkqUzD/FCZb39nYMTVVSMf0vdE2UTfzw/97aPPGIJ7gGw6LnwsredDYr0n?=
+ =?us-ascii?Q?iBiRGooZyH8CbzPuQzwNfiIjvVudDPTXLDf1Kitkrr/evXvJ/liskLgbQEr/?=
+ =?us-ascii?Q?WAWwtbDCsnAC6F3lfYz5LqEiBhu155GwuQVxOmPnSoSVIdqGddVgjVxGxG6U?=
+ =?us-ascii?Q?eKQHsonnJRGdqxfuiey2cTIGRp/zHZN6EkyFn2th+u+TMitvSSjze/sybi22?=
+ =?us-ascii?Q?fM3kSG1fD8yKtWIHgA70zEbL8gkVz+oh8i2sgSgzCk+z6D8kwX0gfS8bHp71?=
+ =?us-ascii?Q?DyvtFtgnfGk0nGAgYfzmIAThttwsAo4qasigg6EpqCn3hmJT041d2Ltj4XOI?=
+ =?us-ascii?Q?EqF0WysPSPe/MBOtNBPndAzaAKLKmSEaIUP5RpjQWisaWuV2UoenV96Gg/yt?=
+ =?us-ascii?Q?8xDnxgzR0IYf7EhRXK5kKdnegOZuiIKkbZtKhqMqbr/5jqY9/qIScMReU7ut?=
+ =?us-ascii?Q?qOVYqfxVyOCfbx213zZGV33EvyNqAbiSQsgt1PDcCACwkII+TPAegNieomd9?=
+ =?us-ascii?Q?TtZXgdhxclcF7xNEL56OAghi8YgVDB7zPp6iwPI1mc7IrGrRggKgIPFHKXS0?=
+ =?us-ascii?Q?mTd9MMiGX1KggMG7p619y0+oTD9iWLJHtzqnuv7LJNuX3IVEn6ehbf+LP6k9?=
+ =?us-ascii?Q?qmRcrAf8Z5aL1Wo+GV0evRAFOqfas5aK/IAKsLLkiIweddfdUR9d/+FAUQ01?=
+ =?us-ascii?Q?Qqy0x8p2dpeK21o5jn8EBvlYfNlCvFql6vp+B9IFCvkVkPUbxrCL8hEa4fPZ?=
+ =?us-ascii?Q?LFgfHoqwRpXiXeu3du1q/RcN6YPHCwf2KPl0NP6SuUEGRK0sydCzMvWmKPzO?=
+ =?us-ascii?Q?rYip4Aya9DDeu/U0J04dNnHjpRTzfhzz+5yfcPhUOT4DYrY7mGpVnkoWxkIU?=
+ =?us-ascii?Q?cVtCR+Cqk+MCPssZyqxQp+NJMb4El3jxLc8iNB1W1jlFHbPbFg6hqJmYz68k?=
+ =?us-ascii?Q?cBZQwU6o8yRKAnCPXWsUmhNerazO3P0By9JzuGXgGR6G9fQmOdO9sD0LfBOn?=
+ =?us-ascii?Q?xQwlwkScWIpzkj9/rmTFOyV8gFh1A5S8y8zEYWo3LSfEP4uf/uBl1+9ZUVYt?=
+ =?us-ascii?Q?bsHfgmXelDN8gtrZm3dDUy6+ovEi9jVUQKROMVVGTzGSHauOkEgdAdBsapJM?=
+ =?us-ascii?Q?FTiV9rnbCgDRU63MhRBeVxqSPm5CuqaCicrtMwFFe8/3VWSI6V8VU6W8UCNU?=
+ =?us-ascii?Q?aOzFe7o+8COMWEO8bhTvYyjuaQ0Tzv73b+o3D093VYFKLa1HOiPw40H2RCMk?=
+ =?us-ascii?Q?lnbbHqnVHZhjt2mCnf70045IwUpJAeIFT37q1Bc0JLwxCG+b6ypXGJGE9ZUW?=
+ =?us-ascii?Q?iru5KfwGsDvxFi3mrL8ZOXyLgP7NGi/9yuoxsw0f4Hk8GdoNbunk2NygWdC4?=
+ =?us-ascii?Q?hXLST790IEpi7rFHrGWeVCeOCWmn634ZtgVHVIHdm16SiGDikSrdaayXAp5x?=
+ =?us-ascii?Q?vqJmpD6WI5hMs7zx0i6O14zlDAbn2t8yw0Fjr1qEyWX/Xt9WVjQ/7ULikoih?=
+ =?us-ascii?Q?IgOt5fV0w79KrhTMjYd5Wwa5T1OsV/fbdD8E0+5utMY4kiFDnULsfyaJb4FC?=
+ =?us-ascii?Q?zUIEjFeV42x8k1wKyI1R2gaGFCCeEImqjQWbYAQbYRLqwZ6qeIWRnBa1ZxeZ?=
+X-MS-Exchange-AntiSpam-MessageData-1: 8kTXhaAgNZ9OWw==
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 999a2673-81bd-4eea-2872-08df404bfbba
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd939dc5-f941-4492-3ddb-08df404bf9d6
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 23:32:00.1561
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 23:31:56.9906
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Sl7E+J0+hp9lxA14bXq70Fi3fbBhR2TfveBEIM50l7cCOs+sT4IhhV+EHGqs47of9HsK8BO8dzunrIb7H1E98A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Aqs0H/dFgi/5owf2By/2IiE7Qo952t1IYabkxAy6y+gVl0WqhhceyKSGIXubvpmf4mw9sruoQ74AU6rfoV497w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9249
 
-Like many other drivers, both the software TSO path
-(enetc_map_tx_tso_buffs()) and the LSO path (enetc_lso_map_hdr()) copy
-the L2+L3+L4 headers of the skb into a fixed-size TSO_HEADER_SIZE (256
-byte) slot of the per-ring dma_alloc_coherent() header area, without
-checking that they fit.
+For simplicity reasons, the enetc software GSO implementation waits for
+the TX ring to free up sufficiently that all BDs that would be generated
+by driver-level segmentation can be enqueued in one go. To pass the time,
+it stops the queue and returns NETDEV_TX_BUSY for the core to requeue.
 
-Sashiko casually points out during review of an unrelated patch:
-https://lore.kernel.org/netdev/179294166520.3134.18097439321876673016@kernel.org/
-that TSO_HEADER_SIZE does not constitute the maximum size that packet
-headers can have for GSO super-skbs, but rather, an essentially
-arbitrary number.
+The problem is that without any limits on gso_segs, some GSO super-skbs
+can never be sent, and the aforementioned behaviour results in the queue
+stalling (there is also no ndo_tx_timeout implementation).
 
-An example where headers can exceed TSO_HEADER_SIZE is with an IPv6
-extension named Segment Routing Header, set through setsockopt(IPV6_RTHDR),
-with a type 4 routing header. With 11 or more segments, the headers of a
-TCP/IPv6 packet exceed 256 bytes:
+This was reported by Sashiko, but is a valid issue which can be easily
+triggered from any source that can craft gso_segs in a way that
+tso_count_descs() can exceed 2047 (the ring size minus the obligatory
+free entry). Valid reproduction methods include TCP peers whose MSS is
+close to tcp_min_snd_mss plus large (64KB) TSO super-skbs; UDP GSO using
+setsockopt(UDP_SEGMENT); maybe others.
 
-  Ethernet                14
-  IPv6                    40
-  SRH, 12 segments        8 + 12 * 16 = 200
-  TCP (with timestamps)   32
-                          ---
-                          286  (30 bytes too many)
+Add an ndo_features_check() that clears the GSO features for skbs that
+take the software TSO path and whose descriptor estimate is larger than
+the ring could ever provide. The core then segments these skbs itself
+before calling ndo_start_xmit().
 
-No privileges are required to request this socket option (but it will
-cause driver writes outside allocated memory). A reproducer sketch can
-be found at:
-https://gist.github.com/vladimiroltean/7cecf636b788b29f361a2fbdae646010
-
-Bizarrely, enetc is the only affected driver, because the core
-accidentally protects most other drivers against this bug in
-gso_features_check(). There, we have this logic that saves the day:
-
-	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-	 * so neither does TSO that depends on it.
-	 */
-	if (features & NETIF_F_IPV6_CSUM &&
-	    skb_has_ipv6_extension_hdr(skb))
-		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
-
-enetc is the outlier because it only advertises the more complete
-NETIF_F_HW_CSUM, so for it, this fixup does not clear the NETIF_F_TSO6
-and NETIF_F_GSO_UDP_L4 bits.
-
-[ astute reviewers may ask: what if we disable NETIF_F_IPV6_CSUM at
-  runtime, via ethtool -k, so as to bypass this fixup, don't we make
-  all drivers vulnerable?
-  No, because netdev_fix_features() will trigger the code path which
-  also prints "Dropping TSO6 features since no CSUM feature.\n".
-  So TSO super-skbs will now be segmented in the stack. ]
-
-Surveying every driver that uses `TSO_HEADER_SIZE`:
-
- Driver  | TSO6 | Checksum feature    | Core guard fires? | Verdict
- ---------------|---------------------|-------------------|---------
- enetc   | yes  | `NETIF_F_HW_CSUM`   | no                | vulnerable
- bnxt    | yes  | `NETIF_F_IPV6_CSUM` | yes               | safe
- nicvf   | yes  | `NETIF_F_IPV6_CSUM` | yes               | safe
- otx2    | yes  | `NETIF_F_IPV6_CSUM` | yes               | safe
- fec     | no   | `NETIF_F_IPV6_CSUM` | n/a               | safe
- mvneta  | no   | `NETIF_F_IPV6_CSUM` | n/a               | safe
- mvpp2   | no   | `NETIF_F_IPV6_CSUM` | n/a               | safe
- mv643xx | no   | `NETIF_F_IP_CSUM`   | n/a               | safe
- dpaa2   | no   | `NETIF_F_IPV6_CSUM` | n/a               | safe (*)
-
-(*) dpaa2 also uses a fixed-size `kmalloc(TSO_HEADER_SIZE)` per segment,
-so the identical overflow would apply if it ever gained `NETIF_F_TSO6`.
-
-The above survey is what influenced the decision to make a localized
-patch in enetc_features_check() rather than create a huge disturbance in
-the core, even though, IMO, TSO_HEADER_SIZE is a huge foot gun.
+Capping the segment count with netif_set_tso_max_segs() would be
+simpler, but its drawback is that it's static, so it would have to
+assume the worst case for every skb (MAX_SKB_FRAGS, and later the
+per-segment VLAN and padding BDs). This would reduce TSO sizes even for
+skbs that fit.
 
 Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-Fixes: 69797ff888d3 ("net: enetc: add LSO support for i.MX95 ENETC PF")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 31 ++++++++++++++++---
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  3 ++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |  1 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |  1 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |  2 ++
+ 5 files changed, 34 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 7f089a84d9a6..3c5478238e35 100644
+index c6571b5cc842..1606ac57016f 100644
 --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1122,7 +1122,15 @@ netdev_features_t enetc_features_check(struct sk_buff *skb,
+@@ -695,6 +695,14 @@ static int enetc_lso_get_hdr_len(const struct sk_buff *skb)
+ 	return hdr_len;
+ }
  
- 	features = vlan_features_check(skb, features);
++static bool enetc_skb_uses_lso(const struct enetc_ndev_priv *priv,
++			       const struct sk_buff *skb)
++{
++	/* LSO data unit lengths of up to 256KB are supported */
++	return priv->active_offloads & ENETC_F_LSO &&
++	       (skb->len - enetc_lso_get_hdr_len(skb)) <= ENETC_LSO_MAX_DATA_LEN;
++}
++
+ static void enetc_lso_start(struct sk_buff *skb, struct enetc_lso_t *lso)
+ {
+ 	lso->lso_seg_size = skb_shinfo(skb)->gso_size;
+@@ -1018,10 +1026,7 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+ 	tx_ring = priv->tx_ring[skb->queue_mapping];
  
--	if (!skb_is_gso(skb) || enetc_skb_uses_lso(priv, skb))
-+	if (!skb_is_gso(skb))
+ 	if (skb_is_gso(skb)) {
+-		/* LSO data unit lengths of up to 256KB are supported */
+-		if (priv->active_offloads & ENETC_F_LSO &&
+-		    (skb->len - enetc_lso_get_hdr_len(skb)) <=
+-		    ENETC_LSO_MAX_DATA_LEN) {
++		if (enetc_skb_uses_lso(priv, skb)) {
+ 			if (enetc_bd_unused(tx_ring) < enetc_lso_count_descs(skb)) {
+ 				netif_stop_subqueue(ndev, tx_ring->index);
+ 				return NETDEV_TX_BUSY;
+@@ -1098,6 +1103,24 @@ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
+ }
+ EXPORT_SYMBOL_GPL(enetc_xmit);
+ 
++netdev_features_t enetc_features_check(struct sk_buff *skb,
++				       struct net_device *ndev,
++				       netdev_features_t features)
++{
++	struct enetc_ndev_priv *priv = netdev_priv(ndev);
++
++	features = vlan_features_check(skb, features);
++
++	if (!skb_is_gso(skb) || enetc_skb_uses_lso(priv, skb))
 +		return features;
 +
-+	if (enetc_lso_get_hdr_len(skb) > TSO_HEADER_SIZE) {
++	if (tso_count_descs(skb) >= priv->tx_bd_count)
 +		features &= ~NETIF_F_GSO_MASK;
-+		return features;
-+	}
 +
-+	if (enetc_skb_uses_lso(priv, skb))
- 		return features;
- 
- 	if (enetc_tso_count_descs(skb) >= priv->tx_bd_count)
++	return features;
++}
++EXPORT_SYMBOL_GPL(enetc_features_check);
++
+ static irqreturn_t enetc_msix(int irq, void *data)
+ {
+ 	struct enetc_int_vector	*v = data;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index d9e91832a9c1..1e3290d1a388 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -529,6 +529,9 @@ int enetc_close(struct net_device *ndev);
+ void enetc_start(struct net_device *ndev);
+ void enetc_stop(struct net_device *ndev);
+ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev);
++netdev_features_t enetc_features_check(struct sk_buff *skb,
++				       struct net_device *ndev,
++				       netdev_features_t features);
+ struct net_device_stats *enetc_get_stats(struct net_device *ndev);
+ void enetc_set_features(struct net_device *ndev, netdev_features_t features);
+ int enetc_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 71c971618388..bfe0eaf50975 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -586,6 +586,7 @@ static const struct net_device_ops enetc4_ndev_ops = {
+ 	.ndo_open		= enetc_open,
+ 	.ndo_stop		= enetc_close,
+ 	.ndo_start_xmit		= enetc_xmit,
++	.ndo_features_check	= enetc_features_check,
+ 	.ndo_get_stats		= enetc_get_stats,
+ 	.ndo_set_mac_address	= enetc_pf_set_mac_addr,
+ 	.ndo_set_rx_mode_async	= enetc4_pf_set_rx_mode,
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index d77a07cece28..86ca88196a4b 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -483,6 +483,7 @@ static const struct net_device_ops enetc_ndev_ops = {
+ 	.ndo_open		= enetc_open,
+ 	.ndo_stop		= enetc_close,
+ 	.ndo_start_xmit		= enetc_xmit,
++	.ndo_features_check	= enetc_features_check,
+ 	.ndo_get_stats		= enetc_get_stats,
+ 	.ndo_set_mac_address	= enetc_pf_set_mac_addr,
+ 	.ndo_set_rx_mode	= enetc_pf_set_rx_mode,
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+index f70b6d4290f2..223f974727bc 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+@@ -440,6 +440,7 @@ static const struct net_device_ops enetc_ndev_ops = {
+ 	.ndo_open		= enetc_open,
+ 	.ndo_stop		= enetc_close,
+ 	.ndo_start_xmit		= enetc_xmit,
++	.ndo_features_check	= enetc_features_check,
+ 	.ndo_get_stats		= enetc_get_stats,
+ 	.ndo_set_mac_address	= enetc_vf_set_mac_addr,
+ 	.ndo_set_features	= enetc_vf_set_features,
+@@ -453,6 +454,7 @@ static const struct net_device_ops enetc4_ndev_ops = {
+ 	.ndo_open		= enetc_open,
+ 	.ndo_stop		= enetc_close,
+ 	.ndo_start_xmit		= enetc_xmit,
++	.ndo_features_check	= enetc_features_check,
+ 	.ndo_get_stats		= enetc_get_stats,
+ 	.ndo_set_mac_address	= enetc_vf_set_mac_addr,
+ 	.ndo_set_features	= enetc_vf_set_features,
 -- 
 2.53.0
 
