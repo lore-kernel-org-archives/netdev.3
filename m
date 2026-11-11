@@ -1,65 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.62
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794382116;
-	b=Hf4x3h3BEJvHAJ3xbKi1WBFw/r4c9qZH0+bfqaiLDvYrlZEYSmrLDZ69KHuAo55uY087
-	 elz0//PunLcstJFiDIK2Td+SujcwghMrY6h2PLA5qHIajGMdBxXswJcSMkJvSYvF1nzyR
-	 iuuri7rfXWd3wvJJ/a0cZqqRQMRXwbSy/05j9jBU+ksd4VfgHq5ExOvkDnb2f/ruQ34w0
-	 mPYBScww2L+6M4L1UffCBa6Rj1nHh+2mrx4HkQXBruXA3e4VN514mU8EbbgafJ5XYHeAT
-	 KKP5UpiCwZ5xJrxGc8XYcbUSWi6OXFbWgE+ejpX2H7RZqvFajfcjUc0ctsyZ1f4TdaA==
+	t=1794382233;
+	b=pBq4p0Ac/wZpWfWG8Kon3h4AZpxU5NFqHLV0afMZD701Lkalyq/LfI9c7fu0Fs30l2We
+	 RBDk7RG09JA8ZcU19DuF8Gk+Bw+Ta0XvhnP/cb0+qVJECG/TwujmHmO/jAwkIFExUmzzW
+	 /Lv5vJpkdK5oJmNPRxj+2Qu3N18eNxIK9GmBcRhaHerAUcPn7k1rl6tf2aKgu+fFY/NeB
+	 sJ39oD0daF28whufNxPPxPHPE1rqptyZMEidSJODb6DT1D+l/S7spqAIaVgFf8pFxHPf1
+	 9gTg33hnJdB8DdVwCxP7sQyGD86bi4xEPyKkrU5IX4EaKLyfygyugW/f/qFlUVuVbXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794382116;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=fvA4caXYy5BSpxvCaqEJeTCv8onAojVykrQnaCc9pCY=;
-	b=BlZABpF2XLMw62460CSGKcuDWiBAOyv3mot4fInmoBeKTVHf4kb8H1ysuB/OAF3YY+Pz
-	 5D6xe/yC1AOzUdcLHidXmu8vi8IXkyOEcO+TJE8xMJj3hnvqwOUbyxS6mmqZKDF7TBP3x
-	 RUmEa99tjiPhp9uqroQrLekB7j0VojksEHgpebH+ZByBHVfsQ6t4T59kd/ybLnnoyuRY7
-	 VAcAeb10QO8la2ufRl/oic+P8a3W/IFeNR18UoiSlTYhjgsC/qa8VahY8anqV3GwXTyuP
-	 4D2guKM2EgXeNN0RKlZ49dYiI5Gc3vueqeOxDqHwjcXzyYR34wAGamRXxwiVNv30/Og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794382233;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
+	bh=vZmhzNJgV5CAL9JNozhDRi5mRDcMfAzNPj0gFy9Ckfc=;
+	b=wOC3j8lOKNy+ZcOe9amV9S6bPBy6C6TdxQtdgkF5gzjuSpkFweJ2R+449YUU8Pk4U+S2
+	 TNJS4d31/S9LjWcJbPjqJ4JOhQC+83Uza3+uX/XPBrPCH+3mOKApGun7Tt5JY0w2h7U5I
+	 Ntd9JjDdSmFFXu0T6Ne12gDzF1cOnbQaqu0IAVu1XKwmBBXQDRfV1TBnykzvD9qF1ecO4
+	 ONnK/yCd/Gef9Hpkj5iGj4OPM1dARX1FQeJ0MYVEbsITx/M0C3Wv9t+5pK3VMhdDOL83h
+	 c1wTLq2AxdO1InSK46Gnj7qyVYVyvRpapsOKycAYUM3AyZGUugMUGWQ88c6JFXYkD7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eRjJGj5E;
-	arc=none smtp.remote-ip=117.135.210.6
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=glOqB8QV;
+	arc=none smtp.remote-ip=195.10.208.62
+Received: from mout-b-202.mailbox.org (mout-b-202.mailbox.org [195.10.208.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC32606A321;
-	Wed, 11 Nov 2026 07:28:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BC32606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93137606A321
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 07:30:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93137606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eRjJGj5E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fv
-	A4caXYy5BSpxvCaqEJeTCv8onAojVykrQnaCc9pCY=; b=eRjJGj5EJf9WJSHZLI
-	TMy626n8dvUKL9EFq/cet51zQnlQNo9AogKL0aHCFaTff39jrcwfgmR7bBt6Q0dn
-	J9L9CZHx2/tCLk6FaK67rnWrEZbb4jodk6Qpp//H2wUnhiYdKQLOFt35Xrka3fvm
-	/0sn40CE5nY/UbEp6ErOasGlA=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCkvCgD3f__eGPRqKBYdDQ--.2187S2;
-	Wed, 11 Nov 2026 15:27:26 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: andrew@lunn.ch,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	sdf@fomichev.me,
-	jacob.e.keller@intel.com,
-	bjorn@kernel.org,
-	alexanderduyck@fb.com
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=glOqB8QV
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-202.mailbox.org (Postfix) with ESMTPS id 4jPZtQ1sJ8zKnlY;
+	Wed, 11 Nov 2026 08:30:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794382222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vZmhzNJgV5CAL9JNozhDRi5mRDcMfAzNPj0gFy9Ckfc=;
+	b=glOqB8QVMfd3uxkpuR4to9uGzjHvX65w77N0OW6jitWBiyHYx75DFujyhA3YCnryJwQEum
+	uusPJqHRqWC92WKmgWIwt8782SXY3IKnvxLf4gbVUejC+ATeOuMUAQmx9PWdOvgo7Ilynh
+	D0QMyNyqvr1QC5VRGkLNFeS02PVvMPtxh5wsibPvc3D97CdXTGY8DGNyrwccHkcuBuspPs
+	OfxRvQ2t01MzuTZttPEvKwcvf0/igYhMXlXaks1v3meTZT45dAhWI65nf7C77jOnwmhAQp
+	PYYXEYOOU77/LI4av/CuGiT23LHRn5M3UaN5rqgkA5iDV5K59aTSX92craTeeQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: Jakub Kicinski <kuba@kernel.org>
 Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net-next] net: ethtool: request rtnl_lock for ETHTOOL_MSG_PORT_GET
-Date: Wed, 11 Nov 2026 15:27:24 +0800
-Message-Id: <20261111072724.3295527-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Florian Westphal <fw@strlen.de>,
+	Sabrina Dubroca <sd@queasysnail.net>
+Subject: Re: [PATCH net-next 2/3] ipv6: add ip6_dst_lookup_flow_cookie
+Date: Wed, 11 Nov 2026 08:30:09 +0100
+Message-ID: <20261111073009.18754-1-ralf@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261110152928.4ef1bf6b@kernel.org>
+References: <20261110152928.4ef1bf6b@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,79 +85,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCkvCgD3f__eGPRqKBYdDQ--.2187S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1rKF4fGF4rGFy7tFykGrg_yoW5GF18p3
-	srAFyUCrWUuwn2qFnrXa1rWFyrAanxWw15Ar18tFy3Wr15Xr4xAFW7K3y3W3W5ZrsaqF95
-	ArZ8XrZ5uanFyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYiiDUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlB4V62r0GN7g3gAA3S
+X-Rspamd-Queue-Id: 4jPZtQ1sJ8zKnlY
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Hi,
 
-port_prepare_data() resolves the requested port through
-phy_link_topo_get_port(), which requires rtnl_lock to be held before it
-reads topo->ports:
+On Tue, 10 Nov 2026 15:29:28 -0800, Jakub Kicinski <kuba@kernel.org> wrote:
+> On Wed,  4 Nov 2026 16:53:30 +0100 Ralf Lici wrote:
+> > +/**
+> > + *	ip6_dst_lookup_flow_cookie - perform route lookup on flow with ipsec
+> > + *				     and return the matching dst cookie
+> > + *	@net: Network namespace to perform lookup in
+> > + *	@sk: socket which provides route info
+> > + *	@fl6: flow to lookup
+> > + *	@final_dst: final destination address for ipsec lookup
+> > + *	@cookie: where to store the cookie for the returned dst
+> > + *
+> > + *	Same as ip6_dst_lookup_flow(), but also returns the cookie describing
+> > + *	the routing state the dst was obtained from. A caller caching the dst
+> > + *	should use this cookie when validating it with dst_check(). If the
+> > + *	IPv6 FIB changed during the lookup, a route dst no longer validates
+> > + *	with it. An xfrm bundle is validated by xfrm and ignores the cookie.
+> > + *
+> > + *	It returns a valid dst pointer on success, or a pointer encoded
+> > + *	error code.
+>
+> Warning: net/ipv6/ip6_output.c:1325 No description found for return value of 'ip6_dst_lookup_flow_cookie'
+>
+> You need to use the appropriate keyword (Return: or Returns:)
+>
 
-	/* ports in the topo are RTNL protected, but may be accessed under
-	 * netdev_lock for ops-locked devices. For now keep them under rtnl
-	 * protection, as no ops-locked devices have phy_port capabilities
-	 * yet.
-	 */
-	ASSERT_RTNL();
+Yep, saw that, nonetheless I was hoping for some feedback on the general
+approach, but I'll respin with the kdoc fix.
 
-The dump side honours this, port_dump_one_dev() takes rtnl_lock()
-itself. The doit side does not. ETHTOOL_MSG_PORT_GET is served by
-ethnl_default_doit(), which keeps rtnl_lock only when the device is not
-ops-locked, or when ethtool_nl_msg_needs_rtnl() asks for it:
+BTW is the kdoc error the reason why netdev/contest reports "Failed gate
+checks"?
 
-	need_rtnl = !netdev_need_ops_lock(req_info->dev) ||
-		    ethtool_nl_msg_needs_rtnl(req_info->dev, cmd);
+Thanks!
 
-ethtool_nl_msg_needs_rtnl() has no case for ETHTOOL_MSG_PORT_GET and
-falls through to "return false", so on a device that opts into the
-instance lock (request_ops_lock, queue_mgmt_ops or net_shaper_ops)
-PORT_GET runs with netdev_lock only. Such a device that does have a
-link topology trips the ASSERT_RTNL() warning and reads topo->ports
-without the protection the xarray is documented to need.
-
-Add the missing case. Like TSCONFIG_GET/SET, PORT_GET has no
-corresponding ethtool ioctl, so it is Netlink-only and always needs
-rtnl_lock.
-
-The bug is latent as no device opts into the instance lock while also
-carrying a link topology, so it cannot be observed yet and the change is
-compile-tested only.
-
-This was found during an audit of net/ethtool/ performed with the help
-of an AI coding assistant (Codex), which also proposed the analysis and
-the fix. I verified the Fixes commit and the callers of
-ethtool_nl_msg_needs_rtnl().
-
-Fixes: 27859d18bf41 ("net: ethtool: Introduce ethtool command to list ports")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- net/ethtool/common.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/ethtool/common.h b/net/ethtool/common.h
-index b062e99e89db..372304722ecc 100644
---- a/net/ethtool/common.h
-+++ b/net/ethtool/common.h
-@@ -124,6 +124,14 @@ ethtool_nl_msg_needs_rtnl(const struct net_device *dev, u8 cmd)
- 		 * these cases are Netlink-only.
- 		 */
- 		return true;
-+	case ETHTOOL_MSG_PORT_GET:
-+		/*
-+		 * port_prepare_data() resolves the port through
-+		 * phy_link_topo_get_port(), which asserts rtnl_lock before
-+		 * reading topo->ports. There is no corresponding ethtool
-+		 * ioctl, so this case is Netlink-only.
-+		 */
-+		return true;
- 	}
- 	return false;
- }
 -- 
-2.25.1
-
+Ralf Lici
+Mandelbit Srl
