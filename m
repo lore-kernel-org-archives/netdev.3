@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794385376;
-	b=MyXmNjIb+GlsM24BszsB0tGVTnJ38+njPSVgtd8csr4INQVVrWva2FKfVscmMcIFgAjl
-	 WtCDkFXvmJcinPlAZBcnhTnA+v1e6R91VlCanUZ37BuBbAsi8IFJX7SgnTk75MwyYFyir
-	 ey7Lpye60z0N02coUi0B2+xrviBZo76jthIhDrfc2DwWArqbF82H46iVPWkmoYdMOmFIs
-	 f2nFbJsLq4asIV/1Tv5DKIbeWwkudjbK3gHTIyjMPM7VKaJKiIMYnC7x4n+b6RuvMJfAD
-	 yGhfWWu0WqKDWfoMj/bPn8aXu5yfYdif5YpFeknOE/S35oakLvkp/5Hkghr4EvhXKiQ==
+	t=1794385377;
+	b=3fk4L9PuZpLwTfQrLWC4rwFurY/ZatYZz4cwq2JLFJVNXkppSo9/2WDR7lkDRGvGag0k
+	 9I+BkRogTVLG5gY5hshFUcgCt3R0CeP9464JdSzV0XvljsOaxfqBKg3ibQ+3zDKEiW3P0
+	 k2yjZcE6F4lSTWj/j1YjXjU4BhUCTKaNxdqd1ykOA4oUjIYJvwTLPrqEdJ6hE1YfPSw28
+	 MnjBR3AAc2sJipujKsjjwZ71CeHSbLPJ3OUX6YIPI+GgOibKsMsjunaz48x9STMaj4yxf
+	 FdZ8NKjm3bLbhdbqb+PYClMk0gdB+ODc1ej7DP+Inqd82NGoKomJ8oM1xfqeyWoKbsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794385376;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794385377;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
-	bh=BwIQ9moUsoLTp/jYOv+s7DlJVU2q3ooRqyXGhjOvLyU=;
-	b=K8XvxaKmZ8haokIocYhRrAbanznmr/uTSx2IGy6oB6lx7QzpvQC2ezPPmSj6iVZE5IA2
-	 MnE0PA6EFZ1tHzfOwO2rYpirFrn9ZnW5H3G3luKY0CKTtKemhmMiE3Zew7KDcY5VjhXH8
-	 YkHuq2Y5ay2QEu4LuZbMLzOLGVqsfzr0mOP3V5IqVUGkPbeisEFRw7MOp348wKtId9O8G
-	 xAZOu4fPy1L0hO0ZJkUZzm9aUup0wYTInXPLASW7zJqFqFpvvaCLD0wlSunk07d3Jk/eQ
-	 oB7ere5Tj14glmHcoSDwpchj8rF899x2Gt2pblTpeqxqYWJK2uT3Uk68fWsfU/AVVTg==
+	bh=NZDDpKrU/yIeXbDY6WHKdTEd7lEWaMyB1sedMS9z2UM=;
+	b=EEObMZB3B/lt+ZMwzcWjG/+xZUuzQGFuMWVueUtX1nygILXWE+eIuAhTOOJp0LIE+HtC
+	 dsgwpwoY2aw/JOBxutC/xLvqpxL1sVIQbwTU3rn42hXG9WbR7AY8sBtyf1rUB5DAmMU43
+	 lTGYnUgmY4HtRQdYzjuZmf3kW5SyhbXth6O/CCUFUdPf/6QyQ/lRMurqpM8X2FZgzhiSA
+	 67Vx9Ucnkx/jYI71/U5HI9pBAeq09mrI5AQk1ycDBimVwXgg4xGRga1UWMK3TwmaDsKFf
+	 F65jJqK8py3JUaZzwdQBXauAfGrbDjSfurf0up4gRvOXOhHQgETqMv6idPW8YPcFGYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mandelbit.com;
 	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=BXIoJJ8l;
-	arc=none smtp.remote-ip=195.10.208.50
-Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [195.10.208.50])
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=N9b7t9pc;
+	arc=none smtp.remote-ip=195.10.208.42
+Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF74660A260A
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 08:22:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF74660A260A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53E160A2625
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 08:22:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B53E160A2625
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=BXIoJJ8l
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=N9b7t9pc
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4jPc2z5stFz9sK7;
-	Wed, 11 Nov 2026 09:22:51 +0100 (CET)
+	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4jPc310Stcz5vM6;
+	Wed, 11 Nov 2026 09:22:53 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1794385371;
+	s=MBO0001; t=1794385373;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BwIQ9moUsoLTp/jYOv+s7DlJVU2q3ooRqyXGhjOvLyU=;
-	b=BXIoJJ8lUj8dz7GNJwxkz2bClqEFk9oQpMPo/QpF65CFWJIx88Ke3JI3kR4keqBJ+o31ap
-	Iid9loUhcPW9qDugraNG+jmYcSGeiy2pHpadeuZgXhGydhZOeoNSYqi+4xRYCVzPqAsOZL
-	+MAXIVdLudOM8HeS9Orc2ihSEUNSdTZLTseZm38tuwkjBfJvKT4tIU77DaxC/wvwZUcU4t
-	PM/H1wsEW0tPLhV3iqh0T7BsBdzE8HpR/jGDGTDxTmCX5i7H37dI8oQg+z5/qMhBp4hYEO
-	gOMefnJdQUY2YtA6x5qzKpVtJossHWyVvbaYkCdgYPTbuVVt1m+IMGVFfVlhCQ==
+	bh=NZDDpKrU/yIeXbDY6WHKdTEd7lEWaMyB1sedMS9z2UM=;
+	b=N9b7t9pcKmWbJnOB8tEnQyO48Tj4cRUL3ta7xcaQE+2KYc05lfuksZdGdOVDOssDz53Rio
+	pXDXhVRQcxZ6Vnf/GRbVzCzDhzasBBIBQJbXvB7e4tS+9XtOVz3x/I5V9WM7a//Q3D9NxE
+	UgrIsWSpncAUD9xMyD0PwZHL4C7t+x830YTTtu6FpBhtfq26Wq84uhyD0M42xb6kL3k2lC
+	OMfkSTO0o1SqDP4CFIgZi/mbVzH72HEVFBPRs0SAIUoQOD/+Xi+mQe/w/jHnrADtbYZWsD
+	yDuzZt2hXjMUGONag1DTQ3ysWY7w7hoYV/vc3pwuQPjYBvpjHIKv6zcbfAutCQ==
 Authentication-Results: outgoing_mbo_mout;
 	dkim=none;
 	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
@@ -69,9 +69,9 @@ Cc: David Ahern <dsahern@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Florian Westphal <fw@strlen.de>,
 	Sabrina Dubroca <sd@queasysnail.net>
-Subject: [PATCH net-next v2 2/3] ipv6: add ip6_dst_lookup_flow_cookie
-Date: Wed, 11 Nov 2026 09:22:36 +0100
-Message-ID: <e48cac0cdf9f3adcedecbbfff4a314a98bc22d01.1794384146.git.ralf@mandelbit.com>
+Subject: [PATCH net-next v2 3/3] ipv6: use the lookup cookie when caching the dst in sockets
+Date: Wed, 11 Nov 2026 09:22:37 +0100
+Message-ID: <43917b9119e13e54dcde0e2941d3f4a1fe255df7.1794384146.git.ralf@mandelbit.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1794384146.git.ralf@mandelbit.com>
 References: <cover.1794384146.git.ralf@mandelbit.com>
@@ -85,154 +85,186 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jPc2z5stFz9sK7
+X-Rspamd-Queue-Id: 4jPc310Stcz5vM6
 
-Callers that keep a dst in a persistent cache read its validation cookie
-with rt6_get_cookie once the lookup has returned. For a route without
-its own sernum that is the current fn_sernum of the node, so a FIB
-change landing in between, or an xfrm policy insertion, which restamps
-every node, pairs the old dst with the new serial. dst_check then keeps
-accepting it until the next change.
+tcp_v6_connect, ip6_datagram_dst_update and ip6_sk_dst_lookup_flow store
+the dst in the socket and read its cookie afterwards. If an xfrm policy
+matching the flow is added after the route and policy lookup but before
+the cookie is read, the plain route found without the policy is cached
+with a post-insertion serial. Later packets pass the validation in
+__sk_dst_check and skip xfrm, so a socket that should be using IPsec
+keeps sending plaintext until the FIB changes again. It affects TCP and
+connected UDP sockets alike.
 
-Add ip6_dst_lookup_flow_cookie, which returns the cookie together with
-the dst. The cookie is taken between two reads of the IPv6 generation:
-if it moved during the lookup the cookie is 0, which is never a node
-serial, so a route dst can still be used for the packet at hand but is
-not accepted again. An xfrm bundle ignores the cookie and is validated
-against its own route and path cookies, which this patch does not
-change.
-
-dsts of nexthop objects are validated against the global generation and
-ignore the cookie. For them the helper returns the generation read
-before the lookup, and ip6_dst_check now requires it to match
-rt->sernum, so a dst allocated after a FIB change is rejected for a
-lookup that began before it. Callers that read the cookie from the dst
-keep passing rt->sernum and are not affected.
+Store the cookie returned by ip6_dst_lookup_flow_cookie instead. Add
+ip6_dst_store_cookie for this and keep ip6_dst_store for callers that
+have no lookup cookie.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
-Changes since v1 https://lore.kernel.org/netdev/e40f48e925a0950eac99a3f084e485e82cabe88f.1793806941.git.ralf@mandelbit.com/
-- Fix kdoc return statement in ip6_dst_lookup_flow and
-  ip6_dst_lookup_flow_cookie. (NIPA)
+No changes since v1 https://lore.kernel.org/netdev/832892eaa7d2371f20459c3134c72914e42970b0.1793806941.git.ralf@mandelbit.com/
 
- include/net/ipv6.h    | 13 +++++++++++
- net/ipv6/ip6_output.c | 51 +++++++++++++++++++++++++++++++++++++++++--
- net/ipv6/route.c      |  2 +-
- 3 files changed, 63 insertions(+), 3 deletions(-)
+ include/net/ip6_route.h | 18 +++++++++++++-----
+ net/ipv6/datagram.c     |  6 ++++--
+ net/ipv6/ip6_output.c   |  6 ++++--
+ net/ipv6/route.c        | 12 ++++++------
+ net/ipv6/tcp_ipv6.c     |  5 +++--
+ 5 files changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 579df1516d25..5a6c66504056 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -1062,6 +1062,11 @@ int ip6_dst_lookup(struct net *net, struct sock *sk, struct dst_entry **dst,
- #if IS_ENABLED(CONFIG_IPV6)
- struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk, struct flowi6 *fl6,
- 				      const struct in6_addr *final_dst);
-+struct dst_entry *ip6_dst_lookup_flow_cookie(struct net *net,
-+					     const struct sock *sk,
-+					     struct flowi6 *fl6,
-+					     const struct in6_addr *final_dst,
-+					     u32 *cookie);
- #else
- static inline struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk,
- 						    struct flowi6 *fl6,
-@@ -1069,6 +1074,14 @@ static inline struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struc
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 95f936be32c6..2684f6069a5e 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -252,13 +252,13 @@ static inline const struct rt6_info *skb_rt6_info(const struct sk_buff *skb)
+ /*
+  *	Store a destination cache entry in a socket
+  */
+-static inline void ip6_dst_store(struct sock *sk, struct dst_entry *dst,
+-				 bool daddr_set,
+-				 bool saddr_set)
++static inline void ip6_dst_store_cookie(struct sock *sk, struct dst_entry *dst,
++					u32 cookie, bool daddr_set,
++					bool saddr_set)
  {
- 	return ERR_PTR(-EAFNOSUPPORT);
- }
-+
-+static inline struct dst_entry *
-+ip6_dst_lookup_flow_cookie(struct net *net, const struct sock *sk,
-+			   struct flowi6 *fl6, const struct in6_addr *final_dst,
-+			   u32 *cookie)
-+{
-+	return ERR_PTR(-EAFNOSUPPORT);
-+}
- #endif
+ 	struct ipv6_pinfo *np = inet6_sk(sk);
  
- struct dst_entry *ip6_sk_dst_lookup_flow(struct sock *sk, struct flowi6 *fl6,
+-	np->dst_cookie = rt6_get_cookie(dst_rt6_info(dst));
++	np->dst_cookie = cookie;
+ 	sk_setup_caps(sk, dst);
+ 	np->daddr_cache = daddr_set;
+ #ifdef CONFIG_IPV6_SUBTREES
+@@ -266,8 +266,16 @@ static inline void ip6_dst_store(struct sock *sk, struct dst_entry *dst,
+ #endif
+ }
+ 
++static inline void ip6_dst_store(struct sock *sk, struct dst_entry *dst,
++				 bool daddr_set,
++				 bool saddr_set)
++{
++	ip6_dst_store_cookie(sk, dst, rt6_get_cookie(dst_rt6_info(dst)),
++			     daddr_set, saddr_set);
++}
++
+ void ip6_sk_dst_store_flow(struct sock *sk, struct dst_entry *dst,
+-			   const struct flowi6 *fl6);
++			   const struct flowi6 *fl6, u32 cookie);
+ 
+ static inline bool ipv6_unicast_destination(const struct sk_buff *skb)
+ {
+diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
+index ff7a7ffbf983..c18609bab366 100644
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -78,6 +78,7 @@ int ip6_datagram_dst_update(struct sock *sk, bool fix_sk_saddr)
+ 	struct in6_addr *final_p;
+ 	struct dst_entry *dst;
+ 	struct flowi6 *fl6;
++	u32 cookie;
+ 	int err = 0;
+ 
+ 	if (inet6_test_bit(SNDFLOW, sk) &&
+@@ -94,7 +95,8 @@ int ip6_datagram_dst_update(struct sock *sk, bool fix_sk_saddr)
+ 	final_p = fl6_update_dst(fl6, opt, &np->final);
+ 	rcu_read_unlock();
+ 
+-	dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, final_p);
++	dst = ip6_dst_lookup_flow_cookie(sock_net(sk), sk, fl6, final_p,
++					 &cookie);
+ 	if (IS_ERR(dst)) {
+ 		err = PTR_ERR(dst);
+ 		goto out;
+@@ -112,7 +114,7 @@ int ip6_datagram_dst_update(struct sock *sk, bool fix_sk_saddr)
+ 		}
+ 	}
+ 
+-	ip6_sk_dst_store_flow(sk, dst, fl6);
++	ip6_sk_dst_store_flow(sk, dst, fl6, cookie);
+ 
+ out:
+ 	fl6_sock_release(flowlabel);
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 25fe0ba98b1a..1b273714f7cc 100644
+index 1b273714f7cc..2288102710b3 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -1279,8 +1279,7 @@ EXPORT_SYMBOL_GPL(ip6_dst_lookup);
-  *
-  *	This function performs a route lookup on the given flow.
-  *
-- *	It returns a valid dst pointer on success, or a pointer encoded
-- *	error code.
-+ *	Return: a valid dst pointer on success or a pointer encoded error code.
-  */
- struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk, struct flowi6 *fl6,
- 				      const struct in6_addr *final_dst)
-@@ -1300,6 +1299,54 @@ struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk, st
- }
- EXPORT_SYMBOL_GPL(ip6_dst_lookup_flow);
+@@ -1370,14 +1370,16 @@ struct dst_entry *ip6_sk_dst_lookup_flow(struct sock *sk, struct flowi6 *fl6,
+ 					 bool connected)
+ {
+ 	struct dst_entry *dst = sk_dst_check(sk, inet6_sk(sk)->dst_cookie);
++	u32 cookie;
  
-+/**
-+ *	ip6_dst_lookup_flow_cookie - perform route lookup on flow with ipsec
-+ *				     and return the matching dst cookie
-+ *	@net: Network namespace to perform lookup in
-+ *	@sk: socket which provides route info
-+ *	@fl6: flow to lookup
-+ *	@final_dst: final destination address for ipsec lookup
-+ *	@cookie: where to store the cookie for the returned dst
-+ *
-+ *	Same as ip6_dst_lookup_flow, but also returns the cookie describing
-+ *	the routing state the dst was obtained from. A caller caching the dst
-+ *	should use this cookie when validating it with dst_check. If the
-+ *	IPv6 FIB changed during the lookup, a route dst no longer validates
-+ *	with it. An xfrm bundle is validated by xfrm and ignores the cookie.
-+ *
-+ *	Return: a valid dst pointer on success or a pointer encoded error code.
-+ */
-+struct dst_entry *ip6_dst_lookup_flow_cookie(struct net *net,
-+					     const struct sock *sk,
-+					     struct flowi6 *fl6,
-+					     const struct in6_addr *final_dst,
-+					     u32 *cookie)
-+{
-+	const struct rt6_info *rt;
-+	struct dst_entry *dst;
-+	int gen0, gen1;
-+
-+	gen0 = rt_genid_ipv6(net);
-+	/* read the generation before looking at the FIB or xfrm policies */
-+	smp_rmb();
-+
-+	dst = ip6_dst_lookup_flow(net, sk, fl6, final_dst);
-+	if (IS_ERR(dst))
-+		return dst;
-+
-+	rt = dst_rt6_info(dst);
-+	*cookie = rt->sernum ? gen0 : rt6_get_cookie(rt);
-+
-+	/* keep the FIB and cookie reads before the final generation read */
-+	smp_rmb();
-+	gen1 = rt_genid_ipv6(net);
-+	if (unlikely(gen0 != gen1))
-+		*cookie = 0;
-+
-+	return dst;
-+}
-+EXPORT_SYMBOL_GPL(ip6_dst_lookup_flow_cookie);
-+
- /**
-  *	ip6_sk_dst_lookup_flow - perform socket cached route lookup on flow
-  *	@sk: socket which provides the dst cache and route info
+ 	dst = ip6_sk_dst_check(sk, dst, fl6);
+ 	if (dst)
+ 		return dst;
+ 
+-	dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, final_dst);
++	dst = ip6_dst_lookup_flow_cookie(sock_net(sk), sk, fl6, final_dst,
++					 &cookie);
+ 	if (connected && !IS_ERR(dst))
+-		ip6_sk_dst_store_flow(sk, dst_clone(dst), fl6);
++		ip6_sk_dst_store_flow(sk, dst_clone(dst), fl6, cookie);
+ 
+ 	return dst;
+ }
 diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 89fddc9df55c..84af9626c738 100644
+index 84af9626c738..ec7433b4fac8 100644
 --- a/net/ipv6/route.c
 +++ b/net/ipv6/route.c
-@@ -2811,7 +2811,7 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
- 	rt = dst_rt6_info(dst);
+@@ -3042,19 +3042,19 @@ void ip6_sk_update_pmtu(struct sk_buff *skb, struct sock *sk, __be32 mtu)
+ }
  
- 	if (rt->sernum)
--		return rt6_is_valid(rt) ? dst : NULL;
-+		return (rt6_is_valid(rt) && cookie == rt->sernum) ? dst : NULL;
+ void ip6_sk_dst_store_flow(struct sock *sk, struct dst_entry *dst,
+-			   const struct flowi6 *fl6)
++			   const struct flowi6 *fl6, u32 cookie)
+ {
+ #ifdef CONFIG_IPV6_SUBTREES
+ 	struct ipv6_pinfo *np = inet6_sk(sk);
+ #endif
  
- 	rcu_read_lock();
+-	ip6_dst_store(sk, dst,
+-		      ipv6_addr_equal(&fl6->daddr, &sk->sk_v6_daddr),
++	ip6_dst_store_cookie(sk, dst, cookie,
++			     ipv6_addr_equal(&fl6->daddr, &sk->sk_v6_daddr),
+ #ifdef CONFIG_IPV6_SUBTREES
+-		      ipv6_addr_equal(&fl6->saddr, &np->saddr) ?
+-		      true :
++			     ipv6_addr_equal(&fl6->saddr, &np->saddr) ?
++			     true :
+ #endif
+-		      false);
++			     false);
+ }
  
+ static bool ip6_redirect_nh_match(const struct fib6_result *res,
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index b1dec5d86d63..25404656069c 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -145,6 +145,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	struct dst_entry *dst;
+ 	struct flowi6 *fl6;
+ 	int addr_type;
++	u32 cookie;
+ 	int err;
+ 
+ 	if (addr_len < SIN6_LEN_RFC2133)
+@@ -288,7 +289,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	 */
+ 	ip6_ecmp_set_mp_hash(net, fl6, sk->sk_txhash);
+ 
+-	dst = ip6_dst_lookup_flow(net, sk, fl6, final_p);
++	dst = ip6_dst_lookup_flow_cookie(net, sk, fl6, final_p, &cookie);
+ 	if (IS_ERR(dst)) {
+ 		err = PTR_ERR(dst);
+ 		goto failure;
+@@ -312,7 +313,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	inet->inet_rcv_saddr = LOOPBACK4_IPV6;
+ 
+ 	sk->sk_gso_type = SKB_GSO_TCPV6;
+-	ip6_dst_store(sk, dst, false, false);
++	ip6_dst_store_cookie(sk, dst, cookie, false, false);
+ 
+ 	icsk->icsk_ext_hdr_len = 0;
+ 	if (opt)
 -- 
 2.56.0
 
