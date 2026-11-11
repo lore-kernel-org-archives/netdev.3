@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423327;
-	b=et9mUsw5yH34Af2Q25Dqu+fBdL7tPae3tWr1WvlJXVsi8tOKyTI/l3DpW/ieoR2eIz3e
-	 9c68N+tnO0aZCblqXFvBwVOkcDTmuQyHC666p+ieRjc0FxrHWgHLPpKP62PPIlZHD6nWW
-	 zFMCUdTxNCQ0QWYf0d15B5L9FCgzoGYG6bPEiqCqETwDquYXjax8WoCA4AclHP+VVIbkK
-	 1La0+NrNOt48Rge8ifQ85YnLjM+JiMTnrhvavoLUpixfpHR2jLRvNc3d71meWvmz+RfGy
-	 xC2iayfV6bIvz950xlyC2Z2e+N13zlvmWhR+Aa/7tDFLAhsii4UMAcjbS7GuQDx3SzA==
+	t=1794423329;
+	b=Hd1eP5vDKT83m3FYd1wZcSas0RNh6KCnRLa+IqShAyO5mf4xISnvbN4UCLvDcsJsZK2j
+	 ipICl+0tXY2S9SVWXzraPo5oS6kIs32fWbVkxIwB6V/p1USpNRTYzYQjIidgdHyWhi9Ay
+	 7h5LNaWSpsx7GTMX45lOt2KY1zY96zBN9GmHw2WdUso8LEvRIZvhcAdz83Qc70PeQmEns
+	 iQL8zFCJhMdN6kb2ffxWUnaMtxb47EyQ0X3MKk4MtY1XvCPre2yNdrcLRP8aS1Bfqc+14
+	 VFqEatLjXSPKGuKresSXxEF6MGJmk/etxRp0HpGGNtFMJK9kpbNdN2dlRR3VyGyUuZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423327;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794423329;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=qig7zK5G4rY7nROTnpAyjhr/qzwfbHkIlR+Z5KlVVbI=;
-	b=wix+yzujRK3To3awNT46f4oqxCc6VJLaMTQq9yBMuc8gzZ4CR2QB9GmNft8AQTG/HByq
-	 64PfK48LnsDJ8+ff+PnjTD5fXIzSn4LbDt0GQQ6du2nZ957y25gpLcDbOdoReSznZ3Hth
-	 s03TXdtfsD8TWQJkgwfwAdM2ei763Oy9YwhqrZQYu6saQHkdqwbfgUKwRBSO3xHbzqGth
-	 wnofMcqYnhlutX91BN/horxvVgeOr1P3nofA+8JyBRBtDkCApIY7DwwcHibBFWIKX5emo
-	 gGTHlB/mLXX3GGi8shgOJdO7QPE2xocD7m9+lFcFA5sZ/TdAib3qwH6rfYETVghFM+Q==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=sWZ5hPvA7c1kpgPO46ixg6f5HH9ySl/UAtR3JYXd3sU=;
+	b=JkPanOmvVTo9aJA5cEeINgLZxYf1MHMcxAMy1x5ffQQD6+BZcTxjgMc7Gs8v3+GxOfBJ
+	 ZMwXvglWBfsm4LXIO2JHJHEXpZiZrYnmj4bIbhTYPRAhLFhaVtCoXkq6dsgDEZJK70e9x
+	 +J32RtaCAAPl0T5v1BkzFKKzDjXqvS6LaO1H8j5soi+S5YrAnldpHlkT9OLYMsPe+U8UN
+	 fs5FhM9TnphbjlXWHAyYfcjKv4swIBvBlY64o+aNK3BuIcsm8YaNmk6oen1HpIx1EMuEp
+	 j+cmidYechE4rOpnnUhE1IAagPhDvxmJAxxdZ+d5MkQli9jaE8+Btbj5tsIQnzlDjNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6JaS54;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y3952ctd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A096D606A321;
-	Wed, 11 Nov 2026 18:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36775606A33E;
+	Wed, 11 Nov 2026 18:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bd6JaS54
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FCF1F00A05;
-	Wed, 11 Nov 2026 18:55:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y3952ctd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7E71F00A08;
+	Wed, 11 Nov 2026 18:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794423327;
-	bh=qig7zK5G4rY7nROTnpAyjhr/qzwfbHkIlR+Z5KlVVbI=;
-	h=From:To:Cc:Subject:Date;
-	b=Bd6JaS54Mh/iGL3sTMQSsn/xOGsAb/MNk1lpGxDA3rc6Re87t+XSkhIsH1q/lGORk
-	 7dSRFPOoS9tNJVasSqxSGirma3MNd6smr1xt8KMg81wQ27tXLyeifOYFBGMZEGmgxx
-	 YdXmerc/y9N9bidOJvNSeYh8plMlYr+uN5notCdsGDBJf54WHS7zy/5+UCykZIRgaD
-	 BZThCgwEU0N3mS2W/8M+aUwD2IhWpSKSWfscaawiSTHLFCyPuC3PW+BjBlUsARQRWJ
-	 62bfHUXnnWBpD1D8fr2dqqhN9h0yQHs/rKDjoitESzKgZkg/bSafFNVsa6YMMBRJZ2
-	 c3we5ZRAAz2pA==
+	s=k20260515; t=1794423329;
+	bh=sWZ5hPvA7c1kpgPO46ixg6f5HH9ySl/UAtR3JYXd3sU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y3952ctd+u0npVyqnP6pjC5oTywwK15FY5idh3YUHANJ133ZliYcMgDgiuxx6txnw
+	 BkZSGDSgj1Ppm27fb5DH+baxkuyAGLUM22f82VhDj7q7vB2iNXh7jeapDd7wB7uf8O
+	 +VTl5D7EHMtcfecdblHR979Y1SAUT+Zx/fb1/79Fju5YAt4TxWSSjm018pNEFXQx5g
+	 pybhSJPLc9jW/fQKrWpfvfAtf/jzRHofhyg3WuwqswbHotAzGsZu0w/G/4FyQo0C4P
+	 wrUZekA06xDen8+1faFFnLknutIdwXTZB6KO+QYjJ7qNAQ03b1ThpZfNZArvfcqY6R
+	 V0bxHVWUxE8yg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -52,10 +52,12 @@ Cc: netdev@vger.kernel.org,
 	cel@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v2 0/5] net: tls: break the connection after a burst of empty data records
-Date: Wed, 11 Nov 2026 10:55:17 -0800
-Message-ID: <20261111185522.2859004-1-kuba@kernel.org>
+Subject: [PATCH net v2 3/5] selftests: tls: Skip the zero_len tests when TLS is unavailable
+Date: Wed, 11 Nov 2026 10:55:20 -0800
+Message-ID: <20261111185522.2859004-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261111185522.2859004-1-kuba@kernel.org>
+References: <20261111185522.2859004-1-kuba@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,31 +69,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Deal with overload of zero-length TLS records. This is the next iteration
-of Chuck's series. I tried to make it as simple as possible - break the
-connection if sender floods us with zero-length records. Consume / discard
-those records even on PEEK to avoid infinite rx_list growth.
+From: Chuck Lever <cel@kernel.org>
 
-https://lore.kernel.org/20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org
+FIXTURE_SETUP(zero_len) returns early when ulp_sock_pair() reports
+that the TCP_ULP setsockopt failed, so on a kernel built without
+CONFIG_TLS the TLS_RX setsockopt never runs. TEST_F(zero_len, test)
+then sends its raw records over a plain TCP socket, which returns
+the ciphertext verbatim. All eight variants FAIL on a machine that
+lacks TLS, and those failures mask any real regression in the same
+run.
 
-v2:
- - add missing poll() back to the selftests
-v1: https://lore.kernel.org/20261109175836.1246840-1-kuba@kernel.org
+Skip the test when the fixture recorded notls, as the other
+fixtures in this file do.
 
-Chuck Lever (3):
-  tls: Consume empty data records in tls_sw_splice_read()
-  selftests: tls: Skip the zero_len tests when TLS is unavailable
-  selftests: tls: Extend coverage for zero-length records
+Fixes: a61a3e961baf ("selftests: tls: add tests for zero-length records")
+Signed-off-by: Chuck Lever <cel@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+v2: no change
+v1: https://lore.kernel.org/20261109175836.1246840-4-kuba@kernel.org
+---
+ tools/testing/selftests/net/tls.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Jakub Kicinski (2):
-  tls: Break the connection after a burst of empty data records
-  selftests: tls: Cover the cap on consecutive empty records
-
- include/net/tls.h                 |   1 +
- net/tls/tls_sw.c                  |  77 +++++--
- tools/testing/selftests/net/tls.c | 353 ++++++++++++++++++++++++++++--
- 3 files changed, 390 insertions(+), 41 deletions(-)
-
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index c4203401c4bf..ca47576220d3 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -2670,6 +2670,9 @@ TEST_F(zero_len, test)
+ 	int rec_off;
+ 	int i;
+ 
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
+ 	for (i = 0; i < 4 && variant->recs[i]; i++)
+ 		EXPECT_EQ(send(self->fd, variant->recs[i]->cipher_data,
+ 			       variant->recs[i]->cipher_len, 0),
 -- 
 2.56.0
 
