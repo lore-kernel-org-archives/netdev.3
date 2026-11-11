@@ -1,61 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794392459;
-	b=k/6WUcF496r8baKHS7Lq6HM/zBh3uhDaj4xmtNEd/eqR3wPaD4cWmeiGbSM30DynPAIG
-	 q9COrCCPJyT8d4y2sJi+eUqCe5qoLc2t4H8c14Geb5c+rRrIZoXXlR2lz/2heMFMuRtvp
-	 wlnzhicN4iiUPXq8D7pyMlL4oWXyN0Hqq6PnM0EC8gOd48o2QihrxA0o4oAjGutI0wUkQ
-	 5YjxvtDpHHYv8usC6CaQ/iA3gnwaAy2zgiIbCv8hnkzDOq/hORZU4wOXfZKuDUz+eCkWO
-	 D5kdtSadcH8w+vTT9jQ+5eLcbtTe1LIRTUPW1E/UAah5vpSi0Yw2uqEiiYe7ryPY4LA==
+	t=1794392859;
+	b=pyDbFPUoQFPmNaseLufBAgvh4g6cmrNIufnDbXMsPZWMY8+2E0Vi/LpeD5jOgkJ2HfVf
+	 EhF8i+BO+/oyvKuJmMTF9L5WF3/uuXywzF5Cpec07TR7PEmFeX6UDcZhmAbNagqxMzS7X
+	 GVDPHmLx03azoy2+18voPmgPyHrgJhksLX924OU4obqr8BjAQwwQVhSViO0bT9suMgGW2
+	 mnie6QSwMLymKxopBR0WrBuLXibvPyYrNDQ4lLCnA8gbfUto62AOs3V83HBz+lOPjdE12
+	 VMNA3QWHBTUTcpXdrl4do7S0KQm1LoRKJ+Zd7IoNkH8K1KgpRLgHwR+s1//eTUfQrrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794392459;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
-	b=vtFdbEKsyDpmfMrDQ3jXoxwA4AfrSGUEgwpYvP7yds9NssPiHfyO1UcuqL7UJLgYYmja
-	 nNI8gWupf4OvKugj26DbOkLqTrGCXjY+Fm0cypmEU0sFfH6ZStkH74TglYms4kqHhYklz
-	 zzAmcxIdlbOdwNXLIELs25fdDhF0CdMiGSHtY9itMVQVXxCSjWRSK7r87ozvH1W5MBybp
-	 Vr/JqMxVjRB8/46vh6CbBcC65Yj8NLnZk+ud9T0hUqYBKttBdV2auu7tCTRcUQHAu3eLm
-	 RlReSdtLUCI4sDKcrxpqm8CwolXPscQf59McReEOaF3/tB8VDVTMf399rREnr1m9ebA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794392859;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=HM3rz76RGIKt8dMzknvwQnTdPjRPPY5nGGIXvenUr+Y=;
+	b=11ZZ6fve03qmjqhS3PKu1rK9ijKvDniK/EwBMyiad5bthL0fK1UFgEFhEYyDu3keXbhk
+	 gaLZtFdjIRMJeR15TWboZ1wg+Ynb6/h+a/5C5rJV42BoUsXB6rcJusUM4MUC73/5BQTOH
+	 InOuJJoOW4HjA9nlWUiUd5eMFcyvBY/bPHABB1OsAS4LNlse1Vk29CJvjjLs63/Aa5wX1
+	 ttwu9IsApIB+VcvyukbATqc8UaFIchGyybPbS2nvJKk1XNEfb7in/sXpJrc0x4yGsKjv4
+	 6Rw3yL1Y/2ZGBJghiDpWl9TPFLsNKRu56QVpCvMs6V5W8XPCIM1GI0FyXSqir0j0Grg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lw7XGR4P;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=simonwunderlich.de;
+	spf=pass smtp.mailfrom=simonwunderlich.de;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=odNvwpbf;
+	arc=none smtp.remote-ip=23.88.38.48
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED82606A321
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 17139606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17139606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lw7XGR4P
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A1F1F00A05;
-	Wed, 11 Nov 2026 10:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794392459;
-	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lw7XGR4PoOoj/r0qE9ybC6RuXRVRqLbtlxsX5gjt14I3sx+OdNICgMsLSfHL1B5SW
-	 tNSQjPjp0O55W2dfMWBLIbuWb0tj5T3RZYEhZM0wzUDLzL9SwoujKN2v2r8gxTlbD1
-	 L10zx7/n5ZLBTiMZTPmpjtqmGjHdNpKepd9bOFyDxdSQwbFEKP2EK8JKVgmLxnYsZ/
-	 2+ra0YE4nGjyYoh/FRI2WisHtKZCsh5m0/TdyO0H420/PtfCEwZXiy5Wkn7++PATtj
-	 s0/kGAHZ5/YPa3k6wovE+8HM0NDXSv3W3C7BjqnzxmJFDLcV0PfOQORzOnFI32ON4q
-	 ANDA/tLtazk7w==
-From: netdev-bot+sinfo@kernel.org
-To: Imre Kaloz <kaloz@kernel.org>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Elad Nachman <enachman@marvell.com>,
- Oleksandr Mazur <oleksandr.mazur@plvision.eu>
-Subject: Re: [PATCH net] net: marvell: prestera: disable port before changing
- its MAC mode
-Date: Wed, 11 Nov 2026 10:20:58 +0000
-Message-ID: <179439245803.2168702.4056378954487348665@kernel.org>
-In-Reply-To: <20261111101521.9878-1-kaloz@kernel.org>
-References: <20261111101521.9878-1-kaloz@kernel.org>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=odNvwpbf
+Received: from kero.packetmixer.de (p200300c59740DeD843BE7E4A980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id C58C0FA0B3;
+	Wed, 11 Nov 2026 11:27:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1794392851;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HM3rz76RGIKt8dMzknvwQnTdPjRPPY5nGGIXvenUr+Y=;
+	b=odNvwpbfWjjW8NjEAySOT1IkfC44KxDd/wDrh241C00FVX05yjV5NwTtD4HzTW1Bf9cMEj
+	LVCv/dLyv4+GlPWHm9xrNyN03ggjU19QB34Mrhw6cu2YQ4wHVelvqCZQ9xs5ZyXEJ9t09F
+	dAe3n4121KpFDX7x+f+J6DhpKrdEi8HU9AkKfoIKTwZVN5MgHyV1cUjIS8YmZT8n99iYFx
+	DsxPZXcK1eTpRqdplk+inGiv4RbTaeb47nW30WNZXpLJ6E7e6VhCaIREf3zBQlKYfyP3Le
+	7pm9JQKN3Plswg2Ljx6KLJ5idLhbFZPaYcICJ95R/7lQbC7Z3VdtE9JdTJUruA==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sashiko <sashiko-bot@kernel.org>,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 01/15] batman-adv: mcast: explicitly initialize mcast.num_want_all_rtr{4,6)
+Date: Wed, 11 Nov 2026 11:27:15 +0100
+Message-ID: <20261111102729.2096241-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261111102729.2096241-1-sw@simonwunderlich.de>
+References: <20261111102729.2096241-1-sw@simonwunderlich.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +78,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi!
+From: Sven Eckelmann <sven@narfation.org>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+All mcast.num_want_all_* are initialized in batadv_mesh_init_late() - with
+the exception of mcast.num_want_all_rtr4 + mcast.num_want_all_rtr6. At the
+moment, it works because atomic_set just initializes it to 0 and the netdev
+private data is already set to 0 before being passed to .ndo_init.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+For consistency purposes, also initialize mcast.num_want_all_rtr4 +
+mcast.num_want_all_rtr6 explicitly.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/bug/linux-9dbe5dec-31ae-49eb-838a-b4b92ced4ace
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/mesh-interface.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 1ce707aaf48a0..6ffc505ce2aba 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -833,6 +833,8 @@ static int batadv_meshif_init_late(struct net_device *dev)
+ 	atomic_set(&bat_priv->mcast.num_want_all_unsnoopables, 0);
+ 	atomic_set(&bat_priv->mcast.num_want_all_ipv4, 0);
+ 	atomic_set(&bat_priv->mcast.num_want_all_ipv6, 0);
++	atomic_set(&bat_priv->mcast.num_want_all_rtr4, 0);
++	atomic_set(&bat_priv->mcast.num_want_all_rtr6, 0);
+ 	atomic_set(&bat_priv->mcast.num_no_mc_ptype_capa, 0);
+ #endif
+ 	WRITE_ONCE(bat_priv->gw.mode, BATADV_GW_MODE_OFF);
+-- 
+2.47.3
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
