@@ -1,74 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794396911;
-	b=ReqNFgSiLig37w1QIoETwVetuUmHoWbnOyRTwQ1MiuUPHMdtBRQixwnZSsDDn+U3W0PX
-	 LLGiVGa9n4Jp9NmLl9mBcSnhkP8jno9OhqCZCFDjUxxJOByyIQnx4Vb3OgfkyquXuNdDs
-	 NeaboCPSJEB8DoKnAWcJ/dctw0+uPf137DGjCv9+gJl5OkzaK0NWKZ6SwKV7DNk7G84JI
-	 GHdNV0n2u6Y1BRMJTm3sGZc990bywb4kKUHgw8lnykvzMW3mRyscHhFXFT/ec7WNOLBSi
-	 98zSexjhV48i6ABtQ5qOaAtFlW7GPzflmXZ0q/VNMpwLaHx6pBrcSVYYxh9IPai4vLQ==
+	t=1794397061;
+	b=DNFzvhnx4xJTBaLc8Sl9CHbXC6FQI90pFfqzbSJVLD9clbo+oTIxcgFtWSytQsrKGz2G
+	 0PVeXz08aON2T/RRDg6YG8PyyuEmT/bXIV3dEFvhOTTGu7sgo5H/3PZ8D4/TyqmzaS2X3
+	 n+Q1ghSBUXeRPF7KGGwiES9eFbyEilfjtgR+dhfj1jI8XKm2o+KB2KeQG5PIVxLjLjWo7
+	 gqfJFMjnqO7IZST40ZwOHjRgjyxWwX3RGfDmsBgDtKhwXMG/CL54oaChuJMeRp8TuJInu
+	 lh5STFxYrhBKoEOLSNmot0QGdr5PiOhkiCb/3x4sAfjHXDDYX1JD29qZJ5fdN9VJL9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794396911;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=zn/evyTY2YXOIPUCl2VF89xJV5FEZinteqD1qP6+XjA=;
-	b=Yqo71W9QfrZJgddTdbBqBtPpY+/D8Ko5jxEsSGvQSkeEO+5rANPQweYlyWefz2QnK4TU
-	 0IYAnxNY6248BvNa5npctG8x4qQNGMn/byiof00wTdlNbGwUm2GkHKXnNDznJNYW2dozW
-	 YKuUEq+nsURBXLzu5qVVdOVIH5V8UKHnUoSZgBAffoPbWyHSNwW+hU65zeBdCQa/VbqQI
-	 4qlXddXp/TJAUvmrXFEeJbNihc1aUa4VLCA4zufvXOdoYNpyiF0cBfiOdqc5mqEEgd1Jj
-	 q3i6NpTyTglWeBDiJzXJHgquxkbfMOtJV7P+Mj6DkqMIb6Ppy5w2e9deBKKk2PTsyCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794397061;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=GWmJbLCR3Z0PWF883WQy0SlXPcx6C4wxGpgsQpGnChg=;
+	b=zDW5yr/kuKmS9NjL7/nYcE5XYDqSC/UtFxWuzaPCPtrvEQuHAUY14cfvk/kqP51Ir1b5
+	 8D+qABd1ghVUVmoLnlFhchMnjhDNr+Z0Y2/Dk75O2D7DKaUCgAtFydpPhDmnIkQpAuR3u
+	 Qdxv5+QGWyzdWyKFafahYvJ45fF2t7hXUYeuzTxq8BfJ1vOptq9TC2feDUw7DJ4GK7XFX
+	 eUsZZ1mzxZmek1Qf5QDoTlkd5bpWp1U3ZlUvdZRCFrerOZMwXSagkU4+Cb573fscyjxSQ
+	 cFONd07eyrJ5gXMUSAAtiRycOtd+BB45GV0gXxWzx+lt/a4C7nD7uL1JXiqkiofQWsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ctmbQthb;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CB2606A321;
-	Wed, 11 Nov 2026 11:35:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28CB2606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BlC5Gblx;
+	arc=none smtp.remote-ip=209.85.222.180
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1AF606A32A
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:37:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F1AF606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ctmbQthb
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BlC5Gblx
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-943e8d35f74so266067185a.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 03:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=ctmbQthbX/z3rmhYp6sHMiRaosFNrjMsuCgbCRRbEJ5FdfQzAz84h4zvsHEJAtrhjtrhDNqusug2G
-	 pLEOZO5UDvuMHViXXUPJJFuUXiWDsx39si7v0AXIOLDPBvx3IcjQQPyxs+WksuNkc+b2eYMF7ABALT
-	 eH5R07ZZsbX3wf+4=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66af452ec7e9-a5480;
-	Wed, 11 Nov 2026 19:35:08 +0800 (CST)
-X-RM-TRANSID:2ee66af452ec7e9-a5480
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af452ea9e0-dabad;
-	Wed, 11 Nov 2026 19:35:08 +0800 (CST)
-X-RM-TRANSID:2ee76af452ea9e0-dabad
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	torvalds@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com,
-	netdev-bot+sashiko@kernel.org,
-	jiayuan.chen@linux.dev
-Subject: [PATCH net v3] tcp: fix device binding after failed IPv6 connect
-Date: Wed, 11 Nov 2026 19:34:55 +0800
-Message-ID: <20261111113455.284747-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+        d=gmail.com; s=20260707; t=1794397060; x=1795001860; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GWmJbLCR3Z0PWF883WQy0SlXPcx6C4wxGpgsQpGnChg=;
+        b=BlC5GblxeuC6mh7E5mlcHWaa6FbwL7M5zsHQyzNo0ElWDR1HAb/10OXHf4NPTjJrYZ
+         28qVLgXYI0cEYMl1lacrKBU6nz6AUicANfMZJzE7tO5nUNNb/YLGhvSTEHQIGzEOAuHd
+         nVuqyNnNQTSTYCKjeMB9T9GmTGazkGf9pwsNZ07qbwteqNGC2d7g3SsUnHMTDJ/U9yLA
+         UNk/kC7bqqiC/S3ciUXpdExCDcSYSMdftZTBSKD4owXddH4eUYyHOmIyppHH6JwIk37s
+         OAcw2gv8gQOn9dcZudYcQ7SMmXcsyH1a+VEFKbwnhezz+4FwBTNzgzrVoz9I0rpjutiu
+         fZ8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794397060; x=1795001860;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GWmJbLCR3Z0PWF883WQy0SlXPcx6C4wxGpgsQpGnChg=;
+        b=IFw+H5roRBE5w80j3CLVAymCV3U3ErA4hHrOAgIG3FmH1oF/5+qHWFfhgwT7YO/Zhx
+         9eVuQKZN7ip5EsUfL9nAOYRPZjXkyZZFfzO+ubsDCusbH3Oz0UDYjnqy/bP9Q0rSeKQA
+         ZWtoYKv6QI9wtAPqtW8khKPQ1FdMmytZXQu4dUF6ZUjqYWVJ94e3sLsvaBRixPqjFkf4
+         /yVmO0Y5uWOgCJLJtVkUwPegHLqiq63jkgtF0CZyJ/XfSbJ2FlK5VQY5SReB5dccmPKF
+         xJOum5O34KOMlgBoB1+8l1ytpRF3dy8gcWUmEnRHVeLIHtxA1nxpb+A/EDRZtmC5Gn4a
+         Yy8g==
+X-Forwarded-Encrypted: i=1; AL+hErGWDLzNNwMGRUHjuFW8xSIrJ3OKgtUFYb6JUTQaYlIIY/0Fsyu88sFE68THhoHNu0CmaNr52fU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ZgnfTBAkMWdzuD2vsIMomjx1nEYNE9R8DpX+AFDqxmNnle7oz
+	OjxDtvKkBHnnOTl3eHzCEim1vTDQovbZWrdKUESOmQG/MJxId7O/7PcE
+X-Gm-Gg: AYBFou3NSnEveiYt1OKBhCDFneLK5hwpp7tfnnMLuVAZ4yokfRgbDswoiZRqBfkVRE8
+	ncGO4h3meyPZWiQHT75CNwUFKvJfEW30tnVk+/jREFJTFygIxWLsx4fauH6jywsNTU6E9MyNNjA
+	j3rHqZO8fs2NuYdQKZzBZ3hJGTfaw7MlKKw6mB4qlPn+WPQkE6cwMB1qBSSkJc63GBM9llwepin
+	4kYpPZT9QawuIElB76tOLFxalO72+BdnU51C/gKQUMhsbw2nUSFjEztv7abNNOBQvb5//7FEN3G
+	ygOdAS7ySwsTtklwZmnievW8pNt77JCEHCwz0ydeW46o/xBUH8PUHHFAcQs709DEbMVl72vjBAb
+	ZLF1jb33DYI0/f1HNhmruJe2EF0DNa11H9JPmJSQChsXTNcHJslUb8Be4GRamdK+j0VrNnzwRLt
+	sAoaXrB0eEbKeJwg7bWLxHJJc8dR8BMeEYvW4C5yHoMbT+8Vm9GZashnveJzMHh68ZQhdx2Mlj4
+	TQwoZeIIUYIif9h9I0mkUz+8ab4P34vFFGxBJjs6/qUteb/eBXTKzI6QvXIsWgtksNi3Ob+cdS3
+	lsnHBcKa5prY1q9otMdzhR4Pf0x3wQ0fx/szwyxYkSmkQ77yv9ExVrk=
+X-Received: by 2002:a05:620a:4444:b0:93f:3e45:a419 with SMTP id af79cd13be357-947b002af5bmr318209785a.38.1794397060199;
+        Wed, 11 Nov 2026 03:37:40 -0800 (PST)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e7dc398sm462686385a.35.2026.11.11.03.37.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 03:37:39 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,112 +87,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Nov 2026 06:37:38 -0500
+Message-Id: <DMSCO4I434TK.15MMEZI0V4UZR@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?=
+ <bjorn@kernel.org>, <bpf@vger.kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Donald
+ Hunter" <donald.hunter@gmail.com>, "Eric Dumazet" <edumazet@kernel.org>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Jamal Hadi Salim" <jhs@mojatatu.com>,
+ "Jiri Pirko" <jiri@resnulli.us>, "John Fastabend"
+ <john.fastabend@gmail.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
+ "Simon Horman" <horms@kernel.org>, "Tariq Toukan" <tariqt@nvidia.com>, "Wei
+ Wang" <weiwan@google.com>, "Willem de Bruijn"
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v1 08/15] psp: only give time-wait sockets of
+ psp connections a validator
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Todd Freed" <toddfreed@meta.com>, <netdev@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261111005533.6436-1-toddfreed@meta.com>
+ <20261111005533.6436-9-toddfreed@meta.com>
+In-Reply-To: <20261111005533.6436-9-toddfreed@meta.com>
 
-tcp_v6_connect() sets sk_bound_dev_if from sin6_scope_id when connecting
-to a link-local address. If the route lookup fails, the error path
-leaves that binding in place. Retrying against ::1 on the same socket
-can then fail with ENETUNREACH, although a fresh socket can connect.
+On Tue Nov 10, 2026 at 7:55 PM EST, Todd Freed wrote:
+> psp_twsk_init() sets tw_validate_xmit_skb on tcp time-wait sockets.
+> today, that becomes set whether or not the socket has psp offload, which
+> is not needed but is harmless. psp_validate_xmit() passes such packets.
+>
 
-Save the original binding and restore it unconditionally on native
-IPv6 errors returned by tcp_v6_connect(). Restore it before
-tcp_set_state(TCP_CLOSE) and inet_bhash2_reset_saddr(), which uses the
-binding to select the l3mdev for the bind2 bucket. Do not restore it
-again after the TCP_CLOSE callback. Keep IPv4-mapped errors on their
-existing cleanup path.
+This can get sent as a standalone patch. I would probably tag it as a
+fix too, even though it is benign. I can't remember why we (I) didn't
+put the validation hook under the branch, but looking at it now, it just
+looks like a bug.
 
-Found during LLM-assisted review of the tcp_v6_connect() error paths.
-Reproduced in UML by connecting to fe80::1 through a down dummy
-interface, then retrying against a listener on ::1 on the same socket.
-With the patch, the retry succeeds. The VRF cleanup tests also pass
-without the inet_csk_get_port() warning seen on the baseline. Tests
-also covered existing bindings and BPF sock_ops callbacks. These are
-custom userspace tests; the networking selftest suite was not run.
+> but a validator makes a socket look like it has an encryption offload of
+> its own, and the tc psp action, added in the next patch, relies on that:
+> encap refuses the packets of such a socket, and sk_validate_xmit_skb()
+> drops a packet with a psp association whose socket has a validator.
+>
+> set the validator only when the socket has a psp association.
+>
+> Signed-off-by: Todd Freed <toddfreed@meta.com>
+> ---
+>  net/psp/psp_sock.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+> index 609b06c7af65..664955bfb4fd 100644
+> --- a/net/psp/psp_sock.c
+> +++ b/net/psp/psp_sock.c
+> @@ -330,10 +330,14 @@ void psp_twsk_init(struct inet_timewait_sock *tw, c=
+onst struct sock *sk)
+>  {
+>  	struct psp_assoc *pas =3D psp_sk_assoc(sk);
+> =20
+> -	if (pas)
+> +	if (pas) {
+>  		refcount_inc(&pas->refcnt);
+> +		/* Only for PSP connections: a validator makes the socket
+> +		 * look like it has an encryption offload of its own
+> +		 */
 
-Deferred Fast Open failures after connect() returns success are
-unchanged.
+comment nit: for my taste, having a comment that starts with "Only for
+PSP connections:" two lines under an if (pas) branch feels unnecessary.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/netdev/062d02ca-e9e1-4f4e-ac57-0de27272a205@linux.dev/
-Link: https://lore.kernel.org/netdev/20261110100224.57cbf548@kernel.org/
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
-Changes in v3:
-- Restore old_bound_dev_if without the scope_id_set and current-value
-  checks, as Jakub requested.
-- Keep the early restore before TCP_CLOSE and bind2 cleanup, and
-  avoid restoring again after the close callback.
-- Leave IPv4-mapped failures on the existing cleanup path.
-- Use WRITE_ONCE() when installing the scope binding.
-
-v2: https://lore.kernel.org/netdev/20261102143352.135769-1-yanxia@cmss.chinamobile.com/
-v1: https://lore.kernel.org/netdev/20261031074654.73952-1-yanxia@cmss.chinamobile.com/
-
-Testing on net d2809ccf3cfc:
-- UML: reconnect and existing-binding checks, two VRF cleanup cases,
-  and five BPF sock_ops cases. The baseline reproduces the stale
-  binding and VRF warning; v3 completes without kernel warnings.
-  Native CONNECT callback bindings are rolled back on failure;
-  CLOSE callback bindings and IPv4-mapped behavior are preserved.
-- x86_64, GCC 12.3.1, W=1: completed kernel and module builds with
-  configurations derived from allmodconfig and allyesconfig.
-  WERROR, KASAN and KCSAN were disabled; allyes also had
-  KUNIT_ALL_TESTS disabled, with the resulting dependency changes.
-  tcp_ipv6.o compiled without diagnostics in both configurations.
-
- net/ipv6/tcp_ipv6.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index b1dec5d86d633db67a754c70ee1c63290a9acb5a..641b74aaf1963e71bb59e5542899e30e33b82a1e 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -134,6 +134,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 			  int addr_len)
- {
- 	struct sockaddr_in6 *usin = (struct sockaddr_in6 *) uaddr;
-+	int old_bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct inet_timewait_death_row *tcp_death_row;
- 	struct ipv6_pinfo *np = tcp_inet6_sk(sk);
-@@ -197,7 +198,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 			if (!sk_dev_equal_l3scope(sk, usin->sin6_scope_id))
- 				return -EINVAL;
- 
--			sk->sk_bound_dev_if = usin->sin6_scope_id;
-+			WRITE_ONCE(sk->sk_bound_dev_if, usin->sin6_scope_id);
- 		}
- 
- 		/* Connect to link-local address requires an interface */
-@@ -251,7 +252,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
- 			tp->af_specific = &tcp_sock_ipv6_specific;
- #endif
--			goto failure;
-+			goto out;
- 		}
- 		np->saddr = sk->sk_v6_rcv_saddr;
- 
-@@ -353,9 +354,14 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 	return 0;
- 
- late_failure:
-+	WRITE_ONCE(sk->sk_bound_dev_if, old_bound_dev_if);
- 	tcp_set_state(sk, TCP_CLOSE);
- 	inet_bhash2_reset_saddr(sk);
-+	goto out;
-+
- failure:
-+	WRITE_ONCE(sk->sk_bound_dev_if, old_bound_dev_if);
-+out:
- 	inet->inet_dport = 0;
- 	sk->sk_route_caps = 0;
- 	return err;
-
-base-commit: d2809ccf3cfc3c30581dc64ebec5f49f7ee1e228
-
+> +		tw->tw_validate_xmit_skb =3D psp_validate_xmit;
+> +	}
+>  	rcu_assign_pointer(tw->psp_assoc, pas);
+> -	tw->tw_validate_xmit_skb =3D psp_validate_xmit;
+>  }
+> =20
+>  void psp_twsk_assoc_free(struct inet_timewait_sock *tw)
 
