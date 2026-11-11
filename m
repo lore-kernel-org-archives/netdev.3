@@ -1,96 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.226
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794400590;
-	b=N5LelOJvPNjvLovsgo/UpdLf8XmfNGrv/TWCbKGvkfDGnEBv+2BoyefoSkV/LfDOh8pf
-	 GFMPk6YtWUHsBqFMt2sat3NuWGuo9kpep7a4Xn0LcYGsNQEm4nwwdULB76p1KC1vsZa1X
-	 7hdC4OLytkyLBilYtXxoNe3iUpoQvZOH6vpu11OnNIlyD6o/0DUAvEe6n+WFvXRaYOWr1
-	 3wYMQjEfKJ9QDRydz5o+ThBlntWTreEQHelzNs/XySmSMtUUX98HBobawS1FT4QkcJ/IS
-	 eyyb1SUTtNV74rJPbkSRxxP06jklRHq7uoozkd7pT+aMzMI2YLcVEJBBz9jTKDczONQ==
+	t=1794400594;
+	b=ZerL1uiltp54Rbcm3kr4y6bHwVxWRQ7/aLSr0wbS6xNYb+pZ+71jlwbU74ab/u91m9is
+	 QFPfyu1v/ua9PY32vnFAz2XcWS6tswTuvyV6SpJb0OAcbKpso4darMYSREmI2H2H9XaoH
+	 1RbmncL0ZjLQB1DabQV4hsblVAM4NDOY29xwY1wjjo5Q/Ihrqi4fMiJ8XoNkMJY6v3pqw
+	 Vuw8QgQCSUO5+ILaWqaDLRRPkA4Cbyz4Tcq0egQTochtGgcyAvq43Mk9RstyeP2CHram2
+	 Nk23TQ5tyZ5cAZT43V0bQDTMnaYxSq1ZI9miEUZYlp0SE3lBcA0O37tZOvbDAhiI9DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794400590;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794400594;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=5kvi9keqRBIcU6BT0G7HR9eg82C0nTpkyhhRu9uuWrU=;
-	b=y+Y0NnEVLm8+kXtVYqmMp2WZn30zpw5aK/t36tC0zkYehiUEbOwBuFS1UGyfhu4IJOg0
-	 rS+YLZNL0zhTpYK96fE3UydCb3EvA8099udX9xSBH7ExgX2yIKiNruFui5myqvAujzBO7
-	 bCX50DaCjAj6vnKmJ7qZ3EGXx8Mo71wQbB2lwgURdfjIzvabh0HNUbJo0F2zT76v0YmqW
-	 D6w7O0rgFzbsahM1FViTc5cyA8bMswnl8mFJFkJch0kEy0kbjr71oSNgTdzatpTHUmG74
-	 I8Fr2o00KUWcjUJxY5/NAAQ8NH233rs597krjkQWhx3ZoQISQZnUmtwHiWzEwsBGkjw==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-DetectorID-Processed;
+	bh=dJebYUd8pyS8Z+2CVSNXS7zJ6v/TxgKHnB9NFofUJ3w=;
+	b=wIc9pJktXIobvdj50TJcvLPSPBpyNVESHJOjeKYsOyb4eNn4Yksamv3HH/awDUM/Ng7Q
+	 DAsdGXN4yNlMF/4pRJZ/WM/S6qxs6VvqtiaWur96p05cH/pXFFl9MapKYMnXW5r0pyWsS
+	 peh0G6G5pPDw/E6IzkS62d3pwjK7bDuXKdzTH+EYyaVk7Tz161Oyhc7HVHgUTRv+WtCad
+	 MieDG+2mrqTdU5eCjMZE/tLS3kYmOoWuYjiKabEOkq4DVqnr2IwLCuI+bBeW8CWYTHsNL
+	 NdBahuY8I9Bs+7X3FZdKsDCbBd891BKOFYuS9CUeKrXT9FRFd7FpuwRrOcV7DezWVtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=JFR5gOyh;
-	arc=none smtp.remote-ip=209.85.215.227
-Received: from mail-pg1-f227.google.com (mail-pg1-f227.google.com [209.85.215.227])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="VyTd/9jr";
+	arc=none smtp.remote-ip=209.85.215.226
+Received: from mail-pg1-f226.google.com (mail-pg1-f226.google.com [209.85.215.226])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC03606A321
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 12:36:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCC03606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D084B606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 12:36:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D084B606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=JFR5gOyh
-Received: by mail-pg1-f227.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so1434502a12.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:36:29 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=VyTd/9jr
+Received: by mail-pg1-f226.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so1480005a12.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:36:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794400589; x=1795005389;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5kvi9keqRBIcU6BT0G7HR9eg82C0nTpkyhhRu9uuWrU=;
-        b=k0RJ1aaimkd6Olad/qaZe7olyBQ36yjOfn1fd+7eirdnN9HYm87W3epE/hTfhi2UDE
-         l8dR3FOMkC34MUYoxSklSIftfMMW7Q8GKdyJ4vxHKsYxs4jiHft8+ctRQWxUrjAxNbYP
-         lBvw8SOc4O5Kkx2EBlD5Yt7zj1+aAtGM4DXwDEgy8MyVSYOwtKqW79FF14YDOBuZvH+i
-         yPEIE7OMO0Fmme2KTcwNgoJBdrdd3baHqQ18il/1X7s8aVnGGjrIqkWvx6Smy8w4EQBT
-         pxC0Xv/9X2r396JSsFspmqvJJzIMhORzUYF2Ak1+k3iBY4VDUNAORNtFvS+jtIM58y9b
-         4lAg==
-X-Forwarded-Encrypted: i=1; AL+hErHKdbXD5UtXbDb12h/b3SpUt0f3IW0X/oJ/8JZqecRQ/hcLOt/xqZrOslctv3PIaWNcOFrKPKE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+IbM7D+/tmp4tUUMOq1LGiKywQgghSeBZdDv33Bm/Lr88wGO9Z
-	qtkQFI89KilCB3hX05MWBBXnUkrkszaul9FWw4GUJjgPtYH1KjdRuW73A6oT44Ya40ltMV+balT
-	5dw2qgFQ5d1QOFF9oBHB2iCAAmm4Q5osapEIP2yUsyK24Tm0fMEZtV+GrkkVYgxlXKxllWHsfi1
-	uPtbjELpXEEoq0IQbJtVWVOPta6mCK209NfE3+E7m3n7uspN8ZC2/dWKgjpqBCgiDl7uUOxR38H
-	RNauD1/q5XgEHgv
-X-Gm-Gg: AYBFou0Ni/Lt/tQu1Y+sZVRHEsWCqOw7UcGotEVOlKjrGDxrpXZlj6xipiXMGit/HXh
-	XGx5F+F2tmH0e+hM5KejBU+IMlTX/mqWdhmGH5zJX+T2sWiuKTBO0U6mpO26H28CM+k3dzkjUkx
-	RlCcRTC8iH9b0btl/eHDo8LVR7B7CJ/FMBBMHe7Imf0wJs/ITl41U9qv2FbUf4vYhNYQC+LCltd
-	Sghv69L962gEI45+rsTdOixI5MRjsMIu09xRRKN+5WBCqLyO33kZnA6fuAWQdeKlIlrRXjQFUv+
-	3o5QlGsQk4WtZxw9YbHh/QK3+BmjwesDwlTUTJL/AYaxT2jhWMulhvGI2SzRDeIh3PIxFSbwJVc
-	SDoJpidLHdkMZ3dF4N7QIC2CVdMlq/2EfP8FqgpbVpYg5h56zOfauayS+hyr2SAYlm4SJimxXO0
-	OiOLS9nOJF9YB+rNzPhjUcM2JPqOZMUGrG4m0=
-X-Received: by 2002:a17:90b:2d03:b0:3ad:a17d:f46c with SMTP id 98e67ed59e1d1-3b182fcd3c4mr2184169a91.62.1794400588969;
-        Wed, 11 Nov 2026 04:36:28 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794400593; x=1795005393;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dJebYUd8pyS8Z+2CVSNXS7zJ6v/TxgKHnB9NFofUJ3w=;
+        b=pcGK0L+GRXWDvLDkLDGolaV1ZsxAaCqLBkc8xXJ50Psymlv7xmpTUzbUkrct2C/f3b
+         5TaAgZnkbxb5taYkxm7VKiHlm+Ib8LAvXTOEf2YZniCuo6U48KZy/lNFomW3iHcaFBDX
+         SbXWlz/ovAetIp/SpFKii0fsOrKAJ4ObVxKZkVtxPoyIcJKWoPt8xeV1tXzUNdBdFcTs
+         JdEf8EMJOadAfZAe5104yFsn4x9nsMaqdxJWAVK2WewrZIXQjnnXETvjwdaVKS1yaxyq
+         k0FZUbmV0hskD0oma24/3AD7YM3g8QQYu21pK0ijtRO0BBUzZklbP5kQUk7RhLPFq6yh
+         N0XA==
+X-Forwarded-Encrypted: i=1; AL+hErGsSlurY02fey+oTognp7117ZLqE0dGwDEAwAQFkXOjgOMy7D+W9QSnM8bVETwnx8dloqFwcI0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z90UZde9/bM46mFx9bsJEJB2WmuWojOyeFJCYI3kvIBEWj6LJn/
+	Ic0Wqemf6F3/wXW1MEQ/OJisxrSjkyD9RFM9TrGzLQ3kNVVD56xKSfC0MZyTzY3jepjCgvDpyIw
+	ZB+VtI//BRzGrToffHL44FIo2azYqI8JRSiZ8U2Y2mOes6C43q8M4Zouyvomf9FL5ZO0TlT7Gz2
+	uG0o1LZn47tXBPjnoCtWfYkCN7uCQgaLSEd0z2ostY+v//OuisytjWbP6CnWTUyDiJ97eRUXjCU
+	dBro5L4Ie8=
+X-Gm-Gg: AYBFou2JOS4bLs0PeIymtYfhX+M4RIeIX8h10lrNrOOL838tWksvUa+fR3FCHEQgZGI
+	lZVSVDTBFsOy5hoaPWFunOo6qyq+W2EfwkYUi3m5kwCKLQTyYwTn1Rt2EIf9oZusTc0RNO8zZ4z
+	QFtU8TxaKOEO0/QlLku9d7J/UuGlsLM0AFXHzC4RK+5rGlaQu8J9l6NpTgWK+FnXI4j78mZQRTV
+	X9w231H32qw/2gsEV8wczxf7j/0IjPxg8m660hcbFfnqT901WrRpmqaglGr3bZVAA86bNXSLZF8
+	l9DmWEA7FdM0T3cTZUB6MiMR+27lRPoZEu9U2yIbXX75GHDeSFqHThYvQfwgtwQBHLtQ8dWAF5P
+	DBn4FGfRNoy7x5tjAEgs09BJLoS2/EiGvbRt1xIYOpj+9X0yKRgWVJ852e7MXkdd0ORT0JSmfMT
+	yaAuH+CGXVVogAZ/+m4kRAGxDEln/753gLGIg=
+X-Received: by 2002:a17:90b:17d1:b0:3ac:8897:7ba5 with SMTP id 98e67ed59e1d1-3b182fd884emr2245189a91.59.1794400592995;
+        Wed, 11 Nov 2026 04:36:32 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b182e51adbsm636683a91.4.2026.11.11.04.36.28
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b181fa190fsm876348a91.2.2026.11.11.04.36.32
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Nov 2026 04:36:28 -0800 (PST)
+        Wed, 11 Nov 2026 04:36:32 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-33713e5e6daso3805119eec.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:36:27 -0800 (PST)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36f479b9819so5370952eec.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:36:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794400587; x=1795005387; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5kvi9keqRBIcU6BT0G7HR9eg82C0nTpkyhhRu9uuWrU=;
-        b=JFR5gOyhXIQUuLavdPb3NXOfq3e2u3GP6NO0lLWjB4wSZAGSE/akdS9LMarqbmOc9j
-         q3AcKCGDOt2q60DSjuD5cH72sVqAI6WVsM+IpkStoS0ndODMhsvvLswNOGtoRnhpe4Sn
-         EX2gGFHIPeZki31hcrR5a7iLAnoAt6mglNztQ=
-X-Forwarded-Encrypted: i=1; AL+hErGtR8FN5HusG5ofiShTpooszuX7MEBa5xAwqxy0We6psy8vwKtbrd8ZJjwZUZi7lsgv0ObwOSo=@vger.kernel.org
-X-Received: by 2002:a05:7301:428e:b0:369:f035:661 with SMTP id 5a478bee46e88-37685d731fcmr2268382eec.15.1794400586960;
-        Wed, 11 Nov 2026 04:36:26 -0800 (PST)
-X-Received: by 2002:a05:7301:428e:b0:369:f035:661 with SMTP id 5a478bee46e88-37685d731fcmr2268348eec.15.1794400586131;
-        Wed, 11 Nov 2026 04:36:26 -0800 (PST)
+        d=broadcom.com; s=google; t=1794400591; x=1795005391; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dJebYUd8pyS8Z+2CVSNXS7zJ6v/TxgKHnB9NFofUJ3w=;
+        b=VyTd/9jrML9zcs9uomduEh9xZgo5saMDng/+eErzdlEQVSOXXyxVFf51DuOFbJOT9D
+         DhZDTx42zUhesPVNKaL8GypaUo9HOnx1y8ujBjjN3tvrNYd4t4ykrGz1mKHsvOudkjxz
+         cOcrCdnj9aPcnGx0QVMwbWG9ugRUJya2p1Rxw=
+X-Forwarded-Encrypted: i=1; AL+hErE5mIb9VOjICekWK72x0F4XqEhdf9asg1/bnNIzqTlN7QdIyWkcNL/I2cbo88I/zDOBSohnc3Y=@vger.kernel.org
+X-Received: by 2002:a05:7300:c7c1:b0:36e:b05e:9a74 with SMTP id 5a478bee46e88-37686a49cd9mr2558403eec.30.1794400590962;
+        Wed, 11 Nov 2026 04:36:30 -0800 (PST)
+X-Received: by 2002:a05:7300:c7c1:b0:36e:b05e:9a74 with SMTP id 5a478bee46e88-37686a49cd9mr2558373eec.30.1794400590107;
+        Wed, 11 Nov 2026 04:36:30 -0800 (PST)
 Received: from pc-hpe-top-git-sendmail-server.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375218c863csm15159947eec.28.2026.11.11.04.36.22
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375218c863csm15159947eec.28.2026.11.11.04.36.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 04:36:25 -0800 (PST)
+        Wed, 11 Nov 2026 04:36:29 -0800 (PST)
 From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 To: michael.chan@broadcom.com,
 	kuba@kernel.org
@@ -100,11 +102,14 @@ Cc: andrew+netdev@lunn.ch,
 	edumazet@kernel.org,
 	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>
-Subject: [PATCH net v2 0/4] tg3: Bug fixes
-Date: Wed, 11 Nov 2026 18:09:12 +0530
-Message-ID: <20261111123917.910416-1-pavan.chebbi@broadcom.com>
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Rui Salvaterra <rsalvaterra@gmail.com>
+Subject: [PATCH net v2 1/4] tg3: Don't fail probe if 31-bit coherent DMA mask is unsupported
+Date: Wed, 11 Nov 2026 18:09:13 +0530
+Message-ID: <20261111123917.910416-2-pavan.chebbi@broadcom.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261111123917.910416-1-pavan.chebbi@broadcom.com>
+References: <20261111123917.910416-1-pavan.chebbi@broadcom.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,34 +122,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-This patchset has 4 fixes.  The first patch restores probe on 57766 when
-the 31-bit coherent DMA mask cannot be set.  The second patch makes NCSI
-PLL lock on the TLP clock to fix WOL at 1G speed on 5720.  The third
-patch fixes ethtool -i display on 5719/5720 when NCSI component is
-missing.  The fourth one fixes a possible heap overflow in the NVRAM
-write path.
+Commit 614f4d166eee ("tg3: Set coherent DMA mask bits to 31 for
+BCM57766 chipsets") lowered the coherent DMA mask to 31 bits as a
+workaround for a spurious address overflow error in the hardware.
+The result of dma_set_coherent_mask() is fatal to probe, so on
+platforms that cannot satisfy such a mask the device fails to probe:
 
-v2: Addressed Sashiko warnings on:
- - patch #2 such that the PLL clock bit is set only at system suspend and
-   power off, cleared on resume and at probe and updated under the APE lock.
- - patch #4 to reject a zero NVRAM page size and to describe the buf advance
-   fix and its reach.
+  tg3 0000:01:00.0: Unable to obtain 64 bit DMA for consistent allocations
+  tg3 0000:01:00.0: probe with driver tg3 failed with error -5
 
-v1:
-https://lore.kernel.org/all/20261108065526.710152-1-pavan.chebbi@broadcom.com/
+This was reported on a Mac mini (Macmini6,2, BCM57766) running a
+kernel built without CONFIG_ZONE_DMA and with IOMMU passthrough as
+the default. Without CONFIG_ZONE_DMA, dma_direct_supported() only
+accepts a mask narrower than 32 bits if it covers the highest
+physical memory address, so with direct mapping a 31-bit coherent
+mask is rejected whenever memory extends above 2GB.
 
-Pavan Chebbi (3):
-  tg3: Don't fail probe if 31-bit coherent DMA mask is unsupported
-  tg3: Select PLL clock when preparing for shutdown
-  tg3: Skip querying for management FW when no NCSI present
+Treat the 31-bit mask as best effort.  If it is refused, warn and fall
+back to the mask used before 614f4d166eee, so that the device still
+probes.  Platforms that accept the mask are unaffected.  Where it is
+refused, 614f4d166eee never protected the device, it only stopped it
+from probing, so this restores the behaviour of kernels before that
+commit.  Warn when a status block lands at an address matching the
+pattern described in 614f4d166eee, so that a resulting TX timeout can
+be identified.
 
-Shravya KN (1):
-  tg3: Fix heap overflow in unbuffered NVRAM write path
+Fixes: 614f4d166eee ("tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets")
+Reported-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Link: https://lore.kernel.org/netdev/CALjTZvYKHWrD5m+RXimjxODvpFPw7Cq_EOEuzRi1PZT9_JxF+g@mail.gmail.com/
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/tg3.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
- drivers/net/ethernet/broadcom/tg3.c | 72 +++++++++++++++++++++++++----
- drivers/net/ethernet/broadcom/tg3.h |  6 ++-
- 2 files changed, 69 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 95827df4cf6a..2cf9d2ea069b 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -8867,6 +8867,13 @@ static int tg3_alloc_consistent(struct tg3 *tp)
+ 		if (!tnapi->hw_status)
+ 			goto err_out;
+ 
++		if (tg3_asic_rev(tp) == ASIC_REV_57766 &&
++		    (lower_32_bits(tnapi->status_mapping) & 0xffff0000) ==
++		    0xffff0000)
++			dev_warn(&tp->pdev->dev,
++				 "Status block at DMA address %pad may cause TX timeouts on this device\n",
++				 &tnapi->status_mapping);
++
+ 		sblk = tnapi->hw_status;
+ 
+ 		if (tg3_flag(tp, ENABLE_RSS)) {
+@@ -17756,6 +17763,7 @@ static int tg3_init_one(struct pci_dev *pdev,
+ 	u64 dma_mask, persist_dma_mask;
+ 	netdev_features_t features = 0;
+ 	u8 addr[ETH_ALEN] __aligned(2);
++	u64 test_dma_mask = 0;
+ 
+ 	err = pci_enable_device(pdev);
+ 	if (err) {
+@@ -17895,15 +17903,22 @@ static int tg3_init_one(struct pci_dev *pdev,
+ 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+ 
+ 	if (tg3_asic_rev(tp) == ASIC_REV_57766)
+-		persist_dma_mask = DMA_BIT_MASK(31);
++		test_dma_mask = DMA_BIT_MASK(31);
+ 
+ 	/* Configure DMA attributes. */
+ 	if (dma_mask > DMA_BIT_MASK(32)) {
+ 		err = dma_set_mask(&pdev->dev, dma_mask);
+ 		if (!err) {
+ 			features |= NETIF_F_HIGHDMA;
+-			err = dma_set_coherent_mask(&pdev->dev,
+-						    persist_dma_mask);
++			if (!test_dma_mask ||
++			    dma_set_coherent_mask(&pdev->dev,
++						  test_dma_mask)) {
++				if (test_dma_mask)
++					dev_warn(&pdev->dev,
++						 "Unable to set 31 bit coherent DMA mask, workaround not applied\n");
++				err = dma_set_coherent_mask(&pdev->dev,
++							    persist_dma_mask);
++			}
+ 			if (err < 0) {
+ 				dev_err(&pdev->dev, "Unable to obtain 64 bit "
+ 					"DMA for consistent allocations\n");
 -- 
 2.52.0
 
