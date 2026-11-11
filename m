@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794358207;
-	b=v67XvonSUIOHNRAUCrZmhi5qD0zx8MXN1R13CNZCh9nUxQiN2xEeECUSrZDxK7rVBC9w
-	 1gBuhZFnQclZSjY08v/KoXAS3pUCwDTpsptBdhyRstRzeyKqtz2v+j43X4ZLcOc3NnOzu
-	 jiyW9HSdOt7bahHdqrEmgNq/mjt8qFPXj78XmlaEPgGk4f5QQAhMvoQOU+yXhyNqbA2vY
-	 +ZPhq3Lioj4epNM+sRs8ovBXa52d3zTPhpsZlYCmxuPSM/7+ETAn2fe4Nxb8XdkY+nyzM
-	 ZyTe+cs1XSNexx4AEGZ59XUg2uy+B2gqinxh9hrNQoisG6aj1gY9i3sdEgt75JLnx3g==
+	t=1794358214;
+	b=39XQItAJ/ka/ZnAyCyIMp23FZPWeiRYjsZb/3BIm1qnutVkUCNdWrYx30Xwlgpz2+HaI
+	 +AWZ54Q7gWnPQ4YNjEKUs3roile7B127uoLECs9r3gN0EuBFbO3Zi8V8lt9P7cQwIFSFe
+	 rfSWOoPUOYovSki+sEdiZ92lJg1r6NECJC4Re2MBItFEsZhSAg0B1WeNWMC+mnvw9EO38
+	 of6aVxUTafCJ9bWZOtHdvM2uIs7Okm2XUNtJ53RYJhfqlSRVXozU4ajL3XlOuQAR2UuHA
+	 GkMKrl4sYoz07pgsIazou9BJPsdENou8G/sGQCsAM5nDgpDOo6zp3RHWpXmfEiZ69sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794358207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794358214;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=d5faOEgw9/xCBeRgP4qFBQ9+iauNTkgah4zQf/hKjwc=;
-	b=pVaytooKu44mWGMCQK307xlt/oPvFOto674+3Olzs2eEqNO7a8W2tXAvs2DIhc/G3Pp5
-	 hdCL5LjbVUI87Bora75BM3TXZPlRQfLmRW4n00AXVfX5LGdojK85sV9M5t7ODvjwgnsTy
-	 y3hpeJXffAbEHo3opjXRYXN1xT54NEkYWK9m7QdaBq9JMkWTzyV23d7yDWsn1wjAR3jqz
-	 x0BbkkDP0/yp0kERK6MAuMD0wopXzu7TUaDe6UfaTDawshopk2V+uMvu4rO3dOvA7KFMU
-	 O+tx4iXK97Z5iIH/v5Olh0SPAAG03io3iA5GbR/7F+N/srBOPeEdGwDelsg7wXnDL1A==
+	bh=TXETTPPRVF+HNiL1JDfhK3+Odg9X5L0s6YqExft/M58=;
+	b=c9RifpvegEshkiqlfdzfZ8A5r5rUe1Rcis+ashOf/NZQjSJh/qBitt4Q3H7ciO1XFFLs
+	 4Dn6TWSeOtxZiFxD7men/5oNtWHPx3VB1IWZgQ4nvGCQ0dMYABS+cOjpQpLr+R3xShgIt
+	 dsghUM6Lqa18boaDQV82/5+utJ6RbDdZzdBcuP33nNNztr28rUq/85tO3iRup5U4c1ptK
+	 Tpai8+tw62D/falFDVMy3n1Y8m2Q01vyX93YP8JiWALFm3deTZYHDXDXS/xNfkZLG8EgV
+	 Ky2y4k7SrjsAaGEsbZl1A+/6iQezb4q8pxqgH/uoqFVCmUedY3MowjJQcDTodiSbayA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=neVdYXZw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="aLsL/HDI";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F20606A31C;
-	Wed, 11 Nov 2026 00:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5618C606A33E;
+	Wed, 11 Nov 2026 00:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=neVdYXZw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5691F0089F;
-	Wed, 11 Nov 2026 00:50:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aLsL/HDI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3141F0093C;
+	Wed, 11 Nov 2026 00:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794358206;
-	bh=d5faOEgw9/xCBeRgP4qFBQ9+iauNTkgah4zQf/hKjwc=;
+	s=k20260515; t=1794358214;
+	bh=TXETTPPRVF+HNiL1JDfhK3+Odg9X5L0s6YqExft/M58=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=neVdYXZwsoWzXbS0Ns29tqjDabZmucPjU3doSpLTzSh5AnhvIqT3+tdKRb8a2soVA
-	 AGOuquDi8QwqSg3q2RLbUn5CGHLx4Av8R2iCg9iAN1VW2f4worR6QUw0kLgJvRW/XU
-	 9UMqbiTe8wN4YJP0qm/HGKmgSESg01HRfSsbeu9242FFnec1+hTJvdcF9941GqldwN
-	 dFtFV9AjY0F7+j5cML5EupPlJPwA+GpXxwe083+SjOOVSQdmVwoGmGkS6ufj6SfOtv
-	 WrmjRVw/EV6ltRQTuJM3MfvbWCMlJ2euECeTan4V1ybmNjoWxTPovOdmqMaciqSel/
-	 fRBfMQiGmEBIA==
+	b=aLsL/HDIZvha5C4UASbyS/8/oVMaiH7y+qfKFJsCXtFfgjRBqu3k2mhnpw7CSVusn
+	 DTLKMNvUdumkNdWSdIPTi19z3ZAdWJn8gnmMxSSzO+4tuHGlP6VnlMU92IQYtu8Wz4
+	 o5PRmVcXER7KBkqzTmNj8ZMUgxv5RXbL6NFLEhj8IWyg3FaMA5gBMU6F4QhTFHkgpo
+	 du8WqP2QFNMfCCzPxMFSFja8O3s/U4IsCxTJ0xLjd9I2KvTdZKWCEy0maVEaYMhcw2
+	 AxESCG0UX5+WvHOh1Ms2i8fjr2djtyyLYDiu3SZ+XUG7dnTZfdUuVumad1sLn+jJwP
+	 wjZY5as0LwZrg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E08639E8A55;
-	Wed, 11 Nov 2026 00:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2108E39E8A55;
+	Wed, 11 Nov 2026 00:50:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] cipso: stop modifying live ip_options_rcu
+Subject: Re: [PATCH net-next] dt-bindings: net: add Realtek RTL8125 PCIe
+ Ethernet
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435820518.142717.5535232865040780378.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:50:05 +0000
-References: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
-In-Reply-To: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
-To: Jann Horn <jannh@google.com>
-Cc: paul@paul-moore.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, jmorris@namei.org, serge@hallyn.com,
- horms@kernel.org, stephen.smalley.work@gmail.com, omosnacek@gmail.com,
- casey@schaufler-ca.com, netdev@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
- selinux@vger.kernel.org, stable@vger.kernel.org
+ <179435821267.142717.8246984206000823163.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:50:12 +0000
+References: 
+ <20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net>
+In-Reply-To: 
+ <20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net>
+To: Ricardo Pardini <ricardo@pardini.net>
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, heiko@sntech.de,
+ sebastian.reichel@collabora.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 06 Nov 2026 22:40:31 +0100 you wrote:
-> cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
-> socket, and tries to remove CIPSO options from the middle by moving all
-> subsequent options.
-> That's not allowed - ip_options_rcu can be read locklessly and must always
-> be consistent. For example, ip_options_undo() reads trusted offsets and
-> length values from the options buffer.
-> Fix it by doing the modification in a copy.
+On Mon, 09 Nov 2026 02:53:47 +0100 you wrote:
+> From: Ricardo Pardini <ricardo@pardini.net>
+> 
+> Add a binding for fixed/soldered Realtek RTL8125 PCIe Ethernet
+> controller. As a PCIe device, its "pci10ec,8125" compatible is the
+> Open Firmware spelling auto-derived from its PCI-SIG vendor/device IDs
+> and is already covered by the generic dtschema pci-device.yaml. The
+> compatible itself therefore needs no binding to be valid.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] cipso: stop modifying live ip_options_rcu
-    https://git.kernel.org/netdev/net/c/1f2c5183fc09
+  - [net-next] dt-bindings: net: add Realtek RTL8125 PCIe Ethernet
+    https://git.kernel.org/netdev/net-next/c/711c458f6f34
 
 You are awesome, thank you!
 -- 
