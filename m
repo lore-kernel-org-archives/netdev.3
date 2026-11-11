@@ -1,74 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794376121;
-	b=1H+6vePlNBGVKFX7iimbGzPq2/WkRI8oaeKenGS9kJhkuhbpq0Me+iORJpBejU/dYOWQ
-	 GdppI/EGnuS5bf9oYxytZRz70AusP1b5FkqGhn57ftOuFcuRXfGtF5fGI0Ci+7IN/tpvG
-	 BGkVZgVxn+Q/p9HQcF/GdNFOBHzNSTp/TQ/wcob/fV8t6nCLnMoA6rKn4e2lL4prA6LiN
-	 Aefoz+5cB4EPihznSA5tCPScabnrCGJaG4G0+OZQyZO7K90z00ccZa+RlXXGYZmHvJ1XZ
-	 K+FVZTkyzB0YCkKLS6HyodZvyArWo+Cmfe4luB//0hTxOifdl9wd99bwKfhrNQ+L2Kg==
+	t=1794376206;
+	b=ORVLGagThqVxg7ezMYAT8eCyAXzxeBwoFiob3ddzlon9Nt5F2CQc4OUKQVhWaUpBY2AM
+	 +XA+DmTb5Ldat0trYQkewNf2JFdetFHaLichA82ckxydu6Fp+kQQJYXvBG8eZUvTlFwI3
+	 YtdB11eak1cSciy77t6V0diFLY2vm9Yyl94oDPDLBgTs8U/xHjDJpNuCjOXIVVknFRBlo
+	 mwvvKrW93ZXz60ixfeDkD4X96ixdYsCmd7UL0q2lwRtb26iU4HpxiKSvDrpxijnwGOK4/
+	 g8jUzrAtGfVVhmmy2Mgz/DPPeRnuEj97mIgJKG3Proo+kpWYvc8qzc0YkuzM/rRkBiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794376121;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=Ghxg2Vb1au5nQAaQf1TtxvsSzv+LRPNDw6Q8zozRJDE=;
-	b=5GgvsIgfrzpv/MtQeMwtjGrS8+Y+4OMaRMRfHZT/GsEU6q6hpYRQu8jpPAiCDG+5IDmb
-	 Dfws1m8eMBg0W8iseiVMCmOh6vXRrpMrj6mYex4Uu7yNeT5K9BBf9KzSjCDa+NRKLkz/n
-	 Pmt3DjinKWEDWqQlevV5wLZVj5AZljCQ3SkKIv3chkuCvhbNBl4w1UYRWZf98C1z7Sfou
-	 sV27GUVSpFt6XaGl5bqkeRNHxvunQkZaI/1VX6Vmgn/czBr2elVB+ZmpVACirZD675bPW
-	 LLtSa6dHwcxoH7WjJEV1VMtmrLXi3lDNtG1XjJ6FWWB3nufnriFJHP+/tCLM0Pp5WIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794376206;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=ihQ7RalclwTtyciHdqTPG3ExDqIcbkjL04B6leMc4Zw=;
+	b=ACWCqVI+/LV/PksxqMQH+CivwhWUpvC6uaoDnIeBLH4lTxXdOmZwUypLek8o20YwDR0a
+	 Bp3GRA0r1i79BmYdDndeTqXRc8tctoVELVU2dKSFPd2uiiJxz56PT392s1dgdZg+iGfbD
+	 hXDemvEEzYDNu3EPZzff/ePTKd9NrlufMxYnHx7DhwZrbC8S3KGE63oNA2tPcejJZ0JOv
+	 rJTPx1vkpo+YsO6pZJoIZUpzwJA3BSUWUioSBJeaR940kiLKRwxcUwmrCHKXw8ss2frRl
+	 MEhNOyT3GyRViX6hrTAiCddVAWUdFtRrJi98JC6qi66way9Xg06ykEHWuApIBFQrZUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZAiekH23;
-	arc=none smtp.remote-ip=209.85.214.197
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="PBBs//GV";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C93606A320
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 05:48:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58C93606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C6F606A31C;
+	Wed, 11 Nov 2026 05:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZAiekH23
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea381ce04fso44602235ad.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 21:48:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794376121; x=1794980921; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ghxg2Vb1au5nQAaQf1TtxvsSzv+LRPNDw6Q8zozRJDE=;
-        b=ZAiekH23S18cbYW8ZVCh3XJnZdr1GZylOx7MO6BKbW5qYkdOzbHlNney2AIfcN2kg2
-         PJ5O/gYoUq/zdLJp/SHN+EJ5zt3aY3PBKeBTG96pBXHTE7qq/eOrAPrx0x1hW2Ju3gvc
-         N8QMGPqPpoXQvTKQP4H2tYIqQ4lYOBnTbmwQ/YajPUm80EGJwSbVk8IGX7vl72oHuqlQ
-         VHCTvL4xwHDGbx4vUOnNztwT/HpidECoSkijEwdbbXNZlSlA4MUUeKQDT9BZt2957IvW
-         enpSa0W6e/qerGontaHuFwYMoWFHfgvcFeBgyUcBnOBy+29C6nyRyJGSC04HejJ7C6PV
-         YULw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794376121; x=1794980921;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ghxg2Vb1au5nQAaQf1TtxvsSzv+LRPNDw6Q8zozRJDE=;
-        b=j8Ni2tusdSDdEZ7POnquc6BZVHmIH0YQazr3EPRo01Z6+y+OK5CPhRf2hmJRvv3OHs
-         hJrHbj043aG9gsmV9stieOceflze+xNdRh3zqOuePDC8uPBiU1FSn0lS5Ccb71QUJ+cu
-         S3lxPH2SOu77xJ+VcBUj8vIjIaftX7lzYKOri1S8dzYeQ/ymQEo+VXk605Fi/0kbggju
-         y51PPgFuVXgPanjkW/DP8UuGO8I8rLohkyWtfso8YM0sh4B/b2xKm/gSjDcB2DLvlcb4
-         TrOmDKF2Uaq+yYkaMLl7RMXqpCRPllKkyrXjJLOqBGofhva+pQDKd6YBfZpPFAYkbhD3
-         n/dg==
-X-Forwarded-Encrypted: i=1; AL+hErFA9A0PHk6GGLK0YWC0aR+9GPK98NVdrBhOvEcNeaTEES4KzSaFGSptf0R0d0rZV5DX35o8EnA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+YZy5FuCzslBYAiaa7c9zlNLyPWMEKeWkkaegC225IDF1MQG10
-	LVhd0L/RwAEXjlZlcnaRW1wcgeH824tMDvNO8x1jaivvu6bKYTfas289MjGUEkMPto/+MLE9LQA
-	dXnNfKA==
-X-Received: from pluo3.prod.google.com ([2002:a17:903:4b03:b0:2e9:7df8:f0e4])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19ec:b0:2e5:debe:cb4b
- with SMTP id d9443c01a7336-2edd3ecf804mr16525285ad.10.1794376120408; Tue, 10
- Nov 2026 21:48:40 -0800 (PST)
-Date: Wed, 11 Nov 2026 05:48:40 +0000
-In-Reply-To: <avMkfJrXhCFXn8M_@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PBBs//GV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A3E1F00A05;
+	Wed, 11 Nov 2026 05:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794376205;
+	bh=ihQ7RalclwTtyciHdqTPG3ExDqIcbkjL04B6leMc4Zw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=PBBs//GVyZhTdSN3o9w8KrUVIg567RZm2G8lZAwXRlxjTbr6vctYMO/7GR0K/cRHD
+	 9ygxOBlxxF9eGhWso1G0e8N3BEsrTBECoO8yL6VRcWaN751CsaJIavZGXIGSajiXdz
+	 IWJy7Lo55EkDWhCFAYUrsAwY7m8TjSEIqFRt+trowHUoSTtitt4ux4LbeWsXN/whX0
+	 0Jcsow2dkGo4j2SF33j0kBiUFQZn6rT77F9Y3VtSCvoD3gTV3cDVb773PD77cYfloh
+	 PX7yMZDIn/NsdHLxSjEmD3kr09rJXE5c94A9Y4K9LPeKiwgrWOz4oyO8HTJQDfq+A/
+	 xGLsH0lsq0gWA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81DE38007D4;
+	Wed, 11 Nov 2026 05:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,84 +52,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <avMkfJrXhCFXn8M_@v4bel>
-Message-ID: <avQBWJFGoi9Dp9uA@google.com>
-Subject: Re: [PATCH net v2] tcp: fix NULL pointer dereference when restarting
- a Fast Open listener
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: dsa: hellcreek: fix device_node leak in
+ hellcreek_led_setup()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179437620468.720797.7079283265270004352.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 05:50:04 +0000
+References: <1793954912000.3200.3087525628285919529@cmss.chinamobile.com>
+In-Reply-To: <1793954912000.3200.3087525628285919529@cmss.chinamobile.com>
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, kurt@linutronix.de, andrew@lunn.ch,
+ olteanv@gmail.com, richardcochran@gmail.com, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
+ Pavel.Zhigulin@kaspersky.com, linux-kernel@vger.kernel.org, yana06070@163.com
 
-On Tue, 10 Nov 2026 23:04:44 +0900, Hyunwoo Kim wrote:
-> When a valid RST is received for a Fast Open child accepted before the
-> three-way handshake completes, reqsk_fastopen_remove() adds the
-> request_sock to the listener's RST list if the listener is in TCP_LISTEN.
-> 
-> An application can call shutdown(SHUT_RD) on a listener socket.
-> inet_csk_listen_stop() checks rskq_rst_head without holding
-> fastopenq.lock. If rskq_rst_head is NULL, it does not acquire the lock
-> and therefore does not synchronize with an insertion by
-> reqsk_fastopen_remove() after that function has passed the TCP_LISTEN
-> check.
-> 
-> The more likely outcome of this race, even without a subsequent
-> listen(), is a leak. If reqsk_fastopen_remove() inserts a request_sock
-> after inet_csk_listen_stop() observes an empty list and returns, the
-> request_sock is stranded in rskq_rst_head and keeps a reference on the
-> listener. The socket is already in TCP_CLOSE, so a subsequent close()
-> does not call inet_csk_listen_stop() again.
-> 
-> If listen() is called again on the same socket before the delayed list
-> insertion, the insertion can overlap the queue initialization in
-> reqsk_queue_alloc(). If it occurs after rskq_rst_head is set to NULL but
-> before rskq_rst_tail is set to NULL, rskq_rst_head points to the
-> request_sock while rskq_rst_tail is NULL.
-> 
-> When a valid RST is later received for another accepted Fast Open child,
-> rskq_rst_head is not NULL, so reqsk_fastopen_remove() attempts to write
-> the request_sock pointer to rskq_rst_tail->dl_next while rskq_rst_tail is
-> NULL. KASAN reports:
-> 
->   BUG: KASAN: null-ptr-deref in reqsk_fastopen_remove+0x147/0x210
->   Write of size 8 at addr 0000000000000088 by task swapper/3/0
->   ...
->   Call Trace:
->    <IRQ>
->    ...
->    reqsk_fastopen_remove+0x147/0x210
->    tcp_check_req+0xa70/0x1060
->    ...
->    tcp_rcv_state_process+0x1cb/0x2ae0
->    ...
->    tcp_v4_do_rcv+0x1fe/0x740
->    tcp_v4_rcv+0x1744/0x2070
->    ...
->    ip_protocol_deliver_rcu+0x5c/0x280
->    ip_local_deliver_finish+0x171/0x330
->    ip_local_deliver+0x107/0x370
->    ...
->    </IRQ>
-> 
-> To widen the race window, the issue was reproduced after adding
-> mdelay(3000) immediately after reqsk_fastopen_remove() checks that the
-> listener is in TCP_LISTEN and immediately after reqsk_queue_alloc() sets
-> rskq_rst_head to NULL.
-> 
-> Make inet_csk_listen_stop() acquire fastopenq.lock regardless of the
-> value of rskq_rst_head and detach the list while holding the lock. With
-> this synchronization, reqsk_fastopen_remove() either inserts the
-> request_sock before inet_csk_listen_stop() acquires the lock, in which
-> case inet_csk_listen_stop() reclaims it, or sees that the listener is
-> not in TCP_LISTEN and does not insert anything.
-> 
-> Fixes: 0536fcc039a8 ("tcp: prepare fastopen code for upcoming listener changes")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Hello:
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+This patch was applied to netdev/net-next.git (main)
+by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+
+On Fri, 06 Nov 2026 16:48:32 +0800 you wrote:
+> hellcreek_led_setup() walks the two LED child nodes of the "leds" node
+> with of_get_next_available_child(). The helper drops the reference on
+> the child passed to it and takes one on the child it returns. After
+> the second call the caller holds a reference on the second LED node.
+> 
+> That reference is never dropped. The out: label only releases the
+> "leds" node itself. Boards with both LED child nodes leak one
+> device_node reference per probe, on the registration failures as well
+> as on the success path.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: dsa: hellcreek: fix device_node leak in hellcreek_led_setup()
+    https://git.kernel.org/netdev/net-next/c/c4c470912125
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
