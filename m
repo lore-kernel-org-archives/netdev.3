@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794431885;
-	b=TO1AIyCgGy0HBjl8rmXH8Py1jd3KfJCCW7oBT0y3PdD7NiXH4ovQxmULnHRn2uAuWCw/
-	 iN/DMfxQc0nQNlcXuD5YENSaxYvQ6uu8ufMK6jBBIo5KQFjT9T/aGcHYx1WfCzaN6FoRh
-	 yh+TuF8jy4WM9RtRQR6a6g4C18YyxeIX/6ROmLrPDIRRX/UKi0rNxr5JLHgAqfM4Mve4r
-	 caX9PTE+PgKijyO2QaNKByGLpVKLGUvr932g0JLCndL+XwXLPONZu3eA8WynPZXsZglA/
-	 nLvEE9bVDPvHDuJw430mjJa1uI7/OG2HZ9sdOkzhDXTWTylSD2KkljGfXS/kCL4Wegw==
+	t=1794431886;
+	b=ascZ95uxN8qywymfQtAHROtTq0axu0erGiRgh2wYuMz/VsV7x1+DMcVOFhUm0WDgG5z9
+	 W51SGM9JPNrgIwpYNscN+ELmTeb/VvfkkIth76faXd4VSZfHQhjX+zPOoKAd94a2wrR4Y
+	 bdtRccj16rOKd8z3toV85V3ix/2w8PIZREozQrSzOUeZC0/jmk1ciBrHSDqrxfwXexsAp
+	 Y2PB3+FHGD98aV91o04t4ulihZoGWcqw8kZALucFHDqgpeWCQ8Uhe66rzH13WUyhFeMzr
+	 XPPIa6ObYny+F/IbP3E3V7tBqcvd8IYMOgG6mAidTLTA+Lso/VCjzb/KTuDUOKS8qwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794431885;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794431886;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=w4bY1zT4bA+pI2ruImGHbxM3e9teccQdCPkojT1t3fg=;
-	b=GC84NktEdwP45RXe8jPZ6vH/+yQ3Y5CQYM0vddLZSceKEdddDFb6imxhORpH3XatT0D2
-	 rTGC3oafaaYJ9b5UZR4/wY0G0kv8seKmdTJVD3/3RwYg3rnUV5PQsKmRwakdLOdlGfI7V
-	 jTuxTtu8IHIdfAXXUaJvumsFlQnfFaEWDHCfas1ISoT3ZX8MRnxqtGwAsICwhxGpEOWM6
-	 tLTdVnBHVnVV6zNBXx1Lte9g4DYsNVXHZGUoXI3g0rTYfySVwKiwajSN2KibVzi41kZlY
-	 gku83n78ETE1GHReArBe8a+weHdYN3W8VOy+oSd/2MNTatD5BqSEoWi+G0Z5tnZbQtg==
+	bh=wBLeHhcB3+2fe6YlLegPD97cbtXOEzul4qQVaNB5N1o=;
+	b=bJGK2ZuCAw/AbmV+n6ZZTZDie8OeRNaj3hxJtMqw1i3mdNOq9W7WSUfr/mgFJs2URKKX
+	 Yj1VLmt+1HbL+LWxesTaVW0Pdg+nkwkYwDbJ+DMZE+PeqkKsd/vm1+NJ9idk+KH0MEW5f
+	 8grySCamTcVEnL9nlOh7YzPmJ/auIgA7Tw+heCw6F3kUJZcQnqyY52zgt5OWnTYkJpHug
+	 8j8CkW245k1q1eRZP+0FLZ7BUMPedG/RJm9dDYhsUljyTlCNT4JPw5Vyam+01xqY8nAOB
+	 cwxTT8PNsCvScj79ZbhUDJauz9BeRv3GE9wavFPeVW1y6dU1s7Wg9BN0f+i18DfaIlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=szelinsky.de;
 	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=OpQlsvKv;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b="ZV2/Plbe";
 	arc=none smtp.remote-ip=85.214.127.56
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CDF606A8A5;
-	Wed, 11 Nov 2026 21:18:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30CDF606A8A5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD0A60A3806;
+	Wed, 11 Nov 2026 21:18:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFD0A60A3806
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=OpQlsvKv
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=ZV2/Plbe
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id D7C7FE833E5;
-	Wed, 11 Nov 2026 22:17:58 +0100 (CET)
+	by szelinsky.de (Postfix) with ESMTP id 21C1CE83237;
+	Wed, 11 Nov 2026 22:18:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1794431878;
+	s=mail; t=1794431884;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w4bY1zT4bA+pI2ruImGHbxM3e9teccQdCPkojT1t3fg=;
-	b=OpQlsvKv2OvsAZ/JDvTY9N04THfnE6Y5XIpFs579B2VxBpKLN9Kfxa0ZPz7kQ9Mt7xyV7D
-	UMtaVdaNNpRQCK4lwg4sBJVEnIc9T4OM6DSxFe2r1B4C/QSblZS4BRkBAO+FhV7BHLZ3d2
-	kSuOYED4puCwp9EciaXIyZaX/0b9bjT8ZUjRfbDA2WxTzcUpj1bl1nDCKT+U6oYqgRfenf
-	PzXF/61VDs30VjWqn+Emiz5BfAwnqqguS7LX1ZXEdmcQiYs83B7TW5hg9IPIZzOdePxlFA
-	u/2tXkbbTsnTCdXfh5L76KwURSUgRg3r7YPnKn12gBhhk/lIfjeN7hfWVyv03A==
+	bh=wBLeHhcB3+2fe6YlLegPD97cbtXOEzul4qQVaNB5N1o=;
+	b=ZV2/Plbeu12dqraNq39GKnqkiAz0zUC4465ynC1UhB3KnGGkObtMyj8IFzG6LQuue1KB+M
+	lnQrZ79XKw9xt4F6RnWajzuRrSEBj/j9p43dvN1Gr6e5yjGIgxFLb9IrP4G8hfIjyAqs+Y
+	Df2O2etvQTQHPDX4KZLzfvyIV2WjiAZ9xh2yorkQlQEtS6jWfPIuYxWMjMKA5xm8bT/uXB
+	9bDDJlR4+aMtHek0R5Aw4+SXOeqQq10XzYiXM8HVRCDjent4taqYmBjR4mXqids1maDung
+	yp++lqD4AeSTkoox2qQnc2/HUSaRFZa/Oe0qjNL028TqjtCHig/Jy3VCd9IZ4w==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 1QGDYooUh6U1; Wed, 11 Nov 2026 22:17:58 +0100 (CET)
+ id 7nP_UB0WbOin; Wed, 11 Nov 2026 22:18:04 +0100 (CET)
 Received: from p14sgen5.lanhh (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Wed, 11 Nov 2026 22:17:58 +0100 (CET)
+	Wed, 11 Nov 2026 22:18:03 +0100 (CET)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -73,9 +73,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v4 07/14] net: pse-pd: do not tie a shared power domain to its creator's devres
-Date: Wed, 11 Nov 2026 22:17:24 +0100
-Message-ID: <20261111211731.3193796-8-github@szelinsky.de>
+Subject: [PATCH net v4 12/14] net: pse-pd: use each PI's own supply handle for the power budget
+Date: Wed, 11 Nov 2026 22:17:29 +0100
+Message-ID: <20261111211731.3193796-13-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261111211731.3193796-1-github@szelinsky.de>
 References: <20261111211731.3193796-1-github@szelinsky.de>
@@ -90,189 +90,264 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A power domain is shared by all controllers on the same supply and
-counted with a kref, but it is devm memory of the controller that
-created it. When that controller unbinds while another one still uses
-the domain, devres frees it anyway, and the other controller and the
-global map keep pointing at freed memory. The same happens when
-pse_register_pw_ds() fails part way: the domains it already set up stay
-in the map, and devres frees them.
+A power domain shared by several controllers holds one supply handle.
+Its consumer device is a PI regulator of the controller that created
+the domain. When that controller unbinds, devres frees the regulator,
+but the other controllers still use the domain and its handle, which
+now points at a freed device. Reading the regulator summary in debugfs
+then reads freed memory.
 
-Allocate the domain with kzalloc() and free it on its last kref_put().
-If pse_register_pw_ds() fails, it now gives back every domain it took
-while it still holds pse_pw_d_mutex, so no other controller can pick one
-up first.
+The domain does not need a handle of its own. The budget is counted in
+the supply's regulator_dev, and each PI regulator already holds a
+handle to that supply, which lives as long as the PI regulator. Use
+that handle for the budget, and drop the domain's handle.
+pse_flush_pw_ds() clears a PI's pw_d before devres unregisters the PI
+regulator, so the budget is never used through a handle that is gone.
 
-Because the domain can now be freed at the put, pse_flush_pw_ds() clears
-pi[].pw_d under pcdev->lock before the put, and pse_ethtool_set_prio()
-checks it under that lock. The PI regulator ops and pse_isr() use it
-under the same lock.
+To find the domain of a new PI, compare its supply with the supply of a
+PI already in the domain. For this, keep a list of the PIs of each
+domain under pse_pw_d_mutex, which pse_flush_pw_ds() now holds for its
+whole loop.
 
-Triggered in QEMU (arm64, KASAN) with two test-only PSE controllers
-on one supply: after the one that created the domain unbinds, binding
-it again gives
+Triggered in QEMU (arm64, KASAN) with two test-only PSE controllers on
+one supply: after the one that created the domain unbinds, reading
+/sys/kernel/debug/regulator/regulator_summary gives
 
-  BUG: KASAN: slab-use-after-free in pse_controller_register+0xb98/0x1274
+  BUG: KASAN: slab-use-after-free in regulator_summary_show_subtree+0x770/0x9c4
 
-With this patch it is gone.
+With this patch the report is gone. A second test, where one controller
+changes its power limit in a loop while the other one unbinds, is clean
+too.
 
 Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- drivers/net/pse-pd/pse_core.c | 68 +++++++++++++++++++++++++++--------
- 1 file changed, 54 insertions(+), 14 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 70 +++++++++++++++++------------------
+ include/linux/pse-pd/pse.h    |  2 +
+ 2 files changed, 35 insertions(+), 37 deletions(-)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 7fffe7e16f75..a1cd033ba744 100644
+index f5a44e17cbec..9a222d469da5 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -876,17 +876,41 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
- 	return 0;
+@@ -47,16 +47,17 @@ struct pse_control {
+ /**
+  * struct pse_power_domain - a PSE power domain
+  * @id: ID of the power domain
+- * @supply: Power supply the Power Domain
+  * @refcnt: Number of gets of this pse_power_domain
+  * @budget_eval_strategy: Current power budget evaluation strategy of the
+  *			  power domain
++ * @pis: PIs that use the power domain, under pse_pw_d_mutex. The supply
++ *	 handles of their regulators all point at the same supply.
+  */
+ struct pse_power_domain {
+ 	int id;
+-	struct regulator *supply;
+ 	struct kref refcnt;
+ 	u32 budget_eval_strategy;
++	struct list_head pis;
+ };
+ 
+ static int of_load_single_pse_pi_pairset(struct device_node *node,
+@@ -446,7 +447,7 @@ static void pse_pi_deallocate_pw_budget(struct pse_pi *pi)
+ 	if (!pi->pw_d || !pi->pw_allocated_mW)
+ 		return;
+ 
+-	regulator_free_power_budget(pi->pw_d->supply, pi->pw_allocated_mW);
++	regulator_free_power_budget(pi->rdev->supply, pi->pw_allocated_mW);
+ 	pi->pw_allocated_mW = 0;
  }
  
--static void __pse_pw_d_release(struct kref *kref)
-+/* Release for a put made with pse_pw_d_mutex already held. */
-+static void pse_pw_d_release_locked(struct kref *kref)
+@@ -559,7 +560,8 @@ pse_pi_allocate_pw_budget_static_prio(struct pse_controller_dev *pcdev, int id,
+ 	int ret, _prio;
+ 
+ 	_prio = pcdev->nr_lines;
+-	while (regulator_request_power_budget(pi->pw_d->supply, pw_req) == -ERANGE) {
++	while (regulator_request_power_budget(pi->rdev->supply, pw_req) ==
++	       -ERANGE) {
+ 		if (_prio <= pi->prio) {
+ 			NL_SET_ERR_MSG_FMT(extack,
+ 					   "PI %d: not enough power budget available",
+@@ -894,24 +896,17 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
+ }
+ 
+ /* Release for a put made with pse_pw_d_mutex already held. */
+-static void pse_pw_d_release_locked(struct kref *kref)
++static void pse_pw_d_release(struct kref *kref)
  {
  	struct pse_power_domain *pw_d = container_of(kref,
  						     struct pse_power_domain,
  						     refcnt);
  
-+	lockdep_assert_held(&pse_pw_d_mutex);
- 	regulator_put(pw_d->supply);
+ 	lockdep_assert_held(&pse_pw_d_mutex);
+-	regulator_put(pw_d->supply);
  	xa_erase(&pse_pw_d_map, pw_d->id);
-+	kfree(pw_d);
-+}
-+
-+static void __pse_pw_d_release(struct kref *kref)
-+{
-+	pse_pw_d_release_locked(kref);
- 	mutex_unlock(&pse_pw_d_mutex);
+ 	kfree(pw_d);
  }
  
-+/* Clear pi[id].pw_d before the domain's reference is dropped. The PI
-+ * regulator ops and pse_isr() hold pcdev->lock while they use it.
-+ */
-+static struct pse_power_domain *
-+pse_pi_take_pw_d(struct pse_controller_dev *pcdev, int id)
+-static void __pse_pw_d_release(struct kref *kref)
+-{
+-	pse_pw_d_release_locked(kref);
+-	mutex_unlock(&pse_pw_d_mutex);
+-}
+-
+ /* Clear pi[id].pw_d before the domain's reference is dropped. The PI
+  * regulator ops and pse_isr() hold pcdev->lock while they use it.
+  */
+@@ -928,6 +923,14 @@ pse_pi_take_pw_d(struct pse_controller_dev *pcdev, int id)
+ 	return pw_d;
+ }
+ 
++/* Drop @pi from @pw_d, with pse_pw_d_mutex held */
++static void pse_pw_d_leave(struct pse_power_domain *pw_d, struct pse_pi *pi)
 +{
-+	struct pse_power_domain *pw_d;
-+
-+	mutex_lock(&pcdev->lock);
-+	pw_d = pcdev->pi[id].pw_d;
-+	pcdev->pi[id].pw_d = NULL;
-+	mutex_unlock(&pcdev->lock);
-+
-+	return pw_d;
++	lockdep_assert_held(&pse_pw_d_mutex);
++	list_del(&pi->pw_d_node);
++	kref_put(&pw_d->refcnt, pse_pw_d_release);
 +}
 +
  /**
   * pse_flush_pw_ds - flush all PSE power domains of a PSE
   * @pcdev: a pointer to the initialized PSE controller device
-@@ -897,10 +921,11 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+@@ -937,18 +940,13 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+ 	struct pse_power_domain *pw_d;
  	int i;
  
++	mutex_lock(&pse_pw_d_mutex);
  	for (i = 0; i < pcdev->nr_lines; i++) {
--		if (!pcdev->pi[i].pw_d)
-+		pw_d = pse_pi_take_pw_d(pcdev, i);
-+		if (!pw_d)
- 			continue;
- 
--		pw_d = xa_load(&pse_pw_d_map, pcdev->pi[i].pw_d->id);
-+		pw_d = xa_load(&pse_pw_d_map, pw_d->id);
- 		if (!pw_d)
- 			continue;
- 
-@@ -910,24 +935,30 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+ 		pw_d = pse_pi_take_pw_d(pcdev, i);
+-		if (!pw_d)
+-			continue;
+-
+-		pw_d = xa_load(&pse_pw_d_map, pw_d->id);
+-		if (!pw_d)
+-			continue;
+-
+-		kref_put_mutex(&pw_d->refcnt, __pse_pw_d_release,
+-			       &pse_pw_d_mutex);
++		if (pw_d)
++			pse_pw_d_leave(pw_d, &pcdev->pi[i]);
+ 	}
++	mutex_unlock(&pse_pw_d_mutex);
  }
  
  /**
-- * devm_pse_alloc_pw_d - allocate a new PSE power domain for a device
-- * @dev: device that is registering this PSE power domain
-+ * pse_alloc_pw_d - allocate a new PSE power domain
-+ *
-+ * A power domain is shared by every controller whose PIs sit on the same
-+ * supply, so it must not be tied to the lifetime of the controller that
-+ * happened to create it. It is freed by pse_pw_d_release_locked() on the
-+ * last kref_put().
+@@ -956,8 +954,8 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+  *
+  * A power domain is shared by every controller whose PIs sit on the same
+  * supply, so it must not be tied to the lifetime of the controller that
+- * happened to create it. It is freed by pse_pw_d_release_locked() on the
+- * last kref_put().
++ * happened to create it. It is freed by pse_pw_d_release() on the last
++ * kref_put().
   *
   * Return: Pointer to the newly allocated PSE power domain or error pointers
   */
--static struct pse_power_domain *devm_pse_alloc_pw_d(struct device *dev)
-+static struct pse_power_domain *pse_alloc_pw_d(void)
- {
- 	struct pse_power_domain *pw_d;
- 	int index, ret;
+@@ -996,7 +994,6 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 	for (i = 0; i < pcdev->nr_lines; i++) {
+ 		struct regulator_dev *rdev = pcdev->pi[i].rdev;
+ 		struct pse_power_domain *pw_d;
+-		struct regulator *supply;
+ 		bool present = false;
+ 		unsigned long index;
  
--	pw_d = devm_kzalloc(dev, sizeof(*pw_d), GFP_KERNEL);
-+	pw_d = kzalloc_obj(*pw_d);
- 	if (!pw_d)
- 		return ERR_PTR(-ENOMEM);
+@@ -1007,10 +1004,15 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 			continue;
  
- 	ret = xa_alloc(&pse_pw_d_map, &index, pw_d, XA_LIMIT(1, PSE_PW_D_LIMIT),
- 		       GFP_KERNEL);
--	if (ret)
-+	if (ret) {
-+		kfree(pw_d);
- 		return ERR_PTR(ret);
-+	}
- 
- 	kref_init(&pw_d->refcnt);
- 	pw_d->id = index;
-@@ -973,7 +1004,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 		xa_for_each(&pse_pw_d_map, index, pw_d) {
++			struct pse_pi *pi = list_first_entry(&pw_d->pis,
++							     struct pse_pi,
++							     pw_d_node);
++
+ 			/* Power supply already registered as a PSE power
+ 			 * domain.
+ 			 */
+-			if (regulator_is_equal(pw_d->supply, rdev->supply)) {
++			if (regulator_is_equal(pi->rdev->supply,
++					       rdev->supply)) {
+ 				present = true;
+ 				pcdev->pi[i].pw_d = pw_d;
+ 				break;
+@@ -1018,6 +1020,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 		}
+ 		if (present) {
+ 			kref_get(&pw_d->refcnt);
++			list_add_tail(&pcdev->pi[i].pw_d_node, &pw_d->pis);
  			continue;
  		}
  
--		pw_d = devm_pse_alloc_pw_d(pcdev->dev);
-+		pw_d = pse_alloc_pw_d();
- 		if (IS_ERR(pw_d)) {
- 			ret = PTR_ERR(pw_d);
- 			goto out;
-@@ -982,6 +1013,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
- 		supply = regulator_get(&rdev->dev, rdev->supply_name);
- 		if (IS_ERR(supply)) {
- 			xa_erase(&pse_pw_d_map, pw_d->id);
-+			kfree(pw_d);
- 			ret = PTR_ERR(supply);
+@@ -1027,20 +1030,13 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
  			goto out;
  		}
-@@ -996,6 +1028,13 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 
+-		supply = regulator_get(&rdev->dev, rdev->supply_name);
+-		if (IS_ERR(supply)) {
+-			xa_erase(&pse_pw_d_map, pw_d->id);
+-			kfree(pw_d);
+-			ret = PTR_ERR(supply);
+-			goto out;
+-		}
+-
+-		pw_d->supply = supply;
+ 		if (pcdev->supp_budget_eval_strategies)
+ 			pw_d->budget_eval_strategy = pcdev->supp_budget_eval_strategies;
+ 		else
+ 			pw_d->budget_eval_strategy = PSE_BUDGET_EVAL_STRAT_DISABLED;
+ 		kref_init(&pw_d->refcnt);
++		INIT_LIST_HEAD(&pw_d->pis);
++		list_add_tail(&pcdev->pi[i].pw_d_node, &pw_d->pis);
+ 		pcdev->pi[i].pw_d = pw_d;
  	}
  
- out:
-+	/* Undo this call's domains before another controller can find them */
-+	while (ret && i--) {
-+		struct pse_power_domain *pw_d = pse_pi_take_pw_d(pcdev, i);
-+
-+		if (pw_d)
-+			kref_put(&pw_d->refcnt, pse_pw_d_release_locked);
-+	}
+@@ -1050,7 +1046,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+ 		struct pse_power_domain *pw_d = pse_pi_take_pw_d(pcdev, i);
+ 
+ 		if (pw_d)
+-			kref_put(&pw_d->refcnt, pse_pw_d_release_locked);
++			pse_pw_d_leave(pw_d, &pcdev->pi[i]);
+ 	}
  	mutex_unlock(&pse_pw_d_mutex);
  	return ret;
- }
-@@ -1943,15 +1982,16 @@ int pse_ethtool_set_prio(struct pse_control *psec,
- 	const struct pse_controller_ops *ops;
- 	int ret = 0;
+@@ -1935,7 +1931,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+ 	if (!pw_diff) {
+ 		goto out;
+ 	} else if (pw_diff > 0) {
+-		ret = regulator_request_power_budget(pi->pw_d->supply, pw_diff);
++		ret = regulator_request_power_budget(pi->rdev->supply, pw_diff);
+ 		if (ret) {
+ 			NL_SET_ERR_MSG_FMT(extack,
+ 					   "PI %d: not enough power budget available",
+@@ -1944,7 +1940,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+ 		}
  
--	if (!pcdev->pi[psec->id].pw_d) {
--		NL_SET_ERR_MSG(extack, "no power domain attached");
--		return -EOPNOTSUPP;
--	}
--
- 	/* We don't want priority change in the middle of an
- 	 * enable/disable call or a priority mode change
- 	 */
- 	mutex_lock(&pcdev->lock);
-+	if (!pcdev->pi[psec->id].pw_d) {
-+		NL_SET_ERR_MSG(extack, "no power domain attached");
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
- 	switch (pcdev->pi[psec->id].pw_d->budget_eval_strategy) {
- 	case PSE_BUDGET_EVAL_STRAT_STATIC:
- 		if (prio >= pcdev->nr_lines) {
+ 	} else {
+-		regulator_free_power_budget(pi->pw_d->supply, -pw_diff);
++		regulator_free_power_budget(pi->rdev->supply, -pw_diff);
+ 	}
+ 	pi->pw_allocated_mW = pw_req;
+ 	*updated = true;
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index a917ac32dc0c..17738ffcd224 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -247,6 +247,7 @@ struct pse_pi_pairset {
+  * @rdev: regulator represented by the PSE PI
+  * @admin_state_enabled: PI enabled state
+  * @pw_d: Power domain of the PSE PI
++ * @pw_d_node: entry in the list of PIs that use @pw_d
+  * @prio: Priority of the PSE PI. Used in static budget evaluation strategy
+  * @isr_pd_detected: PSE PI detection status managed by the interruption
+  *		     handler. This variable is relevant when the power enabled
+@@ -261,6 +262,7 @@ struct pse_pi {
+ 	struct regulator_dev *rdev;
+ 	bool admin_state_enabled;
+ 	struct pse_power_domain *pw_d;
++	struct list_head pw_d_node;
+ 	int prio;
+ 	bool isr_pd_detected;
+ 	int pw_allocated_mW;
 -- 
 2.43.0
 
