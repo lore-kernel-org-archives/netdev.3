@@ -1,65 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794424338;
-	b=MFYcNT2Qb7LuodD7bONcCa2zKdftnikJAMjuMp6ijiIrQxoH4liihPnni2BqxklaQz+r
-	 p9wNQdu7P+DEWFB3lK58KqOsEV8VsohK0xndTbgZ2bQPK2s4h9ABzZKwcajgSz/T/Pf0E
-	 ZPkNtGmOGui+/tY1qhUBk1SbL/rSpkF2Cse70A3x3hkm0fApzZGvgY4OGOk9WcxvfEHuX
-	 LdgobCVbstJcxJ8JP3Gdk2gZr6i2RyZyaizOV5tVKyvKq/9jCQuycEoTPgjDQTjBr7BOl
-	 ImsAqGPyYXcLB8VerRxbc41t/kPKCdYjHLaVL/pgItvAnX1XwGhx4IIjXA90EeyXqyA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794424338;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=TYBYTqmsCEkuPeF6UUVuvymRyySqseSuHMHuFSF29/s=;
-	b=F79HWPG4grb0ujPWjBAIVwttDXsMBcJs0GaD6daYndQiCTWw1hUm0ngok7k2Ygngiszt
-	 Hcyk+P5tYj63z6mqj9RR7hvFpH6sLpg8BgXC8/0L6tEVZ2vNPWG0cbfOsNeICM9sY6kWj
-	 cPvXBZqQNaS1TNegDWSCBRXYIO4b1HgmIcTmVCAoS5qChrl3rRJHRsSJv8P7AOVnN8gQb
-	 JmDmcz+2fA7SdyjfYZKtupXkcpKzHYZ2cezh2h/jO7sg6VM5rLrxhmvRAOli0mm7TpvKr
-	 2NfUxYNANl9iF/R0q6VU69pzVbLyQjHqSjcfqYFsgdIHG7G7xsJXRYWd94DaSXlgjOg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tb9sIjD5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794424413;
+	b=UgHW0QwvskWrnttxhAw78AUj/y/xt03ebqaWzSswNiWIZCwl3ih7NSJHra1X4jtiFksN
+	 kzq98gRibHJD7XEmcpAdMeF8Z+/2oxfPvmAtBGXBsTvYoi7ztmJT9HOL6138UYUHYhS2K
+	 tvXoSU6yklcYw/8ydMch3tFvkf2Bdr47kjFcgKzqImBuAVMqAnP28r2b8Oa+YfeW69ox7
+	 FwHMuu36gaPe5AKAl5Vhn0lJueu1953MvvNjtODZxTPZ8zErVs+8+H/QdqQ0Hd/XIAoA5
+	 7Iljl0lSkN/qGbE/VLBM/9j91EVOtRPqmKQKHos0i6FoHmildvPAutFpwRwLJLMLhvw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794424413;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=mUjd7XG+NWVc3MUtMjmyBvgOlBW9j3cmurL1LfULang=;
+	b=vp8pf0Idehe17s5j3l0AmbpCImKBufDz9Jq+mRoclh+yucVaMrvG3GwaKvNqrKzXRSvf
+	 KgrTX1ljlAOgucYn3y17XhoFQwBTVBVLRA0l/HTskygX2KQhX6q19eHrUA3L8ain5xIdO
+	 HX8PdKO2TO/5Sjs0/BjaM2Mn2/SaS5mATC+ifVpwCiXtB5q95/AV3T0eJIer550qhdKsp
+	 35faF1Kp8eJ6GhJZT8M/qbo4zOlH+W1WPJqzr6eQYyyR1A6tcd8At94PwcXWaYO1K5+AM
+	 EyQufBrhGTrWAfPTkxjFcOFr3+S/mYB+VXRViqig2xd/xti6VaKW9YgetsNzveuD7bw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="hjBke/V4";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5105A606A8A7;
-	Wed, 11 Nov 2026 19:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391A0606A8A3
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:13:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 391A0606A8A3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tb9sIjD5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9751F00A06;
-	Wed, 11 Nov 2026 19:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794424337;
-	bh=TYBYTqmsCEkuPeF6UUVuvymRyySqseSuHMHuFSF29/s=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Tb9sIjD5MfxoIVlQ61rTb+WDUHdk4NZtEH6zlIzApmb331n5cMDbSLhoLzkrStAJI
-	 gmOi2NHeC/1pCO/UNWcLECw4jj9XNxO0QVObKGYKS24JWiWDtvrxo2+MyOKVWI0EzE
-	 Icn6rMoHDD5qJIeqcQ1yJsv6ZydJkY2DIKy8kMUz2KjWLxJB1+jw6B0v1qo3v11x33
-	 QK9RgcoxvdACiNQfaAHriAZvaUX8Wu1z8Kl6V0aassKuEos/5GUpQU30YaYzGKaNHW
-	 tpP205MwY/pH+K0UJEW8h+XeeYoOV1p54OscB4NI680JEkqn51Vklu/A4Wws586b6a
-	 aguPrJ59Sq8SA==
-Subject: Re: [PATCH net-next 10/10] docs: networking: describe tunnel key
- partitioning in TC queue filtering
-From: netdev-bot+sashiko@kernel.org
-To: acassen@corp.free.fr
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- jhs@mojatatu.com, jiri@resnulli.us, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- bharat@chelsio.com, donald.hunter@gmail.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, dsahern@kernel.org,
- idosch@nvidia.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, oss-drivers@corigine.com
-Date: Wed, 11 Nov 2026 19:12:16 +0000
-Message-ID: <179442433615.2199510.11200298531505956799@kernel.org>
-In-Reply-To: <20261109131039.959438-11-acassen@corp.free.fr>
-References: <20261109131039.959438-11-acassen@corp.free.fr>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hjBke/V4
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1931ff67a29so5780041c88.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:13:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794424412; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oYZ4kIWPJCfJW+9IhDoQBI3hlHMOBScu58oSwdPFk1oIoxaxOp3ClTiIvnUDC5SRo5
+         RJ3fCaNw0QN3ojpP8whOafh/t1BOrh+S2usCIY1OIhUCTr2rEy806tmGNEwV503uqYg0
+         MFd0W4ewKdygNYh1J+l4bFBReNkLv54AupITUS46r9ea7FVudTPFaoVb+IR2oLbQ8kkI
+         sSpTweS1Zza9PxugxNEl7Lsi3UvHL8K7mmz308iAEZVwpwI9msVU2MwjnyyNwttmw1Sx
+         LAtBAqmfiiy3yatjNEbZhZE49Z8X/k+ZIaZYxwHNaMTvTHwZg+9fKqWCRwxQXEToN+zt
+         oyJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mUjd7XG+NWVc3MUtMjmyBvgOlBW9j3cmurL1LfULang=;
+        fh=cbT9+4JqxTzwvPnER/wiMqd6oLb+FNrFft2Gsb3HWSA=;
+        b=M/zB3TVfQZ8Hqqwn+98PNw/gFOxEZdOPpL8RZYOIf4lTJ7ZDRGRh//lggbLV2t2e9Q
+         jRPPRZjPJ3vtfB3MbwaDEqLFL3ZRZuykmFLORAt5RomVvJ2hJojQMUCYKW+0uz9YRnCk
+         mnwYRLUqnEki/B8tHGrqNVqcVlh+UVp77guDlMtl9x8RvWfR5cvbIqylFUWxYk+Vwe/b
+         k0n7QGRo+kbsJtp/KibLvqodCFEJo02F9XT1DO7KwwXvj81D7f+AAcPVFnt6gzpG3BFZ
+         KS2Ec8OkrdZtr7eFxW7heCy+OtxfS8KDv/F6+40BsfDtwKfCetuhTGyupyMcfaJY8jku
+         vRgw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794424412; x=1795029212; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mUjd7XG+NWVc3MUtMjmyBvgOlBW9j3cmurL1LfULang=;
+        b=hjBke/V4N+va+Mg9ph1vFHeOnuGvz5jvW/uniXI51R4ovsg1Bs+fGvyDmdzNlBAIcu
+         Y75bcZiOL1NL9DuORAi7Igrjs21YhOTfdaDCWzn4i4uoyKKOhPx3xinO5sWrvzIW8uRW
+         vMj6DB1Sma9BT2YoBmAqgw/iSkR6YhaJcUHdllmrue2n/Cjc7KOE2+08RiKsA6bijh8K
+         rzE9rOgN+9C5n+IFQfVV/ddBNR9pWRq0wcs6b4uIhjRlDYJ20VD2KTAN2xLfe7gfjR47
+         rYbuxQ7M9GXI4CJ0PEu+bFjcOY1R4NhI66d1SRHMMAS1IwzJqiQzJj2Tb0UGwatpC6Pt
+         x+yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794424412; x=1795029212;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mUjd7XG+NWVc3MUtMjmyBvgOlBW9j3cmurL1LfULang=;
+        b=QUYQQ+XL0RKwzwx0lo8vl8c2si9W19T/hgjQ5yc7Cq5nDyJbqprePezYy8SXp+7dlC
+         AsMlRJU2E6T3zt+cc4/1JQpZ+BcpQ/xICFyEMM6jTPSJkaepe9Zm7WicShFmbsKT1T1o
+         o7dOD+LhnISpi7qgwzcgCmQAIAiArxUhVsrx036THqqwL49/BSzqb2SfPEvgntgHs4Rz
+         v1pYoj6QK2YQJOzBFUix+LZ4UkJSgsq2JU3kbljDXLHqw3CNJbZj0sXuPJKPPQOPv/uu
+         byQ/wyn4xA6by5Q9TWxp8FXVDVMQmnQ5opA10Fkjm+WF6uQzHFGoFazeRWs1HdLjKP7K
+         ZioA==
+X-Forwarded-Encrypted: i=1; AL+hErFHBPjZY6Rqgj5/MeMDB0ssk7NPJJCvGlHd1tlpRnP8mym5LAhc3OpZcFoWy1XMeOJM/IOsb8M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z90L+cBxToYzXOiDjqqkjmtAZdro3sxzLAQscskTQLjqmjdAh19
+	r/4B5Scm0mpoLwmLoVvPWJciaAHU4AaZi3eYAVg+C2tcpSx8WoaJAWRxq8U/ZEffvn+PZ5gx/iK
+	5JMkAJNdTEhHMidlj2uXQgzbuGgKfn+4lU3Kq5NPX
+X-Gm-Gg: AYBFou0l2reB2ugYR6GmyNrAG4LW89Dn6kGECvDlKYeF7vM03TmlH8aSzJ9ev+tWaX1
+	mFM5A6tIVJXRhHB0ckrvPpAyMh7iS4eIl5Rnz7oeKiUcOG0z+YmpEQOF7bXR4kddr4p16RwZQ1/
+	Wrm/6MLJiOv3YEOlaZQDdf4f/qFEuzHuEFqMrS/iSfKikUnydv1BO5TjB7EAO5VodWQ01pOczfL
+	GR94VGwE/+t3C/2ufiZV7VV8sk1a4fGTWYZ3VOw/O2Fe3iOpxM2n1FEWvgo3ibaSD3PT33pM4z/
+	fyBDeaPMUmMy4+yEL1K6J7AC129BWmbPNDeLjssUL+yOsrAais5gxiNV5wty3tleWXRz9raYN22
+	/iwPAr8NjSwD+3/eHGLVV1bk6wwPy8dttAkUS0M9Y14Bi3tLDwIjkvZf1CaYvYUnfn6+5SYLpA0
+	ap2vXMuZCMz4S1OebVNY2VkXJzl8G11SPsjtZS7hfWEbBqlAtxJ793EBBy/IhUdIQk7B1D8x22C
+	yfsC2WZ1enOGalQ44i2zpVkJ3c=
+X-Received: by 2002:a05:7022:7e82:b0:1ab:fe29:5081 with SMTP id
+ a92af1059eb24-1b3c0311fd5mr3429271c88.20.1794424409897; Wed, 11 Nov 2026
+ 11:13:29 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,152 +106,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <avFvW7nn7GIZmZ-a@v4bel> <179442373755.2199510.13127759467093413622@kernel.org>
+In-Reply-To: <179442373755.2199510.13127759467093413622@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 11 Nov 2026 11:13:17 -0800
+X-Gm-Features: AclHuK_9K-lJ5eNqk5dnaP5w_lOC-4eLc8rXOfiy8IpYv3SWU2dSRCv6dBlER9U
+Message-ID: <CAAVpQUDsW-drrxi8MteUOr2fNxe-ZezRVCTtwzsY-rEx2VTk+A@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: reject v4mapped source addresses in IPv6 SYN
+ cookie ACKs
+To: netdev-bot+sashiko@kernel.org
+Cc: imv4bel@gmail.com, edumazet@kernel.org, ncardwell@google.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	martineau@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Wed, Nov 11, 2026 at 11:02=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wr=
+ote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The patch closes only the v4mapped trigger.
+>
+> --
+>
+> tcp: reject v4mapped source addresses in IPv6 SYN cookie ACKs
+>
+> This patch makes cookie_v6_check() reject ACKs whose IPv6 source address
+> is v4mapped, before any child socket is created. It matches the check
+> already done in tcp_v6_conn_request(). Before this, a SYN cookie child
+> with a v4mapped peer could be found by tcp_v4_err() and end up caching an
+> IPv4 rtable, which ip6_xmit() then used as an rt6_info.
+>
+> > diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
+> > index b581cb1ee2e8a..6c5bb4bbd349c 100644
+> > --- a/net/ipv6/syncookies.c
+> > +++ b/net/ipv6/syncookies.c
+> > @@ -189,6 +189,12 @@ struct sock *cookie_v6_check(struct sock *sk, stru=
+ct sk_buff *skb)
+> >           !th->ack || th->rst)
+> >               goto out;
+> >
+> > +     if (ipv6_addr_v4mapped(&ipv6_hdr(skb)->saddr)) {
+> > +             __IP6_INC_STATS(net, NULL, IPSTATS_MIB_INHDRERRORS);
+> > +             SKB_DR_SET(reason, IP_INHDR);
+> > +             goto out_drop;
+> > +     }
+> > +
+> >       if (cookie_bpf_ok(skb)) {
+> >               req =3D cookie_bpf_check(sk, skb);
+> >       } else {
+>
+> [Severity: Medium]
+> This closes the v4mapped case. The commit message also names the missing
+> IPv4 address initialization as part of the chain:
+>
+>   "cookie_v6_check() initializes the IPv6 address fields of the request
+>   socket, but not its IPv4 address fields."
+>
+> Is that still a problem for native IPv6 SYN cookie connections after this
+> patch? Further down in cookie_v6_check(), only the IPv6 fields are
+> written:
+>
+>         ireq->ir_v6_rmt_addr =3D ipv6_hdr(skb)->saddr;
+>         ireq->ir_v6_loc_addr =3D ipv6_hdr(skb)->daddr;
+>
+> The normal SYN path sets the IPv4 fields in tcp_v6_init_req():
+>
+>         ireq->ir_rmt_addr =3D LOOPBACK4_IPV6;
+>         ireq->ir_loc_addr =3D LOOPBACK4_IPV6;
+>
+> On the cookie path, the request socket comes from a slab allocation that
+> is not zeroed:
+>
+> cookie_tcp_check()
+>   cookie_tcp_reqsk_alloc()
+>     inet_reqsk_alloc()
+>       reqsk_alloc_noprof()
+>         kmem_cache_alloc_noprof(ops->slab, GFP_ATOMIC | __GFP_NOWARN)
+>
+> Neither inet_reqsk_alloc() nor cookie_tcp_reqsk_init() sets skc_daddr or
+> skc_rcv_saddr. inet_csk_clone_lock() then copies those fields into the
+> child:
+>
+>         newsk->sk_daddr =3D ireq->ir_rmt_addr;
+>         newsk->sk_rcv_saddr =3D ireq->ir_loc_addr;
+>         newinet->inet_saddr =3D ireq->ir_loc_addr;
+>
+> Since commit a3a128f611a965 ("inet: consolidate inet_csk_clone_lock()"),
+> tcp_v6_syn_recv_sock() no longer writes LOOPBACK4_IPV6 into the child.
+> So it looks like leftover slab bytes stay in inet_daddr, inet_rcv_saddr
+> and inet_saddr of every AF_INET6 child created from a SYN cookie.
+>
+> Both ipv6_update_options() and do_ip_setsockopt(IP_OPTIONS) branch on
+> that value:
+>
+>         inet_sk(sk)->inet_daddr !=3D LOOPBACK4_IPV6
+>
+> Could this make icsk_ext_hdr_len and the MSS different for a SYN cookie
+> child than for a normally accepted IPv6 child? Could it also trigger KMSA=
+N
+> uninit-value reports? The leftover bytes would also show up in the
+> inet_sock_set_state tracepoint and the BPF ip4 context fields.
+>
+> Would it make sense to also set ir_rmt_addr and ir_loc_addr to
+> LOOPBACK4_IPV6 in cookie_v6_check(), as tcp_v6_init_req() does? That
+> would be in addition to the v4mapped rejection, not a replacement for it.
 
-Low priority / nit picks for your consideration:
-
-- [Low] The new mlx5 paragraph in Documentation/networking/tc-queue-
-  filters.rst (lines 54-56) says: "The filter therefore needs skip_sw.
-- [Low] The commit message says the patch documents 'what enc_key_id
-  means on a physical port of mlx5'.
-
---
-
-docs: networking: describe tunnel key partitioning in TC queue filtering
-
-This commit documents tunnel key partitioning in tc-queue-filters.rst, where
-a mask on enc_key_id steers blocks of tunnel flows to RX queues. It adds a
-GTP-U example and describes what enc_key_id means on an mlx5 physical port.
-It also covers what happens to the filter when its target queue goes away.
-
-> diff --git a/Documentation/networking/tc-queue-filters.rst b/Documentation/networking/tc-queue-filters.rst
-> index 6b417092276f6..de54d43687c60 100644
-> --- a/Documentation/networking/tc-queue-filters.rst
-> +++ b/Documentation/networking/tc-queue-filters.rst
-> @@ -35,3 +35,25 @@ queues and/or a single queue are supported as below:
-
-[ ... ]
-
-> +  # GTP-U TEIDs whose two top bits are 01 go to queue 1
-> +  tc filter add dev eth0 ingress protocol ip flower skip_sw \
-> +      ip_proto udp dst_port 2152 enc_key_id 0x40000000/0xc0000000 \
-> +      action skbedit queue_mapping 1 skip_sw
-> +
-> +Not all drivers can program a partial mask.
-> +
-> +On mlx5 devices such a filter runs on a physical port where nothing
-> +decapsulates the packet. All the keys describe the packet on the wire.
-> +ip_proto and dst_port tell the hardware which tunnel header holds the key.
-
-[Severity: Low]
-
-The commit message says this documents "what enc_key_id means on a physical
-port of mlx5". Should this paragraph also list the limits the driver
-enforces? As written, the driver can refuse the GTP-U example above, and
-small variations of it, for reasons the document does not mention.
-
-First, the GTP-U example needs firmware flex parser support:
-
-drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_gtp.c:mlx5e_tc_tun_parse_outer_key_gtp() {
-    ...
-	if (!(MLX5_CAP_GEN(priv->mdev, flex_parser_protocols) &
-	      MLX5_FLEX_PARSER_GTPU_TEID_ENABLED)) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "Matching on GTP-U TEID is not supported");
-		return -EOPNOTSUPP;
-    ...
-}
-
-The commit "net/mlx5e: TC, match the tunnel key without a tunnel device"
-says GTP-U needs flex parser profile 3, while GENEVE needs profile 0. Since
-skip_sw is mandatory there is no software fallback. The documented command
-therefore fails on a device that runs another profile.
-
-Second, queue mapping is only offloaded in NIC mode. In en/tc/act/act.c,
-FLOW_ACTION_RX_QUEUE_MAPPING is registered only in tc_acts_nic, and
-mlx5e_tc_act_get() uses tc_acts_fdb for FDB flows. The action is refused on
-the uplink representor in switchdev mode, which is also a physical port.
-
-Third, ip_proto and dst_port only select a match register.
-mlx5e_tc_tun_outer_lookup() accepts only ip_proto GRE or an exact UDP
-dst_port of 2152, 4789 or 6081:
-
-drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c:mlx5e_tc_tun_outer_lookup() {
-    ...
-	/* Only an exact port names a tunnel */
-	if (ports.mask->dst != htons(U16_MAX))
-		return NULL;
-
-	switch (ntohs(ports.key->dst)) {
-    ...
-}
-
-VXLAN on port 8472, or a masked port, is refused with "enc_key_id needs
-ip_proto 0x2f or the exact dst_port of a supported tunnel".
-
-Fourth, VXLAN and GENEVE keys are 24 bit VNIs.
-mlx5e_tc_tun_parse_outer_key_vxlan() and
-mlx5e_tc_tun_parse_outer_key_geneve() refuse a masked key that does not fit
-in 24 bits ("Tunnel key does not fit the 24 bit VNI"). The top bits mask
-from the example (0x40000000/0xc0000000) cannot be reused for those tunnels.
-
-Fifth, mlx5e_tc_tun_parse_outer_key() also refuses decap actions.
-
-The only caveat the document gives is "Not all drivers can program a
-partial mask", which covers none of these limits.
-
-> +The software datapath has no tunnel metadata on such a port. The filter
-> +therefore needs skip_sw. Without it the filter stays in software, where
-> +the port reads key zero.
-
-[Severity: Low]
-
-Is "Without it the filter stays in software" accurate for the queue_mapping
-filters this document describes? Leaving out skip_sw does not seem to
-install a software only filter.
-
-If skip_sw is removed only from the filter, tcf_action_init() rejects the
-skip_sw action:
-
-net/sched/act_api.c:tcf_action_init() {
-    ...
-				if ((tc_act_skip_sw(act->tcfa_flags) && !skip_sw) ||
-				    (tc_act_skip_hw(act->tcfa_flags) && !skip_hw)) {
-					NL_SET_ERR_MSG(extack,
-						       "Mismatch between action and filter offload flags");
-					err = -EINVAL;
-					goto err;
-				}
-    ...
-}
-
-If skip_sw is removed from the action, tcf_skbedit_init() refuses ingress
-queue_mapping:
-
-net/sched/act_skbedit.c:tcf_skbedit_init() {
-    ...
-		if (is_tcf_skbedit_ingress(act_flags) &&
-		    !(act_flags & TCA_ACT_FLAGS_SKIP_SW)) {
-			NL_SET_ERR_MSG_MOD(extack, "\"queue_mapping\" option on receive side is hardware only, use skip_sw");
-			return -EOPNOTSUPP;
-		}
-    ...
-}
-
-The filter level skip_sw is not merged into the flags that the action init
-sees, so this happens whatever the filter flags are. Both failures happen
-before mlx5e_tc_tun_parse_outer_key() runs.
-
-The "stays in software, reads key zero" behavior only seems to apply to
-actions that can run in software, such as drop, mirred or mark. The text
-looks like it was carried over from the commit message of "net/mlx5e: TC,
-match the tunnel key without a tunnel device", which describes generic
-actions.
-
-Could this sentence say that the queue_mapping request is refused instead?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109131039.959438-1-acassen%40corp.free.fr
+I have two patches in my queue for syncookie bugs, and one addresses this.
+I'll post them later today.
