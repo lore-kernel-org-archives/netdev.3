@@ -1,79 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794428913;
-	b=YALKlVqeR1yilXLkk9//j6ZCZUuIomJVXi6//MTAH8Ts5rt1A457HL6P61DV8ljs9oPt
-	 6bKSEQVgDzfVsbepzXmbprxmmvwT75SjBrYvD5m0ZRoFrL+UpElnQ0Dbfc5lYoL+oxxGI
-	 z0KjpxDj9OGmWD36yXdWXF5+LN0Dzv4dAFN8SuZm0OKA6cRJh25oIOT/lVMx7tEW+vJ5X
-	 3RqzeX6n8S5+0KGlPPLerhXKdYiHvv7wrL9t/s5Pc4FW2fG8vYoZ4C5YmVk7K9W2OhmG/
-	 gGMa0JDcZXWVVKcJH6bKu/TL5J15nJ8duqBOWzMHf7otx2vHBTL8ALj2IR8JYk95nUQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794428913;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=66fuXiduK3IeRm3mD9KEzj6ZCYStXeHjOEc3p2JBPkg=;
-	b=RtawUi1XuJyEzY0tnoRmBuKVW4h73NsyMqFTmMKiuxQ8mdMzto/I+VjV9qwofYzKzWKu
-	 18A1yVZC4yIaY4iwTZjCC9ZOhzZqEbG0ScB6SK8TJHxxRnFt3YrXLgv5PJwguWRwA/j3E
-	 i1WoZMZxJFpHF66FbnTWq9B9id9cjdN9gtphz7bfnkpwUMbpiq9YMLYeum0aqbbLw3uVW
-	 kJbKdE2cCZB4hA396VgcTNZ1qgPC798On2A4GuVTr3SKCxL7hQxbvt8+cgNLe0o3uryPd
-	 wiRFP/5JtL/fLQWxetI05ot7qai2DFavMZnaZFrNQ74H/y2gbdDQ+K4fAmCN+baUGTg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VSu7JKrA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.218.115.239
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794429454;
+	b=fNEukRASf06Uvp+hpW8QB7uRGOSw4uf/qncCDbiOpFQfOvvW8VOxTIngSPpOEWn1TkS7
+	 sXYu5stPD5iZW+K6UGsRx/ztaLgOAThzFgVCqr5Ei6InIvUBi9MMChnLs/UmFDFWIDmJo
+	 RWoSrmeMS5BEXt+2hPkC9oEbw5lV677iO6PcPYLfCzvNHR1mIA6es9Zns/+pntN2a2Bn/
+	 f3REUD5lgTOoLmW1bCGObtGItYYitl6mNU6y5ZbFH7V0soiQIVMxiOn+MnFQ7DZjTCMDK
+	 CpZq/Nq67QS1V8pI6NIliLIVgHjJHW1EX4LhWr+C29hxEEBjd0+rKbkF6ffPbw3lAyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794429454;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=vpIyzJPxRnrClrGT6opul0fGUGxCRQ7iTyzY6dXBUDc=;
+	b=zxAmY3ZOMfYU7j0Ax/EivjCF0hX+8RUtcbG+wH6m+aEyWS2NagOvExHTwK40JM/QlbiN
+	 d4k9swPVOucbFdqgW2pjXxfTesb5rYi1h/j+UXlzpdOMNWGuioJ114vOpcYEhaB4xXLQA
+	 /KaaCFpGUy+wa3AWyHm7xRzJ7xxNCSpceadgWaGcbgq1JDTuu3OSMlYgjKRYrDbQ0fDcr
+	 jFoWe/0ygw3bHHRQUngGjJUDTskzuOK7B1f8eyAW9vl4qT3wmPKbO3xLSfalMHpBIsCx7
+	 F8AsPnpzL7BtiwnuPjyZbJmA9xx8x7E9innHGZFu4PHYnF0QQ7anhMJR6HFhZNac6uQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.com;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=YYK+ZnQk;
+	arc=none smtp.remote-ip=34.218.115.239
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90806606A31C;
-	Wed, 11 Nov 2026 20:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDD6606A89F;
+	Wed, 11 Nov 2026 20:37:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDDD6606A89F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VSu7JKrA
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794428913;
-	b=YNFG+6LDS0C8Eic9oiZ2dfbHzzIPt12vDf3JTU16/92RSXjCWg1JAV4+v/7+yqLDdh7M
-	 +RRyBvRpY1QLPZloOnesSTKJqDfDVGP+qZPZEjxwDbSMf+AuQIygpZWv2B+KcAdWWXJMu
-	 zn0EDokBp8D4crNsBPoqQ/1wVpD0QqVU69SvgZFKbfTxDk32SELAzOIK99oi7cY1JkYiw
-	 90regsMKJMj+I8fSsJIA3hZ98tA/hR1IDp7SNt5S2B9/fnWN5r1l4KlxL3mKEscFnm/Po
-	 LGRxGetoSRlxONaedyIi9KujjCiwb9oMWItG+cO91bq7vPE18NQF3nQLr7MMkE+sDqg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794428913;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=66fuXiduK3IeRm3mD9KEzj6ZCYStXeHjOEc3p2JBPkg=;
-	b=ycSmbH21SWyg4E4zENF8tTOP/GdZ6T796ykxKstFjo4J64kxgDKmTAqdvZ+3Uzk+CiKJ
-	 Mw539ncD1trLmEr40iFsc+2bCpmUm7Yvpwbgj1gzlh0O/vW1HrxlWLJqtiVpOpZgWSHjp
-	 SQp9NSNz0hhrthc5CdNeAIX9OKZ0os5S51pssUKramH7LlYyVA8wUuSxuO4fU6Dj2OPxw
-	 eyuZFQIiwfGXwgFzjBRFBi+6onF7wHTr+j3L2t+bk/JzlDzDvqbZqyWiL/Tuc2TslRD+S
-	 TComZk87GgAxfopHgRJP+Vp/zFuAqpWcbNPkUDJJpEgkTMbzAmNmFJJ2E8m4QtRCKfQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 987571F00A05;
-	Wed, 11 Nov 2026 20:28:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794428913;
-	bh=66fuXiduK3IeRm3mD9KEzj6ZCYStXeHjOEc3p2JBPkg=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=VSu7JKrAcTjUUhdknDtyNrjQLTkAvg6wDreqhXiwqbvcIINRKZL5lKpBCyBva3ux9
-	 mxXwJSgOK3n3XE0M8A6aVPt3QQ0BR1D0qFyuwFfA7jde5vYXEWZ1mO5PKDtPeHEKUm
-	 jAL8g/ZwB2GadwFoaIisHyWj2b7pCzUlYPGD65gekml5ipkJwH46Y84lBOTL0JXuZc
-	 h6gHehnFOij6G7i6vxVNYtzc/P5YvpORLnOebuV1JSy2xJMu8qpW2rShQhlp7T3yE+
-	 JFIYnLByWcrY+6+96r62WKc3AJ2DTm+QkTYFww93CcTM1wRpk9TfvzF3kWA2dWVPfP
-	 gEIyiRO9pqvVQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F16BF490E0;
-	Wed, 11 Nov 2026 20:28:31 +0000 (UTC)
-From: Weidong Wang via B4 Relay <devnull+weidongw.illinois.edu@kernel.org>
-Date: Wed, 11 Nov 2026 14:27:28 -0600
-Subject: [PATCH net] net/rds: tcp: bound the message length announced by
- the peer
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=YYK+ZnQk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794429454; x=1825965454;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vpIyzJPxRnrClrGT6opul0fGUGxCRQ7iTyzY6dXBUDc=;
+  b=YYK+ZnQkBuda9ap87dQ89X265NEdYSbOfrslXe+vr4TgOAvKtLF2YWFh
+   pA6hFgDHWeVo72/2XUwFeictRpNtmLjDn9VcZa21pMPhbpsa35xOVGjcn
+   iBoVHonTPHh1awrKgicakSWwvsLqHmMXsVSWx8k0FqVG4jxycVkNFZXJU
+   2j/1u4z4/4B+/qit6fiDCVZxcGZkJGwJ/qLm+UWENRaH84I7jjF8WbzrP
+   x39J6naVHcWAk75aPjEfG7wr8T0GgyftPcU3su3CL3ywyKh7kGzWWn77Y
+   RdJKCu0+40Th3c6s2ixzkwC9BaOB3MLNZsQkEU7JpSvjT5yXs8SD9M/by
+   A==;
+X-CSE-ConnectionGUID: tiE9b2HlQrqB/PDjzj+nRw==
+X-CSE-MsgGUID: GGJF9NIVRMGQ5ByMC+l/mA==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33526248"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 20:37:30 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:13310]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.12.127:2525] with esmtp (Farcaster)
+ id 389de7d3-cdac-4a03-93bb-a296349c3841; Wed, 11 Nov 2026 20:37:30 +0000 (UTC)
+X-Farcaster-Flow-ID: 389de7d3-cdac-4a03-93bb-a296349c3841
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 20:37:30 +0000
+Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
+ (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Wed, 11 Nov 2026
+ 20:37:29 +0000
+Date: Wed, 11 Nov 2026 20:37:24 +0000
+From: David Keogh <dkeogh@amazon.com>
+To: Tianyi Gao <tianyi@cloudflare.com>
+CC: Stephen Hemminger <stephen@networkplumber.org>, Willem de Bruijn
+	<willemdebruijn.kernel@gmail.com>, <netdev@vger.kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, Simon Horman
+	<horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, David Woodhouse <dwmw2@infradead.org>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam
+	<alasdair@mcwilliam.dev>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Magnus Karlsson
+	<magnus.karlsson@intel.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+	<idosch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Randy Dunlap
+	<rdunlap@infradead.org>, Breno Leitao <leitao@debian.org>,
+	=?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>, "Danielle
+ Ratson" <danieller@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@cloudflare.com>,
+	<nh-open-source@amazon.com>
+Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and
+ LL_ALLOC_SPACE()
+Message-ID: <avTSBFpR2t7PO9tx@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+References: <cover.1794020868.git.tianyi@cloudflare.com>
+ <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
+ <willemdebruijn.kernel.1d64e7848503b@gmail.com>
+ <20261107182526.69543-1-tianyi@cloudflare.com>
+ <willemdebruijn.kernel.2c6a653eb65fa@gmail.com>
+ <20261108190831.3f991a13@phoenix.local>
+ <20261109154909.32748-1-tianyi@cloudflare.com>
+ <avTOvr+yy+2j8xrQ@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,126 +109,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261111-h047-send-v1-1-2727a38dbfcd@illinois.edu>
-X-B4-Tracking: v=1; b=H4sIALDP9GoC/yWMQQ7CIBQFr0LeWhKgoMarGBdt+S3fBRp+NSakd
- y+2y5lMpkKoMAluqqLQl4VfuYE9KYypzzNpjo3hjDtba41Oxl+0UI46NBei9+7qOrT+XWji3/6
- 6I9OCxyHlMzxpXP4XrOsGARgGNHIAAAA=
-X-Change-ID: 20261110-h047-send-52025d442823
-To: Allison Henderson <achender@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Zijie Zhao <zijie4@illinois.edu>, 
- Weidong Wang <weidongw@illinois.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794428911; l=3897;
- i=weidongw@illinois.edu; s=20261108; h=from:subject:message-id;
- bh=1rMOxnrBK7wy6KAVesScdDJ1MghCm+cPgQRTPaFaXQk=;
- b=VbzedWxmkJGCPF1wkXLDwAkKq6e+6vzQkgf60JbkS/QnFUdwExDzi+sEynvRmZIazgJr+hAUm
- zNPE4eTD8fdDAPomMgp9MWq9GHCrxhcxnQHdRYj14lPjYILvT/GJmto
-X-Developer-Key: i=weidongw@illinois.edu; a=ed25519;
- pk=DR2S1xPEa5sELrWPfOpvUphJQ2VHC+MDc/wJavE/ifg=
-X-Endpoint-Received: by B4 Relay for weidongw@illinois.edu/20261108 with
- auth_id=1449
-X-Original-From: Weidong Wang <weidongw@illinois.edu>
-Reply-To: weidongw@illinois.edu
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <avTOvr+yy+2j8xrQ@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-From: Weidong Wang <weidongw@illinois.edu>
+On Wed, Nov 11, 2026 at 08:23:26PM +0000, David Keogh wrote:
+> Dropping IFLA_TX_EXTRA_HEADROOM is fine with me. A BPF-side
+> declaration covers the TC egress case, as long as the program is
+> attached to the device the skb is allocated for.
 
-rds_tcp_data_recv() takes the payload length of an incoming message from
-the peer's header and queues pskb_extract() clones of the received data
-on the incoming message until that many bytes have arrived. Nothing
-checks the length, so a peer that announces h_len = 0xffffffff and keeps
-sending makes the receiver hold up to 4 GiB per connection. The clones
-are no longer on the socket's receive queue, so they are not charged to
-the socket and TCP keeps the receive window open.
+One correction to that, after checking how our hosts run the program.
 
-Senders are limited to RDS_MAX_MSG_SIZE in rds_sendmsg(). Apply the same
-limit on receive and drop the connection when a header exceeds it. That
-limit has been enforced on send since v4.11; a peer running an older
-kernel could still send larger messages over TCP, and such connections
-are now dropped.
+Our TC egress programs are not attached individually. A loader keeps
+a chain: only the head is attached to the NIC, and the rest, including
+the program that encapsulates, are reached by bpf_tail_call through a
+prog array. The head can change as programs are added and removed.
 
-The issue was discovered by an AI code review agent (an LLM-based
-bug-finding tool developed by Zijie Zhao and the submitter) and
-confirmed by triggering it on an unmodified kernel, without error
-injection, on x86_64 under QEMU: a plain TCP client in a second network
-namespace connects to the rds_tcp listener (port 16385), sends one RDS
-header with h_len = 0xffffffff and then 1 GiB of payload. The receiver
-held about 1.1 GiB until the connection was closed; the same 1 GiB sent
-as 1 MiB messages held about 60 MiB.
+So if the kernel reads the declaration when a program is attached, it
+never sees the encapsulating program, because that program is only
+ever inserted into the prog array. Putting the declaration on the head
+instead does not help either: the head is a different program that
+pushes no headers itself, and it can change.
 
-With this patch the connection is dropped right after the header and
-nothing is held, while the 1 MiB messages are processed as before. The
-RDS selftest (tools/testing/selftests/net/rds, rds_run.sh -T tcp, also
-with -l 10 -c 10 -u 10) passes with the patch applied.
+For the BPF-side declaration to cover the TC egress case, it needs to
+account for tail call targets. Tianyi, how were you planning to handle
+a program that is only reached by tail call?
 
-The reproducer, fix and changelog were drafted with AI assistance
-(Claude), then reviewed and tested by the submitter.
-
-Fixes: 70041088e3b9 ("RDS: Add TCP transport to RDS")
-Cc: stable@vger.kernel.org
-Cc: Zijie Zhao <zijie4@illinois.edu>
-Signed-off-by: Weidong Wang <weidongw@illinois.edu>
----
-Tested on v7.4-rc1 (05441d697f7f) and on net (ae89f2724e), x86_64,
-KASAN, QEMU/KVM, 3 GiB guest. Setup: rds_tcp listener in the initial
-netns (10.0.0.2); a plain TCP client (no AF_RDS) in a second netns
-(10.0.0.1) over a veth pair.
-
-                   1 GiB after one header     1 GiB as 1 MiB
-                   with h_len = 0xffffffff    messages (control)
-  unpatched        ~1.1 GiB held until close  ~60 MiB
-  patched          connection reset after     ~60 MiB, processed
-                   the header, nothing held   as before
-
-selftests/net/rds: rds_run.sh -T tcp and rds_run.sh -T tcp -l 10 -c 10
--u 10 pass on both trees with the patch. No KASAN/UBSAN reports;
-checkpatch clean.
-
-The limit is per connection; a peer with several source addresses gets
-one connection per address. The reproducer is not attached (AI-found
-issue, see security-bugs.rst) and can be shared on request.
----
- net/rds/tcp_recv.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/net/rds/tcp_recv.c b/net/rds/tcp_recv.c
-index ffe843ca2..29db73df8 100644
---- a/net/rds/tcp_recv.c
-+++ b/net/rds/tcp_recv.c
-@@ -213,6 +213,20 @@ static int rds_tcp_data_recv(read_descriptor_t *desc, struct sk_buff *skb,
- 			}
- 		}
- 
-+		/*
-+		 * The payload is queued on tinc until the whole message has
-+		 * arrived, so a peer must not announce more than a sender is
-+		 * allowed to send. Check on every pass, not only when the
-+		 * header completes: the drop is asynchronous and more data
-+		 * can arrive before the connection is shut down.
-+		 */
-+		if (!tc->t_tinc_hdr_rem &&
-+		    tc->t_tinc_data_rem > RDS_MAX_MSG_SIZE) {
-+			rds_conn_path_drop(cp, false);
-+			desc->error = -EPROTO;
-+			goto out;
-+		}
-+
- 		if (left && tc->t_tinc_data_rem) {
- 			to_copy = min(tc->t_tinc_data_rem, left);
- 
-
----
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-change-id: 20261110-h047-send-52025d442823
-
-Best regards,
---  
-Weidong Wang <weidongw@illinois.edu>
-
-
+Thanks,
+David
