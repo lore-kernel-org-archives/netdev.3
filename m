@@ -1,72 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.114
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794367897;
-	b=gEM5+Rb3RzOAKZ8f+WPRjky7w613xN2ggBBtazNdbi5di49NKHPcsfdiYtQnUzSpcuHs
-	 cg4i5owZoyV+BcKSNgBHNQlqVzX5HoMmC1us9GLkivGeXiOnapOAjvF91UomRl0AP2GU3
-	 zrX990j3u2bHR2PrOJhWtR715xPhXR3IdNOZE/Ssks/YagrlSAalq/rYsQCGUt6B1qKD/
-	 PUUSaqFvNN65D6lfL9U2IOpHRDmk0N36EOAROuYECR7Oy7jNIvLwcWy9W0gxuumRfjOmW
-	 TqM/bMNKxonnbDDwauVNDSbHJN3r3b2EOuLdrcbqhVpIHPNQSSkIDz84GR6Wn98q9ng==
+	t=1794368157;
+	b=jeZzyp8osWYP5ewOqP/Xb3D97xS9v6VlSUimX60hGzCQOs487V+t9m4n4K/RzGzcn9Dx
+	 1kSzgFEGRuHxs0NJKd37gKZAvAbZ39jFZfcZsf3b5Wq80uSUR7nTW9Fbudf4hEEwRqXru
+	 ICIgrKtjjymhvCI0r0FN72qEkUm5sN9AQyHEpzdLn+pIIWbBnmkQnVR4EtiZBAA6Nx8qW
+	 RL4Zvl4A1Q/YtnkMyVUfYi49wrPoG74wJ6YWtsQ0Bdkjil3V4uRG8x/wCkNwKhDGfGpQ4
+	 2GFEEP6+tO4omZRKafARyWBgdFUVhpKcbSSJo2JnbKhqzU90z3cvi4WhJoTPU143ltw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794367897;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=VXGeJs/cCQO0aCYsOzSzvYGgs1xDorb4m6bYnjZh0dw=;
-	b=x5CmjGPhykRxPtgvRn30zsbDHMZVTKndW9CUCCSAG4r2fbBywAf2JLe9JytYInjezL67
-	 ssqGMRZqGSqoKkG11dlriabhI9UAdRr/XGuwEKIoEjKSnHACyuRsRTyIJ9cSml0xPcnNm
-	 0EBMrkqifjq7yZYjaoUBsZ5CaeBcgEVEX6bfKlHkP08CF70195xl6B7fha6Xu1cdMPod8
-	 iGLOpZn918KAJCqNPnCBc/J8b0QuICXuS22MsVMSM+Gug/CJUOiS3s5VvVI7ehYyyfSBq
-	 6qb0H0+6N78kk8An11AJUsHq39B3i5jZkXlioonTmgrCIqUhEO5w2UgZB9bxngmh1Hg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794368157;
+	h=DMARC-Filter:DKIM-Signature:From:Content-Type:Cc:Subject:
+	 Mime-Version:X-Mailer:X-Original-From:To:Message-Id:X-Lms-Return-Path:
+	 Date:Content-Transfer-Encoding;
+	bh=kEBFFd8yOCT0rbB3iMwZuBjqlBV1Cjt28vL9qjdrsTE=;
+	b=K/B/KKDWKCdKWomUQ2DVQIZo0UAoqzevzodOD8ST7MbipMig89YsWZcos/nWTFj6cbDp
+	 BqStobODcp26u/JXq4h/7nDq05X7XWAxDs6PLqMs8vMrGlnpLnIiO7BF4KGiEBAPr2nSk
+	 Ela2Ew0uEV3YBwjJwQ/PBvSjA3g6/9eqqKkXXn5NSh3Ag2hQnHimuuHITpV5WrxW3QCNF
+	 qfu5jprrn2150TEk3axAiYZRu247XDrEK5Px1Fc4OPXKNF7+x30HQj8eP734AZiZ5bKAb
+	 qMwPD1rZBPW46FNMzHV8ueWMx5jGutTQfha5BfPnJykBqtuYpPatk8/PWkbCSfI283g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=xDfexIY+;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5C0606A324;
-	Wed, 11 Nov 2026 03:31:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D5C0606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=bytedance.com;
+	spf=pass smtp.mailfrom=bytedance.com;
+	dkim=pass header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=XgbOw9xW;
+	arc=none smtp.remote-ip=209.127.231.114
+Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB679606A339
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 03:35:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB679606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=xDfexIY+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=xDfexIY+AegydL0styz938D2k0WKy6PzbqScekAkINIgJcX1J1o6ot9wb28z/Fh2A/XSA6RLz3nPP
-	 VFZTXqEh0+s0JmkqKRDnXqoiJSUUPAtbZBuUV1ZSKm0K7qrm9Kmn2quAIS/qCmqZOPLQGfsC+sx8CX
-	 IYUyJJ7PCCzHAEzk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76af3e192ff8-d48e9;
-	Wed, 11 Nov 2026 11:31:33 +0800 (CST)
-X-RM-TRANSID:2ee76af3e192ff8-d48e9
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[223.64.115.200])
-	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af3e193df5-cceb3;
-	Wed, 11 Nov 2026 11:31:33 +0800 (CST)
-X-RM-TRANSID:2ee26af3e193df5-cceb3
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Daniel Machon <daniel.machon@microchip.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Alexei Lazar <alazar@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net] net: dcb: flush rewrite table on device unregister
-Date: Wed, 11 Nov 2026 11:31:14 +0800
-Message-Id: <20261111033114.133296-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=XgbOw9xW
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1794368151; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=kEBFFd8yOCT0rbB3iMwZuBjqlBV1Cjt28vL9qjdrsTE=;
+ b=XgbOw9xWcHRzNDHTcHV/X01sL1Ra9EVahKncVbg82soOrqxHWifXFfpmC5cnZ+EgduWunp
+ 8RPvcSo4cj50JkV2LTg6uJPaZ8ZABjaszpvfDd+QiGRa5M9s9/27YL869h/G4MWacB2nRd
+ KpmKN4hDRwYdTD1DXTK0ZjWmmKbV8O42d12PCS+MBK1hpjsy5cFuO1rOSdYcezx/ypocQL
+ 5vdfpN4WKcLSZ8j+kxk4iS95lxY3Mu2NUymUrUNjIk5pVlorlFs+W5fcpUkbBfgBk9A1dK
+ zJlWpK+849oOU8vhjxtKm6SJ40UxlfPlm7TJwScGhaB3QILsdFVT5aMfkO7I8A==
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@google.com>, 
+	<realwujing@gmail.com>, <stable@vger.kernel.org>, 
+	"Zhao Gongyi" <zhaogongyi@bytedance.com>
+Subject: [PATCH net] net: netns: fix INT_MAX nsid cleanup
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,55 +58,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+To: <netdev@vger.kernel.org>
+Message-Id: <20261111033525.65828-1-zhaogongyi@bytedance.com>
+X-Lms-Return-Path: <lba+26af3e295+5ef86d+vger.kernel.org+zhaogongyi@bytedance.com>
+Date: Wed, 11 Nov 2026 11:35:25 +0800
+Content-Transfer-Encoding: 7bit
 
-In dcbnl_flush_dev(), which is called upon NETDEV_UNREGISTER for net
-devices with dcbnl_ops, only entries in dcb_app_list matching
-dev->ifindex are freed. The entries in dcb_rewr_list added via
-dcb_setrewr() are not flushed.
+A syzkaller reproducer assigning INT_MAX as a peer nsid triggers an
+idr_get_next() warning during netns cleanup. With panic_on_warn, this
+panics the kernel.
 
-This causes a memory leak of struct dcb_app_type nodes in dcb_rewr_list
-when a DCB-capable net device is unregistered, and leaves stale entries
-in the global rewrite table that could inappropriately match if another
-net device later reuses the same ifindex.
+alloc_netid() also overflows reqid + 1 for this nsid. Use
+idr_alloc_u32() for requested IDs and idr_get_next_ul() for cleanup so
+the cursor can advance past INT_MAX.
 
-Iterate over dcb_rewr_list in dcbnl_flush_dev() and remove and free all
-entries matching dev->ifindex, mirroring the cleanup performed for
-dcb_app_list.
+QEMU/KVM reproduced the warning without kernel changes or fault
+injection. The same reproducer ran without warnings after this change.
+Kernel selftests were not run.
 
-This issue was found via LLM-assisted code review, confirmed by
-reproducing the leaked rewrite table entry upon netdevice unregistration
-in a User-Mode Linux (ARCH=um) environment, and verified in UML by
-confirming that all rewrite table entries for the unregistered netdevice
-are flushed.
-
-Fixes: 622f1b2fae2e ("net: dcb: add new rewrite table")
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+Fixes: 7acee67a6bce ("netns: optimize netns cleaning by batching unhash_nsid calls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
 ---
- net/dcb/dcbnl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/core/net_namespace.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
-index ad0aebe0ad3d..95250658ecc1 100644
---- a/net/dcb/dcbnl.c
-+++ b/net/dcb/dcbnl.c
-@@ -2393,6 +2393,13 @@ static void dcbnl_flush_dev(struct net_device *dev)
- 		}
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 52c2bd447..9d530ac41 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -270,14 +270,19 @@ static void ops_undo_single(struct pernet_operations *ops,
+ /* should be called with nsid_lock held */
+ static int alloc_netid(struct net *net, struct net *peer, int reqid)
+ {
+-	int min = 0, max = 0;
++	u32 id;
++	int ret;
+ 
+ 	if (reqid >= 0) {
+-		min = reqid;
+-		max = reqid + 1;
++		id = reqid;
++		ret = idr_alloc_u32(&net->netns_ids, peer, &id, id,
++				    GFP_ATOMIC);
++		if (ret)
++			return ret;
++		return id;
  	}
  
-+	list_for_each_entry_safe(itr, tmp, &dcb_rewr_list, list) {
-+		if (itr->ifindex == dev->ifindex) {
-+			list_del(&itr->list);
-+			kfree(itr);
-+		}
-+	}
-+
- 	spin_unlock_bh(&dcb_lock);
+-	return idr_alloc(&net->netns_ids, peer, min, max, GFP_ATOMIC);
++	return idr_alloc(&net->netns_ids, peer, 0, 0, GFP_ATOMIC);
  }
  
+ /* This function is used by idr_for_each(). If net is equal to peer, the
+@@ -639,10 +644,10 @@ static void unhash_nsid(struct net *last)
+ 	 * use for_each_net_rcu() or net_rwsem.
+ 	 */
+ 	for_each_net(tmp) {
+-		int id = 0;
++		unsigned long id = 0;
+ 
+ 		spin_lock(&tmp->nsid_lock);
+-		while ((peer = idr_get_next(&tmp->netns_ids, &id))) {
++		while ((peer = idr_get_next_ul(&tmp->netns_ids, &id))) {
+ 			int curr_id = id;
+ 
+ 			id++;
+
+base-commit: 070411c1590c8172eb4d86f045d99c372f22fe23
 -- 
-2.33.0
-
-
-
+2.39.5 (Apple Git-154)
