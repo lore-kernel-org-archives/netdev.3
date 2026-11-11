@@ -1,120 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794398992;
-	b=QHlYng364qp+niD0jZ9mLyaViio4uFeLs9/iY2RoL9rUCfG7M/epKABl9jKb221Ysxvd
-	 fZDm8PlTgLaJ8eK/xn64Qr2SWcbzAZ+oZ6jiMMRC+baWeI1J54ZmKg3t6IEwEPDhA75JK
-	 bRTG2y++eSSWK9IkUP6iD2aHbuc4l6gBakNPl7V3N/LiCdxjiyO3MOURxtRqKmawsuv77
-	 lJ7thPkEv0qzOepjwxWW1EkwWNXGyiT/mm1kdQOivkWj33QDWl2QJ6z79HU/lFYWHcgLw
-	 lXGyNr16fYBSxJDI+T1X6WxPZ8I8Rod3gS1YlpU7krzy8fPbmUiPHW10lkeHnRW78xg==
+	t=1794399427;
+	b=yTVgDT8tPC+5CBTrXttUDccMAHho9lhXvR532M3ixXPxIJueaiz9/8pL4n2BNMdTzEOR
+	 zc5kLvVFXUJEOXeX8q2R3rSw+1k81NfmbIvcRHu1uRtYZB+qOoyc2DgzM818aeA1m2EGl
+	 QzJsB9LPZ0P7Y3b3PPub+s2ecQiQWkBQHrbuZVLXsO5woGbRACBwheD6+Y7OySmR3TQ0o
+	 o0hgyRQXGH2FfLgtBX8aariRlLCi3r7xnE69JsQEllORhlXUKLKRb6W90BdIOn4WDdVBT
+	 EcxiB17NbfEu7zYDLRXRf2s4MJ1scWpdPBJpxu8hpoQ8dkhoQWdtJ+u3kf2xlwIJQ5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794398992;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 Content-Type:MIME-Version:Content-Transfer-Encoding;
-	bh=8kDTQyiKQOfIkOGO/u8mg2T8m6Y6HEmmU0F0HKV40UE=;
-	b=iD8IRm/oxMi2ST2e8m2E29OhMDGkhoTSGBZ+ALf1um8MWoP+ZHIfx+2KxFjbx7R8SYsA
-	 T4JBVB53ABB+v/3uINox2qgjzdrSfBy63i7hrbBf3lTWLIVqbbF35J5b8bHZE4yz/F25B
-	 Hmz/l8gdvZlEz9VUfTD7PGMgBuyQGS8QOwuRD/rzUi/+z50TPdzT7ZGk6jMlmtRsprbFK
-	 CXLQqz5UWpou6f6pfRbDczR8RyJRsg/9L1sVWDxb+w9CrHmIph0RIP9rl75PeLo1ed4lO
-	 zLyDLk3Vu20hcYdBGlYVVeUtSx9b989qgfRso6RRplwaRVo/ymtzqaHrm6z8+qVDuyA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794399427;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=0OUhnsXuNnApLOqX+snDYVrViIC+Bne8/zuEptDdEfE=;
+	b=S4al/RPo91zoZpYLuxBWuUR+LB3uM7flma8fUBkUXYKmTS2Zh/g8CyOLJB/1jWgt+z0E
+	 HeCjD7cXzPd6F0vba0l/pP4DV5wTMDRnQ/UlyTzK7oNez99C1PQ1c3qw56mPUW/LLuA3X
+	 tbraQZ4fvtKmcaVV+MIDkywTeJDB/3twjwknumonfmm39pbMRRu7U05TR94hzPIowUS2a
+	 7mYXR1TEy0fOZkAEX2kIBBPcUj3hlfybyPG7qGdQUi+oQSPFfFBsg/JzLgOSrQXnMEvIN
+	 Z4dxLQQDINH9VTqnldHxiCtRXHA9YXBkLW+jncIPf1QQ6LFJyW2On9GWAzjXTwl1DhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k5TWTw6+;
-	arc=none smtp.remote-ip=209.85.167.182
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSv64gGd;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037AA606A89F
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 12:09:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 037AA606A89F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C084606A33F;
+	Wed, 11 Nov 2026 12:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k5TWTw6+
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-4c5d8c7f326so1214463b6e.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:09:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794398991; x=1795003791; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8kDTQyiKQOfIkOGO/u8mg2T8m6Y6HEmmU0F0HKV40UE=;
-        b=k5TWTw6+QRchA1PQTS6oYaZ4PuODw3xmmgrU9JTcYXc6nGWjpHL8uSg68S7qe7XTz2
-         oeqEBJrUspxe+o629HHec6dg4bPIG+7wI9+glwyPUFF/iYZxZjTqTO9QxjbzGSOjSONZ
-         FEjhF/qIMBX10Evv376qVg5lfidCBavTyDN0E5tbzevNXotJVr33CrDxQ5FNkACBc/Y1
-         YXS/V0hJ6xz/e7KW2Dh5fsxDh14z4P7rhUrBnYunE/EF2M3y3pNUwpbMvxh40VwgBsCH
-         CoyQuMqM1hyxsDn9wzJFA0cbjJKL9dsJRW1fIKpN1mNhQvI9PpYTrdPdKe0qq2X+aJiX
-         QzRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794398991; x=1795003791;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8kDTQyiKQOfIkOGO/u8mg2T8m6Y6HEmmU0F0HKV40UE=;
-        b=IpMnl8Y20Z8FoezBPYOjQSaNK1+nEVS80PdrY+cA8/cn++8p/WFmEYvM15u60/p6U6
-         xb/LqoguAb6n8puy3rP2TE75bdzoKivPfzJW5qVc9vgcICU9M/cFQ8pvy2FQWVSXhPoK
-         AFQtoqh3R0Q74e3Mx+wxL5+vRpc+8RG+sntwDDbl9PM7sdyORUsY014msuCqB9LytXlp
-         xj4yNkq40GpI6aiBaEwRnlgr67hYbunZH3y6fpWWPtToY6C+GU51eLTeCO2yEPxH2nPW
-         8CZkyZicLv42rokiDqVZvRyHTDIxSOZT0jxqLET3Fmp8aOHQsfqizOXI9H3qZZ6wyJc2
-         QYLQ==
-X-Forwarded-Encrypted: i=1; AL+hErHgiReb/pJYSBgZ3vcttk7sr8J2yUqEdwAPS3psCcqo0uXYfaJMnxJXclj0koCiH6GEcipR53s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+VanfQcwoZK7EITzYiDQoKl1LrWKdIyJumti8pzvxz4N4Rp580
-	McAKf5gaU8Tewk6xWV1dC2vCW8ee0EeMI09LVB5Pk0XZU1Xes1wGVJLv
-X-Gm-Gg: AYBFou0s/69vQ4K+vWCg35ETP4MT9pCq89jX78trfelUtinYB1aszX6wLbOAUI6Mf4Y
-	bK+2SKFU6A1iWBy91844QHnrMaqTFBJSRLE5TgL5FhDVvViMUXkydQk+aJXr9Z4mRnE35R9APV2
-	YioGlDme8z6WX1vmdgLsd1Qr7t/pA/Ow2Ns7cJtaKSrGS3YaYmHyPrUc21mHjlB4pmfB3zWzrex
-	FxGHKGL48E3a44pEp9QPSqsNc15jv24X2ot7VcCyZvm6bg6L9RURbnnzBfn3o3socVw6M5Pgo/n
-	6s8L8DG6N090Gk1eKkzA+0yIUaZ4pjbTFWhdvTb0qB2dCgUK1ojzkYvlfX13mGLMw/gxct38HVI
-	hRR9OVTEUfz3eKZmrTAJ3sPlbWqpUNh79ukH109ieKgClEgbYVU2cl1mZADjQIU0kTCeC1Kk8DJ
-	fvJ1unteBq67mBCsID5S6PqC19yh1C5eEGnOEteDI/s8iVnowBL4HNvFIIFo0YskdZe1qk3P2XJ
-	ZLtCOpwunDJ5FNHcsd520Ghf8VFzOiwVF2jUkYE3aYespdhS05om1qeM0JquPpjm2f6jNyCdDre
-	pzk2MDiyjpDQ5MqrBiHca9nuyjYb1ZG5qvB38eHnnk9Zr0PzjS2l3wIH79MYmBZHbAv24sB5bOU
-	CjnHL
-X-Received: by 2002:a05:6808:244f:b0:53b:1d13:dffd with SMTP id 5614622812f47-56b92c464dcmr1457460b6e.7.1794398990670;
-        Wed, 11 Nov 2026 04:09:50 -0800 (PST)
-Received: from AMD.home.internal (dhcp-9-244-8-156.gobrightspeed.net. [9.244.8.156])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5690504fdb5sm4958534b6e.3.2026.11.11.04.09.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 04:09:50 -0800 (PST)
-From: Enzo Adriano <enzo.adriano.code@gmail.com>
-To: junhui.liu@pigmoral.tech
-Cc: Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	netdev@vger.kernel.org,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Norman Herms <dockseed@proton.me>,
-	Vinicius Pedrosa <vinicius.eduardo.pedrosa@gmail.com>
-Subject: Re: [PATCH v6 3/8] clk: sunxi-ng: a733: Add PRCM CCU
-Date: Wed, 11 Nov 2026 07:09:48 -0500
-Message-ID: <20261110-a733-fwclk-junhui-reply@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <DMQEUUHANG74.30N8VT6UGHO0M@pigmoral.tech>
-References: <20261009-a733-clk-v6-0-ae8178fce7e8@pigmoral.tech> <20261009-a733-clk-v6-3-ae8178fce7e8@pigmoral.tech> <20261103-a733-ccu-v6-fw-clocks@gmail.com> <DMQEUUHANG74.30N8VT6UGHO0M@pigmoral.tech>
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSv64gGd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB0B1F00A05;
+	Wed, 11 Nov 2026 12:17:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794399427;
+	bh=0OUhnsXuNnApLOqX+snDYVrViIC+Bne8/zuEptDdEfE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bSv64gGdermjnKSMSrKhHyFIefH8xJhXzmx9VO5aKPyoAF8YTKbPV/4ghkJKnQH0L
+	 kNJfortLIxiO+rjv3FW8y/9H8rpqLw/774RK8BroqC3DB+fuX2Gt/2Mx9upaiby2bC
+	 VNULkksFqdl6NWpgccXAPJZYYWdCVaa1+N6Gpu0XOF/0dyYolNSJi+qEIJwi1t9+WJ
+	 Q2JgiDFsbDj1QA2zdsN1AGh/k/jWzI5J4p6RUbERoDG5hlOjGmkcQHGtBv5Q5mcHEZ
+	 3fQ+gkWeKBs/xgswJx/DC3nl+bH4QggqiGtCRx0vU+TObADWrU4zTMavtSw7yFEuvT
+	 uXth4zYG+CqnQ==
+Subject:
+ Re: [PATCH net] net/sched: release old template when replacing a chain
+From: netdev-bot+sashiko@kernel.org
+To: shawnq1@163.com
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 11 Nov 2026 12:17:05 +0000
+Message-ID: <179439942593.2199510.2721267685779477046@kernel.org>
+In-Reply-To: <20261109121448.2589374-1-shawnq1@163.com>
+References: <20261109121448.2589374-1-shawnq1@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -124,45 +63,216 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Junhui,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-> I'd prefer not to mark these clocks as critical just for the vendor
-> firmware. You can see my reply in v5:
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
-I agree that native PSCI and a future OR100 Crust port are separate from
-the vendor SCP on E902, and that future E902 remoteproc/mailbox drivers
-should own these clocks. Vinicius's native-PSCI reboot report used locally
-modified TF-A on A7Z [1]. Upstream TF-A still has no A733 target; its port
-is under review [2]. The immediate problem is that the new CCU's
-unused-clock cleanup breaks reboot with the firmware these boards ship.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-On one Cubie A7S, RAM-booting v7.4-rc1 + CCU v6 + DT v3 and its dependencies
-with vendor boot0/BL31/SCP/U-Boot and no clk_ignore_unused, the run without
-critical flags stalled at reboot -f. With only bus-r-riscv and bus-r-msgbox
-critical, two warm reboots returned to vendor Linux while r-timer0,
-bus-r-timer and bus-msgbox0 were 0/0 (enable/prepare); five flags also passed
-once.
+- [High] The patch adds a use-after-free race on chain->tmplt_priv.
+- [Medium] The patch treats a symptom.
+- [Medium] tc_chain_tmplt_add() creates and offloads the new template
+  (fl_tmplt_create() -> fl_hw_create_tmplt() sends…
+- [Low] The commit message reads like a bug-report email rather than a
+  kernel changelog.
 
-> Since you've already submitted a separate patch adding these critical
-> flags, I'll leave that to you.
+--
 
-I will narrow my separate patch [3] to bus-r-riscv and bus-r-msgbox.
-Chen-Yu, Jernej, Samuel: would you take these two flags as a separate patch
-until E902/mailbox drivers can own the clocks? There is precedent in A523
-bus-r-cpucfg (1dba74abf3e2) and Meson AXG fclk_div3, kept critical for SCPI
-firmware until the driver claims its clocks and a handoff exists
-(drivers/clk/meson/axg.c).
+net/sched: release old template when replacing a chain
 
-I have not tested power-off, suspend, either flag alone on A7S, or other
-boards or firmware; Vinicius found either flag alone insufficient on A7Z
-with vendor BL31 [4].
+With this patch, tc_chain_tmplt_add() destroys any template already on
+the chain once the new template has been created. It targets a chain that
+a goto-chain action keeps alive after RTM_DELCHAIN and that RTM_NEWCHAIN
+then recreates. In that case the old template and its module reference
+used to leak.
 
-[1] https://lore.kernel.org/r/20261011200153.575096-1-vinicius.eduardo.pedrosa@gmail.com
-[2] https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/55200
-[3] https://lore.kernel.org/r/20261031020640-263f7b05-a7s-clock@gmail.com
-[4] https://lore.kernel.org/r/20261005183038.417798-1-vinicius.eduardo.pedrosa@gmail.com
+> Hello,
 
-Thanks,
-Enzo
+[ ... ]
+
+> HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
+> Git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
+> Source version: Linux 7.3.0
+> Compiler:       gcc 11.4.0, GNU ld 2.38
+>
+> The console output, kernel config, reproducer, namespace launcher, and
+> patched-kernel validation logs are available here:
+
+[ ... ]
+
+[Severity: Low]
+This isn't a bug, but the changelog reads like a bug report email. It has
+the "Hello," greeting, reproducer instructions, the gist URLs, QEMU test
+logistics, the reporter's tree SHAs and compiler versions. It also has the
+note that the positive PoC reports a failed threshold on the patched
+kernel.
+
+Could this material go below the --- line or into a cover letter, so that
+the changelog only covers the problem, its impact and the fix?
+
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index bd0d635fe3fed..59f96e899c214 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -3143,6 +3143,8 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
+>  		module_put(ops->owner);
+>  		return PTR_ERR(tmplt_priv);
+>  	}
+> +	/* An action-held chain can retain a template after RTM_DELCHAIN. */
+
+[Severity: Medium]
+Should the template survive RTM_DELCHAIN at all? Right now
+__tcf_chain_put() only releases it when the chain is finally freed:
+
+net/sched/cls_api.c:__tcf_chain_put() {
+    ...
+	if (refcnt == 0) {
+		tc_chain_tmplt_del(tmplt_ops, tmplt_priv);
+		tcf_chain_destroy(chain, free_block);
+	}
+}
+
+While action_refcnt is non-zero, the delete notification is still sent
+through tc_chain_notify_delete(). The chain is then hidden from dumps,
+RTM_GETCHAIN and RTM_DELCHAIN, but its template stays active.
+
+This has a few side effects that the patch doesn't address.
+
+After chain N is deleted, tc_new_tfilter() still gets the same chain
+through tcf_chain_get(block, N, true). It rejects other filter kinds with
+"Chain template is set to a different filter kind":
+
+	if (chain->tmplt_ops && chain->tmplt_ops != tp->ops) {
+
+An RTM_NEWCHAIN without TCA_KIND on that chain takes this early return in
+tc_chain_tmplt_add(), so the recreated chain silently inherits the old
+template:
+
+	/* If kind is not set, user did not specify template. */
+	if (!tca[TCA_KIND])
+		return 0;
+
+The old template's hardware offload also stays installed after the
+delete.
+
+The new comment describes this retention as expected behaviour. Would it
+be better to release the template when the chain becomes action-only,
+with suitable synchronization against readers? That would fix the leak
+and these cases, and this hunk would not be needed.
+
+> +	tc_chain_tmplt_del(chain->tmplt_ops, chain->tmplt_priv);
+
+[Severity: High]
+Can this free the old struct fl_flow_tmplt while an unlocked filter add
+is still reading it?
+
+tc_ctl_chain() drops block->lock before it calls tc_chain_tmplt_add(),
+so only rtnl is held at this point. RTM_NEWTFILTER is
+RTNL_FLAG_DOIT_UNLOCKED. For flower on ingress/clsact or on a shared
+block, tc_new_tfilter() skips rtnl_lock() altogether. fl_change() then
+reads tp->chain->tmplt_priv without any lock.
+
+CPU0 (RTM_NEWCHAIN, holds only rtnl)
+tc_ctl_chain()
+    chain->explicitly_created = true;
+    mutex_unlock(&block->lock);
+
+CPU1 (flower RTM_NEWTFILTER on chain N, no rtnl)
+tc_new_tfilter()
+    tcf_chain_get(block, N, true);
+    passes the chain->tmplt_ops check
+    fl_change()
+        loads tp->chain->tmplt_priv (the old template)
+
+CPU0
+tc_chain_tmplt_add()
+    ops->tmplt_create()
+    tc_chain_tmplt_del()
+        fl_tmplt_destroy()
+            fl_hw_destroy_tmplt(tmplt->chain, tmplt);
+            kfree(tmplt);
+
+CPU1
+fl_mask_fits_tmplt(tp->chain->tmplt_priv, mask)
+    reads tmplt->mask from the freed object
+
+The free also happens before the new pointers are stored. A reader that
+loads chain->tmplt_priv between the kfree() and this store gets a pointer
+that is already dangling:
+
+	chain->tmplt_priv = tmplt_priv;
+
+Before this patch, the only template free was in __tcf_chain_put() at
+refcnt == 0, when nothing else could hold the chain. The commit message
+notes that a user namespace is enough for CAP_NET_ADMIN, and running
+DELCHAIN/NEWCHAIN cycles next to concurrent flower filter adds would
+reach this window.
+
+[Severity: Medium]
+With this order, fl_hw_create_tmplt() sends FLOW_CLS_TMPLT_CREATE for the
+new template before fl_hw_destroy_tmplt() sends FLOW_CLS_TMPLT_DESTROY for
+the old one. Both use the same chain_index. Can that leave offload drivers
+in the wrong state?
+
+The in-tree drivers seem to assume one template per chain index, and they
+match DESTROY by chain_index only. In sparx5, create records the current
+port keyset as orig:
+
+drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c:sparx5_tc_flower_template_create() {
+    ...
+	sparx5_vcap_set_port_keyset(ndev, admin, fco->common.chain_index,
+				    state.l3_proto,
+				    ftp->keyset,
+				    &kslist);
+
+	if (kslist.cnt > 0)
+		ftp->orig = kslist.keysets[0];
+    ...
+}
+
+Here orig is the old template's keyset. Destroy then restores orig from
+the first entry with a matching cid, which is the old template's entry:
+
+drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c:sparx5_tc_flower_template_destroy() {
+    ...
+	list_for_each_entry_safe(ftp, tmp, &port->tc_templates, list) {
+		if (ftp->cid != fco->common.chain_index)
+			continue;
+
+		sparx5_vcap_set_port_keyset(ndev, admin,
+					    fco->common.chain_index,
+					    ftp->l3_proto, ftp->orig,
+					    NULL);
+    ...
+}
+
+So the port runs the keyset from before any template while the new
+template is active. Once the new template is destroyed, the port goes
+back to the old template's keyset.
+
+In mlxsw, mlxsw_sp_flower_tmplt_create() reuses the existing ruleset for
+the chain index through mlxsw_sp_acl_ruleset_get(), so the new template's
+elusage is ignored. In prestera, prestera_acl_ruleset_keymask_set()
+overwrites ruleset->keymask with kmemdup() without freeing the previous
+one, so each cycle leaks one keymask.
+
+The mlxsw and prestera behaviour already existed before this patch, but
+create-first keeps it, while destroy-then-create would let the ruleset be
+released and rebuilt.
+
+The commit message says create-first keeps the old template intact if
+creation fails. Would destroying the old template first give drivers a
+consistent sequence?
+
+>  	chain->tmplt_ops = ops;
+>  	chain->tmplt_priv = tmplt_priv;
+>  	return 0;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109121448.2589374-1-shawnq1%40163.com
