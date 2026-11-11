@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794355807;
-	b=Q+AeY4GeXMMM4Svut9Q63Sn+jINQZDQeFMnGtQ5HrwfbLInYAu4pgS6VmNq/0wD5FB5s
-	 N3X8OiF3engEvxTEf+LlvVhIC74+xqJhx7oweraoU+/Ftj8Lq/TuzFiFAZo6wamQ/HGhN
-	 gtRk9kALszXL2GgQgz4FRHn6/obPcN5+h+Lz51cLbI0r71oOUwFSzv1iA1qrU3dzme5N+
-	 CCgmpBrOYh63nCvYx7+3YnjyLtG1oJYsEyR339g6Z2f+BMepQ27psa80ikppuLfo7AOTv
-	 rJxMhKcK+n3b64C8iV+na3ROrczIngBVgBwX1RNWPPTVDnpyKzQlfhgTT329KXVkWxg==
+	t=1794355808;
+	b=VjMdnAFSqomxQIVKAJlL3Wq4IxA7+31uaWvetDr6zE2zkTlouYA+S98w3w+V/hsp9apg
+	 zxVeJR/4afcnzMYAHe6ygY0dxrYXHEAV3lfP7gLvQFk+IkG3nryNYSTYn484NqvPi0cBA
+	 1p5jM0z7lhiVbEbfXFrK4dLnjGot0As2R80EVUv6SWW/NrrnWl/kpJmUYU15AyRCkKRAV
+	 ujFVLC7060dxNZgxctAvQ/kNDT7Ucyq4bFn7jWnXsUvrQMj4uvZhN8utP5bDbi0XGAtKL
+	 WV75IT7YMDdjOA6g/B4fpbvjlrUkssgOP+zRltRVEs32Idm9piZ7RdHJ7koeWRmF+Ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794355807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794355808;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Er+Sn5xQ3HzulEJBU+ZC5ylI0mayZtrYKjaFWpuVGU4=;
-	b=VqrdFxp5siq9vYXa7gEwhIX4cROg5Lc+R2AniEnLO2a2ToJDUkuhQaj8ME3Zd1NnoXbL
-	 MbLT08JRHjM5ebHyM1yc7kQcMQ/g1dJeOSEWitxjZupnYd1+zDPfwciIRQLHAJaK4icp0
-	 +Cvgzk1ED5YpDrA/y2LIL+pziHpN1uMdA7NGYGKmTrBIiB+x7gGZs3GjsNP1z9HBCg15m
-	 U7L10wjlxdOBAD/wa4jg2feugoqxu+eGHsAZep0mYJLXAfQov//B47EbMTyRx9MoYkcFZ
-	 E/B7ny4tXL5E9VEtnitUsVguubnN9vRzKAdGxXUiRkZAzjp7r7caWGHl8kaI9Jok8Jw==
+	bh=JipW3Ceb+7NCtvWMNFO/Z77o0FixeUdRl+2wilinppU=;
+	b=shKbVRatVwrGQcQVRsEfKQ8tsf3Qn5jfTTFVfnynvozXBzy0gw9Usp5X2lOUUK3fA+i6
+	 h4m0AOCeOui+87lQBDlHZ19D+oTfTMnqE9/yyrx4bLRIrDG33qCrj9ynZUjZMUdg7wUAn
+	 v1m4vvi1Mn0jFNAUuOenqQpXnSjHlqIkR1KFZ61mPk9zbrwF0Ql2eqgVjUOPe94CSwxP0
+	 HNIYUk9c3lGk0k4h7l9o2mPXh6zvEODQtOdDmf4xZdeqRWG6SXDgTkUBG8pLYKjetgEvu
+	 GobGZBSLGJxLZI2NRwMWf+RPQv7Kw3N+d8k6yDw4ENxCSujVy9uYsUNBadLKA+LtIlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iJ/vkKTO";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cExn50c4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE90C606A320;
-	Wed, 11 Nov 2026 00:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53746606A332
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iJ/vkKTO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7104F1F0089F;
-	Wed, 11 Nov 2026 00:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cExn50c4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35991F0093C;
+	Wed, 11 Nov 2026 00:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794355806;
-	bh=Er+Sn5xQ3HzulEJBU+ZC5ylI0mayZtrYKjaFWpuVGU4=;
+	s=k20260515; t=1794355807;
+	bh=JipW3Ceb+7NCtvWMNFO/Z77o0FixeUdRl+2wilinppU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iJ/vkKTONajkwwEgVoQEKy9nOMlpUdFmUB/NFcue8Vn4V2gmPH1mBp26GDNWkbls7
-	 hN3NdODUH5dEwvsEaf0qhppiY5/XA+V22s2keR51RnoOsCcqdRmF2gqPoIu78BaHsd
-	 BFLC2SDLiDhG86j4rRROZb384D2ZUaKTYdlPF73Sq9zkl8jXr6iutta7VLQ6p3nrUG
-	 LAxpO4v9u5Iekf5fmQNRfpO01V2I9WELL4w7fnzO3bH82EyhLUJ+O17ILxtUX0gdzE
-	 HN4eK+VLKCCA+rE0AFB38eXlFO07sgzGTI0VXfIm59HwchIj7D0GuKbi3ZLqocqrPy
-	 78AKwOofn9MAw==
+	b=cExn50c4y6Hcw0nVNUOlguKI1Yx0OG4IWVAB3z9UpJk57yMa8KZPc3VvPxIO3dzds
+	 0mv8kBYbkZEBb3dZb6DrgNxfC7kz214SYSgXUrcN8B60/7kTrZqV/wQSXVfD68cVrR
+	 rGM+nBwj3vNdLDSkbvq3DGuTQepS0MNDfAiSYNMkY+ZMruadMxNwsLnjkqREcDEx8C
+	 kIodPrw70d2YnG/NuuJQIatT4rfUTkML4qyztbgOWMjGWaPtd6xYhL+OGF+AJTZk2G
+	 cSZJRqGjRkN9ygpk3YXk7/rglcRNEgEWLvgaS/cUURLwyBm+R9tLo39AyCjWFMFsdO
+	 XnnfehHafdbpA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E11339E8A4C;
-	Wed, 11 Nov 2026 00:10:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D82D339E8A4C;
+	Wed, 11 Nov 2026 00:10:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2-net v2] mptcp: limits: fix JSON support
+Subject: Re: [PATCH iproute2 v2 1/2] ip route: use the request size as the
+ limit
+ when adding encap
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435580518.128546.9097595420555036368.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:10:05 +0000
-References: <20261109-mptcp-limits-json-v2-1-ad8d20051515@kernel.org>
-In-Reply-To: <20261109-mptcp-limits-json-v2-1-ad8d20051515@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: stephen@networkplumber.org, dsahern@kernel.org, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
+ <179435580642.128546.15113726545917485391.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:10:06 +0000
+References: <20261109053209.65753-1-kaquoin@163.com>
+In-Reply-To: <20261109053209.65753-1-kaquoin@163.com>
+To: Fang Jiabao <kaquoin@163.com>
+Cc: stephen@networkplumber.org, netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to iproute2/iproute2.git (main)
+This series was applied to iproute2/iproute2.git (main)
 by Stephen Hemminger <stephen@networkplumber.org>:
 
-On Mon, 09 Nov 2026 12:47:26 +0100 you wrote:
-> print_mptcp_limit() was trying to open a JSON sub-object and closing it,
-> but no JSON object was actually created before.
-> 
-> Because of that, JSON support was not working with the MPTCP limits:
-> 
->   $ ip -j -p mptcp limits show
->   add_addr_accepted 0 subflows 2
+On Mon,  9 Nov 2026 13:32:08 +0800 you wrote:
+> iproute_modify() passes a hardcoded 1024 as the size limit to
+> addraw_l() when it adds the encap attribute. The request buffer is
+> larger than that, and every other attribute in this function is bounded
+> by sizeof(req). With a seg6 encap of 60 segments the request still fits
+> in the buffer, but addraw_l() prints "addraw_l ERROR: message exceeded
+> bound of 1024" and returns -1. The return value is ignored, so ip sends
+> the request without the encap attribute and exits with status 0, and a
+> route without encap is installed silently.
 > 
 > [...]
 
 Here is the summary with links:
-  - [iproute2-net,v2] mptcp: limits: fix JSON support
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=5525b4722604
+  - [iproute2,v2,1/2] ip route: use the request size as the limit when adding encap
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=c4a39013ba80
+  - [iproute2,v2,2/2] ip nexthop: use the request size as the limit when adding encap
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=1d64d3416d60
 
 You are awesome, thank you!
 -- 
