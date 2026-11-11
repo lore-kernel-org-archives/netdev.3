@@ -1,73 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794399482;
-	b=ZVg91DZLSRrk+HLqhW4HhDiZ/IFUrywF0i/5QuYplG6+SULwo8oC2MRSuX0p/7rg13hq
-	 iIAHcxzQDRKJ82pBGA4BYTlnsZatl2kvUML78fWKVqfeze4S6s3thAwf+/AYFcvkfNpF7
-	 kX7cAtQylKalRmxOPt4EytStvzcIkMbaRGwk1TPA+c8Y2flccSlnU4EBxCCdSAgZ/D0eI
-	 pxFeDYzvTqXmMxLrsNOOXOw9N1utdA5ZSJXfmXr1Rnt3L2FsMo1k3SUr9QQyJ3s4Zxqcc
-	 JCN2oHn2njCNc9mNO2/DSWSwpjZKQvxIDt/JwJFlcKuuPln4b27KaxnVSP1xwWZt5mA==
+	t=1794399618;
+	b=AT6pkJ8DA3JaG2OgJEOXa+IJtcMiK9nQ6++PK7IobS0jJMdeb8g7kLd/k9/fGdxUh1wW
+	 dpG5ZxqHQHK8GZk67CAyhB70vMOajU3DUQ3tckcwJTmWpQ1HNDqkwUlcbgHE9o/zn4GyL
+	 G8FLLlGKSV+jZ96NU7BrfeQqZPgvPKUvgnGrkjsOvQ0h/SGhS22polpALKPZfCTFffqN4
+	 1c1GKgh3+dDMjzAcdvS3poRQH16Vq1ezuXQBkKJ0Yu+2pcj+ZLrQcfu3nF8p/VD1dSiDm
+	 ub0il12obU9WtPFjCfY+zRyaQ+DskDbOZbRHqQqBG4SMJhtMnHkmDP353TsX/Rl3Ayw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794399482;
-	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=twxWWdz/L84GLIkfOlZIXyjFtna9wieu1jiumFBv8x8=;
-	b=IHNyxfnY3BcrmCtvROaCbpXgtsQ7O3lNppu9B2StvqjMfozv9AsbFnESZ62tfF6WTyBO
-	 Q1AeET+n4atd/fK8BEMbBOQdg5Q8FmMmt4NW0/82vPK1TozKyKLkc7G5Dwnqda8DMgcQe
-	 G7eSchOOwFaq5ZLe7Iq3o4MLNZHCUGp8fnpl4nMCyS+JF9mPZSGeh/u/0rSsbJ9j2Nezk
-	 dBkeVDy57sN4sWwKTzJsEWdGApNyp8P4tKwl+bB8uo50qch+7euks832ZPrELm2UTf5uZ
-	 nnrd88aTsObrLwk2WETwuhDQ/ZjCZXzZaZFppngpX6lI9BNSf1e+tgJn9P1xk5WVXdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794399618;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=hWb41iZm0R0yNMhR+sLYT85PthxOfiiXrl7+TyvZ8Ws=;
+	b=K5TN3D5YP5vQoD599rvkqlW0nx20TU5JP9Jk8od+0SS9rZ3NAG1Jqi1bQPuvhImc4HhK
+	 Ttx8RwQHvz2VhojMpgN8EG3dQfZmbJ0de6hYpUeJ9Po/apZn6YfX4r+phmGYijvN+NJ3h
+	 fdaPvrOWj1jBD/lxdiVa9tgDj/Kep5uw/50Ft/uhcAs3sc5Do0F/OUAab8KU9i/ArBiX6
+	 mZrntBt+BdWCimy/8A+JGmBilJJfYF2AD4JrosSbB+bOsHLPr8A9R7mVmurUJK9az/rSB
+	 3od3FS9+1rljd6NnREJ+lfgiJS9LJC+gFfmxuOoWRHTNWBVFoXhuGViiBX67mt9+Jhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OX+h45CA;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=UuhFVMyk;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PH+MMIFM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADCE606A324;
-	Wed, 11 Nov 2026 12:18:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5ADCE606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C501606A324;
+	Wed, 11 Nov 2026 12:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OX+h45CA;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=UuhFVMyk
-Date: Wed, 11 Nov 2026 13:17:57 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794399479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twxWWdz/L84GLIkfOlZIXyjFtna9wieu1jiumFBv8x8=;
-	b=OX+h45CAhtBxpWJ6Dl1w/YTYPEN9A+IwrPeF2gJvtq7MOKI5YTLz1dZBRJs3dVqhtE5Btk
-	dIHSmpFfKqBbz2vQy+ecDGYz9RQ6GHQoFdHQuMgkVRPrdBB2tsebGhY/k/vk01r6tp9CSv
-	dFn2cTtQRwKyY1y15IFxUUAyvT13INgbH331fKDsP3qy+92NmzJmLsVtcW2SgTeYbcCRqt
-	wPlLk3q5TD80e/EM1oyQ6rryNANlOed8W15i3iwIR6x4XMTotH/98CALd+mFTKksaWYLMy
-	6n6qR+HiRSLo9EXkfk4YV5ycZs04a1nwtjN5PfMsYgaJziQY5oV3uKCm+QarwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794399479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twxWWdz/L84GLIkfOlZIXyjFtna9wieu1jiumFBv8x8=;
-	b=UuhFVMyklXOaR+noxK6+6dtCrUiKb/OOI0hlJFUZjGXC9FndfepSHpZwT1/7VlLsL+VW6H
-	z77A7WlPt90FdiDw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Haoran Wang <haoranwangsec@gmail.com>
-Cc: David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, rostedt@goodmis.org
-Subject: Re: [PATCH v4] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-Message-ID: <20261111121757.021rVvhs@linutronix.de>
-References: <179241614797.5916.13928836073297916808@whr>
- <CANZ3JQQrrntu0TefPZC79pKSmsOfwAngRJyuaVm81DYaJNFHFQ@mail.gmail.com>
- <20261109180748.33682-1-haoranwangsec@gmail.com>
- <20261109200332.52e2fc0e@pumpkin>
- <20261110165742.1204-1-haoranwangsec@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PH+MMIFM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8851F00A0A;
+	Wed, 11 Nov 2026 12:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794399617;
+	bh=hWb41iZm0R0yNMhR+sLYT85PthxOfiiXrl7+TyvZ8Ws=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PH+MMIFMmcPHKErf4C+zzI47QjpQwLz1C6t57pLcEpI0W7IHd4tdDu0LtDKvV0VZn
+	 wIiEc4GFQntpE85LKtbUSTkYHZjAzzpM8mFTCj1WMHd2CKmg6k2Py9e9k0lkEcrSz+
+	 hmRujoGfpg885TfrT8GzO/KkoAcR5StZvAyzKYPnDaHvmRFepognOdXIQfQ5E5Is4O
+	 p4W+/EXE/ij34EYfuqMbcjMcWn6w4m/reojFrLmR05pFFmMaYhGimuGr+bwbxlEeUJ
+	 njlZi9wvsUKqSD6Y0vnObhdTDXGq0ahgPyiLCYe99DNAKSH8GG+lta6iSLE4AFrEgY
+	 lpa3qbGdN8NVg==
+Subject: Re: [PATCH net-next 01/12] dt-bindings: can: renesas,rcar-canfd:
+ Document RZ/G3S SoC
+From: netdev-bot+sashiko@kernel.org
+To: mkl@pengutronix.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de,
+ claudiu.beznea.uj@bp.renesas.com, geert+renesas@glider.be
+Date: Wed, 11 Nov 2026 12:20:16 +0000
+Message-ID: <179439961681.2199510.4253042970495028693@kernel.org>
+In-Reply-To: <20261110115112.3807247-2-mkl@pengutronix.de>
+References: <20261110115112.3807247-2-mkl@pengutronix.de>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,59 +63,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261110165742.1204-1-haoranwangsec@gmail.com>
 
-On 2026-11-10 16:57:51 [+0800], Haoran Wang wrote:
-> ppm_get_cpu_entries() must not acquire a sleeping lock while preemption
-> is disabled: get_cpu() raises preempt_count and spin_lock_bh() may sleep
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-I would say "disables preemption" rather than "raises preempt_count".
+Low priority / nit picks for your consideration:
 
-> on PREEMPT_RT kernels.  Read the current CPU with raw_cpu_ptr() instead,
-> which keeps the per-CPU accessor stable without disabling preemption.
+- [Low] In this patch's tree state, the binding documents
+  `renesas,r9a08g045-canfd` as a standalone compatible with no fallback,…
 
-That is not what is happening. raw_cpu_ptr() obtains the per-CPU
-pointer of ppm->pool of the current CPU. I don't know what means
-"accessor stable" and the following. Without disabled preemption the
-scheduler can migrate the task to a different CPU. The access is still
-stable but if the "locking" of the data structure is based on "the
-data structure can only be accessed from the local CPU" then it is no
-longer valid.
+Pre-existing issues:
+- [Low] The concern says the RZ/G3S compatible `renesas,r9a08g045-canfd`
+  gets the unchanged top-level `clocks`/`clock-names` schema, and that…
 
-> Using the pool of a CPU the thread has since migrated away from is
-> harmless: the per-CPU pools are shards of the global ppod index space,
+--
 
-ppod?
+dt-bindings: can: renesas,rcar-canfd: Document RZ/G3S SoC
 
-> and the free path ppm_unmark_entries() derives the owning pool from the
-> index instead of from the running CPU, so any thread can service any
-> shard.  Derive the global index base from pool->base so it always
-> matches the pool that was locked.
+This adds the renesas,r9a08g045-canfd compatible for the RZ/G3S CAN FD
+controller and adds it to the existing allOf conditional blocks. It also
+moves the assigned-clocks/assigned-clock-rates requirement into a new
+conditional that exempts RZ/G3S, and disallows renesas,no-can-fd and
+renesas,fd-only for RZ/G3S.
 
-The important part is that ppm_find_unused_entries() acquires slots
-(read-modify-write operation on the structure) and it happens under the
-lock therefore cross-CPU access does not matter. Does it always happen
-under the lock? Then it is safe - otherwise it is not.
+Link: https://patch.msgid.link/20260902141544.565763-2-claudiu.beznea+renesas@tuxon.dev
 
-> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-> 
-> 
-> thanks for the comments.  v4 below:
-> 
-> - pr_debug() now labels the pool's owner as "pool cpu" and also prints
->   the running CPU, so a thread servicing a foreign shard is visible in
->   the log.
+> diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+> index b9d9dd7a79676..bbaaef8f4282e 100644
+> --- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+> @@ -13,6 +13,7 @@ properties:
+>    compatible:
+>      oneOf:
+>        - enum:
+> +          - renesas,r9a08g045-canfd        # RZ/G3S
+>            - renesas,r9a09g047-canfd        # RZ/G3E
+>            - renesas,r9a09g077-canfd        # RZ/T2H
 
-Was this asked for? The pool CPU might be interesting to know so you
-have which CPU's pool is serving the request. But the current CPU is
-probably less useful.
+[Severity: Low]
+At this point in the series, does anything bind to this compatible?
 
-The changes below look reasonable and I *think* it is unchanged from the
-last time I looked at them
+The patch adds it as a standalone string with no fallback. However,
+rcar_canfd_of_table[] in drivers/net/can/rcar/rcar_canfd.c has no
+renesas,r9a08g045-canfd entry yet. An RZ/G3S node that passes validation
+would therefore not probe.
 
-Please look at Documentation/process/maintainer-netdev.rst for the
-subject prefix, fixes tag and "Resending after review".
+A later patch in the series, "can: rcar_canfd: Add support for Renesas
+RZ/G3S", appears to fix this by adding:
 
-Sebastian
+    { .compatible = "renesas,r9a08g045-canfd", .data = &r9a08g045_hw_info },
+
+[ ... ]
+
+> @@ -350,6 +352,20 @@ allOf:
+>        properties:
+>          reset-names: false
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: renesas,r9a08g045-canfd
+> +    then:
+> +      properties:
+> +        renesas,no-can-fd: false
+> +        renesas,fd-only: false
+> +    else:
+> +      required:
+> +        - assigned-clocks
+> +        - assigned-clock-rates
+
+[Severity: Low]
+This is a pre-existing issue, but should this block also narrow
+clock-names for RZ/G3S? The top-level clock-names still accepts both
+forms:
+
+  clock-names:
+    oneOf:
+      - items:
+          - const: fck
+          - const: canfd
+          - const: can_clk
+      - items:
+          - const: fck
+          - const: ram_clk
+          - const: can_clk
+
+No allOf entry picks one of these forms per compatible.
+
+The RZ/G3S CPG only supplies the peripheral and RAM clocks. Even so, an
+RZ/G3S node that uses the canfd form would still pass dt_binding_check.
+The driver would then get a NULL clk_ram from devm_clk_get_optional(),
+and the RAM clock would never be enabled.
+
+The renesas,rzg2l-canfd and renesas,r9a09g047-canfd compatibles already
+have the same gap.
+
+Requiring the third can_clk entry looks fine, though. The internal
+divider setup can be described with a 0 Hz can_clk fixed-clock, as in
+r9a07g044.dtsi. The fck fallback that "can: rcar_canfd: Allow the CAN FD
+clock to be sourced from fck" adds to rcar_canfd_probe() then handles
+that case.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110115112.3807247-2-mkl%40pengutronix.de
