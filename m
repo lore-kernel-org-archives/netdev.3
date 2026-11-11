@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794437411;
-	b=mXyz/94SAtOk74aC7qU0CuJ/Rz/FtdZ2i79/vHoj3CdttkelwCnsEiotpQnAl8C+EyIE
-	 YTIKuwEkzBmwSKrStp7QVnt0CQl/pCfYF6tejTtwJSbtwiRp2F7BclcOnOIHdd0IBD2CG
-	 LpUrmhYUAmFT+3Xk7GRLkxmRpD2Rfjtn/w/XPp21Fgs6EOqgGIl3c/nLkHgx9hLFEKUXA
-	 JAjzkRcMwn4PyecwOAC7svCSeLQ1qUPFMcXRxs0fKf/Ee+o7fW7tkv50tI1lYGux1hxc2
-	 pmZWcqtdunztocjEmqjGvugknAPVM2JRSZl9Xi+U6EkAO7q/XdtSqk10+aaeW/oVomg==
+	t=1794437412;
+	b=3hALB1af4Qz/5uJ9hcv6QFIlizzXFGDzIgNL4hJzNv5CbTJqSXGC/KCodERfzAZidFLK
+	 MH2YMTUFy4rRgXBtE6Y/KkR9J1myzi4l55FPv+mnaPsSJEUtffh9MF/RJ5oTyEFdI2sg8
+	 3ngcE46RCvPUQVnnDzoOkBLDjmvVctLSQb6b9PN4kZBpeeUfE54Z1ziiwnpvaMd7nYXl3
+	 KbxBFRTVbzIk6t5t2J2FdRe0HDyVerLLvpje5ONeOf6TqyRHwLd+wfv94E0ZfxnZBveWj
+	 TXObixrz3E/sbXPsGddF+xa5oH+gb22zz9ijvpd6bkSSHx91RmC95ZaOfectDpNg0LQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794437411;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794437412;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=4+l3fyHv0HoDI8JNr6LcIUAqarbQcok0CzDtdaUdRTI=;
-	b=2dmQSa5rwlcGwuNRZfiLbIWwqNwEiHI/7gKmJqKifqZrP5EEyK6rrnrHenlr/LwLNPR9
-	 3mA/720w2tfx7MERFhh9pW/YNKRAhY6svT6tXsqD+6gqxgHJlHa6+8Pw50YNqe4+BbiJz
-	 xfh7DAd9wk3xpXOSLCST/vmH60KaRjnYYNv41Y1nybE4a2HXpOSl6qm4ymD5J+R1wrsDx
-	 VsD/gpXle/y33Dj6qaNu8PUa/AeIEJkSRmlOsG0kwQ/Dv+zgwdYxSfzqKjkGVShu8s4Nw
-	 C5ZdqvyBWyC+IzYuu0BPrAFdYlGSDveSsYVyBrwCwotjKaZxRCM/+qtJpQn91V5pE9Q==
+	bh=nvydp4Q/QgwNXiJN83lOmNasAJMP0gCNtLvZMibASWI=;
+	b=lAOk5MdMYoCd6abkcTC8ixAvH8jBwu8u4FgzLVKmUN57FtU7GlbpFSxACqc3EVmo70XR
+	 JRCkUy7O71BGRqTj3KIqEfztDNm8XbvYvXHzof+/QLQlHG2FqM9ryUl8tmfnRFF5QZO7b
+	 Gw/7JGoSGOVuYW4KPsP/729PUoAgqlo467tAno/1VpdxcRmsiu6XVl7iZuhANJMCcajyf
+	 qhwhqfPluhKp97cEp2NpPa0lztrehaem1+ih5L+H2YerX1c6TR/ERPuT8+a1/70LI6YUB
+	 hjhP16Z96cBqOWNfQr8knnLJy4zgN3LhZ8b13sX5S7VGOrW1SYEdypEdEzuMhm1NQgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+0KCXNh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="QKp/6irh";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F371E606A324;
-	Wed, 11 Nov 2026 22:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A474606A89C;
+	Wed, 11 Nov 2026 22:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+0KCXNh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43281F00A05;
-	Wed, 11 Nov 2026 22:50:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QKp/6irh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D72F1F00A05;
+	Wed, 11 Nov 2026 22:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794437410;
-	bh=4+l3fyHv0HoDI8JNr6LcIUAqarbQcok0CzDtdaUdRTI=;
+	s=k20260515; t=1794437412;
+	bh=nvydp4Q/QgwNXiJN83lOmNasAJMP0gCNtLvZMibASWI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g+0KCXNhh9FLc6NiUPenqcH2VV1ITtkFIL88ZYlEPbS+ksbbzkE1B2TzpvSS+2ZlX
-	 ObiBJjQBEaWOwCXvL4CUbenuUnGZDWPEP2ZD9FN+OTT5BsfOlPgakcRfZYgMx/w/cE
-	 5dQk5qgdet6z8zth3XAZ5zLg5sqwz0hvIS9RYtY8W7TLPYZCwgVNfi2VzdznVZFiSM
-	 RvCOJN+or+EIDNuQo3qB5TiAn6lC5souJI6PF2fJXmXD5M3LeQ/F55YRirqYn1zr8L
-	 66fwgZXeBsOuuVhktQSDIhkTllHDYhmhngAejZqqZki4dJ4mkM5q/zwZO/RbH5l+77
-	 TE/h9N8OxZMdQ==
+	b=QKp/6irhs8y7INTGeefhD5IN0JdEi86b9Jjpz756MKSPvRR4LxCm2kFupPmWyd8EQ
+	 FjjE5uJGZ1vX+KfM3XV7jNx8xyq5sAyN1juhWal2oZBcnE7NBqX7qeWs114bzyqvnd
+	 //+9Iruwtcvz8E8C4ruUu+G5elNwp1S8eC9pQwOrjhW3jZAW3mOYFbvY6qlKk7UMN4
+	 C3UFEPOGAIA9oN6DFFoTiB2py4SznYwYP90xvtm6TAPf7VtsLsXcxYITCZ+J4mRU8m
+	 Fz3Fw5koGvivtSCfGxLserXEmtLUpdPKc0XgqJvZZaiHVEewV6BpuSDdnGQPZuyDzL
+	 8UeOBCvMOeLoA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B1DC391AFC6;
-	Wed, 11 Nov 2026 22:50:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20FAF391AFC6;
+	Wed, 11 Nov 2026 22:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2026-11-11
+Subject: Re: [PATCH net] net: dsa: motorcomm: Reread port flags on bridge
+ joining
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179443740943.1688116.1228666992876735767.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 22:50:09 +0000
-References: <20261111133442.225455-8-johannes@sipsolutions.net>
-In-Reply-To: <20261111133442.225455-8-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+ <179443741067.1688116.14171083860500865899.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 22:50:10 +0000
+References: <20261108210357.1633411-1-mmyangfl@gmail.com>
+In-Reply-To: <20261108210357.1633411-1-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Nov 2026 14:32:01 +0100 you wrote:
-> Hi,
+On Mon,  9 Nov 2026 05:03:54 +0800 you wrote:
+> DSA replays neither BR_ISOLATED nor BR_HAIRPIN_MODE on join (e.g. a LAG
+> member rejoining its bond), so the cached flags survive into the next
+> bridge join and program stale hairpin and port isolation state. Sync
+> them from the bridge port.
 > 
-> Here's a set of fixes for the current cycle. Nothing really
-> seems hugely relevant.
-> 
-> Unfortunately we're going to have wireless-next conflicts with
-> this, so there may be some emails about conflicts moving from
-> wireless-next vs. wireless to vs. net. I'll provide a merge
-> resolution with the wireless-next pull request since it'll only
-> be relvant when pulling net back into net-next after that.
+> Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] wireless-2026-11-11
-    https://git.kernel.org/netdev/net/c/831e33ad02ff
+  - [net] net: dsa: motorcomm: Reread port flags on bridge joining
+    https://git.kernel.org/netdev/net/c/7aadc87adbb5
 
 You are awesome, thank you!
 -- 
