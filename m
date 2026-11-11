@@ -1,56 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794434333;
-	b=f+ewGULiLZcfiWq5KnZ7+u1RDn20vxiTOyLU27WxTR/E8qAXhT76GkU30xlWmtL8ulVN
-	 HqSihfSFIMA4q5PfS3Kl6CNtIC9S1q3acCr6Nrd81sXC4ay6zsnv64xyWe0/CgI0n2twp
-	 RCeNiPx8u2pUW10u14mgR2qMdlp8aYoUjbdOgpNYwcoDlcpNn0EEXAseJYQtYO1r9A7UX
-	 91VrQRaaDPciSPFwJC8+reqFY4Q72OxC65nKJ2Q6awabLLFbzXEd9Hqxj14Wopvy4+DPi
-	 Q2bBxiYYqAqsbuWJmfF2iE94s7E0rQEPJIbQ+X5DxhjiE3Hsmcwy8cP0KXPpGrmgPDw==
+	t=1794434407;
+	b=DtJH6umQ4i+J55CttDpo9FOhNSM5jznBykdd8H3vrTiIZFrF7DzqoPl352KLvdKquF+L
+	 klYie1ibCqiLvWU0JE1VpBcWZ8ZHyHwHoZcSW4AjRhdS2LfsByCeXxF887DRe43dqBFMg
+	 ILD3pOUdi7fSOhXw6vBUAvNh1jegliaRJ6/h9Lh1sazwIFMM5vr46l+y1kMAQKWJ5zrnK
+	 V1Aqgd9mWJnKu8CUjocvlyd8hLahFBge7IBYim1Rsn4m2Zz+U3qX2RLhi/Y9hfe5SeU2M
+	 egb4ajThssdWmD4ot+cIae+6168SvB/8pnbHONl/KVAmJ5YN1MWx1iarDU1gdoJOAXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794434333;
-	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
-	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=Bzy/HWiS2g+uLlnxE35P9YvJAj3yVSHdky07Sp8MJkc=;
-	b=s0B1w+rEIIVnOph4P1haPi32tm90t7gmOLCrOsgEgFnm12dmQ5tdD9W8tyaLTEo+tWYl
-	 cV+RB7tGc6fNRxsn4pPRAfnKpN6vCHUQo/b/FNsYlfznsDTgD9etIe2BbOjYTKY3qBO2w
-	 /2R4fUqgUFgfo8/dMniYNkybRyAVyEY1fkU7b6m7qMkiKV4UqkjaWzJsF08+5GPkYTcCd
-	 gMvyAPWIr6CBv2uvTnihQtyGoDIuFhSQ48cZpAoiybUnAbrdQBXyZD0XAafbV8uHN45py
-	 8PJspmtcDVSYIr/atcQLfhwc4NPP1jkYrPWJEvf9sBzejQQVujZpHGhLc47gW+b1yLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794434407;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=QPlbAjgLicca9iUK/LTU+4HhXH7DfDFsly5gN5ecr1Q=;
+	b=EHdNPHQxnNBm4bwG+TKogicB4JOgZ63dJQnIWKuR4hwAMPHPzUf52UAu40Lhg5SgH2aW
+	 7cmoOvlEdiQqlAEAFGetiCOpav5XxBnSo2gtopMcgJsHCCAD4m9sMVSUoj3WtHp7ZRCpm
+	 coH09sXjhTa9TmBLcXneb8anC8O91Vxqd6Zf58H/my9OhTQmm24T370Y4wus9LeuDgTDY
+	 3FFg1G5N82aO23xT/6LnhQw1roD3ZD5yrT9hHVBBDoPKd6jby2iJZrdyLf9UsV8GyjReH
+	 nlqUfchRtmrCigUkdtFMT6m+DcZWIblknfqA9OplUD8+UMGwSWkTcULuUesatZNXtzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=AQRGB0tq;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hu8bhn01;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A4160A2601;
-	Wed, 11 Nov 2026 21:58:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9A4160A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D3360A2612;
+	Wed, 11 Nov 2026 22:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=AQRGB0tq
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Bzy/HWiS2g+uLlnxE35P9YvJAj3yVSHdky07Sp8MJkc=; b=AQRGB0tqgq7wA77y/mB9wLAZ+j
-	UJgj8b2JNk/rb+fcJAg0ntpM2euoZy57H+0RViotqL6EEXtptfRNY8Y3QMlm6TMmn+PGtdSV0eB7J
-	GuLDsIgt9h7hbNZ0iLYEkytkMDZjAYgH6H9rJNzmCtUcH0etxbAbvDMwlz9tudnzwEJNW/xnHWg3R
-	81azx56g0V32mYp7q+HFTnZZggNkABHDDFxNZqIb7QEl3Gd1De6YKf46ax5Qy5NlQaC71qXTUCof9
-	3I1jrO+V+dk4HPBhQiEnneO1BJMUvGRst0SZgB+OhEAhKze/IZzbI3rLL1A9zlMV/6Kw+1s84Rpwm
-	D8+iBFMg==;
-Received: from [::1] (port=34640 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xRGLE-0000000CB0C-0h27;
-	Wed, 11 Nov 2026 22:58:51 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hu8bhn01
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E031F00A06;
+	Wed, 11 Nov 2026 22:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794434407;
+	bh=QPlbAjgLicca9iUK/LTU+4HhXH7DfDFsly5gN5ecr1Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Hu8bhn01VnJLyF7O5DPtLJu7cCqzN3d+r5S/LtoY1L59o9i39jVDodWcTL5o84FtO
+	 cefXcpHc9paHVp4aF5mpLjrg3H3ouMf5bikAzcSxPb4PB2vMb3ZmOgVwyroXkYKpOJ
+	 yztLItBEz1mdKpCMT5SR51xfXdbAkxtI0q0I+IuBm7AyD88rgnLoEnnlDcu/exC17x
+	 vf+9D2UhU7YUwQ56IO654gGmPPKZ4fwkqV3Vs4fUF1GqVsbirNZi/Lxl8ErhREfR78
+	 8rHKRVBbGWqGJko1W+TkL7r6FS0OH6e5TOO4COmWWd+l2MCPjfLW/120SzfBlvCYga
+	 thgXqAaD8lwpg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8254391AFAA;
+	Wed, 11 Nov 2026 22:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,51 +53,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Wed, 11 Nov 2026 22:58:51 +0100
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: netdev-bot+sinfo@kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] udp_tunnel: fix GRO callback mismatch during setup
-In-Reply-To: <179443388157.2168702.6402576631905322740@kernel.org>
-References: <20261111214622.2482547-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <179443388157.2168702.6402576631905322740@kernel.org>
-User-Agent: Roundcube Webmail/1.6.20
-Message-ID: <da59c8b8ee9d133dcebeabb40818959e@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] ipv6: reject routes without an inet6_dev
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179443440545.1663612.15743969370880416230.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 22:00:05 +0000
+References: <tencent_91DA7FD8277B509C55906702D1E425FBC906@qq.com>
+In-Reply-To: <tencent_91DA7FD8277B509C55906702D1E425FBC906@qq.com>
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, ast@kernel.org,
+ liuhangbin@kylinos.cn
 
-On 2026-11-11 22:51, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Hello:
 
-The bug was discovered by code inspection assisted by LLM.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  9 Nov 2026 16:29:40 +0800 you wrote:
+> ip6_route_output() and ip6_route_lookup() can return an error-free route
+> whose rt6i_idev is NULL.  Lowering an external nexthop device's MTU below
+> IPV6_MIN_MTU tears down its inet6_dev, while fib6_ifdown() leaves routes
+> using nexthop objects in the FIB.
+> 
+> An unprivileged user with CAP_NET_ADMIN in a private user and network
+> namespace can construct this state.  Consumers which treat a route without
+> an error as usable can then dereference the NULL rt6i_idev.  This was
+> reproduced as a KASAN NULL pointer dereference in ip6_tnl_xmit().
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] ipv6: reject routes without an inet6_dev
+    https://git.kernel.org/netdev/net/c/08a1eb7a634f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
