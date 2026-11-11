@@ -1,100 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794406608;
-	b=IUDEySwQ58Vxay86oG0xIM5+ZJ1CQ72ktV2TDlCcsvm48hG/2fI9E7xrtied2y4ZFTA8
-	 0z5bXdAqmwg+Hj8btKi2lApMlwm9DNGUo9a+9d34wYpNJN1vumKxDsAuV+YN1byv7+iLo
-	 gwKnZ0eqZ6Qamow9dFtAFgGDeOHyB8MKPnO1mmdWBgylspQI4TF8ck8JSFkXSgkfxgwY+
-	 p4jCdxQT6E+nuQOs+0RvYgci+iRTnDoL0r2GimcJH1KjkoL0YMUDiCYrbeBTJeH7m1By7
-	 VGcEUv8u/1hgOfzDzWoxPoTrhbX50Ztr6hozvNiw8cE8C5U4vhn5TE3GYJQ5mVjz5jw==
+	t=1794406612;
+	b=e8bEJHNpUXfiArykjjmFIK7+00zWZR+HrCEKoKucWwSJn8msm/ZQrGkMjOZuJyQxhgIz
+	 J03twxOLXB4IIzA9P+dBlK4OSkCVgw5To/QbjjrsNjy4FMM/ybJI20kY0RnKpIcK9sfu3
+	 p/aYTdOCjTgaJi54Gy+n9YiZJ5bpnlA3ElfaZpqmeMS9QNwFLCFU+F9AQw4S+TP8fLTNv
+	 b0P1hu938xFlKJ91smGoYL53VKwwcFhTx+KZjiYZFGkGV26B/laoH10BPgPaV5BRXBc+R
+	 FCTYTTMNJk611axITNZ7VPNF7q8PtMNUMkasubChBFpxKdvts1VlsWJv3YCyzThN17Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794406608;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794406612;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Kkp0sf7AYW6VmAUeGJTN0IINgbfaB9P070/+YW6JJGM=;
-	b=Ld79pKazAR4vt7LgIYQN2L5YMzz3cloFneWDRKCNLYpCxSddIfpV9BZ3tvECqgCwJ8HT
-	 EPF/TgwpWPLlkJ+TsBqni6gXvtWgOggxw+m1RZ5JtgoCIpJWGSCuSLiEx27HSZ8T2SWX+
-	 bSX6Fh7sKJvQvNE7EVyIGoJzLMqWEAJBPLpjwvu1rg/4+thNW0hmTejCl4fWstrZa9uOy
-	 H+b2nnBsbtWKqlsqhKXeod1k3nOMujBHgQbNXXo805+gzqEwREGk3h4GJfwnUYZxDxyZW
-	 4zNuEIMMRH8XLhb50UMjnQgBE6gaWQecDQH+e5pDX4Yp+qlumofRCadcRCwr+SjCb1A==
+	bh=rxh6ySQw4OyzmF+zvez+p31cAvwAIQMJM/KeP5k2znw=;
+	b=nlQZT5o0SsFfiuITryxcANjbLGxQ67qKc+6Ji44UV4jji8to2F5L6wqQ3lGk0OyqfhXh
+	 VI3eG2PkeM/vjpO7VWYDzFml/GOdCkK8mLQX4mWJYUoefnENA5BluIuuUxDuvFaLTihdH
+	 eiCXXweQhwIw4YfUeQUMIWdtuh/A1f7UuwzII6hO3hA6uxEi6mnIAC07w4YogTluoGmso
+	 s3IBCJcy/y6gyykn9+BHav2kKWrVoDc+0grhchhSBZybkWwRZXxHxlZMJs5Qg75cARcXN
+	 DPXY9WYChS4Ho7DvWVZg4Zj/uqP9MEfSrABO7QmrMdkvLRp0Yj5C+fJ3b6ao24AbkjQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=SQ4E1TMp;
-	arc=none smtp.remote-ip=209.85.160.172
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=PkOuAvhP;
+	arc=none smtp.remote-ip=209.85.160.179
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65052606A338
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:16:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65052606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00765606A336
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:16:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00765606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=SQ4E1TMp
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-53394bffe0fso34034641cf.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 06:16:48 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=PkOuAvhP
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-53669f7b518so32542601cf.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 06:16:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1794406607; x=1795011407; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1794406611; x=1795011411; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Kkp0sf7AYW6VmAUeGJTN0IINgbfaB9P070/+YW6JJGM=;
-        b=SQ4E1TMp/e2ruLG4sjeW4a9FyCecaLf7rPv9DZjCXoQQokviHfyx48hZqqIliIAyzg
-         U0qynPV/Rcmw3BZy5NZ115W30eORxd1WIQpNwsNbtHLkZmQGhIImXhOEOBnpyc5JsFyU
-         sMeljLDzBCoa+U/Jzm/wSHqHh+G3MhvLtwxbE=
+        bh=rxh6ySQw4OyzmF+zvez+p31cAvwAIQMJM/KeP5k2znw=;
+        b=PkOuAvhPVdtzJ3wJgKaLOTUIfWGW2ZvolzadQnNSWT0uvvZq9KvTMm6jBKhUkb6MaE
+         BCHFnx5z6Bo5mDTJGyI6oPI6IeT7T0KK0DY1aErqz+2uFReDs38ZFl6kgYnPkeVGiKUB
+         whj4ZiaJEzjJNVw8xmStgAv0PsTye5lxa6S2M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794406607; x=1795011407;
+        d=1e100.net; s=20260707; t=1794406611; x=1795011411;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Kkp0sf7AYW6VmAUeGJTN0IINgbfaB9P070/+YW6JJGM=;
-        b=yPyrHavWWWmw9mLKs5YGg+og07K3OE8m62Wa5MJwhDzjGetVUr1pivYaO9DMKMqe1e
-         O38ZHx1Ss+gwfEcgdshed95vHqTBU4108MGE8/5XDaW3zyZ+gvtwhKwESNQcAc7aXMWP
-         i2FSUw1pCINAyZhHRmpegbyb6T8QYCghCRbFohgOBOOIgceNbukYyIk+lx9OxbM4PPIw
-         bmHBHz8EJ6suj9AIFwBitr4KJWRmNoZgKopXSPsh+HHj4CufKEs4hyyw3lDEhypzFbLM
-         pOfP6edjCkojlIY/5hgGWuynpSe5uIttPcJcvPre6x/EAVX6713jFDGcXSI/x/5ATnja
-         ibqw==
-X-Gm-Message-State: APuU4Z/nRS4sVrjmQNIfEj1pWi7IyhRWphv/gAfPFokDbwm+VKLfj8RC
-	iFEsx3lhjmhw9COKqjNexw/lLhYMyx/JO6rcfhW0v1SbJu7SKbvKXSpCkhR5thLY0Bvznw5py+K
-	4ieE=
-X-Gm-Gg: AYBFou367H1TBeqMSiqOGLnvAtnYneGFNu08oKUMF/cIgK3hwwLThesDmw73oLXNnzR
-	Mkh+k1w1CyDBD6/nFEFfz6o+gX73eNfBgXuHZIJx5TLBOQalAzQ38T8obDxQrQVNLyXBm7PkHlH
-	nfZfgRvQj8bKISyI86f45fN+htyC66cEH1Dq5cE9aTggt0h8uFvMV5gyBlpgEtMMj5YyrUBOVGR
-	nMbkLdSl9NZIPNbseUbQcd9R+yqnufLWjJmTnPnMjlkbVJ3axmI2k8yUvnhd6MJ+PS5XvmteeaS
-	tgBQZr/VO/Ei6hjlLDVSJHrlTQJJQbgU1FFfgE/W4lg0lhGeev5iCR9jpNT/eke/5O1zT0oBRDp
-	RgvmO1Ttpio5BfjDdjKOfP1CUzBb4UEt1unTAZQPHovx75bR9/J9O31HBRwdXRyi4fQPNs6lOae
-	4EcAI/5mKtUjX2k3t1zJgvlZofEDg4Te4JAqTJ6WhyFd/mcfXzu4mCASXcAZP4Git9XugOdJFMa
-	W+1AB43dz3Lwokkfsm4XLqiZ0hUj/dzGtlZZEqkDHFVFs/si+BLNbfGP438BEdQjRpXy1SF4ynG
-	za4EPhVAjvYVSudvkMda6s8Qc0m2nU86oqx88vEXPjbzqgzC6u6+3CrWf2av2TJ1mguiZHsNMmX
-	tkVnwyNc30aUTSg==
-X-Received: by 2002:ac8:5fc5:0:b0:535:96cd:559a with SMTP id d75a77b69052e-556c0cbd262mr31027821cf.16.1794406607214;
-        Wed, 11 Nov 2026 06:16:47 -0800 (PST)
+        bh=rxh6ySQw4OyzmF+zvez+p31cAvwAIQMJM/KeP5k2znw=;
+        b=oExMsbUEc3An09obubwAnO+blrZPG+r4DlmWTXGi51F2JF3jbKoOJxVEEQrOaUl5EK
+         n+wQbSZzHa30OQyGa7WWwp/qewRlleGE3DBs3aOjOGfJ4Ok14nELGFCW64/2b2SQeCtV
+         uelUlELHVp8+Q/SfPCF2TMRhb9XWorPopQHdd1ArGoxM3kdZSHdEYk5YXxu0y5wXMVFr
+         1y4A5rX6y4STEN3QT5kJa2EVXk9mlnVXbMenz+2fqzAwtyswQcKM4bl5x3xlPED4798B
+         CQ1eQ4iCRjaxmv8Q/YpDj8bGpRaobtsW8VcSV9/5x6v5EPaWCOT7m1dV9owFbi21dfdJ
+         1+Zg==
+X-Gm-Message-State: APuU4Z8iD1+5DPfkLDa/N9wJcgLOrji7u3UYWOei/zFfj43C1n5UUf2v
+	v/FewNjHXDBB0MeU7XVWmIyevEblSEW0h2q9xDV7nidPbYxXtPojKPMuogPaZc59OGB8IU4cnm6
+	EoIA=
+X-Gm-Gg: AYBFou0a7KIUT6AYPPyLa6BHcEkvpcMKCwAeSlr9mMF7dGOeE36AK54+xb5geFbk6dF
+	tZ57S3TucthoCQWTPcrLqQ+FdaZTtlWndKETDO1Zc13By7rYQdE1cs4FPsde4txpNQLFVsVbnv8
+	LC0wyJjN9Pzqv94ATxKGZhiJc273LTvxlnn1J6QKZJDBMR0NikiYRM4x7fSG1BseCiLiDoqyPNK
+	X4HJrXWKNQAGp9ziZdtfbm1Wb01qQUcF8rgo6ILmzOap4gJMS+szKY7sMyuTgijwpXdPUSw/gm0
+	i7OtDwqx8UuNuDu8cF8AqYAzu0JCaxk9Gwow/Q0ZF74qJaZ/VuA5ePyi2lvkxiLUrrkJjvOZMNM
+	ejlJxBeCIy77yEHLz61zqUK/ruvtFUYmGilhPBQioCUHQ7QCMrBR4LhcdcU8OtqDmQTrAuwxLb/
+	Gao3oZWkPr/+XkndSkEhLL15mUS+hkl31EL0FeE+1utjsrc98/oly24L4rF333SMXQpIm8Hz242
+	KvUqBYKnA74rc+vb7Vco8iGkwYUZIT4/ngPv4ekXqtUmBe9vQzFta7JEfcSk32dZ9aiNHs5r9mb
+	tgSdmWsCXhu6KmyKxdwiBKXmqNKS7k+avfYXenkC1BHkQFo5AAcCGJ1OqV/p/DV9HT+vU69aucz
+	MKRLFZV8aC7iDXA==
+X-Received: by 2002:a05:622a:13d4:b0:532:cacd:e420 with SMTP id d75a77b69052e-556bdbeb543mr38533561cf.6.1794406610942;
+        Wed, 11 Nov 2026 06:16:50 -0800 (PST)
 Received: from localhost.localdomain ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550be2e592sm51505041cf.24.2026.11.11.06.16.45
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550be2e592sm51505041cf.24.2026.11.11.06.16.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 06:16:46 -0800 (PST)
+        Wed, 11 Nov 2026 06:16:49 -0800 (PST)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
+	bpf@vger.kernel.org,
 	Victor Nogueira <victor@mojatatu.com>,
 	Jiri Pirko <jiri@resnulli.us>,
 	sashiko-bot@kernel.org
-Subject: [PATCH net-next 1/2] netfilter: nft_fwd_netdev: drop the stale dst when steering to a device
-Date: Wed, 11 Nov 2026 09:16:37 -0500
-Message-Id: <CORE-9NOG.v1.r0.20261111073528-1@mojatatu.com>
+Subject: [PATCH net-next 2/2] bpf: drop the stale dst when redirecting to an explicit nexthop
+Date: Wed, 11 Nov 2026 09:16:38 -0500
+Message-Id: <CORE-9NOG.v1.r0.20261111073528-2@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <CORE-9NOG.v1.r0.20261111073528@mojatatu.com>
 References: <CORE-9NOG.v1.r0.20261111073528@mojatatu.com>
@@ -112,35 +121,31 @@ Content-Transfer-Encoding: 8bit
 This is a followup of the review of the teql arp-queue fix as reported
 by Sashiko.
 
-The issue: the neighbour variant of fwd rewrites skb->dev to the
-configured output device and calls neigh_xmit(), but leaves the skb's
-dst untouched. If that device's neighbour for the configured nexthop is
-incomplete, the packet is parked on the neighbour's arp_queue while the
-stale dst still describes the device the packet was routed through.
-Draining the queue re-looks the neighbour up from that dst, so the frame
-is built with the routed device's link-layer header and then transmitted
-on the configured device. The packet leaves with another device's
-addresses.
+The issue: __bpf_redirect_neigh_v4() and __bpf_redirect_neigh_v6()
+install a dst for the redirect target only when the program lets the
+helper do the FIB lookup. With BPF_F_NEXTHOP the program supplies the
+nexthop, the lookup is skipped, and whatever dst the packet arrived
+with stays attached while bpf_out_neigh_v{4,6}() switch skb->dev to the
+target device. If that device's neighbour is incomplete the packet is
+parked on its arp_queue with the original route's dst; draining the
+queue re-looks the neighbour up from that dst and builds the frame with
+the original device's link-layer header, then transmits it on the target
+device.
 
-The Fix: drop the dst before the device switch. Both lookup inputs the
-neighbour transmission needs, the device and the nexthop, are supplied
-by the rule, so the route dst is never consulted. Without it the queue
-drain keeps the parking neighbour and the frame carries the configured
-device's addresses.
+The Fix: drop the dst when the nexthop is supplied. That branch never
+consults the route dst, so nothing is lost, and the queue drain keeps
+the target device's parking neighbour.
 
 Conditions to recreate the bug: two network namespaces, A (10.10.0.1/24)
 and B (10.1.0.1/24) in one, their veth peers in the other with only A's
 peer addressed (10.10.0.2/24) so B's nexthop cannot be resolved by ARP.
-Resolve A's neighbour for 10.10.0.2 as permanent, then load this ruleset
-on A:
+Resolve A's neighbour for 10.10.0.2 as permanent and attach a cls_bpf
+egress program to A, with vb the index of B:
 
-    table netdev t {
-            chain c {
-                    type filter hook egress device va priority 0
-                    policy accept
-                    fwd ip to 10.1.0.2 device vb
-            }
-    }
+    struct bpf_redir_neigh nh = { .nh_family = AF_INET,
+                                  .ipv4_nh = htonl(0x0a010002) };
+
+    return bpf_redirect_neigh(vb, &nh, sizeof(nh), 0);
 
 Send one packet to 10.10.0.2. It is parked on B's incomplete neighbour
 for 10.1.0.2; once that neighbour becomes valid the frame leaves B
@@ -152,21 +157,31 @@ Link: https://lore.kernel.org/netdev/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/netfilter/nft_fwd_netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/filter.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nft_fwd_netdev.c b/net/netfilter/nft_fwd_netdev.c
-index a48c2f765bba..ad4d61d64cdd 100644
---- a/net/netfilter/nft_fwd_netdev.c
-+++ b/net/netfilter/nft_fwd_netdev.c
-@@ -175,6 +175,7 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
- 		}
+diff --git a/net/core/filter.c b/net/core/filter.c
+index aca8160b26a1..2af24f371648 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2318,6 +2318,8 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+ 		skb_dst_set(skb, dst);
+ 	} else if (nh->nh_family != AF_INET6) {
+ 		goto out_drop;
++	} else {
++		skb_dst_drop(skb);
  	}
  
-+	skb_dst_drop(skb);
- 	skb->dev = dev;
- 	skb_clear_tstamp(skb);
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+@@ -2433,6 +2435,8 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
  
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, &rt->dst);
++	} else {
++		skb_dst_drop(skb);
+ 	}
+ 
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
 -- 
 2.43.0
 
