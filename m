@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794392861;
-	b=YyDOZ9zez9swtVqhh12NB8qkrSDAKeUb3anN3V+7lulnJuyXZ34rW/Ct/Zj2+aPdCatz
-	 xsdVD+wG1Cl4J0ZfowtYh4TznjCvkhAxC5dKItoIkHkxYfh/FikjkGtpMQSLm6H7AJNAP
-	 8HTURupa0B8NIye1hLCHlC9DOsqjABmPW1pam7DuDad4c/q3SbIuS7ID+CTjOGOH4SL3P
-	 9iradcK68lHscRl/8r2bN6l0t4aRuBjoCsRAsZXLSq9C6bP/yY2yfBEA4BkP2nsPRIlgu
-	 Zy7eIKXsVArzuOObu18V0Wv4BB5MNA2FwGI+m/mSxE1tgyizUlBmolTo3Sv3DyD/7tw==
+	t=1794392862;
+	b=nxdfqByT4Wi9iZjULS/xM5LG6aPaUjC5REOQXQ+wCxZtyDsIHpaFHTSs6hHLUxMO82V1
+	 foA1Ex04WZRgdH8ZocFol1qlafBwm18Zf/j64JRo/XIyiy21Zs2OYe5NVPZl93wcoVlIW
+	 RweUbzduAWXevreAIY6le05J7OBYub4N/bvJg9ZWUVNU3Mj227575CWxXllDPMLt7xBeo
+	 /mEBxJ2VHoLOQ+rJ+h5kVEJragUD47b89NSmJpEHuiRKU/7Ej9vVbxC6d2nnEF79Tox3Z
+	 I+wLpHDVHzPOeKEnDpPewoTrlgdGk1cmR5qy8Ir0IQaQyMb2lQgG6btNKqAqvViKkrQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794392861;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794392862;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=i3zqzKOviMB/7i3MMVHu6vwKrbi96jH7wX2hwfL9yZs=;
-	b=Iyrs8oHMMg5xE939X0327EV8H8T8YTxl8oBV1+yHZzVzsuwq5rVZK0ZpqRh4ksmImnMK
-	 RpukVgxdt4AOoZvTwT2WMbYp1VYi2Rbxhn5EvE0UryOO0yNMSf1Eu46qDMyS9wWGvLjgI
-	 qKNBHiWs5gHtmHQLcG4PGVtVlS+8EhnwykX87+IJPvLaASqtdVaKQK63IFXQl1SKeCV0h
-	 q7m/N0cT6leQVwhnFhdt2l6eLDJxcsIxRdbCk1c3uPmNKS8nuWPSd9xrdnIsA3Gl6XrBB
-	 lwC5pugaY8uLx2nr6Boi2dajcpaPaXdhsuHxpgJSneT095/7OnnnUrsRa5+/rX9xesw==
+	bh=lOIbN1WC9f3tYk8ODaLG/icVZKFBVBuOQ0N3217s/zM=;
+	b=SbEEHt9igS9fs97wqbaeE9OOJckFLsLy6YYOs3hyF7U8N86NPMYpvrv8X2ub6tKavPtY
+	 g6WWTAqlmENeVQhxBCPfNJmv/Jdkx65Pak4YkFtl6vNq/lfqrNPr5dPISqC1pNGzY2ICk
+	 c9Zz+JWmUy5ZTm6gpXyDRl544foK7jmYr/j5ZJFuXW/UervrFlMLRS3Meyw1FaioZ0NTX
+	 B7u3FuwI3OrA5iUXfOJrBPzJdOWcRO4wCjL4xAln0Dm+03PaX54UbCYzJhpmxdPjULZnk
+	 mvGuIB/prNGpVQPwj1Zrj2Ek4RXsDThhz2kmnuGUy7pabfy2DWTxlaWfU+wq4bmm8+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=ketxwRrp;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=XWOXunOD;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 538D6606A883
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B4559606A33F
 	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 538D6606A883
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4559606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=ketxwRrp
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=XWOXunOD
 Received: from kero.packetmixer.de (p200300c59740DeD843BE7E4A980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id F21CBFA1BF;
-	Wed, 11 Nov 2026 11:27:35 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 7EAECFA272;
+	Wed, 11 Nov 2026 11:27:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1794392856;
+	s=09092022; t=1794392857;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i3zqzKOviMB/7i3MMVHu6vwKrbi96jH7wX2hwfL9yZs=;
-	b=ketxwRrpYj6dSTh62/2AwYyFHwCu+GS0t11cfu1psnbF3zyXjQ4YOf+ZpEF0OgFdCPEsN1
-	26Bv9IkBo9EVXgeYtd+bfM8mmHwvSUB6OplPpQpe98MnpfLDrnjZlWQWWFoq/XS2knsrcK
-	ZeAHCW5bQtvNn5KFomqMB/Uxrd4dQtwOiAKk0Ozm6MgO5ObbFVq4abYvDE2JCW3dyEBKv3
-	igrzzyZZVrcTj0OGijtVAdrPJoPas+6Lr7Yj22tT7qEgqfJcvKXLnOPGqzY+djxyhv2uW0
-	yPT4mXLZAKzVSo8SRah8WsYDkgYds8tXdxu9O+1qb2zuyGAy105ijhNfBq7q8g==
+	bh=lOIbN1WC9f3tYk8ODaLG/icVZKFBVBuOQ0N3217s/zM=;
+	b=XWOXunODgWFI2kPC8eaN/q4DOJQzKG3IhUVsS23aG4TBCz151GkJ2Qa6RMoDVkKvkZXDDs
+	HA0QKzAcb7SLzUO8D0o/GjHkPZz0IoD5hzMFOLaTw4l22XwqG8D2EQ7P0K3TkjEBO7KPww
+	5VPzaYW3C/Rx6G3YlJULZfAJ1GQHKYov6u5bM+zMtS5wBzzU9m1gFM0cmlYEkKFfnhZIlb
+	7RBMjv4cNRYallN6FxxcOakSyGGrJbbow4JZq0LbWNAq7v+O/A4Vk0ll5gM8qGNH1iYuEL
+	irxwqHKSm1EqKQTxiMkS2K7GN2sRUbAnTY3oI90Kr3ippVDvXqK5/dPkPeTuHQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -60,11 +60,10 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
-	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 06/15] batman-adv: dat: annotate last_update with READ/WRITE_ONCE
-Date: Wed, 11 Nov 2026 11:27:20 +0100
-Message-ID: <20261111102729.2096241-7-sw@simonwunderlich.de>
+Subject: [PATCH net-next 08/15] batman-adv: tt: annotate last_seen with READ/WRITE_ONCE
+Date: Wed, 11 Nov 2026 11:27:22 +0100
+Message-ID: <20261111102729.2096241-9-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261111102729.2096241-1-sw@simonwunderlich.de>
 References: <20261111102729.2096241-1-sw@simonwunderlich.de>
@@ -81,80 +80,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The last_update field for batadv_dat_entry tracks the jiffies value of
+The last_seen field for batadv_tt_local_entry tracks the jiffies value of
 the most recent activity and is used to detect timeouts. These accesses are
 not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
 to prevent data races caused by compiler optimizations.
 
 To avoid an underflow due to an non-strict order read of jiffies vs
-last_update, use jiffies_delta_to_msecs instead of jiffies_to_msecs to
+last_seen, use jiffies_delta_to_msecs instead of jiffies_to_msecs to
 evaluate the delta.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/bug/linux-4933a0a0-367e-43b3-8da5-29ae37dfdff3
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/distributed-arp-table.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/batman-adv/translation-table.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 0260ed7e828b2..7e82c154c13f8 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -11,6 +11,7 @@
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/byteorder/generic.h>
-+#include <linux/compiler.h>
- #include <linux/container_of.h>
- #include <linux/err.h>
- #include <linux/errno.h>
-@@ -206,7 +207,7 @@ static void batadv_dat_entry_put(struct batadv_dat_entry *dat_entry)
-  */
- static bool batadv_dat_to_purge(struct batadv_dat_entry *dat_entry)
- {
--	return batadv_has_timed_out(dat_entry->last_update,
-+	return batadv_has_timed_out(READ_ONCE(dat_entry->last_update),
- 				    BATADV_DAT_ENTRY_TIMEOUT);
- }
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 46304069b3b75..76635ae82c84b 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -917,7 +917,7 @@ static bool batadv_tt_local_add_existing(struct batadv_priv *bat_priv,
+ 	struct batadv_tt_common_entry *common = &tt_local->common;
+ 	bool readded = false;
  
-@@ -453,7 +454,7 @@ static void batadv_dat_entry_add(struct batadv_priv *bat_priv, __be32 ip,
- 	if (dat_entry) {
- 		atomic64_set(&dat_entry->mac_addr, u64_mac);
+-	tt_local->last_seen = jiffies;
++	WRITE_ONCE(tt_local->last_seen, jiffies);
  
--		dat_entry->last_update = jiffies;
-+		WRITE_ONCE(dat_entry->last_update, jiffies);
- 		batadv_dbg(BATADV_DBG_DAT, bat_priv,
- 			   "Entry updated: %pI4 %pM (vid: %d)\n",
- 			   &dat_entry->ip, mac_addr,
-@@ -468,7 +469,7 @@ static void batadv_dat_entry_add(struct batadv_priv *bat_priv, __be32 ip,
- 	dat_entry->ip = ip;
- 	dat_entry->vid = vid;
- 	atomic64_set(&dat_entry->mac_addr, u64_mac);
--	dat_entry->last_update = jiffies;
-+	WRITE_ONCE(dat_entry->last_update, jiffies);
- 	kref_init(&dat_entry->refcount);
+ 	scoped_guard(spinlock_bh, &common->flags_lock) {
+ 		if (common->flags & BATADV_TT_CLIENT_PENDING) {
+@@ -971,6 +971,7 @@ batadv_tt_local_create(struct net_device *mesh_iface, const u8 *addr,
+ 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
+ 	struct batadv_tt_local_entry *tt_local;
+ 	struct batadv_meshif_vlan *vlan;
++	unsigned long last_seen;
  
- 	kref_get(&dat_entry->refcount);
-@@ -940,6 +941,7 @@ batadv_dat_cache_dump_entry(struct sk_buff *msg, u32 portid,
- 			    struct batadv_dat_entry *dat_entry)
- {
- 	u8 mac[ETH_ALEN] __aligned(2);
-+	unsigned long last_update;
- 	u64 u64_mac;
- 	int msecs;
+ 	if (!batadv_tt_local_reserve_entry(bat_priv, addr))
+ 		return NULL;
+@@ -1000,8 +1001,9 @@ batadv_tt_local_create(struct net_device *mesh_iface, const u8 *addr,
+ 	ether_addr_copy(tt_local->common.addr, addr);
+ 	tt_local->common.vid = vid;
+ 	kref_init(&tt_local->common.refcount);
+-	tt_local->last_seen = jiffies;
+-	tt_local->common.added_at = tt_local->last_seen;
++	last_seen = jiffies;
++	WRITE_ONCE(tt_local->last_seen, last_seen);
++	tt_local->common.added_at = last_seen;
+ 	tt_local->vlan = vlan;
+ 	spin_lock_init(&tt_local->common.flags_lock);
+ 
+@@ -1477,12 +1479,14 @@ batadv_tt_local_dump_entry(struct sk_buff *msg, u32 portid,
+ 	struct batadv_tt_local_entry *local;
+ 	struct batadv_meshif_vlan *vlan;
+ 	unsigned int last_seen_msecs;
++	unsigned long last_seen;
  	void *hdr;
-@@ -952,7 +954,8 @@ batadv_dat_cache_dump_entry(struct sk_buff *msg, u32 portid,
+ 	u16 flags;
+ 	u32 crc;
  
- 	genl_dump_check_consistent(cb, hdr);
+ 	local = container_of(common, struct batadv_tt_local_entry, common);
+-	last_seen_msecs = jiffies_to_msecs(jiffies - local->last_seen);
++	last_seen = READ_ONCE(local->last_seen);
++	last_seen_msecs = jiffies_delta_to_msecs(jiffies - last_seen);
  
--	msecs = jiffies_to_msecs(jiffies - dat_entry->last_update);
-+	last_update = READ_ONCE(dat_entry->last_update);
-+	msecs = jiffies_delta_to_msecs(jiffies - last_update);
- 	u64_mac = atomic64_read(&dat_entry->mac_addr);
- 	u64_to_ether_addr(u64_mac, mac);
+ 	vlan = batadv_meshif_vlan_get(bat_priv, common->vid);
+ 	if (!vlan)
+@@ -1815,7 +1819,8 @@ static void batadv_tt_local_purge_list(struct batadv_priv *bat_priv,
+ 			if (tt_local_entry->common.flags & BATADV_TT_CLIENT_PENDING)
+ 				break;
  
+-			if (!batadv_has_timed_out(tt_local_entry->last_seen, timeout))
++			if (!batadv_has_timed_out(READ_ONCE(tt_local_entry->last_seen),
++						  timeout))
+ 				break;
+ 
+ 			batadv_tt_local_set_pending(bat_priv, tt_local_entry,
 -- 
 2.47.3
 
