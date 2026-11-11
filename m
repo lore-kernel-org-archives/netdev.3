@@ -1,65 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.191
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.95.11.211
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794409736;
-	b=bExkx+FxDG9Eis/AFR22RYb8OulWR8laJjjfT1n2ucwXk1kAIiiolpk2DJosSRWxHQjH
-	 TgEVv25BByA9IJCEfvMYjd/BlSANdVvVWn/ftfDK0ycc2pWULzd6hfDWrQHs/mkzxKb0v
-	 n3USeAxmQIwe0pRZxGC+pZBaY3QN1jiw3vtgtck0dsVxP4Ouop5LXPUQvDhI2OxxvnhSe
-	 DPFYfh5Fx7afVyh8P5DTri4AV0QJzmX6Z0bZ1Boqs7LOonuA66/YsVmC0mvZRNh7m2GaY
-	 bbqdx2kGCUv/t6DXLloAPJa12HYjyhqQHb+NIm4w87g2QIuoKWCW6arDTuUcLA+mhzQ==
+	t=1794409928;
+	b=MWPJKmPyp8wx+wGW7VKUKHdaMXkk6tsOcpRoNXGlWeRhpmrfU+LuN/+Fbw0rSmN2giCF
+	 zhUx5VkcGmilppk9o666JBYv8eJva8qD0It9DQ8F97ft/fHSVLj4GS3diqBvcPeFTi/d/
+	 gUl8aap5dMBwOif5ts3ECTXN3w/CwhsOLxKjyPkTCAgC33wYX+50RkAHwrwhahJbSvLsU
+	 XTFQSGheD13JTP19bHaOro5xVetjkD17JcXXuiMOcbz9mUFkFPgUCIXaEDissL/3z/IxR
+	 1GEh9utTXqsBSZ2CjGwkiWDIX/d4lsYs/anBHXm44f8cKvEt2XglCkJBMUPieT2ddKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794409736;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=LPV/0m1FhlHncjDMGPgjphBsoLLLCxbF9YAsFHWAVCk=;
-	b=FylSSbuYy8GuEPM3wkRozHcrbzxFA3DxWg48dz3hUW0u9j/Z0jUTQ3ixrba7y8gsoIgB
-	 JT2Aka4pvjob/CJ6wi+D/NXbhjNASjQRa5SFOHXqcpC2rA+1ck5kqE9qPnoMtmxJjo6AX
-	 Qg3BQZddSLfSZh/wqICXlRWIAa+OSgXr7UHHXM/PxywU+n5OpZbg4ryWt8ZtcKPtI8eu3
-	 TEc8vnBfUxMQWL0ZJ+6w97regdNGL2wG/WamCIwKYlw4mB0cRjHsy/5JMu8YPuq9ySjsA
-	 x25U4iL2kBQQ98vmuyF+Nw2yIE61VqihQtC31Yr7j5gkWWiEhBQq2GW4E87QMYsVAVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794409928;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent;
+	bh=dehBO8Yxo1qlGsyLOmGqdqT0CExk2sS3MX1Vk4oa/6A=;
+	b=DbhAT6FgGRL3UmCOe8v7NLD7ilAdyvziIOjYNx3OXqQf0y1zEOUqvTCitYOphUofvTdU
+	 fvjQBy7iA0nJJ5s1k8s9TYNxV3KWWBMuQtNFCSsPpSLwCKfzV5xk3lojvnD2P69rUW3u4
+	 4hO5Z9dYMOA7KMuaujF2k20ovhu/LVsDvgCcwZP9ICypkUAldvF0vk5uX3FB3/R4I3lgO
+	 10xMB7+vfNUYAwZbSJqZr9DO3uN3Kaj5XIl/m+FpaCq9TSJBiSl/Lai778mLWbBqsW6Ga
+	 sYkATyl8o1KkffkKQNybi0mnoB7kjkOn8R3CoebYoM3ax26NHBWREbsvq5y00q9+o7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=EAOBzMc3;
-	arc=none smtp.remote-ip=203.205.221.191
-Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+	dmarc=pass header.from=lst.de;
+	spf=pass smtp.mailfrom=lst.de;
+	arc=none smtp.remote-ip=213.95.11.211
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EFA606A89A
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:08:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18EFA606A89A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=EAOBzMc3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794409731; bh=LPV/0m1FhlHncjDMGPgjphBsoLLLCxbF9YAsFHWAVCk=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=EAOBzMc3O6x8UPIR7x/MytAXpBssLOPoe96zo1eP/1KlUnlf4PfpX+frIPnoF2xtp
-	 kxRZApTZHVC1lQr5aSKekIlBPJ8i1w6a6x6xMY0qFr+qA7VFQVLbqwFJI9wmkegfVw
-	 VimFhgk0wXyExaFHqVdCdf5XTyUxiIv+EeAdZ3P0=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-XMAILINFO: MqG4KXyEKpQy7PiNJkUwScMSuOKEvaNZq9Aq/l5NSGpib8u2OnqKzLAYdyyp/A
-	 8eVi9qNs+CP5ydoCffnvW6hiPslk0aUOXOBuc1thONTqbCeHXpC+v6IONyx6aR7S/u/DenGt2SRoX
-	 ajixyL2fwiQhdxPEs/cozU/PKNbKmLEKC1gQGjV14krN6k2p6X2SlQgnu2Ly1El7o5UtwT8DpGQyC
-	 tGQkMhFiclq4hbM2hsvcexfNtuzWL6xAg4t7T0hS5hAo0rmaYPqcz03qu5ByugQ3Q1nnsZQEeqNBS
-	 BKsjyM0hJ9h5mji3S3fpmh7QDEZZVMEtN4k6vD1TaxPUEgY81NZXBlPSYHE1CURSMKUhy5VBtEqS0
-	 MSnr/yGnQW+h+mBm3axG/KeXlS0Qi6LNRU4T0CxJ6M2x+oiXVnRKkyHF/UzJjTJOGWfFAgn2HKr4+
-	 uf3Dw227SMxQzvtD7V6LZZfw30N5ivVE9JGpoNPNzU78GOyiT4vCqovuWQADU2ALrfsZk7RuJ1fr1
-	 fl9japYPU6vqvNMSo9rQCnZqU3F7ilWJRr97qmhUhoiyJK1Qndqx1KQUuPMdIgQwVIMqSwvuef99u
-	 tsIp43Qdd45wQ0nq/wkPRm9Y9PSH3Tx8zP3zVf2HJ1Uov/C0eJwmi8XWaK/ryvS+7gURwal9uyN13
-	 jJh17/rAHGASKuibWbMZxk4MNqu4WYdEbWM2hQW1LQfF3iHLl4h7+Ty02V9ZzSfTVY3DTV7g7SXKI
-	 MdcsD5M567oFWFEeTGtvUYjb1nfRp8j3u+mGR4g44Ei3DAOzjZ3fSUGBtDGmyNGXajcBP73ws/U77
-	 UuMQek1qD+4SJwy0IYkcDTCZS5YME9hcHjX4dmHN8KSO0OA3G7lwZ4pl/UG0ZIDp3+mLV1yaufU6V
-	 e+EHW5xi8V0Kntk4xbTC4MUwdIkHMToFy3jPYH8K0joV1W/6PtjmSk2dLtWQA58/jNrHkKTHU/Skj
-	 8eqtSrFPB1lxVOkOm1tdCMhRMhGoe4YG4SNeVNvIvN9K1HMFN1tllxFDW21NZOhj/lguwaITAFRiu
-	 0+f0Gbz4dUoMXjkI2iCMVoTBSqvq6ljD6bm1yupwvz65wUMwz+nw5a/YNoAmQrihrF4qKOsUSdQN3
-	 Mtgm6JTFWchzFA==
-From: "=?utf-8?B?emNq?=" <zcjie0802@qq.com>
-To: "=?utf-8?B?bmV0ZGV2LWJvdCtzaW5mbw==?=" <netdev-bot+sinfo@kernel.org>
-Cc: "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?bXN0?=" <mst@redhat.com>, "=?utf-8?B?amFzb3dhbmdpbw==?=" <jasowangio@gmail.com>, "=?utf-8?B?ZXBlcmV6bWE=?=" <eperezma@redhat.com>, "=?utf-8?B?eHVhbnpodW8=?=" <xuanzhuo@linux.alibaba.com>, "=?utf-8?B?YW5kcmV3K25ldGRldg==?=" <andrew+netdev@lunn.ch>, "=?utf-8?B?ZGF2ZW0=?=" <davem@davemloft.net>, "=?utf-8?B?ZWR1bWF6ZXQ=?=" <edumazet@kernel.org>, "=?utf-8?B?a3ViYQ==?=" <kuba@kernel.org>, "=?utf-8?B?cGFiZW5p?=" <pabeni@redhat.com>, "=?utf-8?B?aG9ybXM=?=" <horms@kernel.org>, "=?utf-8?B?dmlydHVhbGl6YXRpb24=?=" <virtualization@lists.linux.dev>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net 1/2] net: napi: add completion with an ordered IRQ mask callback
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90E5606A326;
+	Wed, 11 Nov 2026 15:12:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B90E5606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 52A7668D16; Wed, 11 Nov 2026 16:12:03 +0100 (CET)
+Date: Wed, 11 Nov 2026 16:12:02 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-mm@kvack.org,
+	bpf@vger.kernel.org, linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org, apparmor@lists.ubuntu.com,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+	fuse-devel@lists.linux.dev, linux-efi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-usb@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
+	linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 38/41] fuse: refuse files on pseudo filesystems as
+ passthrough backing files
+Message-ID: <20261111151202.GA11391@lst.de>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org> <20261110-work-loop-pseudo-v1-38-4c998976c6c7@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,37 +60,13 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 11 Nov 2026 23:08:48 +0800
-X-Priority: 3
-Message-ID: <tencent_4DBDF69909B9FD811F54F2DC0E6BAC1C0507@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_AA4F39DA7ADE330C721C03AAA832B92DD608@qq.com>
- <tencent_74EA7A2E8BF5758E9C5EF18C9B1CED401D06@qq.com>
-	<179440541756.2168702.17991706426089713368@kernel.org>
-In-Reply-To: <179440541756.2168702.17991706426089713368@kernel.org>
-X-QQ-mid: xmsezc52-0t1794409728tprkn7v98
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-work-loop-pseudo-v1-38-4c998976c6c7@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-SGksCgpJIGZpcnN0IGVuY291bnRlcmVkIHRoaXMgaXNzdWUgb24gTGludXggNi4xOC41OCBk
-dXJpbmcgYSBtdWx0aS10aHJlYWRlZApUQ1AgcmVjZWl2ZSB3b3JrbG9hZCB3aXRoIHZpcnRp
-by1uZXQgaW4gS1ZNIGd1ZXN0cywgYW5kIHRoZW4gaW52ZXN0aWdhdGVkCnRoZSBOQVBJL3Zp
-cnRxdWV1ZSBjb21wbGV0aW9uIG9yZGVyaW5nLgoKVGhlIG9ic2VydmVkIHN5bXB0b20gd2Fz
-IGEgcGVyc2lzdGVudCBSWCBzdGFsbDogdGhlIFJYIHZpcnRxdWV1ZSBoYWQKdW5jb25zdW1l
-ZCB1c2VkIGVudHJpZXMsIGJ1dCBub3RpZmljYXRpb25zIHdlcmUgZGlzYWJsZWQsIE5BUEkg
-aGFkIG5vCm93bmVyIGFuZCBpdHMgd2F0Y2hkb2cgdGltZXIgd2FzIGluYWN0aXZlLiBUaGUg
-cmVjZWl2aW5nIFRDUCB0aHJlYWRzCnJlbWFpbmVkIGJsb2NrZWQgd2FpdGluZyBmb3IgZGF0
-YS4KCkEgZGV0ZXJtaW5pc3RpYyBLVW5pdCBmYXVsdC1pbmplY3Rpb24gdGVzdCBhbHNvIHJl
-cHJvZHVjZWQgdGhlCm5vdGlmaWNhdGlvbi1sb3NzIG9yZGVyaW5nIHVzaW5nIHRoZSBwcm9k
-dWN0aW9uIE5BUEkgY29tcGxldGlvbiBBUElzCmFuZCB3YXRjaGRvZy4gVGhlIHRlc3QgZGVs
-aWJlcmF0ZWx5IGRlbGF5cyB0aGUgb2xkIGNhbGxlciB1bnRpbCBhCnN1Y2Nlc3NvciBwb2xs
-IGhhcyByZWFybWVkIGNhbGxiYWNrcyBhbmQgY29tcGxldGVkLiBUaGUgcHJvcG9zZWQgZml4
-CnBhc3NlcyB0aGUgc2FtZSB0ZXN0LiAKClRoZSBvcmlnaW5hbCBidWcgcmVwb3J0IGRlc2Ny
-aWJlcyB0aGUgc3ltcHRvbXMgYW5kIGNvbXBsZXRpb24gcmFjZToKaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbmV0ZGV2L3RlbmNlbnRfQUE0RjM5REE3QURFMzMwQzcyMUMwM0FBQTgzMkI5
-MkRENjA4QHFxLmNvbS8KClRoYW5rcywKQ29uZ2ppZSBaaG91Cg==
+I've seen setups where people use fuse to mediate access to sysfs
+sysfs in odd ways.  No idea if that's still around, but if so, this
+patch will break it.
 
