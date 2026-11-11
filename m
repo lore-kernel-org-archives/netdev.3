@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423730;
-	b=yYb+aJtMyoyORful5S+9eF6TSK6JHmereUqrAHoorky5BNhafO6tVFpCeRbSPQDLG1IV
-	 qL71i85TuDECmwFcwFp4MvrpQXgYPZynsA52B++zjnf4kH950nMpiWIQtoKKSY2cBSPv7
-	 pnp0q6Zo2O9PtovKAR/RJ+tT6SiSbUAVOAY46kxVBQkH+tjzd8R7u/VRP6X9OiGhY5RH/
-	 fuU313alqsnjtTu0/OvBUp+vjAbXNBusP/xyrL4rYGM6ijgHIZHigTK5/iK0Of0EQH//B
-	 HfLX7cjgM6VrRuxCrguuOMB3eymNbsyG2G/iGz/DxBXB8PJLTvIgmF6ssQpfnSAYZ9Q==
+	t=1794423736;
+	b=fCqC927HndDxQ0nMoVyva7yLjWPD1WPQUr7j1q+P7QeuKvzPocWGt6ClerTzXR7TP7tJ
+	 EPJg3HGhWXlU0sijSpmGWCcYaKl0Mkmv87tLV96SE/NMJxYiKBKe76XWRgw3dQ3uHQU0I
+	 jcrAKWKEil/mndPgd/kESsXXXZZYnflsCVn1bnLYADRYvCjg1E/M9VdMmf0BOX01rTq3F
+	 WvMxHrp44uri+xWwVXvfXLmBHV0Q/jAeFd+B4Ed8rHalMvSZxUtKZO7474YVb47pcQYsP
+	 1siCvQkYtJVbBx9uT+9+9QpM1DGbzweTyVG3eWUaWmcXywfiUkBz7LB6EOL5+2dgYzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423730;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794423736;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=bppZo3I5JD/laDzucSCMcEHXq0XRsoF4ETRLYmZ5nIg=;
-	b=3dei3d/6bh6PCSnM1+QIa9zhCkKAsoibSgFG7TRFTGnuDwJrgx/cA2FUeFZTGiotliXs
-	 iJ86VkogelGhU6JKm/Q6Q8gl0yiKJJ/I3Bg6VcfSAQq1uvWyYZjDu9U8OVCz2JecLtriu
-	 vvGa5EiCQ6SfR/aSclSUJfGYlcS0a0b+aOUef5c6rH2/RUvvgzF67tw2G+Vi1O/LDkz1d
-	 d5fH4cxIXWPnqM7dSqcYs+f8q/SuYWNTErSIVYkOaaqP6hZM7Z1x+06rP8Q+yHhzBs1N7
-	 jg5TEGRgIv99NLrL+MTxShXB9Z05BPUXTu3V1GqiImaMr6set7+utREUAJyqWl8SaZw==
+	bh=zwfLNPGciLDqgrHHkZD+nMXEbxgqL33UgUxrzeLCTCY=;
+	b=b4AdyIr9bKRii/GcbH5trKZc4j+Zde1JixhDAC7tanmNtSEeJ0Cj69IJOrwpmUnVrTAh
+	 UvBSeaRXAfVfz6wcukJ7yaiaSDuyg6ML8rEpmhE3gG6MVx9MbjoIOx9WqpSv/mKS7gmyD
+	 azGf/PS05eF4GNdkcMDv9vc7FH8xul3vwFaIfwiYyt/p7vj60K+eP+WpfBZxRyJkzYVkR
+	 5ggBeO3Xrk+/5DexRWrXaPFKho2C/8VSIIjb1dXRgl3bFh3M3d9KdZc0x/eyPHbFgToCa
+	 8/0d9wHg8ZgMhSYuq/Gk4p0uyvt1HLkkW+X9zlQPs7DKeBg4/Gvo6wFeoCX/B8wv4IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aD3nWxSY;
-	arc=none smtp.remote-ip=209.85.215.228
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FJAFzVG8;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4532E606A335
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:02:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4532E606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D801F606A332
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:02:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D801F606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aD3nWxSY
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cdb9d5c1c8eso1793035a12.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:02:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FJAFzVG8
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3b0a519049aso2330390a91.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:02:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794423730; x=1795028530;
+        d=1e100.net; s=20260707; t=1794423735; x=1795028535;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bppZo3I5JD/laDzucSCMcEHXq0XRsoF4ETRLYmZ5nIg=;
-        b=ohCS4E4/qDsV2J39CXV/CEJ6RAIYcO41huMmwszb5ng23rwuLtoBMmgiT6x74b1LdY
-         zxC5mAswixz4K6Dmb8IqQP6HNDNQskaJFJzDUx0/F/eDuJtWVDh7g39/F129l6QwpwG8
-         k86BxvVzO32Q56s/cZeO2BPEAr07tT62e01GdJT2LdwobKOeFZ4WLQJFR4wZ88iEMUP+
-         +EgInlzrO+Gfm67xoS+lh/Bjot9jPqEY8sS7sSikZIX1eLhFr1gipuNckH8U7ANBZUIo
-         eKNpS2XvvB0L0sqlywktCj9Vc0dmgqyaJ6+7lC0YDkbH4Ke4a3oVNZDUitcppJz1Y3hW
-         H3tw==
-X-Gm-Message-State: APuU4Z+yH/xjIWUxc6VeNkrWb8O5BvSB5PztrheHuvBDjzT6zL0mVRaY
-	KMk9v9Gr+xScQxU6GzikDUMeEA3hrYxKB1vWLZxSPwPuNkuZjeOyco6AexGBiyi/MXRo4RkY4r/
-	xnbf4XCoaycBh/HgTkoTImTrbIZ4kkvzwSEi8vbIhxnjmuqhC1hacNGWVQUPm7/mm6TTVDDLnpA
-	4uJyHy6NXVezMncEIodibe8ze2PJMLFBxb50hWfzSCHjoD29ePZLsuDqzyuIJ6z6B3qRZZowrBZ
-	UOjdHJXXfHquaicgg==
-X-Gm-Gg: AYBFou1ewL6QR0Jyx8wK420ztjhDPomkjtEqsEXklMRbdZg3TByJrd91nHkTpGP6zZR
-	0wPSCBb5sE2ZITeLng5hL405A+FHZTx0UEIIVsOznirY5rWceB82iDv74eYutsavaMYP7wiK5pX
-	Do12ar+1+CvRaAaZ+uiJF5IHZRDrtF4bvFdBrqE73o+jntNrAxfJLkoZOHKFi/urnP5fq0cZosS
-	7pUVvDtWTaht4U2Va1pxHO5aynehZnYo40cmFBIfXr8BmqrwrOAOt8aLYuqQ0R2TAL5H/9nEECQ
-	5nxVBVcWRqFdUfEpxc7osgdxqtqb1HgG0PuXJDQSHxMlWjzjCUnLGwN+83fYwaGL5b1kz6Lsah1
-	Bm1mcoELsXljS3I3CN2IrgsXhHyL38/WVzxytnqNMG3gA8U3nOcDvyqHGKlLMQBaSAoyiqTIEor
-	428SuoXC4Evkg3SqxH3Kq/C7PHrnyDzKPrAjPqQaELxA==
-X-Received: by 2002:a17:90b:4f43:b0:3ae:4dc8:3d3d with SMTP id 98e67ed59e1d1-3b182f5fad5mr3253824a91.58.1794423729517;
-        Wed, 11 Nov 2026 11:02:09 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b182e2e06bsm884859a91.3.2026.11.11.11.02.09
+        bh=zwfLNPGciLDqgrHHkZD+nMXEbxgqL33UgUxrzeLCTCY=;
+        b=C8WERds27FoiEXRyc/qOBslFp2ZM91V4XahqzybW7E7p1cOT1Rm0ocLLInLwgicEWq
+         SCOq8DQIfEcWLjdhy5txfp1kQRjmq0TNDb//DztdRA+SFBjlM0unEFIBH4fF0aJMiX2m
+         jfMvvYmJ+jQ01owGRTJh2TBEkwBZWbKUI00kbqCQLmHDsH01nNPIQRnaEzbOc8uXMAQl
+         Fbx4ZKkCLgNfBeRgiDdH1ipnf3rzR3/uoFeuTSEliwkL6RbqvtUM+tWrW+ZKq1rY9z3S
+         Gzk1Ndd6L1+3+Jwj1N3PFtBrVbZxi3GuGjvEGlH3NYHH3nlKBSmdLbU2+L7XfiH6VAdv
+         S6qA==
+X-Gm-Message-State: APuU4Z+MQ1A8DN5/2DtPWCiVs2r5oa+/5NT+dJmyTA+xbaTBcouj6ngo
+	OU1578pFssNAbrwkFI9+awhWvYp/ZoVkbfvb30HMHzJmOYajGp+VaCP6h5+r08Hsof8KNHoOcLq
+	9BE8ZlSwuwu8dA5t49ciOXoyP0jVq1i6y0wxQhOP2qWt6zLo91ZQRwjwRqJicVrF9TD1WW2CMBT
+	0SQRa3ZV74d17Y6yCUA3WzFXJzLWN7ITXDDoGrqtJbGJisg2ZH1Wa/+Lwjq0KBzvuiXsMFZhbp1
+	lKlJmekfhapGHjzFg==
+X-Gm-Gg: AYBFou1rQ/Xz8slsg8GNi9eh9lUNJVpOnggeuDeQfgUoMw1TSpeHNYAAbRje4Emnxj5
+	FbK3EyEZBbsNhFZ2ioLB1rq+EdwnDkajHmYcxHZIZyC7rY/cjja2HjGnc8jL2VKVTTdZIIrkpwZ
+	JccBGoqwaMZzavaLuUJ4GfVJstaz0YcHEXd3hBmz+qUorBvV25aNoXrU5WCQvv8N4QoFPJDIrv5
+	HBX6n3bGTIs5TI2krVHnXWQImBo38tjYfsALLYPocQc5hzHoRZUSpcLacxf+Y0z0tpxww2Q5B7W
+	vo3umGNDQE49m/ehoUlNKyM5OcSLC3B6hwKiR2y+QxjKWmzXw8UnOCLXrXkNYdxk0ReEA7l48Do
+	7PeOI/2G65uv2gstLfrqf3smgfGzoS0o4frZ/s50/mj41Miu33vpAqR9hFpBmNx/g7WRyptzZQg
+	bOU7i3NmeHthP52CcXekjz0NhGuVCFSlKpz2KOyoxUjA==
+X-Received: by 2002:a17:90b:270c:b0:3a4:7730:33dd with SMTP id 98e67ed59e1d1-3b182f60ae1mr2882359a91.58.1794423735065;
+        Wed, 11 Nov 2026 11:02:15 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b197c125d0sm217623a91.1.2026.11.11.11.02.14
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Nov 2026 11:02:09 -0800 (PST)
+        Wed, 11 Nov 2026 11:02:15 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30bcb065bfdso5690225eec.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:02:08 -0800 (PST)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36d1353fdcdso2449545eec.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794423728; x=1795028528; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794423733; x=1795028533; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bppZo3I5JD/laDzucSCMcEHXq0XRsoF4ETRLYmZ5nIg=;
-        b=aD3nWxSYLkxfgQW6/AqhU2Lgn8lrUhZ5h2kvx4I0+/sFfynCAgHK77m5GBHYFfb7Cw
-         If6iAqI4pkiVWMUzrMEA05xe7p6ZQaiM6gtqwcMjT8r65Nor4zk2VYeOOHz5dmNqs0RY
-         YuKnvcRh7uMhRdVAwXomDp1fPzr25RE/FzDDo=
-X-Received: by 2002:a05:7300:f54b:b0:36c:a42d:9bc9 with SMTP id 5a478bee46e88-37685c7a866mr3388898eec.25.1794423727403;
-        Wed, 11 Nov 2026 11:02:07 -0800 (PST)
-X-Received: by 2002:a05:7300:f54b:b0:36c:a42d:9bc9 with SMTP id 5a478bee46e88-37685c7a866mr3388850eec.25.1794423726578;
-        Wed, 11 Nov 2026 11:02:06 -0800 (PST)
+        bh=zwfLNPGciLDqgrHHkZD+nMXEbxgqL33UgUxrzeLCTCY=;
+        b=FJAFzVG8D1VK+QBEb13kK/enyzpU8mvYq/H6Oc0Ztyc9OO6PNOB7TR2URpuvx4QCfF
+         /PAN5A/QlkCqQn0E94Q4UoOX0u30L4TWFF49uH8TTHF/P1WQweWZfBpR4jKrlKn/9GC1
+         uRZ73KkfQeaEzyu6JWppEZoiHsfJhm49FRngY=
+X-Received: by 2002:a05:7300:6919:b0:36d:2b50:4eb9 with SMTP id 5a478bee46e88-37685e6b287mr5362216eec.25.1794423733087;
+        Wed, 11 Nov 2026 11:02:13 -0800 (PST)
+X-Received: by 2002:a05:7300:6919:b0:36d:2b50:4eb9 with SMTP id 5a478bee46e88-37685e6b287mr5362168eec.25.1794423732283;
+        Wed, 11 Nov 2026 11:02:12 -0800 (PST)
 Received: from localhost.localdomain ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212ec002sm20860468eec.26.2026.11.11.11.02.00
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212ec002sm20860468eec.26.2026.11.11.11.02.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 11:02:05 -0800 (PST)
+        Wed, 11 Nov 2026 11:02:11 -0800 (PST)
 From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -107,9 +107,9 @@ Cc: netdev@vger.kernel.org,
 	Dharmender Garg <dharmender.garg@broadcom.com>,
 	Kumar Mudide <kumar.mudide@broadcom.com>,
 	Ramakrishna Koduri <ramakrishna.koduri@broadcom.com>
-Subject: [PATCH net-next v4 2/5] bnge: add bnge_err()/bnge_warn()/bnge_dbg() logging helpers
-Date: Wed, 11 Nov 2026 19:00:08 +0000
-Message-ID: <20261111190011.53437-3-bhargava.marreddy@broadcom.com>
+Subject: [PATCH net-next v4 3/5] bnge: add bnge_for_each_open_nq() iterator
+Date: Wed, 11 Nov 2026 19:00:09 +0000
+Message-ID: <20261111190011.53437-4-bhargava.marreddy@broadcom.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261111190011.53437-1-bhargava.marreddy@broadcom.com>
 References: <20261111190011.53437-1-bhargava.marreddy@broadcom.com>
@@ -125,128 +125,176 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-netdev_err() and netdev_warn() print "(unnamed net_device)
-(uninitialized)" instead of the interface name while the netdev has not
-been registered yet. Later patches in this series run NQ0 init before
-register_netdev() in probe, so messages from the HWRM ring alloc/free
-paths and from NQ0's async event handling would be logged that way.
+Add BNGE_FIRST_OPEN_NQ and bnge_for_each_open_nq(), and use them in the
+loops that will need to skip the NQ that is created at probe once it is
+split out. The "open" NQs are those whose IRQs and firmware rings are
+created in ndo_open() and destroyed in ndo_stop(), i.e., all NQs from
+index BNGE_FIRST_OPEN_NQ on.
 
-Add bnge_err(), bnge_warn() and bnge_dbg(), which take a struct bnge_dev
-and log through the netdev once it has been registered, including while
-it is being unregistered and after, where it keeps its name. Before
-that, fall back to dev_err()/dev_warn()/dev_dbg() on the PCI device.
+The loops over the Completion Rings (CP rings), per-NQ stats, and NAPI
+registration (init/del) are intentionally left alone to cover all NQs
+(including NQ0), as NQ0's completion structures and NAPI registration
+remain tied to open/stop. The bnapi allocation and NAPI enable/disable
+loops are converted here; NQ0's NAPI enable/disable is handled
+separately by a later patch in this series.
 
-Convert the HWRM ring alloc/free error messages, the IRQ affinity hint
-warning and the async event debug message, which are reachable from
-those paths. No other message is changed.
+In bnge_hwrm_ring_free(), split the NQ free out of the completion ring
+loop so that it can use the iterator, mirroring bnge_hwrm_ring_alloc().
+This changes the order of the firmware commands: previously each NQ was
+freed right after its own completion rings, now all completion rings
+are freed first and all NQs after. Each completion ring is still freed
+before the NQ it belongs to.
 
-No functional change, apart from the log prefix of these messages
-before register_netdev().
+BNGE_FIRST_OPEN_NQ is 0 for now, i.e., every NQ is an open NQ, so the
+macro expands to the loops it replaces. Apart from the firmware command
+order above, no functional change.
 
 Signed-off-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
 Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
 Reviewed-by: Kumar Mudide <kumar.mudide@broadcom.com>
 Reviewed-by: Ramakrishna Koduri <ramakrishna.koduri@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnge/bnge.h      | 18 ++++++++++++++++++
- .../net/ethernet/broadcom/bnge/bnge_hwrm_lib.c |  8 +++++---
- .../net/ethernet/broadcom/bnge/bnge_netdev.c   |  5 ++---
- drivers/net/ethernet/broadcom/bnge/bnge_txrx.c |  4 ++--
- 4 files changed, 27 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |  8 ++++++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 25 +++++++++++--------
+ 2 files changed, 22 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
-index 4479ccd071f5..e76ba4e063bb 100644
+index e76ba4e063bb..5cc08177ff86 100644
 --- a/drivers/net/ethernet/broadcom/bnge/bnge.h
 +++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
-@@ -220,6 +220,24 @@ struct bnge_dev {
- 	u32			phy_flags;
- };
+@@ -238,6 +238,14 @@ struct bnge_dev {
+ #define bnge_warn(bd, fmt, ...)	bnge_log(warn, bd, fmt, ##__VA_ARGS__)
+ #define bnge_dbg(bd, fmt, ...)	bnge_log(dbg, bd, fmt, ##__VA_ARGS__)
  
-+/* The netdev has no name until register_netdev(), so log through the PCI
-+ * device before that (e.g. during probe).
++/* Index of the first NQ created in ndo_open() and destroyed in ndo_stop();
++ * lower NQs live from probe to remove.
 + */
-+#define bnge_log(level, bd, fmt, ...)					\
-+	do {								\
-+		struct bnge_dev *__bd = (bd);				\
-+									\
-+		if (__bd->netdev &&					\
-+		    READ_ONCE(__bd->netdev->reg_state) != NETREG_UNINITIALIZED)\
-+			netdev_##level(__bd->netdev, fmt, ##__VA_ARGS__);\
-+		else							\
-+			dev_##level(__bd->dev, fmt, ##__VA_ARGS__);	\
-+	} while (0)
++#define BNGE_FIRST_OPEN_NQ	0
 +
-+#define bnge_err(bd, fmt, ...)	bnge_log(err, bd, fmt, ##__VA_ARGS__)
-+#define bnge_warn(bd, fmt, ...)	bnge_log(warn, bd, fmt, ##__VA_ARGS__)
-+#define bnge_dbg(bd, fmt, ...)	bnge_log(dbg, bd, fmt, ##__VA_ARGS__)
++#define bnge_for_each_open_nq(i, bd) \
++	for ((i) = BNGE_FIRST_OPEN_NQ; (i) < (bd)->nq_nr_rings; (i)++)
 +
  static inline bool bnge_is_roce_en(struct bnge_dev *bd)
  {
  	return bd->flags & BNGE_EN_ROCE;
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-index 651c5e783516..fb960bff85fa 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-@@ -1302,7 +1302,8 @@ int hwrm_ring_free_send_msg(struct bnge_net *bn,
- 	bnge_hwrm_req_drop(bd, req);
- exit:
- 	if (rc) {
--		netdev_err(bd->netdev, "hwrm_ring_free type %d failed. rc:%d\n", ring_type, rc);
-+		bnge_err(bd, "hwrm_ring_free type %d failed. rc:%d\n",
-+			 ring_type, rc);
- 		return -EIO;
- 	}
- 	return 0;
-@@ -1395,7 +1396,7 @@ int hwrm_ring_alloc_send_msg(struct bnge_net *bn,
- 		req->int_mode = RING_ALLOC_REQ_INT_MODE_MSIX;
- 		break;
- 	default:
--		netdev_err(bn->netdev, "hwrm alloc invalid ring type %d\n", ring_type);
-+		bnge_err(bd, "hwrm alloc invalid ring type %d\n", ring_type);
- 		return -EINVAL;
- 	}
- 
-@@ -1406,7 +1407,8 @@ int hwrm_ring_alloc_send_msg(struct bnge_net *bn,
- 
- exit:
- 	if (rc) {
--		netdev_err(bd->netdev, "hwrm_ring_alloc type %d failed. rc:%d\n", ring_type, rc);
-+		bnge_err(bd, "hwrm_ring_alloc type %d failed. rc:%d\n",
-+			 ring_type, rc);
- 		return -EIO;
- 	}
- 	ring->fw_ring_id = ring_id;
 diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-index 04f5aa75f70e..d95c3c1469da 100644
+index d95c3c1469da..197a9032bbeb 100644
 --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-@@ -2702,9 +2702,8 @@ static int bnge_nq_request_irq(struct bnge_net *bn, struct bnge_napi *bnapi)
- 		cpumask_set_cpu(cpumask_local_spread(bnapi->index, numa_node),
- 				irq->cpu_mask);
- 		if (irq_set_affinity_hint(irq->vector, irq->cpu_mask))
--			netdev_warn(bn->netdev,
--				    "Set affinity failed, IRQ = %d\n",
--				    irq->vector);
-+			bnge_warn(bd, "Set affinity failed, IRQ = %d\n",
-+				  irq->vector);
- 	}
- 	return 0;
+@@ -549,7 +549,7 @@ static void bnge_free_nqs(struct bnge_net *bn)
+ 	struct bnge_dev *bd = bn->bd;
+ 	int i;
+ 
+-	for (i = 0; i < bd->nq_nr_rings; i++)
++	bnge_for_each_open_nq(i, bd)
+ 		bnge_free_nq(bn, bn->bnapi[i]);
  }
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c b/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
-index 472b02cc43b3..2f382514c6ea 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
-@@ -1135,8 +1135,8 @@ static void bnge_async_event_process(struct bnge_net *bn,
- 	u32 data1 = le32_to_cpu(cmpl->event_data1);
- 	u32 data2 = le32_to_cpu(cmpl->event_data2);
  
--	netdev_dbg(bn->netdev, "hwrm event 0x%x {0x%x, 0x%x}\n",
--		   event_id, data1, data2);
-+	bnge_dbg(bn->bd, "hwrm event 0x%x {0x%x, 0x%x}\n",
-+		 event_id, data1, data2);
+@@ -563,7 +563,7 @@ static int bnge_alloc_nqs(struct bnge_net *bn)
+ 	 * so every NQ gets a distinct irq_tbl index.
+ 	 */
+ 	aux_msix = bnge_aux_get_msix(bd);
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		rc = bnge_alloc_nq(bn, bn->bnapi[i], aux_msix);
+ 		if (rc)
+ 			goto err_free_nqs;
+@@ -571,7 +571,7 @@ static int bnge_alloc_nqs(struct bnge_net *bn)
+ 	return 0;
  
- 	switch (event_id) {
- 	case ASYNC_EVENT_CMPL_EVENT_ID_LINK_SPEED_CFG_CHANGE:
+ err_free_nqs:
+-	while (--i >= 0)
++	while (--i >= BNGE_FIRST_OPEN_NQ)
+ 		bnge_free_nq(bn, bn->bnapi[i]);
+ 	return rc;
+ }
+@@ -1255,10 +1255,11 @@ static int bnge_alloc_core(struct bnge_net *bn)
+ 
+ 	bn->bnapi = bnapi;
+ 	bnapi += arr_size;
+-	for (i = 0; i < bd->nq_nr_rings; i++, bnapi += size) {
++	bnge_for_each_open_nq(i, bd) {
+ 		bn->bnapi[i] = bnapi;
+ 		bn->bnapi[i]->index = i;
+ 		bn->bnapi[i]->bn = bn;
++		bnapi += size;
+ 	}
+ 
+ 	bn->rx_ring = kzalloc_objs(struct bnge_rx_ring_info, bd->rx_nr_rings);
+@@ -1976,7 +1977,7 @@ static int bnge_hwrm_ring_alloc(struct bnge_net *bn)
+ 	int i, rc = 0;
+ 
+ 	agg_rings = !!(bnge_is_agg_reqd(bd));
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		struct bnge_napi *bnapi = bn->bnapi[i];
+ 		struct bnge_ring_struct *ring = &bnapi->nq_ring.ring_struct;
+ 
+@@ -2432,7 +2433,7 @@ static void bnge_enable_int(struct bnge_net *bn)
+ 	struct bnge_dev *bd = bn->bd;
+ 	int i;
+ 
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		struct bnge_napi *bnapi = bn->bnapi[i];
+ 		struct bnge_nq_ring_info *nqr;
+ 
+@@ -2449,7 +2450,7 @@ static void bnge_disable_napi(struct bnge_net *bn)
+ 	if (test_and_set_bit(BNGE_STATE_NAPI_DISABLED, &bn->state))
+ 		return;
+ 
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		struct bnge_napi *bnapi = bn->bnapi[i];
+ 
+ 		napi_disable_locked(&bnapi->napi);
+@@ -2462,7 +2463,7 @@ static void bnge_enable_napi(struct bnge_net *bn)
+ 	int i;
+ 
+ 	clear_bit(BNGE_STATE_NAPI_DISABLED, &bn->state);
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		struct bnge_napi *bnapi = bn->bnapi[i];
+ 
+ 		bnapi->in_reset = false;
+@@ -2615,7 +2616,9 @@ static void bnge_hwrm_ring_free(struct bnge_net *bn, bool close_path)
+ 
+ 		for (j = 0; j < nqr->cp_ring_count && nqr->cp_ring_arr; j++)
+ 			bnge_hwrm_cp_ring_free(bn, &nqr->cp_ring_arr[j]);
++	}
+ 
++	bnge_for_each_open_nq(i, bd) {
+ 		bnge_hwrm_nq_free(bn, bn->bnapi[i]);
+ 		bn->grp_info[i].nq_fw_ring_id = INVALID_HW_RING_ID;
+ 	}
+@@ -2628,7 +2631,7 @@ static void bnge_setup_msix(struct bnge_net *bn)
+ 	int len, i;
+ 
+ 	len = sizeof(bd->irq_tbl[0].name);
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		int map_idx = bnge_cp_num_to_irq_num(bn, i);
+ 		char *attr;
+ 
+@@ -2713,7 +2716,7 @@ static void bnge_free_irq(struct bnge_net *bn)
+ 	struct bnge_dev *bd = bn->bd;
+ 	int i;
+ 
+-	for (i = 0; i < bd->nq_nr_rings; i++)
++	bnge_for_each_open_nq(i, bd)
+ 		bnge_nq_free_irq(bn, bn->bnapi[i]);
+ }
+ 
+@@ -2727,7 +2730,7 @@ static int bnge_request_irq(struct bnge_net *bn)
+ 		netdev_err(bn->netdev, "bnge_setup_interrupts err: %d\n", rc);
+ 		return rc;
+ 	}
+-	for (i = 0; i < bd->nq_nr_rings; i++) {
++	bnge_for_each_open_nq(i, bd) {
+ 		rc = bnge_nq_request_irq(bn, bn->bnapi[i]);
+ 		if (rc)
+ 			goto err_free_irq;
 -- 
 2.47.3
 
