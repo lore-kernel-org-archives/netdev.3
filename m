@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794438009;
-	b=K+zunBXZ7MzCXKUMUAn7rmOSd9ttIrkEWUMT2r3pWYQ6NDvcaV8tjY917lu4ofWFyIG3
-	 zMstKwcPt25dfeLIs4j46gaT7nZRFRqzCa1kbQRyejouUliKF3oZEBsVgVjveC/Ma/jGc
-	 OiZq/1SJSpl13aBrR0KJ/rSwe1K1fCSGhXw96hMq0Un1HyXHSMB7oDJq74Be3QeFsIMBi
-	 0EJunnnsLhEmDkMBWhNQREZJ0Iui/cAMbKWdhczRlz6S3LiKuAxrG41HhMIOgtMWweCf7
-	 hDRfOgNRWh+nfHm4oF6SHqW10PsLdVKvptrEbT8McXjAQcODql2f27elYRLovpMGhlQ==
+	t=1794438010;
+	b=U0izxk7VIrsrcsf//xE/GvfEH6d5L7NBfsO9gfovKNtsgd8knecwz9lc67ID2bCZZ+Od
+	 DAdTd+KM3AfVLsWFLCXaOCrq4X4fctDuaV6QCXhsRJWj1rqC41qG0vsFKR/wsV1N3ek4P
+	 h38M3ykiXs1139u3Pw7yZk5T0RZGEt4+l0mqRURqh2NvUpWaUsprHnbjSFwie6gOfwwWH
+	 2KZtv891iJri7lrJ4td6cbF+twadAnpiksMv662M8X2DJcCn2vqVOx3DJbMc+vWexFEN5
+	 fULe3FN5V2a95/Tnk3I8QKMQeJxbS7T94LWJZv70Kcid42OvFJ9evISPiQ1VtT9TDSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794438009;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794438010;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=u/lyJaSf0jh00R25h2n09r2vJy/Cqs58RLY5lnto2rE=;
-	b=FmvC6UJMpfYCjhLcpEp+k3eG+hFX8R7QFM2TeMBetUNbogD9oWLG1jtLoeg1ZE2f57nE
-	 XF/gPfdCFK3yVrRvf9n7ZZ3WO5t5dyiaSKR1aksfofC2tIbxWU+vxADMLt6F52dYBPkCl
-	 YxfyUQ2I64ZkjKjA08sY1eAIwjFIf9iL6ZzBNtEWSaPKC7Dois17Zt04tr22NaMcxvOj3
-	 C77jB8AXRoOVkL4HWoaDD6I5A5HFcNciD4mb1rEIsF2/KBWUJFqpH+e8qAQKRg/CRZ3sW
-	 yOUlKtaVlmnAaRl/LlQlwq0mZWNYTPTjCxs2qCV4+SCEqqj1JU7QPoPeuebZdpVKvFw==
+	bh=KZcycJc23l6NskUVhXEfD3eRHPNY7gNYIBfAcMGeoGg=;
+	b=lLJfpmC4w3ro+Fchh6IEJnYlA+P7jNNnLa3nmBpIAyFZkasSyuqjE3R57I2M6qHnLfyT
+	 TCP+ils0HGiZMDKp8lCepv8ywxbB1+rYmwTmyQcn14f8zAdoUx5CTcsH8kkor/OSLBiPG
+	 6GdQNOXpEKk3EpAPMj5OkjYAdPYi8eSsB+cAujJc18VKgDCxtBHmo6htEX992MaB/Y4wW
+	 kyfJrexRmvwlizYNXto281XkIoFXHiObrxgW2wdVHqksdJNgfjaaHp+lsZmHpD3L/Dzom
+	 5gke+6lcttLD6ENCfDKUPvA6Yl3pJ9X3BGICewqYAmNFqclO2Lx5Ruvy5aKCMpBmj5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DDkY0QQ2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jUbwnVNt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17891606A327;
-	Wed, 11 Nov 2026 23:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA69606A33F;
+	Wed, 11 Nov 2026 23:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DDkY0QQ2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F171F00A05;
-	Wed, 11 Nov 2026 23:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jUbwnVNt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A7D1F00A05;
+	Wed, 11 Nov 2026 23:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794438008;
-	bh=u/lyJaSf0jh00R25h2n09r2vJy/Cqs58RLY5lnto2rE=;
+	s=k20260515; t=1794438010;
+	bh=KZcycJc23l6NskUVhXEfD3eRHPNY7gNYIBfAcMGeoGg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DDkY0QQ2gyiQj9ji51vw1ZNaVYF3+upGlifhK6ePRIcggKHK1w8XPNJhXs28g7RKE
-	 gT4Ohpc5ZbBeT8JBO9VkDCdCH2FnMiGcZ4Z38Y9Wlm4vzbDWDjTr716DCupP25yLFZ
-	 ch1k50MThxiu0F3UeqJLxGwgjW3W6N/1YyPqyrvnMsUUlgIORCVswwj3xMusonEZKw
-	 Xg//C/lQE1nNZMw9sFcVhwBynT8seZoE7iVa+eBIlNKOwRNb9cHW6qERGjDKi7DBJG
-	 UQkh9KGI2I7xj5ctiE6r7cD5jSn8d10U2IU70f6lMQfWNtt2z2i4bbzLOXVJr3IalU
-	 jT7sOspQokNJg==
+	b=jUbwnVNtmWdjjP8v8jScQi5hXBZ5jWJpIijBHeQ/nbTuAHmva9fN3zLCIEC61FxJW
+	 CJorhBmOJhteeNbrcM7Rh46hwLradVhWmM+4fc3Sk26oaIXEnr+Nt4QMCKSfKjwct+
+	 ErAC3j9lt/DC8TWTiIAmhhNt6Hmx3Oo3ylXFgl3ui4VlOU9nIqE1r4lWJN0cYp48au
+	 tXEbh/gZtNM7jXSIIPdvZpcNGLS1eHbM1KrSZgQ6P+V84vjAdIjgfxT9pUrV6nIZ82
+	 sfRcJWS+JBUCfzMJmnFqKRWD0BjhZB+YPvthTrR/l/q0PKj27QnfUrn1Uilqxt8Wsm
+	 6yO3Q0li1JDrA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B266391AFC6;
-	Wed, 11 Nov 2026 23:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210CA391AFC6;
+	Wed, 11 Nov 2026 23:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,46 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ena: Keep the RX buffer mapped if skb allocation
- fails
+Subject: Re: [PATCH net] amt: tear down every amt device on an unregistering
+ lower
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179443800718.1692642.15271790587054510634.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 23:00:07 +0000
-References: <20261109-ena-rx-skb-alloc-fail-v1-1-aee2927cb51f@debian.org>
-In-Reply-To: <20261109-ena-rx-skb-alloc-fail-v1-1-aee2927cb51f@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: akiyano@amazon.com, darinzon@amazon.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- shayagr@amazon.com, harry@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
+ <179443800867.1692642.5683456205144772730.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 23:00:08 +0000
+References: <20261105232302.494171-1-omar@blockcast.net>
+In-Reply-To: <20261105232302.494171-1-omar@blockcast.net>
+To: Omar Ramadan <omar@blockcast.net>
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 09 Nov 2026 09:14:29 -0800 you wrote:
-> We are seeing the following issue in production on arm64 EC2 hosts
-> (m8g.metal-24xl, 64K pages, SMMUv3 in strict mode, 6.18 based kernel).
-> Right after a global OOM, the SMMU reports F_TRANSLATION write faults
-> from the ENA device, followed by a burst of:
+On Thu,  5 Nov 2026 23:23:02 +0000 you wrote:
+> amt_device_event() acts only on the amt device that
+> amt_lookup_upper_dev() returns, which is the first amt device bound to
+> the event's lower. Several amt devices can share one lower, for
+> example two gateways.
 > 
->   WARNING: CPU: 48 PID: 1656834 at drivers/iommu/dma-iommu.c:1242 iommu_dma_unmap_phys+0xf4/0x108
->   Call trace:
->    iommu_dma_unmap_phys+0xf4/0x108 (P)
->    dma_unmap_phys+0x194/0x2a8
->    dma_unmap_page_attrs+0x1c/0x38
->    ena_io_poll+0x7bc/0x1790 [ena]
->    __napi_poll+0x54/0x220
->    net_rx_action+0x250/0x520
+> On NETDEV_UNREGISTER, only the first device is unlinked and
+> unregistered. The others stay upper-linked to the lower, and
+> unregister_netdevice_many_notify() warns, because the notifier chain
+> must detach every upper device. They also still hold a reference on
+> the lower, so each is torn down only when netdev_wait_allrefs_any(),
+> called from netdev_run_todo(), rebroadcasts NETDEV_UNREGISTER. By then
+> the lower's sysfs directory is gone, so unlinking it trips a kernfs
+> WARN, and unregistering it from inside the rebroadcast trips the WARN
+> in __rtnl_unlock(). On NETDEV_CHANGEMTU, only the first device is
+> resized.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: ena: Keep the RX buffer mapped if skb allocation fails
-    https://git.kernel.org/netdev/net/c/3e8e22a1007a
+  - [net] amt: tear down every amt device on an unregistering lower
+    https://git.kernel.org/netdev/net/c/7262e999ebec
 
 You are awesome, thank you!
 -- 
