@@ -1,11 +1,11 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794439268;
-	b=D4kiUgsQQ3x5nWlN2oZfsnS11UPZoM8ZugkeeekmRCBwL59GGnx52cYADTi+r+4aQk6a
-	 E3k8kl5IQ0guiSuLVT0vvPaXdk/FJR/C28/NT5U0fvxExCC3s9LIllZ2/yDtthhnVuTGM
-	 XgssjiPgCaF8nM53XGNBG6KhMiZtrsDYApgNhQ/GQNIxVuh5jqtYvz8VFCys1xO77AZnR
-	 thaOwTaaHTuothKIpUASwtEH4nhzG2r0DFkcA/oLru8NbZ6emhSGd/C+vDbuuprh5jLp4
-	 ZDvmVLRJQmOjntqkm8n5Ro6Lg1Z78hP6limuHgvMdGw3UGVI8s3nmWV7pDFnAhCFnUA==
+	b=Pa06xrP6K8R9wLyOSqMvg9VV4Sl4rBYZdqnPDVIW/pTc19jBMQyPMN99xUtJvEHJsx99
+	 Q8dEgUHpKoyEw4Xzdq1hJLd17LTm3K4hZB86Y/KoTvmkDjt/w1pIKkceQe72W0i4cHlWM
+	 L5+CoXe2F/kWfSgpnw41JocanxtCNi9j6bpEL89rAD07sbosOJzdXTxngFPXpxoTmRlRu
+	 RjuypKfMdqa4o4tHKdv7AEEeo+dpTzMNg6H0v/DQwY6Y+JQjwP7tyOSQzz1fthXBBQHlw
+	 vIM9A6XKTpGVo3I5CTajz7JSYcegUtE5cO5Wwx3g9HmsExHQuDzOs/jMC07HkOFBreg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794439268;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
@@ -13,74 +13,74 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
 	 In-Reply-To;
-	bh=F43DNKKfhUAoEAOcfO/HFf7w3xTwpvN1c5+q7kJ/AJQ=;
-	b=ADtHZVq3luOPeloMRYLwVGQjSI2JlDUxxkAiktyW3jiojRQcF9CuDq0t7UU3r3H0cIP8
-	 e3ccngiaITe/cB6HbLY7fRngYnMKb79Z3VdiVVkmcePrgimmIIGn/kvw7NdwumHO6QwkO
-	 1GtDqPzf/VnAZucRXGODujMaxadZGzMMBAzKnq1rY8YBRDxwlzhD/MuVffiGrHDb8fPMx
-	 LnkQqA9/ZdW4+Wifz8cLY5EAj73IMlQLyjEAlaYAddAvOLiMl8Q4sflmmn6aaGcjRVc20
-	 JzeDRecfO8/RnuR5XoqU5025RMFN9Gs3XeU50DV/QwEvqyxAfbe/1nN570yHOOPkc/A==
+	bh=yLiNMvxVQruQcm1dmYQM6B9T1c0wqmTNiOzMtEKz3a0=;
+	b=F67Ou3nZZpZF0F3y0NacrH/J/3JIuvu9Grq8fk3WaUwNSG32L/V0lNjYo6eBpbKjhqPe
+	 ntyGMZeivxlF07S9/TebFsm1vI33wY7UrBHPwKinY+S+N7FLGedJmPCkmgwBkzggK5OU/
+	 AlYiR0X439XrN8KvlBOwezPk4gEGY9/+HJoMOkVtxrcC2lSdkF8ztmy6yI76MoWzSv7kT
+	 L5efz+nwtRrTjUEe+8y7AXJWRMmsrp4EzObM/eCJ7VPWIzBiTJE6EttHI2+Oyyq6JEkJW
+	 PLPzHSnATb/Kt6Tw12mC0EGA3zMx2uCrWs5334JIfdy8IttHzlffUg3K+VZSLKW5p3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=O0ntajgG;
-	arc=none smtp.remote-ip=74.125.229.8
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="tWA/XaWh";
+	arc=none smtp.remote-ip=74.125.229.135
+Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA1960A3808
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:21:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EA1960A3808
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B22E60A3815
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:21:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B22E60A3815
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=O0ntajgG
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a6ce64b95so2171579eec.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:21:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tWA/XaWh
+Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso3336368c88.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:21:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20260707; t=1794439267; x=1795044067; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=F43DNKKfhUAoEAOcfO/HFf7w3xTwpvN1c5+q7kJ/AJQ=;
-        b=O0ntajgGNrfKFATlaSWgSLejjNVQgDjxhVsVSDttqGtq5aviS683LBngKpx4uv3XAj
-         dDXGAMnqhsJSWt+XdWei6LCeTtI0eQn5Nl+kVt5xLA7YMoToNjUv3RXoZQnXBzmCAAon
-         58HWQLnHa7Grvb7KMRM3cEQbiFQWgxyWzConOroVYW5bzGieZJD/P3DhTxaoXAjODtdB
-         g8pGGYhCkd+NRGJqXJU/6bLHnDl0nv1mZ9iVzHlkbKadEUNRBQGHmA6oJ1OCXi/IwLID
-         e7Vg3qQ2RpyRtzo25N8hBpRXogew+6Y7BNCYMMxSdgjwXmY/3cPgCHBTPC3v80B5QRTi
-         7uyw==
+        bh=yLiNMvxVQruQcm1dmYQM6B9T1c0wqmTNiOzMtEKz3a0=;
+        b=tWA/XaWhilDIFlnze3RfmXPT3zuLapRVFasaiN9nd0tewyRhLSq/JoPBuRjVBnWEQF
+         EfJ2wfgsGX9owNgchteKd1lIu6RiSP3OH9AEtymuJ65j8FrudMdGkfDxyMJoyeAIJoM5
+         wXaQ1drt7KU9O2M3MfvOiG8VNWFHnGTmcWYxF43Uv/U157sVRXT6hKUfXK1PW7gw0sHJ
+         RwVku3hTl++BEabzGqVclt/k2pJ9Vb6VrzAfl7t5hSqMBdtfkABefgGE5YtRN0IX4PLj
+         ceM2Gr/lktRQmiB0BBCRstLwizRWtFbe4/wlxG3NV4klLz1FaaanhWSP9Z65w3fzO8E2
+         J3Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1794439267; x=1795044067;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=F43DNKKfhUAoEAOcfO/HFf7w3xTwpvN1c5+q7kJ/AJQ=;
-        b=u6cqYe2ypwXpMp20iKr19HKkA6RYOGUv/ZLrNQJ95/bWBbyCWPPjN6TR2XjDyfckz8
-         4BL60sNxMQjaDiv9yo+t8b2ZAC4uvSxZp8+pIGkdyQrm9GqoWN0smioeLKqYljOQGneb
-         NOZygyiYTaVyLonmvOk9KvK+qp3kKYZxOmgpDGvhfYbFwNvd+1HjBSb34rFy+hNBLcSg
-         wKPC/1em4sdyFz0CRaZw+/+Pgr5kknOYIEcm4f2W7adzyxbvoqOlLW4Z59cfdtURr1gv
-         9A7dG7IuVAhwvg78uvX8fZ8aAvDZpVXlbS6/Pp8M9DhysrAYsT5JQu7LouzlytgLMVS3
-         cOaQ==
-X-Forwarded-Encrypted: i=1; AL+hErEqYG+RV8nK/3xusAjauvj9ygc8TeIucNBXZsfcx+9scBXsWxfPlM+nvkI2L7thEr+YiLamzxM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z809AXfSlpwE4apGjO5rTIp+4wIaIa74S5DouvPhv+Lef7wqHRE
-	Fle+rl4ejg+pGVVS4v2YyVeGlXL9PMrLKIemTZQ+NBeURbSQaDfgcN4M
-X-Gm-Gg: AYBFou3eKQ+gqqAl657tURR5LM0ONDI1jdeatd6A4SRR4ggdJfZ0MLmEo/meiCQnUYu
-	AGUydQOtRkK1XLY6Xh1Mi8x13mMa8Y2LoDhbAncQVXuxZaipVftIqRH4kshwdhTpkpGoHRh9W0N
-	xSfiDyWdLOznmkUw5a3B/L6xE9rnVMYgbvfU+gF6xhMwJxhkwTAsoSDJu1GSOXN4wkIGrAfWZ/M
-	WXtWwE1vYh7TM2h0AGkzxumCiaiMjfeoLUwcRWyXbPgXYGV0WMa+xSsVtPXDebnsxcPKYk3gwxk
-	jkTlTNlLpqMvRP+vR094OlIsnjU11v/YwKcWrJzMM3QUxdAdc7cG+i5EM9GUsNX/ptCFwozNwgO
-	do/Ws8+yx7N1ohPvq58qogMe2fR40icB3eEmd/3B6Y8Rhx12EPQWAogIucC64BjKd0NqUywilFS
-	zYFp/kxT5WSZ5D1CiN5Gvy/JSUU2ieQH0oX+r35GgZ9qAE5mwQSdnGyWRM+nLfuudHXUD7sduI5
-	6rSsfBnNbP1INzd0w/kNKIXGuij87gzr3/b6UvWPv9jM+uPlFajDbu4G45froiizBjCBXfgnKq7
-	eirbFdmkQ9o1f/833Tmi1xIOFpC3Tcg4AOFPgLokz01kiw==
-X-Received: by 2002:a05:7300:6dac:b0:36f:4981:da16 with SMTP id 5a478bee46e88-37686754f0cmr6158044eec.25.1794439265724;
-        Wed, 11 Nov 2026 15:21:05 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:72::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3752060899asm19142236eec.11.2026.11.11.15.21.04
+        bh=yLiNMvxVQruQcm1dmYQM6B9T1c0wqmTNiOzMtEKz3a0=;
+        b=oH7a2UtedqgjYa8zZu3yiQEU/yhzj7JbVrC16KR9+pIXxbi8oddPZVO4sBC3uAYj6D
+         JyRzMhxXbqGjpBqkHdgRdcD4j2mS4W6h7nitDNAp4IE40FWQMcZZOMQyrbKfVVqhkeoK
+         u90AOBBOKI64wFTGBUMOYVqN7Px91LSxIADMbzzop32R6rfLRn4nv02P1hK6F/6lr6vB
+         OC7xAFEZq3+coitt3W4zBuhYE/q7fDnyVPAGNQqz05PTCaKHgc3qYEUZv0jaDFjdSS8G
+         UJJiikBEnqcvvhL60T2SMxWIojCUIR/o7wnb6QBJ9ebFzYf7P0ImsreuZyNE9KGYHP05
+         qA7g==
+X-Forwarded-Encrypted: i=1; AL+hErGWoOTFnTFVBh548GHBfkP9GIcfxM+84HrAURYuS0/daAG/5I++i1EPgjL+maO3xdGH6CuV3m0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8K0CDPQXK+cB5bsASqMyksaiD34FozujtT2YW9jrUT1q/uuuY3
+	ZOoaO7DZIzVD2D9Bke72G/5OM3/KYXb370xUv221WdJLnZE2GszZo9GN
+X-Gm-Gg: AYBFou21e0+naCbV8z3fZxFNOBHEtRMFPkSiZEyAdNfkyRFpKBSadGkJGl5q2qy2tgh
+	HywKaELixDr6xPwY1H0aqZNBmwCpM1X+AM22wikXURxQiw1BBbbhJZv1GbHjd+JVqNf5unJjTDY
+	wsslsrUPGXLgzp2MfDRxtO2ul7KilmTHReElFrbUcMB+RREPnqyxzP6wxpJnp+Ge1kXQR9Haumu
+	SpSd0OhLzqCx2/BVxCi9sn+zcBnz0+rmBQjkvGJT7LyDEirbXMFzenHNo96rgvHJAVIjMNdTCEW
+	4e6JbgC4qiIn0gsZiJQ27IorGwaQnd0bso1NCl31mkGoSwcz5t0llpNdiA0XFZYvbOzFLTMSmPY
+	827riOMLQ2usroXo4GFwaohnzNDOImt25OjL57sWudWrc7IOvniUipQaxf6etprjrtbmOKW5tEl
+	6aLOtqcfBpQGr0yXACKd9Y+VLDNNWSANn2Yl2VnNOIRSRyztOmeu1bxW6yAWbOg3nDVKqScEdEp
+	rDgpP03p9FYhDgW6K4qOLjaCyseEwmKp7mLah3dX8RR/mGqtaFKfDsTjPiO5t52nxkog5O87hmo
+	NZP19KELCiZmGXNVD1/hrGowKe2/sxozNbqZ5ydrPu3w
+X-Received: by 2002:a05:701b:420e:20b0:144:c112:5f24 with SMTP id a92af1059eb24-1b3c031ae2fmr3766487c88.25.1794439267244;
+        Wed, 11 Nov 2026 15:21:07 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:60::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3772121e654sm7807640eec.2.2026.11.11.15.21.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 15:21:05 -0800 (PST)
-Date: Wed, 11 Nov 2026 15:13:02 -0800
+        Wed, 11 Nov 2026 15:21:06 -0800 (PST)
+Date: Wed, 11 Nov 2026 15:20:41 -0800
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
 Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
@@ -103,13 +103,11 @@ Cc: Magnus Karlsson <magnus.karlsson@intel.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
 	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Stuart Clark <stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 06/11] page_pool: Coordinate refill with
- memory providers
-Message-ID: <avT2Fj5qjbJkArpg@devvm16445.scu0.facebook.com>
+Subject: Re: [PATCH net-next v1 07/11] xsk: Deliver provider chunks without
+ copying
+Message-ID: <avT3vVT8iyKqyW8q@devvm16445.scu0.facebook.com>
 References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-7-bjorn@kernel.org>
- <avOtxBw_grmuDJae@devvm16445.scu0.facebook.com>
- <87tslnrwgt.fsf@all.your.base.are.belong.to.us>
+ <20261110102039.1002605-8-bjorn@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,41 +120,259 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tslnrwgt.fsf@all.your.base.are.belong.to.us>
+In-Reply-To: <20261110102039.1002605-8-bjorn@kernel.org>
 
-On 11/11, Björn Töpel wrote:
-> Stanislav Fomichev <sdf.kernel@gmail.com> writes:
+On 11/10, Björn Töpel wrote:
+> A provider socket still receives through the copy path, which takes
+> FILL entries without the provider's ownership checks: a chunk that a
+> page pool holds could be handed out twice. No driver opts in yet.
 > 
-> > On 11/10, Björn Töpel wrote:
+> Put packets whose buffers all belong to the socket's provider on the
+> RX ring as they are, and copy others into chunks the provider claims.
+> Only the queue NAPI may produce to such a socket, so generic XDP and
+> CPUMAP redirects to it are dropped.
 > 
-> >> diff --git a/include/net/netdev_rx_queue.h b/include/net/netdev_rx_queue.h
-> >> index 989120cbf452..ca12cbf7b825 100644
-> >> --- a/include/net/netdev_rx_queue.h
-> >> +++ b/include/net/netdev_rx_queue.h
-> >> @@ -33,6 +33,12 @@ struct netdev_rx_queue {
-> >>  	struct pp_memory_provider_params mp_params;
-> >>  	/* stamps the page pools of each queue allocation */
-> >>  	u32				mp_gen;
-> >> +	/* NAPI of the running queue, for memory provider wakeups. Set while
-> >> +	 * mp_armed, and if the provider has a refill_done op. Written under
-> >> +	 * the ops lock, read under RCU, see netif_mp_wake().
-> >> +	 */
-> >> +	struct napi_struct __rcu	*mp_napi;
-> >> +	bool				mp_armed;
-> >
-> > The comment should explain why mp_napi != napi? (I do not understand why)
+> A device may place payload at chunk offset 0, as fbnic does, so only
+> the first buffer of a packet keeps the UMEM headroom. Such buffers may
+> be sent back as they are, so only descriptors with XDP_TX_METADATA
+> need room for TX metadata in front.
 > 
-> Fair. It's the same NAPI, with other rules. napi is the driver's
-> association: read under the ops lock, and not cleared when the NAPI is
-> deleted. Provider wakeups run without that lock, from socket syscalls
-> and ->release_netmem().
+> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+> ---
+>  Documentation/networking/af_xdp.rst          |   6 +-
+>  Documentation/networking/xsk-tx-metadata.rst |   3 +-
+>  include/net/page_pool/memory_provider.h      |   2 +
+>  net/core/page_pool.c                         |  34 +++-
+>  net/xdp/xsk.c                                |  82 ++++++++-
+>  net/xdp/xsk.h                                |   5 +
+>  net/xdp/xsk_pp.c                             | 165 +++++++++++++++++++
+>  net/xdp/xsk_queue.h                          |  18 +-
+>  8 files changed, 304 insertions(+), 11 deletions(-)
 > 
-> mp_napi is an RCU copy, set only while the device is up and the queue
-> isn't restarting, for providers with ->refill_done(). netif_napi_del()
-> clears it before its grace period. Setting it also schedules the NAPI
-> once, which replays wakeups lost while the queue was stopped. I'll put
-> that in the comment.
+> diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
+> index cc3f0d16b28f..e73a0005e169 100644
+> --- a/Documentation/networking/af_xdp.rst
+> +++ b/Documentation/networking/af_xdp.rst
+> @@ -428,8 +428,10 @@ area and that your largest packet size can be 2K.
+>  There is also an option to set the headroom of each single buffer in
+>  the UMEM. If you set this to N bytes, it means that the packet will
+>  start N bytes into the buffer leaving the first N bytes for the
+> -application to use. The final option is the flags field, but it will
+> -be dealt with in separate sections for each UMEM flag.
+> +application to use. In a multi-buffer packet, only the first buffer is
+> +guaranteed this headroom; the others may start at offset 0 of their
+> +chunk. The final option is the flags field, but it will be dealt with
+> +in separate sections for each UMEM flag.
+>  
+>  SO_BINDTODEVICE setsockopt
+>  --------------------------
+> diff --git a/Documentation/networking/xsk-tx-metadata.rst b/Documentation/networking/xsk-tx-metadata.rst
+> index f240930ca1df..8bb74a569c26 100644
+> --- a/Documentation/networking/xsk-tx-metadata.rst
+> +++ b/Documentation/networking/xsk-tx-metadata.rst
+> @@ -59,7 +59,8 @@ The flags field enables the particular offload:
+>  Besides the flags above, in order to trigger the offloads, the first
+>  packet's ``struct xdp_desc`` descriptor should set ``XDP_TX_METADATA``
+>  bit in the ``options`` field. Also note that in a multi-buffer packet
+> -only the first chunk should carry the metadata.
+> +only the first chunk should carry the metadata. Only a descriptor with
+> +``XDP_TX_METADATA`` needs ``tx_metadata_len`` bytes in front of it.
+>  
+>  Software TX Checksum
+>  ====================
+> diff --git a/include/net/page_pool/memory_provider.h b/include/net/page_pool/memory_provider.h
+> index daec73c9dcee..849db08513b8 100644
+> --- a/include/net/page_pool/memory_provider.h
+> +++ b/include/net/page_pool/memory_provider.h
+> @@ -49,6 +49,8 @@ struct memory_provider_ops {
+>  bool net_mp_niov_set_dma_addr(struct net_iov *niov, dma_addr_t addr);
+>  void net_mp_niov_set_page_pool(struct page_pool *pool, struct net_iov *niov);
+>  void net_mp_niov_clear_page_pool(struct net_iov *niov);
+> +void net_mp_release_page_pool_bulk(struct page_pool *pool,
+> +				   netmem_ref *netmems, u32 count);
+>  
+>  int netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
+>  		      const struct pp_memory_provider_params *p,
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index e897e79d31f1..56c299f2280d 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -1401,7 +1401,7 @@ bool net_mp_niov_set_dma_addr(struct net_iov *niov, dma_addr_t addr)
+>  }
+>  
+>  /* Associate a niov with a page pool. Should follow with a matching
+> - * net_mp_niov_clear_page_pool()
+> + * net_mp_niov_clear_page_pool() or net_mp_release_page_pool_bulk()
+>   */
+>  void net_mp_niov_set_page_pool(struct page_pool *pool, struct net_iov *niov)
+>  {
+> @@ -1422,3 +1422,35 @@ void net_mp_niov_clear_page_pool(struct net_iov *niov)
+>  
+>  	page_pool_clear_pp_info(netmem);
+>  }
+> +
+> +/**
+> + * net_mp_release_page_pool_bulk() - take net_iovs back from a page pool
+> + * @pool: page pool that holds one reference to each net_iov
+> + * @netmems: net_iovs of the memory provider of @pool
+> + * @count: number of entries in @netmems
+> + *
+> + * A memory provider takes net_iovs out of a page pool without
+> + * ->release_netmem(), for example to give them to userspace. @pool may be
+> + * freed on return.
+> + */
+> +void net_mp_release_page_pool_bulk(struct page_pool *pool,
+> +				   netmem_ref *netmems, u32 count)
+> +{
+> +	bool trace = trace_page_pool_state_release_enabled();
+> +	atomic_t *release_cnt = &pool->pages_state_release_cnt;
+> +	int released;
+> +	u32 i;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		DEBUG_NET_WARN_ON_ONCE(netmem_get_pp(netmems[i]) != pool);
+> +		page_pool_clear_pp_info(netmems[i]);
+> +		if (!trace)
+> +			continue;
+> +
+> +		released = atomic_inc_return_relaxed(release_cnt);
+> +		trace_page_pool_state_release(pool, netmems[i], released);
+> +	}
+> +
+> +	if (!trace)
+> +		atomic_add(count, release_cnt);
+> +}
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 113b0b08356d..b419c673e3f1 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -386,6 +386,54 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+>  	return -ENOMEM;
+>  }
+>  
+> +static int xsk_pp_rcv_copy(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+> +{
+> +	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
+> +	u32 headroom = xsk_pool_get_headroom(xs->pool);
+> +	void *copy_from = xsk_copy_xdp_start(xdp);
+> +	u32 from_len, meta_len, rem, num_desc, i;
+> +	u64 addrs[MAX_SKB_FRAGS + 1];
+> +	skb_frag_t *frag = NULL;
+> +	u32 to_len, copied;
+> +	void *to;
+> +
+> +	from_len = xdp->data_end - copy_from;
+> +	meta_len = xdp->data - copy_from;
+> +	rem = len + meta_len;
+> +
+> +	num_desc = (len - 1) / frame_size + 1;
+> +	if (num_desc > ARRAY_SIZE(addrs)) {
+> +		xs->rx_dropped++;
+> +		return -ENOSPC;
+> +	}
+> +	if (xskq_prod_nb_free(xs->rx, num_desc) < num_desc) {
+> +		xs->rx_queue_full++;
+> +		return -ENOBUFS;
+> +	}
+> +	if (!xsk_pp_claim_copy(xs->pool->pp, addrs, num_desc)) {
+> +		xs->rx_dropped++;
+> +		return -ENOMEM;
+> +	}
+> +
+> +	if (xdp_buff_has_frags(xdp))
+> +		frag = &xdp_get_shared_info_from_buff(xdp)->frags[0];
+> +
+> +	for (i = 0; rem && i < num_desc; i++) {
+> +		to = xp_raw_get_data(xs->pool, addrs[i] + headroom) - meta_len;
+> +		to_len = frame_size + meta_len;
+> +		copied = xsk_copy_xdp(to, &copy_from, to_len, &from_len, &frag,
+> +				      rem);
+> +		rem -= copied;
+> +
+> +		__xskq_prod_reserve_desc(xs->rx, addrs[i] + headroom,
+> +					 copied - meta_len,
+> +					 rem ? XDP_PKT_CONTD : 0);
+> +		meta_len = 0;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static bool xsk_tx_writeable(struct xdp_sock *xs)
+>  {
+>  	if (xskq_cons_present_entries(xs->tx) > xs->tx->nentries / 2)
+> @@ -453,8 +501,14 @@ static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+>  
+>  static void xsk_flush(struct xdp_sock *xs)
+>  {
+> +	struct xsk_pp *pp = xs->pool->pp;
+> +
+> +	if (pp)
+> +		xsk_pp_flush(pp);
+>  	xskq_prod_submit(xs->rx);
+> -	__xskq_cons_release(xs->pool->fq);
+> +	/* A provider releases FILL entries under its lock. */
+> +	if (!pp)
+> +		__xskq_cons_release(xs->pool->fq);
+>  	sock_def_readable(&xs->sk);
 
-And all this only to make sure that we are not recycling something from
-the old pp into the new one? And reworking existing pointer to change/update
-its lifetime is not gonna do it?
+optional nit:
+
+if (pp) {
+	pp_flush
+	prod_submit
+} else {
+	prod_submit
+	cons_release
+}
+
+sock_def_readable
+
+(hard to follow these scattered if(pp) checks :-( )
+
+>  }
+>  
+> @@ -464,6 +518,11 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+>  	int err;
+>  
+>  	err = xsk_rcv_check(xs, xdp, len);
+> +	/* Only the NAPI of the queue feeds a memory provider socket. */
+> +	if (!err && xs->pool->pp) {
+> +		xs->rx_dropped++;
+> +		err = -EOPNOTSUPP;
+> +	}
+
+This is confusing? Why even call xsk_rcv_check for pp case?
+
+>  	if (!err) {
+>  		spin_lock_bh(&xs->pool->rx_lock);
+>  		err = __xsk_rcv(xs, xdp, len);
+> @@ -488,7 +547,26 @@ static int xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+>  		return xsk_rcv_zc(xs, xdp, len);
+>  	}
+>  
+> -	err = __xsk_rcv(xs, xdp, len);
+> +	if (!xs->pool->pp) {
+> +		err = __xsk_rcv(xs, xdp, len);
+> +	} else {
+
+[..]
+
+> +		/* A CPUMAP program runs XDP on another CPU, not in NAPI. */
+> +		if (unlikely(!xdp_rxq_info_is_reg(xdp->rxq))) {
+> +			xs->rx_dropped++;
+> +			return -EINVAL;
+> +		}
+> +
+> +		err = xsk_pp_rcv_zc(xs->pool->pp, xs, xdp);
+> +		if (err != -EXDEV)
+> +			return err;
+> +
+> +		/* Copy only packets of the queue, from its NAPI */
+> +		if (unlikely(!xsk_pp_queue_buf(xs->pool->pp, xdp))) {
+> +			xs->rx_dropped++;
+> +			return -EINVAL;
+> +		}
+> +		err = xsk_pp_rcv_copy(xs, xdp, len);
+
+Move this into __xsk_rcv_pp ?
