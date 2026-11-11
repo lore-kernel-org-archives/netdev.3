@@ -1,58 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794363847;
-	b=mc//tWncJrbs84+DjZBXImfAw4L4lWZ0dPvVQjmfbb1+agcxtC6iOY+ZsZlYrEaQw9Mz
-	 YU/KH3zk4PYnyI9VxUFNaL8EHmK3PnL2Sf7WBmTjiGcfY9joTUAbd8qf2rOklHNxf4lgo
-	 ct62UgQ/5yV+kG6MoPcHfz5/Z1qVK/x9h1mAxfgjJkEZ3xQdniU/voNw/ub6VdG6KEgxw
-	 Wr8xHBhG7CaJmr9JiM2WxYC8uJR65tAS7+qeK0Axmg9+n6zPUkXFtBEcwIMxCdPYTOvEz
-	 V20NM/K4ddmvZslapRkAOvyqmQdaekZDLj3OdLdLPlwQmUKi7l1sOuV/YwOZwLJhHmQ==
+	t=1794364287;
+	b=FYQgkbcnPU6wnfe6fDrQ283CkOiLRJxhufwWfqgXcOCgjSFQC0iT1krz2q3oL2YMZsZ8
+	 tNr/f5Uzsqk4NzRDiMf1xGZuWxq4aXwAbKwmLbcpj71GzCAdo0QpQQsTA27c63YGVB6jR
+	 UKvhCGxUITX9PF2cvn83dK7uy+n6fbfJFc/eJvfG+/eo61QReXfnRIPJha8WXd+MJ6yof
+	 5AIY+6BJ+64gRPAaA5Tf6ZGtIx3TCKvnjrNqXOFlnQrhNwKW5pKB2r37fixiS4Lv5FPjx
+	 7rpKg9xGpqazJBvFfMGPareRwaIxsmjvGYJS6NEym1cuA84+kGJkuqS1Mra1dbaxZWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794363847;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=aMlrCdF6wdgpbtzH1/toupj8eIjFQGIp8QPct95wWLQ=;
-	b=vEGP7Xb1SZn3nGTAbMGo3gZ64n0J1Z2+S5gwLYuvWUSyRsWD4TNoNVkqqgqZmfrJalzN
-	 62e910k+C3XrtCI9oEdDYcCAx7sZ7zsnCxP4F5t7FkavaqsFWBJtRfg8ReIi/UQCRWa1P
-	 xASuacwF2kX19SQUO+8Ijeace0NCwbwh/8TcMksvcmJYk22Qpz9ojloo1zckzgcYB4/SH
-	 e3zUZvpa4onDEkKcekHcFZ2E9TDtdPHfXS0kKKLFPpyCCXqzqZeBmZNWWEp7HfcPXxDQr
-	 4sfOffbw17miP+G1ldI2+0Ixnyxw6k0GV8+iQp8yQzm1HlsjOP4Bd9lkUUQJA2JXUGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794364287;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=tvIZ7pbWoBRbHRTKo7ycS404yAoUTHoTkTV3VzeS6nY=;
+	b=1aQFVXDFX7pTgF+g0+ULUhdAqTBNKQtWGUY2KjVHEmP+cn/CLfOZRv7OiMj+cCCLu8pU
+	 ut2HPKMFTmFPGyxp7TKVUTbYxIhVPIQ9cU1XOV/hoxHrAA4FBCAKDPCTvvZi4pHmbDuTe
+	 banVsItY7Asz1V2Nvmxn/02gh+vgvCjas1H6buZO4vp/xev5DLHgTSwcJ4E6rSQAdtEYw
+	 xLXrlXxUpwVOH1/uFCRBMVZ7hleswmE/FaMZGtptp3jVs9FnNiXQFrj9BjLSi+ZYVx8oe
+	 0HRd1QtkDuLtAkj7SLMQb/UqHNVSvHQE0uKLO+QMq9fgtyVd4pztr1QenLQQBX9q8cw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c52fP1Mq;
-	arc=none smtp.remote-ip=95.215.58.1
-Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nxog5xnt;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B921606A320
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:24:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B921606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EAC606A320
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:31:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92EAC606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c52fP1Mq
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=MoQGpo4FuP4mzIUo8BoEyWZZfoeLV0yVTLAJvW0r6/o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794363844; v=1; x=1794968644;
- b=c52fP1MqBvZyF4hcFd5xyIlBgcKmrWFwQXPg9YL5M3/gI+1f7VVQyvVRE2obF+mkGC1YBMoC
- EPdE9ZijQi3e3L660cSFOg0KzAUgmP6YjRX+E5jcnnfKdKSwuzSIRPeAu9cx7j1lwtcMO9aOk0O
- OQCjSbvEsBIvTjSF8wKVE/1o=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 6f6d6ffe7c88529c;
-	Wed, 11 Nov 2026 02:24:03 +0000
-X-Mizu-Trace-ID: 6f6d6ffe7c88529c
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 11 Nov 2026 10:23:53 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org
-Subject: Re: [PATCH net v2 0/3] rtnetlink: fix truncation of dump entry
-Message-ID: <avPRuQugknhA-HqL@fedora>
-References: <20261110172925.3293312-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nxog5xnt
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdd4dafdcf3so2257028a12.2
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:31:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794364286; x=1794969086; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tvIZ7pbWoBRbHRTKo7ycS404yAoUTHoTkTV3VzeS6nY=;
+        b=Nxog5xntwwP4C9Dm2uC/m+UZw4PaJodBb1FtucoEb34YU6SpsAFTrPlLH6MkGbbRCo
+         NAJfTcWoTn9uu1GvLting5AG+KSFwslAvcJyaFu0wtuds72JiroSF/LIphlb9ucoqd9U
+         d/D/92b5sybYWoWTipMJL0Auq9bQ5poJ6+pYzgCuD6FI9NfpDRgQkxd0QRuNzLp2Y3Of
+         3tPk3M6mU4bEB5k5B8LiTdeczqyPwNLxKK3yQ+BiiqEH7cGvkr1pOXHJVVkQ9Yhpyt+7
+         iHpD7B+qSUH1zzC71e6lbCc9qYM1zMIvDldwhdgoWf9WEIvRU0393SVBHurOCR3KC7uv
+         i3gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794364286; x=1794969086;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tvIZ7pbWoBRbHRTKo7ycS404yAoUTHoTkTV3VzeS6nY=;
+        b=128XYvM0MpJf4WrKPeUTHzO0n3P+rzOibU+W8i/OjaA5birpk8k2DqlJc7NOUqHZjh
+         L9wMH2J6KWrRPdlF0f93+TO5Lxi4dishTZM3wNdEnkgXXD6cZM+4AfkgHECw0560jL6I
+         ebQuXxdeSahEb30pqKCadRBzU10DZ/IsQCtbdMC0vw9ZvVdlZmBtYZ90t5Qh2RPIq70a
+         Ka2D/TArdYYx2gD+SM4/j5vaGW3TOuOV2A7070t+k5Il4nrjDQZotUvkDMeyCKLzINa1
+         u+SU6fQWeSRi+qIUMUAOXOo3ahVe3C7o/fOmibLuoBbstzFSi7Tmd0DuHsBIarOcBZ87
+         7wRg==
+X-Forwarded-Encrypted: i=1; AL+hErHzVdJIhPywLC96IjqdhbE1Dw1liZDIOqgarsPrKB/J8wJtpJNb1xzh2uZi1Zk1hj/pIm17l0w=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/DhmGxiAIzfktNK7Kiva7EWDtZqwPpbsgBlmzqBQk543mGkJ7/
+	Z/CnECtKehz05C2l+BRlxrtNIqUG10Q2oLkw+4pLmXW25B+P2PkElvilM8AoOKVB7UE87O1Urc8
+	GGvNfKkcPKabAylnXP4V/3tRL3w==
+X-Received: from pgby2-n2.prod.google.com ([2002:a05:6a02:6502:20b0:cc7:e6a9:8fe1])
+ (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:7345:b0:3de:456a:6e07 with SMTP id adf61e73a8af0-3f2febd5c74mr1226594637.46.1794364285628;
+ Tue, 10 Nov 2026 18:31:25 -0800 (PST)
+Date: Wed, 11 Nov 2026 11:31:21 +0900
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,46 +75,92 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110172925.3293312-1-stephen@networkplumber.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
+Message-ID: <20261111023121.1511995-1-yuyanghuang@google.com>
+Subject: [PATCH net-next] net: replace mc_dev with a flag in netdev_hw_addr_list
+From: Yuyang Huang <yuyanghuang@google.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Nov 10, 2026 at 09:26:15AM -0800, Stephen Hemminger wrote:
-> While analyzing one of the OSS Scanner dump reports for iproute2,
-> a bug was uncovered in netlink route dump.
-> A route dump whose first entry is too large for the dump skb ends with
-> NLMSG_DONE and status 0. The route and everything after it is silently
-> dropped; "ip route show table 100" prints nothing and exits 0.
-> 
-> It takes some non real world stuff to do this 
-> like a 500 way multipath route is enough to trigger this.
-> 
-> The series is broken into three parts:
->   1. Fix regression in rtnl_dumpit().
->      Do not hide EMSGSIZE on empty skb case.
->   2. Fix IPv6 FIB dump to propagate error properly
->   3. Add a test for this bug.
-> 
-> v2 - drop Assisted-by
->    - correct commit message about "ip route get"
-> 
-> Stephen Hemminger (3):
->   rtnetlink: return EMSGSIZE when first dump entry does not fit
->   ipv6: return EMSGSIZE when first route in dump does not fit
->   selftests: net: netlink-dumps: test dump of route larger than skb
-> 
->  net/core/rtnetlink.c                        |   5 +-
->  net/ipv6/ip6_fib.c                          |   6 +
->  tools/testing/selftests/net/config          |   3 +
->  tools/testing/selftests/net/netlink-dumps.c | 271 +++++++++++++++++++-
->  4 files changed, 280 insertions(+), 5 deletions(-)
-> 
-> -- 
-> 2.53.0
-> 
+Commit 646cb8868bd2 ("net: add a generation counter for dev->mc
+changes") added an mc_dev back pointer to struct netdev_hw_addr_list,
+so the list helpers can find the netns of a dev->mc list. Only dev->mc
+sets it, but the pointer makes every list 8 bytes larger: 32 to 40
+bytes on 64-bit. struct net_device holds four of these lists, and some
+drivers keep arrays of them.
 
-For the series
+Use an is_dev_mc flag in the hole after _count instead, and get the
+device with container_of(). The struct is 32 bytes again.
 
-Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Link: https://lore.kernel.org/netdev/8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com/
+Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+---
+ include/linux/netdevice.h |  6 +++---
+ net/core/dev_addr_lists.c | 12 ++++++++----
+ 2 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index c0ae442c4344..e00687e8e750 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -257,11 +257,11 @@ struct netdev_hw_addr_list {
+ 	 */
+ 	int			_count;
+ 
++	/* Set for dev->mc only */
++	bool			is_dev_mc;
++
+ 	/* Auxiliary tree for faster lookup on addition and deletion */
+ 	struct rb_root		tree;
+-
+-	/* Set for dev->mc only, the device the list belongs to */
+-	struct net_device	*mc_dev;
+ };
+ 
+ #define netdev_hw_addr_list_count(l) ((l)->_count)
+diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+index d827cc21867b..b6f25e487984 100644
+--- a/net/core/dev_addr_lists.c
++++ b/net/core/dev_addr_lists.c
+@@ -25,8 +25,12 @@
+  */
+ static void __hw_addr_changed(struct netdev_hw_addr_list *list)
+ {
+-	if (list->mc_dev)
+-		atomic_inc(&dev_net(list->mc_dev)->dev_mc_genid);
++	struct net_device *dev;
++
++	if (!list->is_dev_mc)
++		return;
++	dev = container_of(list, struct net_device, mc);
++	atomic_inc(&dev_net(dev)->dev_mc_genid);
+ }
+ 
+ static void __hw_addr_count_add(struct netdev_hw_addr_list *list, int value)
+@@ -538,7 +542,7 @@ void __hw_addr_init(struct netdev_hw_addr_list *list)
+ 	INIT_LIST_HEAD(&list->list);
+ 	list->_count = 0;
+ 	list->tree = RB_ROOT;
+-	list->mc_dev = NULL;
++	list->is_dev_mc = false;
+ }
+ EXPORT_SYMBOL(__hw_addr_init);
+ 
+@@ -1215,7 +1219,7 @@ EXPORT_SYMBOL(dev_mc_flush);
+ void dev_mc_init(struct net_device *dev)
+ {
+ 	__hw_addr_init(&dev->mc);
+-	dev->mc.mc_dev = dev;
++	dev->mc.is_dev_mc = true;
+ }
+ EXPORT_SYMBOL(dev_mc_init);
+ 
+-- 
+2.56.0.542.g3ef89b7020-goog
+
