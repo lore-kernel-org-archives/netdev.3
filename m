@@ -1,59 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794359337;
-	b=xyyw8sV4RospbN6JUOaXQMMp0xgtnFQcZiVOXNVLWkOC1GO2twiWOb30mj7Ww2T7Ei7O
-	 PoP8qaMt2s6WRB7T5mACJTCL9y5tRMQOh6vsFW6a4Xv7Y04MKGOkUJAK/3zyWYPiCLgcp
-	 9Zx5UD2jSxf5yZBS5IJqpflg8xCAX8PzuBbbWW/jLXe0155MVSsYMrGN+2LSlzNCvf1Y6
-	 4IqN4l+r+EO9k7WEGgvemTNqBYBBoLa61dQD8n7wTqKxeJzgO3fgWAsz+4+94OO26SZjW
-	 lbuBP5u/xbGyLy31RVOom3WBqdPXzpyjkR5nYoyJKwTk/Kgcir0GmLw7Thi115gj9kQ==
+	t=1794359406;
+	b=G7la76txb5QnVQLPb7Wl+1uUbFY52gnBhtz+QM0tjp2HIIFFxCLEvyeDygXcXEMNFv5z
+	 GTgqueDD6blR7NwmBFxbHR/HXjjGjl53iS7F5yLkLQ1WlCZL9uwLzR5CA2o6WazZj96vn
+	 WWZiNYJVxeDmdIT1pTz1QJayrAi1+R9w8h+rnYPqFYJRwDZxd+Q1VJTJBAD84EG0BikXt
+	 sTdz/fqH2EqRDw/stC8INs47v+9/xUS30P9ntWDt0IH6MWUtNka0bbpYPi9fnTPKEXN2/
+	 eFIFyQuUKXtEuW2Ri4Awgapds1K6UzmZCRpMt3iLsCOtZIXEpAa8YBqeREk7sR4qrWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794359337;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=TtYY5H+Y2SiCvwprj/5Tw0V7c61Jub2+DR/nTLQbuyA=;
-	b=xZH1hyaYl3WZWHsxwiLv+Ekm/3z7Jnupt1pfLuNhY7iQDb3Ee+6dFcyhPWvpJeb077OQ
-	 QjEW4fG+x67mCaKtsOpHcQvi201OfOD6K6r22eOHPylqnHfLJtd8m/OGcpd3cJQznUHWy
-	 1w8vAAfThlt79Q3PYtkkwEViKTN5foZ7scWCX72m2I8kR61ASuojaQ+FA+AXM2yrdqDDq
-	 9n+/hUwiu/BEVmAijFNJ5zWK9McGxqe0pk7j6gm/C4EdSlbQ0wDoUQJvhhCgl5EZtLFo6
-	 G4B43eXEjw+kw2H/VGMGSogcq9VFagHHxmD3q8803WqXZ204AeDcwXHFeQc0AlN3EpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794359406;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=yjUwvrkv4SLMUIorZAyMYy8YP7lnL80NfAbtLuZyId4=;
+	b=bZnijXd1wtBjHT80a5LZ8jS++AkG6ZiiqY+fM5KF5RRg4dkdlCY70imVi3kjm9zycwRl
+	 RYWS6Bmc/5uxDB2VMgKoFtWBUpdxPO76Nt8Ee8l6Nyn+gqQ1Qveh5tpwbjyS7pdPvmvTc
+	 ho0zt+i1H9sHi9cVXE7hhdsm/O/Gr3nlQhxLn/q5p5Mkf+P1jOMfRlCfXvB96kmPq3iXe
+	 Xqrl/i0FMGVa5IjTLeKT+ze/XCQrPnZsKChYv1hSQSOZrNoZNm9i1zF/3jYSC+++6a5bT
+	 8/UcF9l5ZZ2klY2ngPHf76biG9eI9Kn9tnGyyUn+a38F7HBvpSv9Mg2gKEEbN52ec5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjwBpwU7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Th6w0rtY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43C4606A324;
-	Wed, 11 Nov 2026 01:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF490606A31C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 01:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjwBpwU7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014B01F0089F;
-	Wed, 11 Nov 2026 01:08:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Th6w0rtY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1C11F0089F;
+	Wed, 11 Nov 2026 01:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794359337;
-	bh=TtYY5H+Y2SiCvwprj/5Tw0V7c61Jub2+DR/nTLQbuyA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SjwBpwU7dqWZdRZ4kkbA1nk+poWewJqXfHR2dyQNqVzIavNmA26qBXraIdwli3SbI
-	 NsJfySyhbnv+zgW5selm++whA9SAhVFwm8Qw5c7maCNztHb/MGRJXKSvPc9NQ3WUne
-	 AjsXg8O3BGQdUTJ16iPQGl7ZC/TEXQ8/vlwRySFNVrP20b3IsQ2ia3/vjYDJERZCUf
-	 QC+j3Sig14Dyl85Vlya7AAy7uwoYT5Spu7oyL/JLrxYmcNvo3OCfwgi5blymiXJ/Lw
-	 V9MSquHwhnIBDj+CXUR4Si09Xv7qkQhs7zcdleFWcBlYk4TvSGEBmuibdaqi6kpVnN
-	 z2t4uvr8k/DiA==
-Date: Tue, 10 Nov 2026 17:08:55 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tianyi Gao <tianyi@cloudflare.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, toke@redhat.com,
- lorenzo@kernel.org, horms@kernel.org, bpf@vger.kernel.org,
- shuah@kernel.org, hawk@kernel.org, kernel-team@cloudflare.com,
- ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- sdf@fomichev.me, linux-kselftest@vger.kernel.org, jiayuan.chen@linux.dev
-Subject: Re: [PATCH net-next 0/3] veth: link RX queues to their NAPI
- instances
-Message-ID: <20261110170855.5b05db3c@kernel.org>
-In-Reply-To: <20261105143356.17062-1-tianyi@cloudflare.com>
-References: <20261105143356.17062-1-tianyi@cloudflare.com>
+	s=k20260515; t=1794359406;
+	bh=yjUwvrkv4SLMUIorZAyMYy8YP7lnL80NfAbtLuZyId4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Th6w0rtY6/FNu2Fwn7SRNCAvZUAK9dAs1OjMGqfRplU0dknAznrZW/S1LZB3BQ0Mj
+	 6k2xrAPJvNRXHO7YbbdWFTLLT61MlpAV4dRK+zaX4lXMUXP+iDAGWGlrOpnKAE0F4z
+	 xPHBoub0rEXZG/2lRCWxvyDcrOxsgeiSPjPQsf9rwASl9uIxSN7R8czFFshLanvWZZ
+	 30PkHMBzue0LNnJECQKTdzBrc5L9m2K3Ed2b+HN7nBjPBtb/stHsukFrBkjtuzMtBe
+	 V8IBa2Bb37gpaieFtKB8w9tT3jdKPdxww0kvIP7YP85tVaO7JJQbCiT2iopyRDcC3t
+	 usXAxT175OWBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20F71380CFE6;
+	Wed, 11 Nov 2026 01:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,16 +53,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: stmmac: count XDP_PASS frames in rx_packets on
+ the
+ XSK zero-copy path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179435940493.149955.7586683481024134656.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 01:10:04 +0000
+References: 
+ <PNYPR01MB11444552E41C2B17A992492C0FD762@PNYPR01MB11444.INDPRD01.PROD.OUTLOOK.COM>
+In-Reply-To: 
+ <PNYPR01MB11444552E41C2B17A992492C0FD762@PNYPR01MB11444.INDPRD01.PROD.OUTLOOK.COM>
+To: Anandu Padinhare <Anandu.Padinhare@electrifex.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, jszhang@kernel.org, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com
 
-On Thu,  5 Nov 2026 14:33:53 +0000 Tianyi Gao wrote:
-> veth does not link its RX queues to their NAPI instances. queue-get
-> therefore reports no napi-id for them. napi-get lists the NAPI instances
-> of a veth, and their thread PIDs when NAPI is threaded. It does not show
-> which RX queue each instance polls. Userspace cannot tell which NAPI
-> thread to pin for a given queue, or which NAPI to change with napi-set.
+Hello:
 
-The test does not apply, series needs a respin
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 6 Nov 2026 06:12:51 +0000 you wrote:
+> In the AF_XDP zero-copy RX path, frames that the XDP program passes to
+> the stack are handed over by stmmac_dispatch_skb_zc(). That function
+> increments rx_pkt_n instead of rx_packets since
+> commit 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary").
+> 
+> stmmac_rx_zc() already adds every processed frame to rx_pkt_n, so each
+> XDP_PASS frame is counted twice there, and rx_packets, which
+> ndo_get_stats64() reports, never counts them: on a zero-copy queue
+> rx_bytes grows with the passed frames while rx_packets stays still.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: stmmac: count XDP_PASS frames in rx_packets on the XSK zero-copy path
+    https://git.kernel.org/netdev/net/c/070411c1590c
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
