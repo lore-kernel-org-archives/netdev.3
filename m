@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436893;
-	b=KmGM8Cf5qO9YYgbmNVXJQtGRU26N4m5CntBmyMhfsKbDA5tq24oWl24vqAxNPoHTBYrW
-	 TMPURkL8bvAmI68dWZPKyUDhsEVvwGyifen/7FVV7rtWQpJJwNiYKvFPaU4rzEq9aAD/B
-	 c4XRuNcdatzuE3dVdikBKZ2roSn6LAWQTUvABq6eiDhI8DqCjKXkUCFtxgtTGQtX/ApgH
-	 kYg3MVKpGmLlfK23xUcxp1r5bFjn4Aq333ficxdY6302nTzL0ciA6OqlMMWbHhOIn6LY9
-	 f88DOe7MZ/hBeXCVi+O3gUcZYyziM0GmyuSyHXiFhzWzf+yopjgB1TebC7zjJe5pvJA==
+	t=1794436899;
+	b=VRLbN+YSBbEx4ndh2wK+KU4G86B9wX08fGG9JAc21sMSU/847aWsNL06aoA9CZkAw7GK
+	 cSGAAhgP3tgCWkyh2VNlfx26xsE2pHRnqh7d6YyVUX8c64187BcyRk0Zld2E09hJw63A2
+	 clFRwo49J53EoTSpo48C55bqedeQtKVzosnanILhTo+y2NexI9j1Wy/OzslvYySyzkC9M
+	 h4zrPBikH9KHk0oiIhHPTQ5wwYLtd2reV2F+M1i905jDd31+Q1Mi1yH4h4R/epc3k6fCx
+	 hs31p9ZgoCVDWoMCj6tRRsFmEx4n1xCm56TscHHazScHCDH6tLB7IKO7CAGkfdZg/XA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436893;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794436899;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=LJTjahJn9zqRgvX/Ycs7FoWVCdUbyMhl+gR6xg88ieg=;
-	b=rWEGtapARiVa0KB/F0HYGpCXe4QLdeWxKA+LFmpLlDKPbH85nNGLxC5WBZ+6wtle4J3I
-	 f8EL09GN2W5N7ItMDNZiRyQTdQvAK/4Ndf2nB3u6DzCGU2VlfVrP5LhFIEHa7prVpidQ8
-	 dJvutCHSnJLJYCKtLUeWGht/LX8Hs3bMvrf/PDbDzBc0rlxeoAHaL2FtBhDpUglaxAakS
-	 Hadf4G4UXbacZBBFzeiGfZ6mvXDaPzP/m1RMe5ZNb+uLZVbt7VWMKBXykpb6Qb2dWDcoj
-	 jpTXGFDGUTmSz7M/zEkk3UmT9y3PoLP+7FrP2gYDiztW5o4OqMkAjLBumWdPp3mFepA==
+	bh=/AWuy26j6xO/+PuOcFejOEnfNmeGq9vPqTM+p90YjAc=;
+	b=j4IggsyZZgiFdEOfWgWEXOHl5gmyb4qz/WfHLROPXlh6T2PXrt8+BgH60L1QIMJcQ0PS
+	 PRgoick2pCV3y//UeOcGYLl9g58YKigm8k7XFhs0vnRTQCmEhsTXFNdG4n3Ixz9yOhdhx
+	 p1yhfvz7rvCO0JLZfH0s2Sjj0zcIeiYIk9pBYFq41USRBLAOzUbo2xga7susLL83fKNlO
+	 I4KIaw4IUe1oPNT2lDO2K9nkVdK0JvzewbgBWEvk80rBFsgYWDbNRTC1cSSslUxdEbNxn
+	 n4Vx7TYRVk8+kBeIT43phPgdg6KKaLE2hsTww0Mj8K+VkBtspRi5M7kQyQn5at6sVzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fHmZ6QH8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YMvPc8rq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBDD606A897;
-	Wed, 11 Nov 2026 22:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD4760A3820;
+	Wed, 11 Nov 2026 22:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fHmZ6QH8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B951F00A05;
-	Wed, 11 Nov 2026 22:41:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YMvPc8rq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EAB1F00A09;
+	Wed, 11 Nov 2026 22:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794436893;
-	bh=LJTjahJn9zqRgvX/Ycs7FoWVCdUbyMhl+gR6xg88ieg=;
+	s=k20260515; t=1794436898;
+	bh=/AWuy26j6xO/+PuOcFejOEnfNmeGq9vPqTM+p90YjAc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fHmZ6QH8gByQ5fCq+QnGg1Vbe5YTTV1WjH0OiCiEUmqkwlLV91/pbPG4I/xVl8nxX
-	 6VMJA3UN8VxnPufPg/IOQ3970NUGJBQ9LmO8l6yVjV2UDE9+/nXtLZjHn9vy25j2xv
-	 HxhAg1SD5fHs7+UEMb+fEDGHvfSy/WVmC+OxM8l9kwOcyi7RqM48MH65qHWGHhgLWb
-	 hcWwNrf1u5Qv9yXxc0XYi/fuYCKuETo0LYuzJ0qC3oxpbz3M47c16t83oUXHyHBfxd
-	 stnG1EAXlLirrc/0Bv1pqDLP3yYm9HAgz7WdyGDy3CfqKgAfzu3El3pn6Bb7wDVC96
-	 Eu7MFq2NkvQRg==
-Subject: Re: [PATCH net-next v1 05/11] xsk: Install UMEM page pool providers
- in the core
+	b=YMvPc8rqcRjg2+UCtIXYxVtWdwSW1aaeylbH62iXeKnQeRlW+PxRhxHVNrgbDgDQE
+	 6MvnZ2SY6R5G+uU5ZgnzJDSdJHlYyqD7KHAWIOVpGHn+WhGXWm2oEJ/6FMnTe5meYi
+	 iT6OsnvqtRuXD4EQ8gshuiui8OJWvxN8Spl/1HaeruKKVdsczo1ULEwpopI5tm0RnL
+	 ovWS9OvMfEn+qpkfqCSaRlt6cH3LWAQtwLEGkp6Bk0IDhfroVEgXEHCAubAU/Gl6XO
+	 b2fy5QOJJHA899IYxLcmHjCQlm27++rxFd7wFuxT1e7VB1bt8bUQ679Z8khejKLmdf
+	 eyAYdcbd8J4gw==
+Subject:
+ Re: [PATCH net-next v1 07/11] xsk: Deliver provider chunks without copying
 From: netdev-bot+sashiko@kernel.org
 To: bjorn@kernel.org
 Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, sdf@fomichev.me,
@@ -58,11 +58,11 @@ Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, sdf@fomichev.me,
  bestswngs@gmail.com, razor@blackwall.org, dw@davidwei.uk,
  aleksander.lobakin@intel.com, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, stuclar@meta.com
-Date: Wed, 11 Nov 2026 22:41:30 +0000
-Message-ID: <179443689029.2199510.2604170089798059237@kernel.org>
-In-Reply-To: <20261110102039.1002605-6-bjorn@kernel.org>
-References: <20261110102039.1002605-6-bjorn@kernel.org>
-X-sashiko-severity: High
+Date: Wed, 11 Nov 2026 22:41:35 +0000
+Message-ID: <179443689590.2199510.9741809616593174859@kernel.org>
+In-Reply-To: <20261110102039.1002605-8-bjorn@kernel.org>
+References: <20261110102039.1002605-8-bjorn@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -75,10 +75,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -86,418 +86,248 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] xsk_pp_unbind() in net/xdp/xsk_pp.c ignores the return value of
-  netif_mp_close_rxq() and always calls xsk_pp_detach().
-- [High] xsk: UAF of pool and UMEM on xsk_pp_bind() failure with active
-  page_pool
+- [Medium] The patch weakens a documented AF_XDP UAPI guarantee, and
+  userspace cannot opt in or detect it.
+- [Low] The commit message gets wrong what the old copy path did.
+- [Low] The patch adds a new core page_pool memory-provider API,
+  net_mp_release_page_pool_bulk(), in net/core/page_pool.c and…
+- [Low] The new drop paths for provider sockets in xsk_rcv() do a plain
+  non-atomic `xs->rx_dropped++` on a u64 from contexts outside the queue…
 
 --
 
-xsk: Install UMEM page pool providers in the core
+xsk: Deliver provider chunks without copying
 
-This commit installs the AF_XDP UMEM as a page pool memory provider
-through the queue management API, for drivers that set
-netdev_queue_mgmt_ops.xsk_page_pool. Drivers check the chunk size,
-headroom and multi-buffer setup in XDP_VALIDATE_XSK_POOL. The core
-then verifies, using a per-queue mp_gen, that the new page pools picked
-up the provider.
+This commit puts packets whose buffers all belong to the socket's memory
+provider directly on the AF_XDP RX ring, and copies other packets into
+chunks claimed from the provider. Generic XDP and CPUMAP redirects to
+provider sockets are dropped. TX descriptor validation now reserves
+tx_metadata_len only for descriptors with XDP_TX_METADATA.
+
+> A provider socket still receives through the copy path, which takes
+> FILL entries without the provider's ownership checks: a chunk that a
+> page pool holds could be handed out twice. No driver opts in yet.
+
+[Severity: Low]
+Does this describe what the old copy path actually does for a provider
+socket?
+
+Before this patch, xsk_rcv() calls __xsk_rcv() for provider sockets,
+because their mem.type is MEM_TYPE_PAGE_POOL. That leads to:
+
+xsk_rcv()->__xsk_rcv()->xsk_buff_alloc()->xp_alloc()->__xp_alloc()
+    ->xp_get_xskb()
+
+For a provider bind, pool->free_heads_cnt is umem->chunks and pool->fq is
+still set. So __xp_alloc() peeks a FILL entry, and in aligned mode (the
+only mode xsk_pp_bind() accepts) xp_get_xskb() returns &pool->heads[idx].
+
+pool->heads is never allocated here. xp_assign_dev() returns right after
+a successful xsk_pp_bind() and never calls xp_alloc_heads():
+
+net/xdp/xsk_buff_pool.c:xp_assign_dev() {
+    ...
+	if (xsk_pp_supported(netdev)) {
+		err = xsk_pp_bind(pool, netdev, queue_id);
+		if (err)
+			goto err_unreg_pool;
+
+		pool->umem->zc = true;
+		return 0;
+	}
+    ...
+}
+
+xp_alloc() then writes xskb->xdp.data through a NULL-based pointer.
+
+So the failure would be a NULL or wild pointer dereference in NAPI, not a
+chunk handed out twice. No driver opts in yet, so there is no runtime
+impact. Could the commit message describe the actual failure mode?
+
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index e897e79d31f19..56c299f2280d7 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+
+[ ... ]
+
+> @@ -1422,3 +1422,35 @@ void net_mp_niov_clear_page_pool(struct net_iov *niov)
+>  
+>  	page_pool_clear_pp_info(netmem);
+>  }
+> +
+> +/**
+> + * net_mp_release_page_pool_bulk() - take net_iovs back from a page pool
+> + * @pool: page pool that holds one reference to each net_iov
+> + * @netmems: net_iovs of the memory provider of @pool
+> + * @count: number of entries in @netmems
+> + *
+> + * A memory provider takes net_iovs out of a page pool without
+> + * ->release_netmem(), for example to give them to userspace. @pool may be
+> + * freed on return.
+> + */
+> +void net_mp_release_page_pool_bulk(struct page_pool *pool,
+> +				   netmem_ref *netmems, u32 count)
+> +{
+
+[Severity: Low]
+This isn't a bug, but this adds a new core page_pool memory provider API,
+declared in include/net/page_pool/memory_provider.h. The xsk commit
+message doesn't mention it.
+
+The helper clears pp_info and advances pool->pages_state_release_cnt.
+That counter feeds the inflight accounting that decides when a destroyed
+pool is freed. The helper also documents that @pool may be freed on
+return.
+
+Other core changes in this series, such as "page_pool: Coordinate refill
+with memory providers", got their own patches. Could this go in a
+separate page_pool patch, so the page_pool maintainers can review the
+new contract?
+
+[ ... ]
+
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 113b0b08356d5..b419c673e3f14 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+
+[ ... ]
+
+> @@ -488,7 +547,26 @@ static int xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+>  		return xsk_rcv_zc(xs, xdp, len);
+>  	}
+>  
+> -	err = __xsk_rcv(xs, xdp, len);
+> +	if (!xs->pool->pp) {
+> +		err = __xsk_rcv(xs, xdp, len);
+> +	} else {
+> +		/* A CPUMAP program runs XDP on another CPU, not in NAPI. */
+> +		if (unlikely(!xdp_rxq_info_is_reg(xdp->rxq))) {
+> +			xs->rx_dropped++;
+> +			return -EINVAL;
+> +		}
+> +
+> +		err = xsk_pp_rcv_zc(xs->pool->pp, xs, xdp);
+> +		if (err != -EXDEV)
+> +			return err;
+> +
+> +		/* Copy only packets of the queue, from its NAPI */
+> +		if (unlikely(!xsk_pp_queue_buf(xs->pool->pp, xdp))) {
+> +			xs->rx_dropped++;
+> +			return -EINVAL;
+> +		}
+
+[Severity: Low]
+Can these xs->rx_dropped++ updates race with the queue NAPI?
+
+The CPUMAP kthread reaches the unregistered rxq branch.
+cpu_map_bpf_prog_run_xdp() uses an on-stack rxq:
+
+kernel/bpf/cpumap.c:cpu_map_bpf_prog_run_xdp() {
+    ...
+	struct xdp_rxq_info rxq = {};
+    ...
+}
+
+It sets rxq.dev = xdpf->dev_rx and leaves queue_index at 0, so
+xsk_rcv_check() passes for a socket bound to queue 0.
+
+A BPF_F_TEST_XDP_LIVE_FRAMES test run reaches the xsk_pp_queue_buf()
+branch. xdp_test_run_setup() registers a fake rxq on the real device with
+queue_index 0 and page-backed MEM_TYPE_PAGE_POOL buffers. xsk_pp_rcv_zc()
+returns -EXDEV, then xsk_pp_queue_buf() returns false, all in process
+context.
+
+At the same time, the queue NAPI on another CPU can increment
+xs->rx_dropped and xs->rx_queue_full in xsk_pp_rcv_copy(),
+xsk_pp_rcv_zc() and xsk_rcv_check(). No lock is shared between these
+contexts.
+
+Would concurrent increments get lost, and could the u64 counter tear on
+32-bit, so that XDP_STATISTICS reports wrong drop counts? xsk_rcv_check()
+already has the same unsynchronized pattern, and the effect is limited to
+these counters.
+
+> +		err = xsk_pp_rcv_copy(xs, xdp, len);
+> +	}
+>  	if (!err)
+>  		xdp_return_buff(xdp);
+>  	return err;
+
+[ ... ]
 
 > diff --git a/net/xdp/xsk_pp.c b/net/xdp/xsk_pp.c
-> index fdd55265a6cdc..c2214e718cdb3 100644
+> index a77213f7fef6b..a1c2ca00f0169 100644
 > --- a/net/xdp/xsk_pp.c
 > +++ b/net/xdp/xsk_pp.c
 
 [ ... ]
 
-> @@ -236,11 +243,225 @@ static int xsk_pp_nl_fill(void *mp_priv, struct sk_buff *rsp,
->  	return 0;
->  }
->  
-> +/* The queue no longer uses the provider, and its DMA stopped */
-> +static void xsk_pp_detach(struct xsk_pp *pp)
-> +{
-> +	pp->rxq = NULL;
-> +	spin_lock_bh(&pp->lock);
-> +	pp->fq = NULL;
-> +	spin_unlock_bh(&pp->lock);
-> +	xp_dma_unmap(pp->pool, XSK_PP_DMA_ATTR);
-> +}
+> @@ -294,6 +299,166 @@ static bool xsk_pp_refill_done(struct page_pool *pool, enum pp_refill state)
 
 [ ... ]
 
-> +/* Called with RTNL and the instance lock of the device */
-> +void xsk_pp_unbind(struct xsk_buff_pool *pool)
+> +/* Returns -EXDEV for a packet that must be copied. Called from the NAPI. */
+> +int xsk_pp_rcv_zc(struct xsk_pp *pp, struct xdp_sock *xs,
+> +		  struct xdp_buff *xdp)
 > +{
-> +	struct xsk_pp *pp = pool->pp;
-> +	struct pp_memory_provider_params mp = {
-> +		.mp_ops = &xsk_pp_ops,
-> +		.mp_priv = pp,
-> +	};
-> +
-> +	/* Unregister removed the provider already */
-> +	if (!pp->rxq)
-> +		return;
-> +
-> +	netif_mp_close_rxq(pool->netdev, pool->queue_id, &mp);
-> +	xsk_pp_detach(pp);
-> +}
-
-[Severity: High]
-What happens here if netif_mp_close_rxq() fails? xsk_pp_unbind() drops
-its return value and always calls xsk_pp_detach(), and that unmaps the
-UMEM DMA.
-
-netif_mp_close_rxq() can return an error after the reconfig fails:
-
-net/core/netdev_rx_queue.c:__netif_mp_close_rxq() {
-    ...
-	memset(&rxq->mp_params, 0, sizeof(rxq->mp_params));
-	netdev_queue_config(dev, rxq_idx, &qcfg[1]);
-
-	err = netdev_rx_queue_reconfig(dev, rxq_idx, &qcfg[0], &qcfg[1]);
-	if (err == -ENETDOWN)
-		return 0;
-	WARN_ON(err);
-	return err;
-}
-
-netdev_rx_queue_reconfig() can fail in several places:
-
-  - kvzalloc() of new_mem or old_mem
-  - ndo_queue_mem_alloc()
-  - ndo_queue_stop()
-  - ndo_queue_start(), which falls back to restarting the old queue
-
-In each case the old queue keeps running. Its page pools still have
-mp_priv == pp and mp_ops == &xsk_pp_ops, and the hardware RX ring still
-holds UMEM chunk DMA addresses.
-
-The teardown then continues:
-
-xp_release_deferred()
-  xp_clear_dev()
-    __xp_clear_dev()
-      xsk_pp_unbind()
-        netif_mp_close_rxq()   <- fails, result dropped
-        xsk_pp_detach()
-          xp_dma_unmap()
-  xdp_put_umem()               <- vunmap(umem->addrs), unpin pages
-  xp_destroy(pool)             <- frees the xsk_buff_pool
-
-The surviving page pools hold a reference on the xsk_pp only, taken in
-xsk_pp_init(). They hold none on the DMA mapping, the UMEM pages or the
-xsk_buff_pool.
-
-Can the NIC then DMA into unmapped IOVAs? Without an IOMMU, can it DMA
-into unpinned pages that may already be reused?
-
-Also, xsk_pp_alloc_reuse() would keep recycling chunks with stale DMA
-addresses. CPU reads through pp->area.vaddr would hit the vunmapped
-umem->addrs, and pp->pool would point to the freed xsk_buff_pool.
-
-Devmem doesn't seem to have this problem, because its page pools pin
-the binding and the DMA unmap happens on the last reference drop. Here
-the unmap happens no matter what pp->nr_pools is.
-
-netif_rxq_cleanup_unlease() seems to follow the same pattern:
-
-	__netif_mp_close_rxq(phys_rxq->dev, rxq_idx, &p);
-	__netif_mp_uninstall_rxq(virt_rxq, &p);
-
-It ignores the close result and then reaches xsk_pp_uninstall(), which
-calls xsk_pp_detach().
-
-No driver sets xsk_page_pool at this commit. fbnic opts in later in the
-series, and its queue mem_alloc can fail with -ENOMEM.
-
-A later patch in the series adds synchronize_net() before
-xp_dma_unmap() in this path. That doesn't seem to help when the old
-queue is still running.
-
-Should xsk_pp_detach() be skipped, or the DMA unmap and UMEM release be
-deferred until pp->nr_pools drops to zero, when the close fails?
 
 [ ... ]
 
-> @@ -236,11 +243,225 @@ static int xsk_pp_nl_fill(void *mp_priv, struct sk_buff *rsp,
->  	return 0;
->  }
->  
-> +/* The queue no longer uses the provider, and its DMA stopped */
-> +static void xsk_pp_detach(struct xsk_pp *pp)
-> +{
-> +	pp->rxq = NULL;
-> +	spin_lock_bh(&pp->lock);
-> +	pp->fq = NULL;
-> +	spin_unlock_bh(&pp->lock);
-> +	xp_dma_unmap(pp->pool, XSK_PP_DMA_ATTR);
-> +}
+> +	__xskq_prod_reserve_desc(xs->rx, xdp->data - umem,
+> +				 xdp->data_end - xdp->data,
+> +				 nr_frags ? XDP_PKT_CONTD : 0);
+> +	pp->pending[pp->pending_cnt++] = head;
 > +
-> +/* The device unregisters, and is closed */
-> +static void xsk_pp_uninstall(void *mp_priv, struct netdev_rx_queue *rxq)
-> +{
-> +	xsk_pp_detach(mp_priv);
-> +}
-> +
->  const struct memory_provider_ops xsk_pp_ops = {
->  	.init		= xsk_pp_init,
->  	.destroy	= xsk_pp_destroy,
->  	.alloc_netmems	= xsk_pp_alloc_netmems,
->  	.release_netmem	= xsk_pp_release_netmem,
->  	.nl_fill	= xsk_pp_nl_fill,
-> +	.uninstall	= xsk_pp_uninstall,
->  	.caps		= MP_CAP_READABLE,
->  };
-> +
-> +static bool xsk_pp_abandon(struct xsk_pp *pp)
-> +{
-> +	struct xsk_buff_pool *pool = pp->pool;
-> +	bool busy;
-> +	u32 idx;
-> +
-> +	spin_lock_bh(&pp->lock);
-> +	busy = pp->nr_pools;
-> +	while (!busy && pp->reuse_cnt) {
-> +		idx = pp->reuse[--pp->reuse_cnt];
-> +		pp->state[idx] = XSK_PP_USER;
-> +		xp_free(&pool->heads[idx]);
-> +	}
-> +	spin_unlock_bh(&pp->lock);
-> +
-> +	return !busy;
-> +}
-> +
-> +static int xsk_pp_validate(struct net_device *dev, struct xsk_buff_pool *pool,
-> +			   unsigned int mtu, struct bpf_prog *prog,
-> +			   struct netlink_ext_ack *extack)
-> +{
-> +	struct xsk_rx_check check = {
-> +		.buf_size = pool->chunk_size,
-> +		.headroom = xsk_pool_get_headroom(pool),
-> +		.mtu = mtu,
-> +		.sg = xsk_pool_uses_sg(pool),
-> +		.prog = prog,
-> +	};
-> +	struct netdev_bpf bpf = {
-> +		.command = XDP_VALIDATE_XSK_POOL,
-> +		.xsk_check.check = &check,
-> +		.xsk_check.extack = extack,
-> +	};
-> +
-> +	return dev->netdev_ops->ndo_bpf(dev, &bpf);
-> +}
-> +
-> +/**
-> + * xsk_validate_dev - check AF_XDP page pool queues against a new setting
-> + * @dev: device of the queues
-> + * @mtu: MTU to check
-> + * @prog: XDP program to check, or NULL for the current one
-> + * @mode: XDP mode of @prog
-> + * @extack: netlink extended ack
-> + *
-> + * Context: holds the instance lock of @dev, or RTNL for a device without it.
-> + * Return: 0 if the driver accepts all queues of @dev that have an AF_XDP
-> + * memory provider, or its error.
-> + */
-> +int xsk_validate_dev(struct net_device *dev, unsigned int mtu,
-> +		     struct bpf_prog *prog, enum bpf_xdp_mode mode,
-> +		     struct netlink_ext_ack *extack)
-> +{
-> +	struct netdev_rx_queue *rxq;
-> +	struct xsk_pp *pp;
-> +	unsigned int i;
-> +	int err;
-> +
-> +	netdev_assert_locked_ops_compat(dev);
-> +
-> +	for (i = 0; i < dev->real_num_rx_queues; i++) {
-> +		rxq = __netif_get_rx_queue(dev, i);
-> +		if (rxq->mp_params.mp_ops != &xsk_pp_ops)
-> +			continue;
-> +
-> +		/* Generic XDP runs outside the queue NAPI */
-> +		if (mode == XDP_MODE_SKB) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "generic XDP cannot feed an AF_XDP page pool socket");
-> +			return -EBUSY;
-> +		}
-> +
-> +		pp = rxq->mp_params.mp_priv;
-> +		err = xsk_pp_validate(dev, pp->pool, mtu, prog, extack);
-> +		if (err)
-> +			return err;
+> +	for (i = 0; i < nr_frags; i++) {
+> +		frag = &sinfo->frags[i];
+> +		__xskq_prod_reserve_desc(xs->rx, skb_frag_address(frag) - umem,
+> +					 skb_frag_size(frag),
+> +					 i + 1 < nr_frags ? XDP_PKT_CONTD : 0);
+
+[Severity: Medium]
+Does this weaken the documented AF_XDP headroom guarantee for XDP_USE_SG
+applications, with no way to opt in or detect it?
+
+af_xdp.rst says a UMEM headroom of N means the packet "will start N bytes
+into the buffer leaving the first N bytes for the application to use".
+Before this patch, every RX buffer kept this headroom:
+
+- copy mode, in __xsk_rcv()
+- driver zero copy, in xp_alloc()
+- the new xsk_pp_rcv_copy() path, which uses addrs[i] + headroom
+
+Here the frag descriptors are published at skb_frag_address(frag) - umem,
+wherever the device placed the payload. On fbnic that can be chunk
+offset 0. The device has then DMA-written into the first N bytes of
+those chunks. Any per-chunk application data kept in the headroom is
+overwritten.
+
+xp_assign_dev() picks xsk_pp_bind() automatically whenever
+xsk_pp_supported(netdev) is true. That covers both XDP_ZEROCOPY and a
+bind without flags. No bind or UMEM flag lets an application accept or
+refuse the weaker rule. The af_xdp.rst hunk changes the documented rule
+for all drivers:
+
+  In a multi-buffer packet, only the first buffer is guaranteed this
+  headroom; the others may start at offset 0 of their chunk.
+
+At the end of the series only fbnic opts in, and fbnic had no AF_XDP RX
+before, so no existing deployment changes today. An application that
+relies on per-buffer headroom could still lose it, with no change on its
+side, if another driver later moves to xsk_page_pool.
+
+Should this be gated by a flag? Or should the commit message describe it
+as a UAPI change rather than as a device property?
+
+> +		pp->pending[pp->pending_cnt++] = skb_frag_netmem(frag);
 > +	}
 > +
 > +	return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(xsk_validate_dev);
-> +
-> +/**
-> + * xsk_rxq_pool - get the AF_XDP pool that provides memory to an RX queue
-> + * @dev: device of the queue
-> + * @queue_id: RX queue
-> + *
-> + * The pool stays valid while the queue that the caller allocates runs.
-> + *
-> + * Context: holds the instance lock of @dev.
-> + * Return: the buffer pool, or NULL.
-> + */
-> +struct xsk_buff_pool *xsk_rxq_pool(struct net_device *dev, u16 queue_id)
-> +{
-> +	struct netdev_rx_queue *rxq;
-> +	struct xsk_pp *pp;
-> +
-> +	netdev_assert_locked(dev);
-> +
-> +	if (queue_id >= dev->real_num_rx_queues)
-> +		return NULL;
-> +
-> +	rxq = __netif_get_rx_queue(dev, queue_id);
-> +	if (rxq->mp_params.mp_ops != &xsk_pp_ops)
-> +		return NULL;
-> +
-> +	pp = rxq->mp_params.mp_priv;
-> +	return pp->pool;
-> +}
-> +EXPORT_SYMBOL_GPL(xsk_rxq_pool);
-> +
-> +bool xsk_pp_supported(struct net_device *dev)
-> +{
-> +	const struct netdev_queue_mgmt_ops *qops = dev->queue_mgmt_ops;
-> +
-> +	return qops && qops->xsk_page_pool;
-> +}
-> +
-> +/* Called with RTNL and the instance lock of @dev. On error, @pool->pp stays
-> + * set if an old page pool still owns chunks; copy mode must not take the pool.
-> + */
-> +int xsk_pp_bind(struct xsk_buff_pool *pool, struct net_device *dev,
-> +		u16 queue_id)
-> +{
-> +	struct pp_memory_provider_params mp = { .mp_ops = &xsk_pp_ops };
-> +	struct device *dma_dev;
-> +	struct xsk_pp *pp;
-> +	int err;
-> +
-> +	if (queue_id >= dev->real_num_rx_queues || pool->unaligned)
-> +		return -EOPNOTSUPP;
-> +	if ((dev->xdp_features & NETDEV_XDP_ACT_XSK) != NETDEV_XDP_ACT_XSK ||
-> +	    (xsk_pool_uses_sg(pool) && dev->xdp_zc_max_segs == 1))
-> +		return -EOPNOTSUPP;
-> +	if (dev_xdp_prog_id(dev, XDP_MODE_SKB))
-> +		return -EOPNOTSUPP;
-> +	if (!netif_all_mps_have_cap(dev, MP_CAP_READABLE))
-> +		return -EBUSY;
-> +
-> +	err = xsk_pp_validate(dev, pool, dev->mtu, NULL, NULL);
-> +	if (err)
-> +		return err;
-> +
-> +	dma_dev = netdev_queue_get_dma_dev(dev, queue_id, NETDEV_QUEUE_TYPE_RX);
-> +	if (!dma_dev)
-> +		return -EOPNOTSUPP;
-> +
-> +	err = xp_dma_map(pool, dma_dev, XSK_PP_DMA_ATTR, pool->umem->pgs,
-> +			 pool->umem->npgs);
-> +	if (err)
-> +		return err;
-> +
-> +	pp = xsk_pp_create(pool);
-> +	if (IS_ERR(pp)) {
-> +		xp_dma_unmap(pool, XSK_PP_DMA_ATTR);
-> +		return PTR_ERR(pp);
-> +	}
-> +
-> +	mp.mp_priv = pp;
-> +	mp.rx_page_size = pool->chunk_size;
-> +	mp.rx_headroom = xsk_pool_get_headroom(pool);
-> +	err = netif_mp_open_rxq(dev, queue_id, &mp, NULL);
-> +	if (!err) {
-> +		pp->rxq = __netif_get_rx_queue(dev, queue_id);
-> +		pool->pp = pp;
-> +		pool->xdp_zc_max_segs = dev->xdp_zc_max_segs;
-> +		return 0;
-> +	}
-> +
-> +	xp_dma_unmap(pool, XSK_PP_DMA_ATTR);
-> +	/* Copy mode takes the chunks that the provider holds */
-> +	if (!xp_alloc_heads(pool) && xsk_pp_abandon(pp))
-> +		xsk_pp_put(pp);
-> +	else
-> +		pool->pp = pp;
-> +
-> +	return err;
-> +}
-> +
-> +/* Called with RTNL and the instance lock of the device */
-> +void xsk_pp_unbind(struct xsk_buff_pool *pool)
-> +{
-> +	struct xsk_pp *pp = pool->pp;
-> +	struct pp_memory_provider_params mp = {
-> +		.mp_ops = &xsk_pp_ops,
-> +		.mp_priv = pp,
-> +	};
-> +
-> +	/* Unregister removed the provider already */
-> +	if (!pp->rxq)
-> +		return;
-> +
-> +	netif_mp_close_rxq(pool->netdev, pool->queue_id, &mp);
-> +	xsk_pp_detach(pp);
-> +}
 
-[Severity: High]
-What keeps the buffer pool and the UMEM alive when this error path
-leaves pool->pp set?
-
-netif_mp_open_rxq() can fail after ndo_queue_mem_alloc() has already
-created page pools that selected the provider. That happens when
-page_pool_check_memory_provider() returns -ENODATA, and when
-ndo_queue_stop() or ndo_queue_start() fails. Each of those page pools
-took a reference and bumped pp->nr_pools in xsk_pp_init().
-
-If ndo_queue_mem_free() leaves one of them in deferred destruction
-because chunks are still out, xsk_pp_abandon() returns false and
-pool->pp is set. The same happens when xp_alloc_heads() fails with
--ENOMEM.
-
-By that point xp_dma_unmap() has already run unconditionally. The
-lingering page pool may still own chunks whose DMA addresses came from
-that mapping. pp->fq is also left pointing at the fill queue, unlike
-in xsk_pp_detach().
-
-xp_assign_dev() then sees pool->pp set, skips the copy mode fallback
-and returns the error. xsk_bind() destroys the pool right away:
-
-	err = xp_assign_dev(xs->pool, dev, qid, flags);
-	if (err) {
-		xp_destroy(xs->pool);
-		xs->pool = NULL;
-		goto out_unlock;
-	}
-
-xp_destroy() drops only the buffer pool's reference on the xsk_pp.
-The xsk_pp survives on the page pool's reference, and then the
-xsk_buff_pool is freed, which leaves pp->pool dangling.
-
-The socket stays in XSK_READY, so on close xsk_release() frees
-xs->fq_tmp, which pp->fq still points to. xsk_destruct() then calls
-xdp_put_umem(), which vunmaps umem->addrs (pp->area.vaddr) and unpins
-the UMEM pages. The lingering page pool still holds chunks backed by
-those pages.
-
-When that page pool finally returns its chunks, won't the provider
-ops reach pp->pool, pp->fq or pp->area.vaddr after they are gone?
-
-The comment above xsk_pp_bind() says pool->pp stays set so that copy
-mode does not take the pool. But the caller frees the pool anyway, so
-what does keeping pool->pp set protect? A second bind() on the same
-socket also gets a fresh pool with pool->pp == NULL for the same UMEM,
-so the pool->pp check in xp_assign_dev() does not help there either.
-
-Should the xsk_pp pin the buffer pool and the UMEM, and do the DMA
-unmap in xsk_pp_free(), so they outlive the last page pool? Or should
-xsk_bind() defer releasing the pool in this case?
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110102039.1002605-1-bjorn%40kernel.org
