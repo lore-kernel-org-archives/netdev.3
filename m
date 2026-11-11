@@ -1,82 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794371448;
-	b=3WY2U5n4KdfWtwreZ6UyEBu2nwMQxTJ5OdmEvY1ktvB/gll+STHoLv5U63I0KCGrUrKx
-	 1mYETN1l20N32HxNJueM3ArpCZD0FBQXI9jms7LfZXZbctMRFcS/7xnnYIGuDorLYoLch
-	 swUQeJWYNoeuz3tTAMsDzrHBRFQLbGodwGwG1YSDCCmxUXWPQQ9yuXAvEHMCsj+sV+pTF
-	 nqt0EptIOSJiIOj6Ucody8cNasbaA82d14Z03/7hyZ5ld5xDIMO8lECaYAeCvJPG+oJ+8
-	 Re9nlyMlGmF15rvDAp+YkWfqYrW4maL+w9zlU1b6Vx7wlyUITr4uDNFGNwd5Zc1pzVw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794371448;
-	h=DMARC-Filter:X-UUID:X-CTIC-Tags:X-CID-P-RULE:X-CID-O-INFO:X-CID-INFO:
-	 X-CID-META:X-CID-BVR:X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:
-	 Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=BHMFLI/D73Ny1cZtQ3/aZEVyQktB/yR6LX1p1oYanBY=;
-	b=GjtXvrP9M+KVydrddYJja/QWDZsMN2tcm9LY7kjJny9ZxMhyaFLYCPkE6N0Z7QF1gvJG
-	 tXu5/BwRSm21ZIcDhszt1STaI92Jb+thHAu4kjfXfKEAyFkBp0LXSr9eqmKKiMXL3dNms
-	 0BoFaxKjdj9N1AprUXxw48EjV/nACFdFt+oQax3f+Wi3BLA05/FtowZLWh5iraEcf0e1x
-	 fscZ7gMkcbOdghZHUkZKWq3RZCskr1u+beigbNCRMkXT+05t6gonlYpjtXfA6U2HQ0O9j
-	 8bNAGNLiiRaS2RJ7j4+TcuQMMrkGL2DIMXAHsMlrEa525SKn+NwQ7Bt5C2owUkaYaVw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794372269;
+	b=e2fXDApc3MStFQt9/CmTSoA+95T//dvsZF8kniDPDU+nh/y5LSwkdN9Wo7bY1nzFb8Hn
+	 fsJzmkNb7rYOxCq+5iULlqpEWKeE3/7FU0LUJ15+5Nwc2EDp5obnUmAbZJitZ8EA70BBX
+	 otT8rVvPsmqd70g5drPRbmpXvKYyJk+a7OWltMv/UBjqnFBeUOBHoFMfTWiqxR9TVAGK2
+	 ziGaqqEb3BPHS1Qgp3+YeZnsBk5iXaOBz6cAHygwpnTQpF2ZwkC+2gJzgdUwqXyaH2fXo
+	 5J9Amq6+nAwpYfyj1mz+qr+/5OYR06Qw6uhbYhHfzK/2l//LpFUpnq/qXDRW8Ek8s8Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794372269;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=n7Ml7fuo5YQNy3RP7RmS1mPqd8y/+2cm5W2qNSpp1bk=;
+	b=ASJQDCi5eS8YCFnc3TfmafRds8lqjhMTWKhphRCF+Phrk9mm8D8jS7X+2abDs61Hn1jn
+	 SllX5iUD+PU4xWv2rXwbOdUjoIGjp2KtGb3TbIEkRpM4MyFQJ1AZDgiS2eAW0a+9Y4zSa
+	 qTJPCDZV9gmYL8EnYhW4Yx0eoFCx5BAzSCB3O0B4LjPaT93W1GDB1RpgMxCU24KI5hSmX
+	 F3s4m8b3D4LT+72YT/dXHqSlRP3L1rh3Ra+Ju+CntIB0j/wvf4gJCW6fTZO3gkHxafNzI
+	 fKhSgiHfxjHDN/WlwOUuo1SE9owvSZiLZGI2zXdpfR5JEmhhOJnfKtBe3Pl54bE1PEw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QXFDFXme;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EB8606A32E;
+	Wed, 11 Nov 2026 04:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QXFDFXme
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794372269;
+	b=QkgffZIPVC8+LcoJyRhJ9w4qJOlhiX5UEv7doO4Kc4PUU+TS77yg2UbnFjX+zVP2ziKC
+	 +h4fuyi7VHl0r9bV7J62CthZmU2hP2Qljt5cneX50gWudbphiFSDCFns+Mmn3PFT8HNW4
+	 qRkqFsOtUtcst4WKtHu7VfpcWFwiYvr7+sHy2doxpyDy94dKGLQNNrl5rtW53CU+C+3DQ
+	 3UZaUeKDYCS5wiltsp+M034y89ZfA8cvPYwmmKD72NtapdFNTcRtB7A3/BIxFER4KbzqY
+	 X2/k7iD1KUVMTmDPHwlwOnTHqy4eToc7Ka9v0+g77uqtsr9DAq/PLPOiIcb3iNwrf7Q==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794372269;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=n7Ml7fuo5YQNy3RP7RmS1mPqd8y/+2cm5W2qNSpp1bk=;
+	b=Qfk28FHecvskZQ6sHY7xNniacnrKreQ4ydxfL+jk78qreMKGznVVFnKmSyOKfwZ/Ccjv
+	 SF0azEFCIZcD/R6NtcxsV7FU/KPFO4wP7BU8IgqbXwNWji8edF3z4mJaGRQVdcS+Ajkwp
+	 3MJnH7ybn8NFMb6rxlO1jOA5zchrVkP4X/IhnqdOXC60aKRM0bESDspnGOYnfl05qmPWS
+	 BHXvC07wK4oXiEc3JObNVzDerz+6uBa79ny4hKCztqVw/qIAqDHzv4B2leI+oxpPCrCty
+	 fjJzTTyVwZIS58gwlqf66h3h/e0jTt3qJOdyA6ikwQ453wQZ8OAHbbQeY9je4BZ2j/A==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE4A606A31C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:30:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCE4A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: a3cd071add8811f19a56ed5b684f684d-20261111
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MP, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT
-	HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:25033ea5-ccb9-4b38-8486-1ab69d4b079e,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:25033ea5-ccb9-4b38-8486-1ab69d4b079e,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:397065fb8a740d25022b3b1127fa0218,BulkI
-	D:2611102058162GO8Z8LT,BulkQuantity:2,SF:17|19|66|78|81|82|83|102|127|136|
-	153|841|850|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2|1,URL:0,Fi
-	le:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,D
-	KR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_IBB
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: a3cd071add8811f19a56ed5b684f684d-20261111
-X-User: kuangkai@kylinos.cn
-Received: from localhost.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
-	(envelope-from <kuangkai@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1678947632; Wed, 11 Nov 2026 12:30:35 +0800
-From: Kai Kuang <kuangkai@kylinos.cn>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	vladimir.oltean@nxp.com,
-	f.fainelli@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Kai Kuang <kuangkai@kylinos.cn>
-Subject: Re: [PATCH net-next 2/2] net: dsa: user: document the write memory barrier on LAG conduit migration
-Date: Wed, 11 Nov 2026 12:30:09 +0800
-Message-Id: <20261111043009.97281-1-kuangkai@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <5e7d676a-9c02-409b-9312-57bae6c0be63@lunn.ch>
-References: <5e7d676a-9c02-409b-9312-57bae6c0be63@lunn.ch>
+	by smtp.kernel.org (Postfix) with ESMTPS id 8CBEF1F00A00;
+	Wed, 11 Nov 2026 04:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794372269;
+	bh=n7Ml7fuo5YQNy3RP7RmS1mPqd8y/+2cm5W2qNSpp1bk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=QXFDFXmeHmRtpwiurKu1A0Uzrwy8+V/qzdA68FRb2yGNOpuosfHOpownV1JdRfgn2
+	 dCpQvxLdmKOQ7Ahht0kRqdwQ45O8XhhoSv+iuu0kQHnAKXBIYWSsQ0ZoGh2uP+QHSZ
+	 fnOLBdMAj+gvKzD9kRgQk1FiuvILcdhVxZ00p68T/ZXWP0g2xDfRqLL38QwfPb22eY
+	 cBKX1YreyLe6HiL+gNGMo3S5OpU2fDxHvS5w/bp4nI3WrcDTP3LqgBX0k5TZPXO0Vf
+	 g6jVhecxjTPURba8UWCRxk3qUwtv4jj2sRs8cif2lW7OolQQ0FkZPQTQrKpvXwuCFT
+	 BSwk5cRsPSXpQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 1B36F48D8F;
+	Wed, 11 Nov 2026 04:44:27 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Tue, 10 Nov 2026 23:44:27 -0500
+Subject: [PATCH RFC net v3 2/7] net/iucv: fail sendmsg() with EPIPE once
+ sending is shut down
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,44 +83,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="Add_By_Label_Mail_Nextpart_001"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261110-b4-disp-2a6b4364-v3-2-35677b68e697@proton.me>
+References: <20261110-b4-disp-2a6b4364-v3-0-35677b68e697@proton.me>
+In-Reply-To: <20261110-b4-disp-2a6b4364-v3-0-35677b68e697@proton.me>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Alexandra Winter <wintera@linux.ibm.com>, 
+ Hidayath Khan <hidayath@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, Thorsten Winkler <twinkler@linux.ibm.com>, 
+ Nagamani PV <nagamani@linux.ibm.com>, Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, linux-s390@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794372266; l=3220;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=7649mWdFyPHHdznp9ibYDQHg6sWSCfctd7MGqW+sc1A=;
+ b=i7P/l0LC962NTn0Fm3gYmrcALMUuHVrQ1hbwWls5Cz9PfsuKudOUOg0naDAJydSSgNCs4+9Xf
+ tyUMcD6oLtYC6DNDxv+166xH2+WbC2mFjaeFEd/enIv2kAOscxzhikq
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
+Content-Transfer-Encoding: 7bit
 
---Add_By_Label_Mail_Nextpart_001
-Content-Type: text/plain;
-Content-Transfer-Encoding: 8bit
+From: Bryam Vargas <hexlabsecurity@proton.me>
+
+sendmsg() tests SEND_SHUTDOWN on entry only, then waits for the peer's
+window without the socket lock. When sending is shut down during that
+wait, by shutdown(SHUT_WR) in another thread or by the peer's quiesce
+over z/VM, the wait does not end and the call does not fail: the writer
+waits out SO_SNDTIMEO, or, when the window opens first, sends its
+record after the socket's SHT and the peer reads data after EOF. With
+the peer's FIN in as well it returns -ECONNRESET for a stream its own
+socket shut down.
+
+End the wait when sending is shut down and test SEND_SHUTDOWN again
+after it, ahead of the sk_state test, so the call fails with -EPIPE as
+it does on entry.
+
+Fixes: 0ea920d211e0 ("af_iucv: Return -EAGAIN if iucv msg limit is exceeded")
+Cc: stable@vger.kernel.org # 6.18.x
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+New in v3 as a patch of its own: the new condition of sendmsg()'s
+window wait and the test after it, placed ahead of the state test, were
+in the lock patch. It goes before 3/7, which lets sendmsg() wait for
+send memory without the socket lock and would otherwise open the same
+gap a second time.
+
+Three of the 53 default tests are about this, and net fails all three.
+A writer parked on a full window sends its record after the socket's
+own SHT when the window opens, so the peer reads data after EOF; it
+waits out SO_SNDTIMEO when the window stays shut; and with the peer's
+FIN in as well it gets -ECONNRESET. With this patch the first and the
+third pass and the second returns -EPIPE; that test still fails, as its
+SHT finds no room in sk_sndbuf (one of the five in the cover letter).
+With only the wait changed the writer sends after the shutdown in the
+first two and gets -ECONNRESET in the third; with only the test after
+it, it waits out SO_SNDTIMEO again; with the test placed after the
+state test it gets -ECONNRESET again.
+
+Not changed: iucv_send_ctrl() still clears SEND_SHUTDOWN while it
+allocates a control frame, so a caller without the socket lock can make
+the new test miss a shutdown. On a connected socket there are two:
+recvmsg()'s window update, until 3/7 puts recvmsg() under the lock, and
+the NETDEV_GOING_DOWN notifier, which sets IUCV_DISCONN right after, so
+the call then fails with -ECONNRESET.
+---
+ net/iucv/af_iucv.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 657c61161dbd..133c1d1886b2 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -1055,10 +1055,16 @@ static int iucv_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ 
+ 	/* wait if outstanding messages for iucv path has reached */
+ 	timeo = sock_sndtimeo(sk, noblock);
+-	err = iucv_sock_wait(sk, iucv_below_msglim(sk), timeo);
++	err = iucv_sock_wait(sk, iucv_below_msglim(sk) ||
++			     (sk->sk_shutdown & SEND_SHUTDOWN), timeo);
+ 	if (err)
+ 		goto fail;
+ 
++	/* return -EPIPE if sending has been shut down meanwhile */
++	if (sk->sk_shutdown & SEND_SHUTDOWN) {
++		err = -EPIPE;
++		goto fail;
++	}
+ 	/* return -ECONNRESET if the socket is no longer connected */
+ 	if (sk->sk_state != IUCV_CONNECTED) {
+ 		err = -ECONNRESET;
+
+-- 
+2.56.0
 
 
-You're right — I can't be 100% sure the comment is correct, and a wrong
-comment is worse than no comment. The AI review is correct that the
-wmb() sits after both the dp->cpu_dp stores and the dsa_ptr store,
-so it cannot order those two against each other, contrary to what my
-comment and commit message claimed. I also can't prove the barrier's
-original intent was teardown ordering rather than publication, so I'd
-only be replacing one guess with another.
-
-Thanks for the review and for pushing back on this. I've withdrawn this
-comment-only patch and marked it as Superseded in Patchwork, so it won't
-be picked up. The pre-existing RX-path race between dp->cpu_dp and
-dsa_ptr (and the missing reader-side acquire) predates this change; if
-it needs fixing, it should be a separate patch that actually moves the
-barrier and adds READ_ONCE()/smp_load_acquire() on the readers,
-rather than a comment-only change that overstates what the barrier does.
-
-The other patch in this series is unaffected and I'll keep it moving
-forward separately.
-
-Thanks again for the careful review.
-
-Best regards,
-Kai
-
---Add_By_Label_Mail_Nextpart_001
-
-Content-type: Text/plain
-
-No virus found
-		Checked by Hillstone Network AntiVirus
-
---Add_By_Label_Mail_Nextpart_001--
