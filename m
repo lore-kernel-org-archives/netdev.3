@@ -1,65 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794431856;
-	b=YPlh2LQbXprWhhv0nyIyOjNSuM2Jsvqn/LxroV8wwnu6JT/TIXr8utaNZyMxhLL5ewUt
-	 lAQEtqtgHhHm1RIl0weWNpzfMJIznA11g90sRKHeL4u3GBfU0Y9LaQAEA287Pt6TIR2aR
-	 jSFOWkROrIO1zPF9oogM196wMUo8k0jFc8D0A+Q4l0S3OHTYcxaCay/rKdj7jHs6I7yp2
-	 W3rDlJ8dIxrLjtH8KNJ7YbkyKSr2Y1SsEhnbU4ZOn9SnhyS6nr1Pg9n2SObgBFpI0mKtX
-	 JSwPG/RKEXj2Fs9MUUHZezwyyNBtFqluuecVbi3ljMyHeA2+gL5vOCq7EABs7HwA9Ig==
+	t=1794431883;
+	b=SyMNBgfcoqRBeUp/9xFhTw0ZjhekAvRB/9/G9T9DgdTwdyT5tY0DoJ6VMJ2T1n5VshYS
+	 FwvJzRbVqUoALPeDFscWbenXnzQpKjkHipDU4w/CLW2vG2HS7w4DzGG4bDpp5glwvt8UR
+	 yf2WyT1Q1xf7S5HhDj7a21nPirpe3TExJZGNgQUlIRSOvIdeOc1zgyAD+H7SxMLeOFSP9
+	 iEQ7FPlKRuJK6JVUGfscQX+iW47fGyqia2w09T2ZvslP/NvPokBvCauHAniomKugsV423
+	 fQN86eaf0226Dgbwy2mcoO0o4560ETTj8y3C3qjDnMg9OEyPAwWtFgFVxo4KzpG3aQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794431856;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=RbLGwr5xM5Iu3cM4Nx0Zc0qbDlMYiMX8eqFa0Wsah9I=;
-	b=d8GQsz8leNGxdepqULoYfjsqTaH/N1yggT8nXm2Q9qMDv3+Pv4Dsu0Wd8ipMFvU9phwn
-	 Wdg8/4DzxPylTGgGRsRYRNsdEd03wFX6llXb3L8/f9tcAjJhE9SGM8oUaCmLC1wkjKHpW
-	 Y8j3Ktp21jqNPs9LTBE7RP8jE1/mmA0JAMGqop8YbXPVCC1a7XALCgB4AINLfDGpHF6GT
-	 kfoBssCgRNIVnttPFip2XWGE2H4YY36gZ+iRcIHWucAhoPde9WK6AdRFyMSMfHomVI+yM
-	 38EcZ/zcy/po2UoC8LO1Rvlt0+/8fQdt7So5xZ8hsoXYiq34Pc+vPbLGttyhlORFuEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794431883;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding;
+	bh=U/s9WpBgSFZmxHOtI1J+3lfhCl7kgEjOZgarv9f/rWY=;
+	b=jcO80x5+nDJyjbRap3izpLi1odRPVPMTInHanYBT9mFExdQy4DP45OlITUZtXBjqSYmG
+	 mt60TaBAvNXc46aOkPkHm/csJlJXgq8H8U3cALA+tGT8lDt9v6lSvmLr4zrhBfn0gWqX6
+	 HitjAASqhJKAJCwvZcioA2vqzg3SlzeycIkn+sdd3xbxGbK0XjYVhop68MNxKpEFu7O9s
+	 YLtr+wiL+adYXEb7x7+SqBcLoWOChCcPqua7vTELJbxACNfoUw7gsSYQsixJN8ZXVvXiD
+	 7WOB8K6jw+zdjfDrvQ7JWPnWP9FgZQAVcZYTdNIvJNdjuXp4akeQLGVLrs0bm9rlG9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HWYX+haR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=szelinsky.de;
+	spf=pass smtp.mailfrom=szelinsky.de;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=AR18vAgV;
+	arc=none smtp.remote-ip=85.214.127.56
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2DD606A330;
-	Wed, 11 Nov 2026 21:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C66606A33B;
+	Wed, 11 Nov 2026 21:18:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59C66606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HWYX+haR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857191F00A05;
-	Wed, 11 Nov 2026 21:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794431856;
-	bh=RbLGwr5xM5Iu3cM4Nx0Zc0qbDlMYiMX8eqFa0Wsah9I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HWYX+haREpS5zSKCy9SnLY//eVV2pSLn6+4VMoDg6QnC9Ohbi3J04qUeh4jmM3Bc4
-	 2jS3aagPHOS0TkqQbMQKLUtgUzFYTFQ/PEvik0xkMmVi+uGG+bbFcBnOeID2l6Zezg
-	 zScBceQowSpgpQdrhp33i9Y6mG4lR1DdZU4hwaYklQnCs+H+xnihvsjCYmICu4lW6J
-	 FazqqBQF35dQrLBfHjC+FMAnBiEVJMOt+AeyAIW6vWurNvR6xQkmvCIrLAex9Ihzen
-	 FqjyvzxeUkfcup8VgsDuzSxML/SV9tMmBpHI8oCtz3dwE0j34nj0tDTechm/fc9WQw
-	 fDiMbbiAq+yTg==
-Date: Wed, 11 Nov 2026 13:17:34 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Fan Gong <gongfan1@huawei.com>
-Cc: Wu Di <wudi234@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
- netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana
- Ciornei <ioana.ciornei@nxp.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, Mohsin Bashir <mohsin.bashr@gmail.com>,
- Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
- <hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>, Vadim
- Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
- <wulike1@huawei.com>
-Subject: Re: [PATCH net-next v02 0/5] net: hinic3: Bugfix for later
- patch-set.
-Message-ID: <20261111131734.51512ade@kernel.org>
-In-Reply-To: <179437094656.2168702.7238120951030130700@kernel.org>
-References: <cover.1794371175.git.gongfan1@huawei.com>
-	<179437094656.2168702.7238120951030130700@kernel.org>
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=AR18vAgV
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id C3085E83243;
+	Wed, 11 Nov 2026 22:17:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1794431875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/s9WpBgSFZmxHOtI1J+3lfhCl7kgEjOZgarv9f/rWY=;
+	b=AR18vAgVT5bICSBuZA2rQKhqFYpbBnvKTwdHBAn3IkhE57XBNA1MubZgLtGiwp7BxaBaHp
+	4asoiCtHvHb5lRjWIdqMN0vCRrKhTpRlb+fD1jcVE+MDoM8YUe3eRzFfkmZvqNtJiTh2x3
+	HL5lCx65Rmk2GiGEIyMeEi3yO0n+xTfRf+nNi6vjRcKHkGl7y995fP0UEai25Nh0Z457u4
+	U6frujBjl9x58PnOEy0BChv4Y+UJOZ4Y/25vAXq0N5NFl0vAFHXsTjz86CRe6emOCiuCsy
+	dI0mVCpLY6GbnhGVaab/WnVIrhcwyhIk18IO1VArovTPQdmCBulQwDrVtdyVFA==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id nddaUO10EqFL; Wed, 11 Nov 2026 22:17:55 +0100 (CET)
+Received: from p14sgen5.lanhh (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Wed, 11 Nov 2026 22:17:55 +0100 (CET)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Kyle Swenson <kyle.swenson@est.tech>,
+	Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: [PATCH net v4 03/14] net: pse-pd: fix module refcount leak in pse_control_get_internal()
+Date: Wed, 11 Nov 2026 22:17:20 +0100
+Message-ID: <20261111211731.3193796-4-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261111211731.3193796-1-github@szelinsky.de>
+References: <20261111211731.3193796-1-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,12 +88,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 11 Nov 2026 04:22:26 +0000 netdev-bot+sinfo@kernel.org wrote:
-> If the series needs another revision for other reasons, please
-> include the information in the commit messages then.
+pse_control_get_internal() takes a module reference, but when
+pse_pi_is_hw_enabled() fails, it skips module_put(). This happens on
+any I2C or UART error. Each time, one more reference leaks, and the
+PSE driver can no longer be unloaded.
 
-You're supposed to add the info to the cover letter when you post
-new revision. Please read the responses in full :/
+Send this error path to put_module, like the regulator_get_exclusive()
+error path.
+
+Found by code inspection. Not reproduced.
+
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+---
+ drivers/net/pse-pd/pse_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 03da633c6382..c6612232b820 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -1426,7 +1426,7 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
+ 	 */
+ 	ret = pse_pi_is_hw_enabled(pcdev, index);
+ 	if (ret < 0)
+-		goto free_psec;
++		goto put_module;
+ 
+ 	pcdev->pi[index].admin_state_enabled = ret;
+ 	psec->ps = regulator_get_exclusive(pcdev->dev,
+-- 
+2.43.0
+
