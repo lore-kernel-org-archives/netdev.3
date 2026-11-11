@@ -1,60 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436913;
-	b=Oevj+tMmYN9KTkgzlwaDXoK/uVydfynWWH8il67TPv1gg39sPaSyiAkUdMD1bzQGvMFk
-	 lYldj/f0N42VLaSPeQR6B/IQdtQbUXDsAJuEa38/Xe9Iz2CLzNLJFDVX2+X9n0c/bgVVg
-	 2IRv6GfWZIE5SvBrk8Kg6VBEfGHomhAmkvGcQet8FTHa43+bIe78dqk7CoOUd8HafymsW
-	 5DT65Vdjv1lGqbHKBUMu0ozKcrJ7SpXkOLJKNYdPl+pex/ihUE+lT8RP0i7pXUzOtl9bI
-	 Sia99CGulubR26dNHhRWweRLGohwsGe7Nwr8emCeZAdLkFKpAIdx+kEHtHKAEJwHOgg==
+	t=1794437263;
+	b=YsHO4ZFFLGSl3/csSV/GIN0bVAZ8QOkWQQLe8wyfKtOByWB1Kc1/4V7gCiNwvd1IJS27
+	 /dJvYaEbpReZpRLZfYC/gulOnHusdPh/U912z5wwCwh2bnqhGh7d/LI3qiA8rk4WLyTsD
+	 hf+1SA9bM18zDOQwMNeapCttPHnLQXtXywirwdUYrlDY8de5Jvf0P41S1ICpHcRN548jS
+	 FkBhGJw7iqjQt1r07BE/Zenu4qBDiynFuQNyMnS0i0rAb5+KZxQfkftz2FjJ0U0zOigwU
+	 SXYo5JWx83blZtM96MfM1ScApYah1iW9u4dvk+MVkv3N9Hxc7fgLm8Ac55DPTphDkPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436913;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=gPlb9TY3yxqLP5R0MkTTx3agLLAuMLawgbEDKwXS9tY=;
-	b=FUCDUuyAP/n75AR2x57cAid4tGTlidK8st+ikIgPr0ZvQSvBDAZRC6LmdNVt1hB3yfeg
-	 4JH0oc76CLPLPDaW37Jj+3y2Q40qmki4DVVEIxd4Zvjbh1vphULkQTyE8pU5r3lisqV2O
-	 NmqLwcfjzxZcfL9wdyz+RqniQO0D6+eyXJ+87w8IdhbG3ySBcez/0Qc/I7guwUjrIp0oP
-	 ZKv1/gfzIf+eratfJeInUGXUy/ciqkyDHVJx0xoW9UfBT4LtdpO87IkwQuVVXa16/heox
-	 upd9aNroolyOem1E1KfuA1jcQ39fiR5SlfEVOa8j0ZLoa425BRX7aldhEPZSKifPvIQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794437263;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
+	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ji3jFp1wSqz7+lu20WnaH3a/SRQ7c4xRIo2XU78doao=;
+	b=UJiHadiqsohZ9+6t7fAr0O9OV6bjSYPDgUxF4A7Cpawo2TLo0gHNqz8thqLfDn+M5mAA
+	 nf49DiLVDDCrLMaItWZsGI9v0EB6xFyaI39QiD3bBrN+npwfBIKGQ50GqE/f0kqcGlmb8
+	 ZRUOK8cbuT8vmxZ+78w6vkbyDarvPZzW5/Mf9ntHO8fhtXt5ofHqrfJRyvZZgArPWDEhJ
+	 lmp/K37WwA3UwxttCe4kUZ/PSPLEQX3/D+/BGvgti92EPoIUgDtZCQmFy5I/YGP/jWafj
+	 bLMDfV3gdPJv1nx2Fro54afu8CZnQF9NWnG03LIQZ5KMhmeMH5IfWcigKin503Cv6lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LOhTmFK0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w14O00X3;
+	arc=none smtp.remote-ip=74.125.229.135
+Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BE606A8B9;
-	Wed, 11 Nov 2026 22:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CD0606B746
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:47:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14CD0606B746
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LOhTmFK0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367371F00A05;
-	Wed, 11 Nov 2026 22:41:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794436912;
-	bh=gPlb9TY3yxqLP5R0MkTTx3agLLAuMLawgbEDKwXS9tY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LOhTmFK0LIFpKGZSMhQVkNEaxjnUJRldr8arnonmKn0utY76gZOMAPTGPrq4dErEx
-	 ZQmMQj7/jWfSb3gzRatKzGU3w8N9fQJ0VLN0kM+q7wGrWKkmUxBKHmDX8Kad9w9OKM
-	 A5fHAK5rM74FOvKPYRJoouI3VOc3OZIodQTchyN03LJHyuKpyocZf3/6derXP0wykO
-	 xDHMY9tSuhlT6RqCGNDtkAHq732YRz+TUt4NDnQQ4EJ4op5E+l48t25WEp0wfeVyhr
-	 o/xDZb73HscM73YhkdoCzcu5x0HDekO6gYPItm6+hEqumlVjneBZ8/TgZ1DHDmchN9
-	 S/Jl1DZ5WXE3A==
-Subject: Re: [PATCH net v6 3/3] net: virtio: validate outer protocol of UDP
- tunnel GSO packets
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, willemb@google.com, horms@kernel.org, mst@redhat.com,
- jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- hassansultan@google.com, virtualization@lists.linux.dev
-Date: Wed, 11 Nov 2026 22:41:51 +0000
-Message-ID: <179443691180.2199510.148246238688217560@kernel.org>
-In-Reply-To: <20261110213628.3476051-4-edumazet@kernel.org>
-References: <20261110213628.3476051-4-edumazet@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w14O00X3
+Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso3322103c88.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:47:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794437262; x=1795042062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ji3jFp1wSqz7+lu20WnaH3a/SRQ7c4xRIo2XU78doao=;
+        b=w14O00X3MAea7CRAKjvuLoDbCE5nhypmw9DenJFGrL+8wUnY/NYtrU63h9HS0XRHcB
+         EwOw3hCY4etLiYiVhUKJ9WIUKVDIR3bloDLuqJbxvjr2d/64k4HLYc/Zz4gweeyrDfb9
+         kfkycIWyUcQANgosZ05YOK1Fnwl7ivM4RouWyaQ0nOL2GAhQBo69JgMjrsDGZG4xZKxW
+         UmJp99zGMV45SyqdjMVi62MuZd+rkc+2xepDb5os70xf0NE/FOVMRhRktFt5lBr1CzTn
+         Y/F3J5e+CmRdY3D4t9+uCjqhAhvLqeV4k87gHxaFPnqJP7MWyHoCBgS6YmUOnWpk4f2K
+         I6lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794437262; x=1795042062;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ji3jFp1wSqz7+lu20WnaH3a/SRQ7c4xRIo2XU78doao=;
+        b=dFfRCdfqAQYf3vU9g/OY+TDYgy9lAepEeCRBd49hwGMnC82+lTO9lVGPiYFkoqz41r
+         3/X9qNk9B/Na+fRh5K7VwwZLB5peY/3LSKQhJgPzeD8TODMwaxA3T1cUcbB+a4r0u+7b
+         HcKw8StCMtPXGe/soZ0wJnUyMFf2eiggGGiudI2wfvUAiUJEGI1Ewg+ssetdXRm8tZZM
+         eZN8w/9Ayoy5Sb9pDsjfdm5fi4Xiwv0w2OEzDscS23wpxHJiIWBIr6E/JB8PMYXvvOXs
+         BVLRVOpH8155UulbSpnwcN57QqKJ5FR2fBPD/vyFLbyQq5o+R9TTbKimKTUaKeChrW9i
+         u7KA==
+X-Gm-Message-State: APuU4Z/oaqq0EYDksfNmI5iEW9FxzTx4/1tqkiBASOGkI44ghUEajgqo
+	rjzoDHFopAUTM56hFjQS6L2zsCzqqHrkdfQmS0XsxYKQk/9LPQLCt33FyQpPpa2e/LM=
+X-Gm-Gg: AYBFou1yGl/HYb59bv0mkMu2Pf32U4+mGuhGUWXUqLUK00lBGdnme0hjUdeR518kvXy
+	STL1zMZe+3dyvgr5bk8YjnI27Y8495kbQR23Jq28jBpmY20LMlqEIXDIgdOOgjoj1GI0ONM+0pj
+	T93Pyc863bFVH64Eo0HxSMwIkynfC8xQTJClr0BpvZt5xvi8xpoHNxehReu3E0h9e5ad3e063A1
+	6eU73ybmeKmqvl/nR0MA65tznJViVuJKAfKChCSH6HSFROATE9A8CK9qMcrUy2EmgaXaR/iYHCq
+	gYrpKOPXgdriLWw2FYAPIpPFQsVHb8rpTErzb6/YzKaa7qzDJUQvbMg2zLL9jTt9cDohMqmpelw
+	1tZvRtRoz8O8t1JlcGDolBHnkx7vXkmX5EQI+appg600MVDA8xaznMupXVxouUi07dKwwC71i60
+	msbzORvm2+5/RkpsddUGha8hq+6LYgquzzPuM6XpgkjBfnoysExb9+Yvz/g0YPHOXsxlNYiSx7t
+	2qLWXmoguFXee2ts+wk7DuIMB4on8ukHoX41wSLrV/FgEMf+hE/8jwsi6WEtgryA6XDgWjESWtB
+	gVCz9Lg8qxM5zClrXVgWFtOd
+X-Received: by 2002:a05:7022:b0c5:b0:1b4:fa58:9d8 with SMTP id a92af1059eb24-1b4fa580c0fmr159091c88.20.1794437261896;
+        Wed, 11 Nov 2026 14:47:41 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6a::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b1003fsm17745496c88.6.2026.11.11.14.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 14:47:41 -0800 (PST)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	andrew+netdev@lunn.ch,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	shuah@kernel.org,
+	almasrymina@google.com,
+	sdf@fomichev.me,
+	leitao@debian.org,
+	dtatulea@nvidia.com,
+	asml.silence@gmail.com,
+	bobbyeshleman@meta.com,
+	daniel@iogearbox.net,
+	razor@blackwall.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v4 0/5] net: devmem: size TX net_iovs from the dmabuf layout
+Date: Wed, 11 Nov 2026 14:47:35 -0800
+Message-ID: <20261111224740.2744522-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,159 +112,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+TX bindings use PAGE_SIZE net_iovs, so a frag covers at most a page.
+A 64KB skb needs 16 frags, and MAX_SKB_FRAGS caps devmem skbs at about
+68KB, which makes BIG TCP ineffective for devmem TX.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+This series picks the TX net_iov size from the dmabuf sg table instead:
+the largest power of 2, up to 2MB, which aligns every DMA segment. With
+a 2MB hugepage-backed udmabuf a BIG TCP skb takes a few frags. There's
+no UAPI change since TX addresses are dmabuf offsets.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This doesn't make skbs larger. TCP still sizes them with size_goal.
+Only the frags get larger, and a single frag can now cover the whole
+skb.
 
-- [Medium] The new has_eth=false path in virtio_net_hdr_tnl_to_skb()
-  (include/linux/virtio_net.h) rejects almost every valid frame, so it…
+An skb stays under 64KB unless BIG TCP is enabled. With BIG TCP,
+MSG_ZEROCOPY from huge pages can already create frags of 64KB or
+more. So drivers already have to handle them:
+- mlx5 has a 31-bit length per data segment
+- gve splits frags into 16KB descriptors
+- fbnic doesn't enable BIG TCP
+- bnxt has a 16-bit BD length. It is broken for such page frags today
+  and will be fixed separately.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a
-  sibling of the injection the patch closes.
+Tested on two mlx5 400Gb/s hosts with kperf (udmabuf, 32KB RX
+net_iovs, 2MB hugepage-backed TX buffer), series backported to a 7.1
+kernel on the sender only. 1 flow, MTU 4200, receiver tcp_rmem capped
+at 16MB so it doesn't drop, median of 5 x 60s runs:
 
---
+                              before    after
+  frags per skb (sender)       16-17      1-2
+  throughput (Gb/s)            208.6    211.2
+  sender sendmsg CPU (sys)     40.8%    19.5%   (-52%)
 
-net: virtio: validate outer protocol of UDP tunnel GSO packets
+The receiver's CPU is the bottleneck, so the gain is CPU, not
+throughput. More of the transmit runs from the ACK path, so the
+sender's softirq grows (52% -> 59%), but sys + sirq still drops by 16%.
 
-This patch makes virtio_net_hdr_tnl_to_skb() check that a UDP tunnel GSO
-frame really carries the outer IPv4 or IPv6 header it claims, with UDP at
-outer_th_offset. Callers now pass a has_eth argument that says whether the
-frame starts with an Ethernet header. tun_get_user() passes false for
-IFF_TUN devices.
+kperf output (sender side) of runs near the median, before:
 
-Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com/
+  client: == Source <sender>
+  client:   Tx213.826 Gbps (1603901849600 bytes in 60007723 usec)
+  client:   Rx  0.000 Gbps (0 bytes in 60007723 usec)
+  client:   TCP retrans reord rtt rttvar d_ce snd_wnd cwnd
+  client:             0     0 633      2    0 15556608 7657
+  client:   net CPU 49: usr: 0.01% sys: 0.10% idle:44.13% iow: 0.00% irq: 3.21% sirq:52.53%
+  client:   app CPU 50: usr: 0.05% sys:41.55% idle:53.88% iow: 0.00% irq: 1.40% sirq: 3.10%
 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index d1fcb25ab026b..ced5a1596e609 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -1950,7 +1950,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  		break;
->  	}
->  
-> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
-> +				    (tun->flags & TUN_TYPE_MASK) == IFF_TAP)) {
->  		atomic_long_inc(&tun->rx_frame_errors);
->  		err = -EINVAL;
->  		goto free_skb;
+after:
 
-[ ... ]
+  client: == Source <sender>
+  client:   Tx211.242 Gbps (1584440279040 bytes in 60004741 usec)
+  client:   Rx  0.000 Gbps (0 bytes in 60004741 usec)
+  client:   TCP retrans reord rtt rttvar d_ce snd_wnd cwnd
+  client:             0     0 556      3    0 15499264 7650
+  client:   net CPU 13: usr: 0.01% sys: 0.08% idle:37.75% iow: 0.00% irq: 3.87% sirq:58.26%
+  client:   app CPU 14: usr: 0.06% sys:19.48% idle:77.23% iow: 0.00% irq: 1.19% sirq: 2.02%
 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 83f801ff57006..fc9667176f23c 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
+The bnxt patch was tested on two 50Gb/s bnxt hosts with
+CONFIG_MAX_SKB_FRAGS=45. With the default of 17 its check compiles
+out. ncdevmem sending 1KB chunks builds skbs with up to 45 frags. The
+stack segments them and the data arrives intact.
 
-[ ... ]
+Patches:
+- 1: bnxt: segment GSO skbs with too many frags in the stack
+- 2-3: devmem TX prep (truesize, niov_shift in the TX lookup)
+- 4: pick the TX net_iov size from the sg table
+- 5: selftest for TX from a hugepage-backed dmabuf
 
-> @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  	if (ret)
->  		return ret;
->  
-> +	if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th))
-> +		return -EINVAL;
-> +
+v4:
+- drop the per-device frag size limit and the bnxt, fbnic and mlx5
+  patches. Drivers already have to handle large page frags (Jakub).
 
-[Severity: Medium]
-Can the has_eth == false path be reached by ordinary IFF_TUN frames?
+v3: https://lore.kernel.org/netdev/20261105222058.944293-1-sdf@fomichev.me/
+- default the netmem TX frag size limit to PAGE_SIZE, opt in bnxt,
+  fbnic and mlx5 (Mina)
 
-On IFF_TUN, tun_get_user() resets the network header to offset 0 and now
-passes has_eth == false. virtio_net_l3_start() then takes the L3 header
-from skb_network_offset(), so virtio_net_tnl_offsets_ok() needs outer_th
-to be 20 for a plain IPv4 outer header, or 40 for plain IPv6.
+v2: https://lore.kernel.org/netdev/20261103235152.1904727-1-sdf@fomichev.me/
+- reword the TX truesize commit message (Mina)
+- explain why the TX net_iov size ignores the device limit (Mina)
+- use 1 flow results in the cover letter (Mina)
 
-Earlier in virtio_net_hdr_tnl_to_skb(), the offset floor still assumes a
-14-byte Ethernet header, whatever has_eth says:
+v1: https://lore.kernel.org/netdev/20261102191438.1059771-1-sdf@fomichev.me/
 
-	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
-	...
-	if (outer_th < outer_l3min ||
-	    inner_nh < outer_th + sizeof(struct udphdr) ||
-	    inner_th < inner_nh + inner_l3min)
-		return -EINVAL;
+Stanislav Fomichev (5):
+  bnxt_en: let the stack segment GSO skbs with too many frags
+  net: devmem: charge the frag length to TX skb truesize
+  net: devmem: use niov_shift in net_devmem_get_niov_at()
+  net: devmem: size TX net_iovs from the dmabuf sg table
+  selftests: drv-net: devmem: TX from a hugepage-backed dmabuf
 
-So an outer_th of 20 or 40 fails against 34 or 54 before the new check
-runs. The only IFF_TUN frames that can pass both checks have IPv4 options
-(ihl >= 9) or at least 14 bytes of IPv6 extension headers.
-
-On the TX side, virtio_net_hdr_tnl_from_skb() computes outer_th relative
-to skb->data:
-
-	outer_th = skb->transport_header - skb_headroom(skb) + vlan_hlen;
-
-On IFF_TUN, skb->data points at the IP header, so this emits 20 or 40.
-set_offload() also enables NETIF_F_GSO_UDP_TUNNEL without checking the
-device type. As a result, IFF_TUN devices advertise tunnel GSO, but their
-ordinary tunnel GSO frames get -EINVAL and increment rx_frame_errors.
-
-The ETH_HLEN floor predates this patch and comes from a2fb4bc4e2a6.
-However, the commit message relies on the has_eth == false path:
-
-  "tun_get_user() passes whether the device is IFF_TAP."
-
-Should outer_l3min follow has_eth, for example:
-
-	outer_l3min = (has_eth ? ETH_HLEN : 0) + virtio_l3min(outer_isv6);
-
-[Severity: High]
-This is a pre-existing issue, not one introduced by this patch, but it is
-closely related to the injection fixed here. Plain (non-tunnel) GSO
-frames return early and never reach the new check:
-
-	gso_tunnel_type = hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL;
-	if (!gso_tunnel_type)
-		return virtio_net_hdr_to_skb(skb, hdr, little_endian);
-
-In __virtio_net_hdr_to_skb(), the VIRTIO_NET_HDR_F_NEEDS_CSUM branch only
-checks pskb_may_pull(), skb_partial_csum_set() and the transport offset
-against nh_min_len. virtio_net_hdr_match_proto() and the flow dissector
-run only in the branch without NEEDS_CSUM.
-
-So can a tap writer, or a guest via vhost-net, still send an Ethernet
-frame with ethertype ETH_P_NSH, gso_type TCPV4, TCPV6 or UDP_L4, and
-NEEDS_CSUM set? eth_type_trans() would then set skb->protocol to
-ETH_P_NSH.
-
-Suppose such a frame is forwarded, by a bridge or tc mirred, to a device
-that segments in software. Could the segmentation then recurse without
-limit?
-
-skb_mac_gso_segment()
-  nsh_gso_segment()
-    proto = tun_p_to_eth_p(nsh_hdr(skb)->np);   /* TUN_P_NSH -> ETH_P_NSH */
-    __skb_pull(skb, nsh_len);
-    skb->mac_len = proto == htons(ETH_P_TEB) ? ETH_HLEN : 0;
-    skb_mac_gso_segment()
-      nsh_gso_segment()
-        ...
-
-Neither nsh_gso_segment() nor skb_mac_gso_segment() limits the depth.
-Commit 006c8b834aed ("net: gso: limit recursive IP-in-IP segmentation")
-added the SKB_GSO_CB(skb)->recursion_counter check in
-gso_recursion_inc_test(). It is called only from inet_gso_segment() and
-ipv6_gso_segment().
-
-A frame of about 64KB made of stacked 8-byte NSH headers could recurse
-thousands of levels deep and overflow the kernel stack.
-TUN_P_ETHERNET -> ETH_P_TEB -> NSH appears to be a second route into the
-same recursion.
-
-Should nsh_gso_segment() use gso_recursion_inc_test()? Or should the
-plain NEEDS_CSUM path also validate the outer protocol?
-
->  	/* In case of USO, the inner protocol is still unknown and
->  	 * `inner_isv6` is just a guess, additional parsing is needed.
->  	 * The previous validation ensures that accessing an ipv4 inner
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  5 +++
+ net/core/datagram.c                           |  2 +-
+ net/core/devmem.c                             | 36 +++++++++++++---
+ net/core/netdev-genl.c                        |  2 +-
+ .../selftests/drivers/net/hw/devmem.py        | 10 ++++-
+ .../selftests/drivers/net/hw/devmem_lib.py    | 43 +++++++++++++++++--
+ .../selftests/drivers/net/hw/ncdevmem.c       |  8 +++-
+ .../selftests/drivers/net/hw/nk_devmem.py     | 11 ++++-
+ 8 files changed, 101 insertions(+), 16 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110213628.3476051-1-edumazet%40kernel.org
+2.53.0-Meta
+
