@@ -1,94 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.83.148.184
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794435411;
-	b=Rh1q9nXZjgXiiHs2/+0XyofB3bCQUMZOeg6Yoz+J/Q27BPXlii4kGIJlOYDgr/FUyWIr
-	 TAkC0wX4K/esDTLCpBWhojv1aAyNnXpgOdRIqU+c4/c8E2on6QXTD0RMezQgoY3Nhk0Lm
-	 S7nranrgix234HqJwoQBEZ/OZa1O5Q5yWCKobl7p7M9PTkOw2YeT+nJEIzY4kOTppw7Yz
-	 l7baVgERmyyeO41Ld2UqSXzy4AOtlotVDev5lSFj7IjSpRrtg8ZdLrhqgKcFRKEmSR9r4
-	 z6OaMsOzDWGA6gJnUkVkLAmbozhqCYyjOiByvZA9B/s4DsSx/O5iQTXbbYHLLYEQqXg==
+	t=1794435639;
+	b=tnrW8Iz0oCb6DjQb7ruEWc/3R9xxzm35LC+vbChSE5GRsLOB++uKDFIY8HAahQyxxEfi
+	 XCvGXIEaMtlwaZXYisfxMeTcm/+BZCSvsdQjMPC9nlbgUz/XctjE8nr3llilBJShaKliH
+	 bPEv6X/cQEqOxP1bV8Db5iyeye/dqrH3aNv+Dv7FXKw8+gIXJbp3SRifb+Bg9ggrD/1O5
+	 7CDfDmwWaDDm104/CG2I+xwwWvCOku2C2sW+PeT6s+FRv0sUfdyEeKPcR61OtDCb5IfGb
+	 xYilkBq0CPNhdno/yTwK6M9px2AkQabweZEwFw/ye4pCIXRQIIyRNc+kcXk9HIiIcIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794435411;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=vnKV4PnxU9HF6j4JAgfB2zweGVhKP+4yJbw/eTtZUp8=;
-	b=I11Hu+hgCd7Y/Cm4IIYrmufy85G0XupYaa7GiuXXCGAUPS5ho05pdWHQY+on9fmpI9pj
-	 AzX/fuFDIiLg1Jj6okGnCEFa9+C0ejdYth1lmymzQJlQ2dsMVljvhVfAr/t9qi47bDufL
-	 kQNJC2u1KkRXP2YJT3FjwegBJBf/tDb5vYl0kgChjEWDFE0biHU1fJG0cBW/2lFnRt/Hh
-	 0Fgjs8njksGmVUwLvOKegpcYj8FHRLP//i4buNt7vtr8nd6N1qFVIUFfg5h18KtfjZdUo
-	 NimpGq51p4LdWE+LQJw0hXAG5Q6+N38Vc/o9AhnSsOGpa6IobnMsVK1Y/LSBXSpwWsA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794435639;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 CC:In-Reply-To:References:Date:Message-ID:X-Mailer:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=l41r/vBb8YxJ/z+2szPSZoICsIGBmCS/02+qIbRTW+A=;
+	b=j4slqYJTzdg45ZJfnJNwusOCdgHnyCUFCdLNO/w+dohL15l3NqUvZq/nz3/B5/EhiOS/
+	 T1KOX5tTYF/GfB8sJd12/jkzaYwtU8x3nM9M/ll0+/GIkSTF85+k1GXvzhC2rKW8f0ZT7
+	 s3UXr77oa1RfKcRtlKrMbSFpHJWp42YexvfAWrcKLWVGYaCex7sdX5Mxq3rpsfO3jDwkb
+	 hDC1YhPIv84/okzbCdpgZA373ZFXvFrkzGxR+gWDjY4AINv1BWtXcPZ4PlRUrIEXuRyYg
+	 AVzjFjGRlDyRrJ0GwY5SBQkrPShpMkFIIEmNiceS2K72gYQ9mWnXcp2062CXjmo7qdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hU3Rs4Sj;
-	arc=none smtp.remote-ip=74.125.229.9
-Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.com;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=pxanTNtW;
+	arc=none smtp.remote-ip=35.83.148.184
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8753660A380F
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:16:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8753660A380F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B82606A330
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:20:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3B82606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hU3Rs4Sj
-Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-3678f64d078so4323429eec.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:16:51 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=pxanTNtW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794435411; x=1795040211; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vnKV4PnxU9HF6j4JAgfB2zweGVhKP+4yJbw/eTtZUp8=;
-        b=hU3Rs4Sjby8PtUaslxBXzBVvo1G90IyFvQqlvS+9h3K38uEuZQg6Ez+RsngRu8oknX
-         q8c+EkC8Ilg0jwfabfGTOSf2bgCDnzQVXQY7lhHbzxuN/Tx7XGwlmXgVWutMqpM4a9OU
-         Gp6ijqwpnIM4jGYoiJTx3h4EmYlmWu69ccv1FynMw/5SpZ8OjWqsCuiMZq9Fd3RzdKZB
-         bVhgHiW4ZkF1E/nnJK5aCrJ5C3sIyN0gyeDut9I9ylGIgRI19pwnarlPTmY6fbWSPsb+
-         tB1QpVyXxVfv7STUwuEg6MofELktIg5Ty/oEs2uI9gGgLJUq5EJ8sZmF/AxqHarQX6p3
-         3u5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794435411; x=1795040211;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vnKV4PnxU9HF6j4JAgfB2zweGVhKP+4yJbw/eTtZUp8=;
-        b=vZoEQPPKzJgmPgh+b9WjrNgU7N5gx90lxU49iSWsBMFreeJaOaIi+iMihGZuDgtZ2e
-         y9+oMr0Z4IU2QkOiAPRQtuY8Upp/GgJTcPD3vTBCI/o4Bzjn1Klv2R7Z0Ybua3ziUmv3
-         isSnyIZDMYvDpZ4wZgZplupYpgg+KlwL6ut2BpuX/dItV+lclhNg0K2/NfsJpEV6V4++
-         s2IkmX19wWOxvJJSTfnc8vxzVnhHVwUiL1T5JERyXLudLVjzjLbxmgUkhhYXARxVQfD0
-         tQOnyYCtndSu7bJuB+/RENx/4a8C7nZhEmuK+KewmFfU6zHfUj/bybRwzya7VthqswuG
-         p5hg==
-X-Gm-Message-State: APuU4Z85/yDe8GzhVdsuXL22CHLaY3JLHoEdRSljnW2LZ5sbIWvNBfs1
-	v9GrdtxhFZkjcqQ3s1quryi7ZcvmHFotEofFPwLfCDXhDcVjUoz+C6/4
-X-Gm-Gg: AYBFou1zOtn/EWOBwDQHiActnFIJ1aZuqxZo6MA3yE8smk53g3Dkn1C7OQyOu5kc6EB
-	2VhrNaFMyqXvsF3QC7bK0xb9b5pn3Je/qun+CInRLLYWYWkbar0e0XPhEJtGRZmQs8yCtIlmgu0
-	SE1YpTGjKpT5PpX/4W9p156UAAtvB90q1LtfdPWa11lFzFVYSb1hqeBusZRc95l/tT7682J6fll
-	kyN2V6RNRHnGvVDZIkwZua+eskvUyTkIx0D1igG9gWooufzcYCoK0z6ZghqqR1KDOYeNLMJ2y7p
-	W7Gvoo+3wwOM0jAdzSegmyS6xdM/sLnvn9xfCTjIRdcshhVlFQP8tKn4BR+8qVB/bzMbJ4zxmEJ
-	mIXm491YhwfSBm9MXSXFSlk7NLpxKRbhNq4iQ1/Yfh1+E1CpOMFlt7lWRdrT3NwkA+7D72H8ZE2
-	wflvpzp6XnVjpODXtT03MGK15BKw56Xyy+sgaPmCU4ZIDLpjhAupWWWRUNz4eGmXZlzgD5rWBvh
-	hirXDm5qyf+9igSW7yMiGZxFF0TIaiTEhM+KMcfK0I1l+WPk9MyMf76ExtZ6AkHu88krcJy+4Kn
-	Qpgr6DVE9yF4gxHtiwytvkxmdhMvZlaqxt1jtUka/c7I
-X-Received: by 2002:a05:693c:2582:b0:378:314:4042 with SMTP id 5a478bee46e88-37803144bbdmr425280eec.14.1794435410616;
-        Wed, 11 Nov 2026 14:16:50 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:40::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfe29fsm21570686eec.21.2026.11.11.14.16.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 14:16:50 -0800 (PST)
-Date: Wed, 11 Nov 2026 14:16:46 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, kuniyu@google.com, 
-	pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org, 
-	horms@kernel.org, asml.silence@gmail.com, kaiyuanz@google.com, 
-	linux-kernel@vger.kernel.org, almasrymina@google.com, yana06070@163.com
-Subject: Re: [PATCH net-next] net: fix token index wraparound in
- SO_DEVMEM_DONTNEED
-Message-ID: <avTocmy4u8HH0Yo0@devvm16445.scu0.facebook.com>
-References: <20261110120331.13661-1-yanxia@cmss.chinamobile.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794435638; x=1825971638;
+  h=mime-version:content-transfer-encoding:subject:from:to:
+   cc:in-reply-to:references:date:message-id;
+  bh=l41r/vBb8YxJ/z+2szPSZoICsIGBmCS/02+qIbRTW+A=;
+  b=pxanTNtWBaAtMTjvbb387BsP/Q+agdDPabf9auTIkSUzcavTmSdWwT5h
+   hCMF2pKEdHDAz1fKQmLt5D28TDcmgwBty5eDUyghlV5fytkvncTayd6Pp
+   iCdHTqHi3zBx44cPbUkA0L5rkxp2FGoyoft/bZCUw7UTcj5zxBDQqjAr7
+   Vdu+Bqj4UMQvSgyBVkqHLP69CLmeKqCSWBdms+QTHlB6pgoPomTn42mIH
+   +vYkf/ptp+Yry+BsDzUlnLZRvk51Twx7BL+USiZEsDKDwyfXtG/7uGg5S
+   qOgDlssBwom46pcyASVBgVFWOI7/aI4GrdSM7inWBoTYYknXv/sQ2yV4y
+   w==;
+X-CSE-ConnectionGUID: 2YDboeUBTCaDBItEl3LPoA==
+X-CSE-MsgGUID: dbgt/kXoRrSXt5FY50nmWQ==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33548453"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:20:36 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:9342]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
+ id d802550a-d76f-402c-b56b-7f591cc48a5d; Wed, 11 Nov 2026 22:20:36 +0000 (UTC)
+X-Farcaster-Flow-ID: d802550a-d76f-402c-b56b-7f591cc48a5d
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:20:35 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:20:34 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,16 +74,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261110120331.13661-1-yanxia@cmss.chinamobile.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] net: ena: set admin device pointer before
+ queue allocations
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: Arthur Kiyanovski <akiyano@amazon.com>
+CC: Avi Weiss <thnkslprpt@gmail.com>, <netdev@vger.kernel.org>,
+	<darinzon@amazon.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>
+In-Reply-To: <179433615241.3327.1653126166147440177.b4-review@b4>
+References: <20261109071126.87125-2-thnkslprpt@gmail.com>
+ <179433615241.3327.1653126166147440177.b4-review@b4>
+Date: Wed, 11 Nov 2026 22:20:22 +0000
+Message-ID: <179443562266.24920.9919335880545623225.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On 11/10, Xia Yan wrote:
-> SO_DEVMEM_DONTNEED computes each index as token_start + j, in 32-bit
-> unsigned arithmetic. A start of 0xfffffffe and a count of 4 produce
-> indices 0xfffffffe, 0xffffffff, 0 and 1. Once the sum wraps, the loop
-> can erase an existing low-numbered token from the same socket.
+On 2026-11-10 18:42:32+00:00, Arthur Kiyanovski wrote:
+> On Mon, 09 Nov 2026 09:11:27 +0200, Avi Weiss <thnkslprpt@gmail.com> wrote:
+> 
+> > diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+> > index 297fb36ab8c1..23b3ef50b8b6 100644
+> > --- a/drivers/net/ethernet/amazon/ena/ena_com.c
+> > +++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+> > @@ -2045,7 +2047,6 @@ int ena_com_admin_init(struct ena_com_dev *ena_dev,
+> >  	if (ret)
+> >  		goto error;
+> >  
+> > -	admin_queue->ena_dev = ena_dev;
+> >  	admin_queue->running_state = true;
+> >  
+> >  	return 0;
+> 
+> 1. This is a bug fix, so it should go to net and not net-next.
+> 
+> 2. Like your other patches, this one has already been applied to the
+> amzn-drivers repository:
+> 
+> https://github.com/amzn/amzn-drivers/commit/7d1dc4341d4f8376c7affdc2a97c7e012118beaa
+> 
+> Therefore please do the following:
+> 
+> 2.1. Add a From: tag to give credit to Wajeeh Atrash, who wrote this fix:
+> 
+> From: Wajeeh Atrash <atrwajee@amazon.com>
+> 
+> 2.2. Wajeeh has agreed, please also add:
+> 
+> 
+> It should be added before your Signed-off-by:
+> 
+> 2.3. Move "admin_queue->ena_dev = ena_dev;" to the same place as in the
+> github commit, which is directly above the q_dmadev assignment:
+> 
+>         admin_queue->ena_dev = ena_dev;
+>         admin_queue->q_dmadev = ena_dev->dmadev;
+> 
+> I don't see a clear advantage to the location in your patch, so I would
+> rather have both drivers aligned.
+> 
+> Signed-off-by: Wajeeh Atrash <atrwajee@amazon.com>
 
-Sorry, I fail to understand what's the issue. This is (buggy) userspace
-misusing the api and potentially removing different tokens, right?
-So what are we fixing? Can you explain more?
+Two corrections to the commit message, plus two requests for v2.
+
+1. The From: line must be the very first line of the message body,
+above the changelog - not down among the tags. git am consumes it
+from there into the commit's author field, after which it does not
+appear in the commit message at all. Placed next to the Fixes: tag
+it is not consumed: the author stays you, and the line survives in
+the permanent changelog as plain text.
+
+So the body should start:
+
+-  From: Wajeeh Atrash <atrwajee@amazon.com>
+
+-  On the first probe, ena_com_admin_init() allocates the completion
+-  contexts ...
+
+Equivalently, set him as the author locally and let format-patch
+emit the line for you:
+
+  git commit --amend --author="Wajeeh Atrash <atrwajee@amazon.com>"
+
+2. Wajeeh's Signed-off-by: is missing from your draft - my previous
+mail dropped the line by accident, sorry. The tags should end:
+
+- Fixes: da580ca8de2c ("net: ena: add device distinct log prefix to files")
+- Signed-off-by: Wajeeh Atrash <atrwajee@amazon.com>
+- Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+
+Both are needed. Once From: changes the author, netdev's
+verify_signedoff check requires a sign-off matching the author as
+well as one matching the submitter.
+
+3. Please send the three ENA patches as one series against net, with
+a cover letter, instead of three separate mails.
+
+4. Please state how the issue was discovered and validated, and how
+the fix was tested, as required by the "Bug fixes" section of
+Documentation/process/maintainer-netdev.rst. For a driver fix the
+testing statement has to say which hardware it was tested on, or say
+plainly that it was not tested on hardware.
+
+Keep the sentence about the standalone driver in the commit message -
+unlike a link below the ---, it survives the apply.
+
+
