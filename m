@@ -1,89 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794433556;
-	b=0KHYVvuOuLbcJiLk5Zs9TlOjcWyg8pP89DllxHfbv98yIdVF0HOyqJSVr+WOh3IaCCSR
-	 N/FegU5t+dIQLuwkLRhlfnB06tq7qUy6bjIlp8whXydPmHx81TJ9L9IF51NeInvnH/Fud
-	 upF3UXairSI1Yf/aX0Qua2ircItTaqcSr4BclUKHaO2qbIbatAi0aVxS9FrJudBM2jHPf
-	 nbQMUaIXKCFJTaxTJJi/CPvvGzycV0exi9nOSB1titZt4n9OqAjcSjEfLIh5wvFcMdVx7
-	 IPb+xmQ+b71gHwZGwoDQS+WgG2QG4EqcKhVcnpomLHkdBnOf853UsvscCPMNcmW2kLQ==
+	t=1794433586;
+	b=HDWSHQqEYwp9iZvXEZVE+nZxF2YPW9tTwiVPyZ9Rd0slX0u/xTM1fGV6duYucxQw/Y7+
+	 YM61CN1ZrXsfpcvGJwIb4glMxVuAqPEiRhi42JEoJY7Rc/Ya/g6htpvexV/QBZm1XwZVr
+	 yWWq2niujgJxdaOYIj+Rv2iIVBVxYJGSMb3DKPLNC/6dD1A1ROSkVqPWtZUdnMjlxBHV7
+	 345C42AL/ViY914PWsvjn1umntLbJM77K+MzwvIvcgb2bBv9IvZsENXFcedei+Dg3tjmC
+	 09C7h9knyBB4h348NIeiHJrzMJWZ/VS1EALz0VoauJeuuY8LkL4yKOAt+XJ+3uPwfuw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794433556;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794433586;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=uLiiTa/Gb7h1TxDGjxBpe1u+WEWowZlfNkmPxqWemd0=;
-	b=n7t9qQMicLnhFewA9RACv0X+wVW1/AbOzt9i5jEhJfuNkvCUCz+k6/1AvBxBhV9sSAR6
-	 fQRKR4gHKYD4wT4qbsEw4+MR3FlTykTAbcKEfo3g63JMvdhpI/nSXY08GsOay+LwUT/oC
-	 IUdtedZhloXAuu1z+od5Ur5Ix6cgwPRLpABl4PkbB6sNNh7iYtIuAiNKlfwuquW7tvLgN
-	 OV8G3rPf4ocaxZBvBOPxjV1Llqd5TyxydqUUWKpwYEQu1CxED/2sgUrcwjnWo3Ow0Ytgy
-	 K9MNWxDWbT5Bw/55HJhiqr+CFPiUvx5J8V9dKicufwJC0O8Yl9IGQxKEI87Xpjh3oTA==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Bn/IuH8puJguqpDa5kmTTntls8rnsQ/IRNg4aGISG5k=;
+	b=znlEgGay6qQ7Zs+swhg/epY9LJ7d+H9h8MDXoh/8vhdo/5sc/lcIVjzhesl7qGNDnw+E
+	 F/HaujUdtkQ/kwglevb8BSfMXTSC3dTbkLUUCbcVk1uZc6GvFUow8TX4REQIGP1sDZF1n
+	 Nvj7xcdze3DXylv9Um8Q2UjrspfLSYEF6xmivD/HgwA0B564l7s8/+mk9l5WHPXZAWAvT
+	 mH3ynBGwAlJoqGdHEZhI1e+f2XIZrrvqAHzzjhA25rQOTPOBswSOGWp/YpTvVjzrUdzRH
+	 VmZd5BxyTO9dxQknjAQek7pUwCgwqPIEdeZdpLIEGjibtlMb7Yrqb1P4Y0CvNaSS8iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q3o1yGAM;
-	arc=none smtp.remote-ip=74.125.82.182
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jFi1bM75;
+	arc=none smtp.remote-ip=74.125.229.5
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F62606A321
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 21:45:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72F62606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61040606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 21:46:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61040606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q3o1yGAM
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so6476939eec.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 13:45:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jFi1bM75
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-36d73027aedso2028001eec.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 13:46:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794433554; x=1795038354; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uLiiTa/Gb7h1TxDGjxBpe1u+WEWowZlfNkmPxqWemd0=;
-        b=Q3o1yGAMmIMBrIgCVDWk5ZLj3xdQII6hHVqnmtuQqxF30ztQZShfrSaWGPDsxxdTqZ
-         NF7wxW4425xwPino3SFafvANsRF6RpeNzwzIY8MrQ8robbnXnI+4LZskJxLaAMM3AMB9
-         sQG6Cn9vcAEToQ9Qyqeg2tccYh/hkxtK41BaGgXRj4cOHu3iXLo/F3oVJixljU9STury
-         0X1RK0TMK2Qi4v6SRrnM/YApgfD3gpxY8f4LfgMaXRuoog4bqcIwbS0tGnEw0nx4+0XM
-         GqGAwjlevoWNUoYT0pKtPnd4QuhU8e77GwG+nJzG3ZpPjjUpkqi+Wocl1zaTpYoPtW38
-         fX+g==
+        d=gmail.com; s=20260707; t=1794433584; x=1795038384; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Bn/IuH8puJguqpDa5kmTTntls8rnsQ/IRNg4aGISG5k=;
+        b=jFi1bM75O8kdx8AOApDpXo4TIMOuvEQfJRet5WygZXfXP5PmCqTzGg2c41ne34+aW2
+         4q5ELFq+Thob7N6LqY8n5NCbIO/rVT4cyHu3OyEFjdgMD8UxuMV1eRc1sWkkNsBffeVo
+         UmjfhDQyqrrZ7S6JTr6o/MkllBl+R5O5oIZ2/MNDweQdsAtK8ijlylfHKW9cDZzg80u+
+         mQGKEfbCj+8sho1K+5iRyGswRqAYqOX4aRD9WkKk1GXE+OGV50vqooJCqzpNMxbxx0Sf
+         SuHoUuDv4zYZM5WuDB0NXzJjkTRkrCqwgXYcwyRk4D+Iz7am7moHfSgFDINggUfImQIO
+         qi2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794433554; x=1795038354;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uLiiTa/Gb7h1TxDGjxBpe1u+WEWowZlfNkmPxqWemd0=;
-        b=fK5szycIhi3HbevjEjimbyc/KUfRgwBUPxEEIXIde+WYJ5bx/iomIZKtgVcRYTTibn
-         KZ2NXKi7AHOmnpoLnFif7KUaaUzmHSCMpMaTTMdL1VZJ8j1ZMb+8AvVdChNiUJ5wiaS/
-         zDHJ0bwyYKaRCbVOQBWjo8iA2bhkdkugo3mIGLDAujweO9+b9DRGBvZn2kLZ9oKa9wP8
-         lXD+okmSICZYm0T3URrzztNTPz1B9Ao6HZcI0ahIhsF2y1srYZ+hVwym3QM9M1KsOuNc
-         g4sV0SC4GqY+LuMoAjYwzCLxdCuvR+PA9JcEojamYfztXVigZZoH57htafYdRE5Q7vpF
-         QADw==
-X-Forwarded-Encrypted: i=1; AL+hErHreHTAxP7Tk2VNX9QjzU1RC2bFySos19X0PXc3BTbdgBGFTUz55xRhZrEGl01mmPie1FAB+Lw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8VjqW452YgDRKmZT9ATvVhvyFkp0WnZOgnAiEyJQQsOwT3wi1L
-	74kVPNva5GlgytDmQm0WW2qpf9mj6hK++3R7tCA8JrtYNjdq/vvFo9tr
-X-Gm-Gg: AYBFou235V+TfMVnB3P+l4+XRy4eku+dSaWICR07ESbUzwnoJDTKDCpBhZN4tzwElPi
-	tbGiJYG03eiKK93pi6Qybxs5r5L7Wr0XoZ7veXasunYv/Q+FXDIOU17/8B+0I/qOLKgYDsDc82i
-	PMQFH5KstIclSWIwjF5CMXmqwfxBiuHzKplND+SkIujE5jHgEbPR/yqOT8kgOP91sK5FiKEK/XO
-	ZKItrMLBzFQwPm9Su1Dry7+xnGq8BgiNBxCGH3uUDglfJgFVuW6AleKxepUS0or5p0uhhs16VUD
-	JhS6nIOS6p6KRoL825OipP4g7h2QxKVrUy2XyBiWsHKulzFzRMMC5uQGWFQY9yR7RkRRGwYIx0C
-	Y2dY9OXTAmqBaxfnaXj7U3T7IfBC+HEoBugf/wX74pSp2BF5smYikDAw0n9yz8vNNuEZh871zxX
-	LRwqqd7vVirpcBL/GD5R0B+vL6Bd2IgaQfPi1AzEkidGfYHnqqBy2W1OOTQq8TQ/ySKsEKw5lIV
-	0TWVy490OmZjRS6JFcDsapq2vPjHY3JzRBVyMIaicoKJYbO0XqqbD+Q6huGbDyRvNX9u9aLz359
-	FOjMNJo2quEBilBNYpMQQn531VyC9CBWVKbYaNMOZxeGKJDfzXNfvVyNra/v8ws+BKztaF2tZrU
-	7EYjXgrZ/R/SXodTwvo2PEj69hjG4ZD2PD3SyfQ==
-X-Received: by 2002:a05:7301:3f19:b0:36f:3da8:dbc8 with SMTP id 5a478bee46e88-37686d31fa8mr5532433eec.31.1794433554164;
-        Wed, 11 Nov 2026 13:45:54 -0800 (PST)
-Received: from ?IPV6:2a03:83e0:1151:15:c24:4ad9:f660:1904? ([2620:10d:c090:500::6:1f95])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212e9e03sm38006432eec.23.2026.11.11.13.45.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 13:45:53 -0800 (PST)
-Message-ID: <f9979d3b-2a6a-4fa4-ad4d-10e5d4958678@gmail.com>
-Date: Wed, 11 Nov 2026 13:45:51 -0800
+        d=1e100.net; s=20260707; t=1794433584; x=1795038384;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Bn/IuH8puJguqpDa5kmTTntls8rnsQ/IRNg4aGISG5k=;
+        b=0nuOa+Md3bPWvhqm8SiAsqGX9b3b3wVRAsIen6kxhdf24cwRSl89K0TZDo4wOdUbyW
+         jOGMkvOKs1lcrdLjE7RFGALlzjVz2QRACShvXhd2DlylkTzMRqbK4IXoFzI1XF0LeXDO
+         wMcrQEFR+Z0lHJQvd3p8zXjM58o1OHycCSlwGeI+m0gO82a3RAfQFFlYoXf1c7hqsSvE
+         gHqEqBeccF/47eTVwUYOVdvS182FPRU7dZC8Y2coJo5WUEsQj3IguJMZcCYH5FTolfdM
+         zsNeNxd8HYDdCAXKaq2kZkjB28cUBg1w7YhMGClQFrlpmcuODAiBU5sdkxgMLEOe2w02
+         4uAQ==
+X-Forwarded-Encrypted: i=1; AL+hErGB+UlPGL3owggtCbCrmEP+qL+32yJLzXeatC1uC2ZeWeU/fCjgDY1szNZMizMyYb4+zWPVu0c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+t9lsHPLJb5PnxP5XGbp53TwxEjmMq7Gyhxa9C9FNxOqmLeI1D
+	EDl9TFpWf1hdowvSdviYeJ2babMn3wXeK2umuc/A4mlXld4zYLyYDvvA
+X-Gm-Gg: AYBFou3H8ZiHblUjGsGVub9VgqKMvPrh0z7Kd/lLzleoXeGoCn4aRk3uHC3FZurVQ66
+	8dIRfCzgZNFPX5dKUchprBmy1aHUTJqMed1xuLkeQVUE6uVg8Q9j+1TzddPWulRFxzJW3oH5R+I
+	HgOqEx9S5z2m92v26nmPd+0jWqgB30vbZTHTV3Ix3yUMLyUnl3o7YgtM5N0BclfALPZyjKy1H+P
+	XRHCYwlOUpVIDJPMu1QwzIEdy4s8BOC+i2tWMPEQt2gVSl8CuoSK9bBfsQGCmwNq2sIRs+c7BL5
+	uu7sMPwnTQZAa4cL3EQ5phBo/R0Z4qo+ZFCbzLu4xyfcN1yi6o9+zFmycCIVLIkqEE+ROby1raB
+	TwxRd44a2JToyc+uzAtVtisreUnwj4eIXuLoP0kpJ7oS9tMvwZsH6z/fSbL5+/k4cmuojqTvSwR
+	lXtf/ArpiViBaI2RDwtaVAG6L9Y7rZ2nPFLUa53K5GdLQgfT4vJNs2JIl3kFCVK7f2L3IxLKJyJ
+	D2dPUTjKRKbTcEGNQyzI7FHRndk9YVPwLr7hCC0AoGp04WIBj0ytsokz64eR+TxoorA2fZBkMQw
+	BlqfiFq/z0eolgkODJU2vpJd+l3e8uoz/o4vGM7uFIQ8
+X-Received: by 2002:a05:7022:3b84:b0:147:8a40:cdf3 with SMTP id a92af1059eb24-1b3c031b07bmr3568513c88.24.1794433584029;
+        Wed, 11 Nov 2026 13:46:24 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6a::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b1003fsm17414257c88.6.2026.11.11.13.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 13:46:23 -0800 (PST)
+Date: Wed, 11 Nov 2026 13:46:19 -0800
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Carolina Jubran <cjubran@nvidia.com>, 
+	Cosmin Ratiu <cratiu@nvidia.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	David Wei <dw@davidwei.uk>, Dragos Tatulea <dtatulea@nvidia.com>, 
+	Erfan Sharafzadeh <erfansh@meta.com>, Gal Pressman <gal@nvidia.com>, 
+	Jacob Keller <Jacob.e.keller@intel.com>, Kaifeng Wang <kaifengw@google.com>, 
+	Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
+	Matt Fleming <mfleming@cloudflare.com>, Mina Almasry <almasrymina@google.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	William Tu <witu@nvidia.com>, Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net-next V2 10/13] net: devmem: add
+ netdev_has_dmabuf_binding() helper
+Message-ID: <avTdfAaW9tlBRM34@devvm16445.scu0.facebook.com>
+References: <20261110183826.2927274-1-tariqt@nvidia.com>
+ <20261110183826.2927274-11-tariqt@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,156 +110,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 10/11] eth: fbnic: Support RX buffers it
- cannot split
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, io-uring@vger.kernel.org,
- Mina Almasry <almasrymina@google.com>
-Cc: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
- Weiming Shi <bestswngs@gmail.com>, Nikolay Aleksandrov
- <razor@blackwall.org>, David Wei <dw@davidwei.uk>,
- Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Stuart Clark <stuclar@meta.com>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-11-bjorn@kernel.org>
-Content-Language: en-US
-From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-In-Reply-To: <20261110102039.1002605-11-bjorn@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261110183826.2927274-11-tariqt@nvidia.com>
 
-On 11/10/26 2:20 AM, Björn Töpel wrote:
-> fbnic packs several headers, and several payloads, into one page. A
-> provider without MP_CAP_FRAG needs one descriptor per buffer. Give
-> such a buffer a single reference, program the queue so each header and
-> payload takes a buffer of its own, and drop packets that break this.
+On 11/10, Tariq Toukan wrote:
+> From: Dragos Tatulea <dtatulea@nvidia.com>
 > 
-> Header split is now set per queue, so link up changes only the drop
-> mode.
+> Currently there is no way to check whether a dmabuf is bound on a TX
+> queue. RX side has netif_rxq_has_unreadable_mp() which gives a hint
+> of it.
 > 
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+> To help with that, add a helper to check whether a devmem dmabuf
+> binding may still be in use on a given netdev, optionally filtered by
+> the DMA device the dmabuf was mapped against.
+> 
+> A binding can outlive the user's unbind: it can still be referenced by
+> in-flight TX skbs, whose DMA mappings are only valid for the device the
+> dmabuf was attached to. Reporting such a binding as gone would let a
+> driver swap the DMA device out from under those skbs. Bindings stay in
+> the bindings xarray until they are freed, so walk it and report every
+> binding of the netdev that is still mapped. Bindings that were already
+> unmapped are not reported.
+> 
+> This API is necessary for the upcoming support of data direct in mlx5e.
+> 
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > ---
->  drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 119 ++++++++++++++++---
->  drivers/net/ethernet/meta/fbnic/fbnic_txrx.h |   2 +
->  2 files changed, 102 insertions(+), 19 deletions(-)
+>  include/net/netmem.h | 24 ++++++++++++++++++++++++
+>  net/core/devmem.c    | 43 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 67 insertions(+)
 > 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> index bfaa284e497e..d96c957d6fba 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> @@ -761,8 +761,14 @@ static void fbnic_page_pool_init(struct fbnic_ring *ring, unsigned int idx,
->  {
->  	struct fbnic_rx_buf *rx_buf = &ring->rx_buf[idx];
->  
-> -	page_pool_fragment_netmem(netmem, FBNIC_PAGECNT_BIAS_MAX);
-> -	rx_buf->pagecnt_bias = FBNIC_PAGECNT_BIAS_MAX;
-> +	/* A whole buffer has one reference. The packet takes it, so the buffer
-> +	 * may be reused before its BDQ entry is cleaned.
-> +	 */
-> +	rx_buf->pagecnt_bias = 1;
-> +	if (page_pool_supports_frag(ring->page_pool)) {
-> +		page_pool_fragment_netmem(netmem, FBNIC_PAGECNT_BIAS_MAX);
-> +		rx_buf->pagecnt_bias = FBNIC_PAGECNT_BIAS_MAX;
-> +	}
->  	rx_buf->netmem = netmem;
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index fb693bc1702a..35bb6fa0f719 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -397,16 +397,40 @@ static inline unsigned long netmem_get_dma_addr(netmem_ref netmem)
+>  	return netmem_to_nmdesc(netmem)->dma_addr;
 >  }
 >  
-> @@ -792,7 +798,8 @@ static void fbnic_page_pool_drain(struct fbnic_ring *ring, unsigned int idx,
->  	struct fbnic_rx_buf *rx_buf = &ring->rx_buf[idx];
->  	netmem_ref netmem = rx_buf->netmem;
->  
-> -	if (!page_pool_unref_netmem(netmem, rx_buf->pagecnt_bias))
-> +	if (rx_buf->pagecnt_bias &&
-> +	    !page_pool_unref_netmem(netmem, rx_buf->pagecnt_bias))
->  		page_pool_put_unrefed_netmem(ring->page_pool, netmem, -1,
->  					     !!budget);
->  
-> @@ -993,6 +1000,19 @@ static unsigned int fbnic_hdr_pg_end(unsigned int pg_off, unsigned int len)
->  	return ALIGN(pg_off, 128) - FBNIC_RX_HROOM;
->  }
->  
-> +/* A buffer that cannot be split has one reference and takes one descriptor */
-> +static bool fbnic_bd_one_desc(struct fbnic_napi_vector *nv,
-> +			      const struct fbnic_ring *bdq, unsigned int idx,
-> +			      bool ok)
-> +{
-> +	if (likely(page_pool_supports_frag(bdq->page_pool) ||
-> +		   (bdq->rx_buf[idx].pagecnt_bias == 1 && ok)))
-> +		return true;
+> +struct net_device;
 > +
-> +	netdev_err_once(nv->napi.dev, "Bad descriptor for a whole RX buffer\n");
+>  #if defined(CONFIG_NET_DEVMEM)
+>  static inline bool net_is_devmem_iov(const struct net_iov *niov)
+>  {
+>  	return niov->type == NET_IOV_DMABUF;
+>  }
+> +
+> +/**
+> + * netdev_has_dmabuf_binding - is there a dmabuf binding for a
+> + * given @dev and @dma_dev
+> + *
+> + * @dev: netdev to check bindings
+> + * @dma_dev: dma device to check, when NULL it will not be checked
+> + *
+> + * A binding is reported for as long as it is mapped, which can be long
+> + * after the user unbound it: net_iovs of a TX binding can still be queued
+> + * in flight, with DMA mappings that are only valid for the device the dmabuf
+> + * was attached to.
+> + *
+> + * Return: true if a binding is found under @dev and possibly @dma_dev
+> + */
+> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev);
+>  #else
+>  static inline bool net_is_devmem_iov(const struct net_iov *niov)
+>  {
+>  	return false;
+>  }
+> +
+> +static inline bool netdev_has_dmabuf_binding(struct net_device *dev,
+> +					     struct device *dma_dev)
+> +{
 > +	return false;
 > +}
-> +
->  static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
->  			      struct fbnic_pkt_buff *pkt,
->  			      struct fbnic_q_triad *qt)
-> @@ -1007,6 +1027,17 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
->  	/* data_hard_start should always be NULL when this is called */
->  	WARN_ON_ONCE(pkt->buff.data_hard_start);
+>  #endif
 >  
-> +	/* MAX_HDR leaves no room for a second header in a whole buffer, so
-> +	 * the device closes it, with PAGE_FIN, after the first.
-> +	 */
-> +	pkt->add_frag_failed = false;
-> +	if (unlikely(!fbnic_bd_one_desc(nv, &qt->sub0, hdr_pg_idx,
-> +					FIELD_GET(FBNIC_RCD_AL_PAGE_FIN,
-> +						  rcd)))) {
-> +		pkt->add_frag_failed = true;
-> +		return;
-> +	}
-> +
->  	netmem = fbnic_page_pool_get_head(qt, hdr_pg_idx);
->  	pkt->head = netmem;
->  
-> @@ -1032,7 +1063,6 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
->  			 len - FBNIC_RX_PAD, true);
->  
->  	pkt->hwtstamp = 0;
-> -	pkt->add_frag_failed = false;
+>  void net_iov_inc_ref(struct net_iov *niov);
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 5c7d9640e9d1..dd3987bbd9f6 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -513,6 +513,49 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
+>  	return binding;
 >  }
 >  
->  static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
-> @@ -1046,8 +1076,20 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
->  	netmem_ref netmem;
->  	bool added;
->  
-> +	if (unlikely(!fbnic_bd_one_desc(nv, &qt->sub1, pg_idx, !pg_off))) {
-> +		pkt->add_frag_failed = true;
-> +		return;
-> +	}
+> +/* The attachment is cleared once the binding has been unmapped. */
+> +static bool
+> +net_devmem_binding_mapped_to(struct net_devmem_dmabuf_binding *binding,
+> +			     struct device *dma_dev)
+> +{
+> +	lockdep_assert_held(&binding->lock);
 > +
->  	netmem = fbnic_page_pool_get_data(qt, pg_idx);
->  
-> +	/* Without a header buffer, the packet is dropped. */
-> +	if (unlikely(!pkt->buff.data_hard_start)) {
-> +		page_pool_put_full_netmem(qt->sub1.page_pool, netmem, true);
-> +		pkt->add_frag_failed = true;
-> +		return;
-> +	}
+> +	return binding->attachment &&
+> +	       (!dma_dev || binding->attachment->dev == dma_dev);
+> +}
 > +
+> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev)
+> +{
+> +	struct net_devmem_dmabuf_binding *binding;
+> +	unsigned long xa_idx;
+> +	bool found = false;
+> +
+> +	netdev_assert_locked(dev);
+> +
+> +	/* A binding stays in the xarray until it is freed. binding->dev is
+> +	 * only cleared under the instance lock of that netdev, and the free
+> +	 * takes it before erasing the binding, so a binding found under @dev
+> +	 * stays alive while the xarray lock is dropped.
+> +	 */
+> +	xa_lock(&net_devmem_dmabuf_bindings);
+> +	xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
+> +		if (READ_ONCE(binding->dev) != dev)
+> +			continue;
+> +
+> +		xa_unlock(&net_devmem_dmabuf_bindings);
+> +		mutex_lock(&binding->lock);
+> +		found = net_devmem_binding_mapped_to(binding, dma_dev);
+> +		mutex_unlock(&binding->lock);
+> +		xa_lock(&net_devmem_dmabuf_bindings);
 
-How would we get in this state? Does the device need to misbehave and skip
-the header descriptor?
+Sorry, my cache is already empty after c4466d2c3e77.. I wonder if it would
+be easier to change kfree(binding) to kfree_rcu(binding, ...) and then
+we can rcu_lock/xa_for_each here without xa_lock/mutex? All we care is our
+netdev bindings, and these are not being changed as long as we
+hold the instance lock (but the other ones are now concurrently freed,
+hence rcu so we can safely do READ_ONCE on the binding)..
 
+And then the same applies to path 11?
+
+(trying to keep all the complexity in net_devmem_dev_unregister)
