@@ -1,100 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794440811;
-	b=EjEq+v1r4BEq5TMtlp4jfQYOCM6/V71/1yQnFcAmcg4GCCi7JZOhNNl1swv1AShrZHuD
-	 g4YXflwgBaPUkfxBxPjxih9ihnoV6jYBb0jrViJi7P1PvEiiGziCAWRE1hpatGjlZkv07
-	 1RJrJ+i3Wnn5T6J4LSvRyh5jFvi6NNjZrys9eOqtGWjBn561yLC8PQX8Bld6csW7hLhwy
-	 aBiEi5ISo8212d519oaNI+yBE5sKVhJKWKa2VjrZ4A77oS92m7W8ENAb6MtgLlmfVhRka
-	 s1vs30DJuA78jn7nEmkEAlz21+CNO4oCPENuD7CSnLUkywlJjTWMj4b34ehtW4Zz47w==
+	t=1794440905;
+	b=xrn/TwcaLV9Hnwsmj0LtwSUNwTDJwgUrQgYsXXTycxBE4oP4JE6MCgmVccLZSmfmBXh4
+	 xHH0PznURywsdFV0G945JnZ0KzIES8QyX1RoggMQJ253EjIO0njDe3sxRoHMnxS5Jtsct
+	 mrl3lJEE7J/C641Ew62lkkPWxdpffC76tdUbzMbtNauxl79sYMBofvS/EpaU8xOFhgOoW
+	 ZKqemsw5voSDK0bE6dEw3mARbsJx0Tk0oxvsaqnTU8aegyhRwTR86rethaFHEHg5orE6o
+	 fU+TCNr7mrRSKjJu+DOOL+F3ByCE0mwJbdlrWUzgusVv3qMh84vYiifuWF9f7eDgUwg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794440811;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=qNTqvp880V1AzQPjbJWvL9f9zomucT2LF6ZlJcI1BTI=;
-	b=yOkBONcaYLeMZhXLQdmwTuhQNpjR6LCyOf4XF7F9jKWop9Y3L7bcIkwzRFSXbAeiUzon
-	 KF7qhR1+qC4D1WsTUpBUzgG9LbTz50j5quL+IwvwrLX391mtuZI8q6wz66AD1CdYpDPYU
-	 MlcBkfeH0sO1aTT69ylVFXWi/4EMtlvvuHPJKIVa/rOT7clHugArN+XdWJioyXyZ1aZ2A
-	 uOUFkV64Y0YmzODsOVF35LSSptuUfNLhf1nlmWgyVJ0/ja3bxo/4DXCOpmz3BWbWXC5GP
-	 C5EnWOwxLWfSEDWsdPvOjHoE+C1oUn7wSqnnoCkrPB+kw1M8frybFkaavmYGPhALBzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794440905;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=HcIyqdgBVqDQl1X2czRRxA89xP/QmfaHzPYH/NFUI0Y=;
+	b=z6wszJ9SjQ3jShdvUu8gORTP+TE/RtdCXydKODL0tYEGAGeLnWSK+avsyajtO6gO7pWX
+	 N//J3cKNu1MIRUUGn4Wc3sIeMltIVg+3Q9OlAb+gBfBEQ1nRVtoqxTjy4LMJsBTNDc/fu
+	 bApnzd7cjsmf1qHGTlF6MACfQBeZ0a0WVgQHTwwN5hPAAp4eP3GsGaFwWaLwRvKy5Aa50
+	 suWa9dDM3QYDBkNv8D+7GO5EakPnW95bylnn3tZxB1j+UUpLzuxArRuv5o0m4pes72UyM
+	 GcitXBi/mljAqjm0yLqfXvEr9nTNvex0snJ0L64IfaoCSa75/L9/XjDsaGrlJpILt5Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NMzD0TqQ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T20JEc5z;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D1D606A331;
+	Wed, 11 Nov 2026 23:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T20JEc5z
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794440905;
+	b=R36lHJ9N2wjdTNUhVG/bXn4k6LwUcCz8BmmF1rSbAGfUH8m/ktnUJywu92ou3w+5zUTH
+	 q2rxuUkSu28yUrGfCxz95eAepxCyfznWkpHq3EsVMhoPcXRS/zflEy0Q51e9L6PMfeA5Q
+	 fP9DHmrxLc5zbA4okVAIHusTiH3NFr+xfJ7QzVnuCJM5HsgK4hRPf8nxi6/+rmNrQjdpK
+	 rIrdeJPWYZ8v0LjioiDUZHU/rfc7SGcXt9JyF6pD3veA5Tna+usf+O3CU1ZOzqPA/N5fG
+	 3mEk/dgHd0x1LkrR6GhLzVM6RizFXgHvoW7dKhfJpvohRgcVUxe+XxWAApTCqs+Tmfg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794440905;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=HcIyqdgBVqDQl1X2czRRxA89xP/QmfaHzPYH/NFUI0Y=;
+	b=o4I0E7m5+ohluCX5ycEXqVBQh8iy0YKOoGdiFB1NRQ/iQC/sXM40+W2h9dMAXnka1hcd
+	 +XSXKcWCK6DVvGfGER/JBy8QgqIyxg+FKzjS8qTcBaFMtVFeihzHn0O7+VhGnLhv6E+yG
+	 uGQDAsKuwY6XB59oOnC0dsn/ckTe5ETqsQHv+w6sqbCbQmpe0g67Fn2fE8DaW+i5mqxqK
+	 l9D1OCdinOk+o9qTnL2fjC9J8KhKLwHzOPhfr2jrQUXCc2VL6pSahmnx9zJ/nJT3FqWJK
+	 qbfL1cY8A2b42R7ECvDPl/PmF3PZmr45IC1iTMLdhaZzJJqjSQ5uMIjR0mSkJhK6BNA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48323606A88C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:46:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48323606A88C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NMzD0TqQ
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6f8a519e215so389301eaf.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:46:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794440810; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kvoglSM2ujR20jpw7cQulKdhaUJ2c449xvebE/5HAdzGQlusiJigTDdy8IEsHcGYsl
-         c18YWgRsz3QuNVSf3w9jVeSfmuPzj232/Jv0348QWEIAmoqRVh0UYobA2iLPIrFK20ZB
-         rWn5cXs9KDfFKCsGoBeG6mF5huegxUmLNj+H/AEJYzz7L8XvilVM7Cy5Wb1LNPLexjkj
-         BSEzttwRSORtYQ5nd9qnP4WX3m6z2bL+LqBpnRhGYvd73lgMIqxdxEI/5K9weCQK3k88
-         SuOgoZc8l5ACUpkEuElDFbqPnd0FTUnBGpVW+ioBocIgSc6JBExcaG66Z+AQNUBoSBHi
-         PR7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=qNTqvp880V1AzQPjbJWvL9f9zomucT2LF6ZlJcI1BTI=;
-        fh=cBU9PA24bKvg9Zh99izShP2PrFO62EbE539xTfKCj/4=;
-        b=JcKpyrad56JR5tiWM7trMnj86tWtwh/U4iL8OzuTVUN8xDwtkhYVATbP1OgeEp9PrF
-         toaQaJzH6ADXUmimiQhd8MVKSDxlwF8V4NpB/4qghOHsVYxgzkvkLMkfBfuvguGtnN3/
-         mhgsD23AXDJTCOnvUJzUya6IqgL1lZAUm/wGlOzqQWwIxjX84np7NihZZ6XPjBrremn+
-         Hh2XtNWpUX5+IzYvaaUFXvc9suePEqJ7HX8hpIEZUpqc/Z3rhirVkgIJxxfZ7NKj8IZB
-         jtQQjmdNu9w9BjvZ0LzuyLYtneScZrp5ezKpsn+/udcSZpsdajEyiJk7Z8K2XhAK8X9M
-         kkMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794440810; x=1795045610; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qNTqvp880V1AzQPjbJWvL9f9zomucT2LF6ZlJcI1BTI=;
-        b=NMzD0TqQuwQhNFF7aHIeC3SA22YiAV6mClPOc6MrGmoClNILecdh5gv9EaYatBhdKE
-         S1H4sFNblnlve+OJ5uv+CLBpCh3zyK3uPT9kEdQN0l12HoIbPqEJlOF9UoFWSkvyP+rJ
-         3mNTQlsFv1mTjxeytumNxJdr4WJuHO33aTEDzdBhhksudoGOfutqWottdoB1bfhO6aSd
-         y367fAjCvv3590WzqeHb+Op5WihluIRpLNtFeGoYDaTL1OBZfeAsuyTJH/7XQqQHlccp
-         0Hkjf03LWm6Ft/NQ3NDaVlRkGHvuDpIkm3elkOCI9vAVjkFFQnT19iVmrD5Rtd8pjCBp
-         EfZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794440810; x=1795045610;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qNTqvp880V1AzQPjbJWvL9f9zomucT2LF6ZlJcI1BTI=;
-        b=0/kaFYWN7xtg6KkkcIjWX/9wDgRcTThxhnJRx+7TddVPWNsJGbLzT9/IuIYrh5ebN0
-         i6oExL878Nn8h8LR6nAzRGah1tuMrlM7WLt6Fntb1l+HJ//jOyBa+gxWpuTBmXnmTfWl
-         Xif2Kl9QDA7zgokLC/zO+umOPkUyKnJBazTCuSL3Hbjr+1PCp0ohTnaPQZoQwyDCCvuV
-         8ALmY4JGDifWFtPHps4cuEdUeZKX7unIG/44Q03IXowG01nQI9ESzeH0dIyg+GuLTw5O
-         PuYMyu2UphfgcahjDDpvPqZG1h+YJ5PHG2DBqRYYepuq8q27sQlCmfB4FIUW8ZXCFuv1
-         Ub6A==
-X-Forwarded-Encrypted: i=1; AL+hErGdLhjPdTsmqkHjgkROgzlAGLA2Mz8qIXJzsC0nRCzpbeJSk7ptRPiXW5pkrVPlAksfnNt2n+E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+/AA/obewUKWO7MVSpprAUIBC160NKXtaURBIlUOKhcz4KDuzK
-	waE1u2EliJNZX3a1U213K545p6yJ/Lrt1hQAu6Gk0lvPAEQFFsztLUfdWrgfKVnOtf5F7GkZK0F
-	11oPTyWTx4JOrMpfcqHizGUQBICJ9Go4bpsAhhMf5FA==
-X-Gm-Gg: AYBFou3ZqhwS1ezg/pGJnluVct3UYMtC/b7dqQGTKyonr955CglmJeV2XO0UPTnP4n2
-	umNmGgZG9vCEQJrjh9qsBJeyhyKkoeE5BA9/lOqjq84nQjprWvcMBjwEwMRn4JtVg9XjmIK4gze
-	ixEgwLLi0pCquwhK3kY01BEC4/S4Mo/l+rwDoTBnIjSWywEi+8AzmpCQYvfxT5NgeQbOpLboIxp
-	8aSkN3HOCWNKfYpKu4XiC1st30Ko+8an2XGwRDO6NBwi+RW/j4cFWW88XisYdVnvo/hFVzDwFSR
-	DbVlc0FS6h4iLPqMLtC2vYfvP8rAVr/2hkD9Kb8I4O50Fu5S41qBe5pGla+JCXnhUcq/dkKSil/
-	VGqozgydeNuTx2JakmkD3QRVG2+aguOyasxZh0jW9RWkcCl0y7CB+oXEW3H1AQwGbxEYL02eS/L
-	A1EMA1Xv+KiQ==
-X-Received: by 2002:a05:6820:f004:b0:719:1627:6c16 with SMTP id
- 006d021491bc7-7196b62ab2dmr743911eaf.12.1794440810117; Wed, 11 Nov 2026
- 15:46:50 -0800 (PST)
+	by smtp.kernel.org (Postfix) with ESMTPS id 5EDEA1F00A05;
+	Wed, 11 Nov 2026 23:48:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794440905;
+	bh=HcIyqdgBVqDQl1X2czRRxA89xP/QmfaHzPYH/NFUI0Y=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=T20JEc5zE1bPZW3j8KjkNRoxUkWlk1URMH1R+KmHArIPTvIuvA8VMWc50TwiWB6hr
+	 Dgn70IeCPT195Yv1bLmk67M58gcpsaxubq7PNhQSHettVZ5GJoEhCqiDwExuk33c8j
+	 Jm1gi4wGtZLTSVcS+OMrP7oavNfk34HAKVUIYiIMfNswVXBUInSRCYGZw1M7nT0Ufh
+	 keiQKBeRR531/StwgnBoFMIOmrzC0AVhlwu2HA0ayxB3lA2nTKcBCQPxVPEH77jBhh
+	 BEu4ZGz5Ct6Tsc+IOW+zq1p8R35sHSTll1A24i62hBYAyA3wBrjnjZ02pe5S4D4+tI
+	 6BhWjUTKPnNog==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C960149181;
+	Wed, 11 Nov 2026 23:48:23 +0000 (UTC)
+From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
+Subject: [PATCH net v5 0/4] net: phy: postpone PHY interrupts during sleep
+ with MAC-managed PM
+Date: Wed, 11 Nov 2026 23:48:18 +0000
+Message-Id: <20261111-b4-phylib-mac-pm-irq-v3-v5-0-bbfdb5afb7d3@iav.lv>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,85 +84,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794281983.git.tianyi@cloudflare.com> <avOvI8xrHI0dwyHj@devvm16445.scu0.facebook.com>
- <CAG4wq-egD55NZDw+OKVKTKN2tQJ9oKEC504wFv=xoMXyJ-0z4g@mail.gmail.com> <avTqb--WfUNBcEyN@devvm16445.scu0.facebook.com>
-In-Reply-To: <avTqb--WfUNBcEyN@devvm16445.scu0.facebook.com>
-From: Tianyi Gao <tianyi@cloudflare.com>
-Date: Wed, 11 Nov 2026 23:46:39 +0000
-X-Gm-Features: AclHuK98I8l2CyqIug_hRhhYiDHFe7Xrim7_SwhM5rRiI9ms5coKAG0rV8Jl2JY
-Message-ID: <CAG4wq-dw8VqiVTbi-fSJTnwj+amkfE_56ndKCYk4v31z2ppcTA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 00/15] xdp: add SKB core extensions to keep RX
- metadata until skb creation
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Vladimir Vdovin <deliran@verdict.gg>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Tushar Vyavahare <tushar.vyavahare@intel.com>, Jason Xing <kerneljasonxing@gmail.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Madalin Bucur <madalin.bucur@nxp.com>, 
-	Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Chris J Arges <carges@cloudflare.com>, 
-	Jakub Sitnicki <jakub@cloudflare.com>, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	llvm@lists.linux.dev, kernel-team@cloudflare.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAML+9GoC/4XNywrCMBAF0F8pWTuSt9SV/yEukjaxA32ZlGAp/
+ XdjFuJGhNncucyZjUQX0EVyrjYSXMKI05iDOlSk6cx4d4BtzoRTrhnlNVgJc7f2aGEwDcwDYHh
+ AEuC10q10rNHSk3w9B+fxWeQrGd1CbnnZYVymsJZvSZTqL5yHgqrpiUrlBWf0giYd+1TAJL8Qw
+ X4j8o1Yw4UV3tdGfpB9318XLeJ9BQEAAA==
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Lukas Wunner <lukas@wunner.de>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Wei Fang <wei.fang@nxp.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+ Paul Barker <paul@pbarker.dev>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Doug Berger <opendmb@gmail.com>, 
+ Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
+ Shenwei Wang <shenwei.wang@nxp.com>, 
+ Haoning Cheng <Haoning.CHENG@cn.bosch.com>, netdev@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Igor Velkov <iav@iav.lv>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5635; i=iav@iav.lv;
+ h=from:subject:message-id;
+ bh=HfX1jf3NSg3omI4ZglWLxQwe7oK6Rg2xu5oqUFPBLQU=;
+ b=owGbwMvMwCVmNH1q96v4SmbG02pJDFlf/h2RWbycV7E84fXDLYe1X6+ZUCnsY36LucPo/uojx
+ XyJl/v2dZSyMIhxMciKKbJMOKRxK2PJ1b/+HuYPYOawMoEMYeDiFICJ7G1h+M12KHfPZFnORCPN
+ JJUmyb6ZTtsdpuZPsWFYouRvc7QnJ4qRYXLGBp5/eXPa3zn1R/ulxtRM8mrsveVlGJdW0pbxJcm
+ bCwA=
+X-Developer-Key: i=iav@iav.lv; a=openpgp;
+ fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
+X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
+X-Original-From: Igor Velkov <iav@iav.lv>
+Reply-To: iav@iav.lv
 
-Hi Stanislav,
+When the MAC driver manages PHY PM, phylib never sets irq_suspended, and
+a PHY interrupt during the sleep transition runs the PHY driver's
+handler while the MDIO bus may be powered down. On Helios64 (dwmac-rk)
+this hangs the board on suspend as well as on resume.
 
-On 11/11, Stanislav Fomichev wrote:
-> My main concern is that we are adding a lot of code and one more
-> special way to plumb the metadata (and another metadata area), another
-> set of kfuncs
+mac_managed_pm hands phy_suspend(), phy_resume() and the state machine
+to the MAC driver, since commit fba863b81604 ("net: phy: make PHY PM
+ops a no-op if MAC driver manages PHY PM"); the PHY interrupt stays
+with phylib, and so does postponing it.
 
-The RX metadata can be stale on XDP_PASS and lost on XDP_REDIRECT.
-There are already separate attempts to fix it:
+Patches 1-3 fix the postponing that phylib applies to other PHYs, so
+that patch 4 can extend it to MAC-managed ones. Patch 1 moves the two
+flags out of a bitfield they share with the link state written under
+phydev->lock. Patch 2 keeps the line of a postponed interrupt balanced
+when an edge reruns the IRQ thread or phy_free_interrupt() runs during
+the transition. Patch 3 undoes the postponing when phy_suspend() fails
+and ends it when the PHY fails to resume. Patch 4 sets irq_suspended
+for MAC-managed PHYs too and decides the wakeup event of a postponed
+interrupt before the device that owns the MDIO bus suspends.
 
-- the RX hash and the VLAN tag [1],
-- a checksum assertion [2],
-- the checksum invalidation that you suggested [3].
+Not covered: MDIO accesses from closing or opening the interface during
+the transition, and a MAC resume that fails to power the bus up. On a
+shared line, a postponed PHY interrupt disables the line for its other
+users until the PHY resumes; patch 4 extends that to MAC-managed PHYs. A
+nested threaded PHY interrupt is not replayed (irq_wake_thread() has no
+thread to wake), and mdio_bus_phy_may_suspend() does not ask
+phy_may_wakeup() about an attached PHY.
 
-For me, the question is not whether to plumb the metadata, but how.
-It is not great to have fragmented mechanisms. The skb core extension
-area aims to unify them.
+With MAC-managed PM, a postponed interrupt reports a system wakeup only
+when Wake-on-LAN is enabled in the PHY. A PHY that leaves its link
+interrupt unmasked while armed for Wake-on-LAN can then abort suspend
+when the MAC changes the link. Going by their suspend code, BCM54210E
+leaves it unmasked, while RTL8211F and AN8801R mask it. Tested on
+Helios64 (dwmac-rk, RTL8211F); Haoning Cheng tested v4 on i.MX6 (fec).
 
-That is my view. What do you think is the best way to solve these
-problems?
+Changes in v5:
+- v4 patch 2 alone could leave irq_rerun set across
+  phy_free_interrupt() and a new request, after which a postponed
+  level interrupt fired without end; it is merged with v4 patch 3 into
+  patch 2. phy_free_interrupt() re-enables the line after free_irq(),
+  not before, and only while other users of a shared line remain, so
+  the handler cannot keep running on a source it cannot quiet;
+  irq_rerun stays a bool (Sashiko on v4)
+- patch 3: when the PHY fails to resume, the line a postponed
+  interrupt disabled stays off, as before this series, instead of
+  rerunning a handler that may not reach the PHY (Sashiko on v4)
+- patch 4: with mac_managed_pm, only Wake-on-LAN in the PHY makes a
+  postponed interrupt a wakeup; the ethtool flag may describe
+  Wake-on-LAN in the MAC, as with fec (Sashiko on v4); for a PHY that
+  phy_suspend() already suspended, the PHY part of its Wake-on-LAN
+  state is kept in the new wol_phy
+- patch 4: Fixes: now points at 1758bde2e4aa, which added the
+  postponing after the early return for MAC-managed PHY PM
+- comments say that postponing lasts until the transition ends
+- Haoning Cheng's Tested-by on v4 kept on patch 1 only: patches 2-4
+  changed
+- rebased on net
+- tests rerun on v5
+- Link to v4: https://lore.kernel.org/r/20261031-b4-phylib-mac-pm-irq-v3-v4-0-5ba23b3ff9a4@iav.lv
 
-> and slowly creeping more features into xdp making it
-> more and more like skb.
+Changes in v4:
+- new patches 2-4, one pre-existing defect each
+- patch 2: an edge that reruns the IRQ thread no longer disables the
+  line twice
+- patch 3: phy_free_interrupt() during the transition keeps the line
+  balanced (Sashiko on v3)
+- patch 4: a failing PHY PM callback no longer leaves the interrupt
+  postponed (Sashiko on v2 and v3)
+- patch 5: the wakeup event is decided in mdio_bus_phy_suspend(), where
+  phy_may_wakeup() can still read the PHY (Sashiko on v3); Fixes: now
+  points at the stmmac commit that took its PHYs out of postponing
+- v3 asked phylib or phylink_suspend(): phylib, as macb sets
+  mac_managed_pm but suspends with phylink_stop()
+- tests rerun on v4
+- Link to v3: https://lore.kernel.org/r/20261029-b4-phylib-mac-pm-irq-v3-v3-0-5907045f3210@iav.lv
 
-I will leave this to Jesper.
+Changes in v3:
+- with mac_managed_pm, a postponed interrupt signals a wakeup event only
+  with Wake-on-LAN; with MAC power/wakeup enabled and no WoL, v2 aborted
+  s2idle on Helios64 3 of 3 times, v3 0 of 3 (reported by Sashiko)
+- phy_free_interrupt(): stop postponing and re-enable the line before
+  free_irq(), not after it (reported by Sashiko)
+- mdio_bus_phy_suspend() comment narrowed to the MDIO bus (reported by
+  Sashiko)
+- patch 1: Andrew suggested taking phydev->lock in phy_interrupt();
+  the commit message says why that does not close the race
+- tests rerun on v3
+- Link to v2: https://lore.kernel.org/r/20261026045343.837889-1-iav@iav.lv
 
-> For containers in general, and for fast af_/xdp, we seem to have been
-> moving into netkit with queue leasing. Maybe that's something that
-> can help with your veth performance?
+Signed-off-by: Igor Velkov <iav@iav.lv>
+---
+Igor Velkov (4):
+      net: phy: move irq_suspended and irq_rerun out of the bitfield
+      net: phy: keep the line of a postponed PHY interrupt balanced
+      net: phy: stop postponing PHY interrupts when a PHY PM callback fails
+      net: phy: postpone PHY interrupts during sleep with MAC-managed PM
 
-Thank you for the suggestion. Unfortunately, it does not fit our case.
-Our XDP program decides where each packet goes, from the inner
-headers after decap or even partial decryption [4]. Hardware queue
-steering cannot do this.
+ drivers/net/phy/phy.c        |  45 +++++++++++----
+ drivers/net/phy/phy_device.c | 134 ++++++++++++++++++++++++++++++++++---------
+ include/linux/phy.h          |  35 +++++++++--
+ 3 files changed, 169 insertions(+), 45 deletions(-)
+---
+base-commit: 8d5ce4751fad9499ea408163af7f410f18a85782
+change-id: 20261029-b4-phylib-mac-pm-irq-v3-f656d4e1c64f
 
-This series also covers cases without containers: XDP_PASS on the NIC
-and cpumap load balancing.
+Best regards,
+-- 
+Igor Velkov <iav@iav.lv>
 
-[1] https://lore.kernel.org/all/175146824674.1421237.18351246421763677468.stgit@firesoul/
-[2] https://lore.kernel.org/all/20260630191510.81402-1-deliran@verdict.gg/
-[3] https://lore.kernel.org/all/amEojEGsIGkUjIWn@devvm7509.cco0.facebook.com/
-[4] https://lore.kernel.org/all/ca38f2ed-999f-4ce1-8035-8ee9247f27f2@kernel.org/
 
-Cheers,
-Tianyi
