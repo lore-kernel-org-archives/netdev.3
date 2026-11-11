@@ -1,88 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794394130;
-	b=vXT/afmZUO4NnPB4qygXmNEypMXHjg9u3edrLtVHJrtczJlO13XCsRi/uryjv1evANnE
-	 Z96vZcBrhSE+1i0FTG+copkXGNVLI08/OyvrIGWml7wwXXEwUyLtq/f06ZWHMr+kMn84T
-	 dEJOfaTIjdmh+hjMmL/K6pLcRIIL4K+K8xXz2AAsh/HmX+KvkWB4lZQBP1+oTPjwsfEPK
-	 HY9gWsR4gtjM6X+SewwMsj0U+DBKF+7BOQQv04oxFw9DNyW0s6VGUU5BIhhSwwkjGXiSC
-	 47HS5xz9McHlAtapOzI4Xfrp1RoDhn0BItZEAz3w9ZeC17V+0ux7QC0RW3ILyqwKpPg==
+	t=1794394131;
+	b=4Wg8P83A2nrk+iiNzJC8j6OC6JfIKQyZKOR93GTzGvWlWXu4pLgM+kdiJOwl1wSPjgf4
+	 lXmDFI7oShCqMxpQ3nKDeXIf9X1ItWymbX1xIzPSecfEyh7KGgu+i+jYucZMwcSSzcqLN
+	 CuH8kTmjssr+621XSHDW9wr+YyTpP0FbFDGB4CuahFuozzHhbWSUSjCx+5QMmBiNt66Eg
+	 +D3pAvh87KmqGpJwkJn9Xgfx265tXJ8Q1FEM8Q3ZZERpy3m3Hp/kVER3wWdMjj1yQajRP
+	 H3369c94AiAVK0MlXhCvzYCIoIekJaOoqESi/czjraYy/HVM0WzdN8S6d5CoG7XEE4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794394130;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=SJE8c/dZm+CWhQbZBqBGTdaX2jwL8ZWmvduRU6X8Ew0=;
-	b=1/jZIwx7xL5b9LcUbP4axF0f7U5JpkPURh0ztWsD8LTl3WVmfkBsY3tZtb8cxnclqP8b
-	 wQ3ZKnIbcRmcIz/Z29JZArY3UrXxKv/sN/yY/3LT3z4T3uIluFwy9FXehZPjbw81hxVLm
-	 SswTB4U59srtvBSrgavJ8dtP7HH4dbd6KVh7KofI2+fLsHlNTP8HGNUrcHd8cYDiAgXps
-	 zLklwRxqoV5/ozEfq07tUBuhDgRoON1NQ9OQYnIpMklzMBekBee3IyB+EWSAJdk7XWnsS
-	 kqczMMlKHgXvxFcmqsxJyc1AKaK+MLnmKskQPBJLrHb6W79frHmr1Dg7cRMyZxYdnYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794394131;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=RqF08vHGuWiH65DocbzobUsEjzFU0GtZ5sZ7q95NlpI=;
+	b=TzC0QzO5zK/IFPBqAg7/qgcfCPFN+vJC0jnfOQazaZkiKKTQXWVJ/MdqCS5UBF7J+FXR
+	 GR4BwpO80hpjoZRMJAY0USunfZAs3ISVXlmsqCn5uctlBktn/bb5EaOoBoRtIdObUMnON
+	 ejTKXZYflSNaMAtZq3mvD5UxyGSG+BW/KaXgoJyQ9v0hk9y5h3/YsvGcQZ6HoZXfE08dN
+	 1btMbNSep0aUWXyXnE8haiQkjG0IWhlkwTQyGKvth+br7Eq4YnjlphHIPagp/kczR7xt/
+	 wzCssWQj49lw0A73SckcuR3N5XzlMsspU4VpHlYubaNJNnA87MHkzkXKiQLOKE5bgZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=GBKkvpuR;
-	arc=none smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4DTNuvX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D15606A326
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:48:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2D15606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AA1606A886
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=GBKkvpuR
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a549cd7fd2so27284185e9.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:48:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794394128; x=1794998928; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SJE8c/dZm+CWhQbZBqBGTdaX2jwL8ZWmvduRU6X8Ew0=;
-        b=GBKkvpuR5r+JH+yFSCx2MRbxX6k1mn+PDhE0+d7qG4hyFMh2NoIazPozMTmQIzj+JD
-         9V8o/DugtUDYfrwFdXFHHxGzNFBYTu7e76oRigVpHZa80NBx+zbfSyUnBxDqxg3KoAOA
-         I2K6lq0c9BVy7Cbjw4IwNKTP+XHg7DTaHTxQbG5Nh6/cbrNOti3bTUOFGssN6RfM71le
-         ijhIsPf9Un9wqeCXlb5W6zgWPLYabiBOKuih/2tp/XV9plgnBLPIiy+2ydMVk2wWH3eO
-         jqtcIRFucEU87Lf0iApwLllYGg7Jt9b4puTC3EpxpXWCSs10ncEoku0H26XlqImr5k37
-         xJ9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794394128; x=1794998928;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SJE8c/dZm+CWhQbZBqBGTdaX2jwL8ZWmvduRU6X8Ew0=;
-        b=SMk6R2CzeqzMD6KfYWJMtw9QAkrVJ4/6iui5wJju5VWwxf4iGZEJwdkJFNIinbyWTy
-         2vYJZsuGQuVqIm5t1Xsqg7GS2XLDFgoV/ahRVs4VQPCqoxaEbg/LiLsRcKv6cOY1BY3u
-         B5XAzzQeaqCrkCdrr6AEik+B1hsRFXu2jMtiHiM9zUZYdI/Ab9ckf+ZN3zM5k0lm8Xhw
-         efqe41NcB4n2fK8zwc5AyfxcgA49+Cvagj7bxuTxS/ptMkEcCyXSxBYi2OsYoyIQelse
-         5wyDCwTCcO3ege/sRZiw4ZK1X4etBpheoge7gyWaUUqta4+9KeI5g6KLcVeWgAztn0Tp
-         pW+A==
-X-Forwarded-Encrypted: i=1; AL+hErFCEUqL19UBbxMV+bt80nAMEVmsS9gKsJxNVWMyyS5rlvMSH6pCeoAd713z852AALcWB7oJ9k8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9rlEW0a/I9VTn88x3NYeqH+/HibBjc3SkrxOrx3YKow7lLBbHp
-	bwS8rwQphZceJhZt4b4Sm1LgKrugSQhtMZPgnLqxdsA9wSG5Eq/iWC0BBGrHePe3/Oc=
-X-Gm-Gg: AYBFou2i8XXNQc4K3UJ9MC3OupSqllA+ZntvqV1ObJkVILxwj9nzr9tfjaN0t8riiVK
-	z1IzsspI5NiQ9kBV5WzQfVRQUlRUIOiIb1rvW0XtbuBSriRQnTw1bXgWZHhBMRjqjgkSiy5K/t+
-	MHvmvdP2a/kSryQfRCFwja97cbUiF24qOONWpgxyyDFfZFEJ5CfgX+OsPOpWTUr+7BTzi9HcVxR
-	sB0u4jPNTYeU3sArxcTvQsABZORlpcUAQEqBGrM08lAe8VVoK7Cs8T4hj9VEeHBMCGcPJW8KlJk
-	EqZJOh7HJKBTeff1nQ+x0VuGtP0zCPAs12BnCQ82KjtIdboevp6/WOH6MzieaHx+lQv0itsh5eg
-	J+BMslbMdyQy9jEnEMyvz7c+hJysh2Sw2Ml1Mcv19fY9RyM2HfMaSvaI4IJoA1cDWx82Rmz9B/V
-	DlzeNNkvC5jkkOHbxQv71faXHvdw6qQL1JgqVgxWc7gGrd3QIBPCiTUdVy30rLlBg3DZS9CMKIQ
-	45JeObvWjN1GWsZu86pTqYnMTrgsI4CN0cUY0yR5k8Su5RfFZlRfhxU3/Ape9NaWLvq/T3o6mAT
-	bS1og71DQK9GFYMkN9F3VyCauf8eX0gp51OEvdn2/M9D+RjBjrLICY50kNzDQQYyrw==
-X-Received: by 2002:a05:600c:1f93:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4ba0938124fmr41926975e9.16.1794394127955;
-        Wed, 11 Nov 2026 02:48:47 -0800 (PST)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0951fe22sm54693255e9.3.2026.11.11.02.48.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 02:48:47 -0800 (PST)
-Message-ID: <2e392c2b-3fde-42fd-82e0-8130d2de48d2@suse.com>
-Date: Wed, 11 Nov 2026 11:48:45 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4DTNuvX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DA71F00A0E;
+	Wed, 11 Nov 2026 10:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794394130;
+	bh=RqF08vHGuWiH65DocbzobUsEjzFU0GtZ5sZ7q95NlpI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=M4DTNuvXq7TdsnCMIzZLwac1TkEWutEotzKYOnj52KZhCYF9NpW0kTXrwVBnrXm8p
+	 D5qTXrrH5TIy+PoiBmcHkwOGIMEG027bSXbynRJl+uC/Q3uJ7VxMbniKOuosaMnavH
+	 V8vO/bEBxZMJylDNR1JPT4rKuqTcojouFsrmJo3SFku7Jd+J7F6T0HAENwILDJOYRl
+	 mQJYpcplkC+sf+BSw82OnhqXKl/tA1upYomsiY8i2P3TcHhW+NQy/WAR0VhwNZY6qd
+	 Nsq7DHVhW4RFydpSuYXzJSEqUlZ9sOyjxviGozBQ6VaZTFatxofNNKN+IXecInUvax
+	 pKc+JyMMevXDQ==
+Subject: Re: [PATCH net-next v2 2/5] hv_netvsc: hold the VF's instance lock
+ when installing XDP on it
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ kameroncarr@linux.microsoft.com, ernis@linux.microsoft.com
+Date: Wed, 11 Nov 2026 10:48:49 +0000
+Message-ID: <179439412975.2199510.3527577405382153114@kernel.org>
+In-Reply-To: <20261109194843.1353592-3-kuba@kernel.org>
+References: <20261109194843.1353592-3-kuba@kernel.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,77 +64,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Remove obsolete __MODULE_STRING()
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
- Guenter Roeck <linux@roeck-us.net>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rudolf Marek <r.marek@assembler.cz>, Andi Shyti <andi.shyti@kernel.org>,
- Chris Snook <chris.snook@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat
- <YehezkelShB@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Duncan Sands <duncan.sands@free.fr>,
- Chas Williams <3chas3@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-watchdog@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
- netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261002-module-string-v2-0-fc7438acaf4d@suse.com>
- <2e88806e-57dd-47e0-a9ef-a8507d22aa3e@suse.com>
- <a190f981-d668-4208-8148-f4e50adb31a6@suse.com>
- <6c00fc009f4e61e87895eb2dd3d77c5dfb28183d@intel.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <6c00fc009f4e61e87895eb2dd3d77c5dfb28183d@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/9/26 7:07 PM, Jani Nikula wrote:
-> On Mon, 09 Nov 2026, Petr Pavlu <petr.pavlu@suse.com> wrote:
->> On 10/14/26 11:36 AM, Petr Pavlu wrote:
->>> On 10/2/26 10:31 AM, Petr Pavlu wrote:
->>>> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
->>>> MODULE_PARM support for older modules" [1] in 2002-12. That change also
->>>> moved it to the graveyard section at the end of linux/module.h
->>>>
->>>> Replace the remaining uses of __MODULE_STRING() with __stringify() and
->>>> remove the macro.
->>>>
->>>> Apologies for the wide distribution. Acked-bys are appreciated.
->>>>
->>>> [1] https://git.kernel.org/tglx/history/c/136839a1b4
->>>
->>> I've queued the second patch ("drivers: Replace __MODULE_STRING() with
->>> __stringify()") on modules-next for v7.4-rc1. Thanks for the Acked-byes
->>> and reviews.
->>>
->>> The first patch ("hwmon: Replace __MODULE_STRING() with __stringify()")
->>> should go through the hwmon tree. Once these changes are in mainline,
->>> I plan to pick up the final patch ("module: Remove obsolete
->>> __MODULE_STRING()").
->>
->> v7.4-rc1 no longer contains any __MODULE_STRING() calls, so I've queued
->> the final removal in patch 3 on modules-next for 7.5-rc1.
-> 
-> Perhaps send it for v7.4-rc3 to prevent *new* __MODULE_STRING() users
-> from cropping up between now and v7.5-rc1?
-If I need to send an earlier pull request for the module loader, I'll
-include this patch as well.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
--- Petr
+Low priority / nit picks for your consideration:
+
+- [Low] The stable Cc trailer contradicts the rest of the commit
+  "hv_netvsc: hold the VF's instance lock when installing XDP on it".
+
+--
+
+hv_netvsc: hold the VF's instance lock when installing XDP on it
+
+netvsc_bpf() runs with only RTNL held, so the VF's ndo_bpf() is called
+without the VF's instance lock. That trips the lockdep assertion in
+dev_get_min_mp_channel_count() and can race with memory provider binding.
+This patch takes the VF's ops lock around netvsc_vf_setxdp() in
+netvsc_bpf(), and adds an assertion in netvsc_vf_setxdp().
+
+> Reported by Sashiko during core rework, the race was not reproduced.
+>
+> Cc: stable+noautosel@kernel.org # LLM report + LLM fix, untested
+> Fixes: 3ec523304976 ("hv_netvsc: fix potential deadlock in netvsc_vf_setxdp()")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Tested-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+> Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+
+[Severity: Low]
+This isn't a bug, but the stable trailer still says "untested". The same
+commit carries two Tested-by: tags.
+
+The v2 changelog says:
+
+> v2:
+>  - commit msg: say that the race was not reproduced, rather than that
+>    the fix is untested, as functional testing covered it
+
+The body was updated to say "the race was not reproduced". The comment on
+the Cc: stable+noautosel trailer, which stable maintainers read when they
+decide on the backport, was not changed.
+
+Should the trailer be updated to match, for example to something like
+"LLM report + LLM fix, race not reproduced"?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109194843.1353592-1-kuba%40kernel.org
