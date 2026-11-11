@@ -1,73 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.118
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=87.76.132.165
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794412284;
-	b=1SnHf4oQXa5Z7+Kkx6WGDEIiBNiY40BfM81Oo4ibLWUASJZdr9xQoL2Rmi4jUDKIB4Ut
-	 hQo3xAsOe1fNmZHSKSdlIoMEwj0s0WpgmxcWm3Yg2rNuQIQLKCyLChdA1wxP3cwZYUDs0
-	 rHyjTvgc0Vqyf9Jg6C28C2KcD0XSVTBQrvwkUWsVPtGHehO2bSGKJNJgiUA1STXWbaZc6
-	 WPveKQNOynM1hGhufLrBqPImoNkmd10ZMlPiyTMoFekRvyeJ6W7yDDW4e8ygWMccBrLQ4
-	 Fay0NbEp9L9xGJ2QJ121ZK9mY8oYhFDalSNEP+WGv/c7484zoAynKypf3XeYzFaJ4dw==
+	t=1794412948;
+	b=LI6SOiCNk/WPwmoZE7wLHxgn31/LaSCsMgn7E3yrVd1FF5b0ae3Lez82qBYspzXcHq0/
+	 rIfw+dtrj3+5X/sFL6DfzsGtJeQDQxJRs84o4Jct8TGFF4VorTkRIuGuhbgnxKCWEaEt7
+	 arimwciznskzWmA+gbZ3uq7mFGDOTI0xQp3Jp8HXPlwqIMbietC20LxCl48NGfdO4y4or
+	 fdlSf5Dn2NafoXYtmalhuGPBszaQaR/ckWTSME/cNmZ7gkNdCwNrtUM/Ve8Z/uAZ+EYLk
+	 nyyUVoZrxd/4PnbX1pU5d6VeEVhDIZSxD5MXV5nP5F0zQUSQRof6snlBwX9j+3PhzCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794412284;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-Id:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=lQUW5snm4BubDrPXwBB6vcUDU9jpmRBo2GS+Q9VFm1c=;
-	b=z7ZS+yNk6TxFs1A8H0Ev87/tu0JBHBnTdxOb/1TxqD7CTJ5dvYi8GBs5AhG7yLWTzZ+4
-	 Io9PMOFDpiIuwwR/CwXV00DKIY4QwdjIYahQQ/vchkEPdK+2U2x5+cxHYLZkyV59gYUG7
-	 evFaEy2GUsA8NG+tydJ24C93QBUbAL948EbBsY0a8zw0S0CHOmKX3wiPB0OcijU/WW+k9
-	 2qyu0VwTPUFQttV3ODR9ydn8KYyQ6AsMaZXtZZ9RobwD9s5w7KaDLMFrXHI/zvhtNfcoa
-	 EMgdXWjuCfArQ33IvqcXpobPkv2cXIYMPGrug0UCVWZw65wNm+TEVR2hNwurPE9Vo6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794412948;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=WokhbsrTFc2NsHpEugw+0dMzXBQ004WHE6KXS5ikNyc=;
+	b=FGgmLBFMvlSufHisl3pGz8c3vRuwLAyuVSFdNgz/wV7KzV/Fu859iJzNSBzYYXF8rOUl
+	 jRBcr+5nNly4KBIsSOjUjqJmeIWDBZONCGHmlU8HP003Mi3n2aye9lEtv5j4Z6Ohpa/8R
+	 gRH2W0WLK62gJnJep4dvjHLrTtxIZpCvye2p8M/yI/RmHwoBrSdggLYjmoKTyXsk9H+vR
+	 0w6aCy7ahveU4zknkK0b3HtqWJZoLIsO5RGSRrb3RXEQH02yamFe/lpHv5Tz7lOVeQzu8
+	 NfTIq7r2Za07P7nx03ysg95R4hMWokVgS6k4gUhwUgf5W9742IsqbKczhZdBws1p4MA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XdnNg4Xv;
-	arc=none smtp.remote-ip=95.215.58.118
-Received: from mta1.migadu.com (out-118.mta1.migadu.com [95.215.58.118])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=auth.ink;
+	spf=pass smtp.mailfrom=auth.ink;
+	dkim=pass header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=N5D0I8G0;
+	arc=none smtp.remote-ip=87.76.132.165
+Received: from mail.netskyway.net (unknown [87.76.132.165])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41212606A886
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:51:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41212606A886
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F5C606A32D;
+	Wed, 11 Nov 2026 16:02:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38F5C606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auth.ink
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auth.ink
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XdnNg4Xv
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=s1VwpcP/dz4nq03uPjecpk7ZarelKymnfAfgC0pwpXE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794412281; v=1; x=1795017081;
- b=XdnNg4XvczP+MUYL6fBRk/qG+WJcMe8D2B1rWZvl8ZeHST00FcC4MH/pboCrGW4Fkbz/BMOm
- IIFLXw+m7jYP6T5N0iVuLiu63BxUeYoMnMh231nH9LDfUP9YLA5Dnf748fb3B7fmBQ+2eYUyvyN
- 2mjvYTrHaNGjo1b3PNR0YhSA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4c398bc68f558887;
-	Wed, 11 Nov 2026 15:51:21 +0000
-X-Mizu-Trace-ID: 4c398bc68f558887
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Taegu Ha <hataegu0826@gmail.com>,
-	Norbert Szetei <norbert@doyensec.com>,
-	Brice Goglin <Brice.Goglin@ens-lyon.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Matt Domsch <Matt_Domsch@dell.com>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	linux-ppp@vger.kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=N5D0I8G0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8760630A2FE;
+	Wed, 11 Nov 2026 13:02:08 -0300 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=auth.ink; s=dkim;
+	t=1794412931; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=WokhbsrTFc2NsHpEugw+0dMzXBQ004WHE6KXS5ikNyc=;
+	b=N5D0I8G0QMiIngQffgzUl0ze0LjcwhXcJ8HgWudmE1xMqukZW45EsniiwMqVP6nR9VG3AB
+	RC1upKz3QWXaIJsNO/2X9Zsod9hUAUo9luySLJzdCbzl9QI89DRUjLpOUbQIpVxR6GYhkA
+	py1cJH9x1M8nk+Vfw5qPx8zWNDrwBQFO3oY2IMdttJ4k9m+2sjKd7wPwA0UjekfmqPTF0Y
+	62lnPNaUL5eBlQSBrHcBlFIbNp4XXecvXmePlvQk9QgwcQxPzLuH/qduCwwasoQXT5lnb5
+	0tG3yI01jB24CHVMM61Eui4uIuveWUatkxqN3l4nv1Bdjfd73IoijhevoYbVLQ==
+From: Tamir Awad <tamir@auth.ink>
+To: sashal@kernel.org,
+	kuniyu@google.com
+Cc: stable@vger.kernel.org,
+	lee@kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Sashiko <netdev-bot+sashiko@kernel.org>
-Subject: [PATCH net] ppp: restore uncompressed fallback during CCP negotiation
-Date: Wed, 11 Nov 2026 23:51:11 +0800
-Message-Id: <20261111155112.149204-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	rodrigo.zaiden@canonical.com
+Subject: [PATCH 5.15.y v3] af_unix: Clear oob_skb in scan_inflight()
+Date: Wed, 11 Nov 2026 18:02:07 +0200
+Message-ID: <179441291360.3032.12248522121219232932@auth.ink>
+X-Mailer: git-send-email 2.56.0.windows.4
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,68 +64,135 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-ppp_ccp_peek() enables SC_COMP_RUN when sending a CCP Configure-Ack,
-before userspace sets SC_CCP_UP. Data traffic during this window can
-reach pad_compress_skb() while CCP is still negotiating. If compression
-succeeds, len is positive, but the SC_CCP_UP check fails and the packet
-falls through to the error path instead of being sent uncompressed.
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Deflate and BSD-Compress have already advanced their compression state
-by then. Dropping the packet can desynchronize with the peer's state,
-causing decompression errors.
+Embryo socket is not queued in gc_candidates, so we can't drop
+a reference held by its oob_skb.
 
-Restore the uncompressed fallback for non-MPPE compressors when len is
-positive but CCP is not up. Sending the original packet lets the peer
-update its decompression state. Continue to drop packets on negative
-compressor returns, and preserve the existing behavior for CI_MPPE so
-that encrypted data cannot fall back to plaintext during negotiation.
+Let's say we create listener and embryo sockets, send the
+listener's fd to the embryo as OOB data, and close() them
+without recv()ing the OOB data.
 
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-Closes: https://lore.kernel.org/netdev/179339596607.3131.10030375792154782283@kernel.org/
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+There is a self-reference cycle like
+
+  listener -> embryo.oob_skb -> listener
+
+, so this must be cleaned up by GC.  Otherwise, the listener's
+refcnt is not released and sockets are leaked:
+
+  # unshare -n
+  # cat /proc/net/protocols | grep UNIX-STREAM
+  UNIX-STREAM 1024      0      -1   NI       0   yes  kernel ...
+
+  # python3
+  >>> from array import array
+  >>> from socket import *
+  >>>
+  >>> s = socket(AF_UNIX, SOCK_STREAM)
+  >>> s.bind('\0test\0')
+  >>> s.listen()
+  >>>
+  >>> c = socket(AF_UNIX, SOCK_STREAM)
+  >>> c.connect(s.getsockname())
+  >>> c.sendmsg([b'x'], [(SOL_SOCKET, SCM_RIGHTS, array('i', [s.fileno()]))], MSG_OOB)
+  1
+  >>> quit()
+
+  # cat /proc/net/protocols | grep UNIX-STREAM
+  UNIX-STREAM 1024      3      -1   NI       0   yes  kernel ...
+                        ^^^
+                        3 sockets still in use after FDs are close()d
+
+Let's drop the embryo socket's oob_skb ref in scan_inflight().
+
+This also fixes a racy access to oob_skb that commit 9841991a446c
+("af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue
+lock.") fixed for the new Tarjan's algo-based GC.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Link: https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+Reported-by: Lei Lu <llfamsec@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Tamir Awad <security@auth.ink>
 ---
-Reproduced on a WSL2 host running 6.18.58 with an async channel and
-Deflate configured: the frame sent in the negotiation window was dropped
-(tx_errors went from 0 to 1), and with this applied it leaves as an
-uncompressed PPP_IP frame and tx_errors stays unchanged. The frame sent
-after SC_CCP_UP is set is compressed with sequence number 1, which is
-what a peer that fed the uncompressed frame to incomp() expects.
+This has no upstream commit because I replaced the entire GC in
+6.10 and the new GC does not have this bug, and this fix is only
+applicable to the old GC (<= 6.9), thus for 5.15/6.1/6.6.
 
-Diagnosis, implementation and local reproduction are assisted by Codex.
----
- drivers/net/ppp/ppp_generic.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+This resends Kuniyuki Iwashima's March 2025 fix for the old GC. The
+code diff is unchanged.
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 29847dc4bb45..d3e551a3c80b 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1747,18 +1747,15 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- 		skb = new_skb;
- 		skb_put(skb, len);
- 		skb_pull(skb, 2);	/* pull off A/C bytes */
--	} else if (len == 0) {
-+	} else if (len == 0 ||
-+		   (len > 0 && ppp->xcomp->compress_proto != CI_MPPE)) {
- 		/* didn't compress, or CCP not up yet */
- 		consume_skb(new_skb);
- 		new_skb = skb;
- 	} else {
--		/*
--		 * (len < 0)
--		 * MPPE requires that we do not send unencrypted
--		 * frames.  The compressor will return -1 if we
--		 * should drop the frame.  We cannot simply test
--		 * the compress_proto because MPPE and MPPC share
--		 * the same number.
-+		/* A negative return means the original packet must not be sent.
-+		 * Also prevent MPPE/MPPC from falling back to plaintext while
-+		 * CCP is not up.
- 		 */
- 		if (net_ratelimit())
- 			netdev_err(dev, "ppp: compressor dropped pkt\n");
+On 5.15.223, the reproducer panicked three unpatched QEMU guests. Three
+patched guests completed 8,000 rounds each without a kernel warning.
+Both builds used the same config and guest image. An instrumented run
+traced the harness's failed racing sends to EPIPE and ECONNRESET and
+confirmed all 8,000 iterations reached the race.
+
+Changes in v3:
+- Restore the original commit explanation and socket leak reproducer.
+- Keep resend context and validation results below the separator.
+- No code changes from v2.
+
+v2: https://lore.kernel.org/netdev/179418529889.10436.12048717656065553331@auth.ink/
+
+ net/unix/garbage.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index d2fc795..a733d0d 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -102,13 +102,14 @@ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+ 			/* Process the descriptors of this socket */
+ 			int nfd = UNIXCB(skb).fp->count;
+ 			struct file **fp = UNIXCB(skb).fp->fp;
++			struct unix_sock *u;
+ 
+ 			while (nfd--) {
+ 				/* Get the socket the fd matches if it indeed does so */
+ 				struct sock *sk = unix_get_socket(*fp++);
+ 
+ 				if (sk) {
+-					struct unix_sock *u = unix_sk(sk);
++					u = unix_sk(sk);
+ 
+ 					/* Ignore non-candidates, they could
+ 					 * have been added to the queues after
+@@ -122,6 +123,13 @@ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+ 				}
+ 			}
+ 			if (hit && hitlist != NULL) {
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++				u = unix_sk(x);
++				if (u->oob_skb) {
++					WARN_ON_ONCE(skb_unref(u->oob_skb));
++					u->oob_skb = NULL;
++				}
++#endif
+ 				__skb_unlink(skb, &x->sk_receive_queue);
+ 				__skb_queue_tail(hitlist, skb);
+ 			}
+@@ -299,17 +307,9 @@ void unix_gc(void)
+ 	 * which are creating the cycle(s).
+ 	 */
+ 	skb_queue_head_init(&hitlist);
+-	list_for_each_entry(u, &gc_candidates, link) {
++	list_for_each_entry(u, &gc_candidates, link)
+ 		scan_children(&u->sk, inc_inflight, &hitlist);
+ 
+-#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-		if (u->oob_skb) {
+-			kfree_skb(u->oob_skb);
+-			u->oob_skb = NULL;
+-		}
+-#endif
+-	}
+-
+ 	/* not_cycle_list contains those sockets which do not make up a
+ 	 * cycle.  Restore these to the inflight list.
+ 	 */
 -- 
-2.34.1
+2.56.0.windows.4
 
