@@ -1,47 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794433049;
-	b=XmIF9YiJ28RJyJmDmtbSYedk7KD5BFYAts3R6Oz+0MD+dm+gfr/k+LTIdoiw8IH9BcIw
-	 kSInIFmlZp9V2dcGqLXFLqkqao3j9UIZDNyaIDL061XXYqXX7nCwO6HUxSgoF3CDJgenD
-	 HzSlVOGUjn6y8c6YBonUN80GS0TdMH54BRj2xESH2I4yLHUPFqCuhY5vnYO7Zq3TZ0lOx
-	 pp+41LKO+kGI8Ysh/Xlor3V/TavjPRrQe6WdRxOvG9by4GpGIVBHb4h1O2quIT2iGI7Qf
-	 HsW7CNgngPz9Q2DVFbnn/7Y6WS02EKcJoqznRpLGsEA1NIW73zwM5FbfOfq5LYi+nZw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794433049;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=6gjeT2Gi8cfGTOGWEBofK3N5lri6Fh+ybZzjWjQ+1WM=;
-	b=LZAA6Oi2WIOPsWHsfBuaE21sy9YaEw/+4wGYJqeSUu0fcEAqkHg7DICA/bdnR7dijYOv
-	 06n497XA1bzBNtOBQVSHJskihQnsOecuBeiT8UiC2/i9rUy1leQYKVOmA2OHwQWMvhKFJ
-	 R+vvq1W5kkjFa5PpO8JZez0MT40+9WloMrNOBNZk2GRGiT57bUsKD1tFRnEv57mttYFa5
-	 OYfmouyplLEg0QqBJhnH2bJnM9OLMptOSb+2T4yPy3/QAtzsRcG7dcB4GSi/AA1dKYPmo
-	 aM6yTRExbk94fY/zd/NEsD9yS+da7p6GkA6wxqoh3+smOYkheGacu/rNwzn8RhJU++Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gsyTtvK+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794433310;
+	b=Y/oBBT/fgOqROTpck66/Vm6nNA/PCHXD9XnGy1Bf2eZzU6bHsrWSN3sfpVg+tXpEnZYD
+	 kYgHqYaxT4bhhJ2BEW4srVSy2I1HS0J/MXcuBvgH/cTNYyTlqucdflOiVN6wA1TrNjqNk
+	 Oo4Hh3IC+fJfw+smww75lWaKYyezjLUFphxuajZf/Yd4Z5y/Kgs8R4abXMCvONnY6+buN
+	 idfK9kSnkP2VS27DkotK6CCffkwSLCTPWirpzAI4ajQOUsy5iAQQyEbT4tG1WxbUfiLjC
+	 X3mX12ozDzyUO7WNpxGmT7XtPkckmBVoHrs04MMFcUz3DTqcIvfDh/OcNXJUGsj+4EQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794433310;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=I3NsBH7dbDhUWpFoVCuwiBWZEyjMNzIdlKNXXp/dwQk=;
+	b=5aQdjqRGw9ibxRxasC+1ff8rr5ZhZ4Wp6KYzd7vYfIzrTg2J53hVRADmiqUGja8DvD1E
+	 nNkYBpWmOmNPwtrDQfZheO7oto/6GRXh0DEB+P4y2Xmw6aD7mbaAhtEgpgIEHuNDxc3vo
+	 GRm6zhTJnCXrDD2sa/oUoZOAfGjolsqAXOmc14RBNjr456rG4+k00o81Dl+X7SKf2gD/e
+	 KzmZ0bpFGach6Z3cZlFWy7NKvm45XeTbfClySBWGd5i1KQt60NIytDlzXx5zm4QH2e6oM
+	 Cy5VyoqhHNwwgEqxAI6Es7IDzKQI4dgJIPRfO+FEK4Zrj8eBNxQAouWHDDMO5Hp3mfA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=F4Iqknel;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E79606A336;
-	Wed, 11 Nov 2026 21:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48560606A326
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 21:41:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48560606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gsyTtvK+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B196E1F00A05;
-	Wed, 11 Nov 2026 21:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794433048;
-	bh=6gjeT2Gi8cfGTOGWEBofK3N5lri6Fh+ybZzjWjQ+1WM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gsyTtvK+N/jxHzvvUXlTEFxdTkdhvoykYl9xN87NYL8eVELuq8W8SStuQLRw7oQ7O
-	 2OPf8vbm1Kab7muSu2s33Ey0gIdi9255YlG86QrQfeH9+Tkhr+6HWKtO0LjgJ6dp+l
-	 IsjTaylleg7ITxEvkmldijQogtzXT6VXOh9HB0GlC9r7t4M7qf/h4bKIV5lfex+CQD
-	 zrjT1pbqj+zX88miIuufgBljeXw61znVZBzjfqKwhaSbfqjItfnphes4bw9hDKaNP0
-	 PM1I5gsQlCPXVu30g7PF47AY8jkfFbVGEX7k21e8gVQeXzxWhb9FzDghYrYYgKoDdv
-	 Db1kTJ7cop2jw==
-Message-ID: <d652a02e-a637-4b8b-b9ab-13167b30e926@kernel.org>
-Date: Wed, 11 Nov 2026 22:37:04 +0100
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=F4Iqknel
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6fe4372c5f3so2074387eaf.3
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 13:41:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794433309; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Dp8iHIUFlpeEu9ES4LhaFguhT+/7bdKNa8zrWYcvdm5UzHQHshqtAyb39EEp7YtuJz
+         w6o4bItBu+/W179/gf4wqNWwdXgiZBsfRWuxaIRP00kj5z7sT4+N9Hfo+st9vTC4KqVu
+         qm9ZtSc/6pzhlZyj24ZZdl2VX2F1/jalqcfWPDxTdCYrjAmJkPa11vWmlTTWSkpn8gq7
+         ElReGkscVj7DVVc+1oqXDBBYeFUWjH6PV7BcrwdY5CDE7/S65PKZouzOCbhFQLzM6CWB
+         NCOIPo8YlsxYZQlEP6Ve38xmpxIpbVD/lZpA94U9L7buPkZUMlh8dqwqjpb5iEoCEBNX
+         f40w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=I3NsBH7dbDhUWpFoVCuwiBWZEyjMNzIdlKNXXp/dwQk=;
+        fh=pPexfLb7+x9lBhnbozZejMwxPcNKQ/0d1OQhexmwsbg=;
+        b=rdE49SPGoMo8r3fUUFJIsF79A3/lfgDAyHyThDnw3/KhtPHZ6N+y0EQB8/o2dJg4Se
+         Hb/RPgFZfXms323RQpXG5sbEhED0CvEbOGh5ExXHNam12FvQ07IVLef5TzulPDAXB0Wj
+         NRXkKt3EhsNSwO+hY+WgKbF23vMxRP9+f5ln85DToZYNeqA1Nsi5VVs37cZ78ay778S+
+         +xr+OFv70OIJ++Lz8flh/0SfzL244EuZF99OhZMJjaxiQcxKehSu8HMgnN5KTF1nkApy
+         qyunrbr0yat6hyyt3YxHYI6chFD8jOGCMP0jjUWCWwwnA8E8pbUnqQNJuT8F08PyTWbu
+         sdMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1794433309; x=1795038109; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I3NsBH7dbDhUWpFoVCuwiBWZEyjMNzIdlKNXXp/dwQk=;
+        b=F4IqknelR9U1Z90dhMwR0D1pwxqtvZB8DQWKsM/7pekMNvXH3BUQPt18aS0+PmM60o
+         FmOlo7M3dSJEGVXBSRxxFZ72Xpju7KdBtpDEBRc8cRLSsHdXEHOfO05mkyel7IqTfSll
+         IKkySwdEkEi1fHjMI5JzdxK+ikucIaoJkH+tl9UetAAXs88zGYQwEHCUo6ycT+56wnN5
+         aHfCPaV7zf/R6JzzhuNpccH42WKrl5Qmg2dPkCPFYGgPM0vjObTWRnccnQk8gREUwund
+         95QJEfY8ciOcidLK5/u0kF0O9RWV4PH7Iyr59LtTkFj5pS8lMCbuwP/9byeDXW5kxxQB
+         o/pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794433309; x=1795038109;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=I3NsBH7dbDhUWpFoVCuwiBWZEyjMNzIdlKNXXp/dwQk=;
+        b=1CAlO37ahSq/Ww/qaGIu3Ycrs58k+4XNdxojuZ0pl4O1/1CRDAkQZsjxwhTpwbacMf
+         oS6uAH6wlgf5pXnoqlofbB2x2OcxrF7956WlWeTlw+1KpduZNZwK71duuxsyTLUP3VZ+
+         7NO22rlkjhscf3Lt7NEKrNnqJ9FQpRtKyANWxP4o0uXcZDviMfRQ0akChS6+8QBkcz4X
+         XWOviWQ3OSvs4NzLYwPShxha7/3hIb3x/JcMxWOOqWhjZ66VYTgnFmMzLuDW9EI6poSQ
+         xSjhlTJq+YNRcfAkUYQToILE0hiIZYnl0OOHr9aV7LOsghEgZ4F6MkOd8TyFdmrcRh8K
+         d35w==
+X-Forwarded-Encrypted: i=1; AL+hErF9ckBO0SbxhcfEGz6UgT5ZVU9IDmo+pVmlGDinwijC9WkJZWmf+3Ow7afK3z0LUdpvJUuhvio=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Ud/DrQ/X5nNBTa/gboAJ3LOJN84ZqJcJHLnURwAFP28vJJdrm
+	nwP4pGN70z/4Gte7CJyFoe+9j3kFfvAtvOqMijkvq0bONkH2XeUvzrqV61gMndbktg/LHu9+KGX
+	258gyH4rskIY87A32zvELPch5tnyXZD0G7UW6nM9aOg==
+X-Gm-Gg: AYBFou1EsnXRS+fDYygMPK+X5GZFb6hAXDmmY+ADwroHBI3RnXYOn098bJVrk8pUopt
+	ahhARtrWQaRB/bDqefOxQ7St+Kfmv0qhFI22il2FxMsZNkv/SUrEYlQtnXYjTBEuwJPx9YYak/R
+	JHmQn36Ok3m5w6eIFY4+Ww6rRzo3tQvKzolhtel5eDALMkqLYKrV8yuHYEzwu+WZm4iu63fuGo8
+	4ZcHL1CIdediNkuhqxJR0FeUPpWyA2yF0IpxPgBq26qL7z3Ir7G3ZEU10MZktF8OdMEjMLMrDER
+	V+eClXhf33+8Dn3V2CMnbVADf+RG2d1W+ho4SGF8E0W8h0LaYauGIQhjSOMqorhw44ZnEJaLCc6
+	wXd0VUF2mbu1+eMJpKcPBDq9kkao47ggMbhEPT/bHrdX5q4pxJGVKxGPn225ZVXkNBllwBzGS+0
+	MBtt/YSQJBpg==
+X-Received: by 2002:a05:6820:441b:b0:6d8:ccbf:a7c2 with SMTP id
+ 006d021491bc7-7191797df4fmr2278556eaf.68.1794433304290; Wed, 11 Nov 2026
+ 13:41:44 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,105 +104,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] mm: limit pagecache folio refcount
-To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1794020868.git.tianyi@cloudflare.com> <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
+ <willemdebruijn.kernel.1d64e7848503b@gmail.com> <20261107182526.69543-1-tianyi@cloudflare.com>
+ <willemdebruijn.kernel.2c6a653eb65fa@gmail.com> <20261108190831.3f991a13@phoenix.local>
+ <20261109154909.32748-1-tianyi@cloudflare.com> <avTOvr+yy+2j8xrQ@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+ <avTSBFpR2t7PO9tx@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+In-Reply-To: <avTSBFpR2t7PO9tx@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+From: Tianyi Gao <tianyi@cloudflare.com>
+Date: Wed, 11 Nov 2026 21:41:32 +0000
+X-Gm-Features: AclHuK9Lzd82c8LN3lRJw2ClwKtYPqt-3w9VlW5CxKeZCzjufsRqZ2sayCWq8TY
+Message-ID: <CAG4wq-d+LtEi-omGwzgqx14rCp_4J9HztGMpa8ioMsviaPw+ZQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and LL_ALLOC_SPACE()
+To: David Keogh <dkeogh@amazon.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	David Woodhouse <dwmw2@infradead.org>, Dragos Tatulea <dtatulea@nvidia.com>, 
+	Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam <alasdair@mcwilliam.dev>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Breno Leitao <leitao@debian.org>, 
+	=?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>, 
+	Danielle Ratson <danieller@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, bpf@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@cloudflare.com, nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/10/26 21:35, David Hildenbrand (Arm) wrote:
-> Note: I really would prefer doing something else right now, but this is
-> rather urgent.
-> 
+On Wed, Nov 11, 2026 at 08:37:24PM +0000, David Keogh wrote:
+> Our TC egress programs are not attached individually. A loader keeps
+> a chain: only the head is attached to the NIC, and the rest, including
+> the program that encapsulates, are reached by bpf_tail_call through a
+> prog array. The head can change as programs are added and removed.
+[...]
+> For the BPF-side declaration to cover the TC egress case, it needs to
+> account for tail call targets. Tianyi, how were you planning to handle
+> a program that is only reached by tail call?
 
-As this is really something I want to have fixed rather sooner than later, I'll
-throw the first 5 patches into -next tomorrow.
+Thanks for checking how your hosts run the program.
 
-In the meantime, I'd appreciate some feedback from -net folks, as that must be
-sorted out as well.
+My current plan is that the kernel reads the tag only from the program
+that is attached with tcx. One way to use it is for the loader to tag
+the head with the largest headroom that any program in the chain can
+push. The tag describes the whole chain, so it does not matter that
+the head pushes no headers itself. When the loader replaces the head,
+the new head carries the tag and the kernel reads it again.
 
--- 
-Cheers,
+- The value can be larger than needed for some packets, because the
+  tail call targets push headers of different lengths.
+- Auto-tuning has its own problems, as stated in my previous reply
+  [1].
 
-David
+I cannot find a solution where the value is always set correctly and
+no UAPI is needed. What I can do is keep this UAPI minimal.
+
+By the way, I plan to support tcx only in this series. A tcx program
+is attached to one device, so the kernel knows which device to update
+on attach. A cls_bpf filter can sit in a tc block that is shared by
+several devices, which is harder to handle.
+
+Let me know if this plan does not work for you. I plan to post v2
+around next Monday.
+
+[1] https://lore.kernel.org/all/20261108214356.95406-1-tianyi@cloudflare.com/
+
+Thanks,
+Tianyi
