@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794434497;
-	b=cPE22/rpF1LoYu6CrFp5qckj01wvSwKXbk5JugTDA+dKm3O+JkeBnk21J2WdCuEZoZd5
-	 Q7VAfFphNBF1b7OTMPgIkeOF4Y/FCwZKzlUeirgnND1f1lEIEsqHcJyaAqkbQ4VXVXpOL
-	 UprKaP+/OTiPWee4QfcLv477zZ2UnrERAoSdwQ0X4VMsvLV29pI8WrohT0cNdktr1s9dl
-	 ssbSkXjKh0n4ehwVn1rLEMWB+qVOoymnpYHoOVqd18yT9Pm5Zi402gLNK1RRQIdi1Wb2S
-	 62DdYFkhK0d5ogU5x7/dKSkdBQaZ4PFvoX8rla5uphAW57XHf332CJIpc9DKmhyM8pA==
+	t=1794434493;
+	b=S0chKmgm3ZrGPbl+BwUO7n5+yA8ZAdJRJDScIz2BcVgqBeZXu+KVMUudbb/aSjhpEcNL
+	 jrSa1R9vdV1cOUIyqiUnOXgPnwN3ECndWOnFyM6qbd+ZBW8gRfxutXu+jAszmu8mXPNNx
+	 1AkHG4pHzgpxhcS0TDsOC/SmeZt4DUfJwMb/5MzEU+tjCFWSKCrmD+X1te/LQmxGyoy3e
+	 Ssf0OcPhy2mNYkFrONgFCSNPCYyNvt5H+bTELH+Fr524aJPDBr0gCPUVYqPLI8rs3+nmv
+	 BAevnfdLdctQz7M2HPZw/GP3Eii6t446VdyAGObeToZD9EhZ8YoQb7fVXfguW47DF/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794434497;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794434493;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=aGRCzrOyLm5RcQrXArj7+bIIsdtxJpzMcLjLki4ZcpA=;
-	b=0HCuLk7ut0s0st9/gNsGngSIG0x4JZk5+a0HA9OrElS2BocYiSr1AnPezPuZxSuTQ8Wu
-	 NAlkHv0JUkP0P9OszHAmKee7TwWDL8XkEinYihhbHKhL/Qr+qTYngMQq1BENbTlnP5L/U
-	 VgQ+rOrCimsZdslts7Qr5nt5jQ5BRUblbo5OLKnCpAnyjXH6rqrsM/3kzrF4HU4kojc/w
-	 nJfWTakOyugXioI+kSweBD+5FxbPbUp8soiW7EYQIiHfUxkjKuUsluMQl5bdUbLuK+1be
-	 yHSpItNJ7urDsl9O/3hJnPTUBZ/SNWcuOnjhjJY9NrRFdAhGJPMeh+O0InXacS+Gczw==
+	bh=8qP2bK3GbwJQduHJIewrlWs9VNQJnAZ8VpGGRTyoXN4=;
+	b=ENGtVXI3i5fbgA+D93RRRavSMxbiRs6lGrhzzupF1cjq9Lx9TB3JFy99CKOezOjx63XK
+	 gKaol2HEJW+tXJNHaspNC53KYVwkf/H94h1aGC+ZUus6Aa4eKiYxeNRJTvUnYqfXtxsJl
+	 doQnMYLS4exNn2yIiM+1Pj6sHJzu9fVADeGSBDKa/YWufnWTCVw2YgJ+LGaWT6jVp0Blz
+	 FZUfZRVUwQI/uhyBML6gNtOmD7TYKYdbcPjsivCB//UHnWMs0H1lOOOexxmRBHj7VSxLO
+	 8YfiE9eIymcKdwEqC+Vbg3n2ANTNJu5M6vfzXkMpZThFw9XwWbKsEITrJLvOS3CXImw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GcXgxU1T;
-	arc=none smtp.remote-ip=209.85.221.175
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nqKGOAVW;
+	arc=none smtp.remote-ip=209.85.222.53
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B781606B34B
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:01:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B781606B34B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E9C606A89B
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:01:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60E9C606A89B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GcXgxU1T
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5ec20398b05so2108220e0c.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:01:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nqKGOAVW
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-97ca72f2cd9so1980126241.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:01:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794434496; x=1795039296; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794434492; x=1795039292; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aGRCzrOyLm5RcQrXArj7+bIIsdtxJpzMcLjLki4ZcpA=;
-        b=GcXgxU1TEaoOwaQ7FaxKHoS5/K0blKwcO56rckk9IDy3SjnQHN3Iw50VBqitaHeg7y
-         lgkgpGefeWc+bcvNEPmTDesPRvuz3qAL6pJ+xUI6GRDwZwPXrR+X9/mZ6uvLRQ8i/FE0
-         SOVhNtRg07R3g/sKIqXh+BcByQgtKnyNgMIrlsBRIJq+MpwZM79DNBOZfNgasvRuXvHU
-         CRsUb1pODK+FvcUbtvembZdiH06na+XlvqjfCb54SF8T3N8Y7lGxeNBikZTHFizpzPlY
-         7oKDg85rgh7JMpclRR4R5y3lPDfv5nvnrS2R4+LtfIr90uAZosvQ0Wfmla/FhvqEROLB
-         cbBw==
+        bh=8qP2bK3GbwJQduHJIewrlWs9VNQJnAZ8VpGGRTyoXN4=;
+        b=nqKGOAVWt/myjDKGoj1Da/idlljIDawXIfbtDS6uOnQFe1p99qk7eIVc2/57rsYIrQ
+         9KdXan6GkBY8We+aLPDRrzAYsJkZ0Hn4VAJB4bBSxUkFsP2YKx8sb32Vua6uOEoWm4Ea
+         6OT1Y8CGIZGJ0ZQ2hf8OCdN6Wcl2bKb9psa3yZ/jeoRSpfafW9fJ+NrWiL9ueSx2+6QT
+         FoqP+JwlHpPYmCcnqb5VfKkumTE46Ce8aLkd7MfRYqOCiXfSTYCwmb4gIKL+TBC54mgQ
+         CwXUp0zeDq4uT12DubmRye3vThR3vba6UhGWMSkaNzHO6tjXeYc51KB7gzm1l3XrU+J9
+         GLsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794434496; x=1795039296;
+        d=1e100.net; s=20260707; t=1794434492; x=1795039292;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aGRCzrOyLm5RcQrXArj7+bIIsdtxJpzMcLjLki4ZcpA=;
-        b=tx2ImQV8Orv7rEfZfYnZICW+UqHtYs9MOyMq3VyoL1yFVbn9mVOW8oGlc38DVyJejO
-         9hNwLTkAryRQqThjJNQFGkv/iBKrIN3e2Zgh/uBDV65riK8oo80MKf/yUI/pM7VjSlJw
-         zru1d5kebGa4yrfymNFfNEyBe7qGl/KlLs9ZMWF17djArhlOMiAWARV9e++1BGYssNgm
-         GhhfahftCnrBIiInBcn3iUTeugDIEdzB4wWdZ/R+NI93R/qDf4RrT7Vx/JgMyfDZMzxR
-         XaV3QSVrnOD/6V0lcXwT/ch07SAh8zuyk8yn+Rdmue8sSGR+KH1rAerOJgp/A73rNMdR
-         hm6w==
-X-Gm-Message-State: APuU4Z9opgNf2K4AUvLpDDlkt/4oduQaKS/BL0RP8HBfoVjTN20oghod
-	kxCMhGPz+82Ym5t+icXHv5ROHgQiYPvQbiw7ilSQkw5hby4xpwHmyLQP+lz8Qf8x/6h3
-X-Gm-Gg: AYBFou2ciAZo8ib2/tK27BTIS4DsaTEg8HReaigQv69VdsTJznFv9W0brGgnV9P4g5A
-	3LkWv6DFTTQXEyjpcCjeqxx++xjgd2AnY/KU4RC4PZPhk4RTHQ7HbyIyE0hdAZ4Apk30NpJOe5q
-	rXh8zhNgErie1pCClnEV7I4TchgvK4I3GEqOFbWopONPYkW99i3Oa12ZyCJ+80WYd1qshZjjybP
-	OReJrUZhIhnGCMHa6VhLE22+LwdUYJyomLEmi2Kxukx/6YKD0/oss2Gscmo0WX99vki3vOSJoOn
-	ChNd7nsbv4oxSrigeUxYvcInDE4gKA4JQBWkBkqrPcwukx0D2DPKYIqsgEQdCuhp8NFHF7fbZN6
-	L9jIJ3m3QvMJr3d4cy+XKCcsLedVrfw1THHG1A3VN2Nt6YIRwM1JzrdW0KR0HSMjydjGB1HoRjZ
-	goZibyhTrsalcVmF5JsP+TRZlguuUrd8IPbBaljQ3Gwnu9Zct33RoPlVr7B4yAHaKfkGtQ9hwOA
-	LbcOaMKfr1nnDofImHwyumZPaCSQQGMNzjEEkNHcyE1cHKXscuOzas5NWqDFPXVBJOtYVXXeYJb
-	34nH3P7kSwtsXvQpifFRTYwyhM5O
-X-Received: by 2002:a05:6122:1d12:b0:5e9:176f:a548 with SMTP id 71dfb90a1353d-5ee1bf5e39cmr1711028e0c.0.1794434496006;
-        Wed, 11 Nov 2026 14:01:36 -0800 (PST)
+        bh=8qP2bK3GbwJQduHJIewrlWs9VNQJnAZ8VpGGRTyoXN4=;
+        b=wYnr/1D4kZfb5j9vVJKEr2ywebldKp+9iLEuWt61JNgNQTk3ueQY2QMftxW8rzLNK1
+         C4a/9Dl32eRKA12K0nteFyXZjXWnXroVxAO3MvaEcQ7YbNHGBP7fJVPRXhxgV2C/QScE
+         I7YggmGM/jOE8Y+8fYSwLLpPAJO9JFhvpweCipr+H/MaJsOnkUNqV9KpRyWYY9CukLNM
+         jlptNyV/xusSUgrxrJ380VrvtQb9i4a9U1k+ZokmVrFl9DTa6aVFySTQSDvNiyZo4UWa
+         v0Y5Uh4EXCClcmHos3IaXFBmt7pELESnEQHbI/LI818RYBnfKz/9jrkA5RjEOSBIQnTA
+         faCw==
+X-Gm-Message-State: APuU4Z+rjoQhNhWDhT0+3YHWaOYUdRTInLbWosV4F95F2q/HivT75oz0
+	tax4EoYS1jmKuwtlIQ2YaNOQt0JDnBB7xbD5m4P5/xDNXRvCs6RHarZ7KR/Yb2a9AlA/
+X-Gm-Gg: AYBFou1REN2SglbAXcKuuZYa7E2fpeM2ZYfjgPrgsmrDobjOrgjBXrdk/ZEwFXnCaNw
+	Oww3m6jN7J4c+C2+tI/2b2326ATQx95F0y6fU5g8KGWfO1EJ+MInIzLC3syK6/hmd46oAFhPUgG
+	FEqBnzKX2j+TGd+jWwKOwoemMAPy6bOyJv2AvUlBvB6HmeLYkJHXQ+ttHCUOsGw1pLzTDs5IWaG
+	JQl+kI8+qnYAG+rLaERlNmtDQeet2hpujXyi/qARwIKi+sNFxWV3SqUG0Yc1TbAbOe6tQIeGft9
+	DzThB/0UmdCbehDTJ/6evUV5VYOcoLl4YkjsZULpKKZxeiexipIrq5Uz/jh0nOUiLtQVu9LIGPM
+	PDiFYcjcj5y2ief4zm0CmTW9YOm0ZyCBvvLLydWRzSuVnoZO5b2Ns6QexAumcMFF4jS5bI+5k1n
+	NHTEB4xZesWP4n16KyLFDEW6m0FcYmyJ0NXiBiyV0UGb5GBOwO0455vY9KfLYGrG8S/Zf/K7e4h
+	O+Hv/Fdr7Qtm5dyBH7nnAyXmbWYaIfG77W6nqCQ2owEQHzsinVWhOQK86ofE6o475eWRw8zHAS8
+	Gz2V/r+4iylG52GMtYDn0qD/kkiS
+X-Received: by 2002:a05:6102:14a3:b0:7cb:70ed:ff90 with SMTP id ada2fe7eead31-7d5061cf252mr1699656137.26.1794434492280;
+        Wed, 11 Nov 2026 14:01:32 -0800 (PST)
 Received: from Ixchel.lan ([70.49.63.180])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm4557992241.4.2026.11.11.14.01.35
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm4557992241.4.2026.11.11.14.01.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 14:01:35 -0800 (PST)
+        Wed, 11 Nov 2026 14:01:32 -0800 (PST)
 From: Vlad Banea <montrealtango@gmail.com>
 To: netdev@vger.kernel.org
 Cc: hkallweit1@gmail.com,
@@ -88,9 +88,9 @@ Cc: hkallweit1@gmail.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 5/5] r8169: enable RSS on the RTL8125B
-Date: Wed, 11 Nov 2026 17:01:14 -0500
-Message-ID: <20261111220114.3863505-6-montrealtango@gmail.com>
+Subject: [RFC net-next 1/5] r8169: recheck the TX descriptor after a vector-map interrupt
+Date: Wed, 11 Nov 2026 17:01:10 -0500
+Message-ID: <20261111220114.3863505-2-montrealtango@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261111220114.3863505-1-montrealtango@gmail.com>
 References: <20261111220114.3863505-1-montrealtango@gmail.com>
@@ -105,84 +105,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The RTL8125B has four RSS queues with the vector-map interrupt model:
-RX queue N on vector N, TX on 16, link change on 21, and at least 22
-vectors. RSS requires the type 3 descriptor. The RTL8125A has neither,
-so enable this for RTL_GIGA_MAC_VER_63 only.
+With the vector-map interrupt model the TX interrupt can arrive before
+the descriptor write-back is visible. rtl_tx() then stops at a
+descriptor that still looks owned, and the end of a burst stays
+unreaped. Once the BQL limit drops below the stranded bytes, the queue
+stops and the watchdog resets the chip.
 
-Hash on TCP and IP only: the RTL8125B does not spread UDP flows by port.
+The legacy handler reads the interrupt status register before the poll
+runs; the vector-map handler only writes registers. Do as Realtek's
+driver does: if the first pending descriptor still looks owned, read a
+register and look again.
 
+Fixes: 677f8f8c4c5f ("r8169: add support for new interrupt mapping")
 Signed-off-by: Vlad Banea <montrealtango@gmail.com>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 27 ++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 85e2c03fa61d..a313216998d2 100644
+index cd4ebc654dd0..6bd137358d1f 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -78,6 +78,7 @@
- #define R8169_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
- #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
- #define R8169_MAX_RX_QUEUES	8
-+#define R8125B_MAX_RX_QUEUES	4
- #define R8169_DEFAULT_RX_QUEUES	1
- #define R8169_MAX_TX_QUEUES	1
- #define R8169_IRQ_DEFAULT	1
-@@ -880,6 +881,13 @@ struct rtl_vec_map {
- 	u8 max_nvecs;
- };
- 
-+static const struct rtl_vec_map rtl_vec_map_8125b = {
-+	.tx		= 16,
-+	.linkchg	= 21,
-+	.min_nvecs	= 22,
-+	.max_nvecs	= 32,
-+};
-+
- static const struct rtl_vec_map rtl_vec_map_8127 = {
- 	.tx		= 8,
- 	.linkchg	= 29,
-@@ -1835,7 +1843,8 @@ static enum rtl_sfp_mode rtl_get_sfp_mode(struct rtl8169_private *tp)
- 
- static bool rtl_hw_support_rss(struct rtl8169_private *tp)
+@@ -5228,6 +5228,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 		   int budget)
  {
--	return tp->mac_version == RTL_GIGA_MAC_VER_80;
-+	return tp->mac_version == RTL_GIGA_MAC_VER_63 ||
-+	       tp->mac_version == RTL_GIGA_MAC_VER_80;
- }
+ 	unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
++	bool recheck = tp->irq_nvecs > 1;
+ 	struct sk_buff *skb;
  
- static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
-@@ -2965,6 +2974,20 @@ static void rtl_setup_rx_params(struct rtl8169_private *tp)
- {
- 	tp->num_rx_rings = 1;
- 	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_63:
-+		/* The UDP hash types do not spread UDP flows by port on the
-+		 * RTL8125B, so hash TCP and IP only.
-+		 */
-+		tp->hw_supp_num_rx_queues = R8125B_MAX_RX_QUEUES;
-+		tp->rss_data->hw_supp_indir_tbl_entries = RTL_MAX_INDIRECTION_TABLE_ENTRIES;
-+		tp->rss_data->hash_types = RSS_CTRL_TCP_IPV4_SUPP |
-+					   RSS_CTRL_IPV4_SUPP |
-+					   RSS_CTRL_IPV6_SUPP |
-+					   RSS_CTRL_IPV6_EXT_SUPP |
-+					   RSS_CTRL_TCP_IPV6_SUPP |
-+					   RSS_CTRL_TCP_IPV6_EXT_SUPP;
-+		tp->rss_desc_type = RX_DESC_TYPE_V3;
-+		break;
- 	case RTL_GIGA_MAC_VER_80:
- 		tp->hw_supp_num_rx_queues = R8169_MAX_RX_QUEUES;
- 		tp->rss_data->hw_supp_indir_tbl_entries = RTL_MAX_INDIRECTION_TABLE_ENTRIES;
-@@ -6236,6 +6259,8 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
- static const struct rtl_vec_map *rtl_get_vec_map(struct rtl8169_private *tp)
- {
- 	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_63:
-+		return &rtl_vec_map_8125b;
- 	case RTL_GIGA_MAC_VER_80:
- 		return &rtl_vec_map_8127;
- 	default:
+ 	dirty_tx = tp->dirty_tx;
+@@ -5237,8 +5238,19 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 		u32 status;
+ 
+ 		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
+-		if (status & DescOwn)
+-			break;
++		if (status & DescOwn) {
++			/* The vector-map TX interrupt can arrive before the
++			 * descriptor write-back is visible. Read a register and
++			 * look again, as Realtek's driver does.
++			 */
++			if (!recheck)
++				break;
++			recheck = false;
++			RTL_R8(tp, IMR_CLEAR_VEC_MAP_REG);
++			status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
++			if (status & DescOwn)
++				break;
++		}
+ 
+ 		skb = tp->tx_skb[entry].skb;
+ 		rtl8169_unmap_tx_skb(tp, entry);
 -- 
 2.53.0
 
