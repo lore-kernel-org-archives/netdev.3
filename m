@@ -1,90 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794425190;
-	b=Rg25XW14AF65CoWJhzqjLVfPfUS5AHbxwdoKCMREOjxcnm+nROBVUVGSthzQnxt5Esis
-	 UbyBbp/7eJ+e1WMJ/C/WESJK8M5bmwS3cGlpHzz+kN1mJsangXqQjmDUfrUK7TVdYdxOG
-	 XNDJJUxN0kkDxjfyxTRts2nnnRgcNWsvNzohJpEVQoUjd8oZTzu4uZW+BpBLWrufk/naV
-	 a3T9cwqU+hGFAE0SEKbH8GNmA5A3qTfWcz4VehYM1l0DDeglsFBy3Z2eVsmXZQuLgC5tB
-	 77bF8pdE5ZL0hS47gf6g15TIGVjdOm5DRcNH8v6HNuRaQoYup6rZ9vBl06VUp6pnyig==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794425190;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
-	b=sGNzZzQ+U7wOvxL/5/LPlHjckdeu+qyqtNJSp7iSUFUzPMSGakHi9pGG7Q04eHU+O1MV
-	 tWCCSc00+Y3wYgLS87eItmGMzyX8EETMF/93xwpLajCuNNsB/GUobfl4/iJekmgc4vKdo
-	 sdQLVz9lGSTpRrYamMLAYgz7G3MtG2+DkEAthnomqSLmF8zL3jtHIM4CDc8JjRScJpvRs
-	 rtl5XG/C9r9tPfObw1XFo2mSCMwCY6Tg3nF5OFOHDf8GSIdXPEHVf6VLObvxZzghOJUSI
-	 aiumaIATafn3x6z1wVYKbrbr7NRcqMlpGkdwaAC60sYT2QN7knOsjhNEMJFaWgt6vOw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linux-foundation.org;
-	spf=pass smtp.mailfrom=linuxfoundation.org;
-	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OIdbE4kC;
-	arc=none smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794425509;
+	b=SEf/MJsYjpqZN1AFSL9Az0TWdMMOQX7xm9bk0IK6P2Ru2Yq8tDwRYAIQoIoc01Dx/QxC
+	 zagTlIcXV6Z3XIHAoca+ES//mOun0FpCShMPGMBnUZseKjPnFokv+j8d2y70jl6ARaQnL
+	 9euT443L1KxpUkLOfMvhmcWGcwSMUHjrmOsYLb+X8F0z5z5im2+TO2qwB/lo3x2QYtm8L
+	 tP4qFaZ2tDl+6Tt3/cwWBIcasfSXnMXQksDAIZD6QV9MrufZYr58k3OKq3OYlElj5H4Qr
+	 Ch3g8HOZXpXEqo5cqvyRyX0rfGKXkO7odq2FsxqAmujasb6IP0797JGrGxWdi6Jplhg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425509;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=hPJTSgl4lSpxHtP18SvOW1H3AlqpcYb2ZHd7KDI91sE=;
+	b=be8Iwr1n2B4IKaxzSElWU+fYZO7sc5apDxQ0LJwekaljtY1l6NbKSvRMcGPWt1yskE1V
+	 tXlrSDd+NXGqRAoMWp4RSHp0seM0kq/e2XVFqBJj7QqKMA8iIeqawjgz5a7G/yEbYnK/n
+	 SYLfdpClkl3pnOBBbB4cdlqhHGm/BNpQDu1soVfyAjMzJK80EMuJ0TZgxatNrAx5DmOzg
+	 SQFMP2k9IRpgtcfx8OT7mp788Xdm9MOANF9CpB/rgOKrjNIm+aXTLKM/Tpur4PfLimSEQ
+	 /s4migTcKGdC7aEtVgoSllhcG6ubujdovSJ4/ZXORH1HWNUt/C5lZD3oIDIPIiXGqEw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="W+/T+mmy";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E68606A32A;
+	Wed, 11 Nov 2026 19:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W+/T+mmy
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794425508;
+	b=OtKQaSucPWMKJ1eFv8bMmhmDb6RH4DVPbvsTOYgYfYAfRQ1shXmDTWQWdQdofApozqIn
+	 i2KIrqdeUL5gXdQzhYYA36ZrtndbFo94H9Ojt2PL2iMp2Uw/cgFVzbXQ9TK6cIbXaMi39
+	 CLvPnXvQM2iUPaizOi4bDmjhnXaLbsw0Jd/ah1O+C8f4bZBEgLo8hsOhMRHPdScQ/cjS2
+	 xBBUe5Sd73ywfTyayYfZPWQgYvm6mkuLvZw6y1/11/E4DQVUkZMieAjkqXHu03D3uhPTB
+	 j5oesNg3sedNyPYZ0QHAMUQEf02WBE1J5dYpwa42PnUf1+V+Sb6OWTvrjof5E6gXwAA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794425508;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=hPJTSgl4lSpxHtP18SvOW1H3AlqpcYb2ZHd7KDI91sE=;
+	b=amGFHJYPv9+dNGPX1i50MNvP9gNKkCU3iDathSb5b0OwmtNKbeFFFuFw15HlGk5/9TWX
+	 FLEEu94wvhnYGmz5UU7uru8nKvPlKiSu7zD0QjQupy77d/ALf+SO96iSCxz5tTYZe50a6
+	 U06KvPviiVw3Uk6ZmO8MvgUKGmWq8aGF14JtQ0rs3xpVaEbyrmcQjpkU54wyBgMOls9WI
+	 6yQ4zHLGUf5ZG4CjbJTd31Xt3esHBSGGGsOsSSswJ/pPmVav4JEqWz4tMVqqFMgsGvKlN
+	 eO892yEk1fp4jue+koYxLy9zWleq5HujlOlvNFiwMGHUBz77zg2IIdLdkZ6A8vIaqbg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9B6606B825
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:26:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC9B6606B825
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OIdbE4kC
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b757029223so2519259a12.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:26:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1794425188; x=1795029988; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
-        b=OIdbE4kC1o3th9fmUSyZNGWnAWSvsiZJeZolzn138fsOmDtNkvO099TP84cZKeQeSq
-         1IintyPSolFiqebd0PK52cL5ENVcp48uwWSFmgA3/p7zTiXo+Eh6oNUFyxxRhS90T9aw
-         4IdK19TDmdi5YDgJ6UWKOli8HIgcUED302q4A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794425188; x=1795029988;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
-        b=AQeEIZGDtbIS+pZJNomocePqoDofbAlnr7JJPLIiB1QTi2qrYQG7ilOg9K1m6QYWip
-         pa+1fxf3vqWMt56RaNMB1lwYXrs53U+FZoxuMUr/oPmr0QxgkGDjQ5fVcRpAfjAv6ptP
-         26Qs0Yp+XCL/zEX7xzQoRfkONWZnBI2Cw0fEE8q5mBzyPHloEQVzuFxgm8xZWgWRwlMF
-         kCY9i0QLvm5kbYiiEILu6T6CipneHVHxq1wC7Vifs2f+IZf18S4bFeaeWdHk1EgMCbLW
-         w+EcSRI2gLqsb90Nhpojx8V818yrVTlzY/80lOivBlQndbf0lVf99Wp9HXa/UeJVMZbd
-         LmRw==
-X-Forwarded-Encrypted: i=1; AL+hErF7vGYfVAJULj3phkyPiieDL3OMMQeYx/HOVPbbamDvcOSBTpQmJYogQXwECIvfZFuZA7H40MU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+iLapNORXLe6h85DZDE/7PcghyffmMMZdCZTnRKg0IN5eZk0kY
-	r7FMSTWpoZyWO6dyPw/6/aXp06cTQV2EGF6vnSgV5YtJtYSHWqVpXuFhOH6RTg68/5X0rEbURDZ
-	1bV48XRo=
-X-Gm-Gg: AYBFou0mi9Nrz5HNXbdhpN/1Abol3Co17qA54tgLg7ixwjyTo7ToNCmo1nbb8ieZwFM
-	TJkoDMNRcCJ+K6UDgHMkEDWKEXPXAhgV+BYwPYEBuoOVTYgTGQM9hKQLOQAEhilQ4m1VMfDgjMC
-	BvJsGSdQoVWFssUtqmLYm/H7bjerDRayZqCmw53YAhbrgzbSFteH13DuHShQhAV29MB6fG0ofzU
-	SGejbrDcRyXxiQt6q+mciVLgxEDFlj8knvxl8TaugOb13LYRmIcbt1REE5jgv89vYQ7gqPck4LV
-	qnNc3Fn+q3u8v7+DtZQ0SDATyiSeET86YvOYuVI4QGY2xrBF8nbSNSjQfGbbMd5x61yvmG9jsMj
-	PIGKZ5M6vV1lHUsuEhWporQthAtSXkywabkG413pPHqb7VXejeV4krA20KGTBW0DB+BUnO4bQ5Z
-	b7aYdwidWwtjiOd9CcQ0GB2hYzsQUFtLsFHDqT+NhYTXN3QlBZahRcQwUZTzgMlEaYY+Gq7eUUE
-	QMPmsnxKSVvuigg3fTLK2MruNukLPpy7C4s6h8M/DtB8zZ9Vqpa8K6em7DVePNSdI+mkjdyWxZK
-	TPUnynZkQURlAN74DLYI411XPVPBLiOOdXG3vznEroiPMCy/guhVXGtQoeJrftutBSWJYjRkFv4
-	COdmiQ4f4U8t+iTxeQwA1tKhE
-X-Received: by 2002:a05:6402:2279:b0:6b5:8200:5008 with SMTP id 4fb4d7f45d1cf-6b777869ae9mr1784638a12.45.1794425188212;
-        Wed, 11 Nov 2026 11:26:28 -0800 (PST)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b75790caffsm2555753a12.32.2026.11.11.11.26.26
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 11:26:27 -0800 (PST)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso3186487a12.3
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:26:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH9Jr38cL0+0ZDgOAyilT+r5HcOD+XgNrlZ7EVwJftNJAgQvmf5jfpSo09eF0lmqMUyGvV1kXY=@vger.kernel.org
-X-Received: by 2002:aa7:d1ca:0:b0:6b5:6478:a9a5 with SMTP id
- 4fb4d7f45d1cf-6b7773edf34mr1838418a12.10.1794425186528; Wed, 11 Nov 2026
- 11:26:26 -0800 (PST)
+	by smtp.kernel.org (Postfix) with ESMTPS id 663221F00A05;
+	Wed, 11 Nov 2026 19:31:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794425508;
+	bh=hPJTSgl4lSpxHtP18SvOW1H3AlqpcYb2ZHd7KDI91sE=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=W+/T+mmyD3X0cIpn1rAgTiINN64y3iqC/UvCFO0wOCUSYsSI7G4GU8EaG0Y25KuW9
+	 ZHCUBKdAru8o8tIh+JPWiQ6DRmNfBt6OoqdtOplPk67zlcb83fMMJ2B04FrahS0yQy
+	 UQ5NMg51hjNM4V7iAxH3w5s2zfqkVXksPEHwiVYDBdJXR8/k03N6pDMf2mUZOfwHL3
+	 kssoqQZFZImR92u2yFdn4rfBVhPimt4P/MaLu1slmhUSLF+ns2jX8Z8v72bJl+KHpa
+	 AycYA6jPejQ1daE8s/7OUTBpABNYjrz8jOauOkxwV7GkmHPuuP2m+CJlb+brcb1ep2
+	 G741PvJ3/oY1g==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id B17D7490A4;
+	Wed, 11 Nov 2026 19:31:47 +0000 (UTC)
+From: Darren Worrall via B4 Relay <devnull+darren.worrall.shopify.com@kernel.org>
+Date: Wed, 11 Nov 2026 19:31:39 +0000
+Subject: [PATCH iwl-net] idpf: select AUXILIARY_BUS to fix link failure
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,53 +82,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110145241.536019-1-kas@kernel.org> <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org> <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner> <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
-In-Reply-To: <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 11 Nov 2026 11:26:09 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
-X-Gm-Features: AclHuK8LZq7-9ajWCZDJwTRjmLDnovqaiY30E_XKr8U-iLvj6BsIi-SShy4XPgk
-Message-ID: <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-To: Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
-	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261111-idpf-auxiliary-bus-v1-1-e76b940fc929@shopify.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSQ6DMAxFr4K8rtUQqeNVKhYZDLhCgcaEUiHu3
+ qT9u/enDYQik8C92iDSwsJjyFAfKnC9CR0h+8yglT7XWRmnFk1aeWATP2iToFPqdCV9cf7mIQ+
+ nSC2vv9MH8HvAQDM0/0CSfZKby2WpWiOENprg+mKNkTsOR08LvhIlgn3/AmLEkuGiAAAA
+X-Change-ID: 20261111-idpf-auxiliary-bus-c0058e27cd9d
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Madhu Chittim <madhu.chittim@intel.com>, 
+ Joshua Hay <joshua.a.hay@intel.com>, 
+ Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Darren Worrall <darren.worrall@shopify.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2450;
+ i=darren.worrall@shopify.com; h=from:subject:message-id;
+ bh=RbjW4ti8gsuFIX9ZjzwA73lhgVe0TsMd8tFgxZGXUIc=;
+ b=owGbwMvMwCX2T4mx4WrYUgPG02pJDFlfDi1K9b6aINvzofyiZEOjge+28g0e39h3vWQV6XC4+
+ NLgt9qbjlIWBjEuBlkxRZZJ28v+mU1q+VUe1bULZg4rE8gQBi5OAZjIBwGG/zmqa/U2nFimHeLt
+ Fvcmu3CP2V2N1JI3lYLL1FgsLs1e4MzI8P3FuYc1cy/sZZJTuBTKY7a/aP7m5bMtItdqLI/ab+R
+ yjwcA
+X-Developer-Key: i=darren.worrall@shopify.com; a=openpgp;
+ fpr=92B776FE369284FA775A8ABAFE220180D556A530
+X-Endpoint-Received: by B4 Relay for darren.worrall@shopify.com/default
+ with auth_id=1491
+X-Original-From: Darren Worrall <darren.worrall@shopify.com>
+Reply-To: darren.worrall@shopify.com
+Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Nov 2026 at 10:53, Christian Brauner <brauner@kernel.org> wrote:
->
-> If that's the official new stance than I'm very happy.
+From: Darren Worrall <darren.worrall@shopify.com>
 
-I definitely want to remove HIGHMEM entirely in the not too distant
-future. And before we remove it, we can most definitely document the
-fact that we will not be worried about insane users.
+The build can currently fail with
 
-And things like security issues count as "insane user": if you use
-HIGHMEM outside of controlled embedded setups or museum pieces you get
-to keep both pieces when it breaks.
+    ld: vmlinux.o: in function `idpf_plug_vport_aux_dev':
+    drivers/net/ethernet/intel/idpf/idpf_idc.c:82: undefined reference to `auxiliary_device_init'
+    ld: drivers/net/ethernet/intel/idpf/idpf_idc.c:86: undefined reference to `__auxiliary_device_add'
+    ld: vmlinux.o: in function `idpf_plug_core_aux_dev':
+    drivers/net/ethernet/intel/idpf/idpf_idc.c:223: undefined reference to `auxiliary_device_init'
+    ld: drivers/net/ethernet/intel/idpf/idpf_idc.c:227: undefined reference to `__auxiliary_device_add'
 
-IOW, it's legacy. We should aim to not introduce *new* bugs to it, but
-if there are pre-existing bugs they very much count as "don't care",
-this will be removed soon.
+if IDPF is enabled but no other driver pulls in AUXILIARY_BUS. We hit
+this building a minimal kernel for hosts with IDPF NICs. It can be
+reproduced on x86_64 from allnoconfig by enabling PCI, PCI_MSI, NET,
+NETDEVICES, ETHERNET, NET_VENDOR_INTEL and IDPF.
 
-I think the only reason it wasn't removed a couple of years ago
-already is basically a few old 32-bit ARM platforms that still used
-it.
+Select AUXILIARY_BUS in IDPF, as ICE and I40E already do. The same
+link failure was fixed for BNGE in commit d7065436e8a0 ("net: bnge: add
+AUXILIARY_BUS to Kconfig dependencies").
 
-Those platforms still exist, and I predict that they'll still exist
-next year, but if those users have to stay at the current LTS kernel,
-that's fine.
+Build-tested with that configuration on net-queue (dev-queue,
+34a70a40c954) and on mainline (067c5c24cef2): vmlinux fails to link
+without this patch and links with it. Boot-tested on bare metal (AMD
+EPYC) with a Google Cloud IDPF NIC, using a 6.18.60 kernel carrying the
+same change and IDPF built in: idpf probes the NIC and its link comes
+up.
 
-                  Linus
+Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
+Cc: stable@vger.kernel.org # 6.17+
+Signed-off-by: Darren Worrall <darren.worrall@shopify.com>
+---
+The link failure was diagnosed, this patch drafted and the tests above
+run with the help of an AI coding assistant. I reviewed the patch and
+the test results.
+---
+ drivers/net/ethernet/intel/idpf/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/intel/idpf/Kconfig b/drivers/net/ethernet/intel/idpf/Kconfig
+index 586df3a4af..6b59173e0d 100644
+--- a/drivers/net/ethernet/intel/idpf/Kconfig
++++ b/drivers/net/ethernet/intel/idpf/Kconfig
+@@ -5,6 +5,7 @@ config IDPF
+ 	tristate "Intel(R) Infrastructure Data Path Function Support"
+ 	depends on PCI_MSI
+ 	depends on PTP_1588_CLOCK_OPTIONAL
++	select AUXILIARY_BUS
+ 	select DIMLIB
+ 	select LIBIE_CP
+ 	select LIBETH_XDP
+
+---
+base-commit: 34a70a40c954fb8044ecd124840a2c38cd3aa4cc
+change-id: 20261111-idpf-auxiliary-bus-c0058e27cd9d
+
+Best regards,
+--  
+Darren Worrall <darren.worrall@shopify.com>
+
+
