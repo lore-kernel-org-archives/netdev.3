@@ -1,96 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794429767;
-	b=VEZC4IgUa1njXMtacOAJZFT9E93PXCeR2L8yksgM898PdIF8c31uRE7hl7lDWOJvf49y
-	 bNWhPW+1I3epI0oRvagQ5/V4uJtWSFLmcaqw76ziBV2s/mqaVhUe8Pwzt4SOLOdABzY1Z
-	 azb+ypWCUEXfnNgBFb7dCplgG00jqdMJh3xygt9o9raHjGsr+jDh2i9sCgF3/AxHhMcpq
-	 IzfIFGG95boCzQ/eqgNtWZbbismvNCwsIQ9vnsbBlfcTrGSejCgnGKmwdupC0vPdFNT1R
-	 5yQWde6T70bzxKAjR1x9AGv4Y9oc/dnePJ7hDPmKZG1XjhebbkOnzP21Fle9Noa3GKQ==
+	t=1794430040;
+	b=b5dmhqtnlFr7og3QInEqCysEBVSjkryLxGTw8aBzbUdOWmtX3tAy4nsHWZ8XYscpCz92
+	 L3tP0tpG5JwdKtsi8F4o/htu4o3yUM1MknzJikbTQZYRB22NvjT2XMUv6Dj615HvpVKiz
+	 B7+baTlfe4SofI1Wk7lYi/3NeW+N1adPf4jkeaMjidxXoMh+Sdqs3ic3xVf526bBLf/0w
+	 54HflmoRt5T2qAWx4ZgC0N+h1uiA2uHGS660ZAKsihB3s0UHQUpNK7HGeTIve/k+8+U6D
+	 u8sPQIT3DLzSG81NJCwxWKjD4S/+VBkSpHRGo0RwPwZfj7T829hrnoXQ2VxUtMD2L5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794429767;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition;
-	bh=P01mh0gGXgBTKex8RQ8DPGeXMVKoL09RGgf7TfZXSqg=;
-	b=kkdvGJZ3YDSEug2UI0ive6pdrrwSrZNVINNBHWEw4aYGu6NXycKwEa37c73+H/k97Fu7
-	 6Q0bh6ySZrENHxnKs/ySqHZN0SGt8dSVTFrwCY7X40tDF4oTz9rsPRsWGzSuUeaAxxJeJ
-	 IET75CHFJDJmt36JOMdNfi9pUZJxjzoVH3/nQhWKMO4ZbzlPUuUp+tvVs61f9nmRUGIJX
-	 h38/P0mRkW4q2YKjz993xSJgpYAoiyl4B/htiHY8xgvzSQwzMgjUjU4mRa++uFZN+Broy
-	 aXOpX+NGH9jKOipwac7RB30kU38tSTyePMoGaLKqSD6/eda4dsT+NiGqfsfIMNj1/gg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794430040;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=B+IdrmzJ+2aYuhu7s7WjDv3vJGewxP3vyqrjHtY9u9cJjzMKoIzaPxVXEsexOl+f37a3
+	 PWnoUXSZJUI+G72nfhDwqwPslZEET4GaqwxgdnfBKQbxeZ78l9KtLigInVRS6NdsyLa3a
+	 D1rUXZ3AEscfiFJcd5uijChyEFYNIjdEPeJPVAQnWcfGq4EVvb80agn5K6jk/xnjsJJQN
+	 vzfSYSuL0oDnN+H4NzuIbnrKbERVeUMFe2xhKo5rHhKo+nMQbVfIUl70gyG9eWq406iJA
+	 PYqBOZ0VT5uor4GdTEQ2YrtFlhxLHPR5Z10UBpgLzMMjiVVp458sDplrBD4P7QzHBcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zqK4VT5D;
-	arc=none smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cQ146Vn9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE7B606A331
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:42:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FE7B606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F81606A31C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zqK4VT5D
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a4c72951b8so195319b3a.3
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 12:42:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794429766; x=1795034566; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P01mh0gGXgBTKex8RQ8DPGeXMVKoL09RGgf7TfZXSqg=;
-        b=zqK4VT5Dihb7vTZzP6PAfjlD0VkxHmHYkcShN701E5YnyxqqtVnY5xYlh6oYry6C9t
-         Hq+7q4tA0No4aZt5TxjKD/lI3Kb5UapNzy7HczYME4dDyOV9ArAZH000IsbqTOTsJrlP
-         iWIJN4Ao/5xyxu4AUTCq+hKXQz8XwWUhD/uHZEonr+BUXKLTNEHxsr1NOQARw68dnOEr
-         rQaW3e3wX8z/m1DKOiafcYgu1UjgF1SdRBJwoIclKgAcX0DeX2Zh8L1YCnaFVspTZOIc
-         gPy6HmQSvcTS42I8CwZiGtDEle+as6BGzMNgkhFH6KsL24PoY4Qr/ibUJug72qC0MtOK
-         H+ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794429766; x=1795034566;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P01mh0gGXgBTKex8RQ8DPGeXMVKoL09RGgf7TfZXSqg=;
-        b=nXcjLzQev/etXwN96X5H+545YgZyYB2Oq1ORUjQGIE3y0ujwoQPc7p67zbWjPS3wHK
-         kVnAX4t6owAq2AAy7tQcAZkPg4nyUOjwI+IPfvumzRhJ8GG8s+SkeMQPye9deBrrT+wS
-         1krgmOO17k6NVvu3c79TCKLFc4ynqg+2ZtUeDrIcT5C1zMTZ8wlqKF3uDlni6zZvvwBs
-         qZi2+fl5dxUbP8QVM+IgCLuuX/tQSKjbq/miOeO8JMHT5t9k8zGeHTZULmbHMo4eHQA1
-         0RQDhEA57gBoak1KUTb3k5FXHnmE+0A3ovLHnOJGHvF/zY+E6p/aYrgA8aKmzFp2HNhO
-         h2Hw==
-X-Forwarded-Encrypted: i=1; AL+hErHZMKddw8Lk51JH9knYXu0A22VYM/SQWUSyqtvW57KrO4DfqlNOiVuAadGBQYW//5K8RbjeFgA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z81YNK1UiQeV3U2JS7mn26Gv1z3u78IQBCgD6UjvUbfQAWJo+Oy
-	pNNftwgDQuVcoOroyS/ltDlF3idl85DvLjHkIjs71DGis8gXx4GmA2g1
-X-Gm-Gg: AYBFou01qmibO6UR5EHbHC+e9YRs50xP60AcPvex480yzrVzV5P5aSR1Kdjdxi61S15
-	1SgnnGXx5c4DIqDPpa8PmFjWCZ54FwkXQh2Xb0dlz4zVvH3XeHLEx7OTWVEfwmiNW5wiBXcq0bo
-	5m26KxXGJgxXKxNgztaaLqqk58ktMtE8WRJfHhAEx2LsgigqpGbeKtqE5iCDRUl2bc9RWqLKcMm
-	yCW94pe527A+1Ot4VLLaEV0OQk6pcUzJHn0wqdrSHbEHPmFElWFxPgdpfpuzq3v8MqslDw2A6Og
-	pGnDfTpaLpBxL5weT8heo7wvjaGBZoQxajE+fI076wU8Yt7CL1vopdyXlHz6NLmBTZyB8jW+S0C
-	olnebA2ySiHxwLI0CUy7HEEWc02RcB899X0ZclmQKxslMQBdgH3iBXLGs6U7mEJt45Sx1ANraM6
-	uhX2E+gF11K8k9Mfjs33VSorKsSYzdBOKrHzvoNmdGMDBXC7riEHdseGS1pUYxBzjsd8nGu5tIk
-	BSyzBWzUTFP12vYynpAcGLdI+fe5mu0AG8jOQ6blRj2dDAF1ZvIpxeyeqDija2EeazzdPLNlMoX
-	mkoAR38tNLNlHb8FumbfjTsha1PXCMOvUukhwLJy8S3SDHAK
-X-Received: by 2002:a05:6a00:991:b0:89e:37b0:d1b2 with SMTP id d2e1a72fcca58-8bc1ca741c3mr3731307b3a.37.1794429766245;
-        Wed, 11 Nov 2026 12:42:46 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab1226e6sm2395194b3a.43.2026.11.11.12.42.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 12:42:44 -0800 (PST)
-Date: Thu, 12 Nov 2026 05:42:40 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Willem de Bruijn <willemb@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: [PATCH net] ipv6: gro: avoid truncating transport header offsets
-Message-ID: <avTTQNyvwPP6LtGx@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cQ146Vn9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944131F00A05;
+	Wed, 11 Nov 2026 20:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794430040;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cQ146Vn9LiRcDDBIQoajJ+ugCBXs5plswu9hNP4+vxRVRBYq9biFIUnEtU3ZnjnPl
+	 IMgkw6La28oQ/BK5cyFPORbwpMTzNwPGXrx8Me4y6d6tg9N6dLcOD9eebzNmPKnob6
+	 BSy4uIWB4fsFOjOMpX5Bly6rApKHGs02nzKdYthtQKCk57En/LJEruLkBpK5q/PPeM
+	 xJOTjBVUwbiRP6UV2835IHuD5dX478daVz1qvRXmcT4JjM9wGTzrGrbmvnyWg/CgRW
+	 4X9WdnzxGfu9lHzKE/Uhjm1Nyz2eH8JIl8Qm0dt9FMe2rmVEapiBKYoF+gLywayjhw
+	 B3485zsTNRXcg==
+From: netdev-bot+sinfo@kernel.org
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Richard Gobert <richardbgobert@gmail.com>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: gro: avoid truncating transport header offsets
+Date: Wed, 11 Nov 2026 20:47:19 +0000
+Message-ID: <179443003908.2168702.3813206213552261542@kernel.org>
+In-Reply-To: <avTTQNyvwPP6LtGx@v4bel>
+References: <avTTQNyvwPP6LtGx@v4bel>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,82 +65,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-skb->transport_header is a 16-bit offset from skb->head, and U16_MAX is
-reserved as the unset transport header value. A long IPv6 extension
-header chain can make the final offset exceed the field's range.
-skb_set_transport_header() then truncates it.
+Hi!
 
-In the UDP reproducer, UDP_GRO is enabled on the receiving socket and
-the first packet is held on the GRO list. The truncated offset makes
-udp_hdr(p) point to the source MAC address. The first four bytes of the
-source MAC address match the UDP source and destination ports, allowing
-the second packet in the same flow to pass the port comparison.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-gro_receive_network_flush() then derives the first packet's IPv6 header
-address from the truncated transport header offset. ipv6_gro_flush()
-consequently reads from an address 65,536 bytes before the first packet's
-actual IPv6 header. Both UDP and TCP GRO call
-gro_receive_network_flush().
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-KASAN reports:
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-  BUG: KASAN: use-after-free in udp_gro_receive+0x1f37/0x2680
-  Read of size 4 at addr ffff8881065f005e by task swapper/1/0
-  ...
-  Call Trace:
-   <IRQ>
-   ...
-   udp_gro_receive+0x1f37/0x2680
-   udp6_gro_receive+0x23e/0x11d0
-   ipv6_gro_receive+0x1200/0x2750
-   ...
-   dev_gro_receive+0x1a7c/0x2600
-   gro_receive_skb+0x271/0x970
-   virtnet_receive_done+0x3b5/0x12c0
-   receive_buf+0x33a/0x4b40
-   ...
-   virtnet_poll+0xc69/0x1980
-   ...
-   __napi_poll+0xa0/0x530
-   net_rx_action+0x8ff/0x1280
-   ...
-   </IRQ>
-
-The out-of-bounds address was in a free page, so KASAN reported a
-use-after-free. This classification reflects the state of that page,
-not the lifetime of the skb. The invalid read was caused by truncation
-of the 16-bit transport header offset.
-
-Use skb_set_transport_header_careful() to validate the final offset
-before assigning it. If the offset cannot be represented, the skb is
-not held as a new GRO head and is instead delivered through the normal
-receive path.
-
-Fixes: 4b0ebbca3e16 ("net: gro: move L3 flush checks to tcp_gro_receive and udp_gro_receive_segment")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/ipv6/ip6_offload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index 700f1861d8eb7d..de4bab42359ba9 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -241,7 +241,8 @@ INDIRECT_CALLABLE_SCOPE struct sk_buff *ipv6_gro_receive(struct list_head *head,
- 		skb_gro_pull(skb, sizeof(*iph));
- 	}
- 
--	skb_set_transport_header(skb, skb_gro_offset(skb));
-+	if (!skb_set_transport_header_careful(skb, skb_gro_offset(skb)))
-+		goto out;
- 
- 	NAPI_GRO_CB(skb)->proto = proto;
- 
--- 
-2.43.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
