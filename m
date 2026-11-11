@@ -1,50 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.75.26
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794388843;
-	b=woyIaPtY9v8rx6FfIFt7Z9JXqhki5jxEk9qDqNYhnt2o6oKs48P81Ei4hMCh6m575bV2
-	 JWhpEVtRvl5t1EPItJ32UzBKSRpGOvqz4e/dsrHETebVd4Iu1Krb2Tf+dkHU2fDWMBIr6
-	 d0/IThaS8ouF6vD6jXCSU1TSAtEGnjEPA4E4sDDdmP6wmjThBT0UwjMN2nHJcrIeevb+0
-	 z8E8DokQWxnsyPww65zVhhWC1geR3osIVKQONq05BYOfNcersR0i4vgisU0Qx56pFns+g
-	 QnzwbJYRxUDphCtQc24Bb1O/X/jtNFvxamgxtiFqJiSEv+0cSiOwUodgqJ9X3axiY2Q==
+	t=1794389452;
+	b=w/0JuAsKkjzSDEd6HeWQASgD5+p9KJbD5T94cfUuBPekQDOwZS4ZQGpOTY2kuuOujFZ2
+	 JFrprwC9SKJLIGJ1HbyGMS8MTmkwWB/6tNmGJIifIJFQZ7A3O47Lut35DLMGYvY5PISkc
+	 XwMNIAm7k3/e5iXepsD2ptpc9nz7vsr7UzPaqLUxj+N4bEbjyhCfJGJrCdi6jt/RUgsIM
+	 +gAFBURA+z7V7ls1Jx2QDvdIToK4dNxxTxbr5Rfc+Yhir6g0zxf4p3rZUNYaRsaq2V64n
+	 Wy29NdBUy4+9tFTi9Lg5SzXsWZ5F6sl+OyhhFnN0AyTmH61YTsZV33q5s6siBfT1VCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794388843;
-	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
-	 mail-alias-created-date:Received:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Info-Out:X-JNJ;
-	bh=emiE0LSrob/0Gy6mQd2xuosVJeZv2KMBCzBELLcokfE=;
-	b=RL72j4VCM0U4QIJmkpZWj9/yuyFqGE80s4ebfELBtMbWnHlw6uGWSEWW18+UvKxOD1WE
-	 946r2gJxNE7I/rnpVk9KXJs+p/DAG4RFNR/c8Wgis9kqOMN+f35rkkfdyOemVpRiak/dv
-	 2WW5ZMOUJknbj4+gSmLE8onrmA6CKb9zfKM8aZcL3VifTE7tOjMrzxAXYGfRhFzg8wLbj
-	 HLqdjNJSoR5wD5qWwEenY/0u8JIbi3gHThpMhK1xAAqxNkY8OeeTcm+65HpH0suMX8Ze3
-	 tLAWNSNEC94b9VRfZY2o5CIPKjrmWt/5whtcxVcHA3eohnXNQ7M9z+M30fJXL8lI5zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794389452;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=B3ZS/U6BiBBD5fGeH1R5VkY9NPLOvEtcvatjGhH2bZ0=;
+	b=siq67vuz7rs1vcT7gwQcSB/qE+HssYhk06ZBy5iOD9YGJiYQHXI3IzJAzE1QireJbxID
+	 5fr0+e0PpUKvhKOJ1mXUMDnfLZM4796COXgs0OHclUvbU9Jbi0XeAMFdSJc3wF95aLuug
+	 b4iMPYmlsdlx4o1bvCzqH7yRVVzK5llBehiGKNgjMDtVLK6HcsXAJ2uRnLEp3lSk/9zmH
+	 fc2/6CHYcI3+rv3ND2CGefb4OO3hjpViH5FLtRO1VXkR3f878jsX5oOLkNxg+BB5V+U+j
+	 zkk+U0oPDRN2hx/mBod6AwYi/t64KYINF0NUS6GOT2zda6a58usuN9QUjWCaEmDcp1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=verdict.gg;
-	spf=pass smtp.mailfrom=verdict.gg;
-	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=F+TwZV5z;
-	arc=none smtp.remote-ip=57.103.75.26
-Received: from outbound.ms.icloud.com (ms-2006k-snip4-3.eps.apple.com [57.103.75.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bjJSDUbt;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BA9606A31C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:20:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48BA9606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F9606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:30:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B99F9606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=F+TwZV5z
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-11 (Postfix) with ESMTPS id 7017C1800397;
-	Wed, 11 Nov 2026 09:20:40 +0000 (UTC)
-X-ICL-RepId: 01a1c9e8-cf36-79a0-82d8-9c5452a9ca2b
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794388841; x=1825924841; bh=emiE0LSrob/0Gy6mQd2xuosVJeZv2KMBCzBELLcokfE=; h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:x-icloud-hme; b=F+TwZV5zNY9bpkpdE6uQUlkIcMRl0u4xew5tOeREKen1rG5ADQ4LBDC+Cd4Mzir7gry/v+ihFFRXNVEISRdeRZUDpYepglGFrxv1BGdqVlcFgI9o9PDJf6hxSBkGkinjtBLqqH8IoL6vYLJ4fD+OOBodnToRwUOsbAFQcxQF/Va0C6mMFzbBjrNy0VfNxM4J6ubLM10OkNs7sgtHHj6GiJ6ev6VhwTpZ+Dj8NwHDEXJ8bNjaKBYAjszFGh/aVO3wwz6tGLYkw/FNysURAY5CIcBAQrlkSuxiRzt53e6PO7Y/VpOlxD22tKHFma7MM7tUabvG5cyrJxAwNPfyPDiBHw==
-mail-alias-created-date: 1621344842221
-Received: from localhost (unknown [17.156.208.39])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-11 (Postfix) with ESMTPSA id 658D1180011B;
-	Wed, 11 Nov 2026 09:20:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bjJSDUbt
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4918c2d727fso1612881f8f.3
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 01:30:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794389450; x=1794994250; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B3ZS/U6BiBBD5fGeH1R5VkY9NPLOvEtcvatjGhH2bZ0=;
+        b=bjJSDUbtOzaOAQpSLf50C7xoz9mpqk5qHohnCIlWIv+4dIzFCWT8uBWQH1BMHIwq92
+         Sp0skk7bQEZLBgS9CBlRt3NPDx8HuxaDGWyvWfkZ1t5b9SklX5+Z5vQDrp+iOrJ3CWzk
+         5anlnWL/yOmkvajDxM0Sfb0kdjTXD7vcoBuTVSvmPr/cSe5SV0IKMaZEs066FbMiPLUX
+         Aap9BpEE1/6enil0jBizKD5Uh6mVeY0FLVDtPivV8kKXMLwefcdUh/80Q5IJTKpbNejz
+         jXcY705DjPDXEcwVQ21YLgF81sG8rxoLoWlBnl9XRE0iNOJ6xgfV2KOcCCdcTYXutmYh
+         s9tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794389450; x=1794994250;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=B3ZS/U6BiBBD5fGeH1R5VkY9NPLOvEtcvatjGhH2bZ0=;
+        b=hpuyYvnSr6c2XpKb/xVSkXY+vsQJ6OVc/oc6rSERi9l5KihLLU3UgvFSMiRBnuPi2i
+         Ig0QKrw5yhJAfOIxmETSCr5QPMgfT8eZqispTH89fe8p5f7Rk8FuLspVMe/cHHMmqX5y
+         uGzgFT4JZt+dbH/L6mBgZGfoUKCbi267K+8rDEzVsrK9KFMawRIqiELr+340m0jWO3CD
+         rVMNhVAnl3jax3wVYfkyphx7CcLC5Ve3DmXcnNw3nJZFXnbcHE6PVCjtXNDkRDC7a9ya
+         mlApQo/JbPDmr87agbvc3jubAWMowQG7LEWh8u8A7XmLLz6xD1Lb0A9QhUJvvjtisRDY
+         6SmQ==
+X-Forwarded-Encrypted: i=1; AL+hErFX02V27QLEF9HoPeAtSXyY9JNtH3mqbFbbVd79Uo411pS/kj971QYrxsdCmKPBB/ehEPA+s+I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9h+b3rrfUcYbt7HDRi2qPFyhG2Y3IMi30A4/EwB/VmMV5g+r2+
+	u8BeFFtDZ7izwTw5cs4ExwUJS92XvunM/MILc+C16PPSNYr3rsqpTdoU
+X-Gm-Gg: AYBFou1HdGL5CXEze7XMwmbQJMTFd67Nl9ADUMw1k/vSUeOD02//LPPDKzLZS3vxj8V
+	daVpTVbSX9SXL22YXn8ouk9qrddkGV/Rnh6Taxb+8Ihf2hOQhR1rbmgd1OSzDgk3+24n2r5dfG/
+	vrzvmdD2R4/69Qm+D0FPoCIHTXQN4E5c5m9gClHwia0pa4fDxTwIBsBf+ZhooKMuFOXv85Keegp
+	L9xDKrw98qdt0ZUym3vSBAZxatTRzIyqK+bCElM1+HBO1v9zgNjqn5HWXcW3L5yeBK9BeTqlkdo
+	TPZXTW6JiAHn9QSaDrIh0zIMKhO97EGXCYKgCmbmFw5BtqePdeWqqY872zeQ/aajGAuHywMUuAO
+	VHr0K96la6urqg9ZW0nuH5xf49wT0c+ONCWrJ6eMYezp4xYsepupjQAdcqucrfY2vJ+ViHLIUSS
+	MXaAeFbXQ46J/EYCdBqaJcJf4qrJrtzw7vggH5MV+6jHqKtTvih1eAd7d/0Gmj2F/Xp4LtVxSSX
+	6/JtvafmwQITTiI8sDD9HX29PDjosPpQ7gOK7q+ug+VAlzI62AOkvGfFBu1OtfUHKuR/eKFN7zT
+	fKk9cUn6qa4I7axpL1QJJZNL0U0UAfOzlIrgs9qTtWdcHMAZKCbQZkPasf+XvQh9R6diyiE4+b+
+	6GTbnD7Pc55wXycPrbJSEP+RBDx7lQAnHOZrP+R0wOyPO0iFovrNl1mFKFvCZl6/jGJ0m3V+C4n
+	oP1htusDtc2TA=
+X-Received: by 2002:a05:6000:25ee:b0:48e:932:aefa with SMTP id ffacd0b85a97d-499c630fe5cmr2820902f8f.26.1794389449756;
+        Wed, 11 Nov 2026 01:30:49 -0800 (PST)
+Received: from AHERLNXVDANI01.lgs-net.com ([193.8.40.126])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498362eb14asm9175839f8f.34.2026.11.11.01.30.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 01:30:49 -0800 (PST)
+From: =?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
+To: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org
+Cc: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	dima.ruinskiy@intel.com,
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
+Subject: [PATCH iwl-net v2 0/2] igc: fix L1.2 disable on resume, add I226-LMvP to I226 helper
+Date: Wed, 11 Nov 2026 10:30:33 +0100
+Message-ID: <20261111093035.513635-1-danividanivi@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,83 +107,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Nov 2026 12:20:34 +0300
-Message-Id: <DMS9R6RG6OKW.15NILH6RW6578@verdict.gg>
-Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Shuah Khan"
- <shuah@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 0/3] ipv4/ipv6: Cache pmtu on all paths of a
- multipath route
-From: "Vladimir Vdovin" <deliran@verdict.gg>
-To: <netdev-bot+sinfo@kernel.org>, "Vladimir Vdovin" <deliran@verdict.gg>
-X-Mailer: aerc 0.22.0
-References: <20261110095903.84813-1-deliran@verdict.gg>
- <179430520494.488859.8396860489135491042@kernel.org>
-In-Reply-To: <179430520494.488859.8396860489135491042@kernel.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAzNyBTYWx0ZWRfX9XAf6MsiQ2dB
- oQiR6mWlSiHpvOPZsX/S/TDT1oCsipu/wWhOdidgIcgq1f94wFO+5ymo3+AaoSB6AS4Eg351Cih
- kPvGXn0lXZmnEB3KYC0Z2p0q7+N1woZMjjt13QHNqbBwqt0xzKaW+YrEC4KVt2FHyM34Bwk5Q5s
- H2gkjkShiuUX/fTmpO7sOijD7I+MPE23FgquDCBFDjybnLINyIlzcNIrevcihNPCzHgIwpR3Jue
- bQtyrkO7C6wftrDptlVXNgL9uCXMUShxX/lQXDUxli3xYH/64ExwyJbJsqMdFJvGvxWkXUwXqOf
- i+w8qemp/KuUJs0GSl85AOvnfYLSXOB5FOnK5DD+Z86v42WR0gZ2kODLPS+1o8=
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAzNyBTYWx0ZWRfX4prJEIYIvlJI
- 90w/x+gyjFtlqXAQGHWPONIVeEvB27GLuQKgcC7a1JRccu7eGNKedGKjS1ZO71bHDt1yni6h+95
- EBmRLWic11xjY91P9X3obLY5aJXkQyg=
-X-Proofpoint-GUID: 1gpICloqEuvM2jL9llB7HfrG0NqYtiPg
-X-Proofpoint-ORIG-GUID: 1gpICloqEuvM2jL9llB7HfrG0NqYtiPg
-X-Authority-Info-Out: v=2.4 cv=W7qtxhWk c=1 sm=1 tr=0 ts=6af43369
- cx=c_apl:c_pps:t_out a=kRaGL2Q7qLiahLf3O6OaIA==:117
- a=kRaGL2Q7qLiahLf3O6OaIA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Lz8lNifEoAKVmCoaIBl5:22 a=nt9yOg7Ld-NCdoK0S7LV:22
- a=VwQbUJbxAAAA:8 a=slS2ziH7K9J5olFhi2UA:9 a=QEXdDO2ut3YA:10
-X-JNJ: AAAAAAAB1zj+NsaxmxfPI77N0QmgMnZta+6UzS2tAB+wCuqrmJjmSn+VokQoxYC5Zycux8
- hLUVNtLDUoif5Wo0JN7UJX3ATlXdTImnJtaFU5gFDaetqrmcamqVtT7bFVQYUn8WFcbZFP
- 3KMf5sviVUFn2T1ABRPn7LsQ/FHXb6wtH81FSr9UsfFMRrU1jqE9KlupXfQOSUr2VWGmox
- x3caz6SPF/N12ORrx5l+V5akPmfyNUSfjjbpYxWqNDO4XusDsmS40FZGVsaoRXoo2WMFwO
- A5CxaBoVSXwoTZGfCUXTc4cjG9al90iDyq3FVrtFYl/gIZ6n2Z0tRgZH2Ygo4CSJHf4twc
- GmOZtNNDFEvFRgqtmk9V/CLeVJypVlAd2oiQQpwsUW2MOn8nKslEZVyn6uKVDk6pP7ktAc
- g8Wt6zMuVOrLFNcsSh71HA0gEBmBacmnjcRUx6G8arxjQl1gsYKT0MILul0YbOfVrJVPo/
- uV9KFhfSty5RLErGwoonCzbDoHgHTyW1P2Z0wRz52Qi+LG0j7SZr7hQgVTYwoLwW6LTHnA
- RFqf1Z58D2GAf8rOW3u3JdUcV67T/qMTemfdnzsdCcCgwCEihYVxNhGfaD4zHothGYY/1h
- n4OKjNl2DURITXoz7b7hcHieWXT55xpSsxVICX6tciT7rfqh/7z7H4SM0UGCkKwn23yav5
- 1J7Kgqfy9A1PuFnxDXSt3io0iZiiw78KmXk+6rvAxDNZeOPopJpLwJXkTViS2QRjSJb5xP
- InJ7wx0GIJM0TbEAbqv+9i5PU84Hbj8n4ApQNeaHjFiL37dCmrqC3cL4uSRfTDARt+LEiR
- 7mCXPAW+5s5Nx4J5cFbLURBvA60N/Z//tjYcwuR8GvRv9x3b1Nu3aolc2n8UlZeYpWltDM
- zQe6ZHPcJtWPid2VDQnJMvwEP8zxKPJb6VqOzRAOxoyOTSiPcNtD8tRcFF7Iup5oNcDKwt
- PAL3uCCcdqt4aCMH/B5b1jQtkpN1VOkfHWhsYtJ+VkE3fc+iFTV6Ej8iJHJZ8jahG17NRE
- cM8ulYcKAVpgvSOl99nGTz6s9gC0oX7jXJQm6G3TMkhWEGUCmsXWFLem+SKxC1WS5QKCiN
- tvwRGWZDpQTUPn9m4jrqIJGIFGCiJDCFwj3NNxwxkL1/boQEMGAiClsl4V6yJjdUE8/hjz
- advbX8lbo/d6pneh5HwRThQ2yJZz0G+tFNiGZvvlFWjRCpNcfnAC5k2dbB9JI9sF85r8e/
- wIFOY3ADFpvPUnpPPKryq1vmUOEMkiAlrbcZ3eMNfQYa+PblIVSvVGAce/1wVT7igm2GUN
- Uopeod2UpiDFgf71I43j1nx04mdgxIsLb5R/z5ljrrV/tPhZCVhfklv+nwHdK1x0Hw+7hw
- 5ZBqbqGayLnVxg7g1QnRBSvQ
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 10, 2026 at 10:06:44AM +0000, netdev-bot+sinfo wrote:
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+This series replaces "igc: Disable PCIe L1.2 substate on I225-LMvP and
+I226-LMvP devices" [1], split up as suggested by Dima Ruinskiy.
 
-Patch 2 (ipv6) is the counterpart of the IPv4 issue fixed in commit
-7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths if multipath
-enabled") [1]: a host with two ECMP uplinks and a smaller MTU further
-down the path had flows blackholing after a Packet Too Big. The IPv6
-side was deferred back then at David's request [2]. The new pmtu.sh
-tests in patch 3 reproduce it and fail without patch 2.
+Patch 1 removes pci_disable_link_state() from __igc_resume(). That
+function is also the runtime resume callback and can be reached with
+pci_bus_sem already held for read (pcie_do_recovery() runtime-resumes
+the affected devices from within pci_walk_bus()), so taking the lock
+again risks a deadlock. The L1.2 disable done in probe persists in the
+link's aspm_disable mask, so the call is not needed on resume.
 
-Patch 1 (ipv4) was found by code inspection while reworking v1 after
-the Sashiko (LLM) review of it [3]: the same "replace the exception"
-step that review flagged in the IPv6 code is in the IPv4 fan-out from
-7d3f3b4367f3 as well.
+Patch 2 adds the missing IGC_DEV_ID_I226_LMVP to igc_is_device_id_i226().
+Besides the L1.2 disable, this also moves I226-LMvP onto the I226 TSN
+code paths; Dima confirmed that this is correct for 0x5503 [2]. Patch 1
+comes first so that I226-LMvP never picks up the problematic
+resume-path call.
 
-[1] https://lore.kernel.org/netdev/20241108093427.317942-1-deliran@verdict.=
-gg/
-[2] https://lore.kernel.org/netdev/ad29493c-9e48-4a94-b327-e47af3a9d137@ker=
-nel.org/
-[3] https://lore.kernel.org/netdev/179236119085.3135.2701233313088371263@ke=
-rnel.org/
+The I225-LMvP part of v1 is dropped. On the setup where I saw the
+errors (HP Thunderbolt Dock G4), the I225-LMvP does not advertise L1.2
+and the upstream port has no L1 PM Substates capability, so L1.2 is not
+the cause; I will investigate that separately. As agreed with Dima
+[2], disabling L1.2 unconditionally is not part of this series.
+
+Testing: compile-tested only (igc builds cleanly with W=1). I have no
+I226 hardware, so neither change has been runtime-tested on the
+affected devices; testing on I226 / I226-LMvP would be appreciated.
+
+The resume-path issue was reported by the Sashiko AI review of v1.
+I used an AI coding assistant (Claude) to help with the locking
+analysis and to draft the patches; I have reviewed them, compile-tested
+them and take responsibility for them.
+
+Changes in v2:
+- Split v1 into separate patches, as suggested by Dima.
+- Dropped the I225-LMvP L1.2 disable: L1.2 is not supported on that
+  link, so it cannot explain the dock errors.
+- New patch 1: stop calling pci_disable_link_state() from
+  __igc_resume() (reported by Sashiko).
+- Corrected the Fixes: tags.
+- Changed the subject prefix to iwl-net.
+
+[1] https://lore.kernel.org/all/20260925112850.189302-1-danividanivi@gmail.com/
+[2] https://lore.kernel.org/all/5d45a583-198c-467d-afbe-8f19398e82f3@intel.com/
+
+Daniel Viaño (2):
+  igc: don't disable ASPM L1.2 from __igc_resume()
+  igc: treat I226-LMvP as an I226 device
+
+ drivers/net/ethernet/intel/igc/igc_base.c | 1 +
+ drivers/net/ethernet/intel/igc/igc_main.c | 3 ---
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+
+-- 
+2.53.0
+
