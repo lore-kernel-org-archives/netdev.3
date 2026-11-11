@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436876;
-	b=3rajCSzIGxY5uNLxi7hpeepyOqmiftVYn/pmSznlsMKBoyBcMoA6CDJ8xhpQ8MEzNzmH
-	 0XIq6Qs9B/hQ5sLS6aPaxUEpJ6YoFmMDMGC05rBzwv5F0tsrWt7i72XxpLDykLeZXvoYz
-	 6YTkVYK9BzLRnYM2uRDl8ecB3mi6/5LeFwxgBF5lwo8NMN1mK/6bNDe7fXDksuEsr8dSn
-	 B9kNdXaPkWkHntvgy2LGxJFgQRuPHAQJ84yz7NW3h1I48he5w/AUjcDb8HLUaySLq5NaZ
-	 7Onn+CJyDDdX2XklUhxud0H+g7IGq2SnSDvdaHNMKgoH6rfeYLa6xq91oYiYe6n4/JA==
+	t=1794436877;
+	b=31/oaM4vuMhgB5iWWxEQNW7NZK6FsL4gUCs4PLy27oiyRrrKGgwx62DLVFZMsoOhBgI2
+	 IvuAlqElPC9Ag2mU2+QjasHofnKNZQpNzU2m83o36K2ZHl2VutjT6eBvQ5yfpd2XxClR+
+	 +FbUiiWi5b1k4FN6LEKRHjWc+tCzDW1degdMnMFM1ihBSTVoY5PWWS0/eE2Rqh3vtLchw
+	 aV1pGHKQPXgYmdqRMPijXvgpH42AvHjbOx5CQ4fvKn82nlsssIYRHOXkRfd+lsryFQ5Si
+	 5uhv625wdggatBdPaBdSlcsT0VlWu1nnmphr2CtmeSa/CvbzChUD2E/xhIFXH8v1nxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436876;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794436877;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=KjPWGZ6X8LI0nWH7eBTwaOpqqKITpEprmePla9/9J4Y=;
-	b=iiwcYAafVWRjcrWJrhdgpZ2KPHJDqLhTUT6kgIdKJVTMRp8G753dcG9fqNWN6CjaNZvH
-	 suWG7IS3exhtz15ZIz5MmpaXJ/SDh6zayNAIbQ/xoySscvSfCawp0MQbEPQEGEZMgb3fN
-	 f39HQnaLtYNVAXoYiyHRvPk8uaNcGpVB8xwcVnlCWvhjGM91gidPvI8eUmqm1Pd+y9OrH
-	 s57bv+ERSJDF5lmaibYlbE/S2I0+RnS6KIZvXf4BcoNtIECFskSxmr5QrpHHbxrGDf0JI
-	 L0ZMf0vRSEmEzmkHXuPG/AAWfJ4SzNLI6sbpzqkcv2DjZUT8Gg1Ul/f8Q4d+DLVCkpA==
+	bh=fNpwkiEqQmN6x4FYIRfh/xeiUHgO/3NO/lcsso0d+RY=;
+	b=POZQfO+YIpU5Q3r2sB8SKsWxTaDuq3QEppGNLY4E7Y4fAmbIUmsd+lPVxZx0WfRk+Fhx
+	 wOXGuWjA6LME9CJD9+1xokXah8qfD+b0vJSwsGET32O/jJJFDbkh3M9JU1tp8lM8pxzOA
+	 /ldT1xCOT76sW7MQbvMHOris/r8iml5y5lEVFczAc4T6Hd+faIhEsSWWm3k8E9h5YyL0R
+	 oT+7Bw4NUnTEpeG/5oQcpTNvxAsAcAF1gCltX2sA75taUW8MZi1ojy4NqGzgsB8lL2XWu
+	 wc4rHtdCdQs6quFbshNw9Mntj9SlmBhrjwTYTfPCuMKiw/tQ6c7YEjXZeAgK4fDAZwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9BSCHj6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLdOoqX+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22B2606A31C;
-	Wed, 11 Nov 2026 22:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483EC606A33B;
+	Wed, 11 Nov 2026 22:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9BSCHj6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B3D1F00A05;
-	Wed, 11 Nov 2026 22:41:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLdOoqX+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254601F00A05;
+	Wed, 11 Nov 2026 22:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794436875;
-	bh=KjPWGZ6X8LI0nWH7eBTwaOpqqKITpEprmePla9/9J4Y=;
+	s=k20260515; t=1794436876;
+	bh=fNpwkiEqQmN6x4FYIRfh/xeiUHgO/3NO/lcsso0d+RY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D9BSCHj6ygOt+zV5A9LFVhRKoVP+9idURa9MD/hNbbO7IOXVbS2r7TLtktOlaurDV
-	 kRazBAykt2la0ESAw7xHOnXQyezTOSgh/PkILJgcilfKCcHrclZpyzjwdZ2XWAN+xM
-	 scZHfkSabSVJO/adW54wJwYwmrp+N0+ac+aX4ndbY1LP1aDpZoDf+9VMjy5B4VqwCr
-	 EqNCUww+RubaC9uqgf9yUbyX+E4IsRKZ3rQKLxftDgBDNPTFdndo3r+7ZpSZQprHvj
-	 jhShirE046o9aopOoSMFxGy8hnEPE8oEpNqXW17GwLMLwBZsFYllc21lqgrY5QX7yb
-	 jWdOmKnK0CBVg==
-Subject: Re: [PATCH net-next v3 1/2] net: dsa: motorcomm: Report error when
- FDB fails to add
+	b=JLdOoqX+3ncc6QAkGC8k4uno2sCx3sE7Ec3bvGNHmZ60O3vaSnwWJLTz5y5u2xFpe
+	 ZSiVkmtgy0YaoCkH05o9MmxNB5NEdOPSpR3VQzSMJ9K9FhNlbAyAs2u8+4+9c6PQ3S
+	 E+Tlxof3+bT4V+zBWaOHibMg5rW+XE1w0g/IEQ+kvXafBmqAxo1dcoyzdgKxQDRxUI
+	 aldCiZ67by1HeCyu8BNc70x49zrU4n8sDE6jzehQ6EAmcAJQ/V+wN121FFgmN3DTWs
+	 9sXZVzX+aRiU9hdcGgfmI0jtcyLKd2up8RLp4C7scY1iLZ6BikpEb5xT8x5J2pEI88
+	 TBIqgMn4VeZHQ==
+Subject: Re: [PATCH net-next v3 2/2] net: dsa: motorcomm: Add devlink info and
+ resources
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Wed, 11 Nov 2026 22:41:14 +0000
-Message-ID: <179443687465.2199510.164035927002629092@kernel.org>
-In-Reply-To: <20261109163117.1792478-2-mmyangfl@gmail.com>
-References: <20261109163117.1792478-2-mmyangfl@gmail.com>
+Date: Wed, 11 Nov 2026 22:41:15 +0000
+Message-ID: <179443687573.2199510.8331335701739368292@kernel.org>
+In-Reply-To: <20261109163117.1792478-3-mmyangfl@gmail.com>
+References: <20261109163117.1792478-3-mmyangfl@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,113 +75,146 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The code change is right, but the commit message gives a wrong
-  reason for leaving out the Fixes: tag.
-- [Medium] yt921x_fdb_add() in drivers/net/dsa/motorcomm/chip.c now
-  treats only YT921X_FDB_RESULT_NOTFOUND (bit 14) as a failure of the…
+- [Medium] The FDB occupancy that yt921x_devlink_occ_get_fdb()
+  (drivers/net/dsa/motorcomm/devlink.c) reports for the "FDB" devlink…
+- [Low] The patch adds devlink info (DEVLINK_INFO_VERSION_GENERIC_ASIC_ID
+  from yt921x_dsa_devlink_info_get()) and three driver-specific devlink…
+- [Low] The commit message says only "Expose the ASIC model via devlink
+  info (ASIC_ID), and register devlink resources for ACLs, FDB and…
 
 --
 
-net: dsa: motorcomm: Report error when FDB fails to add
+net: dsa: motorcomm: Add devlink info and resources
 
-This patch changes yt921x_fdb_add() to check the FDB result register
-after the ADD operation finishes. If the hardware reports
-YT921X_FDB_RESULT_NOTFOUND, the function now returns -ENOSPC instead of
-success.
+This commit adds devlink info to the yt921x DSA driver, reporting the ASIC
+model as ASIC_ID. It also registers devlink resources for the ACL, FDB and
+meter tables. To compute FDB occupancy it adds a software counter of
+static FDB entries.
 
-> Not carrying a fix tag: filling up 4096-entry table with static entries
-> is just asking for trouble.
+> Expose the ASIC model via devlink info (ASIC_ID), and register devlink
+> resources for ACLs, FDB and meters.
 
-[Severity: Medium]
-Is this reasoning accurate? Before this patch, a hardware ADD failure was
-reported as success. DSA and the bridge then treated the entry as
-offloaded even though the switch never installed it. That looks like it
-dates back to 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm
-YT921x").
+[Severity: Low]
+Could the commit message also describe the changes to the FDB programming
+paths?
 
-Admin-added static FDB entries are not the only way to fill the table.
-yt921x_dsa_port_mdb_add() goes through the same path, and every entry it
-writes is YT921X_FDB_IO1_STATUS_STATIC:
+The patch adds priv->fdb_static_cnt and updates it in yt921x_fdb_add(),
+yt921x_fdb_join() and yt921x_fdb_leave(). These run for every bridge
+fdb/mdb add and delete.
 
-yt921x_dsa_port_mdb_add()
-    yt921x_fdb_join()
-        yt921x_fdb_add()
+yt921x_fdb_leave() is also restructured. YT921X_FDB_OUT1 is now read
+before the DEL operation, not only on the rewrite path. A
+WARN_ON(!priv->fdb_static_cnt) is also added on the delete path.
 
-Bridge IGMP/MLD snooping is enabled by default. It allows up to
-BR_MULTICAST_DEFAULT_HASH_MAX MDB entries, and that limit is also 4096:
+It would help to explain why FDB occupancy is computed as
+LEARN_UCAST_CNT + LEARN_MCAST_CNT + a software static count. That formula
+assumes the hardware counters only include learned entries.
 
-net/bridge/br_private.h:
-#define BR_MULTICAST_DEFAULT_HASH_MAX 4096
+> diff --git a/drivers/net/dsa/motorcomm/devlink.c b/drivers/net/dsa/motorcomm/devlink.c
+> new file mode 100644
+> index 0000000000000..529d2decc4036
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/devlink.c
 
-Those MDB entries are offloaded via switchdev into port_mdb_add. So it
-seems hosts on the LAN could fill the shared hardware table just by
-sending group joins. The same table also holds unicast static FDB
-entries and host entries.
+[ ... ]
 
-Also, the ADD is issued without YT921X_FDB_OP_MODE_INDEX, so the
-hardware places the entry by MAC+FID. If the table uses
-limited-associativity hash buckets, could ADD fail before all 4096
-entries are in use? This depends on the datasheet.
-
-Should this carry:
-
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-
-so that stable kernels pick it up? If not, could the commit message
-describe the failure conditions more precisely, and mention that MDB
-entries are affected as well as unicast FDB?
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 33e5fc127244d..a7a9a74393045 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -725,7 +725,13 @@ yt921x_fdb_add(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
->  	if (res)
->  		return res;
->  
-> -	return yt921x_fdb_wait(priv, &val);
-> +	res = yt921x_fdb_wait(priv, &val);
-> +	if (res)
-> +		return res;
-> +	if (val & YT921X_FDB_RESULT_NOTFOUND)
-> +		return -ENOSPC;
+> +static u64 yt921x_devlink_occ_get_fdb(void *ctx)
+> +{
+> +	struct yt921x_priv *priv = ctx;
+> +	unsigned int count = 0;
+> +	u32 val;
+> +	int res;
 > +
-> +	return 0;
+> +	mutex_lock(&priv->reg_lock);
+> +
+> +	res = yt921x_reg_read(priv, YT921X_LEARN_UCAST_CNT, &val);
+> +	if (res)
+> +		goto end;
+> +	count += val;
+> +
+> +	res = yt921x_reg_read(priv, YT921X_LEARN_MCAST_CNT, &val);
+> +	if (res)
+> +		goto end;
+> +	count += val;
+> +
+> +	count += priv->fdb_static_cnt;
 
 [Severity: Medium]
-What should happen when YT921X_FDB_RESULT_OVERWRITED is set here? The
-result register defines it in chip.h next to NOTFOUND:
+Can this report more FDB occupancy than actually exists, possibly even
+more than the advertised size of YT921X_FDB_NUM?
 
-#define  YT921X_FDB_RESULT_NOTFOUND		BIT(14)
-#define  YT921X_FDB_RESULT_OVERWRITED		BIT(13)
+The new YT921X_LEARN_UCAST_CNT and YT921X_LEARN_MCAST_CNT definitions in
+chip.h have no field mask. Neighbouring registers do, for example
+YT921X_AGEING_INTERVAL_M. The full 32-bit value is added here, so any
+reserved, limit or flag bits next to the count would end up in the
+reported occupancy. Is the whole register the counter?
 
-Nothing in the driver reads it.
+The sum also assumes the hardware learn counters and fdb_static_cnt never
+overlap. In yt921x_fdb_join(), an existing hardware-learned entry is
+rewritten as static with an index-mode ADD:
 
-yt921x_fdb_join() only calls yt921x_fdb_add() after yt921x_fdb_has() has
-reported the {MAC, FID} key absent, with reg_lock held:
+	ctrl1 = val1 & ~YT921X_FDB_IO1_STATUS_M;
+	ctrl1 |= YT921X_FDB_IO1_STATUS_STATIC;
+	...
+	if (ctrl1 != val1)
+		priv->fdb_static_cnt++;
 
-	res = yt921x_fdb_has(priv, addr, vid, &index);
-	if (res)
-		return res;
-	if (index >= YT921X_FDB_NUM)
-		return yt921x_fdb_add(priv, addr, vid, ports_mask);
+Is that entry counted twice if the hardware learn counter does not drop
+when the CPU rewrites the status?
 
-So an overwrite here probably means some other entry in the same bucket
-was replaced. The exception would be a dynamic entry for this key being
-learned between the two operations.
+The same could happen in yt921x_fdb_add():
 
-If the hardware can evict an earlier static FDB or MDB entry this way,
-this would return 0 while that entry silently disappears from the
-switch. A later yt921x_fdb_leave() for it would then see NOTFOUND and
-also return 0.
+1. yt921x_fdb_has() returns not found.
+2. The learning engine then learns the same MAC/FID. reg_lock only
+   serializes CPU access, not hardware learning.
+3. The hash-mode ADD overwrites that entry, but fdb_static_cnt++ still
+   runs.
 
-Could OVERWRITED mean a static entry was evicted? If it only ever means
-a dynamic entry was replaced, a short comment saying why it is safe to
-ignore might help.
+MDB entries are also added as static through yt921x_fdb_join() from
+port_mdb_add, so they are counted in fdb_static_cnt. Source MAC learning
+never creates multicast entries. If LEARN_MCAST_CNT counts all multicast
+table entries, would every MDB entry be counted twice?
 
->  }
->  
->  static int
+> +
+> +end:
+> +	mutex_unlock(&priv->reg_lock);
+
+[ ... ]
+
+> +static const struct yt921x_devlink_resource yt921x_devlink_resources[] = {
+> +	{
+> +		"ACL", yt921x_devlink_occ_get_acl,
+> +		YT921X_ACL_NUM,
+> +		YT921X_DEVLINK_RESOURCE_ID_ACL,
+> +		DEVLINK_RESOURCE_ID_PARENT_TOP,
+> +	},
+> +	{
+> +		"FDB", yt921x_devlink_occ_get_fdb,
+> +		YT921X_FDB_NUM,
+> +		YT921X_DEVLINK_RESOURCE_ID_FDB,
+> +		DEVLINK_RESOURCE_ID_PARENT_TOP,
+> +	},
+> +	{
+> +		"meters", yt921x_devlink_occ_get_meter,
+> +		YT921X_METER_NUM,
+> +		YT921X_DEVLINK_RESOURCE_ID_METER,
+> +		DEVLINK_RESOURCE_ID_PARENT_TOP,
+> +	},
+> +};
+
+[Severity: Low]
+Should this come with a driver page under Documentation/networking/devlink/?
+
+Documentation/networking/devlink/index.rst says each driver that
+implements devlink is expected to document what parameters, info
+versions, and other features it supports.
+
+There is no yt921x entry there yet. For comparison, mv88e6xxx.rst
+documents the devlink features of another DSA driver.
+
+The "ACL", "FDB" and "meters" resource names and the ASIC_ID info version
+are new user-visible interfaces. For example, "FDB" also includes MDB
+entries because the hardware table is shared.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109163117.1792478-1-mmyangfl%40gmail.com
