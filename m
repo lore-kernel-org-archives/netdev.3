@@ -1,99 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794434598;
-	b=oDPVPN5Jq4dvB5KtVBXUpBExNRRxL3YGdn290sOtFbjjhFrYBm5GiG3k/J7fnG6fqbNU
-	 KiM/oTR+pSRQRKO6WDbx6xM49x55yIuOX2/BMdkb4bha1VRLXB+MhtmM99/zponzMobyO
-	 12MIokLLiwE6ccWnmW8Rnr197Ke3j0PSPm3cOq9oh/k1pKJ2zojFVFe5qIltXHx+pAkRa
-	 D6gwnF9DWSsv1rBkHj7tvQaF2u6UEdvZg6TZSt33aqiVE4ldM8nnQFc5DzQHxdi9LFGiX
-	 K/B7uc6Zz6x3qEtRH0hMQM2zICB2//y/d/Zuckc9jURhqk30EiY5CWoHzfkGdRNPzrA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794434598;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Mul4fa6Ln0hB4RFr7GPev/ectXNF1bK3kmmDXWQ6hQs=;
-	b=aAlKStuVF0oQI1lUfHzT7R8Ka5f+9NPESfLoMdXwHQwAbGMWCAKtZBst2IQ/c6W0gPzw
-	 JCSQfMju4a2TpBjYKWEFZbE0SaMn7KH9Yy/yDsMfmyAxc/5vLNzgdhSxgfdspCZI4u7N5
-	 6QkcaOE0lwvkI6T7vOdOtMM0rXX6IJWpYcGA9LT8bnMr9VCM/ilCwYYDZjMVP/hC7cI/P
-	 SY3lCLjUOMawIcQIWMdU9SVO5Q409xR0kTu1EoWZh3ygFf2Bzf3eUVO7n1O7QL/hmqLZK
-	 RcbdcB7+gJGvCUOH/DmNeINHeVm+TDbERumQST/Mq/JqNL1WLUoHjrbYClwx2MwJISw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="f/VzwH8r";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794434952;
+	b=Q96ETIagd/eBZl630CuBLdBCTAWoB82DIwkL26HsMHdSO/lUC/wMhM8lq6TCgA9SNxum
+	 ybGdG6Fk00FDcVanxTXIwZh18VoBe+WShJPoqVYr6uoJyub6S+QlYEUOCb+Kx1adwDcEd
+	 IFIJMBFAncbcVbTo4f2pT+l8h8Q5XXRVoxYK33V8IqB+8NSWAcg7P7H8davlEyPxr0AN2
+	 Ayxe+haNY/qrgkBriLFowzjGLykyTsaBeiCoXODGDRDGvWIs3yODAGWzfAq/ZJR5UC+sO
+	 9GfkYYtSqtUdM7GezkwaEpm7pDbbRmlYVjAmPMV4BCv8URjNq1LHDAmcC67jtRRSqfg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794434952;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=am6gB5NdWXXZW/etXsOg3KYf+73ebZ11VyaFMSvoC9Y=;
+	b=AH+3mi0drukOq8oVOVD0EVe1TkTSNNsFUM6lxU7TMg8UiGTXuDhb3+22kmRD9t+lan+T
+	 hdZvnv3b082K8hQxbI5ZHO30gOlU0jmmb2GsHt9MFkZjmufDW8N/MjNLEaAS8q89N+ufA
+	 hvDnmlVX8h/fIVVIW7FJPgTxywuMsEUMMj2bI+7x/+Hjac6R706Eew63e1DpBOzDb7WPP
+	 bcrj1BNMH35YS+8XHFsTSaAanp1tUBUCABH2BGQSP/i7kAPFppLlNXU62OtillCe8BqPn
+	 jsQ52pCGgv8De3dnhp7wsWd5NxSdDwrNBU8SxcDMpiFwa/qHPd23g46RmZ9DzhY31Jg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ga1RZDqB;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A99606A897
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:03:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1A99606A897
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B5FD6606A321;
+	Wed, 11 Nov 2026 22:09:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5FD6606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f/VzwH8r
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso1250a12.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:03:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794434596; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Dw71PfqJHsGKhqXoEc4uRBir6Zq8QNKEAKzuQgW3mYGl0I3wTm6pOZWQt/rzgkR+4d
-         Jp6478P0zxSeszafJsAgTvPMsrmFvbi/D00Ot+gRJXBZTP80dHnxqTLEyCLl1m7B/rBT
-         MQwecj2U0gxDKDFPtKW3BFY18F1KaFJwzNL5ee20KDzfUiyvP6UiocUyeni01JAE/oV0
-         q9JUnqgwOQvxXSudCbnCoUr/YKwrY9wvniQ/vWYgulnQcIDVd62xHqYeImuDonFP8Zeh
-         V4zF8svbOHHO9kJyvWg5jlDiUvMgiTe2xIW+EXDp5wcQLsxEvVqG0NcDl5zWSlM7mtru
-         6iQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Mul4fa6Ln0hB4RFr7GPev/ectXNF1bK3kmmDXWQ6hQs=;
-        fh=SFTcYCsCDlFlEGPRG+wa19FnQvWvjkx3i4Vm99u/2tQ=;
-        b=M2M5TTTX26Mde+ooVwDxJM+eOQFvj9UWckDqMVy7TGzaCnUHscrqsNKW9wXYTkaXpC
-         MbyDEaEii1RY/EyavTP0fwzmk5aBT+LnJbt1KKjJG3AEHXzB9Q0woF06ulZL6OkbRVK2
-         HLUi5qG28+ZHOH7vSPDHxWZhEpYNJo3K3k7V6uLyLgcsqGIat2rE3iqWLKMvMsi+08cR
-         nlO1HZ9h6esvdpkwl28YNDOlYScbHCOOz7E7h87HHnFFRVJiUe+UnBhKl1XCZy+I4G3f
-         VtesFbCh5HKgL74+u5UDZ2lSXQSB7AJmsdm1slMaI/TRGDaaNlXTWaE6XQdkpvGKIaBF
-         +wxg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794434596; x=1795039396; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mul4fa6Ln0hB4RFr7GPev/ectXNF1bK3kmmDXWQ6hQs=;
-        b=f/VzwH8r+rOT4OVHePl1yP77vum2XzLCVem9F6zhtDKY95k2C+p84Y/B9cBUwfJo0H
-         DX1bpY9AdLJUx4p5B2SYKJchkD7WduR6DHVLk8BLeHG4rHn9JWrBtbvYtENmXMFVXu2p
-         oQ3V3g5w19Ypc+hv3ttO4Kqo0lKBqNnSC4nIZy59ZpLWLmEoxf+IwVm7HP8/hcaBoFU3
-         GTaT3MW2J+DTcaXOv8YlOCQ29lIHkwn8rQ9xTzs5AZ0l4eFCxSYtb1dXeMHp2l77B4lZ
-         AjEiCru+VIsq8nAT3AxhvhIfHnMWdwavvxva6foOrwOSl5DQzxzTx9o24tPUPL5h1RdU
-         uBBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794434596; x=1795039396;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mul4fa6Ln0hB4RFr7GPev/ectXNF1bK3kmmDXWQ6hQs=;
-        b=LGIFQ1ipcskzQ9lZYFrXa03FUxYkxa+J+x7nZc0DyDjV9VBcgUjFyC2P3Y0SXxMtIN
-         lGPp3FgZ1sAqnB1pYn3sxWMJsV8vZTlQeKgi8Eop4RDzX9D1OQZbEHRBQxjm6+esTybS
-         flqETYz44A5de3yftD9SL+S5uoJU3OD8ObgqVEEQk/tFWEmsDv27ttbDcnryce3fafQM
-         terwDIBT3kEVXpWUx/R5480va1lZsKwcPDNuH7lu2QhYPoHEMT3Yi/jM2j+tiiDCISTc
-         qvuN/JQi68vUghmFI+OSNvIb5euTZsDeSb5QwRL/ka2mygFjQnFZ9Fe1jnbxRnRhEP+a
-         eBwg==
-X-Gm-Message-State: APuU4Z+sLUGeK1rd2R5Zt9h/OGL7MRXvbpjZh4Tcxg0mRCIH0I2cR+Ew
-	T4xiyNHNb9CProO7w9dJRZ6/X9OUUFtU93Sr3XSAIk5dIHuaWSMuMCB2tdEykowdwDu6dkwRKek
-	gNI8gyv9dxGOBArZ0vU/fCt2jcinHjHtyt1g6hDuP
-X-Gm-Gg: AYBFou3XY4kktHYbzKVyl/O8XHctqYFX53rTQqegQQIu7m6ZyIUxcMqSfqXPifkQz6o
-	mpvTxcLmkU5kHTYWavQnuYAEmAVhR5vw+dgd8qr/4xzUDNHS1g6UAnFxT94sy89KG6mx2Ff1CJs
-	o7mkRJt6Uc4P2HTY5UfdsGCjmzaJU+ONToBS3sTwTJdgJNqZdDxmLn3CHQwuqdkkhuQy4qejCvs
-	CpfdV0FF8MjnU7+xXkMFSCYfPhDNEiuq6ngoetRH+C8lHbOH+7HzXDKRmPOA0oWiC8sBpejg7DL
-	nm6KukKq8SiFQ1MbFdlF4ojV9wrneZQgEpd1TY+LgRdgpYTweiALlWU9lsjZaEv/WIfSUEI94Vs
-	t/2vnEhb8J1i2JRaR2ZM4Uds3GGWm1w0MEbLv9fN6nJiES11iW9DqdCIjjPExRlLy7Ww=
-X-Received: by 2002:a05:6402:c520:10b0:6b7:91d9:b087 with SMTP id
- 4fb4d7f45d1cf-6b7a2a88237mr5290a12.15.1794434595704; Wed, 11 Nov 2026
- 14:03:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ga1RZDqB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1794434948;
+	bh=am6gB5NdWXXZW/etXsOg3KYf+73ebZ11VyaFMSvoC9Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ga1RZDqBCfh9F7lsHrh434WKtLNlqDdE3hiw7ReTJ7O6x6pbJWZP7eo9tPad4fOSH
+	 cqoKF07i0Vfm/9sJ+jGyC/HxBDIekJ9F3w52TrHEQ/f07sQxJACnEPFK1uTIcWBJCt
+	 pI+Z0z0mWQIFlqmZGVgtLrhduQLggrPcEdtPa3X6wEBmFPz+FMpj7hnYNK1K6Du3EY
+	 V7d7MIYbyGhyfHxhzK+cyGjEi0pwWAU0TlEBlFKZOJ8OCVnRmZf/xcRyLZyFw0i36l
+	 IfKT7xkqpT2Xln3qfSIh2C4v4htWYQWlLPOFBk3ZSr5NDqLXuQbXpil6TOxGyUUlg+
+	 kJz4WrbtylJfQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 85CC060074;
+	Wed, 11 Nov 2026 23:09:08 +0100 (CET)
+Date: Wed, 11 Nov 2026 23:09:05 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: John <shffr@protonmail.com>
+Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] netfilter: flowtable: XMIT_NEIGH flows sent to
+ 00:00:00:00:00:00 once the next hop's neighbour entry is gone
+Message-ID: <avTngTkNKE5ApQW8@chamomile>
+References: <MAEpYNlWKRd7lM0j62YlEZ97Ux1h5AyjSuFRm4Lxk2Q6haeDGTKqX8lpDRZ8slvBu6qA7Bbt18zpr9fyF_jArrEemTgRqzqluxmsGH7UcFk=@protonmail.com>
+ <avSIBUcLH4kZyISX@chamomile>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,104 +68,269 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261108013838.1454450-1-almasrymina@google.com>
- <20261108013838.1454450-3-almasrymina@google.com> <avIRJ3vdIj6Jr9zJ@devvm16445.scu0.facebook.com>
- <CAHS8izOxvUxCND3R18_HfZhB=2RS4_RNfAmx7S=Ex6b5z_CQuA@mail.gmail.com>
- <CAHS8izNodRM1Bx+FT7okpdeDfCeyJVP5QoyxhSMJWXpGuwyL4A@mail.gmail.com> <avTkuRVZcOuYlu9T@devvm16445.scu0.facebook.com>
-In-Reply-To: <avTkuRVZcOuYlu9T@devvm16445.scu0.facebook.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 11 Nov 2026 14:03:04 -0800
-X-Gm-Features: AclHuK8z31nDU3h0IDvtHI4N0WvsgMD2xFT1mD0hWH2bfCjrrHB2M3Hvc2x4WQk
-Message-ID: <CAHS8izO+yUW47rhCnaKfMS1iLHEpx44_NkB_uUoMDms0ZmJMGw@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] net: prevent mixing frags from different
- memory providers or bindings
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, linux-kernel@vger.kernel.org, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avSIBUcLH4kZyISX@chamomile>
 
-On Wed, Nov 11, 2026 at 2:01=E2=80=AFPM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> On 11/11, Mina Almasry wrote:
-> > On Tue, Nov 10, 2026 at 7:54=E2=80=AFPM Mina Almasry <almasrymina@googl=
-e.com> wrote:
-> > >
-> > > On Mon, Nov 9, 2026 at 10:33=E2=80=AFAM Stanislav Fomichev <sdf.kerne=
-l@gmail.com> wrote:
-> > > > > --- a/net/ipv4/tcp_output.c
-> > > > > +++ b/net/ipv4/tcp_output.c
-> > > > > @@ -2692,8 +2692,9 @@ static int tcp_clone_payload(struct sock *s=
-k, struct sk_buff *to,
-> > > > >                                    probe_size - len);
-> > > > >                       len +=3D todo;
-> > > > >                       skb_shinfo(to)->flags |=3D skb_shinfo(skb)-=
->flags & SKBFL_SHARED_FRAG;
-> > > > > +                     to->unreadable |=3D skb->unreadable;
-> > > > >                       if (lastfrag &&
-> > > > > -                         skb_frag_page(fragfrom) =3D=3D skb_frag=
-_page(lastfrag) &&
-> > > > > +                         skb_frag_netmem(fragfrom) =3D=3D skb_fr=
-ag_netmem(lastfrag) &&
-> > > > >                           skb_frag_off(fragfrom) =3D=3D skb_frag_=
-off(lastfrag) +
-> > > > >                                                     skb_frag_size=
-(lastfrag)) {
-> > > > >                               skb_frag_size_add(lastfrag, todo);
-> > > >
-> > > > From [0]:
-> > > >
-> > > > Maybe easier to not merge niovs here? Add '&& !skb_frag_is_net_iov'=
- to
-> > > > that 'if (lastfrag' check? (or your new skb_has_net_iovs)
-> > > >
-> > > > Looks like it is tcp_mtu_probe path, not sure we care about merging=
- there?
-> > >
-> > > I'm guessing this is not an issue with pages because they're
-> > > PAGE_SIZE? But, seems maybe a bit lazy to just hammer all possible
-> > > net-iov coalescing? Is there a slightly cleaner and more generic chec=
-k
-> > > ( && skb_frag_size < PAGE_SIZE or something) so that we don't add
-> > > net-iov tech debt? Technically this will be an issue for hugepages in
-> > > the tx path or large folios or something.
-> > >
-> > > Also I think it belongs in your patch series maybe. That's the one
-> > > adding the large niovs :P
-> > >
-> >
-> > Actually, this comment made me realize: is the optimization that you
-> > did with net-iovs here (that's showing so much better cpu) also
-> > already implemented for pages? If not, is it possible? I don't see in
-> > theory why the userpsace can't pass in a contingious 2MB page to
-> > sendmsg() and the stack could keep it intact in 1 frag up to what the
-> > driver tx supports, no? Is it worth it making your feature generic and
-> > apply to pages too?
->
-> Based on [0] I'm thinking that I'll drop all per-frag enforcement
-> and will not add any special handing to tcp_mtu_probes. Looks like
-> the drivers are expected to handle large frags (if they advertise
-> large tso) or have a [1]-like segmentation fallback signal to the stack..
->
-> And yes, regular msg_zerocopy path already merges pages so this is
-> not niov specific.
->
-> 0: https://lore.kernel.org/netdev/20261105222058.944293-1-sdf@fomichev.me=
-/T/#m169832053b43604b0c5df7f7b1d04e9d4f390cbc
-> 1: https://lore.kernel.org/netdev/20261105222058.944293-1-sdf@fomichev.me=
-/T/#mb6e882ab1aecd6c15552773653301cc235b987d8
+On Wed, Nov 11, 2026 at 04:21:44PM +0100, Pablo Neira Ayuso wrote:
+> Hi,
+> 
+> Would you give a try to this attached patch?
 
-Thank you sir, I think I'll carry out another iteration with the other
-comments addressed. Thank you for the review! Lets try to avoid these
-net-iov checks when it's not something actually net-iov specific like
-a kmap or something.
+I forgot you provided a reproducer, I can see one packet is lost after
+this patch, then the follow up packets don't get blockholed.
 
---=20
-Thanks,
-Mina
+Let me revisit this again.
+
+> Thanks.
+> 
+> On Mon, Nov 09, 2026 at 09:26:55PM +0000, John wrote:
+> > Hi,
+> > 
+> > Since commit b5964aac51e0 ("netfilter: flowtable:
+> > consolidate xmit path"), a flow offloaded with
+> > FLOW_OFFLOAD_XMIT_NEIGH keeps being forwarded with
+> > destination MAC 00:00:00:00:00:00 after the next hop's
+> > neighbour entry has been removed. Nothing resolves the next
+> > hop again, so the flow stays black-holed for as long as it
+> > keeps sending.
+> > 
+> > Before that commit the XMIT_NEIGH case called neigh_xmit(),
+> > which creates the entry if needed, sends a solicitation and
+> > queues the packet. Now nf_flow_offload_ipv6_hook() does
+> > 
+> > 	neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(...));
+> > 	if (IS_ERR(neigh)) { ... }
+> > 	xmit.dest = neigh->ha;
+> > 
+> > and passes the skb to dev_queue_xmit() through
+> > nf_flow_queue_xmit(), without looking at neigh->nud_state.
+> > When ip_neigh_gw6() has just created the entry, ha is all
+> > zeros, and since the neighbour output path is never used, no
+> > solicitation goes out and the entry stays unresolved. The
+> > IPv4 branch has the same construction with ip_neigh_gw4().
+> > In v7.4-rc2 the code has moved into the per-family xmit
+> > functions but is otherwise unchanged.
+> > 
+> > This hit a router here running 6.18.60, which has
+> > b5964aac51e0 as a stable backport. A WireGuard endpoint
+> > behind the router talks to nothing else through it, so its
+> > neighbour entry on the router aged out while the tunnel's
+> > flow was offloaded, and the endpoint's handshake retries
+> > every 5 s kept the flow alive. On the router's egress
+> > interface every forwarded packet of the flow then looked
+> > like this (addresses replaced):
+> > 
+> >   02:0e:bd:92:63:28 > 00:00:00:00:00:00,
+> >   ethertype IPv6 (0x86dd), length 154:
+> >   2001:db8:1::51.60161 > 2001:db8:2::1f.59320:
+> >   UDP, length 92
+> > 
+> > "ip -6 neigh" had no entry for the destination, conntrack
+> > showed the flow as [OFFLOAD], and deleting the conntrack
+> > entry restored the tunnel until the next time the entry aged
+> > out, a few minutes later. Going back to 6.12.115 on the same
+> > router fixed it.
+> > 
+> > The script below reproduces it with three network namespaces
+> > and no special hardware (IPv6 only, needs iproute2, nft and
+> > python3). The server has a permanent entry for the router,
+> > so the router only knows the server from its own resolution.
+> > The flow is offloaded while the router has no valid entry
+> > for the server, which gives XMIT_NEIGH, and once it is
+> > offloaded the script removes the router's entry again, which
+> > is what neighbour GC does to an idle STALE entry.
+> > 
+> > 6.18.60:
+> > 
+> >   flow: [OFFLOAD]
+> >   entry: fd00:2::2 lladdr a2:5b:b4:93:86:a9 REACHABLE
+> >   entry removed, flow offloaded
+> >   2 s later:
+> >   echoes: 7 ok, 11 lost
+> >   destination MAC of echoes to the server:
+> >        10 00:00:00:00:00:00
+> >         7 a2:5b:b4:93:86:a9
+> > 
+> > 6.12.116 (Debian 6.12.116+deb13):
+> > 
+> >   flow: [OFFLOAD]
+> >   entry: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
+> >   entry removed, flow offloaded
+> >   2 s later: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
+> >   echoes: 17 ok, 1 lost
+> >   destination MAC of echoes to the server:
+> >        18 de:9b:d1:db:19:4c
+> > 
+> > (Datagram 0 is lost on both kernels, during start-up.)
+> > 
+> > I have not run the reproducer on mainline. I compared the
+> > code in v7.4-rc2 instead, and the IPv4 path is untested.
+> > 
+> > I don't know this code well enough to say which fix you
+> > would want. Handing the packet to neigh_xmit() when the
+> > entry is not NUD_VALID would restore the old behaviour for
+> > that case, and tearing the flow down would also work, since
+> > the next packet would then take the classic path and resolve
+> > the neighbour. I can test a patch on the router or with the
+> > script.
+> > 
+> > #regzbot introduced: b5964aac51e0
+> > 
+> > --- reproducer ---
+> > 
+> > #!/bin/bash
+> > # Flowtable XMIT_NEIGH flow forwarded to 00:00:00:00:00:00
+> > # after the next hop's neighbour entry goes away. Needs
+> > # root, iproute2, nft and python3.
+> > #
+> > # Namespaces c (client), r (router with a flowtable) and s
+> > # (server). The server has a permanent entry for the
+> > # router, so it never solicits and the router only knows
+> > # the server from its own resolution. The flow is set up
+> > # before the flow-add rule exists, the router's entry for
+> > # the server is removed, and only then is the rule added:
+> > # the flow is offloaded while the next hop has no valid
+> > # entry, which gives XMIT_NEIGH. Once it is offloaded the
+> > # entry is removed again, as neighbour GC does with an
+> > # idle STALE entry.
+> > set -u
+> > P=ftrepro
+> > W=$(mktemp -d)
+> > E() { local ns=$1; shift; ip netns exec "$P-$ns" "$@"; }
+> > cleanup() {
+> >   for j in $(jobs -p); do kill "$j" 2>/dev/null; done
+> >   for n in c r s; do ip netns del "$P-$n" 2>/dev/null; done
+> >   rm -rf "$W"
+> > }
+> > trap cleanup EXIT
+> > trap 'exit 1' INT TERM
+> > 
+> > for n in c r s; do ip netns add "$P-$n"; done
+> > ip link add rc netns "$P-r" type veth \
+> >   peer name c0 netns "$P-c"
+> > ip link add rs netns "$P-r" type veth \
+> >   peer name s0 netns "$P-s"
+> > for n in c r s; do E $n ip link set lo up; done
+> > E c ip link set c0 up
+> > E r ip link set rc up
+> > E r ip link set rs up
+> > E s ip link set s0 up
+> > E c ip -6 addr add fd00:1::2/64 dev c0 nodad
+> > E r ip -6 addr add fd00:1::1/64 dev rc nodad
+> > E r ip -6 addr add fd00:2::1/64 dev rs nodad
+> > E s ip -6 addr add fd00:2::2/64 dev s0 nodad
+> > E c ip -6 route add default via fd00:1::1
+> > E s ip -6 route add default via fd00:2::1
+> > RMAC=$(E r cat /sys/class/net/rs/address)
+> > E s ip -6 neigh replace fd00:2::1 lladdr "$RMAC" \
+> >   dev s0 nud permanent
+> > E r sysctl -qw net.ipv6.conf.all.forwarding=1
+> > E r nft -f - <<'NFT'
+> > table inet t {
+> >   flowtable f {
+> >     hook ingress priority 0; devices = { rc, rs };
+> >   }
+> >   chain fw {
+> >     type filter hook forward priority 0; policy accept;
+> >   }
+> > }
+> > NFT
+> > 
+> > # Client: UDP echo on port 6000.
+> > E c python3 -c '
+> > import socket
+> > s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+> > s.bind(("fd00:1::2", 6000))
+> > while True:
+> >     d, a = s.recvfrom(100)
+> >     s.sendto(d, a)
+> > ' >/dev/null 2>&1 &
+> > 
+> > # Server side of the wire: destination MAC of every echo
+> > # coming back to the server.
+> > E s python3 -c '
+> > import socket, sys
+> > r = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
+> >                   socket.htons(3))
+> > r.bind(("s0", 0))
+> > f = open(sys.argv[1], "w")
+> > port = (5000).to_bytes(2, "big")
+> > while True:
+> >     p = r.recv(2048)
+> >     # IPv6, next header UDP, destination port 5000
+> >     if p[12:14] == b"\x86\xdd" and p[20] == 17 \
+> >             and p[56:58] == port:
+> >         f.write(p[0:6].hex(":") + "\n")
+> >         f.flush()
+> > ' "$W/wire.log" >/dev/null 2>&1 &
+> > sleep 1
+> > 
+> > # Server: one datagram a second to the client, port 5000.
+> > E s python3 -c '
+> > import socket, time, sys
+> > c = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+> > c.bind(("fd00:2::2", 5000))
+> > c.settimeout(0.8)
+> > f = open(sys.argv[1], "w")
+> > for i in range(18):
+> >     t = time.time()
+> >     c.sendto(str(i).encode(), ("fd00:1::2", 6000))
+> >     try:
+> >         c.recvfrom(100)
+> >         f.write("%d ok\n" % i)
+> >     except socket.timeout:
+> >         f.write("%d lost\n" % i)
+> >     f.flush()
+> >     time.sleep(max(0, 1.0 - (time.time() - t)))
+> > ' "$W/server.log" >/dev/null 2>&1 &
+> > SV=$!
+> > 
+> > sleep 4
+> > E r ip -6 neigh del fd00:2::2 dev rs
+> > E r nft add rule inet t fw ct state established \
+> >   meta l4proto udp flow add @f
+> > sleep 3
+> > FLOW=$(E r grep -o '\[OFFLOAD\]' /proc/net/nf_conntrack |
+> >   head -1)
+> > echo "flow: $FLOW"
+> > echo "entry: $(E r ip -6 neigh show fd00:2::2 dev rs)"
+> > E r ip -6 neigh del fd00:2::2 dev rs &&
+> >   echo "entry removed, flow offloaded"
+> > sleep 2
+> > echo "2 s later: $(E r ip -6 neigh show fd00:2::2 dev rs)"
+> > wait $SV
+> > echo "echoes: $(grep -c ok "$W/server.log") ok," \
+> >   "$(grep -c lost "$W/server.log") lost"
+> > echo "destination MAC of echoes to the server:"
+> > sort "$W/wire.log" | uniq -c
+> > 
+> > Thanks,
+> > John
+> > 
+
+> diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+> index 19cafae748ab..73f49dc41157 100644
+> --- a/net/netfilter/nf_flow_table_ip.c
+> +++ b/net/netfilter/nf_flow_table_ip.c
+> @@ -873,7 +873,8 @@ static int nf_flow_queue_xmit4(struct sk_buff *skb,
+>  			return NF_DROP;
+>  		}
+>  		neigh = ip_neigh_gw4(rt->dst.dev, rt_nexthop(rt, ip_addr->ip));
+> -		if (IS_ERR(neigh)) {
+> +		if (IS_ERR(neigh) ||
+> +		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+> @@ -1202,7 +1203,8 @@ static int nf_flow_queue_xmit6(struct sk_buff *skb,
+>  			return NF_DROP;
+>  		}
+>  		neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(rt, &ip_addr->in6));
+> -		if (IS_ERR(neigh)) {
+> +		if (IS_ERR(neigh) ||
+> +		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+
