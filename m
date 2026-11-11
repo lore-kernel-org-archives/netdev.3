@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794390786;
-	b=RL595cG/S+TI/dEAWeKbGoWLBCvFY3wcJDKZbkSJ5cmFC9gS/L61k609wfDUk1OxWubk
-	 gRuWhKIQ69ZwPGQM1pZmd5vGaBRKbdKU/FKyQrbYqlEhGJVru7CTYH6Zl//9UegymTGfL
-	 KZvkX/dIJfdsX0a1Y25GiLRnRCoSKtMi99ulp/b5fz2NTB4+5m1t4xtlJfRm6OIg6piAg
-	 X2syuGHxwDL4XydcjLU4FK4v4kH1bNuV6a474D6EQfN8gzuPTqWmjz1iWSmUVZQECD4dD
-	 mJcZ8sd5CfX8vZaHLNAccTO1J5XZK94FzDEg72GbtZF8e5M+bk50FLp9XU7nu0Lb5Bw==
+	t=1794390788;
+	b=JTl87YAadoP5ffBHXTeycP56DTRo/3Ch6Sca7QNV/YDDP0HwFUXr7wrT77cfO8cU2YP3
+	 y5Za3rp24i6FDrPcmyV9F/Ryu1CoN5KkOhan14M68sevV97Uu2mh1CU9zgccwknbJnv+i
+	 2RgHuFXWCkTzMQJKZXE/pmpclQDTt4iEScDIZCgTjT64UiPfCdNn7puyz9PRXqPzASb+c
+	 hFlCeDO3KYxbf3QAnsKhwYvBg1kDs5UCexh58tswFx7ZLRqjiWA9cJ/Mt633seipUMhly
+	 MwaglZWPTVvn2UTWfwx5TrQlcjzd1XoL/XmLbF5r8mY418kog0U2S8WO8AlZz38+tXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794390786;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794390788;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=XT6BWjf3e2H2CZG/NlymA92TO1byQpSSnVJi47YMPVw=;
-	b=WZfiFeBPQJafZCGOsMsU0b82iDYbXZtwKcM/1SMliSobkFsCcYAuaFXaa+EE3VKtTuGC
-	 dnHNHaRcgB2NoONUNv4REsINyAtQLRcPHQ16hV40zuqekcZbvngznX9YVaeF/Tn8+YeBE
-	 pseP24hwb0m7KAWuT2m/K4bJDbpwmrdp07aNYwvGA+4/ieQI8ENjO/A+pTNYf7+7QETon
-	 3NNYMkSlVsoVzynyz1JljaKDfLrfSDGLLMaKSO3j08tavL7n5EhsueyWiUoNLAHxbC0Sm
-	 0/OlnVusMMSSduEv2B9wpgeJtHCjaG5m8QDBwKad6ONYmsZgmD8nPcqdsgOSraO3ltw==
+	bh=1OpQaokwsZd+EP/gZa6oq3QOJAqakPc+BtVDgkSa06E=;
+	b=j0L6wlQ5bs4Vr0nIEskUR26EOoViQ92gUi1B29KLpH1MMfRVK1xqKTAzf2OgL+x88AR7
+	 WQx7WFbVQV06OLxHTIwCjVht5Jv0U0NXrOx6FGdqwOLZQnuIh0lCBgBWGdaga0vbghPL2
+	 MRYVe07CkOSGvqxipR1ZWQ/Wi5S5G4cNnhDp9eUxqLRf3ryjEj6QvbwvwvJstPGgb8GSy
+	 bOxs3DBU9iF7oWvazcTsKRNpj/ehDDTkDB+X87v5/Hb3xz1Cd6tAe/0/4Eb0/FRYEOzGr
+	 lA5lFDA4gkmUxzcz92Fx/BtOPaTwIHn/2G/7VyqvvSbwmbdLgkybKllfz+DnOIOKknQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Edvf/VAz";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QM3jvUhq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467BF606A33B;
-	Wed, 11 Nov 2026 09:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B457760A2634;
+	Wed, 11 Nov 2026 09:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Edvf/VAz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8624D1F00A09;
-	Wed, 11 Nov 2026 09:53:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QM3jvUhq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6611F00A06;
+	Wed, 11 Nov 2026 09:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794390785;
-	bh=XT6BWjf3e2H2CZG/NlymA92TO1byQpSSnVJi47YMPVw=;
+	s=k20260515; t=1794390788;
+	bh=1OpQaokwsZd+EP/gZa6oq3QOJAqakPc+BtVDgkSa06E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Edvf/VAzHbtYaB6SGLqNNuQrY6tn2AxZui0ULEp46nZrw4K3zZk9Wu6J4oQsRvuPf
-	 TVUEnJ44FOaTXZWgB7PMlbbkrnLSq5ulB+MOuffoMo+m93hsJiQ0CBT2wN6GwYSW0R
-	 ym+Z+mITLcZEE84igwJOXX5sScBa2MDCBqPC9SCjKxBuxXs9SzgUlMSA9Pn10senYg
-	 F/rWKYIRZdflDZyjj5V8A6S5aBr2KxFNeUvtRlDFm2ZIU++Z9EXBi6PwlRdcD8+lxS
-	 HbV+AY1bfvxBgM7TT1r9gG7PXwpwNJEFABMlwmTE1q/d22XSCVt7itKVw93iPu1ZBs
-	 +bayyvWeaJX4g==
+	b=QM3jvUhqqJme0UNb7iifUxF+dUAX3ppWHgI+wnedSvwyCS5Ncm0+F7G3BY2TEht3y
+	 O2gpheBKWOjL/8r6KLhJ8lEkMcuGfatMpKXAbKDu/t38qXDxlMWrbNWHBmbJfhHJfH
+	 /hswm7fZT44kyzIkkZzU2O/103zTue9oigkrLqnm+vGyKO6M5fgltVbcrR08zedhwO
+	 LIITz4aaQOUSjcgN7oRkzTQRYnvp4HAv+2m4DdJkzo+mNsHlna9KwbdeDb3O1FUsEr
+	 u8vtYdZYphijRNgnVdK7G82rSJ9nO7ck4CKnEk5k/QlF+DTH5nA+XCD3FfyqAT0TMT
+	 FRuONH1nuQpjQ==
 From: Imre Kaloz <kaloz@kernel.org>
 To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	netdev@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-mips@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/2] net: sgi: ioc3-eth: apply the DMA attributes only to 64-bit addresses
-Date: Wed, 11 Nov 2026 10:51:37 +0100
-Message-ID: <20261111095138.1757-2-kaloz@kernel.org>
+Subject: [PATCH net-next 2/2] net: sgi: ioc3-eth: fall back to the platform MAC address
+Date: Wed, 11 Nov 2026 10:51:38 +0100
+Message-ID: <20261111095138.1757-3-kaloz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261111095138.1757-1-kaloz@kernel.org>
 References: <20261111095138.1757-1-kaloz@kernel.org>
@@ -66,75 +66,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A Bridge 64-bit direct-mapped DMA address carries the target widget and
-the DMA attributes. An address in the 2GB 32-bit direct window carries
-neither, so attributes OR-ed onto one aim it at widget 0, and every
-receive raises a PCI error.
-
-Apply them, and the RX barrier's upper address bits, only to 64-bit
-addresses. IP27 and IP30 give the IOC3 64-bit addresses; behind an
-XBridge or PIC it can use the window.
+The IOC3 on Fuel's system board has no MAC PROM on its 1-wire bus, so
+ioc3eth_get_mac_addr() cannot succeed there and the probe defers for
+ever. Ask eth_platform_get_mac_address() before deferring, so a platform
+that knows the address can supply it. Once deferred probing gives up
+with neither source answering, use a random address.
 
 Signed-off-by: Imre Kaloz <kaloz@kernel.org>
 ---
-Previously posted as 25/53 of the IP35 series v2: https://lore.kernel.org/all/cover.1791890466.git.kaloz@kernel.org/
+Previously posted as 38/53 of the IP35 series v2: https://lore.kernel.org/all/cover.1791890466.git.kaloz@kernel.org/
 
- drivers/net/ethernet/sgi/ioc3-eth.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/sgi/ioc3-eth.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
-index 009f37105eaf..25139cf5ff62 100644
+index 25139cf5ff62..5296614bf3fb 100644
 --- a/drivers/net/ethernet/sgi/ioc3-eth.c
 +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
-@@ -152,19 +152,37 @@ static inline int ioc3_alloc_skb(struct ioc3_private *ip, struct sk_buff **skb,
- }
- 
- #ifdef CONFIG_PCI_XTALK_BRIDGE
-+/* A Bridge 64-bit direct-mapped DMA address carries the target widget in
-+ * bits 63:60 and the DMA attributes below it.  An address in the 32-bit
-+ * direct window carries neither, so attributes OR-ed onto one form a
-+ * 64-bit address aimed at widget 0.
-+ */
- static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
+@@ -847,6 +847,7 @@ static int ioc3eth_probe(struct platform_device *pdev)
  {
-+	if (!(addr & PCI64_ATTR_TARG_MASK))
-+		return addr;
+ 	u32 sw_physid1, sw_physid2, vendor, model, rev;
+ 	struct ioc3_private *ip;
++	bool random_mac = false;
+ 	struct net_device *dev;
+ 	struct resource *regs;
+ 	u8 mac_addr[6];
+@@ -857,9 +858,16 @@ static int ioc3eth_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "Invalid resource\n");
+ 		return -EINVAL;
+ 	}
+-	/* get mac addr from one wire prom */
+-	if (ioc3eth_get_mac_addr(regs, mac_addr))
+-		return -EPROBE_DEFER; /* not available yet */
++	/* get mac addr from one wire prom, or from the platform */
++	if (ioc3eth_get_mac_addr(regs, mac_addr) &&
++	    eth_platform_get_mac_address(&pdev->dev, mac_addr)) {
++		err = driver_deferred_probe_check_state(&pdev->dev);
++		if (err == -EPROBE_DEFER)
++			return err; /* not available yet */
 +
- 	return (addr & ~PCI64_ATTR_BAR) | attr;
- }
++		dev_warn(&pdev->dev, "no MAC address, using a random one\n");
++		random_mac = true;
++	}
  
--#define ERBAR_VAL	(ERBAR_BARRIER_BIT << ERBAR_RXBARR_SHIFT)
-+/* The RX barrier's upper address bits follow the same form. */
-+static inline u32 ioc3_erbar(dma_addr_t addr)
-+{
-+	if (!(addr & PCI64_ATTR_TARG_MASK))
-+		return 0;
-+
-+	return ERBAR_BARRIER_BIT << ERBAR_RXBARR_SHIFT;
-+}
- #else
- static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
- {
- 	return addr;
- }
+ 	dev = alloc_etherdev(sizeof(struct ioc3_private));
+ 	if (!dev)
+@@ -938,7 +946,10 @@ static int ioc3eth_probe(struct platform_device *pdev)
  
--#define ERBAR_VAL	0
-+static inline u32 ioc3_erbar(dma_addr_t addr)
-+{
-+	return 0;
-+}
- #endif
+ 	ioc3_mii_start(ip);
+ 	ioc3_ssram_disc(ip);
+-	eth_hw_addr_set(dev, mac_addr);
++	if (random_mac)
++		eth_hw_addr_random(dev);
++	else
++		eth_hw_addr_set(dev, mac_addr);
  
- static int ioc3eth_nvmem_match(struct device *dev, const void *data)
-@@ -727,7 +745,7 @@ static void ioc3_init(struct net_device *dev)
- 	readl(&regs->emcr);
- 
- 	/* Misc registers  */
--	writel(ERBAR_VAL, &regs->erbar);
-+	writel(ioc3_erbar(ip->rxr_dma), &regs->erbar);
- 	readl(&regs->etcdc);			/* Clear on read */
- 	writel(15, &regs->ercsr);		/* RX low watermark  */
- 	writel(0, &regs->ertr);			/* Interrupt immediately */
+ 	/* The IOC3-specific entries in the device structure. */
+ 	dev->watchdog_timeo	= 5 * HZ;
 -- 
 2.47.3
 
