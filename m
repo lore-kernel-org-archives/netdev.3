@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794392863;
-	b=WCXiLXEk1Afw2j/95arYRPKQrmeuqKliYxddJjTVHgFj0zJV4c2BovHu/8bhzxu6fvyS
-	 3vKyaXsz38se3JdEokg2EClDOW/IBi5F4Fimq/6MGq2kZlrEvXGfKNOZnd4vAr4W0yOQp
-	 NDWE/quZPU5vVblN4bTAm+M7aEJwaqDGnj5YtPY5LjegwekAAWXzLBoRyW6uuZPbhKG4n
-	 BL/KETZv/GpM/UL2/MAAFSHFMlKYwZ+cWnlaCbVC7L0s9ZU8FAI5Nk4e6sYvB3HVFMNVF
-	 qbsAHbZr8VrVtPOBg1CT1VoOt1nPts5TXtqtT99ZHrfDUpRNSWJAAYE/vKNuj9FalHQ==
+	b=c7sZqCE5u0J9in6zzyxDptAZ8G4/7Yn0xhHT11UrOq8kQeLvq+/4mDvEosEf2lcJ4qH2
+	 qiqZokoKZrYvewCn6SJt3ETQsWmMbPUgDpsGuCmxuRoTf0Kk7t3eI7fnGIxDc8z1KoStw
+	 HDkUP83GhDKdgtvKSiYbYCH2aOva6WUP3VWTqfJxV1oFN4qkVM1pToPU5AI0G87Xn1x0b
+	 WZSkPqosdr4L4GHDFqGqOpBj8UiIe5GL8y+G/8kjKu+1J/lgewnPXaEu84Rjr5Bb+sxvZ
+	 gySjx3Ikj7QLu7ffCk/cQBrOeV/EBFxSpnXy6X1hoC0a9u1rWjBA5ElghBF5DfTFaxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794392863;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=kqq7QJp+oe/MI0HfV6CR+NZX7tzpT/m/ilc9QLSDs5s=;
-	b=IiDXBgoV/CKcj2QMvr28yn53vQYezYjA/QxaC2uspw05K0WfB/lHC1EoLq/F8kZsgvLN
-	 yBOVwjVSH1Nabw/fUU5jUq0Ep1skaGe9vCgtdFv6He9UKSes1T1Be8II7UcofVWDfE/uM
-	 j/CmFl9KIfy6uX5hvJwvapYpgyUJkA7RcZeTVuWw9REqInGdykaZXJ6HzOtUgUWSUqtXp
-	 FyhvkTfivrx8ojfh5Bycwh7FEukXjG9VrRK5Wy8lkSI/lj8RNtWAs24O4an8kZMtzHxS9
-	 ZZBjb5KgtX0uN1CJuCh9r15UT0xt4SE+W0nIy4BF7C+qsuptq65vEgeKbJdzJHFbsbA==
+	bh=k0B3UfgQB/D8vYRdJmCukT9HrfQad+gn9eBgWfJ7V6I=;
+	b=BavgekzK+73gpEvJLYjczljjVcteoQkkY2lbwSANDVhEIgaoV0BKDWK594IUYRvRZyBx
+	 m+hpKx5nbmh24meDhxA8Q7txSQqJSigzuuk5Nf1/kmy9zDDpbPKl0XQ16WWEpna50faHc
+	 nnqXd5X9By0gVUyid/pGCG6C98L+bJk9obp4HJQ/NiBXUYFl9AfO7QhIiziK8GKrrWNzQ
+	 M93T/JofeXU27KR0WN50Ythz0GrZ3oqUeLmjS2ozyTQRaxpJw1u8qC56LR2BpKhMIk+i9
+	 Q11699QfJzHUqYhdCu6I/591SMdzjmIld8ytUbiFra6RL+ERIIv8K06zb1ujjAsVyKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=TeFlIHpr;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=rP54EsoB;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 49857606A8B7
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 5F55F606A8BA
 	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49857606A8B7
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F55F606A8BA
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=TeFlIHpr
-Received: from kero.packetmixer.de (p200300c59740deD843Be7e4A980e9c65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=rP54EsoB
+Received: from kero.packetmixer.de (p200300c59740deD843bE7e4A980e9c65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 9989BFA2EE;
-	Wed, 11 Nov 2026 11:27:39 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 9241BFA2F1;
+	Wed, 11 Nov 2026 11:27:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1794392859;
+	s=09092022; t=1794392861;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kqq7QJp+oe/MI0HfV6CR+NZX7tzpT/m/ilc9QLSDs5s=;
-	b=TeFlIHprzFyctCW3axtbf2Gixwcf3JCP4TRZSvCpNvBghbp4Izq8M+c5I0lJs8kGkjGipH
-	+5YV+tvs4vTslxT/jFLz45Jxuj8/3fUiqzvJi8ToUd0uFMcTmKkApCxamSMVRL2gS2ZjGp
-	1aticfZRQRIiiADc7YimhHjYbBn4SYeXAqaBbFjk63pOkJS5TNXLi7AZM8mW3jXvUAlbfF
-	/xN7itJroOL0+mZQ+O/t8wK1XZMkmFhuJLhPsqntqksjzeAf/RP9uw3NZHQxfHdZlF1mnJ
-	k2rqBPXo0iY4kK+UqdBoIZpVtzzl8UeivxbQ64f5yGlnuS3OXXItghHpG2/nJQ==
+	bh=k0B3UfgQB/D8vYRdJmCukT9HrfQad+gn9eBgWfJ7V6I=;
+	b=rP54EsoBoKySbRouSkdQwtz/NnxKTDKb/tdp3ZVF5VMUkxro3oiGoLu5ToDuLpzgOi1vwM
+	CFP7KJSLqboDYHsmZl8IYXYRNi4uk5np5zQHLQZl09r4PGf/7id0DFIqoE9v3ztvtvy48C
+	yMzRhWMXn+tu3X6w28boyPK50vU++4qLlaMjGhvJYOVdq2RJ4wCESjKv/S+QPFM7zL/9xQ
+	1flOBQs/POKUEurdN4UjbvuZhwvQE6lYvBtWyeYYQ7+9ZCXpN4rk5bmnwhS1kjvxCmxvzy
+	NbD9vcVfx6vZjA/NYgxneHDWKcyPJhMfLqn2QJp53MDyh016ouFaKYnKnfBsng==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -61,9 +61,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 11/15] batman-adv: annotate hardif_neigh_node last_seen with READ/WRITE_ONCE
-Date: Wed, 11 Nov 2026 11:27:25 +0100
-Message-ID: <20261111102729.2096241-12-sw@simonwunderlich.de>
+Subject: [PATCH net-next 14/15] batman-adv: use bool for boolean flags
+Date: Wed, 11 Nov 2026 11:27:28 +0100
+Message-ID: <20261111102729.2096241-15-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261111102729.2096241-1-sw@simonwunderlich.de>
 References: <20261111102729.2096241-1-sw@simonwunderlich.de>
@@ -80,94 +80,99 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The last_seen field for batadv_hardif_neigh_node tracks the jiffies value
-of the most recent activity and is used to detect timeouts. These accesses
-are not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be
-used to prevent data races caused by compiler optimizations.
+A few flags are stored in int or u8 although they only ever hold true or
+false:
 
-To avoid an underflow due to an non-strict order read of jiffies vs
-last_seen, use jiffies_delta_to_msecs instead of jiffies_to_msecs to
-evaluate the delta.
+* the own_packet parameter of the B.A.T.M.A.N. IV OGM queueing functions
+* batadv_forw_packet::own, whose kerneldoc already calls it a bool
+* is_old_ttvn in batadv_check_unicast_ttvn(), which stores the result of
+  batadv_seq_before()
+
+Use bool for them, and pass true/false instead of 1/0.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/bat_iv_ogm.c | 6 ++++--
- net/batman-adv/bat_v.c      | 4 +++-
- net/batman-adv/bat_v_elp.c  | 2 +-
- net/batman-adv/originator.c | 2 +-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ net/batman-adv/bat_iv_ogm.c | 10 +++++-----
+ net/batman-adv/routing.c    |  2 +-
+ net/batman-adv/types.h      |  2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index d4b6c09db8c7d..4e15af1e245a5 100644
+index 9e529215a7908..0b2134a8f963a 100644
 --- a/net/batman-adv/bat_iv_ogm.c
 +++ b/net/batman-adv/bat_iv_ogm.c
-@@ -1569,7 +1569,7 @@ batadv_iv_ogm_process_per_outif(const struct sk_buff *skb, int ogm_offset,
- 		hardif_neigh = batadv_hardif_neigh_get(if_incoming,
- 						       ethhdr->h_source);
- 		if (hardif_neigh)
--			hardif_neigh->last_seen = jiffies;
-+			WRITE_ONCE(hardif_neigh->last_seen, jiffies);
- 	}
- 
- 	router = batadv_orig_router_get(orig_node, if_outgoing);
-@@ -2287,9 +2287,11 @@ batadv_iv_ogm_neigh_dump_neigh(struct sk_buff *msg, u32 portid, u32 seq,
- 			       struct batadv_hardif_neigh_node *hardif_neigh)
+@@ -623,7 +623,7 @@ static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 					bool direct_link,
+ 					struct batadv_hard_iface *if_incoming,
+ 					struct batadv_hard_iface *if_outgoing,
+-					int own_packet)
++					bool own_packet)
  {
- 	unsigned int last_seen_msecs;
-+	unsigned long last_seen;
- 	void *hdr;
- 
--	last_seen_msecs = jiffies_to_msecs(jiffies - hardif_neigh->last_seen);
-+	last_seen = READ_ONCE(hardif_neigh->last_seen);
-+	last_seen_msecs = jiffies_delta_to_msecs(jiffies - last_seen);
- 
- 	hdr = genlmsg_put(msg, portid, seq, &batadv_netlink_family,
- 			  NLM_F_MULTI, BATADV_CMD_GET_NEIGHBORS);
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 2679090c3368b..bd2bf2b58635e 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -161,10 +161,12 @@ batadv_v_neigh_dump_neigh(struct sk_buff *msg, u32 portid, u32 seq,
- 			  struct batadv_hardif_neigh_node *hardif_neigh)
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->mesh_iface);
+ 	struct batadv_forw_packet *forw_packet_aggr;
+@@ -716,7 +716,7 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 				    int packet_len,
+ 				    struct batadv_hard_iface *if_incoming,
+ 				    struct batadv_hard_iface *if_outgoing,
+-				    int own_packet, unsigned long send_time)
++				    bool own_packet, unsigned long send_time)
  {
- 	unsigned int last_seen_msecs;
-+	unsigned long last_seen;
- 	u32 throughput;
- 	void *hdr;
+ 	/* _aggr -> pointer to the packet we want to aggregate with
+ 	 * _pos -> pointer to the position in the queue
+@@ -843,7 +843,7 @@ static void batadv_iv_ogm_forward(struct batadv_orig_node *orig_node,
  
--	last_seen_msecs = jiffies_to_msecs(jiffies - hardif_neigh->last_seen);
-+	last_seen = READ_ONCE(hardif_neigh->last_seen);
-+	last_seen_msecs = jiffies_delta_to_msecs(jiffies - last_seen);
- 	throughput = ewma_throughput_read(&hardif_neigh->bat_v.throughput);
- 	throughput = throughput * 100;
+ 	batadv_iv_ogm_queue_add(bat_priv, (unsigned char *)batadv_ogm_packet,
+ 				BATADV_OGM_HLEN + tvlv_len,
+-				if_incoming, if_outgoing, 0,
++				if_incoming, if_outgoing, false,
+ 				batadv_iv_ogm_fwd_send_time());
+ }
  
-diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
-index cf84aed0c947e..144bb30d608a8 100644
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -534,7 +534,7 @@ static void batadv_v_elp_neigh_update(struct batadv_priv *bat_priv,
+@@ -955,7 +955,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		 * respective interfaces.
+ 		 */
+ 		scheduled = batadv_iv_ogm_queue_add(bat_priv, ogm_buff->buf, ogm_buff->len,
+-						    hard_iface, hard_iface, 1, send_time);
++						    hard_iface, hard_iface, true, send_time);
+ 		if (!scheduled)
+ 			reschedule = true;
  
- 	last_seen = jiffies;
- 	WRITE_ONCE(neigh->last_seen, last_seen);
--	hardif_neigh->last_seen = last_seen;
-+	WRITE_ONCE(hardif_neigh->last_seen, last_seen);
- 	hardif_neigh->bat_v.elp_latest_seqno = ntohl(elp_packet->seqno);
- 	hardif_neigh->bat_v.elp_interval = ntohl(elp_packet->elp_interval);
+@@ -972,7 +972,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
  
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 352a88056e334..0f47ac3ecc967 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -587,7 +587,7 @@ batadv_hardif_neigh_create(struct batadv_hard_iface *hard_iface,
- 	ether_addr_copy(hardif_neigh->addr, neigh_addr);
- 	ether_addr_copy(hardif_neigh->orig, orig_node->orig);
- 	hardif_neigh->if_incoming = hard_iface;
--	hardif_neigh->last_seen = jiffies;
-+	WRITE_ONCE(hardif_neigh->last_seen, jiffies);
+ 		scheduled = batadv_iv_ogm_queue_add(bat_priv, ogm_buff->buf,
+ 						    ogm_buff->len, hard_iface,
+-						    tmp_hard_iface, 1, send_time);
++						    tmp_hard_iface, true, send_time);
+ 		batadv_hardif_put(tmp_hard_iface);
  
- 	kref_init(&hardif_neigh->refcount);
+ 		if (!scheduled && tmp_hard_iface == hard_iface)
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 79fad88cd039c..e2951bf047024 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -891,7 +891,7 @@ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
+ 	struct batadv_orig_node *orig_node;
+ 	struct ethhdr *ethhdr;
+ 	unsigned short vid;
+-	int is_old_ttvn;
++	bool is_old_ttvn;
+ 	u8 curr_ttvn;
+ 	u8 old_ttvn;
  
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 0fece14c7e7f8..b3edfc71af4a7 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -2047,7 +2047,7 @@ struct batadv_forw_packet {
+ 	 * @own: bool for locally generated packets (local OGMs are re-scheduled
+ 	 * after sending)
+ 	 */
+-	u8 own;
++	bool own:1;
+ 
+ 	/** @skb: bcast packet's skb buffer */
+ 	struct sk_buff *skb;
 -- 
 2.47.3
 
