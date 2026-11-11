@@ -1,100 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.40
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794360942;
-	b=bPGknuNytzc+YplPAOGUnLTL896+ujfI7HChqU4pV8iDBRbnTcQ1WK/hwMKgPG7H69Dj
-	 Zy95DcgytSVWAWndjvahexZ0CTiGiG4YP57XGDdXhGYjvtU4CIWlBs62CqBd9QwkOh2A2
-	 NQQ4OXJuxsybxxtY0QeNavIyhwAxs9j3bkNFOrSpHoCQAknB7TF4RsZea3y5fRnyou/hf
-	 y7uS9Gv5wk0Ez8ieQGulyNmcw4cizDWRrX5dOtzbk/jV5DXNIpeAt5LeKMELu3sIks28L
-	 63l5cxXxSVu5HfXy6mIXJarBbDpa9Fmt41o4vZo4FnE1s6KB+9TFlrGFdJDrUiJ/mAw==
+	t=1794361344;
+	b=QXSP2aQsvDTVfoQQiE/d4n5l4cE3xgrnlABSOVASd0gfXlRCwlunU0BACJDTSnGIqTd3
+	 OXTns+78IyIYq6YlhkFrh9fxgAw46qOgxfulfyC9DOm2wyEFyIFY3Wf2TQME82886PU/B
+	 MK1e0H8XVGcSBC8auhg5w4BYH/oPF2oxeZP1L7ylbdQEruDV+zc6YafnjHxvmRs4RpJMe
+	 QZ328BLuXhKiD+k703k6TNU8pWJOvHrCOMSmk+zXu8Fh28ywEuIOn/XRrykRXOxehFK66
+	 lnzxWSsDqmd1xDodKjUSP/RwIT1KyN44ezZYcY5Hnfki2yDgWUPeZSidm/pj5rZEUxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794360942;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=pfQqYpokmZVzyF+aracTrgq2mm2QsLoqIsns9BsxbLs=;
-	b=JJ29FnFM7ajvdtwseC+8s4sTliXbAVW13EgD3ETZMJ2d0+jaHcynF3nU5+Viw8Y6v3pV
-	 WglvaqXcWFoMD+HB+7Wv4tEXqnKj5W/XvEbMfLquEXDlnNhfkONP1qJFlxtE2vrgIAY4Y
-	 s6a26SU2IRVnHWckvHJbp5vl1V21pIwmMJrkJHLgNsoSnwh/alP/CPkbg/ld/IwpUIwAR
-	 b5g3Ld4E4ngw/SRQUBh3zfOLZ6z17UxCKl94qmg/7Mjig5lIjduveKx63gUqLprwIIRkA
-	 6ZwDTNtHM3jTnom0apD95bqCGuInggWWa9po3p1PthH9r54+w/tYeNReY7/6itosA7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794361344;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=g3YMKqL7Zig4N1u5uNQ3udwfmaIwcfVBjpYpAiJaW48=;
+	b=k6yfz8TYtO0wu+GP6EM2lIf3heg5EurTOvmyGsCAh340O/eEPpHz0OMeaGy8jZ6Bpy4G
+	 im5zgeRmQmOuhMR/FBqOnDhbf5MqMUlhC3mlnhqVryPfuCExDmlORSEGxQyP3xklO6JxM
+	 9EExIPXXma57Z90p/VqoiKPicyFW+ebLeE5XzI/hJE9NEJ4HD4pMZygF4eEVkQmr59JmT
+	 XigZn1TsjiFWl1ADIVAuzLwvKyGLM8OFomVHs6VwihS4P751tta5TiIhg1Ht6d4OHAQLZ
+	 zDpyf69iM1/E6Ae3v2d2UBnAI8yyAUzFzBrCB9dLjs5+thkCTX8plO9mGMvjGN8/J/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gt.tech.gov.sg;
-	spf=pass smtp.mailfrom=gt.tech.gov.sg;
-	dkim=pass header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.a=rsa-sha256 header.s=google header.b=Bx+xqW+D;
-	arc=none smtp.remote-ip=74.125.82.41
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=jcbc3NCE;
+	arc=none smtp.remote-ip=195.10.208.40
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9991606A333
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 01:35:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9991606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gt.tech.gov.sg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gt.tech.gov.sg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8941F606A326;
+	Wed, 11 Nov 2026 01:42:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8941F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.a=rsa-sha256 header.s=google header.b=Bx+xqW+D
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1ae58d17cd9so2128692c88.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:35:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gt.tech.gov.sg; s=google; t=1794360941; x=1794965741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pfQqYpokmZVzyF+aracTrgq2mm2QsLoqIsns9BsxbLs=;
-        b=Bx+xqW+DV9goEpGGY/QAN0sUO8vxR2YZAfom2OG6TW9RgB6WMH5OunJGSLrsDWpWSa
-         m20S6DoegeayR1BMrWO9L6DcrlUtGBpoATX4Q6C4xa2YFTzkVWcdWjI5dViI2bcu1aQi
-         9mqL1FNImrGZ2sXzF/uXwUBiBHa9gMHCAEFd4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794360941; x=1794965741;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pfQqYpokmZVzyF+aracTrgq2mm2QsLoqIsns9BsxbLs=;
-        b=Q4d3SXc6rDuq12Ci30xe2uGQvBfqszUtuoRSKC+WiKTUvJo9G0h9cq130FPqbC0tHc
-         3rmCFxf8D9vnMwttvwEg2sfoUIiD/Vu578CvfXYHJ0TWUpZGhzujQCobh00aU2iIyKB2
-         r5PWtKGQldcX/nM1K9xLBllsWQY6WC3MBvphobjpEsdsLXxBnI399Daak8XLw353uXAU
-         1ReQiStmGvwCZuCGqhTN9gLarr7OmeR/gIKG8oYWYgokHNFDMfjFFSP1i3QIP2nWaXhL
-         +4wBsijxCO2JEtokZmxw78lMO0YqRvOuhy1YGam2YPOCW++NbXnOVV0V1DxA/M1q8WEX
-         TKtg==
-X-Forwarded-Encrypted: i=1; AL+hErGHDbnkJ3zuxFqtncAXfNUH3kzNKC1BvfxmZkHKxHTwcwfMrlfAEDiNruiWAWnyk0ZiPCewwuY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+5ylIbcID5LjyJ9ZadD/jkkXrE3bNc56o5qBXR/q9E9JwBqBFf
-	Oozm9ZMHBEVgV3m4Qn9XplWRYJ3EEAAy4Ox3WMaAeQSi/ALjumya+Rvn2y/u0X0TGeA=
-X-Gm-Gg: AYBFou3c+tLH7SBkwZ5pns2aNhMESK7ZauYFbDcG9L6MkhiJved4JP6GmRZl0Ky4g/Y
-	ZvT5G4OiDXIxFcrO0FoSZTTpUweq3pHjD4xT6E2RM80SrdqzSD9rUBFOE1BZn1zxi5HdX8EKN/G
-	fDzdVoMEA9lK/pfba32Uwv3uJwYsDxjIOduVjISXDZ8hJ30kAEBdlBjlcX8c99n+jJ8o57s6xWt
-	5Dmfr05+a8PPZ6YmT1TPS5DhFZQZ3aVNmUGDnUNXgAF+6X3ctRpdcPlKysYV0PgWFt++rUv4owo
-	EjTvLkkEj/DIit+vNwEUN/3snbS3NaB/l5egHG7l+5R1lhu3SyiwAEI2hgD5ccIlvVDpdfNyVJb
-	90dIUvQ0kNdP3/4uOwIJWczdubIuJnzPYBzmvHhiw/u5B0Cxu8U0MqIMbcwKXe6bDmIrNE1+4pd
-	7b5xQp8GBpGhc6u+UtCYd1WxxAgTJeFy7qOzpr+bYIObwTkqkuV0mVon2OzIXfSmTQpreCFQ+pV
-	gAV2+YVNVNml5g75FTzKj6JuUeUw51KVRsspGQiH0H6X5VjCM9dWxwm5nZBQ34uG7Pfcli6t1Hm
-	VbI68o1Q/G1i6/doWnhYMyUhMXi75XdaKfVFE6i0jEy1CtDDmcfMtBG13A==
-X-Received: by 2002:a05:7022:671e:b0:1a3:dbb2:478a with SMTP id a92af1059eb24-1b3c0332a06mr1071478c88.27.1794360940616;
-        Tue, 10 Nov 2026 17:35:40 -0800 (PST)
-Received: from LAPTOP-UUUVNN1I.localdomain ([129.126.57.197])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b20c55sm9696223c88.8.2026.11.10.17.35.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 17:35:40 -0800 (PST)
-From: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Woojung Huh <woojung.huh@microchip.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=jcbc3NCE
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4jPR8k6g8tzFq3n;
+	Wed, 11 Nov 2026 02:42:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794361335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=g3YMKqL7Zig4N1u5uNQ3udwfmaIwcfVBjpYpAiJaW48=;
+	b=jcbc3NCE1+Oc8wULKs2CBF/KuPayvlqKhR4DOPiHiYjyzllL+uijry5Kv8lBl9D4e7MPyi
+	aHXPrkPhtA4dwzBYNPLj3hMQdrOfi1kIfLzr2pjfEW5On/xL8HQQi7qp15Qet7TBtSAXqE
+	UtVe/HzvYMqvlNnd8Wttq5vwshTz3Hsft+HkJHYcATsHZyMuMON2S9MK3tQrDJROpmyQ/+
+	ULdYk5K4VMC1kscFTJmDGJX8Yo6GMOTTAsbXXP0BajQ3y3rJINBpo3RbLT8ETgC7BM5AQQ
+	bGPFJbk72UowPJcNqyHftxU2UGZDueJvrNJFqTRLp5wzMRImKfk6Yvu4o11TdA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+From: Antonio Quartulli <antonio@mandelbit.com>
+To: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com
+Cc: Antonio Quartulli <antonio@mandelbit.com>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	eperezma@redhat.com,
+	shuah@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	maheshb@google.com,
+	peterpenkov96@gmail.com,
 	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wei Jie Law <98lawweijie@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v5 2/2] net: usb: lan78xx: reject short register and statistics transfers
-Date: Wed, 11 Nov 2026 09:34:54 +0800
-Message-ID: <20261111013454.34542-3-law.wei.jie@gt.tech.gov.sg>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
-References: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
+	virtualization@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net v5 0/2] tun: bound the NAPI receive queue
+Date: Wed, 11 Nov 2026 02:42:01 +0100
+Message-ID: <20261111014208.1795777-1-antonio@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,69 +91,77 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4jPR8k6g8tzFq3n
 
-lan78xx_read_reg() and lan78xx_read_stats() read from the device into
-a freshly kmalloc()ed buffer, but only treat a negative return value
-from usb_control_msg() as an error. A device that answers with fewer
-bytes than requested leaves part or all of the buffer uninitialized,
-and those bytes are then used as the register value or the counters.
+With IFF_NAPI, tun queues written packets for NAPI on an unbounded
+list, which an unprivileged user can grow until the system runs out of
+memory. Patch 1 bounds it by netdev_max_backlog; patch 2 adds a
+kselftest for the vhost-net paths into that queue.
 
-Treat a short transfer as -EIO in both helpers. lan78xx_write_reg()
-does not use uninitialized data, since it fills its buffer before the
-transfer, but make it fail on a short transfer as well, so that all the
-register helpers report a partial transfer as an error.
+v5:
+- Take at most budget packets in the NAPI poll instead of keeping the
+  leftovers on a separate queue (Willem)
+- Keep only the lockless check, before allocating, also in
+  tun_xdp_one() (Willem)
+- Say that an OOM is still possible with large packets and many queues,
+  if hard to reach in practice (Sashiko)
+- selftest: little-endian ring, buffers returned in any order, lower
+  netdev_max_backlog only after setup and restore it first, any non-zero
+  experimental_zcopytx, .gitignore entry (Sashiko)
+- Rebase on net, which conflicted in selftests/net/config
 
-Found by code review with LLM assistance and reproduced with an
-emulated USB device (raw-gadget + dummy_hcd).
+v4: https://lore.kernel.org/netdev/20261103142232.1869185-1-antonio@mandelbit.com/
+- Keep the poll's leftovers on a separate queue, like process_backlog():
+  v3 did not bound the queue when the poll ran on another CPU (Sashiko)
+- Schedule NAPI when dropping: with netdev_max_backlog below
+  NAPI_POLL_WEIGHT, MSG_MORE senders (vhost-net) stalled the queue
+  (Sashiko)
+- Use goto free_skb for the locked drop (Willem)
+- Add a vhost-net kselftest (patch 2); the tun kselftest passes (Willem)
+- Cc vhost, kselftest and XDP maintainers and the Fixes author/acker
 
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
----
+v3: https://lore.kernel.org/netdev/20261031231444.1528758-1-antonio@mandelbit.com/
+- Also bound the sendmsg() paths, which share the queue: zerocopy
+  buffers are completed when dropped early, and the batched XDP buffers
+  of tun_xdp_one() are covered too (Willem)
+- Drop the IFF_NAPI_FRAGS exclusion (Willem)
+- Recheck under the queue lock before queueing (Willem)
+- Compare with > like enqueue_to_backlog() (Willem)
+- Keep the includes sorted (Willem)
+- Add the reproducer and a testing statement to the commit message
+
+v2: https://lore.kernel.org/netdev/20261030152540.1409884-1-antonio@mandelbit.com/
+- Cc netdev and the maintainers
+
+Testing, in an x86-64 VM with 1 and 2 vCPUs, on net ead744fd1ce0:
+- Reproducer from patch 1, 15 seconds, 500 and 3000 iptables rules,
+  1400 to 65000-byte packets: memory use stays flat, no OOM; forwarding
+  rate unchanged (152577 packets in 3 s without the patch, 151277 with
+  it).
+- tun_vhost (patch 2), with vhost_net experimental_zcopytx=0 and =1:
+  passes with patch 1. Without it, every variant fails (nothing is
+  dropped); removing the tun_xdp_one() check fails the batch variant,
+  removing the zerocopy completion fails the zerocopy one, and removing
+  the NAPI scheduling on drop fails the copy and zerocopy ones.
+- tun kselftest: pass:91 fail:0 xfail:12, as without the patch.
 
 Notes:
-    This patch depends on the previous one. Without it, a failed statistics
-    read would make lan78xx_update_stats() compute the counters from its
-    uninitialized on-stack buffer, so the leak would move from the heap to the
-    stack.
+- Affected since 943170998b20 (v4.15).
+- Mitigation: disallow unprivileged user namespaces or restrict
+  access to /dev/net/tun.
 
- drivers/net/usb/lan78xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Antonio Quartulli (2):
+  tun: bound the NAPI receive queue
+  selftests: net: add a vhost-net test for the tun NAPI queue bound
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 76c2d98b49df..4a58febcddcf 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -612,6 +612,9 @@ static int lan78xx_read_reg(struct lan78xx_net *dev, u32 index, u32 *data)
- 			      USB_VENDOR_REQUEST_READ_REGISTER,
- 			      USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 			      0, index, buf, 4, USB_CTRL_GET_TIMEOUT);
-+	if (ret >= 0 && ret != sizeof(*buf))
-+		ret = -EIO;
-+
- 	if (likely(ret >= 0)) {
- 		le32_to_cpus(buf);
- 		*data = *buf;
-@@ -645,6 +648,9 @@ static int lan78xx_write_reg(struct lan78xx_net *dev, u32 index, u32 data)
- 			      USB_VENDOR_REQUEST_WRITE_REGISTER,
- 			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 			      0, index, buf, 4, USB_CTRL_SET_TIMEOUT);
-+	if (ret >= 0 && ret != sizeof(*buf))
-+		ret = -EIO;
-+
- 	if (unlikely(ret < 0) &&
- 	    net_ratelimit()) {
- 		netdev_warn(dev->net,
-@@ -695,6 +701,9 @@ static int lan78xx_read_stats(struct lan78xx_net *dev,
- 			      (void *)stats,
- 			      sizeof(*stats),
- 			      USB_CTRL_SET_TIMEOUT);
-+	if (ret >= 0 && ret != sizeof(*stats))
-+		ret = -EIO;
-+
- 	if (likely(ret >= 0)) {
- 		src = (u32 *)stats;
- 		dst = (u32 *)data;
+ drivers/net/tun.c                       |  59 +++-
+ tools/testing/selftests/net/.gitignore  |   1 +
+ tools/testing/selftests/net/Makefile    |   1 +
+ tools/testing/selftests/net/config      |   1 +
+ tools/testing/selftests/net/tun_vhost.c | 409 ++++++++++++++++++++++++
+ 5 files changed, 463 insertions(+), 8 deletions(-)
+ create mode 100644 tools/testing/selftests/net/tun_vhost.c
+
 -- 
-2.43.0
+2.56.0
 
