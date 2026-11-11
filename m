@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794424333;
-	b=MX2UpHj/APqebhErC+DqxxqsX78/9gyB65tCXBPEQbh6UJFfUbMctxjSxayhR8Xk/DeV
-	 AtOa2J2z3DpU38+Q0vKZpqB5VQXXybsSRzzZ5RvCPxC/gjDqps+t9nOGCq0mgd9KOhodh
-	 Vb6GQS98mQ0tAA69ywuFyyyQO090kQBBPzRelwwYjJ6QTJ4rdYSXwUhgVGx9B12U2zSLO
-	 4gld+n75tnFBHCoaST5OxCc/LiGfeGEbfnFAeTUzrps0bmJN8NVMR+BdTx8XBhn19xlYu
-	 kiDijgCp/nQEDB7k4q4om4X81PuX1ATm9M3A1dXmrhwio92ylXKHYXjJkSkX2S84m7A==
+	t=1794424336;
+	b=DlMrKkyUR9Rs61Yb8k3XZQXPjcKTu8srIItIZE7xIwD+l3XbTM8SdUzkrWtDq30RyUwt
+	 KX7b9PWB8kAe3J5uvaa1Ne75IiO6ZjIQDL5AQ4nU37JNPEf0Ro82TD8916zhz0F8I68Fo
+	 HuHlrIaqfidqRn4mMQH4P+GqvLja53aKq7B/RGCltNHqb6cCQH0RrUryc2pG8RBEDqTU8
+	 vgaw9NFxSVbmkcjCBBhdPogQZAZ4InKIHoRPGbFccf3WThTo//WL4obIxcRUCZ4Rj9Ycx
+	 ftlCs8obAicEauTCAuy83QEwe8h6MIJx0R1Th2Z4BBtIYpmBNQ52bAM5LPwD9dI/KSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794424333;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794424336;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=9jTV1cU8eRCsu/cOln8DSW5YMovrmFKMV7huP79WNyk=;
-	b=yB5aJn/U7Vw8l6gOrCtkSDJzwPgFnFoM0umxvZ6qedcJxLK5o6SA9gN4MrsZDfQOPpZX
-	 pyLDn2xuOWNY2Iz1eqD2oBNV4U1MQfdU/Xxa3mdsq6dAkGC2syLyiinB2SexEfk1qHd1S
-	 5pFT8QJnNPxXI85x5vwMqRC7Kg8FfcTD3PVLY4Ih37I+FrlsVn2+rRYLPaNaz3swRkj10
-	 P7+ooKFz4bZ4lXffLdmredLprxhD2DXgFW+d4+XDmevG9PXxrH64imHwnQppWRjPdg0aY
-	 D1SZ7kA7BKKwGoLw1w0gJIBPA86lMTzVtiLhtl83DIfkkJTcoI2ik/MPzHXJbeyO0dw==
+	bh=+vddkaLT6r9Qg+VZp9hd3qPKksz/5ONk6NPlMylLqlY=;
+	b=rad9OXnEe0XEDrqN3k3UFy8kpSq07Bml0Der311vllV9QigL7Qv4LrMxMIslyysDizbf
+	 nCYFjd1FzdSL6pR32VD6DqaHAXt8NhV8hRBakQYstYSxJ7Lh5wwTojCgvzJ8bsLNAWP6j
+	 ytgknCkqxVNim8RgbvPPAAtX/3P4/rsnQ4gyoTy04e/T5KGEM7vHgadCYSxSNoF47lvWh
+	 BkYul+lfyAvOp8iDE2UD2RJts9OjGSvIVYlYvjBdeZBPeESAYAVBEj8HfgbQvDk6sYem2
+	 z2uFnYhod4ZYd5VDSFIKxkfu+cPxhW8Q6XwMEYS4DE8g1TQy/VDvUsCW4EGD25/6fig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QhS5rO7q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDDOvhOW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB558606A89F;
-	Wed, 11 Nov 2026 19:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBBF60A380A;
+	Wed, 11 Nov 2026 19:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QhS5rO7q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D671F00A09;
-	Wed, 11 Nov 2026 19:12:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDDOvhOW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610A61F00A11;
+	Wed, 11 Nov 2026 19:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794424333;
-	bh=9jTV1cU8eRCsu/cOln8DSW5YMovrmFKMV7huP79WNyk=;
+	s=k20260515; t=1794424336;
+	bh=+vddkaLT6r9Qg+VZp9hd3qPKksz/5ONk6NPlMylLqlY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QhS5rO7q7Kkwt5pgyQUSnaeRTvuxOkKq0LhVvckZ5oa8yBhmvAja8xok+1xdRVW9l
-	 88A/GInH3A015FrOBWehEs6vmLkvXqzpzH3884CSjQSy8/H/P3DonNYR5Uw6Q7+ak/
-	 ZUkHfN73KzLR7XOgK9i5zdjSb5jn8d4sFPqyv+2yEzaKkS53AoxLctTf0k/0wrDrgV
-	 aeREkyS/FCK8MNZZoo7578L0RHG4M79zjCWOwwNsTKrE1L2TbVIKh/zhMRmveW05kN
-	 SArqPYH9B8/VkDiMwfPBgwKxYghVMM6/GolvCOaHoAhbI3WGAMH8xgQzc3wQp99bcw
-	 hW9W0fiHOS9ww==
-Subject: Re: [PATCH net-next 08/10] net/mlx5e: TC, offload RX queue mapping in
- NIC flows
+	b=RDDOvhOWStL5eTghhV+WNTTCfKRx6kWFREOg2W2H070X2Ard9W44EKqZR1Uwws/wX
+	 XQGOGA2tjsvVok0sZD9zEcaeVlTJSphZdpXDr7OkUfIWeYc/8gfgC3LG+TzMhu/4xw
+	 nNVXAOm4woXHENuHdhmJ9EAAn+V5ZuKG0VhQ0WVR0BlbHN7HEvAyDCsQ4sh3b+O1za
+	 DN71KhGHHiwRT/qPDmTkzJMu9Nk2oDQqg7W/Bwgs56sXkzPDW7QL5OTTABjZw7HO5B
+	 DMtNX9wK2iIyDfYhDf01oOJITRcAE2xKJogwk7KaVqis4b7lnuQ2xASOrRsOeTGbdq
+	 7XvbnISPa8Z7Q==
+Subject: Re: [PATCH net-next 09/10] net/mlx5e: TC, match the tunnel key
+ without a tunnel device
 From: netdev-bot+sashiko@kernel.org
 To: acassen@corp.free.fr
 Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
@@ -53,11 +53,11 @@ Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
  idosch@nvidia.com, shuah@kernel.org, netdev@vger.kernel.org,
  linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, oss-drivers@corigine.com
-Date: Wed, 11 Nov 2026 19:12:11 +0000
-Message-ID: <179442433199.2199510.1112413550328435081@kernel.org>
-In-Reply-To: <20261109131039.959438-9-acassen@corp.free.fr>
-References: <20261109131039.959438-9-acassen@corp.free.fr>
-X-sashiko-severity: Medium
+Date: Wed, 11 Nov 2026 19:12:13 +0000
+Message-ID: <179442433391.2199510.196528697168850523@kernel.org>
+In-Reply-To: <20261109131039.959438-10-acassen@corp.free.fr>
+References: <20261109131039.959438-10-acassen@corp.free.fr>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -70,10 +70,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,124 +81,163 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The terminating-action guard in tc_act_can_offload_rx_queue()
-  (drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/rx_queue.c) is…
-- [Low] tc_act_can_offload_rx_queue() reads
-  `flow->priv->channels.params.num_channels` (a u16) with no lock and no…
+- [High] The new non-tunnel-device path in __parse_cls_flower()
+  (en_tc.c:2789-2793) offloads any rule that carries ENC_KEYID.
+- [Medium] The patch fixes a bug that users can already hit, but the fix
+  ships inside a net-next feature patch with no Fixes: tag.
+- [Medium] On VF representor (FDB) flows, the new path matches fields
+  that sit past the header region the eswitch min-inline contract…
 
 --
 
-net/mlx5e: TC, offload RX queue mapping in NIC flows
+net/mlx5e: TC, match the tunnel key without a tunnel device
 
-This commit offloads the tc skbedit queue_mapping action for mlx5e NIC
-flows. Matching traffic goes to the direct TIR of the selected channel,
-the same way ethtool steering rules do it. The action must be last and
-cannot follow goto or mirred.
+This adds a parse_outer_key tunnel op. With it, __parse_cls_flower() can
+offload enc_key_id on filter devices that are not tunnel devices. The GRE
+key, VXLAN VNI, GENEVE VNI or GTP-U TEID is matched on the wire, and the
+tunnel is picked from ip_proto and an exact dst_port. These rules must be
+skip_sw and cannot carry a decap action.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/rx_queue.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/rx_queue.c
-> new file mode 100644
-> index 0000000000000..869da3cb703a8
-> --- /dev/null
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/rx_queue.c
-> @@ -0,0 +1,49 @@
-
-[ ... ]
-
-> +static bool
-> +tc_act_can_offload_rx_queue(struct mlx5e_tc_act_parse_state *parse_state,
-> +			    const struct flow_action_entry *act,
-> +			    int act_index,
-> +			    struct mlx5_flow_attr *attr)
-> +{
-> +	struct netlink_ext_ack *extack = parse_state->extack;
-> +	struct mlx5e_tc_flow *flow = parse_state->flow;
-> +
-> +	/* The direct TIR takes over the destination of the rule */
-> +	if (!flow_action_is_last_entry(parse_state->flow_action, act) ||
-> +	    attr->dest_chain || flow_flag_test(flow, HAIRPIN)) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "RX queue mapping must be the last action and cannot follow goto or mirred");
-> +		return false;
-> +	}
+> This covers NIC and eswitch flows. A rule on the uplink representor used
+> to accept enc_key_id without matching on it. It caught all the traffic of
+> its other keys. It now matches the key or gets refused.
 
 [Severity: Medium]
+This describes a bug that predates this patch. Before this change,
+__parse_cls_flower() whitelisted FLOW_DISSECTOR_KEY_ENC_KEYID but only read
+it when mlx5e_get_tc_tun(filter_dev) was non-NULL. So a skip_sw rule with
+enc_key_id on a non-tunnel device was offloaded without the key.
 
-Does this guard catch every earlier terminating action whose destination
-the direct TIR would override? It only checks attr->dest_chain on the
-current attr and the HAIRPIN flag.
+Could the fix go in its own patch with a Fixes: tag? As it stands, stable
+trees can't take it without also taking the new outer key feature,
+tc_tun_gtp.c and the parse_outer_key op.
 
-A preceding gact ok seems to get through. mlx5e_tc_act_accept has
-is_terminating_action set, but tc_act_parse_accept() only does:
+Is the old bug really limited to the uplink representor?
+parse_cls_flower() is shared by mlx5e_add_nic_flow() and
+__mlx5e_add_fdb_flow(). That suggests the NIC netdev (FS_FT_NIC_RX) and VF
+representors accepted enc_key_id the same way without matching it.
 
-	attr->action |= MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
-	attr->flags |= MLX5_ATTR_FLAG_ACCEPT;
-
-Nothing on the NIC path reads MLX5_ATTR_FLAG_ACCEPT, and dest_chain and
-HAIRPIN are not changed. So a filter like this passes the check:
-
-  tc filter add dev eth0 ingress protocol ip flower skip_sw ... \
-      action ok action skbedit queue_mapping 3
-
-verify_attr_actions() accepts it too, because it only rejects FWD_DEST
-combined with DROP. In mlx5e_add_offloaded_nic_rule(), the new branch
-then wins over the default forward to the VLAN table:
-
-	} else if (nic_attr->rx_tirn) {
-		dest[dest_ix].type = MLX5_FLOW_DESTINATION_TYPE_TIR;
-		dest[dest_ix].tir_num = nic_attr->rx_tirn;
-
-As a result, hardware sends the flow to direct TIR 3. In tc, the action
-list ends at ok, so the queue mapping should never apply.
-
-Can a goto in an earlier split attr get past the check in the same way?
-Take goto chain N, then a non-clear ct, then skbedit queue_mapping Q.
-tc_act_is_multi_table_act_ct() returns true for the ct, so
-parse_tc_actions() splits after it. mlx5e_clone_flow_attr_for_post_act()
-then clears the new attr:
-
-	attr2->dest_chain = 0;
-
-When the rx_queue action is checked against attr2, attr->dest_chain is
-0, so the rule is accepted. Hardware would then steer to queue Q instead
-of processing chain N.
-
-This second case assumes NIC CT offload is available and that goto
-followed by ct is accepted on the first attr.
-
-> +
-> +	if (act->rx_queue >= flow->priv->channels.params.num_channels) {
-
-[Severity: Low]
-
-Is this read of priv->channels.params.num_channels meant to be lockless?
-
-mlx5e_setup_tc() sets f->unlocked_driver_cb = true, so this path can run
-without rtnl:
-
-mlx5e_configure_flower()->parse_tc_actions()->tc_act_can_offload_rx_queue()
-
-At the same time, mlx5e_switch_priv_channels() overwrites the whole
-struct under rtnl and priv->state_lock:
-
-	priv->channels = *new_chs;
-
-That leaves a plain write racing a plain read, which KCSAN can report.
-
-The commit message already accepts the functional result. No out of
-bounds access is possible either: num_channels never exceeds max_nch,
-and direct TIRs exist for every index up to max_nch.
-
-For comparison, the similar ring_cookie check in validate_flow() in
-en_fs_ethtool.c runs under rtnl, so it is serialized with set_channels.
-
-Should this read use READ_ONCE(), or should the check take
-priv->state_lock?
-
-> +		NL_SET_ERR_MSG_MOD(extack, "RX queue index out of range");
-> +		return false;
-> +	}
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+> index de74dbfe7b20c..921af801d4d4e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
 
 [ ... ]
+
+> @@ -996,3 +997,90 @@ int mlx5e_tc_tun_parse_udp_ports(struct mlx5e_priv *priv,
+
+[ ... ]
+
+> +/* Without a tunnel device only the hardware can read the tunnel key */
+> +int
+> +mlx5e_tc_tun_parse_outer_key(struct mlx5e_priv *priv,
+> +			     struct mlx5_flow_spec *spec,
+> +			     struct flow_cls_offload *f,
+> +			     enum fs_flow_table_type fs_type)
+> +{
+
+[ ... ]
+
+> +	tunnel = mlx5e_tc_tun_outer_lookup(rule);
+> +	if (!tunnel) {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "enc_key_id needs ip_proto 0x2f or the exact dst_port of a supported tunnel");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	flow_rule_match_enc_keyid(rule, &enc_keyid);
+> +	return tunnel->parse_outer_key(priv, spec, extack,
+> +				       be32_to_cpu(enc_keyid.key->keyid),
+> +				       be32_to_cpu(enc_keyid.mask->keyid),
+> +				       fs_type);
+> +}
+
+[Severity: High]
+Are the other tunnel keys in the same rule silently dropped here?
+
+The used_keys whitelist in __parse_cls_flower() still accepts
+ENC_IPV4_ADDRS, ENC_IPV6_ADDRS, ENC_PORTS, ENC_IP, ENC_OPTS and ENC_CONTROL
+on any filter device. Only two places turn these keys into hardware
+matches:
+
+  - mlx5e_get_flow_tunnel_id()
+  - mlx5e_tc_tun_parse() and mlx5e_tc_verify_tunnel_ecn()
+
+Both are reached only from the mlx5e_get_tc_tun(filter_dev) branch.
+
+This path programs only the key register and then returns 0. Take this rule
+on the uplink representor:
+
+  tc filter add dev <uplink_rep> ingress protocol ip flower skip_sw \
+      ip_proto 0x2f enc_key_id 100 enc_dst_ip 10.0.0.1 \
+      action mirred egress redirect dev <vf_rep> skip_sw
+
+It looks like the rule would be accepted. Hardware would then redirect
+every GRE packet with key 100 to that VF, whatever its outer destination.
+enc_opts, enc_dst_port and enc_tos would be ignored in the same way.
+
+Because skip_sw is required, software never shows the wider match. A
+documentation patch later in the series says "All the keys describe the
+packet on the wire", which makes such rules more likely. That patch does
+not change this code.
+
+Should mlx5e_tc_tun_parse_outer_key() refuse rules that carry any other
+ENC_* key?
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> index 3823ccc60dd39..6780e54a0cb93 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> @@ -2786,6 +2786,10 @@ static int __parse_cls_flower(struct mlx5e_priv *priv,
+>  		err = mlx5e_tc_verify_tunnel_ecn(priv, f, &match_inner_ecn);
+>  		if (err)
+>  			return err;
+> +	} else if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID)) {
+> +		err = mlx5e_tc_tun_parse_outer_key(priv, spec, f, fs_type);
+> +		if (err)
+> +			return err;
+>  	}
+
+[Severity: Medium]
+Can this path be hit on VF representors whose eswitch min-inline mode does
+not cover the tunnel header?
+
+For non-uplink eswitch flows, parse_cls_flower() only checks the match
+level:
+
+	if (rep->vport != MLX5_VPORT_UPLINK &&
+	    (esw->offloads.inline_mode != MLX5_INLINE_MODE_NONE &&
+	    esw->offloads.inline_mode < non_tunnel_match_level)) {
+
+mlx5e_tc_tun_parse_outer_key() writes misc.gre_key, vxlan_vni, geneve_vni
+or misc3.gtpu_teid, but it never raises *outer_match_level. The level stays
+at MLX5_MATCH_L3 (from ip_proto) or MLX5_MATCH_L4 (from dst_port).
+
+On the VF TX side, mlx5e_calc_min_inline() does:
+
+	case MLX5_INLINE_MODE_TCP_UDP:
+		hlen = eth_get_headlen(skb->dev, skb->data, skb_headlen(skb));
+	...
+	case MLX5_INLINE_MODE_IP:
+		hlen = mlx5e_skb_l3_header_offset(skb);
+
+So inline_mode IP does not inline the GRE key. With inline_mode TCP_UDP,
+the inlined bytes end after the UDP header, so the VXLAN, GENEVE or GTP-U
+header is left out.
+
+A GRE key rule therefore passes the check with inline_mode IP. A VXLAN,
+GENEVE or GTP-U rule passes with inline_mode TCP_UDP.
+
+On min-inline devices, such as ConnectX-4 Lx with vport context inline
+mode, could the eswitch miss these bytes in VF-originated traffic? The
+skip_sw rule would then never fire, or would match the wrong packets.
+
+Before this patch, tunnel key matching never reached hardware on VF
+representors. The VF representor testing in the commit message was on
+ConnectX-7, where inline mode is NONE.
+
+Should this path refuse the rule on non-uplink vports when
+esw->offloads.inline_mode is not MLX5_INLINE_MODE_NONE?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109131039.959438-1-acassen%40corp.free.fr
