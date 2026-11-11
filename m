@@ -1,67 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794394527;
-	b=pugrMe4YNfFG1/NXmWqtohBnqv9o4dZ+J5DOu9D1eOtL/WhY6uydqDW/joehYRRYU5wX
-	 Za2ALKVIkUyq8hLbADTNUQGGW+MlOq5g8bad4I759lQkzXMxP0DPenr2yOXeSHWexztJI
-	 2Z49Kj1NLe+ealgQSqvY+PFGjnelqth8LJNNO6UOQqaBXOxuswKojyGUGQKkQCGVHV4wy
-	 lwW00E/rB3hwObwjBRlpkGVRs0EQEtaz1CkxcnFsb4gxvds9HiWw9yjfzu/7v7vhyuAjE
-	 x/I88ojkl/OBTkZvmpZVVai3Qs9P+Fq1GaJ9e8MGeVJgi6uNEqhNMws4fgaI+ddJpng==
+	t=1794394634;
+	b=p8MCujlc0Acw0ROJm2r0X3LaXObqlx/eDredftv1pDSwqLNXFZ/secBh0WBLHCQ8eJn5
+	 5sUkV/7prBAK5ER01f6NE6CSIb7/p1qQULI04/bjWZKAa9TuYkzomzv4oeR0bbqN9FErl
+	 v2MsSw6SpW0P2MUBIx3N99Jy4JOocuUyAYhdNd3kS/QCP5Ro6i2smGxUNhT0z1qtJW/p9
+	 ota/FXJ6lc+9enbWvhENVdUOkb3jHCf/c734wMUz7Rtwv/kLMG1FERCMmo8QO+bvsE3kO
+	 5+njU5syLXbsnTetYqmxQ5GXcecJA7EPtLaxXdQ4s8ccJA99x234hmXRuqhgNi+Yzww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794394527;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794394634;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=SF2NQhuQxu5m0bI5v5rpx1rhcNXkOJ4L4wUCi27ileQ=;
-	b=aOvWa7fxKTyMLLvpVWGzK1m/5iqwlrZHpeuwKV1WZo5+riAZ9FsGCkrH8+gFFRr9W7Po
-	 zZT4ddaV2tmzj6ym96Eom+Le7DcSztl+HDB5XIsJG09mez5KGjasBsFhV1VyQoDd5EiAT
-	 miENugyTJZFAk9Ge2pMQlRpYQjYhiu1gDMRtA1tXIJSMYgdM1ZzrJ9gmnu2Yp4/WPzKgA
-	 poaMqgnMxjWGTkOgk+LsPPpJY+KcJpMXc+ovVYNefXnZdax/hv+bKUoDM3qLk58WV33gJ
-	 tpuLhVDLHEbH0+GBfYViJuCAsVFxS+gG+2nn0Gxo+IgAKTwg+H6RwfbbUkZuV7zD/Qw==
+	bh=y71I2g5CiY6ZLFtOOjFefsyXa2Y2V1HXYev8hBP6Jd4=;
+	b=04cJqSiuy3jeMWTsBkPWgo/rFGn+hMc+ff1cC1clP4P56PHjEWsGY52rGZeAj+p2EHda
+	 jkmK4E0i9vDbUgmfUPstpb47TeNUKS1xehi3kgRtRP30HYkMa0GAWlyf+0SSflRPWGc6z
+	 Zq2cOpBI7wbAny+zQo5wWZA89xjICt0UxyZef3ycxPTGiBzrUrqfF5mmnyX+B1mTYRS9e
+	 gYW7Zo7Ulb/nWZ18+34gdCoamYvyn7gq2OtcPSuHsfIPXNYHMi2n8QKEDhIib8GvmSgJr
+	 AFyhltfDgNTLU/GdBxyH3Oapxmg/DvS0vRE0nBbCuykeRdl/CZOoumbWGPLz8xRr7eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e7c28ZRA;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJcz3i2L;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08F1606A334
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:55:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B08F1606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A1A606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:57:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4A1A606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e7c28ZRA
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJcz3i2L
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794394525;
+	s=mimecast20190719; t=1794394632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SF2NQhuQxu5m0bI5v5rpx1rhcNXkOJ4L4wUCi27ileQ=;
-	b=e7c28ZRAT8ymtGjwBPQPIQt0wJ9p57/GNR7jsfIGv+g7BNDBhXrN7juVuvt3uxGVR378O/
-	Erb7FwKw+x7cYjIyWAPuODTXH32YHy/ovX4vyfvqptwzjk33zDRkZdXnJNY7A6wfJibrth
-	rIc0AUP50DW5kUVqM2NcuxtQEtq57eQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=y71I2g5CiY6ZLFtOOjFefsyXa2Y2V1HXYev8hBP6Jd4=;
+	b=LJcz3i2L3K2BBo4ahQLJAfzdjdNtDuB0P5x1fyq9oRGFJsvsu0KNYquhiAj4gMl5weB1CM
+	IWtDF8ao6daFvIPurkPa/ce8FWBdvAADaRy/nDXcE6hdkw02/b9H2+dYwzVYJmnOjn9gXk
+	HHEioKqJ+wcugjuPb/vQJEfEbndSmJA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-Oqo0X7NTPyKcaINytLDz9g-1; Wed,
- 11 Nov 2026 05:55:20 -0500
-X-MC-Unique: Oqo0X7NTPyKcaINytLDz9g-1
-X-Mimecast-MFC-AGG-ID: Oqo0X7NTPyKcaINytLDz9g_1794394517
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-2-VSeC4wBmMpOyp6eJ7S0wcA-1; Wed,
+ 11 Nov 2026 05:57:09 -0500
+X-MC-Unique: VSeC4wBmMpOyp6eJ7S0wcA-1
+X-Mimecast-MFC-AGG-ID: VSeC4wBmMpOyp6eJ7S0wcA_1794394625
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0EAC619775DB;
-	Wed, 11 Nov 2026 10:55:17 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C3941955F18;
+	Wed, 11 Nov 2026 10:57:05 +0000 (UTC)
 Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 523A518004FF;
-	Wed, 11 Nov 2026 10:55:10 +0000 (UTC)
-Message-ID: <fe93c3de-e478-4bdf-877a-d3c5d345dd04@redhat.com>
-Date: Wed, 11 Nov 2026 11:55:09 +0100
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2DD8C19634EF;
+	Wed, 11 Nov 2026 10:56:58 +0000 (UTC)
+Message-ID: <47221876-07a8-46c1-86f7-552402a8d5a9@redhat.com>
+Date: Wed, 11 Nov 2026 11:56:56 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,8 +72,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/10] ice: dpll: notify TSPLL lock status from
- the periodic work only
+Subject: Re: [PATCH net-next 02/10] ice: dpll: serialize changes of the SyncE
+ CGU registers
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
  arkadiusz.kubalewski@intel.com, jiri@resnulli.us, corbet@lwn.net,
@@ -85,14 +85,14 @@ Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
  intel-wired-lan@lists.osuosl.org, grzegorz.nitka@intel.com,
  karol.kolacinski@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
  poros@redhat.com
-References: <20261106121005.1327603-2-ivecera@redhat.com>
- <179433319925.994134.5092477928749468374@kernel.org>
+References: <20261106121005.1327603-3-ivecera@redhat.com>
+ <179433320107.994134.16333323653199953270@kernel.org>
 Content-Language: en-US
 From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179433319925.994134.5092477928749468374@kernel.org>
+In-Reply-To: <179433320107.994134.16333323653199953270@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
 On 11/10/26 18:53, netdev-bot+sashiko@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found more severe
@@ -101,53 +101,40 @@ On 11/10/26 18:53, netdev-bot+sashiko@kernel.org wrote:
 > 
 > Low priority / nit picks for your consideration:
 > 
-> - [Low] This patch leaves the comments in
->    ice_dpll_tspll_state_on_dpll_set()…
+> - [Low] The commit fixes a race that already exists in the tree, but it
+>    has no Fixes: tag and no stable Cc.
 > 
 > --
 > 
-> ice: dpll: notify TSPLL lock status from the periodic work only
+> ice: dpll: serialize changes of the SyncE CGU registers
 > 
-> This patch stops ice_dpll_tspll_state_on_dpll_set() from sending a TSPLL
-> device change notification from the TIME_REF pin callback. The callback
-> now only updates dpll_state. ice_dpll_periodic_work_e825() refreshes
-> dpll_state on every run and sends the notification when the state differs
-> from prev_dpll_state.
+> This patch adds a cgu_synce_lock mutex to struct ice_adapter, which all
+> E825C PFs share. It holds that lock around the CGU R10/R11
+> read-modify-write sequences in ice_dpll_synce_update_e825c(), and around
+> the ice_tspll_cfg_synce_ethdiv_e825c() call in ice_ptp_link_change().
 > 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
->> index ade1fb3dd0674..bdbcf7af296eb 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+>> ice_ptp_link_change() does not hold dpll_lock, so it can already overwrite
+>> an update of another PF. RCLK callbacks are serialized by dpll_lock, but
+>> the DPLL core is going to serialize callbacks per (module, clock_id), and
+>> each complex has its own DSN and so its own clock_id. With that change, a
+>> test toggling RCLK pins of both complexes lost an update.
 > 
 > [ ... ]
 > 
->> @@ -2947,15 +2946,12 @@ ice_dpll_tspll_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
->>   		WRITE_ONCE(pf->ptp.tspll_locked,
->>   			   new_state == DPLL_LOCK_STATUS_LOCKED);
->>   
->> -		if (tp->prev_dpll_state != new_state) {
->> -			tp->dpll_state = new_state;
->> -			tp->prev_dpll_state = new_state;
->> -			changed = true;
->> -		}
->> +		/* ice_dpll_periodic_work_e825() compares the state with
->> +		 * prev_dpll_state and sends the notification.
->> +		 */
->> +		tp->dpll_state = new_state;
+>> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 > 
 > [Severity: Low]
-> This isn't a bug, but do the comments in ice_dpll_tspll_state_on_dpll_set()
-> still match how the notification path works after this change?
+> Should this patch have a Fixes: tag?
 
 [...]
 
-> Could both comments say that the periodic work picks up the new state
-> through pf->ptp.tspll_locked? Then a later change is less likely to drop
-> the WRITE_ONCE() as just a way to avoid spurious notifications.
-Right, the first comment still gives the reason from before this patch.
-Now the write of pf->ptp.tspll_locked is what brings the new state to
-ice_dpll_periodic_work_e825(). v2 will merge both comments into one that
-says so.
+> Another option is to split this patch out of the series and send it to
+> net.
+Done, the patch went to net with this tag:
+
+https://lore.kernel.org/netdev/20261110094350.184185-1-ivecera@redhat.com/
+
+v2 of this series drops it.
 
 Thanks,
 Ivan
