@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794372271;
-	b=K6rQVg+eqoox2wBvIVoi5ZSBy+ppMoKvdx4j7nPX6lFn552PJTz6F3tD/mFHxtXdx9VO
-	 vnd9+3id8A0lak43AUk8lrvUNefx4ly54GPFd+rzgWC03NmklSFkO4mqrk3Qt8Cs+oP2A
-	 pc4qF/MKyMaQvwltnWcqeRfQlSJUvqLVd63oipFK5WBlklaC2Hj/l945ezZjnV92EhghI
-	 UTduFb6SmeuEPcBvwDeJjL5aCmGhvQpEpxnCqTZtC4rvLcx2ljdD4LX4HymByQUIdH2Sn
-	 81y3tDvE5DDzcMlOJrR1vjtUlmUzpz/gQuCB9pOTSb98ilYUmof8Wrux0+wcDoDRyuw==
+	t=1794372268;
+	b=a2ZyHPb/Ag6skNifrpmJSZdHxACjo88CPBVAYQ6fVLijz7O3LBWdPij1vtksgHQl9Bp0
+	 D8DZejQxplIVWrtyKbNc1GdljIRUDGmj0RZhR4HNNA2lpRzWPU72M0ifwOmjPVckGsIlT
+	 20Y9Q6Su6DPfSR9hpi3cghej8297JRrF10dv4wZv8UvR+MoCYEoA6Yr3qqnG1Gdx7A0GB
+	 EgeU6U9xpM7KAFlkilx0dCalCjf8702141Y9jeRsrRJFn7hOO+ikYfr9kgF8cWZE8MGsc
+	 SoVVtOYxUchl8eOQfDO1q2SkFrRVAvHJQiuLF95zIzijv5hiqqaQyZlc3HM92JDb6xA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794372271;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794372268;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=tbkFECwNg6PN9eF9CD50XhKpEJAa/ewafdUFufZ2sv8=;
-	b=azofM3BfEyLhA/aseEUcZlCBJz0aQfSUhHYh2fhyGBSm6TSaMVNPqJE1yZHQ27BwvZHP
-	 xp8Ph3VjRgxE/p1ZduLR2OI3mHG7NNmYkMCpiVTOs8BbXmFLQ0VuCFCmqk3s6wKTGq3Vc
-	 1ulDGeEx2I2jUf92tp1qcfy9hJ1FawOeSvYSLDNexoK7Ef8Kytm01VwlL88M1JcKIZuvA
-	 2lDNi3K3eAlTo45TEd87bVjFxRckvZxbardo7xUX403OK/XaWNxSQS2K/27Jjs2yT6uPF
-	 kZIlGM1dBAYdCP6kCKBtEnl5LpEve8gOL02zNIJdPi5qBoX1+wK3+LjLwGPqAtKACNw==
+	bh=YL2Gn/VBuzo3bpz+Gar3XFz6Jf2fQq2pQHYq/74rSfI=;
+	b=BZ2IvQ2+BUb9a2o5Mpg2b5mYRWNVLwkzp4lq2J+14k08rMznOXMTRy3B3dcEpOiE9sdC
+	 aox2GcVNRYt/J1j3gWFjvbht+6qPGD9oBQG5TAELhWOCkJ+nLgIkuVQGHVkE2Bz/VesqL
+	 rj7Rx2PVU5HmWpcFAnejN48yKLLMD58HbEAiGa9UGU6r5dVz221Ykxm6XtZJ6G88iNPpr
+	 Pgm7znFWd2NoZ3vjje9P4GBcs3ECNeJv2YaAZhbY7hpoJSi/18I2NRCaQClYIyRH0D4a6
+	 rvZLSxgEJAulQ/UVrUQYiWqm2aXE7FA6Nck+asmekrR5S/BvTPE9yvdo5BamHrBhVkQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JEDxdifG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GuIpdHDb;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5008660A3808;
-	Wed, 11 Nov 2026 04:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E25606A31C;
+	Wed, 11 Nov 2026 04:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JEDxdifG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GuIpdHDb
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794372271;
-	b=IHixVoBO9zrvIot4xKKGjCHXQE6W+cKthJhb4MFoywzpysIEuDN8dCUkShMdvESR+dE+
-	 KAOpDbp95EIy61D1bbk8gXPa/pb2EJdNqy1xc+lqQyWceB9RIsOp2zrPuUcRqH1BCMJ1f
-	 m4//T9mQBg+8ZEDlcVrQ0PlJgIsXQ6eoyTuD3Lt60N1V1F4Xbge/+vnMVWVH2w3np3jRX
-	 1UHGbeuMBahZHDd190130DPjrZBWSNYC496Q0pWY2KXjhOYX2KutWog2wA2cheXkxJwMt
-	 DG/bWg/AuzT6hs/n/QnI+CrXRScY4tzAGwwtz4gndAa9eaOiWBmobEw+adU8zVIdR1Q==
+	t=1794372268;
+	b=JXGEatHVA1DLZ1SS4nwdNoHaTn1oWSumwFRcX4ABnb9iYSeQjpbL4j2/8AVeo9mFyd1o
+	 YaJTWm5qby4PZvxzoGA3VMr1/zytEkLZ7IBIEQKHdQ8eOU2Y9VpSlvmKQC9TDI2WdiU+a
+	 jc4WLnW7HhbHzM+cvvaI6fkbanaWSp9CrbhHF4R36bSh5fmoYLgDZDYd21Sh5x6WN3kjY
+	 nqviHhfUW3QDgluBXPzsGMIa2vX0f+9NNub/cDphQ2/pbuBfJNlC4G0u3608zq6oYP0x+
+	 D9Tao3UL1wUUdh1TQmebsRQ8E8vXcbqAd65K6n2wDZtU9gMuKR1NUbfvaWMTUAtBJmw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794372271;
+	c=relaxed/relaxed; t=1794372268;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=tbkFECwNg6PN9eF9CD50XhKpEJAa/ewafdUFufZ2sv8=;
-	b=0aiftJJBWDRVuZdPmYsgS5QuEVnTxOEXtxGGhS0guz2L1OyCd7StEgBOSqg2k6Gby2j4
-	 0RUsWsD6aGCmMPtmg50Q4GDOxwJvXxZ7WVD/Ecp5SloPfqPRh5EUGB6SVPDtqQGi1JQTt
-	 tWMwVt7RYSssqpe/hvZLiaCPQOfBLA/GQIGu1dbcEEqQY1e/42G5IQOUEz3jxDeJ1hTgQ
-	 5MZW/y95XOgWJZHLzLCigBTN2cNdDE6+bd6fFjxZuvMLGjGWAxeA3hGn6hWxaaR8QoCUz
-	 K53GaI/FQanlV7R/7AGo0VQKu9gjLp2OH+wx+IWbhVzi6PyNEPWZv0fbTUSAmJiWjvw==
+	bh=YL2Gn/VBuzo3bpz+Gar3XFz6Jf2fQq2pQHYq/74rSfI=;
+	b=ZnikEj3PEf0v+6uiscaWqBjZfRCI4xr+1+hr02+4sGqRBZHTKW89OL72Kexcc06tXRFN
+	 OyKyAJmtmGX27lnu8BQfJ4PV/xn5TWSVF3RaAy9B0Iu8Kq+CCyzrt0nOwK6g26KFfz8H8
+	 6O3MSZ+cPLVbMQxCtQshosZU0dkBU/We1X574+oBbeYkVarL7fm/N5D7v4tLtaEiFqHUz
+	 dvcvuhjLiZI+2B3LOsH200cARdEQom7bnwCRhtbvifVSl2yHFasDM9SDsDhvNYxING6iS
+	 lBQiOSQmFEt+wfZtdRZearqMTd1n25P9KNed006Sy7IT+4OYLcBRskBgnYtc+QW+xpQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id D7A051F00A06;
-	Wed, 11 Nov 2026 04:44:28 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 8C99E1F0089F;
+	Wed, 11 Nov 2026 04:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794372271;
-	bh=tbkFECwNg6PN9eF9CD50XhKpEJAa/ewafdUFufZ2sv8=;
+	s=k20260515; t=1794372268;
+	bh=YL2Gn/VBuzo3bpz+Gar3XFz6Jf2fQq2pQHYq/74rSfI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=JEDxdifGdQWHfLEkGGtuHmq0p0TrtHbFuhS/ZKyOnTrDmci5ESIR4nM3SyABKDbqv
-	 UEVhj6aE3vFwLXAvAGnaxbDdlHoGZQ1D2KG0qnP9SegfCxU1UsfPFT8Ak0woKWEftj
-	 RzDMk2hFdmLPnAAXKCU16wHqnJLg1ktPsLiZbqo5IFL9LvpY+s3LOoZo7vxmwduyMC
-	 tTJUyiarYcMeWjgco5uMUdwhxo2gZQ23GAYNi693+53wY2V6mTxCdSLgBqqem6X623
-	 SodIsesawSlayZxBL8+wvVU2J2H4NVbMLVBqhvlA0fCa6enWhRUPa2ML4oJH2/+xND
-	 97+BjPms0cBIA==
+	b=GuIpdHDbWIkZsy3GTOn3JluahobaJCC9rmSBQCGM4mn7pe/kWodxlywfdBkxHA/tV
+	 qdy0OGeAAG3o53EW7L2Mvf8S4O6xqq6Xdj3nACTn6KnJeP5d0rd4+Webcl39doJBgt
+	 PQr3efHGNZdUjigsu3moN1APUlUr/axr3JcIInJVdWrkwAvvvDdhg8OWoEiVROB3Hf
+	 HQdDL+fPITzZyCNo+BExoY5aC8/XPs3OeaCIAUdmC2eILPHz+Bk31/GsxY7H0wC+Il
+	 d50iSzjP1vgvv3xutu/huxOAuOa2oJVEDfss6OhnBOGikfYkpdj6yIIUcGM6D72JWG
+	 iZqf5Z6mlD5dg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5402748D9B;
+	by lkml.kernel.org (Postfix) with ESMTP id 064F148D83;
 	Wed, 11 Nov 2026 04:44:27 +0000 (UTC)
 From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Tue, 10 Nov 2026 23:44:30 -0500
-Subject: [PATCH RFC net v3 5/7] net/iucv: serialize HiperSockets receive
- with the socket lock
+Date: Tue, 10 Nov 2026 23:44:26 -0500
+Subject: [PATCH RFC net v3 1/7] net/iucv: keep the window given to the peer
+ in a field of its own
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261110-b4-disp-2a6b4364-v3-5-35677b68e697@proton.me>
+Message-Id: <20261110-b4-disp-2a6b4364-v3-1-35677b68e697@proton.me>
 References: <20261110-b4-disp-2a6b4364-v3-0-35677b68e697@proton.me>
 In-Reply-To: <20261110-b4-disp-2a6b4364-v3-0-35677b68e697@proton.me>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -96,11 +96,11 @@ Cc: linux-kernel@vger.kernel.org, Thorsten Winkler <twinkler@linux.ibm.com>,
  Nagamani PV <nagamani@linux.ibm.com>, Simon Horman <horms@kernel.org>, 
  netdev@vger.kernel.org, linux-s390@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794372266; l=24639;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794372266; l=6172;
  i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=4O1SwvqM2U26YkSRw3kyw6kgIoT3NNR9yKiQo4nJ3Nk=;
- b=U/DIKTIwjtUijSPN775IP3/v9M/D1TzlIKr6/cebbF7qdYDU4cW9WRef4yuXZ4K7c29weOIVG
- XDdM8hAV0MtDdAX4y5eKUmSxCGx/xJMduTKQJMmWqJBDwg05aZb3Hhq
+ bh=dP9tWoaCJerEwmfDgRNHSm2FFayxgt3K3Jl/oDfEa04=;
+ b=dWIyXI0vjR6Mi29KJ/uQ9RynSOHkgwkWC55KYK5JbVIQwqibQ1imKZlzuuBmvVNBebLd9mGW0
+ 5byDuzkVjXXB8ffZqPwXGpPgAlMV6uWa2cckR4m1EcMKUDlUH96HCXZ
 X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
  pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
 X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
@@ -111,632 +111,146 @@ Content-Transfer-Encoding: 7bit
 
 From: Bryam Vargas <hexlabsecurity@proton.me>
 
-The HiperSockets receive callbacks change sk_state under bh_lock_sock()
-without testing sock_owned_by_user(). A SYN|ACK, SYN|FIN or FIN that
-arrives during a system call on the socket is applied under the task
-that holds lock_sock(), which goes on with the state it read. A SYN is
-answered for a listener that close() is emptying: the child is left on
-the accept queue of a socket that is then freed, and nothing can close
-it. It keeps the listener's name, so bind() to that name fails with
--EADDRINUSE from then on, and it keeps its reference on the net device.
+A HiperSockets SYN carries msglimit as the receive window, and
+SO_MSGLIMIT is accepted while the socket is IUCV_BOUND, which it is
+until the SYN|ACK arrives. A msglimit changed in between leaves the peer
+with the window the SYN carried, while recvmsg() counts the frames it
+reads against the new value:
 
-Either needs only a frame from the peer at the wrong moment. No
-memory-safety report is known.
+- Lowered, a peer that keeps to its window has the socket closed on it
+  once the receive buffer is full and frames wait in backlog_skb_q,
+  where no window update resets the count: WARN_ON(), -EFAULT, the rest
+  of the stream lost.
+- Raised far enough, the threshold of the window update lies above the
+  window: the count never reaches it, the peer uses up its window and
+  its writer waits for an update that only a data frame from us would
+  carry.
 
-Take bh_lock_sock() once in afiucv_hs_rcv(), for every frame that finds
-a socket. While a task owns it:
-
-- A SYN|ACK, SYN|FIN or FIN is recorded in the socket and applied by
-  the owner from proto->release_cb. It is not queued: nothing resends a
-  control frame, and the socket backlog can refuse one under memory
-  pressure, since it does not take a pfmemalloc skb.
-  connect() applies a recorded reply before it tests the state, so a
-  non-blocking connect() still sees a reply that is already in.
-- Data, SHT and WIN frames do not change sk_state and are handled on
-  arrival, as before. They wait in the socket backlog only while the
-  reply to our SYN is recorded and not applied yet, and behind frames
-  that wait already, up to the window given to the peer plus one.
-- A SYN for a listener waits in the backlog, cut to its header, up to
-  the accept queue plus one. Past that, or if the listener closed or
-  its queue filled meanwhile, it is refused without a child.
-
-A frame that no state of the socket can use is freed in afiucv_hs_rcv()
-and such a SYN refused there: a SYN|ACK or SYN|FIN outside IUCV_BOUND,
-a FIN for a socket neither connected nor about to be, and data, SHT and
-WIN frames behind a recorded FIN. A SYN for a socket that does not
-listen was refused only after a child had been allocated for it, and
-that child was never freed; it is now refused without one. A listener
-whose accept queue is full still leaks the child when no task owns it,
-as before.
+Record the window where it goes out, in the SYN and in a listener's
+SYN|ACK, and let recvmsg() count frames against it and take the
+window-update threshold from it. A msglimit set after the SYN no longer
+changes anything for that connection; getsockopt() still returns it. A
+socket connected by a SYN|ACK without having sent a SYN keeps msglimit
+as its window.
 
 Fixes: 3881ac441f64 ("af_iucv: add HiperSockets transport")
-Suggested-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://lore.kernel.org/all/20260724222917.134769-1-hexlabsecurity@proton.me/
-Cc: stable@vger.kernel.org # 6.18.x: f38bce9af9e2: net/iucv: take a private, writable frame before rewriting it in place
+Fixes: 800c5eb7b5eb ("af_iucv: change net_device handling for HS transport")
 Cc: stable@vger.kernel.org # 6.18.x
 Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
 ---
-v3:
-- only the softirq side of the lock is left here; 1/7 to 4/7, 6/7 and
-  7/7 took the rest, and the cover letter lists what was dropped. Up to
-  this patch the parked reader still gets -ENOTCONN at the peer's FIN,
-  as on net; 7/7 changes that
-- afiucv_hs_stray() calls a FIN a stray unless the socket is
-  IUCV_CONNECTED or a recorded SYN|ACK is about to connect it. v2
-  recorded a FIN that reached a socket in IUCV_BOUND and applied it
-  after the SYN|ACK (AI review of v2, first item)
-- data, SHT and WIN frames behind a recorded FIN are strays too, as
-  afiucv_hs_callback_rx() frees them once the FIN is applied. v2 handled
-  them as connected (second item)
-- connect() applies a recorded reply to its SYN before it tests the
-  state. v1 and v2 left the reply for release_sock(): a non-blocking
-  connect() returned -EAGAIN with the SYN|ACK, or the SYN|FIN, already
-  in, where net returns 0 or -ECONNREFUSED
-- kernel-doc on every function added, with its context; the comment on
-  afiucv_hs_defer() is rewritten (the reason v2 gave there was stale),
-  the one on afiucv_hs_backlog_add() says why frames are counted
-- on net, with nothing under it
-v2: https://lore.kernel.org/netdev/20261022-b4-disp-1d26b87a-v2-1-7ee1264d812a@proton.me/
-v1: https://lore.kernel.org/netdev/20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me/
+New in v3 as a patch of its own (Alexandra); v2 had it inside the lock
+patch. It goes first because the backlog of 5/7 counts against this
+window: on the live msglimit it would drop data without a trace, as in
+Hidayath's SO_MSGLIMIT scenario on v1.
 
-Repro of the listener in the message's first paragraph. The window is a
-few instructions wide, between the last child taken off the accept
-queue and the listener's IUCV_CLOSED, so the test kernels have an
-mdelay(400) there and a SYN is sent 100 ms into the close(). net with
-the delay: connect() returns 0, nothing ever accepts or closes the
-child, one socket stays in use after both ends are closed, and a new
-bind() to the listener's name fails with -EADDRINUSE. The series with
-the same delay: the SYN waits in the listener's backlog, is refused
-when the close is done, and connect() returns -ECONNREFUSED; nothing is
-left and the name binds again. With the SYN sent before the close()
-both kernels free the child. Not seen without the delay, and no KASAN
-splat with it.
+Both cases repro in the emulated setup, with the SYN|ACK held back in
+the adapter while the limit changes:
 
-Strays are freed in afiucv_hs_rcv(): a FIN with consume_skb(), as
-afiucv_hs_callback_fin() frees it on net, the rest as NO_SOCKET drops.
-With the drop trace on, a second FIN for a socket the first one
-disconnected leaves no kfree_skb event, on net and here; the series
-with that FIN dropped like the other strays leaves one NO_SOCKET drop.
-A data byte sent the same way is a drop on every kernel.
+- SO_MSGLIMIT 8 when the SYN goes out, lowered to 2, minimum SO_RCVBUF,
+  the peer sends its 8 frames. net reads 2, then takes the WARN_ON() in
+  iucv_sock_recvmsg() and returns -EFAULT; with this patch all 8 arrive.
+  With the default SO_RCVBUF net delivers the 8 as well: a window update
+  goes out after each read and resets the count.
+- SO_MSGLIMIT 2 when the SYN goes out, raised to 8. The peer sends 2 and
+  the socket reads both. On net no window update leaves and the peer's
+  next send returns -EAGAIN; with this patch the update leaves after
+  the first read and the send goes through. With the limit left at 2
+  both kernels send the update.
 
-The SYN for a socket that does not listen, measured: 16 connect() calls
-to a socket that is bound and does not listen, each refused. On net and
-up to 4/7 they leave 16 sockets in use after everything is closed, from
-this patch on none. The full accept queue is not fixed: 1056 SYNs
-refused by a listener whose queue is full leave 1056 sockets in use, on
-net and with the series.
+The last sentence of the message is the third item of the AI review of
+v2. net connects an IUCV_BOUND socket on any SYN|ACK, whether or not it
+sent a SYN. v3 leaves that as it is; against v2 it changes what such a
+socket reads afterwards. With a forged SYN|ACK and one byte for a socket
+that never called connect(), net and this patch return the byte; with
+the window left at 0, as in v2, the read takes the WARN_ON() and returns
+-EFAULT.
 
-The backlog's budget is the window of 1/7 plus one, so a socket
-connected by a SYN|ACK without a SYN of its own counts against msglimit
-there too. With the socket held, three one-byte messages behind such a
-SYN|ACK are all read after the release. With the budget read from
-msglimit_adv alone, one is read and two are SOCKET_BACKLOG drops.
-
-The first two items of the AI review repro on v2 as sent and are gone
-here. Both hold the socket with a task parked in setsockopt(), its
-filter a userfaultfd page, and send it one forged frame over the
-emulated adapter. First: the socket's SYN is held
-back, so it is IUCV_BOUND and no SYN|ACK exists; a FIN arrives, then the
-SYN is released and the SYN|ACK comes in. v2 connects and disconnects
-at the release; v3 frees the FIN as it arrives and a byte goes each way
-afterwards. With the FIN sent after the SYN|ACK instead, both apply it.
-Second: the peer sends one byte and closes, then a forged data frame
-arrives behind its FIN. v2 delivers the forged byte after the real one;
-v3 frees it and the reader gets EOF. net and v1 behave as v3 in both.
-v1 queued control frames and ran them in order, so both came in when v2
-began to record them instead. With any FIN recorded again the first
-test fails; with frames let through behind a recorded FIN, the second.
-
-With any one of these pieces taken out, at least one test fails: the
-release callback that applies what was recorded, the wait for the
-owner, the reply to our SYN applied before the backlog runs, connect()
-applying that reply, either half of afiucv_hs_stray()'s rule for a FIN,
-its rule for frames behind one, the whole of afiucv_hs_stray(), the
-budget read through the window helper, and the stray FIN consumed. Of
-the 53 default tests the kernel with 1/7 to 5/7 fails six: the five in
-the cover letter and the parked reader's -ENOTCONN, which 7/7 changes.
-
-By inspection only, no repro: a pfmemalloc skb refused by the backlog,
-the device reference a waiting SYN holds, and the SOCK_ZAPPED test in
-afiucv_hs_apply().
+With afiucv_hs_window() back on the live msglimit, the lowered case
+loses data in the backlog of 5/7 and the raised one stalls as on net.
+None of this shows in the 53 default tests: with this patch the same
+eight fail as on net, with the same result.
 ---
- include/net/iucv/af_iucv.h |   5 +
- net/iucv/af_iucv.c         | 332 +++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 314 insertions(+), 23 deletions(-)
+ include/net/iucv/af_iucv.h |  1 +
+ net/iucv/af_iucv.c         | 25 ++++++++++++++++++++++---
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
 diff --git a/include/net/iucv/af_iucv.h b/include/net/iucv/af_iucv.h
-index 6decbb1f34b3..6b2cb6c41b9e 100644
+index df85d19fbf84..6decbb1f34b3 100644
 --- a/include/net/iucv/af_iucv.h
 +++ b/include/net/iucv/af_iucv.h
-@@ -128,14 +128,19 @@ struct iucv_sock {
- 	struct sock_msg_q	message_q;
- 	unsigned int		send_tag;
+@@ -130,6 +130,7 @@ struct iucv_sock {
  	u8			flags;
-+	u8			hs_pending;	/* AF_IUCV_PEND_*, af_iucv.c */
  	u16			msglimit;
  	u16			msglimit_peer;
- 	u16			msglimit_adv;	/* window given to the peer */
-+	u16			hs_pending_window;
++	u16			msglimit_adv;	/* window given to the peer */
  	atomic_t		skbs_in_xmit;
  	atomic_t		msg_sent;
  	atomic_t		msg_recv;
- 	atomic_t		pendings;
- 	int			transport;
-+	/* frames in sk_backlog since it was empty */
-+	unsigned int		hs_backlog_data;
-+	unsigned int		hs_backlog_syn;
- 	void			(*sk_txnotify)(struct sock *sk,
- 					       enum iucv_tx_notify n);
- };
 diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 1677cc65ad06..f31b037f28c1 100644
+index ce13fe3c85b5..657c61161dbd 100644
 --- a/net/iucv/af_iucv.c
 +++ b/net/iucv/af_iucv.c
-@@ -44,7 +44,8 @@ static char iucv_userid[80];
-  * @sk:		the socket, in IUCV_BOUND
-  * @window:	the window in the SYN|ACK: the frames the peer takes from us
-  *
-- * Context: Softirq, under bh_lock_sock().
-+ * Context: sk_lock.slock held: softirq with no task owning the socket, or
-+ * the owner in afiucv_hs_apply().
-  */
- static void afiucv_hs_synack(struct sock *sk, u16 window)
- {
-@@ -77,10 +78,58 @@ static void afiucv_hs_fin(struct sock *sk)
- 	sk->sk_state_change(sk);
- }
- 
-+/* iucv_sock.hs_pending: control frames recorded for the owner */
-+#define AF_IUCV_PEND_SYNACK	0x01
-+#define AF_IUCV_PEND_SYNFIN	0x02
-+#define AF_IUCV_PEND_SYNREPLY	(AF_IUCV_PEND_SYNACK | AF_IUCV_PEND_SYNFIN)
-+#define AF_IUCV_PEND_FIN	0x04
-+#define AF_IUCV_PEND_ALL	(AF_IUCV_PEND_SYNREPLY | AF_IUCV_PEND_FIN)
-+
-+/**
-+ * afiucv_hs_apply() - apply the control frames afiucv_hs_record() kept
-+ * @sk:		the socket, owned by the caller
-+ * @mask:	the AF_IUCV_PEND_* bits to apply
-+ *
-+ * A socket closed meanwhile takes none. The test is SOCK_ZAPPED, since
-+ * __iucv_sock_close() leaves IUCV_BOUND as it is.
-+ *
-+ * Context: Process context, under sk_lock.slock.
-+ */
-+static void afiucv_hs_apply(struct sock *sk, u8 mask)
-+{
-+	struct iucv_sock *iucv = iucv_sk(sk);
-+	u8 pending = iucv->hs_pending & mask;
-+
-+	iucv->hs_pending &= ~pending;
-+	if (sock_flag(sk, SOCK_ZAPPED))
-+		return;
-+	if ((pending & AF_IUCV_PEND_SYNACK) && sk->sk_state == IUCV_BOUND)
-+		afiucv_hs_synack(sk, iucv->hs_pending_window);
-+	if ((pending & AF_IUCV_PEND_SYNFIN) && sk->sk_state == IUCV_BOUND)
-+		afiucv_hs_synfin(sk);
-+	if ((pending & AF_IUCV_PEND_FIN) && sk->sk_state == IUCV_CONNECTED)
-+		afiucv_hs_fin(sk);
-+}
-+
-+/**
-+ * afiucv_hs_release_cb() - proto->release_cb, apply what was recorded
-+ * @sk:		the socket, still owned by the caller
-+ *
-+ * Runs after the backlog, so a recorded FIN follows the data before it.
-+ *
-+ * Context: Process context, under sk_lock.slock.
-+ */
-+static void afiucv_hs_release_cb(struct sock *sk)
-+{
-+	if (iucv_sk(sk)->hs_pending)
-+		afiucv_hs_apply(sk, AF_IUCV_PEND_ALL);
-+}
-+
- static struct proto iucv_proto = {
- 	.name		= "AF_IUCV",
- 	.owner		= THIS_MODULE,
- 	.obj_size	= sizeof(struct iucv_sock),
-+	.release_cb	= afiucv_hs_release_cb,
- };
- 
- static struct iucv_interface *pr_iucv;
-@@ -131,6 +180,7 @@ static void iucv_sock_kill(struct sock *sk);
- static void __iucv_sock_close(struct sock *sk);
- 
- static void afiucv_hs_callback_txnotify(struct sock *sk, enum iucv_tx_notify);
-+static int afiucv_hs_backlog_rcv(struct sock *sk, struct sk_buff *skb);
- 
- static struct iucv_sock_list iucv_sk_list = {
- 	.lock = __RW_LOCK_UNLOCKED(iucv_sk_list.lock),
-@@ -562,6 +612,8 @@ static struct sock *iucv_sock_alloc(struct socket *sock, int proto, gfp_t prio,
- 		iucv->transport = AF_IUCV_TRANS_HIPER;
- 
- 	sk->sk_destruct = iucv_sock_destruct;
-+	/* not from iucv_proto: sk_alloc() does not copy proto->backlog_rcv */
-+	sk->sk_backlog_rcv = afiucv_hs_backlog_rcv;
- 	sk->sk_sndtimeo = IUCV_CONN_TIMEOUT;
- 
- 	sock_reset_flag(sk, SOCK_ZAPPED);
-@@ -836,6 +888,15 @@ static int iucv_sock_connect(struct socket *sock, struct sockaddr_unsized *addr,
- 	if (err)
- 		goto done;
- 
-+	/* The reply may be in already, recorded while we own the socket:
-+	 * apply it, or a non-blocking connect() misses it.
-+	 */
-+	if (iucv->transport == AF_IUCV_TRANS_HIPER) {
-+		spin_lock_bh(&sk->sk_lock.slock);
-+		afiucv_hs_apply(sk, AF_IUCV_PEND_SYNREPLY);
-+		spin_unlock_bh(&sk->sk_lock.slock);
-+	}
-+
- 	if (sk->sk_state != IUCV_CONNECTED)
- 		err = iucv_sock_wait(sk, iucv_sock_in_state(sk, IUCV_CONNECTED,
- 							    IUCV_DISCONN),
-@@ -1324,7 +1385,8 @@ static void iucv_process_message_q(struct sock *sk)
-  * @err:	set when no skb is returned
-  *
-  * skb_recv_datagram() would sleep with the socket lock held. This sleeps in
-- * sk_wait_event(), which drops it.
-+ * sk_wait_event(), which drops it; a FIN recorded for the owner is applied
-+ * then and ends the wait.
-  *
-  * Context: Process context, socket lock held; sleeps with it released.
-  * Return: the skb, or NULL with @err set. At RCV_SHUTDOWN the caller
-@@ -2018,7 +2080,6 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	nsk = iucv_sock_alloc(NULL, sk->sk_protocol, GFP_ATOMIC, 0);
--	bh_lock_sock(sk);
- 	if ((sk->sk_state != IUCV_LISTEN) ||
- 	    sk_acceptq_is_full(sk) ||
- 	    !nsk) {
-@@ -2028,7 +2089,6 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
- 		err = dev_queue_xmit(skb);
- 		if (nsk)
- 			iucv_sock_kill(nsk);
--		bh_unlock_sock(sk);
- 		goto out;
- 	}
- 
-@@ -2059,7 +2119,6 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
- 		sk->sk_data_ready(sk);
- 	} else
- 		iucv_sock_kill(nsk);
--	bh_unlock_sock(sk);
- 
- out:
- 	return NET_RX_SUCCESS;
-@@ -2075,9 +2134,7 @@ static int afiucv_hs_callback_synack(struct sock *sk, struct sk_buff *skb)
- 		return NET_RX_SUCCESS;
- 	}
- 
--	bh_lock_sock(sk);
- 	afiucv_hs_synack(sk, iucv_trans_hdr(skb)->window);
--	bh_unlock_sock(sk);
- 	consume_skb(skb);
- 	return NET_RX_SUCCESS;
- }
-@@ -2092,9 +2149,7 @@ static int afiucv_hs_callback_synfin(struct sock *sk, struct sk_buff *skb)
- 		return NET_RX_SUCCESS;
- 	}
- 
--	bh_lock_sock(sk);
- 	afiucv_hs_synfin(sk);
--	bh_unlock_sock(sk);
- 	consume_skb(skb);
- 	return NET_RX_SUCCESS;
- }
-@@ -2110,10 +2165,8 @@ static int afiucv_hs_callback_fin(struct sock *sk, struct sk_buff *skb)
- 		return NET_RX_SUCCESS;
- 	}
- 
--	bh_lock_sock(sk);
- 	if (sk->sk_state == IUCV_CONNECTED)
- 		afiucv_hs_fin(sk);
--	bh_unlock_sock(sk);
- 	consume_skb(skb);
- 	return NET_RX_SUCCESS;
- }
-@@ -2128,6 +2181,7 @@ static int afiucv_hs_callback_win(struct sock *sk, struct sk_buff *skb)
- 	if (!iucv)
- 		return NET_RX_SUCCESS;
- 
-+	/* also runs while a task owns the socket, see afiucv_hs_defer() */
- 	if (sk->sk_state != IUCV_CONNECTED)
- 		return NET_RX_SUCCESS;
- 
-@@ -2148,6 +2202,7 @@ static int afiucv_hs_callback_rx(struct sock *sk, struct sk_buff *skb)
- 		return NET_RX_SUCCESS;
- 	}
- 
-+	/* also runs while a task owns the socket, see afiucv_hs_defer() */
- 	if (sk->sk_state != IUCV_CONNECTED) {
- 		kfree_skb(skb);
- 		return NET_RX_SUCCESS;
-@@ -2180,12 +2235,171 @@ static int afiucv_hs_callback_rx(struct sock *sk, struct sk_buff *skb)
- 	return NET_RX_SUCCESS;
+@@ -176,6 +176,20 @@ static inline int iucv_below_msglim(struct sock *sk)
+ 			(atomic_read(&iucv->pendings) <= 0));
  }
  
 +/**
-+ * afiucv_hs_stray() - test for a frame that no state of the socket can use
-+ * @sk:		the socket the frame is for, under bh_lock_sock()
-+ * @flags:	the flags of the frame
++ * afiucv_hs_window() - the window a HiperSockets socket gave its peer
++ * @iucv:	the socket
 + *
-+ * A stray never waits for the owner. A SYN is one outside IUCV_LISTEN and a
-+ * SYN|ACK or SYN|FIN outside IUCV_BOUND, the state tests of their
-+ * callbacks; a full accept queue is not tested here. A FIN is one unless
-+ * the socket is connected or a recorded SYN|ACK is about to connect it.
-+ * Data, SHT and WIN are strays once the peer's FIN is recorded: the socket
-+ * stays IUCV_CONNECTED until the owner applies it.
++ * The msglimit its SYN or SYN|ACK carried. A socket that sent neither, but
++ * was connected by a SYN|ACK, has msglimit as its window.
 + *
-+ * Context: Softirq, under bh_lock_sock().
-+ * Return: true if the frame is to be freed or, for a SYN, refused.
++ * Return: the frames the peer may send before it needs a window update.
 + */
-+static bool afiucv_hs_stray(struct sock *sk, u8 flags)
++static u16 afiucv_hs_window(const struct iucv_sock *iucv)
 +{
-+	struct iucv_sock *iucv = iucv_sk(sk);
-+
-+	switch (flags) {
-+	case 0:
-+	case AF_IUCV_FLAG_SHT:
-+	case AF_IUCV_FLAG_WIN:
-+		return iucv->hs_pending & AF_IUCV_PEND_FIN;
-+	case AF_IUCV_FLAG_FIN:
-+		return sk->sk_state != IUCV_CONNECTED &&
-+		       !(iucv->hs_pending & AF_IUCV_PEND_SYNACK);
-+	case AF_IUCV_FLAG_SYN:
-+		return sk->sk_state != IUCV_LISTEN;
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_ACK:
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_FIN:
-+		return sk->sk_state != IUCV_BOUND;
-+	}
-+	return true;
-+}
-+
-+/**
-+ * afiucv_hs_defer() - test whether a data, SHT or WIN frame has to wait
-+ * @sk:		the socket, owned by a task, under bh_lock_sock()
-+ *
-+ * These frames do not change sk_state and are handled on arrival, also
-+ * while a task owns the socket. They wait in the socket backlog only if:
-+ *
-+ * - the reply to our SYN is recorded and not applied yet: the socket is
-+ *   still IUCV_BOUND, where data is freed and a WIN ignored;
-+ * - frames wait already: a later one must not overtake them, and
-+ *   sk_backlog.len stays non-zero until __release_sock() has run them all.
-+ *
-+ * Context: Softirq, under bh_lock_sock().
-+ * Return: true if the frame has to wait in the backlog.
-+ */
-+static bool afiucv_hs_defer(struct sock *sk)
-+{
-+	return (iucv_sk(sk)->hs_pending & AF_IUCV_PEND_SYNREPLY) ||
-+	       sk->sk_backlog.len != 0;
-+}
-+
-+/**
-+ * afiucv_hs_record() - keep a control frame for the task that owns the socket
-+ * @sk:		the socket, owned by a task, under bh_lock_sock()
-+ * @skb:	the frame, consumed here
-+ * @flags:	the flags of the frame: SYN|ACK, SYN|FIN or FIN
-+ *
-+ * Not queued: nothing resends a control frame, and the socket backlog has
-+ * to refuse a pfmemalloc skb. A bit in hs_pending is kept instead, and the
-+ * window of a SYN|ACK. The first reply to our SYN decides; a FIN is applied
-+ * after it.
-+ *
-+ * Context: Softirq, under bh_lock_sock().
-+ */
-+static void afiucv_hs_record(struct sock *sk, struct sk_buff *skb, u8 flags)
-+{
-+	struct iucv_sock *iucv = iucv_sk(sk);
-+
-+	switch (flags) {
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_ACK:
-+		if (!(iucv->hs_pending & AF_IUCV_PEND_SYNREPLY)) {
-+			iucv->hs_pending_window = iucv_trans_hdr(skb)->window;
-+			iucv->hs_pending |= AF_IUCV_PEND_SYNACK;
-+		}
-+		break;
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_FIN:
-+		if (!(iucv->hs_pending & AF_IUCV_PEND_SYNREPLY))
-+			iucv->hs_pending |= AF_IUCV_PEND_SYNFIN;
-+		break;
-+	case AF_IUCV_FLAG_FIN:
-+		iucv->hs_pending |= AF_IUCV_PEND_FIN;
-+		break;
-+	}
-+	consume_skb(skb);
-+}
-+
-+/**
-+ * afiucv_hs_backlog_add() - make a frame wait for the task that owns the socket
-+ * @sk:		the socket, owned by a task, under bh_lock_sock()
-+ * @skb:	the frame
-+ * @flags:	the flags of the frame: a SYN, or a data, SHT or WIN frame
-+ *
-+ * sk_add_backlog() is not used: its limit is in bytes and counts the
-+ * receive queue too, while the window is in frames. So frames are counted:
-+ *
-+ * - data, SHT and WIN up to the window given to the peer plus one. They
-+ *   wait only from the reply to our SYN until the owner has run them, and
-+ *   a peer that keeps to its window sends at most that many data frames
-+ *   and its SHT by then, and no WIN;
-+ * - SYNs up to the accept queue plus the one sk_acceptq_is_full() admits.
-+ *
-+ * The counts restart only when __release_sock() has run every frame, so a
-+ * peer cannot keep the owner in its loop. Past the limit a frame is
-+ * dropped and a SYN refused; so is a pfmemalloc skb, on which
-+ * __sk_backlog_rcv() BUG()s unless the socket is SOCK_MEMALLOC. A waiting
-+ * SYN is cut to its header, all the reply needs, and holds its device:
-+ * close() drops hs_dev before the release runs the SYN.
-+ *
-+ * Context: Softirq, under bh_lock_sock().
-+ */
-+static void afiucv_hs_backlog_add(struct sock *sk, struct sk_buff *skb,
-+				  u8 flags)
-+{
-+	struct iucv_sock *iucv = iucv_sk(sk);
-+	unsigned int *count;
-+	unsigned int limit;
-+
-+	if (!sk->sk_backlog.len) {
-+		iucv->hs_backlog_data = 0;
-+		iucv->hs_backlog_syn = 0;
-+	}
-+	if (flags == AF_IUCV_FLAG_SYN) {
-+		count = &iucv->hs_backlog_syn;
-+		limit = sk->sk_max_ack_backlog + 1;
-+	} else {
-+		count = &iucv->hs_backlog_data;
-+		limit = afiucv_hs_window(iucv) + 1;
-+	}
-+	if (*count >= limit ||
-+	    (skb_pfmemalloc(skb) && !sock_flag(sk, SOCK_MEMALLOC)))
-+		goto refuse;
-+	if (flags == AF_IUCV_FLAG_SYN) {
-+		if (pskb_trim(skb, sizeof(struct af_iucv_trans_hdr)))
-+			goto refuse;
-+		dev_hold(skb->dev);
-+	}
-+	__sk_add_backlog(sk, skb);
-+	/* a window of 65535 frames of 64K each would wrap the int */
-+	sk->sk_backlog.len = min_t(u32, sk->sk_backlog.len + skb->truesize,
-+				   INT_MAX);
-+	(*count)++;
-+	return;
-+
-+refuse:
-+	if (flags == AF_IUCV_FLAG_SYN) {
-+		afiucv_hs_callback_syn(NULL, skb);
-+	} else {
-+		sk_drops_inc(sk);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_SOCKET_BACKLOG);
-+	}
-+}
-+
- /**
-  * afiucv_hs_dispatch() - run the callback of a frame
-  * @sk:		the socket the frame is for, or NULL if there is none
-  * @skb:	the frame
-  *
-- * Context: Softirq.
-+ * Context: BH disabled. @sk is under bh_lock_sock(), or owned by the caller
-+ * in afiucv_hs_backlog_rcv().
-  * Return: NET_RX_SUCCESS.
-  */
- static int afiucv_hs_dispatch(struct sock *sk, struct sk_buff *skb)
-@@ -2231,6 +2445,71 @@ static int afiucv_hs_dispatch(struct sock *sk, struct sk_buff *skb)
- 	return err;
- }
- 
-+/**
-+ * afiucv_hs_backlog_rcv() - sk_backlog_rcv, run a frame that waited
-+ * @sk:		the socket, owned by the caller
-+ * @skb:	the frame
-+ *
-+ * Frames run in the order of arrival. The reply to our SYN came before any
-+ * of them, so it is applied first. A SYN is refused if the listener was
-+ * closed or its accept queue filled meanwhile.
-+ *
-+ * Context: Process context, socket owned by the caller, no sk_lock.slock.
-+ * Return: 0.
-+ */
-+static int afiucv_hs_backlog_rcv(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct net_device *dev = NULL;
-+
-+	spin_lock_bh(&sk->sk_lock.slock);
-+	afiucv_hs_apply(sk, AF_IUCV_PEND_SYNREPLY);
-+	spin_unlock_bh(&sk->sk_lock.slock);
-+	if (iucv_trans_hdr(skb)->flags == AF_IUCV_FLAG_SYN) {
-+		dev = skb->dev;		/* held by afiucv_hs_backlog_add() */
-+		if (sk->sk_state != IUCV_LISTEN || sk_acceptq_is_full(sk)) {
-+			afiucv_hs_callback_syn(NULL, skb);
-+			dev_put(dev);
-+			return 0;
-+		}
-+	}
-+	/* BH off: the callbacks take message_q.lock with spin_lock() */
-+	local_bh_disable();
-+	afiucv_hs_dispatch(sk, skb);
-+	local_bh_enable();
-+	dev_put(dev);
-+	return 0;
-+}
-+
-+/**
-+ * afiucv_hs_rcv_owned() - handle a frame while a task owns the socket
-+ * @sk:		the socket, under bh_lock_sock()
-+ * @skb:	the frame
-+ * @flags:	the flags of the frame
-+ *
-+ * A SYN|ACK, SYN|FIN or FIN is recorded, a SYN waits in the backlog, and a
-+ * data, SHT or WIN frame is handled now unless afiucv_hs_defer() says wait.
-+ *
-+ * Context: Softirq, under bh_lock_sock().
-+ * Return: NET_RX_SUCCESS.
-+ */
-+static int afiucv_hs_rcv_owned(struct sock *sk, struct sk_buff *skb, u8 flags)
-+{
-+	switch (flags) {
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_ACK:
-+	case AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_FIN:
-+	case AF_IUCV_FLAG_FIN:
-+		afiucv_hs_record(sk, skb, flags);
-+		return NET_RX_SUCCESS;
-+	case AF_IUCV_FLAG_SYN:
-+		break;
-+	default:
-+		if (!afiucv_hs_defer(sk))
-+			return afiucv_hs_dispatch(sk, skb);
-+	}
-+	afiucv_hs_backlog_add(sk, skb, flags);
-+	return NET_RX_SUCCESS;
++	return iucv->msglimit_adv ?: iucv->msglimit;
 +}
 +
  /*
-  * afiucv_hs_rcv() - base function for arriving data through HiperSockets
-  *                   transport
-@@ -2302,18 +2581,25 @@ static int afiucv_hs_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!iucv)
- 		sk = NULL;
- 
--	/* no sock
--	how should we send with no sock
--	1) send without sock no send rc checking?
--	2) introduce default sock to handle this cases
--
--	 SYN -> send SYN|ACK in good case, send SYN|FIN in bad case
--	 data -> send FIN
--	 SYN|ACK, SYN|FIN, FIN -> no action? */
-+	/* no socket: a SYN is refused, anything else freed */
-+	if (!sk)
-+		return afiucv_hs_dispatch(NULL, skb);
- 
--	err = afiucv_hs_dispatch(sk, skb);
--	if (sk)
--		sock_put(sk);
-+	bh_lock_sock(sk);
-+	if (afiucv_hs_stray(sk, trans_hdr->flags)) {
-+		if (trans_hdr->flags == AF_IUCV_FLAG_SYN)
-+			afiucv_hs_callback_syn(NULL, skb);
-+		else if (trans_hdr->flags == AF_IUCV_FLAG_FIN)
-+			consume_skb(skb);
-+		else
-+			kfree_skb_reason(skb, SKB_DROP_REASON_NO_SOCKET);
-+	} else if (sock_owned_by_user(sk)) {
-+		err = afiucv_hs_rcv_owned(sk, skb, trans_hdr->flags);
-+	} else {
-+		err = afiucv_hs_dispatch(sk, skb);
+  * iucv_sock_wake_msglim() - Wake up thread waiting on msg limit
+  */
+@@ -208,8 +222,11 @@ static int afiucv_hs_send(struct iucv_message *imsg, struct sock *sock,
+ 	phs_hdr->magic = ETH_P_AF_IUCV;
+ 	phs_hdr->version = 1;
+ 	phs_hdr->flags = flags;
+-	if (flags == AF_IUCV_FLAG_SYN)
++	if (flags == AF_IUCV_FLAG_SYN) {
+ 		phs_hdr->window = iucv->msglimit;
++		/* what the peer may send us, whatever msglimit becomes */
++		iucv->msglimit_adv = iucv->msglimit;
 +	}
-+	bh_unlock_sock(sk);
-+	sock_put(sk);
- 	return err;
- }
- 
+ 	memcpy(phs_hdr->destUserID, iucv->dst_user_id, 8);
+ 	memcpy(phs_hdr->destAppName, iucv->dst_name, 8);
+ 	memcpy(phs_hdr->srcUserID, iucv->src_user_id, 8);
+@@ -1320,7 +1337,8 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		consume_skb(skb);
+ 		if (iucv->transport == AF_IUCV_TRANS_HIPER) {
+ 			atomic_inc(&iucv->msg_recv);
+-			if (atomic_read(&iucv->msg_recv) > iucv->msglimit) {
++			if (atomic_read(&iucv->msg_recv) >
++			    afiucv_hs_window(iucv)) {
+ 				WARN_ON(1);
+ 				iucv_sock_close(sk);
+ 				return -EFAULT;
+@@ -1345,7 +1363,7 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 				iucv_process_message_q(sk);
+ 			if (iucv->transport == AF_IUCV_TRANS_HIPER &&
+ 			    atomic_read(&iucv->msg_recv) >=
+-							iucv->msglimit / 2)
++						afiucv_hs_window(iucv) / 2)
+ 				send_win = true;
+ 		}
+ 		spin_unlock_bh(&iucv->message_q.lock);
+@@ -1926,6 +1944,7 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
+ 	afiucv_swap_src_dest(skb);
+ 	trans_hdr->flags = AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_ACK;
+ 	trans_hdr->window = niucv->msglimit;
++	niucv->msglimit_adv = niucv->msglimit;
+ 	/* if receiver acks the xmit connection is established */
+ 	err = dev_queue_xmit(skb);
+ 	if (!err) {
 
 -- 
 2.56.0
