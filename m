@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794424336;
-	b=DlMrKkyUR9Rs61Yb8k3XZQXPjcKTu8srIItIZE7xIwD+l3XbTM8SdUzkrWtDq30RyUwt
-	 KX7b9PWB8kAe3J5uvaa1Ne75IiO6ZjIQDL5AQ4nU37JNPEf0Ro82TD8916zhz0F8I68Fo
-	 HuHlrIaqfidqRn4mMQH4P+GqvLja53aKq7B/RGCltNHqb6cCQH0RrUryc2pG8RBEDqTU8
-	 vgaw9NFxSVbmkcjCBBhdPogQZAZ4InKIHoRPGbFccf3WThTo//WL4obIxcRUCZ4Rj9Ycx
-	 ftlCs8obAicEauTCAuy83QEwe8h6MIJx0R1Th2Z4BBtIYpmBNQ52bAM5LPwD9dI/KSQ==
+	t=1794424332;
+	b=v1QFS8Mi9M85rXWCTW1blGHwluVzUYA1XBv9Y4BeBY9aNgUAD26fiGttK+RgMFLue1JP
+	 X0GOqBOgEKNPHdQgj8TE8GRbMXyl6LmneOKPFZC2qwto1MvwBm18RM8TNYDi/gxVIs6xx
+	 oPz8TvN3wPq7ipJipNPJKonoc0XZFgAecDOGjgPrSW4AVuXILECa5V8/HxrmLDf/k95DW
+	 nHiv+bqyHsVhiay7iRSZrAurj/r2faLpqJdroni+oiUqRi6aWhtRdPHzq2Nh+a2YddblM
+	 jgGb+LPIKccirksPYh6CNPK2EUlWRrlbFKp6ehuGWw3vAAN/DoVaEDDiz8lrX/VkmFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794424336;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794424332;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=+vddkaLT6r9Qg+VZp9hd3qPKksz/5ONk6NPlMylLqlY=;
-	b=rad9OXnEe0XEDrqN3k3UFy8kpSq07Bml0Der311vllV9QigL7Qv4LrMxMIslyysDizbf
-	 nCYFjd1FzdSL6pR32VD6DqaHAXt8NhV8hRBakQYstYSxJ7Lh5wwTojCgvzJ8bsLNAWP6j
-	 ytgknCkqxVNim8RgbvPPAAtX/3P4/rsnQ4gyoTy04e/T5KGEM7vHgadCYSxSNoF47lvWh
-	 BkYul+lfyAvOp8iDE2UD2RJts9OjGSvIVYlYvjBdeZBPeESAYAVBEj8HfgbQvDk6sYem2
-	 z2uFnYhod4ZYd5VDSFIKxkfu+cPxhW8Q6XwMEYS4DE8g1TQy/VDvUsCW4EGD25/6fig==
+	bh=JzLMSwghD2PO6Xb9dFzksMNtTAGLMaDroH8J4cxYrno=;
+	b=5XPyLXe04eShmJnD/TwfnxIOc6dsUyk1AQLzfJtFNSdr7+UjQvQeSPrzxb7ViYc6YHk8
+	 TUUG4mH+WcrOc6VtgaRiC+mRzT6rXQuqL4lq/xiQ7DiPEKvhtlxaZ+3dQ/C9kHilMVtz1
+	 w7rYoHlsK9VQp02oSGamnceOV2baD155BAgIIukc0BO+llNY7IZ6KcmzzC5iuv/0hMBQQ
+	 80Onk2rGC4/mELrMmWJ43xGyVOQdh5ouo94sMmry+0YxoqbyIM4W7YRuYxbBhJ4qopI7D
+	 5QITRgeX/Zt8D6RCx9mJf96SBDrWBGurV7t+7XzDvO+0EdZ5vbOXU9yQdQ0qngdpQgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDDOvhOW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XByef+ej;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBBF60A380A;
-	Wed, 11 Nov 2026 19:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942DA606A89E;
+	Wed, 11 Nov 2026 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDDOvhOW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610A61F00A11;
-	Wed, 11 Nov 2026 19:12:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XByef+ej
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D21F00A05;
+	Wed, 11 Nov 2026 19:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794424336;
-	bh=+vddkaLT6r9Qg+VZp9hd3qPKksz/5ONk6NPlMylLqlY=;
+	s=k20260515; t=1794424331;
+	bh=JzLMSwghD2PO6Xb9dFzksMNtTAGLMaDroH8J4cxYrno=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RDDOvhOWStL5eTghhV+WNTTCfKRx6kWFREOg2W2H070X2Ard9W44EKqZR1Uwws/wX
-	 XQGOGA2tjsvVok0sZD9zEcaeVlTJSphZdpXDr7OkUfIWeYc/8gfgC3LG+TzMhu/4xw
-	 nNVXAOm4woXHENuHdhmJ9EAAn+V5ZuKG0VhQ0WVR0BlbHN7HEvAyDCsQ4sh3b+O1za
-	 DN71KhGHHiwRT/qPDmTkzJMu9Nk2oDQqg7W/Bwgs56sXkzPDW7QL5OTTABjZw7HO5B
-	 DMtNX9wK2iIyDfYhDf01oOJITRcAE2xKJogwk7KaVqis4b7lnuQ2xASOrRsOeTGbdq
-	 7XvbnISPa8Z7Q==
-Subject: Re: [PATCH net-next 09/10] net/mlx5e: TC, match the tunnel key
- without a tunnel device
+	b=XByef+ejZRyzUxQ92DESKOvJm6sqvLAET0v1veFV25qfPJ5WdYJQkiMrVgJUk3xjl
+	 9QiRxoLRrnHRLZCD/Mz3sIX3TmKtUmk2229Ox+qg4kTlGgBxu5diIfO/ZfJlvRtWFQ
+	 RsvB3z5hfCfKQreWPttK67Yh9NFXr2p+Oxxju9bSiAghWpGYbm+TrArCy00/hh7Ej1
+	 PhD4PbbuHnQdcIP+vxJ3b7vzR3BECdis3iF0wNoNlq48ialpARH7W7GIsYUnX8Cg+v
+	 uqgVIIUJt+gotnnADcl/gEW+hj5YRxj83BJ9LOa4CCmRkAVMo6yQHTEX+3Aq60tczi
+	 lRsJ10MCQDXVQ==
+Subject: Re: [PATCH net-next 07/10] selftests: forwarding: tc_flower: test the
+ enc_key_id mask
 From: netdev-bot+sashiko@kernel.org
 To: acassen@corp.free.fr
 Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
@@ -53,11 +53,11 @@ Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
  idosch@nvidia.com, shuah@kernel.org, netdev@vger.kernel.org,
  linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, oss-drivers@corigine.com
-Date: Wed, 11 Nov 2026 19:12:13 +0000
-Message-ID: <179442433391.2199510.196528697168850523@kernel.org>
-In-Reply-To: <20261109131039.959438-10-acassen@corp.free.fr>
-References: <20261109131039.959438-10-acassen@corp.free.fr>
-X-sashiko-severity: High
+Date: Wed, 11 Nov 2026 19:12:10 +0000
+Message-ID: <179442433006.2199510.18178415453434864193@kernel.org>
+In-Reply-To: <20261109131039.959438-8-acassen@corp.free.fr>
+References: <20261109131039.959438-8-acassen@corp.free.fr>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -70,10 +70,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,163 +81,103 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new non-tunnel-device path in __parse_cls_flower()
-  (en_tc.c:2789-2793) offloads any rule that carries ENC_KEYID.
-- [Medium] The patch fixes a bug that users can already hit, but the fix
-  ships inside a net-next feature patch with no Fixes: tag.
-- [Medium] On VF representor (FDB) flows, the new path matches fields
-  that sit past the header region the eswitch min-inline contract…
+- [Medium] When tcflags=skip_sw, match_enc_key_id_mask_test()
+  (tools/testing/selftests/net/forwarding/tc_flower.sh) never tests…
 
 --
 
-net/mlx5e: TC, match the tunnel key without a tunnel device
+selftests: forwarding: tc_flower: test the enc_key_id mask
 
-This adds a parse_outer_key tunnel op. With it, __parse_cls_flower() can
-offload enc_key_id on filter devices that are not tunnel devices. The GRE
-key, VXLAN VNI, GENEVE VNI or GTP-U TEID is matched on the wire, and the
-tunnel is picked from ip_proto and an exact dst_port. These rules must be
-skip_sw and cannot carry a decap action.
+This adds match_enc_key_id_mask_test() to tc_flower.sh. The test puts a
+flower filter with enc_key_id 256/0xf00 on a gretap external device. It
+checks three things: the mask shows up in the dump, a key inside the mask
+matches, and a key outside the mask only hits a second exact-match filter.
+Under skip_sw, if adding the masked filter fails, the test only logs it.
 
-> This covers NIC and eswitch flows. A rule on the uplink representor used
-> to accept enc_key_id without matching on it. It caught all the traffic of
-> its other keys. It now matches the key or gets refused.
-
-[Severity: Medium]
-This describes a bug that predates this patch. Before this change,
-__parse_cls_flower() whitelisted FLOW_DISSECTOR_KEY_ENC_KEYID but only read
-it when mlx5e_get_tc_tun(filter_dev) was non-NULL. So a skip_sw rule with
-enc_key_id on a non-tunnel device was offloaded without the key.
-
-Could the fix go in its own patch with a Fixes: tag? As it stands, stable
-trees can't take it without also taking the new outer key feature,
-tc_tun_gtp.c and the parse_outer_key op.
-
-Is the old bug really limited to the uplink representor?
-parse_cls_flower() is shared by mlx5e_add_nic_flow() and
-__mlx5e_add_fdb_flow(). That suggests the NIC netdev (FS_FT_NIC_RX) and VF
-representors accepted enc_key_id the same way without matching it.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-> index de74dbfe7b20c..921af801d4d4e 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+> diff --git a/tools/testing/selftests/net/forwarding/tc_flower.sh b/tools/testing/selftests/net/forwarding/tc_flower.sh
+> index b58909a931129..9d9f109ab8954 100755
+> --- a/tools/testing/selftests/net/forwarding/tc_flower.sh
+> +++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
 
 [ ... ]
 
-> @@ -996,3 +997,90 @@ int mlx5e_tc_tun_parse_udp_ports(struct mlx5e_priv *priv,
-
-[ ... ]
-
-> +/* Without a tunnel device only the hardware can read the tunnel key */
-> +int
-> +mlx5e_tc_tun_parse_outer_key(struct mlx5e_priv *priv,
-> +			     struct mlx5_flow_spec *spec,
-> +			     struct flow_cls_offload *f,
-> +			     enum fs_flow_table_type fs_type)
+> +match_enc_key_id_mask_test()
 > +{
 
 [ ... ]
 
-> +	tunnel = mlx5e_tc_tun_outer_lookup(rule);
-> +	if (!tunnel) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "enc_key_id needs ip_proto 0x2f or the exact dst_port of a supported tunnel");
-> +		return -EOPNOTSUPP;
-> +	}
+> +	ip link add gt-ex type gretap external # To collect tunnel info
+> +	ip link set dev gt-ex up
+> +	ip link set dev gt-ex master v$h2
+> +	tc qdisc add dev gt-ex clsact
 > +
-> +	flow_rule_match_enc_keyid(rule, &enc_keyid);
-> +	return tunnel->parse_outer_key(priv, spec, extack,
-> +				       be32_to_cpu(enc_keyid.key->keyid),
-> +				       be32_to_cpu(enc_keyid.mask->keyid),
-> +				       fs_type);
-> +}
-
-[Severity: High]
-Are the other tunnel keys in the same rule silently dropped here?
-
-The used_keys whitelist in __parse_cls_flower() still accepts
-ENC_IPV4_ADDRS, ENC_IPV6_ADDRS, ENC_PORTS, ENC_IP, ENC_OPTS and ENC_CONTROL
-on any filter device. Only two places turn these keys into hardware
-matches:
-
-  - mlx5e_get_flow_tunnel_id()
-  - mlx5e_tc_tun_parse() and mlx5e_tc_verify_tunnel_ecn()
-
-Both are reached only from the mlx5e_get_tc_tun(filter_dev) branch.
-
-This path programs only the key register and then returns 0. Take this rule
-on the uplink representor:
-
-  tc filter add dev <uplink_rep> ingress protocol ip flower skip_sw \
-      ip_proto 0x2f enc_key_id 100 enc_dst_ip 10.0.0.1 \
-      action mirred egress redirect dev <vf_rep> skip_sw
-
-It looks like the rule would be accepted. Hardware would then redirect
-every GRE packet with key 100 to that VF, whatever its outer destination.
-enc_opts, enc_dst_port and enc_tos would be ignored in the same way.
-
-Because skip_sw is required, software never shows the wider match. A
-documentation patch later in the series says "All the keys describe the
-packet on the wire", which makes such rules more likely. That patch does
-not change this code.
-
-Should mlx5e_tc_tun_parse_outer_key() refuse rules that carry any other
-ENC_* key?
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> index 3823ccc60dd39..6780e54a0cb93 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> @@ -2786,6 +2786,10 @@ static int __parse_cls_flower(struct mlx5e_priv *priv,
->  		err = mlx5e_tc_verify_tunnel_ecn(priv, f, &match_inner_ecn);
->  		if (err)
->  			return err;
-> +	} else if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID)) {
-> +		err = mlx5e_tc_tun_parse_outer_key(priv, spec, f, fs_type);
-> +		if (err)
-> +			return err;
->  	}
+> +	# A device may refuse a partial mask but software must take it
+> +	tc filter add dev gt-ex ingress protocol ip pref 1 handle 101 flower \
+> +		$tcflags enc_key_id 256/0xf00 action drop
+> +	if [[ $? -ne 0 && $tcflags == "skip_sw" ]]; then
+> +		log_info "Device refuses the enc_key_id mask"
 
 [Severity: Medium]
-Can this path be hit on VF representors whose eswitch min-inline mode does
-not cover the tunnel header?
+Can the skip_sw pass ever reach enc_key_id_mask_check(), or does it always
+end up in this branch?
 
-For non-uplink eswitch flows, parse_cls_flower() only checks the match
-level:
+gt-ex is a gretap external device, and ip_gre has no ndo_setup_tc. When
+clsact is added on it, tcf_block_offload_bind() calls
+tcf_block_offload_cmd(). That function sets up the indirect block and then
+always returns an error:
 
-	if (rep->vport != MLX5_VPORT_UPLINK &&
-	    (esw->offloads.inline_mode != MLX5_INLINE_MODE_NONE &&
-	    esw->offloads.inline_mode < non_tunnel_match_level)) {
+net/sched/cls_api.c:tcf_block_offload_cmd() {
+    ...
+	flow_indr_dev_setup_offload(dev, sch, TC_SETUP_BLOCK, block, &bo,
+				    tc_block_indr_cleanup);
+	tcf_block_setup(block, &bo);
 
-mlx5e_tc_tun_parse_outer_key() writes misc.gre_key, vxlan_vni, geneve_vni
-or misc3.gtpu_teid, but it never raises *outer_match_level. The level stays
-at MLX5_MATCH_L3 (from ip_proto) or MLX5_MATCH_L4 (from dst_port).
+	return -EOPNOTSUPP;
+}
 
-On the VF TX side, mlx5e_calc_min_inline() does:
+As a result, tcf_block_offload_bind() does block->nooffloaddevcnt++ for
+the gt-ex block.
 
-	case MLX5_INLINE_MODE_TCP_UDP:
-		hlen = eth_get_headlen(skb->dev, skb->data, skb_headlen(skb));
-	...
-	case MLX5_INLINE_MODE_IP:
-		hlen = mlx5e_skb_l3_header_offset(skb);
+After that, fl_hw_replace_filter() calls tc_setup_cb_add() with
+err_stop set to skip_sw. tc_setup_cb_add() then rejects the filter before
+any driver callback is called:
 
-So inline_mode IP does not inline the GRE key. With inline_mode TCP_UDP,
-the inlined bytes end after the UDP header, so the VXLAN, GENEVE or GTP-U
-header is left out.
+net/sched/cls_api.c:tc_setup_cb_add() {
+    ...
+	if (block->nooffloaddevcnt && err_stop) {
+		ok_count = -EOPNOTSUPP;
+		goto err_unlock;
+	}
+    ...
+}
 
-A GRE key rule therefore passes the check with inline_mode IP. A VXLAN,
-GENEVE or GTP-U rule passes with inline_mode TCP_UDP.
+So every skip_sw flower filter on gt-ex would fail, whatever the mask is.
+An exact enc_key_id 256 would fail the same way.
 
-On min-inline devices, such as ConnectX-4 Lx with vport context inline
-mode, could the eswitch miss these bytes in VF-originated traffic? The
-skip_sw rule would then never fire, or would match the wrong packets.
+On any setup where tc_offload_check passes, the skip_sw pass would print
+"Device refuses the enc_key_id mask". It would then skip filter 102 and
+enc_key_id_mask_check(), and report no result.
 
-Before this patch, tunnel key matching never reached hardware on VF
-representors. The VF representor testing in the commit message was on
-ConnectX-7, where inline mode is NONE.
+The comment above, the log_info() text and the commit message all say
+the mask is the reason:
 
-Should this path refuse the rule on non-uplink vports when
-esw->offloads.inline_mode is not MLX5_INLINE_MODE_NONE?
+  When tc does not know the mask or a device refuses it under skip_sw, the
+  test only logs this.
+
+Is that accurate, given that no skip_sw filter can be installed on gt-ex
+at all?
+
+This also means the skip_sw half never tests the hardware mask
+programming that this series adds to cxgb4, mlx5 and nfp. A regression
+there would look like the same info line.
+
+Even without the block-level check, nfp_flower_calculate_key_layers()
+looks like it would reject this filter for another reason: it matches only
+enc_key_id, with no ENC_CONTROL or enc_dst_ip match. Again, that has
+nothing to do with the mask.
+
+Should the skip_sw case be dropped, or moved to a block that can actually
+be offloaded?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109131039.959438-1-acassen%40corp.free.fr
