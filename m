@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794392859;
-	b=pyDbFPUoQFPmNaseLufBAgvh4g6cmrNIufnDbXMsPZWMY8+2E0Vi/LpeD5jOgkJ2HfVf
-	 EhF8i+BO+/oyvKuJmMTF9L5WF3/uuXywzF5Cpec07TR7PEmFeX6UDcZhmAbNagqxMzS7X
-	 GVDPHmLx03azoy2+18voPmgPyHrgJhksLX924OU4obqr8BjAQwwQVhSViO0bT9suMgGW2
-	 mnie6QSwMLymKxopBR0WrBuLXibvPyYrNDQ4lLCnA8gbfUto62AOs3V83HBz+lOPjdE12
-	 VMNA3QWHBTUTcpXdrl4do7S0KQm1LoRKJ+Zd7IoNkH8K1KgpRLgHwR+s1//eTUfQrrg==
+	t=1794392860;
+	b=4SF9ZjzviJL+MNCZ+aNGpUO0Bi4K5nPFFaQTDXj5Rh1LbHvio3vPcW+qY69LgTumDKvR
+	 GMvZMfg/RsWZbeGRD+ysz9T/n8gXQLdYQSrQe7MhQMMaG/w6HiEkcF3ACRws6mL9GLpPd
+	 8p4P9d2Z+TPSNn4eNoMAoGuCSfsG0aEd9FPfqTE4w13wtTdZM3ZwmnFfLTmDRWzZu/JOn
+	 7A8iB2Vh/243c+nDpV0NGNA8t86lLke0AxLZA8zHnGoq7tc362miwdVtZwc1peNfkYPPK
+	 ITxLXPrANrgozVCIJEAV9VvyokQswS8vZyFDAi1YJdg/k4nXaZfmtRCPgiZQpKKq+1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794392859;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794392860;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=HM3rz76RGIKt8dMzknvwQnTdPjRPPY5nGGIXvenUr+Y=;
-	b=11ZZ6fve03qmjqhS3PKu1rK9ijKvDniK/EwBMyiad5bthL0fK1UFgEFhEYyDu3keXbhk
-	 gaLZtFdjIRMJeR15TWboZ1wg+Ynb6/h+a/5C5rJV42BoUsXB6rcJusUM4MUC73/5BQTOH
-	 InOuJJoOW4HjA9nlWUiUd5eMFcyvBY/bPHABB1OsAS4LNlse1Vk29CJvjjLs63/Aa5wX1
-	 ttwu9IsApIB+VcvyukbATqc8UaFIchGyybPbS2nvJKk1XNEfb7in/sXpJrc0x4yGsKjv4
-	 6Rw3yL1Y/2ZGBJghiDpWl9TPFLsNKRu56QVpCvMs6V5W8XPCIM1GI0FyXSqir0j0Grg==
+	bh=9zDl0MYB7shvzk9kMl26C8GZ3AJOuHtU2CyfGNendrY=;
+	b=lLbs8KJOofyJZEvmNs3C83/LplqbDkHEa2ccny+FH4C4Qa4XRky367KQioF81noYH9zw
+	 vr1CcuDKBfCBfooz/WjWsQHjnLBul/AkO0jeNQJoq2HGzruMpDOZrDgqpXHngL9FwxGw5
+	 V5xnUnG3pxC17KMR9kGp9MOa2e/AeulDb/wVRtWBJayLrthvhwPEohhOTUe5GgKEMfj9J
+	 ty8RmvAumH/RGoYG2vnWN2swwUPf03MrCLH+IrW+Lu63O4agHHs4op2ptLf/dA+HVL43q
+	 eTAoPE/k7HbyBjx+9KMchlZfogsnnwN1OdMSj/4p6R+SKLtErGrEFqb0IeW+zcv0Ifw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=odNvwpbf;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=BCqBGyo6;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 17139606A324
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17139606A324
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B1F29606A321
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1F29606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=odNvwpbf
-Received: from kero.packetmixer.de (p200300c59740DeD843BE7E4A980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=BCqBGyo6
+Received: from kero.packetmixer.de (p200300C59740ded843Be7e4a980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id C58C0FA0B3;
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 0D5CAFA0B2;
 	Wed, 11 Nov 2026 11:27:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	s=09092022; t=1794392851;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM3rz76RGIKt8dMzknvwQnTdPjRPPY5nGGIXvenUr+Y=;
-	b=odNvwpbfWjjW8NjEAySOT1IkfC44KxDd/wDrh241C00FVX05yjV5NwTtD4HzTW1Bf9cMEj
-	LVCv/dLyv4+GlPWHm9xrNyN03ggjU19QB34Mrhw6cu2YQ4wHVelvqCZQ9xs5ZyXEJ9t09F
-	dAe3n4121KpFDX7x+f+J6DhpKrdEi8HU9AkKfoIKTwZVN5MgHyV1cUjIS8YmZT8n99iYFx
-	DsxPZXcK1eTpRqdplk+inGiv4RbTaeb47nW30WNZXpLJ6E7e6VhCaIREf3zBQlKYfyP3Le
-	7pm9JQKN3Plswg2Ljx6KLJ5idLhbFZPaYcICJ95R/7lQbC7Z3VdtE9JdTJUruA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9zDl0MYB7shvzk9kMl26C8GZ3AJOuHtU2CyfGNendrY=;
+	b=BCqBGyo69nMId0eBy5Bw+r4uziUIL5lbxHM8MBaJGIxAw4NglIPDOvTb4DuOg21dO7NigJ
+	RkYGx8R5wWpqlrBx2YTyUEf04eYBXz9lvOjn4BEeesZo9PraxG2OWTYo3IesEAiVHuFv+w
+	HHulqKhdSejJWnonZ14MDeeOqU6tu3oWBsKgKEkUbnw9B3EfLVhR1SuJNg0/tVwMu4sfQ6
+	5AWn3PFazdlf0N+bEk922T8IFY+QxguY54gKQ30EXSqfEgEVfTnl/7qCkCfjd2pOH/0qtO
+	Qwd/WjK+wU1aLIGaTscgsnbAQjGFwDR3GEcMsNNJy58iu0pwujnrznbiCnA+yQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -59,16 +58,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sashiko <sashiko-bot@kernel.org>,
-	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 01/15] batman-adv: mcast: explicitly initialize mcast.num_want_all_rtr{4,6)
-Date: Wed, 11 Nov 2026 11:27:15 +0100
-Message-ID: <20261111102729.2096241-2-sw@simonwunderlich.de>
+Subject: [PATCH net-next 00/15] pull request for net-next: batman-adv 2026-11-11
+Date: Wed, 11 Nov 2026 11:27:14 +0100
+Message-ID: <20261111102729.2096241-1-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261111102729.2096241-1-sw@simonwunderlich.de>
-References: <20261111102729.2096241-1-sw@simonwunderlich.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,38 +75,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
+Dear net maintainers,
 
-All mcast.num_want_all_* are initialized in batadv_mesh_init_late() - with
-the exception of mcast.num_want_all_rtr4 + mcast.num_want_all_rtr6. At the
-moment, it works because atomic_set just initializes it to 0 and the netdev
-private data is already set to 0 before being passed to .ndo_init.
+here is a cleanup pull request of batman-adv to go into net-next.
 
-For consistency purposes, also initialize mcast.num_want_all_rtr4 +
-mcast.num_want_all_rtr6 explicitly.
+Please pull or let me know of any problem!
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/bug/linux-9dbe5dec-31ae-49eb-838a-b4b92ced4ace
-Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/mesh-interface.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thank you,
+      Simon
 
-diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index 1ce707aaf48a0..6ffc505ce2aba 100644
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -833,6 +833,8 @@ static int batadv_meshif_init_late(struct net_device *dev)
- 	atomic_set(&bat_priv->mcast.num_want_all_unsnoopables, 0);
- 	atomic_set(&bat_priv->mcast.num_want_all_ipv4, 0);
- 	atomic_set(&bat_priv->mcast.num_want_all_ipv6, 0);
-+	atomic_set(&bat_priv->mcast.num_want_all_rtr4, 0);
-+	atomic_set(&bat_priv->mcast.num_want_all_rtr6, 0);
- 	atomic_set(&bat_priv->mcast.num_no_mc_ptype_capa, 0);
- #endif
- 	WRITE_ONCE(bat_priv->gw.mode, BATADV_GW_MODE_OFF);
--- 
-2.47.3
+The following changes since commit a137095419b4be0b204a11af4f1cea872ea262e9:
 
+  batman-adv: tt: limit local table to single TVLV response size (2026-10-30 10:11:27 +0100)
+
+are available in the Git repository at:
+
+  https://git.open-mesh.org/batadv.git tags/batadv-next-pullrequest-20261111
+
+for you to fetch changes up to d5c0415dfb58b646696292a7af3d084200933f84:
+
+  batman-adv: mcast: document the value stored in is_routable (2026-10-31 23:04:11 +0100)
+
+----------------------------------------------------------------
+This cleanup patchset includes the following patches:
+
+- mcast: explicitly initialize mcast.*_want_all_rtr{4,6),
+  by Sven Eckelmann (2 patches)
+
+- uapi: add note/clarification on access of reserved bytes/bits,
+  by Linus Lüssing
+
+The remaining patches are authored by Sven Eckelmann:
+
+- avoid torn u64 counter reads on 32-bit systems
+
+- bat_v: initialize last_unicast_tx on neighbor creation
+
+- anotate various timestamps with READ/WRITE_ONCE (6 patches)
+
+- use matching return types for bool and void functions
+
+- mark read-only MAC address parameters as const
+
+- use bool for boolean flags
+
+- mcast: document the value stored in is_routable
+
+----------------------------------------------------------------
+Linus Lüssing (1):
+      batman-adv: uapi: add note/clarification on access of reserved bytes/bits
+
+Sven Eckelmann (14):
+      batman-adv: mcast: explicitly initialize mcast.num_want_all_rtr{4,6)
+      batman-adv: mcast: explicitly initialize mcast.want_all_rtr{4,6}_list
+      batman-adv: avoid torn u64 counter reads on 32-bit systems
+      batman-adv: bat_v: initialize last_unicast_tx on neighbor creation
+      batman-adv: dat: annotate last_update with READ/WRITE_ONCE
+      batman-adv: bla: avoid negative reported BATADV_ATTR_LAST_SEEN_MSECS
+      batman-adv: tt: annotate last_seen with READ/WRITE_ONCE
+      batman-adv: annotate originator last_seen with READ/WRITE_ONCE
+      batman-adv: annotate neigh_node last_seen with READ/WRITE_ONCE
+      batman-adv: annotate hardif_neigh_node last_seen with READ/WRITE_ONCE
+      batman-adv: use matching return types for bool and void functions
+      batman-adv: mark read-only MAC address parameters as const
+      batman-adv: use bool for boolean flags
+      batman-adv: mcast: document the value stored in is_routable
+
+ include/uapi/linux/batadv_packet.h     | 28 +++++++++++++++---------
+ net/batman-adv/bat_iv_ogm.c            | 34 ++++++++++++++++-------------
+ net/batman-adv/bat_v.c                 |  9 ++++++--
+ net/batman-adv/bat_v_elp.c             |  8 ++++---
+ net/batman-adv/bat_v_ogm.c             |  7 +++---
+ net/batman-adv/bridge_loop_avoidance.c | 21 ++++++++++--------
+ net/batman-adv/bridge_loop_avoidance.h | 11 +++++-----
+ net/batman-adv/distributed-arp-table.c | 19 +++++++++-------
+ net/batman-adv/distributed-arp-table.h |  3 +--
+ net/batman-adv/hard-interface.c        |  2 +-
+ net/batman-adv/hard-interface.h        |  2 +-
+ net/batman-adv/main.c                  |  2 ++
+ net/batman-adv/main.h                  | 15 +++++++++++--
+ net/batman-adv/mesh-interface.c        | 25 +++++++++++++++++----
+ net/batman-adv/multicast.c             | 18 +++++++++------
+ net/batman-adv/multicast.h             |  3 +--
+ net/batman-adv/multicast_forw.c        | 27 +++++++++++++----------
+ net/batman-adv/originator.c            | 16 ++++++++------
+ net/batman-adv/originator.h            |  2 +-
+ net/batman-adv/routing.c               |  4 ++--
+ net/batman-adv/translation-table.c     | 40 +++++++++++++++++++---------------
+ net/batman-adv/translation-table.h     |  8 +++----
+ net/batman-adv/types.h                 | 23 ++++++++++++++-----
+ 23 files changed, 204 insertions(+), 123 deletions(-)
