@@ -1,101 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794377157;
-	b=JqNmmNr/I9PoFavRzbH+7xt706bN9ti0Ip4BmI9UJlOkYCzb74vy1cIWkSWhUgl8+W3k
-	 Ip4mQce7p9y2ZXGK8b4Ry9XiWNsv7AzKqa1Ajtcx2w+etZRxwlfr10R+S2cSOajqDsPvX
-	 E4xaof8okolOKo8uUL+Pc6IlifaYXl4bNdddwJ8qbLx2g6Er+z3GpCIG8VLSenmgwh0Og
-	 AOzMHv6iXvApXLVi/23PeKYW5UmrAAtempxxJXWo5dyz+JlHZNPMIKj03xuxruKP1hX54
-	 rRTYUatCiDbXJ4FgkltN5wTUydv/YuUCQN0J3aAMSC1f8N2fP8reUkMyJREDb6ijwPA==
+	t=1794377760;
+	b=qPUYbp0QRsZFMzkO+poFc11S2XPJg+NjzWClqSvfHOyEonCU9BqJxNVVEePNS0f+puu5
+	 DfIHs6hgSfbxxzR8jG0vmb/F1x/GdTD22neGaJW2YLHOkfoZaqBATD9I7h90FwXpsI2Vg
+	 tZavt2QsAN+2IXMcQ8cn+n/7DZ1h0sj1B5ROAI+KRUdbdE5KpOcaAEOF0NoLH0fs/UmGo
+	 x96wTHbH6bzSZuZoFEIs5x9WThRkESpLE9slWV/egQwAF+ftEYFdp3sUjeIueoZVyTCPO
+	 CA7Dg97KLTv1/feZdlf8ZEuE7bO9SRVqzsQgUmaahdnRMuPkZ/C9coPrKq+0Z7Qq1og==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794377157;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=Cei+YsF51AZ83237FXaR1tP6PT4v6t3ufi1JLcCP87s=;
-	b=qMimMX6Rjrbk2t+pqCucNh/WJfzAZxafxscLD6Yu0dddL8vYePRbCezbX+yBQNGRHH/g
-	 cgzicg+OXcfc59OSKlReyCS3dgJGvH2b1cBtBQAxjfKzNdukx1SBOlUh0vVJ/0zNsP69S
-	 vznP0dnpK+HIIfN5gbqIzSaVivSbO3NMOUkije6+DR/ay4Lx1F7G0dAas79KQ2IokRaz2
-	 +zuaKR8PW5WYSwVNmBd1RZNpRIC7PtydY4UwJFv3IquBhpj+DFe8dmTJhhuEtJtrsLnJM
-	 0ydCbdYPt+7QKvGTfHpDRmvlpDiEfMmsJvAV7MbwA8pmubrtljCe89rGoTdQQV/1wpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794377760;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=MW0zD9KSMGx2T80Sakg+RFoXs36lTEMU6Hbk1o80HfE=;
+	b=fQb41fYWrDqS6QCPCgu3iAqr0n6zEGF9HsDJulS4yj2ls0MEhI+TquqwyOPXeLs3r4Ei
+	 jGlereHRc2mEaG7jNcF06+wBsnus81RjUJJEu7AMDd6b2aOb3lmYn84f/1P16w+NAhUHS
+	 AP6EBPmFHyNxpzvkUurVDV5YOBIVQATTxTWryzewlDMGLuaOfE41xJX1DaYaDeO0nVuXT
+	 r+MyA/ObNLWR60nr+fB2+gf4iS16TQyxgX8AdCv3SM1utBfxE83EKKAmRa753zl/S/j4W
+	 /PDqsh/JuU6x6wfWOz57QRa8A6qRQ2xACJEaCeOjU7zx1oYZv+EkMOK9bJ3lnRL0PAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ikjssk3h;
-	arc=none smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04B3606A31C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 06:05:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D04B3606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=uZWVpxVi;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2782606A31C;
+	Wed, 11 Nov 2026 06:15:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2782606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ikjssk3h
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd8ba7c2694so1134186a12.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 22:05:56 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=uZWVpxVi
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794377156; x=1794981956; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cei+YsF51AZ83237FXaR1tP6PT4v6t3ufi1JLcCP87s=;
-        b=Ikjssk3h+taqQc8g9oUW+Mt843FvrXo7Eaj2wQByG5rdPL6brWY5qxZ5F3B5ylqW4Q
-         qS/F7RnFoPmkU5QG6RGXbRxZk3wRwZBB6fkGnBxiXaHj2OR2ydK8sHRCc27ez96hgsdq
-         bXNNidZYWyIGGEPuvFvAm+RVsf08jQeKAPNnGfeKZOJ3Oh3aqlNXMq6LiQ8E9SSP523u
-         Wer7+IXqfxmLjssUwMIYAmkcMgvjo3mtmE6n8wiAaPzCQbiJFyk19m0p6iiRerzDTDVU
-         SBSw07l2+swtb6BZBCmDUVuyKmTyWlN8UW0i1wfrw5zCLEnw2O65EBMc0nuq35qj3mtC
-         7Pqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794377156; x=1794981956;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Cei+YsF51AZ83237FXaR1tP6PT4v6t3ufi1JLcCP87s=;
-        b=SLEHA7cwiOQs0gWY+131T49ExgTE3uGq77kDysEDadMgKUK7TezobQakCKnFVX6l4d
-         C9QFeGYunSr5gkcyoGEB+iq/WKnKKk2KkXDt80m95ng1wkLK31xIevcfclDxGHvMsLzz
-         zE+2t7SqX86y81S3KnPmSDfWMCq+hv/p2muJEyQlskrPJoA4yUuJ4X3Enbvxxf60H6r/
-         x8awrK+Svgyt0KPZ8hRvtKz8RNCHCGoVoW/oiZtE+TxFHOuTT1wyRxaoJN9tiA4ChHer
-         apLRCdidUPBm7gdu07dzn9ryTYNA3ALvt3pkPnBEM2Aq59LRCBFMUw5E8aL3th96hcK1
-         PHhg==
-X-Forwarded-Encrypted: i=1; AL+hErGKn5Ysogf3eJ5k+NjmWvWZla5WUWmBRy3/89/WIlXepULvWzeGdgX7X70RzRBY3jVAC5h7gF8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+R6o7VVx3/hLMxUrQrNsNJ6aK+RzytzRipmbT2CG0odKXikohK
-	znBtnw9+aelquDUiy09x/PGW0pbZjBmxjtJjbf4IVp+nXOJYYg1RIoNi
-X-Gm-Gg: AYBFou0N+QKQZCkKZ+QDdMIga7vOQilYUIWUQBMvZYVcl+/h+8jk/+6hsKiwgYay9r4
-	kIphw8Ttkph5pFMbwwFZcpxO0kGXYD2E37ztDLZA1iFIaH7lCq/itTxmyJgFRPpc2xUPHHq6Nxs
-	hBK4FGbAhoi6AKDtbrFtM42wosqfInEiOIUyHKTohHnokW9GYoDJ/RQqkqxNUXMKsQlyWFd22OK
-	hhn9dH7PNjiaNcudpSVwunKOO3DgtBstEspI5l8XpzD9IZXhEf2ysKIKDq+FGsAQwgTthzYqJzA
-	oiI6yPybQHLKVO6KZ0+mjQQA3USg4AkpAZUWfO3LPuVSfwu9KnGZUnmmQ4HuTEkf6J1vg662J7r
-	Vq9lmcR7WpgRlV1Rqag4f3WvXJLudGBj6tAxhvbYZmXy19cW5xDTd8Lk+Ie5K+P58G+584qchlG
-	ZRLd+PusWjyBkFbuLShEJhvx+9BFOEMC8wDblI/DCFS856yNGTaX93WwxJsrbCKGzRI7Zm/NekN
-	53pRnCzIlhx/qxiskAMbLwFYp/tp0lPzLuJG/v83X3+3KxjQhYkD7H8EBBolq27JMJ2sNsa5hbI
-	5OD+fG5SP4AoTAMWWB0DBtmvNNCWd4JLCcNbMGIf62mPxBut
-X-Received: by 2002:a17:90b:4c50:b0:3ac:b44c:2d84 with SMTP id 98e67ed59e1d1-3b182ec2106mr1683656a91.13.1794377156145;
-        Tue, 10 Nov 2026 22:05:56 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17e1f88casm2752315a91.12.2026.11.10.22.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 22:05:55 -0800 (PST)
-Date: Wed, 11 Nov 2026 15:05:51 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: Re: [PATCH net] tcp: fix request_sock use-after-free during Fast
- Open accept()
-Message-ID: <avQFv_O4qZCTfLWx@v4bel>
-References: <avFoNgJENLYu4t7X@v4bel>
- <avP5PfDz6WfnvckT@google.com>
- <avQAb-Gb7FRYNNgO@v4bel>
- <CAAVpQUDwTjXE0-Y1MOjrK2naZ3PTzqdB+sBhC3+8R+1gBPyFkQ@mail.gmail.com>
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=uZWVpxViarE7Cj7TRhvVv5Iel0V/32j9aqJleaeHPYixxzKf2C+wh3UhF6iRRrgRxRJ3GfzZxnH3/
+	 9BBgPLrCH/m/AkUi4HAWVnJnBqWbQRqUBpyTwgE+OITjAZ4tuMPUQA3HdD9cQvErVx5RV7WiBdFoXJ
+	 6fbRGwBvkTo7dFtk=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af4081b5b7-b0a23;
+	Wed, 11 Nov 2026 14:15:56 +0800 (CST)
+X-RM-TRANSID:2ee16af4081b5b7-b0a23
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.net (unknown[112.23.105.204])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96af4081af8f-d11aa;
+	Wed, 11 Nov 2026 14:15:56 +0800 (CST)
+X-RM-TRANSID:2ee96af4081af8f-d11aa
+From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+To: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sunwenbo@cmss.chinamobile.com,
+	1342116488@qq.com
+Subject: [PATCH net] amt: handle all upper amt devices in amt_device_event()
+Date: Wed, 11 Nov 2026 14:15:35 +0800
+Message-Id: <20261111061535.189769-1-sunwenbo@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,113 +74,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUDwTjXE0-Y1MOjrK2naZ3PTzqdB+sBhC3+8R+1gBPyFkQ@mail.gmail.com>
 
-On Tue, Nov 10, 2026 at 09:54:57PM -0800, Kuniyuki Iwashima wrote:
-> On Tue, Nov 10, 2026 at 9:43 PM Hyunwoo Kim <imv4bel@gmail.com> wrote:
-> >
-> > On Wed, Nov 11, 2026 at 05:13:15AM +0000, Kuniyuki Iwashima wrote:
-> > > On Mon, 09 Nov 2026 15:29:10 +0900, Hyunwoo Kim wrote:
-> > > > Commit e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
-> > > > made inet_csk_accept() check tfo_listener before taking fastopenq.lock
-> > > > to avoid taking the lock for connections that did not use Fast Open.
-> > > >
-> > > > reqsk_fastopen_remove() clears tfo_listener while holding fastopenq.lock,
-> > > > then reads req->sk. If inet_csk_accept() concurrently observes
-> > > > tfo_listener after it has been cleared, it skips fastopenq.lock and
-> > > > drops the last reference to the request_sock. This can free the
-> > > > request_sock while reqsk_fastopen_remove() is still using it.
-> > > >
-> > > > If the freed memory is reused for a new request_sock with req->sk ==
-> > > > NULL, the reset path in reqsk_fastopen_remove() can append the new
-> > > > request_sock to the original listener's list of requests that caused an
-> > > > RST. After the new request_sock is freed, the next append writes through
-> > > > the stale rskq_rst_tail into freed memory.
-> > > >
-> > > > KASAN reported the following use-after-free when writing
-> > > > fastopenq->rskq_rst_tail->dl_next = req:
-> > > >
-> > > >   BUG: KASAN: slab-use-after-free in reqsk_fastopen_remove+0x142/0x210
-> > > >   Write of size 8 at addr ffff888108230688 by task swapper/5/0
-> > > >   ...
-> > > >   Call Trace:
-> > > >    <IRQ>
-> > > >    ...
-> > > >    reqsk_fastopen_remove+0x142/0x210
-> > > >    tcp_check_req+0x96f/0xdd0
-> > > >    ...
-> > > >    tcp_rcv_state_process+0x19c/0x26b0
-> > > >    ...
-> > > >    tcp_v4_do_rcv+0x16e/0x490
-> > > >    tcp_v4_rcv+0x14a0/0x1af0
-> > > >    ...
-> > > >    ip_protocol_deliver_rcu+0x39/0x1e0
-> > > >    ip_local_deliver_finish+0x124/0x1e0
-> > > >    ip_local_deliver+0xfb/0x1e0
-> > > >    ...
-> > > >    </IRQ>
-> > > >
-> > > > To widen the race windows, mdelay(5) was added after newsk = req->sk,
-> > > > mdelay(20) after the if (req) reqsk_put(req) block, and mdelay(100)
-> > > > after tcp_rsk(req)->tfo_listener = false. The KASAN report above was
-> > > > reproduced with this kernel.
-> > > >
-> > > > For the lockless check, use tcp_sk(newsk)->syn_fastopen_child instead of
-> > > > tfo_listener, which reqsk_fastopen_remove() clears.
-> > > >
-> > > > syn_fastopen_child is a field of the Fast Open child TCP socket
-> > > > referenced by newsk, not of the request_sock. It is set before the child
-> > > > socket is added to the accept queue. The paths that call
-> > > > reqsk_fastopen_remove() in response to a remote ACK or RST do not clear
-> > > > this field.
-> > > >
-> > > > inet_csk_accept() uses this field to take fastopenq.lock only for Fast
-> > > > Open child sockets and rechecks tfo_listener while holding the lock.
-> > > > Connections that did not use Fast Open continue to avoid the lock.
-> > > >
-> > > > Other bitfields sharing the same byte can be modified concurrently, so
-> > > > annotate the lockless read of syn_fastopen_child with data_race().
-> > > >
-> > > > Fixes: e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
-> > > > Cc: stable@vger.kernel.org
-> > > > Assisted-by: LLM
-> > > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > > > ---
-> > > >  net/ipv4/inet_connection_sock.c | 3 ++-
-> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> > > > index e56beec438773..e5e7b844fed44 100644
-> > > > --- a/net/ipv4/inet_connection_sock.c
-> > > > +++ b/net/ipv4/inet_connection_sock.c
-> > > > @@ -683,7 +683,8 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
-> > > >     newsk = req->sk;
-> > > >
-> > > >     if (sk->sk_protocol == IPPROTO_TCP &&
-> > > > -       tcp_rsk(req)->tfo_listener) {
-> > > > +       /* Stable while reqsk removal can race; adjacent bitfields may change. */
-> > > > +       data_race(!!tcp_sk(newsk)->syn_fastopen_child)) {
-> > >
-> > > Are data_race() and !! necessary ?
-> >
-> > It was intended to avoid spurious KCSAN reports.
-> 
-> 1-bit cannot be torn, and I guess KCSAN will not complain
-> even if there were a concurrent writer.
+When multiple AMT interfaces are created over the same lower stream
+device, each AMT interface links to the stream device as an upper
+device and takes a reference to it via dev_get_by_index().
 
-Ah-ha.
+However, amt_device_event() uses amt_lookup_upper_dev(), which only
+retrieves the first matching AMT device.
 
-> 
-> 
-> >
-> > Still.. I agree that it looks a little odd. If you think it is
-> > unnecessary, I will send a v2 without it.
-> 
-> I feel it's misleading as data_race() implies the concurrent
-> writer, but when syn_fastopen_child is set, the bit itself
-> and the other bit fields are not written concurrently either.
+Consequently, when the lower stream device is unregistered
+(NETDEV_UNREGISTER), only the first AMT device is detached and
+unregistered. The remaining AMT interfaces remain attached to the
+lower device, triggering WARN_ON(netdev_has_any_upper_dev(dev)) in
+unregister_netdevice_many_notify(). Similarly, when the lower device
+MTU changes (NETDEV_CHANGEMTU), only the first AMT device has its MTU
+updated.
 
-I'll send a cleaned-up v2.
+Fix this by iterating over all AMT interfaces associated with the
+stream device in amt_device_event() for both NETDEV_UNREGISTER and
+NETDEV_CHANGEMTU, and remove the now-redundant amt_lookup_upper_dev()
+helper.
+
+This issue was identified with the assistance of an LLM-based code
+review tool, confirmed by reproducing the MTU update failure and kernel
+WARNING on lower device unregistration in a User-Mode Linux (UML)
+environment, and verified in UML that all upper AMT devices are cleanly
+handled and unregistered without warnings.
+
+Fixes: b9022b53adad ("amt: add control plane of amt interface")
+Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+---
+ drivers/net/amt.c | 48 +++++++++++++++++++++--------------------------
+ 1 file changed, 21 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 81d26ef82cf5..568ff4f77be6 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -3404,22 +3404,6 @@ static struct rtnl_link_ops amt_link_ops __read_mostly = {
+ 	.fill_info      = amt_fill_info,
+ };
+ 
+-static struct net_device *amt_lookup_upper_dev(struct net_device *dev)
+-{
+-	struct net_device *upper_dev;
+-	struct amt_dev *amt;
+-
+-	for_each_netdev(dev_net(dev), upper_dev) {
+-		if (netif_is_amt(upper_dev)) {
+-			amt = netdev_priv(upper_dev);
+-			if (amt->stream_dev == dev)
+-				return upper_dev;
+-		}
+-	}
+-
+-	return NULL;
+-}
+-
+ static int amt_device_event(struct notifier_block *unused,
+ 			    unsigned long event, void *ptr)
+ {
+@@ -3429,23 +3413,33 @@ static int amt_device_event(struct notifier_block *unused,
+ 	LIST_HEAD(list);
+ 	int new_mtu;
+ 
+-	upper_dev = amt_lookup_upper_dev(dev);
+-	if (!upper_dev)
+-		return NOTIFY_DONE;
+-	amt = netdev_priv(upper_dev);
+-
+ 	switch (event) {
+ 	case NETDEV_UNREGISTER:
+-		amt_dellink(amt->dev, &list);
++		for_each_netdev(dev_net(dev), upper_dev) {
++			if (netif_is_amt(upper_dev)) {
++				amt = netdev_priv(upper_dev);
++				if (amt->stream_dev == dev)
++					amt_dellink(amt->dev, &list);
++			}
++		}
+ 		unregister_netdevice_many(&list);
+ 		break;
+ 	case NETDEV_CHANGEMTU:
+-		if (amt->mode == AMT_MODE_RELAY)
+-			new_mtu = dev->mtu - AMT_RELAY_HLEN;
+-		else
+-			new_mtu = dev->mtu - AMT_GW_HLEN;
++		for_each_netdev(dev_net(dev), upper_dev) {
++			if (netif_is_amt(upper_dev)) {
++				amt = netdev_priv(upper_dev);
++				if (amt->stream_dev == dev) {
++					if (amt->mode == AMT_MODE_RELAY)
++						new_mtu = dev->mtu -
++							  AMT_RELAY_HLEN;
++					else
++						new_mtu = dev->mtu -
++							  AMT_GW_HLEN;
+ 
+-		dev_set_mtu(amt->dev, new_mtu);
++					dev_set_mtu(amt->dev, new_mtu);
++				}
++			}
++		}
+ 		break;
+ 	}
+ 
+-- 
+2.33.0
+
+
+
