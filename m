@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794399622;
-	b=Too0FdgE9hVjGgqIspz/uF39Lsx72uK+P4S4c+6gk9181RwT1atB+rQmJ8wkBDSkNGjW
-	 /LeV1cfmX9Bp8qWC+oA/iZbStRrKMWGf1N02h+wA6xCjkEagE2PMZSe9Q+ATS+cjRIqO+
-	 tTB3Id2Uhi2XFZpvAjwEH5LJH+1/yktmeSWnurIefNAzp1X/kREfRSq1qObbychWtPrED
-	 m4+GsjPAz37Z2aYcElbVsAcb8nhhjFYVDXfQw3BLtVuTxKwyRCwCjJMEeq1ET1R2HC7fu
-	 pPT63uIAEwFvpBJfrc9TBDR03XLEgiyFueaRfUa2VxBwcOtaAnj0VNoTn0toV+GMGfQ==
+	t=1794399623;
+	b=OWsSX1NN7jdbSuLfk9z2owcbXLfdz7rt2rCJaeJyaat02j2OECuFbKdKAc+UOWzwBwNZ
+	 b8o9W2KZayTh+MsMShVis0OpZGem2YXhA9p8G1FQ7qlDF6gpViSqY12HaMFk1kfBXLQzP
+	 p6s9Q4vSaGGY2fmongUKExTSn8NOGG7/qQRWOVenaKCrQss+ofyHRPK+/ak4HOdWUv+yg
+	 XuddOmBRQlWAdF7URHQpt0Dw6ZLrQJrp9e++KkEqC899u+puOzHRAPbVMecgDdHmZzNqB
+	 4IdRdKR1BK93XpJ8Li1sqTPXz7jaKYVzcmQ26I0Rc/lvRbjrD7cHDDjm3SF9SuxVNyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794399622;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794399623;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=g6AlOl7pEh0+2zU4X/Ja4NXbF9QRyry9fi9lbXK3274=;
-	b=Yx8gYFneumZp1VVdueIVn17PSPEqbPPQQHCJKlfvf1qN7rJ/GGi3sb43TfEszA+O4IIH
-	 Y+dMb9NgY4cRdlPRUafyCEV7RiAnhPejZS8HCGsSHZqCtGNta8wnbn1lyIPdZlpoZSRar
-	 8Fj6bFgIhl2Qo+3yCxeOv0EbVtzBWwmP8PRCbLcTQWqGbqSvnrFQONQKStV8MnFctsV1I
-	 DG/jzntgqA8PmLLmZpS8d9DiLKmLw74DvvnNXgLFTx9hE+zQGusA23N67tlg2J0tU2eHX
-	 NjyifWN9pr0ClyXkW8RlA1JpMTZCeIH6jBlcuu+51cFkOtt7NIgdxic8l6dgcoNUVug==
+	bh=uvTO/BGLZIZbUjQrcyChcQsusy9kc1T9we0lQKGwQ98=;
+	b=b99hmh01+Rwj2Bu1/8uvjVkX1en6J7FzHkzPgrBuw19hu2bQGcaokRkjAJKX6mEJ021Z
+	 C+nqPRNgjW3aalLOSCv+3D+AnjEDx44/TG5tgugcYRX3Qfq58uoSprBWX6xDHxaY0jcBp
+	 Q/FSW1TYytSiRuuIVl/ambWV+iS9JIL+fy94aghYMJaqgAXs13T2chzRHqBNkBnO7jC5e
+	 5SEWUtRcThl9B+tL6gtKdzhwTwe0fF2onDy6MQWHSyonURg0qz2OGWI+ZAKzTBo/Nrgqw
+	 UK17w2TqcY6meaJqI79o49BwuUW8QhUNSql8dfNPNSJPqixh0xVYXMtMbNCqcrNivhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TXdYcrje;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RYMtDnvp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42483606A894;
-	Wed, 11 Nov 2026 12:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2034D606A88D;
+	Wed, 11 Nov 2026 12:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TXdYcrje
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978371F00A07;
-	Wed, 11 Nov 2026 12:20:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RYMtDnvp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927291F00A0B;
+	Wed, 11 Nov 2026 12:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794399622;
-	bh=g6AlOl7pEh0+2zU4X/Ja4NXbF9QRyry9fi9lbXK3274=;
+	s=k20260515; t=1794399623;
+	bh=uvTO/BGLZIZbUjQrcyChcQsusy9kc1T9we0lQKGwQ98=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TXdYcrjefThp/4RoSVY+iLcf/npbZMytyl0RJWwIwy2AxwQxJgVm42vN7K55bcJ7k
-	 8RCrcD1v/ESyY40QVsZXiaVTnMmDEzr8vMfTpG4KiC1cGgGknbmOPVG4rZ4ZrS7cPA
-	 YJzdnWA8IhFaRzDaHNswz2fVeqyA7ASBFSWGafc0rfjxJy6J6kT/QX7gFtEA46bSed
-	 lq5vU4mWeNqMgknJTwwsRRXhwWhEY4BgEKm/6XtYxhC8qt9/niJDOvXpxcfwiBVF36
-	 Gjje7HbW03lnV+7doSMfkWTaAQPk7PqJ52nwz+jcHkGMOOPI9RLHh7pU1lCVJQL3df
-	 EyRsbxXcObKmQ==
-Subject: Re: [PATCH net-next 07/12] can: rcar_canfd: Use DT clock names in the
- probe message
+	b=RYMtDnvpFvdP8OHSwZT4k2fO/3Sdl9BTEHztLyPmnXJzUNYR9s1pe/uTTBlVnrxWr
+	 V/vd7r7NE/8cIidAps0UK1IcCBINa8vtd/8W6z6oj2c6sNWtYVdhl6/hymtsqMvNce
+	 oXynS/37XgRgbAyCNA1r24K14PXVZ87+w3iBWraGGfbcQ1S+zONpa+wK5wXTUzPsO/
+	 i1ZEKjFzPCy0QOtbZPy5ZGaHFtuFN8fBjh5rUoGzKAp14TMtvdyBeOUzH8IZ6FFTw2
+	 Nq5N68eDot7n7LOyn7832eXnUeYOjMeCfSvokmXfZNv5pKOqMDNp4QqnDvNmJf5yPd
+	 U3B4dYuyWRDyQ==
+Subject: Re: [PATCH net-next 08/12] dt-bindings: can: renesas,rcar-canfd:
+ Restrict resets in top-level
 From: netdev-bot+sashiko@kernel.org
 To: mkl@pengutronix.de
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  linux-can@vger.kernel.org, kernel@pengutronix.de,
  claudiu.beznea.uj@bp.renesas.com, geert+renesas@glider.be
-Date: Wed, 11 Nov 2026 12:20:21 +0000
-Message-ID: <179439962120.2199510.4973904621434857749@kernel.org>
-In-Reply-To: <20261110115112.3807247-8-mkl@pengutronix.de>
-References: <20261110115112.3807247-8-mkl@pengutronix.de>
-X-sashiko-severity: Medium
+Date: Wed, 11 Nov 2026 12:20:22 +0000
+Message-ID: <179439962217.2199510.18202330076530254925@kernel.org>
+In-Reply-To: <20261110115112.3807247-9-mkl@pengutronix.de>
+References: <20261110115112.3807247-9-mkl@pengutronix.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,85 +64,76 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] In rcar_canfd_probe() (drivers/net/can/rcar/rcar_canfd.c), the
-  new probe message works out the DT clock name from gpriv->extclk and…
+- [Low] In Documentation/devicetree/bindings/net/can/renesas,rcar-
+  canfd.yaml, this patch adds `reset-names: false` (line 235) to the…
 
 --
 
-can: rcar_canfd: Use DT clock names in the probe message
+dt-bindings: can: renesas,rcar-canfd: Restrict resets in top-level
 
-This commit changes the clock name in the final dev_info() of
-rcar_canfd_probe(). It now prints DT binding clock names ("can_clk",
-"fck" or "canfd") instead of "ext" or "canfd".
+This commit moves the broadest constraint for resets (minItems 1,
+maxItems 2) to the top level and drops the per-variant maxItems 2. It
+also adds reset-names: false for the rcar-gen3-canfd and rcar-gen4-canfd
+variants.
 
-Link: https://patch.msgid.link/20261019121356.2421761-3-claudiu.beznea@kernel.org
+Link: https://patch.msgid.link/20261001060825.53335-2-krzysztof.kozlowski@oss.qualcomm.com
 
-> diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-> index bb2d03b75142a..4f5cdfa8211da 100644
-> --- a/drivers/net/can/rcar/rcar_canfd.c
-> +++ b/drivers/net/can/rcar/rcar_canfd.c
-> @@ -2312,7 +2312,7 @@ static int rcar_canfd_probe(struct platform_device *pdev)
+> diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+> index bbaaef8f4282e..1a7a9ce45e977 100644
+> --- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+
+[ ... ]
+
+> @@ -231,6 +232,8 @@ allOf:
+>          resets:
+>            maxItems: 1
 >  
->  	platform_set_drvdata(pdev, gpriv);
->  	dev_info(dev, "global operational state (%s clk, %s mode)\n",
-> -		 gpriv->extclk ? "ext" : "canfd",
-> +		 gpriv->extclk ? "can_clk" : (info->fcan_pclk ? "fck" : "canfd"),
+> +        reset-names: false
+> +
 
-[Severity: Medium]
-Is the right name printed when can_clk is in use on hardware where
-external_clk is 0?
+[Severity: Low]
+This isn't a bug, but isn't this rule already in the binding?
 
-gpriv->extclk does not record which DT clock was picked. In the branch
-that uses "can_clk", it is copied from the hw_info flag that controls
-the GCFG DCS bit:
+Further down in the same allOf list there is a separate block for the
+same two compatibles. It already disallows reset-names:
 
-drivers/net/can/rcar/rcar_canfd.c:rcar_canfd_probe() {
-    ...
-	} else {
-		fcan_freq = clk_get_rate(gpriv->can_clk);
-		gpriv->extclk = gpriv->info->external_clk;
-	}
-    ...
-}
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+              - renesas,rcar-gen3-canfd
+              - renesas,rcar-gen4-canfd
+    then:
+      required:
+        - resets
+      properties:
+        reset-names: false
 
-r9a09g047_hw_info has:
+So the new line duplicates that rule, and validation results for gen3
+and gen4 device trees are the same before and after this hunk.
 
-	.external_clk = 0,
-	.fcan_pclk = 0,
+The commit message says:
 
-RZ/G3E uses this hw_info, and so do RZ/V2N and RZ/V2H through the
-r9a09g047 fallback compatible. Their device trees (r9a09g047.dtsi,
-r9a09g056.dtsi and r9a09g057.dtsi) only list:
+  Since top-level part says "reset-names" cannot accept one item, disallow
+  it for the two variants which do not use it in practice.
 
-	clock-names = "fck", "ram_clk", "can_clk";
+That reads as if this patch adds a new restriction. Could the extra line
+be dropped, or the two gen3/gen4 blocks be merged into one, and the
+commit message updated to match?
 
-On these SoCs, devm_clk_get_optional(dev, "can_clk") returns a clock
-with a non-zero rate, so the else branch runs. extclk then ends up
-false, and the message prints "canfd clk".
+>    - if:
+>        properties:
+>          compatible:
 
-None of those device trees has a "canfd" clock, so a successful probe on
-these SoCs can only have used "can_clk".
-
-The commit message says the names "match what users see in the device
-tree". That does not seem to hold on these platforms. The same ternary
-is also still there at the end of the series.
-
-Could each branch that gets the clock set a const char * clock name
-instead, rather than working it out from extclk and fcan_pclk?
-
->  		 gpriv->fdmode ? (gpriv->fd_only_mode ? "fd-only" : "fd") : "classical");
->  	return 0;
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110115112.3807247-2-mkl%40pengutronix.de
