@@ -1,63 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794410514;
-	b=xsK10kuyH/+J2Yk4zRLxNlzxn7rVS6TS/cBX3QYjzZzZeowHAJTKIzy0W0RVQFM+8SWe
-	 s287bz4HmSqy6GA8gwpUiztV8HzZ3ucnhkAmomu+pX7KOReawNGE0jdRWlZRvIii333wR
-	 voejA9p/+i/rC2T5pPzkhpNFHfmL0s+Tx4Bt6n4rYBo5A4zd1dbHHP3lHJcywOtZpdTut
-	 JrSnpWoVSRZ2zwC3aLRbYLEYmJ2K6958FbAePqxVmm6PUbrQWBLjGM6AmSlqwLsE/g1qC
-	 I9GOGhXLhTXl1MEgfCNQYDRP7PqioSSnmGkRohq+0kVsQjy28+cylypjdx+EnzuzPpA==
+	t=1794410528;
+	b=hRT+FTelIbRE1M0nmqN+BRXhM8Q2/cwe1EvpR14B50J8kKlkXg942w06RJMOB736sKsQ
+	 WXoAULtAqMyOETnjZfq8y6rhCCmnju2C76MQSbkw38Noh/O5GlaxIyUrYWzy3qLct6WSi
+	 UtTykjWz/ma3zJmb3zP4FizW0lEHWkCo3ujygddjfkE9AeFuT05PhjNKzKNtrMZ9qN9vp
+	 I+ri90VOJkZjGMgCMt3NpylH0a4nS0G+JHQc12eW/ZLJaQ4iqcJoiKHqihUMN6sFtAZ1u
+	 1fc+xJHSqBQVaa6jOaTLGeR3bgtbGy6DmPLU2NL9/n499pRgrtgPbGJMMVI1ykRAvXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794410514;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=81ZdOZI8AFzoY6Wjc1ZAc89k6QICeJEkg2KfANGYI3I=;
-	b=Zpo96lETfkAF1Gekm/THP9M/xlqq2bJIECyJyM/dhy3pRup8GlSt+VAhdjgCIMWHQAST
-	 dX7yAIWpbVpVfbHLdy+DAoHxFGDIqe3Hxl/k3G0VyzHoK+siercPiH+yyagZGA55wIH6d
-	 Gxh9aIeov2B3x9zI3Ub/XM9vY67u/AQOX1npmyqq/lZRLVTP3Qsib3q5RLGg7g990nR2a
-	 btkcGFPYW1qNi5b9RRVH56MJnex6XFCOUIVWw+lhM0w0C7R3I9Gnnq5JEVckG/DNr3akc
-	 xrOwSq478pbIFTVR2h3hAx/PgIcIU+P9l8TjFGmUnvRJYvaI70+Jbxudd6MczNMGP2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794410528;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=spmuZfC/dhB9wOC0shsRTlNKhiKFYUA58QCJu4KnRLs=;
+	b=gqUC/vUn/mV3tGq+tik0xZU06paRpPTJyLs1YRfy88hsi5zBFRFBcWR0tKxIQxi8ffRk
+	 ab4cGYAEwnZCBVvIka1MTvmAd2zTxKmAH+fcRx9dU554ETUHEMOLKoOJ07aWO3vVBLsH9
+	 J6/ITdWzK1U727PlEQtoMWSQ8NMTICYuty3xtlbVuYWYYfTLhsqs7haAAM59Itl9R4l+u
+	 wswE1Nasngyj4GkT3jhliGDRAgvmjFOKgdcqA1S8q8KuVVbKwlIBPYqqm1og7Fl/K+rdJ
+	 wccd0e4rqPaBTY91W9NNIDnWuGId/FdXGkWfosJp0i1dWteAOBb7ANsDaOZB2ouJBbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=YsCD+kcs;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BmnYm6ZF;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 1F12F606A324;
-	Wed, 11 Nov 2026 15:21:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F12F606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED8606A330
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:22:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24ED8606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=YsCD+kcs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794410504;
-	bh=81ZdOZI8AFzoY6Wjc1ZAc89k6QICeJEkg2KfANGYI3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YsCD+kcsxHtTV4zP34F7vLZ/ekCoGHlQC9NpKuHz10dcYsogCDKyCqf91wjZ/QUEv
-	 hpwVjxcXbT1BtRZJpBp9HE1eLMWRQrm/wqNVrLQTWJ2IvGv9SlQp6YlS+vHhq+d2AY
-	 LvEFaZrhBAizhh21XETNKqcXLIWY0UcFPLJHk7hFijuoAZkkf0eML9djQ7xPUteaOX
-	 WNyUPw3gATGFPlxghW2yUsrOAi1duAzB0wQsyri+hWQ/2UlVKljrHP8EPtxUvSN4ec
-	 AGOSuiz6z02GqVOUIrmOxb9X1lp6J9PQdQ4mNOnboRwGJ9PdeSY+/PKujwtQtc0RHK
-	 FIC8aJq+C3CoQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 0BD8660055;
-	Wed, 11 Nov 2026 16:21:44 +0100 (CET)
-Date: Wed, 11 Nov 2026 16:21:41 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: John <shffr@protonmail.com>
-Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"coreteam@netfilter.org" <coreteam@netfilter.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] netfilter: flowtable: XMIT_NEIGH flows sent to
- 00:00:00:00:00:00 once the next hop's neighbour entry is gone
-Message-ID: <avSIBUcLH4kZyISX@chamomile>
-References: <MAEpYNlWKRd7lM0j62YlEZ97Ux1h5AyjSuFRm4Lxk2Q6haeDGTKqX8lpDRZ8slvBu6qA7Bbt18zpr9fyF_jArrEemTgRqzqluxmsGH7UcFk=@protonmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BmnYm6ZF
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49d05d51553so23045155e9.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 07:22:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794410526; x=1795015326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=spmuZfC/dhB9wOC0shsRTlNKhiKFYUA58QCJu4KnRLs=;
+        b=BmnYm6ZFBBeKmlthKXbmWB2LvyBF/QXG85L/s3IcHytWRRPZNScsc0utVWkTITbAJ2
+         om1ZR0lTO6zY02r6TRTDYJiiH8lFegskbVH8roj+aVsvl9VLAqvR6XhBu6EK76+QLrQN
+         FjZQt2O2ZojQB3BHGioG7bchG9MnUN5/dC8FXT+7mjyc9rHJWOPjR7rLkm6nSN3B6WnT
+         MXt0fNNqN0WkvmPOuq8lqRBaiecWjKQEHmd24p6lb7Gl1UO+LQTWGGuRu5kOCJ/jNqoG
+         IWoKO6Xwfhz/l0R1dI2F5lh87r2vCJJhSpSIEs6ixxvfrUEFC3NZ/zGpUrFipbpIGd9a
+         absQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794410526; x=1795015326;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=spmuZfC/dhB9wOC0shsRTlNKhiKFYUA58QCJu4KnRLs=;
+        b=LO/m5QSh2F8yM7OF65fPgdfnwaiTgoPDMwq2UsAW7VIfjROn14Z81OoUWjEfqG49r9
+         ajwsRUf+HXrUGW9+xF1vYPSxDUYavgDvTd5v457816C2BNkIaks0aUoMccCiiJbB9Dym
+         XYISvPu0HW92ZyoR6AoaO9xVhOJHPH+p7I4kMZnhgS17uKGxpgCvXNmzVAtLsbnGLnls
+         vErFlbFMZLsxH88Jjn2tBxjHZzULslM9bnMZRCQHfuJb/M0brNygk2rG/Mo7NdROIRDA
+         blq9Ex+no+KSBQ3i43/Zlmal9tpu/ExoiFjrdeyh2zrnvqHEoSWUisPNBwyfxS9Yt29k
+         nilw==
+X-Forwarded-Encrypted: i=1; AL+hErFPFouMhhtVDBhkPC6DClx5dQZvD4AblR2y4UbyO6P8IXqyXXJnd65asZULM+Br3m2fkbTsgd8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Vkftou9WlDOS50TgDFIPs+3i4pE+xMi3FuZEkPScSJV29erFn
+	VyQcCci3gOVPPyqLRnZm/BOkP1NNt4qUftILIW5P4cLLTCvVDGqDVE/v
+X-Gm-Gg: AYBFou1fm2YsiErPnwfOXUbRhg+3q4dCp5C7iWMlE6MfLWgcGyUBwHPmfU3J6Udy5eS
+	psw9SBsXxMBJHpCcnqqWKggJluPTc13HzWWiitC5GJozcv74/I/tfKIlLLRRZfHQeFXeUvNJrIK
+	cxWo0rggLsooQfwwukqPLfKWsetZ2Bbw+h+nzTwitUi2LWiE0lgN/BoLnfh2knrjQfaXF/tjYxB
+	K+1j93g3Xf9Fg57TZXMQBnct+6zdU/2ypqrN0L2pupnen3LHBMYxilO3FJ/L6XdlVIArv3Nxkxh
+	fmzRKudIrpmlzsdbLN9pTjWQGL6sJoppxepfMKSQ1oUyYtfxGTy15wA3G4otrmm8px7kwX7wppG
+	DmdAVHGLWewdzMH2rV263R+LeDXRRIAOYhYZzjWMz2JZ4ROtOUoNDIdByKmCfmNEh3S9q8DGu/q
+	5gtsu/n10a+jOJb+52oZjXhrmr1zxNMAkdE8LrIf14SAIeg65dvpl/lu67mQbIWTzPvSpRJeZIh
+	7yVxmxkZImbtNHFCjt+1Km2Q585Kh6Km/keH2i7Ta5nppW6ZSXnIUvXzjxH75VI0Bjez641xb+C
+	eQ2ftoBcTDYGeykA76Na+INVPkCcM2+HukbLFFJqQNdjilzporuYy9fiUtwp7eIvASRk+0F20+E
+	qvQGRKzlh4w==
+X-Received: by 2002:a05:600c:1c0d:b0:4a2:1e1:d55 with SMTP id 5b1f17b1804b1-4ba093a3cf9mr55715145e9.28.1794410526239;
+        Wed, 11 Nov 2026 07:22:06 -0800 (PST)
+Received: from VivoBook-ASUS-X712UA-M712UA.lan (user-46-112-80-97.play-internet.pl. [46.112.80.97])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498369a4238sm12079575f8f.54.2026.11.11.07.21.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 07:22:04 -0800 (PST)
+From: Stanislaw Pal <kuncy7@gmail.com>
+To: Johan Alvarado <contact@c127.dev>
+Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	alvin.sipraga@analog.com,
+	gabonpivovich@gmail.com,
+	linusw@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	luizluca@gmail.com,
+	maxime.chevallier@bootlin.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	gusfmora@gmail.com,
+	fabianotassotti@gmail.com
+Subject: Re: [PATCH net-next v9 08/11] net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+Date: Wed, 11 Nov 2026 16:21:58 +0100
+Message-ID: <20261111152158.467255-1-kuncy7@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <b68807e4-1470-4f4b-8975-e8a70dffd011@c127.dev>
+References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com> <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com> <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev> <f84cfedb-b551-4316-8d2b-4d6e06fc151b@yahoo.com> <b68807e4-1470-4f4b-8975-e8a70dffd011@c127.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,273 +113,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="AFckwEBk/Xj85OWv"
-Content-Disposition: inline
-In-Reply-To: <MAEpYNlWKRd7lM0j62YlEZ97Ux1h5AyjSuFRm4Lxk2Q6haeDGTKqX8lpDRZ8slvBu6qA7Bbt18zpr9fyF_jArrEemTgRqzqluxmsGH7UcFk=@protonmail.com>
+Content-Transfer-Encoding: 8bit
 
+Hi Johan,
 
---AFckwEBk/Xj85OWv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+On Tue, Nov 10, 2026 at 12:49:04AM -0500, Johan Alvarado wrote:
+> Oleg, could you check this on the AX55 before the first ifup of the
+> conduit? A single register read tells:
+>
+>   devmem 0x98218    # UNIPHY MISC2: 0x70 = SGMII, 0x50 = SGMII+
 
-Hi,
+I can't answer for Oleg's unit. Mine is an Archer AX55 v1 with an
+RTL8367S, family C like your MR80X v2, so this is a second family C
+board, not the family D answer.
 
-Would you give a try to this attached patch?
+That image has no /dev/mem, so I printed MISC2 and MODE_CTRL from
+qca-uniphy instead: at probe, around your preconfig, and before and
+after every pcs_config(). On every boot, warm and cold, probe reads
+MISC2 0x70 and MODE_CTRL 0x421. Without your commit, SGMII+ (0x50,
+0x821) shows up at the first pcs_config(), at about 7.4 s, while the
+switch configures 2500base-x at about 5.0 s.
 
-Thanks.
+One note on the values. In the pcs-qca-uniphy table, MISC2[6:4] = 7
+(0x70) is the USXGMII value; SGMII is 0x30 and SGMII+ is 0x50, as
+FlyFish-go pointed out on an RC3000 v3 [1]. MODE_CTRL says the same as
+your reading, though: 0x421 has SGMII_MODE (bit 10) set and 0x821 has
+SGPLUS_MODE (bit 11). So the hand-over is SGMII either way, and 0x70 in
+MISC2 is just not what tells it. On his board, MISC2 reads 0x70 after
+the boot loader's block reset when U-Boot runs no network command, and
+0x30 after a U-Boot ping.
 
-On Mon, Nov 09, 2026 at 09:26:55PM +0000, John wrote:
-> Hi,
-> 
-> Since commit b5964aac51e0 ("netfilter: flowtable:
-> consolidate xmit path"), a flow offloaded with
-> FLOW_OFFLOAD_XMIT_NEIGH keeps being forwarded with
-> destination MAC 00:00:00:00:00:00 after the next hop's
-> neighbour entry has been removed. Nothing resolves the next
-> hop again, so the flow stays black-holed for as long as it
-> keeps sending.
-> 
-> Before that commit the XMIT_NEIGH case called neigh_xmit(),
-> which creates the entry if needed, sends a solicitation and
-> queues the packet. Now nf_flow_offload_ipv6_hook() does
-> 
-> 	neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(...));
-> 	if (IS_ERR(neigh)) { ... }
-> 	xmit.dest = neigh->ha;
-> 
-> and passes the skb to dev_queue_xmit() through
-> nf_flow_queue_xmit(), without looking at neigh->nud_state.
-> When ip_neigh_gw6() has just created the entry, ha is all
-> zeros, and since the neighbour output path is never used, no
-> solicitation goes out and the entry stays unresolved. The
-> IPv4 branch has the same construction with ip_neigh_gw4().
-> In v7.4-rc2 the code has moved into the per-family xmit
-> functions but is otherwise unchanged.
-> 
-> This hit a router here running 6.18.60, which has
-> b5964aac51e0 as a stable backport. A WireGuard endpoint
-> behind the router talks to nothing else through it, so its
-> neighbour entry on the router aged out while the tunnel's
-> flow was offloaded, and the endpoint's handshake retries
-> every 5 s kept the flow alive. On the router's egress
-> interface every forwarded packet of the flow then looked
-> like this (addresses replaced):
-> 
->   02:0e:bd:92:63:28 > 00:00:00:00:00:00,
->   ethertype IPv6 (0x86dd), length 154:
->   2001:db8:1::51.60161 > 2001:db8:2::1f.59320:
->   UDP, length 92
-> 
-> "ip -6 neigh" had no entry for the destination, conntrack
-> showed the flow as [OFFLOAD], and deleting the conntrack
-> entry restored the tunnel until the next time the entry aged
-> out, a few minutes later. Going back to 6.12.115 on the same
-> router fixed it.
-> 
-> The script below reproduces it with three network namespaces
-> and no special hardware (IPv6 only, needs iproute2, nft and
-> python3). The server has a permanent entry for the router,
-> so the router only knows the server from its own resolution.
-> The flow is offloaded while the router has no valid entry
-> for the server, which gives XMIT_NEIGH, and once it is
-> offloaded the script removes the router's entry again, which
-> is what neighbour GC does to an idle STALE entry.
-> 
-> 6.18.60:
-> 
->   flow: [OFFLOAD]
->   entry: fd00:2::2 lladdr a2:5b:b4:93:86:a9 REACHABLE
->   entry removed, flow offloaded
->   2 s later:
->   echoes: 7 ok, 11 lost
->   destination MAC of echoes to the server:
->        10 00:00:00:00:00:00
->         7 a2:5b:b4:93:86:a9
-> 
-> 6.12.116 (Debian 6.12.116+deb13):
-> 
->   flow: [OFFLOAD]
->   entry: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
->   entry removed, flow offloaded
->   2 s later: fd00:2::2 lladdr de:9b:d1:db:19:4c REACHABLE
->   echoes: 17 ok, 1 lost
->   destination MAC of echoes to the server:
->        18 de:9b:d1:db:19:4c
-> 
-> (Datagram 0 is lost on both kernels, during start-up.)
-> 
-> I have not run the reproducer on mainline. I compared the
-> code in v7.4-rc2 instead, and the IPv4 path is untested.
-> 
-> I don't know this code well enough to say which fix you
-> would want. Handing the packet to neigh_xmit() when the
-> entry is not NUD_VALID would restore the old behaviour for
-> that case, and tearing the flow down would also work, since
-> the next packet would then take the classic path and resolve
-> the neighbour. I can test a patch on the router or with the
-> script.
-> 
-> #regzbot introduced: b5964aac51e0
-> 
-> --- reproducer ---
-> 
-> #!/bin/bash
-> # Flowtable XMIT_NEIGH flow forwarded to 00:00:00:00:00:00
-> # after the next hop's neighbour entry goes away. Needs
-> # root, iproute2, nft and python3.
-> #
-> # Namespaces c (client), r (router with a flowtable) and s
-> # (server). The server has a permanent entry for the
-> # router, so it never solicits and the router only knows
-> # the server from its own resolution. The flow is set up
-> # before the flow-add rule exists, the router's entry for
-> # the server is removed, and only then is the rule added:
-> # the flow is offloaded while the next hop has no valid
-> # entry, which gives XMIT_NEIGH. Once it is offloaded the
-> # entry is removed again, as neighbour GC does with an
-> # idle STALE entry.
-> set -u
-> P=ftrepro
-> W=$(mktemp -d)
-> E() { local ns=$1; shift; ip netns exec "$P-$ns" "$@"; }
-> cleanup() {
->   for j in $(jobs -p); do kill "$j" 2>/dev/null; done
->   for n in c r s; do ip netns del "$P-$n" 2>/dev/null; done
->   rm -rf "$W"
-> }
-> trap cleanup EXIT
-> trap 'exit 1' INT TERM
-> 
-> for n in c r s; do ip netns add "$P-$n"; done
-> ip link add rc netns "$P-r" type veth \
->   peer name c0 netns "$P-c"
-> ip link add rs netns "$P-r" type veth \
->   peer name s0 netns "$P-s"
-> for n in c r s; do E $n ip link set lo up; done
-> E c ip link set c0 up
-> E r ip link set rc up
-> E r ip link set rs up
-> E s ip link set s0 up
-> E c ip -6 addr add fd00:1::2/64 dev c0 nodad
-> E r ip -6 addr add fd00:1::1/64 dev rc nodad
-> E r ip -6 addr add fd00:2::1/64 dev rs nodad
-> E s ip -6 addr add fd00:2::2/64 dev s0 nodad
-> E c ip -6 route add default via fd00:1::1
-> E s ip -6 route add default via fd00:2::1
-> RMAC=$(E r cat /sys/class/net/rs/address)
-> E s ip -6 neigh replace fd00:2::1 lladdr "$RMAC" \
->   dev s0 nud permanent
-> E r sysctl -qw net.ipv6.conf.all.forwarding=1
-> E r nft -f - <<'NFT'
-> table inet t {
->   flowtable f {
->     hook ingress priority 0; devices = { rc, rs };
->   }
->   chain fw {
->     type filter hook forward priority 0; policy accept;
->   }
-> }
-> NFT
-> 
-> # Client: UDP echo on port 6000.
-> E c python3 -c '
-> import socket
-> s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
-> s.bind(("fd00:1::2", 6000))
-> while True:
->     d, a = s.recvfrom(100)
->     s.sendto(d, a)
-> ' >/dev/null 2>&1 &
-> 
-> # Server side of the wire: destination MAC of every echo
-> # coming back to the server.
-> E s python3 -c '
-> import socket, sys
-> r = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
->                   socket.htons(3))
-> r.bind(("s0", 0))
-> f = open(sys.argv[1], "w")
-> port = (5000).to_bytes(2, "big")
-> while True:
->     p = r.recv(2048)
->     # IPv6, next header UDP, destination port 5000
->     if p[12:14] == b"\x86\xdd" and p[20] == 17 \
->             and p[56:58] == port:
->         f.write(p[0:6].hex(":") + "\n")
->         f.flush()
-> ' "$W/wire.log" >/dev/null 2>&1 &
-> sleep 1
-> 
-> # Server: one datagram a second to the client, port 5000.
-> E s python3 -c '
-> import socket, time, sys
-> c = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
-> c.bind(("fd00:2::2", 5000))
-> c.settimeout(0.8)
-> f = open(sys.argv[1], "w")
-> for i in range(18):
->     t = time.time()
->     c.sendto(str(i).encode(), ("fd00:1::2", 6000))
->     try:
->         c.recvfrom(100)
->         f.write("%d ok\n" % i)
->     except socket.timeout:
->         f.write("%d lost\n" % i)
->     f.flush()
->     time.sleep(max(0, 1.0 - (time.time() - t)))
-> ' "$W/server.log" >/dev/null 2>&1 &
-> SV=$!
-> 
-> sleep 4
-> E r ip -6 neigh del fd00:2::2 dev rs
-> E r nft add rule inet t fw ct state established \
->   meta l4proto udp flow add @f
-> sleep 3
-> FLOW=$(E r grep -o '\[OFFLOAD\]' /proc/net/nf_conntrack |
->   head -1)
-> echo "flow: $FLOW"
-> echo "entry: $(E r ip -6 neigh show fd00:2::2 dev rs)"
-> E r ip -6 neigh del fd00:2::2 dev rs &&
->   echo "entry removed, flow offloaded"
-> sleep 2
-> echo "2 s later: $(E r ip -6 neigh show fd00:2::2 dev rs)"
-> wait $SV
-> echo "echoes: $(grep -c ok "$W/server.log") ok," \
->   "$(grep -c lost "$W/server.log") lost"
-> echo "destination MAC of echoes to the server:"
-> sort "$W/wire.log" | uniq -c
-> 
-> Thanks,
-> John
-> 
+Reboot loop on our OpenWrt tree (6.18, dwmac-ipq5018 + qca-uniphy), with
+the OpenWrt ordering patch removed in both images. A boot counts as
+broken on ping loss to a host on lan1, or FCS errors or PAUSE frames on
+CPU port 6.
 
---AFckwEBk/Xj85OWv
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment; filename="fix.patch"
+- Without your commit: 2 of 15 broken.
+  - In one, the switch sent PAUSE frames to the CPU (1368 on port 6) and
+    to lan1, and almost nothing got through. No FCS errors.
+  - In the other, frames from lan1 reached the CPU, but nothing from the
+    CPU went out on lan1, although port 6 ifInOctets kept counting. No
+    FCS errors, no PAUSE frames.
+  In our tree the conduit is closed and opened again at about 26 s
+  (pcs_config() runs again, the UNIPHY already in SGMII+), and that
+  didn't cure either boot. This fits your note that a re-sequence on the
+  SoC side does not help.
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 19cafae748ab..73f49dc41157 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -873,7 +873,8 @@ static int nf_flow_queue_xmit4(struct sk_buff *skb,
- 			return NF_DROP;
- 		}
- 		neigh = ip_neigh_gw4(rt->dst.dev, rt_nexthop(rt, ip_addr->ip));
--		if (IS_ERR(neigh)) {
-+		if (IS_ERR(neigh) ||
-+		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
- 			flow_offload_teardown(flow);
- 			return NF_DROP;
- 		}
-@@ -1202,7 +1203,8 @@ static int nf_flow_queue_xmit6(struct sk_buff *skb,
- 			return NF_DROP;
- 		}
- 		neigh = ip_neigh_gw6(rt->dst.dev, rt6_nexthop(rt, &ip_addr->in6));
--		if (IS_ERR(neigh)) {
-+		if (IS_ERR(neigh) ||
-+		    !(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
- 			flow_offload_teardown(flow);
- 			return NF_DROP;
- 		}
+- With your commit: 0 of 23 broken (20 reboots, 3 power cycles). The
+  preconfig puts the UNIPHY in SGMII+ at about 2.1 s, 3.2-3.3 s before
+  the switch configures its port, and pcs_config() at open finds the
+  mode already set.
 
---AFckwEBk/Xj85OWv--
+2 of 15 against 0 of 23 is weak on its own, but it points the same way
+as your 18 of 51 against 0 of 32. In the same thread [1], FlyFish-go ran
+the RC3000 v3 (RTL8367S, family C) at 2500base-x with only the OpenWrt
+ordering patch removed: 4 of 7 cold boots broken, against 0 of 5 with
+it. In every broken boot the SoC-to-switch direction was the one that
+failed.
+
+I have put the same result on your OpenWrt PR [2].
+
+Tested-by: Stanislaw Pal <kuncy7@gmail.com> # Archer AX55 v1
+
+[1] https://github.com/kuncy7/openwrt-nss-edma/pull/73#issuecomment-6796451511
+[2] https://github.com/openwrt/openwrt/pull/26597
+
+Best regards,
+Stanislaw
