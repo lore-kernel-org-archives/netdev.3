@@ -1,54 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794398285;
-	b=t/cZbQRkVPBrBDlAfx6FxSOqIZlZF579EOln8t1Qn5hl0wcUHAVESit3ZwOIzTzaqFUy
-	 ov6zR1ZY10lihNPuAJPAJaZIpuNDL1iH/gydwag5EU1karo4UWjyZpozoFRyEwiDZgQWy
-	 MORlMxvPLmcAwyR52N5oOeQwXyKzGUDXq9UcU8dW/CBvua177Lz8ujAShAAKaw+g9x8nM
-	 nj4a5jWr1qoUbdeUkUoTKZY7i4vWV2ap0/r49JvOHYyWongqxQ/2WUTfPlg+eWRVlwqeP
-	 MQllA0xY/01KGiJ1CIiE3IzUtMoNOjTvCAsfDDFzZh9DkIHSM07QePJ2Me8bTSdpdCQ==
+	t=1794398342;
+	b=0tyZQwbuiy42oxCDaVhOZzFjT7aC/WSLR2SlOoaWuvS62YqCniej84tplEepbvPSlRKd
+	 1xsqOjVh/35KuwmC09naKQbkkulbMst9tNuXnSZqlhH8e2ZLjd0FtGfVJBO0VVujzvbYl
+	 x3DQlnuZLnxxehKy9CtxCnyy7vQUPAldID4mJ6meVgsr+rXYxHQC4c66bLZ30JEi01Wbu
+	 5/LlzZn2MF5v2N5KKTkqXAstrlKSeiBeLuWOK03ZdK5c3Z3U1GDW5dy9ijMKXkwUoVG/i
+	 Xfozy+6rWG6NkG5PO2yVwfbP1MDtQ3a9r2WuqMUg15T+DS9Tmmw2FIgDbvKHuQALPmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794398285;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=QAtpX+mYswT5tfILpPnNE2GO/1nDfiulyO5xnYGFX+Y=;
-	b=nVxh9rfwnv9qOZ9RYN84DGvMFVPZIb+RAy/nQp0d8ePesVEQfBNK3HqUjYCV+klD+ZOU
-	 kece3TtqyDNH2c/zAXdh5NazjUEMMEEw9NoOWYvLDsFHtjS+2fvRB5d5vvpD/55HcmPwN
-	 r8FBM5BqnX9h1f4qYnDEeVyzslZCYIoAPpbVrnnwycUhkZ/XnDVgVk/evSTuk8UiaafOR
-	 wf62umuaG1uAs692dfd+tSO87g+4nax9gdZkNypM1Ih7Icu5VG/E+bDQfMVIULv4B+Oz+
-	 26N50jBFtNe4KhiXBIzBUPdV2J87VfWHtDdANzq7LoBKuosQ5+4RdJ+tl56KnJdAWEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794398342;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=6+DIIko/jddTALojzUdCwqYFD7qAVSieeB13vaTbTZ4=;
+	b=3ZRUCpDbmpEIqJg6asZuWCc8fZxzo6lXaaSCZ0QAxP95vLI7LAQKcX9iohx0TsIgU1va
+	 QTCQH6UO/prTdzSOxtGty+PEHCFS9gxfcgdDwUDTIDO+KF2UrMC+hIfrKbno6sAIIHCHX
+	 Pnt/VW+p7jrXC6xEZ+yX7nTykz7R5OhdVuFCPQBEvrcsnB5UL4etyyEpvKyffZ/B5JHfC
+	 rPeAdPgYjX4Ox0IBDUvQ0dmGh9A/d4tlouZAkjgs3eoZcLbblxEvT4fsiU26tlsbBU3yd
+	 4YMi9mRgAwMd7CawaTdNiNWpC2QZimU59ww6viAdoJL39aN3SflSSlyy2qCaOHa2AcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CZZZt+iD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=R5XxGFbM;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A6D606A324;
-	Wed, 11 Nov 2026 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579BC606A324;
+	Wed, 11 Nov 2026 11:59:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 579BC606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CZZZt+iD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578831F00A05;
-	Wed, 11 Nov 2026 11:58:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794398284;
-	bh=QAtpX+mYswT5tfILpPnNE2GO/1nDfiulyO5xnYGFX+Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CZZZt+iDaXV26+WhMHROR42F2LIOSWiP08Yj50yMgautwfxUqBPhYZhBoclbGVxne
-	 yRzQeLwPX0eG0h+9Yna4HkzNVKJI4bEc3LL0ssL70JgtaP3pnKmWupe1yyF7BiILaO
-	 6x3cRKxoQtLNkIWsX5g2uKno0nXbMORIfO3ZV1EcYwKZ6tJCp5whTbJPbW153lxl04
-	 aLJ7llyakMlfSNeLi5UV5ou50l1lLYLmyF6F2nO3+Lu8+qXe9uIfag4b3Q06VBzgU+
-	 Tq1T58X5vncislAwYcO8PSP/IYsi+H6iHzgk+o72oCsf5RWzWpkcW0pj/TI2OawL33
-	 CCCmL82f2301Q==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: raoxu <raoxu@uniontech.com>, mst@redhat.com
-Cc: jasowangio@gmail.com, eperezma@redhat.com, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, raoxu@uniontech.com
-Subject: Re: [PATCH] vhost/net: Fix receive queue test in busy poll
-In-Reply-To: <005FA5F7354482C7+20261110051642.249640-1-raoxu@uniontech.com>
-References: <005FA5F7354482C7+20261110051642.249640-1-raoxu@uniontech.com>
-Date: Wed, 11 Nov 2026 03:58:00 -0800
-Message-ID: <87tslna8c7.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=R5XxGFbM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6+DIIko/jddTALojzUdCwqYFD7qAVSieeB13vaTbTZ4=; b=R5XxGFbM6TZRqhT0SXxuzcMt1x
+	LUNRh7V8lAnKwChToktKXZ/BvtFiWDBfAUJ9dLKtb2UHW2064KOlAZ6KUeSJJgWg/hPASfykHm9lb
+	dvvgSD9ejQiiI+LIrAd6gbPGs/9xZWqr0yWBdHoCClUgJD2Bg1YMupaoC/QOZRmfVPSCT6MpDMhbS
+	246KM0GzqcBbc4E2580QxhluNnyoa2vW19Sk2kqFlCkeQ6ViS/yest6rZWy5lPKlR+T/Ay7hDfWGq
+	IJLMSEFD0EmRJ6D4dVOiq+0BkJb7lfNarlib+MyMxjNYvepLWzR3xSOakoCQkMgy3TimUB70/p52t
+	iE2dAMXA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xR6yh-00DAF9-2o;
+	Wed, 11 Nov 2026 11:59:00 +0000
+Date: Wed, 11 Nov 2026 03:58:49 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 39/51] powerpc/crash_dump: recover from a
+ machine check in copy_oldmem_page()
+Message-ID: <avRXzzCSzT9Qj2FC@gmail.com>
+References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-39-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,30 +88,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-39-021c84d852e0@kernel.org>
+X-Debian-User: leitao
 
-raoxu <raoxu@uniontech.com> writes:
+On Wed, Nov 04, 2026 at 08:25:32PM +0100, Christian Brauner wrote:
+> A capture kernel reads the memory of the crashed kernel, and that memory
+> may well have uncorrectable errors. On powerpc a machine check in the
+> kernel is only recovered from if the instruction that took it has an
+> exception table entry (cf. mce_common_process_ue()). copy_oldmem_page()
+> copies with copy_to_iter(). For a read() of /proc/vmcore that is a user
+> copy, all of whose loads have exception table entries, so the machine
+> check turns into a short copy and read_from_oldmem() returns -EFAULT.
+> 
+> But since commit 4a22fd20379c ("vmcore: convert __read_vmcore to use an
+> iov_iter") /proc/vmcore can be spliced too, and splice(), sendfile()
+> and copy_file_range() copy into kernel pages with memcpy(), which has
+> no exception table entries. A machine check there panics the capture
+> kernel. The same goes for the reads of the ELF headers and notes that
+> vmcore does itself, and those have been memcpy() for as long as
+> copy_oldmem_page() has had its kernel buffer branch, since commit
+> 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page").
+> 
+> Copy with _copy_mc_to_iter() instead. PPC64 selects ARCH_HAS_COPY_MC
+> and there it uses copy_mc_generic() for kernel and user destinations
+> alike, which has the exception table entries. Everywhere else it is
+> _copy_to_iter().
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
+> Fixes: 4a22fd20379c ("vmcore: convert __read_vmcore to use an iov_iter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-> From: Xu Rao <raoxu@uniontech.com>
->
-> sock_has_rx_data() returns a positive result when receive data is
-> available. Socket implementations with a peek_len() callback follow
-> that convention, but the fallback for sockets without one returns
-> skb_queue_empty(), which has the opposite meaning.
->
-> This makes busy polling stop when a raw packet socket has no queued data
-> and fail to recognize queued data through the fallback path. Return the
-> negated queue-empty result so the fallback matches the callback and its
-> callers.
->
-> Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-This fix is valid, but you need to carry a Fixes: tag. You should also
-state what netdev tree you're targeting. Please see
-Documentation/process/maintainer-netdev.rst
+The change is the right direction, and x86_64 has the same gap.
 
-Could the changelog also state how the bug was found and confirmed, and
-how the fix was tested?
+arch/x86/kernel/crash_dump_64.c:__copy_oldmem_page() copies with
+copy_to_iter(), the same as the powerpc code this patch changes. x86_64
+selects ARCH_HAS_COPY_MC, and _copy_mc_to_iter() is already available,
+with the _copy_to_iter() fallback in include/linux/uio.h for arches
+without it. The plain and encrypted paths share __copy_oldmem_page(), so
+one conversion there covers both.
 
-Bj=C3=B6rn
+PS: I found this because I am looking at x856 production fleet  kdump
+success rate , where first kernel died of an MCE very often produce no
+usable vmcore at all, and makedumpfile never finishes due to this type
+of problem.
