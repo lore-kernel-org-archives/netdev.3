@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794392862;
-	b=nxdfqByT4Wi9iZjULS/xM5LG6aPaUjC5REOQXQ+wCxZtyDsIHpaFHTSs6hHLUxMO82V1
-	 foA1Ex04WZRgdH8ZocFol1qlafBwm18Zf/j64JRo/XIyiy21Zs2OYe5NVPZl93wcoVlIW
-	 RweUbzduAWXevreAIY6le05J7OBYub4N/bvJg9ZWUVNU3Mj227575CWxXllDPMLt7xBeo
-	 /mEBxJ2VHoLOQ+rJ+h5kVEJragUD47b89NSmJpEHuiRKU/7Ej9vVbxC6d2nnEF79Tox3Z
-	 I+wLpHDVHzPOeKEnDpPewoTrlgdGk1cmR5qy8Ir0IQaQyMb2lQgG6btNKqAqvViKkrQ==
+	b=S/svvoLU4FxyLVMEJXhzao4xtZd/40yUIXpVwhuKWTsapeUIjfKmGwt79lftXGdc5Vjg
+	 vCrMDEw4LJEAK3c3PHIrc1Zc5wMnlzQKLDbzl9Rr1ChUFmqexaFByevos/4DDnfipsWAM
+	 HGlv+9Wmj8vHmtuUVmecETXQHEFdRpPT4aVwo/TdVTcz8IgtAZ/YFk9ktHI2tK/7CPTSV
+	 WutIouNa0v5Nr4LvnHQrHPDFfuyuQBBpTdkRfKlu2tlQ8S82dKQvYM+fMx7W6nsVvBfCv
+	 r6m+qnfL8MZ2vETIf7gzsaFWov45xoY/7GhfdQsaJ+fz+OIgKTW8lKBzyz13JrSLToQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794392862;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=lOIbN1WC9f3tYk8ODaLG/icVZKFBVBuOQ0N3217s/zM=;
-	b=SbEEHt9igS9fs97wqbaeE9OOJckFLsLy6YYOs3hyF7U8N86NPMYpvrv8X2ub6tKavPtY
-	 g6WWTAqlmENeVQhxBCPfNJmv/Jdkx65Pak4YkFtl6vNq/lfqrNPr5dPISqC1pNGzY2ICk
-	 c9Zz+JWmUy5ZTm6gpXyDRl544foK7jmYr/j5ZJFuXW/UervrFlMLRS3Meyw1FaioZ0NTX
-	 B7u3FuwI3OrA5iUXfOJrBPzJdOWcRO4wCjL4xAln0Dm+03PaX54UbCYzJhpmxdPjULZnk
-	 mvGuIB/prNGpVQPwj1Zrj2Ek4RXsDThhz2kmnuGUy7pabfy2DWTxlaWfU+wq4bmm8+g==
+	bh=w9zFH06fEtJge9QM/CiLbfVi79PwZvBhoxCVWpR4J3Q=;
+	b=L6JlXgXuJG+hPlkzkkl+582KihIO2E2m2Kd5gPlfUGHTUU6QqT8kOxYdHbEJ2dyKM5Bd
+	 eao7hJwAwmYW98EzCsjK4zmhJ8QymNlHE4PF+7f6Kc09aw4PyfzC45IDnz33WtHcdzf16
+	 AmBB+Za5VGJxKdiYv5nCarVFilKiEM5Qk4D1a9FL2P9O+sXEqN0HEpl6yTeBHivNZwhRD
+	 2/Wy+dcPeVq235tta3isWTKeb0eQKJ+5923rHGpeNC8ps0RpSiD0TwVuXecJtpL5daFYr
+	 DkJahg9VhcyiNFT6SQlqwW+6ZiTouT7a4tEMbCP2LCc290nk2gec9ZwSZ1nY1W6LbQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=XWOXunOD;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=roXxJRjd;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B4559606A33F
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4559606A33F
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 079AD606A321
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:27:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 079AD606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=XWOXunOD
-Received: from kero.packetmixer.de (p200300c59740DeD843BE7E4A980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=roXxJRjd
+Received: from kero.packetmixer.de (p200300C59740ded843Be7e4a980e9C65.dip0.t-ipconnect.de [IPv6:2003:c5:9740:ded8:43be:7e4a:980e:9c65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 7EAECFA272;
-	Wed, 11 Nov 2026 11:27:37 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 5C778FA156;
+	Wed, 11 Nov 2026 11:27:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1794392857;
+	s=09092022; t=1794392854;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lOIbN1WC9f3tYk8ODaLG/icVZKFBVBuOQ0N3217s/zM=;
-	b=XWOXunODgWFI2kPC8eaN/q4DOJQzKG3IhUVsS23aG4TBCz151GkJ2Qa6RMoDVkKvkZXDDs
-	HA0QKzAcb7SLzUO8D0o/GjHkPZz0IoD5hzMFOLaTw4l22XwqG8D2EQ7P0K3TkjEBO7KPww
-	5VPzaYW3C/Rx6G3YlJULZfAJ1GQHKYov6u5bM+zMtS5wBzzU9m1gFM0cmlYEkKFfnhZIlb
-	7RBMjv4cNRYallN6FxxcOakSyGGrJbbow4JZq0LbWNAq7v+O/A4Vk0ll5gM8qGNH1iYuEL
-	irxwqHKSm1EqKQTxiMkS2K7GN2sRUbAnTY3oI90Kr3ippVDvXqK5/dPkPeTuHQ==
+	bh=w9zFH06fEtJge9QM/CiLbfVi79PwZvBhoxCVWpR4J3Q=;
+	b=roXxJRjdiLI5Xe4NJnZYAct5/NLsQfKc4Lo4Jr6xvU9QLh1J/vpsQxWJ6UM4dD3yUk6BmU
+	9OfUlRziUAhfvlhKv610y6UsMLDCZEqUSBOnE1jPGWPuEWydtK8ylgNww+8f6pXAxWjFCa
+	qlwaurqk5IZiJns5YJNVb0+aK1Ud7FAsO2V93TTcYViGi8QDL0CnHc9h11N7wzZAA5jQEW
+	bbHepONhRuEgx9EwtjkLAgzL3ZHuHs+pWkxPo8d1FZ3rqiTffdVejnljVltZhB4nnJWrlO
+	tQYWL79qL3YZbpwd/aznTV0ZBHhh91OFi+zppqZdRyFq/LqEXWVkA/AjYytMBA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -60,10 +60,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
+	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 08/15] batman-adv: tt: annotate last_seen with READ/WRITE_ONCE
-Date: Wed, 11 Nov 2026 11:27:22 +0100
-Message-ID: <20261111102729.2096241-9-sw@simonwunderlich.de>
+Subject: [PATCH net-next 04/15] batman-adv: avoid torn u64 counter reads on 32-bit systems
+Date: Wed, 11 Nov 2026 11:27:18 +0100
+Message-ID: <20261111102729.2096241-5-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261111102729.2096241-1-sw@simonwunderlich.de>
 References: <20261111102729.2096241-1-sw@simonwunderlich.de>
@@ -80,80 +81,180 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The last_seen field for batadv_tt_local_entry tracks the jiffies value of
-the most recent activity and is used to detect timeouts. These accesses are
-not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
-to prevent data races caused by compiler optimizations.
+On a 32-bit architecture, concurrent updates and reads of the 64-bit
+per-CPU counters result in torn reads. It is necessary to share a
+sync-point with the batadv_add_counter() and batadv_sum_counter() to ensure
+that a potential write (which modifies the upper u32 too) can be retried by
+batadv_sum_counter().
 
-To avoid an underflow due to an non-strict order read of jiffies vs
-last_seen, use jiffies_delta_to_msecs instead of jiffies_to_msecs to
-evaluate the delta.
+The counters are switched to u64_stats_t to also get properly annotated
+(local64) accesses on 64 bit systems.
 
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/bug/linux-34735281-9ca5-437f-9539-e7cd553e3b18
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/batman-adv/main.h           | 15 +++++++++++++--
+ net/batman-adv/mesh-interface.c | 23 +++++++++++++++++++----
+ net/batman-adv/types.h          | 21 ++++++++++++++++-----
+ 3 files changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 46304069b3b75..76635ae82c84b 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -917,7 +917,7 @@ static bool batadv_tt_local_add_existing(struct batadv_priv *bat_priv,
- 	struct batadv_tt_common_entry *common = &tt_local->common;
- 	bool readded = false;
+diff --git a/net/batman-adv/main.h b/net/batman-adv/main.h
+index e738758ee4a7a..fb938e08a3eb2 100644
+--- a/net/batman-adv/main.h
++++ b/net/batman-adv/main.h
+@@ -199,6 +199,7 @@ enum batadv_uev_type {
+ /* Kernel headers */
  
--	tt_local->last_seen = jiffies;
-+	WRITE_ONCE(tt_local->last_seen, jiffies);
+ #include <linux/atomic.h>
++#include <linux/bottom_half.h>
+ #include <linux/compiler.h>
+ #include <linux/etherdevice.h>
+ #include <linux/if_vlan.h>
+@@ -207,6 +208,7 @@ enum batadv_uev_type {
+ #include <linux/percpu.h>
+ #include <linux/skbuff.h>
+ #include <linux/types.h>
++#include <linux/u64_stats_sync.h>
+ #include <uapi/linux/batadv_packet.h>
  
- 	scoped_guard(spinlock_bh, &common->flags_lock) {
- 		if (common->flags & BATADV_TT_CLIENT_PENDING) {
-@@ -971,6 +971,7 @@ batadv_tt_local_create(struct net_device *mesh_iface, const u8 *addr,
- 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
- 	struct batadv_tt_local_entry *tt_local;
- 	struct batadv_meshif_vlan *vlan;
-+	unsigned long last_seen;
+ #include "types.h"
+@@ -339,12 +341,21 @@ static inline bool batadv_has_timed_out(unsigned long timestamp,
+  * @idx: counter index which should be modified
+  * @count: value to increase counter by
+  *
+- * Stop preemption on local cpu while incrementing the counter
++ * Stop bottom halves on local cpu while incrementing the counter. The 64 bit
++ * update is additionally guarded by the u64_stats_sync to allow (for 32 bit)
++ * readers on other CPUs to detect torn reads.
+  */
+ static inline void batadv_add_counter(struct batadv_priv *bat_priv, size_t idx,
+ 				      size_t count)
+ {
+-	this_cpu_add(bat_priv->bat_counters[idx], count);
++	struct batadv_pcpu_counters *counters;
++
++	local_bh_disable();
++	counters = this_cpu_ptr(bat_priv->bat_counters);
++	u64_stats_update_begin(&counters->syncp);
++	u64_stats_add(&counters->cnt[idx], count);
++	u64_stats_update_end(&counters->syncp);
++	local_bh_enable();
+ }
  
- 	if (!batadv_tt_local_reserve_entry(bat_priv, addr))
- 		return NULL;
-@@ -1000,8 +1001,9 @@ batadv_tt_local_create(struct net_device *mesh_iface, const u8 *addr,
- 	ether_addr_copy(tt_local->common.addr, addr);
- 	tt_local->common.vid = vid;
- 	kref_init(&tt_local->common.refcount);
--	tt_local->last_seen = jiffies;
--	tt_local->common.added_at = tt_local->last_seen;
-+	last_seen = jiffies;
-+	WRITE_ONCE(tt_local->last_seen, last_seen);
-+	tt_local->common.added_at = last_seen;
- 	tt_local->vlan = vlan;
- 	spin_lock_init(&tt_local->common.flags_lock);
+ /**
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 6ffc505ce2aba..16b681e10b33d 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -37,6 +37,7 @@
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
++#include <linux/u64_stats_sync.h>
+ #include <linux/utsname.h>
+ #include <net/netlink.h>
+ #include <net/rtnetlink.h>
+@@ -92,13 +93,21 @@ int batadv_skb_head_push(struct sk_buff *skb, unsigned int len)
+  */
+ static u64 batadv_sum_counter(struct batadv_priv *bat_priv,  size_t idx)
+ {
+-	u64 *counters;
++	struct batadv_pcpu_counters *counters;
++	unsigned int start;
+ 	u64 sum = 0;
++	u64 val;
+ 	int cpu;
  
-@@ -1477,12 +1479,14 @@ batadv_tt_local_dump_entry(struct sk_buff *msg, u32 portid,
- 	struct batadv_tt_local_entry *local;
- 	struct batadv_meshif_vlan *vlan;
- 	unsigned int last_seen_msecs;
-+	unsigned long last_seen;
- 	void *hdr;
- 	u16 flags;
- 	u32 crc;
+ 	for_each_possible_cpu(cpu) {
+ 		counters = per_cpu_ptr(bat_priv->bat_counters, cpu);
+-		sum += counters[idx];
++
++		do {
++			start = u64_stats_fetch_begin(&counters->syncp);
++			val = u64_stats_read(&counters->cnt[idx]);
++		} while (u64_stats_fetch_retry(&counters->syncp, start));
++
++		sum += val;
+ 	}
  
- 	local = container_of(common, struct batadv_tt_local_entry, common);
--	last_seen_msecs = jiffies_to_msecs(jiffies - local->last_seen);
-+	last_seen = READ_ONCE(local->last_seen);
-+	last_seen_msecs = jiffies_delta_to_msecs(jiffies - last_seen);
+ 	return sum;
+@@ -802,9 +811,10 @@ static void batadv_set_lockdep_class(struct net_device *dev)
+  */
+ static int batadv_meshif_init_late(struct net_device *dev)
+ {
+-	size_t cnt_len = sizeof(u64) * BATADV_CNT_NUM;
++	struct batadv_pcpu_counters *counters;
+ 	struct batadv_priv *bat_priv;
+ 	u32 random_seqno;
++	int cpu;
+ 	int ret;
  
- 	vlan = batadv_meshif_vlan_get(bat_priv, common->vid);
- 	if (!vlan)
-@@ -1815,7 +1819,8 @@ static void batadv_tt_local_purge_list(struct batadv_priv *bat_priv,
- 			if (tt_local_entry->common.flags & BATADV_TT_CLIENT_PENDING)
- 				break;
+ 	batadv_set_lockdep_class(dev);
+@@ -815,10 +825,15 @@ static int batadv_meshif_init_late(struct net_device *dev)
+ 	/* batadv_interface_stats() needs to be available as soon as
+ 	 * register_netdevice() has been called
+ 	 */
+-	bat_priv->bat_counters = __alloc_percpu(cnt_len, __alignof__(u64));
++	bat_priv->bat_counters = alloc_percpu(struct batadv_pcpu_counters);
+ 	if (!bat_priv->bat_counters)
+ 		return -ENOMEM;
  
--			if (!batadv_has_timed_out(tt_local_entry->last_seen, timeout))
-+			if (!batadv_has_timed_out(READ_ONCE(tt_local_entry->last_seen),
-+						  timeout))
- 				break;
++	for_each_possible_cpu(cpu) {
++		counters = per_cpu_ptr(bat_priv->bat_counters, cpu);
++		u64_stats_init(&counters->syncp);
++	}
++
+ 	WRITE_ONCE(bat_priv->aggregated_ogms, 1);
+ 	WRITE_ONCE(bat_priv->bonding, 0);
+ #ifdef CONFIG_BATMAN_ADV_BLA
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index b3e6dbb360dae..0fece14c7e7f8 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -27,6 +27,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/timer.h>
+ #include <linux/types.h>
++#include <linux/u64_stats_sync.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <uapi/linux/batadv_packet.h>
+@@ -986,6 +987,19 @@ enum batadv_counters {
+ 	BATADV_CNT_NUM,
+ };
  
- 			batadv_tt_local_set_pending(bat_priv, tt_local_entry,
++/**
++ * struct batadv_pcpu_counters - per cpu traffic counters
++ */
++struct batadv_pcpu_counters {
++	/** @cnt: traffic counters (see batadv_counters) */
++	u64_stats_t cnt[BATADV_CNT_NUM];
++
++	/**
++	 * @syncp: synchronization for 64 bit counter access on 32 bit systems
++	 */
++	struct u64_stats_sync syncp;
++};
++
+ /**
+  * struct batadv_priv_tt - per mesh interface translation table data
+  */
+@@ -1564,11 +1578,8 @@ struct batadv_priv {
+ 	 */
+ 	int mtu_set_by_user;
+ 
+-	/**
+-	 * @bat_counters: mesh internal traffic statistic counters (see
+-	 *  batadv_counters)
+-	 */
+-	u64 __percpu *bat_counters; /* Per cpu counters */
++	/** @bat_counters: mesh internal traffic statistic counters */
++	struct batadv_pcpu_counters __percpu *bat_counters;
+ 
+ 	/**
+ 	 * @aggregated_ogms: bool indicating whether OGM aggregation is enabled
 -- 
 2.47.3
 
