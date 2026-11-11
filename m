@@ -1,99 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794405013;
-	b=MgC0P7Ek87KR9u+T6QvJprZGy2VOnUilr1rnEQORyTXvzNU0ekI7jo4DoxGHDgPV6Und
-	 9seolcu6RkHvVx9xnoiprjVkeRTF6vEd4jXSDC6zJKqNxa7VI3W3iARGDdp0ChOYaKKqR
-	 ZdE9DiRUxFQuVPSCkPYbaJDpYqwMk2hFLY075rQZN8k1gCJb2HJYPcGgj4QWlct/NsYrA
-	 yDUBSCrLK99n2yb8QooO1w9IR6JtSFzMqWzWr1A3e0kwritflE1EhFTGSEfWO2QbpUzvD
-	 gUbs1n4j06xxn6maCo4vXZQXH8buo00XTqL47uT4cuhnHU7OR2inLluMYnWY+3o4kjw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794405013;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=LAzqXJmmTPUQnE1+GTZ/b0TQ8axo5J+C46CaOWTj6Ko=;
-	b=dTCtr9ID3FlyG2iUXAbhjiRQAU0F8PIv3TP+ivmlYImiIqBE9fHXJEqxA9raGBQWWwGU
-	 xYbkBw2jiyT/gNxPfQOKKSLvNiiZ1yZ4yP1Q8qQwEItQuU66u/UuPPGj3PernOcMcySrM
-	 hqbw4+epsD30ecUkUJFNwTrWkQtuO1BMZn4PSSSKGUtnOKgbAwKbo6V+LDR+FwDhc1VbY
-	 QhisZ4CxZ8Sg3LVXUVtbkZbuvGzs0sZzFaspPqJOgEgmWx19IRsJj5Gyd+iVNIRe8bpha
-	 wLXrTR33oHqW1e0um2HQI8ux6L//ImFYzb/sALd8iHKAlKghu1givHkrg1mceP+OEgw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=I6FLAu8h;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.42
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.190
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794405031;
+	b=ngoIgvITcbCeSWthNuU9m+zwKPBuBt1xb5bsUVF9kIe8P3ylGuNU216LLpP7IDARgspD
+	 eyfR0jtpFfEP1zHv1UqVK3eRSkh5QpIToRJVbzPKMBThhRn6BLuGbQjGd8ZHRRMc0W0J2
+	 FEawYTTlvTNoe8040cMoPp6q1AXiYJUplP7GNWF7ro22PVIDZBOJC+djjzRkaHXjJfu0a
+	 5CxZaU1j0q9dMQSuePpVi0VYkSch10uRbPkwqIXkbIescgZWxPGzS0nAxyyhejtvP6KKk
+	 ymeBr8c7oZWPU8SQDKFGzsWch6Rglzbj8qJ9mulOhppVva/WL3Kfn03XWRB8Z/aqm9g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794405031;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=W0fVDpxe9XYsp0i+6ZgSyoLxBF06zc9LwPS7rJSHqiY=;
+	b=gLbya1cKtQcXZ8c6KVGWdR+GY42lv1cxTCsq9/h4AfWxLfwxnHH6Cqxc5kHEq0lDE97+
+	 5I7Z/asn5AvA+es88QIjo+2qiXuTMZGpz0fojCHxTrBTa4UqAbMZMrbeOGicFY/cEuipU
+	 KLTcLCk2xhn18s4U9/ZuO2IgHNZyTNyAbX/BuiiJNmiWv1Qkyc9kNHOAAknQcBAd7LKWo
+	 Etby9HB2pvBzsb9WSjElI+3p5StQY0LMh03YnAhnyI2V63VhTIXpzSSiKcP0GkHkkvltx
+	 gWfcpgXhAlFT2xYqRPmuetKUIlmnrzwuDxQ2Xsv7If30at0SONQrIbsQN+jYlAhg2AA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b="rPme4P+/";
+	arc=none smtp.remote-ip=203.205.221.190
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35714606A327
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 13:50:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35714606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA806606A880
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 13:50:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA806606A880
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=I6FLAu8h
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-150ef97e790so5226c88.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 05:50:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794405012; cv=none;
-        d=google.com; s=arc-20260327;
-        b=itgoqGn5ROKke36klX1ITFulFJb+q+mDVwY1zF5bdUxkGLPF9+S/ZqcKJapV2pEsH/
-         q5Qjjbz7P6jEmES6YB3x0Z0lopzczR3uLAwqj700+RSFszHysfnGl7o1KbU4QW56bUni
-         tuuStT5yxOjqa6a4AchOz35YM5AGa/B3GuViIC9za8HNVPjHhszyWEcqfIip0KRgJMPE
-         FQKKuRniYGRJP8h0Kujj1Zw9wS4ck2i7pFHoRw2AtODQy8CCAJ4RJBnkvNWKDVGmImbh
-         NgXC1LrEGi/DJmTl2w9Z0pFIC8JO/ZX0YOtTeD4jObYBBb04lQEcEo923xE20CQ3IgGN
-         xyiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LAzqXJmmTPUQnE1+GTZ/b0TQ8axo5J+C46CaOWTj6Ko=;
-        fh=SFTcYCsCDlFlEGPRG+wa19FnQvWvjkx3i4Vm99u/2tQ=;
-        b=sdp0VksYrrJRe3g8dOebliBF/5N+4bqpe9iM20f7jLaHBXnBnQfS9B83BvK4AVxH06
-         qx6aoE6G5w360/zjff9H/q98hybN1OPiqtNvrY32jeeeczZOTVMDIBrOMt9UVJbQFuEu
-         qHM+arR/I/hN9XFTT66o/Cyc+8815AnUjTHJW/c9c9gUFWmPguTlcbvTjLCDmLyAlzMv
-         qrd+67OVnZs/o4nEcm9hec6n9RY5m1nm4CQVYNpkg6EFuh7kdy/JaVQVXXY4iK1PXTPZ
-         ZumsTva7f4TR0IIA4r3/q4bpfZBfuYyMtA3Hf33tGviPS5v3g3aeNqjxi8hjBya9OgvV
-         0zLA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794405012; x=1795009812; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LAzqXJmmTPUQnE1+GTZ/b0TQ8axo5J+C46CaOWTj6Ko=;
-        b=I6FLAu8h7YdzrfpPOgrUpuCwg/xsc5G2CgfRQ4L8NyYL1YhpiEHmNY/9JlUXimo54g
-         VmX88jGl45coA5jluySUPCTsqQ3jWuCnnEGibRLCX+vHSc/o4unFIuWDh2rjSO0MTIQT
-         ozz7HZdlWBQv+vgaXsgjhS9UeVpZ98dTkYt+s0mUWdVeUcboaVKp+gSLRxInxacKeZYT
-         U28qUkYArAXgOST9LWgmTU3na2Z/0hMHIBK9YMXCHBheyArTEyNDAgYim0n5jUKzKyD7
-         M+jK3XdShevjNP6GGoNTpcyUElLGTh7xl+DD9IXuBdgwb61x6kGUgzDPs6pLBVR6h/pp
-         otBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794405012; x=1795009812;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LAzqXJmmTPUQnE1+GTZ/b0TQ8axo5J+C46CaOWTj6Ko=;
-        b=lPtWScQo5GyE4GZiFrmwqyojEOQH7eKBMcHaPsH26FjGa5AyptSapYsh3ezQwaPRrZ
-         l6EOB/qP+owr1I48TRJqD4NLUorjY8Qu+Lp51AhbG9gCy8ae68/12HVMUxttNDInwmo0
-         upLazO6ZI/d9RMAhN/Ur3UCSZHgjy9yELEDQGuhsVd7BdCTZumGpp70vCLZYTVk0tZiu
-         37BZvszUKifkWHneI1VyNBDvWxo1vhVw+Hz+pqJ5+nrNxwCuH8KfNZXJz+87EcFg/bwz
-         1Pgb1MPZNeKZPxG6Q6fjySFfgNu9SMC7iXobtMAQ67Bmw/mAybeYh15q0QxTr6dDiYQF
-         dF8Q==
-X-Gm-Message-State: APuU4Z8+AWq53TX0UpCsuxHR8enLRW7PNwlInb1qiRDNMOoVsNxYM4fu
-	1VOR7h1/RMuzglHJvXU4Ykeqd2OWG311Ic7phE2NJpeIrqkHW9k8pFdJ4HPde6+3J3cWEfn+dI8
-	Fo9R7japNZtZM0Wy6oyV2dGS/uF+BPSsbvIYj2Htr
-X-Gm-Gg: AYBFou30Y+cShhqdu46Rum42m6X3sz1D4R7WEt1PJ9WQzVV8/LnyOFSGQUgBb8jF8D1
-	xwPORXpXQA4NKt8aMNQV5GjX08ZUa/bqL6sGHjyCHpgB+GkAHsG6rY6zAXsDsMKN9k9ce7xYd+0
-	D9UKy336peGwqT0tgjeP+Y6Xr3l8syzWFs0sDGrjJ1x80XGTchGdX5a/JUbpPzqpy0soHHCaBKb
-	t+yeC/HtLahzvnvrYVhz9gFBW9d7beZutfhIt3fUokKx2F71IDO17DmC28oynKvLflq1+aoqaga
-	HqooioEDv6y/4h6iGv7FrjGRmXl5eLdp7wxPMLduVF9iUPJ42DxldPtUlDdnLFv0rsJWOCP9L3u
-	1zKOf81GhA+cqDJwxfbkgNa2WdiRVA8wC27bncfZmUxMkqWxqgRvJh53yPBMtsp1a5uI=
-X-Received: by 2002:a05:701b:420d:10b0:155:1a18:e9fb with SMTP id
- a92af1059eb24-1b3c03072demr318941c88.17.1794405011103; Wed, 11 Nov 2026
- 05:50:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=rPme4P+/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1794405022; bh=W0fVDpxe9XYsp0i+6ZgSyoLxBF06zc9LwPS7rJSHqiY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=rPme4P+/qiH/Pg+F4luIQYFEUSNQStcJZLz1LMFChkiE4oK4kzNgRBsA3bxkm53bl
+	 bfZ+XthEg54ZyffI1B7v0OEWHJN4ZtsCFS3TaVuBrCOXBhG8q97k7uVD4MUjQj6rN8
+	 kuV3fvqqBErq3pf52DYPNjLslSneAAJcRDmQ08bo=
+Received: from ubuntu.. ([112.3.92.91])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id C92862E4; Wed, 11 Nov 2026 21:50:18 +0800
+X-QQ-mid: xmsmtpt1794405018t57z251ok
+Message-ID: <tencent_74EA7A2E8BF5758E9C5EF18C9B1CED401D06@qq.com>
+X-QQ-XMAILINFO: NBPcaZsd6bGOn8PNIyEDiAC51qdQli4kKvysCslyWIriXpR9YHSu/ay962/2Ft
+	 B2HFSrnWFcTaaj2G/smw6YmkSR9rApmrNbyiXuxSZWVF8KYN7+RfiU43ImKHcFX9pkbkqD1JFxtN
+	 SRrtWGdG+RF8XG0Oxcf0cQWPEwNFRlxNYq/IEhc5Zz9miMOMps4ze5/YEemkLZzTNPJuwuLBG54m
+	 wcjGi1M9w2cZ3+zaudwK8g7lcbusUq3/Uscyxj6UmuBW6//OEMOqR1ZD1LIIi628MalH3dbi6JOf
+	 7EprQ8hq499q02sjEtVwAEhy57L6Y1RMPNCX2Zk+CbIHz8v2UWxpBNNbxGZRaE9qmT/TiB49EYEb
+	 GWsF4S9yRMqmcLdjQB4PFBlg1TiRp8FUIYNhKCldDJvHsB6pZ2cZLtFFOkv1TJlLhZbVvu/RlaoL
+	 LAODtPl7OSiV5ee2nGsJEhK5H2kODChJznoo0egtwQ8o6wDvtC2y5oWgQ/Hsp5WAHpH9c0GhCyVZ
+	 y3jf2kKbCKakxqK/Oz1Uup1A1AKXLWrAfiA7yEvHQWhL2uRvH80f4UqXLK+rWbXguo/PCTIqxYL5
+	 Bw1hlYixyzmrP28LbiLFVvjRsBBm6BJ6i7BF9S5rBvaJDQPmbheIenbXCNemYkG7+zhJCOtgyK5m
+	 oVwFSQevSHB/OzrC093FMWBOTPIkXlug3I+3QozfrTP9Y9laXnK/G6TimoF4V4p4pn+OClYkfoPX
+	 MQ16IMz8xIPiUp4g7rLbuTUFqIsp7GnQuTo6z88DaWtnowRJEba1e9FeRbhl98aqAOCJ2jLzv+Oz
+	 G21LSKIAqr5SHUDSnvkxLLt7Vz/3S47Cs2KBO7J+cYd+tGDXXH/Ekr+YY9VqnN29n/Z3iZVtTHBQ
+	 Gz5nJKBRnidh4P14uQ1Uzcrt1vTQ7bjj4s2hRtA91PWDVXBjG2AfKiWTjA+35T1BG+Z9AfmybWIr
+	 L42LlFDM7tJVxOXWZ7ISxKl51h5DtCp90uCLKtnHg5oxNFjCEMdSbaGV4KUDj77llWpXrlJLGFpU
+	 3NnXy//iKXgFVyoasNnAJ6CIx3evYU/IIyhP9E5W3kuhWKngg7KFUn89us/VcZpB+MQ1r8eHImS+
+	 sCYmYytPqyDC0gyWOuh3BhZZYLAsx6p8rjn1qfhMXfdx6ED+w8ojqF12HxgBXdZk7E5A3ECH47G5
+	 mC3m9jpdG9J9NRwQ==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Congjie Zhou <zcjie0802@qq.com>
+To: netdev@vger.kernel.org
+Cc: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	zcjie0802@qq.com
+Subject: [PATCH net 1/2] net: napi: add completion with an ordered IRQ mask callback
+Date: Wed, 11 Nov 2026 21:50:07 +0800
+X-OQ-MSGID: <20261111135008.1048054-1-zcjie0802@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <tencent_AA4F39DA7ADE330C721C03AAA832B92DD608@qq.com>
+References: <tencent_AA4F39DA7ADE330C721C03AAA832B92DD608@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,80 +92,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261108013838.1454450-1-almasrymina@google.com>
- <20261108013838.1454450-3-almasrymina@google.com> <avIRJ3vdIj6Jr9zJ@devvm16445.scu0.facebook.com>
- <CAHS8izOxvUxCND3R18_HfZhB=2RS4_RNfAmx7S=Ex6b5z_CQuA@mail.gmail.com>
-In-Reply-To: <CAHS8izOxvUxCND3R18_HfZhB=2RS4_RNfAmx7S=Ex6b5z_CQuA@mail.gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 11 Nov 2026 05:49:55 -0800
-X-Gm-Features: AclHuK--VoyZ9R5ERWwbbW8Q5Z3TjeeQ1Z3vaLOtqtyXf-txWLqBbnB8sJo4YqU
-Message-ID: <CAHS8izNodRM1Bx+FT7okpdeDfCeyJVP5QoyxhSMJWXpGuwyL4A@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] net: prevent mixing frags from different
- memory providers or bindings
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, linux-kernel@vger.kernel.org, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 10, 2026 at 7:54=E2=80=AFPM Mina Almasry <almasrymina@google.co=
-m> wrote:
->
-> On Mon, Nov 9, 2026 at 10:33=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gm=
-ail.com> wrote:
-> > > --- a/net/ipv4/tcp_output.c
-> > > +++ b/net/ipv4/tcp_output.c
-> > > @@ -2692,8 +2692,9 @@ static int tcp_clone_payload(struct sock *sk, s=
-truct sk_buff *to,
-> > >                                    probe_size - len);
-> > >                       len +=3D todo;
-> > >                       skb_shinfo(to)->flags |=3D skb_shinfo(skb)->fla=
-gs & SKBFL_SHARED_FRAG;
-> > > +                     to->unreadable |=3D skb->unreadable;
-> > >                       if (lastfrag &&
-> > > -                         skb_frag_page(fragfrom) =3D=3D skb_frag_pag=
-e(lastfrag) &&
-> > > +                         skb_frag_netmem(fragfrom) =3D=3D skb_frag_n=
-etmem(lastfrag) &&
-> > >                           skb_frag_off(fragfrom) =3D=3D skb_frag_off(=
-lastfrag) +
-> > >                                                     skb_frag_size(las=
-tfrag)) {
-> > >                               skb_frag_size_add(lastfrag, todo);
-> >
-> > From [0]:
-> >
-> > Maybe easier to not merge niovs here? Add '&& !skb_frag_is_net_iov' to
-> > that 'if (lastfrag' check? (or your new skb_has_net_iovs)
-> >
-> > Looks like it is tcp_mtu_probe path, not sure we care about merging the=
-re?
->
-> I'm guessing this is not an issue with pages because they're
-> PAGE_SIZE? But, seems maybe a bit lazy to just hammer all possible
-> net-iov coalescing? Is there a slightly cleaner and more generic check
-> ( && skb_frag_size < PAGE_SIZE or something) so that we don't add
-> net-iov tech debt? Technically this will be an issue for hugepages in
-> the tx path or large folios or something.
->
-> Also I think it belongs in your patch series maybe. That's the one
-> adding the large niovs :P
->
+napi_complete_done() can clear SCHED, arm the watchdog and return false
+when deferring hard IRQs. A false return therefore does not guarantee
+that the caller still owns NAPI. Masking interrupts after this return
+can overwrite the interrupt state established by a successor poll.
 
-Actually, this comment made me realize: is the optimization that you
-did with net-iovs here (that's showing so much better cpu) also
-already implemented for pages? If not, is it possible? I don't see in
-theory why the userpsace can't pass in a contingious 2MB page to
-sendmsg() and the stack could keep it intact in 1 frag up to what the
-driver tx supports, no? Is it worth it making your feature generic and
-apply to pages too?
+Add napi_complete_done_with_irq_mask() with a mask callback that runs on
+false-return paths before ownership can be handed off. The callback
+must be non-sleeping, idempotent and leave NAPI state unchanged, since
+a state-update retry may invoke it more than once.
 
+Keep napi_complete_done() as a wrapper without a callback, and inline
+the shared implementation to eliminate the callback path for existing
+callers.
 
---=20
-Thanks,
-Mina
+Signed-off-by: Congjie Zhou <zcjie0802@qq.com>
+---
+ include/linux/netdevice.h | 18 ++++++++++++++++++
+ net/core/dev.c            | 29 +++++++++++++++++++++++++++--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 435be7880..810527cd8 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -601,6 +601,24 @@ static inline void napi_schedule_irqoff(struct napi_struct *n)
+  */
+ bool napi_complete_done(struct napi_struct *n, int work_done);
+ 
++/**
++ * napi_complete_done_with_irq_mask - complete with an ordered IRQ mask callback
++ * @n: NAPI context
++ * @work_done: number of packets processed
++ * @mask: non-sleeping, idempotent device interrupt mask callback
++ * @data: callback argument
++ *
++ * Like napi_complete_done(), but call @mask on false-return paths before
++ * releasing NAPI ownership. Drivers which prepare interrupt rearming before
++ * completion must not mask interrupts after ownership has been released.
++ * The callback must not modify NAPI state and may run more than once if the
++ * state update is retried.
++ *
++ * Return: false if device interrupts have been masked by the callback.
++ */
++bool napi_complete_done_with_irq_mask(struct napi_struct *n, int work_done,
++				      void (*mask)(void *data), void *data);
++
+ static inline bool napi_complete(struct napi_struct *n)
+ {
+ 	return napi_complete_done(n, 0);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index df1a840b0..4ba9e4c1b 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -7001,7 +7001,10 @@ void __napi_schedule_irqoff(struct napi_struct *n)
+ }
+ EXPORT_SYMBOL(__napi_schedule_irqoff);
+ 
+-bool napi_complete_done(struct napi_struct *n, int work_done)
++/* Inline so the legacy API eliminates the optional mask callback path. */
++static __always_inline bool
++__napi_complete_done(struct napi_struct *n, int work_done,
++		     void (*mask)(void *data), void *data)
+ {
+ 	unsigned long flags, val, new, timeout = 0;
+ 	bool ret = true;
+@@ -7013,8 +7016,11 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
+ 	 *    the guarantee we will be called later.
+ 	 */
+ 	if (unlikely(n->state & (NAPIF_STATE_NPSVC |
+-				 NAPIF_STATE_IN_BUSY_POLL)))
++				 NAPIF_STATE_IN_BUSY_POLL))) {
++		if (mask)
++			mask(data);
+ 		return false;
++	}
+ 
+ 	if (work_done) {
+ 		if (n->gro.bitmask)
+@@ -7047,6 +7053,13 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
+ 	do {
+ 		WARN_ON_ONCE(!(val & NAPIF_STATE_SCHED));
+ 
++		/*
++		 * A false result is not proof of retained ownership. Mask
++		 * before the state transition lets another CPU enter poll.
++		 */
++		if (mask && (!ret || (val & NAPIF_STATE_MISSED)))
++			mask(data);
++
+ 		new = val & ~(NAPIF_STATE_MISSED | NAPIF_STATE_SCHED |
+ 			      NAPIF_STATE_SCHED_THREADED |
+ 			      NAPIF_STATE_PREFER_BUSY_POLL);
+@@ -7069,8 +7082,20 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
+ 			      HRTIMER_MODE_REL_PINNED);
+ 	return ret;
+ }
++
++bool napi_complete_done(struct napi_struct *n, int work_done)
++{
++	return __napi_complete_done(n, work_done, NULL, NULL);
++}
+ EXPORT_SYMBOL(napi_complete_done);
+ 
++bool napi_complete_done_with_irq_mask(struct napi_struct *n, int work_done,
++				      void (*mask)(void *data), void *data)
++{
++	return __napi_complete_done(n, work_done, mask, data);
++}
++EXPORT_SYMBOL(napi_complete_done_with_irq_mask);
++
+ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+ {
+ 	struct llist_node *free_list;
+
+base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
+-- 
+2.43.0
+
