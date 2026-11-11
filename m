@@ -1,109 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794362378;
-	b=NHTNQAXBrnLL4/uTJkNIuUx3OdJY2C1dnxioO4SHJQGpitLwr3JEFZQnCE2Eo/b0eEho
-	 hp2fBKW8sifCfousAQ6PzA2d5dGZt8z88NCfTJsQyq2Bl4K/SggbWog/HoFjfSKf6IHmN
-	 m/FuguEI6PEeR3gBtlz9nENhzIIKw1Z0ZLOOX9+qAZYlMFTKpRG4HepGCJ4hRm6ojPL6m
-	 2U47LhsXmAbCRiCxldLkLgIb6olcGmJnawkZCiRD6QMq7lxVWQkiFJdUlFr0ni6HgAKi6
-	 13EDyv8b9XgkEh4hLAn9Nqw725aP+GIrrvnJmXRioTSr9VV0la73KkuxNLHKk5/4tuQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794362378;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.175
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794362419;
+	b=Wk22y5O0oJWWQPEB9dFeF3vbC30wu9rRpScWmS0iGIkg6GwFhCzj1NFrt4t+NAh8r8KT
+	 ysXbibRgbegJGnDtrU7ELrvFrcm9ephBDTgp1KvTRSUmJtxHsUnFiSx8KXNSFl/MsHboo
+	 tYJYNlqOJ/M6meQCV6aEoKxuJU2FjmShSsYpFjmqwV9bJRhP4T0b449jzLk4moLOL/4Sr
+	 kzhRUL3aD/lbPCN63E8f3mizYnem62BEAL9yUTnx65DT+acqCl8dYRmGCLH8IM2Ry5R2a
+	 TEmWO13yxW+znptOUObaDWyQ3kLFHU8+2NktQYn4MdyhGfKwxjy8HuBM1M8VR6Un8mg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794362419;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Jgu962y8cHYH/mees700v1pRhH7ojTrqx1f7sTX+E/8=;
-	b=dhafPTerPyF0hzdYdi3EHJIqiI99t/ZLdlvaVPMEAipLc78d6bQKN1buP/Z5glkwmaww
-	 KBOwWv0fSdNFkZzDrDwjrObQP19Wo8iomt7DOvE+2/ftRAJartyHTl+kRkJvI5HwFe/a9
-	 iU/yfxQiGnh9jlHqAs2irYBRn+6WENXIo+t0l1mRZmCHGljE3u1epMVRlx0FMypId2I9C
-	 WBdzIdCtt05tZIer8K2fmr2a1M26jjIvIlaaJNGIGJOrTwNQ6D1/0vp2HuoEEZhomVlkV
-	 3RGaYsMZl0+XP67doOo3VdILnhF2Qmw5RMtQ26d7I0vMjFA2Gir/RJhOE8cGwqjFavA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NAA8ObNw;
-	arc=none smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
+	b=ln42Vj+/7MZDQaWAs0f3Fhm6KfjyFr4mwEE/8hSy9p+g37ZvZo8ABtBCavuXu/JjBMhC
+	 ppGv/vx0k51Vj5dugvA9fvgf9mzpjWGVXlowPwZjvJ2oIWxyOrnTHvOiwFhpgZ3kRmKlE
+	 gMqQ9/9ZlchvO+g9o8/kiKxSXjIgw8C0r/9TkvUtqYX1bl8D3pQK//fepLzrfljptgNuz
+	 8S5+Vd4/tsaA6TT3lK7dNhsMLdW5xLg3DM64F4F06tjSxL+SdMyj2nzQnnhsW3GhLps1b
+	 mLxtwdmcIbz1ytFs+eLWQbmu3IQ3FJVIiPeNIFf3rsrZi1y5hOLbp6hVmANBLwL4/kg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bvRxWyFG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8B1606A327
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 01:59:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA8B1606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3137606A320
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:00:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3137606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NAA8ObNw
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b4bd3d98bfso3125608a12.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 17:59:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bvRxWyFG
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-37628596783so1371810eec.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:00:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794362418; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R6OcWGUul00CuQcTaa9NRu1ODpP5LKlurg3At4Xkv2GHBhnyuAcPZrGgs5Ug9v2Me2
+         KDX4sOF/W6ULfSu26nHK1sNvCO8M0UO/LmUFuB75aHQpNcvy4CypQQO5PnQE4ANW/9ar
+         2+pnR2SYeYUja13vB9ZfQwJBCw5f4NWskYgJLB/3IO1+NCwaJwnZk6tQEwaCu+sev7+8
+         K4LY6XafnXY4hrIcwqduYfi5MprO1FYzqgLbFOo/tAspAWqIUFmZ1MyIe2saftmTwiyj
+         sfyY/vA9PhahiM96jR3djjc1vrfjzwBGWBj+OIltzppR0RD6dzu/xcq9TG7kWXYiCstn
+         gZZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
+        fh=voFQUW4q6+RvSHWyIUr1ravUatLaSvXwY900JyTZLUc=;
+        b=MjPevreuGV0SU85vWF0klFCse0szOay7mbr95FGAPMdfKCgAU9atCL87yTuREwF7CD
+         +V439B9ifegWcJzqvoj/73tvlomSwxQxulAw1SfE1Gycsof3DOlX0AjpuC3DiuW/oGT0
+         ZIUuC6uvIlGpybu425uSebVcju9WreEsrsJF0q5Er9H4kGrMgGTZKTWYr+JWOXSFyv6e
+         f2s1GALiA8kjce7ck6t1pJBM1xrP/HNAQUOKjIyczUKIcXISyBr4zw91xpNeKZ7GGgHN
+         dKgdamqypdEewVsvccaYaB2aBxXm7ICE0ij39rh0eoe3MmgdAqJHN6p+UTa42MKxzusg
+         X94Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794362376; x=1794967176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Jgu962y8cHYH/mees700v1pRhH7ojTrqx1f7sTX+E/8=;
-        b=NAA8ObNw0VFx6zfK7QgM1ZFQMkCGhinaiCGyiEr/B2ayq9IY9lyHmHRK/ZIY952fas
-         U6I0nseO8oXA8WL4i/T4WnssVKG9ZTwFsZq9WnrxFUDQYMOal923XAORXy68UIoj/fp9
-         2o44YAqDd3V7i/wsQHzUoxOAQg2ZWdiVVgVRA78/MtLcuux2t4VWm8sbWXGsIL1CAFa7
-         ppxqerNjc8Ws6DKxXNWki1zOGGGni9XMFP+vgcYS8jQQMS2+0YgvR+yAVrdp0CsweV86
-         ul7lHm3tYS+gVl3leOtAa3t4ZdQOY2s1J6F4dlAkY64FxkLFuxYlLke/N78FKcpd41iX
-         VRag==
+        d=gmail.com; s=20260707; t=1794362418; x=1794967218; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
+        b=bvRxWyFGwXzDLRtpU1+Z9VJNOOTsNT0608bHW+RTaiPzND6oFBDN/qWqzndR17T2BR
+         KCn2IxPjarwRv9oaQoFUKWSwijRbWm+Ow/iXOOOwmli3lH/82MX/KzxoaWKZZ6i+8sH6
+         VSE+pL9SIqnv3FAUOwjgnW8gmHuWeCZrlEpJ23fPmxEg5iNQEDg/aT7fk9g6AJbLLIlE
+         d8n7kLo5VHvrtvzQZMdpAS/M2Ts4CtOTuV1imvMhxXAj3CB9Nh6Qjliw7Vqa7KGEQJBn
+         tkNmJAwzRm2nQGjbRs6YP91uy4RcGAA+nuSwDAU97BQeflbNLcuTmOVJjt3Wizl3IkyC
+         3W5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794362376; x=1794967176;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jgu962y8cHYH/mees700v1pRhH7ojTrqx1f7sTX+E/8=;
-        b=rgeoNToIBqvMhr7j7/lzfEt3zw+N5CcfptseRco/J98lm3BqGWTRzIxvC/mVDaxUZK
-         elLUebu32lngxyZ65haINvGH4lq6wWVhwczCCCa7lK0/0QcQljTxqOXYjG2bf/eEcujZ
-         t8iBIlC8IIUGPCUc22jrJ0oT3r2W3+Z1zejU9bmce/vLT+ADOFmI44GR5670uADr9UB0
-         oL6j9RJMKpBhAnqP9JvlnyPykBgAMa0kV251BeSNaBmPMUtpadwXs8UDsPWAzFC98F4e
-         dR16i0LS7X2qPzHd2V3C6mui+aEFYlJ0zB0LwVJU3n5vWJcJZR1GrnwzRum6jw9vNRiL
-         vg3g==
-X-Gm-Message-State: APuU4Z+GericQ3NxKOnRQ4nciq/nHa8ygDZl8ra5rt7sSnk+7HzAo8dz
-	jqEPyt0XJOVL2R1aH+nVe2UAAec2SAxlSus+8Y70NLPrDSyhTx+VBmtIDhMGsyWGyC1BnkrKkWP
-	LLyqvJ/0=
-X-Gm-Gg: AYBFou0mKDrL3XdugIySzBtT8qHc9NT/8iphLtWkcikJZSrpOqHETKyu+LdUgGD+eD5
-	A1lq9wlR0bDHR47b4aXjp1D104wiRSWNF9t07qVdb7xZDLHmchUHsfs+GdDJRxWYKRirvGOlrOc
-	1NPx2P2b6zCM66NX+x7X66wBsTupo8egMn9xqOB5tmwyOMem/Kh0x9UHJ2BjpqeLJkhDkwRePox
-	w+j6yMJWrY5UIKJgzRJY/xPSWmOfTuIuOzWWHxXOeyrprsqZJH+uo5CnU1quKB7OQFER6eJP8iT
-	aSQS5mCc6RWYIhIsmTpWy03MDWxxayY8ODwFfZKzj0BS+HzsZQsEeB/caKLCWOmNwXHo1AUlb5a
-	YLLk1YvMym+a0GEKxVmDwVwofIDrMAUt2tRlePxwDQAiqlM9tmX/8SKCVxX0nr+DK+ZcfaGbaph
-	GelgIitwLWo+vxuXBPUlgavJ9R+0yuPWymxwk4RqVnQlPFD+q7/Mqo2dRl5hHjyWvJkLgOj8ItR
-	hXLv8lVxO40uiom9IX3JTzreu+q0iLD4Z00fwDCg4BbT75t5BO37tlOPNE3AVd2ZPH141z2w/r1
-	dMfgcw6JsBFS0I562n9xFT6vyw31Is56t9XRGaWGDPQ4K1tJf2uEEjR5bw==
-X-Received: by 2002:aa7:c683:0:b0:6b6:feca:2450 with SMTP id 4fb4d7f45d1cf-6b7775eba49mr531899a12.19.1794362376364;
-        Tue, 10 Nov 2026 17:59:36 -0800 (PST)
-Received: from L9JK9NPFH9 ([104.28.20.58])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7834cdc23sm147498a12.12.2026.11.10.17.59.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Nov 2026 17:59:35 -0800 (PST)
-From: Tianyi Gao <tianyi@cloudflare.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	toke@redhat.com,
-	lorenzo@kernel.org,
-	horms@kernel.org,
-	bpf@vger.kernel.org,
-	shuah@kernel.org,
-	hawk@kernel.org,
-	kernel-team@cloudflare.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	linux-kselftest@vger.kernel.org,
-	Tianyi Gao <tianyi@cloudflare.com>
-Subject: [PATCH net-next v2 3/3] selftests: net: veth: test RX queue NAPI links
-Date: Wed, 11 Nov 2026 01:59:22 +0000
-Message-ID: <20261111015922.67745-4-tianyi@cloudflare.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261111015922.67745-1-tianyi@cloudflare.com>
-References: <20261111015922.67745-1-tianyi@cloudflare.com>
+        d=1e100.net; s=20260707; t=1794362418; x=1794967218;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
+        b=UhyYQHAu78yIpjXF2abIguvI91JUq8yHwZnuV+GM6olRMwafwKP8UcelQxSCI7OkKR
+         sOTGwAtvNYutl8l7he19ozBZW0xarO4W1EaGHvFot4BbDoD0kjWUrLSeVE+HuWSCWXjM
+         h4RA9+ITNrNAWEoKbaX8XNCM8ZkEpQI6JtyYHb33OCQ3v3xMnjWRKM0JnGVSpZZZeBiU
+         SQwSwCug9kbXqHCBnrBPZB9PvgvMDgxfvqxDwN9du4ZbZG8c68a0DjJoSszNpwI/zJgf
+         8bl4ga8hq38vhZ+pXuDDGbtpffTHQwpT4fqOSq/nhhGIscrs9IoHaD57A8QCs+4dRt8T
+         n2Pw==
+X-Forwarded-Encrypted: i=1; AL+hErESYF7lQ0z509gnWbjN17uhrG5VQALH3hmfRMirW6/xYAabtBOnjFwF8lwFlnByYltNVa6ey0I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8P1TDQsMZbpFq/F73RNR3M/oEn5X+aTyFinqc+iGEl8MFDyzNY
+	0YsYf6W8sOT8WlqNJaUBo3WzO1QthIbU41Uf+pz6qkgkHUW37JsH44EXf+1sJiR00E05bvb9clr
+	DnianOuAjUELRK/W4Rh2tvc34Kq6jxwI=
+X-Gm-Gg: AYBFou1ad94T7+KCRW7eSpV+bZyJLTNpHJJWKZc429Mb0HteW1UR/KNNtaayApqr9HG
+	f0lLvmSekLwl3zjTHveadnbBbSLOr6HjTV4sf8gChRmQOQOYiUJBlITf5fVIA+xptjoSwEyT0sP
+	kqRCpyq75Hg9ASEE6lbu1U2sM5iX8ow0tmxdlvvvIb92r9WHLrSRMhYWw+IpbbzIxAju5fwAelP
+	uropqhLHuImZENf5VioN3gOPeK/mpuFrvZsx3tkVIGRz5S34PMN3XdYIzeKs7Jy/Hl3XpX1l727
+	P7/6H6kASJl7/pnSV6ZChFoTjI0wv4ECvc5gVoIbup5HpnqB60Gx/p21/bn5wEskzl0f5OPTm9k
+	xiWIYQdr+bXO9KPe73VsTwnLPnFzYPWxYRZuaxBCuUrGyiaT8EczVpqIu96tsn9XwwEUODjPg5s
+	QmXXQlBnQPHf5fzRZAw6ul3R/KiHs=
+X-Received: by 2002:a05:7301:795:b0:36e:e349:f2cb with SMTP id
+ 5a478bee46e88-3768579dfa3mr1470248eec.19.1794362417519; Tue, 10 Nov 2026
+ 18:00:17 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,126 +105,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261110-smsc75xx-rx-fcs-v1-1-4e048bfc28f3@gmail.com> <137b3cc5-7077-45d9-8ba3-ea4c584f1992@lunn.ch>
+In-Reply-To: <137b3cc5-7077-45d9-8ba3-ea4c584f1992@lunn.ch>
+From: Joas Antonio <joasantonio108@gmail.com>
+Date: Tue, 10 Nov 2026 23:00:05 -0300
+X-Gm-Features: AclHuK8ROedb8-shxTvKJCqZsFUqIT-32EYB708a8vtoB04n-gGoY_3AV2iFUVI
+Message-ID: <CAOCBhwFSS_weykmFvmHQJ0VuMxW-dxHytBn81rn47wfWwnsV9Q@mail.gmail.com>
+Subject: Re: [PATCH net] net: usb: smsc75xx: reject frames shorter than the FCS
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: steve.glendinning@shawell.net, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Check that the napi-id of every RX queue matches a NAPI instance of the
-device. Also check that the queues are linked only while NAPI is
-enabled. Run the checks with GRO on and with XDP attached, and across RX
-channel changes and link down/up.
+> I assume there is soon going to be another check to ensure the frame
+> is big enough to have an ethernet header? Can these checks be
+> combined?
 
-queue-get and napi-get are only visible through netlink. Read them with
-the ynl CLI, as the ndo-xmit checks do. Compare the results with jq.
-Skip the checks if the ynl CLI or jq is not found.
+Yes, that makes sense, thanks.
 
-Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
----
- tools/testing/selftests/net/veth.sh | 79 ++++++++++++++++++++++++++++-
- 1 file changed, 78 insertions(+), 1 deletion(-)
+Looking at it again, short frames are only half covered today.  For
+the last frame in the URB usbnet drops anything shorter than ETH_HLEN
+after rx_fixup() returns.  The other frames are copied and passed
+directly to usbnet_skb_return(), so a frame of 4..17 bytes (0..13
+after the FCS is stripped) reaches eth_type_trans() without a complete
+Ethernet header.
 
-diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
-index 64c2a5a59821..685209995485 100755
---- a/tools/testing/selftests/net/veth.sh
-+++ b/tools/testing/selftests/net/veth.sh
-@@ -110,6 +110,44 @@ chk_xdp_feature() {
- 	fi
- }
- 
-+chk_queue_napi() {
-+	local msg="$1"
-+	local target=$2
-+	local expected=$3
-+	local ns=$BASE$target
-+	local ifindex
-+	local queues
-+	local napis
-+	local st
-+	local linked
-+
-+	ifindex=`ip netns exec $ns cat /sys/class/net/veth$target/ifindex`
-+	queues=`ip netns exec $ns "$YNL" --family netdev --dump queue-get \
-+		--output-json --json "{\"ifindex\": $ifindex}" 2>&1`
-+	st=$?
-+	napis=`ip netns exec $ns "$YNL" --family netdev --dump napi-get \
-+		--output-json --json "{\"ifindex\": $ifindex}" 2>&1` || st=$?
-+
-+	printf "%-60s" "$msg"
-+	if [ $st -ne 0 ]; then
-+		echo " fail - ynl cli error: $queues $napis"
-+		ret=1
-+		return
-+	fi
-+
-+	queues=`echo "$queues" | \
-+		jq -c 'map(select(.type == "rx") | ."napi-id" // empty) | sort'`
-+	napis=`echo "$napis" | jq -c 'map(.id) | sort'`
-+	linked=`echo "$queues" | jq length`
-+
-+	if [ "$queues" = "$napis" ] && [ "$linked" = "$expected" ]; then
-+		echo " ok "
-+	else
-+		echo " fail - expected $expected found $queues napis $napis"
-+		ret=1
-+	fi
-+}
-+
- chk_channels() {
- 	local msg="$1"
- 	local target=$2
-@@ -330,7 +368,8 @@ fi
- 
- [ $CPUS -lt 2 ] && echo "Only one CPU available, some tests will be skipped"
- [ $STRESS -gt 0 -a $CPUS -lt 3 ] && echo " stress test will be skipped, too"
--[ ! -f "$YNL" ] && echo "ynl cli not found, ndo-xmit tests will be skipped"
-+[ ! -f "$YNL" ] && echo "ynl cli not found, ndo-xmit/napi tests will be skipped"
-+[ ! -x "$(command -v jq)" ] && echo "jq not found, napi tests will be skipped"
- 
- chk_channels_carrier up up || ret=1
- chk_channels_carrier up down || ret=1
-@@ -443,6 +482,44 @@ else
- fi
- cleanup
- 
-+if [ -f "$YNL" ] && [ -x "$(command -v jq)" ]; then
-+	create_ns
-+	RXQ=1
-+	if [ $CPUS -gt 1 ]; then
-+		ip netns exec $NS_DST ethtool -L veth$DST rx 2
-+		RXQ=2
-+	fi
-+	chk_queue_napi "queue napi - default" $DST 0
-+	ip netns exec $NS_DST ethtool -K veth$DST gro on
-+	chk_queue_napi "           - with gro on" $DST $RXQ
-+	if [ $CPUS -gt 1 ]; then
-+		ip netns exec $NS_DST ethtool -L veth$DST rx 1
-+		chk_queue_napi "           - fewer rx channels with gro" $DST 1
-+		ip netns exec $NS_DST ethtool -L veth$DST rx 2
-+		chk_queue_napi "           - more rx channels with gro" $DST 2
-+	fi
-+	ip -n $NS_DST link set dev veth$DST xdp object ${BPF_FILE} section xdp
-+	chk_queue_napi "           - with gro and xdp on" $DST $RXQ
-+	ip -n $NS_DST link set dev veth$DST xdp off
-+	chk_queue_napi "           - after xdp off with gro on" $DST $RXQ
-+	ip netns exec $NS_DST ethtool -K veth$DST gro off
-+	chk_queue_napi "           - after gro off" $DST 0
-+	ip -n $NS_DST link set dev veth$DST xdp object ${BPF_FILE} section xdp
-+	chk_queue_napi "           - with xdp on" $DST $RXQ
-+	if [ $CPUS -gt 1 ]; then
-+		ip netns exec $NS_DST ethtool -L veth$DST rx 1
-+		chk_queue_napi "           - fewer rx channels with xdp" $DST 1
-+		ip netns exec $NS_DST ethtool -L veth$DST rx 2
-+		chk_queue_napi "           - more rx channels with xdp" $DST 2
-+	fi
-+	ip -n $NS_DST link set dev veth$DST down
-+	ip -n $NS_DST link set dev veth$DST up
-+	chk_queue_napi "           - after down and up" $DST $RXQ
-+	ip -n $NS_DST link set dev veth$DST xdp off
-+	chk_queue_napi "           - after xdp off" $DST 0
-+	cleanup
-+fi
-+
- create_ns
- 
- CUR_TX=1
--- 
-2.56.0
+I will send a v2 that tests for size < ETH_HLEN + ETH_FCS_LEN in the
+one place, which covers both the underflow and the missing header.
 
+Regards,
+Joas
+
+Em ter., 10 de nov. de 2026 =C3=A0s 19:41, Andrew Lunn <andrew@lunn.ch> esc=
+reveu:
+>
+> On Tue, Nov 10, 2026 at 09:03:21AM +0000, Joas Antonio dos Santos via B4 =
+Relay wrote:
+> > From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> >
+> > smsc75xx_rx_fixup() takes the frame length from the RX command word
+> > supplied by the device and strips the FCS by using "size - 4" for the
+> > allocation, skb_put() and memcpy() of each frame that is not the last
+> > one in the URB.  The length is only checked against an upper bound and
+> > against skb->len, so a device can report a length field of 2..5, which
+> > gives a size of 0..3 after RXW_PADDING is subtracted.
+> >
+> > size is a u32, so "size - 4" then wraps to 0xfffffffc..0xffffffff.
+> > __netdev_alloc_skb() adds NET_SKB_PAD to the unsigned length, which
+> > wraps back to a small value and the allocation succeeds.  skb_put()
+> > adds the length to the 32-bit skb->tail and skb->len, which also wrap,
+> > so the skb_over_panic() check does not fire.  The following memcpy()
+> > then tries to copy almost 4 GiB from the URB buffer into that small
+> > allocation and writes far beyond it.
+> >
+> > A malicious or malfunctioning USB device can use this to corrupt
+> > kernel memory or crash the machine.
+> >
+> > Reject frames that are too short to hold an FCS, as lan78xx_rx() does.
+>
+> I assume there is soon going to be another check to ensure the frame
+> is big enough to have an ethernet header? Can these checks be
+> combined?
+>
+>         Andrew
+
+
+
+--=20
+Joas Antonio dos Santos
+Cyber Security Specialist and Ethical Hacker
+joasantonio108@gmail.com
+LinkedIn
