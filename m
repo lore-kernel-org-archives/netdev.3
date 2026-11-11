@@ -1,49 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794386407;
-	b=dM4/9yfDKwd5U0ekxGbUDI150IEUno50+Rg+BfghNgQOjf28qDqcDLWFTMc+FFUz53UK
-	 ZFGT2I/wSyg0iuVzXV8SGjdkoEr/1mHfNgk9xad+qjRRP4sJUVLA1OzCCpudNoY5n7DRj
-	 mP6MHOJ1V53eV24oNrEkuXv9DkT4EWzznqomy0VkstXOU/rSXFxF1qQA5p8+taqDf5UsP
-	 9sYS4cpHUHpzAutSm3vsXJWMPPQDsJsl8m3Une4nLtszhBavY2b+CGcjAZ3mjyFa4CLpS
-	 v6rSFMlNl+/kHGwyKQ55ncWTo71pcTrG7cafpU1SsXBTZ8QhHolgYXsRctasusSSFYg==
+	t=1794386667;
+	b=5Fhg1PDAbwL9YwiHB4eiU5i+rHg3yorNkWVgihpOkWr27u4bxSsdK3hZ0r8F7P6LSXVf
+	 Yn68oJ7PWI/MbtgU6k6n+vqqWFNqoTyWEafBEqUn8bOpZ6aQk+jzmGxdnxh1LLmArA496
+	 1K5OoJzUQGSckox5WuAY8+Eswa+UtyKIWs9sJ95DN1/07n95P1tfc2a1iySZwXBraUh98
+	 nBnxhlURS+GQX4328SkT0Pej1MQpcCKZMNDLqyPzBVLyWyc1PalmFZzKXjW667cH3sipC
+	 ijOpfo/gAy76Ex0dlnEvUmBotKMZ3ixcLhf1w8e0ZMbbI8vmEFTJ0rs/4bGCdnBjR/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794386407;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=ExDVWijlDii6IKHmwPi4pgSXddbMzGH+ApjyDrW/l+s=;
-	b=zw4DcM0igRsKkwSVMvirAyM39eFx/AJOq/kyQn4WQ1SPM/EDayr1bb/CU+D2jzP9RPB7
-	 z3L25IqbtD6sFx3ovX4XAxbRXlwBzTLeturftNQc2fXTNDkbRmn/FacNjcW/N6cIU/Vs/
-	 uBWcvJHTwTzSgG1vOjI8h27iRBLVDLDVumYr72eeo8mZO+Dpnej/leWZWNAZtCaYzB/Rw
-	 Oiyyiv8ur/B8TYnr6V/dCxfdUpm7Jhsk/75fMP1b5catpb2M6ULakd1goLcxXPbioQ1rU
-	 KSVomwbDjvgTNoyOYakroc0bSly91Ke9bbc017Rb/TXqVex15t4FARUxtxuBQihmFhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794386667;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=0TaZ5JCUftcvgABnCcPfKOwKyYVdTvJYp612kagBhak=;
+	b=Sasjr0GjKB57705BBvRdoXW1hRckXJQrMtxAtfJkpsLT4BZ8wjsI4SEn1Nzdtc2al6dd
+	 xi9K9ItG9KDGcL9u9I4jdQQgMHmGzaES/102HyiaYPC+EZG0DouHgv3YE2XS1d02Jn964
+	 u2o65q41h67z986kz5qkAZWF/ci9kdhNGGPDNk9Z6Fmj+QWTo8/uzSCuAhDypBwy4/PSw
+	 gPh4/ZiqHd46mqbHxvY2+5DWNFXrlj2K54VinoyxKbwzabUzQvPuJgilZ0Kc0H0QnGVvl
+	 MqtDkPQW4D1aMSJhGZj9JT3vibi/eHY6IP0AK0J1RabyF2cQSRZyr0vSCd5Ebr93AhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRquJ+dq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ATF2+Wf+;
+	arc=none smtp.remote-ip=195.10.208.52
+Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [195.10.208.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0E8606A31C;
-	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E531E606A320;
+	Wed, 11 Nov 2026 08:44:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E531E606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRquJ+dq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BB91F00A06;
-	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794386407;
-	bh=ExDVWijlDii6IKHmwPi4pgSXddbMzGH+ApjyDrW/l+s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YRquJ+dqvO+ql9V7Lw0rD4ih0Q2gbZ0yeWPt35fIe3RMm8BWLG2T9FpDKKtOIpgmY
-	 Y/TIz23BWm9pMI+8fh/0R8wHyA+asum6WEw13YSnGaDg/yahf6uIRZ8mPZg8ILaOXQ
-	 W8GO92eMM3J1XWypMZgj+GyPXE+HsAZkeNSn3UnjAH1pdzWpXyLm/VhmgZnEq4OSYM
-	 8Ox4GeKsqVR67Tz5GgW46n0tdmTSfygJCrZ+NgEC5jAo0AUbn+zBjVh2phiAI+pLDq
-	 HPgsmKK1Y5KhIc/F4I43ZZ6dWuijyu4e53D6q+0sEq6dwrWckoBZjExmOiaATo9mSe
-	 vcYf4D7naP1GQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E17938007E9;
-	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ATF2+Wf+
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4jPcWg4fPpzLmG0;
+	Wed, 11 Nov 2026 09:44:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794386655;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0TaZ5JCUftcvgABnCcPfKOwKyYVdTvJYp612kagBhak=;
+	b=ATF2+Wf+xgoumpPzKb+IWK0RLW4Fsetsy6H391CtVmhidqOaqAe2SH6R4INqUSWp8WHgYB
+	F+kqPWHMA2XMr7rwDOr2MNOIY4pl92TSPS39JykUSPypBuDEdhxjljdOtGJwqo1k74A4k6
+	8a38WCXNlXeNb8YpnoLWfYjTvWae4ZtFN4KX+7IKfcLWKglOILtDy7fZLOfuN3X9N2fkpu
+	qHkqMPvB459suDuYyvp2XWT0KpKF6qsz6CkwzoENEclNxuVFoCwQ1U+5UehpNB6uokQ6Qo
+	v3NWaoMpD0U+OUiJAXQtfRDy2rADFS+86+we3kW9TRjlWjOk8vlWPFR9CTeJAA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+From: Antonio Quartulli <antonio@mandelbit.com>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: Antonio Quartulli <antonio@mandelbit.com>,
+	phil@nwl.cc,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH nf-next] netfilter: nf_nat: skip the xfrm re-lookup without outbound policies
+Date: Wed, 11 Nov 2026 09:44:10 +0100
+Message-ID: <20261111084412.2702283-1-antonio@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,40 +82,60 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] liquidio: enlarge the interrupt name buffer
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179438640618.794109.4972687983974562949.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 08:40:06 +0000
-References: <20261106095114.3564335-1-xujiahao@cmss.chinamobile.com>
-In-Reply-To: <20261106095114.3564335-1-xujiahao@cmss.chinamobile.com>
-To: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+X-Rspamd-Queue-Id: 4jPcWg4fPpzLmG0
 
-Hello:
+nf_xfrm_me_harder() decodes the session and redoes the xfrm lookup for
+every packet whose source or ports NAT changed, even when there is no
+policy that could match. The session decode alone is a sizeable part of
+the NAT path.
 
-This patch was applied to netdev/net-next.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+Skip it when there is no outbound policy, global or per socket, the
+default outbound policy accepts and the dst is not a bundle: the lookup
+would return the same route. xfrm_route_forward() takes the same
+shortcut for forwarded packets.
 
-On Fri,  6 Nov 2026 17:51:14 +0800 you wrote:
-> The PF and VF interrupt names are assembled as "LiquidIO%u-pf%u-rxtx-%u"
-> and "LiquidIO%u-vf%u-rxtx-%u" into INTRNAMSIZ (32-byte) slots.  Three
-> full-range %u do not fit, which gcc reports in a W=1 build:
-> 
->   drivers/net/ethernet/cavium/liquidio/lio_core.c:1119:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
->   drivers/net/ethernet/cavium/liquidio/lio_core.c:1124:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
-> 
-> [...]
+This is the common case for masquerading routers built with
+CONFIG_XFRM that never use IPsec. Forwarding a 1400-byte packet through
+conntrack and masquerade (x86, qemu -icount) drops from 7533 to 7091
+instructions for UDP (-5.9%) and from 7835 to 7395 for TCP (-5.6%).
+With an outbound policy installed the full path still runs, and a
+block policy matching only the masqueraded flow still drops it.
 
-Here is the summary with links:
-  - [net-next] liquidio: enlarge the interrupt name buffer
-    https://git.kernel.org/netdev/net-next/c/1be1e065008d
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+---
+ net/netfilter/nf_nat_proto.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-You are awesome, thank you!
+diff --git a/net/netfilter/nf_nat_proto.c b/net/netfilter/nf_nat_proto.c
+index 64b9bac228ea..69849d805984 100644
+--- a/net/netfilter/nf_nat_proto.c
++++ b/net/netfilter/nf_nat_proto.c
+@@ -600,12 +600,25 @@ nf_nat_ipv4_pre_routing(void *priv, struct sk_buff *skb,
+ #ifdef CONFIG_XFRM
+ static int nf_xfrm_me_harder(struct net *net, struct sk_buff *skb, unsigned int family)
+ {
++	const struct netns_xfrm *xfrm = &net->xfrm;
+ 	struct sock *sk = skb->sk;
+ 	struct dst_entry *dst;
+ 	unsigned int hh_len;
+ 	struct flowi fl;
+ 	int err;
+ 
++	/* Without any outbound policy, global or per socket, and with the
++	 * default outbound policy accepting, the lookup below cannot change
++	 * the route unless the dst is already a bundle: skip it, and the
++	 * session decode it needs.
++	 */
++	if (!READ_ONCE(xfrm->policy_count[XFRM_POLICY_OUT]) &&
++	    !READ_ONCE(xfrm->policy_count[XFRM_POLICY_MAX + XFRM_POLICY_OUT]) &&
++	    READ_ONCE(xfrm->policy_default[XFRM_POLICY_OUT]) ==
++	    XFRM_USERPOLICY_ACCEPT &&
++	    !skb_dst(skb)->xfrm)
++		return 0;
++
+ 	err = xfrm_decode_session(net, skb, &fl, family);
+ 	if (err < 0)
+ 		return err;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.56.0
 
