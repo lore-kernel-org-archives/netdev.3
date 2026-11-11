@@ -1,49 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794393006;
-	b=FsVMe/LWkTSAMaLvchfHiBOydrniz1Cg/3ifcVvDTyX8dVfxxtUR0nX+nznwXjSOcn4B
-	 4iUoBiWizN57hawQspMLjzWv8ifUyZYQm/p2OBuPdyAO96/6RNzxvfYOLuRrx5c7pF+cP
-	 dmT5D8vJn3OmEQGtz9HbRfO/YmRS6YyGx1xJ2PNrN1HBpN3dhxsvVD1dIGvhmcp1PDJiW
-	 vPPZ3zgC5co0kgf6SdzeCfmDYKZfYuGS+sqEGAGpXhkReCHFOxINO0wLXxVoXFvkXWbuS
-	 3DcpluExO2ZzuquvDUKNtgIThhxYKDgmvVOJq3oIRjxLwxGSCAzePhk7VXSbzQQ6L8A==
+	t=1794393178;
+	b=mv/oWwCMPIebF9Gz34i+ENfjYLj9C74Y19xiUWdXxKjA2U4OkPNVpGOgzN8CFG96MvQ+
+	 IxXpG+36NoOB5G/NflPQo6bHkYnynBU6Ii/kjpfwnF7mlIXma4z1g+r5VdnG5eeSL2tdH
+	 TOM99lngQE+F3UVFvtLOdG0DuRjHjsaqzST3LFA48oRcop63wSeQByjFxaMfvc4bkR7Xn
+	 Sb4dNlyu1JQo8yNQymFFAuBxg9WHimzvr5yvFMbP3T6uWLfWMfenBys63gzQdD6MWfwov
+	 w0QDdV9VIDSfN+AHM3XIPD+yStk6TllM/dgbnyEi6yJ83g6WFuAjEvdluw4qE6SGW/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794393006;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=zqAMTKDTeHhyNUQW2d/fCvS7VzvdhoOnM0Q+QGkmlTo=;
-	b=Z65M7f5EGfXMupwyqIIuO+ULlWa5o7FyQLvSB/Nzqm2dQarR/hE9cpyef2irnsLNtkUM
-	 TeQSlCTcNN/3bHgSpgkJYJlPILv3eMqnS0xuCEYbhSlW4gxyDegr+DWaxKF6KYO+37nR8
-	 sggTOEoPoUKUkXYVA2KMXlCj0WpJaPP/Zf2GI6LlitJVkLvmTc5LKFwVdQG8sFwmSUQKr
-	 OesItkF/yp2DVgWh8U9i91m/ZgoWIQujd/MPPYthRS+vh1WCh9SfagI2Pg+/yOLF0ShvW
-	 qlX7YVjcPewwRwUydZv1Iyh/gbTTuLZmrR6TBEUmxFlTNgP8aYzIXahIbuB1uf9wrDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794393178;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=5LxVGBk0nGoYs31KnbsVJCWarpNoNytCYPFUuR+hl2o=;
+	b=rvqJ8fO56QKQd5UVF3/hOPbd8xYKSkEzzQLrdHMAiWp5sx9rZoBsmh7i0g4+o5tv+tX3
+	 MdAlynVe8HG3lYUPycc3anPy82vnugxLt3z3wNuBM+PU40hO6fHrr5IWjFa/7+2s7Y4Vd
+	 I5Ic6/mhpsCcA9sKOO8gwY9shzKyoQOz4kFnovC4rMIz4GyCXol5e8QUJ50iz+dkq/7CK
+	 gPs7ZWTIM1HK8L3thKIsXPEPCOVlqlMN5ewK99OZrQE8iicqlMsvuwoQuLtBSV0gYyjN8
+	 FizVEkDOhVPT7nOdSne6oibaXdZu64bSj1Kg5rIo7IUpkeMTE8qvjLafbVGKrowpJ8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q+Er4JiL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95864606A326;
-	Wed, 11 Nov 2026 10:30:06 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gfI0vyH7;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF61606A31C;
+	Wed, 11 Nov 2026 10:32:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAF61606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q+Er4JiL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1C41F00A05;
-	Wed, 11 Nov 2026 10:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794393006;
-	bh=zqAMTKDTeHhyNUQW2d/fCvS7VzvdhoOnM0Q+QGkmlTo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Q+Er4JiLAohTaIxmNCZgLfL1lkSd+RMM/69vUgO7pG+DEFwLQtidEwB1RvmLq+UTX
-	 fgQKlf+w85QZxUEB6zaH21JLTb5bLaVIRFYnfGNFBS7iAJ2WD40H4PyJ8STO4/P66w
-	 3WhxGykmJcGnJA3rcufzxrVZh8Rtv/aXoWitCLl75jaabqjIDfaMvRDZn3yR9RmNF6
-	 3nDSrcLQAECQm9ykzHqIIvd3WhkEDinhTzHeXvh6xnN086PdgrWmrmtFHKE4gwQ0i/
-	 WMP5UmRqYw6v/Oe6gX2g46sQ3PQjZ7rg/3Dv2lRaK5WFl05m9K9Fci/v3MPYtxMAFg
-	 8fs5CAUvi4bsA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 21086380044C;
-	Wed, 11 Nov 2026 10:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=gfI0vyH7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=gfI0vyH7pOB8czxqaryCpXcOBP99ohzOKmBD2emZCTRp6Yhy7gZdlmlI5eqc64hgvQ1y55j0ceWfn
+	 HrF4uwLu9EU1fRdVUqJXMdoTgyl8icTLhY64s3LhZsOB/TPRdQy6iwk9O2oDUEJKdvulUsUXFXAxjJ
+	 u72q/41jhoX80ISg=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76af4445671f-d90bc;
+	Wed, 11 Nov 2026 18:32:54 +0800 (CST)
+X-RM-TRANSID:2ee76af4445671f-d90bc
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af44454467-d960e;
+	Wed, 11 Nov 2026 18:32:54 +0800 (CST)
+X-RM-TRANSID:2ee16af44454467-d960e
+From: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	jan.kiszka@siemens.com,
+	diogo.ivo@siemens.com,
+	haokexin@gmail.com,
+	horms@kernel.org,
+	vigneshr@ti.com,
+	m-malladi@ti.com,
+	jacob.e.keller@intel.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net 0/4] net: ti: icssg: Fix device_node handling in prueth_probe()
+Date: Wed, 11 Nov 2026 18:32:51 +0800
+Message-ID: <20261110161000.3143-laixiangwu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
+References: <20261110064118.1138-1-laixiangwu@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,45 +85,23 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/rds: Do not unpin a page after a failed atomic
- pin
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179439300494.851123.16127162374822202712.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 10:30:04 +0000
-References: <20261107041804.64213-1-kylebot@openai.com>
-In-Reply-To: <20261107041804.64213-1-kylebot@openai.com>
-To: Kyle Zeng <kylebot@openai.com>
-Cc: linux-rdma@vger.kernel.org, achender@kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+The netdev patchwork cc_maintainers check reports that some people
+listed by get_maintainer.pl for the files touched by this series
+were not on Cc:
 
-On Fri,  6 Nov 2026 20:18:04 -0800 you wrote:
-> rds_cmsg_atomic() assumes that a non-NULL output from rds_pin_pages()
-> represents a pin that it owns. However, pin_user_pages_fast() can roll
-> back a fast-GUP pin after racing fork() and then fail in the slow path,
-> for example after a concurrent mprotect(PROT_NONE). The output slot can
-> still contain the already-unpinned page.
-> 
-> The common error path calls unpin_user_page() on that stale pointer.
-> This can consume another subsystem's pin and allow the page to be freed
-> while it is still in use. A local unprivileged reproducer triggers a
-> KASAN use-after-free write through an io_uring registered buffer.
-> 
-> [...]
+- Vignesh Raghavendra <vigneshr@ti.com> (original contributor of
+  the ICSSG driver code this series fixes)
+- Meghana Malladi <m-malladi@ti.com>
+- Jacob Keller <jacob.e.keller@intel.com>
 
-Here is the summary with links:
-  - [net,v2] net/rds: Do not unpin a page after a failed atomic pin
-    https://git.kernel.org/netdev/net/c/8d5ce4751fad
+Adding them here for visibility. They will be included directly in
+the Cc list of any future revision of the series. No action is
+required from them.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Best regards,
+Xiangwu Lai
 
 
