@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794428391;
-	b=vfhBTo2dSai3AIGHQEtfMZLz2QWl6V3HUKKiclK15eFA2gEDKOUNrxMYJOMOfQqFehbN
-	 +2kRNqw+B9EfgSHH9NMFgmxN5jy6OyUao9IPRTvQdd4l+wfN1TNw1Rw4ci0/Es0W5L63g
-	 gt+QMD0CDjx/VYaon7ZM/BmPffBLOzQLDJ3Cg4OYMhTZSCR5poWF7hLikHWjFVSS52T4f
-	 CMwRH1zhl157S5MAPVq7lFPlE/LH1tSo6jGHg3OR8Qoco2YrksNq3osceXFM/JhnBYiIN
-	 1gPoGxJ1QIZfmLL7m0cH0rFRYDJo5AdpL8y5o25eD1BPBwN9zpOze/xMNRlFcdXF3aQ==
+	t=1794428393;
+	b=17+8/R7hiN4zRe8NKgQL8k+xLwIjnZ8ZJXaV8PMP+k1Yusbsmzy8VLJtdIKxI0yyNQHu
+	 grN7GflTN5P1C+8FZG0k1jqymYaXwYUUyL0a3COodJycqpTUVqzWnuBvBBWUKsnO+0O/J
+	 Lu5hndljUX3UuZzFPg/JzbinbyI5VnsWkZv75F2O0gmKlI5a65qA2k0WA/mN0EtmDZpbd
+	 +Ts1bmfL8HG6MX8wBy0Vvh2wEvcx5q0VLScy1fHOz1nYiUMGYN5FaNJ83li3NlyQRiSiI
+	 +Zxc99SwhSDRQheQ7xGEiC/w9JOMEI+d6nqmmtUToD15Rf8f/fM8a9f0FqKnvS4/WZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794428391;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794428393;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=a+gesJPSmmndHlH+Ac7ljKzTorF0pDpjV1q4cg3H9YQ=;
-	b=Lm8J3gnfqAH9G3+KYrJvsB6PLr9Y3nlPY23vQPz15od9zsKtx2fKfKwJuV9SNfziUf0k
-	 zXjMlbIiZfy3ny0K21j2qO+5Fjef20THfhAvKrtCxHYP38H9B5RZB5utNiDZU4GbT8m+G
-	 yqA50WzVJ40CNcyVpFSPAwMiXoG/kDsd3HFlj7PDxsI/uaN1S4oQvA4TXemAdVqdfWnAK
-	 sN87LsGgvHwWXJsNFmSXyYdL2IxJBlRU9moS2uqYXch6AFsBcXdm0qGShaxq/7vRcHuJZ
-	 CaNinRqQxxbrpgcJotetBm75PI+VthBeD4BTUg0xS5BaOVwb2pKzBxihuK+5dzrsK4Q==
+	bh=f8CuFtmyJf54ODlJeIy52UMNjkpCBp9aiQqZGqfLdfs=;
+	b=n8Gu6y9IfkSk+iqb/Lb+FfphZIOjbvI6Mu4OcJ6uHFpjr1KIT4dgYsLcS0eIZtF779I8
+	 GXZy9JNx0LFMrCj1Ca9wKufT6s4eZJYWvygQu36/kvr3CHKC1RUREPvGO8rpUW+j/7CFu
+	 gu7R5yxLuEtJdWD1vmLVxedG/Y/4vMbglh4tzRaqR7C8tzmXDxk9lJfU/pms14gNkSRFc
+	 fUgXs15WkIR26SuFdD66a9KzvBIYuh4W5b3OK1Pd7U/nDv3URd2iTtN13zOPweNGMfrkg
+	 FlgLDDVyUpFi8Wc/0X3rgw4Ia7g6UMbKa4xfkY0N1fH6HUpxvMBdOfZXdW0t857npWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="RG/EE9qj";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="EF6/DFVJ";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E83A606A31C;
-	Wed, 11 Nov 2026 20:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B308D606A891;
+	Wed, 11 Nov 2026 20:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RG/EE9qj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6071F00A05;
-	Wed, 11 Nov 2026 20:19:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EF6/DFVJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50551F00A05;
+	Wed, 11 Nov 2026 20:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794428391;
-	bh=a+gesJPSmmndHlH+Ac7ljKzTorF0pDpjV1q4cg3H9YQ=;
+	s=k20260515; t=1794428393;
+	bh=f8CuFtmyJf54ODlJeIy52UMNjkpCBp9aiQqZGqfLdfs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RG/EE9qj/CkRU/Ooo+VZYRdY/UviBErQlWrHy47qg13eklvnei9W4t0Jz2yXVNFaX
-	 RKe0gHWTi4qXDatxp8Rms51qY+uiLGIKxQLxA/JH7aplbLyWC/zifK0dEQXFEN32/g
-	 MhcFoZxK0c5Vw2ZtLFLCMur09iX1DZX0lEsipxbgY6oETH3HQXkory9jEr8rwywOTu
-	 hvwCE8tULwSYWFbDkAxapbdYo0lKv2jOaLQXblTQf+49I2ZUmn1JdnkXQd4U78/8Fa
-	 m4IrOJOhokCSmxEnUgWu+0/x476zrt9hB8yuzHNS3sYk2lGrRyNRjovxUknNSHecsk
-	 WaZP0MD/dsAhw==
-Subject: Re: [PATCH net-next v3 2/4] ipv6: take fib6_sernum from a sequence
- shared by all netns
+	b=EF6/DFVJvAHgtkuslUXsILHAGIMrwhUa+jHwuPgI2lFlmQ+w8J50wt0agxK18ixAy
+	 7L2WJ/0q+oM3JjWAO/e6NqpZ9gtygDkzvbiLCx1/wETuUN5Ik6ChJTYMxQkQPIZovW
+	 sfqpBfSa/To3OtMukbgd2Qs8erC/UygbXzRpqw8+ANWD5pZ8QnZKDsJxP2hzG5Ov1C
+	 +okreTDi6WV2kzS4gdGsY6PZ5+bEbH8kozO0qrcqB34Jo/51Os2WDe+ZJEYd1o/PBE
+	 lgkTMaBm8GSuGgbqwUz75XGnL66XGAipqHB0AFtZPlCluvLKKrwJcyaEpHGK6JCwpJ
+	 w/boqCfsWAMEw==
+Subject: Re: [PATCH net-next v3 4/4] net: remove rcu_barrier() from
+ __dev_change_net_namespace()
 From: netdev-bot+sashiko@kernel.org
 To: qiliang.yuan@linux.dev
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  razor@blackwall.org, kuniyu@google.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Wed, 11 Nov 2026 20:19:50 +0000
-Message-ID: <179442839004.2199510.6039710822182786717@kernel.org>
-In-Reply-To: <20261109-bug-net-netns-move-rcu-barrier-v3-2-6084b02610b3@linux.dev>
-References: <20261109-bug-net-netns-move-rcu-barrier-v3-2-6084b02610b3@linux.dev>
+Date: Wed, 11 Nov 2026 20:19:52 +0000
+Message-ID: <179442839245.2199510.16642149560557233526@kernel.org>
+In-Reply-To: <20261109-bug-net-netns-move-rcu-barrier-v3-4-6084b02610b3@linux.dev>
+References: <20261109-bug-net-netns-move-rcu-barrier-v3-4-6084b02610b3@linux.dev>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -76,112 +76,73 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
+- [High] net: UAF in rt6_remove_exception() after
+  __dev_change_net_namespace()
 
 --
 
-ipv6: take fib6_sernum from a sequence shared by all netns
-
-This patch makes fib6_new_sernum() take its values from one global atomic
-sequence shared by all netns, which only hands out values from 2 up. The
-goal is that a per-cpu nexthop route cached in one netns cannot match the
-fib6_sernum of another netns after its device moves. Every netns still
-starts its fib6_sernum at 1.
-
-> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-> index e1d49897d6ab0..827051cbf7482 100644
-> --- a/net/ipv6/ip6_fib.c
-> +++ b/net/ipv6/ip6_fib.c
-> @@ -123,13 +123,23 @@ static void fib6_walkers_skip_rt(struct net *net, struct fib6_info *rt)
->  	fib6_walkers_replace_leaf(net, rt, next);
->  }
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -13044,7 +13044,6 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
+>  	 * the device is just moving and can keep their slaves up.
+>  	 */
+>  	call_netdevice_notifiers(NETDEV_UNREGISTER, dev);
+> -	rcu_barrier();
 >  
-> +/*
-> + * Draw fib6_sernum bumps from one sequence shared by all netns, so that a
-> + * route cached against one netns does not match the sernum of another one,
-> + * e.g. after its device moved, until the sequence wraps. Every netns starts
-> + * at 1 and the sequence only hands out values from 2 up: 0 means no sernum
-> + * to check.
-> + */
-> +static atomic_t fib6_sernum_seq = ATOMIC_INIT(1);
-> +
->  static int fib6_new_sernum(struct net *net)
->  {
-> -	int new, old = atomic_read(&net->ipv6.fib6_sernum);
-> +	int new, old = atomic_read(&fib6_sernum_seq);
+>  	new_nsid = peernet2id_alloc(dev_net(dev), net, GFP_KERNEL);
 >  
->  	do {
-> -		new = old < INT_MAX ? old + 1 : 1;
-> -	} while (!atomic_try_cmpxchg(&net->ipv6.fib6_sernum, &old, new));
-> +		new = old < INT_MAX ? old + 1 : 2;
-> +	} while (!atomic_try_cmpxchg(&fib6_sernum_seq, &old, new));
-> +	atomic_set(&net->ipv6.fib6_sernum, new);
->  
->  	return new;
->  }
+>
 
 [Severity: High]
-Is the value 1 still shared by every netns after this change?
+The commit message says the IPv6 exceptions of a nexthop that leaves a
+group were already flushed when it left, but I don't think that holds.
+When remove_nexthop_from_groups() drops a single IPv6 nexthop from a
+multi-member group, nh_rt_cache_flush() is called with replaced_nh ==
+nh. It bumps fib6_sernum through rt_genid_bump_ipv6() and then returns
+early on !replaced_nh->is_group, so fib6_nh_release_dsts() is never
+called. Any rt6_ex created through a route using the group stays in
+nh->nh_info->fib6_nh.rt6i_exception_bucket until nexthop_free_rcu()
+runs.
 
-inet6_net_init() in net/ipv6/af_inet6.c still does:
+That nexthop_free_rcu() is not always queued directly from the
+NETDEV_UNREGISTER handler. If nh is also used directly by another IPv6
+route, __remove_nexthop_fib() deletes that fib6_info. Its
+fib6_purge_rt() only flushes exceptions created from itself, and the
+reference on nh is only dropped by nexthop_put() in
+fib6_info_destroy_rcu(). nexthop_free_rcu() is therefore queued from
+inside an RCU callback. Before this patch, the rcu_barrier() here plus
+the one in netdev_run_todo() drained that two-stage chain before the
+old netns could go on with its pernet exit handlers.
 
-    atomic_set(&net->ipv6.fib6_sernum, 1);
+Now consider dev being moved out of a netns that is about to exit, or
+default_device_exit_net() moving it back to init_net from
+default_device_exit_batch(). The moved device is not on the old
+netns's todo list, so netdev_run_todo() issues a single rcu_barrier(),
+which only runs fib6_info_destroy_rcu() and queues nexthop_free_rcu().
+netdev_wait_allrefs_any() then sees the loopback refcount already at 1
+and returns without another barrier. ops_undo_list() then runs
+fib6_net_exit(), freeing net->ipv6.rt6_stats, and ip6_route_net_exit(),
+calling dst_entries_destroy() on net->ipv6.ip6_dst_ops, both before
+the final rcu_barrier() in cleanup_net().
 
-The shared sequence never hands out 1. So a netns that has never changed
-its fib6 tree stays at 1, the same value every other fresh netns starts
-with.
+When nexthop_free_rcu() finally runs, fib6_nh_release() ->
+fib6_nh_release_dsts() -> fib6_nh_flush_exceptions() ->
+rt6_remove_exception() decrements net->ipv6.rt6_stats->fib_rt_cache in
+freed memory, and dst_release() reaches dst_entries_add() on the
+destroyed pcpuc_entries counter. Nothing beyond CAP_NET_ADMIN in a
+user-owned netns is needed to set this up with RTM_NEWNEXTHOP,
+RTM_NEWROUTE and RTM_NEWLINK.
 
-The commit message says "Inserting a route bumps fib6_sernum, so the
-routes a netns caches carry values drawn from the sequence". Does that
-hold for routes cached while the insertion is still in progress?
-fib6_add() publishes the route before it bumps the sernum:
+Chains with more stages, such as a one-member group or two members of
+the same group on the moved device, look like they can outlast even
+the two barriers the old code had. Removing this barrier makes the
+simple case reachable as well.
 
-fib6_add()
-  fib6_add_rt2node_nh() / fib6_add_rt2node()
-    rcu_assign_pointer(*ins, rt);
-    inet6_rt_notify(RTM_NEWROUTE, rt, info, nlflags);
-  fib6_purge_rt() for each entry on purge_list
-  __fib6_update_sernum_upto_root(rt, fib6_new_sernum(info->nl_net));
-
-In that window, a concurrent RCU-only lookup in netns A can find the new
-nexthop route and go through
-ip6_pol_route()->rt6_make_pcpu_route()->ip6_rt_pcpu_alloc(), which does:
-
-    if (f6i->nh)
-        pcpu_rt->sernum = rt_genid_ipv6(dev_net(dev));
-
-If this is the first fib6 change in A, the cached value is 1.
-rt6_get_cookie() then gives that value to a socket that connects at that
-moment.
-
-Once the bump happens the dst is invalid in A. But suppose the socket
-does not send until the device has moved to a netns B that has never
-changed its fib6 tree. rt6_is_valid() then evaluates this as 1 == 1:
-
-    return rt6->sernum == rt_genid_ipv6(dev_net(rt6->dst.dev));
-
-and ip6_dst_check() accepts the stale dst. Could the socket in A then
-keep sending through B's device until nexthop_free_rcu() releases the
-per-cpu routes? None of this needs the sequence to wrap.
-
-Both preconditions look reachable:
-
-In A, the nexthop device only needs IFF_UP and IPv6 enabled. addrconf
-adds no routes while the link is not ready (for example a veth with
-carrier off), or for IFF_NO_ADDRCONF devices.
-
-In B, disable_ipv6 makes addrconf_notify() stop before it adds any
-route. An IPv6-disabled container netns therefore stays at sernum 1
-for good.
-
-The later patch in this series, "net: remove rcu_barrier() from
-__dev_change_net_namespace()", does not close this window and may make
-it longer. Nothing later in the series changes the initial value or the
-order of publishing and bumping.
-
-Would it make sense to also seed each netns's initial fib6_sernum from
-fib6_sernum_seq in inet6_net_init()? Alternatively, could the sernum be
-bumped before the route becomes visible to readers?
+Should the leaving nexthop's exceptions be flushed explicitly in
+remove_nexthop_from_groups() or nh_rt_cache_flush(), so that the claim
+in the commit message actually holds? Or would you rather keep the
+barrier until the netns exit ordering is sorted out?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-bug-net-netns-move-rcu-barrier-v3-0-6084b02610b3%40linux.dev
