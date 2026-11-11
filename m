@@ -1,67 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794411335;
-	b=D1iWLPY5WvQ1h5ydKgEgY+reasmNVi21KqDHci7m1MqLmtTehrpkbmssQSGI6D3rCD2x
-	 1XK+46ADyNmuYxs5hyG1lyWDPXLPexSjg7nA6QL6zthTu3uEE0FZKIZRviaSn7VEXDjYB
-	 OY6TQqqsjBqel0tGjDfO83hVG+LS1JOMLaLmr6zMVjyOn/N3jCMuH7QemkmU4EmRFJMHw
-	 QsIhQTJWplIH0neKpfSiuMcsHYgYYMeALqtJfgaowLF2llRGulEY+LsiABjy9mGwynPbS
-	 0JXK82ALHFSzVmQPIDharKVCvnYockm4Rv1bV1onKO9gcr+7W4ysLIq6Di5AoR5BkEg==
+	t=1794411465;
+	b=0ee/+2I+z7Uej74CXNUqK0bNBRxiR3NWrEpBcBeN86qLI8PSAMItV8d1p37C3fY0Kl7Q
+	 84hRZAVhRONyk1m/WopkOi+AJvKDsH7E+0GB4wcSmv1teL31waNRrsPCQZA0PDhroqTOl
+	 ciSpfu/cA2kP5GXOY+635NvcVF3lRIRsglOOpUm+AtTnwY/93m8sPARi6bXoXh9eh8QMO
+	 49koe2jwG8AZb1erlRrLYWe7WtgYFVCKOyo7nuIx8BYDq8Fk8ySAb7xY8PiQbIA9QSV9s
+	 nFjS5+JWBLGre8siVj2lyCmoM1aZJ6mAmYF3u0GZwleIsC/wQja/582wy9F3Lyfvkbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794411335;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=eyAJwUXldOFiID1lt8LpzD8hOYLOWfNlSGMR02veMHU=;
-	b=rOdqp5g93O4msIB5pggw0L5fUrBpywr6lk61XUTyARHJHPji8vFxS4ZCmi5sDko4i6KU
-	 bDqHQ5KizLY1Opnp2lF4I2ufdx0bFPVcxdLf4dqLrImSixEtsJk9/IMK93LYzSENAmX2k
-	 a4slx9uZEO5he3vJlxbzxjgsZuYsaNpgYs6h4JldeYeyGe2s8Huz6CU8RKcFvXPQIA3iN
-	 Ky+ubabNIm3DTmCECcTSozu6sFmC4Q1JTGsU+UJbnkqoHX8xY9mo6mw+2A1vUZ6BXLq/T
-	 vWJuy6p6y3O6jZihUG3nzw4+ya54aNAwz+RvgTujFZ4fcRHxJqy21cC1dCLkYECLe0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794411465;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	b=kGg5GwkATBoi5zSPGRpVfutqMAcwl9SjINuERm8xIjnjyA7sVnSGfvoyUZ+o9HhuANzA
+	 ExEM7FdS/Nj9f4U6EHPGbI6eKWwrQTdRtr6qVtz6l05zm05rctCDuihi7Mi+OR6ZmG70O
+	 zYwz0ZnCvvUWDQyErwRnNtVY3+N51PVvK+TxW7buQqqtec4pUM4PqnTAJUnwNBj0Wm1Zp
+	 vGSOHINXoIpesEEsGlLqIv7sh1dQr50xEfBJJ7Zb6uDm7jq955YywDdmdKthrZLoLrzml
+	 bHiwNNi4dOC5SlIsxu5F3xz8gcK5GZO41xtCJP/vxpBcd21UUk7I4toZBDaMgh1B+xQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RnHKV9WW;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SW4KK3W9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8FF60A260C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:35:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A8FF60A260C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40549606A339;
+	Wed, 11 Nov 2026 15:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RnHKV9WW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794411334;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eyAJwUXldOFiID1lt8LpzD8hOYLOWfNlSGMR02veMHU=;
-	b=RnHKV9WWj1Fa7ts0CRzG2MiQvsrBkwMjvQc3cv8ITSrekf5FbE5RqiujKCtlOAXEdYI+hS
-	cBlqleS8TcJTGio9wTbTe1xtozIWNGTSp8ZYHOKgwiM8bARaBZxB/dReV8owWLInkhJuPH
-	AJ5AEz8a4Aue/qsbCi7AEQAz+a9RRH4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-o0S3b9heP5iY-9-aCziosQ-1; Wed,
- 11 Nov 2026 10:35:27 -0500
-X-MC-Unique: o0S3b9heP5iY-9-aCziosQ-1
-X-Mimecast-MFC-AGG-ID: o0S3b9heP5iY-9-aCziosQ_1794411325
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D7A418007F5;
-	Wed, 11 Nov 2026 15:35:22 +0000 (UTC)
-Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 105FD180054B;
-	Wed, 11 Nov 2026 15:35:17 +0000 (UTC)
-Message-ID: <88ed35ab-0e35-44b7-a74a-fe8db58755b9@redhat.com>
-Date: Wed, 11 Nov 2026 16:35:16 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SW4KK3W9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6871F00A06;
+	Wed, 11 Nov 2026 15:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794411464;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SW4KK3W9O6e+ReIFSLAGBYlbXrw5R51EnC+AQwBArU7s4WtOgWrWUnVyi1S+zR9NN
+	 XFv0p2FpPVTBo2UopI01mc42Z5CTHQjZ1DP+3RsOv1Dh2uF8GHwgOK/JMKzAPijWIT
+	 tO5Us36UZqx1o+lgOK14GbpBQPmfmvlVEoruaklEp75PrTWHLAxxHL2ncKngzatl7p
+	 XHDC40wrER6E6Z0O2Il5GkNcfxG7eYKyRn+iAuY4fSQBy3gySU6xk/lxqou2WAZZ2E
+	 rqYDQefb8nuLZ1GjB6h7s8dwRYc58rlsMlhdzq0jf8ewGhoBDsnAuIoGMof4gZTwRi
+	 ztQ2gNI6pF2ig==
+From: netdev-bot+sinfo@kernel.org
+To: Tristan Madani <tristmd@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Tristan Madani <tristan@talencesecurity.com>
+Subject: Re: [PATCH net] net/sched: cls_flow: pin file with get_file_rcu
+ before reading f_cred
+Date: Wed, 11 Nov 2026 15:37:43 +0000
+Message-ID: <179441146372.2168702.5462633106767625518@kernel.org>
+In-Reply-To: <20261111153106.580776-1-tristmd@gmail.com>
+References: <20261111153106.580776-1-tristmd@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,53 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v15 01/13] dpll: omit pin phase attributes the
- driver has no value for
-To: Ali Rouhi <arouhi@sitime.com>, "jiri@resnulli.us" <jiri@resnulli.us>
-Cc: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
- "arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "cjubran@nvidia.com" <cjubran@nvidia.com>,
- "Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>,
- "prabhakar.mahadev-lad.rj@bp.renesas.com"
- <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261110202607.55744-1-arouhi@sitime.com>
- <20261110202607.55744-2-arouhi@sitime.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20261110202607.55744-2-arouhi@sitime.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 11/10/26 21:26, Ali Rouhi wrote:
-> From: Oleg Zadorozhnyi<Oleg.Zadorozhnyi@devoxsoftware.com>
-> 
-> Let phase_offset_get and phase_adjust_get return -ENODATA for a pin the
-> driver has no value for, and leave DPLL_A_PIN_PHASE_OFFSET and
-> DPLL_A_PIN_PHASE_ADJUST out of the message in that case, as
-> dpll_msg_add_ffo() already does for the fractional frequency offset.
-> Today any error from either callback fails the whole pin dump.
-> 
-> A driver that measures the phase offset only on the input its PLL
-> tracks, or whose part holds a delay larger than the s32 the adjust
-> attribute carries, has no value to report for the pin, and a zero
-> cannot be told from a measurement.  A phase adjust request on such a
-> pin is passed to the driver without the comparison against the old
-> value, so the delay can still be set or cleared.
-> 
-> Signed-off-by: Oleg Zadorozhnyi<Oleg.Zadorozhnyi@devoxsoftware.com>
-> Signed-off-by: Ali Rouhi<arouhi@sitime.com>
-> ---
->   drivers/dpll/dpll_netlink.c | 14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
+Hi!
 
-Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by LLM and not proven at runtime). If it was triggered
+   please include the symptoms, like the stack trace or kernel messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
