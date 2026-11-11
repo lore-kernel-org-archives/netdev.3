@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794355373;
-	b=RWbsN+LM3h8FObgEsoS8wym29y2q+3KesqBxLR3gIMQENSyYac5WbbcMQ1hxwfRHCrYV
-	 hZu+jacmPucYl2tj7pVuKWbPj82sIV3yZcVmkXflk3qU7pHpU/UlxDFhaFv1UGzEAw5uX
-	 iqENMNveNmiWi7nwMsks1yP598EJm++JdSVV2rMpzfU2KZ4wZ0AnhzQ6s6J6bwm3lHzB7
-	 BxGqaI8TPnK997kXvI7p2btmUM+a9rFoDsGHyHNf/yDb5H6KesYAkRbnlPZseeKZLziK4
-	 W/uHrjngiPJQxYyqqLDBAS/FZrcC7BJa2Xqd+mO+B+XQsJveMEo8nOrgBKPp8kzBIOw==
+	t=1794355374;
+	b=1vCWLSqSoz4nPdMYet870QW699Pi0mG5hGXuEfw6ERKVMD3clAvgN8hVbdQIqpJpJzn6
+	 vVxCf0FFT4BE8O2p/yeaerIb0R/F1i1RrSvo1Bv344oH45+/zDyUndiba/wKeh/tnLbVj
+	 XhlO8S47ycnmneYkRWBfY4smIeYPyE+RFB7NNQlh0cWiBa6XyfN2z8QNLAC7xC3QDCeFd
+	 tiNJrJazBuUPKJ8jozDOSat0E/aX8zKHIo4C8gkt1HOeNySMoiiasZWtsBVf4F2F9sRtu
+	 Xa4Ob+RaUob2PSgFfTEq8rzfpwy/pZtKNA7junvN2P8Nek2pExDWB/EE8ZFWidlfI5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794355373;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794355374;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
 	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=3rWM8rZ/iDO2E62pLMbIiggyXTReyyu2ewIC7I+Pnek=;
-	b=CwYknYtDzNYPLYVycwQeh41qEA9BHLWPeG6nkHFC45FSxk1IjgO2AxucDrWWNtTohtQJ
-	 20tKR8wCx27R/JxPe8KnDchVmSKCKvXI9VPaOIV1NkQXTZpi+1DX0gx4sDyg8puq28IWU
-	 vqr9aczWB0IcQshQF4ZEmOQwP/iIM5NN+vABeuIjtjEICX8GVg+QWeA3KoxHcZM/WFcP1
-	 Hsj9ChLmIaAg0PQu7zzetLSWyuQ3RwWLa/uJFle3IqUq1Ot4upXARHQfhPigpNPVOSBEa
-	 B2HhOVKWFRfeSKugBg2Y4vNFvVitx8KLMt2WAFJsEWG80qMUaXsKxQSeol0fjN2kHnA==
+	bh=FRK1W3aFdaRvVolL1WlLwR0kT5ZytF8wiI17WeHS+W4=;
+	b=KaMqK1U4ajOXMTZkMaALfo99Ghs4IvCZ4O/En6AAN3eZR9UkBcYy9z4In4tfWMTwP5qY
+	 /f5YAj61TXxGGilCxA+sacOLdKh6NEmGZP1AwaAVFqklwxWnO8kXhmawCLuNY1EO7LFHj
+	 HK35f2dcAq12W8InJ8EKSKCAW+lQTqBbpXKqJYl3DlNwQMUrExWd6y5xcjHn1fLSzoTKC
+	 o53gSX2U8rh9ps1zwfx3aCotqffBXWs0SSZRERPFUwKR/3k1oxdgUM8FUEKljy8RLVMt9
+	 vu3tFCsVXn2rd1Bjw2QmytWbHEw9IboWegaXRdDHKcFTADiIxpYTI9tckrAtTL88rpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rt1Rm0cb;
-	arc=none smtp.remote-ip=74.125.229.9
-Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EDCQfEMB;
+	arc=none smtp.remote-ip=74.125.229.4
+Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BF7606A31C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:02:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06BF7606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0E6606A331
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:02:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B0E6606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rt1Rm0cb
-Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-35eaf84cc66so2419675eec.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:02:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EDCQfEMB
+Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-370231dbf90so1405664eec.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 16:02:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794355372; x=1794960172; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794355373; x=1794960173; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3rWM8rZ/iDO2E62pLMbIiggyXTReyyu2ewIC7I+Pnek=;
-        b=rt1Rm0cb5QSSu2k8q1Tpzt5K1Pp8s/+HiCYvh49QjA1ZJVrNW90fVLvz97uBalqkmc
-         IYyUbtU8Op9p4S0JRI/ryAO80a2AQ++6A+2lSzS8660lv9DNvjSTOO3baKUWKYXTeftI
-         VbBzlXdqJK6xTTIGmg/MP6fZYH0uM5tGvydkRi5HOTNtSo20pc3RMoTl/eY9f7ttapKw
-         naFj+fycaNDlfP+zgUw5YghlS0087zwB6uYZPTroNPSw9g9wlTN0VuQikXwKK3xRiVaT
-         w0e8VmTmFAdudoJbSSMQ03ixdKVgvRl98w9Jk7DiDIqZhvicpZbZaBE1iwzWOn+QSG2n
-         Hgkg==
+        bh=FRK1W3aFdaRvVolL1WlLwR0kT5ZytF8wiI17WeHS+W4=;
+        b=EDCQfEMBxPwR4HAqljsckLkAadHJFm9I1zOW/aDMaRA/2MU+ieBUWCOicvCOrL6efv
+         oIbaXXJjWCcFMDiplo1StCbv23019yU95eLX1wC5grAINtQgrvjoeRiKHHHX8abKeQ/P
+         as6BXYy7Lajazr//VwwN+Q3hoJSnIN9SY6UFmR1FQt8qAvSvGWAqLqnFNdeAwb+xcugJ
+         qV17E76CiuheeCABe7dXtwGmVzIWOUHP6cmLtKbQreROduKI7Wrvirj6qnR7+AhQNcha
+         aharwLr2ocYtvyflcabwW49mYxDSRKxVmUSzKGwNpI3neT6b4A0KPayL7mwpcEwMftyY
+         +VwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794355372; x=1794960172;
+        d=1e100.net; s=20260707; t=1794355373; x=1794960173;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3rWM8rZ/iDO2E62pLMbIiggyXTReyyu2ewIC7I+Pnek=;
-        b=Z1niPvQ9P477P6PdxS5RlUe4KNJeRflNbKFyxr/pCobIZRqyBGt9nojntZRerRMvXy
-         NyOkbyqWD9VeT7xXd/Ngu0XE8mqlskDcNAS2MUfm8XmHTi+2Rs7gFksV4bc+kKC7Qhci
-         GKfzy7dNRcRBYLZgdMeAXaDk4vyfIA1HT5nSaLKNbe9+gcw2kaTQzriCBOiH4SKY/edz
-         lAAh1T2A6sDPh8dz6mQhkCr8s7coh9KGECH0Xjl9MvFmbPk2SmRs9qriWGvOdRErf5Fj
-         KT+ktCziWi+0hsHtY32GXWUM3OeYJe7+Uwpu2+H3I7GZaLjhTexUfnKsirDxU/CAcyLB
-         BkdA==
-X-Gm-Message-State: APuU4Z+SMsjsBy7eic6mDbi39xFt2oZuKfx99N5llx7h4rsPOThk5fhc
-	WOhq9x687ta2kEMhzAaqw2D5LwSs4O76Wm9bzrMUf5zhAo+leaZfPBJBkllUo1seIlU=
-X-Gm-Gg: AYBFou0nWcYQXtBPW74sNDSroEZPlwxCvPd23pet/a2aG5aRD9uXpogVqqGlvWrVU+M
-	/B5h+v/mxfKhlXRUBgoItBUkMPhb1Tslbik1qbsdLuFhD+Jri6SdIQzDU58Xl65U6YA/ESa9fD/
-	wSkLhA6nV3MEdyOq33vIi56iNTfN7TCS4VewsxGInm1eerntq9ehZ1RE7ABoMGuEhfufwn9F6yz
-	Nc6WcS4w4w8xYT7q96LPMj5UEHh8Lo3pPe69kdv6k3BJzGVEYMbwX0Ua1OneyD5Is+PkSFAaZyQ
-	idtE/vAkq6KFy/8Vy92Vbt3yzZI/TQrUHqpj+N4a+dykGhPSaVRC26v+AKwxDOmAK3eOcXJHsg7
-	vYn8w/BndAfJDrPl9ZVq1NryD/wN+h8OhzCwAiujTJbOVlbRu+WrxsLZoh7s84bUPCYfUHKVtyF
-	EltK44y4snA3ko27eZ+DL2sC+AOYJZkz9d6LWn8DQ+w813uzWeLyTUr+gT4CCcIbMNLYkknrdHG
-	FYnBA+SMd9D815vuSIkDIbdXH8+n88ymL3UhxzCw8WomMVVeh1Y2WxkYvkIOdldljJuhjKtNiI8
-	rtnWnyXAqzH+9NLJy2wY9yA=
-X-Received: by 2002:a05:7301:2329:b0:358:3426:d601 with SMTP id 5a478bee46e88-3768366a41amr1096875eec.2.1794355371446;
-        Tue, 10 Nov 2026 16:02:51 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:6e::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfe07dsm10508576eec.20.2026.11.10.16.02.50
+        bh=FRK1W3aFdaRvVolL1WlLwR0kT5ZytF8wiI17WeHS+W4=;
+        b=MWjJX22uIv6SozWP7EH7NAV7d+hd43FrJFLkB4AQngmulR0L8XRfx3z+ztemDHixZq
+         yfoIQ8nt7kOqgBnLLfLs12fBMdmvjv+S0IF12OEMOWtSoUJr4OjgYP3OwD6qixwYyBu1
+         SIDCvBDqhraOZ8wGqaFIzdBz1V7UeapO5puKNBTgJwauKff9q6sdryrtP/eRGvzqndkU
+         gRZcFdVwEW/q0ks9eOuoBLpHV1faww0aYjUrLe+vtdSRihPsT81B3uMI0FKdkx2lSfX8
+         FaPXKsnCuF+qnlox6PIEi7SbH9G6lCYQ+3hmLtbYq0koUZeREvgt625goEczUg4Lu4bT
+         4SDw==
+X-Gm-Message-State: APuU4Z+nVTUqCwZJUlj5KP17Sb9sFxxrN51iVYU92B1WzX4iKyJABjAd
+	TNTh8+nLkFPUxBG1qM15RLcWNyQdPYR/UXbJMsKP+8yszCDuBDBuAYg18Iw3nkaKc3I=
+X-Gm-Gg: AYBFou2oaNFf0vj7JqZ+DcRmpVhJlP5Czk7rF5n0O0bQ2vGQ6TdQul0PzlE7WnVOIJa
+	BaHk64nisZIeRwDL6/oKJWw65YfYB+D+8kQr4UJwUeAoL+eVm73KXmKf87Irq+ear3WhqlQKndi
+	l834MsfgfARsk53D4aNZ2F5krAD/amD/iz/5UfsYifJsIrBcjMtDfD+JCX6SZyH/4BR4OGcqRFJ
+	lGf5SXvXGVH04sp7ONbTLSxNfaA3HkqCdcBKvcDZIgvQ/iWgaROD/qXfv4j2UpBor/2GzJrtFHZ
+	DRV9RXITzwjyVWbmuuK2ItsLHeRwcrAxmEUsIJQVTRYF+sR7itSKCkIYwf920gUcjIwuVPzo1tr
+	I7gygZvmUdeweF3kVGq/Q/V3V7wShHpRZHc3HBnKNOogcoQOQ4C/JxZ8TxcZOWSb7wY9zr/ngAW
+	cV+2EhWMMN5rNlqQ5dB3JdH9+RQH4ABM88vKyr58uBPegQYiqFPbRHAWYZHDkwytfK8V+SHoTav
+	VQr9Ftsqw5JDiWrSqX9/MRX2zS+FRW5O2xcNF0LIjLUGxbJFRa947/seu/+Re1lcpJtbZ8FN7hm
+	wK5OwldgqotIYIRtRnutR3U=
+X-Received: by 2002:a05:701b:454c:10b0:159:2c6d:fcc3 with SMTP id a92af1059eb24-1b3c034b3e4mr653201c88.33.1794355372521;
+        Tue, 10 Nov 2026 16:02:52 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:74::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11150sm14343401c88.5.2026.11.10.16.02.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 16:02:51 -0800 (PST)
+        Tue, 10 Nov 2026 16:02:52 -0800 (PST)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -87,9 +87,9 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
-Subject: [PATCH net-next v4 3/4] selftests: drv-net: add a kperf runner
-Date: Tue, 10 Nov 2026 16:02:45 -0800
-Message-ID: <20261111000246.962871-4-sdf@fomichev.me>
+Subject: [PATCH net-next v4 4/4] selftests: drv-net: measure devmem performance with kperf
+Date: Tue, 10 Nov 2026 16:02:46 -0800
+Message-ID: <20261111000246.962871-5-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261111000246.962871-1-sdf@fomichev.me>
 References: <20261111000246.962871-1-sdf@fomichev.me>
@@ -105,230 +105,146 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a helper to manage kperf servers, run the client, and return the
-aggregate throughput of both ends. Use a random control port and a unique
-PID file per server, as the hosts may share /tmp, and report server cleanup
-failures. kperf-server --kill waits for the sessions of a server to exit,
-as they may still be releasing devmem and RX steering, which the next test
-needs. A server which can log does so to a file next to its PID file, and
-the end of both logs is printed when the client fails, as the client can
-only tell that a server went away.
+Add a separate udmabuf-backed devmem performance test using KperfRunner.
+Keep correctness cases in drivers/net/hw. Skip the test when kperf or
+/dev/udmabuf is missing, and fail it when the kperf run fails.
+
+Example metric output:
+
+  # # ktap-metric-json: {"goal":"higher","name":"throughput","value":389.127}
 
 Reviewed-by: Björn Töpel <bjorn@kernel.org>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- .../selftests/drivers/net/lib/py/__init__.py  |   4 +-
- .../selftests/drivers/net/lib/py/kperf.py     | 157 ++++++++++++++++++
- .../drivers/net/perf/lib/py/__init__.py       |   6 +-
- 3 files changed, 164 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/lib/py/kperf.py
+ .../selftests/drivers/net/perf/Makefile       |  1 +
+ .../testing/selftests/drivers/net/perf/config |  3 +
+ .../selftests/drivers/net/perf/devmem.py      | 96 +++++++++++++++++++
+ 3 files changed, 100 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/perf/devmem.py
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index 40ccdcf0c378..7a32f6516a12 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -49,11 +49,13 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
+diff --git a/tools/testing/selftests/drivers/net/perf/Makefile b/tools/testing/selftests/drivers/net/perf/Makefile
+index 31b0b60de4f6..1a90537d2726 100644
+--- a/tools/testing/selftests/drivers/net/perf/Makefile
++++ b/tools/testing/selftests/drivers/net/perf/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
  
-     from .env import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
-     from .feat import set_ethtool_feat
-+    from .kperf import KperfResult, KperfRunner
-     from .load import GenerateTraffic, Iperf3Runner
-     from .remote import Remote
+ TEST_PROGS := \
++	devmem.py \
+ 	iperf.py \
+ # end of TEST_PROGS
  
-     __all__ += ["NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
--                "Remote", "Iperf3Runner", "set_ethtool_feat"]
-+                "Remote", "Iperf3Runner", "KperfResult", "KperfRunner",
-+                "set_ethtool_feat"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/kperf.py b/tools/testing/selftests/drivers/net/lib/py/kperf.py
-new file mode 100644
-index 000000000000..8ee8c5ba2ff7
+diff --git a/tools/testing/selftests/drivers/net/perf/config b/tools/testing/selftests/drivers/net/perf/config
+index 6450f34933e6..111e9b58610d 100644
+--- a/tools/testing/selftests/drivers/net/perf/config
++++ b/tools/testing/selftests/drivers/net/perf/config
+@@ -1 +1,4 @@
+ CONFIG_IPV6=y
++CONFIG_NET_DEVMEM=y
++CONFIG_SYNC_FILE=y
++CONFIG_UDMABUF=y
+diff --git a/tools/testing/selftests/drivers/net/perf/devmem.py b/tools/testing/selftests/drivers/net/perf/devmem.py
+new file mode 100755
+index 000000000000..4c1fb9b51fff
 --- /dev/null
-+++ b/tools/testing/selftests/drivers/net/lib/py/kperf.py
-@@ -0,0 +1,157 @@
++++ b/tools/testing/selftests/drivers/net/perf/devmem.py
+@@ -0,0 +1,96 @@
++#!/usr/bin/env python3
 +# SPDX-License-Identifier: GPL-2.0
 +
-+"""Run and parse kperf network performance measurements."""
++"""Measure udmabuf-backed devmem TCP throughput with kperf."""
 +
-+import re
-+import shlex
-+import subprocess
-+import uuid
-+from dataclasses import dataclass
-+
-+from lib.py import cmd, ksft_pr, rand_port, wait_port_listen
++from lib.py import cmd, defer, ethtool, EthtoolFamily, KperfRunner
++from lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft_run
++from lib.py import KsftSkipEx, NetDrvEpEnv
 +
 +
-+_SECTION_RE = re.compile(r"==\s+(Source|Target)\b")
-+_RATE_RE = re.compile(r"\b(Tx|Rx)\s*([0-9]+(?:\.[0-9]+)?)\s+Gbps\b")
++UDMABUF_LIMIT = "/sys/module/udmabuf/parameters/size_limit_mb"
++UDMABUF_SIZE_MB = 2048
 +
 +
-+@dataclass
-+class KperfResult:
-+    """Aggregate throughput (Gbps) of both endpoints."""
++def _set_udmabuf_limit(host) -> None:
++    current = cmd(f"cat {UDMABUF_LIMIT}", host=host).stdout.strip()
++    if int(current) >= UDMABUF_SIZE_MB:
++        return
 +
-+    source_throughput: float
-+    target_throughput: float
++    cmd(f"echo {UDMABUF_SIZE_MB} > {UDMABUF_LIMIT}", host=host, shell=True)
++    defer(cmd, f"echo {current} > {UDMABUF_LIMIT}", host=host, shell=True)
 +
 +
-+class KperfRunner:
-+    """Manage kperf servers and run measurements between test endpoints."""
++def _enable_hw_gro(cfg) -> None:
++    features = ethtool(f"-k {cfg.ifname}", json=True)[0]
++    hw_gro = features["rx-gro-hw"]
++    if not hw_gro["active"]:
++        if hw_gro["fixed"]:
++            raise KsftSkipEx("Test requires rx-gro-hw support")
++        ethtool(f"-K {cfg.ifname} rx-gro-hw on")
++        defer(ethtool, f"-K {cfg.ifname} rx-gro-hw off")
 +
-+    def __init__(self, env):
-+        self.env = env
-+        self._pid_prefix = f"/tmp/ksft-kperf-{uuid.uuid4().hex[:8]}"
-+        self._port = rand_port()
-+        self._started = []
-+        env.require_cmd("kperf-client", local=True)
-+        env.require_cmd("kperf-server", local=True, remote=True)
 +
-+    def _pid_file(self, remote):
-+        # The hosts may share /tmp (netns), and kperf-server kills the
-+        # process named in an existing PID file.
-+        return f"{self._pid_prefix}-{'remote' if remote else 'local'}.pid"
++@ksft_disruptive
++def kperf(cfg) -> None:
++    """Measure udmabuf-backed devmem performance with kperf."""
++    runner = KperfRunner(cfg)
 +
-+    def _log_file(self, remote):
-+        return f"{self._pid_prefix}-{'remote' if remote else 'local'}.log"
++    for name, host in (("local", None), ("remote", cfg.remote)):
++        if cmd("test -c /dev/udmabuf", host=host, fail=False).ret:
++            raise KsftSkipEx(f"Test requires /dev/udmabuf on the {name} host")
++        _set_udmabuf_limit(host)
 +
-+    def _server(self, remote, kill=False):
-+        host = self.env.remote if remote else None
-+        address = self.env.remote_addr if remote else self.env.addr
-+        args = ["kperf-server", "--pid-file", self._pid_file(remote)]
-+        if kill:
-+            args.append("--kill")
-+        else:
-+            args += ["--addr", address, "--port", str(self._port)]
-+            # The output of a daemon is lost, unless it can log
-+            usage = cmd("kperf-server --help", host=host, fail=False)
-+            if "--log-file" in usage.stdout + usage.stderr:
-+                args += ["--log-file", self._log_file(remote)]
-+        return cmd(shlex.join(args) if remote else args, host=host,
-+                   fail=not kill)
++    # kperf reprograms the RSS indirection table for its queues.
++    defer(ethtool, f"-X {cfg.ifname} default")
 +
-+    def _print_logs(self):
-+        """Print the end of the logs of the servers, to tell why the client
-+        failed.
-+        """
-+        for remote in self._started:
-+            host = self.env.remote if remote else None
-+            args = ["tail", "-n", "30", self._log_file(remote)]
-+            log = cmd(shlex.join(args) if remote else args, host=host,
-+                      fail=False)
-+            if log.stdout.strip():
-+                name = "remote" if remote else "local"
-+                ksft_pr(f"kperf-server log ({name}):\n{log.stdout.strip()}")
++    _enable_hw_gro(cfg)
 +
-+    def __enter__(self):
-+        try:
-+            for remote in (False, True):
-+                self._server(remote)
-+                self._started.append(remote)
-+            wait_port_listen(self._port)
-+            wait_port_listen(self._port, host=self.env.remote)
-+        except Exception:
-+            self.close()
-+            raise
-+        return self
++    ethnl = EthtoolFamily()
++    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
++    restore = {
++        "header": {"dev-index": cfg.ifindex},
++        "tcp-data-split": rings.get("tcp-data-split", "unknown"),
++    }
++    config = {
++        "header": {"dev-index": cfg.ifindex},
++        "tcp-data-split": "enabled",
++    }
++    # Memory providers require a zero threshold where the driver has one.
++    if "hds-thresh" in rings:
++        restore["hds-thresh"] = rings["hds-thresh"]
++        config["hds-thresh"] = 0
++    defer(ethnl.rings_set, restore)
++    ethnl.rings_set(config)
 +
-+    def close(self):
-+        """Stop the started kperf servers, which waits for their sessions."""
-+        failures = []
-+        while self._started:
-+            remote = self._started.pop()
-+            command = self._server(remote, kill=True)
-+            if command.ret:
-+                failures.append(command)
-+            host = self.env.remote if remote else None
-+            args = ["rm", "-f", self._log_file(remote)]
-+            cmd(shlex.join(args) if remote else args, host=host, fail=False)
-+        if failures:
-+            details = "\n".join(str(command) for command in failures)
-+            raise RuntimeError(f"failed to stop kperf server(s)\n{details}")
++    devmem_args = [
++        "--time", "15",
++        "--num-connections", "4",
++        "--read-size", str(64 << 20),
++        "--write-size", str(64 << 20),
++        "--pin-off", "4",
++        "--num-rx-queues", "4",
++        "--dmabuf-rx-size-mb", str(UDMABUF_SIZE_MB),
++        "--dmabuf-tx-size-mb", str(UDMABUF_SIZE_MB),
++        "--validate", "no",
++        "--devmem-rx",
++        "--devmem-tx",
++        "--devmem-rx-memory", "host",
++        "--devmem-tx-memory", "host",
++    ]
 +
-+    def __exit__(self, _exc_type, _exc_value, _exc_tb):
-+        self.close()
++    with runner:
++        result = runner.run(client_args=devmem_args)
 +
-+    def run(self, client_args=()):
-+        """Run kperf and return its KperfResult."""
-+        argv = ["kperf-client", "--src", self.env.remote_addr,
-+                "--dst", self.env.addr, "--src-svc", str(self._port),
-+                "--dst-svc", str(self._port)]
-+        argv += [str(arg) for arg in client_args]
-+        command = cmd(argv, background=True)
-+        try:
-+            command.process(terminate=False, fail=False, timeout=300)
-+        except subprocess.TimeoutExpired as error:
-+            command.proc.kill()
-+            command.process(terminate=False, fail=False)
-+            self._print_logs()
-+            raise RuntimeError(f"kperf client timed out\n{command!r}") \
-+                from error
-+        if command.ret:
-+            self._print_logs()
-+            raise RuntimeError(
-+                f"kperf client exited with status {command.ret}\n{command!r}")
++    ksft_metric("throughput", result.target_throughput, goal="higher")
 +
-+        try:
-+            result = self.parse(command.stdout + "\n" + command.stderr)
-+        except ValueError:
-+            ksft_pr(command)
-+            self._print_logs()
-+            raise
 +
-+        return result
++def main() -> None:
++    """Run the devmem performance test."""
++    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
++        ksft_run([kperf], args=(cfg,))
++    ksft_exit()
 +
-+    @staticmethod
-+    def parse(output):
-+        """Parse human-readable kperf client output."""
-+        throughput = {"Source": [], "Target": []}
-+        section = None
 +
-+        for line in output.splitlines():
-+            match = _SECTION_RE.search(line)
-+            if match:
-+                section = match.group(1)
-+                continue
-+            if section is None:
-+                continue
-+
-+            match = _RATE_RE.search(line)
-+            if match:
-+                direction, value = match.groups()
-+                if (section, direction) in (("Source", "Tx"),
-+                                             ("Target", "Rx")):
-+                    throughput[section].append(float(value))
-+
-+        if not all(throughput.values()):
-+            raise ValueError("incomplete kperf result")
-+
-+        return KperfResult(sum(throughput["Source"]),
-+                           sum(throughput["Target"]))
-diff --git a/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-index f16606cedd00..fcc5234cdd57 100644
---- a/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-@@ -32,7 +32,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
-     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
-         ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
-     from drivers.net.lib.py import set_ethtool_feat
--    from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
-+    from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner, \
-+        KperfResult, KperfRunner
-     from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
- 
-     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
-@@ -50,7 +51,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
-                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
-                "ksft_not_none",
-                "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
--               "Remote", "Iperf3Runner", "set_ethtool_feat"]
-+               "Remote", "Iperf3Runner", "KperfResult", "KperfRunner",
-+               "set_ethtool_feat"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
++if __name__ == "__main__":
++    main()
 -- 
 2.53.0-Meta
 
