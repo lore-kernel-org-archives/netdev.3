@@ -1,82 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794434494;
-	b=LvLeQvzi5k/eUcjMFPw2lEApamznh7qiC2dHeUDEl3Dv2b4yDeKpJi0pk/DX6axMUT0M
-	 UIvpIkMILRCPgMCFzyNqPNFu0kdNWnEhDDjvQDehydhyFPb+6NWs3YByzJKF6OXoxNxF1
-	 YepZaZTmdfFdrxrrUQipWSeFdrCb3boJ0WTCTlkTEr+s+DTs/R5K5QoAgwMlgGhylFmj2
-	 1Sj6yltE13FkYpptYaFxb2HS2NhUyvtHruKMhKRI+PTUokNR4HevYjkDBCGGzrgrmsOzQ
-	 hH0TeUu0LNR1kuiMAPUbosdGPMSrNb1Nx/tdI7tGHyIIKCQl3RSQ7qd8PT/de3WvpZA==
+	t=1794434495;
+	b=i7G45KkiOHdmTUd2K7/jFP6lCe2nq6o+Kzq6rI1XYYIXBjK+CTdyLPbg3RhD9YxPIqbj
+	 uFf1CnF3XHekQmIXa/35JrDA8IfKW7sqxxF7zW3gYOF96sNDe42zxOtT80l/5ax0g2H/n
+	 FxRYSeTZ6p2r+L75G6ImM8La+0Nc0a7KGZ8vQICE5qXbs8WFWCV7U3Ka6yAX6VCljTK+R
+	 la8mv4YwfMmG7dlYklCI2Zgd9g+EngIQ7LMgRbGpowAzwtUJfIZnl27VRaz9JOa+XAve5
+	 K63cc0kv825C1w18dkmxOYT2I+naVlqHcUC8nm4t++DjEcGvaS/BfSpEHiIK8dK4QMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794434494;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794434495;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=LDehY2ey8raTB73kpwdcCBrfjZ1fLoT0KNa2suqSbgA=;
-	b=YI86C2XQ0JiiPH7tl56T/JiH4EgHe+q5zaeQH35dVYIUgEsgCt65LlRjU+OO6C9eZ9ie
-	 QISd+aaF6TrbTYOFf6MKa6I+4Y1pZX9SrXFXC4YZLyNTBoVNBNQS6MtlHq9tx+Z59wa1V
-	 o4Yncm4nTXQLrWSukQ9a6Z9hmWgD/DTaUPZRZ45u9Lx61X+n0e24HobtQJpvOjnVjlF79
-	 Xss3E+LoLW65RlRhxEHRNhEewsAFDTeuXkaHvcdLC4kC3OG5m7xS87PwAnH/vBmSU8aRw
-	 8eTkSwKPzo4/hILD9yhezgLX+sFga/kB5/T8Ms9IKh00sojANL7qXE1OXdnvAk6ogDQ==
+	bh=PN800ywekWk9XeZU1A46yK2GvDU4OTLmLYi6Rpi1abk=;
+	b=MMBq+mddwkYw5xYFyE0K/amZ9j1SI61ArYw5Lpnv2hedMbBHNDGThxMlGuYEQQOWzl5X
+	 xini7GdPVc5QBA9/2I+VZMGxoa2xxocnQFOEI/15/2dJlDs7FvrSVcDstuwduCLGI6RYC
+	 HCobI+kX6YJH/iZH0SBh2synmC8rX76vyA5CHhUqbFWc5p4z+Cd90X3khy1rUsFme/uXf
+	 5EJwZy3FM9QiWzPJmB7VyqLJOUF3Exr7tpg+h0LwFwaNaphA8hOX7zG+aFBXuuylZqpHx
+	 pXKabrwItMiK9dSYFt5eo4A31kCOR6Cf3qTOVyqBJQM6RGXeaNBel5a+XLuEMOjJ5Jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Y0lXKXpT;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Rl+Mh9+m;
 	arc=none smtp.remote-ip=209.85.221.169
 Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D54560A262D
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:01:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D54560A262D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D7260A3807
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:01:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16D7260A3807
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Y0lXKXpT
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5ebf39def3aso1252066e0c.3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Rl+Mh9+m
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5e9528732b4so2265753e0c.0
         for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:01:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794434493; x=1795039293; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794434494; x=1795039294; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LDehY2ey8raTB73kpwdcCBrfjZ1fLoT0KNa2suqSbgA=;
-        b=Y0lXKXpTrMih1yvmwmhNCfqv+mfFDku++DmoYV5yCRcIbaamPy2Nsg9iWGCkgXO5jz
-         qQ6wgNBizA4gvL2pMjWBgZNHb0C8F4ZqnDj2BBAxQkUkDCKcrwv8xEdkX9IOJYaWhaXq
-         TV1NEOkQp8wjP2k90AgXacCSQ/uFAzieP7+OeYkph1ycXMkZ3H20gI7UBYHRmVAWqXWo
-         LblMZOEOVZGzdeQm7oAwjKfsfIc0veD76mtET8H2/9BESedFUSItFPm3O1yneGQzK9us
-         Q0+GgRgmToooAUph7RsQ6kuBiHxmK5nudTd8n63HhmvcftTr3N4PRrfF+ylGqHZfDz7T
-         YQkQ==
+        bh=PN800ywekWk9XeZU1A46yK2GvDU4OTLmLYi6Rpi1abk=;
+        b=Rl+Mh9+mXU3EKkMv5CtlZZ8HRUvdg1jNFjsPEN0uJUJ+jMwCKivCIqN8sNEvuPhQRV
+         QcbaJJCIk/ePxDM0LP01+iJrIoIFGQ/0VpI0ARDxHbkeIsibUyivY/4BmLjBymUIPLl8
+         kT+euTSiEcyRLWMZ2uatL8/flVYaFUueTc36wi2nJXrRgss6tv5IhPSz5vQX5ZrYUfi/
+         8kcXssqoySRzmGdjC5bp0nXKO8x2RDSy6CtqGM2/4ycP2NY5NkYa+5gjx6KrwVu2oyoM
+         gWCet2LY9fdGUUNhSZdEo0saHVBLMzRDi3zV/1Y1w0d3DJHHhSBvXMlPp6X5CoAsGHxs
+         f9Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794434493; x=1795039293;
+        d=1e100.net; s=20260707; t=1794434494; x=1795039294;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LDehY2ey8raTB73kpwdcCBrfjZ1fLoT0KNa2suqSbgA=;
-        b=GlK1G3uxdLOlNWFFCaQvtdlMNg5V7ji/XkwbHElgV7l/mh4Wn4H6LZ8JweeYG+pFCp
-         MyGZ7D2wYH19S6Nevu39Y1CSgMp+g1TMLuTh3mEgebB9xS2dnVTydILtBrdXcu7lJrRr
-         ANFCsc8W0RlZ0gAXLSR4PbkFcwYtDlPyZjEvod+ZEKIF2A/JJMt4tODM4uEP5mJRX1PL
-         Bi4/ChPcTxsC4lGamygZU8GcjmxNMP7LbCO72d1Gwb8i068d9SLtcPfe3dYeynWkrlnX
-         cywjkSKagNoNvDVg4dh+fxVH8sXqgGPYySUiub+YtKeP6l0adL/14/4vw44Tp4OyjkqR
-         eY/Q==
-X-Gm-Message-State: APuU4Z/7vRJ96txhd4CIKlLCSehwS3F7ipd31gmKDotnZ8qDziT4x78k
-	Nh9vxzi/weVEZiHsCEKkGbDrez2jV+A52RKJkJJMTQiF0m3v0OWfVcJSv1sIo9DK/Qs2
-X-Gm-Gg: AYBFou1oSL/xmi7VkE3WpSpNUF6opfZFHDHToVV1I0oo7MiCY3kIJ7Tm5cyr1o2uumV
-	paoDEo2lgYTvC5wZ2xxgQv0Yg89TB1gaYdCCU6aJcaIhhztVHIDa3TPYHTskRkxSQd/LXZWWa3W
-	ZVdlEJQmuW/dRBXQrTs2QPrvZQj0jk6yHSu10eakuj6+bYN6RGmfPBAFLY41xi8QKgFmb9lrqx6
-	wTTprKIDlOAfTB0F+j3cCr0LxRN7r+lVKVNwBQKcrxN1xCjn9v4K60276rvlxk+Y4rcAzHAxLgy
-	fHiFdz0d9KdL/tlhWUsxIOQgOuzEG+nytbXdsFHYB/Cx3gV7aCiOl3jusAgIoJxV/CvCMSGg+GI
-	xDqRvchE8r5x/2B/6TgibjiDZdkjEMp3nSRoru7MZMFuNmpW0nsnkYnBg4BrFsYsYqjhZn2dovA
-	AmtrVVSBIcW42MNffgA6K5hyTOGYEQTnGdsJ7fFOOlcBgzB3jwZqcU/Qi/ZN9983CFEaDNH4cjS
-	nmHc8DYc/KfvlSPH9nalxXrEeuRLzIR32p+8OMuJ6HPeBnMPxeou0ULf4dgFwoI8wS5syK4OoVM
-	L5tB3l/k7ideCoMNBzqUvedVCxni
-X-Received: by 2002:a05:6122:510:b0:5ec:4112:6839 with SMTP id 71dfb90a1353d-5ee1c43fe48mr1334532e0c.15.1794434493132;
-        Wed, 11 Nov 2026 14:01:33 -0800 (PST)
+        bh=PN800ywekWk9XeZU1A46yK2GvDU4OTLmLYi6Rpi1abk=;
+        b=VQdHD1L8On9H5llw3/Uiq+TCUxma/l0AezlCiTBLrvoODiERm6DsHJxBVQ8SlPUibV
+         javnuXZlzlDYhVIvodLzHKGiZW/G33XLDKF9wp8AcC1w0l1B34P6gB+miS0NzoZrp9b0
+         dabbAc3T23fdsIa9liVsgey+6gO0LuXCkdv2oRxzmMNsUPgLR7oTIpHO38mUOxr1S2oC
+         P5xcmDhNWNj2LIr+rWCJX9wxopqR+tA8dUgXrtn1Gx85OX9yNE+dw9EZROI3PR/dJtUw
+         ep1yl2xAfDBBQf8XUb54Ze3ICh3kGusccOM4RuYpzx0H8wab1HW6ARIKrj9sVprUWV1F
+         UIHg==
+X-Gm-Message-State: APuU4Z8UUWhFO/Qp6y/5XbUpTW8P5aITmH0z/IrCgVSd8ORMAcdBY8dC
+	JUtO3ybqLV3sdLW2fSGGvvkIAGq1+oKhg5lHKF3e+yEUz2MhDU4xZHBngk4cA521L+xn
+X-Gm-Gg: AYBFou3nF4s+lI87OWcVOmTHxMf3YSGiF3XTw6G5Ox7lL5Jyb0ZdriBXLFfjecWg/kb
+	qiqgYxAaEHd93yNkyzGedQrPGtd+y1VNmw6nU1lb6kpleG1t6hiA9hsiAniLIFKUaU+nlFSOfjl
+	HeXk9b1upQygN/B7j9SJtQwE1fEk3WGQumOu+tiqolUCAQlYZ50IpnG5hDQIxzzkIkkmve3YtwI
+	PbCy86XGMREc1k87QufpWt50e2Xr8d3uWDMB5na+9D0ad4xK3DltInSM6gltuYw4bHwzA6FtEfe
+	tRteJlJ9WyrNgLRuYXxJjmGKAQKRki45+vh4fS24AAQC+RpuX1E9eGL1of6rHTQtdu3T1tCqh7b
+	dZOoQftylk9qo+BMoImuUG7NA6tqM6Q+Oeb4ypLH/oFuIWeN/BCrjE6e8Xn9t2FXjCLaaHo5i2a
+	hs7Nt1UYRxVMze1bDJG87lX1qf8msu6Z+P1/Ft3AxoSMGwOd5vBqqBeDUk2NN0F2fIw5Q5Fcwxi
+	bkqRqeM/3Iim52FPBQdCJVtG8rOEFeUy+A3setHliGKKqmBUJoohZ9+X/AEEfOqMZ5x/BuBfYRq
+	DBJzEdx5SRuDrT8ffCoVYCugDPlz
+X-Received: by 2002:a05:6122:d25:b0:5c7:fbb5:6ea0 with SMTP id 71dfb90a1353d-5ee1c3e566dmr1829463e0c.4.1794434494109;
+        Wed, 11 Nov 2026 14:01:34 -0800 (PST)
 Received: from Ixchel.lan ([70.49.63.180])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm4557992241.4.2026.11.11.14.01.32
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm4557992241.4.2026.11.11.14.01.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 14:01:32 -0800 (PST)
+        Wed, 11 Nov 2026 14:01:33 -0800 (PST)
 From: Vlad Banea <montrealtango@gmail.com>
 To: netdev@vger.kernel.org
 Cc: hkallweit1@gmail.com,
@@ -88,9 +88,9 @@ Cc: hkallweit1@gmail.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 2/5] r8169: describe the vector-map interrupt layout per chip
-Date: Wed, 11 Nov 2026 17:01:11 -0500
-Message-ID: <20261111220114.3863505-3-montrealtango@gmail.com>
+Subject: [RFC net-next 3/5] r8169: make the RSS hash types and descriptor type per chip
+Date: Wed, 11 Nov 2026 17:01:12 -0500
+Message-ID: <20261111220114.3863505-4-montrealtango@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261111220114.3863505-1-montrealtango@gmail.com>
 References: <20261111220114.3863505-1-montrealtango@gmail.com>
@@ -105,230 +105,93 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The vector-map interrupt model hard-codes the RTL8127A's MSI-X layout.
-Other chips put the TX and link change vectors elsewhere, so move the
-layout into a per-chip struct rtl_vec_map.
+The RSS hash types and the RX descriptor type used with RSS are those of
+the RTL8127A. Make both per chip, set in rtl_setup_rx_params().
 
 No functional change.
 
 Signed-off-by: Vlad Banea <montrealtango@gmail.com>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 79 ++++++++++++++---------
- 1 file changed, 48 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 29 +++++++++++++----------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 6bd137358d1f..a77bbedc8c02 100644
+index a77bbedc8c02..cc253728109c 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -81,8 +81,6 @@
- #define R8169_MAX_RX_QUEUES	8
- #define R8169_DEFAULT_RX_QUEUES	1
- #define R8169_MAX_TX_QUEUES	1
--#define R8127_MAX_NUM_IRQVEC	32
--#define R8127_MIN_NUM_IRQVEC	30
- #define R8169_IRQ_DEFAULT	1
- #define RTL_RSS_KEY_SIZE	40
- #define RSS_CPU_NUM_MASK	GENMASK(18, 16)
-@@ -489,7 +487,6 @@ enum rtl8125_registers {
- 	IMR_SET_VEC_MAP_REG	= 0x0d0c,
- };
- 
--#define MSIX_ID_VEC_MAP_LINKCHG	29
- #define LEDSEL_MASK_8125	0x23f
- 
- #define RX_VLAN_INNER_8125	BIT(22)
-@@ -623,9 +620,6 @@ enum rtl_register_content {
- 
- 	/* magic enable v2 */
- 	MagicPacket_v2	= (1 << 16),	/* Wake up when receives a Magic Packet */
--#define	ISRIMR_LINKCHG	BIT(29)
--#define	ISRIMR_TOK_Q0	BIT(8)
--#define	ISRIMR_ROK_Q0	BIT(0)
- #define RTL_DESC_TYPE_CTRL		0xd8
- #define RSS_KEY_REG			0x4600
- #define RSS_INDIRECTION_TBL_REG		0x4700
-@@ -843,6 +837,23 @@ enum rtl_sfp_mode {
- 	RTL_SFP_8127_ATF,
- };
- 
-+/* Vector-map MSI-X layout. RX queue N uses vector N; a source's bit in
-+ * the vector-map IMR/ISR registers is its vector number.
-+ */
-+struct rtl_vec_map {
-+	u8 tx;		/* TX completion */
-+	u8 linkchg;	/* link change */
-+	u8 min_nvecs;	/* vectors that must be allocated */
-+	u8 max_nvecs;
-+};
-+
-+static const struct rtl_vec_map rtl_vec_map_8127 = {
-+	.tx		= 8,
-+	.linkchg	= 29,
-+	.min_nvecs	= 30,
-+	.max_nvecs	= 32,
-+};
-+
- struct rtl8169_rss_data {
+@@ -858,6 +858,7 @@ struct rtl8169_rss_data {
  	u8 rss_key[RTL_RSS_KEY_SIZE];
  	u8 rss_indir_tbl[RTL_MAX_INDIRECTION_TABLE_ENTRIES];
-@@ -871,6 +882,7 @@ struct rtl8169_private {
- 	unsigned int hw_supp_num_rx_queues;
- 	struct rtl8169_rss_data *rss_data;
+ 	unsigned int hw_supp_indir_tbl_entries;
++	u32 hash_types;		/* RSS_CTRL_*_SUPP bits to hash on */
+ };
+ 
+ struct rtl8169_private {
+@@ -884,6 +885,7 @@ struct rtl8169_private {
  	unsigned int irq_nvecs;
-+	const struct rtl_vec_map *vec_map;	/* NULL: single vector only */
+ 	const struct rtl_vec_map *vec_map;	/* NULL: single vector only */
  	enum rx_desc_type init_rx_desc_type;
++	enum rx_desc_type rss_desc_type;	/* layout used with RSS on */
  	struct clk *clk;
  	int speed;
-@@ -4755,7 +4767,7 @@ static void rtl8169_napi_disable(struct rtl8169_private *tp)
- 	if (tp->irq_nvecs > 1) {
- 		for (int i = 0; i < tp->num_rx_rings; i++)
- 			napi_disable(&tp->rtl8169_napi[i]);
--		napi_disable(&tp->rtl8169_napi[R8169_MAX_RX_QUEUES]);
-+		napi_disable(&tp->rtl8169_napi[tp->vec_map->tx]);
- 	} else {
- 		napi_disable(&tp->rtl8169_napi[0]);
- 	}
-@@ -4766,7 +4778,7 @@ static void rtl8169_napi_enable(struct rtl8169_private *tp)
- 	if (tp->irq_nvecs > 1) {
- 		for (int i = 0; i < tp->num_rx_rings; i++)
- 			napi_enable(&tp->rtl8169_napi[i]);
--		napi_enable(&tp->rtl8169_napi[R8169_MAX_RX_QUEUES]);
-+		napi_enable(&tp->rtl8169_napi[tp->vec_map->tx]);
- 	} else {
- 		napi_enable(&tp->rtl8169_napi[0]);
- 	}
-@@ -5535,9 +5547,9 @@ static void rtl8169_free_one_irq(struct rtl8169_private *tp, int i)
- 	napi = &tp->rtl8169_napi[i];
  
- 	if (tp->irq_nvecs > 1) {
--		if (i < tp->num_rx_rings || i == R8169_MAX_RX_QUEUES)
-+		if (i < tp->num_rx_rings || i == tp->vec_map->tx)
- 			free_irq(irq, napi);
--		else if (i == MSIX_ID_VEC_MAP_LINKCHG)
-+		else if (i == tp->vec_map->linkchg)
- 			free_irq(irq, tp);
- 	} else {
- 		free_irq(irq, napi);
-@@ -5591,7 +5603,7 @@ static irqreturn_t rtl8169_interrupt_other(int irq, void *dev_instance)
- {
- 	struct rtl8169_private *tp = dev_instance;
+@@ -2906,6 +2908,15 @@ static void rtl_setup_rx_params(struct rtl8169_private *tp)
+ 	case RTL_GIGA_MAC_VER_80:
+ 		tp->hw_supp_num_rx_queues = R8169_MAX_RX_QUEUES;
+ 		tp->rss_data->hw_supp_indir_tbl_entries = RTL_MAX_INDIRECTION_TABLE_ENTRIES;
++		tp->rss_data->hash_types = RSS_CTRL_TCP_IPV4_SUPP |
++					   RSS_CTRL_IPV4_SUPP |
++					   RSS_CTRL_IPV6_SUPP |
++					   RSS_CTRL_IPV6_EXT_SUPP |
++					   RSS_CTRL_TCP_IPV6_SUPP |
++					   RSS_CTRL_TCP_IPV6_EXT_SUPP |
++					   RSS_CTRL_UDP_IPV4_SUPP |
++					   RSS_CTRL_UDP_IPV6_SUPP;
++		tp->rss_desc_type = RX_DESC_TYPE_RSS;
+ 		break;
+ 	default:
+ 		tp->hw_supp_num_rx_queues = R8169_DEFAULT_RX_QUEUES;
+@@ -3066,14 +3077,7 @@ static void rtl8169_set_rss_hash_opt(struct rtl8169_private *tp)
+ 	rss_ctrl = FIELD_PREP(RSS_CPU_NUM_MASK, ilog2(tp->num_rx_rings));
  
--	rtl8169_clear_hw_isr(tp, MSIX_ID_VEC_MAP_LINKCHG);
-+	rtl8169_clear_hw_isr(tp, tp->vec_map->linkchg);
- 	if (tp->phydev)
- 		phy_mac_interrupt(tp->phydev);
- 	else if (tp->sfp_mode)
-@@ -5615,11 +5627,11 @@ static int rtl8169_request_irq(struct rtl8169_private *tp)
- 		irq = pci_irq_vector(pdev, i);
+ 	/* Perform hash on these packet types */
+-	rss_ctrl |= RSS_CTRL_TCP_IPV4_SUPP |
+-		    RSS_CTRL_IPV4_SUPP |
+-		    RSS_CTRL_IPV6_SUPP |
+-		    RSS_CTRL_IPV6_EXT_SUPP |
+-		    RSS_CTRL_TCP_IPV6_SUPP |
+-		    RSS_CTRL_TCP_IPV6_EXT_SUPP |
+-		    RSS_CTRL_UDP_IPV4_SUPP |
+-		    RSS_CTRL_UDP_IPV6_SUPP;
++	rss_ctrl |= tp->rss_data->hash_types;
  
- 		if (tp->irq_nvecs > 1) {
--			/* RX: 0~7, TX: 8*/
--			if (i < tp->num_rx_rings || i == R8169_MAX_RX_QUEUES)
-+			/* RX queue N on vector N, TX and link at vec_map */
-+			if (i < tp->num_rx_rings || i == tp->vec_map->tx)
- 				rc = request_irq(irq, rtl8169_interrupt_msix,
- 						 irqflags, dev->name, napi);
--			else if (i == MSIX_ID_VEC_MAP_LINKCHG)
-+			else if (i == tp->vec_map->linkchg)
- 				rc = request_irq(irq, rtl8169_interrupt_other,
- 						 irqflags, dev->name, tp);
- 			else
-@@ -5805,7 +5817,7 @@ static void rtl8169_netpoll(struct net_device *dev)
- 	if (tp->irq_nvecs > 1) {
- 		for (int i = 0; i < tp->num_rx_rings; i++)
- 			rtl8169_interrupt_msix(0, &tp->rtl8169_napi[i]);
--		rtl8169_interrupt_msix(0, &tp->rtl8169_napi[R8169_MAX_RX_QUEUES]);
-+		rtl8169_interrupt_msix(0, &tp->rtl8169_napi[tp->vec_map->tx]);
- 	} else {
- 		rtl8169_interrupt(0, &tp->rtl8169_napi[0]);
+ 	rss_ctrl |= FIELD_PREP(RSS_HASH_MASK,
+ 			       ilog2(tp->rss_data->hw_supp_indir_tbl_entries));
+@@ -4272,11 +4276,12 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	    tp->mac_version == RTL_GIGA_MAC_VER_80)
+ 		RTL_W8(tp, 0xD8, RTL_R8(tp, 0xD8) & ~0x02);
+ 
+-	/* enable rx descriptor type v4 and set queue num for rss */
++	/* set queue num for rss and enable its rx descriptor type */
+ 	if (tp->num_rx_rings > 1) {
+ 		rtl8125_set_rx_q_num(tp);
+-		RTL_W8(tp, RTL_DESC_TYPE_CTRL,
+-		       RTL_R8(tp, RTL_DESC_TYPE_CTRL) | RTL_DESC_TYPE_RSS);
++		if (tp->init_rx_desc_type == RX_DESC_TYPE_RSS)
++			RTL_W8(tp, RTL_DESC_TYPE_CTRL,
++			       RTL_R8(tp, RTL_DESC_TYPE_CTRL) | RTL_DESC_TYPE_RSS);
  	}
-@@ -6034,7 +6046,7 @@ static void r8169_free_napi(struct rtl8169_private *tp)
- 	if (tp->irq_nvecs > 1) {
- 		for (int i = 0; i < tp->num_rx_rings; i++)
- 			netif_napi_del(&tp->rtl8169_napi[i]);
--		netif_napi_del(&tp->rtl8169_napi[R8169_MAX_RX_QUEUES]);
-+		netif_napi_del(&tp->rtl8169_napi[tp->vec_map->tx]);
- 	} else {
- 		netif_napi_del(&tp->rtl8169_napi[0]);
- 	}
-@@ -6091,9 +6103,9 @@ static const struct net_device_ops rtl_netdev_ops = {
- static void rtl_set_irq_mask(struct rtl8169_private *tp)
- {
- 	if (tp->irq_nvecs > 1) {
--		tp->irq_mask = ISRIMR_LINKCHG | ISRIMR_TOK_Q0;
-+		tp->irq_mask = BIT(tp->vec_map->linkchg) | BIT(tp->vec_map->tx);
- 		for (int i = 0; i < tp->num_rx_rings; i++)
--			tp->irq_mask |= ISRIMR_ROK_Q0 << i;
-+			tp->irq_mask |= BIT(i);
- 	} else {
- 		tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
  
-@@ -6102,18 +6114,24 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_80)
+@@ -6142,7 +6147,7 @@ static void rtl8169_set_rx_ring_num(struct rtl8169_private *tp)
+ 		tp->num_rx_rings = rounddown_pow_of_two(min(rss_queue_num,
+ 							    tp->hw_supp_num_rx_queues));
+ 		if (tp->num_rx_rings >= 2)
+-			tp->init_rx_desc_type = RX_DESC_TYPE_RSS;
++			tp->init_rx_desc_type = tp->rss_desc_type;
  	}
  }
  
-+static const struct rtl_vec_map *rtl_get_vec_map(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_80:
-+		return &rtl_vec_map_8127;
-+	default:
-+		return NULL;
-+	}
-+}
-+
- static int get_max_irq_nvecs(struct rtl8169_private *tp)
- {
--	if (tp->mac_version == RTL_GIGA_MAC_VER_80)
--		return R8127_MAX_NUM_IRQVEC;
--	return R8169_IRQ_DEFAULT;
-+	return tp->vec_map ? tp->vec_map->max_nvecs : R8169_IRQ_DEFAULT;
- }
- 
- static int get_min_irq_nvecs(struct rtl8169_private *tp)
- {
--	if (tp->mac_version == RTL_GIGA_MAC_VER_80)
--		return R8127_MIN_NUM_IRQVEC;
--	return R8169_IRQ_DEFAULT;
-+	return tp->vec_map ? tp->vec_map->min_nvecs : R8169_IRQ_DEFAULT;
- }
- 
- static void rtl8169_set_rx_ring_num(struct rtl8169_private *tp)
-@@ -6727,10 +6745,8 @@ static int rtl8169_poll_msix_tx(struct napi_struct *napi, int budget)
- 	return 0;
- }
- 
--/* RTL8127 MSI-X vector layout:
-- * Vectors 0 .. (MAX_RXQ - 1)			: Rx Queues
-- * Vectors MAX_RXQ .. (MAX_RXQ + MAX_TXQ - 1)	: Tx Queues
-- * NAPI is only allocated for data path
-+/* Vector-map MSI-X: RX queue N on vector N, TX and link change on the
-+ * chip's vec_map vectors. NAPI is only allocated for the data path.
-  */
- static void r8169_init_napi(struct rtl8169_private *tp)
- {
-@@ -6744,10 +6760,10 @@ static void r8169_init_napi(struct rtl8169_private *tp)
- 					   pci_irq_vector(tp->pci_dev, i));
- 		}
- 		netif_napi_add_tx(tp->dev,
--				  &tp->rtl8169_napi[R8169_MAX_RX_QUEUES],
-+				  &tp->rtl8169_napi[tp->vec_map->tx],
- 				  rtl8169_poll_msix_tx);
--		netif_napi_set_irq(&tp->rtl8169_napi[R8169_MAX_RX_QUEUES],
--				   pci_irq_vector(tp->pci_dev, R8169_MAX_RX_QUEUES));
-+		netif_napi_set_irq(&tp->rtl8169_napi[tp->vec_map->tx],
-+				   pci_irq_vector(tp->pci_dev, tp->vec_map->tx));
- 	} else {
- 		netif_napi_add(tp->dev, &tp->rtl8169_napi[0], rtl8169_poll);
- 		netif_napi_set_irq(&tp->rtl8169_napi[0],
-@@ -6913,6 +6929,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	rtl_hw_reset(tp);
- 
- 	rtl_setup_rx_params(tp);
-+	tp->vec_map = rtl_get_vec_map(tp);
- 
- 	rc = rtl_alloc_irq(tp);
- 	if (rc < 0)
 -- 
 2.53.0
 
