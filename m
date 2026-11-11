@@ -1,71 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.254.49.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794379645;
-	b=nrtbZ0W5m3jXxzmrQ+6y7bVDuAXch+zfJRNRpRO0kyl78qZscqgeSP+OPuNDpo5ivC5V
-	 xfMkRESbrfzmu88vbZHYoGAYZzFBmXYgHs/BpccCMlLNwoUTdlCTXlyvEzI/7q9rqlvgU
-	 YGzhw5zh44LqG9N1Kv1Eb31Tx/VJ9UhPpNyWOO6seBSe7NupDX/o7KLWbFHyrrmlDIK12
-	 fMucvlPXWzHWypxgfWisiXV9OeghJyg5Gaa6Bjyr5iJ/QDVOzYuDFeF9QkbJttKTIsplu
-	 y1l8Qtzx3GMdhGQ1KH6ltbnWX5nUw7EXZhkwzysHVZABau4GDBU8AXDfLKf3/whZCgA==
+	t=1794379824;
+	b=zWwVfo4Rli9i+h9BnYnK3MhW7b3bBFV5wkvS0Eq2TbGJrFir94B/h4Bf0esWI1Mrh663
+	 Ej4fAeoHxzFH+fTyg1Em9DyvejpCddLFxWAeToWLJOH2sUsKsT24IQr0Il67w+rIEIVOD
+	 V6yakzHVesLB7X9nJnWbs7T/qPXfv6xavz5jHAhHeGcGG2eBymZhsGdzNNEeK3BaAM505
+	 bFx1QfUVSJy8jr4uY7BHOGB6vwQUuKaqo+mVjhFVTK1swkkV760eYVofYQmvIz/lQ3mz8
+	 qeg8epZe30lyAuUYmWodsWgP98cRnj0dyvDWZxUJOZ438bNv3LheW8payflXR4dDkzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794379645;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=FhfwlU4Cu7/dKeluYJ5+3JUKxIlFopvSssPKy+noPwE=;
-	b=b0Luzbm6otx+gGoi8Vr1irxfDgoMwmgS32ocm+cyjUt4rqC+bZKOzbK4y5zCVfuimHTa
-	 c3aXRVLJ5hrD0F3v3y6W9qfd7wOyY6Hd5jIiN7g8E/Dk1bUNhwg8c6rkr+sXlGq3zPgfg
-	 F0b1ewXIHcCjxjJ+jfeI7iEraj7NfNcM21cfB6cj1X9vM+4CTkpd7OPcFiVPfGqfy9imb
-	 hbA7i+Fv1zGyhnzjl265LkXFyn0QHBzAeQkfphINuL3ZLmG8iENjIbn3hDZZWb0/jrfaa
-	 AidrGAisFoXukoixWi7HrIhhdlXNwN38Z12XmnkPYCtd92ExP2nfwQ2SzMy+ditl6+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794379824;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 X-HM-Tid:X-HM-MType:X-HM-Spam-Status;
+	bh=IE/0/wHsXzW+zXG7ICg4OVEoH7lwX4Q6eNKHPFTJTL4=;
+	b=eIktcgkjj8A4R3BBnjoh0/VEQsU24/vZqOpGsLLocPZza8vHq1/K0Ld7Q3SNx1NnJFoD
+	 PWAsXShi5UI+ptS+/nRnVU4zJG/X947cv4yWzIhgIzZPNM55pLCNrn6LJMVFxboEj/Ae+
+	 WUmE0Kzwojl9PW6YqCgVDDzeVAf1+b1km5ZoE6YaZ7nnXk01wTO3TDaNUYwzCRMqxO0Ge
+	 R6W0po8OFiMBW7yqg3OIX5FQwaV08imRLC9GJr7E2ybwYgS3pXQLGg0XyMEZmpBwNtXjl
+	 zONIkGXY7olg+dFv78z43vFaKUOHKAbPi/lAJVsehEPil3SwWpdaIcCOkKiIaZ9Vthw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=yj3v71IP;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9E0606A33B;
-	Wed, 11 Nov 2026 06:47:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E9E0606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=yj3v71IP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=yj3v71IPAG7S/R7e7wSHYDSjpZYxoDv6iU4cSSiZS1z+PWQ2psdaYlwQWcO0zXQB6TxS3njrGaCBx
-	 Ds5KaTOyhR4nL0LDwACnWYXPKtKWXle/WiMctc/ojkh9cwSg/a9BXpJLG01b9fkz5cI8nzdt5+LT08
-	 0lBUb9alb7DvAw3M=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af40f795cf-d2bc0;
-	Wed, 11 Nov 2026 14:47:21 +0800 (CST)
-X-RM-TRANSID:2ee56af40f795cf-d2bc0
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[223.64.115.200])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36af40f78f42-d10dc;
-	Wed, 11 Nov 2026 14:47:21 +0800 (CST)
-X-RM-TRANSID:2ee36af40f78f42-d10dc
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Mahesh Bandewar <maheshb@google.com>,
-	netdev@vger.kernel.org,
+	dmarc=pass header.from=jmu.edu.cn;
+	spf=pass smtp.mailfrom=jmu.edu.cn;
+	arc=none smtp.remote-ip=45.254.49.197
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A581606A321;
+	Wed, 11 Nov 2026 06:50:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A581606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
+Received: from Vostro-3710.. (unknown [14.220.232.40])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 54450fead;
+	Wed, 11 Nov 2026 14:50:16 +0800 (GMT+08:00)
+From: Chukun Pan <amadeus@jmu.edu.cn>
+To: andrew@lunn.ch
+Cc: Frank.Sae@motor-comm.com,
+	amadeus@jmu.edu.cn,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	hkallweit1@gmail.com,
+	kuba@kernel.org,
 	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net] ipvlan: update port flags only after ipvlan_set_port_mode() succeeds
-Date: Wed, 11 Nov 2026 14:46:55 +0800
-Message-Id: <20261111064655.233265-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH 1/2] net: phy: motorcomm: add led_brightness_set for YT8521
+Date: Wed, 11 Nov 2026 14:50:10 +0800
+Message-Id: <20261111065010.2040437-1-amadeus@jmu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <598009be-95f3-4091-b3bc-98815c65216e@lunn.ch>
+References: <598009be-95f3-4091-b3bc-98815c65216e@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,65 +60,32 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa1c95f1ebf03a2kunm23cf89e217c0bb
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSkNOVkIaTUMYT0JMHxhNTlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKT1VJSUtVSUhJVU9LWVdZFhoPEhUdFFlBWU9LSFVCQklOS1
+	VKS0tVSkJLQlkG
 
-In ipvlan_link_new(), the shared port->flags is updated before
-calling ipvlan_set_port_mode(). If ipvlan_set_port_mode() fails (e.g.
-switching to L3S mode without CONFIG_IPVLAN_L3S), the error unwinds via
-unlink_netdev, but the shared port->flags has already been modified and
-is never restored.
+Hi,
 
-As a result, subsequent operations on existing ipvlan interfaces on the
-same lower device operate with corrupted port flags (e.g., VEPA or
-PRIVATE flags inadvertently set or cleared).
+> Has this been tested on real hardware?
 
-Fix this by deferring the update of port->flags until after
-ipvlan_set_port_mode() returns successfully, matching the behaviour of
-ipvlan_nl_changelink().
+I tested yt8531 on some SBCs and will add this to the commit message.
 
-This issue was identified with the assistance of an LLM-based code
-review tool, confirmed by reproducing the state corruption in a
-User-Mode Linux (UML) environment when ipvlan_set_port_mode() fails,
-and verified in UML that the shared port flags remain unchanged upon
-failure.
+> Have you had it blinking the heartbeat? Shift-lock etc.
 
-Fixes: a190d04db937 ("ipvlan: introduce 'private' attribute for all existing modes.")
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
----
- drivers/net/ipvlan/ipvlan_main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Only supports forced LED on/off. Forced blink is disabled by default.
+Do I need to implement heartbeat?
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index f29864db662a..5732b167c5b3 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -678,12 +678,6 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
- 	if (err)
- 		goto remove_ida;
- 
--	/* Flags are per port and latest update overrides. User has
--	 * to be consistent in setting it just like the mode attribute.
--	 */
--	if (data && data[IFLA_IPVLAN_FLAGS])
--		port->flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
--
- 	if (data && data[IFLA_IPVLAN_MODE])
- 		mode = nla_get_u16(data[IFLA_IPVLAN_MODE]);
- 
-@@ -691,6 +685,12 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
- 	if (err)
- 		goto unlink_netdev;
- 
-+	/* Flags are per port and latest update overrides. User has
-+	 * to be consistent in setting it just like the mode attribute.
-+	 */
-+	if (data && data[IFLA_IPVLAN_FLAGS])
-+		port->flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
-+
- 	mutex_lock(&port->pnodes_lock);
- 	list_add_tail_rcu(&ipvlan->pnode, &port->ipvlans);
- 	mutex_unlock(&port->pnodes_lock);
--- 
-2.33.0
+> I _think_ this is the wrong place to insert these.
+>
+> The sorting of registers is a bit messed up in this driver, but i
+> think you need to insert before:
+>
+> #define YTPHY_PAD_DRIVE_STRENGTH_REG		0xA010
 
+Indeed, I will correct this.
 
-
+Thanks,
+Chukun
