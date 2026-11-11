@@ -1,101 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794362419;
-	b=Wk22y5O0oJWWQPEB9dFeF3vbC30wu9rRpScWmS0iGIkg6GwFhCzj1NFrt4t+NAh8r8KT
-	 ysXbibRgbegJGnDtrU7ELrvFrcm9ephBDTgp1KvTRSUmJtxHsUnFiSx8KXNSFl/MsHboo
-	 tYJYNlqOJ/M6meQCV6aEoKxuJU2FjmShSsYpFjmqwV9bJRhP4T0b449jzLk4moLOL/4Sr
-	 kzhRUL3aD/lbPCN63E8f3mizYnem62BEAL9yUTnx65DT+acqCl8dYRmGCLH8IM2Ry5R2a
-	 TEmWO13yxW+znptOUObaDWyQ3kLFHU8+2NktQYn4MdyhGfKwxjy8HuBM1M8VR6Un8mg==
+	t=1794362592;
+	b=Qkb7ggQgpbzmhMJ/YAXflMCXEtkbx7GYgfyu7eC+Sq5e+zEKsqtQbZsdkrLz7ZFqlyYl
+	 5edaBUgmwbFV3rBwXtsDJkelaxMr+jUacFs0EQPR+XCRurZWs4i6HDQudQvOY3XdKaiXC
+	 AHjc/ZHlzl2cbrPJ8W2ee+UU9LS1NVdA74Z9VJ8y97rCjt0CglBRTJSjpyqTM8/qnj4/b
+	 Ze0bwMkqft8VJvzQgQnCWhjzwcghxgEVgQDYwVqBdTD1PIyALS/oonCKWefl9FYRgUxAo
+	 gXeS9wRYX1LM0UHJVXLQxOmvHGBv9Gt0FYSwmBWpMxKLUg55JBTY2Q8d//N03dh/sRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794362419;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794362592;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
-	b=ln42Vj+/7MZDQaWAs0f3Fhm6KfjyFr4mwEE/8hSy9p+g37ZvZo8ABtBCavuXu/JjBMhC
-	 ppGv/vx0k51Vj5dugvA9fvgf9mzpjWGVXlowPwZjvJ2oIWxyOrnTHvOiwFhpgZ3kRmKlE
-	 gMqQ9/9ZlchvO+g9o8/kiKxSXjIgw8C0r/9TkvUtqYX1bl8D3pQK//fepLzrfljptgNuz
-	 8S5+Vd4/tsaA6TT3lK7dNhsMLdW5xLg3DM64F4F06tjSxL+SdMyj2nzQnnhsW3GhLps1b
-	 mLxtwdmcIbz1ytFs+eLWQbmu3IQ3FJVIiPeNIFf3rsrZi1y5hOLbp6hVmANBLwL4/kg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=VBnxo1cyrBP9eH26ieZ3qEE4H0EMBAPCxXo+MXkFYS0=;
+	b=bm8Y1Z0/8YrogFCFtszrhfNX71tP5vnQy00opFEnK/Ofg82MGfmnREjJ5sLKm2yGsm7w
+	 joZgo1mWudf7op12EbmyHPzeS+5rqpcx82E0EuZSJXjf/ji8vMtsJ+iiJpP9OsoJDyxeh
+	 vquBtsDTnqGUelU0Rjk8WJ4T9JKn96OSmXbqHaHTyp8+Q7fAjS9vnMSazT3aAMgUxP2re
+	 LQIYqX2Qo8n1Nor7KlJ/ctqDS7OS3OqAZmczUc3rRnIL+TsU9SIqj03IDcQDYWdMLIYIi
+	 0jW59p3dHSNw87/p+79KrTyY5E/6RvEGI2T4gE3gVzZJAmX1qrKHasnFu4ZywhHGUVw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bvRxWyFG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tc2mvNEV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3137606A320
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:00:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3137606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371B4606A326
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:03:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 371B4606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bvRxWyFG
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-37628596783so1371810eec.1
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:00:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794362418; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tc2mvNEV
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33fb4680717so2312952eec.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 18:03:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794362591; cv=none;
         d=google.com; s=arc-20260327;
-        b=R6OcWGUul00CuQcTaa9NRu1ODpP5LKlurg3At4Xkv2GHBhnyuAcPZrGgs5Ug9v2Me2
-         KDX4sOF/W6ULfSu26nHK1sNvCO8M0UO/LmUFuB75aHQpNcvy4CypQQO5PnQE4ANW/9ar
-         2+pnR2SYeYUja13vB9ZfQwJBCw5f4NWskYgJLB/3IO1+NCwaJwnZk6tQEwaCu+sev7+8
-         K4LY6XafnXY4hrIcwqduYfi5MprO1FYzqgLbFOo/tAspAWqIUFmZ1MyIe2saftmTwiyj
-         sfyY/vA9PhahiM96jR3djjc1vrfjzwBGWBj+OIltzppR0RD6dzu/xcq9TG7kWXYiCstn
-         gZZA==
+        b=SnSrlICqkF30MPziT5Rull0lhjJdNeiTXCRwlBRIIO/ZONwhkPLZWJMnTanSMM1VCC
+         az6i+NUl6ZMq7f9wtd0oSIN9fJ09APMwfaKLKo9kXvXMRzL9vQDVJi+uCGSSy3v0szpj
+         jy/1whFsu2Ot0XniI7LGNXDOrBPqtPWSFSH2rAtsiNoHkCptX2cWHI1K1CRuWXjgiEE1
+         EIZfX3w1MifNjcr2O8agj+4d8MG5OqRaVpR8aDZ360tPOEen+oU65HAOVqXW99L3BaRU
+         hWBYPV4N6iV0Yy4a+WB6TPy2EWvFm1QFZbgJBrQd8YtqvZNLlPcrw6t/Y1KiQwN3I1Uk
+         dDrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
-        fh=voFQUW4q6+RvSHWyIUr1ravUatLaSvXwY900JyTZLUc=;
-        b=MjPevreuGV0SU85vWF0klFCse0szOay7mbr95FGAPMdfKCgAU9atCL87yTuREwF7CD
-         +V439B9ifegWcJzqvoj/73tvlomSwxQxulAw1SfE1Gycsof3DOlX0AjpuC3DiuW/oGT0
-         ZIUuC6uvIlGpybu425uSebVcju9WreEsrsJF0q5Er9H4kGrMgGTZKTWYr+JWOXSFyv6e
-         f2s1GALiA8kjce7ck6t1pJBM1xrP/HNAQUOKjIyczUKIcXISyBr4zw91xpNeKZ7GGgHN
-         dKgdamqypdEewVsvccaYaB2aBxXm7ICE0ij39rh0eoe3MmgdAqJHN6p+UTa42MKxzusg
-         X94Q==;
+        bh=VBnxo1cyrBP9eH26ieZ3qEE4H0EMBAPCxXo+MXkFYS0=;
+        fh=jBb97q4RtPmF1NqMnSsZ9Q3x0ztDN1R04t7L3GWocW4=;
+        b=cRvII+MKsBcqt8TebTmSGCZNo0nvRM1ATT6E0c1rrfARssrRuU4XbbHt32XVB2BWGI
+         iUcxGZ3dq+60F1MbQIcp651fRQfjjqkPSR4HZ4w5+Goz0rvf22GFNOSJ8LeYua7MlbKJ
+         75aJSeEIwbIwtXkTv5eiCLl2L54Q7tY2rxolRXVVz8T58+jacCpQyauUwVmAKo+1v1Pw
+         hvJDSepCBl8ud78ic+0MT9S2m9k53lM3Pj0yDy2HBV9CsJyonyvneDlL1lxqqSnjZRv+
+         /OBbXgCIsLhh0UaYTqCRnbptjOq/XZ5Y6wuIcXyfmmH7ccW2cNvyQUyXPnlgabWxybgM
+         +FWA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794362418; x=1794967218; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794362591; x=1794967391; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
-        b=bvRxWyFGwXzDLRtpU1+Z9VJNOOTsNT0608bHW+RTaiPzND6oFBDN/qWqzndR17T2BR
-         KCn2IxPjarwRv9oaQoFUKWSwijRbWm+Ow/iXOOOwmli3lH/82MX/KzxoaWKZZ6i+8sH6
-         VSE+pL9SIqnv3FAUOwjgnW8gmHuWeCZrlEpJ23fPmxEg5iNQEDg/aT7fk9g6AJbLLIlE
-         d8n7kLo5VHvrtvzQZMdpAS/M2Ts4CtOTuV1imvMhxXAj3CB9Nh6Qjliw7Vqa7KGEQJBn
-         tkNmJAwzRm2nQGjbRs6YP91uy4RcGAA+nuSwDAU97BQeflbNLcuTmOVJjt3Wizl3IkyC
-         3W5w==
+        bh=VBnxo1cyrBP9eH26ieZ3qEE4H0EMBAPCxXo+MXkFYS0=;
+        b=tc2mvNEVIdm8B2xyfNM9PSN/LYEqHpd+CNNM5+GFrAjNJAEVehCOmZfouiWm6H033P
+         Hv2o/4hJq854Uf3xuG809NW5W5Szou42PXkOPvSdJSA/g1ZA4ZvDpu84vKZA+EEp3I85
+         2wnCUDAz6A9gdQ5KOyu9GEnlWDpj7eoednBRT62k6BWDuisKRR0EyAkd3HO9+61lpKMs
+         1FEJlUZu1M63H2XTMlBtjVu/g8o3bsx/bOjWUHDf8hM9W3KUgYEbWZA8gWcGn2ldO6AQ
+         xn3bexjLcOGgmwgeFiW3Fo0aYcsvuJwu9Ts/JCL1WSO/k6Pt/SL9RWzwZtVOpDkDOx06
+         J3ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794362418; x=1794967218;
+        d=1e100.net; s=20260707; t=1794362591; x=1794967391;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dtC/s3IFvRHvWLM5ctW+2r/vaRjYMyyM7FY+73RqcL0=;
-        b=UhyYQHAu78yIpjXF2abIguvI91JUq8yHwZnuV+GM6olRMwafwKP8UcelQxSCI7OkKR
-         sOTGwAtvNYutl8l7he19ozBZW0xarO4W1EaGHvFot4BbDoD0kjWUrLSeVE+HuWSCWXjM
-         h4RA9+ITNrNAWEoKbaX8XNCM8ZkEpQI6JtyYHb33OCQ3v3xMnjWRKM0JnGVSpZZZeBiU
-         SQwSwCug9kbXqHCBnrBPZB9PvgvMDgxfvqxDwN9du4ZbZG8c68a0DjJoSszNpwI/zJgf
-         8bl4ga8hq38vhZ+pXuDDGbtpffTHQwpT4fqOSq/nhhGIscrs9IoHaD57A8QCs+4dRt8T
-         n2Pw==
-X-Forwarded-Encrypted: i=1; AL+hErESYF7lQ0z509gnWbjN17uhrG5VQALH3hmfRMirW6/xYAabtBOnjFwF8lwFlnByYltNVa6ey0I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8P1TDQsMZbpFq/F73RNR3M/oEn5X+aTyFinqc+iGEl8MFDyzNY
-	0YsYf6W8sOT8WlqNJaUBo3WzO1QthIbU41Uf+pz6qkgkHUW37JsH44EXf+1sJiR00E05bvb9clr
-	DnianOuAjUELRK/W4Rh2tvc34Kq6jxwI=
-X-Gm-Gg: AYBFou1ad94T7+KCRW7eSpV+bZyJLTNpHJJWKZc429Mb0HteW1UR/KNNtaayApqr9HG
-	f0lLvmSekLwl3zjTHveadnbBbSLOr6HjTV4sf8gChRmQOQOYiUJBlITf5fVIA+xptjoSwEyT0sP
-	kqRCpyq75Hg9ASEE6lbu1U2sM5iX8ow0tmxdlvvvIb92r9WHLrSRMhYWw+IpbbzIxAju5fwAelP
-	uropqhLHuImZENf5VioN3gOPeK/mpuFrvZsx3tkVIGRz5S34PMN3XdYIzeKs7Jy/Hl3XpX1l727
-	P7/6H6kASJl7/pnSV6ZChFoTjI0wv4ECvc5gVoIbup5HpnqB60Gx/p21/bn5wEskzl0f5OPTm9k
-	xiWIYQdr+bXO9KPe73VsTwnLPnFzYPWxYRZuaxBCuUrGyiaT8EczVpqIu96tsn9XwwEUODjPg5s
-	QmXXQlBnQPHf5fzRZAw6ul3R/KiHs=
-X-Received: by 2002:a05:7301:795:b0:36e:e349:f2cb with SMTP id
- 5a478bee46e88-3768579dfa3mr1470248eec.19.1794362417519; Tue, 10 Nov 2026
- 18:00:17 -0800 (PST)
+        bh=VBnxo1cyrBP9eH26ieZ3qEE4H0EMBAPCxXo+MXkFYS0=;
+        b=26XAV82AveI0KMPKaw+DrX9Y3DN9dd6u38KWfiuJKXVBFZtLM0xuJcJsKJhfsMKfWH
+         pQtaUh9X2ViqiCm3KpWrxxE0HtMY29Uhu62PZm6x6QTU+ZJ6WmHBzY3rNCvxDzuLxpQX
+         P28Ckniz9WAdknvCGC8TJe8QWHVKXAhlym4gDP4D5OXTVTxTWWPdF5lcBpbmDaS47/V9
+         bUK4uIV2ttUdb6+YSrdBRzlZqzYKAjhOtcTMOm5v8KiyUHZooiIDb670hzGiy1Y3aG7T
+         o6msym7j2NFEE8jsEi9j6X2cESV+WM82iu3WkRuCNVJY9SKqrVQxilxwfgaswXBn7Dwg
+         dfTg==
+X-Gm-Message-State: APuU4Z+XKvCBy9ySUrTt3NrHm+5KiYcWMz/u+X/SYuyMnPur7AwcTAaz
+	o7AFILZ0w1lpCaEnaRUc/DpEvM7JmsYuvBD0YwiaTc3nfJUgywG/pqLSwKhDD6FymWP0rjZAT7W
+	hAjzp37loHFFVZbcHRoSF4eFIEoiYQuM=
+X-Gm-Gg: AYBFou2yb9YndqAinOYidDtE7UIR8fjBaGev2yFEU2mMdZEXS58ITPYXVKylVy0eRxu
+	RIL5XcBH4BbLVIkUoqPuMDAxndJv1K6zd71yI3642k9hQhd9JRNeoFOYohKjlQD+T5ehKc1b6x8
+	+LsDsH9ZY3iIqdcOz4bzaOQPX4vopkYJqGb8ox4OyG3YVfT6+LSnpsF2b01b2FpAuQO9P5zUz5M
+	rjFOw9USDNUZ3569es/CGcoZxkFYijeqC+A7kOHP3J/Gn9pCpNVDszuzyUKT1TTbfje4OMmlA6+
+	0eRzm4uta1iGROKollCpMu2TIhGggQVMvw1v40C0OqWN8Ol8R29OTAql89iawozO4eIfna7jWN6
+	F6zVM61w5O+J4KtsRU7TvND0umMMjtXVH/vCXIBGPiKjVlqcCsGDJXj2TOKMGtrkcRDvPp53P88
+	tL0xfKm8TNZXrtUDLENYkv9yOTdQ==
+X-Received: by 2002:a05:7301:a0f:b0:36e:9773:84b9 with SMTP id
+ 5a478bee46e88-37685e6af02mr1672191eec.23.1794362591163; Tue, 10 Nov 2026
+ 18:03:11 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,72 +104,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110-smsc75xx-rx-fcs-v1-1-4e048bfc28f3@gmail.com> <137b3cc5-7077-45d9-8ba3-ea4c584f1992@lunn.ch>
-In-Reply-To: <137b3cc5-7077-45d9-8ba3-ea4c584f1992@lunn.ch>
+References: <20261110-gtp-echo-rsp-leak-v1-1-192c032f3dfa@gmail.com> <265240b9-c9d9-4dcf-aea3-b31c460a0e3a@web.de>
+In-Reply-To: <265240b9-c9d9-4dcf-aea3-b31c460a0e3a@web.de>
 From: Joas Antonio <joasantonio108@gmail.com>
-Date: Tue, 10 Nov 2026 23:00:05 -0300
-X-Gm-Features: AclHuK8ROedb8-shxTvKJCqZsFUqIT-32EYB708a8vtoB04n-gGoY_3AV2iFUVI
-Message-ID: <CAOCBhwFSS_weykmFvmHQJ0VuMxW-dxHytBn81rn47wfWwnsV9Q@mail.gmail.com>
-Subject: Re: [PATCH net] net: usb: smsc75xx: reject frames shorter than the FCS
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: steve.glendinning@shawell.net, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 10 Nov 2026 23:03:00 -0300
+X-Gm-Features: AclHuK-wtfZcgBU4GAq4_YpIoQqfFNcIZX-I7sEBpi8z3DxPXOmg25d0xNehB-4
+Message-ID: <CAOCBhwHW8=-CLB3rj=if3MQN=3En=t1eQ3eQuVJA6e9vMgLrxA@mail.gmail.com>
+Subject: Re: [PATCH net] gtp: free the skb after handling an echo response
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: netdev@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Harald Welte <laforge@gnumonks.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>, 
+	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> I assume there is soon going to be another check to ensure the frame
-> is big enough to have an ethernet header? Can these checks be
-> combined?
+> I suggest to reconsider the error detection a bit more.
+> https://elixir.bootlin.com/linux/v7.3.1/source/drivers/net/gtp.c#L541-L57=
+3
+> https://cwe.mitre.org/data/definitions/252.html
 
-Yes, that makes sense, thanks.
+Hi Markus,
 
-Looking at it again, short frames are only half covered today.  For
-the last frame in the URB usbnet drops anything shorter than ETH_HLEN
-after rx_fixup() returns.  The other frames are copied and passed
-directly to usbnet_skb_return(), so a frame of 4..17 bytes (0..13
-after the FCS is stripped) reaches eth_type_trans() without a complete
-Ethernet header.
+thanks for looking at the patch.
 
-I will send a v2 that tests for size < ETH_HLEN + ETH_FCS_LEN in the
-one place, which covers both the underflow and the missing header.
+Dropping the return value of genlmsg_multicast_netns() is intentional
+here.  At that point the echo response has been parsed and the
+notification has been handed to netlink, which owns and frees msg on
+every path.  The only thing left for the handler to do is to release
+the received skb, and that is the same whether the notification
+reached a listener or not.
+
+The failures that can come back are -ESRCH (nobody is subscribed to
+the group) and -ENOBUFS (a listener's receive queue is full).  Neither
+is a receive error for the GTP packet, and there is no recovery to
+attempt.  Passing them on is what the current code does, and it is the
+second problem described in the commit message: gtp_encap_recv() only
+knows 1, 0 and -1, so any other negative value goes back to the UDP
+stack, which treats it as a request to resubmit the packet to another
+protocol.
+
+The errors that the handler can act on, nlmsg_new() and
+gtp_genl_fill_echo() failing, are still detected and now return -1 so
+that the skb is dropped.
 
 Regards,
 Joas
 
-Em ter., 10 de nov. de 2026 =C3=A0s 19:41, Andrew Lunn <andrew@lunn.ch> esc=
-reveu:
+Em ter., 10 de nov. de 2026 =C3=A0s 10:08, Markus Elfring
+<Markus.Elfring@web.de> escreveu:
 >
-> On Tue, Nov 10, 2026 at 09:03:21AM +0000, Joas Antonio dos Santos via B4 =
-Relay wrote:
-> > From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> >
-> > smsc75xx_rx_fixup() takes the frame length from the RX command word
-> > supplied by the device and strips the FCS by using "size - 4" for the
-> > allocation, skb_put() and memcpy() of each frame that is not the last
-> > one in the URB.  The length is only checked against an upper bound and
-> > against skb->len, so a device can report a length field of 2..5, which
-> > gives a size of 0..3 after RXW_PADDING is subtracted.
-> >
-> > size is a u32, so "size - 4" then wraps to 0xfffffffc..0xffffffff.
-> > __netdev_alloc_skb() adds NET_SKB_PAD to the unsigned length, which
-> > wraps back to a small value and the allocation succeeds.  skb_put()
-> > adds the length to the 32-bit skb->tail and skb->len, which also wrap,
-> > so the skb_over_panic() check does not fire.  The following memcpy()
-> > then tries to copy almost 4 GiB from the URB buffer into that small
-> > allocation and writes far beyond it.
-> >
-> > A malicious or malfunctioning USB device can use this to corrupt
-> > kernel memory or crash the machine.
-> >
-> > Reject frames that are too short to hold an FCS, as lan78xx_rx() does.
+> =E2=80=A6
+> > +++ b/drivers/net/gtp.c
+> > @@ -561,16 +561,19 @@ static int gtp0_handle_echo_resp(struct gtp_dev *=
+gtp, struct sk_buff *skb)
+> =E2=80=A6
+> > -     return genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev=
+),
+> > -                                    msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC=
+);
+> > +     genlmsg_multicast_netns(&gtp_genl_family, dev_net(gtp->dev),
+> > +                             msg, 0, GTP_GENL_MCGRP, GFP_ATOMIC);
+> > +     consume_skb(skb);
+> > +
+> > +     return 0;
+> >  }
+> =E2=80=A6
 >
-> I assume there is soon going to be another check to ensure the frame
-> is big enough to have an ethernet header? Can these checks be
-> combined?
+> I suggest to reconsider the error detection a bit more.
+> https://elixir.bootlin.com/linux/v7.3.1/source/drivers/net/gtp.c#L541-L57=
+3
+> https://cwe.mitre.org/data/definitions/252.html
 >
->         Andrew
+> Regards,
+> Markus
 
 
 
