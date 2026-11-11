@@ -1,83 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423678;
-	b=s5gOJhBt497IYP4Z+5WbAlD6pp3rWoQqUPHJasfAPnkv8iGLj2IrsrsKHr02LK3bQx9C
-	 S4xfCjO/DsGke3CFtGsPuuMTNxkNkjwD7oFfl0YaL2qlrFY+iAFIlwlybUIKyotm792yk
-	 uNFMZEEg7pZ0hJWdRfVG/jIy3phYt2nHR+p76pmHj89i87Mk/LJ+k9NRO6Oq13l1D6Cx0
-	 +Ta0FlBzZSAeRwcx8sm4r1Npe0OQNHjqsSpApwk4AZVKPq0y/cuNlA8I3SbnfydbYfYOz
-	 w/So/A45CprQ3GiqQNby9+9ZgpP6cJJx7NenIkIWljnhs52PCZ3jRKDUljx8iXS2ZfA==
+	t=1794423718;
+	b=vn+0qnxbL9J5k/AmZ6fl8RKiSq6aOTtoTnTRwy1qoIeRAU3+f79wlrlpuHiUJjDDf76i
+	 zWSrbpZtZUfREyHEXJXhBv83eF0Cq3mcgm/cmp7V925lS8rbw1RfzB6uLQF9VY8IMJ/EW
+	 kbLYoPwTUPqpot4t/YHXMfOteSwbq3wSGkxtv6uelClk7Bew9doq0HGQ/SjHGBoDE73Yb
+	 3YZAnR2tLSIu1LbUAaPYSbQzZ6D8z/FtND8kOmBL/vOpldW31y3i0xwPs92ARMC7dqnfP
+	 AHvGD+4FuIcj/soSebrnEmhM0k7m+FipG9fQXJ0ybjSBISb/d9Ff9SupHLM/Dr0QMog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423678;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To;
-	bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
-	b=AUSi2yyjsr5IPUw9eg3ZfuVd2Hal4nukoXGxsaxEJhDnvT+HhjMLv1sL2UsS0GpbdTGr
-	 /TkSyY/EHoU8VBsnU24wKuj/WCUhJTkB5+zydybHliFjdR9eqFTSFKDn9pk3vcs1+2u5W
-	 Cj6+KFCnvtl6/hCfbQtwGK7oXY7u9r8by5/hULDTEm1Bfhh6UiiPEGo4IauCAqFFZw1SD
-	 CCMFngHgoYEdav7ZBDw+7DW+ko6WEFpQ816dgv7RlpP3ZezgMa4a7+AjqglMQK74W7gGB
-	 p7MC7mB/0R3ngx0yy2lmBMWohcYNHWcsDXlktdFbGYf12Vsfxit6fcdPuYwdBWOUooQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794423718;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=WGmBVBqTPzE6wBBa29Lpbl1ycjxY4huditJNqegwALo=;
+	b=R/+hxfd6WH5SxoobODpWKZ4f7eUGchc/5zEgMia+Fsi4W4TKbNw2bF3jiGoUFHjy6m0S
+	 jEp8hsgfPslToBHLwkZ1lVp2kFhxNWxR/foSBYQ2ixn/p38KIbatLP86OPtzyOfzbhoYV
+	 b0uSNIRrDo1jsfA//pAy2NAetCZHi0gtl9wOtFVuL5Q/JII6fExUpIjJKXEHh58vAf9lg
+	 h1C0Lzt/0iGtfaKEJuJhhikfKm/PFb3WTZImsSoau6FGpb4kDfzUl+zbRruzdutl4EnM9
+	 zD7bCuXCBI4Jv5LRpoTy4kAqv1jI5zaGTbAYUKcGGAVJqCVSWhcDmiEblQ+xjiIwP1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHkRigWs;
-	arc=none smtp.remote-ip=209.85.222.171
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="GXjtCnX/";
+	arc=none smtp.remote-ip=209.85.214.227
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423C5606A327
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:01:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 423C5606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08DA606A321
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:01:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B08DA606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHkRigWs
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e63ee7b4cso315172885a.2
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:01:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794423677; x=1795028477; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
-        b=LHkRigWscoO1IXIQFs6/S7w1FUhRnu66lP+me1F9tp+woQK1t61v4UNNSyggqb4mOX
-         hkOb5/IVXmfs4ZveeHLDMgbH2NVuzIEY/J/WPy/shFxDKAiXJz6IbXyPUV4ckFZ+CsC+
-         c9gkmXH6qx8NuT+7knfat6nN41LKdJI5AqHmXOuhg18s+O76DdTa+1UL8roEbcvId/Ns
-         kTG/VWDpa7xwT+xoPmwPqh3uf6iTwuE9zBLajqn7CgcAuA/eMNIzXPPLnoO373jqfflo
-         BWXGJsKWiNERilvEBM6NM78A4lF9eT8HO6VECVYKCKap11URDX6Ewiu7J/Bp2B4VyeQc
-         r7RQ==
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=GXjtCnX/
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2ede35b0cf2so3628915ad.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:01:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794423677; x=1795028477;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
-        b=hUBOXgmFN/sepc3tcc/b3Sca+31MCYCBMnvzo+Xoe4XcvCeW4JYC4+7n86dxbV+hiW
-         zsb9pqU/3dm69/UUqhm9kx22IqDIbBdEV3RjJylfpxgWPW5Cluf+CPPYCffj++ewIf4y
-         DNuKmqdV1W1XGryZVnaImnthgn21BDyhrrOMJ3NAdVqwd/FPe5vZkX2Dedd3ZZgZAy/2
-         EizlMjr9uJhJA5c8x7XEkRDPxyghAaR9e5SBp3v6Kd5/R9WfZ4r6HPh7ZjhLbpLBz8Ih
-         MAusE3LRKCyFSzOr+zfyIf0MMDK6Kqk/TJ1edMe1Msg22QCALzQLxZLyMabVmkjldkru
-         NOYg==
-X-Gm-Message-State: APuU4Z+VZlh80lnhYmiIOwVOESFti56yiXkzn3NfML61wzGMKrfxwP8U
-	HJHdUbqqYUSFcwXm3uG2nD29Hwjov2pJ2/PG66KecBzAAnOy6NjCn1Ew
-X-Gm-Gg: AYBFou29X4UjKsSksyX8wlfRjtSOBbijRcKjyhqUadfnXBWT/unH7S5FFLpgqxMhxzB
-	ahuFr2bF0G9Z6hywtLJ3S4MNHVHlqfhyaYkFAZ2RF7WnUISceR56a1DwbIwOTzt98Lqbqns8GGa
-	NsupwITrcJWiok4ZJfzkwbj8GOC6DOyEYrF17FoJOR1F0to9+us7WlgmfsjUB0qM4Z6oAl2C5ql
-	DY0IFrsGWgO01E2ZaOY9EhAVT4F15D4c590rZdBq08yZvokufArjl8ioIeNq8XcFVj1pgsHOWN7
-	ShXSAvyq6f9pgXFGf9PfR8t8LXr10f41u9mak7jN8VRKjzDO4yTY6ZlPD0U7UjXwNZ/ChtNFksy
-	Atp933U+JRGH3Uaun/QDD0noWd5E+m3buMyIDMW0gRQ6VoFjjXvf98SzMmO6HpCN2LDH7sp2LlP
-	vxjXglyOjhk+CMvgiHjJBlqevjighvwmaV6n3dZRJg2xM0U3HuhHDWq5G3LIMOxGzt5WFq7UpN+
-	Csx90F/XkhBCwT8IeOdJEy+oyeMfJn7wws4Rc4lqAc48L+3yusQJnq7V623HuqUf838yJL7s5bE
-	BC7l4knGt9hlzISYR1rVMm1jVzMJdWixiL5S1aiWRzlw1YnDelQeZyU=
-X-Received: by 2002:a05:620a:2b96:b0:93f:53d1:54c7 with SMTP id af79cd13be357-947b00d141dmr521152085a.70.1794423676923;
-        Wed, 11 Nov 2026 11:01:16 -0800 (PST)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e73b2d2sm545314185a.10.2026.11.11.11.01.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 11:01:15 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794423717; x=1795028517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WGmBVBqTPzE6wBBa29Lpbl1ycjxY4huditJNqegwALo=;
+        b=bvrVY93YSRD6JnJ8j5lXodcheVInMfIZ+phbSv2D+4eugWJ76SsqsEbtbx/ZLZR7ol
+         9zgmHJXjDyDwvxIvHT7mjO5U5Q4u7JN25f/vBU7IxlvvCEtN2PHKRiO41gj1/J0asIMS
+         SZHeGFgGkyB3SE40oFCri7KUCGfXQzXROvoNyOToTvLyCIBVeVHOhObEhursTd63NTUH
+         zPZ9q+T/2/QtM5b3mkASUylyVA/gcDwG0NCwrHzgVBERp/Sw79zWGSmXKXsWVTD5e+Rs
+         5cz3QBD3EBxBUr4j5jUoqBs/PL/iWQT6nTiQ5oWmqe9qJJ7ao9NHMVHTZOYSR5OVXMge
+         u+UQ==
+X-Gm-Message-State: APuU4Z9g+FR+LEwIvBzvJg4Xr8ZcWk1Dwbc5neV5Gfny8f9r1tXgoJrW
+	exHO2qFJqY0yO4L8Bx5Ms11fWDg+JmS265zUzFlqK2iPQTyocyjzzpbtRFQV1IRoQ5DfTYyV0bL
+	h5SaCa0ydpxcRWhD56JhLvXVS0ahc780r2AqicLhabVCzXiWWXtaBLbVMunhGvaDTb0OCNk7/gz
+	OV6PdPwR1Y0bvKhYQuZVMJ0Ic5vU6rBthxypp23q64DJdwbbpfEByDV5DUwxq0rElBuMmlxtdax
+	e2hGqnI5RTAKuCmeg==
+X-Gm-Gg: AYBFou3MBghMXa5OxFTOxKJRt/xfXtqSPtTSO6Kd03KA1q1udmbbgHftXSHzA+ZbhlX
+	991TKiYizD59jDLoLLx7kMeFZT5vfOLJHB23Z4xN1PXPfYpf3QK4fxSsIbKOpO/gEDIZsFQwpzd
+	PnaMDsXs2tp9V5C/zf1oWTI9J3FXUYudldHlaVJuGgBBkGf5uTpJaty7V/Eud0A/lJSwhavbc6J
+	6xixKikLcXuoBuB6uL1ishqvBaSLcSsUykw1OF7Au+iNsv1J8fDeJ6Je2+4Mnny5tFoMxrVak1A
+	Q+kLvXqmNLff/kShusVpBIg5GQNLBKw2VEmY40gmPt5x7g5xzqjztaVjE/OZup3naF3MI6tMBdN
+	Dz06Zn2c/7a3Pb0BoChDlzNgnMK8/ReOM7oSGo//Ygv5vEMkbMbHLhFs2LE3IgrId1235dKrunH
+	+bfXL9MBL1rsEWKNhiFPFUTodvoeIMjslq7yQHh9y9og==
+X-Received: by 2002:a17:903:4588:b0:2e2:c995:b00a with SMTP id d9443c01a7336-2edd7a67c4emr37457225ad.48.1794423716964;
+        Wed, 11 Nov 2026 11:01:56 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2edb64dd308sm1262075ad.26.2026.11.11.11.01.56
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Nov 2026 11:01:56 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30bcb065bfdso5690098eec.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:01:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794423715; x=1795028515; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WGmBVBqTPzE6wBBa29Lpbl1ycjxY4huditJNqegwALo=;
+        b=GXjtCnX/JlcdnBl8m58qpkEwqCeVbTt6BGj9vkP7o+5++a6Pe9HfY4VCmoYSjATwaB
+         hstyPOS/xpYFRTSCPMceqHZSXVJn/LkW4r18xbRtLmv14zzhDxUUxkI401BeUFgRMWhF
+         mHqyc9z/zbUOIXlxWge9sGvpAqKAiI3Ii2FYk=
+X-Received: by 2002:a05:7301:77c6:b0:36f:d53:cf2f with SMTP id 5a478bee46e88-37682f94242mr3747139eec.1.1794423714650;
+        Wed, 11 Nov 2026 11:01:54 -0800 (PST)
+X-Received: by 2002:a05:7301:77c6:b0:36f:d53:cf2f with SMTP id 5a478bee46e88-37682f94242mr3747097eec.1.1794423713587;
+        Wed, 11 Nov 2026 11:01:53 -0800 (PST)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212ec002sm20860468eec.26.2026.11.11.11.01.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 11:01:52 -0800 (PST)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [PATCH net-next v4 0/5] bnge: Make NQ0 persistent across open/close
+Date: Wed, 11 Nov 2026 19:00:06 +0000
+Message-ID: <20261111190011.53437-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,104 +114,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Nov 2026 14:01:14 -0500
-Message-Id: <DMSM3RNRY412.1GXB07F4KGJYR@gmail.com>
-Cc: <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>, =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?=
- <bjorn@kernel.org>, <bpf@vger.kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Donald Hunter" <donald.hunter@gmail.com>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Jamal
- Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>, "John
- Fastabend" <john.fastabend@gmail.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Paolo Abeni" <pabeni@redhat.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
- "Simon Horman" <horms@kernel.org>, "Tariq Toukan" <tariqt@nvidia.com>, "Wei
- Wang" <weiwan@google.com>, "Willem de Bruijn"
- <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next v1 04/15] psp: add support for socket-less psp
- associations
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Todd Bert Freed" <toddfreed@meta.com>, "Daniel Zahka"
- <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261111005533.6436-1-toddfreed@meta.com>
- <20261111005533.6436-5-toddfreed@meta.com>
- <DMSJB8MZZCXK.MCEBRZQDAM5Q@gmail.com>
- <CADh2yMx8MPjcH7Bpj72rNNd_tT=6uSC5Ow9JyGjTMjFgs499Pw@mail.gmail.com>
-In-Reply-To: <CADh2yMx8MPjcH7Bpj72rNNd_tT=6uSC5Ow9JyGjTMjFgs499Pw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Wed Nov 11, 2026 at 1:23 PM EST, Todd Bert Freed wrote:
->> I'm not sure the kernel actually needs any bookkeeping at all for these
->> generic rx spi allocations. You could probably just pass the spi, dev
->> id, key, and probably rotation count (as a device key generation of
->> sorts) to the user without creating a kernel object. For socket
->> psp_assocs, the rx state is consulted on the datapath before queueing to
->> the socket. For tx state in all psp_assocs, there is the possibility
->> that an SADB handle needs to be cleaned up. Neither of those apply here
->> or in the rest of the series as I understand it.
->>
->> I figure the tc ingress rule can just take the spi and dev id by value
->> rather than needing a reference to an object that we create here.
->
-> That is how it works in this series. The tc psp decap rule (ingress) does=
- not
-> make reference to an rx assoc ; instead, it should have flower matches on
-> psp_spi, psp_ver, and psp_dev. That effectively ties it to packets from j=
-ust
-> one rx assoc.
->
-> So why keep track of rx assoc objects at all? Two considerations.
->
-> 1/ don't accept packets that correspond to a stale association. That is, =
-even
-> if the device decrypted the packet, it should be dropped if the device ke=
-y
-> which minted the assoc's SPI is two rotations behind. For psp socket offl=
-oad
-> that is enforced in __psp_sk_rx_policy_check() with the pas->generation
-> check.
->
+Hi,
 
-I asked why we needed to keep track of socketless rx assoc objects. The
-above applies to the existing transport mode code, which is my point.
-The rx state from the assoc is looked up from the datapath. It doesn't
-seem like that is the case in this series.
+This series ensures the bnge driver's Notification Queue 0 (NQ0) remains
+persistent across interface close/open cycles rather than being destroyed
+and recreated on each cycle.
 
-> The spec permits SPIs to be reused immediately after two rotations. So th=
-e
-> device could decrypt a packet with a SPI that is more than two rotations =
-old
-> in that case, or if a previous packet is being replayed, for example.
->
+Currently, NQ0 exists only between ndo_open() and ndo_stop(), so firmware
+async events (e.g., link changes) and HWRM completions are not received
+while the interface is down.
 
-A SPI that is two generations old will cause and auth error on rx. The
-hazard is that an old tc rule with a SPI from two generations ago can
-alias a different SPI from this generation. Userspace can just flush old
-rules before doing a key rotation. That is why I suggested including a
-'rotations' attribute, although that is probably not even necessary to
-keep track of which rules need to be flushed.
+NQ0 and its MSI-X vector are now allocated at probe and retained until
+remove. To conserve MSI-X vectors for Rx/Tx queues, vector 0 is shared.
+NQ0's NAPI exists only between ndo_open() and ndo_stop(), like every other
+NQ. While the interface is up, NQ0 runs via NAPI; while down, an
+IRQ-triggered work item processes non-datapath events.
 
-> 2/ hardware offload. the solution to #1 should be able to be fully offloa=
-ded
-> to the device. psp tunnel mode will be hw offload only, and is implemente=
-d
-> in the eswitch with connect-x.
->
-> We could add a psp_gen flower match to replicate the pas->generation
-> check, but the device has no access to the pas and can't offload that.
->
-> Keeping track of the rx assoc means that the kernel can take action on th=
-e
-> "this assoc is now stale" event. Possibly by enumerating the tc rules and
-> either deleting them, or marking them stale for userspace to reap.
->
+Patches 1-4: Preparatory refactoring (alloc/free helpers, logging
+             fallbacks, NQ iterator, irq_tbl layout). No functional
+             change apart from the items noted in their commit messages.
+Patch 5    : Create NQ0 at probe, free it at remove, and add the worker
+             fallback.
 
-I think it makes more sense for userspace to just get rid of the rules
-before rotating the keys.=20
+irq_tbl layout after this series:
+  Vector 0       : NQ0 (probe to remove)
+  Vectors 1..A   : RoCE (auxiliary driver)
+  Vectors A+1..N : Main L2 NQs (open/close only)
 
-> -Todd
+v4:
+   Addressed feedback from Jakub Kicinski on v3:
+   - NQ0's NAPI no longer outlives the open state: it is added in
+     ndo_open() and deleted in ndo_stop(), like every other NQ.
+   - While down, the NQ0 IRQ handler queues a work item for async and
+     HWRM events instead. The mode switches only in open/stop, so one
+     context consumes NQ0 at a time.
+   https://lore.kernel.org/all/20261022181639.1815c338@kernel.org/
+
+v3:
+  Addressed feedback from Simon Horman:
+  - Extracted the failure-path NULL dereference fix in bnge_alloc_core() and 
+    submitted it as a standalone patch to 'net'.
+  - Dropped unnecessary defensive NULL checks (!bn->rx_ring and !bn->tx_ring) 
+    from bnge_free_tpa_info(), bnge_free_rx_rings(), and bnge_free_tx_rings().
+ 
+  Addressed comments from Sashiko:
+   https://sashiko.dev/#/patchset/20260922052904.59237-1-bhargava.marreddy%40broadcom.com
+   https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922052904.59237-1-bhargava.marreddy%40broadcom.com
+
+  Other changes:
+  - Renamed series from "bnge: Support async events while down" to "bnge:
+    Make NQ0 persistent across open/close" to accurately reflect the
+    streamlined focus on NQ0 persistence.
+  - Completely reorganized and streamlined the series from 6 patches down to 5.
+  - Redesigned and shifted the MSI-X vector/offset mapping layout:
+      Vector 0 (IRQ0) : Permanently dedicated to NQ0 at probe
+                        (no longer recreated on RoCE load/unload or open/close)
+      Vectors 1..A    : RoCE (aux) queues
+      Vectors A..N    : Main L2 queues
+  - Added a new patch introducing bnge_err()/bnge_warn()/bnge_dbg() logging
+    helper macros to fall back to PCI dev-level logging before netdev
+    registration during probe (Patch 2).
+  - Switched to the bnge_for_each_open_nq() loop iterator to clarify which
+    loops are open-only versus those that cover all NQs (Patch 3).
+  - Enhanced safety in bnge_napi_poll() to skip CQ notification processing
+    on NQ0 when completion rings are unallocated while the interface is down,
+    preventing invalid dereferences of cp_ring_arr (Patch 5).
+
+v2:
+  https://lore.kernel.org/all/20260922052904.59237-1-bhargava.marreddy@broadcom.com/
+
+  Addressed comments from Sashiko
+   https://sashiko.dev/#/patchset/20260901191728.643212-1-bhargava.marreddy%40broadcom.com
+   https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901191728.643212-1-bhargava.marreddy%40broadcom.com
+  - Dropped patch 7/7 ("bnge: Process async events while administratively down"):
+    - Link events while down are unnecessary to process since bnge_open() already 
+     queries and updates PHY settings via bnge_update_phy_setting().
+    - Keeps the series focused strictly on the NQ0/NAPI lifecycle refactoring.
+  - Corrected the order of operations in bnge_quiesce_nq0() to disable NAPI
+    first, synchronize IRQ, and then ring the doorbell to prevent NAPI
+    rescheduling race conditions.
+  - Added support for dynamic MSI-X vector reallocation by introducing
+    bnge_reinit_nq0() during interface open.
+  - Fixed potential NULL pointer dereferences in core ring cleanups (e.g. bn->rx_ring,
+    bn->tx_ring, and bn->grp_info) on allocation failure paths and failed opens.
+  - Fixed a resource leak in bnge_init_nic() where RX ring pair buffers
+    were leaked if chip initialization failed.
+  - Corrected the MSI-X vector demand check in bnge_resc.c to ensure
+    sufficient vectors are allocated for both NQ0/aux and main rings.
+  - Changed CPU affinity hint failure from a fatal error to a warning.
+  - Added robust NULL pointer and safety checks in ring allocation and
+    cleanup paths to prevent potential kernel crashes on allocation failures.
+
+v1: https://lore.kernel.org/all/20260901191728.643212-1-bhargava.marreddy@broadcom.com/
+
+Bhargava Marreddy (5):
+  bnge: factor out per-NQ alloc/free helpers
+  bnge: add bnge_err()/bnge_warn()/bnge_dbg() logging helpers
+  bnge: add bnge_for_each_open_nq() iterator
+  bnge: make irq_tbl layout depend on BNGE_FIRST_OPEN_NQ
+  bnge: create NQ0 during probe and keep it active across open/close
+
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |  47 ++
+ .../net/ethernet/broadcom/bnge/bnge_auxr.c    |   4 +-
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |   8 +-
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 518 +++++++++++++-----
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   5 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    |  10 -
+ .../net/ethernet/broadcom/bnge/bnge_txrx.c    |  57 +-
+ .../net/ethernet/broadcom/bnge/bnge_txrx.h    |   3 +
+ 8 files changed, 493 insertions(+), 159 deletions(-)
+
+-- 
+2.47.3
 
