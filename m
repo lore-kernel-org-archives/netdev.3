@@ -1,99 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.221
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794411078;
-	b=Eor4BvZ6qBeIDX9j/k6Aca8MW1Cg8oyeBtyWJOSNz2XkBZbiTARs3VJXbMwk2GKdaMCH
-	 mmBtgv50dXJciGJ46bNilTakTgnDB6ud6goRGrpqc3/zFTqNQR/Rr8Q1WDIx1omI3edut
-	 Ko9eTr1ASB2LpIq+ULCXi/g7OqL4WwuW/OEARouiF0tFd/AyX7ZVJwMD3L5cMEeBl6USc
-	 8FhnGbq2CWXu4GOzSqoklJAWrXzWwLdo/9bQMQDcrFkZqRobonaBF/JwFrJPwmbe3Ewzf
-	 S7TvMwSyucQgPMlWGzfU3GJ0/3mUrY/qZ1uk57fkDHZKUHvQ/xFIc5sfcyx/AmsFEbw==
+	t=1794411111;
+	b=QYb4eX4pV/0gF1gD/tqpGoOdQz2HcOOg/JWgKBIJ06edgVALIbTZVIIl2qPNCducJQtS
+	 ChHl8yDd93RX8WXUWnVgRjGxjaEgTlWHwOfBJcJZzBhro8jDxy9IuCb/kmpE7xTCPEgc+
+	 Og4Xsvz8NjB3cI6ORlLfHYOqrwOTBNFezajNuAyPmKkIE7msuOYpitiryvVtZAbWNJorc
+	 iCu6yatXRUytAue5x54290CwQ78FTIqV2ukCva/4/NZ7NPHWFEMcsPrPKy9WE5G1RHPGO
+	 ws8oey5AMcqYRUdqjS4PR2sLdZ9PyB0MyOTU3nIYKy51ioUtGhH7AbY+tYxHGMohKhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794411078;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=jMbE98rH640PDimDt/5oPcA8BfJO9FWfDPET1eqatTE=;
-	b=AF+6ERuWZ4cRjSYeq0lBzj7kJKpG9/2kkuc722jnrKqEJz5LjA3HBrhMdHo4lXcX96cB
-	 1s6xQjrSwtL8aZjPUMKJfRbQosr48S3xNwsl+cIdrTQ/AeAjmalbcJzkAspE6W0ecZgBE
-	 BKcdm9SQ/W7hql+xkG7zm3WFKgcrO8gUU2dbq/zIrjcxy5qQGXRD0gXgizGtNtg0/dPr8
-	 DTSD49+IHAWiUiOpZkyuvfTAUxSJ7AniHWmkFo80UdZde0SVrqsqo+EzeXRpscP1MNJnt
-	 zYOh6ralnW0qqxPOjd5viXmEWY3+Xym8BRxq9dEM95FzUgiNguAySw/pHyChenmnnsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794411111;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=yEIA6Zmz02BTCzQZDjg7NRu0QFN0RHxgpEwj9oihF+4=;
+	b=OotGGC7oHL7TpCdszj1cDxuV6Dq/s9+ZGO8ZbMWiTE04UUZn++rhQmdFiUYrUZeKcJ3z
+	 +Xf8dQ/U8bBzVrzclCEX9jmTwiFSOO8Lafnt8e/YcUG9MGD/xN6sYQNWoozNhLBt0L3Xe
+	 2p+wcSa4mKeS7vJIpzbFkaWobdz+AfrhzYwU5pC26yjokoRH0Hw89WnIOhtwFNHOfooPS
+	 RaHjKHZvzfN3hgdGurc6JBGV2j3HNLpv5HclpWyBIgljFCU5YsNF1PqCGy4w1ssBQ9+bW
+	 w67ll4GHl8zKbp5WVjqEX8Gv7SC2L7JCLDmuGblOSu0io1G2xB8aCiSO1JXH9849CrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QwZFkqnk;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dBZM5A4l;
+	arc=none smtp.remote-ip=95.215.58.221
+Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651E8606A334
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:31:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 651E8606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177DA606A326
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 15:31:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 177DA606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QwZFkqnk
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4b79502c27aso33148595e9.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 07:31:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794411077; x=1795015877; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jMbE98rH640PDimDt/5oPcA8BfJO9FWfDPET1eqatTE=;
-        b=QwZFkqnkqQgmKMaucvqUUEhBhCr0CHfKdRo56wmiBm1nt1B06ewHmhGQFcN1McJkGi
-         Y/h/HgWV5gvyg000piSpcg7wedMpZsjEd0iTLO+PD30VerIoqP9qIeSPzs/jGZpZAAWl
-         p3YkVlhx22iVP4VgqJXKfdnOtzciiHM5NqJO5vHBstLl/najug9+sUBetrRtwIFoufl5
-         JQJGDf20tM/YDaiCXhIvherz/n7N6yUNO8dsm59dUOnRPnhMWvVQgCm2Xg0jmnmKH5fy
-         vB5OHjhNq00CTpz2vuPlCSMcqs12L90cc4QJi2Rxbh4lE18kbfkYVfn4K0CY/Gds6XLg
-         89YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794411077; x=1795015877;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jMbE98rH640PDimDt/5oPcA8BfJO9FWfDPET1eqatTE=;
-        b=QGg+rzyZr/OCZ0KDhM7ecv3IxJ8MgRX8ju0ygpS+OxXJ1g0uqEr0oImsv11TbyUf29
-         FAeKNg2i2eMH19Z5KWngD1mvRruQLxF5AmCDUughNlU/CWmvVRe1G5GNOWpt17yjfjfG
-         EGM/u82X2X19AfTeeSM0H1C4fwvYwfd1G3f2SB13xyJsNhI3eaifru2SV+Fme6NbnRz+
-         97D9USyurACNzz/E8eKn6I0sbLiR4gmfh4YxGKoUGoYtAndxKKobYb3n2C05bMlzZMvN
-         WHLaKF7lqAm0X4KbrV+7+619vjQ2JL14CazIcyf9et1USq3Z8szaAvIlcPkqFjmGH++Q
-         y/YQ==
-X-Forwarded-Encrypted: i=1; AL+hErFkdGVblyTgXRxWz5fSTlnQsbYLAhQUJKdbAE+FGAcsGLS70c3JvE9LGVOn17BVBOzbFEXepZk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/mHOtUPrXcmlbtjYrZVBv4c2k/gHJd+dkd9Q54CZQL8vbMPKhI
-	hGpk6WOTJAYprT1o85qBJIMGR/65iheM2idedK4pWEqkBV+R5qwaXFR2Jom7
-X-Gm-Gg: AYBFou0rPM8zG1I5cz9fUG9HyTSqMtxC22S8BrTYg0ndd+cWpFfvB8RCMd2eFDPh5ik
-	Vda5WX7j7qpDji42t26LLfVykCitWsZybKMrQWaupooL3W4duMUYDLZ8pGaeVLUNA7FtGJBuVsr
-	q9hxpHi39m8VE8tcI7UhjsA98owH8Qp1jtWite1Whf3dLofS+TUM2R1m8MaQEqSsAu8/lWRDqzr
-	HJWQJv7S965+3KYWavytYyEcb8IH5KBeM7En1MrnPMCRnZfcEiLJiqdxj6mCAeY8WUuDQaXWCC4
-	E2KF41RHstrSmcfleFezAV+z4HCNcxLrgc6hFy6ybvBlqt5eo4jxBzBiv0jcBS/rZ8HRPKhKGLD
-	xy+vQhjN/N4xI89KcHDM+G+qbjM/1v1cOCRVLowv/5OfHwcKr8pv2kpZ575qRw/VSBI1pgCTupg
-	ZN1wZJMvh5ia8EXjFoAMmhN7qTXleMrDKWIdogM86qDPwuy825Ho+AkMq4t4zQDRZU8ceyuypX6
-	WTpzdrF4Chb0k56OgbGzOSxz+f+ViJrSBlakv8r/dQJ+UO4AQnG5Bk77IykWRnF0o50oXtxFUPM
-	4hE0rDHqXL8yEXY=
-X-Received: by 2002:a05:600c:1986:b0:4ba:eb:eb9b with SMTP id 5b1f17b1804b1-4ba0935dad6mr50320995e9.8.1794411076662;
-        Wed, 11 Nov 2026 07:31:16 -0800 (PST)
-Received: from localhost.localdomain ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4c5e2fd6sm2261365e9.10.2026.11.11.07.31.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 07:31:15 -0800 (PST)
-From: Tristan Madani <tristmd@gmail.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH net] net/sched: cls_flow: pin file with get_file_rcu before reading f_cred
-Date: Wed, 11 Nov 2026 15:31:06 +0000
-Message-ID: <20261111153106.580776-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dBZM5A4l
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NjcZ2vs086wrkeO3l/vjfd5QbHjdbw8ASBFYAH9BBjE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794411107; v=1; x=1795015907;
+ b=dBZM5A4lIIKKb7ticjEP2eL/HioI0Hp1LgmI4yAus5DfyRQ2BAewrMRWVlfwISZ0fmb5ZrnN
+ vMNRzU8i3WB6GJV3ama9V+u83WeUZTapB9u0P6+zbS9LqJHyYmZlmd2Sk9adM6zZuot1RHI561Y
+ H4C/KL00Vc2UzkOB9/croRyg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 59aee4a50207fa8f;
+	Wed, 11 Nov 2026 15:31:47 +0000
+X-Mizu-Trace-ID: 59aee4a50207fa8f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <28d1e284-501f-47f8-b155-bbc2255f7a06@linux.dev>
+Date: Wed, 11 Nov 2026 23:31:35 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,75 +58,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next 1/9] bpf: Add log support for tracing link_create
+To: bot+bpf-ci@kernel.org, bpf@vger.kernel.org
+Cc: ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+ jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ kpsingh@kernel.org, matt@bobrowski.net, shuah@kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+ martin.lau@kernel.org, mason@kernel.org
+References: <20261109140816.5196-2-leon.hwang@linux.dev>
+ <5ed2ec09ce8a3ce5477a658b68c6315499ef67793014be27de18ee57ec968e12@mail.kernel.org>
+Content-Language: en-US
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <5ed2ec09ce8a3ce5477a658b68c6315499ef67793014be27de18ee57ec968e12@mail.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Tristan Madani <tristan@talencesecurity.com>
+On 2026/11/9 22:47, bot+bpf-ci@kernel.org wrote:
+>> bpf: Add log support for tracing link_create
+> 
+> TL;DR: Logging is incomplete: the freplace max_ctx_offset check in
+> bpf_tracing_prog_attach() still returns -EINVAL with an empty log, and the
+> saved_dst type mismatch may too. No functional regression.
+> 
+>> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+>> --- a/kernel/bpf/syscall.c
+>> +++ b/kernel/bpf/syscall.c
+> 
+> [ ... ]
+> 
+>> @@ -3843,6 +3849,7 @@ static int bpf_tracing_prog_attach(struct bpf_prog *prog,
+>>  	 */
+>>  	if (prog->type == BPF_PROG_TYPE_EXT &&
+>>  	    prog->aux->kprobe_write_ctx != tgt_prog->aux->kprobe_write_ctx) {
+>> +		bpf_log(log, "Invalid kprobe_write_ctx.\n");
+>>  		err = -EINVAL;
+>>  		goto out_unlock;
+>>  	}
+> 
+> The check right after this one still returns -EINVAL without writing
+> anything to the log:
+> 
+> 	if (prog->type == BPF_PROG_TYPE_EXT &&
+> 	    (tgt_prog->type == BPF_PROG_TYPE_RAW_TRACEPOINT ||
+> 	     tgt_prog->type == BPF_PROG_TYPE_TRACEPOINT ||
+> 	     tgt_prog->type == BPF_PROG_TYPE_SYSCALL) &&
+> 	    prog->aux->max_ctx_offset > tgt_prog->aux->max_ctx_offset) {
+> 		err = -EINVAL;
+> 		goto out_unlock;
+> 	}
+> 
+> An freplace program whose max_ctx_offset is larger than that of a
+> RAW_TRACEPOINT, TRACEPOINT or SYSCALL target will get -EINVAL from
+> link_create with an empty log and log_true_size of 0.  That is the same
+> kind of invalid freplace target as the kprobe_write_ctx mismatch above,
+> which now logs.  This isn't a functional regression, but was this check
+> missed?
+> 
+> Would something like this cover it?
+> 
+> 	bpf_log(log, "Extension accesses more ctx than its target.\n");
 
-flow_get_skuid() and flow_get_skgid() read sk->sk_socket->file->f_cred
-without holding a reference to the file. Since the file slab uses
-SLAB_TYPESAFE_BY_RCU, a concurrent close() may free and recycle the file
-object, causing stale credential data to be read through f_cred.
+Will add such log in the next revision.
 
-Pin the file with get_file_rcu() before accessing its credentials and
-release with fput() afterwards.
+> 
+> Also, bpf_check_attach_target() still returns a bare -EINVAL for the
+> saved_dst_prog_type / saved_dst_attach_type mismatch, which is the
+> "freplace attachment to a new target" case the commit message mentions.
+> That code is in verifier.c, so it is outside this patch, but is it intended
+> to be left without a message?
 
-Fixes: 0ede61d8589cc ("file: convert to SLAB_TYPESAFE_BY_RCU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- net/sched/cls_flow.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+It was intentional to avoid touching bpf_check_attach_target() code.
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index a9ac3acf6eda0..233ca13299930 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -17,6 +17,7 @@
- #include <linux/ipv6.h>
- #include <linux/if_vlan.h>
- #include <linux/slab.h>
-+#include <linux/fs.h>
- #include <linux/module.h>
- #include <net/inet_sock.h>
- 
-@@ -208,10 +209,16 @@ static u32 flow_get_rtclassid(const struct sk_buff *skb)
- static u32 flow_get_skuid(const struct sk_buff *skb)
- {
- 	struct sock *sk = skb_to_full_sk(skb);
-+	struct file *filp;
- 
--	if (sk && sk->sk_socket && sk->sk_socket->file) {
--		kuid_t skuid = sk->sk_socket->file->f_cred->fsuid;
-+	if (!sk || !sk->sk_socket)
-+		return 0;
-+
-+	filp = get_file_rcu(&sk->sk_socket->file);
-+	if (filp) {
-+		kuid_t skuid = filp->f_cred->fsuid;
- 
-+		fput(filp);
- 		return from_kuid(&init_user_ns, skuid);
- 	}
- 	return 0;
-@@ -220,10 +227,16 @@ static u32 flow_get_skuid(const struct sk_buff *skb)
- static u32 flow_get_skgid(const struct sk_buff *skb)
- {
- 	struct sock *sk = skb_to_full_sk(skb);
-+	struct file *filp;
-+
-+	if (!sk || !sk->sk_socket)
-+		return 0;
- 
--	if (sk && sk->sk_socket && sk->sk_socket->file) {
--		kgid_t skgid = sk->sk_socket->file->f_cred->fsgid;
-+	filp = get_file_rcu(&sk->sk_socket->file);
-+	if (filp) {
-+		kgid_t skgid = filp->f_cred->fsgid;
- 
-+		fput(filp);
- 		return from_kgid(&init_user_ns, skgid);
- 	}
- 	return 0;
--- 
-2.47.3
+Thanks,
+Leon
 
