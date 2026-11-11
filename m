@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794358208;
-	b=lewwO6b4VPI1qO6pbLJ47Xg4hRojn7YwW+o7w9Kezw4jEESN73ke4fzxEoRwIkQnV/L/
-	 g5WTkNZDaNebEzy6Sz4yfCEgHK79g1aMvs5uRg2dgc+z2vo/5JQ7x+4J/ySdypWKgRdXz
-	 QkrREm+aRvWioVPrE3QHzSmyxka+NtQ1yonhtHcVY4Ji1VO0XR1JSk2hwgWwJ9UOsYrqv
-	 nSjFhccFp9I0b5tEpb3whRBiBsWlpOccK2gUkTaTKrG1xwOTvwJ+65cgyW5QEST65uNXr
-	 +ba897H2cLElsdQUTl4toH++2RmqSf0SwnMeSTkDXsovVDoPf7hc69ns68kT/KE8RYg==
+	t=1794358209;
+	b=simuY1JUbjSKDBHjyEHoXXS/rVNwxE1xr4XnQ8zOtOP+kPsTigYiKugYDAvKMx/YYuMl
+	 2aSuPdTjMd9sZh1X3o8SLT+O9Pl+YIZfAxwfd2n1PWPlmwuGWq+ywGJzjE+lblLF4P4oN
+	 u20t92XA/RCy4rL1/R1Rd3QWLOpGiaJknPfoUekr/PrJ7rZjUrutEaWCYdvt6sNpZ8UcP
+	 q9eN2LYucAkEuB1SPvDyqzPO1d1rIcyhCiLCmMfyzEWWnPaevXgDCy7qwScr/4n09YCMr
+	 m2Xof03WpA72LmqUaO8quvR5KmW4mVOK5q/xKM/4XpreyaBKUI4Fw1TcSX7aWsEcOeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794358208;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794358209;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=+zYwXBSWiIa4Uc/dKRVTAU5d6jEgNZcYQYOhqHVEoS8=;
-	b=iylZTu6z0joqG7HyTyo6y8JBTydgXfqfaOxTtAT4ahO31RuQrUl2G9ZtkXMQ2fH86R5z
-	 peWTuH3/x6b/9yzcRUppEg0mt+btG++7FnQQubWQkMj9Y8Llk85g9j+VbxJgJedsX+X66
-	 sZyg5wGQ9H5DZwIMKlxFYNQFo/hYVwZ9dc95/+Hh81SNUT+238dnpiGaUJR49vH0ySwyc
-	 eUKWPoVyRbn+hsU66yJkGF0Nrcatdtno13hNVgzJWADT8QqbdKzW/HyJUoVctrruAcG1S
-	 Fo+Mh9WpPZuBiYppm1l9RweMk6zeJGrWetFWLZVuxSP/n/kwUsLw0LWFn8T/LcUqosQ==
+	bh=Ha5Smbb98YkJ0rW+4V5BnLFoJAhpoEPnEkudR7DQLks=;
+	b=BB7//GQZwGa6QW4Qx+AblWHah4A5+h1EPWOln0tGR9zw51isWRTL/lpTtYASuzsOi1P7
+	 WqoZbbrjZ7f+Fr9J47wysgoC+/iw13gICMW1MZFnP852bFQmzuj5+UmDKLqsYmYGCc7Kc
+	 y43OmXLHaSoOhM2kzfqZSluU3tBkK8altoIflN0EnoMedIGdeIgoP93QYfKw7FMjjjmtr
+	 o/Ra6x9zypFLzE0FkmCT8pSjceL72XbcMhOlISMQ6YnNesW1+hT1v4vDMeUj8n1fY7lcA
+	 OBfUuhOdlCRh4Ky5McbP9qntHi9YKYBJf08wqk0q+1rri3Ovg98jGrtFbdgnGBAf0/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUH5A4rj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KE13cqiQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45637606A332;
-	Wed, 11 Nov 2026 00:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9105560A2602
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUH5A4rj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41601F0089F;
-	Wed, 11 Nov 2026 00:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KE13cqiQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FE91F00A07;
+	Wed, 11 Nov 2026 00:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794358208;
-	bh=+zYwXBSWiIa4Uc/dKRVTAU5d6jEgNZcYQYOhqHVEoS8=;
+	s=k20260515; t=1794358209;
+	bh=Ha5Smbb98YkJ0rW+4V5BnLFoJAhpoEPnEkudR7DQLks=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PUH5A4rjgfKNS9JGYASmTxM7TrDfBx/+pGmSly3Xeij0IwTpKFM3oARoiFViNyC9w
-	 0AR3ciUs/SD2sNXyYWeB+O4N4qnOhQANJBMowrt3j/QNgMWtDnWO7tWEC/+3uolpSd
-	 QgbzCKuat0WcEBBflBJTDW9PjpoGAhAIUek/brTs718uvr3eS3Hi0O7oFm1bGa+gwH
-	 4ungAvvns7Ofxc/pZkltj39G3TEnTVbodTWM9Iku1bXrkpBhRCAhMBc4CD8WXnzBoI
-	 gBXhd86+6VRIakfXMWAexNoGySFfwY9B1Dmkc30Aeo2Rvlp6imTeeO/pVQtNQAWsDC
-	 EPaUzxjaIyjkQ==
+	b=KE13cqiQKvrNjNLPK3NE8c/3eOJKYUJGEA07PEX2xQTmZdQK7OkQNrdXEqZ3+ZbYl
+	 ucpJF7H6Dyql8ExJg95ySGl7mBpPjcgQIpde+oZ7Lxke+3zRqp+LbJBtzayvt9QkY2
+	 bIwkpo2EN8V1EmiyIuwRt1QvRinA+19OKtTp+qmX+TFL5QhQK1CHzgR7ZOIU/AASLR
+	 /PoD00kgn9ijSe0VezSZOitZOq3tg6E7lBKOFDTnrNpQJpOAaPfopOHXtTkrO4pNJJ
+	 nEi4kTzuDIxCVSL2yEU2B63M8v4MZy5PTQ4cbGguYEAE2nknOziHzsH2yJyjPv7ZqS
+	 Qkl9fKOR1nKgg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81C839E8A55;
-	Wed, 11 Nov 2026 00:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5DF9F39E8A55;
+	Wed, 11 Nov 2026 00:50:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sctp: reset stored flag for each association
+Subject: Re: [PATCH v2 net] tcp: do not resurrect a former listener with
+ SO_ATTACH_REUSEPORT_[CE]BPF
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435820642.142717.18022785803325476057.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:50:06 +0000
-References: <20261108161149.2774119-1-bestswngs@gmail.com>
-In-Reply-To: <20261108161149.2774119-1-bestswngs@gmail.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, yjwei@cn.fujitsu.com, micchie@sfc.wide.ad.jp,
- yoshfuji@linux-ipv6.org, xmei5@asu.edu, stable@vger.kernel.org
+ <179435820792.142717.4771746266504404621.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:50:07 +0000
+References: <20261106084300.2029567-1-edumazet@kernel.org>
+In-Reply-To: <20261106084300.2029567-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ kuniyu@google.com, willemb@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, kylebot@openai.com, jiayuan.chen@linux.dev
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  8 Nov 2026 08:11:49 -0800 you wrote:
-> sctp_send_asconf_del_ip() walks every association on an endpoint. The
-> stored flag records that the current association took the single-homed
-> deferral path and therefore did not allocate an ASCONF chunk. It is
-> currently scoped to the whole function. Once one association sets it,
-> later eligible multihomed associations allocate chunks but skip
-> sctp_send_asconf(), leaking each chunk and its skb.
+On Fri,  6 Nov 2026 09:42:59 +0100 you wrote:
+> After listen() + shutdown(), a TCP socket is moved to the closed
+> section of its reuseport group, while TCP_NEW_SYN_RECV requests
+> can still reference it as rsk_listener.
+> 
+> If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
+> reuseport_attach_prog() calls reuseport_alloc(), which resurrects
+> it into the listening section of a new group, even though the
+> socket is still in TCP_CLOSE.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] sctp: reset stored flag for each association
-    https://git.kernel.org/netdev/net/c/173712d868eb
+  - [v2,net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
+    https://git.kernel.org/netdev/net/c/8c011697f76a
 
 You are awesome, thank you!
 -- 
