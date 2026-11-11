@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794438652;
-	b=LjNxjMZg6gwNaicBSklGrcFqiZB5AxgTQfDvhcT9BgEfp3U+TKsV2r0fvPyhuEos3LVB
-	 cFx24I7pY9t2Aib5P8cg57UHaR6c+zWspCeaL+5ERat0nxXG+iPYYJ6qUp6GFmpxZCFZ0
-	 D9ZqCLfygoxIJ86F7xDmWfQOMGtpUjmMGwcFIePBmeXMIYPDNfzbFE55Ta30oICiWWnQH
-	 AvljVSNlGmMW+xVbbosUksnzXFkrRyy+Q+Pp0nJHp05xBXDFJRyRpG9baFkfPrDSRZPX/
-	 oZ53VGLn0fEkjAPQRCwfI20/YFxnQTy3yyoCuAIddlH8ZI6rZT13hn3eocIsC5rYxdg==
+	t=1794438653;
+	b=LBuNWn4Tt7H8ALzKQmCjmiM2JAmfw39X39qBStxypWqd7EvA7oqv/NNMA7x/PTo3iHcx
+	 HRKWG9vnpEJ10hh1bMkj1WGDZk04ze7qWhrl/Isr3dgLzhwf/O9aC8KWbVfr2vSnpDgEq
+	 MJet6rK88mOqS2FRAd4P8BEB29y01Yydm3oRAY6txOuDU4hh0PyQ34f3XmtAWY7gyzSKZ
+	 61cZEa+NdbX0TmCFHhllSMp1ZRWI2D+ez0U2GUYpOwksvogF7pJUT6ElCh5BxQjk0awoS
+	 54/Ca9+S2dePHCs/bvk0OVeUYk/iseP0alpcwPKM4B1mpu8LlbM/emPpr0XA9d2h7ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794438652;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794438653;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Qmf3dlF/mh5Uu/MOrc1xdUS8BOKsmyUIekhWTkTJJ4g=;
-	b=oTVTxIzOV7nCfaiRQ55AYMGPV7DxEJWFlxrbPAwrbS6CVxEjV9dSZ5GHhbLpzCrK177u
-	 yV/3HZc9o6KWoj5bd0MjKpQv6rH+khgeMSXpMcRVSvpYxh9EdNFyAyLDQuXUZqFiNMr9V
-	 mppKQ5yAaYgJCkRhDknO8v0d8jN2EuGLQig3pwv2/O6Vymrmz5itQw6nPGwyRTMaowZLb
-	 58MAJlqAU9UzC9K91g83igByBmOHpL6I92Ii3dE5KSGV8otuF4hogzW/5YEVvBd53rXSu
-	 VbeJ0MPkZOny41eqiqkSQuPnBlNdJz8w7acg7UF36pCaW/5P7aOMcQbKZQ442lsGXWA==
+	bh=lyiSYiBhg+IRGZO6G7RuJBb13gdg9Db9qJLDOkdCC9M=;
+	b=X5Fws38H+F4rMIDCbhoDHcYOfU59AVCQ65qSOcbg7YfSjL1g6guPfgzThn+PqgmJbR+Z
+	 spdnsE1XXDzi9mioEriub3vacP5wM+Ov2oT5q3QWb/XDVPCmsYpJlX4cdHuIXdwBJAJjE
+	 yryou/KQILRJsx/o6z/G8pacq2Z2eXgtlsEiAFjiRQLhjiqwJcoRidV4eO8nDZatBCb5Y
+	 ybIG5BeavKxL0D2cVXZZD0+PkNqhcP+UMJeGtM5EwXVESsTcggiwHUMv/F3eAjY6DtrKX
+	 RRYFlvhqjiwr/Avzkoa/kKeIBxQxC01oYuUvMLPZHgbiN0PyZn8SX1fRwkpV7v7l+vA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Es0SFyZS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y5ruulpd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345E8606A88C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C58606A899
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Es0SFyZS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866A31F00A0B;
-	Wed, 11 Nov 2026 23:10:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y5ruulpd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8281F00A0F;
+	Wed, 11 Nov 2026 23:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794438652;
-	bh=Qmf3dlF/mh5Uu/MOrc1xdUS8BOKsmyUIekhWTkTJJ4g=;
+	s=k20260515; t=1794438653;
+	bh=lyiSYiBhg+IRGZO6G7RuJBb13gdg9Db9qJLDOkdCC9M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Es0SFyZSsRDVhOMAIvUqBSpyPAWLbi91qVHWaJKn8VVai1ZvmXYb+0+xIW04M7Pn3
-	 /0dZyYbwrP2R5mS5reZXajtXqShWZCw88c6cK3eMmzAZH3wTZG1Xf83HB+poS520bL
-	 qbJScxacN4N8/R00COk5KfllAuY5yhkkbY+XUKALmMMXAoO3sujvTJsD66hfWUUYCE
-	 4z1HRK0BB//E7/rtedTyirDesr+8UIWtU3/QR4sltetBIiLTb0ZxQAAc72AE9wNOSf
-	 d1XC7ue9YqHmIzhTSidQGJ8q+GkLwu0LF/uWqFdiPhGDiZ3YOHtQxazcedAzxa7V34
-	 Q74jwgkmGXX1w==
-Subject: Re: [PATCH net-next v7 15/18] net: ethernet: cortina: Scope RX
- statistics updates
+	b=Y5ruulpdFIDYgWZsNtM2zhXh6xwMj6D7lDH5HQs7FTDyI56vI0p6tReP5VXa1PDAY
+	 ncidTL/HPiBmqSbBzRqhldPVim1HUVc7gF7zDX7e7EdeL0geSWSpuvG3/8EJ0Fkc59
+	 QOE9K8PNdlTV2IRqvO7Th1eJWulUjTCDYDV/RGEj1dyd0kzEixFcihg7au3lEKSq2A
+	 4q0YShrC6vb+wuDbd8Y8zk/a7nQq/gRPenBFNcBlumB1rAlEmGFSdvyu5HgfxQSB2J
+	 aGCexOFr2Z/cv2WDoxCRDc7YDi+B3l4IS9G7DonoC45NFCmGlR9ZBvjLOyPlheule2
+	 UIjST+AosyAQA==
+Subject: Re: [PATCH net-next v7 16/18] net: ethernet: cortina: Drain RX
+ coalescing timer on stop
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Wed, 11 Nov 2026 23:10:51 +0000
-Message-ID: <179443865110.2199510.1541652335335896780@kernel.org>
-In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-15-9c32a1a46aec@kernel.org>
-References: <20261110-gemini-ethernet-fixes-3-v7-15-9c32a1a46aec@kernel.org>
-X-sashiko-severity: Medium
+Date: Wed, 11 Nov 2026 23:10:52 +0000
+Message-ID: <179443865223.2199510.8707051713281280045@kernel.org>
+In-Reply-To: <20261110-gemini-ethernet-fixes-3-v7-16-9c32a1a46aec@kernel.org>
+References: <20261110-gemini-ethernet-fixes-3-v7-16-9c32a1a46aec@kernel.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,76 +64,131 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] net: cortina: softirq-unsafe tx_stats_syncp update in
-  gmac_clean_txq()
+- [Low] The commit message does not explain that moving hrtimer_setup()
+  in gmac_open() (drivers/net/ethernet/cortina/gemini.c) fixes a…
+- [Low] The commit message's reason for keeping the first
+  hrtimer_cancel() in gmac_stop()…
 
 --
 
+net: ethernet: cortina: Drain RX coalescing timer on stop
+
+This patch moves hrtimer_setup() for the RX coalescing timer in
+gmac_open() so it runs before request_irq(). It also adds a second
+hrtimer_cancel() in gmac_stop() after free_irq(). The aim is that no RX
+interrupt can leave the timer queued after the port state has been freed.
+
+> Initialize the timer before requesting the IRQ, and cancel it again
+> after free_irq() has drained every handler that can rearm it. Keep the
+> first cancellation to prevent the timer callback from scheduling NAPI
+> while the poll instance is being disabled.
+
+[Severity: Low]
+Is this description of the first cancellation accurate? The paragraph
+before it says an RX interrupt racing with that cancellation can rearm
+the timer. That still seems possible while napi_disable() runs.
+
+In gmac_stop(), the RX interrupt is only masked after napi_disable():
+
+gmac_stop() {
+	hrtimer_cancel(&port->rx_coalesce_timer);
+	netif_tx_stop_all_queues(netdev);
+	gmac_disable_tx_rx(netdev);
+	gmac_stop_dma(port);
+	napi_disable(&port->napi);
+	...
+	gmac_enable_irq(netdev, 0);
+	...
+}
+
+A NAPI poll that finishes at the same time as the first cancel turns
+the RX interrupt back on:
+
+gmac_napi_poll() {
+	...
+	if (!reschedule && received < budget &&
+	    napi_complete_done(napi, received))
+		gmac_enable_rx_irq(napi->dev, 1);
+	...
+}
+
+After that, gmac_irq() can call hrtimer_start() again. Then
+gmac_coalesce_delay_expired()->napi_schedule() can run while
+napi_disable() is still in progress. When rx_coalesce_nsecs is 0,
+gmac_irq() calls napi_schedule() directly in the same window.
+
+This does not cause a functional problem. A napi_schedule() on a NAPI
+instance that is being disabled is either a no-op or gets waited out.
+Still, the first cancel only handles a timer that is already pending. It
+does not handle the rearm case.
+
+Could the commit message say the early cancel is only best-effort?
+Another option is to mask the RX interrupt before napi_disable().
+
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> index 59e6aeb07e0b4..58d6ed81a59c8 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -2870,6 +2879,9 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
->  	}
+> @@ -2201,6 +2201,10 @@ static int gmac_open(struct net_device *netdev)
+>  	struct gemini_ethernet_port *port = netdev_priv(netdev);
+>  	int err;
 >  
->  	port = netdev_priv(netdev);
-> +	u64_stats_init(&port->tx_stats_syncp);
-> +	u64_stats_init(&port->rx_stats_syncp);
-> +	u64_stats_init(&port->ir_stats_syncp);
->  	SET_NETDEV_DEV(netdev, dev);
->  	port->netdev = netdev;
->  	port->id = id;
->
+> +	hrtimer_setup(&port->rx_coalesce_timer,
+> +		      &gmac_coalesce_delay_expired,
+> +		      CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+> +
+>  	err = request_irq(netdev->irq, gmac_irq,
+>  			  IRQF_SHARED, netdev->name, netdev);
+>  	if (err) {
+> @@ -2237,9 +2241,6 @@ static int gmac_open(struct net_device *netdev)
+>  	gmac_enable_tx_rx(netdev);
+>  	netif_tx_start_all_queues(netdev);
+>  
+> -	hrtimer_setup(&port->rx_coalesce_timer, &gmac_coalesce_delay_expired, CLOCK_MONOTONIC,
+> -		      HRTIMER_MODE_REL);
+> -
+>  	netdev_dbg(netdev, "opened\n");
+>  
+>  	return 0;
 
-[Severity: Medium]
-Initializing tx_stats_syncp here is correct. On 32-bit lockdep
-kernels, though, it also exposes an existing tx_stats_syncp writer
-that runs from the wrong context.
+[Severity: Low]
+This move also seems to fix a separate race on the open side, and the
+commit message does not describe it. Should the commit message mention
+it, or should it go in its own patch?
 
-gmac_clean_txq() bumps port->tx_frag_stats[nfrags] under a plain
-u64_stats_update_begin(&port->tx_stats_syncp). When called from
-gmac_start_xmit(), this runs with BH disabled, so lockdep records the
-seqcount as used in softirq.
+Before this patch, gmac_open() called gmac_enable_irq(netdev, 1) before
+hrtimer_setup(). gmac_irq() arms the timer once the RX interrupt is
+unmasked, if rx_coalesce_nsecs is non-zero:
 
-gmac_stop() also reaches it, via gmac_cleanup_txqs() and
-gmac_clean_txq(), but from process context with BH and preemption
-enabled. The last frames queued before the interface goes down are
-normally still in the ring at that point. If one of them was a
-multi-fragment frame (nfrags > 0), the tx_stats_syncp update runs
-preemptible and with softirqs enabled.
+	if (!port->rx_coalesce_nsecs) {
+		napi_schedule(&port->napi);
+	} else {
+		...
+		hrtimer_start(&port->rx_coalesce_timer, ktime,
+			      HRTIMER_MODE_REL);
+	}
 
-On 32-bit non-RT, that hits the lockdep_assert_preemption_disabled()
-check in __u64_stats_update_begin(). With the lockdep map now
-initialized, it should also produce an inconsistent
-IN-SOFTIRQ-W -> SOFTIRQ-ON-W report for tx_stats_syncp.
+The default is 0, but gmac_set_coalesce() lets rx-usecs be set while
+the interface is down. In that case, an RX interrupt can arrive between
+gmac_enable_irq(netdev, 1) and the old hrtimer_setup() call:
 
-There is a real hazard behind the splat too. While the sequence count
-is odd, nothing stops a softirq on the same CPU from reading TX stats
-through gmac_get_stats64(). That reader would spin forever in
-u64_stats_fetch_begin().
+- On the first open, it would start a zeroed hrtimer that was never
+  initialized.
 
-The other counters in these paths are already protected:
+- On a reopen, it would start a timer that hrtimer_setup() then
+  re-initializes while it is still queued.
 
-- The rx_stats_syncp update in gmac_stop() uses
-  u64_stats_update_begin_irqsave().
-- The ir_stats_syncp update in gmac_clean_txq() is done under
-  geth->irq_lock.
+The stop-side fix does not depend on this move, because ndo_stop only
+runs after a successful open. If the commit message does not explain the
+move, backporters might treat this hunk as cosmetic.
 
-Should the tx_stats_syncp update get the same treatment? Or would you
-rather disable BH around gmac_cleanup_txqs() in gmac_stop()? Either
-way, I think the fix belongs in this patch or just before it, since
-the u64_stats_init() added here is what lets lockdep start tracking
-this seqcount.
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110-gemini-ethernet-fixes-3-v7-0-9c32a1a46aec%40kernel.org
