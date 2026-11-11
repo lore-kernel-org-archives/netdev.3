@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794357606;
-	b=1uckXD1ziqqZ+UumCDh7mLhM4VUwC3TNvOaj27240u3Y8eOGnT7ClzZDcc0aGM4pLoqX
-	 cvIKOeHmAQQQu++lKJrzwge4W4VB3VjPWGrtj2pYxa7ljZkGrFE66fA7saYxyjb2dnX7i
-	 zNiPnnzXVUJMKeDKDX9ic93kxZTmH0pE1VEucvFi0/uc54C75/A7ShauuFvo37amB18Dz
-	 JYLwjxe04B+EDPJIdmLYU28gGm05iEUBuB0/Ls3uQwxiuBtCXcQfe2ERXT4yOGb3YG0a9
-	 BaEdJVZ+ImuKwpSEEWAQfPx0ixnrvY+0yo42sjXflUBWHNyulIz0wLbuHumk2bef+kw==
+	t=1794358208;
+	b=lewwO6b4VPI1qO6pbLJ47Xg4hRojn7YwW+o7w9Kezw4jEESN73ke4fzxEoRwIkQnV/L/
+	 g5WTkNZDaNebEzy6Sz4yfCEgHK79g1aMvs5uRg2dgc+z2vo/5JQ7x+4J/ySdypWKgRdXz
+	 QkrREm+aRvWioVPrE3QHzSmyxka+NtQ1yonhtHcVY4Ji1VO0XR1JSk2hwgWwJ9UOsYrqv
+	 nSjFhccFp9I0b5tEpb3whRBiBsWlpOccK2gUkTaTKrG1xwOTvwJ+65cgyW5QEST65uNXr
+	 +ba897H2cLElsdQUTl4toH++2RmqSf0SwnMeSTkDXsovVDoPf7hc69ns68kT/KE8RYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794357606;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794358208;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=0STTFmcPyB/zsDerEBDy8+hogBiVW5QiFxOhEBovJXw=;
-	b=LRGRDdpUpHt8kbEVuZrIhRpstHPHiR/LnHH1duV5TWtd335+LabjYZQ5ie+7TV6heWla
-	 E170leKvS/LPh4l2G+FmGaBMeyelAJZvpiOcu3ec/r22d/PHfK2uRjQWUim+t/6mmUys5
-	 iKbxiQLUhUk8t6jAcHcLv89B0+nQNdHkC1J53E0YL0LYoi9Q3DPkp5SRnwT5MvRQpjvoZ
-	 6r8y51aSBV1sw9+WH81lypP3fms2DRlk5ijGWTBgY5MIUYY2IAJrMGOO83gaj3qEZJqCe
-	 wJMl3Dmyz410xpEC+gMFIuBccqVfl/UwMqjyiNsZjbIejSvrkR5+C5rrijfuuOz5jxA==
+	bh=+zYwXBSWiIa4Uc/dKRVTAU5d6jEgNZcYQYOhqHVEoS8=;
+	b=iylZTu6z0joqG7HyTyo6y8JBTydgXfqfaOxTtAT4ahO31RuQrUl2G9ZtkXMQ2fH86R5z
+	 peWTuH3/x6b/9yzcRUppEg0mt+btG++7FnQQubWQkMj9Y8Llk85g9j+VbxJgJedsX+X66
+	 sZyg5wGQ9H5DZwIMKlxFYNQFo/hYVwZ9dc95/+Hh81SNUT+238dnpiGaUJR49vH0ySwyc
+	 eUKWPoVyRbn+hsU66yJkGF0Nrcatdtno13hNVgzJWADT8QqbdKzW/HyJUoVctrruAcG1S
+	 Fo+Mh9WpPZuBiYppm1l9RweMk6zeJGrWetFWLZVuxSP/n/kwUsLw0LWFn8T/LcUqosQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L6vNDG2f;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUH5A4rj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2F7606A320;
-	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45637606A332;
+	Wed, 11 Nov 2026 00:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L6vNDG2f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347671F00A04;
-	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUH5A4rj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41601F0089F;
+	Wed, 11 Nov 2026 00:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794357606;
-	bh=0STTFmcPyB/zsDerEBDy8+hogBiVW5QiFxOhEBovJXw=;
+	s=k20260515; t=1794358208;
+	bh=+zYwXBSWiIa4Uc/dKRVTAU5d6jEgNZcYQYOhqHVEoS8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=L6vNDG2f1UXKj3eEU5GjBne/CqlHkc6udmt15sCFF5rpOyGbygsYEBW5rSlwR6o9/
-	 xqIzgisZxLaKP7T24Qu/c+w2JZlecLwuFqt3QAs5DoQ7x7QkPMA4XXJzn8ToKYrE+j
-	 KbuPZ9DDeGZtLE0C0SIgfUI29r7OGn8q7FbvZXJ0D3rj9tZh5VkpG6/tPgRlY/WsDB
-	 Dm+Y0BLAIfe+I29//Yr7E5ol92bndIBpfkZikg5chkCRvyl1gU0qGIMC98jaLxYLL3
-	 1T2XjqbSpGGiVJqbomCKKJdOa9iVVgPGmkEDlqlIt7l8KP5SIb1HJ2Qw528rYSwQbZ
-	 sJp7ZelBw4xLg==
+	b=PUH5A4rjgfKNS9JGYASmTxM7TrDfBx/+pGmSly3Xeij0IwTpKFM3oARoiFViNyC9w
+	 0AR3ciUs/SD2sNXyYWeB+O4N4qnOhQANJBMowrt3j/QNgMWtDnWO7tWEC/+3uolpSd
+	 QgbzCKuat0WcEBBflBJTDW9PjpoGAhAIUek/brTs718uvr3eS3Hi0O7oFm1bGa+gwH
+	 4ungAvvns7Ofxc/pZkltj39G3TEnTVbodTWM9Iku1bXrkpBhRCAhMBc4CD8WXnzBoI
+	 gBXhd86+6VRIakfXMWAexNoGySFfwY9B1Dmkc30Aeo2Rvlp6imTeeO/pVQtNQAWsDC
+	 EPaUzxjaIyjkQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2103839E8A55;
-	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81C839E8A55;
+	Wed, 11 Nov 2026 00:50:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: sfp: add quirk for OEM SFP+ONU-XGSPON
+Subject: Re: [PATCH net] sctp: reset stored flag for each association
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435760493.139049.1251934787976228328.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:40:04 +0000
-References: <20261106221836.3445-1-romit@romitsagu.com>
-In-Reply-To: <20261106221836.3445-1-romit@romitsagu.com>
-To: Romit Sagu <romit@romitsagu.com>
-Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
- hkallweit1@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+ <179435820642.142717.18022785803325476057.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:50:06 +0000
+References: <20261108161149.2774119-1-bestswngs@gmail.com>
+In-Reply-To: <20261108161149.2774119-1-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yjwei@cn.fujitsu.com, micchie@sfc.wide.ad.jp,
+ yoshfuji@linux-ipv6.org, xmei5@asu.edu, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  6 Nov 2026 22:18:29 +0000 you wrote:
-> This XGS-PON ONU stick (vendor OEM, part SFP+ONU-XGSPON)
-> needs the same handling as other Potron-based modules. Without it,
-> the module fails to connect and the kernal shows these errors:
-> sfp sfp1: module transmit fault indicated
-> sfp sfp1: module persistently indicates fault, disabling
-> 
-> This module requires TX_FAULT/LOS behaviour and boot delay tuning.
-> Add a quirk using the existing sfp_fixup_potron.
+On Sun,  8 Nov 2026 08:11:49 -0800 you wrote:
+> sctp_send_asconf_del_ip() walks every association on an endpoint. The
+> stored flag records that the current association took the single-homed
+> deferral path and therefore did not allocate an ASCONF chunk. It is
+> currently scoped to the whole function. Once one association sets it,
+> later eligible multihomed associations allocate chunks but skip
+> sctp_send_asconf(), leaking each chunk and its skb.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: sfp: add quirk for OEM SFP+ONU-XGSPON
-    https://git.kernel.org/netdev/net-next/c/ed04b2020272
+  - [net] sctp: reset stored flag for each association
+    https://git.kernel.org/netdev/net/c/173712d868eb
 
 You are awesome, thank you!
 -- 
