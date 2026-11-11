@@ -1,77 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794425184;
-	b=yuEisPirZwx6aqwnaLSUSbKxjeouxZJmriM5aA8F4tq+1quahsU2kSttVzFY9iSudBVM
-	 BKS9sKcpYx+63mv23mxeDtUgvVQUKPC6M2LyGUovitbYgRiRwRcrnaSvvQN9IzwYr5Z8K
-	 UGjiV/ngKTKX6WD1vAhLZX3VppWfZs8Nm0UvM3btDG5gXagluwi1Hy1fLuwHhcEXQRJTw
-	 q42XakktpJ0KzJVM6P42FpvlYZpDJuDGdUOn7/y4bh1PL7HKgu4FSVHpEiay1IJfYGYNc
-	 W0J7XkQKZrXAdWyehFw5NszadTF4Bhdk7CAaj6vwWo4xIsn69qQZBP4H/weKmxAHOHw==
+	t=1794425190;
+	b=Rg25XW14AF65CoWJhzqjLVfPfUS5AHbxwdoKCMREOjxcnm+nROBVUVGSthzQnxt5Esis
+	 UbyBbp/7eJ+e1WMJ/C/WESJK8M5bmwS3cGlpHzz+kN1mJsangXqQjmDUfrUK7TVdYdxOG
+	 XNDJJUxN0kkDxjfyxTRts2nnnRgcNWsvNzohJpEVQoUjd8oZTzu4uZW+BpBLWrufk/naV
+	 a3T9cwqU+hGFAE0SEKbH8GNmA5A3qTfWcz4VehYM1l0DDeglsFBy3Z2eVsmXZQuLgC5tB
+	 77bF8pdE5ZL0hS47gf6g15TIGVjdOm5DRcNH8v6HNuRaQoYup6rZ9vBl06VUp6pnyig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794425184;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=pr1i3ecZGDWDAvpLi3ABH9Nl7KtZoQS7X+cpI1BrO3Y=;
-	b=20ELUi5yYhQ/Xnf2hnzF4eU9y1tkyq1SY/htlHWSvo0tOjfVYEocZeyvx7quYMTZsRj/
-	 Rnej6Wd9Wdv2MpcnZKLYU8gUMZe9yEIYp+mcBytvq8RBzM4dKldIcgbLrtrGJEyxeDV0M
-	 1GgNV7R5a/3BafUY79cYQr7Uz3Ewp+8cdfkB7fwslcdxhIvyl7mUIoFdf70C69j2sV8M+
-	 aS8DtxXHAH3oAdqavuy6EECpOoaId1QLnYwJ5bJOT5Pb7d7EJJpADlQE46B+cU7xfiS0R
-	 B2cL8QGCq9iRzDUgWp7P64/aHOH1Ql+bM4ubRgjaS8pnwGsCAbNFT5aa4MlNXImDr6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425190;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
+	b=sGNzZzQ+U7wOvxL/5/LPlHjckdeu+qyqtNJSp7iSUFUzPMSGakHi9pGG7Q04eHU+O1MV
+	 tWCCSc00+Y3wYgLS87eItmGMzyX8EETMF/93xwpLajCuNNsB/GUobfl4/iJekmgc4vKdo
+	 sdQLVz9lGSTpRrYamMLAYgz7G3MtG2+DkEAthnomqSLmF8zL3jtHIM4CDc8JjRScJpvRs
+	 rtl5XG/C9r9tPfObw1XFo2mSCMwCY6Tg3nF5OFOHDf8GSIdXPEHVf6VLObvxZzghOJUSI
+	 aiumaIATafn3x6z1wVYKbrbr7NRcqMlpGkdwaAC60sYT2QN7knOsjhNEMJFaWgt6vOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="D/UGcqUc";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=linux-foundation.org;
+	spf=pass smtp.mailfrom=linuxfoundation.org;
+	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OIdbE4kC;
+	arc=none smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14012606A31C;
-	Wed, 11 Nov 2026 19:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9B6606B825
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:26:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC9B6606B825
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D/UGcqUc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAFA1F00A05;
-	Wed, 11 Nov 2026 19:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794425183;
-	bh=pr1i3ecZGDWDAvpLi3ABH9Nl7KtZoQS7X+cpI1BrO3Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=D/UGcqUcwQkz6nfm3G07JgMB+/3Hq+c9+B1470SiKYg3q+WBzTVCED/nm/Kv10/wU
-	 +RwPtlaZtlkenY3lzewO9GA2kxFdtdQAKu7BCuAu6PUZ6wRcLhiqfH/rSaXK7XQYx1
-	 j+aN3H8HcoKrD6Z+VDE5ZNKF0O7rXbuMxoRA27SsuwbbUPUCMQrKVjXardHMzvdey6
-	 Hyi7PAxO/WNn5rystEcCA5omgunZQdYlHOHZHkiSmY1VfXCSTovGPLACAb6eGDC+np
-	 SYFY40RFug9owSGq9o2IGrnq4oM+oQT8poQDrGqgFFIMXkhbpJOAQw2g2+RDvvfb8a
-	 CefaaMChBXAig==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Magnus Karlsson <magnus.karlsson@gmail.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, io-uring@vger.kernel.org,
- Mina Almasry <almasrymina@google.com>, "Mike Marciniszyn (Meta)"
- <mike.marciniszyn@gmail.com>, Weiming Shi <bestswngs@gmail.com>, Nikolay
- Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, Alexander
- Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Stuart Clark <stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 05/11] xsk: Install UMEM page pool providers
- in the core
-In-Reply-To: <CAJ8uoz2JMEKkzO-V7jtreS9q1Btmo0URosXzBGW7f=jhFnUzxg@mail.gmail.com>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-6-bjorn@kernel.org>
- <CAJ8uoz2JMEKkzO-V7jtreS9q1Btmo0URosXzBGW7f=jhFnUzxg@mail.gmail.com>
-Date: Wed, 11 Nov 2026 11:26:19 -0800
-Message-ID: <875wy3890k.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OIdbE4kC
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b757029223so2519259a12.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:26:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1794425188; x=1795029988; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
+        b=OIdbE4kC1o3th9fmUSyZNGWnAWSvsiZJeZolzn138fsOmDtNkvO099TP84cZKeQeSq
+         1IintyPSolFiqebd0PK52cL5ENVcp48uwWSFmgA3/p7zTiXo+Eh6oNUFyxxRhS90T9aw
+         4IdK19TDmdi5YDgJ6UWKOli8HIgcUED302q4A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794425188; x=1795029988;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wd2WluVLwj4r2VIyBQDufDpYxaAOyEu9BCBLHFr84dA=;
+        b=AQeEIZGDtbIS+pZJNomocePqoDofbAlnr7JJPLIiB1QTi2qrYQG7ilOg9K1m6QYWip
+         pa+1fxf3vqWMt56RaNMB1lwYXrs53U+FZoxuMUr/oPmr0QxgkGDjQ5fVcRpAfjAv6ptP
+         26Qs0Yp+XCL/zEX7xzQoRfkONWZnBI2Cw0fEE8q5mBzyPHloEQVzuFxgm8xZWgWRwlMF
+         kCY9i0QLvm5kbYiiEILu6T6CipneHVHxq1wC7Vifs2f+IZf18S4bFeaeWdHk1EgMCbLW
+         w+EcSRI2gLqsb90Nhpojx8V818yrVTlzY/80lOivBlQndbf0lVf99Wp9HXa/UeJVMZbd
+         LmRw==
+X-Forwarded-Encrypted: i=1; AL+hErF7vGYfVAJULj3phkyPiieDL3OMMQeYx/HOVPbbamDvcOSBTpQmJYogQXwECIvfZFuZA7H40MU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+iLapNORXLe6h85DZDE/7PcghyffmMMZdCZTnRKg0IN5eZk0kY
+	r7FMSTWpoZyWO6dyPw/6/aXp06cTQV2EGF6vnSgV5YtJtYSHWqVpXuFhOH6RTg68/5X0rEbURDZ
+	1bV48XRo=
+X-Gm-Gg: AYBFou0mi9Nrz5HNXbdhpN/1Abol3Co17qA54tgLg7ixwjyTo7ToNCmo1nbb8ieZwFM
+	TJkoDMNRcCJ+K6UDgHMkEDWKEXPXAhgV+BYwPYEBuoOVTYgTGQM9hKQLOQAEhilQ4m1VMfDgjMC
+	BvJsGSdQoVWFssUtqmLYm/H7bjerDRayZqCmw53YAhbrgzbSFteH13DuHShQhAV29MB6fG0ofzU
+	SGejbrDcRyXxiQt6q+mciVLgxEDFlj8knvxl8TaugOb13LYRmIcbt1REE5jgv89vYQ7gqPck4LV
+	qnNc3Fn+q3u8v7+DtZQ0SDATyiSeET86YvOYuVI4QGY2xrBF8nbSNSjQfGbbMd5x61yvmG9jsMj
+	PIGKZ5M6vV1lHUsuEhWporQthAtSXkywabkG413pPHqb7VXejeV4krA20KGTBW0DB+BUnO4bQ5Z
+	b7aYdwidWwtjiOd9CcQ0GB2hYzsQUFtLsFHDqT+NhYTXN3QlBZahRcQwUZTzgMlEaYY+Gq7eUUE
+	QMPmsnxKSVvuigg3fTLK2MruNukLPpy7C4s6h8M/DtB8zZ9Vqpa8K6em7DVePNSdI+mkjdyWxZK
+	TPUnynZkQURlAN74DLYI411XPVPBLiOOdXG3vznEroiPMCy/guhVXGtQoeJrftutBSWJYjRkFv4
+	COdmiQ4f4U8t+iTxeQwA1tKhE
+X-Received: by 2002:a05:6402:2279:b0:6b5:8200:5008 with SMTP id 4fb4d7f45d1cf-6b777869ae9mr1784638a12.45.1794425188212;
+        Wed, 11 Nov 2026 11:26:28 -0800 (PST)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b75790caffsm2555753a12.32.2026.11.11.11.26.26
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 11:26:27 -0800 (PST)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso3186487a12.3
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:26:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErH9Jr38cL0+0ZDgOAyilT+r5HcOD+XgNrlZ7EVwJftNJAgQvmf5jfpSo09eF0lmqMUyGvV1kXY=@vger.kernel.org
+X-Received: by 2002:aa7:d1ca:0:b0:6b5:6478:a9a5 with SMTP id
+ 4fb4d7f45d1cf-6b7773edf34mr1838418a12.10.1794425186528; Wed, 11 Nov 2026
+ 11:26:26 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,236 +94,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20261110145241.536019-1-kas@kernel.org> <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org> <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+ <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner> <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
+ <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+In-Reply-To: <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 11 Nov 2026 11:26:09 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
+X-Gm-Features: AclHuK8LZq7-9ajWCZDJwTRjmLDnovqaiY30E_XKr8U-iLvj6BsIi-SShy4XPgk
+Message-ID: <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+To: Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
+	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
 
-Magnus Karlsson <magnus.karlsson@gmail.com> writes:
-
-> On Tue, 10 Nov 2026 at 11:36, Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org> wr=
-ote:
-
->> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
->> index 18966bbdb5b7..c620a0c32c17 100644
->> --- a/net/xdp/xsk_buff_pool.c
->> +++ b/net/xdp/xsk_buff_pool.c
->> @@ -104,10 +101,30 @@ struct xsk_buff_pool *xp_create_and_assign_umem(st=
-ruct xdp_sock *xs,
->>         pool->fq =3D xs->fq_tmp;
->>         pool->cq =3D xs->cq_tmp;
->>
->> -       for (i =3D 0; i < pool->free_heads_cnt; i++) {
->> +       return pool;
->> +
->> +out:
->> +       xp_destroy(pool);
->> +       return NULL;
->> +}
->> +
->> +/* Only copy mode and driver zero copy use heads */
->> +int xp_alloc_heads(struct xsk_buff_pool *pool)
->> +{
->> +       struct xdp_buff_xsk *xskb;
->> +       u32 i;
->> +
->> +       if (pool->heads)
->> +               return 0;
->> +
->> +       pool->heads =3D kvzalloc_objs(*pool->heads, pool->heads_cnt);
->> +       if (!pool->heads)
->> +               return -ENOMEM;
->> +
->> +       for (i =3D 0; i < pool->heads_cnt; i++) {
+On Wed, 11 Nov 2026 at 10:53, Christian Brauner <brauner@kernel.org> wrote:
 >
-> Now I get why you are not reusing the existing xdp_buff_xsk infra, you
-> are removing them here for the PP case. Please mention this in the
-> cover letter of the previous patch. There might be a good argument for
-> it at least in aligned mode. It is wasting memory versus performance.
-> Today when memory is expensive and also for umems that are shared
-> between many sockets, the current scheme in the xsk_buffer pool for
-> aligned mode might not be worth it.
+> If that's the official new stance than I'm very happy.
 
-Will do!
+I definitely want to remove HIGHMEM entirely in the not too distant
+future. And before we remove it, we can most definitely document the
+fact that we will not be worried about insane users.
 
-> I have two questions for you. What would the performance be if you
-> moved the aligned mode over to use the same free_list as unaligned
-> mode and then use that in PP? Would reuse more code, but would it be
-> fast enough?
->
-> If that is not performant, what if you instead decreased the cost of
-> the current pre-allocated xskbs in aligned mode by just creating a
-> single copy per umem and using those in PP? Might be a good thing for
-> regular xsk drivers too these days, but do not know if it will work
-> for you.
->
-> I do not know if any of these suggestions would work, but I think you
-> should examine them as less code paths is generally a good thing. You
-> might also improve the non-PP case too by optimizing it for your case!
+And things like security issues count as "insane user": if you use
+HIGHMEM outside of controlled embedded setups or museum pieces you get
+to keep both pieces when it breaks.
 
-Neither would help the provider. The page pool hands out net_iovs, so it
-needs one per chunk anyway, and the driver brings its own xdp_buff.
-net_iov, reuse and state are 69 bytes per chunk, against 128 for an
-xdp_buff_xsk; free_list would add those 128 on top. Nor is reuse on the
-hot path: the page pool recycles in its own cache and ring, and gives
-chunks back only when it is destroyed or its ring is full. The hot path
-is the FILL claim and the RX ring flush.
+IOW, it's legacy. We should aim to not introduce *new* bugs to it, but
+if there are pre-existing bugs they very much count as "don't care",
+this will be removed soon.
 
-I don't like the reuse[] fixes size tho...
+I think the only reason it wasn't removed a couple of years ago
+already is basically a few old 32-bit ARM platforms that still used
+it.
 
-One copy per UMEM doesn't work either: an xdp_buff_xsk holds pool, rxq,
-DMA addresses and cb, so it can only be shared by pools of the same
-device and queue, and those already share the pool.
+Those platforms still exist, and I predict that they'll still exist
+next year, but if those users have to stay at the current LTS kernel,
+that's fine.
 
-For driver ZC I agree, heads add up with a shared UMEM: 32 MB per pool
-for 1 GB of 4K chunks. Unaligned mode allocates a head per chunk too,
-though, so moving aligned mode to free_heads saves nothing by itself;
-heads would have to be sized by the rings. Worth a look, with numbers,
-but in a separate series.
-
->>                 xskb =3D &pool->heads[i];
->>                 xskb->pool =3D pool;
->> -               xskb->xdp.frame_sz =3D umem->chunk_size - umem->headroom;
->> +               xskb->xdp.frame_sz =3D pool->chunk_size - pool->headroom;
->>                 INIT_LIST_HEAD(&xskb->list_node);
->>                 if (pool->unaligned)
->>                         pool->free_heads[i] =3D xskb;
->> @@ -115,11 +132,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(str=
-uct xdp_sock *xs,
->>                         xp_init_xskb_addr(xskb, pool, (u64)i * pool->chu=
-nk_size);
->>         }
->>
->> -       return pool;
->> -
->> -out:
->> -       xp_destroy(pool);
->> -       return NULL;
->> +       return 0;
->
-> Agree with Stan that these changes should be in a separate commit.
-> Think also about if it would make sense to put your page_pool changes
-> in yet another commit.
-
-ACK!
-
->>  }
->>
->>  void xp_set_rxq_info(struct xsk_buff_pool *pool, struct xdp_rxq_info *r=
-xq)
->> @@ -212,9 +225,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
->>          */
->>         hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
->>
->> -       if (force_copy)
->> +       if (force_copy) {
->>                 /* For copy-mode, we are done. */
->> +               err =3D xp_alloc_heads(pool);
->> +               goto out;
->> +       }
->> +
->> +       if (xsk_pp_supported(netdev)) {
->> +               err =3D xsk_pp_bind(pool, netdev, queue_id);
->> +               if (err)
->> +                       goto err_unreg_pool;
->> +
->> +               pool->umem->zc =3D true;
->>                 return 0;
->> +       }
->> +
->> +       err =3D xp_alloc_heads(pool);
->> +       if (err)
->> +               goto out;
->>
->>         if ((netdev->xdp_features & NETDEV_XDP_ACT_XSK) !=3D NETDEV_XDP_=
-ACT_XSK) {
->>                 err =3D -EOPNOTSUPP;
->> @@ -267,8 +295,10 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
->>  err_unreg_xsk:
->>         xp_disable_drv_zc(pool);
->>  err_unreg_pool:
->> -       if (!force_zc)
->> -               err =3D 0; /* fallback to copy mode */
->> +       /* An old page pool may still own chunks of a failed provider. */
->> +       if (!force_zc && !pool->pp)
->> +               err =3D xp_alloc_heads(pool); /* fallback to copy mode */
->> +out:
->>         if (err) {
->>                 pool->umem->flags =3D umem_flags;
->>                 xsk_clear_pool_at_qid(netdev, queue_id);
->> @@ -301,7 +331,10 @@ static void __xp_clear_dev(struct xsk_buff_pool *po=
-ol)
->>         struct net_device *netdev =3D pool->netdev;
->>
->>         netdev_assert_locked_ops_compat(netdev);
->> -       xp_disable_drv_zc(pool);
->> +       if (pool->pp)
->> +               xsk_pp_unbind(pool);
->> +       else
->> +               xp_disable_drv_zc(pool);
->>         xsk_clear_pool_at_qid(netdev, pool->queue_id);
->>         hlist_del(&pool->dev_node);
->>         pool->netdev =3D NULL;
->> @@ -474,7 +507,7 @@ static void xp_check_dma_contiguity(struct xsk_dma_m=
-ap *dma_map)
->>
->>  static int xp_init_dma_info(struct xsk_buff_pool *pool, struct xsk_dma_=
-map *dma_map)
->>  {
->> -       if (!pool->unaligned) {
->> +       if (!pool->unaligned && pool->heads) {
->>                 u32 i;
->>
->>                 for (i =3D 0; i < pool->heads_cnt; i++) {
->> diff --git a/net/xdp/xsk_pp.c b/net/xdp/xsk_pp.c
->> index fdd55265a6cd..c2214e718cdb 100644
->> --- a/net/xdp/xsk_pp.c
->> +++ b/net/xdp/xsk_pp.c
->> @@ -8,6 +8,9 @@
->>   *       +-----RX ring-------+
->>   */
->>
->> +#include <net/netdev_lock.h>
->> +#include <net/netdev_queues.h>
->> +#include <net/netdev_rx_queue.h>
->>  #include <net/page_pool/helpers.h>
->>  #include <net/page_pool/memory_provider.h>
->>  #include <net/xdp_sock_drv.h>
->> @@ -15,6 +18,8 @@
->>  #include "xsk.h"
->>  #include "xsk_queue.h"
->>
->> +#define XSK_PP_DMA_ATTR        (DMA_ATTR_WEAK_ORDERING | DMA_ATTR_SKIP_=
-CPU_SYNC)
->> +
->>  enum xsk_pp_chunk {
->>         XSK_PP_USER,    /* owned by userspace */
->>         XSK_PP_POOL,    /* owned by a page pool */
->> @@ -30,6 +35,8 @@ struct xsk_pp {
->>         refcount_t refs;
->>         u32 nr_pools;
->>         bool dma_need_sync;
->> +       /* RX queue of the provider, NULL once it is removed */
->> +       struct netdev_rx_queue *rxq;
->>         u8 *state;
->>         u32 reuse_cnt;
->>         u32 reuse[];
->> @@ -236,11 +243,225 @@ static int xsk_pp_nl_fill(void *mp_priv, struct s=
-k_buff *rsp,
->>         return 0;
->>  }
->>
->> +/* The queue no longer uses the provider, and its DMA stopped */
->> +static void xsk_pp_detach(struct xsk_pp *pp)
->> +{
->> +       pp->rxq =3D NULL;
->> +       spin_lock_bh(&pp->lock);
->
-> Just curious, but why this protection of the fq here?
-
-After a normal unbind the queue is already stopped, so nothing reads
-FILL anyway. It matters when the restart fails and the old queue keeps
-running; I have a net fix that keeps the provider on such a queue until
-a retry succeeds... but maybe it's better to introduce the lock then.
-Let me noodle on it for the next rev.
-
-
-Bj=C3=B6rn
+                  Linus
