@@ -1,65 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794404573;
-	b=iKb8tVGtqOAzqng+SL93kjSt7ZXgrI4fZG8eZp7TS1Nuloo78/jInIEUqwrzuqXWiEdQ
-	 fwC+KUxbpUMG3DFQzFGMDI93XS2nHO1WcH95NbBqwcx97SwdIcAXRR4gqkNR8Dl9bxipP
-	 pYsVB/sDPrW5ZTWI05Rcj0weqTIoRE7Perm3xI8UzLhuX4QsZvQhBosO0ofSdU5oalAG6
-	 ZlVRJ3SiBpcGsTlFuyBHyqibv+xbjDCvERegq91t+p8aGTpgeib5gIVJNyo9ySQw0NXRm
-	 o5j+ZuIA7ZmJ1YNhIKcwOBpHfd1HT8kAseJSxiuzUqHqO7lXZBZgCyl5DSW7ueNtQPg==
+	t=1794404716;
+	b=GN2/sEqm6Sj9Hn8TXT3+ztqSbBlf5Lh5TIuSbm3BeVIIjw23zVNDGP8Nv2OExS/wHRZZ
+	 ZKVIS+xbqDguT+EV/kfEIux90YLZ7RkqE25NlhU5FH2GEHO4O3QJy7HuUY61wUB2xlez6
+	 8SBGWQHvimEY+WTulWbjRhztHNAqroEOXsUuK+RIA5dh5d2NEjP/CjFZyxIRIXXy86Tr1
+	 iYXVEZdap9/wK6fSfxXbsi/GNl8dcb5K6dq6YIz1wMr4JP8XHtxRtbC/jlyEDhHPMOLJY
+	 KCfjzladocR29hG7+npARLVDcZw0tSvcxnfV7BxwEfSRAsJXlUdVx2e+IyujO2CwZmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794404573;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
-	b=qePUMrYrdwdtOp6/IhFCq0d+UYDIjlXTXG9m7rj4Oapymmy3inzAgAYpmUD6uSJLFUA2
-	 HFy2VB7jun+hFTHynrR8meKo1pplZTxMAULEzNW+MXNzLwWR964VIP3PklsvXEDskmsRu
-	 W2RXu5RkiWqz1lx3jgHJdT8D24P4CH1U4T9XpkYvevBF2bbZBrhCdSN+z5DA4D/jAdBeo
-	 URp/nYhEUzgPxLSLQ0x2C3MEIp4ahsD2+LsT0jRKjV1lp+5VrcFx27MsGETEZJFptid6l
-	 Op9103l/w9g1fTSUp+P+RbwBr9nQj0K3Z99LPMHZtwWIx+tHNuAlr7N7e0gTkVRADFw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794404716;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=JqaDTrKtx8/Db8fINpAFpkl/BzAhzi7fu660X6wjeKA=;
+	b=jWIT+oUJsXSRPac9HZd5kDS0WVLmHQbU9gFAkheqc3OpuBxuHlQcoD9qoAZ8Gq7X0A8X
+	 ycPis3DViUNcQ2xKAgI1XiM99GdR+VjIiLoeW2j6+61kpjuptv1XBJQW8uuNmzI3II0HP
+	 FqO7bGTO9KaGpQV1d+8Dh+0nbCaCEoRgyKl9b7mzkcrAoQY/ZbeWXeSRIRHuDUmWwEOsk
+	 WXXyktzM3Ir/HIvGhzEcBGC+9flw/ENr5zotMNACwnwWTql+N5KMc16Wnrfy/H5EYrhfA
+	 GxOd5jiBNIHeO2d9qWFWjPS/JPzWBROi62QBLMjHAJofPxnmGR84+7GzEz/oT1SK1kA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1FWFgdc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=wcsaHS3m;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F06606A32E;
-	Wed, 11 Nov 2026 13:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30830606A326;
+	Wed, 11 Nov 2026 13:45:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30830606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1FWFgdc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B351F00A06;
-	Wed, 11 Nov 2026 13:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794404573;
-	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N1FWFgdc7n3FyJi4mWq7kE7aBBRtNzoz7OTcWnlRMydaapZ3nDIlCS4Okv1TVPC3m
-	 JL6rQ4hb45pb3iD/dM5aW7LzXLL/qyYUni1xL1rlyF6YBcPpru6XkKZzzFwowC9Y6y
-	 C7NiuCGH+vmHlWX+5tIej70Q1CIcqLl6FT43SjHcnbxrNC7mmiqAQmKBwWSoAD7GLd
-	 ArJzKTz6tCYzM+6Y3ek8ew3nEUuf+jxXUBKm3e9gdsw66SDyb8OUIR83eD2WnwijaO
-	 dPW/jiYjBeQgF5n7srNsN9thQlouIMfyRaahC/yQazXkj1+PCWlU+Bj+iM7D9axTAT
-	 G3hqLCcrRvQ3g==
-Date: Wed, 11 Nov 2026 14:42:44 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
-	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-Message-ID: <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=wcsaHS3m
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=JqaDTrKtx8/Db8fINpAFpkl/BzAhzi7fu660X6wjeKA=; b=wc
+	saHS3mPAyJ9prqPvG1zaxtBdalEDupa+F24FGd3PfOZr7LpjXXKBwuvaEEtoKYJNIFj+0A0cwIU3I
+	KptTPPpfjAJ4A/D9W+EH9hTfCXNGuxK3z4DPJQCl3HoAAToN54r+nRjAfYTysBfKZobOsV1TPPqpR
+	d4MFNBEflhuwYyM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xR8dC-00Fl3m-2D; Wed, 11 Nov 2026 14:44:54 +0100
+Date: Wed, 11 Nov 2026 14:44:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?utf-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] rust: net: phy: make Device generic over a
+ lock context
+Message-ID: <6cec94de-b65a-443b-88ba-97a6489664e9@lunn.ch>
+References: <20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com>
+ <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
+ <CAGAB664Z1avii3rw6pSu4wT9eCmwYJ4R08ix2Z_YNm9KeEs-EQ@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,100 +84,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGAB664Z1avii3rw6pSu4wT9eCmwYJ4R08ix2Z_YNm9KeEs-EQ@mail.gmail.com>
 
-On Wed, Nov 11, 2026 at 01:36:37PM +0100, Christian Brauner wrote:
-> So we need to copy per page which would fix both.
+On Wed, Nov 11, 2026 at 10:02:04PM +0900, 하승종 wrote:
+> Sashiko's review of this patch was sent off-list [1], so I am replying
+> here.
 
-So the fix below is what we've done before for pipes and I think it's
-the right thing to do here too. I put the following on vfs.fixes:
+The netdev's own LLM reviews are better than Sashiko, so we tend to
+ignore Sashiko. The netdev one also does Cc: netdev.
 
--- >8 --
-From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH] virtio_console: copy pipe buffers that span multiple pages
+> 
+> > Can calling genphy_soft_reset() on a Device<MaybeLocked> cause a data race
+> > on struct phy_device fields and bitfields when a Device<Locked> callback
+> > runs concurrently?
+> 
+> The race comes from the caller, not from this series.
 
-pipe_to_sg() maps buf->page with kmap_local_page() and then copies up
-to a page worth of data starting at buf->offset. But kmap_local_page()
-only maps a single page and a pipe buffer can span multiple pages of a
-compound page with buf->offset pointing past the first one:
+You might find the netdev LLM reports this as an existing issue. Lets
+wait and see.
 
-- skb_splice_bits() for AF_UNIX and TCP sockets
-- tracing_buffers_splice_read() with sub-buffers larger than a page
-- fuse_dev_splice_read() which hands out the page cache folios of WRITE
-  requests. Those can be large folios since b46e09667411 ("fuse: enable
-  large folios").
-
-Without HIGHMEM this happens to work because kmap_local_page() is just
-page_address() and a compound page is contiguous in the direct map.
-With HIGHMEM the copy reads past the mapping. A fuse server on a 32-bit
-HIGHMEM guest that splices a WRITE request into a virtio port crashes:
-
-  BUG: unable to handle page fault for address: fffab000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Oops: Oops: 0000 [#1] SMP
-  EIP: pipe_to_sg+0x158/0x1e0
-  Call Trace:
-   __splice_from_pipe+0xd6/0x1f0
-   port_fops_splice_write+0xf9/0x170
-   do_splice+0x2c1/0x810
-   __ia32_sys_splice+0x2e7/0x310
-   ia32_sys_call+0x1916/0x2510
-   __do_fast_syscall_32+0xd4/0x550
-   do_fast_syscall_32+0x32/0x70
-   do_SYSENTER_32+0x15/0x20
-   entry_SYSENTER_32+0xa6/0x115
-
-pipe_read() had the same problem and 08aa64796016 ("teach
-copy_page_to_iter() to handle compound pages") fixed it by mapping one
-subpage at a time. So copy the buffer with copy_page_to_iter() as well.
-
-Fixes: b46e09667411 ("fuse: enable large folios")
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- drivers/char/virtio_console.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
-index b1b1aaf43e07e..b93a31b81cf4e 100644
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -12,6 +12,7 @@
- #include <linux/freezer.h>
- #include <linux/fs.h>
- #include <linux/splice.h>
-+#include <linux/uio.h>
- #include <linux/pagemap.h>
- #include <linux/idr.h>
- #include <linux/init.h>
-@@ -891,8 +892,9 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
- {
- 	struct sg_list *sgl = sd->u.data;
- 	unsigned int offset, len;
-+	struct iov_iter to;
- 	struct page *page;
--	char *src;
-+	struct kvec kv;
- 
- 	if (sgl->n == sgl->size)
- 		return 0;
-@@ -907,9 +909,14 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
- 	if (len + offset > PAGE_SIZE)
- 		len = PAGE_SIZE - offset;
- 
--	src = kmap_local_page(buf->page);
--	memcpy(page_address(page) + offset, src + buf->offset, len);
--	kunmap_local(src);
-+	/* The buffer can span several pages of a compound page. */
-+	kv.iov_base = page_address(page) + offset;
-+	kv.iov_len = len;
-+	iov_iter_kvec(&to, ITER_DEST, &kv, 1, len);
-+	if (copy_page_to_iter(buf->page, buf->offset, len, &to) != len) {
-+		__free_page(page);
-+		return -EFAULT;
-+	}
- 
- 	sg_set_page(&sgl->sg[sgl->n], page, len, offset);
- 	sgl->n++;
-
--- 
+     Andrew
