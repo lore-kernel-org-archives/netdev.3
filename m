@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794355218;
-	b=tmSZ8A2ctHj6bpv621PyazPP0vFzXpFAjPSdPu9n2wncO5ajqvdQUciArUleuY+OTboX
-	 W1oRBIGW8IiC+a85SJuW4uFrNVpwkbZA9XIbswZxLn6MLurZOWYU8l9omcT4pNU46EEIY
-	 6XbLH8Pe1Z/X1xnRgRC1Ykn2pshxdTdPhpMHLxt+moHWDGS0oJ1Zjc3RrPcEca1v06Rds
-	 5R8oOTPVXcd+fTMuIjkp9xEnM0W+O7ceQxCRGMg8s/fgOQnJpYyonJlb+ZQSumsvt99hv
-	 BE86tFX5cUK+KinVLE6XMoK7SF8tIjD6PK4B6U2t0xQ3osptKQm7YEEsc5B/G9J2XvA==
+	t=1794355213;
+	b=fz+qwZmz4jEPaUNp2JN+AQb4135k22MzbNHBj/IGIETgj/7c0dZkpZLDSlF/tRNOcY5j
+	 tJZp7z1cjVZd6iYTXl6bJWURFow9kJ5yKu0Z7f8ItHbm7sTLkQe6CPvsCZl67DIr9yoi5
+	 rliBUFFK9F5aIjg8mUHj8HTAW9LIRDw97yEZ4pofHOQ1BknFD9zwSerX4AA3S5wFjm/sT
+	 +Nfa4xerrrAlsP8HsAkH+iNOMk0/kBuhUbWtgAttBKzefc9iOTju+2+I2T2hcFleChxIH
+	 G6Z+QZuvgrwUBFD7zuAJEBaWHE0qukdJiO0pJnpCHlt9DaL/YkXNLHfRL9EAkYZYVHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794355218;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794355213;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=XXJOmUh6ZA2cxo0uMHH/7j9X480fJihmgHUTZSH0Lv4=;
-	b=iPT4zYaLE99GIj7vMmGwgWxVdyQX7Mk0nfDByMNWoIGWS2SEIJKhmiudq7Ab2RFElp/J
-	 /wMjuzFmJedV0KVdmhFZs5w6T521F/BfmR0IbRCPm/t5MfPeNnaKmGXElwChdmKJUq0xY
-	 IrzrRk+U7YrZNSdZU/vZ6SOIxVc33u3wgJd2Nf8Sr0PQYVg9wBRfE+wB3MElmKEmzKb6h
-	 Ela2i/V10hyb08AMUSdvetjcsh6h6J4nxPnyUNyuvkUCLwj0UHf8/RDVPmzcXbk7hGmAM
-	 UpVC3Lktt0z2ZkW0LugBU81UxrWEwBs3JauEyvsVcZFieAG0ABrGl2la2ceXL213eWw==
+	bh=pe7yckFoOcxSVtHvpin4iYoemsGaYsL1ql9aqtlmMUg=;
+	b=N0xqB7ziQTLDYFSVjdxLo1IX/E9vaZbcsU6mb5g5B2BBCdvGsXaaa3umCf4msk2JbUGW
+	 QlMLvm7wXGaAdo8N8DqZdQzr6AJdoQIs3UZ/II8UwCwr1MxtrzCvnnNrlKjCqL+UaTr8w
+	 oFvqRsoQleHD9P8rFNijPciE5xZUBImCoVbwA4G5QxNk6tOXOAIjUAdIiyo38r0xW48rh
+	 Pp63QzBJjOmRwsN2I31WJmeTIcF0dh3kVz0HxT7VHI2OPJR5k4+944haqcIbXwWtIp4zP
+	 0IduYfP1xACugHOir0j2x+On3eEPYj4R6m46GDagjTk06LUbQoSf0E6/KnGzdMP3fMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b6iWrDtb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="NM1/Fcki";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376B60A2604;
-	Wed, 11 Nov 2026 00:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E8A606A33A;
+	Wed, 11 Nov 2026 00:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b6iWrDtb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7F21F0089F;
-	Wed, 11 Nov 2026 00:00:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NM1/Fcki
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A6B1F0093D;
+	Wed, 11 Nov 2026 00:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794355218;
-	bh=XXJOmUh6ZA2cxo0uMHH/7j9X480fJihmgHUTZSH0Lv4=;
+	s=k20260515; t=1794355213;
+	bh=pe7yckFoOcxSVtHvpin4iYoemsGaYsL1ql9aqtlmMUg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=b6iWrDtblbR/FyqTPmhsV3XQ0zme5icdDs7lcjaw7oPLl2XXmLeM5l3FxjDxPCW27
-	 aWoSDtcHo3OIfgCuEGIPDp6eltPs6/1Fd49XtFxy28fdcGgw1arKHD4uepr+j7mDqw
-	 5k3TmjN4VMgAUBWrI5C/CxAqQNNN7bAUPMd77ftBm1+hcKnCRAuzfmETiQC3edQIUG
-	 +dyOpHg/rUjDtWXr3b9C7SKW9JOD5EcT5bZZDL666fz0j7iB9fKwMXYsq9sh/1XFp0
-	 q/7kFnZU4ocnzxKEOJzim0zTjR9xqxbWuqNT4je9pbF9x2DzSKVWtLJlBHtH7yb4nc
-	 H8WgT+oncEeqQ==
+	b=NM1/Fckij5mOXKI5Bb4o71FRGU0eqBBXBQmisBuksnz820Ccvdkq4KJg2/W075lwA
+	 Ud7dDemfVUb4Y8UZK5EQtY7qGUGuYK99eqMACUmnQWhuy99yXdfyRJkSKNTxSJISCz
+	 aMxacqe+DLeu0IPzeNZsAXpEfi+WmGvJOEytK+c7WH8ypQ5LUF7nTC6bkRKHzvY2y2
+	 R6J8Hv9y/53V7nn/RwVtlgeW0m7L8n/cRIV1XjE0i5HBSOJN7hrvlaYglsz4jOo1Wj
+	 a+gejRQGvzh74dQAuLseAiM3kJ65eqgePmaspbFCP0uwmgOF2dSrbBZDh+PKp/Qp+u
+	 zjXIJ53XAGaSA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2112939E8A4C;
-	Wed, 11 Nov 2026 00:00:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B1A139E8A4C;
+	Wed, 11 Nov 2026 00:00:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/3] selftests: drv-net: hds: fix state leaks and
- ioctl tests
+Subject: Re: [PATCH net v2] tcp: fix authentication bypass via unsupported TCP
+ auth options
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435521666.125436.2802528717977617642.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:00:16 +0000
-References: <20261106031208.465456-1-dimitri.daskalakis1@gmail.com>
-In-Reply-To: <20261106031208.465456-1-dimitri.daskalakis1@gmail.com>
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
+ <179435521217.125436.80998723021088734.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:00:12 +0000
+References: <20261107224733.1104094-2-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20261107224733.1104094-2-Jeremy.Jean@oss.cyber.gouv.fr>
+To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ dima@arista.com, fruggeri@arista.com, noureddine@arista.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  5 Nov 2026 19:12:05 -0800 you wrote:
-> From: Dimitri Daskalakis <daskald@meta.com>
-> 
-> Fix hds.py leaving tcp-data-split in a non-default state on drivers
-> that report HDS state rather than config, and fix the ioctl XDP tests.
-> 
-> Dimitri Daskalakis (3):
->   selftests: drv-net: hds: always restore tcp-data-split to auto
->   selftests: drv-net: hds: perturb settings via ioctl in
->     ioctl_enabled_set_xdp
->   selftests: drv-net: hds: restore HDS settings in ioctl_set_xdp
+On Sat,  7 Nov 2026 22:47:33 +0000 you wrote:
+> tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
+> least one of the two features is enabled. With TCP_MD5SIG=y and
+> TCP_AO=n, a packet carrying an AO option reaches the disabled
+> tcp_inbound_ao_hash() stub. That stub returns success, so sockets
+> configured to require MD5 authentication end up accepting
+> unauthenticated data. A forged AO option skips the unsigned fast
+> path, which is the only place where tcp_inbound_hash() can return
+> SKB_DROP_REASON_TCP_MD5NOTFOUND.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/3] selftests: drv-net: hds: always restore tcp-data-split to auto
-    https://git.kernel.org/netdev/net-next/c/c1e042cb4de2
-  - [net-next,2/3] selftests: drv-net: hds: perturb settings via ioctl in ioctl_enabled_set_xdp
-    https://git.kernel.org/netdev/net-next/c/2839e04a9f76
-  - [net-next,3/3] selftests: drv-net: hds: restore HDS settings in ioctl_set_xdp
-    https://git.kernel.org/netdev/net-next/c/f4085a199ebd
+  - [net,v2] tcp: fix authentication bypass via unsupported TCP auth options
+    https://git.kernel.org/netdev/net/c/7cc235fb1251
 
 You are awesome, thank you!
 -- 
