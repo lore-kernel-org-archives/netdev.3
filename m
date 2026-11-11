@@ -1,113 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.135.77
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794391271;
-	b=IqkHDBztK6q3/6D1MpLXDwkP9VAlkQoUud4yj19R+sYapN6EbuRe5m3JVlUBK8jftP7o
-	 hhRk3FtsGNHsh9SVhtVgx+faeF+dn2J1cHnUP2GadIzw56Hy9YGebMYZnGG1rPK9KdmeE
-	 zM2Ph+WH6iOUQ/261g7RWZOV4Al7igbtemvyScnyPf1l4W9XBv1x9PoeZF3APB+GFq+HA
-	 FdwwgHLPXBpVS2mFz8sr6Q/FeJaBEMseHoY8HGm/0dVbyeOQDUyayHDLYIImwo4oKKRZZ
-	 srD7/qogou0r+V4yT0zMEmh6VC1hQTTBrwmZetZDc4SHesh8FENYDMLoUh5XJ8xmd2Q==
+	t=1794391307;
+	b=MZTteiK8et8nfD7M8LlqQotfeqI2AR7H+1S8XO9IXW+qho25qB78xDjoVbZJsBdrN78G
+	 7251wG/ApwAlTW93r6GTeZ3+sRLfCfNr0/pMQChS2BgaK1WUuLoeugLbgburqfQEfBu62
+	 A6IpbyDxni3IRPxQSxHKoX7gHwuiD8P3BjtfFPPFdNkjP40xJFm9AJzPiMtane1O3F6+n
+	 UW8iFkd5A2HsUsWhQdTwW7FGoJoGO00QMqsuXm6J7IPXkSS9kjr9MYVU0LgnbnZPdbqYt
+	 iO6u79hcQSnuYlsyYWW/lnFMBMFfVTow8NkDMSsW5YWaZx1nsFnORwB0fzXsvA4JOkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794391271;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=HEpBBwY4m5scDgU0RA4B2noBF/zAsH0ctz5E1VEmcHc=;
-	b=Qglofksr3E+6g6I3pqtIIyls1AHK8n4jQHv9DeC4zDb9flkobe+Wy3LAa7lSnrK7GUO7
-	 GUNqQ52a3H2t7J7nj5Pgqxs2Gk64N3KSZUbhaEO19gSIOt6lvDn1uJX58txs0HjO/HvjX
-	 iRRYiY0yXKEUrQhEBjMX55p7ThAhUFYMPPiqf8AVD7wfZwQasav/MsD66pGuujXBsczoi
-	 NFu8Fcew/OcLeWvHScyXiM7Mkrd689Yn9ZlUz4ICtUGGsOr/C6xKRALM0H34pvTIuhEiF
-	 dMhjlGzpliiXmN59aDAJpHehQfRvOu7aZvGRNcYTpUMZ7Ls3PnlW0kVvsom8hpPS2TQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794391307;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:Received:Received:Received:From:To:CC:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type:X-ADIRuleOP-NewSCL:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=6o/et0VAAZnc5uOVXXXU6rPPsOTQn/o6zow/4OJOOfM=;
+	b=TGufATKUfpFzrcPMo9z8STksdSlC9dnSVPTfr0PzlhgtEijemf+okLheAJnW67v0TVDx
+	 Esy/zRMRes/irq2lvvhHY31QkY8rDR6kgL/dWW9JQ4+v3FfnVBePWzJfax5OpNbwl89dt
+	 hT+1xrfdaFzBtyGGMHYLkA5/OCl2/Jf2azGUhcdgkAGxVuDBtQs4L5nOOPhd/kKE8NPWP
+	 E2bJ1uGd42G+mpGaBreSdLvO9qOcSAYu4pOSgOUr6bnWUfkwrmHVNc6+uR17IYRvhzNtx
+	 vVDHJ06GEZIqf611YnuaKwM6+UTjeWrbem0/9K+c1n8oacU56LbOfyJa7zTgRSc22uQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=QCwbsGiL;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kRJNyJJ8;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dmarc=pass header.from=analog.com;
+	spf=pass smtp.mailfrom=analog.com;
+	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=Iq8fE4ck;
+	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b="khh/OCG5";
+	arc=none smtp.remote-ip=148.163.135.77
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DD160A5BD7
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:01:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64DD160A5BD7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD0C606A326;
+	Wed, 11 Nov 2026 10:01:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FD0C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=QCwbsGiL;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kRJNyJJ8
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AB5KNnv3958987
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:01:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HEpBBwY4m5scDgU0RA4B2noBF/zAsH0ctz5E1VEmcHc=; b=QCwbsGiL8deVshBN
-	cKsOzIJQ73WyK29znFgl01Xga7/uvYUEIct+HpOK+0/5kHTK4MnBex1/1pI0OVHB
-	b3mA00840N4d5bldQbmpq6bIpQ7kfD34OgtTDxuzMCz3UGIElEvQ464oqVZPi3x3
-	mz/qUwxpTZpN1bnKMimTZr8DtNoXVQJzK7y4z8riN+BRA3x980sapxsOWy2Okjkw
-	3jNTZtWfvuPmX3oEkGtYCP5lWJKopTF8cF6yfhcAdGoL7Zlu/yVHsEkq/76t8LVA
-	+zpmnJ7I/DP9fhNTxQGR5Ajmb3lLGXtBB3P4XejoWrYygVzjMFxZcQzHxyk39kZR
-	5Eze5w==
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hv9b3311m-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:01:05 +0000 (GMT)
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-84586110393so3359476a34.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 02:01:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794391265; x=1794996065; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HEpBBwY4m5scDgU0RA4B2noBF/zAsH0ctz5E1VEmcHc=;
-        b=kRJNyJJ85biOA/kKJTj60e5iBiRXfByfWAFvSaolxQmJlXBxm04riDm4Z2EzvI0wKg
-         6PQA4+MQ/yTHu6OC5Z6NFcCRUsgXR55nss+2gPAEb/j9UOzHWF+zDH7wVn6LBjJPRq00
-         PA6a0hWfPHZfVc75pYBIcKMNZ9iiQg9MUtDVOT2rtqFtGjBfQ4Q2Gfc61RZmm0hvjwxA
-         Um7RBArQbqdq3BxAH4nmLZlkfE4+D88OTchpT8Fg6VEp8mZjSYnFvz5QaZSQl83Hr+Tz
-         dYqUJAdG2rSSuBY2vavkuMWmYGIEH3Ef0u9b393zsbUJUuEG4ritq2T/7sbzfCFbnqVB
-         Q39Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794391265; x=1794996065;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HEpBBwY4m5scDgU0RA4B2noBF/zAsH0ctz5E1VEmcHc=;
-        b=ilDMVAeTyaxuNKz/J64Fb+kl58dDfXXMT4L4AayHNy+vU9mL33ezlfmGrUbqDxFVgc
-         guqohWjzzzpJcSlFL29gztLuL2fAOPanrkLTbqHxpS6nhHe/nHuef5Ep8wKBPXtUIVYU
-         FYSCUgbPJeIxc5sMeX0/ccur8XGHljZkn8xyZaJAlFRs4mQiNrAhrs29cOf6rfluOZ0V
-         5YMyn962nDuB3jbHVJ6RmowNryvFIJ38fJKOd6OsU9e1jdgCSPneoazlqFqN/9yll4jf
-         ewHq8hwsGWm87nUGu+SwXpGlsNJUHzWPHYfEEn6KF+KkC6iDg/rac1fFehW3PQaYpUai
-         hTzA==
-X-Forwarded-Encrypted: i=1; AL+hErEMj57zMkLp+I0UFkpTXoS8OdubE1MNVaTvGFpCpak94hnpZd1EjsgF55Y6PTmYNvheZJgH94g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+4LgILrJx1uoee4h6mSRIhSAlLwdaMoz6w+evE/EIkzPIY/r2/
-	1+Eu26g2HzYJ1Wk0t4o9DlMw8fqbLnWyrLDFwHfWoeojvt+Os5MuMqYgegeSks4NXeIG/FyW0ou
-	Zx4Iya07eq/f+D2UTqtGqFljZbvN3BtC1pvEmaY+1Cpgmhjmmh0Kxj4WwRXM=
-X-Gm-Gg: AYBFou1XuZ1WqmOHQXoYezWbm5Bh3e113NXF/SU4bgFzqKId7rCT9KRpCueOb4zV6BS
-	vke18E4xG1guIaKixyATCaTRb+l1MRBUluQbAGuBKFPgdJtJWDTeRpIUNl9V8zvplQo4RCK3hOn
-	8yOs1wMP0XoaJmTqkzIBCSkTeP7OBV1M9PxlG9KJaPg5wPobhgzQa8A8r6JNMnQdr/iK2fg7Rta
-	hIGs7eKwhMkPVsn/5MxIRTZd0q2G2B9BAEKkOmBxRvVq30UqUMnsBn+NRylZKdGRvdH01t4cs7M
-	jE0ilcTNKAflK0e8gMOURHQTYX68mqXXsufWKoBPQEcNSWoWkkIMC6Het8RYmnyzuJnhE2qVp47
-	8MPHcOpo5gxZF8swrJDiUd0mhNmLUGV/5UPIqGk2HW0dyvJJ8xumCIYPae6gIWhVKkjizzBX4yr
-	7L09I3zJml1uoSVMXC
-X-Received: by 2002:a05:6808:1924:b0:4d6:92b3:5c8d with SMTP id 5614622812f47-56b98d27ee0mr1503263b6e.67.1794391264842;
-        Wed, 11 Nov 2026 02:01:04 -0800 (PST)
-X-Received: by 2002:a05:6808:1924:b0:4d6:92b3:5c8d with SMTP id 5614622812f47-56b98d27ee0mr1503211b6e.67.1794391264180;
-        Wed, 11 Nov 2026 02:01:04 -0800 (PST)
-Received: from hu-luoj-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5690504c276sm4686111b6e.4.2026.11.11.02.01.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 02:01:03 -0800 (PST)
-From: Luo Jie <jie.luo@oss.qualcomm.com>
-Date: Wed, 11 Nov 2026 02:00:57 -0800
-Subject: [PATCH v2 3/3] arm64: dts: qcom: ipq5210: Add NSS clock controller
- node
+	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=Iq8fE4ck;
+	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=khh/OCG5
+Received: from pps.filterd (m0516787.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AB8C4CT1791512;
+	Wed, 11 Nov 2026 05:01:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=DKIM; bh=6o/et0VAAZnc5uOV
+	XXXU6rPPsOTQn/o6zow/4OJOOfM=; b=Iq8fE4ckw9dnwkAbgdTO2Y+OXzpgkFam
+	xTNMdZdNS+NdYbkqgLpd2Hz//hY2SntO5/MGblDksZJtdPst9uQvlnYrrZTtYhwc
+	x/iZ7zcci2A3VT71snqZ1C5gzKawxQHiL2ZWRiuOQ18YkLIOvFgGDXByOhMcUTT/
+	xP6HhNOyPy1oxI5fAGWblTCTRFJRdSUz5uue95PKpkzPnicBDwBQqnzOjYwpfNnY
+	/TevRHzFU9QbkS2/iVUDOhT1QecNbX/CeAeYBiMlAyKsO57KszVwZleNy4ynnt6C
+	gMqr6KeYtAgsNQ1+EWHQ6Zi30cid8y1zefFP6xoIf/UhQfDLmhB9Tg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=6o/et0VAAZnc5uOVXXXU6rPPsOT
+	Qn/o6zow/4OJOOfM=; b=khh/OCG5EG7nUs2weKrIKldT/7sTlRWK8FRmf6CYwyl
+	zKOCRImEhetLKgV4VYhuAVmS6pJ2ddoXQM7AQaeUFC06RDf4hK/LGtxtUQJNVaKl
+	9P9WfITetAbKjfosfxJ1PiAP2AMIS9w43OaO53WaXIRRL9doyz1FODZ1RP/7xqYc
+	asPdyTWn8KvE3JSIRDZJ9PTbozHwZ+tRF99lKS0FmcrpKFeTxjf4sif730tQxd5p
+	GVzzApEatcCHIdm5ZikUN6bpSmQ+ZTOQRdC4R2UGdrQLo7z6wcCiRJ/kqY636kTq
+	YUHCYVIVOoSX1j+WNskcWsNpdfFyBg0L+0f/uhL6bvw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4hva22mec3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Nov 2026 05:01:18 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 6ABA1GUR019671
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 11 Nov 2026 05:01:16 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 11 Nov
+ 2026 05:01:16 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
+ Transport; Wed, 11 Nov 2026 05:01:16 -0500
+Received: from HYB-6AVb5If9qTU.tail230d3d.ts.net (HYB-6AVb5If9qTU.ad.analog.com [10.135.4.43])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 6ABA0s1M021835;
+	Wed, 11 Nov 2026 05:00:59 -0500
+From: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Stefan Eichenberger
+	<eichest@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Subject: [PATCH net v3] net: phy: c45: select BASE-T1 type for the forced speed
+Date: Wed, 11 Nov 2026 12:00:53 +0200
+Message-ID: <20261111100053.345196-1-iustin.stolniceanu@analog.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,129 +103,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-qcom_ipq5210_nsscc-v2-3-7e2c1dda3ed2@oss.qualcomm.com>
-References: <20261111-qcom_ipq5210_nsscc-v2-0-7e2c1dda3ed2@oss.qualcomm.com>
-In-Reply-To: <20261111-qcom_ipq5210_nsscc-v2-0-7e2c1dda3ed2@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
-        Jerome Brunet <jbrunet+clk@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Georgi Djakov <djakov@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Luo Jie <jie.luo@oss.qualcomm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, netdev@vger.kernel.org,
-        quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
-        quic_leiwei@quicinc.com
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794391255; l=2069;
- i=jie.luo@oss.qualcomm.com; s=20251128; h=from:subject:message-id;
- bh=V7tk6aEtOPhfOk+VPI7cIHGev2spKigLOSXp8SeaGFM=;
- b=FPdGwja/I0to/ZmRBr9rXIX0wX/bDKAU1xK3bC9dhG0h/+sBG00vXJCbM1eQXFpMhieJc78+d
- zQqoysUX1hbBKJPSNke8FUNppPMjsVdX2VfHSwBf+OW8jJwOM6o7cRU
-X-Developer-Key: i=jie.luo@oss.qualcomm.com; a=ed25519;
- pk=gSsYMDakxtd6UDFYDdA9y9yjIs5Etp5GK/3DoXWPyS0=
-X-Authority-Analysis: v=2.4 cv=GKGdgeNK c=1 sm=1 tr=0 ts=6af43ce1 cx=c_pps
- a=OI0sxtj7PyCX9F1bxD/puw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=EUspDBNiAAAA:8 a=6SnK136Pe_QpXSRpRBcA:9 a=QEXdDO2ut3YA:10
- a=Z1Yy7GAxqfX1iEi80vsk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAzOSBTYWx0ZWRfX00Tc/fqS3Yk5
- r66XzRHG10/BnVwQRCQ8uyVUKv2KivrWkF5+djgAN/knxMB1A/7l3/DWHZmPahLv3fhXzgxRQ42
- Qjc3znjP4M936Kds+zxCND760IJOBGxgmd0p9aM4t2J6sDBYVgXc+PqEXDPsJ5aZHHnD+dX45jD
- MCs0rqHYg7eoZh0d7SScOQDJmc8Mzfb56KPCaD+12KKuEdA8DsoxH2ZvlOUBO6AaXQMrWLztWca
- 0K57tiQk5CEEp9FQNKEJXO1uB7zcZfZDWazNNPJScZBHuBz64JCma1yqtIFYyeXKOnaw8FIxqHp
- Wz5u9gFjLKELq/SzUACaHTrdS9RpEdj4Ed8c7SVbvkceu0cm+8suMGIl6c4zEkcwBMBPAVeqYp/
- 2etcCMEx0wq+RdhwjZJxUOquKZC7AvJ3XTwNFVTuUYx9MKsHfS7OMZZbAvD+WX5p9P/nz7Hy7bh
- xCO/jQapsfAM33kTg1g==
-X-Proofpoint-GUID: lvBDbt6bzp6j0wuUErT-pv53Kr5qyPRE
-X-Proofpoint-ORIG-GUID: lvBDbt6bzp6j0wuUErT-pv53Kr5qyPRE
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAzOSBTYWx0ZWRfXxc8J5lTeqH+L
- INMd1F3+4LUnYNo/1Jw1ULYhpqI82lzzRBBBhlPKoVgah8rFBC3inm0eHaJq/6+DVKaM2Z7ufzM
- 2T6gy9FwlxYLeuTOO7iBOig1JzkByGc=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 2ceJxnRQp5Bwe6F25rTEVizSy0Z1wVN_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAzOSBTYWx0ZWRfX89qOJD3YAARY
+ SdwSzpmJlQQpBzr+QncKYtEmV1HSvJ2p1XVk3zz9ev+uo2mMReJiDZ05E+CaQBWPY9WCDvT7Nz1
+ QAGAV8fMUhI6dladiXRIW7KvJu+ja4xMMaj4defWga+2YQtFltdClhousGgwX5mkT9O6zecJIJM
+ 5ilJ+5m3J6mNNo2QpCs2w+AVQEkHsKa0e4j1MAkt8cYRf4uEmD70aF3rCcR9bGoW9y91HpwRNh2
+ XkNuIdD2BuJ4+wrF09mX5JazGqsyafLfRkGnbx/0mMc0BF+b15UdFkDkHPrVG0RH2Ne7ZY26w+E
+ fGXKPelZ4FdWgD2rqgT4NtHCHAc494LPwKS5pm3w00iCAyMSy/WBjmeaD2hN3RzxWdh/YbmDs6A
+ H/b2tsJuYfBRWp1OZBBY075z3am2FokNM+pUuBZPidsuNgqSt9N2LcMiHBTvcoBpgJmWWyOkEgG
+ iFtBNyZ8BxrqctYyJTg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAzOSBTYWx0ZWRfX0ZqhsdGugBFg
+ DC64Dr8cjr2OPY3wiyunZpMa1VHyEFTfuzDaWV9zvNy0MMXFPVPiPYcuKXmrF09rdQ452+VnoDu
+ xFx3yDfKjgVKv6An4jWQQs+b/06xk7pqgZmLRd/jIHkPJmspgRyL
+X-Proofpoint-GUID: 2ceJxnRQp5Bwe6F25rTEVizSy0Z1wVN_
+X-Authority-Analysis: v=2.4 cv=ZYmIpcVA c=1 sm=1 tr=0 ts=6af43cee cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
+ a=OmVn7CZJonkx5R5zMQLL:22 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
+ a=kTs4aKTdxJRZGFSXfREA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-11_02,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501 phishscore=0
- spamscore=0 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 impostorscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611110039
 
-NSS clock controller provides the clocks and resets to the networking
-hardware blocks on the IPQ5210, such as PPE (Packet Process Engine) and
-the integrated EPHY.
+Commit 25108a834e14 ("net: phy: c45: add support for 1000BASE-T1 forced
+setup") made genphy_c45_pma_setup_forced() write the type selection
+field (bits 3:0) of the BASE-T1 PMA/PMD control register (1.2100) on
+every forced setup: 1000BASE-T1 for SPEED_1000, and 0 for everything
+else. 0 selects 100BASE-T1, so forcing a 10BASE-T1L PHY to 10 Mbit/s
+now also switches its PMA to 100BASE-T1, a mode it does not implement.
 
-Note that the CMN PLL output clock names are reversed with respect to the
-hardware block they actually feed: IPQ5210_PPE_CLK is wired to the NSS
-hardware block, and IPQ5210_NSS_CLK is wired to the PPE hardware block.
-Documentation is added in the DTS file to call this out and avoid
-confusion.
+Seen on an ADIN1110 (internal ADIN1100 PHY): after
 
-Signed-off-by: Luo Jie <jie.luo@oss.qualcomm.com>
+  ethtool -s ethX autoneg off speed 10 master-slave forced-master
+
+1.2100 reads 0xc000 instead of the 0xc002. Since the field is not
+restored by re-enabling autoneg, the PHY keeps the wrong type until
+the next forced setup or reset.
+
+Add a helper that returns the type selection value for the forced speed
+and the supported link modes: 100BASE-T1, 1000BASE-T1, and 10BASE-T1L or
+10BASE-T1S for SPEED_10 depending on the supported 10 Mbit/s modes. Fail
+with -EINVAL when no type matches instead of writing 100BASE-T1. This
+also applies to forced 2.5G, 5G and 10G on BASE-T1 capable PHYs, for
+which there are no link modes yet.
+
+The field is called "type selection" in IEEE 802.3-2022 (45.2.1.214,
+Table 45-178). Keep the old STRAP names as aliases.
+
+Tested on EVAL-ADIN1110EBZ: with this change, forcing 10 Mbit/s writes
+1.2100 = 0xc002 (10BASE-T1L) instead of the invalid 0xc000.
+
+Fixes: 25108a834e14 ("net: phy: c45: add support for 1000BASE-T1 forced setup")
+Signed-off-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- arch/arm64/boot/dts/qcom/ipq5210.dtsi | 40 +++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+Changes in v3 (review by Andrew Lunn):
+- Sort the cases of genphy_c45_baset1_type_sel() by speed.
+- Add Reviewed-by from Andrew Lunn.
+- No functional change.
+- Link to v2: https://lore.kernel.org/r/20261109144837.738619-1-iustin.stolniceanu@analog.com
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq5210.dtsi b/arch/arm64/boot/dts/qcom/ipq5210.dtsi
-index 0c1ede0f73b2..11915f8eb156 100644
---- a/arch/arm64/boot/dts/qcom/ipq5210.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq5210.dtsi
-@@ -331,6 +331,46 @@ frame@b128000 {
- 				status = "disabled";
- 			};
- 		};
-+
-+		nsscc: clock-controller@39b00000 {
-+			compatible = "qcom,ipq5210-nsscc";
-+			reg = <0x0 0x39b00000 0x0 0x100000>;
-+			/*
-+			 * Note: CMN PLL output clock names below are reversed relative
-+			 * to the hardware block they feed - IPQ5210_PPE_CLK is wired to
-+			 * the NSS hardware block ("nss") and IPQ5210_NSS_CLK is wired
-+			 * to the PPE hardware block ("ppe").
-+			 */
-+			clocks = <&xo_board>,
-+				 <&cmn_pll IPQ5210_PPE_CLK>,
-+				 <&cmn_pll IPQ5210_NSS_CLK>,
-+				 <&gcc GPLL0>,
-+				 <0>,
-+				 <0>,
-+				 <0>,
-+				 <0>,
-+				 <0>,
-+				 <0>,
-+				 <&gcc GCC_NSSCC_CLK>,
-+				 <&cmn_pll IPQ5210_EPHY_RAW_CLK>,
-+				 <&cmn_pll IPQ5210_EPHY_RAW_CLK>;
-+			clock-names = "xo",
-+				      "nss",
-+				      "ppe",
-+				      "gpll0_out",
-+				      "uniphy0_rx",
-+				      "uniphy0_tx",
-+				      "uniphy1_rx",
-+				      "uniphy1_tx",
-+				      "uniphy2_rx",
-+				      "uniphy2_tx",
-+				      "bus",
-+				      "ephy_rx",
-+				      "ephy_tx";
-+			#clock-cells = <1>;
-+			#reset-cells = <1>;
-+			#interconnect-cells = <1>;
-+		};
- 	};
+Changes in v2 (review by Andrew Lunn):
+- Name the type selection values after 802.3-2022 (Table 45-178) and
+  define all of them, including 2.5GBASE-T1, 5GBASE-T1 and 10GBASE-T1.
+  The old STRAP name comes from 6f1c646d88c5 and is kept as an alias
+  for userspace.
+- Add a helper that returns the type selection for the forced speed and
+  the supported link modes, also covering 10BASE-T1S. It returns
+  -EINVAL when no type matches instead of writing 100BASE-T1, which
+  also applies to forced 2.5G, 5G and 10G on BASE-T1 capable PHYs.
+- Resolve the type before the first register write, so a failure leaves
+  the PHY untouched (reported by the Sashiko review bot).
+- Retitle the patch, as it is no longer specific to 10BASE-T1L.
+- Link to v1: https://lore.kernel.org/r/20261104152534.1425241-1-iustin.stolniceanu@analog.com
+
+ drivers/net/phy/phy-c45.c | 46 ++++++++++++++++++++++++++++++++++-----
+ include/uapi/linux/mdio.h | 13 +++++++++--
+ 2 files changed, 52 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 870920311f9a..828af4c4e9d4 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -104,6 +104,36 @@ int genphy_c45_pma_baset1_setup_master_slave(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_pma_baset1_setup_master_slave);
  
- 	timer {
++/* Type selection value for the BASE-T1 PMA/PMD control register (1.2100,
++ * 802.3-2022 Table 45-178) matching the forced speed. 10 Mbit/s is ambiguous
++ * between 10BASE-T1L and 10BASE-T1S, so the supported link modes decide.
++ * 2.5G, 5G and 10GBASE-T1 are not handled as there are no link modes for them
++ * yet.
++ */
++static int genphy_c45_baset1_type_sel(struct phy_device *phydev)
++{
++	switch (phydev->speed) {
++	case SPEED_10:
++		if (linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1L_Full_BIT,
++				      phydev->supported))
++			return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1L;
++		if (linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_Full_BIT,
++				      phydev->supported) ||
++		    linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_Half_BIT,
++				      phydev->supported) ||
++		    linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half_BIT,
++				      phydev->supported))
++			return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1S;
++		return -EINVAL;
++	case SPEED_100:
++		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_100BT1;
++	case SPEED_1000:
++		return MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1;
++	default:
++		return -EINVAL;
++	}
++}
++
+ /**
+  * genphy_c45_pma_setup_forced - configures a forced speed
+  * @phydev: target phy_device struct
+@@ -166,6 +196,16 @@ int genphy_c45_pma_setup_forced(struct phy_device *phydev)
+ 		return -EINVAL;
+ 	}
+ 
++	/* Resolve the type before the first write, so a speed without a
++	 * matching type leaves the PHY untouched.
++	 */
++	bt1_ctrl = 0;
++	if (genphy_c45_baset1_able(phydev)) {
++		bt1_ctrl = genphy_c45_baset1_type_sel(phydev);
++		if (bt1_ctrl < 0)
++			return bt1_ctrl;
++	}
++
+ 	ret = phy_write_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1, ctrl1);
+ 	if (ret < 0)
+ 		return ret;
+@@ -179,12 +219,8 @@ int genphy_c45_pma_setup_forced(struct phy_device *phydev)
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		bt1_ctrl = 0;
+-		if (phydev->speed == SPEED_1000)
+-			bt1_ctrl = MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000;
+-
+ 		ret = phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_PMD_BT1_CTRL,
+-				     MDIO_PMA_PMD_BT1_CTRL_STRAP, bt1_ctrl);
++				     MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL, bt1_ctrl);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 06f4bc3c20c7..2806f60ed105 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -417,8 +417,17 @@
+ #define MDIO_AN_10BT1_AN_STAT_LPA_EEE_T1L	0x4000 /* 10BASE-T1L LP EEE ability advertisement */
+ 
+ /* BASE-T1 PMA/PMD control register */
+-#define MDIO_PMA_PMD_BT1_CTRL_STRAP		0x000F /* Type selection (Strap) */
+-#define MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000	0x0001 /* Select 1000BASE-T1 */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL		0x000F /* Type selection */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_100BT1	0x0000 /* Select 100BASE-T1 */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1	0x0001 /* Select 1000BASE-T1 */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1L	0x0002 /* Select 10BASE-T1L */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10BT1S	0x0003 /* Select 10BASE-T1S */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_2P5GBT1	0x0004 /* Select 2.5GBASE-T1 */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_5GBT1	0x0005 /* Select 5GBASE-T1 */
++#define MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_10GBT1	0x0006 /* Select 10GBASE-T1 */
++/* Legacy names, kept for userspace */
++#define MDIO_PMA_PMD_BT1_CTRL_STRAP		MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL
++#define MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000	MDIO_PMA_PMD_BT1_CTRL_TYPE_SEL_1000BT1
+ #define MDIO_PMA_PMD_BT1_CTRL_CFG_MST		0x4000 /* MASTER-SLAVE config value */
+ 
+ /* 1000BASE-T1 PCS control register */
 
+base-commit: 241dec6f9ab74d8c3ef246764f3611666b96b9e1
 -- 
 2.43.0
 
