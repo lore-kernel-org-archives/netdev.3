@@ -1,70 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794407510;
-	b=esjUjIlFTGzavq7etdc7yTogj+ggcv0f5r3dtMO0mxSf4y5T2rSp7wPt1aS7bHvvyX0T
-	 cQJycTPs1LWeuA4v1jCIHw7Wui0emOW8wym42cEewAr+vrpu5hE8NKhFguzlk/9bGw6gR
-	 5jZbyq954u1gSkzTY51ZM+LodI8SUP64szZxRILG/igNdZqFM67wMOPrMiW+LQRRQrEIC
-	 W/39hO52yctw3Ymn5vhidg+9NPdKVeYJs3Unr1msVTaf6GxFovB5Nf6uu73siTPhTCUD2
-	 ugJzYQXXHXn1L3OyuMH5Il0wBQSzbGeykYlTNw2u3Uj4ZU6uG8jMG4NkC+iE8MEDZmg==
+	t=1794407513;
+	b=5jzeHp+M1xh91pN4IyMMT286hFGUOlHwtaDvZYr/7nNNxYMhq8SBiQcMRYHp1Xmh6Lm8
+	 6dPdZ3Cl5rZWgXUCNwhjWatnULfheWZw248UtDOQdsyZGG0yGv+COBD4eXHRCGF4I1RBB
+	 HFuDrf/yt8A+JswOfunUP1sqBkEPhL1S8SEu7arY8J18vqoslzF8QhBj7asdyKauPEolU
+	 BvYfOj66eE1SVblZR/dGJqpYB4OjNqqDFZ2GZJEw4koze1BIX95CSoNG5HrfO6KCTpEET
+	 xZld1WyeP3VJSJwqmVQbUd3q62461ZL1huoiC38l3HdzotP9dYRvl16G0axIC7ac2lQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794407510;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794407513;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
-	bh=FpqThEAQq884gGkXUq0nZfGLBOXswodMtHb28S6gKq8=;
-	b=kxqhiI+qDRa2y12BVmCNM0jZCaIkOSmBYWMUxMT2oUI2s71zC0JL2MVpidG/YXT1Yju2
-	 BQ3V2h+pUI2jmXCzcPbk/g1Yc6muSLpJ6owKgk+aCY4sBDFSnBKC43NdyJssET1uwXEoG
-	 IGXUeD2ThhpcONsgItqE8qbnQUo9V/cjXznas1oGng/V9CSbjJOJeMEipipW9T84We4te
-	 8b1cND864cVQx39pyJnhtGidT6yUDv2h8VdbTbRivsoFo7T2imde+z+m6cfLyRdvlhjMg
-	 CYUR4VBvDAnotHRzssHv1eizJhkRrzc2l8ducNQsxtgikLc0ERAHYsjLbHeB4lsYHLg==
+	bh=duB/7yveMF318wQ7CMLtGRf7OYC9sLd5x47PpD/rS48=;
+	b=TZFTjNq37LB/JmJCZ6dVhw/OSCHOUFdU0fOZBsXUDnFPZf76q3VTfFAl0XH4OQaCYApe
+	 lOWovdxRuDjrUhmkfZRflgo3Z8JrW3zg9OOjRlyBPkfIRVUvBc5hvzpRelRokQCiLe+1h
+	 QRuqCx4fhFfgJiLX93FbLTfFFQj4NivwvCi6i37FDX0Tjgt59u+KH+6vxtncI4okMwR+d
+	 zgho1qWDxIzQz/BAqoZW00BcmYRkQSMFIvFgQPW4gNwIrLIMXt3DAsXUK5jLWmo4JAVx4
+	 9OFgfPzokPcjd4ES5NaYwTH4oaeLuDshBKB3E+JRK0VpwA5odPzWQz9vD+hBm3nobbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=cxOCjnpd;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=KAanVS+v;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073A160A6F5A;
-	Wed, 11 Nov 2026 14:31:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 073A160A6F5A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578EB606A336;
+	Wed, 11 Nov 2026 14:31:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 578EB606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=cxOCjnpd
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=KAanVS+v
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794407517; x=1825943517;
+  t=1794407513; x=1825943513;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=63C2l/35fgXhbv9pkZTuopuvnN7R8G2katEZp0sbTQ8=;
-  b=cxOCjnpd7S+0hE4zEZi3RswCk4SToTCy1mi315mPjPUv9iRyKQfP6XaO
-   jTYQH0Z7Oppcjxr6hDEOePWX6S2Ms6j0JgUWGx1rLKRPlgYIcZFAaTORH
-   GWZpZTP8/n2mWAJVp/X/K0pwyx8E7+ajg2pWr+gBaMziU8ERtwgT3oAhY
-   8/YurG09ztXihDEvo3xNpe8YtCOGPOkQ3/zDtJY1BYkeeJL8d8hvl5t8C
-   HqpDh0lUpKINDi/RjGqgVLXiBo4qP+j7hDYsVSLsHrapIJyEx9y5ReCmo
-   cLY+7dLHJGUZw9dM9FlwrCvs28/0J1AX5HZiwG0LIIgUcbfoB46PphqXu
-   A==;
-X-CSE-ConnectionGUID: Y/6r8e8iQM6KjuVKGsvmtg==
-X-CSE-MsgGUID: KU6b1T8PR+W3dpXWkxJmDQ==
+  bh=HjGJZDFB9RuMeUYwAAgJUELvVAcflCgKhSmOu1n/eNo=;
+  b=KAanVS+vILwEtcBlxXAitxKsy15L2bVlS/euiInksPUnES5mtSasERPp
+   N1wVJY15fs69cXU+B5t7UNwuBOMUTIfxM6HZc1zwn0Qu6U7ILCBt217Us
+   BHRe/1M9dKlrycw9P618nP/rWShLIVVVxPlWS16IC220apErRFeBEcXNv
+   2z+Y2l2nkCsk/fvw/go4GcQSTj22viBa/iZHlUpjwcHn8UuU2m0QQX0Jo
+   HiA1vn2WO89gO8Eg/WL/lVVhtJVMxM3oqIiOD3ZYjj9jF/ssXRpvCoRqR
+   OhBnwI3WVhqDwHFospVnG0jl1XRQokmfxa1ZKt0kvmteaecSGVxeJzE7/
+   Q==;
+X-CSE-ConnectionGUID: CW6Ii7iwQtSQ+rA+SSjv2Q==
+X-CSE-MsgGUID: q5bXFfvxQhSKSg+t2E48PQ==
 X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="65390788"
+   d="scan'208";a="297775349"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Nov 2026 07:31:56 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 07:31:52 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 11 Nov 2026 07:31:48 -0700
+ 15.2.2562.56; Wed, 11 Nov 2026 07:31:52 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 11 Nov 2026 07:31:46 -0700
+ 15.1.2507.58 via Frontend Transport; Wed, 11 Nov 2026 07:31:49 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 11 Nov 2026 15:31:18 +0100
-Subject: [PATCH net-next v2 8/9] net: sparx5/lan969x: scale the TAS guard
- band with the MTU
+Date: Wed, 11 Nov 2026 15:31:19 +0100
+Subject: [PATCH net-next v2 9/9] net: sparx5/lan969x: add support for
+ changing the MTU
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261111-sparx5-mtu-change-v2-8-59c91357e8f6@microchip.com>
+Message-ID: <20261111-sparx5-mtu-change-v2-9-59c91357e8f6@microchip.com>
 References: <20261111-sparx5-mtu-change-v2-0-59c91357e8f6@microchip.com>
 In-Reply-To: <20261111-sparx5-mtu-change-v2-0-59c91357e8f6@microchip.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -91,143 +91,126 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<jensemil.schulzostergaard@microchip.com>
 X-Mailer: b4 0.14.3
 
-The TAS guard band (QMAXSDU_VAL, in units of 64 bytes) is how long
-before a gate closes the scheduler stops starting frames of a traffic
-class, so that a frame started just before the close still finishes in
-time. The driver leaves it at the reset value of 24 x 64 = 1536 bytes,
-so with a larger MTU, a frame started inside the guard band would
-overrun the gate close.
+The MTU of a port is currently fixed to 1500, as the MAC maximum frame
+length, the FDMA buffers, the queue watermarks and the TAS guard band
+are all sized for a 1518 byte frame. The previous patches make the
+buffers, watermarks and guard band follow the MTU, so changing the MTU
+is a matter of programming the MAC and updating these.
 
-The MAC maximum frame length only limits the frames a port receives, so
-a port can transmit frames of the largest MTU of all ports, for example
-when forwarding from a port with a larger MTU. Therefore, size the guard
-band of all ports for a frame of the largest MTU, plus the Ethernet
-header, FCS and two VLAN tags, rounded up to 64 bytes. Add the
-HSCH_TAS_QMAXSDU_CFG register, program the guard band at init, and add
-sparx5_tas_gb_update() for use when the MTU changes.
+Add an ndo_change_mtu callback that sets the MAC maximum frame length of
+the port and resizes the FDMA buffers. The MAC must never accept frames
+that are larger than the RX buffers, so when decreasing the MTU, the
+maximum frame length is lowered before the buffers are shrunk, and when
+increasing it, it is only raised once the buffers have been grown. The
+new MTU is only published once the buffers fit it. If the buffers cannot
+be grown, the MTU is not changed. If they cannot be shrunk, the current
+buffers still fit all frames, so the new MTU is kept. Once the new MTU
+is published, update the queue watermarks of the port and the TAS guard
+band.
 
-With the default MTU of 1500 the guard band is unchanged. As the
-scheduler does not start a frame inside the guard band, a gate window
-shorter than the guard band at the link speed cannot transmit, as is
-already the case for the default 1536 byte guard band.
+As the FDMA is shared by all ports, resizing its buffers briefly stops
+CPU traffic on all ports. This only happens when the change affects the
+buffer size needed for the largest MTU of the ports.
+
+Register based extraction, which is used when the FDMA is not, sizes
+its skbs from the MTU at the time a frame is read, so frames queued
+before an MTU decrease would not fit. Therefore, only allow the MTU to be
+changed when the FDMA is used.
+
+The MACs of both Sparx5 and lan969x support frames of up to 14000 bytes,
+so set the maximum MTU accordingly when the FDMA is used.
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
  .../net/ethernet/microchip/sparx5/sparx5_main.h    |  1 +
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 12 ++++++
- drivers/net/ethernet/microchip/sparx5/sparx5_tas.c | 43 +++++++++++++++++++++-
- 3 files changed, 54 insertions(+), 2 deletions(-)
+ .../net/ethernet/microchip/sparx5/sparx5_netdev.c  | 48 +++++++++++++++++++++-
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index 59deeb91ad921..9bd3f7827b1f2 100644
+index 9bd3f7827b1f2..03643adad4caf 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -746,6 +746,7 @@ int sparx5_tas_enable(struct sparx5_port *port,
- 		      struct tc_taprio_qopt_offload *qopt);
- int sparx5_tas_disable(struct sparx5_port *port);
- void sparx5_tas_speed(struct sparx5_port *port, int speed);
-+void sparx5_tas_gb_update(struct sparx5 *sparx5);
+@@ -110,6 +110,7 @@ enum sparx5_feature {
+ #define SPX5_BUFFER_MEMORY     4194280 /* 22795 words * 184 bytes */
+ #define SPX5_TAS_ENTRIES_PER_PORT 2 /* TAS lists per port */
+ #define SPX5_HW_MTU(mtu)       ((mtu) + ETH_HLEN + ETH_FCS_LEN)
++#define SPX5_MAX_FRAME_LEN     14000 /* Max frame length supported by the MACs */
  
- /* sparx5_mirror.c */
- int sparx5_mirror_add(struct sparx5_mall_entry *entry);
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-index 5302c7686e207..8a6de30042b5d 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-@@ -5424,6 +5424,18 @@ extern const struct sparx5_regs *regs;
- #define HSCH_TAS_STATEMACHINE_CFG_REVISIT_DLY_GET(x)\
- 	FIELD_GET(HSCH_TAS_STATEMACHINE_CFG_REVISIT_DLY, x)
- 
-+/* HSCH:TAS_PROFILE_CFG:TAS_QMAXSDU_CFG */
-+#define HSCH_TAS_QMAXSDU_CFG(g, r)                                             \
-+	__REG(TARGET_HSCH, 0, 1, regs->gaddr[GA_HSCH_TAS_PROFILE_CFG], g,       \
-+	      regs->gcnt[GC_HSCH_TAS_PROFILE_CFG],                              \
-+	      regs->gsize[GW_HSCH_TAS_PROFILE_CFG], 0, r, 8, 4)
-+
-+#define HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL         GENMASK(7, 0)
-+#define HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL_SET(x)\
-+	FIELD_PREP(HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL, x)
-+#define HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL_GET(x)\
-+	FIELD_GET(HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL, x)
-+
- /* HSCH:TAS_PROFILE_CFG:TAS_PROFILE_CONFIG */
- #define HSCH_TAS_PROFILE_CONFIG(g)                                             \
- 	__REG(TARGET_HSCH, 0, 1, regs->gaddr[GA_HSCH_TAS_PROFILE_CFG], g,       \
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tas.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tas.c
-index ec80bc69371ab..32e502bc4f18f 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_tas.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tas.c
-@@ -29,6 +29,9 @@ enum sparx5_tas_link_speed {
- /* Maximum supported cycle time in nanoseconds */
- #define TAS_MAX_CYCLE_TIME_NS ((1 * NSEC_PER_SEC) - 1) /* 999.999.999 nsec */
- 
-+/* HSCH_TAS_QMAXSDU_CFG.QMAXSDU_VAL, the guard band, counts 64 byte units */
-+#define TAS_QMAXSDU_UNIT 64
-+
- /* STARTUP_TIME in units of 256 ns, must be non-zero for a list to start */
- #define TAS_STARTUP_TIME_DEFAULT 8
- 
-@@ -48,8 +51,8 @@ enum sparx5_tas_link_speed {
-  * We use 1 TAS profile per port, shared by both of its lists:
-  * index = portno;
-  *
-- * We do not yet support frame preemption and the default guard band
-- * of 1536 bytes is always used on all queues.
-+ * We do not yet support frame preemption. All queues of all ports use a
-+ * guard band that fits the largest frame that can be forwarded.
-  *
-  * The gate mask of each entry is written as is to the port's 8 queues,
-  * where bit n gates queue (QoS class) n. The mqprio parameters of the
-@@ -718,6 +721,40 @@ int sparx5_tas_disable(struct sparx5_port *port)
- 	return err;
+ #define XTR_QUEUE     0
+ #define INJ_QUEUE     0
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c b/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
+index b3725cf2dd44c..095925752f5f6 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
+@@ -250,6 +250,44 @@ static int sparx5_port_hwtstamp_set(struct net_device *dev,
+ 	return sparx5_ptp_hwtstamp_set(sparx5_port, cfg, extack);
  }
  
-+/* Size the guard band of all ports for a frame of the largest MTU of all
-+ * ports, as a port can transmit frames forwarded from any port.
-+ */
-+void sparx5_tas_gb_update(struct sparx5 *sparx5)
++static int sparx5_port_change_mtu(struct net_device *dev, int new_mtu)
 +{
-+	u32 max_mtu = 0, gb;
-+	int i, tc;
++	struct sparx5_port *port = netdev_priv(dev);
++	struct sparx5 *sparx5 = port->sparx5;
++	bool resize = new_mtu > dev->mtu;
++	int err;
 +
-+	for (i = 0; i < sparx5->data->consts->n_ports; i++) {
-+		if (sparx5->ports[i])
-+			max_mtu = max_t(u32, max_mtu,
-+					READ_ONCE(sparx5->ports[i]->ndev->mtu));
++	/* Register based extraction sizes its skbs from the MTU at the time
++	 * a frame is read, so it cannot handle frames queued before an MTU
++	 * decrease.
++	 */
++	if (sparx5->fdma_irq <= 0)
++		return -EOPNOTSUPP;
++
++	/* Never let the MAC accept frames larger than the RX buffers */
++	if (!resize)
++		sparx5_port_max_len_set(sparx5, port, SPX5_HW_MTU(new_mtu));
++
++	err = sparx5->data->ops->fdma_resize(sparx5, port, new_mtu);
++	if (err) {
++		if (resize)
++			return err;
++
++		/* The current, larger, buffers still fit all frames */
++		netdev_warn(dev, "Failed to resize FDMA buffers: %d\n", err);
 +	}
 +
-+	gb = DIV_ROUND_UP(SPX5_HW_MTU(max_mtu) + 2 * VLAN_HLEN,
-+			  TAS_QMAXSDU_UNIT);
++	WRITE_ONCE(dev->mtu, new_mtu);
 +
-+	mutex_lock(&sparx5->tas_lock);
-+
-+	/* Each port uses the TAS profile of its own number */
-+	for (i = 0; i < sparx5->data->consts->n_ports; i++) {
-+		if (!sparx5->ports[i])
-+			continue;
-+
-+		for (tc = 0; tc < SPX5_PRIOS; tc++)
-+			spx5_rmw(HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL_SET(gb),
-+				 HSCH_TAS_QMAXSDU_CFG_QMAXSDU_VAL,
-+				 sparx5,
-+				 HSCH_TAS_QMAXSDU_CFG(i, tc));
-+	}
-+
-+	mutex_unlock(&sparx5->tas_lock);
-+}
-+
- int sparx5_tas_init(struct sparx5 *sparx5)
- {
- 	const struct sparx5_consts *consts = sparx5->data->consts;
-@@ -764,6 +801,8 @@ int sparx5_tas_init(struct sparx5 *sparx5)
- 		}
- 	}
- 
++	sparx5_port_wm_update(sparx5, port);
 +	sparx5_tas_gb_update(sparx5);
 +
- 	return 0;
- }
++	if (resize)
++		sparx5_port_max_len_set(sparx5, port, SPX5_HW_MTU(new_mtu));
++
++	return 0;
++}
++
+ static const struct net_device_ops sparx5_port_netdev_ops = {
+ 	.ndo_open               = sparx5_port_open,
+ 	.ndo_stop               = sparx5_port_stop,
+@@ -257,6 +295,7 @@ static const struct net_device_ops sparx5_port_netdev_ops = {
+ 	.ndo_set_rx_mode_async  = sparx5_set_rx_mode,
+ 	.ndo_get_phys_port_name = sparx5_port_get_phys_port_name,
+ 	.ndo_set_mac_address    = sparx5_set_mac_address,
++	.ndo_change_mtu         = sparx5_port_change_mtu,
+ 	.ndo_validate_addr      = eth_validate_addr,
+ 	.ndo_get_stats64        = sparx5_get_stats64,
+ 	.ndo_get_port_parent_id = sparx5_get_port_parent_id,
+@@ -306,7 +345,14 @@ int sparx5_register_netdevs(struct sparx5 *sparx5)
  
+ 	for (portno = 0; portno < sparx5->data->consts->n_ports; portno++)
+ 		if (sparx5->ports[portno]) {
+-			err = register_netdev(sparx5->ports[portno]->ndev);
++			struct net_device *ndev = sparx5->ports[portno]->ndev;
++
++			/* The MTU can only be changed when FDMA is used */
++			if (sparx5->fdma_irq > 0)
++				ndev->max_mtu = SPX5_MAX_FRAME_LEN - ETH_HLEN -
++						ETH_FCS_LEN;
++
++			err = register_netdev(ndev);
+ 			if (err) {
+ 				dev_err(sparx5->dev,
+ 					"port: %02u: netdev registration failed\n",
 
 -- 
 2.34.1
