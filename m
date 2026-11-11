@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794390783;
-	b=vAL3oAaiEkP/BcqUxa+uGN/xj+OjTQsxYC45l9XB3RywzSJR2vLgiW9B1qPwbjs6eZ02
-	 Ok+fDmQnnEsrxRXbU0KL/dSmh0RFyWswZaJFxXOjpwO9QES6EHjO0LaEr8+bfnbW/xhS8
-	 JDuMQFfz1wv21ONnCI4qqkobwQ8sFPb8mEitrIaY/it6KwA2jI9YGio2mJ+GSjccsx5ue
-	 D/UyZqDkg3GuF36cdSKf3NzIxhGcJDsBXfD/1S3mzktabN5wKuYRhg9ezb9EiCh+WwTZN
-	 nnul4M8/qJgc1R6ziVitc9eJP8VGNandWcPTKyTVAy9lCXJ1KELp3Eec5K6fuL4c/DA==
+	t=1794390786;
+	b=RL595cG/S+TI/dEAWeKbGoWLBCvFY3wcJDKZbkSJ5cmFC9gS/L61k609wfDUk1OxWubk
+	 gRuWhKIQ69ZwPGQM1pZmd5vGaBRKbdKU/FKyQrbYqlEhGJVru7CTYH6Zl//9UegymTGfL
+	 KZvkX/dIJfdsX0a1Y25GiLRnRCoSKtMi99ulp/b5fz2NTB4+5m1t4xtlJfRm6OIg6piAg
+	 X2syuGHxwDL4XydcjLU4FK4v4kH1bNuV6a474D6EQfN8gzuPTqWmjz1iWSmUVZQECD4dD
+	 mJcZ8sd5CfX8vZaHLNAccTO1J5XZK94FzDEg72GbtZF8e5M+bk50FLp9XU7nu0Lb5Bw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794390783;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794390786;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=dosgcgtYnwjGfg33mXVJN1zPstrhDPbH2LgaYc37HQ4=;
-	b=Nc2Xwm9UMn5bmxEKQYMn/vhsKuvpUddCSUGxH81o0FhnNPmKQ26Erx1H3CLMeJpDi/1T
-	 wOUpJqsmvD/soQH51VAaZJ+vMp3DMKnO7mDDGMDvWltTxmSZMKuEOmwVTaadDtJsBICRX
-	 DsXzr4ZK6td6bqJO9c+mLdGg3cITRApcoFFFETRzdXkwDclgqAz9i1DBymavXcRLcpEJO
-	 PT/tC9AwrvBkyrtPgIFkGya2xUtoqhZFLtWf7CKRTiv/64SCaeOzKykuQvWedDIwP7Dcn
-	 tM1NTqXeUSvN+f1HH/V3+JMPSInjJOYyZslhsGjoZlrtTrJaj4EHQ4H5b8O5kme8U+Q==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=XT6BWjf3e2H2CZG/NlymA92TO1byQpSSnVJi47YMPVw=;
+	b=WZfiFeBPQJafZCGOsMsU0b82iDYbXZtwKcM/1SMliSobkFsCcYAuaFXaa+EE3VKtTuGC
+	 dnHNHaRcgB2NoONUNv4REsINyAtQLRcPHQ16hV40zuqekcZbvngznX9YVaeF/Tn8+YeBE
+	 pseP24hwb0m7KAWuT2m/K4bJDbpwmrdp07aNYwvGA+4/ieQI8ENjO/A+pTNYf7+7QETon
+	 3NNYMkSlVsoVzynyz1JljaKDfLrfSDGLLMaKSO3j08tavL7n5EhsueyWiUoNLAHxbC0Sm
+	 0/OlnVusMMSSduEv2B9wpgeJtHCjaG5m8QDBwKad6ONYmsZgmD8nPcqdsgOSraO3ltw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA0j1gTn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Edvf/VAz";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFF560A2615;
-	Wed, 11 Nov 2026 09:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467BF606A33B;
+	Wed, 11 Nov 2026 09:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA0j1gTn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D791F00A06;
-	Wed, 11 Nov 2026 09:53:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Edvf/VAz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8624D1F00A09;
+	Wed, 11 Nov 2026 09:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794390783;
-	bh=dosgcgtYnwjGfg33mXVJN1zPstrhDPbH2LgaYc37HQ4=;
-	h=From:To:Cc:Subject:Date;
-	b=BA0j1gTn9JckxqLcIm6KxVmr7UL/nxUDp1DN3aVZ3IpISTEjfDkYWKmJj4RVTXfON
-	 p1GhjTKkKofZMBNnhijiFHs4vMHgtIwmuMQn9bFur59fY8CF9ytpMJgOVhaFKEyeMt
-	 scBaMAMCPX9SxY1eLoR3UBIkWCsjD6wCQ+6UqUGSfZvTAoY/RWRplmCUsdjHy9KJMO
-	 NBIcMa7lwuu8GX2y7LvSXeppn5Fj4f+hdq+6SfFkX5dvQpEI3fkJBoH0yJKZd3Ur+b
-	 US2yGSDHa8jXeC2RTdvNAOsF23N/2DWGzqUBlZRKoQvAf1YKXGOOguW90Tc+Q0uDps
-	 MQN9hTLe1Uzqw==
+	s=k20260515; t=1794390785;
+	bh=XT6BWjf3e2H2CZG/NlymA92TO1byQpSSnVJi47YMPVw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Edvf/VAzHbtYaB6SGLqNNuQrY6tn2AxZui0ULEp46nZrw4K3zZk9Wu6J4oQsRvuPf
+	 TVUEnJ44FOaTXZWgB7PMlbbkrnLSq5ulB+MOuffoMo+m93hsJiQ0CBT2wN6GwYSW0R
+	 ym+Z+mITLcZEE84igwJOXX5sScBa2MDCBqPC9SCjKxBuxXs9SzgUlMSA9Pn10senYg
+	 F/rWKYIRZdflDZyjj5V8A6S5aBr2KxFNeUvtRlDFm2ZIU++Z9EXBi6PwlRdcD8+lxS
+	 HbV+AY1bfvxBgM7TT1r9gG7PXwpwNJEFABMlwmTE1q/d22XSCVt7itKVw93iPu1ZBs
+	 +bayyvWeaJX4g==
 From: Imre Kaloz <kaloz@kernel.org>
 To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	netdev@vger.kernel.org
@@ -49,10 +49,12 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-mips@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] net: sgi: ioc3-eth: two changes for the IOC3 on SGI IP35 machines
-Date: Wed, 11 Nov 2026 10:51:36 +0100
-Message-ID: <20261111095138.1757-1-kaloz@kernel.org>
+Subject: [PATCH net-next 1/2] net: sgi: ioc3-eth: apply the DMA attributes only to 64-bit addresses
+Date: Wed, 11 Nov 2026 10:51:37 +0100
+Message-ID: <20261111095138.1757-2-kaloz@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261111095138.1757-1-kaloz@kernel.org>
+References: <20261111095138.1757-1-kaloz@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,37 +66,75 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With the IP35 support series [1] posted, these two changes let ioc3-eth
-drive the IOC3 of the SGI Fuel, which sits behind an XBridge and has no
-MAC PROM.
+A Bridge 64-bit direct-mapped DMA address carries the target widget and
+the DMA attributes. An address in the 2GB 32-bit direct window carries
+neither, so attributes OR-ed onto one aim it at widget 0, and every
+receive raises a PCI error.
 
-Patch 1 applies the DMA attributes and the RX barrier's upper address
-bits only to 64-bit direct-mapped addresses, so the IOC3 can use a
-bridge's 32-bit direct window. Patch 2 asks
-eth_platform_get_mac_address() when the 1-wire MAC PROM read fails,
-and uses a random address once deferred probing gives up.
+Apply them, and the RX barrier's upper address bits, only to 64-bit
+addresses. IP27 and IP30 give the IOC3 64-bit addresses; behind an
+XBridge or PIC it can use the window.
 
-Both were posted as 25/53 and 38/53 of the IP35 series v2 [1] and are
-reposted on their own for net-next, as Jakub asked [2]. The rest of that
-series puts an IOC3 behind an XBridge or PIC on the 32-bit window and
-supplies the MAC address from the L1 system controller. There is no
-build dependency in either direction, and IOC3 Ethernet on IP35 machines
-needs both sides.
+Signed-off-by: Imre Kaloz <kaloz@kernel.org>
+---
+Previously posted as 25/53 of the IP35 series v2: https://lore.kernel.org/all/cover.1791890466.git.kaloz@kernel.org/
 
-Tested on an SGI Fuel.
+ drivers/net/ethernet/sgi/ioc3-eth.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-[1] https://lore.kernel.org/all/cover.1791890466.git.kaloz@kernel.org/
-[2] https://lore.kernel.org/all/20261021073921.07632a37@kernel.org/
-
-Imre Kaloz (2):
-  net: sgi: ioc3-eth: apply the DMA attributes only to 64-bit addresses
-  net: sgi: ioc3-eth: fall back to the platform MAC address
-
- drivers/net/ethernet/sgi/ioc3-eth.c | 43 ++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 7 deletions(-)
-
-
-base-commit: 97ced2c090bfc2156db31fca9f52cf253e4bc186
+diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+index 009f37105eaf..25139cf5ff62 100644
+--- a/drivers/net/ethernet/sgi/ioc3-eth.c
++++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+@@ -152,19 +152,37 @@ static inline int ioc3_alloc_skb(struct ioc3_private *ip, struct sk_buff **skb,
+ }
+ 
+ #ifdef CONFIG_PCI_XTALK_BRIDGE
++/* A Bridge 64-bit direct-mapped DMA address carries the target widget in
++ * bits 63:60 and the DMA attributes below it.  An address in the 32-bit
++ * direct window carries neither, so attributes OR-ed onto one form a
++ * 64-bit address aimed at widget 0.
++ */
+ static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
+ {
++	if (!(addr & PCI64_ATTR_TARG_MASK))
++		return addr;
++
+ 	return (addr & ~PCI64_ATTR_BAR) | attr;
+ }
+ 
+-#define ERBAR_VAL	(ERBAR_BARRIER_BIT << ERBAR_RXBARR_SHIFT)
++/* The RX barrier's upper address bits follow the same form. */
++static inline u32 ioc3_erbar(dma_addr_t addr)
++{
++	if (!(addr & PCI64_ATTR_TARG_MASK))
++		return 0;
++
++	return ERBAR_BARRIER_BIT << ERBAR_RXBARR_SHIFT;
++}
+ #else
+ static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
+ {
+ 	return addr;
+ }
+ 
+-#define ERBAR_VAL	0
++static inline u32 ioc3_erbar(dma_addr_t addr)
++{
++	return 0;
++}
+ #endif
+ 
+ static int ioc3eth_nvmem_match(struct device *dev, const void *data)
+@@ -727,7 +745,7 @@ static void ioc3_init(struct net_device *dev)
+ 	readl(&regs->emcr);
+ 
+ 	/* Misc registers  */
+-	writel(ERBAR_VAL, &regs->erbar);
++	writel(ioc3_erbar(ip->rxr_dma), &regs->erbar);
+ 	readl(&regs->etcdc);			/* Clear on read */
+ 	writel(15, &regs->ercsr);		/* RX low watermark  */
+ 	writel(0, &regs->ertr);			/* Interrupt immediately */
 -- 
 2.47.3
 
