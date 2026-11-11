@@ -1,54 +1,43 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794418666;
-	b=FBio1No+MPQcp/Ms949G9eRZA3BiDJLl6CKipl2EH/j5jLajWHDqlMSn64z8/pvIjrBO
-	 C2U8BGXQTfzEayA+0naXcTEQKjACkq95Zv6MhCuWULPTZP5f4Z28rEcwTrTLb5QwWHA48
-	 Oi/EJ4kIGZVPNlgvH8gVgOBbZdT7yeZfKminn318ITs72tpilvwZ6O5QVmad9NVj3Vpzw
-	 q0s6U01RMTZCGDB6EG+/OpdV/jT8ICS37xzhr2BrdTjI/wf0AQI1a1cv5nQbbOfShoV5X
-	 0vTsXJ9/4/W1UVfm0bbFgh5ptVC+kK5KgjdC1ffMMr8BrjxjNTfTLOxfFSSQT3KsbMw==
+	t=1794418728;
+	b=4oLyHeNl2GSXKcBkQRkGO3Zn+t0gXU4B9H1tM9U1poCvhwy2s+1TWTLgoZqmdDqJ4xB1
+	 xX4Fk3g2D+tgi/Iz8cwdpBa0XwzfIsDWiu4CQNmNnvCILdR96boQdv8CGrTUASasYldeN
+	 TxzGg3N4xVF4OXl7Uky6wPoNcjSjNv9gyuqJlnjQYHhE3sUtIHPtWwD263wBgNoYEBOoL
+	 moS/aMHDJ6B+y8SS2Qe1pNqfeE5U+a0CDMOGzn/LgPZ1+C/9zxNYcPg2lF+LCKjqyaRyJ
+	 Tae42EyA81P+iY4TNgxmtTF2P/IoX1XHe3FJls4z4Qa0S6pLg3931BMs5lMVSZchyKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794418666;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=1CMalMQfv1btYwj0czqGElOTxymPjZTc5WmKz4IRhXg=;
-	b=WcjPeL1iggE3o5ohrlySAW//dptjfJL7FRuLhUj6zy1NsovRLEiHR2C99HZxz4CQS6r/
-	 /iReRbc3bBl45r3erLRfyWh6h86A1AscClDjHX+N5EAPsaonSivYSB4JleLnjBTzlnZ8S
-	 5nqhvgpzvS4Y865Wl9tzRBjuIXPbXneaCSsRxLxxGrOmB1UlN9P0HBmmqfYRjt916n27s
-	 N/2Zzswjz8fQ98luAlHJFzfWNb0wPKdclwBhELiiPy1gAyWqXQyDt2KTaf+Pd/3EpKLP9
-	 48q+Be+QvOtXWErILT6UCzAgUIuBRSSvARsYSoR2xfB8jahtH8hOkIkUcPOwaDnX3Mw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794418728;
+	h=DMARC-Filter:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
+	bh=9LbU2z/Q2aDfTMYbDYnnnTcQA7i/a4L3tX6h70C2NXg=;
+	b=OozyvpOeC9KBhiJwqL9g3pzn+6rJJZx3hbBWTG3KwSgnzBKQE5IGVD5fqFp7CTq8XhPs
+	 pMyAVGde8ykpdTeF+H0HYoeVE9va6st8M7emly1gVA6ZhzKzSSn2mBffrQRUYEKo+j9vI
+	 lfIJlCBJP8Mp5JW31iusYN39sZaoftzjYN3vgfqKmwASE9NTDHyH9eCp2DCl7pql7+cnA
+	 eEubJtWZgJnD0RPkx2kni2w85Cmik3wocafHAZHmduIvu+rb8l/5wx9uupzfQ3upTpWob
+	 gvwFc3mpkQzGmPwNkPrbB2ZtSL7twgvoAFi/LvLPZpqbIkX+xuFJYB8zn4U7+ebYyfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=proxmox.com;
+	spf=pass smtp.mailfrom=proxmox.com;
+	arc=none smtp.remote-ip=94.136.29.106
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80442606A330
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 17:37:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80442606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab4f652f9bso2448837b6e.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:37:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794418665; x=1795023465;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1CMalMQfv1btYwj0czqGElOTxymPjZTc5WmKz4IRhXg=;
-        b=CljV+GRKJHVes3M00cU+ATKBiOoDyu3YXV1uqaPAynuX1vi1Lec0fYGsuPglOgx3HK
-         Fww7nEKd265TlrYNE7UlukzgVlb7l66Us5bsMKZ56/lnlAZhLwWD6VZpNvAYfCWIr1DD
-         wHerj4G/6t7J1iHl690RWDXoYN9JMD9+kGxUAIWzm3NVa+mvyjqiW4R4j+zl612IJMV6
-         fi8fIHrw3al997otuNja7yTuzs7pu8tZAnkERze7reU1jQ5LxoEj4hIOC0SHgwNPuCw+
-         ajrZlRtrf8/TfUu71xo9ZI5tdY9AAoakykh9VQRHsBR0wcNj/3Pfv27n/IKd4nGjrgX0
-         rlVA==
-X-Forwarded-Encrypted: i=1; AL+hErHNEqd+3mWmXdAz5GqbvlWYmprb8M1KFxOEtAsikhOBzpGp3IZtEpQP+vejF3/XeA9X5nYxiv0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/i2rxConbVYXYCHz807i8yUBb34Tnbni8k5lOQi50vWZyjk5Mb
-	On9eDl/e/oVhQi31dWHW2tPO27x7phh43F6PyFC8yAIkgKkFQZsNy/tHU0Bbpy8RaO7dmenYOFv
-	CMiAi9rU0d7H7N9ELb4A6zO2tlMo7KYTAlMOa/i8YS4Ipip1CtccsDYtTaNg=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B335606A321;
+	Wed, 11 Nov 2026 17:38:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B335606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C381D482C6;
+	Wed, 11 Nov 2026 18:38:44 +0100 (CET)
+From: Gabriel Goller <g.goller@proxmox.com>
+Subject: [PATCH RFC net 0/3] net: fix stacked VLAN header corruption in TX
+ offloads and OVS
+Date: Wed, 11 Nov 2026 18:37:48 +0100
+Message-Id: <20261111-net_restore_the-v1-0-6aaeffa601c9@proxmox.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,126 +47,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:bc9:b0:4d6:9293:9bc3 with SMTP id
- 5614622812f47-56b98031617mr2466640b6e.61.1794418665547; Wed, 11 Nov 2026
- 09:37:45 -0800 (PST)
-Date: Wed, 11 Nov 2026 09:37:45 -0800
-In-Reply-To: <AoU-V5M5ZCKF37bLl8ILhgeNdsnCEaiaQNuWP4K56kRfJsnhkIexZ8tFRLq7uzGiA0qNqK6shXcSZ5E4hyV0-QI0ZWSuKiJzKvMrv3NfqCg=@proton.me>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6af4a7e9.7afbdece.117ea2.000a.GAE@google.com>
-Subject: [syzbot ci] Re: tipc: bound reassembly size in tipc_buf_append()
-From: syzbot ci <syzbot+ci972ab65a3669be2c@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@kernel.org, jmaloy@redhat.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	noahweinberger2003@proton.me, pabeni@redhat.com, tung.quang.nguyen@est.tech
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPin9GoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDINDNSy2JL0otLskvSo0vyUjVNbVMMk1LMjY2TUs1VgLqKihKTcusAJs
+ YrRTk5gwSA+pRioXIFZcmZaUml4CMVKqtBQA8bTzGfwAAAA==
+X-Change-ID: 20261111-net_restore_the-59b5fb335fe3
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Boris Sukholitko <boris.sukholitko@broadcom.com>, 
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dev@openvswitch.org, linux-kselftest@vger.kernel.org, 
+ Gabriel Goller <g.goller@proxmox.com>
+X-Mailer: b4 0.17-dev
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1794418723479
 
-syzbot ci has tested the following series
+Since commit 938863727076 ("tc: adjust network header after 2nd vlan
+push"), a second VLAN push leaves network_header pointing to the
+in-band VLAN header. The igb driver TSO and OVS IP set actions still
+expect the L3 header, so they write to the VLAN header and corrupt
+the packet. Patch 1 restores the L3 header in validate_xmit_skb() for
+CHECKSUM_PARTIAL packets, which covers packets tagged by tc or BPF.
+Patch 2 restores it in OVS right after the push, before later actions
+run. Patch 3 adds a KUnit test. tc classification after a push keeps
+working.
 
-[v1] tipc: bound reassembly size in tipc_buf_append()
-https://lore.kernel.org/all/AoU-V5M5ZCKF37bLl8ILhgeNdsnCEaiaQNuWP4K56kRfJsnhkIexZ8tFRLq7uzGiA0qNqK6shXcSZ5E4hyV0-QI0ZWSuKiJzKvMrv3NfqCg=@proton.me
-* [PATCH] tipc: bound reassembly size in tipc_buf_append()
+The kernel uses two conventions for skb->network_header when a packet
+carries an in-band VLAN tag:
 
-and found the following issue:
-general protection fault in tipc_buf_append
+* network_header points at the L3 header
+* network_header points at the in-band VLAN header
 
-Full report is available here:
-https://ci.syzbot.org/series/3856f5b1-55ca-4bc2-885e-034eb8af1bdf
+Since commit 938863727076 ("tc: adjust network header after 2nd vlan
+push"), skb_vlan_push() uses the second convention when it pushes a
+second tag. The flow dissector, and so tc flower, needs that layout to
+classify the packet after the push. Drivers doing TSO or checksum
+offload expect the first one. vlan_features_check() clears TSO for
+multi-tagged packets, so most drivers fall back to software GSO, which
+finds the L3 header itself. igb keeps TSO for these packets and reads
+the IP header at skb->network_header, so it builds the TSO context from
+the VLAN header and corrupts the packet. OVS set actions after a second
+push write to the wrong header in the same way.
 
-***
+Which convention should a packet with in-band VLAN tags follow? This
+series keeps the tc layout, converts to L3 in validate_xmit_skb() for
+CHECKSUM_PARTIAL packets, and restores L3 right after the push in OVS.
+If L3 should hold everywhere instead, the flow dissector would need to
+find in-band tags from mac_len, and skb_vlan_push() could go back to
+its old behavior.
 
-general protection fault in tipc_buf_append
+We hit this in production with VLAN-tagged traffic forwarded by OVS out
+of an igb NIC. The bug was actually triggered, not just found by
+code inspection.
 
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      c4c470912125ec8a1a427a70f4085d8a731b00e4
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/28264169-6c3f-405e-9f6a-339572b43e52/config
-syz repro: https://ci.syzbot.org/findings/e9e2a2a5-41e6-4866-89fc-45c75bfe992b/syz_repro
+Link: https://bugzilla.proxmox.com/show_bug.cgi?id=8318
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 1 UID: 0 PID: 5915 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:tipc_buf_append+0x389/0xa20 net/tipc/msg.c:153
-Code: e9 b5 01 00 00 e8 97 ea 29 f6 48 8b 44 24 20 42 80 3c 30 00 48 8b 5c 24 28 74 08 48 89 df e8 8e 74 a1 f6 48 c7 03 00 00 00 00 <41> 0f b6 46 0e 84 c0 0f 85 ea 04 00 00 8b 1c 25 70 00 00 00 4d 8d
-RSP: 0018:ffffc900039defa0 EFLAGS: 00010246
-RAX: 1ffff9200073be13 RBX: ffffc900039df098 RCX: ffff88810d335a00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88816af130c0
-RBP: ffffc900039df078 R08: ffff8881ba5f6ee3 R09: 1ffff110374beddc
-R10: dffffc0000000000 R11: ffffed10374beddd R12: 1ffff1102d5e2617
-R13: 1ffff9200073bdfc R14: dffffc0000000000 R15: ffff88816af12ff0
-FS:  00007fbe193e76c0(0000) GS:ffff8882a7809000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fbe193e6ff8 CR3: 0000000117562000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- tipc_msg_reassemble+0x230/0x3b0 net/tipc/msg.c:807
- tipc_mcast_xmit+0x254/0x19e0 net/tipc/bcast.c:392
- tipc_sendmcast net/tipc/socket.c:887 [inline]
- __tipc_sendmsg+0x2074/0x2b60 net/tipc/socket.c:1470
- tipc_sendmsg+0x55/0x70 net/tipc/socket.c:1404
- sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
- __sock_sendmsg net/socket.c:818 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
- __sys_sendmmsg+0x273/0x4e0 net/socket.c:2858
- __do_sys_sendmmsg net/socket.c:2885 [inline]
- __se_sys_sendmmsg net/socket.c:2882 [inline]
- __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2882
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbe185a8f19
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbe193e7028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007fbe18825fa0 RCX: 00007fbe185a8f19
-RDX: 0000000000000300 RSI: 0000200000006740 RDI: 0000000000000003
-RBP: 00007fbe18637f6d R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbe18826038 R14: 00007fbe18825fa0 R15: 00007ffeceeefb38
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:tipc_buf_append+0x389/0xa20 net/tipc/msg.c:153
-Code: e9 b5 01 00 00 e8 97 ea 29 f6 48 8b 44 24 20 42 80 3c 30 00 48 8b 5c 24 28 74 08 48 89 df e8 8e 74 a1 f6 48 c7 03 00 00 00 00 <41> 0f b6 46 0e 84 c0 0f 85 ea 04 00 00 8b 1c 25 70 00 00 00 4d 8d
-RSP: 0018:ffffc900039defa0 EFLAGS: 00010246
-RAX: 1ffff9200073be13 RBX: ffffc900039df098 RCX: ffff88810d335a00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88816af130c0
-RBP: ffffc900039df078 R08: ffff8881ba5f6ee3 R09: 1ffff110374beddc
-R10: dffffc0000000000 R11: ffffed10374beddd R12: 1ffff1102d5e2617
-R13: 1ffff9200073bdfc R14: dffffc0000000000 R15: ffff88816af12ff0
-FS:  00007fbe193e76c0(0000) GS:ffff8882a7809000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fbe193e6ff8 CR3: 0000000117562000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess):
-   0:	e9 b5 01 00 00       	jmp    0x1ba
-   5:	e8 97 ea 29 f6       	call   0xf629eaa1
-   a:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
-   f:	42 80 3c 30 00       	cmpb   $0x0,(%rax,%r14,1)
-  14:	48 8b 5c 24 28       	mov    0x28(%rsp),%rbx
-  19:	74 08                	je     0x23
-  1b:	48 89 df             	mov    %rbx,%rdi
-  1e:	e8 8e 74 a1 f6       	call   0xf6a174b1
-  23:	48 c7 03 00 00 00 00 	movq   $0x0,(%rbx)
-* 2a:	41 0f b6 46 0e       	movzbl 0xe(%r14),%eax <-- trapping instruction
-  2f:	84 c0                	test   %al,%al
-  31:	0f 85 ea 04 00 00    	jne    0x521
-  37:	8b 1c 25 70 00 00 00 	mov    0x70,%ebx
-  3e:	4d                   	rex.WRB
-  3f:	8d                   	.byte 0x8d
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Gabriel Goller (3):
+      net: restore the L3 header before VLAN TX offload checks
+      openvswitch: preserve the L3 header after stacked VLAN pushes
+      net: test stacked VLAN headers before TX offloads
+
+ net/core/dev.c                                     |  17 +++
+ net/core/net_test.c                                | 145 +++++++++++++++++++++
+ net/openvswitch/actions.c                          |   6 +-
+ .../selftests/net/openvswitch/openvswitch.sh       |  34 +++++
+ 4 files changed, 201 insertions(+), 1 deletion(-)
+---
+base-commit: 8d5ce4751fad9499ea408163af7f410f18a85782
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git main
+change-id: 20261111-net_restore_the-59b5fb335fe3
+
+Best regards,
+--  
+Gabriel Goller <g.goller@proxmox.com>
+
+
