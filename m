@@ -1,94 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794370758;
-	b=rFoYtqLYZbyeyTUaVGHFkkZ51kmzRFQtHf/jf0DDPfxW/W5S6DkVX02ysZgkhG6uvqps
-	 SElnboX5qxtaA/n7Ixhw2XblJ1G+Wo+wi5Ag9QHhs2rqIaeIzynTuExneXMUZUt+bDJxY
-	 pohBBqU0qazvx+14tX+Ya2hwQjaw3DOy3zK14eM5NYPHRYAttNcu26r33b02demT1RCMO
-	 VuEQCXZFA4s5dpk6he/512XKMV6IE1G+kmLiOof0I3GvRhzo2uVaTtjtdF5F0UrFtlU6X
-	 fTEZWnhR103un7xZSp2VKLobC73d/0z1u8IKxHJv83ZnSTYFG0fh6zbuebrVqtgkpcg==
+	t=1794370763;
+	b=T+R45zeBbBVRh4mJ2syoHJMvRmNZ8g66YNabUGpZcGuF97KZqBJSUfvGx9E3k9kLAgkU
+	 LZTb3CM3Y+2k+7Nt4KOaHXi6Yu6WAyv66U3u6tzRLWl5PTmS9hLlk0Swi/ERcShCGeF70
+	 RhOXTVRTdwY9vvTGWCTyFVsdUizn/RMWNUA/xJeZH78iCLGiCaL8IDBlIhJza8q8qaS0B
+	 ZIcZ9X9Mrk16RRdwE4kZkdxXFGfW3VwSDLpBvQfj1eGLlIM9bw3PtMXvP4VYGcK8XD32Q
+	 OzNSBn8VDJqjYA/KaH0176vj7BI+SZIKhj4CFGsmXSxwDTL6WCkOhYja32zfHxDXNuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794370758;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794370763;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ppcz44YpOa+Rb6xSudMc3Cgx0KmX+T9PkTnsbJicNG8=;
-	b=3WkeVj+Qb6mJXO6IRSZG6Ju0tMianbya3rcGbAPaGWL8+8SXi1huxGGmIpaUT0paVxl/
-	 ko7oWTIPYpvTsVRJAvxVUk+SUGDW3nSXJmawL2iyBGHzN2vHpPfo+ldDTEddGvX0SphNA
-	 MhwN1nl4CrwLfhpSNi2Uwa6iLD/hJ+5ZAi6PL/2RBCay4AkaPFJD3q+gIxZyN5G3v+Zfs
-	 oUaKpEHmDtu3gLAFC62jVyyZ0aD9AwdEnLXkvcmFOBoKhdj4aQ4XjAp6PvnbjsjWMREz3
-	 QIjxq/8HCpgqRUqz17H8gCkqskPNAe+2ddBZxnhJ/pwXbs5shkED1C24Buhw+ztK6ew==
+	bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
+	b=Mkrnahpz2rhxvVEEDUbWJ2Eia5HegMoQCfhZBShljhrgJ3bG+t15TQ/wpVlDEft2xg12
+	 PhIE5KOkVT/9RIzIjEDqLxuL+6hdHGl3KEGwqHsC8MY9ZdOAB8VS38X4CwU/Wd6W3dBO/
+	 DBN/9LoAjFqP6f+lkZBEoIRmmMqTLy0/l6VUzblv3252+PrqdM0l1YiBlEcisVsAmbYXk
+	 skpKzCXb7dQyjYiduM6lHC2LzY3ldKoQDLN3DUKXxr0YuqP9wWXfZdwYBRLYwgpIzBBPC
+	 8jpO2MmWB/KCpkyHFaGFxa2fNDYEkWGWLlGgcEDbccxyoUxANVlA7s0Ab9vf0hZIfug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dNSqWvvB;
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RMaf3jlY;
+	arc=none smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE8460A2603
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:19:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CE8460A2603
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AB0606A33C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:19:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82AB0606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dNSqWvvB
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so4785535eec.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:19:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RMaf3jlY
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36eb1cb7aabso4257194eec.0
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:19:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794370757; x=1794975557; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794370761; x=1794975561; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ppcz44YpOa+Rb6xSudMc3Cgx0KmX+T9PkTnsbJicNG8=;
-        b=dNSqWvvB04Cd+ZZ6DWdGzYKh0mEMxbWZGmm07NNGWRiubzEQi61xrQgVqHrnJxw/gv
-         7m+ZZeQuesfW6vp169N+FLN4UueNzhV/VKxMREeGbzFT0mS4x7GhYpY4HDyzj6WvvsaY
-         zskQEWN+Il/PH4ACI0GyPDzM5hWGWbqCAG/QQ4812hkK85iUWPnVbE+0WcpdfQGX17v5
-         3/v28z8RhRXJXoSdcELukEryz3JVm59wvLDMVKfrKEZKOUHCPUyVYQ+tzDnQcd3Hy8hU
-         jrS2t7vC0sefec98hlYB1IPfwcVYXZR9sbdLsN/1Ha8ezgIBDI9lHXZRqCn0RGzmhiLr
-         M/nA==
+        bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
+        b=RMaf3jlYLyZ/HLW/+KYXVbeUs7XPsT1EqYJa5ckIduBmXbWd9U+SwfXE/Wq/m8otmw
+         2bIXkGWle81gjIwJlZ8cTHs4dQA/TvfVprmpXzIAqGx0h8r1ytzU2NWz48IzbK9Q9BOJ
+         0PfaZz3e2Jn07Ez0LsxkD8jX9SwwZhIJ4a69Hbm4ak5uKX9oQ9wMxNtNVGWDYAHoeOyD
+         99bHD0DhJeqUuX/vHEo+vLFoyDEDOfACpr9exr6r07h6bhQqFqqmRnQJFwylKPiQB0m6
+         IsxvxHMJcDhNoWovdopSaNAVBThNikiZkvi1YepkqOqTyUl8zlc7O4Cvsi+E7k9i7KSC
+         b2Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794370757; x=1794975557;
+        d=1e100.net; s=20260707; t=1794370761; x=1794975561;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ppcz44YpOa+Rb6xSudMc3Cgx0KmX+T9PkTnsbJicNG8=;
-        b=NMgY/U7kCSIfJOpAI8wkcev2FGF3hWfp8ycNgdW7UsteqvIKFpMWqmMh4qrzZhufH6
-         zqUcEAEKvkv0txAypk0fEobJFFOr1qb6ZbUyTK9+KKqEdShkWYtTS7/q6ln3TRTKbuw/
-         2uyhZLBrADKQ6LG77/SQ6WT2A5sJBXu3hSxVq67rsVJMwHojjOhvSkiNf3bOvKguxwYC
-         PTwHeXKr5bR9qwOLUFSXF13xwaOsGILcedfK9rFgre52AwKjojurrRuc00oplPD9XjAS
-         HaPoOBwubV/qJA9ysBmxm0gqVni+GOVrHEV4L8iFTCrC8mV0PtrSUKQPllgsJPEERTph
-         ch7A==
-X-Gm-Message-State: APuU4Z9Etj9vdLwEzg0D9To/NVnwUeNAupw6aFO9wV05kRKGFR00fyE0
-	1MnxqPpDDLAvGCkT513LloHq8k3S8ve02Vx1hsENYHQmb2bGgAWddn13/CzTbgWTv/c=
-X-Gm-Gg: AYBFou3cuXEobTY+xL/sUVRHwGDbGA+A3J7vh3Jyv9NQ6nL1Lgmi2W+6KcLdORpZZ4S
-	N0Vzb0oDTZI3NM/et0bPptypgauhfg8RCsQJJ3TP4JUl5CgADbwhAGokGel3KJbHEFs0ciuZKBW
-	YYZW9rxcasaWJ7EcXqjGdwMRTwifrm+QQfHSK4I5FrR4LOZUg2+los1wwM3lZccWA6s0uJQLiXr
-	6q6X7R6XeXRLqFw97OtfliyGKd5MnnRIVcEiMjonvLS4YSEA4zvj6kS9sILsgoIOSks+/UmhpUm
-	VFM7tukfw5S/ZX6SnvS+PiSOgefKlagubNkf2BB8cXIxuu5prV86/WhAwfKI2sfGnGY+lvN6Kbs
-	OKwUVHTC3O1R6hQYhfZOOJYmnHnpKDFBtRXgyouz7eUARB1c/vHUK/gVP/VMF09YlH3bDMn/pf7
-	SYkmT6iUHaNqb92+kSh9jO/+ajrXRj5cDpSxqtDkoSDFYhqrAWx7ud9Jqz2yn+lUEuaDrV4Q4MJ
-	RvNOdUZz8h8QWXrK4Hb4RcnAG8/IijfD+tRhNnQh3dcaKul2L7tAi0AUC+dQ5VITOu8st/SixRj
-	euzE01dKIV7h/FgCfQ+ZUNvkfafT/i93SKHmW9oTAqO/qIvGeM1Sj1C/D4GPSmo5xdyiNzQbG+e
-	ySPJXZsZC1k5WOoDW/Vmyf3FouS+pwk4xQvir/ZBUzxSMeWFzJmGyw0lgjr6RywY3PHN3LqoY
-X-Received: by 2002:a05:7300:f542:b0:376:98e7:eeae with SMTP id 5a478bee46e88-37698e7ef9dmr1582189eec.6.1794370756966;
-        Tue, 10 Nov 2026 20:19:16 -0800 (PST)
+        bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
+        b=f3bcqKWNiqMNPguqvqnIHeEJbUC17MqaGhvaDbpeyTjJnFJH0dp3JbXOejZsJcKuPU
+         fqQ9LUzk9MVSJ7NmYy8P/tenktb7ul6Hry3PtuO4mEjmEZknGnQEIZnVdXIYf8G8gyJ8
+         pHAbPwJXox/KRMr98p68eBRY+1Z53SwnoD8JoEqOUjC4uV1X3eV0ItEcA8dl7YPbxUk2
+         jkeaHchVg+xVdwLw98cwJG7l/PbJx1YxzHGAn5JVKBtm8keQrpM88/M/1ajeMBMsucWp
+         YZNUXsPvDqlBP04GrRIv6ysStgL6OCO8YodeSknvTmHhPZvoffpZVs0jp/ZGpYyK9JaP
+         khlA==
+X-Gm-Message-State: APuU4Z9kb2MQmURYyJndNPNkC0qT+N9lCvMGoCvezdIyok9upKJhC+k2
+	xtUOjuDEn6DdBmoJ6IaQnZalQbptpalGGXKDr8v9Ct6NQFeJd8Uc3CdksyLQwib7GrM=
+X-Gm-Gg: AYBFou19lIYMfoMm2dgKPQeqI02AVKXsQKCxL4VcAbPV6pI2NFf0lbd8goGl4GfSQBB
+	1tkKvP5EeUZVPcAaKRKPkEeWw153FiTjpf35b04Pgom6bZQ0EtPfhjZBFnXdNeGXhdibwQsdt/t
+	EQC3iBBBiZohsO+HQMCrIMXpjSPis75CET9v06SBrDPOzUOYZkApiRs9bO2mOALIY7ye4RL5kQo
+	uXq3Y3OzUof5noOdIrbjEJfRsJu7ZuWIpI1PLOQJE/20KfsxRiL+nvvRTg7cCmRYXzpjvcFGxfW
+	m5ZRgiPS/QQCo5bzRpvPchzqJF92GP5DIrIQCMDnQ7rkcnpIF1p/jmn9wi3P+liGLe5GhVSHXGH
+	ZtdXcCU2ZxulMNl8HGzXh313kMQPEWN7kTxaWqgAbojssQ3AoqkqJOyhDB7//Dtn+IQNCZBO63E
+	EK18KTgSx+iMG3xG2r/uSuKFP+C9rz0h3c5zS1P9XeM42QAj0BEWB3m6SusNaVBfl5K+J+qMEtx
+	z/FTMj049GDLcYwntPDlXwuHZYQtK60tR5LzADI3T/KOUBugsQLtMvkfnKbb2q+wx+aBAXKYUz6
+	+0gndVxp1pY7aarJ2G/iiQ09lmIi+CyP9xLwdEC6iekKL6bPGrL10RUqj8tg9FonwGF69KJHa31
+	n6pQm5f31QEw5LO26zPegSHl7fa4Xw/d/4bNgola0WFKt4GhqkXlq2eL0otC3YnyCTo/VU6VU
+X-Received: by 2002:a05:7301:b0f:b0:375:c862:31c with SMTP id 5a478bee46e88-3768730b2c7mr1832550eec.40.1794370761338;
+        Tue, 10 Nov 2026 20:19:21 -0800 (PST)
 Received: from Mac.localdomain (198-27-228-154.fiber.dynamic.sonic.net. [198.27.228.154])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3752060c4b6sm11820704eec.15.2026.11.10.20.19.15
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3752060c4b6sm11820704eec.15.2026.11.10.20.19.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Nov 2026 20:19:16 -0800 (PST)
+        Tue, 10 Nov 2026 20:19:20 -0800 (PST)
 From: Ahmad Byagowi <ahmadexp@gmail.com>
 To: netdev@vger.kernel.org,
 	vadim.fedorenko@linux.dev,
 	andi.shyti@kernel.org
 Cc: linux-i2c@vger.kernel.org,
-	Michal Simek <michal.simek@amd.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 2/3] i2c: xiic: add KUnit coverage for register access modes
-Date: Tue, 10 Nov 2026 20:19:02 -0800
-Message-ID: <20261111041904.48916-3-ahmadexp@gmail.com>
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 3/3] ptp: ocp: add WiWi Time Card production image support
+Date: Tue, 10 Nov 2026 20:19:03 -0800
+Message-ID: <20261111041904.48916-4-ahmadexp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261111041904.48916-1-ahmadexp@gmail.com>
 References: <20261111041904.48916-1-ahmadexp@gmail.com>
@@ -103,174 +113,423 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Exercise the driver's private register accessors with memory-backed
-registers instead of physical hardware. Cover native byte/halfword and
-forced 32-bit accesses in both register byte orders, across 22 register
-offsets. Check payload truncation, high-bit values and neighboring
-sentinels. These tests do not validate physical bus transaction widths
-or hardware interrupt behavior.
+Match WiWi 2163:1008, subsystem 10ee:0007, revision 2. The Xilinx
+default subsystem ID is not a firmware-layout identifier. On the
+verified 0x800f production image the register interface matches the
+Celestica LitePCIe production image; the VID and flash header differ.
 
-Include the tests in the driver translation unit so no accessors need
-to become exported interfaces. Require built-in KUnit to avoid a
-built-in driver depending on a modular test framework. The tests follow
-the driver into either its built-in image or module.
+Translate a copy of each peripheral resource by 0x02000000 and its
+interrupt input by 32. Use aligned 32-bit UART and XIIC register I/O.
+Do not register the second GNSS UART: it exists but has no pin routing.
+Leave non-WiWi resource tables and access modes unchanged.
 
-The four parameterized cases passed in an isolated x86-64 QEMU boot
-with networking disabled and no physical-device passthrough.
+CoreList is available via the configuration UART, not PCIe. Check the
+PCI layout and the image ID at BAR0 + 0x02020000 before accessing the
+remaining core signatures or initializing any peripherals. Keep exact
+matches until a compatibility convention for later images is agreed.
 
-Tool-origin disclosure, as required by generated-content.rst: Codex was
-used to implement this test suite, run the KUnit build/boot and draft
-this changelog, in response to a request for upstream-quality testing.
+The LitePCIe per-input gate at BAR0 + 0x1800 must enable SPI before
+child probing: SPI NOR identification can wait for an interrupt. Open
+only the UART, I2C and SPI inputs first. Enable timing inputs after
+registering the PHC and its consumers. Skip unwired GNSS2, HWICAP and
+the separate EEPROM/RGB I2C inputs 17/18: this series does not register
+consumers for them. The highest owned vector is 48, not 50. Keep child
+interrupts available through removal, then mask the gate before freeing
+the vectors.
+
+Reject WiWi devlink flash updates before looking up or modifying an MTD
+device. The WiWi image uses a different flash header and the vendor's
+programming path requires a modified spi-xilinx. A recognized JEDEC ID
+does not establish a supported update path. Leave existing boards' flash
+operations intact.
+
+Source: Thomas Schaub, NetTimeLogic, 10 November 2026, email cited with
+permission. He tested the Time Card repository driver at 1d49e31 with
+the WiWi ID on a production card. His separate fix opens the gate before
+child probe on that driver. This implementation uses a selective mask;
+his test was not a test of this net-next series.
+
+On a WiWi production card, the driver bound, allocated 64 MSI-X
+vectors and registered the PHC, PPS device and three UARTs. The SPI
+NOR and both at24 devices bound. The PHC advanced by 3.000429460 s
+across three one-second sleeps, within the host monotonic brackets.
+The clock reported UNSYNCED at probe; neither PPS lock nor UTC
+accuracy was established.
+
+Tool-origin disclosure: Codex helped analyze supplied hardware evidence,
+implement and test the adaptation, and draft the changelog and docs.
+The revision reconciles Thomas's findings with the tested layout and
+does not treat a proposed image-ID convention as a vendor guarantee.
 
 Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
 ---
- MAINTAINERS                               |  1 +
- drivers/i2c/busses/Kconfig                | 14 ++++
- drivers/i2c/busses/i2c-xiic.c             |  4 ++
- drivers/i2c/busses/tests/i2c_xiic_kunit.c | 88 +++++++++++++++++++++++
- 4 files changed, 107 insertions(+)
- create mode 100644 drivers/i2c/busses/tests/i2c_xiic_kunit.c
+ Documentation/networking/devlink/ptp_ocp.rst |  35 +++-
+ drivers/ptp/ptp_ocp.c                        | 198 ++++++++++++++++++-
+ 2 files changed, 226 insertions(+), 7 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 76fb13c87..eb5777316 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4017,6 +4017,7 @@ F:	drivers/cpuidle/cpuidle-zynq.c
- F:	drivers/edac/synopsys_edac.c
- F:	drivers/i2c/busses/i2c-cadence.c
- F:	drivers/i2c/busses/i2c-xiic.c
-+F:	drivers/i2c/busses/tests/i2c_xiic_kunit.c
- F:	drivers/mmc/host/sdhci-of-arasan.c
- N:	zynq
- N:	xilinx
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 275aaa7f3..014281fa2 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -1322,6 +1322,20 @@ config I2C_XILINX
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called xilinx_i2c.
+diff --git a/Documentation/networking/devlink/ptp_ocp.rst b/Documentation/networking/devlink/ptp_ocp.rst
+index f94b759d9..a81dc1136 100644
+--- a/Documentation/networking/devlink/ptp_ocp.rst
++++ b/Documentation/networking/devlink/ptp_ocp.rst
+@@ -54,7 +54,8 @@ selected with the component name.
+      - Description
+    * - (none)
+      - The card's own flash, written through the SPI controller the driver
+-       exposes.  The card runs the new image after its next reset.
++       exposes. Not supported on WiWi. The card runs the new image after
++       its next reset.
+    * - ``fw.cpld``
+      - The configuration flash of the TAP CPLD on ADVA TimeCard X1 boards,
+        programmed over I2C with the MachXO3 in-system programming commands
+@@ -73,3 +74,35 @@ with the standard devlink status notifications.
+ Example::
  
-+config I2C_XILINX_KUNIT_TEST
-+	bool "KUnit tests for Xilinx I2C register accesses" if !KUNIT_ALL_TESTS
-+	depends on I2C_XILINX && KUNIT=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Test the Xilinx I2C driver's register accessors with both byte orders
-+	  and with native-width or forced 32-bit accesses. KUnit is a kernel
-+	  unit testing framework. These tests use memory-backed registers and
-+	  do not require an I2C controller.
+     $ devlink dev flash pci/0000:02:00.0 file adva-cpld.bin component fw.cpld
 +
-+	  The tests are compiled into the driver to exercise its private
-+	  accessors, and follow the driver's built-in or module configuration.
-+	  If unsure, say N.
++WiWi production firmware
++========================
 +
- config I2C_XLP9XX
- 	tristate "Cavium ThunderX2 I2C support"
- 	depends on ARCH_THUNDER2 || COMPILE_TEST
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index d13cfb012..f2a77ca8d 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -1650,3 +1650,7 @@ MODULE_ALIAS("platform:" DRIVER_NAME);
- MODULE_AUTHOR("info@mocean-labs.com");
- MODULE_DESCRIPTION("Xilinx I2C bus driver");
- MODULE_LICENSE("GPL v2");
++WiWi Time Cards with PCI ID ``2163:1008`` and subsystem ID ``10ee:0007``
++use the Celestica register layout behind a LitePCIe bridge. The driver
++currently supports revision 2 with production image ID ``0x0000800f``
++(reported as firmware version ``1.15``). It verifies the PCI layout and
++the image/core versions before initializing the card. Other firmware
++layouts are rejected, even if they use the same PCI ID.
 +
-+#if IS_ENABLED(CONFIG_I2C_XILINX_KUNIT_TEST)
-+#include "tests/i2c_xiic_kunit.c"
-+#endif
-diff --git a/drivers/i2c/busses/tests/i2c_xiic_kunit.c b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
-new file mode 100644
-index 000000000..f8df88ca6
---- /dev/null
-+++ b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Included by i2c-xiic.c to exercise the driver's private accessors. */
-+#include <kunit/test.h>
++CoreList is readable over the configuration UART, not over PCIe. The
++driver reads the image ID at BAR0 offset ``0x02020000`` before reading the
++known core version registers. Neither a higher image ID nor the Xilinx
++default subsystem ID guarantees a compatible layout.
 +
-+struct xiic_access_param {
-+	const char *name;
-+	enum xiic_endian endianness;
-+	bool force_32bit_access;
-+};
++The image uses the Celestica LitePCIe production map: add ``0x02000000``
++to the peripheral offsets and use aligned 32-bit MMIO. Interrupt input
++``n`` uses MSI-X vector ``n + 32``. The per-input enable mask is at BAR0
++offset ``0x1800``. The driver enables the SPI interrupt before probing
++the flash and defers timing interrupts until the PHC is ready. GNSS2 is
++instantiated but not wired to pins, so no second GNSS port is registered.
++The separate EEPROM and RGB I2C inputs (17 and 18) have no handlers in
++this driver and stay masked; these are distinct from its I2C input 7.
 +
-+static const struct xiic_access_param xiic_access_params[] = {
-+	{ "native_little_endian", LITTLE, false },
-+	{ "native_big_endian", BIG, false },
-+	{ "word_little_endian", LITTLE, true },
-+	{ "word_big_endian", BIG, true },
-+};
++WiWi firmware updates through ``devlink dev flash`` are not supported.
++The WiWi image has a different flash header from the Celestica image.
++The golden image at flash offset zero boots the update image via MultiBoot
++with watchdog fallback. The vendor's programming path requires a modified
++``spi-xilinx`` driver. Recognizing the SPI NOR does not validate that path
++or the image header. Successful clock registration does not establish
++GNSS synchronization or valid UTC.
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 625a85b2d..ee2242389 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -34,6 +34,23 @@
+ #define PCI_VENDOR_ID_CELESTICA			0x18d4
+ #define PCI_DEVICE_ID_CELESTICA_TIMECARD	0x1008
+ 
++#define PCI_VENDOR_ID_WIWI			0x2163
++#define PCI_DEVICE_ID_WIWI_TIMECARD		0x1008
 +
-+KUNIT_ARRAY_PARAM_DESC(xiic_access, xiic_access_params, name);
++/* WiWi production firmware uses the Celestica map behind LitePCIe. */
++#define OCP_WIWI_MMIO_OFFSET			0x02000000
++#define OCP_WIWI_IRQ_OFFSET			32
++#define OCP_WIWI_MSI_ENABLE			0x1800
++/* Upper 32 bits: UARTs, I2C and SPI can interrupt during probe. */
++#define OCP_WIWI_PERIPHERAL_IRQS			(BIT(3) | BIT(5) | BIT(7) | \
++						 BIT(9) | BIT(10))
++/* PPS/TS0/TS1, TS2, GEN1-4 and TS3/TS4. */
++#define OCP_WIWI_TIMING_IRQS			(GENMASK(2, 0) | BIT(6) | \
++						 GENMASK(16, 11))
++/* Leave unwired GNSS2 (4), HWICAP (8) and EEPROM/RGB I2C (17/18) masked. */
++#define OCP_WIWI_IRQS				(OCP_WIWI_PERIPHERAL_IRQS | \
++						 OCP_WIWI_TIMING_IRQS)
 +
-+static void xiic_register_access(struct kunit *test)
-+{
-+	static const int offsets[] = {
-+		XIIC_DGIER_OFFSET, XIIC_IISR_OFFSET, XIIC_IIER_OFFSET,
-+		XIIC_RESETR_OFFSET, XIIC_CR_REG_OFFSET, XIIC_SR_REG_OFFSET,
-+		XIIC_DTR_REG_OFFSET, XIIC_DRR_REG_OFFSET, XIIC_ADR_REG_OFFSET,
-+		XIIC_TFO_REG_OFFSET, XIIC_RFO_REG_OFFSET, XIIC_TBA_REG_OFFSET,
-+		XIIC_RFD_REG_OFFSET, XIIC_GPO_REG_OFFSET, XIIC_TSUSTA_REG_OFFSET,
-+		XIIC_TSUSTO_REG_OFFSET, XIIC_THDSTA_REG_OFFSET,
-+		XIIC_TSUDAT_REG_OFFSET, XIIC_TBUF_REG_OFFSET,
-+		XIIC_THIGH_REG_OFFSET, XIIC_TLOW_REG_OFFSET,
-+		XIIC_THDDAT_REG_OFFSET,
-+	};
-+	const struct xiic_access_param *param = test->param_value;
-+	struct xiic_i2c *i2c;
-+	u32 expected;
-+	u8 *mem;
-+	size_t i;
-+	int reg;
-+
-+	i2c = kunit_kzalloc(test, sizeof(*i2c), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, i2c);
-+	mem = kunit_kmalloc(test, 0x200, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, mem);
-+	/* Aligned RAM stands in for MMIO. No hardware is accessed. */
-+	i2c->base = (void __force __iomem *)(mem + sizeof(u32));
-+	i2c->endianness = param->endianness;
-+	i2c->force_32bit_access = param->force_32bit_access;
-+
-+	for (i = 0; i < ARRAY_SIZE(offsets); i++) {
-+		reg = offsets[i];
-+		memset(mem, 0xa5, 0x200);
-+
-+		xiic_setreg8(i2c, reg, 0xc0);
-+		expected = param->force_32bit_access ? 0xc0 : 0xa5a5a5c0;
-+		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), expected);
-+		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xc0);
-+
-+		xiic_setreg16(i2c, reg, 0x03ff);
-+		expected = param->force_32bit_access ? 0x03ff : 0xa5a503ff;
-+		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), expected);
-+		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xff);
-+
-+		xiic_setreg32(i2c, reg, 0x12345678);
-+		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), 0x12345678U);
-+		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0x78);
-+		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32)],
-+				(u8)(param->endianness == BIG ? 0x12 : 0x78));
-+		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32) + 3],
-+				(u8)(param->endianness == BIG ? 0x78 : 0x12));
-+		xiic_setreg32(i2c, reg, 0x89abcdefU);
-+		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), 0x89abcdefU);
-+		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xef);
-+		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32) - 1], (u8)0xa5);
-+		KUNIT_EXPECT_EQ(test, mem[reg + 2 * sizeof(u32)], (u8)0xa5);
+ #define PCI_VENDOR_ID_OROLIA			0x1ad7
+ #define PCI_DEVICE_ID_OROLIA_ARTCARD		0xa000
+ 
+@@ -404,6 +421,8 @@ struct ptp_ocp {
+ 	struct delayed_work	sync_work;
+ 	int			id;
+ 	int			n_irqs;
++	bool			wiwi;
++	void __iomem		*wiwi_msi;
+ 	struct ptp_ocp_serial_port	port[__PORT_COUNT];
+ 	bool			fw_loader;
+ 	u8			fw_tag;
+@@ -1321,6 +1340,13 @@ static struct ocp_resource ocp_adva_x1_resource[] = {
+ static const struct pci_device_id ptp_ocp_pcidev_id[] = {
+ 	{ PCI_DEVICE_DATA(META, TIMECARD, &ocp_fb_resource) },
+ 	{ PCI_DEVICE_DATA(CELESTICA, TIMECARD, &ocp_fb_resource) },
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_WIWI, PCI_DEVICE_ID_WIWI_TIMECARD,
++			       PCI_VENDOR_ID_XILINX, 0x0007),
++		.class = PCI_CLASS_MEMORY_OTHER << 8,
++		.class_mask = 0xffffff,
++		.driver_data = (kernel_ulong_t)ocp_fb_resource,
++	},
+ 	{ PCI_DEVICE_DATA(OROLIA, ARTCARD, &ocp_art_resource) },
+ 	{ PCI_DEVICE_DATA(ADVA, TIMECARD, &ocp_adva_resource) },
+ 	{ PCI_DEVICE_DATA(ADVA, TIMECARD_X1, &ocp_adva_x1_resource) },
+@@ -2173,6 +2199,11 @@ ptp_ocp_devlink_flash_update(struct devlink *devlink,
+ 	const char *msg;
+ 	int err;
+ 
++	if (bp->wiwi) {
++		NL_SET_ERR_MSG_MOD(extack, "WiWi flash updates are not supported");
++		return -EOPNOTSUPP;
 +	}
++
+ 	if (params->component) {
+ 		if (!bp->has_cpld ||
+ 		    strcmp(params->component, ADVA_CPLD_COMPONENT)) {
+@@ -2331,20 +2362,29 @@ ptp_ocp_register_spi(struct ptp_ocp *bp, struct ocp_resource *r)
+ }
+ 
+ static struct platform_device *
+-ptp_ocp_i2c_bus(struct pci_dev *pdev, struct ocp_resource *r, int id)
++ptp_ocp_i2c_bus(struct ptp_ocp *bp, struct ocp_resource *r, int id)
+ {
++	struct xiic_i2c_platform_data wiwi_data;
++	struct pci_dev *pdev = bp->pdev;
+ 	struct ptp_ocp_i2c_info *info;
+ 	struct resource res[2];
+ 	resource_size_t start;
++	const void *data;
+ 
+ 	info = r->extra;
++	data = info->data;
++	if (bp->wiwi) {
++		wiwi_data = *(struct xiic_i2c_platform_data *)info->data;
++		wiwi_data.force_32bit_access = true;
++		data = &wiwi_data;
++	}
+ 	start = pci_resource_start(pdev, 0) + r->offset;
+ 	res[0] = DEFINE_RES_MEM(start, r->size);
+ 	res[1] = DEFINE_RES_IRQ(pci_irq_vector(pdev, r->irq_vec));
+ 
+ 	return platform_device_register_resndata(&pdev->dev, info->name,
+ 						 id, res, ARRAY_SIZE(res),
+-						 info->data, info->data_size);
++						 data, info->data_size);
+ }
+ 
+ static int
+@@ -2369,7 +2409,7 @@ ptp_ocp_register_i2c(struct ptp_ocp *bp, struct ocp_resource *r)
+ 
+ 	sprintf(buf, "%s.%d", info->name, id);
+ 	devm_clk_hw_register_clkdev(&pdev->dev, clk, NULL, buf);
+-	p = ptp_ocp_i2c_bus(bp->pdev, r, id);
++	p = ptp_ocp_i2c_bus(bp, r, id);
+ 	if (IS_ERR(p))
+ 		return PTR_ERR(p);
+ 
+@@ -2640,7 +2680,7 @@ ptp_ocp_serial_line(struct ptp_ocp *bp, struct ocp_resource *r)
+ 	 */
+ 	memset(&uart, 0, sizeof(uart));
+ 	uart.port.dev = &pdev->dev;
+-	uart.port.iotype = UPIO_MEM;
++	uart.port.iotype = bp->wiwi ? UPIO_MEM32 : UPIO_MEM;
+ 	uart.port.regshift = 2;
+ 	uart.port.mapbase = pci_resource_start(pdev, 0) + r->offset;
+ 	uart.port.irq = pci_irq_vector(pdev, r->irq_vec);
+@@ -3109,7 +3149,26 @@ ptp_ocp_register_resources(struct ptp_ocp *bp, kernel_ulong_t driver_data)
+ 	int err = 0;
+ 
+ 	table = (struct ocp_resource *)driver_data;
+-	for (r = table; r->setup; r++) {
++	for (; table->setup; table++) {
++		struct ocp_resource translated = *table;
++
++		r = table;
++		if (bp->wiwi) {
++			/* GNSS2 is instantiated but not routed to FPGA pins. */
++			if (r->setup == ptp_ocp_register_serial &&
++			    r->bp_offset == offsetof(struct ptp_ocp,
++						    port[PORT_GNSS2]))
++				continue;
++			/* Never modify the resource table shared with other cards. */
++			if (translated.offset)
++				translated.offset += OCP_WIWI_MMIO_OFFSET;
++			if (r->setup == ptp_ocp_register_ext ||
++			    r->setup == ptp_ocp_register_serial ||
++			    r->setup == ptp_ocp_register_i2c ||
++			    r->setup == ptp_ocp_register_spi)
++				translated.irq_vec += OCP_WIWI_IRQ_OFFSET;
++			r = &translated;
++		}
+ 		if (!ptp_ocp_allow_irq(bp, r))
+ 			continue;
+ 		err = r->setup(bp, r);
+@@ -5786,6 +5845,12 @@ ptp_ocp_detach(struct ptp_ocp *bp)
+ 	platform_device_unregister(bp->i2c_ctrl);
+ 	if (bp->i2c_clk)
+ 		clk_hw_unregister_fixed_rate(bp->i2c_clk);
++	/* Child removal can need interrupts, notably SPI NOR reset. */
++	if (bp->wiwi_msi) {
++		iowrite32(0, bp->wiwi_msi);
++		iowrite32(0, bp->wiwi_msi + 4);
++		ioread32(bp->wiwi_msi);
++	}
+ 	if (bp->n_irqs)
+ 		pci_free_irq_vectors(bp->pdev);
+ 	mutex_destroy(&bp->cpld_lock);
+@@ -5951,6 +6016,99 @@ ptp_ocp_sync_work(struct work_struct *work)
+ 	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
+ }
+ 
++/*
++ * CoreList is accessible via the configuration UART, not via PCIe.
++ * Check the image ID first: an unknown image need not provide any of
++ * the subsequent registers. Only the verified fixed layout is supported.
++ */
++static int ptp_ocp_wiwi_validate(struct pci_dev *pdev)
++{
++	static const struct {
++		u32 offset;
++		u32 version;
++	} versions[] = {
++		{ 0x02020000, 0x0000800f }, /* image */
++		{ 0x0300000c, 0x01040000 }, /* clock */
++		{ 0x0301000c, 0x01030001 }, /* timestamp 0 */
++		{ 0x0302000c, 0x01030001 }, /* timestamp 1 */
++		{ 0x0306000c, 0x01030001 }, /* timestamp 2 */
++		{ 0x0311000c, 0x01030001 }, /* timestamp 3 */
++		{ 0x0312000c, 0x01030001 }, /* timestamp 4 */
++		{ 0x030c000c, 0x01030001 }, /* PPS timestamp */
++		{ 0x030d000c, 0x01030001 }, /* signal 1 */
++		{ 0x030e000c, 0x01030001 }, /* signal 2 */
++		{ 0x030f000c, 0x01030001 }, /* signal 3 */
++		{ 0x0310000c, 0x01030001 }, /* signal 4 */
++		{ 0x0303000c, 0x01030001 }, /* PPS generator */
++		{ 0x0304000c, 0x01030002 }, /* PPS input */
++		{ 0x0305000c, 0x02030002 }, /* ToD */
++		{ 0x0307000c, 0x02000002 }, /* IRIG input */
++		{ 0x0308000c, 0x02000001 }, /* IRIG output */
++		{ 0x0309000c, 0x00010002 }, /* DCF input */
++		{ 0x030a000c, 0x00010000 }, /* DCF output */
++		{ 0x030b000c, 0x02000002 }, /* NMEA output */
++	};
++	u32 table, pba, value;
++	void __iomem *base;
++	unsigned int i;
++	int cap, err;
++
++	cap = pci_find_capability(pdev, PCI_CAP_ID_MSIX);
++	if (pdev->revision != 2 ||
++	    !(pci_resource_flags(pdev, 0) & IORESOURCE_MEM) ||
++	    pci_resource_len(pdev, 0) != 0x04000000 || !cap ||
++	    pci_msix_vec_count(pdev) != 64 ||
++	    pci_read_config_dword(pdev, cap + PCI_MSIX_TABLE, &table) ||
++	    pci_read_config_dword(pdev, cap + PCI_MSIX_PBA, &pba) ||
++	    table != 0x2000 || pba != 0x1808)
++		return dev_err_probe(&pdev->dev, -ENODEV,
++				     "Unsupported WiWi PCI layout\n");
++
++	err = pci_request_region(pdev, 0, KBUILD_MODNAME);
++	if (err)
++		return err;
++
++	base = pci_iomap(pdev, 0, 0);
++	if (!base) {
++		err = -ENOMEM;
++		goto out_release;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(versions); i++) {
++		value = ioread32(base + versions[i].offset);
++		if (value != versions[i].version) {
++			dev_err(&pdev->dev,
++				"Unsupported WiWi register version %#x at %#x\n",
++				value, versions[i].offset);
++			err = -ENODEV;
++			break;
++		}
++	}
++	pci_iounmap(pdev, base);
++out_release:
++	pci_release_region(pdev, 0);
++	return err;
 +}
 +
-+static struct kunit_case xiic_access_test_cases[] = {
-+	KUNIT_CASE_PARAM(xiic_register_access, xiic_access_gen_params),
-+	{}
-+};
++static int ptp_ocp_wiwi_irq_init(struct ptp_ocp *bp)
++{
++	void __iomem *msi;
 +
-+static struct kunit_suite xiic_access_test_suite = {
-+	.name = "i2c_xiic",
-+	.test_cases = xiic_access_test_cases,
-+};
++	msi = __ptp_ocp_get_mem(bp, pci_resource_start(bp->pdev, 0) +
++			      OCP_WIWI_MSI_ENABLE, 8);
++	if (IS_ERR(msi))
++		return PTR_ERR(msi);
++	bp->wiwi_msi = msi;
 +
-+kunit_test_suite(xiic_access_test_suite);
++	/* LiteX stores bits 63:32 before bits 31:0, as little-endian words. */
++	iowrite32(0, msi);
++	iowrite32(0, msi + 4);
++	if (ioread32(msi) || ioread32(msi + 4))
++		return -EIO;
++
++	return 0;
++}
++
+ static int
+ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+@@ -5972,6 +6130,14 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	}
+ 
+ 	bp = devlink_priv(devlink);
++	bp->wiwi = pdev->vendor == PCI_VENDOR_ID_WIWI &&
++		   pdev->device == PCI_DEVICE_ID_WIWI_TIMECARD;
++	if (bp->wiwi) {
++		/* No IRQ allocation, bus mastering or FPGA writes before this. */
++		err = ptp_ocp_wiwi_validate(pdev);
++		if (err)
++			goto out_disable;
++	}
+ 	err = ptp_ocp_device_init(bp, pdev);
+ 	if (err)
+ 		goto out_disable;
+@@ -5987,18 +6153,33 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	INIT_DELAYED_WORK(&bp->sync_work, ptp_ocp_sync_work);
+ 
++	if (bp->wiwi) {
++		err = ptp_ocp_wiwi_irq_init(bp);
++		if (err)
++			goto out;
++	}
++
+ 	/* compat mode.
+ 	 * Older FPGA firmware only returns 2 irq's.
+ 	 * allow this - if not all of the IRQ's are returned, skip the
+ 	 * extra devices and just register the clock.
+ 	 */
+-	err = pci_alloc_irq_vectors(pdev, 1, 17, PCI_IRQ_MSI | PCI_IRQ_MSIX);
++	if (bp->wiwi)
++		err = pci_alloc_irq_vectors(pdev, 49, 64, PCI_IRQ_MSIX);
++	else
++		err = pci_alloc_irq_vectors(pdev, 1, 17,
++					    PCI_IRQ_MSI | PCI_IRQ_MSIX);
+ 	if (err < 0) {
+ 		dev_err(&pdev->dev, "alloc_irq_vectors err: %d\n", err);
+ 		goto out;
+ 	}
+ 	bp->n_irqs = err;
+ 	pci_set_master(pdev);
++	/* SPI NOR probe needs interrupts, but timestamp consumers are not ready. */
++	if (bp->wiwi_msi) {
++		iowrite32(OCP_WIWI_PERIPHERAL_IRQS, bp->wiwi_msi);
++		ioread32(bp->wiwi_msi);
++	}
+ 
+ 	err = ptp_ocp_register_resources(bp, id->driver_data);
+ 	if (err)
+@@ -6047,6 +6228,11 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 			goto out_dpll;
+ 		}
+ 	}
++	/* All handlers and the PHC are ready for timestamp interrupts. */
++	if (bp->wiwi_msi) {
++		iowrite32(OCP_WIWI_IRQS, bp->wiwi_msi);
++		ioread32(bp->wiwi_msi);
++	}
+ 	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
+ 
+ 	return 0;
