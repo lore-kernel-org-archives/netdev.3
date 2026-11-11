@@ -1,60 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794390771;
-	b=RFjqgipuLsh+AExWgQjJRUxz6vgi0qbHQ1LHzxVdRoTr7a8bzsW5fiRBTNl+z9vsVzBq
-	 LaaAMK+bMRhxji0AHcKyL68GuuhinfeeZ6EOcPHWK7on/eIPsz70AYYj7xKaId0UiSQXk
-	 f9X7gPeJChJJMEeBKuk9DxyIMfxW9nS0Ta/qLr02Mf49XKDr0u2JzqsHH6wR2DhLBDsPv
-	 gWpfmtSWzbCKTQoSHBMyFQBycd5AG5Vtc9jfpHfKz43J3LCEF6B9oA6D1A5K43ljm+gMn
-	 yuUjdB4DYfy/s36/fTVXwabToXGnHMxFDlFWWUNGhneSKv6raoBzQg7E7ttIhTb2pQw==
+	t=1794390783;
+	b=vAL3oAaiEkP/BcqUxa+uGN/xj+OjTQsxYC45l9XB3RywzSJR2vLgiW9B1qPwbjs6eZ02
+	 Ok+fDmQnnEsrxRXbU0KL/dSmh0RFyWswZaJFxXOjpwO9QES6EHjO0LaEr8+bfnbW/xhS8
+	 JDuMQFfz1wv21ONnCI4qqkobwQ8sFPb8mEitrIaY/it6KwA2jI9YGio2mJ+GSjccsx5ue
+	 D/UyZqDkg3GuF36cdSKf3NzIxhGcJDsBXfD/1S3mzktabN5wKuYRhg9ezb9EiCh+WwTZN
+	 nnul4M8/qJgc1R6ziVitc9eJP8VGNandWcPTKyTVAy9lCXJ1KELp3Eec5K6fuL4c/DA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794390771;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
-	b=aqPfdDdmlR4ILskD9k+9pUOtPQB61uXNpk77Mv0fUXMj8iE3XMxS3kvMiMmRgyI8wKJp
-	 GHLDZZw2qY+WSpqxZsfSd6QB0DJIkDjbgABSyN69V9KP7Z9Huz26v16kKNRrS2WRVVFA+
-	 9NqpLy7JuH55wOAs8Ez7g7iHxkxqS+4cY755mnZNnZKT9AQbIdmHg5FNAXxRevQt6i6Gr
-	 OO18eOhafGFDOEG4A5NHqBvH9AG2+RCl2R+DQYBDSFSmsxQTq5eLvNhVcLkr5i5vniPho
-	 wILxfgvJ+iOAlvhUuW7qYVFhKCy73OnS1trf7JMrVrrHnJUhieYwg5vQJvpkRI4GVPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794390783;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=dosgcgtYnwjGfg33mXVJN1zPstrhDPbH2LgaYc37HQ4=;
+	b=Nc2Xwm9UMn5bmxEKQYMn/vhsKuvpUddCSUGxH81o0FhnNPmKQ26Erx1H3CLMeJpDi/1T
+	 wOUpJqsmvD/soQH51VAaZJ+vMp3DMKnO7mDDGMDvWltTxmSZMKuEOmwVTaadDtJsBICRX
+	 DsXzr4ZK6td6bqJO9c+mLdGg3cITRApcoFFFETRzdXkwDclgqAz9i1DBymavXcRLcpEJO
+	 PT/tC9AwrvBkyrtPgIFkGya2xUtoqhZFLtWf7CKRTiv/64SCaeOzKykuQvWedDIwP7Dcn
+	 tM1NTqXeUSvN+f1HH/V3+JMPSInjJOYyZslhsGjoZlrtTrJaj4EHQ4H5b8O5kme8U+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SI9YyrIa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA0j1gTn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611F3606A334;
-	Wed, 11 Nov 2026 09:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFF560A2615;
+	Wed, 11 Nov 2026 09:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SI9YyrIa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2BE1F00A05;
-	Wed, 11 Nov 2026 09:52:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA0j1gTn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D791F00A06;
+	Wed, 11 Nov 2026 09:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794390771;
-	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SI9YyrIayg09cMZv4qS34siWYyRGhBFEgPvahAzAYdXWfP0ozk/WdiRjdAqRyEFAo
-	 QnRgtUDD98g9wMH9rSblz5CuvXOveJbPybGlJByBFpxF+/DB3mE1VV3XYP3kh/JUBa
-	 n34oZXVz7y5ecj23eD9UOTw52unS9Au+xfgIm2+9HzlJXut0GMjNpmWRo8I0syQZPJ
-	 nxb1bYkjlQoZmdRMW9e3S+GCpaYwDRnlkzrbujQN2MKU1bA+Bae/5yQIT4w2hCt83w
-	 S7Hl3VVLGC5XSge1fl8TGLQw0uNWZulKsZWif6PNdOw7tHbw+dEsOz2xZyHRo2xan2
-	 iYBlctMyKHrOw==
-From: netdev-bot+sinfo@kernel.org
-To: Jun Yao <yaojun8558363@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- steffen.klassert@secunet.com, herbert@gondor.apana.org.au, dsahern@kernel.org,
- idosch@nvidia.com
-Subject: 
- Re: [PATCH] xfrm: avoid stale tunnel pointers in deferred input callbacks
-Date: Wed, 11 Nov 2026 09:52:49 +0000
-Message-ID: <179439076995.2168702.457988164849465854@kernel.org>
-In-Reply-To: <20261111094629.230568-1-yaojun8558363@gmail.com>
-References: <20261111094629.230568-1-yaojun8558363@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1794390783;
+	bh=dosgcgtYnwjGfg33mXVJN1zPstrhDPbH2LgaYc37HQ4=;
+	h=From:To:Cc:Subject:Date;
+	b=BA0j1gTn9JckxqLcIm6KxVmr7UL/nxUDp1DN3aVZ3IpISTEjfDkYWKmJj4RVTXfON
+	 p1GhjTKkKofZMBNnhijiFHs4vMHgtIwmuMQn9bFur59fY8CF9ytpMJgOVhaFKEyeMt
+	 scBaMAMCPX9SxY1eLoR3UBIkWCsjD6wCQ+6UqUGSfZvTAoY/RWRplmCUsdjHy9KJMO
+	 NBIcMa7lwuu8GX2y7LvSXeppn5Fj4f+hdq+6SfFkX5dvQpEI3fkJBoH0yJKZd3Ur+b
+	 US2yGSDHa8jXeC2RTdvNAOsF23N/2DWGzqUBlZRKoQvAf1YKXGOOguW90Tc+Q0uDps
+	 MQN9hTLe1Uzqw==
+From: Imre Kaloz <kaloz@kernel.org>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/2] net: sgi: ioc3-eth: two changes for the IOC3 on SGI IP35 machines
+Date: Wed, 11 Nov 2026 10:51:36 +0100
+Message-ID: <20261111095138.1757-1-kaloz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,25 +62,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+With the IP35 support series [1] posted, these two changes let ioc3-eth
+drive the IOC3 of the SGI Fuel, which sits behind an XBridge and has no
+MAC PROM.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Patch 1 applies the DMA attributes and the RX barrier's upper address
+bits only to 64-bit direct-mapped addresses, so the IOC3 can use a
+bridge's 32-bit direct window. Patch 2 asks
+eth_platform_get_mac_address() when the 1-wire MAC PROM read fails,
+and uses a random address once deferred probing gives up.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Both were posted as 25/53 and 38/53 of the IP35 series v2 [1] and are
+reposted on their own for net-next, as Jakub asked [2]. The rest of that
+series puts an IOC3 behind an XBridge or PIC on the 32-bit window and
+supplies the MAC address from the L1 system controller. There is no
+build dependency in either direction, and IOC3 Ethernet on IP35 machines
+needs both sides.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by LLM and not proven at runtime). If it was triggered
-   please include the symptoms, like the stack trace or kernel messages.
+Tested on an SGI Fuel.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+[1] https://lore.kernel.org/all/cover.1791890466.git.kaloz@kernel.org/
+[2] https://lore.kernel.org/all/20261021073921.07632a37@kernel.org/
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Imre Kaloz (2):
+  net: sgi: ioc3-eth: apply the DMA attributes only to 64-bit addresses
+  net: sgi: ioc3-eth: fall back to the platform MAC address
+
+ drivers/net/ethernet/sgi/ioc3-eth.c | 43 ++++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 7 deletions(-)
+
+
+base-commit: 97ced2c090bfc2156db31fca9f52cf253e4bc186
+-- 
+2.47.3
+
