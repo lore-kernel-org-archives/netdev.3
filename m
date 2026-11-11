@@ -1,66 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.24
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794357398;
-	b=upc9ZCHaDrVxSwDcKwoAFhcLsATDUUqgr2QfdGy9YXPIlVzx6JQj5tiPLnl6tCNg3OSN
-	 XvomWJGnSQaDjMjOHR1zk8eMxNjrStS69jR+MoS1Bklez4/ClKhnTPg1kHl0PevymBB7X
-	 //GkoPsaYyVSFiNgrK2ygZ0JXcrCeJ/FMtDfuXoDKqR0YvmCjreneMhgA7bJlqd7dJYas
-	 IUbJzxQ939sK1Bz2t+WKo5naopQfa1ts+5WcFtjcyr9x4Rm13xFgBxfvyb3xxSf5tp7c4
-	 EjVrR0CO9JC7rlp2Xp7dMsy81wLPIPi9J+ldBPNCb4DjfQKTtcnJlH8JTs9MaKBxuCQ==
+	t=1794357606;
+	b=1uckXD1ziqqZ+UumCDh7mLhM4VUwC3TNvOaj27240u3Y8eOGnT7ClzZDcc0aGM4pLoqX
+	 cvIKOeHmAQQQu++lKJrzwge4W4VB3VjPWGrtj2pYxa7ljZkGrFE66fA7saYxyjb2dnX7i
+	 zNiPnnzXVUJMKeDKDX9ic93kxZTmH0pE1VEucvFi0/uc54C75/A7ShauuFvo37amB18Dz
+	 JYLwjxe04B+EDPJIdmLYU28gGm05iEUBuB0/Ls3uQwxiuBtCXcQfe2ERXT4yOGb3YG0a9
+	 BaEdJVZ+ImuKwpSEEWAQfPx0ixnrvY+0yo42sjXflUBWHNyulIz0wLbuHumk2bef+kw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794357398;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=5xNBziimzhOKJ75khsdW/qJptdIDAbTywmzzl7xoxlQ=;
-	b=ipgWmkoxG8/o91yr67oyE0fkj0Pxn4GnsaT/adYzEdyNWmK90pTKkGZ2z5o/buspsPUU
-	 Q07CJrKzAFs/2eS8ONL1DjN5p0OK8jNl94lRUkdrlYzIEos/N7N+fGzZMhZqD8FhRuKjg
-	 138nxRKq9aWCh/fN+PfBQzqlWMRiucMrRyMNdRjXm1eHoSqjAtZNaL5WSFKNu/jH9bmjH
-	 1Gm7KwKUtXnlor374ktVrQ76Cy8QYTXkG4kk+KmUpeHDdQZHXGF5tmLYsBtpp9yWYOZD3
-	 LKdSHvjiQ+ivFQPLFZ+kttZdEz1QveoRBPgGwPFOzS51ED3pT/cjizHR9GuAXV7fqEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794357606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=0STTFmcPyB/zsDerEBDy8+hogBiVW5QiFxOhEBovJXw=;
+	b=LRGRDdpUpHt8kbEVuZrIhRpstHPHiR/LnHH1duV5TWtd335+LabjYZQ5ie+7TV6heWla
+	 E170leKvS/LPh4l2G+FmGaBMeyelAJZvpiOcu3ec/r22d/PHfK2uRjQWUim+t/6mmUys5
+	 iKbxiQLUhUk8t6jAcHcLv89B0+nQNdHkC1J53E0YL0LYoi9Q3DPkp5SRnwT5MvRQpjvoZ
+	 6r8y51aSBV1sw9+WH81lypP3fms2DRlk5ijGWTBgY5MIUYY2IAJrMGOO83gaj3qEZJqCe
+	 wJMl3Dmyz410xpEC+gMFIuBccqVfl/UwMqjyiNsZjbIejSvrkR5+C5rrijfuuOz5jxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PuXiNeJH;
-	arc=none smtp.remote-ip=95.215.58.24
-Received: from mta1.migadu.com (out-24.mta1.migadu.com [95.215.58.24])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L6vNDG2f;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A324606A321
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:36:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A324606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2F7606A320;
+	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PuXiNeJH
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Ryq0meCWDSCEkuV5UPQQfaSOwgmbjAwNt34VPkFyn8w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794357395; v=1; x=1794962195;
- b=PuXiNeJHCD7dwJbo62mzWZYiunHoHPFgBLij5Hnqq0AU69D01GnYrYwTSyE6jw/U+H8eVhzK
- FZwVQ8VsoslvvHUL+5KwBkkbrRr1Fuss58aJ0+AeGjUc3tkWJ7CGNubyhDeDD79vBiAOydkMKCj
- cCB/BkDp4bcq4COezpmIXv1I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 60c021cf43740dcf;
-	Wed, 11 Nov 2026 00:36:35 +0000
-X-Mizu-Trace-ID: 60c021cf43740dcf
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 11 Nov 2026 08:36:24 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Bjoern Doebel <doebel@amazon.de>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Hangbin Liu <liuhangbin@gmail.com>,
-	Liang Li <liali@redhat.com>, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] selftests: bonding: feed link monitor to deflake
- prio_test
-Message-ID: <avO4iNKpHoXMV9gp@fedora>
-References: <auvnnIXQV2zufxtF@fedora>
- <20261110115354.2250237-1-doebel@amazon.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L6vNDG2f
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347671F00A04;
+	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794357606;
+	bh=0STTFmcPyB/zsDerEBDy8+hogBiVW5QiFxOhEBovJXw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=L6vNDG2f1UXKj3eEU5GjBne/CqlHkc6udmt15sCFF5rpOyGbygsYEBW5rSlwR6o9/
+	 xqIzgisZxLaKP7T24Qu/c+w2JZlecLwuFqt3QAs5DoQ7x7QkPMA4XXJzn8ToKYrE+j
+	 KbuPZ9DDeGZtLE0C0SIgfUI29r7OGn8q7FbvZXJ0D3rj9tZh5VkpG6/tPgRlY/WsDB
+	 Dm+Y0BLAIfe+I29//Yr7E5ol92bndIBpfkZikg5chkCRvyl1gU0qGIMC98jaLxYLL3
+	 1T2XjqbSpGGiVJqbomCKKJdOa9iVVgPGmkEDlqlIt7l8KP5SIb1HJ2Qw528rYSwQbZ
+	 sJp7ZelBw4xLg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2103839E8A55;
+	Wed, 11 Nov 2026 00:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,25 +53,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110115354.2250237-1-doebel@amazon.de>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: sfp: add quirk for OEM SFP+ONU-XGSPON
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179435760493.139049.1251934787976228328.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:40:04 +0000
+References: <20261106221836.3445-1-romit@romitsagu.com>
+In-Reply-To: <20261106221836.3445-1-romit@romitsagu.com>
+To: Romit Sagu <romit@romitsagu.com>
+Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
+ hkallweit1@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
 
-On Tue, Nov 10, 2026 at 11:53:52AM +0000, Bjoern Doebel wrote:
-> Hi Hangbin,
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri,  6 Nov 2026 22:18:29 +0000 you wrote:
+> This XGS-PON ONU stick (vendor OEM, part SFP+ONU-XGSPON)
+> needs the same handling as other Potron-based modules. Without it,
+> the module fails to connect and the kernal shows these errors:
+> sfp sfp1: module transmit fault indicated
+> sfp sfp1: module persistently indicates fault, disabling
 > 
-> On Thu, Nov 05, 2026 at 10:19:08AM +0800, Hangbin Liu wrote:
-> > If the kill fails for some reason, will we wait here forever and hang the
-> > entire test?
+> This module requires TX_FAULT/LOS behaviour and boot delay tuning.
+> Add a quirk using the existing sfp_fixup_potron.
 > 
-> No. bash keeps a terminated child's exit status until it is reaped, so if
-> the ping already exited the kill fails but the wait returns immediately.
-> Only a genuinely unkillable ping would block, independent of kill. The
-> idiomatic form is kill_process() from net/lib.sh, which short-circuits
-> the wait when the kill fails.
+> [...]
 
-Yes, that's what I mean. We need to avoid that the kill failed and the
-process still running.
+Here is the summary with links:
+  - [net-next,v2] net: sfp: add quirk for OEM SFP+ONU-XGSPON
+    https://git.kernel.org/netdev/net-next/c/ed04b2020272
 
-Thanks
-Hangbin
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
