@@ -1,60 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.42.203.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794428393;
-	b=17+8/R7hiN4zRe8NKgQL8k+xLwIjnZ8ZJXaV8PMP+k1Yusbsmzy8VLJtdIKxI0yyNQHu
-	 grN7GflTN5P1C+8FZG0k1jqymYaXwYUUyL0a3COodJycqpTUVqzWnuBvBBWUKsnO+0O/J
-	 Lu5hndljUX3UuZzFPg/JzbinbyI5VnsWkZv75F2O0gmKlI5a65qA2k0WA/mN0EtmDZpbd
-	 +Ts1bmfL8HG6MX8wBy0Vvh2wEvcx5q0VLScy1fHOz1nYiUMGYN5FaNJ83li3NlyQRiSiI
-	 +Zxc99SwhSDRQheQ7xGEiC/w9JOMEI+d6nqmmtUToD15Rf8f/fM8a9f0FqKnvS4/WZw==
+	t=1794428616;
+	b=HQmeDhnrcncKWqxHbJXL4s/MIh7U6EGwQk/2GjIyCXXNlBXINMjQPOScHinj18yLh6Yn
+	 QUnuNijxH60X23BV9aNDaggixl/tuma8Gb1+f7TItiuNJ99frsIcOKpqNN8dJhYmuvOeS
+	 0l0ApJDruFp11+SK75EGqZ6jY/MEJJwPLcOg5QgRmgKHhAPVr1zREBMXMVdAfQu31JHjX
+	 whMxniU+GdZynd4NPYCStkBtlb1IbrEqzNBVllHLrz6ZrruvaFU5HIdkToJz+/PUAkn5z
+	 Qzv5y0loM7wp/6bc2TLcQozUcGzdzZDsYmqgAXwA8Jz8iXI0g1/PlqM3cCfC98lQM5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794428393;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=f8CuFtmyJf54ODlJeIy52UMNjkpCBp9aiQqZGqfLdfs=;
-	b=n8Gu6y9IfkSk+iqb/Lb+FfphZIOjbvI6Mu4OcJ6uHFpjr1KIT4dgYsLcS0eIZtF779I8
-	 GXZy9JNx0LFMrCj1Ca9wKufT6s4eZJYWvygQu36/kvr3CHKC1RUREPvGO8rpUW+j/7CFu
-	 gu7R5yxLuEtJdWD1vmLVxedG/Y/4vMbglh4tzRaqR7C8tzmXDxk9lJfU/pms14gNkSRFc
-	 fUgXs15WkIR26SuFdD66a9KzvBIYuh4W5b3OK1Pd7U/nDv3URd2iTtN13zOPweNGMfrkg
-	 FlgLDDVyUpFi8Wc/0X3rgw4Ia7g6UMbKa4xfkY0N1fH6HUpxvMBdOfZXdW0t857npWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794428616;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=jkJcn8ydDxvyf3lWLXA7GpBEZpUwB/Y6PIOpFmvjCRU=;
+	b=bf2G8JS248pX1tbrUqKkZ4JlsPUS1kyRKnOWLdpaoQgO/MRTVlsewXaLHJL9YZd9KPLX
+	 vyirsKZBPQMVRnQ8X/eMotPFyqQe+cai8r5xNV/DLhua1te5nBvfQ71++KEFtMe2rakO6
+	 B05L1CBPprTKZngToZn9Te+CZwqvz6GWktk7ZSzxAssJBSLsjLmyVavWzrdFX3ar9Z+sT
+	 bwsusJWveg7iFBLaWHtSa43H9ZL8H8/FXoEIJH8mI7g7agGyasIn145teNQT82XkTicTK
+	 RF3lWo67IzjIoiKbMMBu+Kr/zme92Nyw9JmcSc4NN+YuiHEj+N2gRoO1cvGTx14Vnkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="EF6/DFVJ";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.com;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=iMEZvZ9b;
+	arc=none smtp.remote-ip=52.42.203.116
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B308D606A891;
-	Wed, 11 Nov 2026 20:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A91606A31C;
+	Wed, 11 Nov 2026 20:23:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32A91606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EF6/DFVJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50551F00A05;
-	Wed, 11 Nov 2026 20:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794428393;
-	bh=f8CuFtmyJf54ODlJeIy52UMNjkpCBp9aiQqZGqfLdfs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EF6/DFVJvAHgtkuslUXsILHAGIMrwhUa+jHwuPgI2lFlmQ+w8J50wt0agxK18ixAy
-	 7L2WJ/0q+oM3JjWAO/e6NqpZ9gtygDkzvbiLCx1/wETuUN5Ik6ChJTYMxQkQPIZovW
-	 sfqpBfSa/To3OtMukbgd2Qs8erC/UygbXzRpqw8+ANWD5pZ8QnZKDsJxP2hzG5Ov1C
-	 +okreTDi6WV2kzS4gdGsY6PZ5+bEbH8kozO0qrcqB34Jo/51Os2WDe+ZJEYd1o/PBE
-	 lgkTMaBm8GSuGgbqwUz75XGnL66XGAipqHB0AFtZPlCluvLKKrwJcyaEpHGK6JCwpJ
-	 w/boqCfsWAMEw==
-Subject: Re: [PATCH net-next v3 4/4] net: remove rcu_barrier() from
- __dev_change_net_namespace()
-From: netdev-bot+sashiko@kernel.org
-To: qiliang.yuan@linux.dev
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- razor@blackwall.org, kuniyu@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 11 Nov 2026 20:19:52 +0000
-Message-ID: <179442839245.2199510.16642149560557233526@kernel.org>
-In-Reply-To: <20261109-bug-net-netns-move-rcu-barrier-v3-4-6084b02610b3@linux.dev>
-References: <20261109-bug-net-netns-move-rcu-barrier-v3-4-6084b02610b3@linux.dev>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=iMEZvZ9b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794428616; x=1825964616;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jkJcn8ydDxvyf3lWLXA7GpBEZpUwB/Y6PIOpFmvjCRU=;
+  b=iMEZvZ9bKPvYu+lyl63NXczZgb9k00IMn6p/B41NF+YSge2JQ78uaWaI
+   3TEwozp7ebCyFqGQJC10YwNyJFTpBT4U3fmu4ddRB2SEvIbFbSVXuqLiW
+   JVhDNg6z2jRzcs0ngJJjtAW8tcy7wgkxhx1R6E8fIvRf2wdkkR6tp1Wxf
+   D2y5arB9O0zx/GF7R/bGfS/yLIOi5HAWKqBDCS8EZkk/T761sHCwXsd4H
+   Gt61dIFcjAFO4DSHsohJvTEKUFf7MHOm1ElAmU8Gbqug0jZ+YyNxqytYv
+   OQ5eO/IOET+up0Oduz50oSqV8UXFOpL9cLD7O9EVeN3k0XujH1PLjG10w
+   A==;
+X-CSE-ConnectionGUID: Qyyc6pHYShOrjNU/eJizYg==
+X-CSE-MsgGUID: Fcia4Cx0S3GdQP0ncOIkSw==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33786501"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 20:23:33 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:12262]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.46.128:2525] with esmtp (Farcaster)
+ id 16ece643-915b-4807-8d1b-662b366d2515; Wed, 11 Nov 2026 20:23:33 +0000 (UTC)
+X-Farcaster-Flow-ID: 16ece643-915b-4807-8d1b-662b366d2515
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 20:23:32 +0000
+Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
+ (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Wed, 11 Nov 2026
+ 20:23:32 +0000
+Date: Wed, 11 Nov 2026 20:23:26 +0000
+From: David Keogh <dkeogh@amazon.com>
+To: Tianyi Gao <tianyi@cloudflare.com>
+CC: Stephen Hemminger <stephen@networkplumber.org>, Willem de Bruijn
+	<willemdebruijn.kernel@gmail.com>, <netdev@vger.kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, Simon Horman
+	<horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, David Woodhouse <dwmw2@infradead.org>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>, Alasdair McWilliam
+	<alasdair@mcwilliam.dev>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Magnus Karlsson
+	<magnus.karlsson@intel.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+	<idosch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Randy Dunlap
+	<rdunlap@infradead.org>, Breno Leitao <leitao@debian.org>,
+	=?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>, "Danielle
+ Ratson" <danieller@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@cloudflare.com>,
+	<nh-open-source@amazon.com>
+Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and
+ LL_ALLOC_SPACE()
+Message-ID: <avTOvr+yy+2j8xrQ@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+References: <cover.1794020868.git.tianyi@cloudflare.com>
+ <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
+ <willemdebruijn.kernel.1d64e7848503b@gmail.com>
+ <20261107182526.69543-1-tianyi@cloudflare.com>
+ <willemdebruijn.kernel.2c6a653eb65fa@gmail.com>
+ <20261108190831.3f991a13@phoenix.local>
+ <20261109154909.32748-1-tianyi@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,85 +108,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261109154909.32748-1-tianyi@cloudflare.com>
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon, Nov 09, 2026 at 03:49:09PM +0000, Tianyi Gao wrote:
+> To David Keogh: this plan drops the generic device attribute UAPI that
+> your RFC proposed. Your TC egress use case stays in v2, with a BPF-side
+> declaration instead of the device attribute. Before I proceed, please
+> let me know if you are unhappy with this plan.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Sorry for the slow reply. I am happy with the plan, please go ahead.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Dropping IFLA_TX_EXTRA_HEADROOM is fine with me. A BPF-side
+declaration covers the TC egress case, as long as the program is
+attached to the device the skb is allocated for.
 
-- [High] net: UAF in rt6_remove_exception() after
-  __dev_change_net_namespace()
+I will rework the TCP test so it sets the value through one of the new
+paths, and send it as a reply to v2.
 
---
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -13044,7 +13044,6 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
->  	 * the device is just moving and can keep their slaves up.
->  	 */
->  	call_netdevice_notifiers(NETDEV_UNREGISTER, dev);
-> -	rcu_barrier();
->  
->  	new_nsid = peernet2id_alloc(dev_net(dev), net, GFP_KERNEL);
->  
->
-
-[Severity: High]
-The commit message says the IPv6 exceptions of a nexthop that leaves a
-group were already flushed when it left, but I don't think that holds.
-When remove_nexthop_from_groups() drops a single IPv6 nexthop from a
-multi-member group, nh_rt_cache_flush() is called with replaced_nh ==
-nh. It bumps fib6_sernum through rt_genid_bump_ipv6() and then returns
-early on !replaced_nh->is_group, so fib6_nh_release_dsts() is never
-called. Any rt6_ex created through a route using the group stays in
-nh->nh_info->fib6_nh.rt6i_exception_bucket until nexthop_free_rcu()
-runs.
-
-That nexthop_free_rcu() is not always queued directly from the
-NETDEV_UNREGISTER handler. If nh is also used directly by another IPv6
-route, __remove_nexthop_fib() deletes that fib6_info. Its
-fib6_purge_rt() only flushes exceptions created from itself, and the
-reference on nh is only dropped by nexthop_put() in
-fib6_info_destroy_rcu(). nexthop_free_rcu() is therefore queued from
-inside an RCU callback. Before this patch, the rcu_barrier() here plus
-the one in netdev_run_todo() drained that two-stage chain before the
-old netns could go on with its pernet exit handlers.
-
-Now consider dev being moved out of a netns that is about to exit, or
-default_device_exit_net() moving it back to init_net from
-default_device_exit_batch(). The moved device is not on the old
-netns's todo list, so netdev_run_todo() issues a single rcu_barrier(),
-which only runs fib6_info_destroy_rcu() and queues nexthop_free_rcu().
-netdev_wait_allrefs_any() then sees the loopback refcount already at 1
-and returns without another barrier. ops_undo_list() then runs
-fib6_net_exit(), freeing net->ipv6.rt6_stats, and ip6_route_net_exit(),
-calling dst_entries_destroy() on net->ipv6.ip6_dst_ops, both before
-the final rcu_barrier() in cleanup_net().
-
-When nexthop_free_rcu() finally runs, fib6_nh_release() ->
-fib6_nh_release_dsts() -> fib6_nh_flush_exceptions() ->
-rt6_remove_exception() decrements net->ipv6.rt6_stats->fib_rt_cache in
-freed memory, and dst_release() reaches dst_entries_add() on the
-destroyed pcpuc_entries counter. Nothing beyond CAP_NET_ADMIN in a
-user-owned netns is needed to set this up with RTM_NEWNEXTHOP,
-RTM_NEWROUTE and RTM_NEWLINK.
-
-Chains with more stages, such as a one-member group or two members of
-the same group on the moved device, look like they can outlast even
-the two barriers the old code had. Removing this barrier makes the
-simple case reachable as well.
-
-Should the leaving nexthop's exceptions be flushed explicitly in
-remove_nexthop_from_groups() or nh_rt_cache_flush(), so that the claim
-in the commit message actually holds? Or would you rather keep the
-barrier until the netns exit ordering is sorted out?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-bug-net-netns-move-rcu-barrier-v3-0-6084b02610b3%40linux.dev
+Thanks,
+David
