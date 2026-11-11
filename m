@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794399619;
-	b=ox6zrbzadZf3kABVMGSSp6+3f9idiMVbbWInMM5zjwp5mNUVJPGzTdQbbxovxti4v16/
-	 Ypt8VFGV+ex60leh1wYCCiWrAr2yxsmRsDEPGG32BXcxy0/YXnP9FWa6pymXfbE7Dhn7U
-	 7uGvtCwi6o90yNxLOUdslOee+driMpOszc/GvmRRoLuKTV2LEysDnRW5NqgjUhZoSzkR3
-	 sU1jEhGAHraYIIx5ekGwfZFrK/ZYFXJ00+YAU7EYK06IdCsrjTOBEnNd5tCI8Vr4oNDS0
-	 Gper6coE36VfHiM9egP/QTMFeka/hYJlNML9GTD7RbGyU83/sWa2JW8ZfhyMzTGcVMw==
+	t=1794399620;
+	b=eGSYnBwx3yBtpn9Zjgk1CjQCOnDJpsAcJaYH0lZlSKkLtQ+pQGZhD/ZOG3JylfLJfRUD
+	 zhh0RDESYVeypxjuugvFehjLRHpF+Zku/v3XDPTUOL5hjc9lh8oyNeIm80vSTKdwnpTAw
+	 9+h6h82yfzzwLrXocBs2QTAVQvCwJ2Drmwq7O13I34OR2GFu+OMQFmW1k8+FSI98x94Fp
+	 2S/le9QSwLagmuto+Ku0lfhGHU4u3VZka4anXj8CHXySPasBtBy03S1yhY5UQ3hAYtm/8
+	 HeA7f8zpPhSIt8wIEWbTdMMnQFIwoduaXe23vpiDQi9PGcIRi+kaQCue7rtZlyiUZYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794399619;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794399620;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=GD9dHGPBBQDjALH35Lw200yocihggwV/VfdrlhPEkuw=;
-	b=IjRovq9pzOB764xkf02WXACN9/2Ou4ocPD25afrlImWZaL0K1HmUqIOSjJ7OC93cwYgf
-	 GiTCOP6e+pehlENR99QGS10l2OFJgDryCO6IGvLGpkYouqbNmBAMIEoxSVKXpmlG0v8iv
-	 YIE/vBk40X0PuZflschHuUdZ3mBJ/SfeUCmr8Yg7eqzt5POJ+kNblf7BqlwJJx1hiwtBF
-	 LuBJA9/oxXHWTrmDCqe/h4z7WZXPF83K8R8A0WBBnK9d9gdCj9/rAPGASp7dtcC9ySMf8
-	 bcFell+9XYr3v8JKJI5+1WHS4BkQgoDTSpRDQWPhQDbH5nfdaxIkve6AXzzlcKokUxA==
+	bh=RTPnT3LdeumQQgNEh6wdlvvEooxZofAWChf4+Bqv2DI=;
+	b=F/qd3knTpPDQugcRUI5neAEuJ/VKC/+/VgzyfdwVBykEOeFnbVACKI+n8JaKaRoyGoob
+	 Ofzw9xasVeiYObJbFpoDMdUpTfmvQl20vbbmlbJJiZw95t21UYXbDip3/ODurJ42lL9Z+
+	 Rh0Qhb+DTpF+GrxpBL1sDzKmm3pj/Xfgwcpr0f72tjwgotQ0yX8mSU4rDPTz39ieWnwri
+	 coW49EKecMtk9XUZs7Hw8FTnEGrrNkVF/ULx6Bx4o/odGelkaBlwIjYsBerbzonttevbp
+	 v13krJSd6wRHd3MnSfVOU/z2D8hFh54Q3g5VrOxtOKWBWXcivnV16hXA2vcooHlbMPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l5jcvi1q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UndZJali;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBFC606A335;
-	Wed, 11 Nov 2026 12:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E9D606A885;
+	Wed, 11 Nov 2026 12:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l5jcvi1q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684B71F00A06;
-	Wed, 11 Nov 2026 12:20:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UndZJali
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C64B1F00A0D;
+	Wed, 11 Nov 2026 12:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794399618;
-	bh=GD9dHGPBBQDjALH35Lw200yocihggwV/VfdrlhPEkuw=;
+	s=k20260515; t=1794399620;
+	bh=RTPnT3LdeumQQgNEh6wdlvvEooxZofAWChf4+Bqv2DI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=l5jcvi1qiUzOAVlXFI5M3wREL8MD1mrOAH62kDpqbNcYMPWmupiAEd3ytJYCfjA6j
-	 aRI93/45UAeMGPJ8NAyGluz6hgjWoYD/Y9wzWXgq1TEk895/BO+ehvovoz0vTfVyib
-	 yzDSOpqwpcPsE8lY4XSODLo5yEwC1/kCiCBn9AKRw0aPR8pfn8u5TbMybOewVDxBVB
-	 nEVYVke6+BRApclY7EwmtAGrn2CqKdXtPP5C6ZD/l6Ai7/Bz5OUUi8nJd5q7vMuZYw
-	 fGIc0e4pEhDz0YFz5/BWf+uAKY3cdEApp2S/S5ZQK2DYO1IQNmA7hpikKy1yVODUUS
-	 +jCeYMoa1pVpw==
-Subject: Re: [PATCH net-next 03/12] can: rcar_canfd: Allow the CAN FD clock to
- be sourced from fck
+	b=UndZJaliigWVcNdaYjSTMnik1DNcNBvNUusIpk8MoLxBbR62bkhm3/5JZYLj3gwey
+	 owvsTmAAfxE0NPv3i5tlUQ6DCtRt8H2HeAlMB43tNGaOT29R/FNHDX2gt1di7CvaBC
+	 dSt8r2O9pCe8Gg+pHyGa5OqM82DuAahuUBfF0IQOdncf/iEuEqvrpsQChnMin74xAa
+	 IUr+/9TV9YxaaPG0JGm9WNQthAHzeHVdaea48E39pV5s0dHL2ANtl3Seymd8OUcxL+
+	 W+FDPr3hx8wafdPfJc0HoDxqo9sZ92YmYfiLH7721nLu9mlouEqRtMstUnamW9Pydw
+	 +plIRK1XklRhA==
+Subject:
+ Re: [PATCH net-next 05/12] can: rcar_canfd: Add support for Renesas RZ/G3S
 From: netdev-bot+sashiko@kernel.org
 To: mkl@pengutronix.de
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  linux-can@vger.kernel.org, kernel@pengutronix.de,
  claudiu.beznea.uj@bp.renesas.com, geert+renesas@glider.be
-Date: Wed, 11 Nov 2026 12:20:17 +0000
-Message-ID: <179439961796.2199510.1566111456942297897@kernel.org>
-In-Reply-To: <20261110115112.3807247-4-mkl@pengutronix.de>
-References: <20261110115112.3807247-4-mkl@pengutronix.de>
+Date: Wed, 11 Nov 2026 12:20:19 +0000
+Message-ID: <179439961902.2199510.3239778793056609646@kernel.org>
+In-Reply-To: <20261110115112.3807247-6-mkl@pengutronix.de>
+References: <20261110115112.3807247-6-mkl@pengutronix.de>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,70 +70,95 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] This patch adds a third fCAN clock source in rcar_canfd_probe().
+- [Low] Concern: r9a08g045_hw_info sets .fixed_canfd = 1, but
+  rcar_canfd_probe() still reads "renesas,no-can-fd" (fdmode = false,…
 
 --
 
-can: rcar_canfd: Allow the CAN FD clock to be sourced from fck
+can: rcar_canfd: Add support for Renesas RZ/G3S
 
-This commit adds a new fcan_pclk hardware feature bit to struct
-rcar_canfd_hw_info. On the RZ/G3S, fCAN can then come from the peripheral
-clock (fck) when no usable external can_clk is present. Existing hw_info
-instances are updated to set fcan_pclk = 0 explicitly.
+This patch adds an r9a08g045_hw_info entry for the RZ/G3S CAN-FD
+controller and binds it to the "renesas,r9a08g045-canfd" compatible. The
+variant is gen4-like, with two channels, 16 AFL pages, an fcan clock
+sourced from pclk, and the operating mode fixed to CAN FD.
 
-Link: https://lore.kernel.org/all/1d9719e3-10ff-4cd8-b729-55fea93c37ce@wanadoo.fr
-Link: https://patch.msgid.link/20260902141544.565763-4-claudiu.beznea+renesas@tuxon.dev
+Link: https://patch.msgid.link/20260902141544.565763-6-claudiu.beznea+renesas@tuxon.dev
 
 > diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-> index b7c4fe3477ac5..f9173774387fa 100644
+> index ac5d5959d8e4c..74c3c3f20991f 100644
 > --- a/drivers/net/can/rcar/rcar_canfd.c
 > +++ b/drivers/net/can/rcar/rcar_canfd.c
+> @@ -661,6 +661,26 @@ static const struct rcar_canfd_hw_info rzg2l_hw_info = {
+>  	.fixed_canfd = 0,
+>  };
+>  
+> +static const struct rcar_canfd_hw_info r9a08g045_hw_info = {
+> +	.nom_bittiming = &rcar_canfd_gen4_nom_bittiming_const,
+> +	.data_bittiming = &rcar_canfd_gen4_data_bittiming_const,
 
 [ ... ]
 
-> @@ -2190,13 +2196,20 @@ static int rcar_canfd_probe(struct platform_device *pdev)
->  	 */
->  	gpriv->can_clk = devm_clk_get(dev, "can_clk");
->  	if (IS_ERR(gpriv->can_clk) || (clk_get_rate(gpriv->can_clk) == 0)) {
-> -		gpriv->can_clk = devm_clk_get(dev, "canfd");
-> -		if (IS_ERR(gpriv->can_clk))
-> -			return dev_err_probe(dev, PTR_ERR(gpriv->can_clk),
-> -					     "cannot get canfd clock\n");
-> +		if (info->fcan_pclk) {
-> +			fcan_freq = clk_get_rate(gpriv->clkp);
-> +			gpriv->can_clk = NULL;
+> +	.ch_interface_mode = 1,
+> +	.shared_can_regs = 1,
+> +	.external_clk = 1,
+> +	.fcan_pclk = 1,
+> +	.fixed_canfd = 1,
+> +};
 
 [Severity: Low]
-This isn't a bug, but should the comment on the extclk field in struct
-rcar_canfd_global be updated as well? It still describes a two-way choice:
+This isn't a bug as long as the DT follows the binding, but should
+rcar_canfd_probe() ignore or reject "renesas,no-can-fd" and
+"renesas,fd-only" when info->fixed_canfd is set?
 
-    bool extclk;			/* CANFD or Ext clock */
+This is the first hw_info with fixed_canfd = 1. Both properties are still
+read without checking that flag:
 
-With this new branch, extclk stays false while the fCAN source is fck,
-not the "canfd" clock. So on fcan_pclk SoCs, extclk == false no longer
-means "CANFD clock".
+drivers/net/can/rcar/rcar_canfd.c:rcar_canfd_probe() {
+    ...
+	if (of_property_read_bool(dev->of_node, "renesas,no-can-fd"))
+		fdmode = false;			/* Classical CAN only mode */
+    ...
+	if (of_property_read_bool(dev->of_node, "renesas,fd-only"))
+		gpriv->fd_only_mode = true; /* FD-Only mode for CAN-FD */
+    ...
+}
 
-Later patches in the series update the fallback comment above this block
-in rcar_canfd_probe(). The commit "can: rcar_canfd: Use DT clock names in
-the probe message" also updates the dev_info() string to report "fck".
-The extclk field comment is still unchanged at the end of the series,
-though.
+Meanwhile rcar_canfd_reset_controller() skips the CLOE/FDOE writes, so
+the controller stays in CAN FD mode:
 
-> +		} else {
-> +			gpriv->can_clk = devm_clk_get(dev, "canfd");
-> +			if (IS_ERR(gpriv->can_clk))
-> +				return dev_err_probe(dev, PTR_ERR(gpriv->can_clk),
-> +						     "cannot get canfd clock\n");
+	/* Set the controller into appropriate mode */
+	if (gpriv->info->fixed_canfd)
+		continue;
+
+With "renesas,no-can-fd", fdmode == false makes the rest of the driver
+set up classical CAN while the controller is still in CAN FD mode:
+
+  - 8 byte RFPLS/CFPLS in rcar_canfd_configure_rx() and
+    rcar_canfd_configure_tx()
+  - no RCANFD_GCFG_CMPOC in rcar_canfd_configure_controller()
+  - no RCANFD_GCTR_CFMPOFIE in rcar_canfd_enable_global_interrupts()
+  - only nominal bit timing in rcar_canfd_channel_probe()
+
+FD frames on the bus would then be dropped silently instead of being
+reported as errors.
+
+With "renesas,fd-only", the probe message reports "fd-only" mode, but the
+hardware cannot enter that mode.
+
+The binding change for this compatible sets "renesas,no-can-fd: false"
+and "renesas,fd-only: false". Only a DT that fails schema validation can
+hit this, and the compatible is new, so no existing DTs carry these
+properties.
+
+As hardening, could probe force fdmode = true and clear fd_only_mode when
+fixed_canfd is set, or fail probe instead?
+
 > +
-> +			fcan_freq = clk_get_rate(gpriv->can_clk);
-> +		}
->  
->  		/* CANFD clock may be further divided within the IP */
-> -		fcan_freq = clk_get_rate(gpriv->can_clk) / info->postdiv;
-> +		fcan_freq /= info->postdiv;
->  	} else {
->  		fcan_freq = clk_get_rate(gpriv->can_clk);
->  		gpriv->extclk = gpriv->info->external_clk;
+>  static const struct rcar_canfd_hw_info r9a09g047_hw_info = {
+>  	.nom_bittiming = &rcar_canfd_gen4_nom_bittiming_const,
+>  	.data_bittiming = &rcar_canfd_gen4_data_bittiming_const,
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110115112.3807247-2-mkl%40pengutronix.de
