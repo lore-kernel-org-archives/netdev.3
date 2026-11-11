@@ -1,70 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794366730;
-	b=aUoOjwQnlp602nzSleB7m3qoxsfDo9Pp/8UAE0Xi/sYQG4oys0J5sPc9rnxIqRkKaL6e
-	 bRDQ6SM3kl19z05PbpcBSUpJdIrGGoOYGYYT6i/zE2ANQAZIur9/lOcpbXrWXelowUlB3
-	 6U5bu8P46LO89CkV5iy4N01mZdnbldYZUV01fRY2XDjHe07vSzSK6TAjDypPpPP30+Gpm
-	 o9fCSsub2DzR8hbWPpsJsaeaCCUPBTbgCZYbmeo1QOot5UBHhgCdHqqqQi4CzqS54Fyyv
-	 iCAc5zPsMWv1xcMYtEwVBRezdGRqxcB7sK8yNaR0buAKvQClf4DdASYOc/hHk8KAYow==
+	t=1794367311;
+	b=hhCL1mxP+FMS/kSCaQLzK+i/SMRItXhpdIgzHJ5sXwSUeB9Y8D7QNBmtNyiHS76RtiT1
+	 l48KGHIRYIzDIb3M0n+ylDcCi0NEkiaiCzlRYfy17DnkQHWhM0z1TAIEg13AWexfov3Sf
+	 ZV5WbMqGBoaeZUDVOvpzSoyEsgbU89+WKSs+S2/hIhkmDvQn3XLVDSJB/szzUBhCc+Iic
+	 LXVgdYpLPzK7rFQ3D17vCtDF9wJSEehkUTUvhavVjFJWQeamVRJoVvdVlAZp0jVfj8w9R
+	 8YelfgCnGr6fwDb4RvQf8xlj88qkBVi91s+nvk7pdUAXk2DyCT0gQ5hpCzhb1TjfTww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794366730;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794367311;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=9IPIOvv6KeJOQVoUmqhLpqdnguUSFsIDrV7BNBwQySI=;
-	b=KYV0X+lxCNuSCDuDOKnkQhi/x+eYZjnXX/A0yUr57Trj1dfVIP7eu7RVKUObmTrfRioO
-	 VQjtICW5uVG4vrnt1Hk5d/82Dps7qkGtk4zoK6q31aShjYmVylcTcndgJUsGDC7SIpp5a
-	 V+ipSs+ZlF7LmdYd7GjEvejd0DN2TWq3WfmfQpwjZgy5wrb2iFJmxXyMjfaT1WX/eL2X5
-	 46Nsmh9ph0NRe/4DSBZo76kieeX9BGAx6ATgA9wzkmVU0fKwfOurErg/VX1CWlLKD+fq2
-	 Q8vNBgUGGmdSefPhMYIoEwBXo5t6Xge0ASkYTgXJKl0CAe+EXCEFmX+2ctzmZsqx88w==
+	bh=HHekPeqyGWTFP/9TlxTpM6xiARKQpfozn60WBx5Zas4=;
+	b=i+x5vO4yzXWgRpAuJlTRdJtBAH8j9htll886Ggpeiie0d7ok3jpJAZhFu9K/Vc/zLlkR
+	 ev924jMSHVt4vMD6pl6Pyi80qcbDi/id9Lwv4I3N7vEtVQUYwaao7FQtI7lqz3Olhp6U6
+	 zRh4c0DVWTbglac6YJ4nZhQamtEeZaoq0SbUmsl7pfqcuLuZ1RyrkelhaKVM5yB1TChHd
+	 0Ed8rSsipzCuNXiih2+4SDMBbDXZEXCJmdXNPSvIHYEY4pONHWqTX58nLxRYGrKmzqBYt
+	 OPpRArutJCRINr810tA+BdbJW9c85QdEmNSlk2MEpKzICBasA/dr+en4vK6qc4gVl6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rrfR6IWW;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78993606A31C;
-	Wed, 11 Nov 2026 03:12:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78993606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nCxf1X6m;
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBE0606A321
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 03:21:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCBE0606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rrfR6IWW
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nCxf1X6m
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-372bdb942dbso3524183eec.1
+        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 19:21:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=rrfR6IWWk8wvRhe43ri2bnMYSzyzD1xwIpRlVabdGCjb6IPPfk87BGNP5FDD+KAjh24xrhoGGqU61
-	 eWHtdHNGgvLDeEUBy1wiSyLB3A9mcC4RSq5DNSAgdAsy91FXvT+4RmQtXrfMiI5DUPUF6qXLRZcHQG
-	 SmJdqrehmMhemOYc=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36af3dd05277-9fa8b;
-	Wed, 11 Nov 2026 11:12:07 +0800 (CST)
-X-RM-TRANSID:2ee36af3dd05277-9fa8b
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[112.23.105.204])
-	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af3dd05404-cc4b7;
-	Wed, 11 Nov 2026 11:12:06 +0800 (CST)
-X-RM-TRANSID:2ee26af3dd05404-cc4b7
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net] amt: use ipv6_hdr() in amt_mldv1_leave_handler()
-Date: Wed, 11 Nov 2026 11:11:47 +0800
-Message-Id: <20261111031147.105834-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+        d=gmail.com; s=20260707; t=1794367310; x=1794972110; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HHekPeqyGWTFP/9TlxTpM6xiARKQpfozn60WBx5Zas4=;
+        b=nCxf1X6msrsrraBBBnOXfN/6taGnH+s/MLA5+HPoXXI+E7nv+EdZCuCv6bOptJwEhu
+         xClAJvpHsRiq1/Si55X3QH+ntDagSvTeSR49DqvCulozxuL3DdwPB50PVfle1JA1r8k3
+         VyN3DdLRB9NhsFNewq8C9WRuNUbFB/dn8P1xHnQ4InQAMDMX1dmnWmyc2bcKT+/7ZSMk
+         hxtXl6dQdD46KD48dzLer+LvI4sl5M9FZqrEH+INLwS1ZY5LPH4iVQ2eqjDa6Mgk43uM
+         3eLYVRFfNEmhy6X3UaRbDVtyIW7REMyFKCBIMD5xnhjqJBgNOxIAF/qAnjN+P8r7+Ewz
+         i6MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794367310; x=1794972110;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HHekPeqyGWTFP/9TlxTpM6xiARKQpfozn60WBx5Zas4=;
+        b=f0qc6+rlIJNhdqqSnbLBAVmeayNVWRtL/Ks72jEA8wqVXYNgZtda3gmDOsZ+JoMq/P
+         god1YwQiSDGyGdZWwLJwJDI12BYU8rHtDk9gWBYR6T5nDUIMnNE35rBbSy7oPNEudB8a
+         ZlEmnHWIe8oh1/9XqNgG6MI0qQU8jAMYVJ0UEFdMBts37pjgEwmURsTI/7xup/ejEGSr
+         LurXJO9/mvVry7cXrCslZhqBd4eXTs9tugBqp6isUzchAiKtKw52jYUnUhUQHIxtHetb
+         hVErTD0O7Bbj4+eXoBFBVgxaYHpBJ1YAbxzCbDCUzxe6BSJ9KRzOBMhCUbCVsKiKmOub
+         Twfw==
+X-Forwarded-Encrypted: i=1; AL+hErFDtpU0TG/t9NOegRvsKlF9Kqgw1Ihj8d8EVrk68AQ7ohLJrcVwAa8O5BWlQQJTsrOQj1QvW2U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9hlcYYVw5XnEnJ86MmtTlR9S8lRvIy+oVqqa3NBnI+WVK6Z+Gh
+	PjeXRiGGgSeHvaKG6d3nfvluqdpEN9NsW6QkHNLV8Nvzix+yWtP2wyBU
+X-Gm-Gg: AYBFou1RhZ3rz15RRtrnZIDzoHZIJwzGgQgf0ORoLaeoNcd47qD3ZOUsZH34Jy2zwri
+	bIFUIDvZzDUH9b+VF1LiKnBsZdfdKcNX2B9tO6MsE/1uDV4O40zC2xntzyVFvcOkP/xPBxLaUrN
+	SyMtsxZP9cpmF+UAQebanG2sG2zWQ7i5jr836Lx1FtH6LXj5gu5uS38Pseg7Y7Ew4K4hqNoSm9n
+	5qLOh6D8ADqDXnyW21PWkxx0m0vmW7nH/5idf5eTtfRqL87jKQC9kvJgGxQiKN1VOfiKEIu8TDt
+	i6AtJnd5OT63OvjXOjP4U3VWI97dN7Z7HdGfAVfanGKiwPy8FQBQRae1j8epxdUuc6nxaqkgkfl
+	82z97+R/aWvTjyRPBAt57lEWjTt7mBxLCc2DNfUhzxFmc8n2KAUen8z0E/J+5TCFuPtAyZ6/FED
+	0hmqvd3D3Wjkhi1HEsaLRno2eoYKwTbnAN1MdD4EMfHBb08MJ+bhTxJlq8Eg3vrxQWHyZiafy+u
+	VjsE8b2alY1xbGI3Swx+tnCk/nr09oxsv/T0zexe9AhI1HaHWlpSP10uZDC7qXoHBddjrnYA6KZ
+	Kr14MicqO3xBHShTyUmQAgbB6iYPSwWvi3IOeRQBG14Rw/NmSj7gD4m2Q/1Kw7KysvF94LL1Nth
+	+6xrnz+k/
+X-Received: by 2002:a05:7301:6589:b0:369:e8b0:af85 with SMTP id 5a478bee46e88-3768701ccdfmr2376910eec.36.1794367309538;
+        Tue, 10 Nov 2026 19:21:49 -0800 (PST)
+Received: from build2026.lan (67.230.168.206.16clouds.com. [67.230.168.206])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751ad6f11csm9801896eec.0.2026.11.10.19.21.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 19:21:49 -0800 (PST)
+From: ThisSeanZhang <thisseanzhang@gmail.com>
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	netdev@vger.kernel.org,
+	Nick Hudson <nhudson@akamai.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [RFC bpf-next v3 0/3] bpf: Add PPPoE encap/decap kfuncs
+Date: Tue, 10 Nov 2026 22:21:38 -0500
+Message-ID: <20261111032141.525444-1-thisseanzhang@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,55 +104,85 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In amt_mldv1_leave_handler(), which handles IPv6 MLDv1 Done
-(ICMPV6_MGM_REDUCTION) messages, the source address is mistakenly
-extracted via ip_hdr(skb)->saddr into host.ip4 instead of copying the
-IPv6 source address from ipv6_hdr(skb)->saddr into host.ip6 as
-amt_mldv1_report_handler() does.
+Hello,
 
-Because amt_lookup_group() compares the full union amt_addr for v6
-groups, looking up the group with a 32-bit IPv4 header slice fails to
-match the group entry created by amt_mldv1_report_handler(). As a
-result, amt_del_group() is not called when an MLDv1 listener leaves,
-and the AMT relay continues forwarding multicast traffic until the
-group timer expires.
+The motivating use case is a TC BPF PPPoE forwarding path. When such a
+path forwards a GSO packet larger than the negotiated PPPoE MTU,
+inserting the PPPoE header manually leaves skb->protocol set to the
+original IP protocol, so the stack cannot select the PPPoE GSO path
+and the packet may be dropped.
 
-Use ipv6_hdr(skb) and copy ip6h->saddr into host.ip6 so that MLDv1
-Done messages properly match and delete the corresponding IPv6 group.
+The kernel already supports PPPoE GRO/GSO for ETH_P_PPP_SES
+(introduced by commit 55a5d8fca836 ("net: pppoe: implement GRO/GSO
+support")), but a TC BPF program has no direct way to update
+skb->protocol and the associated skb metadata when adding or removing
+a PPPoE header, and bpf_skb_adjust_room() cannot decapsulate PPPoE
+packets either, as it only accepts ETH_P_IP and ETH_P_IPV6. The
+current workaround uses BPF_F_ADJ_ROOM_ENCAP_L3_IPV4/IPV6, which
+marks the skb as IP-in-IP even though the wire format is PPPoE. The
+BPF program must also adjust gso_size manually [1].
 
-This issue was found via LLM-assisted code review, confirmed by
-reproducing the stale group forwarding in a User-Mode Linux (ARCH=um)
-environment, and verified in UML by testing that AMT relay multicast
-forwarding stops immediately after receiving an MLDv1 Done message.
+This series adds bpf_skb_pppoe_encap() and bpf_skb_pppoe_decap(),
+which insert or remove the PPPoE session header and keep the skb
+metadata consistent with the kernel's PPPoE GRO/GSO handlers; the
+encap kfunc writes the PPPoE session header itself, mirroring
+pppoe_xmit(), and the BPF program sets the MAC header's EtherType, as
+with the existing BPF_F_ADJ_ROOM_ENCAP_* flags:
 
-Fixes: b75f7095d4d4 ("amt: add mld report message handler")
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+    bpf_skb_pppoe_encap(skb, sid, flags);
+    bpf_skb_pppoe_decap(skb, flags);
+
+Based on the v1 discussion about whether new UAPI flags were
+warranted, this version uses kfuncs instead, following the existing
+bpf_skb_set_fou_encap() interface. No UAPI changes are needed.
+
+Since the kfuncs may reallocate the skb head, patch 1 adds the
+KF_CHANGES_PKT flag so the verifier invalidates packet pointers after
+calls to packet-modifying kfuncs, analogous to its handling of
+packet-modifying helpers. bpf_xdp_pull_data() and dynptr writes retain
+their existing handling.
+
+The selftests cover IPv4 and IPv6 round trips, the PPPoE header fields
+written by the encap kfunc, rejection of non-IP encapsulation input,
+non-PPPoE decapsulation input, unsupported PPP protocols and truncated
+input, and verifier rejection of packet pointers held across a kfunc
+call. All 9 subtests pass in QEMU/KVM.
+
+[1] https://github.com/ThisSeanZhang/landscape/blob/80bc43eef7143ad029283fe2a8d510718c22af12/landscape-ebpf/src/bpf/tc_chain/tc_pppoe.bpf.c#L38-L47
+
+ThisSeanZhang (3):
+  bpf: Add KF_CHANGES_PKT kfunc flag
+  bpf: Add PPPoE encap/decap kfuncs
+  selftests/bpf: Add a test for the PPPoE encap/decap kfuncs
+
+ include/linux/btf.h                           |   1 +
+ kernel/bpf/verifier.c                         |   1 +
+ net/core/filter.c                             | 192 +++++++++++++
+ .../selftests/bpf/prog_tests/tc_pppoe.c       | 269 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/tc_pppoe.c  |  77 +++++
+ .../selftests/bpf/progs/tc_pppoe_fail.c       |  36 +++
+ 6 files changed, 576 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
+ create mode 100644 tools/testing/selftests/bpf/progs/tc_pppoe.c
+ create mode 100644 tools/testing/selftests/bpf/progs/tc_pppoe_fail.c
+
 ---
- drivers/net/amt.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 81d26ef82cf5..31d91ab7c9ac 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -2147,13 +2147,12 @@ static void amt_mldv1_leave_handler(struct amt_dev *amt, struct sk_buff *skb,
- 				    struct amt_tunnel_list *tunnel)
- {
- 	struct mld_msg *mld = (struct mld_msg *)icmp6_hdr(skb);
--	struct iphdr *iph = ip_hdr(skb);
-+	struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 	struct amt_group_node *gnode;
- 	union amt_addr group, host;
- 
- 	memcpy(&group.ip6, &mld->mld_mca, sizeof(struct in6_addr));
--	memset(&host, 0, sizeof(union amt_addr));
--	host.ip4 = iph->saddr;
-+	memcpy(&host.ip6, &ip6h->saddr, sizeof(struct in6_addr));
- 
- 	gnode = amt_lookup_group(tunnel, &group, &host, true);
- 	if (gnode) {
+Changes since v2:
+- Replace the proposed BPF_F_ADJ_ROOM_ENCAP_PPPOE and
+  BPF_F_ADJ_ROOM_DECAP_PPPOE UAPI flags with
+  bpf_skb_pppoe_encap() and bpf_skb_pppoe_decap() kfuncs.
+- Add KF_CHANGES_PKT so the verifier invalidates packet pointers
+  across calls to packet-modifying kfuncs. bpf_xdp_pull_data() and
+  dynptr writes retain their existing handling.
+- Make the encap kfunc write the PPPoE session header itself,
+  mirroring pppoe_xmit().
+- Rebase onto the current bpf-next.
+
+v2: https://lore.kernel.org/bpf/20261003193347.1137527-1-thisseanzhang@gmail.com/
+v1: https://lore.kernel.org/bpf/20260926210757.2152159-1-thisseanzhang@gmail.com/
+
+base-commit: 0fb18ce8a2e9de830433923cf65838933d615359
 -- 
-2.33.0
-
-
+2.47.3
 
