@@ -1,85 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794405711;
-	b=v8obBMQqTsh2F/68L7QmEPRwziAHsdBKd6OYcpozu64kAf8vtWNVsdqQCVM78TNpzJV+
-	 Hgp0GKIbVhLbBNSjZ7ukXekHUC+OWcGyZEsEuA/HKFcYxUxMT5/nAychOhl5r11jSXziV
-	 RvQV0mlUM2ACb66z2oNSVH+gmhszCQ9kbw1emnh/cyFscrLIQp4XkyOh0cMldtU4ZU1rk
-	 WXY6RxBrswCAIgQ/xyTdxec0XtmS3c7kMmKlHKAzBerchREZjuVAWPdRsgRMe5EhKL/Bs
-	 U854shyXcHCpgOzAsg5CvPoQBEJ3DBmJNPkiYS11iRqwoTAQo0/SpW93aDHlAvrJM4Q==
+	t=1794406606;
+	b=4mcSh5gKjLsh77p3XQIcHcysRjWNCDezmaymzRAvVB128y/5L/EeS1MfKJGThVgTUyB+
+	 j4hgoH01j83+d+tk/BvY3GwuiOtCIJm0Uf6aslQaLlURoaZ0KpcPAUfPzJgqijIhKWSt3
+	 ehjxx/UNji7Pry0AI/q61vkzBbKN6R5HMtE7yRRyl8JFaTnQ3k4M4bwrLQ1ETKihvpKoZ
+	 iXbtMircZRRZJHO20NmO+eG6WrfwvDY0Qk6qBslfK1Z70aXlJQ5vPhJP7Qacm047SZxE9
+	 O2TpkO1Ctz9a59lENAQaQeghsH1H5mRKQboMktG/GcrTBvxOvGXncQ54lHZw1gW+QsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794405711;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794406606;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=O8NgyjtDYz4pyha39rltZunf2bBWHEXRkohajtNJskA=;
-	b=YXomNpDuDOoTJCFZY9UhCLauAVeKIcJeeX6lSS8CalN77CEF+uXs4H2rvGWBg+4d5oIM
-	 yty6B4Za5RLxzGjZ2GILniJVGXKmyLv86Xh/eCteqeFiNPZFuT1YsramkgNTbkHSMWBBi
-	 zVzeRt72QQCBd+iBdviSYhJpQMol/ADX4+e5UGh48LM8h9vBFYRxYdtbmUXlYgSqa977/
-	 L2zOnnvaWrV9T06W4I20W/OSJbHvDRjNsjHhqxPG7P0QgDO9yzxgpwp5klFBAd2UhfChT
-	 yaJBI1M+8OIczZGNAa1aeZm++DyEZpNZlspglQEqNVwFeojLBFgBnQIxrGdKWgB8mXw==
+	bh=PNaQ6Q4vGpSRfUWx0yC1mdo3/cj4HJ9kzAYecFEBLvE=;
+	b=xSagpAKHFuiv3Z2swGgMoToaNMpbZSX+xf7ZP5kw0Lc4oSF0L/ckZfFAbL2aM/7p7PJz
+	 htICLVAVDNr7wlQX5e8xY4JAC9160jwXv18ydiYTnqVe9f8KfAvsH22LfgmP8YylGVnni
+	 HrdTvEGRcVI4QwBRB9EcqDjwOyFzINDhCkzMZ5HKAFv70kd3BP79tfHQz+ZhBvUW3yPry
+	 In8rQ+M0YMagidSnPLV9sz9jgGBIJ8vL4wQ4uoq35Bhl656plu/jQnS21Ro0Hfi8Lzs07
+	 wuUcO+kJK5U3Aq7yfNv8GLP3mWQPNrNmFtKeWCRz0HX3qyVmBSFz9ocR1U9SzdkHlGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Wl5idHGG;
-	arc=none smtp.remote-ip=74.125.82.54
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=vaqSbvOo;
+	arc=none smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35875606A32A
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:01:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35875606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9BA606A327
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F9BA606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Wl5idHGG
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b3acec6677so4906535c88.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 06:01:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=vaqSbvOo
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-53cd0c8614eso22221561cf.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 06:16:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1794405710; x=1795010510; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=mojatatu.com; s=google; t=1794406605; x=1795011405; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O8NgyjtDYz4pyha39rltZunf2bBWHEXRkohajtNJskA=;
-        b=Wl5idHGG8+6GNQnjX94s0EZTSeshK00S72EEWd+SxHRyCQwBWnP8p+VmT0VkT1q31x
-         Tdo1IFOqKdaT3o9I+rw5p40TBXTbPCOMWdKAlgJBNKNy6R6EFWfN7Ra9O//tp7AOpuwK
-         7IGP9NhjK7O4hh4C5alKlt7KTJArDAT9AveXM=
+        bh=PNaQ6Q4vGpSRfUWx0yC1mdo3/cj4HJ9kzAYecFEBLvE=;
+        b=vaqSbvOodam9Lh8sl6hGWYWFmFqegHb/nVrcQAs002a9RBJ1hp32LLzLGA+NPmLazp
+         T0v3UjOHN3+PYiSnZxQkbO9WsJbpZnEuGuT0bGEqnE8G0eMtzFsrbmoW4kPoQlKKGDl6
+         5kpahpb7WhJyfZMPmYEZ9g2LQfyxfPpf4n238=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794405710; x=1795010510;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O8NgyjtDYz4pyha39rltZunf2bBWHEXRkohajtNJskA=;
-        b=GgmVWC4SxuXCe1PYTCUDsM7kvvVmB2bIVgTofjYkGA5u9HXXfZbl5SJmmTzcPBQE3v
-         4OTpdweeMQsE82j9y21N0JTmalalP9uwGQRMgBL02em6YZxUG4aPVAIe9zWMo9u9SSjq
-         CP8YFQLrmG90tTIjRsA+cqBihTbdNsX+SjWEx0z39o6eCAJpn50gOPDyYWVetgPJNdWu
-         iN3N3oiuR1AT5NBv3tLK4WUlRjuvisxCT1Hqt3pjiaElouixolneLQVEmAzQUYV0ml5e
-         ahmZFzaI8jVSAZXkCn6i3mRlj1nvf236c7InAjnU6II1+P1+dOGDKl7JUgZ45jW5Bzhy
-         n3EQ==
-X-Forwarded-Encrypted: i=1; AL+hErHEHlHILRC8yM8BCVcRMB5/JsZCixoQAyDj5mTTy8f2qczqnIW4fw0LYI/F4MejoIZDGrr0Hlw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8nRFZsQnhlGlhPshchoIc9+TB3HNhj6OwcXW8VOhy90BxbCSn1
-	48ZB+pimraufVU+TbxARSoRcM52/QH4WqTHtRaDqbVpAr4RLn4+CdL5U3hJ7EQr55g==
-X-Gm-Gg: AYBFou0JfEAElXE7Yp7dIbnb8dDnLKJzx2xrm0z3KkDsEo8T/AiaFVbRMNO8rrQ++3j
-	vFO/aItLUvAxwbzgLhI8BURlu/1V6OrOAiAu0EWuRmiMuevECmEXM0HAj2KLIt9KTrk+scIpLaB
-	1+ps9wPUraSyXSlOUQrGC3yD+y1RIaJxV+G8014OdNZ0/hYyIGxA2bExDos4KbVbhceDZxuCpmk
-	ppuhKHFADoI8tw3sXaYzJtBnAfXoHwr2xLCvh0ldojCII2VDf0rFK58J4u/tKBniqVLAwVBWh7W
-	NeVfI3gMOOyG+FUJyI7OEn/iKgnvVOM67Zh44MhXj3X60pKsqDC5uzI2wDI+goFFCI1K8QO7iZ6
-	KIMelnJebMH/4m1XMq0wYDE8wdsYeqMxxEr1rm2/8tDJFjqF6Hcgd89CTOrYyOubwoOBignBtMG
-	4NlREqaqauHh/NOFCkg7NhH48sxHaES/S/eHT3xuhnAR99Nxwy2wyDJTDNUZOoikfVQqzOIxhVS
-	amT3crKCSzcj9G0eC1qOc2lm8k0RQmYLWH+YRUGdMizwQbKvWio9G+vC7pGSohKnCcGH9nllRQo
-	eR5KpXTKSQv2hj5f+hU3Km4dDV+lPlB3WFDrL+0=
-X-Received: by 2002:a05:701a:ca05:b0:1a2:fa1d:1de5 with SMTP id a92af1059eb24-1b3c2154fc8mr1737384c88.20.1794405709684;
-        Wed, 11 Nov 2026 06:01:49 -0800 (PST)
-Received: from ?IPV6:2804:14d:5c54:4d67::1c9d? ([2804:14d:5c54:4d67::1c9d])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b2eeffsm16836234c88.9.2026.11.11.06.01.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 06:01:48 -0800 (PST)
-Message-ID: <0c970ddc-4cfc-4ee8-b0b9-6107a8804267@mojatatu.com>
-Date: Wed, 11 Nov 2026 11:01:42 -0300
+        d=1e100.net; s=20260707; t=1794406605; x=1795011405;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PNaQ6Q4vGpSRfUWx0yC1mdo3/cj4HJ9kzAYecFEBLvE=;
+        b=XPtz0OfnCTXE4c5s/Bv+Wd38Zh15ogZiOnpH3K/v6nC0D+WZnmglUxhOdvScW0DVke
+         siaDdTyI1SO0xkAS2uhqa0wL7qSywFeyAfCth9/3Qb5wc6BRxXMuRMHXHWrg+Hntksbz
+         EpdZLol1Z6MHMD31obRkr7kNWza6PnsTH9wTjkgAabkmpzu1Vk89HgqFsHj4z7QAyZzq
+         EWQN0tPkAlBagb2l9OLjM1Co9IxqvK3m6A6IJgRxU23sNpQl6r75UM5LljeY39uVK78C
+         asYnkQ8s1NTtBRvjgABTSsHx0MDjQRiOIEbdLYza0Pz7HNEdWk5gsG261Hsz50EzdI0J
+         G2oQ==
+X-Gm-Message-State: APuU4Z+3Lpd6wp5KqT/fgwUohBgqcWdcgwY3t6K+pIz6El0kt8acqSvh
+	1fnEtMus/t1o1I4sgQeoiaEnyu5dYQopjEo0IAx8PjzTVv6cOkdP5s0iBvY0sK2+mzAuPT3x1Is
+	bxZ0=
+X-Gm-Gg: AYBFou05pDO8WdYjhYZcSLNnme57nPYegJ3lFgNhV7G14mPwk54MCAi6pOU7B+djczj
+	i+THcI5idey0Xl6ZjQBGqmXJDCgihq+1bIREEANnkL3QAcmV0t+ijiGU0Ci1EsuR1ALNLGFj0En
+	eputw+6yWK4TPNU/pADQAH29kRhmUKS0cotendk4nKuozsiiS372BXp8f2dI2flk97PED0+xzj8
+	nJLBMDQoIyN91qBHRLVhKrL5gmnvaGIYi6UL0AskdRUsctxWRzrWnCRLO77kBJ+PdDMNJH03Ktn
+	5IbPIuVdNV+pzpV4Ir1+7KjE0dDVVyObxlbMF/M0DP3Y5Os4LPSEoOZgwbUptUg+W38ZxDfYp6t
+	qUZe8It4KBEexIpOGlFBCZ/EqXmbCcbFLoJ0uOamsjlcxEU1Egnwzxglh3rM8ZbZ3QbCj4olpOB
+	N+Rtpe+cG5quGWzFhp97cA4TKhUepFO9pY4roqGOb+tCiN6jibc61+/izWXggRpl8RwqVKsQKd+
+	PNSzGyZ213uoMIQ801VYBhbbeNWYPdap5rug1xgUuu2CcvELkOnAYcSUp3eNq1S0gVPwe2qPRxo
+	QqBtJ6mKdpF0nmOxkyViJ1OQ3hzYRCpTdlzcxbIKRL1Ei3hv1ArDJnKWsm6XpU81B0aasS1bsMp
+	mzC9EnTB2sGrIGg==
+X-Received: by 2002:a05:622a:1b1d:b0:550:fe12:22da with SMTP id d75a77b69052e-556bd708e0bmr35644631cf.6.1794406604915;
+        Wed, 11 Nov 2026 06:16:44 -0800 (PST)
+Received: from localhost.localdomain ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550be2e592sm51505041cf.24.2026.11.11.06.16.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 06:16:42 -0800 (PST)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	bpf@vger.kernel.org,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	sashiko-bot@kernel.org
+Subject: [PATCH net-next 0/2] net: drop the stale dst when steering to another device
+Date: Wed, 11 Nov 2026 09:16:36 -0500
+Message-Id: <CORE-9NOG.v1.r0.20261111073528@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,97 +119,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xfrm: avoid stale tunnel pointers in deferred input
- callbacks
-To: Jun Yao <yaojun8558363@gmail.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- dsahern@kernel.org, idosch@nvidia.com
-References: <20261111094629.230568-1-yaojun8558363@gmail.com>
-Content-Language: en-US
-From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <20261111094629.230568-1-yaojun8558363@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi!
+This patchset is created to address constant whining by both sashikos
+about this being an issue when fixing a UAF on a teql issue (entering
+v4 now), see the v3 here fixing the teql consumer:
+https://lore.kernel.org/netdev/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com/
 
-On 11/11/2026 06:46, Jun Yao wrote:
-> IP-TFS input can be deferred while its reordering queue waits for a missing
-> sequence number. The VTI receive callback stores a pointer to the tunnel in
-> skb->cb, and the device can be removed and freed before the callback runs.
-> 
-> Keep only scalar tunnel metadata in an skb extension. The VTI callbacks
-> look up the device by ifindex under RCU and check its link configuration
-> before using its private data. If the VTI no longer exists, drop the
-> deferred packet. Use the same metadata to preserve tunnel mark handling
-> and IPv6 tunnel detection, and clear it when a new XFRM receive path starts
-> and after the callback completes.
-> 
-> Signed-off-by: Jun Yao <yaojun8558363@gmail.com>
-> 
-> ---
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 6787fcf6a..f97412b95 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -5044,6 +5044,7 @@ enum skb_ext_id {
->   #endif
->   #ifdef CONFIG_XFRM
->   	SKB_EXT_SEC_PATH,
-> +	SKB_EXT_XFRM_TUNNEL,
->   #endif
->   #if IS_ENABLED(CONFIG_NET_TC_SKB_EXT)
->   	TC_SKB_EXT,
-> diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-> index 445223a8d..defdd4088 100644
-> --- a/include/net/xfrm.h
-> +++ b/include/net/xfrm.h
-> [...]
->   
-> -#define XFRM_TUNNEL_SKB_CB(__skb) ((struct xfrm_tunnel_skb_cb *)&((__skb)->cb[0]))
-> +static inline struct xfrm_tunnel_info *
-> +xfrm_tunnel_info_add(struct sk_buff *skb)
-> +{
-> +	return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-> +}
-> +
-> +static inline const struct xfrm_tunnel_info *
-> +xfrm_tunnel_info(const struct sk_buff *skb)
-> +{
-> +	return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-> +}
-> +
-> +static inline void xfrm_tunnel_info_clear(struct sk_buff *skb)
-> +{
-> +	skb_ext_del(skb, SKB_EXT_XFRM_TUNNEL);
-> +}
+Two producers steer a packet to a network device of their choosing and
+then hand it to the neighbour layer for link-layer resolution:
 
-The above lines are causing build failures when XFRM is not enabled:
+  1/2 netfilter: the neighbour variant of nft `fwd`, on the netdev egress
+      hook
+  2/2 bpf: `bpf_redirect_neigh()` when the program supplies the nexthop
 
-In file included from net/core/sock.c:134:
-./include/net/xfrm.h: In function ‘xfrm_tunnel_info_add’:
-./include/net/xfrm.h:777:33: error: ‘SKB_EXT_XFRM_TUNNEL’ undeclared 
-(first use in this function); did you mean ‘DST_XFRM_TUNNEL’?
-   777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-       |                                 ^~~~~~~~~~~~~~~~~~~
-       |                                 DST_XFRM_TUNNEL
-./include/net/xfrm.h:777:33: note: each undeclared identifier is 
-reported only once for each function it appears in
-./include/net/xfrm.h: In function ‘xfrm_tunnel_info’:
-./include/net/xfrm.h:783:34: error: ‘SKB_EXT_XFRM_TUNNEL’ undeclared 
-(first use in this function); did you mean ‘DST_XFRM_TUNNEL’?
-   783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-       |                                  ^~~~~~~~~~~~~~~~~~~
-       |                                  DST_XFRM_TUNNEL
-./include/net/xfrm.h: In function ‘xfrm_tunnel_info_clear’:
-./include/net/xfrm.h:788:26: error: ‘SKB_EXT_XFRM_TUNNEL’ undeclared 
-(first use in this function); did you mean ‘DST_XFRM_TUNNEL’?
-   788 |         skb_ext_del(skb, SKB_EXT_XFRM_TUNNEL);
-       |                          ^~~~~~~~~~~~~~~~~~~
-       |                          DST_XFRM_TUNNEL
+Both rewrite `skb->dev` to the target device and leave the skb's dst
+pointing at the route the packet arrived through. When the target
+device's neighbour for the nexthop is incomplete the packet is parked on
+that neighbour's arp_queue, and draining the queue re-looks the neighbour
+up from the stale dst. The frame is therefore built with the original
+device's link-layer header and then transmitted on the target device: the
+packet leaves with another device's addresses, and the sender never
+learns that its nexthop was unreachable.
 
----
-pw-bot: cr
+This is explicit: the steer-to-another-device path never worked in this
+respect, so there is nothing here to regress. Both producers shipped with
+`skb->dev` swapped to the target device and the route's dst still
+attached, and the arp_queue drain has re-derived the neighbour from that
+dst for as long as either producer has existed; the invariant "the skb's
+dst describes where the skb is going", which the routing path keeps when
+it steers, was never established for these two entry points. With no
+commit to anchor with a `Fixes:` tag and no crash, UAF or lockup
+involved, the series targets net-next and does not nominate `Cc: stable`:
+a backport would change long-standing redirect behaviour for no
+crash-class benefit.
+
+More context: this came out of the review of the fix for a parked skb
+being resolved against the wrong device in sch_teql, posted separately and
+not part of this series. The neighbour code's queue drain is doing the
+right thing there, it re-derives the neighbour from the skb, so the repair
+belongs with the producers rather than with the drain path. Both
+producers are fixed in the same series so neither is left behind; each
+patch stands on its own and carries its own reproduction recipe.
+
+The reproduction for both arms is a pair of veth devices, one of them
+with an unresolved neighbour, plus a capture on the target's peer: the
+captured frame's source and destination addresses name the device whose
+neighbour was used to build it.
+
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com
+Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel.org/
+Link: https://lore.kernel.org/netdev/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com/
+
+Jamal Hadi Salim (2):
+  netfilter: nft_fwd_netdev: drop the stale dst when steering to a
+    device
+  bpf: drop the stale dst when redirecting to an explicit nexthop
+
+ net/core/filter.c              | 4 ++++
+ net/netfilter/nft_fwd_netdev.c | 1 +
+ 2 files changed, 5 insertions(+)
+
+-- 
+2.43.0
+
