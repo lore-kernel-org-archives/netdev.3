@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794422422;
-	b=mY6XGZwtNlHrdVMFm9IoJRwEavgiCYnGVFa9S+VtV0N7yiZUuZLmMfYl2LPHpVbF2tQN
-	 8a9FuEGsL6hixz9Otq9RNR4d2nsluxHY0MbpWAZYgnFyl9L81faQD/fg5Ofo/BHcHlH+d
-	 W/N9uaRYZ0KPfnVcQbW1IrsCIo/Eq8duk8nOjPXwQNrdTv+GR83vlFZMsXX2RPQhY/h1w
-	 W/bo5WZBuOgE1ZwCO7ln2Hw8lWCk1V5k2er7OumIvfYxLb/h4YZbu4v4bJ53tVEMvKI9+
-	 vHGFUAJc3de7XBkVf8HmcvfPte6qsJ0krpBWvSTiSpFSbLEzMlSEjxQJLAUQKECD2Bw==
+	t=1794422710;
+	b=Tp7NU6QIWfU4ehrcPP9I6yQX/NnhdUTCFFNp1+3vQo28IYQjvctk7gbuXU5GE4BsKYM1
+	 ApG640lrEnuMptF/kb3AtX7ug+AbWO4szlZ9GNjdgS22sO+imSOh7fcpL6Zm2OpCP0ArM
+	 wmuSOS3hyI5h/+pgKlhis0MXAFavfN5/cBp2VerPZv3HFLL8fUt7f9BHAyPryp0rPrQTR
+	 BQbnY+HONej3F6XwIXMgQQ8UIROcjxPkfyePnCEtDZ1QPFn3gDNrOdaJRAFYiOtvj/2ci
+	 g/vMN+58oPAsYSlrfy1yosmm37X3qsKkcl34Icyh18vya/tMwaemhtbqTPi6SYCfoBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794422422;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794422710;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=SUBjRrDLwp3RYZTX5EgqdOR+qdneuin5m0Edj6U64w8=;
-	b=hc+yhVoNd+Gu5/A0Paygmq0CSvTXkMsTacqDeOEvEsD1G5a/Frf34hMfKOjrX8OAxxjC
-	 z3hUq0YryEQ1tIKQgvJd2J2F27mLCSeT7npGOUD00r4gyMeCf+H0+wR7sok+4NmlS6zsJ
-	 VfXYZYCwkNIAZk83P18jmShNe2cuFA/i6RdqWPjPLokd4hkHwa7WqDukQ6V0s3h9ncBfK
-	 OZ7kgC/gAf5LeyNTTJo7966z5hHBSRd3u7t7UQG7dHS72AsYvI+QKb01eEJNmo+ryABje
-	 eH308R+u0J3JkBvRDkTpoyJeWUAMtqwmJ3wbpeWsIGaepQSfgb3rpE95DMMiJ0YR2Mg==
+	bh=RLXIhLCf/9C679guusd4Cass0BZ8cph69Gx5b5prPFQ=;
+	b=zU9OBM8fFwH1c1XbEz0pkWD/c4J8fYPTuvnn11CbfnVaF3iEHYv4rsy47ONu77xDpoy4
+	 lgUI0wV+C80ovbVpp6RX8U6mChUhm5/kGRIV+hVAh2xGl+ikvJgTUcL17MDGFUgRB87Kq
+	 WYq+i56nH33LOsxerUXtSxqDWFSOAMJqm14yyIzDEHHYZqYmwPtxguqmRVTaVcuWCuTpT
+	 r7qgst9BSVPrXcl/WYfP4TqyaMvnYhtQcUFdHKJmT/lueK66DndT6FbgFwKFZmsCGP5Ka
+	 VSbu9fnuaIRhcB4NPHhzCtqA62NUDYkL6fxeoNYarjQPOHj3USE7nYVerq+mhkyL6xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lulACv/e";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cRsbJGhK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC3606A324
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 18:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737FD606A330
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 18:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lulACv/e
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9BF1F00A05;
-	Wed, 11 Nov 2026 18:40:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cRsbJGhK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33881F00A05;
+	Wed, 11 Nov 2026 18:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794422421;
-	bh=SUBjRrDLwp3RYZTX5EgqdOR+qdneuin5m0Edj6U64w8=;
+	s=k20260515; t=1794422710;
+	bh=RLXIhLCf/9C679guusd4Cass0BZ8cph69Gx5b5prPFQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lulACv/eTx0gduW7ToBPfwj6VRy3qO+ZayR6q9TpiWPFtWhGCrW97vLq1hXSlJSoG
-	 gYzTOyPMd83v0/GZLOLcRka4SthpYNU01sKUnLBCy11lolD8Gnr6E/DPLpTriYkhBP
-	 4vVlvTbjMFpz0rgNjjmSJmi/mWCevgoKcOsCoIJpYoey7bcm5cxBgikiuDSZqy0iUx
-	 XLXaRgUJQdHHfY1DhVhbDfG+kmU1zgOir3Bm7wV79m/RSdkjxO246CQ3gR14DglQR7
-	 upPPbBUn/b2T4GtwmLvUWR0dzkKWo5Dfn9lKHuM5zy/JtCQJZ9j6npjUtwpWI2JluX
-	 P9uc+EWSw6mhA==
-Date: Wed, 11 Nov 2026 10:40:20 -0800
+	b=cRsbJGhK8y2n8yVkHGbTVmqejSoGbLI9CUPxt+b7/HsjlblofRzDnQmsa2W89oXar
+	 oKXMtWIpomfFZq/+ML21n4YMJPBJGGjc7KrRggnL/t4qFRkPceRgS9KWaV0UIHmmQS
+	 ewF28mIz/xiRcoTymi8YHNHgWpEjXV8xdxrpDBmySN9ssVaWBdO22zjgDvzmBEepC2
+	 pw0FK8lDAo3kogTfni72Jklgm+e6YBhhRA42VGii5bQEwEJu5zA4P/lKVu7r7tg01u
+	 lwqEoysuCpLI1h+8DdtjiSZ166Y6wjM/UZD6ciRfvSsfH9S0RVKqJPmjDgoIFp7rYF
+	 2lg6RLYq2n9Aw==
+Date: Wed, 11 Nov 2026 10:45:08 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: netdev-bot+sashiko@kernel.org
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
  haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
  kameroncarr@linux.microsoft.com, ernis@linux.microsoft.com
-Subject: Re: [PATCH net-next v2 4/5] hv_netvsc: move a new VF to netvsc's
- netns from a work item
-Message-ID: <20261111104020.2ba90f97@kernel.org>
-In-Reply-To: <179439413220.2199510.12624366739640158561@kernel.org>
-References: <20261109194843.1353592-5-kuba@kernel.org>
-	<179439413220.2199510.12624366739640158561@kernel.org>
+Subject: Re: [PATCH net-next v2 5/5] hv_netvsc: let the core take XDP off a
+ netvsc device that is going away
+Message-ID: <20261111104508.685dbfe5@kernel.org>
+In-Reply-To: <179439413336.2199510.16556459400141468213@kernel.org>
+References: <20261109194843.1353592-6-kuba@kernel.org>
+	<179439413336.2199510.16556459400141468213@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,14 +65,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Nov 2026 10:48:52 +0000 netdev-bot+sashiko@kernel.org wrote:
-> > +	/* pick up whatever netvsc_suspend() stopped vfns_work from doing */
-> > +	schedule_delayed_work(&net_device_ctx->vfns_work, 0);
-> > +  
+On Wed, 11 Nov 2026 10:48:53 +0000 netdev-bot+sashiko@kernel.org wrote:
+> > +		/* The channels and the VF are gone, and so is the program,
+> > +		 * except for the reference netvsc_suspend() keeps for
+> > +		 * netvsc_resume().
+> > +		 */  
 > 
 > [Severity: Medium]
-> Can this run the VF move or takeover before the VF's own driver has
-> resumed?
+> Is "and so is the program" true on the unbind path in the failed-suspend
+> and failed-reconfiguration cases that v2 targets?
 
-The resume handling is a disaster, I can drop this patch completely,
-if preferred, it's not really required for the XDP rework.
+The goal of this patch is to stop returning the false positive
+errors when core clears XDP prog during netvsc shutdown.
+This would trigger a WARN() in the core once core tracks the propagated
+programs. The 100s of netvsc bugs are not my concern.
