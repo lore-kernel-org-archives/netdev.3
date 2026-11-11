@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794355211;
-	b=pZBisLOGeIp+kj5ICZA26hHd1MZ/oqbgZBHkoUSjObebqKvvBYLJvy9zdsVTtcyrfi+e
-	 iZ0iZwqMc1dVOPwHCnIdX/N3sAVSO7m3DHGafM8seZ3HNMD/Uklp2q+feGBluCI2iZXln
-	 VftrAGfXYWjolskTZ0egkt30gvR33h2tLnQ/gvW+pRFoKFIRYDrp1olBEQj/3ycEYDd6h
-	 zXOy2SL0Cdbu37kSu8IzJB0F14pEpHeJn4azs+t50KjYmiZyLxWkCLoFUo02Tg+ukJvrI
-	 WpoUqhCCDUR9Mybu8lkyCkZf9Od3klXjTYEWVqQn1cfgxEcjC3Oxa4rvFsGEvXjCL3Q==
+	t=1794355212;
+	b=gQQyNtLheIA1Ef+02QPrM2mchCHj71LlzL/+Pr35ewCToM5DDSDt5yWzWdK8UzU0TNvb
+	 /let4Y+xHYSngjPGR4rO3P6B1k9+rUztyOZ/gUXy7hh5yjWPOH8WbemZupZiv0cblJU/B
+	 asBU2StWpmRAaFcyjvzd7489fg3GCxYJRlLITDixGeEfV4Pi/LDEOCiZcP1caVXHrjiRU
+	 857vKul3URrvvrcS9Qs3glCbruRDrAqrQlaEyILSyEboM9C/UV6vTAJZ4A6o0q5FRT4nt
+	 LmBLfBwEG2aUGdX9nkh17Gl19B5VLlDNgsCoDS7iTjyJQglcTkHUTKycqvStL/Uj+pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794355211;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794355212;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=D93dTymtfvTjKhWorCFW+iO0oajya8EsjncYpv4pr9Y=;
-	b=GG3FD85kP3TJlvKsKcGMbe11FdGlNG04BGFHngV5ZTNkzT6Fd4fNQ8ElibDx6lz9RaOw
-	 6Etn1G8o8lLWDl81S/BJ35f5LCipauf1rvTtQXbbn1jqKKN6B/+ja2+0iGI44WrVlV59B
-	 BvOauBnQiUUG79xCNt/mrhGfIjDiCG2tFGn6nN5fz5t/FLj0+OC8ssu/eWaVuol6j1/7j
-	 ppnEHSoFtOv3HFixLeYNUE+b37VyjHcAzvmRZt18xHlp1Q+1wadyrS3syplxylWIiekTa
-	 0RqFe1VKCjLj4nXGaBsDAy238vqA66rBvobmteDR7Mm79KIGCcYEg2iKiU2K9yEfQ6w==
+	bh=2V2odHw5C1ZkkpeHbdSVGWqAI+/qYN7jzWWhm8KUJyA=;
+	b=nlGKdEPuduAXekwTrGTE/rmtDgnrRlvUY+xDG/hsFbjdqnHfHMvdJtGb4AB4WlXLvDbP
+	 IfOnQKcJZ7RCjaFricbD4iRCohugY6OjxpjUL6qotmke2uL93Go2/fRxuEbu2zc3Nlk/U
+	 ut8RrqmcY9H9JJkRbHot8ya2TzEaW2I9VVH+nCdMTfj3NPRjwPIRQKiTnzG5mi9ZJ8kvK
+	 adjsyWef+F3Kg6o2eQfw4XAVeeJlW6hNLU7TdB1/tXc4Q5Lt5Ubp6+qqqk+lUgsznZ9w2
+	 hZ9R2GRoHJNBrgkUMgvZkdA8YcA7/xsCLAFfc8p1kEk1RmpLYnFXsDYrvn0e8mvot6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwEIMlIC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dOWsIOl5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3407B606A327
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 00:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CC5606A32E;
+	Wed, 11 Nov 2026 00:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwEIMlIC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54111F0093D;
-	Wed, 11 Nov 2026 00:00:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dOWsIOl5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD611F0089F;
+	Wed, 11 Nov 2026 00:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794355210;
-	bh=D93dTymtfvTjKhWorCFW+iO0oajya8EsjncYpv4pr9Y=;
+	s=k20260515; t=1794355212;
+	bh=2V2odHw5C1ZkkpeHbdSVGWqAI+/qYN7jzWWhm8KUJyA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IwEIMlICj1sUmbCnCbZxa6HiYQaQ8QjO0E1k+dujBZcuXURUPmWihKQFOOf6Edrbh
-	 BZHvkzADQ7kXLIDl4LonQsK7wbKvjYURdOvtcZWrOXXEqAI5TbBt3PTdxtTeqOUOw3
-	 9Bmm9BRApbo2fJA7NwatYAIt1EBbHRJ+PVsCSEqg8c+CRLitzNQquCpSxWM84t7G0g
-	 bwzytxrJUtr1UC000jOcBktgJSs/vlo0lqEWMM6oL8LkDS8RMQcqb07RTQ26vC4+Ip
-	 IFGitXlhEvoCX+UGYUFbdjCX8WqpTj/4CUA+xOQ61NbZhJGU9YQxSl8sGHX1VFEhBj
-	 4ek9FQ0idQy3Q==
+	b=dOWsIOl5Zj4B3Few2VK4ZvCoUN6bHYaGQm6UgrIHhjAxtGUlnUUHZ/kr3wv15P/YY
+	 6lJowviHeJ06bk7YIUKO1YYfZrt0eml6stMCdXJ1NW134VLrIMWv/P79fPvaDbcY0q
+	 94G5XRNIGx/WAOYYb8/eV2Eo5zKk2RLGn0TBRiA2U8BylnMHnRlzBV7rpHgj/Lbjdx
+	 prHUKDAWJUT8xx8R3doltyOboQFl4bL8l1gEuu5YfH+hjAJp9G5IUkjN+I2NKRIYkN
+	 OZY2h188NjaZoGJ/pACDbFJD48fKReCr0yu04ojdOYSkiVpwNtyWoIY0HHnBA1USnS
+	 trMxXRaPV2XKA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B16039E8A4C;
-	Wed, 11 Nov 2026 00:00:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2103C39E8A4C;
+	Wed, 11 Nov 2026 00:00:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,35 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] MAINTAINERS: Add the new IPsec list and patchwork
- instance
+Subject: Re: [PATCH net v3] ipv4: fib_trie: prevent speculative out-of-bounds
+ child access
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179435520942.125436.12467186696022258506.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 00:00:09 +0000
-References: <avGC7CrPVgMrBBtq@gauss4>
-In-Reply-To: <avGC7CrPVgMrBBtq@gauss4>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+ <179435521067.125436.9895323339042656331.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 00:00:10 +0000
+References: <20261106-fib-trie-nospec-v3-1-53da6550dcf8@nvidia.com>
+In-Reply-To: <20261106-fib-trie-nospec-v3-1-53da6550dcf8@nvidia.com>
+To: Daniel Trujillo <datrujillo@nvidia.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 9 Nov 2026 09:23:08 +0100 you wrote:
-> We now have a dedicated mailing list and patchwork instance for
-> IPsec. Patches for the ipsec and ipsec-next tree should be
-> submitted to netdev@vger.kernel.org and ipsec@lists.linux.dev,
-> so that the new IPsec patchwork instance can track it.
+On Fri, 06 Nov 2026 05:02:23 +0000 you wrote:
+> From: Daniël Trujillo <datrujillo@nvidia.com>
 > 
-> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+> fib_table_lookup() checks the child index against the bounds before
+> passing it to get_child_rcu().
+> 
+> The index is derived from the lookup key, which in turn is derived from
+> flp->daddr. A userspace process can therefore influence the index by
+> triggering lookups for chosen destination IPv4 addresses.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] MAINTAINERS: Add the new IPsec list and patchwork instance
-    https://git.kernel.org/netdev/net/c/d2809ccf3cfc
+  - [net,v3] ipv4: fib_trie: prevent speculative out-of-bounds child access
+    https://git.kernel.org/netdev/net/c/fd3d73286662
 
 You are awesome, thank you!
 -- 
