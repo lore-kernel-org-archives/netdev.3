@@ -1,71 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794407488;
-	b=dLT1n/i36OX/Hvsx+zK7EMzb9MwVDg48exc/SjFoL4fISY28LoY7YvZVWYpOdie0pQDr
-	 FDq0WD6ay+dhlBYF06MOOz8XH0tUuCLbG00fk547kLyW+0XPwSrm/8vIc+jqOcosOJDzO
-	 HCJdGxfd6aejPRjgng0E9av6kUNTjlCCIVVcsB9tvhCN6jqbn+uhOmMvV9VOXV3hTOnne
-	 21/4uCuqP9lMQHFCNvXArDzy7D3KAhuxxD/FzmofnrhyL977NKGwIBNw6/zORliddlnuM
-	 m0xIM+O1FAYGNpn8+4H27m4Aq+Ud1z3YgCZFmf8ke01Vb3SIhsi0zRmMuK0ymM3ipAg==
+	t=1794407490;
+	b=DfDw9GrGaSwdPBGBI6DBOYTPeukcZ4iS6Isu0qNyScH/FP3jF93xdFMt/aVnMDtmaxht
+	 hbf7tTylrN/qEA/aAyLXm2+yXN6ZtPIi6jSDdumDNXTR9ZxC+kIxDXavRWlSZefqd4QJ0
+	 +HLCw6F9RT6yA7PfOPTJGuDeCSXTuS4FW8iUJxmfcjCQ+NN8yQJT2j0BeXIIXr+WShWYG
+	 eA40Z+ZZqVDvZO0FDBTD5LIEfTEHE+IBr1Pqe5XM5xqBz0gqet9kVgs91akMG8A8npEYF
+	 VIvoxGyJhKp3K67KtdDzrtB2sA6XBTd7ERvxYHEePvjhf6a+mJDnmbFbDkzUucHTxyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794407488;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794407490;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Subject:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=Ffya1PyP3rVgK3FKUJMeUTOknHVDLAS7rmXQhoJQICA=;
-	b=mM5iWsmBK2DHfe5/0D4dVOf3kivo++3p/CLWJk86uOLIO8I5U1+sDvrqMnFtfYnHGDmw
-	 4W0RScXuO+gRc5h5JDxeD/TnNZ12G24NE48ofZtJEXVoEKDE3lkVd2h5DklTQAPECGN2o
-	 47lwAudBUfpHgbO3HJdGJAqaV4Qc489LzmpbQ8Nli4mYs9b3ZOWxtonkwPauO024VbX0D
-	 lfg8d+jW+++LtfBiPWWy6oug3PbY3td7EfRMadzVrecVRTEQ9qniUI4ONSSkksIvhGUZF
-	 2gI6iCSnvcQAezCKO62IW6asvPzDbjXNlpEKXk/0tdYaCei6jo8fHmAEJM7gWkCAHnQ==
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
+	bh=Ns1YeimGAsOs3Z1Cmj4o6AHpOqtHj5g4xVeuZOEVRn0=;
+	b=NyCnosTVBOm1ijxem0foaaBYKaQ5zpeQRvak6wPrgJiwNQ+sVDil8EV2/WdVZJJHXg8O
+	 S50IQJnMOL0bYxgkQ3utaY3aIvhkpqlQfRh10rBufBeCpXFHDs07LGB2nWPGrDHzdwOjV
+	 TftqqcbPAWk13znfgTQt8yqr5LxeLx9aGEe24Yqh1ixEO51Z7yW7YgcCUQ9VCGO/S7Z1n
+	 oJ8Itx0sJtNfkkVJ1GFkMy1WVALIj3CSC82lwGl+1iQZaqwq9uthOt+AKn/p6MhrLkCFl
+	 X4tqcjCba8+O9ft2aVozK2A0mENCcRkWm78yqZW9+I4ZX6tUqDj2Q/y6kIhGPRyh8wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="CI/3Rm9B";
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=PSWMG4ro;
 	arc=none smtp.remote-ip=68.232.154.123
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6821606A321;
-	Wed, 11 Nov 2026 14:31:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6821606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C442A606A33C;
+	Wed, 11 Nov 2026 14:31:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C442A606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=CI/3Rm9B
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=PSWMG4ro
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794407488; x=1825943488;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=ARf6Qy9+lKPIUIodkBHNGoX/Amz6H0JQ2oSXq5Hzxl8=;
-  b=CI/3Rm9BxO2wWI+lonsgPsKzZzOEC7f+dOCB8auwCbrR8wmTABu5J/1T
-   XezkbDzyl1bNk6WCz/yQ9rZUhuUydgFkln7kmXDI3oNikP0n5aofEb8ET
-   FsFsWWauIcek89lVQSm1AEr8BQJ3mAGoUfeHqq4v36xSzT19nUyboo9FJ
-   e79b9nnQz26B4e8+8INu5Xk0lGtbKUbNe6vdgPqU7ZYXxapQalA/trGgG
-   cB6E9HC/UhD8j7RasGCLY1ezAigx9dsKLV33N8P1+IjCLAwSjTV7foclb
-   5L+0S8n7D3YaobGy+dRHJ4f1XBKLGU/4EYWw2LrWEe94B8pdFzUFjQb24
-   w==;
-X-CSE-ConnectionGUID: xPdy8HDdQ8WgP3ZgxhmbiA==
-X-CSE-MsgGUID: txKp6d8FTIWKTSByyUbJig==
+  t=1794407490; x=1825943490;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=VYNPjjF2MIMlznZcgdyhsEylSs9Yra3CK6TUB4nM0g8=;
+  b=PSWMG4ro69Ljs3+AFrW5WOwzLNRtwQ3vUVeApNQh6KdOZeQL2n4ewm1o
+   bWbdLPnoaCorD2TSLiDj/tVySTle2h3IU39z73VvDgWMK2LChwzTi25sh
+   dNZ08qtLmzxk/o79EKJsGiL+1Z5v/pmQbKhZe6VQC5FwlqFyo6Mv6XgrU
+   GTTvlgEaqz+6CEI++cWl1tiHiJyxUee0pA9RcJO59lYlwXs86gDWuKHq/
+   jh39puoQxcZJZA3//yQ81OwI7D3ySYBxNxX56ZcppvlVFvRI42rD76Ke0
+   f70ogTyeEi8efKgOWpGNF/WjG6mBzOxsBBXkTc5+lqqKkA6jRHp4gZVAW
+   A==;
+X-CSE-ConnectionGUID: uDXNW5CRRBOOiUbnJttyfQ==
+X-CSE-MsgGUID: M+S++q9YQjKlPD2dacsLXg==
 X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="66598085"
+   d="scan'208";a="66598087"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 07:31:27 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Nov 2026 07:31:29 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Wed, 11 Nov 2026 07:31:26 -0700
+ 15.1.2507.58; Wed, 11 Nov 2026 07:31:28 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 11 Nov 2026 07:31:23 -0700
+ 15.1.2507.58 via Frontend Transport; Wed, 11 Nov 2026 07:31:26 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Subject: [PATCH net-next v2 0/9] net: sparx5/lan969x: add support for
- changing the MTU
-Date: Wed, 11 Nov 2026 15:31:10 +0100
-Message-ID: <20261111-sparx5-mtu-change-v2-0-59c91357e8f6@microchip.com>
+Date: Wed, 11 Nov 2026 15:31:11 +0100
+Subject: [PATCH net-next v2 1/9] net: sparx5/lan969x: stop the FDMA
+ channels properly
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,11 +76,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC589GoC/22NwQ6CMBBEf4Xs2TVtEVBO/ofh0JZF9kBL2kowh
- H+3Eo8eJ2/mzQaRAlOEttgg0MKRvctBnQqwo3ZPQu5zBiVULW6lwDjrsFY4pRf+Cn1DxkjdDFZ
- ryLs50MDr4XyAo4SO1gRdJiPH5MP7OFvkwb9eKUX1x7tIFDioxmhTXcWlLu8T2+DtyPPZ+gm6f
- d8/e3qRBcAAAAA=
-X-Change-ID: 20260930-sparx5-mtu-change-d7ebb1a7fcaa
+Message-ID: <20261111-sparx5-mtu-change-v2-1-59c91357e8f6@microchip.com>
+References: <20261111-sparx5-mtu-change-v2-0-59c91357e8f6@microchip.com>
+In-Reply-To: <20261111-sparx5-mtu-change-v2-0-59c91357e8f6@microchip.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
@@ -94,84 +91,154 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<jensemil.schulzostergaard@microchip.com>
 X-Mailer: b4 0.14.3
 
-This series adds support for changing the MTU on Sparx5 and lan969x.
+The FDMA channels are activated by setting their bit in
+FDMA_CH_ACTIVATE, and are disabled through FDMA_CH_DISABLE, after which
+a channel finishes the DCB it is fetching before it becomes inactive,
+as shown by FDMA_CH_ACTIVE. The injection and extraction ports are
+stopped through INJ_STOP and XTR_STOP.
 
-Currently, there is no ndo_change_mtu callback, and the MAC maximum
-frame length, the FDMA buffers, the queue watermarks and the TAS guard
-band are all fixed for a 1518 byte frame. This series makes them follow
-the MTU, and sets the maximum MTU from the 14000 byte frame limit of the
-MACs. As the FDMA is shared by all ports, new buffers are allocated
-while the FDMA keeps running, and the FDMA is only stopped briefly to
-replace them. Details are in the commits.
+sparx5_fdma_stop() tries to stop the channels by clearing their bit in
+FDMA_CH_ACTIVATE, which has no effect: the register only acts on the
+bits that are set, and its bits are cleared immediately by the
+hardware. It also never stops the injection port, and waits for
+XTR_BUF_IS_EMPTY to be 0, which means that the extraction buffer is not
+empty, instead of 1, so the wait always runs until it times out.
 
-Patches 1-2 are fixes: patch 1 makes the FDMA stop sequence actually
-stop the channels, and patch 2 frees the FDMA buffers on init errors
-and deinit. They are routed to net-next rather than net, as they
-fix issues that are not regressions, and the stop sequence is only used
-on deinit until this series uses it to resize the buffers.
+Add the FDMA_CH_ACTIVE register, and make sparx5_fdma_stop() disable the
+channels and wait for them to become inactive, stop the injection port,
+and wait for the extraction buffer to be empty.
 
-Patches 3-4 prepare for the MTU change, by adding a helper for setting
-the MAC maximum frame length, and by making the FDMA init and alloc
-functions operate on the rings passed to them.
+The stop sequence is used by the FDMA deinit, and by the FDMA buffer
+resize added later in this series.
 
-Patches 5-6 size the FDMA buffers from the port MTUs, and add support
-for resizing them.
+The issues were discovered by an AI code review agent and confirmed
+against the datasheet. The fix was tested by unbinding and rebinding the
+switch driver on Sparx5 (PCB135) and lan969x (EV23X71A).
 
-Patches 7-8 scale the queue watermarks and the TAS guard band with the
-MTU.
-
-Patch 9 adds the ndo_change_mtu callback and sets the maximum MTU.
-
-Tested on Sparx5 (PCB135) and lan969x (EV23X71A), by forwarding frames
-up to the MTU and checking that frames one byte over the MTU are
-dropped, by sending jumbo frames to and from the CPU while stepping the
-MTU up and down between 1500 and 9216, and by changing the MTU
-repeatedly while flooding the CPU with frames in both directions.
-
+Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
-Changes in v2:
-- Patch 1: add a Fixes tag.
-- Patch 2: also release the lan969x TX buffers that are still in flight
-  on deinit, store the length of the mapped TX buffers so that two-step
-  PTP skbs are not touched when unmapping, and add Fixes tags.
-- Patch 6: reuse the lan969x TX buffer release from patch 2, and mention
-  in the commit message that frames still in flight are dropped.
-- Rebase on net-next, which now has commit 873363ac591a1 ("net:
-  sparx5/lan969x: release the in-flight slot of a stale TX skb"), so
-  that a two-step PTP frame dropped by a resize no longer leaks its
-  timestamp slot.
-- Link to v1: https://lore.kernel.org/r/20261105-sparx5-mtu-change-v1-0-f27bab580463@microchip.com
+ .../net/ethernet/microchip/sparx5/sparx5_fdma.c    | 46 ++++++++++++++++------
+ .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 11 ++++++
+ 2 files changed, 45 insertions(+), 12 deletions(-)
 
----
-Daniel Machon (9):
-      net: sparx5/lan969x: stop the FDMA channels properly
-      net: sparx5/lan969x: free the FDMA buffers on init errors and deinit
-      net: sparx5/lan969x: add a helper for setting the MAC max frame length
-      net: sparx5/lan969x: pass the FDMA rings to the init and alloc functions
-      net: sparx5/lan969x: size the FDMA buffers from the port MTUs
-      net: sparx5/lan969x: add support for resizing the FDMA buffers
-      net: sparx5/lan969x: scale the queue watermarks with the MTU
-      net: sparx5/lan969x: scale the TAS guard band with the MTU
-      net: sparx5/lan969x: add support for changing the MTU
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+index 15ec9b053824f..bcae0bbd5e44e 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
+@@ -20,6 +20,8 @@
+ 
+ #define FDMA_XTR_BUFFER_SIZE		2048
+ #define FDMA_WEIGHT			4
++#define SPX5_FDMA_STOP_SLEEP_US		500
++#define SPX5_FDMA_STOP_TIMEOUT_US	10000
+ 
+ static int sparx5_fdma_tx_dataptr_cb(struct fdma *fdma, int dcb, int db,
+ 				     u64 *dataptr)
+@@ -86,10 +88,6 @@ static void sparx5_fdma_rx_deactivate(struct sparx5 *sparx5, struct sparx5_rx *r
+ {
+ 	struct fdma *fdma = &rx->fdma;
+ 
+-	/* Deactivate the RX channel */
+-	spx5_rmw(0, BIT(fdma->channel_id) & FDMA_CH_ACTIVATE_CH_ACTIVATE,
+-		 sparx5, FDMA_CH_ACTIVATE);
+-
+ 	/* Disable RX channel DB interrupt */
+ 	spx5_rmw(0, BIT(fdma->channel_id) & FDMA_INTR_DB_ENA_INTR_DB_ENA,
+ 		 sparx5, FDMA_INTR_DB_ENA);
+@@ -125,9 +123,9 @@ static void sparx5_fdma_tx_activate(struct sparx5 *sparx5, struct sparx5_tx *tx)
+ 
+ static void sparx5_fdma_tx_deactivate(struct sparx5 *sparx5, struct sparx5_tx *tx)
+ {
+-	/* Disable the channel */
+-	spx5_rmw(0, BIT(tx->fdma.channel_id) & FDMA_CH_ACTIVATE_CH_ACTIVATE,
+-		 sparx5, FDMA_CH_ACTIVATE);
++	/* Stop TX fdma */
++	spx5_rmw(FDMA_PORT_CTRL_INJ_STOP_SET(1), FDMA_PORT_CTRL_INJ_STOP,
++		 sparx5, FDMA_PORT_CTRL(0));
+ }
+ 
+ void sparx5_fdma_reload(struct sparx5 *sparx5, struct fdma *fdma)
+@@ -447,6 +445,11 @@ static u32 sparx5_fdma_port_ctrl(struct sparx5 *sparx5)
+ 	return spx5_rd(sparx5, FDMA_PORT_CTRL(0));
+ }
+ 
++static u32 sparx5_fdma_ch_active(struct sparx5 *sparx5)
++{
++	return spx5_rd(sparx5, FDMA_CH_ACTIVE);
++}
++
+ int sparx5_fdma_start(struct sparx5 *sparx5)
+ {
+ 	const struct sparx5_ops *ops = sparx5->data->ops;
+@@ -468,20 +471,39 @@ int sparx5_fdma_start(struct sparx5 *sparx5)
+ 
+ int sparx5_fdma_stop(struct sparx5 *sparx5)
+ {
++	u32 channels = BIT(sparx5->rx.fdma.channel_id) |
++		       BIT(sparx5->tx.fdma.channel_id);
+ 	struct sparx5_rx *rx = &sparx5->rx;
+ 	struct sparx5_tx *tx = &sparx5->tx;
+ 	u32 val;
+ 
+ 	napi_disable(&rx->napi);
+ 
+-	/* Stop the fdma and channel interrupts */
++	/* Disable the channels, and wait for them to finish the current DCB */
++	spx5_wr(FDMA_CH_DISABLE_CH_DISABLE_SET(channels), sparx5,
++		FDMA_CH_DISABLE);
++
++	if (read_poll_timeout(sparx5_fdma_ch_active,
++			      val,
++			      !(FDMA_CH_ACTIVE_CH_ACTIVE_GET(val) & channels),
++			      SPX5_FDMA_STOP_SLEEP_US,
++			      SPX5_FDMA_STOP_TIMEOUT_US,
++			      false,
++			      sparx5))
++		dev_warn(sparx5->dev, "Failed to stop FDMA channels\n");
++
++	/* Stop the fdma and the RX channel interrupt */
+ 	sparx5_fdma_rx_deactivate(sparx5, rx);
+ 	sparx5_fdma_tx_deactivate(sparx5, tx);
+ 
+-	/* Wait for the RX channel to stop */
+-	read_poll_timeout(sparx5_fdma_port_ctrl, val,
+-			  FDMA_PORT_CTRL_XTR_BUF_IS_EMPTY_GET(val) == 0,
+-			  500, 10000, 0, sparx5);
++	/* Wait for the extraction buffer to be empty */
++	read_poll_timeout(sparx5_fdma_port_ctrl,
++			  val,
++			  FDMA_PORT_CTRL_XTR_BUF_IS_EMPTY_GET(val),
++			  SPX5_FDMA_STOP_SLEEP_US,
++			  SPX5_FDMA_STOP_TIMEOUT_US,
++			  false,
++			  sparx5);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
+index 1464fd1a1d447..df438be0ec552 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
+@@ -4713,6 +4713,17 @@ extern const struct sparx5_regs *regs;
+ 	__REG(TARGET_FDMA, 0, 1, 8, 0, 1, regs->gsize[GW_FDMA_FDMA], 148, r, 8,\
+ 	      4)
+ 
++/* FDMA:FDMA:FDMA_CH_ACTIVE */
++#define FDMA_CH_ACTIVE                                                         \
++	__REG(TARGET_FDMA, 0, 1, 8, 0, 1, regs->gsize[GW_FDMA_FDMA], 180, 0, 1,\
++	      4)
++
++#define FDMA_CH_ACTIVE_CH_ACTIVE                 GENMASK(7, 0)
++#define FDMA_CH_ACTIVE_CH_ACTIVE_SET(x)\
++	FIELD_PREP(FDMA_CH_ACTIVE_CH_ACTIVE, x)
++#define FDMA_CH_ACTIVE_CH_ACTIVE_GET(x)\
++	FIELD_GET(FDMA_CH_ACTIVE_CH_ACTIVE, x)
++
+ /* FDMA:FDMA:FDMA_CH_CFG */
+ #define FDMA_CH_CFG(r)                                                         \
+ 	__REG(TARGET_FDMA, 0, 1, 8, 0, 1, regs->gsize[GW_FDMA_FDMA], 224, r, 8,\
 
- .../ethernet/microchip/sparx5/lan969x/lan969x.c    |  10 +
- .../ethernet/microchip/sparx5/lan969x/lan969x.h    |   2 +
- .../microchip/sparx5/lan969x/lan969x_fdma.c        | 193 +++++++++++--
- .../net/ethernet/microchip/sparx5/sparx5_fdma.c    | 321 ++++++++++++++++++---
- .../net/ethernet/microchip/sparx5/sparx5_main.c    |   2 +
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |  14 +
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   |  34 +++
- .../net/ethernet/microchip/sparx5/sparx5_netdev.c  |  48 ++-
- .../net/ethernet/microchip/sparx5/sparx5_port.c    | 123 +++++---
- .../net/ethernet/microchip/sparx5/sparx5_port.h    |   5 +
- drivers/net/ethernet/microchip/sparx5/sparx5_tas.c |  43 ++-
- 11 files changed, 693 insertions(+), 102 deletions(-)
----
-base-commit: 368fbf5d82da9ebce309449c74fc0b128f7d0219
-change-id: 20260930-sparx5-mtu-change-d7ebb1a7fcaa
-
-Best regards,
 -- 
-Daniel Machon <daniel.machon@microchip.com>
+2.34.1
 
