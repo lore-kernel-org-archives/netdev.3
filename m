@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794389871;
-	b=FIgeeYIqJMUifOu8xH2RNhiy8gSiceFjKZV6BTVaCK6mO6A3VH0krjkolfj1/T8Y50gx
-	 0Oh48A/eq63MdXEGwCbH43Zqn3sywly8qK4++hATYDN03tbRPurhapAiWzXQo7zTJiBXG
-	 /+0he/L58+D9sy5V9EqeL5SUxuhzYNYh2jAfo7psD9+sItm6+tH8SV+sUmHvUQDK9F1Wr
-	 ppYfIRaC3gZPMLgbOugqVpnXoTL56PQqsj8ZQSaArp/I+nTe1kU20tw0b7Dzvu58q4IuG
-	 +VT09tGTBtDm1O7QqPuzLf1gtE++xHNRXIZk0vmLFZ8qNuvqZymv3M8INspodXs/aAQ==
+	t=1794389877;
+	b=DrB2BHgjBUTPAozqAjwneGrvlSl1Dnd0mCaMaGEY5u/DpA+VBAG5Pfec85r2YAyHsQVR
+	 EgKu3eFovEBYCrdUP2sbuFai4T2sioR4KIF/Q4C3s++9JPU00lMaMEVLsgQF7CcW2Fl58
+	 Obg6NZeMFLVl+N992WpJbAHNXA9sW1LsO/bcl1iyAF+F7eMZki4Y//tO1JyRgl+M9uYnd
+	 Mjk25VvFcjIfeHowUqyQH1Tj20Vs/fPtpnLsnS642ZR7MWU/aYHzLWCM1vVq8xTs0rePK
+	 6NOSXyZI8i45g3BQWtIGE2DpZhHaS7i+0SvSFKfQf102lOSTaljp4bYxSX48YQ+oXIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794389871;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794389877;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=ER4yqahQ5ZFgcMtry2SA5Dt9v7EW2BpAfsXeWQFD2tQ=;
-	b=T/nvvN2fzQtEyUjIdUUlROaBKa1rn1dCGwmFXmGCOEUxSjMMvw/TbRmhUlJHtBy6uEed
-	 9OJwEhaL65Wwe+2/LF8MW0ubUXPCrgmaQX0Te9BDSZFRU621ZvrKaEQlKJcO5n6RWIUJc
-	 8tdHHyl0nYwAVfApBD1iUao9X7zWyxPwjpHKt+7l+DN3whq3JGfZYJpRZw6ZuS9LSErKa
-	 c9z7E8FQTnnD8SttE1DX0vzlxXGMmtZY7sl+f3IeDANt9cZpQfBxAbnLXi4WATNqLPqdf
-	 /l6AkmSqt8aMxJFTauc7/SgNyku6rvUxa4r9wcHNHy2ottaSqdGI3Od+cJQkR6kXGLQ==
+	bh=kVFdLeWHhFiDEphbw9qjX1+kPhQJB3mSR5y2mW+n61s=;
+	b=RJm4zHfTDs8+9mHjOYXn4A6v6GPVM5O9SwkDJMUzvPcsUJANM84GA7aTgh9Z+YUzJ6gd
+	 G7N6zcOYJ//KCsR1X84O5+X/wYADQXEbZ0VZzpCj2s65N+8mGTQrBsiHKWFi+h/EswObL
+	 0Fk57NjTjeDXlRKO21NYvOANIS8Pg7uTvPT88JznysjTO+L3Qnyp5h1S/q51Cx/+wrNEp
+	 JIQsUhkwpgYCtRTg3DYkwcgz+3HuTcpCmmzQ+cPvsmOMTkjfhWP738Jm+zKm4My1Dl88u
+	 McKzxhHE1l0m3VxVPuNomlxhoWPqdwru2V7qAkfnLqGTHa3EubOdORSMTq9IY08E2iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zu4khBmu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=isZdn2xH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445D8606A33F;
-	Wed, 11 Nov 2026 09:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D01606A33B;
+	Wed, 11 Nov 2026 09:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zu4khBmu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B621F00A07;
-	Wed, 11 Nov 2026 09:37:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=isZdn2xH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403A01F00A09;
+	Wed, 11 Nov 2026 09:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389870;
-	bh=ER4yqahQ5ZFgcMtry2SA5Dt9v7EW2BpAfsXeWQFD2tQ=;
+	s=k20260515; t=1794389877;
+	bh=kVFdLeWHhFiDEphbw9qjX1+kPhQJB3mSR5y2mW+n61s=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zu4khBmuMJDijZq7jx13joav4HI5ulOVDzOq9anNIkEwcNtX15NtHh7V8HDcDcYnq
-	 BxaT8gvfLkqhhvcZOaJyyBTqYXH+ezOThjRmARxjCEbjORK8FSdcZufeu1IdK2cCDR
-	 ktl6HUih3vHT6zFByEP91/x8eYlAEkCuO5UoqSAixQLcw/t9im3TBjC5bXoA4kYXMU
-	 Af3fkaIjWUiVDkylSGfBPU+zWHVW14u+Oq5yG5JVi7tPxmd+Bg1vsZryV0xkaY0ts0
-	 0uOX86iR10urw3RQVfL2GBRnoRvz6qJymfuvPLTTs1nViM/hb2GwYcyAXFJlQp1Q7j
-	 BJsMv2vtXyLBg==
-Subject: Re: [PATCH net-next v3 08/14] selftests: dpll: add pin priority test
+	b=isZdn2xHG8FFCkFzBKP7Je2xR7XC6hO0vrf/wMAdZFOIVJPrDK2uXIyjr0g7Rj4XO
+	 sYLSkCiExrQmpgLpRG1fRX0tB9Itq/527QLDGwYjXlVxs2Zyr5UvvlZ2A3L50aHtLV
+	 7IsekMX/VmC65scyu/ND4+ug1AkiB8NPPftrdQng8t3iSlt6sWWXhGt9kbWVE8N28G
+	 enclRfAlz0KSZyKAbehONuy88xhWurBcMrB5aGt/fOeuD/ezHgoKuu/wcAe1tPDpnJ
+	 o2OCz5IVvD1WxCL9gvlTZxkvpjt6uFShcDsp8flzCzTbtnZEAp4m2mSRvYqOALox7i
+	 a/knECC+ggNxg==
+Subject:
+ Re: [PATCH net-next v3 13/14] selftests: dpll: add concurrency stress tests
 From: netdev-bot+sashiko@kernel.org
 To: poros@redhat.com
 Cc: netdev@vger.kernel.org, ivecera@redhat.com, jiri@nvidia.com,
@@ -49,10 +50,10 @@ Cc: netdev@vger.kernel.org, ivecera@redhat.com, jiri@nvidia.com,
  arkadiusz.kubalewski@intel.com, jiri@resnulli.us, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Wed, 11 Nov 2026 09:37:49 +0000
-Message-ID: <179438986953.2199510.11828052858797872845@kernel.org>
-In-Reply-To: <20261109093523.931201-9-poros@redhat.com>
-References: <20261109093523.931201-9-poros@redhat.com>
+Date: Wed, 11 Nov 2026 09:37:55 +0000
+Message-ID: <179438987581.2199510.17652993019541756821@kernel.org>
+In-Reply-To: <20261109093523.931201-14-poros@redhat.com>
+References: <20261109093523.931201-14-poros@redhat.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -66,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,190 +78,194 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] pick_tune_pin() says PIN_TUNE_ID "must not be the reference
-  the device is locked to" and that tests skip "rather than…
-- [Medium] The candidate loop in test_pin_priority_get_set() is built for
-  the case the commit message describes: "a large current value may mark…
-- [Low] The comment in test_pin_priority_get_set()
-  (tools/testing/selftests/drivers/dpll/dpll_features.sh) and the commit…
-- [Low] This patch adds a layout comment above
-  dpllsim_setup_standard_device() in…
+- [Medium] In tools/testing/selftests/drivers/dpll/dpll_stress.sh,
+  cleanup() can send SIGTERM and then SIGKILL to PIDs that bash has…
+- [Low] test_max_devices() in
+  tools/testing/selftests/drivers/dpll/dpll_stress.sh reports itself as…
+- [Low] cleanup() in tools/testing/selftests/drivers/dpll/dpll_stress.sh
+  signals only the PID of each worker subshell, never the external…
 
 --
 
-selftests: dpll: add pin priority test
+selftests: dpll: add concurrency stress tests
 
-This adds test_pin_priority_get_set() to dpll_features.sh. The test sets a
-new priority on a spare input pin, reads it back and restores the original
-value. dpllsim_add_pin() gains an optional priority argument, and the
-standard and stress simulator devices now set priorities on their input
-pins.
+This adds two tests to dpll_stress.sh. One registers and unregisters
+dpllsim devices from several background workers at once. The other
+keeps several devices with many pins live and checks that each one is
+visible on netlink.
 
-> diff --git a/tools/testing/selftests/drivers/dpll/dpll_features.sh b/tools/testing/selftests/drivers/dpll/dpll_features.sh
-> index 874007411bc5e..b4b1eff322a21 100755
-> --- a/tools/testing/selftests/drivers/dpll/dpll_features.sh
-> +++ b/tools/testing/selftests/drivers/dpll/dpll_features.sh
+The workers clean up from their own exit trap, and cleanup() stops
+recorded workers and shell jobs before it removes their devices by name.
+
+> diff --git a/tools/testing/selftests/drivers/dpll/dpll_stress.sh b/tools/testing/selftests/drivers/dpll/dpll_stress.sh
+> index 3806fda2e2dfe..47b8f4bf55b26 100755
+> --- a/tools/testing/selftests/drivers/dpll/dpll_stress.sh
+> +++ b/tools/testing/selftests/drivers/dpll/dpll_stress.sh
 
 [ ... ]
 
-> +	before=$(dpll_pin_get_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID")
-> +	if [ -z "$before" ]; then
-> +		dpll_log_test_skip_or_fail "DPLL pin priority set/get" \
-> +		    "prio not reported"
-> +		return
-> +	fi
-> +	defer dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" "$before"
-> +
-> +	# The accepted range is not advertised, so try one below the current
-> +	# value and then small values, a refusal of all of them is a skip on
-> +	# a device the user provided, the simulator accepts every priority.
+> @@ -39,18 +50,103 @@ untrack_device()
 
-[Severity: Low]
-Is "the simulator accepts every priority" accurate? The commit message makes
-the same claim. However, dpllsim_pin_prio_set() rejects anything above
-DPLLSIM_PIN_PRIO_MAX, which is 255 in dpllsim.h:
+[ ... ]
 
-drivers/dpll/dpllsim/dpll.c:dpllsim_pin_prio_set() {
-    ...
-	if (prio > DPLLSIM_PIN_PRIO_MAX) {
-		NL_SET_ERR_MSG_FMT(extack, "Pin priority must be in range 0-%u",
-				   DPLLSIM_PIN_PRIO_MAX);
-		return -EINVAL;
-	}
-    ...
-}
+>  cleanup()
+>  {
+> -	local dev
+> +	local pid dev base
+> +	local pids=() shell_jobs=()
 
-The configfs store dpllsim_pin_prio_store() applies the same limit.
+[ ... ]
 
-The test still works today. Since before is capped at 255, the candidates
-(before - 1, 1 and 7) are always in range.
-
-This comment is the reason a refusal on the created device is a failure and
-not a skip. Could it say "every priority in 0-255" or "every value tried
-here"? The comment is still the same at the end of the series.
-
-> +	target=""
-> +	for candidate in $((before - 1)) 1 7; do
-> +		[ "$candidate" -ge 0 ] && [ "$candidate" != "$before" ] ||
-> +			continue
-> +		if dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" \
-> +				     "$candidate"; then
+> +	mapfile -t shell_jobs < <(jobs -p)
+> +	mapfile -t pids < <(printf '%s\n' "${BACKGROUND_PIDS[@]}" \
+> +				   "${shell_jobs[@]}" | grep . | sort -u)
+> +	for pid in "${pids[@]}"; do
+> +		kill "$pid" 2>/dev/null
+> +	done
+> +	# Give the workers a few seconds to run their exit traps, then
+> +	# force the survivors and give those a few seconds to die. The
+> +	# kernel cannot recycle the pid of a child until it is reaped,
+> +	# which the wait below does, so the forced kill cannot hit a
+> +	# process that reused one. A worker stuck in the kernel does not
+> +	# die of the forced kill before whatever it waits for returns, so
+> +	# only the workers that are gone are waited for, which reaps them,
+> +	# and the teardown goes on without the rest. The removal of what
+> +	# such a worker left behind can then fail or race with it, which
+> +	# is logged like any other failed removal.
+> +	pids_gone "${pids[@]}"
+> +	for pid in "${pids[@]}"; do
+> +		kill -KILL "$pid" 2>/dev/null
+> +	done
 
 [Severity: Medium]
-Can this make a user-provided device switch its reference?
+Does bash really leave the pid unreaped until the wait below? Bash reaps
+exited background children itself. It does this from its SIGCHLD handler
+and from waitpid(-1) whenever it waits for a foreground command. It keeps
+their status in its bgpids table for a later wait.
 
-The comment above pick_tune_pin() says PIN_TUNE_ID "must not be the
-reference the device is locked to". It also says tests skip "rather than
-reconfiguring the reference". But pick_tune_pin() accepts selectable pins:
+pids_gone() runs seq, $(sed ...) and sleep 0.1 on every pass. A worker
+that exits after the SIGTERM can therefore be reaped, and its pid freed,
+before this loop sends SIGKILL to every entry of pids[]. The loop does
+not check pid_running() first.
 
-	case "$state" in
-	disconnected|selectable)
-		;;
+test_concurrent_workers() makes the window wider:
 
-In automatic mode, a selectable input takes part in reference selection by
-priority. This loop gives that pin a higher priority (a smaller value). It
-never compares the new value with the priority of the current reference.
+	for pid in "${BACKGROUND_PIDS[@]}"; do
+		wait "$pid" || failed=1
+	done
+	BACKGROUND_PIDS=()
 
-On a device set through DPLL_DEV_ID or DPLL_DRIVER, the new priority reaches
-hardware straight away. zl3073x_dpll_input_pin_prio_set() writes REF_PRIO
-through zl3073x_chan_state_set() when zl3073x_chan_ref_is_selectable()
-holds. ice_dpll_hw_input_prio_set() sends it to the CGU firmware through
-ice_aq_set_cgu_ref_prio().
+Workers that finish early are reaped right away, but they stay in
+BACKGROUND_PIDS until the last wait returns. Suppose a harness timeout or
+Ctrl-C arrives while the parent is still waiting on a slower worker.
+cleanup() then sends SIGTERM and later SIGKILL, as root, to those stale
+pids.
 
-Take a device in automatic, revertive mode with a valid signal on the spare
-input. If before - 1 ties the locked reference's priority, or if 1 or 7
-beats it, could the DPLL switch to the spare pin? Restoring the priority
-could then switch it back. Each switch can disturb outputs feeding SyncE or
-PTP.
+If one of those pids was handed out again after a pid-space wrap, could
+this kill an unrelated process?
 
-Would it work to pick a target that does not outrank the connected
-reference? Other options are to change the priority only on disconnected
-pins, or to skip in automatic mode on user-provided devices.
+pid_running() relies on kill -0 and /proc/<pid>/stat, so a reused pid
+also looks like a live worker. In that case pids_gone() would spin for
+the full five seconds and log a false "worker N did not exit".
 
-> +			target=$candidate
-> +			break
+> +	pids_gone "${pids[@]}"
+> +	for pid in "${pids[@]}"; do
+> +		if pid_running "$pid"; then
+> +			log_info "worker $pid did not exit, giving up"
+> +		else
+> +			wait "$pid" 2>/dev/null
 > +		fi
-> +		reason=${DPLL_LAST_ERR%%$'\n'*}
+> +	done
+> +
+>  	defer_scopes_cleanup
+>  	for dev in "${CREATED_DEVICES[@]}"; do
+>  		dpllsim_delete_device "$dev" ||
+>  			log_info "cannot delete device $dev"
+>  	done
+> +	for base in "${WORKER_BASES[@]}"; do
+> +		delete_worker_devices "$base"
+> +	done
+
+[Severity: Low]
+Does the forced kill above reach the external helpers that a worker runs?
+In dpll_lib.sh, dpllsim_create_device() and dpllsim_add_pin() create the
+configfs entries with an external mkdir. dpllsim_delete_device() removes
+them with an external rmdir.
+
+The commit message describes a worker "stuck in the kernel". Take the
+case where a worker's mkdir blocks in configfs. Bash holds back the
+worker's TERM trap until the foreground child returns. kill -KILL then
+kills only the subshell, and the mkdir child keeps running as an orphan.
+
+The second pids_gone() and pid_running() check only the subshell pid.
+The worker therefore counts as gone and is reaped, and "worker $pid did
+not exit, giving up" is never logged.
+
+cleanup() then runs delete_worker_devices() and dpll_lib_cleanup() while
+the orphan is still busy. If its mkdir completes afterwards, can a
+dpllsim device or pin directory appear after the last removal pass and
+be leaked?
+
+The in-flight mkdir would also keep the configfs mount busy, so the
+unmount in dpll_lib_cleanup() may fail.
+
+This seems to contradict this part of the commit message:
+
+  "whatever a killed worker left behind can be removed by name, at the
+  end of the test and from the cleanup handler"
+
+Would it help to start each worker in its own process group and signal
+the whole group, or to track the helper processes?
+
+[ ... ]
+
+> @@ -194,6 +367,50 @@ test_pin_state_flooding()
+>  	log_test "DPLL pin state flooding"
+>  }
+>  
+> +test_max_devices()
+> +{
+
+[ ... ]
+
+> +	# Every created device must be visible on netlink.
+> +	visible=0
+> +	for clock_id in "${clock_ids[@]}"; do
+> +		if dpll_device_wait_by_clock_id "$clock_id" dpllsim \
+> +		   > /dev/null; then
+> +			visible=$((visible + 1))
+> +		fi
 > +	done
 
 [ ... ]
 
-> +	dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" "$before"
-> +	check_err $? "cannot restore pin priority"
-
-[Severity: Medium]
-What happens here in the case the candidate loop is built for? The commit
-message says:
-
-  since a large current value may mark an unused pin outside the settable
-  range, as the ice driver does with 255.
-
-In that case before itself cannot be set. Suppose before - 1 (254) is
-refused and then 1 or 7 is accepted. The pin's hardware priority has
-changed, and this restore to before would be refused for the same reason.
-
-The test would then report a failure, not a skip, on a user-provided
-device. The deferred restore sends the same value, so it also fails, and
-without any message. The unused input stays at priority 1 or 7 on the
-user's hardware, and in automatic mode it could then be picked as a
-reference.
-
-ice_dpll_input_prio_set() and ice_dpll_hw_input_prio_set() do no range
-check of their own. They pass (u8)prio to firmware, so only firmware
-decides whether 255 can be written back.
-
-test_pin_state_transitions() treats a refused restore as a skip when RET is
-0, but this test does not. Should it first check that before can be set,
-for example by writing it back once, before trying a different value? The
-code is still the same at the end of the series.
-
-> +	after=$(dpll_pin_get_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID")
-> +	if [ "$after" != "$before" ]; then
-> +		check_err 1 "priority not restored, got '$after'"
-> +	fi
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/drivers/dpll/dpll_lib.sh b/tools/testing/selftests/drivers/dpll/dpll_lib.sh
-> index 63c70a4aaab6e..6fe707c2609c5 100644
-> --- a/tools/testing/selftests/drivers/dpll/dpll_lib.sh
-> +++ b/tools/testing/selftests/drivers/dpll/dpll_lib.sh
-
-[ ... ]
-
-> @@ -559,8 +579,8 @@ dpllsim_alloc_clock_id()
->  # Create a device with the standard 3-pin layout, deploy it and resolve
->  # the netlink device id. Sets DPLLSIM_CREATED_NAME, DPLLSIM_CLOCK_ID and
->  # DPLLSIM_DEV_ID.
-> -#   gnss0: GNSS, 1 Hz, input
-> -#   ext0: EXT, 10 MHz, input
-> +#   gnss0: GNSS, 1 Hz, input, prio 0 (active reference)
+> +	log_test "DPLL maximum devices ($STRESS_DEVICES devices)"
+> +}
 
 [Severity: Low]
-Is "(active reference)" correct for the simulator? It does not seem to ever
-select or lock to a reference.
+This isn't a bug, but is "maximum devices" the right name for this test?
+dpllsim has no limit on the number of devices. Its only per-device limit
+is DPLLSIM_MAX_PINS:
 
-dpllsim_pin_reset() starts every pin disconnected:
+drivers/dpll/dpllsim/core.c:dpllsim_pins_make_item() {
+    ...
+	if (list_count_nodes(&sim->pin_list) >= DPLLSIM_MAX_PINS)
+		return ERR_PTR(-ENOSPC);
+    ...
+}
 
-	pin->ops = dpllsim_pin_select_ops(pin);
-	pin->state = DPLL_PIN_STATE_DISCONNECTED;
+By default the test creates 5 devices with 10 pins each. It never
+reaches that limit, and it never checks that a pin beyond the limit is
+rejected. The comment above STRESS_PINS_PER_DEVICE mentions the 128 pin
+limit, but the default is well below it.
 
-dpllsim_pin_prio_set() only stores sim_pin->prio, and nothing else reads
-it. sim->lock_status is set once to DPLL_LOCK_STATUS_UNLOCKED in core.c and
-never changes.
+The visibility check also only looks up the devices with
+dpll_device_wait_by_clock_id(). It does not check their pins, so the
+test would still pass if the pins of these many-pin devices did not
+appear on netlink.
 
-The device is always in automatic mode. dpllsim_pin_state_set() accepts
-only disconnected and selectable there, so no pin is ever connected.
-
-So gnss0 never becomes the active reference, and its prio 0 does not affect
-which pin is used. That includes the tie test_pin_priority_get_set() can
-create by setting ext0 to 0. The comment is still the same at the end of
-the series, and no later patch adds selection by priority.
-
-> +#   ext0: EXT, 10 MHz, input, prio 1
->  #   out0: EXT, 10 MHz, output
-
-[ ... ]
+Could the test be renamed, or extended to cover the pin limit and to
+check that the pins are visible?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109093523.931201-1-poros%40redhat.com
