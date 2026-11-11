@@ -1,66 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794381808;
-	b=AUr71el0CyqcXgksptJW0nJwwr7jYKg1wr5jaKBYpFiRB2LPueTuq/gYkNVL5JZTtFCk
-	 bU7luvPdCqNiPGcMV+SXTxu3gJIJK+aAZVTrrw+synM1JvdftC7jaP4QZh+49hmX9Z1hw
-	 jz2p8pkXQ7Ti0x0JCvykaju73aQi9WfYxS27HKpMgav+8FtwxYVHJvwr1brow4hxBBASh
-	 ARL3/lOI2KI4jH7RBFv+c8yCcEe9LL5wbsiF6xsOiKn/dyjh3ZYV9ptJUf6JeYjFmwQOn
-	 EMrzljlccHVyAHywBxebX8anSUOCL6Cx9r+J6gyjm0uIP3OzWiLptrlBjB9wJYdJCCw==
+	t=1794382116;
+	b=Hf4x3h3BEJvHAJ3xbKi1WBFw/r4c9qZH0+bfqaiLDvYrlZEYSmrLDZ69KHuAo55uY087
+	 elz0//PunLcstJFiDIK2Td+SujcwghMrY6h2PLA5qHIajGMdBxXswJcSMkJvSYvF1nzyR
+	 iuuri7rfXWd3wvJJ/a0cZqqRQMRXwbSy/05j9jBU+ksd4VfgHq5ExOvkDnb2f/ruQ34w0
+	 mPYBScww2L+6M4L1UffCBa6Rj1nHh+2mrx4HkQXBruXA3e4VN514mU8EbbgafJ5XYHeAT
+	 KKP5UpiCwZ5xJrxGc8XYcbUSWi6OXFbWgE+ejpX2H7RZqvFajfcjUc0ctsyZ1f4TdaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794381808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794382116;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=2dgUqUBanU/4JTuiSHsZiW6n7JGHT/pJg52L1d7/euY=;
-	b=uaR4moUsfpi1Z1PE0Bd02w/O5csinsiEWm/tGtgbKd3Be1KmxGxTzdOfdTRPmuQ69Ohd
-	 ECTYNUeXIP0rlj21+drwxKFsCT44J5ddcdsrlAXu7GAJ93kg6O+bGog54+/0hP2cZAm0m
-	 2LpNEoDuGq+UTxgWiGCl/PN4FLBgHlxii2mA+M/DOqTWbDaiZYa9PhenPpUeUtkxB0uQT
-	 eEedg3x0hsKWMmaB6IGS2x0fqBX0eFLeX9XdJ5d2u8R+JmkWgl+ibBcus29KzVgi7Xr2q
-	 RFpJtUWTVcAscEUvaFSQnj1hyzIJp+ih7EWCNxDXD+P8Uu7541LsWAmaACedbAkjbbg==
+	bh=fvA4caXYy5BSpxvCaqEJeTCv8onAojVykrQnaCc9pCY=;
+	b=BlZABpF2XLMw62460CSGKcuDWiBAOyv3mot4fInmoBeKTVHf4kb8H1ysuB/OAF3YY+Pz
+	 5D6xe/yC1AOzUdcLHidXmu8vi8IXkyOEcO+TJE8xMJj3hnvqwOUbyxS6mmqZKDF7TBP3x
+	 RUmEa99tjiPhp9uqroQrLekB7j0VojksEHgpebH+ZByBHVfsQ6t4T59kd/ybLnnoyuRY7
+	 VAcAeb10QO8la2ufRl/oic+P8a3W/IFeNR18UoiSlTYhjgsC/qa8VahY8anqV3GwXTyuP
+	 4D2guKM2EgXeNN0RKlZ49dYiI5Gc3vueqeOxDqHwjcXzyYR34wAGamRXxwiVNv30/Og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=126.com;
 	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=AP8eW28W;
-	arc=none smtp.remote-ip=117.135.210.7
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eRjJGj5E;
+	arc=none smtp.remote-ip=117.135.210.6
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15BE606A321;
-	Wed, 11 Nov 2026 07:23:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B15BE606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC32606A321;
+	Wed, 11 Nov 2026 07:28:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BC32606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=AP8eW28W
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eRjJGj5E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=2d
-	gUqUBanU/4JTuiSHsZiW6n7JGHT/pJg52L1d7/euY=; b=AP8eW28Wdo5OtBawzM
-	qJUxk54CldTBDPvSOwd7QZUkO4T0jPGiqrX5REPmVzCznzP6rjYwvg6JRsNWBlPf
-	/YaPA+gZ8XlCyx6mPiLqHdYHd0Fm/6p/CZWZiIEy++0l7vCH5rOfSFSMK0HLgely
-	7Vq63mEdSbVtu5CCwg0ZFFQv8=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fv
+	A4caXYy5BSpxvCaqEJeTCv8onAojVykrQnaCc9pCY=; b=eRjJGj5EJf9WJSHZLI
+	TMy626n8dvUKL9EFq/cet51zQnlQNo9AogKL0aHCFaTff39jrcwfgmR7bBt6Q0dn
+	J9L9CZHx2/tCLk6FaK67rnWrEZbb4jodk6Qpp//H2wUnhiYdKQLOFt35Xrka3fvm
+	/0sn40CE5nY/UbEp6ErOasGlA=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3HzSNF_RqPOadDA--.16164S2;
-	Wed, 11 Nov 2026 15:21:51 +0800 (CST)
+	by gzsmtp5 (Coremail) with SMTP id QCkvCgD3f__eGPRqKBYdDQ--.2187S2;
+	Wed, 11 Nov 2026 15:27:26 +0800 (CST)
 From: Linkui Xiao <xiaolinkui@126.com>
-To: maxime.chevallier@bootlin.com,
-	andrew@lunn.ch,
+To: andrew@lunn.ch,
 	kuba@kernel.org,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	sdf@fomichev.me,
-	nb@tipi-net.de,
-	2022090917019@std.uestc.edu.cn,
-	devnexen@gmail.com
+	jacob.e.keller@intel.com,
+	bjorn@kernel.org,
+	alexanderduyck@fb.com
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@126.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: ethtool: phy: fix NULL link_topo dereference in phy_prepare_data()
-Date: Wed, 11 Nov 2026 15:21:46 +0800
-Message-Id: <20261111072146.3293821-1-xiaolinkui@126.com>
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net-next] net: ethtool: request rtnl_lock for ETHTOOL_MSG_PORT_GET
+Date: Wed, 11 Nov 2026 15:27:24 +0800
+Message-Id: <20261111072724.3295527-1-xiaolinkui@126.com>
 X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,67 +70,79 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3HzSNF_RqPOadDA--.16164S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF45urWUGF1UJF47CF1rWFg_yoW8uFW7p3
-	yrKFyFkr9a9wnavw1UXw15CryUZFn7WrW5KFyFkanxZwn8Ww4kGa13Kr4aqF13A395Ca4Y
-	qrsxZFyDXFnrZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pisa97UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlA-Al2r0F4-MfwAA35
+X-CM-TRANSID:QCkvCgD3f__eGPRqKBYdDQ--.2187S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1rKF4fGF4rGFy7tFykGrg_yoW5GF18p3
+	srAFyUCrWUuwn2qFnrXa1rWFyrAanxWw15Ar18tFy3Wr15Xr4xAFW7K3y3W3W5ZrsaqF95
+	ArZ8XrZ5uanFyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYiiDUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlB4V62r0GN7g3gAA3S
 
-phy_prepare_data() picks up the link topology of the target netdev and
-dereferences it without any NULL check:
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-	struct phy_link_topology *topo = reply_data->dev->link_topo;
-	...
-	pdn = xa_load(&topo->phys, phydev->phyindex);
+port_prepare_data() resolves the requested port through
+phy_link_topo_get_port(), which requires rtnl_lock to be held before it
+reads topo->ports:
 
-The phydev it looks up comes from ethnl_req_get_phydev(), which returns
-dev->phydev as-is when the request carries no phy-index, without ever
-consulting the topology. A driver that assigns netdev->phydev directly
-instead of going through phy_attach_direct() therefore ends up with a
-non-NULL phydev and a NULL link_topo, and ETHTOOL_MSG_PHY_GET on such a
-device dereferences NULL. The fixed-link path of the IBM EMAC driver does
-exactly that.
+	/* ports in the topo are RTNL protected, but may be accessed under
+	 * netdev_lock for ops-locked devices. For now keep them under rtnl
+	 * protection, as no ops-locked devices have phy_port capabilities
+	 * yet.
+	 */
+	ASSERT_RTNL();
 
-This is a regression from the conversion of PHY_GET to the generic phy
-dump infrastructure: the code it replaced bailed out of
-ethnl_phy_parse_request() with "if (!topo) return 0;" before touching
-the xarray, and that guard was dropped by the rewrite.
+The dump side honours this, port_dump_one_dev() takes rtnl_lock()
+itself. The doit side does not. ETHTOOL_MSG_PORT_GET is served by
+ethnl_default_doit(), which keeps rtnl_lock only when the device is not
+ops-locked, or when ethtool_nl_msg_needs_rtnl() asks for it:
 
-Restore the check and answer -EOPNOTSUPP, which is what
-phy_prepare_data() already returns when the phydev cannot be found in
-the topology.
+	need_rtnl = !netdev_need_ops_lock(req_info->dev) ||
+		    ethtool_nl_msg_needs_rtnl(req_info->dev, cmd);
 
-Reaching the crash needs an IBM EMAC device with a fixed-link node, which
-was not available here, so the fix is verified by compilation and code
-inspection only.
+ethtool_nl_msg_needs_rtnl() has no case for ETHTOOL_MSG_PORT_GET and
+falls through to "return false", so on a device that opts into the
+instance lock (request_ops_lock, queue_mgmt_ops or net_shaper_ops)
+PORT_GET runs with netdev_lock only. Such a device that does have a
+link topology trips the ASSERT_RTNL() warning and reads topo->ports
+without the protection the xarray is documented to need.
+
+Add the missing case. Like TSCONFIG_GET/SET, PORT_GET has no
+corresponding ethtool ioctl, so it is Netlink-only and always needs
+rtnl_lock.
+
+The bug is latent as no device opts into the instance lock while also
+carrying a link topology, so it cannot be observed yet and the change is
+compile-tested only.
 
 This was found during an audit of net/ethtool/ performed with the help
 of an AI coding assistant (Codex), which also proposed the analysis and
-the fix. I verified the Fixes commit and both the doit and the dump call
-paths.
+the fix. I verified the Fixes commit and the callers of
+ethtool_nl_msg_needs_rtnl().
 
-Fixes: 9dd2ad5e92b9 ("net: ethtool: phy: Convert the PHY_GET command to generic phy dump")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@126.com>
+Fixes: 27859d18bf41 ("net: ethtool: Introduce ethtool command to list ports")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 ---
- net/ethtool/phy.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ethtool/common.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ethtool/phy.c b/net/ethtool/phy.c
-index 018b0412be86..60a617d9a332 100644
---- a/net/ethtool/phy.c
-+++ b/net/ethtool/phy.c
-@@ -83,6 +83,9 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
- 	if (IS_ERR_OR_NULL(phydev))
- 		return -EOPNOTSUPP;
- 
-+	if (!topo)
-+		return -EOPNOTSUPP;
-+
- 	pdn = xa_load(&topo->phys, phydev->phyindex);
- 	if (!pdn)
- 		return -EOPNOTSUPP;
+diff --git a/net/ethtool/common.h b/net/ethtool/common.h
+index b062e99e89db..372304722ecc 100644
+--- a/net/ethtool/common.h
++++ b/net/ethtool/common.h
+@@ -124,6 +124,14 @@ ethtool_nl_msg_needs_rtnl(const struct net_device *dev, u8 cmd)
+ 		 * these cases are Netlink-only.
+ 		 */
+ 		return true;
++	case ETHTOOL_MSG_PORT_GET:
++		/*
++		 * port_prepare_data() resolves the port through
++		 * phy_link_topo_get_port(), which asserts rtnl_lock before
++		 * reading topo->ports. There is no corresponding ethtool
++		 * ioctl, so this case is Netlink-only.
++		 */
++		return true;
+ 	}
+ 	return false;
+ }
 -- 
 2.25.1
 
