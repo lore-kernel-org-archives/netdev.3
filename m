@@ -1,54 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436159;
-	b=ZvfLevZ6r2W8fvnSsMfovBlQGsF7dRAogN+egNRBqC2bmz8RR6T9zdO4YobBv5XRJqYT
-	 WsXsrcWf/aivwnvMjzkz8tHMTT6hPzIZ/JnFhVaL0CnxtvwmbnxRjg4g2KljYSKz5bcIb
-	 EPeGRhU6/mlxPG49IXEbnUffiMFWDoA6minpgZ3C0Oc/whmnhd7ZDGlzPrhQLIxFAEwk/
-	 vv3LA5viBFb+kJ9/+mH0deISX9F1uAzoIGn49k1t+iSaFcpHZe6qtaKX/Z1kgOEcajOnh
-	 g7IhAFqMRkMIJZXiw0S65l20fg1fA/AzRLfb2qshWqCK9QtSLp7NP4nfepsaq081hSw==
+	t=1794436655;
+	b=jJBJBdzhsru/KBA1QhGjXAbu0FZcFje2h4LdxZiR5owCQDVp4XmuXzu0KGkzKKg8znRY
+	 6jdDol3e+f14OlMVYjAxgM4TL4cXKaUt8wh2bJKqLuokuqKRHSd+pFFVsB2jF2xEKIOOW
+	 truPCYE+4RNGyZgSN/bRlMleXjnAUeKNvzG56o8N2MTRJAzqhXrSD/YqXbXc6c63FwwqL
+	 I09hiWaI2yt69zyLH5Rnzuc91BcjlvKPKUVhQT6RrKAdyF0SS3PedDCz2K+uyAYY1EUL2
+	 1G49sdD5JlAX/hVs5Fjj5ZKN2rNtCK5xOHF3mo1Y7WT87SnxYNvoZPmgIV3eOIoTAXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436159;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=swr3Ra0uYYHhVDT8SV7YWQm5snOjPZHE4+u1z3uEAP4=;
-	b=DseKC7N7Agw3+eYv7Giouy97e2DVW5MhAx4ejqghL3PmfurbgXHcnTsXSn88wy87ZCeM
-	 sm3z/2rWjz7bC7fap0AFmSzLcUvXlAShqa+36jiw8iQdpSYmYkPB0E4/105PXuvSqXN4E
-	 QUF4m677d+sqXHJx2C8BOZQKNget+sX8+4NVTKnIU3fytq8Pv3hZpnh/7PPERb2sBEhcJ
-	 2NODYais6UfkzZeQAd8Uo63qwjbWKmP3eJcGDyj/eDttKQ7hKP8YteHOXTUYPcksKDQbo
-	 aMwuy3f0V4dhEH74v4/2vCfZFowwObZ+5vRXz3pnoMIahnlepqjgJsD0hfG+QIqe3fQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794436655;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=A3RtMOJFfy+vAv7ZRp5Bx//dsvOVbj5s6n6hxHY1wW0=;
+	b=TdTdJ1XK6+TO6t8Ka61gyFsAtMKKOY7q2qXyfeZQ+hEfkAI8podNbo4r7Ei42Y7Yw20t
+	 r9Ck11h9jfhJuTyuC7AJ+tTqjgTImELqdocIHdNIUZEYBT/KjbQtIxyj3udoEqhuSk4Vm
+	 h2pURTyBf9CYBDnyhIJD8ORzuPdeK+xrAs3fEtUlnWV+AHXTuZWIzUYpz8B6kSgt16ybk
+	 x9W+G2cLYawCl+v3e5Aolpp5Ir1JI8IyxNj7lpnHDfu+A2H/6ZlP1I+EDT2R1Ck0uqFva
+	 jE9IdAlTU1nQsV2yH3AjV38JrruqykWBEixwsiEvMoDnH20DkPHt0mhvbjVLeHQRf0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FHFW1jQ8;
-	arc=none smtp.remote-ip=95.215.58.174
-Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZqxvBGV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249FD606A33B
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:29:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 249FD606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE7606A8AB;
+	Wed, 11 Nov 2026 22:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FHFW1jQ8
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=WNeWuH485eW6BnGDu5zKsDsVjpVFn1cXQI2ek2Qhepw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794436154; v=1; x=1795040954;
- b=FHFW1jQ8gZeq62AyqIat/bVk9+oZJPH+mKkgGwHYatFqvqUcb0jqme3Ckd8RXghvxmEFuymv
- EXnKFgmZpzeJhVQnrdCTsXC8aJbNJvY38EQA7hJs/li1XdYxFrbyl6lBTQG5l25sJHs0Bzfkdgu
- +aqETu4zmziTnVUrlolNq95Y=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a971d7137a0d0f9f;
-	Wed, 11 Nov 2026 22:29:14 +0000
-X-Mizu-Trace-ID: a971d7137a0d0f9f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9ccfc1f1-1214-4374-bac4-f4d91103d149@linux.dev>
-Date: Wed, 11 Nov 2026 14:29:11 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZqxvBGV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDCB1F00A06;
+	Wed, 11 Nov 2026 22:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794436655;
+	bh=A3RtMOJFfy+vAv7ZRp5Bx//dsvOVbj5s6n6hxHY1wW0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TZqxvBGV2iuroyyAZYdFql8VA1YInqb8JEashR9rUwvhYxQ8enAIvCqHEARMicfu3
+	 MF/yLB6xJhAUevs6+9mOWRLS89EHyWGY7PAMPfvZxpkQH2vhh+Q5y751xY2pueBkuX
+	 jcmhL2/qFzPynDitdWnTxCaenLFdcHr3fwiiW7hR00xYYihxjRqWDuQ8vta9MDZZZe
+	 8uMQ+UQlE4xqFaXtlVjaWTRO+yMJzvBRaZJIC0tDmzqMM5AhNEJ19OjY5AsDvORnyx
+	 qIfdx776I32l+0q77NJV2xEEAVIoXFG2W68INXqbyzgbMo2Q8WQQDdN7bcKc0eNg5d
+	 NhcgQSRnBP88g==
+Date: Wed, 11 Nov 2026 14:37:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Justin Iurman <justin.iurman@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Hangbin Liu
+ <liuhangbin@kylinos.cn>, Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: Re: [PATCH net v3] ipv6: ioam6: do not modify shared tuninfo
+ eh.nexthdr
+Message-ID: <20261111143734.2c57061a@kernel.org>
+In-Reply-To: <20261109-ipv6_ioam_lock-v3-1-a86195859d1e@kylinos.cn>
+References: <20261109-ipv6_ioam_lock-v3-1-a86195859d1e@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,84 +62,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] bpf: tcp: bpf_tcp_ops_set_rcvlowat() missing from BTF with
- clang KCSAN
-To: Breno Leitao <leitao@debian.org>, kuniyu@google.com,
- netdev@vger.kernel.org, llvm@lists.linux.dev
-Cc: ast@kernel.org, bpf@vger.kernel.org, kuba@kernel.org, tj@kernel.org
-References: <au27Y9m78_3EH2v1@gmail.com>
-Content-Language: en-GB
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <au27Y9m78_3EH2v1@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 09 Nov 2026 10:52:25 +0800 Hangbin Liu wrote:
+> +	((struct ipv6_opt_hdr *)skb_transport_header(skb))->nexthdr = hdr->nexthdr;
 
-
-On 11/6/26 3:38 AM, Breno Leitao wrote:
-> My arm64 KCSAN builds of linux-next fail since next-20261015, because
-> bpf_tcp_ops_set_rcvlowat() is missing from the vmlinux BTF:
->
->    WARN: resolve_btfids: no BTF func for kfunc bpf_tcp_ops_set_rcvlowat in bpf_tcp_ops_set_rcvlowat_kfunc_set
->    WARN: resolve_btfids: unresolved symbol bpf_tcp_ops_set_rcvlowat
->    Failed to generate BTF for vmlinux
->    Try to disable CONFIG_DEBUG_INFO_BTF
->    make[4]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
->
-> This is clang 22.1.3 and pahole 1.31 (current pahole master behaves the
-> same), with CONFIG_KCSAN=y, CONFIG_DEBUG_INFO_BTF=y and CONFIG_WERROR=y.
-> v7.4-rc1 is affected as well. With pahole 1.31, the same config without
-> KCSAN builds fine.
->
-> The kfunc came with 5f549c1e49f3 ("bpf: tcp: Add kfunc to adjust
-> sk->sk_rcvlowat."), and 201a454df948 ("resolve_btfids: Fix the
-> --fatal_warnings exit status") made the missing BTF fatal with
-> CONFIG_WERROR. Without CONFIG_WERROR the kernel builds, but bpf_tcp_ops
-> is never registered:
->
->    initcall __bpf_tcp_ops_init+0x0/0x70 returned -22 after 302 usecs
->
-> This seems similar to pahole behaviour sched_ext hit with a bool
-> argument, discussed in [2] and worked around in f2f095c87603
-> ("sched_ext: Work around pahole 1.32 dropping
-> scx_bpf_task_set_lazy_resched() from BTF").
->
-> Here the argument is an int that clang reassigns, its location list has
-> no DW_OP_entry_value, and pahole 1.31 drops it as well, so staying on
-> pahole 1.31 does not help.
->
-> Not reassigning the parameter is a workaround for me, with any pahole: clang
-> then describes @rcvlowat in w1 from the entry, the kfunc is back in BTF,
-> and __bpf_tcp_ops_init() returns 0 (tested in virtme):
->
-> diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
-> index 2ba73dd6c52cce..1afa6bd7f508ef 100644
-> --- a/net/ipv4/bpf_tcp_ops.c
-> +++ b/net/ipv4/bpf_tcp_ops.c
-> @@ -370,10 +370,9 @@ __bpf_kfunc int bpf_tcp_ops_set_rcvlowat(struct sock *sk, int rcvlowat,
->   	if (moff == offsetof(struct bpf_tcp_ops, dequeue_rcvq))
->   		wakeup = true;
->
-> -	if (rcvlowat < 0)
-> -		rcvlowat = INT_MAX;
-> -
-> -	return __tcp_set_rcvlowat(sk, rcvlowat, wakeup);
-> +	/* Reassigning @rcvlowat can make pahole drop this kfunc from BTF. */
-> +	return __tcp_set_rcvlowat(sk, rcvlowat < 0 ? INT_MAX : rcvlowat,
-> +				  wakeup);
->   }
->
->   __bpf_kfunc_end_defs();
->
-> Would this be acceptable?
-
-I tried and this change should be okay. The below pahole patch
-    https://lore.kernel.org/bpf/20261111222447.322978-1-yonghong.song@linux.dev/
-is to ensure that all kfuncs will have their source BTF. So once
-the patch patch is merged, you can use pahole master branch to build.
-
->
-> [1] https://lore.kernel.org/all/DLRKT5MG6W2P.2V1P0QD4GQEKY@gmail.com/
-> [2] https://lore.kernel.org/all/7c139810be5ffc9764ed4236efc28794@kernel.org/
-
+Please use a temp variable..
+-- 
+pw-bot: cr
