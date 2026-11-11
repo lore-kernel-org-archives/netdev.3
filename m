@@ -1,83 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794435071;
-	b=o6TwBZ9gimrz4LWihiROuxwxQtT4EXseQx+U6SaSvPWpr5EmIQmAB5IwCk7Ca/XmJTdR
-	 q1dn5YyXg2iqwEY5ZwdP7H2nOxpj54rd7ma+irE9ZnFIGoQCbu/DTzipUgXEiYaDuJubD
-	 7awnArCUEW32fGWU8V5w4CxdDb3BDWAl6Iji3ho0spubbE7fAoZ3hJYgfyu6eOjKCZ4gb
-	 uVOhzNjHj3kmGTvds0C3CVlKE1a/sKEJ2wDcUDhAXtsjvg07/Z/5xyzj9byzC+NFkLE+E
-	 5IvHs6GupBDaMSe6h3m9kZMQN3g164duqg4etlUdFt47twNGz9vq1Ry6nnEndz8XFWg==
+	t=1794435124;
+	b=MCY9InXTGpIhKLjQmEAYoFkZX1h0lk19hMi8beLTwiI+AUKUEt9ENLQs4RuPAOujm2UJ
+	 Q0uysj5H8x6Fjs5S/hTk5Q0IWO1JXeQDDHxfnV0XYVHuf/gfzLS91ROQ7Bvd4P2aR/Q43
+	 3wIQgbZmR3tNybjIqJLkXLKjayEssbtuCsQhyNCdzpKNU9s5aR1vAMualN+bi2zAoNqjJ
+	 siqC9DA6777BoeLMTMfhoHUgm8yeOaudBCHe+PEvegN/Fr7qt4QtlrOkQ781KxbLXB93+
+	 AWFvUn89h9DWGqnOeE8eeCdgvPgIf2aIFcJiIbQae9vxeozwnhZUQ4puORxhUHTVAzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794435071;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=B7bvA7Nju/BDOIqnk/HwpcSYfoLqp80hSTWFZMw6p4A=;
-	b=TZ1HNw3tYrw5DhX2/MuBQpvZiAhdNqsXDFqB3r8CQ4L1SGTOkO3wK8jAPd/vUp6BPl24
-	 66clX+eZ7Mj9uIkUdZSFJugdtcup1fPSi6byJIcF5cdleo3aeEQ1/bB831d1IwhjM2Rod
-	 Z+sMWeBHidzDWXdGs7gyFw9yWEv3UqgxCKMFpopEbS7INonm/3d8hvYNprx/SPaJlR5ZT
-	 EUzrFnxmNOJ9cYEzxgk8NkFGmCgx1hmgL1cBD7+eOa6K/802v35T6VowREziVV61NW3tf
-	 qcAILHC2YDl0E32j6kkol0AkdRx2e4A4FTmkTAjeeNh5sL3YlLbWJqVMPav1xW9zWfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794435124;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=YusQ8PlgAGqBdQdfglodyV3rGnWf6b61Lk1KvehKD9M=;
+	b=If/xmEm5d59202eShsdevMq43tdd5LwNz/koz9kM3t+2fvDGNQXKxE5SwqFZqwj9hpzy
+	 YLuj6iGH4M9VB85vQe3wd0Z+GGDH31mohx1nvOHQMTAsQsqd2Sdg9k2uAjQD3ftOwRj1x
+	 h9SgQdrQdqsd14pFgo5XSG3ynS6enAV4A3YPg4y/e8K52LEgbdQY9WYPAhZOOQH25/6sF
+	 H8OnX2kjkBCQMIb/Dhh0KOY8s9AlNkgler9JBVoc4XhjjJv3GlaqVI4CGJ3ztefP4rv0F
+	 77YtIYHqFowwuJDQovXZPAMSLoMl+v8i4QuPKMC+2EEk38kht41vVCpkJ0c9rKgyHOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4Mict27;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OJEf4wzt;
+	arc=none smtp.remote-ip=209.85.221.174
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F271B606A324;
-	Wed, 11 Nov 2026 22:11:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F271B606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C9C606A326
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:12:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20C9C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4Mict27
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794435070; x=1825971070;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eedleuqF5kugMdESWoTLW26GExhkbpI898Czm7AFt8w=;
-  b=a4Mict27tCl20JlFLDUpRoYbG8ktQW62NvXrZq45EYcNWsuH58+nXjNZ
-   I4NbkdIs8Qqor5cjv34syMtYtplILix0GlkzBfiyDJ2x/sj3F/a7P18u7
-   rcyIhmWvG/sI8TIec5d2D2sgJivZvkrE+/Sh0UcVklcZcRJ2spbvjLK5j
-   SzOMpAUJT5IlQYj2iRkORbvCjNxwkYpdaE+G5QY+a0Aa76bWFLjwTHr+U
-   SpIJd2snioj0G1imVlZcFEkv2RzYmBhv3A4er3bI8rO7cotQnX0CxcbZQ
-   3AGlKtePtghP7r9ldAn9tMD0g1SwSqBHXYQQLkzxa7NSuldG5P2pwxGs/
-   w==;
-X-CSE-ConnectionGUID: bjxiJSu4Skig5lbb+INeeg==
-X-CSE-MsgGUID: bVgArFVOQZmVb54xsz2eeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3112814"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3112814"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 14:11:09 -0800
-X-CSE-ConnectionGUID: FWC1MddSSaaUikIEMciXUw==
-X-CSE-MsgGUID: //nFZiDgQZqlx0MDR+ZoNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8500724"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 11 Nov 2026 14:11:07 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRGX1-00000000ztr-2qYG;
-	Wed, 11 Nov 2026 22:11:03 +0000
-Date: Thu, 12 Nov 2026 06:10:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jun Yao <yaojun8558363@gmail.com>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, dsahern@kernel.org, idosch@nvidia.com,
-	Jun Yao <yaojun8558363@gmail.com>
-Subject: Re: [PATCH] xfrm: avoid stale tunnel pointers in deferred input
- callbacks
-Message-ID: <202611120624.jcKHEACy-lkp@intel.com>
-References: <20261111094629.230568-1-yaojun8558363@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OJEf4wzt
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5eaaa9b1591so2426804e0c.3
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:12:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794435122; x=1795039922; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YusQ8PlgAGqBdQdfglodyV3rGnWf6b61Lk1KvehKD9M=;
+        b=OJEf4wztHUDi7BsM+plgvShXgiwGdHpEG1KE3uG7ykCHYPZL5IiAAVx6WqM5iCKL8U
+         R5i11xbcLBqsKEhUFhL+OMGX3pHekqxWS3pUbMl2l/rv6BztG/W8kKaReZasPQQLhMDR
+         ckJyLrtSwnh2T9/qp4XANIelY3ZQqsdcYGHnajZ+0aUvSoZ4rPXgwgy/nTjvgXY5378b
+         7SCCFsStYL+nAhLdIsQj1TCaCtGSxpzllIPOKBiesqpT22x2XYYh+6nQiycyDSE/9e8j
+         EdZZ87yii8NxbypcCI79bdxXEvLIwb1dSYPfAwmjSrqbdMlswsSuJU/hVXrBTrKypP1+
+         8/FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794435122; x=1795039922;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YusQ8PlgAGqBdQdfglodyV3rGnWf6b61Lk1KvehKD9M=;
+        b=XWqPGtgRv2+7zwtIlkQqX3vybXlaKdQLsnQZ07DdmJCNNEUp+3T6Yt/4c29ebZO9j5
+         neTMyorCkwg2oDFl6eBko4GKa4t0xm8e62wR3idUrOGwcb0bi8mu0POHNeAte7+B+RKA
+         z/EK5mSryPxV4OCXLJl12rlH2nsNz9u7Z4z5a9eCyrVU8EKcgRKirnRweLbuDr7jprUP
+         Fjg8RAtiGaP7Ml1r+5WU9vyDEP28vEMbPU7Z4Cu4HPFB+8635CcoR+YvI2IBY1VHT3un
+         pUG1V0Y2IKG3lrnf7YOZESO3pV7Xj6APDcDACV1/h1Zr7z+MTJRnnAfsuKrgird0jFen
+         Uc+Q==
+X-Gm-Message-State: APuU4Z91/gHhtCYQSFV/3UwgdVUvJcWWNrdcci7KRJhJ1mQNyOAf/el2
+	FRMm76TA3sHW7n+eLn8y/JFi+SNz4L3K6OlohWi5kuTijBmJMhQg+rvpChacVw==
+X-Gm-Gg: AYBFou2XsWiMqf2kltNfWANEC0oEn01hxTtU1Gtv3wtQylZVpNw5nh6YB+z4okx94eC
+	ZykV7tcdbXiEl1JY99ayANFU9ZHD92H4Wk6kPHETFlzRPu4nHspkhUnCOK1y2EGpV+sXsZGu9hx
+	FleE8ddtqH04eBnVqTy1aCXbRhrPjg2Y6oOaGRbXNX03bSfVtkyiCpzQyM00YCJ858JMO5LLnpD
+	GqbuIqvTn1/zj/d4oWlpGk6mdkW4UubSxUBhI/8v/xQiXu3IzyF6N2aqw4vGpUzRh3wH0/uboUK
+	Cqcw5rrCRJ85Y+BEkPMusXOddYSWJluxY852k9A3WDooFk57BYSQvWa/Ypq8iG57MwCydiJ7E7u
+	QlEa7w+YuJcP2zIK2CexGxfepIA1cjEfHLmX6PH2wzmVlZx7zba+Alvewl8ub4/71qOCHlS5DaW
+	cyzcZQ3bPwkwMgSIZgWkmdlE7vETMm26n+lltJU9eOcdzWUyGCQjHCeZq+jU5n696/oLYUhph99
+	mEZzC6qh8CyukLn6kZNoKFVZXKwidf1nGop34LN6nVvublldOjfGOG/oQ6tcWY2QvNo4ZjqY0na
+	TRpzJ7sjL82otdovnnE9gjMDEbGpuuuxAhEtmSip73dPMuW9NZ/pDrcgqM2Q9R/2KRKBpI4V553
+	TBgcHg5riz7TV7fNaL6V9FGvDPuoCU60YY+zw9fzGrnvo2Duhn1vGYUGQ615onBP+uyIxnnq2h9
+	XZ+fqwGeQNogg=
+X-Received: by 2002:a05:6122:62e6:b0:5ea:c11b:431a with SMTP id 71dfb90a1353d-5ee1c408083mr1682066e0c.9.1794435122563;
+        Wed, 11 Nov 2026 14:12:02 -0800 (PST)
+Received: from willemb.c.googlers.com.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee27570155sm436357e0c.12.2026.11.11.14.12.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 14:12:02 -0800 (PST)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	steffen.klassert@secunet.com,
+	Willem de Bruijn <willemb@google.com>,
+	stable@vger.kernel.org,
+	Hassan Sultan <hassansultan@google.com>
+Subject: [PATCH net] net: gso: fall back to skb_segment when fraglist cannot satisfy checksum
+Date: Wed, 11 Nov 2026 17:10:33 -0500
+Message-ID: <20261111221129.829218-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,90 +101,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111094629.230568-1-yaojun8558363@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jun,
+From: Willem de Bruijn <willemb@google.com>
 
-kernel test robot noticed the following build errors:
+skb_segment_list() keeps the original transport headers and checksum
+state of its frag_list members. It ignores the checksum bits in features
+and does not initialize the SKB_GSO_CB() checksum state. This breaks in
+two cases:
 
-[auto build test ERROR on klassert-ipsec-next/master]
-[also build test ERROR on klassert-ipsec/master net/main net-next/main linus/master v7.4-rc2 next-20261110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+1. Outer tunnel checksums. __skb_udp_tunnel_segment() and
+   gre_gso_segment() compute them with gso_make_checksum(), which
+   reads SKB_GSO_CB() fields that hold stale skb->cb contents. The
+   outer checksum also needs the inner payload sum, which
+   skb_segment_list() does not compute.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Yao/xfrm-avoid-stale-tunnel-pointers-in-deferred-input-callbacks/20261111-174629
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git master
-patch link:    https://lore.kernel.org/r/20261111094629.230568-1-yaojun8558363%40gmail.com
-patch subject: [PATCH] xfrm: avoid stale tunnel pointers in deferred input callbacks
-config: mips-xway_defconfig (https://download.01.org/0day-ci/archive/20261112/202611120624.jcKHEACy-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261112/202611120624.jcKHEACy-lkp@intel.com/reproduce)
+2. CHECKSUM_PARTIAL packets, for example from veth or tun, sent to a
+   device that cannot checksum them. skb_segment_list() does not fix
+   this up, unlike skb_segment().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611120624.jcKHEACy-lkp@intel.com/
+Fall back to more generic skb_segment() in these cases, as already done
+for modified geometry and SKB_GSO_DODGY. Expand to when
 
-All errors (new ones prefixed by >>):
+- skb->encapsulation is set (IPIP, ESP)
+- skb_tnl_header_len() is non-zero (UDP, GRE and MPLS tunnels)
+- the features cannot checksum a CHECKSUM_PARTIAL packet.
 
-   In file included from net/core/sock.c:134:
-   include/net/xfrm.h:777:9: error: call to undeclared function 'skb_ext_add'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-         |                ^
-   include/net/xfrm.h:777:26: error: use of undeclared identifier 'SKB_EXT_XFRM_TUNNEL'; did you mean 'SKB_GSO_UDP_TUNNEL'?
-     777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-         |                                 ^~~~~~~~~~~~~~~~~~~
-         |                                 SKB_GSO_UDP_TUNNEL
-   include/linux/skbuff.h:697:2: note: 'SKB_GSO_UDP_TUNNEL' declared here
-     697 |         SKB_GSO_UDP_TUNNEL = 1 << 10,
-         |         ^
-   In file included from net/core/sock.c:134:
->> include/net/xfrm.h:777:9: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'struct xfrm_tunnel_info *' [-Wint-conversion]
-     777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/net/xfrm.h:783:9: error: call to undeclared function 'skb_ext_find'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-         |                ^
-   include/net/xfrm.h:783:27: error: use of undeclared identifier 'SKB_EXT_XFRM_TUNNEL'; did you mean 'SKB_GSO_UDP_TUNNEL'?
-     783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-         |                                  ^~~~~~~~~~~~~~~~~~~
-         |                                  SKB_GSO_UDP_TUNNEL
-   include/linux/skbuff.h:697:2: note: 'SKB_GSO_UDP_TUNNEL' declared here
-     697 |         SKB_GSO_UDP_TUNNEL = 1 << 10,
-         |         ^
-   In file included from net/core/sock.c:134:
->> include/net/xfrm.h:783:9: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'const struct xfrm_tunnel_info *' [-Wint-conversion]
-     783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/net/xfrm.h:788:19: error: use of undeclared identifier 'SKB_EXT_XFRM_TUNNEL'; did you mean 'SKB_GSO_UDP_TUNNEL'?
-     788 |         skb_ext_del(skb, SKB_EXT_XFRM_TUNNEL);
-         |                          ^~~~~~~~~~~~~~~~~~~
-         |                          SKB_GSO_UDP_TUNNEL
-   include/linux/skbuff.h:697:2: note: 'SKB_GSO_UDP_TUNNEL' declared here
-     697 |         SKB_GSO_UDP_TUNNEL = 1 << 10,
-         |         ^
-   7 errors generated.
+skb_segment is a strict superset of skb_segment_list functionality.
+This is always safe.
 
+This also moves encapsulated packets that were handled correctly, such
+as those in tunnels without outer checksums, to the slower
+skb_segment() path. Fraglist GRO is off by default.
 
-vim +777 include/net/xfrm.h
+Discovered through analysis by an LLM. Reproduced on an unmodified
+kernel and verified with LLM-generated reproducers in virtme-ng.
 
-   773	
-   774	static inline struct xfrm_tunnel_info *
-   775	xfrm_tunnel_info_add(struct sk_buff *skb)
-   776	{
- > 777		return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
-   778	}
-   779	
-   780	static inline const struct xfrm_tunnel_info *
-   781	xfrm_tunnel_info(const struct sk_buff *skb)
-   782	{
- > 783		return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
-   784	}
-   785	
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
+Cc: stable@vger.kernel.org
+Reported-by: Hassan Sultan <hassansultan@google.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+---
+ net/ipv4/tcp_offload.c   | 5 ++++-
+ net/ipv4/udp_offload.c   | 7 ++++++-
+ net/ipv6/tcpv6_offload.c | 6 +++++-
+ 3 files changed, 15 insertions(+), 3 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index b84fcd07c723..127035ba4faa 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -108,7 +108,10 @@ static struct sk_buff *tcp4_gso_segment(struct sk_buff *skb,
+ 		struct tcphdr *th = tcp_hdr(skb);
+ 
+ 		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
+-		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY) &&
++		    !skb->encapsulation && !skb_tnl_header_len(skb) &&
++		    (skb->ip_summed != CHECKSUM_PARTIAL ||
++		     can_checksum_protocol(features, htons(ETH_P_IP))))
+ 			return __tcp4_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index cd9d7426b227..8e9610d35083 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -516,7 +516,12 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		 /* Detect modified geometry and pass those to skb_segment. */
+ 		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
+-		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
++		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY) &&
++		    !gso_skb->encapsulation && !skb_tnl_header_len(gso_skb) &&
++		    (gso_skb->ip_summed != CHECKSUM_PARTIAL ||
++		     can_checksum_protocol(features,
++					   is_ipv6 ? htons(ETH_P_IPV6) :
++						     htons(ETH_P_IP))))
+ 			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+ 
+ 		ret = __skb_linearize(gso_skb);
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index eec3778855eb..5b830d244660 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -9,6 +9,7 @@
+ #include <linux/skbuff.h>
+ #include <net/inet6_hashtables.h>
+ #include <net/gro.h>
++#include <net/gso.h>
+ #include <net/protocol.h>
+ #include <net/tcp.h>
+ #include <net/ip6_checksum.h>
+@@ -180,7 +181,10 @@ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
+ 		struct tcphdr *th = tcp_hdr(skb);
+ 
+ 		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
+-		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY) &&
++		    !skb->encapsulation && !skb_tnl_header_len(skb) &&
++		    (skb->ip_summed != CHECKSUM_PARTIAL ||
++		     can_checksum_protocol(features, htons(ETH_P_IPV6))))
+ 			return __tcp6_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
+-- 
+2.56.0.567.gdb80ae8cd5-goog
+
