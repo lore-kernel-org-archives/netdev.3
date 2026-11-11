@@ -1,63 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423328;
-	b=WNSb9OO2rWm9r0T9RJXXfAZlBfofAp0Y03eJR7cq+Mc9RdLthUY63wcZCRH7ToERIWpy
-	 9Lp8kwJnb35OTas/gAP8ryhVWlnOUCCXRwnJrDm/sNikz2551K8kkRa9hoGlr7CWlcP9y
-	 /1RuMmuxudtovy5YNXOWqN5Esu569RbE2V860q0NjctworcSC70aNfKobEKqp5+52nmbF
-	 5sIy6Tz9z5Va7CQ0V7MbxLbBpUqzibwXmQPpPWIBjboY4WHeD8X2D/3OUd/sriFICkh0e
-	 gQKKhWT1sMY6rIWIiL85xJeeWDgxboH6yS++4AyhlFl3s43F8ny81ogjTf1WeXXN9BA==
+	t=1794423678;
+	b=s5gOJhBt497IYP4Z+5WbAlD6pp3rWoQqUPHJasfAPnkv8iGLj2IrsrsKHr02LK3bQx9C
+	 S4xfCjO/DsGke3CFtGsPuuMTNxkNkjwD7oFfl0YaL2qlrFY+iAFIlwlybUIKyotm792yk
+	 uNFMZEEg7pZ0hJWdRfVG/jIy3phYt2nHR+p76pmHj89i87Mk/LJ+k9NRO6Oq13l1D6Cx0
+	 +Ta0FlBzZSAeRwcx8sm4r1Npe0OQNHjqsSpApwk4AZVKPq0y/cuNlA8I3SbnfydbYfYOz
+	 w/So/A45CprQ3GiqQNby9+9ZgpP6cJJx7NenIkIWljnhs52PCZ3jRKDUljx8iXS2ZfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423328;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Ci4cqnZZ64d+2U3XURPPoF/V/1lZMvGbT2QamEimuCY=;
-	b=TCtt93pIUhVZjqsjEkcS5hKL/1Utmr5838X6QYE0evqSGf82EtC0gr3zGGPOPEvZ7cYV
-	 47bpCg6jeUxmeytwe0GuIkt2Fab5tYBZ30WpBBoAoD9AwOm38xFKZozSn6kmofZ9yWU27
-	 wCI56uCAyF+4TR1Gqjwa3NoSL0nDVo6UEyTeEhYCsaO6Th+KFLI9mU3+UhpkCvMmAuEf+
-	 qyEjMf397owBThBl/VfBYH7ldiOS9G3sUMSVzJpg2jqbeIeR61JbS3NdcR5zAbAOTuGfw
-	 nW5nDMzE/josF/Z9l9+DGSJ5KWXpmqnJz9Os39QwLdEl6qUk8AI1DqNrkTPi2wsyivw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794423678;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To;
+	bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
+	b=AUSi2yyjsr5IPUw9eg3ZfuVd2Hal4nukoXGxsaxEJhDnvT+HhjMLv1sL2UsS0GpbdTGr
+	 /TkSyY/EHoU8VBsnU24wKuj/WCUhJTkB5+zydybHliFjdR9eqFTSFKDn9pk3vcs1+2u5W
+	 Cj6+KFCnvtl6/hCfbQtwGK7oXY7u9r8by5/hULDTEm1Bfhh6UiiPEGo4IauCAqFFZw1SD
+	 CCMFngHgoYEdav7ZBDw+7DW+ko6WEFpQ816dgv7RlpP3ZezgMa4a7+AjqglMQK74W7gGB
+	 p7MC7mB/0R3ngx0yy2lmBMWohcYNHWcsDXlktdFbGYf12Vsfxit6fcdPuYwdBWOUooQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=akDdb6K7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHkRigWs;
+	arc=none smtp.remote-ip=209.85.222.171
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEF9606A335;
-	Wed, 11 Nov 2026 18:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423C5606A327
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:01:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 423C5606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=akDdb6K7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F9E1F00A07;
-	Wed, 11 Nov 2026 18:55:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794423328;
-	bh=Ci4cqnZZ64d+2U3XURPPoF/V/1lZMvGbT2QamEimuCY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=akDdb6K7pMn8tt3whg1v/OzfHFT22Xor7RVmknokKvRPjO1Ix/xapAw+y6L80Klqr
-	 J1hrm7N7/97twF02vwPiLY1KaMMUiLS9K91mZ5yGIDmXH8i2TOlimKnl8ZAnmdBFcu
-	 vT3yBKMYcOdApG9ZXSasmuarXwgR5TA1Es2UKyLBDdI17KErOAZ9zWrRuiHKA/YaB9
-	 uimOIGEsmdWTOqvvWWnIs6spZyM5toTZop1zdIRY0oGMEStEKUQWH7QWp1mikMqhj6
-	 yR/ugkBrMMxLRW1Vs5nbTmZXjPfJ/b+mmWqJp6DgE8O+a0YPqSMPEcNvrkh73KeupK
-	 1gpREveO25lMg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sd@queasysnail.net,
-	john.fastabend@gmail.com,
-	shuah@kernel.org,
-	cel@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v2 2/5] tls: Consume empty data records in tls_sw_splice_read()
-Date: Wed, 11 Nov 2026 10:55:19 -0800
-Message-ID: <20261111185522.2859004-3-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261111185522.2859004-1-kuba@kernel.org>
-References: <20261111185522.2859004-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHkRigWs
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e63ee7b4cso315172885a.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 11:01:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794423677; x=1795028477; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
+        b=LHkRigWscoO1IXIQFs6/S7w1FUhRnu66lP+me1F9tp+woQK1t61v4UNNSyggqb4mOX
+         hkOb5/IVXmfs4ZveeHLDMgbH2NVuzIEY/J/WPy/shFxDKAiXJz6IbXyPUV4ckFZ+CsC+
+         c9gkmXH6qx8NuT+7knfat6nN41LKdJI5AqHmXOuhg18s+O76DdTa+1UL8roEbcvId/Ns
+         kTG/VWDpa7xwT+xoPmwPqh3uf6iTwuE9zBLajqn7CgcAuA/eMNIzXPPLnoO373jqfflo
+         BWXGJsKWiNERilvEBM6NM78A4lF9eT8HO6VECVYKCKap11URDX6Ewiu7J/Bp2B4VyeQc
+         r7RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794423677; x=1795028477;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3mcdsvysa9luSuezEbeTLmuh15u7mjwAepQLZ7oOKD4=;
+        b=hUBOXgmFN/sepc3tcc/b3Sca+31MCYCBMnvzo+Xoe4XcvCeW4JYC4+7n86dxbV+hiW
+         zsb9pqU/3dm69/UUqhm9kx22IqDIbBdEV3RjJylfpxgWPW5Cluf+CPPYCffj++ewIf4y
+         DNuKmqdV1W1XGryZVnaImnthgn21BDyhrrOMJ3NAdVqwd/FPe5vZkX2Dedd3ZZgZAy/2
+         EizlMjr9uJhJA5c8x7XEkRDPxyghAaR9e5SBp3v6Kd5/R9WfZ4r6HPh7ZjhLbpLBz8Ih
+         MAusE3LRKCyFSzOr+zfyIf0MMDK6Kqk/TJ1edMe1Msg22QCALzQLxZLyMabVmkjldkru
+         NOYg==
+X-Gm-Message-State: APuU4Z+VZlh80lnhYmiIOwVOESFti56yiXkzn3NfML61wzGMKrfxwP8U
+	HJHdUbqqYUSFcwXm3uG2nD29Hwjov2pJ2/PG66KecBzAAnOy6NjCn1Ew
+X-Gm-Gg: AYBFou29X4UjKsSksyX8wlfRjtSOBbijRcKjyhqUadfnXBWT/unH7S5FFLpgqxMhxzB
+	ahuFr2bF0G9Z6hywtLJ3S4MNHVHlqfhyaYkFAZ2RF7WnUISceR56a1DwbIwOTzt98Lqbqns8GGa
+	NsupwITrcJWiok4ZJfzkwbj8GOC6DOyEYrF17FoJOR1F0to9+us7WlgmfsjUB0qM4Z6oAl2C5ql
+	DY0IFrsGWgO01E2ZaOY9EhAVT4F15D4c590rZdBq08yZvokufArjl8ioIeNq8XcFVj1pgsHOWN7
+	ShXSAvyq6f9pgXFGf9PfR8t8LXr10f41u9mak7jN8VRKjzDO4yTY6ZlPD0U7UjXwNZ/ChtNFksy
+	Atp933U+JRGH3Uaun/QDD0noWd5E+m3buMyIDMW0gRQ6VoFjjXvf98SzMmO6HpCN2LDH7sp2LlP
+	vxjXglyOjhk+CMvgiHjJBlqevjighvwmaV6n3dZRJg2xM0U3HuhHDWq5G3LIMOxGzt5WFq7UpN+
+	Csx90F/XkhBCwT8IeOdJEy+oyeMfJn7wws4Rc4lqAc48L+3yusQJnq7V623HuqUf838yJL7s5bE
+	BC7l4knGt9hlzISYR1rVMm1jVzMJdWixiL5S1aiWRzlw1YnDelQeZyU=
+X-Received: by 2002:a05:620a:2b96:b0:93f:53d1:54c7 with SMTP id af79cd13be357-947b00d141dmr521152085a.70.1794423676923;
+        Wed, 11 Nov 2026 11:01:16 -0800 (PST)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e73b2d2sm545314185a.10.2026.11.11.11.01.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 11:01:15 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,100 +86,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Nov 2026 14:01:14 -0500
+Message-Id: <DMSM3RNRY412.1GXB07F4KGJYR@gmail.com>
+Cc: <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>, =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?=
+ <bjorn@kernel.org>, <bpf@vger.kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Donald Hunter" <donald.hunter@gmail.com>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Jamal
+ Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>, "John
+ Fastabend" <john.fastabend@gmail.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
+ "Simon Horman" <horms@kernel.org>, "Tariq Toukan" <tariqt@nvidia.com>, "Wei
+ Wang" <weiwan@google.com>, "Willem de Bruijn"
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v1 04/15] psp: add support for socket-less psp
+ associations
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Todd Bert Freed" <toddfreed@meta.com>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261111005533.6436-1-toddfreed@meta.com>
+ <20261111005533.6436-5-toddfreed@meta.com>
+ <DMSJB8MZZCXK.MCEBRZQDAM5Q@gmail.com>
+ <CADh2yMx8MPjcH7Bpj72rNNd_tT=6uSC5Ow9JyGjTMjFgs499Pw@mail.gmail.com>
+In-Reply-To: <CADh2yMx8MPjcH7Bpj72rNNd_tT=6uSC5Ow9JyGjTMjFgs499Pw@mail.gmail.com>
 
-From: Chuck Lever <cel@kernel.org>
+On Wed Nov 11, 2026 at 1:23 PM EST, Todd Bert Freed wrote:
+>> I'm not sure the kernel actually needs any bookkeeping at all for these
+>> generic rx spi allocations. You could probably just pass the spi, dev
+>> id, key, and probably rotation count (as a device key generation of
+>> sorts) to the user without creating a kernel object. For socket
+>> psp_assocs, the rx state is consulted on the datapath before queueing to
+>> the socket. For tx state in all psp_assocs, there is the possibility
+>> that an SADB handle needs to be cleaned up. Neither of those apply here
+>> or in the rest of the series as I understand it.
+>>
+>> I figure the tc ingress rule can just take the spi and dev id by value
+>> rather than needing a reference to an object that we create here.
+>
+> That is how it works in this series. The tc psp decap rule (ingress) does=
+ not
+> make reference to an rx assoc ; instead, it should have flower matches on
+> psp_spi, psp_ver, and psp_dev. That effectively ties it to packets from j=
+ust
+> one rx assoc.
+>
+> So why keep track of rx assoc objects at all? Two considerations.
+>
+> 1/ don't accept packets that correspond to a stale association. That is, =
+even
+> if the device decrypted the packet, it should be dropped if the device ke=
+y
+> which minted the assoc's SPI is two rotations behind. For psp socket offl=
+oad
+> that is enforced in __psp_sk_rx_policy_check() with the pas->generation
+> check.
+>
 
-A zero-length application_data record decrypts to full_len == 0,
-so tls_sw_splice_read() splices zero bytes and returns zero. A zero
-return from a splice read means EOF, and the caller tears down a
-connection that is still live.
+I asked why we needed to keep track of socketless rx assoc objects. The
+above applies to the existing transport mode code, which is my point.
+The rx state from the assoc is looked up from the datapath. It doesn't
+seem like that is the case in this series.
 
-Consume the record and fetch the next one, as tls_sw_read_sock()
-does. The cap on consecutive empty records bounds the loop.
+> The spec permits SPIs to be reused immediately after two rotations. So th=
+e
+> device could decrypt a packet with a SPI that is more than two rotations =
+old
+> in that case, or if a previous packet is being replayed, for example.
+>
 
-When an empty record precedes a close_notify, splice(2) now returns
--EINVAL from the control-record test instead of a false EOF. A
-splice that reaches an alert record already reports -EINVAL.
+A SPI that is two generations old will cause and auth error on rx. The
+hazard is that an old tc rule with a SPI from two generations ago can
+alias a different SPI from this generation. Userspace can just flush old
+rules before doing a key rotation. That is why I suggested including a
+'rotations' attribute, although that is probably not even necessary to
+keep track of which rules need to be flushed.
 
-Fixes: c46234ebb4d1 ("tls: RX path for ktls")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/netdev/akaoXcfamBp8_mYe@krikkit/
-Signed-off-by: Chuck Lever <cel@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-v2: no change
-v1: https://lore.kernel.org/20261109175836.1246840-3-kuba@kernel.org
----
- net/tls/tls_sw.c | 48 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 28 insertions(+), 20 deletions(-)
+> 2/ hardware offload. the solution to #1 should be able to be fully offloa=
+ded
+> to the device. psp tunnel mode will be hw offload only, and is implemente=
+d
+> in the eswitch with connect-x.
+>
+> We could add a psp_gen flower match to replicate the pas->generation
+> check, but the device has no access to the pas and can't offload that.
+>
+> Keeping track of the rx assoc means that the kernel can take action on th=
+e
+> "this assoc is now stale" event. Possibly by enumerating the tc rules and
+> either deleting them, or marking them stale for userspace to reap.
+>
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 65e578c8c612..0bab7175c9d9 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2044,32 +2044,40 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	if (err)
- 		goto splice_read_end;
- 
--	if (!skb_queue_empty(&ctx->rx_list)) {
--		skb = __skb_dequeue(&ctx->rx_list);
--	} else {
--		struct tls_decrypt_arg darg;
-+	for (;;) {
-+		if (!skb_queue_empty(&ctx->rx_list)) {
-+			skb = __skb_dequeue(&ctx->rx_list);
-+		} else {
-+			struct tls_decrypt_arg darg;
- 
--		err = tls_rx_rec_wait(sk, nonblock, true, false);
--		if (err <= 0)
--			goto splice_read_end;
-+			err = tls_rx_rec_wait(sk, nonblock, true, false);
-+			if (err <= 0)
-+				goto splice_read_end;
- 
--		memset(&darg.inargs, 0, sizeof(darg.inargs));
-+			memset(&darg.inargs, 0, sizeof(darg.inargs));
- 
--		err = tls_rx_one_record(sk, NULL, &darg);
--		if (err < 0)
--			goto splice_read_end;
-+			err = tls_rx_one_record(sk, NULL, &darg);
-+			if (err < 0)
-+				goto splice_read_end;
- 
--		tls_rx_rec_done(ctx);
--		skb = darg.skb;
--	}
-+			tls_rx_rec_done(ctx);
-+			skb = darg.skb;
-+		}
- 
--	rxm = strp_msg(skb);
--	tlm = tls_msg(skb);
-+		rxm = strp_msg(skb);
-+		tlm = tls_msg(skb);
- 
--	/* splice does not support reading control messages */
--	if (tlm->control != TLS_RECORD_TYPE_DATA) {
--		err = -EINVAL;
--		goto splice_requeue;
-+		/* splice does not support reading control messages */
-+		if (tlm->control != TLS_RECORD_TYPE_DATA) {
-+			err = -EINVAL;
-+			goto splice_requeue;
-+		}
-+
-+		/* Splicing zero bytes would read as EOF */
-+		if (rxm->full_len)
-+			break;
-+
-+		consume_skb(skb);
- 	}
- 
- 	chunk = min_t(unsigned int, rxm->full_len, len);
--- 
-2.56.0
+I think it makes more sense for userspace to just get rid of the rules
+before rotating the keys.=20
+
+> -Todd
 
