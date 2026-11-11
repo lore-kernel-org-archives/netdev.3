@@ -1,61 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794415707;
-	b=ESdhTqrM5BV5iQQNh1Lex2FyCUP3kDMEW3BWiw9T7DotYpj7u+GKRlvMW5j+KiG/SEJq
-	 llOboz9IDBrQ4bEy1pLIzKOhAfz4hTDaGu50yumSmmh6lE85oWk66dGQ9Ai1zMiqONRV5
-	 2NcHArOOvxmwfBrpmEkyvsLZLtO+NrhnXH+cNqHXJcCfSIDQdENFiy/Ig6gp+5KFnA3Gz
-	 wvX6w+okDasJQNO5iAnOtoKwno8WZdEtQ0jHd7hyYNSMRZc2Kkx2dLQjWqEiz5Bvlwdpw
-	 QiI3U8qTTXsR/xBYj2FvaE2M25pjWWnp0tZEpcoeT1luruawVs+RbYwumj1TEMtSjxw==
+	t=1794415799;
+	b=ThRgimnrZYoM7CQvwuiLsdpZWWryFt85RARniKcfZbvnbInzZP+W6wJ+luxA+u/y8hqA
+	 MMsPI2v1WTdJiQa+Ba7SAkwNI3WlMWxPJYFb7l4UpluApz2P9F/etnLnoRPBzowMhGel7
+	 WP+zfX7TOORVdUYRsOzH5oA+JlR/rm42UGrr2nBhI5OXc+i88latlDFka0AmXWMVxUFay
+	 A05BZtGGQ5rKSwftrIBDJ2KHPRnILvIgZhpP06Z1iZ/sQmpo+xMImOzJLCMwd2jJRUP9o
+	 zRLSxP2shET95Q5ly7bXUMa+jf9rEuVSrJ0vub458t20LUQ6y6/IQyWeaDbjXJhRewA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794415707;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=0sydFHNzITW/W9RiZ5lrBlSfj6odwN80cmBBE2TsUzo=;
-	b=DMaG1oScvXebnHPukm3lvGfM4nM44VS9QpWXkxdrstvizyiKZ2N/x7Ip90uPIfEnSdSC
-	 9cwlST1SB9qtbQsnbSqt6YHqDe4gg4xzvsq5laAucKFmYcbMxfMfsthCq/7H3x8SwNNcI
-	 JfljXvDjql5JQrZlGVOSSkC+hDhBzC8ZuFQ7lQJ4f6id9aV/LSw+RQN67runW5sWKNfUm
-	 ENdd8KW0da9IA6CPivQK5bmZiUfeM50WRuCuzoccVWX/p38UP/Bys5Obshne411YVJjHs
-	 zEz+H8/RHTJuz0ly4AeN72zGTpE5v4GLiu4VpqPaTHG7J+RuXsrwS4PIRi9LQEA+/Fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794415799;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=rFud020d6ZqbAIZTEaEuXG8erb5QVVdBjItcD5kJ9qU=;
+	b=FUBprv2y1dv1Dvv/rvUi436FmZPZBIGC7MeHKR1FeWjNoznQuXmtC405g6p/nrPq2iU6
+	 zoPiTnWR0fo1jpSP95IIA3hY8CmeywuOHryUZE4DuK9YBcY1mwLPsTFBKksE94yc0ZbiA
+	 AcGkmztH0f6l2vjchZOnZwGwwvfNyedV7jh6+tVs0bwGtIfAsc0iEL0VRdtcpuj/S6Ttb
+	 qIxOFJQbFGVlKTUEhAjeK2fCB0DjBzUn06RoaWa3RR1HP+yYB1G2vrBNXmndJrr7UbzEk
+	 6fNc9FbHKRjFNB+SxRiiB6/8L+fb8P8sVy7lj6DqhrmmTrI7DnYeY5fv+b1B0ZrPMZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=dyHdbNbZ;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HJL1TZqY;
+	arc=none smtp.remote-ip=209.85.219.53
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB49606A321;
-	Wed, 11 Nov 2026 16:48:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CB49606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A07F606A336
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 16:49:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A07F606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=dyHdbNbZ
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0sydFHNzITW/W9RiZ5lrBlSfj6odwN80cmBBE2TsUzo=; b=dyHdbNbZ8KfDHmZzWygnexSWkp
-	vxdIR0q/Nyu3ONUYl8xOsXtkPy0E+7DA1dun3kA+Wv/u0AoStyC68/1gZnroCLRnlH2EG5MclmXD8
-	X1C0Iq7Nl/vCyDH80En9gEWCh5IkC3bc3Gov4Bdc87NZr9EyilnA4v2p1UqKM2NIGkRo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xRBUg-00FnDz-HB; Wed, 11 Nov 2026 17:48:18 +0100
-Date: Wed, 11 Nov 2026 17:48:18 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: joasantonio108@gmail.com
-Cc: steve.glendinning@shawell.net, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: usb: smsc75xx: reject frames without a full
- header and FCS
-Message-ID: <e4a20579-2576-4c2e-9120-b675a175a1da@lunn.ch>
-References: <20261111-smsc75xx-rx-fcs-v2-1-216a5f26842a@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HJL1TZqY
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91ea0c05c92so34110336d6.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 08:49:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794415798; x=1795020598; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rFud020d6ZqbAIZTEaEuXG8erb5QVVdBjItcD5kJ9qU=;
+        b=HJL1TZqY3pycAyt7sUA767m90KqajI8zY0xT1ZfuAA/QfImIGgMx+vAqH5Imyi/a6+
+         aMEZPSuWC0VKrlzb13m1Nrwk3QQ1wPZefNNmLRBLCtq5cxDePjkDtwTpye0fVTiEcWB6
+         aQ5mmiFm7UHTtv3f/HgmSB/WAizRAoppvvJqsmn96SgIn97pqx1oC1BFwsrGLw8pgc3I
+         Zt2pBuE1m63/KLFVCv993l8Nq/ZcD/Q9G+j++A6DU9uB42JKnPgnXP5fvqJ5tv1540yF
+         pMvXIlsts3LByVlAX0I2AnxgbnLfwxfrlIL0MQSTx9vfi1sV4y8WMcWGj2UrnyRyZjKB
+         Frcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794415798; x=1795020598;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rFud020d6ZqbAIZTEaEuXG8erb5QVVdBjItcD5kJ9qU=;
+        b=IKpTmaCCnEKrTwfdBA3uBBm6+h1AcbS7gUzaaw7mVRP+oNFsQreE+pe+Uoyi28rbU6
+         wyC++zDbVKanLSnLkOcC//q0f5+dT19jpxGK7ClQA2CGW0ScmD5IB7yZNyBV1DPGu2GN
+         Zsr8xBJsoXWM1JvOroqtzC7WnAgR3jmKzsncKwSkp2CNJwe6ONNyUE/wLwEPG2LEXW2r
+         S+18JRaRveFLslSci2LquEfwwmDu9Caw+FGj8cdT55Ib2VMuSUhFbiNgY9B+Er1NBEpj
+         z6kC+YQ2CKwyTafjYjWbJJ2D5ifwgO5i27zDL+Kp5uu30drcvgl1yBf+d3nccjSvhg+p
+         sucg==
+X-Forwarded-Encrypted: i=1; AL+hErFQEnhJTLGrczKM/YVRdVL+KgcXPaiJB7JhfnL14CYGGE3BStuPcnqeDcThcGLBhIA9+ka7Dl0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Rvuo5i5t0XKwa0ST0d9Fk2BN8ybfHam6JCJP4SZ56T7tPpuW6
+	m55uYpAW8ajnbwMBXGVbBN9hxQKeFX1hFSSy01QcmKa6n/5ja94CkZ1B
+X-Gm-Gg: AYBFou1IDhnNEMGTt1N6+aSqTMSN0DsIjRgJwxQXvQJCNy+Mi4zcboEH/mtbS/Y/fhj
+	0YngeQz7WefAxeiShOPA7wglfl8tMW2O8YukvSCnZdODbF486KaMAx6ZKkevVMj4TOWPuRoe+UG
+	X/hfmGULOyl2KjV432xNQM7oOXmZJOpTPmuHlffVpwax/U7y1AiINxcTBjD3KsP3lY8cA2XjtuS
+	txUgZEgexcHDexmlNLpS7aKtfWymI1utxBYo/QdlkUp8zRQYiKAsdlwE4CuJbnnTmWTckhZxsqV
+	2IWpSuPtFxiuowACM6yidBvj8IyHEqvl1KeesyH4TedpQRCf+oHRcjAR0LPZXDX43RMSDEP9kgW
+	tEKdaHGjqBTsK7bPoOISg/+XLbsojdG/8eCr5ZteiICkxLuHX6gAzEJlzTVssY/MGeOkejQuRR5
+	jE8A/WtKHFaMdlcL0iFnExlPtZVEX0qwvz9hwWCjyKm0DZomWke5o0ohE3YAagIVQfCO1XML9Yu
+	tvvSDmkparbWIc5Wu5eZZwn6lyFWRrc+cO8jFPmBiQ6+IjETV0pJ37A2Smd1FpBkLoPECTy/hMk
+	XecRRrcp5rH3Fe3V
+X-Received: by 2002:a05:6214:398d:b0:91e:aa6d:d408 with SMTP id 6a1803df08f44-91f03e88ff2mr51627976d6.7.1794415797982;
+        Wed, 11 Nov 2026 08:49:57 -0800 (PST)
+Received: from localhost ([2620:10d:c091:500::6:868a])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04ab626sm51981516d6.15.2026.11.11.08.49.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 08:49:57 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,44 +87,187 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-smsc75xx-rx-fcs-v2-1-216a5f26842a@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Nov 2026 11:49:56 -0500
+Message-Id: <DMSJB8MZZCXK.MCEBRZQDAM5Q@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?=
+ <bjorn@kernel.org>, <bpf@vger.kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Donald
+ Hunter" <donald.hunter@gmail.com>, "Eric Dumazet" <edumazet@kernel.org>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Jamal Hadi Salim" <jhs@mojatatu.com>,
+ "Jiri Pirko" <jiri@resnulli.us>, "John Fastabend"
+ <john.fastabend@gmail.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
+ "Simon Horman" <horms@kernel.org>, "Tariq Toukan" <tariqt@nvidia.com>, "Wei
+ Wang" <weiwan@google.com>, "Willem de Bruijn"
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v1 04/15] psp: add support for socket-less psp
+ associations
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Todd Freed" <toddfreed@meta.com>, <netdev@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261111005533.6436-1-toddfreed@meta.com>
+ <20261111005533.6436-5-toddfreed@meta.com>
+In-Reply-To: <20261111005533.6436-5-toddfreed@meta.com>
 
-> +			if (unlikely(size < ETH_HLEN + ETH_FCS_LEN)) {
-> +				netif_dbg(dev, rx_err, dev->net,
-> +					  "size err rx_cmd_a=0x%08x\n",
-> +					  rx_cmd_a);
-> +				return 0;
-> +			}
+On Tue Nov 10, 2026 at 7:55 PM EST, Todd Freed wrote:
+> currently, a psp association is bound to a tcp socket when it is
+> created, and can hold both an rx and a tx key.
+>
+> add a small registry of un-bound associations. These have either an rx
+> or tx flavor, and are referenced by an id. other parts of the stack can
+> then attach them to packets. see the subsequent patches, where the tc
+> psp action does just this.
+>
+> an rx association records the spi, version, and device key generation,
+> primarily for describe (assoc-get). a tc filter matches these fields
+> with the flower keys psp_spi, psp_ver, and psp_dev instead of
+> referencing the association by id, to facilitate hw offload. these
+> matches are added in a subsequent patch.
+>
+> adds the following new netlink commands for managing these associations.
+> note, these are admin-only and restricted to the netns of the psp device
+>
+>   rx-spi-alloc  allocate an rx spi + derived key, and publish an rx
+>                 association for it, returns its id. the key is
+>                 delivered to the peer out of band
+>   assoc-add     create a tx association and install a tx key, returns
+>                 its id
+>   assoc-del     drop the registry's reference to an association
+>   assoc-get     get / dump associations ; only the spi is reported
+>
+> assoc-get and assoc-del operate on both rx and tx associations.
+>
+> socket associations do not go into the registry, and these apis do not
+> address them. so for example, assoc-get does not list them.
+>
+> socket-less associations are on the device's association lists, like
+> socket associations. they are therefore marked stale by key rotation in
+> the same way, except tx ones: they hold the peer's key, which the
+> rotation of the device key doesn't affect. assoc-get reports it
+> (stale), so that user space can identify such entries.
+>
+> key material enters through netlink and is never reported back. no key
+> is stored for rx associations, and users reference associations by id
+> and never handle keys
+>
+> published associations are dropped from the registry when their psp
+> device is unregistered.
+>
 
-This looks good as far as it goes.
+I think the design could be improved by not reusing struct psp_assoc for
+the socketless rx spi accounting, and by not placing the socketless tx
+assoc on the active, prev, and stale lists next to the socket
+associations. I'll try to comment inline to give you a better idea of
+what I'm talking about.
 
-However:
+In general, what I'd like to minimize is having one object used for
+three different things, where each usecase has its own subset of fields
+active, and then having a bunch of glue in places like
+psp_assocs_key_rotated(), where you have to check if the assoc is
+socketless, followed by if it is tx or rx.
 
-static inline int rx_process(struct usbnet *dev, struct sk_buff *skb)
-{
-	if (dev->driver_info->rx_fixup &&
-	    !dev->driver_info->rx_fixup(dev, skb)) {
-		/* With RX_ASSEMBLE, rx_fixup() must update counters */
-		if (!(dev->driver_info->flags & FLAG_RX_ASSEMBLE))
-			dev->net->stats.rx_errors++;
+[...]
 
-What is the value of FLAG_RX_ASSEMBLE in flags?
+> +int psp_nl_rx_spi_alloc_doit(struct sk_buff *skb, struct genl_info *info=
+)
+> +{
+> +	struct psp_dev *psd =3D info->user_ptr[0];
+> +	struct psp_key_parsed key;
+> +	struct psp_assoc *pas;
+> +	struct sk_buff *rsp;
+> +	u32 version;
+> +	int err;
+> +
+> +	if (GENL_REQ_ATTR_CHECK(info, PSP_A_ASSOC_VERSION))
+> +		return -EINVAL;
+> +
+> +	version =3D nla_get_u32(info->attrs[PSP_A_ASSOC_VERSION]);
+> +	if (!(psd->caps->versions & (1 << version))) {
+> +		NL_SET_BAD_ATTR(info->extack, info->attrs[PSP_A_ASSOC_VERSION]);
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	rsp =3D psp_nl_reply_new(info);
+> +	if (!rsp)
+> +		return -ENOMEM;
+> +
+> +	err =3D psd->ops->rx_spi_alloc(psd, version, &key, info->extack);
+> +	if (err)
+> +		goto err_free_rsp;
+> +
+> +	pas =3D psp_assoc_create(psd);
 
-		return -EPROTO;
-	}
-	// else network stack removes extra byte if we forced a short packet
+I'm not sure the kernel actually needs any bookkeeping at all for these
+generic rx spi allocations. You could probably just pass the spi, dev
+id, key, and probably rotation count (as a device key generation of
+sorts) to the user without creating a kernel object. For socket
+psp_assocs, the rx state is consulted on the datapath before queueing to
+the socket. For tx state in all psp_assocs, there is the possibility
+that an SADB handle needs to be cleaned up. Neither of those apply here
+or in the rest of the series as I understand it.
 
-	/* all data was already cloned from skb inside the driver */
-	if (dev->driver_info->flags & FLAG_MULTI_PACKET)
-		return -EALREADY;
+I figure the tc ingress rule can just take the spi and dev id by value
+rather than needing a reference to an object that we create here.
 
-	if (skb->len < ETH_HLEN) {
-		dev->net->stats.rx_errors++;
-		dev->net->stats.rx_length_errors++;
+> +	if (!pas) {
+> +		err =3D -ENOMEM;
+> +		goto err_free_rsp;
+> +	}
+> +	pas->version =3D version;
+> +	pas->rx.spi =3D key.spi;
+> +
+> +	err =3D psp_assoc_publish(pas);
+> +	if (err)
+> +		goto err_put_pas;
+> +
+> +	if (nla_put_u32(rsp, PSP_A_ASSOC_ID, pas->id) ||
+> +	    nla_put_u32(rsp, PSP_A_ASSOC_DEV_ID, psd->id) ||
+> +	    psp_nl_put_key(rsp, PSP_A_ASSOC_RX_KEY, version, &key)) {
+> +		psp_assoc_unpublish(pas);
+> +		err =3D -EMSGSIZE;
+> +		goto err_put_pas;
+> +	}
+> +
+> +	psp_assoc_put(pas);
+> +	memzero_explicit(&key, sizeof(key));
+> +
+> +	return psp_nl_reply_send(rsp, info);
+> +
+> +err_put_pas:
+> +	psp_assoc_put(pas);
+> +err_free_rsp:
+> +	memzero_explicit(&key, sizeof(key));
+> +	nlmsg_free(rsp);
+> +	return err;
+> +}
+> +
 
-Should rx_length_errors also be incremented?
+[...]
 
-       Andrew
+> @@ -310,7 +311,13 @@ void psp_assocs_key_rotated(struct psp_dev *psd)
+>  	 * be able to Rx any traffic.
+>  	 */
+>  	list_for_each_entry_safe(pas, next, &psd->prev_assocs, assocs_list) {
+> -		pas->generation |=3D ~PSP_GEN_VALID_MASK;
+> +		/* A socket-less Tx association holds the peer's key, which
+> +		 * the rotation of the device key doesn't affect
+> +		 */
+> +		if (pas->id && psp_assoc_is_tx(pas))
+> +			continue;
+> +		WRITE_ONCE(pas->generation,
+> +			   pas->generation | ~PSP_GEN_VALID_MASK);
+>  		psd->stats.stales++;
+>  	}
+>  	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
+
+I would create a separate list for the socketless tx assocs, so that
+SADB handles can be flushed on psp_dev_unregister(). Then you can just
+leave this function untouched, because invalidating the generation is
+only for __psp_sk_rx_policy_check(), which isn't used by the socketless
+rx assocs.
