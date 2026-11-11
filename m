@@ -1,63 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794404402;
-	b=y7EAyWGYeYYg4e0wnB432pNKdk6hbUQmAC5qIDIK23oGgWHbGWLR5em17Z5CqVDAO6Hy
-	 MUJeKyTQa2977VSW+DHQUPpcWyZCHHJqQnV3iZFYxLFaBwa4+PLN3/SJNUXydeg+U69e/
-	 PsUCU9EZFsbyTHbGgqv7RipK3T73E0r6WOrm1OIF6gdcTqTqf21GqOLgKy72AaEFfcwhu
-	 9o4dkl9bQ/0GuHmim7KJGyfRUidKCvLLVyV5xuZQT3OZ3OUxDuHBuwt7dota6WLEy9mgj
-	 9YyJSX3XrTGOBsgAH8/7iLPTh5SyJPHWR9NFS5skdHK8oJruFxBlcKxI39VXQFEdkzA==
+	t=1794404573;
+	b=iKb8tVGtqOAzqng+SL93kjSt7ZXgrI4fZG8eZp7TS1Nuloo78/jInIEUqwrzuqXWiEdQ
+	 fwC+KUxbpUMG3DFQzFGMDI93XS2nHO1WcH95NbBqwcx97SwdIcAXRR4gqkNR8Dl9bxipP
+	 pYsVB/sDPrW5ZTWI05Rcj0weqTIoRE7Perm3xI8UzLhuX4QsZvQhBosO0ofSdU5oalAG6
+	 ZlVRJ3SiBpcGsTlFuyBHyqibv+xbjDCvERegq91t+p8aGTpgeib5gIVJNyo9ySQw0NXRm
+	 o5j+ZuIA7ZmJ1YNhIKcwOBpHfd1HT8kAseJSxiuzUqHqO7lXZBZgCyl5DSW7ueNtQPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794404402;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=/6HHvAwRP0bBA3afQXfQ1zDZEhkkb4+3EN2Lma0qsSc=;
-	b=4Od/7kY61KiFtNbuFLpx9FLq+/gfigQxwXFew6VxqrWNnq/ItB6LJZwbIlsQTnp1kxPx
-	 Erjk6YZRrHpHWrQmCPegRJZ294wKrIpC6VJtcV73V5wwc1VXrn0pTuBMd9ZJTG+/RfcA1
-	 Dn9iM5bQY/4ygCu5Gp1L9yo7oQzZj7AEsx7QSa0cEY7lxTAY3ezsAdY3WucrmSJlMv9fP
-	 8WNN7/BkIN3iTY/bzG1aRR7Jp4h36aL2jUQcjHWblQJ6zI0y2Tkqw32tpFFqx+8OIY1/I
-	 Fr0ZWlV9PBfGfp7UCgejbBv38eg3H8sFfkON9MM97jcKBphb9zyqeLOf8V2vaBzZmmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794404573;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
+	b=qePUMrYrdwdtOp6/IhFCq0d+UYDIjlXTXG9m7rj4Oapymmy3inzAgAYpmUD6uSJLFUA2
+	 HFy2VB7jun+hFTHynrR8meKo1pplZTxMAULEzNW+MXNzLwWR964VIP3PklsvXEDskmsRu
+	 W2RXu5RkiWqz1lx3jgHJdT8D24P4CH1U4T9XpkYvevBF2bbZBrhCdSN+z5DA4D/jAdBeo
+	 URp/nYhEUzgPxLSLQ0x2C3MEIp4ahsD2+LsT0jRKjV1lp+5VrcFx27MsGETEZJFptid6l
+	 Op9103l/w9g1fTSUp+P+RbwBr9nQj0K3Z99LPMHZtwWIx+tHNuAlr7N7e0gTkVRADFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Lc97omma;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1FWFgdc;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9AD606A324;
-	Wed, 11 Nov 2026 13:40:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F9AD606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F06606A32E;
+	Wed, 11 Nov 2026 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Lc97omma
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/6HHvAwRP0bBA3afQXfQ1zDZEhkkb4+3EN2Lma0qsSc=; b=Lc97omma4TNeqNUSseJ5Bp+oX5
-	KzI27KDwxf9EscAcRG/4JoqUVgPaZuPNLllDrxjCGDsvAXak2o22KXE0HXjLbFOTgXVqh7I75JAJn
-	Lt4zo/y1Oa7PKYccSob+dXWpdVY5xa/rcIbttq4uF3gTxkYsryRTg2nJOyHg4WBV3ZFg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xR8YI-00Fkxp-Qc; Wed, 11 Nov 2026 14:39:50 +0100
-Date: Wed, 11 Nov 2026 14:39:50 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v2] net: phy: aquantia: Poll global status
- register for provision ID
-Message-ID: <20881de9-927c-41c1-ae30-829382d531be@lunn.ch>
-References: <20261111-aquantia-poll-global-status-register-v2-1-b602fc7e80a9@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1FWFgdc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B351F00A06;
+	Wed, 11 Nov 2026 13:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794404573;
+	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N1FWFgdc7n3FyJi4mWq7kE7aBBRtNzoz7OTcWnlRMydaapZ3nDIlCS4Okv1TVPC3m
+	 JL6rQ4hb45pb3iD/dM5aW7LzXLL/qyYUni1xL1rlyF6YBcPpru6XkKZzzFwowC9Y6y
+	 C7NiuCGH+vmHlWX+5tIej70Q1CIcqLl6FT43SjHcnbxrNC7mmiqAQmKBwWSoAD7GLd
+	 ArJzKTz6tCYzM+6Y3ek8ew3nEUuf+jxXUBKm3e9gdsw66SDyb8OUIR83eD2WnwijaO
+	 dPW/jiYjBeQgF5n7srNsN9thQlouIMfyRaahC/yQazXkj1+PCWlU+Bj+iM7D9axTAT
+	 G3hqLCcrRvQ3g==
+Date: Wed, 11 Nov 2026 14:42:44 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
+	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Message-ID: <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,21 +69,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261111-aquantia-poll-global-status-register-v2-1-b602fc7e80a9@oss.qualcomm.com>
+In-Reply-To: <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
 
-> +	else if (ret)
-> +		phydev_warn(phydev, "Firmware provisioning ID not ready; "
-> +			    "interface mode detection may be incorrect\n");
+On Wed, Nov 11, 2026 at 01:36:37PM +0100, Christian Brauner wrote:
+> So we need to copy per page which would fix both.
 
-Please don't split strings. Somebody is going to grep for "Firmware
-provisioning ID not ready; interface mode detection may be incorrect"
-when they see it in their logs and not be able to find it.
+So the fix below is what we've done before for pipes and I think it's
+the right thing to do here too. I put the following on vfs.fixes:
 
-This is one exception we make to the 80 character rule.
+-- >8 --
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH] virtio_console: copy pipe buffers that span multiple pages
 
-    Andrew
+pipe_to_sg() maps buf->page with kmap_local_page() and then copies up
+to a page worth of data starting at buf->offset. But kmap_local_page()
+only maps a single page and a pipe buffer can span multiple pages of a
+compound page with buf->offset pointing past the first one:
 
+- skb_splice_bits() for AF_UNIX and TCP sockets
+- tracing_buffers_splice_read() with sub-buffers larger than a page
+- fuse_dev_splice_read() which hands out the page cache folios of WRITE
+  requests. Those can be large folios since b46e09667411 ("fuse: enable
+  large folios").
+
+Without HIGHMEM this happens to work because kmap_local_page() is just
+page_address() and a compound page is contiguous in the direct map.
+With HIGHMEM the copy reads past the mapping. A fuse server on a 32-bit
+HIGHMEM guest that splices a WRITE request into a virtio port crashes:
+
+  BUG: unable to handle page fault for address: fffab000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP
+  EIP: pipe_to_sg+0x158/0x1e0
+  Call Trace:
+   __splice_from_pipe+0xd6/0x1f0
+   port_fops_splice_write+0xf9/0x170
+   do_splice+0x2c1/0x810
+   __ia32_sys_splice+0x2e7/0x310
+   ia32_sys_call+0x1916/0x2510
+   __do_fast_syscall_32+0xd4/0x550
+   do_fast_syscall_32+0x32/0x70
+   do_SYSENTER_32+0x15/0x20
+   entry_SYSENTER_32+0xa6/0x115
+
+pipe_read() had the same problem and 08aa64796016 ("teach
+copy_page_to_iter() to handle compound pages") fixed it by mapping one
+subpage at a time. So copy the buffer with copy_page_to_iter() as well.
+
+Fixes: b46e09667411 ("fuse: enable large folios")
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-pw-bot: cr
+ drivers/char/virtio_console.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index b1b1aaf43e07e..b93a31b81cf4e 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -12,6 +12,7 @@
+ #include <linux/freezer.h>
+ #include <linux/fs.h>
+ #include <linux/splice.h>
++#include <linux/uio.h>
+ #include <linux/pagemap.h>
+ #include <linux/idr.h>
+ #include <linux/init.h>
+@@ -891,8 +892,9 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ {
+ 	struct sg_list *sgl = sd->u.data;
+ 	unsigned int offset, len;
++	struct iov_iter to;
+ 	struct page *page;
+-	char *src;
++	struct kvec kv;
+ 
+ 	if (sgl->n == sgl->size)
+ 		return 0;
+@@ -907,9 +909,14 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 	if (len + offset > PAGE_SIZE)
+ 		len = PAGE_SIZE - offset;
+ 
+-	src = kmap_local_page(buf->page);
+-	memcpy(page_address(page) + offset, src + buf->offset, len);
+-	kunmap_local(src);
++	/* The buffer can span several pages of a compound page. */
++	kv.iov_base = page_address(page) + offset;
++	kv.iov_len = len;
++	iov_iter_kvec(&to, ITER_DEST, &kv, 1, len);
++	if (copy_page_to_iter(buf->page, buf->offset, len, &to) != len) {
++		__free_page(page);
++		return -EFAULT;
++	}
+ 
+ 	sg_set_page(&sgl->sg[sgl->n], page, len, offset);
+ 	sgl->n++;
+
+-- 
