@@ -1,84 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794431884;
-	b=UMOd2xWauub68WZG48EpTQVnI6KBJXpJr4SAWwoKJFJm/HUdTfWvBxbF4VUg1QIwWgqO
-	 BO5VZbWV/DFkLfaXYuL+vOCK8hS0aU/nsCyKRZlUK2R0e2pfVhY40qeBEVrvEEmuVnzK2
-	 JVEVDQrXPi8FIVxZibWeaGu92wA+AEHw52XBiMXEJp0z89Sq/AXbCClPh9uHJDKAL1Zhk
-	 N9yyxjuRIXjbcGxcctYIvcYp2KvSX6lCFpwuxsfbyk23GFGF4nPpC2vp8tcxqSrCN1s6X
-	 +FBVG6C8rKMPx1u21OUJ6hx8VAwOXk6Cm7o3iYS21UZXSMhPUc5sonlsGgouDsVpJCg==
+	t=1794432421;
+	b=t9opjXmVJLCcEPPqMeajAThRQHR656nE3YTovYNV7SmzpgSUC5U38XKpYB6OwZW3Vc2F
+	 jD5jzj+/ku0rSs93S0OeUS1bA6VyfQyqVvdghnD0gfbzeu2sLJX6aV6zhukpARmtAuYXD
+	 q37Yz8rulWzuYqxMsDsCLuEtf0J2wUaUsHbudyem9T/PBMnf2E6s7n5EPWkm+40Mk8S/P
+	 dlhIp22N9Je1cMzBnZ6atjhR9lhXxyrQZo9ZGoXZmZk3Dg++WZ9Q4+zNBN14pFkZ+QXXn
+	 WGiq0YcRT0kIhwnme8cGbqyvU0L/jeSZ61DNuXVpeUdXD6C5aZ6oB76IfhNJVIWLrIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794431884;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=kiIIOB/1cnxR2EISEEwYz1B5ntZjxJ1bIPc1p1OkhcI=;
-	b=lYBqtqDovP3inw0AQ21MEEqNrbro1ezXcZJGjK0GRXpwh0EaGWz6vJ+nQygLQpNpHi1m
-	 npzq6dWISmPKVcz/waxbrNWEsdV4AAoBljWfyxRHZT7dme0ftHXsydUACdHlUl6HT+206
-	 hAXNaG3tHoO21iOJibuL147rO2PUMQBd8pWJ11lP0RWdORGoWiFiusX/VoRMZ5qpUUbzn
-	 EaN7h9MrKm/BEZ2BC1Hn8V40Ym6KDjVNDpi3ja63llH+MzRYn/qCVh4rpb60mEVimozJB
-	 yiYKXpkYApYIunrS86kQVj/C5GKT5UtyoXukqoQXfFO6YZlgDrPPUIgtvxICw6paGiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794432421;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=qmzMLIvZ7smf+narAzjytGAazldlSomsPSAlkZFNulc=;
+	b=LMHReDtBfti2xCkw+75QaW9zzlxnHPKLIWN/sFsIzJZfmhNrAqANQG7XFLDR37aNcvCh
+	 Tf+X7+zM2jWgY3B4Sl/KtfYLHy1DvcRH2uYnDH5bo0b4V5XcPnciWrFut1vQMDpJGigux
+	 PyspaCFQDYj6Kz5c43Lug57k2i6jW9DQDy28UoPj0sJIXzKdbVJiVypkuqWKPtpNmswdy
+	 88VHgmpsRd5shPxnHncQtZbJC221CYWCrtG/p4qNTR5356DCQyTJFvvoDDdwOf5WZfcCj
+	 WKdJfMVLICOMfjaA9NsKG5cRn3/jX1zjPB4S4UgfEV/S7/sYsxWJEBdIQWQFDb4pIdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=szelinsky.de;
-	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=FR+9KxOW;
-	arc=none smtp.remote-ip=85.214.127.56
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fifOHr67;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39985606A8A9;
-	Wed, 11 Nov 2026 21:18:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39985606A8A9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023D7606A321;
+	Wed, 11 Nov 2026 21:27:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 023D7606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=FR+9KxOW
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 35CA9E8338C;
-	Wed, 11 Nov 2026 22:17:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1794431878;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kiIIOB/1cnxR2EISEEwYz1B5ntZjxJ1bIPc1p1OkhcI=;
-	b=FR+9KxOWBfQKcE9myBo8SSFd33xX7LaN1QFH5nk8wsIa90+F82EpsfmCtDgy2phH1tp6XZ
-	nmWskeTWTXWMgY5sLKZi1+K7URkb2aM7I0cjKsgRZVTywMt9r32OTPx26ghrIdD3KbJg9N
-	hpPKxFYav5bFQzDv3ZM8sa3VGE9kF0DBS6JW4SuIS8BksWANwNdoQOk5QBuXeU75+am02W
-	aFGKz8FmuByUQVdQSpi9BcBYu03rrG9ilWwYPfyQM3Ibd+OBgfW9nP+mY2KbNb+FsK4L5y
-	eYTFpy2utkp6aWAKGiRMFGuvorDmi3jnbn3Z3DE7N4RVGEqZmy1PB4U2/X22aQ==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id DmB7twBem-qh; Wed, 11 Nov 2026 22:17:58 +0100 (CET)
-Received: from p14sgen5.lanhh (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Wed, 11 Nov 2026 22:17:57 +0100 (CET)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Kyle Swenson <kyle.swenson@est.tech>,
-	Ross Cawston <ross@r-sc.ca>,
-	netdev-bot+sashiko@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v4 06/14] net: pse-pd: check the PI state under the lock when setting a power limit
-Date: Wed, 11 Nov 2026 22:17:23 +0100
-Message-ID: <20261111211731.3193796-7-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261111211731.3193796-1-github@szelinsky.de>
-References: <20261111211731.3193796-1-github@szelinsky.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fifOHr67
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794432421; x=1825968421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QvooamukB6dLXpxKs4gwsx2mS4fo83sCV47G3gexn70=;
+  b=fifOHr67mes4CkI0CfSbUCoIyti6ntrtgL/9NQpkPLfXbc14N4c2o88x
+   yEPOflQHsbbhS4pDGcEuOyPyieNccSPZ+09hvV+odym6kTn1TbNO8sP4+
+   TmFuNCsbpgmYRsL7SizBTqN2u2TqZ7b6CAU5vTyQG9l+WkWX1ATDJbbAz
+   qlsqacmNb1H65QxBI/Etcgz46x7EEyKqCB+uZHuZ83qOeZg3aXxIFII2Y
+   g61NsYy/LpHuZ4siN3DsXO0egGCgOu8KSPje9k4o7g+KzlGQte+F8Eu3F
+   OyI+osZ/OiNeP0SIHhx/DggTRt/TQFMWUwCD4zDuVeJiE7pWHC2YzFiuv
+   Q==;
+X-CSE-ConnectionGUID: 8g/GJGV7RjSdKMl+dotW6A==
+X-CSE-MsgGUID: tyJNI4dtT+OHPLTBh1O/Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3219837"
+X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
+   d="scan'208";a="3219837"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 13:27:01 -0800
+X-CSE-ConnectionGUID: y+YSjkWNSHydpwcX7GiPYw==
+X-CSE-MsgGUID: qBY9x3i4QfaSV++Y/CbwsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
+   d="scan'208";a="8821606"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 11 Nov 2026 13:26:58 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xRFqI-00000000zmP-3f2T;
+	Wed, 11 Nov 2026 21:26:54 +0000
+Date: Thu, 12 Nov 2026 05:26:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jun Yao <yaojun8558363@gmail.com>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au, dsahern@kernel.org, idosch@nvidia.com,
+	Jun Yao <yaojun8558363@gmail.com>
+Subject: Re: [PATCH] xfrm: avoid stale tunnel pointers in deferred input
+ callbacks
+Message-ID: <202611120519.EG3LbKfu-lkp@intel.com>
+References: <20261111094629.230568-1-yaojun8558363@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,116 +86,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111094629.230568-1-yaojun8558363@gmail.com>
 
-pse_ethtool_set_pw_limit() checks whether the PI is powered without
-pcdev->lock. pse_isr() changes that state under the lock, so if the PD
-disconnects in between, budget is reserved for a port that is no longer
-powered.
+Hi Jun,
 
-Do the check in pse_pi_update_pw_budget() under the lock, and report
-whether the budget was changed, so the rollback after a failed
-regulator_set_current_limit() runs only then. This also rolls back a
-budget that started from zero, which the old code skipped.
+kernel test robot noticed the following build errors:
 
-Found by code inspection. Not reproduced.
+[auto build test ERROR on klassert-ipsec-next/master]
+[also build test ERROR on klassert-ipsec/master net/main net-next/main linus/master v7.4-rc2 next-20261110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
----
- drivers/net/pse-pd/pse_core.c | 39 ++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Yao/xfrm-avoid-stale-tunnel-pointers-in-deferred-input-callbacks/20261111-174629
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git master
+patch link:    https://lore.kernel.org/r/20261111094629.230568-1-yaojun8558363%40gmail.com
+patch subject: [PATCH] xfrm: avoid stale tunnel pointers in deferred input callbacks
+config: nios2-defconfig (https://download.01.org/0day-ci/archive/20261112/202611120519.EG3LbKfu-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261112/202611120519.EG3LbKfu-lkp@intel.com/reproduce)
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 44bc6d557965..7fffe7e16f75 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1815,22 +1815,35 @@ EXPORT_SYMBOL_GPL(pse_ethtool_set_config);
-  * @pcdev: a pointer to the PSE controller device
-  * @id: index of the PSE PI
-  * @pw_req: power requested
-+ * @updated: set to true if the budget was changed
-  * @extack: extack for reporting useful error messages
-  *
-- * Return: Previous power allocated on success and failure value on error
-+ * Return: Power allocated before the update, or a negative error code.
-+ *	   0 is also returned when the budget was not changed, so callers
-+ *	   check @updated before they roll back.
-  */
- static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
--				   const unsigned int pw_req,
-+				   const unsigned int pw_req, bool *updated,
- 				   struct netlink_ext_ack *extack)
- {
- 	struct pse_pi *pi = &pcdev->pi[id];
- 	int previous_pw_allocated;
- 	int pw_diff, ret = 0;
- 
-+	*updated = false;
-+
- 	/* We don't want pw_allocated_mW value change in the middle of an
- 	 * power budget update
- 	 */
- 	mutex_lock(&pcdev->lock);
-+	/* Only a PI under software power control that is enabled and has a
-+	 * PD detected gets a budget. Check this here, as pse_isr() changes
-+	 * it under the same lock.
-+	 */
-+	if (!pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d) ||
-+	    !pi->admin_state_enabled || !pi->isr_pd_detected)
-+		goto out;
-+
- 	previous_pw_allocated = pi->pw_allocated_mW;
- 	pw_diff = pw_req - previous_pw_allocated;
- 	if (!pw_diff) {
-@@ -1848,6 +1861,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
- 		regulator_free_power_budget(pi->pw_d->supply, -pw_diff);
- 	}
- 	pi->pw_allocated_mW = pw_req;
-+	*updated = true;
- 	ret = previous_pw_allocated;
- 
- out:
-@@ -1868,6 +1882,7 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
- 			     const unsigned int pw_limit)
- {
- 	int uV, uA, ret, previous_pw_allocated = 0;
-+	bool updated;
- 	s64 tmp_64;
- 
- 	if (pw_limit > MAX_PI_PW)
-@@ -1894,21 +1909,17 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
- 	/* Update power budget only in software power control case and
- 	 * if a Power Device is powered.
- 	 */
--	if (pse_pw_d_is_sw_pw_control(psec->pcdev,
--				      psec->pcdev->pi[psec->id].pw_d) &&
--	    psec->pcdev->pi[psec->id].admin_state_enabled &&
--	    psec->pcdev->pi[psec->id].isr_pd_detected) {
--		ret = pse_pi_update_pw_budget(psec->pcdev, psec->id,
--					      pw_limit, extack);
--		if (ret < 0)
--			return ret;
--		previous_pw_allocated = ret;
--	}
-+	ret = pse_pi_update_pw_budget(psec->pcdev, psec->id, pw_limit,
-+				      &updated, extack);
-+	if (ret < 0)
-+		return ret;
-+	previous_pw_allocated = ret;
- 
- 	ret = regulator_set_current_limit(psec->ps, 0, uA);
--	if (ret < 0 && previous_pw_allocated) {
-+	if (ret < 0 && updated) {
- 		pse_pi_update_pw_budget(psec->pcdev, psec->id,
--					previous_pw_allocated, extack);
-+					previous_pw_allocated, &updated,
-+					extack);
- 	}
- 
- 	return ret;
--- 
-2.43.0
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611120519.EG3LbKfu-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+   In file included from net/core/sock.c:134:
+   include/net/xfrm.h: In function 'xfrm_tunnel_info_add':
+>> include/net/xfrm.h:777:16: error: implicit declaration of function 'skb_ext_add'; did you mean 'skb_ext_del'? [-Werror=implicit-function-declaration]
+     777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
+         |                ^~~~~~~~~~~
+         |                skb_ext_del
+>> include/net/xfrm.h:777:33: error: 'SKB_EXT_XFRM_TUNNEL' undeclared (first use in this function); did you mean 'DST_XFRM_TUNNEL'?
+     777 |         return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
+         |                                 ^~~~~~~~~~~~~~~~~~~
+         |                                 DST_XFRM_TUNNEL
+   include/net/xfrm.h:777:33: note: each undeclared identifier is reported only once for each function it appears in
+   include/net/xfrm.h: In function 'xfrm_tunnel_info':
+>> include/net/xfrm.h:783:16: error: implicit declaration of function 'skb_ext_find'; did you mean 'skb_ext_copy'? [-Werror=implicit-function-declaration]
+     783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
+         |                ^~~~~~~~~~~~
+         |                skb_ext_copy
+   include/net/xfrm.h:783:34: error: 'SKB_EXT_XFRM_TUNNEL' undeclared (first use in this function); did you mean 'DST_XFRM_TUNNEL'?
+     783 |         return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
+         |                                  ^~~~~~~~~~~~~~~~~~~
+         |                                  DST_XFRM_TUNNEL
+   include/net/xfrm.h: In function 'xfrm_tunnel_info_clear':
+   include/net/xfrm.h:788:26: error: 'SKB_EXT_XFRM_TUNNEL' undeclared (first use in this function); did you mean 'DST_XFRM_TUNNEL'?
+     788 |         skb_ext_del(skb, SKB_EXT_XFRM_TUNNEL);
+         |                          ^~~~~~~~~~~~~~~~~~~
+         |                          DST_XFRM_TUNNEL
+   cc1: some warnings being treated as errors
+
+
+vim +777 include/net/xfrm.h
+
+   773	
+   774	static inline struct xfrm_tunnel_info *
+   775	xfrm_tunnel_info_add(struct sk_buff *skb)
+   776	{
+ > 777		return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
+   778	}
+   779	
+   780	static inline const struct xfrm_tunnel_info *
+   781	xfrm_tunnel_info(const struct sk_buff *skb)
+   782	{
+ > 783		return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
+   784	}
+   785	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
