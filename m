@@ -1,108 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794437517;
-	b=cN+6e/BJPkKZnQSqjsqpkjgdLH6kjxxJ1u6RshYt41p9ezvyxoHP+jSE1pJK3jldMvyy
-	 4dcw11wkji1FJ/iHiNTlu7PG/s4qChk5l3IvUY1Nj9RpZQU8/ckRvVUmWPMQKY2NNkQ5I
-	 kxGkMhNRwelfzyRgnCz2R4GiOb/UDrJQrlXB58FhqHEAXxuPB8PY2XeyzzC90620OQ0hv
-	 yrt6vsFXqpIXqlMWUnd+ERZmU6QK97/c8GggDQGEDAdJ/qhXtQv6yZBQ3KN6IIojW9kuF
-	 YvO9OE0+HSKY0RvuHTIWgbAcQMccPWesVmaitW8l4AF0y3AKN9AQZJeJn0osFdaizeA==
+	t=1794437684;
+	b=ZgWnOYH65X/BlYagb5FuPWh20gVFvKz/t0z6u9kvtLHwFCT/H9SkbLHomF9LQjFsLQw3
+	 Oa8Bstrl0tLK8SmABYJjz7LLXqFHyroVDFbUWOTZC4EP4xUDseRRYMHByIAwDppgfVmmT
+	 5LqVelTdOePv67i6qgj1Ctzu7ePMKDe4OpmKM65xV9/7jcCdCot+s4VqIo63+mE+lqOAv
+	 /3ZJdb8LAQUHaPXddojjVpdGGZNxpn29ITTqYHG8epN2YSjeBep+YpSr/9fxPxXUEOQqD
+	 59LXotQAJxerfQaSOLToOU7NQyTswLdjP34eZgPMFnwoxNHDh4YdN2vyVv1qzpHkLjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794437517;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=6/vhofawT2SU6SgpF8OfaiGs0g+T9Ie9hyxAqVetXP4=;
-	b=sSfwiCHmB5c4gWanPD41cJ/IR0XgnBB/jE5yEw+qYhCZtuAT95af7Pc1Ghrh1UIUF8xT
-	 qo1odsqetkJBzlaXhJiZK+EGWOPYIyXIHpNQ07adHyPRPgGRCp1A9ov/Y+2ktMiw30Gmz
-	 vOZvva+QRIr8EsaLOdCDPhotaLRVQiBNZUX6I4YkNH0pk01geo4mpCA7ueMsR1lImlMwh
-	 2tqYUEhrAQTe5VzyMvwwymy9IqGXbfgeRghLkcXq7SVkn4cw70WuAlxH6CKsecm3Pr7LK
-	 6k83is2CNJna7POncPcR1c2w6xDj2FqakbpvQVV/E+8QEh8UhPQgRlM88U++mG+bLqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794437684;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=mhvjTmuuVsjUkxpEAPNOTcDxmrBni2pTIT0QskenBEc=;
+	b=MuAj+XwrBmSAVmaiTfvvmamYNg7z1svP7w2PQMXuO4zJIi8OjMHQJmxUMX8TIqtIvxWI
+	 hlboLX7NGGTXDihmD/4590ApzzfDFgP+Z5fkNnGYoNr/HUzYchjNtcaEACqkN4MwkZ6zt
+	 trmLLu1Nq7afJYX1yjgDEj7t4LltZFZTCVPcVD8t5DP1gPAf0SrK+4akJD/r1y5nSy7wp
+	 lk0dGhVAUF0ngeQx0J3dQGIW5ajdUdP04Lj5sRhYxQbBZ0k/Bs+QvfT9w2+GF8Rk5shYU
+	 an/UyWiWGfY3BSRrkYOiZItSLiRyrGJw14LjsJYi+77EihVoLdldF+cOdmm9KD+c8KA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S7Ljy7R6;
-	arc=none smtp.remote-ip=209.85.210.175
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=moZGZQn3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2FC606AECC
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:51:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD2FC606AECC
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3A7606A321;
+	Wed, 11 Nov 2026 22:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S7Ljy7R6
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8b600fae14dso1408780b3a.2
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 14:51:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794437516; x=1795042316; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6/vhofawT2SU6SgpF8OfaiGs0g+T9Ie9hyxAqVetXP4=;
-        b=S7Ljy7R6P0pvsFfplRx8vmeSpwWlYryM2KtPN8g7PAd3MCWx0eHXmJwVwSCamyDoHo
-         fY+A2Pc7gE2AWzo6Fy4uYb0L+DcX9VTlaEcA9lvfLYNO3Zud7lz7jLkxoAQH5SoZhoW1
-         9TRDOIkH84I+Eue2lfJ2SETleTqSKo7htEsiPEkUKfejquFQ+N8b4qzki3DUnGoAJ5YB
-         sbP69DPZTRGLBpPuKqxlEfL8qFfhykJQOR2byVPX9tcbW3xJFWg4f81Wa6rmf67sJ/tW
-         LU/2X+S0/uXHYcegzexiwyYUGSq12JkrbocXZcNUesxt3R3E8nBFIQKey5IUdg8+P8Co
-         iirg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794437516; x=1795042316;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6/vhofawT2SU6SgpF8OfaiGs0g+T9Ie9hyxAqVetXP4=;
-        b=uBe+cP+Py7s+ii45YZmDayWO3tZjyAhdPgHT46ML0zM5HvYdnTwN0cBQKeBGsT4ZpR
-         /CYoe2YR4WnLcUqh/TmC7kVJGDpyvDQPPti9D5VjfINNcPVOAXb0ccUXNybaeOK5KNTC
-         w3WFyPhRonNVDHu2UucZxWkKB1kxvxHiaJWAk6d9RSRmFUHFsBv18p6VpWVwBeNCkM3V
-         7pU0/y/8AWzdbXiQxyZO5TMgo/FVmuFsW0k+MDx/3nmurh/3jS/8q0Gy/ArCoNg+NLCG
-         CuUlPfct1/ieyKjLB3+NrTqaDg6JjBNghACQJl5XgLsUKCAxwcdXu3h8cQw16esHeakr
-         pQTQ==
-X-Forwarded-Encrypted: i=1; AL+hErGWj6tA/Y4x7nr8/brOMk3UwzJQhVqXXo5UY4kz/BWYJ6kA73AsegqT23kCmU1sDFnLhoHfwT0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9HlCwWyYf8beAF0Or/rXBWpkQQvgKUS/wZhS2u/QYCd+CMk9Ju
-	pEWBrAj7uZ78/QGdxLkDgcm8O5xOSuMhrzvlvAHEbs1kZIvcxVfNoo3B
-X-Gm-Gg: AYBFou0c4oghtxNQffDhm1G+Tt3DrnF1TmqnVDiIPs20HA1OaHiBoNlyPyTVLpgFyJv
-	ZKmzSuuWUxbFq7YZBltf9aTQiEznA1MdGIcswYFgzRE8nzyUPZqQUTPtR2WegQleVJF/Rcx8u6R
-	0A90O4LLQlJnIjkHBZ10cvcrYtY7uvJOhhUEnXac1lEK5wN6+gw95SzUviJmy+bMSMAQBo3db9V
-	Fpl5m1ee+Dq9aDspmEsXBt/HHPerielmJY2cfj8FaeSInWDyLvKbMJ0ggRU2ElCNGzwcP43nfw9
-	8jRWJ11sPL6mC8C8AXDyFJLKWZLP7WkOV02w1rOEPkLaKM0+EkyvLlRtSUjwqQFwy15YJ4INKLc
-	XBoTIS2YQ1giHpQBY3X/dOKZPWB7qeF2PTqRkrHuWerbfhCrWNlLQUZ65vNZ1Qw2qkqUtIMqUmC
-	xxR6/hfHVPGhjdsIbbz2pqGQhuzAsccbM039TyoBg7eOimWT9bVNFHrYI5a5B/j4paOMgczZcbT
-	DPb2zi+iYJbhXf3ZRnMwXwp1HRETFoKF55hYPY0yTP9C4+v1oWxGL1kbLanZrZanz3U9j2eMwkC
-	j2kjAo1/5TwTnyxryLBNBiRtiXbBMAOUVur0TAhF85NBpSCqNgNeYZxmypZklW/bPFAJuHVCZ46
-	d0c4qa+h/zdhI1ltQhKpw7aHpDLwl7dC8Rou5cAYybvYdLOnrbfZNiLKqx5CE3dCMDvKpT/IfqX
-	4W2bHOn40AAc5atDN4OjCRf3eyUKL5k1vZZ5fGIcSX
-X-Received: by 2002:a05:6a21:6f09:b0:3e1:a4ac:2d5b with SMTP id adf61e73a8af0-3f2ff4d9896mr3404820637.41.1794437516195;
-        Wed, 11 Nov 2026 14:51:56 -0800 (PST)
-Received: from sid-dev-env.cgrhrlrrq2nuffriizdlnb1x4b.xx.internal.cloudapp.net ([4.155.54.158])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa86dd0fsm2471575b3a.22.2026.11.11.14.51.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 14:51:55 -0800 (PST)
-From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Kirill Tkhai <tkhai@ya.ru>,
-	apais@microsoft.com,
-	hargar@linux.microsoft.com,
-	rlmenge@gmail.com,
-	egoriluk@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Subject: [PATCH net v2 2/2] selftest: af_unix: Test scm_fds on dgram disconnect.
-Date: Wed, 11 Nov 2026 22:51:48 +0000
-Message-ID: <20261111225148.88506-3-sidchintamaneni@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261111225148.88506-1-sidchintamaneni@gmail.com>
-References: <20261111225148.88506-1-sidchintamaneni@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=moZGZQn3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CE41F00A07;
+	Wed, 11 Nov 2026 22:54:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794437684;
+	bh=mhvjTmuuVsjUkxpEAPNOTcDxmrBni2pTIT0QskenBEc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=moZGZQn3tacM1W9OrsISfnfN/V4zXrXTRKj7PugF3DN57hZRsv8rpyP0x56g/u6EW
+	 QlLzOa1mnAN21+nIsjzPTgmsa1kUh633Xv+1uT58HjbjL1yX5F4htKpxZ1Xd+GYEYs
+	 PC7DBJtsILNLM8dwzEEuacJdJvY710AvT/iYGj8o9wW4Og8qVItXQ867jsGLgEGvbi
+	 2Lm8RBEJkrYuXL0xt8T7Pgtde46wxGRFgCyAft/JruROIeL5iZya0rD2uekvmWjbMG
+	 VZhx8OJfYS47t3iFo422chTG/KxPKnHjZUJ2E9tJ9ylOZp9dZm6COxbTFrJSVuuL1F
+	 b8o4kHPfT/2HQ==
+Subject:
+ Re: [PATCH net v2] net/sched: sch_qfq: revalidate aggregate after peek
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
+Date: Wed, 11 Nov 2026 22:54:43 +0000
+Message-ID: <179443768349.2199510.12975726279458330465@kernel.org>
+In-Reply-To: <20261110222946.2147440-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261110222946.2147440-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,106 +62,149 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add dgram_disconnect_fdinfo in scm_rights.c verifying that scm_fds in
-/proc/self/fdinfo/<fd> returns to 0 when a connected SOCK_DGRAM socket
-with queued SCM_RIGHTS datagrams disconnects via connect(AF_UNSPEC) or
-observes a dead peer in send().
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
----
- .../selftests/net/af_unix/scm_rights.c        | 79 +++++++++++++++++++
- 1 file changed, 79 insertions(+)
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights.c b/tools/testing/selftests/net/af_unix/scm_rights.c
-index c165f250220a..ced83d3173b7 100644
---- a/tools/testing/selftests/net/af_unix/scm_rights.c
-+++ b/tools/testing/selftests/net/af_unix/scm_rights.c
-@@ -395,4 +395,83 @@ TEST_F(scm_rights, mixed_lowpoint)
- 	close_sockets(6);
- }
- 
-+static int count_scm_fds(struct __test_metadata *_metadata, int fd)
-+{
-+	char path[64], *line = NULL;
-+	int scm_fds = -1, ret;
-+	size_t unused = 0;
-+	FILE *f;
-+
-+	snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", fd);
-+
-+	f = fopen(path, "r");
-+	ASSERT_NE(NULL, f);
-+
-+	while (getline(&line, &unused, f) != -1) {
-+		if (strncmp(line, "scm_fds:", 8))
-+			continue;
-+
-+		ret = sscanf(line + 8, "%d", &scm_fds);
-+		ASSERT_EQ(1, ret);
-+
-+		break;
-+	}
-+
-+	free(line);
-+
-+	ret = fclose(f);
-+	ASSERT_EQ(0, ret);
-+
-+	return scm_fds;
-+}
-+
-+TEST(dgram_disconnect_fdinfo)
-+{
-+	const FIXTURE_VARIANT(scm_rights) variant = {
-+		.name = "UNIX ",
-+		.type = SOCK_DGRAM,
-+	};
-+	FIXTURE_DATA(scm_rights) self = {};
-+	struct sockaddr addr = {
-+		.sa_family = AF_UNSPEC,
-+	};
-+	int ret;
-+
-+	ret = unshare(CLONE_NEWNET);
-+	ASSERT_EQ(0, ret);
-+	ASSERT_EQ(0, count_sockets(_metadata, &variant));
-+
-+	create_socketpairs(_metadata, &self, &variant, 2);
-+
-+	/* 1. Disconnect via connect(AF_UNSPEC) */
-+	__send_fd(_metadata, &self, &variant, 0, 0);
-+	ASSERT_EQ(2, count_scm_fds(_metadata, self.fd[0]));
-+
-+	ret = connect(self.fd[0], &addr, sizeof(addr.sa_family));
-+	ASSERT_EQ(0, ret);
-+	ASSERT_EQ(0, count_scm_fds(_metadata, self.fd[0]));
-+
-+	/* 2. Dead-peer disconnect via send() */
-+	__send_fd(_metadata, &self, &variant, 1, 1);
-+	ASSERT_EQ(2, count_scm_fds(_metadata, self.fd[2]));
-+
-+	ret = close(self.fd[3]);
-+	ASSERT_EQ(0, ret);
-+
-+	ret = send(self.fd[2], "x", 1, 0);
-+	ASSERT_EQ(-1, ret);
-+	ASSERT_EQ(ECONNREFUSED, errno);
-+	ASSERT_EQ(0, count_scm_fds(_metadata, self.fd[2]));
-+
-+	ret = close(self.fd[0]);
-+	ASSERT_EQ(0, ret);
-+	ret = close(self.fd[1]);
-+	ASSERT_EQ(0, ret);
-+	ret = close(self.fd[2]);
-+	ASSERT_EQ(0, ret);
-+
-+	sleep(1);
-+	ASSERT_EQ(0, count_sockets(_metadata, &variant));
-+}
-+
- TEST_HARNESS_MAIN
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch does not fully fix the use-after-free it targets.
+- [Low] qfq_dequeue() puts a `restart:;` label (a label on a null
+  statement) before its local declarations with initialisers (`struct…
+
+--
+
+net/sched: sch_qfq: revalidate aggregate after peek
+
+This patch makes qfq_dequeue() restart when a child peek re-enters
+qfq_enqueue() and changes the in-service aggregate or the class's
+aggregate. It moves the DRR requeue logic out of agg_dequeue() and into
+qfq_dequeue(), after the service charge, using cl->agg. It also rechecks
+class activity after the peek in qfq_enqueue().
+
+> diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+> index e900890e9c544..82903f9e58504 100644
+> --- a/net/sched/sch_qfq.c
+> +++ b/net/sched/sch_qfq.c
+
+[ ... ]
+
+> @@ -1103,6 +1095,7 @@ static void qfq_schedule_agg(struct qfq_sched *q, struct qfq_aggregate *agg);
+>  static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
+>  {
+>  	struct qfq_sched *q = qdisc_priv(sch);
+> +restart:;
+>  	struct qfq_aggregate *in_serv_agg = q->in_serv_agg;
+>  	struct qfq_class *cl;
+>  	struct sk_buff *skb = NULL;
+
+[Severity: Low]
+This isn't a bug, but the restart label sits in front of the local
+declarations, so the backward gotos run their initializers again:
+
+restart:;
+	struct qfq_aggregate *in_serv_agg = q->in_serv_agg;
+	...
+	struct sk_buff *skb = NULL;
+	...
+	unsigned int len = 0;
+
+This relies on declarations following a statement. Mainline no longer
+passes -Wdeclaration-after-statement. This patch has Cc: stable and a
+Fixes: tag going back to 2012, though.
+
+Would older stable trees that still use that flag (5.10, 5.15 or 6.1, for
+example) warn here, or fail to build with CONFIG_WERROR?
+
+Would a loop around the selection step, or assigning these variables
+after the label, be a simpler way to write the retry?
+
+[ ... ]
+
+> @@ -1151,13 +1147,15 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
+>  		 */
+>  		in_serv_agg = q->in_serv_agg = qfq_choose_next_agg(q);
+>  		skb = qfq_peek_skb(in_serv_agg, &cl, &len);
+> +		if (unlikely(in_serv_agg != q->in_serv_agg || cl->agg != in_serv_agg))
+> +			goto restart;
+>  	}
+>  	if (!skb)
+>  		return NULL;
+>  
+>  	qdisc_qlen_dec(sch);
+>  
+> -	skb = agg_dequeue(in_serv_agg, cl, len);
+> +	skb = agg_dequeue(cl, len);
+
+[Severity: High]
+Can the child dequeue here still re-enter qfq_enqueue() and free
+in_serv_agg?
+
+The new restart checks only come after the two qfq_peek_skb() calls.
+agg_dequeue() calls qdisc_dequeue_peeked(cl->qdisc). That helper only
+takes the skb from gso_skb if the child's ->peek() cached one there.
+Otherwise it calls the child's ->dequeue() again.
+
+sch_prio is one such child. prio_peek() caches nothing at the prio level,
+and prio_dequeue() calls qdisc_dequeue_peeked() on each band, starting
+from band 0.
+
+Here is an example setup. The QFQ class child is prio. Band 0 is a netem
+A0 with a delay, whose child is a netem B with duplicate. Band 1 is a
+pfifo.
+
+At peek time, A0's head is not due yet. The peek returns band 1's skb
+without re-entering QFQ, so both restart checks pass. Suppose A0's head
+becomes due before agg_dequeue() runs, and lmax was lowered while packets
+were queued:
+
+qfq_dequeue()
+  agg_dequeue(cl, len)
+    qdisc_dequeue_peeked(prio)
+      prio_dequeue()
+        qdisc_dequeue_peeked(A0)
+          netem_dequeue(A0)
+            qdisc_enqueue(skb, B)
+              netem_enqueue(B)
+                rootq->enqueue(skb2, rootq, to_free)
+                  qfq_enqueue()
+                    qfq_change_agg(cl)
+                      qfq_deactivate_class()
+                        qfq_deactivate_agg()
+                      qfq_rm_from_agg()
+                        qfq_destroy_agg()
+                          kfree(agg)
+
+qfq_deactivate_agg() and qfq_destroy_agg() update q->in_serv_agg. They
+cannot update the local copy in qfq_dequeue(), and that copy is then
+used after agg_dequeue() returns:
+
+	if (unlikely(in_serv_agg->budget < len))
+		in_serv_agg->budget = 0;
+	else
+		in_serv_agg->budget -= len;
+
+The pr_debug() that follows also reads in_serv_agg->F.
+
+Is this a write to the freed aggregate? And if the aggregate is not
+freed, does the service still get charged to an aggregate that is no
+longer in service?
+
+Could q->in_serv_agg and cl->agg be revalidated after agg_dequeue() too?
+Alternatively, the code could be restructured so that no aggregate
+pointer is used after any child dequeue or peek.
+
+>  
+>  	if (!skb) {
+>  		qdisc_qlen_inc(sch);
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110222946.2147440-2-Jeremy.Jean%40oss.cyber.gouv.fr
