@@ -1,110 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794421186;
-	b=s3fD4q/luU6PLoTXEHqAW8wUfls5UfJusn3WPMUlDMkqHJiiMqXWxDAZpUBxk5QwSf5V
-	 KAdyOryeQxRWU/nbIJF9KnY20bM/tbzsJSigebLyAoZk8Y/zGgLzbL9Re8X3f6ov3taaG
-	 wPrthIh1sMW7KT3KBm9BhprLrp6HpdH8jfj/B6PavbEPbKIHsNws3co7vFcQQ/2nnFQoH
-	 9Rnan8KNyXG8IXA/W76c0YVEPxkAzyzLVMDMfiH9Ilo3INZUq88FcbCEhiL57INJu0f1H
-	 qeJ2j1qBDR0zaOW3opZeM9pXefiAMtbsmK6IHju3fbR2DeWlpsENE6Tvh/qW8OjlGFg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794421186;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding;
-	bh=miHmWkTPhUcAEvpsJtGNKtqPm0O9WXg4DLHkHhO3x30=;
-	b=R1HdPnGof7E9CYjvxMzTOvwA/WtY2hehRN6X2SZgfTRzZK36xjGT+NqUStQxk27oq43P
-	 5Xsy8A8ptTGS0FVukQV/GJAYFH6uecy7gDfRCAbxAXuPnxTFDUF6B+6OOX0V9itc/fKYV
-	 6z5LFERecJn3rmCXmXeHg3S0Gkr28fEU5PnpbbFG01CMMx1eKZjb6vj9bF1gS4cFxwQHX
-	 w+b6ORkvmFjs7YS8QuSsoiOiP14EBxC+wv4nNvaL2smdUQ7wzNjvXeglNX8J2PqCYCriG
-	 LmrsVT9ebHz7N1kv7ZdddwDemjGnYopRvwpwcXlB5EaUqz5O+kMyR+VFW6hXOqS2Bdg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rXyV+V8m;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b="67f/wVrW";
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.145.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794421449;
+	b=afhZR3eXlg1IAOGDQf1jokzN55/cdBbEKxMl9kKG5OMPolq96ELc5FlAzKel8lC2b/Jr
+	 2kHkrbD65Sfs/FXcDu/nDzpUfWe2A/7hkCCSJ1od4K9et940Hs4T/O3xi47uckgMNqBFF
+	 X+QxOZ5B040EhBpiSJll4zydpgnKLUQDk/pmvVHiWTJa43uZr3JvD7ySrzUQa+oGfBxx/
+	 yqSDBI4FTr4BaWU5VkrgV4fOYGwj/b/mY0n8sMypbq2OaedZFcBfs1ZxfUxLwbXlB362q
+	 lgRrp0Xbnf7GWDONog2o3JjmwjSpgRmjRnzdfiWUGcUvycfOuuYbPyP4CrEnAdzxpMA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794421449;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version;
+	bh=aMG9NSIoryJ6ZmHzBOTcIKDBni97i5hfecL1FAmnbM4=;
+	b=fk5m6vK0oqS+Ff+aunwn4yUux6/76Atev4KOf+nUCBUlqaz77l6/Dift2PPK0t0SBRIj
+	 90vvbjq2w35ybYyk7QMqawZ0EUEcSJ89LBVAAar5eXgL70HKCNtU0emuws0nuSsRFOr4n
+	 1N+PYwf9gscGX4PJvbU8BtDYNa0146esnbPd6AZngWuoB09AFLLC7l/oXGY4IQtjAwq+j
+	 KMSJvHLEJirqM8EmCN3k8fMIFGzYa4Zp2O4e3r8LjSTrXCWeUTAuaYHZmbd9M3sNzzwwu
+	 xK0isHTXOGmPsImOAG2Zout8P4FuBvf/4b2yHZflGYMybo7c233dcxtLap9lbkGY0hw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=isns6Mqh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8C8606AE1E;
-	Wed, 11 Nov 2026 18:19:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F8C8606AE1E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2FF606A334
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 18:24:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D2FF606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rXyV+V8m;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=67f/wVrW
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794421184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=miHmWkTPhUcAEvpsJtGNKtqPm0O9WXg4DLHkHhO3x30=;
-	b=rXyV+V8mB3WGQYt0D1cbKm+3TdQH5P7EkBB0BuarwzijqP3FTDgXeDtU+702Qha3Vjesjd
-	ZOM+Cs2Cjqf95W9HPfwGmTijj2qXHfWvu2anJBtqLqoaWKO9FjvL7fGv6zbAmkaqKvsvsQ
-	RLNM7MfGFGooJ30UY9ORSGfoi0Y4Pd/bLfBvxxCuZ0XnCWN6lhknFqGFfTdjfbjgodCXyL
-	9khOfeXGPBb8Che0NlD4shfupUeTEen9ahuAZgPlfkyLNV7YY0wetUpUm0wM8itMWW7+PD
-	8f+X28nEXLQlCNh1FQ2LsARwu+5HxRkTrDJVnz2voRACc/e1f7hBk3Crxa9Caw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794421184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=miHmWkTPhUcAEvpsJtGNKtqPm0O9WXg4DLHkHhO3x30=;
-	b=67f/wVrWqykxVxVPvO3YPpqenX7yBp2KyE+jBcUbzvEX+HrwwBjv1vgxB6QxoqLtZqXPOF
-	cVUFfC/MqkcyEyAw==
-To: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Breno Leitao <leitao@debian.org>,
-	printk@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Wessel <jason.wessel@windriver.com>,
-	Daniel Thompson <danielt@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Rio <rioo.tsukatsukii@gmail.com>,
-	Bradley Morgan <brads@mainlining.org>,
-	Pnina Feder <pnina.feder@mobileye.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Cen Zhang (Microsoft)" <blbllhy@gmail.com>,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	kgdb-bugreport@lists.sourceforge.net,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>,
-	kexec@lists.infradead.org,
-	Gustavo Luiz Duarte <gustavold@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH printk v2 0/6] Introduce policies for unsafe flushing
-Date: Wed, 11 Nov 2026 19:25:16 +0106
-Message-ID: <20261111181942.593695-1-john.ogness@linutronix.de>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=isns6Mqh
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABHskCb1222790
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:24:08 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=aMG9NSIoryJ
+	6ZmHzBOTcIKDBni97i5hfecL1FAmnbM4=; b=isns6MqhLK2gICBmvsfmHDefPrM
+	fcse+kjR+dgFtXbRypDtqotW1Yl02H8zLF60ugJCdMKKjv2bgp3/FfDVbtAj0qPL
+	nMdiMIQxDW/X1fu1xFPQrqO7h+9kKGnsak6+fIA8XRHkd2ZnZxPL61j+PZEgibEy
+	nBb5hifSwAd17cHCObGIGWr6WQCyzXxmQufY6UHIk7KcX4LXVPfTsiACYBolCFv2
+	uZsIapcgbM6aipiYch9uLbCT+xrDb7WMyVR20uj/cvl1DYR6dMROu6AKFq/+SWeu
+	7vwmmqM2W1TLALIA4l+/gOuarfulif/2FeT4KQUkwmvzHlyXdH6HmkOe6Mg==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hv85sh1f4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:24:08 -0800 (PST)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad30487d55so5719841a91.2
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 10:24:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794421448; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HpiBILIYFvubsx1h7qSSb+YnWZ4UjjUYRhYscbza0wPyyYTs28QrzO6egQkniSd+4L
+         K8JKdC0rYDDt6s4uFSbSJP8hugBGBmTHjxHIuHRx12hcOb0K/2VJI6oZKOQVMP18PQXv
+         9HJQE9eSo0ASb8/QWcw307t68+hzZ1SFcD+Pk5SLQkR4SnE+iORqzsOunSIjSyEN3rcu
+         olriOYSjiWigR7xdrK0C8MwLC9j4fyCHLeo7tKUnOfXIpq7AjCulOOKEcwi9t+sN/f+E
+         YDTy59V7kta1rdHcyIlVJ2kbdE57EX5ARIVrw6/G3rVLAqVnrFh+hHXvI2p/ZDyy4ICv
+         9LGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version;
+        bh=aMG9NSIoryJ6ZmHzBOTcIKDBni97i5hfecL1FAmnbM4=;
+        fh=Pmj0flJu1UnzQXPteF+BeXRUrdGICr8j0xYNarx7zbU=;
+        b=B7GZbknic27U0bAGEzhUyJX7LYm4RDJKxk9vIz57/fR8bOoUTXTxVnWRtSkOa/sXVM
+         yO425D0niM4kzWbGVF2y/sLOVzkbIWj+LR2l5bh1/ARxvdtjR1R29WUhhHQjV71iSOqq
+         NTmnke3E5fvcOG8Mkdc+uYHaV+OnmRZm20goSz05qHk+9R2+8FIMM/DJnQJG3XoMn/Ch
+         y4uhwuWvDJ0jZx8yNKeznKkVreheZHbp1gUWMLlxQvuw1dUwk6wP7pynnH+heQfn3Cp9
+         Vc2Y7wBUF34tDiMq76r20oDFN+dcJRXmO240WRsQHtmvTgld3Dao37Vqae9KgQ/S8iz3
+         FN4A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794421448; x=1795026248;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aMG9NSIoryJ6ZmHzBOTcIKDBni97i5hfecL1FAmnbM4=;
+        b=O9fztJ3Ba9dPbcgJA7/BwhnpiXcwAH3T48p/6p7ZcC5x/qneEdAp0rnZqqCjzrh1QT
+         wGTpdX3q0OluoSe8KjuDEs27hDaVajHkF8PDjvcF+LzS0iiCr9gTxku5OLRMFEuLHbx9
+         /1jQfeTNwnU06rvKXUs8ZtQxe/vLKGH2+HzOetRp/JgIGevLVVYvxKqlyrYHqp+IPTe8
+         IJcvN+xia7miAZJ8i0NURibaOcqmRYYhfmK4FavKkqcpaWDivVenU+n+12nAKhNdqUYE
+         z4LhzTRyGvnZVlucS52uLO5bPM733qKCAexdHGpWvtkAzztjkyIJMX9NQF21xj08sisf
+         fcCA==
+X-Gm-Message-State: APuU4Z/16qvKAvNipnpy1Em6phJ80SkbvT2WWOUidSCl5YmM9K6RbSLB
+	K31yMx3MfsM5LuRaAFi8rLS/AZTgv2U3gYHhW99uqATRssNmO/MeGrW16TPUasrGLkVtR8GjCAS
+	+qlNMt6AvtTI7eiVLY9+JHnF6hZiaMiXePcwJVMQhV0SlN9xPAWRsdYpREjeF9BeFtZS5pq6Hhp
+	HvR5Yysl8Ub0wRP719Axl64+D2846qrbM=
+X-Gm-Gg: AYBFou1EVsTyjgKsPfo2IBpWfqphpk+P7EFttzfuoDGLM1WXzI8bytlDyluo0RttYSP
+	HOStsH5nhRFVYQ7LM1wcUIFBcT+22AKuqz7q+koeTdbm/x5/MbN6phZPLSzf0uirXOykvjE0P1W
+	e8tOsS1YbTdsvmzlIlxYs1fRf7s5x2EUeXTxjkfMbS6IdHS1eUSTdVrufxytRlRxJqrefvWFcZQ
+	oTghwAbtgP+zuZdo7JvwD+k6wiSOFDj
+X-Received: by 2002:a17:90b:2f83:b0:3ab:884b:65a8 with SMTP id 98e67ed59e1d1-3b182eda7efmr3257443a91.26.1794421447581;
+        Wed, 11 Nov 2026 10:24:07 -0800 (PST)
+X-Received: by 2002:a17:90b:2f83:b0:3ab:884b:65a8 with SMTP id
+ 98e67ed59e1d1-3b182eda7efmr3257421a91.26.1794421447127; Wed, 11 Nov 2026
+ 10:24:07 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,88 +110,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261111005533.6436-1-toddfreed@meta.com> <20261111005533.6436-5-toddfreed@meta.com>
+ <DMSJB8MZZCXK.MCEBRZQDAM5Q@gmail.com>
+In-Reply-To: <DMSJB8MZZCXK.MCEBRZQDAM5Q@gmail.com>
+From: Todd Bert Freed <toddfreed@meta.com>
+Date: Wed, 11 Nov 2026 10:23:56 -0800
+X-Gm-Features: AclHuK8_olqmA7fXTYgEAj2-H4kgkwQj_X0uL-xyG8nZrZvhci79BGaB7ila0uo
+Message-ID: <CADh2yMx8MPjcH7Bpj72rNNd_tT=6uSC5Ow9JyGjTMjFgs499Pw@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 04/15] psp: add support for socket-less psp associations
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+        bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
+        Donald Hunter <donald.hunter@gmail.com>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+        John Fastabend <john.fastabend@gmail.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-rdma@vger.kernel.org, Martin KaFai Lau <martin.lau@linux.dev>,
+        Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
+        Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+        Wei Wang <weiwan@google.com>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-GUID: Kai6dCsmrunecvxQrxn3g9KpAA6-XuQ5
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3MyBTYWx0ZWRfX/hSQllmZ1jkJ
+ Oc9Ms2flYrUM3VghNPdEy/linv6hhBihy1j5Jwkww9zVTivdRMr8PTQNs88sECfEidcHrnRt+LJ
+ ZnDibGn2DHOdhbIXs8n2SrWUzeoHSYc=
+X-Authority-Analysis: v=2.4 cv=RsZQvymK c=1 sm=1 tr=0 ts=6af4b2c8 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22
+ a=-xR6GoDS8vL2zpuMsZwA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3MyBTYWx0ZWRfX8UZPHdxLMiXs
+ UOrQQ73/kdqx8LKV26TT4HuVqPbB3fJmem4kbBuWw8QjlfiSro6CKSIARgXQFi3bjQ+C/Urs2J0
+ 4KMERT+U+lXhnCCRqba/skH++NYTaN/wvlMaxDIX/TiwRaF6caN9y16BKP5P8eaoedtHvOyYRuO
+ cC57jH6N6PfLG5UvSEqK3GE5uACM0D733A4UhRHyCgGklW5WQ6BTsd9V9zul+0rHzao2Mu2+qIU
+ 5ZaumcP+LvCfbKc9igECapKKSFJQYWSvhMSPJ2cBAcMAFq+VuUFQ9AU+y0CAoqVimz4iImkjb/f
+ z91kO2q1s8ecVv1ktG0fSMBW4nWDJN8JxAuwJucXOOQw0WE9+RtZCRDpya93LzVIZUxguY7pirT
+ PAHXyuDyTx1WzQ59HTxA5EYfNw6DhM+c1LbnPEAGkb319nLcPVT458REGMhkaEPR7HRCHCwJT+7
+ gbC9id5c2CX+b9PjCBg==
+X-Proofpoint-ORIG-GUID: Kai6dCsmrunecvxQrxn3g9KpAA6-XuQ5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-11_04,2026-11-11_03,2025-10-01_01
 
-v1 is here [0].
+> I'm not sure the kernel actually needs any bookkeeping at all for these
+> generic rx spi allocations. You could probably just pass the spi, dev
+> id, key, and probably rotation count (as a device key generation of
+> sorts) to the user without creating a kernel object. For socket
+> psp_assocs, the rx state is consulted on the datapath before queueing to
+> the socket. For tx state in all psp_assocs, there is the possibility
+> that an SADB handle needs to be cleaned up. Neither of those apply here
+> or in the rest of the series as I understand it.
+>
+> I figure the tc ingress rule can just take the spi and dev id by value
+> rather than needing a reference to an object that we create here.
 
-Until now unsafe flushing is only performed at the very end of
-panic(), before entering the infinite loop. For other situations
-(such as panic-kexec or panic-reboot or emergency-reboot) no
-unsafe flushing is performed. The reasoning for this is because
-an unsafe flush could lead to fireworks, which could prevent the
-kexec or reboot from occurring.
+That is how it works in this series. The tc psp decap rule (ingress) does not
+make reference to an rx assoc ; instead, it should have flower matches on
+psp_spi, psp_ver, and psp_dev. That effectively ties it to packets from just
+one rx assoc.
 
-However, some users may be willing to take on such risks in order
-to see panic output. Indeed, for the netconsole (which does not
-support safe atomic printing) it is a regression that such unsafe
-printing does not occur. [1] 
+So why keep track of rx assoc objects at all? Two considerations.
 
-This series adds unsafe flushing policy flags per-console to
-allow individual consoles to perform unsafe flushing for such
-scenarios. The unsafe flushing is hard-code-enabled for the
-netconsole in patch 6/6. The justification is that this is not
-less safe than the legacy netconsole.
+1/ don't accept packets that correspond to a stale association. That is, even
+if the device decrypted the packet, it should be dropped if the device key
+which minted the assoc's SPI is two rotations behind. For psp socket offload
+that is enforced in __psp_sk_rx_policy_check() with the pas->generation
+check.
 
-Later these policy flags could be easily exposed to userspace
-via /sys/class/consoles/, once the sysfs per-console interface
-is available.
+The spec permits SPIs to be reused immediately after two rotations. So the
+device could decrypt a packet with a SPI that is more than two rotations old
+in that case, or if a previous packet is being replayed, for example.
 
-Changes since v1:
+2/ hardware offload. the solution to #1 should be able to be fully offloaded
+to the device. psp tunnel mode will be hw offload only, and is implemented
+in the eswitch with connect-x.
 
-- Make console.unsafe_flush_flags unsigned.
+We could add a psp_gen flower match to replicate the pas->generation
+check, but the device has no access to the pas and can't offload that.
 
-- Add missing kerneldoc description for printk_trigger_flush().
+Keeping track of the rx assoc means that the kernel can take action on the
+"this assoc is now stale" event. Possibly by enumerating the tc rules and
+either deleting them, or marking them stale for userspace to reap.
 
-- Remove the WARN_ON_ONCE() in
-  nbcon_context_try_acquire_hostile() since hostile takeovers
-  are now possible from non-panic contexts.
-
-- Also provide a flush reason for console_flush_on_panic().
-
-- Add a global variable @legacy_flush_reason to track reason
-  for legacy flushing.
-
-- Explicitly set PR_FLUSH_RUNTIME to 0 since it is now used to
-  initialize @legacy_flush_reason.
-
-- Temporarily set @legacy_flush_reason during legacy flushing
-  of console_flush_on_panic() and printk_trigger_flush().
-
-- Also set/check ctxt->allow_unsafe_takeover in
-  nbcon_legacy_emit_next_record() to enforce flush policies
-  for legacy flushing.
-
-John Ogness
-
-[0] https://lore.kernel.org/lkml/20261109123127.489676-1-john.ogness@linutronix.de
-[1] https://lore.kernel.org/lkml/20260915100140.3631650-1-ryan.roberts@arm.com
-
-John Ogness (6):
-  printk: Introduce and specify flush reasons
-  console: Introduce unsafe flush policy flags
-  printk: Evaluate flush policy in nbcon_allow_unsafe_takeover()
-  printk: Remove nbcon_atomic_flush_unsafe()
-  printk: Add panic+kexec flush point
-  netconsole: Always perform unsafe flushing on panic/kdb/restart
-
- arch/loongarch/kernel/reset.c  |   2 +-
- arch/powerpc/kernel/traps.c    |   2 +-
- arch/powerpc/kernel/watchdog.c |   2 +-
- drivers/net/netconsole.c       |   4 +
- include/linux/console.h        |  39 +++++++---
- include/linux/printk.h         |  27 +++++--
- kernel/crash_core.c            |   1 +
- kernel/debug/debug_core.c      |   2 +-
- kernel/panic.c                 |   8 +-
- kernel/printk/internal.h       |   5 +-
- kernel/printk/nbcon.c          | 129 ++++++++++++++++++++++-----------
- kernel/printk/printk.c         |  38 +++++++---
- kernel/reboot.c                |   2 +-
- lib/nmi_backtrace.c            |   2 +-
- 14 files changed, 181 insertions(+), 82 deletions(-)
-
-
-base-commit: d01f86a7da8161aac8c6304b377cf58fb75861ca
--- 
-2.47.3
-
+-Todd
