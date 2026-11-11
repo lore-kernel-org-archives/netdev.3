@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436809;
-	b=KzgOXJ3Y4EqCp+Re6GGyiFCYR156Ukx01fE3YA4exIhYawVj/SdvsVEmSO/8PQ09PJis
-	 vhGEeSbsKSLg5Hj5epmG/hwwVboNJCO4pRswbEO0cxR/m+Celo4sjtEm3ae/6qJRTpbx+
-	 y1qdNP0F6V8xfmLoPwPo582Q9aVU3C0Swh2HVkSJdtu4/EbJfugt7LcHxE/PtJ1Ucmfs+
-	 LoAJ3uECTiew3wR315++oTW62+n3bp2DBz9tkQuqdKKQJ67ZZXzndHjmRe2oohkEAlrOP
-	 VVTDc//jIlyX/rxeB34xUtk/JIDEHBYlkxfJsEQAqMer208zGGk058UreI2LXTLAeQw==
+	t=1794436810;
+	b=zegHGpsWJSA+5P7PxwiYnXcuisrtV7AMEf9GrJnOaALG+P9VGPyoE7/RHC6kiD1tdOd1
+	 70yybeunnFnselSq9Y5RmRKBx0n9ijxV2YKy7BAUoylfK+h+WRx83T9MLBxsbz18c2GBL
+	 0B7z9SX8idY3pTsFL/QEC/KIpPtSHOndjQQCJAhdKOJ8NSGJg/+z87Id1o2e2Kxa26erh
+	 Q7OyQnEqqNXv+AinMbw/b3YHAvRqJqT3APsOYJ9+gJ3QnUMNvSvICGPKDHRFZBcpFEArx
+	 tW0M0jnZEK7LH57SZcvBstHE2VaEQPdTfTJpdID6q08FMM7JZIjHLzMvJQWEfi760kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436809;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794436810;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=TEZpFpmffuQgsA7wHSJ9KvqILxRMLO1TQcfZqtrUdh4=;
-	b=FbpBzTaR1F9VAEUPSZa2zywtzvXnLJtthHdgqVzoKKGmEswfcZhC/XY8ycrUtkrRfFHv
-	 cmajFNH68yFu8dlyDX5Oqqbv1dnnAnCi7HIp1UyNxgJOBBqnBIsQKg4vtCbDsjg9mbB9n
-	 UEviJ8IhFQuNa84YKQC2gF6szD5mKvbm45Vz5FMHJ6QueThxvWa910pKmgVkNBVftfOdy
-	 94wpGfpKOJUIkjlPz1klzmEmFewj+I+T0hkyjaur1M3/QXwLIJ/rCeb77TSmM0YoDCRjL
-	 znj8uizJ/vjVOueR+215P4aN48WMXDrniVZwjuBXPCM/vWbCCdo3eo+GuQPJrO4R4HQ==
+	bh=7wWjtPjjZSppAgYUk9uSx1cHsbNwsbiGqpMJOnAUj5k=;
+	b=jinvOvjMrlbby7FXW1rneIovV6t6bzTo9MZbfSxo0AJ7qdHbMcPYnaPBE5zfA3qy1IvE
+	 BoVf1YlsVOH3UMWvF/xxNJPqq8VDni0T2RLKNCq/wUr9v9DPXicGwBL6DlJxpXNCbYM0+
+	 1tpTdsp2P9S84veOZf6hIa6Q8+W4MugEeeGVsYn9E45IYSMypbdLwfY8ny1BN7fRACzCk
+	 cez7hknH4QIjpC2eLjWYAmRCNufPKeD5MaBJnAgr/Y1LUZyhWxVhJ3MGZlDsNQvj5Vz6m
+	 kkZX0V5bntaFR2ZURPYFyjnH40wUQAcJmsjOwHfe6cIkaWf044UFqqJCELUTz1Y/2fA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VIVfpXmh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkGVRmKd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F40606A321;
-	Wed, 11 Nov 2026 22:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9836606A33C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VIVfpXmh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C641F00A05;
-	Wed, 11 Nov 2026 22:40:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkGVRmKd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DE11F00A07;
+	Wed, 11 Nov 2026 22:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794436808;
-	bh=TEZpFpmffuQgsA7wHSJ9KvqILxRMLO1TQcfZqtrUdh4=;
+	s=k20260515; t=1794436810;
+	bh=7wWjtPjjZSppAgYUk9uSx1cHsbNwsbiGqpMJOnAUj5k=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VIVfpXmhJUD7IubH5EEoQ8qr/rmNnAzCk8A6zI51ixsYfPkrXvpaj6m29W7c5jiGD
-	 a0rEC8u8SNRb3D6X+POh5EcgmzUfq/k04uNd5lArAuY9/odZtW6kuLtiQEC6Af04Va
-	 fQ+/njH4QOccgDyvlwoYrRBASdIB8QddWoG6BE/yVWytxSKp4InpcZpx+IttPSWLFB
-	 KC/ZqZjwBFI4CfjqRgK6QDmjDOlFuWLyXZaKBySjva34fCszKNi/HZU/cEyNeN2eVk
-	 PN8kTUOMuN45nj7O1XXOEv2eGZcuCBH5zleaqJX8R8Mi3rhe/igM72TTMTnG4oz118
-	 og1BMVfihdU+w==
+	b=kkGVRmKdNToLGwRoNcrjyHvuQiltPr6uNg4oMicDo/9X6fdoizW16eXwS5o2Yyi0o
+	 NQoV6J78Bl31FS1YZod6mEsv3QJtm5zMZrI6cXbVlWXXrpCr0g6kzJOk8w6i8/ejGX
+	 R4L3imX31nxN022U+ZUtVYpRY9E/pqVEykTtfCG3XnC3InZcc2nlbVoMymaJnJkQoy
+	 sbFbWF1EfnOfySJPc6aOVejXJFIHQ2Qnj7ATTaSEVJP/JDziFMpqYsamLonZ28KyfK
+	 FdKEt8DNUcHoF2cOvgVdyVQ3tzLmWjqBb93795+MSKm0QgaG1mE+xtmled27wvdaDk
+	 EowvU1Nlx07/g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81C4391AFAA;
-	Wed, 11 Nov 2026 22:40:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5DF89391AFAA;
+	Wed, 11 Nov 2026 22:40:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,51 +54,35 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/5] net: sparx5: add tc matchall port policer
- offload
+Subject: Re: [PATCH net-next] net: opt loopback into instance locking
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179443680768.1682529.11013685548418051653.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Nov 2026 22:40:07 +0000
-References: 
- <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
-In-Reply-To: 
- <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- UNGLinuxDriver@microchip.com, robert.marko@sartura.hr,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+ <179443680892.1682529.2463544220659930779.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 22:40:08 +0000
+References: <20261109173902.1225585-1-kuba@kernel.org>
+In-Reply-To: <20261109173902.1225585-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, sdf@fomichev.me
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 5 Nov 2026 14:19:34 +0100 you wrote:
-> This series adds offload of tc matchall filters with a police action to
-> the ingress port policers of Sparx5 and lan969x, which are both served
-> by the sparx5 driver.
-> 
-> In hardware, each ingress port has four single-rate leaky bucket
-> policers. A policer drops the frames that exceed its rate and burst.
-> The four policers of a port share the pass and drop statistics counters
-> of the port.
+On Mon,  9 Nov 2026 09:39:02 -0800 you wrote:
+> netdev netlink iterates over devices when dumping queues/NAPIs/qstats
+> etc. and takes rtnl_lock or instance lock depending on the underlying
+> device. Currently even if all the "real" devices in the system are ops
+> locked we still have to take rtnl_lock for lo (only to find out
+> that it doesn't even have queues or NAPIs to report).
+> Opt loopback into having control path under the ops lock.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/5] net: sparx5: Drop redundant POL_ prefix from POL_UPD_INT_CFG
-    https://git.kernel.org/netdev/net-next/c/de6c6d0fe1a2
-  - [net-next,v3,2/5] net: sparx5: Add registers used by the port policer
-    https://git.kernel.org/netdev/net-next/c/08543a66f15a
-  - [net-next,v3,3/5] net: sparx5: Track shared tc blocks and per-port policer state
-    https://git.kernel.org/netdev/net-next/c/54d7dad1a3bb
-  - [net-next,v3,4/5] net: sparx5: Add hardware programming for the port policer
-    https://git.kernel.org/netdev/net-next/c/b18f7b93e0f7
-  - [net-next,v3,5/5] net: sparx5: Offload tc port policers via matchall
-    https://git.kernel.org/netdev/net-next/c/a53151fbbcd6
+  - [net-next] net: opt loopback into instance locking
+    https://git.kernel.org/netdev/net-next/c/69716ab31a4b
 
 You are awesome, thank you!
 -- 
