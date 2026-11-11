@@ -1,73 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794386393;
-	b=s0lAMOWbnmufQjgTvAxFScrHlMyJoKeWU/WGpPauzwBE6hv45rICXAwg3lyOti0VOrCZ
-	 QAA7hx8vP4Ola/MeIHm52HTjgNPVcOEIsWRoL3Uf3qur8fcdDyxA77ilXu6LOE0axJmeK
-	 /++7Uk+eFq4S/UGTQI9Pg+iICStSyU7g3+QMg2Zol+Np77ROGjGnQisSX8w4JVQqvTgUd
-	 ArNUzKxvPv+qkMpJUgyiMyTaIF1oOhViqbPMf7aU1s6FLrDfo3KLc0OwM6adABdh31eqe
-	 0fhgpOC7Qf/IT4r/I+5Y0ez8FfSnfAV2uthU8GG2Eq3tOt9LIquqqK7WhA12ii5XYsw==
+	t=1794386407;
+	b=dM4/9yfDKwd5U0ekxGbUDI150IEUno50+Rg+BfghNgQOjf28qDqcDLWFTMc+FFUz53UK
+	 ZFGT2I/wSyg0iuVzXV8SGjdkoEr/1mHfNgk9xad+qjRRP4sJUVLA1OzCCpudNoY5n7DRj
+	 mP6MHOJ1V53eV24oNrEkuXv9DkT4EWzznqomy0VkstXOU/rSXFxF1qQA5p8+taqDf5UsP
+	 9sYS4cpHUHpzAutSm3vsXJWMPPQDsJsl8m3Une4nLtszhBavY2b+CGcjAZ3mjyFa4CLpS
+	 v6rSFMlNl+/kHGwyKQ55ncWTo71pcTrG7cafpU1SsXBTZ8QhHolgYXsRctasusSSFYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794386393;
-	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	bh=fP8MJ1yQvKzCPp0zBrwHpFmlaviKV6CNJLuWV4zub+k=;
-	b=KI+i8+jagxhGYOw3fRB1hr+IBKU8yzM/xpi1CeGdIHU526cl1QUG48HPo04RlCR3oBWW
-	 F/w6w5EqvHs2sUydbzKr0OkP7sZXuKwdB9A3j87P+OdTAiOycscXCrAw79dwadlJ7G9ZB
-	 ZIaM+6H1GGC5M/OCOF8361BcoZP7272uTAEQ2yNKRbPmX3SdMb23N9ZHrO5K2ahxT6fgE
-	 KHqBLxQL3TDyz70zDlp9eFtcQW2hM6bTtUwz7epspctGNya0l/BqQbI7ygVCrOQRbOhNQ
-	 IN9XhGNPDxe8AS0bnT3E36+WTWBHy5FfJRsxCVgBusSGvwOO3wQIWT+9lOMqGDbyXVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794386407;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=ExDVWijlDii6IKHmwPi4pgSXddbMzGH+ApjyDrW/l+s=;
+	b=zw4DcM0igRsKkwSVMvirAyM39eFx/AJOq/kyQn4WQ1SPM/EDayr1bb/CU+D2jzP9RPB7
+	 z3L25IqbtD6sFx3ovX4XAxbRXlwBzTLeturftNQc2fXTNDkbRmn/FacNjcW/N6cIU/Vs/
+	 uBWcvJHTwTzSgG1vOjI8h27iRBLVDLDVumYr72eeo8mZO+Dpnej/leWZWNAZtCaYzB/Rw
+	 Oiyyiv8ur/B8TYnr6V/dCxfdUpm7Jhsk/75fMP1b5catpb2M6ULakd1goLcxXPbioQ1rU
+	 KSVomwbDjvgTNoyOYakroc0bSly91Ke9bbc017Rb/TXqVex15t4FARUxtxuBQihmFhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=realsil.com.cn;
-	spf=pass smtp.mailfrom=realsil.com.cn;
-	dkim=pass header.d=realsil.com.cn header.i=@realsil.com.cn header.a=rsa-sha256 header.s=dkim header.b=AicdrOXZ;
-	arc=none smtp.remote-ip=211.75.126.72
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRquJ+dq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C270D606A31C;
-	Wed, 11 Nov 2026 08:39:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C270D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0E8606A31C;
+	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=realsil.com.cn header.i=@realsil.com.cn header.a=rsa-sha256 header.s=dkim header.b=AicdrOXZ
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6AB8cGmoD2277995, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1794386297;
-	bh=fP8MJ1yQvKzCPp0zBrwHpFmlaviKV6CNJLuWV4zub+k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=AicdrOXZZN03i8p9T3v1bhk0QEilmsd1VJevAyhjgUW9Rdn/Oacydb89eQI9CN1zU
-	 nv7mHR1dKJ7aDN5KFWLyi+z2bZ2F98SW2k++5Z0O5UpoBCP0k6OKY+3zDlHlsa7zlq
-	 h/2ZS7dtoqtUqNCh7xYpc9CQB+5L4TXEakUKGaowZLvtxKys/6PEi0mNGG07q1Y8kp
-	 SEH4+PJf1S/w1fW0hnI4WkxBDHKf24OFt4aOOfCMklDjq8AfdY8kPO+xnwum5q672h
-	 q0KM8YINL+byW2YQgjraLYZJMar7N/I0ub1hxjWr4gHSu/ziS9Vpdqi4uKoqtv3Av+
-	 YEhU66GqYfGqw==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6AB8cGmoD2277995
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 11 Nov 2026 16:38:17 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 16:38:16 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
- Transport; Wed, 11 Nov 2026 16:38:16 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>, <nb@tipi-net.de>,
-	<maxime.chevallier@bootlin.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v2 0/2] net: phy: realtek: add PTP support for RTL8127a
-Date: Wed, 11 Nov 2026 16:38:05 +0800
-Message-ID: <20261111083807.1529-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRquJ+dq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BB91F00A06;
+	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794386407;
+	bh=ExDVWijlDii6IKHmwPi4pgSXddbMzGH+ApjyDrW/l+s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YRquJ+dqvO+ql9V7Lw0rD4ih0Q2gbZ0yeWPt35fIe3RMm8BWLG2T9FpDKKtOIpgmY
+	 Y/TIz23BWm9pMI+8fh/0R8wHyA+asum6WEw13YSnGaDg/yahf6uIRZ8mPZg8ILaOXQ
+	 W8GO92eMM3J1XWypMZgj+GyPXE+HsAZkeNSn3UnjAH1pdzWpXyLm/VhmgZnEq4OSYM
+	 8Ox4GeKsqVR67Tz5GgW46n0tdmTSfygJCrZ+NgEC5jAo0AUbn+zBjVh2phiAI+pLDq
+	 HPgsmKK1Y5KhIc/F4I43ZZ6dWuijyu4e53D6q+0sEq6dwrWckoBZjExmOiaATo9mSe
+	 vcYf4D7naP1GQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E17938007E9;
+	Wed, 11 Nov 2026 08:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,30 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: Re: [PATCH net-next] liquidio: enlarge the interrupt name buffer
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179438640618.794109.4972687983974562949.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Nov 2026 08:40:06 +0000
+References: <20261106095114.3564335-1-xujiahao@cmss.chinamobile.com>
+In-Reply-To: <20261106095114.3564335-1-xujiahao@cmss.chinamobile.com>
+To: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Hello:
 
-The PTP block of RTL8127a lives in its internal PHY (RTL8261C), so this
-series adds PTP support to the Realtek PHY driver instead of r8169.
+This patch was applied to netdev/net-next.git (main)
+by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
 
-Changes in v2:
-- Move the PTP support from r8169 to the Realtek PHY driver
-- Drop the r8169 PHY OCP access patch, use phy_read_mmd()/phy_write_mmd()
-- Drop PPS support, only minimal PTP support is added
+On Fri,  6 Nov 2026 17:51:14 +0800 you wrote:
+> The PF and VF interrupt names are assembled as "LiquidIO%u-pf%u-rxtx-%u"
+> and "LiquidIO%u-vf%u-rxtx-%u" into INTRNAMSIZ (32-byte) slots.  Three
+> full-range %u do not fit, which gcc reports in a W=1 build:
+> 
+>   drivers/net/ethernet/cavium/liquidio/lio_core.c:1119:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
+>   drivers/net/ethernet/cavium/liquidio/lio_core.c:1124:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
+> 
+> [...]
 
-Javen Xu (2):
-  net: phy: realtek: add PTP clock support for RTL8127A internal PHY
-  net: phy: realtek: add hardware timestamping for RTL8127A internal PHY
+Here is the summary with links:
+  - [net-next] liquidio: enlarge the interrupt name buffer
+    https://git.kernel.org/netdev/net-next/c/1be1e065008d
 
- drivers/net/phy/realtek/Kconfig        |  11 +
- drivers/net/phy/realtek/Makefile       |   1 +
- drivers/net/phy/realtek/realtek.h      |  20 +
- drivers/net/phy/realtek/realtek_main.c |  19 +-
- drivers/net/phy/realtek/realtek_ptp.c  | 719 +++++++++++++++++++++++++
- 5 files changed, 769 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/phy/realtek/realtek_ptp.c
-
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
