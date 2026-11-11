@@ -1,42 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794418729;
-	b=VnDqDeh7Cqs2P/OSwSOiOkSWGalZhShJM8iSJ1cRbbmZtodYeH9snV+Y6YnGyH5bvZJ6
-	 JFvbL2jjd0ExcQVzWxGhz7LbBTSOUkBCKJ9W/efwCGaQN8iY2drMoYTJeKaNg7LXlsKRh
-	 58ddTid8HoyPlow09jp13HDRydrIyMf5rJ3G098cfcuj1PqarwsBexvUJZB1Zfl7VsPgm
-	 V+I6uqNFOBbZgW3kt+Luw4DhGalc/R2dhkiv0WG03piaGhvZ84alghOwX7OEopqw+y/wP
-	 SJvsDguPc6iECCea3iyvtGy+u/yf3jhNJKRmKL1dxGt3z8cnkGFQuhmvspvY6d0dXpw==
+	t=1794419260;
+	b=jovwq0mq1RZLMGe86g3UcOqtxetYF8hH1pqZN0VgN8TSRtdirGlr8Q9BdCSmVcFo64rW
+	 5v7qJBQMqulHUxGwDWWGZoV0+cGJ76f9khBoM3WkhQgidtWzBb7DoGAxjx5U89FBJSfGj
+	 3HJHuXJk5lFzEMaaXbG44JjWsyk3oN+pKPi7yahiQO94983CmBjwX9GyJAhEnGb9A/VmE
+	 Y05q4zpNyEPLBKfWv9x9MCex4lkO1zHi6B6cd3jSNN1nkD2DlphvUhz4nPTAHg/y6aPz3
+	 5uaiV92D36v2HFrg01mzW6lv6kywxN61wMXwvEP285RK+9hEftRsvwNxU5k10iF7Tqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794418729;
-	h=DMARC-Filter:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
-	bh=E7m3c8vNY4e9niQFNFPSTIwQ27u9U/34uB1xD6ktbVE=;
-	b=XuoLHEYLxbRXFvNwmCXmMTQYgjDfY8Bm/hSlVOSh9Q+V21t4m6ogJgpDrX5vgZeZDq9Q
-	 Rof1Q4Kjt6+wB9r1f+uIp/xGE1ePJor7pjgfuKPkyZjc0M9Tsqjxofd4TpuqS2FR8ZV4j
-	 h5fsCJagU1ue39g5SIBzrpKvAZB9udYPZF1G+tD+3IC0vRPoxz7x4TpRL8s2aMpS1kyea
-	 pSk+VdE/oYZzvMN0x4YjR7V1TpAANnKJii4LcdGBdGnhgpbt3TbZ9xSGFH9MEYvzSQx6k
-	 UYa8y/Uy0hYzPUnrVQdEHk2Zh1wgnVhnmJ3vTetOiIsvdebZml1QIwTEUF2cOmWPC9w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794419260;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=4MaTdFGm3iwJfcX3VGdFborPM6URWf3gTu0u7KO9Lxw=;
+	b=qZX7rfWF3ERiqfYc3jh/JIAQvwBApZRZ10T/+n8rW79+phk3SLkcGLS/cgmQnZFhuLl3
+	 XpOcg7+lvNI/1QLOoC/ksermNpWi+B32lyc27IbLz4zFO6cN59pCG9qDjNMIQVYLZbE2U
+	 CHuWMshjzwOrOfGmZgL8ljB/JqIVx3jF2DTw+ZKzhfpY5vFdXXr4xsCpKHptrx+1OnU2g
+	 eDuMQP6kbw2ErjJebqfmTLjeUwTjSd0aCAFrQ7qQ1LLPrE87k29fS4fQIjhWfrkZ5L+cG
+	 pwII6YzsOv3EWDETsOirfTfY4PkNx5vdhIhCG+zhbVZ49dw0igGZ2WX5Z+h1/JTXVBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=X9iQQDXK;
+	arc=none smtp.remote-ip=74.125.224.42
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3CE606A324;
-	Wed, 11 Nov 2026 17:38:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B3CE606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D0B18482CE;
-	Wed, 11 Nov 2026 18:38:44 +0100 (CET)
-From: Gabriel Goller <g.goller@proxmox.com>
-Date: Wed, 11 Nov 2026 18:37:49 +0100
-Subject: [PATCH RFC net 1/3] net: restore the L3 header before VLAN TX
- offload checks
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EBE606A324
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 17:47:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7EBE606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=X9iQQDXK
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-67c0ffaae1dso86573d50.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:47:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794419259; x=1795024059; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4MaTdFGm3iwJfcX3VGdFborPM6URWf3gTu0u7KO9Lxw=;
+        b=X9iQQDXKuNjq+myrwm8V4PXdcRhRXJAvcHYei6UT/AUaVZFNEBxcYcvMm86gIAU9sp
+         9fiv5DnqAq4z5pG4pFLxxnLrVyiKu7DkyjkiZx9kEWM3cBVIz495kFM5maT2g9nuweDC
+         b72QIY86lc9LZwtjGAC2uYkst3x4CwQzwWb1nGOpDOEATGbdtF6jp18tvNljPOKs4e+O
+         WW5cNYpzFY8lrKExK3+jIhhthMlMGOIWh28yvumgj5zqcB6L77liKuiOLthogauVjPAq
+         P/0go/3r66tFxEICnaM12TEa4SgzEBr+7jQkMyBdU0xO6uXRzzVAgeyDQA8pMG6ZqNu6
+         5KSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794419259; x=1795024059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4MaTdFGm3iwJfcX3VGdFborPM6URWf3gTu0u7KO9Lxw=;
+        b=AmzEacAKOFbxER5yDbRz8xUi7+h39TUDSgOG87u/lxrBkwitEDfeFgsjLH9r+j5Cfa
+         dmo8CSFDLgmZxV5LXZGdxynGgpjn+pU5VYkkmu58EUr4NU4D946Z8gjpeusiBODtn3a0
+         CWfWOvA8hMk0AEzWzV0IlAhhXCeZM4UqBVj6liqguT+qTQIvkWoJYSSy3kScteO6Qqm+
+         SNQPYE8i68SG1v5/wxfYSVGlhdy+t2qHFcfbqRrjkMpkekS2uxvKhFugqXHZ/jY4mfAr
+         qig8Ryz37WGA2M9uEdBAptSO0/nqoyH3R203drBMLCVe6t185c20zR2dcOIA4tzRIoAG
+         R1zg==
+X-Forwarded-Encrypted: i=1; AL+hErHoRJe4WYkf7vD7pEPWSCad+TaQaGz0HBgJ1e7B/+P18ICVP58T/RgMOOKYqhb/hCOeX20di6k=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+8zAXwEF0AZSDiv3LEfkcfF1xTYtZZ3Sn5JmNa0w2b+TWQ1FM5
+	SMWZWgyo1HoPJ6dC3WPBupa9xbIFWJV99lgbypIpNFrqFDjmbPwb21Fg
+X-Gm-Gg: AYBFou2eL/gBSs1aSGPiVB4vqrkfiRR8AZuRK64hOPFYk79cArpKqebFiEQzzk56iT/
+	65Ekch+yWL0Vf8n2cFhlUbc+Oq94sNLuxe9jiedfGtQtpLmKbbzutHf3wS3ot9MO2ORe1M+jqvt
+	GSKdFXOMwtohUIGvuOZEIAvnDNiYrWn4Mg91nhJiY/ixzhdse8mJb+pvQ0Vo1q3B+8rFjy5fpri
+	AMwMfAZ1AY6LNflWhjpef+slBFa4yxR4Q+ELrIF8VlHjUvdNFABlmadMzFUNYOx3gW9hpxyYcUF
+	/ej5ACmmbS0vcXCvsDfyiuv7n+GMMuiwbJq1jJHaEc5ZQvbiKFA+KY2MPT8m1GXP6whNFjN3VbX
+	6ZdfMRtbpJir4oUOGjuqWByl+uoh4Le7m/tzNslxjJLVIpa+pLBlM0CRZbKeUpW1yBkxTTwhj9J
+	snk+Iu+9iXoHhJPNkIl3pCjZTUqDC9nPPnFf4pwnUnXrHFSas0vXx0t3PqLl+taEwtI1GdvOUPB
+	vbY7IJczop1e/rj8Y0WEg8BURTmdA9ibBgPbLtCaaMtr25wlHjeWxlZUWfNqOgRHKCpgEZdA/yT
+	puJ5U1EnYp1aqHh2uP2BgY2VOUmXcN/RtUZbMAPVJPzLMji+b3UdMw==
+X-Received: by 2002:a05:690e:dcf:b0:67c:1fba:b450 with SMTP id 956f58d0204a3-67c788aaf25mr106177d50.16.1794419257699;
+        Wed, 11 Nov 2026 09:47:37 -0800 (PST)
+Received: from VPN-156-197.vpn.usf.edu ([2607:fe50:0:f802::4046])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c589c6f24sm5077708d50.12.2026.11.11.09.47.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 11 Nov 2026 09:47:37 -0800 (PST)
+From: Juan Agustin Niccolini <juanagusnicco@gmail.com>
+To: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	josef@toxicpanda.com,
+	jbacik@fb.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Juan Agustin Niccolini <juanagusnicco@gmail.com>
+Subject: [PATCH net v2 0/2] tcp: Fix the SO_REUSEPORT bind cache admitting a conflicting socket
+Date: Wed, 11 Nov 2026 12:47:02 -0500
+Message-ID: <20261111174704.24312-1-juanagusnicco@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -46,94 +105,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-net_restore_the-v1-1-6aaeffa601c9@proxmox.com>
-References: <20261111-net_restore_the-v1-0-6aaeffa601c9@proxmox.com>
-In-Reply-To: <20261111-net_restore_the-v1-0-6aaeffa601c9@proxmox.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Boris Sukholitko <boris.sukholitko@broadcom.com>, 
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
- Ilya Maximets <i.maximets@ovn.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dev@openvswitch.org, linux-kselftest@vger.kernel.org, 
- Gabriel Goller <g.goller@proxmox.com>
-X-Mailer: b4 0.17-dev
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1794418723547
+Content-Transfer-Encoding: 8bit
 
-A second VLAN push leaves network_header pointing at an in-band VLAN
-header. Drivers such as igb can interpret those bytes as an IP header
-when preparing TSO and corrupt the packet.
+The SO_REUSEPORT bind cache (tb->fast_*) can let a socket skip a bind
+conflict check that it would fail, so an unprivileged user can bind and
+listen on a port that another user is listening on.
 
-Restore the L3 header before offload feature checks for VLAN-tagged
-CHECKSUM_PARTIAL packets. Keep the generic skb_vlan_push() layout intact
-because tc classification after a push depends on it.
+Patch 1 fixes it. Patch 2 adds the reproducer as a selftest.
 
-This fix belongs in the common TX path because packets tagged by tc or
-BPF do not pass through OVS actions. Keep it separate from the OVS fix:
-OVS must preserve L3 before executing subsequent actions, including on
-packets without checksum offload. TX validation cannot repair corruption
-that has already occurred in an action, whether in OVS or tc.
+v2:
+ - Shorten the changelog (Eric Dumazet)
+ - Add reproducer as selftest (Eric Dumazet)
+v1: https://lore.kernel.org/all/20261110080008.26112-1-juanagusnicco@gmail.com/
 
-validate_xmit_skb() also runs on noqueue upper devices such as bond,
-team or macvlan. For CHECKSUM_PARTIAL packets tagged above such a
-device, network_header then sits at L3 while skb->protocol is still a
-VLAN type. The flow dissector parses the IP header as a VLAN header in
-that state, which affects bond layer3+4 hashing and tc flower on the
-lower device's egress. Bridged packets already get the same conversion
-in br_dev_queue_push_xmit() since commit df356d5e81b0 ("bridge: Fix
-network header pointer for vlan tagged packets").
+Juan Agustin Niccolini (2):
+  tcp: Fix the SO_REUSEPORT bind cache admitting a conflicting socket
+  selftests: net: Add SO_REUSEPORT bind cache test to bind_wildcard.c
 
-The IPv4/IPv6 KUnit reproducer fails without this fix and passes with it.
-All 22 enabled net_core KUnit cases and software tc_actions and tc_flower
-tests pass in QEMU. Actual igb hardware TSO has not been tested.
+ include/net/inet_hashtables.h               |  2 +
+ net/ipv4/inet_connection_sock.c             | 15 ++++--
+ tools/testing/selftests/net/bind_wildcard.c | 54 +++++++++++++++++++++
+ 3 files changed, 68 insertions(+), 3 deletions(-)
 
-Fixes: 938863727076 ("tc: adjust network header after 2nd vlan push")
-Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
----
- net/core/dev.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 3c58db732761..fa47fe60b444 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4219,6 +4219,20 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 		     !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
- 		skb->ip_summed = CHECKSUM_NONE;
- 
-+	/* VLAN actions may leave network_header at an in-band VLAN header.
-+	 * Hardware checksum and segmentation offloads need the L3 header.
-+	 */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+	    eth_type_vlan(skb->protocol)) {
-+		int depth;
-+
-+		if (!vlan_get_protocol_and_depth(skb, skb->protocol, &depth))
-+			goto out_unhandled_proto;
-+
-+		skb_set_network_header(skb, depth);
-+		skb_reset_mac_len(skb);
-+	}
-+
- 	features = netif_skb_features(skb);
- 	skb = validate_xmit_vlan(skb, features);
- 	if (unlikely(!skb))
-@@ -4267,6 +4281,9 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 
- 	return skb;
- 
-+out_unhandled_proto:
-+	kfree_skb_reason(skb, SKB_DROP_REASON_UNHANDLED_PROTO);
-+	goto out_null;
- out_kfree_skb:
- 	kfree_skb(skb);
- out_null:
-
+base-commit: 19a227903e65c7a9c179156485660a4e017575fe
 -- 
-2.47.3
-
+2.43.0
 
