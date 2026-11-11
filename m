@@ -1,79 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794414147;
-	b=HrUqHqK3BN8Dxq+CjO/X8ps1tl3SFYA//qRBBg6L9bHQJDsawYR3hmkjKHVCoH4DfI3I
-	 MqUhYCAWNL7X/JIksabnucJi80sFCB3YAcGn1qm29+ryStuqKbmBaCY7etc09zgegrmg/
-	 nZ82sAgeJ9yvi+4cZ0tslihFLSSdGKZ6JNGCktsYfBY+HBXbZh000Yxuhj3z/Up754J2u
-	 nMV8HXGX0dbOIu94M26CD7nfsc1GGPGOVIzu7Qu/WYQnSfA0zIkBNayWh2n1qJfZb2+fj
-	 ocRY0aSCAx4HGRILJ5sYJCLKtZuTqZXFRvsdb2YB8tC25pyv1Vrc3Yu+BZLN9i9rhWA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794414147;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=q8mOpRnf+Di73N3yU2eDEU0GPveFfttiuju/Wh/wS8w=;
-	b=pqI7wPpVJxSsaru6iQzV3+EXLTqw5a+wN4De7yH7Zr8yEtxgp+/Z9Av6mt8m93eu4Gi7
-	 Zh5LlN59c3/eWU0F1pi3Ywwa+NXyHZqn6jXADUC+pvO26G4KD15l1VB44MZ5HVwAWWdUX
-	 imgjZqgUpamT2g20aa57Rd6xHZjfFYtglL51CqlAmR+jQBNZV7VCHsyBdfBsLMiT1pgyK
-	 OfFnxr2GRNOt4RJX+crIq+LM9f0TV5gKuDChjhpEdlsfyRmp6+/OQN35LTcONvO8oZfyI
-	 eaAon/WUGsWRvHnHBQCsZUnk7R0vNIHAIC0rRP1JNSSEEaEpTvNqRW6QkpEcIyjjdbw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HukQX5kZ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794415068;
+	b=auho2q8YO389GAUL2uFHSo11XY169wi4IZlbqWeL+0pmO3rjbeXaXoB8BtbXu4+APxhV
+	 lmjFZIt78qbAAQUEmpuyd+rr4gIQPW0CgXtnWDLMvFLMPACc61IMm509rRcGyvA3eW0r7
+	 RAREkREpPe08UyfnTmrdvdZ72tmt+wvDcDerpPUWSyJ9DLVRdy4ajGF/0/d90o3qCd8yv
+	 DciEysrMeJY8GRPSVLj0aGUJ5jnVDpPLfUdbPnQt5oVspRlDT33I9UiSIMSxCRPj/hzRO
+	 Ixw2PJuwxyjUt4TnkeKX1zr1LghNNE9meRe9QHSJOj46S6rgQl5iZr3W1raBQTJB53Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794415068;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=E1QHDpc/aG9SReTwqdCX+OYwneXtbq0qKQ+Vh74y2Fc=;
+	b=WMgXsPjBqlrw//+M/wX9kH6W1+aj/b6PhUiyA6nqxv5DQFv9s2VUnkX1MP94sj39osMw
+	 3gJASLcNe3GjIGC3wBTYo9Gldzr5HPIsmaP3EhbVBjtSDsMzYI4jStAZYDgNJ7RyTVq7j
+	 +yhRoS2yON8qT2LgEUeWagQPCtPAvqDkaCVaR7R00SZsFRtyBN87uU5L/xI9Vm7NCxjfi
+	 CBOyo2/83yY6tfHE0XnTcYBunJuw21B8XQmLOgX0vamE4qC335VwdQwZFVPt/wtCiN9of
+	 48LbKKK+tM3k77R8uP0/+e2FoiSo9mFSWveuGvlYSyFXBrEY9e9Rpo98J0PT0Sla79A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iZX1dvXd;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A31E606A32A;
-	Wed, 11 Nov 2026 16:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA58606A889;
+	Wed, 11 Nov 2026 16:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HukQX5kZ
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794414147;
-	b=wYwlAyyARqfvEsVdiqYU2G+yd4Ntvwv/6F9gGI/la3liVvhwTEf3GveWBOJVvNn46x7g
-	 g544yRo1rkI4KKclBkvSRWzL8DQer8rKo7KIPgr4Ojpf3gS04OtiTfQwNp1a/+XR//6r1
-	 g+DhJ+5BXuxdhLQiASekkq3B6OFtv3orwvvbo3Oz4kK1EXDOLJE3S/xB3gDfuSfNh1GgX
-	 05m3Z5s0LLn+oS8kfyJ9a0PVgNeWAh2cV1CL5LEyDOGsgPik/+mBnwv4wD32e513JVM7K
-	 DbLQ2WtBf6ntR5cJqFSsLxZkaqA3J2tl8xa9e9TeGfAknjSy4i/RSWurCT8Gn5tTAWg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794414147;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=q8mOpRnf+Di73N3yU2eDEU0GPveFfttiuju/Wh/wS8w=;
-	b=wO5LFu6haaOahJAHlJAHjn1vQSKYcXNOTySl4kemQaLFzt4KV0Jr/p4u6qIvN3oixRll
-	 3EK0vkO+X2RVvprvsPUZi+SlnPSxr3nvM+z85BZfN4TnvwOhaNs1raybY5gYkp5dN6z75
-	 Jkez4A8uHZIkIfi8EFl9H5xWTg/ptmfPJMGlNTqiC7/QIQBbVATJ7w843bkZ9DDdNgfVT
-	 Uvyf+C353qjt4RAYlWqkIdyaj8XQSsjE1oVrWLLc3YOS0kpy2K/x6CWF+vJA9PvarbdVD
-	 NypQnptO0hpOEExRRwGT9dzSoTYlEgbrdAedNj5+5F1Mcz/86l+zOaDfoDYv5BZkxkQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9E1411F00A05;
-	Wed, 11 Nov 2026 16:22:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iZX1dvXd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E77C1F00A13;
+	Wed, 11 Nov 2026 16:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794414147;
-	bh=q8mOpRnf+Di73N3yU2eDEU0GPveFfttiuju/Wh/wS8w=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=HukQX5kZVzKv62Uw4vbqoKlv+mT0ZtoCTZW8Mrn9LU+fuONL2rgbvXY+KS8Fjp672
-	 hpvtNVPyAEc5XeMiGtHdM4O9pWk/e2mm/Uf4vUJNum0/Qiav8YOJ8vQZ+ze3ln1gO/
-	 YrrdnzvAkj+61G1WDjk/w02FLqq4MpcMV9ddecgJ7/E4JraZPC16t6X8ySszwjG5MD
-	 Z2BgOYi+uKohTM79INMyYGTwnkjBndmqujq8PdWIfRtJEHomb8wcKg+dlfwge+wc59
-	 xLsEYrT0ZRT0jreXOcucvqbXgAQtmfKwJLtYe3fYopliWXFWn/lSfA8REYNVVZr+Ut
-	 bq74+OqcPdPhA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F269749025;
-	Wed, 11 Nov 2026 16:22:25 +0000 (UTC)
-From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
-Date: Wed, 11 Nov 2026 16:22:26 +0000
-Subject: [PATCH net v2] net: usb: smsc75xx: reject frames without a full
- header and FCS
+	s=k20260515; t=1794415068;
+	bh=E1QHDpc/aG9SReTwqdCX+OYwneXtbq0qKQ+Vh74y2Fc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iZX1dvXdE8G3oXJiuZCXpzW0nU5GMPALtQULiB8eGueTzpPrBYK9PKUV1Y7qp8I9n
+	 bUzBvsWwohUb8HsyyfQauUUfC20j+bp2GRN8z+oibr0cdmeQMym9v6lsCdiQY8dasK
+	 Vi2uQRfQkypUXQDBZc1ZrIhQGt7KOIWbEgy1Ei6fFf5pgIWyNZj6UUlthcgGA5WVwt
+	 n04L0UhW0Oofo1WZWRVx4uXL44v5Aw3jJWJgy7kTEyIdG3I6Hq3qEOeh39K8Xgv/kd
+	 VOKU/22hwVnb7eU5Zb2AGjOaP48BKaFGJyrrq3c43oS5SwZjEl1Jlr5Wmr+GdZJDVY
+	 oJiD1wLtxi6tA==
+Subject:
+ Re: [PATCH net] net/sched: gred: reject table shrink with queued packets
+From: netdev-bot+sashiko@kernel.org
+To: shawnq1@163.com
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 11 Nov 2026 16:37:46 +0000
+Message-ID: <179441506699.2199510.1043654703064770302@kernel.org>
+In-Reply-To: <20261109163648.301164-1-shawnq1@163.com>
+References: <20261109163648.301164-1-shawnq1@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,106 +63,242 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261111-smsc75xx-rx-fcs-v2-1-216a5f26842a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAEGW9GoC/3WNvQ7CMBCDX6W6maBeKCUw8R6oQ0ku7Un0R7kqC
- qr67kTZGTx8tmzvIBSYBB7VDoEiCy9zBn2qwI79PJBilxl0rVtErJVMYm/XlFRIylvJ6u+tcR6
- dJcitNZDnVBZfMNMGXTZHlm0J3/ISsUR/ByMqVA3VjXl7q42/PIep58/ZLhN0x3H8AOCp+x+zA
- AAA
-To: steve.glendinning@shawell.net, andrew+netdev@lunn.ch, 
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
- pabeni@redhat.com, joasantonio108@gmail.com
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794414145; l=3049;
- i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
- bh=UakfyXge5Z7dCorT5L2tCidbQJeCZJFs6IXcWJSAcH0=;
- b=X3LdGQ0gmxyYqtbCxoFYV/DavCK6B5PoaonNbH+/qj6xL6UcK7taMtAk6ZVCvgO6LnrJkQk1K
- DShzMr0btrABu3f+q47WR8v7Vh5Qo+iUn+I5TZWfi4bCr6YBhITayeo
-X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
- pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
-X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
- auth_id=1371
-X-Original-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Reply-To: joasantonio108@gmail.com
-Content-Transfer-Encoding: 7bit
 
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-smsc75xx_rx_fixup() takes the frame length from the RX command word
-supplied by the device and strips the FCS by using "size - 4" for the
-allocation, skb_put() and memcpy() of each frame that is not the last
-one in the URB.  The length is only checked against an upper bound and
-against skb->len, so a device can report a length field of 2..5, which
-gives a size of 0..3 after RXW_PADDING is subtracted.
+Critical: 0 · High: 1 · Medium: 2 · Low: 3
 
-size is a u32, so "size - 4" then wraps to 0xfffffffc..0xffffffff.
-__netdev_alloc_skb() adds NET_SKB_PAD to the unsigned length, which
-wraps back to a small value and the allocation succeeds.  skb_put()
-adds the length to the 32-bit skb->tail and skb->len, which also wrap,
-so the skb_over_panic() check does not fire.  The following memcpy()
-then tries to copy almost 4 GiB from the URB buffer into that small
-allocation and writes far beyond it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A malicious or malfunctioning USB device can use this to corrupt
-kernel memory or crash the machine.
+- [High] The fix is incomplete.
+- [Medium] The patch changes the result of an existing control operation.
+- [Medium] The new shrink guard treats a non-zero table->tab[i]->backlog
+  as meaning software skbs are still queued and gred_dequeue() will…
+- [Low] The new walk over sch->gso_skb in gred_change_table_def()
+  (net/sched/sch_gred.c:441-448) protects no VQ accounting, and the…
+- [Low] In gred_change_table_def() (net/sched/sch_gred.c:411-413) the
+  patch moves `struct gred_sched *table = qdisc_priv(sch);` below…
+- [Low] On the table-definition path, gred_change()
+  (net/sched/sch_gred.c:681-684) writes `sch->limit =…
 
-A frame that holds an FCS but less than an Ethernet header is not
-valid either.  usbnet drops it when it is the last frame in the URB,
-but the other frames go straight to usbnet_skb_return(), where
-eth_type_trans() reads an Ethernet header that was never copied into
-the new skb.
+--
 
-Reject frames that are too short to hold an Ethernet header and an
-FCS, which covers both cases with one check.
+net/sched: gred: reject table shrink with queued packets
 
-Found by LLM-assisted source review.
+With this commit, gred_change_table_def() returns -EBUSY when a table
+shrink would remove a VQ that still has accounted backlog. It does the
+same when an skb in sch->gso_skb carries a DP that is being removed. The
+goal is to avoid a u32 backlog underflow in gred_dequeue() when a removed
+VQ is recreated later.
 
-Fixes: 1b3b2d9e772b ("net: usb: smsc75xx: stop lying about skb->truesize")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
----
-This issue was found with the help of an LLM-based code review tool
-(Claude).  I checked the code paths by hand against v7.4-rc3 and
-reviewed the fix myself.  It is build-tested only (W=1, arm64); I do
-not have the hardware to test it at runtime.
----
-Changes in v2:
-- Also reject frames too short for an Ethernet header, combined with
-  the FCS check into a single test (review feedback on v1).
-- Subject changed accordingly; it was "net: usb: smsc75xx: reject
-  frames shorter than the FCS".
-- Link to v1: https://lore.kernel.org/r/20261110-smsc75xx-rx-fcs-v1-1-4e048bfc28f3@gmail.com
----
- drivers/net/usb/smsc75xx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Link: https://lists.openwall.net/linux-kernel/2026/10/22/1545
 
-diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
-index 6f72a3f15907..893de273adef 100644
---- a/drivers/net/usb/smsc75xx.c
-+++ b/drivers/net/usb/smsc75xx.c
-@@ -2217,6 +2217,13 @@ static int smsc75xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 				return 0;
- 			}
- 
-+			if (unlikely(size < ETH_HLEN + ETH_FCS_LEN)) {
-+				netif_dbg(dev, rx_err, dev->net,
-+					  "size err rx_cmd_a=0x%08x\n",
-+					  rx_cmd_a);
-+				return 0;
-+			}
-+
- 			/* last frame in this batch */
- 			if (skb->len == size) {
- 				smsc75xx_rx_csum_offload(dev, skb, rx_cmd_a,
+> diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
+> index f3d9a7252949d..8ddbd7f058a6b 100644
+> --- a/net/sched/sch_gred.c
+> +++ b/net/sched/sch_gred.c
+> @@ -408,8 +408,9 @@ static inline void gred_destroy_vq(struct gred_sched_data *q)
+>  static int gred_change_table_def(struct Qdisc *sch, struct nlattr *dps,
+>  				 struct netlink_ext_ack *extack)
+>  {
+> -	struct gred_sched *table = qdisc_priv(sch);
+>  	struct tc_gred_sopt *sopt;
+> +	struct gred_sched *table = qdisc_priv(sch);
+> +	struct sk_buff *skb;
 
----
-base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-change-id: 20261110-smsc75xx-rx-fcs-fca968df1dce
+[Severity: Low]
+This isn't a bug, but is there a reason to move the table declaration
+below sopt? The old order followed the netdev reverse christmas tree
+convention. Only the new struct sk_buff *skb line seems to be needed.
 
-Best regards,
+>  	bool red_flags_changed;
+>  	int i;
+>  
+> @@ -437,6 +438,25 @@ static int gred_change_table_def(struct Qdisc *sch, struct nlattr *dps,
+>  	}
+>  
+>  	sch_tree_lock(sch);
+> +	skb_queue_walk(&sch->gso_skb, skb) {
+> +		if (tc_index_to_dp(skb) >= sopt->DPs) {
+> +			sch_tree_unlock(sch);
+> +			NL_SET_ERR_MSG_MOD(extack,
+> +					   "cannot remove a GRED VQ with queued packets");
+> +			return -EBUSY;
+> +		}
+> +	}
+
+[Severity: Low]
+Does this gso_skb walk protect any VQ accounting?
+
+GRED uses qdisc_peek_head as its .peek op, so qdisc_peek_dequeued() never
+fills GRED's gso_skb. The only other writer seems to be dev_requeue_skb(),
+and it runs after gred_dequeue() has already subtracted the skb from
+q->backlog:
+
+dequeue_skb()
+  gred_dequeue()
+    q->backlog -= qdisc_pkt_len(skb);
+...
+dev_requeue_skb()
+  skb_queue_splice(&requeue, &q->gso_skb);
+
+When the skb is sent again, dequeue_skb() takes it off gso_skb with
+__skb_dequeue() and does not call gred_dequeue() again. The VQ backlog is
+not touched a second time.
+
+The commit message says:
+
+    Reject a shrink while a removed VQ has accounted backlog or an skb
+    in gso_skb still carries a removed DP. This keeps the per-VQ
+    accounting state alive until all packets using it are drained.
+
+Is that accurate for the gso_skb part? The only effect of this walk seems
+to be a spurious -EBUSY while a requeued skb with a removed DP sits in
+gso_skb.
+
+> +
+> +	for (i = sopt->DPs; i < MAX_DPs; i++) {
+> +		struct gred_sched_data *q = table->tab[i];
+> +
+> +		if (q && q->backlog) {
+
+[Severity: High]
+Does this fully close the underflow the commit message describes? The
+same "dequeue subtracts the old skb length from the new VQ's zeroed u32
+backlog" case seems reachable without any table shrink.
+
+In gred_enqueue(), the skb's DP may have no VQ while tab[t->def] is also
+NULL. The skb is then passed through without charging any q->backlog,
+and the tc_index rewrite is skipped:
+
+net/sched/sch_gred.c:gred_enqueue() {
+    ...
+		q = t->tab[dp];
+		if (!q) {
+			...
+			if (likely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) <=
+					sch->limit))
+				return qdisc_enqueue_tail(skb, sch);
+    ...
+}
+
+A VQ for that DP may be created later while those skbs are still queued.
+gred_change()->gred_change_vq() then installs a zeroed VQ:
+
+		table->tab[dp] = q = *prealloc;
+
+gred_dequeue() then finds tab[dp] != NULL and runs:
+
+			q->backlog -= qdisc_pkt_len(skb);
+
+This wraps the u32 backlog.
+
+This looks like the normal configuration sequence. gred_init() only
+takes the table definition, so "tc qdisc add ... gred setup vqs 4
+default 0" creates no VQs. All DP 0 traffic is passed through until
+"tc qdisc change ... DP 0 ..." creates VQ0 with backlog 0, while DP 0
+packets are still queued.
+
+This check only reads q->backlog of the VQs being removed. It can't see
+pass-through packets, because they were never charged.
+
+There is also a side effect. Once a VQ's backlog has wrapped, every later
+shrink that would remove that VQ fails with -EBUSY until the qdisc is
+reset. Before this patch, the shrink destroyed the corrupted VQ.
+
+Could this be fixed in the datapath instead? For example, dequeue could
+skip the subtraction for a VQ that never accounted the skb. That would
+also cover the shrink case, without the new -EBUSY behaviour.
+
+[Severity: Medium]
+Can this make "tc qdisc change ... gred setup vqs N" fail indefinitely
+under load?
+
+Before this patch, a shrink always succeeded. Shadowed VQs were destroyed
+with the "Destroying shadowed VQ" warning, so removing a VQ that still
+had traffic looks like intended behaviour.
+
+GRED uses a single FIFO. On a congested link with continuous traffic in a
+removed DP, that VQ's backlog is rarely zero. There is also no way to
+drain only those VQs.
+
+The commit message only covers a drained queue ("After the queue drains,
+shrinking and re-expanding succeeds"). Because of the Fixes: tag, stable
+backports would also bring the new -EBUSY to existing scripts that
+resize GRED tables at runtime.
+
+The underflow only happens once the VQ is recreated. Could the
+accounting be fixed at VQ creation or at dequeue instead?
+
+[Severity: Medium]
+On an offloaded GRED, does q->backlog only count software-queued skbs?
+
+gred_offload_dump_stats() adds hardware backlog into the same field
+under sch_tree_lock():
+
+net/sched/sch_gred.c:gred_offload_dump_stats() {
+    ...
+		table->tab[i]->backlog += hw_stats->stats.qstats[i].backlog;
+    ...
+}
+
+The nfp abm driver reports this value as the change in hardware backlog
+since the previous dump:
+
+drivers/net/ethernet/netronome/nfp/abm/qdisc.c:nfp_abm_stats_calculate() {
+    ...
+	qstats->backlog += new->backlog_bytes - old->backlog_bytes;
+    ...
+}
+
+gred_dequeue() never subtracts the hardware part. Only a later dump with
+a negative delta removes it. A shrink can therefore fail with "cannot
+remove a GRED VQ with queued packets" while the software queue is empty.
+
+The failure also continues after the hardware queue drains, until
+"tc -s qdisc show" runs again. Before this patch, shrinking an offloaded
+GRED always succeeded.
+
+> +			sch_tree_unlock(sch);
+> +			NL_SET_ERR_MSG_MOD(extack,
+> +					   "cannot remove a GRED VQ with queued packets");
+> +			return -EBUSY;
+
+[Severity: Low]
+Should this -EBUSY path leave sch->limit unchanged? gred_change() sets
+the limit before it calls gred_change_table_def():
+
+net/sched/sch_gred.c:gred_change() {
+    ...
+	if (tb[TCA_GRED_PARMS] == NULL && tb[TCA_GRED_STAB] == NULL) {
+		if (tb[TCA_GRED_LIMIT] != NULL)
+			sch->limit = nla_get_u32(tb[TCA_GRED_LIMIT]);
+		return gred_change_table_def(sch, tb[TCA_GRED_DPS], extack);
+	}
+    ...
+}
+
+iproute2 sends both TCA_GRED_LIMIT and TCA_GRED_DPS for "tc qdisc change
+... gred setup vqs N default D limit X". If that request shrinks the
+table while a removed VQ has backlog, userspace gets -EBUSY, but the new
+limit is already in effect.
+
+The earlier failures in this function are input validation errors. This
+one depends on how much traffic is queued at that moment, so userspace
+can't predict it.
+
+> +		}
+> +	}
+>  	table->DPs = sopt->DPs;
+>  	table->def = sopt->def_DP;
+>  	red_flags_changed = table->red_flags != sopt->flags;
+
+[ ... ]
+
 -- 
-Joas Antonio dos Santos <joasantonio108@gmail.com>
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109163648.301164-1-shawnq1%40163.com
