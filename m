@@ -1,107 +1,156 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794370763;
-	b=T+R45zeBbBVRh4mJ2syoHJMvRmNZ8g66YNabUGpZcGuF97KZqBJSUfvGx9E3k9kLAgkU
-	 LZTb3CM3Y+2k+7Nt4KOaHXi6Yu6WAyv66U3u6tzRLWl5PTmS9hLlk0Swi/ERcShCGeF70
-	 RhOXTVRTdwY9vvTGWCTyFVsdUizn/RMWNUA/xJeZH78iCLGiCaL8IDBlIhJza8q8qaS0B
-	 ZIcZ9X9Mrk16RRdwE4kZkdxXFGfW3VwSDLpBvQfj1eGLlIM9bw3PtMXvP4VYGcK8XD32Q
-	 OzNSBn8VDJqjYA/KaH0176vj7BI+SZIKhj4CFGsmXSxwDTL6WCkOhYja32zfHxDXNuQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794370763;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
-	b=Mkrnahpz2rhxvVEEDUbWJ2Eia5HegMoQCfhZBShljhrgJ3bG+t15TQ/wpVlDEft2xg12
-	 PhIE5KOkVT/9RIzIjEDqLxuL+6hdHGl3KEGwqHsC8MY9ZdOAB8VS38X4CwU/Wd6W3dBO/
-	 DBN/9LoAjFqP6f+lkZBEoIRmmMqTLy0/l6VUzblv3252+PrqdM0l1YiBlEcisVsAmbYXk
-	 skpKzCXb7dQyjYiduM6lHC2LzY3ldKoQDLN3DUKXxr0YuqP9wWXfZdwYBRLYwgpIzBBPC
-	 8jpO2MmWB/KCpkyHFaGFxa2fNDYEkWGWLlGgcEDbccxyoUxANVlA7s0Ab9vf0hZIfug==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RMaf3jlY;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794370769;
+	b=StnN4eGavcfeKhfuHRrMfDTkjMlpGa49VUmhQycbfc/+BXmCS4AqParFa9W4AkpPRoFH
+	 u4Lv4cm5+hChvVlTMYuD0TmJMz8L9hDZJ6Cro5n3QdhGFsxq4hY8kHyUyw5H3/ChPV68o
+	 jp1BlPPEQ72ygCAOQcxXlY/emmtawV2kHznvoB3OPp3JblS/4TzuyKAL0qEQdrES+0aFy
+	 XM3oxPwLPmHTIssANzQUP5TBhkgwiggqQZECDrYmJHDWJNvNuzZ0QCHNt32q+rTH7BOcr
+	 dxlQJaY8n0cR/LnJt3aKBvu9EdVF14nBnSmC+G3Ev+G/6d9kN8RYMYSsinOEuUQSzUQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794370769;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=6x3mjp1qkfjS39o9TZ+rNGdLZDJ/SnCqTCB73yuPQuk=;
+	b=ajwAlvfE5XxKnQKEazBWvyg/+2bS80Qai1kLeMu2CZtNDugwIjjWDakumXR+TTrzxFqP
+	 grBJKAW/v2svQ1XjNXq5aUgVmPiVbUBiwO7qRy8saxjI9r8BKsw63GOrI1mc+9b4fAeu6
+	 BdLRpwZ3DvkKwb+bjE4V9TuguZptddb+PWWS2oaGjwCsSj8qQqzmu4qQgDt0BshZurYC4
+	 2GT7c0wnyZFp8fFKM6yBBMNh2CVRD5SDovFYdgoQLtCWdQtK77+VIrJV0vmYd3iiVYCMD
+	 QgMkAD/8G01hnnLtYOmQd4YP6wRk26FE3+BL4UK8tkG3GKlvDLqCpgtnLTNA6dI3ErA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=jabil.com;
+	spf=pass smtp.mailfrom=jabil.com;
+	dkim=pass header.d=jabil.com header.i=@jabil.com header.a=rsa-sha256 header.s=selector1 header.b=pubeBKNA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.46
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010046.outbound.protection.outlook.com [52.101.201.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AB0606A33C
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 04:19:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82AB0606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE2C60A260B;
+	Wed, 11 Nov 2026 04:19:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FE2C60A260B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jabil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jabil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RMaf3jlY
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36eb1cb7aabso4257194eec.0
-        for <netdev@vger.kernel.org>; Tue, 10 Nov 2026 20:19:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794370761; x=1794975561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
-        b=RMaf3jlYLyZ/HLW/+KYXVbeUs7XPsT1EqYJa5ckIduBmXbWd9U+SwfXE/Wq/m8otmw
-         2bIXkGWle81gjIwJlZ8cTHs4dQA/TvfVprmpXzIAqGx0h8r1ytzU2NWz48IzbK9Q9BOJ
-         0PfaZz3e2Jn07Ez0LsxkD8jX9SwwZhIJ4a69Hbm4ak5uKX9oQ9wMxNtNVGWDYAHoeOyD
-         99bHD0DhJeqUuX/vHEo+vLFoyDEDOfACpr9exr6r07h6bhQqFqqmRnQJFwylKPiQB0m6
-         IsxvxHMJcDhNoWovdopSaNAVBThNikiZkvi1YepkqOqTyUl8zlc7O4Cvsi+E7k9i7KSC
-         b2Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794370761; x=1794975561;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RZzd/00KHA6UQmnnP7AIA0dfP5EP7jOE3/OxHm1kiZ0=;
-        b=f3bcqKWNiqMNPguqvqnIHeEJbUC17MqaGhvaDbpeyTjJnFJH0dp3JbXOejZsJcKuPU
-         fqQ9LUzk9MVSJ7NmYy8P/tenktb7ul6Hry3PtuO4mEjmEZknGnQEIZnVdXIYf8G8gyJ8
-         pHAbPwJXox/KRMr98p68eBRY+1Z53SwnoD8JoEqOUjC4uV1X3eV0ItEcA8dl7YPbxUk2
-         jkeaHchVg+xVdwLw98cwJG7l/PbJx1YxzHGAn5JVKBtm8keQrpM88/M/1ajeMBMsucWp
-         YZNUXsPvDqlBP04GrRIv6ysStgL6OCO8YodeSknvTmHhPZvoffpZVs0jp/ZGpYyK9JaP
-         khlA==
-X-Gm-Message-State: APuU4Z9kb2MQmURYyJndNPNkC0qT+N9lCvMGoCvezdIyok9upKJhC+k2
-	xtUOjuDEn6DdBmoJ6IaQnZalQbptpalGGXKDr8v9Ct6NQFeJd8Uc3CdksyLQwib7GrM=
-X-Gm-Gg: AYBFou19lIYMfoMm2dgKPQeqI02AVKXsQKCxL4VcAbPV6pI2NFf0lbd8goGl4GfSQBB
-	1tkKvP5EeUZVPcAaKRKPkEeWw153FiTjpf35b04Pgom6bZQ0EtPfhjZBFnXdNeGXhdibwQsdt/t
-	EQC3iBBBiZohsO+HQMCrIMXpjSPis75CET9v06SBrDPOzUOYZkApiRs9bO2mOALIY7ye4RL5kQo
-	uXq3Y3OzUof5noOdIrbjEJfRsJu7ZuWIpI1PLOQJE/20KfsxRiL+nvvRTg7cCmRYXzpjvcFGxfW
-	m5ZRgiPS/QQCo5bzRpvPchzqJF92GP5DIrIQCMDnQ7rkcnpIF1p/jmn9wi3P+liGLe5GhVSHXGH
-	ZtdXcCU2ZxulMNl8HGzXh313kMQPEWN7kTxaWqgAbojssQ3AoqkqJOyhDB7//Dtn+IQNCZBO63E
-	EK18KTgSx+iMG3xG2r/uSuKFP+C9rz0h3c5zS1P9XeM42QAj0BEWB3m6SusNaVBfl5K+J+qMEtx
-	z/FTMj049GDLcYwntPDlXwuHZYQtK60tR5LzADI3T/KOUBugsQLtMvkfnKbb2q+wx+aBAXKYUz6
-	+0gndVxp1pY7aarJ2G/iiQ09lmIi+CyP9xLwdEC6iekKL6bPGrL10RUqj8tg9FonwGF69KJHa31
-	n6pQm5f31QEw5LO26zPegSHl7fa4Xw/d/4bNgola0WFKt4GhqkXlq2eL0otC3YnyCTo/VU6VU
-X-Received: by 2002:a05:7301:b0f:b0:375:c862:31c with SMTP id 5a478bee46e88-3768730b2c7mr1832550eec.40.1794370761338;
-        Tue, 10 Nov 2026 20:19:21 -0800 (PST)
-Received: from Mac.localdomain (198-27-228-154.fiber.dynamic.sonic.net. [198.27.228.154])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3752060c4b6sm11820704eec.15.2026.11.10.20.19.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Nov 2026 20:19:20 -0800 (PST)
-From: Ahmad Byagowi <ahmadexp@gmail.com>
-To: netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev,
-	andi.shyti@kernel.org
-Cc: linux-i2c@vger.kernel.org,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 3/3] ptp: ocp: add WiWi Time Card production image support
-Date: Tue, 10 Nov 2026 20:19:03 -0800
-Message-ID: <20261111041904.48916-4-ahmadexp@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261111041904.48916-1-ahmadexp@gmail.com>
-References: <20261111041904.48916-1-ahmadexp@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=jabil.com header.i=@jabil.com header.a=rsa-sha256 header.s=selector1 header.b=pubeBKNA
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pthMp+fC9OBB+A5GTqWHMux8LlcS6aNoPpxIzttPKyrOjDsicAva4AxgOV7wagjJ57Vbyq2z3OIdTtxjgECt4yTlqXphwVWSTIv+bUSlc6PEoc0tf6pRNdrmFqEaUEyMmMx6STFDakPdWaL0hTzFp/O2LfHhdpIn3ufoRjejO8yGhRx2FreYT73H0XgO8/jIBB/8OknWTJ+S9M8DfyEu0vKsoFxMqk0DJ7Gl6+x8egZ1JRh4xhVUeI6tvvWGP4031ZduGjr7DeCbrjmAx837Xf/p/klf9OP3zrMaojL/f8aPjxWREFBI9lli5Im8LHOiKZdTYEiwdqra1B6CcZgjow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6x3mjp1qkfjS39o9TZ+rNGdLZDJ/SnCqTCB73yuPQuk=;
+ b=zPQk6KfFKniwpBa1fk5ApaigXgxnPfFnqsEY+FngqfKq9cwk6yz4HVuBfeYX0HA+qOwXleUg/4OQ9qwZGAP6MKcam54LdyrVeCISCtrjvaNnRNbPiRp7hUfsfYmEoVnbuOVEh8QEHN2+va4J7KYyVxa/mkRkfJsW2NTeAFbSMIPSWtCZWfI5Ury/MvsZtIdj/6/NelKir5WIAgLAW5llIPjZ3VnQYTKzPmQIKPWmwhY/2u1IiGYsEib+jC2xV5QTnM/RzvZRnS2cbhKWYvPHY5QgSSTQ6EO7/PHbzERfeHdosPxpasVRWNxyHfwiyBiAN6X6gP/YyhVkD64ll0CiCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jabil.com; dmarc=pass action=none header.from=jabil.com;
+ dkim=pass header.d=jabil.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jabil.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6x3mjp1qkfjS39o9TZ+rNGdLZDJ/SnCqTCB73yuPQuk=;
+ b=pubeBKNAjJYzpeqhMsf30UBlh1uy7fcVxhr+61f1+CJX8U7OmCgIleR4UA531ZUZ7IYBQKdGbEmYJjN8ujv9MIUAgTNV3bkijFFn5fu9Q71wpF+CtR4IGfeZs2MwcOSvyWOg8csJLDN9tHyLdRPhFrifZ1cSnDilUNW60aeA1sKNWf12gglAKbiu0+VXZvOy6vrcXrOSib5TlcyjdwjaE+TqgWn0+NiJg9JDwXP2kOnEhkZD8v3ICAZXzhAhy4VvfAJYxjEQdRsoBPumi4Xj0nHGcx4oKypmc0XKs1z0sJjO3ftr6e9S/P9TAG49w7kSmiCoC8APNWVpxhYXGhAMjw==
+Received: from DM8PR02MB8087.namprd02.prod.outlook.com (2603:10b6:8:1b::11) by
+ SA1PR02MB8480.namprd02.prod.outlook.com (2603:10b6:806:1fb::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.8; Wed, 11 Nov 2026 04:19:26 +0000
+Received: from DM8PR02MB8087.namprd02.prod.outlook.com
+ ([fe80::6e40:b3cf:7280:6497]) by DM8PR02MB8087.namprd02.prod.outlook.com
+ ([fe80::6e40:b3cf:7280:6497%7]) with mapi id 15.21.0592.010; Wed, 11 Nov 2026
+ 04:19:25 +0000
+From: Kenny Hsieh <kenny_hsieh@jabil.com>
+To: Matt Johnston <matt@codeconstruct.com.au>, "netdev-bot+sashiko@kernel.org"
+	<netdev-bot+sashiko@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"jk@codeconstruct.com.au" <jk@codeconstruct.com.au>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2] mctp i2c: fix double free of midev on netdev
+ register failure
+Thread-Topic: [PATCH net v2] mctp i2c: fix double free of midev on netdev
+ register failure
+Thread-Index: AQHdZdVCHj7bYODww0an4KePwzs6t7cVyFYAgBKPedA=
+Date: Wed, 11 Nov 2026 04:19:25 +0000
+Message-ID:
+ <DM8PR02MB8087B22F3FFB3A9561381BCF8E712@DM8PR02MB8087.namprd02.prod.outlook.com>
+References: <20261027053715.1623087-1-kenny_hsieh@jabil.com>
+ <179334949479.3134.2940952959452938540@kernel.org>
+In-Reply-To: <179334949479.3134.2940952959452938540@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=jabil.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR02MB8087:EE_|SA1PR02MB8480:EE_
+x-ms-office365-filtering-correlation-id: f1fd314b-8e84-47e0-e667-08df3faaf88a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|10067099003|261028144727099003|261022105027099003|261026121527099003|261026140227099003|56012099006|38070700021|11063799006|4143699003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ 7jLUAcQyl+D5yFgMBf5uO+r1SHjALcSZqOb6U44TKUjfsd43bqn7yG6fhzMQPWVa+pWXcODnhTacxKgVxM2mX0pfhgZCw+tFnKwtMFOvPtoYfh+etdJvas/tW9dV6/XwHhV7S15MpDWB2bqHWlp8JThJGOym5oqhQxmZMUQBgMfkvw6TPz23yI9c1eFT1FLRDcI2FxrdUj8MbI5XR7ICS3XQg8qquGT+Amy2JcX3sSqUqEWxQ6LZbH3vlr1qPoH/7UspntKzz2yTId5vDYYNdXwvEwF5lpmUVGjsyPCZw9V8P3XAMqCAR8g5sbg3DokKZYToQDSKwYpZVUx7/1ftlPY2HuEq6bGnQ5BTc794jHxcG9piZ6TTq29IEiVHU+7bujyiixFeG3o1m1snqN3txDVKv3hE0N/U3yyy8xD95zze3n1AVXM8VXY/pzbfRcpzUHeSmwWETY705AStfMdISrnDjl9Ify5GEvFjQkWoMbwXBHP9AYtCNVP1IcIc3YjyFU2VSF/bgzv5MUln5hWXX6Qd/GZiuAv8x/lHc8U6JWCKWK7mwPNjl/5v6A7WHb3GwR+3olW4cwbJM63G+Gk4d+1q1icH3LFdr36ReDdJLgd4l5qOKYUYAxFTnkf/iURTaHqU3nEQxByp8KgV3yvE1He4uFxf8HphB5kYeHuumelj/Ym83okt9GqboK3VbAr8eVoWyfez0Y+xWOg60PM/5w==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR02MB8087.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(10067099003)(261028144727099003)(261022105027099003)(261026121527099003)(261026140227099003)(56012099006)(38070700021)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?c0ZKbFUrWDdNci9DbGYxaG82ZFlQckp6SVFvekIwS25qa2F3dmhNM3BGc0pJ?=
+ =?utf-8?B?QnpQVDBZZkVEaTdrOTYyTnNGRHR2c24rSkhUZHNyQVdwbUNaejRWcFovZ0FF?=
+ =?utf-8?B?L1ROdlB2d1lwUzJhcTh1Z2ZVNmJ3K3hmUE9TNlNockNxb2Rnemc0SUxjcElE?=
+ =?utf-8?B?RDAvUk4yZGZzVGNsOU82dXZXamVXa2xGVEJrUXJaNjdoYVRtY1I5dEJ6VFBk?=
+ =?utf-8?B?b1NGdVZVcXoxRU5EckVWK0tJRG4zQU00aU5jK05nQzExaWhXTExnVTBDeEpz?=
+ =?utf-8?B?czB4Qnh3Z2Y3UkppbVhWaGF5OUtIQk83ZERlRStxdWwrUVpVWXp4Ym84eno1?=
+ =?utf-8?B?MTExSllITlhEbG9TcHpFVlAzRVFTTXV2WEZUWjVzZUZiTXIrRlNsY2lCV0Jk?=
+ =?utf-8?B?akpheFo4VlRFRFRQK1lpS09ONWg4RXJyemorRjVWMWwrdVRqN0lhWFZ4K2FO?=
+ =?utf-8?B?UHNOR1NDSXMzNUNLK05DN1lxc25JVkxhcFVhVDRyclViTjZlbFBVYjlDMk1H?=
+ =?utf-8?B?WEE2UWhUR3FlRmREYjdSOFR4bGFDTHlFL0FVVEFvbFJUR1QyQnBlOWwvd2Zj?=
+ =?utf-8?B?c1Y0NVJzNThsL1dUM1JyWnVsWktZYW8yOVZoTFlMeXFRSmtaWTBVdGtNVmpm?=
+ =?utf-8?B?aU5zQTZrUGdFTFUzUVNNeUR2UDNnYkdRNmZZVmNtTGtSdG0rZ1hvYzNaR1c3?=
+ =?utf-8?B?V0YwLzdsMk94NXM5bU9DNGJGTGoyWGsrWksxTk1XdHdYaFpWVzBvNmhJYjBV?=
+ =?utf-8?B?M1piYlFZM0tXaWlVOExGNWhSRzZmVEMzTUNHSkNhZ3h6UlJVRnBDQlllSUdF?=
+ =?utf-8?B?QUVvWllnUlRWWXY2U0t5Rk5OYyt0WHN6cndZdnZkVFRVNmNGdnY2aDZ1NlQz?=
+ =?utf-8?B?ZTJSNHdPOXlRcVllMG5YZVozeFpIVTBlVGhzTHFOZ0laTVNnanVZWHdmOTRT?=
+ =?utf-8?B?NnVncjh6QWJYN1p5akhaQS9acFFXNXE1YkgrRlZNYjBKUU9MU1N1cys4NkY0?=
+ =?utf-8?B?OXFKOU5Vci9WUER0djVxa2dVeDJJOWhwNWQrTytLY2N6UzNOL1hXTVczaUlx?=
+ =?utf-8?B?eGFqYzBjU0Q5WWkvWUdxM09EWTFKMXBNQkFvODNGejZWbHlhTnN5dE1iY1lw?=
+ =?utf-8?B?aUU4MG5hK0xhWWdadmhxRjE4aWN6TmhKdUxqMlJYK3JDa0JqWU9yYmF3ZjlV?=
+ =?utf-8?B?NWZKZi8xODlCV3FDTjVyN0l3Mkg1dkhLM2w4N2xaNTdoNnFCSU9wRjlDOEZ3?=
+ =?utf-8?B?ckxIODFKV2t2Tkp4Q2JIM1BFTzNqZlJpYnkyakw4VVk5YUU2bkNNR2VpL1h5?=
+ =?utf-8?B?RXFYRUp5VmIzZTdKQm5pTkcrY2pMbDVnSENaanpYQ0ZwRmxjNTVRRnN2Q1Iy?=
+ =?utf-8?B?RXNHUHZLYk8yeGlxM200WjBlSC9JREtOVkpveHZmRWFBYVNpUi83ZEhPVWs3?=
+ =?utf-8?B?U3hORVpsM0VZeU5wcGlnVzEybldYVEZzMXpXMlVmekJYdWdkS1F4dlUvYXpJ?=
+ =?utf-8?B?ZkRFa2VEMkV1aUR0OUlYZmdvZll4NmpGOFVCeEphNTNnQXQrZ3I5ZmxmbFIr?=
+ =?utf-8?B?ZUtnWXd5aFQ0ZTFUN09uenhtVzNpUy9qK3lHUjV0N0gvQi9MOUZ6SklnblY4?=
+ =?utf-8?B?ZGs2TVE3NVI4b3l2UDZuYnU5aVpvRkV0d1AzWk1QSmVGZERIVkYxMVN0R1lD?=
+ =?utf-8?B?K2kyV2EwQ0k5Ymtkbm5uTjJ2Y3dBNG92aHFwNldFOTdMakRFZWtZVW1aV3R4?=
+ =?utf-8?B?OWhlWmZHeWFJTFJwMi8vVEVuQWdrcXRyT0Y2Wm1UcEtrUEdzcGp2ZnFuY09t?=
+ =?utf-8?B?R0JJUWJRYUJ1WWx2R0xJdklFQTFrZG5lYjN0WXR0OGhXbVhLMy9qK0pudWxm?=
+ =?utf-8?B?MkZOaXZMMUc1aGZoTEIzWWFpck14dTIwNnNwRklzTGkvWTN5eDFJMkNzUHpm?=
+ =?utf-8?B?RG04dWNDSnN6ei80eFVwMytWSE8zZVc1NU95WHR4NFlMZHVDZE04enJmOE1P?=
+ =?utf-8?B?THBuM0JXdUVVNUlhelg5VlVvRGVteWdzRWluL0daWVBxSmZxWHJnQ0c5V0gz?=
+ =?utf-8?B?Q0RJeTFMaXBFWnM0TUZFekFzSHZOT1dmQ2ZZb1dUSC8yWGFCWVRkcG5OWitD?=
+ =?utf-8?B?d1JjMTJvWFpnaXB2aUcyblFyZ3p1Wm9IU2ZrcDJ2anV1OU5CTytUb25IU0hH?=
+ =?utf-8?B?cGFyRjZoRU9aM2pHZ1ZjYkh3YjRVdHozRkxkZzdqamJDeC8yckcrUktkbjNv?=
+ =?utf-8?B?RFVCR2h6aENDaTU1UEp4aEpIWTZhdjl3ckFFVEpOOW5wUWxzMFp0eHdzNFVX?=
+ =?utf-8?B?ZXN1dHZIRERpSFJHQ2dXR2czNk81MnlaM2dJZTBWMnRJRWNYdUVtdz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,425 +160,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: jabil.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR02MB8087.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1fd314b-8e84-47e0-e667-08df3faaf88a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2026 04:19:25.6714
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: bc876b21-f134-4c12-a265-8ed26b7f0f3b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nPTpdnhgur0LvNie8UAitEfeONOxpmf2PtENnnOo8bg3x4zZ/ZCDBLsYmEQwomvKDkmB0S32ImWaoii6M14HCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB8480
 
-Match WiWi 2163:1008, subsystem 10ee:0007, revision 2. The Xilinx
-default subsystem ID is not a firmware-layout identifier. On the
-verified 0x800f production image the register interface matches the
-Celestica LitePCIe production image; the VID and flash header differ.
-
-Translate a copy of each peripheral resource by 0x02000000 and its
-interrupt input by 32. Use aligned 32-bit UART and XIIC register I/O.
-Do not register the second GNSS UART: it exists but has no pin routing.
-Leave non-WiWi resource tables and access modes unchanged.
-
-CoreList is available via the configuration UART, not PCIe. Check the
-PCI layout and the image ID at BAR0 + 0x02020000 before accessing the
-remaining core signatures or initializing any peripherals. Keep exact
-matches until a compatibility convention for later images is agreed.
-
-The LitePCIe per-input gate at BAR0 + 0x1800 must enable SPI before
-child probing: SPI NOR identification can wait for an interrupt. Open
-only the UART, I2C and SPI inputs first. Enable timing inputs after
-registering the PHC and its consumers. Skip unwired GNSS2, HWICAP and
-the separate EEPROM/RGB I2C inputs 17/18: this series does not register
-consumers for them. The highest owned vector is 48, not 50. Keep child
-interrupts available through removal, then mask the gate before freeing
-the vectors.
-
-Reject WiWi devlink flash updates before looking up or modifying an MTD
-device. The WiWi image uses a different flash header and the vendor's
-programming path requires a modified spi-xilinx. A recognized JEDEC ID
-does not establish a supported update path. Leave existing boards' flash
-operations intact.
-
-Source: Thomas Schaub, NetTimeLogic, 10 November 2026, email cited with
-permission. He tested the Time Card repository driver at 1d49e31 with
-the WiWi ID on a production card. His separate fix opens the gate before
-child probe on that driver. This implementation uses a selective mask;
-his test was not a test of this net-next series.
-
-On a WiWi production card, the driver bound, allocated 64 MSI-X
-vectors and registered the PHC, PPS device and three UARTs. The SPI
-NOR and both at24 devices bound. The PHC advanced by 3.000429460 s
-across three one-second sleeps, within the host monotonic brackets.
-The clock reported UNSYNCED at probe; neither PPS lock nor UTC
-accuracy was established.
-
-Tool-origin disclosure: Codex helped analyze supplied hardware evidence,
-implement and test the adaptation, and draft the changelog and docs.
-The revision reconciles Thomas's findings with the tested layout and
-does not treat a proposed image-ID convention as a vendor guarantee.
-
-Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
----
- Documentation/networking/devlink/ptp_ocp.rst |  35 +++-
- drivers/ptp/ptp_ocp.c                        | 198 ++++++++++++++++++-
- 2 files changed, 226 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/networking/devlink/ptp_ocp.rst b/Documentation/networking/devlink/ptp_ocp.rst
-index f94b759d9..a81dc1136 100644
---- a/Documentation/networking/devlink/ptp_ocp.rst
-+++ b/Documentation/networking/devlink/ptp_ocp.rst
-@@ -54,7 +54,8 @@ selected with the component name.
-      - Description
-    * - (none)
-      - The card's own flash, written through the SPI controller the driver
--       exposes.  The card runs the new image after its next reset.
-+       exposes. Not supported on WiWi. The card runs the new image after
-+       its next reset.
-    * - ``fw.cpld``
-      - The configuration flash of the TAP CPLD on ADVA TimeCard X1 boards,
-        programmed over I2C with the MachXO3 in-system programming commands
-@@ -73,3 +74,35 @@ with the standard devlink status notifications.
- Example::
- 
-     $ devlink dev flash pci/0000:02:00.0 file adva-cpld.bin component fw.cpld
-+
-+WiWi production firmware
-+========================
-+
-+WiWi Time Cards with PCI ID ``2163:1008`` and subsystem ID ``10ee:0007``
-+use the Celestica register layout behind a LitePCIe bridge. The driver
-+currently supports revision 2 with production image ID ``0x0000800f``
-+(reported as firmware version ``1.15``). It verifies the PCI layout and
-+the image/core versions before initializing the card. Other firmware
-+layouts are rejected, even if they use the same PCI ID.
-+
-+CoreList is readable over the configuration UART, not over PCIe. The
-+driver reads the image ID at BAR0 offset ``0x02020000`` before reading the
-+known core version registers. Neither a higher image ID nor the Xilinx
-+default subsystem ID guarantees a compatible layout.
-+
-+The image uses the Celestica LitePCIe production map: add ``0x02000000``
-+to the peripheral offsets and use aligned 32-bit MMIO. Interrupt input
-+``n`` uses MSI-X vector ``n + 32``. The per-input enable mask is at BAR0
-+offset ``0x1800``. The driver enables the SPI interrupt before probing
-+the flash and defers timing interrupts until the PHC is ready. GNSS2 is
-+instantiated but not wired to pins, so no second GNSS port is registered.
-+The separate EEPROM and RGB I2C inputs (17 and 18) have no handlers in
-+this driver and stay masked; these are distinct from its I2C input 7.
-+
-+WiWi firmware updates through ``devlink dev flash`` are not supported.
-+The WiWi image has a different flash header from the Celestica image.
-+The golden image at flash offset zero boots the update image via MultiBoot
-+with watchdog fallback. The vendor's programming path requires a modified
-+``spi-xilinx`` driver. Recognizing the SPI NOR does not validate that path
-+or the image header. Successful clock registration does not establish
-+GNSS synchronization or valid UTC.
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 625a85b2d..ee2242389 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -34,6 +34,23 @@
- #define PCI_VENDOR_ID_CELESTICA			0x18d4
- #define PCI_DEVICE_ID_CELESTICA_TIMECARD	0x1008
- 
-+#define PCI_VENDOR_ID_WIWI			0x2163
-+#define PCI_DEVICE_ID_WIWI_TIMECARD		0x1008
-+
-+/* WiWi production firmware uses the Celestica map behind LitePCIe. */
-+#define OCP_WIWI_MMIO_OFFSET			0x02000000
-+#define OCP_WIWI_IRQ_OFFSET			32
-+#define OCP_WIWI_MSI_ENABLE			0x1800
-+/* Upper 32 bits: UARTs, I2C and SPI can interrupt during probe. */
-+#define OCP_WIWI_PERIPHERAL_IRQS			(BIT(3) | BIT(5) | BIT(7) | \
-+						 BIT(9) | BIT(10))
-+/* PPS/TS0/TS1, TS2, GEN1-4 and TS3/TS4. */
-+#define OCP_WIWI_TIMING_IRQS			(GENMASK(2, 0) | BIT(6) | \
-+						 GENMASK(16, 11))
-+/* Leave unwired GNSS2 (4), HWICAP (8) and EEPROM/RGB I2C (17/18) masked. */
-+#define OCP_WIWI_IRQS				(OCP_WIWI_PERIPHERAL_IRQS | \
-+						 OCP_WIWI_TIMING_IRQS)
-+
- #define PCI_VENDOR_ID_OROLIA			0x1ad7
- #define PCI_DEVICE_ID_OROLIA_ARTCARD		0xa000
- 
-@@ -404,6 +421,8 @@ struct ptp_ocp {
- 	struct delayed_work	sync_work;
- 	int			id;
- 	int			n_irqs;
-+	bool			wiwi;
-+	void __iomem		*wiwi_msi;
- 	struct ptp_ocp_serial_port	port[__PORT_COUNT];
- 	bool			fw_loader;
- 	u8			fw_tag;
-@@ -1321,6 +1340,13 @@ static struct ocp_resource ocp_adva_x1_resource[] = {
- static const struct pci_device_id ptp_ocp_pcidev_id[] = {
- 	{ PCI_DEVICE_DATA(META, TIMECARD, &ocp_fb_resource) },
- 	{ PCI_DEVICE_DATA(CELESTICA, TIMECARD, &ocp_fb_resource) },
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_WIWI, PCI_DEVICE_ID_WIWI_TIMECARD,
-+			       PCI_VENDOR_ID_XILINX, 0x0007),
-+		.class = PCI_CLASS_MEMORY_OTHER << 8,
-+		.class_mask = 0xffffff,
-+		.driver_data = (kernel_ulong_t)ocp_fb_resource,
-+	},
- 	{ PCI_DEVICE_DATA(OROLIA, ARTCARD, &ocp_art_resource) },
- 	{ PCI_DEVICE_DATA(ADVA, TIMECARD, &ocp_adva_resource) },
- 	{ PCI_DEVICE_DATA(ADVA, TIMECARD_X1, &ocp_adva_x1_resource) },
-@@ -2173,6 +2199,11 @@ ptp_ocp_devlink_flash_update(struct devlink *devlink,
- 	const char *msg;
- 	int err;
- 
-+	if (bp->wiwi) {
-+		NL_SET_ERR_MSG_MOD(extack, "WiWi flash updates are not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (params->component) {
- 		if (!bp->has_cpld ||
- 		    strcmp(params->component, ADVA_CPLD_COMPONENT)) {
-@@ -2331,20 +2362,29 @@ ptp_ocp_register_spi(struct ptp_ocp *bp, struct ocp_resource *r)
- }
- 
- static struct platform_device *
--ptp_ocp_i2c_bus(struct pci_dev *pdev, struct ocp_resource *r, int id)
-+ptp_ocp_i2c_bus(struct ptp_ocp *bp, struct ocp_resource *r, int id)
- {
-+	struct xiic_i2c_platform_data wiwi_data;
-+	struct pci_dev *pdev = bp->pdev;
- 	struct ptp_ocp_i2c_info *info;
- 	struct resource res[2];
- 	resource_size_t start;
-+	const void *data;
- 
- 	info = r->extra;
-+	data = info->data;
-+	if (bp->wiwi) {
-+		wiwi_data = *(struct xiic_i2c_platform_data *)info->data;
-+		wiwi_data.force_32bit_access = true;
-+		data = &wiwi_data;
-+	}
- 	start = pci_resource_start(pdev, 0) + r->offset;
- 	res[0] = DEFINE_RES_MEM(start, r->size);
- 	res[1] = DEFINE_RES_IRQ(pci_irq_vector(pdev, r->irq_vec));
- 
- 	return platform_device_register_resndata(&pdev->dev, info->name,
- 						 id, res, ARRAY_SIZE(res),
--						 info->data, info->data_size);
-+						 data, info->data_size);
- }
- 
- static int
-@@ -2369,7 +2409,7 @@ ptp_ocp_register_i2c(struct ptp_ocp *bp, struct ocp_resource *r)
- 
- 	sprintf(buf, "%s.%d", info->name, id);
- 	devm_clk_hw_register_clkdev(&pdev->dev, clk, NULL, buf);
--	p = ptp_ocp_i2c_bus(bp->pdev, r, id);
-+	p = ptp_ocp_i2c_bus(bp, r, id);
- 	if (IS_ERR(p))
- 		return PTR_ERR(p);
- 
-@@ -2640,7 +2680,7 @@ ptp_ocp_serial_line(struct ptp_ocp *bp, struct ocp_resource *r)
- 	 */
- 	memset(&uart, 0, sizeof(uart));
- 	uart.port.dev = &pdev->dev;
--	uart.port.iotype = UPIO_MEM;
-+	uart.port.iotype = bp->wiwi ? UPIO_MEM32 : UPIO_MEM;
- 	uart.port.regshift = 2;
- 	uart.port.mapbase = pci_resource_start(pdev, 0) + r->offset;
- 	uart.port.irq = pci_irq_vector(pdev, r->irq_vec);
-@@ -3109,7 +3149,26 @@ ptp_ocp_register_resources(struct ptp_ocp *bp, kernel_ulong_t driver_data)
- 	int err = 0;
- 
- 	table = (struct ocp_resource *)driver_data;
--	for (r = table; r->setup; r++) {
-+	for (; table->setup; table++) {
-+		struct ocp_resource translated = *table;
-+
-+		r = table;
-+		if (bp->wiwi) {
-+			/* GNSS2 is instantiated but not routed to FPGA pins. */
-+			if (r->setup == ptp_ocp_register_serial &&
-+			    r->bp_offset == offsetof(struct ptp_ocp,
-+						    port[PORT_GNSS2]))
-+				continue;
-+			/* Never modify the resource table shared with other cards. */
-+			if (translated.offset)
-+				translated.offset += OCP_WIWI_MMIO_OFFSET;
-+			if (r->setup == ptp_ocp_register_ext ||
-+			    r->setup == ptp_ocp_register_serial ||
-+			    r->setup == ptp_ocp_register_i2c ||
-+			    r->setup == ptp_ocp_register_spi)
-+				translated.irq_vec += OCP_WIWI_IRQ_OFFSET;
-+			r = &translated;
-+		}
- 		if (!ptp_ocp_allow_irq(bp, r))
- 			continue;
- 		err = r->setup(bp, r);
-@@ -5786,6 +5845,12 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 	platform_device_unregister(bp->i2c_ctrl);
- 	if (bp->i2c_clk)
- 		clk_hw_unregister_fixed_rate(bp->i2c_clk);
-+	/* Child removal can need interrupts, notably SPI NOR reset. */
-+	if (bp->wiwi_msi) {
-+		iowrite32(0, bp->wiwi_msi);
-+		iowrite32(0, bp->wiwi_msi + 4);
-+		ioread32(bp->wiwi_msi);
-+	}
- 	if (bp->n_irqs)
- 		pci_free_irq_vectors(bp->pdev);
- 	mutex_destroy(&bp->cpld_lock);
-@@ -5951,6 +6016,99 @@ ptp_ocp_sync_work(struct work_struct *work)
- 	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
- }
- 
-+/*
-+ * CoreList is accessible via the configuration UART, not via PCIe.
-+ * Check the image ID first: an unknown image need not provide any of
-+ * the subsequent registers. Only the verified fixed layout is supported.
-+ */
-+static int ptp_ocp_wiwi_validate(struct pci_dev *pdev)
-+{
-+	static const struct {
-+		u32 offset;
-+		u32 version;
-+	} versions[] = {
-+		{ 0x02020000, 0x0000800f }, /* image */
-+		{ 0x0300000c, 0x01040000 }, /* clock */
-+		{ 0x0301000c, 0x01030001 }, /* timestamp 0 */
-+		{ 0x0302000c, 0x01030001 }, /* timestamp 1 */
-+		{ 0x0306000c, 0x01030001 }, /* timestamp 2 */
-+		{ 0x0311000c, 0x01030001 }, /* timestamp 3 */
-+		{ 0x0312000c, 0x01030001 }, /* timestamp 4 */
-+		{ 0x030c000c, 0x01030001 }, /* PPS timestamp */
-+		{ 0x030d000c, 0x01030001 }, /* signal 1 */
-+		{ 0x030e000c, 0x01030001 }, /* signal 2 */
-+		{ 0x030f000c, 0x01030001 }, /* signal 3 */
-+		{ 0x0310000c, 0x01030001 }, /* signal 4 */
-+		{ 0x0303000c, 0x01030001 }, /* PPS generator */
-+		{ 0x0304000c, 0x01030002 }, /* PPS input */
-+		{ 0x0305000c, 0x02030002 }, /* ToD */
-+		{ 0x0307000c, 0x02000002 }, /* IRIG input */
-+		{ 0x0308000c, 0x02000001 }, /* IRIG output */
-+		{ 0x0309000c, 0x00010002 }, /* DCF input */
-+		{ 0x030a000c, 0x00010000 }, /* DCF output */
-+		{ 0x030b000c, 0x02000002 }, /* NMEA output */
-+	};
-+	u32 table, pba, value;
-+	void __iomem *base;
-+	unsigned int i;
-+	int cap, err;
-+
-+	cap = pci_find_capability(pdev, PCI_CAP_ID_MSIX);
-+	if (pdev->revision != 2 ||
-+	    !(pci_resource_flags(pdev, 0) & IORESOURCE_MEM) ||
-+	    pci_resource_len(pdev, 0) != 0x04000000 || !cap ||
-+	    pci_msix_vec_count(pdev) != 64 ||
-+	    pci_read_config_dword(pdev, cap + PCI_MSIX_TABLE, &table) ||
-+	    pci_read_config_dword(pdev, cap + PCI_MSIX_PBA, &pba) ||
-+	    table != 0x2000 || pba != 0x1808)
-+		return dev_err_probe(&pdev->dev, -ENODEV,
-+				     "Unsupported WiWi PCI layout\n");
-+
-+	err = pci_request_region(pdev, 0, KBUILD_MODNAME);
-+	if (err)
-+		return err;
-+
-+	base = pci_iomap(pdev, 0, 0);
-+	if (!base) {
-+		err = -ENOMEM;
-+		goto out_release;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(versions); i++) {
-+		value = ioread32(base + versions[i].offset);
-+		if (value != versions[i].version) {
-+			dev_err(&pdev->dev,
-+				"Unsupported WiWi register version %#x at %#x\n",
-+				value, versions[i].offset);
-+			err = -ENODEV;
-+			break;
-+		}
-+	}
-+	pci_iounmap(pdev, base);
-+out_release:
-+	pci_release_region(pdev, 0);
-+	return err;
-+}
-+
-+static int ptp_ocp_wiwi_irq_init(struct ptp_ocp *bp)
-+{
-+	void __iomem *msi;
-+
-+	msi = __ptp_ocp_get_mem(bp, pci_resource_start(bp->pdev, 0) +
-+			      OCP_WIWI_MSI_ENABLE, 8);
-+	if (IS_ERR(msi))
-+		return PTR_ERR(msi);
-+	bp->wiwi_msi = msi;
-+
-+	/* LiteX stores bits 63:32 before bits 31:0, as little-endian words. */
-+	iowrite32(0, msi);
-+	iowrite32(0, msi + 4);
-+	if (ioread32(msi) || ioread32(msi + 4))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
- static int
- ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
-@@ -5972,6 +6130,14 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
- 
- 	bp = devlink_priv(devlink);
-+	bp->wiwi = pdev->vendor == PCI_VENDOR_ID_WIWI &&
-+		   pdev->device == PCI_DEVICE_ID_WIWI_TIMECARD;
-+	if (bp->wiwi) {
-+		/* No IRQ allocation, bus mastering or FPGA writes before this. */
-+		err = ptp_ocp_wiwi_validate(pdev);
-+		if (err)
-+			goto out_disable;
-+	}
- 	err = ptp_ocp_device_init(bp, pdev);
- 	if (err)
- 		goto out_disable;
-@@ -5987,18 +6153,33 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	INIT_DELAYED_WORK(&bp->sync_work, ptp_ocp_sync_work);
- 
-+	if (bp->wiwi) {
-+		err = ptp_ocp_wiwi_irq_init(bp);
-+		if (err)
-+			goto out;
-+	}
-+
- 	/* compat mode.
- 	 * Older FPGA firmware only returns 2 irq's.
- 	 * allow this - if not all of the IRQ's are returned, skip the
- 	 * extra devices and just register the clock.
- 	 */
--	err = pci_alloc_irq_vectors(pdev, 1, 17, PCI_IRQ_MSI | PCI_IRQ_MSIX);
-+	if (bp->wiwi)
-+		err = pci_alloc_irq_vectors(pdev, 49, 64, PCI_IRQ_MSIX);
-+	else
-+		err = pci_alloc_irq_vectors(pdev, 1, 17,
-+					    PCI_IRQ_MSI | PCI_IRQ_MSIX);
- 	if (err < 0) {
- 		dev_err(&pdev->dev, "alloc_irq_vectors err: %d\n", err);
- 		goto out;
- 	}
- 	bp->n_irqs = err;
- 	pci_set_master(pdev);
-+	/* SPI NOR probe needs interrupts, but timestamp consumers are not ready. */
-+	if (bp->wiwi_msi) {
-+		iowrite32(OCP_WIWI_PERIPHERAL_IRQS, bp->wiwi_msi);
-+		ioread32(bp->wiwi_msi);
-+	}
- 
- 	err = ptp_ocp_register_resources(bp, id->driver_data);
- 	if (err)
-@@ -6047,6 +6228,11 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 			goto out_dpll;
- 		}
- 	}
-+	/* All handlers and the PHC are ready for timestamp interrupts. */
-+	if (bp->wiwi_msi) {
-+		iowrite32(OCP_WIWI_IRQS, bp->wiwi_msi);
-+		ioread32(bp->wiwi_msi);
-+	}
- 	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
- 
- 	return 0;
+SGkgTWF0dCwNCg0KU2FzaGlrbyBmb3VuZCB0d28gcHJvYmxlbXMgaW4gdjIsIGFuZCBib3RoIGNv
+bWUgZnJvbSByZW1vdmluZw0KbmRvX3VuaW5pdCwgc28gSSdkIGxpa2UgdG8gYnJpbmcgaXQgYmFj
+ayBpbiB2MywganVzdCB3aXRob3V0IHRoZSBmcmVlDQp0aGlzIHRpbWUuDQoNCkl0IHR1cm5zIG91
+dCBuZG9fdW5pbml0IHdhcyBhbHNvIGRyb3BwaW5nIHNlbCBhbmQgZW1wdHlpbmcgdHhfcXVldWUs
+DQphbmQgaXQncyB0aGUgb25seSBob29rIHRoZSBjb3JlIGNhbGxzIGFmdGVyIGRldl9jbG9zZSgp
+IGJ1dCBiZWZvcmUNCndhaXRpbmcgZm9yIHRoZSBsYXN0IG5ldGRldiByZWYuIElmIE5FVERFVl9S
+RUdJU1RFUiBmYWlscywgc2VsJ3MgcmVmIGlzDQpuZXZlciBkcm9wcGVkIGFuZCByZWdpc3RlciBo
+YW5ncy4gT24gYSBub3JtYWwgdW5yZWdpc3RlciwgYSBza2IgbGVmdCBpbg0KdHhfcXVldWUgY2Fu
+IGtlZXAgdGhlIG5ldGRldiBwaW5uZWQuDQoNClNvIGluIHYzIG5kb191bmluaXQganVzdCBkcm9w
+cyBzZWwgYW5kIGVtcHRpZXMgdHhfcXVldWUuIEJvdGggYXJlIGZpbmUNCnRvIHJ1biB0d2ljZSwg
+c28gZnJlZWluZyBtaWRldiBhbmQgdGhlIHB1dF9kZXZpY2UoKXMgc3RpbGwgb25seSBoYXBwZW4N
+CmluIG1jdHBfaTJjX21pZGV2X2ZyZWUoKSwgZnJvbSBtY3RwX2kyY191bnJlZ2lzdGVyKCkgbGlr
+ZSB5b3Ugc3VnZ2VzdGVkLg0KDQpJIGRpZCBsb29rIGF0IGtlZXBpbmcgbmRvX3VuaW5pdCBvdXQu
+IFRoYXQgd291bGQgbWVhbiBvbmx5IHBpY2tpbmcgc2VsDQphZnRlciBtY3RwX3JlZ2lzdGVyX25l
+dGRldigpIHN1Y2NlZWRzLCBhbmQgY2FsbGluZyBuZXRpZl90eF9kaXNhYmxlKCkNCmJlZm9yZSBl
+bXB0eWluZyB0eF9xdWV1ZSBpbiBtY3RwX2kyY191bnJlZ2lzdGVyKCkuIEl0IHdvcmtzIGFyb3Vu
+ZCB0aGUNCmNvcmUncyBvcmRlcmluZyByYXRoZXIgdGhhbiB1c2luZyB0aGUgaG9vayBtZWFudCBm
+b3IgaXQsIGFuZCBib3RoIGJpdHMNCm5lZWQgYSBjb21tZW50IHRvIGV4cGxhaW4gd2h5IHRoZXkn
+cmUgdGhlcmUuIEl0IGFsc28gZG9lc24ndCBjb3ZlciB0aGUNCnVubG9jayBtYXJrZXIsIHdoaWNo
+IHJlbGVhc2VfZmxvdygpIHN0aWxsIHF1ZXVlcyBhZnRlciB0aGUgcHVyZ2UuIFNvDQpJJ2QgcmF0
+aGVyIGdvIHdpdGggbmRvX3VuaW5pdCwgYnV0IGhhcHB5IHRvIHN3aXRjaCBpZiB5b3UgcHJlZmVy
+Lg0KDQpCUiwNCktlbm55DQoNCg0KVGhlIHByZS1leGlzdGluZyBvbmUgaXMgaW4gdGhlIG1jdHAg
+Y29yZSByYXRoZXIgdGhhbiBtY3RwLWkyYywgc28gSSdsbA0KbGVhdmUgaXQgb3V0IG9mIHRoaXMg
+Zml4Lg0KDQpwdy1ib3Q6IGNyDQo=
