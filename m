@@ -1,107 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.25
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794389453;
-	b=Y2rP35keSMGBTuQ1tTEyLMl+Q+W0bgWyLb1+jrLrfQZtlbT37cSgbSoVOx0nXz3QhDd2
-	 xgmE2uD8Nwh4HFyiq7rpnaG0GlYlHx3Ive9sHveVfiySttFLMPvaiZ2Nlx6YJnX4mLNF8
-	 BNON01wDmqzmsCWAp7VEzxjtDBCbV662ZOLstGobrc0ZjC4PuTcSdZ5l34l93Cv5qh51u
-	 qHSeiBl8RfzwZWbnNQAP6Kvg2fZ13RUmFdKua8yscyTNZOK1SAnQYJi8fyYZDq1SuGiAk
-	 7NOAcjOXuxSCNKpIOW01GrNnKWu8zhums475RYvor/FX6wziKJTPUHe+AJT9D1OV6eg==
+	t=1794389671;
+	b=5jxT4ebU9WIRR5q6T73vTY0AbeCEgFpCMzuwZ2aRys2pu5EDV8ectT6OJv0TvMIwYg+J
+	 NIut04Evfmu67O7SwoE6BX74Ah9pypz0k1i4PWBlrcRW5Arf/AgvBp+M3c7tx6FMhPKHN
+	 8iq1A6xX4NIL51wsEumwPB5oET9Yb47aVAzRU687nK7z7v2R6EGAfzdMdkPK4j0BCxApm
+	 nnEsMCsB+C66PC5hnLKIuA7Eq3rkXLf6UddeCRlVJeL9lzzmWnLmhwMfBgKmoIgP1+IEw
+	 9GOmFYVpA+8/kp44/NUvVK23SS7Hx/Xix7Xq4RuMPqH4E/oGXYXdYB7M1ECNNYSwHng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794389453;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=ohdbjek4hr8Jhs6bONF/iNmbouRA5J+FWduvFT7IpeM=;
-	b=Iite0f7u+V0ofUymdSiRsaHoXSAIJ+Mcy2ui+VCJQECm65YPErz1ZTVPijeIAHDgOKPD
-	 cTTJPM08IqbYkhh7MEa0ixzsoKOq61fdMPlptoqvgjX2fmGvaa2S6NqHClMrHoDQ0tzrf
-	 MXG8vJ2cY19kyHvWOcYPI6lOLzKMyo0pAjpHfiAh/W+CN1Xl4HamgmgbubqD0dHLgI2I0
-	 J2KMeGfhBkEeZO760EU4dxgfpf8frG8eCOx1PiPDoI+OoB/SRh7RORx1YX200ak/led9n
-	 Un+lnX5iwAFKlSTrOYVaSYftJPQdwFAXMhvE1EZVTA5+JS61kPW5hTv6w9DTMVJHzhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794389671;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=w2FctwDLdLDAkukKWTGqgk6qc1mhPemD+CCv6GK4dYQ=;
+	b=1uSct0z3j4f8tG7TEAEQ5qfNXRdSk8RSyfUWCosE2E3/8yXMr/80bJnfGKb211LVyF/i
+	 2ceWhna86lBAeEqBQ8ZtWuag2YvHaFCxDZRo1ePYzrxnJVdwR1kzGVJZ1bPrqixxe8MFc
+	 XKb27fC7jGJCdt3z7gK9BdRycRv93++1bjqwJ2EKasYV8KIVY4SSriaxKnkE+QpJQXDeu
+	 RicugZ1SnNwVv9BUTBTiQYw4xN/9ho07f1acpAvUR4jKkvtOUxBcOE8r/qqRKOmv8HSbi
+	 Ij4YCRa5UI1FTQoaoQIK1o9HQdMo0OIktlByEK6pCvEr4F71X9JrEvhmUX8AvdG88Gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fqrgW2iX;
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=mails.ucas.ac.cn;
+	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.25
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660EB606A333
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:30:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 660EB606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fqrgW2iX
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-490d59c3f0aso1584072f8f.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 01:30:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794389452; x=1794994252; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ohdbjek4hr8Jhs6bONF/iNmbouRA5J+FWduvFT7IpeM=;
-        b=fqrgW2iXgHIJeJhQma2d8o1vZNeBqNbbG52ROBSXr7B/rKI6naTwS/dn5wgSlDXWyY
-         v/ZQuKpMBHa7ZQxHt7ZeAfqIImafnW85f4Rc39C8m/lCZsstB3xUd9BbWtoX2dIHhB+g
-         BhO5+RX9d2HCuar+UqD9j8ByYscf5nN5vEkO0VGjb1KLKc6Iex/tpGh8j3AnF6xfhNjN
-         ZNLVuPm5/XyQ2CIY0HBr8vPI7Z14LXZFNOk5NpAFsJOgD7EPc20Ox7Z/9IFWcTUev6Hr
-         Exm7B0B5OWTFlFbwj7M3W0PHhe6AQrmFle3vOCwPN2DPjV1WpA0n7PXQk5kZEC0jnC3t
-         t0xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794389452; x=1794994252;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ohdbjek4hr8Jhs6bONF/iNmbouRA5J+FWduvFT7IpeM=;
-        b=s9VxtId6iOycz0XzlUJwjzO5cu0bMEHaElicAhiCpH2jcNdZOYB1+47RrHh1172cjk
-         W8LalegaMm+Qctagfa3/2HCNl4h3rl+sZ2L0UeoIcP4d9lHab6WFRiS8xng/h2Fz7bLP
-         npRxXXklAu/+ZWJzbL7EitNUA0d8P1iJVvJphZFwVvp7EgeEmYq4mNBwvrRKP6dqhEYD
-         NKDPPhM+mJZY/ffmJ5yRlEbBsKx/M3mu18b/0zNiSHwSB7UJf16wG3GKB1T0xPwi0SVN
-         1Ad7UKOswDjNY4O+9D5GLFhpuyRUBS4o/fY/3QWuz75TovBw2gOxnxk2l+IxWg41Vl+l
-         V31g==
-X-Forwarded-Encrypted: i=1; AL+hErEdIDLhjPMzSXYs/+cwQVLi5fquZ2XVLGmGydEu8ycpjBGWJLwpeL0vTu0XEurs3sMW/yRSKEY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8mwJqSnFCYNVtAB93r01zXsTJ9MEX16VzA/q2k99Bx0mVEIMyT
-	/vYJuzJHBrxHZifk5oHK45cKryMDWbRXXbu3rBmAmoaQs9tTp5DwFEdmK5FkFZ8cfJY=
-X-Gm-Gg: AYBFou3gYQg26GTtZ8wbNUPQhRhMH0crvmLnv+HccAZ6Di5Ov6uX2evivaTmG9rQA9Z
-	wlEGgxgBT9YF1M7h4JUNvL/mQdd6KP3CGPAnqKOdpt9UPelGZV3ylZVAvU2BvkTDv2OIW+688Nq
-	JEFzAi2+l0ASpHZ61oZQJZu1fnIPFYNqrLOj/atAn3g5UZFqgJwLRq6/TCYWWdiTKe+amNKILYW
-	Cdvwud8VekQpCOYRb3aP3ZRsOwwINpeTNUkeiuQpDCxu+Grz+gxQtEyUkpud2RYupWkBW5/5YJn
-	fRRPaWKOAAHXyyOn9aFmAoIkM6pZosMRLjb9mU5KiXf49ZbK67m9GPrnbBOmcsaRShHtZnNX223
-	GCoYtMZfE8ycmO1TZzipZP2a2+JNwdbOSYjTjrvIdCs812GTiqf3A0z1Yd5Vz66PKL+XLwrHF3B
-	OA8DhfeaYwu+UXfRhtdJGXYyUd6sJsWLDZEhlpi0y2fPylRijQ4mkh7DflrOyUIJMx/4UsZGxei
-	Q61I4ePe/yRU1lBWTKL4lmdVBI3d/cOSamsiuSnS9VmenshB4hExQr4amqBz5naOsomNdmf/8Kv
-	AQSHixoBBqGT4RxkxFlODw6iUHk6/8OohE8dIkVD2wBqSktaMVxW05yIG3DgQdGXPKYzArkv8yG
-	9Yek8Y37Wt/xU66sIxqVtJR7zvwO98biet4MnF8ETaFNpki9wrk3kf/rJZCl81wXQuoBSMoBkvG
-	PWRxU1/ZNpTM4=
-X-Received: by 2002:a05:6000:220e:b0:48d:ff0b:9b52 with SMTP id ffacd0b85a97d-499c72712d2mr3050951f8f.19.1794389451603;
-        Wed, 11 Nov 2026 01:30:51 -0800 (PST)
-Received: from AHERLNXVDANI01.lgs-net.com ([193.8.40.126])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498362eb14asm9175839f8f.34.2026.11.11.01.30.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 01:30:51 -0800 (PST)
-From: =?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
-To: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Cc: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	dima.ruinskiy@intel.com,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
-Subject: [PATCH iwl-net v2 2/2] igc: treat I226-LMvP as an I226 device
-Date: Wed, 11 Nov 2026 10:30:35 +0100
-Message-ID: <20261111093035.513635-3-danividanivi@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261111093035.513635-1-danividanivi@gmail.com>
-References: <20261111093035.513635-1-danividanivi@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839A606A31C
+	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 09:34:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3839A606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
+Received: from imini.taila1aac7.ts.net (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAAHZbqhNvRq183fAA--.7089S3;
+	Wed, 11 Nov 2026 17:34:25 +0800 (CST)
+From: Yicheng Zhong <zhongyicheng241@mails.ucas.ac.cn>
+To: Sunil Goutham <sgoutham@marvell.com>,
+ Ratheesh Kannoth <rkannoth@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
+ Subbaraya Sundeep <sbhatta@marvell.com>
+Cc: netdev@vger.kernel.org
+Subject:
+ [RFC net-next 1/2] octeontx2-af: reject an out of range MCAM counter on CN20K
+Date: Wed, 11 Nov 2026 09:34:25 -0000
+Message-ID: <179438966513.1752948.9405325090310502892@mails.ucas.ac.cn>
+In-Reply-To: <179438966513.1752948.1646241391383361825@mails.ucas.ac.cn>
+References: <179438966513.1752948.1646241391383361825@mails.ucas.ac.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,49 +55,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHZbqhNvRq183fAA--.7089S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1fKw4DZry7JF1xZF45Awb_yoW8Cr4UpF
+	s0yFyIkr1kJr13uw4UJ3WrtFZ8CanrJFW3Kr18Kr4rZan5tr4Sq3Z8Kay0gFy7J3yruFyj
+	yF12v3yrCFZ8XFUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPIb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
+	8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Jrv_JF4l8cAvFVAK0II2c7xJM28CjxkF
+	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY
+	1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv04
+	87Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280
+	aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7
+	AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UE
+	zuAUUUUU=
+X-CM-SenderInfo: x2kr0wx1lfxvtqjskio6pdxz3voxutnvoduhdfq/
 
-The I226-LMvP device ID (0x5503) was added by commit 8f20571db527
-("igc: Add new device ID"), but when commit b8897dc54e3b ("igc: remove
-I226 Qbv BaseTime restriction") introduced igc_is_device_id_i226(), it
-was left out. As a result I226-LMvP is currently treated as neither an
-I225 nor an I226 part.
+The CN20K branch of rvu_mbox_handler_npc_mcam_counter_stats() derives the
+bank and the register offset from the counter argument without checking it
+against the table, unlike the path the other silicons take.  With a counter
+past mcam->total_entries the bank number selects a bank that does not exist,
+so the register offset leaves the NPC block and the caller reads a register
+of a neighbouring block.
 
-Add IGC_DEV_ID_I226_LMVP to igc_is_device_id_i226(). This changes the
-behaviour for I226-LMvP in the following places, all of which now
-match the other I226 parts:
+Bound the counter to the table before deriving bank and index, which keeps
+the access inside the block; an ownership check would need the caller to be
+compared against the MCAM entry owner and is not added here.
 
- - igc_probe() and igc_io_slot_reset() disable ASPM L1.2, as done for
-   I226 since commit 0325143b59c6 ("igc: disable L1.2 PCI-E link
-   substate to avoid performance issue").
- - igc_tsn_enable_offload() and igc_tsn_disable_offload() set and
-   restore the I226-specific RETX (Qbv full) thresholds.
- - igc_tsn_enable_offload() handles the FutScdDis bit and the base
-   time as on I226.
-
-Intel confirmed that the I226 TSN functionality introduced by commit
-b8897dc54e3b also applies to I226-LMvP.
-
-Fixes: b8897dc54e3b ("igc: remove I226 Qbv BaseTime restriction")
-Link: https://lore.kernel.org/all/5d45a583-198c-467d-afbe-8f19398e82f3@intel.com/
-Signed-off-by: Daniel Viaño <danividanivi@gmail.com>
+Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for CN20K silicon")
+Signed-off-by: Yicheng Zhong <zhongyicheng2025@iscas.ac.cn>
+Signed-off-by: Yicheng Zhong <zhongyicheng241@mails.ucas.ac.cn>
 ---
- drivers/net/ethernet/intel/igc/igc_base.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-index ab9120a31..6865fef40 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.c
-+++ b/drivers/net/ethernet/intel/igc/igc_base.c
-@@ -447,6 +447,7 @@ bool igc_is_device_id_i226(struct igc_hw *hw)
- 	case IGC_DEV_ID_I226_V:
- 	case IGC_DEV_ID_I226_K:
- 	case IGC_DEV_ID_I226_IT:
-+	case IGC_DEV_ID_I226_LMVP:
- 		return true;
- 	default:
- 		return false;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 42a601976db..be8e3518e7b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -4015,6 +4015,13 @@ int rvu_mbox_handler_npc_mcam_counter_stats(struct rvu *rvu,
+ 	 * has its own counter. No need to verify the counter index.
+ 	 */
+ 	if (is_cn20k(rvu->pdev)) {
++		/* cntr is an MCAM entry index on CN20K.  An index past the
++		 * table would derive a bank that does not exist and take the
++		 * register offset out of the NPC block.
++		 */
++		if (req->cntr >= mcam->total_entries)
++			return NPC_MCAM_INVALID_REQ;
++
+ 		index = req->cntr & (mcam->banksize - 1);
+ 		bank = npc_get_bank(mcam, req->cntr);
+ 		regval = rvu_read64(rvu, blkaddr,
 -- 
-2.53.0
+2.43.0
 
