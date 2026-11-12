@@ -1,79 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794477893;
-	b=dJM8ePvX2SLjr9rFw8WuEFwuwuOMmwEip+GIR+tUIUeongUICKSRrPII6VsX9Cib1A8M
-	 Zwqh2GuatQz/ZerkGv6D2np+XRpXzxegIooQJNzMpNfh0UFUdMElCKW0ooKdU5krSi9f0
-	 TZXo1X4J0DdsDKwfOEo0rTnFYMx6G/idXbPxxMSilC8t0VTa5oe0pmbDjYTtXlasd5Oe+
-	 ViaVeE0HbwjJXNnrgLoXx7ORKXi8PnA5rGTVye3K4YlrZAYJ/TT0C4Hw7R3jx4YPnxUd9
-	 yEVPHlSTZe0h8rf5HRU69fZNjGU05gd9h+fAhXnYGWKVmorEojZNjj4M/ErQx+UchDA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794477893;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=/2P+UzLcAXUaiDKQbFxfB1RtcTN93C+L0+1NR3oo0lQ=;
-	b=YIvbkVXMAWjrnIamLwabmpojWiwOrYP+OfY4eoVRRQHUlPCbJzuaO6unGMvVQ91IPK4a
-	 WSUhijPvqopXQZTYRM/KlNNIjs8NJEg5L1Aer5sSULeqKutXBK26F0PaK6r+1yEM71w/a
-	 0yz44iRX1wBXkvfjNa8A+D7vUQLwAuvI2G6IXYNh4s96v4QwU92/LOwnmlwMrEwGK3WRY
-	 rGo4V++sZGRchl+J/AS1+3TfL0fAWEUifNsylBnggzisrYedeXanWBz23dRGJMTSxiKoc
-	 yEGaucuRExXBwHyBZbqDdHT3f0J72AOQPghgkfWiWOIfAgIRAkDdGwmxhRvdp0Qszmg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B4DXqUiH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B02606A321;
-	Thu, 12 Nov 2026 10:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B4DXqUiH
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794477893;
-	b=ji1fs0w+xXzAjCUbnGSCVI2/crVgacFpQOHHrGxMFMZuOsY5Crs0ADUltJY9466CWQLH
-	 5S+KI43wQsp6he8yVP3fD5w1xHe+5+9r1OvRr69ws/EzgXqtHSoY9NKQf/r0N9/epqztf
-	 xHFmNv2j46B+4qBjYIoT5bigaQQjEuZUa4egjFjmSZVsk4MP6Xc8oDBaarD7pXqAmKoUV
-	 VUea3DtEVtxWKw0V+LdM3Ruo3X76AwdaxQAJ+aUzbX278pJ7Hk6MR+ExnhMsDrN6Sa5VS
-	 zZsPWpFlmY1bZs1L63xACBuYtjwldbdPSR2eeN58MgzmWmxuVjAg9CfNpWN7siMIaTA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794477893;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=/2P+UzLcAXUaiDKQbFxfB1RtcTN93C+L0+1NR3oo0lQ=;
-	b=UDfKVGh/ZtztyHlrRiIQYjdG1S0A6UsV1RCr3/QLjTpIgFbpxkf+XAx9Pb3YmBaXb+LY
-	 WsiKhDbG7gzI4AJRrNzzYJcZGlBh5F4/WByZ2Apo+WJ2R8yJASljGbn2ovZhWKpmHv44y
-	 9g9jdSB8rXvFu1utPggXyXtr0DxoSJnY+g+zV85N16T6sf+sN3z+OwKp88RaXusAALI2T
-	 zENZkd3OcGZkkOfmYkEGCATRtoFJEOYfTfeX7G0CL/O8cVtq3KGb49J7fZuQr0NbbBnaX
-	 hSOJ5ZUet/B4PjqnwLriICtB3buTn8td5H+d/iJTb67GXzEcFYqDvls0knJjM7m8Wgw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794477953;
+	b=speWSTo7Fi5YWUycDelu5Oy0T6UegAKwcCNBI/cTKHfQDG+ennfLg9vtE3sE4nr7u9Dg
+	 27zYzapBE/36E0z+nVJQ6PdkfmmqkLLyf4RH5SLY5n0MCTwG8Pzu+AkjlVy+d5LDbQNKr
+	 KMwwp8Gpw0c+xYHBuC/Vx5lYhgt2BsrEgs30JkoJ/X9oYLF4JDYcUDIM49J6lyvx58Omb
+	 nA3pxeyn6PSUgZJkCmpUBxBHiiraWQWKs8Ewi3ECIRnpKHNwq8VxnBIldS0lubHUA+ERj
+	 QzsoAI9+M3sep3yqAIgkkO511G0qLExP6gEB9y6wY316ahFDOH+94Hw0396mLfQLHfQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794477953;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
+	bh=eJpy9wKtB4AptXoRSNPEobdF3i9APnAHY5bJ3PMNze4=;
+	b=iKWJe0TFAwsPqfAqnopMlhAtt0q5Asbfgw5KgkwCxVBz7wROQcSOuxgfPM17D6FzdCE+
+	 4SElurwSXfRFw4MEqqzv4yZ3eVEuwD+qCmatYhStAaWlq3x4D/JkUoK1sTnSk1tjycZ+N
+	 /lWKPGTA2P2N6FQbe1MFbF8pbMU67uE4JqR3tHX7aULdiVEue/VZFkqgt2zhwIWOoFTI8
+	 gzfjdSlGyWgKTw9eTETabUG40WfhFo7M/qsTnMbdsZD1WLQFd+KgtPt921tPnzNxbE8mc
+	 pmB4VlyBKBYPQ/dvUlb7xsmWB8r3OUnDyCxJ4Qefcq99b4Za5ReErIk2V9ywCbXh1jw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BgeZ82+B;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B2BFA1F00A06;
-	Thu, 12 Nov 2026 10:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794477893;
-	bh=/2P+UzLcAXUaiDKQbFxfB1RtcTN93C+L0+1NR3oo0lQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=B4DXqUiH7eXSB4MN+s6sFWcuSa4wlxfgEOAUiVufJ7MWIngtLxiM+kRp5qzCSfzT8
-	 2bsIe72UU4mHIKJ0qEzdN5wZuN6qFN2u02PBgMMkRrPnEVenH6htg7F+NAKz3isc1E
-	 Bfi6fPP9rUS4BltLC60IbhrBJwf+IUqlxb23pzaQnh9JBH+T74uXjTAZX4gC14HYDq
-	 JP6NG1L0/oSOwOx++7uD8XvsiqkTmXMBBigLyR2cwFWQ9hjrCOAMKQ0qB9z24asNLp
-	 A1hrPV3m1s1Hg2YVy+ePfsgbcJws2uZHTPM+Bi2P0ALTiwDDLQJrYWySiK/L0hmH5c
-	 qMYFJcq1jkgfA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3F60A4945D;
-	Thu, 12 Nov 2026 10:04:52 +0000 (UTC)
-From: Suyuan Wang via B4 Relay <devnull+shyckless.gmail.com@kernel.org>
-Date: Thu, 12 Nov 2026 10:04:48 +0000
-Subject: [PATCH net 1/2] nfc: llcp: Clone LSM attributes to newly created
- child sockets
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15AB606A334
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:05:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B15AB606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BgeZ82+B
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-490d59c3edaso525636f8f.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:05:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794477951; x=1795082751; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=eJpy9wKtB4AptXoRSNPEobdF3i9APnAHY5bJ3PMNze4=;
+        b=BgeZ82+Bo79QHpxPv/epRE2RPqK3+ISRFH03lBH5hq3yEXiIpVlggZssbSik1sTmls
+         ryG9W1bKSHK/vMPfLMVQjFN7G8f6tv6LVAHq1TNvqTmvLqMwi9lJTgVeQKQJ8rfEM4Wa
+         9M+NN5cOwyVUAOmm4f/8gq9c+zbjV0Ahw+Rz1y5Sn4Rr+nnFZ2Ef1MPD0K1dxnCR9Hbe
+         hJD30ngytOwvzcBKYF2HMEDEVlJhnWBfPJGC47kYKiKcuIWyBFss1rM923YOvhQyJOXl
+         LG9cSq03kz/tOi1fMcez3i9xXAw4GVPLl5Q+rAJ2AYfc2XMtozYXyAMFTsR9PUYtJNBc
+         wLBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794477951; x=1795082751;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eJpy9wKtB4AptXoRSNPEobdF3i9APnAHY5bJ3PMNze4=;
+        b=MkJD6/rhg8Mm8b671ksOjB15Ne/xgtt6Tqjf1HuDbayHwnFs6iqgua1TLeHZILsKVx
+         XFW2UKxXcwk5En6qMNto1EPvQX2sqCZ0SulyQmAX97ejuzHHm3eUAuvyjD8AdHDLZQzt
+         ZkDc3GRhjAnyP2iUyMxP7OPgZgUvxdQ1HmrVLUoPSHBufQb8JCyyyPMVph5yb5RDGs2H
+         PbptE0fFEgNEA8g8HszZBxeD5YxuFRVjPxQopZUMEYRyR+DJNBEcJn6IUOCfp9XzAHqj
+         gtB2YHTh4zTH7i/XU+2GoxCHHGKr6fy56OeY8YMnlz+dIG4+HvBcTfueSfntDDttp1WS
+         qDng==
+X-Forwarded-Encrypted: i=1; AL+hErGOmgLka64gVpGcMizWPa4xXJAUpck2JDaRYwws0FtJy8mRacwnhyXljicE0A/Hy4Oq8kKc7nA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/iFf+Xs8o3aft+6iylB+c7Y3BDRfWHYzPi7iujp8fmSkJ8Mvoc
+	Jtqlh1Dinh9zPhT0LuQYkdaXMbm+BHj4rQ+WoiSSYcQn7rWRfv2OLTc3
+X-Gm-Gg: AYBFou2K3n4boIb6Leg+zHKWny6Go1Z+Xv+XGZsXcPlSN+0Qf5HumcCbAuLfU+Xz1av
+	wPM0qzLMmmFQwnAcht3sqXnOK49VKI3JOYKheh+81FdQISpId+n8Ex8dM+XOykm64+9Ir+uvImR
+	QGsY3lw/LwC+/6Apux65MCHe96Iezea7MS7Dy2GJ3349xvCdYjjU8Okam+HC1vUCSwJ2YBW3uSi
+	0e30AJZVkg70dG3Jfr6Qiw32sHxlpCeoxke+tCUm6RSubsW0/++HlSluu6tg/1BmLKZIvUkL4lM
+	cDvFg5Istt7m9WWHJ94yUBA9Ph2QDeO9x1nQI7fmFQzURbWJy25pNUpRRncP5IXoM6iKQMrYR32
+	E44M+haddgl2J9HA7/dgiwNgJAJ2MKm2kQM1QobD8MT87zLJHYNCAsmVaq2PpdDg3qEDugeXoQ3
+	8/D4ZcKBHIEisoE9fgGLbLpqh4KPuSBPYOXFEU9rCQFdhndr27MDYSVnePlX0F7o4qjRKyAbtmN
+	G9CwI+uIOAF+gU5igIOrXzU9cpWD/MtocwKIRnzOz757r1P5bJ4S88RgUYDaN7OP9N2Ah02OkbL
+	aO6SuNoYIcYpTQgrreEVdY4DU+vYyBfvqMdTpYIevaJuhboa2tYW
+X-Received: by 2002:adf:d032:0:b0:48a:f4d4:e1f3 with SMTP id ffacd0b85a97d-49afede0d3amr2836432f8f.13.1794477950811;
+        Thu, 12 Nov 2026 02:05:50 -0800 (PST)
+Received: from smtpclient.apple ([217.111.110.194])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498367b99bcsm16587079f8f.51.2026.11.12.02.05.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Nov 2026 02:05:50 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,90 +89,315 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-nfc-v1-1-ab0ef166f382@gmail.com>
-References: <20261112-nfc-v1-0-ab0ef166f382@gmail.com>
-In-Reply-To: <20261112-nfc-v1-0-ab0ef166f382@gmail.com>
-To: netdev@vger.kernel.org, david@ixit.cz
-Cc: edumazet@kernel.org, kuba@kernel.org, horms@kernel.org, 
- oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org, 
- pabeni@redhat.com, davem@davemloft.net
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794477891; l=2145;
- i=shyckless@gmail.com; s=default; h=from:subject:message-id;
- bh=WtUcNIlZr5Of/JlHVB20yKuPFijC05MSrsd3vsPG3W8=;
- b=zMw8c+OS45UQNMuaqZc67YledF6y0cUGl05rZNtlvgXdt1L5mMoMp6tk96v8l8sV16YCN32KP
- 70btJpatg0sDcOKNDDmKNvciQra+NiAFoZKiwGy6Wntc5uvinHafvfu
-X-Developer-Key: i=shyckless@gmail.com; a=ed25519;
- pk=pMtccVGiWES3bV+7YBFuBclkvq2n2HBHQ5azaBrK2lY=
-X-Endpoint-Received: by B4 Relay for shyckless@gmail.com/default with
- auth_id=1498
-X-Original-From: Suyuan Wang <shyckless@gmail.com>
-Reply-To: shyckless@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH ipsec] xfrm: use software GSO for inner tunnels without
+ crypto offload
+From: Usman Malik <usmalik90@gmail.com>
+In-Reply-To: <179354432643.3131.245171497251536441@kernel.org>
+Date: Thu, 12 Nov 2026 11:05:38 +0100
+Cc: steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com,
+ horms@kernel.org,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ cratiu@nvidia.com,
+ leon@kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <33CCA7F8-9B0F-42F8-999B-32E9AF5826D1@gmail.com>
+References: <20261028-xfrm-inner-gso-v1-1-1908f0eb7313@engineer.com>
+ <179354432643.3131.245171497251536441@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 
-From: Suyuan Wang <stevewong@hust.edu.cn>
+On Sun, 1 Nov 2026 14:45:27 +0000, Sashiko AI review wrote:
+> [Severity: Critical]
+> Can this cause AES-GCM IV reuse for the transport-mode software SA
+> traffic that this change sends to xfrm_output_gso()?
 
-nfc_llcp_recv_connect() creates the child socket for an incoming
-CONNECT and queues it for accept(), but never calls security_sk_clone():
+Thanks for the review.
 
-    new_sk = nfc_llcp_sock_alloc(NULL, parent->sk_type, GFP_ATOMIC, 0);
-    ...
-    new_sock = nfc_llcp_sock(new_sk);
+The concern is right, and it is not new. Packets with
+skb->inner_protocol set, such as vxlan, geneve or ip6tnl, over a
+tunnel-mode SA already go through xfrm_output_gso() when an ESP GSO
+handler is registered, and with software crypto they hit it today.
+Jeremy Jean posted the fix as patch 4/7 of "xfrm: fix ESP IV generation
+and ESN authentication".
 
-So the accepted socket doesn't inherit the LSM state of the listening
-socket. With SELinux, its sock keeps the unlabeled SID. The
-sock_has_perm() checks on it (sendmsg, recvmsg and so on) still run,
-but against that SID instead of the server's. Depending on the policy,
-this can deny a confined server on its own accepted sockets, or allow
-something the server's own label wouldn't.
+=
+https://lore.kernel.org/netdev/20260930144523.435271-6-Jeremy.Jean@oss.cyb=
+er.gouv.fr/
 
-Call security_sk_clone() right after the child is allocated, before it
-is set up and queued for accept(). Bluetooth, iucv and vsock fixed the
-same problem the same way, in commit 6230c9b4f895 ("bluetooth: Properly
-clone LSM attributes to newly created child connections"),
-commit 02f06918156b ("iucv: properly clone LSM attributes to newly
-created child sockets") and commit 1f935e8e72ec ("selinux: vsock: Set
-SID for socket returned by accept()").
+It calls secpath_set() on each segment before xfrm_output2(), so every
+segment keeps its own xo->seq until esp_xmit() or esp6_xmit() reads it.
 
-Found with a static analysis tool and checked by hand.
+This patch moves the same packets over a transport-mode SA without an
+offload device onto that path, so it must not be applied before that
+fix.
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Co-developed-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
-Signed-off-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
-Signed-off-by: Suyuan Wang <stevewong@hust.edu.cn>
----
-Compile tested only, I haven't tried it with an SELinux policy and a
-real LLCP peer.
----
- net/nfc/llcp_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+Teaching xfrm{4,6}_transport_gso_segment() an inner IP tunnel would add
+new functionality. Before 0aae2867aa60 these packets never reached the
+ESP GSO handlers with software crypto, and the transport handlers do not
+produce a valid ESP packet for them. Restoring the software GSO for SAs
+without an offload device is the smaller change, and the one stable can
+take.
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 74bf817007cf..0f54548a47cc 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -10,6 +10,7 @@
- #include <linux/kernel.h>
- #include <linux/list.h>
- #include <linux/nfc.h>
-+#include <linux/security.h>
- 
- #include "nfc.h"
- #include "llcp.h"
-@@ -1006,6 +1007,8 @@ static void nfc_llcp_recv_connect(struct nfc_llcp_local *local,
- 		goto fail;
- 	}
- 
-+	security_sk_clone(parent, new_sk);
-+
- 	new_sock = nfc_llcp_sock(new_sk);
- 
- 	new_sock->local = nfc_llcp_local_get(local);
+I tested this on v7.3 with a tbf qdisc on the egress veth, so the
+segments wait in the queue before validate_xmit_skb(). The traffic was
+TCP through an ip6tnl tunnel over an rfc4106(gcm(aes)) SA, with
+esp6_offload loaded, 3 MB per run and 3 runs per case. All kernels carry
+patch 1/7 of the series, so the esp6 IV off-by-one does not mix into the
+counts. The sender capture was decrypted with the SA keys.
 
--- 
-2.34.1
+kernel                     SA mode     IV values reused per run
+v7.3 + 1/7                 tunnel      50, 50, 51
+v7.3 + 1/7 + this patch    tunnel      92, 51, 51
+v7.3 + 1/7 + this patch    transport   50, 51, 50
+v7.3 + 1/7 + 4/7 + this    tunnel      0, 0, 0
+v7.3 + 1/7 + 4/7 + this    transport   0, 0, 0
 
+There is no transport-mode row without this patch, because those packets
+take the SKB_GSO_ESP path and arrive malformed, which is the bug this
+patch fixes. Each reused IV value is shared by up to 7 segments of one
+GSO packet, and for one pair under each value ct1 XOR ct2 equals pt1 XOR
+pt2, so the keystream is shared. Without the qdisc every case is 0.
+Plain TCP over either mode goes through esp6_gso_segment() and is 0 in
+every case. v2 will state the dependency on that fix and carry this
+test. I will post it once the series is in the ipsec tree, rebased on it
+and tested again on that base.
+
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but transport-mode SAs with
+> a crypto offload device (x->xso.dev !=3D NULL) still set SKB_GSO_ESP =
+here
+> for packets with skb->inner_protocol set.
+
+Agreed. When the hw_enc_features of the device do not cover the whole
+gso_type, validate_xmit_skb() segments the packet through
+esp{4,6}_gso_segment() and xfrm{4,6}_transport_gso_segment() with the
+same transport header. v2 will name that path in the changelog. The fix
+for it belongs in the transport GSO handlers, as a separate change.
+
+> [Severity: Low]
+> This is a pre-existing issue, but x->xso.dev is read here with a plain
+> load, and xfrm_dev_state_free() can clear it at the same time:
+
+Pre-existing, and the new test only uses the value as a boolean. I would
+leave a READ_ONCE() conversion of x->xso.dev to a separate cleanup that
+also covers xfrm_dev_offload_ok() and the NETIF_F_HW_ESP_TX_CSUM check.
+
+pw-bot: cr
+
+Usman
+
+
+> On 1. Nov 2026, at 15:45, netdev-bot+sashiko@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>=20
+> Critical: 1 =C2=B7 High: 0 =C2=B7 Medium: 0 (1) =C2=B7 Low: 0 (1)
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let =
+patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your =
+reply
+> (one such reply per series is enough).
+>=20
+> - [Critical] The patch sends more traffic into xfrm_output_gso(), and =
+on
+> that path AES-GCM IVs can repeat.
+>=20
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but =
+transport-
+> mode SAs that have a crypto offload device (x->xso.dev !=3D NULL) =
+still=E2=80=A6
+> - [Low] This problem wasn't introduced by this patch, but =
+xfrm_output()
+> reads x->xso.dev with plain, unmarked loads: in =
+xfrm_dev_offload_ok()=E2=80=A6
+>=20
+> --
+>=20
+> xfrm: use software GSO for inner tunnels without crypto offload
+>=20
+> This commit changes xfrm_output() to use xfrm_output_gso() for GSO
+> packets with skb->inner_protocol set. Before, that only happened in
+> tunnel mode. Now it also happens when the SA has no offload device. =
+The
+> goal is to stop the SKB_GSO_ESP path from producing malformed ESP =
+packets
+> for ipip/ip6tnl traffic over transport-mode software SAs when
+> esp4_offload/esp6_offload are loaded.
+>=20
+>> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+>> index e305ba32e356b..c370d28a83f50 100644
+>> --- a/net/xfrm/xfrm_output.c
+>> +++ b/net/xfrm/xfrm_output.c
+>> @@ -808,7 +808,8 @@ int xfrm_output(struct sock *sk, struct sk_buff =
+*skb)
+>> skb->encapsulation =3D 1;
+>>=20
+>> if (skb_is_gso(skb)) {
+>> - if (skb->inner_protocol && x->props.mode =3D=3D XFRM_MODE_TUNNEL)
+>> + if (skb->inner_protocol &&
+>> +    (x->props.mode =3D=3D XFRM_MODE_TUNNEL || !x->xso.dev))
+>> return xfrm_output_gso(net, sk, skb);
+>=20
+> [Severity: Critical]
+> Can this cause AES-GCM IV reuse for the transport-mode software SA
+> traffic that this change sends to xfrm_output_gso()?
+>=20
+> Before this point, xfrm_output() has attached a sec_path with
+> sp->olen =3D 1, so the skb carries an xfrm_offload. xfrm_output_gso() =
+then
+> calls skb_gso_segment(). In skb_segment()->__copy_skb_header(),
+> __skb_ext_copy() only takes a reference on the extension:
+>=20
+> include/linux/skbuff.h:__skb_ext_copy() {
+> ...
+> refcount_inc(&ext->refcnt);
+> dst->extensions =3D ext;
+> ...
+> }
+>=20
+> So all segments seem to share one struct xfrm_offload.
+>=20
+> For each segment, xfrm_output2()->...->xfrm_replay_overflow_offload()
+> writes to that shared xo:
+>=20
+> net/xfrm/xfrm_replay.c:xfrm_replay_overflow_offload() {
+> ...
+> if (!skb_is_gso(skb)) {
+> XFRM_SKB_CB(skb)->seq.output.low =3D ++oseq;
+> xo->seq.low =3D oseq;
+> ...
+> }
+>=20
+> The XFRM_SKB_CB() copy belongs to each skb, but xo->seq.low is in the
+> shared extension.
+>=20
+> Encryption happens later, at qdisc dequeue time, in
+> validate_xmit_skb()->validate_xmit_xfrm()->esp_xmit(). That code reads
+> the shared value:
+>=20
+> net/ipv4/esp4_offload.c:esp_xmit() {
+> ...
+> seq =3D xo->seq.low;
+> ...
+> esp.seqno =3D cpu_to_be64(seq + ((u64)xo->seq.hi << 32));
+> ...
+> }
+>=20
+> XFRM_GSO_SEGMENT is not set on this path, so nothing advances
+> xo->seq.low per segment. esp_output_tail() then copies esp->seqno into
+> the AEAD IV. esp6_xmit() does the same.
+>=20
+> Segments can wait in the qdisc while the xfrm_output_gso() loop keeps
+> running. For example, dequeue_skb() returns nothing while a
+> TCQ_F_ONETXQUEUE txq is stopped by BQL or a full ring, or another CPU
+> may already be running the qdisc. In that case, won't later segments
+> overwrite xo->seq.low before the earlier ones are encrypted?
+>=20
+> Each packet would still have a distinct esph->seq_no on the wire, but
+> the explicit IVs would be the same. That is GCM nonce reuse under one
+> key. The receiver takes the IV from the packet, so decryption still
+> succeeds and nothing reports the problem.
+>=20
+> veth is noqueue, so in the test setup validate_xmit_skb() runs before
+> the next segment's xfrm_output_one(). That would hide this.
+>=20
+> Tunnel-mode software SAs already use this mechanism today. In the base
+> tree, however, these transport-mode packets, including the vxlan and
+> geneve traffic that worked, went down the SKB_GSO_ESP path. There,
+> xo->seq.low advances per segment within one validate_xmit_xfrm() call,
+> on an extension owned by a single GSO skb.
+>=20
+> Could the sec_path be unshared per segment, or the IV be taken from =
+the
+> per-skb XFRM_SKB_CB() sequence? Another option would be to fix
+> xfrm{4,6}_transport_gso_segment() instead of rerouting these packets.
+>=20
+> [Severity: Low]
+> This is a pre-existing issue, but x->xso.dev is read here with a plain
+> load, and xfrm_dev_state_free() can clear it at the same time:
+>=20
+> net/xfrm/xfrm_state.c:xfrm_dev_state_free() {
+> ...
+> WRITE_ONCE(xso->dev, NULL);
+> xso->type =3D XFRM_DEV_OFFLOAD_UNSPECIFIED;
+> netdev_put(dev, &xso->dev_tracker);
+> ...
+> }
+>=20
+> The new !x->xso.dev test is only used as a boolean, and either value
+> leads to a valid path. At worst it is a data race that KCSAN can see,
+> like the one already in xfrm_dev_offload_ok():
+>=20
+> struct net_device *dev =3D x->xso.dev;
+>=20
+> Further down in xfrm_output(), the check-then-dereference also uses =
+two
+> plain loads. This patch does not touch it:
+>=20
+> if (x->xso.dev && x->xso.dev->features & NETIF_F_HW_ESP_TX_CSUM)
+>=20
+> Would it make sense to read x->xso.dev once with READ_ONCE() into a
+> local variable and use that for these checks?
+>=20
+>>=20
+>> skb_shinfo(skb)->gso_type |=3D SKB_GSO_ESP;
+>=20
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but transport-mode SAs with
+> a crypto offload device (x->xso.dev !=3D NULL) still set SKB_GSO_ESP =
+here
+> for packets with skb->inner_protocol set.
+>=20
+> The commit message says:
+>=20
+> "An SA with crypto offload that falls back to software
+> segmentation in validate_xmit_xfrm() takes the same path."
+>=20
+> Is the reroute/overflow fallback in validate_xmit_xfrm() the only way =
+to
+> get there? validate_xmit_skb() also does this:
+>=20
+> net/core/dev.c:validate_xmit_skb() {
+> ...
+> if (netif_needs_gso(skb, features)) {
+> struct sk_buff *segs;
+>=20
+> segs =3D skb_gso_segment(skb, features);
+> ...
+> }
+>=20
+> That runs whenever the device's hw_enc_features don't cover the whole
+> gso_type, for example SKB_GSO_ESP | SKB_GSO_IPXIP4. The call chain =
+would
+> then be:
+>=20
+> skb_gso_segment()
+> esp4_gso_segment()
+> xfrm4_transport_gso_segment()
+>   inet_gso_segment()   /* inner IPIP, transport header at inner L4 */
+>=20
+> followed by validate_xmit_xfrm()->__xfrm_transport_prep()->esp_xmit().
+> That writes the ESP header 4 bytes into the inner IP header, which is
+> the same malformed layout the commit message describes.
+> xfrm6_transport_gso_segment() has the same limitation.
+>=20
+> Could the commit message mention this fallback as well?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028-xfrm-inner-gs=
+o-v1-1-1908f0eb7313%40engineer.com
 
