@@ -1,89 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794476405;
-	b=38O1/0JD0y/b3cGrhD/w0ixgXHL54ddVlYq3SLiJ8b0zQsbuxL5/sXH0pRsO9f0Y/AWO
-	 nffuFDauq1c4S/0sVKhOrrHjFKd8TVFDSS6opB4pNMqGmlvaa6C30NiKn2iscdQkf2LH5
-	 7uSL0GDHhn1bxjSPLUwf9ea3otKI4Y3I5FR8W8KZLBxlajjRUAeq5xkMrW/H0rsdFN2qv
-	 VU4wZe7gODDcj2I2TjaBI9NKqSfBrZqvCfSAbJI/z1azB6Wo9qiFRvntU3W5eC3YW5wF7
-	 DHWy2U8XiZRXfVaCbizU4WDyCMxPSEcH4QbGuH+dZUIVtvP0aFZMjkCJXcjvuI6ts+g==
+	b=gB1v7OwThDrS84FHmMMHS0EABLPSZBkyMZlAC6gUBqqasQupszm37a2nMNtKj3uIX97q
+	 bgVqLaw94a+QlWATsjyBlm08d5YLM4MydQ//ODr72xntNhhnPw4sHmFquNV7RClt5zrVX
+	 qSCs1ZW3Vd7jgXbbJ/uG2e8C36LnXH+uyIZ/ewT1p7evSj2oqcCElfPxqYmLVFuP9fSZz
+	 tnK2LckK7/rzwS01g7Jllxw1Fyr/hMWJp0FrlXmA0z1L19VG6sgbEVWryvs6+6ffq+F+T
+	 gGg5if2J4wao1DHH61iKDKyRKJ+nQ4GmUnG+vgm6xt6+s+Yfc54B2QfRuzC8lobcIBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794476405;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=IfhBgU9bzNjyzCbMLI08qHDpGZfOfIhIVxpnfJz9+gQ=;
-	b=vnvf7V4yKLpYkAJ8AV1sglG+jC4jQ9lRpO0nXIKEGUxyhKnOdzh58/o8jDhdBVtb4ZdX
-	 ghwg3/WpzPi9uLH+0xhqF1t/3xvcSyAfzF8SIlcWGQ/VrmUaRjKjbL6Pd3dtHCH1ioyBU
-	 8behmcXMcujxtQFqxpqTcDbYDd1dTc5LWLsu//UfmzSi4ACiI7Bm6lId/7VTm3SHMEe9O
-	 ZbUiwTvwZIjdu9ADxGrQOnscXd2aQa9vKalNvWu3G/zJcq1A+sKmg81nlbfxQutL7nFW/
-	 QhpiTVYcUtML5007Mc3hxZelTvtRDSyLiDj33HiFSQwolAeLCBlCRBX29luTbWygXYw==
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=TMeLSlgkdu/THkgzUVHvOLjX2ymbR91RP0Axt+hUjBw=;
+	b=Rga1gnfn0uEIDtUzvs93iLAKVPtNgR7ZvZbhqE0MChADzxRO+GvhZgY84WyNa3ukkfZJ
+	 cu+6mWdMJaBHS5VPzOAGJgpLqk4DxI3EUBnBg08VipPTt2Ruy1dATP/B+Sv+F1xvyq61X
+	 QeQIdtO+jzvoL+DMO3UZec7fPlTBaELRPqenRy8ArS6S1XJZrggQh9jsIE1RECYWf6fw9
+	 qTH+/iISje7uR8R7CxuAv2+SSy0mc7HyiMIoYLys+E6olBGGiLRcltLXyKM3VwPrQvG7C
+	 hyHaaGK8wVW3y6U5tLXROer2J+NAc2vu3kY5tEZADQPguq9TKX6cfQFSaclA2LkXZZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VoMrAWhy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6ZGJ6cj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0076B606A321;
-	Thu, 12 Nov 2026 09:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F9606A335;
+	Thu, 12 Nov 2026 09:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VoMrAWhy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C635B1F00A05;
-	Thu, 12 Nov 2026 09:39:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6ZGJ6cj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52721F00A07;
+	Thu, 12 Nov 2026 09:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794476404;
-	bh=IfhBgU9bzNjyzCbMLI08qHDpGZfOfIhIVxpnfJz9+gQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=VoMrAWhyX9Mu8dmXuJL0tzpqovAGH67dTxFbjd4TxmhmE1/c0FPVOzA9Ic0I2dr8O
-	 R1LEPqRDp5AZW1NtPA3Ct7Mk7SEKbgWIVeFl1BNL5iEUe1bTvUvtWIzoKx+CYUZmQy
-	 GE8NIXtSJJ7ZrGaRM5fNNGKitBWEN5/Q6Tq+JK0378GDgv0YZwNQ5bsIqcTjglpUxq
-	 +rRcWDYtIVXhXlC40Ldkc9s2FE3hdEDpugkRygfnLxQixI1iNmJpEI1jDUtJdy6Kj8
-	 Vw/b/Oo7ZPcLQ5a4p4SUexF7KHm5VqcENXFZHkOCDlVpUBNHuwr/mELTYjRHRonOtj
-	 9U2s9/qqKtsKQ==
-From: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Song Liu <songliubraving@fb.com>, 
- Rik van Riel <riel@surriel.com>, Miklos Szeredi <miklos@szeredi.hu>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, 
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Steve Sistare <steven.sistare@oracle.com>, 
- John Hubbard <jhubbard@nvidia.com>, 
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Linus Torvalds <torvalds@linux-foundation.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, 
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- Jason Gunthorpe <jgg@ziepe.ca>
-In-Reply-To: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
-Subject: Re: (subset) [PATCH v3 0/9] mm: limit pagecache folio refcount
-Message-Id: <179447638951.7244.5228149003624496001.b4-ty@b4>
-Date: Thu, 12 Nov 2026 10:39:49 +0100
+	s=k20260515; t=1794476405;
+	bh=TMeLSlgkdu/THkgzUVHvOLjX2ymbR91RP0Axt+hUjBw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=f6ZGJ6cjqhN17rDGKPshynKiOmlXX+a+/dd2YmmQPrGA8DFmfjdkwesaBwSIv45sT
+	 gzb2qi7pcJJtbUxhCT68PG5/px+TWQyz9EQq/+sz1jn5wSJNpLPlsf4vtYDVDN+j3p
+	 Q0InE2cJkuLP+LjAC1yfGPseSvVtj3tAYPL2HExQeXZT0st1ZVvC4yUO/GEjnD8e85
+	 ROWeb+V/pTmZC8rrzMeik/VGpM5lrGlPAfn5yE5DcUPIOqXEU5W5HLKiFFwJ4PoSsl
+	 OMHdXNxTuLjqurlFGT9CYebYj5/r9r9BkYqe8RjqCWsUOJV6SQA5XCP6mYTn5/KINt
+	 yv6rTWKRqA3VQ==
+Subject: Re: [PATCH net-next V2 02/13] net/mlx5: Detach auxiliary devices on
+ attach failure during load
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ bobbyeshleman@meta.com, cjubran@nvidia.com, cratiu@nvidia.com,
+ daniel@iogearbox.net, dw@davidwei.uk, dtatulea@nvidia.com, erfansh@meta.com,
+ gal@nvidia.com, Jacob.e.keller@intel.com, kaifengw@google.com,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ mbloch@nvidia.com, mfleming@cloudflare.com, almasrymina@google.com,
+ razor@blackwall.org, saeedm@nvidia.com, horms@kernel.org, sdf@fomichev.me,
+ sdf.kernel@gmail.com, witu@nvidia.com
+Date: Thu, 12 Nov 2026 09:40:03 +0000
+Message-ID: <179447640317.2199510.744399659255139654@kernel.org>
+In-Reply-To: <20261110183826.2927274-3-tariqt@nvidia.com>
+References: <20261110183826.2927274-3-tariqt@nvidia.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,54 +69,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
 
-On Tue, 10 Nov 2026 21:35:40 +0100, David Hildenbrand (Arm) wrote:
-> Note: I really would prefer doing something else right now, but this is
-> rather urgent.
-> 
-> Users can create a lot of folio references to pagecache folios, making
-> it possible to overflow the refcount of large folios.
-> 
-> While we knew that one could in theory overflow a folio's refcount, we
-> mostly assumed that bad things would happen and it wouldn't go
-> unnoticed.
-> 
-> [...]
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Applied, thanks!
+Low priority / nit picks for your consideration:
 
-tree: mm/core.git
-branch: for-next-fixes
+- [Low] The commit message says the fix "doesn't deserve a Fixes tag"
+  because the bug was found by code inspection and never reproduced.
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+--
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+net/mlx5: Detach auxiliary devices on attach failure during load
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+This patch adds a mlx5_detach_device() call to the err_attach path of
+mlx5_load_one_devl_locked(). The goal is to detach the auxiliary devices
+that attached successfully before mlx5_attach_device() hit a failure.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
+> This issue was found during code inspection and was not reproduced.
+> Hence it doesn't deserve a Fixes tag.
 
-[1/9] mm: limit pagecache folio refcount when mapping pages
-      https://git.kernel.org/mm/core/c/61351dc9
-[2/9] mm: limit pagecache folio refcount when splicing into pipes
-      https://git.kernel.org/mm/core/c/0ff9a420
-[3/9] mm/mmu_gather: flush pending references early before the folio limit
-      https://git.kernel.org/mm/core/c/bfbf74ba
-[4/9] iommufd: fix cleanup when adding memfd folio pins fails
-      https://git.kernel.org/mm/core/c/6d0d782f
-[5/9] mm/gup: limit pagecache folio refcount when grabbing references
-      https://git.kernel.org/mm/core/c/6d3ff38d
+[Severity: Low]
+Is this a valid reason to leave out the Fixes tag? The Fixes convention
+points at the commit that introduced the bug. It doesn't exempt bugs that
+were found by inspection and never reproduced.
+
+mlx5_attach_device() in dev.c stops at the first failing entry. It does
+not unwind the entries it has already added or resumed:
+
+drivers/net/ethernet/mellanox/mlx5/core/dev.c:mlx5_attach_device() {
+    ...
+		if (ret) {
+			mlx5_core_warn(dev, "Device[%d] (%s) failed to load\n",
+				       i, mlx5_adev_devices[i].suffix);
+
+			break;
+		}
+    ...
+}
+
+Before this patch, err_attach in mlx5_load_one_devl_locked() went
+directly to clear_bit() and mlx5_unload(). mlx5_unload() destroys the
+EQ table, the IRQ table, the flow steering core, the clock and the
+bfreg. mlx5_function_teardown() then tears down the HCA.
+
+The aux drivers at lower indices were still bound at that point. One
+example is a resumed mlx5e netdev whose CQs still reference the freed
+EQs. Later, TX timeout recovery or the remove path
+(mlx5_unregister_device() -> aux remove -> CQ destroy) could touch
+those freed resources.
+
+This can be triggered by any aux probe or resume failure, such as
+-ENOMEM, during devlink reload, firmware reset, health recovery
+(recovery=true) or PCI resume.
+
+According to git blame, the err_attach label without a detach came from:
+
+Fixes: 6dea2f7eff96 ("net/mlx5: Separate probe vs. reload flows")
+
+Could the tag be added, and could the commit message say what happens
+without the fix (resources torn down while aux drivers are still
+attached)? Without the tag, stable maintainers have no signal to pick
+this up.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> index 1a45474ce03db..7e762f72b19ef 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> @@ -1547,6 +1547,7 @@ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery)
+>  	return 0;
+>  
+>  err_attach:
+> +	mlx5_detach_device(dev, true);
+>  	clear_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state);
+>  	mlx5_unload(dev);
+>  err_load:
 
 -- 
-Cheers,
-
-David
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110183826.2927274-1-tariqt%40nvidia.com
