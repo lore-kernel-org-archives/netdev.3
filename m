@@ -1,74 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.157
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794467743;
-	b=dEfyB5fGb38FUS4m3fF7SORuoGUDX99WtONkir9D+9SYF6Sq2YbX3GZ3jLfGM4VDJphQ
-	 0YvFA/eIMi7OW2J0XzqjODE3YMw4NLv1yHhi/PsvUvLa0CA4bYQCA7y94konLHzyH8L3f
-	 mE2fcjNPRBtZT1e7KXYYM8+R/iPNEMgDSyAtr5xfEt0y+ItcxIU5aH5fcgmIfanY6mA3H
-	 avEit2NJoxxQ1xn4WkC0lCepEi9xMpFdE6sDkZG+bPi/b0ROiUJ/DA2gRzdA7QfB1gQMg
-	 c1MYGsap2885lKQw/7QKtpi1rR4EV0iid4KNS2wDS0ssw04p4gBmrF295iHmZ+e4eQw==
+	t=1794467749;
+	b=HwPGJbSGwBzlOp/ZQKuPQRx0+FExerbOndVz4N9Aw8h/nUtIOQSOIfSAYRBv+XQITo7G
+	 H1nwZfTusF3iJdW/sXKTpJoDYvIALsjxo5vLh3MUNBokzeI8+hPXcxCZTY1BgcFz0+sJJ
+	 46qfJ9QyZvgSLcXHT6hSpFU87db+GtJ0A+mr1teTqjYN3xNlnc1abj0E0943giMAvOj25
+	 t2xGBwk0Zv4aCGc11GHGzsRz6esrW2ASZ9VlirBxA+1gmZ17Bi89Rw04qRIUbvFWjGduN
+	 n7AqZsoAx7ia+r3LaEuc9cHXDVEqv2zXwIotEWjtQT6gO2T85L3CKll/ep/LF1UsMgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794467743;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=sD4XhwxF8s8xTiMUALl2zDR61pVT/mrOLvoYZrZI+nM=;
-	b=BRbxYytcNztMnyKtJ3x8RwEkNt4jn8ojr37wgE2RiVy6jMUEQCZkGO0hhCCyjEmzl4RP
-	 GSJbHR7Drk54Dl1oUQmd41ys0fBdQ5A81PdxG7ZFLke/Se5LgvqvZ1n87ccfAcKERCeeu
-	 ZvANF3KokDbV59H1eZHV54Q7+cId0uizuJwYfrM42QWxq6InJFUrkWaB7XO5zU2cnn1zC
-	 AovySsC4yM6nLOpAOe76PSwi83tii6/PU0hR8aQFnUDzz2pAjbTB9sEsaRvzL9IUyflk5
-	 JOCumPqEc5rTtpJW8stahmF1HsKKdR+vylow/OnXN/6gDNySFRvJhaaXiStBgD/S/NQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794467749;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:MIME-Version:Date:Content-Type:
+	 Content-Transfer-Encoding:From:Message-ID:TLS-Required:Subject:To:Cc:
+	 In-Reply-To:References;
+	bh=j3lkRXeTopN25W5T7TjypdJfZTaOamQhEp8M9vnpXqE=;
+	b=YlrMb7/4QYO5J7juOfZF4SHclpNnTTQbmddEnYKm6LktvejFDEWewO7IRGU8MzuDtrSq
+	 4P37Od/U/9YiU4peWM/xh6EmT9dwz6NNhKyBS0eAnJ1LpYMWuGkWd1q670BI1N1Pq39++
+	 kdHfLBAVOC6OV2AAuZXFrqKie4xCzAxLNnKkmWxieKLF3Pr7jLKxjBr9n72RZ7ApYJAMD
+	 8Tf5DmcHhxWz5iUzNQRvZmr0VAOLTkJFJScxTXF4sSENtUlEmTH/JcQ5M/dsVLwLUTNGp
+	 wUvTdU3jtwU0L1E/tp2VNNGX+JecmAO7jKNS9z1cp+iwzPlRB6H5WBr4jxF/yuC2icg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=cQyyEr4N;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6566606A323;
-	Thu, 12 Nov 2026 07:15:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6566606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DtggPLY4;
+	arc=none smtp.remote-ip=95.215.58.157
+Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6713E606A32D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 07:15:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6713E606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=cQyyEr4N
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=cQyyEr4Nr1ZgpVPx16UzNx00wgG86++ftWFsuRmDnh1aiTWnaDDpbYuPwfla/d8uNJ2GiiOEbqeEI
-	 uz64dHp/mfOaOnbbPqM7TjhnVw9WktZdXJli5wsyKrlqAQMqvo1GBPgnD/1ShzQTRkzmV6Lo8ui8p1
-	 IbCEV+wW38MZlp3M=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66af56797f44-abc8d;
-	Thu, 12 Nov 2026 15:15:38 +0800 (CST)
-X-RM-TRANSID:2ee66af56797f44-abc8d
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[223.64.115.200])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af56799825-f6c50;
-	Thu, 12 Nov 2026 15:15:38 +0800 (CST)
-X-RM-TRANSID:2ee76af56799825-f6c50
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: Re: [PATCH net-next] ipv6: check mc_forwarding before calling ip6mr_get_route()
-Date: Thu, 12 Nov 2026 15:15:19 +0800
-Message-Id: <20261112071519.96139-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <avUhGnPJk5Kzci3E@fedora>
-References: <20261111094528.425826-1-sunwenbo@cmss.chinamobile.com> <avUhGnPJk5Kzci3E@fedora>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DtggPLY4
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=UjhC1xevWrnpU/YrXy5BOtjdU/07FY90HOuK9yvSgnA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794467746; v=1; x=1795072546;
+ b=DtggPLY4VHJjO0fkxmWtJOs4h7z/RrjlF5ytAOqiGr+vNDZRQY9nKvxmNJyVIbbwFIIvCsjz
+ +JN5EM/ORQr7SSROnrxC/q1R/UyKVuhkolAydxYrEiFHSIbviqk0NKVG19q6T8jXd55J5WDLvO2
+ hztg7NJgfyG3QKW9FbCDfSTQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 218df4a0f1ad0689;
+	Thu, 12 Nov 2026 07:15:46 +0000
+X-Mizu-Trace-ID: 218df4a0f1ad0689
+X-Migadu-Flow: FLOW_OUT
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,65 +56,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+Date: Thu, 12 Nov 2026 07:15:45 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: gang.yan@linux.dev
+Message-ID: <a5e30ae63ebb4a71327031211b50b33230e50004@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH net 2/2] mptcp: avoid wrapping blackhole timeout
+To: "Yingjie Wang" <x-professor@outlook.com>, netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, edumazet@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, ycheng@google.com,
+ weiwan@google.com, stable@vger.kernel.org
+In-Reply-To: <738e11db58137c0082b53fb1662ab0b70763f51a.1794325665.git.x-professor@outlook.com>
+References: <cover.1794325665.git.x-professor@outlook.com>
+ <738e11db58137c0082b53fb1662ab0b70763f51a.1794325665.git.x-professor@outlook.com>
 
-Hi Hangbin,
+>=20
+>=20mptcp_active_should_disable() calculates the active-disable interval =
+as
+> multiplier * blackhole_timeout * HZ. Since all operands are 32-bit, a
+> large blackhole_timeout can wrap the delay even on 64-bit kernels and
+> make active MPTCP available again while the blackhole is still present.
+>=20
+>=20For example, with HZ=3D1000, a timeout of 6912213 seconds and the max=
+imum
+> multiplier of 64 should produce 442381632000 jiffies, but the current
+> calculation truncates it to 512 jiffies.
+>=20
+>=20This issue was found using a static analysis tool. A loopback reprodu=
+cer
+> induced 12 MPTCP blackholes and waited 1.2 seconds before opening anoth=
+er
+> connection. The unpatched kernel retried MP_CAPABLE, while the patched
+> kernel kept MPTCP disabled and used TCP fallback directly. The reproduc=
+er
+> required neither kernel modifications nor fault injection.
+>=20
+>=20Compute the interval in u64 and cap it at MAX_JIFFY_OFFSET before add=
+ing
+> it to the saved timestamp. This preserves the existing exponential
+> backoff for representable intervals and prevents large values from
+> wrapping into short timeouts.
+>=20
+>=20Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhol=
+e")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
+> ---
+>  net/mptcp/ctrl.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+>=20diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
+> index 63c5747f0f63..5224cfb3ed1f 100644
+> --- a/net/mptcp/ctrl.c
+> +++ b/net/mptcp/ctrl.c
+> @@ -487,6 +487,7 @@ bool mptcp_active_should_disable(struct sock *ssk)
+>  unsigned long timeout;
+>  int disable_times;
+>  int multiplier;
+> + u64 delay;
+>=20=20
+>=20 pernet =3D mptcp_get_pernet(net);
+>  blackhole_timeout =3D READ_ONCE(pernet->blackhole_timeout);
+> @@ -503,10 +504,11 @@ bool mptcp_active_should_disable(struct sock *ssk=
+)
+>=20=20
+>=20 /* Limit timeout to max: 2^6 * initial timeout */
+>  multiplier =3D 1 << min(disable_times - 1, 6);
+> + delay =3D (u64)multiplier * blackhole_timeout * HZ;
+>=20=20
 
-Thanks for the review and the Reviewed-by tag!
+Hi=20Yingjie,
 
-On Thu, Nov 12, 2026 at 02:14:50AM +0000, Hangbin Liu wrote:
-> In commit fd61c6ba313d ("net: ipv6: remove nowait arg to rt6_fill_node"),
-> David Ahern removed the nowait arg. Should we still return immediately
-> after err == 0? Also later if (err < 0), it still goto nla_put_failure
-> and return -EMSGSIZE. Maybe we can carry the err to the end and return
-> a more meaningful reason?
+Thanks for the patch. Basically LGTM,=20
+
+
+Just=20two small questions:
+
+>  /* Paired with the WRITE_ONCE() in mptcp_active_disable(). */
+>  timeout =3D READ_ONCE(pernet->active_disable_stamp) +
+> - multiplier * blackhole_timeout * HZ;
+> + min(delay, MAX_JIFFY_OFFSET);
+
+1. AFAICS, on 64bit machine, the largest possible delay is 64 * INT_MAX *=
+ HZ, far
+less than MAX_JIFFY_OFFSET ((LONG_MAX >> 1) - 1 =3D 2^62 - 2). So is the =
+min() intended for the
+32-bit machine?=20
+
+2.=20If so, should the comment be updated? Because there is a second time=
+out on 32-bit machine.
+
+
+Thanks
+Gang
+
+Reviewed-by: Gang Yan <yangang@kylinos.cn>
+
+>=20=20
+>=20 return time_before(jiffies, timeout);
+>  }
+> --=20
+>=202.43.0
 >
-> Anyway the added checking makes sense to me.
->
-> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-
-Both are very good observations on the existing ip6mr_get_route() error
-handling in rt6_fill_node():
-
-1) Regarding `if (err == 0) return 0;`:
-
-   Commit fd61c6ba313d only removed the unused `nowait` parameter (whose
-   value was always 0) and kept the pre-existing `!nowait && err == 0`
-   early return, mirroring IPv4 rt_fill_info(). Returning 0 from
-   ip6mr_get_route() means a cache miss was queued via
-   ip6mr_cache_unresolved() on nl_queries for asynchronous resolution;
-   falling through in rt6_fill_node() would append normal FIB attributes
-   without RTA_IIF.
-
-   That said, looking closely at inet6_rtm_getroute(), `skb->dev` is
-   currently never assigned there (unlike inet_rtm_getroute() in IPv4),
-   so on a cache miss ip6mr_get_route() takes `if (!dev || ...)` and
-   returns -ENODEV before ever reaching ip6mr_cache_unresolved(). Even
-   if `err == 0` were reached, returning 0 early skips nlmsg_end() while
-   inet6_rtm_getroute() still calls rtnl_unicast() when `err >= 0`.
-   Reworking that path would require changes in ip6mr.c and
-   inet6_rtm_getroute(), which goes beyond this patch's scope.
-
-2) Regarding returning the real negative `err` instead of -EMSGSIZE:
-
-   Agreed -- ip6mr_get_route() can return -ENOENT, -ENODEV, -ENOMEM, or
-   -ENOBUFS, and jumping to nla_put_failure masks all of them as
-   -EMSGSIZE ("Message too long") even when mc_forwarding is enabled.
-   Among all callers of rt6_fill_node(), only inet6_rtm_getroute() passes
-   a non-zero iif and propagates negative errors back to userspace, so
-   initializing `int err = -EMSGSIZE;` and returning `err` at the failure
-   label looks safe and much cleaner.
-
-To make it easy to review both together while keeping each change clear,
-I plan to split this into a 2-patch [PATCH net-next v2 1/2] + [2/2]
-series after the 24-hour resend window:
-- Patch 1/2: check mc_forwarding before calling ip6mr_get_route()
-  (carrying your Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>).
-- Patch 2/2: preserve and return the negative error from
-  ip6mr_get_route() in rt6_fill_node() instead of -EMSGSIZE.
-
-Thanks,
-Wenbo
-
-
