@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794504012;
-	b=hoEzEMIICu2b8PQvH6Q2I2bNf4JN4R76Y+mb0vpxYhC5g1ovHwrdxuYDooD5F1/9Wfof
-	 0QFp+x+YFuREvq0FxwkKrutRGjbHdl/o+awVGDbJouYSir+twFo62jrpQ5qx6ThWGfldI
-	 IBLGQFSTXVk/vjD4BhH618AUNOPpIkvEkOXFHDTZn3kcGNKiFUn6DaQWb82Tlaycilq+5
-	 y8+Ra7gWxXnngygRnCNNa+Rl/S2yupcoRVnDl8JhnPNHDe1EWuqltkbms70eT6uaNk+5O
-	 CrhxRtyAuSoszEPYIQS6XH3mN3aCZu3bIB/s3FTmpgAoTMp6sFgzMraws1dzGSO7T/w==
+	t=1794504013;
+	b=WSu7vW5xCW90iZTEmyTNCvhzRkr0Wv8vkKgZqvzb5WkFLZ+9ACZUaPQBbiMwPJzcAgsx
+	 OKr5NxDOV0m7unggnlI9hoQGtiW7+38QR3ZWObbBADpxP7z8l9ulxnrhBkrwlNqtdyMVI
+	 gE8CorIEe1sJC1X04hf4wBEWdgDHj1ES3fSR8F8Dw9mVj2fC8s4ombP6PSYkQ1nYuF1cj
+	 NrG6oKW4eRiwr4rMhJlVX8I70Uvh1gk8w8UYmKi67KhmKmopBbMNZ4lmxSt8LS8Uno9d8
+	 SBlc3zaKFpR+KPuFzDidGAm/f4275g4zP+HoYKaDALUNlFUoxAmQbyvA9VcJ89SaI7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794504012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794504013;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=GMe02wEq6eVERv07wvbVn0lKTGvmews00dG0nM6IEzA=;
-	b=LfktesY5BGGUWPanKgdXWp6tOH4myu5gYOth4QGUXQovvTVfHvFezRthdpj9OUlDOQZl
-	 G+HkS9BqmlwewO3l4+LJgeTInJ7nB3scAeFkhIG+Ihw445q0ICLRuo3Dlj7YvWQBTnpxL
-	 URE0P83MWjYc+5LD8GQ0wC4WSpAbZnfMq4M/RaMSD3Un2QpmyztIZv+9xnIdhYhxZ2zbk
-	 EiG0MZscAvzGgXfAmRl1E4gwCS84YVNt6V5NNLXLAQjdnbVp+8DtWHCr4av3x6KiKw5ox
-	 3ZqA3JhrqbYDZ66h+jJrh0oF741llTlGHZQVSLWhUljY+uqfdAaDoTG+BZ3Zm9Zulfw==
+	bh=LVpa3Wy1O0wr9XarPr+U6SGlwtFgybb7x6MlwZwVYFE=;
+	b=CP+EaMkcTKF3uh9wI+klHFAAQHCxR+u7YnTAfgYB2zO6KZrpyoCReenPQN3LAm5OD2Jy
+	 yCpBMOuYdB/Xne426Yk/m/Xz8WgVOJ2/KwVeN5Zo5R1z2vlUE9v+7I09VJ1+a676LV8nm
+	 MraPt2sGToanf/bsdzDjp9+czUmR69eD+lu7465HQDqxAC9I8H9UZfi2XBWR0Qmq1I23G
+	 ceEUb1UZtqJsW5kQ3+9MkjwOvnstFxkzJQBzJdVJWjdi2Fp2QqKqy1TpZQZoRvxR4poeB
+	 884S1oJtJUjEEUd4V0koyiM97AEBvE/7dd028oVoNne5nLf5io7M05vu2+K+p89Hg3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibiLNljb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hjr0moD1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2C606A882;
-	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC85606A8B7;
+	Thu, 12 Nov 2026 17:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibiLNljb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5A11F000C4;
-	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hjr0moD1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D0D1F000C4;
+	Thu, 12 Nov 2026 17:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794504011;
-	bh=GMe02wEq6eVERv07wvbVn0lKTGvmews00dG0nM6IEzA=;
+	s=k20260515; t=1794504013;
+	bh=LVpa3Wy1O0wr9XarPr+U6SGlwtFgybb7x6MlwZwVYFE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ibiLNljbIaWnMUwh5gVjppDfu4RCf6FCg1S7HdTxxr+ha3N/a6HWO4S72rU8SffCY
-	 7pxs9+LJ5oHjKztTZlql4Xg+pCS2FBcLHXykxk5IqlaN9Mkh8VYv4b1c7u8es8/lRB
-	 k+VCpmLQeAd+AyYNduhpAwQuaCjtJrWKJmmtxF5jt7FbhsK1sQfNhYMnO5XlJPnNnK
-	 NkqjaMOqXpeBVc0cCpDyLQ7XKRFwWNtesjRM+EwsLcKJo8e7G3XMwWcsWzNnt7si6s
-	 BGnZOF2ckIn9SfhEr2bT3nslUu5GJBovKbEdq+Ov9MenciZDQdYuKmdKlrLEDu0Odi
-	 x2feZ4sJXimlQ==
+	b=Hjr0moD1h356LUcnYiCnVgHlThFImqT5KSR9Wr0vt4hSCLrARnAU7GIzn6tYrv7sQ
+	 /9kmU1+Sg4RT9LR3HfL0opiPWHyhR8AH1y3QwStzoJG83zPhX8xVXfS3TCex07EKkd
+	 XhHSfjz7ppp9wBRSPjbi/LTo0Xk0UAJeIucsQ01gWcf7on80JwcdIr7Ymn3MBDF/4c
+	 Kp59ecVEhwWmhRVUosExnbAOdK6QD+x5qPYm4AtD+N6AefvXxQXsra5eoOsTh6iEgi
+	 jhqW4mWANcv04sQk3GTq2aMNcl/QLlRrTxoFwzdhdXgk9UYcWWU11NsPASPkNks1TT
+	 UoSpdmW2t3cpg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44FE380AA78;
-	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A39F380AA78;
+	Thu, 12 Nov 2026 17:20:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] dql: Reset the adjusted limit when resetting
- the
- queue
+Subject: Re: [PATCH net v2] selftests: net: forwarding: replace bash brace
+ expansion with seq
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179450401027.546493.5429797235689363516.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 17:20:10 +0000
-References: <20261109230022.10729-1-dennylin0707@gmail.com>
-In-Reply-To: <20261109230022.10729-1-dennylin0707@gmail.com>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org
+ <179450401177.546493.17224349993183681494.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 17:20:11 +0000
+References: <20261110024123.535210-1-jinli@lanxincomputing.com>
+In-Reply-To: <20261110024123.535210-1-jinli@lanxincomputing.com>
+To: Jin Li <jinli@lanxincomputing.com>
+Cc: hangbin.liu@linux.dev, dsahern@kernel.org, idosch@nvidia.com,
+ shuah@kernel.org, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  9 Nov 2026 23:00:22 +0000 you wrote:
-> dql_reset() restores limit to min_limit and clears the cumulative queue
-> and completion counts, but retains adj_limit from the previous queue
-> lifetime. dql_avail() therefore uses stale credit until the next nonzero
-> TX completion.
+On Tue, 10 Nov 2026 10:41:23 +0800 you wrote:
+> {1..16384} is bash-specific brace expansion and will not work with POSIX
+> shells like dash or busybox ash. This breaks the flowlabel test when
+> /bin/sh is not bash.
 > 
-> Reset adj_limit to limit as well so that adj_limit = limit +
-> num_completed also holds immediately after a reset.
+> Use $(seq 1 16384) for portable iteration. Fix the same issue in
+> custom_multipath_hash.sh, gre_custom_multipath_hash.sh and
+> ip6gre_custom_multipath_hash.sh.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] dql: Reset the adjusted limit when resetting the queue
-    https://git.kernel.org/netdev/net-next/c/c46ddd7d7acd
+  - [net,v2] selftests: net: forwarding: replace bash brace expansion with seq
+    https://git.kernel.org/netdev/net-next/c/e6edbf3e343c
 
 You are awesome, thank you!
 -- 
