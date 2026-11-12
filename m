@@ -1,61 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.160.73.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794481062;
-	b=cSQRNqknHrON0Ue4ZC5Nonbo2JPLhvitwY7OvqwtqIggXRSSrBRZvo9PuP+qJchOHRhd
-	 aLcz258rZLKbjDxc09BL/NcMtsny5G2nJ/u62587+LwsCdOTSNmIp5a6KJRJ+lJujvdtL
-	 EQ2k8WUBUkwEKtv5QP0GXXqopM7gyNgr+P9HLZeMQi+5Iq3ZrtQJBiesdzD3SsOFVdXRi
-	 AP6wbmDsvru9GviXW6ms6YKlaqObhTpBoDd2AnjzJinaAGo2G+odHIxJZLA0vLNMGPscs
-	 Wj6V5nbJoYtB5Q24ct+NZCNb7jytqrsRDD7W1HTTbzsNvCLGVxiZMl3mDu0yrixDrlQ==
+	t=1794481079;
+	b=NYL23/suniKhipQMiTMY010yby+Ky+gRn/WVmjFDxaL5VIRT3NkJOOPT+44fnd/oKm3E
+	 l0oz23qOqpxmmHtcggKpePi2jWzB220a4+WRzlkpS0lNoNbsGmKCHB04/v3nTmX3pSWV4
+	 ClUdythONhC2z163TqwJelH+SR2I3jsAD+GJNoFvXDI06HNdjtbpi5MfswVeFvqTV+81h
+	 7FkWZKZelxcdnjxXRK0iUP0W7Bqwo1M8oFuQn5h5lQu7h6ohgEdVsSU3S0Mz+kTADSCXc
+	 Q79uaJy6rkjHzRxBoTS9JL4Oxw+/4mviaGD1fCw8RQj2JXkmj3KbYluv8KqWU8Tk8ZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794481062;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type;
-	bh=8P9ng6dnAOZ1uLRwI2Xyior8nl1Uol/mP/8AoZqdZUo=;
-	b=WARinW6u+uXojqxRDImtfW6YdKbswKZmQG7uWGtRce3NnESFJ/MQ4gWTaG8R5k1/Oy2f
-	 zjcRA0+B1ZbsRg0ePltcc/eV8yFPsMCm40YngGgbAgYUyuWAUdPPYc8QNSgw6fxKpK0aj
-	 XgmNg7rixbYqDvQigyPLI5GFoekGu2YU4LzvnN3SvNEUnBSHFw1CA9rO7MCgVGFD8obig
-	 h7M6rqUnYv48Wdgw1xDMCUlKthF8YKZEN7b1zICT1BSCgGUEzOOzi8j8f8ZgrOniFD7R/
-	 Ehyz9g9Nk1txAt8t/tMDEs4SztkpJpHZEoSghn3ckb8WqWY7OG3+whJUPXslz1WyjBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794481079;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type;
+	bh=ycpTw26ozG7nGyxNHYwJnlgidjx45yFTso1Q38E6eC8=;
+	b=UcOst0nj3TDekbW08456Bzf0DA/dQnf+/7LOwsMCa/jcuQl+WohRONoi5Mr1igSsGpP9
+	 0DyGw+x/U5x+0w5uSa7hdLLAFHinYix76fazg8pj3Fae/wN3PbinhtBgWPvXbVjdkcUuo
+	 QnwEOlChxkiVacj4+VypXf8WovQiEK4ECozGFNyEv6UaJ33pssLUZglA8+vatyiChrh1A
+	 GNf7vTI+khOCQMlCBVWcWgUItsjy26xaNsVHgIg4UmpzumoSteG6lXTZHCjQcVY/RF0es
+	 lkOweLaQCDZArNqnsgyYasP7MHUcW9nPpPS0PU+dIYFYxsaQr1ybYHuz1KoE0lqN7Hg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=narfation.org;
 	spf=pass smtp.mailfrom=narfation.org;
-	dkim=pass header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=aZBIcGHd;
+	dkim=pass header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=V2zvC8CS;
 	arc=none smtp.remote-ip=213.160.73.56
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F3E606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:57:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21F3E606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6BC606A327
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:57:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B6BC606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=aZBIcGHd
-Received: by dvalin.narfation.org (Postfix) id 46F7F1FEF7;
-	Thu, 12 Nov 2026 10:57:40 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=V2zvC8CS
+Received: by dvalin.narfation.org (Postfix) id 7DB7A1FEF7;
+	Thu, 12 Nov 2026 10:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1794481060;
+	s=20121; t=1794481077;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8P9ng6dnAOZ1uLRwI2Xyior8nl1Uol/mP/8AoZqdZUo=;
-	b=aZBIcGHdgmTgfk0JcPXJLdRysccdxIvZ/gaPvXpts6Ofv5Y3eOzvbwWlk3Cs5A0WFSNdlC
-	aXjzjLzKCOIB85shL/DCf4ggsC9869mYZ9NSWOp2K5ht2NFUHFIfa1J1JkBsqpC+2fk3dO
-	uiewdbMYQkq+6nYDyjZ4z8TL97QIwfo=
+	bh=ycpTw26ozG7nGyxNHYwJnlgidjx45yFTso1Q38E6eC8=;
+	b=V2zvC8CS10XdJfMs1wizSVU/bVMVxl4+Y4HkAcFfF6Qy+Ib+WuFKzV6cVukCowGYJp/WjH
+	4AMEHM5ikYrdPyEEXPGwsKlQJPi2+fQKN0a28+017xhQjmsNKhZhouBbnKdM5Z9anJPgSU
+	oP6Wg2FEEDh0dY/kEQ+4Fsx2nkrnP8M=
 From: Sven Eckelmann <sven@narfation.org>
-To: sashiko-reviews@lists.linux.dev, b.a.t.m.a.n@lists.open-mesh.org,
- netdev@vger.kernel.org
+To: sashiko-reviews@lists.linux.dev, netdev@vger.kernel.org
+Cc: b.a.t.m.a.n@lists.open-mesh.org
 Subject:
- Re: [PATCH net-next 09/15] batman-adv: annotate originator last_seen with
+ Re: [PATCH net-next 08/15] batman-adv: tt: annotate last_seen with
  READ/WRITE_ONCE
-Date: Thu, 12 Nov 2026 11:57:37 +0100
-Message-ID: <1831685.QkHrqEjB74@ripper>
-In-Reply-To: <sashiko-outbox-210959@kernel.org>
+Date: Thu, 12 Nov 2026 11:57:55 +0100
+Message-ID: <2765052.7s5MMGUR32@ripper>
+In-Reply-To: <sashiko-outbox-210958@kernel.org>
 References:
  <20261111102729.2096241-1-sw@simonwunderlich.de>
- <20261111102729.2096241-10-sw@simonwunderlich.de>
- <sashiko-outbox-210959@kernel.org>
+ <20261111102729.2096241-9-sw@simonwunderlich.de>
+ <sashiko-outbox-210958@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,60 +65,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4751616.8F6SAcFxjW";
+Content-Type: multipart/signed; boundary="nextPart3402950.aV6nBDHxoP";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 
---nextPart4751616.8F6SAcFxjW
+--nextPart3402950.aV6nBDHxoP
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Sven Eckelmann <sven@narfation.org>
-Date: Thu, 12 Nov 2026 11:57:37 +0100
-Message-ID: <1831685.QkHrqEjB74@ripper>
-In-Reply-To: <sashiko-outbox-210959@kernel.org>
+To: sashiko-reviews@lists.linux.dev, netdev@vger.kernel.org
+Cc: b.a.t.m.a.n@lists.open-mesh.org
+Date: Thu, 12 Nov 2026 11:57:55 +0100
+Message-ID: <2765052.7s5MMGUR32@ripper>
+In-Reply-To: <sashiko-outbox-210958@kernel.org>
 MIME-Version: 1.0
 
 On Thursday, 12 November 2026 11:34:43 CET sashiko-bot@kernel.org wrote:
 [...]
-> [Severity: Medium]
-> This problem wasn't introduced by this patch, but can
-> batadv_v_neigh_dump_neigh() and batadv_iv_neigh_dump_neigh()
-
-batadv_iv_neigh_dump_neigh? There is no function with this name in the source 
-code. There is only batadv_iv_ogm_neigh_dump_neigh()
-
-> suffer from
-> the same timestamp underflow [1]?
+> [Severity: High]
+> This problem wasn't introduced by this patch, but can dropping
+> common->flags_lock in batadv_tt_local_add_existing() before queueing the
+> ADD event [1] let a delayed ADD cancel a concurrent DEL event?
 > 
-> net/batman-adv/bat_v.c:batadv_v_neigh_dump_neigh() {
->     ...
->         last_seen_msecs = jiffies_to_msecs(jiffies - hardif_neigh->last_seen);
->     ...
-> }
-> 
-> Because hardif_neigh->last_seen is updated locklessly on packet reception
-> and read without READ_ONCE() or jiffies_delta_to_msecs(), a concurrent
-> update can leave hardif_neigh->last_seen ahead of the sampled jiffies
-> value, wrapping the subtraction and exporting a huge last_seen_msecs
-> value over netlink.
+> batadv_tt_local_add_existing() clears BATADV_TT_CLIENT_PENDING under
+> common->flags_lock, and its caller batadv_tt_local_add() only queues the
+> corresponding ADD event via batadv_tt_local_event() after the lock has
+> been released:
 
-This is adjusted in the next two patches in this patchset.
+This is handled by a pending patchset [1] which couldn't be submitted here 
+because were have so many other things to fix in the TT code and already fill 
+our submission up to the max of 15 patchset since a while.
+
+And it is completely irrelevant for the submitted patchset.
 
 Regards,
 	Sven
---nextPart4751616.8F6SAcFxjW
+
+[1] https://git.open-mesh.org/pub/ecsv/batman-adv.git/log/?h=b4/tt-avoid-unhashed-event
+
+--nextPart3402950.aV6nBDHxoP
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCavWboQAKCRBND3cr0xT1
-y30qAQCxM2pzrCpWwjtmdG17Uozu4UXuGHZ7Y558+4W2pqCO7wD/dz9ukJGdb+Jv
-qjF9rkCqVOr4xg+aDzhwJ5Pan1aQGww=
-=hGQR
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCavWbswAKCRBND3cr0xT1
+y/YpAP9pCjha3Y6xeOY65LTDoFqSdDfgud9m+uI8fWcRtekfsQEAsqHTFRxclv59
+2bqkJCF1r3maEqFRRG6k5F/gwf64VAo=
+=b0cZ
 -----END PGP SIGNATURE-----
 
---nextPart4751616.8F6SAcFxjW--
+--nextPart3402950.aV6nBDHxoP--
 
 
 
