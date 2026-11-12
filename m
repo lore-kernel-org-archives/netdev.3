@@ -1,59 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794502510;
-	b=0FAECOuV24VG8t4JYcAiwavzNKC+ISyeEutnu0nyeiFNKRpc77DJj5iQhaMImgvYVp0G
-	 ovjPVcQFa/CsUu3s/MrRNcZ/lM//nPiotioIe037LT1+Kj0rHbbFH/27BQEOJa+x59NTc
-	 LrTndLgUzQmC8Mgg0hxHgOnwe0V2uvAzua4QqOopfXXwIUk7cl8jctv8lQHP7Cr1K58iO
-	 UVv4ACH1Ctzt1lONljEpMgeUBKzufflOYhytGJqbW7ODkEIbpx3vsX9k1CzA3F5zSiagd
-	 9BQvVU/hgdcO2L8e/Jx8XcAk8KqMcRv0EMhVuPTbKCioI6SPb86LAxLE+o3gFTLM6sQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794502510;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=h37avnMlwklZkt4BDaNjmX2gxVeL40jNvKjrx/JQRbI=;
-	b=dzoIwAP6bR9zZSo+0gChL96EYF52Bsv2Yc04fI9zlupM0n7ZuSUhrIMVnZztAR93ymq6
-	 3vxwJpCz/7TbNd7+GgOUtUcrYVDEGuAFzoZmxSRbJC71lvkfZGcja8bNRnawBxcbAAtYy
-	 ppuKyfB8l/5vntKlHXWqHMganQa5Op8vXCXkC7FjUqgf4gXHJ803EdTedaAV/1D0EVVlo
-	 bxWYf9RkXjmL25772MoPNRW+PFnvJV9g1BRNDb1ja8wrbQqtL7h7F4jcTRFwBfnjNe3ta
-	 SJ78vgiUfuPHviJSEBtR0BdPjzJ2CotsQSwnstsXprcid3Zgn4RG1yXrcIXnZVzpTAQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KLLvPhbI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794502640;
+	b=FntQpbNjlN1r1jQXEbDlpsneUwQeFhSe/3kWZ1L9htWsBDC1rjvGtRlvCEsXuo4kKpQk
+	 kkB4jwXyYx10+X3TYgP0oAy33WmoCUgulMi0v/jb3GTj10Ut4Q7qn4+FnqpMm4VsQXvdb
+	 ndFOxIHxxED68LON2nGWQGZ+wpdx+y/9oUOpDOIlRUdgdKu46x3NuSTMkLzrPigN8awIk
+	 8sATtAhfPDQhUfXtGhluQeQbCNqMCRDGNBy50gnr5+am2J2aPNyS5xG/vo1vVdTkUHmzs
+	 AYfs1MYhfpxrI5sxWshbMjuQZuC7SrKNHP4T/BdeyA1BUXI1Sw9AlHdnRKKFH7N1CTA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794502640;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:From:In-Reply-To:References:MIME-Version:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=darN4TpL7cuu3l7AdV450Bjk03MaXBNxXOy+eZ4zU7o=;
+	b=X2Z5YhVYGRdtcX7EwvR7cdwefPer7xIIMkGQk7qbOJf/4jwzJbpdB0eI9zK9XObhoWqN
+	 /BwuG+Qib+DbOuHvbfvnUcdbM6zN/WKeaSwl3bRnUPGLje3T1v2UEamFJHHOX03Luob6v
+	 2hiooMEA01aGQlvk0HfkML4dJ4zT2W/6G1xaVGt4J7wBVsr3mnJKo9Ja0T4lxZuR14JTV
+	 VmgEKk36v/rQMfqNbKJphdmV9rEeH9DEoj16TiUx4XX/kJaleSGCDvz+dlWoBHceIui7a
+	 Oquwkq6IoU4Kdjqs9NuGct3q81syB4OrAWdW6+e7tTqwfhUdy3F6/Cr52eK8ESFDhsQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fyqcpX0Q;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=mfphcUTJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE3A606A321;
-	Thu, 12 Nov 2026 16:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4706606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:57:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4706606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KLLvPhbI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4741F000C4;
-	Thu, 12 Nov 2026 16:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794502509;
-	bh=h37avnMlwklZkt4BDaNjmX2gxVeL40jNvKjrx/JQRbI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KLLvPhbIPcuUzR/wg99twy7RPxnMrqjfDHsyCZ7L+UiOjMmyziglZx7GsCF+8Xp8z
-	 CUl2zpxFciPXbozifCZ4zFdrYgEzENJx+7Z73+E502cB/A+2vOBv+N+EYAGlA1GYzt
-	 kbwu4XivrddUer5Ca4e0wLYYtsiXbuOWzLOt+iMfm9hGICFt9ThFbEIEnDAltmuUZI
-	 fvK9nL1vGQBviLCrMj1rLGWlvUlxGHZlt5x0LUZuZ7nl/x80BQhxyOtL/kSVKxhnMR
-	 tl6dLG1+1UHiAWeSVl3gKfePi4p6FRWaQPUspAV+7NSdhRmcKGwyEl8/VgYr1r98TA
-	 TOUSNTtgnGEcQ==
-Date: Thu, 12 Nov 2026 08:55:08 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>, netdev@vger.kernel.org,
- jiawenwu@trustnetic.com, duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, hramamurthy@google.com,
- jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v8] net: libwx: fix VF PM suspend/resume flow
-Message-ID: <20261112085508.58f6514b@kernel.org>
-In-Reply-To: <179421969986.488859.13582406441576044740@kernel.org>
-References: <20261109101442.84605-1-mengyuanlou@net-swift.com>
-	<179421969986.488859.13582406441576044740@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fyqcpX0Q;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=mfphcUTJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794502638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=darN4TpL7cuu3l7AdV450Bjk03MaXBNxXOy+eZ4zU7o=;
+	b=fyqcpX0Qt2uw4WJt36u9hwUAxMORlXZDo/gI6j0ii/ZP4gy5C3nR7iL/wwgQL88fhvMihP
+	bI3sGDL0J1cJKXwp0youeF/fpL3nT34DXZlNzHJ5UNYlevPj2uFjOm7mLNT2w+QDKuN3yZ
+	oIBHj0Li82AnzFwogrUbTFDKjNBnd9w=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-2WH6Ihq2OYSR68TvQX3Egw-1; Thu, 12 Nov 2026 11:57:16 -0500
+X-MC-Unique: 2WH6Ihq2OYSR68TvQX3Egw-1
+X-Mimecast-MFC-AGG-ID: 2WH6Ihq2OYSR68TvQX3Egw_1794502636
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91f184f3334so10826d6.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:57:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794502636; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HupA6qrbramtb2zhVx0E3JWfX8cDF2tE8HmL66mIEln2huR2h6gh9xmxxXooEWdM9A
+         gzzB5Yapd5MUXH77YXrYhoWeSwQpkYCZJp/FsfF8lDtVZby8UGm7MgSGYR83rCxOMbcE
+         0RnARH4YSwu723isFldR0O79YlYJ62Uvvnx29eu62Z0jbaeMnSIq1WbF6+q66EarRK8t
+         blizEFGufcMCTtvodfz01HWObCJ3iysYY4kxW3l6eEmgTTiNpIs5pk2GH3oo6qbzNO2N
+         v4jXhvYxD9moXAZUXpL8yphGzijozeVize6WwitXK5KzC5+Dvbit0EpGMLPi4KLS/0wq
+         0QxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=darN4TpL7cuu3l7AdV450Bjk03MaXBNxXOy+eZ4zU7o=;
+        fh=4BzsYUytOum67Ro2WQUvj7vRZT0idiw5dowE1Ai6FB4=;
+        b=NZNEHNgDbOkYMAvmy7++ipIdKzAGq0gyt/yJmZx2TqOyLsjDpB9OmW6UeH19KTKfuh
+         /luB0xw7NOmsybhzzgFY/PRThGSsDJ/Xe0cdyG9cnfn/8JgMGoM3DHHPA+Gcbofgu+Su
+         GdNb20SfQzvXeavRpRCpQoxtNGIG0UwsijI+Bml3adBjcDDMteZBiX2HSdb541hZKv4l
+         V6AOHV5x8bslRz78E6xaisQnmXJS/SrKedkf7Zack336CDZVFqp9O4QmrFcjWGzTKTN+
+         ufpKXLPJoIl46C2kNEd7vL2CmBMrii97DmPYTlNfAzlkqsSBuk7hTvNPtYxueywywxbp
+         96Rw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794502636; x=1795107436; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=darN4TpL7cuu3l7AdV450Bjk03MaXBNxXOy+eZ4zU7o=;
+        b=mfphcUTJmKpNNjKE/vba8sbrm2GA7Y+gcHku8cTk1a+y2dk3EloihtRyKAQeirIvDp
+         wvg8gkhJ5lC1AkaK6heaVC6iCZhP3qCeGnLlBSZBpeyaU5rKFLySsduaBj+RJQrdj/E/
+         IvWZE44ZUGb6gMSkTITxuIkeJPwmU9i14CTY5gqBw8ihusdtAVkW8q/898LYixqHhZYX
+         YqpsLL6HWprFGBwF9Jr3IbUomVpiAGiwrOGlg3zjzrZwjD5T5QVv8bgZRv4HjYSAOgZf
+         YjJaZhabEjQq3VWp4hxuQIFQlsqsnhAkHF8n3rCUYqLL+Up6ZKGZVhESekpKQ0IoL+2B
+         u0fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794502636; x=1795107436;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=darN4TpL7cuu3l7AdV450Bjk03MaXBNxXOy+eZ4zU7o=;
+        b=YgChqmFvYm4l/8FyLCfzGPSGZP2GCfWQLzrgTf42zWzyUGqUG0tfnN6kQRY+W0yxJc
+         7ka+sJPZLhMlHCDNFM4dB2dhJ4PfonSLpTtEpPuBvvkXvkb4wrOoGAWc7Wk61fgJyAOa
+         LPKCxemQVoH0S/lMVtdWJmcwpMjXJF2CidL7QVguNpwpkOvLvaIsFnIsy+H+drx2wP9p
+         WjF8tez3TlXycCW5O45ZXar5ntcDWZi8tQz+ZdNL7ohln6XLuPXPZWJ8CavUxQKoC77X
+         mz95OOs81Jwknef3bFauFAgXZ49aS2KWTUjr1yiSc1ABMrYD6woZjz/1/aaDBgrRMoID
+         /hHQ==
+X-Forwarded-Encrypted: i=1; AL+hErFn+074v7/2Bbd154KFVU/t1zOaTFFr/IZTg5DOxjq87b7EfzX/w6+mGed0vT4oHf231xzOp7s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/0J7D7Fh/W+/HPmdrIYHgE2HObFyxXx1X/R1eRapdokp8a1lr2
+	ViAxPgAZkWFQzvfG3B1CSl6hE+v7ZXFdUshW3oON5M+v678ILL5hoHHSDb4lHwxPSYx2mEITeoa
+	nZPa0jez+Y4cFZdDzH0QF0fTOiayrAQWqQ3fBFLQkpkH5wGgzgsGLpME/pyjU/omP2hPYGBkc4w
+	zOeukZyLMw9RM33Iy7zofQjSWcRFrRE2FC
+X-Gm-Gg: AYBFou3wLASKHx3FZvkJKB0Y3amteJNifdl/7w6CbAHHOQZRZyX6pKNLfTuiRTSOITX
+	U661faLaPJpdN1A6EoEghU4ZL3+zRwlyAZLjT9+cgGajVNsNI6WNEL+K9DQR21POPuB3kFfdcu3
+	xQ0EUz2RYcpyWtgAH/E0FvCe4Jq2lWm9md6DUq1Ja74Rcyd89RdpEF6o4=
+X-Received: by 2002:a05:6214:4907:b0:917:af36:df30 with SMTP id 6a1803df08f44-91f04024a36mr108416356d6.16.1794502636064;
+        Thu, 12 Nov 2026 08:57:16 -0800 (PST)
+X-Received: by 2002:a05:6214:4907:b0:917:af36:df30 with SMTP id
+ 6a1803df08f44-91f04024a36mr108415966d6.16.1794502635425; Thu, 12 Nov 2026
+ 08:57:15 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 12 Nov 2026 10:57:14 -0600
+From: Sergio Lopez Pascual <slp@redhat.com>
+In-Reply-To: <aukO0YEZmiMIISaP@devvm29614.prn0.facebook.com>
+References: <20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org>
+ <20261028-vsock-dgram-support-v1-7-e457cf7cee78@sinrega.org> <aukO0YEZmiMIISaP@devvm29614.prn0.facebook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,21 +127,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Date: Thu, 12 Nov 2026 10:57:14 -0600
+X-Gm-Features: AclHuK97Vbt87h1PiWp1yuLFdgsXXBfxSod9rL7qWx7O4MzdkcMf0Vg2mTyClE4
+Message-ID: <CAAiTLFV5g4XV7ZU+TYFboAi3n535murgSjh4SBw_PMnp=oQyww@mail.gmail.com>
+Subject: Re: [PATCH RFC 7/8] vsock: preserve host-to-guest datagram boundaries
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
+	Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-hyperv@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 09 Nov 2026 10:21:39 +0000 netdev-bot+sinfo@kernel.org wrote:
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
+Bobby Eshleman <bobbyeshleman@meta.com> writes:
 
-v8 and you still can't include the answers to this questions in the
-commit msg? SMH
+> On Wed, Oct 28, 2026 at 05:04:36PM +0100, Sergio Lopez wrote:
+>> Vhost splits large datagrams across guest RX buffers, delivering each
+>> fragment as a separate message. Allocate full-size RX buffers with
+>> page fragments when datagrams are negotiated, and drop whole datagrams
+>> if a guest buffer is too small. Refill empty RX queues even when only
+>> one full-size buffer fits in the ring.
+>
+> I wonder if it might be better to do what seqpacket does, and just split
+> the datagram across the buffers (for seqpacket, until the EOM flag is
+> seen)? I'd expect that we will get better utilization of our vq buffers
+> this way?
+>
+
+Yeah, I do like that approach better. I'm going to implement it for v2.
+
+Thanks!
+Sergio.
+
