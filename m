@@ -1,103 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476535;
-	b=zelqQKTvkJ6hofIK4YGXQUka/tHOCRgSjM+XgQuvpyiQkPyPqFlmVid11Ll2PyAIcnXl
-	 X7+j56hM+otaHRNy2YGZ1UqNxnZCDwNVJQTXDzk2UGelUHjNYiagtPL6ypLkHd2ueQklY
-	 4CRR5GGLWwYszvt7INvWTDHQ7Cy1hfAFaydikbeIW5tS5gU61UtufTd5M517Ya0bZghWV
-	 91eDnjfYOOuWFFW/rchEpWf1PZa+EZqyVeEVmQgpHXPYsjeGty4aa30sra4CBcIjdtfUj
-	 PZS4wlVlYSvk5kzj4Mufe+/vQHXVXbn5gHUgTspROHxUyk79Jj6LIcJbgm7s0U+Vfvg==
+	t=1794476598;
+	b=HPo6lq45yWuxrG8bCAB4tedZV3EVHuC6F+A+2jWxiMRWpE+ggIyJBbcaIZvtDCusoq6E
+	 VscsS56uZ+K41Z6VrnRBS+fU9IKvTGF8jGdlJlfnu3LiFLqJVlUc+eUo0hKBS5WwIL4nD
+	 Efwq9lSOHdH4mk0ztIGtcfpTvf6GgqaU4cjpVy/l2sgUlu/9S46K5QDSAJqcI5+iefhAN
+	 69xGqfVw6PqW2o++TqHfRSOT6rn6A3jR8aolXjj+x+R/XwHq5reZyRuPANMxWHZyzcKAE
+	 IhlAA/xiN6i+/iQ9DJZq+AEXNkYUVy2x8aYDl7PfX8p0qVWoOKTBugWD0KruLg4m0xg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476535;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=M5z4Z218iwFLIiE49jl2bv9SF37cp7wRUYRt0lwEz+g=;
-	b=pPCyGlIHvBcdkMgNH/KR33cmWRIQapfL0w2WtuyuVeGxAQ4i8M153XhHVf04iwmNfapR
-	 SAI7PpeCwBgFVBjdWwRsT1V2+E1Y8ciCYPeg96jH5/7kViZbx6g43r8v9v8X4z/POt8KI
-	 I/I1pPdvOO2EweoWXUaanQI1JjHTS5r0kGm2vC1EBVJRrSTjLLRdsveTKQOknz/ep5Mpv
-	 AbTKYL/Zz3Sgemum6VDfCzLV5wVlcZs7rifOBKKXZMJ6hUEhXdYgK+6p8PO9bF5q+zCWK
-	 vwGAdT7NLAAuvlLsYPo1Y+HFXEs3iTvwD7sAjmoZVCjSHewwv7Xcyl9Y2r2u6V782Qg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476598;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=HoRCw77ZwoLoLapCSKXoJHWwYpZwKjiCThC98/UXUv0=;
+	b=zkqMP4ZNrW/1dKbUv4EveVuwVfn8X7VWMBXjjf9U/bU1kNZEA2pEg/72cyAxvvOwMfMt
+	 eiv6bnZlOSexnnlyK9q+bJXMcIxcSiihQ1EbKvPGCecQW0x8hCybVnHXVcJPCrbDvwtBJ
+	 qjjar/3FEQsj84K28wB4xjoxeV0sPhs+4vCGEoypDtJLL+L0lB+oEbJaUCfLAnZzYM7cV
+	 dTU227e8h0WD7RZOBHaS/KlugFmaHPDif33B7aLzgBDWDB42JSxzUDErYDRWFTC2xBT59
+	 Y3wrC5Bep5cZDg5i1Zi0Q8QbJdjptvORKslUfsOJ9JxVh3ruOjEISN/j4Lc6uFFhj8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Oghy3hZM;
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=YD5jokag;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D45606A330
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:42:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8D45606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2432606A336;
+	Thu, 12 Nov 2026 09:43:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2432606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Oghy3hZM
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-3720addb068so7255757eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:42:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794476534; x=1795081334; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M5z4Z218iwFLIiE49jl2bv9SF37cp7wRUYRt0lwEz+g=;
-        b=Oghy3hZMUYng4sAKtcoxnPw6uGHj+5sCsfYUVf23LwU+ATEnKNflnRzEzIb67/xawB
-         tNco7RrfZzCS/s+2YDJ+nguv5RXPGLznG5Vw8B1HcZYHurdd3n44EcP7zvp8H8ez8uXy
-         1TjeMT5PT+koVkp+clFHn+eKrqXXRsrzqIJcvZB9mnAduvT3DZTN/nSR7FoJDjgDdvhg
-         i+PgyNIfLepNKm/wjuDniyaNJJ/zIaupctIRDTpCuKqLixyR3nzzuP0MQR4RTORtkFwq
-         HY18eFm6NjdVvfTBqadsTHC0VQNZNW9EN+u3T3JifzTv+MejzEhp4+DRhUgp5a1QDwV6
-         VU+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794476534; x=1795081334;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M5z4Z218iwFLIiE49jl2bv9SF37cp7wRUYRt0lwEz+g=;
-        b=tRoXK4yD8cNsWHKlDdByF4M3eBj+3zFds1ofApuKbdwXJr62Cyd5e5L6SXRZM0ucMP
-         U9GAOQ4Nb9JpW8zLVBBEjso6ZwpvhhzoXv6uKr+n6y0eylJBgmFmOJmy6r90tC9opzJL
-         B1pSSKJGiJ50cV9jJjnnkwECo98PIcx1YcTUAn2rkDmI2Yln2h8679ApTVWT16ufc33Y
-         LPV+m43ZgTrNqWpe6JyI/SpHePrPTAWxF3Shx7+8OT96hSscvZxz0XrEJbMaTQ8aUOGO
-         XNvoIyb6zETF73kYRq80rf+Gm5WMmYWmm3khEOEts0HX/JQRKuyW2sgyVR3mx+00+HC2
-         Ws+g==
-X-Gm-Message-State: APuU4Z9EnWwdjXXLfi4CxzNwMlj2J7zCovr/DSwPVQpFW6cHaTPc1iTx
-	pnW840Mf4nrgY2+xxYTjyzXDcFX+FsdzqVb8UnaYBZS6sQEWJMMtGRwuSADPXg==
-X-Gm-Gg: AYBFou0U1XBagkEPXJpGt51kzGccWKHtCrzxqIPxXGACATRIG3jTgsEH6oi3qz44If0
-	45DZEF6QNwDj0Ver38Pk4/FlnL7wBqrhn6ke2STBf8rutX+GVm4FWS1RikiqHQfFcYXu/1w9rhL
-	26hpMhMCajsj3l8GK+7HaE+YvZuJ0AnUbeJLNcWU0Ky7kKwmqWmep35OxiuseBfH5OgbHCuz8aO
-	VFWUHwixd2hPDUGjtMcc5oWx+EeMGl+I8bh9OTJRlXVp9gzw19gZF2wpGcdbqcUJYuMvp/JD6Ho
-	NgtAqOg11WeXco7rlcE719mHYBIxnzssZXGQ0Ssl9xbpd0EcPLPpAGHm2aaQSaX3pdpjrKoPEbF
-	ZROs8v557jTvnB01DTXhcqbIPXV1u73eRdbHKqQnWRYFec/IWekcD/hTg7GrG9ifAFLh8HEDwN3
-	X9fdEfyJXXId/JkZ0D4kN4sT/Cf2Y9bxxp0UkvgqPVu78zTY1i9SmIthfL0tO9Fue2AwU+zT8J3
-	2SHVU4K8Tsg/clpkEa85sGWJz94FAblZHAX5nhYVthG6v04OPyK+7uAvcz/WMmNa6pZLInyYJnP
-	KKhibRUYMUDJc3SEIg6eoGS4rF3imY/CiVrPHvwDLFKfixy+xXaUbUmM+zUKXAhFp3doqDqpUoo
-	qMPIdu7qPoGinmNvuGhyiJWnZw+ts/KWA7ynUpynm0WdFw/0fmbElZmi7tkOfLbBAaQTV6Kr3+5
-	c=
-X-Received: by 2002:a05:693c:42d1:b0:36e:c9e5:33aa with SMTP id 5a478bee46e88-376854ba4b9mr5548647eec.13.1794476533548;
-        Thu, 12 Nov 2026 01:42:13 -0800 (PST)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3751fe306e3sm26300020eec.7.2026.11.12.01.42.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 01:42:12 -0800 (PST)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Florian Westphal <fw@strlen.de>,
-	Mat Martineau <martineau@kernel.org>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net v6] genetlink: Reject joining multicast groups no family owns
-Date: Thu, 12 Nov 2026 09:42:05 +0000
-Message-Id: <20261112094205.1120090-1-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=YD5jokag
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A19D9A1632;
+	Thu, 12 Nov 2026 10:43:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1794476594; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=HoRCw77ZwoLoLapCSKXoJHWwYpZwKjiCThC98/UXUv0=;
+	b=YD5jokagYA6izzSHyGkcS07RAUIFMpS/3kZfLRecMVHQrBIxESaCOw5UZZviDzldV+gken
+	awTT+Mo0KFXVOfSmLRia78oTafNSahzA5fenahWpog3hjufNnBTBNLZnHA/k9UNIBvFz80
+	mPJIVm9z3nb/KvRjqWAUlzyEtndbl0+kKxSVCHVJGxxnQIe/EkRZJl0SQxFMNOnN4/bsFw
+	q1O827qAbGguuQakCraEZ39UvyGjHCwR6PtFRFCmdxmNDMHv1PBeTVAjxdaOSEcbDaGlh3
+	Ud5mkdUMFonKD3235XuaiyPDgwfdSzR6KuA9Kl/iYvolI3hILEN3V5ft4P0jrA==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,129 +53,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Thu, 12 Nov 2026 10:43:10 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: aiyengar1990@gmail.com
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
+ Corentin Labbe <clabbe.montjoie@gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] net: stmmac: dwmac-sun8i: Fix the RX_TH
+ threshold encoding
+In-Reply-To: <20261112-sun8i-emac-jumbo-v2-1-aca0cf23cf17@gmail.com>
+References: <20261112-sun8i-emac-jumbo-v2-0-aca0cf23cf17@gmail.com>
+ <20261112-sun8i-emac-jumbo-v2-1-aca0cf23cf17@gmail.com>
+Message-ID: <58be9817f150b4b67de284c68b3265dc@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
-family owns it. For a group ID that no family owns, it returns 0, so any
-user can join it.
+On 12.11.2026 09:41, Arun Iyengar via B4 Relay wrote:
+> From: Arun Iyengar <aiyengar1990@gmail.com>
+> 
+> The EMAC RX_CTL1 RX_TH field (bits 5:4) encodes 00 = 64 bytes and
+> 01 = 32 bytes (H616 user manual v1.0, 6.5.10; 10 = 96 and 11 = 128 
+> bytes
+> as in the driver). The driver has the first two swapped.
+> 
+> The values are only used in RX threshold mode, which stmmac selects 
+> only
+> when the snps,force_thresh_dma_mode property is set. No Allwinner 
+> device
+> tree sets it, so no in-tree board is affected.
+> 
+> Fixes: 9f93ac8d4085 ("net-next: stmmac: Add dwmac-sun8i")
+> Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c 
+> b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> index 47954537b29e..0c82662fbe6e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> @@ -198,8 +198,9 @@ static const struct emac_variant 
+> emac_variant_h616_emac1 = {
+>  /* Used in RX_CTL1*/
+>  #define EMAC_RX_MD              BIT(1)
+>  #define EMAC_RX_TH_MASK		GENMASK(5, 4)
+> -#define EMAC_RX_TH_32		0
+> -#define EMAC_RX_TH_64		(0x1 << 4)
+> +/* RX_CTL1 RX_TH encoding (H616 UM 6.5.10): 00 = 64, 01 = 32 bytes */
+> +#define EMAC_RX_TH_32		(0x1 << 4)
+> +#define EMAC_RX_TH_64		0
+>  #define EMAC_RX_TH_96		(0x2 << 4)
+>  #define EMAC_RX_TH_128		(0x3 << 4)
+>  #define EMAC_RX_DMA_EN  BIT(30)
 
-A family registered later can get that ID, and the socket stays a member:
-nothing checks it again. An unprivileged user can join the free IDs, load
-a family module with CTRL_CMD_GETFAMILY, which calls request_module(),
-and then receive the notifications of a group with
-GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. For example the
-drop_monitor "events" group always gets ID 1, and is free until the
-drop_monitor module is loaded.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Fix by returning -ENOENT from genl_bind() when no family owns the group.
-There are no group flags to check before the family registers, so this
-applies to privileged callers too: a program that joins a fixed ID such
-as NET_DM_GRP_ALERT before the family is loaded no longer gets its
-messages. I don't know of a program that does this. One that resolves
-the family first still joins.
-
-bind() takes a mask of groups, and most IDs in it can have no owner. Such
-a mask used to work, so keep it working: netlink_bind() skips an ID when
-the bind callback returns -ENOENT, and joins the others. Only genl_bind()
-returns -ENOENT. A skipped ID is not joined, so it is no longer in the
-groups that getsockname() and NETLINK_LIST_MEMBERSHIPS report.
-setsockopt() returns the error, as it asks for one group.
-
-This does not cover a family that is unregistered between the check and
-the point where the membership bit is set.
-
-Found by the Sashiko review of the gtp multicast group fix. Tested as an
-unprivileged user who joins all free IDs, then loads gtp and
-drop_monitor:
-
-Before:
-  joins: ok=62 EPERM=2
-  gtp/gtp (ID 15): member
-  NET_DM/events (ID 1): member
-
-After:
-  joins: ok=19 ENOENT=43 EPERM=2
-  gtp/gtp (ID 15): not member
-  NET_DM/events (ID 1): not member
-  bind(), an owned group and free IDs: ok, member of the owned group only
-
-genl_bind() was added, with its first capability check, in the commit
-in the Fixes tag.
-
-Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
-Fixes: 4d54cc32112d ("mptcp: avoid lock_fast usage in accept path")
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
-v6:
-- Drop patch 2 of v5, as Jakub found it too ugly. A family unregistered
-  between the check and setting the membership bit is not covered.
-- Say that early joins to fixed IDs stop working, also for privileged
-  callers, and that NETLINK_LIST_MEMBERSHIPS changes.
-- Document the -ENOENT meaning on the bind member.
-- Rebase on net/main.
-
-v5: https://lore.kernel.org/netdev/20261104092125.211537-1-anilkaushikwireless@gmail.com/
-
-I used an LLM to help write and review the code, the tests and the
-commit message of this patch. I checked and tested every change myself.
-
- include/linux/netlink.h  | 3 +++
- net/netlink/af_netlink.c | 6 ++++++
- net/netlink/genetlink.c  | 3 ++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/netlink.h b/include/linux/netlink.h
-index 882e9c1b6c1d..b4eb873850e7 100644
---- a/include/linux/netlink.h
-+++ b/include/linux/netlink.h
-@@ -48,6 +48,9 @@ struct netlink_kernel_cfg {
- 	unsigned int	groups;
- 	unsigned int	flags;
- 	void		(*input)(struct sk_buff *skb);
-+	/* -ENOENT means no one owns the group: bind() skips it and joins the
-+	 * others, setsockopt() returns the error.
-+	 */
- 	int		(*bind)(struct net *net, int group);
- 	void		(*unbind)(struct net *net, int group);
- 	void            (*release) (struct sock *sk, unsigned long *groups);
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 69bb951b5fb8..ee573ba6396d 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1033,6 +1033,12 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 			err = nlk->netlink_bind(net, group + 1);
- 			if (!err)
- 				continue;
-+			/* no one owns this group, still join the others */
-+			if (err == -ENOENT) {
-+				__clear_bit(group, &groups);
-+				err = 0;
-+				continue;
-+			}
- 			netlink_undo_bind(group, groups, sk);
- 			return err;
- 		}
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 5cc1037d4917..f038f04ef4ea 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1825,7 +1825,7 @@ static int genl_bind(struct net *net, int group)
- {
- 	const struct genl_family *family;
- 	unsigned int id;
--	int ret = 0;
-+	int ret = -ENOENT;
- 
- 	down_read(&cb_lock);
- 
-@@ -1841,6 +1841,7 @@ static int genl_bind(struct net *net, int group)
- 			continue;
- 
- 		grp = &family->mcgrps[i];
-+		ret = 0;
- 		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
--- 
-2.25.1
-
+Thanks,
+Nicolai
