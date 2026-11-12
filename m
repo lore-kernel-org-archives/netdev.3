@@ -1,59 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794452342;
-	b=pQbL0+QEdVyIFcjBlB4u/Evi916K5qv0TuAyHeBYT+8e+8j+uX186QvcQnH3TfO5KYRR
-	 KEm2R+eCDQyLTnsYNbUz8+9pSqT+WErQ0Uk57rkoVVRxysjQveCuGh2jgzoYXJS/jmZxG
-	 Q9iNrYduz3gzdudt4Mp4cBZoylhICy36EutA0e04tLO9vagTJUim4c/EDTHZB26zYwo0l
-	 MiXyS0ymiHMxUu69EDHBGH9iIJoH60rMGKpJ7n+6MsqGuSRhUb4lD6TPGZB3qUaiGXFvE
-	 v8m/fXSXjVTrAZMw9uhdB+EM4c3u66IjkQEW0aQE/17OEpuEOVzbCiq5LyQG3Qx/TQw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794452342;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=OvSQxUXvoz37Xllfghfy1IjhVE1RB1eaqEabCAt8sVA=;
-	b=dlnLmJGSj6C/k7TGjWNN+NcLALE2CrIh6o/D2BILWQ+lNRFP2DZu4QhWaZuqt+LOeJ5m
-	 oAFe/2PU9vj/lSI4WObN1crmOIUyKiOiAXs11NoYhcyzkpHH28bA8vi/Epux5xTeTa37z
-	 QcGDcxpXtoNLZVDfq7RX2dbq4FoAu3lFW+jIe245iVrG5sjuxojNj5hibBnah10mdQalO
-	 OkHSOKqsVQS2oXVm/rF/EThw5k6KVqtuQuTEcqsDRATFZW7uFLDHEgWrBi3eySDOAFh3M
-	 AqcfqMgrqsf8d8EdkX/WjB/lEARm/mJFyrkUzt6HI22J0tT/xt4IDRoOW0nVk4iJCFQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Fs/8clVc";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794452456;
+	b=dDmqk0rXufLc6Ku6eYd8yPIV0z8+5v5W1r3QTYupWQy4zBCL8cIyJeFoRHit7Y9bFMxw
+	 rEeKTC2EoYPILYbou87CyKqw7kjX1g0sdLQyGwcd36EUfdDEFtj8qkOQ9QYa6hA6//Hxx
+	 tqJ/bEwMtMwUAgCj0OTCsR2EqST5XNstvg8e+0QXDpGG0kZl6OomewnwduS8RqZdw3I3x
+	 3U1CRyofOYnndHPwJGEq21hrZNJis9DsFl9BHFz1xvkEW/d3lKeAv+vtJ7a7N+ViXSeQw
+	 Geo+vJS0sua7nCmsekGT2sAnkdMuuysz/REcK5Z3b9jjR705KlgRUX6099PPy5KFYDQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794452456;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=0ker/e6EtIU4OfORlKixSoRdHPkrYE+Fp5n7xeEspxk=;
+	b=c6i8g1hJGvXDmzfxi7HCdrKIQKcAKhKhr8i4pw4JAMFqacAUwVIKJbk5dkYaVCq0HlrW
+	 pHMJ6On7ixRvUpVSDT+T+4+XpYpatQYmgQ0unVYAX4wW69MavhFx1QAMdNWSMHAGo9ExD
+	 1HHFexzPC7N34AfaicSUTFr+5wUv2D9WRxpH5wV+ZLgCNat7nVEaojkJnYOYVKFV00Kks
+	 3FvsCJ2DWM3fY40k1X94j/Jh6qsFnhcc2k5INxLsIps6SQqTefTnAE0wYMG8dVjiB1H1l
+	 lR+w2L1lq3IvnZ/QJhOa69dWqap81Uac/HLXKcMoo8lWD6jjPSBG0jzmsefbyIRQ/ig==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=FTTco9lA;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=L5+nTpdZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D674F606A31C;
-	Thu, 12 Nov 2026 02:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF24606A324
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:00:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EF24606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fs/8clVc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0693E1F00A05;
-	Thu, 12 Nov 2026 02:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794452342;
-	bh=OvSQxUXvoz37Xllfghfy1IjhVE1RB1eaqEabCAt8sVA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Fs/8clVcZqko7ldeGcwJNDFqDWofg9kjfst0zEzNw0qXziPS9DSkBeMnMrIra48A7
-	 bK9BAO89OCoi1jCBNnKxpb16dRwn/0d05p4yKedW00icfBykV/PH1OKNPj6ok7yINY
-	 5HWfz5+Fp5gXiyfC4gdsLXugDwZnkGzmW+nsJbaKA3r/GqZr10XckE7tWV44DOGac1
-	 3cMwuyybZeSi7x1YuMDdO8f37TtCpGSaGYrHms2mnf8E1d5wJW/4+sVDFDT7F/e9jv
-	 +IivaL44c5QcQEtg4E1xXI0DStis4br1wuq2/qXDMG9jFh37C20VXlzwdLjavQbqrx
-	 LfTK9QcWxJD0Q==
-Subject: Re: [PATCH v4] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-From: netdev-bot+sashiko@kernel.org
-To: haoranwangsec@gmail.com
-Cc: david.laight.linux@gmail.com, bigeasy@linutronix.de,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, rostedt@goodmis.org
-Date: Thu, 12 Nov 2026 02:59:01 +0000
-Message-ID: <179445234141.2199510.13802580450865869960@kernel.org>
-In-Reply-To: <20261110165742.1204-1-haoranwangsec@gmail.com>
-References: <20261110165742.1204-1-haoranwangsec@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=FTTco9lA;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=L5+nTpdZ
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC2ZY6d3158667
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:00:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0ker/e6EtIU4OfORlKixSoRdHPkrYE+Fp5n7xeEspxk=; b=FTTco9lAaClg0qy7
+	paSGkH1RUK1r3PkEpXNRMMzJeVviZF/6qNKW2F2qfKB3yacXPk72rJW4gouDYDyh
+	zo3yATC+E4zrHCfngpeztPAlrGCQaB+l+kuvO+YbpH9u+AbMohSQ9KAZq6SyPVzy
+	KaEssSZKwFtvvPaSs9nWknAZ6lL2ZGjeYNWIhQKrvCiGwoNltoZuwub3jsx3cVeQ
+	PUIsgh8ug3j7giWLMWbErIaBqCa8EPqDy7uZOgiuIRHwrbyDxy1Py2WhJQr7k/5y
+	+qKlylc0NyL6AruGDg5Xkq7aNT3Okx55QTV7JD6wuPdmdJEiVetlRvEWGD1IlVjm
+	7brqFQ==
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com [74.125.224.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hvk7pv7u5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:00:55 +0000 (GMT)
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-67c041acd09so5660464d50.3
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:00:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794452454; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KX27goibCVcK3QJQjkwDSAvmSjYbYAKt9oqjjr8S79odR5JbGHPc0Ff0aKNCN5b8eZ
+         jn5rAcU3IhRh6Q1HHzXCZgkocVxDTPvxEEh/uPsdxRMMI+3X8ipy0ibrc04bqOvnLAcg
+         9ssEgSXaUjCq8IsD3adS122oj3CkThwmXQn2jGvubNYSr2MKkIMFeCtqcOQpeGRfkR8E
+         Yk6NgY+6yY6Fgt2q7GLVHYbOary3f8DSdqID5IhlFm2eEe2+eDX3vb42+3utYN2DWGqO
+         9AIAN8OvZVrvuJA6ocwR2+r4JbwtYfZrX+QMaqyLu096MBcj//KJEEg8YlLeFXfB1LxL
+         jqKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0ker/e6EtIU4OfORlKixSoRdHPkrYE+Fp5n7xeEspxk=;
+        fh=IuMHDrivrb+yz/28nIPuB8qNBKQs5muYNQsLhHQ8I1c=;
+        b=IcVjoozfBT0hoFV3upiAeIuqGq6nRnNNItxHUDtrjXrQzKYfr9sYObrdERRDcka5Nf
+         IV6Ba8IOlnh5DzwTlyCVzktE65eVs9GsZR2nMwmncXDgn12kkqBEOTFpAHMszEZiOqLP
+         TXQQb7DeX+aIBbgZxNcLlxojKgytKW7TfqZMi53lJOXZ/LFd9if6xn/uxoIg6rJqZA+h
+         cZm8OXr1yEeWFK+xvSxu/R0mAY9FmPEDtI7peTy6mXkr7CBEN2OR5NAlJKWYgsUsmPnZ
+         11XF8GLN5PalRc636pZ0esYa3HMyg4VPb88GkP1mstiIGUl4/bE+eRLw0pom8jZ9uJiz
+         GxHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1794452454; x=1795057254; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0ker/e6EtIU4OfORlKixSoRdHPkrYE+Fp5n7xeEspxk=;
+        b=L5+nTpdZUtV13iR13f3WGMjWXpxh1XMcHTcanhn8zUlges3A2XoQ7frC0IGKh3YNGC
+         UP4ToBZ575+b4SXgmJv/W8ujg5QZMKQZCN4ODHey2/3P+Er9U8M4J2gnoKLBbjLb/zcz
+         oq0Jsw8APTD4Xt/kIdVsXKh5EOYdPhWQL/x4trlYzqKKztYLRtMDhAxMPa36iVK8oHIE
+         9+IsysVixaFR3TLBxPxQZwzKXuC+BXvbnDtI7oTjMqaXyhVCNyy67ta2ihw0BVcPm8Iu
+         g1aHVcnPIt6Ja2WQPMfHFGATfw9kaIuviCGUsM1DoXJ33vhEAgW02crjHynzMLPkseDc
+         INkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794452454; x=1795057254;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0ker/e6EtIU4OfORlKixSoRdHPkrYE+Fp5n7xeEspxk=;
+        b=iGBil9KmzIx9vRN2V0d4FQponCAll2pZ67nn6Wsk6UI70v/YnSonUOrLw766W4qvr2
+         72J8XHEnuENNCu5FYa/LpP8dHwoh1pQF4tnMJnXtDYfEoCKUxcdoWRy1ddeNxQ+LSwRC
+         QD8/bTyd/CbAaRk794/OfkYOYLWQk3qK6h9fNbwGtXSWynp7XeZ+nRQN6/Ab7x7d+Osg
+         nvt7YEzxdcc2+2ENTu2SzidPtOpYdE2g/V9yFXzv9RwJxaIgc4APAp2YjkRJUbtUEPaq
+         sXlwl1MG0WWN5evpgOalRCe8nzu8I0hWopwqivOZ3azo//1fUDXegHxg4K/xLwGOe9Eh
+         3kmQ==
+X-Forwarded-Encrypted: i=1; AL+hErGN3b+3SAMyOhDC+zd5OP2KlXWZDjvWUmZdBkg8L81OL6MQ/YxjXu/uFCzoYtPueml3jUI1WhY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z80SCFDY+Vj6yzS9hhayIFIVbUkOCv7dECVOz4qAC+SZorPXOK2
+	XzNy54pICTzKLXU9rSh5O2Gd8BfuPMX1vPsUqdwHe9ALdIdZfK7QKgY4rvLrhGGJwpw2VIVxfkB
+	WyzM19+4VoqnZ5R6cOWJEAgtP4zqYJfrIWkC7ahnRks19JCwd76eXdXL6iRCn10AN97HG4Tjzzw
+	zU+ol74YFf5zmiwt6Zt8FtBF3JKrkLXrcqSA==
+X-Gm-Gg: AYBFou3DVV3qnSMdZc+1nYMXxFHdtk7IlZeW9vo0/fqxFSAzcHI9fx3BD7c4rof8atX
+	PQNasDY+kRqUlkSK0xhcQW0wXiEkwtnm3Fpf43UMY/vCW+goHpWrrtn4TDuSi2OZc7CVkOqqGCu
+	59DZ5hKLah+dcfAcjKzDkrV+tUDF9nupkouqRR1UMYB++gKD1/9iEjkIqUcw==
+X-Received: by 2002:a05:690e:47da:20b0:67b:fd6a:bc1a with SMTP id 956f58d0204a3-67c681084a5mr1880271d50.163.1794452454410;
+        Wed, 11 Nov 2026 19:00:54 -0800 (PST)
+X-Received: by 2002:a05:690e:47da:20b0:67b:fd6a:bc1a with SMTP id
+ 956f58d0204a3-67c681084a5mr1880255d50.163.1794452453847; Wed, 11 Nov 2026
+ 19:00:53 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,139 +127,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261111-aquantia-poll-global-status-register-v2-1-b602fc7e80a9@oss.qualcomm.com>
+ <20881de9-927c-41c1-ae30-829382d531be@lunn.ch>
+In-Reply-To: <20881de9-927c-41c1-ae30-829382d531be@lunn.ch>
+From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+Date: Thu, 12 Nov 2026 11:00:42 +0800
+X-Gm-Features: AclHuK80fTtqa5nlpttp9lfXoNbkIHr6rTn_KulU4jNliXlNEOaMYSAQUCN8MQg
+Message-ID: <CAPTcHHTJGdCq4zXMhv5iuGVrgeKJgN_5MdG4Joh++biR_J15Tw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net: phy: aquantia: Poll global status
+ register for provision ID
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDAxMSBTYWx0ZWRfX/PkTLqxTwuiw
+ sHNc3hwitDAOPlQfXsRI67FjXwxLUbUK2+qN85CzMpl5NDvDMxGGJExbMZ5m3kUDjNuklfK0gn+
+ LrV3XJQ79+XaEiHYJW60poDyNDdD/9U=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDAxMSBTYWx0ZWRfX/nJg4KQHAn1J
+ vazhLu8ORxBOVbm7208kipWG1n6wtvBv/6WLuxvp6x2PziA6n6D3xZ9s+1KMx93dZTdq4JES+pR
+ D/j5lt4rvbdI9nm3Cpj+8Abmuy5RfbVmoPqzwgHy4GiXlI979QoeUiP1I58JxsiXEinVvm7A7YS
+ Sl/NkvsPnHE1d0giZfduZ214YcAx9btkYh2GS+8t/VYotIt/BP5FGHGkQ5Sct/3lxQ1+kNDdWsp
+ k+HuBpWbIAmphld/F3VK3iLxXlmuBgY6ptL4A9CLiS/l0a0poPIevU5OFiNTUzDWnoX0L6HBSjy
+ PnWgde3Bq32ekUnaXW3Yu+unXVTxNHT/rgJwRvqajMF6P/pQ53Zif7TvQUnq4dW19vCrEywIPAV
+ y9VfagThlJxz/TI0mZmUFHq/csODGQy/Li5qwNrAi3gWHDx4LaWY992MCQqT8iMTsGmWkV3bfok
+ o24kCKLyCIldbtGB2uw==
+X-Proofpoint-GUID: QZKSTbuaTem-dwcV2hL_KUZJ4euSQg2A
+X-Proofpoint-ORIG-GUID: QZKSTbuaTem-dwcV2hL_KUZJ4euSQg2A
+X-Authority-Analysis: v=2.4 cv=BpcIUoX5 c=1 sm=1 tr=0 ts=6af52be7 cx=c_pps
+ a=ngMg22mHWrP7m7pwYf9JkA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=YMgV9FUhrdKAYTUUvYB2:22 a=DX8JRrE0vvtK63t69ZYA:9 a=QEXdDO2ut3YA:10
+ a=yHXA93iunegOHmWoMUFd:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611120011
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Nov 11, 2026 at 9:40=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > +     else if (ret)
+> > +             phydev_warn(phydev, "Firmware provisioning ID not ready; =
+"
+> > +                         "interface mode detection may be incorrect\n"=
+);
+>
+> Please don't split strings. Somebody is going to grep for "Firmware
+> provisioning ID not ready; interface mode detection may be incorrect"
+> when they see it in their logs and not be able to find it.
+>
+> This is one exception we make to the 80 character rule.
+Sure, make sense, will merge the log into one single line.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The allocation and free paths no longer agree on how a per-CPU
-  pool index is encoded.
-- [Low] The commit fixes a user-visible PREEMPT_RT bug: `spin_lock_bh()`,
-  which is a sleeping rt_mutex-based lock on RT, is taken inside a…
-
---
-
-libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-
-This patch replaces the get_cpu()/per_cpu_ptr()/put_cpu() sequence in
-ppm_get_cpu_entries() with raw_cpu_ptr(). As a result, spin_lock_bh() is
-no longer taken with preemption disabled on PREEMPT_RT. It also stores a
-base index in each per-CPU pool in ppm_alloc_cpu_pool(), and builds the
-global ppod index from pool->base instead of cpu * pool_index_max.
-
-> diff --git a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> index 2e3973a32d9d1..708013623c2f7 100644
-> --- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> +++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> @@ -119,16 +119,13 @@ static int ppm_get_cpu_entries(struct cxgbi_ppm *ppm, unsigned int count,
->  			       unsigned long caller_data)
->  {
->  	struct cxgbi_ppm_pool *pool;
-> -	unsigned int cpu;
->  	int i;
->  
->  	if (!ppm->pool)
->  		return -EINVAL;
->  
-> -	cpu = get_cpu();
-> -	pool = per_cpu_ptr(ppm->pool, cpu);
-> +	pool = raw_cpu_ptr(ppm->pool);
->  	spin_lock_bh(&pool->lock);
-> -	put_cpu();
-
-[Severity: Low]
-Should this patch have a Fixes: tag? The get_cpu(); per_cpu_ptr();
-spin_lock_bh(); put_cpu(); sequence appears to come from:
-
-Fixes: 47da7e62b391 ("cxgb4: add iSCSI DDP page pod manager")
-
-Commit a248384e6420 later moved it into libcxgb_ppm.c. Without the tag,
-it is harder for stable maintainers to tell which trees need this fix.
-
-[ ... ]
-
-> @@ -144,11 +141,12 @@ static int ppm_get_cpu_entries(struct cxgbi_ppm *ppm, unsigned int count,
->  
->  	spin_unlock_bh(&pool->lock);
->  
-> -	pr_debug("%s: cpu %u, idx %d + %d (%d), next %u.\n",
-> -		 __func__, cpu, i, count, i + cpu * ppm->pool_index_max,
-> -		pool->next);
-> +	pr_debug("%s: cpu %u, pool cpu %u, idx %d + %d (%d), next %u.\n",
-> +		 __func__, raw_smp_processor_id(),
-> +		 pool->base / ppm->pool_index_max, i, count, i + pool->base,
-> +		 pool->next);
->  
-> -	i += cpu * ppm->pool_index_max;
-> +	i += pool->base;
->  	ppm_mark_entries(ppm, i, count, caller_data);
->  
->  	return i;
-> @@ -375,6 +373,7 @@ ppm_alloc_cpu_pool(unsigned int *total, unsigned int *pcpu_ppmax)
->  
->  		memset(ppool, 0, alloc_sz);
->  		spin_lock_init(&ppool->lock);
-> +		ppool->base = count;
->  		count += ppmax;
->  	}
-
-[Severity: High]
-Do the alloc and free paths still agree on the index encoding when
-cpu_possible_mask has holes?
-
-for_each_possible_cpu() sets base from the pool's position in the
-possible mask (0, ppmax, 2 * ppmax, ...), not from cpu * ppmax.
-ppm_get_cpu_entries() now returns i + pool->base. ppm_unmark_entries()
-was not changed, and it still decodes the index as a cpu id:
-
-drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c:ppm_unmark_entries() {
-    ...
-		cpu = i / ppm->pool_index_max;
-		i %= ppm->pool_index_max;
-
-		pool = per_cpu_ptr(ppm->pool, cpu);
-		spin_lock_bh(&pool->lock);
-		bitmap_clear(pool->bmap, i, count);
-    ...
-}
-
-Take a possible mask of {0,2}. CPU 2's pool gets base = 1 * ppmax, and
-the release path through cxgbi_ppm_ppod_release()->ppm_unmark_entries()
-computes cpu = 1. CPU 1 is not possible. setup_per_cpu_areas() in
-mm/percpu.c only fills __per_cpu_offset[] for possible CPUs, so
-per_cpu_ptr(ppm->pool, 1) does not point into this allocation.
-
-Can spin_lock_bh(), bitmap_clear() and the pool->next store then write to
-unrelated kernel memory?
-
-Now take a possible mask of {0,2,3}. Entries from CPU 3's pool
-(position 2) would be released into CPU 2's real pool.
-
-Could that clear bits that CPU 2 has already handed out? If so, the same
-page-pod index could be given to a second DDP tag while the first is
-still in use, and CPU 3's bits would never be cleared.
-
-The commit message says:
-
-  the free path ppm_unmark_entries() derives the owning pool from the
-  index instead of from the running CPU, so any thread can service any
-  shard.
-
-That only holds while pool->base / pool_index_max equals the cpu id. The
-new "pool cpu" label in pr_debug() makes the same assumption. The 2-CPU
-stress test runs with a contiguous mask, so it would not reach this case.
-
-The old cpu * ppmax encoding was also wrong on sparse masks, because it
-could run past pool_rsvd into the general pool. Would it work to either
-update ppm_unmark_entries() to map the index back to the pool in the
-same way, or keep base = cpu * ppmax and size pool_rsvd from nr_cpu_ids?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110165742.1204-1-haoranwangsec%40gmail.com
+Regards,
+Hongmei Xu
