@@ -1,49 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794510612;
-	b=JFW2ogLsmmB2TTONud8eCHucv4B95rwrolkTeZmsHx5MOwzweQv6Lq243VYzhvy3G5wD
-	 wULgYaAkbyuIHC7NB18mTmgYtYEYKv3+eRMG7MB6/5Zvdoic6hgzo5K5eNbzywAyf3v+7
-	 pX1KQBlxxfmtrPXZ02HewH+krVchbnId+No1LnHkvKwynl//rzAucgeYK8PA6T/1BGHOs
-	 8TZcJfjjgQzcExKaRLBMt0e/D1mktzTDsnBx6TDV6q+G3Zxpwor9UnPFnqyMGmKo8qwTp
-	 yXO0LlFiWs1R5p/VnUGwIiY5kUs4Ie3omTgyIdgJDcqA//OBA+QuYWFn2MpfgB1dDvA==
+	t=1794510980;
+	b=5Q8URmk6UvTA46Zg6frvlX72m5A7KPq0DUIdR1JtYbVKkx2V80uQYI4Nm6apxRysRNI1
+	 YFR03U2g/kJWeEhGm0tJ/TeM05j88mjjVxZVZJUVzp1plA6S4jvL59POCOy19vXt5Ril0
+	 /ILg4+BfcoGo/LYb0ldvG53oaYVoEvRw6E37ZNq6N18tsJ+oVC62rYDJLadT87MXdNGz2
+	 lINAuhlnR2GDjh4NKNqnenW5FQ8vO3YFJXXCq1jcDd5ZddXRNP5mgGUGO+WQmAQN0TTHT
+	 ksbXb8SGCISCTv9Lz8N1keJ3S9O4JvrEFlMmvxD7Plui8mEGx1QPgsy33JAbZZYFTCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794510612;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=0/wRb0QkrCnpP/cVCpQ/2KgkiapnxUmfzZNvLjxejRw=;
-	b=fAdVLthOq5AfC0uk0HZPDt3xCn79sxKI1rktZT2XwLikjTAhm1gDHuR3YLxyCO4j6CKc
-	 mv3DIG24ziBg1E9KscBul+AciFi/RDgx+ITLVA3iANKOZCnIT/6WQwZf9ftaVBkdtpFL0
-	 izoWRQhbKcGKQZ2FCjsixgGghPxrtl82HZuQI+jx36N9tILUIEuTsN7K6YnDThGziN2n/
-	 3L1stFeZSRc9fiMlZtE0M/CrM6mqY+f8QsbBkT+/ovDwwP9LboyhQ1scIjTSyEiCik91C
-	 LbfAskaA+dh28owSgP45vf6mmjZdK5ZSQsL5pX824i0bsh8OgLI0X7G9GupgVLfQT4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794510980;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=5I8qafzlKyx+3HTz4plEHXvJyZxM7HeqQJIVJQlIMdI=;
+	b=UeJ1gCM1VZYnzIph2B+L2VphDAGoLgzKXNc8IoWdlcgOcKE4Ouar4V2EwT/fwjzWGXsp
+	 7em8bYV2dIUboZM5IOxudmgApln2vjOhhoHnIjJ0vxKX+1rqtagr1/ls9hX/CBYfySaPz
+	 kRZYfBijUS3kzQxKinORbMQiUhw+hLy/t5mRH+7gQqpMF7K33mQGR+Tn/+yRjLT4ghJ1B
+	 48fIYTepjbOjpfZuDUwC6qa+tZPHRS11owcmvdJfpmzo+OYn5gnKv6EbzL8KW6eVAkIfF
+	 Pc8eX4V1UIkn+//zW+nY/2q8oGRKcrL+oR4igKBq2hc5GSERu3WDD2vR9pspjdN23Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nLZUkaRD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFDBRs92;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7251E60A260B
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74EC606A882;
+	Thu, 12 Nov 2026 19:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nLZUkaRD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450E71F000C5;
-	Thu, 12 Nov 2026 19:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFDBRs92
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1E31F000C4;
+	Thu, 12 Nov 2026 19:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794510612;
-	bh=0/wRb0QkrCnpP/cVCpQ/2KgkiapnxUmfzZNvLjxejRw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nLZUkaRDwTxJciXRHkKbmJlzw786NyZwzt/uMpqEbfLy3/MIWbxDW89DcsOqJTOwz
-	 MZjbvCKnyCyUu3dk8dgVl8bY4LrNQD5WDf+Fr+kmhKdbwgo2cmx2ixab0hHMfMF+DR
-	 AgI3pifcOjOxATigKSiiLswLrn472KnRjSRCDLSQvCaxeWGk0I5WGkZRABSC4x7aDb
-	 zAvBZ03xMjjhMOGg+mY93JEZDivQTPGv5TqWkRY3dSOAvh6zWCACCktMQ1NPuKbq9x
-	 zAivNPghICDPRfWcnXVDBhyah+JvbDZripUcwLE2fqpx46NOxVdNDEyBEpW4+7OfK6
-	 yTsvZ6dENapuA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A36C3924A5F;
-	Thu, 12 Nov 2026 19:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794510980;
+	bh=5I8qafzlKyx+3HTz4plEHXvJyZxM7HeqQJIVJQlIMdI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SFDBRs92QHDYf0eltURydgpR9InQUAnq3GMXkCzw8gGV7AuZc8sAui1RZMT55ZLQ9
+	 egaZmT1m3nvgkMT7wKQ+Vk1Pxt5h5Aod0hwLV61COc234bqOTAu2bZqVzNcWkbgCy9
+	 KDcZImxPz3YVGcHzEmQ1gZg/3GOs85YYdvj3W7xKRgw1qBkbIJBwhskXVwo4LJKMpw
+	 o6vY6q9gOHcp5IAsgshd/NeEa/3a/ylbSB3mKZj3zv49qDhNjUMmIF0Pc3caO362Sv
+	 V5SwpOSN6piOTyNaexGjYNvSWFRSOLetXUaqRy7eOSx+xhBV9/2QDAZSql95TO0ClK
+	 zH1F7glZy+jEw==
+Date: Thu, 12 Nov 2026 11:16:19 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com, Willem
+ de Bruijn <willemb@google.com>, stable@vger.kernel.org, Hassan Sultan
+ <hassansultan@google.com>
+Subject: Re: [PATCH net] net: gso: fall back to skb_segment when fraglist
+ cannot satisfy checksum
+Message-ID: <20261112111619.14ff70e1@kernel.org>
+In-Reply-To: <20261111221129.829218-1-willemdebruijn.kernel@gmail.com>
+References: <20261111221129.829218-1-willemdebruijn.kernel@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,71 +61,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/15] batman-adv: mcast: explicitly initialize
- mcast.num_want_all_rtr{4,6)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179451061077.599290.18211748615272269475.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 19:10:10 +0000
-References: <20261111102729.2096241-2-sw@simonwunderlich.de>
-In-Reply-To: <20261111102729.2096241-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org,
- linus.luessing@c0d3.blue
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 11 Nov 2026 17:10:33 -0500 Willem de Bruijn wrote:
+> skb_segment_list() keeps the original transport headers and checksum
+> state of its frag_list members. It ignores the checksum bits in features
+> and does not initialize the SKB_GSO_CB() checksum state. This breaks in
+> two cases:
 
-This series was applied to netdev/net-next.git (main)
-by Sven Eckelmann <sven@narfation.org>:
-
-On Wed, 11 Nov 2026 11:27:15 +0100 you wrote:
-> From: Sven Eckelmann <sven@narfation.org>
-> 
-> All mcast.num_want_all_* are initialized in batadv_mesh_init_late() - with
-> the exception of mcast.num_want_all_rtr4 + mcast.num_want_all_rtr6. At the
-> moment, it works because atomic_set just initializes it to 0 and the netdev
-> private data is already set to 0 before being passed to .ndo_init.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,01/15] batman-adv: mcast: explicitly initialize mcast.num_want_all_rtr{4,6)
-    https://git.kernel.org/netdev/net-next/c/9efd82f6805d
-  - [net-next,02/15] batman-adv: mcast: explicitly initialize mcast.want_all_rtr{4,6}_list
-    https://git.kernel.org/netdev/net-next/c/ec14a473ec1c
-  - [net-next,03/15] batman-adv: uapi: add note/clarification on access of reserved bytes/bits
-    https://git.kernel.org/netdev/net-next/c/50d3cce980fb
-  - [net-next,04/15] batman-adv: avoid torn u64 counter reads on 32-bit systems
-    https://git.kernel.org/netdev/net-next/c/82c663800f4c
-  - [net-next,05/15] batman-adv: bat_v: initialize last_unicast_tx on neighbor creation
-    https://git.kernel.org/netdev/net-next/c/b844a1f97194
-  - [net-next,06/15] batman-adv: dat: annotate last_update with READ/WRITE_ONCE
-    https://git.kernel.org/netdev/net-next/c/0ca317f5194d
-  - [net-next,07/15] batman-adv: bla: avoid negative reported BATADV_ATTR_LAST_SEEN_MSECS
-    https://git.kernel.org/netdev/net-next/c/53a21998ad66
-  - [net-next,08/15] batman-adv: tt: annotate last_seen with READ/WRITE_ONCE
-    https://git.kernel.org/netdev/net-next/c/a063d1749de1
-  - [net-next,09/15] batman-adv: annotate originator last_seen with READ/WRITE_ONCE
-    https://git.kernel.org/netdev/net-next/c/d4b4b01b5f37
-  - [net-next,10/15] batman-adv: annotate neigh_node last_seen with READ/WRITE_ONCE
-    https://git.kernel.org/netdev/net-next/c/45d1474790e4
-  - [net-next,11/15] batman-adv: annotate hardif_neigh_node last_seen with READ/WRITE_ONCE
-    https://git.kernel.org/netdev/net-next/c/150e85d113fd
-  - [net-next,12/15] batman-adv: use matching return types for bool and void functions
-    https://git.kernel.org/netdev/net-next/c/2daee4a0d81e
-  - [net-next,13/15] batman-adv: mark read-only MAC address parameters as const
-    https://git.kernel.org/netdev/net-next/c/c58558f8998f
-  - [net-next,14/15] batman-adv: use bool for boolean flags
-    https://git.kernel.org/netdev/net-next/c/0f97847fdd1c
-  - [net-next,15/15] batman-adv: mcast: document the value stored in is_routable
-    https://git.kernel.org/netdev/net-next/c/d5c0415dfb58
-
-You are awesome, thank you!
+Does not apply?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
