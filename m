@@ -1,115 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.59.177.22
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794494917;
-	b=DvTnyY9lf9DsdCQqVDaaa/0YwgX7QFKm8s61STHxPFJveY68EGHUgLGuu3PmJmPAroN/
-	 6vYjVmG8Ys42l37fKIWIlKL6k6QwPCDJdSMr8WPhTo4XacXdKRPTGbvyxbOPAkvSDjId7
-	 iZc3Myg4OD8tLK5ZehsIPpA+VnzJ7V6Me6FUsQ0QFqvYtCVxNrsL+hdMfdug7h6sbtHIH
-	 06Y0iDUZ5Of5kfrYiAmbM/0uLWWuyZVfRh7j1EXJp4aQ3uEEoeE8IhA0yDXeGNCXYOqAl
-	 0ee2acsHtF9u9jsPWw7x4U+FBbogsYd9v85Oh+EEnK+SeNzxjvvDtqDkHfTnEsHLxVw==
+	t=1794494968;
+	b=zjzC4nd0GhVHgSr68xEid1YZtPyvXdmwZeKCR5f4h8clo9UV26mxZFg9zD1AJSaVI+yA
+	 AlmgU28aru8tP12d2aGZJsdp4RUpD0ZPrGr7N6fe4tX4x3V4pu5GmeFf4k10pl8ZNb9iM
+	 EC5Gpz+wiomsTgWkPQWgVR4OrBbIsbhKmUtlT8WH3Ax6myqPG8eEXbNSos1zeggx/fXip
+	 aIL3bNR70DP+F73Nw/ZxOGQwmIO5etOcuc3GLwLg1lPXYM/Vcg7hsIt8Aut8cXX0hSivp
+	 E1Y588NplWcr41oWqXslfy7+V3sGRyD+ZETlSNvKJDBZ1Lro0013fW1cLwAzNQ58eCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794494917;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=LEbCE37sqKI+Yn41UtqAlWWrM20PK8ftsQ5p6Bs7BNQ=;
-	b=ARdJZeJy7C/f6sOCIyGRKaEvDwhSaQxcKRzMNjbyxki772AdAWAX5maOKRxFSkIg7F0Q
-	 PyOI51XOJ0Sh10fZi4X3JT759kLKkZuS0kaERaEsYJ778Gutw1DKPx8oIaVLvNAR5vOKi
-	 5xVH80c7G+Kf9M71B0n+3YB5YO2jQyUzCstiZRLKrctD+eqMxObWeNkutNJ9kkyJ8uUWu
-	 ue+0Xwx7ZnHFlGY+OxSl4qJhhWVkE1YDMllZ6JmkkMrJCbwlHG+yIxWN3hIilJi5XdaLK
-	 slD4UBaZzUFNjV+xYM9jE+otKdF1WcHk5PG+2rfZkA+/hMOEzrbCf9yuXuw1HBc/JEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794494968;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Mime-Version:
+	 Content-Type:Date:Message-Id:Subject:From:To:Cc:X-Mailer:References:
+	 In-Reply-To:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:
+	 X-QQ-RECHKSPAM;
+	bh=zjGNu9iJUY6tRHH5ZIf6zaOe5ITdcxUbrHIdm2i7RUM=;
+	b=S5WaOJRJH4E2yyWlQmZuB3agq3cUm0vdsFXvb46C04LZQMYHf7/LFfdouwv97HtWqatU
+	 fSUhBjq9kMAWfVGGHJSdYZs5vg8FPxupRMlxZrkAW9BY+u2XjtG3Vq0P5vezb8Uuzv70w
+	 KLzM06HSTiWrBGhG69WMav4nIhUQAMs/7mTelkSlLym+rPLLS9FZVriZhWoaamGywVV0S
+	 6MXJCnfekpgZEAIStdivslTPds5lysoNYvptAvRA3uR344rFwgBzCahppaagC8LuoWEmk
+	 IidSAP5SeakUM8gBsfD+qn0AqUdZKK8EKUqZ2nlDMgOQlGniGtxeayC7puo0oiWnhYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=drptJcTo;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=sr3hD6aP;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=linux.spacemit.com;
+	spf=none smtp.mailfrom=linux.spacemit.com;
+	dkim=pass header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=bPzMatk7;
+	arc=none smtp.remote-ip=52.59.177.22
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4BD606A335
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:48:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE4BD606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856AF606A323;
+	Thu, 12 Nov 2026 14:49:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 856AF606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=drptJcTo;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=sr3hD6aP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794494915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LEbCE37sqKI+Yn41UtqAlWWrM20PK8ftsQ5p6Bs7BNQ=;
-	b=drptJcTobu9fOdyTCNJBL+e85uPIk8JmMwIqMceMS8OogfR+kEqiAAjWDGRU6DC1mU5E9G
-	WYAVmSHoCwA0yYHJkd55p0syGxfoovCuZxJ7XRZAPS2xrbttcMCZ3R464iX7+qDUJEVLAG
-	2qJj4eUq0mofZhV+2sl6ZPOLDNGSYDI=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-YgzbxPH1NIaFKooJ7q_QAQ-1; Thu, 12 Nov 2026 09:48:33 -0500
-X-MC-Unique: YgzbxPH1NIaFKooJ7q_QAQ-1
-X-Mimecast-MFC-AGG-ID: YgzbxPH1NIaFKooJ7q_QAQ_1794494913
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-845156f593bso2440389a34.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:48:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794494913; x=1795099713; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LEbCE37sqKI+Yn41UtqAlWWrM20PK8ftsQ5p6Bs7BNQ=;
-        b=sr3hD6aPUwwTfnKOp7msyRob5CZlKZV/mKlWwY/7pZ1tmL22hnKR3oLCqtqpqySj2I
-         TyBT1QHKQ6A+lmt++xVCDbVB5sOZo9FF5BhCgXuI3+PbY7Ndnnq+8pbJwSXZLyjiejPM
-         b5QtuL5szlT7TXIHDfSjMjHacSX/2LHKu7Fns/eUqvGmcFw5OPOfIisqZL3fiVl1ZvgP
-         vH5QjqO8IaugWVKKcH0KHb/cdxucMwgvr6Zx84qpWDl2FbzkdVavxGyd3WimyQwwzI50
-         2JF6s5f5HpJx6LZy2NjBNZwgx4fdzdSA/yY13acF2o7uZKDeolXh3NtygyU1q1RXVTgY
-         dH7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794494913; x=1795099713;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LEbCE37sqKI+Yn41UtqAlWWrM20PK8ftsQ5p6Bs7BNQ=;
-        b=MHxqCFku+FJz54NR1aou3BhiZL83JRxY7CNupS6mjaywC5QPqR8XgIWVNTQ4AExr0R
-         0cQ3CZ6h7uAj2gzfUd31vjMu2hfgso2gS8HBDZiyE2lKgsB6FdCG9mcGVV60yM2VMw8x
-         whGyLB4/SKx070wTppdUsMX1liOvwuCRmxJJN0fC0Z3tuqe+gwg2S+vfowPjgklXG8cJ
-         AtxYgZhkJMui71zEZkODrEbIMqznCjU+HqZpypdRYrT4P0cD8PmM6j3yrD7aOXNmRQXS
-         3VkZSMV8XkEmKshN0208KXiKNu4qJf68xcmPGLkIdfr8E6M3EPdoxTW7K/BU6rrjuDPi
-         7tDA==
-X-Forwarded-Encrypted: i=1; AL+hErGIKAHm+1nyGch7qB1yXFzapfujUvwS3oQjq+UKSxCvobjCKyvhYScEIOiide0s9RAo/qESb9A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9h3sffO3MYk+jYOQhMZ0WmApZATe3X+PndKvsb/VdkkpBIRilL
-	MBFuz/2r/jazvyFbBXvAZ2iIXjV+6nusnIWkfsgmCu2UVQwxY0n2xMRLG8WNn4i4dfPArMHAz4a
-	P57si82ydXRbvqTIPeDOGg5noEbI4c4ary7apD7PweG/gM2VfQ9Jm99F+Jg==
-X-Gm-Gg: AYBFou0XKGq5YwihJGkfK6u9biuNHEQbLPsTSjDTSRqGp6+RgVjcd1/ni2rrpuk1PWM
-	OfUNpdauswPdF8Xx/am3ftD2z9AKlarnTaIZ/PzkVeGZRAq6onIqzUVZ8UwwTkgakLZUo6sDJOK
-	p37k/xHtlfLBth0+ePVcDH80XyXJR/JTWrChQG366aTK3iafQgH36Lt3lXouUiEymTpWGEIK61B
-	vppqlu+ZBTDBIOVc9k5DPAZ4jZxzRjyThNh7n6rJ1OIvH7z1ZKzO/pb6ySI/v0BAuwnNzMM7VHz
-	c/hXqzFXicmTS/i/noypYcqZ6tCdSdvQkI79MB8cjBn5EtAuZziyeBHsyQhB5QOkTCRw2ce6kXV
-	YWNasl5erInGifjBav0cigYjieA3gKw+RWqF4GH7GlpwH5h3TBCDS
-X-Received: by 2002:a05:6830:91e:b0:821:a094:b26d with SMTP id 46e09a7af769-860f2924233mr7543131a34.13.1794494912674;
-        Thu, 12 Nov 2026 06:48:32 -0800 (PST)
-X-Received: by 2002:a05:6830:91e:b0:821:a094:b26d with SMTP id 46e09a7af769-860f2924233mr7543101a34.13.1794494912079;
-        Thu, 12 Nov 2026 06:48:32 -0800 (PST)
-Received: from sgarzare-redhat ([209.52.143.85])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-86286c313d7sm83930a34.15.2026.11.12.06.48.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 06:48:30 -0800 (PST)
-Date: Thu, 12 Nov 2026 15:48:23 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Oleg Drokin <green@linuxhacker.ru>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, bobbyeshleman@meta.com, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 3/3] vsock/virtio: fold credit updates into the
- one a socket has queued
-Message-ID: <avXOsmt440EdsPZk@sgarzare-redhat>
-References: <20261106050244.602625-1-green@linuxhacker.ru>
- <20261106050244.602625-4-green@linuxhacker.ru>
+	dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=bPzMatk7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+	s=mxsw2412; t=1794494915;
+	bh=zjGNu9iJUY6tRHH5ZIf6zaOe5ITdcxUbrHIdm2i7RUM=;
+	h=Mime-Version:Date:Message-Id:Subject:From:To;
+	b=bPzMatk7qpExuK/54DlD1AYIsJFWlH7UOaEsiiTsoJRqPkBhOLgzmYW2YFV+1U+mh
+	 ItFD3t74wMuNAITiwMdNZK85jl1D25N/6sTvc5hfVOVFKwHAPy7sjgxBDDybH75GTD
+	 CjUSKckealMdIw0+3UxM1MIO5mvgMc4zdEHLZAf0=
+X-QQ-mid: zesmtpgz6t1794494909t187aaf4b
+X-QQ-Originating-IP: Js536/AgtVk23vBPAsP9wENuhTH6rx7T9W8Qieg91IY=
+Received: from = ( [120.237.158.181])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 12 Nov 2026 22:48:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5432486051573447005
+EX-QQ-RecipientCnt: 20
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,237 +58,164 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261106050244.602625-4-green@linuxhacker.ru>
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=4b60170ac85986e157bd72089ccd51b2afc8a5789b706b54e2b49f94448f;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Thu, 12 Nov 2026 14:48:26 +0000
+Message-Id: <DMTBCR706MJ6.23YJ33SOJOGV2@linux.spacemit.com>
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+From: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>
+To: "Ali Tariq" <alitariq45892@gmail.com>, "Troy Mitchell"
+ <troy.mitchell@linux.spacemit.com>, "Vivian Wang"
+ <wangruikang@iscas.ac.cn>, "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, <netdev@vger.kernel.org>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Yixun Lan"
+ <dlan@kernel.org>, "Chukun Pan" <amadeus@jmu.edu.cn>, "Siddharth Vadapalli"
+ <s-vadapalli@ti.com>, "Tomas Hlavacek" <tmshlvck@gmail.com>, "Muhammad
+ Bilal" <meatuni001@gmail.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>, <linux-riscv@lists.infradead.org>,
+ <spacemit@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0-reader-ipc4
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
+ <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+ <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
+ <12a95b3a-9c8b-4a2d-9b81-12b3839e64a9@lunn.ch>
+ <DMPNAPNEGQ5I.XYUIB7Y8HDCA@linux.spacemit.com>
+ <ee3f414c-fffa-41e6-8bec-6af7ce676c4b@iscas.ac.cn>
+ <DMQJ0R4QTE6R.2I492KA9N85CB@linux.spacemit.com>
+ <e11f1ba6-6e56-4bac-a0cb-f9258a53f34e@gmail.com>
+In-Reply-To: <e11f1ba6-6e56-4bac-a0cb-f9258a53f34e@gmail.com>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:linux.spacemit.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OLeWdWTN7s9ArBRVgLcndy27MEg8aF14b3t/uiBeUwp6rZK7b9N9IMyB
+	qCwQrKkpCcvizFM58KhJi8zeIpnezLhIjdKpcPQh+fwBpSxjsbavSUKoB6VUH3SVqpCBJXy
+	qM3C4NtpmnqMmOlGNvc2f6vu5LZmZxmiqb6ZMHP0LmCpQx0wdt4CxPXAsULXUQytaNmdM5a
+	oBafatLrX/+bk+Fi7o1mxUQwf95iITdpeZ0+dz+AocmJMpuI/xRUaDcUXwfy9/Cr6lAV3zZ
+	ualxUEGChTslHzsNJN5X9n5fVwzwtyVEUCm1hssCjEPPp1LOCqpKzpme+WDPFksuE5RTQtY
+	SmzuVbf0hfsVsiqnC6za9jxwf2VftW/6RivqISpGbn8jGoarRCYCS4oZnWJnWqoVTqMtK0/
+	pXA7M+9Ft0RywFvZH0qEokBR4YAx8PEdAWesacbwr04T0JqEdL9iwr90xWawLkgb/F67RfS
+	XcYRCWZokE3kQOFrCo9L8O/QOQK8nFyfrjbVDw66EjwBJXGCAZvqRtPYayx5KiDYRGZUaEn
+	oy3LQM0Y6zdu9oZTlxXNCqdFIpuTTPbE04D/O1OQpeBjfPooODxsKGwcFfPr5DaDm7t9aTf
+	S/aY375/gM7Q/t14KmaRViearykkoenKi5qqZqWYR3CRSrqd4YIGzEHEqOt1ncycNg2D2GK
+	Qi+2crYOCFTh3BLBP7Pvt2ijYZdeNrVhIBv4FK1RjuNSi5jooek+SbTyKqzFZl66yh8W/zi
+	HtX2Ad5vHFj9UDVdcjzXDaYbo2+mvQ4i8egiFCiNp2Ap4fCmc6mL2LxsACeJwn9BAPa/NMp
+	oXzIaMAtk2wDyQ7iBrraKjelwOdoRNugZWwsQI0wmqF/aqc11WG9t05uP6SU/v4rLu6zH1Y
+	p4hAStSVOfeEd34dosOCyC8KLMhzXoWCJzONOM4JD2QvFWyysUfG8klaSxflcOpuB/R94Ot
+	s1uiHGeovlshR2Tc97vhhVXp/Y0pG92enn2QPMQ7bkQgxqSJzswrQyohq3xLMIz99toQM3e
+	xOfDIohi3x1owk6Hf/8XhgwA8vp5VDqP7362kWjGxpSGfAvctnb9PW8whb4IdfLlHrRzks8
+	JYLjz3tc8bxK2WdVAMozlBilohuUdVyJDY1ovFTByC9+RmqOh7pM/8=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-On Fri, Nov 06, 2026 at 12:02:44AM -0500, Oleg Drokin wrote:
->A credit update carries no data, so the send credit never limits it,
->and the peer can solicit one at will: with OP_CREDIT_REQUEST, or by
->sending data that a local reader drains (a read that empties the
->receive queue sends one). A peer that posts no rx buffers can therefore
->make the other side queue credit updates without limit, about 1 KiB of
->unaccounted slab each for a 44-byte packet.
->
->Every packet carries fwd_cnt and buf_alloc, so while the socket's newest
->packet in a transport's send queue is a credit update, a new one adds
->nothing but newer counters. Record that packet, and the queue it is in,
->in vsock_sock. When another credit update for the socket is queued to
->the same queue, copy its fwd_cnt and buf_alloc into the queued one,
->under the queue lock, and free it. Queuing any other packet of the
->socket clears the record, and so does removing the recorded packet from
->the queue (dequeue, purge, loopback's splice), under the same lock and
->before the transport reads the header. So the counters are only ever
->written into a packet that has not gone out, and the fwd_cnt the peer
->sees never goes back.
->
->The queue has to be recorded because vhost has one per device, and a
->socket's packets can sit in two of them at once (a guest restarted with
+--4b60170ac85986e157bd72089ccd51b2afc8a5789b706b54e2b49f94448f
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Can you elaborate a bit more this? I didn't get how a packet can sit in 
-multiple queues...
+Hi Ali,
 
->the same CID). The send queues are shared by every connection on a
->device, so looking only at the tail is not enough: a peer with two
->connections can alternate its requests so that the tail is always the
->other connection's update.
+On Thu Nov 12, 2026 at 1:33 PM GMT, Ali Tariq wrote:
 >
->A packet that a transport dequeues and puts back at the head (vhost
->with no rx buffer, the guest driver with a full tx virtqueue) is not
->recorded again, as the socket may have queued packets after it. A peer
->can thus make a connection queue at most two credit updates in a send
->queue, plus one per packet the socket itself queues. The folded updates
->are not sent, so vsockmon does not see them.
 >
->Counting credit updates in queued_replies instead would not work: most
->of them are sent by local reads, not in answer to the peer, and under
->bidirectional traffic vhost would stop reading the guest's tx queue
->while the guest stops reading its rx queue, each waiting for the other.
+> On 11/9/26 1:10 PM, Troy Mitchell wrote:
+>> On Mon Nov 9, 2026 at 7:59 AM GMT, Vivian Wang wrote:
+>>> On 11/8/26 15:19, Troy Mitchell wrote:
+>>>
+>>>> On Sat Nov 7, 2026 at 5:32 PM GMT, Andrew Lunn wrote:
+>>>>> On Fri, Nov 06, 2026 at 03:44:50PM +0500, Ali Tariq wrote:
+>>>>>>
+>>>>>> On 11/6/26 2:43 PM, Troy Mitchell wrote:
+>>>>>>> On Thu,  5 Nov 2026 17:34:37 +0500, Ali Tariq wrote:
+>>>>>>>> @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
+>>>>>>>>    		return 0;
+>>>>>>>>    	}
+>>>>>>>> +	rtnl_lock();
+>>>>>>>>    	emac_stop(ndev);
+>>>>>>>> +	rtnl_unlock();
+>>>>>>>>    	clk_disable_unprepare(priv->bus_clk);
+>>>>>>>>    	netif_device_detach(ndev);
+>>>>>>> This can deadlock. emac_stop() -> emac_down() calls
+>>>>>>> cancel_work_sync(&priv->tx_timeout_task) with RTNL now held, while
+>>>>>>> emac_tx_timeout_task() starts with rtnl_lock().
+>>>>>>>
+>>>>>> Thanks Troy, that makes sense.
+>>>>>>
+>>>>>> For the deadlock, I think the correct function to call is rtnl_trylo=
+ck()
+>>>>>> inside the emac_tx_timeout_task(), which would return if the lock is=
+ already
+>>>>>> held and will hold the lock if it is not.
+>>>>> rtnl_trylock() is generally a workaround needed for badly written
+>>>>> code. Please try to avoid it.
+>>>> Agreed. If the reset is done in place, the work does not need RTNL at =
+all,
+>>>> so .ndo_stop can keep cancel_work_sync() as is.
+>>>>
+>>> Thanks for the diagnosis and suggestions.
+>>>
+>>> Although, maybe we could simply avoid cancel_work_sync() in emac_down()=
+?
+>>> emac_tx_timeout_task() checks for !netif_running and does nothing if
+>>> already down so it should be safe. The task cancel_work_sync() in
+>>> emac_remove() does cleanup on unbind so the task is not leaked.
+>>>
+>>> This seems to be the pattern in other drivers as well. What do you thin=
+k?
+>> That was my first thought too, but I'm not sure netif_running() is
+>> enough here. emac_suspend() calls emac_stop() directly, so
+>> netif_running() is still true and a pending work would stop the device
+>> a second time. And since the netdev is devm-registered, emac_remove()
+>> runs before unregister_netdev(), so the work could be requeued after
+>> the cancel there.
+>>=20
+>> So we'd still need to cancel it in suspend and remove, and at that
+>> point resetting in place looks simpler to me. What do you think?
+>>=20
+>>=20
 >
->With a user-space vhost-vsock "guest" that posts no rx buffers, 20000
->OP_CREDIT_REQUEST made the host queue a credit update for each
->(+18.5 MiB of slab); with this patch it queues two. A guest whose
->device stops reading its tx virtqueue queued one per request (200 for
->200); with this patch, two.
+> Thanks Troy, Vivian and Andrew. I'll drop rtnl_trylock().
 >
+> I think a simpler approach here will be to go with Vivian's suggestion
+> of dropping cancel_work_sync() from emac_down(), and handle Troy's two
+> cases by disabling the work where the device is stopped without the core:
+>
+> 1. Suspend: emac_suspend() calls disable_work_sync() before stopping
+>     the device, and emac_resume() calls enable_work(). So the work
+>     can't run while the device is suspended.
+>
+> 2. Remove: emac_remove() uses disable_work_sync() instead of
+>     cancel_work_sync(), so the work can't be queued again before the
+>     devm unregister_netdev().
+>
+> For a normal close, the work's existing netif_running() check is
+> enough, because the core clears it before calling .ndo_stop.
+>
+> With this, nothing waits for the work while holding RTNL, and the
+> work doesn't wait for itself.
+>
+> v2 will have two patches. First the TX timeout fix (reported by Troy)=20
+> then the suspend/resume patch, which will take
+> RTNL after disable_work_sync() and before the netif_running() checks.
+Sounds good :)
 
-Whould be nice to have some performance numbers.
-Are we affecting latency/throughput in some way?
 
->Found by an LLM-assisted security review of vhost-vsock, done while
->porting a project from Xen to KVM, and reproduced as above.
->
->Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
->Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
->---
-> include/linux/virtio_vsock.h            | 66 ++++++++++++++++++++++++-
-> include/net/af_vsock.h                  |  6 +++
-> net/vmw_vsock/virtio_transport_common.c |  1 +
-> net/vmw_vsock/vsock_loopback.c          |  2 +
-> 4 files changed, 74 insertions(+), 1 deletion(-)
->
->diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->index f91704731057..0a5477a0443c 100644
->--- a/include/linux/virtio_vsock.h
->+++ b/include/linux/virtio_vsock.h
->@@ -99,12 +99,70 @@ virtio_vsock_skb_queue_head(struct sk_buff_head *list, struct sk_buff *skb)
-> 	spin_unlock_bh(&list->lock);
-> }
->
->+/* Called with list->lock held. Returns true if @skb, a credit update, was
->+ * folded into the socket's newest packet in @list and must be freed.
->+ */
->+static inline bool
->+__virtio_vsock_skb_fold_credit_update(struct sk_buff_head *list,
->+				      struct sk_buff *skb)
->+{
->+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
->+	struct virtio_vsock_hdr *old_hdr;
->+	struct vsock_sock *vsk;
->+	struct sk_buff *old;
->+
->+	if (!skb->sk)
->+		return false;
+--=20
+Troy Mitchell
 
-When this can happen?
 
->+	vsk = vsock_sk(skb->sk);
->+
->+	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_CREDIT_UPDATE) {
->+		WRITE_ONCE(vsk->credit_update, NULL);
+--4b60170ac85986e157bd72089ccd51b2afc8a5789b706b54e2b49f94448f
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Why?
+-----BEGIN PGP SIGNATURE-----
 
->+		return false;
->+	}
->+
->+	old = READ_ONCE(vsk->credit_update);
->+	if (!old || READ_ONCE(vsk->credit_update_queue) != list) {
->+		WRITE_ONCE(vsk->credit_update_queue, list);
->+		WRITE_ONCE(vsk->credit_update, skb);
->+		return false;
->+	}
->+
+iJcEABYKAD8WIQSL4Ay2cExaPXAQcU2YCe+A+TM0LwUCavXRuiEcdHJveS5taXRj
+aGVsbEBsaW51eC5zcGFjZW1pdC5jb20ACgkQmAnvgPkzNC/PdwD8DO7z3cbgb16T
+doImdDC4h5bI5kgpf0udTdwgsfv+jDgA/iBx0Shg3fNGZonovHhDnPSigl1PzAZx
+DoQpm0TbFXIC
+=2L/5
+-----END PGP SIGNATURE-----
 
-This code is hard to read without comments that explains why we are 
-doing some checks...
-
->+	old_hdr = virtio_vsock_hdr(old);
->+	if ((s32)(le32_to_cpu(hdr->fwd_cnt) - le32_to_cpu(old_hdr->fwd_cnt)) >= 0) {
->+		old_hdr->fwd_cnt = hdr->fwd_cnt;
->+		old_hdr->buf_alloc = hdr->buf_alloc;
->+	}
->+	return true;
->+}
->+
->+/* Called with the lock held of the queue @skb is being removed from. Every
->+ * removal from a send queue must call it, as the helpers below do.
->+ */
->+static inline void __virtio_vsock_skb_untrack(struct sk_buff *skb)
->+{
->+	struct vsock_sock *vsk;
->+
->+	if (!skb->sk)
->+		return;
->+	vsk = vsock_sk(skb->sk);
->+	if (READ_ONCE(vsk->credit_update) == skb)
->+		WRITE_ONCE(vsk->credit_update, NULL);
->+}
->+
->+/* May free @skb: the caller must not touch it afterwards. */
-> static inline void
-> virtio_vsock_skb_queue_tail(struct sk_buff_head *list, struct sk_buff *skb)
-> {
->+	bool folded;
->+
-> 	spin_lock_bh(&list->lock);
->-	__skb_queue_tail(list, skb);
->+	folded = __virtio_vsock_skb_fold_credit_update(list, skb);
->+	if (!folded)
->+		__skb_queue_tail(list, skb);
-> 	spin_unlock_bh(&list->lock);
->+
->+	if (folded)
->+		consume_skb(skb);
-> }
->
-> static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list)
->@@ -113,6 +171,8 @@ static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list
->
-> 	spin_lock_bh(&list->lock);
-> 	skb = __skb_dequeue(list);
->+	if (skb)
->+		__virtio_vsock_skb_untrack(skb);
-> 	spin_unlock_bh(&list->lock);
->
-> 	return skb;
->@@ -120,7 +180,11 @@ static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list
->
-> static inline void virtio_vsock_skb_queue_purge(struct sk_buff_head *list)
-> {
->+	struct sk_buff *skb;
->+
-> 	spin_lock_bh(&list->lock);
->+	skb_queue_walk(list, skb)
->+		__virtio_vsock_skb_untrack(skb);
-> 	__skb_queue_purge(list);
-> 	spin_unlock_bh(&list->lock);
-> }
->diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->index e8481f12312e..7ef6f0c8dd55 100644
->--- a/include/net/af_vsock.h
->+++ b/include/net/af_vsock.h
->@@ -70,6 +70,12 @@ struct vsock_sock {
-> 	u64 buffer_max_size;
-> 	bool recvmsg_inq;
->
->+	/* virtio: queued credit update to fold into, and its send queue.
->+	 * Here, as connect() may free trans while packets are queued.
->+	 */
->+	struct sk_buff *credit_update;
->+	struct sk_buff_head *credit_update_queue;
-
-I don't really like to start to store transport specific stuff in 
-vsock_sock. Did you explore any alternative?
-
-If this can't be remove, we should really explain why in the commit 
-message and here, or even better provide a generic API that transport 
-can use to store private stuff there.
-
-Thanks,
-Stefano
-
->+
-> 	/* Private to transport. */
-> 	void *trans;
-> };
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 74a8fdf825d5..ba814e1c0344 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1911,6 +1911,7 @@ int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *queue)
-> 			continue;
->
-> 		__skb_unlink(skb, queue);
->+		__virtio_vsock_skb_untrack(skb);
-> 		__skb_queue_tail(&freeme, skb);
->
-> 		if (virtio_vsock_skb_reply(skb))
->diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
->index 8068d1b6e851..bffdc0b1321c 100644
->--- a/net/vmw_vsock/vsock_loopback.c
->+++ b/net/vmw_vsock/vsock_loopback.c
->@@ -131,6 +131,8 @@ static void vsock_loopback_work(struct work_struct *work)
->
-> 	spin_lock_bh(&vsock->pkt_queue.lock);
-> 	skb_queue_splice_init(&vsock->pkt_queue, &pkts);
->+	skb_queue_walk(&pkts, skb)
->+		__virtio_vsock_skb_untrack(skb);
-> 	spin_unlock_bh(&vsock->pkt_queue.lock);
->
-> 	while ((skb = __skb_dequeue(&pkts))) {
->-- 
->2.56.0
->
-
+--4b60170ac85986e157bd72089ccd51b2afc8a5789b706b54e2b49f94448f--
