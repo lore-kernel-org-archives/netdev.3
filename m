@@ -1,49 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794490272;
-	b=QUsI846pGKSKeL4yapTOkQQq0e7PLlvx/4HPAxtA/XNXLPiBhmz0xzw2aDsXj4KIeX/i
-	 x8X6xNVdPEXVsB1/sEoZlWh9P+cZDiQ+Zr7Hbjm3n5Iyk+Y5gcCykXXOWfCEzzld3ImG7
-	 GEFVbxo8GasYS00hN55lNsFR9jTyxG+jgikAacYSoPSzi4SwDHxc7a23vo/Ybo/whm9rm
-	 X1UqALjmx2paIYvLI/NL1ovJ4DligG5tPjNyaFsbg/HUCprBauZ0VdxGMNUHgG8EJuXfo
-	 xYTxFa0Vnw8CB5lgGE1DblW+SzxA+t9tnMCpJGvoCtdMybZbxSWf+NilN+bNAVtr+Tg==
+	t=1794490369;
+	b=sdBvJDcAQCzyG7HcDoRbjAMbaCmoqDNmoXQgiifmNeKqLDyZlkkVlcExAfscp8qkggW+
+	 GGAQ0zRGB5H8pz/xLhCJ8yZCXjFntF3uADHnM08y8Q1+0e1v8lzUQGAs+nzK8QZX7LOPt
+	 8x/gaoEvZan7upILOWW1EJ54zFLV04BzlxXA1McSvdxllNJcoQahUmMBUtTVMKCfJ28iP
+	 fsGyplU5WU+Zhn8mm3GxbNOp4G5RMKnSfpywbOeOBaEpJ8xFQYjObg9MGInkuQuH7Ua6A
+	 5VEUQgwTuk6uQ9/HR4ovD7/WFOeuwwagvyTINAC7WCLXl4eMK1+dsp2NYRMfJmFdfKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794490272;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer;
-	bh=Quk0axz0DyzTLssacbmtoRijw1rjeQJxqK9DvxXLGmU=;
-	b=qGDhNUhMbRxYQlfkuydwE/x3Ssbwb+OIq/wEZ5eq6+5ZV350p+TfuITFwgCTzC6197ly
-	 OdzAQt5qDkMtqYEHtu/8GqDMu84Y7OQpaGyqM+oGfmQwW01Zhgey0npvCbjYfqiiPyQs3
-	 jIOdd2R9LwxV8BM1vfgUVF3Q4o7QzdFTKLDlhNcEyFnY4EDa59nYvZgxso9212Iu6fFH6
-	 bFtaf82plAMHjjk2imyTcGGjS4Bub0vbJCLMNbfxmas5t55xSBWMeN8H2phBSDCYf0zCl
-	 kRiyKzYbvSERrJ/jN/9vKYRy78umSGMtgAXIY+ngaNBLQhAYJt1yLbHZca/4CJdstkw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794490369;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=iEo2xki5lr0Ld9JYPAmWGvg1Pdjk4kdBgUxL5c/PWWA=;
+	b=11p5BzBerNzmzRNgDv1H9oEBGvkeuEWSq/jZPVuaG9LvzuzAtVbcaBIxr0CIt1Xp0+wA
+	 Sev3Ks4R3lYjqUOWSYb/RtyVLGBfBxHznczWLsTOm6KBKhTJadrItbhsxRAH3m2ZXI+Tf
+	 TXGRKroxgdd+E8YrDFsnoTU8UK+p2GpOHr0g8UV0Jehk5XRnyUtpk9GQxG9L21jGp4wSA
+	 jXcDRg9Tf4HFoYqF9EXHPLMB8WHzw/iDGMVwwdKrA1+I+TthENbRI3UYashs67XFSJehB
+	 OZB46Z4Vx08kGB132LOIkHB0NUIJVPd91ksMzqUxxH4fctQ3PtUQ4OS/8Xsh4C1fm0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+1gTzbq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i9lBr7SG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C55606A899
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661AE606A32D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+1gTzbq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA461F00A05;
-	Thu, 12 Nov 2026 13:31:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i9lBr7SG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CD21F00A12
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794490272;
-	bh=Quk0axz0DyzTLssacbmtoRijw1rjeQJxqK9DvxXLGmU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=V+1gTzbq23byFyTF+wMsp1xEwlSgVcncgyvXNc0YxQLlGWMv3uzGBL/aC/A8+rxL5
-	 LWGNZdyfHzcYhFIQAE0xNaKVKH/YTPpWeBGMJ7YC4doKQvCns6aAJe9i4/jB3vsHuy
-	 0EFEv6tB2WQ0TacAZnx4buuq1knM42xstr9dgztL61apWTYYnyJOyj7/RbGf3Ur5+8
-	 5NCdavCSU4le0i4qWFMs2I5HIyRKW0bzK9a0tVl93o4lh3d8QIu//Zw+tttsqOWzoG
-	 QKGWxLBjKk5aFVX/H9IfsI/tbYJjAobZgNwPF6KCEZkvrR4nhEMcDXzwF1IYypxdyy
-	 eksFAhjByPhkg==
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Nov 2026 14:30:34 +0100
-Subject: [PATCH net-next v8 19/19] net: ethernet: cortina: Fix ethtool
- statistics reads
+	s=k20260515; t=1794490369;
+	bh=iEo2xki5lr0Ld9JYPAmWGvg1Pdjk4kdBgUxL5c/PWWA=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
+	b=i9lBr7SG/fDtD9bdmi6KD+XPnkRUcprImJzMti7MgTMiG3fCabTEmScJmy6bmre+s
+	 TWwEf8neAUTGDJtN0k8m6X59GkHTQJf4TEQLiHRgueZjgJYfb0LcnmyWTfwb87aVJV
+	 YUkRzi42wR3lsTyEYM8X+37yqRRgTaZ+quFhMrcyETttLQzAdbUnBhYvoKGAzz4unW
+	 zDAjfUJWjFg0Y6n00Fd1f6iL9ntHsHW3NUgccfxUi4z+32EpyxJ03WL0IH5G/kZ8YE
+	 e92roH1ccmLjKYcLOfy0zuUspWwBlHAOZVv3bhsRr/11qxAsBYyQVrdsBiPjDdnIWg
+	 0z+nhdXPa72zQ==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3adfcafaabbso38596071fa.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:32:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHLYOciJLadKRFiCSTzhPWm0QVlv6s+SfuEgMyntS8aSpmeaDgts9yQq5pwlUOZvRlAwJlYf44=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9SCwHlFYj4wEscAQhExTHJ/0vbHDyJNG/pp/7DvXn89YaPggM3
+	s8Q+e3Z1Xqdy/n9/lGP/VOs7p0FyebRuYBHZOK0ld/6jo7uLgFc0dXA/JW3kXM0FHS/cjV/8mSv
+	jQqhWmqkCIvDM87T44JBnVs/i3XCJlTI=
+X-Received: by 2002:a05:651c:1445:b0:3ac:429f:6da8 with SMTP id
+ 38308e7fff4ca-3ae12679b99mr12954551fa.10.1794490367466; Thu, 12 Nov 2026
+ 05:32:47 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,82 +59,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-gemini-ethernet-fixes-3-v8-19-f55bd43e02d3@kernel.org>
-References: <20261112-gemini-ethernet-fixes-3-v8-0-f55bd43e02d3@kernel.org>
-In-Reply-To: <20261112-gemini-ethernet-fixes-3-v8-0-f55bd43e02d3@kernel.org>
-To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
- Myeonghun Pak <mhun512@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.16.0
+References: <20261112-sun8i-emac-jumbo-v2-0-aca0cf23cf17@gmail.com> <20261112-sun8i-emac-jumbo-v2-1-aca0cf23cf17@gmail.com>
+In-Reply-To: <20261112-sun8i-emac-jumbo-v2-1-aca0cf23cf17@gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Thu, 12 Nov 2026 22:32:34 +0900
+X-Gmail-Original-Message-ID: <CAGb2v67P+9zBpmst9qLBJ+PpPG4ghtiC0UiyTz1PK-wRm2jqVg@mail.gmail.com>
+X-Gm-Features: AclHuK_HGkL2v-mrL96AWKEOzFXYn0NCtooN1Z9_WCMxITXSHxeYkq61j0wWgcE
+Message-ID: <CAGb2v67P+9zBpmst9qLBJ+PpPG4ghtiC0UiyTz1PK-wRm2jqVg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] net: stmmac: dwmac-sun8i: Fix the RX_TH
+ threshold encoding
+To: aiyengar1990@gmail.com
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-kernel@vger.kernel.org, Corentin Labbe <clabbe.montjoie@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The TX statistics reader resets p on a seqcount retry but writes through
-values instead. A retry on 32-bit systems therefore writes another 18
-counters past the end of the ethtool statistics array. ETHTOOL_GSTATS
-does not require privileges.
+On Thu, Nov 12, 2026 at 5:41=E2=80=AFPM Arun Iyengar via B4 Relay
+<devnull+aiyengar1990.gmail.com@kernel.org> wrote:
+>
+> From: Arun Iyengar <aiyengar1990@gmail.com>
+>
+> The EMAC RX_CTL1 RX_TH field (bits 5:4) encodes 00 =3D 64 bytes and
+> 01 =3D 32 bytes (H616 user manual v1.0, 6.5.10; 10 =3D 96 and 11 =3D 128 =
+bytes
+> as in the driver). The driver has the first two swapped.
+>
+> The values are only used in RX threshold mode, which stmmac selects only
+> when the snps,force_thresh_dma_mode property is set. No Allwinner device
+> tree sets it, so no in-tree board is affected.
+>
+> Fixes: 9f93ac8d4085 ("net-next: stmmac: Add dwmac-sun8i")
+> Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
 
-Write through p so each retry overwrites the same output slots. Stop
-clearing the fragment counters from the reader, which races with TX
-updates and resets the counters on each read. Snapshot tx_hw_csummed
-under ir_stats_syncp, matching its writer, and retain its output position.
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
 
-Found during Sashiko review and checked with an extracted-reader host
-harness that forces seqcount retries. The old reader overwrote guard
-entries and cleared counters; the fixed reader stays within the output
-array and preserves counters.
+Checked A64, H3, H6 user manuals as well.
 
-Tested on the D-Link DIR-685 with intense transfers and ping storms,
-reading out stats with ethtool at the same time.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 899d96420b1b..d4aa283ccb7b 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2520,6 +2520,7 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	unsigned int start;
-+	u64 tx_hw_csummed;
- 	u64 *p;
- 	int i;
- 
-@@ -2532,6 +2533,7 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- 
- 		for (i = 0; i < RX_STATS_NUM; i++)
- 			*p++ = port->hw_stats[i];
-+		tx_hw_csummed = port->tx_hw_csummed;
- 
- 	} while (u64_stats_fetch_retry(&port->ir_stats_syncp, start));
- 	values = p;
-@@ -2555,12 +2557,10 @@ static void gmac_get_ethtool_stats(struct net_device *netdev,
- 		p = values;
- 		start = u64_stats_fetch_begin(&port->tx_stats_syncp);
- 
--		for (i = 0; i < TX_MAX_FRAGS; i++) {
--			*values++ = port->tx_frag_stats[i];
--			port->tx_frag_stats[i] = 0;
--		}
--		*values++ = port->tx_frags_linearized;
--		*values++ = port->tx_hw_csummed;
-+		for (i = 0; i < TX_MAX_FRAGS; i++)
-+			*p++ = port->tx_frag_stats[i];
-+		*p++ = port->tx_frags_linearized;
-+		*p++ = tx_hw_csummed;
- 
- 	} while (u64_stats_fetch_retry(&port->tx_stats_syncp, start));
- }
-
--- 
-2.56.0
-
+The original chip this came in, the A83T, the manual for it doesn't have
+the bits for this register.
