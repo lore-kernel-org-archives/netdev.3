@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794504010;
-	b=pJD3Rq5akf8/xnrFqVNlASvjBf1vR+A7d1lcYMQrP1jWQ0HffEOs/IbuhKadEFgu0f5D
-	 p44I/y9p/vf7sfd4Zz7OYAAWh0WX8qFHos+DpINWfhSkE4PIKdTT8inCXJ0HH8oVwjCRQ
-	 Esx84Rm5ABs3FkjyPZG5LlKwtAHrUHAnKiVRj4/F3yFrzVsopaPOpubueJowQv87YAcf8
-	 5/5LD8UGI/Pgd7rN8l8NJuSLzOctjvEpn2VhMCYlp2nPYlX8ut7iiaUnbdXqzvalOzd+d
-	 rsqzBFlPcySW9R6mJWE7xxKqS78AVkTyqA3nqoZIWiHwO8QTbG2Gb/WxpSByxGIlPyA==
+	t=1794504012;
+	b=hoEzEMIICu2b8PQvH6Q2I2bNf4JN4R76Y+mb0vpxYhC5g1ovHwrdxuYDooD5F1/9Wfof
+	 0QFp+x+YFuREvq0FxwkKrutRGjbHdl/o+awVGDbJouYSir+twFo62jrpQ5qx6ThWGfldI
+	 IBLGQFSTXVk/vjD4BhH618AUNOPpIkvEkOXFHDTZn3kcGNKiFUn6DaQWb82Tlaycilq+5
+	 y8+Ra7gWxXnngygRnCNNa+Rl/S2yupcoRVnDl8JhnPNHDe1EWuqltkbms70eT6uaNk+5O
+	 CrhxRtyAuSoszEPYIQS6XH3mN3aCZu3bIB/s3FTmpgAoTMp6sFgzMraws1dzGSO7T/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794504010;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794504012;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=qh1V44/qrjqPJqG2SSMDXw9kPp0UwBbtjC0sXrPB5vM=;
-	b=03Drz9HWyAqvVPa0hMBK38995hiORMp7mpyrLKR642fGE4rHaMxJ1G7ysj93S1AVZmI1
-	 4eujUnsixxdDOjIQ7c2EaeY6DO+JFRmYZjYVabFAgl1fDzaIpgJtw9UADv2VpgsHo5XVs
-	 4jvkga2SmSNCHmOGEE0hmXG7rAf1VMDg0tpHVU1oAeEn+W0QoB/+TInnuYFJutHM2QB9e
-	 7scV6kVIfrrMq4MDoJVSOR64o+obTBF9j4o4SghEJA8JfGek9IfdTU5p4zqtbanJIos8b
-	 84TQRsM1sSuKI1/njnmFyAH70KMb3rwxXCONnsjIfDQXSc1xwKCyKx4oOP5Y171fTjQ==
+	bh=GMe02wEq6eVERv07wvbVn0lKTGvmews00dG0nM6IEzA=;
+	b=LfktesY5BGGUWPanKgdXWp6tOH4myu5gYOth4QGUXQovvTVfHvFezRthdpj9OUlDOQZl
+	 G+HkS9BqmlwewO3l4+LJgeTInJ7nB3scAeFkhIG+Ihw445q0ICLRuo3Dlj7YvWQBTnpxL
+	 URE0P83MWjYc+5LD8GQ0wC4WSpAbZnfMq4M/RaMSD3Un2QpmyztIZv+9xnIdhYhxZ2zbk
+	 EiG0MZscAvzGgXfAmRl1E4gwCS84YVNt6V5NNLXLAQjdnbVp+8DtWHCr4av3x6KiKw5ox
+	 3ZqA3JhrqbYDZ66h+jJrh0oF741llTlGHZQVSLWhUljY+uqfdAaDoTG+BZ3Zm9Zulfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZ8FCuym;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibiLNljb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA57606A33B;
-	Thu, 12 Nov 2026 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2C606A882;
+	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZ8FCuym
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447291F000C4;
-	Thu, 12 Nov 2026 17:20:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibiLNljb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5A11F000C4;
+	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794504010;
-	bh=qh1V44/qrjqPJqG2SSMDXw9kPp0UwBbtjC0sXrPB5vM=;
+	s=k20260515; t=1794504011;
+	bh=GMe02wEq6eVERv07wvbVn0lKTGvmews00dG0nM6IEzA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gZ8FCuymDVmjcoz1OcqeOjHS7kOYvCdzOq90aoKN0D36HBSyYkkLatxsuIxXwwah9
-	 Udx182mcaR20iUq3PlCAPfFAqrDbK6srs/UksptS1FZ2CmZE4Q4EhSosyEc3n6J/2e
-	 2FaI3WLe5Dc0I4UH09cG6NduPyHbxTjjRFaqM7BnyTIQHiT0s4QdlWgDGijSJHt9Wv
-	 xB2gpC0EGOJvIp4nUX64ikz2W02ipmo6AtKk10sCMrejusPxF0+uyFPR0CrnY31CqS
-	 29gQBuVsXylCUvXNzC7XlYyS6qz1ZZfmbPHknnnQ6cgw8ESLOsDQdcS21XTNF/mJOH
-	 fXgbrUpy6Rv0g==
+	b=ibiLNljbIaWnMUwh5gVjppDfu4RCf6FCg1S7HdTxxr+ha3N/a6HWO4S72rU8SffCY
+	 7pxs9+LJ5oHjKztTZlql4Xg+pCS2FBcLHXykxk5IqlaN9Mkh8VYv4b1c7u8es8/lRB
+	 k+VCpmLQeAd+AyYNduhpAwQuaCjtJrWKJmmtxF5jt7FbhsK1sQfNhYMnO5XlJPnNnK
+	 NkqjaMOqXpeBVc0cCpDyLQ7XKRFwWNtesjRM+EwsLcKJo8e7G3XMwWcsWzNnt7si6s
+	 BGnZOF2ckIn9SfhEr2bT3nslUu5GJBovKbEdq+Ov9MenciZDQdYuKmdKlrLEDu0Odi
+	 x2feZ4sJXimlQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A322380AA78;
-	Thu, 12 Nov 2026 17:20:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44FE380AA78;
+	Thu, 12 Nov 2026 17:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: udpgso_bench_tx: honor CPU zero in
+Subject: Re: [PATCH net-next v2] dql: Reset the adjusted limit when resetting
  the
- affinity option
+ queue
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179450400877.546493.115415908512112502.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 17:20:08 +0000
-References: <20261110033920.49267-1-xujingjing@cmss.chinamobile.com>
-In-Reply-To: <20261110033920.49267-1-xujingjing@cmss.chinamobile.com>
-To: Jingjing Xu <xujingjing@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, willemb@google.com, kuba@kernel.org,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org
+ <179450401027.546493.5429797235689363516.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 17:20:10 +0000
+References: <20261109230022.10729-1-dennylin0707@gmail.com>
+In-Reply-To: <20261109230022.10729-1-dennylin0707@gmail.com>
+To: Hungyu Lin <dennylin0707@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ akpm@linux-foundation.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 10 Nov 2026 03:39:20 +0000 you wrote:
-> The -C option accepts a CPU number, with -1 meaning that affinity was
-> not requested. Testing cfg_cpu > 0 ignores an explicit -C 0, so the
-> benchmark can run on other CPUs despite the requested pinning.
+On Mon,  9 Nov 2026 23:00:22 +0000 you wrote:
+> dql_reset() restores limit to min_limit and clears the cumulative queue
+> and completion counts, but retains adj_limit from the previous queue
+> lifetime. dql_avail() therefore uses stale credit until the next nonzero
+> TX completion.
 > 
-> Accept zero as well, keeping the negative default unchanged.
-> 
-> Discovered by Codex-assisted code inspection. Validated before and after
-> the fix with loopback UDP traffic, inheriting CPUs 0 and 1 and reading
-> the process affinity with sched_getaffinity(). Before the fix, -C 0
-> retains both CPUs; after it, only CPU 0 is allowed. The default and -C 1
-> cases retain their expected masks. Built with GCC using -Wall -Werror.
+> Reset adj_limit to limit as well so that adj_limit = limit +
+> num_completed also holds immediately after a reset.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] selftests: net: udpgso_bench_tx: honor CPU zero in the affinity option
-    https://git.kernel.org/netdev/net-next/c/c2d5ef7e600b
+  - [net-next,v2] dql: Reset the adjusted limit when resetting the queue
+    https://git.kernel.org/netdev/net-next/c/c46ddd7d7acd
 
 You are awesome, thank you!
 -- 
