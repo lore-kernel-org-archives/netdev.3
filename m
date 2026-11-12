@@ -1,79 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794462711;
-	b=qQIp8HPVyJpTNnz/8CpJ/yWpdQ5pWHV0XNMjO95n4M1G3xDUBi6OmrsFRShaOs8siHI8
-	 tQLwUlXNLco/EQ2A4hgYS7cF0gJfUtLbj3GWC9McgtNKk539CsBih0pNhtARPwiBi5F0r
-	 /kgd6NR/DbuNxd+6/va8knQ91tJL7PvCAdFVYWDLZC0grU/TlfBbJ4CbYI043m6OJEWNQ
-	 ZIZTHr6YXtNV33GS8YwU/IXt5Nz6Z6F5J6tDcrzIIy94hSC6ZkuqUAHZo32f76RwzGund
-	 VxhqAgrF5ZLzRcIZC8ZtrBp3vJcVb+h1K2G/uxHPZP0uCU1msEBfAmWCNM3T6hZ9Eog==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794462711;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=3NTxadOVq9q3/kjBdhZTjDycpZICzYHF9v07pA6aeQ0=;
-	b=JCabUoXKss1cBD2CCB6f2N1ELiw+32XMBAfDIAY7qHiVDVTMwHse9puKz0/Yb6oyHJt7
-	 ZmMtBumiPoikg2u478Cw+CmwqVETLPv+6xI/aU9u05P/ahw/GM+lBL5djhlFGuv/KKm7O
-	 gumbGsOJQSspGyevy083eCBiUyD9BF0WfU0fk2E3dwC4yJwkPKCz5vFpji5/41Nnwhw+L
-	 Cbw0sSp9ScYlbfIbEUik3AgFr3AnvTEv36jV7PzDLBcJd34a5XvjpL7/TSi6PsX7gHKZg
-	 sutTo7TtEEtcEYsEC9IXCMun4zAFppj9aUOj3pcb+IEvNAjKDqLCfO9/vltoyNbTsbA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EanUsimx;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6466F606A327;
-	Thu, 12 Nov 2026 05:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EanUsimx
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794462711;
-	b=KtfJOUz45rXqTYdTrLiM4ukYefsESBjtR4E677kEni32NbR8eatYk/xyu2eJwlegShkO
-	 5KfEakUkGJya2YMCVgeYNi5RQ2zIFkST532Xjtrkwv35E6P5XRuN2Z2SpnZJZWh2m3qWf
-	 DALXJBQX3c2X46zUCBiqTlGUuypL61M4uJZ3v/yW6lqz/nCldoZxCJP29JuDb7irWHcem
-	 cGX2cDcaAicCqxNYVCH3q5CYxQSEFg54/01GbyTJOQu9En6WCfYFnHrB115/uvbMaVRRv
-	 kHii/S4OEFxh4ItYEN/gq/48OOk4Oka/TeL38ayUtLOiP0wC6g1NfX/1w0ooVM7jsKg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794462711;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=3NTxadOVq9q3/kjBdhZTjDycpZICzYHF9v07pA6aeQ0=;
-	b=DrGAtbxrO16gTL0HuZ2+Rp92WcfS58lDEt/pvmUc/h/Oq2Z5yP0/mkIPlNLlzqV7DkHS
-	 YMZyu0IJ9manxqhSfq5uGl1MvuuTMVPq0kFva25grfI81P0hmS2SVYhq1ixWqCuxw8zgM
-	 B51E7laRqSeaGTjXi0ILlAuEIuoFJXwY1Us3JT4ZK2W0kXV5Jmis6a/Vp1MCVB25vEvrQ
-	 MLVq3VqlOv6geV4Pr5B5yTwwZfRHPjkwAylo0b0OjF/MfvPaak+CiecJpnXdiqhQAUjo3
-	 1NPBSc8791Yx/RFNfaKFF4w2i6AczbUnCDYLLHPjkiJQjzq9vGbuatlMn5e4y+iyQLw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794463334;
+	b=Ys3dFh+diZhnx28SQHoA5GlxlrT8m/gvNb+vh3bAnGWgmp9mPUepYtVy1j0m1MM9zly2
+	 8FqHh1Ma/NPFTrRTGPc/2OfW4Nxd5ACU/YBwu7sDYaXE2LIgunrz2jdKChgScaf7ikVBW
+	 9p6OJYv271+rXw668RDFRbo+shZ4zHRMJfhytG04HXhOu0QLRCapY4sU9grxvKrW1cTR9
+	 GnzvgptEYwMZ6qiU9asHOO8c1ZbvV2P/P29rR1i1uG5UVKsDoM1yLkPcjz/KG4U0ofTUz
+	 I/D59tKDE4gSgvmmAiKLhdzUqLEWlbGrG5xoH9fJ00UlbzfVUiMXxY67eSFwK/7cGkA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794463334;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=khamYhZ2bRTaVNqE6uU/QWflcGzYX/UlvUz85mE72r4=;
+	b=fgp7zLNXOZrNDjAkUM5i+4Qe3kO37M49vMgLK0Zz8Re1X1k3uGsZ+7EwwubfxpUUt1tE
+	 6rPdsHHFz3jQ16u4XHr+t8PJLmI3b2XB5luFWWDhSluSZcuxtm/Ilk//xsS1DBnqyHQ9a
+	 WfVG0SCGNrgPDnvoCe+zE6+moKJybRen5bILbTiiFShL2kYt/6K9zC5y7LurX06h1L1Gz
+	 R6SEpCK3ZW9t2LQy4BqEeHnyR6HQ1OjFQbzpSOInTjeYq3hhEXVR2WFkFz7qc0NTr+2XR
+	 f9B28GAKVO1KhajxF3509qUqfP2YXW6+gfiacjuQVMLIfJyKyQ3yHI+oGocCjo9darw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aGSMxE6y;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 895891F00A05;
-	Thu, 12 Nov 2026 05:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794462711;
-	bh=3NTxadOVq9q3/kjBdhZTjDycpZICzYHF9v07pA6aeQ0=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=EanUsimxt0InyFP44QTwfRXLRH0MPC5SnEMZ06JbewDWWjcpHoujV0931lFOEYI1l
-	 nmSO+1ZiiDDOp5t8pqo9W0Jx+qA1nO9hecJ1+RAXDTfY/Qf3qGcB/URt9mDB0tJ2Ee
-	 Li4TsbPN/LwTggvpWIhbXh6aSgfnmoCo/5gr4HI0cSEdBEVYYU5ofstcU7gwGfr7td
-	 Z8xXrBAxC89CON1O4vOU6oN9KVauoObXBvscHUsX+PTm+kEKy0kToQMkcSLD7DZDUB
-	 fxZ1N7ldhfCYwoBHs7PNbTcPm3TfcdoB9Ti8AfF42VxxW0XqRkK/dk6jev30u5DnJE
-	 LOqbhm0wLpRXQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id E2A82492D7;
-	Thu, 12 Nov 2026 05:51:49 +0000 (UTC)
-From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
-Date: Thu, 12 Nov 2026 13:50:25 +0800
-Subject: [PATCH net] MAINTAINERS: exclude CAN documentation from general
- networking
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BCB606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:02:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55BCB606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aGSMxE6y
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b0afbf532eso3583571a91.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:02:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794463334; x=1795068134; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=khamYhZ2bRTaVNqE6uU/QWflcGzYX/UlvUz85mE72r4=;
+        b=aGSMxE6yTfFst/VSbWVwB4YbgbVMo4QusRloLJnjBsj8sTv+tnC0p0NLrOmBjV881Q
+         6v1KDVEM6WiHrfVA0z6KRALldRp+4/EtW7C4Nr0KZrf/+ZZnTtohDmeFNz5IJA+TfGaA
+         iUtAqSc+CyPi7TjMv7VIIyFb2Vaf76t6wISI9JpZVfG6N5TPXM/CY7FMoulN9Ji6sA87
+         XsTjwhLTaymRRtWSZPfeZHMxCNxYjUsALehgNxXr5HUcZYuUEHtmfXmqK0OKGzBZp+/2
+         5jZ0meL3Y85w3gEZ4+Mba8anY/XFTXM2uz8/xVjFaLVeOmdJVlTw8c51hLQFm33Vi8B2
+         MAVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794463334; x=1795068134;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=khamYhZ2bRTaVNqE6uU/QWflcGzYX/UlvUz85mE72r4=;
+        b=YkmZJZLumLei9crLG41xQFR8rjAjjxf1Hz5JAkDcvPnPMJIziyqGUfCdTbuUzKSROE
+         eHHxbaUyb6vjSvFfsVQKp94mmWgev1gojT7F9BuvEA8ByHt0bq8pgY6j8JJ370i0yWsv
+         Es9T3Ops3DzsTlI3RYQbqbCPQo6/fW80fqNo3QEvhTfP0aq8J+5feHaNUxe4FlgvS1Ws
+         Hf+gGM5fK0Mg3tA8a7UA0VwpZXXwetRFkDo3IBw3PaPQLnXFxscP7qSkLk07rnDCG/S4
+         +C23kGvYhT2dHxX1PHBUfZXI3PrYeDOCsy99OwtqVdvge0tWgAJhDsua6dbARJzInnFx
+         imTA==
+X-Gm-Message-State: APuU4Z/OH9y9nE85dIAExt7PM9YwY8AngbvdfjJH7bn3eEHtIPfgsreV
+	orJUFsrJkEiiOaXP1dIblfuJtIyhJkq9g59FovbrefCfACVmbDXZvOBnV9pOQmdqBNjxh/e/Iux
+	xmZmWMw==
+X-Received: from pgby13-n1.prod.google.com ([2002:a05:6a02:650d:10b0:cda:df40:b50f])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a87:b0:39d:f08e:e6e7
+ with SMTP id 98e67ed59e1d1-3b182e10779mr4225406a91.9.1794463333517; Wed, 11
+ Nov 2026 22:02:13 -0800 (PST)
+Date: Thu, 12 Nov 2026 06:02:12 +0000
+In-Reply-To: <20261110113306.3698438-1-antonio@mandelbit.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,80 +76,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-exclude-can-docs-from-netdev-v1-1-b5eb3ba4ae86@qq.com>
-X-B4-Tracking: v=1; b=H4sIAKBT9WoC/yXMUQrCMBCE4auUfXbBBFrRq4gPcXeiK5pI0pZC6
- d2N+vgPw7dSRTFUOnUrFcxWLacWbteR3EO6gU1bk9/7wTnnGYs8JwVLSKxZKseSX5wwKmbuB3c
- 4KrSPIVIj3gXRlh9/pvahy3+s0/UBGb8wbdsH5nMmjYUAAAA=
-X-Change-ID: 20261112-exclude-can-docs-from-netdev-56179ded5faf
-To: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
- horms@kernel.org, mkl@pengutronix.de, mailhol@kernel.org, 
- socketcan@hartkopp.net, robin@protonic.nl, o.rempel@pengutronix.de, 
- kernel@pengutronix.de, max@enpas.org, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Cunhao Lu <1579567540@qq.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794462709; l=1751;
- i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
- bh=EDE/G8F7AsHZZC8XTFKoaDp+CkrXlJxUORBA2UZXClg=;
- b=1DDz/uZh0nk8aI17NVbPmWi9JCFjTJQ/qWJIX9P0DEMRV0wFBnfzmYfFxSeDqYtgfSoQg8n9H
- L7iZDPtorTZCgDjFoc9QuX6mdVSyBwZeXDXJGtstOy++hpamR+plokM
-X-Developer-Key: i=1579567540@qq.com; a=ed25519;
- pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
-X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
- auth_id=1177
-X-Original-From: Cunhao Lu <1579567540@qq.com>
-Reply-To: 1579567540@qq.com
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261110113306.3698438-1-antonio@mandelbit.com>
+Message-ID: <avVVzxL3pVZc6yQ5@google.com>
+Subject: Re: [PATCH net] udp_tunnel: don't treat IPv4 sockets bound to an
+ address as wildcard
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Antonio Quartulli <antonio@mandelbit.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Alice Mikityanska <alice.kernel@fastmail.im>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Cunhao Lu <1579567540@qq.com>
+On Tue, 10 Nov 2026 12:33:06 +0100, Antonio Quartulli wrote:
+> With IPv6 enabled, sk_saddr_any() checks sk_v6_rcv_saddr also for
+> AF_INET sockets, where it is always zero. An IPv4 tunnel socket bound to
+> a specific address (e.g. fou or geneve with "local") ends up in the GRO
+> lookup fast path, although another socket may bind the same port on a
+> different address: GRO then hands that socket's packets to the tunnel's
+> gro_receive.
+> 
+> Check the IPv6 address only for AF_INET6 sockets.
+> 
+> Fixes: a36283e2b683 ("udp_tunnel: create a fastpath GRO lookup.")
+> Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+> ---
+>  net/ipv4/udp_tunnel_core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+> index a128fe85620d..29581c94fdcf 100644
+> --- a/net/ipv4/udp_tunnel_core.c
+> +++ b/net/ipv4/udp_tunnel_core.c
+> @@ -62,10 +62,10 @@ EXPORT_SYMBOL(udp_sock_create4);
+>  static bool sk_saddr_any(struct sock *sk)
+>  {
+>  #if IS_ENABLED(CONFIG_IPV6)
+> -	return ipv6_addr_any(&sk->sk_v6_rcv_saddr);
+> -#else
+> -	return !sk->sk_rcv_saddr;
+> +	if (sk->sk_family == AF_INET6)
+> +		return ipv6_addr_any(&sk->sk_v6_rcv_saddr);
+>  #endif
+> +	return !sk->sk_rcv_saddr;
 
-The SocketCAN, ISO-TP, J1939 and ELM327 documents are already covered by
-CAN maintainer entries, but also match the broad Documentation/networking/
-pattern in NETWORKING [GENERAL]. This makes get_maintainer.pl select
-netdev and the general networking maintainers for these CAN-specific
-documentation changes.
+This is identical with inet_rcv_saddr_any().  As a follow-up
+in net-next, please move sk_saddr_any() to include/net/sock.h
+and use it everywhere.
 
-Exclude these four documents from NETWORKING [GENERAL], as is already
-done for net/can/ and the CAN selftests.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/all/20261111161459.4879a82d@kernel.org/
-Signed-off-by: Cunhao Lu <1579567540@qq.com>
----
-CAN documentation changes currently match NETWORKING [GENERAL], causing
-get_maintainer.pl and b4 prep --auto-to-cc to select general networking
-recipients for CAN-specific changes.
-
-This patch excludes the SocketCAN, ISO-TP, J1939 and ELM327 documents from
-that entry. All four already have CAN maintainer entries.
----
- MAINTAINERS | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 222b7fc2c3aa..cb1fec8ec5f5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19600,6 +19600,10 @@ F:	samples/pktgen/
- F:	tools/net/
- F:	tools/testing/selftests/net/
- X:	Documentation/networking/batman-adv.rst
-+X:	Documentation/networking/can.rst
-+X:	Documentation/networking/device_drivers/can/can327.rst
-+X:	Documentation/networking/iso15765-2.rst
-+X:	Documentation/networking/j1939.rst
- X:	Documentation/networking/mac80211-injection.rst
- X:	Documentation/networking/mac80211_hwsim/
- X:	Documentation/networking/regulatory.rst
-
----
-base-commit: 79eb6679ef6a0d5ea68da53a8321fb1dc72299b9
-change-id: 20261112-exclude-can-docs-from-netdev-56179ded5faf
-
-Best regards,
---  
-Cunhao Lu <1579567540@qq.com>
-
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
