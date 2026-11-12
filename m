@@ -1,90 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794513653;
-	b=U7Q303LeWG8/uZMdM90VwO7pEFIom0TRICjnPFkgmd8dHkstsF+Ph6ZlPMb6pHkq8UWB
-	 V3mq2Bx8imB0H7qNctcOeWxIiM/fcfY9p/R2QikZSZ5NXnRCPJEEgZLjMcbY2uZXdUoDT
-	 n8I8S6BpSBKK/hb9t5aA0N41fgiSCObM9mDBIb+DiwoBZCPjJvEjGGI6fjUfcofO9RV78
-	 +3ETrPx8cUU05VUKYL4ng1Z6l8BWRcdLuWP4EyHH1CbVpNtm4cF/C8sNQbGfYA0lQbLpw
-	 EOwy9S4Vw75V9s0/DNe6rX7dMH7/jMnBSf/t0OclpCF7E59UuWnwLfUPl01/IYOE4og==
+	t=1794513654;
+	b=z6mFgSu27Spo4noHpeGCGKub90Uc8EXVs9Ev2F0w7rRBbGVOcIUwXb9eS/kJIa1srSXZ
+	 1kR7xlGRL/rGsV1pCTR2gakLAtCbQpX/e3348n8yiBWJgFo0n2Cci3iRBPxThKFAE5kGy
+	 wOTRqFgvtfjEFzJ1U6rWBHK0gAbjysJit+xK6C7Oew/s7ItFjJTjS+xbVgvRWPyquEHQc
+	 8UL4kVGDYL3vqhEklOcRxNwJmwOobGLJnwteyfFm7wc3QZv0wzyGD/4fj5q5yiHsCjujm
+	 vRKcVe/bubxqznV4/mp4sIsBrBlS9AWJXLT5KEb1SGPz8Oo+tRXCb5+3w6u1GN8p0nA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794513653;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794513654;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=lvvGCqh9mAL8pK4fm3Dj98YzlhoCn7sBO+aAv64F46Y=;
-	b=kBjekw6+wlL/9h0ex2rZDiyVUN99481KNgpTwYefUBj40b3/0FUgydjggI1knkghAdRh
-	 +zaEGQy+42cho7JYbJb068KUJ90RkW01xq8J5yp3loaWkpCGCUx2WmxIwH0fnKZu1FGaG
-	 khY7egbktYe+q2HZgnu/Kxr6SsiAtoD8Az4Gy+MwxlKU0m4NQUvEIMpOdug6Im8sDiQJ+
-	 XJt5pE5EfTzR34dVxph+h5a7xdSu427ySUmM/yteVwY8zXSKA2mtMpqO5yLHYXQXktoan
-	 pOr+xHJJ0B+frSQ93LYaHwvnokD3sb3cEYH9CSYRH7ZvJy83+J6a/5NFWH08gCcMPpA==
+	bh=D3ioM5FbqLAzMVzRmm6r4Dw7AFpHG1Pxcru1zd6kh6U=;
+	b=Ygyzf3jzoe5Sc55q7JNtJr/QYvbpNaxh1I02yHLBBZ/NfhuSzddpIFY6chvLqfxwqCM6
+	 7fC7fcXSSpTetOBPBEaOWwSRHGMf3Pf3U1yJKhBka6bhAajP6JhE4Z1KkyuiWmDfDv/Y2
+	 IFtd+zBe32SkrhbI/qmqXVNDKJXtGRVBQjIfWDe27+wVo60FfVp0yw3TFIflZzsczdBHZ
+	 fy7vCa+bHNOW2U42o5NUmK3pip2niaOhbchUDnZslm+0BvPJcxSGE6t57nayD88hRRwA8
+	 3d2TUXpOEPj5KBK+uIsoT0zR2pi9N2dqmvxeFyZxwceEcCa/vhWsGf6nFvzro8E+8KA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=BLNlPifX;
-	arc=none smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="H/25QXaI";
+	arc=none smtp.remote-ip=209.85.216.51
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F55606A882
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4F55606A882
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C021B606A88D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C021B606A88D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=BLNlPifX
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8b6399ebb41so223037b3a.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=H/25QXaI
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b0e0e65adbso77997a91.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513652; x=1795118452; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513653; x=1795118453; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lvvGCqh9mAL8pK4fm3Dj98YzlhoCn7sBO+aAv64F46Y=;
-        b=BLNlPifXOWyeUrqPfwx2p3DNb43HDiz7kAZCnlaFtgzzZIW0+TDWu4DHF9lUgf6qFf
-         WXgx3RjFf8AAudzZ/j1K0YFQorD6SqSH3zSro/tXJUiIMaRVJybCx6DWrlMobOfwSZKm
-         XvSP30h9qB2sdayT1v/+BKIwyCl06cM8gFdI1PIjX8gpU3x4e2PtHMcQAKLk0VwNnASi
-         KaFrQivBHC4ZlgTzN1ruebBA4R5EJ4nbvz/vhGDcBBFzZB1DnGiF4PYK5mihWA7svbC1
-         kAZEFAcZ9pyhxMtuoBIObwjwhWVXn7jhtgzJsSDZSQhANo+jWnCIkSXh0oXegKzmp6wD
-         KcXg==
+        bh=D3ioM5FbqLAzMVzRmm6r4Dw7AFpHG1Pxcru1zd6kh6U=;
+        b=H/25QXaICSksPkxFVMdUDQsaRlKgz3T8/++4u1/7c78Za6GwZ+98gb7whO/ZQvXZpp
+         IrHApzoppxgMriRYCh/o8a47Oe4LYoT0x8+onhjE9eVnWGEILoqxtsPDMYULl+5+ek4y
+         RoH6Bo2m1W3yQQFu2Bzuj6beXtdK154934mewqHIsc0VNCeOmEp+WXRF8LO7FRgWZjaY
+         ibl6ZUVaZ1TtOvNrbBDu8wNxx7I9tKVs+Z6DHESR4M3H4xkFyQq3b720qF0IK0tk34kU
+         /H2zX5Vkj1Gur1mdvZBNS1XFrCuMPw8S2igPE+Vv7Jr4zN+5igD+biJKRJ0ua/Z/8WxM
+         7p5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794513652; x=1795118452;
+        d=1e100.net; s=20260707; t=1794513653; x=1795118453;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lvvGCqh9mAL8pK4fm3Dj98YzlhoCn7sBO+aAv64F46Y=;
-        b=gGJsNKYebHmq5Uv83Avfzt/P4v8SJNrwJyKtgNKaY5X6iAVCNt5vLrDpItSEb2Darq
-         eBpe6kVhIlF+p/xnhx/5vVRxEYlXEtWpkFi0NmcsW8RXCmMOtLz2oGLbtaH/H4HD8zyr
-         zSQJQoW1Rcccvdzju8wmWARqffG7oQP1nv+KWp23+xrluAp2U+VTDzquPYtzAta3iJ9Z
-         vSc/w3L5BivVCNoxCyQFxJ+fHv0djHe+K2crMjujfiAaH/QJW3KigTZbl4CFBRrrKMxd
-         dphPthxq7jriU4MVoSWtUc8sdPG0GXv9yTd6jysHTCE6gWeOIbxN5kcu4xjWdJwzj0Tm
-         Z5/A==
-X-Gm-Message-State: APuU4Z+FUnHePnjSStaxV0TofRkAaYTpHlHC1TyXwp77hfhbuSnMuu2P
-	E8D60KhOMD7PKnwuHtAupCWaLj3mytfTzl/lckkv8ULZK3qM3f6cXXWRYO1jhIXDAMSRfblm2fM
-	9C/TM21k=
-X-Gm-Gg: AYBFou0Vweb0pLfTr/OmPCZrEwnJPlDCpeBKlllbirEp5AvNLLbuL6Yc7v9SOVvuVMA
-	uZG3ox5mqCuOqjA43SCRJDOprMspRYrNk+BLx45p6MnfBz9OtOPkCKIGaVNVRcit6uC52GWZvtF
-	+ZAyYQAwuAoluB2kEWN+df3pPbHzXD61GR5xUv+5FGeDchBUcP81TcwuMLNdTC36P5jTncmeI/S
-	+e7HdMnUftGkFNwEfmwvmfKppzkOl4z/22nu+KMbdC6aTZolRv9bCfnTzCYIeQZf0vEPIktQS2I
-	pnSFYl1hd7o2u0fOCErxMwknsrSwboKyZUr1u2MEYyvzxgqDQdDSgE76hfMsU3krdy4cOvR/OzK
-	nq+TjOvydfRPWEND9+RECIwmtSClPNrUq4ZnSzUnvutIFiI4vTZ0uENNabGFEJkpploMQe6dY0Z
-	jrsMnUfKFrc8WaXMUyIqAtNd6hxT3jF9Mx1Oio7VVO8hcQmVgsE/r6pIeXvbrM6ocODaqwnPauP
-	0Vz7fQGU9RTX7tHwy+Ft2Yu7gL4Xf5xW8vl+rojs02j0SznOVj2yFTdYDTaHFZed5TXCnd255GH
-	+rLeibYu2atjdXgqaJo0bVAvKbucgzEl7SEEq8WU8a399nefSyHpkfJgAd/X+EcIKYb3K2B4
-X-Received: by 2002:a05:6a21:35c4:b0:3e2:30c1:fe01 with SMTP id adf61e73a8af0-3f7a90e4708mr166744637.69.1794513651974;
-        Thu, 12 Nov 2026 12:00:51 -0800 (PST)
+        bh=D3ioM5FbqLAzMVzRmm6r4Dw7AFpHG1Pxcru1zd6kh6U=;
+        b=ALS4sGxYTfRx104cS1C383Q0PE10Lm0uHdVhy8DZ/MDEH44agjYJ3TO4T2+PY1MnQJ
+         f3BMgnL0toXrzEIpdey98jjKL+IWheoG2uzZGm8d733iyOE6Y+CgEUPLNkVeFj+ZJeEh
+         s0C69ABu/qLpFeljwclSEERq3wb5K20BaA8TNAAB69Em2sA79J/ViLNJJe2E9x70I5iT
+         cQMj4vbfr49YASOYaYsVOW5nOsFOXEHu0lq+RiGSkgjE3v4wKIQnHrzIIQ+4XHvQggHA
+         d3iWbll8Uyg73Cnjk48xckaoFDG0dF0TSPQTdiqE5k1dRM93gqxSqFhjrc2If608064J
+         oobA==
+X-Gm-Message-State: APuU4Z8pnejR1yGOHKpGQHDBZ1Qozmyj1GXds8Pt+uZCLXXc5XchyHFV
+	pPt+i3ihqR5rbN+g7zQYYf/4y0mQ8bqbULXcztaBexaMj6ro/NONCxqo03OjTU+CvIJ+5+nM0YU
+	NJ+lO
+X-Gm-Gg: AYBFou1zmjkrS4j5S6VIN8qFqfXo0IAFzdj4eTBD4yA1ij5BS4WSAX2WjQoER8q193y
+	z6yW14B4RC7e5rmEafo/Onex1DGAQbLSHaw2nnXk+IzlzqeNkZzZetrqdN3Jz+eV1amGFY32bBq
+	GG6pg3EAEKLZ24U+LYmQ0PBYoLShnjj7X+kzI823cQ09cg1zeCoTIidd3o/hW1JTKPJ2TRj8Bnm
+	VrxedeU6H5i0FnJ7Lx5lpn6GK1twIaxmdRljqkX/RXoCnoqxfDVJAWAcxZ7QEMtCWeWarfd11U0
+	ROb9757h9uHn4SyorDt7xZBMthhGJXQeEDLCP25FQfnx90R4ef9vaRTmzPDf+veqR6xwMkJMVIm
+	xhlTEyxfyAKbvSmxDXkSqpVVEEtfX3YrUpbX+ALnovwl2+qDFkHNHBWyNtOxNO9TFEyb7CEKOQH
+	KEmhPvvR4jlVexZrzY98BKX4RlLmXpjo1DbURjReyaz1nBheoPatLZzQbsGdvcwh0aMv9b8d2GX
+	/K0iUWY4HZlqXZA+w+yuZVhseP8/W4L4dnodAeoz25Sho3I+x67IC54fgEsWELr9W4eEeAwMDVN
+	6Gx45M0So8raxlgDcwPm27opCItf+/4OFfzV/S5p+Pf7jbQIWYHPHa62exmo3RsGaQPhGG0=
+X-Received: by 2002:a17:90b:3985:b0:3ab:b39f:41c8 with SMTP id 98e67ed59e1d1-3b1b0b53626mr142499a91.46.1794513652759;
+        Thu, 12 Nov 2026 12:00:52 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 12:00:51 -0800 (PST)
+        Thu, 12 Nov 2026 12:00:52 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 03/11] ss: escape names chosen by the socket owner
-Date: Thu, 12 Nov 2026 11:59:16 -0800
-Message-ID: <20261112200046.2164391-4-stephen@networkplumber.org>
+Subject: [PATCH iproute2 04/11] ss: size the TCPDIAG_FILE buffer to the record
+Date: Thu, 12 Nov 2026 11:59:17 -0800
+Message-ID: <20261112200046.2164391-5-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112200046.2164391-1-stephen@networkplumber.org>
 References: <20261112200046.2164391-1-stephen@networkplumber.org>
@@ -99,107 +99,102 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unix socket names and process names are set by whoever owns the
-socket and can contain newlines, control characters or a double
-quote. They reached the output unchanged, so a local user could
-split a row, insert a fake one, or, since -p prints the process name
-inside double quotes, make a bogus pid appear:
+tcp_show_netlink_file() read each record into a 16K stack buffer
+using the length from the file, so a record over 16K, which the
+kernel can produce (e.g. many TCP-MD5 keys), overflowed the stack.
 
-  users:(("x",pid=1,fd=3",pid=268,fd=3))
+Read into a heap buffer grown to the record instead. A length below
+a netlink header is still rejected, since the size arithmetic would
+underflow.
 
-Escape them with escape_str(), and replace the double quote
-there like the other non-printing characters. Set LC_CTYPE from the
-environment so UTF-8 names stay intact instead of having every
-non-ASCII byte replaced.
-
-Reported-by: Anthropic OSS scanner (ANT-2026-4X7MF603)
-Reported-by: Anthropic OSS scanner (ANT-2026-CAAB6GZ9)
+Reported-by: Anthropic OSS scanner (ANT-2026-RV0SH3JH)
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- lib/escape.c |  7 ++++---
- misc/ss.c    | 13 +++++++++++--
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ misc/ss.c | 40 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 35 insertions(+), 5 deletions(-)
 
-diff --git a/lib/escape.c b/lib/escape.c
-index b110f61b..e4646bc5 100644
---- a/lib/escape.c
-+++ b/lib/escape.c
-@@ -50,7 +50,7 @@ static const char UTF_tab[] = {
- 
- static const unsigned char ESC_tab[] = {
- 	"@..............................." // 0x00 - 0x1F
--	"||||||||||||||||||||||||||||||||" // 0x20 - 0x3F
-+	"||?|||||||||||||||||||||||||||||" // 0x20 - 0x3F
- 	"||||||||||||||||||||||||||||||||" // 0x40 - 0x5f
- 	"|||||||||||||||||||||||||||||||." // 0x60 - 0x7F
- 	"????????????????????????????????" // 0x80 - 0x9F
-@@ -83,8 +83,9 @@ static void esc_ctl(unsigned char *str, int len)
- 			esc_all(str);
- 			return;
- 		}
--		// and eliminate those non-printing control characters
--		if (*str < 0x20 || *str == 0x7f)
-+		// and eliminate those non-printing control characters,
-+		// plus double quote which callers use as a delimiter
-+		if (*str < 0x20 || *str == 0x7f || *str == '"')
- 			*str = '?';
- 		str += n;
- 		i += n;
 diff --git a/misc/ss.c b/misc/ss.c
-index b93df60f..4462a479 100644
+index 4462a479..3c538a4e 100644
 --- a/misc/ss.c
 +++ b/misc/ss.c
-@@ -25,6 +25,7 @@
- #include <limits.h>
- #include <stdarg.h>
- #include <ctype.h>
-+#include <locale.h>
+@@ -3923,8 +3923,9 @@ Exit:
  
- #include "ss_util.h"
- #include "utils.h"
-@@ -4075,10 +4076,13 @@ static bool unix_type_skip(struct sockstat *s, struct filter *f)
- static void unix_stats_print(struct sockstat *s, struct filter *f)
+ static int tcp_show_netlink_file(struct filter *f)
  {
- 	char port_name[30] = {};
-+	char name[128];
++	struct nlmsghdr *h = NULL;
++	size_t buflen = 0;
+ 	FILE	*fp;
+-	char	buf[16384];
+ 	int	err = -1;
  
- 	sock_state_print(s);
+ 	if ((fp = fopen(getenv("TCPDIAG_FILE"), "r")) == NULL) {
+@@ -3935,11 +3936,11 @@ static int tcp_show_netlink_file(struct filter *f)
+ 	while (1) {
+ 		int err2;
+ 		size_t status, nitems;
+-		struct nlmsghdr *h = (struct nlmsghdr *)buf;
++		struct nlmsghdr hdr;
+ 		struct sockstat s = {};
  
--	sock_addr_print(s->name ?: "*", " ",
-+	/* name is chosen by whoever bound the socket, may contain newlines */
-+	escape_str(name, s->name ?: "*", sizeof(name));
-+	sock_addr_print(name, " ",
- 			uint_to_str(s->lport, port_name), NULL);
- 	sock_addr_print(s->peer_name ?: "*", " ",
- 			uint_to_str(s->rport, port_name), NULL);
-@@ -4611,6 +4615,7 @@ static int netlink_show_one(struct filter *f,
- 	if (pid == -1) {
- 		procname[0] = '*';
- 	} else if (!numeric) {
-+		char task[16];
- 		int done = 0;
+-		status = fread(buf, 1, sizeof(*h), fp);
+-		if (status != sizeof(*h)) {
++		status = fread(&hdr, 1, sizeof(hdr), fp);
++		if (status != sizeof(hdr)) {
+ 			if (ferror(fp))
+ 				perror("Reading header from $TCPDIAG_FILE");
+ 			if (feof(fp))
+@@ -3947,7 +3948,29 @@ static int tcp_show_netlink_file(struct filter *f)
+ 			break;
+ 		}
  
- 		if (!pid) {
-@@ -4618,7 +4623,8 @@ static int netlink_show_one(struct filter *f,
- 			strncpy(procname, "kernel", 7);
- 		} else if (pid > 0) {
- 			if (get_task_name(getenv("PROC_ROOT"), pid,
--					  procname, sizeof(procname)) == 0) {
-+					  task, sizeof(task)) == 0) {
-+				escape_str(procname, task, sizeof(procname));
- 				snprintf(procname + strlen(procname),
- 					 sizeof(procname) - strlen(procname),
- 					 "/%d", pid);
-@@ -5357,6 +5363,9 @@ int main(int argc, char *argv[])
- 	int ch;
- 	int state_filter = 0;
- 
-+	/* needed by escape_str() to pass through UTF-8 names */
-+	setlocale(LC_CTYPE, "");
+-		nitems = NLMSG_ALIGN(h->nlmsg_len - sizeof(*h));
++		/* NLMSG_ALIGN() is u32 arithmetic and wraps near UINT_MAX,
++		 * which would size the buffer below the record.
++		 */
++		if (hdr.nlmsg_len < sizeof(hdr) ||
++		    hdr.nlmsg_len > UINT32_MAX - NLMSG_ALIGNTO + 1) {
++			fprintf(stderr, "Malformed message in $TCPDIAG_FILE: len=%u\n",
++				hdr.nlmsg_len);
++			break;
++		}
 +
- 	while ((ch = getopt_long(argc, argv,
- 				 "halBetuwxnro460spTbEf:mMiA:D:F:vVzZN:KHQSO",
- 				 long_opts, NULL)) != EOF) {
++		if (NLMSG_ALIGN(hdr.nlmsg_len) > buflen) {
++			void *nbuf = realloc(h, NLMSG_ALIGN(hdr.nlmsg_len));
++
++			if (!nbuf) {
++				perror("Reading $TCPDIAG_FILE");
++				break;
++			}
++			h = nbuf;
++			buflen = NLMSG_ALIGN(hdr.nlmsg_len);
++		}
++		*h = hdr;
++
++		nitems = NLMSG_ALIGN(h->nlmsg_len) - sizeof(*h);
+ 		status = fread(h+1, 1, nitems, fp);
+ 
+ 		if (status != nitems) {
+@@ -3976,6 +3999,12 @@ static int tcp_show_netlink_file(struct filter *f)
+ 			break;
+ 		}
+ 
++		if (h->nlmsg_len < NLMSG_LENGTH(sizeof(struct inet_diag_msg))) {
++			fprintf(stderr, "Malformed message in $TCPDIAG_FILE: len=%u\n",
++				h->nlmsg_len);
++			break;
++		}
++
+ 		parse_diag_msg(h, &s);
+ 		s.type = IPPROTO_TCP;
+ 
+@@ -3989,6 +4018,7 @@ static int tcp_show_netlink_file(struct filter *f)
+ 		}
+ 	}
+ 
++	free(h);
+ 	fclose(fp);
+ 	return err;
+ }
 -- 
 2.53.0
 
