@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794527824;
-	b=Q3uJsxe/yyjGLg7JmEjJT0g5vYqLPzHu6IAqagqoko6YuTToD+rDzJzSIFPtooUkKSwA
-	 oE3BdoPJBaoRtUjUgXMi9tML6pAGfYfkZXByInehMBFRN8RUGYPdDtuwRqLr12r26Jyay
-	 PdMpT0QC8OJhfuy/5yL81E+o1ec3YbbwJznkCYFMg0CymGvAxptvj19tyYWR45Mw+Qt97
-	 8UuzF2HNpabMbrcEDJftfhxVzh/QFuxv94BcdC3LW9mj8m49N14Nxl/Ap57yWoPe3c8wi
-	 6mywW7lMKK4W5KBfzDBWlo3Vl+7gKsItfe+jqUkvORdyrsp69+lD8Kb7STcpPRXDz+w==
+	t=1794527826;
+	b=PZtK2geZxezMKuzr2ZdH7B1m2mdp1kyg1AiYUD0ofIhhKD9/VqZ7cRUbK5Fn4auMoGW/
+	 MtxwdDUJKXec+B/8uoTd9i//ZsCxeAVVGG/XcqKVPTmn5+XXgf5qo4JFd1S9DLH/ej1dj
+	 FAJzcpc+3v0DuiSxKv5aPJFOgy34Bd38Gxne33zJdux2BWUThTRlNJ/vYrNa7nJPBJu3O
+	 BJ9Xrd3/ux9G+MNu8rFPkJfeRs5Lo5e+8vUW8DGgtmlWAL31rd7BasZT7f8xm8RCUaOT6
+	 3NOHqz9dUrR3tYtgdUEmWOqJtpzHATC0us7U95GjbeKIa1eDRRUIPUl4TLy0MuvdBkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794527824;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794527826;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=bkTBVjfmsLTYAtJp+mcX3wQqhGIKnbZRF44NSEvyCeo=;
-	b=rvhkrEnFqhTda1JOuFxRrwL0yLeAx7wPz0ePKxOBoPBlGvT9KQ4mv84JnNSEgBa/aIAa
-	 dxG2/JPZ11arPvuE4D56F6khfuFRnmq1xhSxxyTTEi/ZhpfQ6tyktRj1e4ttfgnGCojBo
-	 mMfFCALlv+01N7XDlvCyiK6Dj+9MFVVXLpAB++xRJ/18QAWCtNfb2ZTSuzc65SNGsJ8OF
-	 /4Qx8ytnB2mpwVUj7vL0vgh1Hko0uEZ8abY2jXp/rMFtwKCFXXNA3E3Kqy/YW3Kadk0Jk
-	 +9JM+nDUxuQdIrKv/q5QW/fvRu8Lhwf2rDnO1ryJQleKiPcOkd9xFfIRHzE6OGlq6lQ==
+	bh=fwYFJEU3UzEa1aJ7yISbbu1qTMSdxI2yoZ1REmgZap4=;
+	b=FfgQ4xCR6503PhXFobUldUGX8/lF8hP/Cp2tsxwSIUkF9us7J2mdWFnrw4c5EAQ5f3By
+	 S7+MQvbIuidNjq8dUh8LCU5Q08fxvMgPpQIcdSLLKoywVMaAvnpxE6EPdMIfIeXDRdl1u
+	 2mQA+jgibl2ZuyT58lcvlpVynRg1A+sAXmuYjCWGZE7mQyzCIelzZRLNaSRMEPFupOjKG
+	 Srsoy4jix+mhJuBn9pCrOKqvobt2vBl9Fg61sbL3EOourTeXUo43rnIZwUzGTDKQUlXcJ
+	 WBmjFLsbf4ANCWi8z2D5C5L9JJ+d6CnfFsieSj495i51JRKo0vSjMfCGgQ9df5MRVpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cxy5gC43;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fY9JYmd7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D3A606A334
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517A6606A891
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cxy5gC43
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBEB1F000C5;
-	Thu, 12 Nov 2026 23:57:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fY9JYmd7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAF71F000C6;
+	Thu, 12 Nov 2026 23:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794527824;
-	bh=bkTBVjfmsLTYAtJp+mcX3wQqhGIKnbZRF44NSEvyCeo=;
+	s=k20260515; t=1794527826;
+	bh=fwYFJEU3UzEa1aJ7yISbbu1qTMSdxI2yoZ1REmgZap4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Cxy5gC43KuICfUriaDdF12tFBcRvOR5tupQEh25n+k3JgJclesg4m+yDqu1Ah9Fxg
-	 BvH3NKUpuYHUXvKpvrSyYfReo+pKAdn+/HoUliyRfQfNXgaZ6iqwYCK+st2U0JW17W
-	 +/IP3/BO8z2GNNi16G7DnEsRqAGwejsYAyxh01qUcLlhT85wEwne/vu7KTGF5vn0Fp
-	 +tXwPDu5JOBprIGP4by8ugrGwB/FhzS/IjGSS5jEXtOmol5/pzZSN1mfKuO9jl3DaT
-	 vCVIWDlMHx02D7a5dMpEKoKfPw/WyYqLDJVQrcIayG1s7ZrTJLMReSv8g+9DWFKvEE
-	 bpG3y/pkd3kyw==
-Subject: Re: [PATCH net-next v8 06/15] ibmveth: Refactor TX resource
- allocation in open/close paths
+	b=fY9JYmd7XnAhdwW3mlJs6PW5QbwioFdugMBDEDaOqWN3Jxs5933L0ZmD6H0FKCIDp
+	 zFMBWRBFWxkNKbmEs7GajPBi2q8mFzoJo9u31QsUk7WvEjWAbg402F10vKPQKof85j
+	 PAWdipG2Pc1ESQS6CBIU1DloeqKM1KCDtwCQUvDME9OxSlVUyQzdYg8QcRiHZOMfTM
+	 SpWMM/SU4qDCqAVtyiBrq/F2Jlbp3IgRo6B8CO1zD7a+ST/PoZQlJN7/PF6ziPO+Tp
+	 MA2KyjC+IJWaL4+Fux3/jAZgrLugvrTotwn1L9294UygMR6eWSwcDjN5PvY5r89NDh
+	 BsdGtmUTBHJCg==
+Subject:
+ Re: [PATCH net-next v8 07/15] ibmveth: Add RX queue register helpers for MQ
 From: netdev-bot+sashiko@kernel.org
 To: mmc@linux.ibm.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
@@ -51,11 +51,11 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
  haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
  bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-Date: Thu, 12 Nov 2026 23:57:02 +0000
-Message-ID: <179452782258.2199510.1384176100068608942@kernel.org>
-In-Reply-To: <20261109235556.60604-7-mmc@linux.ibm.com>
-References: <20261109235556.60604-7-mmc@linux.ibm.com>
-X-sashiko-severity: Medium
+Date: Thu, 12 Nov 2026 23:57:04 +0000
+Message-ID: <179452782438.2199510.12943082355356211419@kernel.org>
+In-Reply-To: <20261109235556.60604-8-mmc@linux.ibm.com>
+References: <20261109235556.60604-8-mmc@linux.ibm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,231 +68,143 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0 (2)
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch is titled 'Refactor', but it also carries the only
-  fix for a NULL-pointer dereference that already exists in the base…
-- [Medium] ibmveth_open() now allocates the TX LTBs (line 1432) after
-  h_register_logical_lan, ibmveth_alloc_buffer_pools(),…
-- [Medium] The patch makes a non-NULL tx_ltb_ptr[idx] mean 'this LTB is
-  usable'.
-
-Pre-existing issues:
-- [Low] Not a real bug for the scenario described (baseline decision:
-  false).
-- [Low] Resolved later in the series (baseline decision: false).
+- [Low] The patch's version notes do not match the code.
+- [Low] The v8 notes say ibmveth_register_logical_lan() was changed to
+  return `long`, 'the hypercall status type', but the callers convert…
 
 --
 
-ibmveth: Refactor TX resource allocation in open/close paths
+ibmveth: Add RX queue register helpers for MQ
 
-This patch moves TX LTB allocation and freeing in open() and close() into
-the new ibmveth_alloc_tx_resources() and ibmveth_free_tx_resources()
-helpers. It also moves the TX allocation to the end of open(), after RX
-is live. It adds netif_tx_disable() at the start of open(), and adds a
-check in ibmveth_start_xmit() that drops packets when tx_ltb_ptr[] is
-NULL.
+This commit moves queue 0 logical LAN registration and teardown out of
+ibmveth_open() and ibmveth_close() into ibmveth_register_logical_lan(),
+ibmveth_register_rx_queues() and ibmveth_free_all_queues(), and adds a
+queue_registered[] flag next to queue_handle[]. It also moves buffer pool
+allocation in open() ahead of PHYP registration and calls
+netif_set_real_num_rx_queues() after registration.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 62e6c9a9f5e91..cab895cc970c5 100644
+> index cab895cc970c5..e2aa108655676 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> @@ -1335,10 +1335,31 @@ static void ibmveth_free_tx_resources(struct ibmveth_adapter *adapter)
 
 [ ... ]
 
-> +/* Caller must ensure tx_ltb_ptr[idx] is NULL. open() runs on
-> + * probe-zeroed slots; set_channels() skips populated indices.
-> + */
->  static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
->  {
->  	adapter->tx_ltb_ptr[idx] = kzalloc(adapter->tx_ltb_size,
-> @@ -1277,12 +1287,54 @@ static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
->  			   "unable to DMA map tx long term buffer\n");
->  		kfree(adapter->tx_ltb_ptr[idx]);
->  		adapter->tx_ltb_ptr[idx] = NULL;
-> +		adapter->tx_ltb_dma[idx] = 0;
->  		return -ENOMEM;
->  	}
-
-[Severity: Medium]
-ibmveth_free_tx_ltb() now takes a non-NULL tx_ltb_ptr[idx] to mean the
-LTB is usable, and the new check in ibmveth_start_xmit() depends on that.
-Does ibmveth_allocate_tx_ltb() follow the same rule?
-
-It stores the kzalloc() result in tx_ltb_ptr[idx] before tx_ltb_dma[idx]
-is mapped. On the map failure path it calls kfree() before it clears the
-slot.
-
-The stale sender that the new guard is meant to catch could hit these
-windows on a later grow. After a shrink, netif_tx_wake_all_queues()
-leaves the freed index j without DRV_XOFF. If ethtool -L then grows the
-queues, ibmveth_set_channels() does this:
-
-	netif_tx_stop_all_queues(netdev);
-
-	/* Allocate any queue that we need */
-	for (i = old; i < goal; i++) {
-		...
-		rc = ibmveth_allocate_tx_ltb(adapter, i);
-
-The grow path has no synchronize_net(). A stale sender that already
-passed the DRV_XOFF check could see a non-NULL tx_ltb_ptr[j] and
-memcpy() into it. It could then put tx_ltb_dma[j] == 0 into the
-H_SEND_LOGICAL_LAN descriptor, or write into memory that the map failure
-path is about to kfree().
-
-The grow-failure free loop in ibmveth_set_channels() also frees the slots
-it just allocated without waiting for a grace period.
-
-Would it be safer to allocate and map into local variables, and publish
-tx_ltb_ptr[idx] last with WRITE_ONCE() or a release store? On failure,
-the slot could be cleared before kfree(), and ibmveth_start_xmit() could
-read the pointer and the DMA address once each.
+> +static long ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
+> +					 union ibmveth_buf_desc rxq_desc,
+> +					 u64 mac_address)
+> +{
+> +	long rc;
 
 [ ... ]
 
-> @@ -1373,26 +1424,36 @@ static int ibmveth_open(struct net_device *netdev)
->  	 */
->  	rc = ibmveth_setup_rx_interrupts(adapter);
->  	if (rc)
-> -		goto out_free_buffer_pools;
-> +		goto out_unregister_lan;
->  
->  	netdev_dbg(netdev, "initial replenish cycle\n");
->  	ibmveth_schedule_rx_queue(adapter, 0);
->  
-> +	rc = ibmveth_alloc_tx_resources(adapter);
-> +	if (rc)
-> +		goto out_cleanup_rx_interrupts;
-
-[Severity: Medium]
-Can a TX LTB allocation failure here now free RX buffers that PHYP still
-owns?
-
-By this point ibmveth_schedule_rx_queue(adapter, 0) has posted RX skb DMA
-addresses to the hypervisor. If kzalloc() or dma_map_single() fails in
-ibmveth_allocate_tx_ltb(), open() jumps to out_cleanup_rx_interrupts and
-falls through into:
-
-out_unregister_lan:
-	do {
-		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
-	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
-	ibmveth_free_buffer_pools(adapter);
-out_free_queue_mem:
-	ibmveth_cleanup_rx_resources(adapter);
-
-Any H_FREE_LOGICAL_LAN result other than busy is ignored. The posted RX
-skbs are then unmapped and freed, and so are the RX ring and the buffer
-list pages. If the H_FREE failed, could PHYP still DMA inbound frames, or
-the buffer list drop counter, into pages already returned to the
-allocator?
-
-Before this patch, TX allocation ran before LAN registration, so only
-close() had this window.
-
-The commit message says a later patch keeps this memory mapped on a hard
-failure. At the end of the series, though, ibmveth_free_all_queues() only
-returns -EIO in multi-queue mode:
-
-	if (lpar_rc != H_PARAMETER && adapter->multi_queue)
-		return -EIO;
-
-so single-queue mode would still free the posted buffers on this path.
-
-Does TX LTB allocation need to move after the replenish kick? Since
-ibmveth_alloc_tx_resources() unwinds its own partial failure, it could
-probably stay before h_register_logical_lan(), or at least before
-ibmveth_schedule_rx_queue().
+> @@ -1362,14 +1398,97 @@ static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
 
 [ ... ]
 
-> @@ -1864,6 +1923,14 @@ static netdev_tx_t ibmveth_start_xmit(struct sk_buff *skb,
->  	int i, queue_num = skb_get_queue_mapping(skb);
->  	unsigned long mss = 0;
->  
-> +	/* TX LTBs are freed on shrink; a sender that picked its queue
-> +	 * before the shrink can get here after the free.
-> +	 */
-> +	if (unlikely(!adapter->tx_ltb_ptr[queue_num])) {
-
-[Severity: Medium]
-Does this check fix a NULL pointer dereference that is already in the
-base tree?
-
-On a TX shrink, ibmveth_set_channels() frees the dropped LTBs and then
-wakes every queue, including the freed indices:
-
-	for (i = old; i > goal; i--) {
-		if (adapter->tx_ltb_ptr[i - 1])
-			ibmveth_free_tx_ltb(adapter, i - 1);
-	}
-
-	netif_tx_wake_all_queues(netdev);
-
-Some senders can still have a queue_mapping that points at a freed
-index. One is AF_PACKET with PACKET_QDISC_BYPASS, preempted between
-packet_pick_tx_queue() and dev_direct_xmit(). Another is pktgen reusing
-a cloned skb. In the old ibmveth_start_xmit(), such a sender reaches the
-memcpy() into adapter->tx_ltb_ptr[queue_num] with a NULL pointer.
-
-If so, could this check be sent as a separate minimal patch for net,
-with a tag like the following?
-
-Fixes: 10c2aba89cc0 ("ibmveth: Ethtool set queue support")
-
-Right now it sits inside a refactor in the middle of a net-next series,
-along with the open() reorder and the RX helper dependencies, so it
-can't be backported on its own.
-
-Also, the commit message says:
-
-  a sender already in xmit during the free is not covered, as before
-  this series.
-
-Isn't that sender already drained on the shrink path? When queues are
-being disabled, netif_set_real_num_tx_queues() calls synchronize_net(),
-and ibmveth_set_channels() calls it before the free loop. What remains is
-a stale sender that arrives after netif_tx_wake_all_queues(), and that
-is the case this check catches.
-
-[Severity: Low]
-This is a pre-existing issue and wasn't introduced by this patch. The
-lockless read of tx_ltb_ptr[queue_num] here pairs with plain stores in
-ibmveth_free_tx_ltb() and ibmveth_allocate_tx_ltb().
-
-A sender already in flight can't overlap a shrink-time free, because
-netif_set_real_num_tx_queues() calls synchronize_net() before
-ibmveth_set_channels() frees the LTBs. Should these accesses still use
-READ_ONCE() and WRITE_ONCE() to mark the data race?
-
-> +		netdev->stats.tx_dropped++;
-
-[Severity: Low]
-This isn't a bug introduced by this patch, since the other drop paths in
-ibmveth_start_xmit() do the same thing. Still, netdev->stats.tx_dropped++
-is a non-atomic update of a device-wide counter. ndo_start_xmit can run
-on several TX queues at once, so increments can be lost.
-
-The later patch in this series, "ibmveth: Add per-queue RX and TX
-statistics collection", replaces this with
-IBMVETH_STAT_INC(txs->dropped_packets) on the per-queue counter, which
-the queue's xmit lock serializes.
-
-> +		goto out;
-> +	}
+> +static void ibmveth_free_all_queues(struct ibmveth_adapter *adapter)
+> +{
+> +	unsigned long lpar_rc;
+> +	int i;
 > +
->  	if (ibmveth_is_packet_unsupported(skb, netdev))
->  		goto out;
+> +	netdev_dbg(adapter->netdev, "freeing all RX queues at once\n");
+> +
+> +	do {
+> +		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> +	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> +
+> +	if (lpar_rc != H_SUCCESS) {
+> +		netdev_err(adapter->netdev,
+> +			   "h_free_logical_lan failed: %ld\n", lpar_rc);
+> +	}
+
+[ ... ]
+
+> +static int
+> +ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address)
+> +{
+> +	struct net_device *netdev = adapter->netdev;
+> +	union ibmveth_buf_desc rxq_desc;
+> +	unsigned long lpar_rc;
+> +	int rc;
+
+[ ... ]
+
+> +	lpar_rc = ibmveth_register_logical_lan(adapter, rxq_desc, mac_address);
+> +	if (lpar_rc != H_SUCCESS) {
+> +		netdev_err(netdev,
+> +			   "h_register_logical_lan failed: %ld\n", lpar_rc);
+
+[Severity: Low]
+This isn't a bug, but the v8 changelog says:
+
+  - ibmveth_register_logical_lan() returns long, the hypercall status
+    type
+
+ibmveth_register_rx_queues() stores that long return value in an
+unsigned long lpar_rc and prints it with %ld.
+
+ibmveth_free_all_queues() does the same with the return value of
+h_free_logical_lan(). The close() code it replaces declared that local
+as long lpar_rc.
+
+PAPR H_* error codes are negative (H_PARAMETER is -4, for example). The
+printed value only comes out right because varargs pass the same bits,
+and the default -Wformat does not check signedness.
+
+Should both locals be declared long so the status stays signed?
+
+[ ... ]
+
+> @@ -1480,15 +1597,7 @@ static int ibmveth_close(struct net_device *netdev)
+>  
+>  	ibmveth_cleanup_rx_interrupts(adapter);
+>  
+> -	/* Full LAN teardown (subordinates arrive with register helpers). */
+> -	do {
+> -		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> -	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> -	if (lpar_rc != H_SUCCESS) {
+> -		netdev_err(adapter->netdev,
+> -			   "h_free_logical_lan failed with %lx, continuing\n",
+> -			   lpar_rc);
+> -	}
+> +	ibmveth_free_all_queues(adapter);
+>  	ibmveth_update_rx_no_buffer(adapter);
+
+[Severity: Low]
+This isn't a bug, but the per-version notes don't match the code here.
+The v5 notes say:
+
+  - Call out close() update_rx_no_buffer() before free_lan as intentional
+    last-glimpse accounting while the LAN is still registered (order
+    already in v4; v4 step list omitted it)
+
+In ibmveth_close(), ibmveth_free_all_queues() issues H_FREE_LOGICAL_LAN
+first, and ibmveth_update_rx_no_buffer() runs after it. So the
+no-buffer counter is read after the LAN has been freed, not while it is
+still registered.
+
+The pre-patch close() used the same order, so behaviour is unchanged.
+The note just describes an ordering the code does not follow.
+
+The v6 notes also say:
+
+  This patch no longer touches ibmveth.h
+
+However, v8 adds queue_registered[] to struct ibmveth_adapter in
+drivers/net/ethernet/ibm/ibmveth.h.
+
+Could these notes be updated to match the code?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109235556.60604-1-mmc%40linux.ibm.com
