@@ -1,49 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476780;
-	b=iDIY9MUNkKSYu28cU1D5gVraVNCQLlVBPBNfZGKbLAeVxaknwMu0kp93wnKM9mz14Xet
-	 drJkLh6NGMcl9l4TcVb4BVLeTuZnME+FYlGINZ9lWCw4rbGlulr09eGIZ4m3d7D8a7LX0
-	 8fJyHzt4cm3KUFKWlomZGJEHE2ftdchnJPvgH3/XZmPwAgSbhN4Z2L+Mrajn4hhYm/3nV
-	 OE0bVCF1rg61veWCBLFI1KkVu24elrJvboLJ+wMuVwuHz+2EP6oQczfIUxE+6nPrZHYC7
-	 oPGiYpCHB0zhihvidAhjkjo48NiQCG2OMbkE5e5jOXFAxrpaxoUZzVBdWA25bzjbqNQ==
+	t=1794476792;
+	b=GZfFLoEz17EmxHJ0PEVxJ+qS6oI72NWOmxTBLNO6ZC9Wj5lCR8sXVpXuHucBI9Vy5vYp
+	 D/Dal4Siz9qSbjVV6cTVmlUuTGcnfJCnbdzHH/y1abEgKJUMTkgI6QqYbZ6MSjzQKj4Ea
+	 ySskDxqMwZajsb3r+cWwu8PUEztZr7NKPI8vs/psYsqcEL+kYDYWHczsUMahg5g9C7LO0
+	 caEKMn2fUqOYa9XWsRRZEyG74+UABPGsq7wvXQM9R3OkFcIWCzqbNOAej4wrkL/5BBq0c
+	 Cpp4XGVh8r2aJ0vnmD5kCgr5lq2HAhGv5y6sv58JkpDOcLax06BDznPLh1ZqnJbAs3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476780;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=zF4RKurSPbtIZr5y6aisxGcnIy7a/9xHHcRfZOEEHKY=;
-	b=OFm0/0qj5sEWeGPUjYTJqgmsXheoOPIWUc+9M0gOVk4VBhO2fiq6heEgbZw7RE7ORuwm
-	 KKdpNjlEOteGn1q3xzMl/d32NnxFp/nPT3SQjpC5CPamM+zGQFbupxTzSr7SBbKPoGJec
-	 z0kqTpxLOy0aUootE/m6qlEoDJ+FlfzCaf4pISlgScEiJaRpEAgf11KcNh4cvXdgfNcL/
-	 ZmBYkTsPz4ObffFHRoxZom0rV9ndTfQAEybXVnJGA8W9ROUiO9AtYVIUj25t0/bcueprM
-	 HTilw5sdDkfUCLAwg0JYkESHpQV+7O/aZQ9s326+mYRcuY4Y8dBJjRcFGVfr6TsYN7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476792;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=j6eZ4aCZFTS/utwlBgKhOAgoPY6BL5WxRnVfSRhjSzs=;
+	b=MzlMWyMtFQciihDVCqfICMEDsmIfCvZQfR8A5HQZDCDOl51y2F3VRg92cnh0mwOVgScc
+	 YokBtjyRh2uRWEEzxzVGqsQwzlmpO6/upXwmFPt04NcyNl473k2OGA53tX1YU2FPQ9j4+
+	 g0g1lkCfPyNCiP0x1EERJU2esREn/Pmtmp/uY2t0K1qSjTqoN+qz2glY+52HGxBHGC3x+
+	 nzrQZqNR+vKKLt58yKbxWZvGzYghopfwMUg//5lQ5xqpUeFk4tKKG288U5JWNTb2DzbPG
+	 Zwke1sgKNiopRtb9LA5pKX8Q4aPMwvQg9Mn5pV8AM1IN1Q6Mfz3GJyJIx3QYwPwhn8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=2pXqmXMP;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LzBOJKST;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B592606A323;
-	Thu, 12 Nov 2026 09:46:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B592606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E8606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=2pXqmXMP
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 85196A0064;
-	Thu, 12 Nov 2026 10:46:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794476777; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=zF4RKurSPbtIZr5y6aisxGcnIy7a/9xHHcRfZOEEHKY=;
-	b=2pXqmXMP8GV7SvW37kAVDSxQn4a35G1NODITlm961BJyJKuTT4HfH7yNcaBeBN4U7Eb3SF
-	oGoK1o/QgNZ93MnAS6xYwRJFTIckJQVngdNqeBszfwHk3jZwF+9MUSzkvqSL3rUdWWOmIn
-	/pZph+Gzp5APYCp3MmrS3XrDTJCFBDAo3ae2EZafPKBes8q1zu2HSsGOWEeCZsq//Hfd54
-	pGZ6TMzePxnA/mbDS9PvreQE1Wmuurcx6zATx0sTy2N6DxcJwEygFLY7y6YKTnpcurFyiV
-	mvOoMIx7Pmbs9BvgaXK6x1zNAiFJO+3VECTyNllVrq9nQZM3UDeQXq2vkYWX/Q==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LzBOJKST
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746701F00A0D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794476791;
+	bh=j6eZ4aCZFTS/utwlBgKhOAgoPY6BL5WxRnVfSRhjSzs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LzBOJKST07DI6OhKR9d/bV/f+EcOgB7DduaD1YvU39zKFCS/rJIAybY5s0taxn405
+	 uR/pdQZZhAznLyB7nOQ+cufnEQqKOpnC5K0IJVR8Oq4IxawDfO2+KxuFEU6KobDRy6
+	 EOZWHtZNf+OLv0tNVW6jMaW/GWbjjOuzvORsPft5nBryny0+60SKlJ07TJjbTwzLEh
+	 pjJBoCVwl/3jcz1gV6z+XyIygjzLHbRCaM5QXVTAEZLwQrWwdNKlLILuk1WzQEkX1d
+	 ehaHHedwd+Iu1lXkg6DteBdRHuHqE488DOHu9T2Z0S4T/EYfciiaMdmLUIH0JkfTHM
+	 TPz9SulQgW1vg==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6df0b02fe91so512637eaf.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:46:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEZnWlwkBo3VIgYy10qlvQGlKeqVoeyoHsZBMoO+8OQ4Td3tE6iJmd9buUHM9pPFTGERcAyv0s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8h/xf0wxoRfVXqpmNSf4404uSIwib5ZVm7CigMKtzr7Or5qdhU
+	NNRaU9KYV66qX9PaOhIVUS+xtvpbgcKXLmt2vX+zkbWFgMjQ/hKMcxxbmKFTUPJZ4RCz8aq1MnL
+	KFBXohY11ox5pwcZwlKQSXo+aTNHdLG4=
+X-Received: by 2002:a05:6820:c2d1:20b0:716:f44b:2dcc with SMTP id
+ 006d021491bc7-719740e76c8mr830715eaf.15.1794476790507; Thu, 12 Nov 2026
+ 01:46:30 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +59,205 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 12 Nov 2026 10:46:16 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: aiyengar1990@gmail.com
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
- Corentin Labbe <clabbe.montjoie@gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: dwmac-sun8i: Enable jumbo
- frames up to MTU 2018
-In-Reply-To: <20261112-sun8i-emac-jumbo-v2-2-aca0cf23cf17@gmail.com>
-References: <20261112-sun8i-emac-jumbo-v2-0-aca0cf23cf17@gmail.com>
- <20261112-sun8i-emac-jumbo-v2-2-aca0cf23cf17@gmail.com>
-Message-ID: <328e66e47898b772f2956649bf4cf795@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20261110213628.3476051-4-edumazet@kernel.org> <179443691180.2199510.148246238688217560@kernel.org>
+In-Reply-To: <179443691180.2199510.148246238688217560@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 12 Nov 2026 10:46:19 +0100
+X-Gmail-Original-Message-ID: <CAL4WiipcxHnbZye9P8_NySU=pLfQoSrMWF3PahgSQvfeuOgmsA@mail.gmail.com>
+X-Gm-Features: AclHuK_cZ9ao9G0cYjqdJ9o0VFbuRHG2Gy61oDEJ6kFhBEJLvS-rEY_T6EP_Vvc
+Message-ID: <CAL4WiipcxHnbZye9P8_NySU=pLfQoSrMWF3PahgSQvfeuOgmsA@mail.gmail.com>
+Subject: Re: [PATCH net v6 3/3] net: virtio: validate outer protocol of UDP
+ tunnel GSO packets
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, willemb@google.com, horms@kernel.org, mst@redhat.com, 
+	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
+	hassansultan@google.com, virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Arun
+Le mer. 11 nov. 2026 =C3=A0 23:41, <netdev-bot+sashiko@kernel.org> a =C3=A9=
+crit :
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The new has_eth=3Dfalse path in virtio_net_hdr_tnl_to_skb()
+>   (include/linux/virtio_net.h) rejects almost every valid frame, so it=E2=
+=80=A6
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but it is a
+>   sibling of the injection the patch closes.
+>
+> --
+>
+> net: virtio: validate outer protocol of UDP tunnel GSO packets
+>
+> This patch makes virtio_net_hdr_tnl_to_skb() check that a UDP tunnel GSO
+> frame really carries the outer IPv4 or IPv6 header it claims, with UDP at
+> outer_th_offset. Callers now pass a has_eth argument that says whether th=
+e
+> frame starts with an Ethernet header. tun_get_user() passes false for
+> IFF_TUN devices.
+>
+> Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2=
+f2e2.1793276116.git.mst@redhat.com/
+>
+> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> > index d1fcb25ab026b..ced5a1596e609 100644
+> > --- a/drivers/net/tun.c
+> > +++ b/drivers/net/tun.c
+> > @@ -1950,7 +1950,8 @@ static ssize_t tun_get_user(struct tun_struct *tu=
+n, struct tun_file *tfile,
+> >               break;
+> >       }
+> >
+> > -     if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+> > +     if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
+> > +                                 (tun->flags & TUN_TYPE_MASK) =3D=3D I=
+FF_TAP)) {
+> >               atomic_long_inc(&tun->rx_frame_errors);
+> >               err =3D -EINVAL;
+> >               goto free_skb;
+>
+> [ ... ]
+>
+> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> > index 83f801ff57006..fc9667176f23c 100644
+> > --- a/include/linux/virtio_net.h
+> > +++ b/include/linux/virtio_net.h
+>
+> [ ... ]
+>
+> > @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+> >       if (ret)
+> >               return ret;
+> >
+> > +     if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th=
+))
+> > +             return -EINVAL;
+> > +
+>
+> [Severity: Medium]
+> Can the has_eth =3D=3D false path be reached by ordinary IFF_TUN frames?
+>
+> On IFF_TUN, tun_get_user() resets the network header to offset 0 and now
+> passes has_eth =3D=3D false. virtio_net_l3_start() then takes the L3 head=
+er
+> from skb_network_offset(), so virtio_net_tnl_offsets_ok() needs outer_th
+> to be 20 for a plain IPv4 outer header, or 40 for plain IPv6.
+>
+> Earlier in virtio_net_hdr_tnl_to_skb(), the offset floor still assumes a
+> 14-byte Ethernet header, whatever has_eth says:
+>
+>         outer_l3min =3D ETH_HLEN + virtio_l3min(outer_isv6);
+>         ...
+>         if (outer_th < outer_l3min ||
+>             inner_nh < outer_th + sizeof(struct udphdr) ||
+>             inner_th < inner_nh + inner_l3min)
+>                 return -EINVAL;
+>
+> So an outer_th of 20 or 40 fails against 34 or 54 before the new check
+> runs. The only IFF_TUN frames that can pass both checks have IPv4 options
+> (ihl >=3D 9) or at least 14 bytes of IPv6 extension headers.
+>
+> On the TX side, virtio_net_hdr_tnl_from_skb() computes outer_th relative
+> to skb->data:
+>
+>         outer_th =3D skb->transport_header - skb_headroom(skb) + vlan_hle=
+n;
+>
+> On IFF_TUN, skb->data points at the IP header, so this emits 20 or 40.
+> set_offload() also enables NETIF_F_GSO_UDP_TUNNEL without checking the
+> device type. As a result, IFF_TUN devices advertise tunnel GSO, but their
+> ordinary tunnel GSO frames get -EINVAL and increment rx_frame_errors.
+>
+> The ETH_HLEN floor predates this patch and comes from a2fb4bc4e2a6.
+> However, the commit message relies on the has_eth =3D=3D false path:
+>
+>   "tun_get_user() passes whether the device is IFF_TAP."
+>
+> Should outer_l3min follow has_eth, for example:
+>
+>         outer_l3min =3D (has_eth ? ETH_HLEN : 0) + virtio_l3min(outer_isv=
+6);
 
-On 12.11.2026 09:41, Arun Iyengar via B4 Relay wrote:
-> From: Arun Iyengar <aiyengar1990@gmail.com>
+Same answer as for v4 and v5: UDP tunnel GSO over IFF_TUN has never
+worked since a2fb4bc4e2a6, and this series does not change that.
+has_eth only makes sure IFF_TUN frames are not parsed as Ethernet.
 
-> [...]
+Relaxing the floor enables a path that has never run. I prefer to do
+that in a separate patch, with selftests covering IFF_TUN in both
+directions, and not in this painful series.
 
-> Limit max_mtu so that a frame with two VLAN tags and the FCS fits in
-> 2044 bytes (MTU 2018). A device tree max-frame-size can still lower it.
+>
+> [Severity: High]
+> This is a pre-existing issue, not one introduced by this patch, but it is
+> closely related to the injection fixed here. Plain (non-tunnel) GSO
+> frames return early and never reach the new check:
+>
+>         gso_tunnel_type =3D hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL=
+;
+>         if (!gso_tunnel_type)
+>                 return virtio_net_hdr_to_skb(skb, hdr, little_endian);
+>
+> In __virtio_net_hdr_to_skb(), the VIRTIO_NET_HDR_F_NEEDS_CSUM branch only
+> checks pskb_may_pull(), skb_partial_csum_set() and the transport offset
+> against nh_min_len. virtio_net_hdr_match_proto() and the flow dissector
+> run only in the branch without NEEDS_CSUM.
+>
+> So can a tap writer, or a guest via vhost-net, still send an Ethernet
+> frame with ethertype ETH_P_NSH, gso_type TCPV4, TCPV6 or UDP_L4, and
+> NEEDS_CSUM set? eth_type_trans() would then set skb->protocol to
+> ETH_P_NSH.
+>
+> Suppose such a frame is forwarded, by a bridge or tc mirred, to a device
+> that segments in software. Could the segmentation then recurse without
+> limit?
+>
+> skb_mac_gso_segment()
+>   nsh_gso_segment()
+>     proto =3D tun_p_to_eth_p(nsh_hdr(skb)->np);   /* TUN_P_NSH -> ETH_P_N=
+SH */
+>     __skb_pull(skb, nsh_len);
+>     skb->mac_len =3D proto =3D=3D htons(ETH_P_TEB) ? ETH_HLEN : 0;
+>     skb_mac_gso_segment()
+>       nsh_gso_segment()
+>         ...
+>
+> Neither nsh_gso_segment() nor skb_mac_gso_segment() limits the depth.
+> Commit 006c8b834aed ("net: gso: limit recursive IP-in-IP segmentation")
+> added the SKB_GSO_CB(skb)->recursion_counter check in
+> gso_recursion_inc_test(). It is called only from inet_gso_segment() and
+> ipv6_gso_segment().
+>
+> A frame of about 64KB made of stacked 8-byte NSH headers could recurse
+> thousands of levels deep and overflow the kernel stack.
+> TUN_P_ETHERNET -> ETH_P_TEB -> NSH appears to be a second route into the
+> same recursion.
+>
+> Should nsh_gso_segment() use gso_recursion_inc_test()? Or should the
+> plain NEEDS_CSUM path also validate the outer protocol?
 
-max-frame-size is only parsed for the snps,dwmac compatibles, not for 
-sun8i.
 
-> [...]
+This one looks real, and is independent of this series:
+nsh_gso_segment() can call itself through skb_mac_gso_segment() with
+no depth limit, whatever the way the packet entered the stack.
 
-Thanks,
-Nicolai
+I will send a separate fix for nsh_gso_segment(), with a selftest.
+
+The remark on the changelog of patch 2 is noted, I do not plan to
+respin for it.
+
+Let's merge this series and move on.
