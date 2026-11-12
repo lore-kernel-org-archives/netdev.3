@@ -1,117 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794516486;
-	b=x2uWQqmv6Z55mwbD+6f2QGy/AC3hFFq1l0PRZ142mvP5k43FfQucNFaTzJEMGqxFq28N
-	 WX5EBIvWW71peLCa6Ap1xN3SvQhLrySm6tDn6vAznee0Z+kDIK8rGZk2nu2nDjkGyiRar
-	 SHkqauS4SNGj2kAEyrl4A/tFcptzLMGRFLLBV1V3iajlqnxTxVUrG9w12hIDtHDmJDz3A
-	 ESAOhPmiLto1t4LmXAhmyEvFj/+qS8sLUaCOSMiN59PjfQ7rwHYbhEeyGouJ83woc+bcK
-	 oiV/PNJXEOn4LgkPGrBmfSikg1Qc0ZuPSeDTWgnQvzvvGO6ymHmHhGM+DdLl+yxPBpg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794516486;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794518051;
+	b=uYyaNQ9xAtCua+mL/Hfz8atdCgt0DZ3wkPP1iXp9pdSXWDBp8krLSEdpH4cDIG6aFPUn
+	 ChpllFcnrCfLhkUSAq3S+jisYtncJ14CBbeHVlf8PA0jKeen54bB1guIJa2L8jIuy8Roo
+	 onS3HUVfvx1sXV2ha2HQvGnsFNCxXBaUogp3pTJrI9CGEsLoCScuSFHhbWlsDXNIq06MR
+	 ZoJfrfIUrnl1x/M9NMrcQWU4bn41iL9g8KmpYEUILnxIrpTLNzg8cbOgoopbUrQkY2O47
+	 42ntsqKwCIayKTCpqrNqTELb34hMOAeSs4oIVKUFhFow8xepmj0oWEmRCZevuZKHBjA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794518051;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=lOwnGQXmS8evHlFVLwX0xtuDnhg6yBqOr9ZK8AmqtFQ=;
-	b=wEM4hfkGPLiKbz73mFL7g88/FHYJJ1/IwLxtw9hxtV9kNZmTdkevCZLEq1XCc6B+w0IM
-	 UjvbbmbQ6Fd8yVJa25Nmb7L2Kx6eyFJ6QpmMwgiy5PoeQ/ucvBhptTOR9bTeGqJlDWXYw
-	 CJJJcWfQFcuxTDRoiTSskvqKuTEyMzaXZH7nmlZKBNMMmehBf218yki87OQLD+MBeBBm7
-	 Ff1G7S1YN1uLJrGIw+76/RMpNR/duZsvQHtJTlF9EgpkzNz+w5pFLIxnbBSQbWCbQfH6f
-	 3i7vO+u/XRGN0+6TzrhTOLeUmlw+zkwYLuc0Yl3M+3mHxG8nC2G7j0Vgalw0J8H7uZg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="cWQ9MB/S";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XrcILpcV;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=PrfXz08H+34PFhR+mDKWipfCfKpSe7p7ek5/2sq7ELs=;
+	b=1DJnsa8zwHzb4qis1TzAt2tOUEnLfnmtAwjbTXZ9j7k19sRcAzgZEhjvLRRC7W4guFZM
+	 mQgc30V+wX6JZ7SqEondTh0mHEY6OYa5l4paG53IDEseavVslNC/PeJu1U/xdfOMib6ty
+	 eWtcHODNFSd6LJV4aBnsHte13eOEte0VBFU2arKDezXU864FWLYkplzvFqydxYESHpjCa
+	 0bLCJUOD22WlR5r8t7c37rCCDN2/mMDzZStuvewJ7rAd8W4f/RSWk/T2VAbST0V+NwSJz
+	 7rV1kothOaGrYmwiR31TvoNIf/A+2v6tU+wP7ptn7/mvVJPzXDGm8Imxeof8uPeD4pA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WcBHXqCn;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.179
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25636606B306
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:48:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25636606B306
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDBA606A331
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 21:14:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DDBA606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cWQ9MB/S;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XrcILpcV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794516485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lOwnGQXmS8evHlFVLwX0xtuDnhg6yBqOr9ZK8AmqtFQ=;
-	b=cWQ9MB/SEV27c61OtK0XDaZhXEyPRk9nvugbvwcyhPM/lTzPwqGXApHVKcoYQ3HTkdkBDy
-	EyM429DPAKfjzq+8yWSO9I7z3cDfnoKEUh0Dh3i25uRqXFA/9XF/6gNQdbk0lj4pH7Q9Jh
-	heXh81knuYiSFewT3wdrfpJRqpvmsMw=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-54-OYPpTJjOMsKguaak7uxlRQ-1; Thu, 12 Nov 2026 15:48:02 -0500
-X-MC-Unique: OYPpTJjOMsKguaak7uxlRQ-1
-X-Mimecast-MFC-AGG-ID: OYPpTJjOMsKguaak7uxlRQ_1794516481
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4943ed99826so204424fac.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:48:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WcBHXqCn
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a9f9473029so274257b3a.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:14:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794518049; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TugkO9u+hJiQZhhMND7M0fRdByBvBt2mI4C4Copyp5I69y+yW+lAKQLlGewiraeMyQ
+         hAb640gNmtogdcEn34mSuNn4skErWQTqXOSKE1mUqJwXrUev5RkReJUtiHzHdHIOMhRr
+         qNgug38Zuozwk5jNwnUrVpjmdzbTChuQzgkiuAWitINj1ya6QqV6nljg0rNXcgnc7BPM
+         M/s3E7rlsqaQ98zaPCdzQu262DY7tHpd/7djEpLCSLPrF4ZjV/m1PErJaaMNbpicuOmX
+         ABhbeyApN5z506LL3w8w4wi9sLjO54Jus7imNzWgLjRtJmb82hHCoKrPKEJTzWtRQZD3
+         etAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PrfXz08H+34PFhR+mDKWipfCfKpSe7p7ek5/2sq7ELs=;
+        fh=eOUoAokzubjTohWTNXWKe9b3tHDxP5ZRUBP95ib8px0=;
+        b=R4ubOC8RYJE/fjsTp0x3yuUULv7cux5bnHDr+8h0Y5VsbippS6a+3JYDJWFHG/MbIN
+         lrRX+PJmXlPRlP5Nctt/jMCOsKIJKer3tVOynZH/owiMF6uLB67nW2PrGPsnEDV8154m
+         WO/vx33Z7zR6dmr+0o/L+9Ba0gskgw/H9YmSCynvcn+MO03fKCKHL9Pn3KK/muotKsrJ
+         FNMtq3TiykIr6tN4P6NGLT3Z+d81w0D2fUSY+PwIZH+rG59recGU1QTg4O3iKU0Da88j
+         OBBFQBH+if60jVZHrlnPE68TMXTv4yMF3W6Ct4Qns4JsGDwMe32kfUkjpVdxmghXYGZj
+         viiQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794516481; x=1795121281; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1794518049; x=1795122849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=lOwnGQXmS8evHlFVLwX0xtuDnhg6yBqOr9ZK8AmqtFQ=;
-        b=XrcILpcVi768ekJQkiC6az4W/O0HPMyYmAmrrucrjsC0hI5lPjWzPKtGVXVrPb/dhf
-         mKJi3hUwD03+UV7Xy6OaeqHZ6kiYXq2Vi/JdrO5CCIpD7aYGwqcz40MxDbeO/GCduMho
-         Ht6+Jb3yfMALIrFojQBCuihl7Po26goyI6uI4KHe0JLu2KNCg26Ys6jEvlFyYKSJPiMa
-         B2cRnWyz0uXpBoMNCUY1kPpGuPVJ4MjYYqQItmrW0/chATCt5G3ehy/53eSqR2tmn4Sx
-         3phun0NRzswUh+bs3xHt6nj8cJ4M+0cdfSlxpR66cZsU5LP0emccfjnc3SwylUeytqQl
-         QMfQ==
+        bh=PrfXz08H+34PFhR+mDKWipfCfKpSe7p7ek5/2sq7ELs=;
+        b=WcBHXqCnx04AgsRRw+B9o59yp2jyEV1UiqvXVnqHdIt5kuB0FmrnJjWM33pISB72n+
+         QLfzexQSV6KYXC6u/e5ecjNr/vOnIaAox+ghv42a6me77npj6BqhlmhXDtKXV/Zkg4rM
+         utOxFtup3mHOIaz2bHCU23D3ksUbwi8jHLV+F5Fh8oILCQurqEBRzLEebYQh82cUk9ZY
+         8LjEOQh1/4uWqWZ+rSMroLhSn7NGWOQTwm3B1RNvGbxShpMZGM9++aEeYs30VMswGvsj
+         hDWHsXkMvmYY7rYyeRNJJs7o4E09heEvTdDasSvAliBjoZgk/PFzXphtt+n76mUMuA/C
+         OWSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794516481; x=1795121281;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794518049; x=1795122849;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lOwnGQXmS8evHlFVLwX0xtuDnhg6yBqOr9ZK8AmqtFQ=;
-        b=yE19AUmIe3mla1EuvG0Aj6XcKIIWiP76+Yt6VqA1bHdUhCFdxtU6KFSrlQhoPYtcBr
-         c1QsSxx9ldjL9bdWDAcy60e0mmndcGkoyFKjzk/i8l1kPdrYPVNWSMj7+KPfNKxiIqDX
-         SyeYf9bNaJiO0nSNswn//SIG4KTEa7f/f9HmxQdXoR+fhsw4j1bhtSP2vA5DnJW1+od9
-         XfV7BLcNd6GeOJZ7cERdDUGNmoX9cWxK3KMo2vsPjp/SAfsNWt7olGa4RjrjgqUMWh4h
-         RWSzsbjPtbRpxjYsJ0QICsxqW2rod9qGjPQUoCR7atxBrmLj2tdr+mwhFEceJ+3Q5rb7
-         vMgw==
-X-Forwarded-Encrypted: i=1; AL+hErHKGtXPDDbU39MbVfu0+tH0PNW7mGt0B14N/oaExJGsN7xCNDk8XeRp5Fz01Og4K1h2VS2UdUs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/h1SJTcBb8enrUhsy3sZOZGTkkPZXL45NCAYdtEbB7rFRdqf3a
-	lHB/HqVuce9+XElbsOx2gyapLLPKysl7m4c3msfsjYYSLyx6gkqCwex+zK5//LE8FHYneW8gXmc
-	3DvbbJr9U4dxFAcfqvQjGferBbhQrwbvioyGPy4hbKml6d2BoMKY9o0Crqg==
-X-Gm-Gg: AYBFou2/6K6zct80bdVTZmZYS0z3tgUKGyod3mvSYM5/bxnmh+/wxmxGRcTjEG+yA96
-	RGwDwj0Tl5mZf47BsF9IuweWMTaJh1gbFETHFnykEMCTCzcuXfhUUjGoPr8+kUeWNIJpnBSEYhr
-	KuZMNWU2iAT1/jzIDX3pCPREofXcljA6ekosTC6vKb1U4tnuvMfHh4hzwz6Ft9YNY5B39l5Kis1
-	foZwdGHFjdDeCgwaff4eOkvVmHoTf4iLpUqmKCCTjPxddW4yE1M6jEeYB2TycBTAvXLveSJVsC1
-	SZAeu2MXuGUR1ZE/TMvowtod26oMt6mXfRUFk5TlaD98zM+2kcAjpkVCUYvFtnsEd1qQAGNjldz
-	gQkRLr3Tf9X2m0A+5XcxmyEv/IwzVNu5CI84N93kLvG0yDUraferB
-X-Received: by 2002:a05:6871:7b0a:b0:49d:ff8c:205e with SMTP id 586e51a60fabf-4afdf2da638mr911057fac.29.1794516481378;
-        Thu, 12 Nov 2026 12:48:01 -0800 (PST)
-X-Received: by 2002:a05:6871:7b0a:b0:49d:ff8c:205e with SMTP id 586e51a60fabf-4afdf2da638mr911021fac.29.1794516480871;
-        Thu, 12 Nov 2026 12:48:00 -0800 (PST)
-Received: from sgarzare-redhat ([69.196.88.181])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8628813465esm686251a34.16.2026.11.12.12.47.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 12:48:00 -0800 (PST)
-Date: Thu, 12 Nov 2026 21:47:54 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: jrmmhm.kernel@eldare.de
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v5] vsock/bpf: release sock lock while waiting for
- data in recvmsg
-Message-ID: <avYllBVgJg2AHYc0@sgarzare-redhat>
-References: <20261109-kbh3-1-022-fix-v2-v5-1-4d9af04f0fad@eldare.de>
- <avXyzxvIN3ngFepE@sgarzare-redhat>
- <179451283622.7.13355395779239029915.1767743913@eldare.de>
+        bh=PrfXz08H+34PFhR+mDKWipfCfKpSe7p7ek5/2sq7ELs=;
+        b=OtWpUGyxxsVwOsLPiIA4qE7u1zmebWRLhIdyYoUmKDUEqJnzmsxQa+qdRbUERIhDS3
+         DzJY8Bi1+gxcZRMJ1Xr9azwIylWk/yTmhTktHYzGi0/7c7cMfHdexGN/9f9VzAO1Rtzq
+         Z3Ev/glI4PwKv8KQ6G6vrL0f7IZidLjHI+3rqmYUihav/Wktjx37siUqYfGPOEyQwizs
+         PlmVM1gp+D5+nHWkuHVh3oC1gvByLloAwdRPF+AplE/bUcy+sdpcW7J2VawfBRMtLP4P
+         sC+cJJr6ZfkJa5IRbKQpzVxPBWgtyrD0EPWiV67JOD25OGEPo2YGim7lXzfCBTK0Kw7o
+         EPoA==
+X-Forwarded-Encrypted: i=1; AL+hErESaNMmKM5xCKsIsOvwNz5ax5L1LoO/GCnByKYccF3K/uL8uINguLK/F5pjM4a1NNu6ekdqVeI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8FsiQqzsdr68/9F/wNbS06bbGc2U2q75QG8/NjpJ21AFLm9w5A
+	N8cKymA0xvRG8bpB5T36m6DaE6pa8WvS0VoGQtdWphWsBWTWUQ1fvooGvCzNt7xbM9mVYxrco6J
+	VfWw0v/iLgGRk9VjUvQRerCzxkOuGouA=
+X-Gm-Gg: AYBFou3CxXQ5V+8bnctLKNMs8C/y1PIT+XrLqS2qQxYJvxt4wYjD7QxVthXeMgb80xv
+	L33c1Y5YWjxeG9AeeYZlcnE68/MvLTZ8ysaQN4j7HT6Bl1tEKAvO9/H/eJ/g5YCekrsLES17a3t
+	4I3uzvZOQaGBwvMMZJbggnKGmPmLoZb/wiEj5cRNANss2TnjV4GV1eFmW7DZKDQ882Rb33O182B
+	HVU27/vG3GIUQytpme+ez4EkbaxC43hChOWGXVu0QKfosEUdwVvaSynImulTHHvyZQdgOjNKAln
+	i2UR1M7GZ+grL26B2QQUeoh/NZxKwQ1cobB6T5IqChFi17sHe/+h8xhzbTunPD98rTGdZDVUmJa
+	6L37at/skPh0qqdkcPHrDPIabsD23cYKotspcDUKirlc0CpltHY5CB0LOEuaHcExo0C/fRdXByY
+	/scVbtPJ198LiGgzldXlVW550yeOs1A300wyeBu8/Vz74BT5bOKsqjzlNWJRP64QcwNS0gBSGTL
+	x3RVPLDFHpnFVgs9Bg=
+X-Received: by 2002:a05:6a00:2311:b0:891:3e34:e06f with SMTP id
+ d2e1a72fcca58-8beb7539e7fmr667897b3a.44.1794518048547; Thu, 12 Nov 2026
+ 13:14:08 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,48 +106,218 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <179451283622.7.13355395779239029915.1767743913@eldare.de>
+References: <20261110120212.1110283-1-pkfxxxing@gmail.com> <20261110120212.1110283-2-pkfxxxing@gmail.com>
+In-Reply-To: <20261110120212.1110283-2-pkfxxxing@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 12 Nov 2026 16:13:56 -0500
+X-Gm-Features: AclHuK8r89MZhNaP-FJ80tjfRygA5rIFvNd4P4o3dAcP_IW4NOz1scQ_2zf5I0s
+Message-ID: <CADvbK_dYGutb+-D+Q6pA2MSJr6WZGQUrD+6haS1NoMqaxZ5a5Q@mail.gmail.com>
+Subject: Re: [PATCH 1/1] sctp: revalidate the association socket in timer callbacks
+To: liuyong <pkfxxxing@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12, 2026 at 07:47:11PM +0000, jrmmhm.kernel@eldare.de wrote:
->On Thu, Nov 12, 2026 at 06:23:00PM +0100, Stefano Garzarella wrote:
->>On Mon, Nov 09, 2026 at 09:08:29PM +0100, Jerome Mohm via B4 Relay
->>wrote:
->>>The loop
->>>and the zero-length check belong to the fix (without them the reader
->>>returns early or spins with the lock held), so this is one patch;
->>
->>I don't understand why that fix can't be in a fist patch of the
->>series...
->>
->>>+    if (unlikely(!len || (flags & (MSG_OOB | MSG_ERRQUEUE))))
->>>+        return __vsock_recvmsg(sk, msg, len, flags);
->>
->>... I mean, why this change ^^^ can't be in patch 1/2?
->>
->>BTW I'm not asking to split it (at least for now).
+On Tue, Nov 10, 2026 at 7:03=E2=80=AFAM liuyong <pkfxxxing@gmail.com> wrote=
+:
 >
->It can: the loop is needed for the deadlock fix, since without it the
->reader returns -EAGAIN early when it wakes without data, but the early
->return isn't. A zero-length read with data in the psock queue already
->spins with the lock held on net, and as far as I can tell from the code
->the early return alone fixes that, plus the MSG_OOB and MSG_ERRQUEUE
->cases. In v4 those reads were patch 2/2. They went into one patch only
->because Alexei's diff replaced both, and my v5 sentence justified that
->badly. You said you're not asking for a split, but since the early
->return isn't needed for the deadlock, it would fit as its own patch:
->should v6 have it as 1/2 and the lock change as 2/2, or stay one patch?
-
-Yeah, I'd prefer 2 patches with this change as first patch.
-
+> SCTP timer callbacks cache asoc->base.sk before acquiring its BH lock.
+> An accept or peeloff can move the association to a new socket in between.
+> The callback can then run the state machine under the old socket lock,
+> while an abort on the new socket tears down the association's queues.
+> The timer's transport and association references do not keep those
+> queues alive. With delays inserted to widen the race, KASAN reported a
+> slab-use-after-free in sctp_chunk_abandoned() from the T3 retransmit path=
+.
 >
->>I saw some comments from sashiko, can you reply to them?
+> Recheck the association's socket after acquiring its BH lock. Treat a
+> mismatch like a busy socket and use the existing reference-counted timer
+> rescheduling path. The next callback reads the current socket again,
+> preventing state-machine execution under the old socket's lock. Retain
+> the user-ownership check to handle a migration already in progress.
 >
->I'll wait for your answer before sending v6, and I'm replying to the
->Sashiko comments separately.
+> Apply the check to the T3, association, heartbeat, protocol-unreachable,
+> reconfiguration and probe timers. Their BH context and the endpoint's
+> RCU-deferred sock_put() protect the cached socket during the callback.
+> Pair the socket pointer reads with WRITE_ONCE() in sctp_assoc_migrate(),
+> taking the new socket reference before updating the pointer.
+>
+> The issue was discovered and fixed by Qihoo 360's Tulongfeng multi-agent
+> system.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: liuyong <pkfxxxing@gmail.com>
+> ---
+>  net/sctp/associola.c     |  4 ++--
+>  net/sctp/sm_sideeffect.c | 41 ++++++++++++++++++++--------------------
+>  2 files changed, 22 insertions(+), 23 deletions(-)
+>
+> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> index 4521be3bd8..c5d520c8d7 100644
+> --- a/net/sctp/associola.c
+> +++ b/net/sctp/associola.c
+> @@ -1088,8 +1088,8 @@ void sctp_assoc_migrate(struct sctp_association *as=
+soc, struct sock *newsk)
+>         sctp_endpoint_hold(assoc->ep);
+>
+>         /* Get a reference to the new sock.  */
+> -       assoc->base.sk =3D newsk;
+> -       sock_hold(assoc->base.sk);
+> +       sock_hold(newsk);
+> +       WRITE_ONCE(assoc->base.sk, newsk);
+>
+>         /* Add the association to the new endpoint's list of associations=
+.  */
+>         sctp_endpoint_add_asoc(newsp->ep, assoc);
+> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+> index 35f540fb15..bd6b23369f 100644
+> --- a/net/sctp/sm_sideeffect.c
+> +++ b/net/sctp/sm_sideeffect.c
+> @@ -233,15 +233,14 @@ void sctp_generate_t3_rtx_event(struct timer_list *=
+t)
+>         struct sctp_transport *transport =3D
+>                 timer_container_of(transport, t, T3_rtx_timer);
+>         struct sctp_association *asoc =3D transport->asoc;
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>         int error;
+>
+> -       /* Check whether a task is in the sock.  */
+> -
+> +       /* Defer if the socket is busy or the association has migrated. *=
+/
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy\n", __func__);
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved\n", __func__);
+>
+>                 /* Try again later.  */
+>                 sctp_transport_hold(transport);
+> @@ -271,13 +270,13 @@ void sctp_generate_t3_rtx_event(struct timer_list *=
+t)
+>  static void sctp_generate_timeout_event(struct sctp_association *asoc,
+>                                         enum sctp_event_timeout timeout_t=
+ype)
+>  {
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>         int error =3D 0;
+>
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy: timer %d\n", __func__,
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved: timer %d\n", __func_=
+_,
+>                          timeout_type);
+>
+>                 /* Try again later.  */
+> @@ -362,7 +361,7 @@ static void sctp_generate_autoclose_event(struct time=
+r_list *t)
+>         sctp_generate_timeout_event(asoc, SCTP_EVENT_TIMEOUT_AUTOCLOSE);
+>  }
+>
+> -/* Generate a heart beat event.  If the sock is busy, reschedule.   Make
+> +/* Generate a heart beat event.  If the sock is busy or moved, reschedul=
+e.   Make
+>   * sure that the transport is still valid.
+>   */
+>  void sctp_generate_heartbeat_event(struct timer_list *t)
+> @@ -370,14 +369,14 @@ void sctp_generate_heartbeat_event(struct timer_lis=
+t *t)
+>         struct sctp_transport *transport =3D timer_container_of(transport=
+, t,
+>                                                               hb_timer);
+>         struct sctp_association *asoc =3D transport->asoc;
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>         u32 elapsed, timeout;
+>         int error =3D 0;
+>
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy\n", __func__);
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved\n", __func__);
+>
+>                 /* Try again later.  */
+>                 sctp_transport_hold(transport);
+> @@ -418,12 +417,12 @@ void sctp_generate_proto_unreach_event(struct timer=
+_list *t)
+>         struct sctp_transport *transport =3D
+>                 timer_container_of(transport, t, proto_unreach_timer);
+>         struct sctp_association *asoc =3D transport->asoc;
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy\n", __func__);
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved\n", __func__);
+>
+>                 /* Try again later.  */
+>                 sctp_transport_hold(transport);
+> @@ -454,13 +453,13 @@ void sctp_generate_reconf_event(struct timer_list *=
+t)
+>         struct sctp_transport *transport =3D
+>                 timer_container_of(transport, t, reconf_timer);
+>         struct sctp_association *asoc =3D transport->asoc;
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>         int error =3D 0;
+>
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy\n", __func__);
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved\n", __func__);
+>
+>                 /* Try again later.  */
+>                 sctp_transport_hold(transport);
+> @@ -492,13 +491,13 @@ void sctp_generate_probe_event(struct timer_list *t=
+)
+>         struct sctp_transport *transport =3D timer_container_of(transport=
+, t,
+>                                                               probe_timer=
+);
+>         struct sctp_association *asoc =3D transport->asoc;
+> -       struct sock *sk =3D asoc->base.sk;
+> +       struct sock *sk =3D READ_ONCE(asoc->base.sk);
+>         struct net *net =3D sock_net(sk);
+>         int error =3D 0;
+>
+>         bh_lock_sock(sk);
+> -       if (sock_owned_by_user(sk)) {
+> -               pr_debug("%s: sock is busy\n", __func__);
+> +       if (sock_owned_by_user(sk) || sk !=3D READ_ONCE(asoc->base.sk)) {
+> +               pr_debug("%s: sock is busy or moved\n", __func__);
+>
+>                 /* Try again later.  */
+>                 sctp_transport_hold(transport);
+> --
+> 2.43.0
+>
+Please check the sashiko report:
 
-Great, thanks for that!
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110120212.1110283-=
+2-pkfxxxing%40gmail.com
 
-Stefano
+I think you also need to use READ_ONCE() in sctp_err_lookup() and pass sk
+to sctp_v4_err_handle() and sctp_v6_err_handle(), and then add
+sk !=3D READ_ONCE(asoc->base.sk) check next to sock_owned_by_user(sk) in th=
+e
+functions it calls like:
+sctp_icmp_frag_needed()/sctp_icmp_proto_unreachable()/sctp_icmp_redirect().
 
+Also, use READ_ONCE() in quic_rcv() and sctp_backlog_rcv().
+
+Thanks.
