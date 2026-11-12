@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794497409;
-	b=eKr7nUoKvj6wi2wy7Vsh4MKP8b1Kf3dMcNyt84lzNT7rHx0T7RsZlEbXQN8VINKntglJ
-	 5Kfcr7Ev7sFK0h958gwXvN9OD91d8cVwbm+SdAJhOp+zOwKB5aCHwkrhNdGrLrXbCp0yg
-	 VSwZv9oYLQuVpb1felVqRsQ8AF166EIDUxSNLay12emSu30z1xbKXWP79eQ2iiucMfYgN
-	 gVzFw/txO5QmoTgrSfPvIk1J9OAQLSXW0HWbJB2i5fON1fLXzJe+WexXlCzTYdekoa+lZ
-	 OUBIRfYhHrkuI4vFdpMG95JbmdfQxZgnSPfr5WfvE/swbc+eGl5rjU5UGSvXi7OwFNA==
+	t=1794497489;
+	b=aiT8YsMfEHTdl7M3gOlWUmYsWNcr5VgVD6vQZg/qqH2hO56PaFlEu0OxpMRzOOIFDTJi
+	 xCa3kUJCDioNVLVB1p5jrqco8RdcQHsFUYvYNNyBLoiKo2MJER3pnYT8qky72RFvIZKOM
+	 E6Qxdd4tKdqh7Z+GTxZlejyELejvxP70A+11bP1HGFujTaYNl4QdI90Tk35EL0wyvLdS7
+	 opxMlT2k4QX9K5ldH3KFbf9iIssHs3x1Fz+qhD+5pPdT62CiDtqXWHKribkgUwh30USDg
+	 676242Tgcimj+yeR5U55h/CT+zDWhIN1kFjTuVot5oZDIyI3TnZ5Dp+wuGAx78TB11Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794497409;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794497489;
 	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
 	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=nE61lgnSmGjC8nW6hnP7/bxhS7rbX6LQQlXmuayarqI=;
-	b=sKDCnIrGQfJDa5vAlgwWdLvlIPpD+SOQjRXPAO6TcvEtP3IyqBMX/wKFcPdcvAdqllGf
-	 mTm1VGs7QnjmJiAZkcVksox3yJ06DE65phgU+6NIXaNQ54qFHW2CJqTMqm6KuGBrjQrHu
-	 3o3RvN2uYS/5XOsO0TSAdanDztXfv3pRPM4+rauM8oM1mV5nHrrHLMvvo6k932zvteATq
-	 /9QA3wL0ahT2E/9sFvC5/A1Ms29G9Uh6IkajT+bwcJfUeCz32o7GR5TakcYGCElIequs2
-	 aGc0Bw13cXBAjZjArjPCiKhLu4DOWZAPKRHQ/VzdeiMPXS9wcdFky3QvzKlLSsWGW7w==
+	bh=jxWr0UyAgoOCsx3FYUPyc8/DK6vMkOytDJVYo6SpPCA=;
+	b=uBM4lcWvqNy7x+8mXvGyYVRV23anXPq8Vyy30cCLPZcfbTKnN1Wbba+leGwhkilUuOZ9
+	 catnkmAQ1zQkg2IwyBeD9Epa6t1Q08ZPHVQi2CHHhwRgFmQU0HfnaRKmbjwIJqDEAWZOo
+	 f2obLA0MKrmUuCsFKow9d0kyYNRd3hTQInq5YrrkikrxGKVzPxN51fXxhliN4iUY7k0/1
+	 dEvMcK0TSNasgZcs517HyK7gsAX6sB/mZVEqd5PH6YbsVLbA+kPAGD+GfZ7UUDM53y94r
+	 2M8PbD9+pIrFOGiAyL2mwIbc1IbnYlAXe43LQmJZrzEDm5o5Nt7DfsHJ3kgxFz2PfCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=protonmail.com;
 	spf=pass smtp.mailfrom=protonmail.com;
-	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=keFuLFhI;
-	arc=none smtp.remote-ip=109.224.244.116
-Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b="enD/F0ei";
+	arc=none smtp.remote-ip=79.135.106.30
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4960A2611
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:30:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEE4960A2611
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D43606A898
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:31:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00D43606A898
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=keFuLFhI
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=enD/F0ei
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1794497406; x=1794756606;
-	bh=nE61lgnSmGjC8nW6hnP7/bxhS7rbX6LQQlXmuayarqI=;
+	s=protonmail3; t=1794497486; x=1794756686;
+	bh=jxWr0UyAgoOCsx3FYUPyc8/DK6vMkOytDJVYo6SpPCA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=keFuLFhI1VNM6taMS8i2Zndz+isGvtOkE33PmBwMGwMP9PsTjChG7cshgZu7PvsSe
-	 8XVyV1tRjr+TmsFiuwf562ZZmNO4fOOy2SusUnV2Fn+mlmjdf2RGJSI95v+6bWhAnH
-	 1ccnSs/Pqusb+vAjRUc7aINTNt8DukozpTsQ0/wvJIwhu85x2lDrQlhC2WdEYrOa+N
-	 Z0NCC5rwrmLeY+s1ziWtK+Tb6OT5kMnT5vXPvJQIjxkq/ccK5elD6MWjSMHropehWs
-	 jjwyx1iwjknkSsokY0Sl5sIZ4e96fu/hEa/2T+Cri2UHRtM7uJT1KKsTSC37nEp5OC
-	 1QjCkWjLcapgw==
-Date: Thu, 12 Nov 2026 15:29:59 +0000
-To: netdev-bot+sashiko@kernel.org
+	b=enD/F0eiax/lRDiMR2XI+MZjC0DDtunVMztCY5Mr/Gh47+VYgp7XN+0ULKBMlkiGO
+	 PsmFlTh+dWfr2vHHB87r59l4r5JGH7bdVMTbhFKRFP9ssqCChyzunBpxXajo/aJj9H
+	 6NvrL67qhPxt5KsQQmuj7BiAl5hAe8zq7mfgH9lFT4nabl1bugOitW5w6GkBKQL8dg
+	 q/tyjGgykgZNq0g4EAGLgLGvyE/uR4Sc8NtLnLLMikn02wLj226eoccREWhGJbH/7p
+	 7d15lXeyUUqbm4/c/ZrVqvkHQzPwMw7U0tolMoRWvv5Y9TB42M1FirUubk+axl4Q/P
+	 8l3nnconvG3mg==
+Date: Thu, 12 Nov 2026 15:31:19 +0000
+To: linux-wpan@vger.kernel.org, netdev@vger.kernel.org
 From: Ryan Prinz <rc4d5a@protonmail.com>
-Cc: Alexander Aring <alex.aring@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, linux-wpan@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Ryan Prinz <rc4d5a@protonmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>
-Subject: Re: [PATCH net RESEND] ieee802154: 6lowpan: validate fragment offset against datagram size
-Message-ID: <20261112152819.1014850-1-rc4d5a@protonmail.com>
-In-Reply-To: <179447431152.2199510.14609873818368730049@kernel.org>
-References: <20261109090226.799973-1-rc4d5a@protonmail.com> <179447431152.2199510.14609873818368730049@kernel.org>
+Cc: Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal <miquel.raynal@bootlin.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Ryan Prinz <rc4d5a@protonmail.com>
+Subject: [PATCH net v2] ieee802154: 6lowpan: validate fragment offset against datagram size
+Message-ID: <20261112153034.1015181-1-rc4d5a@protonmail.com>
+In-Reply-To: <20261109090226.799973-1-rc4d5a@protonmail.com>
+References: <20261107223217.718177-1-rc4d5a@protonmail.com> <20261109090226.799973-1-rc4d5a@protonmail.com>
 Feedback-ID: 190731814:user:proton
-X-Pm-Message-ID: c8098364fd82731015df70d6e1f0daba905de77a
+X-Pm-Message-ID: 3e01bde934cf601315439b4cf74b12f4be303d8f
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,25 +67,99 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Thanks for the review! These are fair points, I'll respin.
+A 6LoWPAN fragment announces the total size of the datagram it belongs
+to (d_size) and its own offset within that datagram. The reassembly
+code never checks that the offset actually fits inside d_size, so a
+fragment claiming to start past the end of the datagram is accepted
+the same as a legitimate one.
 
-- The accepted offset range has a closed upper bound (offset + length
-  =3D=3D d_size is allowed, as needed for the final fragment, including a
-  zero-length one at offset =3D=3D d_size), not the open [0, d_size) I
-  described.
-- 802.15.4 has no source authentication without llsec, so this bug
-  doesn't let an attacker impersonate another sender as the message
-  implied. The real effect is an attacker's fragment getting spliced
-  into the reassembled datagram in place of a legitimate sender's
-  bytes for a given span, via the overlap-eviction path you described.
-- The CVE-2019-8359/Contiki-NG comparison doesn't match. That was an
-  out-of-bounds write into a fixed buffer. This is a reassembly
-  data-integrity issue only, since inet_frag_reasm_finish() links skbs
-  by pointer rather than copying into a computed offset. Dropping that
-  comparison.
+lowpan_frag_queue() considers a datagram complete by counting bytes
+received (fq->q.meat) against the declared size (fq->q.len), not by
+verifying the bytes form a contiguous range. A fragment with an
+out-of-range offset still has its length counted toward that total.
+If an attacker's out-of-range fragment lands in a gap before the
+legitimate fragment for that span arrives, inet_frag_queue_insert()
+accepts the attacker's bytes into that span; when the legitimate
+fragment for the same span then arrives, it collides with the
+attacker's skb and is dropped as an overlap (IPFRAG_OVERLAP). The
+datagram still completes, but with the attacker's bytes in the
+reassembled buffer instead of the legitimate sender's.
 
-Sending v2 with the commit message corrected; the fix itself is
-unchanged.
+IPv6's reassembly (net/ipv6/reassembly.c, ip6_frag_queue()) computes
+end =3D offset + payload length for every fragment and checks end
+against IPV6_MAXPLEN, which bounds offset by construction. 6LoWPAN's
+d_offset and d_size are independent wire fields with no such coupling,
+and no separate bounds check was added for it. RIOT-OS's 6LoWPAN
+implementation (gnrc_sixlowpan_frag_rb_add) already rejects a fragment
+once offset + size exceeds the reassembly buffer's datagram_size;
+Linux's 6LoWPAN reassembly had no equivalent check.
 
-pw-bot: cr
+Fixed by rejecting any fragment whose offset exceeds d_size, or whose
+offset plus length would exceed d_size. A final fragment ending
+exactly at d_size, including a zero-length one at offset =3D=3D d_size, is
+still accepted, matching the completion check right below it.
+
+Fixes: 7240cdec60b1 ("6lowpan: handling 6lowpan fragmentation via inet_frag=
+ api")
+Signed-off-by: Ryan Prinz <rc4d5a@protonmail.com>
+---
+v2:
+ - Reworded the impact description. 802.15.4 has no source
+   authentication without llsec, so this bug doesn't let an attacker
+   impersonate another sender; the real effect is that an attacker's
+   fragment can get spliced into the reassembled datagram in place of
+   a legitimate sender's bytes, with the legitimate fragment for that
+   span evicted as an overlap.
+ - Dropped the CVE-2019-8359/Contiki-NG comparison. That bug was an
+   out-of-bounds write into a fixed buffer; this one only corrupts the
+   reassembled payload's contents, since inet_frag_reasm_finish()
+   links fragment skbs by pointer rather than copying into a computed
+   offset. The two aren't the same severity class.
+ - Corrected the described accepted range: the check allows
+   offset + length =3D=3D d_size, which it must for the final fragment
+   (including a zero-length one at offset =3D=3D d_size), so the accepted
+   range has a closed upper bound, not the open "[0, d_size)" the v1
+   message stated.
+
+No change to the fix itself; the diff in reassembly.c is unchanged
+from v1.
+
+Reproduced two ways: with a local kernel module calling
+lowpan_frag_rcv() directly, and over mac802154_hwsim with three
+independent processes standing in for sender, receiver and attacker.
+An attacker in radio range who observes one fragment of an
+in-progress transmission reads d_tag, d_size and the addressing in the
+clear, then sends a single out-of-range fragment of its own before the
+legitimate fragment for that span arrives. The receiver's reassembly
+completes with the attacker's bytes in place of the legitimate
+sender's for that span, and the legitimate fragment is dropped as an
+overlap. Both reproducers were re-run against this fix to confirm the
+out-of-range fragment is now rejected outright.
+
+AI Disclosure: An AI assistant (Claude) was used to assist with the
+analysis and testing. I have verified the vulnerability, the fix, and
+the test results myself and take responsibility for this contribution,
+per Documentation/process/coding-assistants.rst.
+
+ net/ieee802154/6lowpan/reassembly.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ieee802154/6lowpan/reassembly.c b/net/ieee802154/6lowpan/r=
+eassembly.c
+index ddb6a5817d09..905ba5f86844 100644
+--- a/net/ieee802154/6lowpan/reassembly.c
++++ b/net/ieee802154/6lowpan/reassembly.c
+@@ -103,6 +103,9 @@ static int lowpan_frag_queue(struct lowpan_frag_queue *=
+fq,
+ =09offset =3D lowpan_802154_cb(skb)->d_offset << 3;
+ =09end =3D lowpan_802154_cb(skb)->d_size;
+
++=09if (offset > end || skb->len > end - offset)
++=09=09goto err;
++
+ =09/* Is this the final fragment? */
+ =09if (offset + skb->len =3D=3D end) {
+ =09=09/* If we already have some bits beyond end
+--
+2.51.2
 
