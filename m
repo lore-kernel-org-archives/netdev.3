@@ -1,55 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.76.5.236
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794483642;
-	b=LuuwUjYE+/1F2NUDjr5Le2Obh2BaQHUWVAplT7QYU8X53dNA2CMoN+1+mSYvyv/wiNzu
-	 GQy7SSPOvHaC/ZgwZWySBx75Zj0e362UAKyVdZnzc7soaVm63KGu7WfJ+tdGmqPUCD00X
-	 U455ZGUGG0nfy/ST9ngKMBcMl4ElQB1Zy6srXqwnZ0vaCklVdlywKnQa1YBRVCYuQUeEI
-	 72SN9rynOSNLw7OWFPiACIRo3uUEFc3iffOUAkv9jraofRuZ6rZZt1FWeUP5v/R53nJaZ
-	 qZEzDI2UDp/0RDBi02SAeXz0s8ri6Aw9s2Ri1Io52wV7ZXLtj6USC0gACQbh65epATA==
+	t=1794483801;
+	b=0Rm3aQlQNaRrUUjwMTQ4ehJQzofT3Bbe5sFdMNOVMv1p8l9Z8a4DL7xUAlygfEcBUwDI
+	 Zh7KiNAGnVN13Bhp0RamU+SauJkjmAM/KzSW4aE1ppAPYOmwirO3cL9JkVVr3QfSlkey5
+	 9Y5NXugkmBnLLAwhtp5GBpdAk1YNS7Yr6bQrqC5FacJHpippur4CXvo/+UXO8SAIVYeLT
+	 qWOCdegROliptLkeyfSDabZeubLgIY62HiGTuv2ldk1BtKWjN4LqA8uJpSuLaQEpNHIuv
+	 TgdiD6OvykdxUqHwWz+m/MLHkXL6xug0Ath4mXQmGViml55I/fehF0glWX6gv+NNqaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794483642;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-HM-Tid:X-HM-MType:X-HM-Spam-Status;
-	bh=Vp7uBehDsBoSgh8K5UFAlzz0iAriITFqbhRY3HJwCtM=;
-	b=bertH9vDPqKQm79dxsJ+HVUy/Qa9kUlsH3hQdxRyzQAdPzp17IRF8siBtrhi/CMsKdbr
-	 ToGDmYC7kAQybI5DXo48RjES+naLBlDT01UgrQ49BnqXNnVt1jOM5TfVjtKju+LX1d0Hm
-	 tuFpJvpJjNg2TesE8le3vzbL7ynoaNe3MteWGdOPTB2r+6KALQBrOzpltQGtfC6sfd9rK
-	 zCckBdfkiUIons8cgJkJVTe7mJTEipfP1WvTscjHL0/xWYg4ngA/5cLovHi7EzvX1fJDa
-	 /vuzSPsnEt6rBmM7OQHpTMPNXRxdnqe0IcDzvtvTChahIckWE1n77AIR4+4nFce8tew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794483801;
+	h=DMARC-Filter:X-MD-Sfrom:X-MD-SrcIP:From:To:CC:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:DKIM-Signature;
+	bh=hjU+jspvdHfTYvJLdsfJKahfE+jp6uBbXgAHpYf6tVU=;
+	b=SiB6/gDJvfWrXUiNfEGiMbiDVi1ejRJtjaKM3cSeLpucsbS1AIK+k8V42OpkokNeOXcV
+	 Ktje4duTEt4BHn0ggAU2mszlsFfSI5PEyWPxkMkX8x4kh7UxQtAiBT8+wk/BY7BE0/eOE
+	 p9bsC4D47Ns7Asn+xDveep+cUy2YaPAfV9YphTRuxrNLZt4YPcAVKFv5yNczjqzObiBt1
+	 QtwnAeWp39x6TiFd+DkhTwD6NhBujeFErv7F+i2A3m+dZTv6aaKN0Um+MkYKMBYdyoigb
+	 Ps24bePL1Bo+0kHLxaEjclnxDj1YPlaSDCLZAWW8QjKcB+Eem9g2+98SHAY5udTzX1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jmu.edu.cn;
-	spf=pass smtp.mailfrom=jmu.edu.cn;
-	arc=none smtp.remote-ip=45.254.49.197
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63194606A32E;
-	Thu, 12 Nov 2026 11:40:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63194606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
-Received: from Vostro-3710.lan (unknown [14.220.232.40])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 547477c92;
-	Thu, 12 Nov 2026 19:40:26 +0800 (GMT+08:00)
-From: Chukun Pan <amadeus@jmu.edu.cn>
-To: andrew@lunn.ch
-Cc: Frank.Sae@motor-comm.com,
-	amadeus@jmu.edu.cn,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH 1/2] net: phy: motorcomm: add led_brightness_set for YT8521
-Date: Thu, 12 Nov 2026 19:40:20 +0800
-Message-Id: <20261112114020.3344472-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <45f91901-bb11-45a7-a09c-db9ed4ef0117@lunn.ch>
-References: <45f91901-bb11-45a7-a09c-db9ed4ef0117@lunn.ch>
+	dmarc=pass header.from=baidu.com;
+	spf=pass smtp.mailfrom=baidu.com;
+	dkim=pass header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=S+NEjD62;
+	arc=none smtp.remote-ip=180.76.5.236
+Received: from outbound.baidu.com (outbound.baidu.com [180.76.5.236])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 3223F606A89E;
+	Thu, 12 Nov 2026 11:43:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3223F606A89E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=baidu.com header.i=@baidu.com header.a=rsa-sha256 header.s=selector1 header.b=S+NEjD62
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: David Howells <dhowells@redhat.com>, Marc Dionne
+	<marc.dionne@auristor.com>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<linux-afs@lists.infradead.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH net] rxrpc: rxgk: Fix uninitialised stack byte leaked via RXRPC_CHALLENGED
+Date: Thu, 12 Nov 2026 19:43:05 +0800
+Message-ID: <20261112114305.2340-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,24 +53,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa1cf8f239a03a2kunm074696c01cfe1f
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHkgdVkJOS0xOGEpITRpCT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKT1VJSUtVSUhJVU9LWVdZFhoPEhUdFFlBWU9LSFVCQklOS1
-	VKS0tVSkJLQlkG
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc3.internal.baidu.com (172.31.3.13) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1794483796;
+	bh=hjU+jspvdHfTYvJLdsfJKahfE+jp6uBbXgAHpYf6tVU=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=S+NEjD62cu3StR2FZBhcquOhl5pKl1hUGJPEcspgCxEAzFoZ6wfrUkVVHuXdjDxeV
+	 4U/2ofFTTw4a0TE/+p3SkZtuwU0hSY9krrNOxxuH9Z0/sPjCh+xQ6nGrMRIqSrk3kZ
+	 M10a7AWDKdSi53jUSB2i7BHBWk5CRN1/K2tzOOF9JINjaKidqJnIPG9+AgrG91qMnm
+	 glo4Ezo5WT+bpJx5g2s7TimwcCWOud+K+tAAbsPKXQvsBqZq5ZfNy+Hy3iarcS2l/M
+	 Jxpl/C/DIuH+QfWlvJfB/1SzREsdBroRSiPkWEcvjvsaOTZcGLrHIezHkv+B2YBk+H
+	 U56djrIrP9KVA==
 
-Hi,
+From: Li RongQing <lirongqing@baidu.com>
 
-> You can enable it just like any other trigger.
->
-> I find it useful to know when my bugs have caused a deadlock, etc.
+rxgk_challenge_to_recvmsg() builds struct rxgk_challenge on the stack
+and passes all 8 bytes to put_cmsg() via RXRPC_CHALLENGED, but never
+initialises base.pad at offset 3. The struct has no implicit padding,
+so this byte contain leftover kernel stack data and be exposed to
+userspace. This issue was identified by code inspection.
 
-Okay, I understand. I tested the heartbeat mode and no issues occurred.
+Zero-initialise the structure to prevent the potential information leak.
 
-mdio-bus:01:amber:lan# echo heartbeat > trigger
-mdio-bus:01:green:lan# echo heartbeat > trigger
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ net/rxrpc/rxgk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Chukun
+diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+index 77a67ac..15533f4 100644
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -756,7 +756,7 @@ static int rxgk_challenge_to_recvmsg(struct rxrpc_connection *conn,
+ 				     struct sk_buff *challenge,
+ 				     struct msghdr *msg)
+ {
+-	struct rxgk_challenge chall;
++	struct rxgk_challenge chall = { };
+ 
+ 	chall.base.service_id		= conn->service_id;
+ 	chall.base.security_index	= conn->security_ix;
+-- 
+2.9.4
+
