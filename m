@@ -1,45 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.20.114.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794472761;
-	b=ajvFhMd0DO6JLk88/QpT+rAJ558NzC/zHmYlQKGv9xZyL/FZ2e/IZLNuTBLvt2q8TGNh
-	 U85tKadKTS1PV+ja7Xht2vBd0qzLOJLerTUbs4o2QmZYIEIBuvy6URquszVcjVrUBHYrL
-	 tqqlpaz1XJ13YOy485o96dDIW8AH1KZ+rWBt3hwBrzpbq/vETWv3N8+QmLY93FY/UGe6w
-	 KQF6LyurP72cmktcYyM9AxIyZEZODV5fjVYFhWiQLzM0HrBkbih6ypE+LlimdQb+yEdGe
-	 8KT2b8KSypZC3MX89VTRAbNR16RZA4nLA5sQA8Z+VZDJItYqZWMLobLrTc4iaUsNXtw==
+	t=1794472802;
+	b=ZLMn3HQd0p5mZc74u0/fEz+ciblc/mqat1Vevlk+A2LjVmfUPqq+aiwKf+uU3jFpNd4e
+	 Zrb/7oJDfKf3K8Xu2uYplE/yF9PeAB9N1J+Oefp5YQwH7Ktygc/IvZpKncCfNcOULRsA0
+	 +xz+ikbW2WBZEIHPyaIXLbjwWC/ROOSIvDeiPaMIuQNHbC++inPsixFmNPyWSUPhPU4qQ
+	 rn1mBCUy+cuH/84xiENyimouOtNyitfrNADbhmKSrChDHNUA/fsLH6WMBYpAoY3diaVt/
+	 KJbHQF/C76yWRq8SXJ8E5ZeGsoYw0YpCAx7u1ROTZRpESWgxfEunaoyu0VoA4q7/AFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794472761;
-	h=DMARC-Filter:Received:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-ID:References:
-	 In-Reply-To:To:CC:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=LyXFiOgSd/gS7t17gC6C4jnHNJdK0hrmfTDD2nscfFE=;
-	b=fiy08nMxLoobVD69nPnfmN6BxgQV7lXdp5kxCPfDX2Z0ebN8DVS9wkYRfvKwb3iiKZcn
-	 z9XTXybukZHTwfiQxPEQ5swsLOVE7vLzsUGxLecouIbtHOp8WMp2z8XA9cl/FPCFm04sa
-	 +E67Z2l/GKh2H5zL0B91CEYe1i8Zeyrane8ZU72tsXEbV5YDax3djOH9wO9qn9Diw7176
-	 6+cr/nRnn98arf9rgLsKeFeQ1hgR7QwIrxdPxEPC63eJs5j9MSjseUQemsxcUT/bOxwq2
-	 zWPDLk2Hm0h5iyyaQtktiTmYHrLNJZcsQHfGkLX2cdD9UlBycBdjPbWiXaOqAo7usXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794472802;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=7mQ9PgE1JmToTrJOndvjvlG2pZvNaNVcvI5nSe1P3IU=;
+	b=Hg6X6GJdxJvXoK2Q8SbcxJUHBWj5xdLGy/B0QQAWJnVEZsOjEw1fxxkayEoaO2jCUxui
+	 QOnVGAGsOg0dBCBNXLNaJQWTXqfvdaQ5RP1MVhlBv8/i3N8PSZLbbYISiUQlBdAmunfrv
+	 vZlWOU38f/ZVjRJj1I334rFzvlrO1BDcFkLvhrOKiXPkMIBK8XJT6kYi3gaMdAfC9Yhsg
+	 wEDTkpHcKEthVdhVNoJDRZ2y981jG/x+ovCEslX4waR9tSLWBarrPEU45PmNWSpWlaNup
+	 uxai4gC239bOgLj7NR6WFWdpyxy9CIqrq1dNff4EDpy7KZXZ/OVfmF8ritcjHULsLiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=aspeedtech.com;
-	spf=pass smtp.mailfrom=aspeedtech.com;
-	arc=none smtp.remote-ip=211.20.114.72
-Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9FA606B245;
-	Thu, 12 Nov 2026 08:39:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD9FA606B245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Thu, 12 Nov
- 2026 16:39:09 +0800
-Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Thu, 12 Nov 2026 16:39:09 +0800
-From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Thu, 12 Nov 2026 16:39:09 +0800
-Subject: [PATCH net-next v6 3/7] net: ftgmac100: Add AST2700 compatible
- support
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=dvKOlbjk;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BAB606B38E;
+	Thu, 12 Nov 2026 08:40:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85BAB606B38E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=dvKOlbjk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=dvKOlbjkxzAzGH2CcvRLA9QMKfkzEan6NRcKwcELTpvl7ebAhZ1Vaepsg8AZlTcprcICFIMKlKgw2
+	 nWoB1cvrQT3r3NQBAnVqh2MJOPYMs7vof158+T2bpNODcDwBwKDXGTKlsOkHhFtRgd67v2IhHddj92
+	 /9+2NK8qZ4v79Gy8=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76af57b5eb18-e158d;
+	Thu, 12 Nov 2026 16:39:58 +0800 (CST)
+X-RM-TRANSID:2ee76af57b5eb18-e158d
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.6] (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af57b5c081-f984e;
+	Thu, 12 Nov 2026 16:39:58 +0800 (CST)
+X-RM-TRANSID:2ee56af57b5c081-f984e
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Yanqing Wang <ot_yanqing.wang@mediatek.com>,
+ Bartosz Golaszewski <brgl@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ yana06070@163.com
+Subject: Re: [PATCH net-next v2] net: ethernet: mtk-star-emac: fix device_node
+ leak in mtk_star_probe()
+Date: Thu, 12 Nov 2026 16:39:57 +0800
+Message-ID: <1794472797000.690257.2793446627884027520@cmss.chinamobile.com>
+In-Reply-To: <179445682040.2168702.1032780874409478036@kernel.org>
+References: <1794455490000.585551.2561101329908158128@cmss.chinamobile.com>
+ <179445682040.2168702.1032780874409478036@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,85 +78,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261112-support_ast2700-v6-3-238020bf46cf@aspeedtech.com>
-References: <20261112-support_ast2700-v6-0-238020bf46cf@aspeedtech.com>
-In-Reply-To: <20261112-support_ast2700-v6-0-238020bf46cf@aspeedtech.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Po-Yu Chuang
-	<ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Eric
- Dumazet" <edumazet@kernel.org>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794472748; l=2037;
- i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=Fhi2QQE0gYXCC0ZbXJOZaqvp8cju90o459tkZDIGBG4=;
- b=nhUoFmymozzORK2bK/bQraXK706YLMqBau8OGaFJw4NHjVZZtJSdKP4c4DldtEB+Tkvbdx0wf
- kixROtlsKWDAEW6tYgstLdU449ZhJWUcMHBgCSO31x4TgYeGDwB/b0y
-X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
- pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-Add match data for the Aspeed AST2700 FTGMAC100 controller and wire
-its compatible string into the OF match table. This lets AST2700 device
-tree nodes bind to the ftgmac100 driver.
+On 11/12/26 12:13, netdev-bot+sinfo wrote:
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
----
- drivers/net/ethernet/faraday/ftgmac100.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 6d2fe5c2f390..67b1fa464a42 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -37,7 +37,8 @@ enum ftgmac100_mac_id {
- 	FTGMAC100_FARADAY = 1,
- 	FTGMAC100_AST2400,
- 	FTGMAC100_AST2500,
--	FTGMAC100_AST2600
-+	FTGMAC100_AST2600,
-+	FTGMAC100_AST2700
- };
- 
- struct ftgmac100_match_data {
-@@ -2017,7 +2018,8 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 
- 	if (priv->mac_id == FTGMAC100_AST2400 ||
- 	    priv->mac_id == FTGMAC100_AST2500 ||
--	    priv->mac_id == FTGMAC100_AST2600) {
-+	    priv->mac_id == FTGMAC100_AST2600 ||
-+	    priv->mac_id == FTGMAC100_AST2700) {
- 		priv->rxdes0_edorr_mask = BIT(30);
- 		priv->txdes0_edotr_mask = BIT(30);
- 		priv->is_aspeed = true;
-@@ -2131,6 +2133,10 @@ static const struct ftgmac100_match_data ftgmac100_match_data_ast2600 = {
- 	.mac_id = FTGMAC100_AST2600
- };
- 
-+static const struct ftgmac100_match_data ftgmac100_match_data_ast2700 = {
-+	.mac_id = FTGMAC100_AST2700
-+};
-+
- static const struct ftgmac100_match_data ftgmac100_match_data_faraday = {
- 	.mac_id = FTGMAC100_FARADAY
- };
-@@ -2142,6 +2148,8 @@ static const struct of_device_id ftgmac100_of_match[] = {
- 	  .data = &ftgmac100_match_data_ast2500 },
- 	{ .compatible = "aspeed,ast2600-mac",
- 	  .data = &ftgmac100_match_data_ast2600 },
-+	{ .compatible = "aspeed,ast2700-mac",
-+	  .data = &ftgmac100_match_data_ast2700 },
- 	{ .compatible = "faraday,ftgmac100",
- 	  .data = &ftgmac100_match_data_faraday },
- 	{ }
+I don't have any MediaTek hardware with this Ethernet MAC, so the
+change is compile-tested only, with CONFIG_NET_MEDIATEK_STAR_EMAC
+enabled on x86_64.
 
--- 
-2.34.1
+Thanks,
+Xia Yan
+
 
