@@ -1,66 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794475326;
-	b=bO94qebhRp1QB6BvRlXfmT2sqyx6RDyFYoCSjyYoeC4RkKuH+AzmH7ZgxzQhacQqWIOZ
-	 8Z4+A+RPkH6o6WlZfosNxsanC6TAkiw1dh8XayQ8ZoN1+FcVZhS/cNzVnY3xoExOb0/UA
-	 9/S98cm0zGxpGc0CjY3/lf+XyB+A2F0XX51IQMlhMCFd2Zvv2ZYKd6rtPCY3Glz89eZcP
-	 4iApkKXMBG2wY3xkuLnXzn7BY26d5IfcOSeHUoCx05cKKcZYmy4YZSoEhF9FFcX7vJGwP
-	 bcgDD5QR/s2Pl22tdZ+tWP/NAcazPAmKrg4v1sNC6ePpHyGy0mWKDZUsdQfufHyRVQw==
+	t=1794475594;
+	b=MUiuvpEYsCWkwOUx6qj8PkMqIGPTGUlfaPd0YOXSHDGqyLjJUo2IUy+q8HClwfgtM28U
+	 zuVQJeD+a/R2We816BbbnOl+AZn4IV5k1S5bquEp62jllZKtLnNzgefAFXg0vFJQR5SAw
+	 ABCa72TWslS+2iGjRt9qDhJzc8Ufj4qlFM6OxHHhb4ps710TwAIlcU95m8BnuPZUl08N8
+	 XQUUK1xV6+VpZAnQLO2QAfEollUqCt1VYhdEWR0V3e/TSa7vAKNMLxagwnksLUr0QpXKa
+	 bNZff7WzD0ZoL9zYo31fDIDV1CJJtnWxhTqG0Z9Uur9yEDCJyejDbSEeX39HOa8xemw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794475326;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=sLyZtPTkFdbyABhOZWUDHW8SHa1Rc6mfsRhG3LxmUD0=;
-	b=Ih42CrRUzqmt/4I6vQ/FdKqT+R6MPUxFe6wb0bwWImPO/yUxo+BhKULyO9xoHzl5j2ez
-	 nxy4frhf05Tt0fII96U0Q0T060U0frN4t8AKgfpbZCzRwY9z5rV4jSVOKXEcRYGY5g7X8
-	 yOijJMG0eODjLH2cuLue5eWL4zrhnL7hik01p7N85SHzAxy6jQuWhwDD+WZblIhpc2IhV
-	 ZUSIvtU0Xy32HjgOgFxhVOVaU2ygDvb2wOXNl+iSxkG+4RCOMN8IL2q4LW9Sfa84VD7TJ
-	 n1fjIbejxyGEdijmdZjs6kDmQGoP91X3S5U+UmhPh0w+IHtygARMOEwWE77Mj4iou5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794475594;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=;
+	b=QpzsLGbSrSsmwDiGraeSoDwXxCSWYAvstq6wXS92ByfiDPu2XJN8sxCaFR4YVdecnOml
+	 UxMes7/16/M1l3EpDwCCFm8sPl1eqGFf1790ITZhtZJuZ03ukbI3sHIeu9S+tNBC4SrYL
+	 /jQKJYDzuP6xpXebuNtYZHus7dASCPXW0dLURltQzQ5AWsHvJN1z2JCV0JhY5wnb0qti8
+	 cJGcXBCpkQDrB6YJ+HIn9kOvsjaCTd8XToBqbZe+BEXSuPnAQMCxzc3gQzZv3VoGGiJa5
+	 U2EN7rZxQPQIbuYYZzyXvmxA92qxrcq2GAxODlKw0J11YmM9LCxbTlgS+VfZ31wLQaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nAOJwhZu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=OOUgwSFQ;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NVWaEgIO;
+	arc=none smtp.remote-ip=202.12.124.147
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8729B606A31C;
-	Thu, 12 Nov 2026 09:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAB4606A32E
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:26:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FAB4606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nAOJwhZu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6271F00A05;
-	Thu, 12 Nov 2026 09:22:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794475326;
-	bh=sLyZtPTkFdbyABhOZWUDHW8SHa1Rc6mfsRhG3LxmUD0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nAOJwhZuPhiifB1pHM4GAjXo0IsTEIy+1AHFfyPCUFvL1ZpMCNwBs0bbAbdnC74Fa
-	 yO/sVppxWLenFnxjtzXfzarxZEgA6ZEGXWTQhfo/IwANEBRpj7+Z9drQDWp+3aRNQa
-	 Ee72GH6Sdet/XOXTEkFX1p9RnjNSacbnI7AJmQIpjPpmmiLMfwl7BZNsPz0FpCsme0
-	 M+elIZ5zR0tS45NiH2JBIVLbwyz2ua0ndLK4vwXXeEWg+mPaF37aZJXIaJtcp5MMv5
-	 ho0qwytX4zefuxynu3VDax+fdf6QQc+ndtU0SxJPjdCAg2C1Smr0WvUwC0q9ibZtdc
-	 /iW2gD44t8cgw==
-From: netdev-bot+sinfo@kernel.org
-To: Amaan Cheval <amaan.cheval@gmail.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, hramamurthy@google.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, bcf@google.com, jordanrhee@google.com,
- przemyslaw.kitszel@intel.com, maciej.fijalkowski@intel.com,
- pkaligineedi@google.com, maolson@google.com, csully@google.com,
- willemb@google.com, yangchun@google.com, npl@google.com,
- awogbemila@google.com, shailend@google.com, nktgrg@google.com,
- maxyuan@google.com, bpf@vger.kernel.org, john.fastabend@gmail.com,
- hawk@kernel.org, sdf@fomichev.me, daniel@iogearbox.net, ast@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v6 0/2] gve: fix RX page refcount overflow with the
- pagecnt bias
-Date: Thu, 12 Nov 2026 09:22:03 +0000
-Message-ID: <179447532371.2168702.1261444176228225499@kernel.org>
-In-Reply-To: <20261112091451.22969-1-amaan.cheval@gmail.com>
-References: <20261112091451.22969-1-amaan.cheval@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=OOUgwSFQ;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NVWaEgIO
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id 43FFC1D001E4
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:26:33 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Thu, 12 Nov 2026 04:26:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794475573;
+	 x=1794561973; bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=; b=
+	OOUgwSFQfbLVJHu/UOI1xbxzxT29rpy6sRLNcFMwVTBXzHNs1EcuKtWWiF0p0vMV
+	pwgQH1sGEyg8X9BWJj9Z/NzKcXfcrv69W+X1rEzPCKgCj0h2bl3L3ihPDe2oLjYY
+	zobAf3odv5III8Y4tHRH4h7KI6Zu2YAP1UhQkG7TLYGIF7ij7jyaOKtlnwbncIBt
+	YYijyIAjywbzRp3ltvL9VcQ+OgsMOskRjbN5gFQ7kHc6RKUvcDzTn9Bv2ou+3eMQ
+	+moij8YDdCQz1xPUNUyDy748IUxc03Vs5IiimdOyBTWHHVLADFFEPPRw9kr247dq
+	eA1g8xF4ovQHK5pm56sqRA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794475573; x=
+	1794561973; bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=; b=N
+	VWaEgIOJNaSA6tI7c9inqYnE1uxJ1vlT9Fjg51KVxZqxAtQIwJxYCc+Yxxb7rrfn
+	lqi1becGt5OevebJBN8V0kD4rsO7nanl9iJhWpW39+wqAcVowfsRChKO9vZj3XwM
+	7NhuZpLuKr+pKPwEUlXfEC8HTZXygCfCxcVDP5ySwWAwgTE1ocLPnQU9k3YbVcrg
+	8qPDj48hZiFbBg3pVGUGyWsocTCPYj+vZnwsb7ciMOC3xtR6G8+2aCSAIkSBkIfF
+	MDY35u/n4XM4lh+7S50G0rTFS8IvB0y7JNUhkRyoe1XrzafTLgNWCU6E0BQ2ICEU
+	o1x08xFRSCGrwAhYDzLTQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794475573; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:FMwn81pL5b12NqsmaP4WBmzWguYgAFu1F2EljmgEWPYqNZM
+	iY//7m5ObGqReCUUfUqOOq+kI11x8VGGnDsPcmRFz6Zf2TsIwpHRy0ckxO7+gL+x
+	+zqtBrpDtzso9a39wsOfMYJX+YEAHecriGbhyxNO/u9j30xfpI7xlv4dniPKBHZG
+	pBtAJ86cEPBrJ/oVy6Zsy2atapXkf2LmLqZaDaIVJ1NNcVd4pTZZc3SWD9OIjdlb
+	Sfh/9ZG3iLHiloWjh+CFevzhcANeX62E5l6OzDLQ3arKSbGqu+cgg3XjjVxhUOSx
+	koUIuB3C/VujtpDu3jvaZU735sgtdkh7Tq18oWQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:lHtQvLsWKEfUdBxf+XVyTOgUlpH79KXAE43pmsNxrkU=:Zt3fqEzGcC9UmMEpGQAYwZ0fmVAGINXNyxE6QV2Knis=;
+X-ME-Sender: <xms:J4b1aszZnXXmJXycTKT68GToSThX6hRpgSLl_4I6u4n_9y0ijscfDA>
+    <xme:J4b1arHXgXG0E3ZLvA7HJOwMoR1J3526nRnSxn39ymzynPVz3tcJjXoKQqdwOqpDJ
+    AeT-pkeNEL1EAxxeIv_exqlwG8lFva3ZbqaIZ3tJwi6d46YBYeiMr6m>
+X-ME-Proxy-Cause: dmFkZTFWfgeeGR8mo+0U7OOkwDrigGQ4sGgOFZOIt6DyKqatgGiIKMzD3PV2KmRP46YBiF
+    NN7VF9RNbZITkPsgZWpSOFDs2Hsgp/9VR+G7lO3+PQKbSnfTnKJELeW/wMgoAW5UIhwmdD
+    NSL49KegZyyd7iwPktON7yNbn9dxeoKfVhWM9t2Io9/1BIHEHKTR0WotbG6kr8eFh2z+1b
+    csxbAPpRQXO2C4GVfNYOGDOiPXISwylHCy4FaZ7cR6oRi/vJtPkZHGg3mRklsb0kNGxOVd
+    DNAGk5hP/cEFOfJdJHRax64lA7dWq1eHZmhIG5RrznsMXvnmtyPlQ334MKerO1ZX5NuqBV
+    GKnK5TATlSIwk4cWKGycpyTUodNZKF7vM4JxgjSDyU5c3JZMA/00XtklF92iMVX2n35r1M
+    D/1BnTxNkAJQYU6IHiZtnAi+F9Kc5txc7hseFdo5PA6gwuLLPcpiIgVACKdGaO06xjKt6+
+    eDS6tHC5JLF0NyKlfrEblcX91WlQ2m0ahg+JEq12dOeKhFtHqe72OYrIJRxH9aVIg4H37T
+    QC9Hsu2aYqgpvUxhfN9yptOYqfhbjSb7ExkyhKIO3SlLEus47FmO1j/M7VmkJjnZFvCjAd
+    +wpeLaOzhd2kTOw74kwWkYpnUq7IGz2Ntd9IYIHxAihCXh+HKjeLVoMLwTQg
+X-ME-Proxy: <xmx:LIb1anFpYFUFUsNVtoim2Rg7LU1Tm3N1l3d1uUOvZWcowJ5OmXznLw>
+    <xmx:LIb1autSZclqgSgCMjcYXfz7f3-TG4EIJFu13rcYRYlFv3xXvuqTzA>
+    <xmx:LIb1akvxIJ80Do08wt6yzER2CcaT4RkBEgb7xl8huakw9lE5eJlL1w>
+    <xmx:LIb1avHZkyKCDYHXN5bL4LY8EPvrUmq0Rhqocr6RmLq2C_LNQVrCwA>
+    <xmx:NYb1ag6y-0KJmsy4GI_oyZKqDIFupBSr4UE9rN5CDa5GuRRBsmAx6rWK>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 1E26232A0099; Thu, 12 Nov 2026 04:25:59 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,21 +114,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-ThreadId: AD8wiEBgakfZ
+Date: Thu, 12 Nov 2026 10:25:28 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Christian Brauner" <brauner@kernel.org>
+Cc: "Matthew Wilcox" <willy@infradead.org>,
+ "Kirill A. Shutemov" <kas@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Miklos Szeredi" <miklos@szeredi.hu>, "Amit Shah" <amit@kernel.org>,
+ "Jan Kara" <jack@suse.cz>, "Zi Yan" <ziy@nvidia.com>,
+ "Bernd Schubert" <bschubert@ddn.com>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Malin Jonsson" <malin.jonsson@est.tech>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>, "Nishanth Menon" <nm@ti.com>,
+ "Frank Li" <frank.li@nxp.com>
+Message-Id: <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
+In-Reply-To: <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+ <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+ <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
+ <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+ <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
+ <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
+ <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
+> On 11/12/26 09:55, Arnd Bergmann wrote:
+>> On Wed, Nov 11, 2026, at 20:26, Linus Torvalds wrote:
+>>
+>> I tried to push for what I thought was an aggressive timeline
+>> last year, but that would still keep the Arm bits for a couple more
+>> LTS releases and only gradually reduce the scope of highmem in the
+>> meantime, removing support from architectures, file systems, and
+>> drivers where possible. See https://lwn.net/Articles/1051010/
+>> for a summary of my talk in Tokyo, including the slides and
+>> a link to the video for anyone wanting more details.
+>> 
+>> I also prepared a number of patches towards this, but have so
+>> far not been great at following up to get them merged, sorry
+>> about that.
+>
+> I think we can already start at removing CONFIG_HIGHPTE now, right?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Yes, I think my patch from two years ago still applies, see
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by LLM and not proven at runtime). If it was triggered
-   please include the symptoms, like the stack trace or kernel messages.
+https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
+https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+If not, I can send you an updated version.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+     Arnd
