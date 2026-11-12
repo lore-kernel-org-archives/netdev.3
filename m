@@ -1,61 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794450378;
-	b=I2naez42wIBbf93INhNTRoe/dLeJhN2on7Tyx+k1N//47N6IuIkblBTau81g9PO/MIuO
-	 RFVMjVBF/mCuKu/avhzkHaDwBMcrq2WTdYYYnVvOJWrjXDDjwea/iPsCIYeJHJzwVaYIP
-	 fcL5z7aK9NeJfJ4SqwH+rPqwgA5ABKMbmkTOBdh4F62pKM5UiAeAUHMCFsKSL4tI/2cz+
-	 P+NpozkEMJImqBGT8H/dEPxQ7lto8O8cSP//Q3z2y+NtGmWz6tqjOUUh/9J53d56ti8DK
-	 lffbiax4LYiugnzxj0gQ2+waRB/o0mSvljlQuXk39kVuV+/LcYMt79AXVbhlvlAgUjg==
+	t=1794450504;
+	b=w79RWo30b1mCDtt3+Tc+CEb9N1v8Ft0xXtYe8r/VdtwH+atAyb+vAl7DxKRRxsWstESi
+	 X+lTnptKfJ631zSorgT4dd4iibp1EwB25aJNbpN8D/7YX/GJ5J/Yzj8FQMJ+T5JWdNTsu
+	 +oDafOOkFwj4b0n8AKOiLeKZ8lYfOpSewLvhSYpT1Dyu/oCaRoMqXRrnenpSckWJ+846r
+	 iIZmbl7U+2u6kISr6cMspim7N8xidmfPpxb1aqHlvklwPhyAIjUtXyQe2S5z9jpa6YOwr
+	 OhOXKQJ++sgB8IyjtJar831183kuhQojfrqNN34PRqT31aL12VdpDk+k/xCo7Ue+nZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794450378;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794450504;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=ivaEEWTzoqwO0D7EurcMjNHq2ikATNWECtT5fWFlFMg=;
-	b=3aLDirkg/e9tsgHtRkdJVlAvyehv38awwz1F0n8Uke4xxYNB1/g2q47eFeNr2bAVF+aH
-	 C0kOd4N0/4bFpw0eBnbpC1gHnBpo+9VzePSK734v1OGdHmQrzoEY4PuQMiO+gPkHTTouU
-	 Eed00GOigVGc0v+mJVW8geP4IQvNYBny9SGm5F6kc0ApsLT0qmu00rAzE/WrrWglDycTW
-	 yVno6A9dzv6dC6qhYtMH1byfHureQlnmIlw2RfjMvi6VGjAq9TS6XEBXZ3NiHfaaiR6MW
-	 ULbUvbR9eBhfd8Gm7hcpx1fYoCRjEDG2KacgvZbWjjb1VNTolh3SU/Ns0KX42LF3/ww==
+	bh=I4EKeLYusuwV9UZSDwAKboaaUngjXvxm9EAu3qSXbis=;
+	b=t9Xi0E5E0sB058ZicnW8aggO77l1nRfEX2NqcBo87qGKaKN7GTofEDbxS2B7quFUBVYA
+	 PqxF4YWa2UzAc3VkmIrn1j4jeoihjEy91yhzCkeHH8OH78q5GTiz5txMDgL+tf4G+LOmb
+	 YN6R0bebImsijm773ebOG3bexwlEXua0SSj8mA9f9J8X0CVwrV/kKx8KRjt104J9Tbp0w
+	 Zn8Uv+t89yTvgF8eFzI001hs/MYRglbIKOAvVmVMtha9ZIXCiQ87STQAh0+sczwgJhwpc
+	 BLJoLwyc7ykDy5LlGIfe56yHf6PmDXZwgF45D82kn7Affpmxdaibz1iqwQuUhJs2z9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFjhtMJQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oiyhv3ot;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0757606A326
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989F5606A323;
+	Thu, 12 Nov 2026 02:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFjhtMJQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B04E1F00A05;
-	Thu, 12 Nov 2026 02:26:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oiyhv3ot
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFE51F00A05;
+	Thu, 12 Nov 2026 02:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794450377;
-	bh=ivaEEWTzoqwO0D7EurcMjNHq2ikATNWECtT5fWFlFMg=;
+	s=k20260515; t=1794450504;
+	bh=I4EKeLYusuwV9UZSDwAKboaaUngjXvxm9EAu3qSXbis=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QFjhtMJQbqRmDp8vXN4ABMEcLjpfUlNVGnpPfRckPKl1UNEm99kiLT0z2cAt9NU27
-	 y+sknb0HOyPWMbU/CLDsiXzmFqfF9GcrrQAghzqSaCz3yb51AeNw/ireq+me6428P6
-	 P5Y1nDIs7ci1bi8dtEduzHMHMIfHoEcP83Zg+htfIPxsGDSDLu2faND8YEJ532iBOP
-	 ZDR8HwsrU4M8paxWSg359zDRLK4wW0kdsPQkh5HMhh/d3SVUb9+jvDf9IyVx95B58+
-	 1BYFExumW3cfVipBBt1MB0Lzbx1kqYaeRsaY+GsgS4xEhI/a1z/CJrLqObWwQTlati
-	 /S4p64H1Kfw0A==
-Date: Wed, 11 Nov 2026 18:26:16 -0800
+	b=oiyhv3ot5t0hTyhk+LOCNGB2tDYfrjJmpw3GAUQuxaF5/i+FjJC+XfH+Ks40jnCRr
+	 OAwtS+rwHxfwl3XxHbYmszltVWZXFd4JPMRitDyzuhT+k1QdkGk8XShwWHJTfkMOw3
+	 IbNurWr+61zDP/H/GpSJ+3F+l7sIjCVhDizSFOZFJVOD8vCpPPxsuucikaduLzhl0E
+	 AuZlFvmGum8z0qXl9GwDxWgCH+2zYQr3UGCdxw2HR++GMpn7wnnVKs2lH4yh8jIo7C
+	 IgkEJkWhycNj10xwyajofSWMcnppyU/I/7DmlD94dhwdKVeW3h6I3GiEgoNfCEEJQ6
+	 iuuQRXbNevbUQ==
+Date: Wed, 11 Nov 2026 18:28:22 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Kiyanovski, Arthur" <akiyano@amazon.com>
-Cc: Avi Weiss <thnkslprpt@gmail.com>, "Arinzon, David"
- <darinzon@amazon.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, "Brandes, Shai" <shaibran@amazon.com>
-Subject: Re: [PATCH net] net: ena: avoid double-counting TX DMA mappings on
- failure
-Message-ID: <20261111182616.631c9e0e@kernel.org>
-In-Reply-To: <BYAPR18MB26005ED8BFAB5DEBB6D02B63D9702@BYAPR18MB2600.namprd18.prod.outlook.com>
-References: <20261109123934.824610-2-thnkslprpt@gmail.com>
-	<179444039825.7144.5680478965949082764.b4-review@b4>
-	<20261111171127.7ce982b5@kernel.org>
-	<BYAPR18MB26005ED8BFAB5DEBB6D02B63D9702@BYAPR18MB2600.namprd18.prod.outlook.com>
+To: zhu xin <zxyan0222@gmail.com>
+Cc: netdev-bot+sinfo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
+ rohan.g.thomas@altera.com, rmk+kernel@armlinux.org.uk,
+ o.rempel@pengutronix.de, wojciech.drewek@intel.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 0/3] net: stmmac: dwxgmac2: timestamp
+ interrupt support + Agilex5 fix
+Message-ID: <20261111182822.580e871b@kernel.org>
+In-Reply-To: <CAP7veT+buHRMu6f3o5RaKFdv3fABkWKgkO6KFn5js4PEeB8b0w@mail.gmail.com>
+References: <20261109134506.2794160-1-zxyan0222@gmail.com>
+	<179423231463.488859.16977464890948797360@kernel.org>
+	<20261111152012.3506cf35@kernel.org>
+	<CAP7veT+buHRMu6f3o5RaKFdv3fABkWKgkO6KFn5js4PEeB8b0w@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,42 +68,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 12 Nov 2026 01:30:29 +0000 Kiyanovski, Arthur wrote:
-> > On Wed, 11 Nov 2026 23:39:58 +0000 Arthur Kiyanovski wrote:  
-> > > Therefore please do the following:
+On Thu, 12 Nov 2026 10:18:41 +0800 zhu xin wrote:
+> On Thu, Nov 12, 2026 at 7:20=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Mon, 09 Nov 2026 13:51:54 +0000 netdev-bot+sinfo@kernel.org wrote: =
+=20
+> > >  - What hardware the change was tested on. For driver fixes please
+> > >    mention the device (and if relevant firmware version) used for
+> > >    testing, or say that the change was not tested on real hardware.
 > > >
-> > > 1. Add a From: tag to give credit to Evgeny Ostrovsky, who wrote this fix
-> > >    (without leading "-"):
-> > >
-> > > - From: Evgeny Ostrovsky <evostrov@amazon.com>  
-> > 
-> > Unclear whether that's warranted TBH.
-> > Avi is making the effort to upstream the fix, they deserve the credit.
-> >   
-> > > This should be first line before "ena_tx_map_skb() increme..."
-> > >
-> > > 2. Evgeny has agreed, please also add (without leading "-"):
-> > >
-> > > - Signed-off-by: Evgeny Ostrovsky <evostrov@amazon.com>  
-> > 
-> > SoB indeed seems appropriate if the patch is based on prior work.  
-> 
-> The commit code (as well as the other 2 that were already merged)
-> Are copies of fixes that we already published in our github driver. 
+> > > Please do not repost the series just to address the above. Instead,
+> > > reply to this email with the missing information, so that reviewers
+> > > can take it into account. If the series needs another revision for
+> > > other reasons, please include the information in the commit messages
+> > > then. =20
+> >
+> > You are at v10 and still getting these automated emails.
+> > What's going on? =20
+>=20
+> As for what is going on: I answered the bot's full questionnaire once,
+> in a direct reply at v7 [1], and since v10 the same facts are
+> described in the cover letter.  The bot, maybe, evaluates the
+> individual commit messages, where I never put the information,
+> assuming the reply and the cover letter would count.  They do not,
+> so the emails kept coming.  I will fold the tested-on and
+> found-by-inspection statements into the commit messages with the
+> next revision, which should settle it.
 
-I get that, but it sat on your GH for 3+ years. At some point the code
-sitting somewhere on GH becomes just a GPL(?) code drop and the history
-is irrelevant.
-
-> This is the first time I encountered such a case so I searched
-> how to give credit to the person who originally implemented the fixes.
-> 
-> If you feel like SOB is enough I'm OK with it.
-
-Thanks. Also first time I'm seeing this. I'd prefer to give the credit
-to the person who cared enough to push the code upstream. 
-Or differently put - the best solution going forward would be if you
-made sure to upstream ENA fixes from your team in a timely fashion :)
+Read what I quoted. It literally tells you to put it in the commit
+message on revision. How many times do you have to receive this?
+Please either pay attention or stop sending patches.
