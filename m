@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794488377;
-	b=5G9mnu01C/9rMmoV2TdfWyqUBZQyqhEkNi0+dnlNnHCzPmQylr56Mw7wy1G1glUP0Vge
-	 GxwZr8Xmhksc/KUNbx5qrIZFIV6kIaILV/R6Jdn+0+pKH6VgVYkLsbpTPxtd9u5nzvWqB
-	 eLpScamJ1+r99ZmE5w+dPJ9LIju4GXuaHmqMEIzkiTeqbjJ/QGSL085T9cfq88EJ1acVV
-	 o9XS6MgTgaq59KTptDLrOo0WoT5UIzj/BHJvbA40mPEFoDAo988F0d7F0F37mULOZzxXy
-	 qtec4JMc4cqsnlwQNouvxJfWJxznNmLYYWw80NZhdrwyNDDwJlGhn5sJEk2+Qg7ElYg==
+	t=1794488379;
+	b=wBh41CI5TsA7aakpw9uPaD4w9Wh11TOCe4FZtk4gbF7J7kPk4/MQoSlp30VSEtt2G/7S
+	 d0BO0XUbJy1w2kHClMQl8lWOCz83+TxcTuRFjLMxKRtkUERn+wgLtKyTHMlbp4179Sqyh
+	 0dXtG7MxN4zfIxx6wHUDYG/qVHZSUXZX2dPxHz0MweDGtSrUf9UtxJVvhRlIQeboM8BcU
+	 KtCEtlER2nhIN+wVM0tAM5lJB+4SKZhi0S0hQKcNQys3jTHREEI/uvMf7jcwwurUWcazG
+	 7L4TRpSAYdC0Os9/lxF7sSKCujv/Lqfd9tD79ny4Uaw41BkIxVvZTRKFwqpmIQXA/pQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794488377;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794488379;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=EByCVdvV3f7Iu9dpljvIrjYWNnIx5rUT2RWhUCFY3A4=;
-	b=UhXejzYRG/Z6f1mo13tPqtnOsQzLCM8TIatRZ4wb4zc2m/Vwjd+fvZdOrq6+urHDra4V
-	 /DPYCDq+9L8FtU05UPr2IKx0yyOilcg8wPbBup+vdffVHuOO55z97nA6v2RlcCFfwE65g
-	 pcQDBseHYAI4dZg5ZDw9np68g+UGTS5bW4tc8PENxMsE2I/g7BEctTo+USbiRXCIbsIRg
-	 NK9sknHZyXuL597JX3p1vmy9h8Dhc1S4JfLUj91y9Z2yTo0APwqi98mwWpXquSr0fakiI
-	 UiFJ+qG4ntxOlHElbi5sgfHscaXZpQPl94cX5I1DFUU7jpl6O81kts+CYmYfyd3CuDw==
+	bh=QbHi+525zRunXNfIuuoUlB/V5+/jcI7PNq6aGsnXADY=;
+	b=vELvhL1sOSMNU+34BuXr1ghS4wOBY2cFzApov0r00g8oSeO/sA2ILfso9JTz9B4tNKQd
+	 tZ/38UlNGGbUQBY5gpajbCVp8Rh7w82/c26pHGI9seImSDrgPRUZEL/ASNpidyAjpPBQ1
+	 LMsc2kpUJbvy5p4Nbo5yp7uURMN1ZjB+5aUNIDGm35+ygvrdTOYIeyimkuwXpQ+H5f8/N
+	 eimL2J8+WV6osItWFx8MVYYSPJt+A3aDr60VldXweL6zOMhEmpRUM9tM+QZ4ZhnArGi7p
+	 QCK++c2D8bYubEeakFvEezlpXjeWGeS4sIqeUrtfY5b3fbCFyOfMocx/p3wC+RvQ5FQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HI1Mg9KG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HRgTrpmF;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC1606A327;
-	Thu, 12 Nov 2026 12:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DF4606A8A2;
+	Thu, 12 Nov 2026 12:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HI1Mg9KG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HRgTrpmF
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794488377;
-	b=jdc1QQLkNIjNK6A6F/wCLK57Ei3ICDzqTaNZDRg2vnBcrY7dwxHPF7CAPG6RpC8UQSh5
-	 RAE/k1Fwo5mCiPvczUiMkGIyHW4zzi+J8kked2zQ8MVQO4iFAKl3fGmFFR0PO14+ZWsfd
-	 Iws0+Wpp3Baik0CQRf3cPNaDGnPEaV2m64I5iqnAYv8G606j0RQwxORE2mr+e/3FAcv1x
-	 UJkPxhFfJhZj2m2cNt8GYw1EaF9JxnRPQuieI7vt6SpiBQ25gxJ6sMNT744iPo8dmiC1X
-	 YDRcilT0rPIGur7Y+WdaBUekzvardBxppjvx44Wp5Yd/VIsYEH73ODNGzQxHhhJOOYA==
+	t=1794488378;
+	b=ckv9n7lIzUu4nJ2iLDWd/empNTY31smuDwrl/JNQ7LRpo3nTBKMY11FqkSy8Nv6wnv17
+	 l0cq11bHHtqxJ8KELOI/Pt1tDgrcy9S+8qrx6J/zxgNu0l8IpQhnfKTrpmUDI+yI8YLag
+	 8P09M5mMrJRlv839I6XzLLuU+KCWJkZIsjCMeI/VszecSeQP1HIIwmPe//httdAWxlPZb
+	 aPfxWZQbLc4PClG+6X5/bGSpMHdkHUd05O/Nu2RGrSMf+pkzNa4lwYTmhp7mdOkFzYXuo
+	 Iw7KWR/MfDw2dKPH0UFHjEE2NPlWJhhUib0CUxWS8M1VNMR5Luzl4JOVRGCMuxIylxA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794488377;
+	c=relaxed/relaxed; t=1794488378;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=EByCVdvV3f7Iu9dpljvIrjYWNnIx5rUT2RWhUCFY3A4=;
-	b=nSRHQI33G6jzXE4u9aVB6I1rPURWPv715DOKJkp2oJTmV3mWQTPYkLvRWYHN4IukVirX
-	 lchbxQERg8glE3BaSu/cK+8FwUwe+7y44UCMZRl6UEIfZhg+kL0se3GlHvTsSaSfzRwYe
-	 Gn5wcCwIOJpOWHShgT/wkddEIq5wyz0Zaqb9nElDjYb5o9NrHM0fuVtVtyh82eJk9tFxa
-	 VEI65hezhB8LKXInX9ZO5gnzh86Tr9cJoWflj3Ekgh4k4QuFbie8+RC2H1EQvr6fHfdsW
-	 6PkuQxjVdKoCqggjzk/Yw0gMw5oHluPhGDitPqXVY3K4CO+FVfWxfEPZDBgvVjP3YUw==
+	bh=QbHi+525zRunXNfIuuoUlB/V5+/jcI7PNq6aGsnXADY=;
+	b=NzQMETrL21BpS8YPkdXm4WZtsk+N6/s9pydcGHzrispqShEJhvzUnC5dvhHqnowmLe9r
+	 tNGom/SKPp7OIYkvQZkWNEYzwdWhrimrS6YdhsuS8oo6uGXlj53QjzS7cliiG+OVydUBL
+	 jRQg0EIl6G/9sX1gcD0Ac9O7fUgDCzhbfiOV8Yi1rQdapo6vteVeFgupWEu/HoCq77Rvh
+	 Rrltf+6INivnAkmxZMb8G8/V3sivI0muHdNj6KJPQr6hVItNDKN0F2uE/vr+EtObJJWOD
+	 FfRTM1X1Fav6RB8BEIH4q8Y1CI+3aDx1GOBmXGOd3gtU8gYQtGXwCkjXqH7IbW99fNQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A157B1F00A06;
+	by smtp.kernel.org (Postfix) with ESMTPS id A20CD1F00A07;
 	Thu, 12 Nov 2026 12:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794488377;
-	bh=EByCVdvV3f7Iu9dpljvIrjYWNnIx5rUT2RWhUCFY3A4=;
+	s=k20260515; t=1794488378;
+	bh=QbHi+525zRunXNfIuuoUlB/V5+/jcI7PNq6aGsnXADY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HI1Mg9KG5Z+PfKTz6FRvnM0Pjvs5HGkeMMNxnTbiuBNhhqdEJVxuX7oHDToNYANmq
-	 dgeo5rQ/tpOf4V7ZdZqcyTmQ6RvoaWE6dazNrF8OhQVY2uLxUqp2ufSakBwb46RqiI
-	 lVDrzt4WT62NByEvLpscwvceeXDcFgbqf7ljNnMCTNj6kKWb3+o9midrQXSqeXdGbL
-	 kGpjAyTs4FNHLFRgI/0zJG1+bla9XgEi7KoQp7ScHEuFZi0zfegImfGT65Nbxdmm+P
-	 n9jKXzLDYDgpjrSwpl8fMlGnBr2GCeo+CnTPInRCpjw2ogCewr2x5skA35uv+++W7t
-	 nAjwnqV5Bm/Cg==
+	b=HRgTrpmF9HXWd/vcSrMg48KtDwCnA/+YJVRqaBT7O6/Rr8ORlFxEXkSrqpq1avpSO
+	 vCv8JJEoGuAW24GKGKQW6bAa4ePi4GRXL9VA8CwOcVAocoEwpG0SZXZ8y4qXtsFLug
+	 658q3tavvGzhBZRfrGzeSrmhCf7jCFKPq1YMyEAHQ2gSSS7DjxOk0BqNlMs46yHkJM
+	 lu9zjucGZLdTmaxfOyZb+41AbE2gW2nXqjaOUuJiTmWb5YY025ITm7OnXzLe65oz8y
+	 1ylimhnIHk3TAQAowLC04hvv7y3MwSOqdGR0mdO/nIGQxlTAxLuFrUUMvHGWVDy95O
+	 aJoIEs6VfAKlA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 2AF4F494E0;
+	by lkml.kernel.org (Postfix) with ESMTP id 175CD4949B;
 	Thu, 12 Nov 2026 12:59:36 +0000 (UTC)
 From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Thu, 12 Nov 2026 07:59:36 -0500
-Subject: [PATCH net v9 2/6] net/smc: bound the receive length to the RMB
+Date: Thu, 12 Nov 2026 07:59:35 -0500
+Subject: [PATCH net v9 1/6] net/smc: bound the wire-controlled producer
+ cursor to the RMB
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-b4-disp-0287c16e-v9-2-e5e8fa688177@proton.me>
+Message-Id: <20261112-b4-disp-0287c16e-v9-1-e5e8fa688177@proton.me>
 References: <20261112-b4-disp-0287c16e-v9-0-e5e8fa688177@proton.me>
 In-Reply-To: <20261112-b4-disp-0287c16e-v9-0-e5e8fa688177@proton.me>
 To: Mahanta Jambigi <mjambigi@linux.ibm.com>, 
@@ -100,11 +101,11 @@ Cc: Ursula Braun <ubraun@linux.ibm.com>,
  linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
  Hidayath Khan <hidayath@linux.ibm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794488375; l=7328;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794488375; l=3046;
  i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=L04qSXw7HxPjxskjaVdA+heWOrdU6VRxVTt4ADzW71k=;
- b=MHldl2jRMuehMOviHeXXwU87Dt56cbbB5lIWm+FP2yZznslhbjt/TyuNhNwNMMAevTsGJfQrr
- 2k9b/y85lwhAmtx39+WM8fyzfDh4gHrpFAtRb7vfZAxHQ9Eho3dFNvl
+ bh=9ja5JoT+O2VUsGXhvlsOd1Bx55l6YLeZkBRApwlhPSc=;
+ b=BK996OxiMePiy0poiokFLsk4hlFCtR1AhzXkg4ZUawq4cbA2Jttg3YCn7cT2pGbopacW6AxC+
+ wmlNjg+qlIYA+XT4dcuD3rV80W3jSXD8nRYGAtI+soEvQXMLExk3Jqk
 X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
  pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
 X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
@@ -115,175 +116,77 @@ Content-Transfer-Encoding: 7bit
 
 From: Bryam Vargas <hexlabsecurity@proton.me>
 
-smc_rx_recvmsg() sizes the copy from bytes_to_rcv and starts it past the
-bytes MSG_PEEK or splice() already took. A forged producer cursor drives
-bytes_to_rcv past the RMB or negative, and with a conforming peer it
-drops below the peeked count when a MSG_PEEK|MSG_WAITALL reader sleeps
-while another recv() consumes what it peeked. Either way the copy reads
-past the RMB into the reader's buffer. poll(), SIOCINQ and the deferred
-accept read the same raw count.
+smcr_cdc_msg_to_host() and smcd_cdc_msg_to_host() import the peer's
+producer cursor from the wire into conn->local_rx_ctrl.prod without
+bounding it to the RMB. smc_cdc_handle_urg_data_arrival() then uses its
+count as a raw index into the RMB, so a producer cursor past
+rmb_desc->len makes the receive tasklet read past the RMB, and
+recv(MSG_OOB) hands that byte to the application.
 
-Make smc_rx_data_available() report at most what fits in the RMB behind
-the peeked and spliced bytes, never a negative count, and use it in all
-of these. Cache the RMB length for the unlocked wait, where rmb_desc may
-already be freed, and drop released bytes from splice_pending under the
-socket lock, with the consumer cursor update, so a reader cannot run
-between the two and count them twice.
+Bound the producer cursor count to rmb_desc->len when it comes off the
+wire, for SMC-R and SMC-D. Leave the consumer cursor alone: it indexes
+the peer's RMB, which can be larger than ours, so clamping it to our
+RMB would under-credit peer_rmbe_space and could stall sending to that
+peer. Conforming peers are unaffected.
 
-Fixes: 952310ccf2d8 ("smc: receive data from RMBE")
-Fixes: 9014db202cb7 ("smc: add support for splice()")
-Fixes: a4b6539038c1 ("net/smc: fix data error when recvmsg with MSG_PEEK flag")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c@proton.me?part=2
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c%40proton.me?part=2
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c%40proton.me?part=1
+Fixes: de8474eb9d50 ("net/smc: urgent data support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
 ---
-The wait predicates run unlocked, where a link group termination may
-already have freed rmb_desc, hence the cached length; v9 reads and
-writes it with READ_ONCE()/WRITE_ONCE(). With the old splice_pending
-order, a reader that took the lock between the cursor update and the
-drop counted the bytes twice, and the next splice() returned stale bytes
-in place of unread data. 1/6 bounds the producer count, but wrap bumps
-still grow bytes_to_rcv past the RMB (see the cover).
----
- net/smc/af_smc.c   |  6 +++---
- net/smc/smc.h      |  3 +++
- net/smc/smc_cdc.c  |  2 +-
- net/smc/smc_core.c |  1 +
- net/smc/smc_rx.c   |  9 +++++++--
- net/smc/smc_rx.h   | 12 +++++++++++-
- 6 files changed, 26 insertions(+), 7 deletions(-)
+ net/smc/smc_cdc.h | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index ec5980add7a9..90e7d0d2e398 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2774,7 +2774,7 @@ int smc_accept(struct socket *sock, struct socket *new_sock,
- 			if (skb_queue_empty(&clcsk->sk_receive_queue))
- 				sk_wait_data(clcsk, &timeo, NULL);
- 			release_sock(clcsk);
--		} else if (!atomic_read(&smc_sk(nsk)->conn.bytes_to_rcv)) {
-+		} else if (!smc_rx_data_available(&smc_sk(nsk)->conn, 0)) {
- 			lock_sock(nsk);
- 			smc_rx_wait(smc_sk(nsk), &timeo, 0, smc_rx_data_available);
- 			release_sock(nsk);
-@@ -2939,7 +2939,7 @@ __poll_t smc_poll(struct file *file, struct socket *sock,
- 						mask |= EPOLLOUT | EPOLLWRNORM;
- 				}
- 			}
--			if (atomic_read(&smc->conn.bytes_to_rcv))
-+			if (smc_rx_data_available(&smc->conn, 0))
- 				mask |= EPOLLIN | EPOLLRDNORM;
- 			if (sk->sk_shutdown & RCV_SHUTDOWN)
- 				mask |= EPOLLIN | EPOLLRDNORM | EPOLLRDHUP;
-@@ -3237,7 +3237,7 @@ int smc_ioctl(struct socket *sock, unsigned int cmd,
- 		    smc->sk.sk_state == SMC_CLOSED)
- 			answ = 0;
- 		else
--			answ = atomic_read(&smc->conn.bytes_to_rcv);
-+			answ = smc_rx_data_available(&smc->conn, 0);
- 		break;
- 	case SIOCOUTQ:
- 		/* output queue size (not send + not acked) */
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 36b243b34a9a..8601304b3c06 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -204,6 +204,9 @@ struct smc_connection {
- 						 * rmbe
- 						 */
- 	int			rtoken_idx;	/* idx to peer RMB rkey/addr */
-+	int			rmb_len;	/* rmb_desc->len, still valid
-+						 * after rmb_desc is freed
-+						 */
+diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
+index 696cc11f2303..4d630a305118 100644
+--- a/net/smc/smc_cdc.h
++++ b/net/smc/smc_cdc.h
+@@ -221,7 +221,8 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
  
- 	struct smc_buf_desc	*sndbuf_desc;	/* send buffer descriptor */
- 	struct smc_buf_desc	*rmb_desc;	/* RMBE descriptor */
-diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-index 32d6d03df321..e2c765ff2ba3 100644
---- a/net/smc/smc_cdc.c
-+++ b/net/smc/smc_cdc.c
-@@ -381,7 +381,7 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- 		/* bytes_to_rcv is decreased in smc_recvmsg */
- 		smp_mb__before_atomic();
- 		atomic_add(diff_prod, &conn->bytes_to_rcv);
--		/* guarantee 0 <= bytes_to_rcv <= rmb_desc->len */
-+		/* can be out of range, see smc_rx_data_available() */
- 		smp_mb__after_atomic();
- 		smc->sk.sk_data_ready(&smc->sk);
- 	} else {
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 0a9f5418329a..0edbe6106c1a 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2511,6 +2511,7 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
- 
- 	if (is_rmb) {
- 		conn->rmb_desc = buf_desc;
-+		WRITE_ONCE(conn->rmb_len, buf_desc->len);
- 		conn->rmbe_size_comp = bufsize_comp;
- 		smc->sk.sk_rcvbuf = bufsize * 2;
- 		atomic_set(&conn->bytes_to_rcv, 0);
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index 63c178c10bf1..78ab3df1689c 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -118,15 +118,20 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
- 	struct smc_connection *conn = &priv->smc->conn;
- 	struct smc_sock *smc = priv->smc;
- 	struct sock *sk = &smc->sk;
-+	bool drained;
- 
- 	lock_sock(sk);
- 	if (conn->freed) {
- 		release_sock(sk);
- 		goto out;
- 	}
-+	/* lower splice_pending under the socket lock, with the cons update, or
-+	 * a reader running between the two counts the released bytes twice
-+	 */
-+	drained = atomic_sub_and_test(priv->len, &conn->splice_pending);
- 	smc_rx_update_cons(smc, priv->len);
- 	release_sock(sk);
--	if (atomic_sub_and_test(priv->len, &conn->splice_pending))
-+	if (drained)
- 		smc_rx_wake_up(sk);
- out:
- 	kfree(priv);
-@@ -543,7 +548,7 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 			/* increased in recv tasklet smc_cdc_msg_rcv() */
- 			smp_mb__before_atomic();
- 			atomic_sub(copylen, &conn->bytes_to_rcv);
--			/* guarantee 0 <= bytes_to_rcv <= rmb_desc->len */
-+			/* can be out of range, see smc_rx_data_available() */
- 			smp_mb__after_atomic();
- 			if (msg && smc_rx_update_consumer(smc, cons, copylen))
- 				goto out;
-diff --git a/net/smc/smc_rx.h b/net/smc/smc_rx.h
-index 994f5e42d1ba..1833eca15bfb 100644
---- a/net/smc/smc_rx.h
-+++ b/net/smc/smc_rx.h
-@@ -25,7 +25,17 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo, size_t peeked,
- 		int (*fcrit)(struct smc_connection *conn, size_t baseline));
- static inline int smc_rx_data_available(struct smc_connection *conn, size_t peeked)
+ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+ 					  union smc_cdc_cursor *peer,
+-					  struct smc_connection *conn)
++					  struct smc_connection *conn,
++					  int max_count)
  {
--	return atomic_read(&conn->bytes_to_rcv) - peeked;
-+	int avail = atomic_read(&conn->bytes_to_rcv);
-+
-+	/* bytes_to_rcv follows the peer's producer cursor and can be past
-+	 * the RMB or negative. Report no more than fits in the RMB behind the
-+	 * bytes already spliced or peeked. Compare before subtracting: near
-+	 * INT_MIN, avail - peeked wraps. This also runs unlocked, possibly
-+	 * after rmb_desc was freed, hence rmb_len.
+ 	union smc_host_cursor temp, old;
+ 	union smc_cdc_cursor net;
+@@ -235,6 +236,12 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+ 	if ((old.wrap == temp.wrap) &&
+ 	    (old.count > temp.count))
+ 		return;
++	/* The urgent path uses the producer count as a raw index into our
++	 * RMB, so bound it. max_count == 0 leaves the consumer cursor alone:
++	 * it indexes the peer's RMB, which can be larger than ours.
 +	 */
-+	avail = min(avail, READ_ONCE(conn->rmb_len) -
-+			   atomic_read(&conn->splice_pending));
-+	return avail > (int)peeked ? avail - (int)peeked : 0;
++	if (max_count && temp.count > max_count)
++		temp.count = max_count;
+ 	smc_curs_copy(local, &temp, conn);
  }
  
- #endif /* SMC_RX_H */
+@@ -246,8 +253,9 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+ 	local->len = peer->len;
+ 	local->seqno = ntohs(peer->seqno);
+ 	local->token = ntohl(peer->token);
+-	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
+-	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
++	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn,
++			       conn->rmb_desc->len);
++	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn, 0);
+ 	local->prod_flags = peer->prod_flags;
+ 	local->conn_state_flags = peer->conn_state_flags;
+ }
+@@ -260,6 +268,9 @@ static inline void smcd_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+ 
+ 	temp.wrap = peer->prod.wrap;
+ 	temp.count = peer->prod.count;
++	/* as in smc_cdc_cursor_to_host(): bound prod, not cons */
++	if (temp.count > conn->rmb_desc->len)
++		temp.count = conn->rmb_desc->len;
+ 	smc_curs_copy(&local->prod, &temp, conn);
+ 
+ 	temp.wrap = peer->cons.wrap;
 
 -- 
 2.56.0
