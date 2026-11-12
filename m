@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794508806;
-	b=u4Rd9OwpqjcEAMCms1vygVtgYPqT2TAsLZvw8RRVE5vzwHe8KpoQubbmU4hTovPPmgbA
-	 bBFi2XzWsLzADwn7dHu8R3w8JwDzpxIxnDmCuO9axHwJW4zlk22UDh+uONrs2ToQXikzd
-	 gU+J22eHWbgQBLj6SXsKkZqNDvW3ySJt1dl469HuASWj0IpFWuVO8CEmzM1v1vDVFcg33
-	 vfeKYFsUouaOm1+R83+3M2pfiG4juiJlpr4O+1uUr7YSHoMre6XjUTpdENU7VKzVAEF4q
-	 OUPR+txji0KslenUEOaWpT/37d5EFkOjTHFP2OvSXMF5nrmlS2LxqLgHuV+ilwY9mXw==
+	t=1794508809;
+	b=pFN9JueNjTEQbWQiOCS1Zcq7S45n1TfblE+eUOkPHoY3AqwP5gymwBfPEXimzTGuMPlu
+	 N7YWU4Gp6B+L403wOgpbxs+9etQOhmyta+IseQAd9vHmXjurhM8Ubl26BdkkPgN3eX6oI
+	 hqCHA/mQvxVKj5RweXFVY1d4IQ0Ezfn2gMyHMuFEnVOCHHBvoHxIKlY8mPJbT6JJ1N58I
+	 NrDRTuS7KGrImnr/7fNljVBtiin6WurhmhlvpToZHmmERehHyAvnXlnEA9SErdVbQuHHk
+	 C8PIlqljTg3049SmFSB0nFGVzap/3sARLo6eeV+XRr86LC3rlOJjt1sOoDnTGT8Tx9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794508806;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794508809;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=//DGCwL3Y1u1mfVqzISzAnZGj/wOqtSDLZS1SHCj9Es=;
-	b=YaAl0OFz4tRLUaFvQjlV8wpmcCB6ARTMLvJAcIcyRWGlMrk66BfxOjHdbrx4cTWcyRSI
-	 4O/LN3ulc9debkH/21CqcmjyqKu0jTabeS5JEYfLgLbxA6sITHeroXoZWUTgvnktHNAzU
-	 lC1JWAwUJjUmbGwMsbePCO9nuIsnw1OsshcwrcsyhwBLo1cPM19RTV+e2p5QBhYT+4Zt7
-	 nxzpahR4wkSc2IKjbiagIrD1Sy5gdiwb7JrIh4ooRlOXwVH0N8FyBTw5hz3/MUwLx74Mn
-	 nBDw3wRjgOMtlbAL5OQbrU+l5z02AdO30EG2BfE+wSyUJ2iL6JmHFgopqDzVG66dk8A==
+	bh=OAIkw6rCIhMoz1r7TO6vR7yffvK4hXnx21iyJ/EHltQ=;
+	b=p79uJWDoIHu4yRXHupo3pXcv1GZ+L6B3qFhe6PB+cze39MCs1gKTMJiajeZG1zuxkPfp
+	 t6MHKOmvO5RTPKRfBnoJzZVAky/HoZHEtuMlcANgb78e9ilNecKQw1+BbN+gzqw8TXAt/
+	 60HHlqIJ+oh4XLi7gF2sLEJPZJgSXifS1XnLakJmB5Dd6V1jrr7eZgCzf66Lfnb1A3B0C
+	 Mrk8Rf/flLHmpVO8jZVdCxVIgumdR0eaoTcLrfMdCvkjMe2009bzL9CdtCRNSqZbzL0A6
+	 2ilZ2aZb1E6uH8gsTk5DCco/C6RZh17BG6KugP07CoavtKhhtg7DsI/6kmNN1gRaGDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpmtM0TP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SW3TDUyV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66C606A32E;
-	Thu, 12 Nov 2026 18:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F99606A32E;
+	Thu, 12 Nov 2026 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpmtM0TP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0753C1F000C5;
-	Thu, 12 Nov 2026 18:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SW3TDUyV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4575A1F000C4;
+	Thu, 12 Nov 2026 18:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794508806;
-	bh=//DGCwL3Y1u1mfVqzISzAnZGj/wOqtSDLZS1SHCj9Es=;
+	s=k20260515; t=1794508809;
+	bh=OAIkw6rCIhMoz1r7TO6vR7yffvK4hXnx21iyJ/EHltQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cpmtM0TPt8HPg8KetPSukxQGiC6Y8NS2UWC03RfxMyl4AkR+dA6hQ7An2GXvXzeXx
-	 3dq5u7gcnApuQvVEXmWxW16XMi0SbjazYND54ORM4+cIGHBQ3/nLy6Xr4Q7326+40N
-	 VNTMm3xBudS+qXvf0F+3LQKtLQu5YLzHinF53pgMYfIUAI8Ucgeg9SgFJSsTBzxKY3
-	 LlOjGe9DjSuCWWZMbqeP0AC4+8pmAoER9exX+G4BUUJwHxi0nJ1HQeRZCdnuTbH++P
-	 obaUe5iy90y0+S5jOWR2Q4hJJQD3L3fkO57Djd7Ly7HlDj2YqZyKN8wKMsYdGsHe+i
-	 6J6yU+Keh+cqw==
+	b=SW3TDUyVZHG9XU+aYqqnDeaTZi5wx2RU29TD0tD8rFECwra5QdmrzmC2//aZ0FheL
+	 VawBgcsTltOH6Jr6JyVPHzMfrlybd7dIINVXcNmCSnLorSIBzCKAnnqLwMWY48pJSB
+	 Ba0BH97C6HoaR4FNRdjtUrQTkztmO/t29Dst4Hijp6boBNcMQsIEk+BUKFgDACN2xk
+	 ITzDEZDnM+lKt5pfKgoawNOZV3CHmJbFunKsrgusITkQmEq/ALPLHT74hcmCkGXD4N
+	 guHul5ANi2ZkcAgaLegQKc6EvEXCWro0zgLowpXgbkrOcJdczaO5V/cLC1WA4xZ1hQ
+	 qUgxeUshTdyaQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1586380AAFF;
-	Thu, 12 Nov 2026 18:40:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A36A380AAFF;
+	Thu, 12 Nov 2026 18:40:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] bnxt_en: Take RTNL before netif_close() when
- aborting
- FW reset
+Subject: Re: [PATCH net-next v2] vmxnet3: stop DMA mapping the adapter
+ structure
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179450880478.585389.16589339038635282296.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 18:40:04 +0000
-References: <20261110044235.204386-1-bcochrane@google.com>
-In-Reply-To: <20261110044235.204386-1-bcochrane@google.com>
-To: Bryan Cochrane <bcochrane@google.com>
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, sdf@fomichev.me,
- joe@dama.to, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <179450880777.585389.73990303934312950.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 18:40:07 +0000
+References: <20261110154048.143227-1-kapoorarnav43@gmail.com>
+In-Reply-To: <20261110154048.143227-1-kapoorarnav43@gmail.com>
+To: Arnav Kapoor <kapoorarnav43@gmail.com>
+Cc: ronak.doshi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  9 Nov 2026 20:42:35 -0800 you wrote:
-> netif_close() must be called with RTNL held in addition to the netdev
-> instance lock: __dev_close_many() asserts it, and the NETDEV_GOING_DOWN
-> and NETDEV_DOWN notifier chains it runs rely on it for serialization.
+On Tue, 10 Nov 2026 21:10:29 +0530 you wrote:
+> vmxnet3_probe_device() maps the whole struct vmxnet3_adapter with
+> dma_map_single() and passes its address to the device as the "driver
+> data" (misc.ddPA/ddLen) in the shared area.
 > 
-> Commit 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
-> replaced rtnl_lock() with netdev_lock() in bnxt_fw_reset_task() and
-> bnxt_fw_reset(). That is sufficient for the paths that only tear the
-> NIC down internally with __bnxt_close_nic(), but the abort paths close
-> the netdev via bnxt_fw_reset_abort() -> netif_close(), and the error
-> path in bnxt_fw_reset() calls netif_close() directly. Those now run
-> without RTNL and trigger a WARN_ONCE() cascade when a firmware reset is
-> aborted:
+> The adapter is the netdev private area, and alloc_netdev_mqs() allocates
+> it with kvzalloc(). struct vmxnet3_adapter embeds 32 tx and 32 rx queues
+> and is well above PAGE_SIZE, so when a high-order allocation fails the
+> adapter ends up in vmalloc memory. dma_map_single() then warns
+> ("rejecting DMA map of vmalloc memory") and returns DMA_MAPPING_ERROR,
+> and probe fails with -EFAULT. syzbot hit this with page allocation
+> fault injection.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v5] bnxt_en: Take RTNL before netif_close() when aborting FW reset
-    https://git.kernel.org/netdev/net/c/bf83b257423b
+  - [net-next,v2] vmxnet3: stop DMA mapping the adapter structure
+    https://git.kernel.org/netdev/net-next/c/42abea827cf2
 
 You are awesome, thank you!
 -- 
