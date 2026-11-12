@@ -1,99 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794489676;
-	b=sMJP4YgMuaby0V4MbZbXDQe7MC7QaoBGACRWw8GtXcPaalrVsuMtcFYB354sh77sHDoT
-	 8DgSFfBjWl5OWu8YXU/89HiWxRr3bpqblYxmI8/zFt0kHk7mpKJidXKrFxFk8870LPWWs
-	 VELZkCJTrOYCV7arrIWu3NTtVNwjNcF/a2TOvsQcYCGdzRaR66LpYQMyK0Ilcw1SGwM7L
-	 x4LfM7VzlP91b9k1o+Isum7Fv9rY68+Et//1JYu0I8TdkL4TrJIf+FWwjma4h6fK5w4UW
-	 5ejWhNeIbriJE0dcgSvqz8baO9Bj+6agg6unCrPbJdhUQN+ISMchjM4cf+hrmvZE7bA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489676;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794489762;
+	b=i2HZ5yl5OeJ9xDFXXkZm0Q/2YVbE94lp94+iLr3FtGEVY0GhoWW4v12b/DOfTlxek+l8
+	 Ub5QnQ4UlJn3+fTamcX6ad9oSthNcMq1ejewQdgHY99zOXwxuD+VHm6t/Q2HlxhFnRSSg
+	 pKjSE8dAmTqC4U8/EvvFAcv2CpvgSY14l9PWnLVn2TnC/LRHEgWHy+oAg+ozOe03qDhei
+	 bYA1oaqEWEzf9OeEPx1P1o8nxRHT2MILiGO6qM8azhi9JvALWX5jUmBgxs8EEhapK1daS
+	 BS9Og4AJdyfdTVRSGRc7efzMQ24JtOZJ+KF5drm5CwJCJjMxhOP0kMrt2BzDlZZ8P3Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489762;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=8xpDDYtNnR4aoubqNFgyzZP7ndEXc4ZbJtRWR/okbkc=;
-	b=HHFFHg83VkkBqbhvrKRag8/HOkw3FYobtqeDFZIMgvGdKurkldvCEAfTSDQeB4GpqnvY
-	 754gSni2PRd0In2VYvaRUru5gfBKVTohTJ1iXGd5SoQA6gyxRBQy7MRU9b2LyhzKiuls0
-	 0He511f9uFV1qAnEArqsXgmWpwV/eRcJvhAc/5wCytd+L0KEM+KqYwtscuxia4qH3O6Qd
-	 4wCpibvUc4tCfZnP1Vhj3XeNIPy8gchd0d+ilpPlpDSlm8Xm9HT6LoqyedCvl3rS7EQQu
-	 NZt0TJe4oaFkcVRc9KNc8WaxdLFnSqRU6evcN8U2ttsu2gqT8nbwVx3kcs+JtheH33g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
+	b=qedST5NlZmctu5Ei87X3q8KgdLmoTAUzJw09pnS7sBKK2pnsV3UY18KrD5hOA5cQtb+5
+	 V8iXLLALNWMEzlrq1fqwpGwGUh8J2mFBLhA3RxIjn9tahjNRUUviUhKW7dHSRtYve/zFq
+	 gk4Vp3F9g6+7btS7Z+kKuskR0qEqGyhrWFgMV6PkrIb5btoIU3z8ZTMJDzmFQOheSaTfC
+	 hyjf1XZ6MpQ6JfIg8e+queZDi5Tok77Ri32+XffSz6zHJshDzpXN/3bD0cRsCgN0acHvm
+	 XnKi5VAY20mdk3/+w9cAa1f9joSJXTj30nAOGaOpxMF99WjPjBM5SGni2Vaff38D9Uw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bWkY05Zm;
-	arc=fail smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fbErw5PA;
+	arc=none smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1B606A880
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:21:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AC1B606A880
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498B606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:22:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7498B606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bWkY05Zm
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso4292839a12.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:21:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794489675; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cUY0v6JxpZ4aRBWzdCzjNmh2Ytp8TpHPrEnHjq+a1ZJTTalqsZvZ7QSWjUiUcse2Jm
-         WOvBYyRWFMy4GffzVFnUYe3YMDV+G66WwU4xni6hP8FC9lRjnv7KuhFTZ3xdy0h6nhVu
-         jIW9VTHB84EY7X6Bz0c8z4bE0qB2Nn8yd3zb3TEtM9j93hyGGNABDW/8Nch/MB7L0iT1
-         UVWKxsz/6j8Lc5LGyE5eXRzNooCkbNQEMFIwFUJKhIoCzFYEWj2aq+6K8BdIuYONqhKQ
-         k3VFwZ3+ZeQIB5YSZBPjy4Qj4yehZpXekCOCBjdIN4iM2/ne0nHWBbMbXf6+Juq8ajV8
-         UUvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=8xpDDYtNnR4aoubqNFgyzZP7ndEXc4ZbJtRWR/okbkc=;
-        fh=8emk6p0nKhs9OUe+So38DQarg/dTEtGVD+kJN/rYugo=;
-        b=jWIzVS5fgX5Kh/SOr12JYR+25eo+JKqX/cdKTOCUGJ8fNedwbsI9PXb7KsxBtkEqCj
-         pMkEb+RzA0588y8fTllYsJCciuIYFIPg7DhdOJa3QW3/KFK4+Xpon+C4wAc3vq0glCRT
-         DOoAjYKuseOCd+hIFJx/VOOs7aNXwdlKIP1LoXxLYQoRnznctq6vq3faUoN2IDH5Tyf5
-         cSpzNIEX+SehtRPURgSfGxTAZ4xJAlan/Zd6eL4gbo8XyqSwHp1t+ZJT9Qq+Nfj0GuvG
-         qjgXg/644Oc4UIIrox7d1r8JNcnWVp4u48aQsalXiAlFmxvQ9At9Jr71jdq1INrD1QWN
-         i1WA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fbErw5PA
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c247f6687dcso699695666b.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:22:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794489675; x=1795094475; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8xpDDYtNnR4aoubqNFgyzZP7ndEXc4ZbJtRWR/okbkc=;
-        b=bWkY05Zm+4Ji3lpgLQHZzBS1LhxOm6Edqx5AQNdzdhkUYGakxIoCc9C6XZtdt8P+qe
-         fl44R1s9HzqS9vhtDtJa16X3X4g3tTNtDFh+4soV+5NG0ebKZRx22iG5h8IaPbJLXgu8
-         ANESjQZPMd2jGgxbRSnp6ciDQagEEYX1fMeeQu6lKHY8LcUbykBCVP7D8XjdQGm1S1JU
-         LwZovkG8gNRmvBqOoxh/tWcFLFAFdIub3p+i/19TyiqX4OBhvg+c7QYp3F131+21pLV6
-         p+lch4/T7JbNJG++Qth1BGNYS3JViS31mITKXq2KIsXmO7Ouk2i39BrsvgWNErZLfYCt
-         ZNJg==
+        d=gmail.com; s=20260707; t=1794489761; x=1795094561; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
+        b=fbErw5PA4On6cMTc6udCzm/omXr3aSgfT+CqQZEoErw2vBXWAt6ioofBLt7a76KOPw
+         YLZmNktd6KTgdyc8FPQJft+TFWssmC5hXLbG4d2/CPAL+gD0zT3vXBEUF5hSKSvXXnru
+         HkaiO4qF0/tWRR4HD/SsgqwEld4bYqu1GT7VObDFDTRtLDh7/dkIF26wOp054Ws7X94O
+         XOHlVrWtwFhARnL0u7wWZVDg42YuNd9TzRsbbGXJLbk94Kn04bvI1XthKBjvFLSR/NuI
+         beEb3/bfJ5BaN10FXKKKtuqk6OAmRjsKfppSoYyriZvHloJ3CIUHOEcfOeuEgtIUqYAL
+         UwNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794489675; x=1795094475;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8xpDDYtNnR4aoubqNFgyzZP7ndEXc4ZbJtRWR/okbkc=;
-        b=Cqz85ddOdBibj+1R3jzlrVhGvTKD9eUPj1nAM2TemYhHR3iaC5SYeeUvmJFgo+odRB
-         Tq3abI742HKPntmy87xHPwALYPuoMyu8RxUcEASj7THY5SWf64xpg6qs54Iw2+Fq/ox9
-         K2zLRx1IfRLCKbPdIrHqarjziFfvfp20q8CHdgVyaO+cqFMb0NbOUN8rPYdV6yj2TANO
-         CQ9bzXDCCTTPr5n/xp5lBZ873xSz95pC6pegkBQsD3vgoUrfSKu1r/6V6ozA+SsYJeiv
-         P2t/ex876w+FfaY0PKlOX93TnXqddjL6S5QxfED5MQT4xx07p3AutfmGKuQwdGK5qUZL
-         no4g==
-X-Forwarded-Encrypted: i=1; AL+hErFtKU6CkH8+zhSDClN+vgWaP39O0F7Dw+1hNIp3ZzS/Z3rNLFkG15+PFh5Lj76WNtLxBQh9Y64=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8EL8DTxuQs6Hvw4sCpf2V7mmfBuP3+qOzoecglwS9AjnMxGjs1
-	5W1RbjSZbD8fIi96aQorFkwy0xbChaBOSU05606YED6LBwNF+fHCG/5JegfiaUYIORy2gWWYaVP
-	fNnN9F8/nrJz+m7/0Z49KCUi2uwQgTDg=
-X-Gm-Gg: AYBFou1VpS5jSSBKJ+mgE0mL3Gag/Q8wi5D6WFgPL58HMeldz62+XORBHyIuIQRmXVW
-	lL86tIfXc2W82MpMIbYUy5/N7+VzBN3s1xRytZyObBfrSmtux+mn1c23GoGK6vi/xi59+j/4QnT
-	pP2Y0za8uTAi4wFFN30/8B75l5A5oFK7N1sCaeizkRay/ETU80W7u08pnSHflmnXKf23jawCGqf
-	D3fH4DmrcJwYAdMf+IwE9C51Z8JeVvtmGuo1D7fNNOL65h2fnSllY/vgWiwPXGPcOgzd0tCM0Jo
-	UR7S7JMY0i6E5H4dvA/mK7ZfU3vDtogf5Q/ddSt/2kMmq4bmhQPJWhfa8Kb6QH7W5im6SNvTcwG
-	E0EitOR3y+QX28HqSPMBpBSSrXm/4j7ebzV7qKzizERmYUL1DrCY9qOXw
-X-Received: by 2002:a17:907:ea8b:b0:c46:8b9a:39ae with SMTP id
- a640c23a62f3a-c5066b65a98mr447696766b.28.1794489674657; Thu, 12 Nov 2026
- 05:21:14 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794489761; x=1795094561;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
+        b=rs9+PLH5o2cpPfHzxlxKPqkv8+2SNpmLkzsNPeJiIM5PsSH4rszn4H7+gRIroLpTWo
+         IQFBXplTJorYdXXDFRWO7Oa8fw1hTaFDgMqgBeZ1cNrbwdsfyTnwU2j6ptpR4HFiVFv9
+         goobTUvk505w643yqYRBW93+HzdQ/Pqouz6nXRngHBLibrJv0rR2ciRzKmNmL/6hFNKu
+         cvXjs+I/DzqNSVO8XzXb59ShQT3M+VU5GYxJwFQ6qX26+PZHrbcTqox+0s5ftBlyVs4I
+         HJHFhdaywF5yKOYZjIQahpFzMIj3te/VuXhPrFTobka3FVh4OYgW4il3uWWP9d9zJwsy
+         HKgQ==
+X-Gm-Message-State: APuU4Z9mSKRBoNaAw4WgCRSW8686TtUF4sBvjzAjPt4k5vQ/knx3iHFI
+	W7pzvJQZd9r2w6PNIDGTU39Heg0Hmnqpg4Gdiv4Bf1tUcM91jihxwi5eSBC9tCLk
+X-Gm-Gg: AYBFou3HgWqjPVLrb6jUvmHacxYg3YPlDC8FEq6czAd4++txrT99x+fO+cDbeGnznTz
+	2eJxF3hhvsUmpiK6Gb7653DXkyu++jRpt7PRkGFoPVvAOQ0ij8Bfd+d1cx5jxOY2mN8kin3Qg6E
+	/16yKAjGcVjCgCWss86gC/h24aUpBo1fymt1rIethLRVC1fU6I9p8ipdnFmJhV1nIYYXHsrJ+Q3
+	+nlHgXYUGl3zfFyIh7ed63rgK41yCQN+AJKJnBYf/SXNQzH1OwuJX81jW8VczgoUw1Z61yoQAhn
+	YhMfiEF+YlUUI83gwA+2u4ydHRh4NWpAO0qmX090kesPNLEwoJGRMB46CxbHDUWDXYpErDJZ8u9
+	zn92GJ7A/E7jy6bueN30oO8KhsML2IERhusZV84J8rKBh84zE4zSWQVbKl5JZO2Ri4+yrHXY9KA
+	8j8owhO405G8NL/DU4Wqlr6NuVmdZkWK9LQvWCZg3N1GLfoO1Q27UdlET5S1yCQc7BsYIGnPNUZ
+	MeOgnrAiyCuZ/D1xAAVGZOe9uiF5EvNfCSOONBhO5HjqQQJvQo0eC4EM3QzBcFcVq0U8hFtjQQU
+	aneUxpvfRV60GcJpdj0MlVVxgDJG4OnTgSO/gNr9B68xkPLYjT456WI=
+X-Received: by 2002:a17:907:962a:b0:c4c:f85f:aa12 with SMTP id a640c23a62f3a-c5066b494e1mr547325666b.31.1794489760692;
+        Thu, 12 Nov 2026 05:22:40 -0800 (PST)
+Received: from localhost.localdomain ([2a13:e746:396c:c600::31a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a3a621csm344076866b.12.2026.11.12.05.22.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 05:22:40 -0800 (PST)
+From: "Kordian Chmielewski (mlody1212)" <kudzo51@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+	bcm-kernel-feedback-list@broadcom.com
+Subject: Re: BCM4908 Ethernet and 2.5G WAN: upstreaming plan and two questions
+Date: Thu, 12 Nov 2026 14:22:29 +0100
+Message-ID: <20261112132229.340114-1-kudzo51@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261109231739.2561930-1-kudzo51@gmail.com>
+References: <20261109231739.2561930-1-kudzo51@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,40 +102,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112130833.233208-1-skalpesh942@gmail.com> <179448901611.2168702.17174519811846942598@kernel.org>
-In-Reply-To: <179448901611.2168702.17174519811846942598@kernel.org>
-From: KALPESH SOLANKI <skalpesh942@gmail.com>
-Date: Thu, 12 Nov 2026 18:50:34 +0530
-X-Gm-Features: AclHuK-JD7-Wus2aaeNne7wraP3NOnDb65_7q1Yzj-qAflfIEGLjp_bdk0dIcgM
-Message-ID: <CADYuhkoPNzrbQOo67=4qk+5MpnogwCi7CFpSSArP20Jy4ffPbg@mail.gmail.com>
-Subject: Re: [PATCH] bonding: reject IEEE 802.15.4 and 6LoWPAN devices in bond_enslave
-To: netdev-bot+sinfo@kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Oliver Hartkopp <socketcan@hartkopp.net>, Jiale Yao <yaojiale02@163.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Three corrections to my mail above and my later correction.
 
-To provide the requested context for reviewers:
+The AX11000 has three BCM43684 radios, not two; I mixed it up with the
+AX6000.
 
-1. Discovery:
-The issue was identified via manual code inspection of bond_enslave()
-following up on commit 9043be310c6a ("team: reject CAN, IEEE 802.15.4
-and 6LoWPAN devices in team_port_add"). Commit 9043be310c6a noted that
-bonding had only blocked CAN devices (commit 8ba68464e478), leaving
-bonding exposed to the exact same IEEE 802.15.4 and 6LoWPAN type
-inconsistencies.
+I should not have written that the SoC SerDes gives the BCM54991E a
+50 MHz clock. I took the 50 MHz from a comment in Broadcom's SerDes
+setup code, read it as the PHY's clock and did not test it. I have
+tested it now: with the SerDes held in IDDQ, PWRDWN and RESETPLL, the
+PHY answers MDIO right after its enable GPIO goes high, takes its
+firmware over MDIO and starts its CPU, and a running PHY keeps its
+link. So MDIO needs the enable GPIO, not the SerDes. The SerDes status
+still showed PLL lock, so I can't say the PLL itself stopped.
 
-2. Triggering / Symptoms:
-The bug is triggerable at runtime by creating an IEEE 802.15.4 device
-(e.g., via mac802154_hwsim or fakelb) or 6LoWPAN device, enslaving it
-while down to a bonding master, and:
-- For IEEE 802.15.4: issuing a netlink dump (e.g., IEEE802154_LLSEC_LIST_KEY),
-  where ieee802154_llsec_dump_table() unconditionally dereferences
-  dev->ieee802154_ptr / ieee802154_mlme_ops(dev) on the bond device,
-  causing a NULL pointer dereference (as dev->ml_priv is NULL).
-- For 6LoWPAN: on NETDEV_DOWN, lowpan_event() casts netdev_priv(dev) to
-  struct lowpan_dev and writes to ctx.table, corrupting struct bonding.
+And, unlike what I wrote in my earlier correction, the BCM54991E does
+not set MDIO_READ_FAIL on good Clause 45 reads: with a counter on the
+bit, 11640 reads, none with it set. My note was older than the fix that
+made the PHY answer at all.
 
-Thanks,
-Kalpesh
+Kordian
