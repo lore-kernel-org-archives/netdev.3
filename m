@@ -1,86 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794478136;
-	b=p/0HNmnalvOjfqLcyxHACMgZFPb0hWAJyqL/ThxMrqJJoO0DjNMSYxULHKoPJsitZ16P
-	 pztjmgpyNhc3GEJuHJrhAnpQhb1CHt/nit2MJe7KD24Y3LL2e5iEq12Y+Nw13sS0Xdf0F
-	 oMBYv4h4D3+2fvyPWi21kxH0XGV4En5X2XqHJ1Se3D2cHG/lE69h8mXPzcheFlbPRJgE1
-	 NZZ5vm+a8gOkZ+cQFscZO29GS+jrxTFWrLeoTokd7hI2GXkWliUdvPjUrxvWLWRKBS52O
-	 qZS1LK4+dW8dZluSO8HrIC+YfrRFKzPWrsx6iQcQm0qOIea7legm0r0uTvijfVCnxuA==
+	t=1794478139;
+	b=qWITNXqOcJEX7XC8QqxM2S1sMjlsghKDjasIZJd3eb7Jad6Cb/PSBFvYf3uVjF+hjTFM
+	 qMNde2BxsG68Tk6Fvscrk5J1Zf+Ia3PynNqxDBgUjN7TGN5w4h6ky2GuzTt2ROZygL+Ba
+	 d530QlO3DypFQQVl9KZ4K0OadqroIJvFxAr5rBgp3KNN6FxWItklzrKa8kbClbag1DyVD
+	 I/9PCPr/6SdfIZ6K6lykn+F622EgtfgqUBlcCA9Wor/3ym0Av56onb1k6mQ+a0eJMU3aD
+	 HvBmL9gk0YurVv9zVjsLCW0+swMuglNfDW6O1i0QoqDjT4aUu1xM3ROdHw0o3RjdEvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794478136;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
-	bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
-	b=Bkq2ahfLO80K0ia6FfrSNv1eQyFIRof6E257BIzYOjE0a05tGRmNi08YB2tOg+aJXifY
-	 YOUzVHxiNIDbG1AOlU5qp/iaXKOFo8bcBPn601rQSRV4sdBDInU2utQHhreSN2s529POO
-	 DwxJ5JKJ7pGfzrxMEOi9QgoZAqfdaDRcdRlmtwGvVEf+3Q9JswTBdrB7i/IjdQVE+JwjI
-	 Xz1pTgcSA7TIHZahjl3Kf9haVJEtrtaMzvxWrI0ygEQjmuHHEsgG8ljhPj3/bqEBudg+i
-	 t/aYb2S34Yvr/wQHBl3X6aFRpZM41Veop7kQEX0N+A+/Z92icR4AK0IW8PeCEyg31GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794478139;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=DVX5Cp+lWjYczys85N/ZZVBZp73FiLIgRZwjBBoiswU=;
+	b=I6j8rsBuTRY5ouKFYBUBrz/IsGzBMc/7NgifeCbK0r8jrWMg1Co5EVd7GtqY2rKN5ZAE
+	 1MKp+QN2fWzKPDVSLqkuxhlGa2f6MO/eA6/U1tJ+6kFo8Rx4KajhU0Vs45Mo64wyUQZPH
+	 lT0HtMQdWNB4+v08B5EdKc1INQTF+eNEp1pEbv7jWuCmaY8jomiIKJPPOUE32lMNbm3I2
+	 ylkxor8a/qtbVaf110QKDpLC5QPX7gAWBMYmbTN7pvCs9blINM+khI72CKLJ0qLtL4SJB
+	 Yf3rif3DdcZHiHxylkdOEBIZLr/vkkC7BwixptFNzIgbvMGaw8/NJmva2SSU9EQP0ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P7BNzbql;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ob0RMCbf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B7E606A331
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:08:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74B7E606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D0B606A89C;
+	Thu, 12 Nov 2026 10:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P7BNzbql
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so48016985e9.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:08:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794478135; x=1795082935; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
-        b=P7BNzbqlel+Im07I4ouOc191Y1OxCsDaPnWxNXwbbWO3MeDCBhfLunRmAP88K560Y7
-         D8k3kxGbhBmmDloc5oYxXIGTC7V+BIdkWyBVXBiDhQpF6gLaEGjoer0OhfNVKM6md0Yl
-         rtc6B4f+NZC/FoDYXvKu0B6aT1ipwWOWta3cZcupb2KRg6TtCyy2Kp6Lca/j89UXo53C
-         gpIdTSZju9hBrIRs8d6T73+35AMRGUxAf4iX9QRma5KlC2TQSLFGYobjHHkQCDZNkn3u
-         wXQyIaaRHrmPJZzS25QvnId8BtHhJe34WQMBGQKn+pWmoohLEq1Qc0o6aqwM8x2h/Zj7
-         KZ8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794478135; x=1795082935;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
-        b=cBNgvtou2rrlEF1XcLAlfIvA2TbjV2OLlttu8YcmnF2doGaPa3w5vkSRByShGaPdOb
-         EhAL+QcoPlZy8WBBGAhnyPM3iqQZZq0HdvWnn4BrVbHzwXcLtOGm5IA+VIFe1Mm1KIuh
-         MTbbbtm3ly/Qz7L+xWPqUPDp1dkBk8/J/sh1thYTj6G1b/wWthSEwA3DLyyi/7eFibi0
-         Hwuw+VYBd3sn5otFbxyD/2Cya+IuUF4q7Xqze1wNqgdsaeBlTHYTYZSctGl1ZuExI8wI
-         NwAzF94c/kc2qraD7tjV7u8TLYR3w6Bf67FA1iezfRSlEap3XLdoYPsIoQsp9eFsb1Cu
-         YESg==
-X-Forwarded-Encrypted: i=1; AL+hErEt1YIPyVE6UsyFCUyyFCc+sXf9b67kG/sncIuwqSYJFcGMDn+rbl9jsg8R8dWle/OfHVd4vYI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8LD+j8IYklL06dfPXioW5JTfKx8U143r6GnXchnJNh98KOVt3S
-	eRD4x21G4V0PNDEh3elHOO0K+uHZytn9OTGUqOLC5UxuUSkI/GVBOjpx
-X-Gm-Gg: AYBFou1tBsbLE3vThKGamrgxRd1axMNPjcB4rl4zxBwFHgrOSERKUfnhsDKueBhLtQ/
-	9zBI0p3P6++d2IHTNvJyv1gnycbwp2idr8P1tUCRZrDfcdfZEI4WHDutAu7mGNuU9GJSSTIBmlR
-	+oni0UFhO7GVJAv21M4tt4OaKwJNvLTA6mD1cJzDwkQW2zdGCuM3VmS5+hCbiX3ArJk0xWQpjPv
-	4MwAMF03tinVSuByc3RTZCBr9J/wGA3Xs2Fc5UUa7nuKfBkWwLrWszmbjRjCOid5WYs2rA2y/gX
-	u1m7+4ubDP9aX5jb35gzoVnsU+Rs9iHlhCLFldGgc/HQM8I+SdvZLYNVEuoLhqE+gRwCVAJcrbc
-	wT3IrTr7WrT7OfCfyWvT4h5RFOXfPMLLMlH59VdlOO8pOj+lqdS5l0D5k3o4h9mNKwEUMZnW2T4
-	uRRrKah7je6LzVLYZpEFZ5K0layTVOZhwW6t9JlrsSg7DMrJaoxCI4DjOAEPsDMCRCY5ClvRQ+p
-	vMHVT5k69WthspdkCZS4/sz5GSTJFmTexz0FLZgH4benIGASprrOQgAUGAAgE64dJNWTi7kWkg0
-	tWHvCrFpWL0DL2PKPS5y1QLR3fntpVBVkGK8hHLiiZv+2/QopkI=
-X-Received: by 2002:a05:600c:8b22:b0:4a1:742e:3 with SMTP id 5b1f17b1804b1-4ba0938a590mr91246165e9.27.1794478134548;
-        Thu, 12 Nov 2026 02:08:54 -0800 (PST)
-Received: from smtpclient.apple ([217.111.110.194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0953d26asm70701795e9.4.2026.11.12.02.08.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Nov 2026 02:08:54 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ob0RMCbf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A6E1F00A08;
+	Thu, 12 Nov 2026 10:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794478139;
+	bh=DVX5Cp+lWjYczys85N/ZZVBZp73FiLIgRZwjBBoiswU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ob0RMCbf8jwbdDMZFdtYvTt2qMFCt8SpLgJpbNg983WtVDXQmJphTm+wpZqanHCZO
+	 ddpwIYizpO6ZTO6onCoFR3wqwxy69EacvIMyKOgSfVGZ7X1FhdrDw9pc0s99WfRCHi
+	 UplxUdskbdcrNdK0psyG5fIf53Ybxw/+L1IXv1N5i8S1Hv0Kj/RMFZmHUV0NW1TSzR
+	 fcPW5a2QQlIaEVezYKgRBtL7CvJDixHlsMSkVCQyoA2DV+9xJ+PjiDVTbN+K9dpHxo
+	 8J6cMgvqOGj8s0PEMgQe94D0N7uv3xz3iE5sYvAGU9WIgs6fTSXVRuQ7/AuVRHzxcT
+	 CUIrwm5wRzwzw==
+Subject: Re: [PATCH net-next v2 5/6] eth: mpnic: IPv4 and IPv6 in IPv6 tunnel
+ segmentation
+From: netdev-bot+sashiko@kernel.org
+To: daniel.zahka@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, dimitri.daskalakis1@gmail.com, mohsin.bashr@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 12 Nov 2026 10:08:58 +0000
+Message-ID: <179447813848.2199510.18299256518114707021@kernel.org>
+In-Reply-To: <20261110-mpnic-lso-v2-5-ccd37b051d08@gmail.com>
+References: <20261110-mpnic-lso-v2-5-ccd37b051d08@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,53 +63,150 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH ipsec 4/7] xfrm: prevent AES-GCM nonce reuse after early
- GSO
-From: Usman Malik <usmalik90@gmail.com>
-In-Reply-To: <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
-Date: Thu, 12 Nov 2026 11:08:43 +0100
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>,
- Sabrina Dubroca <sd@queasysnail.net>,
- Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>,
- Boris Pismenny <borisp@nvidia.com>,
- netdev@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <F06270EF-7648-4E76-811F-C607A8390835@gmail.com>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
-To: =?utf-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
 
-On Wed, 30 Sep 2026 14:45:21 +0000, Jeremy Jean wrote:
-> In the software ESP offload path, xfrm_output_gso() leaves its segments
-> sharing a secpath extension. Each segment gets its own ESP sequence
-> number, but stores it in the same xo->seq field for IV generation.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Tested this patch as posted (patchwork 14858684) on v7.3 against the
-same build without it. Both kernels carry patch 1/7 of this series
-and no other patch of it, plus my "xfrm: use software GSO for inner
-tunnels without crypto offload" v1, which does not change the
-tunnel-mode path and moves the transport-mode case onto it. The test
-ran in a VM with two network namespaces on a veth, TCP through an
-ip6tnl tunnel over an rfc4106(gcm(aes)) SA, esp6_offload loaded, a
-tbf qdisc on the egress veth that queues the segments, 3 MB per run
-and 3 runs per case. The sender capture was decrypted with the SA
-keys.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Without this patch every queued run reused IV values, 92, 51 and 51
-per run over a tunnel-mode SA and 50, 51 and 50 over a transport-mode
-SA, each shared by up to 7 segments of one GSO packet, with ct1 XOR
-ct2 equal to pt1 XOR pt2 for one pair under each value. With this
-patch, 0 in all 6 runs. A kernel with 1/7 alone gave 50, 50 and 51
-over the tunnel-mode SA. Without the qdisc every run was 0 on every
-kernel.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Tested-by: Usman Malik <usmanmalik@engineer.com>
+- [Medium] mpnic_ipxip6_gso_ok() only checks the outer IPv6 header chain.
 
+--
+
+eth: mpnic: IPv4 and IPv6 in IPv6 tunnel segmentation
+
+This patch turns on NETIF_F_GSO_IPXIP6 for mpnic. The device can segment
+4-in-6 and 6-in-6 packets. The patch adds the outer L3 header length and
+two new L3 types to the Tx descriptor, and adds
+mpnic_features_check_encap_gso() to reject skbs the hardware cannot
+handle.
+
+> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+> index 2a0560b7dd19e..839feb4716b60 100644
+> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+
+[ ... ]
+
+> @@ -228,9 +232,17 @@ static void mpnic_tx_fill_hdrs(struct sk_buff *skb, struct mpnic_tx_hdrs *hdrs)
+>  	else
+>  		hdrs->l4_type = MPNIC_TWD_L4_TYPE_UDP;
+>  
+> -	hdrs->i3len = skb_transport_offset(skb) - skb_network_offset(skb);
+> -	hdrs->l3_type = ip_hdr(skb)->version == 4 ?
+> -			MPNIC_TWD_L3_TYPE_IPV4 : MPNIC_TWD_L3_TYPE_IPV6;
+> +	if (!skb->encapsulation) {
+> +		hdrs->i3len = skb_transport_offset(skb) - net_off;
+> +		hdrs->l3_type = ip_hdr(skb)->version == 4 ?
+> +				MPNIC_TWD_L3_TYPE_IPV4 : MPNIC_TWD_L3_TYPE_IPV6;
+> +	} else {
+> +		inner_off = skb_inner_network_offset(skb);
+> +		hdrs->o3len = inner_off - net_off;
+> +		hdrs->i3len = skb_checksum_start_offset(skb) - inner_off;
+> +		hdrs->l3_type = inner_ip_hdr(skb)->version == 4 ?
+> +				MPNIC_TWD_L3_TYPE_V6V4 : MPNIC_TWD_L3_TYPE_V6V6;
+> +	}
+>  }
+
+[ ... ]
+
+> @@ -362,6 +375,35 @@ netdev_tx_t mpnic_xmit_frame(struct sk_buff *skb, struct net_device *dev)
+>  	return mpnic_xmit_frame_ring(skb, mpn->tx[skb_get_queue_mapping(skb)]);
+>  }
+>  
+> +static bool mpnic_ipxip6_gso_ok(struct sk_buff *skb)
+> +{
+> +	struct ipv6hdr *ip6h;
+> +	__be16 frag_off;
+> +	u8 nexthdr;
+> +	int start;
+> +
+> +	ip6h = ipv6_hdr(skb);
+> +	if (ip6h->version != 6)
+> +		return false;
+> +
+> +	nexthdr = ip6h->nexthdr;
+> +	start = skb_network_offset(skb) + sizeof(*ip6h);
+> +	start = ipv6_skip_exthdr(skb, start, &nexthdr, &frag_off);
+> +
+> +	return !frag_off && start == skb_inner_network_offset(skb) &&
+> +	       (nexthdr == IPPROTO_IPV6 || nexthdr == IPPROTO_IPIP);
+> +}
+
+[Severity: Medium]
+Can a nested tunnel still get past this check?
+
+mpnic_ipxip6_gso_ok() validates only the outer IPv6 header chain up to
+skb_inner_network_offset(). It never checks that the inner L3 header
+leads straight to the L4 header at csum_start.
+
+Some paths reset the inner headers on an skb that is already
+encapsulated. One is bpf_lwt_push_ip_encap() in net/core/lwt_bpf.c:
+
+    skb_reset_inner_headers(skb);
+    skb_reset_inner_mac_header(skb);  /* mac header is not yet set */
+    skb_set_inner_protocol(skb, skb->protocol);
+    skb->encapsulation = 1;
+
+For an IPv6 outer header with nexthdr IPV6, handle_gso_encap() then adds
+SKB_GSO_IPXIP6. BPF_LWT_ENCAP_SEG6 via bpf_push_seg6_encap() looks
+similar.
+
+One way to reach this is an ip6_tnl device whose underlay route has an
+LWT BPF xmit program that pushes another IPv6 header:
+
+    ip6_tnl xmit (encapsulation=1, SKB_GSO_IPXIP6)
+      ip6_finish_output2()->lwtunnel_xmit()->bpf_xmit()
+        bpf_lwt_push_ip_encap()   (inner headers reset)
+
+The packet then looks like this:
+
+    outer IPv6 -> middle IPv6 -> innermost IPv4/IPv6 -> TCP
+
+Here inner_network_header points at the middle header. So
+mpnic_ipxip6_gso_ok() sees an outer v6 header, nexthdr IPV6, and
+start == inner offset, and it returns true.
+
+The skb is DODGY, so validate_xmit_skb() runs software GSO validation. That
+recursion ends in tcp_gso_segment(), where skb_gso_ok() succeeds against
+hw_enc_features and NULL is returned. The skb then reaches
+mpnic_xmit_frame() unsegmented.
+
+mpnic_tx_fill_hdrs() would then program o3len = 40, i3len = 80 (or 60 for
+an IPv4 innermost header), and L3_TYPE taken from the middle header's
+version.
+
+The descriptor only carries OHLEN and IHLEN. Would the hardware then
+skip the per-segment fixups on the innermost header, i.e. IPv6
+payload_len, or IPv4 tot_len/ID/checksum? That would put malformed
+segments on the wire where software GSO would have produced correct
+ones.
+
+The v2 changelog says nested tunnels under an IPv4 outer are now
+rejected, but this layout still has an IPv6 outer.
+
+Should mpnic_ipxip6_gso_ok() also check that the inner L3 header ends
+exactly at skb_checksum_start_offset() with TCP or UDP as its protocol?
+For IPv4 that is ihl * 4. For IPv6 that is the header plus any extension
+headers.
+
+> +
+> +static netdev_features_t
+> +mpnic_features_check_encap_gso(struct sk_buff *skb, netdev_features_t features)
+> +{
+> +	if (skb_shinfo(skb)->gso_type & SKB_GSO_IPXIP6 &&
+> +	    mpnic_ipxip6_gso_ok(skb))
+> +		return features;
+> +
+> +	return features & ~NETIF_F_GSO_IPXIP6;
+> +}
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110-mpnic-lso-v2-0-ccd37b051d08%40gmail.com
