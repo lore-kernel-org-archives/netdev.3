@@ -1,107 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794492317;
-	b=D9d1JtzTl1a8Pt000cVshJyKDysfrkhP4DoMjMK8RqTqu5UXq1HeNvDyJhQXpkbcybXP
-	 QolQgG1DgCIvDsyhaEZjfJsyMZUF9EVY+xh+H0s/VA/AicJaQYCEjBH3akoREutUjju0g
-	 FCRoniN4E7xoHOoox6iTcdLAX1QUp/dlvdgcbVeicxZ4fnfCeFxwOvZ0tTjK+szJC8bVF
-	 jP1mfW8iOWutbE9IfNhQ/CVGRR2PpJ6jQmW7abcJpJqBddINT/O5Epp1ueInWnQ1L8cpm
-	 JG7oBU0tsQHjkaerS8C4Alt9wUCV66zNeeimJGbMMcWW50C3HLfXlNEEJXtEcTgFcJw==
+	t=1794492345;
+	b=rpGLdWNhA6pbsA8cjU4hPBhDhwuWYy4MZbc3vDNcws21GSGMAIBPZUbJHy+3KaNe3/yy
+	 /0Ixj1cUmsMdagyWrqwgB3fqAWkmOcgShKMahIHSz3lJNMAmHh4N5JZS+S/tNuL6wgrUK
+	 1fNpqMRn9BtiDYDSQPmB5XgdqIQmGMCnuUu/atchZ7/bqQKzg1u3HRHal8n7NpBWB19Sm
+	 1UStIjp9DcFvqCPY8xR7fLxV6hH/vN6/dHwQqnA5Lddb9PRl7zPpaU9GVCsDlVPl4dFT6
+	 rBc+UviP3MW837LknweWCaNScZ0t4x1k2vVPDLJGTWBvwgB9JzdarZRlwaSiRrqb0XQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794492317;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=qwOHr2x3L679VhytAnH3M283eQvtUAQoXPmyYPQX/nw=;
-	b=UUd9u2urtPQFx9kWah2xrVfToRZQagvX9nw+l4Jc/XEh3k+jD1+1qTzUuA3oS/dtMsO1
-	 S0rSob4ZnHhZWBfLvEVuE0lGq17pnYARL5+MQArIW6Z+/pXYzPjU9vMX4Ch7xESEh0zO1
-	 ub/u25v36ljoLic+HaiCgngvjYzbbooDELJ5gHWoPG/jvRURoVR/YKCc8NsOXCQr54a14
-	 4ButgmvrmtSnm9SGi+c36LJa3jvdh4L1RQKckSC7BbQP2RcMmO91IRSqNmI5o8UF4oNEN
-	 x1xgBITVOQVLJlt69F1bQoHh+rOrm9BiM9LiL4CHjS+7/Y8omH2UXxb1B0TWKWCYOpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794492345;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Debian-User;
+	bh=ccZWgR7dmlMI77SvdnZJfxt5XPzWoiMS7ZxdcshawL8=;
+	b=AmVLRBvrMLc0SjVSpi/wLWjZQK29h8kwi2qcm9mQyq/HwifYBckZeu9EkjoZEW1Juq8y
+	 z2u7Rjy/jv8R+XeIW3LtDTEC4TH6/v/MJjWRKgyP0CiT+3ieY5pXPfoO4x6V+KCXn6sFa
+	 rSzubI/NG+LEwJztxX0dkjnvPmm9+Ewd4YjUofaCiJoxU5FTLkwUV3BNmmEx9GL7R9yd/
+	 0UBwDHcsKNk/nBOkpBKcZwCFEn+LlCD272fUN30f3b0KUtAQlOCbmxLl85n7n2kavpudE
+	 xfbs+xDqtVzbQbwQVclwHuNVN48OJM2P+G86KhQszXxS0gYV+U2vDHL66UmxVkfD+fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="fI/l4XZW";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=g+cw5PSh;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b="i/UfKCOm";
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB90606A338
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:05:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BB90606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDC3606A321;
+	Thu, 12 Nov 2026 14:05:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DDC3606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fI/l4XZW;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=g+cw5PSh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794492315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qwOHr2x3L679VhytAnH3M283eQvtUAQoXPmyYPQX/nw=;
-	b=fI/l4XZWEisf4VO5sxe76eUST3pzAeeoLaztAegxnmOhpLuPXmeg3h+hJVzX+WqvZJQHqo
-	PxC7FLa+Cg0C4sXxe7zkFXZu76ztnBguHQlyJErUDCfHjUE3DybE1uWUS03VYp9b/VlNby
-	uPdT5Ue4gIu+6W1xKxPKsWNs+MGBNHY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-pOVSyhTPOPmplW7E2hYCAQ-1; Thu, 12 Nov 2026 09:05:13 -0500
-X-MC-Unique: pOVSyhTPOPmplW7E2hYCAQ-1
-X-Mimecast-MFC-AGG-ID: pOVSyhTPOPmplW7E2hYCAQ_1794492312
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4b9f7cace4bso39959965e9.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:05:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794492312; x=1795097112; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qwOHr2x3L679VhytAnH3M283eQvtUAQoXPmyYPQX/nw=;
-        b=g+cw5PShQ1TmdYi/Ffx1rNJE34Y90yiPGG5zzOZ1RoI4DT9ZjcLp9bDkZDnQDXwCGW
-         n7Vnqx9eDfmgQd88aMjG7A3GtFd3Ab6OGtEixjGIigoDrq9NAYQv1T3aDP3E3FYRFHwu
-         O/3UyX8tMOBIcY8vnhAzJBC2jNnJjTar6RNuybDwIvnvvrtsTeG0lJDl+tygtU6LpQha
-         r7qmXbC7XIqF9Sh4aCHVlAyTIE9zOM1TwbeHNUizKZSZn44kT3BspMC9q8m6mgketHAa
-         44UqaWzNr/ZgOr3OQPzlMTOnbtbV/ZO7m+BgQ+2xZNLPJArYW5mKz+IftthH7BTk5j1C
-         5Uqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794492312; x=1795097112;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qwOHr2x3L679VhytAnH3M283eQvtUAQoXPmyYPQX/nw=;
-        b=UIpK5nqo684s6yHZY7fMNAwMNhQ7M1JD55T/YuRmP7vZG7wJN5xhofB/X/eMzeI/RA
-         L44j4r+Kma6wk8+aoao6xC83cVdg2KGTMG0i5laFX8QMi45cVSFFgAGH/5yiteeOsEAb
-         Bq5AolC270yM6Nspr6zFo9tz68A1BnauYhnZxqKhbSVGm4kjpI6rc2JraLZPOX2Mv+bg
-         gjy0ApULx2K5m/JtPTRM8kEFManQO56Rxlu4xAJGTzoDoj0dv8p5NHne32jLY+Y41nfF
-         rEi9KIeffMIkSfs7lD5SvrNu8vXQJOMVQugpLCX4JYBfb9PdO0Pv78Not81h2EPhR6eO
-         xXSg==
-X-Gm-Message-State: APuU4Z9XLU//7PrB15H8ELkCTtcj5QkBbw+qjiAdCVn4ZGog8CklVOg2
-	9r3vL3Qvqm91hrkYzU8Ixv0kP2dm0mRtQ0LE20LAT387G+ns3/SyYCuqbSAUVIfTXemVo/r398Z
-	EC0QQSGDHjY+fIXTnDshlidd6M4bePBKHn0iYeIgBcACCxcDWaF7vYrAzRg==
-X-Gm-Gg: AYBFou00lqdMy3UMMugG7MYp/IPB1Mdq4m3UWpPU7jBb/Q2I8tLj2eIujLrzyxrRqRm
-	rvQE8hZcAh7GqV31Dwd+rGVUeQGG/jJ2TZ3ws6Yai1NoJtxlem53RcyxjX1+K7mUR9uwfWmjWxe
-	JtLe9ugu1gOZILpKmeRetRVog4c3LNV3Un8/ZC3sct1mL35jEeh6WxwMGp4BnFGGrdRiI8brSfR
-	GgRo1tSfiFaVr9EMlpQqqPcnHWgFfC0DokGoxEZLX9sU2IXCZlb/D6RCx9zTXNxDsQ3D8OjNFq3
-	6i3cUS7lzj90i+VWU2rfLFd9bgUPTScuEuqt5cV3klWRYFL/M8rAjMDUNR3uIyuDsN3YpsHTSDx
-	6/Vm0hVN6ccdEHPSoldMEZaQ88KieJ+27V1wZ+4WubladJpfFnbW+jMNUq2zjgQXPGrkWpxz+Xw
-	VN4a2qbcHRsqBS2v7F0UdfrpYK6ugqgQ==
-X-Received: by 2002:a05:600c:3486:b0:4a1:d8fc:8165 with SMTP id 5b1f17b1804b1-4ba093b981fmr95344845e9.20.1794492312289;
-        Thu, 12 Nov 2026 06:05:12 -0800 (PST)
-X-Received: by 2002:a05:600c:3486:b0:4a1:d8fc:8165 with SMTP id 5b1f17b1804b1-4ba093b981fmr95343965e9.20.1794492311603;
-        Thu, 12 Nov 2026 06:05:11 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498366c43f4sm19847458f8f.47.2026.11.12.06.05.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 06:05:08 -0800 (PST)
-Message-ID: <06c0d36d-3492-4fd6-a6cd-8f328b202baa@redhat.com>
-Date: Thu, 12 Nov 2026 15:05:07 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=i/UfKCOm
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=ccZWgR7dmlMI77SvdnZJfxt5XPzWoiMS7ZxdcshawL8=; b=i/UfKCOmWEcqm5tB7RRNDaNgt5
+	AQic0RfgmdLRngj53swzQuj3/xti5yzRH5UggFv/KKhxSB6cJyARDM5k0+ZOiLYhl9QExy3cQNivF
+	IEwl72Bsy/j4xS8InlClIlrTQIdw1a3uQ/xcN0at0IIpJWxHG3ihQ+fXmzBdL+2sV4sYNHUu/OsfX
+	QFmDp5gxFGA79clNRcD6o2pMx+ifDoxsAjLJB4V+Bx0E+Dk8g8C8jH0sgdYeBcKRz4dg9hAQM1UoV
+	LMgxlKn8h9FWx8P1JlGB+/T41vYjSI1XVgxonDAllFpeNM8PYM4VnVxN+78jI2MEjH+pDhp0zU3j/
+	B7Yskgbw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xRVQi-00E1WS-1F;
+	Thu, 12 Nov 2026 14:05:32 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 12 Nov 2026 06:04:58 -0800
+Subject: [PATCH net] netconsole: harden the enablement through configfs.
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,52 +62,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] selftests: tc-testing: add gact probability
- dump tests
-To: Linkui Xiao <xiaolinkui@126.com>, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Linkui Xiao <xiaolinkui@kylinos.cn>
-References: <20261106064114.3592670-1-xiaolinkui@126.com>
- <20261106064114.3592670-4-xiaolinkui@126.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261106064114.3592670-4-xiaolinkui@126.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261112-netcons_double_cleanup-v1-1-d5ff8167e05a@debian.org>
+X-B4-Tracking: v=1; b=H4sIAI/H9WoC/x3MYQrCMAwG0KuE7/cKTRXRXkVkbFnUwEhHu4kwd
+ nfBd4C3o2k1bci0o+rHmhVHJu4I8h78pcEmZEKK6cLMKbiuUrz1U9nGWXuZdfBtCefTGCPzVVh
+ u6AhL1ad9//Edrisex/EDx5ipVW0AAAA=
+X-Change-ID: 20261112-netcons_double_cleanup-43b00118c1c9
+To: Gustavo Luiz Duarte <gustavold@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2721; i=leitao@debian.org;
+ h=from:subject:message-id; bh=5wcjJzy/USJaZfmSnamW/hrROjyCXQQqW4AJILq8p8E=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq9ceo+r3xwF/1X732ecFof2CxLKj5fdcvjqjm9
+ oxf2PvljRyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavXHqAAKCRA1o5Of/Hh3
+ bYhcEACMsDSTjiVuOzE0ZgnKG1DSmfbqw/2Cdj/5Qoj4Y4iRax8wQtC0XvGtXmtCVMZ72P/1Rwa
+ oo120CAnU4NyWLVLW4RgPTkgjfCVALCE30b/SlsG3gHp6ML3I32HwYiw5PbkKbLSfwSuo9Yd+cd
+ r9kiu/UppQ+Qy3AF09HOdxIbCjAgLPV4t2pwb7PMdqguhsQcpy+s9fnM4i1tt3NMkW52cCcdypP
+ 0Pj8hbP4/shZsXd4Hb9LdVUByNACuece+9ayyKhi6u9dv5m2pVDNc37T+cfOWHFSgZLEJT0ZD0+
+ XlavgpurVQ9tO4e0JoNu6gnl5Kwzy+AYQxHSBDwj2fQirBpssuKRJaXZFxrAZrBF957e8dhbWpL
+ OFgpuEnnFxF83R3hA8uRsD5+ZTftXII6CXsbTbBNrMUN4tHaK4bKoZn/UxXyU1LQvkXi7vV5KhB
+ VoQirriKEr+knWeZGSWXgAhdGog5dFauipGHSYoOCTZQzS43lHPMHg1eRg2WRK71TSNlNBQrmHk
+ SgknsLu/LjPlgOf/ZD+2CVIFOHgxJ0xj603nRqID7sPpkyOOJwsFv+qHJi3H4bHCia7w4A92Ei7
+ qwOsFbuZ6pz7nT/6a60IXS5GWQdieF1xiloJiirTyYkotGJcAGzQeHcN6BtMZqTZLAQdvPR/LnI
+ yNtVPdDtCp2sCog==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On 11/6/26 07:41, Linkui Xiao wrote:
-> gact probability attributes are emitted by tcf_gact_dump() only when
-> tcfg_ptype is set, and budgeted for by tcf_gact_get_fill_size().  The
-> only gact cases that look at a probability today are 8e47 and ca89, and
-> both check it through `tc actions list`, which is served by the netlink
-> dump machinery and never consumes the get_fill_size() budget.  The one
-> case that uses `tc actions get`, 525f, runs against an action with no
-> probability, so the RTM_GETACTION reply path -- tcf_get_notify(), which
-> does size its skb from get_fill_size() -- is never exercised with a
-> probability, and the netrand random type is not exercised anywhere.
-> 
-> Add three cases: adding an action with a netrand probability and getting
-> it back; replacing a probability-less action with a deterministic one
-> and getting it back, covering the tcfg_ptype 0 -> non-zero transition
-> that the unconditional TCA_GACT_PROB budget in patch 1 has to cover; and
-> getting a probability-less action, whose dump must report no probability.
-> 
-> These are coverage for the dump and sizing paths that nothing tested
-> before, not reproducers: RTM_NEWACTION, RTM_DELACTION and RTM_GETACTION
-> all take
-> rtnl, so sizing and dumping always run in the same critical section
-> and a replace cannot interleave between them from userspace.  They pass
-> both before and after patches 1 and 2.
-> 
-> Verified by running the tdc gact suite (38 cases, including these
-> three) against a kernel with CONFIG_GACT_PROB=y and this series
-> applied; all passed.
-> 
-> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-I think the value carried by the added tests is too low and new tests
-consume nipa resources. Let me apply the first 2 patches without this one
+There is a possible race when enabling/disabling the target through
+configfs with netdev events that can call a null pointer dereference.
 
-/P
+My robot was able to come up with a reproducer by adding a bunch of
+msleeps() around.
+
+The race is basically this one:
+
+  CPU 0 (enabled_store)             CPU 1 (netconsole_netdev_event)
+  current_enabled = true
+                                    nt->state = STATE_DEACTIVATED
+                                    do_netpoll_cleanup()
+                                      np->dev = NULL
+  nt->state = STATE_DISABLED
+  list_move(&nt->list, &target_cleanup_list)
+  do_netpoll_cleanup()
+    __netpoll_cleanup(): np->dev->npinfo
+
+And kasan reports:
+
+  KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
+  RIP: 0010:__netpoll_cleanup
+  Call Trace:
+   do_netpoll_cleanup
+   netconsole_process_cleanups_core
+   enabled_store
+   configfs_write_iter
+
+The disable path used to call netpoll_cleanup(), which skips a netpoll
+without a device, until it started deferring the release to
+target_cleanup_list.
+
+Re-check the state under target_list_lock, which the notifier holds when
+it stops a target, and queue the target only if it is still enabled.
+Mark it disabled either way, as before.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: 97714695ef90 ("net: netconsole: Defer netpoll cleanup to avoid lock release during list traversal")
+---
+Given this is not super critical or hardly faced in production, I am
+sending this to net-next, even with a 'Fixes:' tag.
+---
+ drivers/net/netconsole.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index a9f9477da1ec77..4b546194f7179c 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1143,11 +1143,10 @@ static ssize_t enabled_store(struct config_item *item,
+ 		 */
+ 		mutex_lock(&target_cleanup_list_lock);
+ 		spin_lock_irqsave(&target_list_lock, flags);
++		/* An interface event may have stopped and released it */
++		if (nt->state == STATE_ENABLED)
++			list_move(&nt->list, &target_cleanup_list);
+ 		nt->state = STATE_DISABLED;
+-		/* Remove the target from the list, while holding
+-		 * target_list_lock
+-		 */
+-		list_move(&nt->list, &target_cleanup_list);
+ 		spin_unlock_irqrestore(&target_list_lock, flags);
+ 		mutex_unlock(&target_cleanup_list_lock);
+ 		netconsole_unregister_console(nt);
+
+---
+base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git main
+change-id: 20261112-netcons_double_cleanup-43b00118c1c9
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
