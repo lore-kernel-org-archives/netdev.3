@@ -1,80 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.13.214.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794515010;
-	b=npDER9pSfirlPpf817Z2iuPbTVvc6CBfYw9hLwPDWZLCdAroK5jXBcqOMb/2TiqOgp5u
-	 OInQxGK+kq3Hf+SIG45zVLu/HR34gLC9bhneRCom5jhaywcraUpLH5GVVlwwAs1Ynbns3
-	 LN+F4lxakLREY8RMLV3mig4mh/3+d/p0SyCPhqXyhgqvatAlOjCBJ6ML4fQbhYqzKRzUx
-	 vYlEj11FJCYQy1YualjS9x/dhEZxH4wDbNR9ZMuvfnVWXKjnVyoUTXGs2CVBueyuKuoR0
-	 J4fuFOT+1uC++kVN6mDyIcpKjOlC/38U9E8UPx9hYAt8S9V+IL3g7fVOa6/nyl3uEgA==
+	t=1794515053;
+	b=V6f656Hckhk8Dhq4n7ojiTHiXGVQsxrWtYhdSZiJq4Mf7PYm9g8YjCARzcWIPxcLQTcG
+	 XCOg7GOogoKz9BztqWfLUG7hZKDifx2LQNd1P4/AWoYoD3M9kr5/xSvDSLnDgQm5jk4Sj
+	 76W5/l/wPCP2SXaD78+0u9MuSp8NDZ4gPFCTxleGAtKnK+pglH1uI4iOtMDXFRrXWMN0r
+	 +JPWudXuVa/PUqeWBgMyOV0SQ0c2QAWfUjAA5k+bVh5R9OdIHuk6LW3RNpkq6xs0EHP+M
+	 hkofZf4NnWaNuV2RSdU/g2xZT0DB7d2jYgsACRzwLa47kW9ZbqP9UijJq1u1/p8uZQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794515010;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=gIo44VjNCShDh9JoxuZCbDu5efW3CxcRnw8e07yhFRY=;
-	b=nU7TGtSVPGdZcsTaIhuPmXIfFCQ+3GMU1I3o0Ba/O3WbSKKwmBxQ2E+0m02uVxJMM14P
-	 tZ1oVzSm6lsi84jQd5+zfqYtvSEBy8PEnCaEf6tD1PBEBn0OlhMYwmM+VMY6OhvOU6lQQ
-	 824lH1LOL5h7UYIlCfrEX5FcMSMfnX7ZhtUTtZ0QpMIiKGCbxr4t97byzMeD1uXoF4uMI
-	 JUv1hpWg0mxNWIi/W4XkTIpZ0yKNuz2oZ8mnBL3fXrgzEMkqctVa2wlmJ/6cNIGtZJFli
-	 WgXWW1OqWb2+n6fTBrhiWXBuHRhepTmnI7uTq4A3+CSOBAfTcG+QpYCwm0/DtfpEVMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794515053;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Wy7wcuO+o4qwVfwmHEs2L+LxiScTi/wwTKAT+OvItWc=;
+	b=4jR1mIL41PohG1d7PZCT3UfTky6HI3NJOwz9jacG6MFrqROcmMjtOaapeelBVpqGBj7G
+	 Zt/vhiPtoWIanyF/9yuudeVldCg+VzsiuqcGpErqimQ0IQZP5tvJNwUFGEN4Rat4Jp+wE
+	 P40/QV/zBE9dsmu9b9qzrPfqqvTI1d+mbiHwoWjRE+EniNeB34LcxdSnATXw27/jbkBew
+	 W4LhesbD8ERUUU4bBF2xCrfROlHWDcFSYh7980VKpvzntSKiRSaDZeVuVQBplqaOH7Ntl
+	 OfLDk8qsn297Ynbdgv4bS0N6vF3c4xavLKVmkcpDzGvAHtOVOjSZpWuBiLMBHbPIJ5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amazon.de;
-	spf=pass smtp.mailfrom=amazon.de;
-	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=HTCZ2fil;
-	arc=none smtp.remote-ip=52.13.214.179
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YZtouUD3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228D3606A334;
-	Thu, 12 Nov 2026 20:23:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 228D3606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3416606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=HTCZ2fil
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1794515010; x=1826051010;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gIo44VjNCShDh9JoxuZCbDu5efW3CxcRnw8e07yhFRY=;
-  b=HTCZ2filCBwvZGKb3hypxT7OnqiBgJw6bHNZppBP7Ym8bNn3pyTsoVT/
-   fME5HHfh2osKA19m3xfHK1oZqrvbCWDyLOe/PIulUcSDnwrC98QLJUwgl
-   eVIpHurlNDf9lAv9dneoAHpZt+BsR9g1EdTAYwd4O4ctuYqBDbKDQdwGh
-   2wbT0VyUxrngk0dm7UCTYjWZHHh2DNradBJUW1+gxXvX8rqQMPg/RPV5L
-   kEINz2a3EF9+Dyy10KzqFHX9/N6BMwOYlAi0Wgv2/Ejdm16BgpjXdBOh5
-   lVZl+v9lLNFZV62JKBzGubATmjKgbJnHTMATkdFCSbUKZERhWmKydEjxC
-   A==;
-X-CSE-ConnectionGUID: K8U9nbOdS9a08qLob9kiNw==
-X-CSE-MsgGUID: 0MrpFR12TnyVLAOGWYQtyQ==
-X-IronPort-AV: E=Sophos;i="6.27,210,1787011200"; 
-   d="scan'208";a="33820958"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 20:23:27 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:17060]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.12.127:2525] with esmtp (Farcaster)
- id 8e4b780a-e04a-41b5-8761-0ed47fec9913; Thu, 12 Nov 2026 20:23:27 +0000 (UTC)
-X-Farcaster-Flow-ID: 8e4b780a-e04a-41b5-8761-0ed47fec9913
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 20:23:26 +0000
-Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 20:23:25 +0000
-From: Bjoern Doebel <doebel@amazon.de>
-To: <stable@vger.kernel.org>
-CC: Kyle Zeng <kylebot@openai.com>, Eric Dumazet <edumazet@kernel.org>,
-	"Willem de Bruijn" <willemb@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	<netdev@vger.kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Bjoern Doebel <doebel@amazon.de>
-Subject: [PATCH 6.1.y] net/packet: check TX_RING fragments before memory accounting
-Date: Thu, 12 Nov 2026 20:23:19 +0000
-Message-ID: <20261112202319.1603433-1-doebel@amazon.de>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YZtouUD3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4262A1F000C7
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:24:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794515053;
+	bh=Wy7wcuO+o4qwVfwmHEs2L+LxiScTi/wwTKAT+OvItWc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YZtouUD3y2UQQY63gblnWy1X/af46ScLWp0ywPu9OO4f7eBqe4vfvf6OaVpmr37pA
+	 A46ZVXBe+MLuqjG3jWAkFDKRZRB7pgcBD+hp9M/QZxwLJ6FSu76IO/4dqzYhgu4ZRx
+	 uo2TJCDdnSc8Vmd+XD9AgoK8LyCvfb4/dRUgZtv2G+ijMciXMlRSE1CoP6Yhtpw1VH
+	 Yi/FpAQJ+TYPoVi26C4fKVO8Ek63i1DKjT9WjobA06txr3WKh2Z94VQniue32XvT+E
+	 jDjinJOR4njnqFbwWtvZum2zZ6LRah6nG454Y3actQZ+U7nHSF+JFU0D0wSIG8vSZg
+	 ezOp06kKKuUyA==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5c146cf35ceso169166e87.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:24:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGkihaYSl0pkzPzapz3Z0lkkFtNihfN6IjbkKv3Ji/fHE3YC6aZQxrjIIEmu5+4MFGpKAx6Dnk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8XdX9FR9hMx8keLaZmlvq1aFPzduq5U+vniIAXKj5F7WiGAROO
+	ysiiyQlIJvnsPNlk/Ra/m5a+qmEJGO6Fw9ecSOQJGQb07U9nD9noeaIWBulhY+gDdgjFNcL5BYz
+	nQPFsXAKMOHay1ncDe5ll2SC2RmYl+0w=
+X-Received: by 2002:a05:6512:b95:b0:5c1:4c0a:49e3 with SMTP id
+ 2adb3069b0e04-5c170b1c2f1mr210546e87.13.1794515051740; Thu, 12 Nov 2026
+ 12:24:11 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,78 +59,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+References: <d9da17af-f49e-4878-a8dd-59a8919e6930@yahoo.com> <b86b9176-3ece-40ac-8fc2-75a3d079829f@yahoo.com>
+In-Reply-To: <b86b9176-3ece-40ac-8fc2-75a3d079829f@yahoo.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 12 Nov 2026 21:23:56 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmtQerZ6frMe4gw5a9BKgqGeaCQHZSgSMu4N3x0f_iVOQ@mail.gmail.com>
+X-Gm-Features: AclHuK9hSel9qovXywvPSFCFEUdNdSWtaQhroOf_WWjAb0X2PxslIg6pR4jx57c
+Message-ID: <CAD++jLmtQerZ6frMe4gw5a9BKgqGeaCQHZSgSMu4N3x0f_iVOQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v10 03/12] net: dsa: realtek: rtl8365mb: refactor
+ forcemode handling
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
+	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, alvin.sipraga@analog.com, gusfmora@gmail.com, 
+	kuncy7@gmail.com, fabianotassotti@gmail.com, gabonpivovich@gmail.com, 
+	contact@c127.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kyle Zeng <kylebot@openai.com>
+On Thu, Nov 12, 2026 at 6:33=E2=80=AFPM Mieczyslaw Nalewaj <namiltd@yahoo.c=
+om> wrote:
 
-[ Upstream commit dc4dd12f80e499dc034710cd8195489abcf0b059 ]
+> Move the external interface force-mode configuration behind struct
+> rtl8365mb_family_info, so that family D can provide its own versions
+> without is_d() checks in the shared code. The existing code becomes
+> the family C implementation and is otherwise unchanged. The
+> mac_link_up() and mac_link_down() callbacks call it through the family
+> info.
+>
+> No functional change.
+>
+> Tested-by: Gustavo Foletto Mora <gusfmora@gmail.com>
+> Tested-by: Stanislaw Pal <kuncy7@gmail.com>
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-tpacket_fill_skb() adds the full non-linear payload length to
-skb->truesize and sk_wmem_alloc before checking MAX_SKB_FRAGS. With
-PACKET_VNET_HDR, userspace can submit a ring-sized frame even when it
-greatly exceeds the device MTU.
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-A near-INT_MAX frame can saturate sk_wmem_alloc before the fragment
-loop rejects it. A subsequent refcount_add(0x40000001) can temporarily
-turn REFCOUNT_SATURATED into 1. A concurrent TX completion can then
-drop that apparent last reference and free the still-live packet
-socket before refcount_warn_saturate() restores the counter.
-
-Check that the remaining payload fits in MAX_SKB_FRAGS pages before
-accounting it. Include the initial page offset in the calculation,
-and move the existing -EFAULT handling out of the fragment loop.
-This preserves the accepted packet sizes and error code while
-preventing an invalid frame from injecting an oversized byte charge.
-
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Cc: stable@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-[edumazet: use net_warn_ratelimited() instead of pr_err(), add a Fixes: tag]
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20261028181450.2221013-1-edumazet@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ 6.1: adjust for context in kernels lacking 3948b05950fd ("net:
-  introduce a config option to tweak MAX_SKB_FRAGS") ]
-Signed-off-by: Bjoern Doebel <doebel@amazon.de>
----
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 17167fd94692d..0f4fb8350bbe5 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2705,6 +2705,12 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	}
- 
- 	offset = offset_in_page(data);
-+	if (unlikely(to_write > MAX_SKB_FRAGS * PAGE_SIZE - offset)) {
-+		net_warn_ratelimited("Packet exceed the number of skb frags(%u)\n",
-+				     (unsigned int)MAX_SKB_FRAGS);
-+		return -EFAULT;
-+	}
-+
- 	len_max = PAGE_SIZE - offset;
- 	len = ((to_write > len_max) ? len_max : to_write);
- 
-@@ -2716,12 +2722,6 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	while (likely(to_write)) {
- 		nr_frags = skb_shinfo(skb)->nr_frags;
- 
--		if (unlikely(nr_frags >= MAX_SKB_FRAGS)) {
--			pr_err("Packet exceed the number of skb frags(%lu)\n",
--			       MAX_SKB_FRAGS);
--			return -EFAULT;
--		}
--
- 		page = pgv_to_page(data);
- 		data += len;
- 		flush_dcache_page(page);
--- 
-2.50.1
-
+Yours,
+Linus Walleij
