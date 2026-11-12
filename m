@@ -1,56 +1,183 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.210
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794475775;
-	b=uTAlWv+rXS+IPLb61188r6XzIEs0LSM1HDNu8zH1+m1sPr2NwoODbbivFl33PYu4/DjS
-	 bN8nvau6M4uwkh/AweLN62WhUK+jrMK6ZUvNzrPduLLGQkgkjXWilHFZ9QhoW4HWTXeHM
-	 XGDYp+eYkdEdhl77p+Di4BJXJeQe+9O3RY1RYMTGvQl71ryMO0U5WNJNYa2JjlciAAI9G
-	 T49Y1dLJFCxR+7dnaLmhVu6e/8I4DYEmmpCyF3E5lxe7TEivKC7ZiKO3mfQGpmM6oWYc2
-	 dMPJliqgvhvRZiPIRBHH0VO/kbs+AokIQVYllDzZgirdRwKrb8bLcafq5LDJd3MHUoA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794475775;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=lZEPpRigEsECphAD+ph6tUiiDbCdsnvX3CVokYbFeE0=;
-	b=ao4nKI/sqew7QL5y5AzeViL8b8ivPIaStJBzd+jtHF0ioR3cmX2/s4Hh0+wuintCnkwK
-	 Csnje5f8m247ZZx9w4Un8bBFbJJiOLGqjrVMHh3d+ZE4ayw2e5WpbC97S5baLNJywn64+
-	 g6YiJNNMhQ/CPg8c8qqvtqJciT0PVTS116rNrJ+X//tV3eAfJUcekSrgSbdjh+uJDtxQv
-	 WtpDi3FsUlD/j2uMAEpawPb+miIg1Ys0Nnd7/MNlrzwi1IT5xm1dzSXpXIznB/589sXc9
-	 MN9q4soZx3YTPUIGReHOeq52pWHNlgz1Vl9lawT+dXrro2n/zGYL2QVnUUANqrU8prg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YSzWV+ny;
-	arc=none smtp.remote-ip=95.215.58.210
-Received: from mta1.migadu.com (out-210.mta1.migadu.com [95.215.58.210])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.69.42
+ARC-Seal: i=3; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794475860;
+	b=t6cdNIBrEyuzaIFcnE63dnm9c4QIRio3VudbUKpf7W03UqiLB4dzUr5EveMZJM9Vj0w9
+	 BCUOKPV04ekU+VFkgUkH0dXaAq1ookUSYQoh3J2hBa3aj76sO6y6HINyGYPmWBsvIiDhq
+	 AUeYUOVGCD3G2Zm6nzTFUhuLu6fWi4GEeLG2Gu6mn6HD9YhfKl/U2lsZqY7hcdwEcC6IT
+	 qdoLHrQLizWWdG6u+Nyf2bUnbg12vkrt5qm+oOgJxaFCLafN+VPuGRkrrErDMXKNDwBGk
+	 Ls11Vf2xCtwBv4iYDfWzD8OQw3uC5XR02Lw6L+jecuew6DwIFLoFNki+BBmCfIbo2WQ==
+ARC-Message-Signature: i=3; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794475860;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:
+	 DKIM-Signature:Authentication-Results-Original:Received:Received:From:
+	 Date:Subject:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 x-checkrecipientrouted:NoDisclaimer:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam-Untrusted:
+	 X-Microsoft-Antispam-Message-Info-Original:
+	 X-Forefront-Antispam-Report-Untrusted:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-EOPAttributedMessage:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+	 X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=jZE7IhtX1NmUiFMMT6bvC9A/apAk2w/Gp6I00CiyWq0=;
+	b=B/S6buKgU/BZuHPoI35iI9N//Gk+wealdrFEdx4LNgT2XqK8szdtVeLa5+cxb9XVRrDX
+	 HGqjsq+Gdi9XeFDvAyLGA0hNkM3AUcWtqyMJX+rhDl6720gRaJttrOTMNmcfg4auouVIR
+	 h6boPkTXLO3y1JsX2lWoCyHvavMuxmXw1IzkCKmAoednXmtsPzFd5P6rf4IudiZAgVgad
+	 AdxckI6rJ3x01iCsVoxzpShITm4r1q7nBLkO8YEhQWJ7nDjNRtn9/0EHvlZ0K+j2VuaaA
+	 MUwIsAFCg0hNOuc82rt3H+hyYiqHWjIm2iJGuLK+IOYCVz4G/CEXlwammw9w5CquLjQ==
+ARC-Authentication-Results: i=3; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Ez6XqCrV;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Ez6XqCrV;
+	arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.69.42
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010042.outbound.protection.outlook.com [52.101.69.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A539606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:29:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A539606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0989606A31C;
+	Thu, 12 Nov 2026 09:30:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0989606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YSzWV+ny
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=BjA3n/sOgSIOyN/7seRAxSwbfgEA28VZeR5jo1CKPqY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794475772; v=1; x=1795080572;
- b=YSzWV+nyi/WuIJBuppxtFhRibcI94F+Spoa3rCrtDDMLrbOrk0C0fnwxfynwwSX4FWE8JUtP
- mVRRppRJcbCoevjJQURPTg9q8xzaM17jdoF2/FhVDvKa6Qznqwy8JnQFOAtLDDP+pK0PRY3uq7X
- K2qzhwBQNOacN78IpBpOptzc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 08258022e496e0c7;
-	Thu, 12 Nov 2026 09:29:32 +0000
-X-Mizu-Trace-ID: 08258022e496e0c7
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Thu, 12 Nov 2026 17:28:00 +0800
-Subject: [PATCH net-next v3 5/5] selftests: seg6: add PSP flavor testing
- for SRv6 End.X
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Ez6XqCrV;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Ez6XqCrV
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=TvOwNqFpRRPCiD8tX69pr41Wfa6NaQHesLhh8/x0GBH+jGztrsTPmuAU2S+s901QqTqO3YVIQu2ukBd9Catu0svgwIWxlSGnM/Qvv5+rVBferqVQNRDR7U57IOoh85RcsKfYE1ptO/HNef0lTZb/BtNRIkj6crN6xIWnIUcX46wlIifaJKCwPsWBcC5/QsOG47LAYDfgv9zsb0KK6qaAd1J3SfCCYJB2LiclTEGgw0ZUQJEDZP+b5Toz/zEyvBwOI/9oWbO5qtQQwHP6DNVu0NbFftw0ioI9ucsG6PaQXE1eUHZqSl2zINW0eZ4X5Yri7nReUCGo7M7WWs0JjwmYdg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jZE7IhtX1NmUiFMMT6bvC9A/apAk2w/Gp6I00CiyWq0=;
+ b=GBykGHRuRi1WGOUvImgchNb3AdrzKUSYfDg7Ak82MSOGcJnoT6vTRmcFcIRe13KKzskI+AKpmf+roRN+sAWqL8EOQ5Fl5hnKrYwp5yc/U9COVEmgoVfSd31x4hSFXuCJOmZnHALSQHXtfk6fGyhxNsbRGdiPFi5NTa/VJSy62aRvCrG7UPtXcT9uH880L/OIEntFmzX1COjmFmtFhwkUpGQlc2cPMDJLsvKal0gb85aG/24MwLff5lHVNvYhZrkZsjD4m+uwdKI0HLZ2WaXOHq391Ad1i0pumlsQVMZ43e72KGIqAtdUiqmVx7sD3lSmRsnEWJQgmC9FjdJ/YEZ4AA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=davemloft.net smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jZE7IhtX1NmUiFMMT6bvC9A/apAk2w/Gp6I00CiyWq0=;
+ b=Ez6XqCrVkAIrs3uf/Pvphnn80ty437AGFP0mArLZLa7WvoiPlPadRJ3yvQc100KNfCA4UljxBVKbMNLDOJdNNfNJUnI/3afHQC4vNImwu0AHKLqocTTRx2l8IdkZKPObdJv0cne3NMQMOciePvzh+hJyIhuQfKGZY6Y1bmn9awo=
+Received: from DU6P191CA0016.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:540::10)
+ by AMDPR08MB999845.eurprd08.prod.outlook.com (2603:10a6:20b:70c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
+ 2026 09:30:52 +0000
+Received: from DB3PEPF0000885B.eurprd02.prod.outlook.com
+ (2603:10a6:10:540:cafe::7c) by DU6P191CA0016.outlook.office365.com
+ (2603:10a6:10:540::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Thu,
+ 12 Nov 2026 09:30:52 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB3PEPF0000885B.mail.protection.outlook.com (10.167.242.6) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4
+ via Frontend Transport; Thu, 12 Nov 2026 09:30:50 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YAMNLFUf51JW1Pr8evq98Jpt/X0t5lmajKOVqo77sabRBdepWj7409IvXxLc2RSXBN8lC0PS1s57yFzU0p0RJv/QgvDTdWKPk63VfFeEk+Q6/vK0wGj27EiUlRw6TEJWITnvalmx3bVcVqML/EgxfGg6DyY56UiaFjOWq2zcEl1FhkOXQbMiei4xf8Cj0AEIN+nKEZ57Aj5dZcsD6ROp2Ah86771vNeouYtqZUYIOWEjZPCSAXPOhVQjpTEm/n1pMetL/zV5v2OU5/OcaHgnWzrC5wcgW8Q5ochAL5biTBQiWl2k6BuAfmcNIk5yT+NiJSTtRYrBZJ2eO1SgZKppvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jZE7IhtX1NmUiFMMT6bvC9A/apAk2w/Gp6I00CiyWq0=;
+ b=eRGA+XXe7aCNm4fArp6lYrQ7QxjQW2DwT31Vw7pXkV2UoxI+OzuEhy7MsNblIaCKT3k+HodTy0n0vRWWecOaxDKVHXVesOxMFGpkdN+6VzvrenOiFCmN8f5TEAgMhyia/JjFji0y2pZp1TVnWq9zYeZHBxZVAVpi5zlNLvy8g7YbJC31R6IuRPhtxWR2EAItD7lBsLhDUJLdqhZxOL9ldS4exMARA3qiPPAwTDGjbQx7lZyQGFVyIHmxm+MjP2Q9r1KL8FIWLK32A8YwPwxNAKl+mKRnyKlQ8jmcSuBXaYzCwmngv9xxNOGSULKRYwBTq4T6I4mS3CNVk8Mc81G7sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jZE7IhtX1NmUiFMMT6bvC9A/apAk2w/Gp6I00CiyWq0=;
+ b=Ez6XqCrVkAIrs3uf/Pvphnn80ty437AGFP0mArLZLa7WvoiPlPadRJ3yvQc100KNfCA4UljxBVKbMNLDOJdNNfNJUnI/3afHQC4vNImwu0AHKLqocTTRx2l8IdkZKPObdJv0cne3NMQMOciePvzh+hJyIhuQfKGZY6Y1bmn9awo=
+Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
+ signed) header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from AS8PR08MB10291.eurprd08.prod.outlook.com
+ (2603:10a6:20b:629::15) by GV1PR08MB10402.eurprd08.prod.outlook.com
+ (2603:10a6:150:15d::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 12 Nov
+ 2026 09:30:16 +0000
+Received: from AS8PR08MB10291.eurprd08.prod.outlook.com
+ ([fe80::9f01:508:17aa:279c]) by AS8PR08MB10291.eurprd08.prod.outlook.com
+ ([fe80::9f01:508:17aa:279c%6]) with mapi id 15.21.0615.008; Thu, 12 Nov 2026
+ 09:30:15 +0000
+From: Bence Csokas <bence.csokas@arm.com>
+Date: Thu, 12 Nov 2026 10:29:33 +0100
+Subject: [PATCH v2 1/2] stddef: Add offsetofend() variant of
+ struct_offset()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261112-offsetof-v2-1-276ede839967@arm.com>
+References: <20261112-offsetof-v2-0-276ede839967@arm.com>
+In-Reply-To: <20261112-offsetof-v2-0-276ede839967@arm.com>
+To: Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Philipp Stanner <phasta@kernel.org>, Sudeep Holla <sudeep.holla@kernel.org>, 
+ Cristian Marussi <cristian.marussi@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jani Nikula <jani.nikula@linux.intel.com>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tursulin@ursulin.net>, Lyude Paul <lyude@redhat.com>, 
+ Danilo Krummrich <dakr@kernel.org>, Zack Rusin <zack.rusin@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Selvin Xavier <selvin.xavier@broadcom.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Chengchang Tang <tangchengchang@huawei.com>, 
+ Junxian Huang <huangjunxian6@hisilicon.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+ Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+ Guenter Roeck <groeck@chromium.org>, Nilesh Javali <njavali@marvell.com>, 
+ GR-QLogic-Storage-Upstream@marvell.com, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <mkp@kernel.org>
+Cc: Bence Csokas <bence.csokas@arm.com>, linux-hardening@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linaro-mm-sig@lists.linaro.org, arm-scmi@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+ nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ linux-scsi@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: PR1P264CA0162.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:347::16) To AS8PR08MB10291.eurprd08.prod.outlook.com
+ (2603:10a6:20b:629::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,485 +187,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-srv6_flavors_endx-v3-5-c9177bbbd965@kylinos.cn>
-References: <20261112-srv6_flavors_endx-v3-0-c9177bbbd965@kylinos.cn>
-In-Reply-To: <20261112-srv6_flavors_endx-v3-0-c9177bbbd965@kylinos.cn>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- Andrea Mayer <andrea@common-net.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.16.0
+X-MS-TrafficTypeDiagnostic:
+	AS8PR08MB10291:EE_|GV1PR08MB10402:EE_|DB3PEPF0000885B:EE_|AMDPR08MB999845:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae20ab5a-52ec-49b3-1d47-08df409fa438
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|921020|10067099003|11063799006|56012099006|261022105027099003|261026140227099003|261028144727099003|261021121427099003|261102123227099003|261009223027099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ LYrzVCPn8lc0cEz0ZiK1qU8q5Fm7Terg3KHUapkHS3OcyhinZhvC5qly16dLoJ6tll/GU3mQIGyHrm4UEH+G+NnA5mhS+URwDRJSWAv6yWBZJ61q8oa+w+qMWMlRgvnaP/CsipLHMBCKF38X2HBAxaAJ2EouAmgjKRMQ1PagdixempUC8NEoeZx3pmguAss3Fx6nnhp1pBUlDP58RMSQUg9L99SfNZQV1bxDfO1jyYapb7Khwif400DjsrYX+vuIVQ+QW59F8ZJCfsY9sRkNpDTh9TM3HH8ts8MpAGtA3Ch3QwnyOqb6ZjYe58G+LSowOhR/nGIYB6o+DOUwschlUKP4q92zUtRfIX7ox9v4KD/VtrYv7dcK0BZhGfMpyOyBTEcsM5jofJNJU1XrjylfhP/5ePVcWQsz86vXvXR2y565adBt6ojq4tap3FRKd2Jhbq2wKFpD5wOAXE3LV8EhnEFzhld/Fe1S+Af9AgE7zz8b+1ygmF9Ht4aZa2gnjRoA9Nd7uxifeoyVhxcGHHcSjbgqQr9kE0Mc7HNBQ6rJCkMQWT2hfqZudYe9niZ3i2hi5Ot7fpKfQBWhjmAZ8QGd7K/59ZlU7T6srPgKVP84/a6oBG8q77mA3xhHJBKh8xSYCmYIzWFxpVIspANW1UwAM3Mf9Usra0pOwq8m8GEHvPJ+uLaJlt4P5LLAB7ZU78rna8Hi7VGpZy4qWwqyIUIIzQ==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR08MB10291.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(921020)(10067099003)(11063799006)(56012099006)(261022105027099003)(261026140227099003)(261028144727099003)(261021121427099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ R/rlwNVpSEeJejiroqsZAyJowDGmRSfl1BEpUU8snN4aklEhgAFEWXUI+5XRZwcv6SA/hnas+52SOpCoweJJwsCpvFsyX9IlbVFcyZkJOk1AFg6QFLPJMToP/KIp8YAMkIFLg00lVKn7147Mwar3R7IPNEQXee9jEH/4GvWCguOWcK0fjHwoELkkbSWz5BJ8V2uLHkHVdTNBZFDLp/wI65B7MvdG94k5bbaRoSDGdevz4gQBKe9E7hXN/PTwQubn1OlphMDwljo9UW/arA5vxMKHVvTdA59Q+hpk1d2pTDJ4QIILbs94/NkZKgrrlHmWa5jKiLZwmTIG1BMPYZGHeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10402
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB3PEPF0000885B.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	3cf24f41-17f3-434b-b2c1-08df409f8f06
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|14060799003|7416014|376014|36860700016|35042699022|23010399003|1800799024|22082099003|18002099003|921020|261026140227099003|11063799006|261028144727099003|261021121427099003|261022105027099003|261009223027099003|261102123227099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	Mi41iVFS42Y4ijkOcEdLtduh04au3Ctaa8x11V1VAXo32pknKPcTPMXzQN/o4py2b56J567tAvY36cKtKiSNKmw1eQAxzXh80NyTLMkY7f3vTtM+KQtBzVeq3bs8ZV6Tvkkx2pOBBmqkKr3pffW0nCNarP1oKy9OPO3Cx0OQUHdn1Sa2YWwuEq0+NQVD2uQtaD3ANeAIRVAQwrH3gex+vnpMjZSC0aTC20d7tyXTZ5iGV6Ui3mKVhSv1jQ8XsPDDnE9L2vBxMZs6RixJJkW9nNUehwmoxSKx1WrUtqgslZ85TETQBPUZAMpLYnL+DEI5z9V3FZOhMNA4gvd+LhPY7w3MF4KWKEegAwq46G9JbnUz+Dbr8L40kwb0LNY8LNTk/PzHETrUPgYCw6OQfmIgj8I0UjZEUj5n2nxdygwiMmrY4lFvmph+msDELQH2uVAK0lOiSGlU7ErNvbgj56MPB7XjGWZYLoDTMAbfiWNoeW6jDlz5C5xktqhyO9WCbsHzcQXnzCuwHc639HiwrGelyia7jV85VvGEt0gaIYiAqnQdI6Oygr5ioZq3+pcv1mXxF1aV+NG9Cl+Q3k/i3Ki03cHOTVAFWY3G9vu+s4rLFIKdbgpGwlQIgV4wjToBGrLmyrXcMqx2y5O9maAdDDXd/WzgC9aPbRxn2nSaCpGaYOk6arD6tK8p117qDScXXeK/gN0Wtjk74Ktr3yKJ09G50vs5GvDDaFee30P2qopyx7MCTUG/kKjrItPLjuoIkgOZ
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(14060799003)(7416014)(376014)(36860700016)(35042699022)(23010399003)(1800799024)(22082099003)(18002099003)(921020)(261026140227099003)(11063799006)(261028144727099003)(261021121427099003)(261022105027099003)(261009223027099003)(261102123227099003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	yGup8012UgHlLQucFmNHZW0exhtlj1DSp5MlK8/Ce4QkOttAbtsrlBHoV8+WhYgIbjBvYmBXJNrfw9lBh3KQPoKtJbp17e2D65f/Gh3wjPlOn+E0vZxD8Kq1LRVfpihWQwMF/4gHPlg1j/hE/MSZS+odm/N6AtpkTQC9IELnSQDu7TvQ7L2PuOdihLbaGO4XRMxB2aKcywhG2KlwZsn8vZ8Z17E+Bivtlxq8aYuhSTCvWOoUnsqUqG3VVB3aZUFrTzbJ6mzP2laDoRU7ycUgx5/hy2TT+mxdm26r8/EQz0u80qMQusMcyC/w6XRhAP1xbRtjyMtkS3LT/8b2UOTnYDjw6MgBAtYcP1ENnCn+U1QjADggbHsEh7S32MFxGO5QvQAOzd8CzTypAZRqEwE0INSbJEcwvADf7nbiuX152tn7WPHSiAQp4AxIXWQjPfXw
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 09:30:50.8346
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae20ab5a-52ec-49b3-1d47-08df409fa438
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885B.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR08MB999845
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+Many call sites of offsetofend() use it for the purpose of pointer
+artihmetic. Thus, a common usage pattern is:
 
-Add an End.X flavor scenario to srv6_end_flavors_test.sh that applies
-the same PSP policies as the End scenario, alone and combined with
-NEXT-C-SID, with every node bound through its adjacency (e.g. 4>2 for
-rt-4 towards rt-2, 2>h towards the host), and exercise it with the
-existing host connectivity tests.
+  offsetofend(typeof(*ptr), member)
 
-Teach the policy and endpoint helpers about <nodeid:op:act> elements:
-__get_srv6_rtcfg_act() extracts the action, the __get_*_func()
-helpers pick the Function for the action, __get_act_cfg() derives the
-End.X next hop, and build_csid()/get_rt_sid() keep the adjacency so
-it is encoded into the C-SIDs (e.g. fcbb:0:34a9:: is End.X on rt-3
-towards rt-4).
+Capturing this in one macro helps keep lines short and terse, while
+still making the purpose clear. It also helps discourage spelling out
+the type name on every callsite, leading to more maintainable code.
 
-There is no need to re-check the ip command capability as it already
-supports setting PSP flavor with End.X.
+A similar struct_offset() macro already exists, so add an offsetof()
+variant in the same spirit.
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Signed-off-by: Bence Csokas <bence.csokas@arm.com>
 ---
-I didn't add `host_srv6_end_flv_consumed_srh_tests()` for End.X because
-the extra policy insertion does not work with the End.X policy. The packet
-resolves the destination via the next hop directly, rather than doing a
-re-lookup in table 90.
----
- .../testing/selftests/net/srv6_end_flavors_test.sh | 254 ++++++++++++++++-----
- 1 file changed, 203 insertions(+), 51 deletions(-)
+ include/linux/overflow.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-index 374b43661c28..5b1b13586df0 100755
---- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-@@ -5,7 +5,7 @@
- # author: Paolo Lungaroni <paolo.lungaroni@uniroma2.it>
- #
- # This script is designed to test the support for "flavors" in the SRv6 End
--# behavior.
-+# and End.X behaviors.
- #
- # Flavors defined in RFC8986 [1] represent additional operations that can modify
- # or extend the existing SRv6 End, End.X and End.T behaviors. For the sake of
-@@ -16,10 +16,10 @@
- #
- # The End, End.X, and End.T behaviors can support these flavors either
- # individually or in combinations.
--# Currently in this selftest we consider the PSP flavor for the SRv6 End
--# behavior, both alone and combined with the NEXT-C-SID flavor defined in
--# RFC9800 [2]. However, it is possible to extend the script as soon as other
--# flavors will be supported in the kernel.
-+# Currently in this selftest we consider the PSP flavor for the SRv6 End and
-+# End.X behaviors, both alone and combined with the NEXT-C-SID flavor defined
-+# in RFC9800 [2]. However, it is possible to extend the script as soon as
-+# other flavors will be supported in the kernel.
- #
- # The purpose of the PSP flavor consists in instructing the penultimate node
- # listed in the SRv6 policy to remove (i.e. pop) the SRH from the IPv6 header.
-@@ -125,12 +125,14 @@
- # configured in the Local SID table:
- #
- #   Local SID table for SRv6 router rt-x
--#   +---------------------------------------------------------------------+
--#   |fcff:x::e is associated with the SRv6 End behavior                   |
--#   |fcff:x::ef1 is associated with the SRv6 End behavior with PSP flavor |
--#   |fcbb:0:xpyy::/48 is associated with the SRv6 behavior and flavors    |
--#   |   given by the Function yy, and with parameter p of the behavior    |
--#   +---------------------------------------------------------------------+
-+#   +-----------------------------------------------------------------------+
-+#   |fcff:x::e is associated with the SRv6 End behavior                     |
-+#   |fcff:x::a is associated with the SRv6 End.X behavior                   |
-+#   |fcff:x::ef1 is associated with the SRv6 End behavior with PSP flavor   |
-+#   |fcff:x::af1 is associated with the SRv6 End.X behavior with PSP flavor |
-+#   |fcbb:0:xpyy::/48 is associated with the SRv6 behavior and flavors      |
-+#   |   given by the Function yy, and with parameter p of the behavior      |
-+#   +-----------------------------------------------------------------------+
- #
- # The fcff::/16 prefix is reserved by the operator for the SIDs. Reachability of
- # SIDs is ensured by proper configuration of the IPv6 operator's network and
-@@ -153,10 +155,14 @@
- #   +----------+----------+--------------------+
- #   | e9       | End      | NEXT-C-SID and PSP |
- #   +----------+----------+--------------------+
-+#   | a9       | End.X    | NEXT-C-SID and PSP |
-+#   +----------+----------+--------------------+
- #
- # For example, fcbb:0:40e9:20e9:: is a C-SID container carrying the C-SID of
- # rt-4 followed by the C-SID of rt-2, both with the NEXT-C-SID and PSP flavors.
- #
-+# fcbb:0:34a9:: is End.X on rt-3, adjacency to rt-4, with NEXT-C-SID and PSP
-+# flavors.
- #
- # SRv6 Policies
- # =============
-@@ -339,12 +345,12 @@ readonly LOCATOR_SERVICE=fcff
- readonly END_FUNC=000e
- readonly END_PSP_FUNC=0ef1
- readonly END_CSID_PSP_FUNC=e9
-+readonly ENDX_FUNC=000a
-+readonly ENDX_PSP_FUNC=0af1
-+readonly ENDX_CSID_PSP_FUNC=a9
+diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+index d0f04436343e..060dad4b6f3e 100644
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -464,6 +464,18 @@ static __always_inline size_t __must_check size_sub(size_t minuend, size_t subtr
+  */
+ #define struct_offset(p, member) (offsetof(typeof(*(p)), member))
  
- readonly LCBLOCK_ADDR=fcbb:0
- readonly LCBLOCK_BLEN=32
--# do not add ':' as separator. The Locator-Node is followed by the parameter
--# of the behavior, 0 for End.
--readonly LCNODE_FMT="%x0"
- readonly LCNODE_BLEN=4
- readonly LCNODEFUNC_BLEN=16
- 
-@@ -531,14 +537,34 @@ get_network_prefix()
- 	echo "${IPv6_RT_NETWORK}:${p}:${q}"
- }
- 
--# Given the description of a router <id:op> as an input, the function returns
--# the <id> token which represents the ID of the router.
--# i.e. input: "12:psp"
--#      output: "12"
-+# Given the description of a router <id:op:act> as an input, the function
-+# returns its <id> field with the <op> and <act> fields dropped. From each
-+# element of the list, the ">" together with the following router ID or
-+# "h" (the adjacency) is dropped as well.
-+# i.e. input: "12:psp", output: "12"
-+#      input: "1,2:psp", output: "1,2"
-+#      input: "1>2:psp", output: "1"
-+#      input: "1>2,2>3:psp", output: "1,2"
-+#      input: "2>h:psp:End.X", output: "2"
- __get_srv6_rtcfg_id()
- {
- 	local element="$1"
- 
-+	echo "${element}" | sed 's/:.*//; s/>[1234h]//g'
-+}
++/**
++ * struct_offsetofend() - Calculate the end of a member within a struct
++ * @p: Pointer to the struct
++ * @member: Name of the member to get the end offset of
++ *
++ * Calculates the offset of the end of a particular @member of the structure
++ * pointed to by @p.
++ *
++ * Return: number of bytes to the location of @member.
++ */
++#define struct_offsetofend(p, member) (offsetofend(typeof(*(p)), member))
 +
-+# Given the description of a router <id:op:act> as an input, the function
-+# returns its <id> field with the <op> and <act> fields dropped. Unlike
-+# __get_srv6_rtcfg_id(), the ">" and the following router ID or "h" are
-+# kept in each element. The callers that need the adjacency use this variant,
-+# e.g. to encode it into a C-SID or to derive the End.X next hop.
-+# i.e. input: "1,2:psp", output: "1,2"
-+#      input: "1>2,2>3:psp", output: "1>2,2>3"
-+#      input: "4>2,2>h:psp:End.X", output: "4>2,2>h"
-+__get_srv6_rtcfg_all_id()
-+{
-+	local element="$1"
-+
- 	echo "${element}" | cut -d':' -f1
- }
- 
-@@ -559,20 +585,95 @@ __get_srv6_rtcfg_op()
- 		xargs | sed 's/ /,/g'
- }
- 
-+# Given the description of a router <id:op:act> as an input, the function
-+# returns the <act> token which represents the action(e.g. Action End or
-+# End.X) configured for the node. Return End by default if not supplied.
-+# i.e. input: "3>4:noflv:End.X", output: "End.X"
-+__get_srv6_rtcfg_act()
-+{
-+	local element="$1"
-+
-+	echo "${element}" | cut -d':' -f3 | sed -e 's/^$/End/'
-+}
-+
-+__get_noflv_func()
-+{
-+	local act="$1"
-+
-+	case "${act}" in
-+	"End")
-+		echo "${END_FUNC}" ;;
-+	"End.X")
-+		echo "${ENDX_FUNC}" ;;
-+	esac
-+}
-+
-+__get_psp_func()
-+{
-+	local act="$1"
-+
-+	case "${act}" in
-+	"End")
-+		echo "${END_PSP_FUNC}" ;;
-+	"End.X")
-+		echo "${ENDX_PSP_FUNC}" ;;
-+	esac
-+}
-+
-+__get_csid_psp_func()
-+{
-+	local act="$1"
-+
-+	case "${act}" in
-+	"End")
-+		echo "${END_CSID_PSP_FUNC}" ;;
-+	"End.X")
-+		echo "${ENDX_CSID_PSP_FUNC}" ;;
-+	esac
-+}
-+
-+# Given the encapsulation action, current route and next hop as input, the
-+# function will return the action specific configuration.
-+# i.e. input: "End.X 2 h", output: "End.X nh6 cafe::2"
-+#      input: "End.X 4 2", output: "End.X nh6 fcf0:0:2:4::2"
-+__get_act_cfg()
-+{
-+	local act="$1"
-+	local rt="$2"
-+	local neigh="$3"
-+	local net_prefix nh
-+
-+	case "${act}" in
-+	"End")
-+		echo "End" ;;
-+	"End.X")
-+		if [ "${neigh}" == "h" ]; then
-+			net_prefix="${IPv6_HS_NETWORK}"
-+			nh="${rt}"
-+		else
-+			net_prefix="$(get_network_prefix "${rt}" "${neigh}")"
-+			nh="${neigh}"
-+		fi
-+		echo "End.X nh6 ${net_prefix}::${nh}" ;;
-+	esac
-+}
-+
- # Return the C-SID of a router: the Locator-Node (4 bits), i.e. the ID of the
- # router, followed by the parameter of the behavior (4 bits, 0) and the
- # Function (8 bits).
- # args:
- #  $1 - router
- #  $2 - Function (e.g. "e9")
--# e.g. input: "4" "e9"
--#      output: "40e9"
-+# e.g. input: "4" "e9", output: "40e9"
-+#      input: "4>2" "a9", output: "42a9"
- build_csid()
- {
- 	local nodeid="$1"
- 	local func="$2"
- 
--	printf "${LCNODE_FMT}%s" "${nodeid}" "${func}"
-+	nodeid=$(echo "${nodeid}" | sed 's/>//; s/h/0/')
-+	[[ ${#nodeid} -eq 1 ]] && mid=0 || mid=""
-+	printf "%s%s%s" "${nodeid}" "$mid" "${func}"
- }
- 
- # Return the C-SID container with the C-SIDs of the routers listed in a
-@@ -580,8 +681,8 @@ build_csid()
- # args:
- #  $1 - <nodeid> of the element: a comma-separated list of routers
- #  $2 - Function (e.g. "e9")
--# e.g. input: "4,2" "e9"
--#      output: "fcbb:0:40e9:20e9::"
-+# e.g. input: "4,2" "e9", output: "fcbb:0:40e9:20e9::"
-+#      input: "4>2,2>1" "e9", output: "fcbb:0:42e9:21e9::"
- build_csid_container()
- {
- 	local nodeids="$1"
-@@ -713,10 +814,10 @@ op_has_next_csid()
- #  $1 - router
- #  $2 - operation <op> of the element (e.g. "next-csid,psp")
- #  $3 - Function (e.g. "0ef1", or "e9" with NEXT-C-SID)
--# e.g. input: "4" "psp" "0ef1"
--#      output: "fcff:4::0ef1"
--#      input: "4" "next-csid,psp" "e9"
--#      output: "fcbb:0:40e9::/48"
-+# e.g. input: "4" "psp" "0ef1", output: "fcff:4::0ef1"
-+#      input: "4>2" "psp" "0af1", output: "fcff:4::0af1"
-+#      input: "4" "next-csid,psp" "e9", output: "fcbb:0:40e9::/48"
-+#      input: "4>2" "next-csid,psp" "a9", output: "fcbb:0:42a9::/48"
- get_rt_sid()
- {
- 	local rt="$1"
-@@ -730,6 +831,7 @@ get_rt_sid()
- 		return
- 	fi
- 
-+	rt=$(echo "${rt}" | sed 's/>.*//')
- 	echo "${LOCATOR_SERVICE}:${rt}::${func}"
- }
- 
-@@ -765,26 +867,34 @@ setup_rt_endpoint()
- 
- # Add an SRv6 Endpoint behavior to each router of a Policy element <nodeid:op>.
- # args:
--#  $1 - <nodeid> of the element: one router, or a comma-separated list
-+#  $1 - <nodeid:op:act> element
- #  $2 - operation <op> of the element (e.g. "next-csid,psp")
- #  $3 - Function (e.g. "0ef1", or "e9" with NEXT-C-SID)
--#  $4 - SRv6 Endpoint behavior and flavors (e.g. "End flavors psp")
--# e.g. input: "4,2" "next-csid,psp" "e9"
--#             "End flavors next-csid,psp lblen 32 nflen 16"
-+#  $4 - flavor configuration of the behavior, without the action
-+#       (e.g. "flavors psp")
-+# e.g. input: "4,2:next-csid,psp" "next-csid,psp" "e9"
-+#             "flavors next-csid,psp lblen 32 nflen 16"
- #      result: the behavior is added on rt-4, bound to fcbb:0:40e9::/48, and
- #              on rt-2, bound to fcbb:0:20e9::/48
- setup_rt_endpoints()
- {
--	local node="$1"
-+	local nodeid="$1"
- 	local op_type="$2"
- 	local func="$3"
- 	local behavior_cfg="$4"
-+	local nodes node next_node
-+	local act act_cfg
- 	local sid
- 	local rt
- 
--	for rt in $(echo "${node}" | sed 's/,/ /g'); do
--		sid="$(get_rt_sid "${rt}" "${op_type}" "${func}")"
--		setup_rt_endpoint "${rt}" "${sid}" "${behavior_cfg}"
-+	nodes="$(__get_srv6_rtcfg_all_id "${nodeid}")"
-+	act="$(__get_srv6_rtcfg_act "${nodeid}")"
-+	for node in $(echo "${nodes}" | sed 's/,/ /g'); do
-+		rt=$(echo "${node}" | cut -d'>' -f1)
-+		next_node=$(echo "${node}" | cut -d'>' -f2)
-+		act_cfg="$(__get_act_cfg "${act}" "${rt}" "${next_node}")"
-+		sid="$(get_rt_sid "${node}" "${op_type}" "${func}")"
-+		setup_rt_endpoint "${rt}" "${sid}" "${act_cfg} ${behavior_cfg}"
- 	done
- }
- 
-@@ -824,7 +934,8 @@ setup_rt_host_proxy()
- #       cafe::x:yy on the loopback of the host (e.g. 2:e9)
- #  $2 - SRv6 router configured for enforcing the SRv6 Policy
- #  $3 - compact way to represent a list of SRv6 routers with their operations
--#       (i.e. behaviors) that each of them needs to perform. Every <nodeid:op>
-+#       (i.e. behaviors) that each of them needs to perform. Every
-+#       <nodeid:op:act>
- #       element constructs a SID that is associated with the behavior <op> on
- #       the <nodeid> node. The list of such elements forms an SRv6 Policy.
- #       For "next-csid,psp", <nodeid> is a comma-separated list of node IDs.
-@@ -841,34 +952,38 @@ __setup_rt_policy()
- 	local container
- 	local function
- 	local op_type
-+	local nodes
- 	local node
-+	local act
- 	local n
- 
- 	in_nsname="$(get_rtname "${encap_rt}")"
- 
- 	for n in ${policy_rts}; do
- 		node="$(__get_srv6_rtcfg_id "${n}")"
-+		nodes="$(__get_srv6_rtcfg_all_id "${n}")"
- 		op_type="$(__get_srv6_rtcfg_op "${n}")"
-+		act="$(__get_srv6_rtcfg_act "${n}")"
- 
- 		case "${op_type}" in
- 		"noflv")
--			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_FUNC},"
--			function="${END_FUNC}"
--			behavior_cfg="End"
-+			function="$(__get_noflv_func "${act}")"
-+			policy="${policy}${LOCATOR_SERVICE}:${node}::${function},"
-+			behavior_cfg=""
- 			;;
- 
- 		"psp")
--			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_PSP_FUNC},"
--			function="${END_PSP_FUNC}"
--			behavior_cfg="End flavors psp"
-+			function="$(__get_psp_func "${act}")"
-+			policy="${policy}${LOCATOR_SERVICE}:${node}::${function},"
-+			behavior_cfg="flavors psp"
- 			;;
- 
- 		"next-csid,psp")
--			container="$(build_csid_container "${node}" \
--				"${END_CSID_PSP_FUNC}")"
-+			function="$(__get_csid_psp_func "${act}")"
-+			container="$(build_csid_container "${nodes}" \
-+				"${function}")"
- 			policy="${policy}${container},"
--			function="${END_CSID_PSP_FUNC}"
--			behavior_cfg="End flavors next-csid,psp ${CSID_CFG}"
-+			behavior_cfg="flavors next-csid,psp ${CSID_CFG}"
- 			;;
- 
- 		*)
-@@ -877,7 +992,7 @@ __setup_rt_policy()
- 		esac
- 
- 		# add SRv6 Endpoint behavior to the selected routers
--		setup_rt_endpoints "${node}" \
-+		setup_rt_endpoints "${n}" \
- 			"${op_type}" "${function}" "${behavior_cfg}"
- 	done
- 
-@@ -1049,6 +1164,29 @@ setup_end_flv_psp()
- 	SETUP_ERR=0
- }
- 
-+setup_endx_flv_psp()
-+{
-+	SETUP_ERR=1
-+
-+	setup_hs_lo_addr 1 1 "${ENDX_CSID_PSP_FUNC}"
-+	setup_hs_lo_addr 2 2 "${ENDX_CSID_PSP_FUNC}"
-+
-+	setup_rt_host_proxy 1 2 "${ENDX_CSID_PSP_FUNC}"
-+	setup_rt_host_proxy 2 1 "${ENDX_CSID_PSP_FUNC}"
-+
-+
-+	# The same SRv6 policies with setup_end_flv_psp except using End.X
-+	setup_rt_policy_ipv6 2 1 "3>4:noflv:End.X 4>2:psp:End.X 2>h:psp:End.X"
-+	setup_rt_policy_ipv6 1 2 "1>h:psp:End.X"
-+
-+	setup_rt_policy_ipv6 "2:${ENDX_CSID_PSP_FUNC}" 1 \
-+		"3>4:next-csid,psp:End.X 4>2,2>h:next-csid,psp:End.X"
-+	setup_rt_policy_ipv6 "1:${ENDX_CSID_PSP_FUNC}" 2 \
-+		"4>3,3>1,1>h:next-csid,psp:End.X"
-+
-+	SETUP_ERR=0
-+}
-+
- check_rt_connectivity()
- {
- 	local rtsrc="$1"
-@@ -1155,7 +1293,9 @@ host2gateway_tests()
- 
- host_srv6_end_flv_psp_tests()
- {
--	log_section "SRv6 connectivity test hosts (h1 <-> h2, PSP flavor)"
-+	local act=${1:-"End"}
-+
-+	log_section "SRv6 connectivity test hosts (h1 <-> h2, ${act} PSP flavor)"
- 
- 	check_and_log_hs_connectivity 1 2
- 	check_and_log_hs_connectivity 2 1
-@@ -1163,10 +1303,14 @@ host_srv6_end_flv_psp_tests()
- 
- host_srv6_end_flv_next_csid_psp_tests()
- {
--	log_section "SRv6 connectivity test hosts (h1 <-> h2, NEXT-C-SID,PSP)"
-+	local act=${1:-"End"}
-+	local csid_psp_func
- 
--	check_and_log_hs_lo_addr_connectivity 1 2 "${END_CSID_PSP_FUNC}"
--	check_and_log_hs_lo_addr_connectivity 2 1 "${END_CSID_PSP_FUNC}"
-+	log_section "SRv6 connectivity test hosts (h1 <-> h2, ${act} NEXT-C-SID,PSP)"
-+
-+	csid_psp_func="$(__get_csid_psp_func "${act}")"
-+	check_and_log_hs_lo_addr_connectivity 1 2 "${csid_psp_func}"
-+	check_and_log_hs_lo_addr_connectivity 2 1 "${csid_psp_func}"
- }
- 
- # On a router, add a route for a SID with seg6 encap in inline mode. The packets
-@@ -1479,4 +1623,12 @@ host_srv6_end_flv_next_csid_psp_tests
- host_srv6_end_flv_consumed_srh_tests
- defer_scope_pop
- 
-+defer_scope_push
-+set -e
-+setup_endx_flv_psp
-+set +e
-+host_srv6_end_flv_psp_tests "End.X"
-+host_srv6_end_flv_next_csid_psp_tests "End.X"
-+defer_scope_pop
-+
- print_log_test_results
+ /**
+  * __DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
+  * Enables caller macro to pass arbitrary trailing expressions
 
 -- 
-2.56.0
+2.56.1
 
