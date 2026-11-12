@@ -1,59 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.12.53.23
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794514919;
-	b=2tEulE0HDLtyX6YxuzKDScOCAlKNJM0NHWu15Xy0VqoIptjd9SDwqnzivE7kWZVmeSxs
-	 BH4ySC1yFIvHNWJCdyTiSL5kH18x4b2IHylE1ZIB6+MDabD1Fz4wPqu/lfpIpBGOsdZQC
-	 98JMFJ7vPlQaNlAmLyZDO3YWeLa3vH9fC8rzQDpg9IAqgRpOY1iyBXmAz5+WUaYidc0Pe
-	 K1FOucOIezfhkbc8vJq/2pfS7wti1x4IHct0ODQ0RlYOkMFUq8a5X2y6EmcVK3WqmSvkR
-	 Uz27sAa49HkqdGRg+qE6FIvL6oYErq9lUmeEuie0oQHWOr+RF+LLdXPIZL7lj750C8g==
+	t=1794514994;
+	b=EEDjx/OWQSV71F4OMmnM6NjtVjFFmEJQRxI70bhELRKPZHFZUMPElVuzCsUBchUjZ4SA
+	 +bz6L4w/4TPr2V6ULbmOzvLuJFx6UfMZVuLKO3DpQrfo9i4PIr5SwUUM5j2KUTk+gcBA7
+	 qCeVhUaKsKfIUO9/nFgu2TKCUVNo919TBy+8vNX+nPbwN1y9zx6m9UcS6JU2ibunYxMd7
+	 og0iIczyOktVjOFntp/JDpPcz5Kpz3bjk2ndm/7Eqk3E8/93dLTuajgdMpP9ztlBhyj33
+	 C9cUZ4Nr4Z9AWmypb3yK72okjH9N0YBc8jQo4QCDL1Su3hJS5QPcp2C7gsh70SRvoXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794514919;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=xQLMtJSqy8FG262aA8N0q0Rpw5hd52l2f1OMCg367UM=;
-	b=eWrL9yhxa3whb2t18OphdA3xa/aU9yo7wJh/47fzo+cL20v21yeKeGyuB6ExprGHQbrI
-	 TX1TFBZmVXVS2KQLoHOZXPxRdlqOzIShKwLftv5+c4d1YzqA1CZCV8nrRnwz5qfcf/Pfm
-	 rT9G1KHIGYJRRokRED5zEIl0k3gR6mfZXSmSxdg6xfZEkapsN7N4U5gRorAj8820XNCkn
-	 r876q2iuwBHZMxkxU+F7n3d20OxveQU6yeOp0xkiRpMfUnYX02WQINiyDEbmnfUpLmU8J
-	 W+GehyvWajozMfWMhNXGP+R6sf2rphstbMne+yeWwpxTjhX5qLYk0XDTzNIzLBth8tg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794514994;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=8DzqwpdQD5heDHoUrlsNiPFwyABhSek6uK6Bj4NP0hg=;
+	b=CRAV5rYsvWNE/7JtOkYczFzEgHBV0TXjgoeARwAinCDsI7HgoVfmQfEwhuiQjHrFHDVr
+	 nTIs9UCz+fuqPjrQ/Kj8sQJDi8NeK6FHX1UzgnUUiGBUl0hdPswwqrBjuvX42APqjJjOP
+	 GmSup6yyAjB3/+fEBSHreT57JvI55FaVT9++ijd+DZCEQqLX0A1xpgDjwtbZi3kXuGyzF
+	 svWInPPpv5rc3kdz0OpDHU79AIHYDWjnEltKk24rj2mBBeJH4CPgmRU5/4ygAYpx1NTAq
+	 OgcHigcdgqvY114SV9Hv+qNIR6wZ/hcqsIlpW9yc8NMckgrbmcyhI/X1YG3iRpOFOpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NH1RaPMK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=amazon.de;
+	spf=pass smtp.mailfrom=amazon.de;
+	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=pDaGQfy9;
+	arc=none smtp.remote-ip=52.12.53.23
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD112606A882
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5E8606A327;
+	Thu, 12 Nov 2026 20:23:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F5E8606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NH1RaPMK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FD81F000C4;
-	Thu, 12 Nov 2026 20:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794514919;
-	bh=xQLMtJSqy8FG262aA8N0q0Rpw5hd52l2f1OMCg367UM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NH1RaPMKN1Qy+y/kj112SpA+0zj+M1t55Rvl7oYZkjnC8fEs1w0YjPGjJ6yuZ0Pfz
-	 6rQ6kDULnacLIcRMdLQ50g0WtjRDAbB8iTO4wTgLJ9yUIjylVm8H6IjFnLSmPOSaxy
-	 RBlOYSDnHuEjWNurk5X0tPCEb3BJe0kGVYPj8Pwp7TL7vPxKqDdViVZ+gVuQGK1GQL
-	 CxKzMclGVMUWqJ3AYA6YU4/wwCm0ICKHKU40WkfKle/pMwUIF+hgO74KUNPCBNWB9x
-	 wEHNJFybaxWgNF1gP60X95g8+1+OpbpYEyL54dbE0uxyprsJ7e+SaFNmd5eGHeLt27
-	 TsJQxbTm+GBYg==
-Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
- with coupled control disabled
-From: netdev-bot+sashiko@kernel.org
-To: idosch@nvidia.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, jv@jvosburgh.net,
- andrew+netdev@lunn.ch, razor@blackwall.org, aahila@google.com
-Date: Thu, 12 Nov 2026 20:21:58 +0000
-Message-ID: <179451491828.2199510.10600083511159752831@kernel.org>
-In-Reply-To: <20261111171947.2816258-2-idosch@nvidia.com>
-References: <20261111171947.2816258-2-idosch@nvidia.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=pDaGQfy9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1794514994; x=1826050994;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8DzqwpdQD5heDHoUrlsNiPFwyABhSek6uK6Bj4NP0hg=;
+  b=pDaGQfy9QSnV4z2H8V2s7V6Y9FoAtjBAgdpz2s1NTDmAtX7oeGXReC1O
+   mjoXHgIg9A+GKaH8afqLdEZ0FQ2l/gAaec+y8sQ+cPEQHbJT4o2nyca8i
+   4ofCn7rjzYYVJnn04ppaDWgLqcYBzOZtBGDa6DAKWc3LHYMDbOClfpRTQ
+   oeVZQExgm4W50Y9IZRjJSy1oCWaK9yCP/3RxUP8eVtdXXZbkIvrjAjjlm
+   6lK6AEfxuBVz29sqlEhJ45lzDF9/wby0eX50OmsuToff7uszns88epl0y
+   kqODXuIKn/TS5GI15ODGJ60xrnIhi2EaU6TTZTugwN7fjF3xisAGbBf72
+   Q==;
+X-CSE-ConnectionGUID: AEJzRDz1SWGPsKT+gABYmw==
+X-CSE-MsgGUID: 8T5oW8P5QC+831tEvlbIrQ==
+X-IronPort-AV: E=Sophos;i="6.27,210,1787011200"; 
+   d="scan'208";a="33713108"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 20:23:11 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:26049]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
+ id 80d6f0d1-7a47-418a-a4da-54433e9e3046; Thu, 12 Nov 2026 20:23:11 +0000 (UTC)
+X-Farcaster-Flow-ID: 80d6f0d1-7a47-418a-a4da-54433e9e3046
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Thu, 12 Nov 2026 20:23:11 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Thu, 12 Nov 2026 20:23:09 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Kyle Zeng <kylebot@openai.com>, Eric Dumazet <edumazet@kernel.org>,
+	"Willem de Bruijn" <willemb@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	<netdev@vger.kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Bjoern Doebel <doebel@amazon.de>
+Subject: [PATCH 5.10.y] net/packet: check TX_RING fragments before memory accounting
+Date: Thu, 12 Nov 2026 20:22:59 +0000
+Message-ID: <20261112202259.1603271-1-doebel@amazon.de>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,155 +84,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Kyle Zeng <kylebot@openai.com>
 
-Low priority / nit picks for your consideration:
+[ Upstream commit dc4dd12f80e499dc034710cd8195489abcf0b059 ]
 
-- [Low] The bonding selftest config fragment
-  (tools/testing/selftests/drivers/net/bonding/config) now asks for…
-- [Low] In bond_lacp_independent_control.sh, collecting() reads the total
-  packet count of the bond1 ingress ICMP echo-request filter (handle…
+tpacket_fill_skb() adds the full non-linear payload length to
+skb->truesize and sk_wmem_alloc before checking MAX_SKB_FRAGS. With
+PACKET_VNET_HDR, userspace can submit a ring-sized frame even when it
+greatly exceeds the device MTU.
 
---
+A near-INT_MAX frame can saturate sk_wmem_alloc before the fragment
+loop rejects it. A subsequent refcount_add(0x40000001) can temporarily
+turn REFCOUNT_SATURATED into 1. A concurrent TX completion can then
+drop that apparent last reference and free the still-live packet
+socket before refcount_warn_saturate() restores the counter.
 
-selftests: bonding: Add a test for 802.3ad with coupled control disabled
+Check that the remaining payload fits in MAX_SKB_FRAGS pages before
+accounting it. Include the initial page offset in the calculation,
+and move the existing -EFAULT handling out of the fragment loop.
+This preserves the accepted packet sizes and error code while
+preventing an invalid frame from injecting an oversized byte charge.
 
-This adds a VRF based selftest which checks that a bond port with
-coupled_control off receives packets in COLLECTING state. It keeps the
-port in COLLECTING state by clearing the Collecting bit in received
-LACPDUs, and then checks that ping works in DISTRIBUTING state. The
-bonding selftest config fragment gains the VRF, pedit and policy routing
-options the test needs.
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Cc: stable@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+[edumazet: use net_warn_ratelimited() instead of pr_err(), add a Fixes: tag]
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20261028181450.2221013-1-edumazet@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ 5.10: adjust for context in kernels lacking 3948b05950fd ("net:
+  introduce a config option to tweak MAX_SKB_FRAGS") ]
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+---
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> new file mode 100755
-> index 0000000000000..c29712e01e49e
-> --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-
-[ ... ]
-
-> +h1_create()
-> +{
-> +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
-> +		coupled_control off
-> +	adf_ip_link_set_master "$h1" bond1
-> +	adf_simple_if_init bond1 192.0.2.1/28
-> +
-> +	tc qdisc add dev "$h1" clsact
-> +	defer tc qdisc del dev "$h1" clsact
-> +
-> +	tc qdisc add dev bond1 clsact
-> +	defer tc qdisc del dev bond1 clsact
-> +
-> +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
-> +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
-> +		ip_proto icmp type 8 action pass
-> +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
-> +}
-
-[ ... ]
-
-> +collecting()
-> +{
-
-[ ... ]
-
-> +	ping_do bond2 192.0.2.1
-> +	pkts=$(tc_rule_handle_stats_get "dev bond1 ingress" 101)
-> +	((pkts >= PING_COUNT))
-> +	check_err $? "Packets not received in COLLECTING state"
-
-[Severity: Low]
-Can this check pass when no packets were received in COLLECTING state?
-
-The bond1 ingress filter with handle 101 is installed once by
-h1_create() from setup_prepare(), outside the per-test defer scopes, so
-its counter keeps growing across tests. collecting() compares the
-absolute counter with PING_COUNT and does not take a baseline before
-ping_do.
-
-tests_run() in net/lib.sh iterates over ${TESTS:-$ALL_TESTS}. Take
-TESTS="distributing collecting" as an example:
-
-distributing()
-    ping_do bond2 192.0.2.1    <- PING_COUNT echo requests hit filter 101
-collecting()
-    port moved to COLLECTING state
-    ping_do bond2 192.0.2.1    <- nothing received without the fix
-    pkts >= PING_COUNT         <- still true from the earlier test
-
-The same thing happens if collecting is listed twice. The default
-ALL_TESTS order runs collecting first, so the default run is not
-affected.
-
-Since the ping_do return value is ignored here, this counter is the only
-check of the fix. Would it make sense to read the counter before ping_do
-and check the delta, or to create the filter inside collecting() with a
-matching defer?
-
-> +
-> +	log_test "Receive in COLLECTING state"
-> +}
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
-> index b62c707152930..71c6d69d98a18 100644
-> --- a/tools/testing/selftests/drivers/net/bonding/config
-> +++ b/tools/testing/selftests/drivers/net/bonding/config
-
-[ ... ]
-
-> @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
->  CONFIG_NETCONSOLE_EXTENDED_LOG=y
->  CONFIG_NETDEVSIM=m
->  CONFIG_NET_IPGRE=y
-> +CONFIG_NET_L3_MASTER_DEV=y
->  CONFIG_NET_SCH_INGRESS=y
-> +CONFIG_NET_VRF=y
-
-[Severity: Low]
-Should this fragment also enable CONFIG_IP_ADVANCED_ROUTER=y and
-CONFIG_IP_MULTIPLE_TABLES=y?
-
-NET_VRF depends on IP_MULTIPLE_TABLES in drivers/net/Kconfig:
-
-config NET_VRF
-	tristate "Virtual Routing and Forwarding (Lite)"
-	depends on IP_MULTIPLE_TABLES
-	depends on NET_L3_MASTER_DEV
-	depends on IPV6_MULTIPLE_TABLES || IPV6=n
-
-and in net/ipv4/Kconfig, IP_MULTIPLE_TABLES depends on IP_ADVANCED_ROUTER
-and has no default:
-
-config IP_MULTIPLE_TABLES
-	bool "IP: policy routing"
-	depends on IP_ADVANCED_ROUTER
-
-The patch adds the NET_L3_MASTER_DEV and IPV6_MULTIPLE_TABLES
-dependencies but not the IPv4 ones. If the fragment is merged onto a base
-config that lacks them, Kconfig silently drops NET_VRF. arm64 defconfig
-is one example: it sets neither symbol, while x86_64_defconfig sets both.
-
-In that case setup_prepare()->adf_vrf_prepare()->vrf_prepare() runs:
-
-	ip -4 rule add pref 32765 table local
-
-which needs IPv4 policy routing, and adf_simple_if_init() cannot create
-the VRF devices. The test then fails during setup and never exercises the
-bonding change.
-
-Several other net selftest fragments have the same gap, while
-net/mptcp/config lists IP_MULTIPLE_TABLES explicitly.
-
->  CONFIG_NLMON=y
->  CONFIG_VETH=y
->  CONFIG_VLAN_8021Q=m
-
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 66aa5e7819ae7..41ee1113d109d 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2662,6 +2662,12 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	}
+ 
+ 	offset = offset_in_page(data);
++	if (unlikely(to_write > MAX_SKB_FRAGS * PAGE_SIZE - offset)) {
++		net_warn_ratelimited("Packet exceed the number of skb frags(%u)\n",
++				     (unsigned int)MAX_SKB_FRAGS);
++		return -EFAULT;
++	}
++
+ 	len_max = PAGE_SIZE - offset;
+ 	len = ((to_write > len_max) ? len_max : to_write);
+ 
+@@ -2673,12 +2679,6 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	while (likely(to_write)) {
+ 		nr_frags = skb_shinfo(skb)->nr_frags;
+ 
+-		if (unlikely(nr_frags >= MAX_SKB_FRAGS)) {
+-			pr_err("Packet exceed the number of skb frags(%lu)\n",
+-			       MAX_SKB_FRAGS);
+-			return -EFAULT;
+-		}
+-
+ 		page = pgv_to_page(data);
+ 		data += len;
+ 		flush_dcache_page(page);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111171947.2816258-1-idosch%40nvidia.com
+2.50.1
+
