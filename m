@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794515818;
-	b=Zi6+y0suw+9ZuE9G7K5M6U8PQAhIbSa0E02pPM2B0b+PcMxwJu2D8U4z5zg8QzRxWKTm
-	 HQ5hy5FGNDJVSiGZ7ev3VCZ23xi5Bc4hC+PWL3p9OME1qH404772h7/5LK9C43CAirnAf
-	 2CxTC9qJXapc0KttW2HTyxAGsBdsLwlsVGPgDj2TgSXhucS0qog0tVMKJGG/+IZrOzwJM
-	 n5B2vjMFlu7k6z8oYkvDul8dkCeRw5N+u6QDVAavj8pZGiCJ86KdpJT6NtmYg8K0vPVds
-	 QckG5awfEkHhWuVoO0dDGrCoVeNCMzWC02aUQMUC8dVcn56vjyCtH6UMNcNgLRrNbow==
+	t=1794515923;
+	b=cg2FTYIibcGRx8jTXqZG6ht28sSvEGHZT8SFoQ+dDVoEbMHWLPmEB/nv7tJLnyeQZvFH
+	 A4M1vLEXPBl3xJqV2Xm0O9VhARmpTjN7+9YTwklNMnQQ7ap9+w5rVFQCdBY39uWR5+v0+
+	 lXmDx8cI9xj83CCcXODQSzVo+oXivvcSYXqGrk0PEPyYchICwbqtFXdWJabHSd9Q2kYFT
+	 zPCkm/Q4Luq729f8LPMw7xSIq1yEj3UecdRw4dXA4t17QRQ2/9njCSF1BB694jmNQbv5C
+	 642h11g63xrnMGOf7SuvxPspZiTf86tpwNfXOERKIEgVxC40s8Az6tdZFhkNfK4V8Og==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794515818;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794515923;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=jTWXcQAEVRNiJ37CZvBOzUnHBbdFQM+hm9VF7G9FXek=;
-	b=4CqhsUjEbcNapcHZfa5XJvfSq9/jYELEsO7TxH+gXbvoUtxl80n6d+9W+xtgzT9DSOI5
-	 cmcmZ5wRQug5ZwlgCfuz+zAYB6wpFORsv4VXkHRwfSOiz6BeoBykg3pjeKKOsVSmUN66f
-	 dbNVflVZp0VB/uG4oRnqdBxcPe1jlGVIAomgu8joqxSeA2VVY0XiDgP3/dLdpat980c79
-	 WFVSGNoyh3NaEqyoAzw043YHyPHP0myjqQeaQ2CLGS9GtGquxBfu5KrfnvbO26xytPxZS
-	 xbhW17VPb4te1fF8MFdgKlNnpwk8l/HmeC6dpexkaVquiLqeySWHeoCCmJIeo9QYqIQ==
+	bh=UHwyh1PaDMDAjwwV7uw3qgkgqcgl+f6qzDOdRN7ySuk=;
+	b=RJodm2Ho0fu+JcPWc7TavmvuwK+eRXkPNrdEAubrbHkLsk1g4R/un71KzNhh0EtFvHjo
+	 H2HZJjzZBNOfNKm3xqiKMiwT+6YN/PG/eKCQl3k8lPCapvu44uSjC+Is8MJvn9hC/VBLz
+	 LKnf5vzEtXRRnQNZXrVhq479zq0HMqCslyEr0dW2dNUzDbQSYqhCboTr5oAo6jZA84tJ2
+	 JrVGFb+2w7qO6MP8qy+owjgjX8st9Euwl2kxNs+chyyst1NQ1S8skw/zju8klZSwVTMyC
+	 cBaA07maZrCDW0CIcCG6ihsT/G7ef/B31h6sZGJRtWaeKoYMHp0JE6l2l9cEWjb+yfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joUWLRfh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qxyd0Lk3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D372B606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149FB606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joUWLRfh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C0E1F000C7
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:36:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qxyd0Lk3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69561F000CE
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794515818;
-	bh=jTWXcQAEVRNiJ37CZvBOzUnHBbdFQM+hm9VF7G9FXek=;
+	s=k20260515; t=1794515922;
+	bh=UHwyh1PaDMDAjwwV7uw3qgkgqcgl+f6qzDOdRN7ySuk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=joUWLRfh/F4X2DVorHfnYB/IDXtZrEVITyXQl1zPB0u5DmL02wbZtZioQQ5t44sUK
-	 gSTkiDM8CBitNqoExoE6NnAWgB8qikoG3mMUmzrbLyr71MATULfiYhhvMJBHtP5WDB
-	 oJe6XZ/SKMxGhi6bEVcqm/ckQGm+tZBQupPU8YzWkn74LF1FY4ctk5+tRUhC/q5NSc
-	 zkn/noi+FvCdBXzThJJ+GIY2WW5PW4uygJUiFpQqetBJ8sLzOYImiXwGm5tiAoesDh
-	 j0dfkgb1K8vdJFqsfgy02nxdNZrrWTBF9HUNVdV+ZYXMjCJmzn+Xt/up5SkrJIQ3Zk
-	 /1qKS7pW7qDyg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5c102ad8420so236455e87.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:36:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGyENLq/LhCav/UhcKSYNLet5xE+/1ZxJCI+wRWhnr1BMqEpAdP/hyn098ZeMpi5nENe0Gt904=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Ke/PBNxAYLJE/UyGuWAbq03zXnGn/mUhljI/IUR0+aTdYvKFq
-	x2Wl6yDCw4vlk1i9yLRaFpmkwZelh8+dJH8hhnU9Jk/Qr5R9tAbOJELeEA6z7YZa8Y36bFLM0Kp
-	IhWMpQwM+TGnWS6eRlVb7DE3GVcaL1h4=
-X-Received: by 2002:a05:6512:401c:b0:5bf:b952:e57f with SMTP id
- 2adb3069b0e04-5c170b68b50mr169690e87.59.1794515817248; Thu, 12 Nov 2026
- 12:36:57 -0800 (PST)
+	b=Qxyd0Lk3F4hrlwDCKcqEm2Mu08zqmKwGyq0mKcsMrIHAcpSrR6ACImHL7KEGNinjH
+	 z2NyNP3eRAGIwDUaoing3kgwLmIBegZWGGacjVcV2RdP+8GNd0lEZvlKSRN3Rwjzzy
+	 ezrTpTx6Q3E/uHEWhDRkFhJ5txf05NdN3p2tgcQqagHNEZBIFaArN6H2P+dJ1cPvrL
+	 W+jUc7rpSRTw7Z9fjITI0d1GPMLOYSp9+fAy6lpwTmOuPTYdgBUZ3UN2m7Vo07bNwd
+	 CdJwK03vTJJx84/0MjCylGQqNMXxeE61HP+i817pGF/EnmAxjfNR2J/FKliaP76b41
+	 k1EXSXU3kJh/Q==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5c1479a959aso194513e87.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:38:42 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHK7yUKLwPWImIjjE+KCS+ciBsReP6Y93+A8Kj0jZlXAWMt/XUcp88pX9Ozjybm0goDK7lAzWg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Glu3fnpilI50T72Zn1fdCGBGol77roVK1ErmqfF4CUzNUZ3eN
+	RlXLThAWI60xoO3W1jyj8MTSdFVyUqqh+sFwHqgjkjmy5OAZCqBarld3VlncefC57iUOONBHE9n
+	z8EZq9JBqWTz6IfQ/xjpY/sxJ37n38ks=
+X-Received: by 2002:a05:6512:3353:b0:5bf:d347:4147 with SMTP id
+ 2adb3069b0e04-5c1709feeb4mr199019e87.50.1794515921695; Thu, 12 Nov 2026
+ 12:38:41 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,15 +59,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de> <20261112-rtl8365mb-dcb-ingress-v2-10-f8e6fbdf8c99@pengutronix.de>
-In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-10-f8e6fbdf8c99@pengutronix.de>
+References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de> <20261112-rtl8365mb-dcb-ingress-v2-5-f8e6fbdf8c99@pengutronix.de>
+In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-5-f8e6fbdf8c99@pengutronix.de>
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Nov 2026 21:36:45 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnuUdZeGz=rZyPayJEC2EK-RsKm7obecA7Jy0SETSD5jw@mail.gmail.com>
-X-Gm-Features: AclHuK-6O1MZON6TJKg3hL1WcNrsf_X-QgpBux5gGIeVOIdYXCWrRn5tPX8QLAg
-Message-ID: <CAD++jLnuUdZeGz=rZyPayJEC2EK-RsKm7obecA7Jy0SETSD5jw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 10/10] net: dsa: realtek: rtl8365mb: report
- the DCB DSCP-to-priority map
+Date: Thu, 12 Nov 2026 21:38:30 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmAdFoMpqM-3Xu3iin32V7ifAZGMAoLErxNP2vPWNsizg@mail.gmail.com>
+X-Gm-Features: AclHuK_t5r8nzDk3zH3dBvcahJi7SHCD527mkcQ-CEPxJhjPETJ91A8L8stJU_g
+Message-ID: <CAD++jLmAdFoMpqM-3Xu3iin32V7ifAZGMAoLErxNP2vPWNsizg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 05/10] net: dsa: realtek: rtl8365mb: describe
+ the ports of each chip
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -77,46 +77,29 @@ Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12, 2026 at 9:38=E2=80=AFAM Oleksij Rempel <o.rempel@pengutroni=
+On Thu, Nov 12, 2026 at 9:37=E2=80=AFAM Oleksij Rempel <o.rempel@pengutroni=
 x.de> wrote:
 
-> Report the DSCP-to-priority map through dcbnl, so that "dcb app show"
-> lists, on every port, the priority a DSCP value gets once the port
-> trusts DSCP.
+> Record which ports each chip has, report one more than its highest
+> port to DSA as the port count, and reject a devicetree port the chip
+> does not have. Lower the family maximum to 8 to match.
 >
-> The switch has one DSCP-to-priority table for all its ports, with
-> exactly one priority per DSCP value. dcbnl, in contrast, configures DSCP
-> priorities per port and allows several priorities for one DSCP value.
-> DSA could mirror a change to every port (dscp_prio_mapping_is_global),
-> but a request on one port would still change the classification of all
-> ports. Keep the map read-only. The QoS baseline seeds it with the
-> default mapping from ietf_dscp_to_ieee8021q_tt(). Requests to change a
-> DSCP entry fail with -EOPNOTSUPP.
+> Commit ca5ecd4246d4 ("net: dsa: realtek: rtl8365mb: correct the max
+> number of ports") raised the port count of all chips to 11, but no
+> supported chip has a port above 7.
+>
+> Since commit 51a4a22301b0 ("net: dsa: realtek: rtl8365mb: use dsa
+> helpers for port iteration"), setup also programs unused ports, so
+> every probe writes per-port registers of ports 8..10. Their learn-limit
+> writes go to 0x0A28..0x0A2A, above the learn-limit registers of ports
+> 0..7. We have not seen a visible effect from these writes.
 >
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
-> Q: The v1 review (Linus) suggested DSCP get, add and delete callbacks
-> in the common code, and setting ds->dscp_prio_mapping_is_global when
-> registering DSCP offload. Why are add, delete and the flag gone in v2?
-> A: The DSCP get moved into the shared code as asked. Add and del were
-> dropped because the table is chip-wide, as the commit message explains.
-> Without add and del, nothing would use the flag, so it is not set.
->
 > Changes in v2:
-> - make the DSCP map read-only, as the table is shared by all ports of
->   the chip and per-port remapping would change every port
-> - drop the DSCP add/del ops, whose delete path could leave the hardware
->   out of step with the remaining APP entries (sashiko)
-> - do not set ds->dscp_prio_mapping_is_global; without DSCP add/del
->   nothing needs its global set/del path (sashiko)
-> - retitled (was "offload DCB DSCP-to-priority")
-> - move the DSCP get handling into rtl83xx-qos.c behind a new
->   qos_get_dscp_prio callback (Linus)
-> - DSCP table seeding moved to the baseline patch
-> - read the table entry through rtl8365mb_qos_regmap_read_field(), which
->   uses field_get() (Luiz)
+> - New in v2. The QoS patches after it handle ports 0..7 only.
 
-Excellent revision here, all requests fulfilled from my PoV:
+With Alvin's comments addressed:
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
