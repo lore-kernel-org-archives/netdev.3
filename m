@@ -1,92 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487066;
-	b=G1jwlF36q1NYZegaioI9VyRb5ZQ8SjSEfoBkcE+fMQJyHdDaawR89CaMm515Qnq/aAi4
-	 7DSeIlwFMAdmmZ0AACA2xsgtdPd+ecN7zwGgoiO708iLwK+Damz+mpTdJzc1yIQXLH/Q/
-	 ShaOzQGKuJFFZwPx95QxUAmEXF+phSBNLn69hmjfKi+jTjkGoOpzTHGdLkBf0Iq8rQOy+
-	 HUjZW8fopjq/mVGuCwq9EKcaiYvwIFb7tJD57UZxGFH56qs5UJ7ygGk2vk38TKC7w1kAS
-	 c8u91ljCxZ9dSvbrv/z+Qdo6+kk7FGWTD3rTiaoZ+6T/4uJCZStLMZ01+LUPD4QptRQ==
+	t=1794487148;
+	b=tTC38kI5fJbwwAMlc9jH9TEPZSxExa09dJavSuoLoTWlll9HEJ+RWRHcVujLBrweZgqI
+	 wMpN28L4xxLF+GKLi5P+2vFCfXgUnFETQ8XhGDt6f9hQkBC/y18p/B5kOWCfTulfXauHp
+	 lJcCnV2BVhne8g98RVzR0EEIhYQA49+kjvDYJxQ1trEhTuakemqltruCxMAt/G6/vkvw9
+	 a/gGy/QdGM09aYpyeHqxcTQ8aSTSWVzro+W5dFD+xYFiubzrQMiBDpiCb2c2vBTcKMEST
+	 +5ya3ubWup+VHwcCdCZwdeGMHdq+IW1xo0fokUE+5ejiehZItgcOKeBTPNsgYtWC4wg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487066;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=de8BG82uU9McoGcWQ0uAl86Gt4M40mYxIglpyfUJuGQ=;
-	b=bUw9WvABGr4glv+z3RjbcKLLsEG5yO6llsyfUQaa7SKJMbDcwLbOG3D0pmTSMPZkNDLx
-	 TPI0sspzknB0XekcNcYVWQIlo8Zy8nTIHVM2d4JaG/iya7wtkeEMXtUef5Ha+Y+f18dvl
-	 prTHh/hOELImF1g7T+xyjdvg6VCzIWLtapsBp53+/g24675mtMKqbim4QFIHvv01tm51o
-	 JEOzuiIwiq2ZAX3IF4RiiZuFIXzG1qw579Ou85xNlaSA3owmfIPI04fQJKDO9oBLCsehv
-	 alDrGi4khIQOAOL1rFDtjWR0bOZb1O43ullspvf7ROsWpt3DfY/Ukp/erqQYgvAxbcQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487148;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vh0wEAdasYoPETQarwZ1upH2wgAJIcq1wNovfVXcsvM=;
+	b=pT3Yf6o0693pecQ+Wxg+U8Fn0FlJtoiNQKRKnDh8+CTJNp9MOZ4G9NJSwFXMHkMppTuU
+	 LtUB8x8L/Gyau+gAusyWHmSRC5njKRyw2RN4iQkx+GlRHAwxE8QblW2AloK1apPRPC4y+
+	 N1ROLqPrm8bNUlJq60wYfbNXmBuZ1Am7RlkTZdXIEs5QrCoN+LdcyTOKXJoPyVQ+AlR65
+	 u/wUCSXG+FGsqRzprTJ7aBRxgSWGx+JF+nIJv1F0PEedtfKVSUgNMGP1vn0HYi+HPMz9w
+	 x9oEU41vZls95MQIff8s/m+CpU+Es2Ej0IDYsj9+fYt/EjZN14Tdx5/voC1bD1EkSsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ffroot.co.za;
-	spf=pass smtp.mailfrom=ffroot.co.za;
-	dkim=pass header.d=ffroot-co-za.20260707.gappssmtp.com header.i=@ffroot-co-za.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AQvkc716;
-	arc=none smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IZ801P0m;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0635606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:37:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0635606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffroot.co.za
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ffroot.co.za
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811F7606A339;
+	Thu, 12 Nov 2026 12:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ffroot-co-za.20260707.gappssmtp.com header.i=@ffroot-co-za.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AQvkc716
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-492f0a1b685so2873767f8f.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffroot-co-za.20260707.gappssmtp.com; s=20260707; t=1794487063; x=1795091863; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=de8BG82uU9McoGcWQ0uAl86Gt4M40mYxIglpyfUJuGQ=;
-        b=AQvkc716rYDt3SDKJK38SO/BRkqGX9RJMonoj/77P5wgbQb9BrET/b7bPNu0djcRFa
-         t9fNgRksH/fSAcQN8bjp5gu3RSeTPoLPoa50IbGWlJ5lLAQB+YqhPyZ75La7HRd+AIwQ
-         pKRF6EGWjmrkkI9EUw6scBdlZrwHMgRw2tbgG3xSn9QYehw9xkEndnZHp7qKwOMGTpeY
-         rPJc2XgzJwDXGC5bpMrO4Dj9QZrnRwugnn1+UFitbf/MrzxYoXSeKUf9bCJdIH5rmm78
-         Xo/ynPWKl46zaf7Xlu/H3/CKQyLQTao2D13j9/BLXZzPeGug77KQAe0TLi77UBAbJA1i
-         pIFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794487063; x=1795091863;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=de8BG82uU9McoGcWQ0uAl86Gt4M40mYxIglpyfUJuGQ=;
-        b=fq9iBl2r+vOYvHg4bbI+svUKgbo6Z4HmEZ64WjVSTPOZOGjbRnLbuBaLTqlUeaMBAe
-         XuoGqHjvpsnbI7cx6SLxxXl/Adv59shSh83z2scjqgYjoorxSuyJkPAN+3hp7V5upuA3
-         VOBhnCytJKUuc3oYRbgTGcktbvUOKR3t9lXJQXauBwGgDu1TK3zxP0L0jtfGrgon1U0g
-         qPYhC2FztAUwy08Jfydhl4dt0c0mBcnGEiGOXzB3gGozSOXYaCeNJlOhqSqHG8uAKyPP
-         3APBzFW2nU0y6bDHDHa9ck0e2RTsREmnzAV8xgXRkKOVlnoZjxV2VcYIOwAoMgwfjqAe
-         Gqow==
-X-Gm-Message-State: APuU4Z9Zi0RDEz5PLu3l+s6X7ZpxYRdWvsxB1YJfTR/FGC3BSLjujNg0
-	5UAhVTgpADAxqOkS1wZZg2tuvPowN2+UPN2ZPl7HQV3MqbVtu2YTO9QBKYmz0DZ0K8hIkr6K/eH
-	H73Fmow67lA==
-X-Gm-Gg: AYBFou2yVzA+7y3XPRPon6kCSBBEoNycht1KoaAzcZtBVAFDHI5QKbIL1GlKiaH6C7B
-	N/eHi4GOGlFiw+kSBrzs59ZgrvIj/vrZF1ETL6tyMhY+7v4AKa8Sxsj/xVY8wM3hYL604K9K9tn
-	4MyJFinI4d2lqJ0ED7MJhBo8wgQUXQP6ixj5PXKIIFms/0dP6RIQMdL7DlxBMJMpMtIFvk4ZGx1
-	oWcjrtTnKJrdgqunjy4sGoQSMRPgn7AAryIqYeRxeIinVq70H0MkQuiYCkci2BaiHJXiyN5IIqT
-	uyDYoYmCwZfmvf0yzMJjEZaZvq8DSIrWw5ITdllJwH164MAchJOYvXp04JNPzKmUrb4ZZkuYZGQ
-	JL1bmgloeW5o526OjHPiwaTHUDhAV3M94Yx0yKHKkH7s45ax8E9pNS+lhf4aBwWJW+aGAOvyISv
-	OYdcc8xUC6tnGIGMmMBk3eIoW0O3hFaDplAvlT4oKHxoYa1SJb8Llu52PmEduSW+qeDL1chxuij
-	BI5LHjLIw/i1crXpZWUt7OYZcOMrPcF4dAtCCMg6nbjfEcUIZuQFX0EiG8tv3DnWY4PAeRp+GWC
-	TomDfic2Kth6vvhO/CEUHJRbFi9+YDsKQ409ycS5NHNFBkfVh/9S
-X-Received: by 2002:a05:6000:2906:b0:48f:d7cd:a5af with SMTP id ffacd0b85a97d-499c0a6173bmr10601985f8f.0.1794487063140;
-        Thu, 12 Nov 2026 04:37:43 -0800 (PST)
-Received: from localhost ([192.145.132.58])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365ccbccsm16837064f8f.44.2026.11.12.04.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 04:37:42 -0800 (PST)
-From: Andrew Gaylard <ag@ffroot.co.za>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net-next] net: sunplus: also fix the byte order of 1c:50:1e MAC addresses
-Date: Thu, 12 Nov 2026 14:37:38 +0200
-Message-ID: <20261112123738.429728-1-ag@ffroot.co.za>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IZ801P0m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A9A1F00A05;
+	Thu, 12 Nov 2026 12:39:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794487148;
+	bh=vh0wEAdasYoPETQarwZ1upH2wgAJIcq1wNovfVXcsvM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IZ801P0mO831HJkHpzTQChJSe9EGTEVSnliF4yzppHntTAOIz4vW3s+5i6liGSaoB
+	 ISZ8oACkEGCzXkzokMHHdDR2PIxprZ7qSxJo07e0xadmkQ14gOFkJSr9khYdGRQpM2
+	 srTEyrLKJzwI3kHxZNOO1iEBsoyOB+0VWIjonkTNS0/eK7WEvg3C7HiL4/Twh9k+i0
+	 U7Tnjd1cz4cI9Kzu8EEa66SLwJ28f1zPr4dG5aPxXZozDDrRpspkCiNTxNLnq/MGwP
+	 Lm9BOIEdqeUOc+n3cyt9XDmbqxsydTmCCgN7N95rVKgAIAv3CeqrfsKh3MbkzxxKy8
+	 UcNf7QKLJzExg==
+Subject:
+ Re: [PATCH net v4 2/2] xfrm: fix selector matching for IPv6 atomic fragments
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, dsahern@kernel.org, idosch@nvidia.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kuba@kernel.org
+Date: Thu, 12 Nov 2026 12:39:07 +0000
+Message-ID: <179448714728.2199510.9531579994326693774@kernel.org>
+In-Reply-To: <20261109213803.1785516-6-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261109213803.1785516-6-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,80 +64,135 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The driver reverses a MAC address from the OTP when it finds the
-Sunplus OUI fc:4b:bc at the wrong end. Newer SP7021 chips have
-a different Sunplus OUI (1c:50:1e), possibly stored in the same
-reversed order, which the driver does not recognise. If the reversed
-address has the multicast bit set, the driver rejects it and uses a
-random address; otherwise it uses the reversed address as it is.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Handle both these OUIs. An address that already starts with either OUI
-is left as is.  On chips that used the reversed address, the interface
-now gets the correct address, so configuration tied to the old address
-(DHCP reservations, udev or networkd rules) will need updating.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-Tested on chips that needed each of these OUIs to be reversed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: Andrew Gaylard <ag@ffroot.co.za>
----
- drivers/net/ethernet/sunplus/spl2sw_driver.c | 36 +++++++++++++++-----
- 1 file changed, 28 insertions(+), 8 deletions(-)
+- [High] The fix still leaves SCTP over IPv6 atomic fragments with zero
+  ports in the XFRM flow, so the policy bypass the commit claims to…
+- [Low] The new AF_INET6 branch in __xfrm_decode_session() takes
+  FLOW_DIS_IS_FRAGMENT as proof that the dissector parsed an IPv6…
 
-diff --git a/drivers/net/ethernet/sunplus/spl2sw_driver.c b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-index 5e0e4c9ecbb0..ab0318bc6f6c 100644
---- a/drivers/net/ethernet/sunplus/spl2sw_driver.c
-+++ b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-@@ -203,18 +203,38 @@ static const struct net_device_ops netdev_ops = {
- 	.ndo_tx_timeout = spl2sw_ethernet_tx_timeout,
- };
- 
-+static const u8 spl2sw_sunplus_ouis[][3] = {
-+	{ 0xfc, 0x4b, 0xbc },
-+	{ 0x1c, 0x50, 0x1e },
-+};
-+
- static void spl2sw_check_mac_vendor_id_and_convert(u8 *mac_addr)
- {
--	/* Byte order of MAC address of some samples are reversed.
--	 * Check vendor id and convert byte order if it is wrong.
--	 * OUI of Sunplus: fc:4b:bc
-+	unsigned int i;
-+
-+	/* Some chips have the byte order of the MAC address reversed.
-+	 * Check for Sunplus OUIs and fix the byte order if it is.
- 	 */
--	if (mac_addr[5] == 0xfc && mac_addr[4] == 0x4b && mac_addr[3] == 0xbc &&
--	    (mac_addr[0] != 0xfc || mac_addr[1] != 0x4b || mac_addr[2] != 0xbc)) {
-+	for (i = 0; i < ARRAY_SIZE(spl2sw_sunplus_ouis); i++) {
-+		const u8 *oui = spl2sw_sunplus_ouis[i];
- 
--		swap(mac_addr[0], mac_addr[5]);
--		swap(mac_addr[1], mac_addr[4]);
--		swap(mac_addr[2], mac_addr[3]);
-+		if (mac_addr[0] == oui[0] &&
-+		    mac_addr[1] == oui[1] &&
-+		    mac_addr[2] == oui[2])
-+			return;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(spl2sw_sunplus_ouis); i++) {
-+		const u8 *oui = spl2sw_sunplus_ouis[i];
-+
-+		if (mac_addr[5] == oui[0] &&
-+		    mac_addr[4] == oui[1] &&
-+		    mac_addr[3] == oui[2]) {
-+			swap(mac_addr[0], mac_addr[5]);
-+			swap(mac_addr[1], mac_addr[4]);
-+			swap(mac_addr[2], mac_addr[3]);
-+			return;
-+		}
- 	}
- }
- 
+--
 
-base-commit: 676f3aace662fbbc180b3898b190a372fa2a516b
+xfrm: fix selector matching for IPv6 atomic fragments
+
+This patch restores IPv6 selector fields (ports, ICMPv6 type/code, GRE
+key) in __xfrm_decode_session() when every Fragment header in the chain is
+atomic. ipv6_find_hdr() gains an IP6_FH_F_NON_ATOMIC flag and now reads the
+initial IPv6 header through skb_header_pointer(). The ports are taken
+from the transport offset found by the flow dissector.
+
+> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> index 4f6a5b81e3b5a..9ea816a8c5f63 100644
+> --- a/net/xfrm/xfrm_policy.c
+> +++ b/net/xfrm/xfrm_policy.c
+> @@ -3530,9 +3530,23 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
+>  		decode_session4(&flkeys, fl, reverse);
+>  		break;
+>  #if IS_ENABLED(CONFIG_IPV6)
+> -	case AF_INET6:
+> +	case AF_INET6: {
+> +		unsigned int offset = 0;
+> +		int fh_flags = 0;
+> +
+> +		if ((flkeys.control.flags & FLOW_DIS_IS_FRAGMENT) &&
+> +		    ipv6_find_hdr(skb, &offset, -1, NULL, &fh_flags) >= 0 &&
+
+[Severity: Low]
+
+Can FLOW_DIS_IS_FRAGMENT be set here for a packet that isn't IPv6? The
+IPv4 branch of __skb_flow_dissect() sets the same flag:
+
+    key_control->flags |= FLOW_DIS_IS_FRAGMENT;
+
+With *offset == 0, the new ipv6_find_hdr() code also skips the version
+check:
+
+    if (!ip6 || (*offset && ip6->version != 6))
+        return -EBADMSG;
+
+vti6_rcv_cb(), vti_rcv_cb() and xfrmi_rcv_cb() pass
+family = x->inner_mode.family. xfrm_inner_mode_encap_remove() picks the
+decap routine from the inner nexthdr instead. An IPIP inner packet goes
+through xfrm4_remove_tunnel_encap(), which sets
+skb->protocol = ETH_P_IP, and the packet is then checked with AF_INET6.
+
+In that case ipv6_find_hdr() parses the IPv4 header as IPv6. Byte 6 is
+the IPv4 flags/fragment offset byte, and 0x2C there reads as
+NEXTHDR_FRAGMENT. The parser then walks the IPv4 fragment payload as
+extension headers.
+
+If those payload bytes look like an atomic Fragment header, this branch
+clears FLOW_DIS_IS_FRAGMENT and loads ports from the fragment payload.
+Before this patch those ports were always zero.
+
+The addresses are already mis-decoded in this case, and the reassembled
+packet gets checked again with AF_INET, so the impact looks small. Should
+this branch also check flkeys.basic.n_proto == htons(ETH_P_IPV6) before
+it calls ipv6_find_hdr()?
+
+> +		    (fh_flags & IP6_FH_F_FRAG) &&
+> +		    !(fh_flags & IP6_FH_F_NON_ATOMIC)) {
+> +			flkeys.control.flags &= ~FLOW_DIS_IS_FRAGMENT;
+> +			flkeys.ports.ports = skb_flow_get_ports(skb,
+> +								flkeys.control.thoff,
+> +								flkeys.basic.ip_proto,
+> +								NULL, 0);
+
+[Severity: High]
+
+For SCTP over IPv6 atomic fragments, do the ports still end up as zero?
+
+sctp_rcv() pulls skb->data past the SCTP common header before it calls
+the policy check:
+
+net/sctp/input.c:sctp_rcv() {
+    ...
+    __skb_pull(skb, sizeof(struct sctphdr));
+    ...
+    if (!xfrm_policy_check(sk, XFRM_POLICY_IN, skb, family))
+    ...
+}
+
+When __xfrm_decode_session() runs, the transport header therefore sits
+before skb->data. The dissector finishes with nhoff = -12. On the
+fragment path __skb_flow_dissect() clamps that value:
+
+    thoff = min_t(u32, nhoff, skb ? skb->len : hlen);
+
+Converted to u32, the negative nhoff becomes a very large number, so
+thoff becomes skb->len. skb_flow_get_ports() at that offset fails and
+returns 0. FLOW_DIS_IS_FRAGMENT has already been cleared at that point,
+so decode_session6() copies sport = dport = 0 into the flowi6. The
+non-fragment port path uses the signed nhoff and does not have this
+problem.
+
+sctpv6_protocol is INET6_PROTO_NOPOLICY, so this is the only IN policy
+check SCTP/IPv6 gets. Could a plaintext IPv6 + atomic Fragment + SCTP
+packet still miss a policy such as "proto sctp dport X" that requires
+ESP?
+
+The ipv6_find_hdr() call above already handles a start before
+skb->data. It leaves the correct transport offset in offset and returns
+IPPROTO_SCTP. Could those values be used here instead of
+flkeys.control.thoff and flkeys.basic.ip_proto?
+
+> +		}
+>  		decode_session6(&flkeys, fl, reverse);
+>  		break;
+> +	}
+>  #endif
+>  	default:
+>  		return -EAFNOSUPPORT;
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109213803.1785516-2-Jeremy.Jean%40oss.cyber.gouv.fr
