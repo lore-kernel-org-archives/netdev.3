@@ -1,53 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794453943;
-	b=ocvJluS3WMBCowOTLp8xxspvFFUG4UwFGgf1SDDU0Xx1LFpbxLEHmV/izbMzCDCKldFu
-	 pIfM4BUuVEkQbHuvwi6IKZZYVuDmD342iv+NRJnEUEuxekS3PKedJ2GOJ6syW9aDwXFDv
-	 GMaSIjzxks7nQP3N36mhpnpdCRxKlupZUE3W5DWt2/LRir0bWTyE+mowKaK3jZ7ActGLb
-	 ho6ffGKIctEKmmvJ1mdQoEIewkA/mnX44k2eXlvSN9BEBP+Tgo5io1fWmMxj5lNqwKJrY
-	 QzPFzGC/HS3kLssNfyLVZ/bCV2kXdZzO0nF+E2dWuKv+T8FOvw9exutJLuyPQJdxB3A==
+	t=1794454605;
+	b=gILEAss6GTjZuZCqgJmhdRMcO3YFcHY1KLY69IcdaFLVcX4NDd8xWw81P88om19u+oxe
+	 unV5J3vOLKtEfRuyNVAjlUhpHP02kEI2jjA5ToKNm0rSguyK2oYl5zXfmtwGnjqyBBVXK
+	 WGPKhIaixXSFEvw6NyfRD+14bS3fmWtZarN3RvfmsjbtsWAMfLRh30yIdbpsSust0VFwT
+	 CbERq2nr628M8u4GtAkXkYE5urW8f0DBEqpJtp0AmZF2VsKmtsXFTfqqEGg5Vb1QdyIvy
+	 7lUiTafZ6Y5A5QlSoUuxAdzChZV2UiWEFsXL1HTq7u8K1da/jNGm1tPL2etLwy+qgSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794453943;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type:Content-Transfer-Encoding:MIME-Version:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:Date:
-	 X-CM-SenderInfo;
-	bh=41wfgGOVNMB+wGfHNY3WAPDxKPIZkBZs1k0Z1IHQb48=;
-	b=wyT8FpDVk96CWsOjvq8RGJmalyRLgoDSd1L6w5LBi3t9aCTsL/kHCQVpBTuCogUPcc+F
-	 9YDv9AjzgqznLloIbHcnb+PTZ60Nto+Z2ub7cglyQwq2dWLtlllnPbPAsHNDKSiGtnV9Q
-	 oTerMf8IFOrO4XjXkCZStx4fW+ajqgtKSiF316girtLhcAEmfDn6a+xpYgx4W0vAhxPiN
-	 Jaz85oTUFyoXgdsC949oy4cf1IZvlmfp1d5sb+ogVPmuNGuv2Lu8z65rxXGdsop08gOvr
-	 hOeV/+K2pyJSc2SOLAF+c8o/mxA3cC5x6LNdEB6LSY/G9gDdP2x2FlXxQtowQhN5XlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794454605;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=gN9Tyx2FqNCHFZUeFzXAvqkF5h5jT66EcfPlDZkPMDo=;
+	b=4u1OUGZu4b0N8v3+qzJqk5n0MVtsosQU8tKhJhwnn+2sPee4he12RveD275HXbrmkepR
+	 yjHAdax6vMbND68Mz5GsTy1nuwh//9WGF64e6318Ayr1kpcBGLzS1dSWAfIB+S0Qxmt9O
+	 xQE0M41STlMaQMcxEk2Iaay1r9q2Reg1YbO8K+Oq1lWtMqQRb/h7D7QdH4i882REaKjNl
+	 hDrG5YH5pcbvsF+kaa2Yed7uHUKqm70vUUPGmsN12Fg2K5ZoDlakPZR33JT/01GsruzL+
+	 4P1JaIur61eCzYiRrYN+5OWfCCRSz4L/yWrn7DSkarf+W1CJyy6auC8Br06ywMZftYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mails.ucas.ac.cn;
-	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.25
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43811606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:25:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43811606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
-Received: from imini.taila1aac7.ts.net (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowADnf7WsMfVq0v7wAA--.17465S2;
-	Thu, 12 Nov 2026 11:25:32 +0800 (CST)
-From: Yicheng Zhong <zhongyicheng241@mails.ucas.ac.cn>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
- Subbaraya Sundeep <sbhatta@marvell.com>, netdev@vger.kernel.org,
- zhongyicheng241@mails.ucas.ac.cn
-Subject: Re: [RFC net-next 1/2] octeontx2-af: reject an out of range MCAM
- counter on CN20K
-In-Reply-To: <avUeBeQSLwNvjwRY@rkannoth-OptiPlex-7090>
-References: <179438966513.1752948.1646241391383361825@mails.ucas.ac.cn>
- <179438966513.1752948.9405325090310502892@mails.ucas.ac.cn>
- <avUeBeQSLwNvjwRY@rkannoth-OptiPlex-7090>
-Message-ID: <179445393225.2035819.12825104834461955299@mails.ucas.ac.cn>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RiVU9U+I;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE44606A31C;
+	Thu, 12 Nov 2026 03:36:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CE44606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RiVU9U+I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=RiVU9U+I/YcePVre89W+4mKr2PW4M+vRlCft7YfevsOEeNbZRccAJ0iIILRgDkoWU9Ed6qVvXzgb1
+	 uiwzLB1pJAoLtPMDf/TuKI5iRkH3TaCuCC5NwGpohUZeLe09NAgIFr0FewhwgkmzaekQEnixwmipTg
+	 P3uMtrHsMWUnyiaU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66af53445443-aa185;
+	Thu, 12 Nov 2026 11:36:41 +0800 (CST)
+X-RM-TRANSID:2ee66af53445443-aa185
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.net (unknown[112.23.105.204])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af53448136-f157a;
+	Thu, 12 Nov 2026 11:36:41 +0800 (CST)
+X-RM-TRANSID:2ee26af53448136-f157a
+From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+To: Daniel Machon <daniel.machon@microchip.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Alexei Lazar <alazar@nvidia.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sunwenbo@cmss.chinamobile.com,
+	1342116488@qq.com
+Subject: [PATCH net-next v2] net: dcb: flush rewrite table on device unregister
+Date: Thu, 12 Nov 2026 11:36:22 +0800
+Message-Id: <20261112033622.40333-1-sunwenbo@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,40 +76,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:zQCowADnf7WsMfVq0v7wAA--.17465S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF4DGr15KFyxXF1DAFyDAwb_yoW3Wwb_AF
-	98A3sxWw48Za4qqFs8Krn8uryfJF4a9as7A3y8ury7C3WDCFW3tr4kurn8CFy0q3y8Jrs3
-	ZFnaqa4I9wnIkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJV
-	WxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbjNt3UUUUU==
-Date: Thu, 12 Nov 2026 11:25:32 +0800 (CST)
-X-CM-SenderInfo: x2kr0wx1lfxvtqjskio6pdxz3voxutnvoduhdfq/
+Content-Transfer-Encoding: 8bit
 
-Thanks.  We looked at npc_mcam_verify_counter() and it cannot simply move
-up.  On CN20K the ownership is recorded against the entry, in
-entry2pfvf_map (rvu_npc.c:3190), not against the counter, and that helper
-consults the counter view.
+In dcbnl_flush_dev(), which is called upon NETDEV_UNREGISTER for net
+devices with dcbnl_ops, only entries in dcb_app_list matching
+dev->ifindex are freed. The entries in dcb_rewr_list added via
+dcb_setrewr() are not flushed.
 
-First, its ownership check reads cntr2pfvf_map.  That array is never filled
-on this silicon, because the counter mailbox that would fill it returns
-NPC_MCAM_INVALID_REQ (rvu_npc.c:3817), so the check would reject every
-legitimate request.
+This causes a memory leak of struct dcb_app_type nodes in dcb_rewr_list
+when a DCB-capable net device is unregistered, and leaves stale entries
+in the global rewrite table that could inappropriately match if another
+net device later reuses the same ifindex.
 
-Second, its bound uses counters.max (rvu_npc.c:2583), a counter count,
-where cntr names an entry and should be bounded by the size of the entry
-table.
+Iterate over dcb_rewr_list in dcbnl_flush_dev() and remove and free all
+entries matching dev->ifindex, mirroring the cleanup performed for
+dcb_app_list.
 
-We plan to correct the patch so the CN20K branch compares the caller
-against entry2pfvf_map and bounds cntr by the entry table.
+This issue was found via LLM-assisted code review, confirmed by
+reproducing the leaked rewrite table entry upon netdevice unregistration
+in a User-Mode Linux (ARCH=um) environment, and verified in UML by
+confirming that all rewrite table entries for the unregistered netdevice
+are flushed.
+
+Fixes: 622f1b2fae2e ("net: dcb: add new rewrite table")
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Tested-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+---
+v2:
+  - Target net-next instead of net, as this has never worked and is not
+    a regression (Petr Machata).
+  - Add Reviewed-by and Tested-by tags from Daniel Machon (verified on
+    lan969x) and Reviewed-by tag from Petr Machata.
+v1: https://lore.kernel.org/netdev/20261111033114.133296-1-sunwenbo@cmss.chinamobile.com/
+
+ net/dcb/dcbnl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+index ad0aebe0ad3d..95250658ecc1 100644
+--- a/net/dcb/dcbnl.c
++++ b/net/dcb/dcbnl.c
+@@ -2393,6 +2393,13 @@ static void dcbnl_flush_dev(struct net_device *dev)
+ 		}
+ 	}
+ 
++	list_for_each_entry_safe(itr, tmp, &dcb_rewr_list, list) {
++		if (itr->ifindex == dev->ifindex) {
++			list_del(&itr->list);
++			kfree(itr);
++		}
++	}
++
+ 	spin_unlock_bh(&dcb_lock);
+ }
+ 
+-- 
+2.33.0
+
+
 
