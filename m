@@ -1,65 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794470068;
-	b=tAOG7ANhw5V8DJ2pzsAknraCJOPcx8NFR3NU/PmM44JXKJhJBa3T5Kf/9UvNQ5Fh3ofx
-	 2zt/5b3ZY7SyZCwhfyHX7JtIQNCXAUrwxmlDt7SZd1yEHJmCAy1qe06JiXyn7HKTPNZw3
-	 ExhGIVe2GWwymc/QZXJtg25fGvX/5IB4uqJqhiUmc5AS48jCu3IgrfA0a1T4bsSS22dWu
-	 BM+hyRUnUTe2v18LI7G3Pe6QXdhz8fDcOWh0JPkTTnBTzU/X+PEsm4jsviliklhCwK8Zl
-	 6IV3u2lKxTZY0pYVklJdhHf2UFyqxX0yftbHGMS68575/v1II6ftsQBoePPiMcMMCKA==
+	t=1794470103;
+	b=mZjnfJcy3FjZ4pARdRkGQ10OdbM4Ojscb/glCbRgz5c2MlJCMv72p7McZjKuhltMD6vl
+	 m6ug2VwnMLm14c/OslQKes/XXtBsHrBfh8l8Q9Ea0nKzHjsuRqqsNCcA9GcVOnFPHQ99z
+	 eX4QJ+KiqqaUDm9RNim2+0HVR766ZflJlDpAQZdnQVF8ignkj9OUTvIArvQtZyUuyoEyY
+	 TQL5xa9rY9wfT5AZJ8D9uSgDQ1xC7isE9hQqg7F9fwHYdLWOjdX7FismJ7kQ3eO74frTR
+	 XLB83YTrmAHdr/fzIlKihWyL+3X3y4BCuk3rzHrdtSgDiKNCk8C1b5tulFjmrQs0TIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794470068;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=xR0nrFMbMlujWxx3EIWeeaKuT3BBTWHLzWpOn49Q/b4=;
-	b=gJQbiI0Oc8wvFBJXC5bXvInL3cgsUV9irVq4F3I0KcFBPMmnzjeyJOSGyCDVXohrx02v
-	 incM2RCCCq+NqUEWCfrnHC4xLYMlZX72KlAo/E+dLnui5XUqqfJlnxyeDS46zqi38zVvm
-	 M+TwwFUI3+oILDK6Gbih/NZ38BzN9cfkL0r8jix/V4ZPYAHz6mXtDIY41BehzeSegnn6j
-	 eJkfRBu0nbmlg8latkkiVDrvPh0pGPYniQoRFA1WVIjYRHp0hw41XZb1dmwBD2vkeKcVI
-	 BpAwBn5cw12LAMoxovuUggkeXqUVxyznNJaISi270VVT7FROPLuuc2uDpdaxOAFzB1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794470103;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=9MfmP8CUu4hZ4XmurNDFRFxv/TJ/BsNwOyCw1nzKGdw=;
+	b=VngGyv0ef9V3uGKxwW/xp2Cn42AJkmMHyJb581ruXkw2udKeJl6M4HrR4UkMpm8b3da9
+	 9tR+wbwXsEssqj3BXnuu5b/hUOIFD8aN5fa5N0Hqj7tYx/EMdD7/TxhznYWyAMtvZIee9
+	 1jWHmgX5X6zB50wODXW2Cb74q9Q50gzsKPfProteCgKsII/3v457nJ2z5onc61p+f0DXV
+	 /3WhaOnzXWxIdplNR7JGboGdT6N76PTq3s9D24W3Sxp8a3GZhLMDiRto2VX6pi7IFpzVC
+	 5YSntFrlxxBfB6xZHxaavkt+lGLoHNrjntkcv0uIS1rMyzsb86tLqgMBmKD29GnUZHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=nc6TvKQL;
-	arc=none smtp.remote-ip=220.197.31.8
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=iiitd.ac.in;
+	spf=(null) smtp.mailfrom=iiitd.ac.in;
+	dkim=pass header.d=iiitd.ac.in header.i=@iiitd.ac.in header.a=rsa-sha256 header.s=google header.b=g9+gt+d9;
+	arc=none smtp.remote-ip=74.125.82.177
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B6A606A32A;
-	Thu, 12 Nov 2026 07:54:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7B6A606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0A6606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 07:54:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D0A6606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=iiitd.ac.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=nc6TvKQL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=xR
-	0nrFMbMlujWxx3EIWeeaKuT3BBTWHLzWpOn49Q/b4=; b=nc6TvKQLKJ6sag9nVo
-	ZOuVY0lDtBDa8aksxPecRHLGnuG+VEX5H9dYsfXYE+OzFBLN/axEeR79U3UTe8tV
-	mpsG57jq8m7QISOK1pA4+mWneYRl7/X2M88QNSIz8fmf5+Jxk4rQCgyoHOeK+0q0
-	HUW5aoL/6uCwPxHCgIBgM/Y9c=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCkvCgDnxvhzcPVq2o9NDQ--.20313S2;
-	Thu, 12 Nov 2026 15:53:25 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rosenp@gmail.com,
-	jacob.e.keller@intel.com,
-	daniel.machon@microchip.com,
-	chunkeey@gmail.com,
-	kees+treewide@kernel.org
-Cc: netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.a=rsa-sha256 header.s=google header.b=g9+gt+d9
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3712b6d9843so3851057eec.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 23:54:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=iiitd.ac.in; s=google; t=1794470095; x=1795074895; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9MfmP8CUu4hZ4XmurNDFRFxv/TJ/BsNwOyCw1nzKGdw=;
+        b=g9+gt+d9iPMMqLhspZsy7g3mdTh88vkwtR+CIuTZMLa4Gik2Q4h8qrX5tc8U7iG1rs
+         vLQSskA97r0w9s8b8Ry1E7MMg5jgMwk9u8glfY6ASApU6IrBioTWRPW0Ik08aQPYrTvz
+         7L754KGrn5UQs8go7wUJ7xgeqg0iR3LlpiC/0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794470095; x=1795074895;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9MfmP8CUu4hZ4XmurNDFRFxv/TJ/BsNwOyCw1nzKGdw=;
+        b=UsohdapE47dOTB4TZoCWD2lVfI1KiAbM1GjSrWeqPWNij1jGXvoMMwr5rRIdQc6CTz
+         rBE0tFh0H59iP/u5sOHkVZ1etIt8V0/22G6nms5cxsarjBnwGBJXLbuDXDIJ+cMqY1z8
+         qQg6fwIMgIjF3EPl3j5+RyFa977hZ6MhNn1H5IOrzKgzVT6T0Rn8nCQ8Xksl4zHEMQvz
+         wXIZByZhFw/TqnWlG/kuDz2ynPm4GPeRwyrY3u1FT5SS1wE17w00DBbm7M5rrpKzLQlH
+         h3XeYKVQhmelWQxIqW2ox0csmaYA29theiI7jmELyBA2M28ep2vAyj6v+cYlnD/NIWOt
+         De7w==
+X-Forwarded-Encrypted: i=1; AL+hErHGBvbD9pzyP7Vq6mckSubdajl1gHDu0aqHR2TO9PnXVMXIY7ZMI+6mQfIei9lbP65gvujF5/4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bT1/h+Asa5HO/FDvvvfC17bg65xxzhBBc6W3KxIZ4m8jIk6Hj
+	c3IKAlLyjOrGi+PUwJyfZUaMWQjmVVjNUJWNkjdaVCyyFocYcMeFIUL9GdMYLtM5fiQ=
+X-Gm-Gg: AYBFou2RDNwNb2E7UD4EsEqHiL6ACOFnYb9fcXGlnI7eKbmlH5EDhoj09hCYv+lJtXa
+	YHo5cqryswkDRcGlOP9qPk+72JtNbkM+N2AoY18Ixw24QjpeX8PVqnqbfjgeL/8WEG629ndknnD
+	kWaVUIMTqabXWd4PLz3iqHAGfbKn7C6RU+DwiEVys7bGkqzqosgr8OIG1RgWmzkMjyfW0TlsF+s
+	lhr3+xeUpjj847EG96J/cYKtRuweF6PNlEtp2PBHeaqBLg1gM7t6Xnxv6UReJFVwREz5wp/Ne6m
+	O2OvnmlJsYEFjE3giyPJJjk4I4aw4dIFvBzu2U1SvAK2+AF1nmebgBgVidi3sjg/YcoPXqUrl24
+	xJe3s8iunIy1jQmau6+7p1yLV4GMnYOiQ8iYQ0UfoTmKJTG6fU7oYqhcb7yZvw3m+sNnAeNq+mN
+	Z5x0lLjNYS2WgjKjskyKsBD6mbj0MHvEpzTuZ9pkUooWHoAPjEYWah0eWX7BR8SYLgKt3WLMo+P
+	ABvpikpK46K1z3poCa0SjcQAszZeALKslvGTsYH4Amh2MEgBDWEDJN5UO/qHr8HgPdRdQEW08ux
+	Q2JTeH0cH3b5gSKMwyofCXh2hdf4FtnyMeorpQHsA5oXIrZ/RXvwd8rcuy3HLoodoK1YNZ/uc3B
+	3T0+uanb0g5X9h2OrlpstvY0ZEv5xFlzp2fywvveJ3wuvvBVtB+irMvZAb24fkPXv
+X-Received: by 2002:a05:693c:8344:b0:376:5b1b:c22d with SMTP id 5a478bee46e88-376831888d7mr4481214eec.4.1794470094622;
+        Wed, 11 Nov 2026 23:54:54 -0800 (PST)
+Received: from iiitd-S2600STB.iiitd.edu.in ([103.25.231.160])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3766146551asm15484180eec.1.2026.11.11.23.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 23:54:54 -0800 (PST)
+From: Piyus Kedia <piyus@iiitd.ac.in>
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net] net: ibm: emac: attach the fixed-link PHY with of_phy_connect()
-Date: Thu, 12 Nov 2026 15:53:21 +0800
-Message-Id: <20261112075321.3903875-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	Piyus Kedia <piyus@iiitd.ac.in>,
+	Kapil Vaswani <kapil@presceralabs.ai>
+Subject: [PATCH net] net/sched: act_csum: bound the IPv6 jumbo payload length
+Date: Thu, 12 Nov 2026 13:24:45 +0530
+Message-Id: <20261112075445.3555341-1-piyus@iiitd.ac.in>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,99 +101,175 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCkvCgDnxvhzcPVq2o9NDQ--.20313S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw4DZr15ur4kuF1kCw1rWFg_yoWrJw4fpa
-	y8WF93ZrykJF1fWF45Ary8AryYga1IyrZ3K340v39xu3s8Xry8AFW5tr4Yvw1Yya95ZF1Y
-	qr47ua13uFs8ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYzuZUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBVRKGr1cHXCLAAA3M
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+tcf_csum_ipv6_hopopts() takes the payload length out of a hop-by-hop
+jumbo option and stores it unchecked:
 
-emac_init_phy() handles a "fixed-link" property by registering a fixed
-PHY for the MAC's own OF node and then assigning net_device->phydev to
-it by hand:
+	case IPV6_TLV_JUMBO:
+		optlen = xh[off + 1] + 2;
+		if (optlen != 6 || len < 6 || (off & 3) != 2)
+			/* wrong jumbo option length/alignment */
+			return 0;
+		*pl = ntohl(*(__be32 *)(xh + off + 2));
 
-	res = of_phy_register_fixed_link(np);
-	ndev->phydev = of_phy_find_device(np);
-	if (res || !ndev->phydev)
-		return res ? res : -EINVAL;
-	emac_adjust_link(dev->ndev);
-	put_device(&ndev->phydev->mdio.dev);
+tcf_csum_ipv6() then hands ipl = *pl + sizeof(struct ipv6hdr) to the
+per-protocol handlers as the extent of the packet, so a 32-bit value
+chosen by whoever built the header reaches the length they read.
 
-net_device->phydev is meant to be set by phy_attach_direct(), which is
-what the of_phy_connect() helper reaches. Assigning it by hand skips
-everything attach does: phydev->attached_dev stays NULL, no link change
-handler is wired up, the PHY never enters the netdev's phy_link_topology,
-and the put_device() drops the reference the driver just took, so the
-phy_device is kept alive afterwards only by the fixed MDIO bus it is
-registered on.
+Both guards downstream fail on such a value.  In
+tcf_csum_skb_nextlayer(), ipl + ntkoff is an unsigned int plus an int, so
+an ipl just under 2^32 wraps to a small number and pskb_may_pull()
+succeeds without pulling anything, while ipl < hl stays false precisely
+because ipl is huge.  tcf_csum_ipv6_udp()'s UDPLITE arm then admits any
+16-bit length, since ul <= ipl - ihl compares against ~4.29e9, and
+csum_partial() reads that many bytes off the end of the skb.  (The plain
+UDP arm is not affected: it requires ul == ipl - ihl.)
 
-The missing topology entry is what prompted this. ethnl_req_get_phydev()
-returns dev->phydev as-is when an ethtool netlink request carries no
-phy-index, so ETHTOOL_MSG_PHY_GET on an EMAC port with a fixed-link finds
-a phydev and then looks it up in a link_topo that was never allocated:
+With payload_len 0xFFFFFFCA, a UDPLITE header claiming 60000 bytes and a
+704-byte skb, KASAN reports:
 
-	struct phy_link_topology *topo = reply_data->dev->link_topo;
-	pdn = xa_load(&topo->phys, phydev->phyindex);
+  BUG: KASAN: slab-out-of-bounds in csum_partial+0x103/0x1f0 lib/checksum.c:119
+  Read of size 4 at addr ffff8880259642c0 by task syz-executor/13111
+   tcf_csum_ipv6_udp+0x19e/0x250 net/sched/act_csum.c
+   tcf_csum_ipv6+0x63c/0x780 net/sched/act_csum.c:549
+   tcf_csum_act+0x34d/0x480 net/sched/act_csum.c:601
+   tcf_action_exec+0x109/0x390 net/sched/act_api.c:1161
+   tcf_classify+0x13d/0x440 net/sched/cls_api.c:1875
+   tc_run+0x31a/0x460 net/core/dev.c:4491
+   __dev_queue_xmit+0x1a7e/0x2390 net/core/dev.c:4890
+   ip6_output+0x280/0x400 net/ipv6/ip6_output.c:248
+   rawv6_send_hdrinc+0xb90/0x1170 net/ipv6/raw.c:663
+   rawv6_sendmsg+0x10d3/0x1260 net/ipv6/raw.c:908
+  The buggy address belongs to the object at ffff888025964000
+   which belongs to the cache skbuff_small_head of size 704
+  The buggy address is located 0 bytes to the right of
+   allocated 704-byte region [ffff888025964000, ffff8880259642c0)
 
-which dereferences NULL in phy_prepare_data().
+The packet is generated locally through a raw AF_INET6 socket with
+IPV6_HDRINCL and leaves an Ethernet device, so skb_network_offset() is
+non-zero and the sum above wraps.  Reaching it needs a clsact qdisc with
+a csum action carrying TCA_CSUM_UPDATE_FLAG_UDPLITE, which is
+CAP_NET_ADMIN in the network namespace - reachable by an unprivileged
+user through a user namespace.  The folded checksum of the out-of-bounds
+bytes is written into the packet and transmitted.
 
-Every other phylib driver with fixed-link support registers the fixed PHY
-and then passes the MAC's own OF node to of_phy_connect(): gianfar, fec,
-davinci_emac and nixge all do it, and so does emac_dt_phy_connect() for
-the phy-handle case. Do the same here. of_phy_connect() takes the attach
-reference and drops the of_phy_find_device() one, so the explicit
-put_device() goes away. emac_adjust_link() is still called once by hand
-afterwards and the PHY state machine is still not started, because a
-fixed link does not change. The rest of the driver already treats
-dev->phy.address < 0 as "no PHY to poll" and never reaches
-dev->phy.def->ops, so nothing else changes.
+Bound the length the way nf_ip6_check_hbh_len() already does for the same
+option: a jumbogram carries payload_len 0 and more than IPV6_MAXPLEN
+bytes, and the length it claims must be backed by the skb.  Once *pl is
+bounded, ipl cannot exceed skb->len, the sum in
+tcf_csum_skb_nextlayer() no longer wraps, and the UDPLITE comparison is a
+real bound again.
 
-The hand assignment itself dates back to commit 08e39982ef64 ("net: emac:
-fix fixed-link setup for the RTL8363SB switch"), but it only started
-affecting the net_device when commit baab9de385a8 ("net: ibm: emac: use
-netdev's phydev directly") moved the pointer from the driver private
-dev->phy_dev into ndev->phydev, so that is the commit fixed here.
+Per Documentation/process/generated-content.rst: the out-of-bounds read
+was found by an AI-driven fuzzing harness, developed
+jointly by Kapil Vaswani and myself, which exercised the csum action
+under KASAN on x86_64.  The root-cause analysis, this changelog and the
+patch were written with the assistance of a large language model, 
+and reviewed by hand; the before/after testing below
+the --- was run by us.
 
-No in-tree DTS pairs "ibm,emac" with a "fixed-link" property, so this is
-latent in mainline; it is out-of-tree users such as the Netgear WNDAP620
-that hit it. There is no such hardware here, so the change is verified by
-cross compilation and inspection only.
-
-emac_remove() still does not call phy_disconnect(), which the phy-handle
-path gets wrong today as well. That is left to a separate change.
-
-Fixes: baab9de385a8 ("net: ibm: emac: use netdev's phydev directly")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Fixes: eb4d40654505 ("net/sched: add ACT_CSUM action to update packets checksums")
+Signed-off-by: Kapil Vaswani <kapil@presceralabs.ai>
+Signed-off-by: Piyus Kedia <piyus@iiitd.ac.in>
 ---
- drivers/net/ethernet/ibm/emac/core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Tested on 7.3.1 with KASAN, in a single-VM qemu rig, same .config and
+same image before and after; only net/sched/act_csum.o and the relink differ
+(kernel build #2 unpatched, #3 patched):
 
-diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
-index 640618c..6e8b711 100644
---- a/drivers/net/ethernet/ibm/emac/core.c
-+++ b/drivers/net/ethernet/ibm/emac/core.c
-@@ -2674,11 +2674,14 @@ static int emac_init_phy(struct emac_instance *dev)
- 				return res;
+              jumbo length  payload_len   before            after
+  variant A   0xFFFFFFCA    16            KASAN, VM lost    ok, exit 0
+  variant B   0xFFFFFFCA    0             KASAN, VM lost    ok, exit 0
+  control     none (PadN)   16            not run           ok
+
+  before, variant A: Read of size 4 at addr ffff888024cb6340, task 11851
+  before, variant B: Read of size 4 at addr ffff88805fe8e9c0, task 9555
+
+Both faulting runs reach csum_partial() through the trace above.  After the
+patch both programs run to completion with every setup step succeeding and
+all four sendto() calls accepted, so the packets do travel the egress path
+and the action simply refuses the length:
+
+  ntkoff=14 pl=0xffffffca ipl=0xfffffff2 ipl+ntkoff=0x00000000 \
+      ipl-ihl=0xffffffc2 ul=60000
+
+The control is the same program with the jumbo option replaced by a PadN and
+a UDP-Lite length of 8, which is inside the packet.  It was run on the
+patched kernel only, since what it is there to show is that the patch did
+not break the path: the walker still accepts an ordinary hop-by-hop option
+and csum_partial() still runs over the 8 bytes the packet really has.  Only
+an unbacked jumbo length is rejected.
+
+Reproducer: not included here.  This bug was found with AI assistance, which
+Documentation/process/security-bugs.rst says to treat as public; the same
+paragraph says not to post the reproducer publicly.  It is a short shell
+script plus a ~40-line C sender, tested, and available on request.
+
+Conditions it needs: a clsact qdisc with a csum action carrying
+TCA_CSUM_UPDATE_FLAG_UDPLITE, on an Ethernet-type device, with the packet
+locally generated so that skb_network_offset() is 14 and the sum in
+tcf_csum_skb_nextlayer() can wrap.  CAP_NET_ADMIN in the network namespace,
+which CONFIG_USER_NS makes reachable by an unprivileged user.
+
+ net/sched/act_csum.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+index 5fff52a8ca90..eab8cdf6745b 100644
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -449,7 +449,8 @@ static int tcf_csum_ipv4(struct sk_buff *skb, u32 update_flags)
+ 	return 0;
+ }
  
- 			res = of_phy_register_fixed_link(np);
--			ndev->phydev = of_phy_find_device(np);
--			if (res || !ndev->phydev)
--				return res ? res : -EINVAL;
--			emac_adjust_link(dev->ndev);
--			put_device(&ndev->phydev->mdio.dev);
-+			if (res)
-+				return res;
+-static int tcf_csum_ipv6_hopopts(struct ipv6_opt_hdr *ip6xh, unsigned int ixhl,
++static int tcf_csum_ipv6_hopopts(struct sk_buff *skb,
++				 struct ipv6_opt_hdr *ip6xh, unsigned int ixhl,
+ 				 unsigned int *pl)
+ {
+ 	int off, len, optlen;
+@@ -463,13 +464,29 @@ static int tcf_csum_ipv6_hopopts(struct ipv6_opt_hdr *ip6xh, unsigned int ixhl,
+ 		case IPV6_TLV_PAD1:
+ 			optlen = 1;
+ 			break;
+-		case IPV6_TLV_JUMBO:
++		case IPV6_TLV_JUMBO: {
++			unsigned int avail = skb->len - skb_network_offset(skb);
++			u32 pkt_len;
 +
-+			if (!of_phy_connect(ndev, np, &emac_adjust_link, 0,
-+					    dev->phy_mode))
-+				return -EINVAL;
-+
-+			emac_adjust_link(ndev);
- 		}
- 		return 0;
- 	}
+ 			optlen = xh[off + 1] + 2;
+ 			if (optlen != 6 || len < 6 || (off & 3) != 2)
+ 				/* wrong jumbo option length/alignment */
+ 				return 0;
+-			*pl = ntohl(*(__be32 *)(xh + off + 2));
++			pkt_len = ntohl(*(__be32 *)(xh + off + 2));
++			/* RFC 2675: a jumbogram carries payload_len 0 and more
++			 * than IPV6_MAXPLEN bytes.  Reject anything else, and
++			 * anything the skb cannot back: callers take this as
++			 * the extent of the packet and read that far into it.
++			 */
++			if (pkt_len <= IPV6_MAXPLEN ||
++			    ipv6_hdr(skb)->payload_len)
++				return 0;
++			if (avail < sizeof(struct ipv6hdr) ||
++			    pkt_len > avail - sizeof(struct ipv6hdr))
++				return 0;
++			*pl = pkt_len;
+ 			goto done;
++		}
+ 		default:
+ 			optlen = xh[off + 1] + 2;
+ 			if (optlen > len)
+@@ -521,7 +538,7 @@ static int tcf_csum_ipv6(struct sk_buff *skb, u32 update_flags)
+ 				goto fail;
+ 			ip6xh = (void *)(skb_network_header(skb) + hl);
+ 			if ((nexthdr == NEXTHDR_HOP) &&
+-			    !(tcf_csum_ipv6_hopopts(ip6xh, ixhl, &pl)))
++			    !(tcf_csum_ipv6_hopopts(skb, ip6xh, ixhl, &pl)))
+ 				goto fail;
+ 			nexthdr = ip6xh->nexthdr;
+ 			hl += ixhl;
+
+base-commit: a2fd526d644233d6a892c28173f07c61e21e4c93
 -- 
-2.25.1
+2.34.1
 
