@@ -1,96 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794457465;
-	b=a7Q7kraiWq5xlJln07MpWFIqHstGODGeejeZqbliA7oB90lELdz1AA+B3fY4rrkzzEwO
-	 7JuHRYTmcV0yQ93U0pm7Keuc8wwCrAYBoGF+wwPo74nzlMZEfoWRO6r6QABPN0snAPsbk
-	 /FQMsvLrRJL2pFmj2c1cXsCPSugN1TECDwDaxFUxwm5ANpmh/ifmRuXio42iYAFtNUnxB
-	 e6YeEB5i8Z7CtlZ408OV9iRRdzAGzZBzAY108pDlW2ogw1joXzCpNovz93fMrluc23bIk
-	 1yCMd8WpIZwZtvgI/iJ2VrkprHnKvwvsDIBJHuVI0AWylBjIxkxExA+vZO7h57Ifsbw==
+	t=1794457891;
+	b=vloR/rdNThHaNbcjNdnvAsB3UvzfRxxzBWzS4FatXve8ZKW8R5E6rJ1NzBrQjhK4lN30
+	 0wIgZNw4JxXwWIsCPKBrIenn+/DKYeVmauBeDPzr+dnqil25kUsvCyyv5aNkAVAVacDem
+	 cb6wYhg8qBKFDyts0/wcpci17vUCR2IL84yFnP/zilxxskZOTGqDCBe4DOfch8gSphz62
+	 8AcXk64R7N80WE5MJ3nRZLIXeGajl2JV9rtqgRMeRyFFEj/2dsu29KpL3TAA4ct8t58sL
+	 JhNIyr1ZP8ci2CP6gc8QvYs4B7Bsy/2XaAo/vT2k7k3W3kXvfNFgpzPLtWp030qzpag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794457465;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
-	b=r0tT0EUZEKTyC4BG2VuX/e7GF7LPYu7wMtaU9jcnKmQD3BivrEWA0T1/7LYWZ0rIEJt9
-	 I6oDCQBa9z8OHR9cmvHJVtMcWgyq7q5pGSpatkRU48pt1QIAfJd9Gm1Hg7t5IkTsxzi2j
-	 QrlxgnEMDfOGb2lc47u+tRfg5xP0oRNxvWad9nApCIVpaz4x3jHGto9jFzf7ODF8wfJdp
-	 FfWgWnILMsuX2D09HXYSMHQbn2jDYfkPEgg9VBjF5g0YPXRIDLrgfdh8VyVsNrmdKCsS3
-	 z0mdtpbg7sLUETLyjR1QnpVW0PdMBHUe2T9Pboy7jiRQk13B/lNVqH9mT5j6MloHeNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794457891;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ewDQkyi302TW6WSeRV08GWmgo3FjljwrHal9OxzqK/0=;
+	b=MwWoK/sCq8pbJhf2LHNL/0M1Fd+ySOMt64IlqzSUrTm/ZIfNJ+pTrY+MWiIL+Zp03V7m
+	 xEeyctWe0gYUugxcGnIn8ZQYLqVGjO4BxoAkib2SO+j9pivy0Ti5Auot1V538ok4bDnTa
+	 nHzBHb7kp6Sws9OY5PW9bnxb6GUAeolSyk2+ED7l6xSoPQ7QyTpQoAegbMGm5auAL5P3y
+	 5mcn+ucx/XkUEa9T2mcI2SgGl8l/LWWD1avrOLaJjbgfPARNkRbSFuJTBI8ltZSfxJwXZ
+	 hpTzIoRi6mxenFVF0O4gfsQOh9w/tbMXH/4y+zod3cWvxXTSO0gmQAuNVqIMqZUPHbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dZp+0eOc;
-	arc=none smtp.remote-ip=74.125.231.201
-Received: from mail-oi2-f9.google.com (mail-oi2-f9.google.com [74.125.231.201])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRzl8FhK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6FD606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:24:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F6FD606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB84606A32E;
+	Thu, 12 Nov 2026 04:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dZp+0eOc
-Received: by mail-oi2-f9.google.com with SMTP id 5614622812f47-4f2a0576df3so190043b6e.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:24:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794457464; x=1795062264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
-        b=dZp+0eOc7wf67+aV9XcOB9yjsrNEhiEJuWZRMp4y85VlJLW8OlwqJMn7CEYTRAzwg3
-         W8VJKgm/oGP9cCmLAHuHiJ9izkrdETd/R/a4uRiAditF26dNTa9ZRgeHOb8MaI49JokK
-         Zya0oeg80Id2CG9kYrNJAP/W/O/+NQy7mg0mQuQPdaFLRwmkRd7+mpIou1v82/6lJjM1
-         MfhuQk4m69Ia9zNaQS/Sqsoovgy2nt9aMRJxgddK91Ax456Qqft6YjtAOfqEpM4/HuIx
-         cfAj4tPrB13Xdt5Afph7W/8pPWseLrqRPszMQitrPgVtUeuW76plj+LOoDYA+cDWyex1
-         pktg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794457464; x=1795062264;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
-        b=fmV4rb9Bawgubn8d1Vquhu2megPR4YbDehA2vESJVy/ituosAJnMxjjnezoHZ/IHh6
-         ElMvvvNa/v7iFB5kLGiCjNlq6zo5ZOp5SFMZyLga5jtTwPZV/PJ0N+rwmP4RAcHvXo4m
-         OQyVyvPl6ALxJsBIoiklXSUvZk/xjOPhwhXP5ikh9o2gxg5JLgsN5aeO+5UPIe0DGB7u
-         Cwj117dwCniXLh/psF7eXQS8+XgBFH1KsPjtUmBrG4j6vAkM1tA7656JdhBUQK+59K6Q
-         wESj06XQMvBRJyURaopTw9eLSo7q9W3FaWkYdY/V+zRFAaagjZop9D1e23hQl82upeZH
-         2O2Q==
-X-Gm-Message-State: APuU4Z+/7eg4O2GgyadUvazW/aCiKCUPIN+deMd/pADVsqx3ct4SDx4F
-	Yn4dvft+p5HdNLQdjIQwddgxuyUw0H7Vs4epJRpYE/XtqkokyKYxR0E7
-X-Gm-Gg: AYBFou0nP9fPtrj7fN3opNN/DBdalYFIXU5fki00lz71kk5d3ttcTnLvR13SF9haqgi
-	npOw8HGrnzje8V8Lj9oH/509TKhZY4y4gJlB2UbEsBopzHuBlhugUuqLexpW93CYsbzOppFnA9E
-	GURcCIgTXodpSbuUskTpE2Qz1Q7wcWnsnhteb07Igb5OVR6PX7B8KtQ26RVG6Y9qGi/q/nIebLJ
-	oNFeeHWIeBBGr/96eM0eNRI5Ncu4oFfjgimQNgBieBD7OLRSSZUDzrCdvP1PRpEBcfUkcfqxWEc
-	zaxOdJyULzvoFeaKefBh4IxaiwM91Bsx+37SL+dVtqwWEiz0j6UcVxHtdCxLkrrRIR3Wv2jyh8d
-	lyHlhbWAeYH8NN3ljGZgeioWCcjNhNvvcu07RaBe4Fx8Pl0ILbMgtxF6OzahrjBB4rbgmMvwJYv
-	L/7Rb44SpSxdsmlX66CJQX8v/J2S14evcr706yw9rBIpfbIQie9dDsS7Day3ok2CFJoZiCVDJ9b
-	/WfnNWtKH8hmI9wHB4ftZTSGUZ/SYda04sS++YvKMQ+oqxcdYFGgKgx9urqEzepe0tX2C6Q4gzw
-	qckVVuh1HGdhOsYD3K48X3xrGdBUBxbwdg53LpKbu0ghkFum3L8J0rE5daZphrL+qEQ=
-X-Received: by 2002:a05:6808:1246:b0:532:6c52:9778 with SMTP id 5614622812f47-56cd65417d6mr1113652b6e.20.1794457464100;
-        Wed, 11 Nov 2026 20:24:24 -0800 (PST)
-Received: from localhost.localdomain ([14.22.11.162])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-56905146a03sm6947187b6e.6.2026.11.11.20.24.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 20:24:23 -0800 (PST)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] ip6mr: prevent info-leak in ip6mr_cache_report()
-Date: Thu, 12 Nov 2026 12:24:15 +0800
-Message-ID: <20261112042415.617221-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRzl8FhK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64EC1F00A05;
+	Thu, 12 Nov 2026 04:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794457891;
+	bh=ewDQkyi302TW6WSeRV08GWmgo3FjljwrHal9OxzqK/0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZRzl8FhKA1apZMK9+2RxDRRzxQ+PGis7fLpNSLp49YLYMy1JjffLK5WBnjWKDUdsy
+	 3xZW+qkGBRm1om1tjxXQWUYEXPfN7kjvsIZ1A/aETSBXy7uyD+i2OmV7YPJkWgs9WN
+	 eiwUer4ABxovj0XBPvqhUBbR+w80yN84Bkd4qpk5hEBwsfCEJbU/vTIO3IPHA1vkm2
+	 tf2vIp9rAune4VbrCSXiKunlVH11AcAZJKXXN+bDlDZ+UpbBhUGYo7YqvBrrZRIISE
+	 4BXI0prC1WStkj/P085ahCPql7/7lB/m77JtwhMa+5qaFpCugaMmsuZWtcCmjVO7Q6
+	 LMPRSQws2cdpw==
+Subject: Re: [PATCH net] net: usb: rtl8150: fix rx tasklet use-after-free on
+ disconnect
+From: netdev-bot+sashiko@kernel.org
+To: mhun512@gmail.com
+Cc: petkan@nucleusys.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, ae878000@gmail.com
+Date: Thu, 12 Nov 2026 04:31:30 +0000
+Message-ID: <179445789040.2199510.7426210198945271595@kernel.org>
+In-Reply-To: <20261110043016.56986-1-mhun512@gmail.com>
+References: <20261110043016.56986-1-mhun512@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,45 +64,200 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The non-WHOLEPKT branch copies the IPv6 header at offset 0 and then
-appends 40 bytes with skb_put(), but the mrt6msg is written at offset 0
-after skb_reset_transport_header(), so the appended 40 bytes are never
-initialized.  They hold stale heap contents.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The report is queued to the mroute6 socket and copied into the
-IP6MRA_CREPORT_PKT netlink attribute, disclosing the stale bytes to
-user space.  The stale bytes can contain kernel heap and image
-pointers, and the report is reachable from an unprivileged user
-namespace (MRT6_INIT in a new netns, plus the non-root
-RTNLGRP_IPV6_MROUTE_R group).
+Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
 
-Use skb_put_zero() instead, as the IPv4 code does since
-commit 4f34002e2e376 ("ipmr: prevent info-leak in pmr_cache_report()").
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This issue was discovered by Tencent CodeBuddy Security.
+- [Medium] The patch's new tasklet_kill() calls in rtl8150_disconnect()
+  cannot reliably stop rx_fixup() when it keeps rescheduling itself, and…
 
-Fixes: 7bc570c8b4f75 ("[IPV6] MROUTE: Support multicast forwarding.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- net/ipv6/ip6mr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the stale
+  dev->rx_skb pointer can lead to a double free or a device DMA into…
+- [High] This problem wasn't introduced by this patch, but pegasus.c, the
+  driver rtl8150 was derived from, has the same late-completion tasklet…
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index dd0638d3c3f95..b7ae220d6b21d 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -1154,7 +1154,7 @@ static int ip6mr_cache_report(const struct mr_table *mrt, struct sk_buff *pkt,
- 	/*
- 	 *	Add our header
- 	 */
--	skb_put(skb, sizeof(*msg));
-+	skb_put_zero(skb, sizeof(*msg));
- 	skb_reset_transport_header(skb);
- 	msg = (struct mrt6msg *)skb_transport_header(skb);
- 
+--
+
+net: usb: rtl8150: fix rx tasklet use-after-free on disconnect
+
+This adds a second tasklet_kill() in rtl8150_disconnect(), placed after
+unlink_all_urbs(). It is meant to drain an RX tasklet that a late
+read_bulk_callback() could have scheduled after the first kill, before the
+driver data is freed.
+
+> diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+> index d51e43170e033..98c36c3779564 100644
+> --- a/drivers/net/usb/rtl8150.c
+> +++ b/drivers/net/usb/rtl8150.c
+> @@ -971,6 +971,8 @@ static void rtl8150_disconnect(struct usb_interface *intf)
+>  		tasklet_kill(&dev->tl);
+>  		unregister_netdev(dev->netdev);
+>  		unlink_all_urbs(dev);
+> +		/* A completion may have scheduled it after the first kill. */
+> +		tasklet_kill(&dev->tl);
+
+[Severity: Medium]
+Can this tasklet_kill() actually end the rx_fixup() reschedule loop that the
+commit message describes?
+
+The commit message says "disabled endpoints make RX resubmissions fail, so
+rx_fixup() can keep rescheduling itself". It then says "tasklet_kill()
+drains any late tasklet and prevents self-rescheduling".
+
+rtl8150_driver has no soft_unbind, so usb_unbind_interface() disables the
+endpoints before calling ->disconnect(). The device is still attached, so
+usb_submit_urb() passes its -ENODEV check. usb_hcd_link_urb_to_ep() then
+returns -ENOENT, or -EPERM while usb_kill_urb() is in progress:
+
+drivers/usb/core/hcd.c:usb_hcd_link_urb_to_ep() {
+    ...
+	if (unlikely(!urb->ep->enabled)) {
+		rc = -ENOENT;
+		goto done;
+	}
+    ...
+}
+
+In rx_fixup(), -ENODEV is the only error that skips the reschedule, and
+nothing checks RTL8150_UNPLUG:
+
+drivers/net/usb/rtl8150.c:rx_fixup() {
+    ...
+try_again:
+	status = usb_submit_urb(dev->rx_urb, GFP_ATOMIC);
+	if (status == -ENODEV) {
+		netif_device_detach(dev->netdev);
+	} else if (status) {
+		set_bit(RX_URB_FAIL, &dev->flags);
+		goto tlsched;
+	}
+    ...
+tlsched:
+	tasklet_schedule(&dev->tl);
+}
+
+tasklet_kill() only returns once the waiter sets TASKLET_STATE_SCHED
+itself:
+
+	wait_on_bit_lock(&t->state, TASKLET_STATE_SCHED, TASK_UNINTERRUPTIBLE);
+
+tasklet_action_common() clears TASKLET_STATE_SCHED and wakes the waiter
+just before it calls t->callback(t). rx_fixup() then sets the bit again
+before it returns. All of this runs in non-preemptible softirq context.
+
+On a CONFIG_SMP=n non-RT kernel, or when the waiter runs on the same CPU as
+the tasklet, process context would only ever see TASKLET_STATE_SCHED set.
+Wouldn't rtl8150_disconnect() then sleep in TASK_UNINTERRUPTIBLE forever
+while ksoftirqd keeps running rx_fixup()?
+
+The first tasklet_kill() already had this limitation. The new call relies
+on the same assumption to close the use-after-free.
+
+For tasklet_kill() to be reliable here, would rx_fixup() and the resched
+path in read_bulk_callback() need to stop resubmitting and rescheduling
+once RTL8150_UNPLUG is set?
+
+>  		free_all_urbs(dev);
+>  		free_skb_pool(dev);
+>  		dev_kfree_skb(dev->rx_skb);
+
+[Severity: High]
+This is a pre-existing issue, but can dev->rx_skb still be stale when it is
+freed here?
+
+read_bulk_callback() passes dev->rx_skb to the stack, and if the pool is
+empty it leaves the pointer unchanged:
+
+	netif_rx(dev->rx_skb);
+	...
+	skb = pull_skb(dev);
+	spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
+	if (!skb)
+		goto resched;
+
+	dev->rx_skb = skb;
+
+The pool has only RX_SKB_POOL_SIZE (4) entries, and only rx_fixup() refills
+it. rx_fixup() is also the only place that replaces the pointer. If every
+GFP_ATOMIC allocation in fill_skb_pool() fails, it just reschedules:
+
+	skb = pull_skb(dev);
+	spin_unlock_irq(&dev->rx_pool_lock);
+	if (skb == NULL)
+		goto tlsched;
+	dev->rx_skb = skb;
+
+Suppose rtl8150_disconnect() runs in that state. The tasklet_kill() calls
+stop the loop but leave the pointer as it is. Would dev_kfree_skb(dev->rx_skb)
+then double free an skb that the network stack already consumed?
+
+Something similar looks possible across close and open. rtl8150_close()
+does not kill the tasklet or clear rx_skb. rtl8150_open() then reuses a
+non-NULL rx_skb as the bulk-in buffer:
+
+	if (dev->rx_skb == NULL)
+		dev->rx_skb = pull_skb(dev);
+	...
+	usb_fill_bulk_urb(dev->rx_urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
+		      dev->rx_skb->data, RTL8150_MTU, read_bulk_callback, dev);
+
+Could the device then DMA packet data into freed memory?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but pegasus.c, which rtl8150 was
+derived from, seems to have the same late-completion tasklet problem. This
+patch doesn't change it.
+
+In pegasus read_bulk_callback(), when the resubmit fails, rx_tl is scheduled
+without checking PEGASUS_UNPLUG again:
+
+	else if (rx_status) {
+		pegasus->flags |= PEGASUS_RX_URB_FAIL;
+		goto tl_sched;
+	}
+	...
+tl_sched:
+	tasklet_schedule(&pegasus->rx_tl);
+
+During unbind the endpoints are already disabled, so the resubmit fails with
+-ENOENT. It fails with -EPERM once usb_kill_urb() has set urb->reject.
+
+The only tasklet_kill() is in pegasus_close(), and it runs before the URBs
+are killed:
+
+	tasklet_kill(&pegasus->rx_tl);
+	unlink_all_urbs(pegasus);
+
+pegasus_disconnect() then goes from unlink_all_urbs() to free_netdev()
+without draining the tasklet:
+
+	unregister_netdev(pegasus->net);
+	unlink_all_urbs(pegasus);
+	free_all_urbs(pegasus);
+	...
+	free_netdev(pegasus->net);
+
+Consider a completion that passes the netif_running() check before
+__dev_close_many() clears __LINK_STATE_START. If it reaches
+tasklet_schedule() after the tasklet_kill() in pegasus_close(), rx_tl is
+left pending with no later kill.
+
+rx_fixup() returns early on PEGASUS_UNPLUG, so there is no endless loop.
+It still reads pegasus->flags, though, and tasklet_action_common() touches
+the tasklet_struct inside netdev_priv(). Could either of those run after
+free_netdev()?
+
+Does pegasus_disconnect() need a tasklet_kill(&pegasus->rx_tl) after
+unlink_all_urbs() too?
+
 -- 
-2.43.7
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110043016.56986-1-mhun512%40gmail.com
