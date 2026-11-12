@@ -1,55 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476792;
-	b=GZfFLoEz17EmxHJ0PEVxJ+qS6oI72NWOmxTBLNO6ZC9Wj5lCR8sXVpXuHucBI9Vy5vYp
-	 D/Dal4Siz9qSbjVV6cTVmlUuTGcnfJCnbdzHH/y1abEgKJUMTkgI6QqYbZ6MSjzQKj4Ea
-	 ySskDxqMwZajsb3r+cWwu8PUEztZr7NKPI8vs/psYsqcEL+kYDYWHczsUMahg5g9C7LO0
-	 caEKMn2fUqOYa9XWsRRZEyG74+UABPGsq7wvXQM9R3OkFcIWCzqbNOAej4wrkL/5BBq0c
-	 Cpp4XGVh8r2aJ0vnmD5kCgr5lq2HAhGv5y6sv58JkpDOcLax06BDznPLh1ZqnJbAs3Q==
+	t=1794476814;
+	b=qkjizIU5pF6AYOUYVBGWQWrdA1lRYoBAQa0efvCHCrAHZkKO583SDNaYJfnhl7Nn2h2M
+	 smNU3rCu9/4TVYKyW2FBTJKJyPTXu8xmY9nN/5KqdsXXO36agxC106AjF6cQ4Pp5A9KX7
+	 rCY9I7Sd5JK7bAGp40r7OJn4POV54YTI0iT8YCgoN5ce32CfdLcLklmNaEoqIFTFVXEJi
+	 KSjgAXBwvETCFBNCOALDHdZd79kgKvbrEsYJpDDs/TF+o8asnn2X7za1NbKY6F4Z885/A
+	 3K0ejo8W+42MWOHTq0JRMTRMPPRk6hvJAXTkR9a/uA5biil6NGSTgTby6ekByyhVobQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476792;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=j6eZ4aCZFTS/utwlBgKhOAgoPY6BL5WxRnVfSRhjSzs=;
-	b=MzlMWyMtFQciihDVCqfICMEDsmIfCvZQfR8A5HQZDCDOl51y2F3VRg92cnh0mwOVgScc
-	 YokBtjyRh2uRWEEzxzVGqsQwzlmpO6/upXwmFPt04NcyNl473k2OGA53tX1YU2FPQ9j4+
-	 g0g1lkCfPyNCiP0x1EERJU2esREn/Pmtmp/uY2t0K1qSjTqoN+qz2glY+52HGxBHGC3x+
-	 nzrQZqNR+vKKLt58yKbxWZvGzYghopfwMUg//5lQ5xqpUeFk4tKKG288U5JWNTb2DzbPG
-	 Zwke1sgKNiopRtb9LA5pKX8Q4aPMwvQg9Mn5pV8AM1IN1Q6Mfz3GJyJIx3QYwPwhn8Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476814;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=Os5ASwC0ZZ0storl1qYXZGqutt7G4ITq+W/A7LHhpa4=;
+	b=oqP7d+ia1YbRN0FxxCitKueeaaJnNYsnAAmR1Onb9xQPD8aW23yBunqSZN0Gg2kdOiWz
+	 Yt06y4hlvEydmbzRkSD1/5qitG7Eu3FPkfkggnRbKIja2EuqrhlxDvJqB8HrCHoj4LbWG
+	 x1nKfKYy33L0P+WKtT6F0mrF5ifq58p5kfS1V04Dmi2g2/QqfshSyozo0kcLdv38MjcR5
+	 nBckLtTpphkP1EAJGZJet4ZWsIlTqqDtI1pOTJ3smeae2E4eUu+fZ3+TtOD69vu0EgVsE
+	 G5IOk88uNQytvBOOFKyqmXTTH3nQAkKfB626iP6lmSg5/VZjmxsHxYQVU85KGodHFFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LzBOJKST;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E8606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:46:31 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OgSlMzAz;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA93A606A31C;
+	Thu, 12 Nov 2026 09:46:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA93A606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LzBOJKST
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746701F00A0D
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794476791;
-	bh=j6eZ4aCZFTS/utwlBgKhOAgoPY6BL5WxRnVfSRhjSzs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LzBOJKST07DI6OhKR9d/bV/f+EcOgB7DduaD1YvU39zKFCS/rJIAybY5s0taxn405
-	 uR/pdQZZhAznLyB7nOQ+cufnEQqKOpnC5K0IJVR8Oq4IxawDfO2+KxuFEU6KobDRy6
-	 EOZWHtZNf+OLv0tNVW6jMaW/GWbjjOuzvORsPft5nBryny0+60SKlJ07TJjbTwzLEh
-	 pjJBoCVwl/3jcz1gV6z+XyIygjzLHbRCaM5QXVTAEZLwQrWwdNKlLILuk1WzQEkX1d
-	 ehaHHedwd+Iu1lXkg6DteBdRHuHqE488DOHu9T2Z0S4T/EYfciiaMdmLUIH0JkfTHM
-	 TPz9SulQgW1vg==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6df0b02fe91so512637eaf.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:46:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEZnWlwkBo3VIgYy10qlvQGlKeqVoeyoHsZBMoO+8OQ4Td3tE6iJmd9buUHM9pPFTGERcAyv0s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8h/xf0wxoRfVXqpmNSf4404uSIwib5ZVm7CigMKtzr7Or5qdhU
-	NNRaU9KYV66qX9PaOhIVUS+xtvpbgcKXLmt2vX+zkbWFgMjQ/hKMcxxbmKFTUPJZ4RCz8aq1MnL
-	KFBXohY11ox5pwcZwlKQSXo+aTNHdLG4=
-X-Received: by 2002:a05:6820:c2d1:20b0:716:f44b:2dcc with SMTP id
- 006d021491bc7-719740e76c8mr830715eaf.15.1794476790507; Thu, 12 Nov 2026
- 01:46:30 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OgSlMzAz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=OgSlMzAzKJAqJsXs45GSMc7H2iU3L5Sv5RERx/6CZQ72TaJDW8goA80P9mt0Cp5sJWNJGVi3pJRGF
+	 iEqYPYxtrD7kQwKgY5HpTp1Ls2iVAsXNiusJTia1Y2DQUJ8QWfq/bx93TU6KDXsIQmlscfLt5UP2xj
+	 doMzL5NwX/KbXMU4=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af58b096ea-816cb;
+	Thu, 12 Nov 2026 17:46:50 +0800 (CST)
+X-RM-TRANSID:2ee46af58b096ea-816cb
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from  (unknown[223.64.115.200])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af58b07794-fbc64;
+	Thu, 12 Nov 2026 17:46:50 +0800 (CST)
+X-RM-TRANSID:2ee16af58b07794-fbc64
+From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Hangbin Liu <hangbin.liu@linux.dev>,
+	Hangbin Liu <liuhangbin@kylinos.cn>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sunwenbo@cmss.chinamobile.com,
+	1342116488@qq.com
+Subject: [PATCH net-next v2 2/2] ipv6: preserve ip6mr_get_route() error in rt6_fill_node()
+Date: Thu, 12 Nov 2026 17:46:30 +0800
+Message-Id: <20261112094630.197244-3-sunwenbo@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20261112094630.197244-1-sunwenbo@cmss.chinamobile.com>
+References: <20261112094630.197244-1-sunwenbo@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,205 +79,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110213628.3476051-4-edumazet@kernel.org> <179443691180.2199510.148246238688217560@kernel.org>
-In-Reply-To: <179443691180.2199510.148246238688217560@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 12 Nov 2026 10:46:19 +0100
-X-Gmail-Original-Message-ID: <CAL4WiipcxHnbZye9P8_NySU=pLfQoSrMWF3PahgSQvfeuOgmsA@mail.gmail.com>
-X-Gm-Features: AclHuK_cZ9ao9G0cYjqdJ9o0VFbuRHG2Gy61oDEJ6kFhBEJLvS-rEY_T6EP_Vvc
-Message-ID: <CAL4WiipcxHnbZye9P8_NySU=pLfQoSrMWF3PahgSQvfeuOgmsA@mail.gmail.com>
-Subject: Re: [PATCH net v6 3/3] net: virtio: validate outer protocol of UDP
- tunnel GSO packets
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, willemb@google.com, horms@kernel.org, mst@redhat.com, 
-	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	hassansultan@google.com, virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le mer. 11 nov. 2026 =C3=A0 23:41, <netdev-bot+sashiko@kernel.org> a =C3=A9=
-crit :
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The new has_eth=3Dfalse path in virtio_net_hdr_tnl_to_skb()
->   (include/linux/virtio_net.h) rejects almost every valid frame, so it=E2=
-=80=A6
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but it is a
->   sibling of the injection the patch closes.
->
-> --
->
-> net: virtio: validate outer protocol of UDP tunnel GSO packets
->
-> This patch makes virtio_net_hdr_tnl_to_skb() check that a UDP tunnel GSO
-> frame really carries the outer IPv4 or IPv6 header it claims, with UDP at
-> outer_th_offset. Callers now pass a has_eth argument that says whether th=
-e
-> frame starts with an Ethernet header. tun_get_user() passes false for
-> IFF_TUN devices.
->
-> Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2=
-f2e2.1793276116.git.mst@redhat.com/
->
-> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> > index d1fcb25ab026b..ced5a1596e609 100644
-> > --- a/drivers/net/tun.c
-> > +++ b/drivers/net/tun.c
-> > @@ -1950,7 +1950,8 @@ static ssize_t tun_get_user(struct tun_struct *tu=
-n, struct tun_file *tfile,
-> >               break;
-> >       }
-> >
-> > -     if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> > +     if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
-> > +                                 (tun->flags & TUN_TYPE_MASK) =3D=3D I=
-FF_TAP)) {
-> >               atomic_long_inc(&tun->rx_frame_errors);
-> >               err =3D -EINVAL;
-> >               goto free_skb;
->
-> [ ... ]
->
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index 83f801ff57006..fc9667176f23c 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
->
-> [ ... ]
->
-> > @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >       if (ret)
-> >               return ret;
-> >
-> > +     if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th=
-))
-> > +             return -EINVAL;
-> > +
->
-> [Severity: Medium]
-> Can the has_eth =3D=3D false path be reached by ordinary IFF_TUN frames?
->
-> On IFF_TUN, tun_get_user() resets the network header to offset 0 and now
-> passes has_eth =3D=3D false. virtio_net_l3_start() then takes the L3 head=
-er
-> from skb_network_offset(), so virtio_net_tnl_offsets_ok() needs outer_th
-> to be 20 for a plain IPv4 outer header, or 40 for plain IPv6.
->
-> Earlier in virtio_net_hdr_tnl_to_skb(), the offset floor still assumes a
-> 14-byte Ethernet header, whatever has_eth says:
->
->         outer_l3min =3D ETH_HLEN + virtio_l3min(outer_isv6);
->         ...
->         if (outer_th < outer_l3min ||
->             inner_nh < outer_th + sizeof(struct udphdr) ||
->             inner_th < inner_nh + inner_l3min)
->                 return -EINVAL;
->
-> So an outer_th of 20 or 40 fails against 34 or 54 before the new check
-> runs. The only IFF_TUN frames that can pass both checks have IPv4 options
-> (ihl >=3D 9) or at least 14 bytes of IPv6 extension headers.
->
-> On the TX side, virtio_net_hdr_tnl_from_skb() computes outer_th relative
-> to skb->data:
->
->         outer_th =3D skb->transport_header - skb_headroom(skb) + vlan_hle=
-n;
->
-> On IFF_TUN, skb->data points at the IP header, so this emits 20 or 40.
-> set_offload() also enables NETIF_F_GSO_UDP_TUNNEL without checking the
-> device type. As a result, IFF_TUN devices advertise tunnel GSO, but their
-> ordinary tunnel GSO frames get -EINVAL and increment rx_frame_errors.
->
-> The ETH_HLEN floor predates this patch and comes from a2fb4bc4e2a6.
-> However, the commit message relies on the has_eth =3D=3D false path:
->
->   "tun_get_user() passes whether the device is IFF_TAP."
->
-> Should outer_l3min follow has_eth, for example:
->
->         outer_l3min =3D (has_eth ? ETH_HLEN : 0) + virtio_l3min(outer_isv=
-6);
+In rt6_fill_node(), when ip6mr_get_route() fails with a negative error
+(for example -ENODEV, -ENOENT, -ENOMEM, or -ENOBUFS), the error path
+currently jumps to nla_put_failure and unconditionally returns -EMSGSIZE
+("RTNETLINK answers: Message too long").
 
-Same answer as for v4 and v5: UDP tunnel GSO over IFF_TUN has never
-worked since a2fb4bc4e2a6, and this series does not change that.
-has_eth only makes sure IFF_TUN frames are not parsed as Ethernet.
+Among all callers of rt6_fill_node(), only inet6_rtm_getroute() passes
+a non-zero iif and propagates negative errors back to userspace. Keeping
+-EMSGSIZE as the default return value for attribute put failures while
+preserving the negative error returned by ip6mr_get_route() lets
+userspace see the actual failure reason when multicast forwarding is
+enabled.
 
-Relaxing the floor enables a path that has never run. I prefer to do
-that in a separate patch, with selftests covering IFF_TUN in both
-directions, and not in this painful series.
+This issue was pointed out during code review of rt6_fill_node() by
+Hangbin Liu, confirmed on a UML kernel with MRT6_INIT enabled (where
+"ip -6 route get ff0e::1 from 2001:db8::3 iif d0" reported "Message too
+long" despite the failure in ip6mr_get_route() being -ENODEV), and
+verified after the patch that it returns -ENODEV ("No such device")
+instead while other rt6_fill_node() paths behave unchanged.
 
->
-> [Severity: High]
-> This is a pre-existing issue, not one introduced by this patch, but it is
-> closely related to the injection fixed here. Plain (non-tunnel) GSO
-> frames return early and never reach the new check:
->
->         gso_tunnel_type =3D hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL=
-;
->         if (!gso_tunnel_type)
->                 return virtio_net_hdr_to_skb(skb, hdr, little_endian);
->
-> In __virtio_net_hdr_to_skb(), the VIRTIO_NET_HDR_F_NEEDS_CSUM branch only
-> checks pskb_may_pull(), skb_partial_csum_set() and the transport offset
-> against nh_min_len. virtio_net_hdr_match_proto() and the flow dissector
-> run only in the branch without NEEDS_CSUM.
->
-> So can a tap writer, or a guest via vhost-net, still send an Ethernet
-> frame with ethertype ETH_P_NSH, gso_type TCPV4, TCPV6 or UDP_L4, and
-> NEEDS_CSUM set? eth_type_trans() would then set skb->protocol to
-> ETH_P_NSH.
->
-> Suppose such a frame is forwarded, by a bridge or tc mirred, to a device
-> that segments in software. Could the segmentation then recurse without
-> limit?
->
-> skb_mac_gso_segment()
->   nsh_gso_segment()
->     proto =3D tun_p_to_eth_p(nsh_hdr(skb)->np);   /* TUN_P_NSH -> ETH_P_N=
-SH */
->     __skb_pull(skb, nsh_len);
->     skb->mac_len =3D proto =3D=3D htons(ETH_P_TEB) ? ETH_HLEN : 0;
->     skb_mac_gso_segment()
->       nsh_gso_segment()
->         ...
->
-> Neither nsh_gso_segment() nor skb_mac_gso_segment() limits the depth.
-> Commit 006c8b834aed ("net: gso: limit recursive IP-in-IP segmentation")
-> added the SKB_GSO_CB(skb)->recursion_counter check in
-> gso_recursion_inc_test(). It is called only from inet_gso_segment() and
-> ipv6_gso_segment().
->
-> A frame of about 64KB made of stacked 8-byte NSH headers could recurse
-> thousands of levels deep and overflow the kernel stack.
-> TUN_P_ETHERNET -> ETH_P_TEB -> NSH appears to be a second route into the
-> same recursion.
->
-> Should nsh_gso_segment() use gso_recursion_inc_test()? Or should the
-> plain NEEDS_CSUM path also validate the outer protocol?
+Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
+zero new warnings or errors.
+
+Suggested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+---
+ net/ipv6/route.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 6dd4a70f6490..11ce0db66484 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5808,6 +5808,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 	struct nlmsghdr *nlh;
+ 	struct rtmsg *rtm;
+ 	long expires = 0;
++	int err = -EMSGSIZE;
+ 
+ 	nlh = nlmsg_put(skb, portid, seq, type, sizeof(*rtm), flags);
+ 	if (!nlh)
+@@ -5864,12 +5865,14 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ #ifdef CONFIG_IPV6_MROUTE
+ 		if (ipv6_addr_is_multicast(&rt6_dst->addr) &&
+ 		    atomic_read(&net->ipv6.devconf_all->mc_forwarding)) {
+-			int err = ip6mr_get_route(net, skb, rtm, portid);
++			int ret = ip6mr_get_route(net, skb, rtm, portid);
+ 
+-			if (err == 0)
++			if (ret == 0)
+ 				return 0;
+-			if (err < 0)
++			if (ret < 0) {
++				err = ret;
+ 				goto nla_put_failure;
++			}
+ 		} else
+ #endif
+ 			if (nla_put_u32(skb, RTA_IIF, iif))
+@@ -5992,7 +5995,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 
+ nla_put_failure:
+ 	nlmsg_cancel(skb, nlh);
+-	return -EMSGSIZE;
++	return err;
+ }
+ 
+ static int fib6_info_nh_uses_dev(struct fib6_nh *nh, void *arg)
+-- 
+2.33.0
 
 
-This one looks real, and is independent of this series:
-nsh_gso_segment() can call itself through skb_mac_gso_segment() with
-no depth limit, whatever the way the packet entered the stack.
 
-I will send a separate fix for nsh_gso_segment(), with a selftest.
-
-The remark on the changelog of patch 2 is noted, I do not plan to
-respin for it.
-
-Let's merge this series and move on.
