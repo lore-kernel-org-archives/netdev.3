@@ -1,64 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794468306;
-	b=qQAsRpXFNg350XGTYbHQ2tEz3kBSTO1sB44NjGRSISx3d3eI0NBAiQ6iUnbLV39FxBcy
-	 K+11/Bs07LW14jAG+i/EQnxrsOdJPm0wsje5goupPvPWugiZQ+5jBGenY0zYjkgBzLVr6
-	 9duh61ft9eHhs3HuA0zchjrNq2vzK1SGPdZVnIs37uhUUfF6EbF4ZV5ceIPSnEHQ9CfxH
-	 OXfvg3Fwlc5xyEFSL/NKNZQrxrbXbEVarLmKpbt9gzE/YUipwVOM7oO4UCgqVep5Af1cM
-	 xF9dmtk++Q+D7KSu3LCuDvuHMpFd7HxumwKFOwsgrSC/uJ0vpb48QaUjT+zp1O6AkPQ==
+	t=1794468637;
+	b=IOppVwsyIS5mZJq+0wTkg2MdgrlagHC3oLXH/rPsKHl/YceBvGNp77yJa0zBWXc/Iq8+
+	 aAlE50oQFWcbUjbq21MaG+VaSZQXjGlohoYyibK0o3wBo00O/VOLuCuIfezX3+BkLxS2f
+	 2Z1y8h9NnpjdxijCDcSN0j4LO2Arh8PFKtfDO9KqfK8Srj6U8jq/OO8ez7pzKL4E7l6At
+	 l9UIHQMXZ6/+3KRPEnpymIZ7OXO79YWSzWPcciINgJ+dJUQkOaC6aeC9kuDIVMA+oVesE
+	 8e2BsK6eyWOfhIaPHWMtk9trWAikhTU5pmAWK1ot0eJ2POF7B/3WNpjes6ZNWqDPnLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794468306;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=pqC808M/mZK8wr2GU+lcOwmAS4GPcScAPoGXHMQXl8k=;
-	b=sxAB5HKNndDMkoXDPT2hkpMGSzdSwF7VjrT+cWP31epCbaNTucnX0e9X1vzPA3Fyka7l
-	 LBT9G3aDYvTJCngp4we7FiHbckJZp4s7GaQoNlPBKAtA6pmtqBLo8lYuu94pMSbVb3m2p
-	 KnzOiZ7/gjLy7Ll6+GkigixkBEVbJNuYeBkBtDPkDShcIzWfgNaXc5GIrIdShs1o7eu/P
-	 ISJlqpEJsgMa2NiiGUTC2VniDSRcO0uNqbkzvYT2IaLPOdBXj8jxjC/nN4aWhMELzYHG0
-	 SH3bMBfaXlvrNDfP9aR/3fKtytq4571dZGit11tJFX9qqFRl33JZkTUH15FsJqmAXbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794468637;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=PwsB3w3IGTBBRMoLaneSoM4ODkNVnmOpEafVevDzJLw=;
+	b=WhqE19B8tfpHnyE3awyb57xJJ7GtUgYxDe6phXhCNXA3YJGD6oeL/faidUGOB+0u/hv0
+	 Yl7jVA5N5syVGK1N9kl2xK/mAK5FqZpK0eLTz2WdSA8Rkt0h+1CuYR0T3V4v2ulKrNu37
+	 1CONK7o9ynf0xVImk9zrQTz9ltxKPy3X2I6Xin4PA3DOQX6tLQqxWulsR7YrhOOMPTBmD
+	 80fxGKLErKf3IZQCpxCV6sFDM9m3pHBZHxqKPPT3Y/glOhRlu5z55vTJUayPK0vll9pIm
+	 wwkB5HIkdH2lDbjHVIKDstpBeB3/3B+vDewt0ijfEXEsBynKlyEJ/3Z7CPACXM/zseg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HNdFc70J;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=infradead.org;
+	spf=pass smtp.mailfrom=infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=DPMA3dk4;
+	arc=none smtp.remote-ip=198.137.202.133
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16D6606A32E;
-	Thu, 12 Nov 2026 07:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A63606A31C;
+	Thu, 12 Nov 2026 07:30:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37A63606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HNdFc70J
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBD01F00A07;
-	Thu, 12 Nov 2026 07:25:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794468306;
-	bh=pqC808M/mZK8wr2GU+lcOwmAS4GPcScAPoGXHMQXl8k=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HNdFc70JhZjcvuKLNs4EfjWppFCSNim5jLbVVJZPo/oeyyFA52BKRw44NrvWunV3t
-	 GpbLsLTioy6nWuxiGDslqUkEIzHr7brGuBroD5x0jF01ySwD4gIqg120R9/4fDqEyp
-	 1hrtJKFfSQLmZfwJwQyoCbGpSOhRQfHuEfzRA8CHJRPhKrYMCUetbo9ltrMneLJd1x
-	 Ld12HPfg1BDRSsBSlnDNByHdlS1RkoQEhhC7BCrms0Qi//fzYgL75T431SRysdNcoL
-	 XVWfWspPl0vyg3OATolqSYZSMS5LW/DhDnAxQaRNzsYFeuTjd3hPuVkYJblRle4nL4
-	 2yqVn/RVOEQZA==
-Subject: Re: [PATCH net-next 3/3] net: ethernet: ti: am65-cpts: implement
- PTP_SYS_OFFSET_PRECISE
-From: netdev-bot+sashiko@kernel.org
-To: jjc@jclark.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, lee@kernel.org, s-vadapalli@ti.com,
- rogerq@kernel.org, bigeasy@linutronix.de, martin.kaistra@linutronix.de,
- vadim.fedorenko@linux.dev, r-sharma3@ti.com, robertcnelson@gmail.com,
- nm@ti.com, vigneshr@ti.com, c-vankar@ti.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, mfd@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Date: Thu, 12 Nov 2026 07:25:04 +0000
-Message-ID: <179446830443.2199510.10552580927894870264@kernel.org>
-In-Reply-To: <fd826c118aec02c06bde92ff9c20f1958c214b3d.1794284248.git.jjc@jclark.com>
-References: <fd826c118aec02c06bde92ff9c20f1958c214b3d.1794284248.git.jjc@jclark.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=DPMA3dk4
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=PwsB3w3IGTBBRMoLaneSoM4ODkNVnmOpEafVevDzJLw=; b=DPMA3dk4FDl/bjba/fpoYHDgfR
+	PF+VSqLj8OtUIoi3igaR/h/ivDQ4MMJ6ij6D4xIpO7nUdLVMkhYysTQq5NbImlkBKw2GpjZW8caUB
+	zkJD+w9D0bIosY2DtvnYPM5frL8eeLHy/iMgD16Crs2xMUSTXDdbqinaUgzhUVpfA16yqHtjGYoKN
+	cwDfPCuX4S7EB0LCYbqTdlX6yqmFphTSPpyFxmQWOzSfgL4WkFVBtKLyJiX4KSpm0gYCQqmtyjyge
+	CSIHdyxonT2OEHj3kidFXuxDh9X6v2BAe8xFpfL7k4SxtM4vP4obUdcZXnBL85oDq3DhZc0ANia9H
+	HEcR+A3Q==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRPGT-00000008w2P-3Sb5;
+	Thu, 12 Nov 2026 07:30:34 +0000
+Message-ID: <f49599ba-7fcb-4c24-a94f-28fa953e8b00@infradead.org>
+Date: Wed, 11 Nov 2026 23:30:32 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,174 +58,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] netlink: specs: rt-route: move fixed-header to
+ operations list
+To: Hangbin Liu <hangbin.liu@linux.dev>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>
+Cc: Wessel Jacobi <wessel@jacobi.pw>, linux-doc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20261112-ynl_fixed_header-v1-1-8475ea19e409@kylinos.cn>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20261112-ynl_fixed_header-v1-1-8475ea19e409@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 11/11/26 10:46 PM, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> Wessel reported that fixed-header is not shown in the generated HTML
+> page like rt-link.yaml. The doc generator only renders fields on each
+> entry in the operations list, not operations-level keys. Move
+> fixed-header onto each operation so it appears in the HTML.
+> 
+> Reported-by: Wessel Jacobi <wessel@jacobi.pw>
+> Closes: https://patch.msgid.link/8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
-- [Medium] The optional ti,gtc-push property fails in two different ways
-  in am65_cpts_of_parse() (drivers/net/ethernet/ti/am65-cpts.c).
-- [Medium] am65_cpts_gtc_push_select() in
-  drivers/net/ethernet/ti/am65-cpts.c writes the EXPBIT_SEL field of…
-- [Medium] am65_cpts_gtc_push_select() in
-  drivers/net/ethernet/ti/am65-cpts.c reads GTC_CFG0_PUSHEVT back only…
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
 
---
+Thanks.
 
-net: ethernet: ti: am65-cpts: implement PTP_SYS_OFFSET_PRECISE
-
-This commit adds getcrosststamp support to the TI K3 CPTS driver. It uses
-the Global Timebase Counter push event output, routed to a CPTS hardware
-timestamp input. For each request the driver enables the push input,
-waits for an event and pairs the PHC timestamp with the computed GTC
-edge, retrying up to three times. The feature is enabled when the CPTS
-node has a ti,gtc-push property naming the GTC CFG0 syscon and the push
-input.
-
-> diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
-> index 0d71147f3c291..70b0d43bfe788 100644
-> --- a/drivers/net/ethernet/ti/am65-cpts.c
-> +++ b/drivers/net/ethernet/ti/am65-cpts.c
-
-[ ... ]
-
-> @@ -797,6 +839,226 @@ static int am65_cpts_ptp_enable(struct ptp_clock_info *ptp,
-
-[ ... ]
-
-> +/* select the counter bit the GTC exports on its push event output */
-> +static int am65_cpts_gtc_push_select(struct am65_cpts *cpts)
-> +{
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(cpts->gtc, AM65_CPTS_GTC_PUSHEVT,
-> +				 AM65_CPTS_GTC_PUSHEVT_EXPBIT_SEL,
-> +				 FIELD_PREP(AM65_CPTS_GTC_PUSHEVT_EXPBIT_SEL,
-> +					    AM65_CPTS_GTC_PUSH_BIT));
-
-[Severity: Medium]
-Is it safe for this driver to own the EXPBIT_SEL field of GTC_CFG0_PUSHEVT?
-
-The register belongs to the SoC-wide GTC, not to the CPTS.
-am65_cpts_ptp_getcrosststamp() rewrites it on every PTP_SYS_OFFSET_PRECISE
-request. The previous value is never saved or restored, on success or on
-error.
-
-The GTC push event output goes into the Time Sync Router, which can send
-it to other timesync capture inputs, SYNC_OUT pins, or software on other
-cores. Suppose one of those consumers expects a different exported bit.
-Won't its signal frequency change after the first request from Linux, and
-then be forced back to bit 15 on every later request?
-
-The ti,gtc-push binding added in this series describes the GTC as the
-SoC's system counter. It doesn't give this CPTS exclusive ownership of the
-push output.
-
-> +	if (ret)
-> +		return ret;
-> +	/* flush the posted write before the input is enabled */
-> +	return regmap_read(cpts->gtc, AM65_CPTS_GTC_PUSHEVT, &val);
-
-[Severity: Medium]
-Should val be checked here, to confirm that EXPBIT_SEL now reads back as
-AM65_CPTS_GTC_PUSH_BIT?
-
-am65_cpts_gtc_push_next_edge() and the window check in
-am65_cpts_gtc_push_wait() both assume rising edges at k * 2^16 + 2^15:
-
-	if ((s64)(popped - edge) < 0 ||
-	    (s64)(popped - edge) >= (s64)AM65_CPTS_GTC_PUSH_PERIOD) {
-		...
-		return -EAGAIN;
-	}
-
-	push->cycles = edge;
-
-The write might not take effect. For example, the CFG0 region could be
-firewalled or read-only in some security configuration, or another agent
-could rewrite the field. Then the exported bit b' is not 15.
-
-With b' < 15, the first event comes from an edge before the expected
-bit-15 edge. If IRQ thread latency puts popped past edge, the attempt is
-accepted with push->cycles = edge. The result is off by up to that
-latency.
-
-With b' = 16, every bit-16 edge falls 2^15 cycles after a bit-15 edge,
-which is inside the window. About half of attempts would pass while being
-about 164 us off at 200 MHz.
-
-In both cases, wouldn't PTP_SYS_OFFSET_PRECISE return a wrong
-cross-timestamp to userspace with no error? The syscon regmap is uncached,
-so a FIELD_GET() on val would catch the mismatch.
-
-[ ... ]
-
-> @@ -1160,6 +1423,24 @@ static int am65_cpts_of_parse(struct am65_cpts *cpts, struct device_node *node)
->  		}
->  	}
+> ---
+> I'm not very sure whether we should also set `fixed-header` for
+> `newroute-ntf` and `delroute-ntf`, since these notifications are identical
+> to `getroute`. But because `fixed-header` is defined at the operations
+> level, I've added it to all list fields to match the existing behavior.
+> 
+> I rebuilt the HTML documentation, and now `fixed-header` shows up correctly.
+> ---
+>  Documentation/netlink/specs/rt-route.yaml | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
+> index 48d1659f20f3..b5786b465eef 100644
+> --- a/Documentation/netlink/specs/rt-route.yaml
+> +++ b/Documentation/netlink/specs/rt-route.yaml
+> @@ -708,13 +708,13 @@ attribute-sets:
 >  
-> +	if (of_property_present(node, "ti,gtc-push")) {
-> +		gtc = syscon_regmap_lookup_by_phandle_args(node, "ti,gtc-push",
-> +							   1, &prop[0]);
-> +		if (IS_ERR(gtc))
-> +			return dev_err_probe(cpts->dev, PTR_ERR(gtc),
-> +					     "Failed to get GTC syscon\n");
-
-[Severity: Medium]
-Should a failed syscon lookup be fatal here? A bad index just below only
-logs an error and leaves the feature disabled.
-
-Returning here makes am65_cpts_create() return ERR_PTR(ret).
-am65_cpsw_init_cpts() in am65-cpsw-nuss.c then fails the whole CPSW probe:
-
-	if (IS_ERR(cpts)) {
-		int ret = PTR_ERR(cpts);
-
-		of_node_put(node);
-		dev_err(dev, "cpts create err %d\n", ret);
-		return ret;
-	}
-
-So a problem with the optional cross-timestamp property takes down the
-Ethernet interface.
-
-A correct DT can also hit this. TI_K3_AM65_CPTS does not select or depend
-on MFD_SYSCON, and ARCH_K3 does not select it either:
-
-config TI_K3_AM65_CPTS
-	tristate "TI K3 AM65x CPTS"
-	depends on ARCH_K3 && OF
-	depends on PTP_1588_CLOCK
-
-With CONFIG_MFD_SYSCON=n, the syscon stub returns ERR_PTR(-ENOTSUPP). Any
-DT with ti,gtc-push would then stop Ethernet from probing. The same
-happens if the phandle points at a node without the "syscon" compatible.
-
-The existing ti,pps handling and the new index check both treat errors as
-non-fatal. Could this path do the same, or should a Kconfig dependency on
-MFD_SYSCON be added?
-
-> +
-> +		if (prop[0] > 7 ||
-> +		    (cpts->pps_present && prop[0] == cpts->pps_hw_ts_idx)) {
-> +			dev_err(cpts->dev,
-> +				"invalid GTC push HWx_TS_PUSH index: %u\n",
-> +				prop[0]);
-> +		} else {
-> +			cpts->gtc = gtc;
-> +			cpts->gtc_push_hw_idx = prop[0];
-> +		}
-> +	}
-
-[ ... ]
+>  operations:
+>    enum-model: directional
+> -  fixed-header: rtmsg
+>    name-prefix: rtm-
+>    list:
+>      -
+>        name: getroute
+>        doc: Dump route information.
+>        attribute-set: route-attrs
+> +      fixed-header: rtmsg
+>        do:
+>          request:
+>            value: 26
+> @@ -772,6 +772,7 @@ operations:
+>        name: newroute
+>        doc: Create a new route
+>        attribute-set: route-attrs
+> +      fixed-header: rtmsg
+>        do:
+>          request:
+>            value: 24
+> @@ -808,6 +809,7 @@ operations:
+>        name: delroute
+>        doc: Delete an existing route
+>        attribute-set: route-attrs
+> +      fixed-header: rtmsg
+>        do:
+>          request:
+>            value: 25
+> @@ -815,11 +817,13 @@ operations:
+>      -
+>        name: newroute-ntf
+>        doc: Notification about a created route.
+> +      fixed-header: rtmsg
+>        value: 24
+>        notify: getroute
+>      -
+>        name: delroute-ntf
+>        doc: Notification about a deleted route.
+> +      fixed-header: rtmsg
+>        value: 25
+>        notify: getroute
+>  
+> 
+> ---
+> base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
+> change-id: 20261112-ynl_fixed_header-2d7acfcb54f8
+> 
+> Best regards,
+> --  
+> Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1794284248.git.jjc%40jclark.com
+~Randy
