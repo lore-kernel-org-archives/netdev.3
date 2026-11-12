@@ -1,58 +1,134 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794492345;
-	b=rpGLdWNhA6pbsA8cjU4hPBhDhwuWYy4MZbc3vDNcws21GSGMAIBPZUbJHy+3KaNe3/yy
-	 /0Ixj1cUmsMdagyWrqwgB3fqAWkmOcgShKMahIHSz3lJNMAmHh4N5JZS+S/tNuL6wgrUK
-	 1fNpqMRn9BtiDYDSQPmB5XgdqIQmGMCnuUu/atchZ7/bqQKzg1u3HRHal8n7NpBWB19Sm
-	 1UStIjp9DcFvqCPY8xR7fLxV6hH/vN6/dHwQqnA5Lddb9PRl7zPpaU9GVCsDlVPl4dFT6
-	 rBc+UviP3MW837LknweWCaNScZ0t4x1k2vVPDLJGTWBvwgB9JzdarZRlwaSiRrqb0XQ==
+	t=1794492369;
+	b=H2WczsOkDEAUBiIEBboTEQDnOV3iQyoGmcAd+HbMwcilufhek5dqKLNqzmueRm/zqvVG
+	 TMr6pmpP1p8vR28slZ6OA5EQvIC2bKnYQhOlRgkFQbdtbyJ84tyD5vGCGdibQZVvTQY4d
+	 p5FXgbvX3JZAlog0QR/SFWNDLysT8dkatjzPspYs+oKRtEZaeYnPT0IBYIfv63EnI17cd
+	 uCkMHoFpGdJzZYQaKsddczJoEclXyoDHkEXcip0jrBTq12gG6mMrWMgYCnY0KKmLXeb4R
+	 5fZNKVfEMjaBOOMnVEotoL/2oZ+p0hlPuP07lyXaIhg4tvI/BflABL3hqqq4KtZ0BEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794492345;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Debian-User;
-	bh=ccZWgR7dmlMI77SvdnZJfxt5XPzWoiMS7ZxdcshawL8=;
-	b=AmVLRBvrMLc0SjVSpi/wLWjZQK29h8kwi2qcm9mQyq/HwifYBckZeu9EkjoZEW1Juq8y
-	 z2u7Rjy/jv8R+XeIW3LtDTEC4TH6/v/MJjWRKgyP0CiT+3ieY5pXPfoO4x6V+KCXn6sFa
-	 rSzubI/NG+LEwJztxX0dkjnvPmm9+Ewd4YjUofaCiJoxU5FTLkwUV3BNmmEx9GL7R9yd/
-	 0UBwDHcsKNk/nBOkpBKcZwCFEn+LlCD272fUN30f3b0KUtAQlOCbmxLl85n7n2kavpudE
-	 xfbs+xDqtVzbQbwQVclwHuNVN48OJM2P+G86KhQszXxS0gYV+U2vDHL66UmxVkfD+fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794492369;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
+	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
+	b=awCkj8on/q+N1HyChJQVl9B+7+sr/zwHfLoe6Rm8Ma7/UzV4HeBHdIPo0b5TWx/cfC9P
+	 1K7Y8jotQ/83D6jP0gqRGk46W/f3OVKN3l9dAISTkauE0WxPXnNRaWYsd7pGRIvYXf/oS
+	 6zM7vutqbFDAit1gy+9uT/1gEAC4mVRGv4HoabEhPK7YdfJcRn7EXrk0FCwl7Bp7JnpNB
+	 +jhxddlD7sh27Ncy76GVz1qOsJMVKPushPyONxlgDCm4oSWn2LKgDnnFcXDGzX117pBwY
+	 4d67JNqfySds5aPFEZmUA5hzENjCSy+SpcvZ9ocMUvp54deF4FdB0QxgHN5s69XwCHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b="i/UfKCOm";
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDC3606A321;
-	Thu, 12 Nov 2026 14:05:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DDC3606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCDC606A8AB;
+	Thu, 12 Nov 2026 14:06:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BCDC606A8AB
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=i/UfKCOm
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=ccZWgR7dmlMI77SvdnZJfxt5XPzWoiMS7ZxdcshawL8=; b=i/UfKCOmWEcqm5tB7RRNDaNgt5
-	AQic0RfgmdLRngj53swzQuj3/xti5yzRH5UggFv/KKhxSB6cJyARDM5k0+ZOiLYhl9QExy3cQNivF
-	IEwl72Bsy/j4xS8InlClIlrTQIdw1a3uQ/xcN0at0IIpJWxHG3ihQ+fXmzBdL+2sV4sYNHUu/OsfX
-	QFmDp5gxFGA79clNRcD6o2pMx+ifDoxsAjLJB4V+Bx0E+Dk8g8C8jH0sgdYeBcKRz4dg9hAQM1UoV
-	LMgxlKn8h9FWx8P1JlGB+/T41vYjSI1XVgxonDAllFpeNM8PYM4VnVxN+78jI2MEjH+pDhp0zU3j/
-	B7Yskgbw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xRVQi-00E1WS-1F;
-	Thu, 12 Nov 2026 14:05:32 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 12 Nov 2026 06:04:58 -0800
-Subject: [PATCH net] netconsole: harden the enablement through configfs.
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5912F1F890;
+	Thu, 12 Nov 2026 14:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794492366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
+	b=MePUV0PJPVg6e87V3rI/oBHU/WVNpeN9fAmgxCGLxENx35oKrb0iEmR3T18rtLtVz1Vf+O
+	1G6UmmBLJXvaA1WYhfqBFsQOBOJ7IA2iBvpEpvVmXn/Cmsa4Thr80o0Lq+TtDYhKs5Kyab
+	qpmF+O8fmKXKFCYmnkRlnrBsSmTsSBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794492366;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
+	b=tYPab8lGc7bR6d9kEE9FN38yDhbA+TLnfbS8qBFT3Rs/vxGIU/l099dpGQkmH3U6mcvPbG
+	SX8CzvRsGMGv8qBw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794492366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
+	b=MePUV0PJPVg6e87V3rI/oBHU/WVNpeN9fAmgxCGLxENx35oKrb0iEmR3T18rtLtVz1Vf+O
+	1G6UmmBLJXvaA1WYhfqBFsQOBOJ7IA2iBvpEpvVmXn/Cmsa4Thr80o0Lq+TtDYhKs5Kyab
+	qpmF+O8fmKXKFCYmnkRlnrBsSmTsSBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794492366;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
+	b=tYPab8lGc7bR6d9kEE9FN38yDhbA+TLnfbS8qBFT3Rs/vxGIU/l099dpGQkmH3U6mcvPbG
+	SX8CzvRsGMGv8qBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8DBA813432;
+	Thu, 12 Nov 2026 14:06:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RScNEcrH9WqvKgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 14:06:02 +0000
+Date: Thu, 12 Nov 2026 14:06:00 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
+ pages
+Message-ID: <avXGtysfRk3uQpNu@pedro-suse.tail5790ac.ts.net>
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
+ <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
+ <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,109 +138,152 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-netcons_double_cleanup-v1-1-d5ff8167e05a@debian.org>
-X-B4-Tracking: v=1; b=H4sIAI/H9WoC/x3MYQrCMAwG0KuE7/cKTRXRXkVkbFnUwEhHu4kwd
- nfBd4C3o2k1bci0o+rHmhVHJu4I8h78pcEmZEKK6cLMKbiuUrz1U9nGWXuZdfBtCefTGCPzVVh
- u6AhL1ad9//Edrisex/EDx5ipVW0AAAA=
-X-Change-ID: 20261112-netcons_double_cleanup-43b00118c1c9
-To: Gustavo Luiz Duarte <gustavold@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2721; i=leitao@debian.org;
- h=from:subject:message-id; bh=5wcjJzy/USJaZfmSnamW/hrROjyCXQQqW4AJILq8p8E=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq9ceo+r3xwF/1X732ecFof2CxLKj5fdcvjqjm9
- oxf2PvljRyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavXHqAAKCRA1o5Of/Hh3
- bYhcEACMsDSTjiVuOzE0ZgnKG1DSmfbqw/2Cdj/5Qoj4Y4iRax8wQtC0XvGtXmtCVMZ72P/1Rwa
- oo120CAnU4NyWLVLW4RgPTkgjfCVALCE30b/SlsG3gHp6ML3I32HwYiw5PbkKbLSfwSuo9Yd+cd
- r9kiu/UppQ+Qy3AF09HOdxIbCjAgLPV4t2pwb7PMdqguhsQcpy+s9fnM4i1tt3NMkW52cCcdypP
- 0Pj8hbP4/shZsXd4Hb9LdVUByNACuece+9ayyKhi6u9dv5m2pVDNc37T+cfOWHFSgZLEJT0ZD0+
- XlavgpurVQ9tO4e0JoNu6gnl5Kwzy+AYQxHSBDwj2fQirBpssuKRJaXZFxrAZrBF957e8dhbWpL
- OFgpuEnnFxF83R3hA8uRsD5+ZTftXII6CXsbTbBNrMUN4tHaK4bKoZn/UxXyU1LQvkXi7vV5KhB
- VoQirriKEr+knWeZGSWXgAhdGog5dFauipGHSYoOCTZQzS43lHPMHg1eRg2WRK71TSNlNBQrmHk
- SgknsLu/LjPlgOf/ZD+2CVIFOHgxJ0xj603nRqID7sPpkyOOJwsFv+qHJi3H4bHCia7w4A92Ei7
- qwOsFbuZ6pz7nT/6a60IXS5GWQdieF1xiloJiirTyYkotGJcAGzQeHcN6BtMZqTZLAQdvPR/LnI
- yNtVPdDtCp2sCog==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
+X-Spamd-Result: default: False [-11.80 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,suse.cz,linux-foundation.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,intel.com,gmail.com,sk.com,gourry.net,redhat.com,cmpxchg.org,fb.com,surriel.com,szeredi.hu,zeniv.linux.org.uk,arndb.de,ziepe.ca,8bytes.org,oracle.com,toxicpanda.com,davemloft.net,kvack.org,vger.kernel.org,lists.linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[63];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -11.80
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-There is a possible race when enabling/disabling the target through
-configfs with netdev events that can call a null pointer dereference.
+On Thu, Nov 12, 2026 at 02:16:33PM +0100, David Hildenbrand (Arm) wrote:
+> > Mostly LGTM, with some comments:
+> > 
+> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> Thanks for the review, Pedro!
+> 
+> > 
+> >> ---
+> >>  include/linux/mm.h | 35 +++++++++++++++++++++++++++++++----
+> >>  mm/filemap.c       |  6 ++++++
+> >>  mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
+> >>  mm/memory.c        | 33 +++++++++++++++++++++++++++++----
+> >>  mm/migrate.c       | 11 +++++++++++
+> >>  mm/userfaultfd.c   |  4 ++++
+> >>  mm/util.c          | 18 ++++++++++++++++++
+> >>  7 files changed, 126 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> index 4608540e40d46..439cfe446cea4 100644
+> >> --- a/mm/huge_memory.c
+> >> +++ b/mm/huge_memory.c
+> >> @@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+> >>  {
+> >>  	struct mm_struct *mm = vma->vm_mm;
+> >>  	pgtable_t pgtable = NULL;
+> >> +	vm_fault_t ret = VM_FAULT_NOPAGE;
+> >>  	spinlock_t *ptl;
+> >>  	pmd_t entry;
+> >>  
+> >> @@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+> >>  		if (is_huge_zero_folio(fop.folio)) {
+> >>  			entry = pmd_mkspecial(entry);
+> >>  		} else {
+> >> +			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
+> >> +				ret = VM_FAULT_SIGBUS;
+> >> +				goto out_unlock;
+> >> +			}
+> >>  			folio_get(fop.folio);
+> > 
+> > I see you use this pattern often. Would it make sense to have a
+> > bool folio_get_unless_overflow()?
+> 
+> I commented somewhere (in v2 I think) that I played with using
+> folio_get_checked() from #2, but didn't quite like it so I discarded it as
+> 
+> (a) it cannot be used everywhere here, as I'd need more functions to add
+> multiple references. next_uptodate_folio() also could use it as I would need yet
+> another temporary helper for a try_get().
+> 
+> (b) these changes here are going to get reverted fairly soon once I change the
+> way how mappings are refcounted (which is, unfortunately, not suitable for
+> stable, otherwise I wouldn't be throwing in this temporary change in the first
+> place)
+> 
+> So everything that is expected to stay in later patches uses the proper helper.
 
-My robot was able to come up with a reproducer by adding a bunch of
-msleeps() around.
+Alright.
 
-The race is basically this one:
+> 
+> [...]
+> 
+> >>  
+> >> +		if (unlikely(folio_ref_count_over_limit(folio))) {
+> >> +			/* Skip this PUD; it can be faulted in later. */
+> >> +			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
+> > 
+> > A comment as to what's going on here with VM_MIXEDMAP would be useful. I guess
+> > the idea is that faulting on a mixedmap later will not necessarily hand you the
+> > exact same page fault result?
+> 
+> I can throw in a comment, yes.
+> 
+> [...]
+> 
+> >> +bool __folio_ref_count_over_limit(unsigned int ref_count)
+> >> +{
+> >> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+> >> +		return true;
+> >> +	/* Background threads must not consume admin reserves. */
+> >> +	if (current->flags & PF_KTHREAD)
+> >> +		return true;
+> >> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
+> >> +	if (!in_task())
+> >> +		return true;
+> >> +	/* Capability checks are not safe with IRQs disabled. */
+> >> +	if (irqs_disabled())
+> >> +		return true;
+> >> +	/* Use the task's credentials, which filesystem overrides cannot change. */
+> >> +	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
+> >> +}
+> > 
+> > In case this function ever returns over limit, we probably want to log this
+> > in the kernel log. If this function gets the folio you could even print
+> > the problematic file offset/inode/filesystem/etc. Ratelimited of course.
+> 
+> You mean, if this function returns "true", right? Is printing always fine?
+> (e.g., irqs disabled?)
 
-  CPU 0 (enabled_store)             CPU 1 (netconsole_netdev_event)
-  current_enabled = true
-                                    nt->state = STATE_DEACTIVATED
-                                    do_netpoll_cleanup()
-                                      np->dev = NULL
-  nt->state = STATE_DISABLED
-  list_move(&nt->list, &target_cleanup_list)
-  do_netpoll_cleanup()
-    __netpoll_cleanup(): np->dev->npinfo
+Yes. As far as I know, it's always fine, even under NMI. But definitely fine
+with IRQs disabled.
 
-And kasan reports:
+> 
+> > 
+> >> +EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
+> > 
+> > I'm fairly sure this will break the build for a number of non-GPL drivers
+> > when calling folio_get() with CONFIG_DEBUG_VM=y.
+> 
+> You mean, breaking OOT drivers, right? I can switch to EXPORT_SYMBOL if that's a
+> concern.
 
-  KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-  RIP: 0010:__netpoll_cleanup
-  Call Trace:
-   do_netpoll_cleanup
-   netconsole_process_cleanups_core
-   enabled_store
-   configfs_write_iter
+I had the impression we had some stuff in-tree that isn't marked as GPL. But a quick
+grep shows that everything is either GPL or dual-licensed.
 
-The disable path used to call netpoll_cleanup(), which skips a netpoll
-without a device, until it started deferring the release to
-target_cleanup_list.
+In any case, yes, this will quite possibly break debug builds for people OOT.
+I think folio_get() might be a bit too ubiquitous to do this to.
 
-Re-check the state under target_list_lock, which the notifier holds when
-it stops a target, and queue the target only if it is still enabled.
-Mark it disabled either way, as before.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Fixes: 97714695ef90 ("net: netconsole: Defer netpoll cleanup to avoid lock release during list traversal")
----
-Given this is not super critical or hardly faced in production, I am
-sending this to net-next, even with a 'Fixes:' tag.
----
- drivers/net/netconsole.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index a9f9477da1ec77..4b546194f7179c 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1143,11 +1143,10 @@ static ssize_t enabled_store(struct config_item *item,
- 		 */
- 		mutex_lock(&target_cleanup_list_lock);
- 		spin_lock_irqsave(&target_list_lock, flags);
-+		/* An interface event may have stopped and released it */
-+		if (nt->state == STATE_ENABLED)
-+			list_move(&nt->list, &target_cleanup_list);
- 		nt->state = STATE_DISABLED;
--		/* Remove the target from the list, while holding
--		 * target_list_lock
--		 */
--		list_move(&nt->list, &target_cleanup_list);
- 		spin_unlock_irqrestore(&target_list_lock, flags);
- 		mutex_unlock(&target_cleanup_list_lock);
- 		netconsole_unregister_console(nt);
-
----
-base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
-base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git main
-change-id: 20261112-netcons_double_cleanup-43b00118c1c9
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+Pedro
