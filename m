@@ -1,69 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.80
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476916;
-	b=JCKmrnuU1u/LIIZcDH9gP0qf6lV+P1H8NkXZCB9hO6YFhcTF7jvY9EmEYIoMZFa3/Oaj
-	 9xXtNZnuM2UV1pYXkWH6PfrFBumix4ZEssLxba5aDF4v7VI6RnLOiFq3ojQ30cRXfUazm
-	 OdgYrrXBtWXtaKycY/HK0P9tZY+RB3VW4YWi0g2ZeuYOfaZ+Yoq8RSoMYUhbvVXg8IE8R
-	 1h+v/2duyxrB0vk9TxNgPCCENYjfqBwxi8RMhztQXi1vT1RXb6eQf2KHtHSdBT0357gCe
-	 fkbznlbl5ox25m4f9pwlxkJbYOIPzsdqL8acdmkV7WEGxsLWuenF0A2OrhbLl9HRZUw==
+	t=1794476980;
+	b=Z0SGmDbXfBQySN9iBBNG2UCvQ3urTyB9rJYQAKovlDz5RdREX629NMFepz1YejYb1622
+	 u60XrK4MZhvOucnTxiz8z3YGogn+cFLgYZozcO1tKi2Ui/tHT7IB2f92rZCdoKyenvN13
+	 odsz4GeZKKBttWXfHcyF0JenBa9L3WfPQYd4LQYLkActxjnvfIZyRKe6/0BLBBsa9woAQ
+	 NaPfU6fEFzQW+8xWNm5bFVwwpVzBlDztzvPEOKcDLAn0JqmZZ1KPDv3nJrhs80/rNmgEJ
+	 EB3fs8C4URatzHOrUNo4RAgCpkXDy1PDhed9yaT62BWAYnUnwZGWn/XZptH9FnLhdzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476916;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=S1I6Hq1LNxJ2AM3XAIf6COuRQm5+kbnmORhmffuAx1E=;
-	b=cs42tKHUIMlMRcUUloTWmUkzCI/moHOS402m8IJLnnndFZDU/z55g/0WQazI2ze5gEQs
-	 iNjPniq1PE2U1UnMmBuiSKgO9ZbJ1KQ73NmlkhFiQ2C1AP5nNBpx5k1zCt7IwVe2yIHqb
-	 JorJjnbzBT7JcfOT3ZR86j2hTMbPRQi+Mj99pzZ5bh4RFfuCRBjNC+y9vWvHMk5MUrsyS
-	 fO1tX3mTDiU5yooNPd9DHhmnHSjJtWk2veCyW6pA48f+TUZCpzBV9Tsea4Wl4GU8P6o+K
-	 MJyN/o1mfFpUx2b+XsAj43ye5jNVtNpBApFd0Dg+B0NA7QTRRTXrRHoOYayIMyXPovg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476980;
+	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=8cqK1V8owyQCpLM8jFYlicLWr47iUsvtQTMyLTGP118=;
+	b=qMa6JjLBz7qPM4iNHKiMr68POeMKIPyy09P03bhBtMdc2hydPGTBOXQa6ZkTYvFVcj1O
+	 V9Z4FP3Xru0QfQBoepkNhB2gWsDM7r6Cto8RfuFtXaAmimAcG0wBUaGlJYc6diUSDiMbp
+	 Dz80IJR/3viDaWuTrCFZ7BVlXSy87ZttiN6kqKbdgKqsrK6ccQGHRwfxjYbbvrlOQvgLG
+	 Mcxuq1PKpRNSSNc9WjagrRSzC+H7qAtKrisWK10OwIkPM4ZWNAfuCJLAwUyplSY29gjxf
+	 8N0Cd0iUVHhMC1JCemGsCdTA06ISxyx2NLU3BsAYz9a7r2ZkOWJSunOo+5tC9ZQ1ibQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jqc36Bwe;
-	arc=none smtp.remote-ip=95.215.58.80
-Received: from mta1.migadu.com (out-80.mta1.migadu.com [95.215.58.80])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=nebula-matrix.com;
+	spf=pass smtp.mailfrom=nebula-matrix.com;
+	arc=none smtp.remote-ip=115.124.28.147
+Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395A0606A33F
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:48:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 395A0606A33F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jqc36Bwe
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=UzHD0xBypvN0pN6/OIEvkmDF15pe0Kzfmzwbbwx3SyI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794476913; v=1; x=1795081713;
- b=jqc36BweYDZmBlcdZqY8WdSEIykwJhcihOwVZJ3SkVL6iD+HGInr4Dr8GNd27wsy2kvtnsJe
- qJHZObmF0ZRyiMIqBLHvQHT0ITV9xjDwxQXawwWgrzT8H+v1UckOdTQPwrq8xbmxthHvNQRE7DQ
- LV4fq5vAEmo7w7tvzO+PEzr4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 07b5a578b5343b43;
-	Thu, 12 Nov 2026 09:48:33 +0000
-X-Mizu-Trace-ID: 07b5a578b5343b43
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 12 Nov 2026 17:48:21 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, 1342116488@qq.com,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v2] net: hsr: clean up synced addresses and allmulti
- in hsr_del_port()
-Message-ID: <avWLZTnYPQJ2-z7_@fedora>
-References: <20261112064716.85381-1-sunwenbo@cmss.chinamobile.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06209606A31C;
+	Thu, 12 Nov 2026 09:49:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06209606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1807105|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0481636-0.00804177-0.943795;FP=16596273005033193360|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040092104;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.k0PDAwg_1794476968;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.k0PDAwg_1794476968 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Nov 2026 17:49:28 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v34 net-next 0/8] nbl driver for Nebulamatrix NICs
+Date: Thu, 12 Nov 2026 17:49:12 +0800
+Message-ID: <20261112094925.6098-1-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,80 +58,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112064716.85381-1-sunwenbo@cmss.chinamobile.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 12, 2026 at 02:47:16PM +0800, Wenbo Sun wrote:
-> hsr_set_rx_mode() syncs unicast and multicast addresses to slave A and
-> slave B devices via dev_uc_sync_multiple() and dev_mc_sync_multiple(),
-> and hsr_change_rx_flags() propagates IFF_ALLMULTI via
-> dev_set_allmulti().
-> 
-> When an UP HSR device is deleted via hsr_dellink(), hsr_del_ports()
-> removes all ports from hsr->ports before unregister_netdevice_queue()
-> leads to hsr_dev_close(). Consequently, hsr_dev_close() iterates over an
-> already-empty port list and cannot execute dev_uc_unsync() or
-> dev_mc_unsync() on the detached slaves. Likewise, when a slave device is
-> unregistered while the HSR master is UP, hsr_netdev_notify() calls
-> hsr_del_port() directly without running hsr_dev_close(). In addition,
-> hsr_dev_close() does not release IFF_ALLMULTI on slave devices either.
-> As a result, detached slave devices can retain synced unicast/multicast
-> addresses and an elevated allmulti reference count.
-> 
-> Clean up these states in hsr_del_port() when detaching slave A or slave B
-> by calling dev_uc_unsync(), dev_mc_unsync(), and, when IFF_ALLMULTI is
-> set on the master device, dev_set_allmulti(port->dev, -1).
-> 
-> This issue was identified with the assistance of an LLM-based code
-> review tool, confirmed by reproducing the retained allmulti reference
-> count and synced multicast address in a User-Mode Linux (UML)
-> environment upon deleting an active HSR interface, and verified in UML
-> that both states are properly cleared after HSR port deletion.
-> 
-> Fixes: 36b20fcdd966 ("net: hsr: Add support for MC filtering at the slave device")
-> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-> ---
-> Changes in v2:
-> - Clarify the commit message to explain explicitly why hsr_dev_close()
->   iterates over an already-empty hsr->ports list on hsr_dellink() and
->   does not release IFF_ALLMULTI, answering Hangbin Liu's question.
-> - Add Reviewed-by from Hangbin Liu.
-> - Link to v1: https://lore.kernel.org/r/20261111060143.183670-1-sunwenbo@cmss.chinamobile.com
-> 
->  net/hsr/hsr_slave.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index a546f70f9cc8..bab0c27dd06a 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
-> @@ -245,8 +245,14 @@ void hsr_del_port(struct hsr_port *port)
->  		netdev_rx_handler_unregister(port->dev);
->  		if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
->  			dev_set_promiscuity(port->dev, -1);
-> -		if (port->type == HSR_PT_SLAVE_A || port->type == HSR_PT_SLAVE_B)
-> +		if (port->type == HSR_PT_SLAVE_A ||
-> +		    port->type == HSR_PT_SLAVE_B) {
->  			vlan_vids_del_by_dev(port->dev, master->dev);
-> +			dev_uc_unsync(port->dev, master->dev);
-> +			dev_mc_unsync(port->dev, master->dev);
-> +			if (master->dev->flags & IFF_ALLMULTI)
-> +				dev_set_allmulti(port->dev, -1);
-> +		}
->  		netdev_upper_dev_unlink(port->dev, master->dev);
->  		if (hsr->prot_version == PRP_V1 &&
->  		    port->type == HSR_PT_SLAVE_B) {
-> -- 
-> 2.33.0
-> 
-> 
-> 
+This series continues and refines the previous v28 NBL NIC driver patch
+set for Nebula-matrix m18110/m18000 (SNIC s1000) Ethernet adapters.
 
-Sorry, you post v2 version to fast. Please check if
-dev_uc_unsync()/dev_mc_unsync() could be called from hsr_dev_close(). If not,
-should we remove them from hsr_dev_close()?
+The first two foundational patches of v28 have been merged into net-next
+main branch:
+- net/nebula-matrix: add minimum nbl build framework (cffde9e49e86)
+- net/nebula-matrix: add core driver architecture and HW layer
+  initialization (825e6d230163)
 
-Thanks
-Hangbin
+Following maintainer feedback to shorten the patch series, this
+iteration drops the two merged commits, reorganizes and polishes the
+remaining functionality into a standalone 8-patch sequence. No new
+features are added; this series only completes the pending core
+infrastructure.
+
+The overall driver development plan remains consistent with the v28
+two-phase roadmap:
+1) Complete hardware initialization, mailbox/channel communication and
+   control-plane infrastructure (this series)
+2) Implement netdev registration and TX/RX data-path functionality
+   (follow-up series)
+
+This patch set supplements the merged foundational code, covering
+channel layer abstraction, resource management, interrupt handling,
+chip-level initialization, control dispatch routing, channel RPC
+framework, and device lifecycle init/remove/start/stop logic.
+
+changes v33->v34
+Link to v33:https://lore.kernel.org/netdev/20261106045631.2224-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v32->v33
+Link to v32:https://lore.kernel.org/netdev/20261021062113.2158-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v31->v32
+Link to v31:https://lore.kernel.org/netdev/20261010095939.2230-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v30->v31
+Link to v30:https://lore.kernel.org/netdev/20260928123237.88994-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+changes v29->v30
+Link to v29:https://lore.kernel.org/netdev/20260922120311.86593-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+changes v28->v29
+Link to v28:https://lore.kernel.org/netdev/20260914123429.56596-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+2.remove the hash table implementation 
+
+illusion wang (8):
+  net/nebula-matrix: add channel layer
+  net/nebula-matrix: add common resource implementation
+  net/nebula-matrix: add intr resource implementation
+  net/nebula-matrix: add chip-wide hardware init/deinit implementation
+  net/nebula-matrix: dispatch: add control-level routing core
+    infrastructure
+  net/nebula-matrix: dispatch: add mailbox RPCs for msix map, mailbox
+    irq and vsi/eth id
+  net/nebula-matrix: add common/ctrl dev init/remove operation
+  net/nebula-matrix: add common dev start/stop operation
+
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   10 +-
+ .../nbl/nbl_channel/nbl_channel.c             | 1546 +++++++++++++++++
+ .../nbl/nbl_channel/nbl_channel.h             |  196 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.c |   51 +
+ .../nebula-matrix/nbl/nbl_common/nbl_common.h |   14 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   23 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  743 ++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   55 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  671 +++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   23 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   32 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.h       |   12 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 1309 +++++++++++++-
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  342 ++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  373 ++++
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |   12 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   33 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  853 +++++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   21 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  157 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  159 ++
+ .../nbl/nbl_include/nbl_def_channel.h         |  175 ++
+ .../nbl/nbl_include/nbl_def_common.h          |   23 +
+ .../nbl/nbl_include/nbl_def_dev.h             |   16 +
+ .../nbl/nbl_include/nbl_def_dispatch.h        |   93 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   81 +
+ .../nbl/nbl_include/nbl_def_resource.h        |   38 +
+ .../nbl/nbl_include/nbl_include.h             |   28 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  262 ++-
+ 29 files changed, 7328 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
+
+-- 
+2.51.0.windows.1
+
