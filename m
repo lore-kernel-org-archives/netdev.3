@@ -1,113 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794506645;
-	b=apUkAhmqv3JZB/UFvmmF/PnsygXiN/eaKDqiUweYBQHoeEDWQCJxDYxhrq4M5vvsw9Lm
-	 SEfMqD2PCGB5SwbU6VNFQnQFc2z/I3tVjGD8ggRmEOXN38eS0U0ftMqHUc4dpsV84xzFG
-	 MWYE21W8mwkDMWy/BNcm8YyMqHy0a0dqsnKIFik5U2G6L6v/6T1bmMfd7GqbEMs6ALvgc
-	 jfxdPoOs0ixBRrA4WRAIBhZuZWlhYV3AanzS7RavWBbg/kOkLwZws30GPjnjIcDpLRLss
-	 Mqq6oC4LKq96kbLlLFGbNRmj7x9BlQO3uboAM8C0lMD3f5W3HTXWlbRhOlf97B1Y6Dw==
+	t=1794506906;
+	b=fHFXYkl3eMmDvlaLtfMWRdo/e7PrS4sNu9Tzaa9KYZcF4XsVe/UL5VVH2rLjwMIUxiy1
+	 oiMIvsdnkkrskk5GcqFvicf9SINRLmcQLx2dzEWpdPx3HER45be2f21YdY8EiHb7ydryA
+	 gg/FuxoZBtyT6VAWUpuoSibXX6eeiLJP/W3ooz01sC9hQzzpLermbYqAr9Z+PCXDS5dQa
+	 WygDBPuzWgWUJjp+ob5vAxg9NxPKVXL4lA1dgZrJ1/dKWoHTbgzjh3ebLv8gm3JammTKu
+	 TQsyfWur9SmM9zWtoPJcOm4qp2GCG1ojcgEQO03ID93J72ng8mewImvkQh+272v//pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794506645;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=LzeYtQeHYIVthg2hHB9w5Dkr2DnAfEy/jz5r4BF+vDg=;
-	b=bCPXVL4WyM3qXvS6wplDr4PHoAp62mcNJKgb7+pasUhU9xPSZT4Oa7KfYEQZpXkcnd/1
-	 1awHfPiTKbEAvsJ9W0yftPT49Q7SYciTPUVzwpPt/McTdC/ijpQdradgHCsyzwvt8rCvE
-	 VIFzBT5mmD3CGeYvkw7VoOLIM6eHzrHxf7K4osdS71alNWRu9AOqGJ284+Mmn/CXYdmKN
-	 uayVS7KMaEI9tw2YJe/ifBueCSe5TW+dY6FAuX9K6hvbLQmMEd1AzvD5cZqmEgwCBuHgu
-	 4QYxBrVOfmlqVT6y6JsD+vLOYYTJbpDUyoU+w+Sc2EJVkHlqYGOgeEy2GwKckPHU9hw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794506906;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=IuyY4VkDEyFSQSAJ/QGlhbXVklK5sj2QLVDu+lvSUaA=;
+	b=MgRv4mDVX1pMcv+CdhUNCDXXFIz0TZNy8bWjCD812V4gsbfLY2Y40v/B1h5sQTffredi
+	 eYj6X3MAkRE0u0XzKedCHAIQ2uofPYpfAX9VL5TNFw9wWOUu0ARacWlJVrjjFxXkBSr80
+	 2d8upj90hrDWrGmTET2lgmAg0/wAFM7MmI0gluMc9R6YbU+WLiZxV4CC9hcWbZKpUjUZJ
+	 dYTVYBooi67sIegR2zDWpVN2T/AngA3IBJhdr7aO5q+RZ7DK4NlT26dbNFdNNAPiIRlJs
+	 fib9AzRD8BP0Gy16imaZA2dtiGlKXB0pLUpZP8X+p3+RK940FtaCCvo5yZi53d1muLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=hcDIt0Ch;
-	arc=none smtp.remote-ip=209.85.215.226
-Received: from mail-pg1-f226.google.com (mail-pg1-f226.google.com [209.85.215.226])
+	dmarc=pass header.from=cs.unc.edu;
+	spf=pass smtp.mailfrom=cs.unc.edu;
+	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=KkbandDT;
+	arc=none smtp.remote-ip=209.85.128.182
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5249760A5BC4
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 18:04:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5249760A5BC4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03760606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 18:08:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03760606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=hcDIt0Ch
-Received: by mail-pg1-f226.google.com with SMTP id 41be03b00d2f7-cdb684859cbso88611a12.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:04:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794506644; x=1795111444;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LzeYtQeHYIVthg2hHB9w5Dkr2DnAfEy/jz5r4BF+vDg=;
-        b=Bfu7uwsePt55C1FWUuZv3NpVJp9ZKB8qd76IkzeokgxwuvNPq62bfvaatH8ddk4uu7
-         Gl9Cz8d3u50ldVaBebcRfiX3hf5G67XkUMKNh9YDfLF9E3Vxlye1B3ftyGmNfN/mBa7v
-         pry53ZrlWlw+NKqR2Dj+bhZzWefbb7j3OmRU14aiNMLauPphhLshicAP010fGB3pAOJv
-         nUQs64rqTInMsPxMqTl0QhSYgJjJu3A1CCOGCVkqOnbhUTGMfSWCyH90iKT0aWcSrOWR
-         s5cRFX8noBUIP4PqAtWM4vZumufvi5gKMh4934hq6y6eLI8Hz7BPjW21R12QgfLRsOuT
-         Q/RA==
-X-Gm-Message-State: APuU4Z+Vuzfasp1S81ozBAMjbeiGw8h0bP5K+D23n5R++UUMfu/+VVTo
-	sXpmMkZilnh1idbFP6fJMaO+N1+D+fgQgQgqNkHxsClapFhnx3dJEOhnDn2UIO/u95b/hoGwMGe
-	oSduLs112xoRnyXR04s+dBPdbww0MKjSGdloyvbgnSQmT4boYzegGwcSvak43TzKQE3vNJOYuwJ
-	Oi47Sk1NBHi1ClQHmIu9QTLeXYTlatrrtKr1FZ+yReVhpoA7TWG2FqYUrvwNp64v+U6P3/EoxgX
-	GQ0AlWTRrgv/a26
-X-Gm-Gg: AYBFou1mxB1NTzvx+FZJBb2NkoQoIe3rxrhmg959PfODxPXwjqs9eCirbMED30Rjgq/
-	/OreE5sxN0h0jP156FVoqilRqvB/I/78dKt5m+vnduy+4vGyZbn0njdsEkE8k1INJV+z/15xzlE
-	EbHbLdWutgzcvzzd8ilo2K9s5PIDe5+IQEDOiFzwmuaJwMoLeP2ExTOZLAOVtcVdYr8HJ5oEp4x
-	sR8o5bsSeFr07f1FhaPjOKfDPLblcqao3K9OoyPnE4taQYQxpmzY17ZUVumhjOFMqaEdSlWE1Db
-	/bfOwaQhlbsQGZ5G3K2FEQ37VJ+Wbmi6QEs5k6RjzhSbA9vNJo8U0XZdDLYUC2x6PfdrtOvtGqG
-	6E75tUj5nK+vdVNIVE6GIsnkTUzFpLaZlZDxJbip9x5+OrL17JT3rGUkaLT7LADqQoxL6zkOKGh
-	S0WikdwXHpR4nEfwNi3vcTYMo3Gy/oLW8sjJSzXORa
-X-Received: by 2002:a17:90b:4b0c:b0:3b1:4eb6:b3a with SMTP id 98e67ed59e1d1-3b182defaedmr6138183a91.8.1794506644385;
-        Thu, 12 Nov 2026 10:04:04 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1ae999e55sm333993a91.7.2026.11.12.10.04.03
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Nov 2026 10:04:04 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b191f8a9b3so53980a91.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:04:03 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=KkbandDT
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8b0d126f631so2068557b3.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:08:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794506642; x=1795111442; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=cs.unc.edu; s=google; t=1794506905; x=1795111705; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IuyY4VkDEyFSQSAJ/QGlhbXVklK5sj2QLVDu+lvSUaA=;
+        b=KkbandDTebPbtmvtFRJySdi9uHWjGVY+xCBEXoeqFT3otRqLqghjLLhESS2VmNbsZG
+         JW8/NU4Ji7lPnObb0Jpl8uVYwV85AQIN0rtovgkhk0Vm3brSPvgKjZIiwl/DcXianqnI
+         rm5Cn/ZGv1MQxLXrr0TYT6JOmjigo37X94D4tjnDu+6m6VAOu1yrgvSIOjZovdD2wKcn
+         LE1/nAxkIodnZMyyTcpWjSAOf28hhLFatREyMqb4SJH2+6oemej2YHpEtTmbc1M5LNXB
+         DY8LPlMWHs0PFfvZpR0riH+0FIox/j/k/5f8tLpHJlODXEacfuw7h4h37oG6pEq1W6JT
+         eErQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794506905; x=1795111705;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LzeYtQeHYIVthg2hHB9w5Dkr2DnAfEy/jz5r4BF+vDg=;
-        b=hcDIt0Chs29LshaTx1MBFuNTfKinj20fv/i1REig4dkLgxjp+LiflBoA6lLqL8wK4A
-         6DVvK/UBlqHOCjY53/apO7ZBnRk5AgeCDYwBZWWvMklBH3R1u+oMB3GO01ZVsUfediF3
-         Mi5oQVxXx48oMTm4RUZvUUJ/xFPU2+l7zS1No=
-X-Received: by 2002:a17:90a:e7cf:b0:3ad:13fe:41ba with SMTP id 98e67ed59e1d1-3b182f0d331mr6271084a91.52.1794506642343;
-        Thu, 12 Nov 2026 10:04:02 -0800 (PST)
-X-Received: by 2002:a17:90a:e7cf:b0:3ad:13fe:41ba with SMTP id 98e67ed59e1d1-3b182f0d331mr6271047a91.52.1794506641708;
-        Thu, 12 Nov 2026 10:04:01 -0800 (PST)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18abc06sm95004a12.22.2026.11.12.10.03.58
+        bh=IuyY4VkDEyFSQSAJ/QGlhbXVklK5sj2QLVDu+lvSUaA=;
+        b=2fBekvd0K/uD3nVFGB63yKMPTbZVxSkyJTJ1xdhUA0PxZ+PfkaEJKtlBC4Csx55lBA
+         8dSSGMfbXP+bi0/LSyfXE5pp5kELLnJnNFpkALNzZdSzEqIv1J45xUErNrZB++0Bo+ET
+         QtvQtNunajK1xc+b9NwchtJGg9JPSEsWJKCKG8N/7zzR8HyvnvkCq1Qd6PYrPCFFNy/G
+         QxJaNwTrhVSqyVaDsP/rrX3tVadWOw7lUUmcaNaVymV8+vW/iOQMAh9e9JvbO4S+LooB
+         TbxUyfxExQMPn+/nkc5SFAzPUgv+4nppIRJNZQR3YDa5xTjr2yy+IA25D9lFQkjAdw3D
+         8J+g==
+X-Forwarded-Encrypted: i=1; AL+hErFCJkC3tFwi5VLk2Q69S89g9yE6YSKRUPyyp2jxLX+fMjuAo6GJwjhz8VeBCiucTLCBKirJzu8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+CbMBVH2g9zZYLiI9nqnPD+3PxBi3dwAuI5ApWpXsHOAYllQiS
+	91VnzwQyM6CjMwPhDGFXRVh1S2wi56Q7sOMfjI5sl46axLvHWxJ5dYiGT8KtZKnXxg==
+X-Gm-Gg: AYBFou3ST0CtzRyJa9e5HnkwDJ0FSipoWQzZAbgMrt6Ie7Wd4Q3K66pgkniJKb6pjaK
+	5ywHVNVkGwGT3l1y6k66o14pTDVWtIQMWXMO27Zew3vSqqucwKNMHtgIsYrDXX2c02Ds/JDbZYc
+	C1jq0XuAbtLs2jtmQgvZMM31LYgUhDH3uC5rzWQRfOiRvCYuSQ4fhyfS1oEhgm4QFC0jLScWPPl
+	gybPlu/NeMXbhzr3UYescttvFklkvs7+k/MiPcYzjPIC85LsXUhvJ8UQ4xt5kiltgifuxs8vjJe
+	xSzRoz0/zG+IwNwfAt0GyYYmjumixUCdiYeUPp4/B8tWPniu0LpVMePwZwKLUiGUm8orEQmgSyt
+	hLF8lU8u2zf+Vdg+Tew3dEli6/pbIRU+9aIaQ1jyLHdEMbRdgM+qzzX3kAhTwlYH8PKOs+9QU2b
+	NiaobjAJhsWPf0yXIM9itBFAEByTbI9yOXCAj7cWW23Q7KsfqtU9TBavxX5PRW0MYnEx/Sb5u6t
+	XVGLdRXc2nP43PcPKLFMCr3pIB2ApKaKKbslQWRWvNzVGpZvn0CkVNPwSuLM8Hk+2duCkGFYisF
+	hwjkYESSHqmbPzC1Mn8nrnBYYNHf5SF83Cdf1dFXzunK5nyuYC/3
+X-Received: by 2002:a05:690c:c6c3:b0:8b0:d9c9:3fc6 with SMTP id 00721157ae682-8b4aa2f2c28mr2160547b3.13.1794506904893;
+        Thu, 12 Nov 2026 10:08:24 -0800 (PST)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa933f04sm1743067b3.18.2026.11.12.10.08.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 10:03:59 -0800 (PST)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+        Thu, 12 Nov 2026 10:08:24 -0800 (PST)
+From: Hengyu Liang <hengyul@cs.unc.edu>
+To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v5 8/8] net: dsa: b53: fix mirror port encoding on BCM5325 and BCM5365
-Date: Thu, 12 Nov 2026 10:02:02 -0800
-Message-ID: <20261112180202.324504-9-florian.fainelli@broadcom.com>
+	Paolo Abeni <pabeni@redhat.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] ipv6: bring NLM_DONE out to a separate recv() in link and address dumps
+Date: Thu, 12 Nov 2026 13:08:08 -0500
+Message-ID: <20261112180808.1217483-1-hengyul@cs.unc.edu>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261112180202.324504-1-florian.fainelli@broadcom.com>
-References: <20261112180202.324504-1-florian.fainelli@broadcom.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,153 +102,85 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-BCM5325 and BCM5365 use an 11-bit bitmap for the mirror capture port,
-whereas newer switches use a four-bit port ID. Programming the port
-number directly can select no destination or the wrong destination, and
-can select multiple destinations. For example, port 2 requires BIT(2),
-but writing 2 selects port 1 instead.
+Commit ac14ad9755d4 ("ipv6: use xarray iterator to implement
+inet6_dump_ifinfo()") and commit 9cc4cc329d30 ("ipv6: use xa_array
+iterator to implement inet6_dump_addr()") made the IPv6 RTM_GETLINK and
+RTM_GETADDR dumps put NLM_DONE into the same recv() as the last
+objects.
 
-Use the bitmap encoding on BCM5325 and BCM5365, including translating
-logical CPU port 5 to hardware bit 8. Apply the corresponding field mask
-when checking for a conflicting destination, replacing the destination,
-and clearing it after the last mirror source is removed. Keep the port ID
-encoding for newer switches.
+However, some applications expect NLM_DONE in a separate recv(). As of
+now, Kamailio waits for it when it looks for the IPv6 addresses of the
+host. It gives up after 4 seconds and listens on localhost only.
 
-The ingress and egress mirror source masks use the same layout on these
-switches, with the CPU port at bit 8 and bits 5-7 reserved, so apply the
-same translation when setting and clearing a source port bit.
+A similar issue happened before in the route dumps and in the IPv4
+address dump. It was fixed by commit 460b0d33cf10 ("inet: bring
+NLM_DONE out to a separate recv() again") and commit 5b4b62a169e1
+("rtnetlink: make the "split" NLM_DONE handling generic"). Perhaps
+these two dumps need the same.
 
-Fixes: ed3af5fd08eb ("net: dsa: b53: Add support for port mirroring")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+The issue can be reproduced with:
+
+    python3 tools/net/ynl/pyynl/cli.py --dbg-small-recv 4096 --no-schema \
+        --spec Documentation/netlink/specs/rt-addr.yaml \
+        --dump getaddr --json '{"ifa-family": 10}' 2>&1 | grep Recv
+
+Before commit 9cc4cc329d30 ("ipv6: use xa_array iterator to implement
+inet6_dump_addr()"), the result is:
+
+    Recv: read 232 bytes, 3 messages
+    Recv: read 20 bytes, 1 messages
+
+After that commit, the result is:
+
+    Recv: read 252 bytes, 4 messages
+
+This patch will set RTNL_FLAG_DUMP_SPLIT_NLM_DONE for both dumps.
+
+Fixes: ac14ad9755d4 ("ipv6: use xarray iterator to implement inet6_dump_ifinfo()")
+Fixes: 9cc4cc329d30 ("ipv6: use xa_array iterator to implement inet6_dump_addr()")
+Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
 ---
- drivers/net/dsa/b53/b53_common.c | 46 +++++++++++++++++++++++++-------
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 38 insertions(+), 9 deletions(-)
+Application impact (Ubuntu 26.04 user space): Kamailio 6.0.5 with
+"auto_bind_ipv6=1" added to the shipped kamailio.cfg, on a host with
+one IPv4 and one global IPv6 address. On v6.8, it listens on both
+addresses and on localhost. On v6.9 and on net, it logs "Could not get
+network interface list" and listens on 127.0.0.1 only.
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index a2d46cceca47..5bdf9cf147b3 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2608,6 +2608,31 @@ enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds, int port,
- }
- EXPORT_SYMBOL(b53_get_tag_protocol);
+Kamailio looks only at the first message of each recv() for NLM_DONE
+(src/core/socket_info.c, same in its master branch).
+
+Tested on net: with this patch, Kamailio listens on all addresses again
+and starts without the 4 second wait.
+
+ net/ipv6/addrconf.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index d9d13e78bf13..cbee883e8b01 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -7561,14 +7561,16 @@ static struct rtnl_af_ops inet6_ops __read_mostly = {
  
-+static u16 b53_mirror_capture_port_mask(struct b53_device *dev)
-+{
-+	if (is5325(dev) || is5365(dev))
-+		return CAP_PORT_MASK_25;
-+
-+	return CAP_PORT_MASK;
-+}
-+
-+static u16 b53_mirror_port_mask(struct b53_device *dev, int port)
-+{
-+	/* These switches use a bitmap with the CPU port at bit 8. */
-+	if ((is5325(dev) || is5365(dev)) && port == B53_CPU_PORT_25)
-+		port = B53_CPU_PORT;
-+
-+	return BIT(port);
-+}
-+
-+static u16 b53_mirror_capture_port(struct b53_device *dev, int port)
-+{
-+	if (is5325(dev) || is5365(dev))
-+		return b53_mirror_port_mask(dev, port);
-+
-+	return port;
-+}
-+
- int b53_mirror_init(struct dsa_switch *ds)
- {
- 	struct b53_device *dev = ds->priv;
-@@ -2631,15 +2656,15 @@ int b53_mirror_init(struct dsa_switch *ds)
- 	/* DSA retains matchall filters across suspend and resume. */
- 	for (port = 0; port < dev->num_ports; port++) {
- 		if (dev->ports[port].mirror_count[true])
--			ingress |= BIT(port);
-+			ingress |= b53_mirror_port_mask(dev, port);
- 		if (dev->ports[port].mirror_count[false])
--			egress |= BIT(port);
-+			egress |= b53_mirror_port_mask(dev, port);
- 	}
- 
- 	if (!(ingress | egress))
- 		return 0;
- 
--	cap_ctl = MIRROR_EN | dev->mirror_port;
-+	cap_ctl = MIRROR_EN | b53_mirror_capture_port(dev, dev->mirror_port);
- 	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
- 	if (ret)
- 		return ret;
-@@ -2659,6 +2684,8 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 	struct b53_device *dev = ds->priv;
- 	unsigned int *mirror_count = &dev->ports[port].mirror_count[ingress];
- 	u16 reg, other_reg, loc, other_loc, cap_ctl;
-+	u16 cap_mask = b53_mirror_capture_port_mask(dev);
-+	u16 cap_port = b53_mirror_capture_port(dev, mirror->to_local_port);
- 	int ret;
- 
- 	loc = ingress ? B53_IG_MIR_CTL : B53_EG_MIR_CTL;
-@@ -2677,7 +2704,7 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 		return ret;
- 
- 	if (((reg | other_reg) & MIRROR_MASK) &&
--	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
-+	    (cap_ctl & cap_mask) != cap_port) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Only one mirroring destination is supported");
- 		return -EOPNOTSUPP;
-@@ -2689,14 +2716,15 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 	}
- 
- 	/* Select the destination before enabling the new source. */
--	cap_ctl &= ~CAP_PORT_MASK;
--	cap_ctl |= mirror->to_local_port;
-+	cap_ctl &= ~cap_mask;
-+	cap_ctl |= cap_port;
- 	cap_ctl |= MIRROR_EN;
- 	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
- 	if (ret)
- 		return ret;
- 
--	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg | BIT(port));
-+	ret = b53_write16(dev, B53_MGMT_PAGE, loc,
-+			  reg | b53_mirror_port_mask(dev, port));
- 	if (ret)
- 		return ret;
- 
-@@ -2730,7 +2758,7 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
- 	if (ret)
- 		goto err;
- 
--	reg &= ~BIT(port);
-+	reg &= ~b53_mirror_port_mask(dev, port);
- 	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg);
- 	if (ret)
- 		goto err;
-@@ -2749,7 +2777,7 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
- 	if (ret)
- 		goto err;
- 
--	reg &= ~(MIRROR_EN | CAP_PORT_MASK);
-+	reg &= ~(MIRROR_EN | b53_mirror_capture_port_mask(dev));
- 	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
- 	if (ret)
- 		goto err;
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index cfdb5ed38326..ee049927a63a 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -239,6 +239,7 @@
- /* Mirror capture control register (16 bit) */
- #define B53_MIR_CAP_CTL			0x10
- #define  CAP_PORT_MASK			0xf
-+#define  CAP_PORT_MASK_25		0x7ff
- #define  BLK_NOT_MIR			BIT(14)
- #define  MIRROR_EN			BIT(15)
- 
+ static const struct rtnl_msg_handler addrconf_rtnl_msg_handlers[] __initconst_or_module = {
+ 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_GETLINK,
+-	 .dumpit = inet6_dump_ifinfo, .flags = RTNL_FLAG_DUMP_UNLOCKED},
++	 .dumpit = inet6_dump_ifinfo,
++	 .flags = RTNL_FLAG_DUMP_UNLOCKED | RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
+ 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_NEWADDR,
+ 	 .doit = inet6_rtm_newaddr, .flags = RTNL_FLAG_DOIT_PERNET},
+ 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_DELADDR,
+ 	 .doit = inet6_rtm_deladdr, .flags = RTNL_FLAG_DOIT_PERNET},
+ 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_GETADDR,
+ 	 .doit = inet6_rtm_getaddr, .dumpit = inet6_dump_ifaddr,
+-	 .flags = RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED},
++	 .flags = RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED |
++		  RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
+ 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_GETMULTICAST,
+ 	 .dumpit = inet6_dump_ifmcaddr,
+ 	 .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+base-commit: 19ec8416a76c08326fe5f814410a1b43046e63be
 -- 
 2.53.0
 
