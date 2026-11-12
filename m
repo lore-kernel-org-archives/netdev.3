@@ -1,51 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794491026;
-	b=jqtZsua4egKE+dT3mC7DNODJvk+HAioXMUt3BLwZtJOciyTDXQtY16NQhBhgVXWEOqLh
-	 rw8jyeAzxJEsYVLDrlHII2mugBtb2q/A4Zp3aWYmYSFuecnfO8mkARgu1oK6T45LEuYS8
-	 6gqc0WTymI7nfoydjV1Yx9pNJ/lOj6GSzFA50wAzgdctVHw84gLIm28UtkvQq5rWVKtql
-	 SawwRd3wVi6FvYTCIA7jsbyIg0qNqrr26zJpCkwSxN+W8Jm3bCss+myZxJJslXUBWp3jl
-	 5FZInMjQ5Rt/Sjmlh1VYy+hvgKPd7IXttm2eiUk+b+viyeqXrjJJ0C3wLzZ7mFgsKZg==
+	t=1794491032;
+	b=M3yzK4EMTj3yIxAEIRy7h7d4j6kNv2nkhAnjhuMZP2WJcFM3J5orztYv/x43YRswcb5L
+	 LOEbL8ndXUgx8g2wcuId8vQ4cUzXpc9SM1dakukzC+xPnOGqFMouiFP5Uq6cpM/shQuud
+	 dq8TbuBlxoaEdePclUM8VfZnZOcj4Xltzr7sU5yN1UCw2LoyfRhaDtozwmzC9ZAIj4J/D
+	 jqKdZULsqyX4DTywy9Zd9ps2ZmEXldUED9IslNnriYr2oQyinm468vzYEJgp+lJMPuo9n
+	 3+f21FYCxeHUAjxLtLiWgekCK5PkyKvU9aObYuGkGhXGjf1hROMDjWLsf0N4EX9fCLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794491026;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:User-Agent:X-Bm-Milter-Handled:
-	 X-Bm-Transport-Timestamp;
-	bh=NRCmlz9UIpzLSIl8G/BYxNYMUmX8i/GH+eW+zCSkzcA=;
-	b=HeOcA9DHEzlIVTH6ihCTpNyoRH9g5JlRL3xM20PIA6PZoUxliHiDQrQwub5RhjeX48qN
-	 fJmjy5IhzxxesOWjWheeKM7WF+3j+JqjY7JmW5+OpTEdIU1dLVC/q9X+s7qVIWjAEZZO7
-	 +TLiBCmbyBAcF7vJlitv3vGo1sw79JZhlbosXxP1Qj4JaFjZgaXFRKPwWHXrQ10I752ZC
-	 iqpIRsi512K0Kb/shQk5G72cYcLTbqw7lFJcfAIkWXmXEaPKFWf+gr9Ywni7hFsA5VHZL
-	 wnEmraRWrxLBJ1wuGR1nD4Ijswl1DUWzCRZPIf5eJljXhIrm5Fq0tIESuKREw1EASPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794491032;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=VxOpdanBTNNue1alsU1irSoWxQrGWAWPxOQ3iRVu+z8=;
+	b=J2CJQUwB6JUSdzZ89dT9P9518VN+mRxgM0gYpdnMnbHXIjNxsaItQk7s91hviLV5SkOC
+	 4f/YIwqhNQGLgGwofuLHyJVmHmamcKFWaz5sFnqpxQhczoKrAQ1R9PHhZ8tGj2+8dlKNE
+	 KMUOJCU5eJZsFGHOonZjcpfcFyRM9/cr3AgcuDAu9AVvlPfeLFIbB+xXgUUJsVDJQPrc4
+	 isp2iTI1foXlCofw2Jb0xru2iD3m4QS6UnbQX6SCbj5/VrFGPARFFwCsJwUAaicYrSHPN
+	 cVNmRsb4hpfxRd2Pn98TzMLkFpDEKP3Je+vlRmPvDCUZakhcyEDQSLmNUpwdRQIPxbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=HiEsg05j;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860BD606A31C;
-	Thu, 12 Nov 2026 13:43:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 860BD606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DC04746C7C;
-	Thu, 12 Nov 2026 14:43:43 +0100 (CET)
-Date: Thu, 12 Nov 2026 14:43:41 +0100
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] ipv6: reset all.force_forwarding when disabling
- all.forwarding
-Message-ID: <avW_Yn2W7tSHTMaq@luna.proxmox.com>
-References: <20261109-ipv6_reset_all-v1-1-815dfd508246@proxmox.com>
- <1eb85d22-7d2b-460c-82f6-2af15a4875dc@6wind.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC219606A31C;
+	Thu, 12 Nov 2026 13:43:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC219606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=HiEsg05j
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1794491031; x=1826027031;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LoKVXxBlF6G5G7uhLeP+QLHXu/VsSMcYJ+6Nn7/f51k=;
+  b=HiEsg05j6CAKZhmTN+1BtvB2Rs/ivtWVO3lQVNFABLjfYdgXay+pO4tH
+   v8i9JJ14YvJWNpAX6eECrbZzmank9idS2gKADRHbykhZxZYhuh/GjnqEg
+   ZOE72pXSnb0fMWYwV1jBw9clBE1FvuVaI65jCvHFBz71a8kPgVW8l5RPn
+   4Ju6Sk7hR7IikBIKQdjX3hR++vSC3nh4icQtzJvUDyF3HHGSWSyrdOWQz
+   QWP+S7Wtmz/wjOEtOIt+GO6GwFsWHbecM3bmbnWZJuo+/QxTlfo/J22ZN
+   2kPHAw/t02jVu0kVbzfxj8ifw1RoO6OaJHy8w3Fx2TlQgiymvhLBay4re
+   Q==;
+X-CSE-ConnectionGUID: AkdiOhkuQuO+skhyaRgHVA==
+X-CSE-MsgGUID: Zxbb6DEXR6G8pGhS+ZKjaA==
+X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
+   d="scan'208";a="297833517"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 06:43:50 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Thu, 12 Nov 2026 06:43:50 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 12 Nov 2026 06:43:47 -0700
+Date: Thu, 12 Nov 2026 14:43:46 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Joe Damato <joe@dama.to>
+CC: <netdev@vger.kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <edumazet@google.com>, <horms@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+Subject: Re: [PATCH net-next 5/5] net/mlx4: flush pending doorbell when
+ dropping a TX skb
+Message-ID: <20261112134346.zvctvknj4mc5s2pm@DEN-DL-M70577>
+References: <20261110231304.1859217-1-joe@dama.to>
+ <20261110231304.1859217-6-joe@dama.to>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,88 +83,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1eb85d22-7d2b-460c-82f6-2af15a4875dc@6wind.com>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1794491023021
+In-Reply-To: <20261110231304.1859217-6-joe@dama.to>
 
-On 10.11.2026 18:34, Nicolas Dichtel wrote:
-> Le 09/11/2026 à 16:53, Gabriel Goller a écrit :
-> > Disabling all.forwarding resets force_forwarding on every interface, but
-> > leaves all.force_forwarding set:
-> > 
-> >   # sysctl -wq net.ipv6.conf.all.forwarding=1
-> >   # sysctl -wq net.ipv6.conf.all.force_forwarding=1
-> >   # sysctl -wq net.ipv6.conf.all.forwarding=0
-> >   # sysctl net.ipv6.conf.dummy1.force_forwarding
-> >   net.ipv6.conf.dummy1.force_forwarding = 0
-> >   # sysctl net.ipv6.conf.all.force_forwarding
-> >   net.ipv6.conf.all.force_forwarding = 1
-> > 
-> > Writing 1 to all.force_forwarding afterwards is ignored because the
-> > value did not change, so the interfaces are not re-enabled.
-> > 
-> > Reset all.force_forwarding too and notify netconf listeners.
-> > 
-> > Suggested-by: Ido Schimmel <idosch@nvidia.com>
-> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+> If mlx4_en_xmit drops an skb (for example because DMA mapping fails) and
+> that skb happens to be the last one in the batch, the doorbell for the
+> WQEs posted earlier in the batch isn't written.
 > 
-> There is the same effect if an interface entry is reset:
+> The queue stays awake, though, so those WQEs are eventually announced to
+> the HW after the next TX, but that depends on traffic and could induce
+> latency.
 > 
-> $ sysctl -wq net.ipv6.conf.all.force_forwarding=1
-> $ sysctl net.ipv6.conf.ntfp1.force_forwarding net.ipv6.conf.all.force_forwarding
-> net.ipv6.conf.ntfp1.force_forwarding = 1
-> net.ipv6.conf.all.force_forwarding = 1
-> $ sysctl -wq net.ipv6.conf.ntfp1.force_forwarding=0
-> $ sysctl net.ipv6.conf.ntfp1.force_forwarding net.ipv6.conf.all.force_forwarding
-> net.ipv6.conf.ntfp1.force_forwarding = 0
-> net.ipv6.conf.all.force_forwarding = 1
-> $ sysctl -wq net.ipv6.conf.all.force_forwarding=1
-> $ sysctl net.ipv6.conf.ntfp1.force_forwarding net.ipv6.conf.all.force_forwarding
-> net.ipv6.conf.ntfp1.force_forwarding = 0
-> net.ipv6.conf.all.force_forwarding = 1
+> Avoid all of that by writing the pending doorbell in the drop path.
 > 
-> Maybe the new value should be applied whatever the old value was for the 'all'
-> entry (like for net.ipv6.conf.all.forwarding).
+> Signed-off-by: Joe Damato <joe@dama.to>
+> ---
+>  drivers/net/ethernet/mellanox/mlx4/en_tx.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> Note that, it is the same for ipv4 forwarding:
-> 
-> $ sysctl -wq net.ipv4.conf.all.forwarding=1
-> $ sysctl net.ipv4.conf.all.forwarding net.ipv4.conf.ntfp1.forwarding
-> net.ipv4.conf.all.forwarding = 1
-> net.ipv4.conf.ntfp1.forwarding = 1
-> $ sysctl -wq net.ipv4.conf.ntfp1.forwarding=0
-> $ sysctl net.ipv4.conf.all.forwarding net.ipv4.conf.ntfp1.forwarding
-> net.ipv4.conf.all.forwarding = 1
-> net.ipv4.conf.ntfp1.forwarding = 0
-> $ sysctl -wq net.ipv4.conf.all.forwarding=1
-> $ sysctl net.ipv4.conf.all.forwarding net.ipv4.conf.ntfp1.forwarding
-> net.ipv4.conf.all.forwarding = 1
-> net.ipv4.conf.ntfp1.forwarding = 0
-> 
-> but not for ipv6 forwarding:
-> $ sysctl -wq net.ipv6.conf.all.forwarding=1
-> $ sysctl net.ipv6.conf.all.forwarding net.ipv6.conf.ntfp1.forwarding
-> net.ipv6.conf.all.forwarding = 1
-> net.ipv6.conf.ntfp1.forwarding = 1
-> $ sysctl -wq net.ipv6.conf.ntfp1.forwarding=0
-> $ sysctl net.ipv6.conf.all.forwarding net.ipv6.conf.ntfp1.forwarding
-> net.ipv6.conf.all.forwarding = 1
-> net.ipv6.conf.ntfp1.forwarding = 0
-> $ sysctl -wq net.ipv6.conf.all.forwarding=1
-> $ sysctl net.ipv6.conf.all.forwarding net.ipv6.conf.ntfp1.forwarding
-> net.ipv6.conf.all.forwarding = 1
-> net.ipv6.conf.ntfp1.forwarding = 1
+> diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+> index 123071a47bed..3166837711be 100644
+> --- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+> @@ -1135,6 +1135,9 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
+>  
+>  tx_drop_count:
+>  	ring->tx_dropped++;
+> +	/* an earlier skb in this batch may have deferred the doorbell */
+> +	if (ring->doorbell_pending)
 
-Makes sense, aligned the behavior to ipv6 forwarding with this patch:
-https://lore.kernel.org/all/20261112-ipv6_always_apply-v1-1-8df846631005@proxmox.com/
+I think checking !netdev_xmit_more() here would let you ditch the new ring
+state, but it seems bnxt does it the same way, so fine by me.
 
-This patch is still relevant.
+> +		mlx4_en_xmit_doorbell(ring);
+>  tx_drop:
+>  	dev_kfree_skb_any(skb);
+>  	return NETDEV_TX_OK;
+> -- 
+> 2.53.0-Meta
+>
 
-Thanks for the review.
-
-Gabriel
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
