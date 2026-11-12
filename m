@@ -1,74 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794455534;
-	b=5WQAuAUVN43+KK8TjwdDhydqWAAt9RnZBaUXSdSI+eR5Ffo75oTOlGEaqOBdKmjpygu0
-	 qtlTk0kX/+wofyeY/+/gOME47HHymjuXhdLYfmJ0j411O6tTpztz7fqqWNcWwxihKUBhD
-	 z9V1SVjKQEJpFuEifQ+K91eD0paEw6J/JdkdRcr05H2PkSFA5XI0Lt4WYaWMvcR+b1UAe
-	 siUQ0m82DwjufJtUzEkop+J/F1PcmEaGrnwzvW0zR1FNOLG9YmTynHWzc/8zFCvYg7s+e
-	 SL4WGelZtcycQH3HweeqlAzCL25uP+5/CNK36q8y1EJuc9Q0Negl7Gh+MytIr9BajRQ==
+	t=1794456168;
+	b=EG7V2QafITKD5MI04cJbFXchY3FvZvMayqwcql7BitZ0X26c9ZAYSd7ygr30yQIl+9PG
+	 S7V5dAjDohSkHY32iQh72l9wID++s2ginXtdJhO59/DFvOcMt+ooWZbE05xMDHYQRFBWu
+	 nFt3XopQDq4cOXn/2k9bY3XCkfH5Dx/z4LkooIU1/tAfP/nO1ArWnt5Pl+Og7yK7KSeKT
+	 NmIQYyWjVhiYSuW3kd79W35ZOzHXmnv4YYwJBmu5Sm96wrf/TdzSV3d4QtJeDpcCF68L/
+	 vGo1U/yDUgrjGzcGQTp0bTqvjSUCeytO4FFD3hO6j0PMm05ib3trdl/ub+SPfHqnzxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794455534;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=oJjEKVEAKHGwMXnMBrqjNVfsEmgIQU1/u5wEHFXaSQI=;
-	b=gtQxA4LLbBQXJXOJEeJF/ah5I7UiGUBCF7d/Zwj5nb2/pt62o0Q24kmE2iiVlQpinofQ
-	 MSOIpxInrIhkcv2wdcjQrdVcNt1D4BRSawArcqHyEtb3UghoSJtG6j+lAKjsZUhpsiKA+
-	 EuEPNbB/J2c+7m8SroSwJ+foLD22WrkWD+FjEn1elhDRToOu84+hvAmVoJbneJD/ga6V/
-	 JfKXKa/l4/7gC77/ps5xxRLmyvlEJJvar1HL9NNKKyZO1hLBfeAp8B+NIHAEjyUPgqQFO
-	 x6v68R8AGbaszg+nY2VLx+I2Ol8KVZ+IQgkAxJroixtWwbcSwiL6sYkTJUvP+8Pfd3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794456168;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=dgXA4BlYneZfOpECEiIX+smZ2qtO7I+usA3cuFq7GY0=;
+	b=tdWQWjdA/t8qdsT18RZw20OxRJzEs7qZMOpz30ifH0/tOALhLDdjA8L64Ti4DvRpmO6L
+	 TeRtaHh4UAOTYLXl1dA2JeILnk03fLjnYTjQNlqFbrTWOl56yHn5q7V8fmOeDSfzZHS0t
+	 muZih1yPDnQMm41HeLDq3W9B5+5S+WkwwsFFBBU9I0zMq4wwWw4MHcNtgmn8gOtKLh+pv
+	 C1T7kikYB5ycMp7m1l1Q1hdbpE4MLZ1ADgLaho8lRzQJMIgVDvx0tPJONb0ON6U7eBTwe
+	 Pqs7aPRC+Kd+70iXwqwsOKJgg/Ckc9dxfVoi9lnWgTPVMH3BVjTOxD4OI9n6em5Alww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="bQLh/WyJ";
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA7C606A321;
-	Thu, 12 Nov 2026 03:52:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDA7C606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLBPpLzP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 883C3606A31C;
+	Thu, 12 Nov 2026 04:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=bQLh/WyJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=bQLh/WyJjXEzqZ1pf3Ouk4IxgieDVprTMltgLLD+ANL7q/yUSPnDYjxiOXeqslwae6/DKW3+HvWc2
-	 bekKDE6qPC3ufHNHJ5WlqCOsWSE/86Qb1fgdMHcfInBUc4qp0VY0/nelUOHaw5cXFDZbDHpnJXN0Fb
-	 nR5Rs7kBgHOGsmtU=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66af537eb6b7-aa3f9;
-	Thu, 12 Nov 2026 11:52:12 +0800 (CST)
-X-RM-TRANSID:2ee66af537eb6b7-aa3f9
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[223.64.115.200])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af537ea705-f1ab7;
-	Thu, 12 Nov 2026 11:52:12 +0800 (CST)
-X-RM-TRANSID:2ee16af537ea705-f1ab7
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Mahesh Bandewar <maheshb@google.com>,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLBPpLzP
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 58EA71F00A05;
+	Thu, 12 Nov 2026 04:02:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794456168;
+	bh=dgXA4BlYneZfOpECEiIX+smZ2qtO7I+usA3cuFq7GY0=;
+	h=From:To:Cc:Subject:Date;
+	b=MLBPpLzPPj/ohUh12HdOqIIGOP4uCE8J6jhKIXHjO3yDLRNc6v0GHF/7zWnW+NT/B
+	 fdHLDXD8EotMYIf6iLQmvciyxhl1vx11bC0PWGBc00Iyf24fsLvc3M893w/jViSqbh
+	 ZfTCAeBFNVVAml6qzUFeMgCMXBsUCCtfG5f7tDFbr7wgp3nLjgvqysQkcNpibOe/vn
+	 dBprGWCABZw0GIhkaP3eMRYF8G54nZeiaoPwmO31M4QkaG1fLYRJHhxF06f7+paOry
+	 c+Gff+WRf6+5Mgg1rghh//qVZbOUcjJ/FjYDeXU4AunPWuGBMad4hVngU7l8TD/I2l
+	 Fo85SGcuyi3dA==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: Re: [PATCH net] ipvlan: update port flags only after ipvlan_set_port_mode() succeeds
-Date: Thu, 12 Nov 2026 11:51:52 +0800
-Message-Id: <20261112035152.43363-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <avRnWUbGFbdfirZB@fedora>
-References: <20261111064655.233265-1-sunwenbo@cmss.chinamobile.com> <avRnWUbGFbdfirZB@fedora>
+	linux-nfs@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Morris <jmorris@namei.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v6 00/13] KEYS: Sanitize the garbage collector
+Date: Thu, 12 Nov 2026 06:02:29 +0200
+Message-ID: <20261112040242.247168-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,51 +90,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8bit
 
-Hi Hangbin,
+1. Replace key_type_dead retyping with module reference pinning so live
+   keys and restrictions keep their backing key_type module loaded until
+   key_gc_unused_keys() or keyring_destroy() completes.
+2. Process serial-tree scans and graveyard destruction in fixed 64-key
+   chunks to a bound workqueue execution latency without hurting overall
+   throughput for a significant amount.
 
-On Wed, Nov 11, 2026 at 09:02:17PM +0800, Hangbin Liu wrote:
-> If ipvlan_set_port_mode() failed, the unregister_netdevice(dev) will be
-> called. Does port->flags still need to restore?
+The first part has a user-space visible effect: rmmod returns -EBUSY while
+keys or keyring restrictions still pin the backing module.
 
-Thank you very much for taking the time to review this patch and for
-pointing out the question about the commit description.
+Internal key caches or transport state bottlenecks are addressed by either
+clearing their private caches on last-client teardown or splitting key
+types into dedicated provider modules.
 
-You are completely right that when creating the first ipvlan device on a
-lower device, unregister_netdevice(dev) drops the last reference to the
-port in ipvlan_uninit() -> ipvlan_port_put(), destroying the port so no
-flag restoration is needed.
+CHANGES
+=======
 
-The issue happens when one or more ipvlan interfaces already exist on the
-same lower device:
+v6:
+- Split "KEYS: trusted: TEE: Synchronize session lifetime" into two
+  patches:
+  1. "KEYS: trusted: Update static calls before init"
+  2. "KEYS: trusted: TEE: Synchronize session lifetime"
+  No actual code changes.
 
-1. Because struct ipvl_port is shared across all ipvlan interfaces on a
-   lower device, ipvlan_init() takes an additional reference via
-   refcount_inc(&port->count) when creating a new ipvlan interface.
-2. If ipvlan_link_new() writes port->flags before calling
-   ipvlan_set_port_mode(), and ipvlan_set_port_mode() fails (for
-   instance, requesting L3S mode when CONFIG_IPVLAN_L3S is disabled),
-   unregister_netdevice(dev) only decrements port->count back down to at
-   least 1. Since ipvlan_port_destroy() is not called, the shared port
-   remains active for the existing ipvlan interfaces while still carrying
-   the newly written port->flags.
+v5:
+- Another round of fixes resolving Sashiko remarks.
+- Reordered TEE session lifetime synchronization patch before suppressing
+  sysfs bind attributes.
+- Release conn->key in rxrpc_process_event() on init_connection_security()
+  failure
+- Update Documentation/networking/rxrpc.rst to reference
+  net/rxrpc/security.c instead of net/rxrpc/server_key.c.
+- Store the delay-adjusted reap timestamp in gc->end in
+  key_garbage_collector() instead of recording unadjusted key->expiry and
+  adding key_gc_delay a second time.
 
-Rather than saving and restoring port->flags on the error path, moving
-the port->flags assignment after ipvlan_set_port_mode() succeeds avoids
-modifying it on failure altogether, as there are no remaining failure
-paths afterward in ipvlan_link_new() (matching ipvlan_nl_changelink()).
+v4:
+- Replaced WARN_ON() around fallible keyring_clear() in CIFS idmap and
+  SPNEGO cache-clearing helpers with pr_warn_ratelimited().
+- Moved key garbage collection from the shared events workqueue onto a
+  dedicated WQ_MEM_RECLAIM | WQ_PERCPU workqueue (key_gc), allocated in
+  key_init(), so WQ_MEM_RECLAIM workers (nfsiod/cifsiod) and reclaim paths
+  can flush key GC safely.
 
-I see that the v1 commit message phrased this awkwardly ("never restored")
-and did not clearly distinguish the shared-port case with existing
-interfaces. If you agree with this explanation and approach, I will be
-happy to send a v2 with a clearer and more precise commit message once the
-24-hour resend window passes.
+v3:
+- Split dns_resolver and rxrpc key types into dedicated provider modules
+  (dns_resolver_key.ko and rxrpc_keys.ko) instead of client refcounting,
+  so cached or retained keys do not pin dns_resolver.ko or rxrpc.ko.
+- Dropped the standalone nvme-keyring fix as it was picked up by the
+  subsystem maintainers.
+- Hardened key_gc_flush() to serialize against chunked key_gc_work
+  continuations, and fixed a restriction module reference leak on failed
+  keyring instantiation.
 
-Thanks again for the review!
+v2:
+- Used v1 as a test probe for Sashiko to detect the corner cases instead
+  of trying to resolve even the known ones beforehand.
+- Converted the client subsystems to be compatible with the module
+  pinning semantics.
 
-Best regards,
-Wenbo
+VERSIONS
+========
 
+- v5:
+  https://lore.kernel.org/keyrings/20261108222719.304712-1-jarkko@kernel.org/#t
+- v4:
+  https://lore.kernel.org/keyrings/20261107131512.3603168-1-jarkko@kernel.org/
+- v3:
+  https://lore.kernel.org/keyrings/20261105005311.804098-1-jarkko@kernel.org/
+- v2:
+  https://lore.kernel.org/linux-integrity/20261103030226.2685251-1-jarkko@kernel.org/
+
+Cc: keyrings@vger.kernel.org
+Cc: linux-afs@lists.infradead.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-nfs@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Marc Dionne <marc.dionne@auristor.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Sumit Garg <sumit.garg@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+
+Jarkko Sakkinen (13):
+  KEYS: Add key_gc_flush() for draining RCU callbacks
+  dns_resolver: Move the key type into a separate module
+  NFSv4: Clear idmap keyring cache when the last client unloads
+  smb: client: Clear idmap/SPNEGO caches when the last session is
+    unloaded
+  s390/cert_store: Start tracking subsystem keys
+  KEYS: trusted: Update static calls before init
+  KEYS: trusted: TEE: Synchronize session lifetime
+  KEYS: trusted: TEE: Disable sysfs bind attributes
+  rxrpc: Release conn->key when init_connection_security() fails
+  rxrpc: Move key types to their own module
+  KEYS: Pin the backing kernel module for a key type
+  KEYS: Remove key_type_dead
+  KEYS: key_garbage_collector(): process in chunks
+
+ Documentation/networking/rxrpc.rst        |   2 +-
+ arch/s390/kernel/cert_store.c             | 161 +++++-------
+ fs/nfs/nfs4idmap.c                        |  21 ++
+ fs/smb/client/cifs_spnego.c               |  12 +
+ fs/smb/client/cifsacl.c                   |  12 +
+ fs/smb/client/cifsproto.h                 |   8 +
+ fs/smb/client/misc.c                      |  19 +-
+ include/linux/key-type.h                  |   6 +-
+ include/linux/key.h                       |   2 +
+ net/Makefile                              |   4 +-
+ net/dns_resolver/Kconfig                  |  15 ++
+ net/dns_resolver/Makefile                 |   4 +-
+ net/dns_resolver/dns_key.c                |  65 +----
+ net/dns_resolver/dns_query.c              |  64 +++++
+ net/dns_resolver/internal.h               |   5 -
+ net/rxrpc/Kconfig                         |  20 ++
+ net/rxrpc/Makefile                        |   7 +-
+ net/rxrpc/af_rxrpc.c                      |  19 +-
+ net/rxrpc/ar-internal.h                   |  25 +-
+ net/rxrpc/conn_event.c                    |   7 +-
+ net/rxrpc/key.c                           | 122 +++------
+ net/rxrpc/proc.c                          |   2 +-
+ net/rxrpc/rxgk.c                          |  66 -----
+ net/rxrpc/rxkad.c                         |  47 ----
+ net/rxrpc/security.c                      | 184 ++++++++++++++
+ net/rxrpc/server_key.c                    | 260 +++++++++++--------
+ security/keys/gc.c                        | 289 ++++++++++------------
+ security/keys/internal.h                  |   8 +-
+ security/keys/key.c                       |  65 +++--
+ security/keys/keyring.c                   |  88 +++----
+ security/keys/trusted-keys/trusted_core.c |  15 +-
+ security/keys/trusted-keys/trusted_tee.c  |  89 +++++--
+ 32 files changed, 932 insertions(+), 781 deletions(-)
+
+--
+2.47.3
 
