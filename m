@@ -1,59 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.4.11.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794510393;
-	b=ZbIaJwQvjvYtAte8QkkJjMQM6DiTN8tWnX2tvN7ZhzoJ/p6r7QM9tFfj6QP36eB9O4nC
-	 OezvxLaSoJqpQHkjr/N48+iIUTcrKLl7XWIbYdHOZNkK7j9REqOs+aCkKHOPQYx47kPnR
-	 of5mVHWd0OJv1Y6EBiBRc/eBrjVwEV6rIJxj8WfJVYJEm3coU3y2oD5kEZYEpEE51ZPjN
-	 pkR/WL7OcS2e8uKmjbfS8GTFT2iO2s2Moh+lD37NtxnRizVT61YGPUjWg2nMfsSp60Vnu
-	 Vg1SVpxR3F4aHTL4ahOjEaIeev2kEYtu9NZwSxSe4YJJFDueN5TiLJjMF1c24GO9+Pg==
+	t=1794510586;
+	b=FRVEp5ybzKoPECqC+Ga4zZ1W2XY9NKiizWELehp7NZarQelTP14pEKaeJ3rOV1qwwySR
+	 gNFrCI6zgJ8Wg41KNUKU0OXO6EoDpgk8EkMm7X5JX1SpJk5WQBRVx1wAujyx4Te/IrEyy
+	 K8he8pIP1hMvxqiuS4ReeYBZFR5ec31YvL0NG3uerR5pNSUNNL4PkebQVpy/cRRu8cYv8
+	 EGhbsTLjNU39ulonps8Kf/mQVPo53aTAB/pCXJO0RwNEIaRxPizLAwQ5tlPL3x9wNW9a3
+	 TeEfQfNa74OMqL66yDJ2Hj7a8AfVfFqUn2OSWsNl4eAvWuQGcx/pIIHkVGEKIKFeh/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794510393;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=r0zYc4cnCv2J3Iy4kEtuDQvccNYIff5xrHTWmszqY9o=;
-	b=lqyCWdF6NIEdCkOPsmCt3Wvuakk3agSODq3vMIlzc4fbPdxh1m+Nrmi5RT4t5izAHCXW
-	 2R9yfMX2Owlcos/LmSKipP7bYC7gQndF2BPX/6Y+gIrl2m4g2ovsStEIlLN/TSYYjy9Wi
-	 8QuwDbc3aYqDYsFLqYmyxkINL58wjQIbmjC1iYUt3ZDvJIlZnU9SczfeNxv1bGUb/KrjK
-	 1SAW1CA9IR+2/uc9qsg8pJwxpOMB7onT0qGGBTN03KNZ+m0kvWUCrkGoWVQ7ZJMwZpk9+
-	 cDUFgZRMsKi1LRhhUpHRDsOtP6dRKKCDWKsIUJMO6nvvi/kD/CWYHAnBrcyghkIOlVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794510586;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=sJQr+gvBgyWCXNcDuYBIUccK+tp9NBCw7G3cq8vaix0=;
+	b=JanyXVXeAg2cjXUKW6y5Pob0oQe9//aFPJy5iwpE72Zm8TEEqqEZyfWDZWWUvsbi3VKD
+	 j8URLbM9lGqTw+m4HubOPrmRJ13xnVwdL2ZicJlnTNy0FIUQu2kMA41LdEsWZKRK7LT3B
+	 SVbWCL1wEcnD1F/9qIZyZDkpXkFkp8q4tLLIe2V7SZxH50N1KRJhew6xKfj+u1M0R0zxy
+	 0m3mz5zftMLmwbc5Ca+4pO9HkVRfaTgHHMhhB5WXwn3I3pyRJV1KdPauFNzi0Dv+T8MrT
+	 tWHVHwYjBUbkPcj7GCwocH6JfnfHB5zfe+bYBtG4sIifNfA6ZWcO55ZELfJeRph2PPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUtH2EiZ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=phrozen.org;
+	spf=pass smtp.mailfrom=phrozen.org;
+	arc=none smtp.remote-ip=46.4.11.11
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F89606A31C;
-	Thu, 12 Nov 2026 19:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUtH2EiZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E76A1F000C4;
-	Thu, 12 Nov 2026 19:06:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794510392;
-	bh=r0zYc4cnCv2J3Iy4kEtuDQvccNYIff5xrHTWmszqY9o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YUtH2EiZ7ul0IhwyzfFys+N/U7TRvLCD2fN5dTbux0dKUlM9z8NyGzTiU4ZfKuGZJ
-	 Js161mWdV1PFM54WGuZ8VpCB5hemhfteLxTiZHCwK+J14BHf9d1/JXv5xy/rwvDhWo
-	 cQRSdBKTpL+pYPYhokBy/d3xG228N28GJFuCbyT8ZTNFEodvBcEGO/mfePbH4z7h1q
-	 mYJGvMPOK7NKBcSvVpcTxHwQizEB7XBskkoRqB7Uk4dpGh5XI3duzHornEtWOXk8Z+
-	 e5ZsDzuHNdQmMDL9MjvYEHAbd6PI2MQg3WsdD5IdmbvxLLjAZQoSbAtGFQJXYY+d3A
-	 f4ONQULQora4Q==
-Date: Thu, 12 Nov 2026 11:06:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
- yangshuaisong@h-partners.com, ningwei15@huawei.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 net 0/4] net: hns3: fix multiple bugs in reset/error
- paths
-Message-ID: <20261112110631.2ec2d378@kernel.org>
-In-Reply-To: <179440206352.2168702.1328392786936670574@kernel.org>
-References: <20261111125810.3359030-1-shaojijie@huawei.com>
-	<179440206352.2168702.1328392786936670574@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A054E606A338;
+	Thu, 12 Nov 2026 19:09:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A054E606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phrozen.org
+Received: from [2a04:4540:1403:f2fc:83ce:6656:246:c906] (helo=bertha10..)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <john@phrozen.org>)
+	id 1xRaAw-002XyJ-2j;
+	Thu, 12 Nov 2026 20:09:34 +0100
+From: John Crispin <john@phrozen.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	devicetree@vger.kernel.org,
+	lei.dong@airoha.com,
+	Linqi.zhang@airoha.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Rajeev.kumar@airoha.com,
+	upstream@airoha.com,
+	Weifeng.xu@airoha.com,
+	zhengping.zhang@airoha.com
+Subject: [PATCH net-next] dt-bindings: net: airoha: add AN7589 MDIO controller
+Date: Thu, 12 Nov 2026 20:09:28 +0100
+Message-Id: <20261112190928.1318743-1-john@phrozen.org>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,15 +67,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 11 Nov 2026 13:01:03 +0000 netdev-bot+sinfo@kernel.org wrote:
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+The AN7589 carries the AN7583 SCU MDIO controller three times, the
+third one at offset 0xd8. Document it as a fallback pair on the AN7583
+compatible. Allow the new offset for the AN7589 only.
 
-Please make sure you include the answers to these questions in the
-cover letter if you repost
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ .../bindings/net/airoha,an7583-mdio.yaml      | 25 +++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml b/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
+index 3e7e68ec1560..41dc295ce6cf 100644
+--- a/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
++++ b/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
+@@ -17,14 +17,20 @@ description:
+   The other 2 (that this schema describe) live under the SCU
+   register supporting both C22 and C45 PHYs.
+ 
++  The Airoha AN7589 has a third controller of this kind under the SCU.
++
+ $ref: mdio.yaml#
+ 
+ properties:
+   compatible:
+-    const: airoha,an7583-mdio
++    oneOf:
++      - const: airoha,an7583-mdio
++      - items:
++          - const: airoha,an7589-mdio
++          - const: airoha,an7583-mdio
+ 
+   reg:
+-    enum: [0xc8, 0xcc]
++    maxItems: 1
+ 
+   clocks:
+     maxItems: 1
+@@ -41,6 +47,21 @@ required:
+   - clocks
+   - resets
+ 
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: airoha,an7589-mdio
++    then:
++      properties:
++        reg:
++          enum: [0xc8, 0xcc, 0xd8]
++    else:
++      properties:
++        reg:
++          enum: [0xc8, 0xcc]
++
+ unevaluatedProperties: false
+ 
+ examples:
+
+base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
+-- 
+2.34.1
+
