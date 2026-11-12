@@ -1,136 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794493591;
-	b=38YegcOgcYEJSYLOL9sIiBdn86EH/2td6UtSTaSUOxyuheb6DlFd1AE4GfcXdxeBDuLN
-	 a8d5ELBLXABA7yVc/vaqNGPlHf2Oq8dYZh1mg4PIZ0i+bLr2NrJZSeABrsHNHsPGD7TXe
-	 9CZmqtsKT06Q6GE0o8QjeWbtloi9WdHQ/DOP7GLXA/xS6ZkvF7S7W/mRACZk6o86OSSrI
-	 DiNonv1QfQ8R3GyXvH0DIpS0odCoA6AYdyVDOHCQhAofnhCE3c40gcp2G7b6JRav+1XdL
-	 vIVwuN//yHZ2N6vQiMWOSY/6F9em/m2BzJrMdPjIRrB3UnpuY2zNQXn/UFPyUGJLF3w==
+	t=1794493694;
+	b=ckhqnB5qf+8KQa+IFx1l3c5uY3TyO3uRS8U0yb65LgCHELGyRCuTak4a2TUIp/pv7WYf
+	 EyWdnsBEdnbzDWIn83kC6cbzs6BXncUSSs9I9K9YeZofDlCSw4QKXiL2rnMj6NwEYkfPq
+	 GuzCylUlRrY1eoAuGSC1Ew4I38diT8gud8/pG7j6FeGbUKe1Asg9ivZx+vM8HvQheTIG1
+	 v/hJD3N9nQmNNik6DeOOHIWsyXkVjEj35GC920xKdhkQc2z9W1bOFlP5KC+wHQ8+n9lE/
+	 rp1F/vjAjNUAAyikbvvBP027WHfkX+i0OH7IyERDqAm5tMjsIZ3HgBvOpbRqYqTVv8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794493591;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=jHr4RUKl7RY4PSbdL2GT5NxxihQwmpjqwvgP01/M+Ac=;
-	b=GTtj1gmhi86OeBmqwPTlwP+8ZByKwxvxSued19YM9D9yIlHENpmnNS6UfI/zxe2NeXta
-	 t1HiVO84jkbLMaTou0zd5loOWT1uKLfJEAjoonqUTzk1nvW+sRKibvJ9PnvQG+rNgYwfD
-	 vl1KUZt6a+SV3PRTjfRZ/E/IMngDzvMZuIa6hvuTqbLcVyS5rjaVBJui90DjtFpBBPKRy
-	 rqYfJA8CZ44UckHk4nJlEZIDycauA7JIpQqugKY27XgPeIdl0RdHnfu05bI6i9DhLpKXV
-	 NrF4wmd5Ez7ga79tF4aUI4zGdFvVdjajK0XuYQ/DWSNclMzAdlN/UDLSvttXmpCHVRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794493694;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Rc9bf8NN613bIi8UJTLUeEhOmQUWktCfilbKq+1NuLg=;
+	b=jdniRSE3yU75kdDmn8SmY79T3oVxNHK1tibY19t+/6Qorafje8B8iHoSxQI7mDY9efac
+	 pp7R2LjELCc1EAfy87wlzEqXF529a1mOx0p442g0CuhRq7Pp23k/zUhw+PPzk+QTIkeTo
+	 lKTe0mA8c/Kx69sfudhf6vrDg+TlAPjNIN6EepCHs+g3bwceD8HrElpWVlDI2hGwbGJpq
+	 Ae7CNfGdLQ5a9qa6/qtIwMwSlE2yIdo31/nYbJXrxjlLXaRowdDqWH4dUCk/YzkcUFeWk
+	 bY3/a6fJvXubjHDGcHOpjKbDP4Rsg2an26+3z+UeghNH4NsdeppEKG6z6za+utzGzSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kYW8zoDp;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tjn0V528;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kYW8zoDp;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tjn0V528;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ch0w08DL;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XEIeebje;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04704606B2CD;
-	Thu, 12 Nov 2026 14:26:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04704606B2CD
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2034606D54C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:28:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2034606D54C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kYW8zoDp;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tjn0V528;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kYW8zoDp;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tjn0V528
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 352F021DEF;
-	Thu, 12 Nov 2026 14:26:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794493589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ch0w08DL;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XEIeebje
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794493692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jHr4RUKl7RY4PSbdL2GT5NxxihQwmpjqwvgP01/M+Ac=;
-	b=kYW8zoDpxMShaXbNnc9eapJegGiIybzvqwjxCqnm+R2TdEAh36ASZwVv4xO/eJIdXj+9cM
-	9D4IrfT0kvDW90Cves9fCI1ZQjOgverbkC1h8JjL9l8PFxNUq73b7D91YAkzOkysn1ZGw2
-	CWXeWI690YBd0qRlSnh9jtU+06mmwdI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794493589;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jHr4RUKl7RY4PSbdL2GT5NxxihQwmpjqwvgP01/M+Ac=;
-	b=tjn0V528px+d3pLuk5LH3w+4rInyUgou34GTzbKL3K6IA6KH4ammsRhKZEOQcJQ/txfapm
-	aavvgsfYqamIknCA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794493589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jHr4RUKl7RY4PSbdL2GT5NxxihQwmpjqwvgP01/M+Ac=;
-	b=kYW8zoDpxMShaXbNnc9eapJegGiIybzvqwjxCqnm+R2TdEAh36ASZwVv4xO/eJIdXj+9cM
-	9D4IrfT0kvDW90Cves9fCI1ZQjOgverbkC1h8JjL9l8PFxNUq73b7D91YAkzOkysn1ZGw2
-	CWXeWI690YBd0qRlSnh9jtU+06mmwdI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794493589;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jHr4RUKl7RY4PSbdL2GT5NxxihQwmpjqwvgP01/M+Ac=;
-	b=tjn0V528px+d3pLuk5LH3w+4rInyUgou34GTzbKL3K6IA6KH4ammsRhKZEOQcJQ/txfapm
-	aavvgsfYqamIknCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A81013432;
-	Thu, 12 Nov 2026 14:26:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OIFuDpHM9WrmPwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 14:26:25 +0000
-Date: Thu, 12 Nov 2026 14:26:23 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason <mason@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
- pages
-Message-ID: <avXMKH__gwi6BwVy@pedro-suse.tail5790ac.ts.net>
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
- <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
- <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
- <avXGtysfRk3uQpNu@pedro-suse.tail5790ac.ts.net>
- <2f9b90fd-fe50-4afa-ab59-0c4a00e5e276@kernel.org>
+	bh=Rc9bf8NN613bIi8UJTLUeEhOmQUWktCfilbKq+1NuLg=;
+	b=Ch0w08DLquo/MLe3vXT7N8xsd7o/Jq9FqjHyz1ARzFAyef3kblh5ATY7MpfJnBxIzEZ49F
+	YalEFjvhZiqj4z4KN3OH2moAWP2PXWkAVmdctBw67FvjNcbB7TbVw2csrLSceKEYEu0x3Z
+	hAl1PqKM0I2xFzbatiLdwcBtf8zCRBU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-120-TfnZj2wiNUKh8BQ2v5MAmA-1; Thu, 12 Nov 2026 09:28:11 -0500
+X-MC-Unique: TfnZj2wiNUKh8BQ2v5MAmA-1
+X-Mimecast-MFC-AGG-ID: TfnZj2wiNUKh8BQ2v5MAmA_1794493690
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4b8b3cd61a5so5243585e9.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:28:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794493690; x=1795098490; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rc9bf8NN613bIi8UJTLUeEhOmQUWktCfilbKq+1NuLg=;
+        b=XEIeebjesgm/l0zQ6wDtEuFi5RLFtZgPXWTOOgS/vwHYC2SZzUTH6SiTvBq73tBY6T
+         aDQBm4e1hmHrF0gYjNdg90OITLZx1iCF6NUJ+At7UCG9Z685PIxFk1xEQzEm7UW3hlQc
+         P1Yz0KqQTKX9bqfmFaQY7vuOVCc7QzGue/bkN7a1+WP8oXTCLPi1P8uTbaz3ln/r7lNg
+         RqjmiuqCxuiTviWyP3yia2dPep/TpdQYWJjxyk5Qc2xtbnnK+2y03sCIUg2Cb6IipdDG
+         3dRl1kXmN1AiiahIV3S0+Rhtv0SzcMa/kGPQrhWrDhShpM58YvCIm7RjBZgccLfoAlfF
+         9Gfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794493690; x=1795098490;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Rc9bf8NN613bIi8UJTLUeEhOmQUWktCfilbKq+1NuLg=;
+        b=WuCz09cn5+sN3EcrzU1KliLJyvtskYezRDWC95neJRiUQbUdv66TKwW7u7hfDcdRdz
+         4ZlUI3WJF1FT1XsaRQXsWM6MBzc5vbtDCTChWDcSknuBor+7H/8Oq6FR/59OdOpb6PXn
+         Iq6LDyNaiBhn2mrAPi3fBFWf88VIUjH5gN/X+L/3/gIyODApfzVdeEIlpN3bJ7mZXgoA
+         ibAx0ZKOPM6A1BQRc2t2xboE//S2jI0nYujoAI9aSB6LH7iUwS3/avPn5l2GC7kR1zM6
+         Z3mzZPRLPDzAlvWUHpwOkDZHqCv6IqAjKkAzKFyd5lEvIio6zyBuB7zEBCP4sKd21YTb
+         yjTA==
+X-Forwarded-Encrypted: i=1; AL+hErHKt7ITFT3vxoBur2IaLBHM9J0PRqYFECN9OHKs2GDlX98FGXiB4qv2QCNyrcaDlfBZ4tVarmo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/kNo1neR0jMCh8amqefM9B44/4Qpi/d3pnlNZWI9LwLw3G+QLd
+	zCRB+TkzaGOHui6/fP7vXdKnimYeqBFP/rts3HzfnqOK8I/u9UHgsfmHuIYQaNVsgMIoRJAvRqx
+	24MJG6dWGSi9AfCNt2fijLMTCS7RIn4HU5jeUN8zjQ4kCDT0rZkhp/ebVmA==
+X-Gm-Gg: AYBFou23edmg2sCAo8zBVg4exoSAcqpwGhj86zKdZ3/qtczt7F+/jKy8UQADJazCWel
+	aItNNclPo1QlquCMave35wUlSoXMGlL2zuqrKUPTAwAwrea5OAkWn0ulNjcDJJwTRttQwv79hsv
+	3lazIcwSqNCrjcC7MmEiB72yplxYUCFVbcRSvv9fnQihBrwAytVAXkt/PSauPMmydLe0a7sQSIH
+	euyPYcaNeQsiOqiueuSwq7+/YB7QKUkQMqJywdKsolzwWMYL3+6Y6eLNNgbA5ebVGOCn6cc87b1
+	EE8ZiA3DlGgsEEMvWv++xlbUJ4jeWBmQ+Hv1SvavpNeoo75In8sSRI8vi/sheh2kOEnHRyQi5S5
+	+2YRveJjw1F2485ebzqHzXT+oDm/pBlqRUK6T6w0WqMSrTcENcqZiLviJbu8DSYwcFMOuOznioX
+	v14JqIQ6T8vFe4OsZ1N/HSNpvR7KPaDEtnQ5pH+KzOOwiS
+X-Received: by 2002:a05:600c:8183:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4bb4e296cd4mr53828345e9.16.1794493689816;
+        Thu, 12 Nov 2026 06:28:09 -0800 (PST)
+X-Received: by 2002:a05:600c:8183:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4bb4e296cd4mr53827785e9.16.1794493689324;
+        Thu, 12 Nov 2026 06:28:09 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb51f3cbf9sm40266145e9.0.2026.11.12.06.28.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 06:28:08 -0800 (PST)
+Message-ID: <2fb8d2d3-9840-4e1f-a02d-877a9b93593a@redhat.com>
+Date: Thu, 12 Nov 2026 15:28:07 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -140,114 +112,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f9b90fd-fe50-4afa-ab59-0c4a00e5e276@kernel.org>
-X-Spamd-Result: default: False [-11.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,suse.cz,linux-foundation.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,intel.com,gmail.com,sk.com,gourry.net,redhat.com,cmpxchg.org,fb.com,surriel.com,szeredi.hu,zeniv.linux.org.uk,arndb.de,ziepe.ca,8bytes.org,oracle.com,toxicpanda.com,davemloft.net,kvack.org,vger.kernel.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[63];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-X-Spam-Score: -11.80
-X-Spam-Level: 
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] ipv4: recompile IP options on a private copy
+ in ipv4_send_dest_unreach()
+To: Ido Schimmel <idosch@nvidia.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, linux-security-module@vger.kernel.org,
+ Kyle Zeng <kylebot@openai.com>
+References: <20261109131736.3060756-1-edumazet@kernel.org>
+ <20261109131736.3060756-2-edumazet@kernel.org>
+ <20261112134645.GA3195113@shredder>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261112134645.GA3195113@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 12, 2026 at 03:16:00PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/12/26 15:06, Pedro Falcato wrote:
-> > On Thu, Nov 12, 2026 at 02:16:33PM +0100, David Hildenbrand (Arm) wrote:
-> >>> Mostly LGTM, with some comments:
-> >>>
-> >>> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> >>
-> >> Thanks for the review, Pedro!
-> >>
-> >>>
-> >>>
-> >>> I see you use this pattern often. Would it make sense to have a
-> >>> bool folio_get_unless_overflow()?
-> >>
-> >> I commented somewhere (in v2 I think) that I played with using
-> >> folio_get_checked() from #2, but didn't quite like it so I discarded it as
-> >>
-> >> (a) it cannot be used everywhere here, as I'd need more functions to add
-> >> multiple references. next_uptodate_folio() also could use it as I would need yet
-> >> another temporary helper for a try_get().
-> >>
-> >> (b) these changes here are going to get reverted fairly soon once I change the
-> >> way how mappings are refcounted (which is, unfortunately, not suitable for
-> >> stable, otherwise I wouldn't be throwing in this temporary change in the first
-> >> place)
-> >>
-> >> So everything that is expected to stay in later patches uses the proper helper.
-> > 
-> > Alright.
-> > 
-> >>
-> >> [...]
-> >>
-> >>>
-> >>> A comment as to what's going on here with VM_MIXEDMAP would be useful. I guess
-> >>> the idea is that faulting on a mixedmap later will not necessarily hand you the
-> >>> exact same page fault result?
-> >>
-> >> I can throw in a comment, yes.
-> >>
-> >> [...]
-> >>
-> >>>
-> >>> In case this function ever returns over limit, we probably want to log this
-> >>> in the kernel log. If this function gets the folio you could even print
-> >>> the problematic file offset/inode/filesystem/etc. Ratelimited of course.
-> >>
-> >> You mean, if this function returns "true", right? Is printing always fine?
-> >> (e.g., irqs disabled?)
-> > 
-> > Yes. As far as I know, it's always fine, even under NMI. But definitely fine
-> > with IRQs disabled.
-> > 
-> >>
-> >>>
-> >>>
-> >>> I'm fairly sure this will break the build for a number of non-GPL drivers
-> >>> when calling folio_get() with CONFIG_DEBUG_VM=y.
-> >>
-> >> You mean, breaking OOT drivers, right? I can switch to EXPORT_SYMBOL if that's a
-> >> concern.
-> > 
-> > I had the impression we had some stuff in-tree that isn't marked as GPL. But a quick
-> > grep shows that everything is either GPL or dual-licensed.
-> > 
-> > In any case, yes, this will quite possibly break debug builds for people OOT.
-> > I think folio_get() might be a bit too ubiquitous to do this to.
+On 11/12/26 14:46, Ido Schimmel wrote:
+> On Mon, Nov 09, 2026 at 02:17:35PM +0100, Eric Dumazet wrote:
+>> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+>> index 3a90c8d28b940bf615c165d9b30ac634943586e1..9af72cb892034deff2bb3169911c02c025d73cf2 100644
+>> --- a/net/ipv4/route.c
+>> +++ b/net/ipv4/route.c
+>> @@ -1256,6 +1256,7 @@ EXPORT_INDIRECT_CALLABLE(ipv4_dst_check);
+>>   
+>>   static void ipv4_send_dest_unreach(struct sk_buff *skb)
+>>   {
+>> +	struct sk_buff *nskb = NULL;
+>>   	struct inet_skb_parm parm;
+>>   	struct net_device *dev;
+>>   	int res;
+>> @@ -1271,6 +1272,16 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
+>>   	if (ip_hdr(skb)->ihl > 5) {
+>>   		if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
+>>   			return;
+>> +
+>> +		/* __ip_options_compile() writes into the options, and
+>> +		 * callers of dst_link_failure() may cache pointers into
+>> +		 * skb->head: work on a private copy.
+>> +		 */
+>> +		nskb = pskb_copy(skb, GFP_ATOMIC);
+>> +		if (!nskb)
+>> +			return;
+>> +		skb = nskb;
+>> +
+>>   		parm.opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
+>>   
+>>   		rcu_read_lock();
+>> @@ -1279,9 +1290,11 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
+>>   		rcu_read_unlock();
+>>   
+>>   		if (res)
+>> -			return;
+>> +			goto out;
+>>   	}
+>>   	__icmp_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0, &parm);
+>> +out:
+>> +	consume_skb(nskb);
+>>   }
 > 
-> Thinking again, folio_get() should not be affected, it rightfully only checks
-> for a refcount underflow (when we exceed the limit + headroom). So only
-> try_get_page() is affected, which OOT very likely doesn't use.
+> Not sure that what Sashiko describes can happen today, but I wouldn't
+> rely on the network header not being in the headroom. Something like (on
+> top of your patch):
+> 
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index 630143ca0f31..77c03620f89d 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -1282,6 +1282,10 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
+>   		if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
+>   			return;
+>   
+> +		/* pskb_copy() does not copy the headroom */
+> +		if (skb_network_offset(skb) < 0)
+> +			return;
+> +
+>   		/* __ip_options_compile() writes into the options, and
+>   		 * callers of dst_link_failure() may cache pointers into
+>   		 * skb->head: work on a private copy.
 
-Aha, yes, you're right. I mixed up your folio_get() change. Would it make sense
-to VM_WARN_ON() on this as well, or does the <= 0 check cover us already?
-> 
-> -- 
-> Cheers,
-> 
-> David
+I think the above makes sense.
 
--- 
-Pedro
+/P
+
