@@ -1,49 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794502287;
-	b=UgJ2zIZn1C/ahmKl2HU4QCzdIsEnPqW0BFcp+XtQHYXzg9whOr9MEUPVuHF6QCs8sz5W
-	 J0ffdfSMC9N6CEAEVMMezU6ekVPLH75+eQmy6mTrDziadXwIEiG+wbQjwY0cVePRfU1Rm
-	 WM6SIJ+0OcCp0HCKu2nLnezculS9iroUTFtrY9Bk9xvHG08JATKCNjtw8w97xFXZRmHpa
-	 c/9F6YaVXEsj7wiwgDgpUBx6TP8uTHZCoajIDAJB4npYg2UKkwkFfm9zZ6njeXhCOSXoi
-	 xtzQvrY3xaPCUzY+ZACJxKGChVnVzlRjuzUC4StEwwQYvIXBDF1MPbzhFox8bdZgWKQ==
+	t=1794502415;
+	b=g26tAzPJgeZirBHd5YvMz5URodLJnTblKf01vZ+TQNnf6LMIUbBJ1360IS+j0NWvBHCO
+	 2CZ8xqYeDyYzh+nwWqHsuZF1QS36+zqbOl5ThaN8AXhiOxIrsqRVPwluEhMV7LdoQcr8Z
+	 uvmGxFGim7ZlkxWZ8NIDQh2TPt6NZ4T9PgYxDBWCOkBsYevF/r136cKpbzbzJBDFvoy63
+	 si0aS5J154HZoAvtuCXIM5Arb/HsPaoMM9hSpnq8kCBhc2VIUAk5CllVjr/DP+CNbSHsg
+	 eQGhd1wCYc9UD68QnNYQ06C7liO0hd5cCllHs7ajVIdhMbU92J9fhgEVFq8VE3f+yDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794502287;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=YSV4wnE5JrNZpfy9DXizyOVofgXc49f/P/CmYGZXquc=;
-	b=gI95kkyJqj4XXyGCtus/S61fkWfyFKp8bn6RIeAmrDlFunOO0fVvQkylEDp4cm9F8t6h
-	 gbR6YqquMgPIhSXsTodiNnt2Flf4rupnitvN7CGGQ/suEa6tlPylHE90V5fP0e6nfxrlQ
-	 utkOQk0mwDKU2VxMgUwO9vqtgbsTD9pZwsL9U7yrFA5cYqnxvtptkAk2v4HXqfg4odmNu
-	 aYWluqAkA19ZbWkkN88FljMFKl3WoFtdNUmuqYVIv8yc0pSY7sbnhwAGGx14vGstCdYO+
-	 /wUfoC0+WVOCOOs5I6rvEBE9c1altajswH3JvY1rNFhhpx2N4A+TEJiN5xGnLlq6OEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794502415;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=kUesCCpeSihhizE+ryMsGam5gkt2oL/j/Joc00r5DNc=;
+	b=sgny033oZaNrA1zTts28EkXGJwiMUJYdQmwCQ8cNJB0faVv8JNey2Xms5WGSpzu7d1ln
+	 K8VXz0yzK7y/G6OSh6riwSo1RGOg1cCJF4tN4go5Ji12hktwfAo2XAto/3/BpAsMxUGdw
+	 MOwS1JO4WPhe69IKEPq12ywdmSGJZd/jKBAdboqNOPf8glojeu5CVfMztk/bSl2XQpop7
+	 XF+x8P2ieZXv5pE+NftDJZeCwNqi01VJ8a2z90gRnonD8YkLDuIO8uzE1Q6xiwb1GDwbj
+	 iRZvX/I/SrPSYLV2YLOwXw1HlPK/Kpd47hza4l/7A+1GF9frSGi/yHfEPd/+2OuVSuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lYu5Ew+C;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B33A606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:51:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B33A606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ML4tXTMR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29952606A31C;
+	Thu, 12 Nov 2026 16:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lYu5Ew+C
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47485165C;
-	Thu, 12 Nov 2026 08:51:23 -0800 (PST)
-Received: from [10.57.89.53] (unknown [10.57.89.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 537BC3F673;
-	Thu, 12 Nov 2026 08:51:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794502286; bh=gziiyQK1BxD/KktmJz3UhiBC7eUPuphRzNgyTLRGPU0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lYu5Ew+C7yrCa7RiggELSeaEVOzRU7KJiR4EJu/2oEpURAFtwE8k67E7Izln+GUfX
-	 kfxIZHPbjrHc+L9EPzlccgoH6aIkZj9yt8ONOULn5aeisq6g+1hcsKoEubUszevAlR
-	 GEyEiV2XFTVYzg5ptf6a6caWz04aM7qR/SD8rT0o=
-Message-ID: <43de98e8-a67d-495a-9315-478acfa18d99@arm.com>
-Date: Thu, 12 Nov 2026 16:51:23 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ML4tXTMR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7414B1F000C4;
+	Thu, 12 Nov 2026 16:53:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794502414;
+	bh=kUesCCpeSihhizE+ryMsGam5gkt2oL/j/Joc00r5DNc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ML4tXTMRuQPNOPSoszh5R0pfwKAhIx5zHlg1LhoCuK5VA7sv2nSyM6gl6oSeGtuHt
+	 DBl2xctqAu+tua6sz/sBZjw4RTAmeaQdZxruL6Acisc5Ly/MEgcpEu5D+g3YK5+Sps
+	 ozh7BpDB4CZQrm9qSMlLS1q2vhuzTSvaQpUMhiaHkPKYkpthffJ0TVMcKFgidEJwWI
+	 aKOB5Z/i8fE9sZyDiw2w3wJTlthfkHLC+tlnkzEmzmu7QzdHz68DWxxEpmi/YDb+nZ
+	 XQJJ5yzwqffB9XdzeldfRAKT5sR65dTTSV0k19rff0u2tr7NVzRbmZc9nLqJnRQkxQ
+	 dsLqWX/+HMpXw==
+Date: Thu, 12 Nov 2026 08:53:33 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Longjun Tang <lange_tang@163.com>
+Cc: mst@redhat.com, eperezma@redhat.com, jasowangio@gmail.com,
+ xuanzhuo@linux.alibaba.com, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, tanglongjun@kylinos.cn
+Subject: Re: [PATCH 2/3] virtio_net: introduce an RX queue watchdog for
+ stuck detection
+Message-ID: <20261112085333.77476864@kernel.org>
+In-Reply-To: <20261109094310.103979-3-lange_tang@163.com>
+References: <20261109094310.103979-1-lange_tang@163.com>
+	<20261109094310.103979-3-lange_tang@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,96 +61,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] dma-mapping: add dma_alloc_attrs_node() and
- dma_alloc_coherent_node()
-To: Jakub Kicinski <kuba@kernel.org>, m.szyprowski@samsung.com
-Cc: netdev@vger.kernel.org, iommu@lists.linux.dev, joro@8bytes.org,
- will@kernel.org
-References: <20261106184433.761422-1-kuba@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261106184433.761422-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 2026-11-06 6:44 pm, Jakub Kicinski wrote:
-> Hi!
-> 
-> On NUMA systems networking drivers want to allocate rings
-> and buffers close to the NAPI-handling core rather than
-> allocating all from where the device is connected.
-> 
-> Looks like we have accumulated 6 drivers which do:
-> 
->         set_dev_node(dma_dev, numa_node);
->         va = dma_alloc_coherent(...);
->         set_dev_node(dma_dev, old_node);
-> 
-> Introduce dma_alloc_coherent_node() so that such racy
-> hacks are no longer necessary.
-> 
-> Note that making dma_map_ops->alloc() callbacks explicit-node-aware
-> is left for future work.
-> 
-> Stable tag on top of v7.4-rc1, so that we can also pull this into
-> the networking tree:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/kuba/linux.git tags/dma_alloc_coherent_node
-> 
-> v1:
->   - add the API first, then wire up the node in dma-direct, iommu-dma
->     and CMA (Robin)
->   - add dma_direct_alloc_node() and keep dma_direct_alloc() as a wrapper,
->     swiotlb-xen uses it as its ->alloc (fixes the build on arm/arm64),
->     arch/x86 no longer needs changes
->   - docs: drop the NUMA_NO_NODE suggestion from dma-api.rst (Björn)
->   - docs: document that CMA does not fall back to other nodes' areas (Björn)
->   - docs: document which allocations ignore the node
->   - explain the separate GPL-only export in the commit message (Marek)
-> rfc: https://lore.kernel.org/20261027022528.633359-1-kuba@kernel.org
-> 
-> Jakub Kicinski (11):
->    dma-mapping: add dma_alloc_attrs_node() and dma_alloc_coherent_node()
->    dma-direct: add dma_direct_alloc_node()
->    iommu/dma: pass the NUMA node to iommu_dma_alloc()
->    dma-contiguous: pass the NUMA node to dma_alloc_contiguous()
+On Mon,  9 Nov 2026 17:43:09 +0800 Longjun Tang wrote:
+> The backend raises an interrupt after adding buffers to the used ring,
+> and the hypervisor injects it. If one is lost (e.g., a transient KVM
+> failure), NAPI will not be scheduled and the driver stops consuming
+> buffers. The ring eventually fills up, the backend stops notifying, and
+> the queue is left permanently stuck.
 
-The API side of things looks OK to me. For the DMA patches at least,
-
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-
->    eth: libwx: restore the device's NUMA node after ring allocation
->    eth: libwx: use dma_alloc_coherent_node()
->    eth: ixgbe: use dma_alloc_coherent_node()
->    eth: xgbe: use dma_alloc_coherent_node()
->    eth: fungible: use dma_alloc_coherent_node()
->    eth: mlx5: use dma_alloc_coherent_node()
->    eth: mlx4: use dma_alloc_coherent_node()
-> 
->   Documentation/core-api/dma-api.rst            | 17 ++++++++
->   include/linux/dma-direct.h                    | 11 ++++-
->   include/linux/dma-map-ops.h                   |  5 ++-
->   include/linux/dma-mapping.h                   | 14 +++++++
->   include/linux/iommu-dma.h                     |  2 +-
->   include/linux/mlx4/device.h                   |  2 +-
->   include/linux/mlx5/driver.h                   |  2 -
->   drivers/iommu/dma-iommu.c                     | 30 ++++++++------
->   drivers/net/ethernet/amd/xgbe/xgbe-desc.c     |  6 +--
->   .../net/ethernet/fungible/funcore/fun_queue.c |  8 ++--
->   drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 20 +++-------
->   drivers/net/ethernet/mellanox/mlx4/alloc.c    | 12 +++---
->   drivers/net/ethernet/mellanox/mlx4/en_cq.c    |  9 +----
->   .../net/ethernet/mellanox/mlx4/en_netdev.c    |  2 +-
->   drivers/net/ethernet/mellanox/mlx4/en_rx.c    |  5 +--
->   drivers/net/ethernet/mellanox/mlx4/en_tx.c    |  5 +--
->   .../net/ethernet/mellanox/mlx5/core/alloc.c   | 24 ++---------
->   .../net/ethernet/mellanox/mlx5/core/main.c    |  4 --
->   drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 22 ++++------
->   kernel/dma/contiguous.c                       | 12 +++---
->   kernel/dma/direct.c                           | 22 +++++-----
->   kernel/dma/mapping.c                          | 40 +++++++++++++++++--
->   kernel/dma/ops_helpers.c                      |  5 ++-
->   23 files changed, 152 insertions(+), 127 deletions(-)
-> 
-
+Can you say more about what platform you're hitting this problem on?
+An what's the virtio backend?
