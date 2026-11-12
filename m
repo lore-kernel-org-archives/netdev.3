@@ -1,63 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=206.220.120.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794527836;
-	b=fY0hJykviHDfh6fxl/Qjx1rYsKmpFXaa9PT8dCZasGr3H2nqB9mY4qyhqUD3vPBrI9uG
-	 LZhsZSD4jO4RMm0dcKPoBv3hFwMBT1GNpm0qrPt06chyRKEAn3GbaLR0EfH6b42pWBF8o
-	 jCOO0I6ZOIzpPNVdlPGWmyHqpA9RDrUCe80TbwUSO2wWuG3vSSOntFdCLGHDKhEq/ZSp7
-	 II687YLy49gVJz7YgXmoZN0hUQ3D55Sna40R2pWY5H5spGMLHhdgz2/zJoZm2tB+m1RCL
-	 YYQcC8KOk+DT/LxUOhtGTIjOTwjDCp9sPSqicNVo+M5UF/bDt2+0fqEr1GP+WylefSg==
+	t=1794527987;
+	b=3S8UGAiEgYzXP7H0JVxf4LeMqZweSTQQH+4o2zeO3uKpBrWbdIALwnaJfZsyylE0WLKT
+	 B13Y3CIn0LbgTxws6XyXIarFY0ei9NA87YqJpJqe/hPAoTryeBbFBe1K5x4Nj5vhG5dLL
+	 bX3Jq86PeSG+cqXGy6ULd2juV06uL4nRT5tdhJqn8o+NYnn3guVdOXxNJtUHZs0RwMxXG
+	 VXDE+1U2W4WiAd0YiSjyWGTYG9y9TRfLQYeXVbmRQkCJXqu21ahwT3yF9UdMcPaoKSbbP
+	 rluU/gc8QSeZnclIHMCS4lmzYhr03Oj1d1U+kVQb9l+0MOQuAxhzmgh8+ApxY8JXriw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794527836;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=OdxNko8swMxQNehkVojSmtOH0S1SRG1cKkOw6mwbAms=;
-	b=tLAMlKCsPq3Ail4rdr1e6nQjPEfhx8fLIFFRo6OaJMsrVGe4+h85jUlxZ3hYpHDvcktn
-	 /7VKxI5+YhQ++z2uwiMJ/+HGqzLtGUv04kuvKHVYvhxYcyKDNKMbvWu1YdNsaBoUFsRkV
-	 lRgDNLcwSKQmPS43dlxYIYr0BaVKwj0ppIs/HnngpWkx80KNbc+vJvgLTWjuROPNtXQSr
-	 YW47pKceqlaMlYY5A8ZsEhHzv+P90+J7jO6YIVFtkuImAf6ZmYK8YmHugLelb12m8KBEm
-	 SnR7q7dmtx9xhaLcEddG5c+6zroAai7vEY8V7pqJx1ijyXVzMI8zuQvoKeYcmoUa1Sw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794527987;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding;
+	bh=MJZjU0tPS6cW8A2TM1zhmExCYlVmTrPO/MNJkESJ67o=;
+	b=RbdY5JGQO6/ZYAXAps7nlrb+BxNGR+n7CgBU09LyqPOu/x6auCVpSym38pvV2OMr/hNQ
+	 I4QndsYJX+AKo/yRAApzhuMxGLw01nUHuFwMEH3fXPW9kpZKLXQcIcUAhiyOIV1ymLHnX
+	 dkhfzE7ekCSf3oqUN+ex7E6WQ+IStYoeLRhW+130v+bfJlIsQ+mxfIH+VP+dKv2kOXoBJ
+	 yP5MFVuHv3detfw2M3e2kOg7l+t/6t2krG1OZt0dYyOJqICv+T3QJYriyciDBgILC7X0v
+	 MMbKSsx0S+t9ydiUhFLZaz2Zyup3QT7aE2FQ1qye/jk4Kp0rM9PxzJDJzBv2iEEQpUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cbRe8NK+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=grapheneos.org;
+	spf=pass smtp.mailfrom=grapheneos.org;
+	dkim=pass header.d=grapheneos.org header.i=@grapheneos.org header.a=rsa-sha256 header.s=default header.b=Q8XsPP8a;
+	arc=none smtp.remote-ip=206.220.120.4
+Received: from mail.grapheneos.org (mail.grapheneos.org [206.220.120.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B38606A888
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FBD606A31C;
+	Thu, 12 Nov 2026 23:59:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2FBD606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grapheneos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grapheneos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cbRe8NK+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF691F000C4;
-	Thu, 12 Nov 2026 23:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794527836;
-	bh=OdxNko8swMxQNehkVojSmtOH0S1SRG1cKkOw6mwbAms=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cbRe8NK+v6gV8kOUCGVtLpTM8Oxo9W/eZ1ohIZq3hcltmSCeJvwH9p1Wi5xpj2est
-	 qUJTjAQ9L5KiaHgANI+k0bK7IDNg4m/gryc6TrncvGA9sqaHlw+fQ5FKnDyh4Sl6Gp
-	 kvwAhpOEgWBAEIoy3wkTN7kybEWshX6M58XzQrjV5fgNfT7F0nrAMzySSFZyhW2lxF
-	 vaglohklJUPzemHo2jP+xY1kbhRcsI5dtrJFyUVOeq73Mrsspf/8AFVO6pzn2PnHCi
-	 5zeN1Il/swLegnad+1fJjcXAvOdjcYdKYbC933+19dw5RaZWSpBfXGCCo3DXpGJuYA
-	 Hyl3AdifOy8Aw==
-Subject:
- Re: [PATCH net-next v8 15/15] ibmveth: Complete set_channels down-path
-From: netdev-bot+sashiko@kernel.org
-To: mmc@linux.ibm.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
- chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
- haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
- bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-Date: Thu, 12 Nov 2026 23:57:14 +0000
-Message-ID: <179452783479.2199510.8962832293852344506@kernel.org>
-In-Reply-To: <20261109235556.60604-16-mmc@linux.ibm.com>
-References: <20261109235556.60604-16-mmc@linux.ibm.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=grapheneos.org header.i=@grapheneos.org header.a=rsa-sha256 header.s=default header.b=Q8XsPP8a
+Received: by mail.grapheneos.org (Postfix) id EFD283C08EF2F;
+	Thu, 12 Nov 2026 23:59:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grapheneos.org;
+	s=default; t=1794527985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MJZjU0tPS6cW8A2TM1zhmExCYlVmTrPO/MNJkESJ67o=;
+	b=Q8XsPP8azc6C+LrBtDkRqGA2ICDYml9gEzLFwmHJau81h7kmuJ7IuUtRmwq4BVFha1ymsw
+	0GOl++UOFw0INI4Kruzih0I9uLreodBpLzO2tnLcmX6Qqaj25TJwawI+VZqhl9MS93gI96
+	sW6d6MdEC42gBvE2gTZxxd05H4eBU4OhKFVSm2YDQsZTAH9IXpR5T9+f1TNybcNTdj30tk
+	9yx5N7JiHESnqRp4J9sTiy0f73Z4HPbyhUHHLuUNfgwG0J5f5C4fmotk7PkzhQsAIjo2o7
+	8ZmV3Y3YXOXmENVkMelZPcA0cExjzc1+5by7AIq1wQkd/zPfqoTORXqJ6f2sZg==
+From: liamsmith827 <liamsmith827@grapheneos.org>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liam Smith <liamsmith827@proton.me>
+Subject: [PATCH net-next v3 0/4] ipv4: restrict on-link fallback to lookup misses
+Date: Thu, 12 Nov 2026 23:59:28 +0000
+Message-ID: <20261112235932.23836-1-liamsmith827@grapheneos.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,146 +70,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Liam Smith <liamsmith827@proton.me>
 
-Low priority / nit picks for your consideration:
+When an output interface is specified (e.g., using SO_BINDTODEVICE,
+IP_UNICAST_IF or IP_PKTINFO) and the FIB lookup fails, the IPv4 output
+path ignores the error and constructs an on-link route via the
+specified interface. According to the comment above the code, the
+intent was to allow sending packets via an interface that does not have
+any routes.
 
-- [Low] The down-path of ibmveth_set_channels() can now shrink the
-  published RX count while close() has kept the LAN memory mapped.
+However, the error code is not checked, so the fallback is also taken
+when the lookup hits an unreachable, blackhole or prohibit route/rule.
+In other words, these routes and rules are ignored when an output
+interface is specified [1].
 
-Pre-existing issues:
-- [Low] When mq_fallback is set, ibmveth_get_channels() reports max_rx
-  equal to the live rx_count (e.g. 8).
+This is a problem for Android, which implements its VPN "kill switch"
+using prohibit rules, with the expectation that packets hitting such
+rules are never transmitted. Unprivileged applications can bind a
+socket to an interface and trivially bypass the VPN. This is especially
+bad on cellular interfaces where neighbor resolution is not needed, so
+packets can reach any destination and not only on-link ones.
 
---
+Solve this by only taking the fallback when the lookup did not match
+any route (i.e., a miss) and returning the error to the caller
+otherwise [2].
 
-ibmveth: Complete set_channels down-path
+It is currently impossible to distinguish between a miss and an
+unreachable rule since they both return the same error (-ENETUNREACH).
+Therefore, patch #1 adds a lookup flag that makes the lookup return a
+different error upon a miss and patch #2 uses it to restrict the
+fallback. Patch #3 adjusts the selftests and patch #4 updates the
+comment above the fallback.
 
-This patch completes ethtool -L for ibmveth. While the device is down it
-publishes the desired RX and TX counts without allocating anything. While
-up it validates tx_count before the RX resize and skips the TX LTB work
-when tx_count is unchanged. It also sets max_tx to at least the live
-tx_count in both get_channels and set_channels.
+After the change, a packet that was previously transmitted on-link
+despite hitting one of these routes/rules is no longer transmitted and
+an error is returned to user space instead. It is unlikely that anyone
+is relying on the current behavior:
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 510d9d80e2df5..3ced6f5bad2d7 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -3687,15 +3687,32 @@ static void ibmveth_get_channels(struct net_device *netdev,
+1. It is a side effect of not checking the error code and it contradicts
+ip-route(8) and ip-rule(8), which document these routes and rules as
+dropping packets or generating an error.
 
-[ ... ]
+2. These routes and rules are already honored when the output interface
+is a VRF device or enslaved to one.
 
-> -	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
-> +	/*
-> +	 * Always report the live RX count. ethtool -L is read-modify-
-> +	 * write, so a TX-only request echoes rx_count back at us; an
-> +	 * understated value would be applied as a silent RX shrink.
-> +	 * mq_fallback instead caps max_rx at the live count, which
-> +	 * blocks growth in the core without misreporting what is
-> +	 * currently configured.
-> +	 */
-> +	channels->rx_count = rx_count;
->  	if (adapter->multi_queue && !READ_ONCE(adapter->mq_fallback))
->  		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
->  	else
-> -		channels->max_rx = channels->rx_count;
-> +		channels->max_rx = rx_count;
->  }
+3. These rules are already honored by IPv6, which does not have such a
+fallback.
 
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. With
-mq_fallback set, ibmveth_get_channels() reports max_rx equal to the live
-rx_count, so the ethtool core accepts any rx_count from 1 to rx_count.
+The following is unchanged:
 
-ibmveth_resize_rx_channels() then rejects every rx > 1 that differs from
-the live count:
+1. Packets can still be sent via the specified interface when the
+lookup does not match any route, which is the original use case.
 
-	if (goal_rx > 1 &&
-	    (!adapter->multi_queue || READ_ONCE(adapter->mq_fallback))) {
-		...
-		return -EOPNOTSUPP;
-	}
+2. The fallback is still always taken for multicast packets. The
+precedent in ip_route_output_key_hash_rcu() is to not enforce
+restriction rule/routes on oif-bound multicast, so that precedent should
+be followed here too. 
 
-With a live count of 8, "ethtool -L ethX rx 4" passes the core range
-check and then fails in the driver with -EOPNOTSUPP. Only the no-op
-request and rx 1 succeed.
+[1]
+ # ip link add name dummy1 up type dummy
+ # ip address add 192.0.2.1/24 dev dummy1
+ # ip rule add to 198.51.100.1 prohibit
+ # ip route get 198.51.100.1
+ RTNETLINK answers: Permission denied
+ # ip route get 198.51.100.1 oif dummy1
+ 198.51.100.1 dev dummy1 src 192.0.2.1 uid 0
+     cache
 
-The comment in ibmveth_resize_rx_channels() says this is deliberate, so
-that read-modify-write TX-only requests still clear the core. The new
-comment says the cap "blocks growth in the core", which is accurate.
-However, shrinks to 2..rx_count-1 are refused as well.
+[2]
+ # ip route get 198.51.100.1 oif dummy1
+ RTNETLINK answers: Permission denied
 
-Is it intended that users see this gap between the advertised max_rx and
-the values the setter accepts?
+v3:
+- Remove comment on flag.
+- Improve flag commit message.
+- Improve cover letter.
+- Target net-next instead of net, remove Fixes and stable Ccs.
+- Change author to legal name.
+v2: https://lore.kernel.org/netdev/20261110061536.10811-1-liamsmith827@grapheneos.org/
+- Restrict the fallback to routing lookup misses, instead of only
+  honoring prohibit (-EACCES).
+- Add FIB_LOOKUP_REPORT_MISS to differentiate a routing miss from an
+  unreachable rule.
+- Split the comment update out into its own patch and remove the
+  signature.
+- Enable all of the commented out device bind tests in
+  ipv4_ping_novrf(), add a route miss test and update the UDP test
+  expectations.
+- Target net instead of net-next, add Fixes and Cc stable.
+- Drop RFC.
+v1: https://lore.kernel.org/netdev/20261019032406.88874-1-liamsmith827@grapheneos.org/
 
-[ ... ]
+Liam Smith (4):
+  ipv4: add FIB_LOOKUP_REPORT_MISS
+  ipv4: restrict on-link fallback to lookup misses
+  selftests: net: test restricted on-link fallback
+  ipv4: replace obsolete routing comment
 
-> @@ -3771,30 +3783,84 @@ static int ibmveth_set_channels(struct net_device *netdev,
-
-[ ... ]
-
-> +	/* If not opened (never opened, close+open failed while IFF_UP
-> +	 * stayed set, or close() kept the LAN memory after a failed
-> +	 * H_FREE_LOGICAL_LAN), publish desired queue counts without
-> +	 * allocating.
-> +	 */
-> +	if (!adapter->opened) {
-> +		if (goal_rx > old_rx) {
-> +			for (i = old_rx; i < goal_rx; i++) {
-> +				if (adapter->queue_registered[i]) {
-> +					netdev_err(netdev,
-> +						   "RX queue %d still held by PHYP, free retried on next open\n",
-> +						   i);
-> +					return -EBUSY;
-> +				}
-> +			}
-> +		}
-
-[ ... ]
-
-> +		if (goal_rx != ibmveth_get_num_rx_queues(adapter)) {
-> +			ibmveth_publish_num_rx_queues(adapter, goal_rx);
-> +			rc = netif_set_real_num_rx_queues(netdev, goal_rx);
-
-[Severity: Low]
-Suppose close() kept the LAN memory mapped after H_FREE_LOGICAL_LAN
-failed in multi-queue mode, which is one of the states the new comment
-lists. This path can now publish a smaller RX count. The
-queue_registered[] -EBUSY check only runs for goal_rx > old_rx. A shrink
-such as rx 8 to rx 4 therefore goes through while slots [goal_rx, old_rx)
-are still registered and mapped, along with their buffer pools.
-
-ibmveth_free_all_queues(), ibmveth_cleanup_rx_resources() and
-ibmveth_free_buffer_pools() only loop up to ibmveth_get_num_rx_queues().
-On the next open, the only thing that frees those slots is
-ibmveth_free_stranded_rx_queues():
-
-ibmveth_open()
-    ibmveth_free_all_queues()           /* [0, 4) */
-    ibmveth_free_stranded_rx_queues()   /* [4, 8) */
-    ibmveth_release_lan_resources()     /* [0, 4) */
-
-This works at this commit, because the helper scans [num, MAX) on
-buffer_list_addr and queue_addr. Its kernel-doc only names one source of
-such slots, though:
-
- * A scale-up register or IRQ-setup failure whose H_FREE_LOGICAL_LAN_QUEUE
- * also fails leaves that queue out of the live set with its slot still
- * registered and its memory still mapped.
-
-Could the kernel-doc of ibmveth_free_stranded_rx_queues() say that a
-down-path shrink in ibmveth_set_channels() also depends on it? The commit
-message could note this too.
-
-Otherwise, a later change that narrows the helper to its documented
-purpose (for example, gating it on slots left by scale-up failures) would
-leak the DMA-mapped RX rings, buffer-list pages and buffer pools of slots
-shrunk away while down.
-
-[ ... ]
+ include/net/fib_rules.h                   |  1 +
+ include/net/ip_fib.h                      |  6 +--
+ net/ipv4/fib_rules.c                      |  2 +-
+ net/ipv4/route.c                          | 34 ++++++++--------
+ tools/testing/selftests/net/fcnal-test.sh | 47 +++++++++++++----------
+ 5 files changed, 47 insertions(+), 43 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109235556.60604-1-mmc%40linux.ibm.com
+2.47.3
+
