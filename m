@@ -1,49 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794503410;
-	b=1ZB0q926pgcEFRvEWlRQ66REobDxq7NcKFMnM3LMSoQjxlfXMaPHALIOJSbZw1vpRxdK
-	 BhSHUraYGzO8rKv0zjuAfIdqArjqXu4Anu5ilK63Ue57Z2rtDJDbubvnqvMTC0dH6w4+h
-	 /R/ZBLOWKMHPwwiXQgfxq2MOH6IcXPNm94rEMHzZtyR1NVqpWMd80wK+DQo8AdFO+LMCX
-	 2phpAoRVxH8poygB+nCivuaq5e/yIN/W2jPigeBw2agtJTYhRQ/6ra80KagA13uVH86pw
-	 8pw665y4R8SNsPm/803H2S1O5TJgclRYg6Wjub+OoiIhbgGPn0xDtsvF2oLmkXMORtA==
+	t=1794503419;
+	b=F0HdEsr5L5ol082DzSRTyZBtVW6T41Yl2UGym8z79LYh1WzKl1GnWglmQXNysXA5tZqC
+	 eE8ArfQWLJxd8bs+gQuQzJAoJUwGatJ9Gi66U750Xs5kWoAoJf4dKZ4hZvsPe18nbYFHb
+	 HIxjDqp6cm/WVwf7kjxQz8LuiTK0cuxeGU5NYrGcZMFTVfWfyGGB53ZQ4O6XeJyNFkOQs
+	 VyOypqAUUE+CR2++gdyCOjlVKICCGFWVt+n5RUv8P+ksy7eFSPIfsa4TcI/m89pJTvz8S
+	 KBAFA5dW2Zi57jMcljoO9+89NgKReRhU9JMnuGbTRLmB/NcBbh9nBbkO+dYyzKXuCcg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794503410;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=VqJqQmXN3Hcs0vJ81mtWmJGZP+7ybSBHA9gD6M1mDho=;
-	b=l5h1J84I05gkppu+YtP/mCUZF6yiGO/GhD6oTlDV51YC0Gh2pSTSugKEAfJTx3X572JK
-	 ijoJfCoAozDUG4pGQkha5ISpqBbrQy/0FZd0mwTu9nPCvK0jq7MIIruCq9Bv68IZXGlfD
-	 hpiZeUh+pOS3qcwbdI37GUQRcSQug+sPZLfZsw6j3E2wtsh+8uS1PRoFw9DmvTFj6YhaC
-	 nbKExWpKAwM1J3JsP1oam7P4O1cEinP83LM7/j3ciYswTjxu6QeT4kvft1Cr8vzknmDSO
-	 sHTEBdquAL/fYYV7rw9tn3J94jr24nXP3GIKnv/DrDGHEqUWFnrUAmFm+Xkv4lwAR9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794503419;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=IDIKLIBlCay0D/rJOxPmqKyRlqsV8uekf9GsZW7hCPI=;
+	b=mW3PMJUGm3lGC04lN0/V6n6sX7Pm07fASFS62WIzfPiV4YFWhPi+pRasGb6Ndl0oDFPH
+	 c+EFVrYDGQP/WMaj6R7PyF3kq+goTkhAlVEaaSNE4bW/4Gk4r7zQiVBAUnlH5gintZxSE
+	 ehUNT0TlJGsX3EQQgIJAHhX8k/+TD25DEZ31y1DO5NxHyFY3iWkiynqZ80jnmCqYO1R9q
+	 jwhlZdAM2yQt0UtiZPROuqPUs2y4QStEyZkZoAZ2EShtAueeZDv6y5KSObhXX91SmhwOl
+	 qWJPDA/32XkCZRkrc4/CTbpLP1760m5+OOMrJ18S+ztH0gs9TNTVKYv+c1wkOagu1hQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="aTG/8Ov9";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNbh2Mnh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DEC606A330;
-	Thu, 12 Nov 2026 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC50606A330
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aTG/8Ov9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A01F000C4;
-	Thu, 12 Nov 2026 17:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNbh2Mnh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995C51F000C4;
+	Thu, 12 Nov 2026 17:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794503409;
-	bh=VqJqQmXN3Hcs0vJ81mtWmJGZP+7ybSBHA9gD6M1mDho=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aTG/8Ov9L8E3TMZ8MQNHvVDIc081ZU1Klddc8cKf0uj0aXPlNQ6WIL/cPOdrUKrMZ
-	 Y34OIwnYg9/Ot5okj5Qjt5Z7Kmj3+K/UUyFfkNLi6g6WnE9SMMNbCe0+of8RUGP5/W
-	 UbxAFcBxGR4PsNMjf9r0WUJiYDH/kFJaQIcZItjE8hQli0HdqpgG0aWJ4aOTTcvtOD
-	 neZMdTCTqWm2Bm73JBKrqFiEqjmPMxX729EpukRf5WSRSLt79LIvLcBqF2vQZJirGJ
-	 qlgCzEIEh32eVHPgN/eNAoG7jY9UmvuKrILa2VB+p+E7WCUbNsdndXTWKVQvP3ajl8
-	 jYCUgdgme8Ipg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2EF380AA75;
-	Thu, 12 Nov 2026 17:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794503418;
+	bh=IDIKLIBlCay0D/rJOxPmqKyRlqsV8uekf9GsZW7hCPI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SNbh2MnhgmzvPy2Ajx4onYNIrleMLoe5ucWW8C57OT4BH7l1zKjrZAt2pY/cpEJcL
+	 4kGRLoKstjPc4XdaPTAPB1Y84rLXH4kLRxqfsNjCh5NP/9RYuqZly7OItPi10hlVA3
+	 Fl+r1LsnA/OWmCRfrKszpL8oB4UC76nFHS0wRjQRKfquAgazXGLsFQjpTRNa9F+e5R
+	 EcPSQpfMZPLvgDi8gG3Hqc8rSF9DHqBA7CCEEpkSzvgu03+599bUPRphOeZlv8cXVb
+	 anb9zmHmXVNe0jD410KdBy8hEirszz/uLrYs8MEWLMIcCC9tAFkXtEkmMi75zxWb59
+	 iWnyXO9b3kzlg==
+Date: Thu, 12 Nov 2026 09:10:18 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ayush Yaduvanshi <ayush37735@gmail.com>
+Cc: netdev@vger.kernel.org, skalluru@marvell.com, manishc@marvell.com
+Subject: Re: [PATCH net-next] bnx2x: fix kernel-doc for bnx2x_rss()
+Message-ID: <20261112091018.7a0e41c7@kernel.org>
+In-Reply-To: <20261109211719.114004-1-ayush37735@gmail.com>
+References: <20261109211719.114004-1-ayush37735@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,47 +57,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v8] net: libwx: fix VF PM suspend/resume flow
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179450340777.540799.8922827918825455447.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 17:10:07 +0000
-References: <20261109101442.84605-1-mengyuanlou@net-swift.com>
-In-Reply-To: <20261109101442.84605-1-mengyuanlou@net-swift.com>
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hramamurthy@google.com,
- jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  9 Nov 2026 18:14:42 +0800 you wrote:
-> The shared PM callbacks used by txgbevf and ngbevf free queue vectors and
-> disable PCI without first stopping a running VF or draining service
-> activity. Resume does not re-enable PCI or restore the queues and IRQs of
-> a running VF. Service work can therefore access torn-down resources, and a
-> running interface is not restored correctly after resume.
+On Tue, 10 Nov 2026 02:47:19 +0530 Ayush Yaduvanshi wrote:
+> The kernel-doc comment above bnx2x_rss() still refers to
+> bnx2x_config_rss_pf() and documents an @ind_table parameter
+> that is not part of the function prototype.
 > 
-> Stop a running VF under RTNL before freeing its interrupt resources,
-> preserving its administrative running state. Drain the service timer and
-> work before disabling PCI.
-> 
-> [...]
+> Update the function name and remove the stale parameter.
 
-Here is the summary with links:
-  - [net,v8] net: libwx: fix VF PM suspend/resume flow
-    https://git.kernel.org/netdev/net-next/c/a6c3e4c1f703
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+There's a ton of warnings in this file, let's try to fix them all at
+once or not at all (I really doubt they bother anyone since it's an 
+old dormant driver)
