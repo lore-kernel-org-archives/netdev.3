@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794459210;
-	b=SfWED1lqrLvpalrzd/NBQTFb1w6aGWy6WBX4Pk2k9yfcplRZN6nPoy+h+NjQDg4QmxBW
-	 MW0lLimfXfyrE5h+FmHIBOyq6f+SDUHqUikI1u474RrIv4tbKI0KOS8BIClv3H8pewaYj
-	 1x4U0eVoFxPZDd0ULW9j8KI1Co6Z+UAboC7HPrG5Ea/K2LCtaR/n6ZFbZfWqbE73xaXle
-	 Qtranlf7QsI184ORIU35aOgOjE5VzorchBPO52wL9Z80ZCus4Ld961R0+W80v+PfRbbHO
-	 5yBCAYI1aB1Ij6f+N9ApEljcHVY3+LtjAD8Hd6QMU2BABSIJwe9APdgWKnS2WAOscdw==
+	t=1794459215;
+	b=1nZum08gTZVtVmwNu+IAlhUIrOQOCom8zayevb+MDZxGjlq3Bv2FEroXJedlkl7m6kir
+	 ZzQhoUUwVx1tJbvix1IIGpGZg4O+eVbfKDbKztbWksBF9oa4x8KN9qrd1i98TCc1hFcKW
+	 0zkboc7c1qrm7F5jzzHCbWSj2zGrhVt5EJyNGPJOO0Vuy09GS8PZMtNOYGXZ5xO4IxBFb
+	 cP6psPuCkmE3B5Q3xfgggocyAr8F03Xpues0wp9DSYikaWbi8J5CxTh4eXP8fr8PKpHBs
+	 wKg2rWBcMtSjadi6FOmKck6ud6ktFKWw+uUgvJT8rcbb7xmM2MDO0yDU/HRC1de+eCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794459210;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794459215;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
-	b=IvUJil4RB/bFuiFMRVRZObHwCpwkSFru9rD01qi9kXi+krgk0M1f7EljOPZv+8qUIX3I
-	 xJm83aC4X5jwcrUH1drirk79AAwfhHSWvO4vRPhuTd9nRqCJryewtv6Pkjn+eVuNtKaIJ
-	 vJyxO+3Y1JBGnxTumCIA6mUcpM4tMYjDhYkTnv6dCwwxlr5vyWBxt0ZX9ok5tp0CqFjAv
-	 rlavTQ8MVDZgI5OUVQlcik4i3KKt6ULxZaDD6XGy8kqD7cTVhd+Ex3iSBeX0kqRFJQhyd
-	 rgiKaMfHHLgzo1hkxWpajQSjdjGXOa4RVBuLsiymjNKiFdCryWFTiCgbnOCfY8uWfiw==
+	bh=jFIH548lIGR831rTuuZKYy9OsQLDm4lptzmx0LF/Teo=;
+	b=nUoZFmGDU3IMOsC3QOd+1YkF4usoKC5PiUXYG3qYGp7E0aIGkcVfU/yaBbSzA+VA8t5G
+	 3MEMslGu8tebh6uPKo05OsbEsx+Ty7G4FHsAe2IBFNw3WCBIn8pJgC/YlyD3jmEDc12+h
+	 eRT5Sv3LVOgv7dacduNrylsw7nENtbgwespcA+0xgb3amJJcOT2WIQMPwpFOQmtKaH757
+	 79gNQLPb5PIs3sbkTtSqh6t1ZNsEHdh5kisIPNUcEuWFfvF/KpdjdA678Dno9FaP1uCiV
+	 5OhOc3IumKL4LXrYPWqdlY3OmpDXCGv85kQG3xwuguy29p3Bte4iuPZmB4lKFPjEPxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RzTAuL1X;
-	arc=none smtp.remote-ip=74.125.82.48
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NIQGBmX+;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1502C606A33C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1502C606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC5F606A334
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EC5F606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RzTAuL1X
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-15dd124bbe7so6026946c88.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NIQGBmX+
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso8192273eec.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794459209; x=1795064009; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794459214; x=1795064014; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
-        b=RzTAuL1Xty2p5RwFlgMH7n1jdFP11HvdtB4QDh/wHeqzwGq2opOI+7x7SQ7nRglu+Z
-         TBuCzR6aoVSfXlX3HBEM7PF28P4MKloJkLgmImElrvsp9BNeM36hZ/MIPusZGZib52LC
-         Bw9RwwiqXuwzU0l50tQtrk6F4jqucIKilXfBQX+K1UTG5iJs/g7o7Z14pTzXdzUPGNom
-         dpabiataK+HkycV/5XtfhBVUmAoo60as8WKPluJyx7E5hhPUvue6zp6ZQrqJY4S+AfPK
-         /TjWQh7DN91Q6w1JwYHeKRy1MwewY/eF4jHAO5ym/Bcp2rA37fNckKmnX0uZclUbKH09
-         D5NQ==
+        bh=jFIH548lIGR831rTuuZKYy9OsQLDm4lptzmx0LF/Teo=;
+        b=NIQGBmX+gB/td2jTgeQJHS0l1U0N/7qJuZlSzsKPGmZCC+pLoqfGjKXBa+PU9VNzd5
+         T1yQ47rp63xSNQ934qqBgiakvDT+bzaORp5BUpEq8gUz1JrL0guNlq81FgmVNPJb8DLY
+         FIqWful2hr41vzOOOpoO/urDxhfD2YbEcEW4e7JNxC34f4RaxWgXB4xpYAKVMd1CBCgL
+         IMH5sOaVzmXAd5V8QVe8wqfOIQ7KGm62bPrWyDtcUaPZN0wmqYw+FNC6S6Y9Y/R2+Fxr
+         rwpW/+x4C116FN0mPtG7B5zzkklM8rHdh4BB3jfGmWrltm1fvd2uxtkV++S+4qVnHwZL
+         /k5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794459209; x=1795064009;
+        d=1e100.net; s=20260707; t=1794459214; x=1795064014;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
-        b=treUGBuFGUVPeyi2o+6MPIzDvC2zGCms9c+mxNSSg1BEUUQBBHXhqAIAIv0JRUvep8
-         /c7IOxpw+moEGyzC2d9d2tf5vgZ8KHWDzIGPNFSaGxREUh/BaIpkbw14A92O8O4Lv3es
-         Qwvl8BqiVHyXAalMPbO68CQY3dgaciken1PCpbGHnx/oLcCOKoF7Ouega5cZIAE9mLsT
-         UEYLdLv04PQaL9c8tzFHTE5rrQLcOPiy/eMocLEIBYCEwfN5eRIEv46inz2tgb53haii
-         A6qnEw+p/tJnVViqTn6DQoLH4O5QTpuCzX5qCIdz0fxotOfc2xsaRc/lFHsO3poR7PY/
-         rD+A==
-X-Gm-Message-State: APuU4Z8gpr1emGreBOqpdK+YjIOPkMS+y41fC+K5EvQNJnMBY+j7jHj9
-	x4cutxm2SXBY1KSSRijnckGsAC70gAWFkAiw67SxBMjECB6umhAk/uAJCDhqsw==
-X-Gm-Gg: AYBFou2vJmWB/FvK+Qgm64jKEhg1yyLo/xHwR3Pk6MOZ648qaaDL18HI5OrmaSnNZMY
-	8N6kYiuPUDVw74YyVwa9TGEq69X7viSV2qRuNIZyMYbLJWhltjEe78fjwHZB1I4qB1brkbxtm5k
-	8TZj/iatcLYRiUzm0elHt5+lfNfJhWQtNi9V7QrExE6OwtR6TPUQ3sJcNqbWmejoIGktE+U+oKr
-	4NqDX25ThfjloHuuujt5Srd0lFkxHMIZc8qP/52lpQPjgkwcKV8jZjjgeYWQxuG456dDNb7DdD6
-	qvpfdT3z9VjNMSg15sY5qPfDywxCtwMUg3pzCaEKh2h8Nwv7oDFuyt0r26ZxNY3NDV0hidzrogS
-	UziVdBTVkToq9VpGph705BhY1oO8JI7PR7bnLswTAaIXEpOetnhBRgUs3sxSoUB3zrQ1yjhD4D1
-	zTHgriTN7c5n0/CvMcGGmOVafdCWaJBYAhbs3NF9uJpPZTJRvvUAg/jhBZZIDbKT4j8fTABdHY7
-	4sd1i9mASfVK8yUVjrnEY8p/AqcNkejqs0mlPEJdo22tYym2xKCWtZP2nFirhN2LS0aAEHTQqGQ
-	Jl9z7xWH
-X-Received: by 2002:a05:7301:2329:b0:358:3426:d601 with SMTP id 5a478bee46e88-3768366a41amr4535295eec.2.1794459209097;
-        Wed, 11 Nov 2026 20:53:29 -0800 (PST)
+        bh=jFIH548lIGR831rTuuZKYy9OsQLDm4lptzmx0LF/Teo=;
+        b=Noqg3U0D7eE6WsXB1jWpZf8ojINCH18GXtSc4iSwKF6pQzFGpzmaBZmeAudIY9nIQo
+         LfIaqOLxZbwFrQteoLP2Jvk6gYUv7OEMwDRCJlO1+IP8JaYkSTADyrIOYFxaLJ5HwAqG
+         Jqu/n+hV7jlr31tNst3BEVJp5gSBo/RrHzQeficLY0KAJYqgRzLE6tk+dF+AD8Wm5aj2
+         GGkC4UtmIeAhFZOFJwLSKPYxZrh3EXZN86GphMNdIeT8HtudreYJ2+tpLL9ftNKWzWDT
+         SLyDlryrMJXpq4UYiLJOzhV9UsJOl29r7CNJzwlEzb8anL45vNPcjzXdUgWmxHo9RD6I
+         Z3mQ==
+X-Gm-Message-State: APuU4Z964hvRPu1gSqsDlBIRhHGHomKYPly0koW2XirKP6K4Ql88KOJH
+	19Y64wRZ41DJPD7xvzEG5AavpLvmGy1APKvO2j7JeGQv10ZoNXvVPs/t134hBA==
+X-Gm-Gg: AYBFou1eke+Ggga42tWtgXC27eIjDQim8sAV+9jxDEAzCno4NF3jTzZDiYHwO0mstf5
+	Ohj8XKTD4K65m3ivIGo2hPc1ZIHlkGVRM1N45UuOYdi+05TugIrtH8VpELrJiVK6snk/UONz01i
+	7fXTR061XWaqdU6sHP9hgDIL14KrUVME7XOnur2MOsj6ToD7XAaMxCCAE51j6ri5LOyMApvdEkL
+	hMPVfZvhTctPuij/rzbiy/ny88WghfB5zTR8MsPaooQ5I61Z3G22deqJXyT1+GMUkXt5cFDGUWJ
+	8KXpi7zbpObsebBucocU8dOyuEfEndzreoNblhw2PwvReFWORUAsipkpYEjaOMwRyJYwofuIE+l
+	a+3HKckfV7/8YDwH118wYHpE+SVMg5ONk612lilv3pD1GkjjSzIgLNsehay2plI+1SvFYGOF4nR
+	J3xXL0wxRo9x03v73mt6Wy7wvniI1fZjQMih5Ac0MzOdUsAkgoFAnLH2QLeNnIXAkLiXttpQ+7n
+	R6MRP+u/Fp7LBuC0oZqzUNCNUzInB0i9IxKwtN4HKiAQqrVMivz/trPLqswc4vFIqyyAluxgT1S
+	7LupWE81
+X-Received: by 2002:a05:693c:8947:10b0:36f:14ef:ad08 with SMTP id 5a478bee46e88-376850ced2cmr4362199eec.9.1794459214221;
+        Wed, 11 Nov 2026 20:53:34 -0800 (PST)
 Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.23
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 20:53:24 -0800 (PST)
+        Wed, 11 Nov 2026 20:53:30 -0800 (PST)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -98,9 +98,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net v2 02/12] net: au1000: clear all-multicast mode when restoring hash filtering
-Date: Wed, 11 Nov 2026 20:52:44 -0800
-Message-ID: <20261112045301.3669532-3-f.fainelli@gmail.com>
+Subject: [PATCH net v2 03/12] net: au1000: disconnect the PHY before freeing the MDIO bus
+Date: Wed, 11 Nov 2026 20:52:45 -0800
+Message-ID: <20261112045301.3669532-4-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112045301.3669532-1-f.fainelli@gmail.com>
 References: <20261112045301.3669532-1-f.fainelli@gmail.com>
@@ -115,30 +115,92 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-MAC_PASS_ALL_MULTI remains set after IFF_ALLMULTI is cleared or the
-multicast list shrinks below the filter limit. Clear it when programming
-the selective multicast hash so unwanted multicast traffic is filtered
-again.
+Balance phy_connect() on probe failure and removal. Otherwise PHY
+interrupts, device references and the attachment to the freed netdev
+survive teardown. Disconnect before unregistering the bus while its MDIO
+callbacks and MAC registers remain usable.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+PHY teardown can re-enable the MAC for MDIO even if the interface was
+never opened. Reset the MAC after PHY and MDIO bus teardown, before
+releasing descriptors and register mappings. Skip MAC control accesses
+when mac_enabled is clear, since stopping an already clock-gated MAC
+hangs MTX-1. Always clear the DMA descriptor control bits and TX state.
+
+The teardown corrections were identified by Sashiko AI review and
+hardware testing, with OpenAI Codex assisting implementation, validation
+and commit-message consolidation. Previously validated on MTX-1 with
+opened and never-opened removal, rebind and traffic; both removal cases
+left the MAC enable register at zero. MIPS build and extracted-function
+ASan/UBSan checks passed before this series was consolidated.
+
+Fixes: 0638dec01e89 ("[PATCH] net: au1000_eth: PHY framework conversion")
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/ethernet/amd/au1000_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-index cd25248f4e3a..58bc8e1b539d 100644
+index 58bc8e1b539d..7063f9e5bc7c 100644
 --- a/drivers/net/ethernet/amd/au1000_eth.c
 +++ b/drivers/net/ethernet/amd/au1000_eth.c
-@@ -1042,7 +1042,7 @@ static void au1000_multicast_list(struct net_device *dev)
- 					(long *)mc_filter);
- 		writel(mc_filter[1], &aup->mac->multi_hash_high);
- 		writel(mc_filter[0], &aup->mac->multi_hash_low);
--		reg &= ~MAC_PROMISCUOUS;
-+		reg &= ~(MAC_PROMISCUOUS | MAC_PASS_ALL_MULTI);
- 		reg |= MAC_HASH_MODE;
+@@ -584,14 +584,17 @@ static void au1000_reset_mac_unlocked(struct net_device *dev)
+ 	struct au1000_private *const aup = netdev_priv(dev);
+ 	int i;
+ 
+-	au1000_hard_stop(dev);
++	if (aup->mac_enabled) {
++		au1000_hard_stop(dev);
+ 
+-	writel(MAC_EN_CLOCK_ENABLE, aup->enable);
+-	wmb(); /* drain writebuffer */
+-	mdelay(2);
+-	writel(0, aup->enable);
+-	wmb(); /* drain writebuffer */
+-	mdelay(2);
++		writel(MAC_EN_CLOCK_ENABLE, aup->enable);
++		wmb(); /* drain writebuffer */
++		mdelay(2);
++		writel(0, aup->enable);
++		wmb(); /* drain writebuffer */
++		mdelay(2);
++		aup->mac_enabled = 0;
++	}
+ 
+ 	aup->tx_full = 0;
+ 	for (i = 0; i < NUM_RX_DMA; i++) {
+@@ -603,8 +606,6 @@ static void au1000_reset_mac_unlocked(struct net_device *dev)
+ 		aup->tx_dma_ring[i]->buff_stat &= ~0xf;
  	}
- 	writel(reg, &aup->mac->control);
+ 
+-	aup->mac_enabled = 0;
+-
+ }
+ 
+ static void au1000_reset_mac(struct net_device *dev)
+@@ -1287,6 +1288,8 @@ static int au1000_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_out:
++	if (dev->phydev)
++		phy_disconnect(dev->phydev);
+ 	if (aup->mii_bus)
+ 		mdiobus_unregister(aup->mii_bus);
+ 
+@@ -1334,9 +1337,14 @@ static void au1000_remove(struct platform_device *pdev)
+ 	struct resource *base, *macen;
+ 
+ 	unregister_netdev(dev);
++	if (dev->phydev)
++		phy_disconnect(dev->phydev);
+ 	mdiobus_unregister(aup->mii_bus);
+ 	mdiobus_free(aup->mii_bus);
+ 
++	/* PHY teardown may have re-enabled the MAC for MDIO accesses. */
++	au1000_reset_mac(dev);
++
+ 	for (i = 0; i < NUM_RX_DMA; i++)
+ 		if (aup->rx_db_inuse[i])
+ 			au1000_ReleaseDB(aup, aup->rx_db_inuse[i]);
 -- 
 2.53.0
 
