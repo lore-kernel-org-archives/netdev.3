@@ -1,90 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794513656;
-	b=UyZqxPmI9LRfTfvQIWbGFDdyIZLJP0ZZSS4+D38yfh/j/7keRbgAQcsSk53LC4mgJ42h
-	 UDDMcYzJ4+JJrPDZOjKa3yA5MwW3iC4cei9mXmNdzG/oGmaMAnryLkhnYeJWu9JDj4Oeh
-	 3vTe9pwoMpYHAzpoCaiY42ej+i7WILRsnxzB4e5WV8ATkTq0Bfxa9jN7fBVJDvyd1NF8V
-	 ToOMK0vkmJqJ1731T9ubKwd5Fa0YtavX8ues34m7QZnOC+KNw/RHFyzPAJ9OHnhqLw5qi
-	 h5iG1YtIhUAWwC6ydAVnsenGQf3ZfDa4aBGefISD3CdZ61Xt5gxsaVXpfpTFESjtvwg==
+	b=k4w5W66w9FXRrkaBX58pTNoa7GA9PWqkMjt9j2UP+ZEof5jsSbHZxXGNlY7o4nnljrAK
+	 +vI6d6XpE6Weq/ZYfxfGJUJieA4v3a0VKPdd5fFUEMdPv/vOV1G89VEk8tkT36Q1Z5lf9
+	 9ua/mIrvN29MgBR+AZYq8ujG1LIeSlTTtDuWnbosrssEbXIicYu7cHHYHKc+lKPeS2O8X
+	 08mlWd824QdJm7XcQtwus4I71PGyGdvNOO4twAK5wB1eajExfSXlMMm0Za/OfW9JpTa0Y
+	 fOWOxZE4GqM0qjakCQrsv8Zg+KsSSAAvG6hI9QSXW7woP/qi40dn2U7slH+8kyHhQYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794513656;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=0pYj3bKFMtj7PR16yt0nJIoJWj/HYEwrPCOVrJ7Te0Y=;
-	b=RZbwloQoVf8wjZBXvyPnaE7e+n7EM/Ytgyx/FtmVXlse4QnnyMhpJM7DANmnerzpEMhj
-	 Jr8JEo962IMS2BoRPALUli6sGqctCw2Ml9hiikPrY7+15wALksuj5TjJhP/OvjUYWa7DW
-	 Q6SPUrTC46iX5483yQdEQqw1Spm5sF8iJzc1HcoPRgneKH5tObhHyXM9uPfFwXbOEsDHJ
-	 a9nlmVuFUAMN/9J7ogbFVeTu5Ur7/LssZ6JcBW+cV0KjooqPccehi2eBKOEoCU8j6XQfF
-	 rj3ZxlOYS1/EZwNSERE8zjzdYX3Ie4aMOR7FsvMQi4qxYgURBcAfGp53b6gtNW49OdA==
+	bh=AT90dIWtholrDKY4FOKu2oK87geOpoqbZrY5cxtsT3E=;
+	b=Ud+v11HLsI4iC9LGbNF9015IQOCmTYtVGjd+miuDGrRZuulsVoV6NwXZDWmTlMiKMAmf
+	 kBm88yJmrsKLgmyShUhcIauXxDgIMyaIujO87jjpiV7LQ3e/uLXhhoP9yhx/xZX8R7PkD
+	 Lbfg7DdduWqMoKSTa/nimExY9KdjOTVT2NegswhMu2LA4f5ezBrjVvyx3Yaq25jInNwiQ
+	 aCh/PZ7dsvr43dUFLMMznBiFmNXJHO9Fl08gWgsh00/beu9oJ1rutruGs7qkBGWMNNdgv
+	 rTdkMMzes65T5ZrHvgqOZJXjbQxXbIkczZ75THSlx01acdGx2L8T/l4ZWnmOL/ewb+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ju9PFt01;
-	arc=none smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AglUCQgq;
+	arc=none smtp.remote-ip=209.85.216.50
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F59606A8A3
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6F59606A8A3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3C606A8AD
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EB3C606A8AD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ju9PFt01
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b18717a193so96688a91.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AglUCQgq
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3acb11973c3so144561a91.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513655; x=1795118455; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513656; x=1795118456; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0pYj3bKFMtj7PR16yt0nJIoJWj/HYEwrPCOVrJ7Te0Y=;
-        b=ju9PFt01/Py1e0+Got6MEL8jiP5b9hmOuRJJj+iss63dKPTduRL9kQmK6c0T6r04E5
-         oqQyZNQ4jiYHkADQZlyG7AYAckyYmmsZC8iAZjkv+5SLZGM+tP45gKRUUzvl7L1nPspg
-         +iwtPYp6uKWupKBWolZA/DCqXzG8O+64TDcl740mnACdlyaZL1NOeOBPFciSsr88h2iQ
-         P2xSXIBt1mb1OF/ofAGT9jtKNDJNsZb0CzzJxdbJJ2RXJOmC53CwlOENAq1Y+YqrSd+5
-         k7bn3cR04Fc/MPiJ4TaajQ9zjTlyw+EBrOL3DL4arWf+u5i19YaBaZrLca9nhca4V39V
-         0UXA==
+        bh=AT90dIWtholrDKY4FOKu2oK87geOpoqbZrY5cxtsT3E=;
+        b=AglUCQgq/bOe9ggMF/NGiAlbezs7y+yW6XL5Van5njKT9HPtNKj9haPFuIeRZ/uTL5
+         opnDZqvyDy7eLc98YVhlx0v4k2xn0Fd+RwTNaCMVTuAffwHedN7zKCxYXAse8lvLS+n1
+         ZgeNAj6ypUnnykBJ5jkb+14q9yP8O8V6wECb9tHXMh44ojxOQPx8B1r3nub0M3p2OtIM
+         Qrh2YRRHUot58n7yllkhiEy8McnEj2r3obBL4QQFp7e9BcoN6xnNomSSTiU+tSkOhp84
+         sD+D2vHKz0548ptm+B8KFsq8H1Ycc26dgy6uOilciyPOc6Ruc5S4cq8Pr3iKQEQK/17y
+         qa5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794513655; x=1795118455;
+        d=1e100.net; s=20260707; t=1794513656; x=1795118456;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0pYj3bKFMtj7PR16yt0nJIoJWj/HYEwrPCOVrJ7Te0Y=;
-        b=FW0fLP6xZtHzblxaXgY6QhXm5MfA/Hly1xOqzao7DUpOXtXEMBV6OjLE2TzMioLtuN
-         AkKf2h1Y9k/vn+5hn1iP8ZPAXC/+7eI+CLSQfJno8evkcIOFTzj2+Jfj0pu96U4vDPKn
-         vIyQpSXOLzSt0flAbc6YxsG9fq59y6DRjSq25OcLM7Msr844Ed008vcBvkvbysQkq98l
-         BV/KOmnp5QanuVcA15tx09D74a/8NJ2Uivr9QjOLFbohXz0xRgH/RiR5139FcEGaqRLv
-         N4B6Qj5bmu2GvFQYav9qJLJcZB9VW5FEu5KVKjoCDhpKuHEQWeqQ3BURF3lGjxQIebjH
-         eK0Q==
-X-Gm-Message-State: APuU4Z/4w3u1uL7vYo9Lyhi1IPCj6GENtjfEZAO3/qO4BAKkxKfu5/ct
-	AjP9abhHEbMZqynu0ipjpZUk43+Im4Wb91aiGukZN4Lcbb8fJEVEQsi8avcpBYwTgSebc4W8fQP
-	W2fQG
-X-Gm-Gg: AYBFou1SQ3Nz4rFR9irfo7eHQi9DOICRxUgjiV0vnTIwR+aoM9eqILeti4FJJ6L52g1
-	smib4jj6p4VC9dsbH5Qh2dEeq0XyeLCyYqNGygsCT+aiL8Ac9Mrio2kWCMJU26reejy8b8yacD6
-	sUnB9HvLMPOWgKW3MgU22zA/71T8U1bWXxw//AOeukXHeqBoqWv+HX6i2qJu1w4ToMjbSNm7+Uf
-	ZpmEpO0kEh9XKovd0u936jUYRZM0EtPIVvr2Wv/uppM6vBi2SjNqKrMggnbnKMjDkCKgxvpmdUo
-	BFGSsG2tAP+QbDk8YsCfI0hcEN/9b+1awqOn6iSu80kUajqMVZ6SULRgdNkKKPGiM9gUTQtO5L+
-	jVUDopkoPFXcL6S0DZRQFKucqNpCTkrwNcSQTkVzxJtfKUXLoeu2eAS0RVZAw5O7zsWSifIyNtY
-	zcWWDyddQjm605+rJd2ZakzGlmHUfs4MOZlCgd9iyMtdNBNYbyRbOI25nS5jhY7JiWBHt2sVOU6
-	Kah35ZxQXQkIEOXn7Nazo2rwxO1ad8LMLpaDKBCFnR1hKeRq4hBYUlfWOJ/OM3orajvWVNuh4Jg
-	K12FSx5DgeutioTIzDaXCFNe2jT1hbM0dlcn+Y/oxMNLiTGXTZfLW+mW4+nQIqdqwh84GAY=
-X-Received: by 2002:a17:90b:3c4e:b0:3a7:b260:9ced with SMTP id 98e67ed59e1d1-3b1b0b87f83mr131779a91.58.1794513654979;
-        Thu, 12 Nov 2026 12:00:54 -0800 (PST)
+        bh=AT90dIWtholrDKY4FOKu2oK87geOpoqbZrY5cxtsT3E=;
+        b=Tzy+8EOHyF+7qw/MZT9qrViOBAhaA6/FosNpofmCEQA1UAZYk/QaGSAUw7awo9Nv8W
+         EPAvOjbkZAerBXIavav+IZ6tPVwpsGPrM0bs0HubUQDYlVR2CPPADuy9NTeLejX7uYuL
+         R3JtKc5K+vAMUAqw6s1K/xcqLe/Qn4Uuyyro0slX/Hr/zqUioWGXUofkZXj3xLt6a/V9
+         aMi3iR4LtF9DUu94hwNtE4PNTw3lRxNCMyDu90rfLCJojRAK2ZYbpX6hASYSamM18SAF
+         GL7jpSZkkAcmfQK9E9z1x/0SdJ2wVTSEMXKtcZudExlnCI23ZJaenT/dJXAAXcIk4t9i
+         KQIg==
+X-Gm-Message-State: APuU4Z8tc+IyeSHr2NxegRef4EQDCKOAImCmFRtiSGTxrAFuDfrEP84p
+	hHfE79b7zKBfWXbS/XHpVGwZlhk1q3MnuVD5hKFg9o7oxmH/0XpLcv/Y4q/ZhA9NoCfRhJnvDnn
+	SJUXimag=
+X-Gm-Gg: AYBFou3wzz/10iYdywDp7QLKwyp9QZgol866I/VQWvIh5RN7+wY13rUAEB3jTQ443iu
+	T1O5IPrjxAbGFgAxl8jk769tqD8PH6HAc3Y0bakLwYKMb59IyK89Hp/e7NfEg9zj8856gHGh1rc
+	bZnrIByfBwZTQn3gIPaG7QW6A/bPhfvxAnjv6usGWVm/XZDNnaZi/GPSLC5VrpCVD7IoKNRzv4X
+	1nyBxucGjyF6xTl4bDekqm8HRqJpf1Fnw73fDRFNQz3JabXmhhe9oc4427Q9h+BKDgmPcU27F2v
+	RV+oMlwQ5WT/YPFvd7ewHXHgbpFN6dwv9PZrG3MK4czxob3AyfeeXE30mk+OqThxCbrQsz5/54a
+	8iUmD3n/rD2JnFC/mPqP1Fwa+aG5UMEkdZQ7g8tg9Z5ck53ApMkz4CfQIeRpyfrEV62xYpce9Ex
+	8QvPdKU/CB1L4wAyBi2VFLjzGeIIqg8FjDp41PqtTTIxtuVm2rPJG7dJ/Sncm6ybHhsa1dYbB22
+	emVbE8gkZeWJ56zgOFYvPrTI9fYjIMMXm3Y2LdiJWpdwc8dJsF5ETGxo7j8kVGCFRYJEPC6zcdD
+	ciyA3/UiP/J2rERtvs+4Z7c8I/NtOR1rRPvScDD0D/PU4qxOxgjnRlGeb2aicMwWELGJXO2D5uZ
+	0/KGZ99zJBP7Z1gCq
+X-Received: by 2002:a17:90b:58f0:b0:3b1:4eb6:b3a with SMTP id 98e67ed59e1d1-3b1b081887amr156909a91.8.1794513655679;
+        Thu, 12 Nov 2026 12:00:55 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.54
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 12:00:54 -0800 (PST)
+        Thu, 12 Nov 2026 12:00:55 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 07/11] ss: fix rpcbind service cache
-Date: Thu, 12 Nov 2026 11:59:20 -0800
-Message-ID: <20261112200046.2164391-8-stephen@networkplumber.org>
+Subject: [PATCH iproute2 08/11] ss: read socket SELinux context only for -z
+Date: Thu, 12 Nov 2026 11:59:21 -0800
+Message-ID: <20261112200046.2164391-9-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112200046.2164391-1-stephen@networkplumber.org>
 References: <20261112200046.2164391-1-stephen@networkplumber.org>
@@ -99,88 +100,75 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-init_service_resolver() left the name of an entry uninitialized
-when the program was not in the rpc database, so ss -r could crash
-using it. It also leaked an entry on every skipped mapping and
-accepted a partly parsed address.
+user_ent_hash_build_task() called getfilecon() on /proc/PID/fd/N
+for every socket, even without -z, and the path was resolved again
+after readlink() had seen a socket. The owner of the descriptor
+could swap in a file on a FUSE mount it serves and hang ss -p
+in getxattr.
 
-Parse the mapping before allocating, and name unknown programs by
-number.
+Only look up the context for -z, and read it through an O_PATH
+descriptor after checking with readlink(), which does not call into
+the file's filesystem, that it is still the same socket.
 
-Reported-by: Anthropic OSS scanner (ANT-2026-M2GWD3L5)
+Reported-by: Anthropic OSS scanner (ANT-2026-EPMKLNM2)
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- misc/ss.c | 44 ++++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+ misc/ss.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/misc/ss.c b/misc/ss.c
-index 2becb852..5ecc5b5c 100644
+index 5ecc5b5c..9d2f9891 100644
 --- a/misc/ss.c
 +++ b/misc/ss.c
-@@ -1559,37 +1559,45 @@ static void init_service_resolver(void)
- 		return;
+@@ -533,6 +533,38 @@ static void user_ent_add(unsigned int ino, char *task,
  
- 	for (; rhead; rhead = rhead->rpcb_next) {
--		char prog[128] = "rpc.";
-+		const char *proto;
-+		char prog[128];
- 		struct scache *c;
--		int hport, lport, ok;
-+		int hport, lport;
+ #define MAX_PATH_LEN	1024
  
--		c = malloc(sizeof(*c));
--		if (!c)
-+		if (sscanf(rhead->rpcb_map.r_addr, "::.%d.%d",
-+			   &hport, &lport) != 2 &&
-+		    sscanf(rhead->rpcb_map.r_addr, "0.0.0.0.%d.%d",
-+			   &hport, &lport) != 2)
++/* The owner of a descriptor can point $PROC_ROOT/$ID/fd/$FD elsewhere
++ * (e.g. at a file on a FUSE mount it serves) after readlink() saw a socket.
++ * Pin the object and check it is still that socket before reading its label.
++ * The check uses readlink(), which does not call into the filesystem of
++ * the pinned object.
++ */
++static int user_ent_sock_context(const char *path, unsigned int ino,
++				 char **context)
++{
++	unsigned int pinned;
++	char self[64];
++	char lnk[64];
++	ssize_t len;
++	int ret = -1;
++	int fd;
++
++	fd = open(path, O_PATH | O_CLOEXEC);
++	if (fd < 0)
++		return -1;
++
++	snprintf(self, sizeof(self), "/proc/self/fd/%d", fd);
++	len = readlink(self, lnk, sizeof(lnk) - 1);
++	if (len > 0) {
++		lnk[len] = '\0';
++		if (sscanf(lnk, "socket:[%u]", &pinned) == 1 && pinned == ino)
++			ret = getfilecon(self, context);
++	}
++
++	close(fd);
++	return ret;
++}
++
+ static void user_ent_hash_build_task(char *path, int pid, int tid)
+ {
+ 	const char *no_ctx = "unavailable";
+@@ -580,7 +612,8 @@ static void user_ent_hash_build_task(char *path, int pid, int tid)
+ 		if (sscanf(lnk, "socket:[%u]", &ino) != 1)
  			continue;
  
--		ok = sscanf(rhead->rpcb_map.r_addr, "::.%d.%d", &hport, &lport);
--		if (!ok)
--			ok = sscanf(rhead->rpcb_map.r_addr, "0.0.0.0.%d.%d",
--				    &hport, &lport);
--		if (!ok)
--			continue;
--		c->port = hport << 8 | lport;
--
- 		if (strcmp(rhead->rpcb_map.r_netid, TCP_PROTO) == 0 ||
- 		    strcmp(rhead->rpcb_map.r_netid, TCP6_PROTO) == 0)
--			c->proto = TCP_PROTO;
-+			proto = TCP_PROTO;
- 		else if (strcmp(rhead->rpcb_map.r_netid, UDP_PROTO) == 0 ||
- 			 strcmp(rhead->rpcb_map.r_netid, UDP6_PROTO) == 0)
--			c->proto = UDP_PROTO;
-+			proto = UDP_PROTO;
- 		else if (strcmp(rhead->rpcb_map.r_netid, SCTP_PROTO) == 0)
--			c->proto = SCTP_PROTO;
-+			proto = SCTP_PROTO;
- 		else
- 			continue;
+-		if (getfilecon(path, &sock_context) <= 0)
++		if (!show_sock_ctx ||
++		    user_ent_sock_context(path, ino, &sock_context) <= 0)
+ 			sock_context = strdup(no_ctx);
  
- 		rpc = getrpcbynumber(rhead->rpcb_map.r_prog);
--		if (rpc) {
--			strncat(prog, rpc->r_name, 128 - strlen(prog));
--			c->name = strdup(prog);
-+		if (rpc)
-+			snprintf(prog, sizeof(prog), "rpc.%s", rpc->r_name);
-+		else
-+			snprintf(prog, sizeof(prog), "rpc.%lu",
-+				 (unsigned long)rhead->rpcb_map.r_prog);
-+
-+		c = malloc(sizeof(*c));
-+		if (!c)
-+			continue;
-+
-+		c->port = hport << 8 | lport;
-+		c->proto = proto;
-+		c->name = strdup(prog);
-+		if (!c->name) {
-+			free(c);
-+			continue;
- 		}
- 
- 		c->next = rlist;
+ 		if (task[0] == '\0') {
 -- 
 2.53.0
 
