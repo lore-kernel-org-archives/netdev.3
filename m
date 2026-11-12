@@ -1,157 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794485888;
-	b=CyCRPp0uFNKdoLaHrrFyOn8L9BL4H5AOblBqZFQY4LjXktci1Hq8STRc+icxhu29ouGB
-	 rJNySEGgkQ3CFhs8jStD9K3MxKLbmg7lMqSl+ZuYWm5+F1R+CNYS0NsraX1GjSVk8ZN7h
-	 UJjQKgQ5oBqLulNsiSdiQfAYSZ4Ub2R2vCMKG0r0UASyCD4EzdVN7Pw1QFRb1wp7sxgTE
-	 u+iuGrFJhZrl+9Ul2Xy/E7WQi1LLjGgHffVss1aYVWtA5Ol0YalW1jeCCWN5/vluWwsHd
-	 zLKzcuM9ofiMsVDdR6+XXoGICDAFUgV8oKFpTaCuN3vBvEjGxNFzn8CYcI6CGTYZH7Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794485888;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:DKIM-Signature:Received:Received:Date:From:To:CC:Subject:
-	 Message-ID:References:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=nGSFsb5tCeV12a115Jv1Rrt62GTEPMO5YdB2wl6D6Tc=;
-	b=TBeOLMGxaiBp0NSs+Mqlvw87fkgSggahX88gyMiPaFfb0VJov8b9Dov7+MILBxl+30GZ
-	 oUvmzxJmBCLdQnjB1QxzSxRsgssr8Vnx/jYp5ZwqZZhnjB3z7f4Xp46DH6RqWN7t4sDYl
-	 eobi0Jx6RoA3t/gV8N7mL4Qz2CLGRvuKAH1nEd/SLJ37XLUeP0V7RD4nVWg3Gbr7aXnIZ
-	 dQ1sfNxIXqHykSrD1qTg8LNIGF23I8V7OxRfrJgzn2shdUbcXnX0fICghs6bZR1+nggxN
-	 0gJnRBhZ+FmpsFqs0LkiFtxx4sPp2MCPf7w9hWa1uTRia6Yts+iUhXhqLEy/xDeK/NQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwuEYh;
-	dkim=fail reason="signature verification failed" header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=NGLxRHpb;
-	arc=fail smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.148.174
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794485958;
+	b=IzFiRuTsRD73f7MtDC4Ow6nVY+rqz55DwkZNnQB33tAvUaAI32VcxT3392Zf+Z/pXQhu
+	 BtPjLSujMwS4wqOKMoxfUoPDyIoXQ7nLveEIk5szU2fC80XdyWnblgDsgyZBCoG1kNAbL
+	 AINKOdpyzRvqKqWPAZ7QstfQrdqAclB6SUA/p6qSZGALcY7hqA+n3ZmTzsOVucQgqAIrI
+	 Nw4Qs2T1SEjQfNVQ96A8bQgrOT9HnTW1FxxWZofLo+JtRD7zxsBMDRgcyqWbSVwaIc+q8
+	 ngtduGuAnM+/get0Sru8huwwFwnY+aeXNkwfLqxJnUQHPpXtB9ng/UvC3w1O6UseqJQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794485958;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version;
+	bh=QZk03uKyCPRUhuK7+e1NdJhunuSpIM7RD1mNR5GIZ04=;
+	b=EOC9OOtX/X2aYWBfm8vT2dtcKnIIb8UNhpCmCHegVqarf9O7APxCitRBkFVUlpbyjrSo
+	 163ZdCEpYfOB3WCwER8Q3F4Bffs7N/vzYEe6R0/vrjU95YBrFWRCR6hXcwn9slgeMe6ur
+	 XvACaGYOyZd0kbEQB7WHMshMjGvPpe2sL0k+exPQx6F2l9LKWx2nJNr30slFph+obroqv
+	 CQ528tzYHNxjoIk4jl26otxpzexhY7fewHQGydqoOFe/WXKcI4o8qztcxNLwRrx7NUNkj
+	 l/8gew2QGEQ4+Y3OMnuT6YnYMVRzOg6vG1z6qO56/qtnQQiwICgOqcVfs+RiIHSdq6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=a2io9LQh;
+	arc=none smtp.remote-ip=67.231.148.174
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FD606A31C;
-	Thu, 12 Nov 2026 12:18:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 583FD606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD90606A321;
+	Thu, 12 Nov 2026 12:19:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DD90606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwuEYh;
-	dkim=fail reason="signature verification failed" (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=NGLxRHpb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794485888; x=1826021888;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=oScwrDMwY2vQdtKj6nzupia7fH/vOd/pISkBAuD2YP8=;
-  b=i0GwuEYhRuWa2xSOWb9HwRT4CmiSc3MAKN/ZxV9XmFO+5bw2FpJOslHW
-   ni0+vcHG0yMtHgbeTjINPW2WNE1xruOExhTJoI5asHzOaewFJWSE94G/7
-   3kKj/cUaTcFzI5pZeEIvmpXw4rfa6yrXCD2n4yerIS9iYXJgHxPQOhL3i
-   xoom7Mc09AoVxaAd8aO+8uf4gj9ZKj9G2kx5zxkPpx2XHJ4Pkvigfhuvj
-   eOUHpoMW+mwR1eU2S9bl9fzu5Oz4aD+oura708xJY4TgfN6UmBwhfuONx
-   nkfsbxZ4rQmBf54n7DJ+5VBPq8y2o3r9p1tYBIrT537QV9ZiTWNWGIDcG
-   Q==;
-X-CSE-ConnectionGUID: fEqxQytSQRqBVPF41f+aNA==
-X-CSE-MsgGUID: vAy2uvlcQrOvl72DaaITVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3313282"
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="3313282"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 04:18:07 -0800
-X-CSE-ConnectionGUID: 7d699Q+MTRyyv/Mn4a8Gtg==
-X-CSE-MsgGUID: dJePKQfdRDSccQRkIifbug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="8597729"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 04:18:06 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=a2io9LQh
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC7Pl3v121862;
+	Thu, 12 Nov 2026 04:19:11 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=QZk03uKyCPRUhuK7+e1NdJh
+	unuSpIM7RD1mNR5GIZ04=; b=a2io9LQhgoc2/aXhYruzN8c9yZr1+B+9rwhYBEh
+	IYVFt+SHlZJmkxZKC0w5UANAswNsC3JsdNCkoBEXxY6LFeXaNKd/X+cVf44dzdpG
+	2kv4N/5bCHzUwqX3zpObFNnV1MT9L+80RF1J/EY296qCh61LXhiZFktxlo4jQYmi
+	UmvqyBDFO3vAjqD3Tj4B/XuZJoGon3Z2OEDfUezsODbuuHaoWq+hgL8Vh4U3d6LB
+	mFSClcGaebNxO6UigxyNYJ58fstapvkQz5aNIJxPQSve682CY7GNzw974P6RJPHL
+	EC/qDa9v4DRBWFhz2k7omNXNoW0txzrczBmMk9lyaOaHTAw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4hw92913nx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Nov 2026 04:19:11 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 12 Nov 2026 04:18:05 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Thu, 12 Nov 2026 04:18:05 -0800
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.65) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 12 Nov 2026 04:18:05 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pI1WS4Jx/u2HQH5o+MRzXxR4maMQzyBw6Rl8j+f6IQk0QRvOoZ5r9GU3nc6AOaoYiukkZw54EvUoqrq+oDyUGt+J/k9g/w7UZC46vnWkJ4e8aL64Pz/QKwwH64gTlUV0tkKnP6GkJo0WDPx8ytg95W0pJn6P3CfTaOMWW378MkAddT3WExpCi2DIXd8WSAmNQH7epri527Ag9BMIKrAs5BGir34jqr39WpAlCjww8qr2tMdhBfNFX0rLEuUTJilhJnoBY9uPoZ9e5ykQ6l/v+NyRkH1gwBqnV3Uafmg7VgAvNiE65itzg3mWZMunO4YJmpBi7x3PbICV2PLeM6wryg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=70JxUuXTJPnRkSzNpzylxmCb5NM7FSflk87A9wf2syc=;
- b=cWUKJzA1DLWo5paP43jjpDEdGXasa2tymYVf9nkq4/+QogA7W+UOAz1MOto/7mE5byHhoEiIhraCoMCN2Ur+wuZOzorAJ2qVLkiVnEVWOGwQhT8VVbaIgrDWjRhY9hk1MGUx4uPrdbPKANcKa94G6f79lOkjlblY70cOTqFJwQ8H+Qo5ia+Cygplf5FJSdMhOXDAShycPCWGFwymef0NcU8MvQw7u7y/A13ou69xsP/aUqhogN8B+s0SJ5rIxO5fLvQSXKoJ50RyhGJzqzgp4fkqpJOTZ/IE4ytSKGczcJk0cTgUwn2aQKfw1jAvhyNXby/ndGaDrpPvKyTEWRgkRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=70JxUuXTJPnRkSzNpzylxmCb5NM7FSflk87A9wf2syc=;
- b=NGLxRHpbuT9c5Y1ML88eAisKrTBjKWXpZO4GEVzuvvCX7fdhlaImWijzlrd959WVFSLZ8SNg4GSyDnWKHLXRkwb8ET1gRaRs+PsPCaNv0v91vB5CFB2GBXdhbAUUYYYpG4aRBVhbU6etJjqqEAfP3YnAIdZ/+ll1LxPtEeUYQfY=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13) by MW4PR11MB6861.namprd11.prod.outlook.com
- (2603:10b6:303:213::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
- 2026 12:18:01 +0000
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0615.007; Thu, 12 Nov 2026
- 12:18:01 +0000
-Date: Thu, 12 Nov 2026 13:17:47 +0100
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-CC: Magnus Karlsson <magnus.karlsson@intel.com>, Stanislav Fomichev
-	<sdf@fomichev.me>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
-	<rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
-	<kernel-team@meta.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>, Pavel Begunkov
-	<asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii Nakryiko
-	<andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, "Kumar Kartikeya
- Dwivedi" <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
- Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
-	<jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai
-	<ihor.solodrai@linux.dev>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<io-uring@vger.kernel.org>, Mina Almasry <almasrymina@google.com>, "Mike
- Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
-	<bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David Wei
-	<dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Stuart Clark
-	<stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 07/11] xsk: Deliver provider chunks without
- copying
-Message-ID: <avWua/xvHrUa5wUI@boxer>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-8-bjorn@kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261110102039.1002605-8-bjorn@kernel.org>
-X-ClientProxiedBy: WA2P291CA0029.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1f::29) To LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13)
+ 15.2.1544.25; Thu, 12 Nov 2026 04:19:07 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 12 Nov 2026 04:19:07 -0800
+Received: from sjc4ccscust-vm07.sclab.marvell.com (unknown [10.110.24.160])
+	by maili.marvell.com (Postfix) with ESMTP id 52CA53F708E;
+	Thu, 12 Nov 2026 04:19:10 -0800 (PST)
+From: kmahammadraf <kmahammadraf@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David
+ S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Satha Rao
+	<skoteshwar@marvell.com>,
+        kmahammadraf <kmahammadraf@marvell.com>
+Subject: [PATCH net v2] octeontx2-af: fix TX scheduler queue index width for CN20K
+Date: Thu, 12 Nov 2026 12:19:07 +0000
+Message-ID: <20261112121907.2576520-1-kmahammadraf@marvell.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -161,165 +92,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|MW4PR11MB6861:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2fe2868-84db-433c-7ea2-08df40b6fee4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|22082099003|261009223027099003|18002099003|261022075727099003|261022105027099003|261021121427099003|261021135927099003|261102123227099003|261028144727099003|261026121527099003|261026140227099003|261021123027099003|56012099006|10067099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: RqVw8bESgUgzJLqH/8a1fBxjWE094MpOC2Oo+JU+tHqXA3foZJDfcxKXSD6T1QqOi5tM0sPlAmxj0PfONyuuvmNJKrUciEJzDws5cJeKIsO2vaK65+fmtsEFNp+a4Ac4Jw+CZJNh8xyQ/O/fNAMEvcCGJgTxkcXQsRe+3y2YnsqBDVlFeb3bGksIV0NoGVTb1RqhmsEhmGlxElrH1a14jEVXPmg3uTD62qqK1lBVzpqPqUPeTPC8To2eobj41A1p7sF2FeFL7WieMhmJASkWfP4A3xL/odebQW6OtkdzcXoKpWi4zzDGcZcVNRVS4wgKFrlyib/co25i7uedHmynRKrVCDv7YKD7ljRS0mxmzHQgBOta2HyQ2OsAt/CGSeiHESH3tbdF3oJi2D5l7GyNrj4giOEuwfCG708eIQts6dnR+W0Zv/EH8sIY340HmQmir0yUo7ulBW+PDUUGhkcnCEzZeLw9yf/umPhJYd/upOnwOP/e/UOcgyGfuosiD62So+Id6r60Ts3/vdBHUPa7HDADbFVKt/f5CEbETnVdUkdTIQyVKl/DLSG0LHJjxQni7/ZWoA5WZZ/tK5yEoHsIo+vt8FqMmD++vfdvduPAwM0A5daiJi7Y4tyAxWLo2kbZyFCk8T+Lo6VJ7GSPoWmBK1Ypc7R9cckMR+AJIYudkhQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(22082099003)(261009223027099003)(18002099003)(261022075727099003)(261022105027099003)(261021121427099003)(261021135927099003)(261102123227099003)(261028144727099003)(261026121527099003)(261026140227099003)(261021123027099003)(56012099006)(10067099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?CsaldlLtBSymbVh2zdtSzGpfGFbBkit3uuc2+eCE+QdO4+7KuhLBvxzF4Z?=
- =?iso-8859-1?Q?BVLTZ7GeN7v4b23nsfdXDG64BSuxrpubkOzs0ppFYZHlmtAY/+9oWGimyf?=
- =?iso-8859-1?Q?Q0zP1rmRohDpSUtz5nH1KhjUlmZA2U+NXAk/QALj7hH9Fu5RMu3J4rqoi9?=
- =?iso-8859-1?Q?993TcGWUKro0cis4FYnGQhLzFvdnuCcmWgDW/UQFeAr1TixRrKxAeFJccu?=
- =?iso-8859-1?Q?s2xo8Y6XU18TDa+yS4vY14MC16CySdLkQFRerPxDiXiOizjF70wJuQBajL?=
- =?iso-8859-1?Q?QnmYaUM1VZuKisxDzijzpTiLj0Tvc1qGpCuAXd9V2+OrBpx8mB42TYhm2h?=
- =?iso-8859-1?Q?dGCVr8Ehcrm8/JxL5Hd0SFuw6XX2rlO9+rlHyNMKu+4BAKKxHqwr+QBBqG?=
- =?iso-8859-1?Q?OWLGQcVM7RB7X9BlP79cKVB3/omXPuFDki+p6m8RIqtwXHPUNCYBWY48yF?=
- =?iso-8859-1?Q?5bEsCyrxH5guR1kMcb4Uf8Gj9a7Dh9Kn0WyzD2NVlWbYaegLX8BBmKO7EM?=
- =?iso-8859-1?Q?3NJ18/d/M4S/Hpa2zhzQfIZQG+3ZDaxNIVEexKVGmwL0MfkWsbLXD13srO?=
- =?iso-8859-1?Q?RHm6XR2uN7KQFkjuxkTzoW5naqOd2OvEazq8wNfQKNtSGWMAwmqS1ogoTF?=
- =?iso-8859-1?Q?/WO6w+fZpgfn/vCLF9HzWs0bYjYo1oYcnc2E2Rm9s15r4rJrXOEeIRl2LC?=
- =?iso-8859-1?Q?Ul6betVbkRnFatdgr1h+qO6+LIoXFLf6l11ZseDC5mDKS+OMSYhD5MWCkx?=
- =?iso-8859-1?Q?DYZCwhEiSthY5Cy66UtfsLljiZFt/iLNupnzyLMbzzWFu4nk9YK2jYVCI0?=
- =?iso-8859-1?Q?H5hHZWmEAwpaaDh6i2mhMT3EqLqJdNydui8JzfIpNQOlNhmUvT3c1ss63x?=
- =?iso-8859-1?Q?VbOv+i9p7X+chwCZCuRWWUZN+mQCQ0sEA1UQJVos38538Zhg1CCo2vC/s0?=
- =?iso-8859-1?Q?cHgwxiAcLk8uc1XVRwlGvMqoPo8CynoEab8FB8PsKQbP+ltvRksGhOIzZS?=
- =?iso-8859-1?Q?dmDr5aeWdp8jpbBlmB5YD1U6vE8bD3rzSSoP3ctZ3f8+e5un8BAGw+lpOM?=
- =?iso-8859-1?Q?5BfTcd31UZTr7gFaivYbFY1bTBWvivFSLmkgeJrgG1xZCV+GHYua0Klzu/?=
- =?iso-8859-1?Q?xwvkYlPPz6Urun+KGx9zdKliFINKzJBlLzhEZstY1HxZQJrdNNH8ipZC5Y?=
- =?iso-8859-1?Q?2N38AIVqiDqoHAmdNbKBDsDDVDGi+5Y3CC1s33SlUEKlrZY1BUHr1JDmci?=
- =?iso-8859-1?Q?cGMgIVc+2AyFPwvylcyYCqYM4WMx5QO9GU3u5yFlfclFDWVff0v4TIRWLi?=
- =?iso-8859-1?Q?717ba3/xuS25WP6ed2xEhhmx71DXPmg2d/tPzJaqjbhSmGcZ5lEOzLVI00?=
- =?iso-8859-1?Q?M0eobErDBgykuCU0A2x1+QUAvZSWnCbS6VXqF7DV/+5GiJl/oFJ649RAqg?=
- =?iso-8859-1?Q?YlpkDc02UEMNmo3KSjXIZCPjpiZTYsJtL9HGUjAajRswR89aa3GEKBOMPS?=
- =?iso-8859-1?Q?u47RLOIHc6UH6TimTfHHAP7XnDYLdZO293u5dskkWYaC4kMnP9lKB9IISv?=
- =?iso-8859-1?Q?HfZVCvtzi0WJQ5ZHA7+Ahjuw/UFaWkIsyEN8B0MXPRgL1wyGH8/Z8/FXG1?=
- =?iso-8859-1?Q?jwDEIeZ2cIcdL54ChtbhlvZSPKsdKE2pDYo8uVJUlpmMbIMBhV/qqo1Cqf?=
- =?iso-8859-1?Q?M0WNzFgqrr2IiQ3u3xIv73uaA3hvthmcxEyUJFdMilFM1NoDIzb/5ctL7X?=
- =?iso-8859-1?Q?nTdHtxyLnG64q01Y2PZxBDVKRf41ggG5wbPq6eV7fhtbmbC3TWBycYhqJz?=
- =?iso-8859-1?Q?3Hh17nKGjk78lPeeKTmQ24x6k+1nQDg=3D?=
-X-Exchange-RoutingPolicyChecked: d1AiVtni1Z+3UsrAWDn1t9Pms6xRz+m62Lo4Odl4ekxE9YAGZQU+Nq5FGUuxgXg8FoL7QFI6Beb0uAln0TbwXlUnTFj63dKbxICbUyI1OKLT2iOVEkdPRPzeOijFkmheyKHtkULx53VHD1S8pyYQ4wuQ2k6RnuY1h8vP9v60vtBUL3JRhub90mOKq0og/GWUuM2D9ErE7udsVl2vWxcmaRgK/7hZEMT0uNZpoClUlJ4GsIQgDm0lXnFQaZTq0Bey28xyWCbETTuM0R4nbNUDcWSnn7OpBVa3fHhrZ1r9VuTqzs1SfsnOQph86RneQT9vtdLi50ISOrtYJ6RwJDNj9g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2fe2868-84db-433c-7ea2-08df40b6fee4
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 12:18:01.5404
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H4W+AOx9CXFI3LpZVtqAX3GEtt9TK3tTIzB4TVEEGIISYgAsL6BXIJAAG5OTAhQ2z8btHapvdmigSXoo205vsIrDHc4HHJf2Y7piNUaQrrk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6861
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=GsDXaU1C c=1 sm=1 tr=0 ts=6af5aebf cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=TqQ25hKhOvP58c2vajwA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA0OCBTYWx0ZWRfX4rL2ORBkAnAh
+ 5OymMkQDkep/Eto/5kLzM83SbvevICaa/l5JzasHY0NfpoVV2NCjuWPtcUAU9PxXX6zjwE77Z3/
+ N8ArGc+JYEyFD7o2z+EzPJg08ACaiGw=
+X-Proofpoint-GUID: HqYVf-V2T1O2mvTIoaoTSxP5Pb-xIN4q
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA0OCBTYWx0ZWRfX2f+z0BpjVEv6
+ z5Eo4yoZJqjfsRkhUN3LY7EOh/1Cxn4YDreZIancepa9wIhoJK389a6D4NTlTMx0CPr/6H0HG2U
+ mz3CpJ4jc8ooz+0+muaQ2wIlkxwEBXDUFl72l+K3iv8s7I74Lrse41eM2tu1CcZo3aVnvqfvrML
+ YJ+FOhHigVUry069YeeBci0h8M4rw3hK+P+TCtIqaScKBjTj18CZpa4cOS2AEOSpbLwBc3o1PZs
+ G7iHt8JICohNK/mpuxaVM5frI52kGz3sc123UCoszw4m86AeyzycKnYGIJRqWzXeAmLLzIHafUt
+ xqmMDX6Dt/ChLdh6lSEX2GjnGdnvDvXgzjLyhMW6EQQYP75E0RHq4fkV4enpqt2atpc2lrz+oD0
+ Gs0CrsyO2uJqatmsgGsixVNzlV0jNiaChlkvg34YB1EkCsQ//CAaV0Jy13BCC3oTAaiN/96G/9m
+ LS5u9ZnxKPMZHqxlMGg==
+X-Proofpoint-ORIG-GUID: HqYVf-V2T1O2mvTIoaoTSxP5Pb-xIN4q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
 
-On Tue, Nov 10, 2026 at 11:20:28AM +0100, Björn Töpel wrote:
-> A provider socket still receives through the copy path, which takes
-> FILL entries without the provider's ownership checks: a chunk that a
-> page pool holds could be handed out twice. No driver opts in yet.
-> 
-> Put packets whose buffers all belong to the socket's provider on the
-> RX ring as they are, and copy others into chunks the provider claims.
-> Only the queue NAPI may produce to such a socket, so generic XDP and
-> CPUMAP redirects to it are dropped.
-> 
-> A device may place payload at chunk offset 0, as fbnic does, so only
-> the first buffer of a packet keeps the UMEM headroom. Such buffers may
-> be sent back as they are, so only descriptors with XDP_TX_METADATA
-> need room for TX metadata in front.
-> 
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
-> ---
->  Documentation/networking/af_xdp.rst          |   6 +-
->  Documentation/networking/xsk-tx-metadata.rst |   3 +-
->  include/net/page_pool/memory_provider.h      |   2 +
->  net/core/page_pool.c                         |  34 +++-
->  net/xdp/xsk.c                                |  82 ++++++++-
->  net/xdp/xsk.h                                |   5 +
->  net/xdp/xsk_pp.c                             | 165 +++++++++++++++++++
->  net/xdp/xsk_queue.h                          |  18 +-
->  8 files changed, 304 insertions(+), 11 deletions(-)
-> 
+From: Satha Rao <skoteshwar@marvell.com>
 
-(...)
+CN20K supports up to 2K TX scheduler queues per layer, so scheduler queue
+index handling must use 11 bits.
 
-> +
->  static int xsk_pp_nl_fill(void *mp_priv, struct sk_buff *rsp,
->  			  struct netdev_rx_queue *rxq)
->  {
-> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-> index 1bc42c8902f4..b9464b917a88 100644
-> --- a/net/xdp/xsk_queue.h
-> +++ b/net/xdp/xsk_queue.h
-> @@ -156,17 +156,24 @@ static inline bool xp_unused_options_set(u32 options)
->  	return options & ~(XDP_PKT_CONTD | XDP_TX_METADATA);
->  }
->  
-> +static inline u32 xp_desc_meta_len(struct xsk_buff_pool *pool,
-> +				   struct xdp_desc *desc)
-> +{
-> +	return desc->options & XDP_TX_METADATA ? pool->tx_metadata_len : 0;
+Update TX scheduler queue index handling in both register-address decoding
+and hierarchy parent validation paths. Also widen TX scheduler register
+masking used by mailbox/config register access.
 
-How is it related to this patch? I know I trimmed, but I didn't see any
-references above to tx_metadata_len, only some documentation bump.
+Without this, queue IDs above 1023 can be truncated on CN20K, which can
+cause invalid hierarchy validation and incorrect TX scheduler register
+access for higher queue indices.
 
-Besides, the amount of branches introduced to existing hot path is
-worrying. On next revision, could you provide numbers from xdpsock before
-and after this set run on existing zc driver?
+Fixes: b279bbb3314e ("octeontx2-af: NIX Tx scheduler queue config support")
+Fixes: d06411632e80 ("octeontx2-af: enable tx shaping feature for 96xx C0")
 
-> +}
-> +
->  static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
->  					    struct xdp_desc *desc)
->  {
-> +	u32 meta = xp_desc_meta_len(pool, desc);
->  	u64 len = desc->len;
->  	u64 addr, offset;
->  
->  	if (!len)
->  		return false;
->  
-> -	/* Can overflow if desc->addr < pool->tx_metadata_len */
-> -	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
-> +	/* Can overflow if desc->addr < meta */
-> +	if (check_sub_overflow(desc->addr, meta, &addr))
->  		return false;
->  
->  	offset = addr & (pool->chunk_size - 1);
-> @@ -176,7 +183,7 @@ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
->  	 * (pool->chunk_size is ``u32``), @len is guaranteed
->  	 * to be <= ``U32_MAX``.
->  	 */
-> -	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
-> +	if (offset + len + meta > pool->chunk_size)
->  		return false;
->  
->  	if (addr >= pool->addrs_cnt)
-> @@ -191,6 +198,7 @@ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
->  static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
->  					      struct xdp_desc *desc)
->  {
-> +	u32 meta = xp_desc_meta_len(pool, desc);
->  	u64 len = desc->len;
->  	u64 addr, end;
->  
-> @@ -198,13 +206,13 @@ static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
->  		return false;
->  
->  	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
-> -	len += pool->tx_metadata_len;
-> +	len += meta;
->  	if (len > pool->chunk_size)
->  		return false;
->  
->  	/* Can overflow if desc->addr is close to 0 */
->  	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
-> -			       pool->tx_metadata_len, &addr))
-> +			       meta, &addr))
->  		return false;
->  
->  	if (addr >= pool->addrs_cnt)
-> -- 
-> 2.56.0
-> 
+Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
+Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+---
+v2: https://lore.kernel.org/netdev/179264357442.3290.13030103983603784553@kernel.org/
+	- Fix parent scheduler index decoding in hierarchy validation for CN20K.
+	- Add Fixes tags for the affected TX scheduler index/mask paths.
+	- Correct commit subject formatting (remove nested "Subject: [PATCH]" text).
+---
+ drivers/net/ethernet/marvell/octeontx2/af/mbox.h    | 2 +-
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index cece197d1074..1b62f9d7f00a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1164,7 +1164,7 @@ struct nix_txschq_config {
+ 	u8 lvl;	/* SMQ/MDQ/TL4/TL3/TL2/TL1 */
+ 	u8 read;
+ #define TXSCHQ_IDX_SHIFT	16
+-#define TXSCHQ_IDX_MASK		(BIT_ULL(10) - 1)
++#define TXSCHQ_IDX_MASK		(BIT_ULL(11) - 1)
+ #define TXSCHQ_IDX(reg, shift)	(((reg) >> (shift)) & TXSCHQ_IDX_MASK)
+ 	u8 num_regs;
+ #define MAX_REGS_PER_MBOX_MSG	20
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 29559db68929..72d13d34829d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -2755,7 +2755,7 @@ static bool is_txschq_hierarchy_valid(struct rvu *rvu, u16 pcifunc, int blkaddr,
+ 	if (!is_valid_txschq(rvu, blkaddr, lvl, pcifunc, schq))
+ 		return false;
+ 
+-	parent = (regval >> 16) & 0x1FF;
++	parent = (regval >> 16) & (is_cn20k(rvu->pdev) ? 0x7FF : 0x1FF);
+ 	/* Validate MDQ's TL4 parent */
+ 	if (regbase == NIX_AF_MDQX_PARENT(0) &&
+ 	    !is_valid_txschq(rvu, blkaddr, NIX_TXSCH_LVL_TL4, pcifunc, parent))
+@@ -2849,9 +2849,9 @@ static void nix_tl1_default_cfg(struct rvu *rvu, struct nix_hw *nix_hw,
+ }
+ 
+ /* Register offset - [15:0]
+- * Scheduler Queue number - [25:16]
++ * Scheduler Queue number - [26:16]
+  */
+-#define NIX_TX_SCHQ_MASK	GENMASK_ULL(25, 0)
++#define NIX_TX_SCHQ_MASK	GENMASK_ULL(26, 0)
+ 
+ static int nix_txschq_cfg_read(struct rvu *rvu, struct nix_hw *nix_hw,
+ 			       int blkaddr, struct nix_txschq_config *req,
+-- 
+2.25.1
+
