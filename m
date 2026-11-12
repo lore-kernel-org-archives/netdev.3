@@ -1,59 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794478136;
-	b=ZZ99O8bNIlDBl/NNqeViTBC1MZskIqPjnOy3jTo9eSRt3t4LBZ/b87C9ChM7KCQEopwP
-	 eV7JXfL5oOmZDt1GL4djQ3zRkfgoG4Af2KWn31i7YUQrEeSq41Hc8jZPPVQUQzG9uuT1U
-	 pWcNOSB6mq3leUCX7Fl7BQwvDJrGLgb7doilfCrFZVGAgtS4IikSTsOvW5UmmZuWC9rgp
-	 RJPQOToPviHcckjqKQ4/2MOSJJFOoYPQEEXB+c/RaWWw4BeRljC3voVj4uuc2dMgNvRSV
-	 NosDRDXjCaIjvEsp2ZVuTSRY03xxhpeyFee/4Gk/FY5FnAWROhVqebrwzW+bkTeeYjA==
+	b=p/0HNmnalvOjfqLcyxHACMgZFPb0hWAJyqL/ThxMrqJJoO0DjNMSYxULHKoPJsitZ16P
+	 pztjmgpyNhc3GEJuHJrhAnpQhb1CHt/nit2MJe7KD24Y3LL2e5iEq12Y+Nw13sS0Xdf0F
+	 oMBYv4h4D3+2fvyPWi21kxH0XGV4En5X2XqHJ1Se3D2cHG/lE69h8mXPzcheFlbPRJgE1
+	 NZZ5vm+a8gOkZ+cQFscZO29GS+jrxTFWrLeoTokd7hI2GXkWliUdvPjUrxvWLWRKBS52O
+	 qZS1LK4+dW8dZluSO8HrIC+YfrRFKzPWrsx6iQcQm0qOIea7legm0r0uTvijfVCnxuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794478136;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=GYZI2TbfNbB54zmF9fDhfS5KLR8hYBAK5ZU+ntDYVgU=;
-	b=Q7tSaedzNfWUquZYBJGhiAUiJ8uKavLkwkK2uamNbZ8yfn6DRZ0Io575kHrLNXNHTeeW
-	 1ZQPcGuEeNS80GMWbZh8+i3E4oYENoFhcI4RR31UnxDUBY3/HLoS8fOCR6kzb+qZCnkqS
-	 9ob5E91QAe+HFdwEBG81MGmnz5GMaq+KjN4R2Ps2Cmjkffsga5tEkEVRVHA2mylKyHUsm
-	 e0ccK3/MNtbGhKx70miUL7Cl/zj57UlDG/jh8tp4gz7aBfBM1L/KERuuE90qm2h9rLZBN
-	 GXLRPCJKw2sdbS5mRHPdZKOFS6H0vtgubCuhT4FL33Hf32wCsU/c3FZWsS9RMbef4XQ==
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
+	bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
+	b=Bkq2ahfLO80K0ia6FfrSNv1eQyFIRof6E257BIzYOjE0a05tGRmNi08YB2tOg+aJXifY
+	 YOUzVHxiNIDbG1AOlU5qp/iaXKOFo8bcBPn601rQSRV4sdBDInU2utQHhreSN2s529POO
+	 DwxJ5JKJ7pGfzrxMEOi9QgoZAqfdaDRcdRlmtwGvVEf+3Q9JswTBdrB7i/IjdQVE+JwjI
+	 Xz1pTgcSA7TIHZahjl3Kf9haVJEtrtaMzvxWrI0ygEQjmuHHEsgG8ljhPj3/bqEBudg+i
+	 t/aYb2S34Yvr/wQHBl3X6aFRpZM41Veop7kQEX0N+A+/Z92icR4AK0IW8PeCEyg31GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ilD9MwXC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P7BNzbql;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E297606A321;
-	Thu, 12 Nov 2026 10:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B7E606A331
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:08:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74B7E606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ilD9MwXC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9D21F00A05;
-	Thu, 12 Nov 2026 10:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794478135;
-	bh=GYZI2TbfNbB54zmF9fDhfS5KLR8hYBAK5ZU+ntDYVgU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ilD9MwXC5520N6YeS3vN2b1mHsCczauLN+nyrrr3AMQHF0l0WlxTlGo84+HMj6DMZ
-	 RWOG9ZmfNQy08QesKrSx0GEsZC8oG+ors7gmYzDY1xdJQeUphUxFVW5QVuiO8vx+Mk
-	 9jMBMqSjdAxP+hbUWgIG/KpgUe+fM5dvLJJMN8iacQ+lHNnkbPjojDci+GSFiUi5wg
-	 Eysxtl/lQOEL3Ds0N4gQQsWkQsXFqZpu3FKu/wPDth3wWeftrRQpGYa0dmrcCmDWL/
-	 jXGmECaG5F4xlKiclG1pFOQOfIGXw6BHG2q4i3axooSTYCSz5ooKmE+qB/7739G8hs
-	 62BSxYn/kpiJw==
-Subject: Re: [PATCH net-next v2 1/6] eth: mpnic: Tx checksum offload
-From: netdev-bot+sashiko@kernel.org
-To: daniel.zahka@gmail.com
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, dimitri.daskalakis1@gmail.com, mohsin.bashr@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 12 Nov 2026 10:08:54 +0000
-Message-ID: <179447813438.2199510.8203457737182862437@kernel.org>
-In-Reply-To: <20261110-mpnic-lso-v2-1-ccd37b051d08@gmail.com>
-References: <20261110-mpnic-lso-v2-1-ccd37b051d08@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P7BNzbql
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so48016985e9.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:08:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794478135; x=1795082935; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
+        b=P7BNzbqlel+Im07I4ouOc191Y1OxCsDaPnWxNXwbbWO3MeDCBhfLunRmAP88K560Y7
+         D8k3kxGbhBmmDloc5oYxXIGTC7V+BIdkWyBVXBiDhQpF6gLaEGjoer0OhfNVKM6md0Yl
+         rtc6B4f+NZC/FoDYXvKu0B6aT1ipwWOWta3cZcupb2KRg6TtCyy2Kp6Lca/j89UXo53C
+         gpIdTSZju9hBrIRs8d6T73+35AMRGUxAf4iX9QRma5KlC2TQSLFGYobjHHkQCDZNkn3u
+         wXQyIaaRHrmPJZzS25QvnId8BtHhJe34WQMBGQKn+pWmoohLEq1Qc0o6aqwM8x2h/Zj7
+         KZ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794478135; x=1795082935;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IahaQWnW2L3d2rI5uNi4is2Ap/AkkkuOCkd2M+75oU0=;
+        b=cBNgvtou2rrlEF1XcLAlfIvA2TbjV2OLlttu8YcmnF2doGaPa3w5vkSRByShGaPdOb
+         EhAL+QcoPlZy8WBBGAhnyPM3iqQZZq0HdvWnn4BrVbHzwXcLtOGm5IA+VIFe1Mm1KIuh
+         MTbbbtm3ly/Qz7L+xWPqUPDp1dkBk8/J/sh1thYTj6G1b/wWthSEwA3DLyyi/7eFibi0
+         Hwuw+VYBd3sn5otFbxyD/2Cya+IuUF4q7Xqze1wNqgdsaeBlTHYTYZSctGl1ZuExI8wI
+         NwAzF94c/kc2qraD7tjV7u8TLYR3w6Bf67FA1iezfRSlEap3XLdoYPsIoQsp9eFsb1Cu
+         YESg==
+X-Forwarded-Encrypted: i=1; AL+hErEt1YIPyVE6UsyFCUyyFCc+sXf9b67kG/sncIuwqSYJFcGMDn+rbl9jsg8R8dWle/OfHVd4vYI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8LD+j8IYklL06dfPXioW5JTfKx8U143r6GnXchnJNh98KOVt3S
+	eRD4x21G4V0PNDEh3elHOO0K+uHZytn9OTGUqOLC5UxuUSkI/GVBOjpx
+X-Gm-Gg: AYBFou1tBsbLE3vThKGamrgxRd1axMNPjcB4rl4zxBwFHgrOSERKUfnhsDKueBhLtQ/
+	9zBI0p3P6++d2IHTNvJyv1gnycbwp2idr8P1tUCRZrDfcdfZEI4WHDutAu7mGNuU9GJSSTIBmlR
+	+oni0UFhO7GVJAv21M4tt4OaKwJNvLTA6mD1cJzDwkQW2zdGCuM3VmS5+hCbiX3ArJk0xWQpjPv
+	4MwAMF03tinVSuByc3RTZCBr9J/wGA3Xs2Fc5UUa7nuKfBkWwLrWszmbjRjCOid5WYs2rA2y/gX
+	u1m7+4ubDP9aX5jb35gzoVnsU+Rs9iHlhCLFldGgc/HQM8I+SdvZLYNVEuoLhqE+gRwCVAJcrbc
+	wT3IrTr7WrT7OfCfyWvT4h5RFOXfPMLLMlH59VdlOO8pOj+lqdS5l0D5k3o4h9mNKwEUMZnW2T4
+	uRRrKah7je6LzVLYZpEFZ5K0layTVOZhwW6t9JlrsSg7DMrJaoxCI4DjOAEPsDMCRCY5ClvRQ+p
+	vMHVT5k69WthspdkCZS4/sz5GSTJFmTexz0FLZgH4benIGASprrOQgAUGAAgE64dJNWTi7kWkg0
+	tWHvCrFpWL0DL2PKPS5y1QLR3fntpVBVkGK8hHLiiZv+2/QopkI=
+X-Received: by 2002:a05:600c:8b22:b0:4a1:742e:3 with SMTP id 5b1f17b1804b1-4ba0938a590mr91246165e9.27.1794478134548;
+        Thu, 12 Nov 2026 02:08:54 -0800 (PST)
+Received: from smtpclient.apple ([217.111.110.194])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0953d26asm70701795e9.4.2026.11.12.02.08.53
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Nov 2026 02:08:54 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,106 +89,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH ipsec 4/7] xfrm: prevent AES-GCM nonce reuse after early
+ GSO
+From: Usman Malik <usmalik90@gmail.com>
+In-Reply-To: <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
+Date: Thu, 12 Nov 2026 11:08:43 +0100
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S . Miller" <davem@davemloft.net>,
+ Sabrina Dubroca <sd@queasysnail.net>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>,
+ Boris Pismenny <borisp@nvidia.com>,
+ netdev@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <F06270EF-7648-4E76-811F-C607A8390835@gmail.com>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
+To: =?utf-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Wed, 30 Sep 2026 14:45:21 +0000, Jeremy Jean wrote:
+> In the software ESP offload path, xfrm_output_gso() leaves its segments
+> sharing a secpath extension. Each segment gets its own ESP sequence
+> number, but stores it in the same xo->seq field for IV generation.
 
-Low priority / nit picks for your consideration:
+Tested this patch as posted (patchwork 14858684) on v7.3 against the
+same build without it. Both kernels carry patch 1/7 of this series
+and no other patch of it, plus my "xfrm: use software GSO for inner
+tunnels without crypto offload" v1, which does not change the
+tunnel-mode path and moves the transport-mode case onto it. The test
+ran in a VM with two network namespaces on a veth, TCP through an
+ip6tnl tunnel over an rfc4106(gcm(aes)) SA, esp6_offload loaded, a
+tbf qdisc on the egress veth that queues the segments, 3 MB per run
+and 3 runs per case. The sender capture was decrypted with the SA
+keys.
 
-- [Low] The new per-queue Tx counter `twq.csum_partial`, which reaches
-  userspace as the qstats `tx-needs-csum` value, goes up too early.
+Without this patch every queued run reused IV values, 92, 51 and 51
+per run over a tunnel-mode SA and 50, 51 and 50 over a transport-mode
+SA, each shared by up to 7 segments of one GSO packet, with ct1 XOR
+ct2 equal to pt1 XOR pt2 for one pair under each value. With this
+patch, 0 in all 6 runs. A kernel with 1/7 alone gave 50, 50 and 51
+over the tunnel-mode SA. Without the qdisc every run was 0 on every
+kernel.
 
---
+Tested-by: Usman Malik <usmanmalik@engineer.com>
 
-eth: mpnic: Tx checksum offload
-
-This adds generic Tx checksum offload (NETIF_F_HW_CSUM) to mpnic, including
-for encapsulated skbs via hw_enc_features. It adds mpnic_features_check() to
-make sure the skb header layout fits the Tx descriptor fields. CSO frames are
-counted and reported through the netdev qstats needs_csum counter.
-
-> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-> index 93abdec44642f..65de6d999d548 100644
-> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-
-[ ... ]
-
-> +static void
-> +mpnic_tx_offloads(struct mpnic_ring *ring, struct sk_buff *skb, __le64 *meta)
-> +{
-> +	struct mpnic_tx_hdrs hdrs = {};
-> +
-> +	if (skb->ip_summed != CHECKSUM_PARTIAL)
-> +		return;
-> +
-> +	mpnic_tx_fill_hdrs(skb, &hdrs);
-> +
-> +	*meta |= cpu_to_le64(FIELD_PREP(MPNIC_TWD_CSUM_OFFSET,
-> +					skb->csum_offset / 2) |
-> +			     MPNIC_TWD_FLAG_REQ_CSO);
-> +
-> +	u64_stats_update_begin(&ring->stats.syncp);
-> +	u64_stats_inc(&ring->stats.twq.csum_partial);
-> +	u64_stats_update_end(&ring->stats.syncp);
-
-[Severity: Low]
-Should this counter be bumped only after the frame is actually queued to
-the hardware?
-
-mpnic_tx_offloads() increments twq.csum_partial for every CHECKSUM_PARTIAL
-skb before mpnic_xmit_frame_ring() calls mpnic_tx_map():
-
-> @@ -230,6 +263,8 @@ static netdev_tx_t mpnic_xmit_frame_ring(struct sk_buff *skb,
->  	MPNIC_XMIT_CB(skb)->bytecount = skb->len;
->  	MPNIC_XMIT_CB(skb)->desc_count = 0;
->  
-> +	mpnic_tx_offloads(ring, skb, meta);
-> +
->  	if (mpnic_tx_map(ring, skb, meta))
->  		goto err_free;
-
-mpnic_tx_map() can fail in two ways. One is dma_map_single() or
-skb_frag_dma_map() returning a mapping error. The other is the head or a
-fragment being larger than FIELD_MAX(MPNIC_TWD_LEN). In either case the
-error path frees the skb and counts it as dropped:
-
-mpnic_xmit_frame_ring() {
-    ...
-err_free:
-	dev_kfree_skb_any(skb);
-	ring->tx_buf[tail] = NULL;
-	ring->tail = tail;
-err_drop:
-	mpnic_tx_flush_doorbell(ring);
-
-	u64_stats_update_begin(&ring->stats.syncp);
-	u64_stats_inc(&ring->stats.twq.dropped);
-	u64_stats_update_end(&ring->stats.syncp);
-    ...
-}
-
-The csum_partial increment is never undone. mpnic_get_queue_stats_tx()
-then reports it as tx->needs_csum, so the same packet shows up as both
-dropped and checksummed by the device, even though it never reached the
-hardware.
-
-The same ordering is still there later in the series. mpnic_tx_offloads()
-also bumps hw_gso_wire through mpnic_tx_lso() before mpnic_tx_map() runs.
-
-One option is to have mpnic_tx_offloads() report which offload it used,
-and update the stats only after mpnic_tx_map() succeeds. Note that fbnic
-uses the same count-before-map pattern in fbnic_tx_offloads().
-
-> +
-> +	*meta |= cpu_to_le64(FIELD_PREP(MPNIC_TWD_L2_HLEN,
-> +					skb_mac_header_len(skb) / 2) |
-> +			     FIELD_PREP(MPNIC_TWD_L3_IHLEN, hdrs.i3len / 2));
-> +}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110-mpnic-lso-v2-0-ccd37b051d08%40gmail.com
