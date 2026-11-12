@@ -1,112 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.132
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794480835;
-	b=2UAEnYA28aPSI2XA8ojFLGdXnPlKjKPJyBUsu7VJETozGdpHvBgRGL34fQ+xGJHl3Ieh
-	 ZuCJv4Nq1iKOzooZSXInsDqj21KrTFluNJGmZFVu9FcccLvIC4WuPFIXPT8t1FLVjDN+S
-	 JFn1xflImMuhHB/8Hp5xG2jojZQRCoyhBFXMTL/dcoWmj1ndOhvWoHMzYn2ZV5Fr9XyyO
-	 Eih68mUCJ4QShzWSMFPQfitl6x+jzfl+a67DgdNxh08yUVH2kMdb3bi4WbDoVXSi/SV7U
-	 eUZYIn4y8ztBsvpRcXFEelmhdDCdktFSVEnfpvS5peAO+sth+OqClMyBHkABzBeCidQ==
+	t=1794480996;
+	b=c67EUU6YhRHO60bF/7NFYrkkVQuzSKmI+ToGCrCl8zF1VZDeOV2BFqwPVfNiqYkpQM8H
+	 0vx733aCTS7S2VzhZJ+BSVrmSmM4mKps/qcQytRRVtVKUlswi9mPMgS1DjXHlJwuDOBGx
+	 YW02f2FQ5McHxCoawrR9ZrqN1+pCAxRi8rkU33CJkhwXvs+qu1q6zsnQBuzHEplmMpDEq
+	 z+m+sZR8gqbdROOus4OJcK6mgEAlVmvO+nBsAva57jHshCSXmkdSHQUHG5AKKwWfRTG/u
+	 G4TcOPCFsdY8jyRl4NNzndLXTBxSPN0Fq0QDRjcEm8LgoOOLJt5Bh9UGpN/MOJl8scw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794480835;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-	 Content-Type:Content-Disposition:X-Mailer:X-Mutt-Fcc;
-	bh=x9FymSRgKEmF3YLVaEmXV+qBe5FB2zMq7gJot0C8RFA=;
-	b=kJSd6dt58uKXtZf3QDm030PGeMe1tTC4UxzNT44Hbt3Hq82qA1blcwjysu/fNJzw5LdI
-	 0L1N2PT9FwlXGL3iYZBjSgk1XPF3MdLA1pYLefS10FgzW1gJHNfG+0zqm6tlOH7/p1hCG
-	 4YGXkQcze6XPnGdKYfRFMiXatSUKswViixozvJJfiflC1hAsqPSf+eCtJ4BdpigWDZLvG
-	 sQy4pXuPdW7HBEp0z1fXMV2O5Z5rtldIiT7bf9crLLm/VnLG1ekjFr9Hx8BxALaWTJpsa
-	 UOdHQPc8qUNeOi716tfdzokje100VQDbgUnCfFCFg8famq8OxOiB8zg8oGVeUcht4QA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794480996;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=jtGHs2eqhkMRzNqa6Gcv6/y7Ijx8kqUTG8HewUTMQTc=;
+	b=W6UgnJkiBLp4nMSDr5pIw6KkI0Lda57kraKFNYRuBHIoJ72Wy5ctG1sKnz38NmUt/ia+
+	 GESHXZYNUKVLe64fn1bZGWunx0GiTi21JalqVlbt42nMQ9cdissTYg0dxcvbbQeFIMXVk
+	 1jO6/Ek+QC6Cmu9gklM/3B+LgIp/tauVEuRTjEA4nfR7qqgGGrIy/LPTPAc0exLlUnR28
+	 V4Q+ZcheIog9bRcwY/fEXDZXjKXNmzUUQ7UwxELBoU+OPDIHKse1/vW3mfXVsqjesaNSm
+	 9w5vYIOGMFe3oemeGs9c0WYfjEvpqC5lFoJLRd64sR5tpQgfD8eaPBZP9updK3Rc++g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gbIsmZyd;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kYxzWQLj;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jrkXU1T+;
+	arc=none smtp.remote-ip=74.125.227.132
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29E606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:53:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D29E606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC9F606A33D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:56:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FC9F606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gbIsmZyd;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kYxzWQLj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794480834;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=x9FymSRgKEmF3YLVaEmXV+qBe5FB2zMq7gJot0C8RFA=;
-	b=gbIsmZyd951GkYAeuc5ZVvZPM6iBmnW+NSEqvDeWCvQAXHsX3ABjnR0P4lGihKq90YfK6Q
-	muIHNQdA/M0Q1Y76+xl/OBmt0j83U64zG185sJiLibkqkTSIltYKflwrqnOukKVyKoCKs/
-	u1a6BAw5KImAlk18fDj78C4Fx2PVzbU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-67-jWEj8hRFNTupQT-WxUgwCw-1; Thu, 12 Nov 2026 05:53:52 -0500
-X-MC-Unique: jWEj8hRFNTupQT-WxUgwCw-1
-X-Mimecast-MFC-AGG-ID: jWEj8hRFNTupQT-WxUgwCw_1794480831
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-492d47f142cso537871f8f.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:53:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jrkXU1T+
+Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2e96b8bfb43so17277215ad.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794480831; x=1795085631; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x9FymSRgKEmF3YLVaEmXV+qBe5FB2zMq7gJot0C8RFA=;
-        b=kYxzWQLjAgb7uaSd94J0/GnE3e+uslJh0T7nLI6J5Y2CPFK/vi8ve70V/KvrFhlfXb
-         2wV37QFKMOalUGJOTR9LzckAGvWSY7r/9RLfD/ATIjyHIUQFfjaU4/QzASTHohMie+L2
-         3JdblAlJUCqEAT9YOF+ROtjzjTpVkvTIRndO2HpUNCaV29bS0yw1R+vbbW1aSgU+pcco
-         xkboxj70uy73V4m802XAfLuy1zMD4g3P4ktC2GK9pgPGXZM4Y+DJ4vqpTtLiDak85cCl
-         j11asEvqARn4jN0bKjaFP20rZ4PCbWURM7+xQXgbCPhzVRf4LcCZ1QFPC1ropbmu3nmr
-         7Atg==
+        d=gmail.com; s=20260707; t=1794480995; x=1795085795; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jtGHs2eqhkMRzNqa6Gcv6/y7Ijx8kqUTG8HewUTMQTc=;
+        b=jrkXU1T+YrLuTQfCjAmR7IxcQeKyuXOPWSQgLpSmcaKR/ycd/j7ErZn2Q9V/OePG6M
+         mw0k1g0N/JiJZD07zxm3VaoVtoPwBASHFEOjObAcHSoTfmS19wLeCvIiY5wm92sCDER9
+         HhJaCH72PUwGrZ1gfY1m5z4oNsgGE84915pxmwW7yazaKyktie7US8qdBONlXyw9b/Yv
+         YLtaUp58Md8tfZlYy2Iai7WVKDpSYuiSx3MnUqAhxlStT/X+DO3LhesPnYDIpqgx4cB1
+         wehn6EfRpgZKi5YdQEfNtPQ3qT90lTorr/O9gEOpvTvtwwuu6LzohbAUBu4tKnBByHLP
+         uyCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794480831; x=1795085631;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794480995; x=1795085795;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=x9FymSRgKEmF3YLVaEmXV+qBe5FB2zMq7gJot0C8RFA=;
-        b=p4SjlAGdKkAuy6WYdTZM9oZ5Yr2xRpRZb11EqscsL34OpctYNp5H/WofFeqGA3QR/6
-         osHS1T0kffgXPTlwTOvKT8vvi+9VcxfnHyND8/Q7r8KBKEyqK/b8h5J4mzfeVOugq3FJ
-         eclc+Wh1N7PXov6JX5NrU9xKWYL/0SfT2x3PqPMr3/7ILu/+O1yNnztYOZ+XG7FqqEa7
-         mgjPptOfG5t6YHkj1Da1S1lhNChceQPWSG6JA/bvc2Rx5k19g2zfig3G1efYedaLnd5w
-         T0+durffZRTVuo0lizkKi8He++LY61EGUwRJ0mwdaJzO/aU9WAjagR4mc+jEwji5W2EV
-         L1ew==
-X-Forwarded-Encrypted: i=1; AL+hErEChyZL1J917i1PIU4LPRAXUjVQVTXnOAp8kpdz5mpzcgEvjZSevC5h0zQRazVBjdaM1+e0Npg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/M9bVyjxr2vRtOOpgLw9cXucYp53VQxEX3KCeVA/HEWR5rkaIA
-	iVBKUs8OTfkkXbpFknUaWohoYdSccUdj8Fzh2Fpag9qFg1OePfCAwBwUtKMwDtBxjcvsk8cuxyo
-	pZtUjcFc7M3EEKgIIk7EJA0HFpN75JDCYLQllNt67+c2oynahv9OP+mgTrQ==
-X-Gm-Gg: AYBFou1hPscADPt74lPBrXNZ/eoO6pK5JfWYFAcH8cJX7ANGAsjgfl+6HQPbfyVSNX4
-	L+3bPEQNvUHo0vVcc+Src6YYzONM19PsuuLouqpToK/f1HqYx6RXLxWNdvEiVdwzWPvgBZG1Kzc
-	OMfVHjs7WiztWe38krbrSqyS+36h58WWxx1l4YTUB/dpXQ1nzCP/K1ArzO+h0XQpBHXWcO6GMkT
-	FgcNGhjEoBs0427fsXGGMIodHAPalB2ltTWpx6uAZ64PSMwPvGfawgDIAUTdV5Fw/jqThFdYfx0
-	xqZgIjyF5Fanfa6CF3KJ/oKBiGKtTaPSQm7Xsjv2xA4+auL5sQJmUwhFPr544aXLvbvtpD48Xup
-	PKKtHYRsG3g/0grYY/n7awkDtcQTCnTzjsu/LLH9n8g==
-X-Received: by 2002:a05:6000:4211:b0:498:364d:7509 with SMTP id ffacd0b85a97d-49b02d4cd48mr4648423f8f.24.1794480831209;
-        Thu, 12 Nov 2026 02:53:51 -0800 (PST)
-X-Received: by 2002:a05:6000:4211:b0:498:364d:7509 with SMTP id ffacd0b85a97d-49b02d4cd48mr4648361f8f.24.1794480830624;
-        Thu, 12 Nov 2026 02:53:50 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cbeedsm15992928f8f.43.2026.11.12.02.53.48
+        bh=jtGHs2eqhkMRzNqa6Gcv6/y7Ijx8kqUTG8HewUTMQTc=;
+        b=aw4TTXxUNahZaxy8K9YVX0WCkYQTia87oKfgoxyYR/+0Yph6QX5pKt4ulxyhi/MyBI
+         97e95JY86FoWVMzWNnUatm6ThCrNRNl0f3fx0n8tw1iK5PAr20KmfLGS5SUcA3wBRLNv
+         FqzzhTC4SMTlzu8860yg97+5q+RxM0TaMeaqgmGe/DsGExS3CaOKeeCUPsku9dQskdB6
+         WNI/TI21W50HGppqSbxGvQHBCEHWqNcAbUF2JjKnCfi0viXYtqz89NalhSRD/G7otsYT
+         +tuGqnxnO4GS5+g98Dczx/0hLjVqFz0AU8LtkJ10+aKQNxVcyMcdcBTP92/w4wUkdqvi
+         r/4g==
+X-Gm-Message-State: APuU4Z8dOsS3ZAWBHewiMel032BcGru2HYHBW8eh0GL0LMc3Dr4YAUXn
+	Ht58CXDo9/VBY1xJN3KeN+muVvk/NsudcUtHZXQPPZnQrQpDay7ZW7+S
+X-Gm-Gg: AYBFou3v3diOvMrbmN+lSSJ6f5PL+lZ9rMWDgkYhUnVTwt8KRYQmFOCP1FQzlxYxESb
+	avKVAHlj68iN4Tf/RLC+Re0F8ujFT2EJscDPXJ+OS4/f5mfBwaEFvtXC98z/Lkqjtz8whNyt6H5
+	DUPA84HwzptQH7SxI9dxHUoRFjDe/2A2lWn0DD2jZq3FTZepV2+D25he1Kr+zSSbZYjNZUxlQig
+	AoVAzrF5QR2qrDzQEXgmn5UkVv6+iyTK9QlshA9dehBqTSu34ZkDOoeYB/3GzICRFA8dtnIbsjl
+	RuWlEKzeSfhsniqE5t/Jq3f4oXsGK63tKjJx+KYQEObnV5WgJXfziufBDXSr5uT5+x3hyePlILb
+	Ujn/tc5PvR1mJ7mhLGVzvx2K1SrJW7sddjNPWONHki6ELbbqLyiAahFXN4sWO83ywlcO5tW1uS0
+	husT+XGWWXPjVV71yN6qQPANTvRP+vUd7aPKATzKHZl45hJ2wqVQfZ0Jtqo695Rz6QyG2pr4Z6L
+	enURQeIK8jeSAXcJqIO5dPnq+o64bihbKEjgbSNUp54xlwBV3W87P2kGjgP1XAw3QmjXeK6GgAD
+	tX0ekc9xG/k/WGvrwttzhy9pJZnZAHdj+hHuT2GATUEA2H8=
+X-Received: by 2002:a17:90b:1d0b:b0:3b0:8947:fad2 with SMTP id 98e67ed59e1d1-3b182fb2981mr5114945a91.53.1794480994840;
+        Thu, 12 Nov 2026 02:56:34 -0800 (PST)
+Received: from J4f-Laptop.localdomain ([183.36.237.241])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d0fdbdsm4228959a91.10.2026.11.12.02.56.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 02:53:49 -0800 (PST)
-Date: Thu, 12 Nov 2026 05:53:47 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Khan Zhao <zhaoguohan@kylinos.cn>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jason Wang <jasowang@redhat.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH RFC] vhost: set dirty log bits without pinning pages on x86
-Message-ID: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+        Thu, 12 Nov 2026 02:56:34 -0800 (PST)
+From: Shihuang Liu <shlomojune6@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Shihuang Liu <shlomojune6@gmail.com>
+Subject: [PATCH] bpf: Reject offloaded maps as map-in-map inner maps
+Date: Thu, 12 Nov 2026 18:56:20 +0800
+Message-ID: <20261112105620.57520-1-shlomojune6@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,85 +106,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
+Content-Transfer-Encoding: 8bit
 
-vhost had a TODO to replace page pinning with a version
-of set_bit that works on userspace memory, since forever.
+bpf_map_update_elem() on an ARRAY_OF_MAPS or HASH_OF_MAPS map accepts
+the fd of an offloaded map.  A program that then looks up the inner map
+gets a pointer computed with the software map layout: with an ARRAY
+template the write lands in struct bpf_offloaded_map.dev_priv, with a
+HASH template __htab_map_lookup_elem() reads bpf_htab fields past the
+320-byte offloaded map allocation (KASAN slab-out-of-bounds).  An
+offloaded map used as inner_map_fd is accepted as well, and the first
+inner lookup jumps to an invalid address because bpf_map_offload_ops
+has no map_lookup_elem.
 
-It is really best to avoid GUP on fast path entirely.
-Implement set_user_bit and use it in vhost, to do just that.
+The root cause is that bpf_map_meta_equal() compares map_type,
+key_size, value_size, map_flags and the btf record only, and
+bpf_map_fd_get_ptr() relies on the template's map_meta_equal() without
+comparing ops.  Offloaded maps share map_type (ARRAY/HASH) with the
+software maps, but use bpf_map_offload_ops and a different object
+layout, while the verifier and the JIT keep using the template's ops
+and layout.
 
-Should not be too hard for non-x86 too.
+Reject offloaded maps in bpf_map_meta_alloc() so they cannot be an
+inner-map template, and require inner_map_meta->ops == inner_map->ops
+in bpf_map_fd_get_ptr().
 
-Reported-by: Khan Zhao <zhaoguohan@kylinos.cn>
-Link: https://lore.kernel.org/all/20261112085631.128819-1-zhaoguohan@kylinos.cn/
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: a38845729ea398 ("bpf: offload: add map offload infrastructure")
+Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
 ---
+ kernel/bpf/map_in_map.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-
-lightly tested. pls test and resubmit with your tool.
-
- arch/x86/include/asm/uaccess.h | 18 ++++++++++++++++++
- drivers/vhost/vhost.c          |  7 +++++++
- 2 files changed, 25 insertions(+)
-
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a0dd3c2b233e..ba1e7c3f83c8e 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -594,6 +594,24 @@ _label:									\
- 	__ret;								\
- 							})
+diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
+index 0fa3f2ac0f992f..5aa1f8249feb51 100644
+--- a/kernel/bpf/map_in_map.c
++++ b/kernel/bpf/map_in_map.c
+@@ -22,6 +22,8 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
+ 		return ERR_PTR(-EINVAL);
+ 	if (inner_map->excl_prog_sha)
+ 		return ERR_PTR(-ENOTSUPP);
++	if (bpf_map_is_offloaded(inner_map))
++		return ERR_PTR(-EOPNOTSUPP);
+ 	if (!inner_map->ops->map_meta_equal)
+ 		return ERR_PTR(-ENOTSUPP);
  
-+/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
-+#define set_bit_user(nr, addr)					\
-+({									\
-+	int __err = 0;							\
-+	__uaccess_begin();						\
-+	asm volatile("\n"						\
-+		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-+		     "2:\n"						\
-+		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-+					   %[errout])			\
-+		     : [errout] "=r" (__err),				\
-+		       [ptr] "+m" (*(u8 __user *)(addr))		\
-+		     : [mask] "q" ((unsigned char)BIT(nr))		\
-+		     : "memory", "cc");				\
-+	__uaccess_end();						\
-+	__err ? -EFAULT : 0;						\
-+})
-+
- /*
-  * We want the unsafe accessors to always be inlined and use
-  * the error labels - thus the macro games.
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 2f2c45d208832..9ba16cbd788cc 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2405,6 +2405,12 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
- }
- EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
+@@ -110,7 +112,8 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
+ 		return ERR_PTR(-ENOTSUPP);
  
-+#ifdef CONFIG_X86
-+static int set_bit_to_user(int nr, void __user *addr)
-+{
-+	return set_bit_user(nr, addr);
-+}
-+#else
- /* TODO: This is really inefficient.  We need something like get_user()
-  * (instruction directly accesses the data, with an exception table entry
-  * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
-@@ -2427,6 +2433,7 @@ static int set_bit_to_user(int nr, void __user *addr)
- 	unpin_user_pages_dirty_lock(&page, 1, true);
- 	return 0;
- }
-+#endif /* CONFIG_X86 */
- 
- static int log_write(void __user *log_base,
- 		     u64 write_address, u64 write_length)
+ 	inner_map_meta = map->inner_map_meta;
+-	if (inner_map_meta->ops->map_meta_equal(inner_map_meta, inner_map)) {
++	if (inner_map_meta->ops == inner_map->ops &&
++	    inner_map_meta->ops->map_meta_equal(inner_map_meta, inner_map)) {
+ 		bpf_map_inc(inner_map);
+ 		/* Its users are those of the outer maps from now on */
+ 		WRITE_ONCE(inner_map->was_inner_map, true);
 -- 
-MST
+2.43.0
 
