@@ -1,66 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794446560;
-	b=M8lo5HtYKyGTqSOHi1+llV2Y2cPrlXEf54KCCyl9hxHfIgGYx9Mzg+sXk6e95fb/8yDA
-	 boiWmVQdtAtfqjFSeZYxFal5sp1/ebmKaS6luFWmrAZajsF7SOo424JCHrOCETwUkRUCn
-	 lX+NTzd6qoBY7AFrykiDuX7UTZkVdBp/BIc6EXKAuJAujtUnTOXJzIEd4nAbJ1A7Vwet2
-	 TNR5MRCo1znIREfkBobfTXEU47SMuo8jux33a77Ocrpl0KrSsx4G3DZOn9lNbwsbp6HEp
-	 uSCYAYex3awgZZOrd3FacaHi+obpSUW/Z9/FFn+LfH32I2Y2zYHKFv3jVdurmF8Tauw==
+	t=1794446839;
+	b=aFYFEh+3VPfIlA2ppzc3lfLdu5ZUovCSi1i3IoUdKr5uROs96IYb57nSZTZgJD8wIGjx
+	 +5asv8GdNZZ/U9LUH6iqphv7SxVU+ZPLS1tMtYyA4omLu3cFdoyTJoWiK86DeDS7VfBmf
+	 Nw3ctow+9lsszTsl5IdKJFZ/oB+Z2B0vHDHvEMlZznLyopRmdL9n4FkF+67N3qk8gXXbv
+	 EYFUB5D8AbYx0pa4qxGLNNLmSY1Qg5k93mSM59zAb9Z6BEmO2iO4hQuVOnXmtJaOXs87z
+	 iZNJUwcK4YGUx0GclIXzbfJrcqtCPPdcJOUm0lw3bcOl7uHTva8yCk+K/IN3mv+TzGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794446560;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794446839;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=yMgbUplGc67CDT49oiQXFHdtB0XBP/ABTmNCDVt654s=;
-	b=THMVN4//9VD0Oib+XPxi28GPGXX6hHICylBLvZDqTDZQ+OLqx7RU+0pINnhZc2gnTkxw
-	 7yTMWq/liF7naddFpQV0RrFrrUIKe9lO7IJ7ZPiNatuhYOyJZjm3dVBzQ7GuZsDXcfk39
-	 TitSImjnsqaCDjSBtDq83LB8LqWFIq814WJW05QRN5hRHLZ3DGxHo9wHal526sTTNNPXs
-	 jd9a5jN5CeViNDjlTHdq5jL7rE7KLlJoAyl5bNwvx5mhJ0DGLZ0vbz2B9lak/cfKIHuar
-	 WpHyBqzr2y2LHSC5z5qjnc/F4S+yNi+LBTcJOVSe4hErohkJQA5Ko3MWXPdLgDxL2fQ==
+	bh=q/lveT1bVR64vDjyJJw1kviu+yZQdYmoJOsd/WaZ6p8=;
+	b=4OuVXtTXq6s+rlpaKoATEXXc+2EJ6bfx6CDEHt2YfrV3jdM0RzEJTKQqijUaVvg8A4xt
+	 qFZoaLBuWuEo4auiJRSZslmH1PbUFjaYTRTZZZilZg0hQPIA/svhe0HM6Be30hcCymKxo
+	 8qkh62symBEzt46FChxUekpR3O250MSGpsJQUSczf00vuwrPzuJ7+WsJ/AqtIIBtzrvcm
+	 7t5oBh5qe7gUFBBMNmEJFljidiZRuPoSFpyYrmkyrCSkOyrSPlEhff331vDMWVSb4AdUW
+	 tHDfyVfD7YhrMB0IB+QbM4pt41cbJ4sBP5TOM40fiRfYqujnTVXLhiiUyWYJuUdkf8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NsL424JA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O0Xse3nj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285B0606A31C;
-	Thu, 12 Nov 2026 01:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A64606A31C;
+	Thu, 12 Nov 2026 01:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NsL424JA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014821F00A06;
-	Thu, 12 Nov 2026 01:22:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O0Xse3nj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049761F00A06;
+	Thu, 12 Nov 2026 01:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794446559;
-	bh=yMgbUplGc67CDT49oiQXFHdtB0XBP/ABTmNCDVt654s=;
+	s=k20260515; t=1794446839;
+	bh=q/lveT1bVR64vDjyJJw1kviu+yZQdYmoJOsd/WaZ6p8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NsL424JAQYNS49/xxqD5d2o9VWjbWTUkrnj05TSe/ZCiOBHpLLgaBGZJolIMiEYOa
-	 rQGZJZ5E3tdchZ4z6ED8TBuui8XcshgtTU2kRl5we0KZ3kRXdwm97qPect0o//6vp4
-	 MQQ3lj3hEUnYi0MMJiyofLq7oSO0JJngff5g+cNFziZf6+9obvdaYVFnl0IMIRMsMh
-	 e/JZPi/1qUD+aXR/K0Unmn9R+ht2TOK3lYusaJAh7ZByzqgklmtfApHkqVLBgeX7M7
-	 2Phopcip5EYZsVcvTsGzLoiVyIt9wELfLn9Y9lZ/74UfZjt+AjwNWB/wv5+yGS9son
-	 kRt+YTzL6w6dg==
-Date: Wed, 11 Nov 2026 17:22:38 -0800
+	b=O0Xse3nj+TS+Yj85esN1+koCSwhjpteuHkg6I6K+JLFc5/NSltJSsE52iDqkk9BOo
+	 S9pwUKkYTWjLWAcLdNB4N0RSsGYgceuDGY2J1tTw/jZLRILLR+MOw2sEV6HUwD47Q8
+	 xYY8wIJwEIu8Vh0f7SAwTYnADSXXD+BHQkCvDY0WvrVa0u7jwZ6IFk/F5qF3Kcc/PK
+	 DTJN5HT9oY+6U0lKs/YIoNouNI0EF0RVwvQbQCm1Aap9HetYbiP9Nv0XI9B3k9C4Ug
+	 SS6XsYR+1TrRcww4XrORI+9zj30p7xb4nC31uvo4Yf2PE9Pv3en79300Ha212kyUYj
+	 hST/dL2X3LYIw==
+Date: Wed, 11 Nov 2026 17:27:18 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Alexandre Cassen <acassen@corp.free.fr>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Ido Schimmel
- <idosch@nvidia.com>, Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai
- Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil
- Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
- netdev@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/4] net/sched: honor
- TCA_ACT_FLAGS_NO_PERCPU_STATS in bpf, ife and skbmod
-Message-ID: <20261111172238.506fb9ce@kernel.org>
-In-Reply-To: <20261109124618.933149-3-acassen@corp.free.fr>
-References: <20261109124618.933149-1-acassen@corp.free.fr>
-	<20261109124618.933149-3-acassen@corp.free.fr>
+To: hyunjungg <hj351016@gmail.com>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
+ <ryazanov.s.a@gmail.com>, M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] net: wwan: iosm: cancel adb_timer on cleanup to
+ avoid use-after-free
+Message-ID: <20261111172718.1e41f48b@kernel.org>
+In-Reply-To: <20261109124933.1603575-1-hj351016@gmail.com>
+References: <20261109124933.1603575-1-hj351016@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,13 +67,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  9 Nov 2026 13:46:13 +0100 Alexandre Cassen wrote:
-> -		ret = tcf_idr_create(tn, index, est, act,
-> -				     &act_bpf_ops, bind, true, flags);
-> +		ret = tcf_idr_create_from_flags(tn, index, est, act,
-> +						&act_bpf_ops, bind, flags);
+On Mon,  9 Nov 2026 21:49:33 +0900 hyunjungg wrote:
+> Found by static analysis; not tested on real hardware (needs an Intel
+> M.2 7360 WWAN modem).
 
-Now that we modified all actions could you take a look at removing 
-the unnecessary API variants? tcf_idr_create() has one remaining
-caller AFAICT, so we can probably rename tcf_idr_create_from_flags()
-back to tcf_idr_create() and make using flags the default?
+Please don't send these low effort untested driver fixes for networking.
