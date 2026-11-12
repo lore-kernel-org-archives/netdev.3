@@ -1,62 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794474366;
-	b=bYOWvMagvgnncedQQf5PvPE04zhCYSnCt9aFfDx5lPTPwzSL+E7xyRqx9byMEKz72W+0
-	 VKaLMKAA6oMPq2SWHToC+x2XjmQvkEhlwnCpoePHec2SFwPKI2FTbwCCwsyWoRz2GT1jr
-	 IExhO/lrPGDca0qucUnJuLfiY3a7JtvmK/vqV4agVYLs1fVptWxugsiTSC9LtwwmKmOwX
-	 scWdj1++rCKOl8zluh9AM3rnd3hK89tgklHpGSH5AXg0iE78SOiZ/wQhtiOhlMF+h8dRo
-	 noSzKHwS9j6PJfXZxdTPQFNh/MyUvS4g43oE/ER7T7B7KOsV4aLJ+q7VgND/yj6zjNw==
+	t=1794474384;
+	b=xuRfbvoOeIk9OyAyFZCEOMxPlEYE3S8RnmHJCgzMbYG8STlVgchYp+kP8P2f+lDBKJFi
+	 0PZlasAaEqTjCuD6WxDSpv+ckUkbf0Y3V3gH5LheSGxibiNRv3q4jgaLkWaMQ8T9ys6hA
+	 4t8T/4f1oYIRp1kMiTG4y8p6a1ft2n9e0PmtpTOenm1LL091h9v2pEOeOWO5SEyg0RcBf
+	 dXa82/no/ByePKuy3ugkNAFpU4be7KoQSPCL6xhG6jtQG+dzvlsheXsLaFK9KIKZH3Zsb
+	 90Ez5xD/yS1nqilUYgB2/74EYQ2UW5EaalJQmkspma79wUODHzKGYv6p7+L1xSlcSJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794474366;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Rspamd-Queue-Id;
-	bh=w+J4cfzvIkYfhSsRO9GW6mn6A7rg77PGWNHJk+zmkqw=;
-	b=SUnG7ASfHcVvXofR3go/JmbkO8Uk/XtZnB54jaVt2me6ritvhW7KtrhLU5rvcUiE20Wd
-	 feHFMcrTj1XHYoGPCLWtpR/dlNJVuaZl3DTUYGQmeFZcVePK12DWxMOgY5/8gDjFACrpR
-	 oQvTJ9qlTw0zwqHUs8WGCKoyi6Hjvot35NZaXyc3JwdJsGLYG+YJwKZMLwBVdJ/zasY+R
-	 Ervo1RQdpbQ8hNNj2OnDp1IVXur4rtsj7KMnGKpDtqy204hvXtPfaaEMHxNrYF0LK/CDM
-	 M7ZkLLe40it6v1ANyow78mbZZbZ3/4pYe1TwN7Dqy74zDu8zRn++oU4lNmoCaXtzRmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794474384;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=pZfLhLAZRarfjos4mDzX4e9ICCBeIlr8PK7cvQkamjI=;
+	b=P+Qe3ZTnNa+nbbZ4HtPS3ubfkwYl2V56sJ5WYMtsow+d48hzcIIbOy1NtTm3Dc7eht+c
+	 OaYXnumls2Qc3fC0KJhG3VnWYrdIz28DBltDyYQ7eJaRbdIgsQ9EfNveT/myjlPMT9o2s
+	 3IJryUBF/nzk+r2yhOjJAVpTaceFuAw6lmAKkbVwIP9ObULesRbArDu133xgF1IyFkDo5
+	 d1iDH/tylKN29RedKywjO53cowSmruM2nUs1XpZIhm4h+DxzCp93Rx5JJ7ziGlnHXhGfG
+	 rNzjRE5AUGaAXSrt6XR+O0NUXCF5gib4hOAvIlOCtQN9g589777IULags3zFSsdH+UQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mandelbit.com;
-	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=AQvRFziB;
-	arc=none smtp.remote-ip=195.10.208.47
-Received: from mout-b-107.mailbox.org (mout-b-107.mailbox.org [195.10.208.47])
+	dmarc=pass header.from=corp.free.fr;
+	spf=pass smtp.mailfrom=corp.free.fr;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=cJ2adch3;
+	arc=none smtp.remote-ip=212.27.60.169
+Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D0D606A330;
-	Thu, 12 Nov 2026 09:06:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8D0D606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045DA606A330;
+	Thu, 12 Nov 2026 09:06:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 045DA606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=AQvRFziB
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-107.mailbox.org (Postfix) with ESMTPS id 4jQDyB5BdRz3yG9;
-	Thu, 12 Nov 2026 10:05:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1794474354;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w+J4cfzvIkYfhSsRO9GW6mn6A7rg77PGWNHJk+zmkqw=;
-	b=AQvRFziBUyqdb8x3QiU+/VyW2cW/0vmQl7GRPLMGskX9qdplkQ0OqBSdFfTfBBv4bKRDv7
-	K5K4t9XZm07C6wddEjFikIsXJijAx9I+KZPJ57Z7dAU+oYkg4k/vlMZVZq1fLoBERMMH9o
-	v8HxKhk3riOEOZ8NoijwUgDzrOR99/qpN/5H011E32pN/S1tAZEVuMs1DbBJDbM6vSsfkE
-	M++qd1stt/HGE6narT/gMsef7TKfihT6Z9878qM5CmB9bvTyv7Fk96+mmNqXzKDe2X/T1F
-	FjxEmX4dl98/L1hOQ4neaiG+HCeq9HLF7fMuHPyecunYtxXM4zHnQfvXR6nM/w==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
-Message-ID: <1d0d447f-f458-4eec-8b63-80119fee618b@mandelbit.com>
-Date: Thu, 12 Nov 2026 10:05:51 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=cJ2adch3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
+	t=1794474374; bh=R5jgklfvYhY7a5tUlqxzaIMMvev7gNDRqMQWJEoks48=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cJ2adch3iUxAPhG+h3sK2gbExjP0NxOI63iZlJOaCbh/etVIfPJbFzJynS+ZOnPUQ
+	 khdpRNLJiMlfdjWfTmdJi8I9y1U2vP6hiSD1x8iY1n9/01fENlbUn3hCulr0pICXP1
+	 YF3QqVY57+r53VQ6S8L6NQEWwNVI9kWEnIlD21QCSUbeKzOf8ZnTuX8gOlnsx3drLr
+	 9mjm3TpBMLQXhilvEmAoUPvGXGcfnZSDPh0noxLka9mZGPc1f8lqWLhMCb0ROHXefw
+	 hq2BPA6G+3JDK0RuhrGhtEeWn3Ko+hWSLBpcKvysoz4kH3H7f0dPyQZAX/f+7ZyGEq
+	 ctq5liz7sVIzg==
+Received: from [0.0.0.0] (unknown [213.228.1.188])
+	by rcs.proxad.net (Postfix) with ESMTPSA id 4BE4E44C2D6C;
+	Thu, 12 Nov 2026 10:06:13 +0100 (CET)
+Message-ID: <2ab2071d-776f-4dc0-838e-22b907d5a601@corp.free.fr>
+Date: Thu, 12 Nov 2026 10:06:12 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,59 +57,45 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] udp_tunnel: don't treat IPv4 sockets bound to an
- address as wildcard
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+Subject: Re: [PATCH net-next v3 2/4] net/sched: honor
+ TCA_ACT_FLAGS_NO_PERCPU_STATS in bpf, ife and skbmod
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Alice Mikityanska <alice.kernel@fastmail.im>, linux-kernel@vger.kernel.org
-References: <20261110113306.3698438-1-antonio@mandelbit.com>
- <avVVzxL3pVZc6yQ5@google.com>
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Ido Schimmel <idosch@nvidia.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20261109124618.933149-1-acassen@corp.free.fr>
+ <20261109124618.933149-3-acassen@corp.free.fr>
+ <20261111172238.506fb9ce@kernel.org>
 Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Organization: Mandelbit SRL
-In-Reply-To: <avVVzxL3pVZc6yQ5@google.com>
+From: Alexandre Cassen <acassen@corp.free.fr>
+In-Reply-To: <20261111172238.506fb9ce@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4jQDyB5BdRz3yG9
 
-On 12/11/2026 07:02, Kuniyuki Iwashima wrote:
->> diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
->> index a128fe85620d..29581c94fdcf 100644
->> --- a/net/ipv4/udp_tunnel_core.c
->> +++ b/net/ipv4/udp_tunnel_core.c
->> @@ -62,10 +62,10 @@ EXPORT_SYMBOL(udp_sock_create4);
->>   static bool sk_saddr_any(struct sock *sk)
->>   {
->>   #if IS_ENABLED(CONFIG_IPV6)
->> -	return ipv6_addr_any(&sk->sk_v6_rcv_saddr);
->> -#else
->> -	return !sk->sk_rcv_saddr;
->> +	if (sk->sk_family == AF_INET6)
->> +		return ipv6_addr_any(&sk->sk_v6_rcv_saddr);
->>   #endif
->> +	return !sk->sk_rcv_saddr;
+
+
+On 11/12/26 02:22, Jakub Kicinski wrote:
+> On Mon,  9 Nov 2026 13:46:13 +0100 Alexandre Cassen wrote:
+>> -		ret = tcf_idr_create(tn, index, est, act,
+>> -				     &act_bpf_ops, bind, true, flags);
+>> +		ret = tcf_idr_create_from_flags(tn, index, est, act,
+>> +						&act_bpf_ops, bind, flags);
 > 
-> This is identical with inet_rcv_saddr_any().  As a follow-up
-> in net-next, please move sk_saddr_any() to include/net/sock.h
-> and use it everywhere.
+> Now that we modified all actions could you take a look at removing
+> the unnecessary API variants? tcf_idr_create() has one remaining
+> caller AFAICT, so we can probably rename tcf_idr_create_from_flags()
+> back to tcf_idr_create() and make using flags the default?
 
-Yes, indeed.
-Ok, I'll add it to my todo list.
-
-> 
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-
-Thanks!
-
-
--- 
-Antonio Quartulli
-
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
-
+ack, will have a look over the week-end (and try to respond to the 
+sashiko boy on previous mlx5 patchset for tunnel key partitioning)
