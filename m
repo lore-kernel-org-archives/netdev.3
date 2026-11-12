@@ -1,131 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794499856;
-	b=bhgmSt9BcIpW+9c1uikiZoul+oRc3Rfv7FgueNCOEXJKx5NMF8bt597x3Ml8LorJNJmA
-	 RNHArY4OEzTXaJFqRRm2UfGT7R16DJmuIrpV/akZ1oz6GwanvpIvIwVIvBP60p2Xf2fwq
-	 9W0IbwBlxU4hKmN3vQkyoq9f8j0NaPw8nDF374/zJYxn03rwjgY46lQvFFaI9tv7lkHbZ
-	 7KOdplYEvtYO5Bxx++TJScotEUaf3+SXy8LyjOy5z8woSBIHhEeEwDVzackphMleprV1q
-	 CrlDpFHdV5MI0s3ZZNGT2ZYyomj1+EkOlP0hfTCftGS1BMl+fjjdSW6TrzR7uE6hJ5g==
+	t=1794500135;
+	b=fZxqA+stVmZunJAFVl2nYkxUzm51L5tOb7qGOIti8TSjRNnfZ+YunX1dtfb9d5PYHxQz
+	 LyQWQUZtly2cHyCe8npqP+WZYS8uwXvXivfmcXa+BiiRgkig+Ro6SBu0y19jRm/Id4j9Q
+	 YiaR0ZX+Bb5Miy7OOAf+pFQvB/tpwDA+dID+N21uegbJfHNCqaUA2jxMVE0u3NrjukZRU
+	 6P9ubE1del3+VcMucxPPjlu26N/O3je0+oaS0zVarm9SbvNlAk9rLJb+S6PCUEd/88Qfi
+	 4lROrJn6QXB2usf3tsg9bLNxhmydNjfjdrQSxoOgEYgaPW+xMnrj46qGMIS4EukeAWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794499856;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=TY1S6pONlaEy8PXrW1EyxT+5Cb+KB7r0xzu7FeRkMVI=;
-	b=IKbdb4Umfcp1PSEVLVdeQNG2qBmle8G2TXWcX4S9UUCyaqbSuZpkx4xCmk6lSY2MN3o2
-	 qXi7tWQt1F5XeraxEQ8QCj0bmj7YE8bkpUWyoRuTuG8Ff/a7wj1RetHf4PFp5/+TCF0hY
-	 EWfZr5LWeHNov1TkkS4XeB4F5S7FiwNcEsuPSICKbHrWfGuCQa0vXL8k4q32yzTxyBwxH
-	 Rlh1Dteej2wDh7xdPZWgzygBdpPDV72vn7e4zv1fcaj3+STy3xhC1EHI0XUBT0sNPJdwN
-	 XLiVw7s117zFl4XrTDBE89aHjt2lH+1+c9Wx4LYDWe9udk2FTOjAeB6BETlhF1CFAjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794500135;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=7OebMRYXMUNnV/GNOINKc0z7/r8pBZDZQCXFWrMOjjY=;
+	b=seihj6TsNNalC+6EeIh7eDO+9wtFUIA2hhvX0Zvca1NDyLWlnIp9v9zAKia/BgqoHnjZ
+	 D+OKwVwkAPOZniC84P648ckQGdrcZ9CJMH4OkmS9AwOQwb7oQdje5I8uMxWXCHFngNWnx
+	 8B09ftV/MMjDr5UhjThC4+pXdfLsr/Oxh/YoKwRMp19E/0fz3dFK4kacn1Jfgxa/SlRYr
+	 E66ZZ1pHhmG7BK5l2tWKbN+fpY5YP4rrx5AL0FdpOz+NhXAzrV1QdQO1XurERZPCDNNbX
+	 B6+LKIKdSW0/wBcKFUjBb2wOd+5O7AuswYERhgJ7g7l1j0CKoZbDimUx5OmYyd9x4gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VmTXplA6;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nCSh6HC5;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VmTXplA6;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nCSh6HC5;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dmarc=pass header.from=modelmiser.com;
+	spf=pass smtp.mailfrom=modelmiser.com;
+	dkim=pass header.d=modelmiser.com header.i=@modelmiser.com header.a=rsa-sha256 header.s=protonmail header.b=cIYGd5X6;
+	arc=none smtp.remote-ip=185.70.43.17
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA41606A323;
-	Thu, 12 Nov 2026 16:10:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADA41606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FF1606A337;
+	Thu, 12 Nov 2026 16:15:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53FF1606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=modelmiser.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=modelmiser.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VmTXplA6;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nCSh6HC5;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VmTXplA6;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nCSh6HC5
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E595B21F94;
-	Thu, 12 Nov 2026 16:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794499853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TY1S6pONlaEy8PXrW1EyxT+5Cb+KB7r0xzu7FeRkMVI=;
-	b=VmTXplA6oiq409l1Q8u7Qgt4p69886cSyQzzPQ+YtJM0kaW9AbMPBie11VAtJTRFumr7xa
-	ccBHcDBXf4Dw5mf+p9Ns8XyI80zNFbN8mHlEjK8X+7BOleqSXDENKhhsj++cONKNtCKOO/
-	UKE8Mt4aLjyZ/8g4gE/ytLGkegf6710=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794499853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TY1S6pONlaEy8PXrW1EyxT+5Cb+KB7r0xzu7FeRkMVI=;
-	b=nCSh6HC5G9PTcri4c07C8tEqlSP++XFq6z49AbkySWcUnri5AmuUdcJpMRiT8NlWzG3i7l
-	skLZ8ZekpBADvLBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794499853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TY1S6pONlaEy8PXrW1EyxT+5Cb+KB7r0xzu7FeRkMVI=;
-	b=VmTXplA6oiq409l1Q8u7Qgt4p69886cSyQzzPQ+YtJM0kaW9AbMPBie11VAtJTRFumr7xa
-	ccBHcDBXf4Dw5mf+p9Ns8XyI80zNFbN8mHlEjK8X+7BOleqSXDENKhhsj++cONKNtCKOO/
-	UKE8Mt4aLjyZ/8g4gE/ytLGkegf6710=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794499853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TY1S6pONlaEy8PXrW1EyxT+5Cb+KB7r0xzu7FeRkMVI=;
-	b=nCSh6HC5G9PTcri4c07C8tEqlSP++XFq6z49AbkySWcUnri5AmuUdcJpMRiT8NlWzG3i7l
-	skLZ8ZekpBADvLBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36FD913432;
-	Thu, 12 Nov 2026 16:10:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4wFHAQjl9WrTLgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 16:10:48 +0000
-Date: Thu, 12 Nov 2026 16:10:46 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] RFC: net: limit folio refcount when splicing from
- sockets
-Message-ID: <avXk3dPpE8dNEOi2@pedro-suse.tail5790ac.ts.net>
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-9-318625d63a98@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=modelmiser.com header.i=@modelmiser.com header.a=rsa-sha256 header.s=protonmail header.b=cIYGd5X6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=modelmiser.com;
+	s=protonmail; t=1794500131; x=1794759331;
+	bh=7OebMRYXMUNnV/GNOINKc0z7/r8pBZDZQCXFWrMOjjY=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=cIYGd5X6tNoHC0REsb3R9HzyI+PKVWBJwOAvl69CbQFm37hBAM3+G4eAeqXR62Czs
+	 1+s6WuTv3qyoY1txczGjdRZXm2xg2Ae2QJNk1c5bpgA8PTbuGZytn8SfIaQ9NEW46V
+	 Q6aSHAV/MTJoSJu+K/n1Rl/ly60CDlwuwa5PJPxixaRHbi+Kzn+t8LAUmk4f6BtuRe
+	 rcAP/65SsSOFxngb+g0vrxWNLjOMYmN+Di41HP/A/cSxltKarXcHf+ZBsKuMo70ILF
+	 12oqF8pnvaorhB0L/kc8ynloEpDjYNoLjC4cC1d5m/sqQJC5IKeoHmFwJPncegn02K
+	 DBQZYbiKqHn+w==
+Date: Thu, 12 Nov 2026 16:15:27 +0000
+To: Richard Cochran <richardcochran@gmail.com>, David Woodhouse <dwmw2@infradead.org>
+From: Chad Aldreda <ca@modelmiser.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuangpeng Bai <shuangpeng.kernel@gmail.com>, netdev@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] ptp: vmclock: keep the device state until the last file is closed
+Message-ID: <20261112161514.1647680-2-ca@modelmiser.com>
+Feedback-ID: 232753253:user:proton
+X-Pm-Message-ID: 1d6a9e0292d7416e8db1c5c8c8b1bfa3775a35fe
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -135,63 +61,258 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-refcount_overflow_stable-v3-9-318625d63a98@kernel.org>
-X-Spamd-Result: default: False [-11.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,suse.cz,linux-foundation.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,intel.com,gmail.com,sk.com,gourry.net,redhat.com,cmpxchg.org,fb.com,surriel.com,szeredi.hu,zeniv.linux.org.uk,arndb.de,ziepe.ca,8bytes.org,oracle.com,toxicpanda.com,davemloft.net,kvack.org,vger.kernel.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[62];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -11.80
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 09:35:49PM +0100, David Hildenbrand (Arm) wrote:
-> Various networking features support splicing data from sockets into
-> pipes (TCP, AF_UNIX, KCM, kTLS), whereby spd_fill_page() takes an
-> additional page reference for each fragment, while the skb keeps its own
-> reference until it was fully consumed. This allows for exceeding folio
-> refcount limits.
-> 
-> This is not specific to large pagecache folios, but with them it is a
-> lot easier to reach the refcount limit, as page table mappings can cheaply
-> create many references.
-> 
-> Let's use try_get_page() in spd_fill_page() and stop splicing with
-> -EFAULT if that fails. To propagate the error, let spd_fill_page(),
-> __splice_segment() and __skb_splice_bits() return an int instead of a
-> bool. If we could not splice anything, return the error from
-> skb_splice_bits(): returning 0 would make the callers (TCP, AF_UNIX, KCM,
-> kTLS) report EOF, although data is still queued. The callers already
-> handle errors.
-> 
-> Use -EFAULT, consistent with splice_folio_into_pipe().
-> 
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+vmclock_probe() allocates struct vmclock_state with devm_kzalloc() and
+maps the shared page with devm_memremap(), so both are released when
+the driver is unbound, but an open /dev/vmclockN keeps using them
+through its file state. After an unbind, read() runs on the freed
+struct and reads through the released mapping, and a poll() in
+progress sleeps on a wait queue in the freed struct. KASAN reports a
+slab-use-after-free in vmclock_miscdev_read(). In testing, the same
+read() faulted on the unmapped page once the device had been bound
+again.
 
-Acked-by: Pedro Falcato <pfalcato@suse.de> 
+Allocate the state with kzalloc_obj() and map the page with memremap(),
+and release both on the last reference: open() takes a reference and
+release() drops it, and a devm action drops the device's own reference
+after vmclock_remove() has called misc_deregister(). misc_open() calls
+open() with misc_mtx held, and misc_deregister() takes misc_mtx, so
+open() always runs while the device's reference is held.
 
--- 
-Pedro
+vmclock_remove() now marks the device as removed and wakes every waiter
+on the wait queue. A read() or mmap() on a file that is still open fails
+with -ENODEV once it sees the mark. On a device that supports
+notifications, poll() returns EPOLLHUP | EPOLLERR, including a poll()
+that was already waiting; it tests the mark after poll_wait(), so it
+cannot miss the wake-up. The wake-up uses wake_up_interruptible_all(),
+because no later notification will reach a waiter that the remove-time
+wake-up skips, such as a second epoll instance that registered the file
+with EPOLLEXCLUSIVE. Without notifications poll() already returns
+POLLHUP.
+
+Separately from the report below, the bug was also found by a
+Coccinelle script that reports device nodes in devm-allocated memory,
+posted at
+https://lore.kernel.org/r/20261106193517.3267013-2-ca@modelmiser.com,
+and reproduced in QEMU 10.2.4 with -device vmclock. There is no access
+to EC2 hardware with this device, so the fix has only been tested in
+QEMU. QEMU's device has no notifications, so the poll() path was tested
+with a local change that lets poll() wait without them.
+
+Fixes: 205032724226 ("ptp: Add support for the AMZNC10C 'vmclock' device")
+Reported-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Closes: https://lore.kernel.org/all/178144969601.60470.14493569608271069160=
+@gmail.com/
+Cc: stable@vger.kernel.org # 7.0+
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Chad Aldreda <ca@modelmiser.com>
+---
+v2:
+- vmclock_remove() wakes the wait queue with wake_up_interruptible_all()
+  instead of wake_up_interruptible(), so every epoll waiter gets
+  EPOLLHUP | EPOLLERR at remove, not only the first EPOLLEXCLUSIVE one.
+  Pointed out by Paolo Abeni, from the Sashiko review:
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107150344.394652=
+9-2-ca@modelmiser.com
+  The two notification wake-ups are unchanged.
+- The commit message says how the bug was found and tested.
+- Cc: stable now carries "# 7.0+" (see below).
+- Rebased on net/main 19ec8416a76c; no other change.
+
+v1: https://lore.kernel.org/r/20261107150344.3946529-2-ca@modelmiser.com
+
+Testing, all in QEMU 10.2.4 with -device vmclock, KASAN enabled:
+- As in v1: a guest process opens /dev/vmclock0, unbinds the driver
+  through /sys/bus/platform/drivers/vmclock/unbind, and reads the open
+  file again. Without this patch KASAN reports the slab-use-after-free;
+  if the device is bound again before the second read, that read oopses
+  on the unmapped page. With the patch the read returns -ENODEV, KASAN
+  reports nothing, and the rebound device reads normally.
+- New in v2, for the wake-up: three threads each add the same open file
+  to their own epoll instance and block in epoll_wait(), then the
+  driver is unbound. QEMU's device does not set
+  VMCLOCK_FLAG_NOTIFICATION_PRESENT, so for this test only, a local
+  change (not part of this patch) made poll() take the waiting path
+  without that flag. Before the unbind, the test reads each waiter's
+  /proc/self/task/<tid>/wchan and counts the run only if all three are
+  asleep in do_epoll_wait. With v1 and EPOLLEXCLUSIVE, one waiter got
+  EPOLLHUP | EPOLLERR and the other two slept until their 8 s timeout,
+  in each of 4 runs; with v2 all three woke at the unbind, in each of 4
+  runs. Without EPOLLEXCLUSIVE all three woke with either version.
+  KASAN reported nothing in any of these runs.
+- Not tested: EC2 hardware, a real notification, and mmap() after
+  unbind.
+
+This applies to v7.0 and later, where the per-file state was added.
+Earlier kernels have the same bug through the devm-allocated state and
+need a separate backport.
+
+Lorenzo Stoakes' "ptp: vmclock: convert mmap hook to mmap_prepare"
+(2026-11-05) changes vmclock_miscdev_mmap(). If it lands first I can
+rebase.
+
+Not changed here: in vmclock_probe(), !st->miscdev.minor is never true,
+because an unregistered dynamic miscdevice keeps MISC_DYNAMIC_MINOR, so
+a device with neither interface still binds. That is a separate fix.
+
+ drivers/ptp/ptp_vmclock.c | 62 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 54 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
+index bb0e14bac9f2..ea94a73ac52e 100644
+--- a/drivers/ptp/ptp_vmclock.c
++++ b/drivers/ptp/ptp_vmclock.c
+@@ -17,6 +17,7 @@
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
++#include <linux/kref.h>
+ #include <linux/miscdevice.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+@@ -51,6 +52,8 @@ struct vmclock_state {
+ =09enum clocksource_ids cs_id, sys_cs_id;
+ =09int index;
+ =09char *name;
++=09struct kref kref;
++=09bool removed;
+ };
+=20
+ #define VMCLOCK_MAX_WAIT ms_to_ktime(100)
+@@ -369,6 +372,9 @@ static int vmclock_miscdev_mmap(struct file *fp, struct=
+ vm_area_struct *vma)
+ =09struct vmclock_file_state *fst =3D fp->private_data;
+ =09struct vmclock_state *st =3D fst->st;
+=20
++=09if (READ_ONCE(st->removed))
++=09=09return -ENODEV;
++
+ =09if ((vma->vm_flags & (VM_READ|VM_WRITE)) !=3D VM_READ)
+ =09=09return -EROFS;
+=20
+@@ -398,6 +404,9 @@ static ssize_t vmclock_miscdev_read(struct file *fp, ch=
+ar __user *buf,
+ =09uint32_t seq, old_seq;
+ =09size_t max_count;
+=20
++=09if (READ_ONCE(st->removed))
++=09=09return -ENODEV;
++
+ =09if (*ppos >=3D PAGE_SIZE)
+ =09=09return 0;
+=20
+@@ -450,6 +459,10 @@ static __poll_t vmclock_miscdev_poll(struct file *fp, =
+poll_table *wait)
+=20
+ =09poll_wait(fp, &st->disrupt_wait, wait);
+=20
++=09/* After poll_wait(), so the wake-up in vmclock_remove() is not missed =
+*/
++=09if (READ_ONCE(st->removed))
++=09=09return EPOLLHUP | EPOLLERR;
++
+ =09seq =3D le32_to_cpu(st->clk->seq_count);
+ =09if (atomic_read(&fst->seq) !=3D seq)
+ =09=09return POLLIN | POLLRDNORM;
+@@ -466,6 +479,12 @@ static int vmclock_miscdev_open(struct inode *inode, s=
+truct file *fp)
+ =09if (!fst)
+ =09=09return -ENOMEM;
+=20
++=09/*
++=09 * misc_open() calls this with misc_mtx held, and vmclock_remove()
++=09 * calls misc_deregister(), which takes misc_mtx, before the device's
++=09 * own reference is dropped.
++=09 */
++=09kref_get(&st->kref);
+ =09fst->st =3D st;
+ =09atomic_set(&fst->seq, 0);
+=20
+@@ -474,9 +493,21 @@ static int vmclock_miscdev_open(struct inode *inode, s=
+truct file *fp)
+ =09return 0;
+ }
+=20
++static void vmclock_free(struct kref *kref)
++{
++=09struct vmclock_state *st =3D container_of(kref, struct vmclock_state, k=
+ref);
++
++=09if (st->clk)
++=09=09memunmap(st->clk);
++=09kfree(st);
++}
++
+ static int vmclock_miscdev_release(struct inode *inode, struct file *fp)
+ {
+-=09kfree(fp->private_data);
++=09struct vmclock_file_state *fst =3D fp->private_data;
++
++=09kref_put(&fst->st->kref, vmclock_free);
++=09kfree(fst);
+ =09return 0;
+ }
+=20
+@@ -649,9 +680,20 @@ static void vmclock_remove(void *data)
+ =09if (st->miscdev.minor !=3D MISC_DYNAMIC_MINOR)
+ =09=09misc_deregister(&st->miscdev);
+=20
++=09/* Files still open now fail, and a poll() in progress returns */
++=09WRITE_ONCE(st->removed, true);
++=09wake_up_interruptible_all(&st->disrupt_wait);
++
+ =09dev->driver_data =3D NULL;
+ }
+=20
++static void vmclock_put(void *data)
++{
++=09struct vmclock_state *st =3D data;
++
++=09kref_put(&st->kref, vmclock_free);
++}
++
+ static void vmclock_put_idx(void *data)
+ {
+ =09struct vmclock_state *st =3D data;
+@@ -665,9 +707,15 @@ static int vmclock_probe(struct platform_device *pdev)
+ =09struct vmclock_state *st;
+ =09int ret;
+=20
+-=09st =3D devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
++=09/* Open files can outlive the device, so st is not devm memory */
++=09st =3D kzalloc_obj(*st);
+ =09if (!st)
+ =09=09return -ENOMEM;
++=09kref_init(&st->kref);
++
++=09ret =3D devm_add_action_or_reset(dev, vmclock_put, st);
++=09if (ret)
++=09=09return ret;
+=20
+ #if IS_ENABLED(CONFIG_ACPI)
+ =09if (has_acpi_companion(dev))
+@@ -686,13 +734,11 @@ static int vmclock_probe(struct platform_device *pdev=
+)
+ =09=09=09 resource_size(&st->res));
+ =09=09return -EINVAL;
+ =09}
+-=09st->clk =3D devm_memremap(dev, st->res.start, resource_size(&st->res),
+-=09=09=09=09MEMREMAP_WB | MEMREMAP_DEC);
+-=09if (IS_ERR(st->clk)) {
+-=09=09ret =3D PTR_ERR(st->clk);
++=09st->clk =3D memremap(st->res.start, resource_size(&st->res),
++=09=09=09   MEMREMAP_WB | MEMREMAP_DEC);
++=09if (!st->clk) {
+ =09=09dev_info(dev, "failed to map shared memory\n");
+-=09=09st->clk =3D NULL;
+-=09=09return ret;
++=09=09return -ENXIO;
+ =09}
+=20
+ =09if (le32_to_cpu(st->clk->magic) !=3D VMCLOCK_MAGIC ||
+--=20
+2.43.0
+
+
