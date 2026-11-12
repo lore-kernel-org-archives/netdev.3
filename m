@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794509415;
-	b=0cXlCFxm13fNluTpPQvm+WjxxP2/I1uLjnZcJ/VPZhm05jNjVbJWVEOHXSV5YqPl4uIE
-	 Dt+WchSq+FehHtYgD+ph9aHgDIPBCI37iaQX6t0a+Xf8PObYSiWsJCQMTvFq7iKpGxhfo
-	 N6gUs18WqHlY6zQp9VIJBmb0SB1dxEQL8XtThZEvDrcAvshu9Nb+933Bd7akyRZJJac/s
-	 tDKAucorFN4pBNmBfes6twUOmxBZAyiWYfVSBgOJ5T/a2/mtNWE+54bN67/BoHvvvWBwv
-	 BAME0WqJZZFMo5fcE41smCDoS+VtdCt9CxaG7pSdP491QE306BYKU4Ze69NlaI75Lgw==
+	t=1794509420;
+	b=k4H4eod/GOvaf4LP7/W+1rgvacSzdxs0hXRgfdgS1a0jXGox0fNtCX84V+VQXpbCU0Ll
+	 WYqI8MKw1ZG3Dfe5oZnyGGBcB6NDfTVvGTimbd9tkP18i9AlDWbDBq+rgbWyeHuIdX/6e
+	 VE6NtxA0emmc/8aB/IYGLZWMCHq/JSe1KUKBHJcTrFpPdCukVjp4MRfsfd/dwWuspF0AB
+	 OG5H65gZF/WVOKmGYOnp92J6zrJYqj3CWWBorNgR29l5vhXbtvtWZdHw9LTTB4tsu4NTd
+	 2fboVhYktItJECeW3K4MSzRl7mfZr281u+Yr4wKtelrdh8MzaiyCbnSXN0dtOJCQ1QQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794509415;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794509420;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=2TSuYt+9U84TuJXlSvGBhEdxmWJbqCs5zxZfM3yUjAs=;
-	b=rg/ek/xn1fqvYZ6xq0QaXhkvUC/AmVZQhbsik2UtlS+XKKFtLKjsQiDk9Lrsox6ETrD4
-	 AtoRoV8wVXGu0IJlsO8jyG9hXSRIOOJNQXMyuRGGtMVX10Xn4ofwR6lV63hZXW3pxvXSh
-	 wkpRkhm03lGjlH2jlxJQEeqwQg95V2SiZVJ8V5PRLbdMzCiZrw64dSY5Lu+T2w4BODHux
-	 2uq41K+5lw3T/4VaJ197UVnWPGEXDIiWoVygX0H6TXLE+/imQkQ56CZgBmjudY1ImFKVq
-	 REU3lDRNkxa8i9eJl5z7VxjVIOzLiQXXghGO2Cp8BAM9Pa+c1kip4nUdJfgZuvXlOxA==
+	bh=0t7MBPoXO1zUEk3qTq2YgC9RWH2JSMEoFtgx+BcgY9Q=;
+	b=k+YSDI5GkIw4nG9ki1nIZWGlBF62PJ8pj3NKEHKWPTMvFPQl8HjZTs2zdO4eGIY4uQu9
+	 xyKA4cnOGBniQTo+Lii87G9U4RLd0WkISR8RnNuLsD9tRFNLsBU2PkilvNbUt9VqC/8hp
+	 kvoh9mcY1iJUZY5Any0J+23+ZMvlDYVwhx0idMcgCSjj89zqJ8viS5l+tu2A9pRF6CjCz
+	 Y1AnqYRRV5PzVgKfpws+JByOEEPPVfiVbH7EiXopq1IjcJau0BIfLjwV7EzE39Ll210cF
+	 uX5NIeclpzXU8plUqEo4T2wp+nnpCwk/cM4i7GxOjPyzRRB5r276JnTGlFob6Teh6Ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NYeOzPHb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xot332U3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E440860A2610;
-	Thu, 12 Nov 2026 18:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3A760A3806;
+	Thu, 12 Nov 2026 18:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NYeOzPHb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DA01F000D2;
-	Thu, 12 Nov 2026 18:50:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xot332U3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442AC1F000C6;
+	Thu, 12 Nov 2026 18:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794509414;
-	bh=2TSuYt+9U84TuJXlSvGBhEdxmWJbqCs5zxZfM3yUjAs=;
+	s=k20260515; t=1794509420;
+	bh=0t7MBPoXO1zUEk3qTq2YgC9RWH2JSMEoFtgx+BcgY9Q=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NYeOzPHbP7RyzzKXOATROZI8l9pQxRoAM3QTlm+ZWVXoCjF8cvl+2kG2ZJbea+9bk
-	 L60Pc0lWu2RiBPDo35dEJRHYpAuHQlh69+zEBIdqIvzmMmmJmbwSCuTbFA0dsFSlcX
-	 YeLW7ngvl2PDEAC12rznsNiOUIQA/BvHmtxFHwu9f7MoZwGT3hM4D2/sWhelbw+Hzj
-	 krkgwtWjkEeG1lUTn/1uX1VGJ34VCoQ4Hc+SxRfSE+PbVjpAZSWDWvKU5H56vOOgNx
-	 ScXPbTtfdvJboImhMUTFE29fl+g2K9lXbgjqt9sNBxW5j1UyPoCfP0LyOafK8dmVoE
-	 GcgyGhaVJKiSQ==
+	b=Xot332U3xfnc8YPIYjyO3rbNYPlMwmHx2P4ug5T5hR1ctV+S3RTN3nI32lvbrOpiw
+	 BxRCKG6f48eJNv1ZMSf5mmXJE8shvZENveMDMlko1ZCzW//70H2HnwIHGxYcL/LzSH
+	 SS2OFxrHxjyiU5AFIj6Bg/GBE4wXCHabJYY1GG3Vk8onmh9mL+DplnSRMpse3o4LnV
+	 VhKgy2p25R3xgMlo0UOZaNYZGYzIvSGt6BtpICmP6g0nowXPO/YTH6OXZL8HHRh5wz
+	 Tz3sTBfddGrzvX42ehjf2r3IAJb47s+P1Jfqadl6iK0b4HsjvtmLWpVSlo4fDuglWg
+	 Urp23ANGxRU3Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4385391AF9C;
-	Thu, 12 Nov 2026 18:50:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A29A391AF9C;
+	Thu, 12 Nov 2026 18:50:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] mailmap: add entries for Hangbin Liu
+Subject: Re: [PATCH net v2 0/4] net: sb1250-mac: ethtool link updates
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179450941327.590019.3553289092982582016.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 18:50:13 +0000
-References: <20261111-mailmap-v1-1-8ab349555808@kylinos.cn>
-In-Reply-To: <20261111-mailmap-v1-1-8ab349555808@kylinos.cn>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179450941877.590019.12889374228037218560.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 18:50:18 +0000
+References: <20261110230300.2769327-1-f.fainelli@gmail.com>
+In-Reply-To: <20261110230300.2769327-1-f.fainelli@gmail.com>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, macro@orcam.me.uk,
+ daniel.machon@microchip.com, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Nov 2026 09:24:38 +0800 you wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
+On Tue, 10 Nov 2026 15:02:56 -0800 you wrote:
+> This patch series addresses a few minor issues:
 > 
-> Add the active email address for Hangbin Liu and map the old or rarely-used
-> addresses to it. This prevents get_maintainer.pl from listing not actively
-> used addresses as patch recipients.
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> - Running ethtool against an sb1250-mac backed interface would not
+>   return any link information, although all of it is there
+> - There was no support for restarting auto-negotiation, also there for
+>   "free" with PHYLIB
+> - The kernel driver reports enabling RX Checksum offload but does not
+>   report it through the NETIF_F_* feature bits
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] mailmap: add entries for Hangbin Liu
-    https://git.kernel.org/netdev/net/c/c6e0a84a6e6b
+  - [net,v2,1/4] net: sb1250-mac: Add ethtool link settings support
+    https://git.kernel.org/netdev/net-next/c/b1a2a220435b
+  - [net,v2,2/4] net: sb1250-mac: Advertise and honor RX checksum offload
+    https://git.kernel.org/netdev/net-next/c/f116890c4050
+  - [net,v2,3/4] net: sb1250-mac: Add ethtool autonegotiation restart support
+    https://git.kernel.org/netdev/net-next/c/47759d9a9f74
+  - [net,v2,4/4] net: sb1250-mac: Fix RX checksum status and header offset setup
+    https://git.kernel.org/netdev/net-next/c/e48003f359fb
 
 You are awesome, thank you!
 -- 
