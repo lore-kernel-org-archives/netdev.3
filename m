@@ -1,80 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794482418;
-	b=ty7GhOQP2mqf9KPu6YfpDQj7zhmWvjLXL18Z1UL8vizhLxWtndb6vp6T+5sx4iKry6vT
-	 Bf/NP+a+U2q4PrP6Rs7O+hinhbYcho63IhZyNTkHGEerTWk9u3q2QXLK0C1X9vSoDcDG9
-	 EO5cT/VQX70Pcawm8sIGM8uXMAUoY4GqILQy/XJ1LblW28PL4IglWxsI49aXSJKfuAng5
-	 eUx3G04eKGReuVMy6gVk1ogyb66hC5feqoLGS72hJBb7n0psR1uBA2gL4lbPb1tRiNL7R
-	 dihAiQZcoh6bIvI7lp8fn7vwps6ABWxVEjI/gmMpvye+DjNdOYXDdL8C7L990ToVWaA==
+	t=1794482419;
+	b=oRLOKQQvCd51ukALnStUOysdMTf6o37tbFWiBk/bYOgytE6k8W/b9oWM8aA89aex84Qv
+	 t9iTs7QDfhfh4X7yx2hso67SwDrQTk90Z2pz1j5P0U9LDFgqxbI37C6fF3kYqNJhc69jo
+	 lbzQxX/TsWSUw+MdmuDNgz5HB6728tUA7s1HtnwgVrRwNxYU/vCnGrtdlbYwPJyTrvild
+	 sDlNuifWs02c6g7ws9D0mXdxN5hp7UKZXTvuN0dKd8RFMaCTYIPDvQEf76imxFZslOHQz
+	 MVaSc2rIXg6JX5phZ1YCfraAGJa5ZwGvQZN580rxhz/XlFOY7aE8lrKfF/3a+nCDwsg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794482418;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794482419;
 	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=DAoJLDq8Ga0Al0IQkwwR6XXBD9eqgfhjwmrtsUdqWQo=;
-	b=tk/4UF4YuqxD0/+dAC3DPG3lApzxgH4SUxpiOrMscZ8dZL3qFwFDr0wl07fm+riazqM/
-	 h52BMfga4MhzNs2PWcYsD/GxfX9hCzJl2ZXgIL0N5cfHtSbwAAIpSYoTCKdKGeyw8MDh3
-	 1zFSW7/CjUvMU1xML8yHiNVCjUNaESCrkcHM9t/eyTFqeTL+sWk8ejO6qsfEoHhHvryLx
-	 U9R3L1hudR3S+B6mmjhXP/zvKl1TZg1WpOkXvJN4MY/xBHltC91ennV6Rdry9hmC/JKtr
-	 +06EwTHL7URlyXXkvoxCdjn7S+7hq0f6gKr+IWmlaaQTKoUr0yWtgFt5E+ppxub4s2g==
+	bh=OydsdcQ0lBU8caAFUIuul0fQc20tWhEfNqcNpy0fjA8=;
+	b=XnQjSmnOo7FazyiXmZigktMa4dQ9QQnZN0m7PLSMUfIjOhu+r/Jd3/IsBBwkha2Mzr5j
+	 RjXn+yfNNhjy/OWgNiIrNA2NhweH/l1Zx6u1me5VmuLHP0CdMaH/oVokAS/upc8ugKM+A
+	 sMKJDJ4eVD1FkJeVONd+aY6XzekEEzOKwDOxEcydGX4Jefqhm+lk8XpxfZCUEjJ9UT27Q
+	 M5n8NwiCVLShYwIiXst/IYl3KnByquHRI1+Cq1wW1RepAb+V5QgtwDgeUTvJMxk6UIep3
+	 JFNC1Zdo/hQRJucjjVbD5CfEW2YMdbv1SfvWSD7Qt2GTF6jmKcmmvbRjr7Gq0ufpoxg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=FETPGWu2;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P9BHn5iX;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553CC60A3808;
-	Thu, 12 Nov 2026 11:20:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 553CC60A3808
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C002A60A6F4C;
+	Thu, 12 Nov 2026 11:20:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C002A60A6F4C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=FETPGWu2
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P9BHn5iX
 Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
 	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 31679202C92;
-	Thu, 12 Nov 2026 12:20:15 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 41F5C20581F;
+	Thu, 12 Nov 2026 12:20:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482415;
+	s=20260414; t=1794482416;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DAoJLDq8Ga0Al0IQkwwR6XXBD9eqgfhjwmrtsUdqWQo=;
-	b=FETPGWu2fT7jsp0NaN/SAGSZGujN+8Sx0qbEiYoi7D/1UwDQA3LiM3gQIl5gOpiBDKf0AP
-	vi3G38aRbsDfVdrdL+m/Q+9TYo8lSKHUy8VgD9pdJnxBrJAITL9N1TpAFeQ6kWo7cCJOLr
-	6Y6fACGoZn1hQusAZy1OG7s0KeYbe4kGM4LkVwYsKrMrmIOOy+XWEULbXBA8RopknGy+vX
-	UzU8dHGyRn/mL3ChSjOdjUlKC4ONuCw+l68Bfwbdl5N9PeeKO3Mq2XgQ8c0yqZMLiJWo6A
-	3AP9kFgi98CHZs7RHexx8CVP+NKLgTymHPVU4Z7Ij3+6TIDqujc6RFciUjhoJA==
+	bh=OydsdcQ0lBU8caAFUIuul0fQc20tWhEfNqcNpy0fjA8=;
+	b=P9BHn5iX6aJqw6hSgDJsZ0m/CI0ws3XyLEeU3CBX7IfNjtSCVs+M3wF+viEdm46+0F1xD+
+	wsZ6xMcoBnuVAdYVY1m/ENonDjuD9oVdiU4RQk05o9eMwjQs5eaOtQN7LLHwni8aE612cI
+	1K5qTF4HekLNPOR6Ui99WLXUJtOUEH0srF2c1ZTq4QiWPho8rSkXaNez2uSrGT4eaWLUyC
+	LTDlHYfj9izWAS7QtBXJ+3A324F4I1QLbUlymqxa9CZniIyYrAKlFgU+t7jWilsGFE3OhD
+	EjcEJF+Ad2r1J4T+kARCaIDJtLhsCkmMiBy3pjXR500IDEcA2oIXHDPrOt1Bqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482415;
+	s=20260414; t=1794482416;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DAoJLDq8Ga0Al0IQkwwR6XXBD9eqgfhjwmrtsUdqWQo=;
-	b=Xp1q48rGAcyUlFCto3UZI6ONCpoCC5n0Pnu9WiJgWlxPXXp2sv5zFT7fXvG+xpPIEY19xV
-	oiTipiEa3BAjNhW4RiPTaHF88t4mZVslfhtqM8DIZaOfZooQMmucu5s+Lo2xg4vXNx+vGC
-	9wgSsqWAGykLUD6IPZkg1xHCqhGdTlx0WPyEidT1lbMX/Rb0oq1TRd9PkD4dOmTdb1ZI6t
-	fYNzBeW8DMtf0L5XiVScOlI0xE6nr3IWAV6IW3ZPhofCW0m+7ObDFe2mpismur52XJ6H0M
-	480TTAPd9XBP5F9sysGoXC68E+01HSq1mTWphSqo8cfeMztWQCNTHhOqPq9plQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482415; a=rsa-sha256;
+	bh=OydsdcQ0lBU8caAFUIuul0fQc20tWhEfNqcNpy0fjA8=;
+	b=d1L/oYkIzDdswOtBYPR5FbnHHgK7NNOrdxKNOYRYV9raiGnxxGI52CjbsZtisJpmNynEQp
+	Y0ekpr0PQxDSt4p4Q0iph47SOVZNOS8ccVps9RKXSx8yE4mP9jIRJCFclDPR0cFug2C1zy
+	UMv81Vc0uuZhfsLHXutZCYrnyq+BKm1RRDttf5o9/vMV2MrRWRfuQCGq1HcJ+sue6kKr7g
+	Ri1dnDaDLXR4qKqpK+DLWP8gxBEvSEzB2rsZ6CNqMsPyhL4Y13sBnr7aR+H+DclhDBDUWc
+	xETzQ/SShAWFKdH772Q0fwJETum2Rp5qz80X3k5jgDPXztM3yI0uRIJPqW8DEA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482416; a=rsa-sha256;
 	cv=none;
-	b=WnfzFs5xEPwZ++46gnIZArpzfiSiXEJJh2TTWeZmNOXqtpJu33aa4Dl3LY7GXRhd7wdOew
-	fLIrRhSbXp/u+xPw124TdCKV//VP0wDLbmGFPiNt/HDdYGJxsnw6Yqpd2MAdihrpU1aEfL
-	lRKfqslWdRdE/SGYnxy+jpmum/7hGYC2/iSvRgbZsRxeKzOnYxcZD1q5oTq20JyfPs3fMv
-	DfcteTnfueVFk82aRIxN+vb6rsBRa/UMEGRsee04x90eDJ+p8jKbYNjMyRaN050HDCULk2
-	ZHtaigttA1cTukdwNEYwjtj1tGP1AgTbFQ3aCh+T7QicFjyZiIm36AEn4hTTXA==
+	b=PbRKPadPwU/V0apFmtlNMYydp0PprrOL4qOCaFUOuylRw95Rg7x9bLGYv4/Gm8zm83AqG5
+	2/lUBWo+YBPxpopfZGppuWD/ITpX7lNhPl4kZrjCyLfGhR34CEmRY74zi21pUs9maoiqsg
+	bOsx/kLB5oAm26lCXVX03pRHLZPYXWpx/zQQ5GWM6HPUhMcUlVDfB2tYfrAuT2G2ZyZm/e
+	s6O9dWiNowNt0K7UOI4b2INwsHWYTbfHiW7saFHmW/hRe+L86IG215vyARx9k/f7yj0+T3
+	r1yXZPXk0tuW9pObQgWJUV58+ND3d70uPxpmkCsp4w94vxFnRk5PoLM2NcFArw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 12 Nov 2026 12:19:35 +0100
-Subject: [PATCH net-next v5 3/9] virtio-net: copy the XDP rx hash before
- the program runs
+Date: Thu, 12 Nov 2026 12:19:37 +0100
+Subject: [PATCH net-next v5 5/9] virtio-net: support receive timestamp
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,7 +85,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-3-7ab67b572f4f@pengutronix.de>
+Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-5-7ab67b572f4f@pengutronix.de>
 References: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 In-Reply-To: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -108,225 +107,384 @@ Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org, 
  kernel@pengutronix.de, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7436;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13728;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=Wt4xzMKr8sKjwDtAffVOd9/ZHwoEf2KWjXEHHQAs2iU=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBa+llZf4XjEVSSxW1s1eeab9MMcczyCdqX/ikgXOZ
- hVELD3XUcrCIMbFICumyKKysIJP1OODZ+Q0ES6YOaxMIEMYuDgFYCLbNBkZFidkaphfe7cmc+2F
- XxcyWjzmTDrGuUOP9zGrhf9Nk4NGNowM0xzXNDp+kow92zrDMWmWQsAu9upTXEK/3nU/zpr27f1
- XdgA=
+ bh=HYsIsVWc87i3J9U5yTaQkRwcFwTd+B0b/Ldf497M/mQ=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBW9arYSFrnf+XbZ9f0eb4cIpLjzcn0vextduUeRjC
+ p5VqDulo5SFQYyLQVZMkUVlYQWfqMcHz8hpIlwwc1iZQIYwcHEKwERM7jAyTHf48sIhxKTg9qb2
+ brbvcWqlix5sOGYqrPls0wW/pq36xgz/dJ2mhrR/55pZVRm4YUVHm8yP+qCkOZKvIvIO/+3acHk
+ HPwA=
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-virtnet_xdp_rx_hash() reads the hash from the vnet header at
-xdp->data - vi->hdr_len when the XDP program calls
-bpf_xdp_metadata_rx_hash(). That is only the header until the program
-changes the buffer: bpf_xdp_adjust_meta() writes the metadata right in
-front of xdp->data, over the header, and bpf_xdp_adjust_head() moves
-xdp->data, so the callback then reads metadata or packet bytes.
+Add optional hardware rx timestamp offload for virtio-net.
 
-Wrap struct xdp_buff in struct virtnet_xdp_buff, copy hash value and
-report type into it in virtnet_xdp_handler() before
-bpf_prog_run_xdp(), and let the callback read the copy. The small and
-mergeable paths put the wrapper on the stack; for AF_XDP the fields are
-in the cb of struct xdp_buff_xsk, checked with XSK_CHECK_PRIV_TYPE().
+Introduce the virtio feature VIRTIO_NET_F_RX_TSTAMP. If negotiated, the
+virtio-net header grows by room for a 64 bit TAI timestamp (header
+size 40 bytes), stored in struct virtio_net_common_hdr. The layout is
+cumulative: the field is at the same offset whether or not the
+features before it were negotiated. The fixed layout needs
+VIRTIO_F_VERSION_1, so the feature is cleared without it.
 
-Move virtio_net_hash_value() up so the copy can use it.
+Implement ndo_hwtstamp_get/set so the timestamping can be enabled
+and disabled at runtime with SIOCSHWTSTAMP. The driver cannot filter
+what the device timestamps, so any rx filter other than NONE becomes
+ALL. The timestamp is read before the packet is handed to the XDP
+program or the stack, and attached to the skb with skb_hwtstamps().
+It is a raw TAI value; there is no PHC.
 
-Fixes: aa37f8916d20 ("virtio_net: Support RX hash XDP hint")
+The header size is negotiated per device and also applies to
+transmitted packets. xmit_skb() clears the whole header, so the device
+sees a zero tstamp.
+
+On receive in big packet mode, the header is placed in front of the
+data in the first page. Grow padded_vnet_hdr to 48 bytes so the
+40 byte header still fits there.
+
+Tested in a guest with a patched QEMU:
+  guest: ./timestamping eth0 \
+          SOF_TIMESTAMPING_RAW_HARDWARE \
+          SOF_TIMESTAMPING_RX_HARDWARE
+  host:  nc -4 -u 192.168.1.1 319
+
+Based on work by Willem de Bruijn.
+
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/virtio_net.c | 86 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+ drivers/net/virtio_net.c        | 131 +++++++++++++++++++++++++++++++++++-----
+ include/linux/virtio_net.h      |  10 +++
+ include/uapi/linux/virtio_net.h |   1 +
+ 3 files changed, 127 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 4c740b403ad1e..ffd7313663c18 100644
+index 23e7f62a6ff64..57b7c32625dfb 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -491,6 +491,26 @@ struct padded_vnet_hdr {
- 	char padding[12];
+@@ -20,6 +20,7 @@
+ #include <linux/filter.h>
+ #include <linux/kernel.h>
+ #include <linux/dim.h>
++#include <linux/unaligned.h>
+ #include <net/route.h>
+ #include <net/xdp.h>
+ #include <net/net_failover.h>
+@@ -418,6 +419,12 @@ struct virtnet_info {
+ 	u32 rss_hash_types_supported;
+ 	u32 rss_hash_types_saved;
+ 
++	/* Device passes time stamps to the driver */
++	bool rx_tstamp_supported;
++	bool rx_tstamp_enabled;
++
++	struct kernel_hwtstamp_config tstamp_config;
++
+ 	/* Has control virtqueue */
+ 	bool has_cvq;
+ 
+@@ -482,15 +489,17 @@ static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
+ 	      offsetof(struct virtnet_info, rss_hash_key_data));
+ 
+ struct padded_vnet_hdr {
+-	struct virtio_net_hdr_v1_hash hdr;
++	struct virtio_net_common_hdr hdr;
+ 	/*
+ 	 * hdr is in a separate sg buffer, and data sg buffer shares same page
+ 	 * with this header sg. This padding makes next sg 16 byte aligned
+ 	 * after the header.
+ 	 */
+-	char padding[12];
++	char padding[8];
  };
  
-+/*
-+ * The vnet header sits in the headroom in front of xdp->data, which the
-+ * XDP program may overwrite with bpf_xdp_adjust_head() or
-+ * bpf_xdp_adjust_meta(). What the metadata kfuncs report is copied from
-+ * it before the program runs. For AF_XDP the fields behind xdp live in
-+ * the cb of struct xdp_buff_xsk.
-+ */
-+struct virtnet_xdp_buff {
-+	struct xdp_buff xdp;
-+	u32 hash_value;
-+	u16 hash_report;
-+};
++static_assert(sizeof(struct padded_vnet_hdr) % 16 == 0);
 +
-+static inline u32
-+virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
-+{
-+	return __le16_to_cpu(hdr_hash->hash_value_lo) |
-+		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
-+}
-+
- struct virtio_net_common_hdr {
- 	union {
- 		struct virtio_net_hdr hdr;
-@@ -1687,6 +1707,24 @@ static void put_xdp_frags(struct receive_queue *rq, struct xdp_buff *xdp)
- 	}
- }
- 
-+/* xdp must be embedded in struct virtnet_xdp_buff or struct xdp_buff_xsk */
-+static void virtnet_xdp_save_hdr(const struct virtnet_info *vi,
-+				 struct xdp_buff *xdp)
-+{
-+	struct virtnet_xdp_buff *ctx = container_of(xdp, struct virtnet_xdp_buff, xdp);
-+	const struct virtio_net_hdr_v1_hash *hdr_hash = xdp->data - vi->hdr_len;
-+
-+	XSK_CHECK_PRIV_TYPE(struct virtnet_xdp_buff);
-+
-+	if (vi->has_rss_hash_report) {
-+		ctx->hash_value = virtio_net_hash_value(hdr_hash);
-+		ctx->hash_report = __le16_to_cpu(hdr_hash->hash_report);
-+	} else {
-+		ctx->hash_value = 0;
-+		ctx->hash_report = VIRTIO_NET_HASH_REPORT_NONE;
-+	}
-+}
-+
- static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
- 			       struct net_device *dev,
+ /*
+  * The vnet header sits in the headroom in front of xdp->data, which the
+  * XDP program may overwrite with bpf_xdp_adjust_head() or
+@@ -520,7 +529,7 @@ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
  			       unsigned int *xdp_xmit,
-@@ -1696,6 +1734,8 @@ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
- 	int err;
- 	u32 act;
- 
-+	virtnet_xdp_save_hdr(netdev_priv(dev), xdp);
-+
- 	act = bpf_prog_run_xdp(xdp_prog, xdp);
- 	u64_stats_inc(&stats->xdp_packets);
- 
-@@ -1867,7 +1907,8 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
- 	struct virtio_net_hdr_mrg_rxbuf *hdr = buf + header_offset;
- 	struct page *page = virt_to_head_page(buf);
- 	struct page *xdp_page;
--	struct xdp_buff xdp;
-+	struct virtnet_xdp_buff vxdp;
-+	struct xdp_buff *xdp = &vxdp.xdp;
- 	struct sk_buff *skb;
- 	unsigned int metasize = 0;
- 	u32 act;
-@@ -1900,17 +1941,17 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
- 		page = xdp_page;
- 	}
- 
--	xdp_init_buff(&xdp, buflen, &rq->xdp_rxq);
--	xdp_prepare_buff(&xdp, buf + VIRTNET_RX_PAD + vi->hdr_len,
-+	xdp_init_buff(xdp, buflen, &rq->xdp_rxq);
-+	xdp_prepare_buff(xdp, buf + VIRTNET_RX_PAD + vi->hdr_len,
- 			 xdp_headroom, len, true);
- 
--	act = virtnet_xdp_handler(xdp_prog, &xdp, dev, xdp_xmit, stats);
-+	act = virtnet_xdp_handler(xdp_prog, xdp, dev, xdp_xmit, stats);
- 
- 	switch (act) {
- 	case XDP_PASS:
- 		/* Recalculate length in case bpf program changed it */
--		len = xdp.data_end - xdp.data;
--		metasize = xdp.data - xdp.data_meta;
-+		len = xdp->data_end - xdp->data;
-+		metasize = xdp->data - xdp->data_meta;
- 		break;
- 
- 	case XDP_TX:
-@@ -1921,7 +1962,7 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
- 		goto err_xdp;
- 	}
- 
--	skb = virtnet_build_skb(buf, buflen, xdp.data - buf, len);
-+	skb = virtnet_build_skb(buf, buflen, xdp->data - buf, len);
- 	if (unlikely(!skb)) {
- 		u64_stats_inc(&stats->alloc_fail);
- 		goto err;
-@@ -2288,7 +2329,8 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
- 	unsigned int xdp_frags_truesz = 0;
- 	struct sk_buff *head_skb;
- 	unsigned int frame_sz;
--	struct xdp_buff xdp;
-+	struct virtnet_xdp_buff vxdp;
-+	struct xdp_buff *xdp = &vxdp.xdp;
- 	void *data;
- 	u32 act;
- 	int err;
-@@ -2298,16 +2340,16 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
- 	if (unlikely(!data))
- 		goto err_xdp;
- 
--	err = virtnet_build_xdp_buff_mrg(dev, vi, rq, &xdp, data, len, frame_sz,
-+	err = virtnet_build_xdp_buff_mrg(dev, vi, rq, xdp, data, len, frame_sz,
- 					 &num_buf, &xdp_frags_truesz, stats);
- 	if (unlikely(err))
- 		goto err_xdp;
- 
--	act = virtnet_xdp_handler(xdp_prog, &xdp, dev, xdp_xmit, stats);
-+	act = virtnet_xdp_handler(xdp_prog, xdp, dev, xdp_xmit, stats);
- 
- 	switch (act) {
- 	case XDP_PASS:
--		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
-+		head_skb = build_skb_from_xdp_buff(dev, vi, xdp, xdp_frags_truesz);
- 		if (unlikely(!head_skb)) {
- 			u64_stats_inc(&stats->alloc_fail);
- 			break;
-@@ -2324,7 +2366,7 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
- 		break;
- 	}
- 
--	put_xdp_frags(rq, &xdp);
-+	put_xdp_frags(rq, xdp);
- 
- err_xdp:
- 	page_pool_put_page(rq->page_pool, page, -1, true);
-@@ -2477,13 +2519,6 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 			       struct virtnet_rq_stats *stats);
+ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
+-				 struct sk_buff *skb, u8 flags);
++				 struct sk_buff *skb, u8 flags, ktime_t tstamp);
+ static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
+ 					       struct sk_buff *head_skb,
+ 					       struct sk_buff *curr_skb,
+@@ -1299,14 +1308,25 @@ static struct sk_buff *virtnet_receive_xsk_merge(struct net_device *dev, struct
  	return NULL;
  }
  
--static inline u32
--virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
--{
--	return __le16_to_cpu(hdr_hash->hash_value_lo) |
--		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
--}
--
- static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
- 				struct sk_buff *skb)
++static inline ktime_t virtnet_record_rx_tstamp(const struct virtnet_info *vi,
++					       const struct virtio_net_common_hdr *hdr)
++{
++	if (!READ_ONCE(vi->rx_tstamp_enabled))
++		return 0;
++
++	return ns_to_ktime(get_unaligned_le64(hdr->tstamp));
++}
++
+ static void virtnet_receive_xsk_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 				    void *buf, u32 len,
+ 				    unsigned int *xdp_xmit,
+ 				    struct virtnet_rq_stats *stats)
  {
-@@ -6760,23 +6795,18 @@ virtnet_xdp_rss_type[VIRTIO_NET_HASH_REPORT_MAX_TABLE] = {
- static int virtnet_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
- 			       enum xdp_rss_hash_type *rss_type)
+ 	struct net_device *dev = vi->dev;
++	struct virtio_net_common_hdr *hdr;
+ 	struct sk_buff *skb = NULL;
+ 	struct xdp_buff *xdp;
++	ktime_t tstamp;
+ 	u8 flags;
+ 
+ 	len -= vi->hdr_len;
+@@ -1324,7 +1344,9 @@ static void virtnet_receive_xsk_buf(struct virtnet_info *vi, struct receive_queu
+ 		return;
+ 	}
+ 
+-	flags = ((struct virtio_net_common_hdr *)(xdp->data - vi->hdr_len))->hdr.flags;
++	hdr = (struct virtio_net_common_hdr *)(xdp->data - vi->hdr_len);
++	flags = hdr->hdr.flags;
++	tstamp = virtnet_record_rx_tstamp(vi, hdr);
+ 
+ 	if (!vi->mergeable_rx_bufs)
+ 		skb = virtnet_receive_xsk_small(dev, vi, rq, xdp, xdp_xmit, stats);
+@@ -1332,7 +1354,7 @@ static void virtnet_receive_xsk_buf(struct virtnet_info *vi, struct receive_queu
+ 		skb = virtnet_receive_xsk_merge(dev, vi, rq, xdp, xdp_xmit, stats);
+ 
+ 	if (skb)
+-		virtnet_receive_done(vi, rq, skb, flags);
++		virtnet_receive_done(vi, rq, skb, flags, tstamp);
+ }
+ 
+ static int virtnet_add_recvbuf_xsk(struct virtnet_info *vi, struct receive_queue *rq,
+@@ -2540,7 +2562,7 @@ static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
+ }
+ 
+ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
+-				 struct sk_buff *skb, u8 flags)
++				 struct sk_buff *skb, u8 flags, ktime_t tstamp)
  {
--	const struct xdp_buff *xdp = (void *)_ctx;
--	struct virtio_net_hdr_v1_hash *hdr_hash;
--	struct virtnet_info *vi;
-+	const struct virtnet_xdp_buff *ctx = (void *)_ctx;
- 	u16 hash_report;
+ 	struct virtio_net_common_hdr *hdr;
+ 	struct net_device *dev = vi->dev;
+@@ -2549,6 +2571,9 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
+ 	if (dev->features & NETIF_F_RXHASH && vi->has_rss_hash_report)
+ 		virtio_skb_set_hash(&hdr->hash_v1_hdr, skb);
  
--	if (!(xdp->rxq->dev->features & NETIF_F_RXHASH))
-+	if (!(ctx->xdp.rxq->dev->features & NETIF_F_RXHASH))
- 		return -ENODATA;
++	if (tstamp)
++		skb_hwtstamps(skb)->hwtstamp = tstamp;
++
+ 	hdr->hdr.flags = flags;
+ 	if (virtio_net_handle_csum_offload(skb, &hdr->hdr, vi->rx_tnl_csum)) {
+ 		net_warn_ratelimited("%s: bad csum: flags: %x, gso_type: %x rx_tnl_csum %d\n",
+@@ -2587,8 +2612,10 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 			unsigned int *xdp_xmit,
+ 			struct virtnet_rq_stats *stats)
+ {
++	struct virtio_net_common_hdr *hdr;
+ 	struct net_device *dev = vi->dev;
+ 	struct sk_buff *skb;
++	ktime_t tstamp;
+ 	u8 flags;
  
--	vi = netdev_priv(xdp->rxq->dev);
--	hdr_hash = (struct virtio_net_hdr_v1_hash *)(xdp->data - vi->hdr_len);
--	hash_report = __le16_to_cpu(hdr_hash->hash_report);
+ 	if (unlikely(len < vi->hdr_len + ETH_HLEN)) {
+@@ -2618,23 +2645,27 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 	 */
+ 
+ 	if (vi->mergeable_rx_bufs) {
+-		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
++		hdr = buf;
++		flags = hdr->hdr.flags;
++		tstamp = virtnet_record_rx_tstamp(vi, hdr);
+ 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
+ 					stats);
+ 	} else if (vi->big_packets) {
+-		void *p = page_address((struct page *)buf);
 -
-+	hash_report = ctx->hash_report;
- 	if (hash_report >= VIRTIO_NET_HASH_REPORT_MAX_TABLE)
- 		hash_report = VIRTIO_NET_HASH_REPORT_NONE;
+-		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
++		hdr = page_address((struct page *)buf);
++		flags = hdr->hdr.flags;
++		tstamp = virtnet_record_rx_tstamp(vi, hdr);
+ 		skb = receive_big(dev, vi, rq, buf, len, stats);
+ 	} else {
+-		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
++		hdr = buf;
++		flags = hdr->hdr.flags;
++		tstamp = virtnet_record_rx_tstamp(vi, hdr);
+ 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
+ 	}
  
- 	*rss_type = virtnet_xdp_rss_type[hash_report];
--	*hash = virtio_net_hash_value(hdr_hash);
-+	*hash = ctx->hash_value;
+ 	if (unlikely(!skb))
+ 		return;
+ 
+-	virtnet_receive_done(vi, rq, skb, flags);
++	virtnet_receive_done(vi, rq, skb, flags, tstamp);
+ }
+ 
+ static int virtnet_rq_submit(struct receive_queue *rq, char *buf,
+@@ -5575,6 +5606,27 @@ static int virtnet_get_per_queue_coalesce(struct net_device *dev,
  	return 0;
  }
  
++static int virtnet_get_ts_info(struct net_device *dev,
++			       struct kernel_ethtool_ts_info *info)
++{
++	struct virtnet_info *vi = netdev_priv(dev);
++
++	/* setup default software timestamp */
++	ethtool_op_get_ts_info(dev, info);
++
++	if (vi->rx_tstamp_supported) {
++		info->so_timestamping |=
++			SOF_TIMESTAMPING_RX_HARDWARE |
++			SOF_TIMESTAMPING_RAW_HARDWARE;
++
++		info->tx_types = BIT(HWTSTAMP_TX_OFF);
++		info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
++				   BIT(HWTSTAMP_FILTER_ALL);
++	}
++
++	return 0;
++}
++
+ static void virtnet_init_settings(struct net_device *dev)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
+@@ -5670,7 +5722,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
+ 	.get_ethtool_stats = virtnet_get_ethtool_stats,
+ 	.set_channels = virtnet_set_channels,
+ 	.get_channels = virtnet_get_channels,
+-	.get_ts_info = ethtool_op_get_ts_info,
++	.get_ts_info = virtnet_get_ts_info,
+ 	.get_link_ksettings = virtnet_get_link_ksettings,
+ 	.set_link_ksettings = virtnet_set_link_ksettings,
+ 	.set_coalesce = virtnet_set_coalesce,
+@@ -6269,6 +6321,43 @@ static void virtnet_tx_timeout(struct net_device *dev, unsigned int txqueue)
+ 		   jiffies_to_usecs(jiffies - READ_ONCE(txq->trans_start)));
+ }
+ 
++static int virtnet_hwtstamp_get(struct net_device *dev,
++				struct kernel_hwtstamp_config *config)
++{
++	struct virtnet_info *vi = netdev_priv(dev);
++
++	if (!vi->rx_tstamp_supported)
++		return -EOPNOTSUPP;
++
++	*config = vi->tstamp_config;
++
++	return 0;
++}
++
++static int virtnet_hwtstamp_set(struct net_device *dev,
++				struct kernel_hwtstamp_config *config,
++				struct netlink_ext_ack *extack)
++{
++	struct virtnet_info *vi = netdev_priv(dev);
++
++	if (!vi->rx_tstamp_supported)
++		return -EOPNOTSUPP;
++
++	if (config->tx_type != HWTSTAMP_TX_OFF) {
++		NL_SET_ERR_MSG_MOD(extack, "TX timestamping is not supported");
++		return -ERANGE;
++	}
++
++	/* The driver cannot filter, any filter becomes ALL */
++	if (config->rx_filter != HWTSTAMP_FILTER_NONE)
++		config->rx_filter = HWTSTAMP_FILTER_ALL;
++
++	WRITE_ONCE(vi->rx_tstamp_enabled, config->rx_filter == HWTSTAMP_FILTER_ALL);
++	vi->tstamp_config = *config;
++
++	return 0;
++}
++
+ static int virtnet_init_irq_moder(struct virtnet_info *vi)
+ {
+ 	u8 profile_flags = 0, coal_flags = 0;
+@@ -6329,6 +6418,8 @@ static const struct net_device_ops virtnet_netdev = {
+ 	.ndo_get_phys_port_name	= virtnet_get_phys_port_name,
+ 	.ndo_set_features	= virtnet_set_features,
+ 	.ndo_tx_timeout		= virtnet_tx_timeout,
++	.ndo_hwtstamp_set	= virtnet_hwtstamp_set,
++	.ndo_hwtstamp_get	= virtnet_hwtstamp_get,
+ };
+ 
+ static void virtnet_config_changed_work(struct work_struct *work)
+@@ -6740,6 +6831,10 @@ static int virtnet_validate(struct virtio_device *vdev)
+ 		__virtio_clear_bit(vdev, VIRTIO_NET_F_STANDBY);
+ 	}
+ 
++	/* The fixed header layout with tstamp at offset 32 needs VERSION_1 */
++	if (!virtio_has_feature(vdev, VIRTIO_F_VERSION_1))
++		__virtio_clear_bit(vdev, VIRTIO_NET_F_RX_TSTAMP);
++
+ 	return 0;
+ }
+ 
+@@ -6932,6 +7027,9 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RX_TSTAMP))
++		vi->rx_tstamp_supported = true;
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+@@ -6965,8 +7063,10 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 		dev->xdp_metadata_ops = &virtnet_xdp_metadata_ops;
+ 	}
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
+-	    virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO))
++	if (vi->rx_tstamp_supported)
++		vi->hdr_len = offsetofend(struct virtio_net_common_hdr, tstamp);
++	else if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
++		 virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO))
+ 		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash_tunnel);
+ 	else if (vi->has_rss_hash_report)
+ 		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash);
+@@ -7309,6 +7409,7 @@ static unsigned int features[] = {
+ 	VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM,
+ 	VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
+ 	VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM,
++	VIRTIO_NET_F_RX_TSTAMP,
+ };
+ 
+ static unsigned int features_legacy[] = {
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index a6de308b8f25e..2abd8a614a23f 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -17,6 +17,16 @@ struct virtio_net_common_hdr {
+ 		struct virtio_net_hdr_v1_hash hash_v1_hdr;
+ 		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
+ 	};
++	/*
++	 * The wire layout is fixed and cumulative: a field sits at the same
++	 * offset whether or not the features before it were negotiated; unused
++	 * bytes are padding. tstamp is thus always at offset 32 and only
++	 * present (header size 40) if VIRTIO_NET_F_RX_TSTAMP was negotiated.
++	 * The negotiated header size tells how much of this struct is
++	 * on the wire. Only ever append new fields at the end.
++	 */
++	__u8 reserved[8];	/* outer_nh_offset, ipsec_resource_hdr (not implemented) */
++	__le16 tstamp[4];	/* le64 TAI receive time in ns, 0 if none */
+ };
+ 
+ static inline bool virtio_net_hdr_match_proto(__be16 protocol, __u8 gso_type)
+diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+index 1db45b01532b5..15e8e408d50fb 100644
+--- a/include/uapi/linux/virtio_net.h
++++ b/include/uapi/linux/virtio_net.h
+@@ -56,6 +56,7 @@
+ #define VIRTIO_NET_F_MQ	22	/* Device supports Receive Flow
+ 					 * Steering */
+ #define VIRTIO_NET_F_CTRL_MAC_ADDR 23	/* Set MAC address */
++#define VIRTIO_NET_F_RX_TSTAMP	  49	/* Device sends TAI receive time */
+ #define VIRTIO_NET_F_DEVICE_STATS 50	/* Device can provide device-level statistics. */
+ #define VIRTIO_NET_F_VQ_NOTF_COAL 52	/* Device supports virtqueue notification coalescing */
+ #define VIRTIO_NET_F_NOTF_COAL	53	/* Device supports notifications coalescing */
 
 -- 
 2.56.0
