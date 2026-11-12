@@ -1,110 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794481080;
-	b=MM03eUZghDHT2YVadQE1Oe3kB6+JEBkGacBzcgBGzcL4oFDqGXy/xOFoB6KJnDhFjYOq
-	 t6JzidHdtGPW/2v+/s+Qnz2ewuxsQ9xE3Jal4HoRxvygn7fGE9W+dKysPi4n5lPcFln/p
-	 XeTTmFiVFYkKZ8+VJEX4dFjgc3oQIyP/f48lMmUWDx5m4aDHRZ28xdrrxOVXOyTCYELLe
-	 EtRYGwbOrMke0CsOcRDDJjW/VnN4sMWZEtcL3rcf/ssDGCg6tBpPg4dmEELY2FviUCx0Q
-	 ItTZQwvtTszXLmb5+Vz+4k3E9LO2vf1/I/lpiN724772VBk1kQTqqgfhmK4lLTqSmsg==
+	t=1794481085;
+	b=AVKgaQV1cOkotsv40MiEK9lcHJrcSJtD1Gx+gQ0bhFoLlEb1FTI6X8S7faOBYgban4Qn
+	 XmL7lgb/lKIL5nwOZ7ouT4j68h5oLSPHOyifuA4cuiTT+7DOF0IwMYMKy1nb23SmG5wDt
+	 r0GdhYnD8HDS0uhbnM1xBZESpnzEVFxDEIzyCey8mq34I7ws/T+S4mpt/30JvXhFydNRz
+	 pXfvK6XLktowh9siP50HjD0Y0nr3nC89fIeJWDImtMWT15LpoQGqBeRg+XedSwxRiWHZW
+	 V6Bcv/BS7BnO3YfkPGQpPmWqlMPbE6lyR61rGcL3AALs6ItaMob0dvEY/U7YHikbdQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794481080;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=;
-	b=renSUkP2mlKdoDV+MS2x4B708PqeO1Uqcwh0TtrQidne1na5GHUSU/P6OK60WbBdepuf
-	 C4YcHK9f+GHjoRinbL87LogRlIvyNpG25lrWyisveEGIB/BEGFVqJl6a91LcFPbp1HP8F
-	 TMGH52lf+vomgTio4CL6D1lO1PVdwlZJKgbGPlhg3H1ojiV7xwbSjTMgjtV3Itf2FNHW2
-	 uBB9DaqOZyqtPfn84WShwk/SSDPoKFT/L5WGF04OKkvge6lTHdmVO4Ink91BLjXAc0OFY
-	 cBAMWnq0jcHmCYNm/1hQHyCBZtdJmrRMwE64nnXTrh/Cu7YVAdXDOI4V9NtelNB/hnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794481085;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Spam-Status:X-Spam-Checker-Version;
+	bh=GUeyCkWJ30TKeXscHAtkA+LtWzqmgJiXCIh4pQZpiKI=;
+	b=YEE2GMd/acZWOIrOBCVP+36IO47YM+crwR6Iw7dWiYWT8LUBnQct6A5HsFOVTu1GRpfR
+	 ZVVuy7W4zrcEhY+eXXha12T0NjVGW2rb8IupMZlElbcWMtk51F1jtDE+NshQ4bjUOjpns
+	 78Y07ReyhTByjcSyI6fCijbU1OvgFwGXnT2T/kxV4LnnrHQTrCRz04YH8IjWioDE9UBCl
+	 A6GdKqFO23A/RLSJSVeRj9Ql7/AP1ExN5V+WZYknDWmc04TCJ+aXP2pjR3dkfI+DfC440
+	 vRN/l/yTU+TWGobfJjWwFSEUdlltrzBynAfQl1lI54meFwLX1ubSIedM4lkyXKOjPQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arndb.de;
-	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Lx3oOVyr;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=5Tucp5Ch;
-	arc=none smtp.remote-ip=202.12.124.157
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B91606A337
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:58:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39B91606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=lCZb3yKc;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8A6606A321;
+	Thu, 12 Nov 2026 10:58:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB8A6606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Lx3oOVyr;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=5Tucp5Ch
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 6A0BD7A015B
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:57:59 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 12 Nov 2026 05:57:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794481059;
-	 x=1794567459; bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=; b=
-	Lx3oOVyr7xrldDhNotY/Y44ZUkWpUbS/Sw15HoBIt7zwVfFUJYzuhwJE6hHBi/f8
-	72PdLUrfif3QbiaqWlxNR28c8e/kBp2q3B8JS74VmKGEIA51P5NyNwQU9UU2U8DZ
-	5hOupRTbk/Bo1YRYVjiwE79692Z2HaOFkRbUqn04C0dAknhoZ/XF/BqXISN8djmK
-	nzQpQlDPCzLVKROdNaK/NAazeqQ5iP1EORfBNzaq7ok9xgR2qwyEFHaDlF4Y9AlF
-	XYa4+Lf5XVm+Qhxd+suZVmkwWbJXRviGrqHovHUmcPfLOq6ZV/oylQQuwfeVvML/
-	U7opSxQSF50d5vGuJszB5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794481059; x=
-	1794567459; bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=; b=5
-	Tucp5ChVCBDjhl4dk5C7F5X3LVKTFsMP8gnn9x0MuH2+7jMPa4Nj+SIQT2DVG8uJ
-	u5wupJm5rdstAzMZZInODnyvvfpTJfSSXwspucG8yFOI18XQA+xNSYU8OspFIhSc
-	LO/T82B7R1uppnjALZIhacMzde9ZBYWKSQzN44nG7+0vSBMXLzlZpyo2vVWuFYH0
-	fE8J7L53cCmOZj5msmFb4hnFvbEATEFuLAZdCbui2G1dPgjuzrWnaKOAF5Kwkf9e
-	8FQ0yTD33WASXijjLCTz8CpmqYu/XHq6UATYTYTvybNI0UcKwDFTUQ2UkVbC+N6n
-	CdlnYUUoCZMBRuGIDFwhA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794481059; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:bc93MovpOp2RcC465cs1Ug+gnaABaZm3g5HQ1+imHZnyIBu
-	Uu4gypCJDvC1C1//nKwsaotdOlmwG6Ha2jDbToN/RcL0hjPUn2Kwe7MuoZFSnVRL
-	kX1aY9eqhe3cBb4Cp4EB+ximMRbRv6ClsCMdrmV6Z/vAo9xomJtNHzwV7tXI+0Tr
-	d21igZGwZOsnRMRnEE9776vHgYCrkRKo2eAutc9b3xQZ46oSamkwqvEPWKvhfFcQ
-	bLoxzxvxpb+P2Lbkx6GIKMyOSvWlj8oxqoCLKP5s547VhNCxbuAVLH/yGitJK/5V
-	7rbyZ9RhGaPiS1hv5atLBGdRuuzlfPxy45fOYOw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:QYGhyNrll/z2x43nzHbHMzcpokL6CuOf/GHVHHBnNG4=:9cBz8A60daXm+XxflR0ZEsASkUqul+qaMs0gX60bkz4=;
-X-ME-Sender: <xms:lZv1aulnwhqAVrU2ywlIhlQkx3jcr_mjJ1oOcF-oQALIJdbh9W2MSg>
-    <xme:lZv1agpofMLGq5k0IqsluYkWK-3JUTpfBoFK3L6DLiuUPYqcFGn2Enty4uF_-XQnJ
-    z94b6dWlBxsjyCv4Ip2kz_9V8gd6SZusy2huFR7jeXtsherYI7qUTdq>
-X-ME-Proxy-Cause: dmFkZTFPAb5ZVZzWlLcejKGx6E4VA3h8PqNfBXtLQtoFPOgpmgytfsUfOyDLCYXd2SSa4q
-    2EH8IJ2PPzcvWQUIF8rzpRv4eG4RNXvx0NBusK63EGFOtvbarh8wH0CGqL2blZX5LnwxGj
-    Bq7bb6BFYZpib28HfQC1ujCrw0Q8TBW7/48cz6euAfTCWQtTfGAuyvgN7GbpRZsmgRF2E4
-    TCaNzGWqT+dNqpflZRaBZXkZZtt4lBXqOUPXc/rjd4+dtSMM8lEb+r/hClV3R/o7Q+s5sd
-    1lcFl3GcCnNdnbplqVUVqfvmlm5/4bt3TMMk6ZNCk1/IOqRAfS2+h81eYDNbQMld/1X+lI
-    8+vvCIKZ1a4bZphSYeDPjCLmrTmXj+ipxN85OGTScj/sl7+Ut3TC/P8rMkVApR+7BygKid
-    SkK0hxv5G+rH+sog2zIEng3jqw0sOhQu7dCKfMZsvhYS/RJDLdeoB3JlbIKQ1Ys7dHJw2w
-    E1GTp+3yFqf73WGe3gAJZsZogHWBjRGFo1jLw+xcZHLP9MN34ZbJcYdMqQYR6DX3zmMqyt
-    U2s5m3k8BcCtol6aY9t+57PktWJnKsaEvlPS7qbnA2Qi397OHuVQYt2HBnl4g4gG0zdN1t
-    W74OFEbJGA5QHDn0M9LErHNZjmr7Zm0RyUqswJebH+zD/PZn3cfiGvgMm5gg
-X-ME-Proxy: <xmx:m5v1apYfRm6Zt7Y0f2U2u3xCBkE7OANuu7_SI_WuQKzpEBsoK_gakw>
-    <xmx:m5v1aqwe9cSnJzJz-zCoa-M5X9VKgGBOT0Z-GKILMaQBtdU6hxleOg>
-    <xmx:m5v1angYViALKmj2ClSkaSfBGAsOhh0oZTdF0LOqTWdiA7YmSiqtnA>
-    <xmx:m5v1ahr24wqldhEb8CE5VCD_MYmhCuogL16D5SqQjqcPObg2XEt3og>
-    <xmx:o5v1ag_90SnSwFh8o9nRP0b3a1tEHU8n2Te6e-_AnmGGK-27gNICHabi>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 82A8332A009E; Thu, 12 Nov 2026 05:57:25 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=lCZb3yKc
+Received: from kali.mshome.net (unknown [4.213.232.19])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 34F3020B7168;
+	Thu, 12 Nov 2026 02:57:56 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 34F3020B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1794481080;
+	bh=GUeyCkWJ30TKeXscHAtkA+LtWzqmgJiXCIh4pQZpiKI=;
+	h=From:To:Subject:Date:From;
+	b=lCZb3yKcup/JAsYlNeFlSW7d8PXVj2Hz/MSwDVQN83kwTfhXK4AgpLDhCRvCQmtV5
+	 jKnNe7tRd8nqH/f1Qoa26wo0vROkUk1j6GCz25y9uAGir9TTMa1bsnIQ+1qPvZblgQ
+	 Kqd4VjLwW5bfz5eZmTtahbJXAdUt5la0EerHLRag=
+From: Sahil Chandna <sahilchandna@linux.microsoft.com>
+To: haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	weh@microsoft.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	leitao@debian.org,
+	sahilchandna@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next] net: mana: Add CQE polling as first-level TX timeout recovery
+Date: Thu, 12 Nov 2026 04:57:18 -0600
+Message-ID: <20261112105752.978446-1-sahilchandna@linux.microsoft.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,82 +74,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AD8wiEBgakfZ
-Date: Thu, 12 Nov 2026 11:56:55 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Christian Brauner" <brauner@kernel.org>
-Cc: "Matthew Wilcox" <willy@infradead.org>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Miklos Szeredi" <miklos@szeredi.hu>, "Amit Shah" <amit@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "Zi Yan" <ziy@nvidia.com>,
- "Bernd Schubert" <bschubert@ddn.com>, "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Richard Weinberger" <richard@nod.at>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>, "Nishanth Menon" <nm@ti.com>,
- "Frank Li" <frank.li@nxp.com>
-Message-Id: <bf186643-780c-40e0-bde6-f2af90404a18@app.fastmail.com>
-In-Reply-To: <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
- <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
- <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
- <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
- <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 12, 2026, at 10:28, David Hildenbrand (Arm) wrote:
-> On 11/12/26 10:25, Arnd Bergmann wrote:
->> On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
->>> On 11/12/26 09:55, Arnd Bergmann wrote:
->>>>
->>>> I tried to push for what I thought was an aggressive timeline
->>>> last year, but that would still keep the Arm bits for a couple more
->>>> LTS releases and only gradually reduce the scope of highmem in the
->>>> meantime, removing support from architectures, file systems, and
->>>> drivers where possible. See https://lwn.net/Articles/1051010/
->>>> for a summary of my talk in Tokyo, including the slides and
->>>> a link to the video for anyone wanting more details.
->>>>
->>>> I also prepared a number of patches towards this, but have so
->>>> far not been great at following up to get them merged, sorry
->>>> about that.
->>>
->>> I think we can already start at removing CONFIG_HIGHPTE now, right?
->> 
->> Yes, I think my patch from two years ago still applies, see
->> 
->> https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
->> https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
->> 
->> If not, I can send you an updated version.
->
-> yes, please, that also brings it up to reviewer's attention :)
+The current mana_tx_timeout() handler unconditionally schedules a full
+port queue reset (detach/attach) whenever the TX watchdog fires.
+This is unnecessary for transient stalls where completions are
+simply delayed or an interrupt was missed.
 
-Ok, I have rebased my old patches to 7.4-rc2 now and pushed them to
+Implement a graduated recovery approach: on the first TX timeout (or
+when the previous timeout was more than 2 minutes ago), schedule NAPI on
+the stalled queue's TX CQ via napi_schedule(). This triggers
+mana_poll_tx_cq() through the normal NAPI path, processing any pending
+completions without relying on the interrupt and recovering
+missed-interrupt scenarios without queue reset.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=highmem-7.4
+If any subsequent TX timeout fires on any queue, within 2 minutes of
+the previous one, escalate to the existing port-level detach/attach
+reset, as the CQE poll did not recover the queue.
 
-I'll do some more build testing on this version before I post
-them to the list.
+This makes the TX timeout recovery three-tiered:
 
-    Arnd
+  Level 1: CQE poll via napi_schedule() (this patch)
+  Level 2: Port queue reset (detach/attach)
+  Level 3: device reset(FLR)
+
+Co-developed-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Signed-off-by: Sahil Chandna <sahilchandna@linux.microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 31 ++++++++++++++++---
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  2 ++
+ include/net/mana/mana.h                       |  4 +++
+ 3 files changed, 33 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index e6d494df22e4..0d8c8b8fbc83 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -336,6 +336,9 @@ static void mana_per_port_queue_reset_work_handler(struct work_struct *work)
+ 	if (err)
+ 		netdev_err(ndev, "mana_attach failed: %d\n", err);
+
++	/* Let the next TX timeout try a CQE poll recovery first */
++	WRITE_ONCE(apc->last_tx_timeout, 0);
++
+ dealloc_pre_rxbufs:
+ 	mana_pre_dealloc_rxbufs(apc);
+ clear_flag:
+@@ -964,6 +967,7 @@ static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ 	struct mana_port_context *apc = netdev_priv(netdev);
+ 	struct mana_context *ac = apc->ac;
+ 	struct gdma_context *gc = ac->gdma_dev->gdma_context;
++	unsigned long last = READ_ONCE(apc->last_tx_timeout);
+
+ 	/* Debug knob for bringup/qualification: when set, log the timeout and
+ 	 * skip the reset so the failing state is preserved for telemetry.
+@@ -980,11 +984,30 @@ static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ 	if (test_bit(GC_IN_SERVICE, &gc->flags))
+ 		return;
+
+-	/* Note: If there are pending queue reset work for this port(apc),
+-	 * subsequent request queued up from here are ignored. This is because
+-	 * we are using the same work instance per port(apc).
++	if (!apc->port_is_up)
++		return;
++
++	/* If the previous timeout fired less than
++	 * MANA_TX_TIMEOUT_RESET_THRESHOLD ago, the earlier CQE poll did not
++	 * help and queue stalled again	: escalate to a port reset.
++	 * Note: If there is pending queue reset work for this port (apc),
++	 * subsequent requests queued up from here are ignored, because the
++	 * same work instance is used per port (apc).
+ 	 */
+-	queue_work(ac->per_port_queue_reset_wq, &apc->queue_reset_work);
++	if (last &&
++	    time_after(last, jiffies - MANA_TX_TIMEOUT_RESET_THRESHOLD)) {
++		queue_work(ac->per_port_queue_reset_wq, &apc->queue_reset_work);
++		return;
++	}
++
++	/* First timeout, or the previous one was long ago: try to recover by
++	 * polling the TX CQ for completions before escalating to a reset.
++	 */
++	if (txqueue < apc->num_queues && apc->tx_qp && apc->tx_qp[txqueue]) {
++		WRITE_ONCE(apc->last_tx_timeout, jiffies);
++		apc->eth_stats.tx_cqe_poll_recovery++;
++		napi_schedule(&apc->tx_qp[txqueue]->tx_cq.napi);
++	}
+ }
+
+ static int mana_shaper_set(struct net_shaper_binding *binding,
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+index a91eb12badca..ff4799c61a6c 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+@@ -22,6 +22,8 @@ static const struct mana_stats_desc mana_eth_stats[] = {
+ 				       tx_linear_pkt_cnt)},
+ 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+ 					rx_cqe_unknown_type)},
++	{"tx_cqe_poll_recovery", offsetof(struct mana_ethtool_stats,
++					tx_cqe_poll_recovery)},
+ };
+
+ static const struct mana_stats_desc mana_hc_stats[] = {
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 09725e3256fa..5de6eaa02102 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -94,6 +94,8 @@ enum mana_priv_flag_bits {
+
+ #define MANA_RX_FRAG_ALIGNMENT 64
+
++#define MANA_TX_TIMEOUT_RESET_THRESHOLD (2 * 60 * HZ)
++
+ struct mana_stats_rx {
+ 	u64 packets;
+ 	u64 bytes;
+@@ -447,6 +449,7 @@ struct mana_tx_qp {
+ struct mana_ethtool_stats {
+ 	u64 stop_queue;
+ 	u64 wake_queue;
++	u64 tx_cqe_poll_recovery;
+ 	u64 tx_cqe_err;
+ 	u64 tx_cqe_unknown_type;
+ 	u64 tx_linear_pkt_cnt;
+@@ -566,6 +569,7 @@ struct mana_port_context {
+ 	struct net_device *ndev;
+ 	struct work_struct queue_reset_work;
+
++	unsigned long last_tx_timeout;
+ 	/* Debug knob to log TX timeout but skip recovery reset */
+ 	bool tx_timeout_skip_reset;
+
+--
+2.53.0
+
