@@ -1,82 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794486475;
-	b=si3sGFFmXRmHwVQw+TKur8cofVXNOXHvBdM2Ry7D9RBYOpZAqAIFtn8V5BCf0JuNER3q
-	 enP1ObXfOnoAF4cz4Q2bC1M0HJpejjA0qbPaKO8Plij1j4Kz7fvTiexFmI+SC6LSqleui
-	 m+E/WV9Gq+65+zZ1+cjirGo9Kboh/1/iVdy+hegkSIrgxdnV80IEgKI63XGonFRSX6wjj
-	 A77jXiGeF3nx8Mjc4m4txdvsrDuUXu3N7XZkqxdLOTww5A3x6eavCTGsWfCipWQXnLMmh
-	 E6kEfMeNmDtbqhvZwwYPh0Q6TocNctGFS1sOvn9bGRYhrbYQuAHgo33P0g2CHFWb0Kw==
+	t=1794486606;
+	b=JoLx9/IslufYQ64IxKwfPQ71feJMoQ4vKGicG3heo4l+RMzwsT/V7WB/jHIUTABOqNgw
+	 J7LNfHxgoPZJeajZQPCk47wfaK9kh5PEsoQZcRvek3vqeQ6TYcHX68CXth8LcSoA1BWwY
+	 iN8HuF3FlS7Vk/S2M2umXCGiLHRiN2diz5px89g12xPSc+Tcs5pm/tOtHlcF+n6OnTCM9
+	 xr5+6JARWXYBE0VgylWeUEk0EtfJVCp2hVMor/HfOP1b8Hrdh31lAEBrkLNDPQrp9D1TR
+	 UZ/FlIpmcshgRAVTGP8zlxqCa5PwEX0J6g4IwTKlp25LFWC9PIvqI0Wmo0JjaE4UmJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794486475;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=1ZA5sC73+IlFkRAeNQ9a0k730uLXrOz2+FrELu1ZSFY=;
-	b=NH11ZWUcBGZ/nzG1u9Dle+OYvGrO/4kYr6dwgYpaN3Gy+4ZhUx9EUNllitKdXv7lZxah
-	 uOmmU8eDBJ/puWxKUTh+dhkwKLvohBXV9lQH/xke3NkeaSLObdlUYGn24sI9R/h+s3Fyj
-	 3o7jy3UhUWIrO3c1YTN46gW7enNe8ycTcwG/dWre4KCztbjlQA6n6SoX/tkrByNNxRIqi
-	 AykFYzCuvqSbQJQPhsFy2Qao3REo+ZDH8T8oeTVUhqgAAzeMPngw1oYZPgplOqFldM++I
-	 Xjt0f5aI4oGciq/SZfgXjE01662ms1lCumwyqIn9yFc18SHJAlf/MjMqSM+rK65X0Tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794486606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=k3st0dGZek/XsHRomjt4q4del7I8E56wk47WUe3AOKo=;
+	b=3yPTD7RfVPy1zWjQdX0uyHGYvQkCcmkETX+islS6E4ei8OQu3mQJ0S3MzdPjfaY/Grr3
+	 kh++Ycu4B5bshhZCV9/ERvhdOdbfFWvL26Q0fLZLykfLP+1JOZ/mnXEvOc+JOaCePXQyx
+	 HWkNPPvscTloA40U8zAq84NU3wstXMNUBH0se9yR98aCBnxnUYeaKEVbd4AdljRVdiftV
+	 7uTfbeiTPLEgFM2EWDaQ85VfiotzqhjvhWCcOONKGCZKVK6EvPqrJgbNR++6llyeRvuC9
+	 BMvOIt3UkHTd8C8oSTPRwg6BIt+WhLZxDPbv1U0kMTPiPV84nqBlYqXnnatAOuWB+jQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Kgui6sOd;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aKqsebRM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5185B606A332;
-	Thu, 12 Nov 2026 12:27:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5185B606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C1D606A32D;
+	Thu, 12 Nov 2026 12:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Kgui6sOd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794486482; x=1826022482;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=l3F0dgEZqqzCTcle72a7ov5JeFD0DWKUDjz+apn6hYY=;
-  b=Kgui6sOdUjO6yxo2fegXimnMxpiCRlcKXU6h4nkdJm7sk+N6X+LStrRF
-   cV2UOwyQSeuQY57+DHs0+GRqadakaGVVwO4nRm9gNnPibL1Kvi12+RfQb
-   BH4Wubvpr9461b9YfKJUyXVhnak5P4y8zZucl/qWjTd0IW4k9XfnjOwVr
-   d3AEfVzpOkgEoXiJIvCUvpAQO6GFlbGmRNKwwGiyz2POwosvp4fK6p+cS
-   tIAhBMrdbqkbbLIo8vXX9RIJJ7osGwIBq0eeSvyT9gQCVJrHjpFagMQCs
-   gH45rLoLEd53BZOMVfU8HoesrTiTrjMlHMxB14beb+wDaLrSXVoMIxwgB
-   Q==;
-X-CSE-ConnectionGUID: RVd2qb8VQ9mGyxq4pxN7VQ==
-X-CSE-MsgGUID: +0FH4PJYR7KVuom5Boj3Zg==
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="77094255"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Nov 2026 05:28:01 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 12 Nov 2026 05:27:53 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 12 Nov 2026 05:27:50 -0700
-Date: Thu, 12 Nov 2026 13:27:49 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Maor Dickman
-	<maord@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Roi Dayan
-	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
-	<shayd@nvidia.com>, Uri Dar <udar@nvidia.com>
-Subject: Re: [PATCH net] net/mlx5: Lag, Return error when enabling MPESW
- without LAG support
-Message-ID: <20261112122749.7cudepr32t4bz2le@DEN-DL-M70577.microsemi.net>
-References: <20261110114350.2639891-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aKqsebRM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AB61F00A05;
+	Thu, 12 Nov 2026 12:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794486605;
+	bh=k3st0dGZek/XsHRomjt4q4del7I8E56wk47WUe3AOKo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=aKqsebRMd0yXwvS6TBcPNOyVOGCcbX55hrQpg8olSzANZtrmkOxtnCtE/rE4erh3A
+	 Vg2f7r4G2ghiH+VLI+tnQOwCVUbrYuX+17iEIDG7OL/6AYBZPIKrmhUDIT23aystjX
+	 JgAY7UP0k6yBvbBBvam2JciKuFF7xV84BZfvy/c6nHRPcZgHJNVbmoPYHG99shnwPj
+	 A+/6uIVKlQX8FaK1Y5wPuSth8gaFs+H1+ae4GB/9PcWdTGwmGnwyLDQwUolS8grEo5
+	 IpkWc0+D/hllfv9uHVnc/aBS51gWXXImTTD/SAyFiBOIAa6O/u2MFaBofxkaNGAnJh
+	 /27VhnoiSCHUg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9943D3AA9F74;
+	Thu, 12 Nov 2026 12:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,27 +53,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261110114350.2639891-1-tariqt@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: dst_metadata: fix memcmp overread in
+ skb_metadata_dst_cmp
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179448660448.2065860.8508505178205062232.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 12:30:04 +0000
+References: <20261109082410.206140-1-jpsergent@gmail.com>
+In-Reply-To: <20261109082410.206140-1-jpsergent@gmail.com>
+To: Jean-Paul Sergent <jpsergent@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, i.maximets@ovn.org,
+ sashal@kernel.org, kuba@kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, sridhar.samudrala@intel.com,
+ kees@kernel.org
 
-> From: Uri Dar <udar@nvidia.com>
-> 
-> When firmware reports a function as not LAG capable (lag_master=0 or
-> num_lag_ports < 2), mlx5_lag_add_mdev() creates no LAG object for it.
-> Enabling multiport E-Switch on such a device returns 0 from
-> mlx5_lag_mpesw_queue_work(), so
-> "devlink dev param set ... esw_multiport value true" reports success
-> although nothing was enabled, and a following "devlink dev param show"
-> still reports false.
-> 
-> Return -EOPNOTSUPP instead. mlx5_lag_mpesw_disable() ignores the return
-> value, so disabling keeps its current behavior.
-> 
-> Fixes: a32327a3a02c ("net/mlx5: Lag, Control MultiPort E-Switch single FDB mode")
-> Signed-off-by: Uri Dar <udar@nvidia.com>
-> Reviewed-by: Shay Drori <shayd@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
+Hello:
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon,  9 Nov 2026 00:24:10 -0800 you wrote:
+> Commit 3fcece12bc1b6 ("net: store port/representator id in
+> metadata_dst") dropped the options_len equality check when converting
+> skb_metadata_dst_cmp() to a type switch, so the memcmp length is taken
+> from skb a alone.  When skb b carries fewer options than a, the
+> comparison reads past b's allocation.
+> 
+> Hit in practice with Cilium geneve GRO aggregation, comparing an skb
+> carrying 12 bytes of tunnel options against one carrying none:
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] net: dst_metadata: fix memcmp overread in skb_metadata_dst_cmp
+    https://git.kernel.org/netdev/net/c/74a7db839308
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
