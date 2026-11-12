@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794459204;
-	b=TD5DU40RBc9td3EWBE2btZBIrplg8kCo6mlXJWCxZLuTGXq5kauONgB46uP2o/ZREu8Z
-	 BsLA0SO/9nmu8/c34N3N2T91FwfrjzmOfdzHf+yoYMFOUOLklkw8ISZ6M/xMbUaygFOtS
-	 eL9agUfCGWsoDtgAsa3qdD/CK+vT2ImMLWFoyVB5rXyraOcUH5SfVXiML4RZ+Ex3jsODu
-	 DHgAPJi2h0+fN2lqsiI6T8ij2HDE89CLVGsb9kp7cixNVKBxUl0hz5slxJmX1GPuKpPx5
-	 nzGz0XE4qbsqZvBG0VwFkM+5+RsDWmzeTjMqNoiPQlUU7222MhkEl1VGp44oObkP5BQ==
+	t=1794459210;
+	b=SfWED1lqrLvpalrzd/NBQTFb1w6aGWy6WBX4Pk2k9yfcplRZN6nPoy+h+NjQDg4QmxBW
+	 MW0lLimfXfyrE5h+FmHIBOyq6f+SDUHqUikI1u474RrIv4tbKI0KOS8BIClv3H8pewaYj
+	 1x4U0eVoFxPZDd0ULW9j8KI1Co6Z+UAboC7HPrG5Ea/K2LCtaR/n6ZFbZfWqbE73xaXle
+	 Qtranlf7QsI184ORIU35aOgOjE5VzorchBPO52wL9Z80ZCus4Ld961R0+W80v+PfRbbHO
+	 5yBCAYI1aB1Ij6f+N9ApEljcHVY3+LtjAD8Hd6QMU2BABSIJwe9APdgWKnS2WAOscdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794459204;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794459210;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Fq7eVjoo8xJhvVi6unc9XNet04qh3ukyVn0blU6xcQE=;
-	b=5WpOrJg8j5vW+DRmEVgmUQ7YGLecPRn0s2LzzZX0+bzFTs3SlS7BFCw47qBKewnhHZ6f
-	 HKwQyX+m5yzYTWPBrlVleHxWa2k3Vk3dydv8IwwF3fvlIxs6xR00LBqufHiqxhfLRUTHS
-	 WeJ4x132wQwf678zrrriLGkHV0ug9COXUcab/Rurr2s+dZe6hslAxeUFTSfWNVH0Gair5
-	 JVYaj6Zt2GdY3x7Bh0hMPGzutCRDRXvWYYp13j/1Dg8u4emJFlPs6HdpCIlZn5m6CWU1u
-	 c87yEh9JBBfSFl/w4BO4Vyf7DIiHcbYXMe/NtCZGCCMos2q922elCCJKRoXmb0SKmhg==
+	bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
+	b=IvUJil4RB/bFuiFMRVRZObHwCpwkSFru9rD01qi9kXi+krgk0M1f7EljOPZv+8qUIX3I
+	 xJm83aC4X5jwcrUH1drirk79AAwfhHSWvO4vRPhuTd9nRqCJryewtv6Pkjn+eVuNtKaIJ
+	 vJyxO+3Y1JBGnxTumCIA6mUcpM4tMYjDhYkTnv6dCwwxlr5vyWBxt0ZX9ok5tp0CqFjAv
+	 rlavTQ8MVDZgI5OUVQlcik4i3KKt6ULxZaDD6XGy8kqD7cTVhd+Ex3iSBeX0kqRFJQhyd
+	 rgiKaMfHHLgzo1hkxWpajQSjdjGXOa4RVBuLsiymjNKiFdCryWFTiCgbnOCfY8uWfiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iA+HoZy4;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RzTAuL1X;
+	arc=none smtp.remote-ip=74.125.82.48
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FAF606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74FAF606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1502C606A33C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1502C606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iA+HoZy4
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-36eb1cb7aabso5851928eec.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RzTAuL1X
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-15dd124bbe7so6026946c88.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794459204; x=1795064004; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794459209; x=1795064009; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Fq7eVjoo8xJhvVi6unc9XNet04qh3ukyVn0blU6xcQE=;
-        b=iA+HoZy44jRRP+FrtcYQ+dzOjnHFESP0hqTtmIbHTcoAQIGHvpOXovN6NII6YUYUDr
-         yU41ZxiDZA3rZbxrr8DM1Gq0MdfXLanv3G1khEWjTQLnvHzYiKeX5yqvm0vQ7IE7jFqo
-         d+BOnbJc9TD3fCIojejExHFGjYv2sfzir4cc9tzPyAWUSQgtdVRll7YiHb9jhdSVbWhL
-         kiVAjXCFvMtWrNwpIpmQ1k7BPnnq6hP+Ycaxx6SJ3P0ioFyX79m2zpafaAWWDQ8MW9em
-         FMxBvtFiIZUxqFdhFxj4kJjyQZhNr42Fr2HftNPqJwXnApTEMv8CaS+TRSuQfkNAewdR
-         ju4w==
+        bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
+        b=RzTAuL1Xty2p5RwFlgMH7n1jdFP11HvdtB4QDh/wHeqzwGq2opOI+7x7SQ7nRglu+Z
+         TBuCzR6aoVSfXlX3HBEM7PF28P4MKloJkLgmImElrvsp9BNeM36hZ/MIPusZGZib52LC
+         Bw9RwwiqXuwzU0l50tQtrk6F4jqucIKilXfBQX+K1UTG5iJs/g7o7Z14pTzXdzUPGNom
+         dpabiataK+HkycV/5XtfhBVUmAoo60as8WKPluJyx7E5hhPUvue6zp6ZQrqJY4S+AfPK
+         /TjWQh7DN91Q6w1JwYHeKRy1MwewY/eF4jHAO5ym/Bcp2rA37fNckKmnX0uZclUbKH09
+         D5NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794459204; x=1795064004;
+        d=1e100.net; s=20260707; t=1794459209; x=1795064009;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Fq7eVjoo8xJhvVi6unc9XNet04qh3ukyVn0blU6xcQE=;
-        b=bMJzAXQEY7S+VGiv9LEOHYatfaup/xoWOpjhiRjrGdMIuDOH6kifgf4M+iJbtQ7jSd
-         Rn03EHVvOV1eRfDVDkX9rvKygKrnkJfgg9PoiequsfsIKAAcVMI2xOODx2dCY0x9FYbh
-         GwXiCQAc7j70nVe7QhzQJKFUlsesCUAblGPBH6+ecVVu76h0l46UZ/dl9sOA0VAkVJKY
-         OM0IEcZzKzasQ8LfymroNmIrbWaw4rsIonmnKHRD9pDe97pU6kA83HiKrwUuSbdB79LE
-         tNfb8l9begivriA8D51r+po+m1seRREstzBzysOMhAwfHObxkqxYNn6YXf9UO6ZLVy8W
-         8BMg==
-X-Gm-Message-State: APuU4Z/1B7jTR1Ni9aMIv8AYEniawlMSuOkPelU7e6Rhc0CIvEN0mdRF
-	186BA/YHoGWM0Pw8rW1Nz4gD+3rMWGH/NZk7SX/bqGy2Hxlm5cBUYVlP94Praw==
-X-Gm-Gg: AYBFou067mpJ1Y9Dkn+sseIYhG1C3a2eUOd/xDlIMjdnI32ivkoWlyzSMRyaEYbtx30
-	n92hVf/0ezc3sBVukLSGiYJgKaYbE6EskhY9jo/7yKAIkFmmXQeMyPRZ3lllJvb4xyvLFLmuTNr
-	xDR5m7k6cthaOUHoLoQ5dypRAP5pcIiNgnXrdRt2ZoXLxPLL8mYMctyJIH5h2HBde+aDKpZR3xF
-	tw8C5w9ProKxguRZRxffAwiHjkQU9MP/HvqzMKYi2qPryKPlYrofnbsrzFMpTqAXz4jfOufBr0j
-	b2DO4+RBXGxXjnryPoVRfYm2/Ob8FUm/hGf1jnKnJlNAsjRKO9vwMDiCfMyTV6f3cqzLsUk8s9+
-	vxbZHsRZkfiDF+e2gov115iJY8khETy/1mt9T+RDesrExjJsHwb2WakEOdY1J/UGxSVpvNAUl2k
-	0x+Wg9i7ibA+P/Bb4laPbJ2UJrqPWjKPHKLleusThHD60pQILeVwbCO6Nb80N9VmdkqdIb+q4IE
-	ctm3xcSTPRQXoSGcaLzE/Q2IofKhq/0Y5dzzzzFyxVBkNtHs9xaJOaI7CDcO5tT4yOOSgPDbEya
-	O6CU5yR5bXulwFTpg64D9S6iqhq8awo=
-X-Received: by 2002:a05:7300:5410:b0:351:1bdb:e3b7 with SMTP id 5a478bee46e88-37686072206mr6620613eec.15.1794459203572;
-        Wed, 11 Nov 2026 20:53:23 -0800 (PST)
+        bh=aFPoSxt0aWUwwqX5xUF8SwWRu98kYFqbtHO45/HLvLo=;
+        b=treUGBuFGUVPeyi2o+6MPIzDvC2zGCms9c+mxNSSg1BEUUQBBHXhqAIAIv0JRUvep8
+         /c7IOxpw+moEGyzC2d9d2tf5vgZ8KHWDzIGPNFSaGxREUh/BaIpkbw14A92O8O4Lv3es
+         Qwvl8BqiVHyXAalMPbO68CQY3dgaciken1PCpbGHnx/oLcCOKoF7Ouega5cZIAE9mLsT
+         UEYLdLv04PQaL9c8tzFHTE5rrQLcOPiy/eMocLEIBYCEwfN5eRIEv46inz2tgb53haii
+         A6qnEw+p/tJnVViqTn6DQoLH4O5QTpuCzX5qCIdz0fxotOfc2xsaRc/lFHsO3poR7PY/
+         rD+A==
+X-Gm-Message-State: APuU4Z8gpr1emGreBOqpdK+YjIOPkMS+y41fC+K5EvQNJnMBY+j7jHj9
+	x4cutxm2SXBY1KSSRijnckGsAC70gAWFkAiw67SxBMjECB6umhAk/uAJCDhqsw==
+X-Gm-Gg: AYBFou2vJmWB/FvK+Qgm64jKEhg1yyLo/xHwR3Pk6MOZ648qaaDL18HI5OrmaSnNZMY
+	8N6kYiuPUDVw74YyVwa9TGEq69X7viSV2qRuNIZyMYbLJWhltjEe78fjwHZB1I4qB1brkbxtm5k
+	8TZj/iatcLYRiUzm0elHt5+lfNfJhWQtNi9V7QrExE6OwtR6TPUQ3sJcNqbWmejoIGktE+U+oKr
+	4NqDX25ThfjloHuuujt5Srd0lFkxHMIZc8qP/52lpQPjgkwcKV8jZjjgeYWQxuG456dDNb7DdD6
+	qvpfdT3z9VjNMSg15sY5qPfDywxCtwMUg3pzCaEKh2h8Nwv7oDFuyt0r26ZxNY3NDV0hidzrogS
+	UziVdBTVkToq9VpGph705BhY1oO8JI7PR7bnLswTAaIXEpOetnhBRgUs3sxSoUB3zrQ1yjhD4D1
+	zTHgriTN7c5n0/CvMcGGmOVafdCWaJBYAhbs3NF9uJpPZTJRvvUAg/jhBZZIDbKT4j8fTABdHY7
+	4sd1i9mASfVK8yUVjrnEY8p/AqcNkejqs0mlPEJdo22tYym2xKCWtZP2nFirhN2LS0aAEHTQqGQ
+	Jl9z7xWH
+X-Received: by 2002:a05:7301:2329:b0:358:3426:d601 with SMTP id 5a478bee46e88-3768366a41amr4535295eec.2.1794459209097;
+        Wed, 11 Nov 2026 20:53:29 -0800 (PST)
 Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.15
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 20:53:16 -0800 (PST)
+        Wed, 11 Nov 2026 20:53:24 -0800 (PST)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -98,9 +98,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net v2 01/12] net: au1000: recycle RX descriptors on allocation failure
-Date: Wed, 11 Nov 2026 20:52:43 -0800
-Message-ID: <20261112045301.3669532-2-f.fainelli@gmail.com>
+Subject: [PATCH net v2 02/12] net: au1000: clear all-multicast mode when restoring hash filtering
+Date: Wed, 11 Nov 2026 20:52:44 -0800
+Message-ID: <20261112045301.3669532-3-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112045301.3669532-1-f.fainelli@gmail.com>
 References: <20261112045301.3669532-1-f.fainelli@gmail.com>
@@ -115,37 +115,30 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An skb allocation failure retries the same completed descriptor forever
-in hard IRQ context. Return the buffer to DMA and advance the ring even
-when the packet must be dropped.
+MAC_PASS_ALL_MULTI remains set after IFF_ALLMULTI is cleared or the
+multicast list shrinks below the filter limit. Clear it when programming
+the selective multicast hash so unwanted multicast traffic is filtered
+again.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/ethernet/amd/au1000_eth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-index 8682323d693f..cd25248f4e3a 100644
+index cd25248f4e3a..58bc8e1b539d 100644
 --- a/drivers/net/ethernet/amd/au1000_eth.c
 +++ b/drivers/net/ethernet/amd/au1000_eth.c
-@@ -788,7 +788,7 @@ static int au1000_rx(struct net_device *dev)
- 			skb = netdev_alloc_skb(dev, frmlen + 2);
- 			if (!skb) {
- 				dev->stats.rx_dropped++;
--				continue;
-+				goto next;
- 			}
- 			skb_reserve(skb, 2);	/* 16 byte IP header align */
- 			skb_copy_to_linear_data(skb,
-@@ -820,6 +820,7 @@ static int au1000_rx(struct net_device *dev)
- 				pr_cont("\n");
- 			}
- 		}
-+next:
- 		prxd->buff_stat = lower_32_bits(pDB->dma_addr) | RX_DMA_ENABLE;
- 		aup->rx_head = (aup->rx_head + 1) & (NUM_RX_DMA - 1);
- 		wmb(); /* drain writebuffer */
+@@ -1042,7 +1042,7 @@ static void au1000_multicast_list(struct net_device *dev)
+ 					(long *)mc_filter);
+ 		writel(mc_filter[1], &aup->mac->multi_hash_high);
+ 		writel(mc_filter[0], &aup->mac->multi_hash_low);
+-		reg &= ~MAC_PROMISCUOUS;
++		reg &= ~(MAC_PROMISCUOUS | MAC_PASS_ALL_MULTI);
+ 		reg |= MAC_HASH_MODE;
+ 	}
+ 	writel(reg, &aup->mac->control);
 -- 
 2.53.0
 
