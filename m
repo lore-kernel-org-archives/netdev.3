@@ -1,49 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794500411;
-	b=UDImvrIEL2aXLsi6EabBmlksKEMFDTTncBJJ6CO6PN7ftF//qOMHncf2nBYT2iPydRV+
-	 e0qgQy+BDTMGt0iZXk+qK7lc4t+rghWfaqIHOHraHb2f9qjj4NjDzWotCz54Q0eNAFfcU
-	 UFUrj/39tlspNYdgecFMWkJ26o4yQpfOFovb5MmlojvJwEEEUg1P0hYaYzYE0x7w51LNn
-	 k2xkQ0Fo88qYRbxue2XgTcF0fQwuqAqBayJuQOKsLwSOfkniu/gD52E6gB4bXVjnVjsoE
-	 zJjXf8fbB9qOvkaZPz+Vv9wd1YC/JgxhHEpmj9t/zwes8NbV0UnVZwWR9v/+QQWO0xQ==
+	t=1794500514;
+	b=U9fUowXH2WPzgS711ewTalOsdRn3yuQWW01Xif1/2wRiEKDg+ZthR+LfT29eWAnBWAwI
+	 n6eWuuq3rl7+tAcVrZ4aJqGGkZQjpJkXcvPKForUvNdsKe+wgVcMyAQPDtvpShxEHHtdm
+	 B9n9Z0J68Ob5aJ95G5UIFx+exscqyOkJryeZeFe3K+uIutqR9ZkbeA/OFYHx2jtUtqIMe
+	 DFTUWxbLlyOQ3V02VY7jj64vhIDOx61+EaHFOY7cAvsTBxWQwmy7GCZe+jYpZvYAc9Ypv
+	 L/p32NHS0ybtKKWVrcpcZHDMa1id0s2HY3Zei8Rj7KeviscJ3rtZZaG/AcxlgbOArOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794500411;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=lIJsoicyLzlTt/RMLlBP9yzkS+ewHy2x6UQEnMwmQNg=;
-	b=dwymEwOhlgQrH8yvbXQbftyQ84fteSHaIcGG0UNrYILt1AdsEXsGL/Us/xjeabRQjb0O
-	 walA5sfKotHUl/HttJhzkhjQ6Ra7lWHH5KWQQHxroW1zlMz305kFhLXGRa5uK/HSDodCt
-	 E7IGvmIwgPbyA6bI6VRTfvEMox+uGYH1Nkmtbiz+GW4UaSV9iSLDRv42XkjlbU02aagr5
-	 rX9xZRtKYgkLzA4q5mru+RXlznkIfYuAMfktGaqKZqymKRlLqr1mdP6SpO637cEoyN4Q1
-	 K4XhYdZ8A+f+8wCOY7SxQr+3Lbs25GYK8v9sVGVbQEGrba9UzSCWAamDB3yMggbDMEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794500514;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=MThHrrAgO+4uPmzlybRs1Z4U0Fzgwcz7pOBq89o/DUE=;
+	b=hlfWXLzbGGb1lYoFrkUuJN64BEOPg0JpXRn+PTDm9WOMM+9tHQhM7mhmls613PbB3r5O
+	 gwk2nqv6aIdZnN+G/zY/esKXL2yXF9ChY8oO+e0+ABY+RnYly1XPrRZIuL8g3GLgpOSIk
+	 6tEJy0hvS/zyK2RvFiBrjfxUmaaVs/Q7iD9yCbetYH/m5NFPB0yFZ1sBh4audlHWYelR+
+	 Bl24lZMtqIAB4MiRIPp892UUZV6JxgZPQrDhPPzCl7wrEe9/ATVCNZVkvzoXfk4g9OUcP
+	 fO0hPkAytNwcj8ik8rKTSjvN515TtpBkPKZcTzoSqjQL/Qdh8MHz3HwYu89aZ//ADmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMjzy0Je;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9CE606A88C;
-	Thu, 12 Nov 2026 16:20:10 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MomroVmx;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3458B606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:21:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3458B606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMjzy0Je
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8101D1F000C9;
-	Thu, 12 Nov 2026 16:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794500410;
-	bh=lIJsoicyLzlTt/RMLlBP9yzkS+ewHy2x6UQEnMwmQNg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dMjzy0JeEgcsuvR55Gi9I7EJR6uln2Yw7UrtBuUERz+rFQYsY48XY904Iu5ZhipGc
-	 um7SKhfvS26SpxlgMd3IpimWksdFvtuuif5VW6ihevQWgyenXk6Ufs7Wk1xLAQRICN
-	 weOicgEiMqMJVYBcL18qCv8lLBWgnZsPEuZFUSoAysyYd/fJGychuWJs8GGnCYDdAk
-	 DQdd5PrW0CkhuQLBl+ooqEJHkPhM+Q3cU1ujmZMvVzZwTQpGYQsvrPWPc6YreYjsPQ
-	 NnEufl9E6h7QA5OWIIQK67NHxnbD9vvjTspOZaxjpplhWxydmcjSFgwbyfA1ytBDxQ
-	 uuhZZJzAtN6nA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 772E5380AA5F;
-	Thu, 12 Nov 2026 16:20:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MomroVmx
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C4FE339;
+	Thu, 12 Nov 2026 08:21:50 -0800 (PST)
+Received: from [10.57.89.53] (unknown [10.57.89.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18A6B3F959;
+	Thu, 12 Nov 2026 08:21:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794500513; bh=jedXPPvr7jZuVhdrhq32oHINCmvOzuYPpr5X/Ba4uXE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MomroVmxYPw12QBT+rgCGPZ3lttH/nPhsgCEMyYJ/gtn+dAH250P+mP+4Cm5pZJb9
+	 uaEF2O/7Lqogifa/0OkPooXeRmSM173RFZNowVYGh5RtZtb1c1DR60ozD0RVqVLWfJ
+	 dbsJsDkgTGmp7taZz7dZsWT8WvTniKgxPANxrjhQ=
+Message-ID: <ca3d6077-651c-4882-af5b-15fa01242c35@arm.com>
+Date: Thu, 12 Nov 2026 16:21:49 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,51 +53,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/11] dma-contiguous: pass the NUMA node to
+ dma_alloc_contiguous()
+To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ m.szyprowski@samsung.com
+Cc: netdev@vger.kernel.org, iommu@lists.linux.dev, joro@8bytes.org,
+ will@kernel.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+References: <20261106184433.761422-1-kuba@kernel.org>
+ <20261106184433.761422-5-kuba@kernel.org>
+ <c83426a5-d21c-4f0d-b13e-099b6f96df6f@redhat.com>
+ <d00d3435-fcce-4c0f-8ed5-a672b5b85dfb@arm.com>
+ <c014414f-fdd2-4a79-b133-44671c0e4475@redhat.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <c014414f-fdd2-4a79-b133-44671c0e4475@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] tcp: fix false exhaustion of odd-sized
- bind
- port ranges
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179450040901.42282.8175323324330757611.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 16:20:09 +0000
-References: <20261106171442.31811-1-baditaflorin@gmail.com>
-In-Reply-To: <20261106171442.31811-1-baditaflorin@gmail.com>
-To: Florin Badita-Nistor <baditaflorin@gmail.com>
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri,  6 Nov 2026 19:14:40 +0200 you wrote:
-> Fix false bind() exhaustion when an odd-sized local port range still
-> contains an eligible free port. The wrap can flip parity in odd-sized
-> ranges; even-sized scan sequences are unchanged. The namespace-wide
-> connect() allocator is not changed by this series.
+On 2026-11-12 3:43 pm, Paolo Abeni wrote:
+> On 11/12/26 14:28, Robin Murphy wrote:
+>> On 2026-11-12 9:53 am, Paolo Abeni wrote:
+>>> On 11/6/26 19:44, Jakub Kicinski wrote:
+>>>> --- a/kernel/dma/mapping.c
+>>>> +++ b/kernel/dma/mapping.c
+>>>> @@ -642,6 +642,13 @@ EXPORT_SYMBOL_GPL(dma_get_required_mask);
+>>>>    * Same as dma_alloc_attrs() but places the memory on @node rather 
+>>>> than on the
+>>>>    * node of @dev. Like with kmalloc_node() the node is only a 
+>>>> preference,
+>>>>    * the page allocator may fall back to other nodes if @node is out 
+>>>> of memory.
+>>>> + * The contiguous memory allocator (CMA) does not: only the CMA 
+>>>> area of @node
+>>>> + * and the global CMA area are tried. The allocation may fail even 
+>>>> though the
+>>>> + * CMA area of another node, e.g. that of @dev, still has free space.
+>>>> + *
+>>>> + * Allocations served from per-device or global coherent pools, 
+>>>> per- device CMA
+>>>> + * areas, restricted or atomic pools, arch_dma_alloc() or dma_map_ops
+>>>> + * implementations do not take @node into account.
+>>> I'm possibly over-thinking here, but AFAICS there are a bunch of 
+>>> dma_map_ops that
+>>> are using dev_to_node():
+>>>
+>>> dma_iommu_alloc_coherent() in arch/powerpc/kernel/dma-iommu.c
+>>> vio_dma_iommu_alloc_coherent() in arch/powerpc/platforms/pseries/vio.c
+>>> gart_alloc_coherent() in arch/x86/kernel/amd_gart_64.c
+>>>
+>>> With this series they will stop using the driver provided numa node.
+>>> Probably not a blocker but possibly worth to call out?
+>>
+>> Nothing "stops" - this series adds a *new* interface by which drivers 
+>> can now indicate a specific preferred node, but DMA API backends are 
+>> still free to ignore the caller-provided hint and continue doing 
+>> whatever they want. This is already called out all over the series in 
+>> commit messages, documentation and comments including the one above.
+> I mean: the series also replaces the old hacks with the new APIs usage
+> in a few drivers, and in the above cases there could be actual regressions.
 > 
-> Earlier x86-64 KVM validation of this unchanged allocator/test code:
-> - Regression test: four failures before, zero after (eight cases).
-> - Full port-range suite: four failures before, zero after (80 cases);
->   two existing SCTP XPASS results unchanged.
-> - Go net.Listen, 100 attempts per IP version: 100 failures before,
->   zero after; explicit free-port controls succeed in both kernels.
-> 
-> [...]
+> But I guess we could handle them if and when they will surface.
 
-Here is the summary with links:
-  - [net-next,v2,1/2] tcp: avoid false bind exhaustion with odd-sized port ranges
-    https://git.kernel.org/netdev/net-next/c/c7d11f97e8a2
-  - [net-next,v2,2/2] selftests/net: cover odd-sized local port ranges with one free port
-    https://git.kernel.org/netdev/net-next/c/ca133dd5fb20
+Ah, sorry, I was confused by the comment being made in the context of 
+this patch - what you mean is that in patches 6-11, the new API isn't 
+guaranteed to give the same result as the set_dev_node() hacks being 
+removed? To be fair, the new API itself still does not change any 
+behaviour, removing the hacks changes the behaviour ;)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I guess it could be worth a note in those commit messages if we think 
+there's a chance that anyone is using these NICs on POWER systems that 
+might conceivably observe a performance blip.
 
-
+Cheers,
+Robin.
