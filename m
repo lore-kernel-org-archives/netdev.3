@@ -1,64 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.29
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794449708;
-	b=AwYMxtU67LE6RoEij7vomlDLuayQLHEuBefTbH0SchXuWTwsERsOsp6SnBPeYxS+7H6a
-	 f+19LiFaCmzejGx+bJQGIYRr3yt6oQkBDfwNfVOHreRwkqgP2MJs3NWxNVPLSm3dZt254
-	 dKKcu22SwCnfTQxciOCQI3l58w3/SXeOWNUGzW//OCrUucwZpX+NZwhteh5rpwuT3ZMxk
-	 mBsEVTb3LkvpGMrEuKUi/7Nj5gWnNkkcWktQis4uh7cOOt+NjeFawT2XOBtLhp7GeVpqT
-	 rA5VE72a3/Dwocfwy8lB4lRokl/+V7nlWkFYL04QwW+Z1H5JDCLk6cPFcdV9OLXMzvg==
+	t=1794449813;
+	b=G9gNrymSi3pA9Ht/GDFJhRC/8idzAgOmuory/NZHI9Kt8gHlhiAbEnkquK7VjhRkOphD
+	 JxecsKSjait2g1gX6TMixtRKmzOjBf8MBfbLVQ7UPiQNz6d29XdqwY9Ve9XJzwlSrxxmT
+	 GI/E9r76MJ923Yf03EMW+k4+2MtM6DpKj1eXafNi92sVmI6YaG7PGiJsD9zUVQTbQRLuB
+	 Dds6/sx6I7pvv+z9JcaSPieSgO2CLPjAgUmO2OVzkaOwPyMCKnZXP9ILsLsveOIZDqYcD
+	 aF/C4YLKx4kDA3hf3QkGORyATJTsQHy4Ylvota5wbc5WEHNiAdjuasZJ4M9n3ZUK1IA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794449708;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=w/G+bI1y1XPFEXnVVSbx5g6FUS3R8cb54ecVY4rT5Jo=;
-	b=FZHjW+3WD316fX7TU+9xK9UF8eLkpKI+a4KRzrNVwJJI1c/YqVBpcfq+1pQgHOTWDcR4
-	 +N+2bh5krK1eoOTiEYSyQQ7pQl4dPoyJTirPDJ2fz/GMzUBh0QCF0VfPn6rQleoXj4aH6
-	 424RlOGgGw38nWsWXeOe/axZvFWdmYCVEb9eM+/ba9E5fEE+UAmjCm7vHekb/zyzC3iA5
-	 8jPmgwAxBzlr0DVJn5Ptb4vH81iQJ0Ls8BQSzgmwo6tb0Xc2Od6oC5ECbUAGIXzYGfe5B
-	 qtSEALg5B66qArlWZjycG5WOHniWs6sisXZ8gdKDL+LrlMBPq5Ii7WeA8iYsxgNTt+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794449813;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:References:Content-Language:Cc:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=qmgUyfk8WV4aWH8UenZtW/YyeUIA1n0+cWDnJ+tIrdc=;
+	b=1aZRDq7DinSIqjVWPcbPjzLXzgRfUXisUXtgmm+8YI92GU5WWSnJuNz80dhJLmED8S0d
+	 unUHr4oOZMb8wQphtrSok2mN5qEPQACffEmpMLACfffj4gGhKbgfAh7f+sBmfSp8nCvqT
+	 xxhu2J1aQ1ViB6tx1d8zzszkEq9jCsECxqA6STVH6yaLPAPwIxGMfxkqA4pnEaW6v/DbR
+	 MVLYy/GhnMKVZDHHneCYmD33KJscTFI4zrZArA10qSWn25hzp83f9kSFsh+GACXNsAokJ
+	 4rGNfkNlM4ypUnjdnpihb1V3LCuI9S6choce0Mk7ZQB0vvUS1ZrZ4ZDQDyCRHihBCGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EoJRmJLK;
-	arc=none smtp.remote-ip=91.218.175.29
-Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=infradead.org;
+	spf=pass smtp.mailfrom=infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4X38J56L;
+	arc=none smtp.remote-ip=198.137.202.133
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2E9606A336
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:15:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE2E9606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B461606A31C;
+	Thu, 12 Nov 2026 02:16:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B461606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EoJRmJLK
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9G2qFQ4sYFCKpZ2fPFqNG76HFv5MjfylAO8756ay2zY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794449705; v=1; x=1795054505;
- b=EoJRmJLKm+kw70cJWNKRWqUckONbjm+w8bJvrTe2T0pBpuUrFFktrGezsExIBLjTMxZhgkFa
- nmd3/OHl0lYIgp8tOJRdrYLXbEiOLPjpfNRxm2GY+Fo0Ia4zU/gGYjlxTIakNF13amTs5MXrib0
- ute6cruuUDofSLNGqxXK2Qa4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id ae91a8d985c07d3d;
-	Thu, 12 Nov 2026 02:15:04 +0000
-X-Mizu-Trace-ID: ae91a8d985c07d3d
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 12 Nov 2026 10:14:50 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, 1342116488@qq.com
-Subject: Re: [PATCH net-next] ipv6: check mc_forwarding before calling
- ip6mr_get_route()
-Message-ID: <avUhGnPJk5Kzci3E@fedora>
-References: <20261111094528.425826-1-sunwenbo@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4X38J56L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=qmgUyfk8WV4aWH8UenZtW/YyeUIA1n0+cWDnJ+tIrdc=; b=4X38J56LnvOgYr6B1uVqluZteJ
+	hELccqpHkHCpTUjRZwXGISGWno5amd75kaD1jAX/r3v0m1TkLtvinRISxOlFlFiOVlWopISQaNwcS
+	s4ZQGxroQS0VKjZkgK+BBxvyUimHE4SMakXpMkSbSWwLhoZSFdWjKVXYWXZd/qGbAEBKOcMwPdaN1
+	8Jz2k/iqW5xuEfo7fplG2tUDLhdFSp4p6Y8wPkRcAyuTupuWiPkgwqALRo8bV7I0sX3w7ZMj/KJhN
+	+d6AwbYc7882QP/e9Nek3MvWf/S6PITY+ujXW/d0a5CjKLF4sxoPXVroxBxhdk64p+oSydgxKieV2
+	eGZAEGgA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRKMt-00000008UXt-3TVY;
+	Thu, 12 Nov 2026 02:16:51 +0000
+Message-ID: <cff30946-5984-4d69-a590-3c7291d8f32c@infradead.org>
+Date: Wed, 11 Nov 2026 18:16:51 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,73 +58,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111094528.425826-1-sunwenbo@cmss.chinamobile.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Documentation suggestion on Netlink specs: missing fixed-header
+ info
+To: Wessel Jacobi <wessel@jacobi.pw>, linux-doc@vger.kernel.org
+References: <8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw>
+Content-Language: en-US
+Cc: Hangbin Liu <liuhangbin@kylinos.cn>, Jakub Kicinski <kuba@kernel.org>,
+ Linux Networking <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Yuyang Huang <sigefriedhyy@gmail.com>,
+ Donald Hunter <donald.hunter@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Wenbo,
-On Wed, Nov 11, 2026 at 05:45:28PM +0800, Wenbo Sun wrote:
-> When CONFIG_IPV6_MROUTE is enabled, rt6_fill_node() unconditionally calls
-> ip6mr_get_route() whenever an input interface is specified and the
-> destination address is multicast.
-> 
-> However, if multicast routing is not active (i.e. no multicast routing
-> daemon is running and mc_forwarding is 0), there is no matching (S,G)
-> multicast routing cache entry, and skb->dev is NULL in the synthetic route
-> query skb allocated by inet6_rtm_getroute(). As a result, ip6mr_get_route()
-> returns -ENODEV, which causes rt6_fill_node() to jump to nla_put_failure
-> and return -EMSGSIZE to userspace ("RTNETLINK answers: Message too long").
-> 
-> In contrast, IPv4 counterpart rt_fill_info() checks
-> IPV4_DEVCONF_ALL_RO(net, MC_FORWARDING) before attempting to query
-> ipmr_get_route(), and falls back to emitting RTA_IIF and normal local
-> delivery route attributes when multicast routing is not enabled.
-> 
-> This discrepancy was identified during code audit of multicast route get
-> handling. The failure was confirmed on a UML kernel: querying an IPv6
-> multicast route with an input interface ("ip -6 route get <mcast_addr>
-> from <src_addr> ...") failed with -EMSGSIZE on an unpatched kernel.
-> 
-> Align IPv6 behavior with IPv4 by checking whether mc_forwarding is active
-> (atomic_read(&net->ipv6.devconf_all->mc_forwarding)) before calling
-> ip6mr_get_route(). When mc_forwarding is 0, rt6_fill_node() proceeds to
-> output RTA_IIF and normal route attributes.
-> 
-> Tested:
-> - On a UML kernel with CONFIG_IPV6_MROUTE=y, verified that
->   "ip -6 route get ff0e::1 from 2001:db8::3 ..." with an input interface
->   now succeeds and outputs the route instead of failing with -EMSGSIZE.
-> - Verified that IPv6 unicast route get and multicast route get without
->   an input interface continue to work as expected.
-> - Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
->   zero new warnings or errors.
-> 
-> Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-> ---
->  net/ipv6/route.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> index 2eb884558c24..6dd4a70f6490 100644
-> --- a/net/ipv6/route.c
-> +++ b/net/ipv6/route.c
-> @@ -5862,7 +5862,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
->  #endif
->  	if (iif) {
->  #ifdef CONFIG_IPV6_MROUTE
-> -		if (ipv6_addr_is_multicast(&rt6_dst->addr)) {
-> +		if (ipv6_addr_is_multicast(&rt6_dst->addr) &&
-> +		    atomic_read(&net->ipv6.devconf_all->mc_forwarding)) {
->  			int err = ip6mr_get_route(net, skb, rtm, portid);
->  
->  			if (err == 0)
+Hi netdev:
 
-In commit fd61c6ba313d ("net: ipv6: remove nowait arg to rt6_fill_node"),
-David Ahern removed the nowait arg. Should we still return immediately
-after err == 0? Also later if (err < 0), it still goto nla_put_failure
-and return -EMSGSIZE. Maybe we can carry the err to the end and return
-a more meaningful reason?
+Does anyone know what this means and what to do about it?
+Thanks.
 
-Anyway the added checking makes sense to me.
+On 11/5/26 2:48 AM, Wessel Jacobi wrote:
+> Hello,
+> 
+> The "fixed-header" information is missing for the Netlink rt-route specification docs.
+> This is pretty essential information for working with Netlink, and I was tearing my hair out on why I couldn't find it.
+> 
+> Compare the (visible) `fixed-header` at [1] with the (absent) `fixed-header` information on [2]. The `fixed-header` key *is* present in the source yaml `Documentation/netlink/specs/rt-route.yaml` [3], but it seems it doesn't get reflected in the generated HTML version.
+> 
+> The HTML documentation would be more pleasant and useful if it had all the relevant information.
+> 
+> Thank you
+> 
+> [1]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-link.html#operations
+> [2]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-route.html#operations
+> [3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/netlink/specs/rt-route.yaml?h=v7.4-rc1#n709
+> 
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+-- 
+~Randy
+
