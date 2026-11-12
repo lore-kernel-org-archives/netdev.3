@@ -1,88 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794499764;
-	b=q/+bs2H5cmXaoc7QwBl162Ip7WEfyDeN0896hBazIq67yAucla3lHXCrkkzVAtHxRha9
-	 S0QiShNSIouVEZH12Tq+9/6g82A2lxQj5VxP28uejpkkHSaAdiX18tf7EKUETUAbthyGM
-	 28JPitywsBXuCyD1RawSBxLb3DmnjpGehP5l7Jm9gn29uGjazt4keSxyXtUmUxOYvTUe8
-	 aI40tNMc+ESRqBp0sOSaHpIVQStrAEZWTSFFHipBhwyBMJq1OsKFds39MTNRTDHzbhuxx
-	 wLhrLrUz/3A6qY9if8XVMdzOBDbC47DrJuAXGBuGsO3bidXTRsPTgUnI9LNKfrnBEtA==
+	t=1794499767;
+	b=3u58jD/s4m9hkQKbeVxDfDmfzhhfVk+xDezNFdQqVBmXnAHTCI2fawIyDjWHbSqVhPzr
+	 tR9hiRO7uH2URLyxW9kN7JVHsQ/lKlzqBAccUZgI2c07lvbGv7ziFVYlP8NK6FzCJyNWh
+	 W8heUajKusklNrcw5Uns6PLU3Z9XhCAQ02fbXx+bthbTan6lWAL33xTqs02OG5ISAwzOw
+	 D42xFcA0b30v0MeI40PGMLn0zlFoleQY5JwpieDll3sRR+yKjJrTOvh+RgguUj2uc4GHs
+	 FfpYBWiLuBqJRzbgT/IiqQLhBeLffSP2JpIX7gkQdabQtd86ZLWCJqGNAAVAbHhIIYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794499764;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID;
-	bh=kwHs/QT4Q8au5W0hUdFDBusTL4qVOvTdKK969U4KmFU=;
-	b=zvQOpxLcH9zgYIT2mI4zTbZiayINSTwxIRCl6jm+LFs6mqOKoSltQSYxf43yRn0ZQvRF
-	 GSz5JLTFVIMQ6mLsSImVAdiNdOYAtn/35zMzUEuAxg3ZwtcdNN30ky3HHYMM1pOvzM+Hh
-	 5pnIafNvVjyOtr52pNMCO0St2QFCYH38PMlHRLvJuJSpt3Pg+tZl+Av0tkrxhiIJvY7SL
-	 mNuUF0G8j4RlL3dL7Q2XRTU9Jvfzi3GDU3KL+/jArpV6Cj6Qm+feizF3aRCGBEqUOT1Ho
-	 MfEB4oVtZ7TKmI2fstykjpK6joEmqjD4HytUm3zFG948cx1YbM8DGqHvN5Bi+RK1lYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794499767;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:X-Rspamd-Action:
+	 X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
+	bh=2Pc/BE/Q52yGpOarG+khdx5fMHXqENwQm7w1VOmz/Yw=;
+	b=ckfpy68JvxBd/Sh4pRuvj7Z0dEKBBJuTAbgkfPhhYfySK6hfE9FU868KeIS83TzEvXVk
+	 Xn/9u9RQd1WmCW9jpGQHZwgJAsxvwlmy9oEuRBqsBJezKiLA6ejDOrwnlbkWcf5V+UU0i
+	 S3z2LVCawQrG8imgPpi9jH5CkKu8ksPuDkT6cnKxBxAHRQP2uXMM0Y0wFg81LtlCknGCt
+	 snJZJnFdmwpIdFS1JN+llQMvCUw49sO2kqfEZPK67AqgAaxxkyuE6luSpaeZHxtIegmpg
+	 z6ZbVoK2a71jMnuwXnwDz52RK5mdPVZnXEs+QamEPsWhQ50jKupcYZvzHFlUfkGQa8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r4YSvVOR;
-	arc=none smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f3hBN4yS;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b="Q/0K4tT3";
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f3hBN4yS;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b="Q/0K4tT3";
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD98606A327
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:09:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAD98606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FF4606A333;
+	Thu, 12 Nov 2026 16:09:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76FF4606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r4YSvVOR
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso9116a12.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:09:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794499763; x=1795104563; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kwHs/QT4Q8au5W0hUdFDBusTL4qVOvTdKK969U4KmFU=;
-        b=r4YSvVOR/uwA3ubuYrZrBC+ynnnrP9qdQAnsm9uL8Le5hlSWZEp1vrkpFHwMqaXrkN
-         XjNsDlxg86mIUwGLmjYbzDZng2WVeQiQXsiVh5zsvFYcPlwQYdU3oax3formNj0yhd2b
-         3RvNk1QcxjNfKDPb4MeeAosEBG/X8hT6Bikvf6RlBdxEzlPxGFXUkiCcObMaqhzDT4H6
-         xWDdCnpqOedBqSjamWI6eO1Q9FDHDeruytdwTqVC0TlrMaqJACmeofBND370kvOByrNc
-         /vUxR9x8nPTI5A8Kh0ViDlgJU3YwaFn2Z/GbIrGDJfBA7/69mSnQRfFvMya337/4sftC
-         0S0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794499763; x=1795104563;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kwHs/QT4Q8au5W0hUdFDBusTL4qVOvTdKK969U4KmFU=;
-        b=VDEEy8ozMqXxhJm5wUSM+xWLPe0SZb9nuWMdRBtBLmJdKwWDkCHbTed7PfQoNgfKWd
-         nso6qJjJDIsec3mxi7xnw58Rij9OiOEWjK1O+IBaShx3G5A3yHPo4L1xMRLD9pgES+C4
-         +n90Rec69PqNsV0aU1+y0qdStbK8N9dOIOorTHckEx7ZmLTwa82pks1ql0bM9vOPCw5I
-         82YtP3BGEaI0pzzFixZ/wlGNV5joqpRt827Ig1CiQa589xzSdoWRR4tQ94QNbuX7uBk7
-         BalTuYXN16nwyDygxyT3/ARXmCciMDRbk/VWFyGKWGavMHwu6oS+cc/Z6od6KUeiZSgt
-         R3ZQ==
-X-Forwarded-Encrypted: i=1; AL+hErHteJx+7of81XqE8yP38JonVniKO6u6w54JWOHaK9eWDUpFnHr/q7xChrb259vKij6mYh7C6bw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9qhZe6755NvGmCEBQs8J19NpLySYGiKLe+Kr4RLYvXnE5sT3IT
-	YeX05aoS8nglcVX2EvRKdmpnKzCtIa3cW0mRq312KwzR6AblCKsB4QiyIE7FEw==
-X-Gm-Gg: AYBFou0VphMin9PvivS9IKZ3gezOQHzaqpzDG4C+y6WdSWW4IHzV9SgsaM64pYJycOw
-	aaGCQ5K9/zwFzP3YekcqXiGPvMzKD3Lv5ct+SQh4z9RCQqb8UQ6ncXZTzzcoCD/YtsUL2zxkasE
-	f0ar/mJLn/CRw1tWnPMDJjxV9+Hh4xPknis+/jfOn1dMzJEpZlWxkkftdhZpZmf+G8mW4iw+5Y9
-	iuL0fZdRH3Q8IjiaGKq40BVJxfOPxKCnZBxALi27cmnngtqyMi6PNNZlmDfcj0fKk3pVw6sAh7J
-	286F50pQULLkbjXLH1HqH3zkpr5W8/+w99OE3sYEzi0g8UZ5M4FlGqgN1+KLndTEWIi2BwlggPt
-	7kWGVKq8y9jJlwircl+BOOIZnRm3v7TU82AKuQJyDDL1ymXdbngvIoIuwUm1NmF3qIl6T55PVrD
-	urepgcEDnlf4+kwEihZBkL6sS2BP491sTHEgD1X+Lj9JPcHINLdYgepJbR6Szo0V04HJ2GkFFDj
-	zOqhj3TdXm9V9nA9m6Uvkbz970NZLB56FAyEBKJWO8I9jXDbomCNvJ0eSAqTjTxFtg3pcmPUf8U
-	W2bWFsNehyC1MNnV/2Xynqm6f1bRDThDehw=
-X-Received: by 2002:a17:90b:2cd0:b0:3ad:6090:a190 with SMTP id 98e67ed59e1d1-3b182f1b0d9mr6717429a91.41.1794499762715;
-        Thu, 12 Nov 2026 08:09:22 -0800 (PST)
-Received: from [192.168.122.1] ([218.48.198.193])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdd8d67f209sm3243661a12.6.2026.11.12.08.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:09:22 -0800 (PST)
-From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
- David S. Miller <davem@davemloft.net>, netdev@vger.kernel.org
-Subject:
- [PATCH net] xfrm: espintcp: read the socket error queue for MSG_ERRQUEUE
-Date: Fri, 13 Nov 2026 01:09:19 +0900
-Message-ID: <179449975985.164761.7508657205685376308.c279-espintcp@gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f3hBN4yS;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q/0K4tT3;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f3hBN4yS;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q/0K4tT3
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 945D51FB8D;
+	Thu, 12 Nov 2026 16:09:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794499764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Pc/BE/Q52yGpOarG+khdx5fMHXqENwQm7w1VOmz/Yw=;
+	b=f3hBN4ySnI5cE3+JOrCGjRA72FoPDSvg7l/cfGo4h8Pb6UVyomrX8BVx9nHgU+xs9gEwss
+	ujUehcaCloAwFhIinMiH8O4Qln8CGDqwb/Y0DpQDDjCVj0+rTZ4hSs+mELBV30sLzFHbC5
+	QjO749plQy0hMCimjtG0AkfgbBoQBjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794499764;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Pc/BE/Q52yGpOarG+khdx5fMHXqENwQm7w1VOmz/Yw=;
+	b=Q/0K4tT3wWzPs6dyZFiJZ+LbOgcn3qLlYvBojekxSRY39yB2hPRNbNMlskKRDxKXiFjQi3
+	sat9nb4bIhSpXWBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=f3hBN4yS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Q/0K4tT3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794499764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Pc/BE/Q52yGpOarG+khdx5fMHXqENwQm7w1VOmz/Yw=;
+	b=f3hBN4ySnI5cE3+JOrCGjRA72FoPDSvg7l/cfGo4h8Pb6UVyomrX8BVx9nHgU+xs9gEwss
+	ujUehcaCloAwFhIinMiH8O4Qln8CGDqwb/Y0DpQDDjCVj0+rTZ4hSs+mELBV30sLzFHbC5
+	QjO749plQy0hMCimjtG0AkfgbBoQBjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794499764;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Pc/BE/Q52yGpOarG+khdx5fMHXqENwQm7w1VOmz/Yw=;
+	b=Q/0K4tT3wWzPs6dyZFiJZ+LbOgcn3qLlYvBojekxSRY39yB2hPRNbNMlskKRDxKXiFjQi3
+	sat9nb4bIhSpXWBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B421013432;
+	Thu, 12 Nov 2026 16:09:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qCrxE6/k9WqvLAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 16:09:19 +0000
+Date: Thu, 12 Nov 2026 16:09:17 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 8/9] RFC: net: limit folio refcount when splicing
+ pages into skbs
+Message-ID: <avXknD2x_JsXoMw4@pedro-suse.tail5790ac.ts.net>
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-8-318625d63a98@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,43 +136,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-refcount_overflow_stable-v3-8-318625d63a98@kernel.org>
+X-Rspamd-Queue-Id: 945D51FB8D
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-12.01 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,suse.cz,linux-foundation.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,intel.com,gmail.com,sk.com,gourry.net,redhat.com,cmpxchg.org,fb.com,surriel.com,szeredi.hu,zeniv.linux.org.uk,arndb.de,ziepe.ca,8bytes.org,oracle.com,toxicpanda.com,davemloft.net,kvack.org,vger.kernel.org,lists.linux.dev];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCPT_COUNT_GT_50(0.00)[62];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -12.01
 
-An ESP-in-TCP socket can have a TX timestamp queued and report POLLERR,
-but recvmsg(MSG_ERRQUEUE) returns EAGAIN because espintcp_recvmsg()
-reads the IKE queue instead. If an IKE message is pending, the same call
-consumes that message as though it were an error-queue result.
+On Tue, Nov 10, 2026 at 09:35:48PM +0100, David Hildenbrand (Arm) wrote:
+> Various networking features use MSG_SPLICE_PAGES to add pages to skbs,
+> whereby skb_append_pagefrags() takes a page reference for each fragment it
+> adds. Pages spliced from pipes were already checked when entering the
+> pipe, but in-kernel users like sunrpc pass pagecache pages directly. This
+> allows for exceeding folio refcount limits.
+> 
+> This is not specific to large pagecache folios, but with them it is a
+> lot easier to reach the refcount limit, as page table mappings can cheaply
+> create many references.
+> 
+> Let's use try_get_page() in skb_append_pagefrags() and fail with -EFAULT.
+> Don't use -EMSGSIZE, as TCP would just retry with a new skb. The only
+> caller, skb_splice_from_iter(), handles that.
+> 
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Handle MSG_ERRQUEUE through inet_recv_error() before reading the IKE
-queue. This exposes queued error metadata and leaves IKE messages for
-normal receive calls.
+Acked-by: Pedro Falcato <pfalcato@suse.de> 
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
----
-With the same arm64 QEMU/KVM configuration and loopback fixture, the
-original kernel returned EAGAIN for a queued TX timestamp and consumed
-IKE data on MSG_ERRQUEUE. The changed kernel returned the timestamp
-metadata and preserved IKE data for normal receive, on both IPv4 and
-IPv6. Ordinary TCP and normal IKE receive paths were also compared.
-No external IKE peer or physical network was tested.
-
- net/xfrm/espintcp.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 4052ae5bbb2ea5..3e23900d6446b9 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -148,6 +148,9 @@ static int espintcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	int copied;
- 	int off = 0;
- 
-+	if (unlikely(flags & MSG_ERRQUEUE))
-+		return inet_recv_error(sk, msg, len);
-+
- 	skb = __skb_recv_datagram(sk, &ctx->ike_queue, flags, &off, &err);
- 	if (!skb) {
- 		if (err == -EAGAIN && sk->sk_shutdown & RCV_SHUTDOWN)
 -- 
-2.55.0
-
+Pedro
