@@ -1,68 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.141
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794444079;
-	b=DjlZyRDg13N3GR3b6igtBMes5KzHL7FhC9ryZ8OF+2ZAMwwGlv/ktk5zbVFZ28BiDO8h
-	 J0NLydNS43y382bp8ScknjiulZgHv5P4OIRqlB+9VrgE6JuAgOxcCUzh88AIE+zFxzFH0
-	 GuGgVsDT/eonK7U5/L2Pn+11TFffF9nn1h6XQnHBsloupqufyoX5nJO0hdkxH797GgZOo
-	 KrNA5139wi+qWHGMr96bjPCrGbn/PqzJWYrhNwuDiNHrFr5l06HzPYuG2JagQnR9xlg1z
-	 KgyR7s9R4Wm1YYNqe8BBO+wnBnza+elP2MxsruJOUQJJrobA6oaRQCFB5iUb8cyzkJw==
+	t=1794444446;
+	b=OQuf0B65Opj89rHsY75qy6mE5QhYPgLragJkC5vSbVbpbxOu3qy7xUtqDGzQ2wHkLD40
+	 JZf7hwD6EMzclJvSSGEElYNP3kKY1hrXGlDNHGFo++D9tdsVdqtJSLMx3EJIeI3W7VVPA
+	 aczw8kNim8F8UYrnoXo/7Pu2kbwfG0ypg0dhCJ3xMgN+eBOM0AejISIYpJz5fRIBRza5b
+	 L1sLE/1Cb4fm52guQ42ri5VUSdtZ62OvyajF/1Tlx7fiqCoD1BNe2AtDi3vf4raAqgpdn
+	 SL23ShF1vK4a9PuTA6B/nQg+Breb322/gizCJGL53A6bqGwYY0DlALjdUBy737Sa0rg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794444079;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794444446;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Yw31CXHtALD9+rlXmyh33It7GXnvhUwt2iK6ewaR4dU=;
-	b=FvFF+r5NvzBdVrpsb9p9PB8hZ9bS+430NI4oRSIyAqr7J5j2lOJx//Y9JDd+wjglR2Kn
-	 7hJ16B0GpMFfslpfqmi2FkdqV/3e03C+GSYvWA2RWC8y/J4ge2Z3Ta0fUTzQ24zMmyqCR
-	 PRdBR0a3WKWRpFwi1mf1Jk3GjcT48GK9zVqv/aAkbEmIpY2e6fINGLqsTSB/5b12BehAI
-	 ZGu6HbO6tjVmVeY3/SGmLa2AYpIOj/QJ8wunU9mU/K9r/Ti1gSoB8LL2hLE4I3wfhtqfS
-	 r7SAQu67TNqEt4u264hphIgtpsEHVeaB61CCd5HBVHEwaH5acV747mZwgmDfN1x/NRQ==
+	bh=/meX34FFjvsBjwEFSiF7h2pMrlZOIlpgdM74rS/8GJs=;
+	b=YG2/ptvJhsE6hdzSGSG/dg84kJIZ03xCkWa5NRyinZrdQFLMzwUjUvCnu8KyC6iRzg+b
+	 uga08JHpUMwuuGDkAwTg3xZtSnnGsT9ldj/OEVfxWyxTSyHUibH/Q3kus8+mqFYFExs10
+	 ZZ9MikE8UKPzhuoJlsWxozWiU2QVwIhdsk00UZ1dlwVCM+LKjxX8JWyDbqPdikIgsAe/l
+	 pJZYqv7J9XEr6Jv+EbOdJsxtmxuNbi7zK0LWSMxhJJ6rI2CXsk6q1oEPp+2M9dOoLVqp+
+	 /weoaHBLgI6PnC23CJftyh3NzghGVmkrJec2Jzlw+SwY87wkLga1SZypppESsik1TQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ddDelkYc;
-	arc=none smtp.remote-ip=95.215.58.141
-Received: from mta1.migadu.com (out-141.mta1.migadu.com [95.215.58.141])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c5tECsEz;
+	arc=none smtp.remote-ip=95.215.58.198
+Received: from mta1.migadu.com (out-198.mta1.migadu.com [95.215.58.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E740606A333
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 00:41:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E740606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4364660A3823
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 00:47:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4364660A3823
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ddDelkYc
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c5tECsEz
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=G8BSMK/JGL39KoesEzLdLzGnPrhRNJKjOy5VM7SOH3k=;
+DKIM-Signature: a=rsa-sha256; bh=fMSPfR8xyIbF4ge2e/H/gRNwNJPj7Dk9rRNiQdhWwhY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794444076; v=1; x=1795048876;
- b=ddDelkYcfZtZXn7M0lr9pXIxgzp0gMlttYczsApffSSOMSSAgqwdLmRV0wLWhYn3yCmLLtGM
- x0dNLc3MZEaO+BruObISvg1K6RhzyimP9vf7gGM6Nf2+Ci8b7+5snqoUmGSL5686mu14nxLm/b6
- cs8SYdRLSTP87LsUrPCJRNjY=
+ t=1794444443; v=1; x=1795049243;
+ b=c5tECsEzcVpY0zNvO3yky12+P2vnJ9u9wB+JEUAUgXq9umTxM7Q2GY9Q0Irv+lFRohwQOLB9
+ ww9lzmfDlag+xxB+sr/SWygRH2ulL3R0seuVpN9rJ/YGhDnrKtLYrHvPcjIWPyHOtzSmiUez3a0
+ P+XmAYdfetd8/8xz3wwVFNhM=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 7f7faac83d7e72b7;
-	Thu, 12 Nov 2026 00:41:15 +0000
-X-Mizu-Trace-ID: 7f7faac83d7e72b7
+Received: by mta12.migadu.com with ESMTPS id a465595a3c07692d;
+	Thu, 12 Nov 2026 00:47:23 +0000
+X-Mizu-Trace-ID: a465595a3c07692d
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 12 Nov 2026 08:41:04 +0800
+Date: Thu, 12 Nov 2026 08:47:13 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
 To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>, netdev@vger.kernel.org,
+	Yuyang Huang <yuyanghuang@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, 1342116488@qq.com
-Subject: Re: [PATCH net] net: hsr: clean up synced addresses and allmulti in
- hsr_del_port()
-Message-ID: <avULIJLRzOEoefJI@fedora>
-References: <20261111060143.183670-1-sunwenbo@cmss.chinamobile.com>
+Subject: Re: [PATCH net] ipv4: igmp: report IFA_TARGET_NETNSID in multicast
+ address dumps
+Message-ID: <avUMkYmCtkwNYf8_@fedora>
+References: <20261111082222.327963-1-sunwenbo@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,64 +72,75 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261111060143.183670-1-sunwenbo@cmss.chinamobile.com>
+In-Reply-To: <20261111082222.327963-1-sunwenbo@cmss.chinamobile.com>
 
-On Wed, Nov 11, 2026 at 02:01:43PM +0800, Wenbo Sun wrote:
-> hsr_set_rx_mode() syncs unicast and multicast addresses to slave A and
-> slave B devices via dev_uc_sync_multiple() and dev_mc_sync_multiple(),
-> and hsr_change_rx_flags() propagates IFF_ALLMULTI via
-> dev_set_allmulti().
+On Wed, Nov 11, 2026 at 04:22:22PM +0800, Wenbo Sun wrote:
+> Commit eb4e17a1d915 ("netlink: support dumping IPv4 multicast addresses")
+> extended RTM_GETMULTICAST to support dumping IPv4 multicast addresses.
+> While inet_valid_dump_ifaddr_req() accepts IFA_TARGET_NETNSID in dump
+> requests and dumps addresses from the target network namespace,
+> inet_fill_ifmcaddr() never puts IFA_TARGET_NETNSID in the netlink
+> replies.
 > 
-> However, when an HSR device is deleted via hsr_dellink(),
-> hsr_del_ports() removes all ports from hsr->ports before
-> unregister_netdevice_queue() invokes hsr_dev_close(). Similarly, when a
-> slave device is unregistered while the HSR master is UP,
-> hsr_netdev_notify() calls hsr_del_port() directly. Because
-> hsr_del_port() does not unsync unicast/multicast addresses or restore
-> the allmulti count, the slave devices permanently retain synced hardware
-> addresses and a leaked allmulti reference count after port deletion.
+> As a result, userspace applications querying multicast addresses in a
+> target netns receive entries without IFA_TARGET_NETNSID, which may lead
+> them to conclude that the kernel does not support netns-targeted dumps
+> or to misattribute the returned addresses. In contrast, IPv4 unicast
+> address dumps (inet_fill_ifaddr()), IPv6 multicast address dumps
+> (inet6_fill_ifmcaddr()), and AF_PACKET multicast address dumps all
+> report IFA_TARGET_NETNSID.
 > 
-> Fix this by calling dev_uc_unsync() and dev_mc_unsync(), and
-> decrementing allmulti via dev_set_allmulti(port->dev, -1) if
-> IFF_ALLMULTI is set on the master device, when detaching slave A or
-> slave B in hsr_del_port().
+> Add IFA_TARGET_NETNSID to inet_fill_ifmcaddr() when requested, and
+> explicitly set fillargs.netnsid = -1 in inet_ifmcaddr_notify() to
+> prevent notification messages from exceeding their preallocated skb
+> size.
 > 
 > This issue was identified with the assistance of an LLM-based code
-> review tool, confirmed by reproducing the leaked allmulti reference
-> count and synced multicast address in a User-Mode Linux (UML)
-> environment, and verified in UML that both states are properly cleaned
-> up upon HSR port deletion.
+> review tool, confirmed by reproducing in a User-Mode Linux (UML)
+> environment where AF_INET RTM_GETMULTICAST dumps with IFA_TARGET_NETNSID
+> omitted the attribute, and verified in UML that AF_INET multicast dumps
+> now report IFA_TARGET_NETNSID, normal dumps without netnsid continue to
+> work, and socket multicast join/leave notifications succeed without
+> warning.
 > 
-> Fixes: 36b20fcdd966 ("net: hsr: Add support for MC filtering at the slave device")
+> Fixes: eb4e17a1d915 ("netlink: support dumping IPv4 multicast addresses")
+
+I don't think this should be fix. Maybe consider this as a new feature and
+target to net-next?
+
+Thanks
+Hangbin
 > Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
 > ---
->  net/hsr/hsr_slave.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  net/ipv4/igmp.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index a546f70f9cc8..bab0c27dd06a 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
-> @@ -245,8 +245,14 @@ void hsr_del_port(struct hsr_port *port)
->  		netdev_rx_handler_unregister(port->dev);
->  		if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
->  			dev_set_promiscuity(port->dev, -1);
-> -		if (port->type == HSR_PT_SLAVE_A || port->type == HSR_PT_SLAVE_B)
-> +		if (port->type == HSR_PT_SLAVE_A ||
-> +		    port->type == HSR_PT_SLAVE_B) {
->  			vlan_vids_del_by_dev(port->dev, master->dev);
-> +			dev_uc_unsync(port->dev, master->dev);
-> +			dev_mc_unsync(port->dev, master->dev);
-> +			if (master->dev->flags & IFF_ALLMULTI)
-> +				dev_set_allmulti(port->dev, -1);
-> +		}
->  		netdev_upper_dev_unlink(port->dev, master->dev);
->  		if (hsr->prot_version == PRP_V1 &&
->  		    port->type == HSR_PT_SLAVE_B) {
+> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> index 144fca158adc..831d003677ba 100644
+> --- a/net/ipv4/igmp.c
+> +++ b/net/ipv4/igmp.c
+> @@ -1517,6 +1517,12 @@ int inet_fill_ifmcaddr(struct sk_buff *skb, struct net_device *dev,
+>  	ifm->ifa_scope = RT_SCOPE_UNIVERSE;
+>  	ifm->ifa_index = dev->ifindex;
+>  
+> +	if (args->netnsid >= 0 &&
+> +	    nla_put_s32(skb, IFA_TARGET_NETNSID, args->netnsid)) {
+> +		nlmsg_cancel(skb, nlh);
+> +		return -EMSGSIZE;
+> +	}
+> +
+>  	ci.cstamp = (READ_ONCE(im->mca_cstamp) - INITIAL_JIFFIES) * 100UL / HZ;
+>  	ci.tstamp = ci.cstamp;
+>  	ci.ifa_prefered = INFINITY_LIFE_TIME;
+> @@ -1538,6 +1544,7 @@ static void inet_ifmcaddr_notify(struct net_device *dev,
+>  {
+>  	struct inet_fill_args fillargs = {
+>  		.event = event,
+> +		.netnsid = -1,
+>  	};
+>  	struct net *net = dev_net(dev);
+>  	struct sk_buff *skb;
 > -- 
 > 2.33.0
 > 
-> 
-> 
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
