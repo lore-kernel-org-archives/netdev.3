@@ -1,82 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794472677;
-	b=fPuiMFjHTiowvI+oG389RPnY/Y7N5ewPxq2LNQJqCDCP4vuL/ZzGIyUtM6Be1nY9X/R5
-	 xcdXbHv6ADtPZUk2cbz18DbXTu0XcvbvOCjkqyFk81wLUz9BdfeMHxSswdYfLwMwAh1cu
-	 EqZNO6JMG78lsOoCUFwvpYvlB7vMO+3dLvmqj8pTFcfWFyjIXtp/7cDKCGcojFRKRvxjz
-	 1m7Kr7trDHam+N0dl9zMx1CIo3FiuJrwbpI7oDuPljSH+Io9eXU3BdxtMm20TXLkLKAWd
-	 84wTh/Nj4z5Jdij3mulcLqO57sX2aOeJDirEjV2nXx3cmUDUnbeLoGM9ERayXAdZb9g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794472677;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
-	b=LWyoN9t0tYNX37+B6xCJz5c0W6mq7b0deeP1lNwkcw3l2kFhPnwGVnqgOkKGv4GrlcC7
-	 ckMchcOmmtJG3CtI+QlFKJfczCftZoGTe2UAOrCRDR84CgEt37NEVGJnzAMzHfRi0baYF
-	 sqGOZk4ZopuBLRkVPzbWLjuMO7bjKL9Y/8fhv/60iig/HOOop7kZXRwuucxRlyBYn4ANQ
-	 tTWmLgAEsTFvULS+1St9iRfF/7/1EHSUgq3VPdr3qbOkUdNti4493F9qxTsVvirDf94tu
-	 gyFQRdkb5J8hmQA4ikv87RcBhP9WwBHQfsxwv1AqrNR749zdde9MEj/RYIZ4zZwYBMA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Us3odBQ4;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.20.114.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794472760;
+	b=ek8iKNUwJBV3+zrxUqn7fACDQKzWKTzTs1+eMmNwI+j2OLRrLyKTXbx+QAg2rOYbQuvt
+	 j55tLAEyvSr1a9b27q73pqkzFL7tIwiqHaY8TvDFeeYJ989PWa9vRjRDyn6dUp/cVY/xA
+	 xMvbGjh68d4Ih86tAdA/WDLi87KYiKs0n7tIrYGuLqk+PCQCDwSkEF7+gc9o00FnFty/B
+	 hrBccpotXKyPdkGqcHxOrM0VKfj3pVlkOz4OlPW7n3j3lYibQvBzdjVOhYCUwHu4h5ddB
+	 favda4sb+QOhUWT9R4PGMFmDqX2t/YY4Kd2Y6NFWlOgda5H02uZzBl6F/55inu41PLA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794472760;
+	h=DMARC-Filter:Received:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-ID:References:
+	 In-Reply-To:To:CC:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=2RxUdAyVdSwRgSZWlCZeRtYQ8ANbZoRIT48fGOdPh9k=;
+	b=Wjp3ZKqmfk/OCdVuzFi/YLL8gEAicTI9n3cbg+I07UTNSqZmWDEWSXbI3nQJbDZ4PQOX
+	 eNOWGjD+pSqTcIMXQgA8WepzYJczmKuRUIZnEau+b5AKlDnFo9vH8a9C/sO/ZleTrBi7c
+	 VMITQo+tfCrH61zemGhv9QSKETH+/6uIKBhwlIyDnxVNaQeq7StndgI0+kX4txQe1A0dr
+	 oEScDmR5oXm/8cyAmtmT5PCBS2wJigzah9L5pOkoWSxBdOUTxQd8qA3A++lbav0ny/WDq
+	 2W45qzhoX1dGnP+18kYHio4YRZ3r+BCb/epDjukdVyvUFf9hfoY5BK6GAUEUJmADPTA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=aspeedtech.com;
+	spf=pass smtp.mailfrom=aspeedtech.com;
+	arc=none smtp.remote-ip=211.20.114.72
+Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76776607079E;
-	Thu, 12 Nov 2026 08:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76776607079E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Us3odBQ4
-Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::ac])
-	(Authenticated sender: relay-from-dude04.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8A83B205836;
-	Thu, 12 Nov 2026 09:37:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794472671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
-	b=Us3odBQ4PsgrAfKuswlLtFYBgcPjvnFxMf/4yoa7ekxZq+dAPW52QwWTFGtgVi8ks6lS3Z
-	nmC5QKy8Jg5I3ozUzRC+439FI251r4Ah2oZZCygHOZKqU7f9QYzgeuRqaGpeoijcy9IrHj
-	rGDN+aZ6m1KWdVqM5ofjwnnNCwwhUkfYdv2qeUH5li4oCq7QceqHq3zpvPG9U7qC9bljvq
-	7ATgL7IwiEu32GQkYBPisdNsjdl63UCbwX0DHFcCdGzAqlSMJ23f0S0LBvoFNlDFjDYHJt
-	0vTYvDYiFdpFNKr+V5BPXCJz2GkeGxBrLRaEuMMX7fJyo7GWYC7xonEiOBTkZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794472671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
-	b=a3mKe91slCzI+JBzYV3NUhJjWz/HDU1w/8TE8q5K2V/NAlHISw1/1OdV3wAyWnmhmAkOyO
-	fZ27Fgs2nwpy0tg75BUG8/XFXMQQrIW981R48VPQoFp5ERbNKkdbov6r9kzrKj8H64NJjd
-	ejRpPiBpmACvGa6D6n1yCVjm4Xtyo4LIQV+p/0hz4vj5mWK+q1l6Nzy91vApl93Ka/+3TG
-	SpAQ/JQNw44MmtUlh58IdOTDFSGmrRh18LGYSi3JvLzg5ywo2WccgjUSH8YA7HWRSFHhG3
-	XzVaKoVMWTsxcqmV87Jq/rx4UgShNI180Abb5chl3A9EtJblgy4Y1Us3vNs3bw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794472671; a=rsa-sha256;
-	cv=none;
-	b=RQjCywgxWl8NM8HOlGZKLZVxkvW0FimCUf2OQ4dm4K4rQbUKWSWmxIK4LlVaxo4ar+AKXG
-	ZAD4C892gO7UGQJuDaYl/AMES9j5WslrtAJE0NPIpfTRDeDbYcoYclaZycb8MWPB4VqFa0
-	KPtN8gRd6iPlZHqxvMLMQiIojMFqQeC7ETtHS8Zlpj33zPrV8DqZAh7YoTKtAmqh8AwOGR
-	QV8TWD1ZTyg91Tu0BiXfV0MvMx7lOwhJ85TRSeHJttlqB1Ue4D/lH2Jt4ouDacELyssqks
-	7uR3AiPN7EIhpw87p/sklXvoN9G0TlQJSTQz3O+DZcKO8cDgzPgW+H34pl8q8g==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude04.red.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-Received: by dude04.red.stw.pengutronix.de (Postfix, from userid 1058)
-	id 5C67D381DC0; Thu, 12 Nov 2026 09:37:51 +0100 (CET)
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 12 Nov 2026 09:37:49 +0100
-Subject: [PATCH net-next v2 06/10] net: dsa: realtek: rtl8365mb: store the
- egress queue count per chip
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F64606B241;
+	Thu, 12 Nov 2026 08:39:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0F64606B241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Thu, 12 Nov
+ 2026 16:39:08 +0800
+Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
+ Transport; Thu, 12 Nov 2026 16:39:08 +0800
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+Date: Thu, 12 Nov 2026 16:39:07 +0800
+Subject: [PATCH net-next v6 1/7] dt-bindings: net: ftgmac100: Make Aspeed
+ compatibles standalone
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,110 +51,169 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-rtl8365mb-dcb-ingress-v2-6-f8e6fbdf8c99@pengutronix.de>
-References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de>
-In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Linus Walleij <linusw@kernel.org>, 
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de
-X-Mailer: b4 0.14.2
+Message-ID: <20261112-support_ast2700-v6-1-238020bf46cf@aspeedtech.com>
+References: <20261112-support_ast2700-v6-0-238020bf46cf@aspeedtech.com>
+In-Reply-To: <20261112-support_ast2700-v6-0-238020bf46cf@aspeedtech.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Po-Yu Chuang
+	<ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, "Heiner
+ Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Eric
+ Dumazet" <edumazet@kernel.org>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794472748; l=4637;
+ i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
+ bh=y2/7dHAFpz+HzURl/lsqkis0My8D3WV1bMFE28qKQ78=;
+ b=43xy9PKOInSbIWiupaGeZaLP6V6FaISm4bWuBfvzxZbEXsMKyk/sO63VJUGltiJsMOjn9I7xI
+ /BU6uzzEIVADs+O/FLvDB7FPRL5rIwKOPvSNcEpfCcpNjeOZ5RIvJ9I
+X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
+ pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-Store the number of egress queues in the per-chip info structure and
-advertise it through ds->num_tx_queues, following the ksz driver
-(struct ksz_chip_data.num_tx_queues).
+The aspeed,ast2400-mac, aspeed,ast2500-mac, and aspeed,ast2600-mac
+compatibles are currently only valid when paired with the generic
+"faraday,ftgmac100" fallback: if a node ever bound through the
+generic entry alone, ftgmac100_probe() would set
+rxdes0_edorr_mask/txdes0_edotr_mask to BIT(15) instead of the Aspeed
+BIT(30), skip Aspeed clock setup, and leave the DMA mask too narrow.
 
-The queue count is a per-chip hardware property, and this driver supports
-several chips of the rtl8367c family. All currently supported chips expose
-eight queues, but keeping the count in chip_info lets the QoS code that
-follows program the priority-to-queue map via the ieee8021q helpers for
-whatever queue count a chip carries, so the 802.1Q collapse is correct
-rather than hard-coded to eight.
+Make each of them a standalone compatible instead, so none of the
+Aspeed compatibles require the generic fallback alongside them.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Now that the Aspeed compatibles no longer need the generic fallback,
+also constrain the clocks and clock-names properties per compatible
+instead of leaving them generically optional: aspeed,ast2400-mac takes
+exactly one clock, aspeed,ast2500-mac and aspeed,ast2600-mac take one
+or two, and the plain faraday,ftgmac100 compatible takes none. Require
+clock-names whenever two clocks are listed.
+
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+
 ---
-Q: Linus: why is the queue count not in struct realtek_variant?
-A: The count is per chip, while realtek_variant is per subdriver, and
-rtl8365mb serves several chips. The QoS code added later in this series
-reads ds->num_tx_queues, as Linus suggested in his v1 review, so
-RTL8366RB can advertise its own count the same way.
+ftgmac100_of_match[] has had dedicated entries for AST2400, AST2500,
+and AST2600 since commit 03a2aba50b2c ("net: ftgmac100: List all
+compatibles"), so there is no known kernel + devicetree combination
+where a node has actually bound through the generic entry and gotten
+the wrong EDORR bit. This part is a binding correctness fix, not a fix
+for an observed failure.
 
-Changes in v2:
-- drop the num_tx_queues comment, which restated the assignment
-- keep the Reviewed-by tags: v2 only drops a comment
+Note that arch/arm/boot/dts/aspeed/aspeed-g4.dtsi, aspeed-g5.dtsi, and
+aspeed-g6.dtsi still declare their MAC nodes with the two-string
+"aspeed,astXXXX-mac", "faraday,ftgmac100" compatible, so this will make
+dtbs_check warn against those files until the redundant fallback
+compatible is dropped there as well. That .dtsi change will be sent as
+a separate series through the Aspeed/arm-soc tree, since dt-bindings
+changes don't go through that tree.
 ---
- drivers/net/dsa/realtek/rtl8365mb_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../devicetree/bindings/net/faraday,ftgmac100.yaml | 71 +++++++++++++++++++---
+ 1 file changed, 61 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 1e6cdc61f6bd3b3f74e422dbbcfdcb67cc0532a7..f7960d94f1cd9f6a1982849a9e5a1b5d98880b4b 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -711,6 +711,7 @@ struct rtl8365mb_extint {
-  * @extints: available external interfaces
-  * @jam_table: chip-specific initialization jam table
-  * @jam_size: size of the chip's jam table
-+ * @num_tx_queues: number of egress queues exposed by the chip
-  *
-  * These data are specific to a given chip in the family of switches supported
-  * by this driver. When adding support for another chip in the family, a new
-@@ -724,6 +725,7 @@ struct rtl8365mb_chip_info {
- 	const struct rtl8365mb_extint extints[RTL8365MB_MAX_NUM_EXTINTS];
- 	const struct rtl8365mb_jam_tbl_entry *jam_table;
- 	size_t jam_size;
-+	unsigned int num_tx_queues;
- };
+diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+index d14410018bcf..9d352e3686aa 100644
+--- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
++++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+@@ -11,14 +11,11 @@ maintainers:
  
- /* Chip info for each supported switch in the family */
-@@ -748,6 +750,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		},
- 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+		.num_tx_queues = 8,
- 	},
- 	{
- 		.name = "RTL8367S",
-@@ -761,6 +764,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		},
- 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+		.num_tx_queues = 8,
- 	},
- 	{
- 		.name = "RTL8367SB",
-@@ -776,6 +780,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		},
- 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+		.num_tx_queues = 8,
- 	},
- 	{
- 		.name = "RTL8367RB-VB",
-@@ -790,6 +795,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		},
- 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+		.num_tx_queues = 8,
- 	},
- };
+ properties:
+   compatible:
+-    oneOf:
+-      - const: faraday,ftgmac100
+-      - items:
+-          - enum:
+-              - aspeed,ast2400-mac
+-              - aspeed,ast2500-mac
+-              - aspeed,ast2600-mac
+-          - const: faraday,ftgmac100
++    enum:
++      - faraday,ftgmac100
++      - aspeed,ast2400-mac
++      - aspeed,ast2500-mac
++      - aspeed,ast2600-mac
  
-@@ -3288,6 +3294,8 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
- 		goto out_teardown_irq;
- 	}
+   reg:
+     maxItems: 1
+@@ -88,22 +85,76 @@ allOf:
+     else:
+       properties:
+         resets: false
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: aspeed,ast2400-mac
++    then:
++      properties:
++        clocks:
++          maxItems: 1
++        clock-names:
++          maxItems: 1
++      required:
++        - clocks
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - aspeed,ast2500-mac
++              - aspeed,ast2600-mac
++    then:
++      properties:
++        clocks:
++          minItems: 1
++          maxItems: 2
++        clock-names:
++          minItems: 1
++          maxItems: 2
++      required:
++        - clocks
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - aspeed,ast2400-mac
++                - aspeed,ast2500-mac
++                - aspeed,ast2600-mac
++    then:
++      properties:
++        clocks: false
++        clock-names: false
++  - if:
++      properties:
++        clocks:
++          minItems: 2
++    then:
++      required:
++        - clock-names
  
-+	ds->num_tx_queues = mb->chip_info->num_tx_queues;
+ unevaluatedProperties: false
+ 
+ examples:
+   - |
++    #include <dt-bindings/clock/aspeed-clock.h>
 +
- 	/* Start statistics counter polling */
- 	ret = rtl8365mb_stats_setup(priv);
- 	if (ret) {
+     ethernet@1e660000 {
+-        compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
++        compatible = "aspeed,ast2500-mac";
+         reg = <0x1e660000 0x180>;
+         interrupts = <2>;
++        clocks = <&syscon ASPEED_CLK_GATE_MAC1CLK>;
+         use-ncsi;
+     };
+ 
+     ethernet@1e680000 {
+-        compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
++        compatible = "aspeed,ast2500-mac";
+         reg = <0x1e680000 0x180>;
+         interrupts = <2>;
++        clocks = <&syscon ASPEED_CLK_GATE_MAC2CLK>;
+ 
+         phy-handle = <&phy>;
+         phy-mode = "rgmii";
 
 -- 
-2.47.3
+2.34.1
 
