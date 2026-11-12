@@ -1,54 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794449813;
-	b=G9gNrymSi3pA9Ht/GDFJhRC/8idzAgOmuory/NZHI9Kt8gHlhiAbEnkquK7VjhRkOphD
-	 JxecsKSjait2g1gX6TMixtRKmzOjBf8MBfbLVQ7UPiQNz6d29XdqwY9Ve9XJzwlSrxxmT
-	 GI/E9r76MJ923Yf03EMW+k4+2MtM6DpKj1eXafNi92sVmI6YaG7PGiJsD9zUVQTbQRLuB
-	 Dds6/sx6I7pvv+z9JcaSPieSgO2CLPjAgUmO2OVzkaOwPyMCKnZXP9ILsLsveOIZDqYcD
-	 aF/C4YLKx4kDA3hf3QkGORyATJTsQHy4Ylvota5wbc5WEHNiAdjuasZJ4M9n3ZUK1IA==
+	t=1794449858;
+	b=KLkNmekeEZE379MklVnnQR1EvvO3IFQUjXPXPcTZhhvD2sCUrH9Bvr7FD+/yh1CZ6rLe
+	 JBEUvrFi01qt1u97O+TkOsUy4rygM50EqNes6L1URnP689/lCEIjPCIW5Cs+SooZ14sGW
+	 84ZoytzLe8pTbx52xp+H70d6ar2RgFnCAfjIKL+l0JygaPggvFu5Cm+a4lNv0BfXgrm//
+	 oazTDzood/xtnCknqRzuLl2iew3IOcbl6n5GtScuM2Rwg9qgk/14YqeXvsAPWhFHrTi/H
+	 Xm5lGg565gPqIpW+qHUagCnQ8loZYY8IL14r+aWdHsR4dbOqAEcT6nZv5Ea+oWKH70A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794449813;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:References:Content-Language:Cc:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=qmgUyfk8WV4aWH8UenZtW/YyeUIA1n0+cWDnJ+tIrdc=;
-	b=1aZRDq7DinSIqjVWPcbPjzLXzgRfUXisUXtgmm+8YI92GU5WWSnJuNz80dhJLmED8S0d
-	 unUHr4oOZMb8wQphtrSok2mN5qEPQACffEmpMLACfffj4gGhKbgfAh7f+sBmfSp8nCvqT
-	 xxhu2J1aQ1ViB6tx1d8zzszkEq9jCsECxqA6STVH6yaLPAPwIxGMfxkqA4pnEaW6v/DbR
-	 MVLYy/GhnMKVZDHHneCYmD33KJscTFI4zrZArA10qSWn25hzp83f9kSFsh+GACXNsAokJ
-	 4rGNfkNlM4ypUnjdnpihb1V3LCuI9S6choce0Mk7ZQB0vvUS1ZrZ4ZDQDyCRHihBCGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794449858;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=2lsD1pQ6+DDqGPxcO7ETihmN0CAHUGLXXhPg7tK/8Ag=;
+	b=dhsKwOQ1Cn2vL0+9hdTMOjjhMigG9kBMXxr0cCT3CcxrIM8peT+C5cnFwZ8peXKDLQr8
+	 SA818pRUiPWbtssPC3b5e2xDqfWmJMZVzC0lz4SEjlSa3uNXhmSrhml3uNCoXDtrXSU2E
+	 uXbp56u/Rs7lhNAHTdGQ0d/wXHtNcc7h0Eu1+3fMU9PSJLIST8b0pQ+4zC21VzMXdMAhg
+	 S8sAWwEAcvSh9ucCe0GZwlQTGhm0q1TZBpdQa/7U2NlQmY579LTa21zHActaIpq0T0CQs
+	 nBt2zYSZPW8lLGmtBOShl3A9AJsHIGKfa2P7u7iUA13l/fOJ1H2iNzCMsov0RCv0Xuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4X38J56L;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVFhp9r7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B461606A31C;
-	Thu, 12 Nov 2026 02:16:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B461606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC99606A323;
+	Thu, 12 Nov 2026 02:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4X38J56L
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=qmgUyfk8WV4aWH8UenZtW/YyeUIA1n0+cWDnJ+tIrdc=; b=4X38J56LnvOgYr6B1uVqluZteJ
-	hELccqpHkHCpTUjRZwXGISGWno5amd75kaD1jAX/r3v0m1TkLtvinRISxOlFlFiOVlWopISQaNwcS
-	s4ZQGxroQS0VKjZkgK+BBxvyUimHE4SMakXpMkSbSWwLhoZSFdWjKVXYWXZd/qGbAEBKOcMwPdaN1
-	8Jz2k/iqW5xuEfo7fplG2tUDLhdFSp4p6Y8wPkRcAyuTupuWiPkgwqALRo8bV7I0sX3w7ZMj/KJhN
-	+d6AwbYc7882QP/e9Nek3MvWf/S6PITY+ujXW/d0a5CjKLF4sxoPXVroxBxhdk64p+oSydgxKieV2
-	eGZAEGgA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRKMt-00000008UXt-3TVY;
-	Thu, 12 Nov 2026 02:16:51 +0000
-Message-ID: <cff30946-5984-4d69-a590-3c7291d8f32c@infradead.org>
-Date: Wed, 11 Nov 2026 18:16:51 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVFhp9r7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8F41F00A05;
+	Thu, 12 Nov 2026 02:17:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794449858;
+	bh=2lsD1pQ6+DDqGPxcO7ETihmN0CAHUGLXXhPg7tK/8Ag=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SVFhp9r7elGbFBAM8BQvrwEyKnGqiYIYBfesiP66ozgkCONxbK1epepV3kzG4dARq
+	 50X852UzZImHRcRicEKYNbIMxz0k8miZVLZz3fovWxTA2C6gPbFgpyvgA6qw+EEfjb
+	 ipXqJCQxG95v6rcP4GzT9YJq9j4bzRp2GxatEEK+HB0t7x5fL+WP/BrXSR2mSycRHR
+	 lSZ22qe5n+Xx0xKPQ18RJQ0fHUpfM9bLdTdtWNvz5ScGqPL2lvnP68jNaNarkJMT1a
+	 zMOhNKGTnyVpmfNO7Gscwm/63GrG8svxP/4AnG7E0IbAi64kfXmlzDucwPu9ywSPtq
+	 nGDRl3OeraBhA==
+Date: Wed, 11 Nov 2026 18:17:37 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hanson Wang <hanson.wang@ugreen.com>
+Cc: netdev@vger.kernel.org, Sukhdeep Singh <sukhdeeps@marvell.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: atlantic: stop TX again before freeing
+ rings
+Message-ID: <20261111181737.3b2e56dc@kernel.org>
+In-Reply-To: <20261109071935.2945421-1-hanson.wang@ugreen.com>
+References: <20261109071935.2945421-1-hanson.wang@ugreen.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,43 +61,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Documentation suggestion on Netlink specs: missing fixed-header
- info
-To: Wessel Jacobi <wessel@jacobi.pw>, linux-doc@vger.kernel.org
-References: <8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw>
-Content-Language: en-US
-Cc: Hangbin Liu <liuhangbin@kylinos.cn>, Jakub Kicinski <kuba@kernel.org>,
- Linux Networking <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Yuyang Huang <sigefriedhyy@gmail.com>,
- Donald Hunter <donald.hunter@gmail.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi netdev:
+On Mon,  9 Nov 2026 15:19:35 +0800 Hanson Wang wrote:
+> +	/* Drain external XDP transmitters that passed the admission gate.
+> +	 * They can wake TX queues, so wait before the final queue stop.
+> +	 */
+> +	synchronize_net();
 
-Does anyone know what this means and what to do about it?
-Thanks.
+Is this really needed? presumably you removed a NAPI at some point which
+implies a RCU sync.
 
-On 11/5/26 2:48 AM, Wessel Jacobi wrote:
-> Hello,
-> 
-> The "fixed-header" information is missing for the Netlink rt-route specification docs.
-> This is pretty essential information for working with Netlink, and I was tearing my hair out on why I couldn't find it.
-> 
-> Compare the (visible) `fixed-header` at [1] with the (absent) `fixed-header` information on [2]. The `fixed-header` key *is* present in the source yaml `Documentation/netlink/specs/rt-route.yaml` [3], but it seems it doesn't get reflected in the generated HTML version.
-> 
-> The HTML documentation would be more pleasant and useful if it had all the relevant information.
-> 
-> Thank you
-> 
-> [1]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-link.html#operations
-> [2]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-route.html#operations
-> [3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/netlink/specs/rt-route.yaml?h=v7.4-rc1#n709
-> 
+> +	/* Service work, IRQs, NAPI and external XDP can no longer wake
+> +	 * queues. Drain SKB transmit before aq_nic_deinit() frees rings.
+> +	 */
+> +	netif_tx_disable(self->ndev);
+> +	netif_carrier_off(self->ndev);
 
+Double-stopping is pretty hacky. Can you figure out a way of avoiding 
+the race instead of stopping the queues twice?
 -- 
-~Randy
-
+pw-bot: cr
