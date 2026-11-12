@@ -1,55 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794515223;
-	b=ECD+tnyrrt7PhElpoMbZ9myfcLL3S1l3HZiLH/M7Lmsig2lcq96byy5BLW1Au9bBkHZS
-	 dGdWHv3EQkVucg7sB+VdYv9yaM5tPFXphe/GKzJVN6Io/2dLTR/k+/ek73f4fQwaexy0L
-	 b15YVSsR3e4hLVVa09rx2fL+Srj/UhOKXuYCmhbPKxu/rY9qfnwhLrUNzWFDjhNECyLAp
-	 ZVUEZjFLpkv6kw5i9A5eZp8xefrrI2rmytHU6Vt7QgRcutxCpDf13s/050sI6b+iJc3cO
-	 rmX2K4cXURZb5m0m/lvDlczxSXHrrC3wISksQkHvGNkzyXYabTQbtbIOXR8cnPmAeCg==
+	t=1794515270;
+	b=PWpidszifNsYG+h/4eCUgCsfHmt6yHXdMbM+yWz/0UghuDS9NP2/O7OX2v1QYPlplOGg
+	 JD4SKQ+UK/LflBP4HLjktbUqopWXMkaFzJSzvq70Zt8cCFR/RtI/ebqezyevt7IgqbUYi
+	 SlLsBWm1EMJVFwSUcjT3GokH7vTDA7nXI3qZxOohf4JHXSNvXj58D5NgW09RrpfqbqLC4
+	 aeplP5X3x+mbfhsGa50Y8+OzHTamdw1Xwmd1yXLGWtguVRwCVp8K4GNY0QGIzmz1bdwvV
+	 eVpbIlpN1GKh9CFlp1L11IKnAm9zIxj+Lgebo+bnXCmRlPiQJqPAaI5mE+qvLR+Bq+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794515223;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Chb+aEEpnG9wBgADB7Efz085hxxOusSroeCKPcg1AC8=;
-	b=ftAKxghe07zjrBSd6sbd88V/mvUwAaX7BJ+sbz/gaxhZs2zv7uihC5tmWyRtB3ELsLRy
-	 c7KAlKRi8TjCt2PDULkOfqrWRC0Nt68UPbOzma2txM+dGbgIuish6yPO69EpZqPfqgUY8
-	 v4Q1w5CIEEdOa1hIf1VZLvmKZjg1ECMDKSRtCJ6v2jfX5unppvzI0IL9h/jKdpxXBQNGl
-	 /GPCNRNdLgnmYvq5Yi85agjOObqD1mbJ4eE8wXsfE4ja64PS6oNSVX2fITVHFJz+fri4e
-	 luYlRO57DiE3AZ/ZskJRrWBAP/C1MdlxF6Tcv9mAdBnoy0BcztqqqGMjKs2t4feD4bw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794515270;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=sqzRA9UrTkSrnhG0afFV62l+ePZ4vnCL9ohyTPGZ/WA=;
+	b=l+zibLOxvEZ7xTSpYT1rP/A7i+9f3AVKoCkVRZjU73EgH7a2lUcCcvNTVxME41gIn5/K
+	 rXdL0/tJSJ+ZMZ7wSE8jEAkC19ztx7vZa1iPzqORSIFIAq28lHfAIqf7aoBhmHO3Bi7wD
+	 sRMC/NQfjTC4oG9/JM+rzyjsSrUBhpdVuJLYASD0DarVCpKz76Vlc2v6HBBXyistV/uCU
+	 /sP+oeQoQIWfpe9gL4L8l3UD/UFnzbJjzifJH8jh2UK6qssfcCP8xDHTdI2q/OF008F8C
+	 lRN098l8BfbY+lY5gYfC66MGv0kzA7iufY2k3TTXpXi9AXRRknNS9KZ51N/GXD/B1rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ATS7JxV+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FSXY6HrW;
+	arc=none smtp.remote-ip=209.85.221.179
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10249606A332
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913E7606A33B
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:27:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 913E7606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ATS7JxV+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86F51F000CC
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:27:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794515222;
-	bh=Chb+aEEpnG9wBgADB7Efz085hxxOusSroeCKPcg1AC8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ATS7JxV+6MOYwgHE/fLNQPwuG223tWr1KOngzRgaekXHsU4DJdzHclPmAbxImTcPm
-	 0snevFacJ3pbQQmQRHAOlwm68Qcp2ol6/HtHkGUkiNQYM4vKHH2FAuhohEyhPQIctu
-	 z1afVrI2bUrrq0yohQo+t0T+1o13gdkF8GyxO/Z15AEu4EVUb4j+JEWzHZdNRaGWPX
-	 eET30KhaCHdvY88RiUcaKJbFk5XUcnotxW99pOfWQUUXPYUExxefQ5FSb+yPoE+asm
-	 MYCF4D8+WJH5cwo9khl5KY496S/qJAj5McGOJFIzKaVLkIH7Ub2kBdOjOFRp0gUl89
-	 1kniHJQKMBh8g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3ace304021eso1621861fa.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:27:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGRNG23QkHkr+myYEUVpaIGDKDGhRelh1lTARFVxfeBpqZUsSqTBl8QdTgLMMuDiosTbPi7ZBc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/8FvrO6msqg07D5Yl0XyzRleYFBTsweiX9JK/JwtF2cXX4O80D
-	GmAeTMExSWxi3pcfPo+6qN09UcPlVnyfy9UYZAobf4K5DBNwi6znyD3l24JtC5SD/lT/a/ek6x4
-	GjcpKNTkWZEhHT4+w4vGX40BLq/cM/bE=
-X-Received: by 2002:a05:651c:a1b1:b0:3a9:a2fd:5931 with SMTP id
- 38308e7fff4ca-3ae2b4a1ea8mr2084711fa.6.1794515221502; Thu, 12 Nov 2026
- 12:27:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FSXY6HrW
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5ebf39def3aso102325e0c.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:27:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794515269; x=1795120069; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sqzRA9UrTkSrnhG0afFV62l+ePZ4vnCL9ohyTPGZ/WA=;
+        b=FSXY6HrWohav0xzx4hrdId11gMGlVIU6liGz3RGbsAhmAcNXDFu8lnG5WTM9O44qGM
+         eD0cmTPlZsKG9NPyYgOvMYMNM4JAQYGdl+YvxzAiNmM9hAaLa9V6Q29clS98xl5BQ+xj
+         qi5rIDGPi2Xcdu+WpFwQgBLFgF+HTRRdHDYIC2WC/L1U/5axruhO5xu0XDZnT5fksT9y
+         SrHXB8JwuZj2zN8A6Joxqp7ick0aV4ARCpGO+H5osp5kX4dztAfO/UPwCrU/YbhcQb8e
+         ZfBB6+fjB8Co7knW/Wr2fN3RA04egkjhu4veS/V7ewnpO3rez8Cw4+3pqBgwGwrlZCtv
+         TvMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794515269; x=1795120069;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sqzRA9UrTkSrnhG0afFV62l+ePZ4vnCL9ohyTPGZ/WA=;
+        b=FbsGGHXmXSbh34ge3PpiIAywyQP84ZtnJzxWGkOQhXI+Xy67gBjrtnt3jKtSQJt5S6
+         fCnc8lNt9MXYL88j+DOISMNhy7MCdAYCuq5nvEO77mjm5j12xLpeCi94KiasGjeCMAnb
+         i5BdnHYsULHYq7/T2pQG8+ERAPqxJJVW52Dcx4Rfm7R2CMA2m+r1XjnrSQQT2pvsM2y+
+         NmJwbYnpdq2iEbyCOwN2LYOfYZiLJGtHed8m5mnrrTJcrLBacHdN12fJyCdJbXg+1MJ3
+         60dxe8pZCAz4FTcYy4fz59HLNAoYckIoApybaOicWJkdMD4UJ9QIuhPFpCNpPxbV7w/P
+         vcsQ==
+X-Gm-Message-State: APuU4Z/ZDW6Ir4uJtnYMcHoqiZm5w8RJnoBt3wBu9OBbb3k8TprbJWzs
+	L3hHy4RtB00OXxwLUVSduOjq0Qj0IHVbNZFPE3b6qUE1BpdxZW+BJFHC
+X-Gm-Gg: AYBFou1uirzsKUAQY78EuaeqpuizjomJC0Y5GhyEg+Bp2U2A2pUU3UyoqWtNxpld+aI
+	V3ekqB1/qA0hkS11SMfBVvtimodWad/dTZfaZoodsoxWflA+wfqf3C0e75CoqkLu2wIF5IAe3To
+	rdbZwOH3/ii2CfLE/nuxO1jMbG/MRMimf2tB9VZfxR2HfDLSvfleY5TRJE+8FjUvNaWz9C0boI9
+	JtXj/nXPrc+nEOzvyYnke2w85gs+IJt0VEKPM9FJYMjT+j5kcH9P/2He7UHE4ANaglzXubiyV30
+	hfuw2sJcznBgCEz2TUXe78b7zicLT77CsSAIOwkFYR2q6EolOu1v9g9S36nAqwCi5Nkd1kmTCta
+	aV/ps3kZPKMtFahK+4yzI4T3DVQ1yMfBKDvpXcW74jiCu3tBq3fMgrcJwGOqat3De6sdLbRzrOG
+	k6y3XO52XC0TJnMCfvxmnTBHNmXNUel1pE7GJ9skY/LTsGdpY+EaJTv+S9eHjF8ojPxNH95hTMj
+	3MGk9aUh93vlQ3461fAY3IgL6lWcsXI3ZNH9MML7GoiDphlgkLQYYe09DDkRUSVNFAysl5AlhOf
+	lbY8cbVz8YViOjgfB+AYgGSPCGcsQyIXnogh+LCa9HPC7j+Nl/M8Zc5RYt90U7CWDQx38slWrGZ
+	/azQ1cXRrqsLWB5VDLRN3j67hwIcUbqc4a0I6uhjeEV1QCot2GVwH4FNH1SJwhaF6
+X-Received: by 2002:a05:6122:249a:b0:5ea:c727:11fa with SMTP id 71dfb90a1353d-5ee344ed328mr127187e0c.0.1794515269435;
+        Thu, 12 Nov 2026 12:27:49 -0800 (PST)
+Received: from gmail.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c779474ecsm367275241.2.2026.11.12.12.27.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 12:27:48 -0800 (PST)
+Date: Thu, 12 Nov 2026 15:27:48 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ steffen.klassert@secunet.com, 
+ Willem de Bruijn <willemb@google.com>, 
+ stable@vger.kernel.org, 
+ Hassan Sultan <hassansultan@google.com>
+Message-ID: <willemdebruijn.kernel.bc632ebec32d@gmail.com>
+In-Reply-To: <20261112111619.14ff70e1@kernel.org>
+References: <20261111221129.829218-1-willemdebruijn.kernel@gmail.com>
+ <20261112111619.14ff70e1@kernel.org>
+Subject: Re: [PATCH net] net: gso: fall back to skb_segment when fraglist
+ cannot satisfy checksum
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,45 +107,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <d9da17af-f49e-4878-a8dd-59a8919e6930@yahoo.com> <9b7b42be-6cc5-467f-bd01-62ab74de3523@yahoo.com>
-In-Reply-To: <9b7b42be-6cc5-467f-bd01-62ab74de3523@yahoo.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Nov 2026 21:26:49 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=6rq=+NOD9U1FZ+wnmzUQDzF7sbebp1qvrRTMYnET1CQ@mail.gmail.com>
-X-Gm-Features: AclHuK_hp8KGOjg2fIYGYRM-U9txeKytgoHXjAulH_X4Z4aeAayp8jUpHXZ6IgI
-Message-ID: <CAD++jL=6rq=+NOD9U1FZ+wnmzUQDzF7sbebp1qvrRTMYnET1CQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 10/12] net: dsa: realtek: rtl8365mb: refactor
- L2 MAC handling
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
-	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alvin.sipraga@analog.com, gusfmora@gmail.com, 
-	kuncy7@gmail.com, fabianotassotti@gmail.com, gabonpivovich@gmail.com, 
-	contact@c127.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 12, 2026 at 6:40=E2=80=AFPM Mieczyslaw Nalewaj <namiltd@yahoo.c=
-om> wrote:
+Jakub Kicinski wrote:
+> On Wed, 11 Nov 2026 17:10:33 -0500 Willem de Bruijn wrote:
+> > skb_segment_list() keeps the original transport headers and checksum
+> > state of its frag_list members. It ignores the checksum bits in features
+> > and does not initialize the SKB_GSO_CB() checksum state. This breaks in
+> > two cases:
+> 
+> Does not apply?
 
-> Add L2 MAC pack/unpack helpers and use them in the family C
-> serializers instead of open-coding the byte packing, since the layout
-> of the MAC address words is the same for both families. The now unused
-> per-field MAC masks are dropped.
->
-> Rename the family C serializers to rtl8365mb_c_l2_*(), export them and
-> reach them through function pointers in struct rtl8365mb_family_info,
-> so that a following patch can add the family D layout without touching
-> the family C code again.
->
-> No functional change.
->
-> Tested-by: Gustavo Foletto Mora <gusfmora@gmail.com>
-> Tested-by: Stanislaw Pal <kuncy7@gmail.com>
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-
-Yours,
-Linus Walleij
+Will rebase in v2.
