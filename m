@@ -1,59 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794447667;
-	b=lXRX/G7112s0v5Zz47lis4ldfIuYtGQwDiKLddvdlcFnmiPLClyb7rEMZYgSzSRa2Q5x
-	 DzwuUGIrmR3fpnxPvxhh6SVUKbTwbWNKs9idQx9xrDxSiKAiQKmiv9zh23d08I03esPdS
-	 QNEzWOsEL0Ch0ROUERRqfMpwFB4EmWzSlpR8Wv6EDCUCAW+Q384MUIOgM38o9NLY6EYGg
-	 MMK62gRO2567Bm0atV/s1cjpc8zf5Wz2bM4eNyjykNCZ7kegiLGjVk9vGu23GJCCrQjIw
-	 iL6A7YxPGP/MnPqDK7njJy7SWQAworIFV6+QsQ+tc+TiHfneQtTzXsakqPFN2/f8VCg==
+	t=1794447699;
+	b=vUQgwpai6IrOmh3sBOpoTkZ8w70xfR75kLmlawqVrNfBzTodGn4haK7jqWg5P21CCSWx
+	 JpBhOS99/sv4qNXdy4dI0Najl+S9mPDN94iLaJPqMlbin6Il2YsNOKBJ6hND3r84SUuTa
+	 gi3ITV/zvHcTcD4CL1rRt44GAfGmEc5uIAQh7ERjnTiICrHSc8MdY6VyzZ+g9dEYlQVhb
+	 Xs9CH4hLjcuR4IFaukupj9xTOMojMAjts/VrAk2Js7tQrBzDtHx84SOI+ueYlB4mR9n0A
+	 gLvAKtX2RmXvFzZ6r5EhNgBS9HlReF31hSSFYGg2P+wF8AUhij5oxmwQrqg/Ynez41Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794447667;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=78GpTlryXdmrJjByh3BUkZG9u0d3fTR+T73cEQZ+ISo=;
-	b=OE9rcyizBOC4hP/iVFb+v4zCvb6J7/phYNlnSX1SQDyA9i6venLLd7mQ8WZWwSYVMcTV
-	 VhXIKJQ+te9f4PdkPLxIClRAx+UX44yhxJ28OU5qbOsNZPQGLHBEY5OTDyFI6Phrg/rXb
-	 7ASv0klUNEg4NXY2EYDoSmmCTMp+/F0ZPYel48akrRTO8YkoUKC2vjzAyw4lVkKTzDnJJ
-	 wMoBUNxUjAlAjBTVoX/Y/+8KJ6+kkd0M6suOOa4Y5rJs3t2mY6IabYQOEMRe60uEL7gTN
-	 mEjpMvDMDyNhrf25/vbb8eT28pGoAVZpRpgmblV0jw0orKiQtHAot/6D087uZ3nyuGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794447699;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=rd7HKNoZdZvE8lr/tvCzJ8B26fSCroLo4VvAtY1YV38q9QJwGHdHYR2y9H8C2VDgJoNP
+	 np4jy+4k+1QkZfulAC6EYeFZy4leG8j/W1rWHTjC3lr+VN5U8vDJaZYJ2BsQAFfsKe1jn
+	 AgOVIeuAshv2VQoSlBzGwpgLFl729I/vXDLcwiwr1Gwa5eZzowHoGB8rjVnQIDHiNXbix
+	 GGMtXtZmtlNofxREEFm5yqbotEVyVeg/2BCKV6vxD01vcSVkpcPQeZItRfrYVfIA7hNik
+	 RxsREbQ56aChX1Z52ZzSNSfnxL/NWhMJWpdr1WO/nmxXgwbmm6VyfpPt+eSbK+tyJJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="RMNW/hj3";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SidTa3oo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9056E606A321;
-	Thu, 12 Nov 2026 01:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE71606A324
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RMNW/hj3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0121F00A06;
-	Thu, 12 Nov 2026 01:41:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SidTa3oo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE58E1F00A05;
+	Thu, 12 Nov 2026 01:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794447667;
-	bh=78GpTlryXdmrJjByh3BUkZG9u0d3fTR+T73cEQZ+ISo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RMNW/hj3cip2bnbqZ58DP7ZCuhYbB449WbkhHiLHdXYIbp+Yj0UstquCla7tCJSBP
-	 H1fwSCTJ6hX0PLFgCOyqKHiVnQPByXuUhL2h9rfOUxssaZl10EbHdOx5hiij2kVnFA
-	 W5TTwX7pWlpdHCX6cmfi7wxrVCLrXldYEcwAWJu1saz28hdaRD6oKo1vDvzlS0hcVb
-	 1FyPhmjxhJoS7X0DrdfDc1Cf4Wv4M1iPRxecbSPU8YGoLn2TJP2f1fpKEbt/SjyK4R
-	 EkfWaO38saxffH8JJDH5YTp4mMaE+7cI+39QeMClA18AemjYdyaGwhStSUReEm+3R/
-	 tp/ZCw8zJ8OLg==
-Date: Wed, 11 Nov 2026 17:41:06 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
- <ryazanov.s.a@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-Subject: Re: [PATCH net] net: wwan: mhi_wwan_mbim: disable rx_refill work on
- removal
-Message-ID: <20261111174106.09f639ca@kernel.org>
-In-Reply-To: <20261110043006.56681-1-mhun512@gmail.com>
-References: <20261110043006.56681-1-mhun512@gmail.com>
+	s=k20260515; t=1794447699;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SidTa3ooh+dDUnsw65X63uLxzNg/ez+yu4ozqE3le3/IDWgcdcqL0/n2ratb+n8nP
+	 vo+vko1f74c+izxVAtj0XWZTMqu2fxi3eKDLfmIlKX0No3e/tXWTGSqma4B5F2kUG+
+	 kdGAUgQIk221C1D072hw5Y/2LzUbXFU+lJm/m1b+RZhUOYHlQBIz/GS82ZLN6NZUUT
+	 HLj4983t7tgbwAQiej98FzUjBuGlCbUGl6DDkHdujavx2FCS8JSPJVM93FAyHe49H5
+	 3kvB80B4hWWpzPIKg2E/k3utsQEK7IHkcgRpsoBj0YniVxUR0XbEDeXhixR7bk/Xjl
+	 FrHWDfNh+lsmw==
+From: netdev-bot+sinfo@kernel.org
+To: Jiaming Fan <fan.jiaming@hotmail.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: Re: [PATCH iwl-net] e1000: report RX checksum offload as on when it
+ is enabled
+Date: Thu, 12 Nov 2026 01:41:38 +0000
+Message-ID: <179444769837.2168702.18320155804189818970@kernel.org>
+In-Reply-To: =?utf-8?q?=3COS3PR01MB10251F4C0DDF4A1AA90095494E7702=40OS3PR01M?=
+ =?utf-8?q?B10251=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+References: =?utf-8?q?=3COS3PR01MB10251F4C0DDF4A1AA90095494E7702=40OS3PR01MB?=
+ =?utf-8?q?10251=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,45 +69,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon,  9 Nov 2026 23:30:06 -0500 Myeonghun Pak wrote:
-> mhi_mbim_remove() cancels rx_refill before wwan_unregister_ops()
-> removes the links. Bringing a link up in between calls mhi_mbim_ndo_open()
-> and queues the work again. With the MHI channels already reset, the
-> work cannot refill RX buffers and keeps re-arming itself, eventually
-> running after devres frees the context.
-> 
-> Use disable_delayed_work_sync() to drain the work and reject later
-> queueing. Probe initializes fresh work on rebind.
-> 
-> Found by a static analysis tool under development.
-> 
-> Fixes: aa730a9905b7 ("net: wwan: Add MHI MBIM network driver")
-> Cc: stable@vger.kernel.org # v6.10+
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> 
-> ---
-> 
-> diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-> index 336f89756f10..3b6b0066f673 100644
-> --- a/drivers/net/wwan/mhi_wwan_mbim.c
-> +++ b/drivers/net/wwan/mhi_wwan_mbim.c
-> @@ -650,7 +650,7 @@ static void mhi_mbim_remove(struct mhi_device *mhi_dev)
->  	struct mhi_controller *cntrl = mhi_dev->mhi_cntrl;
->  
->  	mhi_unprepare_from_transfer(mhi_dev);
-> -	cancel_delayed_work_sync(&mbim->rx_refill);
-> +	disable_delayed_work_sync(&mbim->rx_refill);
->  	wwan_unregister_ops(&cntrl->mhi_dev->dev);
->  	kfree_skb(mbim->skbagg_head);
->  	dev_set_drvdata(&mhi_dev->dev, NULL);
+Hi!
 
-AI says this is not enough for make the teardown correct:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110043006.56681-1-mhun512@gmail.com
--- 
-pw-bot: cr
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
