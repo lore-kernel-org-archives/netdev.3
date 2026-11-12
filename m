@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794448947;
-	b=1xDAYoadD6RKu9Mh33t7IJDuXllqvqzP/CDO5Tpd8zr31VjpvDucmQYqUoR/tS2iZngP
-	 JqoPRP404x2XW4lZlqVcOObE+mljUQT9z1buvXANrflbajU21tLXFzu6M4pRh5sOMgf/v
-	 iRXYsTGVxLoMy6P8RFeFcupSyDaf0u6lo4eSpRS+T2iwNn1X148552f82n89V+xLy0GNM
-	 YCoA/lbMYWOWXROgMNTtuDdgTakPf/rWf0Xk/Q56aEw8Ouog/CAuLgwTZpnmDam2xy2md
-	 RE5yy+XxQNHDbEYv5O4dSfoUuHbJvpMwDun99XGvIzDykgzNFbHCE3LC8WD4bLuG/QQ==
+	t=1794448948;
+	b=CysA651nrsiTlSP7MMyUdeF/T0Np29Z0cQ4FBBiQlF4TgTpNzE3CKfHDX+8xbqtsDvWU
+	 +q22WyRtrVzw0t8jRgTeve7gc63s+r7QJ4qE/bsCNNBYcvuEmPFrw3XMaJ9uUb+0NlsoG
+	 m24XKtGJO9oMrrkIh12xbV1IBIQRkiy/ldD7Y4gHnmoA/qG5+lb+m7ZPrJRlK0vMzorSE
+	 26q2DAChskP3FIThN2Xn7zmYh3CzHShWH1yKh39EGrM4YCCBaUQpoX6rN4dM2MGZ3KhKH
+	 NEsGp/T1/3ikI60qpv0D6M5B+k1CkjePPqElh0yqb3jLfw4kfaWU4sj7OwDLiJp0GKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794448947;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794448948;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=HriGiWi+UQ8QPL/8QwkOWDz4Mb2kWePdRLKQHkPJXMI=;
-	b=FHVkfGc61rFNP0KJ7Ux9n1QKrS1LYS8H78izDy8B6fiXiJI5l2n7p+5sn3/Vo+75eYse
-	 pFYaEmxcCvzasrXrbnXtCnIfHlhqxnUbTZupJ+9NuIYodbW8tyDJO6+VqFa8yeORluwhG
-	 UYwWES1rEyDVeMeahE/+n4344vQrXfxyOGx3x0Co6LIQCYPfk9btQm+Q5coN3AWnJx5Ty
-	 m++awrnwVZkDGHuJvAkIOD+kus3n8fzAsnA0tejce1v9amdfxBQ1s7/uCT7lmJaOeXJK1
-	 gnumGtuJCbtTTipHWwVgbFwXyYMT+3d+sz2k5nRUnysoGSJlTbyprLnk+4YAs5NXPiw==
+	bh=9IdyrQpxmQGcEQZC1T9QWsfjmpdwPjPqwtgtBfpGwVo=;
+	b=AeUKIUzdb3iql2FoQaaPYq7xWopImztCJQPvKaeK5oXqV3Ajs/yA52b+hllFmjVIet69
+	 HN38sxVboLTlKiiK8Z77aQ7BtboZ7lt0KGBVkEGc1u2rsJlRqquwuTsspGLfidDX2Mk12
+	 eE+MmNRk9dA9ctatFHzGHc1Q+IozWUcvC7ZjImVg3JvFpBRHctpOlDYsXoFd3QlEIQ0Ts
+	 cAXwrwuq5/mdBp0KWbiKP8zZmh0VixO9SF7KSEH9pTPO3VWvSXUxFwpoXlcRZ+5qmcrKn
+	 xg1gjmoBcc1LeShoyiyyEaztuEHu4Hv09Cw1/8mgmglP4jG6S0rYZlQjtm9strpM32w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WWhT9UPX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CgLdAcB3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7BD606A337
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D1E606A33F
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WWhT9UPX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AA61F00A06;
-	Thu, 12 Nov 2026 02:02:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CgLdAcB3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9251F00A05;
+	Thu, 12 Nov 2026 02:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794448946;
-	bh=HriGiWi+UQ8QPL/8QwkOWDz4Mb2kWePdRLKQHkPJXMI=;
+	s=k20260515; t=1794448947;
+	bh=9IdyrQpxmQGcEQZC1T9QWsfjmpdwPjPqwtgtBfpGwVo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WWhT9UPXr0myRopcw5u0oW/MMCb3oOkApSaqHzPxBZxrKs50GY7bhTW8hzQcTcYPl
-	 1+Grsajj+fI5uHHWIbqWAQsLem0ChlZVaDI9lKzD3MdgT+HGktCoZLs362xHto7YZz
-	 a3SwCdTjCozx8DwBnWUMr5VMCeBiraUbgkraWa9Sjpt8lbohj9eqsY4ANESzgUhShE
-	 P0RpRvESMdL1QX6zG5Bl1Cu1zvE/i82CVhQIv3wMhL0WsdC2muikCaFazwtjf7C6s2
-	 vJF/W8eaC1HDuTi+WB/ZnfvtkUx18zDukmf2Dn1I7viQx52hKiiG3l+mguS36Qsf3X
-	 nAxAaE/njcJjA==
-Subject: Re: [PATCH net-next v7 1/2] netlink: specs: add ovs_flow del and set
- operations
+	b=CgLdAcB3imbbQDyw3gdNmFOFq2QL3p+GnlYOGqIr2feleMICp9Txse3H4kYJw8MnK
+	 9BiaGcbGMCDAHy+db9Sh7ZLgWRpEKTOdz61miCcIGid5Ip7GkAimNZEecki4jQRT1C
+	 9OPCPWll18Cs9UcqLdsb90VlmUTtjLP7LufxcBqIZv6tFzZOawjp4OrDfMsvVxqjnJ
+	 ChfeJ2+p9q87caSNOZRFaqlWrLv8xA0qxolv9k5DuZs+U1EYcKlFSV0O7HeeTxE4wa
+	 w7GivX9aZcPouCB4I3JbNg0Kzoa2cuT5cGVwGladM8SLQa5NmeyM29XjbfFeCOvgst
+	 e8bcyM8VXjyKA==
+Subject: Re: [PATCH net-next v7 2/2] netlink: specs: add ovs datapath and
+ vport set operations
 From: netdev-bot+sashiko@kernel.org
 To: houminxi@gmail.com
 Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
  aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
  dev@openvswitch.org
-Date: Thu, 12 Nov 2026 02:02:25 +0000
-Message-ID: <179444894546.2199510.2728310247051508293@kernel.org>
-In-Reply-To: <20261110174751.973464-2-houminxi@gmail.com>
-References: <20261110174751.973464-2-houminxi@gmail.com>
-X-sashiko-severity: Low
+Date: Thu, 12 Nov 2026 02:02:26 +0000
+Message-ID: <179444894679.2199510.3381591546922833179@kernel.org>
+In-Reply-To: <20261110174751.973464-3-houminxi@gmail.com>
+References: <20261110174751.973464-3-houminxi@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,136 +65,186 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (3)
 
-- [Low] The new OVS_FLOW_ATTR_UFID doc in
-  include/uapi/linux/openvswitch.h (lines 669-671) and in…
-- [Low] The patch changes the docs for key, actions, stats, tcp-flags and
-  used from 'present in notifications' to 'present in replies and…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch adds `checks: max: 4096` to `masks-cache-size` in
+  Documentation/netlink/specs/ovs_datapath.yaml.
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but
+  Documentation/netlink/specs/ovs_vport.yaml still declares the vport…
+- [Low] This problem wasn't introduced by this patch, but the vport `get`
+  do request in Documentation/netlink/specs/ovs_vport.yaml lists only…
+- [Low] The new vport and datapath `set` ops in the specs declare no
+  reply and no notification.
 
 --
 
-netlink: specs: add ovs_flow del and set operations
+netlink: specs: add ovs datapath and vport set operations
 
-This commit adds the del and set operations to the ovs_flow YNL spec and
-gives dump its own request list. It also changes probe to a flag and adds
-used and tcp-flags to the get reply. The attribute docs are reworded in
-both the spec and include/uapi/linux/openvswitch.h.
+This commit adds SET operations to the ovs_datapath and ovs_vport netlink
+specs and adds more attributes to the NEW request lists. It also marks
+new, del and set as uns-admin-perm and changes ifindex to s32 with a
+minimum of 0. Finally it puts a maximum of 4096 on masks-cache-size and
+marks all ops as dont-validate strict and dump.
 
-> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
-> index 951837b72e1d2..d7aeeeb5a3cc5 100644
-> --- a/Documentation/netlink/specs/ovs_flow.yaml
-> +++ b/Documentation/netlink/specs/ovs_flow.yaml
-
-[ ... ]
-
-> @@ -438,18 +447,22 @@ attribute-sets:
-
-[ ... ]
-
+> diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
+> index f7b3671991e6c..b24dc1e03f46a 100644
+> --- a/Documentation/netlink/specs/ovs_datapath.yaml
+> +++ b/Documentation/netlink/specs/ovs_datapath.yaml
+> @@ -102,13 +102,17 @@ attribute-sets:
 >        -
->          name: ufid
->          type: binary
+>          name: masks-cache-size
+>          type: u32
 > +        checks:
-> +          min-len: 1
->          doc: |
->            A value between 1-16 octets specifying a unique identifier for the
->            flow. Causes the flow to be indexed by this value rather than the
-> -          value of the OVS_FLOW_ATTR_KEY attribute. Optional for all
-> -          requests. Present in notifications if the flow was created with this
-> -          attribute.
-> +          value of the OVS_FLOW_ATTR_KEY attribute. A value longer than 16
-> +          octets is treated as if the attribute were absent, so a new flow is
-> +          indexed by its key. A zero-length value is rejected with -ERANGE.
-> +          Optional for all requests. Present in notifications if the flow was
-> +          created with this attribute. A dump does not read it.
+> +          max: 4096
 
-[Severity: Low]
-Is "A dump does not read it" accurate when it sits next to the -ERANGE
-sentence? The commit message goes further:
+[Severity: Medium]
+Is 4096 the right bound on every configuration? The commit message says:
 
-  "A dump does not read the attribute at all."
+  The masks cache size has an upper bound of 4096, which the attribute
+  records.
 
-ovs_flow_cmd_dump() still parses every attribute against flow_policy:
+However, datapath_policy in net/openvswitch/datapath.c computes the limit
+from the percpu unit size:
 
-net/openvswitch/datapath.c:ovs_flow_cmd_dump() {
-    ...
-	err = genlmsg_parse_deprecated(cb->nlh, &dp_flow_genl_family, a,
-				       OVS_FLOW_ATTR_MAX, flow_policy, NULL);
-	if (err)
-		return err;
-    ...
-}
+	[OVS_DP_ATTR_MASKS_CACHE_SIZE] =  NLA_POLICY_RANGE(NLA_U32, 0,
+		PCPU_MIN_UNIT_SIZE / sizeof(struct mask_cache_entry)),
 
-and flow_policy has:
+and include/linux/percpu.h has:
 
-	[OVS_FLOW_ATTR_UFID] = { .type = NLA_UNSPEC, .len = 1 },
+#define PCPU_MIN_UNIT_SIZE		PFN_ALIGN(32 << 10)
 
-In validate_nla(), the NLA_UNSPEC length check fails with -ERANGE, so a dump
-request that carries a zero-length OVS_FLOW_ATTR_UFID is rejected the same
-way a do request is. The dump never uses the ufid value, but it does
-validate the attribute.
+struct mask_cache_entry is 8 bytes. That gives a limit of 4096 on 4K and
+16K page kernels, 8192 with 64K pages (ppc64, arm64 with
+CONFIG_ARM64_64K_PAGES) and 32768 with 256K pages. On those
+configurations the spec would mark values that the kernel accepts as out
+of range.
 
-Could the wording say that a dump ignores the value but still rejects a
-zero-length ufid? The same sentence is in the OVS_FLOW_ATTR_UFID kernel-doc
-in include/uapi/linux/openvswitch.h.
+The spec also leaves out a second rule.
+ovs_flow_tbl_masks_cache_resize() in net/openvswitch/flow_table.c rejects
+any non-zero size that is not a power of two:
+
+	if ((!is_power_of_2(size) && size != 0) ||
+	    (size * sizeof(struct mask_cache_entry)) > PCPU_MIN_UNIT_SIZE)
+		return -EINVAL;
+
+Could the max check be dropped? Another option is to document the bound
+as PCPU_MIN_UNIT_SIZE / 8, along with the zero-or-power-of-two rule.
 
 [ ... ]
 
-> diff --git a/include/uapi/linux/openvswitch.h b/include/uapi/linux/openvswitch.h
-> index 440825e658371..3f18f59e91dc2 100644
-> --- a/include/uapi/linux/openvswitch.h
-> +++ b/include/uapi/linux/openvswitch.h
+> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+> index fa975f8821b6c..5a3ac4b03033a 100644
+> --- a/Documentation/netlink/specs/ovs_vport.yaml
+> +++ b/Documentation/netlink/specs/ovs_vport.yaml
+> @@ -111,7 +111,9 @@ attribute-sets:
+>          type: unused
+>        -
+>          name: ifindex
+> -        type: u32
+> +        type: s32
+> +        checks:
+> +          min: 0
+>        -
+>          name: netnsid
+>          type: u32
+
+[Severity: Low]
+This isn't a bug introduced by this patch. Since ifindex is being matched
+to the kernel policy here, should netnsid be fixed the same way? The spec
+still declares netnsid as u32, but vport_policy in
+net/openvswitch/datapath.c has:
+
+	[OVS_VPORT_ATTR_NETNSID] = { .type = NLA_S32 },
+
+and ovs_vport_cmd_fill_info() sends it with nla_put_s32():
+
+		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
+
+		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
+
+peernet2id_alloc() can return NETNSA_NSID_NOT_ASSIGNED (-1). A YNL client
+that follows the spec would read that as 4294967295.
 
 [ ... ]
 
-> @@ -655,9 +664,11 @@ struct ovs_nsh_key_md1 {
->   * should be suppressed.
->   * @OVS_FLOW_ATTR_UFID: A value between 1-16 octets specifying a unique
->   * identifier for the flow. Causes the flow to be indexed by this value rather
-> - * than the value of the %OVS_FLOW_ATTR_KEY attribute. Optional for all
-> + * than the value of the %OVS_FLOW_ATTR_KEY attribute. A value longer than 16
-> + * octets is treated as if the attribute were absent, so a new flow is indexed
-> + * by its key. A zero-length value is rejected with -ERANGE. Optional for all
->   * requests. Present in notifications if the flow was created with this
-> - * attribute.
-> + * attribute. A dump does not read it.
+> @@ -150,6 +157,7 @@ operations:
+>        name: get
+>        doc: Get / dump OVS vport configuration and state
+>        attribute-set: vport
+> +      dont-validate: [strict, dump]
+>        do: &vport-get-op
+>          request:
+>            attributes:
 
 [Severity: Low]
-This patch changes key, actions, stats, tcp-flags and used from "present in
-notifications" to "present in replies and notifications". This paragraph is
-edited too, but it keeps "Present in notifications if the flow was created
-with this attribute". Should it also say replies?
+This is a pre-existing issue and was not introduced by this patch. The get
+do request still lists only name. ovs_vport_cmd_get() uses the same
+lookup_vport() helper as set and del, and that helper falls back to the
+port number when the request has no name:
 
-ovs_flow_cmd_fill_info() calls ovs_nla_put_identifier() unconditionally:
+	} else if (a[OVS_VPORT_ATTR_PORT_NO]) {
+		u32 port_no = nla_get_u32(a[OVS_VPORT_ATTR_PORT_NO]);
 
-net/openvswitch/datapath.c:ovs_flow_cmd_fill_info() {
-    ...
-	err = ovs_nla_put_identifier(flow, skb);
-	if (err)
-		goto error;
-    ...
-}
+del and the new set op both list port-no. Should get list it too, so that
+clients generated from the spec can look up a vport by port number?
 
-and for a flow identified by a ufid, that emits OVS_FLOW_ATTR_UFID:
+> @@ -165,6 +173,25 @@ operations:
+>              - netnsid
+>              - upcall-stats
+>        dump: *vport-get-op
+> +    -
+> +      name: set
+> +      doc: |
+> +        Modify an existing OVS vport. The vport is picked by name, or by
+> +        port number when the request carries no name. An ifindex or options
+> +        are rejected with -EOPNOTSUPP, and a type that differs from the
+> +        vport's type with -EINVAL. The type only has to match; the one
+> +        attribute that changes state is upcall-pid.
+> +      value: 4
+> +      attribute-set: vport
+> +      dont-validate: [strict, dump]
+> +      flags: [uns-admin-perm]
+> +      do:
+> +        request:
+> +          attributes:
+> +            - name
+> +            - type
+> +            - upcall-pid
+> +            - port-no
 
-net/openvswitch/flow_netlink.c:ovs_nla_put_identifier() {
-	if (ovs_identifier_is_ufid(&flow->id))
-		return nla_put(skb, OVS_FLOW_ATTR_UFID, flow->id.ufid_len,
-			       flow->id.ufid);
-    ...
-}
+[Severity: Low]
+This is a pre-existing gap, and the existing new and del ops have it too.
+The new set op here declares no reply or notification, and neither does
+the datapath set op in ovs_datapath.yaml.
 
-fill_info() builds get replies and every dump entry, so the ufid shows up in
-those replies as well as in notifications.
+ovs_vport_cmd_set() builds a full vport message and sends it with
+ovs_notify(), which calls genl_notify():
 
-The spec now also disagrees with itself: the &flow-get-reply list includes
-ufid, but the ufid doc in ovs_flow.yaml has the same notification-only
-sentence.
+	err = ovs_vport_cmd_fill_info(vport, reply, genl_info_net(info),
+				      info->snd_portid, info->snd_seq, 0,
+				      OVS_VPORT_CMD_SET, GFP_KERNEL);
+	BUG_ON(err < 0);
+
+	ovs_unlock();
+	ovs_notify(&dp_vport_genl_family, reply, info);
+
+ovs_dp_cmd_set() does the same with OVS_DP_CMD_SET. These messages go to
+the family's multicast group. They also go to the requester when
+NLM_F_ECHO is set.
+
+Should the set ops describe these messages, for example with a notify
+entry that reuses the get reply, so generated clients can decode them?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110174751.973464-1-houminxi%40gmail.com
