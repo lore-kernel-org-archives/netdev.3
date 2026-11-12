@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794489801;
-	b=k8+/t3Ua962f5ZacQsnmUoAtUedfv/V6jeHgpdSIqu0gNLtaGUjVthya1Y1tvDUU8sPV
-	 jkHbrWeCu5xfb6V7nOdp+AXMdpGvMWc7ukgJ6cKw6oB6kGlTrHyuJrMsD4ab3jbS8AipU
-	 Jm1SQ0R+tihJi/yt938XVdS07BydlWK8dzCR5l5P7YRvoHYV446hRT0auflltWLhl6AAr
-	 GwHrP9bib+l6RUNJNeljsjkmEbyi6mqC0YXhL2Nt8ounUXEJy1rYiQa0tRUvWaQ6B+IFG
-	 pvSSWa3KIonl52VXA0a73S41ILeXrQ7jvGQUr4+8yC6vA1lgBehVHNd8RBNv0eoID2A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489801;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794489807;
+	b=Hc0HuD0NYaK+vHEGt0CVF9dzMIZnxdBvDIsHJJrqlQyufaGyGrfPZ/MkMdY6RkewqJkr
+	 FbFH7lk/m9yPuS24NEmXINY3NeQrqQbOITuFofYGe3v5uLIWo72d2+P7iYMHKZWQ3Lof7
+	 kd/0dCG//l1cWkTDHXWlxVR4hBipZHYtjLhV1b4kOvVL9n+71v0XVfqU3o1MXbuz3aHtL
+	 bp7fHMCm29hbihVtzM5QHCK2fVwR8jauPKbpUzOdlhI3fFnG0ju5rNtpp2wyi4RmvCam6
+	 x+EUqI0EwXxXpLMV3iVZ/AUTpjnmKeXjG1nUpHjyhZ7F9OT+aoDKCAN7r9b2IjX5BKw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489807;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
-	b=jn+/Y+Oa8avstOC3s3bLcFQKepyHFkWuDfXhmAWBEaWJFLOiy2eyN3KDd6rB+iZdr2SU
-	 ULMYOE7uAsW9HN06H7Rsl6L4iqt4Z2LxNMc06TGJWFlOPHsnkvlnKvx5toDVjypw9Xws3
-	 Tr259g3ehKqecmKStGL5016sd44+mRH2k5atjtBM5N3pKaZwtdGXShCc1g138RBaGkc6w
-	 fHx5lyP12Iw49Vs53jO/k8+XDUeJq2Zgaxap66uBtrAUaDd6HpKRzEOfLw17AFwXkFx+g
-	 t606HMIhvsN/9dPhCx5Tffy8fjPBfHNRRrlSjqHaQU40746P4joexbrstv/peu9tL1g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=ghFbVMi6rgXawixTzgsSQ5cbDCjPINeM9K/QV7YYUEs=;
+	b=y3OAaxltR+gXlQ4fC2YPeqQ69kW4QncID9As8QwFqS3FebrxF/JaH62J2giYSaRfCT1U
+	 xhIhQK7VWyOiD5HJiqiysm5n3CwPGHVUIvPWEA3oFAvC42KBxEXYf43SGhJGh6r3V9L9u
+	 c5p6Tm9pMnNkORoykNbEryIvg+hIFYsUE3qL+6mvq487sxXIfNzvPc7tngisCNFBQoAgH
+	 Cvam5sJLnC2R4HfLr4NvsyKFgZ+Ry8W+I2nXJJmuZPSXLGsK/yEAxo3DPyLMB5zw0eu+j
+	 IzqlOyITsd5aFd+d77uFD/5WBPy/iewe8lZMD7SGg/6Ssa7QV15/C6j8JWDEzHvm7rw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ysm6lo8q;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u7CNYouD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.47
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAB9606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:23:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEAB9606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21302606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:23:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21302606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ysm6lo8q
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c40e30c26a4so155455166b.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:23:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u7CNYouD
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c169ae1cb26so152226466b.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:23:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794489805; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VIxcLyS1eHuAsz6aUy2j7u9hxSpuw5TDPMqRZfQFAaU34UbCq0hYTk92rpqR0BrZRP
+         cRnxqpTj4ruYPaFDoajsf6ueKhB5qZFsO+gJcpfdMw24B3iAkGZXmO2dxFnigxG8/e0r
+         V5dPgKhStgvuTaApQ0OGiB8c/B/ZrDMPGBSGEqR22pEDGEQ34M2RZDuZHorYrDEscCzK
+         h2pzLMdDKRQCm+y6dDqLesQ5V/Sv2uQMnTeCqzy0zgttNYsH8ncOID95QCDjL9XXaG0x
+         mytRoKXV9jwd/J4u9HFJOSEVwlnLEmcuadVXN5Qc25NO4Aq7HOa09C2YNOrJecrL8sX6
+         Hiyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ghFbVMi6rgXawixTzgsSQ5cbDCjPINeM9K/QV7YYUEs=;
+        fh=ABrK3X9hIbERDGRQJTXDFdYjVPTu/LC4leZ2nXb7ujY=;
+        b=DrhHg7JQhtBIZyHxxGctnQklaQNmDQbPoScinMF5iRXJ6RkARocs2wUiT2WSmSmq73
+         4hnLAQZEmwTAPiRMHXtepU8RjPCc+c5/4GUGbcW4/knjvCZjGnegtmu1wy7QuoP9R6sp
+         8Wndf0fOmiK97sHjnVoC4U/Xvs4m6SR3rZ79YX36Ua2aFS1wGFwGYsX5/kPldpNWVaSF
+         hHYc3velluXxW6aNFhKe0Ew9Zrrcf+rVVHgSmJFhNiBTutsF7pU0qTg113ZmD0BFJtsR
+         WtPxH0Fi4u2mD1kZ/JVlIfJK2npL09I1ycJi/eKBrlHUdyBEBMdH8h7a2ptOF4cc8k/0
+         flcw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794489799; x=1795094599; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
-        b=Ysm6lo8q9h75vv1rF+sVUxVRvFgBVwxt5CqCNS1R91Gp9s2vFYaS6q8TwsBcHWc+Qn
-         QaqQ7w9+XQkui9QyAyJDNtHPbMbsS9J01/Kj9FJ2UrNVACBUeydBmfm1k3xF+zc/sgNF
-         GMow4uorVLcomDAD5QEyDLy2TDw0MX4eU/NH+lxJyiFf/z/XP3mKzhFEueZn+yaWugxp
-         A8IUrae6JAvgFNj3341Iz1LUhT92ONCA65t/NPLa/5q8DhHKyTq8KmUb1RVmy7dacK+S
-         kQpMhRv5h1HAEz7qCQAIX0JZKPOT/dFaDfrq+LaPaS9RvLYCQUF02swwW7JYUip3uKs3
-         TEoQ==
+        d=gmail.com; s=20260707; t=1794489805; x=1795094605; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ghFbVMi6rgXawixTzgsSQ5cbDCjPINeM9K/QV7YYUEs=;
+        b=u7CNYouDxtmkklFnZqQCQAU5YV0At+t5CI4iCxPZMku96NHqtVKf11c9d3bi4TNt3C
+         cAgC5zPRGsKtCwvJAS0jhidMMM7illgLiiUs+X2zQQzo0K99wKHBOTYPdeHkHxC+/u4b
+         xbUkSbhnTm7heHz0ZDuZPz/hiYyeeKyiB16aSm5KM+WRNQE/EGsEBGBqsyKgh09kgFZl
+         8OHsMs2fZ1auB7hHUv8pXFAyekFfoeAKhVGx/TVFAocR8T5BY4q3ICnPifaEuaT7rd/L
+         AR7IrBopgsUFEfs8T0vpPiVSTKibtVW+i44YdEraYXF0rWEuema7/YmtLWrCVM84Wjn8
+         hH6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794489799; x=1795094599;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
-        b=Rwp5UIB7igSBJdVEowE6qd3QvZBYBDDMbdLacm2gODEA1v24ysx/Ohmp1/NU17ExzV
-         iEQRnwZA1e+2hELJjX1e8gtmmRmZsg1JCzTP0wS8l9bVlA9p8m9CuKKKsKNg09Xzoy6X
-         dtgw7sNrHb9dsmELNbrAJdL1YpuVS6B+kqtM9zoBkwBnAktjOz3Rdr7jF8qpLYbDjU5+
-         0sDQRiSw2TaBDZoWAFm7XaCyks4A104hjZwArg5uXNZO485gk6/WHv9nMaYs7A4qA43T
-         duhP2knxmoqrO4A1+Bo6dESkSGuu20JQvCrIguIh7591ffLHXa5bwo+Nxbgb47nP8sW3
-         bvLw==
-X-Gm-Message-State: APuU4Z+eH1KSw3lgmjwIFpS6JPzPRfJQS/qGo8++H3UcfbZdnVjX/9lG
-	KWJ5BosTNmSrWMkkBAgMbfGDJ+7sOqfXYcJMqHphMUmloAA0BA5PSaYXffoO9EFC
-X-Gm-Gg: AYBFou2DEPtcrfXz0gL1kI9QJFYM7ZPqjaftsG+PFeEX+Ws/Ks6UPXqaiMFApoEUKVx
-	UUasK6UZLGPcNUvh1iBz0x1cpRGvfFE47Sy1vqUq78+Ygijb3N8eW6yRvHrQ1boaYyy+2zOz4dG
-	deCaso17wwjhSO3XCJ33eUqdEPbaJIZ0+mMACTvkISrMMdQHodgQ2+sa+z0UNAzTxydqAuCrLPd
-	6qQ1i6KKsP5oooYSZ0HcfVdflMXQ2GjE8lrMiuoTa9ulX724nnS73iuGYRIi8dz9uWdOOf1yFgn
-	0gPVkxJ85YNCMIQVA082+3PzqkO4y89UcsoAdQW8pg7Z6xGUd+gjXnj4/jjtkGXXElJgC7xtodX
-	622Hzvq8gXtaWY1hAls+n6i0BzNPx1ZWeN4qk6wWtIi+iqP0nIVqItWK7lnZDwLdmgrjn3SpE1T
-	G58l9Sqh1zvi9vMfJNFtpXBGoxetgvNywROagjZ84UI5UXkcDpm0QhaiGBw9Mu0swnGYSje/Aoh
-	SXR78JiIn6sBfTT6uYfuha+YNprXJiPBfE4sVF7lzwusEIvw8bV/peyInir0W2KFVO8PWwtrCo3
-	GmyvIkogpenDdtiu0vzfDI5kV8bf2uq0P3WATGyzEv+Ump9gpyv8z7yIescZEKT/H98xQOsDrRv
-	w
-X-Received: by 2002:a17:906:6205:b0:c40:9b35:ad91 with SMTP id a640c23a62f3a-c507b60db8dmr249279366b.13.1794489799362;
-        Thu, 12 Nov 2026 05:23:19 -0800 (PST)
-Received: from localhost.localdomain ([2a13:e746:396c:c600::31a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a5704c3sm341545966b.26.2026.11.12.05.23.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 05:23:18 -0800 (PST)
-From: "Kordian Chmielewski (mlody1212)" <kudzo51@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/7] net: bcm4908_enet: TX ring and DMA fixes
-Date: Thu, 12 Nov 2026 14:23:08 +0100
-Message-ID: <20261112132308.340291-1-kudzo51@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261109235700.2586821-1-kudzo51@gmail.com>
-References: <20261109235700.2586821-1-kudzo51@gmail.com>
+        d=1e100.net; s=20260707; t=1794489805; x=1795094605;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ghFbVMi6rgXawixTzgsSQ5cbDCjPINeM9K/QV7YYUEs=;
+        b=CyH4er7MKfzes8XMzmJ97kOxQaVba8xNxrPqiaNO0HsCQ4llpqcmYVgILT6T2P/39K
+         P38dOTe7/EWM+xlNN2lYMmSQLI8/cAkDJRN+eJdIGQ8H//esmIAehdcZjGst6L5fMsA4
+         LdtRJ5IweGnVrMHcAFgwR0PvDtf/5n/tPtFcwH8G93rsX6VLQTCzFb7PmUeYfjXY7+NY
+         7Sh6roDbKoqKbLWsc59jheoWmf5SGG83cDOj1TRICZvdzW8310RYShXtxVyYO9x8iZ4d
+         Vhcdhhd4QRrHuC/165RUyw+zzXCsoJaXQn6FL+71EmWvCbqViN4xa+IdQaKKKtllH128
+         2+GQ==
+X-Forwarded-Encrypted: i=1; AL+hErHz30M99nXjRiggT+47ImAxlI/n92B24vtirH0/QCe6pB70SrAB5sll9UUPNo9F+fH5eyr1F2o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8zOaGxG9HG+T+k8V/SiWjCi5lrBfWAb6hGYE93cV+gHJkOUP08
+	dwVwye5FuudBH2lBPSbraw6O5OBFOMGwfZ9U7vJgLuPR2XFpfNKxpRpOhtaoBSu3VOIvRfPoorW
+	gWhQ3lCOoJ2QHQFkJHIu4hdx+ArP06iE=
+X-Gm-Gg: AYBFou0ts2jlVGPtaPmAI03qNUk7PBG9v01Kfh7vwdgV+Fo9qCEwlmParCnNeXS9Lcf
+	J5PmEpAuqZELnwdsmGJ4J+Q9zlvM03u1wiYyJxfQEgkcYKi3oHB3EcGxfGjEkc3uHrN5NpWtdv9
+	BOxovjjk7Bz3cVubpDO+OeOKBn3bOVJ4ESUUcnKefCPILqmg0uKxMwoLpEO/AnEnzLdP3hi24BI
+	RyivdFRf7JZfBJuQ87nhIZqBMYc2Kt3HR9gDngLKIhB9m1p5yVK+iLK5Xoq7qtrE54/8ds1tqnM
+	Jo2m436rfcJwZ+dayoaePqJYkGbNkCh/xLr+cfu5729OP4eh8KQTKT6QTAEJZDV86mea0gqvEar
+	a9xNDAjCIt6uMCIxRQfhRtFg3aaUPufVBvpDutEgQPaOD5h3N2dPqBkc1Raxxs63Wm10otEGFZs
+	KW
+X-Received: by 2002:a17:906:478f:b0:c4c:c62a:b9b3 with SMTP id
+ a640c23a62f3a-c507bc36f03mr224064866b.22.1794489805492; Thu, 12 Nov 2026
+ 05:23:25 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,38 +104,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261112131056.234801-1-skalpesh942@gmail.com> <179448937301.2168702.18016211527226138253@kernel.org>
+In-Reply-To: <179448937301.2168702.18016211527226138253@kernel.org>
+From: KALPESH SOLANKI <skalpesh942@gmail.com>
+Date: Thu, 12 Nov 2026 18:52:48 +0530
+X-Gm-Features: AclHuK8Sqa4kefaWDnU4gXlBaTY8QTlThLLHR4_5ohyhfwkoqXKCWby2azhF0VU
+Message-ID: <CADYuhkri8-W86GJeqa9D5yrYk13rAoC0JMV+XGUKUPmUw=GMng@mail.gmail.com>
+Subject: Re: [PATCH] tun: disallow setting ARPHRD_MCTP link type via TUNSETLINK
+To: netdev-bot+sinfo@kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>, 
+	Jeremy Kerr <jk@ozlabs.org>, Matt Johnston <matt@codeconstruct.com.au>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-A correction to the cover letter and to two changelogs: I mixed up what
-I had seen fail on the hardware with what I had found reading the code.
+Hi,
 
-Only patches 1 and 7 come from failures on the hardware. Patch 1 fixes
-the TX stall under load (seen twice, none in 8 runs with the fix).
-Patches 2 to 6 come from reading the code and have no reproducer.
+To provide the requested context for reviewers:
 
-Patch 7: the skb_over_panic was seen only after I raised the RX
-channel's MAX_BURST to 32 by hand on a running channel. I tried that
-again today on my 6.18 tree with the patch: within seconds one frame
-was longer than the buffer, and it was dropped and counted in
-rx_length_errors instead of a panic, but the DMA then stalled and the
-board needed a reboot. With the driver's own value, 8, there were none
-in about 18 million frames. So patch 7 is hardening and belongs in
-net-next rather than net.
+1. Discovery:
+The issue was identified via code inspection of TUNSETLINK type
+transitions and mctp_known() / mctp_pkttype_receive().
 
-Two changelogs say too much. In patch 3, the TX skbs left on stop are
-leaked, not freed: the stale descriptors could send buffers nobody
-freed. In patch 6, I have no test of what the DMA does at a descriptor
-being refilled. With the patch, a 16-entry RX ring under more traffic
-than the CPU can take gave no RX or checksum errors in about 14 million
-frames, but I have not run that without the patch. Also, the panic in
-patch 7 passed 3388 to skb_put(), so the descriptor said 3392 with the
-FCS.
+2. Triggering / Symptoms:
+The issue is triggerable at runtime by an unprivileged user in a user+net
+namespace:
+1. Open /dev/net/tun and create an IFF_TUN device (registered as ARPHRD_NONE,
+   attaching mctp_dev).
+2. Call ioctl(fd, TUNSETLINK, ARPHRD_MCTP) while down, then bring link UP.
+3. Write a packet with ETH_P_MCTP in tun_pi.
+4. On ingress, mctp_pkttype_receive() observes dev->type == ARPHRD_MCTP
+   and invokes mctp_cb(skb), tripping WARN_ON(cb->magic != 0x4d435450)
+   because the tun-allocated skb has an uninitialized control block.
+On systems with panic_on_warn=1, this causes an immediate kernel panic.
 
-In my earlier plan mail I wrote that RX buffers were not freed on stop
-and that RX frames longer than the buffer were passed up. Both were
-wrong: the RX buffers are freed, only unmapped with a size of 0, and
-such frames end in skb_over_panic, seen only with the raised burst.
+Thanks,
+Kalpesh
 
-I will send a v2 with these fixed.
-
-Kordian
+On Thu, 12 Nov 2026 at 18:46, <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by LLM and not proven at runtime). If it was triggered
+>    please include the symptoms, like the stack trace or kernel messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
