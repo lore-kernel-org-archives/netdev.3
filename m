@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794515756;
-	b=ySimua4+WWfy5bmmrUlvOAvxFQg6TWRHEr/ZhYoXUT+rGZdk0T+/Vg37LCkBOkzGuAkn
-	 GsN3k7ArPhDLtmpVHUuUSmTAl4vPPHP4Bgxn0Pk2TpOMfF4kmo+nNaQFbcl0fPmHFWJ8D
-	 c78GSbWvrqlKWBlm3q7XOPiQzVR8QZEuQntws9Te6qfHTO95sg4sG50e6XrZ8p4ZK4hHf
-	 ALF+FbDww7NfMkw+x4RUL5Roi/0Xk/ItfDmThcR+sBxez8Q2lQYc7DuL3Wdj1wZ4dwHS9
-	 s7Wp3Iqn8R8GUV1OvGsn2LcKQL/oOK5zskcMnFlclg/dp6matgEFCdLgydR9KzA2XsQ==
+	t=1794515818;
+	b=Zi6+y0suw+9ZuE9G7K5M6U8PQAhIbSa0E02pPM2B0b+PcMxwJu2D8U4z5zg8QzRxWKTm
+	 HQ5hy5FGNDJVSiGZ7ev3VCZ23xi5Bc4hC+PWL3p9OME1qH404772h7/5LK9C43CAirnAf
+	 2CxTC9qJXapc0KttW2HTyxAGsBdsLwlsVGPgDj2TgSXhucS0qog0tVMKJGG/+IZrOzwJM
+	 n5B2vjMFlu7k6z8oYkvDul8dkCeRw5N+u6QDVAavj8pZGiCJ86KdpJT6NtmYg8K0vPVds
+	 QckG5awfEkHhWuVoO0dDGrCoVeNCMzWC02aUQMUC8dVcn56vjyCtH6UMNcNgLRrNbow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794515756;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794515818;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=6nnQnFl772x0ttUe5n0YYK5lmJ4sIS9Uyk55NkUhIc4=;
-	b=5UUg6pvvykURfiWgwH0uzi2WinWgRjGkfQQc7mBUCLEuiXcMhxWK/mT7YpdbMTNarNyB
-	 nWhAbeEkh/AcH8H84GBr7/3Ds4yrTyAuFJRYjx7XWD+xGPkh3j7AfuSwGHmPlDMfJZL/V
-	 X6U3V07g8c+D5vu6FciA/4ZVfI1Y3YD6cWLChGZVz/0NkSE2syrQtSZLLO/YuuffuAsls
-	 KnLXK8iZ7YrYAjly3CH1FAN2IIaWveEwe8Ucx5ZSRA+6z/hKtugWBIDkzOdu1HJp1QOWt
-	 qGEGzwXDII19IvE6MYN4ZSPtytuuEhpgCKnv2AUlqCecJ0+UXoK+C2bO5iGy2h1mWTg==
+	bh=jTWXcQAEVRNiJ37CZvBOzUnHBbdFQM+hm9VF7G9FXek=;
+	b=4CqhsUjEbcNapcHZfa5XJvfSq9/jYELEsO7TxH+gXbvoUtxl80n6d+9W+xtgzT9DSOI5
+	 cmcmZ5wRQug5ZwlgCfuz+zAYB6wpFORsv4VXkHRwfSOiz6BeoBykg3pjeKKOsVSmUN66f
+	 dbNVflVZp0VB/uG4oRnqdBxcPe1jlGVIAomgu8joqxSeA2VVY0XiDgP3/dLdpat980c79
+	 WFVSGNoyh3NaEqyoAzw043YHyPHP0myjqQeaQ2CLGS9GtGquxBfu5KrfnvbO26xytPxZS
+	 xbhW17VPb4te1fF8MFdgKlNnpwk8l/HmeC6dpexkaVquiLqeySWHeoCCmJIeo9QYqIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bcbRho79;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joUWLRfh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDADE606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D372B606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bcbRho79
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927E31F000CA
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:35:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joUWLRfh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C0E1F000C7
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794515756;
-	bh=6nnQnFl772x0ttUe5n0YYK5lmJ4sIS9Uyk55NkUhIc4=;
+	s=k20260515; t=1794515818;
+	bh=jTWXcQAEVRNiJ37CZvBOzUnHBbdFQM+hm9VF7G9FXek=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bcbRho79og5+TrQo9mGVyPrV7+u0qubmPkZytHvLGZsm9an4QzBix04Di/VU6UVeI
-	 y8mIow9HaoTxdGPzeJBHdyQytGyy7AM9YZepZrfQ/dB/qrOOtGC+lmwkDvBtiwrRfj
-	 Ic3eZVTMc27Ij82dz3cDaxyApb+CVN0fsA90FYV9KXGCShqccyWQ8HUrebqOPf1V77
-	 kCcP7AMu/NcbzhHfJRyOwJVvAEHvGyW46jfUgK8h+Pf58LMbxqm+ZaMqUQWF/7c/Dg
-	 JL3zP5AvQFqg8LTH67rkx5LBCus/aQRR9wFnfQdePozRbZ+aCA8F1Mf/ZA5bVIGkLT
-	 XhFFLamz/hhhA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5bfa7c09c9eso218354e87.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:35:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGXXU5JlnjQAJgei7mW/F9Wu9LBw0vi2s/RhZfnqAqPQ/IDZ5TKAlfXr6BPvZpkE5XnuBBFwk8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+MdZWOvP+Bg+aP35sYNUB2G4QVvExSljzN66ax4+QUDGkOCcAJ
-	SPQHjxadf6CDFIM5eIbnwEASwxGpmGHmUZA3D0hlnbuWzYldg2tOlR4YuVqPeE3Nfxzc7LpUoZa
-	mTLDnjZnSUpyby9tYUY4AuYSAaCmzZyE=
-X-Received: by 2002:a05:6512:1192:b0:5c1:5703:46f4 with SMTP id
- 2adb3069b0e04-5c1705d8515mr195706e87.7.1794515755373; Thu, 12 Nov 2026
- 12:35:55 -0800 (PST)
+	b=joUWLRfh/F4X2DVorHfnYB/IDXtZrEVITyXQl1zPB0u5DmL02wbZtZioQQ5t44sUK
+	 gSTkiDM8CBitNqoExoE6NnAWgB8qikoG3mMUmzrbLyr71MATULfiYhhvMJBHtP5WDB
+	 oJe6XZ/SKMxGhi6bEVcqm/ckQGm+tZBQupPU8YzWkn74LF1FY4ctk5+tRUhC/q5NSc
+	 zkn/noi+FvCdBXzThJJ+GIY2WW5PW4uygJUiFpQqetBJ8sLzOYImiXwGm5tiAoesDh
+	 j0dfkgb1K8vdJFqsfgy02nxdNZrrWTBF9HUNVdV+ZYXMjCJmzn+Xt/up5SkrJIQ3Zk
+	 /1qKS7pW7qDyg==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5c102ad8420so236455e87.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:36:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGyENLq/LhCav/UhcKSYNLet5xE+/1ZxJCI+wRWhnr1BMqEpAdP/hyn098ZeMpi5nENe0Gt904=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Ke/PBNxAYLJE/UyGuWAbq03zXnGn/mUhljI/IUR0+aTdYvKFq
+	x2Wl6yDCw4vlk1i9yLRaFpmkwZelh8+dJH8hhnU9Jk/Qr5R9tAbOJELeEA6z7YZa8Y36bFLM0Kp
+	IhWMpQwM+TGnWS6eRlVb7DE3GVcaL1h4=
+X-Received: by 2002:a05:6512:401c:b0:5bf:b952:e57f with SMTP id
+ 2adb3069b0e04-5c170b68b50mr169690e87.59.1794515817248; Thu, 12 Nov 2026
+ 12:36:57 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,15 +59,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de> <20261112-rtl8365mb-dcb-ingress-v2-9-f8e6fbdf8c99@pengutronix.de>
-In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-9-f8e6fbdf8c99@pengutronix.de>
+References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de> <20261112-rtl8365mb-dcb-ingress-v2-10-f8e6fbdf8c99@pengutronix.de>
+In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-10-f8e6fbdf8c99@pengutronix.de>
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Nov 2026 21:35:42 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=EGaGXJCMGoTX-R5YU+OSU26NpbO3MBbr+yWBO0q6-yA@mail.gmail.com>
-X-Gm-Features: AclHuK-MB5ZypNmDSpTL7UbjyzH-7DqQYw4we94SaKV5K5KPZVzBJ2hsaKf5r_8
-Message-ID: <CAD++jL=EGaGXJCMGoTX-R5YU+OSU26NpbO3MBbr+yWBO0q6-yA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 09/10] net: dsa: realtek: rtl8365mb: offload
- DCB apptrust
+Date: Thu, 12 Nov 2026 21:36:45 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnuUdZeGz=rZyPayJEC2EK-RsKm7obecA7Jy0SETSD5jw@mail.gmail.com>
+X-Gm-Features: AclHuK-6O1MZON6TJKg3hL1WcNrsf_X-QgpBux5gGIeVOIdYXCWrRn5tPX8QLAg
+Message-ID: <CAD++jLnuUdZeGz=rZyPayJEC2EK-RsKm7obecA7Jy0SETSD5jw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 10/10] net: dsa: realtek: rtl8365mb: report
+ the DCB DSCP-to-priority map
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -80,38 +80,43 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Nov 12, 2026 at 9:38=E2=80=AFAM Oleksij Rempel <o.rempel@pengutroni=
 x.de> wrote:
 
-> Wire up port_get_apptrust and port_set_apptrust. The admin can then
-> choose through dcbnl apptrust which ingress classification a port trusts
-> for its priority: 802.1p (PCP), DSCP or both. A port that trusts nothing
-> keeps the port default priority.
+> Report the DSCP-to-priority map through dcbnl, so that "dcb app show"
+> lists, on every port, the priority a DSCP value gets once the port
+> trusts DSCP.
 >
-> In the driver's model of the hardware, the trusted priority-decision
-> table is switch-wide, so all ports that trust something must trust the
-> same selectors. While another port trusts a set of selectors, a request
-> to trust a different set is refused with -EBUSY.
->
-> When both are trusted, DSCP must come first. When PCP is trusted, the
-> switch classifies an untagged frame by the PCP given to untagged
-> frames. A PCP source ranked above DSCP would then hide DSCP from
-> untagged IP frames. Refuse the order pcp dscp and any unknown selector
-> with -EOPNOTSUPP.
+> The switch has one DSCP-to-priority table for all its ports, with
+> exactly one priority per DSCP value. dcbnl, in contrast, configures DSCP
+> priorities per port and allows several priorities for one DSCP value.
+> DSA could mirror a change to every port (dscp_prio_mapping_is_global),
+> but a request on one port would still change the classification of all
+> ports. Keep the map read-only. The QoS baseline seeds it with the
+> default mapping from ietf_dscp_to_ieee8021q_tt(). Requests to change a
+> DSCP entry fail with -EOPNOTSUPP.
 >
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
+> Q: The v1 review (Linus) suggested DSCP get, add and delete callbacks
+> in the common code, and setting ds->dscp_prio_mapping_is_global when
+> registering DSCP offload. Why are add, delete and the flag gone in v2?
+> A: The DSCP get moved into the shared code as asked. Add and del were
+> dropped because the table is chip-wide, as the commit message explains.
+> Without add and del, nothing would use the flag, so it is not set.
+>
 > Changes in v2:
-> - move selector and precedence validation into rtl83xx-qos.c behind new
->   qos_get/set_apptrust callbacks; weights and -EBUSY stay here (Linus)
-> - use one-hot decision weights; in the driver's model, the v1 linear
->   weights could tie PCP with DSCP (Linus)
-> - define the apptrust slot order once (enum rtl83xx_apptrust_slot) for
->   the shared selector table and the backend source table
-> - write the PCP and DSCP weights with one register update, so a failed
->   write cannot leave the trusted table half programmed (sashiko)
-> - check that all apptrust sources share the one register that is updated
-> - rank DSCP above PCP and refuse pcp dscp with -EOPNOTSUPP, because
->   with PCP first, untagged IP frames never reach DSCP
+> - make the DSCP map read-only, as the table is shared by all ports of
+>   the chip and per-port remapping would change every port
+> - drop the DSCP add/del ops, whose delete path could leave the hardware
+>   out of step with the remaining APP entries (sashiko)
+> - do not set ds->dscp_prio_mapping_is_global; without DSCP add/del
+>   nothing needs its global set/del path (sashiko)
+> - retitled (was "offload DCB DSCP-to-priority")
+> - move the DSCP get handling into rtl83xx-qos.c behind a new
+>   qos_get_dscp_prio callback (Linus)
+> - DSCP table seeding moved to the baseline patch
+> - read the table entry through rtl8365mb_qos_regmap_read_field(), which
+>   uses field_get() (Luiz)
 
-Very thorough and resolves my issues!
+Excellent revision here, all requests fulfilled from my PoV:
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
