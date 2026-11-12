@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794503683;
-	b=K9aL9/hHGujf8FkQNNTTjDRn+GUVwkS8t4AxoehnbJE2Kk2cWjEYu8rnqeIJsqSVhfvd
-	 SzcCgl8WqGmkrkpztK+FyaK/f/+pKPwVh5gEP5oszcI+fNFWtee86/dVJVWrnrCO/wdvY
-	 /ilMyPSiPmiH/JUGlSp0BLPqfiZ4U21vdZ36DSEz1mQgfR4hQOsy4pFKQ2g6Ed189+hEn
-	 W304XeK/pur0eaHGAZiKcoBdp3/RwWGkko9qtdvx3hUT4s9Y8ByDueuxSUYU2xUd0ATU3
-	 F2TQ2tb0MshGRTbUWOnboT6fm75ZpgRkdbRIageCy8l/D6x6HEJhd0rxaWmn5+NTxJQ==
+	t=1794503680;
+	b=4GXKk9tkxMTXUdJpVJ8S4CP4waJJvdYYO1e2SEM3fXBQhNdGAehzLrB2zuPSSd6QFjx1
+	 9p6Oz/1ptN+ddcxj3rLpTXHckYzL5s1k//5VD14ktEmcz/TyZ4iDzdgxVBmMixzYnJbut
+	 aTmPPt5YAcaWr1BnXVa84nEWRb4ole+yZ192+CG6AW9LXprgoM9qWHHheuNKB9CwJbIqJ
+	 XPzOQK2v5/ArX3jX9H+Nx2ocD2U0gqMb4slRLP5R9jUiKGCwha3eg3ptEPCBChA2TT1mY
+	 iMaPlTts5a7wTwsvqR4aNFK8pMgK0BcBvx28ea4cwQzpcLHLkS9uqeMmMeX/qoQ0VAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794503683;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794503680;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=sIJOpYI0tqH12KdllEGaWQJYe1GWhkDdyw/STcddpKo=;
-	b=yixpWzHgl13c22OIbpa2bWCIMLCfLS9hw+jLmBelmAJdrNvyncLBd9IlGOQnf2LvZW/5
-	 uYEhHqIx8gtAhUekJbyLS5lc0nHz65ckoTr9oKCjrAp7SAGangTUjCz4uWzfDG+jL9uJP
-	 fSWbYH/JX2K7htZtwldIwDp0qpni5FnSXUFwlbvre07fMqTiY82150K7v56qdMnCJQCtD
-	 aHsbcI4SOy6zRkm3f/UKE6BGnc7VdOK1RZ1Jis9OF/lNQ9u/VUxDBoWVZri3AZH3mIf/N
-	 6F1RtzRNU5hdRGHB21/qTOZGgSVghE60ZbO7XHK0iMxBfcONdNrwJKAtT+eHBx4E/Ew==
+	bh=/TDcQhTa12XtYWxapL+e3sH8uDMDLzi4mZ29QKak43A=;
+	b=DWcXIp6V+T0SUm/M7Jt6rRvMpcp/SojJYHY2jyfbacGNehvb0/V4Kt/Q62WAN2XXxH3g
+	 WKsHaZlio8lZYVPoXbi5SeDKo/8letpzP3JI1bEkxmiXu5rt70ldMNCgnNMyLSGEKbbCh
+	 1zWRG6JuU/1mEhHseb0qG+ykCwLRw5/Cqu+w92e6rB22f/GT87gDSPK+xOymplOXPivLA
+	 G9ISLOWhVcahPN5QSHkEzH4dwUOrn2JtAh5bwLuYds4ZhP0iS2bA2lhtKeETU/yH5wDb2
+	 ilFqKynF9UwkY5yiy/S0IUPeYo17KmkJ7FKGJq8C6UVA+B890J2Z7se4Pt58diHHjsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kv2x/vPG";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l2XvtUl1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D00606A891;
-	Thu, 12 Nov 2026 17:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013FA606A31C;
+	Thu, 12 Nov 2026 17:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kv2x/vPG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CA41F000CA;
-	Thu, 12 Nov 2026 17:14:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l2XvtUl1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0024F1F000C4;
+	Thu, 12 Nov 2026 17:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794503683;
-	bh=sIJOpYI0tqH12KdllEGaWQJYe1GWhkDdyw/STcddpKo=;
+	s=k20260515; t=1794503679;
+	bh=/TDcQhTa12XtYWxapL+e3sH8uDMDLzi4mZ29QKak43A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kv2x/vPG3dP93Xn0Pt8n8/AF+47yHXHhwxZmYonj60EUdbF2I4hCPcWctyPubBFKw
-	 9YCmNSREnwdwhmH9ifRrNsWl9T3HI+mRvfh9AOFb/t5eARPoHgI+2QFa3fX+RXuaZs
-	 eaoOURJouW9OkL0uKsettGZj6XMs3J4mAszE1d/5yzSCVW0UM17TDVU74eDgIIJ2+7
-	 6cVRSlOJ48zMaqncdI8nxRDCljLQuKL/L3i9YARqRuT5jKphjMTcjRBSGEB4hDu5Cv
-	 LOmC4xjBrIMBKugdm49FdDPjLn5ea+BNI1kLL0K7/FQ781zNZf/tW3kDbviy6ucevt
-	 4gtWWWjgymRhQ==
-Subject:
- Re: [PATCH net 7/7] net: bcm4908_enet: drop RX frames longer than the buffer
+	b=l2XvtUl1+lKAuKGPvcerkThj5kNyPxpTvfjnCKaaUKGn36RZWOWeCOlC6OJPHw9k/
+	 t4uWQdMnE23Vt2u04lU2sJFqzxxvAe+lmvh/9j1kzII2qAJosOdIcMcaRRRKbvJNTq
+	 1y+hQ9qL8qfkmgscPD7UDgFI9bcIXQ6cydo+DucogK5lik7MHPXM2mqgA3MD2X8lHE
+	 62N8+cbFXwL4Rm3b/ypvyLxnnvPKY2oWyIDmhLhPJuExbgY6LPgG9YcOr5hfHPBtyu
+	 COCAkqoBWydfthmDlknVMnoH3SLgqMRirFShdu7wO71mI43LMnh88IcBMJfISMyaGo
+	 vpBzHcari0TSQ==
+Subject: Re: [PATCH net 1/7] net: bcm4908_enet: fix the TX ring wrap
 From: netdev-bot+sashiko@kernel.org
 To: kudzo51@gmail.com
 Cc: netdev@vger.kernel.org, rafal@milecki.pl,
  bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Thu, 12 Nov 2026 17:14:42 +0000
-Message-ID: <179450368206.2199510.1806851064431992107@kernel.org>
-In-Reply-To: <20261109235700.2586821-8-kudzo51@gmail.com>
-References: <20261109235700.2586821-8-kudzo51@gmail.com>
+Date: Thu, 12 Nov 2026 17:14:38 +0000
+Message-ID: <179450367847.2199510.5624854630375363280@kernel.org>
+In-Reply-To: <20261109235700.2586821-2-kudzo51@gmail.com>
+References: <20261109235700.2586821-2-kudzo51@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,159 +75,179 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new check in bcm4908_enet_poll_rx()
-  (drivers/net/ethernet/broadcom/bcm4908_enet.c:664-671) treats a…
-- [Medium] The new branch in bcm4908_enet_poll_rx()
-  (bcm4908_enet.c:668-670) increments netdev->stats.rx_length_errors and…
+- [Medium] The early ring-full path at the top of
+  bcm4908_enet_start_xmit() (`if…
+- [Low] The commit message leaves out a second symptom of the same index
+  mismatch, which this patch also fixes.
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the RX refill
-  failure path in bcm4908_enet_poll_rx() loses the old buffer and later…
+- [High] This problem wasn't introduced by this patch, but the patch's
+  new stop/wake logic still depends on it working.
 
 --
 
-net: bcm4908_enet: drop RX frames longer than the buffer
+net: bcm4908_enet: fix the TX ring wrap
 
-This patch adds a check to bcm4908_enet_poll_rx() so that RX descriptors
-reporting a length larger than ENET_RX_BUF_DMA_SIZE are dropped instead
-of being passed to skb_put(). Such frames are counted in rx_length_errors
-and rx_dropped. The commit message says this was seen only with the RX
-channel MAX_BURST raised to 32.
+The TX ring now uses all descriptors, with WRAP on the last one. Both
+read_idx and write_idx wrap at length, and one descriptor is always left
+free, so read_idx == write_idx can only mean an empty ring.
+bcm4908_enet_start_xmit() now stops the queue once the ring is full.
+bcm4908_enet_poll_tx() wakes it again, with smp_mb() on both sides.
 
 > diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-> index ea4a9eb98097c..b2debdfa0902e 100644
+> index fd2715f84af97..01a3e1d0192f8 100644
 > --- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
 > +++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-> @@ -660,10 +660,13 @@ static int bcm4908_enet_poll_rx(struct napi_struct *napi, int weight)
->  
->  		len = (ctl & DMA_CTL_LEN_DESC_BUFLENGTH) >> DMA_CTL_LEN_DESC_BUFLENGTH_SHIFT;
->  
-> -		if (len < ETH_ZLEN ||
-> +		/* A length past the buffer would make skb_put() panic the kernel */
-> +		if (len < ETH_ZLEN || len > ENET_RX_BUF_DMA_SIZE ||
 
-[Severity: Medium]
-On a mainline kernel, can the device ever report a length like this?
+[ ... ]
 
-bcm4908_enet_dma_alloc_rx_buf() maps exactly ENET_RX_BUF_DMA_SIZE (1532)
-bytes and puts that size in the descriptor:
+> @@ -525,20 +535,14 @@ static netdev_tx_t bcm4908_enet_start_xmit(struct sk_buff *skb, struct net_devic
 
-    tmp = ENET_RX_BUF_DMA_SIZE << DMA_CTL_LEN_DESC_BUFLENGTH_SHIFT;
+[ ... ]
 
-bcm4908_enet_set_mtu() programs mtu + ENET_MAX_ETH_OVERHEAD, which is
-also 1532 at ENET_MTU_MAX:
-
-    enet_umac_write(enet, UMAC_MAX_FRAME_LEN, mtu + ENET_MAX_ETH_OVERHEAD);
-
-bcm4908_enet_dma_ring_init() only ever writes ENET_DMA_MAX_BURST_LEN (8)
-to ENET_DMA_CH_CFG_MAX_BURST.
-
-The commit message says:
-
-    It was seen on a BCM4908 with the RX channel's MAX_BURST raised to
-    32, where the DMA reported a length of 3388 bytes, more than twice
-    the size of the buffer; with the default burst length it has not
-    been seen.
-
-Given that, does the Fixes: tag (and the stable backport it implies) fit
-here? The triggering configuration is not one mainline uses.
-
-There is also the question of what the hardware actually did. If the
-DMA wrote the 3388 bytes it reported into a 1532-byte mapping, then the
-skb_shared_info area of the frag, and part of the next napi_alloc_frag()
-allocation, were overwritten before the CPU saw the descriptor.
-
-Before this patch, skb_over_panic() stopped the system at that point.
-With this patch the frame is dropped silently. There is no WARN or log
-message, the channel is not reset, and bcm4908_enet_dma_rx_ring_enable()
-re-enables the ring with the same configuration.
-
-Did the hardware really overrun the buffer, or did it only misreport the
-length? If an overrun is possible, would a WARN_ONCE() or a ratelimited
-netdev_err() be better than a silent drop?
-
->  		    (ctl & (DMA_CTL_STATUS_SOP | DMA_CTL_STATUS_EOP)) != (DMA_CTL_STATUS_SOP | DMA_CTL_STATUS_EOP)) {
->  			dma_unmap_single(dev, slot.dma_addr, ENET_RX_BUF_DMA_SIZE, DMA_FROM_DEVICE);
->  			skb_free_frag(slot.buf);
+>  	/* Free transmitted skbs */
+>  	if (enet->irq_tx < 0 &&
+> -	    !(le32_to_cpu(ring->buf_desc[ring->read_idx].ctl) & DMA_CTL_STATUS_OWN))
+> +	    !(le32_to_cpu(ring->buf_desc[READ_ONCE(ring->read_idx)].ctl) & DMA_CTL_STATUS_OWN))
+>  		napi_schedule(&enet->tx_ring.napi);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but slot.buf can be NULL
-when this path runs, after an earlier RX refill failure.
+This is a pre-existing issue and was not introduced by this patch, but
+does the new stop/wake logic work when the optional TX interrupt is
+missing?
 
-bcm4908_enet_poll_rx() copies the ring slot by value and then refills
-the same index:
+In Documentation/devicetree/bindings/net/brcm,bcm4908-enet.yaml, both
+interrupts and interrupt-names have minItems: 1. A DT node that lists
+only "rx" is therefore valid, and probe carries on with
+enet->irq_tx < 0.
 
-    slot = enet->rx_ring.slots[enet->rx_ring.read_idx];
+In that case bcm4908_enet_open() never enables the TX NAPI:
 
-    /* Provide new buffer before unpinning the old one */
-    err = bcm4908_enet_dma_alloc_rx_buf(enet, enet->rx_ring.read_idx);
-    if (err)
-        break;
+	if (enet->irq_tx > 0) {
+		napi_enable(&tx_ring->napi);
 
-bcm4908_enet_dma_alloc_rx_buf() writes straight into the ring slot
-before it knows whether the allocation worked:
+The TX NAPI still has NAPI_STATE_SCHED set from netif_napi_add, so
+napi_schedule() here always fails in napi_schedule_prep(), and
+bcm4908_enet_poll_tx() never runs.
 
-    slot->buf = napi_alloc_frag(ENET_RX_SKB_BUF_ALLOC_SIZE);
-    if (!slot->buf)
-        return -ENOMEM;
+Nothing then advances read_idx, unmaps or frees the TX skbs, or wakes
+the queue. After length - 1 frames, the new stop-on-full branch at the
+end of bcm4908_enet_start_xmit() stops the queue. Nothing wakes it
+again, although the new comment there says "poll_tx() wakes the queue
+once there is room".
 
-If napi_alloc_frag() fails, the ring slot now holds buf == NULL. The
-only reference to the old, still-mapped frag was in the local copy,
-which is discarded on the break.
+On ifdown, bcm4908_enet_stop() calls napi_disable(&tx_ring->napi) on
+the NAPI that was never enabled. Wouldn't napi_disable_locked() then
+spin here forever while holding RTNL and the netdev instance lock?
 
-On a dma_mapping_error(), slot->dma_addr is overwritten with the error
-cookie and slot->buf is set to NULL, so the old streaming mapping is
-leaked as well.
+		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+			usleep_range(20, 200);
+			val = READ_ONCE(n->state);
+		}
 
-read_idx is not advanced, and the descriptor still has OWN clear. The
-next poll therefore handles the same index with slot.buf == NULL. Once a
-refill succeeds:
+bcm4908_enet_stop() also calls free_irq(enet->irq_tx, enet) with a
+negative IRQ.
 
-    bcm4908_enet_poll_rx()
-      build_skb(NULL, ENET_RX_SKB_BUF_ALLOC_SIZE)
-        __build_skb_around()
-          __finalize_skb_around()
-            memset(shinfo, ...)   <- NULL + size
+This goes back to 12bb508bfe5a ("net: broadcom: bcm4908_enet: support
+TX interrupt"). The in-tree bcm4908.dtsi provides both "rx" and "tx",
+so only DTs that use the binding's optional-TX form are affected.
 
-Does this oops in NAPI softirq context? On the bad-frame path, including
-the new len > ENET_RX_BUF_DMA_SIZE branch, the code calls
-skb_free_frag(NULL) instead, and after a mapping error it calls
-dma_unmap_single() on the error cookie.
-
-bcm4908_enet_dma_uninit() skips slots with buf == NULL, so the leaked
-frag and its mapping are never released at teardown either.
-
-Could bcm4908_enet_dma_alloc_rx_buf() allocate and map into local
-variables, and update the slot only on success?
-
-> +			if (len > ENET_RX_BUF_DMA_SIZE)
-> +				enet->netdev->stats.rx_length_errors++;
->  			enet->netdev->stats.rx_dropped++;
+>  
+> -	/* Don't use the last empty buf descriptor */
+> -	if (ring->read_idx <= ring->write_idx)
+> -		free_buf_descs = ring->read_idx - ring->write_idx + ring->length;
+> -	else
+> -		free_buf_descs = ring->read_idx - ring->write_idx;
+> -	if (free_buf_descs < 2) {
+> +	if (unlikely(bcm4908_enet_tx_free_descs(ring) < 1)) {
+>  		netif_stop_queue(netdev);
+>  		return NETDEV_TX_BUSY;
+>  	}
 
 [Severity: Medium]
-Should rx_errors be incremented here as well?
+Can this early ring-full path in bcm4908_enet_start_xmit() lose a
+wakeup?
 
-The struct rtnl_link_stats64 kernel-doc in include/uapi/linux/if_link.h
-says:
+It stops the queue without the smp_mb() and re-check that the patch
+adds at the end of bcm4908_enet_start_xmit(). include/net/netdev_queues.h
+says the standard stop/wake pairing does not prevent false wake ups
+when the ring is full, and that drivers should check for ring full at
+the start of the xmit handler. So this path can be reached.
 
-    @rx_errors: Total number of bad packets received on this network
-    device. This counter must include events counted by
-    @rx_length_errors, ...
+Here is one way to get a false wake:
 
-This driver never touches rx_errors, and bcm4908_enet_netdev_ops has no
-ndo_get_stats64. Userspace therefore sees the raw netdev->stats values.
-After one oversized frame, ip -s link would show a non-zero frame count
-with zero errors.
+  - bcm4908_enet_poll_tx() finds netif_queue_stopped() true and free
+    descriptors >= 1.
+  - Meanwhile the stop/smp_mb/re-check at the end of start_xmit
+    restarts the queue.
+  - poll_tx is delayed, for example by a hardirq, before it calls
+    netif_wake_queue().
+  - start_xmit fills the last free descriptor and stops the queue
+    again.
+  - poll_tx's late netif_wake_queue() then clears XOFF on a full ring.
 
-The same frame is also counted in rx_dropped, which the uAPI describes
-as packets received but not processed, for example because of a lack of
-resources.
+There is no read barrier in poll_tx between the XOFF test and the
+write_idx load, so load-load reordering is another way to get there.
 
-For comparison, bcmsysport.c and bgmac.c increment rx_length_errors
-together with rx_errors, and do not also count the frame in rx_dropped.
+On the next xmit, the early check reads read_idx and sees a full ring.
+Suppose the poll_tx() runs that reap the remaining descriptors finish
+inside the window before netif_stop_queue() here:
 
->  			break;
->  		}
+CPU0 (start_xmit)                    CPU1 (poll_tx)
+bcm4908_enet_tx_free_descs() == 0
+                                     reap all outstanding descriptors
+                                     WRITE_ONCE(tx_ring->read_idx, ...)
+                                     smp_mb()
+                                     netif_queue_stopped() == false
+netif_stop_queue()
+return NETDEV_TX_BUSY
+
+No descriptors are outstanding at that point, so no TX interrupt or
+NAPI poll follows, and the driver has no ndo_tx_timeout. Wouldn't the
+queue then stay stopped until ifdown/ifup? That is the "queue stops for
+good with nothing left to wake it" symptom the commit message describes.
+
+The window is narrow. It needs the xmit CPU to be preempted, as on
+PREEMPT_RT, or held by a long hardirq.
+
+Could this path use netif_txq_try_stop() instead, or the same
+stop/smp_mb/re-check/restart sequence used at the end of
+bcm4908_enet_start_xmit()?
+
+[ ... ]
+
+> @@ -572,8 +576,17 @@ static netdev_tx_t bcm4908_enet_start_xmit(struct sk_buff *skb, struct net_devic
+>  
+>  	bcm4908_enet_dma_tx_ring_enable(enet, &enet->tx_ring);
+>  
+> -	if (++ring->write_idx == ring->length - 1)
+> -		ring->write_idx = 0;
+> +	WRITE_ONCE(ring->write_idx,
+> +		   ring->write_idx == ring->length - 1 ? 0 : ring->write_idx + 1);
+
+[Severity: Low]
+This isn't a bug, but the commit message leaves out a second symptom of
+the same index mismatch, and this change fixes it too.
+
+With the old wrap at length - 1, slot length - 1 was never filled.
+bcm4908_enet_poll_tx() wrapped read_idx at length. After it reaped
+slot length - 2, read_idx became length - 1, which write_idx could
+never equal.
+
+The loop then ran on the unused slot, whose descriptor ctl is still
+zero, so OWN is clear. Once per ring lap it called dma_unmap_single()
+with slot->dma_addr 0 and slot->len 0, then dev_kfree_skb(NULL) and
+handled++. This over-counted tx_packets and caused CONFIG_DMA_API_DEBUG
+warnings about unmapping memory that was never mapped.
+
+The changelog only says:
+
+    while poll_tx() wraps read_idx at length,
+
+Could it also name this symptom, so stable backporters can see that it
+is covered?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109235700.2586821-1-kudzo51%40gmail.com
