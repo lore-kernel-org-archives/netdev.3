@@ -1,58 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794442351;
-	b=Pc/U2/gyDv3Ih8bK2zDhmg4YNd4bMQOHTkeU98EN9lg7W9e+Cj9GpfNDaXhnF1gHKPfm
-	 umOetA72027tis5iggj9q3ka4r14nfk1SJa4jqJNSLuNxPY33QS4rLXk7htMM/8D+bIoa
-	 oIbiy6EjFtBJ0S5xiIvxKuU1D9pU4mkI2/J1OZagQMjZ54ofeK7NOLQMCbQpEBY/EbxK/
-	 bM/blR5VYnGCB1ixKF379L8KVVcRLdkzuXj7To8Z4zluG//5lVt+/EGC/35/1zXHWHavE
-	 5IYSZl0mqLaXYOkouNeJ8hPAXUsxj+aRbFVd7EkYf5ko5RTVigbD8Kq801vxipmPiiQ==
+	t=1794442501;
+	b=O7yAbKzou/M4NF70tnoiXuK/73RgrZEXr3FWp1GaNnN6P3tCAU5B53PYNfrTAtDGhYkL
+	 RMyZ1xSvgpZPmPmCEmBF3rFwcWV+SqVg1hXg0O542ZAxLI+h2B6VMOb55r1esfA4wKKRz
+	 gFnSXXLFpCJQ24W77H/pmLTVoT26NnmLXxmPe1p8xC83L0ZnuvvSExLL19qJSSWXtaMHg
+	 IzgB+/d760q8xMi0TJ5s0QiTYGHSBnZPi/CHnrIKMuhYYrhSsC5DBxwYebrgO2E+HTg4t
+	 +g6OEI55574yd3v1Cwm4yw49fFsFX7WdSbVag2yWeHnfq/Hl+c7hh7s63I7oKA7m/Fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794442351;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794442501;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=gTyO3X8pSKWt1MgW/zJVanTQYKSVAuU4mGWeixd1i6k=;
-	b=j68YatJxHri4gFN0NQ+ZbhwHnooQCAKPdXYF2+7lsIbCVdOW3zJ8HSovCQzY0hxEbLMR
-	 N/8hf907Sb1Vicpck1jDT0gf+rrn9EinjEF68Bw5KUtEzRrfFUACPGq50kqa2cMZ7zTcp
-	 W/4GOVbzkjtwT/R2DDXoXikBHXPVes92AQ1oL8cEbB1CEKokjjm8e6g//wdyQTDQNnsET
-	 /YOXibJmPi7T3aOrUHhGo0Vkp+lZfIkF3+eplZvUBq6VYH8/OXcNZaPHWhFyMMNyTO7ic
-	 bzR4/ZW5zi65b5mqUYaLqz2/VdqUEJx6fDz8faTwqZifwo1HLAeDrWRdRTVCS6XoiWA==
+	bh=Q/EartPOy717CuQdv8ANaMlETa+4mCRy7I4dcWtZtrE=;
+	b=NSmW/tKrzq/0Mz3WRrNUJT3090EhI2qdijTgTTu63W5oxkqDik3gWj/fc9bgMcSZOT4U
+	 GKgoXITXB9yOh3wTquKUiJpcTuFgMU/r+4KWxHNd0VqpTmshFzsx7vCZxokHo9vjE+Bpr
+	 PpDoWLF3iaTHB3rWBgte7TvBYeMSn8PUQRybzADfh3p/c+WxGbfHWJOVQnsDYJJoUtULi
+	 Qy6ZxV+h3pzq7T05JvxV8PxhKLnBprSMcV+k3Vc5tVT9uR+jZkwgAgmZ9FaTUrjQyDkou
+	 LZB2cfzY2UicMfUFRmvsX3WLVooJY5QF9z9rv9ELCXVWnkeHEYkSBznthMe4cjCmOCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c9asc4pv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rpmtyci8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37257606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 00:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAEB606A324;
+	Thu, 12 Nov 2026 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c9asc4pv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A8C1F00A05;
-	Thu, 12 Nov 2026 00:12:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rpmtyci8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A60B1F00A07;
+	Thu, 12 Nov 2026 00:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794442350;
-	bh=gTyO3X8pSKWt1MgW/zJVanTQYKSVAuU4mGWeixd1i6k=;
+	s=k20260515; t=1794442501;
+	bh=Q/EartPOy717CuQdv8ANaMlETa+4mCRy7I4dcWtZtrE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=c9asc4pvfOwaz+2Q+2bg9H6b3DVpkiMHgQ2rL3WzuRVXldIvr/rJywdhbHh4QUDUc
-	 32mEl9YFOBj58Oe8yVaHS1OTz+hn3dFCGy5PhDrFy45LUw4+3hHBBfjrj/9M+ozJ3y
-	 WYhtQQYfK3iQUNPhlGOW6I4+Y4Obt1y0gKO5/iVKcXvhLDofJqnxh03ZXSbMxs+LsC
-	 ydbEt4I+EH6C7achO2ZQl2E1MJPFIEjF66EEU4XAWIZe3ZUn+NDbsk6o++G1wqBUDE
-	 dDMqJzvtDdiRpB6Pj87C3SzMXA6KZ1kqJVqjHvMD+jjsZgfuwrENDflc/8XVvaOtXE
-	 ELLV7HigDc6ZQ==
-Date: Wed, 11 Nov 2026 16:12:29 -0800
+	b=Rpmtyci8aux5sP02UwuMM0SFs1Ay4fZueM4bTxiZAvf1FG/XV2+1zNXsE0Ri3aVxE
+	 Lz7/V3FoZmXtls4ENNgK9ebqPtTIRCtEU4crfR8jfASyOwESqRTsg7ya9r6PVP7S00
+	 SZ8YJs7qh8OYlbn40nmcbXWzrbNOYP09/iyhqD1tmGeYo63rlR/fxHE/Nj9F3WC5Lr
+	 OhFR4Uj6c9TYSDpb3YvcNoq7SEjOvTiIHveNLHnyOqa/0m+IJo2jL5QGackjbXUkw/
+	 GdC47yH+vK84qfngcuCWhkwqYDju3eVgJ/b5uwF7VHmevhk1sMJX5YPRdOCpaIzQf0
+	 m7DsfPn1Thx3A==
+Date: Wed, 11 Nov 2026 16:14:59 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Maciek Machnikowski <maciek@machnikowski.net>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
- richardcochran@gmail.com, milena.olech@intel.com,
- willemdebruijn.kernel@gmail.com, andrew@lunn.ch, vadim.fedorenko@linux.dev,
- horms@kernel.org, almasrymina@google.com
-Subject: Re: [PATCH v12 net-next 2/3] netdevsim: Implement basic ptp support
-Message-ID: <20261111161229.75fe6283@kernel.org>
-In-Reply-To: <f9e139ec-c4d6-42ac-8fe3-90e0c342765b@machnikowski.net>
-References: <20261108201503.85000-3-maciek@machnikowski.net>
-	<179425609934.994134.5338593155278222514@kernel.org>
-	<f9e139ec-c4d6-42ac-8fe3-90e0c342765b@machnikowski.net>
+To: "Cunhao Lu" <1579567540@qq.com>
+Cc: "Marc Kleine-Budde" <mkl@pengutronix.de>, "kernel"
+ <kernel@pengutronix.de>, "Vincent Mailhol" <mailhol@kernel.org>, "Heiko
+ Stuebner" <heiko@sntech.de>, "Oliver Hartkopp" <socketcan@hartkopp.net>,
+ "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman"
+ <horms@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Randy Dunlap" <rdunlap@infradead.org>,
+ "Wolfgang Grandegger" <wg@grandegger.com>, "linux-can"
+ <linux-can@vger.kernel.org>, "linux-arm-kernel"
+ <linux-arm-kernel@lists.infradead.org>, "linux-rockchip"
+ <linux-rockchip@lists.infradead.org>, "linux-kernel"
+ <linux-kernel@vger.kernel.org>, "netdev" <netdev@vger.kernel.org>,
+ "linux-doc" <linux-doc@vger.kernel.org>, "stable" <stable@vger.kernel.org>
+Subject: Re: [PATCH net v8 00/10] can: fix Rockchip TX stalls and bus-off
+ restart/close races
+Message-ID: <20261111161459.4879a82d@kernel.org>
+In-Reply-To: <tencent_F59D327809C523BE014488357EEF4D163408@qq.com>
+References: <20261108-rockchip-canfd-restart-close-v8-0-3e7a23fd9eae@qq.com>
+	<20261109112402.283c16a3@kernel.org>
+	<tencent_F59D327809C523BE014488357EEF4D163408@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,21 +75,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 10 Nov 2026 21:46:55 +0100 Maciek Machnikowski wrote:
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >=20
-> > - [Medium] nsim_start_xmit() (drivers/net/netdevsim/netdev.c) only
-> >   overwrites or clears skb_hwtstamps(skb)->hwtstamp inside `if=E2=80=A6=
-A non-issue. We are not working with a real HW, so we have to cut some =20
-> corners to make it work. The most probable leaks are fixed, those are
-> hypothetical.
+On Tue, 10 Nov 2026 11:05:37 +0800 Cunhao Lu wrote:
+> > >=C2=A0Subject:=C2=A0[PATCH=C2=A0net=C2=A0v8=C2=A000/10]=C2=A0can:=C2=
+=A0fix=C2=A0Rockchip=C2=A0TX=C2=A0stalls=C2=A0and=C2=A0bus-off=C2=A0restart=
+/close=C2=A0races =20
+> >
+> > please=C2=A0use=C2=A0get_maintainer.pl,=C2=A0do=C2=A0not=C2=A0CC=C2=A0n=
+etdev=C2=A0on=C2=A0CAN=C2=A0patches=C2=A0directly. =20
+>=20
+> I used b4 prep --auto-to-cc, which invokes get_maintainer.pl.
+> The series modifies Documentation/networking/can.rst, which matches
+> Documentation/networking/ under NETWORKING [GENERAL] and is not
+> excluded there, so netdev@vger.kernel.org was added automatically.
+>=20
+> I will manually remove netdev@vger.kernel.org from Cc for the next
+> revision.
 
-It's about as hypothetical as testing this in SW is useful.
-Please drop the netdevsim patches and just add the selftest under
-drivers/net/hw
+Or better still send a patch to exclude it like the rest of CAN
