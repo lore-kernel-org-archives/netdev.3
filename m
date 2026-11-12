@@ -1,49 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794448808;
-	b=SY6sN0l6TyWkoKSWmNsTF4/W538Y8uyTbdv6EN3Aa3tGWpFCd7Xpy88hn9n/9iqUd7tM
-	 9Dy0wPkG5joQMjcskop7s00VkgTWUBFWgjsP6lqADkdxW/Eo0SUYMUOH5d9ZOiCineuSe
-	 4ee1Z6nXfN54tdBm3mpwf8tkl3J+DtUY0QEXPC2X+CHaUJywVgOp8LpfhkAqnrIBo6FYX
-	 0QfYS8OIb8S6ehK0vkb0QiJAjtGw8RNrumWFVm8PP+7xVG2a0x7tiTDMzO+8Df8xIZtdA
-	 H4n2f6tdlV/Tz+Enye636pJhIzQ0ji60H0SpvL1JYrCvQWmKiqq8kTBmG1HdoCZUMHw==
+	t=1794448879;
+	b=4Qr8yelVCIubGuvw9jau5DkOOis9yBR+g5g0MlrakgJIIfO/+jgt7iYRiwIW73iMJaDJ
+	 kd1AgZmHGvxI8vJ9t29JvcOss2Dg0kxKnBGsY0TKHH4hrI879m0mEpRFOilAPEzePXyPB
+	 HP7e7WVBvOBdFw5j7bcSAbb87jEeWSdnvrbpTKNxdPqMy+9yMG3fxtEvsLThZZsmI2gF5
+	 oQus+YA4UaKVI8FXInuy+54b8htrXTMf0hiyogkJXMigfd73B6GbKyCd8eRnSLORgduad
+	 1sdVKcfE73LUc1HAwFKP5GpSoNX5ePU7xr3/XAKSKJ09zYBmjH616wYUD8uKqSh5XTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794448808;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
-	b=1D0TF4apCpnjJN7MeFfwN2Z0xiOzm3n82/fLG8lk2pCTG5bapCAXgmNmseaVVmh9mG/W
-	 9Dz9IXTb+1QGx9z3saT5Lrze7zLrkI3juvkgBfRJ4tcmjM9kyADLHPbsGbs0dcgTHbGaZ
-	 Ont3ACtGLR3uhZlXJF8SKrWA32SYc7Ue2aUk2iszzfqU9lRlN571eBJDX2NbBvOAKi29g
-	 LximK58vFUZPpOsNMfW9mxu99O1h5/HhYtzO+A89huB63n7bcwOHTmizCs5ngu3EjTk5F
-	 SsErH98tLO6p7fjm+LRqTz4mzo6l/pmDQKrevBE1xaMoA0PTIpBT3Uy0TUWeEWWQ0wQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794448879;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Date:Message-ID;
+	bh=eNzrAPG64MO8y3dz4nUcIDSO0TUhGA8rWGS2CeQQssA=;
+	b=HYR3IJztdNsycnu3I3Ctdm70G0Q6HZ0cWdcVrJr30cf+l4ruZ0WmCxiFfVKOdUzo1OFf
+	 L1/nWFqyRo6DCQk03m6HKz1tkI8ldAfjw7Dvth6Ciamyg7oe6GpOb/L+xX1G2ZhYHxUoZ
+	 W95+bJkEMcs0HGZtaEEnUvMfERP0HJvJ2Zud7L3q4kukuDBfsH7lbVt2Ec+85ATjLdaVd
+	 tBnaN2oy8oCqQIHjtPyEZmjrPPU/LkI7wjcjOtiXnCrSJ/jV3+YOai356J6GmpGBkFbTy
+	 k1Ou/c8h2pCjI4Lc9z9fcPsfjdQ58nMLr/OlsMh8HhYnbqEX3j3VfXx53hplfOL04JQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQPzrCau;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F3606A323;
-	Thu, 12 Nov 2026 02:00:08 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LOcflsq+;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADBC60A3801;
+	Thu, 12 Nov 2026 02:01:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CADBC60A3801
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQPzrCau
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67C91F00A05;
-	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794448808;
-	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CQPzrCauYk1gS86uv74QwbX+ugone0X6LWe7bEpPNMoRJeKKt3NhJUtZLLwOs+fN3
-	 NdEuynPzBwssC17dv6rQpBaYyvxfL0MknHWoGmsZlbi1GILHtsiK9dsioXxUTzISQi
-	 JQbgSPIK7pftO9sxaakiMITlhaqPpW4rxO/tm5HKgmPRlzW6tGPTHb2ciEURHPPODm
-	 0Fwml7Ek/hCFcEub4NjxF8jea1V+WnEdyNnNPTg9Kd7uo+Ai7wvlzylFfb8JsKAHTA
-	 bHnmjI5NJRvXW3kN902T9w0VMzZRIN6VhrLB5hzI+2SYo/a93UIz/Qfh9oUpSM4Icw
-	 L2YF71zXcoOEw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81E1391AFD2;
-	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=LOcflsq+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=LOcflsq+muKs9+YwLmCMZNZAlfc8Y8HYJ4qP+ZswwPcfHb9IZf3LGQqYgqROmRlsSIzKFyIWbgJT+
+	 DBuOnLiLMYAzY0JA6/C5KlJzULPVADIT4+4nHgd0LAFrT9tIsBJ0DBUdjLhkUGECRCwrm+YNmmAjEd
+	 H+G6ZFN6hyErpokA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96af51dec2c3-e16c3;
+	Thu, 12 Nov 2026 10:01:16 +0800 (CST)
+X-RM-TRANSID:2ee96af51dec2c3-e16c3
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.64] (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af51debf03-ee564;
+	Thu, 12 Nov 2026 10:01:16 +0800 (CST)
+X-RM-TRANSID:2ee56af51debf03-ee564
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, kuniyu@google.com,
+ pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, asml.silence@gmail.com, kaiyuanz@google.com,
+ linux-kernel@vger.kernel.org, almasrymina@google.com, yana06070@163.com
+Subject: Re: [PATCH net-next] net: fix token index wraparound in
+ SO_DEVMEM_DONTNEED
+In-Reply-To: <avTocmy4u8HH0Yo0@devvm16445.scu0.facebook.com>
+References: <20261110120331.13661-1-yanxia@cmss.chinamobile.com>
+ <avTocmy4u8HH0Yo0@devvm16445.scu0.facebook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +70,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ptp: ocp: replace __get_free_page() with
- kmalloc()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179444880643.1768068.10714270723125429493.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 02:00:06 +0000
-References: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
-In-Reply-To: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: vadim.fedorenko@linux.dev, richardcochran@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, david@kernel.org, vbabka@kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 12 Nov 2026 10:00:08 +0800
+Message-ID: <179444880814.535319.10275603515600207990@cmss.chinamobile.com>
 
-Hello:
+Hi Stanislav,
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+You're right. This doesn't fix a bug in valid use of the API.
 
-On Sun, 08 Nov 2026 10:40:36 +0200 you wrote:
-> ptp_ocp_summary_show() allocates a temporary buffer for formatting
-> PTP OCP device summary information.
-> 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> [...]
+The intent was to prevent an invalid range from wrapping around and
+releasing low-numbered tokens on the same socket. That would make
+invalid-input handling more predictable.
 
-Here is the summary with links:
-  - [net-next] ptp: ocp: replace __get_free_page() with kmalloc()
-    https://git.kernel.org/netdev/net-next/c/c88fd6989aea
+I'll drop the patch and won't send another revision.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks,
+Xia
 
 
