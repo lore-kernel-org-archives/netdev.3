@@ -1,102 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794489296;
-	b=35ARGeHSk5OCEgLerrf2irZxZf9BQxbb0Z9/I1wXILstNG9annEEE/zZr/2i8SC3ERFN
-	 rWF7v0pLnrvdjU397YVfsmEsTCJOjT54mKtnQ9GhjacCEw4ggPGGHGHr076ncQ1v4pw8p
-	 CS09vgRfny388bKT8UWbteDv9Azfh559Zo+mB81a0d9KeuMWQQKHmhbOx91MI7JSpbkau
-	 AP8r98hlpz4x/FuQjWRLAENNJrkjCEmY4Q/Xj+yObflQ5rRrfq/Nwk9RUJGvQelMBn+4I
-	 Q79455j1YL6xFaJ92W3pACUxIBcYQTrZjE61wdwWVYp3rqrXo8OD47cLD5NPuhTyxzQ==
+	t=1794489374;
+	b=Sp0Z45GYrxd67VKSA3D5gqUYy169h28hw/DsZZpUA2tMK9m65lP+4oDjh5SNXl7Wwsfs
+	 +KSpWVjt+WE4qqgkStq4hkuHDif45rD2zpK5vgKsaRHylvaLbdcq3Q7hN5H2+MSq8o4E4
+	 ix6zhqHLEIeqZNmGvQEpDodx4xLrfcTs3hOXpLoFNfjLbEzmVcuuXqtJ68ERy/T9TnJJQ
+	 O6+cwjSbc7HWH3gjdurUx4iKBHM7QPSKhZIwmadnFoZnQWxqAFdJBWoUIIkKEkpV7Nrs6
+	 PP0Vfm4Z+8gdtWK+c8zi65fhOOrdrFXv4TMhHyrB8IVd8a8aTM6V+Vd+/+rJJw01AEQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489296;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=l3qR4fbwmcH1ch8aJsFgigRVRt4HxyD2/C6Feim+5RI=;
-	b=KDqUN37zRKdaCH3Esm21Xgbcd95E99wtzYodglz+Zi3i0Kn3PUz0cgVmAsUz8u5OXBu3
-	 XZiA/Ta53EshlfP+GGsKSg4UX2nChyECCxvZ7K0Qnl7KwD2OTCxjwsfPS5y8GvzY7CGUx
-	 wQE0RSkpHz5S7oVkeC3qHRQP5zmBIJi2hlrmM3Fb/i+pkBkF21Qjiv71ZA+kUGfTlebJK
-	 6QKTNgLcAgIn5bnhcStv0l98Ob5Co8mkGuJnKbGtEWTKyks1dOLnvxDW4Je0DOgzKn6qn
-	 kc8HuTSK1ppFmA0Wv/7FBbBztfpwttxJanLSx3dsmrnruz4J0mFShg8WVc+xh2a0Gpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489374;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	b=hCbUxcv8PbA0/Bkjdt1CJFKQOySycR2dRl+EKmj6s9GDfHDp5or4KNgsdrj7eyH5d+Za
+	 zQIc4COZZF62r5fTcAdL4dI3GyUZ3PB3/6XrE4n2aooMpGIFL+4OxILUuOK/s0so7nGns
+	 BRH8j8ecIM5VDh8jYWC+9u24moTvq1T5FkCXpn0oNHTcsDgx5bL770zu2Rq7Y1UidQxOY
+	 HyJ/hkfS2fuybmyZJFrPe0NZHq9q4qURF8ls4H8gFPIY3ZVpbQsAjF/bg1dSez9biCh9I
+	 PamU2wcIqoQZDxfQLyHsOrUbH2cJiJyQANsBd1sLeGYdYxi+BeN9tADLmepeAUYIFvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oxpD6u9r;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=osdfFHGv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8E1606A8B1
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:14:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B8E1606A8B1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4133C606A88C;
+	Thu, 12 Nov 2026 13:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oxpD6u9r
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso40700485e9.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:14:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794489295; x=1795094095; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l3qR4fbwmcH1ch8aJsFgigRVRt4HxyD2/C6Feim+5RI=;
-        b=oxpD6u9r1PIdjZiJXIwCdj4PZnoYigiueu0k1eB5tnXI8EhoUmY4pXfe51EtUAnFNj
-         atmBKHNaEUrIjdL1kRTPepktv7bBpma5C5deNxi4g2TsrIPAdNKmAlXoDtioWGXB0PgK
-         2E1QvvSKa2hqf9WsTEGC5R67UqyA1LP9QBg2KuJB8dkz1iMPK+wu4UE/QJi2uGycL0Op
-         xLuSWuEbyQTxgeVoaSZ5gONzsPAgpWozuxYaEpwoavwH7bTwqXSGZqhJF9lUrhFHXuSm
-         n9i0ro0Wi1SD8hAUOgGu/9uBJB4LnRWGrEIrJP1QPNmlI3MYTmpMMDbu1W15eYAntCV/
-         eLQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794489295; x=1795094095;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l3qR4fbwmcH1ch8aJsFgigRVRt4HxyD2/C6Feim+5RI=;
-        b=qrc1xDCkmb/yn4RwSlUF7iNbl0/xr/OsZRiwfjVFCKn/5Zp6E4QQCfovCweBovCWbY
-         tjEzeKQobYy4+RxoLnvjnbM1lRKW10PeQwEB2ScfAM3mcj6rlb2RlQxiNe8bvTjwOiWw
-         gUHHLhXlpGcjUgZAFRJgHZ6TwJ6MMKJltwhFIcEflmlI5hRyisCqaZNkGUFOtPBiBGJH
-         U7w1/agDUqUN7SfIuZw66alyHFqEdTDLbiF0GNP3RbdBBX1t4r+zaQUHfb8gmj/VRspG
-         QttDgZJWJn9kLpJ/8Y3a+4vZZO5GM8wP7pIZdeTnGIFlkKe6HhaWeN30hFCXcLlQMBGe
-         KuaQ==
-X-Forwarded-Encrypted: i=1; AL+hErFw1iTycYAbV5UxGN/zSSCGXodNyaRzLbmW1mAGjtZUNTB2KIYQEGi3gqNR2FcgdoTOk1hhwdk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z88BgDNDcyJ07uhgwFO3lKe2BsL8ZSahzxoEH7khIjzLyYpxmEK
-	LFC4FisK8mlYmK05n1E1Adya4L3fwhEQa8ToThj8fAzvzWx/upSK5AsD
-X-Gm-Gg: AYBFou33mmyAp+C6AWZQ90nh1aZ4lcb073vfgFvPoIpPv6IcGwwb4MCMmaJuuX+kY2U
-	57s5WJzpYRTOX3T24acgyBM7P0x4N4L6lz28cD16tIobksaKZEsr0Sn/NSXr6jN/MlpGz2Zn1u7
-	pShYTJJA8yYZB/ATyvaXqbCeMj/H2otnNmpdrp/yIZy8hgm4RI/AIprO25SRhMrvmr70ucpdMPs
-	TU276oFRqr/17CsbLiq7Voqt9AvNZjbhJAyCdpz1j942+GA0hRWp5jHhwiT45PTNBKUNUuSYCGw
-	WpG1RHYpPI5qewx4h3gQcWtLy4FxvuvO4b16kyv4GzuAZ6rBNkLxaDfyQnrn1xGINigxRANqW/J
-	8H8lkP3k59io9isqtedrmT4+eCdZmkJjEMSxhkm0qW72aNFoccZiPh8ZwSZu1WWZginmtdEHiS4
-	M78NSRiu7I6RioRr8RtkyxVLc5oxoOH9NVL8SQg6Wl7Lw4bl145MJy4aRxEBtxZXEJicpFyONKv
-	nNwiVKgguN4RvNWcxJaqbWJEaaMblMoWWM6EmrZPZu7ZPNUWsV/zCoWao4qqmD2yXF31ntSrS/G
-	qibsdFrzP1SpjF41wKP/ga0mBChKWbJxFgqsk+kPtna+w6j6SCypRilcPvGa/fXrEm659H61ZNr
-	+kVdJ/tostjn8GC1lXnE3Xs3fNErWqgoerH1PSFiEjAzT/rJMeHjqEHuwg/eUZ9yS3+MvnPnr5Q
-	==
-X-Received: by 2002:a05:600c:3e8f:b0:4b2:2ec5:8a2b with SMTP id 5b1f17b1804b1-4ba0936c927mr96232865e9.10.1794489294531;
-        Thu, 12 Nov 2026 05:14:54 -0800 (PST)
-Received: from Ansuel-XPS24.localdomain (host-212-171-11-167.retail.telecomitalia.it. [212.171.11.167])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4ba0951fe22sm146453225e9.3.2026.11.12.05.14.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 05:14:54 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>
-Subject: [PATCH net-next 2/2] net: phy: fix trivial whitespace/format issue
-Date: Thu, 12 Nov 2026 14:13:57 +0100
-Message-ID: <20261112131358.106442-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261112131358.106442-1-ansuelsmth@gmail.com>
-References: <20261112131358.106442-1-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=osdfFHGv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836401F00A05;
+	Thu, 12 Nov 2026 13:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794489373;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=osdfFHGvdGVzpolaHtqWua9j4Lps+/X9kP1WfyxxUV6yqWb/is9L09mQptcR0LR7e
+	 byDfPXEwbQ4EToiojG9mv8EQmEb7UiHWgmLhnhGjJWqeqNsEUkGnDJ7P6uN2n7ZPKe
+	 guuv/n5TpvTozUM8RCy4tS1P9OsVZnE45bFHKN9KE440uM8BY3ynY22vtkvjQvh2g7
+	 3B27ovIFretMJf4SiftxW142kle+qgbgDqFE9LazkSHHQru9VTMXsSjG7aPf1jtEGE
+	 jY7Lg8bDo7ld9ZENhiBtWW3kArCKYOqAGH/akXqcyrIRt3RkxO3ofVCEFvZiw/wrio
+	 R1Oh7F/x92nHA==
+From: netdev-bot+sinfo@kernel.org
+To: Kalpesh Solanki <skalpesh942@gmail.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, Jeremy Kerr <jk@ozlabs.org>,
+ Matt Johnston <matt@codeconstruct.com.au>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH] tun: disallow setting ARPHRD_MCTP link type via TUNSETLINK
+Date: Thu, 12 Nov 2026 13:16:13 +0000
+Message-ID: <179448937301.2168702.18016211527226138253@kernel.org>
+In-Reply-To: <20261112131056.234801-1-skalpesh942@gmail.com>
+References: <20261112131056.234801-1-skalpesh942@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,68 +64,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Running checkpatch on phylink code, points out some trivial issue with
-whitespace instead of tab, if-else condition with a return in the if
-condition and manually printing the function name instead of using
-__func__.
+Hi!
 
-Fix all of these trivial issue to mute checkpatch warning.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/phy/phylink.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index bf1962e572f8..e7734e45376c 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3151,7 +3151,7 @@ int phylink_ethtool_ksettings_get(struct phylink *pl,
- EXPORT_SYMBOL_GPL(phylink_ethtool_ksettings_get);
- 
- static bool phylink_validate_pcs_inband_autoneg(struct phylink *pl,
--					        phy_interface_t interface,
-+						phy_interface_t interface,
- 						unsigned long *adv)
- {
- 	unsigned int inband = phylink_inband_caps(pl, interface);
-@@ -4080,12 +4080,12 @@ static int phylink_sfp_module_start(void *upstream)
- 	if (pl->phydev) {
- 		phy_start(pl->phydev);
- 		return 0;
--	} else {
--		ret = phylink_add_sfp_mod_port(pl);
--		if (ret)
--			return ret;
- 	}
- 
-+	ret = phylink_add_sfp_mod_port(pl);
-+	if (ret)
-+		return ret;
-+
- 	/* If the module may have a PHY but we didn't detect one we
- 	 * need to configure the MAC here.
- 	 */
-@@ -4207,6 +4207,7 @@ void phylink_resolve_c73(struct phylink_link_state *state)
- 
- 	for (i = 0; i < ARRAY_SIZE(phylink_c73_priority_resolution); i++) {
- 		int bit = phylink_c73_priority_resolution[i].bit;
-+
- 		if (linkmode_test_bit(bit, state->advertising) &&
- 		    linkmode_test_bit(bit, state->lp_advertising))
- 			break;
-@@ -4635,7 +4636,8 @@ void phylink_replay_link_end(struct phylink *pl)
- 
- 	if (WARN(!test_bit(PHYLINK_DISABLE_REPLAY,
- 			   &pl->phylink_disable_state),
--		 "phylink_replay_link_end() called without a prior phylink_replay_link_begin()\n"))
-+		 "%s called without a prior phylink_replay_link_begin()\n",
-+		 __func__))
- 		return;
- 
- 	pl->force_major_config = true;
--- 
-2.55.0
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by LLM and not proven at runtime). If it was triggered
+   please include the symptoms, like the stack trace or kernel messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
