@@ -1,97 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.27
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794478199;
-	b=otS8Ytug0HbJow6NWmVrwK8J8O181AU4z/SmsNppUQZfhGxZSTKqtUfQssgviWl+GtG2
-	 Nhsiv/KecVXhY6H9YsundUdo5bAfMIJJQD9u6GEqYnm4lT1iNZA+hokDoJJ7aSCAeH7DR
-	 EdInYN8iqrLAc52e+LpL7BUcqgYHXq70toDKZkU2jICnWDYFtwapa4oqVcvRU9084II3V
-	 2q1AsD+L2m5NImd6JRxdGSXvdB0bRmSxW7sEjbiEZGpki7tAXaRyTOBV58VBIcGcKE1Cc
-	 0/szkoJ1pq+8sBFADFC5MddrJ6pE4gymYyZ/dRxOpjaSccIhFVIfLd3uPFoEDVWqN0A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794478199;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=09830S51JqWpFaEyY9D9c+3iuHevt9aUw8rtsVGEl7k=;
-	b=dJfKXjZhn6ceCgXETTgnJ+AK3dgrplgZYRogVDJXeNJ8PNfcVskom2HArcXoz3loBu85
-	 ACtzivLgK0ON5xFqCE+u+IFxS3ffTGjFL0CvwuYevbL5Y0vCVNNDyKAxz+DinrENT45Rm
-	 juxzMu9lje9Urt/J1kQU99StTxplj4+ARuvuKTiY62mk48kUFJyXliZKwBr9cj3kfR101
-	 IblnxA8B/RiEM2cUAn0TKKcgcv2JAabolY/CdReKrkDwL6cPsiOSQiSsnhKHzQDlBRJ/9
-	 z8HIQM4FRlTrIbblVpeN7AcQv4jQiczZ9yyxTW+kJWFqyZbxprbSsKj5K7vZb4bG1sA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=23o4+Y4h;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.27
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011027.outbound.protection.outlook.com [52.101.62.27])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794478216;
+	b=zMXQl8mCp1zgdUZFr7TGGRzqHuIedN7lgrSTKUctnSDwo0byRUpu2VDP5SulrQaKW3I0
+	 q6On/n8a1Nr2OGT+LL4EDIUFE8UJDiaSSvcyBUvwQxsRC8MsktBDiWh42TuX80JI/PAK/
+	 WM4gYeFoi9cbpfZReats6SIpSPCRzYdrvW8/PZmpIqeYnhYOndojDr+rihu9u6SzZAPGH
+	 nPX9XzXpkN0t1w0vZ97uRaxIOQPpeaHvWF21A+jDgSOLNl5ukBEMnAvzdtS/lLO5d7u0/
+	 f+FcAr//P5Zq/AmZlHELqqnDS6w4V7I33cdxnq47lXkLwZOc+DLBXLATncR7uUJRSmQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794478216;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+	b=QVvmTT1KvnHYGALTW0iCy6iAHscQVq8Ay8nTgpaq/ewwfEivCYJFlWH4P7kgdTxF/E0U
+	 XfHqkhxAhMV1QY3bu7k36QTWXuUNQqjddxhqUblVdyets9FEa4lQGstpXhpFLrEZzU4i9
+	 v+eyKhTayriZDbW66/ab55LqlBL5/nXy1/ydpeI/gmYMOhb8Y0g381CFyU0HHm++vCinw
+	 z3tcBMilE6PtMxX7lsvgZFfBHXQLcAFIRqTF4A633FslXTO1aAMRY/9ogFwOxMrt0SZye
+	 UpG5ceNNYfnFX0Th2TM30o18RLr0joQZY33snNfroceqruw5l+qd2FBZAoM1jvvrdsg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHqj5YET;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="ZZS/98e7";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43455606A321;
-	Thu, 12 Nov 2026 10:09:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43455606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D4606A33B
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:10:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 992D4606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=23o4+Y4h
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WNfnP45vucrqc66aToNIvEzpt8lwIaCvvInviJfkt+DeNGzLmNkiCG2/uCt3gHteza7O6bMRJkPnyiN7hxZxhbhWzKn9j2z28gzXbYmLTlgsgA4O4grDyMZJKLaw8DDe/tY21dgMlOXF/0xUmVMIEHOgEUAOmOybs1KgnG3kN5A2au+sUwDmYbMCT/MrWn3cgqIMjY+LbkyCkOxgZTcZ6Zd/l6V69XNpznEBO+AgS/IYDtuiesLsxw4p7yX/raTJhSaRdkKwv+sTXIAnSGmwWSojVLqkhKPVS551Y5UByLWWLj0uVNp0BBa0RI6OdEbxkd8wiKhqHpvM1c1ib4mT3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=09830S51JqWpFaEyY9D9c+3iuHevt9aUw8rtsVGEl7k=;
- b=bmI1xgZNO/j2z1uH1/FCIkY+lSaiaU9pvAJKjXMiWMye+lyefKHIRqIll1ENvfPnG06SFuRN57kUtMhLmJ6GQBGOBTwRkdxhBNcRpo9p1PhG6kWhEjY4BTOqdD6AXQtbhMd9aXOEgzTjPJzHEI9p+vxnoHxjdMnvPzEYBY1llmX4EEg9D0WKWkGVMfQA7sDXNYGpPz7hc1o0hHgiaInAg/v+TImVZBkQPmLOAznlGThKFMs9V758ybiqWsUHS38YcAAVq+aN1d/pOC2E69lL1iGxOwvuHLKyC7bK6BuheYWfqsvzkh+H/8LzFZwdyziVFWF2zab0xFhSMXvPU39hPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=09830S51JqWpFaEyY9D9c+3iuHevt9aUw8rtsVGEl7k=;
- b=23o4+Y4hmDQw4A3bM8bRy7Qx9YlUgKCDLkpKCbtiRQL0Cs/PSsXeYKQKc3pHwVvv/d9KzDDKWg/stGAC2NjJU3XqXSPBakUAvVa5Qtnu7cJVWtBZy+inKHEPQb1582K4zjZdL/kv1m300CrEcMz88bHR5NT3BdqcVONHPHOBhuQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
- by IA0PPF4D923B935.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bcd) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Thu, 12 Nov
- 2026 10:09:33 +0000
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b%7]) with mapi id 15.21.0615.007; Thu, 12 Nov 2026
- 10:09:33 +0000
-Message-ID: <14e6511e-3878-4e14-8c25-7db5c179db8e@amd.com>
-Date: Thu, 12 Nov 2026 15:39:26 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 4/4] net: macb: Add TSN CBS TC offload support
-To: Charles Perry <charles.perry@microchip.com>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260909142056.1433875-1-vineeth.karumanchi@amd.com>
- <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
- <avMxXCDMQMh5180r@MON-LT-C78453.mchp-main.com>
-Content-Language: en-US
-From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-In-Reply-To: <avMxXCDMQMh5180r@MON-LT-C78453.mchp-main.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0155.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d7::17) To SJ2PR12MB8953.namprd12.prod.outlook.com
- (2603:10b6:a03:544::14)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHqj5YET;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZZS/98e7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794478214;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+	b=UHqj5YETfBVyn4EcerJJtZE/utyXAw79ljkIEUeQ97SO2RhRExGzee7X6rkK9XrrC1IuFB
+	sfKLrC0ydDxdWFQjYBaAD+N+hV3Ft/wP/gzuhfOKrq6BGfcV29Ygw6edk/4c3BbwRjbIUl
+	+iu22/syzObHQxCp7uNNGW1eWjTWR0Q=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-yHxr2LBwO5uYtbzswiwW8Q-1; Thu, 12 Nov 2026 05:10:13 -0500
+X-MC-Unique: yHxr2LBwO5uYtbzswiwW8Q-1
+X-Mimecast-MFC-AGG-ID: yHxr2LBwO5uYtbzswiwW8Q_1794478211
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso33527895e9.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:10:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794478211; x=1795083011; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+        b=ZZS/98e7hTzHTSGfkOQMtdtVMwRHf5R7ryuR7PCPA2eB8uSBpyDzPAsYTDUrE8c1s7
+         6Bbcw7gA0UnCboWXBGHyBwOAEpWX7QNbRNZKReLPknfCZLjPGuvHRe/GlpozugwnC4r+
+         ckxIBN40YsOOfEKk9gs+W21PqXpi5M0XTINP/tW0/SGXqbDKWTDy1Yv2u25fvFiBXzqL
+         ZauUIgbHEEHf3ys0/Hr37zfwpFJu4rue8u3BAwHjL+wS6nMjReXaWeWspg7NzFyHeZas
+         dKncXM1E+AtVPk9wxpke/tfyEod4k7XIGOfYDxW7wVQ2XtDXCAvM8gSCxGQyHWvT6f5n
+         RR3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794478211; x=1795083011;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+        b=ctu7Ok8mH3C1vNKbfyfXKFCJJtovVDFMgxhk2ZHsnxIFkpW2RrGEwE3ea5xVWTh1O5
+         lZdwVOicnGKYAzxj6peDiPjlBuDTQxu4HFY26C2XbgDGaMyZNr8ZFbQKKbn5SWNd/zdH
+         fTZqij3s2IUP5gbVeSkZbYsxB9TC0RyBP7qRAyZIKAhfaDKmXqAsi6Y340SCIP7SlHEx
+         JJ/l46mSwuWP5+ssZe4N1RPRNKQe+JlLKAR+zdFFDJJg5+m9c3c4lmFvZkJnwKQsxLay
+         ykS4q1owDc1JtDwf7AMmvcaE0EnkhtvpwoqxRxEk3E57DNltaAAISSaZC4LZtyxJojao
+         KqSA==
+X-Forwarded-Encrypted: i=1; AL+hErGxh5/JMFJVLXqbl3AgZcwQbLyoPDrGNsPq6GLQTJkSya6MArX4XVAYubkrRvOnri1brNekpJ4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8PPMTTYzOt1FPztO1MzbfjvZXlZR3SN4+SLh54dA6HIvX2knFL
+	j8xvj2Qz7xd5fe0G8Le1WdhVUhMs+tC2xr8nDnmYJazOjme30IztrBl0AFl3imPvbZ2ZniVcuVe
+	QP526UnF8yeP7KgLMEYu/r//OPvLem26g2YdYc/KiYWvVfMax4QFmTTvsgw==
+X-Gm-Gg: AYBFou3jRe5hfLB6GuYQ/JtaYZE6Nm+r4QvvGfLcjyJrKwzLlIaOpnabtCHgW1g9DW6
+	jsaabFALlGI4do7w+Nu2ZjtStqTLFMm7In81EJFX7hZM5T7Pv+VgDi/wyn2tkmruJPTFJM4d06R
+	1Zb/RiyTDum+iNEN74a6WCKs8D8NWxykafwzMfi9DxwHALVfTT4wRzJCrwoQyntaymNM/BnZZxv
+	tkEAiCcgbnEXFHlfhX8B269gnmLotxVU7Sb2oOXTm82QD8JkdNXwKcZqHDM+EYHfJjwZzI4axOx
+	hnwrD1edihpattaruJw+tijIh7bMgwfxLCTki1H7CR4gJpEpz/OYCVxBrsT+4F6/hhFW32sxnlY
+	rdLRd17AfxX0iGkfTAsgvcScpCrlTfAVPVyrUU5AnnQ==
+X-Received: by 2002:a05:600c:6214:b0:4b5:d95c:2378 with SMTP id 5b1f17b1804b1-4ba0939815cmr87754375e9.34.1794478210553;
+        Thu, 12 Nov 2026 02:10:10 -0800 (PST)
+X-Received: by 2002:a05:600c:6214:b0:4b5:d95c:2378 with SMTP id 5b1f17b1804b1-4ba0939815cmr87753625e9.34.1794478209938;
+        Thu, 12 Nov 2026 02:10:09 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cbfc6sm16943454f8f.41.2026.11.12.02.10.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 02:10:08 -0800 (PST)
+Date: Thu, 12 Nov 2026 05:10:06 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: zhaoguohan@kylinos.cn
+Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] vhost: set dirty log bits without pinning pages on
+ x86
+Message-ID: <20261112045853-mutt-send-email-mst@kernel.org>
+References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+ <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,251 +117,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|IA0PPF4D923B935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ca8239e-8f7a-4a51-b768-08df40a50c7b
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|261102123227099003|11063799006|56012099006|4143699003|261009223027099003|261022075727099003|261022105027099003|261021121427099003|261026121527099003|261028144727099003|261026140227099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	I9rkR0fvZYpFF5gDtqIYLbC/xeMAW3iH8fmu7k+HqdknAFtMro6vM3uLGE/TJDcDn1l/bG9xfv+GAxzvYSz5K5FszACxTxhEfAkYhHCHchj3pOwp341ec+UQK5iN+PjwlCwJak8gWEcZ2br18ZeMdsAYL5tJGAYeMy+xNSOH1D8GbhAg6YE5VomIhee0nif/vTiEVPCVr/tNyqYURCMiUFpCe0QigzGPkAUxZDpoe5C82zWj3EUju1porB1E+YQMp7nCGJD81lCNcI/bgW1djTfO4tNiqHzR+/mQqoZxFDc1oq4/E+KEOgzbaC+MdgqdmljDsDyd5HWdrV9AqQ80iusIPiRwcb/Tp/CdrCc7tSLNzg8DUpC0X+be1uGBTUX0Xk+9fBt0iDme3kassw1hPomGmSW/GaCJye8scukBgcrn9BXkusqKIPxSUVou4B9VQwlKI1TM8tP+HNHkLHdn/uhepdrQtNlgDLk7U6o1nS671PjXxXLlqUrtvnYoehjPmpv6z0dZsu3K5EqEZW6xt7hJY7LDo9AseqNsx3qsB/b0MjhQqwd3XIn5Z+a2jSrhWUJ9bLoKURP2SlUs6OMkCu30Bcmp1pDjvbb7HbhneV1A4/6a5TzdgIHJf8R0Jg2xtbGEC7ej1gMzAFxN3+T7tKBzsQCCO/48aL88H+niSPQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(261102123227099003)(11063799006)(56012099006)(4143699003)(261009223027099003)(261022075727099003)(261022105027099003)(261021121427099003)(261026121527099003)(261028144727099003)(261026140227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WXRaTDB2ZUhQRnl2YjlsYkk0blJjSktjSHd6RkVkcTQ3VVBESDBQckIyZUFx?=
- =?utf-8?B?WUpETldFK1d0bkxmVE4zdG1ENWpkYWNwZUZrL0VwUTRGaHZXOWt2My8xRld5?=
- =?utf-8?B?UTBMTHFxWFBFRHpjcTExL3J6TzBUT2tiSnVwNHd6c09BTWFKVFkxUVZVZ0tn?=
- =?utf-8?B?NzdaaGdIbXVnMXZLVnQrb29rcjZUSWFKVkdST3gxanB5dm56TVZTQTJ1elAz?=
- =?utf-8?B?ZFpCSThlMVk5TVZ0b2R5d1VLcXBCZzJ1SmdJZnhKVkQrYU9hQW8yUUdHajJB?=
- =?utf-8?B?eUZsVE9xWmJZNmtmUjFRN1Q5VUVvZy9ZSnR3R2l4QjFxbFErZXZ5ZlRsRDhB?=
- =?utf-8?B?MFFCOWNwckRuY3VLWEY1TEJUNTZDZnJmL3FZSXdwdlhKZmRjWXVhWWxmZjlR?=
- =?utf-8?B?b0QzODViUDAwb3krRWdISndadHlmVEpGejV0Sk94czlnWThSY2hldUJDTU1x?=
- =?utf-8?B?RnpQUWIrcGRDVDlTZ3d1Vmdlc1lpcGFrdUhIN0V5UE1kMmhsTThJZlVNVE9W?=
- =?utf-8?B?SXdzN3gwb09MdlpHcHpOVzhBZXRKSHpMdFJYQ2lIeVk0Ti8ydXo3UHJkS205?=
- =?utf-8?B?VllkVTB5MUY3S0ZiWG5nelhGQ1JPUGtuMnRYZGpWTnM1OGFXVFI0Q1hVb2sx?=
- =?utf-8?B?MktWOUtyNjh2U05mVE1LenRnM25ya3RMMm01TDdlQTNGTUZIRlVqNHFPL2Ur?=
- =?utf-8?B?NTVtVVBJUmRqaG1odDBad1pibmJISDlFUE1nVmpyeGRMMmFqd25NUm1Wc2Zo?=
- =?utf-8?B?ck1sZy8vdVhvQ0xzOFJRUkFtZ0tjWjN5ZzdGZk1EcXhsVDNHcDZoR1R0SS9i?=
- =?utf-8?B?TGxRRVNDV1NESU1EaUZvUWNRdXgyNE11ZmlqeUllTEJPU3NOUzBpZkNsNmZT?=
- =?utf-8?B?d3M2TmNVTzZISGhCZ2owZ3lVK04vV2RvRDc4K2ZIYmhxWW5LRjJGam9TaDNl?=
- =?utf-8?B?bzI0ZXBtSmNoRGR5M1VnSnR6WFBaOFZUVHNvMTV2MnB3UnMzaHQzZGxpclFa?=
- =?utf-8?B?STVrcFVqaGpxQnlwc2RVTmRZTEUvVXYzWncwaGdmNmxHL2MxYS9zQTluazlw?=
- =?utf-8?B?ZmZEWXc3aGlOQ2dYNWVobWxySzUvYlR0eGt6THpRQzh1MTZDWmI0VTV0L085?=
- =?utf-8?B?SGdYbHBiK0x6bzRFTlI3eU5Fc0pDbmdINkpRekpjeC9NYWticTQ2blFING5Y?=
- =?utf-8?B?eUJQWm5rYjhvUmJuUW90ckJmMEJEQnp6R1I3THpGWVA4Q0hnMEtaZkgzN0RN?=
- =?utf-8?B?OERWOEFibFVWUGpSYUN3MWhIaTUyUm5ucnN0L3BhUFpiZXdwdW1CeDJ1WmRK?=
- =?utf-8?B?MzNINWZnaXpPd1NtdnpNS2hUVUpva2txVGgwZnFNM21mdzFBYjBzNWcxZFZZ?=
- =?utf-8?B?T0taOGpKT25ka0xmd05YaDJnazZ0dkRUdnJHTktTN1h6a3g0QndTNldWeWtK?=
- =?utf-8?B?UndQRXVZandWclZZeTZkNTluaGlNTy8xZGo2VWhacVg1SEF6ZC9zeTMvWlUw?=
- =?utf-8?B?YUhlalQyNUhmSUVKRVNXU2huMHR3T1dBL2UxeldlNXYyNTFiZ3FtL29yNEtz?=
- =?utf-8?B?OFFVdUJ4dXhXVlk2MXBlWDkrWWxFY3FORW1FNmFDY3lISFFvWkQyYnR1N05q?=
- =?utf-8?B?eTVEVmx4ZStZeHlXV3pGRVA2SEx4ZkRkMUFlNnhsbXlmSTVGdkdKMU53SE9T?=
- =?utf-8?B?MlJtaUZvdWpqVjNXbHRWb1R6YWJOY2FOc0tLOUhtdzdLSEpWY1dKUXZpVnZy?=
- =?utf-8?B?QWI5cW5jbkMvUnV4NVhKTTJGTE12ZEVpc0dhY2gzOU1ETkNpZ0svSnV1UWM4?=
- =?utf-8?B?dVVuQlBsbis1UnpNdjRDN040SlpIZmNlblJNRGNVcDl4SXBsMDJzOWREQ1FE?=
- =?utf-8?B?eWdVWmJWVHhpbUJUVjVKR3RhVmUrYXZVUE1lcVJnNTl1YmtycUNiMng3eWlV?=
- =?utf-8?B?cmdQM1Z1dHphMmFNVjc3SUJjK2FLamN5OThxNkRDcmFHV3p4K1dpYXdQL2Q3?=
- =?utf-8?B?STZlUDR5YkNvTDZjQjAzbGZEbzVYVTBvOUZqMmpOYkV4czBPNWVUMnN2cHJT?=
- =?utf-8?B?VzBlYUsyazJnK21LVFJScnkrbjU2RUJoY1QxUDdSOGRzMFczaVhQVDdUTkhC?=
- =?utf-8?B?UFAzZG9vR1k4M3VjU1FYeDBXcjdyeFdoMVlkYk42dVJsaTNyTnRQYi9Wa3kr?=
- =?utf-8?B?aW5pWnNJSjVBYUlhZlZDS2FHMkl1UDZRb0RETGp6cjBUNncyNGNzN0FDdTNP?=
- =?utf-8?B?bWlQZFNLbks1eXZNZU9IdXNRVnE1NVZ3a3hoU0dET1dHdDF1RVF1VEd1UDRx?=
- =?utf-8?Q?sXe3gnjdMwf4Y9vT2N?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ca8239e-8f7a-4a51-b768-08df40a50c7b
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 10:09:33.4458
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T5SMnYXFh5GGRwmREfspZh8jJQurhf6qbVQX+U+IG4GudKInmFJdfLEhPCAspmpl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF4D923B935
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 
-Hi Charles,
-
-On 11/10/2026 8:29 PM, Charles Perry wrote:
-> Hello Vineeth, 
+On Thu, Nov 12, 2026 at 04:56:30PM +0800, zhaoguohan@kylinos.cn wrote:
+> From: Khan Zhao <zhaoguohan@kylinos.cn>
 > 
-> On Wed, Sep 09, 2026 at 07:50:56PM +0530, Vineeth Karumanchi wrote:
->> Add Credit-Based Shaper (CBS/IEEE 802.1Qav) TC offload support for
->> time-sensitive networking on GEM hardware. CBS is restricted to the
->> two highest-priority queues: Queue A (num_queues - 1) and Queue B
->> (num_queues - 2), matching hardware capability.
->>
->> Validate that idleslope is positive and does not exceed the link
->> speed, preventing negative values from bypassing the bounds check
->> due to signed-to-unsigned promotion.
->>
->> The idle slope register value is computed differently based on hardware
->> variant:
->>
->>   High-speed GEM: scale idleslope linearly to the full 32-bit register
->>   range relative to link speed.
->>
->>   Standard MACB: convert the kbps idleslope into the register's native
->>   unit, which depends on the interface width:
->>     - 1G (8-bit GMII):    bytes/sec,   scale kbps by 1000/8 (125)
->>     - 10/100M (4-bit MII): nibbles/sec, scale kbps by 1000/4 (250)
->>
->> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
->> ---
->> Changes in v2:
->> - macb_cbs_get_queue_params() now returns the idleslope register offset
->>   (u32 *idleslope_reg) instead of a bool flag, and the idleslope is
->>   programmed via bp->macb_reg_writel(), dropping the per-queue if/else
->>   that open-coded gem_writel(CBS_IDLESLOPE_Q_A/Q_B).
->> - Expanded the idleslope kbps-to-hardware-unit conversion comment.
->> - Zero-initialize kset in macb_cbs_add() so an unpopulated link speed
->>   reads as 0 and is rejected; reorder locals to keep the declarations
->>   in reverse-christmas-tree order.
->> - Rebased on net-next, which renamed the struct net_device pointer to
->>   "netdev" (was "dev"/"ndev").
->>
->>  drivers/net/ethernet/cadence/macb.h      |   9 ++
->>  drivers/net/ethernet/cadence/macb_main.c | 116 +++++++++++++++++++++++
->>  2 files changed, 125 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
->> index f5359549f3d4..20faeba77d6d 100644
->> --- a/drivers/net/ethernet/cadence/macb.h
->> +++ b/drivers/net/ethernet/cadence/macb.h
->> @@ -184,6 +184,9 @@
->>  #define GEM_DCFG8		0x029C /* Design Config 8 */
->>  #define GEM_DCFG10		0x02A4 /* Design Config 10 */
->>  #define GEM_DCFG12		0x02AC /* Design Config 12 */
->> +#define GEM_CBS_CONTROL		0x04BC /* CBS Control Register */
->> +#define GEM_CBS_IDLESLOPE_Q_A	0x04C0 /* CBS IdleSlope Queue A */
->> +#define GEM_CBS_IDLESLOPE_Q_B	0x04C4 /* CBS IdleSlope Queue B */
->>  #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
->>  #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
->>  #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
->> @@ -224,6 +227,12 @@
->>  #define GEM_ENST_ON_TIME(hw_q)		(0x0820 + ((hw_q) << 2))
->>  #define GEM_ENST_OFF_TIME(hw_q)		(0x0840 + ((hw_q) << 2))
->>  
->> +/* Bitfields in CBS_CONTROL */
->> +#define GEM_CBS_ENABLE_QUEUE_A_OFFSET	0
->> +#define GEM_CBS_ENABLE_QUEUE_A_SIZE	1
->> +#define GEM_CBS_ENABLE_QUEUE_B_OFFSET	1
->> +#define GEM_CBS_ENABLE_QUEUE_B_SIZE	1
->> +
->>  /* Bitfields in ENST_CONTROL */
->>  #define GEM_ENST_DISABLE_QUEUE_OFFSET	16
->>  
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
->> index 67150ff03066..00c1c619dea8 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->> @@ -99,6 +99,10 @@ struct sifive_fu540_macb_mgmt {
->>  
->>  #define MACB_MDIO_TIMEOUT	1000000 /* in usecs */
->>  
->> +/* CBS port transmit rate factors: 1000/interface_width */
->> +#define MACB_CBS_PORT_RATE_1G		125	/* 1000/8 for GMII (8-bit) */
->> +#define MACB_CBS_PORT_RATE_10_100M	250	/* 1000/4 for MII (4-bit) */
->> +
->>  /* DMA buffer descriptor might be different size
->>   * depends on hardware configuration:
->>   *
->> @@ -4492,6 +4496,116 @@ static int macb_setup_taprio(struct net_device *netdev,
->>  	return err;
->>  }
->>  
->> +static int macb_cbs_get_queue_params(struct macb *bp, u8 queue_num,
->> +				     u32 *enable_bit, u32 *idleslope_reg)
->> +{
->> +	/* Queue A is highest priority (num_queues - 1) */
->> +	if (queue_num == bp->num_queues - 1) {
->> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_A);
->> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_A;
->> +		return 0;
->> +	}
->> +
->> +	/* Queue B is second highest priority (num_queues - 2) */
->> +	if (queue_num == bp->num_queues - 2) {
->> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_B);
->> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_B;
->> +		return 0;
->> +	}
->> +
->> +	return -EINVAL;
->> +}
->> +
->> +static int macb_cbs_add(struct net_device *netdev,
->> +			struct tc_cbs_qopt_offload *qopt)
->> +{
->> +	u32 enable_bit, idleslope, speed_kbps, ctrl, idleslope_reg;
->> +	struct ethtool_link_ksettings kset = {};
->> +	struct macb *bp = netdev_priv(netdev);
->> +	int err;
->> +
->> +	err = macb_cbs_get_queue_params(bp, qopt->queue, &enable_bit, &idleslope_reg);
->> +	if (err) {
->> +		netdev_err(netdev, "CBS: Queue %d not eligible (only top 2 queues support CBS)\n",
->> +			   qopt->queue);
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* idleslope is calibrated for the current link speed; CBS is not
->> +	 * reprogrammed on link-speed changes, so it must be reconfigured
->> +	 * if the link speed changes.
->> +	 */
->> +	phylink_ethtool_ksettings_get(bp->phylink, &kset);
->> +
->> +	if (!kset.base.speed || kset.base.speed == SPEED_UNKNOWN) {
->> +		netdev_err(netdev, "CBS: Invalid link speed\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	speed_kbps = kset.base.speed * 1000;
->> +
->> +	if (qopt->idleslope <= 0 || (u32)qopt->idleslope > speed_kbps) {
->> +		netdev_err(netdev, "CBS: invalid idleslope %d (must be 1..%u kbps)\n",
->> +			   qopt->idleslope, speed_kbps);
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* qopt->idleslope is in kbps; convert to the units the hardware
->> +	 * register expects:
->> +	 * - High-speed GEM: fraction of port bandwidth, scaled to the full
->> +	 *   32-bit register range
->> +	 * - Standard MACB: the register counts bytes/sec in 1G (8-bit GMII)
->> +	 *   mode and nibbles/sec in 10/100 (4-bit MII) mode, so scale kbps
->> +	 *   by 1000/8 (125) or 1000/4 (250) respectively
->> +	 */
->> +	if (bp->caps & MACB_CAPS_HIGH_SPEED)
->> +		idleslope = DIV_ROUND_UP_ULL((u64)qopt->idleslope * U32_MAX, speed_kbps);
->> +	else
->> +		idleslope = (u32)qopt->idleslope * (kset.base.speed >= 1000 ?
->> +					       MACB_CBS_PORT_RATE_1G : MACB_CBS_PORT_RATE_10_100M);
->> +
+> set_bit_to_user() pins the log page with pin_user_pages_fast(), maps it
+> with kmap_atomic(), sets one bit and then unpins the page and marks it
+> dirty. This runs for every bit set in the dirty log, e.g. on each used
+> ring update while logging is enabled for live migration.
 > 
-> PIC64-HPSC, which has MACB_CAPS_HIGH_SPEED, doesn't have the first idle
-> slope calculation method which scales to the full 32 bits register range.
-> It uses nibble/sec for 10/100M, byte/sec for 1G, 2.5bytes/sec for 2.5G,
-> 5bytes/sec for 5G and 10bytes/sec for 10G.
+> log_write() always passes a byte address and a bit number in [0, 7], so
+> the update can be done as a byte-sized cmpxchg on the user address. On
+> x86, try that first using unsafe_try_cmpxchg_user() inside a
+> user_access_begin()/user_access_end() section with page faults disabled.
+> If the access faults (page not present, read-only or needing COW), or
+> the cmpxchg loses to concurrent updates of the same byte four times in
+> a row, fall back to the existing pin/kmap/set_bit path, which can fault
+> the page in.
 > 
-> Is it possible that you have another design config bit for the "full 32
-> bits register range" method used here?
+> unsafe_try_cmpxchg_user() is only implemented on x86, so other
+> architectures keep using the existing path.
 > 
+> On an x86_64 KVM guest (i7-12800HX host), a synthetic used-ring
+> workload with logging enabled went from 243.60 to 171.11 ns per
+> descriptor, averaged over five alternating runs. This is the
+> end-to-end cost per descriptor, not live migration performance.
+> 
+> Signed-off-by: Khan Zhao <zhaoguohan@kylinos.cn>
+> ---
+>  drivers/vhost/vhost.c | 50 ++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 45 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index e29f154706da..9c3045504709 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -2527,11 +2527,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+>  }
+>  EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
+>  
+> -/* TODO: This is really inefficient.  We need something like get_user()
+> - * (instruction directly accesses the data, with an exception table entry
+> - * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
+> - */
+> -static int set_bit_to_user(int nr, void __user *addr)
+> +static int set_bit_to_user_slow(int nr, void __user *addr)
+>  {
+>  	unsigned long log = (unsigned long)addr;
+>  	struct page *page;
+> @@ -2550,6 +2546,50 @@ static int set_bit_to_user(int nr, void __user *addr)
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_X86
 
-The Cadence GEM revision `r1p14f2` in our implementation uses linear
-scaling across the full 32-bit idleSlope register range, as confirmed by
-Cadence support. However, the register description specifies only the
-second, speed-dependent formula, which does not match our observations.
+Wait this is x86 specific anyway? So let's just implement it
+properly, why do we need all these hacks?
 
-I couldn’t find a configuration bit that distinguishes between these
-behaviors. Which Cadence IP revision is used in PIC64-HPSC?
+I run a quick test on this in a VM, feel free to reuse:
 
-I can follow up with Cadence support to determine how software can
-identify which encoding applies.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-Thanks,
--- 
-🙏 Vineeth
+
+
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 3a0dd3c2b233e..3ed49c91a7434 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -594,6 +594,23 @@ _label:									\
+ 	__ret;								\
+ 							})
+ 
++#define set_bit_user(nr, addr)					\
++({									\
++	int __err = 0;							\
++	__uaccess_begin();						\
++	asm volatile("\n"						\
++		     "1: " LOCK_PREFIX "btsb %[bit], %[ptr]\n"		\
++		     "2:\n"						\
++		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
++					   %[errout])			\
++		     : [errout] "=r" (__err),				\
++		       [ptr] "+m" (*(u8 __user *)(addr))		\
++		     : [bit] "r" ((unsigned int)(nr))			\
++		     : "memory", "cc");				\
++	__uaccess_end();						\
++	__err ? -EFAULT : 0;						\
++})
++
+ /*
+  * We want the unsafe accessors to always be inlined and use
+  * the error labels - thus the macro games.
 
