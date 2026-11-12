@@ -1,101 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794513193;
-	b=yRrjZckyV0XmQazzQ2Pb5bpklwCWrc3zgD73R62s/albrOpHhnP9G6yIhuB1cfksB8ZQ
-	 Z5X5ugRgi7CdtNOf+7nbs9NLRlY5MUvcvh0r5whHboAyVPk0rJ027xXMS8DbcTNZ43Eii
-	 qOUeDOUBanl8QeTny0sESKawQFXWIL/ffOX0Hqyaa5Bi5IULSU5DYJJdoWi1iwU4tBbfW
-	 ckXre2Oeq1PZCwLHXwvhyk3fc9c85KUvcbDdd1V+AaXoM2jFwDa0OVlhS2vVCt+Gbwe+m
-	 29UYy8kn1j5DkJfCBIiEcbFVHEeEry/PS+DpYYv4fBgy7tafb9sRi6mL1ObiDTYmKrg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794513193;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:Date:
-	 Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=slMJ/jl0C3PRYQL80eM6Rik84HUmAPDqG/+JqwCg8f0=;
-	b=Ovg/4LR3NFsyqz/nx6+yRxjBLkL6cIBrf2u/NnIu4ngvM8qLzBCtQp6+REgRLEnbc/+Z
-	 NDclcwcemskguk1HwVmhwP2DbbVUpZIP720HJVfL/WHH4xtmiVSXWWAvkOO600x5KlkuE
-	 gUhGWp/xJFxgzhMBsf7C9P3In+Go4cakU5IOdRVpJubaez5Kuz9ogS733DO1aQ6NgW2Wu
-	 7NtOjvlEm0lEQ4lTqVaYCy+HxvHlgSLOvN2OCjTTr4PSudLr43oS03alPGaxa+phyr9BF
-	 v34DQWAaiEK8VwsxOpyLpcva3GjPEP8ZifEQs9TEB6JeLuE4312XbhbdTQTyVwYZg0w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XOvykWdZ;
-	arc=none smtp.remote-ip=209.85.214.169
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794513198;
+	b=3N1FCTv8wDDMRhENjUxgLAAoOcNBOrwDaVF9/40NF97A6ri1eONWqUroCUMusuxvhua9
+	 tKEqYMIsVXse+QyHJ87jThSFQDEJtBS05n6xReBDuIjnrv02rpdYSQmkKdfOIHzA7Fwuy
+	 Ob8jv14Vd8BKhoyTBp3GPtY2cgg8jHw29ufPa2pgBm4fwyCLst3P1rlRKE7CUSuJoEQ3x
+	 WJsRSRo54JU9v7d1lUlSRAFg6wLKwAUE9vC4nF19VT05r141fbSNhzvdCnXHNUOVh8bI2
+	 1ehTa8rqBRlfFurkMuJFRiAljerNOBFWB/ZQJhZXjllZwtV19gnbWwND1/LnFj1kCTw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794513198;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-ID:References:In-Reply-To:To:CC:
+	 X-Mailer:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=29R05VH5Y4/K9A+0U43YHRXTFG/IR621ypMLaZzADxo=;
+	b=vSLMOioIxPKFH72TyIc/5G36riHIbkXLqSpbrOUtnhBhtLvrFOOSmNKOl0p7NiA385OO
+	 QzWxFtdP7gjm/r64JNuI0xS0b9ApSU7DmLPkLtrlqec2txCsH0q7YpQ+IvINY3GknwKnj
+	 45Qz2dgTaAKSHI0IaJpEeTSlKf3pAZZtJoD9+MggSZLaromHikM4b2pwH6C0HFQ6rQGbm
+	 MIyVY7awe3v8z5wOVTpQuRkxNPe31vKi2dnE6WLP201FwwFDQjnGfL5bbV/bUv09qO7/n
+	 GYTAeB76gI3f4Dk4ftYFsbsAnQlZdTkAu9Z2uu44uXnQCvCWjIbkr764Zlqr6BvSLQQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="U3ZWby/E";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.53
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010053.outbound.protection.outlook.com [52.101.201.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB559606A32A
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:53:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB559606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041EE606A8A5;
+	Thu, 12 Nov 2026 19:53:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 041EE606A8A5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XOvykWdZ
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ed08b07213so1190455ad.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 11:53:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794513192; x=1795117992; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:from
-         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=slMJ/jl0C3PRYQL80eM6Rik84HUmAPDqG/+JqwCg8f0=;
-        b=XOvykWdZa8akqe46XxXcrhPdSdqBzB7qNT4fuFywibfxQufgbTNScOQjj91AfQqUZw
-         wmbVWY6cyWAogeH+okdshWEXjy++ULfcj4DQ9nRE1p5Q07j61mwgC5xiXku5NX3VeaJf
-         jzGj5QgklpL2p6GeZi5PywWO0zN8hv5iG3w2BfhW/grvky+gs6T8hwl7wD0GeIw+r4Y7
-         tbwRpUv+wXlFY11ybqJtpnPlvWZyMvMFNlu79mVZ3Nw3NAnT7oYMN1jJZ13VwHKWsX9f
-         nLAZ8PU3gD+zm7kHmsHmshoT2Bb+y8BOMpYkjVVhGXHOpsv6kRL+zhP/btDwUKU1OFGz
-         TxgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794513192; x=1795117992;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:from
-         :subject:cc:to:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=slMJ/jl0C3PRYQL80eM6Rik84HUmAPDqG/+JqwCg8f0=;
-        b=ypBJ5OrE39UcF/c2fSfWuX/IP1IZFwOoJWlJMQAj6N0hchV8I5gxvNsScyluaAfY3N
-         SvH+zhIlO2k7CX8kZW5iMltDoOQX29OpaSzHlF86z+iFP8S+2hEAhAaC1ZcH5zY+9MHg
-         mssXth8Fn+xlgXAhhuxtR0pe2cI/BZ5lKQLVJYbp9YU8QDdEjoNo31CMSzNp+m2D7SiR
-         mpfqXnPYswL1we0sjVPPQApYG+yTgmkVF8WST2lZIqpMZRzPpDaGe2rYH7dPjjfcOaMG
-         1CHXL/tfTLMtD9Xo+p3tanIvI8CMHbmzvVTzLwFXjUF7F+SS62NJERHATzxzBtC0UA1b
-         gYFw==
-X-Gm-Message-State: APuU4Z8yS64hoOYhg0eKK6Q6FkB2UkEkMT6FO0JDsnpTvRUeyTfNdyOo
-	8c7dPmmz5jl0w/vcXRdxYEIzJUQ5+FnlUhYxZ0imeg4+umXQa0f5QKeF
-X-Gm-Gg: AYBFou3Ja395KM7HJ7DO9Dptq4A+0m6cN6y5wfJdcNlQPDQBeutfz8KWg1wlRS6KOm1
-	tROV6oMFSHwqkaLq39EeAkSJvqfTbSAMH1FMA0xKQ/k20uvArZWlThBsnNJ4InZIOiQBmBXmOHf
-	+kkvilM4YjTvt1zIzqu0HB/ehEf3MQ16BmSrRxHeF+BsPPeGC2DMl+BqB4+asWnqdfSjwaea1FX
-	93oKTurgOqRkTWIzoP1vKLXze063907n1xYjdeqTIBonIE2YvlgHf7YlkLikZ9XN+YbxH+S2iXk
-	wJGGZP8i9v9jSvoE/5Z3YvhKeZlVnFgx4CCmFPc6LO5t1zXnsjg5kOPLqp1qDWVBVoDQLqSqDLx
-	kZ5yU+0bSrRifAL8oU3DvFPxEy9wxTMyehuw7VDIRXR7d1wZCgR/buFNN8Ra1ye8KTTChNPUPAu
-	9MBuI50DfTKQytlvur2eWliGa0bYdchD6OTgr6YsHB0UP07kIwitU+yNiqbUGhUrkRE1Yxg33zQ
-	rV/2XR7Xt2CGL1rK6HJuZmcZaVpAmUIV87E4TwsH9frPY1TDhJ8FhFMazFuomK4d4T0REO7THPb
-	yWUpl6GnyrDtS+gUsXBpT+VnRGOACDOVyQTc81lKgrV+61l9liE2bdKWO6NFIvJSxz2BRtWB/Mj
-	mAKVKouP6g4GKL9m7NXhd0CxzTF8jhLRCJs0=
-X-Received: by 2002:a05:6a20:5491:b0:3e2:82d6:467f with SMTP id adf61e73a8af0-3f7a75bf032mr171001637.26.1794513191665;
-        Thu, 12 Nov 2026 11:53:11 -0800 (PST)
-Received: from localhost ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed2053d26sm90591b3a.36.2026.11.12.11.53.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 11:53:11 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Nov 2026 19:53:10 +0000
-Message-Id: <DMTHU30GGMF2.1ISXFYKE43OM7@gmail.com>
-To: "Shihuang Liu" <shlomojune6@gmail.com>, <bpf@vger.kernel.org>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
- <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Ihor
- Solodrai" <ihor.solodrai@linux.dev>, "Jakub Kicinski" <kuba@kernel.org>,
- "Quentin Monnet" <qmo@kernel.org>
-Subject: Re: [PATCH] bpf: Reject offloaded maps as map-in-map inner maps
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-In-Reply-To: <20261112105620.57520-1-shlomojune6@gmail.com>
-References: <20261112105620.57520-1-shlomojune6@gmail.com>
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=U3ZWby/E
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZzAugoITDNOLPZA2YQ5fR6y800QRzOZ8TmS59YeYpbQ5/vhLg2HU/jMWyGjVD6xS9EOkBYzW3hZp6bKtxDh4Nt6VPPw36y78ECFXiNva31ZgvEJD9gZXlY4t2OpdySqIjXYq/C0Z2Rz8OWpOqJsM8dL/7gSsCDGkp0o73nejhle9r06iwDqmuRieegB+1NIDKTM7/iV1NfGnr1JnxcPXUYc2GP2eoPM96Zd266vRly1yKix6GjxjPIFwOtnL5kYXzyrzdYUArwcauHu8Gy5Fcj7mM0HEaCB5OfWjQ/y2fuDuCgIb/ggN44m0QJ5kfUFSHiBVfU9tCYV4XK8JGaJe4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=29R05VH5Y4/K9A+0U43YHRXTFG/IR621ypMLaZzADxo=;
+ b=RfBN4tixcSID8DqhHKXJg7H6kERZ0a14fQZ2SS5m18sFiTQkHRuy9eurhk585l3H62dN7jP+rMBIAkaBWRncLb8XCL4JATrlGMl+bDPncAwCb4XTfE4R6Dl49/KK/rWHh/7rhT9we0XfyapNIu4UaDXOIoeXWm6VDa6gwRLHDa+Qo+DBO6Nu37ELaA2oue+kb628PvaJwZw6LWYUGCzE2jS3fiumD4z6AIw6DpdIFZhD0cWwgm3CaJJKyOBX/LbZWv6ImLnGFzAtm8pGmWAMY+my9Hm0it7rMKTyNazH9MuQOrUuIXV7SF5ktv/p8itq6FdGwA9AD7PVyPJf+XvWjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=29R05VH5Y4/K9A+0U43YHRXTFG/IR621ypMLaZzADxo=;
+ b=U3ZWby/EqgBxlvB+JNAXbGLRHeI4T09Y51UA+ILiDKrBtCRyZjXwO/l27HRuWbs16VOZynyK9cjONvVyBcTaKTrDQ19MYTuWmYEjz57ZBPAYEp1HmP1aIiLnyANq0K+xVWjz8Re1onOMFAmNkhcdCoIS4DAQUjG6QlbLEIFkmUM=
+Received: from CH0PR03CA0022.namprd03.prod.outlook.com (2603:10b6:610:b0::27)
+ by LVUPR12MB999159.namprd12.prod.outlook.com (2603:10b6:408:3a4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
+ 2026 19:53:11 +0000
+Received: from CO1PEPF00018868.namprd03.prod.outlook.com
+ (2603:10b6:610:b0:cafe::4c) by CH0PR03CA0022.outlook.office365.com
+ (2603:10b6:610:b0::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Thu,
+ 12 Nov 2026 19:52:58 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CO1PEPF00018868.mail.protection.outlook.com (10.167.249.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Thu, 12 Nov 2026 19:52:47 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
+ 2026 12:47:22 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
+ 2026 12:47:21 -0600
+Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Thu, 12 Nov 2026 12:47:16 -0600
+From: Srinivas Neeli <srinivas.neeli@amd.com>
+Date: Fri, 13 Nov 2026 00:16:46 +0530
+Subject: [PATCH net-next v4 2/8] net: xilinx: tsn: add TSN endpoint wrapper
+ driver
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,95 +107,252 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261113-patches_v2_external-v4-2-56bb26f042a4@amd.com>
+References: <20261113-patches_v2_external-v4-0-56bb26f042a4@amd.com>
+In-Reply-To: <20261113-patches_v2_external-v4-0-56bb26f042a4@amd.com>
+To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Michal
+ Simek" <michal.simek@amd.com>, Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>, Eric Dumazet <edumazet@kernel.org>, "Eric
+ Dumazet" <edumazet@kernel.org>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-rt-devel@lists.linux.dev>, Srinivas Neeli <srinivas.neeli@amd.com>,
+	<git@amd.com>, <neelisrinivas18@gmail.com>
+X-Mailer: b4 0.16.0
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00018868:EE_|LVUPR12MB999159:EE_
+X-MS-Office365-Filtering-Correlation-Id: af6dcf59-1dcd-4fa2-3b91-08df40f686fd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|82310400026|36860700016|921020|10067099003|11063799006|56012099006|261022075727099003|261026121527099003|261026140227099003|261022105027099003|261021121427099003|261028144727099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	PuV4/+8U/z3cgw1zfk4CHyBDjQ+EiV7OrNG04Edih47JlzCl4szpt+yd82jeuUh3Emq7UV4h9X0hReamhz3szdy6gbUTNq0OMM5kNKZzQqxalxEwwTUUhfx/2lB7WoRPWGG5y5hxTGGfdn2RD/iBWiIS6tZQKzEb/juB3hzn4xDVIvR4RKOl7j4uYOPNhkrR5N5KCva2wIMBgmBGfsRRencnuuVd2j+iNiEEVL8RdUhcvpp6FEocllTc9Dl8sQDPDy85H2QQeKY7w1bieJMxlWbCbH1NDIAqoSgPvBUiT0q9xbPOqFx+L6FxuVcbe4cCAaHu5b52UqwnS8JkqYWiMiAgzPUgBNEPNVGbsjj+Bm/0oS7xYrZ7jWKp04EcB5QMM7O7t1m7KA9Zf+MopKxoLBKZhV5k2KY/zzLGN6oYKEkUQUmMTblggrXRTCW/JyZFMZKK/vInTqP9ebunFfZjrgel3+9NU7V43GhZzAeHRBR8zOlpMXP8EQ1UYV/vLXF3tchh6bv15RX3s8KQdNrlbecbXB4V8ZvI0xfhwrYg3F+7LjispOTOUv770yBYGzj9cholVYXaS+h7OY3FtbdGYOLRa7UnhsNrxG+15c3kMlQyiAjbmyn4NrUxmfZbzOHXhOwEJ42BjAfwBPGfiTOIL9aBYY3GmxrEfzgr1+3t6gY1dFCDvz205T4ELC1JBwWalVvpMkRjGLHyTEp31he9cWn0zMekL3ROmvWYaP7fgkguTuW1U5fw6aoeLtybuWg49qnhbpGSLUsw+U52nqFt+A==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(82310400026)(36860700016)(921020)(10067099003)(11063799006)(56012099006)(261022075727099003)(261026121527099003)(261026140227099003)(261022105027099003)(261021121427099003)(261028144727099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	pEV/o2Ndkk0GyMHOorZAJNoxbel7TQnHz5tS9T+/hCEO8db1WXANKcL7f/2TbTtOsQXuof2oi+EoM4+DGxMdFYtwezvIoALHatcTWDYr9nV4F5tNCiLYNMuKEKEP+xW1L/IYS26uMaHal/FW8NxtYphH/sdq12rz0N8scOlRxu73yAXK9i6VkxaUDfhpnsdOD2JPN+E1d+HKAdeqYFvdlXfVHpmYKPr+4ajp3ykAp5i9HDR0bPj9mzEYjifojMoqBbdykLl/CeADKeCLI4S9W0cQTURDVJ5SvmrGJbrHCpngUCmzRL2gXSManeM+fi48NjS6/cbt6Q5RfInICCKTfDW4wIjSrRiUIiCXSCDEgYYGUmBzD3EcTxk/pTxEn5xPzJ5cGVgpA7l2T3fZmBkytFXkYYQTkRYUo7oCgqFPglgF4xPmsszFtgfCd93lYpzR
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 19:52:47.9455
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: af6dcf59-1dcd-4fa2-3b91-08df40f686fd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00018868.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR12MB999159
 
-On Thu, Nov 12, 2026 at 02:56 AM Shihuang Liu <shlomojune6@gmail.com> wrote:
-> +	if (bpf_map_is_offloaded(inner_map))
-> +		return ERR_PTR(-EOPNOTSUPP);
->  	if (!inner_map->ops->map_meta_equal)
->  		return ERR_PTR(-ENOTSUPP);
+The TSN Endpoint Ethernet MAC IP groups several sub-nodes under one IP
+node with a set of IP-wide clocks. Each sub-node needs its own driver,
+and the shared clocks must be running before any of them probe.
 
-No need for a new check.
-.map_meta_equal in the ops means that the map can be an inner map.
-See the comment in struct bpf_map_ops.
-Drop it from bpf_map_offload_ops. Then the next check rejects the map.
+Add a thin wrapper platform driver for the IP node. Enable the IP-wide
+clocks from the device tree and bind each sub-node to its own driver.
 
-> -	if (inner_map_meta->ops->map_meta_equal(inner_map_meta, inner_map)) {
-> +	if (inner_map_meta->ops == inner_map->ops &&
-> +	    inner_map_meta->ops->map_meta_equal(inner_map_meta, inner_map)) {
+Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 
-bpf_iter_attach_map() has the same problem. It checks map_type only:
+---
+Changes in v4:
+- Drop the Kconfig reference to a companion DSA driver that is not in
+  this series.
 
-  BPF_LINK_CREATE
-    bpf_iter_attach_map()      accepts an offloaded ARRAY or HASH
-  BPF_ITER_CREATE
-    prepare_seq_file()
-      __get_seq_info()         bpf_map_offload_ops.iter_seq_info is NULL
-                               bpf_map_elem_reg_info.seq_info is NULL
-      seq_info->seq_priv_size  <- NULL pointer dereference
+Changes in v2:
+- Depend on OF_ADDRESS instead of OF && HAS_IOMEM.
+- Point the Kconfig help text at the companion DSA driver, not a symbol that
+  does not exist yet at this patch.
+- Drop the mod_devicetable.h include, platform_device.h already pulls it in.
+---
+ MAINTAINERS                                       |   1 +
+ drivers/net/ethernet/xilinx/Kconfig               |   1 +
+ drivers/net/ethernet/xilinx/Makefile              |   1 +
+ drivers/net/ethernet/xilinx/tsn/Kconfig           |  14 +++
+ drivers/net/ethernet/xilinx/tsn/Makefile          |   2 +
+ drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c | 104 ++++++++++++++++++++++
+ 6 files changed, 123 insertions(+)
 
-Something like this (compile tested only):
-
-diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
-index 0fa3f2a..9ec3bbf 100644
---- a/kernel/bpf/map_in_map.c
-+++ b/kernel/bpf/map_in_map.c
-@@ -38,6 +38,7 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
- 	if (!inner_map_meta)
- 		return ERR_PTR(-ENOMEM);
-
-+	inner_map_meta->ops = inner_map->ops;
- 	inner_map_meta->map_type = inner_map->map_type;
- 	inner_map_meta->key_size = inner_map->key_size;
- 	inner_map_meta->value_size = inner_map->value_size;
-@@ -65,7 +66,6 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
- 	}
-
- 	/* Misc members not needed in bpf_map_meta_equal() check. */
--	inner_map_meta->ops = inner_map->ops;
- 	if (inner_map->ops == &array_map_ops || inner_map->ops == &percpu_array_map_ops) {
- 		struct bpf_array *inner_array_meta =
- 			container_of(inner_map_meta, struct bpf_array, map);
-@@ -88,8 +88,9 @@ void bpf_map_meta_free(struct bpf_map *map_meta)
- bool bpf_map_meta_equal(const struct bpf_map *meta0,
- 			const struct bpf_map *meta1)
- {
--	/* No need to compare ops because it is covered by map_type */
--	return meta0->map_type == meta1->map_type &&
-+	/* An offloaded map has the map_type of a host map and its own ops */
-+	return meta0->ops == meta1->ops &&
-+		meta0->map_type == meta1->map_type &&
- 		meta0->key_size == meta1->key_size &&
- 		meta0->value_size == meta1->value_size &&
- 		meta0->map_flags == meta1->map_flags &&
-diff --git a/kernel/bpf/map_iter.c b/kernel/bpf/map_iter.c
-index a58c148..9e459a2 100644
---- a/kernel/bpf/map_iter.c
-+++ b/kernel/bpf/map_iter.c
-@@ -176,6 +176,10 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
- 	    map->map_type != BPF_MAP_TYPE_RHASH)
- 		goto put_map;
-
-+	/* An offloaded map has the map_type of a host map and its own ops */
-+	if (!map->ops->iter_seq_info)
-+		goto put_map;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6e71049322df..27f42178c12d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -30748,6 +30748,7 @@ M:	Srinivas Neeli <srinivas.neeli@amd.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
++F:	drivers/net/ethernet/xilinx/tsn/
+ 
+ XILINX UARTLITE SERIAL DRIVER
+ M:	Peter Korsgaard <jacmet@sunsite.dk>
+diff --git a/drivers/net/ethernet/xilinx/Kconfig b/drivers/net/ethernet/xilinx/Kconfig
+index 7502214cc7d5..c6d704c8d3d4 100644
+--- a/drivers/net/ethernet/xilinx/Kconfig
++++ b/drivers/net/ethernet/xilinx/Kconfig
+@@ -41,4 +41,5 @@ config XILINX_LL_TEMAC
+ 	  This driver supports the Xilinx 10/100/1000 LocalLink TEMAC
+ 	  core used in Xilinx Spartan and Virtex FPGAs
+ 
++source "drivers/net/ethernet/xilinx/tsn/Kconfig"
+ endif # NET_VENDOR_XILINX
+diff --git a/drivers/net/ethernet/xilinx/Makefile b/drivers/net/ethernet/xilinx/Makefile
+index 7d7dc1771423..66dab012650b 100644
+--- a/drivers/net/ethernet/xilinx/Makefile
++++ b/drivers/net/ethernet/xilinx/Makefile
+@@ -8,3 +8,4 @@ obj-$(CONFIG_XILINX_LL_TEMAC) += ll_temac.o
+ obj-$(CONFIG_XILINX_EMACLITE) += xilinx_emaclite.o
+ xilinx_emac-objs := xilinx_axienet_main.o xilinx_axienet_mdio.o
+ obj-$(CONFIG_XILINX_AXI_EMAC) += xilinx_emac.o
++obj-$(CONFIG_XILINX_TSN) += tsn/
+diff --git a/drivers/net/ethernet/xilinx/tsn/Kconfig b/drivers/net/ethernet/xilinx/tsn/Kconfig
+new file mode 100644
+index 000000000000..3164d1ce7caa
+--- /dev/null
++++ b/drivers/net/ethernet/xilinx/tsn/Kconfig
+@@ -0,0 +1,14 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Xilinx TSN device configuration
++#
 +
- 	aux->map = map;
- 	err = bpf_iter_map_check_prog(prog, aux);
- 	if (err)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 04a3b3c..c8146db 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -112,7 +112,6 @@ int bpf_check_uarg_tail_zero(bpfptr_t uaddr,
- }
++config XILINX_TSN
++	tristate "Xilinx TSN Ethernet driver"
++	depends on OF_ADDRESS
++	help
++	  This driver supports the AMD/Xilinx Time-Sensitive Networking
++	  (TSN) Endpoint Ethernet MAC IP. It provides the wrapper device
++	  and the endpoint MAC that connects the IP to the host CPU.
++
++	  If unsure, say N.
+diff --git a/drivers/net/ethernet/xilinx/tsn/Makefile b/drivers/net/ethernet/xilinx/tsn/Makefile
+new file mode 100644
+index 000000000000..6f99226f3dc8
+--- /dev/null
++++ b/drivers/net/ethernet/xilinx/tsn/Makefile
+@@ -0,0 +1,2 @@
++obj-$(CONFIG_XILINX_TSN) += xilinx_tsn.o
++xilinx_tsn-y := xilinx_tsn_main.o
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+new file mode 100644
+index 000000000000..afe7609c67fb
+--- /dev/null
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Time Sensitive Networking (TSN) Ethernet MAC wrapper driver.
++ *
++ * Copyright (C) 2026 Advanced Micro Devices, Inc.
++ */
++
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/types.h>
++
++#define TSN_NUM_CLOCKS		6
++
++/**
++ * struct xlnx_tsn_ip - wrapper-private IP state
++ * @clks: bulk-managed IP clocks
++ */
++struct xlnx_tsn_ip {
++	struct clk_bulk_data clks[TSN_NUM_CLOCKS];
++};
++
++static const char * const tsn_clk_names[TSN_NUM_CLOCKS] = {
++	"gtx",
++	"gtx90",
++	"host_rxfifo",
++	"host_txfifo",
++	"ref",
++	"s_axi",
++};
++
++static void tsn_clk_bulk_disable(void *data)
++{
++	struct xlnx_tsn_ip *w = data;
++
++	clk_bulk_disable_unprepare(TSN_NUM_CLOCKS, w->clks);
++}
++
++static int tsn_ip_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct xlnx_tsn_ip *w;
++	int ret;
++
++	w = devm_kzalloc(dev, sizeof(*w), GFP_KERNEL);
++	if (!w)
++		return -ENOMEM;
++
++	for (int i = 0; i < TSN_NUM_CLOCKS; i++)
++		w->clks[i].id = tsn_clk_names[i];
++
++	ret = devm_clk_bulk_get(dev, TSN_NUM_CLOCKS, w->clks);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to get clocks\n");
++
++	ret = clk_bulk_prepare_enable(TSN_NUM_CLOCKS, w->clks);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to enable clocks\n");
++
++	ret = devm_add_action_or_reset(dev, tsn_clk_bulk_disable, w);
++	if (ret)
++		return ret;
++
++	return devm_of_platform_populate(dev);
++}
++
++static const struct of_device_id tsn_of_match[] = {
++	{ .compatible = "xlnx,tsn-endpoint-ethernet-mac-3.0" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, tsn_of_match);
++
++static struct platform_driver tsn_driver = {
++	.probe = tsn_ip_probe,
++	.driver = {
++		.name = "xilinx-tsn",
++		.of_match_table = tsn_of_match,
++	},
++};
++
++static struct platform_driver * const tsn_drivers[] = {
++	&tsn_driver,
++};
++
++static int __init xlnx_tsn_init(void)
++{
++	return platform_register_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
++}
++module_init(xlnx_tsn_init);
++
++static void __exit xlnx_tsn_exit(void)
++{
++	platform_unregister_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
++}
++module_exit(xlnx_tsn_exit);
++
++MODULE_AUTHOR("Srinivas Neeli <srinivas.neeli@amd.com>");
++MODULE_DESCRIPTION("AMD/Xilinx TSN Endpoint Ethernet MAC wrapper driver");
++MODULE_LICENSE("GPL");
 
- const struct bpf_map_ops bpf_map_offload_ops = {
--	.map_meta_equal = bpf_map_meta_equal,
- 	.map_alloc = bpf_map_offload_map_alloc,
- 	.map_free = bpf_map_offload_map_free,
- 	.map_check_btf = map_check_no_btf,
+-- 
+2.43.0
 
-
-Pls tag the respin as [PATCH bpf-next v2].
-
-pw-bot: cr
