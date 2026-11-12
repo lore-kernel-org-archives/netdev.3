@@ -1,90 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794513655;
-	b=OXvPZ6+oD78uGqS5RI3JdKQOK7mfggZf7rcAXpdP/z8UuRnEUBU08UdkKWs0+3hCW9YN
-	 JasOK8WeyXjfLoHhLcNj6JRAy4VyDaabrvv5BVz6dehqQTKorpZp7e4tuXXqHZUyUTuJO
-	 i8RsedOpWBov/5vV9UZKGMwyCZOlofxUGMc2uEgfQ78DrO1fsQr6FsCo0mg8EDBQ/0eG9
-	 +hMvLuQ0aq+9PCUo157LsT2rsXMZIqwGDAcP2jkbSjoMZc7esXg9YakRTGh7CiGpnuyn6
-	 8VNZr+Zu4RTT4h6tMf/im03F4Af9l71YQzybilE9JEg5m32oCHpcJr8EmT0gegZjr0w==
+	b=oQ7LlPuERX2GnHa5Cv5aiZVm3zBljrM7Pg9DUEbsLwHl3Nl8fuSg9ojQlR4Yq35Cz7ww
+	 HD9EGSJOMpd2A5ulA7jSUfUJcDt+cpJ4eIVF+lSAV3FCd3tcQpMIzl66lgeXj7BCZmgGn
+	 w/o5YukNoNRuh3iisNS0JZ8xT7AfmOF8zbsdvVdY7xIRQPdPcjLMJMSpGWjbQj16uBfl1
+	 Yn46ixMa+j8junU0/3ocLbyS7lS8xn0KdtNNuWDMvcFw1jJzT4hlWnwagE0ZiO/emShmc
+	 GStUAwZEQhnrCqN1IMmmSf1tcOAS64Wzvt+N6DEVrrBWJDg8IK27yGq+g0fKPKadStA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794513655;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=24lMsuypZEODGJ/XVVAC7Z9OPdGduan4+qU1+RS/WR0=;
-	b=FfwI7Q7IZI/uMWlec6ezF+ifKEIRMc8AJf29Q9GWFPtp2DeRZaggb1liNBaljVtQjXI0
-	 faSYwCgf49ixdo116srFiYzBWGnNeQexJccdD1StLOL+bQb9e8PU5SIojkt2b1bgzv17S
-	 aSRvhpcu9sYQEH3YBPIYlLv03QXmJnzGrjKVkOS8DeQcePKSGcrnMV9qOiyzSE/cdZ1C3
-	 ddGUGAJGpEV3gjO/RCOph/og4Vj0n7Ox1vT3cozEkJiK8n2wq3L/np4H1ebjBE+0Ik8gD
-	 B8h4a46N74s3RPR8uBk7dJ2cIRjM1lRp61fW/Z9137E3w27LAVwk9mcPxD01gd4GjcA==
+	bh=VC4OdCe/LgNXkhGsk/CkX5+khBmZwetPRhu0LmQOFU8=;
+	b=XPZjcXLknI2aVscrc46NWPIsGG02OfYIqgdWRukrwMHVrlQ/4zUSpaVEIHiTumABWp1g
+	 q4L4rjDpn07MsT3/vUmnuyq7DlAxue+3NWbKmNnefBCI7R/fz1wWF4LG4u7xiVFIsC72T
+	 jH8/LPXSOSjDZs4ObQejqxP76/d9/p3/8d/pXlFrtDK3ZW7FrrpTdRjj6LAr3dTGCbWh+
+	 Tnhmg7v05V7HrgOtORLcUICKY9RRp1b5eH7X+sY1jRSUBR6+4N9VFKYLSlhPP6Ia3N59L
+	 XjSQW0Ek+R9G/iAuPNWjcfiBK582vJ+Uid5mTH+S1WDnT/i7B2IYkUVA7zs2tyLaWFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=slLy2kJw;
-	arc=none smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=aB0YClp0;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB2B606A338
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AB2B606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5BF606A89B
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B5BF606A89B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=slLy2kJw
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e9eb579c0eso1552735ad.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=aB0YClp0
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b197cd42b0so115165a91.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513653; x=1795118453; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513654; x=1795118454; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=24lMsuypZEODGJ/XVVAC7Z9OPdGduan4+qU1+RS/WR0=;
-        b=slLy2kJwmnsKIomRWAjs2yETifuY/LgyLpo/8tbsON90IK4cGjIOHU9tUCGHlId9lo
-         tTtCb6rxn5wpQ4/B5dubdIvoKiDyVnF1HhJetXKapzahcu39ZYkfhJ+wDUrxBgtpSrqN
-         GrrRCS9tErjarun28Ydky24w4xAtuBNz/npjz5ZBxjQXWdBCE0BsPVKABX79NvUaOlIu
-         U2qxQD+XundnrfhB/8f2dRnaBW3mD6L8Kpk2WOm4H9hk3/FA6izVTuGpzN2KOa6bcPZI
-         scq3jy2Mt0HMn6McYP3Ys9ZCJ2GxK0I9JEk6QDzE1bXV8BJ67yvYGIO+yn5U8a2tCeqk
-         bz0Q==
+        bh=VC4OdCe/LgNXkhGsk/CkX5+khBmZwetPRhu0LmQOFU8=;
+        b=aB0YClp0iRns3+mhb3zaiD6d62FTcvq4j/pAzX79GLTIJT3uL8ISkTLSZAzTR7kGYI
+         WAfLsyG0F5HBysm9wWYi3p11hmZDr004ahbjaxWJCOZ/27lBu97q+dtcRIKit6cY8syK
+         narpVnWEKrWGkaj9ZBWklrbN9Xy5upfox8xh+2I371FavWrxc8GCH9h/GKaOFFHHK1Zs
+         o1WZlBt8AUkqX7aa0gPqgXKWxgjg+J4JXxxClIQvR7NzSAb5veAp3olakvcWFsuhiQQ9
+         1MFeWpxZHyZXumSDxNvsHqcz/6JThyeg0PYTLJSrugC1Xd/BGvofoIi3XJSEk2Z5H9Gj
+         ShTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794513653; x=1795118453;
+        d=1e100.net; s=20260707; t=1794513654; x=1795118454;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=24lMsuypZEODGJ/XVVAC7Z9OPdGduan4+qU1+RS/WR0=;
-        b=XN4U1y3Mhz+YqNacXgoFBPwQ4s3zAYVqj3ukxcZYiQ/SOQH8x6UVQu7uOY04C8/ma9
-         DAoMwFozRgZ1SxTkPTuCOjbtA7HI/hBZkfLcdX1d+7QB8LTqmgmKgrpqk7mp/qSK9x3j
-         BGZXrcSVo7nIoxEZ0x86mN8eS/E/zVYgyBk+Nf9g+InLv1qGW247SeVz1uR1EVlQPV+M
-         qV3mn2WqwzYfnuH6Cg62TVi9kcBns9xukVxV5lYp4bT7MKZa7lw+OwJtARUEFKZeWqLc
-         J/w5Qomg08N4kiTneu9gFNndxSgUm5KYWeqXl9TP4bOXc7mXtNcK/jXFK8tiXB+QRUcC
-         DblA==
-X-Gm-Message-State: APuU4Z/eVrcPCO8TtKdSDLc1Y37TO1pcIvXXaSETlLjXGVmi9acpxjEa
-	/Yzahh8EqiX2R/CjwSYzkQhMHL37IV1Aj1JtIvmdsSv9slNTBvMp88tSHJ4ov74HCvk3ntzhXB+
-	ZgrROYyA=
-X-Gm-Gg: AYBFou2qfVz3uvcQFPMdtypz5KtgFoPuasRhDLaK3MbDDJegBjwCFr7NQAeoB4GlBo0
-	71c4Hhs3v0RWZaoN8MHyMBBgDMuDiPc8TTw62H+966AnfoRC4yzyHfj1alqexuG2MrrSVx+NC51
-	64NvTG4QzLxkkEpGdl+AoKfAILP7mQrwXxgcdifC2RONbCDcam7DH0Vxow3RiFyZiaoLpDEWzNc
-	5Bqq7BOXDUmw43/s2SA6unyiHP8emLN1YYpI77v/nQ4x9KR5VnSIJGnCljCP4rZ+fb1qLrFtHdC
-	PB+HW5xgQuA3na1Gca/gb3+Z0GXEtx29fKXNM9ct5tuCZoZ3NfzG4+1ilYZqakdJ5J0e78oY2E9
-	5y7xc8zvZKvrbJY71hkM9Mb8qEEdoW8MuDvqgoW63i2saATUaPA0Nm/aFkjhrvo2tmiFpZ5xH0L
-	dK8ruUBvZxinjbMR5u5qxRzpo63aHMBtTP6k42AYiAhavXZS1G5h8tT9r2+QLr2HMQrWRfvls2o
-	TkF9bZrDmrsWyE1NX666SoW9ML4zyEj6C6XzHS82BOerE3T+3pvs7iyd7ONj4wttQHvOXwAesgw
-	iVzaaUUczabk51iHDXlhKFMLExmsR4OxrVXctY9+zwG4TejBAUfKwlS+Xp/xnAJaftBL/nM=
-X-Received: by 2002:a17:902:c40a:b0:2ed:4b23:c417 with SMTP id d9443c01a7336-2ee0da7f4cdmr3741345ad.11.1794513653510;
-        Thu, 12 Nov 2026 12:00:53 -0800 (PST)
+        bh=VC4OdCe/LgNXkhGsk/CkX5+khBmZwetPRhu0LmQOFU8=;
+        b=idWL9llGNQ/TpctZBN4z6Na/thjr2NLmLJkb20lNcBhEGvwVwr2fgRj3NWQPQkCvSx
+         C8gYnnr1iEeydx5POd6thAMa+6UoicJk35VGnn6c3sj/gg+MHn6gBcQGojrztzY/q78S
+         fOOUDoHpwc3NqogdKFFJ9MQ6dKLKqNRNbs47kdCJBqUZB9unKarpxz2ptAk4qKEI/+hY
+         lWThNbniJ0Z6EjiAn80YmN05O6U8coMiSRhN+PTbUMJVMfl9XrmJQEP3fDu6+ipt4gUJ
+         2CIvXID1bdgWnawQb+qLNic7hG/5dDl/jxluVurzxgRfrgz1YYW40Xp0R/kNmWT57KrQ
+         Zwpw==
+X-Gm-Message-State: APuU4Z+1321+bitVt5tbomFMmeo/U/x3IOF8tStQKE6opmViQ6EX7oXE
+	UIAxl3rhX8SUOHz8wV9NVTzGJZIEZdG0Q4PSPvMRuvB+ug/ouT0RKUWE785SsrI7dlwHvEW+AOR
+	6jM69
+X-Gm-Gg: AYBFou3dC987hqyrPEjHkVW+HQD92Cgz+oYbNXIgAr4DBjuyGebO5kz8scCxdroVI0/
+	FBmzlxoobmLEMbANYT7iMBuZSDt39+WpkuKmpZhmLw+WNM/xN2dKmRruYWAdIW73TzpojAb42zA
+	OmLjTeR7Bz/6nGLqGLD99SIp63GW3CxY3xeHO4BfAXl07lLL1F6/WVRAB3LB32A3Xpw0q8BwOuw
+	znsgpagVmRbF8ot94Z8UF7nqZ92f5xC/erkACL93PVm8ixg73eagy5v/s768iH4CfdGBAnmdMCt
+	R++YV5jTbvlnz8NIpbt17GEXanbzANggohPOt3j2h9QLg7MGca0mo50yA8hJ53dxs/HPqI+uPq0
+	jMYyCUi+bTkFRcrMrCUhkP2KHvJfXPashHtgSraCarGyuZHO6C26k5mnghRB3uOMFB54UO4nYrv
+	F/39UIXvkJ68HSm3hK6523NDERTa64AE1BrsaMBrpBtBQ2qMj11ZcEXFNap7HGfQQpUXa2xTifu
+	IbB70uQ3Mc82lgdXP9huQ2HW5pQ6zwh6B8PAd04+39NzxXfQDLk0VnJkgwswUR1YBcVjcloKjrR
+	9iuPCRQ61/FYbTOkAOLuT+pEq2LeoIskrYRq9XkCo20IPogbzWt0pfjzPDPhHiHw4a9jPcA=
+X-Received: by 2002:a17:90b:2cc3:b0:3a8:13d6:f740 with SMTP id 98e67ed59e1d1-3b1b0a0d989mr134212a91.22.1794513654245;
+        Thu, 12 Nov 2026 12:00:54 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.52
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 12 Nov 2026 12:00:53 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 05/11] ss: replay all dumps in TCPDIAG_FILE
-Date: Thu, 12 Nov 2026 11:59:18 -0800
-Message-ID: <20261112200046.2164391-6-stephen@networkplumber.org>
+Subject: [PATCH iproute2 06/11] ss: bound state and type name lookups
+Date: Thu, 12 Nov 2026 11:59:19 -0800
+Message-ID: <20261112200046.2164391-7-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112200046.2164391-1-stephen@networkplumber.org>
 References: <20261112200046.2164391-1-stephen@networkplumber.org>
@@ -99,126 +99,138 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ss -D records an IPv4 dump followed by an IPv6 dump, but the
-replay stopped at the first NLMSG_DONE, so IPv6 sockets were never
-shown. Keep reading until end of file, and apply the -4/-6 family
-filter, which a live dump applies in the request. The family comes
-from the file, so check its range.
+The socket state, SCTP state and TIPC socket type come from the
+kernel (or a TCPDIAG_FILE) and were used to index name tables
+without a range check.
 
-The ssfilter test expected the IPv4-only output; add -4 where both
-families match and add IPv6 cases.
+SCTP associations were detected by the inode matching the previous
+row, so an endpoint dumped twice was treated as an association and
+its TCP-style state indexed the SCTP table out of range. Use the
+INET_DIAG_PEERS attribute, which the kernel only sends for
+associations, instead.
 
+Reported-by: Anthropic OSS scanner (ANT-2026-GDQ1INKZ)
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- misc/ss.c                     | 18 +++++++++++++-----
- testsuite/tests/ss/ssfilter.t | 26 +++++++++++++++++++-------
- 2 files changed, 32 insertions(+), 12 deletions(-)
+ misc/ss.c | 43 ++++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
 
 diff --git a/misc/ss.c b/misc/ss.c
-index 3c538a4e..72de0742 100644
+index 72de0742..2becb852 100644
 --- a/misc/ss.c
 +++ b/misc/ss.c
-@@ -444,6 +444,9 @@ static void filter_af_set(struct filter *f, int af)
- 
- static int filter_af_get(struct filter *f, int af)
- {
-+	if (af < 0 || af >= 64)
-+		return 0;
-+
- 	return !!(f->families & FAMILY_MASK(af));
+@@ -107,7 +107,6 @@ static int show_proc_ctx;
+ static int show_sock_ctx;
+ static int show_header = 1;
+ static int follow_events;
+-static int sctp_ino;
+ static int show_tipcinfo;
+ static int show_tos;
+ static int show_cgroup;
+@@ -766,7 +765,15 @@ static unsigned long long cookie_sk_get(const uint32_t *cookie)
+ 	return (((unsigned long long)cookie[1] << 31) << 1) | cookie[0];
  }
  
-@@ -3943,8 +3946,8 @@ static int tcp_show_netlink_file(struct filter *f)
- 		if (status != sizeof(hdr)) {
- 			if (ferror(fp))
- 				perror("Reading header from $TCPDIAG_FILE");
--			if (feof(fp))
--				fprintf(stderr, "Unexpected EOF reading $TCPDIAG_FILE");
-+			else if (status || err)
-+				fprintf(stderr, "Unexpected EOF reading $TCPDIAG_FILE\n");
- 			break;
- 		}
- 
-@@ -3977,15 +3980,17 @@ static int tcp_show_netlink_file(struct filter *f)
- 			if (ferror(fp))
- 				perror("Reading $TCPDIAG_FILE");
- 			if (feof(fp))
--				fprintf(stderr, "Unexpected EOF reading $TCPDIAG_FILE");
-+				fprintf(stderr, "Unexpected EOF reading $TCPDIAG_FILE\n");
-+			err = -1;
- 			break;
- 		}
- 
--		/* The only legal exit point */
-+		/* One dump per address family; the file ends after a DONE */
- 		if (h->nlmsg_type == NLMSG_DONE) {
- 			err = 0;
--			break;
-+			continue;
- 		}
-+		err = -1;
- 
- 		if (h->nlmsg_type == NLMSG_ERROR) {
- 			struct nlmsgerr *err = (struct nlmsgerr *)NLMSG_DATA(h);
-@@ -4008,6 +4013,9 @@ static int tcp_show_netlink_file(struct filter *f)
- 		parse_diag_msg(h, &s);
- 		s.type = IPPROTO_TCP;
- 
-+		if (f && !filter_af_get(f, s.local.family))
-+			continue;
+-static const char *sctp_sstate_name[] = {
++/* Names indexed by a value from the kernel, which may be out of range */
++static const char *table_name(const char * const *names, size_t n,
++			      unsigned int i)
++{
++	return i < n && names[i] ? names[i] : "UNKNOWN";
++}
++#define TABLE_NAME(names, i)	table_name(names, ARRAY_SIZE(names), i)
 +
- 		if (f && f->f && run_ssfilter(f->f, &s) == 0)
- 			continue;
++static const char * const sctp_sstate_name[] = {
+ 	[SCTP_STATE_CLOSED] = "CLOSED",
+ 	[SCTP_STATE_COOKIE_WAIT] = "COOKIE_WAIT",
+ 	[SCTP_STATE_COOKIE_ECHOED] = "COOKIE_ECHOED",
+@@ -805,6 +812,7 @@ struct sockstat {
+ 	char *peer_name;
+ 	__u32		    mark;
+ 	__u64		    cgroup_id;
++	bool		    sctp_assoc;
+ };
  
-diff --git a/testsuite/tests/ss/ssfilter.t b/testsuite/tests/ss/ssfilter.t
-index 4c2315ca..cc0f01a5 100755
---- a/testsuite/tests/ss/ssfilter.t
-+++ b/testsuite/tests/ss/ssfilter.t
-@@ -3,21 +3,27 @@
- . lib/generic.sh
+ struct dctcpstat {
+@@ -880,18 +888,6 @@ struct tcpstat {
+ 	struct tcp_bbr_info *bbr_info;
+ };
  
- # % ./misc/ss -Htna
--# LISTEN  0    128    0.0.0.0:22       0.0.0.0:*
--# ESTAB   0    0     10.0.0.1:22      10.0.0.1:36266
--# ESTAB   0    0     10.0.0.1:36266   10.0.0.1:22
--# ESTAB   0    0     10.0.0.1:22      10.0.0.2:50312
-+# LISTEN 0      128          0.0.0.0:22         0.0.0.0:*
-+# ESTAB  0      0           10.0.0.1:22        10.0.0.1:36266
-+# ESTAB  0      0           10.0.0.1:36266     10.0.0.1:22
-+# ESTAB  0      0           10.0.0.1:22        10.0.0.2:50312
-+# LISTEN 0      128             [::]:22            [::]:*
-+# ESTAB  0      0      [fec0:42::24]:40520 [fec0:42::1]:22
-+# ESTAB  0      0      [fec0:42::24]:22    [fec0:42::1]:44248
-+#
-+# Each test filters to one address family, so the address columns are
-+# not padded for the wider IPv6 rows.
- export TCPDIAG_FILE="$(dirname $0)/ss1.dump"
+-/* SCTP assocs share the same inode number with their parent endpoint. So if we
+- * have seen the inode number before, it must be an assoc instead of the next
+- * endpoint. */
+-static bool is_sctp_assoc(struct sockstat *s, const char *sock_name)
+-{
+-	if (strcmp(sock_name, "sctp"))
+-		return false;
+-	if (!sctp_ino || sctp_ino != s->ino)
+-		return false;
+-	return true;
+-}
+-
+ static const char *unix_netid_name(int type)
+ {
+ 	switch (type) {
+@@ -1437,14 +1433,14 @@ static void sock_state_print(struct sockstat *s)
+ 		sock_name = "unknown";
+ 	}
  
- ts_log "[Testing ssfilter]"
+-	if (is_sctp_assoc(s, sock_name)) {
++	if (s->sctp_assoc) {
+ 		field_set(COL_STATE);		/* Empty Netid field */
+-		out("`- %s", sctp_sstate_name[s->state]);
++		out("`- %s", TABLE_NAME(sctp_sstate_name, s->state));
+ 	} else {
+ 		field_set(COL_NETID);
+ 		out("%s", sock_name);
+ 		field_set(COL_STATE);
+-		out("%s", sstate_name[s->state]);
++		out("%s", TABLE_NAME(sstate_name, s->state));
+ 	}
  
--ts_ss "$0" "Match dport = 22" -Htna dport = 22
-+ts_ss "$0" "Match dport = 22" -Htna4 dport = 22
- test_on "ESTAB 0      0      10.0.0.1:36266 10.0.0.1:22"
+ 	if (show_queues) {
+@@ -2498,7 +2494,7 @@ static void sctp_stats_print(struct sctp_info *s)
+ 	if (s->sctpi_tag)
+ 		out(" tag:%x", s->sctpi_tag);
+ 	if (s->sctpi_state)
+-		out(" state:%s", sctp_sstate_name[s->sctpi_state]);
++		out(" state:%s", TABLE_NAME(sctp_sstate_name, s->sctpi_state));
+ 	if (s->sctpi_rwnd)
+ 		out(" rwnd:%d", s->sctpi_rwnd);
+ 	if (s->sctpi_unackdata)
+@@ -3622,6 +3618,12 @@ static int inet_show_sock(struct nlmsghdr *nlh,
+ 	if (s->local.family == AF_INET6 && tb[INET_DIAG_SKV6ONLY])
+ 		v6only = rta_getattr_u8(tb[INET_DIAG_SKV6ONLY]);
  
--ts_ss "$0" "Match dport 22" -Htna dport 22
-+ts_ss "$0" "Match dport 22" -Htna4 dport 22
- test_on "ESTAB 0      0      10.0.0.1:36266 10.0.0.1:22"
- 
--ts_ss "$0" "Match (dport)" -Htna '( dport = 22 )'
-+ts_ss "$0" "Match (dport)" -Htna4 '( dport = 22 )'
- test_on "ESTAB 0      0      10.0.0.1:36266 10.0.0.1:22"
- 
- ts_ss "$0" "Match src = 0.0.0.0" -Htna src = 0.0.0.0
-@@ -46,3 +52,9 @@ test_on "ESTAB 0      0      10.0.0.1:22 10.0.0.2:50312"
- 
- ts_ss "$0" "Match (src or src) and dst" -Htna '( src 0.0.0.0 or src 10.0.0.1 ) and dst 10.0.0.2'
- test_on "ESTAB 0      0      10.0.0.1:22 10.0.0.2:50312"
++	/* SCTP assocs share the inode number of their endpoint; only
++	 * assocs carry INET_DIAG_PEERS, and only for those is the state
++	 * an SCTP_STATE_* value.
++	 */
++	s->sctp_assoc = s->type == IPPROTO_SCTP && tb[INET_DIAG_PEERS];
 +
-+ts_ss "$0" "Match IPv6 dport = 22" -Htna6 dport = 22
-+test_on "ESTAB 0      0      \[fec0:42::24\]:40520 \[fec0:42::1\]:22"
-+
-+ts_ss "$0" "Match IPv6 src:port" -Htna 'src [fec0:42::24]:22'
-+test_on "ESTAB 0      0      \[fec0:42::24\]:22 \[fec0:42::1\]:44248"
+ 	inet_stats_print(s, v6only);
+ 
+ 	if (show_options) {
+@@ -3709,7 +3711,6 @@ static int inet_show_sock(struct nlmsghdr *nlh,
+ 		else
+ 			tcp_show_info(nlh, r, tb);
+ 	}
+-	sctp_ino = s->ino;
+ 
+ #ifdef ENABLE_BPF_SKSTORAGE_SUPPORT
+ 	if (tb[INET_DIAG_SK_BPF_STORAGES])
+@@ -4918,9 +4919,9 @@ static int tipc_show_sock(struct nlmsghdr *nlh, void *arg)
+ 
+ 	if (show_tipcinfo) {
+ 		if (oneline)
+-			out(" type:%s", stype_nameg[ss.type]);
++			out(" type:%s", TABLE_NAME(stype_nameg, ss.type));
+ 		else
+-			out("\n type:%s", stype_nameg[ss.type]);
++			out("\n type:%s", TABLE_NAME(stype_nameg, ss.type));
+ 		out(" cong:%s ",
+ 		       stat[TIPC_NLA_SOCK_STAT_LINK_CONG] ? "link" :
+ 		       stat[TIPC_NLA_SOCK_STAT_CONN_CONG] ? "conn" : "none");
 -- 
 2.53.0
 
