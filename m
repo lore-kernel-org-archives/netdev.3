@@ -1,47 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.168
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794475709;
-	b=4cX8j2A36OZYzMSQbKC+mZc47RNwbWR3qCcpPSdTTvtI6MOYc8sliB+EXCvyOyi0GiQY
-	 E/VTFAAUoBHvvQQfPSkpniYtC0psTniZwMA7NrDxWm7Yq312gGh8WnBN44SgUSdmZTA4c
-	 /KXp3LggJdHgstxK7wi6ECivA9d7/GGz4XRUIM2rgdH5SwEBNb7Yr0BSbk4AzFRrETNu2
-	 MCP40TNa4n5umiJ7T4QTYIarSTu6XmpWCnQvWfNb5cIjbVQzYbYUPgusMOyWb26r4llWz
-	 BuaXTWXasH661hc31zVLEigkOIvRtd7PvFvBzc9CBCautNBfF0Jm95mE40WvR3buxIQ==
+	t=1794475711;
+	b=MD2cFrovc3FAfUHMtHKYM1m/75BNz90/kyMWvV08moAJG7zorohQL5lczO7hMWH0ReW1
+	 MqcopLXl7Zpfl/7Vk5TFYo++xPWBkZyBIwvPN8fwOcQoFUbz3pQ5o9IbMJtG+fBxjlIsV
+	 K2EoQ1fNDJ91JzzNh0FYwCiPPh9CsQtH4Asb4NqggjPcRVNDEkndhQpOLoTvWAwY4SvEr
+	 fxwJaNOWB7dq6sghX9JOweugLfbmfjOevyPzwpGfMztCpO3m7If/UcFJ/74VlmJDGOgAQ
+	 ez8kDtc238U7FU8Kl4Ezoi7dYrQOq/erlF9w3qkqL7nyBDzODZY49zaOaElZ9s43Vrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794475709;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
-	b=G6ti5OFYgv1tVXCrFZ5zaIrZlHale9ApshUTSZ4s1Ki7kxKY65uydzbKAZ+yy7ZJesCS
-	 3w75HV4T5vM2j8204SEl4qpgcuQ6W5BccVeB4UfgM+KZaQ3UFyXIp2kVDApb4sarDTmHS
-	 +5ymJMTOf0Z+Vw278K8lGN4/xLf2qH7kKhxzeJJQjean2XjUdD+OO0He6Tfx3/aBQOpP6
-	 /o4cESu8COEDvw+j4BA5YQGYBziZzo4ofy3DORD2j16AEGx15UeKsCtJBSSgu4mtMQYOQ
-	 Cry9ER/a1u5Bf3BKYez6sFonJCcD1LvxtxNiJ5cmENyrzO5u9AGhaYCQzVSJMx3u4eQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794475711;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=X0YkHzZQGp+BZSgrM936DfHn7nfx5gY1Xw7CsQ3SGzw=;
+	b=m2vyCs39V8Gy9lNyZhHA71YtY4Unqsth3G0EOpdqsnh2ItNHrgyZ5UQMIDGG7F0kRFBr
+	 GmOihbqgUJ68HjXXG28AOePOtX3Wg27VXm7OjvyIcbmbY4vNotROsLJLkiBcIIwrYGjAZ
+	 Z4JN982OLKez+ykMxL4howP54VJEWDsrKhF2WE5OiB1Yf0NOq41u3QdFZFFVX1aqGrirh
+	 sxxjYosj0qcVZjxg/f96TpbcS1Qa+ih7OmvW/CBfoezq9mKgY+5mq6HtFxSvVMY5cZF2S
+	 DY+l+P3YvgJNfzwIQkkypwNYOEFNmkl2iQuHhEXTpv2s8/Ew2nw98iH+dDaRq+HHLsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ig67/Q5U";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tya7+ea8;
+	arc=none smtp.remote-ip=91.218.175.168
+Received: from mta0.migadu.com (out-168.mta0.migadu.com [91.218.175.168])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C7606A321;
-	Thu, 12 Nov 2026 09:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCFA606A332
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:28:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFCFA606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ig67/Q5U
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3221F00A05;
-	Thu, 12 Nov 2026 09:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794475708;
-	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ig67/Q5UyR7u+l7reMcBd+/6d+1hZBrZuflvI8fVlnKGwRPGSovuLhYFlD2XwshDx
-	 k4tWIwIpZxgVS+CnHDuNFmwz2y0IQR3KTMb/WgVe+IP5VJD50E8CqJuLwUg4OFGy7J
-	 /TdABenpbG+NFE26X1Tm6gzyn6qutTdeFFLriGI/xhqj9QTek90gHYvZIWgj/2lFXG
-	 2LildKJmwvPv8iFpkgWQS+ehmyT34Fvl+PtVOquGQFCrgIzpmgEXqq5UL/M8eqPCDe
-	 GBAG5HSArBfaL5Jmk6mQ/h0lgMQxHl0tiz5Vcr7wEwYGUgZ9RYFsQdEK4W/u5oxatR
-	 EKcCPEcC8JG7g==
-Message-ID: <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-Date: Thu, 12 Nov 2026 10:28:17 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tya7+ea8
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=E1YkdaMxIbLeUfRHHODlVmdheov0JaFnvpW0wY7+oyk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794475707; v=1; x=1795080507;
+ b=tya7+ea8la0aJM9NzLcQURNTaMzl2vA3VuHe/HdBgw0UnQnwZNoPCOcHeRU/SyOSXHID2cQT
+ /hbKIRAGITdJZTctJ4Hr+HgUE2+PmyB9rJQAbVciIjXCxze1y7SXFezGEQJZAhLo5Rb62WJkV9N
+ ns6tbN2QqSZgS6Ti0AYEjrZ0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id e96ee24549728be5;
+	Thu, 12 Nov 2026 09:28:27 +0000
+X-Mizu-Trace-ID: e96ee24549728be5
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH net-next v3 0/5] seg6: add End.X PSP flavor support and
+ selftests
+Date: Thu, 12 Nov 2026 17:27:55 +0800
+Message-Id: <20261112-srv6_flavors_endx-v3-0-c9177bbbd965@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,117 +61,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-To: Arnd Bergmann <arnd@arndb.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, "Kirill A. Shutemov"
- <kas@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>,
- Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Nishanth Menon <nm@ti.com>,
- Frank Li <frank.li@nxp.com>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
- <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
- <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
- <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33N0QrCIBgF4FcJrzN+nXNbV71HxFj626ShoUM2x
+ t498SIIosvD4XxnIxGDxUjOh40ETDZa73KojgeixsE9kFqdM+HAJXSc0xiS7M00JB9ij04vtBN
+ tx5jUNShB8u4V0NilmFficKYOl5nccjPaOPuwlrPESv/HTYwCFRqYglqJ5t5cnutknY8n5QqX+
+ IdgAN0vgmeiloNqTFu1RrAvYt/3Nx1wu94AAQAA
+X-Change-ID: 20260922-srv6_flavors_endx-9489116d50c4
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ Andrea Mayer <andrea@common-net.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.16.0
 
-On 11/12/26 10:25, Arnd Bergmann wrote:
-> On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
->> On 11/12/26 09:55, Arnd Bergmann wrote:
->>>
->>> I tried to push for what I thought was an aggressive timeline
->>> last year, but that would still keep the Arm bits for a couple more
->>> LTS releases and only gradually reduce the scope of highmem in the
->>> meantime, removing support from architectures, file systems, and
->>> drivers where possible. See https://lwn.net/Articles/1051010/
->>> for a summary of my talk in Tokyo, including the slides and
->>> a link to the video for anyone wanting more details.
->>>
->>> I also prepared a number of patches towards this, but have so
->>> far not been great at following up to get them merged, sorry
->>> about that.
->>
->> I think we can already start at removing CONFIG_HIGHPTE now, right?
-> 
-> Yes, I think my patch from two years ago still applies, see
-> 
-> https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
-> https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
-> 
-> If not, I can send you an updated version.
+This series adds End.X PSP flavor handling in seg6local and extends the
+SRv6 selftests to cover it.
 
-yes, please, that also brings it up to reviewer's attention :)
+Patch 1 splits the final forwarding step out of end_flv8986_core() so
+RFC8986 flavor logic can be reused outside the End path.
+Patch 2 uses that to add End.X PSP support through the same
+end_flv8986_core() path.
+Patches 3-4 refactor the PSP selftest setup/cleanup so flavor tests can
+be added more cleanly.
+Patch 5 adds End.X PSP connectivity coverage and updates the selftest
+policy parser to accept an explicit action field.
 
--- 
-Cheers,
+The goal is to make End.X PSP behavior consistent with End PSP, while
+keeping the selftest structure easier to extend for later flavors.
 
-David
+Run all srv6 selftests on debug kernel. All passed without error.
+
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Changes in v3:
+- Rebase on Andrea's "seg6: fixes for the PSP flavor of SRv6 End"
+- Update selftest to support the new SID format
+- Link to v2: https://lore.kernel.org/r/20261009-srv6_flavors_endx-v2-0-56ac7f838f41@kylinos.cn
+
+Changes in v2:
+- rebase on Andrea's "seg6: ensure packet data is writable before modifying SRH and IPv6 DA"
+- Patch 2: Update end_flv8986_core() comment for End.X
+- Patch 3: Move ret check in this patch
+- Patch 4: Do not remove noflv route
+- Link to v1: https://lore.kernel.org/r/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn
+
+---
+Hangbin Liu (5):
+      seg6: split final End process out of flavor processing
+      seg6: add RFC8986 flavor support for End.X
+      selftests: seg6: move SRv6 End PSP setup into its own helper
+      selftest: seg6: explicit cleanup for SRv6 End PSP test
+      selftests: seg6: add PSP flavor testing for SRv6 End.X
+
+ net/ipv6/seg6_local.c                              |  31 +-
+ .../testing/selftests/net/srv6_end_flavors_test.sh | 322 +++++++++++++++++----
+ 2 files changed, 284 insertions(+), 69 deletions(-)
+---
+base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
+change-id: 20260922-srv6_flavors_endx-9489116d50c4
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
+
