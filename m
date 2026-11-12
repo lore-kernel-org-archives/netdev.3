@@ -1,72 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794454605;
-	b=gILEAss6GTjZuZCqgJmhdRMcO3YFcHY1KLY69IcdaFLVcX4NDd8xWw81P88om19u+oxe
-	 unV5J3vOLKtEfRuyNVAjlUhpHP02kEI2jjA5ToKNm0rSguyK2oYl5zXfmtwGnjqyBBVXK
-	 WGPKhIaixXSFEvw6NyfRD+14bS3fmWtZarN3RvfmsjbtsWAMfLRh30yIdbpsSust0VFwT
-	 CbERq2nr628M8u4GtAkXkYE5urW8f0DBEqpJtp0AmZF2VsKmtsXFTfqqEGg5Vb1QdyIvy
-	 7lUiTafZ6Y5A5QlSoUuxAdzChZV2UiWEFsXL1HTq7u8K1da/jNGm1tPL2etLwy+qgSg==
+	t=1794455495;
+	b=Gmc1LkuWJPsc1hab52HmjwbSMUcLB9UNKxaYQAS4SYDBbYrXhmStIl3jIfGh41AZ6ASX
+	 iG6fF0EUpukIRyotXRW8HujHcwdgh4xyUqyQmPrwSE5O6fR0v4eqFU/20J8/kojiS7E2S
+	 ASpLRUM+jJ/hGZz5sZeOiVq3mzPkWUY0wf3TgXCydtzNeBv6kOw6uQmxTw2TTNtZvRXzJ
+	 PpwXyk1RfmkI8GIBjJwmWyGt8iXnQDRl9VsHW9ds82lzeUf5I2fs9ZYCaXOeWALQHNeCy
+	 SnsUwtuS+7stRW6FzKACWBr3nfimJ64JNWdRmY9czAHlfp5FG8kVAKAp3n5aQ8x6h8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794454605;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794455495;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=gN9Tyx2FqNCHFZUeFzXAvqkF5h5jT66EcfPlDZkPMDo=;
-	b=4u1OUGZu4b0N8v3+qzJqk5n0MVtsosQU8tKhJhwnn+2sPee4he12RveD275HXbrmkepR
-	 yjHAdax6vMbND68Mz5GsTy1nuwh//9WGF64e6318Ayr1kpcBGLzS1dSWAfIB+S0Qxmt9O
-	 xQE0M41STlMaQMcxEk2Iaay1r9q2Reg1YbO8K+Oq1lWtMqQRb/h7D7QdH4i882REaKjNl
-	 hDrG5YH5pcbvsF+kaa2Yed7uHUKqm70vUUPGmsN12Fg2K5ZoDlakPZR33JT/01GsruzL+
-	 4P1JaIur61eCzYiRrYN+5OWfCCRSz4L/yWrn7DSkarf+W1CJyy6auC8Br06ywMZftYg==
+	bh=SCVn4ixoUhM5kBe1PutJBybtN9lGQ3HUNA/BXvLhSJw=;
+	b=SdxU0Xw4GGN3u42lhUCklYIN2QL54rJ+uBfbE+lddSVtca5rmtoT1qjlLWSbfLOJ/Lbt
+	 BkGgHP+xPq4S4OWL6LDT+GaazrFJVPgBD9oKeAjnDA+4OZfo3mj5o5hEL/RK8+giobMKG
+	 y8fGiY8nVZtfMtsibIpYZ0hoC32dqIwAmEYQnvzbOQKr5R86/UYW32GBb8SzOVF2LHaPO
+	 uQR7SyyPJRnBp8GkQIeXuyg6AH7gEttA0gFw3KeqQDIM+HCW0YWh9zUD87Mxrb8xep9P9
+	 qR99+I+VMnzFRCHqi+y25jAOLv1NghkTWHenkoZt5UtKI4uA/lMni9iBqDcEwVqiuJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RiVU9U+I;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE44606A31C;
-	Thu, 12 Nov 2026 03:36:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CE44606A31C
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=vlk87VrX;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABAD606A31C;
+	Thu, 12 Nov 2026 03:51:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ABAD606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RiVU9U+I
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=vlk87VrX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=RiVU9U+I/YcePVre89W+4mKr2PW4M+vRlCft7YfevsOEeNbZRccAJ0iIILRgDkoWU9Ed6qVvXzgb1
-	 uiwzLB1pJAoLtPMDf/TuKI5iRkH3TaCuCC5NwGpohUZeLe09NAgIFr0FewhwgkmzaekQEnixwmipTg
-	 P3uMtrHsMWUnyiaU=
+	b=vlk87VrXfClLyKz7/NC3Akq1maOI8c5Zh93vseazjnYYm/jZNUyraeRP0dcaEX3N+h/gMC69JmDqm
+	 7ZeWRGhv13kNZ1qRRvIjNxKFnoGC2wbLI7c7b+uI/F4bdCA5VceRPnhr1g6pqGu90jlSAqK/19EMJS
+	 WhtkFF5/Cl+GeyMk=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66af53445443-aa185;
-	Thu, 12 Nov 2026 11:36:41 +0800 (CST)
-X-RM-TRANSID:2ee66af53445443-aa185
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86af537c35ac-7d81e;
+	Thu, 12 Nov 2026 11:51:31 +0800 (CST)
+X-RM-TRANSID:2ee86af537c35ac-7d81e
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[112.23.105.204])
-	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af53448136-f157a;
-	Thu, 12 Nov 2026 11:36:41 +0800 (CST)
-X-RM-TRANSID:2ee26af53448136-f157a
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Daniel Machon <daniel.machon@microchip.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Alexei Lazar <alazar@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net-next v2] net: dcb: flush rewrite table on device unregister
-Date: Thu, 12 Nov 2026 11:36:22 +0800
-Message-Id: <20261112033622.40333-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+Received:from [198.18.0.64] (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36af537c24aa-f086d;
+	Thu, 12 Nov 2026 11:51:31 +0800 (CST)
+X-RM-TRANSID:2ee36af537c24aa-f086d
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Yanqing Wang <ot_yanqing.wang@mediatek.com>,
+ Bartosz Golaszewski <brgl@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ yana06070@163.com
+Subject: [PATCH net-next v2] net: ethernet: mtk-star-emac: fix device_node
+ leak in mtk_star_probe()
+Date: Thu, 12 Nov 2026 11:51:30 +0800
+Message-ID: <1794455490000.585551.2561101329908158128@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,64 +74,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-In dcbnl_flush_dev(), which is called upon NETDEV_UNREGISTER for net
-devices with dcbnl_ops, only entries in dcb_app_list matching
-dev->ifindex are freed. The entries in dcb_rewr_list added via
-dcb_setrewr() are not flushed.
+mtk_star_probe() gets the PHY node from the "phy-handle" property
+with of_parse_phandle(). The helper takes a reference on the node it
+returns. The node is used by of_phy_connect() each time the netdevice
+is opened.
 
-This causes a memory leak of struct dcb_app_type nodes in dcb_rewr_list
-when a DCB-capable net device is unregistered, and leaves stale entries
-in the global rewrite table that could inappropriately match if another
-net device later reuses the same ifindex.
+That reference is never dropped. Every error return after the lookup
+leaks it. Unbind leaks it as well: the driver is devm-only and has no
+remove callback.
 
-Iterate over dcb_rewr_list in dcbnl_flush_dev() and remove and free all
-entries matching dev->ifindex, mirroring the cleanup performed for
-dcb_app_list.
+Release it with a devm action, registered right after the lookup.
+The error paths and the unbind path then drop the node through the
+devm cleanup.
 
-This issue was found via LLM-assisted code review, confirmed by
-reproducing the leaked rewrite table entry upon netdevice unregistration
-in a User-Mode Linux (ARCH=um) environment, and verified in UML by
-confirming that all rewrite table entries for the unregistered netdevice
-are flushed.
+Found during a code review of the OF node handling in ethernet drivers.
 
-Fixes: 622f1b2fae2e ("net: dcb: add new rewrite table")
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Tested-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
 ---
-v2:
-  - Target net-next instead of net, as this has never worked and is not
-    a regression (Petr Machata).
-  - Add Reviewed-by and Tested-by tags from Daniel Machon (verified on
-    lan969x) and Reviewed-by tag from Petr Machata.
-v1: https://lore.kernel.org/netdev/20261111033114.133296-1-sunwenbo@cmss.chinamobile.com/
+Changes in v2:
+- Add the missing Fixes: tag.
 
- net/dcb/dcbnl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+v1: https://lore.kernel.org/netdev/1794061182000.57993.3986467551914992480@cmss.chinamobile.com/
 
-diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
-index ad0aebe0ad3d..95250658ecc1 100644
---- a/net/dcb/dcbnl.c
-+++ b/net/dcb/dcbnl.c
-@@ -2393,6 +2393,13 @@ static void dcbnl_flush_dev(struct net_device *dev)
- 		}
- 	}
- 
-+	list_for_each_entry_safe(itr, tmp, &dcb_rewr_list, list) {
-+		if (itr->ifindex == dev->ifindex) {
-+			list_del(&itr->list);
-+			kfree(itr);
-+		}
-+	}
-+
- 	spin_unlock_bh(&dcb_lock);
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index b83886a41121..bac4a24c5979 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1501,6 +1501,11 @@
+ 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  }
  
--- 
-2.33.0
-
++static void mtk_star_of_node_put(void *data)
++{
++	of_node_put(data);
++}
++
+ static int mtk_star_set_timing(struct mtk_star_priv *priv)
+ {
+ 	struct device *dev = mtk_star_get_dev(priv);
+@@ -1603,6 +1608,11 @@
+ 		return -ENODEV;
+ 	}
+ 
++	ret = devm_add_action_or_reset(dev, mtk_star_of_node_put,
++				       priv->phy_node);
++	if (ret)
++		return ret;
++
+ 	priv->rmii_rxc = of_property_read_bool(of_node, "mediatek,rmii-rxc");
+ 	priv->rx_inv = of_property_read_bool(of_node, "mediatek,rxc-inverse");
+ 	priv->tx_inv = of_property_read_bool(of_node, "mediatek,txc-inverse");
 
 
