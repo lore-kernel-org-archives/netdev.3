@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794506638;
-	b=B35CW+noRiGOxNwxYQhTL1WO5Qr0NImugFynsrgtLoMA0S4Qpskua1dWl2rQ8Biyp672
-	 96iO93MImAFmud0TlpCPHUFwAygaWEflVnerbh0ydIRfAyD1x0iFeuBIuprJnLRO8bBTn
-	 Uxx9ZlP4m1YzABVQWKHs54Fds3ZsGheVfiZbrZdzroYYvRaP8pVQJ70q3OBMOAXacXoyW
-	 +U6xBwVYGElHdN0eTIxyU9Nc7eoIMvwXH/74BlYBinsjvCmSPFhEHbCO8+fI1P0NhFS6W
-	 ag1e4m5ua/QpQvod6hhwrBsfCh6U6eu9kvk5pjmlWq8LnSqjUg9n+pOndZLnBCTDNkQ==
+	t=1794506639;
+	b=HkmPqMmCHyTcLbF/W2itKsrcfLzhbxiRmVhP1BZRLS9cmYnMejDEU3C+SbDQKRfxSNMB
+	 VZ34rlT/Mtcq8nxhN0MtP6/Y6+aDlmlzzh15U1Ym/2GUdBtah1bG5D/lDEfzTnHcF0PId
+	 ygU5SULdEYWz2U1hMBQgdd0OxB+5aQJKu7mZ/PK7cWOiNLZQ/GKUtogvE6+SFg6qcrNit
+	 /LE60bqEwcLNBt4386k/0wDsfC6FZNlCzjs/BT+ZXLyNJaTPpQ3BQ9DalnTRr9SBaGarA
+	 Rexzaxu3q3slzdt9T8CgX0JpXXLPAvUEMtokvcktXpeeHhUX9bl4ERK4OIOxtkbwjgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794506638;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794506639;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
-	b=3MewNlcfF6mbzwwZTM/WHR1Sx3wWmPo08QAoOnQ8J4ND5gdnrtLOWkVDZHTmxJs/uyi5
-	 2u8pW0ftFSYNql1BsCKuPKo7BO1mhLxkRdNvBSyO3Gnm6GBXciQ9PwlW+8DtYk5oZfZ8P
-	 hFtRVveHPIhJURDVJigKmwaqMVahHHFvJY3F+oreg464+e3zSev2AAi8nPcycrbdaDfXd
-	 zZQ0vtdzjbFssbWHMmSWKQw0lMxeYMb13Q49Lz+3lYON67l/3Zve/Hb6G7dNCzQn8lKMe
-	 mgGlq2prnk8GVCxM09+hEg6gDWn7OWEQRUhghDSXoFQ6Icx1KkEZj26OhY1I8TpNaaQ==
+	bh=Ajk6da4fFo8BLmAPTr1Lm266LYSOfPr/a6DbHRqN51U=;
+	b=hbeZ1zGvQNyT97/XEFWCwgxBC+EYwXaSnTRJ6w87v3rZKO/4uLrWcymau52beIBWXyAz
+	 ohgamj/2qdfZ/W/06CK2WyW6g8OWwb2JsEaM2Zww8SbNDeyBcEn/FBBWyn39HciJo26ih
+	 zDOAWcC4yn0x0L5YfBdxoa7Mma5EzyxfQZIjFlPQSv4dZQkXyvSUw3yAttzBpf8qUaog3
+	 fCPzFLu1Wy2Xxl9LtqHrRJIZmDtABkLiaKyntS4dMFEMjWwxmX3s5ojXDOlwKciAQkpam
+	 y8j9tFSmdCSJE0C1zXj1o5eO2lvZ72Y5cHehcSUOcVFH8eXe+l9s8KIfj+IpQhHb/ZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=fQFpGwjw;
-	arc=none smtp.remote-ip=209.85.215.225
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Uby4QPHU;
+	arc=none smtp.remote-ip=209.85.222.225
+Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A010460A2634
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 18:03:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A010460A2634
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731A860A3814
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 18:03:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 731A860A3814
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=fQFpGwjw
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cdd9e925075so61985a12.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:03:57 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Uby4QPHU
+Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-93f20b304c0so89785a.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:03:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794506637; x=1795111437;
+        d=1e100.net; s=20260707; t=1794506638; x=1795111438;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
-        b=NLLHcMVKhJCD1glyS/hk8/Mx6RcHEpQg+QPAqFTRZ1nZMqRoC89/7vkN+9si57EHjG
-         QrxO/S2XeWtFSnLTWM3R5UmPR8aLT/6o3xdyF1IzLJ0VtiToGl0Yx9dDZ1LxnRX/7lUN
-         VGGuItlhXgRg8o4118hXZM2TlktZeYk/8PnGj81pDxjXMF1olm/EMWLiytIsfzOboATh
-         Ds80JQ7t8hRgIiHBs7MfPOjv5mKEnSpM5Mm4wtfC1VEBBMjYWyM0MVWEDisLkQ6TDX/O
-         rpm2Bw/17eF+uS6tai9+M6++aEZGTzv5wKmjo3A+jKYljruoZtMbuvOGT4PWn28w8ASd
-         SSZQ==
-X-Gm-Message-State: APuU4Z/LeWxcsQM+6/ZDaCExNuh+sKSVEIBqvIMoJg5wgmIfQMl9rbkX
-	ultOgbfphf+0O/6+mqRJpzB8U4p/2pyoXtjulNtRw4MksnxnsP208Ko/Cs+wDHpAgqOdQpxYDZZ
-	G1QscU8JLRw9I4ZFQmPAwQ+DP+Ecy9JLpnurWBa23jijjlcgXI6mkEFtzRVBy/3Ubat8jrIdXhm
-	dNPoF7paly6SV9X3xU5Q+jQp0K9N1YNH0FQpm8s2qGvzYj6xp1gjU+003NcmHt8KEI+7RIKXHwO
-	mUYZEj1LAnri/I8
-X-Gm-Gg: AYBFou0UxxYsMb1m4JmvUxAr0HCtAyrAiOzw2LFw8XBzBjCvd4UU1pQeCLcO4MJ9WzT
-	I+YT/INq8xe+wdJQjP0N5RSk3iQ4ZhoxylH/K5pgFA67Eo8LBW5j1ph5eIbMusmIPJPpnk4+dJg
-	y3O2LzSGRKUHVWar6uWvkSqCtSEiQD+v5e7oa3sCQnIUP7GwtozqBnpum7Dju+7lRfFKbkMN83d
-	VlvYggiJVdAZ2kwQW0G0UsNxJqSP9enfSo9tw1coZX8/iHu3vdI0DUCxhrjI/Gc2fucICxT6bpb
-	BygK3v998lRReUiqT4EZP1qALdV+puKoy0/KYUonDdSTNModjfujm4B+kJEfx02eZiNgrlXMcQ8
-	rezkpottKHwPPoLB9f0s3WrNDxOa/jYUA9rZL0Vn/oa0ftgegTk31NvCDpmmLYgcyqENaNKsQu5
-	IZ4DhAl1+mqofcCRMk27l0nf5u7sC4xV1+9qQqMK68
-X-Received: by 2002:a17:90b:33c6:b0:3b0:9e2c:9b61 with SMTP id 98e67ed59e1d1-3b182ee21e0mr6202439a91.35.1794506636648;
-        Thu, 12 Nov 2026 10:03:56 -0800 (PST)
+        bh=Ajk6da4fFo8BLmAPTr1Lm266LYSOfPr/a6DbHRqN51U=;
+        b=Vdr+jj9bc0ik7d6pkzFNQE/jDVmrRCw5tgtHCu7uO8euW0zNg6HK3rHw0FCVr3vmrL
+         zpPFsD5Tv80hUoDtYGKs58QfkaFYC7Y7X228fxi9sakPYMf/269A2oATeFqVCj8jcnGG
+         bt7vqDDn4tHnSf20qBStU+UEx6dV65PLcAF3XAkFKyxAekbqh6ioYm0tq0j0rLKGJ8Bj
+         +iGbt2A41U5K8C3O1xW4ZtmnVPn8eHivY0m++t4tE4000jEEdNMFDh4p6oMoWLFcRN/f
+         it4OoECv7FOgt5Vpv61LnppudRkL/kehf3Stqenv0BYbAVvM8FSD0E1r/C4FLHGrAHiL
+         LFYA==
+X-Gm-Message-State: APuU4Z8ulchL9O2l1goELU7ms5UVE/lJ+dT+N/eprnJ1YSNmU0NT7Wgv
+	2zXd0uNESB0F0ig5sLNPEar75LihqbOh8+W49xpoC4Td4S7COBdDB3tsAGRWErWtWbz8X+CM1Oh
+	778aAqeGN0Kj5bo+0/3adPTk1ki9fnEyFYoMaFfJ+hK7LVCSMX6jtCl27byakhxPL0HRlYNDoCp
+	0AQWvcOQPV8Xzd8M+B7pU1F5Z0bjhQiUTOM4VTth/x7XO/LDcITou+R2DLUjjFRwqsrxOCmQdku
+	ICCi6j22CsRgfbE
+X-Gm-Gg: AYBFou1jF9dkah+NvpzkMhhfCRJxrTvagCpHPP/81yE/QCPwPjh0EKI6rHLNFEyrzLf
+	GcPPluyKrXDrv/5IL8OJY4Rro3jGD9X8MbStgFdHzxvEWmzNsh4phZJqfy53b1Z5Fex5OAHGU/q
+	A++pAZS+UkpvOSEtDBvqbugv4/QI/EKgobMIBaUf4UtgYqCeETowgYP2EDHAfkYuOLaQkP/U0Dv
+	fkNN5Vr7c2lTGyCRsGkTk9N2BKYMAuWKKKIA9guqneZPlNvpF1HTWIhozZvkOFzMq5I05dMqhb/
+	erEeDLCpFLzYg65vK5XHo+zot6OoVc+EPAfHU0lH58IXJVBB9KDeez850v4NFXpf37NplFz84VX
+	akAfPHoeWO8X7+/6PjpQbUYiRY1u+O6sUxphZiaMDFlyOdKZslM9YzxDImCB2gZeRz72a42kURW
+	cdhDsm3CgB2DthA3pGE7EVkarqhssfMT12EPkDyT66
+X-Received: by 2002:a05:620a:6f01:b0:93e:653e:6981 with SMTP id af79cd13be357-9494ba5556bmr31784585a.11.1794506638334;
+        Thu, 12 Nov 2026 10:03:58 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b197c1a3e7sm3066493a91.2.2026.11.12.10.03.56
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-9479f0221a7sm118906385a.19.2026.11.12.10.03.57
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Nov 2026 10:03:56 -0800 (PST)
+        Thu, 12 Nov 2026 10:03:58 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdb86c39250so58430a12.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:03:55 -0800 (PST)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8b7614e9762so46617b3a.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:03:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794506635; x=1795111435; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794506637; x=1795111437; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4vlXeE9enSxQAZM/AVNB/6k7VuHl6mXvqO/NCZEaN1w=;
-        b=fQFpGwjwMbR3NB0o6to9uADuPFS7ufipGTgnVsMMohE3zzImvVR0+vV21hmppLVX3f
-         lSJ83JELBKocUBbnCRb4QaOwnsbFo0cX03gp8q2CDpuFjtk6+aQGGzur8jvFYsYaqEUR
-         yPLJCt9vE5vEUqYPSx2XaUIlJUvoAMBXbmerg=
-X-Received: by 2002:a05:6a21:9216:b0:3e1:9071:acdd with SMTP id adf61e73a8af0-3f2ff0dc5cfmr6424033637.35.1794506634906;
-        Thu, 12 Nov 2026 10:03:54 -0800 (PST)
-X-Received: by 2002:a05:6a21:9216:b0:3e1:9071:acdd with SMTP id adf61e73a8af0-3f2ff0dc5cfmr6423986637.35.1794506634267;
-        Thu, 12 Nov 2026 10:03:54 -0800 (PST)
+        bh=Ajk6da4fFo8BLmAPTr1Lm266LYSOfPr/a6DbHRqN51U=;
+        b=Uby4QPHU3CYUNyB/Gc/laRVFEk2SbKtVhr5X9quADN5M842OQZuSOZN9x/JgORoq+t
+         xN+PdRTW8xrqowYLH0Gt/nMxAS2TfKs3gyTCBnNr1W9sH/a4pwDfUrXUXsAQWezHFVhg
+         1Eg1KR0IpdWoKoj7m49dFMm9beRYLxxfk7AqQ=
+X-Received: by 2002:a05:6a20:a10e:b0:3eb:aeb4:2c39 with SMTP id adf61e73a8af0-3f7a6cad582mr5419637.17.1794506636831;
+        Thu, 12 Nov 2026 10:03:56 -0800 (PST)
+X-Received: by 2002:a05:6a20:a10e:b0:3eb:aeb4:2c39 with SMTP id adf61e73a8af0-3f7a6cad582mr5371637.17.1794506636108;
+        Thu, 12 Nov 2026 10:03:56 -0800 (PST)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18abc06sm95004a12.22.2026.11.12.10.03.52
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18abc06sm95004a12.22.2026.11.12.10.03.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 10:03:53 -0800 (PST)
+        Thu, 12 Nov 2026 10:03:55 -0800 (PST)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -102,9 +102,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Vivien Didelot <vivien.didelot@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v5 5/8] net: dsa: b53: use the correct override register 2 Gbps bit
-Date: Thu, 12 Nov 2026 10:01:59 -0800
-Message-ID: <20261112180202.324504-6-florian.fainelli@broadcom.com>
+Subject: [PATCH net v5 6/8] net: dsa: b53: reference count shared mirror source bits
+Date: Thu, 12 Nov 2026 10:02:00 -0800
+Message-ID: <20261112180202.324504-7-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112180202.324504-1-florian.fainelli@broadcom.com>
 References: <20261112180202.324504-1-florian.fainelli@broadcom.com>
@@ -120,59 +120,173 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The IMP and per-port GMII override registers swap the override-enable and 2
-Gbps speed bits. Using the IMP speed bit on a GMII port clears its override
-enable and leaves any previous 2 Gbps selection intact. Select the speed
-bit alongside the register and enable bit so lower speeds clear the correct
-bit and 2 Gbps sets it.
+Multiple tc matchall filters can use the same source port, direction and
+capture destination, but the hardware represents that source with one
+mask bit. Removing any one filter currently clears the bit even when
+another filter still needs it, and can also disable mirroring globally.
 
-Fixes: b6a8a5477fe9 ("net: dsa: b53: fix resetting speed and pause on forced link")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Track references to each port's ingress and egress source bits. Program
+a bit for the first reference and retain it until the last reference is
+removed. Keep the two directions independent and ignore a deletion with
+no matching reference to avoid underflow. The tc callbacks serialize this
+accounting under RTNL.
+
+Fixes: ed3af5fd08eb ("net: dsa: b53: Add support for port mirroring")
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/dsa/b53/b53_common.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 61 ++++++++++++++++++++++++++++++++
+ drivers/net/dsa/b53/b53_priv.h   |  4 +++
+ drivers/net/dsa/bcm_sf2.c        |  6 ++--
+ 3 files changed, 69 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 715a0969eacb..6b4a94a97d66 100644
+index 6b4a94a97d66..7f5bae290eaa 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1427,17 +1427,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 				  int speed, int duplex,
- 				  bool tx_pause, bool rx_pause)
- {
--	u8 reg, val, off;
-+	u8 reg, val, off, speed2000;
+@@ -2604,11 +2604,56 @@ enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds, int port,
+ }
+ EXPORT_SYMBOL(b53_get_tag_protocol);
  
- 	/* Override the port settings */
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+		speed2000 = PORT_OVERRIDE_SPEED_2000M;
- 	} else if (is5325(dev)) {
- 		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-+		speed2000 = GMII_PO_SPEED_2000M;
++int b53_mirror_init(struct dsa_switch *ds)
++{
++	struct b53_device *dev = ds->priv;
++	u16 ingress = 0, egress = 0, cap_ctl = 0;
++	unsigned int port;
++	int ret;
++
++	/* A switch reset may leave the previous mirror configuration intact. */
++	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, 0);
++	if (ret)
++		return ret;
++
++	ret = b53_write16(dev, B53_MGMT_PAGE, B53_IG_MIR_CTL, 0);
++	if (ret)
++		return ret;
++
++	ret = b53_write16(dev, B53_MGMT_PAGE, B53_EG_MIR_CTL, 0);
++	if (ret)
++		return ret;
++
++	/* DSA retains matchall filters across suspend and resume. */
++	for (port = 0; port < dev->num_ports; port++) {
++		if (dev->ports[port].mirror_count[true])
++			ingress |= BIT(port);
++		if (dev->ports[port].mirror_count[false])
++			egress |= BIT(port);
++	}
++
++	if (!(ingress | egress))
++		return 0;
++
++	cap_ctl = MIRROR_EN | dev->mirror_port;
++	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
++	if (ret)
++		return ret;
++
++	ret = b53_write16(dev, B53_MGMT_PAGE, B53_IG_MIR_CTL, ingress);
++	if (ret)
++		return ret;
++
++	return b53_write16(dev, B53_MGMT_PAGE, B53_EG_MIR_CTL, egress);
++}
++EXPORT_SYMBOL(b53_mirror_init);
++
+ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 		   struct dsa_mall_mirror_tc_entry *mirror, bool ingress,
+ 		   struct netlink_ext_ack *extack)
+ {
+ 	struct b53_device *dev = ds->priv;
++	unsigned int *mirror_count = &dev->ports[port].mirror_count[ingress];
+ 	u16 reg, loc, cap_ctl;
+ 	int ret;
+ 
+@@ -2623,6 +2668,11 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 		return -EOPNOTSUPP;
  	}
  
- 	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
-@@ -1449,11 +1451,12 @@ static void b53_force_port_config(struct b53_device *dev, int port,
++	if (*mirror_count) {
++		(*mirror_count)++;
++		return 0;
++	}
++
+ 	if (ingress)
+ 		loc = B53_IG_MIR_CTL;
+ 	else
+@@ -2637,6 +2687,9 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 	cap_ctl |= MIRROR_EN;
+ 	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
  
- 	reg &= ~(0x3 << GMII_PO_SPEED_S);
- 	if (is5301x(dev) || is58xx(dev))
--		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-+		reg &= ~speed2000;
++	(*mirror_count)++;
++	dev->mirror_port = mirror->to_local_port;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(b53_mirror_add);
+@@ -2645,9 +2698,17 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
+ 		    struct dsa_mall_mirror_tc_entry *mirror)
+ {
+ 	struct b53_device *dev = ds->priv;
++	unsigned int *mirror_count =
++		&dev->ports[port].mirror_count[mirror->ingress];
+ 	bool loc_disable = false, other_loc_disable = false;
+ 	u16 reg, loc;
  
- 	switch (speed) {
- 	case 2000:
--		reg |= PORT_OVERRIDE_SPEED_2000M;
-+		if (is5301x(dev) || is58xx(dev))
-+			reg |= speed2000;
- 		fallthrough;
- 	case SPEED_1000:
- 		reg |= PORT_OVERRIDE_SPEED_1000M;
++	if (!*mirror_count)
++		return;
++
++	if (--(*mirror_count))
++		return;
++
+ 	if (mirror->ingress)
+ 		loc = B53_IG_MIR_CTL;
+ 	else
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index c4d2a41c714f..df00a5ae46c9 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -119,6 +119,8 @@ struct b53_pcs {
+ #define B53_N_PCS	2
+ 
+ struct b53_port {
++	/* References to each egress/ingress mirror source mask bit. */
++	unsigned int mirror_count[2];
+ 	u16		vlan_ctl_mask;
+ 	u16		pvid;
+ 	struct ethtool_keee eee;
+@@ -170,6 +172,7 @@ struct b53_device {
+ 
+ 	/* run time configuration */
+ 	bool enable_jumbo;
++	unsigned int mirror_port;
+ 
+ 	unsigned int num_vlans;
+ 	struct b53_vlan *vlans;
+@@ -545,6 +548,7 @@ int b53_mdb_add(struct dsa_switch *ds, int port,
+ int b53_mdb_del(struct dsa_switch *ds, int port,
+ 		const struct switchdev_obj_port_mdb *mdb,
+ 		struct dsa_db db);
++int b53_mirror_init(struct dsa_switch *ds);
+ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 		   struct dsa_mall_mirror_tc_entry *mirror, bool ingress,
+ 		   struct netlink_ext_ack *extack);
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 1c846f6d7802..6570279cc040 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -996,9 +996,11 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
+ 	if (priv->hw_params.num_gphy == 1)
+ 		bcm_sf2_gphy_enable_set(ds, true);
+ 
+-	ds->ops->setup(ds);
++	ret = ds->ops->setup(ds);
++	if (ret && !priv->wol_ports_mask)
++		clk_disable_unprepare(priv->clk);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void bcm_sf2_sw_get_wol(struct dsa_switch *ds, int port,
 -- 
 2.53.0
 
