@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794448806;
-	b=GLqbMEvjirB1nkIjKrJUQd67bPeTXjvQ2GTQr9oClJOzWPbB2LQde5mY2+JuFWFF+Ft3
-	 d2agK6ODIho9gB1VjdFFuRsIWlOYdmyjh6OOb4PqWm8DBO8G5i7XIm3B5soHUbtQxHa2p
-	 PI13EOv6XbrZx+uRzoSQzdu2aO5nIlPaVyN2iv+z7D23NrSAP51Z8P7lOXBYWDfz8xM7x
-	 rVopy7j+L2uHUn0FQa36yjvKxvFgcnvwrYR0LUp7k9r2nAnGZFMxiJ9NhmRhokUkiw0uR
-	 LCnsu45aIOHo4e0SA8czll8YZRiM8QDYVTki4yTZrrC/3fZppMemODbp6MYNEH1pzEA==
+	t=1794448808;
+	b=SY6sN0l6TyWkoKSWmNsTF4/W538Y8uyTbdv6EN3Aa3tGWpFCd7Xpy88hn9n/9iqUd7tM
+	 9Dy0wPkG5joQMjcskop7s00VkgTWUBFWgjsP6lqADkdxW/Eo0SUYMUOH5d9ZOiCineuSe
+	 4ee1Z6nXfN54tdBm3mpwf8tkl3J+DtUY0QEXPC2X+CHaUJywVgOp8LpfhkAqnrIBo6FYX
+	 0QfYS8OIb8S6ehK0vkb0QiJAjtGw8RNrumWFVm8PP+7xVG2a0x7tiTDMzO+8Df8xIZtdA
+	 H4n2f6tdlV/Tz+Enye636pJhIzQ0ji60H0SpvL1JYrCvQWmKiqq8kTBmG1HdoCZUMHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794448806;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794448808;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=CrFEoxXRWmp4QQvsClKG/2hu9QeByJV/faRb/ux4aRs=;
-	b=sc+j5fX9GBxvqauveT1OXNFbZ8lDMEMPHEuXAstAaMz/ieyLnJoGsLwYPjrvPZQE447d
-	 XYFTsjZAghB3HKHv742GNT87Bmjwrgys3pvSPdPcm4YB2u8tMcs04KSoHCHqlzPeSWOp9
-	 VWKqhWr0mmWiBEzvqntkHQJBmcI/DrPWjib3Uu0QiYreVkzLy/ESc7s/RRiF8TF7w9MKG
-	 CYPzwSYsMckXV6y+ACYHOR5bdma8TvyA2mcInxwwgS5ecTaJ00m0uw7ac6osSjplpUntt
-	 /OMcQ+tvIC8u1sPQ4B5iBCBF6/OKQosWGUWcRL4hykDgVSq95rzJijrKVir9DL5kEMA==
+	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
+	b=1D0TF4apCpnjJN7MeFfwN2Z0xiOzm3n82/fLG8lk2pCTG5bapCAXgmNmseaVVmh9mG/W
+	 9Dz9IXTb+1QGx9z3saT5Lrze7zLrkI3juvkgBfRJ4tcmjM9kyADLHPbsGbs0dcgTHbGaZ
+	 Ont3ACtGLR3uhZlXJF8SKrWA32SYc7Ue2aUk2iszzfqU9lRlN571eBJDX2NbBvOAKi29g
+	 LximK58vFUZPpOsNMfW9mxu99O1h5/HhYtzO+A89huB63n7bcwOHTmizCs5ngu3EjTk5F
+	 SsErH98tLO6p7fjm+LRqTz4mzo6l/pmDQKrevBE1xaMoA0PTIpBT3Uy0TUWeEWWQ0wQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGtTVj90;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQPzrCau;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C0C606A31C;
-	Thu, 12 Nov 2026 02:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F3606A323;
+	Thu, 12 Nov 2026 02:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGtTVj90
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8F71F00A05;
-	Thu, 12 Nov 2026 02:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQPzrCau
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67C91F00A05;
+	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794448806;
-	bh=CrFEoxXRWmp4QQvsClKG/2hu9QeByJV/faRb/ux4aRs=;
+	s=k20260515; t=1794448808;
+	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OGtTVj90eBjPUVgoWLZ8MyrGJ+ALXKTWj5onhkLzEuiBBMcDRO+07MWuHHSqCJV3Z
-	 y+phMlBXgsoWv6QAo1i/jUwisqLD6eM/8qXW94XRG/kwMyo9QDxUe70C0lcJZSgmA+
-	 LnOMjcdAf/1MA+oo7AR6FdLtodliy2lKrNfgMANY0hc60k8rGsml7YI1fs6O6Yn3QU
-	 qGrTDbwFvdGzGsd5LXgcwImH/wfZtVibfJW/dVZJTRl9jKqrpu6udWAJdfuRimFog1
-	 DPtTZG5qOe7F4nZ8x7K0WLCH0PNTub12enaqfc+mwsPuoi91PfIOhVRDt+Fgf2NHh/
-	 4m8bpm60Px0QQ==
+	b=CQPzrCauYk1gS86uv74QwbX+ugone0X6LWe7bEpPNMoRJeKKt3NhJUtZLLwOs+fN3
+	 NdEuynPzBwssC17dv6rQpBaYyvxfL0MknHWoGmsZlbi1GILHtsiK9dsioXxUTzISQi
+	 JQbgSPIK7pftO9sxaakiMITlhaqPpW4rxO/tm5HKgmPRlzW6tGPTHb2ciEURHPPODm
+	 0Fwml7Ek/hCFcEub4NjxF8jea1V+WnEdyNnNPTg9Kd7uo+Ai7wvlzylFfb8JsKAHTA
+	 bHnmjI5NJRvXW3kN902T9w0VMzZRIN6VhrLB5hzI+2SYo/a93UIz/Qfh9oUpSM4Icw
+	 L2YF71zXcoOEw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E0EF391AFD2;
-	Thu, 12 Nov 2026 02:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81E1391AFD2;
+	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH,net-next,v2] af_unix: Fix wrong socket tested in the
- symmetric
- half of unix_state_lock_cmp_fn().
+Subject: Re: [PATCH net-next] ptp: ocp: replace __get_free_page() with
+ kmalloc()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179444880494.1768068.16134554554597594383.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 02:00:04 +0000
-References: <20261109092016.2082-1-lirongqing@baidu.com>
-In-Reply-To: <20261109092016.2082-1-lirongqing@baidu.com>
-To: Li@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Rongqing <lirongqing@baidu.com>
-Cc: kuniyu@google.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179444880643.1768068.10714270723125429493.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 02:00:06 +0000
+References: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+In-Reply-To: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: vadim.fedorenko@linux.dev, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, david@kernel.org, vbabka@kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 9 Nov 2026 17:20:16 +0800 you wrote:
-> From: Li RongQing <lirongqing@baidu.com>
+On Sun, 08 Nov 2026 10:40:36 +0200 you wrote:
+> ptp_ocp_summary_show() allocates a temporary buffer for formatting
+> PTP OCP device summary information.
 > 
-> The second half of unix_state_lock_cmp_fn() mirrors the first with a and b
-> swapped, but it tests b->sk.sk_state again.  Since b is already known to be
-> TCP_LISTEN, the switch only hits default and always returns 0 ("no order
-> known") instead of 1.  Test a's state instead, as the first half does.
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] af_unix: Fix wrong socket tested in the symmetric half of unix_state_lock_cmp_fn().
-    https://git.kernel.org/netdev/net-next/c/96750c67eda8
+  - [net-next] ptp: ocp: replace __get_free_page() with kmalloc()
+    https://git.kernel.org/netdev/net-next/c/c88fd6989aea
 
 You are awesome, thank you!
 -- 
