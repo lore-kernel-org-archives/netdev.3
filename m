@@ -1,80 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.147
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.185.32
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794504898;
-	b=k0Axsqh1kZgrHUf7yjk69ahlY3fQdXL/yWQF/wmHEPpHgsk/Coss3zHgFTaJDZL6qTLV
-	 6VCHnFYgi6InmvpfqhouNEzRryyrWaD6udN+Ie+XUxCb9fB7Et8jMMej8rdsuxD/cj+oC
-	 rDvBg6AlLupvHMOBl0n5/ecboyQdIHQ77p+vlFPA73sRHkz0gff36fE7hWoxNAuL8K62Y
-	 DHA831wO/57jlYwy1BM2ryVpoYm29Q7SEDOWKYUEShrbPxGtpPFXNZX+WJhRw+26eaZJZ
-	 TXnv3XzdEIItoEeIDjtAw6i3xSpx9V9AG+jMy2KLr5UGo1Y1hhXLemSlIhFTy9d3+qA==
+	t=1794504950;
+	b=HtDEhQHuC6BgvThSV042xSpoBxdGd0wsUw68aZyv8bjZv/ZCtAO3JXqw6Tw7E08x1VnX
+	 XFC3M4nOZ3v0rFf8c+cI8nV47zy4IiAGDAihMHWJHo0HxraYtQYoHcIH9LsH5CNVdW9mi
+	 FcDZIcziMAHRAoVyJUyMzNzg+h32eZZSAjS/SRTUXyhNVr6oX0EPq/sc4qVU96uQRNAfR
+	 ZV07OZeoJHPpsLPmPBS4mYM9BlWwebznZtJP9gUpoYUhd1zUA4rrPpgCBiVl5sruvnHb0
+	 1ezk6ea7dR+Y3vPlkiQxPGJQYAEB9B0NYenBaoMLA7V+wzb7kw+vAMbidBmy7whLclQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794504898;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794504950;
 	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
 	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:X-Mailer;
-	bh=xZFGCbHHDA930kNhg5JksTPwdJCEfzaDUNyG5sEFjX0=;
-	b=rXwGxriUx6WFdkMzOzbSdNFNEHeKu160xryfS00oTlJLBUS5R0uRSmCqRDwFi/HtXohM
-	 8/2vTzBHvU/Zz0j+XHuw7qlNhhsh8R0ZqUqqCc72ok3TqHj1NbkUSDZRj7xhIILzY51oU
-	 8yqH0PBqmSwD2OQ8mGRnMLrJhmLWNItPs9EIsQpGR92XuI77tvBkYyAq2GJhtpQy9UpKW
-	 ic7wX4L620oPzODusKNYHYQP2BpOKkoUVxgIhrEpt3pOCsGnZcY8Y9Nu4kjivV0YBm2We
-	 hHIvGdMB/sDdUlyCD9p7cG4K5+Ia8bIs5sKwWE/lzP8RjweSfnh/zOzwFVh4l0ojKRw==
+	bh=lIElPgc3zQAUQPuvQ54S5XZb2V9/VuZ+xDRzMf9i5eQ=;
+	b=Rg1ukixYVsJ+u1ivD9SXxoga/z3s6+vRKLyfTbb4c08LPLN6u7T/h+4UlciI8vhL3lzh
+	 m+EIGscppXdZ3F7ANylTwhDEWv5ADzzqW0i70VySXiJjdo4G/TCpveGSmjezr/sfwUBvz
+	 fNoVqC02keESzDX5U/muoZDZ2xlxdwMP0ilON0VeUQvJDFRqVol+0Tn1f9Iv1Dliyqk8r
+	 94gYll4Ky6igTWNRCSmEa60uc+IEPqCywqlx6B4+3y93EscIP1C+2Xgs4v9i7Vyy2Jiq7
+	 /x2K11c7FyYJt9rwOv47gurv65Q+9/djuELLu4PBNX1akDaPPLs+kZ/boRS+BST7ILA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=yahoo.com;
 	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b="C//BfZMA";
-	arc=none smtp.remote-ip=66.163.184.147
-Received: from sonic309-21.consmr.mail.ne1.yahoo.com (sonic309-21.consmr.mail.ne1.yahoo.com [66.163.184.147])
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Xm6wupfJ;
+	arc=none smtp.remote-ip=66.163.185.32
+Received: from sonic313-9.consmr.mail.ne1.yahoo.com (sonic313-9.consmr.mail.ne1.yahoo.com [66.163.185.32])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986D46070EF0
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 17:34:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 986D46070EF0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD95606A8AF
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 17:35:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CD95606A8AF
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=C//BfZMA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794504896; bh=xZFGCbHHDA930kNhg5JksTPwdJCEfzaDUNyG5sEFjX0=; h=Date:Subject:From:To:References:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=C//BfZMAboaS2T1Gwp0TfjzLTs/AdYqIYwQJru5h/lzVAP56/fxbm7jSffseD1NKLmBaUWpMYTIBXuWhM2baVQAy/3Q/GNAPJQuI9ida4zlSP3I3FwO+lO7Xuk1MwVbX8VrshRJswiib1UcS1FA7dGsAbc7+uax/Y7plxLJm2TySNCZL2bwdgBSpIx1pt72oL4grtqTa/vD9fhf4jr4aDxbPB5ROyK/DRp6oeM1t9waKcZ25Mtfxa8Cbj8takoTuo0rURrg90lu2tHH8jHdktnX5Q9m2Q3VCEOdV+FJsxZ+QeG2jMaLhD69aQVzvmPn4ljXf6xfp99Nm1UM/0aha5g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794504896; bh=FCeqzTR6wDlMbMDVcF+1OPArUTFrARxnMStXoOrbRre=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=rfxVl7sqB9tKnxhd3NNbApiGMQMwuzuCtsqpjtEf7S1xmETM8GNHwpIlOk26dbtmsIkkgCjEAmGb5K1qsbRBkoRkuIIWKhAlbi5qR/5HsldiifGoK/n//LBo98wDSkIwcgwuVjv0tyGtru76LFD1nKjyDJvXhoxAEXxwwGBebWN6qA8b3AUipktFSG5dz9M/O/zKiHrhynxlrMjIIScVsPAxIcdt1S0R4n7wxiLu3gPPPisobVbMlmApWBzkIeAqEKM582nx3proSxIXG6FePu3U7G3hocvCf19bguv+cj5dGi3mpagy9Q+GBo9jbyIPi6ZtBzTE9IXCdXr1h8DnoQ==
-X-YMail-OSG: 2HMfmoQVM1msinEeqJHYy6xG_Xt0H3ydSuJF78EE9MzhShODwyFoamYQjlXoR_U
- OfV3V7JuHgWMXk9uQDhJr83e1lqYykWTMz4DfufXQqSLlGtnn0AaKlgO6qoz5ukffhO0sA9yYqHp
- n7lcyXDlZnTdalIcJ0ngdO5NIDGsd5IreBXCctBjSRZOOJ5m2OzAZk_Hoo1v7V88fvveCNDQUPNx
- QDiXqyvxRDiTYYIrQUSpP7kzEqzUDN1SI0ExcNAs2YPspA0O5oppu4o5xHVX4wm3mVTeMruthL9X
- NgbaoEcUqlJdzLW_DrVZpBpyrDDWP3asLbh0_oZCkSPtlw9IIL4DGSuyFedNVKDlPUpmvB.MLTwy
- Z0Dsa22GOk98sC0V.sfp_IzxBkaLrsy3LPnuwVqirIOS2MKEC90.0XgozjMUrm1AscWNfivhBWOK
- Xe5CyLIpfqEUnM1We1H3dAeoV28Lh_BP.fyfvceMneL4yO2Q4vE_9_3CcQGYTxruQvqu1Qb5iNOM
- .gNslezZLDZx.UGGNdxcu6HsNe2o_XLykP4Q.7pTbxWBMCxjxZJvphinZZS.jelgtlg_XkG.1xWK
- l9hIl_FEzuw97KEpCPJ8eS8S2VsCqJv23TyShVflsqxbVSQ5cDjVwTdmRZnptQlpYpXLbgyDMgrm
- kSVjE6iI0diAZIGRNw0gI8xJpiyI7pPSyLAZAlXoHm1HFdrqs.9eikRy5cbpNCRIhN6Bv8RVQrTo
- dOsy0uFHJqB3piFPQCCbHUbHzFz._1afBwJOEoHaQsFf.XH6Ddh4KfuY3SgdxlEcq.jcYgh9XZ3Y
- ZiMvRxK2cUCJ_rNED6ZF48CCLWSBLawyT_rbIp6yrHPcliKGaMnyZ_h6KIjWYOpZ79_Lhd6PcbYn
- n8rwqR4bLYbT54BrwhBMse7sqTcHMdGjaDadtjc107VYbusvzHhsnrDSg2EF5mLbZWQRXgP84pAe
- hAwHaz_ET6f1PZD7fGiGvxUew1T2_OOf4hf1lpEOYVOMG8syyPykunoU4it8h6Tin8p246lfd8qX
- 5WAdX.d1WLBv4iiL5Cu4_A3S4YXt2eqG.vwmajPrwAxuQ0Rv1JjRpUP2RA16jmqzLlgTjfUekHd_
- m7V1wdrQyu0FaCXQTSDE2fWH68GDyGP5QhIqnhGzOTT7TilS.2tReuhoVDNmcUbEOikfyBJVukM5
- vVlxrzFEHeHTco4aAZ0A4_tHaUHDhR8z4c4_JElbB1m8N_L3kOVJ2d9Mpg8B7LqnQbNO34elJiv5
- CjkgYYHEEBL9wHNmjdOMxOSoaAdttSmpOYvrpZk6M2ZeYiB9S0kgUPSq90DgRjH1ufjPV7lnP4nF
- j2Fh78lP2TqRSyprzxQNy39PMUjTCttaeal1su0PuVLEwlo4IuGALqEY6.EFh3l2Ac05GcgItvQe
- sGTXGHYDV4dUSW0zsJwERN2HkmuC7fO9nFsmFz3ZoccgUMNQtmNKUA5Iv1J15a1ET62HwA1wtm9A
- aDEP0R4XNDHGWCj.xALF07dZsGgyi3smOKXHbvoLMzFFgrgm8wWXYLN_mNwD_D3s..HJsCmB3_qm
- oGl0_w6kYMFIfwSwdzmCPAd0oTo.JFa_ER.pZHDOEIv34.CLwLxW9BMQTrrhZzzIMd.sKfbVJsnA
- jU18dPYlIyZMaKHd.miucu3RiUjgTojjddu6.SeAGABN4XNM1oovbQtMDAhELnT0mAz25hVkN20w
- 2g8GhqY8CDfQ1MRISABBNpUmYnvMHYO1DW4XrbJunfasQb0qOf5ZE76bz.8eQmUZUDmNia4PGRF7
- XGzZv7BAjcp.Uefb8tfwlFbh.9E9VBM8MaCKaWEreFrPO0j5PncTrfqSuAGjD9XFHZN_0jC..uPK
- 0kxTSTeCfY6T0fSUbw7CFfB40.2bQpEJ42QIvbkCLtNLez54y0J19G0iaF4jLwKtrLlWXFjFAYAp
- aF9S4ysg0oJkE9NWXAN4fcItS4fL.B2DcJmHyHSzdcIlq9D0AEz1bltILAKjrcUfmazWCYHy1_St
- HTvkZNxPWdCgNZm_2_q00iNgnWOirUWhtMKrk0f53D.IwoV5YgG2y_mhVAqMYQrBdXmtj6Mr27kp
- HcsZyqXIMMR8glRZDkOUdFnEY4Iq6yqg5Yucp5u9Ooi2oy6KLO6vNZgRPISO.D.9kZB2U3ronulw
- DCTpEHLE6RxnkWAYWJsxdC5pTIVDepxuG89NWx_N6sBdgasRasD8r1QArfJnfHUytD_vtIWApyWP
- wq4D8.2yZW0vgGk3GThPRJnGJk0PqKrAq44W2p.k3ECQkx542LwHs9BawkkUmBZtJLUVidvmmryp
- s86c4bj1oeYsruzAr_JYvM51PjD91xWu5DEqCHy5a
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Xm6wupfJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794504948; bh=lIElPgc3zQAUQPuvQ54S5XZb2V9/VuZ+xDRzMf9i5eQ=; h=Date:Subject:From:To:References:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=Xm6wupfJJNfpS9YssZPwMl1awk844B8TijM3BdeK3uFjR4NJW6YlUW6CdMriq7Ri1H1BAmU5Mr8wt9gMTdjmuB9z9XU0JNoOu7KtIbGGQLjcqMDbaWmtCGNTpqCQyv8GfXSAZPaBxuHSn1rEk7xQmm5/pf6k5LWOfp+Yl/FFTrXnTuuiDP8xZQn4YoMr00PqVlXPIGDu1OPSkGWumUvAXtTunIApbpLuPgRn4+5zqyuM+aJBOZNEqAJQTsQ8qbXemxGSJmnzpTfgVG5WXolPcKmRH2Ffh0143Kz3ROzjxcoYrXWkVTGulOzAYqv+pA7y8cxQ/CMmjn2rjCnKOBssbA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794504948; bh=JzjFn4juoCV2RXHzY5eDLyNUgHgjSjFHzl0vrS86+l2=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=f4m/ndQGBQHS4aiw6X0xBKhuEeF9stfJ8btUK+uoEwoXWc0+6FvW+5OShUFr8OdBL/tOhfavKfILl8QkJ9ukiwQGSkzm9zixMNvJIM4lHrcPMSBRk4wZOnV1b2PmNbJsBmOjEsz2G2j0kQ52H1VxHBleXrFX1Ve+6UWOaphEEEOQuIRlYD7QW8s+PYGBYTEfqc0m97us1rFljYStpZpnd57XFZr5S2mgfwfZDtPqa2fkofR+bE35knHqOEhQGcy+eaOHswUGnWqutnQ5LtKuUA6EEc9WXaHXtHspji+1/TBi3DV1Tk7yIpcdbTYRUt7n9iqQqZOKdK0mRpluNir1lQ==
+X-YMail-OSG: Ong5Kd0VM1k314xWfOH19msxYd7lqLCMn_oCZrxvOrS4VdO7INhvq9YARvRee3e
+ yOAtIp_Nt8hyQTwvLyODM7NxwvKC0dd9ZWZwJ8hyk2Sg6O6FHTMdUgkt.3YGeJWJcoDxybGaLbwo
+ xSEPBdq6B.XZ._vjzK1ucxQHO0Wc.7Rs39Nk7xi2AHPjYdNys2DXxvMAKifYFmSqq_ep.u1lZn9G
+ wQKYcly1_31D5YikNPOj47oPquFtHivBK4I42CnLAheQpn.dOjc6HndkCqdWRe.7gbLb.ZsnMK2u
+ lr4eIg0g50DmbhdNoupIyVCcYiKekHoDBOyDzlQWldwcceFJSmU9y7wHfK9Fd5ml5aHvzoojZ7VM
+ CW0XMxlQTg2.o082Uut3UzLO8bxPLdJ7kP8WTGgSk_dxTBZXoJ7hfA2TW_Br9b33aApr.TVAFgl6
+ 6CoSen88llrPIlN04Wr.0f5srnDtVmplkYN.OSVN0_smapzO1WnEDsfv6huh1ID4pSWWRlXCCq_D
+ saRQ5MomFnaWTFEFlmbnKeEOFznKvrh5_SWV5r85KUAlFUS6GGvFA01fuAdyFa.Urdlb3gNxQRDv
+ jP6eoKjYvZnllcPbvTUP1ttVeOdlOBfh.o5CkRrOi3fEd30fO0YG9be1MYB.1I7cCTOJFG0Cr6yj
+ SgKkbIC_UJ3GNWjcq0g.NCdbQs.eRtSQi6DS7yI0UBN1b1bVUPZ1v2577mugPhRIKLfsG62MzxBN
+ gil3JhtI_hjcFi_72XtNQD5597VCfvojmsUKZgocmqlnV0GoEFym.NWojp56efrkYxWwf6gmxr3A
+ ZWaXEViKiYE2nN4F4KsLO_RQSOcifQ.x4USBmAx0roteYGaCzC7AeLl1X1N6DBILemfYSiinbuWw
+ 4bpa.iQn_uc.DEGsyRpgLwph1iJtEoga.ye5A5v1E6QRUw7809n4o6SlLvQLDv8xrs_ezvysBs8g
+ Zczx.f8sbgSrmbanLXbqKRONeial1o88B9L_wasOJhr9H2iT6dWZUkpBrQn2LKToqee_LUoggnV0
+ _sDJjuMNMR7lHYZjh72BkIvk.KWRgy4gum8uk8XMBicErcUhBBK6JgPbmi7UTm41.e3xcZwUlaqC
+ IXp_eMFVQ3zH9Bi1nsNsjjHgFNOGs.3op9CQIDIFIsTqKgRvYpLusZOd.0piCVU96fssGHksX9sO
+ GE01T5aW3GAWn4zHGg2H8.hyTm0SGTKTAmUo4Iwq0GwHVpRjXRQ5sZxfsHo3Z2NrPL7G.7H5m9rE
+ Tcm5HrhnYnjk.Mw1MzgO8Eq9b6wBrkKIM_lMeJEYlE2LlkJlKcow8TPNaJIxReYwi2PS_oXWwKZq
+ a61sv8IrxwlpexxTBii32yDM2orcepHpHmPkH88Yusl1gDnFYu.JSg21a1bDgS5ui2yb1G.wpl8D
+ 0p0KdRTFEDtMl2mkhxKQE8mKxH3WKcF4wJxp_LhrMaFxU3wcbYoGG3wcQCw5.WgOfHbVBg3AO5d.
+ kctpisRN01mY94veZkAEi17VwT1WBsjrTce0unkHjYmgaft6jwN_ePe1CLiR3pW1JGg39CV_2IPV
+ gyrIotYRDgfXZwfoPDvihRET7HdEPxmh.MALmcOwXI6GGuftBptK505BPzIZnW1horYFpBvreDDJ
+ KD49dycNhhbOrFf_K6ZxkVHeeBjeKhggZFKdQBrgy6RDi0U61hQTmbWCK8wPQgGc.4jRuUsB_7Wi
+ TRkN7IBpP74NTszI9S330DB_Shp3vl9RcE18zxqZZJfaM3QZ8HuRCTYw8UBg1RLP9TpUPdxpfQ35
+ ff0WTD5QvJxTvplnykuhy38PFxcd0goXXPLRJyL.KUJNlTj5FtInbQ72uQBe0grJy.ExFbAthAVD
+ .XI4Oirop0mq5flwtEdW.gBk7G0T628S7wl5KTWyWIJ4fd5GXVgGqOUh.0lm01YBLJCOPqMOf7vX
+ P0Ozux_i2vwfSz9icXvG8SNFdOX0Uc3nnqFhPnvEKVGqNKn_A3bQusfwf4r.UxeG5fjc0ukd_.BV
+ EhSysjV0rd9jXRT4oimmcLwiPe9ZgnovWx9LVuVz.wD6EQN_8Ty8..DxAl3A_SGKyG4fcZ6dpnuB
+ HhVVNA037RnAmhPh2JWzPZSkA8daXuzImcDifZkk7BdZuFCgfFIBxdXDIXHlvsjbN9Wlo6fFIq1I
+ 5uUW6k5c371Yh3zcMqzqdOO_P0AzgBFGU4wsYiuhcIuf7zbkQA3xgQC3V0BtbMxCGfcireVViYwu
+ CXK0b8ps2ilhdusZ1MvxQWSp3vtJhGD.zGQVIu1x6nVZRHYhlZ82O2Ccu.mzSZyUUEIQNNqLfHfe
+ a5NYvXKOb6rnahf5PD4vikcQzeSEIJasyUKJkgvLN
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: fa8f8e52-4c3a-47c2-a319-b4d621ea2390
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Nov 2026 17:34:56 +0000
-Received: by hermes--production-ir2-5dd9bf4598-9c455 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6beab65f14dff0f33ea26c2aa480fea4;
-          Thu, 12 Nov 2026 17:34:51 +0000 (UTC)
-Message-ID: <ccf26274-13cb-432b-b8ed-e016abd2020e@yahoo.com>
-Date: Thu, 12 Nov 2026 18:34:49 +0100
+X-Sonic-ID: b02481b8-19dd-429d-96e9-06b6e379fcfd
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Nov 2026 17:35:48 +0000
+Received: by hermes--production-ir2-5dd9bf4598-b6ftf (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3042556b733bdb82afada3b444a10d44;
+          Thu, 12 Nov 2026 17:35:42 +0000 (UTC)
+Message-ID: <226b2171-8cfb-4176-af14-d252bcc6240d@yahoo.com>
+Date: Thu, 12 Nov 2026 18:35:40 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,8 +85,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v10 04/12] net: dsa: realtek: rtl8365mb: set speed
- for family D
+Subject: [PATCH net-next v10 05/12] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
@@ -101,191 +101,151 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On family C hardware, forcing a 2.5 Gbps link speed requires relying
-strictly on the HSGMII SerDes configuration block, while forcing a dummy
-1 Gbps value inside the standard digital interface register. Family D
-introduces a dedicated hardware link speed value (5) for 2500M. The speed
-bitfield width has been expanded to 3 bits, splitting the most significant
-bit into a new separate register field (FORCE_SPEED2), which maps directly
-to a distinct per-port digital interface force layout.
+On family D, RGMII on extension interface 1 needs three things that
+the other families do not: the EXT1 RGMII TX clock delay field in
+EXT_TXC_DLY (0x13f9, bits [5:3]) must be cleared, the pin mux in the
+top-level configuration register must be set up, and SerDes 1, which
+shares the pins, must be disabled.
 
-On family D the forced-mode configuration (link, duplex, pause, speed)
-is written to a per-port register at 0x12c0 + port instead of the
-per-extint register. The bit positions of TXPAUSE, RXPAUSE, LINK, DUPLEX
-and the low two speed bits are the same as on family C; the upper speed
-bits go to bits 13:12 (FORCE_SPEED2), so FORCE_EN (bit 12 on family C)
-is not set. A second per-port register at 0x12c8 + port enables the
-forced mode: the vendor RTL8367D API writes 0xFFFF there when the MAC
-is forced and 0 otherwise. This driver always forces the MAC, as on
-family C, so it writes 0xFFFF on every call, including link down.
+The vendor RGMII setup for EXT1 clears the RGMII field of EXT_TXC_DLY
+(0x13f9, bits [5:3]) in addition to programming TXDELAY in RGMXF.
+Do the same. The init jam table writes 0x0090 to this register, which
+leaves the field at 2, so without the clear an extra TX delay would be
+applied on top of tx-internal-delay-ps. Clearing it makes
+tx-internal-delay-ps the only source of TX delay.
 
-Add the family D implementation as rtl8365mb_d_ext_config_forcemode().
-The shared code reaches it through the ext_config_forcemode pointer in
-struct rtl8365mb_family_info, so it needs no is_d() check.
+If the internal MAC4 block occupies extension 1, do not advertise RGMII
+for port 7 in phylink_get_caps(), so the configuration is refused before
+any EXT1 register is touched. This mirrors the vendor RTL8367D API, which
+returns an error for RGMII on port 7 when UTP port 4 uses the RGMII
+interface. The driver logs an error naming the conflict. RGMII is the
+only interface of port 7 this driver implements, so port 7 then has no
+supported interface: phylink_create() fails for it, and if it is a CPU
+port the switch does not probe.
 
-Nothing points to it until the family D info is added together with the
-chip table entry in the last patch. Until then it is not static and is
-declared in rtl8365mb.h, so that the build does not warn about an unused
-function.
+When MAC4 does not own the pins, bind the RGMII/MII pins to MAC7 and
+disable SerDes 1, which shares them. The TX delay field, the pin mux and
+the SerDes 1 disable are all programmed before RGMII is selected, so the
+shared pins are never driven by RGMII and SerDes 1 at the same time.
 
-Tested-by: Gustavo Foletto Mora <gusfmora@gmail.com>
+The family D branch is not reachable until the chip table entry is
+added in the last patch.
+
 Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl8365mb.h      |   4 +
- drivers/net/dsa/realtek/rtl8365mb_main.c | 110 +++++++++++++++++++++++
- 2 files changed, 114 insertions(+)
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 70 +++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.h b/drivers/net/dsa/realtek/rtl8365mb.h
-index 664bddb..3d607bd 100644
---- a/drivers/net/dsa/realtek/rtl8365mb.h
-+++ b/drivers/net/dsa/realtek/rtl8365mb.h
-@@ -24,6 +24,10 @@ struct rtl8365mb_family_info {
- const struct rtl8365mb_family_info *
- rtl8365mb_get_family_info(struct realtek_priv *priv);
- 
-+int rtl8365mb_d_ext_config_forcemode(struct realtek_priv *priv, int port,
-+				     bool link, int speed, int duplex,
-+				     bool tx_pause, bool rx_pause);
-+
- static inline bool rtl8365mb_is_d(struct realtek_priv *priv)
- {
- 	return rtl8365mb_get_family_info(priv)->family == RTL8365MB_FAMILY_D;
 diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index ef75dc2..27a6917 100644
+index 27a6917..bdc29d0 100644
 --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -346,6 +346,8 @@
- #define RTL8365MB_PORT_SPEED_10M	0
- #define RTL8365MB_PORT_SPEED_100M	1
- #define RTL8365MB_PORT_SPEED_1000M	2
-+#define RTL8365MB_D_PORT_SPEED_2500M	5
-+#define RTL8365MB_D_PORT_SPEED_MSB_MASK	BIT(2)
+@@ -334,6 +334,12 @@
+ #define   RTL8365MB_SDS_OPTION_ARM_KEY		0x0249
+ #define RTL8365MB_SDS_OPTION_REG		0x13C1
  
- /* External interface force configuration registers 0~2 */
- #define RTL8365MB_C_DIGITAL_INTERFACE_FORCE_REG0		0x1310 /* EXT0 */
-@@ -364,6 +366,26 @@
- #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK		BIT(2)
- #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK		GENMASK(1, 0)
- 
-+/* bits[13:12]; bit 13 reserved, no defined speed value uses it yet */
-+#define   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK	GENMASK(13, 12)
-+
-+#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE		0x12c0
-+#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(_port) \
-+		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE + (_port))
-+
-+#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE		0x12c8
-+#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(_port) \
-+		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE + (_port))
-+
-+/* Per-port force-mode enable. The vendor RTL8367D API
-+ * (dal_rtl8367d_port_macForceLink_set()) treats it as an on/off switch for
-+ * the whole forced configuration: all bits set when the MAC is forced, zero
-+ * when it is not. The meaning of the individual bits is not documented.
-+ * This driver always forces the MAC, as on family C, so all bits are set
-+ * on every call, including link down.
++#define RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK		GENMASK(4, 0)
++/* Shared "disable" encoding for both SDS_MISC's and SDS1_MISC0's
++ * 5-bit mode fields.
 + */
-+#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK	GENMASK(15, 0)
++#define RTL8365MB_D_PORT_SDS_MODE_DISABLE		0x1f
 +
- /* CPU port mask register - controls which ports are treated as CPU ports */
- #define RTL8365MB_CPU_PORT_MASK_REG	0x1219
- #define   RTL8365MB_CPU_PORT_MASK_MASK	RTL8365MB_PORT_MASK
-@@ -1713,6 +1735,94 @@ static int rtl8365mb_c_ext_config_forcemode(struct realtek_priv *priv, int port,
- 	return 0;
- }
+ /* Embedded DW8051 microcontroller control registers. The microcontroller
+  * can run firmware to manage the SerDes link, but this driver keeps it in
+  * reset and disabled: phylink already performs the link management that
+@@ -466,6 +472,20 @@
+ #define   RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK		GENMASK(5, 4)
+ #define   RTL8365MB_PORT_MISC_CFG_CONGESTION_SUSTAIN_TIME_MASK	GENMASK(3, 0)
  
-+int rtl8365mb_d_ext_config_forcemode(struct realtek_priv *priv, int port,
-+				     bool link, int speed, int duplex,
-+				     bool tx_pause, bool rx_pause)
-+{
-+	const struct rtl8365mb_extint *extint =
-+		rtl8365mb_get_port_extint(priv, port);
-+	u32 r_tx_pause;
-+	u32 r_rx_pause;
-+	u32 r_duplex;
-+	u32 r_speed;
-+	u32 r_link;
-+	int val;
-+	int ret;
++/* EXT_TXC_DLY holds a 3-bit TX clock delay per external interface, for
++ * RGMII ([2:0] EXT0, [5:3] EXT1, [8:6] EXT2) and separately for GMII.
++ * Only the EXT1 RGMII field is used here, and it is cleared in RGMII
++ * mode so that tx-internal-delay-ps is the only TX delay applied.
++ */
++#define RTL8365MB_D_REG_EXT_TXC_DLY				0x13f9
++#define   RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK			GENMASK(5, 3)
 +
-+	if (!extint)
-+		return -ENODEV;
++#define RTL8365MB_D_REG_TOP_CON0				0x1d70
++#define   RTL8365MB_D_MAC7_SEL_EXT1_MASK			BIT(13)
++#define   RTL8365MB_D_MAC4_SEL_EXT1_MASK			BIT(12)
 +
-+	if (link) {
-+		/* Force the link up with the desired configuration */
-+		r_link = 1;
-+		r_rx_pause = rx_pause ? 1 : 0;
-+		r_tx_pause = tx_pause ? 1 : 0;
++#define RTL8365MB_D_REG_SDS1_MISC0				0x1d78
 +
-+		if (speed == SPEED_2500) {
-+			r_speed = RTL8365MB_D_PORT_SPEED_2500M;
-+		} else if (speed == SPEED_1000) {
-+			r_speed = RTL8365MB_PORT_SPEED_1000M;
-+		} else if (speed == SPEED_100) {
-+			r_speed = RTL8365MB_PORT_SPEED_100M;
-+		} else if (speed == SPEED_10) {
-+			r_speed = RTL8365MB_PORT_SPEED_10M;
-+		} else {
-+			dev_err(priv->dev, "unsupported port speed %s\n",
-+				phy_speed_to_str(speed));
-+			return -EINVAL;
-+		}
+ /**
+  * enum rtl8365mb_vlan_egress_mode - port VLAN egress mode
+  * @RTL8365MB_VLAN_EGRESS_MODE_ORIGINAL: follow untag mask in VLAN4k table entry
+@@ -1263,6 +1283,32 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
+ 	if (ret)
+ 		return ret;
+ 
++	if (rtl8365mb_is_d(priv) && extint->id == 1) {
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_EXT_TXC_DLY,
++					 RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK, 0);
++		if (ret)
++			return ret;
 +
-+		if (duplex == DUPLEX_FULL) {
-+			r_duplex = 1;
-+		} else if (duplex == DUPLEX_HALF) {
-+			r_duplex = 0;
-+		} else {
-+			dev_err(priv->dev, "unsupported duplex %s\n",
-+				phy_duplex_to_str(duplex));
-+			return -EINVAL;
-+		}
-+	} else {
-+		/* Force the link down and reset any programmed configuration */
-+		r_link = 0;
-+		r_tx_pause = 0;
-+		r_rx_pause = 0;
-+		r_speed = 0;
-+		r_duplex = 0;
++		/* Bind the RGMII/MII pins to MAC7. MAC4 does not own them:
++		 * RGMII is not advertised otherwise, see
++		 * rtl8365mb_phylink_get_caps().
++		 */
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_TOP_CON0,
++					 RTL8365MB_D_MAC7_SEL_EXT1_MASK,
++					 RTL8365MB_D_MAC7_SEL_EXT1_MASK);
++		if (ret)
++			return ret;
++
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_SDS1_MISC0,
++					 RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK,
++					 RTL8365MB_D_PORT_SDS_MODE_DISABLE);
++		if (ret)
++			return ret;
 +	}
 +
-+	val = FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK,
-+			 r_tx_pause) |
-+	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_RXPAUSE_MASK,
-+			 r_rx_pause) |
-+	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK, r_link) |
-+	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK,
-+			 r_duplex) |
-+	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK,
-+			 r_speed &
-+			 RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK);
-+
-+	/* Speed is 3 bits on family D: bits[1:0] go into FORCE_SPEED,
-+	 * bit[2] goes into FORCE_SPEED2 (register bit 12); only 2500M
-+	 * sets it. Register bit 13 is reserved.
-+	 */
-+	val |= FIELD_PREP(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK,
-+			  FIELD_GET(RTL8365MB_D_PORT_SPEED_MSB_MASK,
-+				    r_speed));
-+	ret = regmap_write(priv->map,
-+			   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(port),
-+			   val);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->map,
-+			   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(port),
-+			   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
- 				       struct phylink_config *config)
- {
+ 	ret = regmap_update_bits(
+ 		priv->map, RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(extint->id),
+ 		RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(extint->id),
+@@ -1830,6 +1876,8 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+ 		rtl8365mb_get_port_extint(ds->priv, port);
+ 	struct realtek_priv *priv = ds->priv;
+ 	struct rtl8365mb *mb = priv->chip_data;
++	u32 data;
++	int ret;
+ 
+ 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+ 				   MAC_10 | MAC_100 | MAC_1000FD;
+@@ -1859,8 +1907,26 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	 * which remain unimplemented.
+ 	 */
+ 
+-	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII)
+-		phy_interface_set_rgmii(config->supported_interfaces);
++	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII) {
++		/* On family D the EXT1 pins are shared with MAC4 (UTP port 4).
++		 * If MAC4 owns them, RGMII on this port cannot work.
++		 */
++		if (rtl8365mb_is_d(priv) && extint->id == 1) {
++			ret = regmap_read(priv->map, RTL8365MB_D_REG_TOP_CON0, &data);
++			if (ret)
++				dev_err(priv->dev,
++					"failed to read TOP_CON0, RGMII on port %d disabled: %pe\n",
++					port, ERR_PTR(ret));
++			else if (data & RTL8365MB_D_MAC4_SEL_EXT1_MASK)
++				dev_err(priv->dev,
++					"port %d: EXT1 is owned by MAC4, RGMII cannot be used\n",
++					port);
++			else
++				phy_interface_set_rgmii(config->supported_interfaces);
++		} else {
++			phy_interface_set_rgmii(config->supported_interfaces);
++		}
++	}
+ 
+ 	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_SGMII &&
+ 	    mb->sds_supported)
 -- 
 2.53.0
 
