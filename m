@@ -1,60 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794507643;
-	b=jBsONFhuAOWOJYylPwYR30RTYOgTmlApziQYcRVk69w1asJgs0gkfzwgXqWQw+VhVM/W
-	 spoTL2Skw0sSGVHNg1IufTw/IQNWUqlSdJ7bpuwTeBeYeQmBXMXpE9Nr4t1rzdSSYasLI
-	 z8XN7P0MJYFbKwTWc+J49ZiDecSO6t3UYSBt4xzg5pSam9iHBWudd+UH1uBvJ3u/DC+4c
-	 q9aKYnFHf75zS/bVFvCYYmrFzLfq72FnYPyorxPKzrT95TXlZ6WGTR7Dhcg71bo2tSCaK
-	 70mkZiWpW/yFCqzEJswXKHXgKHKsZTSkSF4BrDdg2Wh5q9W13RlJnSAGBNZ7l8f7DjA==
+	t=1794507772;
+	b=yvJsYe4G8fpPuvCX+BEpMlp4UZneZRfHUFlBcctJbZ/6kcylk2RJrewRrKj1p2Xyobau
+	 bHdE6gK7q90o4q4t7vExGFATbbqZVOablqsvWJBUqDmKmqb41pRhltQ/jJ+spGmjjztyl
+	 lc9bE7hmJ2gjQHiD9bsYhdl1XX55iudI9I/MJI9Eg1w41xqMi5X83LlaG5mA/4voIi3ih
+	 5pi4Km9/QSsdd8fGaG/hr8KiWHadt541FL3fOyx3diLjBhS4HXgzlXj6QnhQyhS6V+5gT
+	 kXpRmJnq3J8OlOx7xg2vgIRgKhurFs0wD+O3MRg5Gpfb7h+RAgxfoXt28qUvTet8wmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794507643;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794507772;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=z384hamH81nls7Cqgu8VnU3Tqn87ERoN8oONux7EIiI=;
-	b=oR8JmbutaaTycEUqnFkOKbApRhoUo5SURfflTxr4Rt2M7oo9RmJeGiKqP96l8Y+7d/a4
-	 EVw6KCQhxQo81CGlt6jXYXxdBvu0zsCSm6TVJ72yXd0cPohFq7H6AtrcUtSmHwSARUZcF
-	 s04LsNuC762ukB/tcKjRzuGKFiMlCrl95qzrf1++HN9WHuIqhmXWNqzFR/WvYp2r7Z5Ew
-	 +hKn26IyPuLPge2WL74xdnJr1BlOO6M2IqidTtxT1w4AQss83lPJR3bt4FmgoL9g0UW9F
-	 PjiV3p6H85rEwyGKQHP3NNkwFtosm6WBr4qixtIYC5k2/CYueCy4Y01krwxiVCb5WwQ==
+	bh=n44GLeAOgDdye7NV4IO7bRTFU8RygkQW6ehpVCLImtI=;
+	b=V07Q+08irgPaHmivMNS6rumzE+QU9xiDj2QY3cFYWgH3RM9EeCrfPvj+n52QVBKGQb5u
+	 esjzWoYK3++sCYzqluhvNcL6GUTq24zkDKnNtRnd+sdCWJS0CKxYjhNAFjT3GVhQ89kyA
+	 KzD0Yff67AOE8rG6WstUmx7exvB5WelH/o4ideql02t2f5n2LE0k1hft9qBNuBBnOeoZI
+	 knKFlahNf1bMQPZFE6Tk64ddhkWIMjIXE9qJ5zoKJ3EmZNB6P2QWumRfbprvlNI5QonS+
+	 AWq7VSoOlrWQ/LwHeC9vnJXz2wLyue95klQc8nnXan8haznMUmrz2YpMN91+iBKbuGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HUYbCeaG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxU4ML+T;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38025606A31C;
-	Thu, 12 Nov 2026 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3DD606A323;
+	Thu, 12 Nov 2026 18:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HUYbCeaG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975561F000C4;
-	Thu, 12 Nov 2026 18:20:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxU4ML+T
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BA71F000C4;
+	Thu, 12 Nov 2026 18:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794507642;
-	bh=z384hamH81nls7Cqgu8VnU3Tqn87ERoN8oONux7EIiI=;
+	s=k20260515; t=1794507772;
+	bh=n44GLeAOgDdye7NV4IO7bRTFU8RygkQW6ehpVCLImtI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HUYbCeaGof0BKc8LXkOBn5vjsaaSI+wfp0I8Vp3nsjkfd+OwNc0OA77PKjR/D5Tp5
-	 K5LFjXnkQIkcOG4Deb8dgEkJHyX3TzyasypjcfTjijoiVfj95HmK8YQ2Il6BGeZYhi
-	 NfvLteiCiciltqy9q7R/IUsHmt1jD0u/dpfDLAnb9AEf1t2Jq0H/BwYSIqtwMgb4i6
-	 DP3V9rZCktkbNCR+1ItqxiSNuefjjKQb/bxz+TEPfb9ab/qzIQySVL3jWNpLPyQXbK
-	 aIKfqOtIWWi3Q57c21ctsq47rqxmMu9oj2GsOdw6iuVFbkiykEE8GIFOp1UMWgCHx8
-	 7arhkVEQze6HQ==
-Date: Thu, 12 Nov 2026 10:20:41 -0800
+	b=GxU4ML+TLMjtDNoh2xlJVi9HpPIyc0pTBIhhinjawsj1lu9tBJQabgQfB8IlNhQ8D
+	 bmFBuZx2dk6a+/aA/tgFOVmARFnWldombX60pDWKGuWS00a7utqpjJ/V2RvQ9kld6j
+	 ipon/Khmwbe5ZOJzgC8SKnqT3Vg4Xd7TcQcGcLF5J2cCxshj9ODeZF/TKwU2a+PqVd
+	 yjeF1c5pdteYlhsF2Cukk79ByzblM+otqNortzlcC4JaY5d8SL5KsAORY76P+PkttN
+	 vdZO+qknSkkOQsMlj1i7eQquYSXm7iXCCJB5wvPn8tWWyS5jkf4+f9HBaIlg5dX5qL
+	 8R6wtEkFcB6ng==
+Date: Thu, 12 Nov 2026 10:22:51 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: claudiu beznea <claudiu.beznea@tuxon.dev>, Claudiu Beznea
- <claudiu.beznea.uj@bp.renesas.com>, netdev@vger.kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH net-next 07/12] can: rcar_canfd: Use DT clock names in
- the probe message
-Message-ID: <20261112102041.0857478e@kernel.org>
-In-Reply-To: <20261112-private-tangible-dragonfly-3de373-mkl@pengutronix.de>
-References: <20261110115112.3807247-1-mkl@pengutronix.de>
-	<20261110115112.3807247-8-mkl@pengutronix.de>
-	<20261111-wise-graceful-avocet-27fa57-mkl@pengutronix.de>
-	<7c5f9cc9-8e3a-4f3d-b9a5-b5b0462833af@tuxon.dev>
-	<20261112-private-tangible-dragonfly-3de373-mkl@pengutronix.de>
+To: liuyong <pkfxxxing@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long
+ <lucien.xin@gmail.com>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] sctp: revalidate the association socket in timer
+ callbacks
+Message-ID: <20261112102251.6403e562@kernel.org>
+In-Reply-To: <20261110120212.1110283-2-pkfxxxing@gmail.com>
+References: <20261110120212.1110283-1-pkfxxxing@gmail.com>
+	<20261110120212.1110283-2-pkfxxxing@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,24 +64,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Nov 2026 14:44:43 +0100 Marc Kleine-Budde wrote:
-> > RZ/G3E, RZ/V2H, RZ/V2N have input clocks named in the HW manual as pclk,
-> > clk_ram and canfd. These are described in [1] page 3365, [2] page 3286, [3]
-> > page 3160.
-> >
-> > All these have external_clk = 0, fcan_pclk = 0 and the patch here will print
-> > "canfd clk" for them, as it is actually defined in HW, and as the previous
-> > code did.
-> >
-> > It is true the commit message mentions it uses DT binding clock names. Maybe
-> > that should be amended.
-> >
-> > With the current binding names and various usage of it across different SoCs
-> > I'm not sure we can use binding names for all the cases.
-> >
-> > Please let me know how would you like me to proceed.  
-> 
-> I think it's fine. Let's see what the netdev people say :)
+On Tue, 10 Nov 2026 20:02:09 +0800 liuyong wrote:
+> Signed-off-by: liuyong <pkfxxxing@gmail.com>
 
-Fine by us if it's fine by you :) Thanks for chasing down 
-the explanation!
+We need real/legal names, one lowercase string doesn't look right.
+Please update
+-- 
+pw-bot: cr
