@@ -1,79 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794488378;
-	b=sElGGjVQYexDkWjLaHQnMAcJtaIGuLF5HnqGcUSIOkZd2nDEv/LM1WppYTTKbOuBDpn0
-	 GrouOejQ625n2z/SoixrfbXeko7IKOzG70ZyEJ76OKYzWZPBFv2fKJIIhQ/xnKwVSORPb
-	 K7c6BeRzpPyZ312K+XA2ih/ubMr8lRmQBWapc2DbBArnmhhRu+HRcLLTra+f7jpFWMJWH
-	 DuM65jXc4EQCB199Aw8buyW7+ysqYv8xo49mr3ZJecJGBraUiPgMtAs27EUCgK+0FYOTp
-	 YSAaC2hGHpv4C4MeA0zu9RtjjEWx5qaMMyzQ1GRqcjeJWOnHGvIyA8KunA9BHJftI2Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794488378;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=0uShfIg81iZJK8hhCnfJcApGKUqA1kN1Jqwh/hJXTls=;
-	b=J0AMdrY474rE2zgM1V5PHxHVmQCayIJ8bRz2bbu9/JyWnMEfTS/J3XeecM1Kh4nD5xvo
-	 bpz9l9HfJkFNy4er2f3oKpniMFzpyEmwxInYMYg55pdEPpZ7jzuRdig+Ap3j8Qif+JPM6
-	 orbNc5jA97CEeMwpcPqzpCjcs3XyeDsLYylENXbhijAm6/gByyBctGo/cfI3MVAfC3IZc
-	 fdpUdw2Kot45hQauI4M0u15vYmHIHudiRv9SKfujW51+ztuOX9dEzJPprAGsKbjdnIGZZ
-	 Eyctvq9io+dofa7wiQM9CueRit1nimVQBhsJr6CsYmoATwiWliRlIVxyblD1glw7xeg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SHuYVq4a;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E45606A336;
-	Thu, 12 Nov 2026 12:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SHuYVq4a
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794488378;
-	b=a+HdZ8y+a8xtpgiV7E6pjBL6MQfLeuXDLd+uZ/gT98Z4lFkna+jFCNNGFI+fBm1IV51A
-	 e6Up0nuPrRvbsTLy+stfIPrACP1TRnDQ5lgeu7RrXzavCrx41Y+UB18Qmiez41WkFGaVN
-	 5q4P5iwgFNAYWYAA8XJyFg2FjmUTI/EVUoUTIqg6FtgOjx5piJjN5CKvBxibzoMBqmF++
-	 mCzExXPMIsJhS0hSS8uQIfku6VBn1AFyBHWJO5zLg7o3gIjzI2315+XfkeUnp7Dll5sDU
-	 jtUbo5k9RjncZ1BDSFB3e5vDI/yTGGOg7AZcpaO1ZaCtBVW8jw5PDDcCbQok/b8ORkA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794488378;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=0uShfIg81iZJK8hhCnfJcApGKUqA1kN1Jqwh/hJXTls=;
-	b=TzPaR3D5Au+1oIWOR9gjcu+F2ycyR0AsKchUAztt+A08M15n3tP5spCLxfFrpoy41Unu
-	 N0Lt5bZhHXeshzoUjh41ZOHIloskS62ma0EZgknyUU8Lf0+dl8pBbrpd8Ox+WKSQk5Q4I
-	 e7UGOyqsTcoQI5HdU7ilFIAXGrSEHqADTtl9ayp8S4nO95u7EDNiv2kdpIDV03jk0mZ9+
-	 kINYrQQQCy4gicJ8C9qaPccgkGU5zEhGCGUOPJ1QeTWTRfOfu5XUOOa9S/1AJ54DjSTOt
-	 KhBcOUEVcwRuXqlIezmQK5bAGLoQ/H3FONO4NVidNVcmY06KKtTF5OeveQGIMpGx5fQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794488660;
+	b=N8M0r3cAZrV60243o4tYWYAfLHpJZhi0qIReAYCUaeKQDBV9Zfz1Y/qz4mii9F30yFHJ
+	 NYoIGoJro8Q2D+yNmscmTW5kJTIJE2nEU6Z8B0GLlWzi3mqhY6U7EeTXuYgYI6fkWG5oZ
+	 vukF3xbFoo4XcLu9goXYKr30hS/NtXbJfLcLCOrm7o1RamYMSejPnf9NmiBASYFp5JnlQ
+	 IYJs8esgLLhfv5791JiuX9qhHpgNOq+s6PS6awTB4qcVjoFwUs8Wmofhhy6ow6idWKhiF
+	 R6Xr0tlXQn51gaDfa4i41vzzspC0EEHka1kXZ/EkJtmDZp2ewTAUcUe6kWVm2HkZTZQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794488660;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=0tj6mONKQs4uxuQAiKsmAs+vaFP71pgTJSVc6t5mh5c=;
+	b=j7cLwUEJXshK+fHSkdj5L5rfQqrDcIodR1UPJPWuXIX1fZLmBMlsTaiRXl07TKtV9nDS
+	 yVSgnDDAlrrGDbodWpaEIJJUDFirSd+q9WiI4lg/jYNoRn0bj3U5V6pLMfZ6VeyTit0Rw
+	 kvWlhw8D9/Mv0hDrufqkuS5zTgsp3MALdC4Iv5TjLxNJGnVfsS0Cj3EQ7j84Xo+/cTjJ7
+	 KlSkCUgx2xPJYdwDciyZPg/uutmc67YktWvF+QxL6AgswtyxJhwVI5EESCFEVtWKkpJGl
+	 ydVXkSXfANBkdm/AE4hWagYqAnmzpyeNrCxYUoH6A37nrk3kaaquxOvjtrD3ZP1r4HA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MB2W0Dzm;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B37011F00A08;
-	Thu, 12 Nov 2026 12:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794488378;
-	bh=0uShfIg81iZJK8hhCnfJcApGKUqA1kN1Jqwh/hJXTls=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=SHuYVq4asakCW+34JVL4F+3EtPd32PguSQrsM31ldfT7jvoRMJGHKYBqc1T3kcgBI
-	 WTMqda8q6Crr/7QOpNqYRmhodfqijDtDvvkqAgllqKu0U0QNM8ItGduoaqTxKir1uF
-	 w0Xox64JBgV7gTP64rPu75L+APWgBhM5ogjIaODlAcSjXWyyVmaXXV8GJ3RqXlrrK7
-	 hL+Qom/WXnNsF4VXRkAs5n+t4jINBQmBGE1hAb8yVvw4nRJr2cQNHCL2DgI0HfZ5XK
-	 ZNc9b/eQt6mE01hYhQPWTtmg1AjVZ0rBRDNKczNNfJpaKI0qfEZf/KULEMUarlcjA2
-	 8pLrze7Ww2OnA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3F26E494E4;
-	Thu, 12 Nov 2026 12:59:36 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Thu, 12 Nov 2026 07:59:37 -0500
-Subject: [PATCH net v9 3/6] net/smc: bound the send length to the send
- buffer in smc_tx_sendmsg()
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B327606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:04:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B327606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MB2W0Dzm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794488658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0tj6mONKQs4uxuQAiKsmAs+vaFP71pgTJSVc6t5mh5c=;
+	b=MB2W0Dzmv7cyfeDj7oenEVJ/ohOUV4ws+Al/PjBUmacBAOpxe5/ztVkPyHcPJ8UPhA+S57
+	9VqEcajtQ7fYCFF0VGSRve7pcebCIGA2VAil6igo73kvW3Yftd6l9tmUY8o2lv3RKx9aZU
+	EbcLEns6fTplOLfDz9HtJAa33qH16+E=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-05S6PDg1NX6TgKk1Y-jqbw-1; Thu,
+ 12 Nov 2026 08:04:12 -0500
+X-MC-Unique: 05S6PDg1NX6TgKk1Y-jqbw-1
+X-Mimecast-MFC-AGG-ID: 05S6PDg1NX6TgKk1Y-jqbw_1794488650
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EFF4A18011E1;
+	Thu, 12 Nov 2026 13:04:09 +0000 (UTC)
+Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.7])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AC1F91956087;
+	Thu, 12 Nov 2026 13:04:04 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v4 00/14] dpll: add a simulated DPLL device driver
+Date: Thu, 12 Nov 2026 14:03:45 +0100
+Message-ID: <20261112130359.840795-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,114 +89,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-b4-disp-0287c16e-v9-3-e5e8fa688177@proton.me>
-References: <20261112-b4-disp-0287c16e-v9-0-e5e8fa688177@proton.me>
-In-Reply-To: <20261112-b4-disp-0287c16e-v9-0-e5e8fa688177@proton.me>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, 
- Dust Li <dust.li@linux.alibaba.com>, Eric Dumazet <edumazet@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, "D. Wythe" <alibuda@linux.alibaba.com>, 
- Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Ursula Braun <ubraun@linux.ibm.com>, 
- Wenjia Zhang <wenjia@linux.ibm.com>, Stefan Raspl <raspl@linux.ibm.com>, 
- linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Wen Gu <guwen@linux.alibaba.com>, Tony Lu <tonylu@linux.alibaba.com>, 
- Simon Horman <horms@kernel.org>, 
- Guangguan Wang <guangguan.wang@linux.alibaba.com>, 
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
- Hidayath Khan <hidayath@linux.ibm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794488375; l=3799;
- i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=ioWt2nFN8deKKR5Xb2UG2DAkkoZuzmKYXtUilMMIgkA=;
- b=ff6Z2RzXixcmmtuatiFKXxb3m30/JFoQZNnsf61UBEpoJoOC/NbrFVDwPQOA1qiQS2WCjCsmb
- IR12c1YbPFKDvIA8kz3zsUUVnni+GPhYA9bMmKZd8IZPNOtRbphBl22
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
- auth_id=893
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+The DPLL subsystem has no in-tree driver that can run without real
+hardware, so core changes and userspace tooling are hard to exercise in
+CI, and the pin-on-pin and reference sync paths see almost no coverage
+outside the vendors' labs. This series adds dpllsim, a simulated DPLL
+device driver, together with selftests that run against it.
 
-conn->sndbuf_space can run past the send buffer. After an SMC-R link
-failover, a late completion from the old link can move tx_curs_fin back,
-and the next completion credits the same bytes again; across the ring
-end, smc_curs_diff() credits the step back itself as more than a whole
-ring, so even with a conforming peer sndbuf_space can reach three times
-the buffer. The failover catch-up and SMC-D DMB merge (only the loopback
-device today) also credit it from the peer's consumer cursor without a
-bound. smc_tx_sendmsg() takes it as the write space, and the second
-chunk of its copy writes past the send buffer.
+The driver is controlled through configfs, following gpio-sim. Writing a
+clock ID into a device directory and setting "live" to 1 registers a
+DPLL device with the core. Pins are directories under pins/ with their
+type, frequency, direction and priority as attributes, and all of them
+are registered when the device goes live. The split between creating
+the configuration and going live keeps the register and unregister
+paths reachable from userspace, so they can be exercised repeatedly
+without reloading the module.
 
-Clamp writespace, which sizes the copy, to sndbuf_desc->len, negative
-values included, so the copy stays in the send buffer. The over-credit
-itself is not undone: with sndbuf_space too large, send() can still
-overwrite data in the send buffer that the peer has not received.
+The patches follow the shape of the zl3073x introduction. The
+driver starts with the device alone, then gains pins and the static pin
+operations one at a time (state, priority, frequency, phase adjustment),
+and every feature patch is followed by the selftest that covers it. The
+last two patches add concurrency stress tests and reference tracker
+leak tests for the lifecycle paths.
 
-Fixes: c6f02ebeea3a ("net/smc: switch connections to alternate link")
-Fixes: cc0ab806fc52 ("net/smc: adapt cursor update when sndbuf and peer DMB are merged")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+The simulation loop (lock state machine, phase and frequency
+measurements, monitoring features), the topology features (MUX pin
+hierarchies, reference sync, media failure injection), netdevsim
+integration and device mode setting follow in two further series once
+this one is in, to stay within the 15 patch limit.
+
+The driver and the selftests were developed with an LLM coding
+assistant (Claude Code) working under my direction. I chose the
+configfs design, the split into one feature per patch and the test
+scenarios, and I reviewed every line. The assistant wrote most of the
+code and the first drafts of the changelogs, and it found and fixed
+bugs by running the suite on the lab host. The series then went
+through several rounds of an LLM based patch reviewer whose findings
+were fixed, and through a mutation test in which deliberately broken
+driver and core code was caught by the tests.
+
+The selftests live in tools/testing/selftests/drivers/dpll and run
+with "make -C tools/testing/selftests TARGETS=drivers/dpll run_tests".
+By default they create dpllsim devices; with DPLL_DEV_ID=<id> the basic
+and feature scripts run against an existing device instead, so the same
+suite exercises real hardware, and DPLL_DRIVER=<module name> picks the
+first device of that driver, dpllsim for a simulated one. The whole
+suite was run through the kselftest runner in a KVM guest and on an ice
+E810 host with CONFIG_KASAN, CONFIG_PROVE_LOCKING and
+CONFIG_DPLL_REFCNT_TRACKER enabled, against the simulator and, with
+DPLL_DRIVER=ice, against the ice DPLL, where the tests that need a
+simulator skip and the pin state and priorities of the hardware are
+left as they were. All pass with no warnings in dmesg.
+
 ---
-The overwrite after an over-credit is by inspection; not tested. Fixing
-the credit in smc_cdc_tx_handler() needs a cursor compare that survives
-the u16 wrap rollover, which smc_curs_comp() does not do, so it is left
-out here. A negative value maps to len, not 0, since 0 would make the
-send loop spin.
----
- net/smc/smc_cdc.c |  2 +-
- net/smc/smc_tx.c  | 10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+v4:
+- address the findings of the netdev AI review of v3
+- dpllsim: keep the priority and the frequency set over netlink apart
+  from the configured values, so that every live transition starts from
+  what configfs holds and the attributes keep showing it
+- dpllsim: document the pin limit, the frequencies per pin type, the
+  errors of the live write and what happens to values set over netlink;
+  correct the comments on what the subsystem mutex covers
+- selftests: tell a failed device or pin dump from a system without
+  devices or pins, and fail instead of skipping when the simulated
+  device cannot be created
+- selftests: pick the spare input pin by all its parent devices, bail
+  out before touching a pin whose current priority, frequency or phase
+  adjust could not be written back, restore the reference after the
+  test pin in manual mode, do not let a refusal hide an earlier failure
+- selftests: signal only workers that are still children of the script,
+  never delete a device named by the environment or one that existed
+  before, record the mounts before mounting
+- selftests: keep the files of freed objects out of the reference
+  tracker snapshot, fail when the tracker is built in but records
+  nothing, skip the final leak check when a device was left behind
+- selftests: log deferred restores that fail, tell failed pin queries
+  from missing attributes in the remaining places, fail a stress worker
+  that a signal interrupted, enable CONFIG_IKCONFIG_PROC for the
+  tracker probe
+- drop the claim that configfs implies no stable ABI
+- add the Reviewed-by given to patches 2, 5, 6 and 14 of v3 (Ivan
+  Vecera) and keep the other tags, except on patches 7 and 9, where
+  the behaviour of the driver changed and which ask for a new look
 
-diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-index e2c765ff2ba3..90a79a983b48 100644
---- a/net/smc/smc_cdc.c
-+++ b/net/smc/smc_cdc.c
-@@ -43,7 +43,7 @@ static void smc_cdc_tx_handler(struct smc_wr_tx_pend_priv *pnd_snd,
- 		/* sndbuf_space is decreased in smc_sendmsg */
- 		smp_mb__before_atomic();
- 		atomic_add(diff, &cdcpend->conn->sndbuf_space);
--		/* guarantee 0 <= sndbuf_space <= sndbuf_desc->len */
-+		/* can be out of range, see smc_tx_sendmsg() */
- 		smp_mb__after_atomic();
- 		smc_curs_copy(&conn->tx_curs_fin, &cdcpend->cursor, conn);
- 		smc_curs_copy(&conn->local_tx_ctrl_fin, &cdcpend->p_cursor,
-diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
-index 0f0c6df3bf2c..3913ef103b35 100644
---- a/net/smc/smc_tx.c
-+++ b/net/smc/smc_tx.c
-@@ -233,6 +233,14 @@ int smc_tx_sendmsg(struct smc_sock *smc, struct msghdr *msg, size_t len)
- 		/* initialize variables for 1st iteration of subsequent loop */
- 		/* could be just 1 byte, even after smc_tx_wait above */
- 		writespace = atomic_read(&conn->sndbuf_space);
-+		/* sndbuf_space can be out of range: late completions of an
-+		 * old SMC-R link credit it again after a failover, and with
-+		 * SMC-D DMB merge it follows the peer's consumer cursor.
-+		 * Bound writespace, which sizes the copy; a negative value
-+		 * would become huge in the size_t min_t() below.
-+		 */
-+		if (writespace < 0 || writespace > conn->sndbuf_desc->len)
-+			writespace = conn->sndbuf_desc->len;
- 		/* not more than what user space asked for */
- 		copylen = min_t(size_t, send_remaining, writespace);
- 		/* determine start of sndbuf */
-@@ -278,7 +286,7 @@ int smc_tx_sendmsg(struct smc_sock *smc, struct msghdr *msg, size_t len)
- 		/* increased in send tasklet smc_cdc_tx_handler() */
- 		smp_mb__before_atomic();
- 		atomic_sub(copylen, &conn->sndbuf_space);
--		/* guarantee 0 <= sndbuf_space <= sndbuf_desc->len */
-+		/* can be out of range, see writespace above */
- 		smp_mb__after_atomic();
- 		/* since we just produced more new data into sndbuf,
- 		 * trigger sndbuf consumer: RDMA write into peer RMBE and CDC
+v3:
+- move the selftests from tools/testing/selftests/drivers/net/dpll to
+  tools/testing/selftests/drivers/dpll, with the shared library as a
+  TEST_FILES entry of that directory, so that the tests sit where the
+  drivers do
+- let dpllsim refuse pin states that are not valid in the device mode:
+  connected is refused in automatic mode, which the simulator runs in,
+  as Documentation/driver-api/dpll.rst reserves it for manual mode
+  (Ivan Vecera)
+- make the pin state test follow the mode of the device under test and
+  check on the simulator that connected is refused in automatic mode;
+  cycle the stress tests through the states of automatic mode only
+- add DPLL_DRIVER to pick the device of a given driver, or the simulator
+  with DPLL_DRIVER=dpllsim, on a system that has hardware DPLL devices
+- describe what the leak check waits for instead of a concurrent dump
+  holding references, which nothing does (Ivan Vecera)
+- carry the Reviewed-by and the set Acked-by of v2 over to the patches
+  whose code did not change or only moved; patches 2, 5 and 6 changed
+  and ask for a new look
+
+v2:
+- sort tools/testing/selftests/drivers/net/dpll/config alphabetically
+  and make the scripts clean under the shellcheck run of the netdev CI
+  (quoted exit and return values, shellcheck directives for the globals
+  shared between the library and the scripts and for the optional
+  argument of dpllsim_setup_standard_device())
+
+v3: https://lore.kernel.org/all/20261109093523.931201-1-poros@redhat.com/
+v2: https://lore.kernel.org/all/20261105151852.1844305-1-poros@redhat.com/
+v1: https://lore.kernel.org/all/20261103093910.596225-1-poros@redhat.com/
+---
+
+Petr Oros (14):
+  dpll: dpllsim: Add simulated DPLL device driver
+  selftests: dpll: add test library and device lifecycle tests
+  dpll: dpllsim: Add configurable pins
+  selftests: dpll: add pin enumeration and property tests
+  dpll: dpllsim: Add support to set input pin state
+  selftests: dpll: add pin state tests
+  dpll: dpllsim: Add support to get/set priority on input pins
+  selftests: dpll: add pin priority test
+  dpll: dpllsim: Add support to set frequency on pins
+  selftests: dpll: add pin frequency test
+  dpll: dpllsim: Add support to adjust phase
+  selftests: dpll: add pin phase adjust test
+  selftests: dpll: add concurrency stress tests
+  selftests: dpll: add reference leak tests
+
+ Documentation/driver-api/dpllsim.rst          |  95 ++
+ Documentation/driver-api/index.rst            |   1 +
+ MAINTAINERS                                   |   8 +
+ drivers/dpll/Kconfig                          |   1 +
+ drivers/dpll/Makefile                         |   1 +
+ drivers/dpll/dpllsim/Kconfig                  |  16 +
+ drivers/dpll/dpllsim/Makefile                 |   4 +
+ drivers/dpll/dpllsim/core.c                   | 480 +++++++++
+ drivers/dpll/dpllsim/dpll.c                   | 500 +++++++++
+ drivers/dpll/dpllsim/dpllsim.h                | 101 ++
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/drivers/dpll/Makefile |  17 +
+ tools/testing/selftests/drivers/dpll/config   |   8 +
+ .../selftests/drivers/dpll/dpll_basic.sh      | 242 +++++
+ .../selftests/drivers/dpll/dpll_features.sh   | 605 +++++++++++
+ .../selftests/drivers/dpll/dpll_lib.sh        | 989 ++++++++++++++++++
+ .../selftests/drivers/dpll/dpll_reftrack.sh   | 190 ++++
+ .../selftests/drivers/dpll/dpll_stress.sh     | 610 +++++++++++
+ tools/testing/selftests/drivers/dpll/settings |   1 +
+ 19 files changed, 3870 insertions(+)
+ create mode 100644 Documentation/driver-api/dpllsim.rst
+ create mode 100644 drivers/dpll/dpllsim/Kconfig
+ create mode 100644 drivers/dpll/dpllsim/Makefile
+ create mode 100644 drivers/dpll/dpllsim/core.c
+ create mode 100644 drivers/dpll/dpllsim/dpll.c
+ create mode 100644 drivers/dpll/dpllsim/dpllsim.h
+ create mode 100644 tools/testing/selftests/drivers/dpll/Makefile
+ create mode 100644 tools/testing/selftests/drivers/dpll/config
+ create mode 100755 tools/testing/selftests/drivers/dpll/dpll_basic.sh
+ create mode 100755 tools/testing/selftests/drivers/dpll/dpll_features.sh
+ create mode 100644 tools/testing/selftests/drivers/dpll/dpll_lib.sh
+ create mode 100755 tools/testing/selftests/drivers/dpll/dpll_reftrack.sh
+ create mode 100755 tools/testing/selftests/drivers/dpll/dpll_stress.sh
+ create mode 100644 tools/testing/selftests/drivers/dpll/settings
 
 -- 
 2.56.0
-
 
