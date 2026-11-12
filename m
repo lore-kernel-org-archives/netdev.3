@@ -1,63 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794510586;
-	b=FRVEp5ybzKoPECqC+Ga4zZ1W2XY9NKiizWELehp7NZarQelTP14pEKaeJ3rOV1qwwySR
-	 gNFrCI6zgJ8Wg41KNUKU0OXO6EoDpgk8EkMm7X5JX1SpJk5WQBRVx1wAujyx4Te/IrEyy
-	 K8he8pIP1hMvxqiuS4ReeYBZFR5ec31YvL0NG3uerR5pNSUNNL4PkebQVpy/cRRu8cYv8
-	 EGhbsTLjNU39ulonps8Kf/mQVPo53aTAB/pCXJO0RwNEIaRxPizLAwQ5tlPL3x9wNW9a3
-	 TeEfQfNa74OMqL66yDJ2Hj7a8AfVfFqUn2OSWsNl4eAvWuQGcx/pIIHkVGEKIKFeh/g==
+	t=1794510606;
+	b=kzcZwf/DQ86QEB64IvVupxY9heJuo3jDwhLoxwp6hbLjrXkUTFaIpFM2MZmsi56ldXGc
+	 JqHW8DFeYTcsYxomuLWZ2z6mjfD9jb/pwy3N38nOpHHTebyAxC+4X06TIhpDr0UtAceL8
+	 fstFDbjJEFJskw0zjq3IIdNnkgK022X/fIohvo4yiIoL1kfyY82pMrM9oe/oIOb8Wblv0
+	 hkXMcESqPgsktcnlKpW7jjIiSNnNYcQC9DaJHq+5YpadggrEJ9e+Lurz+R/xjcqIt2l3P
+	 3THOpmlMQdPeTujID1qYMJqpYyqjnutcd4Wx0MflU6h3ai5svCA7tA+mggQGAJIHs9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794510586;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=sJQr+gvBgyWCXNcDuYBIUccK+tp9NBCw7G3cq8vaix0=;
-	b=JanyXVXeAg2cjXUKW6y5Pob0oQe9//aFPJy5iwpE72Zm8TEEqqEZyfWDZWWUvsbi3VKD
-	 j8URLbM9lGqTw+m4HubOPrmRJ13xnVwdL2ZicJlnTNy0FIUQu2kMA41LdEsWZKRK7LT3B
-	 SVbWCL1wEcnD1F/9qIZyZDkpXkFkp8q4tLLIe2V7SZxH50N1KRJhew6xKfj+u1M0R0zxy
-	 0m3mz5zftMLmwbc5Ca+4pO9HkVRfaTgHHMhhB5WXwn3I3pyRJV1KdPauFNzi0Dv+T8MrT
-	 tWHVHwYjBUbkPcj7GCwocH6JfnfHB5zfe+bYBtG4sIifNfA6ZWcO55ZELfJeRph2PPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794510606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=k+u9ZELK0cEE6mVHbrD+EOF2KyXq+O1Ddn95XbV+VJg=;
+	b=DUlzbhRZARZ9by02ojpk8W7Zv3NbstzuICeorCYRBwf2GNgkU6EhmWa35mfnzeV8yA/m
+	 YW6U/af2bNt16if6YnwwHXYjiTAc5obatjI7MRZHmVcsfIP9KvLAEUw9zZISEt9OJHuFq
+	 tQ7fEBbN2UQL/tz2iU/6p7u4I89P0hB6EOudhdGVhxSMsX4Gl63ckfDFSAbpnE3uMS2Cy
+	 611qeJYhjQmROB4jBJawiqiuyRhNXYDYLBGQoxcwa2shmOrdw1Du4ZIViYjxS2+i/doaq
+	 5Dpk31Ly16wYfJiM5dIFJZjCcoRosGrqFZhn+qlUKW5f6cbXi2mMoZ6fshWxBE7FEXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=phrozen.org;
-	spf=pass smtp.mailfrom=phrozen.org;
-	arc=none smtp.remote-ip=46.4.11.11
-Received: from nbd.name (nbd.name [46.4.11.11])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kGbwzMi9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A054E606A338;
-	Thu, 12 Nov 2026 19:09:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A054E606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phrozen.org
-Received: from [2a04:4540:1403:f2fc:83ce:6656:246:c906] (helo=bertha10..)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <john@phrozen.org>)
-	id 1xRaAw-002XyJ-2j;
-	Thu, 12 Nov 2026 20:09:34 +0100
-From: John Crispin <john@phrozen.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	devicetree@vger.kernel.org,
-	lei.dong@airoha.com,
-	Linqi.zhang@airoha.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Rajeev.kumar@airoha.com,
-	upstream@airoha.com,
-	Weifeng.xu@airoha.com,
-	zhengping.zhang@airoha.com
-Subject: [PATCH net-next] dt-bindings: net: airoha: add AN7589 MDIO controller
-Date: Thu, 12 Nov 2026 20:09:28 +0100
-Message-Id: <20261112190928.1318743-1-john@phrozen.org>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F096606A333;
+	Thu, 12 Nov 2026 19:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kGbwzMi9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0894E1F000C4;
+	Thu, 12 Nov 2026 19:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794510606;
+	bh=k+u9ZELK0cEE6mVHbrD+EOF2KyXq+O1Ddn95XbV+VJg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kGbwzMi9Awtvf3OKYLK90cUD9IA4pztlDuQedtEus1Z+4oHrC3ga6M0Cd53XJ65R1
+	 HxOJz0ntN3mcQDxdM8pibJQi4UV5TfrudDHstDqyFFYGYnGiVW5hVWMGwVLKRgHscn
+	 Rf71krR3IAAe04OUnQIzLzZXa3Aa+DS1kWvIs8NaDvBPNmCFDHil2vVoVi5a255veD
+	 if6oF6lYrlFismlrXUxVFpCk/lwTUCB+J81ApNT8qX3W0xrhpx9Hc8BvtTEVbaoKJK
+	 98x99XQ/dzG5pbtB7+AB9jH/9eerG737x3KjQ1CNjNwX90T/TkuSaJpli8PUxBNGsh
+	 AgLLUaRqF8sAg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F16303924A5F;
+	Thu, 12 Nov 2026 19:10:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,67 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: phy: c45: select BASE-T1 type for the forced
+ speed
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179451060478.599290.3189541035062475572.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 19:10:04 +0000
+References: <20261111100053.345196-1-iustin.stolniceanu@analog.com>
+In-Reply-To: <20261111100053.345196-1-iustin.stolniceanu@analog.com>
+To: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ eichest@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-The AN7589 carries the AN7583 SCU MDIO controller three times, the
-third one at offset 0xd8. Document it as a fallback pair on the AN7583
-compatible. Allow the new offset for the AN7589 only.
+Hello:
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- .../bindings/net/airoha,an7583-mdio.yaml      | 25 +++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml b/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
-index 3e7e68ec1560..41dc295ce6cf 100644
---- a/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
-+++ b/Documentation/devicetree/bindings/net/airoha,an7583-mdio.yaml
-@@ -17,14 +17,20 @@ description:
-   The other 2 (that this schema describe) live under the SCU
-   register supporting both C22 and C45 PHYs.
- 
-+  The Airoha AN7589 has a third controller of this kind under the SCU.
-+
- $ref: mdio.yaml#
- 
- properties:
-   compatible:
--    const: airoha,an7583-mdio
-+    oneOf:
-+      - const: airoha,an7583-mdio
-+      - items:
-+          - const: airoha,an7589-mdio
-+          - const: airoha,an7583-mdio
- 
-   reg:
--    enum: [0xc8, 0xcc]
-+    maxItems: 1
- 
-   clocks:
-     maxItems: 1
-@@ -41,6 +47,21 @@ required:
-   - clocks
-   - resets
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: airoha,an7589-mdio
-+    then:
-+      properties:
-+        reg:
-+          enum: [0xc8, 0xcc, 0xd8]
-+    else:
-+      properties:
-+        reg:
-+          enum: [0xc8, 0xcc]
-+
- unevaluatedProperties: false
- 
- examples:
+On Wed, 11 Nov 2026 12:00:53 +0200 you wrote:
+> Commit 25108a834e14 ("net: phy: c45: add support for 1000BASE-T1 forced
+> setup") made genphy_c45_pma_setup_forced() write the type selection
+> field (bits 3:0) of the BASE-T1 PMA/PMD control register (1.2100) on
+> every forced setup: 1000BASE-T1 for SPEED_1000, and 0 for everything
+> else. 0 selects 100BASE-T1, so forcing a 10BASE-T1L PHY to 10 Mbit/s
+> now also switches its PMA to 100BASE-T1, a mode it does not implement.
+> 
+> [...]
 
-base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
+Here is the summary with links:
+  - [net,v3] net: phy: c45: select BASE-T1 type for the forced speed
+    https://git.kernel.org/netdev/net/c/df501db9b18f
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
