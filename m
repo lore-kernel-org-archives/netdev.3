@@ -1,145 +1,140 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.154.28
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794478977;
-	b=db0KlGeKr5XRPH+WoyLQEJx99Z4VIjB8y1vJ+AWTj91HxgMDkOBtLaNqaLGiMFJlYopn
-	 idaES/P6GbGxCnVHuH/mvxDeQZ66+6m+tf6Jmyv2GM7/hsyegDcW2NvzVfZgN02aIsurh
-	 X10ELfCVr9P5iJZvtPxIUd9mV7j+9RrwSZJs2yEHqszr+WbDpAVSfzzpL29GOWYB6zdoA
-	 yA7LTs3pOjpGT/rftzPmrZYXUddJbHtIqdOhqP18adOW09+SQ9G7vboOhP2PKelEEMJqU
-	 qWNC80+GW3nixbflUuMLApEyHUsLYr01fYz+RC0OtRFhVmLf1EUXiWe3f7xh35LgYVw==
+	t=1794478973;
+	b=xkPn1cXifRBc0Tbx0Yklzrworu8NueoSKNzMdystBkLmXC1MFMKLNH4bJxX+Foic38MS
+	 uMXLfhoXCbM6OIFT4BlUMPm5x4tghIQzbyUf2ttHanrIPBG2HztSYCqNn4iztR8/yt09J
+	 9sm7p55fCPDFSJxDk6DPyI3F5STfjZLFwVV8hM5ZZWJUZzGjUQRXBfjRZWdJl+wAGDlph
+	 azoWSIgjDrSCfF5MWR9ih+4aq4oqmAbwurDxSVvPJBaQQrIlYZTW44s71U9iISe7AGLv4
+	 aNfhZLOk2Vnw2wztkclfL8KkUxDnhVFmjKjr3fotf3yR4aMJ+Fgg7t22M41+1mmxcgg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794478977;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:DKIM-Signature:
-	 Received:Received:X-MS-Exchange-Authentication-Results:Received-SPF:
-	 Received:Received:Received:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-EOPAttributedMessage:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794478973;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:DKIM-Signature:Received:Received:Message-ID:Date:User-Agent:
+	 Subject:To:CC:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
 	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=K27BhB8uGOEHKSkOqtpvPMCYWkD0jG2bT05td2J/JuU=;
-	b=4I7Z2mTcE9YoMiZJZE69j0MEw8QUjwras7B5XFVtXZtIP9ophursQC+Y3FZfkGpOkC0V
-	 2ivcBc+FUNRdZS0elKftoqX15DSskrmVDT2zhr2GhsT18oNiq49Pm5CtVntO4siQPyVcP
-	 VniHjRI0lzVIxh+rKoVB5eShpHNE7icTHGrGHcCQd5ysm8CHfNidqm89JfqI6c0n6V9Gf
-	 WTP4WQ4OyCT4Zv6StCBDB2fHWHzAcZ7fvXMME0Lw0hSeYSuww+GcTkCBPWyLPEBjmwn56
-	 pI8+nxz5URKjAxQsEu7JEVC7GtQJoQG11TTsMMRMGLiTQXmmPTKftPuqMG8CoVNfomw==
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=rOtvO6rEIRBMiwrSUVckgxceTSMvSqj/YwnXzhSHiO4=;
+	b=nE+g5+JpPNPT7e0iYHnniiZepjDoQ9qA4aPgVfQnZ6UTfnXXc0AmtaRWKie9am4YPxfy
+	 f+tbXqVvi4mTIG9sQrIfZ3UsW0B6xhKZsmYx4FM9uPKl5MW8CwenVPIrLJuZo7YbQy+3t
+	 gGTjc3vyjdMFt5aTHAX7EWA9Tyif2s1mljzGQYD8/yRx8o8alRYYeP6EJ1sG+kCecVD80
+	 zNCxaUM7+DxHCxUdNQszuefD0CJWiJ+OTDDC2sktS7vEHMpL391AUpyCeXc6fQNvaDsTW
+	 MTu9Gf5vQP8BiLH7lC5zfIz/9KzVBXdgTe0lhntCQNr9XQaDfgSfFj2JFU+wXcpoFFQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ti.com;
-	spf=pass smtp.mailfrom=ti.com;
-	dkim=pass header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=c6Dy42yv;
-	dkim=pass header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=Z52h1Vtl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.154.28
-Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nEbKEJ1b;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=TXJfhZWk;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DAA606A890;
-	Thu, 12 Nov 2026 10:22:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5DAA606A890
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7801C606A31C;
+	Thu, 12 Nov 2026 10:22:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7801C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=c6Dy42yv;
-	dkim=pass (1024-bit key) header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=Z52h1Vtl
-Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
-	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC7gu0X2308431;
-	Thu, 12 Nov 2026 04:22:36 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=K27BhB8uGOEHKSkOqtpvPMCYWkD0jG2bT05td2J/J
-	uU=; b=c6Dy42yv/zdFUlaQTsXhA3iE0XReNt9tnuPasyIg/Ygxja4TOq1helsjA
-	bl2y/rEv+lBZv7kAk0c3jWG9PXkyddIgs9CvPzcU2woux3WEi+I3Tpac+PFJO9sq
-	pjtldH5fr5EcP4t1zjca4GqLcpziAWCbkT8cb4pDavRadCXbu+Hl/RZZDk9TYVlz
-	dowrAKCjqT4hpsmJcO0ISxLzjMFrMIzclTktwAvXKoOnFg92a0Pwoif+Id8aSQ8a
-	EXOvYoV1WgmFmKFg+wP5WU7JVqNh7Etj3UPek0Rnwnnhh/oizjhz4frVlnNLYCcy
-	iCRNqXRLDrcVsdeq+fJCoQ80Z5YUQ==
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010061.outbound.protection.outlook.com [52.101.46.61])
-	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4hvvr6w3e1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 12 Nov 2026 04:22:36 -0600 (CST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nEbKEJ1b;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=TXJfhZWk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794478973; x=1826014973;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=HY5waR1Tyvdpl8pasIy7v1O7d3VcXV3LdCvNHdxy44g=;
+  b=nEbKEJ1bLJuGcVGUwzwtd3SXM6ULV40MvyP32pwhtioFBtGfkTLRBKRc
+   LSlMXdz93o/1qmqlGLadzzFET2id7oeaAOQcP8jOomKMtyDZ9UJjIKFEv
+   RUPIR+pjL8GmUKBzcgJrTKYKljOquuk6imwUuEWhOZoL4SE+BUc6B+E2b
+   5Y2gvznJh8F3qDz3Pgbkt0OWF/g63spnkzc75BC/N+2d742ldCrMFzaHY
+   hs6oH5/FZNEB/Mw9NKBRxZVMCPlvIZYxP/+/KbCKM50hChNT/E9kWQwA8
+   Hj45cvAozv/zbPhRd6fD95zb8SJyVNLuaCLrHdhBRfRTXAoXqR4waeel0
+   w==;
+X-CSE-ConnectionGUID: bcfhNp3ARESAG7zbgDcFTA==
+X-CSE-MsgGUID: J+4DxaYERgSllislPJkOSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3179901"
+X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
+   d="scan'208";a="3179901"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 02:22:52 -0800
+X-CSE-ConnectionGUID: oCReWnkRQ+SUuki/d8pk3Q==
+X-CSE-MsgGUID: yq3c2tD0QlmjKVJyWF915g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
+   d="scan'208";a="8966493"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 02:22:52 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 12 Nov 2026 02:22:51 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 12 Nov 2026 02:22:51 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.25) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 12 Nov 2026 02:22:50 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HiYr0p0KaZdNYcfxSuOH6cqDy3Lld7APzi+86DSlRAH6EGyWwDLZ3x4pWkLb/nJ7Lm9ng0yY3glrmiV1Spu3NQ8FchZs5HcjlTK83kyC+n1X2VdyF4HOrqjN+6LEThit2l9JDa0bpd/rsUcCD4MBEPhuPzR4ZXDEXTa4nYvfM0tQp4CvOey/PKKE5ILMaPGx51HmJ5Ojm9uOZE7hb4aE7P3d3UAla/ds4nWNko/2hZcr9s4q+Q/hK/sFKHeF54ojqD4EjoBA8xLwPOKEK5N40ewKeZE3bIQe/8h94y20ZuNnjXWCUXq23fSDnINO411hYn0qPYZ3saGb69u+NGHGCw==
+ b=kEDJw+nH42h3DmIaOtD25Zoi2L9PhZqr7Tvd5N1nrXzedGvkATvSTv037Luz9BqW6WJCW65wEqA8AK0KoTBgNAj6rH0s0dFRIf6TVx8Qb+fz3Zo40AIeDHS5/s0eoeL7lV4WwRHOCNEElwnlxpd3OzChoZ75iDqqvdzT9dDOJx0J8sBrIxOPSQkagycYqGql6QL1zlvU0cbcN+3S4BxArVorQ9OgsQBzHtrZ0M6Y9o/rza8UiqzPOb+B4PG9obPzNZ6BygSbkpS9pts7mKlF3j6cp5Ckp+FZlPuBo3VxECc23/yGDzYA/kOXf/Nzwvafwa68Pp626feKN8l9CV1/Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K27BhB8uGOEHKSkOqtpvPMCYWkD0jG2bT05td2J/JuU=;
- b=Xj3FEQLk2pilC5+QTkhKR8yWh+ny3u4OB28mWBtCZApC6xh3JD/7samU4sJqv+qCbvQi+FuuJCbmGDhfeY0nmV7uUXBRnT/NTML0jygbAPnrefbEwPAnhQhUkE9t5qI3uqktY7pPN9x5PAfWTDV6Zck2tGkGZE3Dedff3QmHt2IB9D0HNjsGJm3MkQTNmuQcqAE3IZd4lL9USy0Ov3irv77/6FqIH8wrV9i2jThsU7hibeBLRhnyjyGzIC7/EjYPYNCUok/QFlT8sNPl1fusRtCx0UpDrX2S5lzQ4V5q/RJTvZU4cN0KcBh6NEDvdgAzZLTvOvMqwLraE9iJcki6kA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=siemens.com smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ticloud.onmicrosoft.com; s=selector1-ticloud-onmicrosoft-com;
+ bh=rOtvO6rEIRBMiwrSUVckgxceTSMvSqj/YwnXzhSHiO4=;
+ b=oz5G/avZPOh/WLsdeYZy7xpS78IuDOsRtI9SCBMgkPHRHdrI+pesFqZzlnuL+pIO9bg3is35PMStGCjYhLZNlDQ8oh+/Y8+M/NHrJrmtbvWDGCepT171lTxB/NEhssvhpUWZkTzv07teUyjlwC+f1Glgr4Aid/mq+nWLNWdKoU99R/hvCAVGfZEayvi1QbmYmknypOCAtFyc8LH3nbi7kUSOISL15XHxyBGVoUY2sx4DeIBelIWh3KRqAIsvdlvixaglpAMnKBzHatHRCxnEl8QqRq5z0hSYHRAABgk7js6f9hlqGoCsvjLR9He7zLa7EFKDaxIOkTyKRrQboynIWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K27BhB8uGOEHKSkOqtpvPMCYWkD0jG2bT05td2J/JuU=;
- b=Z52h1Vtl0pLozMjsqoxLfm7RG4wICbfl7/3CN2M4sdGY/JMPbOrpd519ZsQlk1IgFMhq3FblUHJJS/lEzcKamZz7EcVHj3Yo5oaUbY/C6L6DAY/wAx51ZxVWlpgvilsXL8Ea6p4eRvDBeDcsMg+by1928GsH4yHjxXSxNRqQ7sQ=
-Received: from CH0PR03CA0299.namprd03.prod.outlook.com (2603:10b6:610:e6::34)
- by DS0PR10MB6078.namprd10.prod.outlook.com (2603:10b6:8:ca::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.8; Thu, 12 Nov 2026 10:22:30 +0000
-Received: from CH2PEPF000166C6.namprd04.prod.outlook.com
- (2603:10b6:610:e6:cafe::6a) by CH0PR03CA0299.outlook.office365.com
- (2603:10b6:610:e6::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Thu, 12
- Nov 2026 10:22:30 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 198.47.21.194) smtp.mailfrom=ti.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- CH2PEPF000166C6.mail.protection.outlook.com (10.167.244.233) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Thu, 12 Nov 2026 10:22:28 +0000
-Received: from DFLE207.ent.ti.com (10.64.6.65) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 12 Nov
- 2026 04:21:55 -0600
-Received: from DFLE208.ent.ti.com (10.64.6.66) by DFLE207.ent.ti.com
- (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 12 Nov
- 2026 04:21:54 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE208.ent.ti.com
- (10.64.6.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Thu, 12 Nov 2026 04:21:54 -0600
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6ACALsD41656003;
-	Thu, 12 Nov 2026 04:21:54 -0600
-Received: from localhost (meghana.dhcp.ti.com [172.24.231.93] (may be forged))
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 6ACALrZv018526;
-	Thu, 12 Nov 2026 04:21:54 -0600
-From: Meghana Malladi <m-malladi@ti.com>
-To: <diogo.ivo@siemens.com>, <haokexin@gmail.com>,
-        <philippe.schenker@impulsing.ch>, <devnexen@gmail.com>,
-        <horms@kernel.org>, <jacob.e.keller@intel.com>, <m-malladi@ti.com>,
-        <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@kernel.org>,
-        <davem@davemloft.net>, <andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>, <danishanwar@ti.com>
-Subject: [PATCH net v3 RESEND 3/3] net: ti: icssg-prueth: Fix bridge port_vlan and flooding state
-Date: Thu, 12 Nov 2026 15:51:40 +0530
-Message-ID: <20261112102140.2744508-4-m-malladi@ti.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261112102140.2744508-1-m-malladi@ti.com>
-References: <20261112102140.2744508-1-m-malladi@ti.com>
+ bh=rOtvO6rEIRBMiwrSUVckgxceTSMvSqj/YwnXzhSHiO4=;
+ b=TXJfhZWkI4eXyp8AnKNxbC6ujk9lO3wu4i0pGon7koFSF6VwjJut1/IUns+0VY4azhoWM+PwQJTcrqrrS4WPoNUHr864cl+czpHXoR6Tb3Q9x4/StjpuV3byfU84N9BukKm07nHLMfUXRraXzVN4g6SScjwhk/MPUPlPzE+Cxbc=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by LV2PR11MB6046.namprd11.prod.outlook.com (2603:10b6:408:17a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
+ 2026 10:22:47 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0615.009; Thu, 12 Nov 2026
+ 10:22:47 +0000
+Message-ID: <2432bda7-8867-44ff-bd86-1897995d3acb@intel.com>
+Date: Thu, 12 Nov 2026 11:30:00 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net] idpf: select AUXILIARY_BUS to fix link failure
+To: <darren.worrall@shopify.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: <intel-wired-lan@lists.osuosl.org>, Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Madhu Chittim
+	<madhu.chittim@intel.com>, Joshua Hay <joshua.a.hay@intel.com>
+References: <20261111-idpf-auxiliary-bus-v1-1-e76b940fc929@shopify.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20261111-idpf-auxiliary-bus-v1-1-e76b940fc929@shopify.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR09CA0162.eurprd09.prod.outlook.com
+ (2603:10a6:800:120::16) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -149,188 +144,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF000166C6:EE_|DS0PR10MB6078:EE_
-X-MS-Office365-Filtering-Correlation-Id: cbf390f6-438a-4163-a6ee-08df40a6dadb
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|LV2PR11MB6046:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c8dd34a-ef90-4b06-c81c-08df40a6e5c2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|7416014|376014|82310400026|23010399003|56012099006|921020|22082099003|18002099003|6133799003|10067099003|261009223027099003|3023799007|261026140227099003|261022075727099003|261022105027099003|261021123027099003|261021135927099003|261021121427099003|261102123227099003|261028144727099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info:
-	XdJSNgoyMxbQAU5D8d6T1S9pVTEX/V4b3OZvz9hklf+G/em0abvhJfFC3s/dJz+Pp+xhcQU9KdumuznmokyKQ6m87cM/qoypGzvZRsrUT+YYP4PNS++7uYFgTs9f+aT49cRR7wNG0NiSmM9hbvIEa2LoafwCZ9OezQxtoO6GhDdM/Nvi+dSjp6DF6VkY8+l2Lt8xFHzUUwvVApKyFiBp79e17QCfeymvC5bT4rSyOj8e9zaDfux+OhAUQQMtMKOnh2+PenwwhQ8mPdEBg1oLZ2lyLq+YK5GnQ/1H352Aw8tH98VCQwhT/Hqhq6HVAFHsNeGFCvBvuTd5OrbeC4GKmnQ7vfAyshbdx3EyG4+3a2/AFI9xnq+AaeHNxR74GvzBiE/mDFP/3Jsav87hX6iNcQNFNrDbmu3mParL3c4XNoHXoJbfCClTiBFi0qaGGNCoKd2Rr35mzLHN9n0TLwt7I+K7CZaZJtuhxr+FsdKM4V/TfVelHrt79fLIx3O8QczV2SiONviJvfKWpg6VDUe3oT1M2QD0yMbCBxs5sEVYvQMUyJox+MTdDs8UmcM4PMlEptFVVPJ3lplKxzlW2GMzHaTSpd86jkZVs9qzhZRmvAnnsMkq6R2DiPyB64hiv7BtPPhur7u9rK49neJN5I++AeiwMpnoz5hgAyx2lN7gR0tY0qngh4/0dxUflQ89EjLOIsrPXhUW1Z14hu+1ALFIuPrVGmRtUQ2GdRIgZ82Iiqe88nlfjSQHhE/+CKUNFYuU
-X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(376014)(82310400026)(23010399003)(56012099006)(921020)(22082099003)(18002099003)(6133799003)(10067099003)(261009223027099003)(3023799007)(261026140227099003)(261022075727099003)(261022105027099003)(261021123027099003)(261021135927099003)(261021121427099003)(261102123227099003)(261028144727099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|22082099003|18002099003|6133799003|261009223027099003|56012099006|11063799006|5023799004|261028144727099003|261021121427099003|261102123227099003|261026140227099003|261026121527099003|261022105027099003|261021135927099003|261022075727099003|10067099003;
+X-Microsoft-Antispam-Message-Info: mDqhs2uZwybD9yAQyLds5vz475pnc90LAa2NEJAKYj45jwaiqurMFXOixJ3bxp2qX9n2Il3xJpaQuxyikUm7P8uCL/PkYL8hujOd6GDIdta8rnT9/VxHltW7ac4eJgMWo2nbVjh1mSrjWFYIZ0zCrJXSaLyjZvJtrByq1I+YeQPvr4/MAg9b1Q49qsC+ZJA/1HtCZkZFxHYcgauSmm7b+XwbaW3/cKGP3/J+U7nRCr9VlBK1z7ssjnM/C2zIq3XbNaJuDftGD0gayRzRjCifIY7HECmxxrDyFWBgosxb7gjhB9IffPzQgO1dIeKNmeYSPcfaUX1VA2VtTp6scWkXKqQfdpoF75ZfS+r0BpW2v89sauIKYL2zOMViG0L5BC2h1/uYfkdoktX/6rmaAJqynYC8k7mAy5x+l6vJ/Nx9uYyK53h3QuZ6bvG0574SHRmBsDZyzN70oZo1n4td9w/gmgsgeedEJevf5EFY224cGeH/IyRONN/PBvdKYQcE6rtMjr8fPhhX8w8rkBIDtNOzF+UUARZ8HhTIUlL9aaJjMTTyotuYqaFe+fFnWPzV7wFBXGbXhxl3slGvIqbqRqwVLd5zbR46m7dgB5GrRHjb4hQEI5K6MFVhJRWVDimgGB8Al7fN91l2IBniMwvPXdSqDY5woG0Y4yrrkPleKJ2rFuI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(22082099003)(18002099003)(6133799003)(261009223027099003)(56012099006)(11063799006)(5023799004)(261028144727099003)(261021121427099003)(261102123227099003)(261026140227099003)(261026121527099003)(261022105027099003)(261021135927099003)(261022075727099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	VmAp0a/DJTD4bPPxUDEmomQaR34ju00fuIyl70l2O9tjXpsUiY6xlbD506yCizj8pdRyoSacp3qEcx0sZ/RA9j7h9g6EEUnb97Nht0NGl2i3iRv7mRgJl2+hKdxlkPfF0PgjHaSycxH35TrO4yc1QNLsB/G5zGjuOPW5fPufMs6v0Jx/gLc6WgzDB/FbHZd7R5padr+nYCz3XI+5Gx6rgX0+Ago0qzZquzzltSvg1Qd+EaIK2w1KQDiHciRGqm7zriblgyLlW91L8+ZeSLjmoULR+KESr0QuwTj24arzD4iOrUGUd/ZAkjK5qMB6tgK7c8/nj2g9xja7vccxf/TV4XKM3hFB4vsVcpAagf7DB2teGb/QZTNulsstK9raEbHISRt72PEy6f4h2SJBXSvZsk3w/E3PeAQM+Zfdp5q00jbY7eeEGDShg2iHScWddWVS
-X-Exchange-RoutingPolicyChecked:
-	WT31IbcYBS8PWbFgQMgigMJ0LsipL0nBwRzw1/OrEgklI5qKerJKsDaNZ0D8sO91/5MGICx7mozxNsPQlzszywbXQ3Pv9ccK78B+li3N58CMAAQrb/szKuNUeI76WqXRBhPelfVJ+ACyuKi2q42aNALGNLbqrI/YSM/5rqY9DPZmshVtFhRmibbNjubg7NrsQxnil1DXa2roPkn/3lAWs9LxO7OQYGmjpJfo6CDfpfcg0oEH0ER8vaHa/a/bQ2kBpk8QCYXtaK0mCVX/0ugSxE5/owYeDOUxHgr6Ki0udLcW078X/yh9CZG+l5GS51UAgkKSc6B4nDO32pyeNAVRJg==
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 10:22:28.9593
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aThkZElzUWtrNWEvUmV6ZTVOWGNZbmJpQnN5Kzl0NkZxTGZRRUVlYlk5UzR2?=
+ =?utf-8?B?ZHpDTUNSeFJzcXlldWE3VXQ0S1hFem5zNStnZ3dtSko2dlRqaUN0Rjh3ZTZk?=
+ =?utf-8?B?cm5lTUw5WHY3RzYrSjMxTGV4cmlvRHJ3YnZGTTNBYkhRY2FwcDNsOFhJeDBz?=
+ =?utf-8?B?bzkyVlJLN3pJYkJHOWk2dDBtRXpGY2RzdFEyNDRyYUZ6eVI1VDladmR1L2Q0?=
+ =?utf-8?B?M0xYdnpGVXQwcDlDOUhuYkpxWTI3anBLR3RBLzN3c2tEWVpUenpCblMzMTBs?=
+ =?utf-8?B?WFUzS0hyR2RhRUQ3bkR6bDZRMjlHbHA1YW5TcDRLa25YUkhWOEw2MXJKWmRB?=
+ =?utf-8?B?Rk9KeUxhWVlhNmRFQ2tCMktjZkNIZjRNSzJBQlA5MUMwR3AyZGtxZDI4SWNz?=
+ =?utf-8?B?QTlteTNqbjlZcTZlOFljN0dRMFhZTG5sVE1hMkNLcDJGVjFmZ0dlU3VqcXBL?=
+ =?utf-8?B?cUdrWm50WGttOVpFcFFyaDlNVDBlOFBBeEdsaE91QXFmcmk4UlRHOE9mL2ow?=
+ =?utf-8?B?ZDBQcXR5UTRoQnJiVjYvWTJDUzhTek1sazI5UTl5TEg3TFV5Z0pjY1d3YnZ2?=
+ =?utf-8?B?ak9MVEdCTTBGOVFOVktTWkptMDZIVnE4cVRlTHlOcStZVHdQTDVqcno1QXNB?=
+ =?utf-8?B?UHFVd0llcnBLSW9LR2VIeUlmTkF2RWpHQ3hrVUpFVTl0U1Y2cHdaY3llMTlN?=
+ =?utf-8?B?dDNmd3R5VGlhcTkwaElrUWtMUFRWVEh0MEQyMGdNVW55UFM5ZCtlbnRKcFpC?=
+ =?utf-8?B?YmJtRXhzMHA0MGZCWkhiMUNrYjJkRHJ5bUwyMlk2dDJ5c3pkL0VPVWFyd1JX?=
+ =?utf-8?B?SEdLRXF6cnVWeDJHMVR5WTQ1OG80dXo0VFM3SVRaWEpLUXozVm5ZTTlEanhE?=
+ =?utf-8?B?Q1dPZHdYa1B1ZkhHTnJUWGorbytDMlVzREU2MFBBWkJMUVMvWnZrdGYvako3?=
+ =?utf-8?B?b1UwaCs1UXBROHRGbkZldkJad2R1ZlJIYWVGazdKQ05rRjFoendDcFBVVUN5?=
+ =?utf-8?B?WDh4ejRNSzczQzc0cmVnVHg2N1d2eHVrU1oyLzRWdUZIWmRtQm1lU2NaaS96?=
+ =?utf-8?B?Tm5LWFVFTnIvT2ZpMjdXdHRvclJ2RjZqSHlNL1BraWdHNEt5Y0JoM2xBcnRN?=
+ =?utf-8?B?c1dYaGpKTjkwV21qeUxIeUpON1pha01acXhrRE5LckZXNXR2WGFDMHErdTJx?=
+ =?utf-8?B?UDlEQStzMnRLdytDdVNsZlZXVjFwY0w1YVNEaEVqZ0MwdXBWUUJkOHhQTEhP?=
+ =?utf-8?B?bkJzeEpvOHpkUU5IdHJBbE56TUMyTlZzUi9jM21WeWNINTNYSWlKa0hoVXlw?=
+ =?utf-8?B?Smc5RWViQm9pR3dwM3FRWnNaM3l1OUc0LzI0RzRiWEVuY2tmS29nRVE2R0dB?=
+ =?utf-8?B?TnBNNVV1b01MMVlIOVZVNWsxYmhXa0UreFFFRGpIc08zZjIzSEVVTXRTNGJZ?=
+ =?utf-8?B?OGZpMmVROG9Xd29DbTl4MVJYQSsyenJkRmlVK3pCd2dkRE5nK21ONGpWNUx1?=
+ =?utf-8?B?c2RyVDZoM1ZUVzkxKzB3MEF4Vm9GYllXMVRGcGFVQ0VyL1pqRVcybXBZT1Qz?=
+ =?utf-8?B?Q0lITTYwaGFES0ViUnQ5eWFoLysxTGs2MjRselVwMnZqOVVNNU5HdzdXMSt2?=
+ =?utf-8?B?aEZWNGY2T0NmOGg1aGVIb2habGV6eUoyVEtTUVZIOTQzS29wdWx2RWo3Uk9k?=
+ =?utf-8?B?OWNIbkM4cnJ1UkVOY3VPUjBKaHFCY3FQUHBRaURHMXNiOG9YZE1vdlhWSTJO?=
+ =?utf-8?B?UVUxb3ZHbkZsL0hyd1ZnQUw2QkZRejU3dDBUcW5QZnpEM2ZTejhCZ1pzWDlm?=
+ =?utf-8?B?UnZEQzI1emgyeGY5TmFzczB2ZkxIUDJ3Nlo4Z1JLZkRxcTQ3dTl3SFN3Rksz?=
+ =?utf-8?B?cXg3d1A5THlZc1Q3cjVrN2xKRGFGdXIwdlNkRVFtaDkydE41RTdEZEhGVnMz?=
+ =?utf-8?B?RUhrVlM3Wlh5NHBrb0hIT0ViQktOS0N2RWRJZ2dvc1BWMmh2Z3hTbkYxemVT?=
+ =?utf-8?B?RkhEai8yelpNczAzNHhyckRzbXA3UG1lVTUvSG9keldpdHVOZVM2NTRzVWhy?=
+ =?utf-8?B?VjREOTJ5ak8yTFU0eDZVblBnVHZGajBUekNxWkFBNFNBTk1yYm1NY3BqVVY4?=
+ =?utf-8?B?eVg2RWxTRzhGRGswYktNbmJYME9ERGFHZmtvUVJ0bVJ4blEvSTRjTVdHK0VJ?=
+ =?utf-8?B?Mkd6SkxmaStOUC8xUUdHek1UajZGajR2c3RWU3FOV01PV2MyR2llZDNzNkx2?=
+ =?utf-8?B?VXgxWjRCUmg3S2N2N0krS0VwV3g2d2VmSGdqVnh6REw3eHJlY1l0eUkzVXU0?=
+ =?utf-8?B?eFRXc1NLRmw0eFpBaUd5bGdUQTZUUnFxaEFQVDdTK1l2YzVkeVFkbyt6Y0d1?=
+ =?utf-8?Q?szzlenO5g95ArvR8=3D?=
+X-Exchange-RoutingPolicyChecked: MzCaQv7KjloYJuTyp+FiUCx8+WaMqpVEaQCm3trr6W9Owt8tyhTUW/RxoqAYq+b3hO9yOYe0Ngq1zla0SeH1mgkXVel3tvcxwHRFlzcDdlzRcwt+M2iyi0YE3/XHrvFcfgHwJohhgIBZFsvBDqVfXFN5yzdBd8zsp+s6J3u8AT52RipBm/QyiUcTS4FpayIeKvgJqVOWJFCrU0siTDzdOEbtCeFz71E/ztsg5cI4b9475+R7Wyeb34+9M4BskTZSRnX/KJzecjfj74wtGlj7SeGXS+vDzwYSaFxcQSP0cKP9R6RtdhTr8oVC1iNpf5q4sqYWeyWTW8rxc3y6joHNbQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c8dd34a-ef90-4b06-c81c-08df40a6e5c2
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 10:22:47.5558
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbf390f6-438a-4163-a6ee-08df40a6dadb
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF000166C6.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6078
-X-Proofpoint-ORIG-GUID: eowFtW_G4BibHhWycwnAyDCt9cZjvbKS
-X-Proofpoint-GUID: eowFtW_G4BibHhWycwnAyDCt9cZjvbKS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA0MSBTYWx0ZWRfX5Ll4ps9fE80l
- o6syDgY53fix7Ppmx+6lcfBpTF0cZbJ/61zDiGdxpH1saQ6FrkjoUcObVYpj0MFDktsytsme4ix
- Mtv8BilPX/iV+97h5NFV9/1UUbaI6zT0PVfNh6oHe413d8f201NnogLqrnO6VyTfavG3S8g2SkI
- mVoYS3/ihu7Z/FheX4rqy4AFIZaYxKTUocL3nARLaU5hS56FCykwN61cLDZziI5Q0bUU1AQyzni
- 4ztFoIJ8RKCrSaFHhuLFwzzeahQtpL/auZBIeVEILOWtVT8QTbyT1YpGft+qNSGLWdhItKi9PcO
- V/wj6S/f74KcGAFoPg2Nc+mY1e/rBjOPgXFFjxLAhf/19jOKe0bxWHPWHwoLc03qeR1Z8TVGa1M
- zwbgMYPEIDKNKYhwomRAnVtt9YFVqurv8rN2RJLtVrEj0lOAFLhphSROJh0Y4hEWNt9RNWCD0Dn
- wYnHm9DVeo441I0zF6A==
-X-Authority-Analysis: v=2.4 cv=MpLHeGae c=1 sm=1 tr=0 ts=6af5936c cx=c_pps
- a=mkiEHwHV8KLcq3bIK/dapQ==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=zJRp6_cAMcgA:10 a=AlMIdn_sM9wA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=fPAWb5peG099m5CrUpKH:22
- a=sozttTNsAAAA:8 a=W48xRondKBpYVHpv39cA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA0MSBTYWx0ZWRfX+7SjTjI8hJkK
- ubZ7xRhOHUN+RxckeP9ZbAoQsAo63BvWF/xX1gRt1pRxohF+0IK812h3J8kcfqSylpEoDpDJaJv
- Xgs37zTT58Me0lXEGizk3yvihvEWo9w=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611120041
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0wCgLupvkvWbWU9v6Yziu5XFh5pP+1S1KlK5imE1wtSgpWo+2GghvJbhMa83PPMwzsUi0QWKiXFV5Wn2+NrSBnHc9mqwUBFdFMagmx3VeFc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6046
+X-OriginatorOrg: intel.com
 
-Bridge formation only set port_vlan on the second emac, leaving the first
-without VLAN configuration; fixed by setting port_vlan on both emacs.
+On 11/11/26 8:31 PM, Darren Worrall via B4 Relay wrote:
+> From: Darren Worrall <darren.worrall@shopify.com>
+> 
+> The build can currently fail with
+> 
+>      ld: vmlinux.o: in function `idpf_plug_vport_aux_dev':
+>      drivers/net/ethernet/intel/idpf/idpf_idc.c:82: undefined reference to `auxiliary_device_init'
+>      ld: drivers/net/ethernet/intel/idpf/idpf_idc.c:86: undefined reference to `__auxiliary_device_add'
+>      ld: vmlinux.o: in function `idpf_plug_core_aux_dev':
+>      drivers/net/ethernet/intel/idpf/idpf_idc.c:223: undefined reference to `auxiliary_device_init'
+>      ld: drivers/net/ethernet/intel/idpf/idpf_idc.c:227: undefined reference to `__auxiliary_device_add'
+> 
+> if IDPF is enabled but no other driver pulls in AUXILIARY_BUS. We hit
+> this building a minimal kernel for hosts with IDPF NICs. It can be
+> reproduced on x86_64 from allnoconfig by enabling PCI, PCI_MSI, NET,
+> NETDEVICES, ETHERNET, NET_VENDOR_INTEL and IDPF.
+> 
+> Select AUXILIARY_BUS in IDPF, as ICE and I40E already do. The same
+> link failure was fixed for BNGE in commit d7065436e8a0 ("net: bnge: add
+> AUXILIARY_BUS to Kconfig dependencies").
+> 
+> Build-tested with that configuration on net-queue (dev-queue,
+> 34a70a40c954) and on mainline (067c5c24cef2): vmlinux fails to link
+> without this patch and links with it. Boot-tested on bare metal (AMD
+> EPYC) with a Google Cloud IDPF NIC, using a 6.18.60 kernel carrying the
+> same change and IDPF built in: idpf probes the NIC and its link comes
+> up.
+> 
+> Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
+> Cc: stable@vger.kernel.org # 6.17+
+> Signed-off-by: Darren Worrall <darren.worrall@shopify.com>
 
-Firmware restart in non-offload bridge mode cleared IFF_PROMISC-driven
-UC/MC flooding state, breaking unicast forwarding; fixed by tracking
-flooding state and restoring it after every firmware restart, including
-the switch-to-EMAC and HSR-to-EMAC transitions in
-prueth_netdevice_port_unlink() and prueth_hsr_port_unlink().
+Thank you!
+Acked-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-Store the flood-enable flags before issuing the firmware commands so that
-a concurrent icssg_enable_fw_offload() call cannot read a stale false
-value if it runs between the command and the flag update.
 
-Add a NULL check for emac slots in icssg_enable_fw_offload() to handle
-single-port DT configurations where one prueth->emac[] slot is unused.
-
-Fixes: 161087db66d6b ("net: ti: icssg-prueth: Add Support for Multicast filtering with VLAN in HSR mode")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
----
-
-Changes from v2(v3-v2):
-- Fixed race: uc/mc_flooding_enabled flags set BEFORE firmware commands
-- Added icssg_enable_fw_offload() after restart in bridge unlink path
-- Added icssg_enable_fw_offload() after restart in HSR unlink path
-
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 25 +++++++++++++++++++-
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |  4 ++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index ef5dce595f68..48539460ee49 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -213,6 +213,8 @@ static void icssg_enable_fw_offload(struct prueth *prueth)
- 
- 	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
- 		emac = prueth->emac[mac];
-+		if (!emac)
-+			continue;
- 		if (prueth->is_hsr_offload_mode) {
- 			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
- 				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
-@@ -241,6 +243,17 @@ static void icssg_enable_fw_offload(struct prueth *prueth)
- 					icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
- 			}
- 		}
-+
-+		/* Re-apply flooding state cleared by firmware restart.
-+		 * In switch mode, flooding is managed by the bridge via
-+		 * switchdev callbacks, not tracked by these flags.
-+		 */
-+		if (!prueth->is_switch_mode && netif_running(emac->ndev)) {
-+			if (emac->uc_flooding_enabled)
-+				icssg_set_port_state(emac, ICSSG_EMAC_PORT_UC_FLOODING_ENABLE);
-+			if (emac->mc_flooding_enabled)
-+				icssg_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
-+		}
- 	}
- }
- 
-@@ -1286,16 +1299,23 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
- 	icssg_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_DISABLE);
- 
- 	if (promisc) {
-+		emac->uc_flooding_enabled = true;
-+		emac->mc_flooding_enabled = true;
- 		icssg_set_port_state(emac, ICSSG_EMAC_PORT_UC_FLOODING_ENABLE);
- 		icssg_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
- 		return;
- 	}
- 
- 	if (allmulti) {
-+		emac->mc_flooding_enabled = true;
-+		emac->uc_flooding_enabled = false;
- 		icssg_set_port_state(emac, ICSSG_EMAC_PORT_MC_FLOODING_ENABLE);
- 		return;
- 	}
- 
-+	emac->uc_flooding_enabled = false;
-+	emac->mc_flooding_enabled = false;
-+
- 	if (emac->prueth->is_hsr_offload_mode) {
- 		/* Track basic add/delete via callbacks */
- 		__dev_mc_sync(ndev, icssg_prueth_hsr_add_mcast,
-@@ -1934,7 +1954,8 @@ static int prueth_netdevice_port_link(struct net_device *ndev,
- 		    prueth->br_members & BIT(PRUETH_PORT_MII1)) {
- 			prueth->is_switch_mode = true;
- 			prueth->default_vlan = PRUETH_DFLT_VLAN_SW;
--			emac->port_vlan = prueth->default_vlan;
-+			prueth->emac[PRUETH_MAC0]->port_vlan = prueth->default_vlan;
-+			prueth->emac[PRUETH_MAC1]->port_vlan = prueth->default_vlan;
- 			icssg_change_mode(prueth);
- 		}
- 	}
-@@ -1960,6 +1981,7 @@ static void prueth_netdevice_port_unlink(struct net_device *ndev)
- 			dev_err(prueth->dev, "Failed to restart the firmwares, aborting the process");
- 			return;
- 		}
-+		icssg_enable_fw_offload(prueth);
- 	}
- 
- 	prueth_offload_fwd_mark_update(prueth);
-@@ -2024,6 +2046,7 @@ static void prueth_hsr_port_unlink(struct net_device *ndev)
- 			dev_err(prueth->dev, "Failed to restart the firmwares, aborting the process");
- 			return;
- 		}
-+		icssg_enable_fw_offload(prueth);
- 		netdev_dbg(ndev, "Disabling HSR Offload mode\n");
- 	}
- }
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index df93d15c5b78..832e654a102c 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -242,6 +242,10 @@ struct prueth_emac {
- 	bool offload_fwd_mark;
- 	int port_vlan;
- 
-+	/* UC/MC flooding state - preserved across firmware restarts */
-+	unsigned int uc_flooding_enabled : 1;
-+	unsigned int mc_flooding_enabled : 1;
-+
- 	struct delayed_work stats_work;
- 	u64 stats[ICSSG_NUM_MIIG_STATS];
- 	u64 pa_stats[ICSSG_NUM_PA_STATS];
--- 
-2.43.0
+> ---
+> The link failure was diagnosed, this patch drafted and the tests above
+> run with the help of an AI coding assistant. I reviewed the patch and
+> the test results.
+> ---
+>   drivers/net/ethernet/intel/idpf/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/idpf/Kconfig b/drivers/net/ethernet/intel/idpf/Kconfig
+> index 586df3a4af..6b59173e0d 100644
+> --- a/drivers/net/ethernet/intel/idpf/Kconfig
+> +++ b/drivers/net/ethernet/intel/idpf/Kconfig
+> @@ -5,6 +5,7 @@ config IDPF
+>   	tristate "Intel(R) Infrastructure Data Path Function Support"
+>   	depends on PCI_MSI
+>   	depends on PTP_1588_CLOCK_OPTIONAL
+> +	select AUXILIARY_BUS
+>   	select DIMLIB
+>   	select LIBIE_CP
+>   	select LIBETH_XDP
+> 
+> ---
+> base-commit: 34a70a40c954fb8044ecd124840a2c38cd3aa4cc
+> change-id: 20261111-idpf-auxiliary-bus-c0058e27cd9d
+> 
+> Best regards,
+> --
+> Darren Worrall <darren.worrall@shopify.com>
+> 
+> 
 
