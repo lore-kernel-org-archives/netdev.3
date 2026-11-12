@@ -1,76 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794513458;
-	b=1anX/uCg2hwk/P/8eMTdM61jHBrAPfemEo697vniGIg4i9436W2+FzYM5+CARlRVjRpL
-	 N3fkzXNkZLskJjsSCmx71PwEAwG+IDOTGfxRvc3ycICXcIZJJv63CNOPOHqJfm+GzaWYC
-	 U8DrAT4ZgDM4aUhidB8/zrUQ5InK7sIEQCMn9yKSFveMpvEjt1oBaMCTMh61Cirqkm40G
-	 6VCJwWmKWNjhTSFAZwtKUM6N5OIvUE7WbT4v8WUaM2db37ecuQBNirV0kHtaJsNnLiYM3
-	 H+tthZzGXzTmsUW7oW6lD9eIywuYRq7ZURvzWLgvKOneNzzzOS5ksx2uhK/+SnjiRdg==
+	t=1794513650;
+	b=BVoGJYtpSdPN8H/DdP+lFqsv22yp3xBfugFrIFjXP5ulzVk6i5yCd6mg4mBj6ZbBchca
+	 i3lI8OkKBZ3qSUJ57OkXLfX83l8y0wz5AEoYa+AM5cmU0wERSKIpkASADe2DKgPcvntqT
+	 jR6JJo3GLyxwNAkVbqEeLDvGVFEuJ+aIOISePH4GP7ufNQ2TANblgJRYFxxF4efq2RSAA
+	 y3CXw00xbQFHSdSEMCyUISgWTC8FC+hWY4rfZzxJmyxK4iBiHa+vE4Ttj48qMupa5z1KR
+	 D4O7FOhx30UYFLS07LVfQPtQDJGAf1f/CYsmxsE+beXZ+InwPGbwM3r8gFYIZlbzdsg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794513458;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=7guJMRRaIyBXSu5q1TNtm5fdzWXrkWkE2iKaLV14h3U=;
-	b=kvJJnBIpXnEqbemn+vE3lTmWItKPdXdrUOdApZUt/qlOGSO3cRJ6ECavnAfNrmhbjNSA
-	 74VGnb/jq3zhXW7f3mRbSiX9pZSoJUFqdB+RywRvkwTt4MZjis1pBCTk3TjM/t3fCVVZ5
-	 8MH1ZInPpc2nzSmI9QjmQKmu1jybeROeS+1gxtVeuMWSo6xwdskIIs7IUrxOQj8Q16upu
-	 j8upr/x2L8YhAOU1e8DhbTeqncDi6e2RPjP9vmODWLtjmKoylbjDpXcH3oNr7C/322LSl
-	 W8lbYEdPNQQqy46n+l77h6hD/R8tevzwIM6/k3WwCXVe0Xr71MDMMxUDW1+FClL+lSA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794513650;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=UqJ1UZJImrnjV82Sxx/gHnjsXofKa5flLX/yxWE4r7Q=;
+	b=bBH+p2kqKgC6tBWK1+QUlBmtlJjesI2IjKEo/8ux1f3Fi2Z4I+f+GjfgjaIxizfyhbnH
+	 5fKaTbfUBAct9WsfBfbZoFdwVrZ6Tjyl3wq0XdsBSUXylULds8PswlIq2UrPTyZpmlLCP
+	 Rc4hG41RZki3NH55LnsomVBjj5cLL23zm7LKLzPQKTHBF2nabKxj3T12DzftNt+ypNinF
+	 sLyyO6B7lV7gl3yorzo2obOZdKwxAmaUjYV2+Hihz6wgloGWWgEuZnRLVsiZuwvaJNXf1
+	 HYO60yMzNnZg80Dle7TWoVZFYKY5JVAfkCrlcEjM2uPZqt/a8c5t8n+yt8/UiKzjLHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WwR0zLi9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=o5yZfNOS;
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBFE606A88F;
-	Thu, 12 Nov 2026 19:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBECF606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBECF606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WwR0zLi9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE151F000C5;
-	Thu, 12 Nov 2026 19:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794513458;
-	bh=7guJMRRaIyBXSu5q1TNtm5fdzWXrkWkE2iKaLV14h3U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=WwR0zLi94YNDct3dcB3nW3opR+n+eZhSHuebehNpSFyoYQJYcRB/uTok6f0VIEsn8
-	 VhNnmCYLnslIOCeD3XHMyPbA/szoNfexl/h4UkRdQdnkKQS+t4viFQd0RF5sIrS+7w
-	 94NnR1EI7kWlcUYSg5DeygJD9WLbjg6lApMtl06hUAl/P2fwWHzg6oLoFiO4b46RcW
-	 EtTonZU6mxNjqp2zNmo0stc9wJcpwtqAxzNRKlZulu64/zsMZDedhlHfcdt4xWq8eU
-	 vUh5tJKBKk+fh7k+Z924uIN9JJy6j+hnV411pXsULtaOC6Ei5AfRW5f5NXXqASN3YD
-	 y+XV789RFCh3g==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Stanislav Fomichev
- <sdf@fomichev.me>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya
- Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
- Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai
- <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org,
- io-uring@vger.kernel.org, Mina Almasry <almasrymina@google.com>, "Mike
- Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
- <bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David
- Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Stuart Clark
- <stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 07/11] xsk: Deliver provider chunks without
- copying
-In-Reply-To: <avWua/xvHrUa5wUI@boxer>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-8-bjorn@kernel.org> <avWua/xvHrUa5wUI@boxer>
-Date: Thu, 12 Nov 2026 20:57:34 +0100
-Message-ID: <875wy1rff5.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=o5yZfNOS
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so116495a91.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513649; x=1795118449; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UqJ1UZJImrnjV82Sxx/gHnjsXofKa5flLX/yxWE4r7Q=;
+        b=o5yZfNOSp1hwed46uC5BB9D7U8CxCOtlroJmvZ7S8L5JmYLSUVRr6x6QBOWpjHydmN
+         wHk89+AgtAOIjYdNuXB934DPWNNh0NWu4Ufa5XpVpJasXT8G3JbPTQJY/kTxa+G9UcWR
+         h59DSgtRHvAPF2rpF+BMPn04OZJG/lG6xq3jdFq1TQbeIyOmvIZCfDyzWLvMDuXH9ZhZ
+         xzGIuEyKLcaouHjltqJZ+jGb8/kOs/FnhdppaFaxTruP4hgfYUZx0wLZwHSalg8qkM4k
+         o3ddyLPYy4RdlUiPjCJsre/+BMK5d84eRexjzcOkAwN3zoUYXrHH6wk5pHf35Hqp4+cl
+         ZAhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794513649; x=1795118449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UqJ1UZJImrnjV82Sxx/gHnjsXofKa5flLX/yxWE4r7Q=;
+        b=UeedzwLN8JDhmiDMJJIUeUVDrORLtL4myjFkrYOzOxzg/w+lm3ihY22061V9x2pmny
+         cmVGWiZSsOFkYZaYjDAS7fv/V6sUE6XqugSZblCJ3PJ+6WP2kVDVqO0I1ycZqJQvzokm
+         2NRrJztjjFv6W/I8cvWnVUTB/xMp3R5bge5s1Gc7OM4Y1oCFg/RpQc7Fr7X+GJlC5dDu
+         tum7D+p+dPxZ/HLWfgp5Ktmq/So3vq9aPkV9W9nJFLTgp1cDZolnQ9i5E/t1uvT9sBDZ
+         1rom1LjZU7o+lj0YatVVv0bg9oDVPTrMVFmvPP/S2pE7FLWGJf0vYdjeMJJsHmB+GE94
+         V8VQ==
+X-Gm-Message-State: APuU4Z+L2MIrNgQXKr4cHNcbvPthHXqku0yKGOEDFkRnghWznA0xZzh5
+	HhDJBSa3oLUJwOZAnDfilYkFqNZqwTlt8ilKzegDlJF7BdhhOsGzg0aeaMzaGrpMPBrOubIaJE6
+	U4wDX
+X-Gm-Gg: AYBFou0E6BHYSXjHpgWI82aTJECPqK/anhfNryt7zCfQ4rmn7mKlYoQy3Z7WHaAEb4j
+	wShDKcYu+kgFPHn1suYDfYZeJTpF0B8H+iDonJSkz7p4vgFhrxvDkxGrawY5sWWGVrEfrJ7lDfW
+	vuuizKPJFEdYtT7FY2FxKqO8EoY0jAFFqtJsKewOosvWy1tjpeoFS5hR4rno+F40Lt1sN+MNKi0
+	y9wy+TCU3gtMvhV4H0fSA2LzHUiooxMire3wY4RMVODeQ+8DJyb5ENu8v2H7MqDtWxNsLxjUNGq
+	d1HmqxnCqOgg9016fYWgfPduUP+aL5hts1HdZASju1sM5ouZrfdvoLbFHbnwqumoxeX4o3IZr3k
+	WWOQJUOTgj7qODUjX2o9/zYtG92rWoVP0wwkigtZOPa9X1ZjsOlJxZx/JUosNSO/XfhyMFnnej+
+	guENxgowfyihZzVsLQYrm6LP2+d8eEq1KvDsLzV2RRcEhRiBbNscK+/Sh7XnS+qkx55eFatlZMg
+	wvUh/P3CYB9K1b1VhVJUgqCfMSapSdoOHZymFETi3CipN/I+3jgJAS7W50MuUfdEGWESuahUL5a
+	TMala3Pkzxir1pEVYh5qJJk73Ml5pz73EZFDIHsflD8O+nEjTSslxxE5/+pqbgQ/MCgq198=
+X-Received: by 2002:a17:90b:4c8b:b0:3ac:9ed8:f30e with SMTP id 98e67ed59e1d1-3b1b0d07d05mr68262a91.35.1794513648631;
+        Thu, 12 Nov 2026 12:00:48 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 12:00:48 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2 00/11] ss fixes from an OSS scan
+Date: Thu, 12 Nov 2026 11:59:13 -0800
+Message-ID: <20261112200046.2164391-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,87 +93,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+Fixes for the ss findings of scan iproute2-20261015-004, plus bugs
+found while confirming them.
 
-> On Tue, Nov 10, 2026 at 11:20:28AM +0100, Bj=C3=B6rn T=C3=B6pel wrote:
->> A provider socket still receives through the copy path, which takes
->> FILL entries without the provider's ownership checks: a chunk that a
->> page pool holds could be handed out twice. No driver opts in yet.
->>=20
->> Put packets whose buffers all belong to the socket's provider on the
->> RX ring as they are, and copy others into chunks the provider claims.
->> Only the queue NAPI may produce to such a socket, so generic XDP and
->> CPUMAP redirects to it are dropped.
->>=20
->> A device may place payload at chunk offset 0, as fbnic does, so only
->> the first buffer of a packet keeps the UMEM headroom. Such buffers may
->> be sent back as they are, so only descriptors with XDP_TX_METADATA
->> need room for TX metadata in front.
->>=20
->> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
->> ---
->>  Documentation/networking/af_xdp.rst          |   6 +-
->>  Documentation/networking/xsk-tx-metadata.rst |   3 +-
->>  include/net/page_pool/memory_provider.h      |   2 +
->>  net/core/page_pool.c                         |  34 +++-
->>  net/xdp/xsk.c                                |  82 ++++++++-
->>  net/xdp/xsk.h                                |   5 +
->>  net/xdp/xsk_pp.c                             | 165 +++++++++++++++++++
->>  net/xdp/xsk_queue.h                          |  18 +-
->>  8 files changed, 304 insertions(+), 11 deletions(-)
->>=20
->
-> (...)
->
->> +
->>  static int xsk_pp_nl_fill(void *mp_priv, struct sk_buff *rsp,
->>  			  struct netdev_rx_queue *rxq)
->>  {
->> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
->> index 1bc42c8902f4..b9464b917a88 100644
->> --- a/net/xdp/xsk_queue.h
->> +++ b/net/xdp/xsk_queue.h
->> @@ -156,17 +156,24 @@ static inline bool xp_unused_options_set(u32 optio=
-ns)
->>  	return options & ~(XDP_PKT_CONTD | XDP_TX_METADATA);
->>  }
->>=20=20
->> +static inline u32 xp_desc_meta_len(struct xsk_buff_pool *pool,
->> +				   struct xdp_desc *desc)
->> +{
->> +	return desc->options & XDP_TX_METADATA ? pool->tx_metadata_len : 0;
->
-> How is it related to this patch? I know I trimmed, but I didn't see any
-> references above to tx_metadata_len, only some documentation bump.
+The biggest change is removing the fallback /proc parsing.
+It was buggy and fixing it is not worth bothering.
+Every family ss lists that way has had sock_diag support since well before
+the oldest supported LTS kernel, and the parsers were untested and
+trusted file contents that an unprivileged user can partly control.
+A kernel built without netlink socket diagnostics now gets an error
+instead of a silent fallback.
 
-Provider frags start at chunk offset 0, and an application may send them
-back as they are. TX validation wants tx_metadata_len in front of every
-descriptor once the UMEM has it, so such a descriptor fails, though only
-XDP_TX_METADATA descriptors use that room. Driver ZC never puts RX data
-below offset 256, so it never came up. It stands on its own; I'll make
-it a separate patch.
+The rest escape names chosen by whoever owns the socket, bound state
+and type values from the kernel before indexing name tables, stop
+treating a netlink port id as the owner's pid, and size the
+TCPDIAG_FILE read buffer to the record while rejecting lengths the
+parser cannot use.
 
-> Besides, the amount of branches introduced to existing hot path is
-> worrying. On next revision, could you provide numbers from xdpsock before
-> and after this set run on existing zc driver?
+Stephen Hemminger (11):
+  ss: fix double close on sock_diag send failure
+  ss: drop /proc fallback for socket listing
+  ss: escape names chosen by the socket owner
+  ss: size the TCPDIAG_FILE buffer to the record
+  ss: replay all dumps in TCPDIAG_FILE
+  ss: bound state and type name lookups
+  ss: fix rpcbind service cache
+  ss: read socket SELinux context only for -z
+  ss: check owner before naming a netlink socket
+  ss: keep following events after ENOBUFS
+  ss: report a failed SCTP or MPTCP dump
 
-(FWIW, I've left a all my performance patches out, to keep the size of
-set down.)
+ lib/escape.c                  |   7 +-
+ man/man8/ss.8                 |   3 +-
+ misc/ss.c                     | 884 +++++++++-------------------------
+ testsuite/tests/ss/ssfilter.t |  26 +-
+ 4 files changed, 249 insertions(+), 671 deletions(-)
 
-Will do, but the only one I got is mlx5. Would be awesome if you or
-Magnus could take it for a spin on Intel NICs.
+-- 
+2.53.0
 
-Single-buffer RX on driver ZC gets no new per-packet branch: xsk_rcv()
-leaves through xsk_rcv_zc() first. The rest is one test per flush, one
-XDP_TX_METADATA test per TX descriptor, and a flag test in the
-multi-buffer and XDP_PASS/redirect helpers. v2 also moves pool->pp next
-to fq, which the flush reads anyway, and drops the frag walk in
-xdp_buff_needs_copy(), as agreed with Stan.
-
-Anything specific, or just in general?
-
-
-Bj=C3=B6rn
