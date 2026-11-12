@@ -1,120 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794474926;
-	b=gYX7lAy2oRya/Foxn0akUblWjzMA9qCpG/jZFndMJkAPztlU9/eB7ZcjeteV98E3mDva
-	 SW1ivK7DFS9XtqURTqWlSPzYe38kWW3uFqfdkgbRjPn+yExg5QovlEum1X4yLsk2voNXb
-	 IAuwopqaNWH6f2nxivWRRxOMTL/2N7vOWXelOwhyDBO05xEcJDIn2yJqZaitz8FLCAWif
-	 zfKq+Bld/2eJcFxvcUH5p8lBMIoOnNFYcnVYOJsSnXod8knvyOe5sRVNx5PWPMSoS2M0D
-	 EQG5LBVhUJqxNNaVzIs8Tv6Zd7M0EjKRffkrsKOEeXnizTxtadf7QazSFT964TsByog==
+	t=1794474940;
+	b=hnovrGIPDTOJXBUdcqWKQDC/tx1tvKgBLw3aPdp/q2XjQU/Ils0hf5k7ZHrWvCe+cT9N
+	 vJn8DerfZJAP7HDtvZMkqg1AzykET7LC/wrpEt+7SDQ9ZTymytZUx2FyX0A9A5JWGld4A
+	 fc+EIzb6fUybInc4xZPBDzO4RAL/8RBIQzccQ7zEps5nony7NTYcyj0tJxbFaUN/m3ZvQ
+	 nKM9ecx/0Atus2T48S4WtHoVytWZOl/YXejIUJUnZxM6JdxyoBe9VWFx/PPNzVDIoCp0v
+	 dlRxzudV9HNG35R2cOyQfx2lmVzkNqemLtN0g3U1kOediW327NlEm1A5jMdm3CoCN1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794474926;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=cEN7d+jyurewLFa/LuiPLiAZonMx9OftX2NbfIlKgdw=;
-	b=NBFB4SEoOcJgxjHVotyb8kyjyCWCI2P0EniIlEU4H8hnCx4MoyfumH7SGaEEoQg+JpHU
-	 d5t8hX6JdttpXjPQZT0XatOGAVZsVrUIdPDZW6EQu1sZbDP9iFx9SwTDp04deM0y46G1H
-	 t9uP9j4nTf/4t9anK+mbqgM0yf7Bsp8TmAjoOhznEpSoNC4K3rqDniqP3eN/fW7HH0uXA
-	 Mjx5XNorgWnpoIOgM26uLNwC6/89YFLuA1a73jPkg2CKjoHovY570wTEOUp7aOuOu/Vae
-	 xiILPDdRd9keM9/hx1wFwUXOQYqNbDjDOZDhmx8engDZroeax86JVGujko8+B0sfYBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794474940;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+	b=wkoqTnxwaY3XL1CsQYM8uPcOcwUTPHV/LkTBuss3sOC56PxyEJtg62UXN3lkzQe9WNAC
+	 iqn0jMBqsAP1Qc/VuSjH9M/mXhzcBTJVJ+qwOaxoZ89oUOo/G0BJyP7SdPsGUIaJmRIBD
+	 Rrg7jw3rJhHpg5SaWlwO7by5sZFIl8wVv56G9o7/YQVCLWZMpgRKYv1OaFx5cLCL/Blaw
+	 LuVysG4mxLxdMnLRBaSwVijjcuWrUcAaNPI95raj1q0eDn3EaD999jgQDc1uXitu0gXFT
+	 j8CmQiBuBX+r8W4P6/hbu91lTTY+ghcUtM8GZRApn9VIqDWIAiKvbHLRBWstwDSrpRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RdELOKkG;
-	arc=none smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuTvq3q;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBjixnsW;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83375606A32D
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:15:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83375606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0D6606A8A8
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:15:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B0D6606A8A8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RdELOKkG
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-372bdb942dbso5196968eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:15:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuTvq3q;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBjixnsW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794474938;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+	b=aMuTvq3qIoH43sv+1a7P8mAUyk7hzIxGncQhFZS7l5317fpGTaPqEkVvZk8AEWtDZgKSf/
+	TaUUy3y1dNhIVRxz2oO0WwtmwY2WePLpuTTo+D0BoeK6BYN8YQ/YcUyZS/yDPgRp54OsGX
+	Tk62qEa3stwnAzxKVZq2EX1rI2opIuU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-3EkoEd5dPYi5SMJXSKJpjA-1; Thu, 12 Nov 2026 04:15:37 -0500
+X-MC-Unique: 3EkoEd5dPYi5SMJXSKJpjA-1
+X-Mimecast-MFC-AGG-ID: 3EkoEd5dPYi5SMJXSKJpjA_1794474936
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-492425d771bso2544114f8f.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794474926; x=1795079726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cEN7d+jyurewLFa/LuiPLiAZonMx9OftX2NbfIlKgdw=;
-        b=RdELOKkGhI/YuUC1xnfrm+5EXnd8mmiRPEm4bZGtKq8StrF+btPPCAlsUV3okt0tpU
-         JmJ4jZG9ZqPA4105qLMh4EKJsPIAQAtMuGfMFB1PNMjdRKgccORMbGJEdHd38dhZYob1
-         CUUY/6UmSXOm1ZApgLezphXnJIf7TaTeBdV2fGjdLahhS1BnM6KmeYygB/icQXnOr804
-         52EwsS7iHDyY4FEPgiTh8RnkXWGW6RbuFcEuarHwbbS2+qIVxhV4RzRduneXq/kRCKye
-         P3YvP7ReONvCelis5BZGSZ3f+f8kC/z+jk4mqQXDtUOPGhzhtfaa54W67JHaSFXcZd49
-         0VLw==
+        d=redhat.com; s=google; t=1794474936; x=1795079736; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+        b=RBjixnsW08WSzYaCIeMMgfDMxPNjBHIl29W/hMUL87tEOBmVisUX3PMetALgCVp1OX
+         TZbZ1VfJRXWZ8BFWFchwd7tgIJoXRAMZ1nRX5repU5Q31o9xRq0O705WrzyZCRzxWddb
+         YzmuGdP+BRePNQ1n67DeI4eA92tJVnyS+DaC8eQoIrM/soc8PR2bRDqAqpO4lWc9OeBY
+         c5+uNuKmNSGznIGKIs8ZALZpia3CJOVSRzKC0zetFO/gA8PKmjmviNBxx4Fe7zOqIGOM
+         D98ld0NhCtGmG7X8A60u7hB2G3VvOiQYhEqVBCgco8EMqeWC5jtGqCnPUtPrqYNvdkS7
+         AcfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794474926; x=1795079726;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cEN7d+jyurewLFa/LuiPLiAZonMx9OftX2NbfIlKgdw=;
-        b=exCxmPg4Aow/VOPLPYADQoR5/DXFOrY9RIs7wZRrNoVW0RDsAhC5UDDaXd4xwcHLKT
-         hKFAWQP0wHEhKgTM/u7r+ZMhPfl/+odNB2cCobe0ghXEPA9lCbpvpReRon18UlFb258Z
-         o2ErAwauNB/bcrJV6mGy1WAXaGMeR4hLraC1orvWklPesXAARoHE5ZKCcORAgJ+7fAJC
-         oqHOJLLUIC7rAYSxgFUFelNNveX2dnINqOePghZpWyyijfHaD+CWsFYDNJcWKXsvx4CQ
-         bYRqH1M/FfkPosGEQfCthzvGhPeu3eLb19Zr87qfOXWj1ssCINr8aHToV1jvjmCgg96U
-         rk8Q==
-X-Gm-Message-State: APuU4Z9Fx0w0aUbvrD9kyOmXfa/hrJJa1sODT4OrU2IAwgZ73P3blSKj
-	vCJQeIUOG3clLCF9tBZn3yRQkTEuZtAkIbN+SZrBmuINMkFwXT+Xc4NLj1lZtguq
-X-Gm-Gg: AYBFou1nNbIj8uK0r87IEJjhPWRjuo3Piyl1RX5rhdkdLrfGrmE4V/MvR2avZF+Wo/7
-	w784XkP7qlQrp7gEavdXsZiqdxhHm4fP71jRHKgKk5GlzNkwrhIc4+4uBOZB4NCUXSUTtDxxKEa
-	14dIYKJ/XifmLlJH4K+27n7FWDuAmDhpPK03SFSdxQ1JzIIgiWaphKU9A1dysh0qZ8VHBFNEcqY
-	g6D0vHj/tRJdiJWsQgyc3+/cj9QXffNOs7W8KhJtz3y5yCC3WBOafhS+Jeno0XIcvDzPtOd2ZEM
-	Z/ERWdhR4yPj92h1+nSnx8x1Orm33pRozKi/FpPGLWMKvOXC3n949/MFTlTmD8fcw7lA7zti2j0
-	JqtXiGS2dzRMqeHuoSSw+gnPRgRPwbmAFzB7PGee7JmtHZV6wLFuMSpL96z7u+XQX68sEhbtEVs
-	PHFxeMeibL9LtM0Jg0jA6yQ+Z38x8OVMLa1kVwW/hUWAUDqJDr/hxHii1c9q91IAGGGBJGwq1pf
-	sVoLDCI7XM2BP7vfhDTQ/bOOzKkLGvzvJnBMeYi3OKoHlcuf6iwa8/2tuDl2jBHIGgh2nG0jMBP
-	hKTeC1IrTeoX+kDPT5lmayrXLgT1Ute30HvPGMi6qOCr
-X-Received: by 2002:a05:7301:514a:b0:36a:7b3c:4e0a with SMTP id 5a478bee46e88-3768675676dmr5379824eec.24.1794474924729;
-        Thu, 12 Nov 2026 01:15:24 -0800 (PST)
-Received: from localhost.localdomain ([2406:7400:51:27a4:c2b6:f9ff:fe77:10a0])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212e7d24sm40096319eec.22.2026.11.12.01.15.13
+        d=1e100.net; s=20260707; t=1794474936; x=1795079736;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+        b=OeJ0OjS+dJumZGgcZwE4Komks/l3+6rXAm9WcCvRMihlcp6UU4cPoM/z/VO1df3cWV
+         2mtPnrLlwaRg1omy4d/T051KCWYRO502ese98c9MmbywiQT9ikaYnlYoxzR8KaABgbL5
+         //NKPQWG/+F12tbrDnmEZaF7zbVjunr+5VxoTHYevp3UmbUaQm4WoCoTWdcUSaKaGt7B
+         s4snmv+E0jSeKzF+fXR/3+B3BQrYI2NjKn4KuF8Wh4JikWm0dHElgmpvb/YLjEjr4RzH
+         5qtNpSMqTeOL+DsYFZLoyxhsG74Dxum8BcxTIg0+0w6MnZ4sGSxaIWbjnHqfo6Pnc5ZH
+         aY+g==
+X-Forwarded-Encrypted: i=1; AL+hErGiIqP4gaKBt3RUJlE0gTjZ0jxYcPCPoH24LVz0/TfcLhv6dnKLU47Y7rC1Zz4PgaNSBmF+yvg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+u6wp9sUaCMAes8ANWcWveTgpROenGvHg/17YZqH26DKoPiZxB
+	L+vv5dymYh49jy0VUrYdLm17Dosh4k1H+exjcIzCnCdejRor6XwRN0biJzLpVjVxOQ1J6D684hr
+	WkKe5Kgrgn7jysbq1lQ+vTFJW/i9N10VSxkuMJXwmyeT9p0l5YiTg/+w+LLTfAWrTXA==
+X-Gm-Gg: AYBFou1ySuuUkRXMdLFa/mcDexei481jdlzFdBha844AkO/CnK3utCkGyfo0FajjI1j
+	iel7lKl9vYhoS4GIsvuool0lSbk7QTUBfycHwDaB0cd/a6x+6NdUfS+fPeinOzy/Abf6d0Fe4+N
+	Bir8fpSex4jEZ3Dxl1uPmUH+qciHSvl7wmeCs9GtcfB9y/B5inZVZ2QVI+NfCANSKA7wbrVJVdE
+	/Lq7SicsOdXSVMA1sg7yBNa3blwp5oKn2xSebOm+O1rgLFPTjekdqkHnGr5zoTCWsFun4Z40tqG
+	i5Z9aRi96h5iruEUJ2qnMWEagJ715eDYf60rvuev206+dsrOC99aafZu3oHF6ebzhP59CTkTrZw
+	x4La7Yazdfu228Sfcz55x2QLySP/+4jbUm+C3abdyFA==
+X-Received: by 2002:a05:6000:4b13:b0:487:88b:4681 with SMTP id ffacd0b85a97d-499c6027597mr7970523f8f.10.1794474935549;
+        Thu, 12 Nov 2026 01:15:35 -0800 (PST)
+X-Received: by 2002:a05:6000:4b13:b0:487:88b:4681 with SMTP id ffacd0b85a97d-499c6027597mr7970448f8f.10.1794474934931;
+        Thu, 12 Nov 2026 01:15:34 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498361f674fsm15808324f8f.33.2026.11.12.01.15.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 01:15:24 -0800 (PST)
-From: Amaan Cheval <amaan.cheval@gmail.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com,
-	hramamurthy@google.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bcf@google.com,
-	jordanrhee@google.com,
-	przemyslaw.kitszel@intel.com,
-	maciej.fijalkowski@intel.com,
-	pkaligineedi@google.com,
-	maolson@google.com,
-	csully@google.com,
-	willemb@google.com,
-	yangchun@google.com,
-	npl@google.com,
-	awogbemila@google.com,
-	shailend@google.com,
-	nktgrg@google.com,
-	maxyuan@google.com,
-	bpf@vger.kernel.org,
-	john.fastabend@gmail.com,
-	hawk@kernel.org,
-	sdf@fomichev.me,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Amaan Cheval <amaan.cheval@gmail.com>
-Subject: [PATCH net v6 1/2] gve: refuse XDP on queue formats without XDP support
-Date: Thu, 12 Nov 2026 14:44:50 +0530
-Message-ID: <20261112091451.22969-2-amaan.cheval@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261112091451.22969-1-amaan.cheval@gmail.com>
-References: <20261112091451.22969-1-amaan.cheval@gmail.com>
+        Thu, 12 Nov 2026 01:15:34 -0800 (PST)
+Date: Thu, 12 Nov 2026 04:15:31 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: zhaoguohan@kylinos.cn
+Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] vhost: set dirty log bits without pinning pages on
+ x86
+Message-ID: <20261112040926-mutt-send-email-mst@kernel.org>
+References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+ <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -124,71 +117,135 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 
-Commit d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ
-RDA") enabled XDP on DQO-RDA by dropping the queue_format check from
-verify_xdp_configuration(), which until then refused every format but
-GQI-QPL. Nothing replaced it: gve_set_netdev_xdp_features() advertises
-no XDP features for DQO-QPL and GQI-RDA and gve_xdp_xmit() rejects
-both, but the core only checks that ndo_bpf exists, so a native XDP
-program, and an AF_XDP socket on top of it, can still be attached on a
-queue format the driver does not support.
+On Thu, Nov 12, 2026 at 04:56:30PM +0800, zhaoguohan@kylinos.cn wrote:
+> From: Khan Zhao <zhaoguohan@kylinos.cn>
+> 
+> set_bit_to_user() pins the log page with pin_user_pages_fast(), maps it
+> with kmap_atomic(), sets one bit and then unpins the page and marks it
+> dirty. This runs for every bit set in the dirty log, e.g. on each used
+> ring update while logging is enabled for live migration.
+> 
+> log_write() always passes a byte address and a bit number in [0, 7], so
+> the update can be done as a byte-sized cmpxchg on the user address. On
+> x86, try that first using unsafe_try_cmpxchg_user() inside a
+> user_access_begin()/user_access_end() section with page faults disabled.
+> If the access faults (page not present, read-only or needing COW), or
+> the cmpxchg loses to concurrent updates of the same byte four times in
+> a row, fall back to the existing pin/kmap/set_bit path, which can fault
+> the page in.
+> 
+> unsafe_try_cmpxchg_user() is only implemented on x86, so other
+> architectures keep using the existing path.
+> 
+> On an x86_64 KVM guest (i7-12800HX host), a synthetic used-ring
+> workload with logging enabled went from 243.60 to 171.11 ns per
+> descriptor, averaged over five alternating runs. This is the
+> end-to-end cost per descriptor, not live migration performance.
+> 
+> Signed-off-by: Khan Zhao <zhaoguohan@kylinos.cn>
+> ---
+>  drivers/vhost/vhost.c | 50 ++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 45 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index e29f154706da..9c3045504709 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -2527,11 +2527,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+>  }
+>  EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
+>  
+> -/* TODO: This is really inefficient.  We need something like get_user()
+> - * (instruction directly accesses the data, with an exception table entry
+> - * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
+> - */
+> -static int set_bit_to_user(int nr, void __user *addr)
+> +static int set_bit_to_user_slow(int nr, void __user *addr)
+>  {
+>  	unsigned long log = (unsigned long)addr;
+>  	struct page *page;
+> @@ -2550,6 +2546,50 @@ static int set_bit_to_user(int nr, void __user *addr)
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_X86
+> +static bool set_bit_to_user_fast(int nr, void __user *addr)
+> +{
+> +	u8 __user *p = addr;
+> +	u8 old;
+> +	int retries = 4;
+> +	bool success = false;
+> +
+> +	/*
+> +	 * log_write() passes a byte address and a bit number in [0, 7].
+> +	 * On x86, update just that byte to avoid crossing a page boundary.
+> +	 * Bound retries so a contended byte cannot hold up the worker.
+> +	 */
+> +	pagefault_disable();
+> +	if (!user_access_begin(p, sizeof(*p)))
+> +		goto out;
+> +	unsafe_get_user(old, p, fault);
+> +	do {
+> +		if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), fault)) {
+> +			success = true;
+> +			break;
+> +		}
+> +	} while (--retries);
+> +fault:
+> +	user_access_end();
+> +out:
+> +	pagefault_enable();
+> +	return success;
+> +}
 
-The DQO-QPL RX path was never written for that. Its page accounting
-assumes the driver keeps a reference of its own across every handoff:
-gve_xdp_done_dqo() passes the buffer to xdp_do_redirect() and then
-recycles it with gve_reuse_buffer(), so a redirect target that releases
-the buffer synchronously, such as an AF_XDP socket in copy mode, can
-drop the page's last reference when pagecnt_bias runs out. The page is
-then freed while it is still DMA-mapped and registered in the QPL, and
-the driver posts it back to the device.
+Yes we wanted this for the longest time!
+But can we use the nice scoped_user_rw_access API?
+Something like:
 
-GQI-RDA is no better off: an XDP_TX there goes through
-gve_tx_fill_xdp(), which copies the frame into tx->tx_fifo, but a
-raw-addressing TX ring never allocates that FIFO, so the first XDP_TX
-writes through a NULL tx_fifo.base.
 
-Refuse XDP setup in gve_verify_xdp_configuration() whenever the driver
-advertises no XDP features for the current queue format, which today
-means DQO-QPL and GQI-RDA. A zero-copy XSK pool bind is already refused
-by the core for the same reason, and a copy-mode bind never reaches the
-driver and is harmless without a program.
+        pagefault_disable();
+        scoped_user_rw_access(p, efault) {
+                unsafe_get_user(old, p, efault);
+                do {
+                        if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), efault)) {
+                                success = true;
+                                break;
+                        }
+                } while (--retries);
+        }
+        pagefault_enable();
+        return success;
+efault:
+        pagefault_enable();
+        return false;
 
-Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ RDA")
-Cc: stable@vger.kernel.org
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Amaan Cheval <amaan.cheval@gmail.com>
----
-v6:
- - Say the check also covers GQI-RDA, where XDP_TX writes into a TX
-   FIFO that raw addressing never allocates (Sashiko). Message only, so
-   I carried Joshua's Reviewed-by.
-v5: https://lore.kernel.org/netdev/20261109100437.331423-2-amaan.cheval@gmail.com/
- - Check dev->xdp_features instead of queue_format, and reword the
-   subject and message around that (Joshua).
-v4: https://lore.kernel.org/netdev/20261106114551.212675-2-amaan.cheval@gmail.com/
 
- drivers/net/ethernet/google/gve/gve_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+maybe?
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 2437cd8ba633..fe560f5c5408 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct net_device *dev,
- 	struct gve_priv *priv = netdev_priv(dev);
- 	u16 max_xdp_mtu;
- 
-+	if (!(dev->xdp_features & NETDEV_XDP_ACT_BASIC)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "XDP is not supported on this queue format.");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (dev->features & NETIF_F_GRO_HW) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "XDP is not supported when HW-GRO is on.");
--- 
-2.47.3
+
+
+> +#else
+> +static bool set_bit_to_user_fast(int nr, void __user *addr)
+> +{
+> +	return false;
+> +}
+> +#endif /* CONFIG_X86 */
+> +
+> +static int set_bit_to_user(int nr, void __user *addr)
+> +{
+> +	if (set_bit_to_user_fast(nr, addr))
+> +		return 0;
+> +	/* Resolve faults, or use the native bit layout on other architectures. */
+> +	return set_bit_to_user_slow(nr, addr);
+> +}
+> +
+>  static int log_write(void __user *log_base,
+>  		     u64 write_address, u64 write_length)
+>  {
+> -- 
+> 2.43.0
 
