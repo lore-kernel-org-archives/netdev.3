@@ -1,49 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794450006;
-	b=WXZTvOq6Xp9SDhBSv7KKbkcbbtz0b94zsHNnveWHH3XscLlwW0IVIzD7FwTXtSGklYzW
-	 ljpEIpVW46E2JYfRxOjCiIVLk/hpaMi1I4m/HQ7bBg1GvYVZvUeLg25lSMABd2HoeA90/
-	 1kBvCA+9ErGq5dQC5Zjtbzd+6hq/K6HwHwepH0RtOViZ2Xo6DZsnrA68/hQOl7sr8GRIK
-	 2NGDxNtIBZdpIIprjTR1oX7GTuBc48o7PnNOkTaSV9XsnPKHUPwmsKAUU9A6g/px4YEF6
-	 fZ3Ijgdk7UQDvK++1BOyx3sPQIcBiuln8LpRgxdG5Sn4styjFzxGGzrMihhGbd81Jgw==
+	t=1794450256;
+	b=KfxyAC77mDflpLs1nGNzdXNjWDfWft6ZiV+/sbh+U+DymZU6mNP3lmif1wvF5V6x/XmD
+	 bSuxu1g1DxSoyfswva0TWqUhbPdC/FZk8R+2PaplK0I7x9F4y14eAoAc6ZCy/B+IPEyD9
+	 5qZYxDoAR30++MVJYRkFgp721BOYTN3Jsz/eFWGoniTS5+iCZljhjj7ME5dI4zYShVsqH
+	 nfFUzqbz1TNdIDD496oAs4Yj0YF6TaYvLuH7jXPjuAPiPf0eIiaZbHsLvq4gS2/wZh39C
+	 6curv0omgNT6Gp1ARpUxtJM19T02DpsmiqJ5ew5boV7b3VNhAj5xGcSAQDwQVu3TCaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794450006;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=BhBdvtva/PS+g95PBhs3u2exK13+VzhAhO9rc9cL2qI=;
-	b=jqYlnjaVEYmTmDDHW1y4nsNLmQszyxINRcryhDIVa3bvqkO11YXra54KYb6FbHs1BSay
-	 dNaSiX9FrQQoGMpNPB4hqpKsS+TwKA0mo1SG19VIPoeNYcxgyITsXsOJ3JBGpa+qndYhO
-	 5y5L4C0txdl8TGraTTpDB4/zbx8GTtidx+lB6/Q5TGRBwtog3B3rCs70xh7wnJOUUUmmL
-	 LWHKioeDzEOVf8LBJXuFv3E73WD5FR4LdgnfQmuoXgjSzkWx2OLkpvOfjjW+ICEtCDbP/
-	 nlHVriwGPMPSjlwmkEeIklf8rW4lHFOJ1uOU/poYcOcghnZQFr5oSX3AKJ4cQRuZgZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794450256;
+	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=CMs2hiL6dqSvXmpMCUhFT/HCLWI00jj+E7D9u8d37HY=;
+	b=uWico86B2hk3NxpbbxrRAs4+EWpBODQK7iaLHK2WXEQnfftrv9nFqrIUNSDSLS/ORNOi
+	 zHla21vhuqMjim+AbtadeSQO5oDYmM/KYT/kZpMOwy2K+JkUTyYlIzZNjB8D+RQWpYHzm
+	 iRlT0+bcqV2+u4mDfnnSYIUNp35YhAtqjE/G6kdHGj+056q/ztjZzPvX5i4i+Ne6hMjf5
+	 +w6SVTfFeG5K6hL5yqld2I4c2Ln4/7ZThx4B92/xXSwIUNhpXHNm2bZ+wAaS7aUj6la+T
+	 Dh4DntVhsQlo0FH0iSSu6z4k1ebkA5tsFVIIdLIoLJNkB3Sxe0d3/MNMDzys28cUrWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eMgw4oKl;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=ECBexlUT;
+	arc=none smtp.remote-ip=220.197.31.7
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC38C606A31C;
-	Thu, 12 Nov 2026 02:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDF1606A31C;
+	Thu, 12 Nov 2026 02:24:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFDF1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eMgw4oKl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FAB1F00A05;
-	Thu, 12 Nov 2026 02:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794450006;
-	bh=BhBdvtva/PS+g95PBhs3u2exK13+VzhAhO9rc9cL2qI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=eMgw4oKlAZrxSyObARgVNYmnKtnXBqDrQpOrybvdO1Bn3pfuISj7hMrMLMK9GTTjK
-	 xZQvkeye1s+DDNrOvvqIwOmYJ2CQtTuc0j17ncDN696IANG2V7pFWYNfPDCVydW98D
-	 TGT1zoUGzSpeXVht2zKhYxJIgZHgsz1mVxlJDWpSzNanviSw2Cqe8NkIA7PfsjNrry
-	 eEFy/eq4mCC6UU0joFUiQfffiKsU+o1ZPhS8sMds2qIMygLB1zahuVDsw20ar/IxE6
-	 WiYDBnSF+g/Uejep9atSBrNjNetIG+pMKmq3Uckwk1kzL8xHfC2uXbXt4FfnVYBOt6
-	 WcB9gkPt++WXQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E1C6391AFD7;
-	Thu, 12 Nov 2026 02:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=ECBexlUT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=CMs2hiL6dqSvXmpMCUhFT/HCLWI00jj+E7D9u8d37HY=;
+	b=ECBexlUTfMcU0TzeyeHJyBObIRgfVHH9ZR0gINCJCnsug2Cp4UNT/iEyM7AELu
+	++HPY/30SbDlpzGBbsnCLK4KAb/5NJYdGt6RNWEHhBFBsd/UnQhfg1jRwcd5pCMN
+	5bh6cJCv+0izBRSJr1M5OXFEgLIc2hTdKBEyTIWfsXgQw=
+Message-ID: <3b2e263b-6cef-4267-be94-50751dfee494@126.com>
+Date: Thu, 12 Nov 2026 10:23:18 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,44 +51,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5: HWS, fix flow meter release on FTE update
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179445000518.1776220.6038675210157382603.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 02:20:05 +0000
-References: <20261110173437.2471233-1-acassen@corp.free.fr>
-In-Reply-To: <20261110173437.2471233-1-acassen@corp.free.fr>
-To: Alexandre Cassen <acassen@corp.free.fr>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, moshe@nvidia.com,
- kliteyn@nvidia.com, jacob.e.keller@intel.com, gal@nvidia.com,
- enelsonmoore@gmail.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] nfc: llcp: fix SNL PDU size truncation in
+ nfc_llcp_allocate_snl()
+To: netdev-bot+sinfo@kernel.org
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, Guikun Yang <yangguikun19@qq.com>,
+ stable@vger.kernel.org
+References: <20261111095907.3366028-1-xiaolinkui@126.com>
+ <179439136381.2168702.3784011162899965365@kernel.org>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <179439136381.2168702.3784011162899965365@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD33x8WI_VqBr_FDA--.30825S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr4DuF1DJr4DWrWfXFy5Jwb_yoW8WF4Dpa
+	yjgrsYy3Z5Jr1xCa18ta1jva4Fq395GFy5Wr45Kr1Y9as8WF1UKrWIgr4Y9a4q9r9Ygw1F
+	vr42grs2yw1qvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBjmvWr1IxjZqwAA3B
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Thanks for the reminder.
 
-On Tue, 10 Nov 2026 18:34:35 +0100 you wrote:
-> HWS has no duplicate match. When a flower filter is replaced in place,
-> its new rule waits as the pending duplicate of the old FTE. Once the
-> old rule goes, switch_to_pending_act_dests() copies the pending actions
-> over the FTE before update_fte() releases the actions of the old rule.
-> An HWS rule reads the base id of its meter action through a pointer to
-> the exe_aso of the FTE. That release takes the meter action of the new
-> rule instead.
+On 2026/11/11 18:02, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> [...]
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by LLM and not proven at runtime). If it was triggered
+>     please include the symptoms, like the stack trace or kernel messages.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-Here is the summary with links:
-  - [net] net/mlx5: HWS, fix flow meter release on FTE update
-    https://git.kernel.org/netdev/net/c/145480b28ca8
+This patch is a fix for the issue previously reported here:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Link: 
+https://lore.kernel.org/netdev/tencent_634C55A23C7CCCA3985283BFED46A69C9E09@qq.com/
 
+The commit message already includes:
+
+Reported-by: Guikun Yang <yangguikun19@qq.com>
+Link: 
+https://lore.kernel.org/netdev/tencent_634C55A23C7CCCA3985283BFED46A69C9E09@qq.com/
+
+To clarify: I did not reproduce this issue at runtime in my testing.
+The problem was identified by code review/static analysis of
+nfc_llcp_allocate_snl(), where the SNL PDU size can be truncated.
+So this is a code-review/static-analysis finding rather than a
+runtime-triggered crash in my environment.
+
+Please let me know if further information is needed. As requested,
+I will not repost the series just to add this clarification.
+
+Thanks,
+Linkui
 
