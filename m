@@ -1,79 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.66
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794472909;
-	b=kBHdQNDWxtdAtIeJRKw69bXPSHtgLXXTGO140cRluS1aRdcfiIdnsX+BOT3xOeJAe1bQ
-	 97R1zlaMdtgQrL2RvNOMsEr6QMINn4s02Gy+qX/IpNe8RWJgdTgjn/x+wR2ORzCx/rpk0
-	 joscYNahyBRGABmviZCro129q+p+AWbqKNIMdDqidigUhqdpr9l4DNY7gdBZCSwuxWyX7
-	 T0sXwpCi1so9caE4ryqWnBXwGFhawMJVmLTWTMupZu666EfDEAynTHb0OZgkADgzq9bk4
-	 nPbp0VuPEAM3K0URZrLVtKJSi7h2ciXYfWBzSuLVQxJcxLc8OIEywIge3AU6YZbV5kA==
+	t=1794473268;
+	b=2XiYjW1FbynT/Ef+RMlkrWayMuURWBnPDnxk4HUSHLBOvCZZch1MwMVGRDqM6ZvltVPM
+	 DGg02apY7XJisjb6aa9/rH5TblHdA3Ofyqf5+np3KZqZPzsHuFdJIUazW9BBf4jonqK6A
+	 SWgxkobhzqXwYylMqiUmMX57tt/9d3KMxqN7L3NXmH2xGeQCRO6XF3jI/XUQwGznFGzvX
+	 Dm37CziJhOoRM22VnMneX6o581+qgM/7qMXa6AkDSVr1ZNurErH/lEACy7mGgjkIC8lTf
+	 kXh10a9I1P9hTd9JZoxjcq63UfxUEZZb/wIzzpuG/KZS08gmQIVyx9o2tn9HF5WaZHA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794472909;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=7j4ZkRwyXw7fmRhYE9lsi9fnMe99t0IsGQ1HSh6+zso=;
-	b=kzZkjWF97VpPSvG/58AW3a9AR2NfhcwRkgcMiERuUSD6agtw6suyjUK2WHnn1zegFS/4
-	 y/A5JezciBCCji6M3wZMt2bXZP6CUzQ5Yqs8dPHjGFR3TmCuaTQS6D3m6/zYshuoESpwq
-	 2t22Z4dyzDFNkYsoyGf02d/qonNfBc2k8CuBZJP3sy6E/8RhkCVZj8BD3Dw73g5rrJjkq
-	 Tk21Wc87dniklpytQBe5fUwN3l/S2z+aJumkH4upaK2nAnWB2YarSJNNC//RnAUHLt4jl
-	 SjIQTtfV+IzD1nJw7dimg3GBOJo1ZgBP9Hm/xsHaTzBV7jmfQdinKAO32m6yywiwIBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794473268;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=dcsxoU8M8jswOaYjwBMhrB+oQ7qC9KvS+elveu08Ck4=;
+	b=PRjglzw2KHBHGMmnt6OjH93BNn9inSxkKi3qFUPkWc2Ia7qpPdmsYIKHzmJ9YzHZaUXT
+	 IN7w4pcbgMwrLLmePYzTENR/LPZ5M8SZzdbf7R1Z3C1jolmWcaeKjIFIqlFQnQZWNmSI2
+	 yLApKa0BcJxwJj7JG2sgUoEhVWon6uU6/vDFui+BW75LT5HKJkm4izcnRFLsctJTBif9x
+	 NqPISD+BA8Q0S50H0xn2/PVlU5HKhTMwZbw5dToO9XnPM4asxTjH3N4G77qvZ6VclO0LO
+	 PsrxAXTRMVua6KO6dU9zDGgB1cUpyU+IUHXtvkc9z/MVv/LUK/5atXc46x0fN7weZQg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HNt4lR5O;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=cn.bosch.com;
+	spf=pass smtp.mailfrom=cn.bosch.com;
+	dkim=pass header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b="i71/fcBA";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.66
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011066.outbound.protection.outlook.com [52.101.70.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB52606C839;
-	Thu, 12 Nov 2026 08:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA794606B247
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:47:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA794606B247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cn.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HNt4lR5O
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794472908;
-	b=Kfh5sG2hjb3rydiXRatVMywSRDQocLG9KlbGYohSdZIMQIMW74GBGpjWN39KcXG8Xd0Q
-	 u58LDdXOEVrB6ArL9e/JfS66imXMUVxrfTxVcNH9XdhA7vmH9EV1UCbToIUXEyEGU2y/W
-	 9q+T+1a7kFSt1NllEigWW7ouOqN7Fmvjdl1ARzArTFPUysTPPEBoH/YODy3vfwOnWCxoN
-	 pi9cK08sWjM288tPE0LnIc6+iTW3s3eq7HD/fxICdeTJhD1EBwZYR2fJPkXpMA2d4Z27Y
-	 1QF/Gio6SnNJW+ugwlcz1SMpyQxzjBZk3zMeMz3BQb21PUvFeZXfDcK7qzo/+5vim3g==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794472908;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=7j4ZkRwyXw7fmRhYE9lsi9fnMe99t0IsGQ1HSh6+zso=;
-	b=CveUSkcr2SeZx1160NxomlqsQWTCF+O/bFPNRcsDyMZK45SJ2NV2wWOSRHfeSBkkSt8d
-	 bkwTIh0N4LbC5gb8ff9SFYFGur7QTu2ES060SwImG34qV1RE/yhZPyjYyaIy3lZc7tGcf
-	 IzifoHHBvPtuhe8XX5XIkEPpk/yUfZbGJo3C0roeZZdMN7LEntlTDPpTLdsN4++gExRVN
-	 DMwXEuSDhY7bheqraPfE3IzfxZzmYialdbJRf7hM7/i2YVFSSGygbwqe3W2jGILi8T7YV
-	 WNLPFjriHyHaEBYKBnKfp8mf9ReMb8TB9jrkwE1JuEAmlveaSKn/0jAnfwzVbHhSfPw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B1AD51F00A0B;
-	Thu, 12 Nov 2026 08:41:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794472908;
-	bh=7j4ZkRwyXw7fmRhYE9lsi9fnMe99t0IsGQ1HSh6+zso=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HNt4lR5OCdkNXd2V606MySq0Y6wAGv95tQGRUV80IVqb0slK+mJoDh0BsNjBCYdKt
-	 5nI/f870NJK1QQgCt9TYKtaR1VjtTBWcUyYPGdySFrvhG/Jpbs9dd/Pll00W8HSXUF
-	 pUixb33jzrB+hz3TWlnNbADABXPs7KnMIZcBqxCHW1mD+Jd1VB2+ebbYrN+QViqc2w
-	 HkGFSExDi8usTB7SUWQXhYV8f9eAxuWaxT51tGfnZpkJriU8gUvOuHZD7Iil2WbMzR
-	 CKZVp1cjbWcRVhfC5pcJlq92LKRrTZeFPqX98ToBNuEeaBIraG6lmwL+V4O9oJybjV
-	 9gQWMCVsaOdzw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3DBD9493D5;
-	Thu, 12 Nov 2026 08:41:47 +0000 (UTC)
-From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Thu, 12 Nov 2026 08:41:48 +0000
-Subject: [PATCH net-next v2 2/2] net: stmmac: dwmac-sun8i: Enable jumbo
- frames up to MTU 2018
+	dkim=pass (2048-bit key, unprotected) header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b=i71/fcBA
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oJh70O63s3XVTTMMKiXKNxHJOfHLxVCxwG/0zKcxOtOvqNTElLWvg+rpeSnCx9+5h5aFqpYLhyExbGokg3jG4cA52oveUbtiM4dBXgh0w3+ed5CB8/nr4MTicA0iku0TAoJQJ/0Uqjue8zvX4YTeNizRWN3EYYXjI8bHrWrkS7wodUeeu7m1Al6byTx3Q9wgQbpQ+4ed0VF/lMtzG7LIyE+sQP8DN+YzPbCwr9dyIfnKobJCpRIRd69YCF4FHX3wreLWCTttGE2qChuC4NnhDU7xuABYJiRykS+1LINCjKCpQSS7M4sE02Klzff2rKLEuGQmutAb9G0WMCMKZ3sFpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dcsxoU8M8jswOaYjwBMhrB+oQ7qC9KvS+elveu08Ck4=;
+ b=ZfVTaOZJpVAqmozCpgVanvJ5x7buQU246gFfWtX2XqHDisFEGMIV5iGvz8xvejuojXyp8qXBspHJhZmneB89WkOVWQpikmhbow3kehKtZwZowKPVcVNeRXpOsrgKpOAvH5AtdX8zBNHHU2HQTppaitSmCaUFU6ghB2X+p9UxaR8UCh3HDmAmZF4SFoG2vq6H/ax+Acd/xhFw/ZJuWX1sVai5Kqlnj00LZmc6kJXDGOsjx2bd9lUFjSib+Cm8xhcAGg9LCFjLE0EcHUvWaZtDoBBzagaMvdzUsE8yHeEhJDqmQNnsWg05KRC3HBU5/9i6GNZP/Nj+GytW5LS/mI3vyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=iav.lv smtp.mailfrom=cn.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=cn.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cn.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dcsxoU8M8jswOaYjwBMhrB+oQ7qC9KvS+elveu08Ck4=;
+ b=i71/fcBAfa5UJ5Eof4f1Gf1kqhtVYtrJMMBNgzwqDtUqzwax4zWwPGUizavUtNPdkx/erZLPyIId5sk1Vh1kxR6FYZd/u3SKHaRZib1HnaP2QmhPuX7nVn4OsTv4oDYazKuYA1M94z8JWbw6Et6MSYrBtdxymwKg3mkNQ7G/5BoZMaqNEpS+enCmSWy7S7QPnoH/aU1ip515+brv5PRacIHzGILwzCygyFdhVhU5DBe7BQfGgVDw+3LiUt7qhIubqCwXGM2Tw32SjEuYrcbPsEcib4l76HZj4xOLkq4qbKjRF0b/toKxuxb9Jx8RNbfVPbtTizJy6Y5N9TT75r8+bA==
+Received: from WA1PEPF00005B94.POLP291.PROD.OUTLOOK.COM (2603:10a6:1d8::630)
+ by GV2PR10MB6718.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:b4::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
+ 2026 08:47:41 +0000
+Received: from WA1PEPF00009B3E.eurprd05.prod.outlook.com (2603:10a6:1d8::117)
+ by WA1PEPF00005B94.outlook.office365.com (2603:10a6:1d8::630) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9
+ via Frontend Transport; Thu, 12 Nov 2026 08:47:40 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 139.15.153.206) smtp.mailfrom=cn.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=cn.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of cn.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ WA1PEPF00009B3E.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Thu, 12 Nov 2026 08:47:40 +0000
+Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 12 Nov
+ 2026 09:47:11 +0100
+Received: from WX8-V-0008J.wx.apac.bosch.com (10.190.167.205) by
+ smtp.app.bosch.com (10.124.11.207) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57; Thu, 12 Nov 2026 09:47:10 +0100
+From: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
+To: <iav@iav.lv>
+CC: <netdev@vger.kernel.org>
+Subject: Re: [PATCH net v5 0/4] net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+Date: Thu, 12 Nov 2026 16:46:07 +0800
+Message-ID: <20261112084607.130518-1-Haoning.CHENG@cn.bosch.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261111-b4-phylib-mac-pm-irq-v3-v5-0-bbfdb5afb7d3@iav.lv>
+References: <20261111-b4-phylib-mac-pm-irq-v3-v5-0-bbfdb5afb7d3@iav.lv>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,146 +109,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-sun8i-emac-jumbo-v2-2-aca0cf23cf17@gmail.com>
-References: <20261112-sun8i-emac-jumbo-v2-0-aca0cf23cf17@gmail.com>
-In-Reply-To: <20261112-sun8i-emac-jumbo-v2-0-aca0cf23cf17@gmail.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
- linux-kernel@vger.kernel.org, Corentin Labbe <clabbe.montjoie@gmail.com>, 
- Arun Iyengar <aiyengar1990@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794472906; l=4734;
- i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=ZPiyfCZmfSnwUUZ2KWrlwC/8CYyWh0WpVDKIRZLdbyA=;
- b=0IUWEE0Wk0sl3sXsxfCbIwPqGk+0GPYaoUwZ0ZQ9e3Gu9EoHTdRH04zVOqGDJWJA31Sb3Mjw7
- 2BID/ohoa4nCptmWbC2IZbGeDXOTyFq/y57Y/myP9y7JLcMJEQKQiFv
-X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
- pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
-X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
- auth_id=1480
-X-Original-From: Arun Iyengar <aiyengar1990@gmail.com>
-Reply-To: aiyengar1990@gmail.com
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: WA1PEPF00009B3E:EE_|GV2PR10MB6718:EE_
+X-MS-Office365-Filtering-Correlation-Id: ccca5f73-b067-459f-71c5-08df40999c65
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|1800799024|376014|18002099003|22082099003|10067099003|5023799004|56012099006|261102123227099003|261021121427099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	pGtf3XDOhyipDVnf6rawnTvVcKcw9k+5Igozr5BdyuXw4yDcWvCcyIXl3dHKn81d9KxYwbefpznCLeNvj0c91jM6fLcOw0IiP5fwErMpGbpXNJWB4C4zf370Gh3OfaXwCfq6oP2CsupXBRyHNqH+FrHh6Is9HPeCuu84TkY+M9dszqmrv6+lMfQyfcr8glXk8oHO8iWMyNI79idGxaQvg7w2Gq9CaMDSSRFBI5I3y68uI/DRZpL5Q4EH7NPY554fBow+QA7vXbsSW0j9lkYBnAdTZIwaZetM2P/L/5pK5GHm6DRAnBWGBTuCN43EBiEx9qO8xx3YMwec4Ymg0+7rPFRqJV9KzulwS9PODgurjQdd03/gh0u17TRyOc2wEW6J/z3G44J6fJdJfu1dOKrZN/XiWgihxjbfiHcEIpk+UWf8GmZQgI0kGOuML5KEuJ5qbWpycavuszrbvClPnyhxeeHqA55fWqos7tc9U3LfjeNzqYya7tB9MCS2K+9VgblU8e8dX1NpfGWHliKWibEkJXgfqkxQNgc7QwoUyPq2SOMchBx1I7OFK3XRymgAq+rGyECUoLMkLn/7n71skrsPNQGSbsSWB2zojl8DUn0XG6Xg067QaT21SQ+eL8MQ5eRzrmPqTD02xwMg2puFgJ9eu64LuU54f0lc+ZYEpPUFzqmry/MklIP/EDsJAO21ncBC
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(1800799024)(376014)(18002099003)(22082099003)(10067099003)(5023799004)(56012099006)(261102123227099003)(261021121427099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	WFZ7Q9fxbKYUDLMjCqliCRoxsSwb03i4sV2Pf+nDs+LjKvNrdb0fnEef1HSShKRSKXtom046Ksp8SCJsAnqsmgFEKhuExqELZoFW235/GobWwMU5b/3PqKl7HJ03WQXv6S1YQ+E9zy7xluHG3r5ojmvDcIj/oEsDPuyhL9cSBlsRvaOciqsDkfDcOFF0X3ZUaaLwTQ4qMy3OG5Qypo872dfT3cNbKMFKyppb+2VCBvIiVhxjD3aG/ysyPd5gu3126+XhnCyYj6IcIzGDFRQR7IPyZ0w2NsEAlWFPIOQID02HSG1cq2AdDQPenxKIzppQQmDBXP4Q3AE73ilTQS2LtkLbC9v4FdqplceePRXJOf2jOvHDPtDRJiWn9Vt52d7frz6hCQ4IXS+nYDJwvQl6jtyNEOKrj0gXkjvqEjOZ1onpzN0Y19/bqGjtG6pP3RPr
+X-OriginatorOrg: cn.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 08:47:40.7124
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ccca5f73-b067-459f-71c5-08df40999c65
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	WA1PEPF00009B3E.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR10MB6718
 
-From: Arun Iyengar <aiyengar1990@gmail.com>
+Hi Igor,
 
-The sun8i EMAC advertises a maximum MTU of 3712, but no frame larger
-than the standard 1518 bytes is actually received: on an H616 board
-(Orange Pi Zero2, RTL8211F over RGMII) every ping above 1472 bytes with
-DF set is lost, and the rx_length counter goes up for each one.
+I tested the complete v5 series on our i.MX6 FEC platform with
+Linux 6.18, including minor compatibility adjustments for the
+backport.
 
-There are two independent limits:
+Suspend/resume testing passed without PHY IRQ-related MDIO timeouts
+or other related issues.
 
-1. EMAC_RX_CTL0 bit 29 (JUMBO_FRM_EN) is never set, so the receiver
-   rejects frames longer than 1518 (1522 with a VLAN tag) bytes. The
-   Allwinner BSP driver (sunxi-gmac) sets this bit unconditionally at
-   init. Set it in core_init as well; core_init runs after every DMA
-   soft reset, including the one done by an MTU change.
+Tested-by: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
 
-2. The EMAC has no Synopsys HW feature register, so stmmac uses normal
-   descriptors in chain mode and, without enh_desc, sets max_mtu to
-   SKB_MAX_HEAD(NET_SKB_PAD + NET_IP_ALIGN), which is 3712 with 4K
-   pages. That value is not a hardware limit. The descriptor buffer
-   size field is 11 bits wide (the same in the BSP and the QEMU model),
-   so ndesc_init_rx_desc() caps each RX buffer at 2047 bytes, and
-   ndesc_get_rx_status() discards any frame that needs a second
-   descriptor. On TX, stmmac_xmit() only splits jumbo frames for
-   enh_desc, and norm_set_tx_desc_len_on_chain() masks the length to
-   11 bits, so a linear frame longer than 2047 bytes would be silently
-   truncated.
-
-Moreover, the RX DMA only fills a multiple of 4 bytes of a buffer: on
-the H616, with 2047 programmed, a 2044 byte frame (FCS included) is
-received in one descriptor and a 2045 byte frame already spills into a
-second one. The usable size is therefore 2044 bytes, the same value as
-DESC_BUF_MAX in the original sun8i-emac submission and in the U-Boot
-driver.
-
-Limit max_mtu so that a frame with two VLAN tags and the FCS fits in
-2044 bytes (MTU 2018). A device tree max-frame-size can still lower it.
-Longer frames from the wire span two descriptors and are dropped as a
-whole by stmmac_rx(), which drains the descriptors of a split frame
-since commit 834ec9530832 ("net: stmmac: drop split frames on AF_XDP
-zero-copy RX").
-
-Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 24 +++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 0c82662fbe6e..a18d3daf6a3f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/if_vlan.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/mdio-mux.h>
-@@ -219,12 +220,25 @@ static const struct emac_variant emac_variant_h616_emac1 = {
- 
- /* Used in RX_CTL0 */
- #define EMAC_RX_RECEIVER_EN             BIT(31)
-+#define EMAC_RX_JUMBO_FRM_EN		BIT(29)
- #define EMAC_RX_DO_CRC BIT(27)
- #define EMAC_RX_FLOW_CTL_EN             BIT(16)
- 
- /* Used in TX_CTL0 */
- #define EMAC_TX_TRANSMITTER_EN  BIT(31)
- 
-+/* The buffer size field of the EMAC DMA descriptors is 11 bits wide, and
-+ * the RX DMA only fills a multiple of 4 bytes of a buffer: with 2047
-+ * programmed, frames longer than 2044 bytes spill into a second
-+ * descriptor. The stmmac normal descriptor code used for this EMAC only
-+ * handles frames that fit in a single RX descriptor and a single TX
-+ * descriptor buffer. Bound the MTU so that a frame, including two VLAN
-+ * tags and the FCS, always fits in 2044 bytes.
-+ */
-+#define EMAC_MAX_FRAME_LEN	2044
-+#define EMAC_MAX_MTU		(EMAC_MAX_FRAME_LEN - ETH_HLEN - \
-+				 2 * VLAN_HLEN - ETH_FCS_LEN)
-+
- /* Used in EMAC_TX_FLOW_CTL */
- #define EMAC_TX_FLOW_CTL_EN             BIT(0)
- 
-@@ -645,6 +659,15 @@ static void sun8i_dwmac_core_init(struct mac_device_info *hw,
- 
- 	v = (8 << EMAC_BURSTLEN_SHIFT); /* burst len */
- 	writel(v, ioaddr + EMAC_BASIC_CTL1);
-+
-+	/* Without JUMBO_FRM_EN the receiver flags every frame longer than
-+	 * 1518 bytes (1522 with a VLAN tag) as a length error, so any MTU
-+	 * above 1500 is unusable. Frames are still bounded by the RX
-+	 * descriptor buffer size, see EMAC_MAX_MTU.
-+	 */
-+	v = readl(ioaddr + EMAC_RX_CTL0);
-+	v |= EMAC_RX_JUMBO_FRM_EN;
-+	writel(v, ioaddr + EMAC_RX_CTL0);
- }
- 
- static void sun8i_dwmac_set_mac(void __iomem *ioaddr, bool enable)
-@@ -1209,6 +1232,7 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->mac_setup = sun8i_dwmac_setup;
- 	plat_dat->tx_fifo_size = 4096;
- 	plat_dat->rx_fifo_size = 16384;
-+	plat_dat->maxmtu = min(plat_dat->maxmtu, EMAC_MAX_MTU);
- 
- 	ret = sun8i_dwmac_set_syscon(&pdev->dev, plat_dat);
- 	if (ret)
-
--- 
-2.55.0
-
-
+Best regards,
+Haoning
