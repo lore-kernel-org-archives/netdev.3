@@ -1,58 +1,103 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794503872;
-	b=HFzRJeU2wRY4zJKz8NOMiRGwYe4SwRxpq7aapzXJ22SFSTjQjDj6olz0vYxzizMW5paX
-	 uju1dseuw0NFbUgC7y4gb+szA9No2S8mc5m75/DROzQn7HErD4iekf+t9QsQp01qFWsHT
-	 xjS5SdQHBq8tTZKxs0p8tHW5Iq0EjJQWOQ8IUzH43K1gruVZNEnbXFHT6bCO0VcdUmwEa
-	 v4vWAR6+5coKCsgFer8DaImhJ80msv7HgQbAJQUSQmZ0mMm8rowtJNHgWyb5aD0o1bnkz
-	 AvBYJPYdhex43MnyQY6EO5hpO/4352DUuQgIrtKFMdOXen3YBhnCsi2ldVGoRTahXnw==
+	t=1794503876;
+	b=mUqnESIeq/ymsAmp8Q4KAGKk07Bmpd6Z6c9p9p8EN7IBF4ObEBZzP83DhzeHfaHCyx/D
+	 ce5HqslU5MDrJnCm71C6sfElkLD9ZgNnelNCTVb+7iLZMWaRKhE+Pugb1KTAD1V+SwWPL
+	 jf+tNW7yZkB69RvijNtWqc795etdUa3p4AiaflBNf/7a4l4HtCcNZ91EWbtyzb5MDqTdK
+	 L6g75FSwo6PUBOuKcvXHrVL9Ce/LmPNUF5eyBaT8wmQ0NNy1k2cmySvFGiC2MWBOBUwis
+	 PhzxLqkfTWL2nCBcZLFxCjHmaSvFoWXRdHw6c3WJlsRMgMuzyxSpqPWXa4iICvlg4uQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794503872;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=6/lts8UHglPwoIUdhVhv4E41rBr0awp3JcM6GQfq77Y=;
-	b=O2cCVSUUjgbfMOWjqhznoYGyOGM+fSZBiIgOymscM0jKZKyatLwVljwvJyeupa+1mbYJ
-	 Y8dFBWkGqhmGEc5ctwYgXW8IpPSHuLtO8B8auUBZ3fcW/xFl/XEWQB6YjmTItWbTqiFWk
-	 COQlpOXKWdaGymOY+DsDsvmi3R2LUqQAkXsz9QUTbSA1CTJid4UWwgMBdYdyXR5R/4Cst
-	 9IsMuvLSPoI6iIga6J7gRzncz/HHv9KRByUhNce42GdQG91+Ifi96kMZj/NZeI+6epqnf
-	 ic2VgFoSes7ll8v6v9pyQ4wn36BAf8zGxudE028DmXa8Wo6Sc9xXAVImH6JCkJYoiXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794503876;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=VMi+hIkLWXT7siLEN9ATyCll+A1V4GrHFAEeCBcDPio=;
+	b=25EheIKy2mCkG8KJlAlZepDJWxlqrKr+5BN9JIO/HMNByML0t0lLkBu4Zaf+7kH51Lny
+	 DYkTXFwlZAsxwcsi6YduH5D+XS8Cwdq0kv1PlDhwN855MVJSaJKkXLjBdPgdRQJLN2vBG
+	 r8eaGZpfhZWDUlNj50PVceX+1SYrhFq0+W6oaO2XHMr7+IvXMfoNo9xTuD67DEyKFI4cc
+	 t/hPuGPnNt48OnmjFSR//Min+O/yId5ZzT7zdZc3v+1wT8ayhWQ4tKB0h70EOEV/tvaj5
+	 B5kL53GbKUfL5e3XjxkJAlyDyBkN5VKE1prug4a3OFXHrhXPTY941KK7co0zesIKq3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYKvg3wx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xi1M0Wrq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDC2606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 17:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F8A606A321;
+	Thu, 12 Nov 2026 17:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYKvg3wx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0270A1F000C4;
-	Thu, 12 Nov 2026 17:17:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xi1M0Wrq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9171F000C5;
+	Thu, 12 Nov 2026 17:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794503872;
-	bh=6/lts8UHglPwoIUdhVhv4E41rBr0awp3JcM6GQfq77Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HYKvg3wx0aw0A9XnLWJfCnsl4jQIXjda3h9HKOZO/oDPEPrTQh+qkXWei3ntyMenv
-	 2uDGcz2pJWKDuU8eYKEB9u8HIK5S+Hh14ewwLC81NMIlKyIWF8QnM8RSNtKjJWp4lP
-	 f7Qw65wvPsPRI2dkJfn3TvRLMpufrt24p/h+HNpeEMrKyc32U9hYBRiUZIlyIcL9G1
-	 z53WaZTz43fXXXRAFdt8oMp0R6LCrxV7MR+8v0NbFZUkMNrsF+LSPrfn17TpZxAS/y
-	 d3qPgGCPTnS/Fop6Km9UmYxGY+tD4CPYZ6OapRk7iawzf6jTwG4nqMajNRQN7R8AQc
-	 P8gBd2YwTOHTw==
-Subject: Re: [PATCH net-next] mlxsw: Disable LAG collector when requested
-From: netdev-bot+sashiko@kernel.org
-To: idosch@nvidia.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, andrew+netdev@lunn.ch,
- petrm@nvidia.com
-Date: Thu, 12 Nov 2026 17:17:51 +0000
-Message-ID: <179450387153.2199510.7230065692935796784@kernel.org>
-In-Reply-To: <20261111170925.2809513-1-idosch@nvidia.com>
-References: <20261111170925.2809513-1-idosch@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794503876;
+	bh=VMi+hIkLWXT7siLEN9ATyCll+A1V4GrHFAEeCBcDPio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Xi1M0WrqH5bMvx0n0pi4w5v7a8qJzrxjW4xzgjyJBTk4w5Ha9LDFHd8Q2SIO4bI0/
+	 R1AH44wKcxNJXbaWLeAun1BY623lBE7mWeM8MlocaX0VT4oGCtm1o/G3AsbPIXS1Ln
+	 HAfe4Gi1tJJQuDHDrzTAcmJcvP7xkP9KNg6uFt8kIbAQS0k0mQOiMe1zrTRcGbMEAP
+	 QjV4y8GkI+IFa+IR6J9g75IGth5ijUGZ2Wd4tjx81In8/mDCI0Hl19n37GOo0mpyES
+	 RMm1owYYSjXmybNXysJzMRsSMwbMIAEWBzrarLAWP33yYlnJBqzwDlRjfOGVF8svjx
+	 eUQ0ymv8EqhZg==
+Date: Thu, 12 Nov 2026 09:17:55 -0800
+From: Kees Cook <kees@kernel.org>
+To: Bence Csokas <bence.csokas@arm.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Nilesh Javali <njavali@marvell.com>,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	chrome-platform@lists.linux.dev, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Add struct_offsetofend() for pointer arithmetic
+Message-ID: <202611120916.3619B95@keescook>
+References: <20261112-offsetof-v2-0-276ede839967@arm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,137 +107,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261112-offsetof-v2-0-276ede839967@arm.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, Nov 12, 2026 at 10:29:32AM +0100, Bence Csokas wrote:
+> A common usage pattern for offsetof() is the following:
+> 
+>   offsetof(typeof(*ptr), member)
+> 
+> This is exactly the definition of struct_offset(). Some call sites use
+> offsetofend() instead of offsetof(). Add this variant, then replace all
+> call sites with the corresponding macros.
 
-Critical: 0 路 High: 0 路 Medium: 1 路 Low: 1
+Yeah, I think this is reasonable. I'd prefer to see the Coccinelle
+script explicitly added to tools/coccinelle/api/ though, so it can be
+trivially re-run as needed.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Also, while Alejandro is right about the needless outer parens, I think
+I'd like to keep them just to match the other define, and they do no
+harm.
 
-- [Medium] Before this patch, mlxsw_reg_slcor_col_disable_pack() did
-  nothing in practice.
-- [Low] mlxsw: missing Fixes trailer for
-  mlxsw_reg_slcor_col_disable_pack() bug fix
+-Kees
 
---
-
-mlxsw: Disable LAG collector when requested
-
-This commit changes mlxsw_reg_slcor_col_disable_pack() so that it packs
-MLXSW_REG_SLCOR_COL_LAG_COLLECTOR_DISABLED instead of the "collector
-enabled" value. A collector disable request now takes effect in the ASIC,
-and packets received on a disabled LAG port are dropped in hardware.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/reg.h b/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> index 01fcbd1c8d015..9dbeabf5536d1 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> @@ -1491,7 +1491,7 @@ static inline void mlxsw_reg_slcor_col_disable_pack(char *payload,
->  						    u16 local_port, u16 lag_id)
->  {
->  	mlxsw_reg_slcor_pack(payload, local_port, lag_id,
-> -			     MLXSW_REG_SLCOR_COL_LAG_COLLECTOR_ENABLED);
-> +			     MLXSW_REG_SLCOR_COL_LAG_COLLECTOR_DISABLED);
->  }
-
-[Severity: Low]
-This fixes a real bug in mlxsw_reg_slcor_col_disable_pack(), but the
-commit message has no Fixes: trailer. As far as I can tell the helper
-has packed MLXSW_REG_SLCOR_COL_LAG_COLLECTOR_ENABLED since it was added
-in commit d1d40be084c6 ("mlxsw: reg: Add link aggregation configuration
-registers definitions"). The LAG code in spectrum.c has used it to
-disable collection since commit 0d65fc13042f ("mlxsw: spectrum:
-Implement LAG port join/leave").
-
-The commit message says this is not a regression, and the patch is
-aimed at net-next, so leaving the tag out may be deliberate. Without
-it, though, stable tooling has nothing pointing at where the bug came
-from. The same goes for anyone bisecting LAG ingress behaviour on
-Spectrum.
-
-Should this carry a Fixes: tag against d1d40be084c6? If the intent is
-to keep it out of stable because it changes ingress behaviour on
-existing LAG setups, could the commit message say so explicitly?
-
-[Severity: Medium]
-
-Now that this write takes effect, can mlxsw turn off the hardware
-collector on an 802.3ad port that the bond still treats as collecting?
-
-In drivers/net/ethernet/mellanox/mlxsw/spectrum.c, one tx_enabled bit
-controls both the distributor and the collector:
-
-mlxsw_sp_port_lag_changed() {
-	if (info->tx_enabled)
-		return mlxsw_sp_port_lag_col_dist_enable(mlxsw_sp_port);
-	else
-		return mlxsw_sp_port_lag_col_dist_disable(mlxsw_sp_port);
-}
-
-That bit comes from bond_lower_state_changed(), which only reports
-whether the port is distributing:
-
-	info.tx_enabled = bond_is_active_slave(slave);
-
-struct netdev_lag_lower_state_info has no collecting field. So the driver
-can't tell "collecting but not distributing" apart from "disabled".
-
-Also, mlxsw_sp_master_lag_check() only checks tx_type. Bonds with
-coupled_control=0 are still offloaded.
-
-With independent control, ad_mux_machine() can move a port from
-AD_MUX_DISTRIBUTING to AD_MUX_COLLECTING, for example when the partner
-clears its Collecting bit. On entry to that state the bond does:
-
-	case AD_MUX_COLLECTING:
-		port->actor_oper_port_state |= LACP_STATE_COLLECTING;
-		port->actor_oper_port_state &= ~LACP_STATE_DISTRIBUTING;
-		port->actor_oper_port_state |= LACP_STATE_SYNCHRONIZATION;
-		ad_enable_collecting(port);
-		ad_disable_distributing(port, update_slave_arr);
-
-ad_disable_distributing() calls bond_set_slave_tx_disabled_flags(). That
-function only sets the backup state and leaves slave->inactive at 0. As a
-result, bond_should_deliver_exact_match() still accepts frames on this
-port in software.
-
-The lower state notification still carries tx_enabled=0, so the driver
-runs:
-
-mlxsw_sp_port_lag_changed()
-  mlxsw_sp_port_lag_col_dist_disable()
-    mlxsw_sp_lag_col_port_disable()
-      mlxsw_reg_slcor_col_disable_pack()  /* now COLLECTOR_DISABLED */
-
-Before this patch, the ASIC kept collecting in this state, which matched
-the bond.
-
-A conformant partner only clears Collecting while it is in ATTACHED and
-not distributing, so this doesn't look like a lasting black hole. The
-problem is the window when the partner starts sending again:
-
-- A coupled control partner moves to COLLECTING_DISTRIBUTING as soon as
-  it sees our Sync.
-- An independent control partner moves to DISTRIBUTING as soon as it sees
-  our Collecting.
-
-Would the partner's first frames be dropped in hardware during that
-window? The drops would last until our mux machine reaches
-AD_MUX_DISTRIBUTING and the deferred bond_slave_state_notify() delivers
-tx_enabled=1.
-
-This also seems to conflict with the commit message:
-
-  "Packets received on a disabled LAG port are now dropped, as they are
-  in the bond's software datapath."
-
-In AD_MUX_COLLECTING, the bond's software datapath doesn't drop these
-packets. Is that statement accurate for this state?
+> 
+> Signed-off-by: Bence Csokas <bence.csokas@arm.com>
+> ---
+> Changes in v2:
+> - Use struct_offset() instead of reinventing it
+> - Rename offsetofendp() to struct_offsetofend()
+> - Merge the two treewide patches
+> - Link to v1: https://patch.msgid.link/20261105-offsetof-v1-0-4153f5c10edc@arm.com
+> 
+> To: Kees Cook <kees@kernel.org>
+> To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> To: Marcel Holtmann <marcel@holtmann.org>
+> To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+> To: Sumit Semwal <sumit.semwal@linaro.org>
+> To: Christian K鰊ig <christian.koenig@amd.com>
+> To: Philipp Stanner <phasta@kernel.org>
+> To: Sudeep Holla <sudeep.holla@kernel.org>
+> To: Cristian Marussi <cristian.marussi@arm.com>
+> To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> To: Maxime Ripard <mripard@kernel.org>
+> To: Thomas Zimmermann <tzimmermann@suse.de>
+> To: David Airlie <airlied@gmail.com>
+> To: Simona Vetter <simona@ffwll.ch>
+> To: Jani Nikula <jani.nikula@linux.intel.com>
+> To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> To: Tvrtko Ursulin <tursulin@ursulin.net>
+> To: Lyude Paul <lyude@redhat.com>
+> To: Danilo Krummrich <dakr@kernel.org>
+> To: Zack Rusin <zack.rusin@broadcom.com>
+> To: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+> To: Selvin Xavier <selvin.xavier@broadcom.com>
+> To: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+> To: Jason Gunthorpe <jgg@ziepe.ca>
+> To: Leon Romanovsky <leon@kernel.org>
+> To: Chengchang Tang <tangchengchang@huawei.com>
+> To: Junxian Huang <huangjunxian6@hisilicon.com>
+> To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> To: Hans de Goede <hansg@kernel.org>
+> To: Mauro Carvalho Chehab <mchehab@kernel.org>
+> To: Haiyang Zhang <haiyangz@microsoft.com>
+> To: Wei Liu <wei.liu@kernel.org>
+> To: Dexuan Cui <decui@microsoft.com>
+> To: Andrew Lunn <andrew+netdev@lunn.ch>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Eric Dumazet <edumazet@kernel.org>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> To: Jes Sorensen <Jes.Sorensen@gmail.com>
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> To: Johannes Berg <johannes@sipsolutions.net>
+> To: Benson Leung <bleung@chromium.org>
+> To: Tzung-Bi Shih <tzungbi@kernel.org>
+> To: Guenter Roeck <groeck@chromium.org>
+> To: Nilesh Javali <njavali@marvell.com>
+> To: GR-QLogic-Storage-Upstream@marvell.com
+> To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> To: "Martin K. Petersen" <mkp@kernel.org>
+> Cc: linux-hardening@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-bluetooth@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linaro-mm-sig@lists.linaro.org
+> Cc: arm-scmi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: intel-gfx@lists.freedesktop.org
+> Cc: nouveau@lists.freedesktop.org
+> Cc: linux-rdma@vger.kernel.org
+> Cc: linux-hyperv@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Cc: chrome-platform@lists.linux.dev
+> Cc: linux-scsi@vger.kernel.org
+> 
+> ---
+> Bence Csokas (2):
+>       stddef: Add offsetofend() variant of struct_offset()
+>       treewide: Use struct_offset()
+> 
+>  drivers/bluetooth/btmrvl_main.c                    | 12 +++++-----
+>  drivers/dma-buf/dma-resv.c                         |  2 +-
+>  drivers/firmware/arm_scmi/base.c                   |  2 +-
+>  drivers/gpu/drm/drm_edid.c                         | 26 +++++++++++-----------
+>  drivers/gpu/drm/i915/gem/i915_gem_object.c         |  4 ++--
+>  drivers/gpu/drm/i915/i915_active.c                 |  2 +-
+>  drivers/gpu/drm/i915/i915_sw_fence_work.c          |  2 +-
+>  .../gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c  |  2 +-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c            | 12 +++++-----
+>  drivers/infiniband/hw/bnxt_re/qplib_fp.c           |  2 +-
+>  drivers/infiniband/hw/hns/hns_roce_cq.c            |  4 ++--
+>  drivers/infiniband/hw/hns/hns_roce_qp.c            |  6 ++---
+>  drivers/media/usb/uvc/uvc_v4l2.c                   |  4 ++--
+>  drivers/net/hyperv/rndis_filter.c                  |  2 +-
+>  drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |  2 +-
+>  drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c     |  2 +-
+>  drivers/net/wireless/intel/iwlwifi/mvm/rs.c        |  2 +-
+>  .../net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c |  5 ++---
+>  drivers/net/wireless/realtek/rtl8xxxu/core.c       |  2 +-
+>  drivers/net/wireless/realtek/rtw88/fw.c            |  2 +-
+>  drivers/net/wireless/realtek/rtw89/core.c          |  2 +-
+>  drivers/net/wireless/realtek/rtw89/fw.c            |  8 +++----
+>  drivers/net/wireless/virtual/mac80211_hwsim_main.c |  4 ++--
+>  drivers/platform/chrome/cros_ec_lightbar.c         |  4 ++--
+>  drivers/scsi/qla2xxx/qla_gs.c                      |  2 +-
+>  drivers/scsi/qla2xxx/qla_mbx.c                     |  2 +-
+>  drivers/scsi/qla2xxx/qla_os.c                      |  2 +-
+>  drivers/scsi/qla2xxx/qla_tmpl.c                    |  4 ++--
+>  drivers/scsi/scsi_transport_fc.c                   |  2 +-
+>  include/linux/overflow.h                           | 12 ++++++++++
+>  30 files changed, 75 insertions(+), 64 deletions(-)
+> ---
+> base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
+> change-id: 20261105-offsetof-f62aa6348f0d
+> 
+> Best regards,
+> --  
+> Bence Csokas <bence.csokas@arm.com>
+> 
 
 -- 
-Sashiko AI review 路 https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111170925.2809513-1-idosch%40nvidia.com
+Kees Cook
