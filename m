@@ -1,56 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.40
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794495989;
-	b=CT9xduHh4CbqfNMsnQeHWnpny0NH5QMo2f3KSY96BnQBQxVwPA2zdu7YhF3GtC0UHs6g
-	 OEhm0BwH1RwvA1IrTWvnpvjVjDVxQvmQUGh00/UTrfSYhzdOFn5zRPLkLdg7UrPyioBbP
-	 E7j1OyrNdHQt8Y3rkhr5H2fw/rpZQBLc2VPtbr0bMh8Dn7ZpDJJ29FUIum54Hhj0kN/bG
-	 ciwaQ0OjcgEcrqDWF8RpdW/EMupIj3cyWX7cyH2aIA5BObjHSHRB/voL+1obzQf6Fh7m2
-	 tyA5X2qb1+hjNPDr9T9oEMV8TXqgJdlOiMgkSJhdjPJTFMIrbeDikH7VNBJjAqrbacQ==
+	t=1794495987;
+	b=JcNgYHRtIEO1RnobhGm7AJ34Lz1r1O2VRPfA4AQomMHxhmde7O4RhMTfRzkw1yU1hLAE
+	 AN/0FIqwDAnZ4MDGX+48oysZAq79n9b0joUGg85HVfQmqvZAsCbXrJhsZbDbK/0hTkP9W
+	 7VfdvBGpISuuE1Ih2iXNDAdv6PGu+PdALu4fXJqpdmigJ+9+fD9kNEXsMUD/JFoQrl+cv
+	 7pqEO3TEy/eidrUhSGrEkpe00lngIR2dqAX9FLzQqNBhPPOnw8aNYTaC2B4kIeaSxcODn
+	 sIBaTSrmQWPxY40X6dTbudePOmyYlV2S8E/6QqBhpJowcSLhRim5podV8pmEzzYf4Lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794495989;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794495987;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
-	bh=95BXVUjFXeYf/sH6PjXF/vGeySat62hqJ4TRbbkb8/c=;
-	b=sdw5s7vVs4tyJqrh+HGSmQnEODuBRkqu2qZpvrSQD3lQedVnXb85Z2VEvLLh0Cvbf4h6
-	 Phoa+ZvSvMdDUKjT230hytKuMIVJEKEdwvAS7WH7NHdwn4MfnE5lxTvyUEXdbxVd6eUSx
-	 P5nSLciBlmbEi9//FDS6yar+jiDJYgxuqtlWV2eQ+5xYgeeDEvKo5qg8yHRnDxf2853pf
-	 iYrm59YEOWPNHa/xvXBk3BFmEEDiD+mjqGOo665AzK6jXCinxoWDEL4gOs1Z2+8DkoYmD
-	 HkSusth1vKP23d/uCijnYfX/z55iAxY/lipDCw2guQFrnyri+AuaKU5QNj0sMKYvapQ==
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=zkh3wWzLr/WZwVrpT9eotF1ouZu/Lpfc/r7pJH4exFo=;
+	b=xcPB4jxAI4tmCbPUaNiLJrzzNGjr8PmCTL471hkjrxAl1Kg0IVorSnoMYwFoGFghzx7J
+	 2mV6tkQ8X2Qfo3TEYcZG5qXP0w8lZxGQHDhtVBC7EbGS2Jvi950+5j/TmvTg8s/xefqF+
+	 TEoixCcQlDnYeFfrmuFxsHiyK/14mQ3TvAzMhOMkoz0LicRn/scrjTEECUhpeIxyB+wFx
+	 /bKEwtSlH3pAgqkK3e2aN6PptWLYqCKMgBy4fblM53OxXR2TkP56EDzvB1hWf+Y2sszT0
+	 UClh0W2tf1PSp9uKhSO4BaKEj55RoK9J6WPUiZMEn3Q0YNtdhK/WQp2MnUxwB5OP5dg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mandelbit.com;
 	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Fyuo3k8z;
-	arc=none smtp.remote-ip=195.10.208.42
-Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=pD1f2rOl;
+	arc=none smtp.remote-ip=195.10.208.40
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA68606A335;
-	Thu, 12 Nov 2026 15:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EA68606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03722606A321;
+	Thu, 12 Nov 2026 15:06:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03722606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Fyuo3k8z
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=pD1f2rOl
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4jQNy45Qbhz5vbs;
-	Thu, 12 Nov 2026 16:06:20 +0100 (CET)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4jQNy04GhszFpkp;
+	Thu, 12 Nov 2026 16:06:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1794495980;
+	s=MBO0001; t=1794495976;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=95BXVUjFXeYf/sH6PjXF/vGeySat62hqJ4TRbbkb8/c=;
-	b=Fyuo3k8zN40l0/XYRMvaRJKSoUOaimKbCF6FjxYfpz/SUKRA/AblMHr0w121zSKpv3b1A2
-	gUiM5CFgv1JcF88VU3ox3bcrRPJGf84hOFAsYtEOWUT+lljdONbg2iv9l/vrnwvwhpuMoR
-	7yWGZnTnGBPAqjelnXxyIzFk8FJirnFheywdR4/F6YAhVIzt/4ZKiNUHDOno9N8rFHnwnf
-	0NXn1qw4kl35yCNEjGACjC1HCUpnEDRye/mY1uTvEr3nc+DYiBAq+H091DdLPVO28QI1kx
-	GhAhGXNaoO+Ebej/YjT+ZJWCxZPqg/MvhDCfg/iK67r9hXzkMzB6lo4CWZv/qw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zkh3wWzLr/WZwVrpT9eotF1ouZu/Lpfc/r7pJH4exFo=;
+	b=pD1f2rOlz6NG/8fmy+eFxKkaJRSQ0yq8O8dY0UlEaFsMV653YNqEZDTOKo00RRrTPRBYWv
+	biQvK3k7YPWjPMMfNRXZH/w8rBqB5cVyWqzrswoB/UMtMvJqNNBNYw0YvFmcHrrA+GAbpv
+	54o3F4+GiwdKeYagsdr8lIKMDVo94yb3Xv74Mfgpmhdj9GiPI6XBd3dt03g//nN0PSP7Wt
+	WmnWxd1igtilnijjyeAE4X4YvdkO767LABt1e+7i1U9RKIGKPxxHAjokS/ekXd63feHLI2
+	fZ4YFLbKWfQfNS5B7BD7g9iRUB82A8UEFqqyqeipALEDjkyF1XzVtU0XVXeJOA==
 Authentication-Results: outgoing_mbo_mout;
 	dkim=none;
 	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
@@ -70,12 +69,10 @@ Cc: Antonio Quartulli <antonio@mandelbit.com>,
 	sdf@fomichev.me,
 	netdev@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [PATCH net-next 3/3] tun: skip the virtio-net header parsing without IFF_VNET_HDR
-Date: Thu, 12 Nov 2026 16:06:05 +0100
-Message-ID: <20261112150612.3866546-4-antonio@mandelbit.com>
+Subject: [PATCH net-next 0/3] tun: trim per-packet work on the write path
+Date: Thu, 12 Nov 2026 16:06:02 +0100
+Message-ID: <20261112150612.3866546-1-antonio@mandelbit.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261112150612.3866546-1-antonio@mandelbit.com>
-References: <20261112150612.3866546-1-antonio@mandelbit.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,36 +83,29 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jQNy45Qbhz5vbs
+X-Rspamd-Queue-Id: 4jQNy04GhszFpkp
 
-Without IFF_VNET_HDR, tun_get_user() still passes an all-zero header to
-tun_vnet_hdr_tnl_to_skb(), which then only resets the MAC header. Do
-just that.
+Profiling a link-bonding daemon on an embedded router (Cortex-A7), which
+injects every packet with a write() to a tun device, showed tun doing
+per-packet work its packets do not need:
 
--1.6% instructions per 1400-byte packet dropped at the raw table, -2.2%
-when written 64 per write() (emulated x86).
+1. a flow dissector run, only to set the transport header
+2. a BH-disabled RCU section, only to check for an XDP program, which
+   only TAP devices can have
+3. the parsing of an all-zero virtio-net header without IFF_VNET_HDR
 
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
----
- drivers/net/tun.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Per 1400-byte packet written and dropped at the raw table, instruction
+counts (qemu -icount) drop by 6.5% for 1 (Cortex-A7), 2.3% for 2 and
+1.6% for 3 (x86). The tun selftests pass.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 395923651f31..38f9da1ab462 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1943,7 +1943,10 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 		break;
- 	}
- 
--	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-+	if (!(tun->flags & IFF_VNET_HDR)) {
-+		/* all a zeroed header would do */
-+		skb_reset_mac_header(skb);
-+	} else if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
- 		atomic_long_inc(&tun->rx_frame_errors);
- 		err = -EINVAL;
- 		goto free_skb;
+Antonio Quartulli (3):
+  tun: don't probe the transport header of packets written by userspace
+  tun: don't disable BHs for the XDP program check of every packet
+  tun: skip the virtio-net header parsing without IFF_VNET_HDR
+
+ drivers/net/tun.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
 -- 
 2.56.0
 
