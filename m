@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794522032;
-	b=vMV/PfTGFFQrAsybrZOw8RzXQhHtUYr5fhyZwJWMUlAsaga7lvg/cWdShXQvIaF9sVsq
-	 Gp1Sjw/byzZogamdRqASVbj+pw8zr81baWzBjJ87nxQgerueBUiIx1MMeQ5F+MMca06hx
-	 yWesqSjcPrtmuyr44uetCuCnGGnFO6Bu+YPtXJn81Qt55WCcgURFpN0zdfYg/4lgVWlvK
-	 oC4ioPewdeLcxRD3yciAVNZIWS2vE5qZ9Inn3D0qFZs5xgYkNE3n4LnBJaqLqv69kLQQd
-	 KsXsq3NpF1J9mkwnwjkx8bKLO8x0fD//joQGRM9Qc9FmkBdrBBHyROF2BlTYWHng7Tg==
+	t=1794522041;
+	b=V4vhjA0+HE/z2wXSbMwhYDYaz9OB20qb/TV9S6ZgbyzqD90XxX056cMAsbtwp1VZzwKX
+	 v6Xs47dPy+6ulcxh5lpgK2S8+MQ5fTbiKt1Yp+xVHfVRx+WD8hwdO/IfekKCcgaM5u/44
+	 s+JkY93yKOKz5nhzK6UmddJOLj/PIZ6VYs6R1+8N/TVripyKGDZySBjQg/GeCWBVrULMy
+	 G7LMC55afWBxSRW457EF+xUC7w7mvOvYF1L9+FPlLK3l76VG4v3RLyvAajsSydCvibU5p
+	 rD3GWgcoffykKmwIj+U/1bxP4eL46xYD1XHNHoCBHOVaUw9BmiLLYVWcZLqEGqOGwiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794522032;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794522041;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
@@ -15,88 +15,88 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 X-DetectorID-Processed;
-	bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
-	b=4miJhx0zQ2a2VmL6acD227OuBds6b2iotKAXJIO31av2Qtj4i5uKUZkhLfTqP5pChoaB
-	 EzhBKgAPy/7kq/xNdq3pCU/PgOvt6AYUMlC5EUnM6IhtjKkWT50+8m4ahF1ZNVS8eNCtu
-	 2XmfwBZqW/kReXr6IomCjte1GyQ2l1Yqyo8wVObPbzfMFN4owPkSE5qKlsTG+SHV8PyGX
-	 H2/6WJGeg8CzAWuV1xy4zMhkxoJzcMisSw4Nm1HHC7fti4I0PzYQnLwnSH2xy2vHRluyy
-	 N0+C2+wauODK1FmfZ8A83rd1jv5l/k1Le6yAvx+5j9oWXcEZvqEL1it7SjlrvYh2wgw==
+	bh=LoF4OTllmT9/8Bym4KO+EuEoV1VsIKNsPgJWXYwUKoM=;
+	b=ktNnEA4yC1tttGlYC0zXW6dQRiFw9ah7WgnNDaN5EoIEoU2ewVprOzLn1r0rrFXhQ2cj
+	 TkQcpati4k62LhEROzESJKiFU70/XZ85U+R+yWS+16Hf80YZ/vIOfduNXc+I68Q8GmIRP
+	 MwzRKlJAvOIfVrBycK8exyAbqCvVJIELoo3AB0e2Zo+iMdaMaYGuOH9OZlZvhfZVwtqQR
+	 Gb18r06mVdpLhnv74jH/wMejIgteY506EI/SffFew47D3E1XFe1OMhnokxgXu/LwSsvxQ
+	 oARxTCrLJE4ElNhcC3ySYbzEvJ0QiRjrwbVRuKKXxtBY5vtXiPRUF2u/8HjAt7ejIOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DbqCBSQX;
-	arc=none smtp.remote-ip=74.125.82.228
-Received: from mail-dy1-f228.google.com (mail-dy1-f228.google.com [74.125.82.228])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=crLvQoBP;
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DAD606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:20:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8DAD606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661AF606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:20:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 661AF606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DbqCBSQX
-Received: by mail-dy1-f228.google.com with SMTP id 5a478bee46e88-37600b0db49so1252026eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:31 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=crLvQoBP
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3b0d0b80fb9so258658a91.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794522031; x=1795126831;
+        d=1e100.net; s=20260707; t=1794522041; x=1795126841;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
-        b=ClzhzybVFCe/KGb1Qm+vf3DFhqwx2oGrQefhOJ8IX/xVx81ZXJkbyf1HO3N9ue19kh
-         dfAEQ3ggikpYatEBpuTBt5l034Fpref8Zub+BiTvMicFOAtwra10wFINOyIL9fJduFfR
-         g95/m99kM7yUbDGjG+3GztxKpCkH8QHm1uALdjsbu7+5nD2Ir5CpyHNVoYDKxMPlI3bL
-         uSu2KaRhdHiDaJJDzoX6hVFm7sSGbVXsAc2SbNEHNOWPFFFy2lXhhvKO1dO2VlDE+r36
-         n4HiX60oMUIYrfKVUWSt8S7nFOyZ09tQkwzT/U3VNGjSH7US8aY3avAz5HEU/8A8R0T8
-         htMg==
-X-Forwarded-Encrypted: i=1; AL+hErFikq1XDT5keMsM0SV1i21NymTF5SooJcARJy+Lba2NOQIYNata9urvC/c21hfaV6vdp8Wg1ag=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9An068ftZcHtayF5BSmny0v9cViNKlHONGYr5FQy+Bs4fyzn9T
-	EFkw/0ld7Oqgzz5lT83dabSL1nOZIoNqkdTaYvRDLFk3sxKchSmgRhlw6RRu1fXQ/vj2+pbb4b6
-	pE6dcHWlB4t0WqeTlbM2XW79NmndEQuNtkt3rHQPabRIpg2ymBEtsKP/5nH325www7XO1XZ1kMw
-	QaRUBmByLBla4StPEDCPxADX+52z0RH8iHt2+sfgDg/r4JVqArBfBgg2CbHJmwUe4Ii+yW0QB/x
-	k32OYkjc0m6i3Yp
-X-Gm-Gg: AYBFou1ekdW8U9WX2kLgPZLSA7NXsZRX6uD0WE+WxVm/LQInIRCZqdnGK5kdJG4f0DI
-	GvmX3DM0h6CbG/243V7ZiN9iPPfQ89/sKNfQbceILBlTmfafn1M0fP+Y8Aackr968xLL5947Uyx
-	66AGbHA49SEmkq6GCTxn4qF8TayO1ea5q00j2hsdlaAkmZ84dIRIiosankI4qZQaVuV0Ms8ahkv
-	RQ0RkfCMuxJ1K5/pa5ehFAra3xovNKr3oBMviu5pqjvpTi2GM4BhOs4omU630VjJG2fh4w7l2D7
-	Pdl4mP8cBTNXdBQBXH8W1EgiQNqOKM2H6OiWTAEza55vD20VatrZRTG4Tc/AEE8rGbTWsY/+JPV
-	pl+RgLVoWG7RoGipYJ2cMfG5atmCPnpNAImpGWqpfgi/JPLWAUT4zDKpiukGEXOqmRDlaF7e3v4
-	iQHB1XngsPUwxpmhCQLbNabEdjI6tT/yNASOL7qNGj
-X-Received: by 2002:a05:7022:eb47:20b0:184:ae11:51c8 with SMTP id a92af1059eb24-1b4f5f7fe1cmr3307368c88.23.1794522030540;
-        Thu, 12 Nov 2026 14:20:30 -0800 (PST)
+        bh=LoF4OTllmT9/8Bym4KO+EuEoV1VsIKNsPgJWXYwUKoM=;
+        b=WtD1J+MgoRxI0ImzuUzSbhKTNpem8fV3UXaQz16RXRY0yNgMkVABcHOxMQ482qN2LA
+         NL25ZNszQdv/dU4nUWDqn+loswshHcI7gytme79hRHGvToTWXgyU9Tx8l4yyArketAcp
+         bSjtGcD3xE1aiwMgxCwa6EVdi/muCfEmiJNqJ85ohnIzpGdStUWdOYxN9bgrQ+uEKLDl
+         hS2+X5g6xJ52fwSJle+sJuYxePM9siuR3jV+tyjTy26rBtrIYqs7UDVK4O6IgrXojbtH
+         Cm1WuHdY/3mPCuD9etmXdc2lJ58mLMnoblHVfHjvPSM70bJz4Hdx6AUKRe2Ow8Mw0Ath
+         OxJA==
+X-Forwarded-Encrypted: i=1; AL+hErF0gcETj6TNiOlJ6sNzIS8A6yfAcnYVazSRkdvjwf6RKtUWLOlSbxu8XMG5pBmKHBNx7UMryTM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/tQ0BqiCq4F+NXX0QT8OnD4ssBNMnVTFyoFLldNM65q2siTttC
+	kMFLUFQ/Z1NDnUyh8r8Gh0y3baT9VCrS2+NjAGsqMum4d8Qf4otOaySHFd7zdgbpov1AO4vur66
+	ErnfR6z7iqk/QuuAQQNg28jiHwRni2k/d0AhMIBUJuxNAU8NKg7e69oRskmkOPIMAhDHAHsQpwd
+	O+hu99qH4FYAY4O75aGeavP1BKTFKc2677uRF1HslFANI2GEQ5X0Ur+wXZYtreZ3khXzNuJADWm
+	RnOwvF8fucU+tbx
+X-Gm-Gg: AYBFou2vbKv9aGm2ownluYM4UhtKtXYjedEjA7B7K1CnthpN1tCb3Ip3oQsEeedwO+C
+	cQPIdJXQaV3jLCaYSGrA8Wc4MsqEnNn+pcalvXHWV4l8qpc1bRBKG/nzoqgBrdo5LxeMo2TDJ5z
+	BjACgl+0ok/UvF49/ZA97QBzzvHdf0laCLmKacQIBYMH/j6nO1eSc3s1GQw4UcxpzuNa0zqEIof
+	vzyMZy+/w7XWm8bpXLWA9CrvlYdOZgqhYCjZTZeDKyZNuCLf0h9Mhh3ca62TqIZXund/AbmOkpb
+	/aa8G1xbqtzopIjiHYOn7QLBp7UihCuHj1980CDRRkvkkoPebU295tmX/h4TMwmhI3XzqARjC3O
+	MDnDUSme000MgvkzweyB5rP45trrRvwf0XK9DqgV9GaTtx1GH2tcY5KgwyC9lGkljJbhYvdpUWp
+	U1XTZiGat2oz9R2s3fJRmjmN+gNkBDKCz3ouk2i6nu
+X-Received: by 2002:a17:90b:3dce:b0:3ad:c482:ae9a with SMTP id 98e67ed59e1d1-3b1b081b427mr459143a91.1.1794522040407;
+        Thu, 12 Nov 2026 14:20:40 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-37959abaee5sm38962eec.14.2026.11.12.14.20.29
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b197ca0af1sm3699355a91.3.2026.11.12.14.20.38
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Nov 2026 14:20:30 -0800 (PST)
+        Thu, 12 Nov 2026 14:20:40 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3724667bc16so168371eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:29 -0800 (PST)
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-139b62317d0so915012c88.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794522028; x=1795126828; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794522038; x=1795126838; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
-        b=DbqCBSQXZCrintuXQM5LV9lIFkPqmGjC5imc2e4RCeNXUZjEpQt0TJmL1UGzYVMG77
-         Kw8oeskuttxb5A8RLrbw20tdNmY9HKD+hhydakD+WuGb4qvTvjk1Am/oSDDkP9y1TBOi
-         B0bCtaM8InHef9E++jd4G/SB4tliC+bo1xeso=
-X-Forwarded-Encrypted: i=1; AL+hErEcH06d3hlD5hNh8cMogZ9I+C97cNChXTwaucvxb2gODoB9YA0+WwUUg+Q6rVDGkWvF8fkq/Bg=@vger.kernel.org
-X-Received: by 2002:a05:693c:87c2:10b0:36c:a3ae:936e with SMTP id 5a478bee46e88-377e093dc83mr3368463eec.5.1794522028412;
-        Thu, 12 Nov 2026 14:20:28 -0800 (PST)
-X-Received: by 2002:a05:693c:87c2:10b0:36c:a3ae:936e with SMTP id 5a478bee46e88-377e093dc83mr3368430eec.5.1794522027690;
-        Thu, 12 Nov 2026 14:20:27 -0800 (PST)
+        bh=LoF4OTllmT9/8Bym4KO+EuEoV1VsIKNsPgJWXYwUKoM=;
+        b=crLvQoBPi2/uq0idbOwwMrf2bsPN8mf10vlkorFq6oSH4w+ceUUXoX+cb//jek1dOs
+         QzUpYk/VZSUgbc9axYLYF3eVgI9wwqF9XgQyZ1Gl1NfLXhJdAbFJJk0FiB0F9J9fn9DP
+         NfcYVa1Pp7Khqe4rsJ6xn8HL1cP3OXzOgz+Hk=
+X-Forwarded-Encrypted: i=1; AL+hErEYgVygkiuvFIkUE6T5f53LZWew2xNDwHhmauZufnZSgwskCjUD5S+F3VN9ztK7YoQ2CcRmE1o=@vger.kernel.org
+X-Received: by 2002:a05:7022:1583:b0:195:e4b9:d326 with SMTP id a92af1059eb24-1b503112a76mr766365c88.12.1794522037578;
+        Thu, 12 Nov 2026 14:20:37 -0800 (PST)
+X-Received: by 2002:a05:7022:1583:b0:195:e4b9:d326 with SMTP id a92af1059eb24-1b503112a76mr766340c88.12.1794522036859;
+        Thu, 12 Nov 2026 14:20:36 -0800 (PST)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3795591f4f8sm1232743eec.13.2026.11.12.14.20.26
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50316e195sm1959526c88.8.2026.11.12.14.20.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 14:20:27 -0800 (PST)
-Message-ID: <05d38633-4f68-4e1d-9e08-0c5c532da5ed@broadcom.com>
-Date: Thu, 12 Nov 2026 14:20:25 -0800
+        Thu, 12 Nov 2026 14:20:36 -0800 (PST)
+Message-ID: <361df07a-d231-43da-91ca-8c507797bb1f@broadcom.com>
+Date: Thu, 12 Nov 2026 14:20:34 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,8 +107,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 6/6] net: bcm4908_enet: publish the buffer address
- before OWN
+Subject: Re: [PATCH net v2 5/6] net: bcm4908_enet: unmap RX buffers on stop
+ with their mapped size
 To: Kordian Chmielewski <kudzo51@gmail.com>, netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
  <rafal@milecki.pl>, bcm-kernel-feedback-list@broadcom.com,
@@ -117,7 +117,7 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  linux-kernel@vger.kernel.org
 References: <20261112195051.597102-1-kudzo51@gmail.com>
- <20261112195051.597102-7-kudzo51@gmail.com>
+ <20261112195051.597102-6-kudzo51@gmail.com>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -152,29 +152,20 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20261112195051.597102-7-kudzo51@gmail.com>
+In-Reply-To: <20261112195051.597102-6-kudzo51@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 11/12/26 11:50, Kordian Chmielewski wrote:
-> bcm4908_enet_dma_alloc_rx_buf() hands a descriptor to the DMA by
-> writing its control word, with DMA_CTL_STATUS_OWN, first and the new
-> buffer address second. If the DMA read the descriptor between the two
-> stores, it would write the next frame into the old buffer, which
-> poll_rx() is turning into an skb. start_xmit() writes the address
-> first, but nothing orders the two stores, and the descriptors live in
-> coherent memory, where arm64 may make them visible in either order.
+> Since the switch to build_skb() the RX buffers are mapped with
+> ENET_RX_BUF_DMA_SIZE and slot->len is no longer set for them, but
+> bcm4908_enet_dma_uninit() still unmaps them with slot->len. Use the
+> size they were mapped with.
 > 
-> Write the address first on both paths and order it before the control
-> word with dma_wmb(). In poll_rx(), read what the DMA wrote only after
-> seeing OWN clear (dma_rmb()), as Documentation/memory-barriers.txt
-> describes for descriptors shared with a device.
+> Found by reading the code.
 > 
-> Found by reading the code; I have no test that shows the DMA reading a
-> descriptor while it is being refilled.
-> 
-> Fixes: 4feffeadbcb2 ("net: broadcom: bcm4908enet: add BCM4908 controller driver")
+> Fixes: 3a1cc23a75ab ("net: broadcom: bcm4908_enet: use build_skb()")
 > Signed-off-by: Kordian Chmielewski <kudzo51@gmail.com>
 
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
