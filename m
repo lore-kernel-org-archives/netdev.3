@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794514918;
-	b=GzpD7Uz3NIPbaUQ0nK0G8gwW9HKIvn2ONeVllOU9vAigUyy5g31evz+RZTU+gRfv7y2S
-	 GeC+Iolowqx5hZtW0pTRG3wYPwRwQNtZcJgUSfPt5LEkBKTGIkzeUpplTuasUe0f5f5P7
-	 3tnpnu/YjtsMgJskT4V/tBEybUXLKSPLiozxiM0irzusvm748sD6VILNgVir5deND+PHe
-	 f2C25tKq+r98aBuIvyhrTXiqjcVyu/eUnlveHV12cmtuoSuUin0RStojuHx/EWAk1N9VR
-	 j/R5ZPCKdtTWcJdaDd8NO/EIUZatCdvItOI0SgDXMywSenR56CJFs9ZqbEu7+RKdgkQ==
+	t=1794514919;
+	b=2tEulE0HDLtyX6YxuzKDScOCAlKNJM0NHWu15Xy0VqoIptjd9SDwqnzivE7kWZVmeSxs
+	 BH4ySC1yFIvHNWJCdyTiSL5kH18x4b2IHylE1ZIB6+MDabD1Fz4wPqu/lfpIpBGOsdZQC
+	 98JMFJ7vPlQaNlAmLyZDO3YWeLa3vH9fC8rzQDpg9IAqgRpOY1iyBXmAz5+WUaYidc0Pe
+	 K1FOucOIezfhkbc8vJq/2pfS7wti1x4IHct0ODQ0RlYOkMFUq8a5X2y6EmcVK3WqmSvkR
+	 Uz27sAa49HkqdGRg+qE6FIvL6oYErq9lUmeEuie0oQHWOr+RF+LLdXPIZL7lj750C8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794514918;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794514919;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=JWZrjKwcXmjICx0+YDbcMtJTiJ23RLhSnQ9nOf3lyEk=;
-	b=jZUQUTf3AVFMEbCXoVab51wqabw6bkCHpJiRbp91N5Ww0HoiCEMEZL9zt1hPquPYScrs
-	 n5wk4PFNmzOyKhF62dJdStUqBInWFzEQftANamDr+nOTRh5UCnAec+aAdF3q5EBv2h7u5
-	 SfvsWhuFE7K2M3WoQVS4yLCLdpNCCDAaFDPPG6JuMJozaHa2hoShqgzB9LzapkvuJBYdw
-	 CMLP1W8cmJWDo+AcevQmyB02kU2+c76fw4qR+mtdnCVgMfgSizWwUoNZprOWfnUB9m3g/
-	 eeodqXozB9zKs7REGB/2rODsCEYt4zsEsh6szuot6BMY0SQhmIabC3qxryiE7hXkZuQ==
+	bh=xQLMtJSqy8FG262aA8N0q0Rpw5hd52l2f1OMCg367UM=;
+	b=eWrL9yhxa3whb2t18OphdA3xa/aU9yo7wJh/47fzo+cL20v21yeKeGyuB6ExprGHQbrI
+	 TX1TFBZmVXVS2KQLoHOZXPxRdlqOzIShKwLftv5+c4d1YzqA1CZCV8nrRnwz5qfcf/Pfm
+	 rT9G1KHIGYJRRokRED5zEIl0k3gR6mfZXSmSxdg6xfZEkapsN7N4U5gRorAj8820XNCkn
+	 r876q2iuwBHZMxkxU+F7n3d20OxveQU6yeOp0xkiRpMfUnYX02WQINiyDEbmnfUpLmU8J
+	 W+GehyvWajozMfWMhNXGP+R6sf2rphstbMne+yeWwpxTjhX5qLYk0XDTzNIzLBth8tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2hvHRh8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NH1RaPMK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44627606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD112606A882
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2hvHRh8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2E71F000C4;
-	Thu, 12 Nov 2026 20:21:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NH1RaPMK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FD81F000C4;
+	Thu, 12 Nov 2026 20:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794514918;
-	bh=JWZrjKwcXmjICx0+YDbcMtJTiJ23RLhSnQ9nOf3lyEk=;
+	s=k20260515; t=1794514919;
+	bh=xQLMtJSqy8FG262aA8N0q0Rpw5hd52l2f1OMCg367UM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=a2hvHRh8sD1ttugenc/VfdkMFMBjjhJD8+pZ38XW+HXDSBxJ11e4ZSIvSvy6ekb3D
-	 ITbEzydsJTeLwmLwdgyv1Ne2I/Jvvfgye8tgk5A93WAoyut8ziQA26K4zxbYeXHM1W
-	 RHx27T3lmUT1/xIvwpCYr7FFU4IDTW9ur5QE8MY3Y30DWWZ4lppADU8OBGpP1cS6mD
-	 5drZT1wQUcsOyx5hEklrnMrmi5dJB6MVDnP5N8+Zf3TcRHCcpjITj8oTyapguWondq
-	 n4xoA8xR7Ry0CgBOcOdsQS5uwPFimrXik7N1xXjbCtmLiFK2wU4QGXrGvUBKOxmljA
-	 0YphzgoGTqh/Q==
-Subject:
- Re: [PATCH net-next 1/2] bonding: 3ad: Receive packets in COLLECTING state
+	b=NH1RaPMKN1Qy+y/kj112SpA+0zj+M1t55Rvl7oYZkjnC8fEs1w0YjPGjJ6yuZ0Pfz
+	 6rQ6kDULnacLIcRMdLQ50g0WtjRDAbB8iTO4wTgLJ9yUIjylVm8H6IjFnLSmPOSaxy
+	 RBlOYSDnHuEjWNurk5X0tPCEb3BJe0kGVYPj8Pwp7TL7vPxKqDdViVZ+gVuQGK1GQL
+	 CxKzMclGVMUWqJ3AYA6YU4/wwCm0ICKHKU40WkfKle/pMwUIF+hgO74KUNPCBNWB9x
+	 wEHNJFybaxWgNF1gP60X95g8+1+OpbpYEyL54dbE0uxyprsJ7e+SaFNmd5eGHeLt27
+	 TsJQxbTm+GBYg==
+Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
+ with coupled control disabled
 From: netdev-bot+sashiko@kernel.org
 To: idosch@nvidia.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  pabeni@redhat.com, edumazet@kernel.org, jv@jvosburgh.net,
  andrew+netdev@lunn.ch, razor@blackwall.org, aahila@google.com
-Date: Thu, 12 Nov 2026 20:21:57 +0000
-Message-ID: <179451491706.2199510.1058504888559496420@kernel.org>
-In-Reply-To: <20261111171947.2816258-1-idosch@nvidia.com>
-References: <20261111171947.2816258-1-idosch@nvidia.com>
-X-sashiko-severity: Medium
+Date: Thu, 12 Nov 2026 20:21:58 +0000
+Message-ID: <179451491828.2199510.10600083511159752831@kernel.org>
+In-Reply-To: <20261111171947.2816258-2-idosch@nvidia.com>
+References: <20261111171947.2816258-2-idosch@nvidia.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,118 +64,154 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The fix clears 'inactive' only when ad_enable_collecting()
-  runs.
-- [Low] The patch fixes a real, user-visible bug but has no Fixes: tag.
+- [Low] The bonding selftest config fragment
+  (tools/testing/selftests/drivers/net/bonding/config) now asks for…
+- [Low] In bond_lacp_independent_control.sh, collecting() reads the total
+  packet count of the bond1 ingress ICMP echo-request filter (handle…
 
 --
 
-bonding: 3ad: Receive packets in COLLECTING state
+selftests: bonding: Add a test for 802.3ad with coupled control disabled
 
-With coupled control disabled, an 802.3ad port in COLLECTING state should
-receive packets, but the RX path only delivers from slaves whose inactive
-flag is cleared. This patch makes bond_set_slave_rx_enabled_flags() clear
-slave->inactive in addition to slave->rx_disabled.
+This adds a VRF based selftest which checks that a bond port with
+coupled_control off receives packets in COLLECTING state. It keeps the
+port in COLLECTING state by clearing the Collecting bit in received
+LACPDUs, and then checks that ping works in DISTRIBUTING state. The
+bonding selftest config fragment gains the VRF, pedit and policy routing
+options the test needs.
 
-> When coupled control is disabled, a port in COLLECTING state is supposed
-> to receive packets, but it does not. The bond only delivers packets from
-> slaves whose 'inactive' flag is cleared, whereas
-> bond_set_slave_rx_enabled_flags() only clears 'rx_disabled'.
->
-> Fix by clearing 'inactive' as well.
+> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> new file mode 100755
+> index 0000000000000..c29712e01e49e
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+
+[ ... ]
+
+> +h1_create()
+> +{
+> +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
+> +		coupled_control off
+> +	adf_ip_link_set_master "$h1" bond1
+> +	adf_simple_if_init bond1 192.0.2.1/28
+> +
+> +	tc qdisc add dev "$h1" clsact
+> +	defer tc qdisc del dev "$h1" clsact
+> +
+> +	tc qdisc add dev bond1 clsact
+> +	defer tc qdisc del dev bond1 clsact
+> +
+> +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
+> +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
+> +		ip_proto icmp type 8 action pass
+> +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
+> +}
+
+[ ... ]
+
+> +collecting()
+> +{
+
+[ ... ]
+
+> +	ping_do bond2 192.0.2.1
+> +	pkts=$(tc_rule_handle_stats_get "dev bond1 ingress" 101)
+> +	((pkts >= PING_COUNT))
+> +	check_err $? "Packets not received in COLLECTING state"
 
 [Severity: Low]
-Should this carry a Fixes: tag?
+Can this check pass when no packets were received in COLLECTING state?
 
-bond_set_slave_rx_enabled_flags() was added by commit 240fd405528b
-("bonding: Add independent control state machine"), and that commit only
-cleared rx_disabled. The RX gate in bond_should_deliver_exact_match()
-checks only bond_is_slave_inactive(), so the bug goes back to that commit.
+The bond1 ingress filter with handle 101 is installed once by
+h1_create() from setup_prepare(), outside the per-test defer scopes, so
+its counter keeps growing across tests. collecting() compares the
+absolute counter with PING_COUNT and does not take a baseline before
+ping_do.
 
-The notes say this targets net-next because it never worked, and that
-makes sense. A tag would still let stable and distro maintainers link the
-fix to the original commit:
+tests_run() in net/lib.sh iterates over ${TESTS:-$ALL_TESTS}. Take
+TESTS="distributing collecting" as an example:
 
-Fixes: 240fd405528b ("bonding: Add independent control state machine")
+distributing()
+    ping_do bond2 192.0.2.1    <- PING_COUNT echo requests hit filter 101
+collecting()
+    port moved to COLLECTING state
+    ping_do bond2 192.0.2.1    <- nothing received without the fix
+    pkts >= PING_COUNT         <- still true from the earlier test
 
-> diff --git a/include/net/bonding.h b/include/net/bonding.h
-> index 598d56b1bc970..cb89aff437f44 100644
-> --- a/include/net/bonding.h
-> +++ b/include/net/bonding.h
-> @@ -594,6 +594,7 @@ static inline void bond_set_slave_active_flags(struct slave *slave,
->  static inline void bond_set_slave_rx_enabled_flags(struct slave *slave,
->  					       bool notify)
->  {
-> +	slave->inactive = 0;
->  	slave->rx_disabled = 0;
->  }
+The same thing happens if collecting is listed twice. The default
+ALL_TESTS order runs collecting first, so the default run is not
+affected.
 
-[Severity: Medium]
-With this change, inactive is only cleared when ad_enable_collecting()
-runs. Can a COLLECTING port still be left with inactive=1 and
-rx_disabled=0?
+Since the ping_do return value is ignored here, this counter is the only
+check of the fix. Would it make sense to read the counter before ping_do
+and check the delta, or to create the filter inside collecting() with a
+matching defer?
 
-bond_option_all_slaves_active_set() can still set inactive without
-touching rx_disabled when all_slaves_active goes from 1 to 0:
+> +
+> +	log_test "Receive in COLLECTING state"
+> +}
 
-drivers/net/bonding/bond_options.c:bond_option_all_slaves_active_set() {
-    ...
-	bond_for_each_slave(bond, slave, iter) {
-		if (!bond_is_active_slave(slave)) {
-			if (newval->value)
-				slave->inactive = 0;
-			else
-				slave->inactive = 1;
-		}
-	}
-    ...
-}
+[ ... ]
 
-A COLLECTING port matches !bond_is_active_slave(). This is because
-ad_disable_distributing()->__disable_distributing_port()->
-bond_set_slave_tx_disabled_flags() left it in BOND_STATE_BACKUP.
+> diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
+> index b62c707152930..71c6d69d98a18 100644
+> --- a/tools/testing/selftests/drivers/net/bonding/config
+> +++ b/tools/testing/selftests/drivers/net/bonding/config
 
-The steady-state COLLECTING recheck in ad_mux_machine() only looks at
-rx_disabled:
+[ ... ]
 
-drivers/net/bonding/bond_3ad.c:ad_mux_machine() {
-    ...
-					if (aggregator->is_active &&
-					    bond_is_slave_rx_disabled(slave)) {
-						ad_enable_collecting(port);
-						*update_slave_arr = true;
-					}
-    ...
-}
+> @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
+>  CONFIG_NETCONSOLE_EXTENDED_LOG=y
+>  CONFIG_NETDEVSIM=m
+>  CONFIG_NET_IPGRE=y
+> +CONFIG_NET_L3_MASTER_DEV=y
+>  CONFIG_NET_SCH_INGRESS=y
+> +CONFIG_NET_VRF=y
 
-Since rx_disabled stays 0, the recheck never fires. Until the next mux
-transition, bond_should_deliver_exact_match() keeps returning true, and
-every non-LACPDU frame on that port gets RX_HANDLER_EXACT.
+[Severity: Low]
+Should this fragment also enable CONFIG_IP_ADVANCED_ROUTER=y and
+CONFIG_IP_MULTIPLE_TABLES=y?
 
-The notes list this as known issue 1 and describe COLLECTING as
-transient. However, the companion selftest ("selftests: bonding: Add a
-test for 802.3ad with coupled control disabled") keeps a port in
-COLLECTING indefinitely by clearing the partner's Collecting bit. So a
-partner that never sets LACP_STATE_COLLECTING would keep the port
-dropping traffic.
+NET_VRF depends on IP_MULTIPLE_TABLES in drivers/net/Kconfig:
 
-Would it work to also check bond_is_slave_inactive(slave) in the recheck,
-for example:
+config NET_VRF
+	tristate "Virtual Routing and Forwarding (Lite)"
+	depends on IP_MULTIPLE_TABLES
+	depends on NET_L3_MASTER_DEV
+	depends on IPV6_MULTIPLE_TABLES || IPV6=n
 
-    bond_is_slave_rx_disabled(slave) || bond_is_slave_inactive(slave)
+and in net/ipv4/Kconfig, IP_MULTIPLE_TABLES depends on IP_ADVANCED_ROUTER
+and has no default:
 
-That would let the port recover on the next state machine tick.
+config IP_MULTIPLE_TABLES
+	bool "IP: policy routing"
+	depends on IP_ADVANCED_ROUTER
+
+The patch adds the NET_L3_MASTER_DEV and IPV6_MULTIPLE_TABLES
+dependencies but not the IPv4 ones. If the fragment is merged onto a base
+config that lacks them, Kconfig silently drops NET_VRF. arm64 defconfig
+is one example: it sets neither symbol, while x86_64_defconfig sets both.
+
+In that case setup_prepare()->adf_vrf_prepare()->vrf_prepare() runs:
+
+	ip -4 rule add pref 32765 table local
+
+which needs IPv4 policy routing, and adf_simple_if_init() cannot create
+the VRF devices. The test then fails during setup and never exercises the
+bonding change.
+
+Several other net selftest fragments have the same gap, while
+net/mptcp/config lists IP_MULTIPLE_TABLES explicitly.
+
+>  CONFIG_NLMON=y
+>  CONFIG_VETH=y
+>  CONFIG_VLAN_8021Q=m
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111171947.2816258-1-idosch%40nvidia.com
