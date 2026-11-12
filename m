@@ -1,107 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794494996;
-	b=D2baMFq/ZsBWp6fIE/FfH8zbHYVhCNNYtw/tETu564hAZMW6NhPSAhJTahDc+h6Lipf3
-	 SdoDFWcRRLJUlATarwjh/zgPLO8Z7OaG61uwcYn0yJRkBEnPTZ3JopgAy0vCpIBPWzMhn
-	 XdXKEKJvJNLVQfnEYzZXsbduKWRuKSq+g4C4qM8HnJYvPpeBSLQ9u5oZ5tDIpnGBjYWvG
-	 eYmK5ngI6lD3rZJLClVeTS6vlX+IqWV+t6JVbRrktuneapeFT36tAlGmOvP4xmrs/zxkb
-	 Ecl7xVpnQS+Tl0WN/WGsY77LrFHPcqgM0ZsMdZMVkv5cyb7PTeQGHPv0A+rNfLdXyHA==
+	t=1794495140;
+	b=sdHGABrnoaxWzvXXcIPMgurd58+PIsYCcjfOU2pRoTZLb8jE6FsBAPOdSKIv6suSg+bJ
+	 IlNJle/ZSNpph9gfPbJ9K6haPLz73SYYXraSS+dtqVd8iyFat9reLs7VKOb1rWQog/uCv
+	 5hvPjsgk08iVuc3j62DEEpJSvJWc0iwz7nnYnDY9i5Jw5e81tahRj/QllK3vezSCukz01
+	 IjQ/kCNw23croSgojp1LDlWxj1PgCwXu9f44pyLR9yk1/ynXHagmlq9zc9ccxUK7fc8gj
+	 yGnHhz8tzn8RIH7xILk/5aY4dV/UNAhLgszN+DA6XfHr/Nai9bZJbmgbJS5pXs1Yy5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794494996;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=vfNdgyP+NRKLkAfEjNEeqH/mZDeg/vBSn9uePnv4O7Q=;
-	b=osCYcel80UizfEB768PFIvMndkUBxgs1ye1pNf5rskd9l3mEAPLrCwHTFFKEjWsqvX97
-	 OKzPYAk4soyM6CiZ94EVtF8N6Aeq3cbHahvTbWToLF537u+PKzXRBRhGJUBbEU4JozzlD
-	 j7wf776PMzfW3XT7q3GOzU9NZbH9tM0NE5tcEUwzM9rRoq2GcNaFSILc1B7uSZdGuewHf
-	 hxSV2J9LY5f8rbCxttVmBoFGZOszXNUoRQRAhcH2U7tWaCSM0DeVDzV1X0z/lbwJ832RX
-	 qOAeatXWIv5h0cJCfKFmpl0r8ka7Y3bbW7WMJW+YignjdQAtLSVWZy6JCZzvRDXpgKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794495140;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=oHKGckLKjhKuC8TFxfYio1TRXf55zru0s2A4nn+WqcQ=;
+	b=WdFbxvZMw06V6F74dHB3ijDms5QTPvTXtOddqy5asRQARM0xOvt9YHeI5fCwCKB6QSuk
+	 8wmqgJORtuS1ZB6qaGJGRN5iQsrPC6f1yo3V6yU2PEx0W/luBHt9RMc4M3dljs/lUIRof
+	 4hfP1Cl6Z1jBwMu2MEKKQxamsoq2oQ5b6zCJwgzFtcNEriFII53NDLeJs6AX/AXf56/XJ
+	 5u3d+CNOPfmJrGiE/2yDI+nAXkX5Rg/s0vAXmb8zOV96N73+XlDVdQ3me4RBot4jea5ZP
+	 T6kX2futS2ICcScFAOV+DfraianCfTo7WBqKc7wmIJ2a3DyDEwJ0fDNRoBkncY1HiZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DFRUeeaZ;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=d36m5nSx;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H4NZhvs6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B4D606A336
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:49:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1B4D606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1295C606A31C;
+	Thu, 12 Nov 2026 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DFRUeeaZ;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=d36m5nSx
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794494994;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vfNdgyP+NRKLkAfEjNEeqH/mZDeg/vBSn9uePnv4O7Q=;
-	b=DFRUeeaZ7PukFq0E2zU6kQkUyhWnE7OCKXlOMhuO7y9on1VxO7Lm6Qx4yRkDeBXOz/DyM9
-	VMeC0F/8++wR2SgbJDGdjf+9TSTHN+/Li7QoUmAU+YdhzKylg5W++5mKvoBCfSuRB52toH
-	J/tT4jqZwBYN1wxH7MDGWb8VLyAc5Kk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-A6GNV9KiMwWZICVbFzyYOQ-1; Thu, 12 Nov 2026 09:49:53 -0500
-X-MC-Unique: A6GNV9KiMwWZICVbFzyYOQ-1
-X-Mimecast-MFC-AGG-ID: A6GNV9KiMwWZICVbFzyYOQ_1794494989
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-490ab0a20ebso3282999f8f.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:49:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794494989; x=1795099789; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vfNdgyP+NRKLkAfEjNEeqH/mZDeg/vBSn9uePnv4O7Q=;
-        b=d36m5nSxoDWdvyYtLqnat3194iJTv5RdLjF8A0cLiDThlGMtUpCYJPUhOr+doqiE47
-         SCZNGYTmAilxtj0XcaFk97qT1Zkp0AODjD0FiQd4xlqtdHRJNs5RVOMwhjwOXTk6B2Ot
-         x+Mtm4olGs7EyjoH1yE4d7X0dxfs++EXzuH3u8+OU+5P9KQBC1fgxbjlf8/k3jFTdm+s
-         cRzGbvNcN10o8dgvCCXKWQ5L7ZdDGFMlmlKCN9XCvf1RjXteKe0+cypskqqHJs/cu4oq
-         c/xWT7BVJu1q5tISQ/1tlVUUZcVhx8hQ0HoqfgcgILFrkq+32bZdLEFoM5muSmA3RvaI
-         cxmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794494989; x=1795099789;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vfNdgyP+NRKLkAfEjNEeqH/mZDeg/vBSn9uePnv4O7Q=;
-        b=TfVbztaA2ZXzLlCDzXezro+bgDZgvh03Yz0WJoGLJExmPfU/t470ylOTDYk7Ez06hu
-         JaCHSaNvzlLcQH3hZ4JIKjxjmunoiO9yNBw9E3MnYYw+PEP/eBvsxcwa2qPztsS5ZDNC
-         QuMF60/s1mLHzxvraJpsD09KEbgV9TEM06JiD8+VId1Ws48+skLyhu/JNsKJvzwR0mf9
-         KD0HD3mOPD75Xf6rHt7HWgCPEQ+5bvqXConaXHHcxFuFQAPb0e5vASNR3DWhgP5T1vS6
-         gt0xx/zyzAn2zPYBDHBGvQbAr5qoGyUcjULIFLxWDHvScfvBZBIa9qb/AG60EcFUfUJg
-         wtgw==
-X-Gm-Message-State: APuU4Z9t3chUuG+sRmkwruelDicS0V2+7GJWqcfbVQXS1BWBffqd9daR
-	+/AcAB06x9hzb8AcZdjxuozmcmH7+pbtVWhd9IGp5iTNMUOrUlD+i0UskCvIU9MhWKj7qF8zzio
-	nyvN3pUS/wM4Xu8XXLO6xKKvVibdt2Y2dWoFWaDNdqNIEhPxNymI0XDKuDw==
-X-Gm-Gg: AYBFou017mpssv8oqfABWxROfb59Di30JPBdz1+fnMFyJpIoBLihzA5oXgT+18hYXr6
-	p8admuvRvlihIZVfcfvAumLf8ihi//aNG6PMzH/nRZAKaKn+ksLtTdCtzsqm19VX7YWr/C8OyNC
-	e+q4scvGtslYJmCWdeOQ2X/058oL8bUlKVWptdhJr4OF5LqUcYLyrZnLZZnEHEpwxgwaUlGpmgY
-	QVm3sqgKboEnfyIxySjkIJXc3Z6swtnJcpDinwCFAZSkf6Oq30G2EVdlMb6bWv6+ePsreAXPtvr
-	Fj7Jz9ewri5HvAOQcAUKJE3vs7SXEtWZrG6uj/p9REBVBA1kI68wLTeVxl/8l+k/2VPhmJBjs22
-	xPWZPQlEG7CBieWkEruujFqfunK9C9n/Xhh7UE3oHs+wSsPG14N+p5nFVQoQCpWRbYLdepL4diI
-	62DSt4GjsjnGWZ2TYSU+6+PuGHv0CzqmG5EBy82ZuVcaBG
-X-Received: by 2002:a05:600c:4ecb:b0:4b9:ff69:19ac with SMTP id 5b1f17b1804b1-4ba093811d3mr106230365e9.11.1794494989332;
-        Thu, 12 Nov 2026 06:49:49 -0800 (PST)
-X-Received: by 2002:a05:600c:4ecb:b0:4b9:ff69:19ac with SMTP id 5b1f17b1804b1-4ba093811d3mr106229855e9.11.1794494988926;
-        Thu, 12 Nov 2026 06:49:48 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2969e7sm66879205e9.10.2026.11.12.06.49.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 06:49:48 -0800 (PST)
-Message-ID: <c4910aa4-a477-4b0b-b875-52703fc8bcc2@redhat.com>
-Date: Thu, 12 Nov 2026 15:49:47 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H4NZhvs6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5264C1F00A08;
+	Thu, 12 Nov 2026 14:52:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794495139;
+	bh=oHKGckLKjhKuC8TFxfYio1TRXf55zru0s2A4nn+WqcQ=;
+	h=From:Subject:Date:To:Cc;
+	b=H4NZhvs6yrF5U2b5PE0UkP9/EK0zs28ghNjyy8pVfXOgVbPrPcvKG/GdSjP3p00VA
+	 UfRgh89IOZt/vDnt9xrRK02cSXrgBczEEunqsGH0JlgJ9BxF66z3UYRE096TzHsv3n
+	 PlmwTtDqlFwxrn12vwd+X/h+c/G6j0bDNx0FsvGDT0Rru/pGN4ycChrl/zFvdQKBxI
+	 rveyJ9nUvC0hkeTASM7iwHsToe7I81cZ/BLRU2OX1gG8ubA+0FY6ucAj+/Tv6kGhxk
+	 DlSL5N/LU8+Eas3QNSYu9PhtwXpDZ1xvhzqAFquvtdMEv6vzCibye0ctJaKk4Y3kLx
+	 p7uifPwzZlozw==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH net-next v2 00/10] Deliver TLS session tags to upper-layer
+ consumers (NFSD)
+Date: Thu, 12 Nov 2026 09:52:04 -0500
+Message-Id: <20261112-tls-session-tags-v2-0-a587a50de7fc@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,49 +54,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/5] net/mlx4: flush pending doorbell when
- dropping a TX skb
-To: Daniel Machon <daniel.machon@microchip.com>, Joe Damato <joe@dama.to>
-Cc: netdev@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, edumazet@google.com, horms@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261110231304.1859217-1-joe@dama.to>
- <20261110231304.1859217-6-joe@dama.to>
- <20261112134346.zvctvknj4mc5s2pm@DEN-DL-M70577>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261112134346.zvctvknj4mc5s2pm@DEN-DL-M70577>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WOyw6CMBBFf4XM2tFSi6+V/2FYlHaUGmhNpxIN4
+ d+lGFcu79wzN2cEpuiI4VSMEGlw7IKfg1wVYFrtb4TOzhmkkDtRlRJTx8jEmcOkb4xHK4SS1WF
+ 7VQrmt0ekq3stkxfwlNDTK0H9bfjZ3MmkvJjZRjNhE7U3bT796E2vnc996ziF+F7shnJZXERml
+ X+RoUSBat/Y0h6VrSp5DlGbjtYm9FBP0/QBSExGIu0AAAA=
+X-Change-ID: 20260512-tls-session-tags-9d0042583f44
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Sabrina Dubroca <sd@queasysnail.net>, Keith Busch <kbusch@kernel.org>, 
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, 
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, 
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org, 
+ Hannes Reinecke <hare@kernel.org>
+X-Mailer: b4 0.17-dev-9c833
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6480; i=cel@kernel.org;
+ h=from:subject:message-id; bh=1YbGJ7P3cSrTs9FPZDlebICr4QrVxyKnLFjrnYFH80A=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq9dKYNJriI/yAPqV6HOqTr4MQlqQp2W3ed/0lk
+ vWPnXSj/MKJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCavXSmAAKCRAzarMzb2Z/
+ l2KOD/9bFLU4QM8kqngzwuhSOKvwW1p5bYMcMs14TnqMpeXYapglkyQ7ER3dtShXNbE2dTnnfN1
+ JuRzvhLmwZnkYSenS/5LlzwUK3x6hHdSG2175BGBf96zjzxAC3ohlh03vuP/RKsh9vUv83b7eGG
+ UtlcKVKxKcc20qlVKCnsoQULixEPg3NtCCUyXI798OqIeQHg7IM6FdHxBNJs4ekvqoSyNkRdCPg
+ 7CCRFHSoMV9RkTTTJR1O7aBMG1aQaEyENtogJ74vE19EujlAwYguyBXQNtCzx+YYJPk1IH0++sj
+ OYWOn0mkc3yaiH1Q3SplwaSHobNwTXEGruCr59DJizgCpq3PBl0/h+GAH6/0+ajpwyBAHxHltFQ
+ v1lUhL6U8f/WJYv58mf58ZsZWm/E3qHsR1QhklC5c4+Af9OOSBa4Lapln40RV8RtFvKjR+3uHVa
+ COEusp614I3/ir+VtIvX1KqZmVt4wM/JBJLi1FmRtaLraKT8TUVDTW/BlmcpQeMPiUh4bX6YqDg
+ jouUZcFpAbmtY9uugMQES4pH91TBjHGJFFfHeeWj/V2rVKtfjPpywaxt59wiU3uIXoVXd4K30Kd
+ gf4k9X2JwKyxvHfaoyM/1gTlOXQDoqwT6U/fHcyWi6m5Usy8PO3CERpD8tpvNEyOcqVlrs1XEN/
+ AseUqA97FNtBecQ==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-On 11/12/26 14:43, Daniel Machon wrote:
->> diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
->> index 123071a47bed..3166837711be 100644
->> --- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
->> +++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
->> @@ -1135,6 +1135,9 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
->>   
->>   tx_drop_count:
->>   	ring->tx_dropped++;
->> +	/* an earlier skb in this batch may have deferred the doorbell */
->> +	if (ring->doorbell_pending)
-> 
-> I think checking !netdev_xmit_more() here would let you ditch the new ring
-> state, but it seems bnxt does it the same way, so fine by me.
-I don't think checking `!netdev_xmit_more()` would work, as
-`__netdev_tx_sent_queue()` adds more logic to it.
+NFSD and similar upper-layer services want access-control decisions
+based on TLS peer-certificate characteristics, but in-kernel x.509
+parsing would duplicate work mature userspace libraries already do.
+tlshd evaluates certificates against admin-defined policy and reports
+the policies that matched back to the kernel as opaque string tags.
+Intersection against per-resource tag sets stays the consumer's
+problem.
 
-Still I think that the cacheline alignment comment by sashiko
-on patch 4 is relevant:
+The series builds on commit 81246a65303d ("handshake: Require admin
+permission for DONE command"), now in net-next. Without it a forged
+DONE downcall could set session tags for a real handshake.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110231304.1859217-1-joe@dama.to
+Four architectural choices shape the series, only one of which is
+visible in any single patch.
 
-I think a better binary layout for `struct mlx4_en_tx_ring` is needed.
+The tagging vocabulary is opaque to the kernel. tlshd decides what
+each tag means, and the handshake layer and its consumers only test
+membership. Any future attribute the kernel wants to gate on has to
+be expressed as a tag rather than as a new netlink field.
 
-Thanks,
+HANDSHAKE_MAX_SESSIONTAGS rides on every ACCEPT reply as
+HANDSHAKE_A_ACCEPT_MAX_SESSION_TAGS (patch 7), so tlshd can size its
+DONE-side tag list to the running kernel's limit rather than to a
+header constant.
 
-Paolo
+Session tags have one owner at each step. The DONE handler collects
+them into a private stringset before taking the completion gate, so
+no allocation happens inside the gate. The gate's winner hands the
+set to handshake_finish_complete() (patch 6 adds a kunit test for the
+gate). svcsock copies the set into the transport and orders the copy
+before setting XPT_TLS_SESSION. check_xprtsec_policy() reads that bit
+with test_bit_acquire(), so a transport that reports a TLS session
+always has its tags visible.
+
+The stringset helper (patch 2) is a generic library so that NFSD
+export tagging (patches 9 and 10) can use it without further churn in
+net/handshake/.
+
+This series applies to the nfsd-testing branch of
+https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git
+The base-commit below is the tip of that branch as of August 18.
+
+---
+Changes in v2:
+- Drop v1's 1/9, sent ahead of the set per Jeff and now merged.
+- Adopt the pinned hr_file/fput lifetime model.
+- Adapt to the errno-valued handshake status (hp_done takes int).
+- Rename "tagset" to "stringset" throughout (Hannes)
+- Warn and return false when a query precedes stringset_finalize().
+- Add a patch with KUnit tests for stringset.
+- Split the hp_done session-tags argument into its own patch.
+- Collect the session tags before taking the completion gate.
+- Pass ownership of the tag set to handshake_finish_complete().
+- Add handshake_session_tag_len(), shared with the NFSD parser.
+- Add KUnit tests for session-tag collection.
+- Check the file reference count in the completion-gate KUnit case.
+- Rename the ACCEPT cap attribute MAX_TAGS to MAX_SESSION_TAGS.
+- Publish the saved tags with smp_wmb() and test_bit_acquire().
+- Deny a tagged export on the non-mTLS arms of check_xprtsec_policy().
+- Extract nfsd_nl_parse_allow_tags() from the netlink export parser.
+- Build stringset only when a consumer selects CONFIG_STRINGSET.
+- Free the session tags as soon as hp_done() returns.
+- Report a rejected session tag or allow-tag through the extack.
+- Show allow_tags in /proc/fs/nfsd/exports.
+- Record the client address and XID in nfsd_export_tags_denied.
+- Link to v1: https://patch.msgid.link/20260605-tls-session-tags-v1-0-47bd1d94d552@oracle.com
+
+---
+Chuck Lever (10):
+      handshake: Add tags to "done" downcall
+      lib: Add a "stringset" data structure
+      lib: Add KUnit tests for the stringset data structure
+      handshake: Add a session-tags argument to the TLS done callback
+      handshake: Pick up session tags passed during the DONE downcall
+      handshake: Add a kunit test for the completion gate
+      handshake: Advertise the session-tag cap to user space
+      SUNRPC: Copy the TLS session tags when they are available
+      NFSD: Implement export tagging
+      NFSD: Add allow_tags to the netlink export interface
+
+ Documentation/core-api/index.rst           |   1 +
+ Documentation/core-api/stringset.rst       | 243 +++++++++++++++++++++++
+ Documentation/netlink/specs/handshake.yaml |  19 ++
+ Documentation/netlink/specs/nfsd.yaml      |  10 +
+ Documentation/networking/tls-handshake.rst |  62 +++++-
+ MAINTAINERS                                |   8 +
+ drivers/nvme/host/tcp.c                    |   3 +-
+ drivers/nvme/target/tcp.c                  |   3 +-
+ fs/nfsd/Kconfig                            |   1 +
+ fs/nfsd/export.c                           | 194 +++++++++++++++++-
+ fs/nfsd/export.h                           |   9 +
+ fs/nfsd/netlink.c                          |   4 +-
+ fs/nfsd/netlink.h                          |   3 +-
+ fs/nfsd/trace.h                            |  27 +++
+ include/linux/stringset.h                  | 191 ++++++++++++++++++
+ include/linux/sunrpc/svc_xprt.h            |   7 +-
+ include/net/handshake.h                    |  50 ++++-
+ include/uapi/linux/handshake.h             |   4 +
+ include/uapi/linux/nfsd_netlink.h          |   1 +
+ lib/Kconfig                                |  12 ++
+ lib/Kconfig.debug                          |   6 +
+ lib/Makefile                               |   1 +
+ lib/stringset.c                            | 190 ++++++++++++++++++
+ lib/tests/Makefile                         |   1 +
+ lib/tests/stringset_kunit.c                | 308 +++++++++++++++++++++++++++++
+ net/Kconfig                                |   1 +
+ net/handshake/genl.c                       |   5 +-
+ net/handshake/handshake-test.c             | 307 ++++++++++++++++++++++++++++
+ net/handshake/handshake.h                  |   9 +
+ net/handshake/netlink.c                    | 110 ++++++++++-
+ net/handshake/request.c                    |  61 +++++-
+ net/handshake/tlshd.c                      |  10 +-
+ net/sunrpc/Kconfig                         |   1 +
+ net/sunrpc/svc_xprt.c                      |  11 +-
+ net/sunrpc/svcauth_unix.c                  |  14 +-
+ net/sunrpc/svcsock.c                       |  63 +++++-
+ net/sunrpc/xprtsock.c                      |   4 +-
+ tools/net/ynl/Makefile.deps                |   3 +-
+ 38 files changed, 1911 insertions(+), 46 deletions(-)
+---
+base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
+change-id: 20260512-tls-session-tags-9d0042583f44
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
 
