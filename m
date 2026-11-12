@@ -1,66 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.201
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794456822;
-	b=bPLbIjXC982JVXtwPP82g6Gi4LnSqqgZNgSQZcs1iYNw0AvZJT1/gBY5CG5o4S9zT+x4
-	 Jy50zLgI9ESrGL66e625oE78Lwy3HfS9OfLmVSx8N+kiqUWaOwumKykD4XYMo7L7NJ2LR
-	 TRTo2keUPMjmj3gEDxhRelxN1555lbIcpjE5zwH2gVwQTZp+KoImBjP493eYXcrLUQGpu
-	 d92bA+Y8kEDPgR95Xj3jq84KIt+G/wVTKC4/i1JmTvtjIGIxPc5CgSAQfA8VgKJX6o5/r
-	 pE6j2mQLoDBK6XffPWxMSi/nFtmFpey3ohLKUS9ZhdDNBpqOYuh7BuNz1e7W1RFJe2g==
+	t=1794457465;
+	b=a7Q7kraiWq5xlJln07MpWFIqHstGODGeejeZqbliA7oB90lELdz1AA+B3fY4rrkzzEwO
+	 7JuHRYTmcV0yQ93U0pm7Keuc8wwCrAYBoGF+wwPo74nzlMZEfoWRO6r6QABPN0snAPsbk
+	 /FQMsvLrRJL2pFmj2c1cXsCPSugN1TECDwDaxFUxwm5ANpmh/ifmRuXio42iYAFtNUnxB
+	 e6YeEB5i8Z7CtlZ408OV9iRRdzAGzZBzAY108pDlW2ogw1joXzCpNovz93fMrluc23bIk
+	 1yCMd8WpIZwZtvgI/iJ2VrkprHnKvwvsDIBJHuVI0AWylBjIxkxExA+vZO7h57Ifsbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794456822;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	b=X9KoB1fzaGxOXxZ0cndFFQ22o27kDx3z5jY/Z6rT2f6Z809pm8PnTWsTJ6SxvRu968/d
-	 YpojSoV9Al6lCaMK8xREpaT81REuFm/G5dnkdGfAIn6DANPd4O7AXyS5VsBr07/U08+2h
-	 peKPLHvlvcZDaFaj9j35PdQafGXa1936/nY95DX8B9YLs4RPR5eAK524yImvTQpy1M+5G
-	 EIf4504XLaxlgEhppaG1FivLD20f6nhj1zdpdVO/wfpGzslKOEADrpkJOYAn05u+9ungw
-	 03L/7ccrkfW59q93n/n0IsVaZ6MGAR9I+WxhEbkA3CCERq1tdJ8L5UAmXQ6lHf07vhw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794457465;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
+	b=r0tT0EUZEKTyC4BG2VuX/e7GF7LPYu7wMtaU9jcnKmQD3BivrEWA0T1/7LYWZ0rIEJt9
+	 I6oDCQBa9z8OHR9cmvHJVtMcWgyq7q5pGSpatkRU48pt1QIAfJd9Gm1Hg7t5IkTsxzi2j
+	 QrlxgnEMDfOGb2lc47u+tRfg5xP0oRNxvWad9nApCIVpaz4x3jHGto9jFzf7ODF8wfJdp
+	 FfWgWnILMsuX2D09HXYSMHQbn2jDYfkPEgg9VBjF5g0YPXRIDLrgfdh8VyVsNrmdKCsS3
+	 z0mdtpbg7sLUETLyjR1QnpVW0PdMBHUe2T9Pboy7jiRQk13B/lNVqH9mT5j6MloHeNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LBSmcK8U;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dZp+0eOc;
+	arc=none smtp.remote-ip=74.125.231.201
+Received: from mail-oi2-f9.google.com (mail-oi2-f9.google.com [74.125.231.201])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA14606A321;
-	Thu, 12 Nov 2026 04:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6FD606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:24:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F6FD606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LBSmcK8U
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09601F00A05;
-	Thu, 12 Nov 2026 04:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794456821;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LBSmcK8Uq825T5Yh2FSpWHL1M7tuqT2t3wXpKRLlSLa3uXS1Nv3aaquyIJ0DLZ2Pt
-	 ch5YVpbRc/xMp0mCHRhrjwr27PJVHPzrOT6G0V+upyRrRFbhdMc9Zfs1Mu7rkBa7i1
-	 GosTsaTx/xyD2TcPFv+RNsXOZRIfnZwcZfo3brlsP7LwkxySQpVFffLeoSBTtkfyxg
-	 qVbJQ5V6K5o6VyQXuInRAOl5bKrDVl/yOk3bvEt0/A4BkPhEP9Wgw2yXOaTXP5Xg8p
-	 Hgpmq7JgCguP2qA/rkVi4XI4xGxm2lDBICYTRWsYYu6TxiKyu3/8AxczmffW5K+uAC
-	 mXDxc5vbw3JYQ==
-From: netdev-bot+sinfo@kernel.org
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Yanqing Wang <ot_yanqing.wang@mediatek.com>,
- Bartosz Golaszewski <brgl@kernel.org>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- yana06070@163.com
-Subject: Re: [PATCH net-next v2] net: ethernet: mtk-star-emac: fix device_node
- leak in mtk_star_probe()
-Date: Thu, 12 Nov 2026 04:13:40 +0000
-Message-ID: <179445682040.2168702.1032780874409478036@kernel.org>
-In-Reply-To: <1794455490000.585551.2561101329908158128@cmss.chinamobile.com>
-References: <1794455490000.585551.2561101329908158128@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dZp+0eOc
+Received: by mail-oi2-f9.google.com with SMTP id 5614622812f47-4f2a0576df3so190043b6e.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:24:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794457464; x=1795062264; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
+        b=dZp+0eOc7wf67+aV9XcOB9yjsrNEhiEJuWZRMp4y85VlJLW8OlwqJMn7CEYTRAzwg3
+         W8VJKgm/oGP9cCmLAHuHiJ9izkrdETd/R/a4uRiAditF26dNTa9ZRgeHOb8MaI49JokK
+         Zya0oeg80Id2CG9kYrNJAP/W/O/+NQy7mg0mQuQPdaFLRwmkRd7+mpIou1v82/6lJjM1
+         MfhuQk4m69Ia9zNaQS/Sqsoovgy2nt9aMRJxgddK91Ax456Qqft6YjtAOfqEpM4/HuIx
+         cfAj4tPrB13Xdt5Afph7W/8pPWseLrqRPszMQitrPgVtUeuW76plj+LOoDYA+cDWyex1
+         pktg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794457464; x=1795062264;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lpp4FX5gZJokt1GnwgH1j6FAHpdM7kiuFK8F/Wda8qU=;
+        b=fmV4rb9Bawgubn8d1Vquhu2megPR4YbDehA2vESJVy/ituosAJnMxjjnezoHZ/IHh6
+         ElMvvvNa/v7iFB5kLGiCjNlq6zo5ZOp5SFMZyLga5jtTwPZV/PJ0N+rwmP4RAcHvXo4m
+         OQyVyvPl6ALxJsBIoiklXSUvZk/xjOPhwhXP5ikh9o2gxg5JLgsN5aeO+5UPIe0DGB7u
+         Cwj117dwCniXLh/psF7eXQS8+XgBFH1KsPjtUmBrG4j6vAkM1tA7656JdhBUQK+59K6Q
+         wESj06XQMvBRJyURaopTw9eLSo7q9W3FaWkYdY/V+zRFAaagjZop9D1e23hQl82upeZH
+         2O2Q==
+X-Gm-Message-State: APuU4Z+/7eg4O2GgyadUvazW/aCiKCUPIN+deMd/pADVsqx3ct4SDx4F
+	Yn4dvft+p5HdNLQdjIQwddgxuyUw0H7Vs4epJRpYE/XtqkokyKYxR0E7
+X-Gm-Gg: AYBFou0nP9fPtrj7fN3opNN/DBdalYFIXU5fki00lz71kk5d3ttcTnLvR13SF9haqgi
+	npOw8HGrnzje8V8Lj9oH/509TKhZY4y4gJlB2UbEsBopzHuBlhugUuqLexpW93CYsbzOppFnA9E
+	GURcCIgTXodpSbuUskTpE2Qz1Q7wcWnsnhteb07Igb5OVR6PX7B8KtQ26RVG6Y9qGi/q/nIebLJ
+	oNFeeHWIeBBGr/96eM0eNRI5Ncu4oFfjgimQNgBieBD7OLRSSZUDzrCdvP1PRpEBcfUkcfqxWEc
+	zaxOdJyULzvoFeaKefBh4IxaiwM91Bsx+37SL+dVtqwWEiz0j6UcVxHtdCxLkrrRIR3Wv2jyh8d
+	lyHlhbWAeYH8NN3ljGZgeioWCcjNhNvvcu07RaBe4Fx8Pl0ILbMgtxF6OzahrjBB4rbgmMvwJYv
+	L/7Rb44SpSxdsmlX66CJQX8v/J2S14evcr706yw9rBIpfbIQie9dDsS7Day3ok2CFJoZiCVDJ9b
+	/WfnNWtKH8hmI9wHB4ftZTSGUZ/SYda04sS++YvKMQ+oqxcdYFGgKgx9urqEzepe0tX2C6Q4gzw
+	qckVVuh1HGdhOsYD3K48X3xrGdBUBxbwdg53LpKbu0ghkFum3L8J0rE5daZphrL+qEQ=
+X-Received: by 2002:a05:6808:1246:b0:532:6c52:9778 with SMTP id 5614622812f47-56cd65417d6mr1113652b6e.20.1794457464100;
+        Wed, 11 Nov 2026 20:24:24 -0800 (PST)
+Received: from localhost.localdomain ([14.22.11.162])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-56905146a03sm6947187b6e.6.2026.11.11.20.24.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 20:24:23 -0800 (PST)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] ip6mr: prevent info-leak in ip6mr_cache_report()
+Date: Thu, 12 Nov 2026 12:24:15 +0800
+Message-ID: <20261112042415.617221-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,21 +100,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+The non-WHOLEPKT branch copies the IPv6 header at offset 0 and then
+appends 40 bytes with skb_put(), but the mrt6msg is written at offset 0
+after skb_reset_transport_header(), so the appended 40 bytes are never
+initialized.  They hold stale heap contents.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The report is queued to the mroute6 socket and copied into the
+IP6MRA_CREPORT_PKT netlink attribute, disclosing the stale bytes to
+user space.  The stale bytes can contain kernel heap and image
+pointers, and the report is reachable from an unprivileged user
+namespace (MRT6_INIT in a new netns, plus the non-root
+RTNLGRP_IPV6_MROUTE_R group).
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Use skb_put_zero() instead, as the IPv4 code does since
+commit 4f34002e2e376 ("ipmr: prevent info-leak in pmr_cache_report()").
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+This issue was discovered by Tencent CodeBuddy Security.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Fixes: 7bc570c8b4f75 ("[IPV6] MROUTE: Support multicast forwarding.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+ net/ipv6/ip6mr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index dd0638d3c3f95..b7ae220d6b21d 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -1154,7 +1154,7 @@ static int ip6mr_cache_report(const struct mr_table *mrt, struct sk_buff *pkt,
+ 	/*
+ 	 *	Add our header
+ 	 */
+-	skb_put(skb, sizeof(*msg));
++	skb_put_zero(skb, sizeof(*msg));
+ 	skb_reset_transport_header(skb);
+ 	msg = (struct mrt6msg *)skb_transport_header(skb);
+ 
+-- 
+2.43.7
+
