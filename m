@@ -1,106 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794520877;
-	b=tDOriZlp08CIiKR7dCFaYoCX9bwaKcHOlCtE8ZOohzIz9ikUf4nmZ1C2zqQPpLCGQQe4
-	 Dy2bx0/puHMQd/119+91c9DiHJA+39aYZnzoVWxDvs3ezxbqQhn3j+tkbDZR9kyBr5p8P
-	 vUzxh6+zfqr8Uwiy4mere7w1bcCiPK8CjrAvw4hHLNXSpq4weoqW7HHrvYPVhKobFhyYa
-	 nWRdAXtBMiFALp7cRhiLAQwzbqe3TdC26XtqZ9Fsho6AZ3C7phISaMebKX+D3C2++tJba
-	 TDWmAOLr+aIqZT0k7kXbpflTlCo/iPrQXPdhlzefDHpMec3ZQgOmP1gW6z7eGkiou+w==
+	t=1794520989;
+	b=tuy73esT/oJI+HQPiVhd5d75mdxjmmHEw+lCEZG0XOSuAuNoendWzYwDM/laaImESPq1
+	 RwcunwPykoInkym36m0aPiQFwinh/hXk0+XcXggmRuMoa+V87MPJ5U1O0eqMijEbM3359
+	 igWwA1XYNZxlwTxAwXPVZJnX00mO41bZXq6gmw9lk9GfxspAhJUr8sSpHoNgA9Svq1JVo
+	 jqHMb1ftHBi0qrrfLf5Gf8YoXvSXILHqlc4tJp1Id4L6MI0yfCMtQNLpD9sKvJvb993yr
+	 Awi795l19Wm0gdKJOkqH7ZcNK1dpJrTy7msU1TvVxZBzIaEv8cp0f8agj6JHrYPb6+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794520877;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=NPahPdj6bq+f1tXgN0owcrCGpqBtYrj35FRosbGsj3U=;
-	b=WRgIJhjai0m7azALTBvb/3zML95kmED0oLyd0iDGZtQtNJagBffzMJwQRJ7aLBxYpZTJ
-	 0W3wN9UU80yZTNI4S2eWWHWk0NU1KaY5tIpYRWXCeUk3C08MU6LB486DTIFuJwdipVJh6
-	 U8IQW+KLE5G9DkQJBosuGriENe3Gp+Zr6bUsem2sy878mj/F964wJ19m4E40GGXEAG6Yo
-	 6Vd+T8uXryyZd1kwWyAwmFf3k+GKL5CbwnLoleczQQmhQSPgiUfvvlZc89VeOdXPkfGDx
-	 a3t3Wdz4Qy2rKdCEnv4i3xC9ZALXIIelBhntoGTaoPJozItFeJcBwAQ7kHkWbC/4asw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794520989;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=J6Da50J1V8Sxf6MbTURmnFjnMgqzNALvpXgpfJtWA6g=;
+	b=VK2AIqmQf33y2TBRKbvDrUzPsnI4jRNJ43mOoQ2U/2LZBcbywqWTjW9T8h1dAGEQTebX
+	 8V1fVT0izIhNihDxiNl3TKQEkG0L2CTA72IBa6ly2Huvc1VrouyuR5RUhbJNpPXMkbNTt
+	 oUuj3sYMvK2NGujjftH7CxpPOVwQi2hh6dP8V8BzbeuOvlqTX4aoyy+f4gH4SLybxlT45
+	 LDlRtO41gtD8/sLe2vvIY8FQzxhtu1TeL7LbIz2vbrAdbp1d2BNFhdKT/1ohboId2qV6B
+	 JsaTLbN3CaeHidwGfXVtwgOYtJXTyPESfpn3b64EUKZcPFpbBJQ5NEmCcGoaVk0KuQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=crBdnlNF;
-	arc=none smtp.remote-ip=209.85.221.182
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZUbD+ZK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B53606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:01:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0B53606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9571A606A31C;
+	Thu, 12 Nov 2026 22:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=crBdnlNF
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5eaf34452a9so414631e0c.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:01:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794520876; x=1795125676; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NPahPdj6bq+f1tXgN0owcrCGpqBtYrj35FRosbGsj3U=;
-        b=crBdnlNFjY1CopAF5BSuM/Cf9DBpPovYPuQA2z7PeQVyJ+ri4LNxZmxMDPHLkjZzUX
-         YXEzOIQeu6jOZ3Vfu257SgR28n2/o9WTUJCp4jX7AQ7CwJ6YZGCdqEvsESdYstOZwtr+
-         y5FBcD9vtzU6ScBTuCmwItQBHhHS0Mioftcwxh5sxhRkxZMwdqZs32gy7TnOkO41Z//w
-         b+DcVH8r8+7GAwFf+mxoEBW5G262Tu7m4NZhIR8eUceDPkfmewcP0wS9q2g4DVsAbEag
-         6Foc7aCnro/jz9/AvCXbzQbLBsNZeaEuTlMbkY+C29++MTkwbwOd/h4YQrFCZBLAzoOZ
-         o9Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794520876; x=1795125676;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NPahPdj6bq+f1tXgN0owcrCGpqBtYrj35FRosbGsj3U=;
-        b=YbH1cI0Tr5UtDv03d0Q0BOISrp1Ztj4iiqDLC6DoBwUtqbo6PS31b5N/JuJo4HnTtG
-         3qD3XFDzqxz8ci2njfPVe80MvL/o7LV3wC0Y/k5XVtPW3+LnDRFCSJrYejB+2f+tB2hg
-         DUb2Y9D4s2yXjG7HKG28iiwi7macLz1R/ceJ7AoeoVkv+snlDg3o96/L52iQbnujqhLI
-         dKUHlrpex9hIungG1cdVDWO58I+ZoVeNlwOGakrkx2nILm+FqoLxNmvt9JWw0muSaoy7
-         /Lv5jVPM+S2TKHJKk47Bqsa/BMgsNgVk/SYdFYcg3YMUrnBQOYe/4pXLXsPQRoVDtnbY
-         +A7A==
-X-Gm-Message-State: APuU4Z/XmSvt36ojPQ04PAeSSxdvz+iNOrya7/Y2f6RGnG+XNppYobzE
-	d3hZZp3YSyj9Dn6AbwvH38TW650WYiCH1gwHXeFyPtg9YcY+I2hmK96O
-X-Gm-Gg: AYBFou0ti+c0riyH4rWA2Qr5c5dGuRGkrAWdXIbdAMYU7qiJ884TphCBYvi8Icoko3z
-	UcFZcc1NcIMJcq+6KfZidr9IzxOsAVnT/tLwoc/+D1wy2ILl1sYd59begv6/LSXVUkfucHNNnGW
-	rkqbmBPIUQpjF8vtpaUsQnQSwxv/NTVHJv0lZfWHH99lWBgS2nBwQAt5gAnFriuTeTuLP4Ifq2n
-	fAijgQX+N1/amrL2RmBhccOcj1UJdgswqM1BEpuJlWKVvdTLVf66HT6lMbGtBZ1FbaR52lL6926
-	8AmRmI38gJiDocyv+fMI5lgvSdbPaGppAwei8Q0bNoZLvZcg57RMK7OVvIf8BtUuB1LSRgpIaa8
-	vvawm4XSuCH7PaJGjEnW85m0ynmsvUysqYdDoLX46yKUlaDpJ33XaTHKxU0v2DGoCiJtK+ltvVU
-	Q32k8tUe/v7o85exzDoSILPBa+rXtU3ttmjOjBo/oru9bsGw3jpoYz93KfaiNz3ibej2VUy7dDo
-	/qCkw3jlQq847MQu7VRPChau+PFeKZFspUBObRD8eN4pgKR4roJp10s2pw6XZOxgBGgFSY2yLzH
-	y8uSzu7OOw79wMFogLW0XTDnGgdUxcT78jIuYZcE5oEdZjsod+ZTnP1r3S4uEqEOza/Y5p/QB0j
-	CnoDWfa1nQeQdWRut4Jm68D9Xxq8dGTd77Rx0BECOtDshTqsrdUaL0D4nD9Z0oRM=
-X-Received: by 2002:a05:6122:2906:b0:5ea:c3bc:c54b with SMTP id 71dfb90a1353d-5ee34a512c0mr136619e0c.3.1794520875632;
-        Thu, 12 Nov 2026 14:01:15 -0800 (PST)
-Received: from gmail.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee34e32f83sm214802e0c.6.2026.11.12.14.01.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 14:01:15 -0800 (PST)
-Date: Thu, 12 Nov 2026 17:01:14 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: KhaiWenTan <khai.wen.tan@linux.intel.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Song Yoong Siang <yoong.siang.song@intel.com>, 
- Looi Hong Aun <hong.aun.looi@intel.com>, 
- KhaiWenTan <khai.wen.tan@intel.com>
-Message-ID: <willemdebruijn.kernel.2721e06a6436@gmail.com>
-In-Reply-To: <20261111053728.2611070-1-khai.wen.tan@linux.intel.com>
-References: <20261111053728.2611070-1-khai.wen.tan@linux.intel.com>
-Subject: Re: [PATCH net 1/1] af_packet: Fix wrong timestamps in tcpdump
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZUbD+ZK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979911F000C4;
+	Thu, 12 Nov 2026 22:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794520989;
+	bh=J6Da50J1V8Sxf6MbTURmnFjnMgqzNALvpXgpfJtWA6g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aZUbD+ZKFwkQgxT5VsLJNK35sCqd1Dkwql1U1jW5dNGhtmirRAtrMXgR76vfu/LUj
+	 rvDHchTjL4ofamZab2MD1xmVH0rpG91uL6Gt5ZnGRhAIEZ+jAlCRh7BbQOA4vwlh6R
+	 GRQaC25HorukNtgKe9az2to+rs2ye4DDlEY6Gne/DUJXJyUVy8os9QKnx1UNXl/mAj
+	 KyadDR7rCr27TAWlREvrKLm39lKZ6jcBZX7CCB4ozsTWdHgxaAMXoPuDQp7sdj2btG
+	 LU0Fvi++qUZec+XQxVTIK8rssclbFFjKg6hAJ9zLkV4mRtepG4b6Qm6i18Z+exJADU
+	 o0/SeTY/7fmbg==
+Subject:
+ Re: [PATCH net] net: tn40xx: fix swnode use-after-free on probe failure
+From: netdev-bot+sashiko@kernel.org
+To: johan@kernel.org
+Cc: fujita.tomonori@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, stable@vger.kernel.org, hfdevel@gmx.net
+Date: Thu, 12 Nov 2026 22:03:08 +0000
+Message-ID: <179452098811.2199510.15081106290449010908@kernel.org>
+In-Reply-To: <20261110100051.2567443-1-johan@kernel.org>
+References: <20261110100051.2567443-1-johan@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,109 +63,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-KhaiWenTan wrote:
-> From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-> 
-> Since commit 97dc7cd92ac6 ("ptp: Support late timestamp determination"),
-> timestamps may need to be retrieved with input from the driver
-> .ndo_get_tstamp(). Support was missing from mmap'ed AF_PACKET sockets.
-> 
-> The problem was noticed using the igc driver, that since commit
-> 069b142f5819 ("igc: Add support for PTP .getcyclesx64()") has migrated to
-> use .ndo_get_tstamp() that timestamps were wrong on the receiving side,
-> when using tcpdump.
-> 
-> Fixes: 069b142f5819 ("igc: Add support for PTP .getcyclesx64()")a
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Fixes: 97dc7cd92ac6 ("ptp: Support late timestamp determination")
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-> Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
-> ---
->  net/packet/af_packet.c | 29 ++++++++++++++++++++---------
->  1 file changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index cf6429f09477..7197236c8a3b 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -456,15 +456,20 @@ static int __packet_get_status(const struct packet_sock *po, void *frame)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch rests on a wrong premise and adds a refcount leak of
+  the MDIO software node, along with a dangling pointer into freed…
+
+--
+
+net: tn40xx: fix swnode use-after-free on probe failure
+
+This commit removes the fwnode_handle_put() of the MDIO bus firmware node
+from tn40_swnodes_cleanup() and calls it a stray reference decrement. The
+commit message says this put causes a use-after-free when the software
+node group is unregistered on probe failure and on driver unbind.
+
+> diff --git a/drivers/net/ethernet/tehuti/tn40_mdio.c b/drivers/net/ethernet/tehuti/tn40_mdio.c
+> index fb1a4a2e4dbc5..49951477ac052 100644
+> --- a/drivers/net/ethernet/tehuti/tn40_mdio.c
+> +++ b/drivers/net/ethernet/tehuti/tn40_mdio.c
+> @@ -157,7 +157,6 @@ void tn40_swnodes_cleanup(struct tn40_priv *priv)
+>  {
+>  	/* cleanup of swnodes is only needed for AQR105-based cards */
+>  	if (priv->pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
+> -		fwnode_handle_put(dev_fwnode(&priv->mdio->dev));
+
+[Severity: High]
+Is this put really stray? It seems to balance the reference that the MDIO
+core takes on the bus fwnode when the bus is registered:
+
+drivers/net/phy/mdio_bus_provider.c:__mdiobus_register() {
+    ...
+	if (bus->state == MDIOBUS_ALLOCATED)
+		fwnode_handle_get(dev_fwnode(&bus->dev));
+    ...
+}
+
+The bus has no primary fwnode, so dev_fwnode(&bus->dev) is the tn40 MDIO
+swnode here. The core expects to drop that reference in mdiobus_release():
+
+drivers/net/phy/mdio_bus_provider.c:mdiobus_release() {
+    ...
+	if (bus->state == MDIOBUS_RELEASED)
+		fwnode_handle_put(dev_fwnode(d));
+    ...
+}
+
+However, tn40_remove() and the err_cleanup_swnodes path in tn40_probe()
+call tn40_swnodes_cleanup() before devres runs devm_mdiobus_unregister()
+and devm_mdiobus_free(). In tn40_swnodes_cleanup(),
+device_remove_software_node() calls set_secondary_fwnode(dev, NULL). The
+swnode is not primary, so this sets bus->dev.fwnode to NULL. By the time
+mdiobus_release() runs, its put is fwnode_handle_put(NULL), which does
+nothing.
+
+Here is the refcount of the MDIO swnode kobject after a successful probe:
+
+  software_node_register()               1
+  child PHY swnode kobject parent ref    2
+  device_add_software_node()             3
+  __mdiobus_register() get               4
+  device_add()->software_node_notify()   5
+
+Without the removed put, tn40_swnodes_cleanup() drops three of these
+(notify_remove, swnode_put, and software_node_unregister). The PHY child
+release drops the parent ref. That leaves the MDIO swnode at 1 forever.
+
+With the put in place, the count reached exactly zero. kobject_cleanup()
+only drops the parent after the child's release has finished. Given that,
+where does the use-after-free in the commit message come from?
+
+  "the parent MDIO node has been freed before the child PHY node"
+
+After this change, does every TN9510 unbind, module unload, or probe
+failure after __mdiobus_register() leak the MDIO swnode?
+
+That leak would have these effects:
+
+The tn40_mdio-<id> node stays registered under /sys/kernel/software_nodes.
+The next probe's software_node_register_node_group() then fails with
+-EEXIST, either through software_node_to_swnode() or through a duplicate
+kobject name. The card cannot be bound again until reboot.
+
+The leaked swnode's ->node points into tn40_priv->nodes.swnodes[], which
+devres frees. software_node_find_by_name() dereferences
+swnode->node->parent and swnode->node->name for every registered node, so
+it would read freed memory.
+
+device_add() set swnode->fwnode.dev to &bus->dev. device_del() never
+clears it, because dev->fwnode is already NULL by then. The leaked node
+would keep a dangling pointer to the freed mii_bus.
+
+The same core get/put pair already exists at 25b6a6d29d40 (in
+mdio_bus.c), so the 6.15 stable backport would bring the same leak.
+
+Could the fix account for the core's reference instead of dropping the
+put? For example, bus->dev.fwnode could stay set until mdiobus_release()
+has run.
+
+>  		device_remove_software_node(&priv->mdio->dev);
+>  		software_node_unregister_node_group(priv->nodes.group);
 >  	}
->  }
->  
-> -static __u32 tpacket_get_timestamp(struct sk_buff *skb, struct timespec64 *ts,
-> -				   unsigned int flags)
-> +static __u32 tpacket_get_timestamp(struct net_device *dev, struct sk_buff *skb,
-> +				   struct timespec64 *ts, unsigned int flags,
-> +				   unsigned int sk_tsflags)
->  {
->  	struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
->  
-> -	if (shhwtstamps &&
-> -	    (flags & SOF_TIMESTAMPING_RAW_HARDWARE) &&
-> -	    ktime_to_timespec64_cond(shhwtstamps->hwtstamp, ts))
-> -		return TP_STATUS_TS_RAW_HARDWARE;
-> +	bool cycles = sk_tsflags & SOF_TIMESTAMPING_BIND_PHC;
 
-nit: whitespace line between variable declarations
-
-> +
-> +	if (shhwtstamps && shhwtstamps->hwtstamp &&
-> +	    (flags & SOF_TIMESTAMPING_RAW_HARDWARE)) {
-> +		ktime_t tstamp = netdev_get_tstamp(dev, shhwtstamps, cycles);
-
-Does this call need to be conditional on SKBTX_HW_TSTAMP_NETDEV, to
-interpret the union as netdev_data?
-
-like get_timestamp, resolve the orig_dev.
-
-> +
-> +		return ktime_to_timespec64_cond(tstamp, ts) ? TP_STATUS_TS_RAW_HARDWARE : 0;
-> +	}
->  
->  	if ((flags & SOF_TIMESTAMPING_SOFTWARE) &&
->  	    ktime_to_timespec64_cond(skb_tstamp(skb), ts))
-> @@ -476,11 +481,16 @@ static __u32 tpacket_get_timestamp(struct sk_buff *skb, struct timespec64 *ts,
->  static __u32 __packet_set_timestamp(struct packet_sock *po, void *frame,
->  				    struct sk_buff *skb)
->  {
-> +	struct net_device *dev = skb->dev;
-
-validate skb->dev != NULL
-
-> +	unsigned int sk_tsflags;
->  	union tpacket_uhdr h;
->  	struct timespec64 ts;
->  	__u32 ts_status;
->  
-> -	if (!(ts_status = tpacket_get_timestamp(skb, &ts, READ_ONCE(po->tp_tstamp))))
-> +	sk_tsflags = READ_ONCE(po->sk.sk_tsflags);
-> +	ts_status = tpacket_get_timestamp(dev, skb, &ts, READ_ONCE(po->tp_tstamp), sk_tsflags);
-> +
-> +	if (!(ts_status))
->  		return 0;
->  
->  	h.raw = frame;
-> @@ -2424,9 +2434,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
->  	/* Always timestamp; prefer an existing software timestamp taken
->  	 * closer to the time of capture.
->  	 */
-> -	ts_status = tpacket_get_timestamp(skb, &ts,
-> +	ts_status = tpacket_get_timestamp(dev, skb, &ts,
->  					  READ_ONCE(po->tp_tstamp) |
-> -					  SOF_TIMESTAMPING_SOFTWARE);
-> +					  SOF_TIMESTAMPING_SOFTWARE,
-> +					  READ_ONCE(sk->sk_tsflags));
->  	if (!ts_status)
->  		ktime_get_real_ts64(&ts);
->  
-> -- 
-> 2.34.1
-> 
-
-
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110100051.2567443-1-johan%40kernel.org
