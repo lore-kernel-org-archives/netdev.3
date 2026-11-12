@@ -1,59 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794508668;
-	b=XYSMpYwWEBhRFYnq7Y5nt/4/Wpbb2Q1lfDFukIG3y94/wTL2JPcVPIKWF+Th2mQu8gNI
-	 MMU29FwVLxvvmex2MUGv56Vn+CoHvYPRgWqwV+hpT2k7Hp1ABRm1QeBgoq5TllB0aCMeP
-	 WXGgH45lZMm1TT40zC5Bd3Z03zTwwqD8GXJIOI6Jw364Gg/yK53wq5I5eaaMPTZNkftK5
-	 XZAo8GBunjqbnUOU4pmb5UdV8g9Y2W+S2SRPKIdwwnRERQ+/sOJn6TAke14P7JmQhSRsC
-	 b0GB+CLRUVJClFVgE0lhAChWLNLtbX/ZzyOZeNdpcEeeWgJsH92e+w41e3sUKlbRCAQ==
+	t=1794508806;
+	b=u4Rd9OwpqjcEAMCms1vygVtgYPqT2TAsLZvw8RRVE5vzwHe8KpoQubbmU4hTovPPmgbA
+	 bBFi2XzWsLzADwn7dHu8R3w8JwDzpxIxnDmCuO9axHwJW4zlk22UDh+uONrs2ToQXikzd
+	 gU+J22eHWbgQBLj6SXsKkZqNDvW3ySJt1dl469HuASWj0IpFWuVO8CEmzM1v1vDVFcg33
+	 vfeKYFsUouaOm1+R83+3M2pfiG4juiJlpr4O+1uUr7YSHoMre6XjUTpdENU7VKzVAEF4q
+	 OUPR+txji0KslenUEOaWpT/37d5EFkOjTHFP2OvSXMF5nrmlS2LxqLgHuV+ilwY9mXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794508668;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=RsXs2i7+CtvLR6Av6bBCfCc6Wle/5dFWZ1B+tWLP9vo=;
-	b=KFM8cv27wkwdPRC7W1u5FgU3U3zxd5z33uM8CME0ZH5nletw80NBtADekCyWmaD9AsDX
-	 J/2qFq/S3d3eZbAFa7SK+59mN2lh2J78LIcJOkRiJUgCsubjbnSEcQtsMQkdX/q4Yp9oU
-	 /IyCwVsespEgsQ3KefAOq+0psWy78Nt/hSH5sOo+zgW/qQr8cW/r/FXxH2pt5Tch69u7t
-	 aEcxD6nFMTunBbpnQ5X7WL0XeO0L6cNHbRR1prwDSRy9CNzj3LBNvTAFtSvpmsn9WyxVM
-	 sqxTbTUnDtxVx0FCrK/NQA48rZT5Vl8o9NaXL/K9WwkXGKgOgoN6gk6Jrg8i5Sj7i8Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794508806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=//DGCwL3Y1u1mfVqzISzAnZGj/wOqtSDLZS1SHCj9Es=;
+	b=YaAl0OFz4tRLUaFvQjlV8wpmcCB6ARTMLvJAcIcyRWGlMrk66BfxOjHdbrx4cTWcyRSI
+	 4O/LN3ulc9debkH/21CqcmjyqKu0jTabeS5JEYfLgLbxA6sITHeroXoZWUTgvnktHNAzU
+	 lC1JWAwUJjUmbGwMsbePCO9nuIsnw1OsshcwrcsyhwBLo1cPM19RTV+e2p5QBhYT+4Zt7
+	 nxzpahR4wkSc2IKjbiagIrD1Sy5gdiwb7JrIh4ooRlOXwVH0N8FyBTw5hz3/MUwLx74Mn
+	 nBDw3wRjgOMtlbAL5OQbrU+l5z02AdO30EG2BfE+wSyUJ2iL6JmHFgopqDzVG66dk8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jKxNGQRN;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpmtM0TP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4082C606A32D
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 18:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66C606A32E;
+	Thu, 12 Nov 2026 18:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jKxNGQRN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440191F000C4;
-	Thu, 12 Nov 2026 18:37:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpmtM0TP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0753C1F000C5;
+	Thu, 12 Nov 2026 18:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794508667;
-	bh=RsXs2i7+CtvLR6Av6bBCfCc6Wle/5dFWZ1B+tWLP9vo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jKxNGQRNkeqaQIOutbdp2E9BXGD+7bxSyYwxhNRk7DCLImB1rMgjy8nfZQt4lus7U
-	 pxOBAaOsE+1I4Nck+5ZA4xqzsmmASNPdpIS0Cwwcll0BKxqmXj/KiMElqhLeQL/AES
-	 fii7f6oylrsv3QUitRBbdycFfKF7pK7FKRsZTVxpIC3a0xBPrV2njDnYeXu1eWGzAM
-	 Ibvp9AYMD1+AaXUf0ZvPblJODoPa63UfXI6+pN9gq9/IJ5KHVmI43cddhsxkowBKBR
-	 c4NJecm0bySNEYFVfqDuulwLfEUUsvsQUIArquX1ow+e2OnFVSDGAJt9pfzZhWsO8M
-	 GLZ+fpSG4SSjA==
-Subject: Re: [PATCH net 2/2] bnxt_en: Wait for the PF in bnxt_resume()
-From: netdev-bot+sashiko@kernel.org
-To: michael.chan@broadcom.com
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
- keegan.freyhof@broadcom.com
-Date: Thu, 12 Nov 2026 18:37:46 +0000
-Message-ID: <179450866678.2199510.18044059314286997868@kernel.org>
-In-Reply-To: <20261110174943.2106347-3-michael.chan@broadcom.com>
-References: <20261110174943.2106347-3-michael.chan@broadcom.com>
-X-sashiko-severity: Medium
+	s=k20260515; t=1794508806;
+	bh=//DGCwL3Y1u1mfVqzISzAnZGj/wOqtSDLZS1SHCj9Es=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=cpmtM0TPt8HPg8KetPSukxQGiC6Y8NS2UWC03RfxMyl4AkR+dA6hQ7An2GXvXzeXx
+	 3dq5u7gcnApuQvVEXmWxW16XMi0SbjazYND54ORM4+cIGHBQ3/nLy6Xr4Q7326+40N
+	 VNTMm3xBudS+qXvf0F+3LQKtLQu5YLzHinF53pgMYfIUAI8Ucgeg9SgFJSsTBzxKY3
+	 LlOjGe9DjSuCWWZMbqeP0AC4+8pmAoER9exX+G4BUUJwHxi0nJ1HQeRZCdnuTbH++P
+	 obaUe5iy90y0+S5jOWR2Q4hJJQD3L3fkO57Djd7Ly7HlDj2YqZyKN8wKMsYdGsHe+i
+	 6J6yU+Keh+cqw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1586380AAFF;
+	Thu, 12 Nov 2026 18:40:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,161 +53,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v5] bnxt_en: Take RTNL before netif_close() when
+ aborting
+ FW reset
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179450880478.585389.16589339038635282296.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 18:40:04 +0000
+References: <20261110044235.204386-1-bcochrane@google.com>
+In-Reply-To: <20261110044235.204386-1-bcochrane@google.com>
+To: Bryan Cochrane <bcochrane@google.com>
+Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, sdf@fomichev.me,
+ joe@dama.to, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hello:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Mon,  9 Nov 2026 20:42:35 -0800 you wrote:
+> netif_close() must be called with RTNL held in addition to the netdev
+> instance lock: __dev_close_many() asserts it, and the NETDEV_GOING_DOWN
+> and NETDEV_DOWN notifier chains it runs rely on it for serialization.
+> 
+> Commit 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+> replaced rtnl_lock() with netdev_lock() in bnxt_fw_reset_task() and
+> bnxt_fw_reset(). That is sufficient for the paths that only tear the
+> NIC down internally with __bnxt_close_nic(), but the abort paths close
+> the netdev via bnxt_fw_reset_abort() -> netif_close(), and the error
+> path in bnxt_fw_reset() calls netif_close() directly. Those now run
+> without RTNL and trigger a WARN_ONCE() cascade when a firmware reset is
+> aborted:
+> 
+> [...]
 
-- [Medium] The patch uses two things as the PF-ready barrier for a VF
-  resuming in the same kernel: a successful HWRM_VER_GET poll, then…
-- [Low] The failure that the commit message and the new comment in
-  bnxt_resume() describe is not the failure shown in the logs.
+Here is the summary with links:
+  - [net,v5] bnxt_en: Take RTNL before netif_close() when aborting FW reset
+    https://git.kernel.org/netdev/net/c/bf83b257423b
 
---
-
-bnxt_en: Wait for the PF in bnxt_resume()
-
-This patch changes bnxt_resume() on a VF. Before taking rtnl_lock() and
-netdev_lock(), the VF now polls firmware with bnxt_hwrm_poll() up to 10
-times, so that a PF in the same kernel can finish initializing first.
-The retry delay depends on the error code: 250 ms for -EAGAIN, 750 ms
-for -ECOMM, and no delay for -EBUSY.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 9d232d8357587..03682d9182c6d 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-
-[ ... ]
-
-> +	if (BNXT_VF(bp)) {
-> +		for (i = 0; i < BNXT_RESUME_MAX_RETRY; i++) {
-> +			rc = bnxt_hwrm_poll(bp);
-> +			if (rc != -EAGAIN && rc != -EBUSY && rc != -ECOMM)
-> +				break;
-> +
-> +			/* Wait briefly for -EAGAIN (FW busy), a bit longer for
-> +			 * -ECOMM (PF down) to allow the PF to fully initialize.
-> +			 * For -EBUSY, the message typically has timed out, so
-> +			 * try again immediately.
-> +			 */
-> +			if (i < BNXT_RESUME_MAX_RETRY - 1) {
-> +				if (rc == -EAGAIN)
-> +					msleep(250);
-> +				else if (rc == -ECOMM)
-> +					msleep(750);
-> +			}
-> +		}
-
-[Severity: Low]
-Do the commit message and this comment describe the failure that the logs
-actually show?
-
-The commit message says:
-
-  the initial FW message may timeout if the PF has not been initialized.
-
-But every quoted log line is:
-
-  hwrm req_type 0x0 seq id 0xb0 error 0xa
-
-That message comes from the firmware error response branch of
-__hwrm_send(). It is printed only after firmware returned a valid response
-with a non-zero error_code. A timeout would print "Error (timeout: ...)"
-and return -EBUSY instead.
-
-Error 0xa is HWRM_ERR_CODE_HOT_RESET_PROGRESS, and __hwrm_to_stderr() maps
-it to -EAGAIN:
-
-drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c:__hwrm_to_stderr() {
-    ...
-	case HWRM_ERR_CODE_HOT_RESET_PROGRESS:
-	case HWRM_ERR_CODE_BUSY:
-		return -EAGAIN;
-    ...
-	case HWRM_ERR_CODE_PF_UNAVAILABLE:
-		return -ECOMM;
-    ...
-}
-
-The kernel-doc for hwrm_req_send() also describes -EAGAIN as "HWRM busy or
-reset in progress".
-
-The new comment labels -EAGAIN as only "FW busy" and gives it the shortest
-backoff. The longer "allow the PF to fully initialize" wait goes to -ECOMM.
-So the observed failure goes through the 250 ms -EAGAIN branch, with a
-total budget of about 9 x 250 ms.
-
-Could the commit message and the comment be updated so they name the
-hot-reset-in-progress (-EAGAIN) case as the condition being fixed?
-
-> +		if (rc) {
-> +			netdev_err(dev,
-> +				   "Firmware not responding during resume, rc = %d\n",
-> +				   rc);
-> +			return -ENODEV;
-> +		}
-> +	}
-> +
-> +	rtnl_lock();
-> +	netdev_lock(dev);
-> +
->  	if (bnxt_hwrm_ver_get(bp)) {
->  		rc = -ENODEV;
->  		goto resume_exit;
-
-[Severity: Medium]
-Is rtnl_lock() enough to make the VF wait until the PF has finished
-initializing?
-
-On the PF side, the end of bnxt_resume() drops both locks before it
-reconfigures SR-IOV:
-
-drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_resume() {
-    ...
-resume_exit:
-	netdev_unlock(bp->dev);
-	rtnl_unlock();
-	if (!rc) {
-		bnxt_ulp_start(bp);
-		bnxt_reenable_sriov(bp);
-	}
-	return rc;
-}
-
-bnxt_reenable_sriov() calls bnxt_cfg_hw_sriov(bp, &n, true) with neither
-rtnl nor netdev_lock held. That path does this:
-
-bnxt_cfg_hw_sriov()
-    bnxt_hwrm_func_buf_rgtr()
-    bnxt_func_cfg()
-        bnxt_hwrm_func_vf_resc_cfg(..., reset=true)
-
-It registers the VF request forwarding buffers and reserves per-VF
-resources with HWRM_FUNC_VF_RESOURCE_CFG.
-
-A VF that has passed the poll and is blocked in rtnl_lock() gets the lock
-as soon as the PF drops it. It can then run bnxt_hwrm_ver_get(),
-bnxt_hwrm_func_reset(), bnxt_hwrm_func_qcaps(),
-bnxt_hwrm_func_drv_rgtr() and bnxt_open(). All of these can run before or
-during the PF's bnxt_cfg_hw_sriov().
-
-In that window, could the VF query its resource limits and reserve rings
-before the PF has restored the VF min/max resources and forwarding buffers
-after the hibernation reset? If so, bnxt_open() might fail ring reservation
-or see stale limits, so the "PF not initialized" failure could still happen
-in later commands.
-
-Would it need explicit ordering to close this window? For example, the PF
-could reconfigure SR-IOV before releasing the lock, or the VF could wait
-for a PF-side SR-IOV ready condition.
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110174943.2106347-1-michael.chan%40broadcom.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
