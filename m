@@ -1,95 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794495710;
-	b=2DB4XGRIZafQ3qk1yDRuQNC1J/TGQsa3qmemdOPJjSuGMC88Y+uNcNkSJflo4w7vqe6c
-	 lp19KzfYuOg4pw3kw8VkIexu2TuuaQlLOZTeFWGMBvAffoDEVu/gTkI+LDQki/+4LkFr/
-	 iRH57El4xx+88ekZesKDFv+s2vKIihcuho/ARjlcujfYmxo7p3e0qQ3ClDO2zo4EBBtYZ
-	 rwuA1U246hdd0cYMdTcZNI1Fm2TOuXbqtyP+0xmff+O4AtR3xM/YgWuASn4TNlRAqQNym
-	 NvkZ3I8Y9IMA6NAhTNUn0QSqEupDIPWBYiv/qmg3W6TsyLtNk0bRMu4gpfV/lbJprRw==
+	t=1794495936;
+	b=lNNMZWrbJ8M2YBB4zH7doDjudiRtZc4vM35BjtXEzUOZDgULBa8OYr5bj88uicNQLpLj
+	 wZCWHv9AfnRRuGoqgi+5+SIpvNpYXZd1bucz+iDidy+Nya56YTHOsGdHfxX7zMHUUOlj1
+	 RPK+F5Jnf/t1phQfX0NDFuFcG+EOKHcGhLexkKLM94f/4aUqj70qVTxSrKTD1q+EF1okQ
+	 ePS1GpmLWsVLCwKX8Nry07i0xnPWsA836ZvYiMCsZErg6PkeYJslruNUH477nfpXcCBYA
+	 GVxLxd3DNjRtqVIT7s2h3yCJmcvyyU5+hEz7Fgui0kjezC07aMaWkZbRNp0pZGhYhYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794495710;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
-	b=2CBELE8Io7mfEg6htoa355zqBDZuWYaoNGMyQmOGXlusWUOUB4HsBKgJbzArbuC1tLav
-	 mNMSNPPXvdxSkpLxofauLo8uJ7GvQMyAGU1orrrkW7xAT6fChyhr4VZDoYocGy+s2s87X
-	 aHbmvd97GxOT2Essmr/8i5zJD5LuHFCkaIfbaWQjl/r+Zjr4G1vvHW6SoPsIBkkWGy7mS
-	 mRVr96L418rTu/9auTFsT5A2BzB2C3gpK96nxq6RNZdp1YllodIcYpdzSoML7hnEbYbFD
-	 V6ji4ZpBxe/PacsRZpmqrw4+OYngt14sf/1CcZJBschEQwUX69rRPf6b9p3iBFH6hpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794495936;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=GOqpkyo4LPYyLkLcWc/OmF1B6GtriSScGQCA7EInhEE=;
+	b=EgPCJYJ/pe8pgB3QT/eZT2MQJTlSdCldvHq2Ct9HURivUvaFGZrBUcINZm2/D0Fr4ADv
+	 A2j/Knah9sHur98VgKH+by0ScleA2tNUaueY4eOxJEV1JpAp9y3+SnZlEdgG05IuGehIj
+	 7H7bWHS41A6Y3wCGhUhD4PnwEcb6Y6CkBxsW1Gz7L/4fs4Pk1i2p1QAvrZ98cRNAREXcD
+	 Dx/ibpK3ZVDx3a3CkcNYYY61RG1UWjy+J7ntsh0QOECT0hNOLHvabWklnCX5rQUilJMEt
+	 tSEQlwzCUfuwxHM/xUDSh04WfgE6z0Qy14LGw03S1eEXjvVL9IMjdAqz2OHo/uv8/Qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="yFXqY/uI";
-	arc=none smtp.remote-ip=209.85.217.45
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=edYMVlV7;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="F//A/5n4";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3A7606A338
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:01:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C3A7606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AD6606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:05:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7AD6606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yFXqY/uI
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7d2dbc0a8d4so1518737137.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 07:01:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=edYMVlV7;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=F//A/5n4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794495934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GOqpkyo4LPYyLkLcWc/OmF1B6GtriSScGQCA7EInhEE=;
+	b=edYMVlV7KDj4CILKc1yV8+dPJk2KPiMCF1jiT0GG9UhfS2vf+qLfVPbYhNlc1nnDjm1wB/
+	qctOx4t4wjWYhNFx280kIeaP0TzQ5KbUdkQoc6YOOUrphR6ftt8S+o6HELhsSXb2VLQ9Ph
+	u4KFyS0MJ/zqCaFG1QxtVIrNiyjEwxg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-TUNkaSLEPVu2JuVJQVzPfg-1; Thu, 12 Nov 2026 10:05:31 -0500
+X-MC-Unique: TUNkaSLEPVu2JuVJQVzPfg-1
+X-Mimecast-MFC-AGG-ID: TUNkaSLEPVu2JuVJQVzPfg_1794495930
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a20fd059ddso33822175e9.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 07:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794495709; x=1795100509; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
-        b=yFXqY/uIBJokOTs0nvStnFKn1dDvyOFvUuPwGd/fHbSUGqlmqmS6k5WQvOmJzwuhP7
-         D4fFUbO6lptZ/rnnvb15OHHof4Wn8/JIG/fH/7wlJnfoFh2Mi/sWG2HisiuFrDztYb0i
-         o1MzeGiKxPEOC4OvGQiDa8Pfy368H3sRFqyBfvuvD2O9oIsS+C2AYSq01oSku4K7RNGr
-         QxqW5fakCi3CGNoChMP2QMhUCNH7d1iSsenns/W9OLSQvf6tq/QMf+OCiP5k/JsYfC8G
-         p9M4K23tjNghsMl8xfGgXxDh9SGxfw2vELs4iv6ZOEVg2zZ72RCvYiZRD+/jCcx1dFM6
-         p75Q==
+        d=redhat.com; s=google; t=1794495929; x=1795100729; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GOqpkyo4LPYyLkLcWc/OmF1B6GtriSScGQCA7EInhEE=;
+        b=F//A/5n4pQpDyMCnhlgIVbYdrM7RbFo+BdEuiCYObiEwZSLgVxjUXaSj8siJjlevCs
+         vsX2pH1A+BoqXzfHhTjCGYtRJKd/JwEVaZXN1Pu38YkEDBmK5e3p+7hld6U9gjKRtene
+         zF6qrpx/7O2oOvop729rO2GJF3Y6M3Ho0QTklkiARvJMLF6tYvJ/BLWzytxrnbj6THWD
+         ngbrtqSnAcDV+uyL3iGaAaKxR5Z7M0PoNDy1Lbo+0k/DFjBqrYGTRaBPSQYUfv0P8NbX
+         IT22NqA+gBevaE9Qp6Yed4EohOB4oH7QcEcLdJiflhxIU8Yimh/k8KYVUvYJeXSERYkN
+         +4JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794495709; x=1795100509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794495929; x=1795100729;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
-        b=EPpk4syonXYmwg/74qAuO1znBTP4SUZJVqzeV8AhkTRVvJeZ5Tc4zqvBTfa1PNDQc2
-         U+qCf14YS9wR5AOdPCWeQ3ZXG5xt7TOAmi8bvDMvJRQuc2QcGzVUPyhH1CbdI9tK8QhF
-         4xMqLdiXwofGgPyKCwSUnq00CDwEQVOuDR13aB9n+bW5xsQ0b5ZJyhFJ+TQ2eAPE+qqv
-         iUuqinOvUOIz1EZ6LM1/1OA0zDsWFT+ETX+duhiQwbLZ1OrB0DivWaZIOOfIhOwdRJ0D
-         ksEZrzgPjEexTe8nIGW0i1PxPoYjG+KubDHDFJyU4gCkNJU9zg8b+m3D46dx9B/VJKTY
-         cVpg==
-X-Gm-Message-State: APuU4Z8OuaS7AzcI54tHSjnx/JKsVqC18Xwa4SszYEG8r8/Er9TT6Npr
-	GGYkrBA0lnhs4HtfPIVPHFvahKkiUSNtmsU4GDtDcS0bQ5AZw91PtaZMZpVJ7wI3
-X-Gm-Gg: AYBFou1x8esuIWMXVqKQJPBCTYTpaUXzAKvLZH7U13jVpmwVB0zqXNOUg/CKSWOgmxl
-	DRsCWdofU5xt2OzokzEgxiX94Mriklsinwh7hkwFX+H7jme7PpRMCn4n5+6R6rlva8lj1+f/Qjv
-	wgFud/2op/b9txZYGtGI1Rt+s4fNEAXvIqRZKioug7aqkdN5c3q7Bn+QNK0MWGnk9P15jgHNLmi
-	GEfrvXP8WKaiyoDiOZ7KoZ7B3gvedZTHBmoT5BxYnChm36BlD2PLE7QgW8pLC5B0is/cmCku4ip
-	4Y2uQ5lQabZJIsxIbAkeKgHxvkRgSW/OEGS3dG+Mpis6cuQmPfyoiCo6hzF/Boh8HZT57x2wupU
-	K0v0lORDRjW/d/bodXKHPq7MvhqQlZMAdfkZuabaIkxzUBsA6xiAe/HfjtJFxiHPsH6jmZSiFHt
-	sGqCkPVedNCSaXm4rcb/mlTK3L2DbSddGYhQCvJpfjAQMUaQdbpEM8QW9SsKkvdSuJHi8enrDbn
-	ieHOTVJqP5RzZuYYLi6M6Rpw2bxnpVrp+00EaIK5U1A8pw6uGNfGLRkwsPvye9CylphIDCKopjT
-	cjTCpUpxL5umcijyuIkVsUXlIKS1wt3gLu0amiwH+LOGQ5ldGRW6vYHLs10LS6TMg1TmYibyvAW
-	cvzGbDJIGgUckMfJfGCmm/6wj+pOM5Gu2MTjyEFwQs1hoY0Mp4eyJiSRTpNbpuYqKmcU=
-X-Received: by 2002:a05:6102:374b:b0:7d2:75bf:2fdb with SMTP id ada2fe7eead31-7d4ee1e5ba9mr1717334137.2.1794495707226;
-        Thu, 12 Nov 2026 07:01:47 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04fb371sm74191346d6.25.2026.11.12.07.01.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 07:01:44 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	linux-sctp@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	on Sim <tlatkdgus1@gmail.com>
-Subject: [PATCH net] sctp: validate SACK pull length against chunk length, not skb length
-Date: Thu, 12 Nov 2026 10:01:42 -0500
-Message-ID: <3fbf59d17a91c46098e3d4115e06987918b68c45.1794495702.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
+        bh=GOqpkyo4LPYyLkLcWc/OmF1B6GtriSScGQCA7EInhEE=;
+        b=TOe5KsZxZUZFYACH5xSpaOyI2JbFWwDY4gYPtttySNGtWCC8gZqJdOZNJZMQt6e2Pb
+         2AZP7OB5ZQcX12vUM3oz69wg0MIB8g6ZMX+TLNy7rXdyqKim9P/pIyX9DX7MLShKe6kT
+         IKaLKEPpITYWZg6BBQHVsnQajj0yqmh2vS/TM5YVHQoyCAr6XOQOFHC17/UP9zeRDrnt
+         S92tzePfCf5XGTxPLh+hpgP14qdOX+LkG/TvnEPXu4bwNGRffu7Ol2sboU4LUeoGzKp7
+         YDThay1l3alH4/wBqmRQ3XUnu3Lz+p5YakvVfEAw9RTXrtoyKwOlpPDPgbs9pQostJau
+         Fh/Q==
+X-Forwarded-Encrypted: i=1; AL+hErFFyYkc+8axVFeb+k4rIW/c1ou6c5xChlq/9iPQqUk7IALmzh4SL433ewZ+PRW494G+deE1nbI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8u/TLkjdQGN1BeNYWH+nJdDNgNiwMw1FKRoaLZ3tnXsFU6WuYZ
+	JxEfY2Dg3S5/aT+5EwSy8Ef5ckuAZ/6S/CRbHPn9PEDVnNlUBRcAadSSXYAUFLsmKBY8rPzUaur
+	gMgpzAfKupQIRlpvg6Zdt8zRneEJW+Cv5ipTLFrRKa+6OhbsODSWWXkvGIg==
+X-Gm-Gg: AYBFou0mE08V9RTrlyW8tEnfC5E3p1rBEJYRqApBJSjNITNe81l/04ddKP7bzF0UWhE
+	ys+oKn3V8rV4mawvKVqROs1eOj3Y3UAx0iAfGYIy6uLGHwwNq1juCeAsUpNIa9HBEprzkCsNcUm
+	YSBhwmy1xW5XF1CGWIh9wve1Dmh1C6er6qRmtQucyWTvz/ftMkAho1Gq2GDdtSp7y2/kil2FiwQ
+	6I1RPDsZvawrGPXmonIJJioVW/hujHsKG2wKS7yEOkEtqVO46+eF27VN+LTCLAiP3MzeHeaj4OF
+	PwqUvpfKwP9B2XaXkFhCrxlwSztZWLtUvzQt0Fdmpkhnzms329dzR9KklAFQpVUkPTwei44G/8H
+	p4s2MiU3loCZXU5iVNoSErVNHPD5qAm9TW073Ni4/V1w5AurVlMFZtsxtTszSQYoNf62Shd6sqK
+	BpP7CREVmnEignAyJ7wq/NhjUf3dWTKSDBAOvnvPaUGLZl
+X-Received: by 2002:a05:600c:1389:b0:4a1:f8cb:7d70 with SMTP id 5b1f17b1804b1-4ba09388518mr111954105e9.24.1794495929600;
+        Thu, 12 Nov 2026 07:05:29 -0800 (PST)
+X-Received: by 2002:a05:600c:1389:b0:4a1:f8cb:7d70 with SMTP id 5b1f17b1804b1-4ba09388518mr111953325e9.24.1794495929170;
+        Thu, 12 Nov 2026 07:05:29 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2842e6sm75067305e9.4.2026.11.12.07.05.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 07:05:28 -0800 (PST)
+Message-ID: <2dcdcc8c-0484-4fd0-b09e-723b32cbacd1@redhat.com>
+Date: Thu, 12 Nov 2026 16:05:26 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,45 +112,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ptp: vmclock: keep the device state until the last
+ file is closed
+To: Chad Aldreda <ca@modelmiser.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Shuangpeng Bai <shuangpeng.kernel@gmail.com>, netdev@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261107150344.3946529-2-ca@modelmiser.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261107150344.3946529-2-ca@modelmiser.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-sctp_sm_pull_sack() derives its pull length from the num_gap_ack_blocks
-and num_dup_tsns fields in the SACK body, but validates it against
-chunk->skb->len (the remaining packet data) rather than the SACK chunk's
-declared length. A malformed SACK with an inflated num_dup_tsns can pass
-this check when subsequent chunks pad the skb, advancing skb->data past
-the SACK boundary into later chunks.
+On 11/7/26 16:03, Chad Aldreda wrote:
+> @@ -649,9 +680,20 @@ static void vmclock_remove(void *data)
+>   	if (st->miscdev.minor != MISC_DYNAMIC_MINOR)
+>   		misc_deregister(&st->miscdev);
+>   
+> +	/* Files still open now fail, and a poll() in progress returns */
+> +	WRITE_ONCE(st->removed, true);
+> +	wake_up_interruptible(&st->disrupt_wait);
 
-This misaligns the skb cursor for subsequent chunk processing. When an
-AUTH chunk follows, sctp_sf_authenticate() reads and compares the HMAC
-digest from the wrong skb offset while sctp_auth_calculate_hmac() writes
-the computed HMAC through the correct chunk_hdr pointer, bypassing the
-authentication check.
+I think that sashiko comment about using wake_up_interruptible_all()
+is relevant:
 
-Fix by validating the computed pull length against the chunk's declared
-body length instead of the total remaining skb data.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107150344.3946529-2-ca@modelmiser.com
 
-Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
-Reported-by: on Sim <tlatkdgus1@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
----
- net/sctp/sm_statefuns.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index b2f609f177fb..44b1770d43c1 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -6368,7 +6368,8 @@ static struct sctp_sackhdr *sctp_sm_pull_sack(struct sctp_chunk *chunk)
- 	num_dup_tsns = ntohs(sack->num_dup_tsns);
- 	len = sizeof(struct sctp_sackhdr);
- 	len += (num_blocks + num_dup_tsns) * sizeof(__u32);
--	if (len > chunk->skb->len)
-+	if (len > ntohs(chunk->chunk_hdr->length) -
-+		  sizeof(struct sctp_chunkhdr))
- 		return NULL;
- 
- 	skb_pull(chunk->skb, len);
--- 
-2.47.1
+/P
 
