@@ -1,88 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.192
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487566;
-	b=3JzNb6SVjurkI1xrZnnZwIF1nffe9KFS5XvhD6bxrOnUcPAh+9GDuuPF/0CI2/NmaDL3
-	 kBmIafXHHqT2v20qiWkpv635OtBxH066AaP4ywktrWKnjyn8kbRFBc1XrUYRkdsdfI+uP
-	 tSYg6Ipzr5W1QBoZDMdROokg1Zx8zEyl7grgJHA8sBjYFICoJTAfjpLviM17hE4Hlzl7q
-	 jjXCRmVoygkcvj8c1TnXtqNx0KwiqSkcqMOvg3TcqgtzC0piVbm4x2VKs7/coa8xfGcbV
-	 HnjsQc09Tcuad2YRgSOOCyadMMdMbLXnccbs7ngpPDqX2Dhre13SCqlcGeJsD0OXZDg==
+	t=1794487708;
+	b=VDo/BFSffETgnheP44DGsTPU8JD4LEJfDHs/h6+JGqp0Q/SXKVjmKF3J1xz3AxRBYGcd
+	 5n+bmMB9UXuxKQPVbfUX6WH40GydYtmuJ46Q5U0PxgAq1e9BGoUPtEjCDvO/AHaSftm95
+	 iy556ZQ3wlVNfBnL8fuPKEZZSBmzLRiaXVUWJY4oK5BVShMRpEgLMKOsmkSSze+IZY3nD
+	 e+aWT3J0e0Ng1bIxKaHsTRBZuWqh8k9cbARix/6/cCRT1Pt73j8T8qGGkDZiV+lmuJ0nn
+	 QviisvKmWpT63dQ9PCDAbhxqqBjNmOeMFrCSQRMao3fGDOsd4YNECVVFgglpx4areDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487566;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=vc0NrXd+yFpV3sold/b+8tm1+Fzn8ECdrNUXiAkQ2d0=;
-	b=vg8Vi8H/FAUui2933twlgUBWLMQdF4MCEUOPpnGJjVG0G1p/N6GR0UPUF2wh6zqDhsxN
-	 sQ/p2mmOnt3HVi6xirkqBs/xKo0EJBxYuiAeJzMpgTATnUoSUMBjcDSPtmCC9MfVt0tHL
-	 UAmqGGpC4g5RXiDgJs7l1PZzcbis2dYXeYxkgfG+2y0c+e4JT6oxge/0cRJ4VRtnVW0If
-	 EDdsOmUnk+g9WqFKyYRXMTlVPCUhNCFTFdGwhRgEcApx+oFKP00reiZdvA+eOQ1NQU+Xw
-	 G8dIK2IohvaSF+H2hJEQN0mVpjMXld+Vy0xwO1HAl1J0aM66MiCGCsDXkYKyVU3k2IQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487708;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=2ydDXOxFBj0SVycf8TwirFfYbpVr31/wQtaeKtsEhMo=;
+	b=tiNic/c4Sfa+f+bfquFWtScp9N/jsD/B7T5J8IxXlirAjPvqhbDFFKeJihhUN+nlllfn
+	 VJEf5hnARtHBWUocJKZTAum4UzQcL7RCXthucG6x9P26GSwi7rnjwKwfIqKqNcE65H31O
+	 TWBYIdZH3mJUdpS2zuwsEn2Re9cL89pFfsLj8K0VBgRhi9Jd3icExHZys/uzkL0js46XP
+	 tvTNl/F50sBCWL7NghCPhYxHTgbq+9ZePXVJrTQTS19vBm2s/pEg6Q3wypm+PoQF8RH6b
+	 PODpK4a35MrNsKuK+YsmhbGeoacFY8W0MYUl69RWWX8uPd4YN4hJOfc2IEtsMI/b9dQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=OPhGp7M9;
-	arc=none smtp.remote-ip=203.205.221.192
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=D7HcLpg6;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349C6606A89C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:46:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 349C6606A89C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB06606A32A;
+	Thu, 12 Nov 2026 12:48:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AB06606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=OPhGp7M9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794487557; bh=vc0NrXd+yFpV3sold/b+8tm1+Fzn8ECdrNUXiAkQ2d0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OPhGp7M9uiCvTshMlQkcrMfECSUJdfsXAAdJLg2qM4EpFUWr7laC7i0ui4nWoCouN
-	 Kk5eJX1Lx9mHUfAcQSSuPgHmfXy9lMU4nvyajEkWZR0htglH7GqbfmPudA3AhbGrZ9
-	 aZ5eSiTaMIHBY4fdgP2m8UzSXcRaFD2NMjTkTMdE=
-Received: from localhost.localdomain ([2409:8d5c:8f0:65e5:e498:8f16:a485:ceef])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id B70218AE; Thu, 12 Nov 2026 20:45:48 +0800
-X-QQ-mid: xmsmtpt1794487553tnhmcb0sk
-Message-ID: <tencent_AE3D481F5F51E98E657317C2F664C4FA4F08@qq.com>
-X-QQ-XMAILINFO: OAope3s6+8XpCRb78Uo2DvztjnNPFEtCHZtGrY0EL6PxRo93AOYTMCSxQACTed
-	 fX0hU+XaAk0md+Otrg0C+FgxzPx0l5Wpbzt6jbyoOHkmnqN4NG6stQaMBa5G6AhIcQR2tVUoQoxn
-	 XUwvRasY7A1X7S3tKtBehV/uYMZSOjdOLCGi51eBAVb5YJ1nmwDjJzy7M5Dw+XKH+RzPXxC4c8NV
-	 LrKJNdCWmgZLjM2eE9SvhPaRHphr9imJCL14drzTSXvbcTWEui/UuIGGZvYVbVqrw/RNQO/5Yxg1
-	 zv0r+7kHQaxQFuxdYED1kNvmhfSfr8yne+3vM2czhWB2JyDN7QtPliPihzklJ0Hb7GcmEuL6/2/x
-	 JkB+1IiJOlY52XdMza0pyo9fYi6aqA41v5ll8nqVLplOpxtiotb815jTDNhjDcSKI8Ap4S6ZUgvq
-	 hlms+kDomE06zKxoXX8VlyIOMKh6hn+y2LbE5UIIQppywiVOLwWFyfHHZ/oRJ10Q0FYaP8u2RM8s
-	 uXOqOcYPoYAb5UTtGj0q+HK4fTQxdxSRI0rwJcSSQ4sl1pdm2kZv/iTmKoltQmnq6N2BBMEEgVU2
-	 MNuVKZDL2uXafliMNwpI8xx6vEzf6r6l7z+/e7fXyVXG0fEMBVE1Pdlf78lfE2y6RKBoW0g0fqVa
-	 DNhDAkDtf339qNnZHDcy9FZCHOBUUE3hg27mEfC8uG3vzOwbBKf3aZHdXLPAxrV5OBihxIn0oMwX
-	 2jMNp+yWHejiYR8wPuzhLOcX8Hq+ECzfACacX33D05Hr/u9LFIxat2Cq8HQlQyuInBeYZex1lDXk
-	 zQK9kwAutr31qAn1WiqRjygtg+uPpYDWFFxqE9N7/nZnUEyMEDiZllerRI/+rp81f8pvmwcK1wrs
-	 pvSnmgC6wUUn9/V0k2hHYd6C+hY4aISX5ooqLtzZmJBuuT37QzM4sHi2SCPkM9M/AGB/j2Z2sE7+
-	 /eDsq7/9nFM/gsY6X5mRA1FHZRDDEkjy+BNLuMFbJtf+IcCy8TojH3+E9oOcHjKJY1AeIZkgbFbZ
-	 LvESrgaKRTvbpfaaghM9Kcbx5UFA644Er7jAOQxTJbZTGf+AXY4CmV1PBlI1iQzWUm3ZTkrKuiaz
-	 DQtB0csTDGY9TP6hOo4pKik4xLN+NSPj3tO+ZrXrg+BQxA80g=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Hang Nan <2122295973@qq.com>
-To: netdev@vger.kernel.org
-Cc: mptcp@lists.linux.dev,
-	matttbe@kernel.org,
-	martineau@kernel.org,
-	geliang@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kuniyu@google.com,
-	willemb@google.com,
-	linux-kernel@vger.kernel.org,
-	Hang Nan <2122295973@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] net: core: take the reuseport migration reference with acquire ordering
-Date: Thu, 12 Nov 2026 20:45:47 +0800
-X-OQ-MSGID: <20261112124547.193812-3-2122295973@qq.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261112124547.193812-1-2122295973@qq.com>
-References: <20261112124547.193812-1-2122295973@qq.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=D7HcLpg6
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 49B8BA1563;
+	Thu, 12 Nov 2026 13:48:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1794487705; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=2ydDXOxFBj0SVycf8TwirFfYbpVr31/wQtaeKtsEhMo=;
+	b=D7HcLpg63LrjbttMO0pxYYrV4lPsjGVL0AmomQUy6vklnuvaQd47hBSSw4M9yWYO0IvDS7
+	EVJQkjzDstRV1nWS5gxD9evSHMU00LKFV2Uzinb5em+0lDA7Pv3vUfuE1n02P9x7z2s8AL
+	udl0MFHopqM+m2nkP2W7T3sJtdIog6KxIRdIsNS1gCUOPuQXJhis4QC2AkFRo6aQKBUfGc
+	kC50mM3sfe5RaXlFC85b7EaySfN3e/FHI1IoNH9JX1HzYioAuS/YdW44UO6AA3UPtA++Jk
+	qFmO1Wp7Uy3WXtCFl4AojrHhJbA82rGMQDAnvR5sBbBMlpea4W8bxk5/tz98vg==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,44 +53,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Thu, 12 Nov 2026 13:48:24 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott
+ Branden <sbranden@broadcom.com>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Andrew
+ Lunn <andrew@lunn.ch>, Stefan Wahren <wahrenst@gmx.net>, Phil Elwell
+ <phil@raspberrypi.com>, netdev@vger.kernel.org, James Clark <jjc@jclark.com>
+Subject: Re: [PATCH 3/3] ARM: dts: bcm2711: give the GENET MDIO controller its
+ clock
+In-Reply-To: <6125aa53-4fad-46ed-b627-e0fce7df7b84@broadcom.com>
+References: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
+ <20261020-devel-bcm2711-gisb-clk-v1-3-a1728724d0f8@tipi-net.de>
+ <6125aa53-4fad-46ed-b627-e0fce7df7b84@broadcom.com>
+Message-ID: <c00ede37512d46c8155647eed7e39450@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-reuseport_migrate_sock() returns a listener with a reference held, and
-every caller immediately reads that listener: tcp_v4_rcv() and
-tcp_v6_rcv() pass it to tcp_filter() and tcp_check_req(), and the
-request-socket paths clone its state.  A listener removed from the
-reuseport group concurrently with that lookup must not be observed in a
-half-torn-down state after the reference was successfully taken.
+Hi Florian
 
-refcount_inc_not_zero() lost its acquire ordering in the refcount_t
-consolidation (fb041bb7c0a9), so these subsequent reads are not ordered
-against the reference acquisition.  Use
-refcount_inc_not_zero_acquire(), as was done for the established-socket
-lookups, inet_twsk_purge() and bpf_sk_assign() in 5b5d8f351dd9.
+On 20.10.2026 17:40, Florian Fainelli wrote:
+> On 10/20/26 07:58, Nicolai Buchwitz wrote:
+>> The MDC of the GENET MDIO controller comes from the GISB clock.
+>> Describe it, so mdio-bcm-unimac can get the real 200 MHz from
+>> clk_get_rate() instead of assuming the 250 MHz of the STB chips, and
+>> can put bounds on when an MDIO write completes for PTP.
+>> 
+>> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> 
+> Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-No behaviour change on strongly ordered architectures.
+sorry for ignorance, but I'm not familiar with how the ordering between
+these trees is usually handled. Patches 1+1 are in clk-next now 
+(af7994af5228,
+ab94dbf30233), and the last one for your dt tree needs the define from 
+the first patch
 
-Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hang Nan <2122295973@qq.com>
----
- net/core/sock_reuseport.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Do you take the dt patch for devicetree/next, or should I wait until the 
+rest lands
+in mainline? Thanks!
 
-diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
-index fccbdd0430b0..78d1d7103122 100644
---- a/net/core/sock_reuseport.c
-+++ b/net/core/sock_reuseport.c
-@@ -666,7 +666,8 @@ struct sock *reuseport_migrate_sock(struct sock *sk,
- 	if (!nsk)
- 		nsk = reuseport_select_sock_by_hash(reuse, hash, socks);
- 
--	if (IS_ERR_OR_NULL(nsk) || unlikely(!refcount_inc_not_zero(&nsk->sk_refcnt))) {
-+	if (IS_ERR_OR_NULL(nsk) ||
-+	    unlikely(!refcount_inc_not_zero_acquire(&nsk->sk_refcnt))) {
- 		nsk = NULL;
- 		goto failure;
- 	}
--- 
-2.53.0
-
+Nicolai
