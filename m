@@ -1,95 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.0
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794504299;
-	b=GxIvPc/vpgKFy2BdZiUuCrYJYZLQsRtffHeQLhbqgHAitU/8yvtM0oY1WHNIhNQeaJwS
-	 Xpt1semADQapwL6fSk9hPCrZ4D8QIv5fxJbJdF7tiUhYin36qj8DfibqdafT7UBMmqhdp
-	 SYvzqeBVCCG4l8NDhiHrZJ6qoVphBXIphRmBTF4Br8V0cEHyB/oPWHoBfdiPpp7LQlPJW
-	 XTzFehuMcXTY9N4yMTGeY2MQpEM/4fd6+km3Fq+VyGSK5+dCklhv8wltU+eMZYCHx6TYX
-	 J7fdKW9evVC4Z8LLnb+1DRGucOxs8FBgvy/FQSUd5NsNy3fz+vqG8KqG8NItQvReHJg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794504299;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=UEs+nzWRaRp917aoYI9U1JFVkzp5XZBJ5gUnGKU3NGE=;
-	b=Eq7wdKSbzjs/24I10oU/Gb7GysA30IXxeILxhXOB9IlgznVbV3kr8FFbt2E4EKpFOnaZ
-	 NzdvQzlXe9UoB4m5KWbb5jR6PVYr6OtRuZtpt4/urKFFAO3f4cQhP6HNgZfiNAohkeaDR
-	 8dmZQyV9vHXLcifAdutoM9uQEkoTONUkLI1G+oDjEBQJ89qM2mp7Ht4yD685oyBp+QcIQ
-	 C7uxgs78FdFqJZSsp6lrqtvi0ByD/J9N3RvqlQSdfcdjsWq9R6gw2bpYRm9Naivj4bjCd
-	 9vtohgO/n/K/WMO+oZkKs5T7m/EDJTKV1EXjPyuwxQ98rhwHuaitzjUuNR6Dopoxezg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S4y2j5j7;
-	arc=none smtp.remote-ip=74.125.229.0
-Received: from mail-dy2-f0.google.com (mail-dy2-f0.google.com [74.125.229.0])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794504351;
+	b=3Wtsixswxl+j6UiqWKvs4i1wfJwO8sqVYwKhl6Kmz7aIKbOMgxNMNAT97a0VkVvKP015
+	 UYYJ+CYvblho0sP/hvem7VoHv/PusN94VgwoXm++2bh26cw+vxK+JPL65h2esmMk6gyTc
+	 QERLGx5WcObovCOJPNkpYRx36hZpCoHIiV/aq7RMCcjjkOzv2qgA5jn7ujvGMKIS+jMIt
+	 x8x/D4GBzcxXOeue9VIXSedZL033TjGsxb0F06+NH/jU+7xCLLnL3w30r+vQBeJBa98Bi
+	 jQTrH544nI++5BrXXqyTwi+wfVRgp4mLbLQCU2tV6F0zVHLkLuXKvE7FMfweTQ+M4QA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794504351;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=bJHVQy5huoI+taeLYsi+HT7KEQiclPfYD5HjpFT1cIk=;
+	b=HrVGvNFagWjLBX7Kwo1IR/pCdoecrbry9yHAP6vh6WjpR+4b0o299vBHgNq2U2zMQu4m
+	 CG6XMALP76ZLh4Llh6p6W4MS4VQ03WfGhyPwVQoB1OtEktSaE6qBA6nX4nKq0L+1mHX30
+	 QB84a9/EI9aYkR3TKasnfm7esNEHN5kOgttCWa1452BIKj5IoPfvr3uvkvxlkJ92bY6Tx
+	 n1axEil68IUwhHormiK1XfMfjQP89P8LvbSCX/w5XQ0bYFtm0jCFI2jaUXKFW0Lo0IEq2
+	 3FRSm9b+DMJKJUBrVdwLVDGP9qfoTVhsOIDtmp4FLawbD2ry0a+tFfQ455QhKp2SyyQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cjHolHDu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709E9606A321;
+	Thu, 12 Nov 2026 17:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cjHolHDu
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794504351;
+	b=xdJhglQq3LW44sWVSFdtKIcf1fsuZYhME0BV1fBflVf+J+cAKhqIntCY77n+XEQ4khU0
+	 OXpqpkVJBqJihUM0fXq9wLIgG090W5uclhx3OQ3/3VOm+eDCOed+9Rm+8Gh6Rjbrgtsuq
+	 7WQqaAxdycouDFFyZ+ujtNMi7sQO3n4netU8O+QXDoKvzkzS3iKHl2xV8pgEJz3CT6VbE
+	 VJvwbvVeVvUmo49dwf7gYcu9pqbhHz5czgTb7e6C3mp45QuSOdoqOjivtRHyfxwhLp1UI
+	 TZsdydD+DnuZPIp/xuDquMc9CHvdjdDQOp72YDtiFAPxIenTbbh5gtCzv6gGOswVDFQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794504351;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=bJHVQy5huoI+taeLYsi+HT7KEQiclPfYD5HjpFT1cIk=;
+	b=eHIPagVbtZ3EJ9vscyv/TP9AOpKtNwTmojeEZcqRCK8UYUF5sLIe8j5BbZG10KxtGwh6
+	 Gm3chv0fqILmAdE53DReohsLvSq112zNMLclH7kMe3E1qeO/XK8c+tHxkX+H2H3Hyk3rN
+	 jz6CkJgbSq2g33OOB4UdHW9Y3J1IAx+MZCtaA0NbhLtSbyVZg+sf55gVgwSJ3w/tvqMD8
+	 PUWoH818eXhQLuNCwayRMoy1VNiggY1i1EjrJr4mOjWMjFHAny0zAgszqIdDJdLJ8hOPS
+	 cn7FALPOjn0k2B5ZDqAkJ7BfTdBUW66+nMatACt8LELbf+pxCtBm64CkRfR/JTlURhg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1E1606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 17:24:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F1E1606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S4y2j5j7
-Received: by mail-dy2-f0.google.com with SMTP id 5a478bee46e88-3117f9b9e64so13992eec.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:24:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794504298; x=1795109098; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UEs+nzWRaRp917aoYI9U1JFVkzp5XZBJ5gUnGKU3NGE=;
-        b=S4y2j5j7eEmQWSOHqnVtpeUI9RpdBZ9lvLBNkDHNvYXEWFRQI54XWg0Sn7wz79Z77m
-         8UoX7W2fsYxj0wFOX/x4blpkW928Nrfc2rxLxYYgIVg0hUedDAxEOyPPaF+kUUcwXne1
-         VKjWv1ftJ/6FOBxqdkqKcGhWBgqNzf/niatC5R2jQ0k0LM182TbJl8yVoIREQZTOA0yg
-         ZnDLmeH53vcMnOG5FYCoZUlrgWBTitOgd5+q3vY1ucXWdvZ7zd4Wrw1e6PufrYqPfy2Z
-         lA/N9rAxMfBlARwHcg09FhIr/jidSK4fhxoennVOCup+lc/pPdxqSkByl4HRPJ5pY2x2
-         +jDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794504298; x=1795109098;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UEs+nzWRaRp917aoYI9U1JFVkzp5XZBJ5gUnGKU3NGE=;
-        b=0eBX3K1wht3hpThCXTK2S6kJkvOvVLmP1sYwzSPadyoEXp1ZmyAqYyBYi7wf1lCyPN
-         Z5k+W8LrDs/Of5Bl/FJoW5bDa94Iuo+lCHF3Vy69v0JG6RvM1VE67U9WH2w+KwmOH5AQ
-         vbfptNICa6KcS/hZK5BsId4dJ5v4iuCKJRwQRGYGxvda2s3zI1vrLZa3IsHvHE9ENRUC
-         wTFHeXCFF04IY+TEt/SexyK1BMlPrvu5L9WHzYCgmjbDEHCuC0qXTLxZRvGM0lyoVqeW
-         aky13VJg3r3aYfjKDrUo40KNQKvMFI/86xuTBuU3Er+DY40H31P9uVKFrfp52uwjrV59
-         5ubA==
-X-Forwarded-Encrypted: i=1; AL+hErH0EgiJGo9obGOoAIMBaORd41c2n5c/kpMsX/KkSNPY+Y1SAV/STeThTXZzbbSn4ZPnPzy82fQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+SmApEqFOIohuJ0QxdbvsE0wmrBISWuCXOHl9HSMR8h/48pv9B
-	Tc8uZc2mglsMw8yuQsrkmZslWUm/RBGCb9zRB7I9RhfC7Gt0dtVzPq3k
-X-Gm-Gg: AYBFou1+QXHisgyWY3obhzXVLH9A6KpH4clu5pcdmheUa0ttMDGDoMNTEYCQD91K5jc
-	ZFWfo2YR1+vF52OdV7Mh85xKkf8C6yPP9hSgqRKIrx2wocqO1NJ9GwZIYVsUhYJ0XgtmC7XWi0i
-	mT3pk3B9sC2iY5Cn4k3X5pL1Lj24YvVH73eZE65xi00Yhl9qlMJbkv09uu4ENz0xz1YCrxgyBYv
-	zjYvlEdCfh7BxPu8JFpjo7iEMeTL9Ic5Cd1hyuZnNxFqkxaYaUJ4Tpv0ICzsRP/pfF/3cl0IMp9
-	qyA+bhCD+LuJmfxJDe5ITb3lqETfdhNMhJoVVFnyLSe0tnKmtewAZk21U0RFVI0yVDncpxpBTm3
-	119haVh+bD0VrViva32hVL+3ZjNz93LvhrwaFa2dbps3WD+K4E9PonKcVi/vxbtytYevpvmNdlN
-	XfQ42MbRIXAosDVDy1o7AOSoVq/VqgCqMyTY7q/gvFqeEXB2pvq1UDhO179vDp52bXrwvJl7cA5
-	+QEBfXe87lRwHLehy0mpamVy9/u+f6Vt3R54OAQEz0IJWfQ3cestoedb2Sk0JbkiAsCjEb2yIZ6
-	1F1V09N8sdmnkVTYTxRM/CQ=
-X-Received: by 2002:a05:7301:dd81:b0:36c:dd3b:a3e4 with SMTP id 5a478bee46e88-377deaeab9dmr2596773eec.3.1794504297384;
-        Thu, 12 Nov 2026 09:24:57 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:71::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3792624fe41sm1107451eec.22.2026.11.12.09.24.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 09:24:56 -0800 (PST)
-Date: Thu, 12 Nov 2026 09:24:52 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, 
-	jacob.e.keller@intel.com, bjorn@kernel.org, alexanderduyck@fb.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: Re: [PATCH net-next] net: ethtool: request rtnl_lock for
- ETHTOOL_MSG_PORT_GET
-Message-ID: <avX2MdTZePW5ssrq@devvm16445.scu0.facebook.com>
-References: <20261111072724.3295527-1-xiaolinkui@126.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 246161F000C6;
+	Thu, 12 Nov 2026 17:25:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794504351;
+	bh=bJHVQy5huoI+taeLYsi+HT7KEQiclPfYD5HjpFT1cIk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=cjHolHDuh/R0dMWTn8TO5cGtPZasvWVl0zlX/GXxLwcIFXi/ok0THdVhepCEKynQw
+	 wyzU/IoM9yCr6uG6+0SiPfVAwdPmRzJEGmXDYGj9IXS80xCxJQGVaw+wwK9v/yo2eb
+	 t605LvRHBWRg7WO2IUVH1s/G4OsEDbLG8GbdNGrBuBRDaVqwwldQzkXSZ1ZIT7QSGN
+	 sP5e/2iONeiIsSUlfsGol9dwO3MmDnGUh/WdaNrwmJDIH+qzJN1Aaq5QFn7hg0PAzQ
+	 rXe4a/0HxRDlfg7A8A/aU14Df2jeEJ6h2CcPb3Bzvoufpl/fkpCPqz/RHBQ3LR8r9U
+	 op5SwrIuQSlOw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 8E14B45A77;
+	Thu, 12 Nov 2026 17:25:49 +0000 (UTC)
+From: Asdlerto Korry via B4 Relay <devnull+korryasdlerto.gmail.com@kernel.org>
+Date: Thu, 12 Nov 2026 19:25:49 +0200
+Subject: [PATCH net-next v3 1/2] dt-bindings: net: nfc: samsung,s3fwrn5:
+ Add pvdd-supply
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,48 +83,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261111072724.3295527-1-xiaolinkui@126.com>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261112-m52xq-nfc-netdev-v3-1-725a61ce4148@gmail.com>
+References: <20261112-m52xq-nfc-netdev-v3-0-725a61ce4148@gmail.com>
+In-Reply-To: <20261112-m52xq-nfc-netdev-v3-0-725a61ce4148@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Asdlerto Korry <korryasdlerto@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794504348; l=1338;
+ i=korryasdlerto@gmail.com; s=20261104; h=from:subject:message-id;
+ bh=zH+1as4NCY/dZ65WKSxZl8APKd4N3zG6ELlk34X29Gg=;
+ b=vIZTPZ2ceGklPiI/sE2YKq81kKdtCavLG2dRIE+zRC+k6/VMD1hy28l0ND78DrMd0+ePmBBnQ
+ 1Fs/NGyuOoUC+cHZ0A6YSKgP76v3a0N+2S8psgM+HR99nZo3fAVOukw
+X-Developer-Key: i=korryasdlerto@gmail.com; a=ed25519;
+ pk=RqttIGkm2XZ8NhLQBzPgpXXawOdVa1uODGsk+sagbxs=
+X-Endpoint-Received: by B4 Relay for korryasdlerto@gmail.com/20261104 with
+ auth_id=1411
+X-Original-From: Asdlerto Korry <korryasdlerto@gmail.com>
+Reply-To: korryasdlerto@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On 11/11, Linkui Xiao wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> port_prepare_data() resolves the requested port through
-> phy_link_topo_get_port(), which requires rtnl_lock to be held before it
-> reads topo->ports:
-> 
-> 	/* ports in the topo are RTNL protected, but may be accessed under
-> 	 * netdev_lock for ops-locked devices. For now keep them under rtnl
-> 	 * protection, as no ops-locked devices have phy_port capabilities
-> 	 * yet.
-> 	 */
-> 	ASSERT_RTNL();
-> 
-> The dump side honours this, port_dump_one_dev() takes rtnl_lock()
-> itself. The doit side does not. ETHTOOL_MSG_PORT_GET is served by
-> ethnl_default_doit(), which keeps rtnl_lock only when the device is not
-> ops-locked, or when ethtool_nl_msg_needs_rtnl() asks for it:
-> 
-> 	need_rtnl = !netdev_need_ops_lock(req_info->dev) ||
-> 		    ethtool_nl_msg_needs_rtnl(req_info->dev, cmd);
-> 
-> ethtool_nl_msg_needs_rtnl() has no case for ETHTOOL_MSG_PORT_GET and
-> falls through to "return false", so on a device that opts into the
-> instance lock (request_ops_lock, queue_mgmt_ops or net_shaper_ops)
-> PORT_GET runs with netdev_lock only. Such a device that does have a
-> link topology trips the ASSERT_RTNL() warning and reads topo->ports
-> without the protection the xarray is documented to need.
-> 
-> Add the missing case. Like TSCONFIG_GET/SET, PORT_GET has no
-> corresponding ethtool ioctl, so it is Netlink-only and always needs
-> rtnl_lock.
+From: Asdlerto Korry <korryasdlerto@gmail.com>
 
-[..]
+The PVDD pin of the S3FWRN5 has to be powered before the chip is
+enabled. On some boards, like the Samsung Galaxy M52 5G, this supply
+is switched by a SoC GPIO. Document it, so that the regulator can be
+handed to the driver instead of being kept always on.
 
-> The bug is latent as no device opts into the instance lock while also
-> carrying a link topology, so it cannot be observed yet and the change is
-> compile-tested only.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Asdlerto Korry <korryasdlerto@gmail.com>
+---
+ Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Then why fix it if there is no bug? And phy_link_topo_add_port has
-a big comment explaining the expectations?
+diff --git a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+index 12baee45752c..3c5a579a7108 100644
+--- a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+@@ -34,6 +34,10 @@ properties:
+     description:
+       Output GPIO pin used to enter firmware mode and sleep/wakeup control
+ 
++  pvdd-supply:
++    description:
++      Power supply of the PVDD pin
++
+   s3fwrn5,en-gpios:
+     maxItems: 1
+     deprecated: true
+@@ -84,6 +88,7 @@ examples:
+             wake-gpios = <&gpj0 2 GPIO_ACTIVE_HIGH>;
+ 
+             clocks = <&rpmcc 20>;
++            pvdd-supply = <&nfc_pvdd>;
+         };
+     };
+   # UART example on Raspberry Pi
+
+-- 
+2.25.1
+
+
