@@ -1,97 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794445637;
-	b=kXoYXBXDlp6cm7sqSLsOrXPCGN3Fw6w+4+S4s/7RI1vmKG6CfH+M7EzxF/4LviXWi1hT
-	 NjRH4fLf+iGklvOwsAgE1A0YVDdP//Psa+dHhYB/cX9Fq+2pD59z/7NkYMnfmUoMdt3Q6
-	 ALmJoNgWO+Ulbl6jBXfbHbzu5kbB3YVdURndTYcE0v4l6LLLtv2xeojWd9CmtbXfLDJn3
-	 nT52J7tC3o0BMOT10oIFCUmvNJ2PYAq5ricf5wXZWW/2oskEV6pbmS37lTmY1++siAwFm
-	 p2TkVwzYx//6NS3MwGCkuwqG9E4mwhJ9+YE5dBOLLa0FYRFfniJhCfKzQzD0geuHscQ==
+	t=1794445806;
+	b=3BTouWnad3QIHWpxO5e95U0bU5/IaGAM74mGVCn5lR/esTT2QRNO3IcWJB3U0C4YtUn7
+	 cXW/FupAriQwXmNOhRlq2K9CXGWXIXwQRmoutYWAfD6oASQGBHZ1pQZ0rFVPKRvPe1udi
+	 nceMbrxuGfWqTWLKLoF6IcsxrNUyR0hb1KJx3RZSWXE4UuwAKaHs3kWTsvuv6gJKMClQK
+	 tAfVw/46I9t2RzRbfh1dIgkGBDsRbEiQl1+TCq7Ql/SxW9JWagoWM586HRSW/zKe9i7mn
+	 tD0CAUdlK+dBvObO/MOZ7RB9NZBzrgJ/djWTE9HFvXEScKivYxfOqVYmOp31zwm4eJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794445637;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=2RReNFzwszTC+E0RspOXYqfO8c+r26PYFZscPQMQXPo=;
-	b=rovn2e5wX1gDHzqfVlynJlaCAsofOz72/t2oPirfGdUWCW3wy1rZ2hYbJROPcUmsOwaZ
-	 lNyP1d6zVXLcDRrQ0HybQhQ2zJmUJEXTCz+cIC685hme60W0m5CTeKzyg0OqKXrfpjcl7
-	 EwZM/Nh7VzLgX6SkyzXB/BA1LKht+C2CxKE8id1avaPdDBX459gEcQuNUxawZxKYHm5fc
-	 fQe5zA0eQRO4CK7M4T4Z2nlNMILHR0H7KMS277F5zRXybDts8Ny5hZlrN05ljasuMzqsu
-	 rwtk3jC2gVt9gVKife2at3tP55uX8cbQ3qDWgZCJcP98sc+gakzpAT683upLwHGw8rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794445806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=6fxkIUEUzyle7Zrx0jGwr/lUnjzRkrMVgN4T1ImT6Jc=;
+	b=3RLN/YnkWTTX5xKP08sJvWma7WIGuUMhewjmAtb7zlVcycPIt6zHqxX8g6AfLjc2UnP1
+	 TITLFNAb3kQYAAEPlDiUHvLNdUq3xpmAtL/zobnDPKklG+Llb2kMGXXieJlOXpw/8v737
+	 Em8Jn+D/GA9UCLSrCJF+qLydZo+ZsSZUJb2fFFH3+budJkiktL9a/7ybQQAC2Kr8sR48t
+	 5m50pqPLBdr2e5SlJS7O93a4bwPwPYqnxqa+yqVd+YZqF1hCsUBh7kU3m47TKa9DvBKPQ
+	 1iwoM4SpW2QGnT7FRIZFrVVZL8JCqNIB43mhN7hTGBfGAOLzYRels/LMaDfTmIlzNbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jIa+R2cZ;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KAhhY4wF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7645E606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:07:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7645E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58C5606A321;
+	Thu, 12 Nov 2026 01:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jIa+R2cZ
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8b2f59de176so2778231b3a.2
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 17:07:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794445637; x=1795050437; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2RReNFzwszTC+E0RspOXYqfO8c+r26PYFZscPQMQXPo=;
-        b=jIa+R2cZA8GeTGWY4OkBYSP1QFCIyWWlph2FPtReagpNxNoDxmiZOVCH1eJ2M7WU3o
-         D4mO5chbkhqnEgeKPmW7Ko50qbGyEuJKZJtZ/qZ3aONwoR2/havVtaEvOZvYpISSZP1M
-         z1nMBWNO5DteMV/pf4HKoB8hNglyNPsjJBduYVSouut9lLlrngwNf68xTsyvP6M6bC/+
-         5PuXzhcDe+fGSJ6iD0VvBVLEshrBsbM3DEpJMKYL8fj9gaYpN2U19vcsEOkqLj36NZUH
-         M1BR8IXXGRswP1pZb2d2u1Cc4GoeSekQHwqZQ23AF8jyRXJ1nN8MAvgYHWKOlXHV1num
-         lE1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794445637; x=1795050437;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2RReNFzwszTC+E0RspOXYqfO8c+r26PYFZscPQMQXPo=;
-        b=EMTJqyoPbEcptWJIXhd88SrTgQqBnBrGTKCh93OfhFe9yG/nz4zhfmQbandP/zr8R0
-         pkP0ODD3xZTXQBhMKZCqyxbPGmX4wuSV7NiuuTrzKXVCa+TklWPYMDZMozTFCx9AjqsD
-         kfzU0ZpJyvRQ1kzadNKs+7H9xGtP9N83784SxR6Zb2iLEBxXOYbKrVM+ZeREdGqQBJNT
-         LVL4CjMRSnrisH4NKYoGq55idIaTPnBVbiMkViuY9+U8+sKsIZi/oXBh2029K0Fdg/N0
-         s9Qt2astoALAzTtwm7xevvjmd9dnKz8LNyR9xtXGVWjQsMUsj37CUww+rl0Hv5+w56mQ
-         3atw==
-X-Gm-Message-State: APuU4Z9fJJUPzUhm4FyOIR75cWgwT91KYnUh3pxSn/o7gJFQYtbGlTWc
-	znRv7+f1Rx0qpBLrzsH3MVagXRz/I7WwCEzS0E7j2D57Z5wyE6IXM0eV3BKz/0D5qng=
-X-Gm-Gg: AYBFou0n3I/kXTs6wT6azGGqQtrGtBW+Nb4sPFTAsu9Nu1+8W06M7qQeSr8d7E90X2E
-	y4Ipxptrr6qcrodsYpo6PMSmHkt1grjLSOyNWUYUQ/0+SGJy8DHzX8TA9/E811S66w0x2D/WA6T
-	Vsc/0SQXkrwHUxJIkJwyPRjM6YtBCQL9srsOwg1qJv6ABPdIDCtGp8PQUG9OpGCmV3ivhsbdcys
-	oVhvPlmQQJA1v/2MY3vb2lKJh3xhfVVFZy1+uTTAESDyw8IEfLNVQYV3P6Kow6x4Jt0vemeFc5P
-	sHJq0CnSbRdcpiP3mW2metq+2deYhPGRpyvN4dIQPGz8DoSmjIhmIYFlLeDHSlKmNGgEsVULWNZ
-	wljt8QuB0c8V0zEpXniDMGjKpk16PuRutO22Ix4QyGXMmB8C8FXfJa72bz86L2Pk70D7+ldrpYu
-	u3BINvbdbUXL0jX1Pf6uxVGIIUHCUwx8lc6br83i0b7aOD73Li3RERz1LX3vGyp8ZMc5b+om4ys
-	JG4iU1662cAdQa7GKthmjkhn+4IX+Ll1NHxHjrA4Q3KTA7U5wBWFou2ZQdKk1HDWg5UFHiy1vpn
-	MuXrYQ+YBS54aIyx1pjC1NiG9VPU0ICr1hmi+CRfIQ/JmGnDvoGBvZJogKmjphh2irOEbMVQvmf
-	praqIEh8VJr+eLi/BsGo=
-X-Received: by 2002:a05:6a00:6c8d:b0:89a:5f8d:2e35 with SMTP id d2e1a72fcca58-8bc1dbfb4abmr3789694b3a.49.1794445636851;
-        Wed, 11 Nov 2026 17:07:16 -0800 (PST)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa86dd0fsm2559942b3a.22.2026.11.11.17.07.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 17:07:16 -0800 (PST)
-Date: Wed, 11 Nov 2026 17:05:24 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Todd Freed <toddfreed@meta.com>
-Cc: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>, Jamal Hadi
- Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, Daniel Zahka
- <daniel.zahka@gmail.com>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH iproute2-next 2/3] tc: add the psp action
-Message-ID: <20261111170524.2b0a6af9@phoenix.local>
-In-Reply-To: <20261112001512.3598626-3-toddfreed@meta.com>
-References: <20261112001512.3598626-1-toddfreed@meta.com>
-	<20261112001512.3598626-3-toddfreed@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KAhhY4wF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F4D1F00A05;
+	Thu, 12 Nov 2026 01:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794445806;
+	bh=6fxkIUEUzyle7Zrx0jGwr/lUnjzRkrMVgN4T1ImT6Jc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=KAhhY4wFOOxBP8prpZlGgBOJbPW4zgteWYiawD5UK33yphoZwDr/DaWfPoaDKxgXZ
+	 ghgDS7vtkU+oi/IdWXpOanuSxDPxr3DSugKZpUIFwvePkw3aU+5EDtEHhgt8l9/SoX
+	 /rZLM285Beh57SQkprl5oXYGEwA9zGvzgbgVt1dM/fjTHpajYz4LWJQLX69opD3Rzz
+	 i29z/3exIdHyaGxAIeAzV6+OXuvuKhyAQyVqPp+Tr+expPns8ZR1j82s9bU2D5Yl2a
+	 SWGeC2gR1vIhCzIPmWHttu10yQ+rqDj7vXeSU2eNX1o/7YdeaFDPP9dg5TvKa3q477
+	 MLsrnUHWTtR6g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E0BC391AFCE;
+	Thu, 12 Nov 2026 01:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,52 +53,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] tls: fix async encryption race on weakly ordered
+ architectures
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179444580518.1745669.12722897429288810023.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 01:10:05 +0000
+References: <20261108-tls-async-tx-ordering-v1-1-f9a1844ca88e@xsightlabs.com>
+In-Reply-To: <20261108-tls-async-tx-ordering-v1-1-f9a1844ca88e@xsightlabs.com>
+To: Ofri Zangi <ofriz@xsightlabs.com>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, vakul.garg@nxp.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, guyt@xsightlabs.com
 
-On Wed, 11 Nov 2026 16:15:11 -0800
-Todd Freed <toddfreed@meta.com> wrote:
+Hello:
 
-> The psp action applies PSP (PSP Security Protocol) encap and encryption
-> to packets, separately from psp socket offload:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 08 Nov 2026 21:12:57 +0200 you wrote:
+> From: Ofri Zangi <ofriz@xsightlabs.com>
 > 
->   psp encap assoc ASSOC_ID   attach a PSP Tx association, created with
->                              assoc-add over the PSP netlink family; the
->                              association's device encrypts the packet
->                              on transmit
->   psp decap                  remove the PSP Rx state of a packet the
->                              PSP device decrypted
+> With async encryption, a record can be transmitted without its TLS
+> header on weakly ordered architectures such as arm64, because the
+> consumer may observe rec->tx_ready set while still seeing the old
+> scatterlist entry.
 > 
-> decap takes no association. To take only those packets which belong to a
-> single rx-spi-alloc call, a rule applies the corresponding flower psp_spi,
-> psp_ver and psp_dev matches.
-> 
-> In JSON, the verb is psp_action. The action is documented in tc-psp(8).
-> 
-> Signed-off-by: Todd Freed <toddfreed@meta.com>
-> ---
+> [...]
 
-I saw several things that need fixing here, but AI review saw more:
+Here is the summary with links:
+  - [net] tls: fix async encryption race on weakly ordered architectures
+    https://git.kernel.org/netdev/net/c/a2fd526d6442
 
-New code must use strcmp(), not matches().  Six sites: "psp", "encap",
-"decap", "assoc", "help", and the "index" test.  matches() does prefix
-matching, so "e", "d", "a", "h", "i" all become valid keywords and are
-de-facto ABI once released -- any keyword added later that shares a
-prefix either changes the meaning of an existing one or can't be added.
-Your own 3/3 uses strcmp(), so this is just making 2/3 match.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-"psp decap assoc 3" is accepted silently and sends both
-TCA_PSP_ACT_DECAP and TCA_PSP_ASSOC_ID.  Your changelog, the man page,
-and your uapi comment ("u32, encap only") all say this is meaningless.
-You already reject encap without assoc; please reject this too.  The
-check has to go outside the "if (!p.index)" guard, since the attribute
-is added unconditionally.  A repeated "assoc" is also silently
-last-one-wins -- duparg() is the usual way to flag that.
 
-print_psp() emits "psp_action" as a JSON string for encap/decap and as
-a number in the default case.  Which type a script sees depends on the
-kernel it's talking to.  Keep the key one type.  The default case also
-fires when TCA_PSP_ACTION is absent entirely, printing "action 0".
-
-explain() and the man page both omit "jump" from the CONTROL list,
-though parse_action_control_dflt() accepts it.
