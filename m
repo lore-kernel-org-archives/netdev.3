@@ -1,89 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794480356;
-	b=iHc9BOwjmIH8Tc/hEPk2ovnccEDrRCsCiPIvsi1BSqiOAy73dyg57J9iwjYgNUnrH3eh
-	 0ObH7W88n23Yq9C6piT/JIZYRtYew8NgjTUehb+WviFa2wJYSodwatiMe+nQIUp3NG0YJ
-	 TaOpwOdCpTGXsP5GcgjeUFP7riC2WWnhfiJ+aAWf3I5eYGFQ1Xt7oiQ/lXVsd8+NCBkA7
-	 yciLqKaUp1xcmq0dHHDXLaJrsYYArgOOiIXkQ72tEXj3tCbJupq4q/EXSPYZiMn2q+gO3
-	 Q0XKNCqpFCDhlhmiEMhGHALAH0L+3yEKB+Y38TR1DG294ZOzqFnd/qUvyLw4nxduvLA==
+	t=1794480473;
+	b=zUmpa+z1DMZiWVvj8MXVBeEZaYDN46WF+Iev8PT1tdI8Bnu0oIXlv9tlPhSC4lGlC9zZ
+	 tl2b1rRe8Srdn63B9FGcuDqaiAPI/Wr1X9hSb0naJeXEh92wCy00ceW6oKUr8cV5yo0EE
+	 H+gHO2H0lhvDgEb+DzhY0r+Dk0AkH5Q2+RuA/+Tl3jj7l0vbGSK1kPFnma3ihxtQWVwoq
+	 Y8ffu8XTpVsflWY9xfU4bm3o+tcXQmSOWej1w5aIVUo37rqgNY2auR2/HcRh8ncYiIEUY
+	 AtBmJOi6l/cg9AzDWCXNR4KJtHBpd2KQu+TxrHPVV+btO6rAm55EUXuW4EpjopiMlyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794480356;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
-	b=4iaX/dXsEit5SDSZGGV5EqyQYra4kzZCHMjxDLFv7I8EBJPuPB+tu4UIgr26yVBzcmeJ
-	 444jMLm82p3TyKqhVh9owOxRlVLSRu6VWtTEVYXNgi2i3MPW2kNeBuSBkl5iLnAhPz+Uz
-	 EwwWBUKCA2PIElbsGbM00pmJK1oQ3ZVjdRM0ow/ot5J5vLtXRO8X51V16B5jTApJP5dVD
-	 646kTs/n7u5sNaEo1h/WN7LnLOzY1b4IlwIuqMNZLKjz9B5odjXg1UpNXuadDjuxjcWHl
-	 tBuw6vyyPp+1nuUgxGz1zNAbaOvS33Kue9pHLwXCffMenVW3zUjxv6f/qC6THGVUZ2A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794480473;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=LaAKKhAngwkFxDGEu7glsCDhQDKP6or5IXQD5q9C6lk=;
+	b=OFcbvIjbOzHGNtCHG4HXx0ddP1wgbt/3Y/+r4tWI7i36QpRA3TGP0QsB2bseewFlcLCS
+	 8I4tTQUplDSzJVrhdpMpR0IPnJtPlzQeXnXCJHIuJdi76Lsr5SF1+BD+TFKCEaPbbO/s6
+	 5RrHs6wJ+YP4kvKLu1McTyGz84P2VIYLHaSHB0/Jvz52Lmq3vffGz/sCSYW9ThnJAB2uW
+	 wLDOrhRz5qCp/OgUEPfDJD+H/xDPh2Fyy0xck4E6UXLMLJnSFGtJH9n25BHQRvUXCdzYu
+	 /2xSs4cwMFQuddCM4BELRVLokR3ISqVgFmbrCOJfCSf3kiFteblPsdztAfgfHSwhG4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bhRW52/O";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C82606A33E;
-	Thu, 12 Nov 2026 10:45:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75C82606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505CF606A32D;
+	Thu, 12 Nov 2026 10:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6C17021C82;
-	Thu, 12 Nov 2026 10:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1794480353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
-	b=QM+hxa8SO3kXjLDKLwIaK+hPE+CFmebUEyVLd9wWlZ8yPay0XuEKWjb2hHPlFXwrG7DMHy
-	0iAJIRyF4VSIwnjFD/uNrmNED/6mEviFTEPN33IWXPPN/7tE3xgqOLmkgHgIR9pNySZ6Qf
-	Eg0gzzfNWpjJUOahQYicH3ABXC1CCb4=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=QM+hxa8S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1794480353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
-	b=QM+hxa8SO3kXjLDKLwIaK+hPE+CFmebUEyVLd9wWlZ8yPay0XuEKWjb2hHPlFXwrG7DMHy
-	0iAJIRyF4VSIwnjFD/uNrmNED/6mEviFTEPN33IWXPPN/7tE3xgqOLmkgHgIR9pNySZ6Qf
-	Eg0gzzfNWpjJUOahQYicH3ABXC1CCb4=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06AE713432;
-	Thu, 12 Nov 2026 10:45:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YOzfM+CY9Wr4VwAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Thu, 12 Nov 2026 10:45:53 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: petkan@nucleusys.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH net 1/1] net: usb: rtl8150: break cycle between tasklet and URB
-Date: Thu, 12 Nov 2026 11:45:11 +0100
-Message-ID: <20261112104548.693456-1-oneukum@suse.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bhRW52/O
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85FD1F00A05;
+	Thu, 12 Nov 2026 10:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794480472;
+	bh=LaAKKhAngwkFxDGEu7glsCDhQDKP6or5IXQD5q9C6lk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bhRW52/OaiERqOjVo+YsX7WenTAM+RkUSYdDbFFgDeELIFl5MCvdrQ4/lrfg3PaBP
+	 OJEvlXHrGI0KP6Sf7isOdA90CQUC1tSnbnlL7KMlGmOGy1uOT4Tps4k2NALfzc5lt4
+	 GBKdaLdl6Hn4QG7D1jOt3xg+R2SbDhwXqrQ5QTOpBVzV6PCDTf9sB1jcXxmSVYEwEX
+	 9k1ve7B7mHoKt9f85FezBUXVhvbLCq9DZT0dTEHtWXQsiFKFjjwdYqhwDGS2C9B8hk
+	 PMIxYSXrd0qwW336ZZGtXr/22P+Xd17f+e0rYlMLg9nZUtItJXlZjgdtGYx+r60Y9l
+	 +6iWNMqoSTUaQ==
+Date: Thu, 12 Nov 2026 11:47:38 +0100
+From: Alejandro Colomar <alx+linux-hardening@kernel.org>
+To: Bence Csokas <bence.csokas@arm.com>
+Cc: Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Philipp Stanner <phasta@kernel.org>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Lyude Paul <lyude@redhat.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Selvin Xavier <selvin.xavier@broadcom.com>, 
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Chengchang Tang <tangchengchang@huawei.com>, 
+	Junxian Huang <huangjunxian6@hisilicon.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Benson Leung <bleung@chromium.org>, 
+	Tzung-Bi Shih <tzungbi@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
+	Nilesh Javali <njavali@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	chrome-platform@lists.linux.dev, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] stddef: Add offsetofend() variant of
+ struct_offset()
+Message-ID: <avWY8kNFlkLyxIrX@devuan>
+References: <20261112-offsetof-v2-0-276ede839967@arm.com>
+ <20261112-offsetof-v2-1-276ede839967@arm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,132 +87,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6C17021C82
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-10.51 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[netdev];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:email]
-X-Spam-Score: -10.51
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hmbonzz4lyxux25l"
+Content-Disposition: inline
+In-Reply-To: <20261112-offsetof-v2-1-276ede839967@arm.com>
 
-The tasklet can resubmit the URB, which in turn can
-resubmit the tasklet. The cycle needs to be broken.
-The simplest way to do so is to prevent the resubmission
-of the URBs by poisoning them.
 
-Fixes: eff674a514bd3 ("USB: rtl8150_disconnect() needs tasklet_kill()")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/net/usb/rtl8150.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+--hmbonzz4lyxux25l
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx+linux-hardening@kernel.org>
+To: Bence Csokas <bence.csokas@arm.com>
+Cc: Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Philipp Stanner <phasta@kernel.org>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Lyude Paul <lyude@redhat.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Selvin Xavier <selvin.xavier@broadcom.com>, 
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Chengchang Tang <tangchengchang@huawei.com>, 
+	Junxian Huang <huangjunxian6@hisilicon.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Benson Leung <bleung@chromium.org>, 
+	Tzung-Bi Shih <tzungbi@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
+	Nilesh Javali <njavali@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	chrome-platform@lists.linux.dev, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] stddef: Add offsetofend() variant of
+ struct_offset()
+Message-ID: <avWY8kNFlkLyxIrX@devuan>
+References: <20261112-offsetof-v2-0-276ede839967@arm.com>
+ <20261112-offsetof-v2-1-276ede839967@arm.com>
+MIME-Version: 1.0
+In-Reply-To: <20261112-offsetof-v2-1-276ede839967@arm.com>
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index d51e43170e03..846e6329d571 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -343,6 +343,13 @@ static int alloc_all_urbs(rtl8150_t * dev)
- 		return 0;
- 	}
- 
-+	/*
-+	 * They need to be blocked so that open()
-+	 * can unblock them
-+	 */
-+	usb_block_urb(dev->rx_urb);
-+	usb_block_urb(dev->tx_urb);
-+	usb_block_urb(dev->intr_urb);
- 	return 1;
- }
- 
-@@ -353,11 +360,18 @@ static void free_all_urbs(rtl8150_t * dev)
- 	usb_free_urb(dev->intr_urb);
- }
- 
-+static void reenable_all_urbs(rtl8150_t *dev)
-+{
-+	usb_unpoison_urb(dev->rx_urb);
-+	usb_unpoison_urb(dev->tx_urb);
-+	usb_unpoison_urb(dev->intr_urb);
-+}
-+
- static void unlink_all_urbs(rtl8150_t * dev)
- {
--	usb_kill_urb(dev->rx_urb);
--	usb_kill_urb(dev->tx_urb);
--	usb_kill_urb(dev->intr_urb);
-+	usb_poison_urb(dev->rx_urb);
-+	usb_poison_urb(dev->tx_urb);
-+	usb_poison_urb(dev->intr_urb);
- }
- 
- static inline struct sk_buff *pull_skb(rtl8150_t *dev)
-@@ -425,6 +439,11 @@ static void read_bulk_callback(struct urb *urb)
- 	netdev->stats.rx_bytes += pkt_len;
- 
- 	spin_lock_irqsave(&dev->rx_pool_lock, flags);
-+	/* prevent an eteral loop */
-+	if (test_bit(RTL8150_UNPLUG, &dev->flags)) {
-+		spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
-+		return;
-+	}
- 	skb = pull_skb(dev);
- 	spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
- 	if (!skb)
-@@ -518,7 +537,7 @@ static void intr_callback(struct urb *urb)
- 	res = usb_submit_urb (urb, GFP_ATOMIC);
- 	if (res == -ENODEV)
- 		netif_device_detach(dev->netdev);
--	else if (res)
-+	else if (res != -EPERM)
- 		dev_err(&dev->udev->dev,
- 			"can't resubmit intr, %s-%s/input0, status %d\n",
- 			dev->udev->bus->bus_name, dev->udev->devpath, res);
-@@ -751,6 +770,7 @@ static int rtl8150_open(struct net_device *netdev)
- 	if (!dev->rx_skb)
- 		return -ENOMEM;
- 
-+	reenable_all_urbs(dev);
- 	set_registers(dev, IDR, 6, netdev->dev_addr);
- 
- 	usb_fill_bulk_urb(dev->rx_urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
-@@ -969,8 +989,9 @@ static void rtl8150_disconnect(struct usb_interface *intf)
- 	if (dev) {
- 		set_bit(RTL8150_UNPLUG, &dev->flags);
- 		tasklet_kill(&dev->tl);
--		unregister_netdev(dev->netdev);
- 		unlink_all_urbs(dev);
-+		tasklet_kill(&dev->tl);
-+		unregister_netdev(dev->netdev);
- 		free_all_urbs(dev);
- 		free_skb_pool(dev);
- 		dev_kfree_skb(dev->rx_skb);
--- 
-2.56.0
+Hi Bence,
 
+> Date: 2026-11-12 10:29:33+0100
+> From: Bence Csokas <bence.csokas@arm.com>
+>
+> Many call sites of offsetofend() use it for the purpose of pointer
+> artihmetic. Thus, a common usage pattern is:
+>=20
+>   offsetofend(typeof(*ptr), member)
+>=20
+> Capturing this in one macro helps keep lines short and terse, while
+> still making the purpose clear. It also helps discourage spelling out
+> the type name on every callsite, leading to more maintainable code.
+>=20
+> A similar struct_offset() macro already exists, so add an offsetof()
+> variant in the same spirit.
+>=20
+> Signed-off-by: Bence Csokas <bence.csokas@arm.com>
+> ---
+>  include/linux/overflow.h | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>=20
+> diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+> index d0f04436343e..060dad4b6f3e 100644
+> --- a/include/linux/overflow.h
+> +++ b/include/linux/overflow.h
+> @@ -464,6 +464,18 @@ static __always_inline size_t __must_check size_sub(=
+size_t minuend, size_t subtr
+>   */
+>  #define struct_offset(p, member) (offsetof(typeof(*(p)), member))
+> =20
+> +/**
+> + * struct_offsetofend() - Calculate the end of a member within a struct
+> + * @p: Pointer to the struct
+> + * @member: Name of the member to get the end offset of
+> + *
+> + * Calculates the offset of the end of a particular @member of the struc=
+ture
+> + * pointed to by @p.
+> + *
+> + * Return: number of bytes to the location of @member.
+> + */
+> +#define struct_offsetofend(p, member) (offsetofend(typeof(*(p)), member))
+
+The outer parentheses are unnecessary (they are unnecessary in
+struct_offset() too, but that already exists).
+
+
+Have a lovely day!
+Alex
+
+> +
+>  /**
+>   * __DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
+>   * Enables caller macro to pass arbitrary trailing expressions
+>=20
+> --=20
+> 2.56.1
+>=20
+>=20
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--hmbonzz4lyxux25l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmr1mUAACgkQ64mZXMKQ
+wqniCg//WgRXXz7luTnHUaMXrHNthttFpY3wBO557jzGIfLwMa+0tJqYgSh8MGS8
+7F44pQ7lX8E0qC+aMkDd3ItqdrKeD3McIbqqgpr8iU1VT0ljohr8pnTU7UIyIP/u
+bX/o22pWYohJFt/xcJcLxQ63rHmjcfjH2ug2i8ZgZHh/YGX+Biah79nfkcAB+uYX
+NI+43mSTP1aHvUK3Jf/z7PJF/v1/vyv1zJ/nsoN74w3JhlYGMggMcXHSu+dp0jmX
+qJUkyYJ5SQEzMdU/n2pSgOJFIZl6YS957I6fhU3GxEPXSldcnd/VIH/QRKMpSyjM
+jWzBsyjyyink+9RSw7AcmU46DJ28GeWMW5jZdg7jXq6ZGjO0/AKleOtMrevQLN4s
+hB7CzUrtofXBv5Oa5javphhfKIEoawgDsDch5eXFQW/Rm9rSflWysbPTCST5n/h0
+GfKbUEzD+COFj6I+Y8COEceKp4Xv8Y08A3r6CyyNIPzPwcc0CulK6xAmHbsMxIXZ
+c6uz3LLfqukMfbuquIZE4KhlNt+ZLRtnxL6rFfFkvLYdz4KwIsljmiPqoyPQxp9A
+OX5vOdZ9ulzmuuNoTY5OeJWSlsI6edzNc17hE6jjR1+wFfJSzVF2cvvv6mRGnpY/
+bGpmsQZFuH/KWJutZlHbsMGYEKF7lo42UH0Tqx57oaglMss89x4=
+=8quq
+-----END PGP SIGNATURE-----
+
+--hmbonzz4lyxux25l--
