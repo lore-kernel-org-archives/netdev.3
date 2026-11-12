@@ -1,49 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794524174;
-	b=FZnbd4oZE90OY72p7dEwXbyaHXhHc4KxuzXxh6smqSH8Vg3G/qur+4gdDNqaLpv8AigT
-	 h6dNco/6xOIElnY/omgvA3xoenZ8j3Y3grTxNo94iGILm1sRP7KjQsq3RRgZ5965an83e
-	 8q4r3yUe2JB7IV2wsk61fjbMaS99x0WY9mi96kNfKVoQc9+2Eq25w7X9bgdHkyhqRvX1o
-	 ZBZOT1U+UIePhEUrKM0wiF6rHOlDS2LkWm8sIE9xlU78yP7lP7f2iWK45FUqRYwIhWcaR
-	 ralntx83PwEROLCSchpMeLzpecNirh/ceLF8sVodxRYSgOGK8KV/17u28F/xo6zrV+w==
+	t=1794524416;
+	b=T/Q2G7kgqYY+izoGIJOzRFI6QyNqC9Za9fSJWk2+xi6xajM44GCbIMjNjA0HnnC3QJGl
+	 1HcfNCr1ndeGBhU0yH6YHvsy5WES7wlQTS1FWX8DSnUkgS9cEp5+0dH2/bsuc3oPLpuin
+	 VR5Z9r5NNR5KSaPWtUJPEl2jfhkqiThj8mh68jqyuJ3TWAmM5uH2/C15/I3SnZfaBAOgk
+	 yhXWGJ/yOR/akyxk+6fCemgfWa24LhvNE/mCbxSDnhCrVhHvn1e0qraSnVvTg57gEwK4F
+	 FMKAmQnveKwPfOLtKQtfWBH+6+6DcuPxCZsumd0kHmwBZ4miS9FpniEvPDDwVLO5suA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794524174;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=7KXZct2Nh4QdUFm8d2XuDz0d/faDhoWyH6HWizHXA2E=;
-	b=q9+L+6dvpoxk+bXk5vsuHHtfEhNQUVmm3lNLBDtiBWL0UMc4Jr+n+5DEjF3cjKtiZC+c
-	 YO/wwwzNf0a07XI7K/OPnK/8cQSJxABtNtbRgLrBZZPbqbU3y8ZjoBMahJVc/X2s/2cTo
-	 L2YwvQcn3byxVg0bD48M2gZx+foaMzyGzU8OT6rNd/yzXYTLxRq5ud0lHXncCFSZdNPUC
-	 szJ9MU79MtjqJzOymCkEj47kHbMLef+Y2GQNM1Dodk/T5jGWRfuvkFVmXF0GHMbbP/bxz
-	 iSl0W7U1jcF5GO6rDdxCBgUdI+S06ZBKCEs/ZozCh0zukBZPrrV52+gdqAOrATZTg3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794524416;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
+	b=oOVxBP5tOVm4R5D4w82c2BXVj1brnHicPR8vbJqxt/cYJqzUWPh538WYMyZZpP73gFj0
+	 x/R97OlaXJ8Kp1JK79BAS65+OlsI1mubMKxiTu6dG6W7PiTA9r/tLDP5Nzb6szqcQe4Hs
+	 IYARQy3++8QKr7pkLQWYuUW+n3FLa8qZjiJHAGU833ym97v9i8zLe/Ue5iiWtYnEsCu5k
+	 Ztv7yb4hp3eaxMPeHR+EGA9HFK+RE0TYX5pr1tuzPoytoHIf/duYiWTqhacc2DYNehLRL
+	 d/M3LQWhT60c/VOstVxjJLEwDHH69KgURw+qgDYPlb0GNZZ4dOB84PhA0tqhi4yKPnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lpa/UJ09";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="UEmdS/dd";
+	arc=none smtp.remote-ip=74.125.229.4
+Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DCF60A262C;
-	Thu, 12 Nov 2026 22:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BC1606A880
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:00:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26BC1606A880
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lpa/UJ09
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17F61F000C9;
-	Thu, 12 Nov 2026 22:55:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794524173;
-	bh=7KXZct2Nh4QdUFm8d2XuDz0d/faDhoWyH6HWizHXA2E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lpa/UJ09XlXh3NXrGdzLl3Y0yzxu/o2Bzw5r3haCfnWuH7X8CHkF8yj3NsQz0KkSj
-	 vONam95AbPdOBj9C6SkI6dRw7H9KgGH6g6wEXqWeftz8Nk2pZJmw1Jk12PbpEiImdc
-	 2B6PIpgLL3gF5jGr/Gxw8yPAyb+TIkLNV5lE3JggBkwitvGWL2MMQQR+flkvvzRiRU
-	 rMu2dX7Wq6wtwpn2mK6E9ZBK0ZUH4JI2fHrxZhPneJVYInZniV34L+vIM3a41tZcsa
-	 P+jT5nwYN8FQ41gjR9R1A427bI9HACxtMDz4ugRU9nN4n5Yd+pem/niRiHkliLrF65
-	 /7WwZU/xEuh6g==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 12 Nov 2026 23:53:28 +0100
-Subject: [PATCH v4 9/9] net: limit folio refcount when splicing from
- sockets
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UEmdS/dd
+Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-36f758312e0so123943eec.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:00:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794524415; x=1795129215; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
+        b=UEmdS/ddxgea87Jmi4D6KGO0cwNBW0iN6pjH4MYdOo/9psUz72Te3wCs/WBVGWCYin
+         oLAdMFp7CIubzlvzOBmyRG/Lj4TRocdsaMYZRyRloCp5icyGrXTBcF0NN3YDIdpbziPD
+         9dCoQysz795JPTNbOOEjaH/EeLGkosuG4aQkxwOskX09xUil/r1gN92uAD9OMsSjKiDB
+         F0lH6/nzBn/sVPwCLsDSnGNtu6ltHUoqDrztZuFogvL6rw+gfNvucXjpxiD1Anf0Up7c
+         0j1KXXL6s2KWDR5t1ZzoobkG3mM+v03VwLyiHohMh0pxNELAMXLgF+TZ4oIQZUO8hFiw
+         1I8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794524415; x=1795129215;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
+        b=fPGqnPgTpDNhTOXD2zLYi3uHPiBpbJsl8R2gVKKjCtpP/GP9W7N0z7MzaSqrjiJAbV
+         6etgZCPNHxG5DiHA7Im7uVYZIrXeY9Bziq0o4eZJu5GYOBZOr4QJHpZTt1r3alRFMvuQ
+         puLop8JLg4iCRxqNaXAXGanBL7jwoTrL3kbfE5Xj5dRi65NlB3O/P081hz51iSS9X8b9
+         rjku5mcjaqZXwfI2MF3/7OHA9ubfJzqH3UD31m85Mqtdp64/fl4kD2g/PyFGf/kboJoJ
+         eIBZX6pjulgrJP3/RFFwNzbXU30tvR+NGH/l7xZvKRsVAQHd+ZniJyJZ3NqXEBk5F1IS
+         NYZA==
+X-Gm-Message-State: APuU4Z/ZcVymAn2W0QC4iFJzxEINBG6+evf1djdFAQbjUHTttx3Sx6YV
+	Q/Yk0ptfBZ/9DjDxYqFPq+/McNFtX4mgxZEJFcCrBH8n06zOlH4yBtuL
+X-Gm-Gg: AYBFou1QzUQMurkaeTlARijCfT2vUOWnFm1Fhvt1nNYNl2CUEqn4QvUsF54fJEnvG7n
+	Gv7MQ0gsEWO/vO4jInf2U9vGF9Kjr+k5F2HFpobWfbQW762vE1njN/ICwJqI37JmCN1UxfU0MUj
+	i8bPy81c7e8PQDyFAUPo3pxUgwCHDadzr4mzJ2Q2SgImlqlNPE8nrzLDWiMkS+OgFdZKRLmdyNm
+	E7JNHUh6DniOugXOjiG41QyjFWzJOidvYMiikDmfKGSkjR6mJh1KJeTVwIzuad9kZ1A5RvDM4ha
+	LUkAAV15EpZmve/GejLBiV5gVRBEJ58SClLgYzxgnK4p95Q9aoU3SDLeLvI5BLGTAawYte2uB7P
+	jiDLcnoQPM8waqchGRdiqUJdtBlz5kSj+dv1w7Uixw6AIqljHXSDtgtVrVMAwICQV7oZcKq4JGL
+	gEsx//vJl5dWc0KWrfgwbuZdZ6qlI6FNwUch1XnOZEM6JnzO2cdNW9fuOQ0ph3qpKVnZZuMytbK
+	bgJuoJnUoEJ1Gy9ObPU6D62l4NBfbam6wSfVGrwOyQrGVOqjVrjPI1XdYd1DL/XSLrr7p1k+27Y
+	vGwgURoa08aJZy0hVwO7Kn8=
+X-Received: by 2002:a05:701b:454f:10b0:1b2:4998:a0df with SMTP id a92af1059eb24-1b5030db655mr763014c88.35.1794524414765;
+        Thu, 12 Nov 2026 15:00:14 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:60::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031b98e5sm2014845c88.14.2026.11.12.15.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 15:00:13 -0800 (PST)
+Date: Thu, 12 Nov 2026 15:00:09 -0800
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
+	andrew+netdev@lunn.ch, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org, 
+	almasrymina@google.com, sdf@fomichev.me, leitao@debian.org, dtatulea@nvidia.com, 
+	asml.silence@gmail.com, bobbyeshleman@meta.com, daniel@iogearbox.net, 
+	razor@blackwall.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v4 0/5] net: devmem: size TX net_iovs from the
+ dmabuf layout
+Message-ID: <avZC2hp_0ODMQ4SG@devvm16445.scu0.facebook.com>
+References: <20261111224740.2744522-1-sdf@fomichev.me>
+ <1b764043-2efd-4e65-adb9-a47c0136446b@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,262 +101,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-refcount_overflow_stable-v4-9-ad3deef0bd23@kernel.org>
-References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
-In-Reply-To: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Song Liu <songliubraving@fb.com>, 
- Rik van Riel <riel@surriel.com>, Miklos Szeredi <miklos@szeredi.hu>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, 
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Steve Sistare <steven.sistare@oracle.com>, 
- John Hubbard <jhubbard@nvidia.com>, 
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
- iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org, 
- Pedro Falcato <pfalcato@suse.de>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7665; i=david@kernel.org;
- h=from:subject:message-id; bh=YprwJxPujKbTqAJR7+MEgkU1slwl4fvrcUXKr6083QM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+OWdZhIuraRTZhSu/umUgt+rJTueTAgtSJm4s/rjwj
- O+luT6mHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEyEJZ3hn/lfbe1bRUyliy9c
- uL1I+nC+bFJz4fp76hO89m+oK5yxbCMjw8oYEdvXjHOUMgT4Y5sW1N467Bi75R2f1eEXcVeX3Gr
- 35QEA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1b764043-2efd-4e65-adb9-a47c0136446b@redhat.com>
 
-Various networking features support splicing data from sockets into
-pipes (TCP, AF_UNIX, KCM, kTLS), whereby spd_fill_page() takes an
-additional page reference for each fragment, while the skb keeps its own
-reference until it was fully consumed. This allows for exceeding folio
-refcount limits.
+On 11/12, Paolo Abeni wrote:
+> Hi,
+> 
+> A few (late) questions/comments to check I'm not missing relevant
+> points,
+> 
+> On 11/11/26 23:47, Stanislav Fomichev wrote:
+> > TX bindings use PAGE_SIZE net_iovs, so a frag covers at most a page.
+> > A 64KB skb needs 16 frags, and MAX_SKB_FRAGS caps devmem skbs at about
+> > 68KB, which makes BIG TCP ineffective for devmem TX.
+> 
+> ... with default .config. You could set MAX_SKB_FRAGS to 45 and reach
+> ~180K...
+> > This series picks the TX net_iov size from the dmabuf sg table instead:
+> > the largest power of 2, up to 2MB, which aligns every DMA segment. With
+> > a 2MB hugepage-backed udmabuf a BIG TCP skb takes a few frags. There's
+> > no UAPI change since TX addresses are dmabuf offsets.
+> 
+> ... still this option should be more effective because the limit would be
+> higher and the skb would use less cachelines for the shared_info,
+> 
+> I'm wondering if making a comparison vs MAX_SKB_FRAGS==45 would be
+> complex and if you could do that, too.
 
-This is not specific to large pagecache folios, but with them it is a
-lot easier to reach the refcount limit, as page table mappings can cheaply
-create many references.
+Originally I did not want to include bigtcp to keep it apples to apples:
+same tso size, just 16 frags in skb vs 1 (in ideal case).
 
-Let's use try_get_page() in spd_fill_page() and stop splicing with
--EFAULT if that fails. To propagate the error, let spd_fill_page(),
-__splice_segment() and __skb_splice_bits() return an int instead of a
-bool. Keep returning true/false instead of 1/0 to reduce the churn in
-this fix.
+I just tried running mlx5 with 45 frags configured and it fails to start with
+the following error:
+mlx5e_attach_netdev() warns "MLX5E: Max SQ WQEBBs firmware capability: 16, needed 23" and returns -EIO.
 
-If we could not splice anything, return the error from skb_splice_bits():
-returning 0 would make the callers (TCP, AF_UNIX, KCM, kTLS) report EOF,
-although data is still queued. The callers already handle errors.
+(fwiw quick review with llm claims that mlx5 only supports up to 20 skb frags)
 
-Use -EFAULT, consistent with splice_folio_into_pipe().
+What I also tried just now is `gso_max_size 524280` (on top of this series)
+and it ups single flow throughput from 200Gbps to 240Gbps (presumably
+by making the receiver go faster with 512K TSOs vs 64K TSOs) and halves
+the sender softirq..
 
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Cc: stable@vger.kernel.org
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- net/core/skbuff.c | 90 +++++++++++++++++++++++++++++++------------------------
- 1 file changed, 51 insertions(+), 39 deletions(-)
+I hope this gives you more data, not sure running with 20 frags is worth
+it (vs 16)? LMK if you disagree or want me to run something else.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 5e3f910eeea0b..a5965f8fa1b00 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3150,11 +3150,13 @@ static bool spd_can_coalesce(const struct splice_pipe_desc *spd,
- }
- 
- /*
-- * Fill page/offset/length into spd, if it can hold more pages.
-+ * Fill page/offset/length into spd, if it can hold more pages and we can
-+ * take a page reference. Returns non-zero to stop, or a negative error
-+ * if we cannot take a page reference.
-  */
--static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
--			  unsigned int *len, unsigned int offset, bool linear,
--			  struct sock *sk)
-+static int spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
-+			 unsigned int *len, unsigned int offset, bool linear,
-+			 struct sock *sk)
- {
- 	if (unlikely(spd->nr_pages == MAX_SKB_FRAGS))
- 		return true;
-@@ -3168,7 +3170,8 @@ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
- 		spd->partial[spd->nr_pages - 1].len += *len;
- 		return false;
- 	}
--	get_page(page);
-+	if (!try_get_page(page))
-+		return -EFAULT;
- 	spd->pages[spd->nr_pages] = page;
- 	spd->partial[spd->nr_pages].len = *len;
- 	spd->partial[spd->nr_pages].offset = offset;
-@@ -3177,12 +3180,14 @@ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
- 	return false;
- }
- 
--static bool __splice_segment(struct page *page, unsigned int poff,
--			     unsigned int plen, unsigned int *off,
--			     unsigned int *len,
--			     struct splice_pipe_desc *spd, bool linear,
--			     struct sock *sk)
-+static int __splice_segment(struct page *page, unsigned int poff,
-+			    unsigned int plen, unsigned int *off,
-+			    unsigned int *len,
-+			    struct splice_pipe_desc *spd, bool linear,
-+			    struct sock *sk)
- {
-+	int ret;
-+
- 	if (!*len)
- 		return true;
- 
-@@ -3200,8 +3205,9 @@ static bool __splice_segment(struct page *page, unsigned int poff,
- 	do {
- 		unsigned int flen = min(*len, plen);
- 
--		if (spd_fill_page(spd, page, &flen, poff, linear, sk))
--			return true;
-+		ret = spd_fill_page(spd, page, &flen, poff, linear, sk);
-+		if (ret)
-+			return ret;
- 		poff += flen;
- 		plen -= flen;
- 		*len -= flen;
-@@ -3213,28 +3219,30 @@ static bool __splice_segment(struct page *page, unsigned int poff,
- }
- 
- /*
-- * Map linear and fragment data from the skb to spd. It reports true if the
-- * pipe is full or if we already spliced the requested length.
-+ * Map linear and fragment data from the skb to spd. It returns non-zero to
-+ * stop: true if the pipe is full or if we already spliced the requested
-+ * length, or a negative error if we cannot take a page reference.
-  */
--static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
--			      unsigned int *offset, unsigned int *len,
--			      struct splice_pipe_desc *spd, struct sock *sk)
-+static int __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
-+			     unsigned int *offset, unsigned int *len,
-+			     struct splice_pipe_desc *spd, struct sock *sk)
- {
- 	struct sk_buff *iter;
--	int seg;
-+	int seg, ret;
- 
- 	/* map the linear part :
- 	 * If skb->head_frag is set, this 'linear' part is backed by a
- 	 * fragment, and if the head is not shared with any clones then
- 	 * we can avoid a copy since we own the head portion of this page.
- 	 */
--	if (__splice_segment(virt_to_page(skb->data),
--			     (unsigned long) skb->data & (PAGE_SIZE - 1),
--			     skb_headlen(skb),
--			     offset, len, spd,
--			     skb_head_is_locked(skb),
--			     sk))
--		return true;
-+	ret = __splice_segment(virt_to_page(skb->data),
-+			       (unsigned long)skb->data & (PAGE_SIZE - 1),
-+			       skb_headlen(skb),
-+			       offset, len, spd,
-+			       skb_head_is_locked(skb),
-+			       sk);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * then map the fragments
-@@ -3248,10 +3256,11 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
- 		if (WARN_ON_ONCE(!skb_frag_page(f)))
- 			return false;
- 
--		if (__splice_segment(skb_frag_page(f),
--				     skb_frag_off(f), skb_frag_size(f),
--				     offset, len, spd, false, sk))
--			return true;
-+		ret = __splice_segment(skb_frag_page(f),
-+				       skb_frag_off(f), skb_frag_size(f),
-+				       offset, len, spd, false, sk);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	skb_walk_frags(skb, iter) {
-@@ -3260,11 +3269,12 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
- 			continue;
- 		}
- 		/* __skb_splice_bits() only fails if the output has no room
--		 * left, so no point in going over the frag_list for the error
--		 * case.
-+		 * left or on error, so no point in going over the frag_list
-+		 * for the error case.
- 		 */
--		if (__skb_splice_bits(iter, pipe, offset, len, spd, sk))
--			return true;
-+		ret = __skb_splice_bits(iter, pipe, offset, len, spd, sk);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return false;
-@@ -3272,7 +3282,9 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
- 
- /*
-  * Map data from the skb to a pipe. Should handle both the linear part,
-- * the fragments, and the frag list.
-+ * the fragments, and the frag list. Returns the number of bytes spliced,
-+ * or an error if we could not splice anything because we could not take
-+ * a page reference.
-  */
- int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
- 		    struct pipe_inode_info *pipe, unsigned int tlen,
-@@ -3287,14 +3299,14 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
- 		.ops = &nosteal_pipe_buf_ops,
- 		.spd_release = sock_spd_release,
- 	};
--	int ret = 0;
-+	int ret;
- 
--	__skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
-+	ret = __skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
- 
- 	if (spd.nr_pages)
--		ret = splice_to_pipe(pipe, &spd);
--
--	return ret;
-+		return splice_to_pipe(pipe, &spd);
-+	/* Returning 0 would make callers report EOF. */
-+	return ret < 0 ? ret : 0;
- }
- EXPORT_SYMBOL_GPL(skb_splice_bits);
- 
+> > This doesn't make skbs larger. TCP still sizes them with size_goal.
+> > Only the frags get larger, and a single frag can now cover the whole
+> > skb.
+> > 
+> > An skb stays under 64KB unless BIG TCP is enabled. With BIG TCP,
+> > MSG_ZEROCOPY from huge pages can already create frags of 64KB or
+> > more. So drivers already have to handle them:
+> > - mlx5 has a 31-bit length per data segment
+> > - gve splits frags into 16KB descriptors
+> > - fbnic doesn't enable BIG TCP
+> > - bnxt has a 16-bit BD length. It is broken for such page frags today
+> >    and will be fixed separately.
+> > 
+> > Tested on two mlx5 400Gb/s hosts with kperf (udmabuf, 32KB RX
+> > net_iovs, 2MB hugepage-backed TX buffer), series backported to a 7.1
+> > kernel on the sender only. 1 flow, MTU 4200, receiver tcp_rmem capped
+> > at 16MB so it doesn't drop, median of 5 x 60s runs:
+> > 
+> >                                before    after
+> >    frags per skb (sender)       16-17      1-2
+> >    throughput (Gb/s)            208.6    211.2
+> >    sender sendmsg CPU (sys)     40.8%    19.5%   (-52%)
+> > 
+> > The receiver's CPU is the bottleneck, so the gain is CPU, not
+> > throughput. More of the transmit runs from the ACK path, so the
+> > sender's softirq grows (52% -> 59%), but sys + sirq still drops by 16%.
+> 
+> is the receiver using GRO H/W offload/big TCP? Which are the gro_max_size/
+> gso_max_size limits? In the `after` scenario, is the 2nd frag used for the
+> headers?
 
--- 
-2.56.0
+hw gro, no big tcp (default tso of 64k). The headers are still in the
+linear part and most of the time we get 1 frag.
 
+I'm assuming 2 frags are happening sometimes because of tcp sending
+something over that 2MB boundary. So that one single range has to be expressed
+by to frags.
