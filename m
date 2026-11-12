@@ -1,60 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794492137;
-	b=DeIYJSwbyvmqphm2jWG+yPyQiSY9Yff+vgUl9khBgVF0fIivwOF3VADlWKmbaj0ubroc
-	 XY44N6GHSZpUW+/Gr8XEyF9hqsOcBiVAfN3s2ap63xGCrtz/qwXbjJsKGPE0Wzohbbx43
-	 gwVmbb5LtT3j08GnSG2oAWl+bHoVFOtxAyn/JUEh7IICwgoEC6GQKo064fdMyl6+2Saim
-	 wkRJ56yfrjBRMWg46ZV1GS1gJcl9PhhimOON0lCaN7v9oJ8FFLLlnnfMF7mATNlBCyclk
-	 DGfDSIj3R2MO0XMsRS36YnDHB3u2JXk3HXO3uDKOKqSz49s3itxpY9gOwfMYxwAVe+g==
+	t=1794492146;
+	b=gWiswQ0i5hePWAx0K7vHkDSxcP5yVAs4qGAqh+cpdvoW3GjkXFQjYZNuAh7Kmrvco68A
+	 pRIYQEbBR3Fu2T/F8KpntyS2mU+dEZFv8H5Cu3zXeqVX3Dyel7EckiLVqBQ1K60EQ5SfT
+	 a82gOyL+DtP/spbth6Ng2j/SbWnwCPwW9lVvsr5YGXn4ianoxp59znN90KWBX883amGGm
+	 mU9Zru5Qi94oRyEiEx93QseaqBFhO/VzQm5BonzlFpwB71KMClzsXMdnT10z3EtkkXYsr
+	 aY5G3JbXNTb0EPIQzrlz3yWdPnrmyfwxUkFgH/xQSal7GOMLC4dVtZ+BDz1N8DIRhhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794492137;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794492146;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	b=OGeYaZ6HMVQkBCuxKI7YcJ1FEQ2WMfwGOoxt+UmcTUrC3Y3giT1qo2vK3HMqPtv0pPfd
-	 jWRNwvrH3exDHy1sSuVl/pCTSnxfmFEAn5UwJyoBidlxYpeXY38U/XUQmQ3e4DDK4bEng
-	 NPT4JRE+lQbdk0VanBR6SuwUOj/joB33krEmNnBpRA2CjxC+3MXrQPR3RcqAmy46TY9Kx
-	 WvYXN49ACNG6oRUcumxyu99Nc6GnWLreNlULDC4M2ySGaD6BOH1SmFFM8/+wpFZ/dq2j8
-	 88R9SEPsyfGcs5ag0El/gTxKoKWedEr9sDwML2J+y9OPd/LxlV/SCgEETJGC5SDPpVA==
+	b=08bIgqau/6IPLSdfgW6uMCv61g+wTaACKHqgKiR/CK3yzRh51YNbq47XWnC4XbOrMuAl
+	 tfOHHLdjf3czfBr+Yvh85uZu8xwAdRR1jiAX8p3jKL0KiPWmZIHhef2F/MmrxkjmUcjx2
+	 Pqh+GPhkHV3HEj4Vg5VkLzBnfZ1EgLqNVg5MzQcn2mehkYu+2Ul41cvLBCEjAMJDxg/gy
+	 cnB0b8eDatEu1L8ftPnHqHWstzbua4ncpMpn4ACq4y/m7BDspno7T7Srg/NyoYTvbfSlk
+	 nn4ShcYvkei6/9ik7VdyG4f4Ou8WEVnBJaQXpzJXG7TjSMpe2O/OE2QPHWryjxZVGGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YyCNKNBp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlwJ39a1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14586606A330;
-	Thu, 12 Nov 2026 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C86606A330;
+	Thu, 12 Nov 2026 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YyCNKNBp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF71F00A05;
-	Thu, 12 Nov 2026 14:02:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlwJ39a1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75401F00A06;
+	Thu, 12 Nov 2026 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794492136;
+	s=k20260515; t=1794492146;
 	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YyCNKNBpysLCemDZZfCc/F7vDencDP1Pi2Tlq8tELy9rXkatBVzAOHrqGzPLREvTv
-	 3EugFEpVaEx7gw+p9pYcraR8NCmVJLrdZDrKRneUbsK5aYwHyQ7u6o/5z2ONY5H+uC
-	 Vi3tib2d8pdZFDNQd1Ih6P5gm89J+D2Eq920ss5gB8muXviyaCVbZZwYDPgxAuJD/0
-	 KX19mbNrh7ropLv8yEQJyulvRHQedqHidDk4byAha0nHUVldjghZoi2fOn2J8BJuLU
-	 KFsmuffgEt7ykLEIKgrKJ3xsDcItZlX5u2RGnH59NXUjpC+Q1YLBrE0V9GmuDWBX3v
-	 g9Xmlwvw3C54w==
+	b=jlwJ39a12n/heLpSgWcHBpjVT9mYI5SkK8C7DrOZFc3WyKQ0kpQMTx5nhJ6Tp6IX4
+	 B6dIP5ckzBOfjO9SA7ct7vQwjrByJ/BSd6WbHVgsrc2pg5Rm5naTl44+Z9pr+4W+qP
+	 YWfTZww+HsanluFclcz0CE/K8UekcMX8fqpIM2iaJZxFPN9Ro8AITvgaMKla2wcz9F
+	 xtocuYddY99fKD14mmkGtaA8mHFRHvUVCfF03fBRVfCwnJ+SBBydkF+kBdjwwwNBhE
+	 LxK/Ooh+zmMeyN/RJ1ZB0ZiH6Dh6aeXr6wyqQp0CFbWu9n3l5P/wiazlMIhO4TtwtU
+	 ciW2e48/4W2QA==
 From: netdev-bot+sinfo@kernel.org
 To: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: 
- Re: [PATCH net] net: ethernet: mtk_eth_soc: Fix potential PPE hash table leak
-Date: Thu, 12 Nov 2026 14:02:15 +0000
-Message-ID: <179449213543.2168702.9560735261651362363@kernel.org>
-In-Reply-To: <20261112-88a3a7ff32-net-mtk@mail.sdu.edu.cn>
-References: <20261112-88a3a7ff32-net-mtk@mail.sdu.edu.cn>
+Cc: Sudarsana Kalluru <skalluru@marvell.com>,
+ Manish Chopra <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bnx2x: Fix potential IRO array leak on removal
+Date: Thu, 12 Nov 2026 14:02:25 +0000
+Message-ID: <179449214541.2168702.8243471976083576689@kernel.org>
+In-Reply-To: <20261112-88a3a7ff32-net-bnx2x@mail.sdu.edu.cn>
+References: <20261112-88a3a7ff32-net-bnx2x@mail.sdu.edu.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
