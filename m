@@ -1,106 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794521259;
-	b=UfaqQUO0Lsp+rVi1RUqPp/X+w+nolwbpVSu7ICPGtr/xcXwUi4GLKQWiHytMR5F/yu88
-	 /Z+Lax7ou3KVohIY+a/KNGKVKeUViA9F46kVk7K0k+CrQXldCSepPohKP2eysfQtuZMEg
-	 4UOsIVPXga36yfsTZiAlxeNEjMri2+/cjRtg4YvGi6rX/JzoGO7PC0azucp7EBmf7cQpF
-	 KAd3DQ2YFu3RCikjjsCV+3Ebi/0w2ayeyjrKMAJC/3kKBlybb0i5Mdmvr9d1OyThmQk3G
-	 oMA3V8YC4JtK3OY/mjsshw9VYCnpZ8O5TojCmhxeQsGgNLNs3P/2KA22zD36nQaTPEA==
+	t=1794522032;
+	b=vMV/PfTGFFQrAsybrZOw8RzXQhHtUYr5fhyZwJWMUlAsaga7lvg/cWdShXQvIaF9sVsq
+	 Gp1Sjw/byzZogamdRqASVbj+pw8zr81baWzBjJ87nxQgerueBUiIx1MMeQ5F+MMca06hx
+	 yWesqSjcPrtmuyr44uetCuCnGGnFO6Bu+YPtXJn81Qt55WCcgURFpN0zdfYg/4lgVWlvK
+	 oC4ioPewdeLcxRD3yciAVNZIWS2vE5qZ9Inn3D0qFZs5xgYkNE3n4LnBJaqLqv69kLQQd
+	 KsXsq3NpF1J9mkwnwjkx8bKLO8x0fD//joQGRM9Qc9FmkBdrBBHyROF2BlTYWHng7Tg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794521259;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=EJk8CdNdbEyP4ChDys2eIJP2WebzH4A9jm4eCQthCqA=;
-	b=IXutJbCIu6c54G/NhrTI88Otckif3Wds0tPCGhpLJGPOotLWi7pzwuBxsVFsnHwArLr9
-	 CIZ6B1TJK1sa4HYVgGPN4hQ4ZEOB86pCJD0Pe757pRVdjNgJBNENqB3vO4qOcE83hXsCc
-	 cxCEATgtW/iyJEyqJR3N7by6XzGb+lzbVGk1LkcosJUL6+1XGz+91h0ksI+yrMGcVCyBZ
-	 ceKkf0mYXDE/KWdJJMmBgKmdfBgtbIi68gneckshJyhn5GijCGOaO3YI2LJNP0iE5gIMY
-	 oEAZzEu9CERpCLQETdkev5/ODHAhhOV0bUm7lvTC057OiWXeOFOX9HWIRp7BqoXz3WQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794522032;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
+	b=4miJhx0zQ2a2VmL6acD227OuBds6b2iotKAXJIO31av2Qtj4i5uKUZkhLfTqP5pChoaB
+	 EzhBKgAPy/7kq/xNdq3pCU/PgOvt6AYUMlC5EUnM6IhtjKkWT50+8m4ahF1ZNVS8eNCtu
+	 2XmfwBZqW/kReXr6IomCjte1GyQ2l1Yqyo8wVObPbzfMFN4owPkSE5qKlsTG+SHV8PyGX
+	 H2/6WJGeg8CzAWuV1xy4zMhkxoJzcMisSw4Nm1HHC7fti4I0PzYQnLwnSH2xy2vHRluyy
+	 N0+C2+wauODK1FmfZ8A83rd1jv5l/k1Le6yAvx+5j9oWXcEZvqEL1it7SjlrvYh2wgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Jbfbbnmm;
-	arc=none smtp.remote-ip=74.125.82.48
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DbqCBSQX;
+	arc=none smtp.remote-ip=74.125.82.228
+Received: from mail-dy1-f228.google.com (mail-dy1-f228.google.com [74.125.82.228])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A68606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:07:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3A68606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DAD606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:20:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8DAD606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Jbfbbnmm
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-15ea896ddc8so330916c88.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:07:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794521257; x=1795126057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EJk8CdNdbEyP4ChDys2eIJP2WebzH4A9jm4eCQthCqA=;
-        b=JbfbbnmmdK4hpUP8wbY6apEXPrxSwPOvFQSm5Wons5ly4KnwEgPkDct4M4AoLNlc2A
-         B5JIWUy/gsG/TPxcyU9bHOQFteUFPC07Q8q+QY3nyR9ZEr1GqEWl/mYLp7QQzjZ/td0w
-         BOs9UHXkDGjOaNHEL6ti4oB0FwLXli064Ogbg=
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DbqCBSQX
+Received: by mail-dy1-f228.google.com with SMTP id 5a478bee46e88-37600b0db49so1252026eec.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794521257; x=1795126057;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20260707; t=1794522031; x=1795126831;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
+        b=ClzhzybVFCe/KGb1Qm+vf3DFhqwx2oGrQefhOJ8IX/xVx81ZXJkbyf1HO3N9ue19kh
+         dfAEQ3ggikpYatEBpuTBt5l034Fpref8Zub+BiTvMicFOAtwra10wFINOyIL9fJduFfR
+         g95/m99kM7yUbDGjG+3GztxKpCkH8QHm1uALdjsbu7+5nD2Ir5CpyHNVoYDKxMPlI3bL
+         uSu2KaRhdHiDaJJDzoX6hVFm7sSGbVXsAc2SbNEHNOWPFFFy2lXhhvKO1dO2VlDE+r36
+         n4HiX60oMUIYrfKVUWSt8S7nFOyZ09tQkwzT/U3VNGjSH7US8aY3avAz5HEU/8A8R0T8
+         htMg==
+X-Forwarded-Encrypted: i=1; AL+hErFikq1XDT5keMsM0SV1i21NymTF5SooJcARJy+Lba2NOQIYNata9urvC/c21hfaV6vdp8Wg1ag=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9An068ftZcHtayF5BSmny0v9cViNKlHONGYr5FQy+Bs4fyzn9T
+	EFkw/0ld7Oqgzz5lT83dabSL1nOZIoNqkdTaYvRDLFk3sxKchSmgRhlw6RRu1fXQ/vj2+pbb4b6
+	pE6dcHWlB4t0WqeTlbM2XW79NmndEQuNtkt3rHQPabRIpg2ymBEtsKP/5nH325www7XO1XZ1kMw
+	QaRUBmByLBla4StPEDCPxADX+52z0RH8iHt2+sfgDg/r4JVqArBfBgg2CbHJmwUe4Ii+yW0QB/x
+	k32OYkjc0m6i3Yp
+X-Gm-Gg: AYBFou1ekdW8U9WX2kLgPZLSA7NXsZRX6uD0WE+WxVm/LQInIRCZqdnGK5kdJG4f0DI
+	GvmX3DM0h6CbG/243V7ZiN9iPPfQ89/sKNfQbceILBlTmfafn1M0fP+Y8Aackr968xLL5947Uyx
+	66AGbHA49SEmkq6GCTxn4qF8TayO1ea5q00j2hsdlaAkmZ84dIRIiosankI4qZQaVuV0Ms8ahkv
+	RQ0RkfCMuxJ1K5/pa5ehFAra3xovNKr3oBMviu5pqjvpTi2GM4BhOs4omU630VjJG2fh4w7l2D7
+	Pdl4mP8cBTNXdBQBXH8W1EgiQNqOKM2H6OiWTAEza55vD20VatrZRTG4Tc/AEE8rGbTWsY/+JPV
+	pl+RgLVoWG7RoGipYJ2cMfG5atmCPnpNAImpGWqpfgi/JPLWAUT4zDKpiukGEXOqmRDlaF7e3v4
+	iQHB1XngsPUwxpmhCQLbNabEdjI6tT/yNASOL7qNGj
+X-Received: by 2002:a05:7022:eb47:20b0:184:ae11:51c8 with SMTP id a92af1059eb24-1b4f5f7fe1cmr3307368c88.23.1794522030540;
+        Thu, 12 Nov 2026 14:20:30 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-37959abaee5sm38962eec.14.2026.11.12.14.20.29
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Nov 2026 14:20:30 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3724667bc16so168371eec.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:20:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794522028; x=1795126828; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EJk8CdNdbEyP4ChDys2eIJP2WebzH4A9jm4eCQthCqA=;
-        b=Lq082LSdPMWpcrKTAaDFTX9gUz7Fn578iyD8xmHp0WtcBMpsJJLvQfe2YQSuSz9rQr
-         WrCUBrPCDahMeOm+gnekwh2wzwUyMeFhWrPsnLcRtrhSv7kXTP053YfQkYQBQHbLWva4
-         u6Ms6dHJh8f741KITEt5F+9F5TStkZGXwoHUWR3NyG2ETf9STdZvusKcCZq9FNnT4G/k
-         MIloAfnlgXg8mpcA8D/u7zvuSnlzYiSGGEZy4BlhcIrrilctAVmphaBjWmt5jtl4EHfV
-         wu14gsw1mJpTCmVbGUFWdHZnTfFLiY7G/+9lWxh1QAQJKrtA7yoSj/aSWtUjqMiFFXxG
-         RomQ==
-X-Forwarded-Encrypted: i=1; AL+hErHOFYaWiGELbHBcFFRXp745qp9sbTa/Amr44PdHjG8f1Kwo7ITJAM4sZpDJxPLHe5wGZI8GE/0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8ycnmlt0fqLJjl97BqQgdvnPnhdz2/SOE43n9/TrEISPTbBHuU
-	BV1UF8kl1seixSJQ0EB8jNVK/h3rAZRiNUF2ckQJvqLW72e0AIoTbYdmIywhC5NWUg==
-X-Gm-Gg: AYBFou1yWJ+xZZUtToZhtiG/JqpAR7P+FN27mutUTAIdHfvMABU4JndKDygqibNxCal
-	Kj6I/5gRAQ4a2jdCC93VkvcjjpWb/+XvAOpv7v9GNHlt29oS+A9EgNQGOvlEZyuiCTbr9aOBzXP
-	0JeGClbaKNESJkmsT4TxgNMUOd3FldC7SS6rJwfYpHoIej3sMN/XxMDmnCGay89F+cbbz7QByeq
-	rPPL3MCxEhcTHhJxnt+z4nG8XdMqTtfvdZ1/v2a9Pmzxskpqdrjc61/EjtZsegVdjlnPe/XWsCi
-	5bLu1CeehGw7dIibEHMoQTE7GUtByajiKfyzZgL6k8IqpghRTGH8Sawa47c01PvfWe2j+PJBGY1
-	Psf4tgJsf18rZyZogMGcE6sUuEubzzP3XKslxrllmkKj6voWeB+2mQqhGTF2296AYu4Tm6EmvKE
-	ZPVpIOqSCXVjtNabtQWpJ5/NzohF6kRSvnoV+AS7aWmRRYKSzl0YRMwZsgpQBLKy1brrLuZngSj
-	WSif5QbiGrRTGx+rs+OrSnr6HeY9moQJEgdD1wNT4IExkqTFA8s+r/0+YNuI53JqUf/u+4Annwo
-	BmwdqnStrtKRBf6qjAJV/sFqlV2fZE0YpH3yQ2l+UB9UCX4zERCexWKdjOXTvuNXecaAkQ==
-X-Received: by 2002:a05:7300:6d03:b0:36c:3b8a:8090 with SMTP id 5a478bee46e88-37963a4ef35mr704124eec.2.1794521256304;
-        Thu, 12 Nov 2026 14:07:36 -0800 (PST)
-Received: from localhost ([2a00:79e0:2e7c:8:616b:3e06:cec4:c2f9])
-        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-379569b8389sm1765404eec.25.2026.11.12.14.07.34
+        bh=dMIN/jsvm9zebNFrjUksdeFOedRMnbi0KaBFP9e8FN4=;
+        b=DbqCBSQXZCrintuXQM5LV9lIFkPqmGjC5imc2e4RCeNXUZjEpQt0TJmL1UGzYVMG77
+         Kw8oeskuttxb5A8RLrbw20tdNmY9HKD+hhydakD+WuGb4qvTvjk1Am/oSDDkP9y1TBOi
+         B0bCtaM8InHef9E++jd4G/SB4tliC+bo1xeso=
+X-Forwarded-Encrypted: i=1; AL+hErEcH06d3hlD5hNh8cMogZ9I+C97cNChXTwaucvxb2gODoB9YA0+WwUUg+Q6rVDGkWvF8fkq/Bg=@vger.kernel.org
+X-Received: by 2002:a05:693c:87c2:10b0:36c:a3ae:936e with SMTP id 5a478bee46e88-377e093dc83mr3368463eec.5.1794522028412;
+        Thu, 12 Nov 2026 14:20:28 -0800 (PST)
+X-Received: by 2002:a05:693c:87c2:10b0:36c:a3ae:936e with SMTP id 5a478bee46e88-377e093dc83mr3368430eec.5.1794522027690;
+        Thu, 12 Nov 2026 14:20:27 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3795591f4f8sm1232743eec.13.2026.11.12.14.20.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 14:07:35 -0800 (PST)
-Date: Thu, 12 Nov 2026 14:07:33 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: Jack Wu <jackbb_wu@compal.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
-	Shi-Wei Yeh <shi-wei.yeh@mediatek.com>,
-	Minano Tseng <Minano.tseng@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Robert Yu <robert_yu@compal.com>,
-	Jeff Chang <Jeff_Chang@compal.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v11 1/6] net: wwan: t9xx: Add PCIe core
-Message-ID: <avY4pfjYOoJGh4en@google.com>
-References: <20261105-t9xx_driver_v1-v11-0-2084aa512864@compal.com>
- <20261105-t9xx_driver_v1-v11-1-2084aa512864@compal.com>
+        Thu, 12 Nov 2026 14:20:27 -0800 (PST)
+Message-ID: <05d38633-4f68-4e1d-9e08-0c5c532da5ed@broadcom.com>
+Date: Thu, 12 Nov 2026 14:20:25 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,1443 +106,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-t9xx_driver_v1-v11-1-2084aa512864@compal.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 6/6] net: bcm4908_enet: publish the buffer address
+ before OWN
+To: Kordian Chmielewski <kudzo51@gmail.com>, netdev@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
+ <rafal@milecki.pl>, bcm-kernel-feedback-list@broadcom.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org
+References: <20261112195051.597102-1-kudzo51@gmail.com>
+ <20261112195051.597102-7-kudzo51@gmail.com>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20261112195051.597102-7-kudzo51@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi,
-
-On Thu, Nov 05, 2026 at 03:56:27PM +0800, Jack Wu wrote:
-> Registers the T900 device driver with the kernel. Set up all
-> the fundamental configurations for the device: PCIe layer,
-> Modem Host Cross Core Interface (MHCCIF), modem common control
-> operations, build infrastructure and MAINTAINERS entry.
-> Besides the T900 itself (14c3:0900) the driver binds its
-> HP-branded variant, the HP RMM-G4 (03f0:01ca); both IDs are
-> exported via MODULE_DEVICE_TABLE for module autoloading.
+On 11/12/26 11:50, Kordian Chmielewski wrote:
+> bcm4908_enet_dma_alloc_rx_buf() hands a descriptor to the DMA by
+> writing its control word, with DMA_CTL_STATUS_OWN, first and the new
+> buffer address second. If the DMA read the descriptor between the two
+> stores, it would write the next frame into the old buffer, which
+> poll_rx() is turning into an skb. start_xmit() writes the address
+> first, but nothing orders the two stores, and the descriptors live in
+> coherent memory, where arm64 may make them visible in either order.
 > 
-> * PCIe layer code implements driver probe and removal, MSI-X
->   interrupt initialization and de-initialization, and the way
->   of resetting the device.
-> * MHCCIF provides the interrupt channels used for the boot
->   handshake and for the host-to-device reset doorbell.
-> * Modem common control operations provide the basic read/write
->   functions of the device's hardware registers,
->   mask/unmask/get/clear functions of the device's interrupt
->   registers and inquiry functions of the device's status.
-> * Add MAINTAINERS entry for the MediaTek T9XX 5G WWAN modem
->   device driver.
+> Write the address first on both paths and order it before the control
+> word with dma_wmb(). In poll_rx(), read what the DMA wrote only after
+> seeing OWN clear (dma_rmb()), as Documentation/memory-barriers.txt
+> describes for descriptors shared with a device.
 > 
-> Removal resets the modem, because the next driver load has to
-> redo the device handshake and status sync and cannot do that
-> against firmware left running by the previous load.  Shutdown
-> runs the same teardown and reset, because a kexec reboot gets no
-> platform reset and the next kernel would otherwise find that
-> firmware still running; a driver cannot tell kexec from any other
-> reboot or power-off, so every shutdown takes this path and waits
-> up to 1 s for the link after MRST._RST, or 2 s after the doorbell
-> below.
-> mtk_pci_remove() evaluates MRST._RST on the device's own ACPI
-> node: that is a platform-level reset and does not depend on the
-> firmware's state.  Where the platform has no MRST._RST, or the
-> method fails, removal falls back to the MHCCIF
-> DEV_EVT_H2D_DEVICE_RESET doorbell if the link is still up.  The
-> doorbell is a request to the firmware, so it is best effort and
-> cannot recover firmware that has stopped responding - the case
-> the reset exists for.  Probe therefore does not require
-> MRST._RST; without it the driver still binds and only removal is
-> degraded.
+> Found by reading the code; I have no test that shows the DMA reading a
+> descriptor while it is being refilled.
 > 
-> Signed-off-by: Jack Wu <jackbb_wu@compal.com>
-> ---
->  MAINTAINERS                              |   11 +
->  drivers/net/wwan/Kconfig                 |   11 +
->  drivers/net/wwan/Makefile                |    1 +
->  drivers/net/wwan/t9xx/Makefile           |    9 +
->  drivers/net/wwan/t9xx/mtk_dev.h          |   39 ++
->  drivers/net/wwan/t9xx/pcie/mtk_pci.c     | 1044 ++++++++++++++++++++++++++++++
->  drivers/net/wwan/t9xx/pcie/mtk_pci.h     |  139 ++++
->  drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h |   34 +
->  8 files changed, 1288 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 461a3eed6129..8f13ef7440ce 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16494,6 +16494,17 @@ L:	netdev@vger.kernel.org
->  S:	Supported
->  F:	drivers/net/wwan/t7xx/
->  
-> +MEDIATEK T9XX 5G WWAN MODEM DRIVER
-> +M:	Jack Wu <jackbb_wu@compal.com>
-> +M:	Robert Yu <robert_yu@compal.com>
-> +M:	Jeff Chang <Jeff_Chang@compal.com>
-> +R:	Wen-Zhi Huang <wen-zhi.huang@mediatek.com>
-> +R:	Shi-Wei Yeh <shi-wei.yeh@mediatek.com>
-> +R:	Minano Tseng <Minano.tseng@mediatek.com>
-> +L:	netdev@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/net/wwan/t9xx/
-> +
->  MEDIATEK USB3 DRD IP DRIVER
->  M:	Chunfeng Yun <chunfeng.yun@mediatek.com>
->  L:	linux-usb@vger.kernel.org
-> diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
-> index 88df55d78d90..f510cc8ab4e4 100644
-> --- a/drivers/net/wwan/Kconfig
-> +++ b/drivers/net/wwan/Kconfig
-> @@ -121,6 +121,17 @@ config MTK_T7XX
->  
->  	  If unsure, say N.
->  
-> +config MTK_T9XX
-> +	tristate "MediaTek PCIe 5G WWAN modem T9xx device"
-> +	depends on PCI_MSI && ACPI
-> +	help
-> +	  Enables MediaTek PCIe based 5G WWAN modem (T9xx series) device.
-> +
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called mtk_t9xx.
-> +
-> +	  If unsure, say N.
-> +
->  endif # WWAN
->  
->  endmenu
-> diff --git a/drivers/net/wwan/Makefile b/drivers/net/wwan/Makefile
-> index 3960c0ae2445..7361eef4c472 100644
-> --- a/drivers/net/wwan/Makefile
-> +++ b/drivers/net/wwan/Makefile
-> @@ -14,3 +14,4 @@ obj-$(CONFIG_QCOM_BAM_DMUX) += qcom_bam_dmux.o
->  obj-$(CONFIG_RPMSG_WWAN_CTRL) += rpmsg_wwan_ctrl.o
->  obj-$(CONFIG_IOSM) += iosm/
->  obj-$(CONFIG_MTK_T7XX) += t7xx/
-> +obj-$(CONFIG_MTK_T9XX) += t9xx/
-> diff --git a/drivers/net/wwan/t9xx/Makefile b/drivers/net/wwan/t9xx/Makefile
-> new file mode 100644
-> index 000000000000..bd6063c85c2b
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/Makefile
-> @@ -0,0 +1,9 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +ccflags-y += -I$(src)/pcie
-> +ccflags-y += -I$(src)
-> +
-> +obj-$(CONFIG_MTK_T9XX) += mtk_t9xx.o
-> +
-> +mtk_t9xx-y := \
-> +	pcie/mtk_pci.o
-> diff --git a/drivers/net/wwan/t9xx/mtk_dev.h b/drivers/net/wwan/t9xx/mtk_dev.h
-> new file mode 100644
-> index 000000000000..fc25418bb957
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/mtk_dev.h
-> @@ -0,0 +1,39 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only
-> + *
-> + * Copyright (c) 2022, MediaTek Inc.
-> + */
-> +
-> +#ifndef __MTK_DEV_H__
-> +#define __MTK_DEV_H__
-> +
-> +#include <linux/bits.h>
-> +#include <linux/types.h>
-> +
-> +struct device;
-> +
-> +#define MTK_DEV_STR_LEN 16
-> +
-> +enum mtk_user_id {
-> +	MTK_USER_CTRL,
-> +	MTK_USER_MAX
-> +};
-> +
-> +enum mtk_dev_evt_h2d {
-> +	DEV_EVT_H2D_DEVICE_RESET	= BIT(2),
-> +};
-> +
-> +enum mtk_dev_evt_d2h {
-> +	DEV_EVT_D2H_BOOT_FLOW_SYNC	= BIT(4),
-> +	DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP = BIT(5),
-> +	DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD	= BIT(6),
-> +};
-> +
-> +/* mtk_md_dev defines the structure of MTK modem device */
-> +struct mtk_md_dev {
-> +	struct device *dev;
-> +	void *hw_priv;
-> +	u32 hw_ver;
-> +	char dev_str[MTK_DEV_STR_LEN];
-> +};
-> +
-> +#endif /* __MTK_DEV_H__ */
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> new file mode 100644
-> index 000000000000..902bcbe1512e
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> @@ -0,0 +1,1044 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2022, MediaTek Inc.
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +
-> +#include "mtk_dev.h"
-> +#include "mtk_pci.h"
-> +#include "mtk_pci_reg.h"
-> +
-> +#define MTK_MHCCIF_RC_BASE_ADDR		0x1000A000
-> +
-> +#define MTK_MHCCIF_RESET_DELAY_MS	2000
-> +#define MTK_PLDR_READY_POLL_MS		20
-> +#define MTK_PLDR_READY_POLLS		50
-> +
-> +static const int mtk_pci_irq_tbl[MTK_IRQ_SRC_MAX] = {
-> +	[MTK_IRQ_SRC_MHCCIF] = 28,
-> +	[MTK_IRQ_SRC_CLDMA0] = 27,
-> +	[MTK_IRQ_SRC_CLDMA1] = 26,
-> +};
-> +
-> +#define MTK_PCI_TRANSPARENT_ATR_SIZE	(0x3F)
-> +#define MTK_PCI_MINIMUM_ATR_SIZE	(0x1000)
-> +#define ATR_SIZE_LO32_MASK		GENMASK_ULL(31, 0)
-> +#define ATR_SIZE_HI32_MASK		GENMASK_ULL(63, 32)
-> +#define ATR_SIZE_BIAS_FROM_LO32		2
-> +#define ATR_ADDR_ALIGN_MASK		0xFFFFF000
-> +#define ATR_EN				BIT(0)
-> +#define ATR_PARAM_OFFSET		16
-> +
-> +struct mtk_mhccif_cb {
-> +	struct list_head entry;
-> +	int (*evt_cb)(u32 status, void *data);
-> +	void *data;
-> +	u32 chs;
-> +};
-> +
-> +/**
-> + * mtk_pci_setup_atr() - Configure a PCIe address translation rule
-> + * @mdev: MTK MD device
-> + * @cfg: ATR configuration parameters
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +static int mtk_pci_setup_atr(struct mtk_md_dev *mdev, struct mtk_atr_cfg *cfg)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	u32 addr, val, size_h, size_l;
-> +	int atr_size, pos, offset;
-> +
-> +	if (cfg->transparent) {
-> +		/* No address conversion is performed */
-> +		atr_size = MTK_PCI_TRANSPARENT_ATR_SIZE;
-> +	} else {
-> +		if (cfg->size < MTK_PCI_MINIMUM_ATR_SIZE)
-> +			cfg->size = MTK_PCI_MINIMUM_ATR_SIZE;
-> +
-> +		if (cfg->src_addr & (cfg->size - 1)) {
-> +			dev_err(mdev->dev, "Invalid atr src addr is not aligned to size\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +		if (cfg->trsl_addr & (cfg->size - 1)) {
-> +			dev_err(mdev->dev,
-> +				"Invalid atr trsl addr is not aligned to size, %llx, %llx\n",
-> +				cfg->trsl_addr, cfg->size - 1);
-> +			return -EINVAL;
-> +		}
-> +
-> +		size_l = FIELD_GET(ATR_SIZE_LO32_MASK, cfg->size);
-> +		size_h = FIELD_GET(ATR_SIZE_HI32_MASK, cfg->size);
-> +		pos = ffs(size_l);
-> +		if (pos) {
-> +			atr_size = pos - ATR_SIZE_BIAS_FROM_LO32;
-> +		} else {
-> +			pos = ffs(size_h);
-> +			atr_size = pos + 32 - ATR_SIZE_BIAS_FROM_LO32;
-> +		}
-> +	}
-> +
-> +	/* Calculate table offset */
-> +	offset = ATR_PORT_OFFSET * cfg->port + ATR_TABLE_OFFSET * cfg->table;
-> +
-> +	addr = REG_ATR_PCIE_WIN0_T0_SRC_ADDR_MSB + offset;
-> +	val = (u32)(cfg->src_addr >> 32);
-> +	mtk_pci_mac_write32(priv, addr, val);
-> +
-> +	addr = REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_MSB + offset;
-> +	val = (u32)(cfg->trsl_addr >> 32);
-> +	mtk_pci_mac_write32(priv, addr, val);
-> +
-> +	addr = REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_LSB + offset;
-> +	val = (u32)(cfg->trsl_addr & ATR_ADDR_ALIGN_MASK);
-> +	mtk_pci_mac_write32(priv, addr, val);
-> +
-> +	/* TRSL_PARAM */
-> +	addr = REG_ATR_PCIE_WIN0_T0_TRSL_PARAM + offset;
-> +	val = (cfg->trsl_param << ATR_PARAM_OFFSET) | cfg->trsl_id;
-> +	mtk_pci_mac_write32(priv, addr, val);
-> +
-> +	/* Enable ATR last, after translation target is fully programmed */
-> +	addr = REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset;
-> +	val = (u32)(cfg->src_addr & ATR_ADDR_ALIGN_MASK) | (atr_size << 1) | ATR_EN;
-> +	mtk_pci_mac_write32(priv, addr, val);
-> +
-> +	/* Ensure ATR is set */
-> +	mtk_pci_mac_read32(priv, addr);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_atr_disable() - Disable all PCIe address translation rules
-> + * @priv: MTK PCI private data
-> + */
-> +static void mtk_pci_atr_disable(struct mtk_pci_priv *priv)
-> +{
-> +	int port, tbl, offset;
-> +	u32 val;
-> +
-> +	/* Disable all ATR table for all ports */
-> +	for (port = ATR_SRC_PCI_WIN0; port <= ATR_SRC_AXIS_3; port++)
-> +		for (tbl = 0; tbl < ATR_TABLE_NUM_PER_ATR; tbl++) {
-> +			/* Calculate table offset */
-> +			offset = ATR_PORT_OFFSET * port + ATR_TABLE_OFFSET * tbl;
-> +			val = mtk_pci_mac_read32(priv, REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset);
-> +			val = val & (~BIT(0));
-> +			/* Disable table by SRC_ADDR_L */
-> +			mtk_pci_mac_write32(priv, REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset, val);
-> +		}
-> +}
-> +
-> +/**
-> + * mtk_pci_get_dev_state() - Read the device state from the modem
-> + * @mdev: MTK MD device
-> + *
-> + * Return: Device state value.
-> + */
-> +u32 mtk_pci_get_dev_state(struct mtk_md_dev *mdev)
-> +{
-> +	return mtk_pci_mac_read32(mdev->hw_priv, REG_PCIE_DEBUG_DUMMY_7);
-> +}
-> +
-> +/**
-> + * mtk_pci_get_irq_id() - Map an IRQ source to its hardware IRQ ID
-> + * @mdev: MTK MD device
-> + * @irq_src: IRQ source enum
-> + *
-> + * Return: IRQ ID on success, -EINVAL on failure.
-> + */
-> +int mtk_pci_get_irq_id(struct mtk_md_dev *mdev, enum mtk_irq_src irq_src)
-> +{
-> +	int irq_id = -EINVAL;
-> +
-> +	if (irq_src > MTK_IRQ_SRC_MIN && irq_src < MTK_IRQ_SRC_MAX) {
-> +		irq_id = mtk_pci_irq_tbl[irq_src];
-> +		if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX)
-> +			irq_id = -EINVAL;
-> +	}
-> +
-> +	return irq_id;
-> +}
-> +
-> +/**
-> + * mtk_pci_get_virq_id() - Get the Linux virtual IRQ for a hardware IRQ ID
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + *
-> + * Return: Virtual IRQ number on success, negative error code on failure.
-> + */
-> +int mtk_pci_get_virq_id(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	if (irq_id < 0 || irq_id >= priv->irq_cnt)
-> +		return -EINVAL;
-> +
-> +	return pci_irq_vector(pdev, irq_id);
-> +}
-> +
-> +/**
-> + * mtk_pci_register_irq() - Register a callback for a hardware IRQ
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + * @irq_cb: Callback function
-> + * @data: Private data passed to callback
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_register_irq(struct mtk_md_dev *mdev, int irq_id,
-> +			 int (*irq_cb)(int irq_id, void *data), void *data)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	if ((irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX) || !irq_cb)
-> +		return -EINVAL;
-> +
-> +	spin_lock(&priv->irq_cb_lock);
-> +	if (priv->irq_cb_list[irq_id]) {
-> +		spin_unlock(&priv->irq_cb_lock);
-> +		dev_err(mdev->dev,
-> +			"Unable to register irq, irq_id=%d, it's already been register by %ps.\n",
-> +			irq_id, priv->irq_cb_list[irq_id]);
-> +		return -EBUSY;
-> +	}
-> +	priv->irq_cb_data[irq_id] = data;
-> +	smp_wmb(); /* Ensure data is visible before callback */
-> +	WRITE_ONCE(priv->irq_cb_list[irq_id], irq_cb);
-> +	spin_unlock(&priv->irq_cb_lock);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_unregister_irq() - Unregister a hardware IRQ callback
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_unregister_irq(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	int virq_id;
-> +
-> +	if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX)
-> +		return -EINVAL;
-> +
-> +	if (!READ_ONCE(priv->irq_cb_list[irq_id])) {
-> +		dev_err(mdev->dev, "irq_id=%d has not been registered\n", irq_id);
-> +		return -ENOENT;
-> +	}
-> +
-> +	/* mtk_pci_irq_handler() loads the callback and its data separately, so
-> +	 * the data may only be cleared once no handler can still hold a live
-> +	 * callback pointer.
-> +	 */
-> +	mtk_pci_mask_irq(mdev, irq_id);
-> +
-> +	spin_lock(&priv->irq_cb_lock);
-> +	WRITE_ONCE(priv->irq_cb_list[irq_id], NULL);
-> +	spin_unlock(&priv->irq_cb_lock);
-> +
-> +	virq_id = mtk_pci_get_virq_id(mdev, irq_id);
-> +	if (virq_id >= 0)
-> +		synchronize_irq(virq_id);
-> +
-> +	priv->irq_cb_data[irq_id] = NULL;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_mask_irq() - Mask (disable) a hardware IRQ
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_mask_irq(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX) {
-> +		dev_err(mdev->dev, "Failed to mask irq: input irq_id=%d\n", irq_id);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, BIT(irq_id));
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_unmask_irq() - Unmask (enable) a hardware IRQ
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_unmask_irq(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX) {
-> +		dev_err(mdev->dev, "Failed to unmask irq: input irq_id=%d\n", irq_id);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_SET_GRP0_0, BIT(irq_id));
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_clear_irq() - Clear (acknowledge) a hardware IRQ
-> + * @mdev: MTK MD device
-> + * @irq_id: Hardware IRQ ID
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_clear_irq(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX) {
-> +		dev_err(mdev->dev, "Failed to clear irq: input irq_id=%d\n", irq_id);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mtk_pci_mac_write32(priv, REG_MSIX_ISTATUS_HOST_GRP0_0, BIT(irq_id));
-> +
-> +	return 0;
-> +}
-> +
-> +static inline u32 mtk_pci_map_evt_bit(u32 val, u32 from, u32 to)
-> +{
-> +	return (val & from) ? to : 0;
-> +}
-> +
-> +static u32 mtk_pci_ext_d2h_evt_hw_bits(u32 chs)
-> +{
-> +	return mtk_pci_map_evt_bit(chs, DEV_EVT_D2H_BOOT_FLOW_SYNC,
-> +				   MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC) |
-> +	       mtk_pci_map_evt_bit(chs, DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP,
-> +				   MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP) |
-> +	       mtk_pci_map_evt_bit(chs, DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD,
-> +				   MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD);
-> +}
-> +
-> +static u32 mtk_pci_ext_d2h_evt_chs(u32 hw_bits)
-> +{
-> +	return mtk_pci_map_evt_bit(hw_bits, MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC,
-> +				   DEV_EVT_D2H_BOOT_FLOW_SYNC) |
-> +	       mtk_pci_map_evt_bit(hw_bits, MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP,
-> +				   DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP) |
-> +	       mtk_pci_map_evt_bit(hw_bits, MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD,
-> +				   DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD);
-> +}
-> +
-> +/**
-> + * mtk_pci_register_ext_evt() - Register a callback for MHCCIF device events
-> + * @mdev: MTK MD device
-> + * @chs: Bitmask of event channels to register; must not overlap the
-> + *	 channels of a callback already registered
-> + * @evt_cb: Callback function, called from a work item with mhccif_lock
-> + *	    held: it must not sleep or (un)register MHCCIF callbacks
-> + * @data: Private data passed to callback
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int mtk_pci_register_ext_evt(struct mtk_md_dev *mdev, u32 chs,
-> +			     int (*evt_cb)(u32 status, void *data), void *data)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_mhccif_cb *cb;
-> +	int ret = 0;
-> +
-> +	if (!chs || !evt_cb)
-> +		return -EINVAL;
-> +
-> +	spin_lock_bh(&priv->mhccif_lock);
-> +	list_for_each_entry(cb, &priv->mhccif_cb_list, entry) {
-> +		if (cb->chs & chs) {
-> +			ret = -EBUSY;
-> +			dev_err(mdev->dev,
-> +				"Unable to register evt, intersection: chs=0x%08x&0x%08x cb=%ps\n",
-> +				chs, cb->chs, cb->evt_cb);
-> +			goto err_spin_unlock;
-> +		}
-> +	}
-> +	cb = kzalloc(sizeof(*cb), GFP_ATOMIC);
-> +	if (!cb) {
-> +		ret = -ENOMEM;
-> +		goto err_spin_unlock;
-> +	}
-> +	cb->evt_cb = evt_cb;
-> +	cb->data = data;
-> +	cb->chs = chs;
-> +	list_add_tail(&cb->entry, &priv->mhccif_cb_list);
-> +err_spin_unlock:
-> +	spin_unlock_bh(&priv->mhccif_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * mtk_pci_unregister_ext_evt() - Unregister an MHCCIF device event callback
-> + * @mdev: MTK MD device
-> + * @chs: Bitmask of event channels to unregister, exactly as registered
-> + */
-> +void mtk_pci_unregister_ext_evt(struct mtk_md_dev *mdev, u32 chs)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_mhccif_cb *cb, *next;
-> +
-> +	if (!chs)
-> +		return;
-> +
-> +	spin_lock_bh(&priv->mhccif_lock);
-> +	list_for_each_entry_safe(cb, next, &priv->mhccif_cb_list, entry) {
-> +		if (cb->chs == chs) {
-> +			list_del(&cb->entry);
-> +			kfree(cb);
-> +			goto out;
-> +		}
-> +	}
-> +	dev_warn(mdev->dev,
-> +		 "Unable to unregister evt, no chs=0x%08x has been registered.\n", chs);
-> +out:
-> +	spin_unlock_bh(&priv->mhccif_lock);
-> +}
-> +
-> +/**
-> + * mtk_pci_mask_ext_evt() - Mask (disable) MHCCIF device events
-> + * @mdev: MTK MD device
-> + * @chs: Bitmask of event channels to mask
-> + */
-> +void mtk_pci_mask_ext_evt(struct mtk_md_dev *mdev, u32 chs)
-> +{
-> +	u32 hw_bits = mtk_pci_ext_d2h_evt_hw_bits(chs);
-> +
-> +	mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +			MHCCIF_EP2RC_SW_INT_EAP_MASK_SET, hw_bits);
-> +}
-> +
-> +/**
-> + * mtk_pci_unmask_ext_evt() - Unmask (enable) MHCCIF device events
-> + * @mdev: MTK MD device
-> + * @chs: Bitmask of event channels to unmask
-> + */
-> +void mtk_pci_unmask_ext_evt(struct mtk_md_dev *mdev, u32 chs)
-> +{
-> +	u32 hw_bits = mtk_pci_ext_d2h_evt_hw_bits(chs);
-> +
-> +	mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +			MHCCIF_EP2RC_SW_INT_EAP_MASK_CLR, hw_bits);
-> +}
-> +
-> +static u32 mtk_pci_ext_h2d_evt_hw_bits(u32 chs)
-> +{
-> +	return mtk_pci_map_evt_bit(chs, DEV_EVT_H2D_DEVICE_RESET,
-> +				   MHCCIF_RC2EP_EVT_DEVICE_RESET);
-> +}
-> +
-> +/**
-> + * mtk_pci_send_ext_evt() - Send an MHCCIF event to the modem
-> + * @mdev: MTK MD device
-> + * @ch: Event channel to trigger (must be a single bit)
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +static int mtk_pci_send_ext_evt(struct mtk_md_dev *mdev, u32 ch)
-> +{
-> +	u32 rc_base = MTK_MHCCIF_RC_BASE_ADDR;
-> +	u32 hw_bits;
-> +
-> +	/* Only allow one ch to be triggered at a time */
-> +	if (!is_power_of_2(ch)) {
-> +		dev_err(mdev->dev, "Unsupported ext evt ch=0x%08x\n", ch);
-> +		return -EINVAL;
-> +	}
-> +
-> +	hw_bits = mtk_pci_ext_h2d_evt_hw_bits(ch);
-> +	if (!hw_bits) {
-> +		dev_err(mdev->dev, "Unmapped ext evt ch=0x%08x\n", ch);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_BSY, hw_bits);
-> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_TCHNUM, ffs(hw_bits) - 1);
-> +	return 0;
-> +}
-> +
-> +static u32 mtk_pci_get_ext_evt_hw_status(struct mtk_md_dev *mdev)
-> +{
-> +	return mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +			      MHCCIF_EP2RC_SW_INT_STS);
-> +}
-> +
-> +static void mtk_pci_ack_ext_evt_hw(struct mtk_md_dev *mdev, u32 hw_bits)
-> +{
-> +	mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +			MHCCIF_EP2RC_SW_INT_ACK, hw_bits);
-> +	/* Flush the ack before the callbacks run: one landing late would
-> +	 * erase an event they make the device raise.
-> +	 */
-> +	mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +		       MHCCIF_EP2RC_SW_INT_STS);
-> +}
-> +
-> +/**
-> + * mtk_pci_pldr() - Reset the modem via its ACPI MRST._RST method
-> + * @mdev: MTK MD device
-> + *
-> + * Return:
-> + * * 0       - Success, device was reset.
-> + * * -ENODEV - No ACPI, no handle or no MRST._RST method.  Device
-> + *             untouched.
-> + * * -EIO    - MRST._RST failed.  Device untouched, still running;
-> + *             a different reset may be attempted.
-> + */
-> +static int mtk_pci_pldr(struct mtk_md_dev *mdev)
-> +{
-> +	acpi_status acpi_ret;
-> +	acpi_handle handle;
-> +
-> +	if (acpi_disabled) {
-> +		dev_dbg(mdev->dev, "Unsupported, acpi function isn't enable\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	handle = ACPI_HANDLE(mdev->dev);
-> +	if (!handle) {
-> +		dev_dbg(mdev->dev, "Unsupported, acpi handle isn't found\n");
-> +		return -ENODEV;
-> +	}
-> +	if (!acpi_has_method(handle, "MRST._RST")) {
-> +		dev_dbg(mdev->dev, "Unsupported, pldr method isn't supported\n");
-> +		return -ENODEV;
-> +	}
-> +	acpi_ret = acpi_evaluate_object(handle, "MRST._RST", NULL, NULL);
-> +	if (ACPI_FAILURE(acpi_ret)) {
-> +		dev_err(mdev->dev, "Failed to execute MRST._RST method: %s\n",
-> +			acpi_format_exception(acpi_ret));
-> +		return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * mtk_pci_link_check() - Check if the PCIe link to the modem is active
-> + * @mdev: MTK MD device
-> + *
-> + * Return: true if the device is present, false otherwise.
-> + */
-> +static bool mtk_pci_link_check(struct mtk_md_dev *mdev)
-> +{
-> +	return pci_device_is_present(to_pci_dev(mdev->dev));
-> +}
-> +
-> +static void mtk_mhccif_isr_work(struct work_struct *work)
-> +{
-> +	struct mtk_pci_priv *priv =
-> +		container_of(work, struct mtk_pci_priv, mhccif_work);
-> +	struct mtk_md_dev *mdev = priv->mdev;
-> +	struct mtk_mhccif_cb *cb;
-> +	u32 stat, mask, chs;
-> +
-> +	/* Clear level 1 before reading level 2: an event raised after the
-> +	 * clear latches level 1 again and fires on the unmask below, one
-> +	 * raised before it is in the read.
-> +	 */
-> +	mtk_pci_clear_irq(mdev, priv->mhccif_irq_id);
-> +	stat = mtk_pci_get_ext_evt_hw_status(mdev);
-> +	mask = mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR
-> +		+ MHCCIF_EP2RC_SW_INT_EAP_MASK);
-> +	if (unlikely(stat == U32_MAX && !(mtk_pci_link_check(mdev)))) {
-> +		/* When link failed, we don't need to unmask. */
-> +		dev_err(mdev->dev, "Failed to check link in MHCCIF handler.\n");
-> +		return;
-> +	}
-> +
-> +	stat &= ~mask;
-> +	/* Acknowledge level 2 before dispatch: an event that re-asserts
-> +	 * while a callback runs must survive as a new status bit.
-> +	 */
-> +	if (stat)
-> +		mtk_pci_ack_ext_evt_hw(mdev, stat);
-> +
-> +	chs = mtk_pci_ext_d2h_evt_chs(stat);
-> +	/* Callbacks must not sleep or modify mhccif_cb_list */
-> +	spin_lock_bh(&priv->mhccif_lock);
-> +	list_for_each_entry(cb, &priv->mhccif_cb_list, entry) {
-> +		if (cb->chs & chs)
-> +			cb->evt_cb(cb->chs & chs, cb->data);
-> +	}
-> +	spin_unlock_bh(&priv->mhccif_lock);
-> +
-> +	mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
-> +}
-> +
-> +static const struct pci_device_id t9xx_pci_table[] = {
-> +	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0900),
-> +	  .class = MTK_PCI_CLASS, .class_mask = ~0 },
-> +	{ PCI_DEVICE(0x03f0, 0x01ca),  /* HP RMM-G4 */
-> +	  .class = MTK_PCI_CLASS, .class_mask = ~0 },
-> +	{/* end: all zeroes */}
-> +};
-> +
-> +MODULE_DEVICE_TABLE(pci, t9xx_pci_table);
-> +
-> +static int mtk_pci_atr_init(struct mtk_md_dev *mdev)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_atr_cfg cfg;
-> +	int port, ret;
-> +
-> +	mtk_pci_atr_disable(priv);
-> +
-> +	/* Config ATR for RC to access device's register */
-> +	cfg.src_addr = pci_bus_address(pdev, MTK_BAR_2_3_IDX);
-> +	cfg.size = ATR_PCIE_REG_SIZE;
-> +	cfg.trsl_addr = ATR_PCIE_REG_TRSL_ADDR;
-> +	cfg.port = ATR_PCIE_REG_PORT;
-> +	cfg.table = ATR_PCIE_REG_TABLE_NUM;
-> +	cfg.trsl_id = ATR_PCIE_REG_TRSL_PORT;
-> +	cfg.trsl_param = 0x0;
-> +	cfg.transparent = 0x0;
-> +	ret = mtk_pci_setup_atr(mdev, &cfg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Config ATR for EP to access RC's memory */
-> +	for (port = ATR_SRC_AXIS_0; port <= ATR_SRC_AXIS_3; port++) {
-> +		cfg.src_addr = ATR_PCIE_DEV_DMA_SRC_ADDR;
-> +		cfg.size = ATR_PCIE_DEV_DMA_SIZE;
-> +		cfg.trsl_addr = ATR_PCIE_DEV_DMA_TRSL_ADDR;
-> +		cfg.port = port;
-> +		cfg.table = ATR_PCIE_DEV_DMA_TABLE_NUM;
-> +		cfg.trsl_id = ATR_DST_PCI_TRX;
-> +		cfg.trsl_param = 0x0;
-> +		/* Enable transparent translation */
-> +		cfg.transparent = ATR_PCIE_DEV_DMA_TRANSPARENT;
-> +		ret = mtk_pci_setup_atr(mdev, &cfg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mtk_pci_bar_init(struct mtk_md_dev *mdev)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	/* Fixed offsets used on these mappings (MSI-X registers up to
-> +	 * 0x3103 on BAR0/1, the ATR-biased MHCCIF window on BAR2/3) are
-> +	 * guaranteed by the only two devices this driver binds (0x0900,
-> +	 * 0x01CA), whose BAR sizes are fixed by hardware.  A device that
-> +	 * misreports them is out of scope rather than impossible, so no
-> +	 * pci_resource_len() checks.
-> +	 */
-> +	priv->mac_reg_base = pcim_iomap_region(pdev, MTK_BAR_0_1_IDX,
-> +					       mdev->dev_str);
-> +	if (IS_ERR(priv->mac_reg_base)) {
-> +		dev_err(mdev->dev, "Failed to map BAR0/1\n");
-> +		return PTR_ERR(priv->mac_reg_base);
-> +	}
-> +
-> +	priv->bar23_addr = pcim_iomap_region(pdev, MTK_BAR_2_3_IDX,
-> +					     mdev->dev_str);
-> +	if (IS_ERR(priv->bar23_addr)) {
-> +		dev_err(mdev->dev, "Failed to map BAR2/3\n");
-> +		return PTR_ERR(priv->bar23_addr);
-> +	}
-> +
-> +	/* We use MD view base address "0" to observe registers */
-> +	priv->ext_reg_base = priv->bar23_addr - ATR_PCIE_REG_TRSL_ADDR;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mtk_mhccif_irq_cb(int irq_id, void *data)
-> +{
-> +	struct mtk_md_dev *mdev = data;
-> +	struct mtk_pci_priv *priv;
-> +
-> +	priv = mdev->hw_priv;
-> +	queue_work(system_highpri_wq, &priv->mhccif_work);
-> +
-> +	return 0;
-> +}
-> +
-> +static int mtk_mhccif_init(struct mtk_md_dev *mdev)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	int ret;
-> +
-> +	INIT_LIST_HEAD(&priv->mhccif_cb_list);
-> +	spin_lock_init(&priv->mhccif_lock);
-> +	INIT_WORK(&priv->mhccif_work, mtk_mhccif_isr_work);
-> +
-> +	/* The write below goes through the BAR 2/3 ATR window, so this
-> +	 * function must run after mtk_pci_atr_init().
-> +	 * Mask every channel; consumers unmask the channels they need.
-> +	 * Do NOT ack here: EP2RC status bits are latched one-shot
-> +	 * notifications (e.g. BOOT_FLOW_SYNC raised before the driver
-> +	 * loads) that the device never re-sends.  Masking blocks
-> +	 * delivery but preserves the bit for delivery on unmask; an
-> +	 * ack would erase it and the boot flow would hang silently.
-> +	 */
-> +	mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
-> +			MHCCIF_EP2RC_SW_INT_EAP_MASK_SET, U32_MAX);
-> +
-> +	ret = mtk_pci_get_irq_id(mdev, MTK_IRQ_SRC_MHCCIF);
-> +	if (ret < 0) {
-> +		dev_err(mdev->dev, "Failed to get mhccif_irq_id. ret=%d\n", ret);
-> +		return ret;
-> +	}
-> +	priv->mhccif_irq_id = ret;
-> +
-> +	ret = mtk_pci_register_irq(mdev, priv->mhccif_irq_id, mtk_mhccif_irq_cb, mdev);
-> +	if (ret) {
-> +		dev_err(mdev->dev, "Failed to register mhccif_irq callback\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void mtk_mhccif_exit(struct mtk_md_dev *mdev)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_mhccif_cb *cb, *tmp;
-> +
-> +	mtk_pci_unregister_irq(mdev, priv->mhccif_irq_id);
-> +	cancel_work_sync(&priv->mhccif_work);
-> +	/* The work unmasks the source on its way out, so leave it masked. */
-> +	mtk_pci_mask_irq(mdev, priv->mhccif_irq_id);
-> +
-> +	list_for_each_entry_safe(cb, tmp, &priv->mhccif_cb_list, entry) {
-> +		list_del(&cb->entry);
-> +		kfree(cb);
-> +	}
-> +}
-> +
-> +static irqreturn_t mtk_pci_irq_handler(struct mtk_md_dev *mdev, u32 irq_state)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	int irq_id;
-> +
-> +	/* Check whether each set bit has a callback, if has, call it */
-> +	do {
-> +		int (*cb)(int irq_id, void *data);
-> +
-> +		irq_id = fls(irq_state) - 1;
-> +		irq_state &= ~BIT(irq_id);
-> +		cb = READ_ONCE(priv->irq_cb_list[irq_id]);
-> +		if (likely(cb)) {
-> +			smp_rmb(); /* Ensure data is read after callback */
-> +			cb(irq_id, priv->irq_cb_data[irq_id]);
-> +		} else {
-> +			dev_err_ratelimited(mdev->dev,
-> +					    "Unhandled irq_id=%d, no callback for it.\n",
-> +					    irq_id);
-> +			mtk_pci_clear_irq(mdev, irq_id);
-> +		}
-> +	} while (irq_state);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t mtk_pci_irq_msix(int irq, void *data)
-> +{
-> +	struct mtk_pci_irq_desc *irq_desc = data;
-> +	struct mtk_md_dev *mdev = irq_desc->mdev;
-> +	struct mtk_pci_priv *priv;
-> +	u32 irq_state, irq_enable;
-> +
-> +	priv = mdev->hw_priv;
-> +	irq_state = mtk_pci_mac_read32(priv, REG_MSIX_ISTATUS_HOST_GRP0_0);
-> +	irq_enable = mtk_pci_mac_read32(priv, REG_IMASK_HOST_MSIX_GRP0_0);
-> +	irq_state &= irq_enable;
-> +
-> +	if (unlikely(irq_state == U32_MAX && irq_enable == U32_MAX))
-> +		return IRQ_NONE; /* device gone */
-> +
-> +	irq_state &= irq_desc->msix_bits; /* scope to this vector */
-> +	if (unlikely(!irq_state))
-> +		return IRQ_NONE;
-> +
-> +	/* Mask the bit; the consumer unmasks it when it is done */
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, irq_state);
-> +
-> +	return mtk_pci_irq_handler(mdev, irq_state);
-> +}
-> +
-> +static int mtk_pci_request_irq_msix(struct mtk_md_dev *mdev)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_pci_irq_desc *irq_desc;
-> +	struct pci_dev *pdev;
-> +	int ret, i;
-> +
-> +	pdev = to_pci_dev(mdev->dev);
-> +	irq_desc = priv->irq_desc;
-> +
-> +	priv->irq_cnt = MTK_IRQ_CNT_MAX;
-> +
-> +	for (i = 0; i < MTK_IRQ_CNT_MAX; i++) {
-> +		irq_desc[i].mdev = mdev;
-> +		irq_desc[i].msix_bits = BIT(i);
-> +		snprintf(irq_desc[i].name, MTK_IRQ_NAME_LEN, "msix%d-%s", i, mdev->dev_str);
-> +		ret = pci_request_irq(pdev, i, mtk_pci_irq_msix, NULL,
-> +				      &irq_desc[i], "%s", irq_desc[i].name);
-> +		if (ret) {
-> +			dev_err(mdev->dev, "Failed to request %s: ret=%d\n",
-> +				irq_desc[i].name, ret);
-> +			for (i--; i >= 0; i--)
-> +				pci_free_irq(pdev, i, &irq_desc[i]);
-> +			priv->irq_cnt = 0;
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mtk_pci_request_irq(struct mtk_md_dev *mdev)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	int ret;
-> +
-> +	ret = pci_alloc_irq_vectors(pdev, MTK_IRQ_CNT_MAX,
-> +				    MTK_IRQ_CNT_MAX, PCI_IRQ_MSIX);
-> +	if (ret < 0) {
-> +		dev_err(mdev->dev,
-> +			"Unable to alloc %d MSI-X vectors: ret=%d\n",
-> +			MTK_IRQ_CNT_MAX, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = mtk_pci_request_irq_msix(mdev);
-> +	if (ret)
-> +		pci_free_irq_vectors(pdev);
-> +
-> +	return ret;
-> +}
-> +
-> +static void mtk_pci_free_irq(struct mtk_md_dev *mdev)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	int i;
-> +
-> +	for (i = 0; i < priv->irq_cnt; i++)
-> +		pci_free_irq(pdev, i, &priv->irq_desc[i]);
-> +
-> +	pci_free_irq_vectors(pdev);
-> +	priv->irq_cnt = 0;
-> +}
-> +
-> +static int mtk_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct mtk_pci_priv *priv;
-> +	struct mtk_md_dev *mdev;
-> +	int ret;
-> +
-> +	mdev = devm_kzalloc(dev, sizeof(*mdev), GFP_KERNEL);
-> +	if (!mdev) {
-> +		ret = -ENOMEM;
-> +		goto log_err;
-> +	}
-> +	mdev->dev = dev;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv) {
-> +		ret = -ENOMEM;
-> +		goto log_err;
-> +	}
-> +
-> +	pci_set_drvdata(pdev, mdev);
-> +	priv->mdev = mdev;
-> +	mdev->hw_ver  = pdev->device;
-> +	mdev->hw_priv = priv;
-> +	strscpy(mdev->dev_str, pci_name(pdev), MTK_DEV_STR_LEN);
-> +
-> +	ret = pci_enable_device(pdev);
-> +	if (ret) {
-> +		dev_err(mdev->dev, "Failed to enable pci device.\n");
-> +		goto log_err;
-> +	}
-> +
-> +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-> +	if (ret) {
-> +		dev_err(mdev->dev, "Failed to set DMA Mask and Coherent. (ret=%d)\n", ret);
-> +		goto disable_dev;
-> +	}
-> +
-> +	ret = mtk_pci_bar_init(mdev);
-> +	if (ret)
-> +		goto disable_dev;
-> +
-> +	ret = mtk_pci_atr_init(mdev);
-> +	if (ret)
-> +		goto disable_atr;
-> +
-> +	spin_lock_init(&priv->irq_cb_lock);
-> +
-> +	ret = mtk_mhccif_init(mdev);
-> +	if (ret)
-> +		goto disable_atr;
-> +
-> +	/* Mask every source before the handlers go in, so a source
-> +	 * left enabled by firmware or a previous bind cannot fire
-> +	 * into a half-initialised driver.
-> +	 */
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX);
-> +
-> +	ret = mtk_pci_request_irq(mdev);
-> +	if (ret)
-> +		goto free_mhccif;
-> +
-> +	if (!mtk_pci_link_check(mdev)) {
-> +		ret = -ENOLINK;
-> +		goto free_irq;
-> +	}
-> +
-> +	ret = pci_save_state(pdev);
-> +	if (ret) {
-> +		dev_err(mdev->dev, "Failed to save PCI state: %d\n", ret);
-> +		goto free_irq;
-> +	}
+> Fixes: 4feffeadbcb2 ("net: broadcom: bcm4908enet: add BCM4908 controller driver")
+> Signed-off-by: Kordian Chmielewski <kudzo51@gmail.com>
 
-I'm a bit skeptical of drivers that stash an extra copy of PCI state.
-There are times where it's legitimate, but often it means you'll
-introduce bugs of your own.
-
-> +
-> +	priv->saved_state = pci_store_saved_state(pdev);
-> +	if (!priv->saved_state) {
-> +		ret = -ENOMEM;
-> +		goto free_irq;
-> +	}
-> +
-> +	pci_set_master(pdev);
-> +	mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
-> +
-> +	return 0;
-> +
-> +free_irq:
-> +	mtk_pci_free_irq(mdev);
-> +free_mhccif:
-> +	mtk_mhccif_exit(mdev);
-> +disable_atr:
-> +	mtk_pci_atr_disable(priv);
-> +disable_dev:
-> +	pci_disable_device(pdev);
-> +log_err:
-> +	dev_err(dev, "Failed to probe device, ret=%d\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static void mtk_pci_remove(struct pci_dev *pdev)
-> +{
-> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct device *dev = &pdev->dev;
-> +	int i, ret;
-> +
-> +	/* Silence every source before tearing anything down. */
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX);
-> +
-> +	/* Free the vectors first: once no handler can run, the unmask at the
-> +	 * tail of mtk_mhccif_isr_work() cannot re-open the source behind
-> +	 * mtk_mhccif_exit()'s back.
-> +	 */
-> +	mtk_pci_free_irq(mdev);
-> +	mtk_mhccif_exit(mdev);
-> +	pci_clear_master(pdev);
-> +	pci_disable_device(pdev);
-> +
-> +	/* Reset last: the endpoint comes back at power-on defaults, so no MMIO
-> +	 * and no MSI-X teardown may follow it.
-> +	 */
-> +	ret = mtk_pci_pldr(mdev);
-> +	if (!ret) {
-> +		/* MRST._RST may return before the link has retrained, and a
-> +		 * config write the device does not take is simply lost.
-> +		 */
-> +		for (i = 0; i < MTK_PLDR_READY_POLLS && !mtk_pci_link_check(mdev); i++)
-> +			msleep(MTK_PLDR_READY_POLL_MS);
-> +		if (!mtk_pci_link_check(mdev))
-> +			dev_warn(dev, "device not back %d ms after reset, its config space may not be restored\n",
-> +				 MTK_PLDR_READY_POLLS * MTK_PLDR_READY_POLL_MS);
-> +	} else if (!mtk_pci_link_check(mdev)) {
-> +		dev_warn(dev, "PLDR failed (%d) and link is down, modem not reset\n", ret);
-> +	} else {
-> +		dev_warn(dev, "PLDR failed (%d), trying MHCCIF reset\n", ret);
-> +		if (mtk_pci_send_ext_evt(mdev, DEV_EVT_H2D_DEVICE_RESET)) {
-> +			dev_err(dev, "MHCCIF reset failed\n");
-> +		} else {
-> +			/* Unlike MRST._RST the doorbell returns before the device
-> +			 * has reset, so let it settle before the restore below.
-> +			 */
-> +			msleep(MTK_MHCCIF_RESET_DELAY_MS);
-> +		}
-> +	}
-> +
-> +	/* Without this a runtime-PM suspend after unbind would snapshot the
-> +	 * reset state over our copy, and whoever binds next finds BARs the
-> +	 * device does not decode.
-> +	 */
-
-I'm confused about this explanation. You don't ever call
-pm_runtime_put() or similar, so this device can never actually
-runtime-suspend. Are you talking about some code that's not included in
-this patch series?
-
-https://docs.kernel.org/power/pci.html#device-runtime-power-management
-
-Anyway, if you *did* have a problem here ... I expect the answer is to
-properly get() a reference on the way out, so that runtime_suspend is no
-longer possible after a reset, until the next probe().
-
-You also have a slightly different description from the cover letter:
-
-"""
-  - mtk_pci_remove() calls pci_restore_state() and pci_clear_master()
-    after pci_load_and_free_saved_state(): the reset leaves the device
-    at power-on defaults and the state was saved after pci_set_master()
-"""
-
-In any case, something seems fishy here.
-
-Brian
-
-> +	pci_load_and_free_saved_state(pdev, &priv->saved_state);
-> +	pci_restore_state(pdev);
-> +}
-> +
-> +/* A kexec reboot neither resets nor powers down the slot, and the boot
-> + * notification the next kernel waits for is one-shot, so reset the modem
-> + * on the way down the same way remove() does.
-> + */
-> +static void mtk_pci_shutdown(struct pci_dev *pdev)
-> +{
-> +	mtk_pci_remove(pdev);
-> +}
-> +
-> +static pci_ers_result_t mtk_pci_error_detected(struct pci_dev *pdev,
-> +					       pci_channel_state_t state)
-> +{
-> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
-> +
-> +	dev_err(mdev->dev, "AER detected: pci_channel_state_t=%u\n", state);
-> +
-> +	/* AER recovery not supported, disconnect the device */
-> +	return PCI_ERS_RESULT_DISCONNECT;
-> +}
-> +
-> +static const struct pci_error_handlers mtk_pci_err_handler = {
-> +	.error_detected = mtk_pci_error_detected,
-> +};
-> +
-> +static struct pci_driver mtk_pci_drv = {
-> +	.name = KBUILD_MODNAME,
-> +	.id_table = t9xx_pci_table,
-> +	.probe = mtk_pci_probe,
-> +	.remove = mtk_pci_remove,
-> +	.shutdown = mtk_pci_shutdown,
-> +	.err_handler = &mtk_pci_err_handler
-> +};
-> +
-> +module_pci_driver(mtk_pci_drv);
-> +
-> +MODULE_DESCRIPTION("MediaTek T9xx PCIe WWAN driver");
-> +MODULE_LICENSE("GPL");
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.h b/drivers/net/wwan/t9xx/pcie/mtk_pci.h
-> new file mode 100644
-> index 000000000000..ffb5f62a6729
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.h
-> @@ -0,0 +1,139 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only
-> + *
-> + * Copyright (c) 2022, MediaTek Inc.
-> + */
-> +
-> +#ifndef __MTK_PCI_H__
-> +#define __MTK_PCI_H__
-> +
-> +#include <linux/pci.h>
-> +
-> +#include "mtk_dev.h"
-> +
-> +enum mtk_irq_src {
-> +	MTK_IRQ_SRC_MIN,
-> +	MTK_IRQ_SRC_MHCCIF,
-> +	MTK_IRQ_SRC_CLDMA0,
-> +	MTK_IRQ_SRC_CLDMA1,
-> +	MTK_IRQ_SRC_MAX
-> +};
-> +
-> +enum mtk_atr_src_port {
-> +	ATR_SRC_PCI_WIN0 = 0,
-> +	ATR_SRC_PCI_WIN1,
-> +	ATR_SRC_AXIS_0,
-> +	ATR_SRC_AXIS_1,
-> +	ATR_SRC_AXIS_2,
-> +	ATR_SRC_AXIS_3,
-> +};
-> +
-> +enum mtk_atr_dst_port {
-> +	ATR_DST_PCI_TRX = 0,
-> +	ATR_DST_AXIM_0 = 4,
-> +};
-> +
-> +#define MTK_PCI_CLASS                 0x0D4000
-> +
-> +#define MTK_BAR_0_1_IDX                 0
-> +#define MTK_BAR_2_3_IDX                 2
-> +
-> +#define MTK_IRQ_CNT_MAX				32
-> +#define MTK_IRQ_NAME_LEN			32
-> +
-> +#define ATR_PORT_OFFSET				0x100
-> +#define ATR_TABLE_OFFSET			0x20
-> +#define ATR_TABLE_NUM_PER_ATR			8
-> +#define ATR_PCIE_REG_TRSL_ADDR			0x10000000
-> +#define ATR_PCIE_REG_SIZE			0x00400000
-> +#define ATR_PCIE_REG_PORT			ATR_SRC_PCI_WIN0
-> +#define ATR_PCIE_REG_TABLE_NUM			1
-> +#define ATR_PCIE_REG_TRSL_PORT			ATR_DST_AXIM_0
-> +#define ATR_PCIE_DEV_DMA_SRC_ADDR		0x00000000
-> +#define ATR_PCIE_DEV_DMA_TRANSPARENT		1
-> +#define ATR_PCIE_DEV_DMA_SIZE			0
-> +#define ATR_PCIE_DEV_DMA_TABLE_NUM		0
-> +#define ATR_PCIE_DEV_DMA_TRSL_ADDR		0x00000000
-> +
-> +struct mtk_pci_irq_desc {
-> +	struct mtk_md_dev *mdev;
-> +	u32 msix_bits;
-> +	char name[MTK_IRQ_NAME_LEN];
-> +};
-> +
-> +struct mtk_pci_priv {
-> +	struct mtk_md_dev *mdev;
-> +	void __iomem *bar23_addr;
-> +	void __iomem *mac_reg_base;
-> +	void __iomem *ext_reg_base;
-> +	int irq_cnt;
-> +	/* irq_cb_lock: protects irq_cb_list[] and, on the register side,
-> +	 * irq_cb_data[].  mtk_pci_unregister_irq() clears irq_cb_data[]
-> +	 * after synchronize_irq() and outside the lock, because a handler
-> +	 * past its READ_ONCE() of irq_cb_list[] still needs the data.
-> +	 * Callers must not register and unregister one irq_id concurrently.
-> +	 */
-> +	spinlock_t irq_cb_lock;
-> +	void *irq_cb_data[MTK_IRQ_CNT_MAX];
-> +
-> +	int (*irq_cb_list[MTK_IRQ_CNT_MAX])(int irq_id, void *data);
-> +	struct mtk_pci_irq_desc irq_desc[MTK_IRQ_CNT_MAX];
-> +	struct list_head mhccif_cb_list;
-> +	/* mhccif_lock: lock to protect mhccif_cb_list */
-> +	spinlock_t mhccif_lock;
-> +	struct work_struct mhccif_work;
-> +	int mhccif_irq_id;
-> +	struct pci_saved_state *saved_state;
-> +};
-> +
-> +struct mtk_atr_cfg {
-> +	u64 src_addr;
-> +	u64 trsl_addr;
-> +	u64 size;
-> +	u32 port;      /* Port number */
-> +	u32 table;     /* Table number (8 tables for each port) */
-> +	u32 trsl_id;
-> +	u32 trsl_param;
-> +	u32 transparent;
-> +};
-> +
-> +/* BAR 0/1 MMIO access */
-> +static inline u32 mtk_pci_mac_read32(struct mtk_pci_priv *priv, u64 addr)
-> +{
-> +	return ioread32(priv->mac_reg_base + addr);
-> +}
-> +
-> +static inline void mtk_pci_mac_write32(struct mtk_pci_priv *priv, u64 addr, u32 val)
-> +{
-> +	iowrite32(val, priv->mac_reg_base + addr);
-> +}
-> +
-> +/* BAR 2/3 MMIO access */
-> +static inline u32 mtk_pci_read32(struct mtk_md_dev *mdev, u64 addr)
-> +{
-> +	return ioread32(((struct mtk_pci_priv *)mdev->hw_priv)->ext_reg_base + addr);
-> +}
-> +
-> +static inline void mtk_pci_write32(struct mtk_md_dev *mdev, u64 addr, u32 val)
-> +{
-> +	iowrite32(val, ((struct mtk_pci_priv *)mdev->hw_priv)->ext_reg_base + addr);
-> +}
-> +
-> +/* Device operations */
-> +u32 mtk_pci_get_dev_state(struct mtk_md_dev *mdev);
-> +/* IRQ Related operations */
-> +int mtk_pci_get_irq_id(struct mtk_md_dev *mdev, enum mtk_irq_src irq_src);
-> +int mtk_pci_get_virq_id(struct mtk_md_dev *mdev, int irq_id);
-> +int mtk_pci_register_irq(struct mtk_md_dev *mdev, int irq_id,
-> +			 int (*irq_cb)(int irq_id, void *data), void *data);
-> +int mtk_pci_unregister_irq(struct mtk_md_dev *mdev, int irq_id);
-> +int mtk_pci_mask_irq(struct mtk_md_dev *mdev, int irq_id);
-> +int mtk_pci_unmask_irq(struct mtk_md_dev *mdev, int irq_id);
-> +int mtk_pci_clear_irq(struct mtk_md_dev *mdev, int irq_id);
-> +/* External event related */
-> +int mtk_pci_register_ext_evt(struct mtk_md_dev *mdev, u32 chs,
-> +			     int (*evt_cb)(u32 status, void *data), void *data);
-> +void mtk_pci_unregister_ext_evt(struct mtk_md_dev *mdev, u32 chs);
-> +void mtk_pci_mask_ext_evt(struct mtk_md_dev *mdev, u32 chs);
-> +void mtk_pci_unmask_ext_evt(struct mtk_md_dev *mdev, u32 chs);
-> +
-> +#endif /* __MTK_PCI_H__ */
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h b/drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h
-> new file mode 100644
-> index 000000000000..a97ad6630dcf
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h
-> @@ -0,0 +1,34 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only
-> + *
-> + * Copyright (c) 2022, MediaTek Inc.
-> + */
-> +
-> +#ifndef __MTK_PCI_REG_H__
-> +#define __MTK_PCI_REG_H__
-> +
-> +#define REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB	0x0600
-> +#define REG_ATR_PCIE_WIN0_T0_SRC_ADDR_MSB	0x0604
-> +#define REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_LSB	0x0608
-> +#define REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_MSB	0x060C
-> +#define REG_ATR_PCIE_WIN0_T0_TRSL_PARAM		0x0610
-> +#define REG_PCIE_DEBUG_DUMMY_7			0x0D1C
-> +#define REG_MSIX_ISTATUS_HOST_GRP0_0		0x0F00
-> +#define REG_IMASK_HOST_MSIX_SET_GRP0_0		0x3000
-> +#define REG_IMASK_HOST_MSIX_CLR_GRP0_0		0x3080
-> +#define REG_IMASK_HOST_MSIX_GRP0_0		0x3100
-> +
-> +/* mhccif registers */
-> +#define MHCCIF_RC2EP_SW_BSY			0x4
-> +#define MHCCIF_RC2EP_SW_TCHNUM			0xC
-> +#define MHCCIF_RC2EP_EVT_DEVICE_RESET		BIT(13)
-> +
-> +#define MHCCIF_EP2RC_SW_INT_STS			0x10
-> +#define MHCCIF_EP2RC_SW_INT_ACK			0x14
-> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK		0x20
-> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK_SET	0x30
-> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK_CLR	0x40
-> +#define MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC		BIT(5)
-> +#define MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP	BIT(15)
-> +#define MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD	BIT(16)
-> +
-> +#endif /* __MTK_PCI_REG_H__ */
-> 
-> -- 
-> 2.34.1
-> 
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
