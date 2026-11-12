@@ -1,77 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794479623;
-	b=xBW+RzKQEe1nfwtYfHJJmpim0dqv8XXZmyib4eyW2apevYYL0o0IDUSi2wqXG3UN9SCW
-	 tbDa92CO2zlHtOH0HJ9tU2qKBbDgtsSH32fI17optSI4DNgOLX+19nH18UPiY4pROPvyC
-	 IgRvP+FOX/5RCbSizDfxLpkAGfeW1lpyZNQ/dTrPekny/niXqDunFdmPJLSL/csQuwVHI
-	 hN9L4fncO2u35PiBIMyOzFPvEOX7Pggxz3//6jCnFzhZGTeIG4hepfU5auFQehENdjZzt
-	 V5/ZuOPGcS7Y7NolYUFwUQoJoiCUd7j0QLCE1feuz7MCLBjst18EV8vY+Dwcqe4zbBw==
+	t=1794479631;
+	b=ca3PwApfY00wlFoxo3M6uqs1we1IfGtcIhch54gmQlRY8j6mYfLJY0dVHgDLLOYbiUzy
+	 7YrTc9bSzUaEettD15t8pBUgNIRZKRfHloxBYNU5Mqyv1X5/E5eHIei6A7mQFJLiQyhtn
+	 1Q3ywZOcH/sXBXG6bqmQzVo5DgceWzegODwbZRzkSaNAk8Brq4kxUgA3L1W840sN3u5SN
+	 rJeLG6x20IoA/L91k2nu/OGgg9ZVWSO9mjRbAUGbuq8O4ftokBOoRMscUyX15LtiyaAbC
+	 /wsl6dlkTiSFYXmbdha8gLB7gYN8W1xaL/wentb+fQLoX7Si0mScEOb2ZSGq9vcuULA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794479623;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=rbpDRtvLispEaOOAEmO0b3GpRQQvbfSOyhL5a902KuA=;
-	b=OS7Kun7CYkfyrxZbioEd8O0ASEywuYvdi5bezUyo1CLHcdezi+mS0oNFbwwq9h+s3SFb
-	 W4zykaqOl5NX467m2fLBVDbJj58G7o6FmGa1qxBlagd/4O0Cmdy439ltM0mj6Fk0+f/vg
-	 0JE9/lMHVLe3q6R+Cpvv/sQvhHm6pIH1lip8PPXpYJZYOdKMHAvJhIIg6fQ3Z+kjV+pg4
-	 cfN6KpCqmW31dFrT4rA11v1q9PLhIEl4U6l3IgRvqmKP09igDM9oyhjtfBrcluF0vpm86
-	 6Me2gy/LYjsIPSRWCu2r6H9UBgTctucr9wT2ksIS2Kd4n/PuMmElXLdMGHZDhUGtQrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794479631;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=+aHQkk84/jyWq1Sa4aXoN8rFXFkbow5EARyg7OTXn+Y=;
+	b=ELMFMhoEvZcfKQnoXol2jKqDlED5b89LftrrYbBkBTXZBCGqREzAJiV03N3zt5u6PA+m
+	 udKCB6UsL103Azio2PlPKRDlciZ+B7lCm0pBwBv1VS+vfxW3l219JlscYvVU5AV4hXDpF
+	 440vwWfVYPj5snUuqV47RAImjSyOrpbPqW4lA3LdMXbEx/FbiBqdWVHJn6ZQCn6CL2B3m
+	 LDAW+x+ux8f2rMFiZElKHt8mWuTfLsItjRKClVLR6tBZEdYsJaKrUqHR+r+Atg/gZ8Iwf
+	 Uxkota5HCV++Cjz4Cs4Y1afMmhYLsvggibMRQalRCZJWcd1ZdGDdjLCAcFvfL1aaH+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FItSruet;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WIhTJaMD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01501606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:33:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01501606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAA1606A323;
+	Thu, 12 Nov 2026 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FItSruet
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794479622;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rbpDRtvLispEaOOAEmO0b3GpRQQvbfSOyhL5a902KuA=;
-	b=FItSruetWsn8WCHhJUlLI103QKp/Gac7iDkAjNDULgAN7rwjgnVHvZj+mSuDR8THGVsb7s
-	chvkljXuSLqhaV2p+zpYNQyPOcT/uf8MujYh/feLDgkPqhhAbv0v1CCRZGJ9AkOKCv7SqH
-	qGvr43+zIQUs2iEv+PPep5CrNbXJ20w=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-b0Vy4GskNz-5COo0zZuYaQ-1; Thu,
- 12 Nov 2026 05:33:38 -0500
-X-MC-Unique: b0Vy4GskNz-5COo0zZuYaQ-1
-X-Mimecast-MFC-AGG-ID: b0Vy4GskNz-5COo0zZuYaQ_1794479616
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 970B71954223;
-	Thu, 12 Nov 2026 10:33:36 +0000 (UTC)
-Received: from jbenc-thinkpadp1gen4i.rmtcz.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5BA061800543;
-	Thu, 12 Nov 2026 10:33:34 +0000 (UTC)
-Date: Thu, 12 Nov 2026 11:33:32 +0100
-From: Jiri Benc <jbenc@redhat.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn
- <willemb@google.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net 1/2] nsh: limit recursion in nsh_gso_segment()
-Message-ID: <20261112113332.157fc4fe@jbenc-thinkpadp1gen4i.rmtcz.csb>
-In-Reply-To: <20261112102001.3744643-2-edumazet@kernel.org>
-References: <20261112102001.3744643-1-edumazet@kernel.org>
-	<20261112102001.3744643-2-edumazet@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WIhTJaMD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E211F00A05;
+	Thu, 12 Nov 2026 10:33:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794479631;
+	bh=+aHQkk84/jyWq1Sa4aXoN8rFXFkbow5EARyg7OTXn+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WIhTJaMDCbntg/CKE6hWj2qG9UcfTu46mxNfCVJd3PM6nU2CwAnfD/rNIw9+0TXgr
+	 2x3EfnnydyDZORVGf8LIfESmomjDLYhisRnb7MsqgTxiN3iT2I8fkb+riKRJIruKW0
+	 Dhgg6D525FZZ+jCQfzTSujfaG+WCFZFnKdsV8bBaQrMpjHPsv+CTTeFsiB7tBnVz9f
+	 bJMUFS9r8VnIllKNetZUbAsHSpeYDV5Ibnrcp8yF7Cwnnk51v77a0NqQBiYmRL9Hap
+	 B/5/u2etmF8B8ZrDDl6Z6bZY+9uGl/eMSnu73BTlhYk4LcrhEhKrB6wKTy47CUFf2E
+	 /X42EBe/uwcOg==
+Date: Thu, 12 Nov 2026 11:33:47 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Eric Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	mfd@lists.linux.dev, Martin Kaistra <martin.kaistra@linutronix.de>, 
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v4 3/8] dt-bindings: net: dsa: Add SoC-e SWIP
+ switch function
+Message-ID: <20261112-unselfish-congenial-waxbill-c7f9e3@quoll>
+References: <20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
+ <20261105-devel-vstrassheim-soce-dsa-ml-v4-3-02f3cde2afa1@linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,29 +65,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261105-devel-vstrassheim-soce-dsa-ml-v4-3-02f3cde2afa1@linutronix.de>
 
-On Thu, 12 Nov 2026 11:20:00 +0100, Eric Dumazet wrote:
-> Use gso_recursion_inc_test(), added in commit 006c8b834aed ("net: gso:
-> limit recursive IP-in-IP segmentation"), with the same limit as IPv4
-> and IPv6. The counter is shared with them: a packet with four NSH
-> headers in front of an IPv4 header is still segmented, one more NSH
-> header and it is dropped.
+On Thu, Nov 05, 2026 at 03:16:47PM +0100, Vasilij Strassheim wrote:
+> Add a binding for the Ethernet switch function integrated into SoC-e
+> SWIP cores.
 > 
-> The NSH -> ETH_P_TEB -> NSH route is covered as well, as each round
-> goes through nsh_gso_segment().
+> Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> ---
+>  .../bindings/net/dsa/soce,swip-switch.yaml         | 96 ++++++++++++++++++++++
+>  1 file changed, 96 insertions(+)
 > 
-> Fixes: c411ed854584 ("nsh: add GSO support")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/netdev/179443691180.2199510.148246238688217560@kernel.org/
-> Cc: Jiri Benc <jbenc@redhat.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> diff --git a/Documentation/devicetree/bindings/net/dsa/soce,swip-switch.yaml b/Documentation/devicetree/bindings/net/dsa/soce,swip-switch.yaml
+> new file mode 100644
+> index 000000000000..daac779c466d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/dsa/soce,swip-switch.yaml
+> @@ -0,0 +1,96 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/dsa/soce,swip-switch.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: SoC-e SWIP FPGA Ethernet switch function
+> +
+> +maintainers:
+> +  - Vasilij Strassheim <v.strassheim@linutronix.de>
+> +
+> +description:
+> +  Ethernet switch function of the SoC-e Switch IP (SWIP) FPGA core. The port
+> +  count and presence of VLAN and STP register blocks depend on the FPGA
+> +  synthesis configuration.
+> +
+> +$ref: dsa.yaml#/$defs/ethernet-ports
+> +
+> +properties:
+> +  compatible:
+> +    const: soce,swip-switch-00-04-0c-10
+> +    description:
+> +      This compatible identifies the register layout; its suffix gives
+> +      the offsets of the core version and feature identification
+> +      registers (0x00, 0x04, 0x0c, and 0x10). Port counts and optional
+> +      features depend on the FPGA synthesis configuration and are
+> +      detected at runtime using this register layout.
+> +
+> +  reg: false
+> +
+> +  reg-names: false
 
-Reviewed-by: Jiri Benc <jbenc@redhat.com>
+I don't get why do you need these two above?
 
-Thanks for the fix!
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    patternProperties:
+> +      '^ethernet-port@[0-9a-f]+$':
+> +        type: object
+> +
+> +        properties:
+> +          reg:
+> +            maximum: 30
+> +            description: Switch port index, from 0 through 30.
+> +
+> +          phy-mode:
+> +            enum:
+> +              - mii
+> +              - gmii
+> +              - rmii
+> +              - rgmii
+> +              - rgmii-id
+> +              - rgmii-rxid
+> +              - rgmii-txid
+> +
+> +        required:
+> +          - reg
+> +          - phy-mode
 
- Jiri
+Best regards,
+Krzysztof
 
