@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794523740;
-	b=TJcwtbjnFqaxhvO1L7S1uvRMwxWiO1gauR9p1GwNBbVM1RtmRkWrQcF/dnnsY37lfYHW
-	 yjzIFLCJmz8eOFZ3IZjJJAGiy8APgGmUWwh773Sdy6LOEmWA+0EYinCp9SDPZloFMXsNY
-	 o7JHMJEmlCjGG8r+hcxDu0s3kwldCf0xG+Ff0PDE+VRjF2gkgTHElVaZQ9MQ84HksQFci
-	 kWSIjQsuDynF/uJkaR7Ze7JTDGtBbAhlMbFOOE7peB5UrHYLmvDQ31g/xy4bTsXK8+OLQ
-	 dCytKRWkvQItYQ0z9g+RDCZ+jExG8oF+O+mJnlh5VcBLiBQBolfH2AhtFekVqKKUTmQ==
+	t=1794523745;
+	b=MIlwzoy7k2U1pz+90Qojb3An4RJwOFjmGvfLfMbFe39XUWLNHBgznSS39YR7+vRskRas
+	 pZD4tg3lwj1Kj82/ZDBUhAh+1TmgE/1Ds98aA83Er4xjeJO4LFJxWZWSNA7H6nsmVRjAf
+	 pLx5ZBHK0VpsjbfV3CBZq5I+QZj+++MXlaRTOaX09igXFUm3k1qUGPfi0an484p3yyqO2
+	 bwiLtN5oAYvoklazbzD6sOfpgqgk/tbkP2rDVDGTgatof8jrQ7grP2j8uy7DLNc1um8Rf
+	 Q4gd0dEoc+7XWI7vQvWfcv2wX5sSsBZp8OInP/jfxoJ5qbyfBDQt/5Hb2/1/3muUKjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794523740;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794523745;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zl/WMN5i6CYnrqe2aXgzhSk2a5FA5Upj9o2d7Ivp1Kw=;
-	b=0aYP/BmhjXTLUnEW/t97XN0MGzy8WesOXRbunfZJSVQYmxM2MUN+upYZru+5mzFPKzvZ
-	 BOZlh7wzSvbqJZhICeLw9t3IkVLB5WLbxTilLBEfyD9LP35Xg28VLyZs4A64jpPuajewH
-	 nOAqjM555rKgU3MZfq1Z3BXmnP81nedwLZ5jaHrHkkTNDUTSTkp4eLK28/bG4O5WfbjG5
-	 3gBvbUlcYdeiicnoRAsJERiob39FmyJ8lYyaoD41Z0vkfawoF1Nna7sts3ywvH3IpB2UI
-	 o7t7hxTEXd6C5Sz3tUl5mweFzIyNGRnwoxlMfKN4gwNhjPKg/TSYda0CpZp63mvVhZg==
+	bh=wI3p+YFMsDDPnyhy/ooDHa6Q6Ez070BIob1RsZs6fmg=;
+	b=FNdk/SzlVbp3h4D+XiEwUxNCQH4wbDFP2LAm3qkc2V8/23D0TTviogBu/FL0W/huzCy/
+	 sWokqDESNCZL2+IEHaoA2wW37sgCB/NNuBqzaLw/03TU+f2JG5pbsmZMczTlV6JZ9M//j
+	 xwxNpKRZ3QBMAEzYXrleIx9Qx2s1nrZKSR79j56aaNk3a/yOnb4v5pMMcdz4hhFFxb9t2
+	 siQnW7O/Ye+H0EJaCr6jxZ5Vsr0UO0XkbVDxgJGfXz5sgw+C2dLuiVg3llVUmxlwDWwQ1
+	 wJHxflomLytkV2UeXIRtnXeNOkt8NbvSzLbFuTKSi0Xyo+mw4sCkZ0f0pUcU11L9Nyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PhPfS9ua;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OJ3fBm4z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C691606A31C;
-	Thu, 12 Nov 2026 22:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C42606A335;
+	Thu, 12 Nov 2026 22:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PhPfS9ua
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752561F000C4;
-	Thu, 12 Nov 2026 22:48:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OJ3fBm4z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37941F000CA;
+	Thu, 12 Nov 2026 22:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794523739;
-	bh=zl/WMN5i6CYnrqe2aXgzhSk2a5FA5Upj9o2d7Ivp1Kw=;
+	s=k20260515; t=1794523745;
+	bh=wI3p+YFMsDDPnyhy/ooDHa6Q6Ez070BIob1RsZs6fmg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PhPfS9uaI13NBSZUcdHJjyhGUPTYhX5DmdQhqSIUHqlmnqsbwmDyfLlQh+JxvOD9G
-	 o/4UTvzSCiYA2kVxN/erVGjXwQ58kTLyBnSiI5T0zB3V9eJrjw7+3k+vuHyr2zQrU0
-	 2nJ6GLuriy925qIMJFrRhlUxVj1qFCd7blU5TbF0uhev067/9/8rodKnuott6FHh35
-	 9k9WL9X2RbKhJ1m8aM1Mfy914P+LY6RdSDUNAIl0nU06N4GEyCVtwPVpeadETvhgEq
-	 UEcSLFkgzZCj03+Du+m5OVu+WuKmC9vSH0XYUksiBTtvygF1FX4qGVvAeNFap8scVX
-	 A/aS6Pg6jMGXw==
-Subject: Re: [PATCH net-next v4 1/5] bnxt_en: let the stack segment GSO skbs
- with too many frags
+	b=OJ3fBm4zTqOxKfAgpyy8NInHfLx2WwMDVfJjO8iDCaN4vixR8hUea9SoQB3UHuQ2E
+	 e8y/8Io1oq4Kggn5PijcShJDhkfVX4m9WJ8lNCIZUcK3xRe7jDM0TObIgx+Jp46a/Z
+	 MUWS0G19Me2yv/i5YQBNKIA7yTe+knmCWg5Y01V5F6JQovaGDduLEBO4aS52CELYdZ
+	 dHh8R+UdxWGJ2iqfZqAcwTXNQg1UfiYl1RA17KvEXLx3mpIJE/eu4bII+cipK6liIH
+	 upyKA/QT/0XLGVKFBmFVHGlbBENk48Y5o9rjT7dn1pxfSxGTO7RqHJ0n8VCCHBP1EM
+	 HHHEgaZSWpTFA==
+Subject: Re: [PATCH net-next v4 5/5] selftests: drv-net: devmem: TX from a
+ hugepage-backed dmabuf
 From: netdev-bot+sashiko@kernel.org
 To: sdf.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -51,11 +51,11 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  leitao@debian.org, dtatulea@nvidia.com, asml.silence@gmail.com,
  bobbyeshleman@meta.com, daniel@iogearbox.net, razor@blackwall.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Thu, 12 Nov 2026 22:48:57 +0000
-Message-ID: <179452373797.2199510.8641970184828384072@kernel.org>
-In-Reply-To: <20261111224740.2744522-2-sdf@fomichev.me>
-References: <20261111224740.2744522-2-sdf@fomichev.me>
-X-sashiko-severity: Low
+Date: Thu, 12 Nov 2026 22:49:03 +0000
+Message-ID: <179452374350.2199510.6232070407318094793@kernel.org>
+In-Reply-To: <20261111224740.2744522-6-sdf@fomichev.me>
+References: <20261111224740.2744522-6-sdf@fomichev.me>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,84 +68,91 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] This commit fixes two real bnxt TX bugs but has no `Fixes:` tag
-  and no `Cc: stable`.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new TX large-niov test (check_tx_large_niov in devmem.py
+  and check_nk_tx_large_niov in nk_devmem.py, both calling…
 
 --
 
-bnxt_en: let the stack segment GSO skbs with too many frags
+selftests: drv-net: devmem: TX from a hugepage-backed dmabuf
 
-This commit clears the GSO features in bnxt_features_check() for skbs
-with more than TX_MAX_FRAGS frags when MAX_SKB_FRAGS > TX_MAX_FRAGS. The
-stack then segments those skbs instead of bnxt_start_xmit() linearizing
-them. Non-GSO skbs are still linearized in the xmit path.
+This adds a -H option to ncdevmem that backs the udmabuf with 2MB
+hugepages. It also adds a TX test, run from both devmem.py and
+nk_devmem.py, that sends a 3MB patterned buffer from that udmabuf so the
+frags cross the 2MB net_iov boundary. The received data is checked by
+comparing sha256 hashes from the remote side.
 
-Link: https://lore.kernel.org/all/CANn89i+ps_CozfOyRnKav0_LUmSekJ9ExB5JkDbTAVf_ss_98g@mail.gmail.com/
-
-> With MAX_SKB_FRAGS > TX_MAX_FRAGS, the xmit path linearizes skbs with
-> more frags than a packet can have BDs. For GSO skbs, linearizing needs a
-> large allocation, can produce a head which doesn't fit in a BD with BIG
-> TCP, and always fails for unreadable skbs. Clear the GSO features of
-> such skbs in ndo_features_check instead, so that the stack segments
-> them. Non-GSO skbs are still linearized.
->
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Link: https://lore.kernel.org/all/CANn89i+ps_CozfOyRnKav0_LUmSekJ9ExB5JkDbTAVf_ss_98g@mail.gmail.com/
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> diff --git a/tools/testing/selftests/drivers/net/hw/devmem_lib.py b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+> index 71b916c161969..8058fd1ddd501 100644
+> --- a/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+> +++ b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
 
 [ ... ]
 
-[Severity: Low]
-Should this patch carry a Fixes: tag and Cc: stable?
+> @@ -63,10 +66,15 @@ def require_devmem(cfg, rx_page_size=RX_PAGE_SIZE_DEFAULT):
+>          # ncdevmem's queue range and cause the probe to fail.
+>          cfg.devmem_supported = {size: _probe_devmem(cfg, size)
+>                                  for size in PROBE_RX_PAGE_SIZES}
+> +        cfg.devmem_hugepages = _probe_devmem(cfg, RX_PAGE_SIZE_DEFAULT,
+> +                                             hugepages=True)
+>  
+>      if not cfg.devmem_supported[RX_PAGE_SIZE_DEFAULT]:
+>          raise KsftSkipEx("Test requires devmem support")
+>  
+> +    if hugepages and not cfg.devmem_hugepages:
+> +        raise KsftSkipEx("Test requires a 2MB hugepage-backed dmabuf")
+> +
 
-Both failures described above come from the linearize fallback that
-commit b91e82129400 ("bnxt_en: Linearize TX SKB if the fragments exceed
-the max") added to bnxt_start_xmit():
+[Severity: Medium]
+Can this probe succeed anywhere other than a 4K page kernel whose default
+hugepage size is 2MB?
 
-drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_start_xmit() {
-    ...
-#if (MAX_SKB_FRAGS > TX_MAX_FRAGS)
-	if (skb_shinfo(skb)->nr_frags > TX_MAX_FRAGS) {
-		netdev_warn_once(dev, ...);
-		if (skb_linearize(skb))
-			goto tx_free;
-	}
-#endif
-    ...
-}
+Before the probe, the only reservation is _reserve_hugepages(). It writes
+64 to the default hstate's sysctl:
 
-The driver calls netif_set_tso_max_size(dev, GSO_MAX_SIZE), so with BIG
-TCP the linearized head can be larger than 65535 bytes. The BD length is
-then built in bnxt_start_xmit() as:
+NR_HUGEPAGES_FILE = "/proc/sys/vm/nr_hugepages"
 
-	flags = (len << TX_BD_LEN_SHIFT) | TX_BD_TYPE_LONG_TX_BD |
-		TX_BD_CNT(last_frag + 2);
+def _reserve_hugepages(want=64):
 
-TX_BD_LEN_SHIFT is 16, so the high bits of len are shifted out of the
-u32. Wouldn't the descriptor then get a truncated length of len & 0xffff?
+That sysctl only grows the pool for the default hugepage size. On arm64
+with 16K or 64K base pages, the default size is 32MB or 512MB. An x86
+kernel booted with default_hugepagesz=1G has the same problem. In those
+setups the 2MB pool never grows.
 
-For devmem TX, the driver sets dev->netmem_tx, so unreadable skbs can
-reach this path. skb_linearize() can't pull unreadable frags, so every
-such GSO skb with more than TX_MAX_FRAGS (30) frags goes to tx_free and
-is dropped.
+With -H, udmabuf_alloc() always requests MFD_HUGETLB | MFD_HUGE_2MB. The
+probe allocates its buffer in run_devmem_tests():
 
-A later patch in this series, "net: devmem: size TX net_iovs from the
-dmabuf sg table", also calls the bnxt BD length limit a bug that needs
-a fix. An earlier fix to the same block, commit 00eeab0c644a ("bnxt_en:
-Write doorbell when linearizing skb fails"), carried
-Fixes: b91e82129400 and Cc: stable@vger.kernel.org.
+	mem = provider->alloc(getpagesize() * NUM_PAGES);
 
-Without the tag, stable kernels built with CONFIG_MAX_SKB_FRAGS > 30
-would not get this fix automatically. Would something like this work?
+NUM_PAGES is 16000 and the size is rounded up to 2MB. That needs 32
+hugepages on 4K pages, 125 on 16K pages and 500 on 64K pages. So even
+when 2MB is the default size, 64 pages are too few on non-4K kernels.
 
-Fixes: b91e82129400 ("bnxt_en: Linearize TX SKB if the fragments exceed the max")
-Cc: stable@vger.kernel.org
+In both cases UDMABUF_CREATE fails and cfg.devmem_hugepages ends up False.
+check_tx_large_niov() and check_nk_tx_large_niov() then always skip with
+"Test requires a 2MB hugepage-backed dmabuf". That message does not say
+that the hugepage pool is the cause.
+
+Before this patch, hugetlb was only used when rx_page_size >
+getpagesize(). So -H looks like the first user to hit this on non-4K
+kernels.
+
+Would it make sense to reserve pages through
+/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages instead? The count
+could be derived from the size ncdevmem will allocate, or -H could use a
+smaller buffer.
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111224740.2744522-1-sdf%40fomichev.me
