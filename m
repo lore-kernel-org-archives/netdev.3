@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794447012;
-	b=vwSwPTX8v9g24Miz/MElRHi9S8GAWFlwVzGBURl9f1ipL9el2dR8E9/XaJv+uUnuQmDY
-	 ZfURe8ZbeTeXPnkO3ZuPCAJNQ/ZVhTK9ud4ePupodiMe6O21yYbs303T+OYk/kntXNKbq
-	 gHkv9o+1pJNONXLTmZFqGcuWOt6duq75Vk/pQ9MRdDK7ESUPt+iOVUPms3xZ5BdmYueQw
-	 zCaYs6of9Ct5t4jnAqCaRwRWhp8S4FrJ1Vbki147HImihzSf0uHxSxN1jOxipb3YQx7mC
-	 aH0vmpM5rU0tKaTrACY4MQfkQRnRP36PhGRW1FwF0GS1/g0+YeIXf4bj2a+9OY1+LjQ==
+	t=1794447017;
+	b=XWQUwiIGhwD8IJ6J65Nbf0rO3tqwwoT6c+IUdjcvNTsEi7q9lPl2Ut7vP+kNWDPjIv89
+	 9nKckwRnS0GocesnyLzwcvZ4MydWUa1/spcs682c5hHoWs5hPQmR6ysH8FBthpYt34vIv
+	 Ftbx5QqR1bARcrKlpLlyJfnYBA4V/xhd94NSELQZ6XB7OAxTIxAqHEaV8gi6IgrDZIhni
+	 j4ItqV/wwuzxK2fLLfXXIyquVAcTTQ98gr78Y9cpzfE/t5r+XmV6MlkYzdaP3B8YgTfkR
+	 w/MDo9MfR/uuV97MC1Q4jmIaJf1X5grJRdpdRCz9sM2dXVq1Ptcgcgpza5qjf1YG4Xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794447012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794447017;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=qnDiwghou9b4hL/o+S0CML8wXd5T0Muu0ICUHeawXmk=;
-	b=b82L0Da1on1pUWMqloXZ6ZW7W2dSdFfCOzd2bHfd3qGQ9J+KzPLBn1jjaLBzFAVwyywE
-	 5K+UiTpQQVfcbhplBqLCsrYhv0jBPUP2BeKFfBLW/WgV3/8Gf18B1tu4BfezIu1wC8f4+
-	 noElAKbL5K4hFTsVRVSKgCXKJvAhoLUkEho9uF+J1T922YySZ26ohRA1C3CA6iL0y4Chi
-	 /gZTIvkLXB8Y8F0c23L5oXYmQwSmsdeY3WoX9zXcuHemVjoVNvi56xrrP89ejFkhx7nOj
-	 ogeGpYIX29I4rc0QghSYq1S/jtlmbDmBq4eF/pGdvT+yIdUH5eGaT+nYl753GGZzfrg==
+	bh=d1ryBN7m25xIxhEAVtHnwEmc3pQTp6vGAygh4SVWUJw=;
+	b=o/Uq7sHQkIDYziBYhXsdR0+pD9qypHGc2dbt2X4VIxW6CAeaQc5aPry4CS2XutmsoSEc
+	 b29qQPFlfr6/xIxEMCXxumWXamX8OL6cVedCcDXytENFGpV6RSHZE0ENE54AIJaYKuigW
+	 Co+EoAeRE7lLIFR/al8PGD63Ib6hDe5ZvU7aen+6lrXMx3+FPSbKPQBwLMC9e/VYCS3mi
+	 h4KzuyERdP4mTowzfMrgzWy9RrxzRHhj1v01hdw1wQVg6HoFDVSB3C9s8Kt4uc1VESaNS
+	 9erxbGsogfL7VmGuyIPBuXS12Ahh9KPPqsDCBsgiTMjU0YMShPycARM2kp7n4NbcS9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KwUSAxwt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=apfpXwSd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC836074E68;
-	Thu, 12 Nov 2026 01:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF9D6074E66;
+	Thu, 12 Nov 2026 01:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KwUSAxwt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A0E1F00A05;
-	Thu, 12 Nov 2026 01:30:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=apfpXwSd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B821F00A05;
+	Thu, 12 Nov 2026 01:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794447012;
-	bh=qnDiwghou9b4hL/o+S0CML8wXd5T0Muu0ICUHeawXmk=;
+	s=k20260515; t=1794447016;
+	bh=d1ryBN7m25xIxhEAVtHnwEmc3pQTp6vGAygh4SVWUJw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KwUSAxwtPrNsGHq8xFxSnGbKhnaZDI04485lYkaZDgWmSyw5ugGaLyYe4Q8Jgrwhb
-	 exUnkVCHKRwW5NKrKYBzHO8VZc3mPs4A4QflAy6xPcwm5S6GruP5xLXVoe21TVFert
-	 T1sknXa6bejcTFEqNmsDVVa6C1EUbhMPToQegr0IEWOxNDeTr/6H+/Drx3dAnGR2ql
-	 /MH9hJm8Qo66mLjA3jBksW0rJobMiWV1ljzOONkirAn3AgPtxPBMbqY3+d3wGtxpnB
-	 PNtCczVYfaE60iCiEefOnJWnoIJV7sU49sMZF8LkFFpAzwjG9Gq8MfnfZBUyrrTdRf
-	 utnjfciZRlLjQ==
+	b=apfpXwSd23atWyrd8dINN+fwFwGUn6W8zDWDPVL/N0b95KjH2YslQv7Wo+e6HGPYn
+	 KItlcCGzuW/qf0TikuPdhNWaEHr0tgF22JczmP+eMwdpc8ut9HX9WdE4e8PAH2MTU3
+	 5J3k2/SNka8hLhaE/IfBeiy6Pw5XkCN1x6dilMfyo9pdYE/jh1tXsuGyb6HsLCl4Yp
+	 19tvFKC2XL/w1dudeoyaWfRIrCisapV8Gcq69pq3xw707Zxl+SBuHr37ymfZFaes7Y
+	 mIQdM1dg4DLdPEj9hz23F/Y6IqvMrlurIUFlzMHA90aYFlX4Mfpo9QgGzsIxS0VVZt
+	 sxm9bov/P0TfA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E184391AFCF;
-	Thu, 12 Nov 2026 01:30:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B26B391AFCF;
+	Thu, 12 Nov 2026 01:30:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] sctp: avoid requeueing pending control chunks
+Subject: Re: [PATCH net] net: enc28j60: cancel deferred works on remove to
+ avoid
+ use-after-free
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179444701092.1753823.11388298782522084673.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 01:30:10 +0000
-References: <20261107030532.32310-1-kylebot@openai.com>
-In-Reply-To: <20261107030532.32310-1-kylebot@openai.com>
-To: Kyle Zeng <kylebot@openai.com>
-Cc: linux-sctp@vger.kernel.org, lucien.xin@gmail.com,
- marcelo.leitner@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179444701517.1753823.12338640917223292373.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 01:30:15 +0000
+References: <20261107140649.3702472-1-hj351016@gmail.com>
+In-Reply-To: <20261107140649.3702472-1-hj351016@gmail.com>
+To: Hyunjung Ko <hj351016@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  6 Nov 2026 19:05:32 -0800 you wrote:
-> The T4 and RE-CONFIG timeout handlers take a reference to their cached
-> control chunk and submit it through SCTP_CMD_REPLY. A previous
-> transmission can still be on the control outqueue when output is corked
-> or suppressed, or when sctp_packet_transmit_chunk() could not append the
-> chunk.
+On Sat,  7 Nov 2026 23:06:49 +0900 you wrote:
+> From: Hyunjung Ko <hj351016@gmail.com>
 > 
-> sctp_outq_tail() then adds the same list node a second time. Re-adding a
-> non-tail entry can corrupt the list without being caught by the
-> insertion-time list checks. A subsequent flush or association teardown
-> can access an already freed chunk. The ASCONF path is reproducible by an
-> unprivileged SCTP socket owner in a user/network namespace, with KASAN
-> reporting a use-after-free in __sctp_outq_teardown().
+> enc28j60 defers work to three work_structs that dereference the driver
+> private data via container_of(): tx_work (queued from ndo_start_xmit),
+> setrx_work (from ndo_set_rx_mode) and restart_work (from ndo_tx_timeout).
+> They run on the system workqueue and are never cancelled.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] sctp: avoid requeueing pending control chunks
-    https://git.kernel.org/netdev/net/c/665b4149e91b
+  - [net] net: enc28j60: cancel deferred works on remove to avoid use-after-free
+    https://git.kernel.org/netdev/net-next/c/bafe532bae92
 
 You are awesome, thank you!
 -- 
