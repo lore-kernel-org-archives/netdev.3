@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794519591;
-	b=xyzfvdGxS98eHvLixMvhOhrqoh3ylktMNN33tqgoxS+aBcLYYpka5mNLzjqafbol58H3
-	 3x/0k3Onn3SBRhS5R2u5eCRvTgPxad3KgOCBx76uF8R55pol2RDLqNH7ob3zUebliL5fu
-	 l3bL+rYBXaxC51LcoanVH0neU1SRa+KWUUXF1+s1NFr7hVDbWIBj/cebK27OadnMirnQv
-	 T8TfpVRGvnBo+Uy2v53ubRIZF6aaF0/Qg7n+Y/br3EuLecpMoGpaTy6TKaGSuny4VMIuj
-	 SOc2BQ+dUezXcSuuXvlOTdt+Y1XvLL40R1lZFCSUrIuH9VL/JNnnuIXYNABjqlcJluA==
+	b=vLhGIOlUDyZLtTSna0rKfMIx8UvdhkVWPW7raVdIV37ETIKvlaGkCrvF0LCRsEf2ToHg
+	 760TMnOldjwBWDqspKEWoHoEst5EyFDBvN0J6/l5hoK0JrSVN+NkPAZl1ccgL91au2vSk
+	 VjfeDmg8Yr9gId+m0vZnYuG3TXN3A8Ni+D7YvjAHQIpR298p7MyM25HqY0VSWl4L0IRSP
+	 PI9WxHlzRcpRw9syr0tDx+GhuIigGQSvhMVOmHbG5VtUeL8qqM4409qL91hF4j+AEGEs7
+	 XLNB0QhsCl15ET/+b66fRo2yv6jvE43bpUsEGg41gIR3wv1bq5zMdo5z0pVIE1aGMOA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794519591;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=kC3bFQJa3sH8peY8DR6++Vxef8QEFila5H495e35WVg=;
-	b=yb8AkzSKCWy+Elyp38mAyGqDv7B9FZVE4vmqdrPJ8AzaANxoOYsHEQsg3zY24WfCWWbi
-	 z9N6lq51fn8SpfJaq0WtQL7sPC1oswcKNnzm8JJhWIwsxNG+RTgEyAQtSKH3i8we/J2ag
-	 75m79WhB6jOH7ni17MizzT18ZKz6UNOGDbKR1hXEGcnumCaz7dXiJLub4EIVL6g7aqAEX
-	 ojhGKO5I1Xnp+DxMnGdslPta5xIoS+DE+RBWzr7XZcIh7R1v+qBYxPvZDJH06iYLRxWRZ
-	 Ake8XpXf/EhdlzyG/hp4/ng4R/OEMvDE9kn9wBnWTfLkfuk9hw8AxGh5J28DwhkIHzw==
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=5NMoOR0sdo7CgbVWGSxVCziMzV8yq95ZiIFRjgRJiTc=;
+	b=Bhp/1xUh8sAJGkTR4LilIhHC+hoKbGDqDCDlmDr77GC55y1eu1EHchdIQy1X7ILRzN1H
+	 Q9B+nOjS0QahgJ7C+fKcdONjG8hQU9Dij4rjfCtTF02Y+bwT6GoJ+nAk1mt0DBIP/7mI4
+	 13Kljep4THIbGfyaYy0WKSSdHgiMPdXpjSmrCKxe0CuXAhcdqgVLFT+jJ59oy+pIup5yT
+	 qTtRbpFvxpvNPEWAiuRf7FCeZWVcxPpvjWhn2gwkflHtE89kT3fj4P5irM2ZPhUTKbT5o
+	 t3pl30gnu5Gryv5jjRICD+pNYwSfJHRIvpmnzwL7w6em/BlI8y1wRXz1uEVX5XhGjmQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ONAhlEb7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mHu1dy7F;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF96606A31C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A0606A33A;
 	Thu, 12 Nov 2026 21:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ONAhlEb7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mHu1dy7F
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794519591;
-	b=NN4Byk1m3MdGXFh44S5IOt6x3kAMwRPkSZehE2R9t7UiTYM0tPG6W1xUS+bVLc9tXHMj
-	 0emEjGzoYHygk2D5MA5Z4lzfHhjUO4dZ9SCWxg6O0qH+OIPCgsF3SDSWCr5lz6VDPGIlv
-	 j5JrEX4Gjq1ugpTxMG9oNXWHPS5dgjXkDpXmeFkSoqLbxA/s/yz05BL3L4zO4uQABNds5
-	 DRV0I6876Tg/noMcBcPnHYyk6U9NyqG2V9zZh7cqMbHq/a1Z8IlHxiTMMy6Vot07qKHt6
-	 ePlnkIIJAlVwr7Oj+DdnVzfUDGygiz2L9MkC7011/TWxY94RSDNwX2xmrquT1xHkBJQ==
+	b=ymZqpTOAK6Cz9clicYPl5R85D0XGvMSE/u7CzHUQiq1ZseRXbIkWQYU7Nj7MQrKoky7Y
+	 /CSKozhsEmUonsbti5P8vmgj1K2kudHEM6v1YkrvbKHbwvSlSmLXDMPsUCiPFlc7DQWG6
+	 goAeEzWugyoEXBEDiFJN5LWyGgnCO5XRvaKA7udupq6qQSz66mGEuJn8ml/+Tl8jhPeMY
+	 OqJzV6WlwesvSpwFbawGL2D2SdsR4O9cBaNdzBHQnXhOqXHPfj7QZ9HL2kMx5F2Lk+a88
+	 ALlCDIm6clZ3uFCBIfqpBdqPaWpopyJsRvZJqOPTNhOnuiz5dQu544C5siumOpcRBkw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794519591;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=kC3bFQJa3sH8peY8DR6++Vxef8QEFila5H495e35WVg=;
-	b=2lycXXgm2X2NKJMrFg2bbAjqZD5erVaQJciOe64T6yX8GoLJm59rmPoaB5fswWfeJkgb
-	 Qoo0kvWWEfUHQlFACXHIRrfTGoGYeMjlyCzm4/IF31o2oNzNCBu4sCZOrTkwPNMe/E1HR
-	 Xb3ZxJtbwvd/HWd6/5fY7/JDL7sC7sBd0WZFxgXcVoww5AgzwyiD+Gd7wWlzlwE5mBdH8
-	 4ocOHtTQLAg+aoFBMkYw/3B1NZGuMyuc/haURDNDdH7kZ5NzpmAENgF7Tq1mwWNQfvHJi
-	 GQ5L7TUs4csG4Dmah+LSuKG/wNHAXGNj6yVVimVXjfgkwel5atkik2qEh95ENuTQaQg==
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=5NMoOR0sdo7CgbVWGSxVCziMzV8yq95ZiIFRjgRJiTc=;
+	b=XbZRCa4l1+eWBjOcCOeslrHRzHLGvM80T9L+/P8tsw8gvLjFRVXjvo/Q2MnYiANsXGn9
+	 JD8yuxx69zayIyMqO296kmlYqIdV+Jdfgr7Du15mBNXZaU/tQE+DMEAZ7CsFJrtL5lkPm
+	 4NvdO+i1ZXcwV4XI0M6/B4UPwl39QwNj3ftlKo2BvWlpOHEhpC8p/sh4OXDsS9F2TkG2R
+	 u7n+68cAEtKcy+U88FhUtSeTeGZb6EOFpM+ZKtJqh3nWLeT7YaTypIdz4/eSwl1HclfL6
+	 x/j5thVS2PdKnGbFDvxrw0HBVVCprI9tOS9zNrOK05YXHBZponVMjpJGoNYSMAsnUjQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0C7751F000C6;
+	by smtp.kernel.org (Postfix) with ESMTPS id 09A851F000C5;
 	Thu, 12 Nov 2026 21:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794519591;
-	bh=kC3bFQJa3sH8peY8DR6++Vxef8QEFila5H495e35WVg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=ONAhlEb743REUh5LubLvpfpTCXd0YgevO4W9VHM9dmHTfpisiVufiU8Efi+U6GUys
-	 dmbfox+qRkD7OeBCQpMWvcX5UcpIJklibeLeZQebfOXMHQ3UuzjWigLCTMJxfRvc6y
-	 roG/XCWk2I9UOUJzgt1eNDNudYEzQZz2uV1Jh4UCZwaJfqn2LAA0YEyYNZRXGXJpMM
-	 3nmyVY8uTrK8oEZrC8gOkMS8HKyi4WKjQU761N5S+WGiXSs/Ai6rvMoh9NcUr5PJ9T
-	 ySMtPhsPTFJ9fX4aWmrm96vMEZbx5lJnftf/wP80hpzfFD3VjmJF8ysfQyDtQjCb7i
-	 YoHY2lIFrQsPw==
+	bh=5NMoOR0sdo7CgbVWGSxVCziMzV8yq95ZiIFRjgRJiTc=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=mHu1dy7FZp62nABTTlUBcauL0vtvsrtbi8gq4gChL1RljDFN0XcBIJMS8YpfPCxfY
+	 r70oxJg6iA+2ZlKdnpR1fc3z7sDN97vB9v23037X4fb1gzHTtrD9IXdfasBBTkEaPj
+	 xG3s6D9gjZnW+/3HMQqivTVpIX8BSZfARumvJLMjL5uYHgaVk7ZD3adNUV/rxontw8
+	 Tp9loSK0nFKd9+dBFRPmR0LWG8Ivupj8CTsn2cdIxek15gxubM+c0bUbwkOxjArSeF
+	 4VzVhvJpgaBTrLaOTHN2mAJY/5WGoRry0gUWaJ3dQFswrmu3Tlq0NuPjtTanca4Jtr
+	 eStx5W6RcLC5w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 88EA647513;
+	by lkml.kernel.org (Postfix) with ESMTP id 550674750F;
 	Thu, 12 Nov 2026 21:39:49 +0000 (UTC)
 From: Joseph Telaak via B4 Relay <devnull+joseph.telaak.dev@kernel.org>
-Date: Thu, 12 Nov 2026 16:39:41 -0500
-Subject: [PATCH net-next v3 2/2] net: dsa: mxl-gsw1xx: reset the switch
+Subject: [PATCH net-next v3 0/2] net: dsa: mxl-gsw1xx: reset the switch
  through reset-gpios
+Date: Thu, 12 Nov 2026 16:39:39 -0500
+Message-Id: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,9 +85,12 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-mxl-gsw1xx-reset-v3-2-863e82074893@telaak.dev>
-References: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
-In-Reply-To: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABwy9moC/23NwRKCIBQF0F9xWEcjoIat+o+mBeLTKMMGiGgc/
+ z2kFjW1vPPePXdCFowCi7bZhAx4ZdWoY2CrDMmj0D1g1caMaE4rQnKKL2HAvb2TELABCw6zjZC
+ cVQ0jHaBYuxroVEjkHun4oCE4dHhd7K05gXSLuPwelXWjeaR1T1LjPVT8DnmCc1wyzuqmKyXns
+ HMwCHFet+CT7+mnwP8INApFJUkr8prxmn0J8zw/AeTpEAMPAQAA
+X-Change-ID: 20261102-mxl-gsw1xx-reset-37ac836b31fe
 To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>, 
  Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -98,117 +102,77 @@ Cc: Daniel Golle <daniel@makrotopia.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Joseph Telaak <joseph@telaak.dev>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794519588; l=3553;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794519588; l=2698;
  i=joseph@telaak.dev; s=20261104; h=from:subject:message-id;
- bh=WZYxeaFGDWxSpN7GzuooSUNjWaVXrTqutE63YR5JtU0=;
- b=gBIElyAt9sK0h91F8d58bV1C+Ls9eNK6vVg0iJzPMMHj54lGxmP2K0mGcfX/Zf1nnV6pB0WUe
- 0Gq71vWKYwcBLZa7K2oTk8pOtDEXMLCKA2l2wfsiOy/vxKAzYZN4lai
+ bh=PzNRMlJ8hydRxArSVgRXqNp71nKnYMNDOQPUVvecNEo=;
+ b=a/6ZOcXYhMZ8lCx79LgPFkxA+8lKA+mZAtP7QE5uKXknU76dDCX18N1XMKnYkf7oYfnTzmVp6
+ oTxqcQLpZM+AECGw5uA5OCyfE5A2zIyUSjwGOhHfhaMPLdEEqsMV3YX
 X-Developer-Key: i=joseph@telaak.dev; a=ed25519;
  pk=oQI+UfddlZ0wK2ac4WKOGNjUl1ZEN8j9ZVFSqEDoNP0=
 X-Endpoint-Received: by B4 Relay for joseph@telaak.dev/20261104 with
  auth_id=1404
 X-Original-From: Joseph Telaak <joseph@telaak.dev>
 Reply-To: joseph@telaak.dev
-Content-Transfer-Encoding: 7bit
 
-From: Joseph Telaak <joseph@telaak.dev>
+The GSW1xx driver never resets the switch, and the MDIO core does not
+handle reset-gpios for non-PHY devices, so the driver works with whatever
+the bootloader configured. On the GL.iNet GL-SFT1200 (Siflower SF19A2890 +
+GSW150) the bootloader leaves the internal PHYs one MDIO address too high,
+and the WAN port has no PHY.
 
-The switch keeps the configuration the bootloader left in it, and the
-driver never resets it. The MDIO core asserts and releases reset-gpios
-only for PHY devices, so a reset line described on the switch node has
-no effect either.
+Patch 1 allows reset-gpios in the binding for the standalone switches.
+Patch 2 pulses it at probe.
 
-On the GL.iNet GL-SFT1200 the bootloader leaves each internal PHY of
-the GSW150 one MDIO address above its port. Port 0 then fails with
-"failed to connect to PHY: -ENODEV", and the PHY that answers at a
-port's address belongs to the neighboring port. After a hardware reset
-every PHY is back at its port's address and all ports work.
+This is separate from commit 82e2c7db0830 ("net: dsa: mxl-gsw1xx: force
+internal PHYs into a known reset state"), which only programs the PHY
+bits of RST_REQ. On this board that commit is applied, and the PHYs still
+sit at the shifted addresses; only a hardware reset of the switch moves
+them back.
 
-Get the reset through the reset controller API and pulse it before the
-first register access. The reset core hands a reset-gpios property to
-the reset-gpio driver, so a board that wires the reset this way needs
-CONFIG_RESET_GPIO; without it the reset is skipped. The timing follows
-the vendor's driver for the GSW150: asserted for 250 ms, then 1 s before
-the switch is accessed.
+Tested on a GL.iNet GL-SFT1200 (Intel GSW150 / PEB7084 at SMI address
+0x1f, reset on an active-low SoC GPIO), on v7.4-rc1 with
+CONFIG_RESET_GPIO=y: after a warm reboot and after a cold power-on, all
+three ports find their PHYs at addresses 0 to 2 and link at 1 Gbit/s.
+Without the patch, port 0 fails with -ENODEV after every boot.
 
-The reset also returns the RGMII slew rates to their power-on defaults,
-so a board that uses reset-gpios sets the ones it needs in its device
-tree.
+There is no in-tree user yet: the GL-SFT1200's device tree is under
+review on linux-mips without the switch, which follows once the SoC's
+GMAC is supported.
 
-Signed-off-by: Joseph Telaak <joseph@telaak.dev>
 ---
- drivers/net/dsa/lantiq/mxl-gsw1xx.c | 26 ++++++++++++++++++++++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.h |  4 ++++
- 2 files changed, 30 insertions(+)
+Changes in v3:
+- Patch 1: say in the slew-rate descriptions that, without the
+  properties, a reset through reset-gpios leaves the power-on defaults.
+  Rob's Ack is kept: reset-gpios itself is unchanged.
+- Patch 2: say the same in the commit message, and wrap a line over 80
+  columns.
+- Cc Philipp Zabel for the reset controller API.
+- Link to v2: https://patch.msgid.link/20261108-mxl-gsw1xx-reset-v2-0-46c1da093893@telaak.dev
 
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-index a26f78e1a4..f69856a65b 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-@@ -18,6 +18,7 @@
- #include <linux/phy/phy-common-props.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/reset.h>
- #include <linux/workqueue.h>
- #include <net/dsa.h>
- 
-@@ -719,6 +720,7 @@ static int gsw1xx_serdes_pcs_init(struct gsw1xx_priv *priv)
- static int gsw1xx_probe(struct mdio_device *mdiodev)
- {
- 	struct device *dev = &mdiodev->dev;
-+	struct reset_control *reset;
- 	struct gsw1xx_priv *priv;
- 	u32 version, val;
- 	u8 shellver;
-@@ -737,6 +739,30 @@ static int gsw1xx_probe(struct mdio_device *mdiodev)
- 	if (!priv->gswip.hw_info)
- 		return -EINVAL;
- 
-+	/* The MDIO core handles reset-gpios only for PHYs. Reset the switch
-+	 * here, so it does not run with whatever the bootloader configured.
-+	 */
-+	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	if (IS_ERR(reset))
-+		return dev_err_probe(dev, PTR_ERR(reset),
-+				     "failed to get reset control\n");
-+
-+	if (reset) {
-+		ret = reset_control_assert(reset);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "failed to assert reset\n");
-+
-+		fsleep(GSW1XX_RESET_ASSERT_US);
-+
-+		ret = reset_control_deassert(reset);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "failed to deassert reset\n");
-+
-+		fsleep(GSW1XX_RESET_DEASSERT_US);
-+	}
-+
- 	priv->gswip.gswip = gsw1xx_regmap_init(priv, "switch",
- 					       GSW1XX_SWITCH_BASE, 0xfff);
- 	if (IS_ERR(priv->gswip.gswip))
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.h b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-index 81bc00eabb..bca8e3223c 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-@@ -19,6 +19,10 @@
- 
- #define GSW1XX_SYS_CLK_FREQ			340000000
- 
-+/* Hardware reset timing of the vendor's driver for the GSW150 */
-+#define GSW1XX_RESET_ASSERT_US			250000
-+#define GSW1XX_RESET_DEASSERT_US		1000000
-+
- /* SMDIO switch register base address */
- #define GSW1XX_SMDIO_BADR			0x1f
- #define  GSW1XX_SMDIO_BADR_UNKNOWN		-1
+Changes in v2:
+- Use the reset controller API, so reset-gpios goes through reset-gpio,
+  instead of driving the GPIO from the driver (Daniel).
+- Use the vendor driver's reset timing, 250 ms asserted and 1 s before
+  the first access. v1 gave 2 ms and 100 ms as the vendor's, which they
+  are not.
+- Patch 1: add Rob's Ack.
+- Link to v1: https://patch.msgid.link/20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev
 
--- 
-Git-155)
+---
+Joseph Telaak (2):
+      dt-bindings: net: dsa: lantiq,gswip: add reset-gpios
+      net: dsa: mxl-gsw1xx: reset the switch through reset-gpios
+
+ .../devicetree/bindings/net/dsa/lantiq,gswip.yaml  | 12 ++++++++--
+ drivers/net/dsa/lantiq/mxl-gsw1xx.c                | 26 ++++++++++++++++++++++
+ drivers/net/dsa/lantiq/mxl-gsw1xx.h                |  4 ++++
+ 3 files changed, 40 insertions(+), 2 deletions(-)
+---
+base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
+change-id: 20261102-mxl-gsw1xx-reset-37ac836b31fe
+
+Best regards,
+--  
+Joseph Telaak <joseph@telaak.dev>
 
 
