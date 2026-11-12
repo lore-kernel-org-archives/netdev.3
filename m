@@ -1,55 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794495528;
-	b=TmFsXlT4psAQiilDEt535yyUy36XesqUy4UsC/usd8ibataPyms3cD7HofJbzE1VcxXq
-	 RNxmAOVuFc4kccVhnkLc3FurO/va+Lqma0T3IddsZHlM92ASUAgB29PKhcvyDxkrApDdF
-	 xbRgBi91euuL6HAyCqhtWM6ckrrD8yGxoCkC6Nuput05y3vIRKcrP4jfK1a/KpJubITtH
-	 R6TUHoPuLyO6euhfxvGEeAIiMKDAe0yfXQhZT77tdCguycIgG6vGvYLMSxtwOrAKGnWq9
-	 EypGc3v2RmdDiec3CHgPEaouUuG2FeW1/Da46T8nmmtO8rWtkYBXUaxrRsG/knwy1Cw==
+	t=1794495710;
+	b=2DB4XGRIZafQ3qk1yDRuQNC1J/TGQsa3qmemdOPJjSuGMC88Y+uNcNkSJflo4w7vqe6c
+	 lp19KzfYuOg4pw3kw8VkIexu2TuuaQlLOZTeFWGMBvAffoDEVu/gTkI+LDQki/+4LkFr/
+	 iRH57El4xx+88ekZesKDFv+s2vKIihcuho/ARjlcujfYmxo7p3e0qQ3ClDO2zo4EBBtYZ
+	 rwuA1U246hdd0cYMdTcZNI1Fm2TOuXbqtyP+0xmff+O4AtR3xM/YgWuASn4TNlRAqQNym
+	 NvkZ3I8Y9IMA6NAhTNUn0QSqEupDIPWBYiv/qmg3W6TsyLtNk0bRMu4gpfV/lbJprRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794495528;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Ahp2R8XXPiuO6iEjfb6UKUnsMrVVlx0bOA5QMiN/SCg=;
-	b=ghx8vJW3rtRnjUEx+9GrgXy6nqbO8GEnJgrnu5Uy3hqTDj92/hFxuIJdMKMt5Sk8hJa2
-	 vn16d+CnqPspJ3GqSx9OvrrTgDw2qos5fbhkOQbSlPMUTw1VYOtqfr+95eL3agyTpSLEB
-	 r57MhRf9czc4MBDoHxn5L9/iEZFMdb4k6JgBjRzLDoanSvtmP6W6HyFfh96jxdMuv8iak
-	 IjcSqoCp0n3yMEQ38YVYeOxrfZ3YunjoJVqcAYSXOAw0RfKYBGwa4Nb8KcoFghUFvg1/j
-	 1IGQ7RQydoiYb0EDP4pYykzjhKd6hK0u5UZsE7V1hRgZMwJUIr4VxiCGownL6sG3rSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794495710;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
+	b=2CBELE8Io7mfEg6htoa355zqBDZuWYaoNGMyQmOGXlusWUOUB4HsBKgJbzArbuC1tLav
+	 mNMSNPPXvdxSkpLxofauLo8uJ7GvQMyAGU1orrrkW7xAT6fChyhr4VZDoYocGy+s2s87X
+	 aHbmvd97GxOT2Essmr/8i5zJD5LuHFCkaIfbaWQjl/r+Zjr4G1vvHW6SoPsIBkkWGy7mS
+	 mRVr96L418rTu/9auTFsT5A2BzB2C3gpK96nxq6RNZdp1YllodIcYpdzSoML7hnEbYbFD
+	 V6ji4ZpBxe/PacsRZpmqrw4+OYngt14sf/1CcZJBschEQwUX69rRPf6b9p3iBFH6hpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evi7clWU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="yFXqY/uI";
+	arc=none smtp.remote-ip=209.85.217.45
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDB5606A32E
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3A7606A338
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:01:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C3A7606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evi7clWU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B29E1F00A10
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:58:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794495528;
-	bh=Ahp2R8XXPiuO6iEjfb6UKUnsMrVVlx0bOA5QMiN/SCg=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=evi7clWUqzfu5IwbwBr1JJlISMJDxPDhvh6uAAOyCg4ZnCnklbxu8+ZjPmsyAJp/0
-	 aP8kAcEIz52VuMwJki7SyO4fuxYHvB3MavOJRR03w0bl2i7fAv32f91k/+09mGMrj3
-	 iWt4HXcH3d0ZZxsnA6Rm9vsEqznM4YC0+n0a6kqqns3tv22HaO3JdV6Q+ZvJtYkBfF
-	 h9guIvmInAtJSD2Thdtkqr1TC4gRLGYeJpVypaDuYlIneKDv92USZioY1YD+c92ZTM
-	 GNRqYI1l0LabEgiidIKy/Ghen9POAU1/k4/CNgnT6u71WupklB+95qmRViP8rE0x3t
-	 oi8M7RhZ7wVeQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3ab3b29a298so36358301fa.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:58:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHdIeElWa7F8Nm3uzUk/bZKw8HlgAwYqQESS2xFSYosh+hczKxGUVD9c9aNuDXRneEPCQT68CE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z83YqQvrIquFQofvMoJOMAJYg2cSWwYOBVTJ7TktQwYBMX3WKNG
-	bCRf6+q9HCUeVJ87/NBBPfZ7ieSZmK/AGyRQkBUneOHDpd+FpaJ1CDXM3CurqXUQdE4J5nEj3ab
-	tC+/4RdX0ze0JryRpoq+ieCDSGfAPID4=
-X-Received: by 2002:a05:651c:e0c4:10b0:3ae:25db:795 with SMTP id
- 38308e7fff4ca-3ae25db0827mr3381781fa.12.1794495527049; Thu, 12 Nov 2026
- 06:58:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yFXqY/uI
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7d2dbc0a8d4so1518737137.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 07:01:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794495709; x=1795100509; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
+        b=yFXqY/uIBJokOTs0nvStnFKn1dDvyOFvUuPwGd/fHbSUGqlmqmS6k5WQvOmJzwuhP7
+         D4fFUbO6lptZ/rnnvb15OHHof4Wn8/JIG/fH/7wlJnfoFh2Mi/sWG2HisiuFrDztYb0i
+         o1MzeGiKxPEOC4OvGQiDa8Pfy368H3sRFqyBfvuvD2O9oIsS+C2AYSq01oSku4K7RNGr
+         QxqW5fakCi3CGNoChMP2QMhUCNH7d1iSsenns/W9OLSQvf6tq/QMf+OCiP5k/JsYfC8G
+         p9M4K23tjNghsMl8xfGgXxDh9SGxfw2vELs4iv6ZOEVg2zZ72RCvYiZRD+/jCcx1dFM6
+         p75Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794495709; x=1795100509;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qc4uEPO8Cmvke9ozBGIwJNLQ+cJCAHLnYttkfZRqa0Y=;
+        b=EPpk4syonXYmwg/74qAuO1znBTP4SUZJVqzeV8AhkTRVvJeZ5Tc4zqvBTfa1PNDQc2
+         U+qCf14YS9wR5AOdPCWeQ3ZXG5xt7TOAmi8bvDMvJRQuc2QcGzVUPyhH1CbdI9tK8QhF
+         4xMqLdiXwofGgPyKCwSUnq00CDwEQVOuDR13aB9n+bW5xsQ0b5ZJyhFJ+TQ2eAPE+qqv
+         iUuqinOvUOIz1EZ6LM1/1OA0zDsWFT+ETX+duhiQwbLZ1OrB0DivWaZIOOfIhOwdRJ0D
+         ksEZrzgPjEexTe8nIGW0i1PxPoYjG+KubDHDFJyU4gCkNJU9zg8b+m3D46dx9B/VJKTY
+         cVpg==
+X-Gm-Message-State: APuU4Z8OuaS7AzcI54tHSjnx/JKsVqC18Xwa4SszYEG8r8/Er9TT6Npr
+	GGYkrBA0lnhs4HtfPIVPHFvahKkiUSNtmsU4GDtDcS0bQ5AZw91PtaZMZpVJ7wI3
+X-Gm-Gg: AYBFou1x8esuIWMXVqKQJPBCTYTpaUXzAKvLZH7U13jVpmwVB0zqXNOUg/CKSWOgmxl
+	DRsCWdofU5xt2OzokzEgxiX94Mriklsinwh7hkwFX+H7jme7PpRMCn4n5+6R6rlva8lj1+f/Qjv
+	wgFud/2op/b9txZYGtGI1Rt+s4fNEAXvIqRZKioug7aqkdN5c3q7Bn+QNK0MWGnk9P15jgHNLmi
+	GEfrvXP8WKaiyoDiOZ7KoZ7B3gvedZTHBmoT5BxYnChm36BlD2PLE7QgW8pLC5B0is/cmCku4ip
+	4Y2uQ5lQabZJIsxIbAkeKgHxvkRgSW/OEGS3dG+Mpis6cuQmPfyoiCo6hzF/Boh8HZT57x2wupU
+	K0v0lORDRjW/d/bodXKHPq7MvhqQlZMAdfkZuabaIkxzUBsA6xiAe/HfjtJFxiHPsH6jmZSiFHt
+	sGqCkPVedNCSaXm4rcb/mlTK3L2DbSddGYhQCvJpfjAQMUaQdbpEM8QW9SsKkvdSuJHi8enrDbn
+	ieHOTVJqP5RzZuYYLi6M6Rpw2bxnpVrp+00EaIK5U1A8pw6uGNfGLRkwsPvye9CylphIDCKopjT
+	cjTCpUpxL5umcijyuIkVsUXlIKS1wt3gLu0amiwH+LOGQ5ldGRW6vYHLs10LS6TMg1TmYibyvAW
+	cvzGbDJIGgUckMfJfGCmm/6wj+pOM5Gu2MTjyEFwQs1hoY0Mp4eyJiSRTpNbpuYqKmcU=
+X-Received: by 2002:a05:6102:374b:b0:7d2:75bf:2fdb with SMTP id ada2fe7eead31-7d4ee1e5ba9mr1717334137.2.1794495707226;
+        Thu, 12 Nov 2026 07:01:47 -0800 (PST)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04fb371sm74191346d6.25.2026.11.12.07.01.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 07:01:44 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	linux-sctp@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	on Sim <tlatkdgus1@gmail.com>
+Subject: [PATCH net] sctp: validate SACK pull length against chunk length, not skb length
+Date: Thu, 12 Nov 2026 10:01:42 -0500
+Message-ID: <3fbf59d17a91c46098e3d4115e06987918b68c45.1794495702.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,101 +99,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112-a733-clk-v7-0-db7c5451ffa2@pigmoral.tech> <20261112-a733-clk-v7-6-db7c5451ffa2@pigmoral.tech>
-In-Reply-To: <20261112-a733-clk-v7-6-db7c5451ffa2@pigmoral.tech>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 12 Nov 2026 23:58:33 +0900
-X-Gmail-Original-Message-ID: <CAGb2v64Ye4wEiE3y2msoFh1P5Cs7dvXQ_vESmVFEJ=qhkp9PVQ@mail.gmail.com>
-X-Gm-Features: AclHuK-IX9I87FO9BVEBpEeLaHk1PETWtM0mWihOigloFLp60Bd_bejTc7ChEns
-Message-ID: <CAGb2v64Ye4wEiE3y2msoFh1P5Cs7dvXQ_vESmVFEJ=qhkp9PVQ@mail.gmail.com>
-Subject: Re: [PATCH v7 6/8] clk: sunxi-ng: a733: Add mod clocks support
-To: Junhui Liu <junhui.liu@pigmoral.tech>
-Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, netdev@vger.kernel.org, 
-	Jerome Brunet <jbrunet@baylibre.com>, Enzo Adriano <enzo.adriano.code@gmail.com>, 
-	Andre Przywara <andre.przywara@arm.com>, Norman Herms <dockseed@proton.me>, 
-	Vinicius Pedrosa <vinicius.eduardo.pedrosa@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+sctp_sm_pull_sack() derives its pull length from the num_gap_ack_blocks
+and num_dup_tsns fields in the SACK body, but validates it against
+chunk->skb->len (the remaining packet data) rather than the SACK chunk's
+declared length. A malformed SACK with an inflated num_dup_tsns can pass
+this check when subsequent chunks pad the skb, advancing skb->data past
+the SACK boundary into later chunks.
 
-On Thu, Nov 12, 2026 at 4:15=E2=80=AFPM Junhui Liu <junhui.liu@pigmoral.tec=
-h> wrote:
->
-> Add the module clocks found in the Allwinner A733 SoC, including video,
-> storage, interfaces and others. While most of these clocks are similar
-> to those in the A523 SoC, this implementation accounts for changes in
-> register offsets and introduces support for new modules.
->
-> Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-> Tested-by: Vinicius Pedrosa <vinicius.eduardo.pedrosa@gmail.com>
-> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
-> ---
->  drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 1087 ++++++++++++++++++++++++++=
-++++++
->  1 file changed, 1087 insertions(+)
->
-> diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-n=
-g/ccu-sun60i-a733.c
-> index 8bc603393f5a..5ea65bf5b5e0 100644
-> --- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
-> +++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+This misaligns the skb cursor for subsequent chunk processing. When an
+AUTH chunk follows, sctp_sf_authenticate() reads and compares the HMAC
+digest from the wrong skb offset while sctp_auth_calculate_hmac() writes
+the computed HMAC through the correct chunk_hdr pointer, bypassing the
+authentication check.
 
-[...]
+Fix by validating the computed pull length against the chunk's declared
+body length instead of the total remaining skb data.
 
-> +static SUNXI_CCU_M_HW_WITH_MUX_GATE(i2spcm2_asrc_clk, "i2spcm2_asrc", i2=
-spcm2_asrc_parents, 0x1224,
+Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
+Reported-by: on Sim <tlatkdgus1@gmail.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+---
+ net/sctp/sm_statefuns.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This and the csi master clocks later have an underscore in the clk name str=
-ing.
-They should have hyphens instead. I will fix it when I apply the patches.
-No need to resend just for this.
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index b2f609f177fb..44b1770d43c1 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -6368,7 +6368,8 @@ static struct sctp_sackhdr *sctp_sm_pull_sack(struct sctp_chunk *chunk)
+ 	num_dup_tsns = ntohs(sack->num_dup_tsns);
+ 	len = sizeof(struct sctp_sackhdr);
+ 	len += (num_blocks + num_dup_tsns) * sizeof(__u32);
+-	if (len > chunk->skb->len)
++	if (len > ntohs(chunk->chunk_hdr->length) -
++		  sizeof(struct sctp_chunkhdr))
+ 		return NULL;
+ 
+ 	skb_pull(chunk->skb, len);
+-- 
+2.47.1
 
-> +static SUNXI_CCU_DUALDIV_MUX_GATE(csi_master0_clk, "csi_master0", csi_ma=
-ster_parents, 0x1800,
-
-This one.
-
-> +                                 0, 5,         /* M */
-> +                                 8, 5,         /* N */
-> +                                 24, 3,        /* mux */
-> +                                 BIT(31),      /* gate */
-> +                                 0);
-> +static SUNXI_CCU_DUALDIV_MUX_GATE(csi_master1_clk, "csi_master1", csi_ma=
-ster_parents, 0x1804,
-
-This one.
-
-> +                                 0, 5,         /* M */
-> +                                 8, 5,         /* N */
-> +                                 24, 3,        /* mux */
-> +                                 BIT(31),      /* gate */
-> +                                 0);
-> +static SUNXI_CCU_DUALDIV_MUX_GATE(csi_master2_clk, "csi_master2", csi_ma=
-ster_parents, 0x1808,
-
-And this one.
-
-> +                                 0, 5,         /* M */
-> +                                 8, 5,         /* N */
-> +                                 24, 3,        /* mux */
-> +                                 BIT(31),      /* gate */
-> +                                 0);
-
-
-These were flagged by a review agent comparing the driver against the datas=
-heet
-and BSP code.
-
-
-ChenYu
