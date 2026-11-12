@@ -1,60 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487148;
-	b=tTC38kI5fJbwwAMlc9jH9TEPZSxExa09dJavSuoLoTWlll9HEJ+RWRHcVujLBrweZgqI
-	 wMpN28L4xxLF+GKLi5P+2vFCfXgUnFETQ8XhGDt6f9hQkBC/y18p/B5kOWCfTulfXauHp
-	 lJcCnV2BVhne8g98RVzR0EEIhYQA49+kjvDYJxQ1trEhTuakemqltruCxMAt/G6/vkvw9
-	 a/gGy/QdGM09aYpyeHqxcTQ8aSTSWVzro+W5dFD+xYFiubzrQMiBDpiCb2c2vBTcKMEST
-	 +5ya3ubWup+VHwcCdCZwdeGMHdq+IW1xo0fokUE+5ejiehZItgcOKeBTPNsgYtWC4wg==
+	t=1794487552;
+	b=CwcnpBcfTyZjVI/EozQVIWn1NMfuoXhO4QaWzrcQ9d+6UsxQS2a8vY3U7g+vLq5D74ua
+	 DkvjJiDqFmev7KP5WVFYwRh9hSF34QjlVonbElivY/+eeoR/9rsgWfQFzlFmOlwkvwHNo
+	 R8Y7lJG8nRBrTkPZjpKwO3az4N6osw883PkYEMX07v4uQOtPwlJ5gLkNLOEcpeOfodfK4
+	 PX0ykooU1tgySzf8pB9p6gJt8LJ8gFy1oJ3vxYuLcaj+onhtRpL8TMmPGIzmLapD4Kizz
+	 6XA7Un9xVx5GzWeDb2K30k0Z1qQ+FX3nss1C/vyVLxue+WNXvGmHp0zPLgZISSZgTNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487148;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=vh0wEAdasYoPETQarwZ1upH2wgAJIcq1wNovfVXcsvM=;
-	b=pT3Yf6o0693pecQ+Wxg+U8Fn0FlJtoiNQKRKnDh8+CTJNp9MOZ4G9NJSwFXMHkMppTuU
-	 LtUB8x8L/Gyau+gAusyWHmSRC5njKRyw2RN4iQkx+GlRHAwxE8QblW2AloK1apPRPC4y+
-	 N1ROLqPrm8bNUlJq60wYfbNXmBuZ1Am7RlkTZdXIEs5QrCoN+LdcyTOKXJoPyVQ+AlR65
-	 u/wUCSXG+FGsqRzprTJ7aBRxgSWGx+JF+nIJv1F0PEedtfKVSUgNMGP1vn0HYi+HPMz9w
-	 x9oEU41vZls95MQIff8s/m+CpU+Es2Ej0IDYsj9+fYt/EjZN14Tdx5/voC1bD1EkSsA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487552;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:User-Agent:X-Bm-Milter-Handled:
+	 X-Bm-Transport-Timestamp;
+	bh=fkuD8USi293M2GyM1a4ma7QYzKDoDimjsvNM+ReEAsc=;
+	b=ELgtsApgpcTtGKhGG21D5WRG0g1T25nW82Ez4fHkPkaVI9Ebfa2x7wRF+2ILe5w5aJvU
+	 4b5iWlogBGtb+WZak9EfnZN7/IkLh0c7tzZgyqQZfuhuqa/LjDD7P7G2QmJkSFDednApS
+	 59CZoXjJdeF0CILcQQBGwfDqKhNCmWFxWosqs08+XeehY4SM9OuH1Fe0T9bkfAf+uEvnF
+	 hSY8Lo8QkWylfopra66y20g7ym1IfuGgB1T5PamrB3piA/X39ClmQvoDsCj6yGQIX5YXw
+	 8pPg6R/Y0lvb56uvIWFZH3KOgLYRs25VJtpsJO83cbtszQYpqSFjbjWAmRJ6h9YQpUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IZ801P0m;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=proxmox.com;
+	spf=pass smtp.mailfrom=proxmox.com;
+	arc=none smtp.remote-ip=94.136.29.106
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811F7606A339;
-	Thu, 12 Nov 2026 12:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IZ801P0m
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A9A1F00A05;
-	Thu, 12 Nov 2026 12:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794487148;
-	bh=vh0wEAdasYoPETQarwZ1upH2wgAJIcq1wNovfVXcsvM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IZ801P0mO831HJkHpzTQChJSe9EGTEVSnliF4yzppHntTAOIz4vW3s+5i6liGSaoB
-	 ISZ8oACkEGCzXkzokMHHdDR2PIxprZ7qSxJo07e0xadmkQ14gOFkJSr9khYdGRQpM2
-	 srTEyrLKJzwI3kHxZNOO1iEBsoyOB+0VWIjonkTNS0/eK7WEvg3C7HiL4/Twh9k+i0
-	 U7Tnjd1cz4cI9Kzu8EEa66SLwJ28f1zPr4dG5aPxXZozDDrRpspkCiNTxNLnq/MGwP
-	 Lm9BOIEdqeUOc+n3cyt9XDmbqxsydTmCCgN7N95rVKgAIAv3CeqrfsKh3MbkzxxKy8
-	 UcNf7QKLJzExg==
-Subject:
- Re: [PATCH net v4 2/2] xfrm: fix selector matching for IPv6 atomic fragments
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, dsahern@kernel.org, idosch@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Thu, 12 Nov 2026 12:39:07 +0000
-Message-ID: <179448714728.2199510.9531579994326693774@kernel.org>
-In-Reply-To: <20261109213803.1785516-6-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261109213803.1785516-6-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBCE606A323;
+	Thu, 12 Nov 2026 12:45:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCBCE606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 040824832C;
+	Thu, 12 Nov 2026 13:45:43 +0100 (CET)
+Date: Thu, 12 Nov 2026 13:45:34 +0100
+From: Gabriel Goller <g.goller@proxmox.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] ipv6: reset all.force_forwarding when disabling
+ all.forwarding
+Message-ID: <avW0C4_kHRv9v3Lr@luna.proxmox.com>
+References: <20261109-ipv6_reset_all-v1-1-815dfd508246@proxmox.com>
+ <179436921928.2199510.2583920348009853721@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,135 +54,158 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179436921928.2199510.2583920348009853721@kernel.org>
+User-Agent: NeoMutt/20260504
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1794487536000
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On 11.11.2026 03:53, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 2 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] In net/ipv6/addrconf.c, addrconf_fixup_forwarding() (lines
+>   908-915) now sends inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,…
+> - [Medium] ipv6: missing NETCONFA_FORCE_FORWARDING in
+>   inet6_netconf_fill_devconf()
+> - [Low] The patch fixes a user-visible bug but has no Fixes: tag.
+> 
+> --
+> 
+> ipv6: reset all.force_forwarding when disabling all.forwarding
+> 
+> When all.forwarding is disabled, this patch also clears
+> all.force_forwarding, so that writing 1 to all.force_forwarding later
+> re-enables the interfaces. It also sends a netconf notification for the
+> change.
+> 
+> > diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> > index d9d13e78bf13b..9007a58039e65 100644
+> > --- a/net/ipv6/addrconf.c
+> > +++ b/net/ipv6/addrconf.c
+> > @@ -905,6 +905,14 @@ static int addrconf_fixup_forwarding(const struct ctl_table *table, int *p, int
+> >  						     net->ipv6.devconf_dflt);
+> >  
+> >  		addrconf_forward_change(net, newf);
+> > +		/* Disabling all.forwarding also resets all.force_forwarding */
+> > +		if (newf == 0 && net->ipv6.devconf_all->force_forwarding) {
+> > +			WRITE_ONCE(net->ipv6.devconf_all->force_forwarding, 0);
+> 
+> [Severity: Low]
+> Should this patch carry a Fixes: tag for commit f24987ef6959, the commit
+> that added the force_forwarding sysctl?
+> 
+> That commit added the per-interface reset in addrconf_forward_change():
+> 
+>     if (newf == 0)
+>         WRITE_ONCE(idev->cnf.force_forwarding, 0);
+> 
+> It did not reset devconf_all->force_forwarding. Because
+> addrconf_sysctl_force_forwarding() only acts on a write when
+> old_val != new_val, writing 1 again does nothing.
+> 
+> Without the tag, stable kernels that have force_forwarding may not pick
+> up this fix.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Hmm not sure about this one. If I make a new version I'll add it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> > +			inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,
+> > +						     NETCONFA_FORCE_FORWARDING,
+> > +						     NETCONFA_IFINDEX_ALL,
+> > +						     net->ipv6.devconf_all);
+> 
+> [Severity: Medium]
+> Does this notification carry the force_forwarding value at all?
+> 
+> inet6_netconf_notify_devconf() sizes the skb with
+> inet6_netconf_msgsize_devconf(type) and fills it with
+> inet6_netconf_fill_devconf(). Neither helper handles
+> NETCONFA_FORCE_FORWARDING. They only know about NETCONFA_FORWARDING,
+> NETCONFA_MC_FORWARDING, NETCONFA_PROXY_NEIGH and
+> NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN.
+> 
+> So when all.forwarding is set to 0 while all.force_forwarding is set,
+> RTNLGRP_IPV6_NETCONF listeners get an RTM_NEWNETCONF for
+> NETCONFA_IFINDEX_ALL that contains only NETCONFA_IFINDEX. The size and
+> fill helpers agree with each other, so WARN_ON(err == -EMSGSIZE) in
+> inet6_netconf_notify_devconf() never fires. The message without a
+> value goes out silently.
+> 
+> An RTM_GETNETCONF request that ends up with all set in
+> inet6_netconf_fill_devconf() also omits force_forwarding. A listener
+> therefore cannot recover the new state by querying afterwards either.
+> 
+> The commit message says netconf listeners are notified. With this
+> message they cannot tell what changed or what the new value is.
+> 
+> The gap predates this patch. The existing force_forwarding
+> notifications in addrconf_sysctl_force_forwarding() and
+> addrconf_force_forward_change() have the same problem. This patch adds
+> one more caller that depends on that path.
+> 
+> Could NETCONFA_FORCE_FORWARDING handling be added to
+> inet6_netconf_msgsize_devconf() and inet6_netconf_fill_devconf(),
+> either as a preceding patch or in the same series?
 
-- [High] The fix still leaves SCTP over IPv6 atomic fragments with zero
-  ports in the XFRM flow, so the policy bypass the commit claims to…
-- [Low] The new AF_INET6 branch in __xfrm_decode_session() takes
-  FLOW_DIS_IS_FRAGMENT as proof that the dissector parsed an IPv6…
+This is fixed by this commit:
+2d916a8c307c ("ipv6: Add NETCONFA_FORCE_FORWARDING to netconf messages")
 
---
+> [Severity: Medium]
+> Does this notification actually carry the new force_forwarding value?
+> 
+> inet6_netconf_fill_devconf() only puts NETCONFA_FORWARDING,
+> NETCONFA_MC_FORWARDING, NETCONFA_PROXY_NEIGH and
+> NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN. It has no branch for
+> NETCONFA_FORCE_FORWARDING, so for this type it emits only the ifindex:
+> 
+> net/ipv6/addrconf.c:inet6_netconf_fill_devconf() {
+>     ...
+> 	if ((all || type == NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN) &&
+> 	    nla_put_s32(skb, NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN,
+> 			READ_ONCE(devconf->ignore_routes_with_linkdown)) < 0)
+> 		goto nla_put_failure;
+> 
+> out:
+> 	nlmsg_end(skb, nlh);
+>     ...
+> }
+> 
+> inet6_netconf_msgsize_devconf() reserves no space for it either. The two
+> helpers agree, so no WARN fires.
+> 
+> As a result, RTNLGRP_IPV6_NETCONF listeners get an RTM_NEWNETCONF for
+> "all" with no NETCONFA_FORCE_FORWARDING attribute.
+> 
+> The commit message says "Reset all.force_forwarding too and notify netconf
+> listeners", but listeners cannot tell from this message what changed or
+> what the new value is.
+> 
+> The missing fill support dates back to f24987ef6959. The existing
+> force_forwarding notifications in addrconf_sysctl_force_forwarding() and
+> addrconf_force_forward_change() have the same gap. This patch adds one more
+> caller that depends on that path.
+> 
+> Could NETCONFA_FORCE_FORWARDING branches be added to both
+> inet6_netconf_msgsize_devconf() and inet6_netconf_fill_devconf(), either
+> as a prerequisite or in the same series?
 
-xfrm: fix selector matching for IPv6 atomic fragments
+Same as above, already fixed.
 
-This patch restores IPv6 selector fields (ports, ICMPv6 type/code, GRE
-key) in __xfrm_decode_session() when every Fragment header in the chain is
-atomic. ipv6_find_hdr() gains an IP6_FH_F_NON_ATOMIC flag and now reads the
-initial IPv6 header through skb_header_pointer(). The ports are taken
-from the transport offset found by the flow dissector.
+> > +		}
+> >  		if ((!newf) ^ (!old))
+> >  			inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,
+> >  						     NETCONFA_FORWARDING,
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-ipv6_reset_all-v1-1-815dfd508246%40proxmox.com
 
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index 4f6a5b81e3b5a..9ea816a8c5f63 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -3530,9 +3530,23 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
->  		decode_session4(&flkeys, fl, reverse);
->  		break;
->  #if IS_ENABLED(CONFIG_IPV6)
-> -	case AF_INET6:
-> +	case AF_INET6: {
-> +		unsigned int offset = 0;
-> +		int fh_flags = 0;
-> +
-> +		if ((flkeys.control.flags & FLOW_DIS_IS_FRAGMENT) &&
-> +		    ipv6_find_hdr(skb, &offset, -1, NULL, &fh_flags) >= 0 &&
-
-[Severity: Low]
-
-Can FLOW_DIS_IS_FRAGMENT be set here for a packet that isn't IPv6? The
-IPv4 branch of __skb_flow_dissect() sets the same flag:
-
-    key_control->flags |= FLOW_DIS_IS_FRAGMENT;
-
-With *offset == 0, the new ipv6_find_hdr() code also skips the version
-check:
-
-    if (!ip6 || (*offset && ip6->version != 6))
-        return -EBADMSG;
-
-vti6_rcv_cb(), vti_rcv_cb() and xfrmi_rcv_cb() pass
-family = x->inner_mode.family. xfrm_inner_mode_encap_remove() picks the
-decap routine from the inner nexthdr instead. An IPIP inner packet goes
-through xfrm4_remove_tunnel_encap(), which sets
-skb->protocol = ETH_P_IP, and the packet is then checked with AF_INET6.
-
-In that case ipv6_find_hdr() parses the IPv4 header as IPv6. Byte 6 is
-the IPv4 flags/fragment offset byte, and 0x2C there reads as
-NEXTHDR_FRAGMENT. The parser then walks the IPv4 fragment payload as
-extension headers.
-
-If those payload bytes look like an atomic Fragment header, this branch
-clears FLOW_DIS_IS_FRAGMENT and loads ports from the fragment payload.
-Before this patch those ports were always zero.
-
-The addresses are already mis-decoded in this case, and the reassembled
-packet gets checked again with AF_INET, so the impact looks small. Should
-this branch also check flkeys.basic.n_proto == htons(ETH_P_IPV6) before
-it calls ipv6_find_hdr()?
-
-> +		    (fh_flags & IP6_FH_F_FRAG) &&
-> +		    !(fh_flags & IP6_FH_F_NON_ATOMIC)) {
-> +			flkeys.control.flags &= ~FLOW_DIS_IS_FRAGMENT;
-> +			flkeys.ports.ports = skb_flow_get_ports(skb,
-> +								flkeys.control.thoff,
-> +								flkeys.basic.ip_proto,
-> +								NULL, 0);
-
-[Severity: High]
-
-For SCTP over IPv6 atomic fragments, do the ports still end up as zero?
-
-sctp_rcv() pulls skb->data past the SCTP common header before it calls
-the policy check:
-
-net/sctp/input.c:sctp_rcv() {
-    ...
-    __skb_pull(skb, sizeof(struct sctphdr));
-    ...
-    if (!xfrm_policy_check(sk, XFRM_POLICY_IN, skb, family))
-    ...
-}
-
-When __xfrm_decode_session() runs, the transport header therefore sits
-before skb->data. The dissector finishes with nhoff = -12. On the
-fragment path __skb_flow_dissect() clamps that value:
-
-    thoff = min_t(u32, nhoff, skb ? skb->len : hlen);
-
-Converted to u32, the negative nhoff becomes a very large number, so
-thoff becomes skb->len. skb_flow_get_ports() at that offset fails and
-returns 0. FLOW_DIS_IS_FRAGMENT has already been cleared at that point,
-so decode_session6() copies sport = dport = 0 into the flowi6. The
-non-fragment port path uses the signed nhoff and does not have this
-problem.
-
-sctpv6_protocol is INET6_PROTO_NOPOLICY, so this is the only IN policy
-check SCTP/IPv6 gets. Could a plaintext IPv6 + atomic Fragment + SCTP
-packet still miss a policy such as "proto sctp dport X" that requires
-ESP?
-
-The ipv6_find_hdr() call above already handles a start before
-skb->data. It leaves the correct transport offset in offset and returns
-IPPROTO_SCTP. Could those values be used here instead of
-flkeys.control.thoff and flkeys.basic.ip_proto?
-
-> +		}
->  		decode_session6(&flkeys, fl, reverse);
->  		break;
-> +	}
->  #endif
->  	default:
->  		return -EAFNOSUPPORT;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109213803.1785516-2-Jeremy.Jean%40oss.cyber.gouv.fr
