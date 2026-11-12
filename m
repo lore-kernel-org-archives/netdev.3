@@ -1,100 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794453857;
-	b=hzS0ZL3pxOPyKRmMzbtR1+DPLf6bnzTHHZAew4d0zXeByl+VqcEa2OYnZdFlJK05C1FZ
-	 M2au4HqTKODzoxO+2Db/UlsTT+lLI56An3MHZwRZn1/zZC5QqXGvdquFWFJLynmW14Aht
-	 ey4vI3T9ADUmOv16bc1ZK0f3oBlnNhTT773E/EieVXfo7t6JFzA5GLe07IR9L1HW1L84h
-	 +aGbe4nXQ10ctzFTFLFzQjLtgpOoIsgPP7pLGvqyXwCSSIpFw6/3OW3VNjUpQv4l1fuaD
-	 pSdeLNpo+OqhWJ6uxbQAKD2ZP4cejqx8mxJ9BvxFGOV0RUg3vJbOIQ0+EalMWPDiKVQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794453857;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Q4vGBoYjXFEqsa4lUNP8BKLQi2KAQQHSCj0yiO/z3RQ=;
-	b=NkdOfJYthKB7ubwUCJl5JbvTaFxoTNM5fEh0lhCEeHlzzjcLPU78tiR9Tc/PA0J+eWTT
-	 /sx5O+5kTke9YQGHm5LKROURW65O3eC711YdjUdnSZJn1poK3DU7RzdssVuOtOzeT8SgL
-	 CNY7xr0z0NkQ4JcOnaxw38jyKfFs/wF09VLuq2MUhDb2//HLKxPIBXdt5lxvIfQSBdVBm
-	 i6YwVZYaHEIYTVsqHP+ypg9RKPCHg9/m/DEDBd8Amx83WtAx556yq1B8UPoVOnr5eMSk3
-	 09DhtL//yBZu+bTzEkIurYj7/xpu5e2PctgiVPhDUyEKSdLbpTZw5ZhO6YO77KJHIEw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oHmtI1ml;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.25
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794453943;
+	b=ocvJluS3WMBCowOTLp8xxspvFFUG4UwFGgf1SDDU0Xx1LFpbxLEHmV/izbMzCDCKldFu
+	 pIfM4BUuVEkQbHuvwi6IKZZYVuDmD342iv+NRJnEUEuxekS3PKedJ2GOJ6syW9aDwXFDv
+	 GMaSIjzxks7nQP3N36mhpnpdCRxKlupZUE3W5DWt2/LRir0bWTyE+mowKaK3jZ7ActGLb
+	 ho6ffGKIctEKmmvJ1mdQoEIewkA/mnX44k2eXlvSN9BEBP+Tgo5io1fWmMxj5lNqwKJrY
+	 QzPFzGC/HS3kLssNfyLVZ/bCV2kXdZzO0nF+E2dWuKv+T8FOvw9exutJLuyPQJdxB3A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794453943;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type:Content-Transfer-Encoding:MIME-Version:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:Date:
+	 X-CM-SenderInfo;
+	bh=41wfgGOVNMB+wGfHNY3WAPDxKPIZkBZs1k0Z1IHQb48=;
+	b=wyT8FpDVk96CWsOjvq8RGJmalyRLgoDSd1L6w5LBi3t9aCTsL/kHCQVpBTuCogUPcc+F
+	 9YDv9AjzgqznLloIbHcnb+PTZ60Nto+Z2ub7cglyQwq2dWLtlllnPbPAsHNDKSiGtnV9Q
+	 oTerMf8IFOrO4XjXkCZStx4fW+ajqgtKSiF316girtLhcAEmfDn6a+xpYgx4W0vAhxPiN
+	 Jaz85oTUFyoXgdsC949oy4cf1IZvlmfp1d5sb+ogVPmuNGuv2Lu8z65rxXGdsop08gOvr
+	 hOeV/+K2pyJSc2SOLAF+c8o/mxA3cC5x6LNdEB6LSY/G9gDdP2x2FlXxQtowQhN5XlQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mails.ucas.ac.cn;
+	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.25
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD9C606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:24:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BD9C606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oHmtI1ml
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-33fb4680717so4537054eec.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 19:24:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794453857; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VgDnHSG/Bi9zQhcfYH6obfPZpSCt2pmIZMzWMcYN4GfXgjczpL1pQGBqNjpkghSQq8
-         HIOhH5SViiZl+QFLdMaMSIpFqnx/QprV+pTo5Ri5CfyfftyTR4Wty9b5DEUJNrbygklK
-         A0DWT7lsrl0RXS7VFuZ2INu/haaog775oPIQ+uKnNXck+ujRJO7cg+lJon9Fk1VFzApk
-         JmXfCPLOR+lp0N2IaYNsn46FEIyKN0iV+TsHum9HIXE9LQx2DNGse4NO1gNvd+NEAAfh
-         Vq1q7/4Z1HCO+KH079/Yo3sfMPRMjlkHteDi3QskYQU+wKNhiLcmDbpCO6F/aBa6B3oF
-         VU1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q4vGBoYjXFEqsa4lUNP8BKLQi2KAQQHSCj0yiO/z3RQ=;
-        fh=WOEryvjXJ6AtqGSwSdq3DyWjlHbgaLHXznXJAwQy4XA=;
-        b=YdYnJGPVMDByO/iqKKfgDOddqY2VYugaW9S9Tr9xrNKtu3mI4t1BGV16FKrxECwAHd
-         u1KXPGX2u8J3ULfiZWANFSObPmOLKME5d7fVU0tMAG7KlicEwnUqGrcylnL7biqC+Igu
-         JL6X1mG3xyP7tIk3dDJPuTfDiq/MHxkTHffS1dBsKl7iQ1vXlChOkBOTxum6lNdveSch
-         ZmS6DZ4TOb1WW+/Dx1qJbLMHi2WQ0km5WtEfzuyJQtHVPmiUA+tanboAngGCdgqX7Uut
-         5vqnYYfYn1/6wHEOQwA/ynYhn6gkHXqn0IeBe39i65TF8RK8b/bfhVXCq0O6tvRoazkN
-         DHeQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794453857; x=1795058657; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q4vGBoYjXFEqsa4lUNP8BKLQi2KAQQHSCj0yiO/z3RQ=;
-        b=oHmtI1mlCv4ejGkzncxu4FeiQZGkBkIG+Uipng9xKmEURLEeUg+XV/wMMGwyP4iUqy
-         1ItFv9ibWqS7p/99s3Qm42lMFDBe/pmPegJQgBorqDceE0nhC8TQqWuynEn3UyxGVZDO
-         euLuq7aziNRtCdc98K61q15gOB5u60w3kmItbRWwQdMYRxj3UIrTd24e+Re2GfxcxZ1Z
-         HB9ReMrvDB0CAhX0T/iNV72w3DAFm12h1aEv5otcOb2DJw3PkYlMuobGefAmy0DRM4YU
-         c/ihWqKX1tvaOizP2nIpgaEm16Hu6PVJPZminkArvqGxS+0dC0nrZ3boINckuDZXOy4/
-         mwWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794453857; x=1795058657;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q4vGBoYjXFEqsa4lUNP8BKLQi2KAQQHSCj0yiO/z3RQ=;
-        b=dj/9p925K3/f1GntaO0edb9rkYibKTpj4fhJd8H31HY3KsE4xis4woM5U8SMM4ia2i
-         vw+P8wlp8nBdW7KCUmW6sM6lDTosjF8ETuHPao+1axFHrzQA0zJjX+61ETZAxJtgqZWh
-         nft2uXTl5FM0FmVWVABxzFk1Bu0ap039MoV84JZ6LdtnJ79F85TBe6Wncc+LHTb0TWS0
-         mZWs+oyi2rBm0A9h46ZhmMwsDKIlQ1EE7lLMGPE6TQtToYXYf75cEvAg3bErSwPY5GzE
-         SClzlJ1YA41Tf0p3q5D0oGaz12xt/YnqTzsQQ3g9USv77dB71RUPxu+0b5TdmbIqxRS1
-         IQ7A==
-X-Forwarded-Encrypted: i=1; AL+hErEumGYhYEzRrmzFpusl9llEUUXkgh2t4wsy67mM7I1IO4CmQJiAnfBN2a+FUHgxVfB0tGZoFsg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z83yewxLlr25bN6l0Oml8DUv0u1heP7C42uMLSm5jFdbauM85JF
-	i8Cosl1OM3Hx2OOrsVKRKKNTKQprZlP1XdY65tMuMNedCholfur05/rcHDs95HZoRZFMjtMJgNY
-	7aGZwwXLxpAT8BnJPVfnQL1g+C5pxaT8=
-X-Gm-Gg: AYBFou1m9eI/rJ+fqGbvoNz+1MPMMxsMLJGHOHoClaUK52kqHlfTwqApQFBYkH37qQo
-	OiUjAZQWFuVQSF7TbNf7zVS/4aBpdvPlj0Jmv2LZ4wNKdUA3PyAJADWUyY8pF31tRYrWHcLQmak
-	7W43GsvGTDKJSsE0UquUWrCV/k16tt66HobgrXC/tQoxztY2VYAhIBpjiXJqOkdMU5SKZDlIrVp
-	EHpYOwbYdEdPLBU6wGHtPU+O1Uo0L3vWipZy8wxHmmGKqdbHwzeWn0mI7c0jx9K66K06d/cJPX4
-	kbH49nMex2q/d4V91HeUNANJFIMdaBAUAem3eWQEHkjY6IvgT4ONU1oq1QiUNaGN1eMs3UdhAhC
-	nYlinC0xJI2AwAd254FCg94F0T9Er6bIv7WrCrI0VGlzQe0lhtuhwj27ykrW3bBCFwwlM
-X-Received: by 2002:a05:7300:2324:b0:369:4c3f:8a5 with SMTP id
- 5a478bee46e88-376858967b7mr6629283eec.14.1794453856441; Wed, 11 Nov 2026
- 19:24:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43811606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:25:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43811606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
+Received: from imini.taila1aac7.ts.net (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowADnf7WsMfVq0v7wAA--.17465S2;
+	Thu, 12 Nov 2026 11:25:32 +0800 (CST)
+From: Yicheng Zhong <zhongyicheng241@mails.ucas.ac.cn>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
+ Subbaraya Sundeep <sbhatta@marvell.com>, netdev@vger.kernel.org,
+ zhongyicheng241@mails.ucas.ac.cn
+Subject: Re: [RFC net-next 1/2] octeontx2-af: reject an out of range MCAM
+ counter on CN20K
+In-Reply-To: <avUeBeQSLwNvjwRY@rkannoth-OptiPlex-7090>
+References: <179438966513.1752948.1646241391383361825@mails.ucas.ac.cn>
+ <179438966513.1752948.9405325090310502892@mails.ucas.ac.cn>
+ <avUeBeQSLwNvjwRY@rkannoth-OptiPlex-7090>
+Message-ID: <179445393225.2035819.12825104834461955299@mails.ucas.ac.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,30 +57,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109124933.1603575-1-hj351016@gmail.com> <20261111172718.1e41f48b@kernel.org>
-In-Reply-To: <20261111172718.1e41f48b@kernel.org>
-From: khj <hj351016@gmail.com>
-Date: Thu, 12 Nov 2026 12:24:04 +0900
-X-Gm-Features: AclHuK8dZXGZrK50IL11IFqhm4T154m_E5AYrfNaDTyQqii--eKK6YwdxrFnb7g
-Message-ID: <CAGr5VtMkhKim-qOuHBOo-6S+o3uf3J9mcKF1MRKGFZ0_XZraQQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: wwan: iosm: cancel adb_timer on cleanup to avoid use-after-free
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
-	M Chetan Kumar <m.chetan.kumar@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:zQCowADnf7WsMfVq0v7wAA--.17465S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JF4DGr15KFyxXF1DAFyDAwb_yoW3Wwb_AF
+	98A3sxWw48Za4qqFs8Krn8uryfJF4a9as7A3y8ury7C3WDCFW3tr4kurn8CFy0q3y8Jrs3
+	ZFnaqa4I9wnIkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJV
+	WxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbjNt3UUUUU==
+Date: Thu, 12 Nov 2026 11:25:32 +0800 (CST)
+X-CM-SenderInfo: x2kr0wx1lfxvtqjskio6pdxz3voxutnvoduhdfq/
 
-Understood, I'll drop this one. Sorry for the noise -- I won't send
-untested driver fixes to netdev.
+Thanks.  We looked at npc_mcam_verify_counter() and it cannot simply move
+up.  On CN20K the ownership is recorded against the entry, in
+entry2pfvf_map (rvu_npc.c:3190), not against the counter, and that helper
+consults the counter view.
 
-2026=EB=85=84 11=EC=9B=94 12=EC=9D=BC (=EB=AA=A9) =EC=98=A4=EC=A0=84 10:27,=
- Jakub Kicinski <kuba@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On Mon,  9 Nov 2026 21:49:33 +0900 hyunjungg wrote:
-> > Found by static analysis; not tested on real hardware (needs an Intel
-> > M.2 7360 WWAN modem).
->
-> Please don't send these low effort untested driver fixes for networking.
+First, its ownership check reads cntr2pfvf_map.  That array is never filled
+on this silicon, because the counter mailbox that would fill it returns
+NPC_MCAM_INVALID_REQ (rvu_npc.c:3817), so the check would reject every
+legitimate request.
+
+Second, its bound uses counters.max (rvu_npc.c:2583), a counter count,
+where cntr names an entry and should be bounded by the size of the entry
+table.
+
+We plan to correct the patch so the CN20K branch compares the caller
+against entry2pfvf_map and bounds cntr by the entry table.
+
