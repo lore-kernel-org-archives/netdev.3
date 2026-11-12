@@ -1,82 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794459222;
-	b=bWQJYO1KLkBOR1KdXOo9fTh6UHdzsnzPQyYgk36mk5TofZuTffGQyo1p73vdsxRqOr/g
-	 q4MmTYnjWjMNZ2rkm0kogS4R2TymaNBpRnlSS4RKwAqgxVQHHcex9jolK1M9kprQi3JXk
-	 zgu8G8Vpc1/Ddhlj9rmD/QFGsc03P2O8Ksd5fnP6QqRfmSjfLE6x07+FOT/W4YpyJK2ua
-	 /ey1BIRuHDWouidLXh1h6MjHObHPbIKp7IxRqc6u5RdV1p7mVbRhJZ/4BN+XuzdxFLorm
-	 nSIs+NLBsKu3zSAq5zrUJFBpBQhjE+ogD5O5Jpp9Tk7cmp8oWaDMt/AenmDherpCnKA==
+	t=1794459226;
+	b=4gfUVNyC2M90GKuNE3VLmwovav5UgOKi+IJwBy0Ok7lmD2Zfv669aHWEjMQiyjeUQAeI
+	 HHO9nC2yZx8uiEEu3ZddvMjD3+TfRFe8iX8tWnEfVPVzvKnGlWdir21AJ3NHL+Q7lYG4/
+	 3bMc3gCG0aLZvoqEefmEA9rR9WFogPT5aWChShZyA9TxOgXK0OP7pc4pCecfeBIDaEF+E
+	 O+NQHZ++DrneGHKVKodye8rAK/v7qP5V4OTT6T52A7IE1cm3h2BEi4zRajadTm1lYyAli
+	 ioDPF9rjmWidVYCpp7c4W9DJYcShyf8J6eqmcuYbDWoRKS/HRAJfPeiKFpUs1Q2oCAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794459222;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794459226;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=O8eFfbSG5vJmh+PRh1YD9XBTnKbqGfFwPb/6vx+9vU4=;
-	b=1V3T+1Hcl/4o2oo8ddI0iy15yTL51JHHXrlOmb9qmp61GgDMslZRFk8E/A1k9N8hpMav
-	 uOgQDy/fKtVQhcotDfqk/EGjafia+JUfYHYPwCdyXHw77/wJzjZ+4pNAQb5jBGT8a5SUG
-	 0YBvR71PywKxzu8XJGItgVnztGC0WNxh8mlYQOJ9Zx+H91QakpTjLE+4IEBnuq+uHD7Vy
-	 4nux2gSy8iwJ6IDT90V/omyMkcGawRE8AmhbcDIhUjvLWABzEdMMGZv1URNbskA+d+pNy
-	 Anjf8DoUTkZkgbrh7RyETtA6CquPzeTWZ05OKYiSVA1Yu8SveiASSJIkFP8WHCr8syQ==
+	bh=aReQhoQDtTjsXQU7L8MfhGPbTYfsAF+OFRMYwi8UI4I=;
+	b=p10GS2v8O+5ZG9dDy28dHh/dZ8QNZts2Un8hc8WmzLm8FJtiO4SeF4DKqFRVqWeFJmH7
+	 f1+HVC3hwOIJUDFxI7hQK+zTODoxkDESyXXFC9zFtjDkhVMkUP13dfJ9ZFRnNbB4QIY3m
+	 X9YLNB7fcgBsmIcgYWhhjdjtCaR8VfYcOv18F4ckZabei+c1ZiH0buOpnck+TOXxAwd4D
+	 OR1UODovfzcNYtQD9mbTHuK2nqYVt7gunHzt0GBosCz44b0svU4dSDlFHBFRjHGBXil16
+	 yl8YpxBOlk2hHFNgWX8MXI1QNH2TX+OIpzh+Vd+qK4vH1rodW8EhPJscwkk5zPbFipQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NN7eytIU;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OO941wBz;
 	arc=none smtp.remote-ip=74.125.82.180
 Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C57606A338
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6C57606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC20606A32A
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:53:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AC20606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NN7eytIU
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-36e795af1d4so420766eec.1
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OO941wBz
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so7038121eec.0
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:53:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794459221; x=1795064021; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794459226; x=1795064026; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=O8eFfbSG5vJmh+PRh1YD9XBTnKbqGfFwPb/6vx+9vU4=;
-        b=NN7eytIUilnZEYZS7gynUWECf0M2MjFXYFQhvcRVtEP4HW9EiNpXJxHIKdLxZ3xVCE
-         pVRvJV5Bh+WjrFHUyVpiZbA9bMW9+IoWIZcpunlUz/sjJUFVtUWn5FJCFfn8I8e10hs5
-         S77eg5yDcu9yVmDUhMVdicVA/VCteI6ugiVM9EI9vqWxYvttoDKZ2EePcjXitnZwLisN
-         wBZstSX84CRM6go61KvtvrVN9GjVDpdRRLLPZV0nlYCIY8x5cqpesfq6aU97/7G/pP5B
-         tuPb4XcUDiL45k8HkspRMVnU94wKzsWED7P5ETntsuVRc1KYdBmO5kBzZ3re4JiwEF/A
-         2p6g==
+        bh=aReQhoQDtTjsXQU7L8MfhGPbTYfsAF+OFRMYwi8UI4I=;
+        b=OO941wBzSWdMLo4wQ9thfK8QgXLDpqmIeX3mxdrhKhazrWjN4RKBRPpqehxIM19qkK
+         1UPMhaCGZuieeimncw6kbFuQIcaR0YsNA/yzyg/mbarqMiHkqwHYYm4fx1D211gplKMk
+         WYORIdPuFG0TChlouMdmAjc9WgHd+tCJFNxuo95Uo4nfnjEe9jXy6va3Tx7jNohYJevj
+         25mtyRJRCXiC54lH2NRf7duME4Mvq72/W8z/WmwORIyO01vpdyICKLOp+3lKiywsUEHC
+         ggdQCp9o+8hND2oVPZ9RAS09+CBRHewiBc9uzJAAJXtIvT49Cq1wGmgMJiq1APRAXfAo
+         lpKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794459221; x=1795064021;
+        d=1e100.net; s=20260707; t=1794459226; x=1795064026;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O8eFfbSG5vJmh+PRh1YD9XBTnKbqGfFwPb/6vx+9vU4=;
-        b=0j0vHWDD5EYp5exnVKwcxv3x/UyT9zGxUU/jL7cZ9lrerwo0rqOM4pVckFO3IYV5nF
-         X+189hqcxYp3rBeVNY7VS9J5/DNQvdPTnl+yJNthlqVq1wCELQxn7F/mnHK5buxrpVwy
-         17tS8IJmAf+bKPb8l3WmsvmW04EVowIo3Q3KQDy+MZp/Tv7ylc7+WrLJ4qzWw51gMwlV
-         yykP5iiADDQxyI9Ik7J9JQy0HT/MqbKafKJFGWc5DrnJPn2zMwPnxtVwFy+vXjo/h2ey
-         Bs/qiL3Pj860LrO9he9R8txq8XTI/hpNqsxOUkeLy8jcgVSImVnC6GgHVA1pwUfsDmLQ
-         gDlg==
-X-Gm-Message-State: APuU4Z9BBwgM2WV5NfnRZX/tv03xz0rdNSbh4lKa2sgiuVQNi9o0IUbQ
-	yLnzSlhhkaa1KSwraYBy7b6mBebeCMGJfFXEmwqgqXfVLFfTORtHqCOnQX3VqQ==
-X-Gm-Gg: AYBFou0R/LbPgYUpe09bza5GrOASCne/6xm9hJLLvZ4d7BdSHl/giGnA3KMMnc9nvG4
-	NlkX2trFvm8WMKu5HzBeKQNEvwLZvQl7oF1Jr1DM8BnSAOpMTluN+45pt2ZP1NdscbzivrDurPp
-	CVZOphOERpK4CIn181tYC9+MUC9kuQRgzg3kr9Yrh72p14lpRvwcmF5mTN5L6shTDiIzOvCadPh
-	QYMmU5EJtZx7FvPHn/piSY+/wMfhR1nEHB+iEk7b4f5Lt43VkvVF7dgHbOz++PSBztdvVTDN+AS
-	O6bWTrOmUmnpS3zAF+0gvQmW1Zd2zZLCVLeXDWMCm+WJoBWdVqbyseYkZf1uQFjnuU7KdDPfH3E
-	cJ1/fy8r3TXH59W9bRdzDzBXVuxvQ5Wzk4OEPLVqu+n6+WE5d/SBZCDWfsIYMFehciOnEVQZvHE
-	RGpwsmjiqEc9FOCWl6NNApDmL+dZWjBzVlI8kvW4DdjWa8u56lboCjfyh4Xz/hNe7WRPV44pnMC
-	Ai7YndvtUl/mZtYQiwZDOWypPcXc+d0c+RMkwDKh7XIy+FgT651Rrhampw39+oOPpA0DGgj9qgr
-	dbX6ticluJPnsLRrJYgs3VfXNa2B6BE=
-X-Received: by 2002:a05:693c:80cd:b0:377:82e:2d79 with SMTP id 5a478bee46e88-377e093ecaamr1595631eec.9.1794459220160;
-        Wed, 11 Nov 2026 20:53:40 -0800 (PST)
+        bh=aReQhoQDtTjsXQU7L8MfhGPbTYfsAF+OFRMYwi8UI4I=;
+        b=mUW1Su92Gh507ukV6pAN589GhkynMbkMxMwmSiBt2muRHoMdMFsGnXUkvCtykMt/JK
+         /2t0K1vChf3ycWUwqqpzzZMbTqYUyShJeM10LafuuUXYpzLi7n09uxzY8NvEjmeujDB3
+         +HptOwsaB7oyxVahfK2D9VvEpQjh/y+mZvzpa41K87UzZrbXXEX/zCRKy+CUwQDJ8BZf
+         +2+tY09L/mogqNkMbwRvNKjtmNpA2E5cX+KFAxLXwYNSdLR7Cip66MU3SZZ9VFO86yo9
+         c8oR6YYSh7Du5xaeBnjgfE7qk5Neajv8KkdTMRBrJHdnbf9iTWgpYKsd3WAnmWmc0F+E
+         Es5A==
+X-Gm-Message-State: APuU4Z9gJXK6HVftyPSlxGyZGhWmMsQ3h1ba8VRF5rYlqaPKbUGUEDPb
+	hsMu2MgdTvSI0ETMnRk0YWC0+ETO7fpEe9Jox7OFIvZRt+3aXGdhlT/aZI800Q==
+X-Gm-Gg: AYBFou0LgHIGyYnj2bepENXppaevPDxiLjxxsOeCR1KxSkJn6DAn60p0ujT6dyfHvzu
+	iKlyUsb/SFdJH0q8+D50vJtlTVSRIb4lCwH7f6B/I5TN8Ga4nfAJwJBm3fju/wX7w9DEu80UzA/
+	rzzEFIl2Lv0Jc9HOToB8oWbZESfDYZM0/PEgo+9G7S4bjIGhZCbe5pP476iL+JNOzLXWNTb69vv
+	MSE76SfCQlEoaVXFROMh0m3IiXwULj53DGtl5uU6OVqCnz5vdxkJPajLUkGMHRXPEN6bYQKZRSp
+	0sXor8cqqcfmmoETQy49zh5OfHDzubDOeIBKNTgeHjxMR1JIGyQUbx1AvuL0RuQI3BXh3mlpRVW
+	Qmc3/AgVTsj7vznGvIgXZvV/qeI9bNi9DP1cpwQGBI+rONjgqFOU8InyHYtxRE5bKBErX8cnJxY
+	TniGLvzQtpzXdG8anSSl7RB9KP7gHCu2NeTED/Aah6kxyFg7XLctCeLuLW8miiXxGxE6uBTnRl8
+	gh/3qd7I0BftfJNvdQVw36zphQWhsq5LhnFwO0T32BozKLzGTnKnPjI9SPo3YJORT1hZTXf3jI2
+	7tvnTeTOaA==
+X-Received: by 2002:a05:693c:20c3:20b0:343:9eb1:9940 with SMTP id 5a478bee46e88-37686759540mr4770613eec.26.1794459225474;
+        Wed, 11 Nov 2026 20:53:45 -0800 (PST)
 Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.34
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 20:53:35 -0800 (PST)
+        Wed, 11 Nov 2026 20:53:41 -0800 (PST)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -98,9 +98,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net v2 04/12] net: au1000: report MDIO transaction timeouts
-Date: Wed, 11 Nov 2026 20:52:46 -0800
-Message-ID: <20261112045301.3669532-5-f.fainelli@gmail.com>
+Subject: [PATCH net v2 05/12] net: au1000: serialize TX completion with packet submission
+Date: Wed, 11 Nov 2026 20:52:47 -0800
+Message-ID: <20261112045301.3669532-6-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112045301.3669532-1-f.fainelli@gmail.com>
 References: <20261112045301.3669532-1-f.fainelli@gmail.com>
@@ -115,98 +115,84 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MDIO write callback reports success even if the controller stays
-busy and no write is issued. Propagate timeout errors and wait for write
-completion so failure of the final transaction is reported to phylib as
-well. Return ETIMEDOUT for read timeouts too.
+TX completion runs in hard IRQ context while ndo_start_xmit updates the
+same descriptors and ring state without locking. An interrupt between
+netif_stop_queue() and setting tx_full can miss the wakeup and leave the
+queue stopped until the watchdog runs. Use the existing IRQ-safe device
+lock in both paths to serialize reclamation and queue state changes.
 
-Use readl_poll_timeout() for write completion with a 20 microsecond sleep
-interval and a 20 millisecond timeout. The MDIO callback runs in sleepable
-context, so avoid adding millisecond busy-waits for completion.
+When submission reclaims a completed descriptor at tx_head, advance
+tx_tail before reusing it so the interrupt handler does not wait on the
+new packet while older completions remain pending. Consume the copied
+skb after releasing the lock with dev_consume_skb_any(), which also
+handles netpoll entry with hardware interrupts disabled.
 
-Fixes: 0638dec01e89 ("[PATCH] net: au1000_eth: PHY framework conversion")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/ethernet/amd/au1000_eth.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-index 7063f9e5bc7c..6b2e216a8361 100644
+index 6b2e216a8361..5ce106d0389f 100644
 --- a/drivers/net/ethernet/amd/au1000_eth.c
 +++ b/drivers/net/ethernet/amd/au1000_eth.c
-@@ -41,6 +41,7 @@
- #include <linux/platform_device.h>
- #include <linux/cpu.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- 
- #include <asm/mipsregs.h>
- #include <asm/irq.h>
-@@ -278,7 +279,7 @@ static int au1000_mdio_read(struct net_device *dev, int phy_addr, int reg)
- 		mdelay(1);
- 		if (--timedout == 0) {
- 			netdev_err(dev, "read_MII busy timeout!!\n");
--			return -1;
-+			return -ETIMEDOUT;
- 		}
- 	}
- 
-@@ -292,26 +293,27 @@ static int au1000_mdio_read(struct net_device *dev, int phy_addr, int reg)
- 		mdelay(1);
- 		if (--timedout == 0) {
- 			netdev_err(dev, "mdio_read busy timeout!!\n");
--			return -1;
-+			return -ETIMEDOUT;
- 		}
- 	}
- 	return readl(mii_data_reg);
- }
- 
--static void au1000_mdio_write(struct net_device *dev, int phy_addr,
--			      int reg, u16 value)
-+static int au1000_mdio_write(struct net_device *dev, int phy_addr,
-+			     int reg, u16 value)
+@@ -872,7 +872,9 @@ static void au1000_tx_ack(struct net_device *dev)
  {
  	struct au1000_private *aup = netdev_priv(dev);
- 	u32 *const mii_control_reg = &aup->mac->mii_control;
- 	u32 *const mii_data_reg = &aup->mac->mii_data;
- 	u32 timedout = 20;
- 	u32 mii_control;
-+	int ret;
+ 	struct tx_dma *ptxd;
++	unsigned long flags;
  
- 	while (readl(mii_control_reg) & MAC_MII_BUSY) {
- 		mdelay(1);
- 		if (--timedout == 0) {
- 			netdev_err(dev, "mdio_write busy timeout!!\n");
--			return;
-+			return -ETIMEDOUT;
++	spin_lock_irqsave(&aup->lock, flags);
+ 	ptxd = aup->tx_dma_ring[aup->tx_tail];
+ 
+ 	while (ptxd->buff_stat & TX_T_DONE) {
+@@ -889,6 +891,8 @@ static void au1000_tx_ack(struct net_device *dev)
+ 			netif_wake_queue(dev);
  		}
  	}
- 
-@@ -320,6 +322,13 @@ static void au1000_mdio_write(struct net_device *dev, int phy_addr,
- 
- 	writel(value, mii_data_reg);
- 	writel(mii_control, mii_control_reg);
 +
-+	ret = readl_poll_timeout(mii_control_reg, mii_control,
-+				 !(mii_control & MAC_MII_BUSY), 20, 20000);
-+	if (ret)
-+		netdev_err(dev, "mdio_write busy timeout!!\n");
-+
-+	return ret;
++	spin_unlock_irqrestore(&aup->lock, flags);
  }
  
- static int au1000_mdiobus_read(struct mii_bus *bus, int phy_addr, int regnum)
-@@ -344,8 +353,7 @@ static int au1000_mdiobus_write(struct mii_bus *bus, int phy_addr, int regnum,
- 	 */
- 	au1000_enable_mac(dev, 0);
+ /*
+@@ -972,21 +976,25 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
+ 	u32 buff_stat;
+ 	struct db_dest *pDB;
+ 	int i;
++	unsigned long flags;
  
--	au1000_mdio_write(dev, phy_addr, regnum, value);
--	return 0;
-+	return au1000_mdio_write(dev, phy_addr, regnum, value);
+ 	netif_dbg(aup, tx_queued, dev, "tx: aup %x len=%d, data=%p, head %d\n",
+ 				(unsigned)aup, skb->len,
+ 				skb->data, aup->tx_head);
+ 
++	spin_lock_irqsave(&aup->lock, flags);
+ 	ptxd = aup->tx_dma_ring[aup->tx_head];
+ 	buff_stat = ptxd->buff_stat;
+ 	if (buff_stat & TX_DMA_ENABLE) {
+ 		/* We've wrapped around and the transmitter is still busy */
+ 		netif_stop_queue(dev);
+ 		aup->tx_full = 1;
++		spin_unlock_irqrestore(&aup->lock, flags);
+ 		return NETDEV_TX_BUSY;
+ 	} else if (buff_stat & TX_T_DONE) {
+ 		au1000_update_tx_stats(dev, ptxd->status);
+ 		ptxd->len = 0;
++		aup->tx_tail = (aup->tx_tail + 1) & (NUM_TX_DMA - 1);
+ 	}
+ 
+ 	if (aup->tx_full) {
+@@ -1009,8 +1017,9 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	ptxd->buff_stat = lower_32_bits(pDB->dma_addr) | TX_DMA_ENABLE;
+ 	wmb(); /* drain writebuffer */
+-	dev_kfree_skb(skb);
+ 	aup->tx_head = (aup->tx_head + 1) & (NUM_TX_DMA - 1);
++	spin_unlock_irqrestore(&aup->lock, flags);
++	dev_consume_skb_any(skb);
+ 	return NETDEV_TX_OK;
  }
  
- static int au1000_mdiobus_reset(struct mii_bus *bus)
 -- 
 2.53.0
 
