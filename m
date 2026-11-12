@@ -1,47 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794450256;
-	b=KfxyAC77mDflpLs1nGNzdXNjWDfWft6ZiV+/sbh+U+DymZU6mNP3lmif1wvF5V6x/XmD
-	 bSuxu1g1DxSoyfswva0TWqUhbPdC/FZk8R+2PaplK0I7x9F4y14eAoAc6ZCy/B+IPEyD9
-	 5qZYxDoAR30++MVJYRkFgp721BOYTN3Jsz/eFWGoniTS5+iCZljhjj7ME5dI4zYShVsqH
-	 nfFUzqbz1TNdIDD496oAs4Yj0YF6TaYvLuH7jXPjuAPiPf0eIiaZbHsLvq4gS2/wZh39C
-	 6curv0omgNT6Gp1ARpUxtJM19T02DpsmiqJ5ew5boV7b3VNhAj5xGcSAQDwQVu3TCaA==
+	t=1794450378;
+	b=I2naez42wIBbf93INhNTRoe/dLeJhN2on7Tyx+k1N//47N6IuIkblBTau81g9PO/MIuO
+	 RFVMjVBF/mCuKu/avhzkHaDwBMcrq2WTdYYYnVvOJWrjXDDjwea/iPsCIYeJHJzwVaYIP
+	 fcL5z7aK9NeJfJ4SqwH+rPqwgA5ABKMbmkTOBdh4F62pKM5UiAeAUHMCFsKSL4tI/2cz+
+	 P+NpozkEMJImqBGT8H/dEPxQ7lto8O8cSP//Q3z2y+NtGmWz6tqjOUUh/9J53d56ti8DK
+	 lffbiax4LYiugnzxj0gQ2+waRB/o0mSvljlQuXk39kVuV+/LcYMt79AXVbhlvlAgUjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794450256;
-	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=CMs2hiL6dqSvXmpMCUhFT/HCLWI00jj+E7D9u8d37HY=;
-	b=uWico86B2hk3NxpbbxrRAs4+EWpBODQK7iaLHK2WXEQnfftrv9nFqrIUNSDSLS/ORNOi
-	 zHla21vhuqMjim+AbtadeSQO5oDYmM/KYT/kZpMOwy2K+JkUTyYlIzZNjB8D+RQWpYHzm
-	 iRlT0+bcqV2+u4mDfnnSYIUNp35YhAtqjE/G6kdHGj+056q/ztjZzPvX5i4i+Ne6hMjf5
-	 +w6SVTfFeG5K6hL5yqld2I4c2Ln4/7ZThx4B92/xXSwIUNhpXHNm2bZ+wAaS7aUj6la+T
-	 Dh4DntVhsQlo0FH0iSSu6z4k1ebkA5tsFVIIdLIoLJNkB3Sxe0d3/MNMDzys28cUrWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794450378;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ivaEEWTzoqwO0D7EurcMjNHq2ikATNWECtT5fWFlFMg=;
+	b=3aLDirkg/e9tsgHtRkdJVlAvyehv38awwz1F0n8Uke4xxYNB1/g2q47eFeNr2bAVF+aH
+	 C0kOd4N0/4bFpw0eBnbpC1gHnBpo+9VzePSK734v1OGdHmQrzoEY4PuQMiO+gPkHTTouU
+	 Eed00GOigVGc0v+mJVW8geP4IQvNYBny9SGm5F6kc0ApsLT0qmu00rAzE/WrrWglDycTW
+	 yVno6A9dzv6dC6qhYtMH1byfHureQlnmIlw2RfjMvi6VGjAq9TS6XEBXZ3NiHfaaiR6MW
+	 ULbUvbR9eBhfd8Gm7hcpx1fYoCRjEDG2KacgvZbWjjb1VNTolh3SU/Ns0KX42LF3/ww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=ECBexlUT;
-	arc=none smtp.remote-ip=220.197.31.7
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFjhtMJQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDF1606A31C;
-	Thu, 12 Nov 2026 02:24:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFDF1606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0757606A326
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 02:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=ECBexlUT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=CMs2hiL6dqSvXmpMCUhFT/HCLWI00jj+E7D9u8d37HY=;
-	b=ECBexlUTfMcU0TzeyeHJyBObIRgfVHH9ZR0gINCJCnsug2Cp4UNT/iEyM7AELu
-	++HPY/30SbDlpzGBbsnCLK4KAb/5NJYdGt6RNWEHhBFBsd/UnQhfg1jRwcd5pCMN
-	5bh6cJCv+0izBRSJr1M5OXFEgLIc2hTdKBEyTIWfsXgQw=
-Message-ID: <3b2e263b-6cef-4267-be94-50751dfee494@126.com>
-Date: Thu, 12 Nov 2026 10:23:18 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFjhtMJQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B04E1F00A05;
+	Thu, 12 Nov 2026 02:26:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794450377;
+	bh=ivaEEWTzoqwO0D7EurcMjNHq2ikATNWECtT5fWFlFMg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QFjhtMJQbqRmDp8vXN4ABMEcLjpfUlNVGnpPfRckPKl1UNEm99kiLT0z2cAt9NU27
+	 y+sknb0HOyPWMbU/CLDsiXzmFqfF9GcrrQAghzqSaCz3yb51AeNw/ireq+me6428P6
+	 P5Y1nDIs7ci1bi8dtEduzHMHMIfHoEcP83Zg+htfIPxsGDSDLu2faND8YEJ532iBOP
+	 ZDR8HwsrU4M8paxWSg359zDRLK4wW0kdsPQkh5HMhh/d3SVUb9+jvDf9IyVx95B58+
+	 1BYFExumW3cfVipBBt1MB0Lzbx1kqYaeRsaY+GsgS4xEhI/a1z/CJrLqObWwQTlati
+	 /S4p64H1Kfw0A==
+Date: Wed, 11 Nov 2026 18:26:16 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Kiyanovski, Arthur" <akiyano@amazon.com>
+Cc: Avi Weiss <thnkslprpt@gmail.com>, "Arinzon, David"
+ <darinzon@amazon.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, "Brandes, Shai" <shaibran@amazon.com>
+Subject: Re: [PATCH net] net: ena: avoid double-counting TX DMA mappings on
+ failure
+Message-ID: <20261111182616.631c9e0e@kernel.org>
+In-Reply-To: <BYAPR18MB26005ED8BFAB5DEBB6D02B63D9702@BYAPR18MB2600.namprd18.prod.outlook.com>
+References: <20261109123934.824610-2-thnkslprpt@gmail.com>
+	<179444039825.7144.5680478965949082764.b4-review@b4>
+	<20261111171127.7ce982b5@kernel.org>
+	<BYAPR18MB26005ED8BFAB5DEBB6D02B63D9702@BYAPR18MB2600.namprd18.prod.outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,72 +65,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: llcp: fix SNL PDU size truncation in
- nfc_llcp_allocate_snl()
-To: netdev-bot+sinfo@kernel.org
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Linkui Xiao <xiaolinkui@kylinos.cn>, Guikun Yang <yangguikun19@qq.com>,
- stable@vger.kernel.org
-References: <20261111095907.3366028-1-xiaolinkui@126.com>
- <179439136381.2168702.3784011162899965365@kernel.org>
-Content-Language: en-US
-From: Linkui Xiao <xiaolinkui@126.com>
-In-Reply-To: <179439136381.2168702.3784011162899965365@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD33x8WI_VqBr_FDA--.30825S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tr4DuF1DJr4DWrWfXFy5Jwb_yoW8WF4Dpa
-	yjgrsYy3Z5Jr1xCa18ta1jva4Fq395GFy5Wr45Kr1Y9as8WF1UKrWIgr4Y9a4q9r9Ygw1F
-	vr42grs2yw1qvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBjmvWr1IxjZqwAA3B
 
-Hi,
-
-Thanks for the reminder.
-
-On 2026/11/11 18:02, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On Thu, 12 Nov 2026 01:30:29 +0000 Kiyanovski, Arthur wrote:
+> > On Wed, 11 Nov 2026 23:39:58 +0000 Arthur Kiyanovski wrote:  
+> > > Therefore please do the following:
+> > >
+> > > 1. Add a From: tag to give credit to Evgeny Ostrovsky, who wrote this fix
+> > >    (without leading "-"):
+> > >
+> > > - From: Evgeny Ostrovsky <evostrov@amazon.com>  
+> > 
+> > Unclear whether that's warranted TBH.
+> > Avi is making the effort to upstream the fix, they deserve the credit.
+> >   
+> > > This should be first line before "ena_tx_map_skb() increme..."
+> > >
+> > > 2. Evgeny has agreed, please also add (without leading "-"):
+> > >
+> > > - Signed-off-by: Evgeny Ostrovsky <evostrov@amazon.com>  
+> > 
+> > SoB indeed seems appropriate if the patch is based on prior work.  
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> The commit code (as well as the other 2 that were already merged)
+> Are copies of fixes that we already published in our github driver. 
+
+I get that, but it sat on your GH for 3+ years. At some point the code
+sitting somewhere on GH becomes just a GPL(?) code drop and the history
+is irrelevant.
+
+> This is the first time I encountered such a case so I searched
+> how to give credit to the person who originally implemented the fixes.
 > 
->   - Whether the issue was actually triggered, or is only theoretical
->     (e.g. found by LLM and not proven at runtime). If it was triggered
->     please include the symptoms, like the stack trace or kernel messages.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> If you feel like SOB is enough I'm OK with it.
 
-This patch is a fix for the issue previously reported here:
-
-Link: 
-https://lore.kernel.org/netdev/tencent_634C55A23C7CCCA3985283BFED46A69C9E09@qq.com/
-
-The commit message already includes:
-
-Reported-by: Guikun Yang <yangguikun19@qq.com>
-Link: 
-https://lore.kernel.org/netdev/tencent_634C55A23C7CCCA3985283BFED46A69C9E09@qq.com/
-
-To clarify: I did not reproduce this issue at runtime in my testing.
-The problem was identified by code review/static analysis of
-nfc_llcp_allocate_snl(), where the SNL PDU size can be truncated.
-So this is a code-review/static-analysis finding rather than a
-runtime-triggered crash in my environment.
-
-Please let me know if further information is needed. As requested,
-I will not repost the series just to add this clarification.
-
-Thanks,
-Linkui
-
+Thanks. Also first time I'm seeing this. I'd prefer to give the credit
+to the person who cared enough to push the code upstream. 
+Or differently put - the best solution going forward would be if you
+made sure to upstream ENA fixes from your team in a timely fashion :)
