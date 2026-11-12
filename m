@@ -1,98 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794500284;
-	b=mVr9ll0fb/+hAyZR0rzw4oAPIA5WfAM10xd7caXLUCB9v5Hl3Sw8avQ8DWSDhium8vo8
-	 FVlUJMpBkfF2au0cywgumynpamYF8pyG4hUyN/pE0BcJATrei7ZHbAqQQw3IBI34qu55f
-	 Wy4AtInqteJBzqmN+mg78vvKLQ8JwnqCNJsRWQqmMavrTXOvVPh7mGK0nj0MQhgdpP1gj
-	 sDXsqKjzn3uPgUc0nugJ9fkAkt2VLCajOddxx+iE5N53X0tHmLxAcYH2IFek34aSi01Ui
-	 CRargSbRt7KvPs+RBHxzGoN1wFSBVYuwz6R/nVB/n570KRlzlKpnE2txXySSgxhBkBg==
+	t=1794500407;
+	b=VOf3ax4yClyAYMui/txTNqPv/CpbpOYQ671rFlBQhTUn+OJqR1LfWNz0hxcR3bBMSQny
+	 775YvT1JRXsbOtzYuk2uUPbuzmsPBjaa0ZoeYIM/9mNamtGjxfyK4+ZhABEj6WcPbdJoD
+	 vgm0KwOYYBO+Qeo//Z8GFnbJTNjUc+5SlAjWB1uTxDX67x3rD5qIfStBt1gihm/TrnXMJ
+	 D6d41x5qHTZlck7WyHqtnVeKgEZdvAWkotijV0x+8WLo11zWmMzD46rvUWRu4X0ed2QdS
+	 E4z9cSq6LVfcxT7WwHVyDWuPCoMWZbpNb135Pies/70HY6D92bQpchXs0rDaXA3mhOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794500284;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=9m7K9K9LtL761eVrSTnykdQPje31prtt54RRFaowtjE=;
-	b=px1hnc0THg6mR4UTyYbrelyVElJeIPkiNkNUUkS76eQnwX121LNbY2Q61JDuFN2vBSeC
-	 Fbx7YPpyYC+poaq5GNqnoYnkfXAiMsvZw1Wrut+08bzEE1sGA88ItiB4WyNQEyN96jfrP
-	 Z/vR06mKQWdUmnkyzucKY7oqMlq4Q8Ha9dDKUmlV5oculQRXtChTZUy2cGks3WFaZrzvR
-	 oX5u9+F0KATzKgEf0Elpr1jrfJmUPm4XPybp6OefKCOSVNLCFhIQ53GN+Y+osE4bwUHX+
-	 zA8dmlr42sArU3s1jmEUEI7LctZ723KbNL+bWgj7Ke4srW8puVWvjEd8v6YIA+SG6xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794500407;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=/KbZqwAX9q3OhGF17k4YUyCJru5x7wrgR3CRRpIUUzc=;
+	b=oPjhjk2qSIEjmGTgHPS71Dh0ignifrXB/8XWHPJxrhVEUGs2niga+60X104iA8zVXeaW
+	 YeMWgRhFU6bxvhuHylKeuiDuSGbT5/0k1LbiEEkScphiN5QKQLOgcWYLmkEZIomftwBid
+	 4Gasi9yA6UibS+C3bbzMKIPhJU2U5tRRUKZqtwhUD00OJXeKzG4WPTfDKbIxAcONWiX8F
+	 2/JZpsoX5yu4hUL+XsME/vsf4WQH9X2sSB2GhQRSvzWokqa/INclRfUzY9ruQdzYuzZmI
+	 OHmX7H+AiW1RiTuwK325ygI/fcsUOAp/AzkidXZ383F8u4pQy1JjU0DOfRayB+ZIfYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="cYH8El/v";
-	arc=none smtp.remote-ip=209.85.216.48
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jggp6FrR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA86E606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:18:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA86E606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C7B606A31C;
+	Thu, 12 Nov 2026 16:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cYH8El/v
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3b0b3438540so2846995a91.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:18:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794500283; x=1795105083; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9m7K9K9LtL761eVrSTnykdQPje31prtt54RRFaowtjE=;
-        b=cYH8El/vM0c2A5+6y9XzQCoxGgTV1g3bbYkJ9Pkn+phPxvFcTI2NhnNpoyYTNv3oVt
-         Oafs/qULEz0YrHyRE+G24rf0cbaM8eVEB7ZpadIH1HEkwBFIJ53Zxml9XcdCdEtL6BDj
-         9tUl8zEdJJt+4BbFtAOlof5VNkXRVnObmUYZOL+gHNcrHqSCYrI0QQuKgJmqXLQWoG3L
-         y2gOsBlZ+LKDmcUmZFJ12MSxZGBLkacWKDG/guXQKrOUD9TDIlc5nUeSsxdXqWpcVl6p
-         9yoM/wk/07Mq2gOUuSBXj1QqLvu7yCsZJMJOzqL0vBwTdIgwF7FYTJpfhWFJGdehUkEt
-         kdnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794500283; x=1795105083;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9m7K9K9LtL761eVrSTnykdQPje31prtt54RRFaowtjE=;
-        b=FkiDZIdA/ZPWAzaIum4HxGPXtX1VY6XhANKD5orlPlo1pDdgbefRqlZa7CfRj4GqWt
-         y6fOM0+lULHAj7nOvKQdDwpSz3+FI8HZ21OlfCefqnH56T+Zk4huEo2Fz1cNI9qRXZpj
-         dATGCcY8TFvI4MYN5jgNjIsJofQc9AkgB+Qqm7Xn6+H4YlFgUEN7e/Q4YIDWP3kem8Mp
-         FrgRUNY2dTp4VckIkeEipx0O2tbQKIdVoohnecvex1Z19Q5IkULBZcLT+jqgLV3RzuRS
-         SMKq0lLybKAtX4narAoNPun6M6vJ3yIEVlQ6QeRlu0pMj86MydRV6G7NVoK+t1rQtrc5
-         rHQw==
-X-Gm-Message-State: APuU4Z/OwqT2Ps1vfgBd2Et+GSntE81XfQv3rWLOQBRXBQbLAf3Zl5yP
-	ANCuD9OPKJIOOR5jAY0y8/lhT9+1LLeFnEGNYbgz5PAVGG2ZHBuoniPRLjtxy3ZWb8w=
-X-Gm-Gg: AYBFou25bi1sSwMe5m+g5cujwgJSCCfF4SaGQCuETgaM281D1D6QRwgfe/O8MTED12E
-	xHl42gKoei2d+53MsmJZwctGbdnQdF5CSSagCJcYoa+KJtwNL3XMjJ5F0KH5sVgIMl9G6C1VSod
-	Ko+19sGqZ5+XoHggbJ5rIpav9iUS5kQA670tmgP28fLxMG9fFMdY57QjxTowZHJjR2h9HRUFq+z
-	raTCB6Y0muKkVWZvJN8/cennL0ZtsbDyQ1EmybTFW47RJ6FZwb4AFOUnrbC6HduVvR3Lpc1rfXK
-	m2HENnXEZB0Kx+ArCj90zcIN3ZMPqtTRbSilHG/GZLvaukm/txXz236E4ANJD+apW3R09kItpA4
-	wjKBJTXp9o+0mdVaLkzWXGhb6s1aE8fz6c/B2Av654iRxBagqzNjnJ/kxJwKkth0ddksgbSIi49
-	kWoTEEUnXS37TzFEY4RlDodsPFbuW5n4XNI+6UPyaiLYneZ/Z845w3hV2tpK98EAOPF1Dd+0L5W
-	xsm2OQTefemNmMX3lEpcUteAgCLs3FXzVywy5dIgw5Ly6tDBDpdlnMhKukTxWAnWm7xfOGDplea
-	fnLcMzppZnlz2xnSWd4czHLCsOYMAKtZIe6rEb/vM0XRu6xKVA++3EKAONRIonS5652pV2IM4N4
-	=
-X-Received: by 2002:a17:90b:4a8a:b0:3b0:cc3e:68b5 with SMTP id 98e67ed59e1d1-3b182efabfemr6090892a91.21.1794500282480;
-        Thu, 12 Nov 2026 08:18:02 -0800 (PST)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197ce460csm5132750a91.5.2026.11.12.08.18.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:18:02 -0800 (PST)
-Date: Thu, 12 Nov 2026 08:17:58 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2 2/3] ipv6: return EMSGSIZE when first route in
- dump does not fit
-Message-ID: <20261112081758.70426a67@phoenix.local>
-In-Reply-To: <20261112153115.GA3255418@shredder>
-References: <20261110172925.3293312-1-stephen@networkplumber.org>
-	<20261110172925.3293312-3-stephen@networkplumber.org>
-	<20261112153115.GA3255418@shredder>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jggp6FrR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3AE1F000C4;
+	Thu, 12 Nov 2026 16:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794500407;
+	bh=/KbZqwAX9q3OhGF17k4YUyCJru5x7wrgR3CRRpIUUzc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Jggp6FrRtXMrsRjhkZ/ZiF9INv9FTKscEaxcc1xp0lUUn+9MdyuMIKK7mGdrr5At2
+	 MV7GbV0xRUcsQZHMRfc5NRqHd4BH/HiYTTLnqwWAsweq/xhw466vyNQyzJvQ+S9Pbr
+	 F7mbZ2kiKEHy8b2KS4HqgagYt1ICHs5ppNwDtOOVqcpezeWjD6JOjE3P26dF6AqCuK
+	 xX9PQ1ziZlFoht3ZpH70C8B7kYEE+GobZO30ptZeoNkVJm/sZAQ+KHz3/ehEsIKdft
+	 KSWE9K4kiQPhvQH2ZwPHkGImd2BOUVDB8886SYTZNZrFs/6/DHeqUslXRcKkfhTsaF
+	 UCk8dyyx4P3jQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1537380AA5F;
+	Thu, 12 Nov 2026 16:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,25 +53,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/2] net: psp: preserve SKB_EXT_PSP across packet
+ scrubbing
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179450040578.42282.14929639226978181632.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 16:20:05 +0000
+References: <20261106182007.374660-1-weiwan@google.com>
+In-Reply-To: <20261106182007.374660-1-weiwan@google.com>
+To: Wei Wang <weiwan@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, shuah@kernel.org, horms@kernel.org,
+ jakub@cloudflare.com, daniel.zahka@gmail.com, willemb@google.com,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 
-On Thu, 12 Nov 2026 17:31:15 +0200
-Ido Schimmel <idosch@nvidia.com> wrote:
+Hello:
 
-> > 
-> > Return -EMSGSIZE in this case, as IPv4 does. This depends on the
-> > rtnl_dumpit() fix in the previous patch.
-> > 
-> > Fixes: beb1afac518d ("net: ipv6: Add support to dump multipath routes via RTA_MULTIPATH attribute")
-> > Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>  
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri,  6 Nov 2026 18:20:05 +0000 you wrote:
+> When a virtual interface such as netkit is associated with a PSP device
+> in another network namespace via PSP_CMD_DEV_ASSOC, incoming PSP packets
+> decapsulated on the physical device lose their SKB_EXT_PSP extension
+> when scrubbed during redirection (e.g. skb_do_redirect() or
+> netkit_xmit() calling skb_scrub_packet()). As a result,
+> __psp_sk_rx_policy_check() rejects incoming PSP-encrypted TCP data
+> segments at the socket layer.
 > 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> 
-> FWIW, given that "It takes some non real world stuff to do this", I
-> think these patches can be routed via net-next.
+> [...]
 
-The exaggerated security argument is that malicious root in network namespace
-can do this and hide/crash ip commands and/or routing daemons in other namespace.
-Once again the analyzer is stretching pretty far to argue that.
-But then again with the current "lets chain $.01 vulnerabilities" world maybe not.
+Here is the summary with links:
+  - [net,v3,1/2] net: Make PSP skb extension survive packet scrubbing
+    https://git.kernel.org/netdev/net/c/b22268fc3ddc
+  - [net,v3,2/2] selftests/net: psp: test bidirectional data transfer
+    https://git.kernel.org/netdev/net/c/51127238570b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
