@@ -1,91 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794513657;
-	b=KO5NrKMnkh1sEkvYAlaLxIacxZUy9CGIVl8wlgr8ROgOFhUNYgyP8dqnaE4Wim0o1RYH
-	 WhfNTTJcQKFcT33/YwgMsQ/n5QLxMLkq+HcEGFl03v44fzPLgsjbAFUhsnM/ltwyLOTtr
-	 aZdx0G7kJXvfkbAv2v5bs8qUXSfKCqnYPp3oDJs7nkXEfPx0cFAhs8KKhCZGrZQhVmhKb
-	 QmFMeARkd1rOE3NagGXktC8630GvLrOVyLGLjuz8JYfiNsnXQLEvj9rn3sU89LBt0LN2H
-	 fY24iQUhkhSavOwwmkv9exVhFUAb5hB6BCw1TQV+lesnKt/0IGA8Nig+8YKx3f+MxiA==
+	t=1794513659;
+	b=qyzWSeB/V2LSGtcSz/bWdCN8Kofr70soZw9+ACtk62EMRx6zz0ctFF9uoohZ2qOkAvQT
+	 eHcWjwHlAOePliP/+3sWI8fjt9oMfDbHqRnBB+pM3Mt3IMqI9MY0kPhJ1YWSB3J4cCkiH
+	 VkEc60zeuK3j+ZQe7Y7JBZ+vkj3Ir4lHD+Uf2CEESzZ/neHSEKM9TuTeBOABuMIiWEl0c
+	 0ZCkBAVwmBjBD1aefTqUagGsf6Lbkr8X6ToVBNiH7OQwUA54B47PTT7kQ5BxZ8/P+Ufkk
+	 hMJiRlRXgwrPwoYjC7JO6caBz/TKAFMSU0Wjc0lSI+6h6jtEA42oUxv/hyI3Ro8vZvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794513657;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794513659;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=WdvdDGSFWIEla4D7hHqsS8B6Zb6SHYxSoLi9gbVDLFs=;
-	b=Xfa2iYmj4Xqm8Na0uDyqZjFhQoLjSXjAN+LlfiyDgBX8Id3DJHqbh2uj+bbOedG2E00c
-	 75rQ03klfgYZduRgMPwcDp0aJt5ltz+hPuG67OBHwweqIOORwFKWzr1zJFb19NPx3ytDB
-	 pdLvFIM3H8gPLAGitWA0GcSxMP7fHhl58bj6hTmToDF2wpjMxV/IiduaLNzQUMRs8mX68
-	 jueg7eBaU74L6yTi8SrrNw0ZYgkyVT45x/UftqjKsuwpL73rIlGXDE8FjRlWvhaCicZuK
-	 JN6Sj8eBnV1NXEirqQoTleeZibTZCqhwU6oDKFxjPADnH4oa5w29JOyN+y/jxIJ2LXw==
+	bh=eYNgo2UVBenIRIwSD7tfpreyjCqu1yXJLp8IAWrk/4Y=;
+	b=NWwt4OAv1fCiypjfXy1WTlfdVkzuo2T2Pz/0TZJfidXP9f3ddCAGHQtMlrUu5cMvMs6l
+	 hHStzpcIt5ffwXTT5y7DLaJXuWhhq9uxnzlPjbkYJdRPDTP0Wki4sqhFfOoIlgTertszz
+	 HceutfymVGmbVY7bilvNZnrMhK3s3YEXWI0y96OH+D4FZn5OhC6072CjALrhEUG/9sdoM
+	 OD9Geo/orkoy257l0H3+gBd+oljspmQ0FApTNTYGT7gOotBpj3UiGMAeaNmUPWQQrzLXq
+	 tSIxMM1wqDZuR1dOm6xZfcshB/uehMK6N0OpktEUeCCP+boXNi13Lh1RyKMhz0ptvSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZTqLQVAh;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kBgS9Xqq;
+	arc=none smtp.remote-ip=209.85.216.46
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6FB606A8BA
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F6FB606A8BA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250C1606A33D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:00:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 250C1606A33D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZTqLQVAh
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3b0b3438540so150977a91.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kBgS9Xqq
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so116588a91.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:00:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513656; x=1795118456; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794513658; x=1795118458; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WdvdDGSFWIEla4D7hHqsS8B6Zb6SHYxSoLi9gbVDLFs=;
-        b=ZTqLQVAhMFA9aa7X+aFHrsCURiAdJZtGQiuORETcx3elZaycJjK1qHKHI3QdMxX+CP
-         0Df+y9EnEUq+Dbznsjv6sl+3HXNI3t8mg4+KEENidgmCDesYdANNVIVzUBkHBOH5Qe/d
-         KhY/nQCoPtgc+7w7WCP1HeEGApRVBfCUcXz4mwU7YJHgWxvJWUu1/SbE2qz9q+CwOkAx
-         FBxVsrQW5H9dkrZw1UDO1fligpYfPkcqYB8u4aOWt/32a+VeK1edVdYDHopYDZZ+kYtd
-         qnW8/U8Dpt9FT7LZbjJ8Qn/Lt4IzTQe6mYL3Vgs/RKXt/8F7Xb61wcqqo1wQyNRasHMc
-         M3Yg==
+        bh=eYNgo2UVBenIRIwSD7tfpreyjCqu1yXJLp8IAWrk/4Y=;
+        b=kBgS9XqqFCm5oCVdvyKq88qGeiOyMffX/UMqVapiQldA5zJCRkKOoSxQou9YCMNVJI
+         Vdrs5dhXrLEpjruauxL8N7oiGt+plOwhA1QS9n5rGHr7R5GaQYJaL016hO/yDjHv+6rF
+         G0nI3CJN9i+FbewuPZiG+mwDI7C9uwrHd/eRG6bL3BUyB+zhMeLyEVu/zrhuqwDw0vSV
+         k39FXl4jP70gKXhzUAnfH0wzo1Sq53QltbfeGY50zbvindrAuO9PaYWYgVjUNmBO53y0
+         EmEkJDvi9G4jBE0a1c2f4bEAyRMcboFm875UM2dGGBdKRHfnJPTPljRzUUI7Wr3PYxB0
+         b4Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794513656; x=1795118456;
+        d=1e100.net; s=20260707; t=1794513658; x=1795118458;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WdvdDGSFWIEla4D7hHqsS8B6Zb6SHYxSoLi9gbVDLFs=;
-        b=txlmKyfmubIl0dhVYZSnp23obmtzYn/5jtR3K9q1tFQ9WSnDArmrQznhV9w+Mv/i1w
-         ySZvTUWU6MJ0QxIUrHCaUrxazAKu8aTgm1MWqtLVHuDiMlFi7oQzpzmeryslj+OEIN1a
-         4FPnJ/m6tbrpPXS/+5+ZdwDLR706QXelnTrtMxcuY23JPnUkMUThIxpCtl+Sl0lkdrxd
-         dWimsohG1GFQ2ZbpHbrYGQIuLsHZ6WxpEdonqONXIoT8XRqCTA5lIQseSLpGJbxT80b+
-         0perLiX74WwIURkDwIq/S/9zbn9exRHUHkcd7GNiV2iJl2qFQQvkccFVSOj1LaZbAgI6
-         ZMhA==
-X-Gm-Message-State: APuU4Z8MI64tB9uKE1Nz3z56NjrccAQEcjHt7KyMARGHuqG6jJ5n/QUW
-	VNs2a9xKx6sQuWiBJOaZE1qhfAA2pwtrRPpn2y04ljchwW5j2DjqLhUcehsfP5LjBjcha9XmJDj
-	uQfLii+Q=
-X-Gm-Gg: AYBFou2fR3XInNqj6Wq3eAPRc5FO/qivKjGLyCNW0eU7xUBbq395i5kfAEQnPDGew/G
-	4z6wL2ge7dzz0/4cB5x6it4yJYOn0zFmORU+ALQFRDu4s+6+f+0ebAFK71zvdQaS0f6QaGr9e3t
-	ArZ1NgNoSwnxJja3m6fRVapjySlSaAZaIXrgHErYuxcX+02wTx0MKlEXzmNUipA3jjWDj2U63tY
-	mSTFDD9GjKmNwf0++O2g2dbpEOaEKPbG/CTeHNQ5vXc/i8obGVoMMF4SFwZu2G2qpPAy6RNJ6sv
-	MuaBMtDJSRbRV7Ep1E6NJijsfPsdoy4qXTkgdtps9sWWU7LqF4AgFjhF7kBEqKhtMFBhombr1q3
-	yRQiv6dmymqiNXrEcgqf05BiTCozpMFucVPX/SPDjROqFKBS8EscxsB/nXOvZ9ordsh2WWRd0I9
-	ZEt2bdG9Ln6PxD/iAtBoeFQeQhmYwZYKpovziD5kHTzcZbDy0kLRYMab/zDgsu6cEJBHjmbVRsz
-	WGbJK8b9G2ZvJt9CELYinDknWssbmjQRwCeRVjDC9peUdHoYBaAeCnaH/D7ZQqiNOPtDly7/9ip
-	htGqCfOE9Rmzmf3DU8umGRzlLTiv7Ozfm8hZjLEMdnmtfK7JVdL0HrJsjhjRZuoeJsmjPfkvWkW
-	96Jk2BQ4JUvN/A6o5
-X-Received: by 2002:a17:90b:5546:b0:3b0:bcf4:6cde with SMTP id 98e67ed59e1d1-3b1b0a46cb4mr154735a91.45.1794513656523;
-        Thu, 12 Nov 2026 12:00:56 -0800 (PST)
+        bh=eYNgo2UVBenIRIwSD7tfpreyjCqu1yXJLp8IAWrk/4Y=;
+        b=NYtHMVF9wjIx89YOeSwnt3GkjRLIgQfuzPmDf3fnYMRjIByA6QQY66sNM+dbpe3Kfw
+         rMrq/jA6NNcJKhj/IoXuj4OHvTZSXcQU7X5Xju1AdLviiRhsxTZoJFYfLQIjp2xt/NqM
+         9laTrntAEOePjE305lz98a7F3Rzu1N/kFwX14sbv0Rg+slI8XHWbqUTX1wj43t1xKUCT
+         63iovZCtEWz7pryXee7XRm6n0MoyTNIkAJ2V/8xEK+5M38MAiS1SQu2x9PVQxovGRRzx
+         iz2E00/rr4ZAJSWGS4QnZrTvwglnjPh9VzMVhM4BdTrrud+Jj5Z758TedKvd+Na5cjWQ
+         maHA==
+X-Gm-Message-State: APuU4Z8ZiKE0XrNAFARP571qISn26x+I4N/fVCyUkVrdAARIDY0qOTIl
+	hHv9DNSdPv9FPCHbsYHFaiatkXYY2qWS3RsF3TCS/rfMME7dFu8mO3HTnraixNVd/Fm470YfwLv
+	enPxgvJ0=
+X-Gm-Gg: AYBFou3O50ch3kh0tpwrkwA0pRVJLVz/Uyg0wn6+wY4BTxBK2nyMwLIewr7SDOH6uzq
+	zPSYNoL135z8I15EejineC3zUiqFxCcnHfyTAK8ksFoGdw6Iai81yKqsFrNUWp0DEFEHj+pFFQe
+	M2biTXmTuAy/GXh477/wZBrfq/UTDmxwMUh1Gf1NuaIXnolfLJP/Jn1DZuaWA5EOnzv5YhxHiHx
+	ypdQrXw0CRZ65KSOmf9AY+qC+15i81A36Zi3tBg1fNwfQH2zkhw1JPXveQRqzgyWrSPr30EzsA/
+	eWfWxtP06fUNsk5QVXbquDzaFRiueefZjwvtGiaKlBGo4xVYrcgtoQTRqGM37NXObQF/iP4vqPw
+	/viQTLYa1prcumaNmGAC3027/rukHz/u8aPC8V0oGdk+2SGAT9zubwSEdx3ZDVWPVK6hhYqjXo6
+	mFItei1xgBryXq1WtU15bUU1jQf7junDKE0iwpf56poZO7wopplJbDN+NwQ60e1WXuY+YwvPYez
+	JW03YB6NMD0MxEWAih31J+ke7w3saiZDUN5LgYG4Jo8Rb5QzNCf+7LIcBlr/0iQMZtW0YHg6yyY
+	HshhKCzEhOCLatxyoklK42I6B/HkVc0re0REDym+RoShcz6wqawwoDDgrFiQqeA+ohz3tbiu
+X-Received: by 2002:a17:90b:4c8f:b0:3ad:7f4d:2839 with SMTP id 98e67ed59e1d1-3b1b0b5c3cfmr90162a91.14.1794513658214;
+        Thu, 12 Nov 2026 12:00:58 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.55
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm5967123a91.13.2026.11.12.12.00.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 12 Nov 2026 12:00:56 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 09/11] ss: check owner before naming a netlink socket
-Date: Thu, 12 Nov 2026 11:59:22 -0800
-Message-ID: <20261112200046.2164391-10-stephen@networkplumber.org>
+Subject: [PATCH iproute2 10/11] ss: keep following events after ENOBUFS
+Date: Thu, 12 Nov 2026 11:59:23 -0800
+Message-ID: <20261112200046.2164391-11-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112200046.2164391-1-stephen@networkplumber.org>
 References: <20261112200046.2164391-1-stephen@networkplumber.org>
@@ -100,139 +99,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The netlink port id was taken as the pid of the owning process,
-but any process can bind any free port id, so ss could show (and
-report the SELinux context of) an unrelated process.
+ss -E exited when a burst of socket closes overflowed its receive
+queue. Lost events are not fatal, so keep listening, as
+rtnl_listen() does.
 
-Only name the process if it holds the socket. Port ids that cannot
-be checked are shown as numbers.
+With -K the second socket, used only to send SOCK_DESTROY, also
+joined the event groups and its queue filled up unread. Open it
+without groups.
 
-Reported-by: Anthropic OSS scanner (ANT-2026-1FCHVE1N)
+Reported-by: Anthropic OSS scanner (ANT-2026-39AYDLBX)
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- man/man8/ss.8 |  3 ++-
- misc/ss.c     | 51 ++++++++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 48 insertions(+), 6 deletions(-)
+ misc/ss.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/man/man8/ss.8 b/man/man8/ss.8
-index 54af744a..96d25ab0 100644
---- a/man/man8/ss.8
-+++ b/man/man8/ss.8
-@@ -337,7 +337,8 @@ sockets the initiating process context is displayed as follows:
- .RS
- .RS
- .IP "1." 4
--If valid pid show the process context.
-+If the port id is the pid of a process holding the socket, show the process
-+context.
- .IP "2." 4
- If destination is kernel (pid = 0) show kernel initial context.
- .IP "3." 4
 diff --git a/misc/ss.c b/misc/ss.c
-index 9d2f9891..6d37f676 100644
+index 6d37f676..7c47d377 100644
 --- a/misc/ss.c
 +++ b/misc/ss.c
-@@ -4662,10 +4662,47 @@ static int xdp_show(struct filter *f)
- 	return handle_netlink_request(f, &req.nlh, sizeof(req), xdp_show_sock);
- }
+@@ -5099,14 +5099,19 @@ static int handle_follow_request(struct filter *f)
+ 	rth.local.nl_pid = 0;
  
-+/* A netlink port id is chosen by whoever binds the socket; it is the
-+ * pid of the owner only by convention. Check that the process holds it.
-+ */
-+static bool netlink_pid_holds_sock(int pid, unsigned int ino)
-+{
-+	char path[MAX_PATH_LEN];
-+	struct dirent *d;
-+	bool ret = false;
-+	DIR *dir;
-+
-+	if (pid <= 0 || !ino)
-+		return false;
-+
-+	snprintf(path, sizeof(path), "%s/%d/fd",
-+		 getenv("PROC_ROOT") ? : "/proc", pid);
-+	dir = opendir(path);
-+	if (!dir)
-+		return false;
-+
-+	while (!ret && (d = readdir(dir)) != NULL) {
-+		unsigned int fd_ino;
-+		ssize_t link_len;
-+		char lnk[64];
-+
-+		link_len = readlinkat(dirfd(dir), d->d_name, lnk, sizeof(lnk) - 1);
-+		if (link_len == -1)
-+			continue;
-+		lnk[link_len] = '\0';
-+
-+		if (sscanf(lnk, "socket:[%u]", &fd_ino) == 1)
-+			ret = fd_ino == ino;
-+	}
-+	closedir(dir);
-+
-+	return ret;
-+}
-+
- static int netlink_show_one(struct filter *f,
- 				int prot, int pid, unsigned int groups,
- 				int state, int dst_pid, unsigned int dst_group,
--				int rq, int wq,
-+				int rq, int wq, unsigned int ino,
- 				unsigned long long sk, unsigned long long cb)
- {
- 	struct sockstat st = {
-@@ -4679,6 +4716,7 @@ static int netlink_show_one(struct filter *f,
- 	SPRINT_BUF(prot_buf) = {};
- 	const char *prot_name;
- 	char procname[64] = {};
-+	bool is_owner = false;
- 
- 	if (f->f) {
- 		st.rport = -1;
-@@ -4692,6 +4730,9 @@ static int netlink_show_one(struct filter *f,
- 
- 	prot_name = nl_proto_n2a(prot, prot_buf, sizeof(prot_buf));
- 
-+	if (pid > 0 && (!numeric || show_proc_ctx))
-+		is_owner = netlink_pid_holds_sock(pid, ino);
-+
- 	if (pid == -1) {
- 		procname[0] = '*';
- 	} else if (!numeric) {
-@@ -4701,7 +4742,7 @@ static int netlink_show_one(struct filter *f,
- 		if (!pid) {
- 			done = 1;
- 			strncpy(procname, "kernel", 7);
--		} else if (pid > 0) {
-+		} else if (is_owner) {
- 			if (get_task_name(getenv("PROC_ROOT"), pid,
- 					  task, sizeof(task)) == 0) {
- 				escape_str(procname, task, sizeof(procname));
-@@ -4734,13 +4775,13 @@ static int netlink_show_one(struct filter *f,
- 	if (show_proc_ctx) {
- 		/* The pid value will either be:
- 		 *   0 if destination kernel - show kernel initial context.
--		 *   A valid process pid - use getpidcon.
-+		 *   The pid of a process holding the socket - use getpidcon.
- 		 *   A unique value allocated by the kernel or netlink user
- 		 *   to the process - show context as "not available".
- 		 */
- 		if (!pid)
- 			security_get_initial_context("kernel", &pid_context);
--		else if (pid > 0)
-+		else if (is_owner)
- 			getpidcon(pid, &pid_context);
- 
- 		out(" proc_ctx=%s", pid_context ? : "unavailable");
-@@ -4779,7 +4820,7 @@ static int netlink_show_sock(struct nlmsghdr *nlh, void *arg)
- 
- 	if (netlink_show_one(f, r->ndiag_protocol, r->ndiag_portid, groups,
- 			 r->ndiag_state, r->ndiag_dst_portid, r->ndiag_dst_group,
--			 rq, wq, 0, 0)) {
-+			 rq, wq, r->ndiag_ino, 0, 0)) {
- 		return 0;
+ 	if (f->kill) {
+-		if (rtnl_open_byproto(&rth2, groups, NETLINK_SOCK_DIAG)) {
++		/* Only used to send SOCK_DESTROY, must not get the events */
++		if (rtnl_open_byproto(&rth2, 0, NETLINK_SOCK_DIAG)) {
+ 			rtnl_close(&rth);
+ 			return -1;
+ 		}
+ 		f->rth_for_killing = &rth2;
  	}
  
+-	if (rtnl_dump_filter(&rth, generic_show_sock, f))
++	/* ENOBUFS means events were lost, keep listening */
++	do {
++		ret = rtnl_dump_filter(&rth, generic_show_sock, f);
++	} while (ret == -ENOBUFS);
++	if (ret)
+ 		ret = -1;
+ 
+ 	rtnl_close(&rth);
 -- 
 2.53.0
 
