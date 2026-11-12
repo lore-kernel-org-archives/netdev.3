@@ -1,72 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794466120;
-	b=lP9+ZVQYHTmkgGwG8phVrZYMe0zwx+lK5yQHEzQdNvLFuG6axXgpZGqfZAk0FaHzPkhZ
-	 NdS4VxAn+UXrmeIRLrSMi9h2phToRAZMOE8CJuv3wR2Cqe2rlYrIUqHpoyiyXykZrVyX+
-	 XMnzM7porbnjq3hJ9HZw2XFQxKrlEL1wIemJCrsxj8oGEObU/5XYKRMoypmtEKcwxgyHK
-	 MSmBHE6GjOhdeUTYjcEmXiFRnfgmUjWaXAKeNfYNFSSZ/oggACk+xAsZVhjeStzm6oUFN
-	 JHQqz5Vu4S1k4jajFKJJU8nkhgrUwgXsPa0J/XK22FPrNNnhfCMfXKKz5YYRuOuDMIg==
+	t=1794466564;
+	b=nbXLxER5Dcp4X4/l2/Zt7Rk1aVIviHKW25W1YrgxZGk+YbbyTXE/REJbeIxizr/rTvpY
+	 ZIlLqDz+IHboWD/etuGkNNV/beMETf4a4NrYriBJDg3ZGQEGB+0I6kSGipTn1Epz8/hRR
+	 OGPLQFejarZfG+5ORf11hHouylwTjRdUWfHOJhyIeDpajzHyzCwSQ3s4mS7nDnhXfAkW/
+	 4a6jBtJ/uWMFYBgHjgJOhwC9AOCgOFV1NxhTZ0IEGWPdTBQ1dBYVpITCgKl2/HOmRqqae
+	 Jkaa7TFGPkVRmhuixq+EnlBuMDwbOuryyICs0z/mMktWaARs14KEs6ULUSbT8ENkZKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794466120;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=wTWBtNCAGodQDgAKD3Exz5ymS4Zkos+iD05/S8F8FRo=;
-	b=ZtPgra3tziiTjFRscmQD0mk2afuJWyMP8noP1TgbyXo/vnWdEpgSQ+in0+x8v+Uworak
-	 f7OPKQ/2s5rtTArfzr/BB4WsgILjyRhcO53KGLZ4hA+dDsGbQxztWzPLACZy3CEMQxXYF
-	 n5I00jRXn60bvuHYmzagzamghQFOc9DUwsiCLLhg0MX82zUT/GFqC91vxwiTmskkvPaMN
-	 6eh0KOcc9WAKr1LNRuzAUY0QD9uKpENFryLH33sSr/jgUMA1AtcqqDXZiK9+QnqBW3QuE
-	 R1IPFuI1Lr5LePsookgrb8Q5vH3l/oBNnr61bJIezMqZkn0jD6MoRW10CRuwrGDiD2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794466564;
+	h=DMARC-Filter:DKIM-Signature:Received:X-Originating-IP:Date:From:To:
+	 Cc:Subject:X-Priority:X-Mailer:X-NTES-SC:Content-Transfer-Encoding:
+	 Content-Type:MIME-Version:Message-ID:X-Coremail-Locale:X-CM-TRANSID:
+	 X-CM-SenderInfo:X-Coremail-Antispam;
+	bh=orTk+cCRojN6jAERdRAtmuhY/zheZD2z69ZfmXakmaQ=;
+	b=i/GIwQRTySVY03y5PTIgPqESXRDFQFORuJPsIEFcL0w8IeLrGhrMMfoAM12j2DOTq6Bp
+	 eYiqpC9DcbHgFAHIPvacFjT/ltNGodrFY7/Za0fNxbZm+qNPRZjzkvoitKiBADhGIZT4P
+	 kVy+yqSvlK+TKNqdZLtV6ztT1WMtPAvNbfLM5Ujo/w/MiAlo7yihZ+E36MTWb/QXvpCmw
+	 i9HBTX0311Lo+tLGOQijpSZ8d8tELEOKiH6D4k0bVgbdkoJpX9PqOISxoKtohtXS9qIJB
+	 cpEVMhPPlELiPFUeWEWaomNs3CAneoeGhdHobbCK/INyAvevA+gPItxKMvbAUbHEhbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=go+4XAhb;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA222606A31C;
-	Thu, 12 Nov 2026 06:48:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA222606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=SQ4XpjV+;
+	arc=none smtp.remote-ip=220.197.31.6
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F7606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 06:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B0F7606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=go+4XAhb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=go+4XAhbQSlP+ATyT0OTeLGBSWaKbhXbl3lfp6NuaTIlYHFGPFwg5Qz6is5YJTOCpYjIOEZW9W69X
-	 pfDfIhTzLX7U6tlenn6eG64PhoLDZZZ52DKbdG1mRPyDwokg7V/UigNypRLQZyzRkkDNwfY4dQEEzY
-	 /Ky0l3Sbu1Aq8ggk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26af56144d6f-1ace7;
-	Thu, 12 Nov 2026 14:48:37 +0800 (CST)
-X-RM-TRANSID:2ee26af56144d6f-1ace7
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.net (unknown[112.23.105.204])
-	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86af56144729-f5b20;
-	Thu, 12 Nov 2026 14:48:37 +0800 (CST)
-X-RM-TRANSID:2ee86af56144729-f5b20
-From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Mahesh Bandewar <maheshb@google.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sunwenbo@cmss.chinamobile.com,
-	1342116488@qq.com
-Subject: [PATCH net v2] ipvlan: update port flags only after ipvlan_set_port_mode() succeeds
-Date: Thu, 12 Nov 2026 14:48:21 +0800
-Message-Id: <20261112064821.85624-1-sunwenbo@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=SQ4XpjV+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=orTk+cCRojN6jAERdRAtmuhY/zheZD2z69ZfmXakmaQ=; b=S
+	Q4XpjV+vWyuE0M06YbIRuv2yI7tdqnfb6B5/jpuk0yLCrTWZ3gaHipu6gMwrKs6K
+	eZ6XjoYpVS7Hpdgz1yaIhyJ80pEJoH+I5qk/7G9c2JMaaUwxT0llvzpwPXy2KRJ4
+	MG6XTPWDtF+boBmlncebBPlCr/poqEhlKI+uHvEKhg=
+Received: from chenaibingfly$126.com ( [2409:8720:4a00:1405::326] ) by
+ ajax-webmail-wmsvr-41-103 (Coremail) ; Thu, 12 Nov 2026 14:55:49 +0800
+ (CST)
+Date: Thu, 12 Nov 2026 14:55:49 +0800 (CST)
+From: "Chen Aibing" <chenaibingfly@126.com>
+To: netdev@vger.kernel.org
+Cc: linux-net-drivers@amd.com, ecree.xilinx@gmail.com,
+	habetsm.xilinx@gmail.com
+Subject: [PATCH net-next] sfc: add missing prototypes for ef10 helper
+ functions
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 126com
+X-NTES-SC: AL_Qu2SBviduU0v7yGQYOkfn0YSgug3WcKzvvok3YRVc+YOpQDO/y8HWHJvOVnQ+emwDg2gnBqQQQZO6f1iXaR6prFtc9o0ONbP9LOw0TOOBw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,79 +65,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <7d3fd748.4779.1a1ce8a8dcb.Coremail.chenaibingfly@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:ZykvCgD3t3_1YvVqoi9gAA--.52213W
+X-CM-SenderInfo: xfkh0txlel0wxio1qiyswou0bp/xtbBqRXtKWr1YvWYagAA3C
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-In ipvlan_link_new(), port->flags is updated before calling
-ipvlan_set_port_mode(). If ipvlan_set_port_mode() fails (for example,
-when switching to L3S mode without CONFIG_IPVLAN_L3S), error unwinding
-calls unregister_netdevice(dev) via unlink_netdev.
-
-While unregister_netdevice(dev) destroys the port when creating the first
-ipvlan device on a lower interface, struct ipvl_port is shared across all
-ipvlan interfaces on the same lower device (tracked via port->count). If
-another ipvlan interface already exists, unregister_netdevice(dev) only
-drops the extra reference and leaves the shared port alive with the
-updated port->flags, unintentionally altering the flags of existing
-ipvlan interfaces.
-
-Defer updating port->flags until after ipvlan_set_port_mode() succeeds,
-after which ipvlan_link_new() has no remaining failure paths. This avoids
-modifying port->flags on failure without needing to save and restore it,
-matching ipvlan_nl_changelink().
-
-This issue was identified with the assistance of an LLM-based code
-review tool, confirmed in a User-Mode Linux (UML) environment by creating
-a second ipvlan interface that fails in ipvlan_set_port_mode(), and
-verified in UML that the existing interface's port flags remain
-unchanged upon failure.
-
-Fixes: a190d04db937 ("ipvlan: introduce 'private' attribute for all existing modes.")
-Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
----
-v2:
-  - Clarify in the commit message that when creating a second or
-    subsequent ipvlan interface on an already-active port,
-    unregister_netdevice() only drops the extra reference rather than
-    destroying the shared port, and explain why deferring the update
-    avoids needing to save and restore port->flags (Hangbin Liu).
-  - Soften and clarify the wording in the commit message.
-v1: https://lore.kernel.org/netdev/20261111064655.233265-1-sunwenbo@cmss.chinamobile.com/
-
- drivers/net/ipvlan/ipvlan_main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index f29864db662a..5732b167c5b3 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -678,12 +678,6 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
- 	if (err)
- 		goto remove_ida;
- 
--	/* Flags are per port and latest update overrides. User has
--	 * to be consistent in setting it just like the mode attribute.
--	 */
--	if (data && data[IFLA_IPVLAN_FLAGS])
--		port->flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
--
- 	if (data && data[IFLA_IPVLAN_MODE])
- 		mode = nla_get_u16(data[IFLA_IPVLAN_MODE]);
- 
-@@ -691,6 +685,12 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
- 	if (err)
- 		goto unlink_netdev;
- 
-+	/* Flags are per port and latest update overrides. User has
-+	 * to be consistent in setting it just like the mode attribute.
-+	 */
-+	if (data && data[IFLA_IPVLAN_FLAGS])
-+		port->flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
-+
- 	mutex_lock(&port->pnodes_lock);
- 	list_add_tail_rcu(&ipvlan->pnode, &port->ipvlans);
- 	mutex_unlock(&port->pnodes_lock);
--- 
-2.33.0
-
-
-
+RnJvbTogY2hlbmFpYmluZyA8Y2hlbmFpYmluZ0BjbXNzLmNoaW5hbW9iaWxlLmNvbT4KCkZpeCB0
+aGUgZm9sbG93aW5nIFc9MSB3YXJuaW5ncyB3aGVuIGJ1aWxkaW5nIHdpdGggLVdtaXNzaW5nLXBy
+b3RvdHlwZXM6CgogIGRyaXZlcnMvbmV0L2V0aGVybmV0L3NmYy9lZjEwLmM6IHdhcm5pbmc6IG5v
+IHByZXZpb3VzIHByb3RvdHlwZSBmb3IKICAnZWZ4X2VmMTBfdmFkYXB0b3JfcXVlcnknIFstV21p
+c3NpbmctcHJvdG90eXBlc10KICBkcml2ZXJzL25ldC9ldGhlcm5ldC9zZmMvZWYxMC5jOiB3YXJu
+aW5nOiBubyBwcmV2aW91cyBwcm90b3R5cGUgZm9yCiAgJ2VmeF9lZjEwX3ZhZGFwdG9yX2FsbG9j
+JyBbLVdtaXNzaW5nLXByb3RvdHlwZXNdCiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvc2ZjL2VmMTAu
+Yzogd2FybmluZzogbm8gcHJldmlvdXMgcHJvdG90eXBlIGZvcgogICdlZnhfZWYxMF92YWRhcHRv
+cl9mcmVlJyBbLVdtaXNzaW5nLXByb3RvdHlwZXNdCiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvc2Zj
+L2VmMTAuYzogd2FybmluZzogbm8gcHJldmlvdXMgcHJvdG90eXBlIGZvcgogICdlZnhfZWYxMF92
+cG9ydF9hZGRfbWFjJyBbLVdtaXNzaW5nLXByb3RvdHlwZXNdCiAgZHJpdmVycy9uZXQvZXRoZXJu
+ZXQvc2ZjL2VmMTAuYzogd2FybmluZzogbm8gcHJldmlvdXMgcHJvdG90eXBlIGZvcgogICdlZnhf
+ZWYxMF92cG9ydF9kZWxfbWFjJyBbLVdtaXNzaW5nLXByb3RvdHlwZXNdCiAgZHJpdmVycy9uZXQv
+ZXRoZXJuZXQvc2ZjL2VmMTAuYzogd2FybmluZzogbm8gcHJldmlvdXMgcHJvdG90eXBlIGZvcgog
+ICdlZnhfZWYxMF90eF90c29fZGVzYycgWy1XbWlzc2luZy1wcm90b3R5cGVzXQoKVGhlc2Ugbm9u
+LXN0YXRpYyBmdW5jdGlvbnMgYXJlIGRlZmluZWQgaW4gZWYxMC5jIGFuZCBjYWxsZWQgZnJvbQpl
+ZjEwX3NyaW92LmMsIGJ1dCBoYXZlIG5vIGRlY2xhcmF0aW9uIGluIGFueSBzaGFyZWQgaGVhZGVy
+LgpBZGQgdGhlIG1pc3NpbmcgcHJvdG90eXBlcyB0byBlZnguaC4KClNpZ25lZC1vZmYtYnk6IGNo
+ZW5haWJpbmcgPGNoZW5haWJpbmdAY21zcy5jaGluYW1vYmlsZS5jb20+Ci0tLQogZHJpdmVycy9u
+ZXQvZXRoZXJuZXQvc2ZjL2VmeC5oIHwgMTIgKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwg
+MTIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L3NmYy9l
+ZnguaCBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3NmYy9lZnguaAppbmRleCAxMjM0NTY3ODkwYWIu
+LmFiY2RlZjEyMzQ1NiAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvc2ZjL2VmeC5o
+CisrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3NmYy9lZnguaApAQCAtMjA5LDYgKzIwOSwxOCBA
+QCBpbnQgZWZ4X3hkcF90eF9idWZmZXJzKHN0cnVjdCBlZnhfbmljICplZngsIGludCBuLCBzdHJ1
+Y3QgeGRwX2ZyYW1lICoqeGRwZnMsCiAJCSAgICAgICBib29sIGZsdXNoKTsKIAorLyogZWYxMC5j
+OiBleHBvcnRlZCBoZWxwZXJzIGFsc28gdXNlZCBieSBlZjEwX3NyaW92LmMgKi8KK2ludCBlZnhf
+ZWYxMF92YWRhcHRvcl9xdWVyeShzdHJ1Y3QgZWZ4X25pYyAqZWZ4LCB1bnNpZ25lZCBpbnQgcG9y
+dF9pZCwKKwkJCSAgICB1MzIgKnBvcnRfZmxhZ3MsIHUzMiAqdmFkYXB0b3JfZmxhZ3MsCisJCQkg
+ICAgdW5zaWduZWQgaW50ICp2bGFuX3RhZ3MpOworaW50IGVmeF9lZjEwX3ZhZGFwdG9yX2FsbG9j
+KHN0cnVjdCBlZnhfbmljICplZngsIHVuc2lnbmVkIGludCBwb3J0X2lkKTsKK2ludCBlZnhfZWYx
+MF92YWRhcHRvcl9mcmVlKHN0cnVjdCBlZnhfbmljICplZngsIHVuc2lnbmVkIGludCBwb3J0X2lk
+KTsKK2ludCBlZnhfZWYxMF92cG9ydF9hZGRfbWFjKHN0cnVjdCBlZnhfbmljICplZngsCisJCQkg
+ICB1bnNpZ25lZCBpbnQgcG9ydF9pZCwgY29uc3QgdTggKm1hYyk7CitpbnQgZWZ4X2VmMTBfdnBv
+cnRfZGVsX21hYyhzdHJ1Y3QgZWZ4X25pYyAqZWZ4LAorCQkJICAgdW5zaWduZWQgaW50IHBvcnRf
+aWQsIGNvbnN0IHU4ICptYWMpOworaW50IGVmeF9lZjEwX3R4X3Rzb19kZXNjKHN0cnVjdCBlZnhf
+dHhfcXVldWUgKnR4X3F1ZXVlLCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiLAorCQkJIGJvb2wgKmRhdGFf
+bWFwcGVkKTsKKwogI2VuZGlmIC8qIEVGWF9FRlhfSCAqLwotLSAKMi4zOS4w
