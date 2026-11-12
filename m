@@ -1,41 +1,41 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794472677;
-	b=Fzo0Y1cVrc0Kch1BCFDxlqW8VPUGfHU8PEe9KfcN1Jq8eydyRJBu6E0iaOL4LVgplEhW
-	 lt4vaxFYVqeOjcj++h3dFmkll2xtbJUjCNkVY9343Vqleyipkdg/+Dyj//PrB9LQfPAhq
-	 Wakyr/2ZqqAGf3D9AXecDMYMeTaHlByFMdwwl5K6FnKFCvo3+hPIeEzqsLeXDr3HWmqpf
-	 foSAbK7fBtkZtxdRzv4zDQn+LYq8AG7TnZJgtPQwUqquvCfg63hoOlJKx4MSorstn7MFD
-	 q7qRjq9L8HBGmhBH4S+Kb62k5KZU+zC/dpaV+fICoFCwMnO10A+J91lWd2qKFzEUx1Q==
+	b=fPuiMFjHTiowvI+oG389RPnY/Y7N5ewPxq2LNQJqCDCP4vuL/ZzGIyUtM6Be1nY9X/R5
+	 xcdXbHv6ADtPZUk2cbz18DbXTu0XcvbvOCjkqyFk81wLUz9BdfeMHxSswdYfLwMwAh1cu
+	 EqZNO6JMG78lsOoCUFwvpYvlB7vMO+3dLvmqj8pTFcfWFyjIXtp/7cDKCGcojFRKRvxjz
+	 1m7Kr7trDHam+N0dl9zMx1CIo3FiuJrwbpI7oDuPljSH+Io9eXU3BdxtMm20TXLkLKAWd
+	 84wTh/Nj4z5Jdij3mulcLqO57sX2aOeJDirEjV2nXx3cmUDUnbeLoGM9ERayXAdZb9g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794472677;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=+SHNkVP1QeJXX81DDUzaRvsnZJM4H9Pz1GBRNHq2FGk=;
-	b=4i4JQ7Zo1chWV0IAx+8e9QId/nThBM5ktlORhUbQFEvu0YpTAYNdrshafbJS+HCU5nT+
-	 DDYMdveogTCk7+CGsoQTaDi6d8cdPC7eAeK+6qug2qXTzbo8408yAAUgMxJa9aOWccHy2
-	 g4MAYsk4Uj6LerdgD8kO6Zx9fnhs7jt+xiCxVdk2vaFNvIoRwY9PegkR6CXl4K6hkECWt
-	 +rpXLCA68cqoP0iQf9Hc9KT7IaWT+EYEp9+SzE62nnG9EdbSHa5bQsqFm4l4cVX2pcCbF
-	 XJ3wuPrXNLwFakHOpJBaFWpf9BVI/XN9I9Dzvn9YEYTirm76jNif7ZpHjdew530p40w==
+	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
+	b=LWyoN9t0tYNX37+B6xCJz5c0W6mq7b0deeP1lNwkcw3l2kFhPnwGVnqgOkKGv4GrlcC7
+	 ckMchcOmmtJG3CtI+QlFKJfczCftZoGTe2UAOrCRDR84CgEt37NEVGJnzAMzHfRi0baYF
+	 sqGOZk4ZopuBLRkVPzbWLjuMO7bjKL9Y/8fhv/60iig/HOOop7kZXRwuucxRlyBYn4ANQ
+	 tTWmLgAEsTFvULS+1St9iRfF/7/1EHSUgq3VPdr3qbOkUdNti4493F9qxTsVvirDf94tu
+	 gyFQRdkb5J8hmQA4ikv87RcBhP9WwBHQfsxwv1AqrNR749zdde9MEj/RYIZ4zZwYBMA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=cRJIo+8N;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Us3odBQ4;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFF260707A5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76776607079E;
 	Thu, 12 Nov 2026 08:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FFF260707A5
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76776607079E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=cRJIo+8N
-Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.4.pengutronix.de [10.17.1.12])
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Us3odBQ4
+Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::ac])
 	(Authenticated sender: relay-from-dude04.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8DA32205847;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8A83B205836;
 	Thu, 12 Nov 2026 09:37:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794472671;
@@ -43,40 +43,40 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+SHNkVP1QeJXX81DDUzaRvsnZJM4H9Pz1GBRNHq2FGk=;
-	b=cRJIo+8N//iNA7/5qOFGcVifSytAcJvTfWZcwEe/H0WP9lDjxo/vtmLeUJj5BqxnEZde97
-	uO0v/60MsZE7fphD0s16H5uclZ5OO4ri3vJOI8u6MHVEpCnMtfKnMdMH6E+cPwBMlwu4kp
-	ohMJvjkgeNFISraz10owMLyIz2ktreTqp5yV8/z5Ivg9KxqIX5D+8yhb7h42OPw/InW4hW
-	LEP0Pm8kLCkSmQBq/PJ925U1ar6jsbm3FpZL2BAdJjRm3noSxL/BGjaU88yjhZsXXN+uZm
-	YXG1GOeIcwqhD3R/6QbNCwBLJea6yC8mCb5suWbZp6UzazRYHmhW+lpJ/cufqg==
+	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
+	b=Us3odBQ4PsgrAfKuswlLtFYBgcPjvnFxMf/4yoa7ekxZq+dAPW52QwWTFGtgVi8ks6lS3Z
+	nmC5QKy8Jg5I3ozUzRC+439FI251r4Ah2oZZCygHOZKqU7f9QYzgeuRqaGpeoijcy9IrHj
+	rGDN+aZ6m1KWdVqM5ofjwnnNCwwhUkfYdv2qeUH5li4oCq7QceqHq3zpvPG9U7qC9bljvq
+	7ATgL7IwiEu32GQkYBPisdNsjdl63UCbwX0DHFcCdGzAqlSMJ23f0S0LBvoFNlDFjDYHJt
+	0vTYvDYiFdpFNKr+V5BPXCJz2GkeGxBrLRaEuMMX7fJyo7GWYC7xonEiOBTkZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794472671;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+SHNkVP1QeJXX81DDUzaRvsnZJM4H9Pz1GBRNHq2FGk=;
-	b=QH1sKvyFMm+XS9+1ScpSviPmc3wX9Fm8F/7H9ghI70EQjpv3QqsusAmfrkQZ1NSdUMxDXn
-	iHv/HfjubjCTbjynIZKMWPWr8Z9VHYGQujvvAs0dpvOOHpfyzppktTcJCAufdOi8Zn7ipq
-	m0E92dYmSGkgLz54CXm+fE2RS/t9ktBDESVEEuBZo2gKSKgZiCRMQCXfjo8yNljVeVmQv7
-	sahURSPiv65ipqKwr+q9cSEYRhBKC+A2MdgUMzv5by8lslHkgtvoaeezvpSv6kiiez3zwR
-	CKzEARtbJLPO0E9M1FR0fWbFpIGN80NbjAMxM8EoOhWPg5kCGozLTRMee+vSJQ==
+	bh=RQk4jWkk+NH4t7YyU4ZqKjMoejeTW5BAQK7uOBeQH7w=;
+	b=a3mKe91slCzI+JBzYV3NUhJjWz/HDU1w/8TE8q5K2V/NAlHISw1/1OdV3wAyWnmhmAkOyO
+	fZ27Fgs2nwpy0tg75BUG8/XFXMQQrIW981R48VPQoFp5ERbNKkdbov6r9kzrKj8H64NJjd
+	ejRpPiBpmACvGa6D6n1yCVjm4Xtyo4LIQV+p/0hz4vj5mWK+q1l6Nzy91vApl93Ka/+3TG
+	SpAQ/JQNw44MmtUlh58IdOTDFSGmrRh18LGYSi3JvLzg5ywo2WccgjUSH8YA7HWRSFHhG3
+	XzVaKoVMWTsxcqmV87Jq/rx4UgShNI180Abb5chl3A9EtJblgy4Y1Us3vNs3bw==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794472671; a=rsa-sha256;
 	cv=none;
-	b=MSR9jsjoDf86X9BfgiW16Y0VcyvRTB6E2LA+0lTkf7ozVb15yPnNkiYojPdcNZ88zGSTrb
-	FOAScEmi52XEu0UT86Iis+JIt7Hl5/G+buOnGGo01yt58jTi84Nli07bGU+ZLl5uKwxwCg
-	hpq7qP2WToygQ4nd0T5zmk2XejxyhVtBMmT5vSiszGqE8S6RprAjPMocbgqoYPVqTgdZtX
-	XfAKyys1HcLwgPi9Ue+dyteHWZWUcF/nmNLJKjC5Spm8cw74f7Uh/gdaFP7T6pClkoJLr+
-	wl09MVd6ifxecfc9zj9Y5D0KxAmNYYDrkwKnD7G6wwnHPPQXSxqNfuqw/J0WNQ==
+	b=RQjCywgxWl8NM8HOlGZKLZVxkvW0FimCUf2OQ4dm4K4rQbUKWSWmxIK4LlVaxo4ar+AKXG
+	ZAD4C892gO7UGQJuDaYl/AMES9j5WslrtAJE0NPIpfTRDeDbYcoYclaZycb8MWPB4VqFa0
+	KPtN8gRd6iPlZHqxvMLMQiIojMFqQeC7ETtHS8Zlpj33zPrV8DqZAh7YoTKtAmqh8AwOGR
+	QV8TWD1ZTyg91Tu0BiXfV0MvMx7lOwhJ85TRSeHJttlqB1Ue4D/lH2Jt4ouDacELyssqks
+	7uR3AiPN7EIhpw87p/sklXvoN9G0TlQJSTQz3O+DZcKO8cDgzPgW+H34pl8q8g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude04.red.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
 Received: by dude04.red.stw.pengutronix.de (Postfix, from userid 1058)
-	id 61FF9381E51; Thu, 12 Nov 2026 09:37:51 +0100 (CET)
+	id 5C67D381DC0; Thu, 12 Nov 2026 09:37:51 +0100 (CET)
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 12 Nov 2026 09:37:52 +0100
-Subject: [PATCH net-next v2 09/10] net: dsa: realtek: rtl8365mb: offload
- DCB apptrust
+Date: Thu, 12 Nov 2026 09:37:49 +0100
+Subject: [PATCH net-next v2 06/10] net: dsa: realtek: rtl8365mb: store the
+ egress queue count per chip
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,7 +88,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-rtl8365mb-dcb-ingress-v2-9-f8e6fbdf8c99@pengutronix.de>
+Message-Id: <20261112-rtl8365mb-dcb-ingress-v2-6-f8e6fbdf8c99@pengutronix.de>
 References: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de>
 In-Reply-To: <20261112-rtl8365mb-dcb-ingress-v2-0-f8e6fbdf8c99@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -102,433 +102,95 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de
 X-Mailer: b4 0.14.2
 
-Wire up port_get_apptrust and port_set_apptrust. The admin can then
-choose through dcbnl apptrust which ingress classification a port trusts
-for its priority: 802.1p (PCP), DSCP or both. A port that trusts nothing
-keeps the port default priority.
+Store the number of egress queues in the per-chip info structure and
+advertise it through ds->num_tx_queues, following the ksz driver
+(struct ksz_chip_data.num_tx_queues).
 
-In the driver's model of the hardware, the trusted priority-decision
-table is switch-wide, so all ports that trust something must trust the
-same selectors. While another port trusts a set of selectors, a request
-to trust a different set is refused with -EBUSY.
-
-When both are trusted, DSCP must come first. When PCP is trusted, the
-switch classifies an untagged frame by the PCP given to untagged
-frames. A PCP source ranked above DSCP would then hide DSCP from
-untagged IP frames. Refuse the order pcp dscp and any unknown selector
-with -EOPNOTSUPP.
+The queue count is a per-chip hardware property, and this driver supports
+several chips of the rtl8367c family. All currently supported chips expose
+eight queues, but keeping the count in chip_info lets the QoS code that
+follows program the priority-to-queue map via the ieee8021q helpers for
+whatever queue count a chip carries, so the 802.1Q collapse is correct
+rather than hard-coded to eight.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 ---
-Changes in v2:
-- move selector and precedence validation into rtl83xx-qos.c behind new
-  qos_get/set_apptrust callbacks; weights and -EBUSY stay here (Linus)
-- use one-hot decision weights; in the driver's model, the v1 linear
-  weights could tie PCP with DSCP (Linus)
-- define the apptrust slot order once (enum rtl83xx_apptrust_slot) for
-  the shared selector table and the backend source table
-- write the PCP and DSCP weights with one register update, so a failed
-  write cannot leave the trusted table half programmed (sashiko)
-- check that all apptrust sources share the one register that is updated
-- rank DSCP above PCP and refuse pcp dscp with -EOPNOTSUPP, because
-  with PCP first, untagged IP frames never reach DSCP
----
- drivers/net/dsa/realtek/realtek.h        |  16 +++
- drivers/net/dsa/realtek/rtl8365mb_main.c |   4 +
- drivers/net/dsa/realtek/rtl8365mb_qos.c  | 171 +++++++++++++++++++++++++++++++
- drivers/net/dsa/realtek/rtl8365mb_qos.h  |   4 +
- drivers/net/dsa/realtek/rtl83xx-qos.c    |  75 ++++++++++++++
- drivers/net/dsa/realtek/rtl83xx-qos.h    |   4 +
- 6 files changed, 274 insertions(+)
+Q: Linus: why is the queue count not in struct realtek_variant?
+A: The count is per chip, while realtek_variant is per subdriver, and
+rtl8365mb serves several chips. The QoS code added later in this series
+reads ds->num_tx_queues, as Linus suggested in his v1 review, so
+RTL8366RB can advertise its own count the same way.
 
-diff --git a/drivers/net/dsa/realtek/realtek.h b/drivers/net/dsa/realtek/realtek.h
-index a9bdadbea3cbe19eeef0f33762318f022881e75f..0008ba9681cccb521d85d9bfc97425ad1b777aa6 100644
---- a/drivers/net/dsa/realtek/realtek.h
-+++ b/drivers/net/dsa/realtek/realtek.h
-@@ -100,6 +100,15 @@ struct realtek_priv {
- 	void			*chip_data; /* Per-chip extra variant data */
- };
- 
-+/* apptrust selector slots: the index into the trust[] array of the
-+ * qos_get/set_apptrust callbacks, in precedence order (highest first)
-+ */
-+enum rtl83xx_apptrust_slot {
-+	RTL83XX_APPTRUST_DSCP,
-+	RTL83XX_APPTRUST_PCP,
-+	RTL83XX_APPTRUST_COUNT,
-+};
-+
- /*
-  * struct realtek_ops - vtable for the per-SMI-chiptype operations
-  * @detect: detects the chiptype
-@@ -174,6 +183,13 @@ struct realtek_ops {
- 	int	(*qos_set_pcp_prio)(struct realtek_priv *priv, u8 pcp, u8 iprio);
- 	int	(*qos_set_dscp_prio)(struct realtek_priv *priv, u8 dscp,
- 				     u8 iprio);
-+	/* @trust is indexed by enum rtl83xx_apptrust_slot and has @n entries.
-+	 * The trust scope (per port or switch-wide) differs between chips.
-+	 */
-+	int	(*qos_set_apptrust)(struct realtek_priv *priv, int port,
-+				    const bool *trust, unsigned int n);
-+	int	(*qos_get_apptrust)(struct realtek_priv *priv, int port,
-+				    bool *trust, unsigned int n);
- };
- 
- struct realtek_variant {
+Changes in v2:
+- drop the num_tx_queues comment, which restated the assignment
+- keep the Reviewed-by tags: v2 only drops a comment
+---
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
 diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 512463be9212bb072380bc26c44b1bef23428917..d16e7c99217bdc01d1bdf7dbbcb8e7ed1441e6a8 100644
+index 1e6cdc61f6bd3b3f74e422dbbcfdcb67cc0532a7..f7960d94f1cd9f6a1982849a9e5a1b5d98880b4b 100644
 --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -3481,6 +3481,8 @@ static const struct dsa_switch_ops rtl8365mb_switch_ops = {
- 	.port_bridge_flags = rtl83xx_port_bridge_flags,
- 	.port_get_default_prio = rtl83xx_port_get_default_prio,
- 	.port_set_default_prio = rtl83xx_port_set_default_prio,
-+	.port_get_apptrust = rtl83xx_port_get_apptrust,
-+	.port_set_apptrust = rtl83xx_port_set_apptrust,
- 	.port_stp_state_set = rtl8365mb_port_stp_state_set,
- 	.port_fast_age = rtl83xx_port_fast_age,
- 	.port_fdb_add = rtl83xx_port_fdb_add,
-@@ -3527,6 +3529,8 @@ static const struct realtek_ops rtl8365mb_ops = {
- 	.qos_set_port_prio = rtl8365mb_qos_set_port_prio,
- 	.qos_set_pcp_prio = rtl8365mb_qos_set_pcp_prio,
- 	.qos_set_dscp_prio = rtl8365mb_qos_set_dscp_prio,
-+	.qos_set_apptrust = rtl8365mb_qos_set_apptrust,
-+	.qos_get_apptrust = rtl8365mb_qos_get_apptrust,
+@@ -711,6 +711,7 @@ struct rtl8365mb_extint {
+  * @extints: available external interfaces
+  * @jam_table: chip-specific initialization jam table
+  * @jam_size: size of the chip's jam table
++ * @num_tx_queues: number of egress queues exposed by the chip
+  *
+  * These data are specific to a given chip in the family of switches supported
+  * by this driver. When adding support for another chip in the family, a new
+@@ -724,6 +725,7 @@ struct rtl8365mb_chip_info {
+ 	const struct rtl8365mb_extint extints[RTL8365MB_MAX_NUM_EXTINTS];
+ 	const struct rtl8365mb_jam_tbl_entry *jam_table;
+ 	size_t jam_size;
++	unsigned int num_tx_queues;
  };
  
- static const char *const rtl8365mb_supplies[] = {
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_qos.c b/drivers/net/dsa/realtek/rtl8365mb_qos.c
-index 2a849d0e4898a712d8f4babd5cdd03fe8e207814..c465d639ee5e527a604498fb064d6757aac1fda4 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_qos.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_qos.c
-@@ -12,6 +12,7 @@
- #include <linux/build_bug.h>
- #include <linux/dcbnl.h>
- #include <linux/regmap.h>
-+#include <linux/string.h>
- #include <net/dsa.h>
- #include <net/dscp.h>
- #include <net/ieee8021q.h>
-@@ -114,6 +115,8 @@ static_assert(RTL8365MB_QOS_WEIGHT_BITS * RTL8365MB_QOS_WEIGHTS_PER_REG <=
- #define RTL8365MB_QOS_PRIDEC_TABLE_UNTRUSTED		0
- #define RTL8365MB_QOS_PRIDEC_TABLE_TRUSTED		1
+ /* Chip info for each supported switch in the family */
+@@ -748,6 +750,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+ 		},
+ 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+ 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
++		.num_tx_queues = 8,
+ 	},
+ 	{
+ 		.name = "RTL8367S",
+@@ -761,6 +764,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+ 		},
+ 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+ 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
++		.num_tx_queues = 8,
+ 	},
+ 	{
+ 		.name = "RTL8367SB",
+@@ -776,6 +780,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+ 		},
+ 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+ 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
++		.num_tx_queues = 8,
+ 	},
+ 	{
+ 		.name = "RTL8367RB-VB",
+@@ -790,6 +795,7 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+ 		},
+ 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+ 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
++		.num_tx_queues = 8,
+ 	},
+ };
  
-+static_assert(RTL8365MB_QOS_MAX_PORTS <= RTL8365MB_QOS_REG_BITS);
-+
- /* Priority-decision sources, in the hardware's numbering */
- enum rtl8365mb_qos_pridec_src {
- 	RTL8365MB_QOS_PRIDEC_PORT = 0,
-@@ -141,6 +144,36 @@ static_assert(RTL8365MB_QOS_PRIDEC_REG(RTL8365MB_QOS_PRIDEC_TABLE_TRUSTED,
- #define RTL8365MB_QOS_WEIGHT_DISABLED			0
- #define RTL8365MB_QOS_WEIGHT_PORT			BIT(0)
+@@ -3288,6 +3294,8 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
+ 		goto out_teardown_irq;
+ 	}
  
-+/* Priority-decision source of each apptrust slot */
-+static const u8 rtl8365mb_qos_apptrust_src[] = {
-+	[RTL83XX_APPTRUST_DSCP]	= RTL8365MB_QOS_PRIDEC_DSCP,
-+	[RTL83XX_APPTRUST_PCP]	= RTL8365MB_QOS_PRIDEC_1Q,
-+};
++	ds->num_tx_queues = mb->chip_info->num_tx_queues;
 +
-+/* The 1Q source also classifies untagged frames, by the PCP given to untagged
-+ * frames. Ranked above DSCP, it would hide DSCP from untagged IP frames.
-+ */
-+static_assert(RTL83XX_APPTRUST_DSCP < RTL83XX_APPTRUST_PCP);
-+
-+static_assert(ARRAY_SIZE(rtl8365mb_qos_apptrust_src) ==
-+	      RTL83XX_APPTRUST_COUNT);
-+
-+/* Register of source @_s in the trusted decision table */
-+#define RTL8365MB_QOS_APPTRUST_REG(_s) \
-+	RTL8365MB_QOS_PRIDEC_REG(RTL8365MB_QOS_PRIDEC_TABLE_TRUSTED, _s)
-+
-+/* The top trusted rank must fit in the weight field */
-+static_assert((RTL8365MB_QOS_WEIGHT_PORT <<
-+	       ARRAY_SIZE(rtl8365mb_qos_apptrust_src)) <
-+	      BIT(RTL8365MB_QOS_WEIGHT_BITS));
-+
-+/* Each trusted slot outranks the port default and every later slot */
-+static u8 rtl8365mb_qos_apptrust_weight(unsigned int slot)
-+{
-+	return RTL8365MB_QOS_WEIGHT_PORT <<
-+	       (ARRAY_SIZE(rtl8365mb_qos_apptrust_src) - slot);
-+}
-+
- static u32 rtl8365mb_qos_sel_mask(unsigned int idx)
- {
- 	unsigned int off = RTL8365MB_QOS_SEL_OFFSET(idx);
-@@ -304,6 +337,14 @@ static int rtl8365mb_qos_set_pridec(struct realtek_priv *priv, int table,
- 						 weight);
- }
- 
-+static int rtl8365mb_qos_get_pridec(struct realtek_priv *priv, int table,
-+				    int src)
-+{
-+	return rtl8365mb_qos_regmap_read_field(priv,
-+					       RTL8365MB_QOS_PRIDEC_REG(table, src),
-+					       rtl8365mb_qos_weight_mask(src));
-+}
-+
- /* Program every source in both tables rather than relying on the reset state */
- int rtl8365mb_qos_pridec_init(struct realtek_priv *priv)
- {
-@@ -327,3 +368,133 @@ int rtl8365mb_qos_pridec_init(struct realtek_priv *priv)
- 	/* In the driver's model, a clear bit selects the untrusted table */
- 	return regmap_write(priv->map, RTL8365MB_QOS_PRIDEC_TBL_SEL_REG, 0);
- }
-+
-+/* Read the trust state of each apptrust slot from the trusted table */
-+static int rtl8365mb_qos_apptrust_read(struct realtek_priv *priv, bool *trust)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(rtl8365mb_qos_apptrust_src); i++) {
-+		int weight;
-+
-+		weight = rtl8365mb_qos_get_pridec(priv,
-+						  RTL8365MB_QOS_PRIDEC_TABLE_TRUSTED,
-+						  rtl8365mb_qos_apptrust_src[i]);
-+		if (weight < 0)
-+			return weight;
-+
-+		trust[i] = weight != RTL8365MB_QOS_WEIGHT_DISABLED;
-+	}
-+
-+	return 0;
-+}
-+
-+int rtl8365mb_qos_get_apptrust(struct realtek_priv *priv, int port, bool *trust,
-+			       unsigned int n)
-+{
-+	u32 trusted_ports;
-+	int ret;
-+
-+	if (n != ARRAY_SIZE(rtl8365mb_qos_apptrust_src))
-+		return -EINVAL;
-+
-+	ret = regmap_read(priv->map, RTL8365MB_QOS_PRIDEC_TBL_SEL_REG,
-+			  &trusted_ports);
-+	if (ret)
-+		return ret;
-+
-+	/* On the untrusted table nothing but the port default is trusted. */
-+	if (!(trusted_ports & BIT(port))) {
-+		memset(trust, 0, n * sizeof(*trust));
-+		return 0;
-+	}
-+
-+	return rtl8365mb_qos_apptrust_read(priv, trust);
-+}
-+
-+/* The trusted table is shared by all ports. A port may switch to it only if it
-+ * trusts the same sources as the other ports already on it.
-+ */
-+static int rtl8365mb_qos_apptrust_check_shared(struct realtek_priv *priv,
-+					       int port, const bool *trust)
-+{
-+	bool other[ARRAY_SIZE(rtl8365mb_qos_apptrust_src)];
-+	u32 trusted_ports;
-+	int ret;
-+
-+	ret = regmap_read(priv->map, RTL8365MB_QOS_PRIDEC_TBL_SEL_REG,
-+			  &trusted_ports);
-+	if (ret)
-+		return ret;
-+
-+	if (!(trusted_ports & ~BIT(port)))
-+		return 0;
-+
-+	ret = rtl8365mb_qos_apptrust_read(priv, other);
-+	if (ret)
-+		return ret;
-+
-+	if (memcmp(trust, other, sizeof(other))) {
-+		dev_err(priv->dev,
-+			"trust profile is switch-wide; another port already trusts different sources\n");
-+		return -EBUSY;
-+	}
-+
-+	return 0;
-+}
-+
-+int rtl8365mb_qos_set_apptrust(struct realtek_priv *priv, int port,
-+			       const bool *trust, unsigned int n)
-+{
-+	u32 reg = RTL8365MB_QOS_APPTRUST_REG(rtl8365mb_qos_apptrust_src[0]);
-+	u32 mask = 0, val = 0;
-+	bool any = false;
-+	int ret, i;
-+
-+	if (n != ARRAY_SIZE(rtl8365mb_qos_apptrust_src))
-+		return -EINVAL;
-+
-+	ret = rtl8365mb_qos_check_port(priv, port);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < n; i++)
-+		any |= trust[i];
-+
-+	if (!any)
-+		return regmap_clear_bits(priv->map,
-+					 RTL8365MB_QOS_PRIDEC_TBL_SEL_REG,
-+					 BIT(port));
-+
-+	ret = rtl8365mb_qos_apptrust_check_shared(priv, port, trust);
-+	if (ret)
-+		return ret;
-+
-+	/* Collect all slot weights into one mask and value and write them once,
-+	 * so a failed write cannot leave the trusted table half programmed.
-+	 */
-+	for (i = 0; i < n; i++) {
-+		u8 weight = trust[i] ? rtl8365mb_qos_apptrust_weight(i) :
-+				       RTL8365MB_QOS_WEIGHT_DISABLED;
-+		u8 src = rtl8365mb_qos_apptrust_src[i];
-+		u32 src_mask = rtl8365mb_qos_weight_mask(src);
-+
-+		/* A slot missing from rtl8365mb_qos_apptrust_src[] is 0, which
-+		 * is the port source. Reject it. Also reject a source whose
-+		 * weight is in a different register than reg.
-+		 */
-+		if (WARN_ON_ONCE(src == RTL8365MB_QOS_PRIDEC_PORT ||
-+				 RTL8365MB_QOS_APPTRUST_REG(src) != reg))
-+			return -EINVAL;
-+
-+		mask |= src_mask;
-+		val |= field_prep(src_mask, weight);
-+	}
-+
-+	ret = regmap_update_bits(priv->map, reg, mask, val);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_set_bits(priv->map, RTL8365MB_QOS_PRIDEC_TBL_SEL_REG,
-+			       BIT(port));
-+}
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_qos.h b/drivers/net/dsa/realtek/rtl8365mb_qos.h
-index 71949ece4af8fae5c49cf105ddaa3db9bc622cf2..eed5ea5fa7f345ce6989e3e890d7cd755da9d0fc 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_qos.h
-+++ b/drivers/net/dsa/realtek/rtl8365mb_qos.h
-@@ -24,5 +24,9 @@ int rtl8365mb_qos_set_port_prio(struct realtek_priv *priv, int port, u8 iprio,
- 				u8 untag_pcp);
- int rtl8365mb_qos_set_pcp_prio(struct realtek_priv *priv, u8 pcp, u8 iprio);
- int rtl8365mb_qos_set_dscp_prio(struct realtek_priv *priv, u8 dscp, u8 iprio);
-+int rtl8365mb_qos_set_apptrust(struct realtek_priv *priv, int port,
-+			       const bool *trust, unsigned int n);
-+int rtl8365mb_qos_get_apptrust(struct realtek_priv *priv, int port, bool *trust,
-+			       unsigned int n);
- 
- #endif /* _REALTEK_RTL8365MB_QOS_H */
-diff --git a/drivers/net/dsa/realtek/rtl83xx-qos.c b/drivers/net/dsa/realtek/rtl83xx-qos.c
-index 08091586901291e45ad1a2c64730cdcc30298b7a..b25a9dfb9138b5c2c176dbe68974cdd65e1643bb 100644
---- a/drivers/net/dsa/realtek/rtl83xx-qos.c
-+++ b/drivers/net/dsa/realtek/rtl83xx-qos.c
-@@ -10,6 +10,7 @@
-  * The backend maps internal priorities to its egress queues itself.
-  */
- 
-+#include <linux/build_bug.h>
- #include <linux/dcbnl.h>
- #include <linux/errno.h>
- #include <net/dscp.h>
-@@ -19,6 +20,25 @@
- #include "realtek.h"
- #include "rtl83xx-qos.h"
- 
-+/* dcbnl selector of each apptrust slot */
-+static const u8 rtl83xx_apptrust_sel[] = {
-+	[RTL83XX_APPTRUST_DSCP]	= IEEE_8021QAZ_APP_SEL_DSCP,
-+	[RTL83XX_APPTRUST_PCP]	= DCB_APP_SEL_PCP,
-+};
-+
-+static_assert(ARRAY_SIZE(rtl83xx_apptrust_sel) == RTL83XX_APPTRUST_COUNT);
-+
-+static int rtl83xx_apptrust_sel_to_slot(u8 sel)
-+{
-+	int slot;
-+
-+	for (slot = 0; slot < ARRAY_SIZE(rtl83xx_apptrust_sel); slot++)
-+		if (rtl83xx_apptrust_sel[slot] == sel)
-+			return slot;
-+
-+	return -EINVAL;
-+}
-+
- /* Seed the PCP and DSCP tables, although neither source is trusted yet */
- int rtl83xx_qos_init(struct dsa_switch *ds)
- {
-@@ -113,3 +133,58 @@ int rtl83xx_port_set_default_prio(struct dsa_switch *ds, int port, u8 prio)
- 	return priv->ops->qos_set_port_prio(priv, port, tt, prio);
- }
- EXPORT_SYMBOL_NS_GPL(rtl83xx_port_set_default_prio, "REALTEK_DSA");
-+
-+int rtl83xx_port_get_apptrust(struct dsa_switch *ds, int port, u8 *sel,
-+			      int *nsel)
-+{
-+	bool trust[ARRAY_SIZE(rtl83xx_apptrust_sel)];
-+	struct realtek_priv *priv = ds->priv;
-+	int i, ret;
-+
-+	if (!priv->ops->qos_get_apptrust)
-+		return -EOPNOTSUPP;
-+
-+	ret = priv->ops->qos_get_apptrust(priv, port, trust,
-+					  ARRAY_SIZE(trust));
-+	if (ret)
-+		return ret;
-+
-+	*nsel = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(rtl83xx_apptrust_sel); i++)
-+		if (trust[i])
-+			sel[(*nsel)++] = rtl83xx_apptrust_sel[i];
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(rtl83xx_port_get_apptrust, "REALTEK_DSA");
-+
-+int rtl83xx_port_set_apptrust(struct dsa_switch *ds, int port, const u8 *sel,
-+			      int nsel)
-+{
-+	bool trust[ARRAY_SIZE(rtl83xx_apptrust_sel)] = { };
-+	struct realtek_priv *priv = ds->priv;
-+	int i, prev = -1;
-+
-+	if (!priv->ops->qos_set_apptrust)
-+		return -EOPNOTSUPP;
-+
-+	/* The backends use a fixed precedence, so the selector list
-+	 * must follow the slot order.
-+	 */
-+	for (i = 0; i < nsel; i++) {
-+		int slot = rtl83xx_apptrust_sel_to_slot(sel[i]);
-+
-+		if (slot < 0 || slot <= prev) {
-+			dev_err(priv->dev,
-+				"unsupported apptrust order; supported: dscp, pcp, dscp pcp\n");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		prev = slot;
-+		trust[slot] = true;
-+	}
-+
-+	return priv->ops->qos_set_apptrust(priv, port, trust, ARRAY_SIZE(trust));
-+}
-+EXPORT_SYMBOL_NS_GPL(rtl83xx_port_set_apptrust, "REALTEK_DSA");
-diff --git a/drivers/net/dsa/realtek/rtl83xx-qos.h b/drivers/net/dsa/realtek/rtl83xx-qos.h
-index 82ad9338d78db9062d8ceed06378b31e467ee04d..fbddc7b7d9dd37918423afc5373b684596637a05 100644
---- a/drivers/net/dsa/realtek/rtl83xx-qos.h
-+++ b/drivers/net/dsa/realtek/rtl83xx-qos.h
-@@ -11,5 +11,9 @@ int rtl83xx_qos_init(struct dsa_switch *ds);
- int rtl83xx_qos_init_port(struct dsa_switch *ds, int port);
- int rtl83xx_port_get_default_prio(struct dsa_switch *ds, int port);
- int rtl83xx_port_set_default_prio(struct dsa_switch *ds, int port, u8 prio);
-+int rtl83xx_port_get_apptrust(struct dsa_switch *ds, int port, u8 *sel,
-+			      int *nsel);
-+int rtl83xx_port_set_apptrust(struct dsa_switch *ds, int port, const u8 *sel,
-+			      int nsel);
- 
- #endif /* _RTL83XX_QOS_H */
+ 	/* Start statistics counter polling */
+ 	ret = rtl8365mb_stats_setup(priv);
+ 	if (ret) {
 
 -- 
 2.47.3
