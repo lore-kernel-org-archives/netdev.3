@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476405;
-	b=gB1v7OwThDrS84FHmMMHS0EABLPSZBkyMZlAC6gUBqqasQupszm37a2nMNtKj3uIX97q
-	 bgVqLaw94a+QlWATsjyBlm08d5YLM4MydQ//ODr72xntNhhnPw4sHmFquNV7RClt5zrVX
-	 qSCs1ZW3Vd7jgXbbJ/uG2e8C36LnXH+uyIZ/ewT1p7evSj2oqcCElfPxqYmLVFuP9fSZz
-	 tnK2LckK7/rzwS01g7Jllxw1Fyr/hMWJp0FrlXmA0z1L19VG6sgbEVWryvs6+6ffq+F+T
-	 gGg5if2J4wao1DHH61iKDKyRKJ+nQ4GmUnG+vgm6xt6+s+Yfc54B2QfRuzC8lobcIBA==
+	t=1794476412;
+	b=wAdgBJnIeRFWZ/PNHbB3ksGMFCd8iAERmsArHtQeWIpiaF8D02nueiEQMKSZ4A4bASQn
+	 h4k5tMNSt5PTnOmUwc10y9/f1o/GAVZbyp3bqQ+ckcqY5M00sSgtDWuJemtiskryxYH6s
+	 AqwQ+VfcV+eNUnJxvTr6PgM3j7ft1QVwR/Av5kjF9EYeQrCDpd00eh6p7EmvwKj4RztKK
+	 ErXWjSK33CpZTEEic7sPt65J3noMj6krlg6TBWE1Qg1rDmZ3YSOrKZZPCS3buJMEAQuCK
+	 OJTv7a+Vuf/bRGIbmBfU0JAY4QqekAhL1mArZ8d1ie5YGK05JyKIKRGDS1AoJxHmiEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476405;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476412;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=TMeLSlgkdu/THkgzUVHvOLjX2ymbR91RP0Axt+hUjBw=;
-	b=Rga1gnfn0uEIDtUzvs93iLAKVPtNgR7ZvZbhqE0MChADzxRO+GvhZgY84WyNa3ukkfZJ
-	 cu+6mWdMJaBHS5VPzOAGJgpLqk4DxI3EUBnBg08VipPTt2Ruy1dATP/B+Sv+F1xvyq61X
-	 QeQIdtO+jzvoL+DMO3UZec7fPlTBaELRPqenRy8ArS6S1XJZrggQh9jsIE1RECYWf6fw9
-	 qTH+/iISje7uR8R7CxuAv2+SSy0mc7HyiMIoYLys+E6olBGGiLRcltLXyKM3VwPrQvG7C
-	 hyHaaGK8wVW3y6U5tLXROer2J+NAc2vu3kY5tEZADQPguq9TKX6cfQFSaclA2LkXZZw==
+	bh=NyUq0HGbA3xYCUVID2+llNrlZkXulKWcxnwhqdibIlI=;
+	b=BbpDg3fZ3TSQRNkduHb0TYmh6erjdTkOYcn02sezTkW38pbql/ccGf8Wznqiyok36NI4
+	 fqAXnSpniMDOJ5ZUrg17jF206pBbCbu4wQSdbOX0nxlPuR3N0UtW/6Caf4gtDha3HSWrL
+	 Ko7QzLRx+/cjCZ00Z2ygUIxLmHXnRGhBtcektpYG8IjzgmjIGLXb2ZYj6fWx/v7tKOveL
+	 CPpEABCNWuq+UgmdpEfWSdHQrAUm/7cTlywMhWM0MLTrhTGK6mv309ilHYyjtlzMpPE6s
+	 moss1tuyTy1xJx6Njycpc+Y3Whz1NSE94Tsp4IuTpynW72RsDSc5p1grhTGMzsCU27g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6ZGJ6cj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UPZlP6fI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F9606A335;
-	Thu, 12 Nov 2026 09:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE9E606A31C;
+	Thu, 12 Nov 2026 09:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6ZGJ6cj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52721F00A07;
-	Thu, 12 Nov 2026 09:40:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UPZlP6fI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DB81F00A09;
+	Thu, 12 Nov 2026 09:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794476405;
-	bh=TMeLSlgkdu/THkgzUVHvOLjX2ymbR91RP0Axt+hUjBw=;
+	s=k20260515; t=1794476412;
+	bh=NyUq0HGbA3xYCUVID2+llNrlZkXulKWcxnwhqdibIlI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=f6ZGJ6cjqhN17rDGKPshynKiOmlXX+a+/dd2YmmQPrGA8DFmfjdkwesaBwSIv45sT
-	 gzb2qi7pcJJtbUxhCT68PG5/px+TWQyz9EQq/+sz1jn5wSJNpLPlsf4vtYDVDN+j3p
-	 Q0InE2cJkuLP+LjAC1yfGPseSvVtj3tAYPL2HExQeXZT0st1ZVvC4yUO/GEjnD8e85
-	 ROWeb+V/pTmZC8rrzMeik/VGpM5lrGlPAfn5yE5DcUPIOqXEU5W5HLKiFFwJ4PoSsl
-	 OMHdXNxTuLjqurlFGT9CYebYj5/r9r9BkYqe8RjqCWsUOJV6SQA5XCP6mYTn5/KINt
-	 yv6rTWKRqA3VQ==
-Subject: Re: [PATCH net-next V2 02/13] net/mlx5: Detach auxiliary devices on
- attach failure during load
+	b=UPZlP6fIyXjZhhA+CNHsPkCgdn5sAUbpb3i3F4cFFKZ6tuCoptu5y5g2XU/TLPBza
+	 aiEYyXN9v4JlBVZfZwV3gqObA/OfgDyY4AHiKAaplcrwjfjectqRtGAOUuy1+6pJTO
+	 Ne5iumWe4eEcKUl6NEnpW9fS1C0hZEm6jEyDOP0+lEmitTbEklX+qtv0eKfJ7S6Zo2
+	 dRWYrqA7IAX6iEk2q3yTBGlX36k5nT/O2EZXdgtha2Y0SFg7JKqCqSsIONuszM3oOn
+	 jeOmcJck/qAKKkrANM27gH02V3j7+8eDcBzK5G/peQTc2euLnEvWkFC/CzsInUlI10
+	 sVK88RwRZGADg==
+Subject: Re: [PATCH net-next V2 09/13] net/mlx5e: Use the correct DMA dev when
+ data_direct is enabled
 From: netdev-bot+sashiko@kernel.org
 To: tariqt@nvidia.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -53,10 +53,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  mbloch@nvidia.com, mfleming@cloudflare.com, almasrymina@google.com,
  razor@blackwall.org, saeedm@nvidia.com, horms@kernel.org, sdf@fomichev.me,
  sdf.kernel@gmail.com, witu@nvidia.com
-Date: Thu, 12 Nov 2026 09:40:03 +0000
-Message-ID: <179447640317.2199510.744399659255139654@kernel.org>
-In-Reply-To: <20261110183826.2927274-3-tariqt@nvidia.com>
-References: <20261110183826.2927274-3-tariqt@nvidia.com>
+Date: Thu, 12 Nov 2026 09:40:10 +0000
+Message-ID: <179447641026.2199510.5931919267235772242@kernel.org>
+In-Reply-To: <20261110183826.2927274-10-tariqt@nvidia.com>
+References: <20261110183826.2927274-10-tariqt@nvidia.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -76,75 +76,131 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message says the fix "doesn't deserve a Fixes tag"
-  because the bug was found by code inspection and never reproduced.
+- [Low] This patch makes the data-direct PCI device (dd_dev->device) the
+  DMA device for the page_pool of data-direct RQs (mlx5e_alloc_rq,…
+- [Low] mlx5e_get_dma_dev() (en_main.c:965-976) reads
+  mdev->data_direct->dev with READ_ONCE() through…
 
 --
 
-net/mlx5: Detach auxiliary devices on attach failure during load
+net/mlx5e: Use the correct DMA dev when data_direct is enabled
 
-This patch adds a mlx5_detach_device() call to the err_attach path of
-mlx5_load_one_devl_locked(). The goal is to detach the auxiliary devices
-that attached successfully before mlx5_attach_device() hit a failure.
+This commit adds mlx5e_get_dma_dev(). When data_direct is enabled it
+returns the data direct device instead of the PF PCI device. The helper
+is used for the RQ page_pool DMA device and for .ndo_queue_get_dma_dev,
+and the latter now refuses to return a device in data-direct mode when
+RX queues are leased.
 
-> This issue was found during code inspection and was not reproduced.
-> Hence it doesn't deserve a Fixes tag.
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 5b99099e4ed0c..ebd41f24330d0 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -962,6 +962,19 @@ static void mlx5e_rq_free_shampo(struct mlx5e_rq *rq)
+>  	kvfree(shampo);
+>  }
+>  
+> +static struct device *mlx5e_get_dma_dev(struct mlx5_core_dev *mdev,
+> +					bool data_direct)
+> +{
+> +	struct mlx5_data_direct_dev *dd_dev;
+> +
+> +	if (!data_direct)
+> +		return mlx5_core_dma_dev(mdev);
+> +
+> +	dd_dev = mlx5_data_direct_get_dev(mdev->data_direct);
+> +
+> +	return dd_dev ? dd_dev->device : NULL;
 
 [Severity: Low]
-Is this a valid reason to leave out the Fixes tag? The Fixes convention
-points at the commit that introduced the bug. It doesn't exempt bugs that
-were found by inspection and never reproduced.
+Is anything keeping dd_dev alive between the READ_ONCE() in
+mlx5_data_direct_get_dev() and the dd_dev->device dereference here?
 
-mlx5_attach_device() in dev.c stops at the first failing entry. It does
-not unwind the entries it has already added or resumed:
+The unbind side clears the pointer, runs the notifier chain, and then
+frees the device:
 
-drivers/net/ethernet/mellanox/mlx5/core/dev.c:mlx5_attach_device() {
+mlx5_data_direct_remove()
+    mlx5_data_direct_dev_unreg(dev)
+        ...
+        mlx5_data_direct_do_unbind()
+            WRITE_ONCE(reg->dd.dev, NULL);
+            blocking_notifier_call_chain(&reg->users,
+                                         MLX5_DATA_DIRECT_UNBIND, NULL);
+    pci_disable_device(pdev);
+    kfree(dev->vuid);
+    kfree(dev);
+
+At this commit, mlx5e_data_direct_event() only logs on
+MLX5_DATA_DIRECT_UNBIND. It takes none of the locks the readers hold,
+which is priv->state_lock in mlx5e_queue_get_dma_dev() and in the channel
+open path that reaches mlx5e_alloc_rq().
+
+If a reader has already loaded a non-NULL dd_dev, can it dereference it
+after kfree(dev)? The returned struct device pointer is also used
+without taking a reference.
+
+This does not look reachable at this commit. set_pflag_data_direct()
+still returns -EOPNOTSUPP, so data_direct is never true here.
+
+Later in the series, "net/mlx5e: Disable data direct on data direct
+device unbind" makes the notifier take rtnl_lock(), netdev_lock() and
+priv->state_lock before it returns. That serializes it against these
+readers before kfree(dev) runs.
+
+> +}
+> +
+>  static int mlx5e_alloc_rq(struct mlx5e_params *params,
+>  			  struct mlx5e_rq_param *rq_param,
+>  			  struct mlx5e_rq_opt_param *rqo,
+> @@ -1105,7 +1118,11 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
+>  		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+>  		pp_params.pool_size = pool_size;
+>  		pp_params.nid       = node;
+> -		pp_params.dev       = rq->pdev;
+> +		pp_params.dev       = mlx5e_get_dma_dev(mdev, data_direct);
+
+[Severity: Low]
+With this change, the page_pool of a data direct RQ is created against
+dd_dev->device. mlx5e_queue_get_dma_dev() also hands that device to
+memory providers (devmem, io_uring zcrx), which map their buffers
+against it.
+
+What tears these down when the data direct device is unbound? At this
+commit, this is the only mlx5e consumer of MLX5_DATA_DIRECT_UNBIND:
+
+mlx5e_data_direct_event() {
     ...
-		if (ret) {
-			mlx5_core_warn(dev, "Device[%d] (%s) failed to load\n",
-				       i, mlx5_adev_devices[i].suffix);
+	if (action == MLX5_DATA_DIRECT_UNBIND)
+		mlx5_core_dbg(priv->mdev, "data direct device unbound\n");
 
-			break;
-		}
-    ...
+	return NOTIFY_OK;
 }
 
-Before this patch, err_attach in mlx5_load_one_devl_locked() went
-directly to clear_bit() and mlx5_unload(). mlx5_unload() destroys the
-EQ table, the IRQ table, the flow steering core, the clock and the
-bfreg. mlx5_function_teardown() then tears down the HCA.
+It doesn't close the data direct RQs, destroy their page pools, or
+unbind the memory provider mappings. mlx5_data_direct_remove() then
+runs pci_disable_device() and kfree(dev) right after the notifier
+returns.
 
-The aux drivers at lower indices were still bound at that point. One
-example is a resumed mlx5e netdev whose CQs still reference the freed
-EQs. Later, TX timeout recovery or the remove path
-(mlx5_unregister_device() -> aux remove -> CQ destroy) could touch
-those freed resources.
+Could the page_pool and dmabuf mappings outlive the device they were
+mapped against?
 
-This can be triggered by any aux probe or resume failure, such as
--ENOMEM, during devlink reload, firmware reset, health recovery
-(recovery=true) or PCI resume.
+This also doesn't appear reachable at this commit, since
+set_pflag_data_direct() in en_ethtool.c still returns -EOPNOTSUPP.
 
-According to git blame, the err_attach label without a detach came from:
+Later in the series, "net/mlx5e: Disable data direct on data direct
+device unbind" rewrites mlx5e_data_direct_event(). The new version calls
+netif_close() and netdev_unbind_dma_dev(), then clears
+MLX5E_PFLAG_DATA_DIRECT. The flag only becomes settable later, in
+"net/mlx5e: Enable the data direct netdev feature".
 
-Fixes: 6dea2f7eff96 ("net/mlx5: Separate probe vs. reload flows")
+> +		if (!pp_params.dev) {
+> +			err = -ENODEV;
+> +			goto err_free_by_rq_type;
+> +		}
+>  		pp_params.napi      = rq->cq.napi;
+>  		pp_params.netdev    = rq->netdev;
+>  		pp_params.dma_dir   = rq->buff.map_dir;
 
-Could the tag be added, and could the commit message say what happens
-without the fix (resources torn down while aux drivers are still
-attached)? Without the tag, stable maintainers have no signal to pick
-this up.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> index 1a45474ce03db..7e762f72b19ef 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> @@ -1547,6 +1547,7 @@ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery)
->  	return 0;
->  
->  err_attach:
-> +	mlx5_detach_device(dev, true);
->  	clear_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state);
->  	mlx5_unload(dev);
->  err_load:
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110183826.2927274-1-tariqt%40nvidia.com
