@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794490267;
-	b=x9/zMfNih2AF4DwNkYMHx8sLPnhfxVHYIjrulODV3PYA/gpOqPEQYq+hxNg2vOddorCx
-	 PVxEpJ1pAbnaglgMiOk11Tf/N6+8mvNNy3aHO5gkAkbmBKrtRb0zCPCilKjIrIty57AjV
-	 OcFQGWKsA5Y989OWQiEWlmCK0GuiAbce295M+tRcQZIWZilKHPgD7oHZJm+u60z0iUYoF
-	 cuHQHqXnYGySp5AB93qeg0sz+o9BbbZ1TclQMJkZ6F3hYdB+sqFF+F9kegMR5JCMZzqKb
-	 FnEliboEOCn3b7hGLPcwpGERMtWZzjLWSGGJOZJot6/0vUfTi/SJUZSeoQM9r1lo8uA==
+	t=1794490270;
+	b=erSmPbLx0jiPEw5bMS8ysN77R3BaYyCrQbr4iJHM6/+XXwo/f8Dpq2+CxSlZoiBECDL+
+	 L8NGyb8zkQQwP8pRrEeDqjTeH8hQA4Il0P7h25pO10KIt2PGewHHMr1KjQ2u47/0wWvJz
+	 wYS9HK9IbLrXvYlf+1UVtyv847zLZSgBy3XUTlYVn3/FOhPp5licH1j07NK/TZPSuicdM
+	 V0E+le9swg33rCgvofp/Gd2BU6Kg9azKeW2DXcBP5985bPvcOkqxYK7YkfO8XVuDuBfe8
+	 ijyM01jgidAIJ6HjKaH0uQvtcOhVrtFegzwJMr7g7GSRpmSo+6Kond1B2FOsRb+BbPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794490267;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794490270;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer;
-	bh=tGwxVXZYCMI48tMAWgdqT75Rt7/Q7H5nbuP4kLxTk5A=;
-	b=P9v5Gr1iQArMJZwd1DGh0zcK91ALHYiiPZqyN6mxrTI472ta8mAClu9BPOO1e5zQJZD2
-	 YPD3KzRw+cpwIxpgb7U4NipG/vDtVfjZU2Oqi8Y0WiF3cW4RbLQHjAHgFJIWtA16STRtp
-	 sHhnnICuyKAURWrXOawdttaLRnwIJcLgVaDFU4UmYJiSJzkcWUXS6J0xgur+JsB1eNwYu
-	 ZCW0/0z1j9NAUI08HXj6upmVp4fLWMNU5w4Lfx9YUODJ3udvuhtz1Mymg3+KAp0CdnVyA
-	 ZHZoXER8Ej1G33EVi12obWjIpe75W2VsrcRrK399jZ2SxH9OtMvvTJL58KzQOL9AOYg==
+	bh=stWeNmOFxIgHe2Lsk2Jd+hY/Hny7hRBVyzbKd7me1rs=;
+	b=Gm+F/gzkszWbFh7utZd/nyeBTBmE177ctnH77TVi+WZj9Dv5wIUnOdU+2G1L81Ncm/Hw
+	 ELN7IqThWCXjKHGKziN+tHV76s1h4RaszaN2vl95GpODpXX78yM3fsVwm96p7yDrPSayx
+	 iA6M6vfJ2aCW0Q0Rfa6OeH/AoXyCgswd7yZNJ9DdQyxXkH4ge7Ap+mSlTrQin5R/9JOce
+	 h/9qOG7rZpj3uM6T2jABhMtBEp/k0OzaCQBUt5JdpL5tPwr6TVeMduCH2o+FiiaPvetT0
+	 IHNQNwFrew+ZEuB/FSi9/gyuMMSglTvowaedQxWElM9TkXLgdPguSnVTpSWtkT8Jjsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RNjYFgo5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="U/Y9Uv8Z";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2F606A8A5
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ABA606A899
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RNjYFgo5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82F31F00A08;
-	Thu, 12 Nov 2026 13:31:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U/Y9Uv8Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8831F00A09;
+	Thu, 12 Nov 2026 13:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794490267;
-	bh=tGwxVXZYCMI48tMAWgdqT75Rt7/Q7H5nbuP4kLxTk5A=;
+	s=k20260515; t=1794490269;
+	bh=stWeNmOFxIgHe2Lsk2Jd+hY/Hny7hRBVyzbKd7me1rs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RNjYFgo5mpXkX9kY0pkQRD9a77VJfTONW2vL69Yp1UM+gkjk+bzh+lCOvCELh2sIE
-	 Okx9caRJB76QZAtHaGIJOSr/iqZtMkyVm7U34Gtnv56+tS525bBsqUduIwuum3hkIO
-	 PBHimL8XZ0jVOnXb/fyMa+SpAArEHmTPM+0HrIF0SwCQPXzosqUAUqZfwfEvUfvgKu
-	 fBfCYz+KSsgTiITgAWzjeCDEdm3jtMeaIoVPqzLVnjrz5wvkKh9fnSMXDBZFV50hGK
-	 OuCz2k366l6Z3AX6AgQRh8vzpWrQ0AtJAlFMls2dNtyCwSdYXtAoGC4NT03ePyETmx
-	 N+YmF+YbixLyQ==
+	b=U/Y9Uv8ZeU8atuHJxvtKqJvAHialLZcgvHu3mIm/B4ueiC6OEj+KXqc2jALxPKhVS
+	 UVlOM+TBHDiCOKp23FIqUsaxdlH2rzYkbq2flx3FBFEdmv5qQGHkD9cSSzdTVpwrDt
+	 QsBoG2joOsRufCr45opLm7ZXL5Mex1oa4Pymr19EGa/zHIlc3sWJM6+Ma+zk5XC3HO
+	 2vzn+uabdSYHpU5fv5YG66izpZqdbzspfuEFvgcV90M4VFeLr8wQJq+OQEDC/PqOh6
+	 3vdm5uPiWx4wXB5c2WiY9PbMIsMYdl3wdUDWEYg4jHTs0cp9gQo1gRgHEz1GojRRzH
+	 rfYk7ktJKw4Kg==
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Nov 2026 14:30:32 +0100
-Subject: [PATCH net-next v8 17/19] net: ethernet: cortina: Drain RX
- coalescing timer on stop
+Date: Thu, 12 Nov 2026 14:30:33 +0100
+Subject: [PATCH net-next v8 18/19] net: ethernet: cortina: Reject TX rings
+ smaller than retained pointers
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-gemini-ethernet-fixes-3-v8-17-f55bd43e02d3@kernel.org>
+Message-Id: <20261112-gemini-ethernet-fixes-3-v8-18-f55bd43e02d3@kernel.org>
 References: <20261112-gemini-ethernet-fixes-3-v8-0-f55bd43e02d3@kernel.org>
 In-Reply-To: <20261112-gemini-ethernet-fixes-3-v8-0-f55bd43e02d3@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -67,63 +67,103 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-gmac_stop() cancels the RX coalescing timer before disabling and
-freeing the IRQ. An RX interrupt racing with that cancellation can
-rearm the timer, leaving it queued after the netdev and its private
-port state have been freed.
+The hardware-owned TX read pointers can retain their positions when the
+queues are rebuilt. After shrinking the TX ring with ethtool -G while
+the interface is down, gmac_setup_txqs() copies those pointers into the
+write and clean pointers without checking the new ring size. A retained
+pointer outside the smaller ring can then index past both the skb table
+and the coherent descriptor allocation.
 
-gmac_open() also initializes the timer after enabling RX interrupts.
-With RX coalescing configured, an interrupt can start an uninitialized
-timer on first open, or one that setup then reinitializes while queued
-on reopen.
+Reject a TX ring size that cannot contain every retained read pointer,
+before applying any RX ring changes in the same ethtool request. Check
+again before allocating and programming the TX rings on open, including
+for pointer state inherited from firmware. DMA is stopped at both checks.
+Do not just mask the software pointers, which would leave the hardware
+read pointer outside the new ring.
 
-Initialize the timer before requesting the IRQ. Keep the early stop-path
-cancellation as a best-effort drain of an existing timer; an RX interrupt
-can still rearm it before IRQ teardown. napi_disable() handles concurrent
-scheduling attempts. Cancel the timer again after free_irq() has drained
-the handler, so no timer callback can outlive the port.
+Found during Sashiko review and confirmed with a pointer arithmetic
+model: a retained pointer of 200 with 16 entries reports 15 free entries
+and permits the first TX write at index 200. Checked all 16-bit pointer
+values against queue orders 0 through 15 and cross-built the driver for
+ARM.
 
-This was found by code inspection and tested on the D-Link DIR-685.
+Tested on the D-Link DIR-685 with intense transfers and ping storms.
 
 Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index d0d161654f49..24a66fc34738 100644
+index 24a66fc34738..899d96420b1b 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2243,6 +2243,10 @@ static int gmac_open(struct net_device *netdev)
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	int err;
+@@ -602,6 +602,20 @@ static int gmac_init(struct net_device *netdev)
+ 	return 0;
+ }
  
-+	hrtimer_setup(&port->rx_coalesce_timer,
-+		      &gmac_coalesce_delay_expired,
-+		      CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++static bool gmac_txq_size_valid(struct net_device *netdev, unsigned int entries)
++{
++	struct gemini_ethernet_port *port = netdev_priv(netdev);
++	unsigned int i;
 +
- 	err = request_irq(netdev->irq, gmac_irq,
- 			  IRQF_SHARED, netdev->name, netdev);
- 	if (err) {
-@@ -2279,9 +2283,6 @@ static int gmac_open(struct net_device *netdev)
- 	gmac_enable_tx_rx(netdev);
- 	netif_tx_start_all_queues(netdev);
++	/* DMA is stopped, so the hardware read pointers cannot advance. */
++	for (i = 0; i < netdev->num_tx_queues; i++)
++		if (GET_RPTR(port->dma_base + GMAC_SW_TX_QUEUE_PTR_REG(i)) >=
++		    entries)
++			return false;
++
++	return true;
++}
++
+ static int gmac_setup_txqs(struct net_device *netdev)
+ {
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+@@ -616,6 +630,12 @@ static int gmac_setup_txqs(struct net_device *netdev)
+ 	unsigned int r;
+ 	int i;
  
--	hrtimer_setup(&port->rx_coalesce_timer, &gmac_coalesce_delay_expired, CLOCK_MONOTONIC,
--		      HRTIMER_MODE_REL);
--
- 	netdev_dbg(netdev, "opened\n");
++	if (!gmac_txq_size_valid(netdev, entries)) {
++		netdev_err(netdev,
++			   "TX ring is too small for the retained read pointer\n");
++		return -EINVAL;
++	}
++
+ 	rwptr_reg = port->dma_base + GMAC_SW_TX_QUEUE0_PTR_REG;
  
- 	return 0;
-@@ -2318,6 +2319,7 @@ static int gmac_stop(struct net_device *netdev)
+ 	skb_tab = kzalloc_objs(*skb_tab, len);
+@@ -2623,11 +2643,21 @@ static int gmac_set_ringparam(struct net_device *netdev,
+ {
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+ 	unsigned int old_rxq_order;
++	unsigned int txq_order = port->txq_order;
+ 	int err = 0;
  
- 	phy_stop(netdev->phydev);
- 	free_irq(netdev->irq, netdev);
-+	hrtimer_cancel(&port->rx_coalesce_timer);
+ 	if (netif_running(netdev))
+ 		return -EBUSY;
  
- 	gmac_update_hw_stats(netdev);
- 	return 0;
++	if (rp->tx_pending) {
++		txq_order = min(15, ilog2(rp->tx_pending - 1) + 1);
++		if (!gmac_txq_size_valid(netdev, BIT(txq_order))) {
++			NL_SET_ERR_MSG(extack,
++				       "TX ring is too small for the retained read pointer");
++			return -EINVAL;
++		}
++	}
++
+ 	if (rp->rx_pending) {
+ 		old_rxq_order = port->rxq_order;
+ 		port->rxq_order = min(15, ilog2(rp->rx_pending - 1) + 1);
+@@ -2638,7 +2668,7 @@ static int gmac_set_ringparam(struct net_device *netdev,
+ 		}
+ 	}
+ 	if (rp->tx_pending) {
+-		port->txq_order = min(15, ilog2(rp->tx_pending - 1) + 1);
++		port->txq_order = txq_order;
+ 		port->irq_every_tx_packets = 1 << (port->txq_order - 2);
+ 	}
+ 
 
 -- 
 2.56.0
