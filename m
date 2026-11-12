@@ -1,64 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794475082;
-	b=DUd94dh+fwcZDspmEroqxnJThl9HpFMpGcdMUMTqTiPLIjOVOfMFlphlI14ePUNNgAk8
-	 4iM63KqkFmdepA9vegeeAEBWDUSuXxFXbgdD2z7by7SMyjcaehE8apUYpXVjRcigdQ7lx
-	 vJTXg+Fnn7nWNEbxRdMMuIA4VGiGxiqWkcNhM7IDQOc5gb8RvAQuCLmztbZCTqrjEllrK
-	 PayEUy/FL2a58czFa35UmEJh/bVWsNfXEpngw8H5Yma8nCVy1zGxr+sYQQOWZoY4cYu/9
-	 AizVXNbgW8ldhiQuZKIGQveeEWq6TIFNX273TMow/gfVhpYl+4CTO1U5OgDvNO3qbsA==
+	t=1794475293;
+	b=FAXMVcS2SDCsqOjA66vOBD7dL4HOq2FS1q2FK/cwnvS5YmuB2QVlc8C7M5WxWK0abLKC
+	 AAWebP2Re2NFVW1hhivlCtvGsMYD+/QDdxRGcIcz1sSuy8fcGh25GoCch0IDN/x8fp3or
+	 Um9vggdAR+cMhRWUUMGiwLk+wmjBM3LcYJDktyO2dKWwMiK83ujja/KLnBEOJFbwrQ7kp
+	 JzBlj0TOALfIFv+FwcUAJKw20twZzMujJhzxjU6o28ZzQCygr9aFHrju7UTH5JRUSpTD4
+	 BtAouz73KG2RFWZtwn4lncHFx6SSlusjfhTQEkKVzNE7Ol2TZWoMtK0pVqyjpiL2vVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794475082;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=FxECJ+at7tUmdA4jpirQioDBaofqfSHvgn+uUGiUknw=;
-	b=fka7yH45s3HKlFYV8bVsOJexyBie3uXuRDJZIJBBkYyr8qe3qe8miW5J88Vpwkn8hV0K
-	 oErAcwGcz3c/D761LjAsbEfZ9jrtRJsktdf2ClNhVUo6xMT3tZwEyKLstek7muYQP7AAP
-	 PJ7LZ87O2mZ8mCnx0knx/nKQqV8aPf1T1EmNTheS+8/7g/V/QuPXLKtdaqOEdkDM+tkfb
-	 e7XfkQlxskyaHg0rjUmQBqZ9JtDhwuxVL4nuGnLBnNUdQ0LJm0sG+TJ9iyznw+hUCGu4R
-	 lLNp6xn38alfH1lWepgj/M2MJcm5BSEAV78DHbUvVzdeIT70TCwZxPCCeN9xlPI0YUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794475293;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=WWgmljf7p+9w5O022U38G+2AIVWKoqElpuvWzSOA914=;
+	b=2zlMIunL0rKT6qxk46nRsh/rYycBE2SfflzjVxul3da0daSIHP2VVEwfXywO3wi2nMnI
+	 QLytGw+1FWg59me/pI/xQq98C6ramfOxMiegJSjXQ3o4OYjPqKBuVZXx07z78ostudJ2G
+	 NeF7fhAZmUROHhXgelDtdP3xkVqNMlbtWbkk10MkNx/7U24STJL71OuZyZEF4u3fKa8Sl
+	 pEixsKgkV0z8Qv5DP5z6xoMXJz9JrxhyF3pZc/Rjt2orzTtRjgfCZwKLh/rJsgpYuWDm1
+	 x9lV7Hgi+Q0fLCAOsgEKDazPVbgo+W9PP8j5COPHnkQ9EpWU5lUdXK+QLL+Zfe7VWRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=qLeW0Xau;
-	arc=none smtp.remote-ip=162.62.57.87
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uCLbTb0r;
+	arc=none smtp.remote-ip=209.85.210.180
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A2D606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:18:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2A2D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899B5606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:21:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 899B5606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=qLeW0Xau
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794475071; bh=FxECJ+at7tUmdA4jpirQioDBaofqfSHvgn+uUGiUknw=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=qLeW0XauRtiEoT2dbWAjBO2gfFyDL+LHJV7vq0XUbVPRvPsVXOaBtCZzssuNRrLHr
-	 JnJ3QNxc0yLlR51F+YICuoRLe07rF0Fh2ysJmaFLfqusLGXoPDITzmhDAdkLQ0PwF0
-	 fmTRDxIfTmoMXoXuzT64gTu2HG9v4h7ZlwsdJSwc=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-XMAILINFO: N2nZekq4carkcWSgLcJAY8XpK+xVtIIJ0Wzo/gyWOBR9I2B/I5Eu15r0GdMhWU
-	 /0KGhzB4wIVlpqNusptcHGTNasQzVmH4xSUQzb+69ogv+JRxpFqmCnzfCKJO+w7B94VvjmcyhuG9a
-	 MK80C+/qCZFMWIMIg+g2Haqm8FlLgJ4EUTXPAeP8vS6A4MKD36mFUEsVvt8JfLwwn9gxWGLuDlW4a
-	 28KcfPDhxHRsZOr6x9SYV1qVxe2puaPVgNUM6+/MDudauksb05OP7no9K0svZmn+vS4Ut8PY7mT0H
-	 w+7dWHZZzHTh9mXKLtfgVlefWqnA/wigeSYPb6S09fD9yCUVSuCHpahAdViqVxjia8b3EwFCXTNou
-	 jmeyUz5oWZpk1bEhiPrcTBan6wUtNIJFVNnrU8BnOR8OdnAvJ7VGiNcyZtcYR3uemNDMefz5HPFqA
-	 r3nmmZ1quH6EFqAZgVkZNs3rPDX0G6iekzNNBmfxY92ejI6C/adNs13b6zIdg0kmdGFvvE02fijuy
-	 WBxpIISuk9dFSL6alMizHmZ+OnOMRJMs/7SvviNfkv8lPzQT6y9dA9AlcTK7nYNl5kI/LwZa0kvh7
-	 ZEGj+qhzC2Gm6KkJP5JyQ9aO7lc0WAZH3IEzX11V/TbK+KLrWWVRpweM0IqqW5e+9u7Yn1ng+17eZ
-	 YLan45g7yyWRkw4jLdxbDQy8vZ5cUiH0jpeD0tPf4YCrFvjnz/T8Ac73SKdE6+g1uwX4BNsarFrUI
-	 +7UKfHBXcB+BJYCFM4S/ic9Iy13FwtqLonCqG+4F0685JAr8fYRh1GoYRRKmb2bQS91LbJMjvETqX
-	 oeDeZa7ggPFqBdffEKHGh9Vw3yNH13GQ1BgzeqXlINK8v4HV+IYSWDbQEPIQWVHzgDy+GWDUVOPfg
-	 R+7C4t7jMrhkflBt5rGaHTSeVG1JZpGfgHVje3ucqPXMHRepw7aH6AbEki0rxW6Rx0YuZ/dw/Pm6A
-	 hPofonKmUVHor6ZyA6Rkjg3scLiQ3U5XVlKSU/27pAAQd1DT2EpbDj74XcSZ0jJcHCkwa891Z0DwS
-	 KiBYhDnwC1AJ26xL25zu6LONplvnMM3Zhxd7l5CDUdScWmf4IVHSXuhAHTQ==
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?TWFyYyBLbGVpbmUtQnVkZGU=?=" <mkl@pengutronix.de>
-Cc: "=?utf-8?B?SmFrdWIgS2ljaW5za2k=?=" <kuba@kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?ZGF2ZW0=?=" <davem@davemloft.net>, "=?utf-8?B?ZWR1bWF6ZXQ=?=" <edumazet@kernel.org>, "=?utf-8?B?cGFiZW5p?=" <pabeni@redhat.com>, "=?utf-8?B?aG9ybXM=?=" <horms@kernel.org>, "=?utf-8?B?bWFpbGhvbA==?=" <mailhol@kernel.org>, "=?utf-8?B?c29ja2V0Y2Fu?=" <socketcan@hartkopp.net>, "=?utf-8?B?cm9iaW4=?=" <robin@protonic.nl>, "=?utf-8?B?by5yZW1wZWw=?=" <o.rempel@pengutronix.de>, "=?utf-8?B?a2VybmVs?=" <kernel@pengutronix.de>, "=?utf-8?B?bWF4?=" <max@enpas.org>, "=?utf-8?B?bGludXgtY2Fu?=" <linux-can@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] MAINTAINERS: exclude CAN documentation from general networking
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uCLbTb0r
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b5c3288e6cso1792573b3a.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:21:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794475292; x=1795080092; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WWgmljf7p+9w5O022U38G+2AIVWKoqElpuvWzSOA914=;
+        b=uCLbTb0rB83bwv9iDuS+LxIdVmXsAEqbZalNHgCMW9hYO09rz9Bd82xt1MY/+a7ipU
+         Ph9/ItVXahyPYEPiUhLnothPXdEa3DmzRP468PqaETZ+1nIdHeTcguQ2DV3yakaUitrk
+         LE4J2DXpB2C7uS2qBfUbJ9jkB6F6yLgZ9yUDoEJUbxLAtWq+qMiO+fP/uFoSyvICafIC
+         SeSkbuIYpxPANwSS985Jer97vYYJx7f/nUg9POhhaQkH6xN1IKcAsxhMfXY9hxrgAm4n
+         2ZmYffJHUWXBKOMCdMj3IukJ5K+cv7J3fRxSgpukR9zmN09xhtXGSqjPjZlRocobEjgE
+         HspA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794475292; x=1795080092;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WWgmljf7p+9w5O022U38G+2AIVWKoqElpuvWzSOA914=;
+        b=lhz7PlxmRC4TMDLqiqe0AmwwOOb1d1HQt91+EAaBvYu5LuY7xYvQbficwJbwVdnMOf
+         DB93mPtpevK3lFaKpA65IgovffUgsFkmWveTBLYst/aYhmfEpULZTKkKuUGHE2v4VETK
+         yDnHzxOOAdPkXYaFbOvBOOI+hx7+43WUW1zbJG7358GvkXyBp2wFzSIHPdWhaH6lIMiE
+         oJhLaovR1bE5aKCPsgFRDWkSiEvblYR0yF6s8d5ES+5CDq7Gx+h5aHA0x5iOUqIItIjf
+         jL4cmzw2i5csNQgg16WGjboGsyFJ+y4YLLAyXmIA5cgFIaZ5dP2jx2HztnHurR2NLhNx
+         gIvw==
+X-Gm-Message-State: APuU4Z8h52r2UmU93It2WQqQrpG5ZrsLj7/+tNgYaTrYq9K8whvFVn2Z
+	YIwvgz18fp0MRQq/OyBExIVyzAGdRcwgZjz49IvVK/b3LzkbfIHOdD+H3whO5Tzi
+X-Gm-Gg: AYBFou3jNyMetEw3z9HRlgAj8UIZC8QV7HiU3OyrFZMcBfc+nAONZnvh7oJiGKHAVMQ
+	XzFQtMYJ3Q7/+/LwLOr4uePtvrmo5Yps5OljbuKHDcV2z2EKcgnjfNeLiuy1lfgQy/r6cJfygWe
+	/IegFTqVE9m9XMgj+lS4W4eTIkkwiuLfjwfrNQgTnBQ1g45U2LUsou7rGIpGR/rPWoMA9CaZ8ml
+	B1bnrXFrhOtr3j9YnDBhQinsCoeVsblX//gTex6HFOtp30tnD8ks7D0b9xHGQ4ko+zow1Ag6hhk
+	NvFAkgzcd2cJUoF1321ZlNgY0fe1ovWk31jlrRF11/Y48KAByuW403NeALc42u/A0wJk72RnC0Q
+	PXZtlSAD5Bis8evw16OSmryKm2afjZNodSLXkhHJqm5T2fjs/IExto8Of3zBSRHcdmkM9sVOmMt
+	yYb5CRt+Rl+INF+aPo2W710p1LcuKnUeyzqQ6/+K7gXJs09cAaVS75I4S4thKLU97wmma3tuOB7
+	IcybbVX3mjCuLa4pXESKensJBAgWXunmJaT6JK7mPPLlFOIlCSWdsif/E6b/ikmsI3yZAOwfRzK
+	P/So8DFzUzvVue2m6/E/qVSDwWwF1lVrsfIIP5ymMdAbDqkRErstUGlIXtF8vFj14FIQX0ZdNA=
+	=
+X-Received: by 2002:a05:6a00:b86:b0:89e:c324:958a with SMTP id d2e1a72fcca58-8bc1d148d9emr4997745b3a.34.1794475291667;
+        Thu, 12 Nov 2026 01:21:31 -0800 (PST)
+Received: from JIAPENGLIN-MC0.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa2a6d79sm3214881b3a.10.2026.11.12.01.21.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 12 Nov 2026 01:21:31 -0800 (PST)
+From: Lin Jiapeng <ljp1205831794@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Lin Jiapeng <jiapenglin@tencent.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vlad Yasevich <vladislav.yasevich@hp.com>,
+	linux-sctp@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] sctp: preserve the last transport during INIT error cleanup
+Date: Thu, 12 Nov 2026 17:20:58 +0800
+Message-ID: <20261112092114.12458-1-ljp1205831794@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,34 +101,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Thu, 12 Nov 2026 17:17:49 +0800
-X-Priority: 3
-Message-ID: <tencent_FD28A290DF67931DCD970C5042E788514006@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20261112-exclude-can-docs-from-netdev-v1-1-b5eb3ba4ae86@qq.com>
-	<20261112-polite-nano-peccary-fdf491-mkl@pengutronix.de>
-In-Reply-To: <20261112-polite-nano-peccary-fdf491-mkl@pengutronix.de>
-X-QQ-mid: xmsezb41-0t1794475069t1av64kev
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-SGkgTWFyYywKCj4gPsKgZGlmZsKgLS1naXTCoGEvTUFJTlRBSU5FUlPCoGIvTUFJTlRBSU5F
-UlMKPiA+wqBpbmRleMKgMjIyYjdmYzJjM2FhLi5jYjFmZWM4ZWM1ZjXCoDEwMDY0NAo+ID7C
-oC0tLcKgYS9NQUlOVEFJTkVSUwo+ID7CoCsrK8KgYi9NQUlOVEFJTkVSUwo+ID7CoEBAwqAt
-MTk2MDAsNsKgKzE5NjAwLDEwwqBAQMKgRjogc2FtcGxlcy9wa3RnZW4vCj4gPsKgwqBGOiB0
-b29scy9uZXQvCj4gPsKgwqBGOiB0b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9uZXQvCj4gPsKg
-wqBYOiBEb2N1bWVudGF0aW9uL25ldHdvcmtpbmcvYmF0bWFuLWFkdi5yc3QKPiA+wqArWDog
-RG9jdW1lbnRhdGlvbi9uZXR3b3JraW5nL2Nhbi5yc3QKPiA+wqArWDogRG9jdW1lbnRhdGlv
-bi9uZXR3b3JraW5nL2RldmljZV9kcml2ZXJzL2Nhbi9jYW4zMjcucnN0Cj4KPiBXaHnCoG5v
-dMKgZXhjbHVkZcKgdGhlwqB3aGlsZcKgImNhbiLCoHN1YmRpcj8KClN1cmUsIEknbGwgZXhj
-bHVkZSB0aGUgd2hvbGUgRG9jdW1lbnRhdGlvbi9uZXR3b3JraW5nL2RldmljZV9kcml2ZXJz
-L2Nhbi8KZGlyZWN0b3J5IGluIHYyLgoKSSB3YXNuJ3Qgc3VyZSBhdCBmaXJzdCB3aGV0aGVy
-IHRoZSB3aG9sZSBkaXJlY3Rvcnkgc2hvdWxkIGJlIGV4Y2x1ZGVkLApzbyBJIHRvb2sgYSBj
-b25zZXJ2YXRpdmUgYXBwcm9hY2ggYW5kIG9ubHkgY2hhbmdlZCB0aGUgZW50cmllcyB3aGVy
-ZQpJIGhhZCBjb25maXJtZWQgdGhlIGlzc3VlLgoKQmVzdCByZWdhcmRzLApDdW5oYW8gTHUK
-Cg==
+From: Lin Jiapeng <jiapenglin@tencent.com>
+
+On failure, sctp_process_init() removes all non-ACTIVE peer transports.
+An existing UNCONFIRMED transport is not promoted to ACTIVE by
+sctp_assoc_add_peer(), so cleanup can remove the last transport.
+
+sctp_assoc_rm_peer() assumes another transport remains after removal.
+If the list becomes empty, it interprets the list head as a transport
+and passes the invalid replacement to sctp_assoc_set_primary() when
+removing the primary path, causing a NULL pointer dereference:
+
+	Oops: general protection fault, probably for non-canonical address 0xdffffc0000000045: 0000 [#1] SMP KASAN NOPTI
+	KASAN: null-ptr-deref in range [0x0000000000000228-0x000000000000022f]
+	RIP: 0010:sctp_ulpevent_notify_peer_addr_change+0x73/0xba0
+	Call Trace:
+	 <IRQ>
+	 sctp_assoc_rm_peer+0x186/0x9b0
+	 sctp_process_init+0x1ff4/0x2810
+	 sctp_do_sm+0x1c97/0x4560
+	 sctp_assoc_bh_rcv+0x30b/0x630
+	 sctp_rcv+0xb63/0x1220
+	Kernel panic - not syncing: Fatal exception in interrupt
+
+Keep the last transport during cleanup so sctp_assoc_rm_peer() has a
+valid replacement. The retained transport is freed when the association
+is destroyed.
+
+Fixes: add52379dde2 ("sctp: Fix oops when INIT-ACK indicates that peer doesn't support AUTH")
+Cc: stable@vger.kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Signed-off-by: Lin Jiapeng <jiapenglin@tencent.com>
+---
+ net/sctp/sm_make_chunk.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 15c2d87575a8..e4b7dacf174e 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -2528,7 +2528,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
+ 	/* Release the transport structures. */
+ 	list_for_each_safe(pos, temp, &asoc->peer.transport_addr_list) {
+ 		transport = list_entry(pos, struct sctp_transport, transports);
+-		if (transport->state != SCTP_ACTIVE)
++		if (transport->state != SCTP_ACTIVE &&
++		    !list_is_singular(&asoc->peer.transport_addr_list))
+ 			sctp_assoc_rm_peer(asoc, transport);
+ 	}
+ 
+
+base-commit: 145480b28ca82e9fae789427cc4569e596515a32
+-- 
+2.55.0
 
