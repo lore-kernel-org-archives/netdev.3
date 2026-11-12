@@ -1,98 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794489762;
-	b=i2HZ5yl5OeJ9xDFXXkZm0Q/2YVbE94lp94+iLr3FtGEVY0GhoWW4v12b/DOfTlxek+l8
-	 Ub5QnQ4UlJn3+fTamcX6ad9oSthNcMq1ejewQdgHY99zOXwxuD+VHm6t/Q2HlxhFnRSSg
-	 pKjSE8dAmTqC4U8/EvvFAcv2CpvgSY14l9PWnLVn2TnC/LRHEgWHy+oAg+ozOe03qDhei
-	 bYA1oaqEWEzf9OeEPx1P1o8nxRHT2MILiGO6qM8azhi9JvALWX5jUmBgxs8EEhapK1daS
-	 BS9Og4AJdyfdTVRSGRc7efzMQ24JtOZJ+KF5drm5CwJCJjMxhOP0kMrt2BzDlZZ8P3Q==
+	t=1794489801;
+	b=k8+/t3Ua962f5ZacQsnmUoAtUedfv/V6jeHgpdSIqu0gNLtaGUjVthya1Y1tvDUU8sPV
+	 jkHbrWeCu5xfb6V7nOdp+AXMdpGvMWc7ukgJ6cKw6oB6kGlTrHyuJrMsD4ab3jbS8AipU
+	 Jm1SQ0R+tihJi/yt938XVdS07BydlWK8dzCR5l5P7YRvoHYV446hRT0auflltWLhl6AAr
+	 GwHrP9bib+l6RUNJNeljsjkmEbyi6mqC0YXhL2Nt8ounUXEJy1rYiQa0tRUvWaQ6B+IFG
+	 pvSSWa3KIonl52VXA0a73S41ILeXrQ7jvGQUr4+8yC6vA1lgBehVHNd8RBNv0eoID2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489762;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489801;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
-	b=qedST5NlZmctu5Ei87X3q8KgdLmoTAUzJw09pnS7sBKK2pnsV3UY18KrD5hOA5cQtb+5
-	 V8iXLLALNWMEzlrq1fqwpGwGUh8J2mFBLhA3RxIjn9tahjNRUUviUhKW7dHSRtYve/zFq
-	 gk4Vp3F9g6+7btS7Z+kKuskR0qEqGyhrWFgMV6PkrIb5btoIU3z8ZTMJDzmFQOheSaTfC
-	 hyjf1XZ6MpQ6JfIg8e+queZDi5Tok77Ri32+XffSz6zHJshDzpXN/3bD0cRsCgN0acHvm
-	 XnKi5VAY20mdk3/+w9cAa1f9joSJXTj30nAOGaOpxMF99WjPjBM5SGni2Vaff38D9Uw==
+	bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
+	b=jn+/Y+Oa8avstOC3s3bLcFQKepyHFkWuDfXhmAWBEaWJFLOiy2eyN3KDd6rB+iZdr2SU
+	 ULMYOE7uAsW9HN06H7Rsl6L4iqt4Z2LxNMc06TGJWFlOPHsnkvlnKvx5toDVjypw9Xws3
+	 Tr259g3ehKqecmKStGL5016sd44+mRH2k5atjtBM5N3pKaZwtdGXShCc1g138RBaGkc6w
+	 fHx5lyP12Iw49Vs53jO/k8+XDUeJq2Zgaxap66uBtrAUaDd6HpKRzEOfLw17AFwXkFx+g
+	 t606HMIhvsN/9dPhCx5Tffy8fjPBfHNRRrlSjqHaQU40746P4joexbrstv/peu9tL1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fbErw5PA;
-	arc=none smtp.remote-ip=209.85.218.42
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ysm6lo8q;
+	arc=none smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498B606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:22:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7498B606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAB9606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 13:23:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEAB9606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fbErw5PA
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c247f6687dcso699695666b.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:22:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ysm6lo8q
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c40e30c26a4so155455166b.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:23:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794489761; x=1795094561; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794489799; x=1795094599; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
-        b=fbErw5PA4On6cMTc6udCzm/omXr3aSgfT+CqQZEoErw2vBXWAt6ioofBLt7a76KOPw
-         YLZmNktd6KTgdyc8FPQJft+TFWssmC5hXLbG4d2/CPAL+gD0zT3vXBEUF5hSKSvXXnru
-         HkaiO4qF0/tWRR4HD/SsgqwEld4bYqu1GT7VObDFDTRtLDh7/dkIF26wOp054Ws7X94O
-         XOHlVrWtwFhARnL0u7wWZVDg42YuNd9TzRsbbGXJLbk94Kn04bvI1XthKBjvFLSR/NuI
-         beEb3/bfJ5BaN10FXKKKtuqk6OAmRjsKfppSoYyriZvHloJ3CIUHOEcfOeuEgtIUqYAL
-         UwNA==
+        bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
+        b=Ysm6lo8q9h75vv1rF+sVUxVRvFgBVwxt5CqCNS1R91Gp9s2vFYaS6q8TwsBcHWc+Qn
+         QaqQ7w9+XQkui9QyAyJDNtHPbMbsS9J01/Kj9FJ2UrNVACBUeydBmfm1k3xF+zc/sgNF
+         GMow4uorVLcomDAD5QEyDLy2TDw0MX4eU/NH+lxJyiFf/z/XP3mKzhFEueZn+yaWugxp
+         A8IUrae6JAvgFNj3341Iz1LUhT92ONCA65t/NPLa/5q8DhHKyTq8KmUb1RVmy7dacK+S
+         kQpMhRv5h1HAEz7qCQAIX0JZKPOT/dFaDfrq+LaPaS9RvLYCQUF02swwW7JYUip3uKs3
+         TEoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794489761; x=1795094561;
+        d=1e100.net; s=20260707; t=1794489799; x=1795094599;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ccSTKtpjKTVtHkCbDQpEVUXvzo8BHn21vQfhlDPvWNM=;
-        b=rs9+PLH5o2cpPfHzxlxKPqkv8+2SNpmLkzsNPeJiIM5PsSH4rszn4H7+gRIroLpTWo
-         IQFBXplTJorYdXXDFRWO7Oa8fw1hTaFDgMqgBeZ1cNrbwdsfyTnwU2j6ptpR4HFiVFv9
-         goobTUvk505w643yqYRBW93+HzdQ/Pqouz6nXRngHBLibrJv0rR2ciRzKmNmL/6hFNKu
-         cvXjs+I/DzqNSVO8XzXb59ShQT3M+VU5GYxJwFQ6qX26+PZHrbcTqox+0s5ftBlyVs4I
-         HJHFhdaywF5yKOYZjIQahpFzMIj3te/VuXhPrFTobka3FVh4OYgW4il3uWWP9d9zJwsy
-         HKgQ==
-X-Gm-Message-State: APuU4Z9mSKRBoNaAw4WgCRSW8686TtUF4sBvjzAjPt4k5vQ/knx3iHFI
-	W7pzvJQZd9r2w6PNIDGTU39Heg0Hmnqpg4Gdiv4Bf1tUcM91jihxwi5eSBC9tCLk
-X-Gm-Gg: AYBFou3HgWqjPVLrb6jUvmHacxYg3YPlDC8FEq6czAd4++txrT99x+fO+cDbeGnznTz
-	2eJxF3hhvsUmpiK6Gb7653DXkyu++jRpt7PRkGFoPVvAOQ0ij8Bfd+d1cx5jxOY2mN8kin3Qg6E
-	/16yKAjGcVjCgCWss86gC/h24aUpBo1fymt1rIethLRVC1fU6I9p8ipdnFmJhV1nIYYXHsrJ+Q3
-	+nlHgXYUGl3zfFyIh7ed63rgK41yCQN+AJKJnBYf/SXNQzH1OwuJX81jW8VczgoUw1Z61yoQAhn
-	YhMfiEF+YlUUI83gwA+2u4ydHRh4NWpAO0qmX090kesPNLEwoJGRMB46CxbHDUWDXYpErDJZ8u9
-	zn92GJ7A/E7jy6bueN30oO8KhsML2IERhusZV84J8rKBh84zE4zSWQVbKl5JZO2Ri4+yrHXY9KA
-	8j8owhO405G8NL/DU4Wqlr6NuVmdZkWK9LQvWCZg3N1GLfoO1Q27UdlET5S1yCQc7BsYIGnPNUZ
-	MeOgnrAiyCuZ/D1xAAVGZOe9uiF5EvNfCSOONBhO5HjqQQJvQo0eC4EM3QzBcFcVq0U8hFtjQQU
-	aneUxpvfRV60GcJpdj0MlVVxgDJG4OnTgSO/gNr9B68xkPLYjT456WI=
-X-Received: by 2002:a17:907:962a:b0:c4c:f85f:aa12 with SMTP id a640c23a62f3a-c5066b494e1mr547325666b.31.1794489760692;
-        Thu, 12 Nov 2026 05:22:40 -0800 (PST)
+        bh=XyKog9AQppShEJliLLK1T6Sbi2JcYrMEsnM8YpdfsIk=;
+        b=Rwp5UIB7igSBJdVEowE6qd3QvZBYBDDMbdLacm2gODEA1v24ysx/Ohmp1/NU17ExzV
+         iEQRnwZA1e+2hELJjX1e8gtmmRmZsg1JCzTP0wS8l9bVlA9p8m9CuKKKsKNg09Xzoy6X
+         dtgw7sNrHb9dsmELNbrAJdL1YpuVS6B+kqtM9zoBkwBnAktjOz3Rdr7jF8qpLYbDjU5+
+         0sDQRiSw2TaBDZoWAFm7XaCyks4A104hjZwArg5uXNZO485gk6/WHv9nMaYs7A4qA43T
+         duhP2knxmoqrO4A1+Bo6dESkSGuu20JQvCrIguIh7591ffLHXa5bwo+Nxbgb47nP8sW3
+         bvLw==
+X-Gm-Message-State: APuU4Z+eH1KSw3lgmjwIFpS6JPzPRfJQS/qGo8++H3UcfbZdnVjX/9lG
+	KWJ5BosTNmSrWMkkBAgMbfGDJ+7sOqfXYcJMqHphMUmloAA0BA5PSaYXffoO9EFC
+X-Gm-Gg: AYBFou2DEPtcrfXz0gL1kI9QJFYM7ZPqjaftsG+PFeEX+Ws/Ks6UPXqaiMFApoEUKVx
+	UUasK6UZLGPcNUvh1iBz0x1cpRGvfFE47Sy1vqUq78+Ygijb3N8eW6yRvHrQ1boaYyy+2zOz4dG
+	deCaso17wwjhSO3XCJ33eUqdEPbaJIZ0+mMACTvkISrMMdQHodgQ2+sa+z0UNAzTxydqAuCrLPd
+	6qQ1i6KKsP5oooYSZ0HcfVdflMXQ2GjE8lrMiuoTa9ulX724nnS73iuGYRIi8dz9uWdOOf1yFgn
+	0gPVkxJ85YNCMIQVA082+3PzqkO4y89UcsoAdQW8pg7Z6xGUd+gjXnj4/jjtkGXXElJgC7xtodX
+	622Hzvq8gXtaWY1hAls+n6i0BzNPx1ZWeN4qk6wWtIi+iqP0nIVqItWK7lnZDwLdmgrjn3SpE1T
+	G58l9Sqh1zvi9vMfJNFtpXBGoxetgvNywROagjZ84UI5UXkcDpm0QhaiGBw9Mu0swnGYSje/Aoh
+	SXR78JiIn6sBfTT6uYfuha+YNprXJiPBfE4sVF7lzwusEIvw8bV/peyInir0W2KFVO8PWwtrCo3
+	GmyvIkogpenDdtiu0vzfDI5kV8bf2uq0P3WATGyzEv+Ump9gpyv8z7yIescZEKT/H98xQOsDrRv
+	w
+X-Received: by 2002:a17:906:6205:b0:c40:9b35:ad91 with SMTP id a640c23a62f3a-c507b60db8dmr249279366b.13.1794489799362;
+        Thu, 12 Nov 2026 05:23:19 -0800 (PST)
 Received: from localhost.localdomain ([2a13:e746:396c:c600::31a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a3a621csm344076866b.12.2026.11.12.05.22.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a5704c3sm341545966b.26.2026.11.12.05.23.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 05:22:40 -0800 (PST)
+        Thu, 12 Nov 2026 05:23:18 -0800 (PST)
 From: "Kordian Chmielewski (mlody1212)" <kudzo51@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-	bcm-kernel-feedback-list@broadcom.com
-Subject: Re: BCM4908 Ethernet and 2.5G WAN: upstreaming plan and two questions
-Date: Thu, 12 Nov 2026 14:22:29 +0100
-Message-ID: <20261112132229.340114-1-kudzo51@gmail.com>
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	bcm-kernel-feedback-list@broadcom.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/7] net: bcm4908_enet: TX ring and DMA fixes
+Date: Thu, 12 Nov 2026 14:23:08 +0100
+Message-ID: <20261112132308.340291-1-kudzo51@gmail.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261109231739.2561930-1-kudzo51@gmail.com>
-References: <20261109231739.2561930-1-kudzo51@gmail.com>
+In-Reply-To: <20261109235700.2586821-1-kudzo51@gmail.com>
+References: <20261109235700.2586821-1-kudzo51@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,23 +106,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Three corrections to my mail above and my later correction.
+A correction to the cover letter and to two changelogs: I mixed up what
+I had seen fail on the hardware with what I had found reading the code.
 
-The AX11000 has three BCM43684 radios, not two; I mixed it up with the
-AX6000.
+Only patches 1 and 7 come from failures on the hardware. Patch 1 fixes
+the TX stall under load (seen twice, none in 8 runs with the fix).
+Patches 2 to 6 come from reading the code and have no reproducer.
 
-I should not have written that the SoC SerDes gives the BCM54991E a
-50 MHz clock. I took the 50 MHz from a comment in Broadcom's SerDes
-setup code, read it as the PHY's clock and did not test it. I have
-tested it now: with the SerDes held in IDDQ, PWRDWN and RESETPLL, the
-PHY answers MDIO right after its enable GPIO goes high, takes its
-firmware over MDIO and starts its CPU, and a running PHY keeps its
-link. So MDIO needs the enable GPIO, not the SerDes. The SerDes status
-still showed PLL lock, so I can't say the PLL itself stopped.
+Patch 7: the skb_over_panic was seen only after I raised the RX
+channel's MAX_BURST to 32 by hand on a running channel. I tried that
+again today on my 6.18 tree with the patch: within seconds one frame
+was longer than the buffer, and it was dropped and counted in
+rx_length_errors instead of a panic, but the DMA then stalled and the
+board needed a reboot. With the driver's own value, 8, there were none
+in about 18 million frames. So patch 7 is hardening and belongs in
+net-next rather than net.
 
-And, unlike what I wrote in my earlier correction, the BCM54991E does
-not set MDIO_READ_FAIL on good Clause 45 reads: with a counter on the
-bit, 11640 reads, none with it set. My note was older than the fix that
-made the PHY answer at all.
+Two changelogs say too much. In patch 3, the TX skbs left on stop are
+leaked, not freed: the stale descriptors could send buffers nobody
+freed. In patch 6, I have no test of what the DMA does at a descriptor
+being refilled. With the patch, a 16-entry RX ring under more traffic
+than the CPU can take gave no RX or checksum errors in about 14 million
+frames, but I have not run that without the patch. Also, the panic in
+patch 7 passed 3388 to skb_put(), so the descriptor said 3392 with the
+FCS.
+
+In my earlier plan mail I wrote that RX buffers were not freed on stop
+and that RX frames longer than the buffer were passed up. Both were
+wrong: the RX buffers are freed, only unmapped with a size of 0, and
+such frames end in skb_over_panic, seen only with the raised burst.
+
+I will send a v2 with these fixed.
 
 Kordian
