@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794467197;
-	b=KoehdpwAutxnJWIqJEsxGXm5Bum/5z1MJ+09NEvmDRu96NOoRilpsA6Ouhza2Hq4klt9
-	 5zC35rk9rcxd1FAbJ4J/TQv4A72eWAt29HNhVXUqCjGSm9DasQJ7q6jR19uXsUR8xICEo
-	 LmcU1UuthzgPlfGzwoESjXxIbSdrYDCbsPx3ev4900l16OEq4UR9n55/KfdUw2FfAC1R5
-	 2XAEA+C8bX6gCbapKOT1G1GZIbairWTKXQLKv2LAP/wigr/Bte0a4v1VpJu6dfPhQOLFa
-	 9ZH35AkLc/7J5z0fWeo7yNEsLzDBi41RxoeNBc1W9b7oWKlvZyKF4aZbJHYOWXF+37A==
+	t=1794467208;
+	b=tx3BNZcGqnLSHylzoluxtPW2yDvh1IR/iTtGJDxiVECHY9ln41+WrZyzPfv4OdY4+D+j
+	 nU87lk85LbcI4I4yfpFt9MF5olLBSsmZLglWi31/d8Do3GixytxL2YSkyPFhS7P+PLyKx
+	 i01OgzuVV6a/1piC5nlc7FahtL0LIM9DZEA3+gZxJtMTOkKdAAKr23L9fV5AUnSFhD1is
+	 wIVTPWQGRWjSn6X2vUnTyUQcimDpbnNmh5xIPfNxMVBGn1v0x6LBoavoHa4u7nrzFYZnw
+	 RXMJ0kWslOSzA/cxSybtnr8AW2vq4bBnFMYa0b7QbYdXOYOF8QWAqiIJ8ktRrtvvjGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794467197;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794467208;
 	h=DMARC-Filter:dkim-signature:Received:Received:Received:Received:From:
-	 To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=dMt8u1kOMML99JIIetOfyywDcYomQz3pDU6fHAV3iv0=;
-	b=ogsWh6w1RLIkJsgDNg2L1w0r+1TGIPLlSzGEqjsMw0FTRY0g6n3fxcA9Q91FaPtGJejM
-	 jSwWgMBSpYgFVulOYwFVpkLb2B2ROMsyp98sIT/6BhNDopRj6dT+LfIgF8sF0FfPKQhBS
-	 5r9c6NT8sAte43T+GmLo0BO3nuC7KMPraxKYAgsTkMoNDgua0LI1zVuXCUoeyiv5UOORV
-	 6f37Z8v4uSj3w/eXHemQ8h0PAyiy7EI1tczoquZPdGrIWKQa7jmA8dJgBccB7zXGKmlge
-	 TNLF8D5eJIlWp57n1kI01Y/GLvKc37YRNG8HEfWFIVj0lmOTK4Y5VX5UA/LraAcr5YQ==
+	bh=BsCQVVvz9zb7LcZjSNA8RYs4+MpjCM1IzVsegs/bW0A=;
+	b=EhnkN3LtRqiI6EcdQmHFXySxAm36cmPgcuu6DohjvcPMfOcSEiyHV2vtGMzwXN6Q26Tw
+	 qi4kyOMBIQfgVJVkwK0twwHxR4+Il/fYU7lJzqZ8b9+OWrcEmjd6HHB+xrZbLAutYq07n
+	 JgX5ZV2Bkj1n6783t+RaKjHtwXvtGHQyJQcraYuJsGZ4d9JOj12K2aT8PC+J04TIEm4RQ
+	 lSKBPs4lFgzZcQWUalYaH5S5QFW5yDzepqXGZWI46HhRi/vfWhE/QazyK+YtrBzX4uw/V
+	 zGKdHnL9pobE6T+K/7ueU8HsuSMyPMyBl/XGo/IrVKtyRIQQe3iQzsfVYZPYvw4GTLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=huawei.com;
 	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HcyQC69S;
-	arc=none smtp.remote-ip=113.46.200.223
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=104Vu8B5;
+	arc=none smtp.remote-ip=113.46.200.227
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E835606A31C;
-	Thu, 12 Nov 2026 07:06:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E835606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C26606A334;
+	Thu, 12 Nov 2026 07:06:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3C26606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HcyQC69S
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=104Vu8B5
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=dMt8u1kOMML99JIIetOfyywDcYomQz3pDU6fHAV3iv0=;
-	b=HcyQC69S06bmzR9G2io7KlXS+LlYCzyUb2ZENuj/U/OtHKJVE6n+h1N+I7BdJIYRQ+BvNZzsF
-	P2+KRnJBtiZ53DF+15MQB/4k5+Hc3GYWUpp24I0c/JSSFG3Aq7UFX1KkEXxcYKWCLjrsVtiBp1W
-	V1swqZLEzIoIF6yc+xt2iGM=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4jQBJ66CLbzmV8H;
-	Thu, 12 Nov 2026 15:06:14 +0800 (CST)
-Received: from dggpemr200004.china.huawei.com (unknown [7.185.36.180])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8575F4057C;
-	Thu, 12 Nov 2026 15:06:30 +0800 (CST)
+	bh=BsCQVVvz9zb7LcZjSNA8RYs4+MpjCM1IzVsegs/bW0A=;
+	b=104Vu8B5ayC7TY++qQR8ptb/Ib7+FkAJf43feDhiAbSFGTaGt64rMnh7/njE2pn6lLYeb7ySA
+	Yv6vBbQdkcDe/IQsbsN/oN5JWBKHdWUEItV1wNCmZPOw8CtM7VX7AU3c/O9NRO1YIIQpJkp4gRl
+	TFBpfkOULy40nHRRVqpwZ2M=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4jQBJl2hSxznTWy;
+	Thu, 12 Nov 2026 15:06:47 +0800 (CST)
+Received: from dggpemr100012.china.huawei.com (unknown [7.185.36.193])
+	by mail.maildlp.com (Postfix) with ESMTPS id A353D40565;
+	Thu, 12 Nov 2026 15:06:41 +0800 (CST)
 Received: from whupemq100015.china.huawei.com (7.152.185.230) by
- dggpemr200004.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
+ dggpemr100012.china.huawei.com (7.185.36.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 12 Nov 2026 15:06:30 +0800
+ 15.2.2562.46; Thu, 12 Nov 2026 15:06:41 +0800
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.220.94) by
  whupemq100015.china.huawei.com (7.152.185.230) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 12 Nov 2026 15:06:28 +0800
+ 15.2.2562.46; Thu, 12 Nov 2026 15:06:39 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
 	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
@@ -68,10 +68,12 @@ To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
  Fedorenko" <vadim.fedorenko@linux.dev>
 CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>
-Subject: [PATCH net-next v03 0/4] net: hinic3: Bugfix for later patch-set.
-Date: Thu, 12 Nov 2026 15:06:19 +0800
-Message-ID: <cover.1794467919.git.gongfan1@huawei.com>
+Subject: [PATCH net-next v03 4/4] hinic3: Ensure that the value of max_qps is not changed
+Date: Thu, 12 Nov 2026 15:06:23 +0800
+Message-ID: <75d0140471d5f48801d6ad565ccd1829f337e35d.1794467919.git.gongfan1@huawei.com>
 X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <cover.1794467919.git.gongfan1@huawei.com>
+References: <cover.1794467919.git.gongfan1@huawei.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,43 +88,58 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  whupemq100015.china.huawei.com (7.152.185.230)
 
-These issues were discovered by LLM Gemini-4-Argon and Claude-Opus-5-5.
-At the same time, LLM recommended submitting an independent patch.
-These issues were not actually triggered. Based on theoretical analysis
-and consideration of actual risks, this patch is used to fix the issues.
+nic_dev->max_qps is used to allocate hardware resources. Therefore,
+it is assigned the value 1 only when its value is abnormal. In other
+scenarios, the value cannot be changed. However, the value of
+nic_dev->q_params.num_qps can be dynamically changed.
 
-Testing:
-  These patch-set have been tested on hinic3 hardware.
+Fixes: 1f3838b84a63 ("hinic3: Add Rss function")
+Co-developed-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Wu Di <wudi234@huawei.com>
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ drivers/net/ethernet/huawei/hinic3/hinic3_rss.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-V03:
-* Clenaup checkpatchs in file hinic3_netdev_ops.c.(AI Review)
-* nic_svc_cap->max_sqs is already in the range [1, 256].(AI Review)
-
-V02: https://lore.kernel.org/all/179437094656.2168702.7238120951030130700@kernel.org/
-* Rewrite the commit message and provide an explanation for each
-  patch.(AI Review)
-* Split checkpatchs in to a separate patch.(AI Review)
-* Fix the failure of napi_alloc_skb() in recv_one_pkt().(AI Review)
-* READ_ONCE()/WRITE_ONCE() only stop the compiler from tearing or caching
-  the access. They don't order anything against the work item, and they
-  can't stop it from running. So, remove READ_ONCE() and WRITE_ONCE() on
-  nic_dev->adaptive_rx_coal.(AI Review)
-
-V01: https://lore.kernel.org/netdev/cover.1793946318.git.gongfan1@huawei.com/
-
-Fan Gong (4):
-  hinic3: Solve an stall issue in hinic3_rx_poll()
-  hinic3: Avoid concurrent updates on 32-bit systems.
-  hinic3: fix some checkpatchs.
-  hinic3: Ensure that the value of max_qps is not changed
-
- .../huawei/hinic3/hinic3_netdev_ops.c         | 76 ++++++++-----------
- .../net/ethernet/huawei/hinic3/hinic3_rss.c   |  9 +--
- .../net/ethernet/huawei/hinic3/hinic3_rx.c    | 11 ++-
- 3 files changed, 44 insertions(+), 52 deletions(-)
-
-
-base-commit: 73022f605c447f31610b94ed4a983d2b4bf2c721
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
+index 25db74d8c7dd..75dc0c044071 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
+@@ -307,15 +307,13 @@ void hinic3_try_to_enable_rss(struct net_device *netdev)
+ 	int err;
+ 
+ 	nic_dev->max_qps = hinic3_func_max_qnum(hwdev);
+-	if (nic_dev->max_qps <= 1 ||
++	if (nic_dev->max_qps == 1 ||
+ 	    !hinic3_test_support(nic_dev, HINIC3_NIC_F_RSS))
+ 		goto err_reset_q_params;
+ 
+ 	err = alloc_rss_resource(netdev);
+-	if (err) {
+-		nic_dev->max_qps = 1;
++	if (err)
+ 		goto err_reset_q_params;
+-	}
+ 
+ 	set_bit(HINIC3_RSS_ENABLE, &nic_dev->flags);
+ 	decide_num_qps(netdev);
+@@ -324,7 +322,6 @@ void hinic3_try_to_enable_rss(struct net_device *netdev)
+ 	if (err) {
+ 		dev_err(hwdev->dev, "Failed to set hardware rss parameters\n");
+ 		hinic3_clear_rss_config(netdev);
+-		nic_dev->max_qps = 1;
+ 		goto err_reset_q_params;
+ 	}
+ 
+@@ -332,5 +329,5 @@ void hinic3_try_to_enable_rss(struct net_device *netdev)
+ 
+ err_reset_q_params:
+ 	clear_bit(HINIC3_RSS_ENABLE, &nic_dev->flags);
+-	nic_dev->q_params.num_qps = nic_dev->max_qps;
++	nic_dev->q_params.num_qps = 1;
+ }
 -- 
 2.43.0
 
