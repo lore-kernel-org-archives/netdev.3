@@ -1,62 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.160.73.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794481032;
-	b=hZY+H0pwNiG/c8mQzWr69zXMChn3widNzrWG1SVii927Hfisnv6nBY8ZIQKEtiICQhPQ
-	 J0iC0FdRWEDej+nLN3XtrdPX70F0pNAE3UtlAWtc2NZ2ojJKAtsKJY3eA7Jn3e7LtR+UO
-	 fA7aYJjReQWnXbUC96XcS3EJz8uMiR/XI1O0C1b5xk5zOD5U9lbUGTv3IDTo6tIkAtR23
-	 6IL30tESlaECELW2OIJNyVYTS4LLAT7wsx68HIjyXnoXVFEu0QL3dakadJYlTgyvb5A/X
-	 sLjOyd+2l8NrlKpQyasHo+L5m4zwhG8K+49yf6SlVyw5NmiLoA0Ex/HQugqeigbMFZQ==
+	t=1794481062;
+	b=cSQRNqknHrON0Ue4ZC5Nonbo2JPLhvitwY7OvqwtqIggXRSSrBRZvo9PuP+qJchOHRhd
+	 aLcz258rZLKbjDxc09BL/NcMtsny5G2nJ/u62587+LwsCdOTSNmIp5a6KJRJ+lJujvdtL
+	 EQ2k8WUBUkwEKtv5QP0GXXqopM7gyNgr+P9HLZeMQi+5Iq3ZrtQJBiesdzD3SsOFVdXRi
+	 AP6wbmDsvru9GviXW6ms6YKlaqObhTpBoDd2AnjzJinaAGo2G+odHIxJZLA0vLNMGPscs
+	 Wj6V5nbJoYtB5Q24ct+NZCNb7jytqrsRDD7W1HTTbzsNvCLGVxiZMl3mDu0yrixDrlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794481032;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=CaAlmqccaq1A08RrxIHF9ttWnYDk4b0C2sEgkxs45mk=;
-	b=tl4iFf1kBXjvWR0I4IerNhKGBYbaksXOtWroGsp0BoUw0J/Y15/3zrtW8kkLQ/Ls1UGc
-	 2vhFJRnIDg/97jnpG2p+tvngo3jqvmAJ1SHqJ2RrTFrPsuJUW2PVpkF/R6H3nbhjX/MwQ
-	 pb85ggNjJOK5uyDD1ak7GLQfXTHnN054B9yOXkgbRN3YwF6yMgZkPDR+8aE1heoX3e2TK
-	 5/qBmCDUKgtuQMFNWbmc7Pcia6XZVuWuSI0ohYiQWq0scnf8r7f31XO1RvECINI1fZd3r
-	 T/efcGDNy4//PCeBTHeC7gsv4V8a2eArCTGHOCCV4anqMX8aaUW1d7H/H/OwzLn/yOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794481062;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type;
+	bh=8P9ng6dnAOZ1uLRwI2Xyior8nl1Uol/mP/8AoZqdZUo=;
+	b=WARinW6u+uXojqxRDImtfW6YdKbswKZmQG7uWGtRce3NnESFJ/MQ4gWTaG8R5k1/Oy2f
+	 zjcRA0+B1ZbsRg0ePltcc/eV8yFPsMCm40YngGgbAgYUyuWAUdPPYc8QNSgw6fxKpK0aj
+	 XgmNg7rixbYqDvQigyPLI5GFoekGu2YU4LzvnN3SvNEUnBSHFw1CA9rO7MCgVGFD8obig
+	 h7M6rqUnYv48Wdgw1xDMCUlKthF8YKZEN7b1zICT1BSCgGUEzOOzi8j8f8ZgrOniFD7R/
+	 Ehyz9g9Nk1txAt8t/tMDEs4SztkpJpHZEoSghn3ckb8WqWY7OG3+whJUPXslz1WyjBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrBnMRkg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=narfation.org;
+	spf=pass smtp.mailfrom=narfation.org;
+	dkim=pass header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=aZBIcGHd;
+	arc=none smtp.remote-ip=213.160.73.56
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E7606A31C;
-	Thu, 12 Nov 2026 10:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F3E606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 10:57:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21F3E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrBnMRkg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A98A1F00A06;
-	Thu, 12 Nov 2026 10:57:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794481031;
-	bh=CaAlmqccaq1A08RrxIHF9ttWnYDk4b0C2sEgkxs45mk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KrBnMRkgr+lw9sIuVkgMOvSYBLAvEUefXnyijCRf7+tQyW0bguz6XLIpkdyqGjnaf
-	 y2rzXO0GPX+NnOIXGUUW2zrp6DTG6fjDIBOyc6aFPAY4UJtN3j6cz/TUguqfD18bDI
-	 sMkrBH/eRYZAR6T2MI7rOa7Mh/NlK/JiIDVmFTe9DiJRvRwz81BZH0hnJgIwxormtf
-	 8RB2gzEaQE2NKzSElZMY48v1qJ26emDJWdpNxxCpRrBPXDw/+aSwpxo+dTfEtKVPWM
-	 XFwwxOrrYXUIX07w8xL+k+Pw/C5YDpG26usPgnoRM2MpvIkeWFvysJ8IB3f7d9zPlR
-	 ZcZVu0Nx7mz0w==
-Date: Thu, 12 Nov 2026 11:57:08 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luo Jie <jie.luo@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Richard Cochran <richardcochran@gmail.com>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	netdev@vger.kernel.org, quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com, 
-	quic_leiwei@quicinc.com
-Subject: Re: [PATCH v2 1/3] dt-bindings: clock: qcom: Add NSS clock
- controller for IPQ5210 SoC
-Message-ID: <20261112-wild-accurate-cockatrice-a80efa@quoll>
-References: <20261111-qcom_ipq5210_nsscc-v2-0-7e2c1dda3ed2@oss.qualcomm.com>
- <20261111-qcom_ipq5210_nsscc-v2-1-7e2c1dda3ed2@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=aZBIcGHd
+Received: by dvalin.narfation.org (Postfix) id 46F7F1FEF7;
+	Thu, 12 Nov 2026 10:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1794481060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8P9ng6dnAOZ1uLRwI2Xyior8nl1Uol/mP/8AoZqdZUo=;
+	b=aZBIcGHdgmTgfk0JcPXJLdRysccdxIvZ/gaPvXpts6Ofv5Y3eOzvbwWlk3Cs5A0WFSNdlC
+	aXjzjLzKCOIB85shL/DCf4ggsC9869mYZ9NSWOp2K5ht2NFUHFIfa1J1JkBsqpC+2fk3dO
+	uiewdbMYQkq+6nYDyjZ4z8TL97QIwfo=
+From: Sven Eckelmann <sven@narfation.org>
+To: sashiko-reviews@lists.linux.dev, b.a.t.m.a.n@lists.open-mesh.org,
+ netdev@vger.kernel.org
+Subject:
+ Re: [PATCH net-next 09/15] batman-adv: annotate originator last_seen with
+ READ/WRITE_ONCE
+Date: Thu, 12 Nov 2026 11:57:37 +0100
+Message-ID: <1831685.QkHrqEjB74@ripper>
+In-Reply-To: <sashiko-outbox-210959@kernel.org>
+References:
+ <20261111102729.2096241-1-sw@simonwunderlich.de>
+ <20261111102729.2096241-10-sw@simonwunderlich.de>
+ <sashiko-outbox-210959@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,93 +65,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261111-qcom_ipq5210_nsscc-v2-1-7e2c1dda3ed2@oss.qualcomm.com>
+Content-Type: multipart/signed; boundary="nextPart4751616.8F6SAcFxjW";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On Wed, Nov 11, 2026 at 02:00:55AM -0800, Luo Jie wrote:
-> NSS clock controller provides the clocks and resets to the networking
-> blocks such as PPE (Packet Process Engine), UNIPHY (PCS) and EPHY on
-> IPQ5210 devices.
+--nextPart4751616.8F6SAcFxjW
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Thu, 12 Nov 2026 11:57:37 +0100
+Message-ID: <1831685.QkHrqEjB74@ripper>
+In-Reply-To: <sashiko-outbox-210959@kernel.org>
+MIME-Version: 1.0
+
+On Thursday, 12 November 2026 11:34:43 CET sashiko-bot@kernel.org wrote:
+[...]
+> [Severity: Medium]
+> This problem wasn't introduced by this patch, but can
+> batadv_v_neigh_dump_neigh() and batadv_iv_neigh_dump_neigh()
+
+batadv_iv_neigh_dump_neigh? There is no function with this name in the source 
+code. There is only batadv_iv_ogm_neigh_dump_neigh()
+
+> suffer from
+> the same timestamp underflow [1]?
 > 
-> Add support for the compatible string "qcom,ipq5210-nsscc" based on the
-> existing IPQ9574/IPQ5424 NSS clock controller Device Tree binding. IPQ5210
-> additionally exposes a pair of EPHY-RAW Rx/Tx clock sources used to derive
-> the clocks for its integrated 2.5G Ethernet PHY, so extend the clocks and
-> clock-names lists with "ephy_rx" and "ephy_tx".
+> net/batman-adv/bat_v.c:batadv_v_neigh_dump_neigh() {
+>     ...
+>         last_seen_msecs = jiffies_to_msecs(jiffies - hardif_neigh->last_seen);
+>     ...
+> }
 > 
-> Also add master/slave ids for IPQ5210 networking interfaces, which are used
-> by the nsscc-ipq5210 driver for providing interconnect services using the
-> icc-clk framework.
-> 
-> Signed-off-by: Luo Jie <jie.luo@oss.qualcomm.com>
-> ---
->  .../bindings/clock/qcom,ipq9574-nsscc.yaml         |  47 ++++++++-
->  include/dt-bindings/clock/qcom,ipq5210-nsscc.h     | 106 +++++++++++++++++++++
->  include/dt-bindings/interconnect/qcom,ipq5210.h    |  18 ++++
->  include/dt-bindings/reset/qcom,ipq5210-nsscc.h     |  60 ++++++++++++
->  4 files changed, 228 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml b/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
-> index a35bbc7b1924..dc7d90a99dc7 100644
-> --- a/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
-> +++ b/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
-> @@ -4,24 +4,28 @@
->  $id: http://devicetree.org/schemas/clock/qcom,ipq9574-nsscc.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Qualcomm Networking Sub System Clock & Reset Controller on IPQ9574 and IPQ5424
-> +title: Qualcomm Networking Sub System Clock & Reset Controller on IPQ SoCs
->  
->  maintainers:
->    - Bjorn Andersson <andersson@kernel.org>
-> +  - Luo Jie <jie.luo@oss.qualcomm.com>
->  
->  description: |
->    Qualcomm networking sub system clock control module provides the clocks,
-> -  resets on IPQ9574 and IPQ5424
-> +  resets on IPQ9574, IPQ5424 and IPQ5210
->  
->    See also:
-> +    include/dt-bindings/clock/qcom,ipq5210-nsscc.h
->      include/dt-bindings/clock/qcom,ipq5424-nsscc.h
->      include/dt-bindings/clock/qcom,ipq9574-nsscc.h
-> +    include/dt-bindings/reset/qcom,ipq5210-nsscc.h
->      include/dt-bindings/reset/qcom,ipq5424-nsscc.h
->      include/dt-bindings/reset/qcom,ipq9574-nsscc.h
->  
->  properties:
->    compatible:
->      enum:
-> +      - qcom,ipq5210-nsscc
->        - qcom,ipq5424-nsscc
->        - qcom,ipq9574-nsscc
->  
-> @@ -42,6 +46,9 @@ properties:
->        - description: Uniphy2 NSS Rx clock source
->        - description: Uniphy2 NSS Tx clock source
->        - description: GCC NSSCC clock source
-> +      - description: CMN_PLL EPHY-RAW Rx clock source
-> +      - description: CMN_PLL EPHY-RAW Tx clock source
-> +    minItems: 11
+> Because hardif_neigh->last_seen is updated locklessly on packet reception
+> and read without READ_ONCE() or jiffies_delta_to_msecs(), a concurrent
+> update can leave hardif_neigh->last_seen ahead of the sampled jiffies
+> value, wrapping the subtraction and exporting a huge last_seen_msecs
+> value over netlink.
 
-Please place minItems at the beginning, before "items:".
+This is adjusted in the next two patches in this patchset.
 
->  
->    '#interconnect-cells':
->      const: 1
-> @@ -63,6 +70,9 @@ properties:
->        - const: uniphy2_rx
->        - const: uniphy2_tx
->        - const: bus
-> +      - const: ephy_rx
-> +      - const: ephy_tx
-> +    minItems: 11
+Regards,
+	Sven
+--nextPart4751616.8F6SAcFxjW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Same here
+-----BEGIN PGP SIGNATURE-----
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCavWboQAKCRBND3cr0xT1
+y30qAQCxM2pzrCpWwjtmdG17Uozu4UXuGHZ7Y558+4W2pqCO7wD/dz9ukJGdb+Jv
+qjF9rkCqVOr4xg+aDzhwJ5Pan1aQGww=
+=hGQR
+-----END PGP SIGNATURE-----
 
-Best regards,
-Krzysztof
+--nextPart4751616.8F6SAcFxjW--
+
+
 
