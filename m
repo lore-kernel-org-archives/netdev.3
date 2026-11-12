@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794510009;
-	b=2LqlyLxkz5XWaDiIxuivuGEZS5w2vp2thg0rNR89zTOXAMFIg9BYIneSVhXLgxSK2jWA
-	 kMaEfQZfRhBgvNaW0trpbYfz2Rb2MpF3eorYH7hi1LahdsNsDsaqnW4FBrhg69ZckEcYX
-	 LgvndctbTrsyE4+uIs0JXDO+ARwIhXt94xv7WFQFXffalSstfgxaLwQwA2ALKTuucw6HL
-	 dE57T0fcJmnfo1FiNE0HB24BB1FtfccRBILY8HdLt1cG32NrOkd0R3OpZhQUEmrFTk12M
-	 qrk0FUZWueuKp8HqD1mCi7st1mhNO7MNy/5qR/kNTinAW1UCs4fM1/HesuuyY4eDr8Q==
+	t=1794510012;
+	b=w61sq7GU8Vyod/7PKn7YWipARAPy8fnx0YekQcnE1TjMmTayS+w+RfYGaHc8NGzkm6E0
+	 3vxkKso9LWQeIDh1K3ue2iiPQhVxAD6VM4cEa5uex2Xz7M50PIOXZngN9a04SGipQM25+
+	 +J/DP/nXwxp1y+a4ruOENTy60Y3Hy+zJ3Z/dKtBVTYoFDFPDMvd6M3vhgqUdxK4gPli0r
+	 hqX0g8qEfRwiM4dRe0NPNFLzB5upds4NqakO5fRFF7HUrhXOn/M0Y2EB/jZDEqWOcMH2P
+	 zmfdANL+YLF/ubUxJy1iC603D/HcUSxxPPnd70kU1uIlwivKuu6D68JtYnmX+qne//A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794510009;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794510012;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=7YTH93u38oQ8QNw98PRHN1c5en4J1Tms4ZHbVUovza0=;
-	b=GAHcghRQNXFDj2uGo/XvyT5wPCjoBc9TZgTN4RrIsWkWFxS6dklHEb91Wa1m/UqGthvo
-	 Tw7bs1vc4N5piuA783TZFYOPCCFkfwH6raaxXaMDjL0IguiJ8gqLKeXKxRw7WVAEcGn5Y
-	 PjQGeGx1ypRzxKCxcButi8IvO4Oxsy/xdWzmD6ruEqtVzovRZ3oJ86q72mUh3kdpCcF6C
-	 gWLC17qOJE/KazsGEJsilNhnkVtNyinJ0HJQcTHHjFKXtGRNHGUgWum4H8/1Je3+0j263
-	 isoOlP1xla94sOCZXE6SJQa1b1ccGC5/qtN7gD7ZCMpjvgDKFmJFcNBdILsB57odjSQ==
+	bh=nU1s4hPKfhK1wmrH5ikzcYoaNf00CXdascWgsQAj/nQ=;
+	b=dIeqtUlak2DDKKSzyYrsqqBaSIJO84CBPBfjBhT4jYGRriGjgDqe5ehvfhQVQkcuJpz8
+	 h+cEHAW+r3tAE3dMsvyGEqWsN0f9ChQXOHv7TdGdBVsmilRWm9GxsbXH/IVSe+o8e8zAJ
+	 jmtwGCHK3CFVlULiCq1SZB3xeBQ/o9Cjp87jpJlYBAkGcdIZtVW0NSFSAnXL+PSqfgzki
+	 xRVrQafdm/Rr9HFM9J4E0y5I4tyLcE5M68NT+EHl+XhNXJT3u6wcFEqBOSOqgbyn4T1KP
+	 OPwWlh3CZ02vzOp9EOj37b1N03XLQnUNbA8ryZSLX8/Onpl71esURYS8mLwlRgc4r+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nXeoTvW8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="F/dRi0T8";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D1606A88F;
-	Thu, 12 Nov 2026 19:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882CA60A5BE2
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nXeoTvW8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26D91F000C4;
-	Thu, 12 Nov 2026 19:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F/dRi0T8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D1A1F000C4;
+	Thu, 12 Nov 2026 19:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794510009;
-	bh=7YTH93u38oQ8QNw98PRHN1c5en4J1Tms4ZHbVUovza0=;
+	s=k20260515; t=1794510012;
+	bh=nU1s4hPKfhK1wmrH5ikzcYoaNf00CXdascWgsQAj/nQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nXeoTvW8U87/8SqeAA08lThp6h9Z4f7VeoI5tOU6qvO1OO57XaYCNWm0fegl77DS9
-	 pFrVWPLuMfNYwrMYLo7P4VrhoEiYtuN5CZWy8Qg3ucV0r1uNFWgzrrorxtpBw5ZwOs
-	 FtwGGssacguLwpZfhPahNq0VKSflkjAtkTstiKAVICUhDO745KEoUe2li69RvZ6Ep6
-	 GGcRf0qd1UvLXD0W6gSfEg07y3q9lOn6lB4TUcG3498jnEcY1rdV4zTzjU95DWjPee
-	 GV7hSPaewv54nRk+8uBZ1MqJ0f1TPG/HLjhCVpWfUz2T+d9XxkZVfEujwu/XImHucs
-	 3kSKn6E51rs3Q==
+	b=F/dRi0T8IXe8qJbMSRzpgRT1PPEuTUT9z+JnBeQbXRzquR1P2uoZ2YozPVqxvth9v
+	 Igy2ymUbQSZ3dm2y9XpeJUaOjNOKzZXuas/l+xduQGROy1g74mfNDJfxkkw2Vh3iSE
+	 u6hJzMgM4DCVAiGRIFEYu0QDu0d0Jqm0+/5Lof9r9R0I4+FKgktOIx3NVS2dMtro9X
+	 YZj9dFQm7aIndLEQRf8PLRdcdvP53uDqZ9mTbOXUXdIb92OTA0+pxzeHZSu7fCjhrf
+	 MYHSm13VOB4wErcSzdGP/0X9ZgtyBlo7gIOgEnlb3w8VrW8vhDHLqkJvOnbpEdZVyd
+	 udzMF2t5H1y+A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E51053924A5F;
-	Thu, 12 Nov 2026 19:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E72CE3924A5F;
+	Thu, 12 Nov 2026 19:00:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,46 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5e: IPsec,
- don't match upper proto selectors in crypto offload TX
+Subject: Re: [PATCH net v2] tcp: fix request_sock use-after-free during Fast
+ Open
+ accept()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179451000753.594620.15896228047491336264.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 19:00:07 +0000
-References: <20261111081337.3129580-1-tariqt@nvidia.com>
-In-Reply-To: <20261111081337.3129580-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- parri.andrea@gmail.com, borisp@nvidia.com, cratiu@nvidia.com, gal@nvidia.com,
- leon@kernel.org, leonro@nvidia.com, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, mbloch@nvidia.com, phaddad@nvidia.com,
- raeds@nvidia.com, saeedm@nvidia.com
+ <179451001045.594620.10862327534856393811.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 19:00:10 +0000
+References: <avQKA_YTAThtbsYU@v4bel>
+In-Reply-To: <avQKA_YTAThtbsYU@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Nov 2026 10:13:37 +0200 you wrote:
-> From: Cosmin Ratiu <cratiu@nvidia.com>
+On Wed, 11 Nov 2026 15:24:03 +0900 you wrote:
+> Commit e3d95ad7da4f ("inet: avoid fastopen lock for regular accept()")
+> made inet_csk_accept() check tfo_listener before taking fastopenq.lock
+> to avoid taking the lock for connections that did not use Fast Open.
 > 
-> The mentioned commit introduced support for upper protocol selectors
-> (protocol & ports) to mlx5 IPsec offload. In crypto offload mode this
-> causes offloaded TX SAs to stop matching traffic.
-> 
-> In tx_add_rule(), setup_fte_upper_proto_match() is called for all
-> offload types and programs a match on the upper protocol (TCP/UDP) and
-> ports. For crypto offload, setup_fte_esp() is then called and sets
-> ip_protocol to ESP. The resulting rule requires both ESP as the IP
-> protocol and TCP/UDP ports, which no packet can satisfy, so TX crypto
-> offload silently stops working for such SAs.
+> reqsk_fastopen_remove() clears tfo_listener while holding fastopenq.lock,
+> then reads req->sk. If inet_csk_accept() concurrently observes
+> tfo_listener after it has been cleared, it skips fastopenq.lock and
+> drops the last reference to the request_sock. This can free the
+> request_sock while reqsk_fastopen_remove() is still using it.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/mlx5e: IPsec, don't match upper proto selectors in crypto offload TX
-    https://git.kernel.org/netdev/net/c/5ed47bd79ceb
+  - [net,v2] tcp: fix request_sock use-after-free during Fast Open accept()
+    https://git.kernel.org/netdev/net/c/62754aad50d0
 
 You are awesome, thank you!
 -- 
