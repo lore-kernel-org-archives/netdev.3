@@ -1,94 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794501225;
-	b=F8h0XvGVyGkCVqMiXO8JOmwxq/IBd7sl9aflpHx9qe1BTvtX3jsCed1pvrtkMya1xKpB
-	 s8Bv0pBrz5/AV2O8S6vl30cl2QIeSQwDEX39vpZI0W2LtMHD1H/xnJnd09Xq2jWon2P8g
-	 31rpV9r5KSMtklv43kaBmyDFocrUcX1KRKNLdUarNv10nociu0dXFW8xZuW4Ti4pFowkn
-	 tt6haTamDAHf6lLOrcnEZIr+yDidV4MbjNOacXDqWJ7INZXdOZtKxFcbuAqgKKgnrq/HN
-	 HQzZj9FKXHmK/ZQkI8Goa0TxWiZwXutSF6dND1d98Jv9l0L+cDc4NDBdI0CV8N8/tBg==
+	t=1794501227;
+	b=GFYTGEdD3KDy1EfJym2LCj938BW2V4Fnu3h4pGxwyMDg0/dwSbtWB4fGMaksAxFgPRG4
+	 /suAUjcW9iK/S99l1Eo8FfyqaNU8eA5awvZwkaoruRXokfOC5iYnDn9w7f2Yss5wstdGF
+	 VzwDYMIDPjjAQn9nDBrwuyaRCMBv4K1X8BDpE07jYX3P3EQaAwgcuAxIW6JmjODx/lQP0
+	 L+8jb59YHfBM+vcWquE4HfSXefJM+V3++XqXPL+8zprKPJTGLTIU+kAbxptOZE1kYzEVs
+	 sFbA95tKM8agJmN1Rxo2hL76awqhEcjTKhcTbwcGuDyVZKNtr3umwaJt3oe4rAixiKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501227;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=tbdfNX28L/i/5oHG446ychVES0ZdkWJVAEz8POMkBqY=;
-	b=ljK4o4n1HS+OaTMWExdQWTGPLju/gIdbIbJ1iyxZUyYNjd3TGKamqa2eB4g0+3o+7IJj
-	 g06wxCsOuPKTrwzAT8FCP6cDEcnN6bKbQahOJrlqRsaTr+q7DCvCgfVWFoyjkrcTzqGVc
-	 x+I3TEDTX8luPkkkBz5ADSoza6Gc7qv/94hieRS7ekSbRdbHSqKIkdElQa/YJz48LY2oV
-	 mMMn8L1UJaS56iueeGKHLTxGexcIkiD4/TX9jAD7oqq4T/NdTKHIyxvTIOqjbA8YRa9wU
-	 s0J01xdyRwlix1opP9K6rAKmJk6+h9jSL1zXgIjUUKyscvlgcCOdrxJyBu5Wqkk5fZQ==
+	bh=Fq2Tsxhf5rFExqtMe5i2fmiOO7MCidBfvMh2Y6TVSf4=;
+	b=ZrSHOQjA6LW1CClbXBFZ3DFmZ76GWfis2HCZL1JtGtKwnCEN26luVU5NHyU/PCbzAeKS
+	 SnsM57YJI6pLKrp9EwGEUvlpDkl5adt6Wd4TI5JodWr3dGsaf6HVK4aF25h/lMvqNbB4x
+	 3eeGFtcBWQwE+tB79Tlb7sP4toOQkIsImup+eTGzSWAfox32lUaxJxc/im62BlMY8xAV7
+	 4R68la2KuaT16rxZOKG6KsEXcQHE69EJPIsALpOgeOLwBkCLJPhazCuDTThKZbpPEiRDt
+	 unJTfp7a7VQ5hyeJNP0hHRwlCAID26CJ21lBDgeLTtaRZQYvRmKamwz4lQrfQsxvzTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u2AaKfmQ;
-	arc=none smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gbxi3VQ6;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4424960A2623
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:33:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4424960A2623
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7179606AB03
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:33:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7179606AB03
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u2AaKfmQ
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1b3ada81853so4186603c88.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:33:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gbxi3VQ6
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-37198ed3727so1339560eec.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:33:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794501224; x=1795106024; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794501226; x=1795106026; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tbdfNX28L/i/5oHG446ychVES0ZdkWJVAEz8POMkBqY=;
-        b=u2AaKfmQMcjkan1aCxxE9geaP+hEcpgc6e6VbKe6MHvKKvLl5OiquJ8t3OiCA8tFUH
-         71+y/xp39lOCobqJzEV5TxPX+NqchZESmE3yrZxyDc523SbckeZIJVHZETvwg5rZxsyX
-         Ieb2wrQzIQzHz5CXixJaeE1f8rCKTSGh0MqmL3z1tjwgA0FDBi8t1qjtT0+ekiZv99B2
-         3P/zd+UE1ekNbsRYKBOo0gCY1CnxCgDdhopwG5uFfVqmkX4IaZD7ErEvvbiZSvxuYheU
-         Jx1CA49JBenGJ7OH/cI1fyhrbxITDhiNtIcoXXi4bKeMAYCJGHtUGb2qTHAkSztKEj5h
-         XULA==
+        bh=Fq2Tsxhf5rFExqtMe5i2fmiOO7MCidBfvMh2Y6TVSf4=;
+        b=Gbxi3VQ6FZ4SKA8SpkY+K+CI/ecuWylsppICb+x8IPsxjVU/Hmbl+EXZdNBHoVdA31
+         IWXVcAJT5Kar6Ymq21q9MyjUeqDq9dkUIS3agnXxAhujjtYt2p6QF+hoWiFi7+epcJss
+         ej0SvU3DyZd3hsjtjd/S4xMxqfmBS2oztn7Lsz4PQ/yxRzFRNG37KNPCSVMhv8s7ir8j
+         bXfbI+x2u64n56WsUVv7eU69fv8vfnAn1EOrppcnYK4yeDsMLS4vzb7JskBHn/OtyJf9
+         gqCqFUmOgqcfIW+ioD+KuSukPQrdUsJlBvA4CqGZASxMD0tkzVDQuBSG67gkRBqSRtlt
+         mBUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794501224; x=1795106024;
+        d=1e100.net; s=20260707; t=1794501226; x=1795106026;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tbdfNX28L/i/5oHG446ychVES0ZdkWJVAEz8POMkBqY=;
-        b=cpO98uv0QQKTcdKSWMDTv8gLAcQhrRs50wYC4AcogtI3X3NaegDjbN4x3yK+scpSge
-         VgLUYaFAgc309cv6/DfYhDsiKWnTCiBiZJexwwri5DhczDk8BpC6oVz2igtINfWGoIm6
-         M9c25KmU4YRSfJ0VqIWRoAjONc67PR+2cSsx8Yo07H9FWy2fd1yctqJFjxwV+x8k2+pt
-         gzuxwfZbjzPgk1RhdkI3QVOEFW0di9aATXjBU0G/u2MkWhVUnKB33PBD7hSWAPMKSBNV
-         K9tkx+h01Yfv+y3QFMvML7f+NgY+mMRvHw9Xfer9bztCUK/f7agiZmGGuiocw2TjcQuo
-         Kweg==
-X-Gm-Message-State: APuU4Z9ivTNiaOZJxV1BVCGCFUIK0cQH9hNN/CeJS6dWvIbXbT7aZOel
-	g/d8b7WutbNZqAR99tFSrBmFcrn9afoKwk8KyZ+lPYRO538id6bVHxPK+b6ch4uA
-X-Gm-Gg: AYBFou2vb8ZytoE16/Rq5uuyamzmmuWd4IE+g+dTLdgrftOERW/h1/j4PWwk1X808i4
-	Nn1Zstlz+0JyxCullyqDbd6NhYqo5O7XamAruFZFm9wsY4VUH6LSVJWq1rKizQSq1ArSJbBSnzd
-	mTd61/iSie0JX1Rvc3LBQOium+Y6UP/uiRE0pYbHeFybe5TrXIaTttqzfIFcx/Wm0EyiuaZg88o
-	YpElII2J6eFvH3gBEHDaX07tkNA+XkVJKb0Ovmi+Ymu8UbqIald6AAd/pSSrPKvzJyLrs7cEqR8
-	qoQBjYR5uxCezr2EqmaNrxIKlq/ZyZUcWT2k5TYsjaCwNu4NhMk6xvl+KMwY60q/GdZYbjx0isN
-	O7zkemDbEJOZbeiNooT2Ad8LP1j5Rc1kGAK2XGDRCgNUsbVpYc8OQq1VCPjxlsodF/QGBxgKGLS
-	bU599rLFlLnj/Hc9zeqP9E4XOwc5L6NaUEzgjaF7/Wg7husrQNddtXpGMhp0WMpGtWC0cVHRb3c
-	y0gc0oP3c4COxMIr/Hs3vxIo5RIJEnd9IIYQwovn8egYy1j8629+8uVUa7lpjQgR/sF7PyWkYPv
-	LXPZ4xDg5+hyezlqQBaXRAWpKEgQffJa+lcn3LYtE0wm9rimadzjDqHc9gKsFH8Tvl3GSXnyMrW
-	V8N4KMxSgLSRsro6LnDSsppUe75FODBP1G3lAWccLJKNaaD0w6DF5eUAEGY8XadCIub5Vp/+v
-X-Received: by 2002:a05:7022:f20f:b0:1b3:b53e:b4cd with SMTP id a92af1059eb24-1b5031003e7mr96230c88.21.1794501224164;
-        Thu, 12 Nov 2026 08:33:44 -0800 (PST)
+        bh=Fq2Tsxhf5rFExqtMe5i2fmiOO7MCidBfvMh2Y6TVSf4=;
+        b=mSMMvHKol7Wng6W04X/4RLVDz+a7rbj1m9kfmJfjQchE4KkjYuH21gFhJMn+wYhDJB
+         riaNRecuoQ3FVBWAbh2dvsYeQSZeITTu4co3vowpejvuKeTCil9JubqK7d8VSR+wnpgI
+         HCJPUTa2Vv/nSXXM4w3QeprbKMGog5QSRBG8uap5RpNYPD/EtWywIrHNc4MMmVgbxCB0
+         E6uvVTuIpQhNb5u7b21X9YQ84BCD1WX0liXQTjrq7uTX036jJJmnMXIk3CDKtNc9tlDV
+         LeB/FFSbtwp6AKTFeqhcOuEcfQtZP/3j+CMpb0MCSnVQQAliBWCkF3V6WNStHpnW/aA5
+         ndQw==
+X-Gm-Message-State: APuU4Z9sdTtmRNbfyiXG38MJJgokPowzxbPy6IESBgj22Zb4GH096ydQ
+	cgmjZWldyTZN02Oad3iMByp+HqUKBlXEfLqBiLlnORsujXjierSIHjN6KEE9CAd0
+X-Gm-Gg: AYBFou2cn4HfUN8NutPG14alBqPF/NQX/QQbHrfi23yui99ylw/IzKT44qGKMVg9Y8i
+	XnzEUyRJo65Nv9L2uT0KjzdsamC49x73HZx68MWoTOK0VH4hftPfDnBEt0sOy+TRBAf+4whLo9Z
+	GeBTbW9aPBZi36kVE9NVnxxGzkkrw9M9v7/HPKP0KfnPFN071UUTa9t2d2uFjRzOPJf8dUhigpf
+	Wlj8hyLNb9hI+csReD7ZmMZVvG9Ea20sybX0LsuPA8+P7eYDoiK/6qGax9jfClkUiBP0D21VZLf
+	1U/RWgb1InLpXP9SElmvkBEq3WNb9CooERgezfwkHv7u8IzIpNZJiou8MmFwesZmW6X7y8aphkc
+	Jf6DsFT5fhsjVtSxsCLwqlcK7gr8GWK/QWZ95G2fa4oJUEuzYEByZLovc1PFOOuB6LRatNJ4hyd
+	wY/oBjjXLGmb6OEBRhHGxgQjYWGKIYXW/BfQxFAhgcfdbuT3Gai/V3+wgZAVlxNgOEOU7rO5x2S
+	fjgq6SW+G4b1Q3AOqq47MR2lLtt3STwacDwp7S/cbMK0hCta+vSscmq6onNBbLQTPrYKYvE+49O
+	GUGg5qEbj/MebwFtkyfaT+P3HMoqth8yoKXi5q4N2rRYr+obMvtEDFpXV7j0UNGStCT125lr4n2
+	gnSfHEtwYaVHl/CTZ7Tx9iS/V/6WGz4ANTOtDXZl8nblTThEq21jx//mRTKfXYYjEIc7PPaM9
+X-Received: by 2002:a05:701b:4294:10b0:1b3:b3d5:566f with SMTP id a92af1059eb24-1b5030990dbmr88896c88.11.1794501225666;
+        Thu, 12 Nov 2026 08:33:45 -0800 (PST)
 Received: from Mac.localdomain (198-27-228-154.fiber.dynamic.sonic.net. [198.27.228.154])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50300e5dcsm230248c88.0.2026.11.12.08.33.43
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50300e5dcsm230248c88.0.2026.11.12.08.33.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Nov 2026 08:33:43 -0800 (PST)
+        Thu, 12 Nov 2026 08:33:45 -0800 (PST)
 From: Ahmad Byagowi <ahmadexp@gmail.com>
 To: netdev@vger.kernel.org,
 	vadim.fedorenko@linux.dev,
 	andi.shyti@kernel.org
 Cc: linux-i2c@vger.kernel.org,
 	Michal Simek <michal.simek@amd.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 1/3] i2c: xiic: allow platforms to require 32-bit register accesses
-Date: Thu, 12 Nov 2026 08:33:30 -0800
-Message-ID: <20261112163333.12523-2-ahmadexp@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net-next v2 2/3] i2c: xiic: add KUnit coverage for register access modes
+Date: Thu, 12 Nov 2026 08:33:31 -0800
+Message-ID: <20261112163333.12523-3-ahmadexp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261112163333.12523-1-ahmadexp@gmail.com>
 References: <20261112163333.12523-1-ahmadexp@gmail.com>
@@ -103,166 +103,177 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The LitePCIe bridge in the WiWi Time Card production image cannot safely
-service subword MMIO accesses. Bringing up its AXI IIC controller with the
-existing byte accessors caused a fatal machine check. Two crash dumps
-placed the faulting access in ioread8(), called by xiic_clear_rx_fifo()
-during xiic_reinit(). The affected register was the IIC status register.
+Exercise the driver's private register accessors with memory-backed
+registers instead of physical hardware. Cover native byte/halfword and
+forced 32-bit accesses in both register byte orders, across 22 register
+offsets. Check payload truncation, high-bit values and neighboring
+sentinels. These tests do not validate physical bus transaction widths
+or hardware interrupt behavior.
 
-Add a platform-data flag to use aligned 32-bit accesses for registers
-carrying byte or halfword values. Keep the detected register endianness
-and use a single transaction, not read-modify-write, for FIFO accesses.
-Platforms that do not request this mode retain their existing accessors.
+Include the tests in the driver translation unit so no accessors need
+to become exported interfaces. Require built-in KUnit to avoid a
+built-in driver depending on a modular test framework. The tests follow
+the driver into either its built-in image or module.
 
-With these accessors on a WiWi card, the controller probed and at24
-registered the board and MAC EEPROMs. Repeated EEPROM reads and I2C
-interrupt delivery were tested separately on an earlier Ubuntu port.
+The four parameterized cases passed in an isolated x86-64 QEMU boot
+with networking disabled and no physical-device passthrough.
 
 Tool-origin disclosure, as required by generated-content.rst: Codex was
-used to analyze the supplied crash evidence, implement the accessors,
-prepare tests and draft this changelog. The request was to support the
-WiWi card while retaining the existing behavior on other platforms.
+used to implement this test suite, run the KUnit build/boot and draft
+this changelog, in response to a request for upstream-quality testing.
 
 Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
 ---
- drivers/i2c/busses/i2c-xiic.c          | 56 +++++++++++++++++---------
- include/linux/platform_data/i2c-xiic.h |  3 ++
- 2 files changed, 41 insertions(+), 18 deletions(-)
+ MAINTAINERS                               |  1 +
+ drivers/i2c/busses/Kconfig                | 14 ++++
+ drivers/i2c/busses/i2c-xiic.c             |  4 +
+ drivers/i2c/busses/tests/i2c_xiic_kunit.c | 91 +++++++++++++++++++++++
+ 4 files changed, 110 insertions(+)
+ create mode 100644 drivers/i2c/busses/tests/i2c_xiic_kunit.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 893b0670a..64fa74c40 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4018,6 +4018,7 @@ F:	drivers/cpuidle/cpuidle-zynq.c
+ F:	drivers/edac/synopsys_edac.c
+ F:	drivers/i2c/busses/i2c-cadence.c
+ F:	drivers/i2c/busses/i2c-xiic.c
++F:	drivers/i2c/busses/tests/i2c_xiic_kunit.c
+ F:	drivers/mmc/host/sdhci-of-arasan.c
+ N:	zynq
+ N:	xilinx
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 275aaa7f3..014281fa2 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -1322,6 +1322,20 @@ config I2C_XILINX
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called xilinx_i2c.
+ 
++config I2C_XILINX_KUNIT_TEST
++	bool "KUnit tests for Xilinx I2C register accesses" if !KUNIT_ALL_TESTS
++	depends on I2C_XILINX && KUNIT=y
++	default KUNIT_ALL_TESTS
++	help
++	  Test the Xilinx I2C driver's register accessors with both byte orders
++	  and with native-width or forced 32-bit accesses. KUnit is a kernel
++	  unit testing framework. These tests use memory-backed registers and
++	  do not require an I2C controller.
++
++	  The tests are compiled into the driver to exercise its private
++	  accessors, and follow the driver's built-in or module configuration.
++	  If unsure, say N.
++
+ config I2C_XLP9XX
+ 	tristate "Cavium ThunderX2 I2C support"
+ 	depends on ARCH_THUNDER2 || COMPILE_TEST
 diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index ba560462d..8425a540f 100644
+index 8425a540f..6c0f04aaa 100644
 --- a/drivers/i2c/busses/i2c-xiic.c
 +++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -66,6 +66,7 @@ enum i2c_scl_freq {
-  * @rx_msg: Current RX message
-  * @rx_pos: Position within current RX message
-  * @endianness: big/little-endian byte order
-+ * @force_32bit_access: Bridge requires aligned 32-bit register accesses
-  * @clk: Pointer to AXI4-lite input clock
-  * @irq: Interrupt number
-  * @state: See STATE_
-@@ -95,6 +96,7 @@ struct xiic_i2c {
- 	struct i2c_msg *rx_msg;
- 	int rx_pos;
- 	enum xiic_endian endianness;
+@@ -1650,3 +1650,7 @@ MODULE_ALIAS("platform:" DRIVER_NAME);
+ MODULE_AUTHOR("info@mocean-labs.com");
+ MODULE_DESCRIPTION("Xilinx I2C bus driver");
+ MODULE_LICENSE("GPL v2");
++
++#if IS_ENABLED(CONFIG_I2C_XILINX_KUNIT_TEST)
++#include "tests/i2c_xiic_kunit.c"
++#endif
+diff --git a/drivers/i2c/busses/tests/i2c_xiic_kunit.c b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
+new file mode 100644
+index 000000000..b4c818d8b
+--- /dev/null
++++ b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
+@@ -0,0 +1,91 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Included by i2c-xiic.c to exercise the driver's private accessors. */
++#include <kunit/test.h>
++
++struct xiic_access_param {
++	const char *name;
++	enum xiic_endian endianness;
 +	bool force_32bit_access;
- 	struct clk *clk;
- 	int irq;
- 	enum xilinx_i2c_state state;
-@@ -282,52 +284,68 @@ static int xiic_i2c_runtime_resume(struct device *dev)
-  * Only the least significant byte [doublet] of the register are ever
-  * accessed. This requires an offset of 3 [2] from the base address for
-  * big-endian systems.
-+ * Some bridges only support aligned 32-bit accesses. For these, access the
-+ * entire register in its detected byte order, without a read-modify-write:
-+ * reading or writing a FIFO register must perform exactly one transaction.
-  */
- 
--static inline void xiic_setreg8(struct xiic_i2c *i2c, int reg, u8 value)
-+static void xiic_setreg32(struct xiic_i2c *i2c, int reg, int value)
- {
- 	if (i2c->endianness == LITTLE)
--		iowrite8(value, i2c->base + reg);
-+		iowrite32(value, i2c->base + reg);
- 	else
--		iowrite8(value, i2c->base + reg + 3);
-+		iowrite32be(value, i2c->base + reg);
- }
- 
--static inline u8 xiic_getreg8(struct xiic_i2c *i2c, int reg)
-+static int xiic_getreg32(struct xiic_i2c *i2c, int reg)
- {
--	u8 ret;
-+	u32 ret;
- 
- 	if (i2c->endianness == LITTLE)
--		ret = ioread8(i2c->base + reg);
-+		ret = ioread32(i2c->base + reg);
- 	else
--		ret = ioread8(i2c->base + reg + 3);
-+		ret = ioread32be(i2c->base + reg);
- 	return ret;
- }
- 
--static inline void xiic_setreg16(struct xiic_i2c *i2c, int reg, u16 value)
-+static void xiic_setreg8(struct xiic_i2c *i2c, int reg, u8 value)
- {
-+	if (i2c->force_32bit_access) {
-+		xiic_setreg32(i2c, reg, value);
-+		return;
++};
++
++static const struct xiic_access_param xiic_access_params[] = {
++	{ "native_little_endian", LITTLE, false },
++	{ "native_big_endian", BIG, false },
++	{ "word_little_endian", LITTLE, true },
++	{ "word_big_endian", BIG, true },
++};
++
++KUNIT_ARRAY_PARAM_DESC(xiic_access, xiic_access_params, name);
++
++static void xiic_register_access(struct kunit *test)
++{
++	static const int offsets[] = {
++		XIIC_DGIER_OFFSET, XIIC_IISR_OFFSET, XIIC_IIER_OFFSET,
++		XIIC_RESETR_OFFSET, XIIC_CR_REG_OFFSET, XIIC_SR_REG_OFFSET,
++		XIIC_DTR_REG_OFFSET, XIIC_DRR_REG_OFFSET, XIIC_ADR_REG_OFFSET,
++		XIIC_TFO_REG_OFFSET, XIIC_RFO_REG_OFFSET, XIIC_TBA_REG_OFFSET,
++		XIIC_RFD_REG_OFFSET, XIIC_GPO_REG_OFFSET,
++		XIIC_TSUSTA_REG_OFFSET, XIIC_TSUSTO_REG_OFFSET,
++		XIIC_THDSTA_REG_OFFSET,
++		XIIC_TSUDAT_REG_OFFSET, XIIC_TBUF_REG_OFFSET,
++		XIIC_THIGH_REG_OFFSET, XIIC_TLOW_REG_OFFSET,
++		XIIC_THDDAT_REG_OFFSET,
++	};
++	const struct xiic_access_param *param = test->param_value;
++	struct xiic_i2c *i2c;
++	u32 expected;
++	u8 *mem;
++	size_t i;
++	int reg;
++
++	i2c = kunit_kzalloc(test, sizeof(*i2c), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, i2c);
++	mem = kunit_kmalloc(test, 0x200, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, mem);
++	/* Aligned RAM stands in for MMIO. No hardware is accessed. */
++	i2c->base = (void __force __iomem *)(mem + sizeof(u32));
++	i2c->endianness = param->endianness;
++	i2c->force_32bit_access = param->force_32bit_access;
++
++	for (i = 0; i < ARRAY_SIZE(offsets); i++) {
++		reg = offsets[i];
++		memset(mem, 0xa5, 0x200);
++
++		xiic_setreg8(i2c, reg, 0xc0);
++		expected = param->force_32bit_access ? 0xc0 : 0xa5a5a5c0;
++		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), expected);
++		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xc0);
++
++		xiic_setreg16(i2c, reg, 0x03ff);
++		expected = param->force_32bit_access ? 0x03ff : 0xa5a503ff;
++		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg), expected);
++		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xff);
++
++		xiic_setreg32(i2c, reg, 0x12345678);
++		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg),
++				0x12345678U);
++		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0x78);
++		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32)],
++				(u8)(param->endianness == BIG ? 0x12 : 0x78));
++		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32) + 3],
++				(u8)(param->endianness == BIG ? 0x78 : 0x12));
++		xiic_setreg32(i2c, reg, 0x89abcdefU);
++		KUNIT_EXPECT_EQ(test, (u32)xiic_getreg32(i2c, reg),
++				0x89abcdefU);
++		KUNIT_EXPECT_EQ(test, xiic_getreg8(i2c, reg), (u8)0xef);
++		KUNIT_EXPECT_EQ(test, mem[reg + sizeof(u32) - 1], (u8)0xa5);
++		KUNIT_EXPECT_EQ(test, mem[reg + 2 * sizeof(u32)], (u8)0xa5);
 +	}
++}
 +
- 	if (i2c->endianness == LITTLE)
--		iowrite16(value, i2c->base + reg);
-+		iowrite8(value, i2c->base + reg);
- 	else
--		iowrite16be(value, i2c->base + reg + 2);
-+		iowrite8(value, i2c->base + reg + 3);
- }
- 
--static inline void xiic_setreg32(struct xiic_i2c *i2c, int reg, int value)
-+static u8 xiic_getreg8(struct xiic_i2c *i2c, int reg)
- {
-+	u8 ret;
++static struct kunit_case xiic_access_test_cases[] = {
++	KUNIT_CASE_PARAM(xiic_register_access, xiic_access_gen_params),
++	{}
++};
 +
-+	if (i2c->force_32bit_access)
-+		return xiic_getreg32(i2c, reg);
++static struct kunit_suite xiic_access_test_suite = {
++	.name = "i2c_xiic",
++	.test_cases = xiic_access_test_cases,
++};
 +
- 	if (i2c->endianness == LITTLE)
--		iowrite32(value, i2c->base + reg);
-+		ret = ioread8(i2c->base + reg);
- 	else
--		iowrite32be(value, i2c->base + reg);
-+		ret = ioread8(i2c->base + reg + 3);
-+	return ret;
- }
- 
--static inline int xiic_getreg32(struct xiic_i2c *i2c, int reg)
-+static void xiic_setreg16(struct xiic_i2c *i2c, int reg, u16 value)
- {
--	u32 ret;
-+	if (i2c->force_32bit_access) {
-+		xiic_setreg32(i2c, reg, value);
-+		return;
-+	}
- 
- 	if (i2c->endianness == LITTLE)
--		ret = ioread32(i2c->base + reg);
-+		iowrite16(value, i2c->base + reg);
- 	else
--		ret = ioread32be(i2c->base + reg);
--	return ret;
-+		iowrite16be(value, i2c->base + reg + 2);
- }
- 
- static inline void xiic_irq_dis(struct xiic_i2c *i2c, u32 mask)
-@@ -1480,6 +1498,8 @@ static int xiic_i2c_probe(struct platform_device *pdev)
- 		return irq;
- 
- 	pdata = dev_get_platdata(dev);
-+	if (pdata)
-+		i2c->force_32bit_access = pdata->force_32bit_access;
- 
- 	/* hook up driver to tree */
- 	platform_set_drvdata(pdev, i2c);
-diff --git a/include/linux/platform_data/i2c-xiic.h b/include/linux/platform_data/i2c-xiic.h
-index 2e3683c23..afad9a49c 100644
---- a/include/linux/platform_data/i2c-xiic.h
-+++ b/include/linux/platform_data/i2c-xiic.h
-@@ -16,6 +16,8 @@
-  * @num_devices:	Number of devices that shall be added when the driver
-  *			is probed.
-  * @devices:		The actuall devices to add.
-+ * @force_32bit_access:	Use aligned 32-bit accesses even for byte and
-+ *			halfword payloads on bridges without subword I/O.
-  *
-  * This purpose of this platform data struct is to be able to provide a number
-  * of devices that should be added to the I2C bus. The reason is that sometimes
-@@ -26,6 +28,7 @@
- struct xiic_i2c_platform_data {
- 	u8				num_devices;
- 	struct i2c_board_info const	*devices;
-+	bool				force_32bit_access;
- };
- 
- #endif /* _LINUX_I2C_XIIC_H */
++kunit_test_suite(xiic_access_test_suite);
