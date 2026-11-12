@@ -1,112 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476047;
-	b=rRLupkiGtfYpm6GRLh+d9tKryzDN16pQiatFHqisshU/npN1J83fTvBTHObYZXvKbZdc
-	 C6tFFx8KlXRnIZGbrsgqQdeQfO//lIUMxoT8QT5sHyU3Lc+ItDR/7+3qNRPC0VT0/GPyb
-	 O9u+xvsBXbl6Q2zmwMPDrNq1b5L0G5CAWzBI1jmvhsGaC/aTDjJXomMVZNWFPzJCbIf9Z
-	 leUUeAuX+YGWV6SBeCI15PK8LCLEWFJ47M+QzCFmy7xwP5rtEcERVrgGLo/g0bIVxG2+t
-	 zYwP9PFbPVD42omK/1OAegC5LvVEOSv69Oeo7Jd5DraxWXupzz8DBxdIh55MOGu4WXA==
+	t=1794476210;
+	b=DxcPt0U+pm38jAb/3PadvSvo3p6YB9pz2cs41Q4kvXKESgSeFAFR/y6PDUQKEpJGxmwi
+	 I/JCE3qQbdBD5rxIlf/5mkVJ1LJlsnXIxCP4SVOoBMUUIZqMfkDhfjSM8Dfp/b+kvLr39
+	 PE2vhwmbNn4cEhMZfe2TEfbLcest2v9IY9/sFthaxvVfFzduVr/PUcYe9DF8HSD0/p/Q6
+	 9HJ0Ce1LuVNR6KFSm5XFJ9uSCBqUY1Zvvzsnq8+EY5RwqQ7vOOSg5CEg+0nUZtFnhlgss
+	 A1lj7c25FcBs33ZF6kE1vgWYPuX25KxpELkjtXceW73/ZhCAS3MTS/5VfW0XX/M1O/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476047;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=ZEMqREsfmPbH/k7JgWoRxNTtP7MVL9uGc2qOxQ8K0XM=;
-	b=DS/a6t89OAZSNFXSYnqWio5IGZpWrdj4crJ3+tPTdTEAHfX4UoAq84U9ua9Y2483R7or
-	 ZGHzc7q0UwAYqUl9bYDb4hFTjb32c8ISosmmtLo3kfrAa7ywLTx3LgzyG+vs3s/RYQ7CY
-	 2TlnFNDrEkgwrPwVYTnwMG+rpAYlopNnyEwNjFbtWURK4qbpiUHcjxXRWAWRKe0pgc3AV
-	 D7pVXulTABZSQqg+U2Z7Hk6mTPF6Zk6gkfzTXnb3VE2JcPXHi1ScdMLLky4rPMXTxDykS
-	 ARvR4Zf9rZZ6JACi8iXNgG2PcNa98S+JPfTcvTHU5mSJ6Co5UHoZ3O44J1h4YeV38aw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476210;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=pALi1i1EkIm5pnPkLRbsgcgxk7uPJ30fEOp++hHfNsA=;
+	b=oSkHvTSVZFBpuT2TGJGevvBzOkJtxeGNvDfSfdgLl3sdq3umZTPQgFtdAumHInY7D7wF
+	 vtZTym7C2ZbdhvFIT0gEruqAyc1N9qXu5AOzcEJG/Y1zRmsAb/VLSFGEw+SXlcEWbtVSP
+	 UrdQfGM5BMvFOZHj/ViBvhImzt+AdgMi9wxVsASoS9aoi0ESt3jSx2RvbDEdxnNkXHt6u
+	 pkwvQyLI9oO0g7sin8+Imnk1pgXqkDXioFbxOP47siRJYPwSI0KR1GnmSDw0V9M7KhUCY
+	 CV/coY7dEUb5c+QySMJAac7CmMxFdGkFips5qKYRC3d3wRsdE93T/3M7ZP0tk48zAvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jLYxMoQm;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=R26FPh3h;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Pq/5Jc3K";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049A6606A32E
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:34:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 049A6606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76230606A323;
+	Thu, 12 Nov 2026 09:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jLYxMoQm;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=R26FPh3h
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC90vVZ2514210
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:34:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZEMqREsfmPbH/k7JgWoRxNTtP7MVL9uGc2qOxQ8K0XM=; b=jLYxMoQmys93uE7j
-	CuWvYbYPmrj1sUfJWh0gLR2ORgt4gpxUk5c2z5SxMWrfjZpHBYvqE2HA5VtTiqP0
-	mgYQ37Xgum14mCK2xt/o3GtqLbxHRajXPrsMLXf4n0V/jj6Q/rwlaYcgsvYbOdph
-	yObZEvvyhxFU1Q584JHKgmQtXflw75gAe3PKjP8ouo/TOcJOXwRMUiS03cU7ympL
-	vdbf6ZHotCbqONNVn4oM3XYS2pNTrKdutcgBsNa47JkvgxN/qgD9uRG53SsFkJFF
-	uIj02i+OFMCK9Z0TDa4J3hKi9eGNe6+vYuBhOvcRhathKOQKM6qHiGw0msgn5OY5
-	g/lTYw==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hvwm1txv2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:34:06 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b0a528ca65so3832142a91.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:34:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794476045; x=1795080845; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZEMqREsfmPbH/k7JgWoRxNTtP7MVL9uGc2qOxQ8K0XM=;
-        b=R26FPh3hTODMjYe5LsIcwKRaYEOBRhFtXo4LLszzfjd4FyuMnVcoXYLnE2Hy4gXtdG
-         0B7g5eSGb1YIE9Tojms3sGyIDUYK1Er2VsFWq5E2VOCHJsNQA4cjJdSMqPnqS1PkWayr
-         d6SNBkFY0IVl4efDzkSYtzt3HlJrsE+8ihCsk7/12FAdyqCt7EnS1unf+V+ooWl0vhEF
-         eB79NCjyjB50L+7/crLkY4PolkxLckrr2hAoc68Dplwv1WGyWv7JTnpwAXG2nYBgEbIc
-         UtSgItyIgZOOI6NR4Ol7KNaJTwZe/w0IxfXEJACODxZRKeKoFfumTxH7uFy04mJsKHgf
-         bJMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794476045; x=1795080845;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZEMqREsfmPbH/k7JgWoRxNTtP7MVL9uGc2qOxQ8K0XM=;
-        b=cOwPzqPEdBM4/Th1BzU2eitjMzNuyc8pBIUkoXyC6LHRMYhE2pwidCCExeCBTIT0Um
-         n2LM5XZPXqkIPdBelWc3UZ7VHE/rNysHDrdEiBTb4GLQtmu6cagI8vdmWirBeaj4eP+r
-         FjnBjWcqAdYcH8cotDdMr3mQ0ZvQiQo/LrK+Uy14IzV0MCKS4/1M0fb9RxhI4cchBwtL
-         4MQmAkfPSFSkuQ+IDqyJ3Hl9RUUh0Xev0PxQ7Eb0lQSCePP+ELqOjuBtDuaVIzybhdx2
-         p0QOPWm80wBO7kR0q+BE8jgG9lQPuzqZVTvKnmgRY2WHU5xSIIXBmgMyz+ulcWp0f/ED
-         5sYQ==
-X-Forwarded-Encrypted: i=1; AL+hErG6ZqagAocd66EJ/rWUkE+Hboy1C9GIk25hQDnCGLgjobCuKGoVA+e59mhXAZ4GoWf0w4BgsNE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+SLHZ46KPa5xkaYMS/AmVzfwCA5Kf/BGbTzv/SssMZq5ecef4N
-	aJ71i8zqGxVwzeQevqybnZS+5I/uOvr+duGpXYk98yS+vHMHV581SWaWCe/UXWKp+3XIZmAFiWS
-	VvGfVFBcJM3BuXDWKezDMhbjXntyNbPLX1g89Gmq4Hm0bUk1GuJzOwmHCyCA=
-X-Gm-Gg: AYBFou1bfsV5iaz9LKvSjcGl8a2PoaRKNe50eLjRbzcP0jDXxcVygqRrY6htGhrcV07
-	H3pY+DFGwn+KZjFn+6V/e4Dub4FRwpn7tU4kGKiDaMcVTFKJOFoYnJLzuFol0FHI+At7+zlthHI
-	wxHVuzqA5y17mQ8dQQVLzCibW3Ww2GSMAGJEEEM0h/ac0YelYhqZggHwHTVpwMMxTRGz3yaTdJv
-	AibwsI7nhb20ZRZlxFlCx1+YDj+13fHW5wi18BlKmbHmYebOWbsH2TdoZpfKMc5AfWnbClQnHQK
-	SKuNrQ8EaHJUn0YsrrBwQcxo8KoXj9/c4VB97Uq3cv2OwhtpzEQcKbO9BtrJGcG6Ri5FxBqU4+r
-	8OlXUwDFTVhvNiZWRLgqMKCZ858WAEi5cNjmsVhjmJ+UcLoXKybq3lF3gLGgTYiRaBF8cvYvZnw
-	C1sg==
-X-Received: by 2002:a17:90b:2f4e:b0:3ac:9176:e82b with SMTP id 98e67ed59e1d1-3b182f42c74mr4784652a91.54.1794476045147;
-        Thu, 12 Nov 2026 01:34:05 -0800 (PST)
-X-Received: by 2002:a17:90b:2f4e:b0:3ac:9176:e82b with SMTP id 98e67ed59e1d1-3b182f42c74mr4784628a91.54.1794476044726;
-        Thu, 12 Nov 2026 01:34:04 -0800 (PST)
-Received: from [10.217.216.70] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197c9d7c1sm3881186a91.17.2026.11.12.01.33.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 01:34:04 -0800 (PST)
-Message-ID: <d2315dad-ecf5-4838-bbc5-663fc2d3c75b@oss.qualcomm.com>
-Date: Thu, 12 Nov 2026 15:03:57 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pq/5Jc3K
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6D61F00A05;
+	Thu, 12 Nov 2026 09:36:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794476210;
+	bh=pALi1i1EkIm5pnPkLRbsgcgxk7uPJ30fEOp++hHfNsA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Pq/5Jc3KuREdnl86zOuZWTs9FWCGSjFGk59m1ilZSWjwlUG/Hb9gG9fgKqLndlMDS
+	 zcr89mbJgPVvuJVlxRJxPlF2c/4BM/X66jZOoB0z1YZeDdTumoLLH3UlclG9FZbK2K
+	 R5yzVTMYH6KXgWjcAe2A5hVevYYQgOhFmZJa5tkOARYgdtM+ZS6NLD3uWi1kZQANaY
+	 O56I/rOn0fVbL/2qTUHIXSLQQArLhMvfkvxN6OH1NlRGvAU4PraL0HpeI2cmHR9DEC
+	 jLpfkPAl4GLGwNaqB//h8BeIDqJhpTKdoaigb1+rR7F63QGWCHDVcSNnBZLe4D3W/e
+	 4muwKU5cuYEuA==
+Subject: Re: [PATCH v4 net-next] octeontx2-af: Add couple of mailbox support.
+From: netdev-bot+sashiko@kernel.org
+To: rkannoth@marvell.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com,
+ cursoragent@cursor.com
+Date: Thu, 12 Nov 2026 09:36:48 +0000
+Message-ID: <179447620892.2199510.3746680937453360550@kernel.org>
+In-Reply-To: <20261109033617.2161960-1-rkannoth@marvell.com>
+References: <20261109033617.2161960-1-rkannoth@marvell.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,92 +63,464 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] arm64: dts: qcom: nord: Add support for TSCSS
- node
-To: Shawn Guo <shengchao.guo@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
- <20261108-tscss-v2-10-d5f575010427@oss.qualcomm.com>
- <avGHpvYV2Q6T3vwd@QCOM-aGQu4IUr3Y>
-Content-Language: en-US
-From: Imran Shaik <imran.shaik@oss.qualcomm.com>
-In-Reply-To: <avGHpvYV2Q6T3vwd@QCOM-aGQu4IUr3Y>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=KsnYSmWN c=1 sm=1 tr=0 ts=6af5880e cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=EUspDBNiAAAA:8 a=_qMGny95FC9WgreSDIcA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-GUID: IPX1UuzGoSzXB3AgeYeeVc7A10xV7RgH
-X-Proofpoint-ORIG-GUID: IPX1UuzGoSzXB3AgeYeeVc7A10xV7RgH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDAzNyBTYWx0ZWRfX+mramsQzouLM
- CDjQMbXdH5LV+FsameV5m9GHqzgYdzE5xp5yQ7KXzH3VjblAE6BDfbTrkBThFCY7YZ8EpXAxC5F
- CFfUGntQamswz3+27DG71LAmArVzJeHOKB8arPQoXGQS3vM/yeaNT1WiLaAMEIiWaUN2W20GHLU
- k/9OjIQsvdqk4pCVIC3uysxXAUwIWT7IWLoxSLGzS8QU0qhj3vePioBl/gRqu7aRisBpVORcbc0
- DGmAam4ksw3nxiKUrwm3Ugbis0vPFu9dTKh4r+Puul3AR111i/4Jf9q9hUletP/TzK3KUyxbJuy
- y8rIUAgDmPphQCJ94q4tfRH2gUN87qFAIDtlTZWBBEzZiXJTyE9ZSyXWuLLIL0bUOeSPxQN2PZh
- EIaQ+qnNsWHQel1eTssiQlXJUhCtuV61QP9Das8qZNo2PvJVHHRYtB5sg3dIF5ReXyBQsa2ueUG
- comKsxuAbz+nO6tL3rA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDAzNyBTYWx0ZWRfX6uUEKc8ouny8
- ySIu2eBlUvdcYyAznFxo0Wr+0BQYHABvjvvH8CxVqKqOG88s4t7XxhYg8ZJwtcagVDTucQdCZNS
- zsYqdvYThoXbDcboi1dm/5XYhMCXCJ8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0
- spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611120037
 
+Thank you for your contribution! Sashiko AI review found 8 potential
+issue(s) to consider.
 
+Critical: 0 · High: 2 (1) · Medium: 2 · Low: 4
 
-On 09-11-2026 02:13 pm, Shawn Guo wrote:
-> On Sun, Nov 08, 2026 at 06:48:31PM +0530, Imran Shaik wrote:
->> Add Timestamp Counter Subsystem (TSCSS) node support on Qualcomm Nord
->> SoCs.
->>
->> Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
->> ---
->>   arch/arm64/boot/dts/qcom/nord-embedded.dtsi | 14 ++++++++++++++
->>   1 file changed, 14 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/nord-embedded.dtsi b/arch/arm64/boot/dts/qcom/nord-embedded.dtsi
->> index 1ab7d9bc3cfe..1d5f27336f73 100644
->> --- a/arch/arm64/boot/dts/qcom/nord-embedded.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/nord-embedded.dtsi
->> @@ -736,6 +736,20 @@ pcie_data_inbound: interconnect@1c00000 {
->>   		qcom,bcm-voters = <&apps_bcm_voter>;
->>   	};
->>   
->> +	ptp@1c80000 {
->> +		compatible = "qcom,nord-tscss";
->> +		reg = <0x0 0x01c80000 0x0 0x2000>;
->> +		reg-names = "tsc";
-> 
-> The node should probably go to nord.dtsi with nord-embedded.dtsi
-> supplementing Embedded specific resources like clocks.
-> 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Sure, I will check and move this node to nord.dtsi in next series.
+- [High] The patch changes nix_get_tx_link() in
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c.
+- [High] In rvu_mbox_handler_nix_lf_alloc(), the patch snapshots
+  rq_cnt/sq_cnt/cq_cnt/way_mask with READ_ONCE and adds the comment 'req…
+- [Medium] The commit message presents the nix_get_tx_link() change as an
+  export plus a new reported value ('Export nix_get_tx_link(); it now…
+- [Medium] For the representor, rvu_mbox_handler_nix_lf_alloc() jumps
+  from the is_rep_dev() branch to exit before nix_interface_init(), so…
+- [Low] The new NPC_MCAM_FLOW_DEL_N_FREE handler
+  (rvu_mbox_handler_npc_flow_del_n_free) and NPC_MCAM_GET_MUL_STATS…
+- [Low] struct iface_info declares sq_cnt/cq_cnt/rq_cnt as u16.
+- [Low] The patch adds four AF mailbox messages with fixed wire layouts:
+  IFACE_GET_INFO (0x014), NPC_MCAM_FLOW_DEL_N_FREE (0x6020),…
+- [Low] The subject 'octeontx2-af: Add couple of mailbox support.' and
+  the body do not mention several changes made in the patch.
 
-Thanks,
-Imran
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch's
+  partial lock conversion leaves it in place.
+
+--
+
+octeontx2-af: Add couple of mailbox support.
+
+This adds AF handlers for the IFACE_GET_INFO, NPC_MCAM_FLOW_DEL_N_FREE,
+NPC_MCAM_GET_MUL_STATS and NPC_MCAM_GET_FEATURES mailbox messages. It also
+publishes NIX queue contexts under aq->lock and channel bases/counts under
+rsrc_lock, and clears the counts on LF free, detach and allocation failure.
+Finally, nix_get_tx_link() is exported and now returns cgx_links + lbkid
+for LBK VFs and cgx_links + 0 for the representor.
+
+> octeontx2-af: Add couple of mailbox support.
+
+[Severity: Low]
+This isn't a bug, but the subject and body leave out several changes in
+this patch:
+
+  - The NIX_LF_ALLOC READ_ONCE() snapshot of the rq/sq/cq counts and
+    way_mask.
+  - The split of NPC_DELETE_FLOW into npc_delete_flow_rules().
+
+Both are described only in the v3 -> v4 changelog below the "---" line,
+and git am drops that.
+
+The patch also combines lifecycle fixes (clearing the channel counts on
+detach, free, teardown and alloc failure) and a TX link semantic change
+with four new mailbox ABIs. None of the fixes has a Fixes: tag.
+
+Could the fixes be split out, so they can be reviewed and backported on
+their own?
+
+> Publish NIX queue contexts under aq->lock and channel bases/counts
+> under rsrc_lock, and clear the counts when a NIX LF is freed, detached
+> or fails to allocate. Export nix_get_tx_link(); it now reports the
+> LBK link of an LBK VF and LBK link 0 for the representor.
+
+[Severity: Medium]
+Is this description complete? nix_get_tx_link() is not only a reporting
+helper. The NIX TX scheduler takes its link from it:
+
+  rvu_mbox_handler_nix_txsch_alloc()   TL1 start = end = link
+  nix_get_txschq_range()               fixed-mapping range from link
+  nix_tl1_default_cfg()                schq = link
+  nix_txschq_free()                    TL1 SW_XOFF / CFG_DONE at link
+  is_valid_txschq()                    access allowed when links match
+
+With this change, AF VFs with lbkid = 1 and the representor get different
+TL1 queues and fixed-mapping ranges than before.
+
+The v2 -> v3 note says hw->cgx_links was kept for LBK VFs so that "the TX
+scheduler callers (txschq alloc/free, TL1 default config, schq range)
+keep the same link". v4 reverses that.
+
+The new values match the RX link selection, which uses
+hw->cgx_links + pfvf->lbkid and hw->cgx_links + 0. If the goal is to fix
+a TX/RX link mismatch, should this be a separate patch with a Fixes: tag?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+> index cece197d1074b..28f2b549780f3 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+
+[ ... ]
+
+> @@ -1812,6 +1847,33 @@ struct rep_event {
+>  	struct rep_evt_data evt_data;
+>  };
+>  
+> +struct iface_info {
+> +	u8 is_vf : 1;
+> +	u8 is_sdp : 1;
+> +	u8 rsvd : 6;
+> +	u16 pcifunc;
+> +	u16 rx_chan_base;
+> +	u16 tx_chan_base;
+> +	u16 sq_cnt;
+> +	u16 cq_cnt;
+> +	u16 rq_cnt;
+
+[Severity: Low]
+Can these counts be truncated? rvu_iface_get_qcnts() fills them like
+this:
+
+	info->sq_cnt = bitmap_weight(pfvf->sq_bmap, pfvf->sq_ctx->qsize);
+
+bitmap_weight() returns unsigned int. qsize comes from the u32
+rq_cnt/sq_cnt/cq_cnt in nix_lf_alloc_req, and
+rvu_mbox_handler_nix_lf_alloc() only rejects zero.
+
+So a function with more than 65535 enabled queues would get a wrapped
+count in the IFACE_GET_INFO reply.
+
+> +	u8 rx_chan_cnt;
+> +	u8 tx_chan_cnt;
+> +	u8 tx_link;
+> +	u8 nix;
+> +};
+> +
+> +/* Max supported */
+> +#define IFACE_MAX (256 + 32) /* 32 PFs + 256 VFs */
+> +
+> +struct iface_get_info_rsp {
+> +	struct  mbox_msghdr hdr;
+> +	u16 cnt;
+> +	u8 truncated;
+> +	u8 rsvd[5];
+> +	struct iface_info info[IFACE_MAX];
+> +};
+
+[Severity: Low]
+This isn't a bug, but the commit message says:
+
+  Only the AF handlers are added; the senders are not part of this patch.
+
+This patch fixes the wire layouts of IFACE_GET_INFO,
+NPC_MCAM_FLOW_DEL_N_FREE, NPC_MCAM_GET_MUL_STATS and
+NPC_MCAM_GET_FEATURES, including the iface_info bitfields, IFACE_MAX and
+the 256-entry arrays. No in-tree PF/VF code uses them.
+
+Could the senders be posted with these handlers, as netdev usually
+expects for new interfaces?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index 29559db689290..59cc87becb54d 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+
+[ ... ]
+
+> @@ -920,33 +936,114 @@ static void nix_setup_lso(struct rvu *rvu, struct nix_hw *nix_hw, int blkaddr)
+
+[ ... ]
+
+>  static void nix_ctx_free(struct rvu *rvu, struct rvu_pfvf *pfvf)
+>  {
+
+[ ... ]
+
+> +	spin_lock_irqsave(&aq->lock, flags);
+> +	rq_bmap = pfvf->rq_bmap;
+> +	sq_bmap = pfvf->sq_bmap;
+> +	cq_bmap = pfvf->cq_bmap;
+
+[ ... ]
+
+>  	pfvf->rq_bmap = NULL;
+> -	pfvf->cq_bmap = NULL;
+>  	pfvf->sq_bmap = NULL;
+> +	pfvf->cq_bmap = NULL;
+>  	pfvf->rq_ctx = NULL;
+>  	pfvf->sq_ctx = NULL;
+>  	pfvf->cq_ctx = NULL;
+>  	pfvf->rss_ctx = NULL;
+>  	pfvf->nix_qints_ctx = NULL;
+>  	pfvf->cq_ints_ctx = NULL;
+> +	spin_unlock_irqrestore(&aq->lock, flags);
+> +
+> +free_ctx:
+> +	kfree(rq_bmap);
+> +	kfree(sq_bmap);
+> +	kfree(cq_bmap);
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+does the new aq->lock publication cover the AQ enqueue path?
+
+rvu_nix_blk_aq_enq_inst() checks the context without aq->lock:
+
+	case NIX_AQ_CTYPE_RQ:
+		/* Check if index exceeds max no of queues */
+		if (!pfvf->rq_ctx || req->qidx >= pfvf->rq_ctx->qsize)
+
+It calls is_valid_txschq() and builds the instruction. Only then does it
+take spin_lock(&aq->lock), and it uses the bitmap without checking it
+again:
+
+		if (req->ctype == NIX_AQ_CTYPE_RQ && req->rq.ena)
+			__set_bit(req->qidx, pfvf->rq_bmap);
+
+nix_ctx_free() is reached from FLR teardown, which holds only flr_lock:
+
+  __rvu_flr_handler()
+    rvu_blklf_teardown()
+      rvu_nix_lf_teardown()
+        nix_ctx_free()
+
+The mbox AQ path does not take flr_lock.
+
+If FLR teardown runs between the unlocked check and spin_lock(&aq->lock),
+can the AQ path now call __set_bit(qidx, NULL)?
+
+Before this patch, the same window was a use-after-free of the kcalloc'd
+bitmap. The new locking seems to protect only the IFACE_GET_INFO reader.
+
+[ ... ]
+
+> @@ -1520,15 +1630,21 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+>  	bool rules_created = false;
+>  	struct rvu_block *block;
+>  	struct rvu_pfvf *pfvf;
+> +	u32 rq_cnt, sq_cnt, cq_cnt;
+> +	u64 way_mask;
+>  	struct cgx *cgxd;
+>  	u64 cfg, ctx_cfg;
+>  	int blkaddr;
+>  
+> -	if (!req->rq_cnt || !req->sq_cnt || !req->cq_cnt)
+> +	/* req is in shared mailbox memory; read the counts only once */
+> +	rq_cnt = READ_ONCE(req->rq_cnt);
+> +	sq_cnt = READ_ONCE(req->sq_cnt);
+> +	cq_cnt = READ_ONCE(req->cq_cnt);
+> +
+> +	if (!rq_cnt || !sq_cnt || !cq_cnt)
+>  		return NIX_AF_ERR_PARAM;
+>  
+> -	if (req->way_mask)
+> -		req->way_mask &= 0xFFFF;
+> +	way_mask = READ_ONCE(req->way_mask) & 0xFFFF;
+>  
+>  	pfvf = rvu_get_pfvf(rvu, pcifunc);
+>  	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
+> @@ -1583,63 +1699,96 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+
+[ ... ]
+
+>  	/* Initialize receive side scaling (RSS) */
+>  	hwctx_size = 1UL << ((ctx_cfg >> 12) & 0xF);
+>  	rc = nixlf_rss_ctx_init(rvu, blkaddr, pfvf, nixlf, req->rss_sz,
+> -				req->rss_grps, hwctx_size, req->way_mask,
+> +				req->rss_grps, hwctx_size, way_mask,
+>  				!!(req->flags & NIX_LF_RSS_TAG_LSB_AS_ADDER));
+>  	if (rc)
+>  		goto free_mem;
+
+[Severity: High]
+The new comment says the counts are read only once because req is in
+shared mailbox memory. Are other validated fields in this handler still
+fetched twice?
+
+req->rss_sz and req->rss_grps are checked earlier:
+
+	if (req->rss_sz && (req->rss_sz > MAX_RSS_INDIR_TBL_SIZE ||
+			    !is_power_of_2(req->rss_sz)))
+	...
+	    (!req->rss_grps || req->rss_grps > MAX_RSS_GROUPS))
+
+They are read again from req for this nixlf_rss_ctx_init() call, which
+loops like this:
+
+	for (grp = 0; grp < rss_grps; grp++)
+		rvu_write64(rvu, blkaddr, NIX_AF_LFX_RSS_GRPX(nixlf, grp),
+
+If the peer rewrites rss_grps after the check, can this write registers
+outside this LF's RSS group slots? For example, grp = 32 with nixlf = 0
+gives 0x4700, which is NIX_AF_RX_NPC_MC_RCV. A rewritten rss_sz would
+also break the ilog2() encoding.
+
+req->npa_func and req->sso_func have the same problem. They are validated
+with is_pffunc_map_valid(), then read again before being written to
+NIX_AF_LFX_CFG:
+
+	if (req->npa_func)
+		cfg = req->npa_func;
+	if (req->sso_func)
+		cfg |= (u64)req->sso_func << 16;
+
+Could a peer swap in another function's pcifunc here, and bind this NIX
+LF to that function's NPA or SSO LF? The window between check and use
+covers the rvu_lf_reset() polling and the GFP_KERNEL allocations.
+
+[ ... ]
+
+> @@ -1710,8 +1875,8 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+>  	}
+>  
+>  	if (is_rep_dev(rvu, pcifunc)) {
+> -		pfvf->tx_chan_base = RVU_SWITCH_LBK_CHAN;
+> -		pfvf->tx_chan_cnt = 1;
+> +		nix_interface_set_chan(rvu, pfvf, 0, 0,
+> +				       RVU_SWITCH_LBK_CHAN, 1);
+>  		goto exit;
+>  	}
+
+[Severity: Medium]
+For the representor, this jumps to exit before nix_interface_init(). So
+rsp->tx_link is never written and stays 0.
+
+The PF driver saves it in mbox_handler_nix_lf_alloc():
+
+	pfvf->hw.tx_link = rsp->tx_link;
+
+and later uses it to program the TL3/TL2 LINKX_CFG.
+
+After this patch, nix_get_tx_link() returns hw->cgx_links + 0 for the
+representor. That value picks the TL1 handed out by TXSCH_ALLOC and is
+reported as tx_link in IFACE_GET_INFO.
+
+Should NIX_LF_ALLOC report the same tx_link for the representor, so the
+AF doesn't give out two different TX links for one function?
+
+The two values already differed before this patch (SDP link vs 0). The
+new value and its exposure through IFACE_GET_INFO come from this change.
+
+[ ... ]
+
+> @@ -2108,15 +2276,22 @@ static void nix_clear_tx_xoff(struct rvu *rvu, int blkaddr,
+>  	rvu_write64(rvu, blkaddr, reg, 0x0);
+>  }
+>  
+> -static int nix_get_tx_link(struct rvu *rvu, u16 pcifunc)
+> +int nix_get_tx_link(struct rvu *rvu, u16 pcifunc)
+>  {
+> -	struct rvu_hwinfo *hw = rvu->hw;
+>  	int pf = rvu_get_pf(rvu->pdev, pcifunc);
+> +	struct rvu_hwinfo *hw = rvu->hw;
+>  	u8 cgx_id = 0, lmac_id = 0;
+> +	struct rvu_pfvf *pfvf;
+>  
+> -	if (is_lbk_vf(rvu, pcifunc)) {/* LBK links */
+> -		return hw->cgx_links;
+> -	} else if (is_pf_cgxmapped(rvu, pf)) {
+> +	if (is_rep_dev(rvu, pcifunc))
+> +		return hw->cgx_links + 0;
+> +
+> +	if (is_lbk_vf(rvu, pcifunc)) {
+> +		pfvf = rvu_get_pfvf(rvu, pcifunc);
+> +		return hw->cgx_links + pfvf->lbkid;
+> +	}
+
+[Severity: High]
+Can lbkid be equal to or larger than hw->lbk_links here?
+
+In nix_interface_init(), lbkid is set from the VF index only when
+lbk_links > 1. It is then inverted based on the requester's
+NIX_LF_LBK_BLK_SEL flag:
+
+		lbkid = 0;
+		if (rvu->hw->lbk_links > 1)
+			lbkid = vf & 0x1 ? 0 : 1;
+		...
+		if (loop)
+			lbkid = !lbkid;
+
+On single-LBK silicon, an AF VF that sends NIX_LF_ALLOC with
+NIX_LF_LBK_BLK_SEL gets lbkid = 1. This function then returns
+hw->cgx_links + 1, which is the SDP link (hw->cgx_links + hw->lbk_links).
+
+This value drives the TX scheduler. Does that hand the VF the SDP TL1?
+
+  rvu_mbox_handler_nix_txsch_alloc()
+    start = link; end = link;              (TL1 index = SDP link)
+  nix_tl1_default_cfg()
+    schq = nix_get_tx_link(rvu, pcifunc);  (writes SDP TL1 regs)
+  nix_txschq_free()
+    nix_clear_tx_xoff(..., NIX_TXSCH_LVL_TL1, nix_get_tx_link(...))
+
+is_valid_txschq() would also let the VF configure SDP-owned
+aggregation-level schqs, because the links now compare equal:
+
+		if ((nix_get_tx_link(rvu, map_func) !=
+		     nix_get_tx_link(rvu, pcifunc)) &&
+		    (rvu_get_pf(rvu->pdev, map_func) !=
+		     rvu_get_pf(rvu->pdev, pcifunc))) {
+
+On fixed-mapping silicon, nix_get_txschq_range() still computes the LBK
+range like this:
+
+		*start = hw->cap.nix_txsch_per_cgx_lmac * link;
+		*end = *start + hw->cap.nix_txsch_per_lbk_lmac;
+
+That is only correct for link == hw->cgx_links. With per_cgx = 4,
+per_lbk = 132 and link = hw->cgx_links + 1, the range moves up by 4. It
+then overlaps other LBK VFs' slots, and on single-LBK parts the first
+SDP schqs.
+
+On parts with lbk_links > 1, there are two more changes:
+
+  - AF VFs with lbkid = 1 move from TL1 cgx_links to cgx_links + 1.
+  - The representor moves from the SDP TL1 to LBK0's TL1, which it now
+    shares with lbkid 0 AF VFs.
+
+pfvf->lbkid is written only in NIX_LF_ALLOC and is never reset. Can the
+TL1 allocated in TXSCH_ALLOC then differ from the TL1 that is later
+configured or freed?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+> index 42a601976db36..9b31c6643d104 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+> @@ -3545,6 +3545,53 @@ int rvu_mbox_handler_npc_mcam_free_entry(struct rvu *rvu,
+>  	return rc;
+>  }
+>  
+> +int rvu_mbox_handler_npc_flow_del_n_free(struct rvu *rvu,
+> +					 struct npc_flow_del_n_free_req *mreq,
+> +					 struct msg_rsp *rsp)
+> +{
+
+[ ... ]
+
+> +	cnt = mreq->cnt;
+> +	if (!cnt || cnt > 256) {
+> +		dev_err_ratelimited(rvu->dev, "Invalid cnt=%u\n", cnt);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Snapshot shared mailbox memory before processing the request. */
+> +	memcpy(entry, mreq->entry, cnt * sizeof(entry[0]));
+
+[Severity: Low]
+Should this be READ_ONCE(mreq->cnt)? cnt is a plain load from shared
+mailbox memory, and it bounds the memcpy() into the on-stack
+u16 entry[256]. Without READ_ONCE(), the compiler is allowed to reload
+the field after the bounds check.
+
+rvu_mbox_handler_npc_mcam_mul_stats() has the same pattern, and there
+req_cnt also bounds the writes to rsp->stat[]:
+
+	req_cnt = req->cnt;
+	...
+	memcpy(entry, req->entry, req_cnt * sizeof(entry[0]));
+
+The NIX_LF_ALLOC change in this patch already uses READ_ONCE() for the
+same reason.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109033617.2161960-1-rkannoth%40marvell.com
