@@ -1,110 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794473814;
-	b=oNa5aUohkA+2WkYdVyuK+XX7XCa6+dHoHf/iWq5IdwkKK4ZVH2r/C68O7KuVkiY35JmW
-	 LdG+lZXSsMt4oR2a5TuACVY+hHx4/cBKiKzFLMpvIpdj2b8EtikqmUpnD5p1qLeHj/GV1
-	 8LfFUinOfKTDi/e+YGBTD5+9FYcPTarLt1wBpJveYUO+klELXQH3jyRlPiuHntcoX1nDM
-	 seOEz5PUB3HOnwyg6hu/9S6DBKyuNl/yzpXDEk4GzvGcKDF2XommcICay+fuPy6FLnzRX
-	 QS8Cyh8FXagmfL5No53OIJQK4PlUDibOFvb0bqhTNRnuFWGfuxdg9aRvzXTgJBFPVlw==
+	t=1794474056;
+	b=HaA5/68Ca1XmV4qZR8fJiXE+0V8s5787BNIzl5Yx10DR9/ZHL8Vm1Mi8L/MCDYLme1ZL
+	 PdgmQyjw30uFZVhxd78/rL0xquHUbMDTGZkHFrPPHqDDWezwkwZhGM3Ye5G0gBGff/Xvc
+	 VNvjat16FRlmF2mqGBkhewgne0MHKJTtbGGkLP3N4ElH3if1RJnjO0LtMIQnt4Ko4qPlq
+	 YIMV67fqJ6Z4sr2kdDCJAJ6mwhsKhEDXZ7NKZn7HNdxs2OtNY0d1e8NU5Wj/W10rXF6OV
+	 A8ejQjhzdBjNT/7T8k4z0Thlyb/lRrmpywM6GarKQv35ibPOdfDegdUXAncB/PuAGLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794473814;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=rEDyzDvctiKMCWHEwGxzSSTUsEjyrAP4XO5pemqaf/w=;
-	b=quIcNLUnVrW3SQIQBEpyF5X/l5vQyrCuCHECKzZ84VAi1MUTiZD4QdRtWLxjuWRR+Lau
-	 1lBMrK5B2N5Biy5IIVzPMkPrLVdVryKyjty4oNuSOst+vFoTKgJRmDx8SEI0hBvsJgLPL
-	 V7e3bPg8L1AwWr2ZceMKEqCB5GyqUUzoSd2x/Z9RIaOgIYyM0P4yAZQAayXIsw08kadbG
-	 d+lVnFOxJeipmRiWp4sUjbHg+D+8BDgc9YLYfFahicXLuBNXElh5MoF39lTPYUEh/B3pp
-	 828d9ZESIXjYDzYhy+Xq08m014Tq3iM2RMdxdScnNotahmO6KlXL91bHLMhhiTb2ixA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794474056;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=DP15FYKEHXO6xoDhi4j3CgcS1prpD18B+3vZ34NHmTc=;
+	b=aPeOTTXTBsGAklXGVuVCx8BFJiTbf6Npo7Ev357rqqOr6yk/yLLFlOezdhmpz5VGBLgF
+	 x8dUb/g5Ay3Anh5ImsGwqrWpPjH5AfE5dpbxFlMMsiXH38jIBPoUBxZhc8Zydzw2REFJE
+	 gyt+AwG0hNFbFMejpP3Hj7nJX3KL2oh3uy96imqZ3zkUUZnd3WlCK9vNOGVun1+smWsVj
+	 KEuqy4lFx+sNvImvZ6CXVex3ibt7yM4rJHJn10JXQZatzGxIYiR2cllt0B7L81vIKFTTC
+	 N1CQP4sGLP5moaSdxXuH7vq4YhNaCdKlzebuA8h/G/i6HSAVytiGWZtODKTe9xV4efA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arndb.de;
-	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=B3knZGFb;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=1UQSHGCM;
-	arc=none smtp.remote-ip=202.12.124.147
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B788460A2637
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 08:56:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B788460A2637
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tB3cVqC9;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996D606A31C;
+	Thu, 12 Nov 2026 09:00:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9996D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=B3knZGFb;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=1UQSHGCM
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id 0BA0D1D0023B
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:56:52 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 12 Nov 2026 03:56:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794473793;
-	 x=1794560193; bh=rEDyzDvctiKMCWHEwGxzSSTUsEjyrAP4XO5pemqaf/w=; b=
-	B3knZGFbJoyqxhvAjg5ey4pgvXQ0+dX+2yrqxypUpfmLl52FvtNsp7+AX8SbQ/eD
-	QB4o9/31f8xFXCXe56hraiMz96Up0KKZvOb2Y5C65VShVM0pPaDafBjDrSUg42VY
-	tu9bgejyvmqkt1Sc9Y32autzBDXmungVYOYMmKlWzY8ke9h7yX3aXbw7wQqSIKs3
-	owqqHduQlPeKvwCMeJG/2LJco0+TSA+EyuE40Mo+9A/AlkXjnBpb4ObaqIe0Doxc
-	7R11bWCv4vRYIh1QpCl5N1NsJgYyvfBQVk0IZtDm5jfVeuHETVudImiaPHrGdr9O
-	vc7/hsrU2ooBu9I+vxQIQA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794473793; x=
-	1794560193; bh=rEDyzDvctiKMCWHEwGxzSSTUsEjyrAP4XO5pemqaf/w=; b=1
-	UQSHGCMZ2A3z8bSIkkWxeq6RnxTXCPrxpPWHAyytgP+bJFnjHFjyYHqv4hm0qCHi
-	QYj5WIQxDSWITpVoqdkvKqOQ6WfVb701r08hcNQLu5c31R4jKN1xLVhnaNofI2HX
-	7FdlCq7ohwLhQBbrPhAF/DBKK326jQC/kxRtegHB3eLgHLY3PWtxVOOFT5sBaYxH
-	iEXrIpL7ps7Vq4atKdHaQMjAWH1A1hydNB2gIjGap0JgIebeP6f+c/OshDqYw/Jr
-	vUJZRxhTpwPPzneK6Bk38wsyBQPOmtYPcLegI1AUZjxz+ntB7H/oAx/pXKxLSRwD
-	hopHAfS59cof80uyciXMg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794473793; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:K5Lh0hA7WJeekvxDVE0+su1RTmIOTe2VbzVKbpCqoX54nCl
-	M2wBxG7XoFJo/Vxd/8g0+x08sE5NB1Sq/KsBtoiBMN7/c1vbIrucoOoNG6Ok3xZc
-	R/rtZ+5LwNpMwLKNoUkfCHZgi3Lg2oUyhmtinamZfQ29PBehZL5ms0MgHqAPVl2E
-	CUfKdk0phCAuStMRUOmhOljVUrBgmlAmgR8PXQtM9Ld/E6mU4MWHpuXMR9tmgo69
-	5zzwiQnqcS9I9JSMP2FfF3Hw7rc5lKWl0INywWpR5N63WHMUYPFw12vjtDo/ZJOw
-	7gtFuH57kiOIg67AABv++wUUiqJ/WZKIVV2g9+A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:bxT2HtsddpIKccxw7D1EmmeuIKfYJp+MJ2nSGobHrHU=:sEmA3MCn6JLrIUaQkRNBmsF7Hz02Y0iwntBVDLMI0ZY=;
-X-ME-Sender: <xms:NH_1asWKISFAZPfViYwtF0t1h1O_t_TUK-yUOcamOFfpOmsJjSP4yg>
-    <xme:NH_1arbnH92k8S1-bT0BlraQyd9qZk0y0Sn00uORJAF8vwlxDDfIbDO0bjykC8awK
-    bmkq2V7jpdyyeJMnsesd2PBlWQc6-IxQ5LTwSVYBMhTPwlK8kfbKFQb>
-X-ME-Proxy-Cause: dmFkZTE3ND7a5+W1Z07eormEvJEB+XP9yRNxmJWlhqo4nFZBM2kAyJQF7ZgJlr2V+yFcEa
-    l9MRmavypBJJ+1A3waVwnEHhrM4U0pZpCmMYKIXvfnZkXMGbKdecZtrxLKkn6LEq19o5fE
-    gPq8WxneDUi3v4xiFBdFxJqhhRjF9l4qFHfKxbM/8/kEKMzoow8MOCqc8EgLK/YGye/NOx
-    vJ+BeW0pJ1MEvAjPtKHXRRQgaz1GtmTJKeuhP2oScGxUjAxi6NvtA3CvTfeHnIQJVEo9ZV
-    dg2D6P1vG5wAmVpHBLy1jTDsA3jHwbynxf2/c8p8S1vmmHEGJ6xAPZTTV5Umrrj1UI3Khs
-    rJijqRdX01D2IUPunT3qBzgERFBVZ8jYBYw1H3yAWZItZ9j4airbtb5XjMvlG++YM1xjMj
-    nmYen9siqd5jtfWF+5rxuSCWu//0CHbbjZOuheK/lwuiWNnUidGYUvyWOFd9E2OfMRQyJo
-    NHUJLrgFmF/YLzCIRd6QgoB46bEjyL4va2ECLKod74mkfUM9Bt3nKjoMZsBw6FKGE9i6pb
-    kcdlCi+42mrcvNt9/oRYrgd7nZbADhLRxQvbPjTXfqJ8XvHIJ7OuVZ6HyNF9xugO4WyMQv
-    IHitba4dtlHe8UFBYfWm9s4Tizbuv07yoIS03Wj6UhMEjI5BgOKm5i1NzONA
-X-ME-Proxy: <xmx:OX_1atJeGP10qV3r_BB9LlbDWvzjzAT8IKY6g0XHpnMofHCEovQSTw>
-    <xmx:OX_1ajjzmcyTWNa03jroLuvYNjQrc-9N6_xxwGxAK_v1HHphOwD9Lg>
-    <xmx:OX_1ahRgitGd4zqX3yfmA8xLG4zFwqJjTP381SaWrv0nOrdNocAf6w>
-    <xmx:OX_1aoabTMJLtPTZZWDyERW41w-hFW-0kPrJfUFDo4kw2bxAwi0xvA>
-    <xmx:QX_1apsoJxByQcSYtOm475IyTqWu9-y7wuRQ59vqRM_Lw5w34HoWDLYb>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 1A43C32A0099; Thu, 12 Nov 2026 03:56:20 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tB3cVqC9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=tB3cVqC9ntwAcc0M/0QQfzsjhVr7ZZAICDPR44mCA9SC6MF4eWYA2+g4ipgOfmOwUc2AO5UbhuNri
+	 tn+GwT+cSBxFOypU4H+CHUqZNy02/VrIYbZORFvD+b5SPuffZvcxPKxTfHDqMOVsJurug/dl+B55tf
+	 nLfFR5bNn/tFfcFg=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af58043ad8-80ab4;
+	Thu, 12 Nov 2026 17:00:51 +0800 (CST)
+X-RM-TRANSID:2ee46af58043ad8-80ab4
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.net (unknown[112.23.105.204])
+	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46af58041f7d-fa36d;
+	Thu, 12 Nov 2026 17:00:51 +0800 (CST)
+X-RM-TRANSID:2ee46af58041f7d-fa36d
+From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+To: Jiri Pirko <jiri@resnulli.us>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sunwenbo@cmss.chinamobile.com,
+	1342116488@qq.com
+Subject: [PATCH net v2] team: validate the length of U32 and S32 option data
+Date: Thu, 12 Nov 2026 17:00:30 +0800
+Message-Id: <20261112090030.172342-1-sunwenbo@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,113 +75,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AD8wiEBgakfZ
-Date: Thu, 12 Nov 2026 09:55:48 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Christian Brauner" <brauner@kernel.org>
-Cc: "Matthew Wilcox" <willy@infradead.org>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Miklos Szeredi" <miklos@szeredi.hu>, "Amit Shah" <amit@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Zi Yan" <ziy@nvidia.com>, "Bernd Schubert" <bschubert@ddn.com>,
- "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Richard Weinberger" <richard@nod.at>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>, "Nishanth Menon" <nm@ti.com>,
- "Frank Li" <frank.li@nxp.com>
-Message-Id: <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
-In-Reply-To: 
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 11, 2026, at 20:26, Linus Torvalds wrote:
-> On Wed, 11 Nov 2026 at 10:53, Christian Brauner <brauner@kernel.org> wrote:
->>
->> If that's the official new stance than I'm very happy.
->
-> I definitely want to remove HIGHMEM entirely in the not too distant
-> future. And before we remove it, we can most definitely document the
-> fact that we will not be worried about insane users.
->
-> And things like security issues count as "insane user": if you use
-> HIGHMEM outside of controlled embedded setups or museum pieces you get
-> to keep both pieces when it breaks.
->
-> IOW, it's legacy. We should aim to not introduce *new* bugs to it, but
-> if there are pre-existing bugs they very much count as "don't care",
-> this will be removed soon.
+In team_nl_options_set_doit(), the policy for TEAM_ATTR_OPTION_DATA in
+team_attr_option_nl_policy is NLA_BINARY because the payload layout
+varies with the option type.
 
-Agreed. There is also the option of adding Kconfig dependencies to
-mark things that are known broken with highmem when we either know
-that it is buggy, or we have a good reason to break something that
-none of those remaining users should be using.
+For TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32, the payload is
+read directly with nla_get_u32(attr_data) and nla_get_s32(attr_data)
+without checking its attribute length. When userspace supplies a
+truncated attribute (0 to 3 bytes), nla_get_u32() or nla_get_s32()
+performs an out-of-bounds read past the attribute buffer. Conversely,
+oversized payloads (> 4 bytes) would also have trailing bytes
+silently ignored instead of being rejected as invalid input.
 
-> I think the only reason it wasn't removed a couple of years ago
-> already is basically a few old 32-bit ARM platforms that still used
-> it.
->
-> Those platforms still exist, and I predict that they'll still exist
-> next year, but if those users have to stay at the current LTS kernel,
-> that's fine.
+Validate that nla_len(attr_data) equals sizeof(u32) or sizeof(s32)
+for TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32 respectively, and
+return -EINVAL otherwise, consistent with how NLA_U32/NLA_S32
+attributes are validated and similar to commit 5bef3ac184b5 ("team:
+better TEAM_OPTION_TYPE_STRING validation").
 
-I tried to push for what I thought was an aggressive timeline
-last year, but that would still keep the Arm bits for a couple more
-LTS releases and only gradually reduce the scope of highmem in the
-meantime, removing support from architectures, file systems, and
-drivers where possible. See https://lwn.net/Articles/1051010/
-for a summary of my talk in Tokyo, including the slides and
-a link to the video for anyone wanting more details.
+This issue was identified with the assistance of an LLM-based code
+review of Netlink option handlers in the team driver, confirmed by
+sending malformed U32 (notify_peers_count) and S32 (priority) option
+attributes on a UML kernel, and verified after the patch that
+invalid lengths (0..3, 5, and 8 bytes) are rejected with -EINVAL while
+valid 4-byte options still work as expected.
 
-I also prepared a number of patches towards this, but have so
-far not been great at following up to get them merged, sorry
-about that.
-I definitely still want to revisit this soon, in particular the
-bits about defaulting to VMSPLIT_2G_OPT, and probably my patch
-to allow having (limited) discontiguous lowmem on Arm systems
-with a large MMIO hole.
+Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
+zero new warnings or errors.
 
-Scope-wise I think we absolutely need zsmalloc (zram/zswap)
-on arm32 to work with GFP_HIGHUSER, but enough people have told me
-that they still expect to need anonymous memory and ext4 page
-cache for a while, and probably powerpc32. The majority
-of __GFP_HIGHMEM allocations can probably just be converted
-to use lowmem, which would eliminate a good chunk of kmap()
-calls as well. In my attempts to do that, I came across two
-problems I'd have to solve though:
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+---
 
- - Movable allocations (GFP_HIGHUSER_MOVABLE) imply highmem.
-   while I think only 64-bit architectures support movable
-   pages today, we cannot currently express an allocation
-   that should be movable on 64-bit but lowmem on 32-bit.
+Changes in v2:
+- Check exact length (!= sizeof(u32) / != sizeof(s32)) instead of
+  only rejecting truncated payloads (<), as suggested by Hangbin Liu.
+- Extended the UML test to also cover oversized option payloads.
 
- - Internal users of tmpfs (in particular DRM/GEM) usually
-   don't want highmem or movable pages, but actual tmpfs
-   does default to GFP_HIGHUSER_MOVABLE. Separating the two
-   is complicated.
+ drivers/net/team/team_core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-I added a few people to Cc here that I believe care about
-having several more LTS releases with some highmem support
-because of existing customer requirements.
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 957cc7885d2f..8fa05c489b99 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2833,6 +2833,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 			ctx.info = opt_inst_info;
+ 			switch (opt_type) {
+ 			case TEAM_OPTION_TYPE_U32:
++				if (nla_len(attr_data) != sizeof(u32)) {
++					err = -EINVAL;
++					goto team_put;
++				}
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+@@ -2852,6 +2856,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.bool_val = attr_data ? true : false;
+ 				break;
+ 			case TEAM_OPTION_TYPE_S32:
++				if (nla_len(attr_data) != sizeof(s32)) {
++					err = -EINVAL;
++					goto team_put;
++				}
+ 				ctx.data.s32_val = nla_get_s32(attr_data);
+ 				break;
+ 			default:
+-- 
+2.33.0
 
-     Arnd
+
+
