@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794501023;
-	b=33f94/MwjcE7/o059DwRyddo8TXBiQmjE9rYWXPWEhnWZ8AdCjfzhKijJ5lockiC35uY
-	 0QuzxFwv7ilxw2aeNhjMVtqI2c55ror3BNAVCD9vT3rZzyX5XW+Ak6OmFzCXY3hWgvgTi
-	 wj+v+cUFOZbOgEVdmZNoMAljYlvznmIQXsldsWqcRTlqVz7u1JqsUQUOMcJkoZOhOjkDn
-	 i4yFxCPfEHde0g5keZaP7PRkqnOkkUGamRtpi4VobDnq3zU2GoVcaSTmmv8NdYRzomMK8
-	 hf0OUm484a2jDDS4RKLQ1thZVpbA/uXTgSbm5CK9cR1u6EaISqmX8hEADMdyHyZc7Yw==
+	t=1794501193;
+	b=KjUUE+BqOyxTxGR/OHgjhlqVPrXEwGs3bBin7JDxeMjP+Mefcv7aPABm5IlPba287hSy
+	 zvsbFeBYjSzmCPD3vj9m7pbjR8Ycqxk4Fg9Q1r9fqbxrvmAzVrmzxl5n+UcD4jJsVc/ka
+	 asNUWRwGWrH0Q/3AHBEe/lNx1bbz0puFIEHZJX3nX94IgyMLfa2DUnm53mrl5QLqADfWK
+	 68xwLTT0og8RALnhHrq5AwSnlsUxoQHKMpRdvovkLhHC1SscIdAv+yrvwlFNiZkKDsNIF
+	 2oPQfEiCQUhtSXG9REROyvAOnESyGtAeYOd+VrZ4rUujvQp2YI2qXzGByeTPipdxquA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501023;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=kj3jY71KNu7EonmjA6hia9bcgwhknY40spNJGqFG/Dk=;
-	b=rtxXPjlldIOGIJ5g/NAKYKWeU80UOdNE7rRfxsAlC24S9kU4N+R6JYxRdT/zAIRzn9HF
-	 KeUMH5gnp9SvokrckhnZQHmpgfhVRDlqH+1xSOIYvP/Z7G2rf8KqatVKDMnwJzGMyie5l
-	 EgGMbwm1I1sdDbZg09P01rwObKAcQd6H9u0G4lQQoSv8XYIUqWx6qV4tF6X9ybppKa80/
-	 yYl610mBvYQUtHa3IZRIcwZay4lRo7WPqiu1urTCrnmta5uN0rMze4cyQI/Gy+RECKmxx
-	 L1hTbwcjCCtcAf4E01UVxC7GYIj2qWnGFnjkqyLHkIBryIs1PzqB2/9dFMJxNHB5vRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501193;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=yPUd9FeLj5QpouzWq1NZvMG7gxT72E6Fd8Vvq6ez92s=;
+	b=kw7sUQhIM3kefBhk/c68Nh8B4jhDpVIcFUfEYQlBZ5qMEE+OUWq1lEEs7WdciHZXqNdP
+	 vJUUF072wjBTeJ1eoxcTC0MJYxaOWbAXDVRVM7nLt/TKJ+Z/uzgpsM6Fcyr4ZyHmt57lu
+	 F2MgHXtuskwaUw7sRUc2KxUhs14/U6WyoDixXU2pj/sUQUGKBr7BmliWV3enF+OWr4ueJ
+	 R1aXj5AGAF7jiAje8yHYqdnEG7bDTE6cUErj/LMSYjQj96Z+bLJfAizJyJHKI3kPVVcrj
+	 mWJ0MTicfS8fk08JU3JeDyoWCRpwj6TiuVM40fd4QfbbqDViXO7U3Y75stXIqy1ciiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hI414lJ5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kkL6kCI/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE6B606A323;
-	Thu, 12 Nov 2026 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105CC606A33E;
+	Thu, 12 Nov 2026 16:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hI414lJ5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85351F000C4;
-	Thu, 12 Nov 2026 16:30:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkL6kCI/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3471F000C4;
+	Thu, 12 Nov 2026 16:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794501023;
-	bh=kj3jY71KNu7EonmjA6hia9bcgwhknY40spNJGqFG/Dk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hI414lJ5ZvaBmJMUDAvcxHQPBmcysI+sMi7p4MjcAAG4WOnlpABfwnIdj2KqfC7f2
-	 PYPRnC46QtRmRjSRER5ZkUcKNSF1LCWNMkzx4LjTVRivaMXVDs30PLwXZhjk28Z8qQ
-	 TiFO8gw3/kL+/WPPkE5Ms4DCXSbWtjNHeVSIdhgDurDdlKk/NazdvWqgc+0IzrlkIN
-	 ilWjZKuBE8u/oK/MU3pzwY8OpvyCKT+zwSPzkJoE+i1b2NMvA2koRNjCquxgXZJURv
-	 iLPQByQoMQ3sJmjuz/dLpL1rM6epLmmOOJRFwzkUl05huk3O8k5hW1PzF3uEwD9H0s
-	 slcZyy7rOiMnQ==
-Subject: Re: [PATCH net] net: 8139too: cancel the thread work after
- unregister_netdev()
-From: netdev-bot+sashiko@kernel.org
-To: mhun512@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, ae878000@gmail.com
-Date: Thu, 12 Nov 2026 16:30:22 +0000
-Message-ID: <179450102226.2199510.1336538624039413031@kernel.org>
-In-Reply-To: <20261110042903.55991-1-mhun512@gmail.com>
-References: <20261110042903.55991-1-mhun512@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794501192;
+	bh=yPUd9FeLj5QpouzWq1NZvMG7gxT72E6Fd8Vvq6ez92s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kkL6kCI/5z+yr5mFgZW7w+h2y0/a3TTWefVLABMpxdQHdJudK8lwyF4FjFvwxq3Vs
+	 htMBstcmkwA8gIJAq6QxjEz6Mzx2FNoc8zqgdFNqu21GN+h9TwxVxTSJrfhnIaL++W
+	 HXlmBp6fvwahXXYZJojhnoDUcdbXbUstH61FpFE96KyvTCnyWm0AJrz3FNQ4rO5QZR
+	 +8Pv4oK185Rax6ifdRTKOk8TjNGvzMMKyaKciww3Gmi+pL7+GFv5kX0+vS0J3jwz0r
+	 Igr+BBC7PxIMpuLA7dn6QK8QqgoD9UJ6D7sOvsvhRjMMujNoYSzU1A8VPiWa/Os7Ew
+	 K0pwlnK9eAX3g==
+Date: Thu, 12 Nov 2026 08:33:11 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Subash Abhinov Kasiviswanathan
+ <subash.a.kasiviswanathan@oss.qualcomm.com>
+Cc: sean.tranchetti@oss.qualcomm.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4] net: qualcomm: rmnet: Update MTU handling during
+ format changes
+Message-ID: <20261112083311.641a2216@kernel.org>
+In-Reply-To: <20261108075727.2031331-1-subash.a.kasiviswanathan@oss.qualcomm.com>
+References: <20261108075727.2031331-1-subash.a.kasiviswanathan@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,120 +61,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sat,  7 Nov 2026 23:57:27 -0800 Subash Abhinov Kasiviswanathan wrote:
+> rmnet derives the MTU of its devices from the real device MTU minus the
+> headroom needed by the egress data format. Several problems exist in
+> how this is handled when the data format is set or changed:
+> 
+> - The headroom only accounts for the V4 egress checksum header and
+>   ignores the V5 one, so devices using V5 checksum offload get an MTU
+>   that is too large for the real device.
+> - rmnet_newlink() sizes the first device from the port's data format
+>   before the requested IFLA_RMNET_FLAGS have been applied, so the MTU
+>   does not match the format that ends up being used.
+> - A real device MTU smaller than the headroom underflows the unsigned
+>   subtraction, and a real device with a jumbo MTU makes the creation of
+>   the first device fail while resizing an existing one clamps it.
+> - Existing endpoints are shrunk by writing dev->mtu directly. No MTU
+>   notifiers run and userspace gets no link notification. The helper
+>   also returns -1, and changelink flattens every failure into -EINVAL.
+> - rmnet_changelink() publishes the new data format before resizing the
+>   endpoints and reverts it on failure, so the datapath can observe a
+>   format whose headers do not fit the MTUs. A failed resize can also
+>   leave some endpoints shrunk, and a mux_id change requested in the
+>   same call is kept even though the call returned an error.
+> 
+> Fix these by calculating the headroom from the requested data format,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] After this patch, the case the commit says it fixes (the thread
-  work still live when __rtl8139_cleanup_dev() calls free_netdev()) can…
-
---
-
-net: 8139too: cancel the thread work after unregister_netdev()
-
-This patch moves cancel_delayed_work_sync(&tp->thread) in
-rtl8139_remove_one() so it runs after unregister_netdev(). Before the move,
-rtl8139_open() or the TX watchdog could queue the work again after the
-cancel and before the netdev is freed.
-
-> diff --git a/drivers/net/ethernet/realtek/8139too.c b/drivers/net/ethernet/realtek/8139too.c
-> index 8241bcf766644..efcf46fd9842f 100644
-> --- a/drivers/net/ethernet/realtek/8139too.c
-> +++ b/drivers/net/ethernet/realtek/8139too.c
-> @@ -1103,10 +1103,10 @@ static void rtl8139_remove_one(struct pci_dev *pdev)
->  
->  	assert (dev != NULL);
->  
-> -	cancel_delayed_work_sync(&tp->thread);
-> -
->  	unregister_netdev (dev);
->  
-> +	cancel_delayed_work_sync(&tp->thread);
-> +
-
-[Severity: High]
-Can a running instance of tp->thread still be live when
-__rtl8139_cleanup_dev() calls free_netdev()?
-
-The commit message says rtl8139_tx_timeout() reinitializes the work, and
-that code is still present:
-
-drivers/net/ethernet/realtek/8139too.c:rtl8139_tx_timeout() {
-    ...
-	tp->watchdog_fired = 1;
-	if (!tp->have_thread) {
-		INIT_DELAYED_WORK(&tp->thread, rtl8139_thread);
-		schedule_delayed_work(&tp->thread, next_tick);
-	}
-}
-
-On every HAS_LNK_CHNG chip except CH_8139_K, have_thread stays 0,
-because rtl8139_start_thread() returns early:
-
-	else if (tp->drv_flags & HAS_LNK_CHNG)
-		return;
-
-So this INIT path runs on most RTL8139 boards.
-
-dev_watchdog() does not refresh trans_start, and only the work itself
-wakes the stopped queue, via rtl8139_tx_timeout_task(). While the queue
-stays stopped, ndo_tx_timeout fires again every TX_TIMEOUT (6*HZ).
-
-Here is one possible sequence:
-
-dev_watchdog()->rtl8139_tx_timeout()
-  INIT_DELAYED_WORK() + schedule_delayed_work()   /* instance A */
-
-rtl8139_thread() (instance A)
-  rtnl_lock();                                    /* blocks */
-
-dev_watchdog()->rtl8139_tx_timeout()
-  INIT_DELAYED_WORK()   /* work->data reset to WORK_STRUCT_NO_POOL */
-  schedule_delayed_work()                         /* instance B */
-
-rtl8139_remove_one()
-  unregister_netdev()
-  cancel_delayed_work_sync()
-    __cancel_work_sync()->start_flush_work()
-      pool = get_work_pool(work);  /* NULL, or B's pool */
-  __rtl8139_cleanup_dev()
-    free_netdev(dev);
-
-rtl8139_thread() (instance A)
-  /* gets RTNL */
-  if (!netif_running(dev))         /* dev and tp already freed */
-
-cancel_delayed_work_sync() finds running instances only through the pool
-stored in work->data. Once the INIT has orphaned instance A, the cancel
-does not wait for it. Wouldn't that leave the use-after-free this patch
-is meant to close?
-
-The same re-init looks like it can also corrupt state while the device
-is running. next_tick is a file-scope static. rtl8139_thread_iter() sets
-it to HZ * 60 whenever any have_thread=1 device (RTL8129 or 8139K) is in
-the system. A have_thread=0 device that then hits a TX timeout would call
-INIT_DELAYED_WORK() on a timer that is still armed. timer_setup() clears
-the timer linkage while the old timer wheel bucket still points to it.
-
-Likewise, if the work is queued but not yet running, INIT_LIST_HEAD() is
-applied to an entry that is still linked on pool->worklist.
-
-Would it be better to also drop the INIT_DELAYED_WORK() from
-rtl8139_tx_timeout() and keep only schedule_delayed_work()? Probe already
-initializes tp->thread. The INIT line was added by 83cbb4d25771, the
-commit named in the Fixes: tag.
-
->  	__rtl8139_cleanup_dev (dev);
->  	pci_disable_device (pdev);
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110042903.55991-1-mhun512%40gmail.com
+These should probably be 5 separate fixes in a patch series?
