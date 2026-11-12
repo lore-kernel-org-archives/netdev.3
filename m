@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794482420;
-	b=azonDVLfA6Zk5cqEegPqiKgO88O9JhALvsnGojwoWFKFcK/vdBFTB+LSb2WuoSCoQxyf
-	 4v7TCsUrk3W/0oT0e3oY/fkIvGWaCP/gnyfkeOOHrocsNJX3q4msSJRIHIhA5veKtVCVo
-	 LOecyKEpoON92qMvZ6PZehvKe71b8U+xBuF925G6Fx5SU2mBFJ1TweHgEo+CX0JQ8/gz9
-	 3dXOCO3RD3h8qaq/skdbu4tEGH33wjGIgDWRJ6LGQwZkfvUOyH8o4kPoSi+ffTfK8HocR
-	 Lx/BYCdnZP/tRrdfDhmK3g3NnPW0ZkR5e0/7iOkyDq6ves7eTdcgdQOuf6rSojbgIZA==
+	t=1794482417;
+	b=yYXtFdZcU+sK4Nw4kfBt2sJoJEBLbiquXjWIAJ30KRZ4MWTMOiLRlFDgGSv/LDAIm257
+	 NETzbK8gEgD4RSRPlo9/OJi7yiLJkP16PbS0xp4EN4IOVy8jO2AQ6Xb9MYjQZs2is4rL4
+	 ZK0psL39gUNw24nhMQl05p1I/ycvq0E5v/fEtefNkvVuOSMPfQFiuL8wiVpn/jilWVeo4
+	 750y1Ahsgj4MgkIsb61sf03R7Q5/pPY5hcIBD1Mg4QcnW4ctn80moQhmSDj43OwskxDCk
+	 P6y5tDorkqaSMwFrTbVNqTPSlx+JwX1GdOe4rSYJ8vgZ15khfenwOg0S5iKX65YDniQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794482420;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794482417;
 	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=YFmiRipGVOhRtn8lRjovLQKljgNDRtPwRig6/ms6OmE=;
-	b=3RRfmJ0FAPDDE80wPvoFCqW7ihVvHPs1DmoLid45KoI7mYwLwi1+e392qZwQXshhcbr4
-	 IY2uMfzLSKTi5Ge+Pa1qPSHXy6Wdl5BQ0mUdWLV9sXd1RGVx8X83WlFDYzs9hX5yQvu6M
-	 zWJHZdWCdeIyiLNOH6D1+Hb5EFg1FJ7+EhAYsCvsQUslnMS0S20MZH4ijlo+QOWWXmdgB
-	 4pcuNjdDTwVMPK4BEx01oIBge7bDOuGgpcw9bs1OQQ/1u0AmeMcSeDZVOSS921OyEm6Qs
-	 qyTMR6kbXoqA9ayrqgmDIscjkzFED7Ul59hLPm0r1kw+pzJWLgNBq7mrukpkKL5StBw==
+	bh=5ziLmMlwTQBnBAgwJdnf7L34hsFaEYwyaTVUcHngXrg=;
+	b=M9oDoD94QBvoswpZX9QIYYDxVqyWtF+JnOsdXDhQ0oN5Yk+qcOYXAmii9y3rmESuCsLy
+	 IDKDvjZQZLrQMthIHghd1YELnjeiiNRO7HHXM17VCN7Ut57i0RLBf7LNBc2AFa03bNcvT
+	 C+bKuFtGL2Ew/G91YnMKecbXW02s8LWxZxQZCkOBq7JiJtniAWSSHtsvW7gbO6zRe5mIc
+	 I6M18cuSXArJlXPv6THrbQjEfQtnP66sbPrZijyDf28uGvnmxlIu2I0+DIxsMdP1o2RGO
+	 ZxsCco2gyd2P+57B4usLy9RxfIdGRQBsFk+ZezRhagJ2yZrSt0pR3cuwW2Tc2cRXDNg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=V61OQqSx;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Jqvlzwte;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF23F60728D4;
-	Thu, 12 Nov 2026 11:20:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF23F60728D4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4F460A2625;
+	Thu, 12 Nov 2026 11:20:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A4F460A2625
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=V61OQqSx
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Jqvlzwte
 Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
 	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CF686205848;
-	Thu, 12 Nov 2026 12:20:17 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 20CBF202C8B;
+	Thu, 12 Nov 2026 12:20:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482418;
+	s=20260414; t=1794482414;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YFmiRipGVOhRtn8lRjovLQKljgNDRtPwRig6/ms6OmE=;
-	b=V61OQqSxORIU8ZN4ZnRzPKyX0NxkVNnWyp5Gz5b5A+ACnC86Jxi7hpmvyrrytCloExroD1
-	E5QfcR8McDAayd/DqVoO0y/YRmyrSjR4tYZq1YT5YjIXjhL6Zrx4aKkFkYBXYrlHxiHrxO
-	P4F6G16ptP54y5Z/01cf8hzTVfmAySC1CjQg7hlAL4s6Zur2aVFbxJt+EjUCYh7PUkacvf
-	J13L2DzII7fAOkM/LyG33e6RgVNyDDiutL4vcJ9GXVMcOs+VfKDbJM4D3nw25IdSrX/wnc
-	5Pt/V1181gFhvo8grgIq25TEbtiGginIBxwIDUT4DWKNqhHiTqEoYYy2Du8EcA==
+	bh=5ziLmMlwTQBnBAgwJdnf7L34hsFaEYwyaTVUcHngXrg=;
+	b=Jqvlzwte4CNvoUmUqCJjakfD06Vqd8vBwJRhwk524wO9xJaBJAG6u940PMBHlFeB0T2JGO
+	vfTl25eCtVEJ4VgxXKmlNPnwGt5LaBkWu7WK/2zj8IePzkbgXq65lzRokNqyeIv+XleExq
+	2xHGyUasfnq33NUKq0fYuWIMpjI7l30bGjlggXdF8A2kgQ5x0QpVfbeHI0YlofAAlbNFJv
+	IA1Ew+7lwO/RBgd8RndIy8FISlYA9V21TR6SdXm23JCkuPtI2LaQp1AtZY0dhgBquI6Ay2
+	87BSnPlyMYPk/9U46bglnc7UAUSCubw85UB17ZfnIspoNiFZ6eRescjwVhFstA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482418;
+	s=20260414; t=1794482414;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YFmiRipGVOhRtn8lRjovLQKljgNDRtPwRig6/ms6OmE=;
-	b=ZJN/QQwliDlN4M6gWvYqK8Oe5ZBB2nSb0w4uT28yOirVrnWCwqFoUImAPify5Z1PhNLr8X
-	dWZByVBTXsHZF2WNmOsqysGH6CQ8+H163zbGweju1JhkYa5x/HwUTaPdJrveVliyV9+cMC
-	DFJPnG51aeErLc3flQwE+nYQvbH0DX3+Jt4mfH8cIy2yZajEbM7dsldpyKAi4H5O+hlf9g
-	ecpwQxjwsg6SR+Wt59mdWrhwcosYnS8e2L+9e4sWWBHRkKGTkz1IrSsR7e53JlD64aHwZs
-	jfdWU7gggVNnqS7xRw6eEnnYJrrUy100K0QEuKYPWhnk/YKM0AS8SPRplOWj/g==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482418; a=rsa-sha256;
+	bh=5ziLmMlwTQBnBAgwJdnf7L34hsFaEYwyaTVUcHngXrg=;
+	b=dp47u5dGkCJaLq3lmXVqaYm6OOADpkwXoHYGg0u+b3IdNH0zguJ/IvNLXwPv7lcueTJIXW
+	xgVvolfrV/cwsY0Zaxh8LbBGJO/WJKTBZ4mE63rkwDsGQCEN9qYFH/VAe2ziAEglkrkwL4
+	en/inP1rNB/mZ4FwAjallDM3dbHVjDnv/6i4VItrjR1lSUIaI4LP6HrTco0UlzVZlOpeFf
+	+nLcVmK7P4FNu5nEJHny464KOKd5vdMM+CjMp3Tokayk0F1u8f1DScJsBTHT+DjSMQwY7R
+	08VimuIOg2sDjVpfiy8UAMdF8GMyXUYVjPK0tFn4NSF00HzOiuQgBCK4jIHcRw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482414; a=rsa-sha256;
 	cv=none;
-	b=G99L7gKI+t7nHitGUMZSLDABtz+J3u9aztGqeU9v6Hnplxin8Nkx7mJi4EVPxSRmLbE+c2
-	5AfRlWc5b0HOzIre3qh14nGGevAYJGXNYSVuH58Lfl7a0Sn3Ukr12NwyFUytJJrxuYgpDR
-	1BoDEHRSMzyDlq19YPEDhBYBU8s05Ja1CBC1OT5T3a/hjh07AdL7mBksCE8Gjpy9mN/qlI
-	KfvysZi/+LgiX1MWXHXwIbpt1wIonfgmP1JOUH5P55aLSsoGJi/57mbsCauuXLwHH/1c/F
-	ts/+cznvvXj1Xa2vJjSkBAftxV/f0SfUABBD74Gy++7dQ7uuSuEPeV3dSHLSRA==
+	b=A78Xe278fURcZdSSdxlONOkmr/vh8dYXz5RCqhYwtWRRgcwtByww4k0qSc4LXk4OQ+lClb
+	4qxAZP/DoRvdUTe782W1cRuik3avfmHG/0Edt1DAMOyuC7eu4/WsRicmZboLUQ3u1q8l57
+	Sr5iSLKqccL1X+l3CS+KXjQqhpz93MvlVVQNUTPSmFhJgNMIJyI51m8UC+VRYxTisCYvZL
+	Dk+/H03K0ms/yEf9oIvtn4sA5hZhfBGONuoo3t5bKfMdggE1csuTpdhYUpjo7MXpP45BFX
+	LwdCmSf+n7s46YqwM/ZWMyg+kBrw3HzeDtlJp0bUYJR4YL7oYEqhtbPXhqmTrg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 12 Nov 2026 12:19:40 +0100
-Subject: [PATCH net-next v5 8/9] virtio-net: add XDP rx timestamp metadata
+Date: Thu, 12 Nov 2026 12:19:33 +0100
+Subject: [PATCH net-next v5 1/9] net: ethtool: tsconfig: allow hardware
+ timestamping without a PHC
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,7 +86,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-8-7ab67b572f4f@pengutronix.de>
+Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-1-7ab67b572f4f@pengutronix.de>
 References: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 In-Reply-To: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -107,90 +108,59 @@ Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org, 
  kernel@pengutronix.de, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2661;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1676;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=fT8KifTYffEMAVE4OeBysAfdxyS21tEVpFH/gXnDaCo=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBW+zjrj1XBX7VD/J/2fFqaKgPI0ZLasifqzNOz15y
- 6rwdttJHaUsDGJcDLJiiiwqCyv4RD0+eEZOE+GCmcPKBDKEgYtTACbSuZWR4dG9bVPP8tVMWbs9
- dn5U9sKTc5trXfUUSuZ943n1UNFZkInhN6ug/rVFm/yn+qxev6HcKrc5VDko9GFu/Y6lCZ8uLOe
- w5wQA
+ bh=sJoHRrVMKr6ZSzo1Qq3LalC6B8sAG2AlxpNu43jHhDQ=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBa9V11v//6j7t9q9ubGxsfBnhliLYc6Fwx8Wcle+F
+ eSwOH6zo5SFQYyLQVZMkUVlYQWfqMcHz8hpIlwwc1iZQIYwcHEKwES6HBn++3NuVxK9mMt/TuXr
+ 6y0zPZiqHhbs6ryVfue9g86OKVpufxl+s6XpWV1Irpt3K1DsNr9M9t70FYaFIsmKprbfdi/a/H0
+ KNwA=
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-For the skb, the timestamp is read from the header before the XDP
-program runs, so XDP_PASS keeps it even if the program changes the
-packet. XDP therefore works with rx timestamping enabled.
+A driver can do hardware timestamping without a PTP hardware clock; its
+get_ts_info() then reports hardware timestamping with phc_index -1.
+ngbe and txgbe (libwx) do so when no PTP clock is registered, e.g. with
+CONFIG_PTP_1588_CLOCK=n, and dpaa without a ptimer-handle.
 
-Add xmo_rx_timestamp so XDP programs can read the timestamp with
-bpf_xdp_metadata_rx_timestamp(). It returns -ENODATA if timestamping
-is not enabled or the device did not timestamp the packet. Install the
-metadata ops also if only VIRTIO_NET_F_RX_TSTAMP is negotiated;
-rx_hash returns -ENODATA then.
+SIOCGHWTSTAMP and SIOCSHWTSTAMP work for such a device, but
+tsconfig_prepare_data() refuses it with -ENODEV:
 
-Like the hash, the timestamp is copied into struct virtnet_xdp_buff
-before the program runs, so the callback still works after the program
-changed the headroom with bpf_xdp_adjust_head() or
-bpf_xdp_adjust_meta().
+ - TSCONFIG_GET fails.
+ - TSCONFIG_SET passes the new config to ndo_hwtstamp_set() first and
+   fails only when building the reply, so user space gets an error
+   although the config was applied.
+ - In a dump only -EOPNOTSUPP is skipped; the error ends the dump, and
+   the devices after this one are not listed.
+
+The reply already leaves out ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER when
+the index is -1. Let tsconfig_prepare_data() take that path instead of
+failing.
+
+Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/virtio_net.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ net/ethtool/tsconfig.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 57b7c32625dfb..46be686e34b79 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -511,6 +511,7 @@ struct virtnet_xdp_buff {
- 	struct xdp_buff xdp;
- 	u32 hash_value;
- 	u16 hash_report;
-+	u64 tstamp;
- };
+diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+index 2db0e7ba8b9f5..75f9b319aa310 100644
+--- a/net/ethtool/tsconfig.c
++++ b/net/ethtool/tsconfig.c
+@@ -73,11 +73,7 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
+ 		if (ret)
+ 			goto out;
  
- static inline u32
-@@ -1736,6 +1737,8 @@ static void virtnet_xdp_save_hdr(const struct virtnet_info *vi,
- 		ctx->hash_value = 0;
- 		ctx->hash_report = VIRTIO_NET_HASH_REPORT_NONE;
+-		if (ts_info.phc_index == -1) {
+-			ret = -ENODEV;
+-			goto out;
+-		}
+-
++		/* -1 without a PHC: the reply leaves out the provider */
+ 		data->hwprov_desc.index = ts_info.phc_index;
+ 		data->hwprov_desc.qualifier = ts_info.phc_qualifier;
  	}
-+
-+	ctx->tstamp = virtnet_record_rx_tstamp(vi, xdp->data - vi->hdr_len);
- }
- 
- static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
-@@ -6896,8 +6899,21 @@ static int virtnet_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
- 	return 0;
- }
- 
-+static int virtnet_xdp_rx_timestamp(const struct xdp_md *_ctx, u64 *timestamp)
-+{
-+	const struct virtnet_xdp_buff *ctx = (void *)_ctx;
-+
-+	/* 0: timestamping is off or the device did not timestamp the packet */
-+	if (!ctx->tstamp)
-+		return -ENODATA;
-+
-+	*timestamp = ctx->tstamp;
-+	return 0;
-+}
-+
- static const struct xdp_metadata_ops virtnet_xdp_metadata_ops = {
- 	.xmo_rx_hash			= virtnet_xdp_rx_hash,
-+	.xmo_rx_timestamp		= virtnet_xdp_rx_timestamp,
- };
- 
- static int virtnet_probe(struct virtio_device *vdev)
-@@ -7063,6 +7079,10 @@ static int virtnet_probe(struct virtio_device *vdev)
- 		dev->xdp_metadata_ops = &virtnet_xdp_metadata_ops;
- 	}
- 
-+	/* rx_hash returns -ENODATA without NETIF_F_RXHASH */
-+	if (vi->rx_tstamp_supported)
-+		dev->xdp_metadata_ops = &virtnet_xdp_metadata_ops;
-+
- 	if (vi->rx_tstamp_supported)
- 		vi->hdr_len = offsetofend(struct virtio_net_common_hdr, tstamp);
- 	else if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
 
 -- 
 2.56.0
