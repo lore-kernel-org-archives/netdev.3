@@ -1,63 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794507930;
-	b=MX1uqKmRb3Twu/kNiE6Z5AN4fsIlQyTtqe2WrNTGJsr6C2WVwCkEGKeYCjJl5qTYAcKF
-	 GhMk1eaPz9rtalNorveCaveOktryQA4yXMtofE35YqWc45fhM7do0qwH8fRJfJT70IsMx
-	 kfdw9J9wSucc3oVdlu3NC2jjF+WpTadrmQXJEI7sIkZcnTdH51Z1Akzr2WklYcpriquJ8
-	 zllU9e6k4Ku5MBztB/+yy1OCobHcYgYM2I4FUgp47ZGFdcQl0bRUSk6ykPZd6I3pzg/72
-	 2Fl7y3KAaQVXoqImfClWalVdUZ5xRekXaRdLWQ5dR7Dl9kZoio5YNaMcwBSrFKBkuVg==
+	t=1794508208;
+	b=crAkxAmIlkhlHHNI6q0HbUevsjXqpBxJ1B4BNy2XAkJ2PndqzqUuEKoglIJJD9Ritu40
+	 /LE7IZQnoEbQg8ssSkndsO9jmYv4c/tX8SQ4PagOWSASjvDzj0vjGnVcyH3M+nGepWtSX
+	 jswhrnG1K5ftiQOVXDf7h7+UoHgBOrhdWkn/G55JHngnpxZpV547GSeVDfjM5BKwNiBSY
+	 SdP4xRICxKSZPq9TWM+F83u2SEIluZTMEbkrQnnsG5swQN1kFAP5HNcAWZTAgLNRljxLL
+	 ODJpiwgWueG9JCzriSk1p6xCiD8G9hSGCh7w6F9o2QJW5v+e/faA81nKhQ67rhZYF4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794507930;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=bidjvX+TRs5sF6hJ4qbvArQhbDriXPM1GfNBRtGdlLc=;
-	b=0pY95zSfK5edg1mzbe8ioteqkEChNnpu5ZZXBsFNz8BF/6/wXQefJRMn7kOEIoaqNvD1
-	 5DT3Mfq3aXXBqjaB91ZVwfOPH8rfqI8yIwssdOdK+khl02Cn0J6GXVtzjgTBgjSPrvk6W
-	 fUDI8ew03b6TfbmMSyS9e6MHYZ4FvvCF+1lFcUedxXLwVZsrcrf5E9Ll5p10/lX1Svy2E
-	 1yraEhjUMf5rqplzwV1YXkmUV7HhqnHfwpXacSPeAgb9hdVqvu7rRZjj3Pkd2ZBe340kU
-	 poCb0nb+WehjT3YpGYCbPuF0aP4PigANriaBWpozXXC2IWrDWsAVJyA3tyRvu2IBLhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794508208;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=+52UGbBilkl4hGyrUrFA0fSvaAA64MpqwEqJs05gnNA=;
+	b=B2eOX7WQVCtefY/2h2CvQR9cH7z5aKfrF5xYvqPmeuU8ATgOMlea9Lfv5eTn49lpvMjl
+	 nVJBsTxGTM0aRVf20jzw49LTBTsK/Iq6q2bI9XWRctJOikBD1QYdwCZGUZP+Zu5/4PNCz
+	 dhTyvdRFXDpvfoxKjWE8i1H9pyh/Qm2swNSwzr0uL+xrXDUGxLuF86ty99oQMiy3hbkZq
+	 XlgTbl+VMjDApXk116ypIdqxgotSziZRtmDi/Qijn7LCN/sxCozS23UjcMR30yBAVS8sK
+	 i5o8F00GrdI/MM95UOUANCrwPbJydOCSDOIT9y/FYxb09mzf1DpSvg2Qofdc70m1XKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joCIRw7z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nz0heuvc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E0B606A32A;
-	Thu, 12 Nov 2026 18:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D1A606A885;
+	Thu, 12 Nov 2026 18:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=joCIRw7z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32FC1F000C4;
-	Thu, 12 Nov 2026 18:25:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nz0heuvc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03711F000CA;
+	Thu, 12 Nov 2026 18:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794507930;
-	bh=bidjvX+TRs5sF6hJ4qbvArQhbDriXPM1GfNBRtGdlLc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=joCIRw7zJTF/b3SYVpGkuxCGQXazYIvQWt3WYe/r/R6Nx36JBmLz8kzoWZvPwIb2M
-	 FY1LF+7VbSC9VizGWLydT0QiNUwBONDnN6MER0t8Drxl8CW7gNBjnVTxNVmZd34Woc
-	 wB8DDo1/V93BlE9DC1yP3xZ8B+vzxqsvN6xGLJHw74OJJDMcqsj600y9FzHTPhm6Ez
-	 wTiGz2tEG92K3gHIX2jZvqoozvxTeRKgBmHVLvWYJBq2T1z6DFkDWla/jb/Vc/+Oy2
-	 MjJlV2t+J+7VCsd93a4lT/2ALUlgCvoZYHakFv6Jh1VapHYoGEwghe58bEeqK3z/N/
-	 SKNPW/oXS5AQw==
-Date: Thu, 12 Nov 2026 10:25:29 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ding Hui <dinghui1111@163.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org (open list:STMMAC
- ETHERNET DRIVER), linux-stm32@st-md-mailman.stormreply.com (moderated
- list:ARM/STM32 ARCHITECTURE), linux-arm-kernel@lists.infradead.org
- (moderated list:ARM/STM32 ARCHITECTURE), linux-kernel@vger.kernel.org (open
- list), dinghui@lixiang.com, xiasanbo@lixiang.com, yangchen11@lixiang.com,
- liuxuanjun@lixiang.com
-Subject: Re: [PATCH net v6 0/4] net: stmmac: fix RX descriptors and XSK TX
- on resume
-Message-ID: <20261112102529.1b79104a@kernel.org>
-In-Reply-To: <cover.1794311618.git.dinghui@lixiang.com>
-References: <cover.1794311618.git.dinghui@lixiang.com>
+	s=k20260515; t=1794508207;
+	bh=+52UGbBilkl4hGyrUrFA0fSvaAA64MpqwEqJs05gnNA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Nz0heuvctAyaSfiiJvoHqgZqQ8vTXglysA79k+he2ohOLzsolSr6kchIiCHDRLHrb
+	 TyrXK+GrFfqw0mpDhQ9vsIa+I2pExs4/nIhKCJGb9s65r36BX5AhYuwusuqUCmotlI
+	 /TYBAdrslIIuoRacE1M8iSBZV+O/F9XHM4cX42YrVJD4SDQxY9Atg0H8/wEk5HUApi
+	 F8t+ggY04wLx++OEzE2TTeBfmViMTob26jEF/O5LtcYiH/pxvq3RoyNCbwmxPDsDnn
+	 6bYLw2YtWs88/LX+qTLEKclwWpD1D/beoJ0YZ7IYhnmoqAYAKKN8jm6nLy9TjFF8rr
+	 R8TAM9/F3JTZA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4454380AAFF;
+	Thu, 12 Nov 2026 18:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,14 +53,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] udp_tunnel: don't treat IPv4 sockets bound to an
+ address
+ as wildcard
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179450820653.579048.1771964318277156966.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 18:30:06 +0000
+References: <20261110113306.3698438-1-antonio@mandelbit.com>
+In-Reply-To: <20261110113306.3698438-1-antonio@mandelbit.com>
+To: Antonio Quartulli <antonio@mandelbit.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
+ kuniyu@google.com, razor@blackwall.org, alice.kernel@fastmail.im,
+ linux-kernel@vger.kernel.org
 
-On Tue, 10 Nov 2026 20:38:51 +0800 Ding Hui wrote:
-> This series restores RX descriptor addresses overwritten by hardware
-> writeback between disabling NAPI and stopping RX DMA during suspend. It
-> also fixes an AF_XDP TX-only resume stall found while testing the series.
+Hello:
 
-Does not apply, please rebase and repost
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 10 Nov 2026 12:33:06 +0100 you wrote:
+> With IPv6 enabled, sk_saddr_any() checks sk_v6_rcv_saddr also for
+> AF_INET sockets, where it is always zero. An IPv4 tunnel socket bound to
+> a specific address (e.g. fou or geneve with "local") ends up in the GRO
+> lookup fast path, although another socket may bind the same port on a
+> different address: GRO then hands that socket's packets to the tunnel's
+> gro_receive.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] udp_tunnel: don't treat IPv4 sockets bound to an address as wildcard
+    https://git.kernel.org/netdev/net/c/612b8376e811
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
