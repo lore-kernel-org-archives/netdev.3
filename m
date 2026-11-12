@@ -1,97 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794524416;
-	b=T/Q2G7kgqYY+izoGIJOzRFI6QyNqC9Za9fSJWk2+xi6xajM44GCbIMjNjA0HnnC3QJGl
-	 1HcfNCr1ndeGBhU0yH6YHvsy5WES7wlQTS1FWX8DSnUkgS9cEp5+0dH2/bsuc3oPLpuin
-	 VR5Z9r5NNR5KSaPWtUJPEl2jfhkqiThj8mh68jqyuJ3TWAmM5uH2/C15/I3SnZfaBAOgk
-	 yhXWGJ/yOR/akyxk+6fCemgfWa24LhvNE/mCbxSDnhCrVhHvn1e0qraSnVvTg57gEwK4F
-	 FMKAmQnveKwPfOLtKQtfWBH+6+6DcuPxCZsumd0kHmwBZ4miS9FpniEvPDDwVLO5suA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794524416;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794524468;
+	b=daz52FziwEVF4/T0FYNeEM9D9p4Md7rwekaoXq5AaL9UHrZe9SKlv4+nDHRBrwg6jLz6
+	 xDocTn2UvPF3iLKy/vzEYd63fTowPYYRiePuw/N+AXvBiGmrwe3nlxMkyRVydlXmtTNLF
+	 M9rbHGsis3EW2llPShj/URn39kM7wHMMi8hLHEHKILZueUxc2FL54gGdPZsTZaDeA7ZjA
+	 L30ksUaPFAr8nElrwiRhjRRSaNJd9jgW+FobaR/v9C8HRKPtW2ZST9B9TcCg7ecg7bZkW
+	 mFQrhMOwM8IoqHhsdcce4Z+rFO91kcvsC1wrW0R0Ef5vSNIstNfLxBgsWc0AOI7o+kg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794524468;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
-	b=oOVxBP5tOVm4R5D4w82c2BXVj1brnHicPR8vbJqxt/cYJqzUWPh538WYMyZZpP73gFj0
-	 x/R97OlaXJ8Kp1JK79BAS65+OlsI1mubMKxiTu6dG6W7PiTA9r/tLDP5Nzb6szqcQe4Hs
-	 IYARQy3++8QKr7pkLQWYuUW+n3FLa8qZjiJHAGU833ym97v9i8zLe/Ue5iiWtYnEsCu5k
-	 Ztv7yb4hp3eaxMPeHR+EGA9HFK+RE0TYX5pr1tuzPoytoHIf/duYiWTqhacc2DYNehLRL
-	 d/M3LQWhT60c/VOstVxjJLEwDHH69KgURw+qgDYPlb0GNZZ4dOB84PhA0tqhi4yKPnQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=XeZTUBvhgpIr/mryTTLRvu/xMyKUEKxDCy6a+x8xHAE=;
+	b=FBLnxGh9PIoRmeTgFtq6+044UsNfCKbPYeiHEaB8Igp4W8yggv3Xtb0uj+iW9HiR4Vqk
+	 ofmVACLfjVmTMTy4ZVyTKlQ0FZgC82wKhrYHrdAFf6er4GvQoESZkO95TccCdzDCr527h
+	 ttICttn0yoFq2UDkK+exxb4MU8IsotGLECg2osNxq68N414hX6g+OGnTn6uMDyGKER8wQ
+	 z1HcO4UN3zhJDKDj2xkPRDiG+pFeoz9KDWpBjQbMfeOYEEjxSZX2yA1u1vDaRr+cConSp
+	 vZjddqq6Oxetx4hUPEj4DgqNETagMsjkOUfFzTtVgLquGJ4TWKB8kvyNGYa+x4W99vA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="UEmdS/dd";
-	arc=none smtp.remote-ip=74.125.229.4
-Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ORwCc0Rf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BC1606A880
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:00:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26BC1606A880
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED3B606A88D
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:01:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8ED3B606A88D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UEmdS/dd
-Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-36f758312e0so123943eec.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:00:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ORwCc0Rf
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4ba013938d7so3690345e9.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 15:01:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794524467; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K02UoUvfmP/8dAWKaqSdYpLK3lNib3jILzT7RqdBZhag861ifv20pKToOLd3zLxwbr
+         GbCvMqxYdphUIfb5rweO01xbLyEr1InsS/YzCf8zO1WDWCmZ/m+GWJl98/ODaqECLvDY
+         V7OQwVb8/zg6qw1PMy5lcVy1hROsB13KF4//mFqzoMOofmVj7j3KjVIaOzMJF3D9cbQx
+         cKf3YTCx6/Kr6ck52qD+z3iwLDqt0sWD6ofg5Gwzd0x+JzN4PEYQ6/hM2J8kV/AVKDq7
+         VwaqTl0Gtxvp3fu47aDIgBY+i676TtU/3/+fBibKCOPMO5s/b4R+KYrA8uVI2+1jKrY7
+         C3eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XeZTUBvhgpIr/mryTTLRvu/xMyKUEKxDCy6a+x8xHAE=;
+        fh=8FMTimyfuzsUJ0ehbFryJMe2lZ8fCCzN7H16RupsQww=;
+        b=OKaRicOLTR9kAr/KxUjtu+0Fr5kSGuASC3PYCwEibUbYZMJgD3Lj4AI7FWgCK+IO+f
+         RIw/0gDVYR2onfnOuL/arXA4vSQi5wuBf+MRCJb721HisNhGSqJX6KhXojWHeK0XYvp1
+         3J+PbkQlplYM3XVjwmyF8FyT+OLNRs8twXL9moaDm0o+6aXX6QHUNUQHV0Rvr5TE4BVI
+         6agHcMb1bTAsKRp6vWOO6f8i3qWQSI7RYC8Dls6fn0cBxCr/+vjMmG65guOb9sVFNnQj
+         smcn0FVYYZ7NOebMz9A+Fct+i3KuWmexSp0U6cR2u4Pfe3tdM2IGuUJjxoZW14zbI8ml
+         sJeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794524415; x=1795129215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1794524467; x=1795129267; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
-        b=UEmdS/ddxgea87Jmi4D6KGO0cwNBW0iN6pjH4MYdOo/9psUz72Te3wCs/WBVGWCYin
-         oLAdMFp7CIubzlvzOBmyRG/Lj4TRocdsaMYZRyRloCp5icyGrXTBcF0NN3YDIdpbziPD
-         9dCoQysz795JPTNbOOEjaH/EeLGkosuG4aQkxwOskX09xUil/r1gN92uAD9OMsSjKiDB
-         F0lH6/nzBn/sVPwCLsDSnGNtu6ltHUoqDrztZuFogvL6rw+gfNvucXjpxiD1Anf0Up7c
-         0j1KXXL6s2KWDR5t1ZzoobkG3mM+v03VwLyiHohMh0pxNELAMXLgF+TZ4oIQZUO8hFiw
-         1I8w==
+        bh=XeZTUBvhgpIr/mryTTLRvu/xMyKUEKxDCy6a+x8xHAE=;
+        b=ORwCc0RfO5g12dP7DXRFOapIjWsMZprR43pPYuTX5mzuufCJ+FSeXnwUhWLdW5uQcT
+         pUhjEZ6JndcGeqBS2exd1A6EPEaFxGnzAxxa3p1FYRbJgY/kNs2HrPyjO5jEV0eVTrCU
+         MpV6JvRAyTtMc63c2sWcGhIVMtn9or0kHHYQxmTnxGzXPJi4ugNlUDjHOnnvbxlv5WQy
+         j6WOnF+fX1TKbps7pGcWObt5jUeVGoqMY4fduHB+irTQuU9h+MkFBPWFJ//1njBTIxYG
+         FEqOW2CkK6tHrOgCL4gg3YFE7gHukHSnJrunAODa8JKo+sBjGY0Ntec7QRCPypPNNCF8
+         nZpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794524415; x=1795129215;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794524467; x=1795129267;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EBkgmCwzSSGPUQEDHuaBTutli2Jfo6B14aVph4B8jx0=;
-        b=fPGqnPgTpDNhTOXD2zLYi3uHPiBpbJsl8R2gVKKjCtpP/GP9W7N0z7MzaSqrjiJAbV
-         6etgZCPNHxG5DiHA7Im7uVYZIrXeY9Bziq0o4eZJu5GYOBZOr4QJHpZTt1r3alRFMvuQ
-         puLop8JLg4iCRxqNaXAXGanBL7jwoTrL3kbfE5Xj5dRi65NlB3O/P081hz51iSS9X8b9
-         rjku5mcjaqZXwfI2MF3/7OHA9ubfJzqH3UD31m85Mqtdp64/fl4kD2g/PyFGf/kboJoJ
-         eIBZX6pjulgrJP3/RFFwNzbXU30tvR+NGH/l7xZvKRsVAQHd+ZniJyJZ3NqXEBk5F1IS
-         NYZA==
-X-Gm-Message-State: APuU4Z/ZcVymAn2W0QC4iFJzxEINBG6+evf1djdFAQbjUHTttx3Sx6YV
-	Q/Yk0ptfBZ/9DjDxYqFPq+/McNFtX4mgxZEJFcCrBH8n06zOlH4yBtuL
-X-Gm-Gg: AYBFou1QzUQMurkaeTlARijCfT2vUOWnFm1Fhvt1nNYNl2CUEqn4QvUsF54fJEnvG7n
-	Gv7MQ0gsEWO/vO4jInf2U9vGF9Kjr+k5F2HFpobWfbQW762vE1njN/ICwJqI37JmCN1UxfU0MUj
-	i8bPy81c7e8PQDyFAUPo3pxUgwCHDadzr4mzJ2Q2SgImlqlNPE8nrzLDWiMkS+OgFdZKRLmdyNm
-	E7JNHUh6DniOugXOjiG41QyjFWzJOidvYMiikDmfKGSkjR6mJh1KJeTVwIzuad9kZ1A5RvDM4ha
-	LUkAAV15EpZmve/GejLBiV5gVRBEJ58SClLgYzxgnK4p95Q9aoU3SDLeLvI5BLGTAawYte2uB7P
-	jiDLcnoQPM8waqchGRdiqUJdtBlz5kSj+dv1w7Uixw6AIqljHXSDtgtVrVMAwICQV7oZcKq4JGL
-	gEsx//vJl5dWc0KWrfgwbuZdZ6qlI6FNwUch1XnOZEM6JnzO2cdNW9fuOQ0ph3qpKVnZZuMytbK
-	bgJuoJnUoEJ1Gy9ObPU6D62l4NBfbam6wSfVGrwOyQrGVOqjVrjPI1XdYd1DL/XSLrr7p1k+27Y
-	vGwgURoa08aJZy0hVwO7Kn8=
-X-Received: by 2002:a05:701b:454f:10b0:1b2:4998:a0df with SMTP id a92af1059eb24-1b5030db655mr763014c88.35.1794524414765;
-        Thu, 12 Nov 2026 15:00:14 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:60::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031b98e5sm2014845c88.14.2026.11.12.15.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 15:00:13 -0800 (PST)
-Date: Thu, 12 Nov 2026 15:00:09 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	andrew+netdev@lunn.ch, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org, 
-	almasrymina@google.com, sdf@fomichev.me, leitao@debian.org, dtatulea@nvidia.com, 
-	asml.silence@gmail.com, bobbyeshleman@meta.com, daniel@iogearbox.net, 
-	razor@blackwall.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v4 0/5] net: devmem: size TX net_iovs from the
- dmabuf layout
-Message-ID: <avZC2hp_0ODMQ4SG@devvm16445.scu0.facebook.com>
-References: <20261111224740.2744522-1-sdf@fomichev.me>
- <1b764043-2efd-4e65-adb9-a47c0136446b@redhat.com>
+        bh=XeZTUBvhgpIr/mryTTLRvu/xMyKUEKxDCy6a+x8xHAE=;
+        b=A0RlKASRpmZF5cn474uE/CryZ/KKz8JMIsUzbx0r0WYTx4O2ig4v4xcObyl1EW7zEF
+         28PLCMDhlm2KZbGZQOTj4OlZGHtMjOAjUqf6zD/OVRfoz5GGxByPqXyYtO/oeetgjkaH
+         sGg6L+clXn7IQ2Hhzd8DLRdegMdzfFlAqIl3aXd0nMR15DIT4qyPEIHM76qTnnDAOkQB
+         ZAxgAXVPVnCoAqj7vH3UK/MMKetbj3Bp5YmpWR/42FXsu6H32gKo4uih4GYvTq71rf8F
+         OeFtDqSyq/ELNyT5X5QL29cca0OXWl+R5tldRM88KX9Cu+DLbmdQOcc6Z09os2OdNrjZ
+         r4mg==
+X-Forwarded-Encrypted: i=1; AL+hErFYBRlvjQq8UUvyzhw0D4atXn5MJYm9HSPc2N3ycQazr8LOfMsRHSgfSSeC4r1s9F7I4u57SHQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/I+kzDYFMQN4RA7cDCUYmnyx+2CcQI/l9Y+rF493P+vMZVk0As
+	X8cEvqRQqVG52sh/3+R8LfPl5hDYV/3pIQqiXSgKWvGhiF3Eh/qF9VCdPWCAILhXdBzpskJrCWo
+	pD0br46N0I2rts3kn8VGOv/VO10nXMOk=
+X-Gm-Gg: AYBFou3Z8Y0BOqITj30WLn6kPU2B+ZY/exhQV+lftavyjW0PtpFvRKznMnUd3Wik0ME
+	rJYvumpnJh7bqfYkhPT/MkxqPb5UAQoY90tdReNXrZxliofHEnBIRWYg/Ay7bnSlHpWDhxFPZlU
+	BlV2Hh3LrhRyPB69brmPV9g38HON0C/KNfnqSHpdEdkCZEd9e88xE8NnfPeGDAPYP9GEw4QR4xe
+	FgEDtqvwNEpMvCY95ne98DXNM1PSzz+rUSvjlmMK1BUGF3eQbrC3DbVCZqnsQhcxwjwrcd05QKA
+	T7t1KEA4tkCts/ATrk6F1W3Yur4AbaSy7dhyfEmHEkvDzMkX9n54ezLrml0Cb8jBi6BtcYCxGRc
+	ow4ub49Vp3JAu3EoxMDzNL/RmwoAfBleO4wFKvGa2yc0BlE3F+Jsx9gGet1nS7mQXEtRqRF8MHv
+	3MJKfSupLIkog5wjkdrFiprS/HOMInsqt2PQ==
+X-Received: by 2002:a05:600c:840c:b0:49c:d019:70c5 with SMTP id
+ 5b1f17b1804b1-4bb5599bda8mr15428035e9.0.1794524466778; Thu, 12 Nov 2026
+ 15:01:06 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,85 +105,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1b764043-2efd-4e65-adb9-a47c0136446b@redhat.com>
+References: <CAEf4BzYDmzNoN-5Rnfj4RrAU8wKnZe+tDFApng61L0mubXqung@mail.gmail.com>
+ <tencent_3455CE5C67BEF809176851A476321557E70A@qq.com>
+In-Reply-To: <tencent_3455CE5C67BEF809176851A476321557E70A@qq.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 12 Nov 2026 15:00:55 -0800
+X-Gm-Features: AclHuK9-JNkpmr-iGpGEl47XwzmIYWiDVtXbPH3fGOAQAo_1XzuYJoGM1mVSO4A
+Message-ID: <CAEf4BzbdC_+KSCN8C=+E+3n4H70p9c+xbFvEOQC-RXADWbGB5Q@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: check cpu_possible() in per-cpu helpers
+To: bo cao <treebacker@foxmail.com>
+Cc: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/12, Paolo Abeni wrote:
-> Hi,
-> 
-> A few (late) questions/comments to check I'm not missing relevant
-> points,
-> 
-> On 11/11/26 23:47, Stanislav Fomichev wrote:
-> > TX bindings use PAGE_SIZE net_iovs, so a frag covers at most a page.
-> > A 64KB skb needs 16 frags, and MAX_SKB_FRAGS caps devmem skbs at about
-> > 68KB, which makes BIG TCP ineffective for devmem TX.
-> 
-> ... with default .config. You could set MAX_SKB_FRAGS to 45 and reach
-> ~180K...
-> > This series picks the TX net_iov size from the dmabuf sg table instead:
-> > the largest power of 2, up to 2MB, which aligns every DMA segment. With
-> > a 2MB hugepage-backed udmabuf a BIG TCP skb takes a few frags. There's
-> > no UAPI change since TX addresses are dmabuf offsets.
-> 
-> ... still this option should be more effective because the limit would be
-> higher and the skb would use less cachelines for the shared_info,
-> 
-> I'm wondering if making a comparison vs MAX_SKB_FRAGS==45 would be
-> complex and if you could do that, too.
+On Sun, Nov 8, 2026 at 6:41=E2=80=AFPM bo cao <treebacker@foxmail.com> wrot=
+e:
+>
+>
+> > please trim the commit message down, it's way too verbose
+>
+> Will do -- a trimmed version follows as v4.
+>
+> > not sure this is right, bpf_per_cpu_ptr_proto specifies
+> >
+> >  .ret_type      =3D RET_PTR_TO_MEM_OR_BTF_ID | PTR_MAYBE_NULL | MEM_RDO=
+NLY,
+> >
+> > it already is marked as maybe_null
+>
+> The proto is marked, but check_helper_call() drops the flag on the
+> path this hunk touches.  For BPF_FUNC_per_cpu_ptr with a percpu obj
+> argument (R1 tagged MEM_RCU), returns_cpu_specific_alloc_ptr is set,
+> and the return type is then assigned as:
+>
+>         if (returns_cpu_specific_alloc_ptr) {
+>                 regs[BPF_REG_0].type =3D PTR_TO_BTF_ID | MEM_ALLOC | MEM_=
+RCU;
+>         } else {
+>                 /* MEM_RDONLY may be carried from ret_flag, but it
+>                  * doesn't apply on PTR_TO_BTF_ID.  Fold it, otherwise ..=
+.
+>                  */
+>                 ret_flag &=3D ~MEM_RDONLY;
+>                 regs[BPF_REG_0].type =3D PTR_TO_BTF_ID | ret_flag;
+>         }
+>
+> The cpu-specific branch does not carry ret_flag at all, so
+> PTR_MAYBE_NULL never reaches R0 there -- only the ksym path (the
+> else branch) keeps it.  Nothing after the switch re-adds the flag
+> for this case either: the code below only assigns an id when the
+> register type is already maybe-null, and clears the flag for
+> ptr-cast functions.
+>
+> Since bpf_per_cpu_ptr() does return NULL for cpu >=3D nr_cpu_ids
+> (since 01cc55af9388), a program that calls it on a percpu obj and
+> writes through the result without the NULL test passes verification
+> and oopses on NULL + offset at run time.  The hunk carries
+> (ret_flag & PTR_MAYBE_NULL) into that branch, which only restores
+> what the proto already declares.
 
-Originally I did not want to include bigtcp to keep it apples to apples:
-same tso size, just 16 frags in skb vs 1 (in ideal case).
+makes sense, thanks for elaborating!
 
-I just tried running mlx5 with 45 frags configured and it fails to start with
-the following error:
-mlx5e_attach_netdev() warns "MLX5E: Max SQ WQEBBs firmware capability: 16, needed 23" and returns -EIO.
-
-(fwiw quick review with llm claims that mlx5 only supports up to 20 skb frags)
-
-What I also tried just now is `gso_max_size 524280` (on top of this series)
-and it ups single flow throughput from 200Gbps to 240Gbps (presumably
-by making the receiver go faster with 512K TSOs vs 64K TSOs) and halves
-the sender softirq..
-
-I hope this gives you more data, not sure running with 20 frags is worth
-it (vs 16)? LMK if you disagree or want me to run something else.
-
-> > This doesn't make skbs larger. TCP still sizes them with size_goal.
-> > Only the frags get larger, and a single frag can now cover the whole
-> > skb.
-> > 
-> > An skb stays under 64KB unless BIG TCP is enabled. With BIG TCP,
-> > MSG_ZEROCOPY from huge pages can already create frags of 64KB or
-> > more. So drivers already have to handle them:
-> > - mlx5 has a 31-bit length per data segment
-> > - gve splits frags into 16KB descriptors
-> > - fbnic doesn't enable BIG TCP
-> > - bnxt has a 16-bit BD length. It is broken for such page frags today
-> >    and will be fixed separately.
-> > 
-> > Tested on two mlx5 400Gb/s hosts with kperf (udmabuf, 32KB RX
-> > net_iovs, 2MB hugepage-backed TX buffer), series backported to a 7.1
-> > kernel on the sender only. 1 flow, MTU 4200, receiver tcp_rmem capped
-> > at 16MB so it doesn't drop, median of 5 x 60s runs:
-> > 
-> >                                before    after
-> >    frags per skb (sender)       16-17      1-2
-> >    throughput (Gb/s)            208.6    211.2
-> >    sender sendmsg CPU (sys)     40.8%    19.5%   (-52%)
-> > 
-> > The receiver's CPU is the bottleneck, so the gain is CPU, not
-> > throughput. More of the transmit runs from the ACK path, so the
-> > sender's softirq grows (52% -> 59%), but sys + sirq still drops by 16%.
-> 
-> is the receiver using GRO H/W offload/big TCP? Which are the gro_max_size/
-> gso_max_size limits? In the `after` scenario, is the 2nd frag used for the
-> headers?
-
-hw gro, no big tcp (default tso of 64k). The headers are still in the
-linear part and most of the time we get 1 frag.
-
-I'm assuming 2 frags are happening sometimes because of tcp sending
-something over that 2MB boundary. So that one single range has to be expressed
-by to frags.
+>
+> Thanks,
+> Bo Cao
+>
