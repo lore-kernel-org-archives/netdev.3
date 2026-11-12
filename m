@@ -1,113 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794477061;
-	b=1YpNQuvVBAfttCLRCdaXPkYif8jE5tmcv92M1wmnN3152qgHVl4XHp7KqQsFm8AHvHV1
-	 lGJwTZS89MjsraenYaC0nTSfcJtmZFd2B1TlbK0AveJBmJQGBH1YIm/RhUlbD8yK32SEH
-	 YbVWaOVf/SQJUgzW2Z7RorwmyNd89jnlEkXZUaMImhYnQ/6ZjWoYK8GqRYI1svmiegvFN
-	 mftYpbE3m09wuMS+PnEsKIDKxkmaYWwZpr/7sV3WF0JKrwY28CvcDYgekQATPQg4cXLd9
-	 V0+BUKz51LMBisTcWCczYW9FYr+wOiyB/n2ytQWuaZjf1/gtklQsQzfnJ1KbPyhQkZw==
+	t=1794477221;
+	b=Bon+BxAP+rP/V+S97pOpkTihPNvM3dbF54rb/d71Ln73aIvq4NIMNNc6pzaNVhuCaKTE
+	 f4z7daziZzCXMazojxbejkoNXfXzggw5Su95OE0XXfQOAn6HBS5pFZjEn0Kx7QrwrZsLf
+	 IfytadliFvrfFAjhie7DQMp+/ZsGOOSVIfRAZQEL4z6bfsTeEcHOcp7eNhxoR6Q+uoWH9
+	 kLg33tLDaSRm7hD6dQdOVwAoLeANfVcS1bykPdfHqy91Lv+9AUzRkv7fEasoadeK9QVp3
+	 XVftr0NODnIBrV3cFoaldQfw0HQG1k6bjgG1wJ8ku9/+4yPwtsA/ERYpIqUmNPXRwBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794477061;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794477221;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-	b=T7eLHjpCEcZuJ2s3rDQ4rpiCckHoI8mdwIT14cIfMWPAWHTvkyjsPnB0wdukiVi+LfK5
-	 qcfUC0dtdUkPP7GN5syxLvCEZ9ulsTFd5Z2sDzUr1JEnoYVXiTRO99rsqjWtSNWh0WWw+
-	 WSVJJ095eRP9R+vOIZIRFj8ObtRLej4yAaZzar4qXdUTwtI7IdsOQcyBUVMPB9lrJjCXe
-	 9J7m6WXpuKqsSu4fM/Cg21sQ/TLaO66J2PYpBhSPZF+MA0BVh1LagSZEvyTAJsf+QzVIi
-	 tlYnqWEA2Nk/G9uRSjW3fMBHiFW0HK7XusvgJhx+fvn1AuxQfDOqVXnm9senysiJs7Q==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=k03Ntp2ry5pgO/TcJOAttfz0cIyCVzxqYcnTvskPTaI=;
+	b=gSNRBs2q8vyeCfD40HKHwnsQ6FZKTUSX+CJ/7rvAb7HODAYjljRCI23DchWXwD6wXyuO
+	 477JFBztsyU63EZqbvBUjGDGD8NhoDlETUuImJR4Z/Cc/c0RBcdwH5N5BVvHNfTmdzEyK
+	 Wmy5VtZUIIBJUqjVgScz/SazxFsWXy+pD0xAUGTv0L4h/GnrOoaYBJ///BBPYgi3/ZGIS
+	 YzdoqSr+GBvQL+d7Awvapm7QmcExC/wbOIce2I+9/u09vm3AFQ5Z6hewk7Sz/pZggS1fn
+	 Vanyb/Amel7KIBHZUjYY9jcwjtL1ChTdNJtaN2hupFNYHB/zXAJmMbZLZRMa9JNtRWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RXWiPM9g;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KXyVzv0L;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8TEnGOQ;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jJquilm9;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D3606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:51:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666D3606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1F8606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:53:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE1F8606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RXWiPM9g;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KXyVzv0L
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8TEnGOQ;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jJquilm9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794477060;
+	s=mimecast20190719; t=1794477219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-	b=RXWiPM9glKt8c84teQV76D3GrDKVCOBLB6mn2I1ijFJCQb4OMmrlLDFWCcFqryVtl+9qRw
-	S3cfhJCt406aNjQazTVjoMN1ShBkX16QufH020lkNxDnsh6+qRCYZrayYpANo3TONKVu6z
-	RBoTMv3PIYpNxhWQR2LTSjOAj9vwT1o=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=k03Ntp2ry5pgO/TcJOAttfz0cIyCVzxqYcnTvskPTaI=;
+	b=e8TEnGOQEmhVgJAIPOFGTYYc+FG8FmaGO2H4AiiY+FlbuYlL0L0R+XJYSh9ajncJnnyVk9
+	+s1S+MApXZq3B00nEUGgJnnpb2t42WXtoU3Qb9jNmzXPVFqe3fzGsLwx6w9jzvczpJTL2+
+	CtbgA4OPv80XkRFX1hrFRUuQZBPikm0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-D5RkwmI5OzieIFQDSDHFwA-1; Thu, 12 Nov 2026 04:50:58 -0500
-X-MC-Unique: D5RkwmI5OzieIFQDSDHFwA-1
-X-Mimecast-MFC-AGG-ID: D5RkwmI5OzieIFQDSDHFwA_1794477058
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-490a0e72578so3003677f8f.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:50:58 -0800 (PST)
+ us-mta-614-Dsy56wYLNLOQUQhZ0Ts2Ug-1; Thu, 12 Nov 2026 04:53:37 -0500
+X-MC-Unique: Dsy56wYLNLOQUQhZ0Ts2Ug-1
+X-Mimecast-MFC-AGG-ID: Dsy56wYLNLOQUQhZ0Ts2Ug_1794477216
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a20e41008cso28569835e9.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 01:53:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794477057; x=1795081857; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-        b=KXyVzv0La1EfoYmGOSDKursoJv+qB7cu2AJUrUEF+n8lT7MCegQ6v5eAFLcMOoxTDA
-         MIRxwqu8JNwlXDP9IIP+vlCNr6Dyyn8ppqi1Wl9Rfiux8jDryy5qgvsyQugg59ylrxbV
-         CtfS2Kx1304JWpicaWTxUB/Ts31PlHSunJAL973MX6sviRV4hGudIt80nYsG8MndH9Z3
-         licU8sniPAMzlXmxntNJUNxafI5BH28UZlvgsEDW4ahZMUvlXPSDv7JKT8mTbNhhYcoJ
-         GKVvDaiv4Kjv3WLys74kpWVx1O0MY5pZBYpNmC+4s37WIjxCoQNTAghsCzwEv2Mxi738
-         m7Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794477057; x=1795081857;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1794477216; x=1795082016; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-        b=NsNa+hYh0oudizt4jPioL5u2V+W5G4w8a4quDTuowEdDrStZPGpMlllUoyC+p7fXkz
-         /Bbvk5v6nuElFs05pABvbwC66Fm8J3xMPthj+tKTT4rntTin2odmH2TU6EqfHqZttv1N
-         uy6OoFYTf0AD3q655/eGKVfbx20uaejDrqF0bWlx61Kqr9fsIgTHLnh1lQ2zcnlvsQud
-         GrMr02muKoGzZ4LyXaZASHPkA8Cb6Px2wFRbyaXO0ToOkb2Tzyt8YJ1P7LYHj7e7H3KT
-         BU/ZZXwjWoO89tmdNL6BaecSEyA49/i61mW90/rkc/TjD6HcCz29fMMNQuLuWILz3DGU
-         1hkA==
-X-Forwarded-Encrypted: i=1; AL+hErEoepF/vKRDne3CyquNLqbXqQCddSc0JbUgr+++CdhYY39RbNEZHKFR4kIcVmfwkqiMpYtNu0M=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9rimmVwbBKIdEZsz0GI9JYP3C6B2KjcM2dABid3aIY0R6HJ/NX
-	UyFgGs+aI+/NUaDmfsQbRxT0LtSPf2kqBdsbYDD5oZSVl8JJSO+Qj+ro1rCdnat4EqfmFN9kzzx
-	PsLw72qZCdSvEiGUkT/Uf4zjqtEYIRIuSQEVRt6KHiv49DtbCshfEcJg7VA==
-X-Gm-Gg: AYBFou1j0fM8bU2tT1UCjvQCagS68hjsKP0PR7yfy9QIAbg9Uf6P814PzCTpKTy1X3k
-	5O9yGGH9JllNx51xVNS/dm9H6+Pg+b43dRdYhsdJqrWIR4oxctlaSCTmM7kWWMP6uleJoYpNqQA
-	sg3QvJrgc6bjK2V30K5GPpG7qFwedeM1fgKwQR7wTB++7NWP9lFr4qWKPZZ/17EWKFFzce6FXip
-	hz+7yerVDTqMwa0wjesQP+AeVOPxkzZP38m9A/RmnC/c9GC+ytKXWWF/vT+LS9pshRnQ35oyVak
-	nJxf4i6Ld0VRl95JYOMtTdKZAHf+/VWcjJzetELHcx3K9/VkkdjD5/90EelTL16CdSjRBKXxwdx
-	Sd3sq+bUr4AEhipBg62gTi8Mi1jIgQzRD7vDze7kZfw==
-X-Received: by 2002:a5d:5f91:0:b0:48d:f9a4:bd68 with SMTP id ffacd0b85a97d-499c7dfe760mr9013242f8f.27.1794477057313;
-        Thu, 12 Nov 2026 01:50:57 -0800 (PST)
-X-Received: by 2002:a5d:5f91:0:b0:48d:f9a4:bd68 with SMTP id ffacd0b85a97d-499c7dfe760mr9013178f8f.27.1794477056650;
-        Thu, 12 Nov 2026 01:50:56 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-499823761f5sm10614988f8f.2.2026.11.12.01.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 01:50:55 -0800 (PST)
-Date: Thu, 12 Nov 2026 04:50:52 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: zhaoguohan@kylinos.cn
-Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] vhost: set dirty log bits without pinning pages on
- x86
-Message-ID: <20261112044557-mutt-send-email-mst@kernel.org>
-References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
- <20261112085631.128819-2-zhaoguohan@kylinos.cn>
+        bh=k03Ntp2ry5pgO/TcJOAttfz0cIyCVzxqYcnTvskPTaI=;
+        b=jJquilm9aduzqvxqXcP+q13sj9GcUXPFmTuwWlcwk8v7Nd60VIgy8cZuigkftUzcxP
+         2vQxJdNe9NU7UNfR019TsLE096TO3cp0HmuV9kk48FwmflP5jZ8I9FyRvXFPoqsqYyiR
+         pL98w2RSjhOViZXeF/2W+SpgNrgZzFG8/e/pZuJYnG01idkZPvRgb52ryHZE5uCRpkSt
+         yoy/HQ29lNuRA1zgCfz5YQI95BMRw+TXwnYqZpylg9HCOVYWVC6G+ErnAUWnFLQV4Tl0
+         thP24z1gHNL/hWgpuv5CwR03RGG97BxSVasEuVR7YDcqLyIgGnZGtuRyzOLaC4TazNti
+         ItkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794477216; x=1795082016;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k03Ntp2ry5pgO/TcJOAttfz0cIyCVzxqYcnTvskPTaI=;
+        b=l2JgmS00ygnru71kCtPGbMqrDjfzE/WPswH7QFWLY7Z/nkQraEqKUFhXq/xbvkCS67
+         slf5pNmr9rq+HzpEH+tHYJp2yI4RBQQ5kn78L37FrJRX+HQDID8SnZHlx0HacbFq9tas
+         kEXMh1aNrbgRlURIxJOuBhFV1CNcIPI59YudA8yjXwUtcK7L8vJPOaPkFuq6/er+5Qu7
+         31o+yXJGkaWvBwXOacdgE3jhVlbh4yp7FALfaEbdqQ/NDbePGx6JGvc/D+ubNNTY5bG9
+         lcDmOSQ6imqJbM86iYErXmaEuncyTql6nTVX2x/I0oAN/vdWEISwzPVCux+4E4/oONKP
+         3BkQ==
+X-Gm-Message-State: APuU4Z9YN/Ggz27GCBpvBNtm3pBPVGw2PSiuHcZoxH/PfkKaJZH1hW6l
+	MYUwY4uGsLY4D5XCAFVwGHaWtwD7VRxNZjmFL6ZNMja+S9oOl51XeBmg5dYIqwXwn/8BDTnad09
+	5nozR3G96Cg7c/gjfqG4kxPSp+qQh1o5OvrEwqeFo5oSHpgFrdThwmfbZEQ==
+X-Gm-Gg: AYBFou1Z60jRUH1l1CfxQrlhvzAgc8txHP6VLYVV56NBHMZr3x+IqS4+F1MAU5rTv3I
+	mVmsZWlcS06LmmoB2DrYo4GcxPQmNA5rZAkLM1//Io6E0WJHpOqjJSyBgV7CVI/A2ReJW6abDiH
+	zZnNY/mvwoSWKK3PJPC5UiSEJhK4Sl6v4bwIPorLXU0k3LREba+qOaEiMywnytBz1uKzXaArxD1
+	fHYETxzEudyTYatAtUzZF5dmcyW8MHmUOi0824ehDtoAqrgmGBGS2WxNLIBbzZrrOpnI9fk0CAd
+	LQfz1uszgV5+RwKL0I1u9obA/hIYcjF3BZkruFjMc4uzayLDScc8OOZ8c3uLbEclzaD/mrsG0lB
+	r7jTA0Xdwumk/4Y6uyNN5uEMBI/iiREmYFfM9oz6t7Uu7Pcqsv0j7f2PWbPtSBU+ogH8x9RYceo
+	PyaL3QACMq5TQXdEEzjqdLA3hdtRS9FW8lJvjP8tlS38ls
+X-Received: by 2002:a05:600c:e554:b0:4bb:534b:ada4 with SMTP id 5b1f17b1804b1-4bb534badf0mr2171885e9.33.1794477216211;
+        Thu, 12 Nov 2026 01:53:36 -0800 (PST)
+X-Received: by 2002:a05:600c:e554:b0:4bb:534b:ada4 with SMTP id 5b1f17b1804b1-4bb534badf0mr2171565e9.33.1794477215780;
+        Thu, 12 Nov 2026 01:53:35 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e29d24dsm58717545e9.11.2026.11.12.01.53.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 01:53:35 -0800 (PST)
+Message-ID: <c83426a5-d21c-4f0d-b13e-099b6f96df6f@redhat.com>
+Date: Thu, 12 Nov 2026 10:53:34 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,136 +111,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112085631.128819-2-zhaoguohan@kylinos.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/11] dma-contiguous: pass the NUMA node to
+ dma_alloc_contiguous()
+To: Jakub Kicinski <kuba@kernel.org>, robin.murphy@arm.com,
+ m.szyprowski@samsung.com
+Cc: netdev@vger.kernel.org, iommu@lists.linux.dev, joro@8bytes.org,
+ will@kernel.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+References: <20261106184433.761422-1-kuba@kernel.org>
+ <20261106184433.761422-5-kuba@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261106184433.761422-5-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 12, 2026 at 04:56:30PM +0800, zhaoguohan@kylinos.cn wrote:
-> From: Khan Zhao <zhaoguohan@kylinos.cn>
-> 
-> set_bit_to_user() pins the log page with pin_user_pages_fast(), maps it
-> with kmap_atomic(), sets one bit and then unpins the page and marks it
-> dirty. This runs for every bit set in the dirty log, e.g. on each used
-> ring update while logging is enabled for live migration.
-> 
-> log_write() always passes a byte address and a bit number in [0, 7], so
-> the update can be done as a byte-sized cmpxchg on the user address. On
-> x86, try that first using unsafe_try_cmpxchg_user() inside a
-> user_access_begin()/user_access_end() section with page faults disabled.
-> If the access faults (page not present, read-only or needing COW), or
-> the cmpxchg loses to concurrent updates of the same byte four times in
-> a row, fall back to the existing pin/kmap/set_bit path, which can fault
-> the page in.
-> 
-> unsafe_try_cmpxchg_user() is only implemented on x86, so other
-> architectures keep using the existing path.
-> 
-> On an x86_64 KVM guest (i7-12800HX host), a synthetic used-ring
-> workload with logging enabled went from 243.60 to 171.11 ns per
-> descriptor, averaged over five alternating runs. This is the
-> end-to-end cost per descriptor, not live migration performance.
-> 
-> Signed-off-by: Khan Zhao <zhaoguohan@kylinos.cn>
-> ---
->  drivers/vhost/vhost.c | 50 ++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 45 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index e29f154706da..9c3045504709 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -2527,11 +2527,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
->  }
->  EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
->  
-> -/* TODO: This is really inefficient.  We need something like get_user()
-> - * (instruction directly accesses the data, with an exception table entry
-> - * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
-> - */
-> -static int set_bit_to_user(int nr, void __user *addr)
-> +static int set_bit_to_user_slow(int nr, void __user *addr)
->  {
->  	unsigned long log = (unsigned long)addr;
->  	struct page *page;
-> @@ -2550,6 +2546,50 @@ static int set_bit_to_user(int nr, void __user *addr)
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_X86
-> +static bool set_bit_to_user_fast(int nr, void __user *addr)
-> +{
-> +	u8 __user *p = addr;
-> +	u8 old;
-> +	int retries = 4;
-> +	bool success = false;
-> +
-> +	/*
-> +	 * log_write() passes a byte address and a bit number in [0, 7].
-> +	 * On x86, update just that byte to avoid crossing a page boundary.
-> +	 * Bound retries so a contended byte cannot hold up the worker.
-> +	 */
-> +	pagefault_disable();
-> +	if (!user_access_begin(p, sizeof(*p)))
-> +		goto out;
-> +	unsafe_get_user(old, p, fault);
-> +	do {
-> +		if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), fault)) {
-> +			success = true;
-> +			break;
-> +		}
-> +	} while (--retries);
-> +fault:
-> +	user_access_end();
-> +out:
-> +	pagefault_enable();
-> +	return success;
-> +}
-> +#else
-> +static bool set_bit_to_user_fast(int nr, void __user *addr)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_X86 */
-> +
-> +static int set_bit_to_user(int nr, void __user *addr)
-> +{
-> +	if (set_bit_to_user_fast(nr, addr))
-> +		return 0;
-> +	/* Resolve faults, or use the native bit layout on other architectures. */
-> +	return set_bit_to_user_slow(nr, addr);
-> +}
-> +
->  static int log_write(void __user *log_base,
->  		     u64 write_address, u64 write_length)
->  {
+On 11/6/26 19:44, Jakub Kicinski wrote:
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -642,6 +642,13 @@ EXPORT_SYMBOL_GPL(dma_get_required_mask);
+>    * Same as dma_alloc_attrs() but places the memory on @node rather than on the
+>    * node of @dev. Like with kmalloc_node() the node is only a preference,
+>    * the page allocator may fall back to other nodes if @node is out of memory.
+> + * The contiguous memory allocator (CMA) does not: only the CMA area of @node
+> + * and the global CMA area are tried. The allocation may fail even though the
+> + * CMA area of another node, e.g. that of @dev, still has free space.
+> + *
+> + * Allocations served from per-device or global coherent pools, per-device CMA
+> + * areas, restricted or atomic pools, arch_dma_alloc() or dma_map_ops
+> + * implementations do not take @node into account.
+I'm possibly over-thinking here, but AFAICS there are a bunch of dma_map_ops that
+are using dev_to_node():
 
+dma_iommu_alloc_coherent() in arch/powerpc/kernel/dma-iommu.c
+vio_dma_iommu_alloc_coherent() in arch/powerpc/platforms/pseries/vio.c
+gart_alloc_coherent() in arch/x86/kernel/amd_gart_64.c
 
-Actually why do we need all the unsafe trickery, is there
-a reason? below seems way simpler?
+With this series they will stop using the driver provided numa node.
+Probably not a blocker but possibly worth to call out?
 
-+static int set_bit_to_user(int nr, void __user *addr)
-+{
-+       u8 __user *p = addr;
-+       u8 old;
-+       int i, ret;
-+
-+       if (get_user(old, p))
-+               return set_bit_to_user_slow(nr, addr);
-+       for (i = 0; i < 4; i++) {
-+               ret = __try_cmpxchg_user(p, &old, old | BIT(nr), fault);
-+               if (!ret)
-+                       return 0;
-+       }
-+       return set_bit_to_user_slow(nr, addr);
-+}
-
-
-
-
-
-
-
-
-> -- 
-> 2.43.0
+/P
 
