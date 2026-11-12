@@ -1,128 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794452861;
-	b=4MEmO2MLBmPVWAchhim8AnpFNuR2m4TLfd8VTPuuaymZXqJR4713up9Go9qlBK+wjbbp
-	 vH25fza1A8I2KGSuiKY+r0cP9CALyzNtCEOwmsNwxBUDJ7T0qJhupsbNuUwzrNhNWzZDB
-	 EXabJ3KL4vZd7Lmn7KALLpGnh3l+TKY4l8Lxf/1jdE487QMK85KCwUI2eT538JOmOnSW0
-	 L1BCLrtixd9v7qADv9Ck71L7fxyZVhZ1gBTp4QhnmAyiUPtNVcS0sg43YmAGI+XiqNSnE
-	 hEQrBJZgUGFLE6dxUbUbtheGyAe5/5uFNlzw87zTSMgmMLBQcbK097v2ea3HattECzQ==
+	t=1794453270;
+	b=YqTkQrCoBOU6nJlsBfbdYOvK0c0ILMpyutTPtTpgEIqCPxIR+JHUikp3YXANd0GUxzUD
+	 ZxPFwVpsEtlVTRMjtFy3HWM2HhdOKbMCPuvgTGiMWGHQrVoKuHyiZIPWURyoSId1rbYak
+	 s/LF8TJ1I59e+BPofuMdKgjpTYdaFBU1KJRr3lHQH6+hVXQ4Yz9uT5ARqgO/ikye7gSHA
+	 v90tt7gXKVjeaS3RnIkTfPd/np3acixL2Ta3JsGVWlyxWrE3NBnKZztIMozz2xnimheB8
+	 mYZHnryL4V6FbMO2bCY0BZavceN7yhOj8lZHtQSrXadK9mPcq5jtwhqRhrJvxdD/rYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794452861;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=ZmnLfxYwe4poyiIBa66gftbZFHVTpxGNl3PmmLe5ze0=;
-	b=5jGJ5RXZzA+AXUBSZA4MJiDtv2x2kk+X5c34rm6X+4RneWPPvX1JBPJYb5ViRauvozNK
-	 wKDtWOPK2eUsYBwWk3ZO983ZP4x+pKC2IqGK5wtY+sJGuf8mYDZD5yclYVet90kwopusB
-	 K7IVQzfn97bM/lEWACHckby5b8It9mtiHFEoMKTKEvTA3+mG2EFGMomZ4lqxNGk2JZ4Tu
-	 MwaTHj2VT7BTq1FmOdazy9jlDg0Ik1qN1D1I3P6kTMl11BWrHIc0o4maQpZd7RY4+qAmy
-	 sbTrcqNCtuO2BvW0yDtEmzoNnFCXrOwtk4Tn9wYxHgM4bRtpfU6XO+FYWXkQqZjKoqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794453270;
+	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-INFO:X-CID-META:
+	 X-CID-BVR:X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=FdF+h7AtULUUrmxiUaxhZy1q0/4wai1urbrPTsOyOSQ=;
+	b=IMUXNLrXHbBKaEx4G5yx/DyEhkhXLRxzq6/tQx06aU8oU4Fce+GxHPKQrsPMBE1AfAqv
+	 ziI80icfahNwakA2kN7VjlGRwxqcekYseKzyzcXMmB3+r/JpEb8ppeUhsHwOW5EoZwNU9
+	 IY+ckjjxU/c6SJPUwcu5bc9NgHo6pbuG/ks3az8BOR8m+UzPPZf3VIlcKwKuMTE/g7vRx
+	 jqokQwYu7+86yGgSV1dAxqRooNLOGC3BPw1lpP/p+O/GADvYjaNSgD4EfiPAvnAZMEzCq
+	 l65ItR+s2sjVSRDxEbEScwmL9o6plQA+/UhtqTtw6svWawQZjJOx1qzBj8ZyIOAPGAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=fryer.io;
-	spf=pass smtp.mailfrom=fryer.io;
-	dkim=pass header.d=fryer.io header.i=@fryer.io header.a=rsa-sha256 header.s=fm2 header.b=hRpcKaR3;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=yt3zpwnR;
-	arc=none smtp.remote-ip=103.168.172.137
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	dmarc=none header.from=kylinos.cn;
+	spf=pass smtp.mailfrom=kylinos.cn;
+	arc=none smtp.remote-ip=124.126.103.232
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E88606A880
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:07:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42E88606A880
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fryer.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fryer.io
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=fryer.io header.i=@fryer.io header.a=rsa-sha256 header.s=fm2 header.b=hRpcKaR3;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=yt3zpwnR
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id 80F531380F43
-	for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 22:07:40 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 11 Nov 2026 22:07:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fryer.io; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1794452860; x=
-	1794460060; bh=ZmnLfxYwe4poyiIBa66gftbZFHVTpxGNl3PmmLe5ze0=; b=h
-	RpcKaR3acxj70rXRcnFzeHZAl0UPVPN4hWCnH2MtVbwxnacRfjy/jDXfRuQXA6nD
-	oxy2JKwynTvdaDNx5+xBqIao3L8dDqpuVn6/Xy3Qr0Qg0ObYy1Ofrq5G3omKRfRM
-	fjtTHq2Y3p2rJaNLOliuG6cxghXErRkYjt6alTCkQ5g/vlsI4ukrhxltFEJBJYql
-	gVFzhmuMZss3xSVhXsFCNCu+7RZw4LxSwLnzgQj590P+DtQzdpEvCqfeyjXuN/IY
-	hMNmRKBO+QeTCMvsp12C2MRd1K6r04W41fw7W5msxuqcwdJ7rwQ6XO6yY4Lq6+0R
-	W1m4nkLwiB9P+VqDX5DSA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1794452860; x=1794460060; bh=Z
-	mnLfxYwe4poyiIBa66gftbZFHVTpxGNl3PmmLe5ze0=; b=yt3zpwnRwWRZw+lhH
-	mBEdxTpFqXZJ4RIEh4H4yx51DWAytgI9XuHg4VsfNz+OaBflBQoYs6XthIU8zvjc
-	NnchYhYZiCV37DsAZ6HcPBcJO4mAhzeUxrhh6u8JJbBKLI3uZHgGNPnF7FE//DO0
-	6cMXckC3hlPGwDMOI9PdDalLFFHlr/DgihhB90MKO2cb+Vbu5xfUUvuZwUQK4xv3
-	RrN+NpuWODEYr1UXSZbSvFtK91aMpBeFIcUYKllG1leIROyK9LyFJluJIWyCHG/l
-	A9g2I9z0O/NXtQdyf0Q5oR75kYSVTwPzRSS2D+0ccgs62JoMhOten9yiOnuB5x6F
-	fCptg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=fryer.io a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794452860; d=fryer.io;
-	mf=PGJyeW9uQGZyeWVyLmlvPg==;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:V2YVMwz3b7Ws42Lc7ZRqWekozT2bhIRdqo0qtMZciv5dbMT
-	9Rtq92W9p2jPAX9Ho23Pu7eqbrjZYKXYOV4PwHqanbQjG1DMwFNxcs+/zA+JXeRZ
-	/GmPMGW9iMveJFRm2uPr/um5TUC7WIKj41BKQTRnEBhhHZbsp5OdrZx1vjMDQKPb
-	dbH0ovE3yDd9ZcJtllts9Up0hNzjCiZTWN3cS6dI1gxbNzlaHV8lFtkqWvDGtFSI
-	bhCDZNElC/20wtcEPUhZwHvQpmiU7o3KVAQDNBB9PUHbJ3kHnEIfMwLzZ0JygKAp
-	PLYC6MqV8JW0/nyrkW1iGjxYdXwp9Z4ZFULihsA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=11;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:SeR/UWS0DyJq+sdp54yqv88lNJq7nsg39fyZZecbCJQ=:mwCubyUoXH9/ErBmxCjWJ0BV4nNf2T3k9IXYARicktY=;
-X-ME-Sender: <xms:fC31apXtbykA0ZehQcnEMF4v9i88Fp4bQgSuq4trptG5KBWsmk0_jQ>
-    <xme:fC31alfZXGbXlfII_4sXbdbOixAymdchtFAG9DMFuREFXl8jNinL69RpZR0o_njCa
-    6auAHvk4WM5-XM4LC58mJCKNTNpPP66Rg8s5KIhA1hHy4osGnZwfHqnjg>
-X-ME-Received: <xmr:fC31aibPy56EsmZjtZVsHFoeFZ_eNkVq8eI99hI3FC0ZzGrpzL_MlnxE4nq7GQoJgL0YAF6_uyW-2of8fwmxnS59OA7wz83_gONnGhwwpt756Q>
-X-ME-Proxy-Cause: dmFkZTGNqxnAQGo+67LQj2GXGr75Ygk0nC0tJY/emBpSYptZYpDuY6dRlclSjM8m6pm6/r
-    sW14kWHXAaTsbZO/1hrKMTQKzUKvmwlouGnavFg7uoUP+8ztbm7fceF7bVebTCuYgVpbW/
-    NYl77M7LcKVDFv5yAuLC4kl7LfDVbkgqACXWYm7M3O/HOwhk4IZIrABQCnGy4tafxmPOcA
-    FEYgmdAM6p5zC1x0gb1PgVbIlnluDx0mqUXyOiymo+gT/n/nWhLeqOjxpMMs40q4b1pb22
-    Cranq6fsp7Sy/eSSjt8cyDRcL65I80gYy7rNmLzlfhyhZG96XIr0uxRZqLOAy6T5hQY1Pr
-    2clreLsHoexnDsnXyoM5ccHHR88bCiLtAHUaJIW0wtbI6er/39IGmC6GY0kGuIbAL9Rmia
-    6RNmHvGwyuDPwkmANLgwMp/X+pjtM7cJW3vi47Wu1HXzXhLo/gNWjdUfu6z2lelPj2ydPJ
-    u1ZICzI/km/dTiox64Z7ZTRMFwCUs9ANiqD9fQfjGWZIEJZsydR9dCxj+u4XTQgxbCuEFW
-    Y6Q3POoNwVJsHwtozNHXCyOdkyWFBu5Ko4rws3jZC+aqVrmvwbNKsn6Yq6ryAENJpsTojH
-    xgLzCx+mVTosAGFj1OFyPgJkfS5YwHkdPgLtCLAmQkrj1jLlZyF3h+WOFVcA
-X-ME-Proxy: <xmx:fC31ahPCHGEFw_UAV77lQj9HLXKK7I7srprUPT2qrciolxbSwNnKJQ>
-    <xmx:fC31aoXtcFuJqjsvb30BiTAFt_N4W7KpTnbGZMbM6AP_OlMeBHjsyg>
-    <xmx:fC31auLcxOMg53Y9XCRx0gD0L0JwgstQOdcMd1mDIZymUGbt1eiCUA>
-    <xmx:fC31arquJ7zjl4YzodsOd1pi4bRgmGJo-vzB_5dTE5bjDrLn4zCHKg>
-    <xmx:fC31ar5ONmgUVq-Oc2nes_qUDPlaHBbzNHvFnwtFAK55qxGADTMRpXHG>
-Feedback-ID: if1c946a5:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Nov 2026 22:07:40 -0500 (EST)
-From: Bryon Fryer <bryon@fryer.io>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	jasowangio@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org
-Subject: [PATCH net 2/2] selftests: net: check UDP tunnel GRO virtio offsets
-Date: Wed, 11 Nov 2026 22:07:08 -0500
-Message-ID: <20261112030708.1915665-3-bryon@fryer.io>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261112030708.1915665-1-bryon@fryer.io>
-References: <20261112030708.1915665-1-bryon@fryer.io>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B5A606A31C;
+	Thu, 12 Nov 2026 03:14:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7B5A606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 29bc072cde4711f19a56ed5b684f684d-20261112
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:dec4d389-e4f5-4a5a-937a-833c6fb048fd,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:7,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:17
+X-CID-INFO: VERSION:1.3.19,REQID:dec4d389-e4f5-4a5a-937a-833c6fb048fd,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:7,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:17
+X-CID-META: VersionHash:7db8b62,CLOUDID:a5b1225bd12cb549e5de2b1449ab6336,BulkI
+	D:261112101701HAGG4G4K,BulkQuantity:1,SF:17|19|64|66|78|80|81|82|83|102|12
+	7|136|153|841|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL:99|1
+	,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:N
+	O,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 29bc072cde4711f19a56ed5b684f684d-20261112
+X-User: liuhangbin@kylinos.cn
+Received: from fedora [(114.244.3.119)] by mailgw.kylinos.cn
+	(envelope-from <liuhangbin@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1826982388; Thu, 12 Nov 2026 11:14:24 +0800
+Date: Thu, 12 Nov 2026 11:14:22 +0800
+From: Hangbin Liu <liuhangbin@kylinos.cn>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Wessel Jacobi <wessel@jacobi.pw>, linux-doc@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Hangbin Liu <hangbin.liu@linux.dev>,
+	Linux Networking <netdev@vger.kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Yuyang Huang <sigefriedhyy@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: Re: Documentation suggestion on Netlink specs: missing fixed-header
+ info
+Message-ID: <avUvDvhSnp1c-q0E@fedora>
+References: <8610ee11-e1dc-481a-9654-11188a06786a@jacobi.pw>
+ <cff30946-5984-4d69-a590-3c7291d8f32c@infradead.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -132,337 +78,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cff30946-5984-4d69-a590-3c7291d8f32c@infradead.org>
 
-Feed ordinary Geneve/TCP packets through a NAPI TAP and bridge into a
-virtio-header TAP. Require a multi-segment GRO aggregate and compare its
-exported transport and checksum offsets with parsed wire headers. Include
-a GRO-off packet-integrity control. No output or no merge is not a pass.
+Hi Randy,
+On Wed, Nov 11, 2026 at 06:16:51PM -0800, Randy Dunlap wrote:
+> Hi netdev:
+> 
+> Does anyone know what this means and what to do about it?
+> Thanks.
 
-Signed-off-by: Bryon Fryer <bryon@fryer.io>
----
- tools/testing/selftests/net/tun.c | 292 ++++++++++++++++++++++++++++++
- 1 file changed, 292 insertions(+)
+Wessel noted that the `fixed-header` field appears in `rt-link.html` but is
+missing from `rt-route.html`, even though the field is present in `rt-route.yaml`.
 
-diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-index 34de2580e3..192b3e0c0d 100644
---- a/tools/testing/selftests/net/tun.c
-+++ b/tools/testing/selftests/net/tun.c
-@@ -2,17 +2,23 @@
- 
- #define _GNU_SOURCE
- 
-+#include <endian.h>
- #include <errno.h>
- #include <fcntl.h>
-+#include <poll.h>
- #include <sched.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <time.h>
- #include <unistd.h>
-+#include <linux/ethtool.h>
-+#include <linux/sockios.h>
- #include <linux/if_tun.h>
- #include <netinet/tcp.h>
- #include <sys/ioctl.h>
- #include <sys/socket.h>
-+#include <sys/mount.h>
- 
- #include "kselftest_harness.h"
- #include "tuntap_helpers.h"
-@@ -1130,4 +1136,290 @@ XFAIL_ADD(tun_vnet_udptnl, 6in4_over_maxbytes, recv_gso_packet);
- XFAIL_ADD(tun_vnet_udptnl, 4in6_over_maxbytes, recv_gso_packet);
- XFAIL_ADD(tun_vnet_udptnl, 6in6_over_maxbytes, recv_gso_packet);
- 
-+/*
-+ * Forward ordinary Geneve/TCP frames through a NAPI TAP and bridge to a
-+ * second TAP, which exports the still-encapsulated packet with virtio headers.
-+ * GRO must retain the outer UDP offset.
-+ */
-+#define GRO_PACKETS 8
-+#define GRO_PAYLOAD 200
-+#define GRO_SEQ 0x12345678
-+#define GRO_BUFFER_SIZE 4096
-+#define GRO_RECEIVE_TIMEOUT_MS 3000
-+
-+FIXTURE(tun_vnet_gro)
-+{
-+	char ifname[2][IFNAMSIZ];
-+	int fd[2];
-+};
-+
-+FIXTURE_VARIANT(tun_vnet_gro)
-+{
-+	bool gro;
-+};
-+
-+FIXTURE_VARIANT_ADD(tun_vnet_gro, gro_off)
-+{
-+	.gro = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(tun_vnet_gro, gro_on)
-+{
-+	.gro = true,
-+};
-+
-+static int gro_sysfs(const char *dev, const char *attribute, const char *value)
-+{
-+	char path[128];
-+	int fd, ret;
-+
-+	snprintf(path, sizeof(path), "/sys/class/net/%s/%s", dev, attribute);
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0)
-+		return -1;
-+	ret = write(fd, value, strlen(value)) == strlen(value) ? 0 : -1;
-+	close(fd);
-+	return ret;
-+}
-+
-+FIXTURE_SETUP(tun_vnet_gro)
-+{
-+	int flags = IFF_TAP | IFF_NO_PI | IFF_VNET_HDR | IFF_NAPI;
-+	int features = TUN_F_CSUM | TUN_F_TSO4 | TUN_F_UDP_TUNNEL_GSO |
-+		       TUN_F_UDP_TUNNEL_GSO_CSUM;
-+	struct ethtool_value value = { .cmd = ETHTOOL_SGRO };
-+	struct ifreq ifr = {};
-+	int i, sk, little_endian = 1;
-+
-+	self->fd[0] = -1;
-+	self->fd[1] = -1;
-+	if (unshare(CLONE_NEWNET | CLONE_NEWNS))
-+		SKIP(return, "Cannot create network/mount namespaces: %s",
-+		     strerror(errno));
-+	ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+	ASSERT_EQ(mount("sysfs", "/sys", "sysfs", 0, NULL), 0);
-+	for (i = 0; i < 2; i++) {
-+		self->fd[i] = tun_open(self->ifname[i], flags, TUN_VNET_TNL_SIZE,
-+				       features, NULL);
-+		ASSERT_GE(self->fd[i], 0);
-+		ASSERT_EQ(ioctl(self->fd[i], TUNSETVNETLE, &little_endian), 0);
-+		ASSERT_EQ(fcntl(self->fd[i], F_SETFL, O_NONBLOCK), 0);
-+	}
-+	sk = socket(AF_INET, SOCK_DGRAM, 0);
-+	ASSERT_GE(sk, 0);
-+	ASSERT_EQ(ioctl(sk, SIOCBRADDBR, "gro-br"), 0);
-+	strcpy(ifr.ifr_name, "gro-br");
-+	for (i = 0; i < 2; i++) {
-+		ifr.ifr_ifindex = if_nametoindex(self->ifname[i]);
-+		ASSERT_GT(ifr.ifr_ifindex, 0);
-+		ASSERT_EQ(ioctl(sk, SIOCBRADDIF, &ifr), 0);
-+	}
-+	ifr.ifr_flags = IFF_UP;
-+	ASSERT_EQ(ioctl(sk, SIOCSIFFLAGS, &ifr), 0);
-+	strcpy(ifr.ifr_name, self->ifname[0]);
-+	value.data = variant->gro;
-+	ifr.ifr_data = (void *)&value;
-+	ASSERT_EQ(ioctl(sk, SIOCETHTOOL, &ifr), 0);
-+	close(sk);
-+	/* Register the Geneve UDP GRO handler in this network namespace. */
-+	ASSERT_EQ(geneve_create(param_dev_geneve_name, AF_INET,
-+				&param_ipaddr4_outer_dst, param_hwaddr_inner_src), 0);
-+	/* Defer NAPI flushing for 20 ms so ordinary writes can aggregate. */
-+	ASSERT_EQ(gro_sysfs(self->ifname[0], "gro_flush_timeout", "20000000"), 0);
-+	ASSERT_EQ(gro_sysfs(self->ifname[0], "napi_defer_hard_irqs", "1"), 0);
-+}
-+
-+FIXTURE_TEARDOWN(tun_vnet_gro)
-+{
-+	int i;
-+
-+	for (i = 0; i < 2; i++)
-+		if (self->fd[i] >= 0)
-+			close(self->fd[i]);
-+}
-+
-+static int gro_build_packet(uint8_t *buf, unsigned int index)
-+{
-+	uint8_t *cur = buf + TUN_VNET_TNL_SIZE;
-+	struct iphdr *outer, *inner;
-+	struct udphdr *udp;
-+	struct tcphdr *tcp;
-+	unsigned int i, len;
-+	uint32_t sum;
-+
-+	memset(buf, 0, GRO_BUFFER_SIZE);
-+	cur += build_eth(cur, ETH_P_IP, param_hwaddr_outer_src,
-+			 param_hwaddr_outer_dst);
-+	outer = (void *)cur;
-+	cur += sizeof(*outer);
-+	udp = (void *)cur;
-+	cur += sizeof(*udp);
-+	cur += build_geneve_header(cur, VN_ID);
-+	cur += build_eth(cur, ETH_P_IP, param_hwaddr_inner_src,
-+			 param_hwaddr_inner_dst);
-+	inner = (void *)cur;
-+	cur += sizeof(*inner);
-+	tcp = (void *)cur;
-+	tcp->source = htons(49152);
-+	tcp->dest = htons(5201);
-+	tcp->seq = htonl(GRO_SEQ + index * GRO_PAYLOAD);
-+	tcp->ack_seq = htonl(1);
-+	tcp->doff = sizeof(*tcp) / 4;
-+	tcp->ack = 1;
-+	tcp->psh = index == GRO_PACKETS - 1;
-+	tcp->window = htons(32768);
-+	cur += sizeof(*tcp);
-+	for (i = 0; i < GRO_PAYLOAD; i++)
-+		*cur++ = (index * GRO_PAYLOAD + i) & 0xff;
-+	len = cur - (uint8_t *)tcp;
-+	build_ipv4_header((void *)inner, IPPROTO_TCP, len,
-+			  &param_ipaddr4_inner_src, &param_ipaddr4_inner_dst);
-+	inner->id = htons(index + 1);
-+	inner->check = 0;
-+	inner->check = build_ip_csum((void *)inner, sizeof(*inner), 0);
-+	sum = add_csum((void *)&inner->saddr, 2 * sizeof(inner->saddr));
-+	sum += htons(IPPROTO_TCP) + htons(len);
-+	tcp->check = build_ip_csum((void *)tcp, len, sum);
-+	len = cur - (uint8_t *)udp;
-+	build_udp_header((void *)udp, 49152, VN_PORT, len - sizeof(*udp));
-+	build_ipv4_header((void *)outer, IPPROTO_UDP, len,
-+			  &param_ipaddr4_outer_src, &param_ipaddr4_outer_dst);
-+	outer->id = htons(index + 1);
-+	outer->check = 0;
-+	outer->check = build_ip_csum((void *)outer, sizeof(*outer), 0);
-+	sum = add_csum((void *)&outer->saddr, 2 * sizeof(outer->saddr));
-+	sum += htons(IPPROTO_UDP) + htons(len);
-+	udp->check = build_ip_csum((void *)udp, len, sum);
-+	if (!udp->check)
-+		udp->check = 0xffff;
-+	return cur - buf;
-+}
-+
-+static int64_t gro_milliseconds(void)
-+{
-+	struct timespec ts;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+	return ts.tv_sec * 1000LL + ts.tv_nsec / 1000000;
-+}
-+
-+TEST_F(tun_vnet_gro, outer_transport_header)
-+{
-+	uint8_t input[GRO_BUFFER_SIZE], output[GRO_BUFFER_SIZE];
-+	unsigned int seen = 0, aggregates = 0, records = 0;
-+	/* Bound the wait even if forwarding fails or packets are lost. */
-+	int64_t deadline = gro_milliseconds() + GRO_RECEIVE_TIMEOUT_MS;
-+	struct pollfd pfd = { .fd = self->fd[1], .events = POLLIN };
-+	int i, len, frame_len, ready;
-+
-+	/* Input virtio headers are zero: only ordinary packets enter GRO. */
-+	for (i = 0; i < GRO_PACKETS; i++) {
-+		len = gro_build_packet(input, i);
-+		ASSERT_EQ(write(self->fd[0], input, len), len);
-+	}
-+	while (gro_milliseconds() < deadline) {
-+		struct virtio_net_hdr_v1_hash_tunnel *tunnel = (void *)output;
-+		struct virtio_net_hdr_v1 *vh = &tunnel->hash_hdr.hdr;
-+		uint8_t *frame = output + TUN_VNET_TNL_SIZE;
-+		struct iphdr outer, inner;
-+		struct tcphdr tcp;
-+		struct udphdr udp;
-+		unsigned int outer_th, inner_nh, inner_th, header_len;
-+		unsigned int offset, payload, first, segments, bit;
-+
-+		ready = poll(&pfd, 1, 50);
-+		ASSERT_GE(ready, 0);
-+		if (!ready) {
-+			if (seen == (1U << GRO_PACKETS) - 1)
-+				break;
-+			continue;
-+		}
-+		ASSERT_NE(pfd.revents & POLLIN, 0);
-+		ASSERT_LT(records++, 128);
-+		len = read(self->fd[1], output, sizeof(output));
-+		ASSERT_GE(len, TUN_VNET_TNL_SIZE + ETH_HLEN);
-+		frame_len = len - TUN_VNET_TNL_SIZE;
-+		if (memcmp(frame, param_hwaddr_outer_dst, ETH_ALEN) ||
-+		    memcmp(frame + ETH_ALEN, param_hwaddr_outer_src, ETH_ALEN))
-+			continue;
-+		ASSERT_EQ(((struct ethhdr *)frame)->h_proto, htons(ETH_P_IP));
-+		ASSERT_GE(frame_len, ETH_HLEN + sizeof(outer));
-+		memcpy(&outer, frame + ETH_HLEN, sizeof(outer));
-+		ASSERT_EQ((int)outer.version, 4);
-+		ASSERT_GE(outer.ihl * 4, sizeof(outer));
-+		ASSERT_EQ(outer.protocol, IPPROTO_UDP);
-+		outer_th = ETH_HLEN + outer.ihl * 4;
-+		ASSERT_GE(frame_len, outer_th + sizeof(udp) + GENEVE_HLEN);
-+		memcpy(&udp, frame + outer_th, sizeof(udp));
-+		ASSERT_EQ(udp.dest, htons(VN_PORT));
-+		ASSERT_EQ(ntohs(outer.tot_len), frame_len - ETH_HLEN);
-+		ASSERT_EQ(build_ip_csum(frame + ETH_HLEN, outer.ihl * 4, 0), 0);
-+		ASSERT_EQ(ntohs(udp.len), frame_len - outer_th);
-+		offset = outer_th + sizeof(udp);
-+		ASSERT_EQ(frame[offset] >> 6, 0);
-+		ASSERT_EQ(frame[offset + 2], ETH_P_TEB >> 8);
-+		ASSERT_EQ(frame[offset + 3], ETH_P_TEB & 0xff);
-+		offset += GENEVE_HLEN + (frame[offset] & 0x3f) * 4;
-+		inner_nh = offset + ETH_HLEN;
-+		ASSERT_GE(frame_len, inner_nh + sizeof(inner));
-+		ASSERT_EQ(((struct ethhdr *)(frame + offset))->h_proto,
-+			  htons(ETH_P_IP));
-+		memcpy(&inner, frame + inner_nh, sizeof(inner));
-+		ASSERT_EQ((int)inner.version, 4);
-+		ASSERT_GE(inner.ihl * 4, sizeof(inner));
-+		ASSERT_EQ(inner.protocol, IPPROTO_TCP);
-+		ASSERT_EQ(ntohs(inner.tot_len), frame_len - inner_nh);
-+		inner_th = inner_nh + inner.ihl * 4;
-+		ASSERT_GE(frame_len, inner_th + sizeof(tcp));
-+		ASSERT_EQ(build_ip_csum(frame + inner_nh, inner.ihl * 4, 0), 0);
-+		memcpy(&tcp, frame + inner_th, sizeof(tcp));
-+		ASSERT_GE(tcp.doff * 4, sizeof(tcp));
-+		header_len = inner_th + tcp.doff * 4;
-+		ASSERT_GE(frame_len, header_len);
-+		payload = frame_len - header_len;
-+		ASSERT_GT(payload, 0);
-+		ASSERT_EQ(payload % GRO_PAYLOAD, 0);
-+		offset = ntohl(tcp.seq) - GRO_SEQ;
-+		ASSERT_EQ(offset % GRO_PAYLOAD, 0);
-+		ASSERT_LT(offset, GRO_PACKETS * GRO_PAYLOAD);
-+		ASSERT_LE(offset + payload, GRO_PACKETS * GRO_PAYLOAD);
-+		for (i = 0; i < payload; i++)
-+			ASSERT_EQ(frame[header_len + i], (offset + i) & 0xff);
-+		first = offset / GRO_PAYLOAD;
-+		segments = payload / GRO_PAYLOAD;
-+		for (bit = first; bit < first + segments; bit++) {
-+			ASSERT_EQ(seen & (1U << bit), 0);
-+			seen |= 1U << bit;
-+		}
-+		if (!variant->gro || vh->gso_type == VIRTIO_NET_HDR_GSO_NONE) {
-+			ASSERT_EQ(vh->gso_type, VIRTIO_NET_HDR_GSO_NONE);
-+			ASSERT_EQ(segments, 1);
-+			ASSERT_EQ(le16toh(vh->gso_size), 0);
-+			ASSERT_EQ(gro_build_packet(input, first), len);
-+			ASSERT_EQ(memcmp(frame, input + TUN_VNET_TNL_SIZE, frame_len), 0);
-+			continue;
-+		}
-+		ASSERT_EQ(vh->gso_type, VIRTIO_NET_HDR_GSO_TCPV4 |
-+			  VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4);
-+		ASSERT_EQ(le16toh(vh->gso_size), GRO_PAYLOAD);
-+		if (segments > 1)
-+			aggregates++;
-+		TH_LOG("segments=%u outer_th=%u expected=%u inner_nh=%u",
-+		       segments, le16toh(tunnel->outer_th_offset), outer_th,
-+		       le16toh(tunnel->inner_nh_offset));
-+		EXPECT_EQ(le16toh(tunnel->outer_th_offset), outer_th);
-+		EXPECT_EQ(le16toh(tunnel->inner_nh_offset), inner_nh);
-+		EXPECT_EQ(le16toh(vh->csum_start), inner_th);
-+		EXPECT_EQ(le16toh(vh->csum_offset), offsetof(struct tcphdr, check));
-+		/* hdr_len may include the payload kept in the linear head. */
-+		EXPECT_GE(le16toh(vh->hdr_len), header_len);
-+		EXPECT_LE(le16toh(vh->hdr_len), frame_len);
-+		EXPECT_EQ(vh->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM,
-+			  VIRTIO_NET_HDR_F_NEEDS_CSUM);
-+	}
-+	ASSERT_EQ(seen, (1U << GRO_PACKETS) - 1);
-+	if (variant->gro && !aggregates && _metadata->exit_code != KSFT_FAIL)
-+		SKIP(return, "No multi-segment GRO aggregate observed");
-+}
-+
- TEST_HARNESS_MAIN
--- 
-2.47.3
+I think it is because we put it in the operations in rt-route.yaml.
 
+  operations:
+    enum-model: directional
+    fixed-header: rtmsg
+    name-prefix: rtm-
+    list:
+
+While in rt-link.yaml it's in the list field
+
+  operations:
+    enum-model: directional
+    name-prefix: rtm-
+    list:
+      -
+        name: newlink
+        doc: Create a new link.
+        attribute-set: link-attrs
+        fixed-header: ifinfomsg
+
+I will do a test and post the update if works.
+
+Thanks
+Hangbin
+
+> 
+> On 11/5/26 2:48 AM, Wessel Jacobi wrote:
+> > Hello,
+> > 
+> > The "fixed-header" information is missing for the Netlink rt-route specification docs.
+> > This is pretty essential information for working with Netlink, and I was tearing my hair out on why I couldn't find it.
+> > 
+> > Compare the (visible) `fixed-header` at [1] with the (absent) `fixed-header` information on [2]. The `fixed-header` key *is* present in the source yaml `Documentation/netlink/specs/rt-route.yaml` [3], but it seems it doesn't get reflected in the generated HTML version.
+> > 
+> > The HTML documentation would be more pleasant and useful if it had all the relevant information.
+> > 
+> > Thank you
+> > 
+> > [1]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-link.html#operations
+> > [2]: https://www.kernel.org/doc/html/v7.4-rc1/netlink/specs/rt-route.html#operations
+> > [3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/netlink/specs/rt-route.yaml?h=v7.4-rc1#n709
+> > 
+> 
+> -- 
+> ~Randy
