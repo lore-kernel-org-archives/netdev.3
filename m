@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794506407;
-	b=w9aa6uqJydKNV1kgY1ja/HJuWKTlcNARJcV4eKRoiGyIv4YsbUmMuH+wz/gs1cWZDmBf
-	 7Xb8M6dS8dv+AHCyv6dew0vi5nKO9HyLmIgJgbZCDmBpV4eFVlmN+z8gfCTeTqbnbsTGI
-	 mlBv3PysR8qo7Kwq4aHQ/0T6p40TkNXvJVBh8BDh8FlDfrw0AxrqvvXqQ4Qi6wiEOyEPG
-	 x15pb6g3TWRWayAqdzci9uedYFw3WbYmLR9FQcMddl/RtqpYdst+KvI1pLPFXXDSTvkSA
-	 Hh9LLL5JXZ6eiCu/YMWJfyB3ujx+LAaiywD4ezIBiLR7UqMOznrXvFE56FzSPvB0dvA==
+	t=1794506409;
+	b=YicSpvofKx78pxkPzbasn8O8vL4G1E+j3tE8CBu5FCMqOvvenOajG+1NzZ5eWti+117Y
+	 5hMRxvvdEc0I3YDCmkjfmvmTE7Zwhu4vysZCnz70kjnsiaXDeC4sN/jkSeEyhwhbgFeHn
+	 k3PAJVh2Y7hHf9WwcA4CWFANijKTaf2Wv145sJWPNhSpUniu2EE7qKMUpTr8ETXiiCyWI
+	 ZFVjYidkPZRfw7fDlpXgtaqu3GxOUpBtJAydxlAi664ZmuWVRWJLrAePeXKs3N1YoFCeI
+	 dEpbD+HhPC3QB5O5aBR2RygkKxxBVkXETa0IShDJaF9PTvFoZH5cJ5ydgO2gdzKSE8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794506407;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794506409;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=74E+9z4uWRmmkeRkAU8beQOIwYaKDHbJfj34RGUWY4Q=;
-	b=4a4zP2vFfTM4VvxMiorF5wFINfLvbERH16JLpJmGarsFJzQKfixL/HzMtFqUVQV3CWl7
-	 8eCj4UuOmxq8KOoFSpdbXlejaWqBIzTLGlQwHhBAHS2i/bWZBpXpRMyE/L2AsUZsSaJ7b
-	 S3PO1D0fMZuqMRTc+2vcZpmSGhlr1yUUTQS66PzhajiVecizKPXlDVbwrG0G8ABxLZK22
-	 kc7RiF8MWW/SxXfMbiiTFEV529e3KJjLEZz2ALHxoQipl97HjUMGxzJAidBPMVpOS73Ck
-	 g+G0BsKiR9Qz30S2sOvQ6CbNDZ7g+dJa1k1vy/6H3VNlqXn37E769tboJvdCJS/9F1Q==
+	bh=7YRNISiJxbIUTsLygKufgFidBAmVPMdjexsRlPS3F+o=;
+	b=wWnffg1dPNyVEtt62G0bvwJ50Vm/9nDI6sZEERiiH7GDEZMDMIPmq9eRyrz1EgwO39ZS
+	 xB4wM4ilVoNQSosN+aNkJjkU5aEGWVFjG2dFK3B+XukK2o9FcmkWaYfb+Gnsl819aqkTj
+	 uJGIONGOZ//vEHoBS8BwIKgcPdbXloFopvNohoJDhj0d2zCLhGWrmhk7RsPRQPYA1ziB5
+	 PETZ4OZUFCNvFLCao50njNExBtB6SMKIew6aaolkOFTpcxSnIlEF/Pj/dsFs2yAC5NSvh
+	 eHPEOLFGFWOLPn9KLTYrQpB3urQZQ1uz3CHyOx8ZZEeaUZyqD/2XfsOg93iM1Lh1fWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=muD8m8Zv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I8VZoVXV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBC4606A323;
-	Thu, 12 Nov 2026 18:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592BC606A880;
+	Thu, 12 Nov 2026 18:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=muD8m8Zv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477DC1F000C4;
-	Thu, 12 Nov 2026 18:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I8VZoVXV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D663B1F000C5;
+	Thu, 12 Nov 2026 18:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794506407;
-	bh=74E+9z4uWRmmkeRkAU8beQOIwYaKDHbJfj34RGUWY4Q=;
+	s=k20260515; t=1794506408;
+	bh=7YRNISiJxbIUTsLygKufgFidBAmVPMdjexsRlPS3F+o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=muD8m8ZvLGaRrVzmLf8zDKP10kpM+sqtUKGz+3Cd7UFNca5JgAjTD54L0rxWxNVLY
-	 ZSr8JbRSz9QJtFtUu9wXq7XUzX4wugc9NK+YIaGq4UEEfcNycsbLWc8uIouQfRkrPy
-	 vt4bzOz6EGWW+XVy0TEKPfSUhPvavdwLadv/9p/XUMEOLRgnBBKwzpVbWPjI+1/NrZ
-	 8ySmH7URpzBEDcSrGxuMIe6ybC1MtoN1W5BAwYUfTYoyjqnKyu/Ng1SzZxDekqMV4u
-	 TcswtiBpuMeyWHox7LC2ugiW+wNMmH8OQcsAl/91KffBJQxuZ27dqoqirJbzArrLh7
-	 fQ6tE9llBnFoQ==
+	b=I8VZoVXVKR/KHWYA4AbPmug8HNRy6tbNVRdhAAEwFR3a66h2lckakXfARjRTNO/RL
+	 VMhSA1QilwQ80v4Ahjx7tDyVET2DelGsLakOfjoDQjTviRt3Ue5FHxh/Yp1CU64ivT
+	 XlmFaa9ay/sKZDjSZfkNKpdZdrYrMWjm4kKdyrcAF6Uz4gIiRlTw5FYrdeh6rINcx8
+	 zaQ1DqtvR4dGIh0CebUMqG8H7SFFNbWHSaEJrFs47DcCRznHlKA/UWANxAdjwsNkdw
+	 R2cL3wuFRrXn8/SERVHlNV+jpVrq26qHmkK17QWXkkaIkj+zYKXsad7y83nKOcaTGo
+	 TdXyOf7DlWPyg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A44F380AA7D;
-	Thu, 12 Nov 2026 18:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4586380AA7D;
+	Thu, 12 Nov 2026 18:00:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,37 +54,48 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] gtp: free the skb after handling an echo response
+Subject: Re: [PATCH net 0/2] ice: dpll: fix updates of the SyncE CGU registers
+ on
+ E825
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179450640576.567589.2698592522112399495.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 18:00:05 +0000
-References: <20261110-gtp-echo-rsp-leak-v1-1-192c032f3dfa@gmail.com>
-In-Reply-To: <20261110-gtp-echo-rsp-leak-v1-1-192c032f3dfa@gmail.com>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: pablo@netfilter.org, laforge@gnumonks.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <179450640727.567589.292897520370852621.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 18:00:07 +0000
+References: <20261110094350.184185-1-ivecera@redhat.com>
+In-Reply-To: <20261110094350.184185-1-ivecera@redhat.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, arkadiusz.kubalewski@intel.com,
+ grzegorz.nitka@intel.com, aleksandr.loktionov@intel.com, poros@redhat.com,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, mschmidt@redhat.com,
+ jramaseu@redhat.com, intel-wired-lan@lists.osuosl.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 10 Nov 2026 09:03:26 +0000 you wrote:
-> From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+On Tue, 10 Nov 2026 10:43:48 +0100 you wrote:
+> All E825C PFs share the CGU registers R10 and R11, which hold the mux and
+> the divider of the two recovered clock outputs. Both patches fix how a link
+> change updates them, both found in review:
 > 
-> gtp0_handle_echo_resp() and gtp1u_handle_echo_resp() return the result
-> of genlmsg_multicast_netns() to gtp_encap_recv().  When the netlink
-> notification is delivered that result is 0, and gtp_encap_recv() treats
-> 0 as "the skb has been consumed":
+> - Patch 1 adds a lock shared by all PFs around the read-modify-write
+>   sequences of these registers. A link change on one PF could undo an RCLK
+>   pin change made by another PF.
+> - Patch 2 lets a link change set the divider of an output only when its
+>   port drives that output. Every port set it from its own link speed,
+>   which is wrong when ports run at different speeds.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] gtp: free the skb after handling an echo response
-    https://git.kernel.org/netdev/net/c/f17b293d155f
+  - [net,1/2] ice: dpll: serialize changes of the SyncE CGU registers
+    https://git.kernel.org/netdev/net/c/0afbc079d87e
+  - [net,2/2] ice: dpll: set the SyncE divider only for the port driving the output
+    https://git.kernel.org/netdev/net/c/164721e16b82
 
 You are awesome, thank you!
 -- 
