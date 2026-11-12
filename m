@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.193
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.196
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794475744;
-	b=yFtVvGMCmUv9QsnfdoQ//ms7Y6qrx7zK+YyPQZzQmecMyy4o3Xm83lSItXwRhHNKAPB8
-	 nWt2bG/XOMNFi7/p2E72zao+BTSPH8siv6P9OZMul576VLkQ2ssqnETDIBbu1O7fd6guH
-	 IZwTLinyUzN9d8MxUhewJXoSuXP7Emy3uWf2sRnAgfuY5zvMU1qaCqLq4zYGxOE1ZCek2
-	 wJTD0xbSa+0KW3fPzKw+kZCF4A31Ya4URbEhmDDEOVBRnhA2cc/K+Gnvj015vKYyI/8E9
-	 pitv6HCDGo4kRTPH67Dzrb33gr6Fpj9D79BQeraoHtsR1qft/J9LzHQXwUzpqo6Wj2A==
+	t=1794475758;
+	b=Hnojlaist20d8p+5YNFaaZ2iVrXLcr8sg+A0nV83BRn7YBlKY/dD7dUcy8Udh+ARVEcq
+	 yjUXMwCpFV3CqxH53B1r8+7HZQ0l/UQCUSEoG1kHL4JDn/y22HhZH5DlTn9U50ViPDyU7
+	 cbRSZzHhuLnucHO+qLxiGNRJ+qD0kHLSMtaDcZxFhPbID7pDYGdGABnbJSw25GcVIxKDD
+	 qIRlIrTS3ooOYOt1lf6y3ub/iEwPk6L/SIKBizm3TIBQjXPuYKJfSrKb/rluRyMP38qAh
+	 Wc9aLn1dQyp35t5N1p315UDFcM0uR8d2PF4xQTW+/ZCJXfHNgvQCFuJF2Kg5BIKZcnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794475744;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794475758;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer;
-	bh=jNXpiUp3oDdDyxeEWlLjs1m4mGHUrIyXQcyGp9qGQuo=;
-	b=WF+BZiBumB6Q2EL0j6G0BPq/8YjFPF9JL9ZUtic0Ek3ImtoCDFIvhnTcXkKFew+t4rMb
-	 GRtuNGMxtK1eHlciufBQMXG6h3HiJb1rFRpa68MfQTpIB4+RdgLP9Q5DgwewsSVuqXo8u
-	 cztH9qWl3cVusN6AD5j83vGYPoGR4/fTTq9OLBePrd1mTtbx9tg+OBYGF9rGVDCxQBHqv
-	 G+7Jnc/sxZfY3I66Z1IrBQYlPMPyW7sNx48MT+gcYVgcYAdcw1VjQNrsVdztJtYvJnmZq
-	 0/il/AiIVOO4fsTzYusDOwVxG+tNR3YVCpmV9C0Jpt2wV85c4BaR8KB64gl0SZaJr6Q==
+	bh=VId0h4p/u77ggNkwAFm/J3Zsd5AjX5cfSMD9gYIbFWs=;
+	b=HVPsvtSm2UCRJ09lGZt3NQ5m9fEFbsD+tkshFjsvK+Q8lx4Pjr4BECaTiHmMOYlOvEFU
+	 wy3EQAaiwEc69uiqhprSf8cyeWEmMNXhUkB8c78v8kWR5IDSFgk6XK42/rltIhaGxq/Ij
+	 16bWw95MWWN/PX2ERPqbVPdwi7QxhRMITt2jXuregvvYjSkWhVH5z1rxWN4KZn79EjRKl
+	 k7xkBbTXZidWRsCN4raesAtccdEtUlmhNnl22I6FWbU9z0shvUWUkvzAaQbdRIfzawm3X
+	 kvTEMw1EYI9EVkBzHIpJ33ZTQCdAN+46wRhrTsLyE1xhdMzyIUnXdxnFYz2xx6nV7lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Rd5qOkgG;
-	arc=none smtp.remote-ip=91.218.175.193
-Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pMlOrmfj;
+	arc=none smtp.remote-ip=95.215.58.196
+Received: from mta1.migadu.com (out-196.mta1.migadu.com [95.215.58.196])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD88606A321
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:29:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBD88606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56476606A333
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:29:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56476606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Rd5qOkgG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pMlOrmfj
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/+WuwrSksAjzAHCCytpm8Y2IGIJxlPeKxsMgUDhSC6o=;
+DKIM-Signature: a=rsa-sha256; bh=O//EwO8yzWEhB1NbD8MSRBoGsEgVHeqA1DUOjnhAai0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794475742; v=1; x=1795080542;
- b=Rd5qOkgGN2Jy58oGC2b5UqSnml46mVBMMf23WeJzKy+NF34DyTrDLdxWMwBz7hnG19WUXX5r
- 9TDfz3Fl+n/KjOKQXUNJdGqF+Ox6yclHlS73+kKPIeT4ep+1E/9YwqVXgDiePNK0hMmoGM4ldG+
- yWhWhKAbenlVSYXjBwRydgj8=
+ t=1794475755; v=1; x=1795080555;
+ b=pMlOrmfjPSLVb6uJqNJcu6hIt2SB4krIriHqO6n6AWAL85Uv4RjgmCyK9hI0FTRPxaBMWoDJ
+ /e76Rmbt2aXzwlYaNwmSXB4YH2nN+8zdLruQyuMJUdryZR4NJjemoziZxtjYJ/TvPrsKFkxiGrw
+ RVPgRRFuFjPL6u+zdQHIMK28=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id b94977e37de25a9a;
-	Thu, 12 Nov 2026 09:29:01 +0000
-X-Mizu-Trace-ID: b94977e37de25a9a
+Received: by mta10.migadu.com with ESMTPS id 0c2a5ac31d33393e;
+	Thu, 12 Nov 2026 09:29:15 +0000
+X-Mizu-Trace-ID: 0c2a5ac31d33393e
 X-Migadu-Flow: FLOW_OUT
 From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Thu, 12 Nov 2026 17:27:58 +0800
-Subject: [PATCH net-next v3 3/5] selftests: seg6: move SRv6 End PSP setup
- into its own helper
+Date: Thu, 12 Nov 2026 17:27:59 +0800
+Subject: [PATCH net-next v3 4/5] selftest: seg6: explicit cleanup for SRv6
+ End PSP test
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-srv6_flavors_endx-v3-3-c9177bbbd965@kylinos.cn>
+Message-Id: <20261112-srv6_flavors_endx-v3-4-c9177bbbd965@kylinos.cn>
 References: <20261112-srv6_flavors_endx-v3-0-c9177bbbd965@kylinos.cn>
 In-Reply-To: <20261112-srv6_flavors_endx-v3-0-c9177bbbd965@kylinos.cn>
 To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
@@ -77,125 +77,75 @@ X-Mailer: b4 0.16.0
 
 From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-setup() installs both the base topology and the End PSP policies. That
-couples general test setup with one specific flavor scenario and makes
-it hard to add further flavor cases cleanly.
+The End PSP tests install policy and localsid state but rely on the
+global namespace teardown to remove it. That leaves flavor-specific
+state behind once more tests share this script.
 
-Extract the End PSP policy setup into setup_end_flv_psp() so flavor
-tests can set up and later tear down independently (the matching
-cleanup arrives in a following patch).
+Use defer and defer_scopes_cleanup to remove the PSP specified
+configurations. i.e.
 
-Run the block under set -e so a setup failure is treated as an error
-instead of falling through into the connectivity checks. When deciding
-to report the run as skipped, keep any failure already recorded by a
-test, so a real failure is not converted into a skip.
+  * cafe::1, cafe::1:e9, cafe::2, cafe::2:e9 route and proxy on rt1, rt2
+  * fcbb:0::x0e9 End next-csid,psp policies on rt 1,2,3,4
+  * fcff:x::0ef1 End psp polices on rt 1,2,4
 
 Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
- .../testing/selftests/net/srv6_end_flavors_test.sh | 56 +++++++++++++++++-----
- 1 file changed, 45 insertions(+), 11 deletions(-)
+ tools/testing/selftests/net/srv6_end_flavors_test.sh | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-index 157baa8ecb0b..0ed5bfe99029 100755
+index 0ed5bfe99029..374b43661c28 100755
 --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
 +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-@@ -488,8 +488,9 @@ cleanup()
- 
- 	# check whether the setup phase was completed successfully or not. In
- 	# case of an error during the setup phase of the testing environment,
--	# the selftest is considered as "skipped".
--	if [ "${SETUP_ERR}" -ne 0 ]; then
-+	# the selftest is considered as "skipped", unless a test has already
-+	# recorded a failure.
-+	if [ "${SETUP_ERR}" -ne 0 ] && [ "$ret" -ne "$ksft_fail" ]; then
- 		echo "SKIP: Setting up the testing environment failed"
- 		exit "${ksft_skip}"
- 	fi
-@@ -785,6 +786,27 @@ setup_rt_endpoints()
- 	done
+@@ -759,6 +759,8 @@ setup_rt_endpoint()
+ 		add "${sid}" table "${LOCALSID_TABLE_ID}" \
+ 		encap seg6local action ${behavior_cfg} \
+ 		dev "${DUMMY_DEVNAME}"
++	defer ip -netns "${nsname}" -6 route \
++		del "${sid}" table "${LOCALSID_TABLE_ID}"
  }
  
-+# setup proxy on route entries for hosts
-+# args:
-+#  $1 - ingress router that enforces the SRv6 Policy
-+#  $2 - destination host whose addresses are proxied
-+#  $3 - suffix of the address on the loopback of the destination host
-+#       (i.e. cafe::<host>:<suffix>)
-+setup_rt_host_proxy()
-+{
-+	local rt=$1
-+	local hs=$2
-+	local func=$3
-+
-+	ip -netns "$(get_rtname "${rt}")" -6 neigh add \
+ # Add an SRv6 Endpoint behavior to each router of a Policy element <nodeid:op>.
+@@ -801,10 +803,16 @@ setup_rt_host_proxy()
+ 	ip -netns "$(get_rtname "${rt}")" -6 neigh add \
+ 		proxy "${IPv6_HS_NETWORK}::${hs}" \
+ 		dev "${RT2HS_DEVNAME}"
++	defer ip -netns "$(get_rtname "${rt}")" -6 neigh del \
 +		proxy "${IPv6_HS_NETWORK}::${hs}" \
 +		dev "${RT2HS_DEVNAME}"
-+
-+	ip -netns "$(get_rtname "${rt}")" -6 neigh add \
+ 
+ 	ip -netns "$(get_rtname "${rt}")" -6 neigh add \
+ 		proxy "${IPv6_HS_NETWORK}::${hs}:${func}" \
+ 		dev "${RT2HS_DEVNAME}"
++	defer ip -netns "$(get_rtname "${rt}")" -6 neigh del \
 +		proxy "${IPv6_HS_NETWORK}::${hs}:${func}" \
 +		dev "${RT2HS_DEVNAME}"
-+}
-+
+ }
+ 
  # This helper function builds and installs the SID List (i.e. SRv6 Policy)
- # to be applied on incoming packets at the ingress node. Moreover, it
- # configures the SRv6 nodes specified in the SID List to process the traffic
-@@ -860,10 +882,6 @@ __setup_rt_policy()
+@@ -882,6 +890,8 @@ __setup_rt_policy()
  		add "${IPv6_HS_NETWORK}::${dst}" \
  		encap seg6 mode inline segs "${policy}" \
  		dev "${DUMMY_DEVNAME}"
--
--	ip -netns "${in_nsname}" -6 neigh \
--		add proxy "${IPv6_HS_NETWORK}::${dst}" \
--		dev "${RT2HS_DEVNAME}"
++	defer ip -netns "${in_nsname}" -6 route \
++		del "${IPv6_HS_NETWORK}::${dst}"
  }
  
  # see __setup_rt_policy
-@@ -962,17 +980,29 @@ setup()
- 	setup_hs 1 1
- 	setup_hs 2 2
- 
--	# set up the loopback addresses of the hosts used by the Policies (i.c)
--	# and (i.d).
--	setup_hs_lo_addr 1 1 "${END_CSID_PSP_FUNC}"
--	setup_hs_lo_addr 2 2 "${END_CSID_PSP_FUNC}"
--
- 	# set up default SRv6 Endpoints (i.e. SRv6 End behavior)
- 	setup_rt_local_sids 1 "2 3 4"
- 	setup_rt_local_sids 2 "1 3 4"
- 	setup_rt_local_sids 3 "1 2 4"
- 	setup_rt_local_sids 4 "1 2 3"
- 
-+	# testing environment was set up successfully
-+	SETUP_ERR=0
-+}
-+
-+setup_end_flv_psp()
-+{
-+	SETUP_ERR=1
-+
-+	# set up the loopback addresses of the hosts used by the Policies (i.c)
-+	# and (i.d).
-+	setup_hs_lo_addr 1 1 "${END_CSID_PSP_FUNC}"
-+	setup_hs_lo_addr 2 2 "${END_CSID_PSP_FUNC}"
-+
-+	# setup proxy on route entries for hosts
-+	setup_rt_host_proxy 1 2 "${END_CSID_PSP_FUNC}"
-+	setup_rt_host_proxy 2 1 "${END_CSID_PSP_FUNC}"
-+
- 	# set up SRv6 policies
- 	# create a connection between hosts hs-1 and hs-2.
- 	# The path between hs-1 and hs-2 traverses SRv6 aware routers.
-@@ -1429,6 +1459,10 @@ set +e
- 
+@@ -1460,11 +1470,13 @@ set +e
  router_tests
  host2gateway_tests
-+
-+set -e
-+setup_end_flv_psp
-+set +e
+ 
++defer_scope_push
+ set -e
+ setup_end_flv_psp
+ set +e
  host_srv6_end_flv_psp_tests
  host_srv6_end_flv_next_csid_psp_tests
  host_srv6_end_flv_consumed_srh_tests
++defer_scope_pop
+ 
+ print_log_test_results
 
 -- 
 2.56.0
