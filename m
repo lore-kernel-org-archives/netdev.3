@@ -1,168 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.156.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794482243;
-	b=PvykFhNuRJCYBPQCdXMczp1UbhN54k25GvQTgGybAXHOBfr1lIhaI7hjsDUCkq615ci+
-	 1FEgAZ8boIJzlmJNmZKOjceHaGEdZCXhJVaYaebV8GfiohoH6jxwMZULIe7wBQzMc8D1H
-	 etf2+x6jFN46WpYWAdsByHdxIR0XYoqRPx6BB/2r9WYNwmp+MJnTZxLxO37AazcWefIPp
-	 d6PapaTjiYa3VlDAILvAd8ul0Fo7BU1nzS3LfYxcmEb527IRrxEYUsgxmvpBZtqbxuCRJ
-	 FJT95kF4nB+0S6f30Vj4Ey1Thx0NV55FoDB8UI02oEgVRjNDHuhWcuisZYVBawRvn2A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794482243;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Received:Received:From:
-	 To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:References:
-	 In-Reply-To:Accept-Language:Content-Language:X-MS-Has-Attach:
-	 X-MS-TNEF-Correlator:x-ms-publictraffictype:
-	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=fEAZwCOqLvZ1w5znYDIkGx6jC2UyEHuc502UML4m4lM=;
-	b=Egk4xvFBA/QM2YWZVFQOaNh0A4n+zSb4TzvFQhoWcu9J4FDNy+zMAOdSclGN7k9jjHEV
-	 5fxdolkDRMEVm3Co269fyRZBDb/wPHrAlO8+fWrMb+tz1aJqusltgjdJxCDonUhhjov/V
-	 q3crEym2YSqcB/FSdndBfbB7VmsX9Z9LqxLeFc+R25XPgytPL1goI9pZLTCamkD8r86k5
-	 0+ZTSUOm/k0KvjErFVyxeEz4dbejzQMCj1EqCBXOnhlynjDtmsEkzN8AgZQZkGrZeemc0
-	 v6KgFzT6drnV0zK+vxyuXMewlbK6nwFvWFbbWn5ez4SLvPu8QbOaZ0alJsEcq0Y5fsg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=marvell.com;
-	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=UIAW6T1J;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.156.173
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794482415;
+	b=ZVgIbdbfSzHpdTRg4Y7b8kyZ16ZDVpZRR0NnPlNtniEBC7VuSeVwJiGAZJNQxMnw/YMj
+	 MaMQ9qTnMhS1gvmSV8I7AzMbe2bE0mxEIwF6iC44q8GOv36fCwCdWrHmquf06MyqCnoRe
+	 o4kXo4cM/P8N7ME/bLnR1vLNGCxeYnjIfkzBWdu1CeeJIK4m0TPcc8zhLXvgoLIm+HqnM
+	 jkxuhn9cS75iu7zkMEoxA2bBSLbJH2BU+ESoXMa3CNgy72s/k9lZ/J7GlPFpEO+5lHH9X
+	 C9VXNz4/iSMxZ9aUd+6OQ/uxZDiwzVi+11B60SWdjUr4UGJ9xpDYkXZScyJQP9+Pd2A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794482415;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=n6P1sRjIxGRsOlYiUP9NL4FyqP6Z5X1r0A8C9mbRGC4=;
+	b=T8Ae8wPduJTgwYLgOFaeiaqEqOMOxFpUFK0LU3c9JlsEuM0kpJhgF5BGXDQZT10YSzTu
+	 zZy03EmOEuLXxZ8E9YBDn/Wo6MvSw3PafHTUlgCCmnMVTzgJAwZMBlYIWahtYMSaaBD3c
+	 j8UHis7TyJ88g2vlA1GR2DJTMeHQub0F35cFt5QStVof1AC3AKS0vLN8b6uRtafe4lQBX
+	 cqbbt9p6eiB/cf95GRNVN61/T+EPnRvSJte0g9iTpuUuzJd6WQN5JnUixN3IS4XzETeFZ
+	 gY483jI96hPHkEGtt2TN+BqjQc2Z0eljng0mzRUYs7aXEUj1Fxd2I82BINkpznPuRIQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MDpvB1Qw;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16B6606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 11:17:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A16B6606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554CC606A8AC
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 11:20:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 554CC606A8AC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=UIAW6T1J
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC7PaHm1847989;
-	Thu, 12 Nov 2026 03:17:18 -0800
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11021094.outbound.protection.outlook.com [52.101.62.94])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hw15uuc6a-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 12 Nov 2026 03:17:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k5y4Z++3Btm6pyQXrkiXE7rC+KEv+fiIEVBATS/CUBRYoHe6K2vh3+F2mRsCShud4zqsMkFsyILV2zyZ7TkOgJKA4JswdIVHfjMIpt1DbA3WX8eoDNKjyv8aO7r76EvsD/ppiu9uGjfPvuHByp79c81Uw6+nifepX/xnKdWgN4uAZOZKO/7Y8heLZCL8bXen+p5/Rb5isNQhRnmjsyA5eel3AE7nHhXT196tKR9y8Xbi4PEX809Tph4yI7NkMRBgv0XGs8MOJNOJ+kdK22vcxXqbXEIFJ5ZfGPQT2j8GdkjQzXO8iDp+df8SC4fKtW7H0aJqmTJZ7hJmnN3Qmi6bIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fEAZwCOqLvZ1w5znYDIkGx6jC2UyEHuc502UML4m4lM=;
- b=lJ0xfnJlHRLppu7VsC01OCUGU+4411m9yoAozgBqKN5YIfkAkbsZemjqkVfeLh0Q6APRk7eoV7AHRtnQzzZwpOXpnnN3M9dFtL6c8afcKCG1iKJOnIjn/+F74jBZ6BPfH/02n0wgDUqfOmsM7Ai+zZF7/3mRUpI8gaDnm268XIr8qP0EctS90FywwkNVNmI9/brDM7m7mH4INDFbyMiDR50j1tdR1+rjx4Xs+TGb50L5RsQoSP9v0h41op1ClT9hIXtX/y2r+BoUexuATNtVqlQcLGmhmxncnm24KzT4EsIxnaAzjOwPXHWODp/owKOdQlnrngor+7vRdbZmJ3Dp7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fEAZwCOqLvZ1w5znYDIkGx6jC2UyEHuc502UML4m4lM=;
- b=UIAW6T1JVSfyb6X4mC5H656yKPy8aR0T9oc9LEghEq52M4ellkMC6+0eKTJ8PZ6MBasx2ngfAzGCrUt2ZbJ9XVd72phxLGqg8gQQKG3TndCooBgJpzt9paPReZNvk+d3q7pM/Y/w8EcxhZ5tzMw+if29T6wE3rPjET02/5NygfE=
-Received: from CO6PR18MB3859.namprd18.prod.outlook.com (2603:10b6:5:349::7) by
- MN0PR18MB5941.namprd18.prod.outlook.com (2603:10b6:208:4bf::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
- 2026 11:16:08 +0000
-Received: from CO6PR18MB3859.namprd18.prod.outlook.com
- ([fe80::ccdf:d2d5:bd22:df6d]) by CO6PR18MB3859.namprd18.prod.outlook.com
- ([fe80::ccdf:d2d5:bd22:df6d%3]) with mapi id 15.21.0615.008; Thu, 12 Nov 2026
- 11:16:07 +0000
-From: Sai Krishna Gajula <saikrishnag@marvell.com>
-To: Yicheng Zhong <zhongyicheng241@mails.ucas.ac.cn>,
-        Sunil Kovvuri Goutham
-	<sgoutham@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        Geethasowjanya Akula <gakula@marvell.com>,
-        Subbaraya Sundeep Bhatta
-	<sbhatta@marvell.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [RFC net-next 2/2] octeontx2-af: cn20k: do not phys_to_virt() the
- mailbox base
-Thread-Topic: [RFC net-next 2/2] octeontx2-af: cn20k: do not phys_to_virt()
- the mailbox base
-Thread-Index: AQHdcpc2o0ndIdK0CEiQcfbOj5mjQw==
-Date: Thu, 12 Nov 2026 11:16:07 +0000
-Message-ID:
- <CO6PR18MB385937CF769CC37612732B02A0702@CO6PR18MB3859.namprd18.prod.outlook.com>
-References: <179438966513.1752948.1646241391383361825@mails.ucas.ac.cn>
- <179438966513.1752948.11370387748541356912@mails.ucas.ac.cn>
-In-Reply-To: <179438966513.1752948.11370387748541356912@mails.ucas.ac.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=marvell.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR18MB3859:EE_|MN0PR18MB5941:EE_
-x-ms-office365-filtering-correlation-id: e3e7a9a9-919f-4aab-83be-08df40ae5936
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|22082099003|18002099003|261009223027099003|4143699003|11063799006|56012099006|261028144727099003|261102123227099003|261021121427099003|261022105027099003|261026121527099003|261026140227099003|261021123027099003|38070700021|10067099003;
-x-microsoft-antispam-message-info:
- kEH6FEaMd2J51mHSGl1JgXvJ6FURc47/c/NIef1CkjQL88YwqinTPmaYyoV6JAG9yI6GeaEFQcCf4/o9u2beG+BFdwQXG6fDQ0Ssq1L/CniscdUGqcXMd+zcfearsZardbh7y9Onpl2UyLGDsw9kzNVFT5L9ZZydJlzPG3d90iPK5/bq+E/J673HA+SOXGKfzYUYCdkaB3kg1twClrlIbXMP326C0/ghtjcLkoxQMi1LFcfSsm0lmonMPHdX2bmoA9FqpJopc6XFnEOGdsTMfD4OMimhdrxKxf7NY0MKmMmDSnZwlm8/DjXS/UD3CcmHQHOlcC95T86idbXa4C+vCDfddkhU/HFyqBiQO4d8NIKC91tYp3fsp/xgfca+rZ8Xhk8dyDKjHlLH8FrWKQntaGGLWBTwQuU8z6Z74U8gvHoxxc4pLXTQIyCwaYLrjbucBgQR8Aavq4yC1Y3Nl179Q3280rfda/8Fchn/a33TQEb3A/SeDRoZTWmclEeyNSKIMALBGMWP6ZFrKjNMEDoF2l/qRTcU/aCfKCJ+7dCEU9nEqwjfU/P1t8s9zdLO8jAX6vLmzRs6SwPevtZY4G+WVHRJMNWQxs6dDaW2JVr7G/es7og2DfTJsGVBeMhF7Rgq1BdAQ1T/4SYkPfvSHxAqoVqs4q6v0v9uIjy0Sqy700TmmIY9q5zGyZPIN4pl/gbqcdO2CdJ1fVOzTR8CeftCucfbMgiTn2M1DwqXN3CA0GY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR18MB3859.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(261009223027099003)(4143699003)(11063799006)(56012099006)(261028144727099003)(261102123227099003)(261021121427099003)(261022105027099003)(261026121527099003)(261026140227099003)(261021123027099003)(38070700021)(10067099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?R1ZGOU5MQmxKaWlmdmEvWW1vdEhmUWpxYnhGTUVobjBzeTNoS3ZpUHM3djhB?=
- =?utf-8?B?SWZKNlZxeVVUWEdIcTQ0blZqSzFlQ05Ba1hVMDhiSVZWc3VPTDZOejlpZ3NP?=
- =?utf-8?B?UE5aeGk4Nk5OaFdzK3FDVWZCRVV5MWlkYVdBNjM4SkVYNDl2d0xPdE9oaURI?=
- =?utf-8?B?WnlOcEN6TlgyR0xZNFV5bkdvZU5LWm9ZYkxRWEFkS1hRU25UOVRXY0t5ZFZh?=
- =?utf-8?B?VDlabTN2UjJjZ3FJLzN5SUVtRkVoS3hmbGlLaEJXOUxuZmRZSks2Vy83U2lv?=
- =?utf-8?B?aFJ0Mk5Ua3RBcmhlREo0Tnoyemo5d2V5ZGk2aThCRGVHblkyTkdJTXN4YUFm?=
- =?utf-8?B?SlNlUTBlOHBHcDJQa1Zvazc2dmJEZ1pGNlNTWWMwUlNVUUpJSUVYNU5reVRJ?=
- =?utf-8?B?Rk9tMWtKUzJpdWVzWjNxNWgxUWdwTUN0cTZMbDQ1MlJMVnl0RTlFVWZWYUhW?=
- =?utf-8?B?MlF3a250OWZJRUJsWUk2RDZxa0syMWMzbmphUGdNMXVIOVpub3N3VXhxdlJi?=
- =?utf-8?B?emxUdEhTMlRxb2VRS3I2VnRUNDUyOWw4d1lrcjc1WmFvaFBmWXdXaFNQT0U1?=
- =?utf-8?B?NlJZODlLdllwYkpERllRTDNvUTRkWFlYeGx2NHBLZ0NLWHhva1JBWi9DVmtX?=
- =?utf-8?B?WnljZWorc2VpUCtHS2dseUdOYmRQWEJlSnlZQUl1Q0dnRDFqRnlaem1WelFs?=
- =?utf-8?B?dDJMUHRCOXprenU3eTNXQUVwTEhmK3F0dEdPNWU2Wm1XdXlNa3hyWkY4eHpT?=
- =?utf-8?B?bWVQNW0vYkJvMDNMOEVjc3BKRGdFKzZSNnZyUUF3TUM3bEhMQVdwa2NwSTM3?=
- =?utf-8?B?d2VZNHVGNGp5QXpPajlOdGVYVHlBQ0hXVkV5dGNxT0ZBV2dFL2VXMXZDdldI?=
- =?utf-8?B?QW9vd0JOK3FPWDFqY2FVeXNLWVI3ZkFKRENWY1lxcDJDUC9RMzhRemZzRE9w?=
- =?utf-8?B?bzdaQitSY0FBY1FnQnF0Y3lJU0RJYWs1T2tkYm5LQ0dOUUxCOXk4R28zVlhl?=
- =?utf-8?B?K0I3ZEtydHAwaVhDcnVVS2xsQmxrRnE1K0FobnNvQUhpbjJqZGc5dzEwT2Zo?=
- =?utf-8?B?UVNBenozTGdiYjduclJZdWh2VXNRT3NRSWs2RUpuamRWVFNRd2VPVUdxOVBa?=
- =?utf-8?B?bnFnbUpBMU5vUFlFTG1CWTQ4VUJ2cmxCRzBMZ3JvWU9LL3I2b25TZUQ3OENO?=
- =?utf-8?B?cklTN3FYaVFRK3BZcWxXV1g1SVlxak85c3pZMXp1Yjc1Mjc2U2RNK05uMkdK?=
- =?utf-8?B?SFFCazJ1RUpiMXI2VHdSRWhGeDRDMWd4QVJyV05mQS9VWmx6T05JOFVCaEFF?=
- =?utf-8?B?aTZ3T1RWK1RyeVBNVWt4SXN3VWNlekdRR0VEQlFGdXhjRzExdUxTMzJuMmZj?=
- =?utf-8?B?aE42SWJJZE95amJLSjV2WlpRSDUvRThjWUVQQWErcnBTQXRGV280OUcreGh5?=
- =?utf-8?B?K2MyOFpNWjl1Nk1xUEZWZENQT294ODFlNzBYM1dtaklqbW1saGpMQ3JKN0M5?=
- =?utf-8?B?cGhWdjRraWlFWjViWjFmQlJqV1dhcGlGVWtkSXFyNlBrWnlSTUxwVGxLdmhO?=
- =?utf-8?B?SGJ0NXhxZ29wRWxCdlltei8vYUczWXA2aGpYYnNkN1poL0EzejY3K1p1TGph?=
- =?utf-8?B?RGR3bVNxbEx2ODJMYlY1UUxHajlQYzZwM2FsRXdjNHRVRUxHTVVoNlg5OEh1?=
- =?utf-8?B?SFJYb3VQcVNtZTBwWGZGZ1IzZWFPOUU3MzlxWVdYUitTWlRwNFJWTG9mbklz?=
- =?utf-8?B?MEQva3c1WFdrRjdJNGVqNlFuUEpPeFdUdmFOSGhqMFk0L1BBQUkxZU43cWlP?=
- =?utf-8?B?aUs4Z1FOV2VnKzJaV2JZMHpqMmVYZGk1U2Y3Z1NYWEM3UERjc0dlQ0FCMklY?=
- =?utf-8?B?eUNVWXcyTGZ0dHJ2MGMwVDZRRzFwNklQTWVoODQvQkRhZDF5RzNsa1pzTDlV?=
- =?utf-8?B?RzhRV0FSQlJQT010UjBuOEJMZDlsSUJINmtCd1RLMVVLUDE0eTVCL29FdWRo?=
- =?utf-8?B?SEE4UDl5ZWlrRFNHaE0wSjhDMTUyOUpZVHNBbHpNcWRJS3FlZkZYc1g2Tkt1?=
- =?utf-8?B?alNpMG1sQVdTRmxVbXBMRHcwRHI1OVZnQUhiOW02THhDUUgzMzlWSW13OUxr?=
- =?utf-8?B?TFoxNzl5ZVRvNnV2WTJUVW1DY3llbm00dG1vaUZjS0UzUDVTN0E2dkdhY2ln?=
- =?utf-8?B?NlNheEtMOXVza01sSDI4RHlPNnA3cW9IME1HL3FTc1djTnZVTml0NGU0cm1E?=
- =?utf-8?B?TXBtNWpHeUE2Rk40Y0dUR1Jsam1pTk5XZXBMMEdYRU5hTzI5TThJS0I3K2pO?=
- =?utf-8?B?bTNZOSsyVmFSWmhPTEk5U211aktwQmhkVCs5MjVpZGplZjc1eS93QT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MDpvB1Qw
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3b18717a193so812976a91.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 03:20:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794482413; x=1795087213; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=n6P1sRjIxGRsOlYiUP9NL4FyqP6Z5X1r0A8C9mbRGC4=;
+        b=MDpvB1QwemOWm3CTeo03llC9nDTT85pdKF7CQHVJ4QTcGuG9oo4tA8eA3MBNT4FF6V
+         5DJaFqD2tAOko3Rl61+Cz0ViPM5+rdLnJWECkp7pWQkUgg8qftEEfT7iw/09S/In03vs
+         F+uzBBNpzloxd0Jzzhdne4MeV8wSngpMlmiz0lxYPpNUhl+KibVkJK10H9K1ew9ejxet
+         LHuSEOV2SFyPkZEHOTrfGjSAnE+8GKkOqymt4VuJq0mLLIw3R25l2EVcpURmish8Mu6V
+         34FcuG7yVE2XUO+dFq5anKUiGNaFBK6jYppFWvnwbi/2JioVnPxSTpLd/AFGJ1RPS0QD
+         OWyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794482413; x=1795087213;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=n6P1sRjIxGRsOlYiUP9NL4FyqP6Z5X1r0A8C9mbRGC4=;
+        b=nW9goNx/5c9xc33WWjrmVd7B4MBVsKD6o7ki0mMcP+ZXPfbHH145wFK2YbfT+lm0is
+         FUvsmbaFpnrk1PYA9ULtrZ5OcAy0WzFggTNXywTKy7UxDRpZeqUEAJZE+3D6STy2v2C6
+         XxxlorcVAcd6LU/oF2ndQpyZARQW6D1y0DeE+31wsfuQfPtEYiu/YpfG+IJSGQ3BJZnO
+         qU1EGkIvL6n7axzbBHjhCiHNaoa0VsZH13jteSIrD8NoLze3NpWPa1HOdQJ+J2vIPcF2
+         RZ/cAnGDHstnX6Wcjsv+r+Zh4cecWMiFLv7gBZuhpno3B43YQfaLS3lf2RsxIitnnTrT
+         YLVw==
+X-Gm-Message-State: APuU4Z/8Z1wAA9uFUsy5KvtSJb5V+RI6E19SYRsVyoYIn2pwmyEkflCp
+	CBkL9Fmw1rfm0xdzGHjnvvbW2iga7ZXoeHvFuLBd0KsAuvV3RuVtrTFPkh0HRfNo
+X-Gm-Gg: AYBFou1ToayxMSIcnrGBkhCfAmk3XDX1z47ZIDKOo/DQgTQ17gYhols2ZDQFSnR+0n9
+	PcdQsFYargzmXkXVigpRKYeDTWr8Sm8VMVf4FF4w5N+mlTniUVI7QOJK0lrNyabvtC80doQP+ch
+	j2k+GHL7r8zOgClsq+rxhrX8rIgRS4947wmqvwp6cMzaXaT9eupv0ctMUz4V0UGmbBKdYnpUo3S
+	97joVPPKka7tEekP+r2zmWHkaPDZdt/ViaKQzqRwlVhOt+RZ3Mo4DDGeXpmXdT6gOpwczsHrusx
+	VndssNX227h5OcCg6/DuRTRzRLBP3INWUKMCWhIg7x7TKSucWv0JGkdJHsxEpsC1DGuNqlUaFfY
+	BUECWYBiHP/zvA2i7WiR2J10qkzrY2fnsvenN/seDzN9XG8hhL3omCpq4EQSoNDqGAVwvHc7jEK
+	2NgiPufk/vmhkq/bmqMTBVfY6VJQQIWzVSnr6r5kV0+yzyyNLEp32fExkCdqIwaEVDdoMPiuWCQ
+	XbhT1W5QWpgFXjQRsW9GhHwW6xIj523vc5Zm956LdIpNQdg6fZVZbaYtoJkX9EN9ntxKAu4mrNL
+	hiXDaq8m0uwQEKM1TyDRS+tp3QH7dwtQf8j044zh5w==
+X-Received: by 2002:a17:90b:1f90:b0:3a7:e11c:4e6e with SMTP id 98e67ed59e1d1-3b182f5a142mr5144729a91.59.1794482413349;
+        Thu, 12 Nov 2026 03:20:13 -0800 (PST)
+Received: from buddy.mshome.net ([104.192.108.10])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b182dff97fsm3541562a91.3.2026.11.12.03.20.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 03:20:12 -0800 (PST)
+From: Jun Yao <yaojun8558363@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	lkp@intel.com,
+	victor@mojatatu.com,
+	Jun Yao <yaojun8558363@gmail.com>
+Subject: [PATCH v2] xfrm: avoid stale tunnel pointers in deferred input callbacks
+Date: Thu, 12 Nov 2026 19:19:46 +0800
+Message-ID: <20261112111946.375692-1-yaojun8558363@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -172,93 +103,579 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	0MoEc/s1ttGuoLtGqht1FP8834s591+EbA89OhrRmIGZeLqmsfRANExTUVy+gGIf02gsDQfxx9gz/phdUULjwvR85ZGMnUDIICBYEsJs8aA3GNXCXeRTcsaogLZc0t129Nv7ChqwQxrL296NaWDw+L2MPSiJ5nUfsddsSzHw1hK1xOCuWUkjeJLpnp0MDBdmoFs6KB2efcHKngAd+YTXPkv4ccV+kSBiiRGOKEa4+SLJnR2J1HSKCrau8uaVOjKbM9lVNUORbG6w1pyRhQmuQ0bDOO4snprRXFJolPqyBBJshu0J1PJVI1c5ak3aHJjKcZPM72eq7eqKWtoo3pzoDA==
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR18MB3859.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3e7a9a9-919f-4aab-83be-08df40ae5936
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2026 11:16:07.4729
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DA4mFWoETjyl/A+X0Ng+BgwC4V+zr1u8mJCz2yT9mEV4A4PZKWukGtYKyARqWP6m4ByCgyAqsZCy+TJZjBMJgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR18MB5941
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA0NCBTYWx0ZWRfXw8ZfAmced9CP
- /xeYlpFQyj2henOEh38ioKU33emGCSuGh6xJPzYbLOPdMivXv9dcoWzkFOC+ZW1U0FyX5smA2iW
- Ejv0QRVcJkeNW/cpda+soGWpKc8qLuo=
-X-Authority-Analysis: v=2.4 cv=Mev5KJ/f c=1 sm=1 tr=0 ts=6af5a03e cx=c_pps
- a=QffN0g5EZ+Wxgj/Qwxz7mA==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=zJRp6_cAMcgA:10 a=-AAbraWEqlQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8
- a=VwQbUJbxAAAA:8 a=1fopSG9ek0Yzf3PmuycA:9 a=QEXdDO2ut3YA:10
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: Tt07COPS-yxvt70Wnia90RJxha4BbKN7
-X-Proofpoint-ORIG-GUID: Tt07COPS-yxvt70Wnia90RJxha4BbKN7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA0NCBTYWx0ZWRfX0nm5XQ4NX+lG
- 0nKur5D0wAYOVZxWA+dsBC/6z8BbQTQAxaVX67OidqjD1ukKSMNFC1HL5iVeHl4he3JwxLTwsus
- bCnG+Ljfeef/O8QpHBctRxLXeu1l3wlf3IGr71qDhV51Q501lc+DS39HHErJVC+pejKjQECEtDL
- 0SkV9yCylQRgthxT1+TJnO5iUqByX2qZNKtN27QNOamh5xL81O+1kydHpUTsIVbB95ABA+W6h+6
- qNUQPTcjjHunhTB+Z9y91QeYfuwr2I8b+D4J1hFJIGBiy3A/CxJY0qStzc/W75GsZYLPHKDjXq4
- f2MvXWwNB4llWnMOvIf7aTSGf6UeM3iCDyzqvELZOvclbVz28sE/sxGg9A+xNK1JXS0isKZUiVU
- UrxS4DQeVs/44T/O5uYSJCP0q4Rrw0VHVOAmJ0p6f/uNrpE1z7/2kNQT7J9yzrk8GjYFa/XLeCY
- sm1mEZG9PEgewZ39XsA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFlpY2hlbmcgWmhvbmcgPHpo
-b25neWljaGVuZzI0MUBtYWlscy51Y2FzLmFjLmNuPg0KPiBTZW50OiBXZWRuZXNkYXksIE5vdmVt
-YmVyIDExLCAyMDI2IDM6MDQgUE0NCj4gVG86IFN1bmlsIEtvdnZ1cmkgR291dGhhbSA8c2dvdXRo
-YW1AbWFydmVsbC5jb20+OyBSYXRoZWVzaCBLYW5ub3RoDQo+IDxya2Fubm90aEBtYXJ2ZWxsLmNv
-bT47IEdlZXRoYXNvd2phbnlhIEFrdWxhIDxnYWt1bGFAbWFydmVsbC5jb20+Ow0KPiBTdWJiYXJh
-eWEgU3VuZGVlcCBCaGF0dGEgPHNiaGF0dGFAbWFydmVsbC5jb20+DQo+IENjOiBuZXRkZXZAdmdl
-ci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFtSRkMgbmV0LW5leHQgMi8yXSBvY3Rlb250eDItYWY6
-IGNuMjBrOiBkbyBub3QNCj4gcGh5c190b192aXJ0KCkgdGhlIG1haWxib3ggYmFzZQ0KPiANCj4g
-cW1lbV9hbGxvYygpIHN0b3JlcyB0aGUga2VybmVsIHZpcnR1YWwgYWRkcmVzcyByZXR1cm5lZCBi
-eQ0KPiBvdHgyX2RtYV9hbGxvY19jb2hlcmVudCgpIGluIC0+YmFzZSBhbmQgdGhlIERNQSBhZGRy
-ZXNzIGluIC0+aW92YSwgc28gLT5iYXNlDQo+IGlzIGFscmVhZHkgYWRkcmVzc2FibGUuIGNuMjBr
-X3J2dV9nZXRfbWJveF9yZWdpb25zKCkgcGFzc2VzIGl0IHRocm91Z2gNCj4gcGh5c190b192aXJ0
-KCkgYmVmb3JlIGhhbmRpbmcgDQo+IHFtZW1fYWxsb2MoKSBzdG9yZXMgdGhlIGtlcm5lbCB2aXJ0
-dWFsIGFkZHJlc3MgcmV0dXJuZWQgYnkNCj4gb3R4Ml9kbWFfYWxsb2NfY29oZXJlbnQoKSBpbiAt
-PmJhc2UgYW5kIHRoZSBETUEgYWRkcmVzcyBpbiAtPmlvdmEsIHNvIC0+YmFzZQ0KPiBpcyBhbHJl
-YWR5IGFkZHJlc3NhYmxlLiAgY24yMGtfcnZ1X2dldF9tYm94X3JlZ2lvbnMoKSBwYXNzZXMgaXQg
-dGhyb3VnaA0KPiBwaHlzX3RvX3ZpcnQoKSBiZWZvcmUgaGFuZGluZyBpdCB0byBvdHgyX21ib3hf
-cmVnaW9uc19pbml0KCksIHdoaWNoIHRoZW4NCj4gZGVyZWZlcmVuY2VzIHRoZSByZXN1bHQgYXMg
-YSBwb2ludGVyLCBhbmQgb24gYXJtNjQgcGh5c190b192aXJ0KCkgc3VidHJhY3RzDQo+IFBIWVNf
-T0ZGU0VUIGFuZCBhZGRzIFBBR0VfT0ZGU0VULCBzbyBhIHZpcnR1YWwgYWRkcmVzcyBnb2VzIGlu
-IGFuZA0KPiBzb21ldGhpbmcgb3V0c2lkZSB0aGUgbGluZWFyIG1hcCBjb21lcyBvdXQuDQo+IA0K
-PiBVc2UgLT5iYXNlIGRpcmVjdGx5LCBzaW5jZSB0aGUgbWVtb3J5IHRoZSBBRiB3YW50cyBpcyB0
-aGUgUkFNIGl0IGFsbG9jYXRlZC4NCj4gSWYgLT5iYXNlIGlzIG1lYW50IHRvIGhvbGQgYSBwaHlz
-aWNhbCBhZGRyZXNzIG9uIHRoaXMgcGF0aCB0aGVuIHRoZSBhc3NpZ25tZW50IGluDQo+IHFtZW1f
-YWxsb2MoKSBpcyB3aGF0IHNob3VsZCBjaGFuZ2UgaW5zdGVhZCwgYW5kIHdlIHdvdWxkIGxpa2Ug
-dG8ga25vdyB3aGljaA0KPiBvZiB0aGUgdHdvIGlzIGludGVuZGVkLg0KPiANCj4gRml4ZXM6IGY4
-OTA5ZDNkZDU1NCAoIm9jdGVvbnR4Mi1hZjogQ04yMEsgbWJveCBpbXBsZW1lbnRhdGlvbiBmb3Ig
-QUYncyBWRiIpDQo+IFNpZ25lZC1vZmYtYnk6IFlpY2hlbmcgWmhvbmcgPHpob25neWljaGVuZzIw
-MjVAaXNjYXMuYWMuY24+DQo+IFNpZ25lZC1vZmYtYnk6IFlpY2hlbmcgWmhvbmcgPHpob25neWlj
-aGVuZzI0MUBtYWlscy51Y2FzLmFjLmNuPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0
-L21hcnZlbGwvb2N0ZW9udHgyL2FmL2NuMjBrL21ib3hfaW5pdC5jIHwgNCArKy0tDQo+ICAxIGZp
-bGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9udHgyL2FmL2NuMjBrL21i
-b3hfaW5pdC5jDQo+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9vY3Rlb250eDIvYWYv
-Y24yMGsvbWJveF9pbml0LmMNCj4gaW5kZXggMDFmMzJhZGFjNTkuLjY5MDhkN2ZmN2ZiIDEwMDY0
-NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9tYXJ2ZWxsL29jdGVvbnR4Mi9hZi9jbjIw
-ay9tYm94X2luaXQuYw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9tYXJ2ZWxsL29jdGVv
-bnR4Mi9hZi9jbjIway9tYm94X2luaXQuYw0KPiBAQCAtMjQwLDcgKzI0MCw3IEBAIGludCBjbjIw
-a19ydnVfZ2V0X21ib3hfcmVnaW9ucyhzdHJ1Y3QgcnZ1ICpydnUsIHZvaWQNCj4gKiptYm94X2Fk
-ZHIsDQo+ICAJCQlpZiAoIXRlc3RfYml0KHJlZ2lvbiwgcGZfYm1hcCkpDQo+ICAJCQkJY29udGlu
-dWU7DQo+IA0KPiAtCQkJYmFyID0gKHU2NClwaHlzX3RvX3ZpcnQoKHU2NClydnUtPm5nX3J2dS0N
-Cj4gPnZmX21ib3hfYWRkci0+YmFzZSk7DQo+ICsJCQliYXIgPSAodTY0KXJ2dS0+bmdfcnZ1LT52
-Zl9tYm94X2FkZHItPmJhc2U7DQpbU2FpXSAgQWdyZWUgd2l0aCB5b3VyIHN1Z2dlc3Rpb24sIHdl
-IGhhdmUgYWxyZWFkeSB0YWtlbiBjYXJlIHRoaXMgY2hhbmdlIGluIGludGVybmFsIHJlcG8uIFRo
-YW5rcy4NCj4gIAkJCWJhciArPSByZWdpb24gKiBNQk9YX1NJWkU7DQo+ICAJCQltYm94X2FkZHJb
-cmVnaW9uXSA9ICh2b2lkICopYmFyOw0KPiANCj4gQEAgLTI1NCw3ICsyNTQsNyBAQCBpbnQgY24y
-MGtfcnZ1X2dldF9tYm94X3JlZ2lvbnMoc3RydWN0IHJ2dSAqcnZ1LCB2b2lkDQo+ICoqbWJveF9h
-ZGRyLA0KPiAgCQlpZiAoIXRlc3RfYml0KHJlZ2lvbiwgcGZfYm1hcCkpDQo+ICAJCQljb250aW51
-ZTsNCj4gDQo+IC0JCWJhciA9ICh1NjQpcGh5c190b192aXJ0KCh1NjQpcnZ1LT5uZ19ydnUtPnBm
-X21ib3hfYWRkci0NCj4gPmJhc2UpOw0KPiArCQliYXIgPSAodTY0KXJ2dS0+bmdfcnZ1LT5wZl9t
-Ym94X2FkZHItPmJhc2U7DQo+ICAJCWJhciArPSByZWdpb24gKiBNQk9YX1NJWkU7DQo+IA0KPiAg
-CQltYm94X2FkZHJbcmVnaW9uXSA9ICh2b2lkICopYmFyOw0KPiAtLQ0KPiAyLjQzLjANCj4gDQpS
-ZXZpZXdlZC1ieTogU2FpIEtyaXNobmEgPHNhaWtyaXNobmFnQG1hcnZlbGwuY29tPg0K
+IP-TFS input can be deferred while its reordering queue waits for a missing
+sequence number. The VTI receive callback stores a pointer to the tunnel in
+skb->cb, and the device can be removed and freed before the callback runs.
+
+The issue was discovered by Qihoo 360's Tulongfeng multi-agent system.
+
+This IPv4 VTI use-after-free was reproduced on Linux 7.4-rc2 in an x86-64
+QEMU guest. When the IP-TFS reorder timer resumes input after VTI deletion,
+KASAN reports an 8-byte read from freed memory in vti_rcv_cb(). Relevant
+parts of the report are:
+
+  BUG: KASAN: slab-use-after-free in vti_rcv_cb+0x696/0x770
+  Read of size 8 at addr ffff88810eae4b58 by task swapper/3/0
+  Call Trace:
+   [...]
+   vti_rcv_cb+0x696/0x770
+   xfrm4_rcv_cb+0xa6/0x110
+   xfrm_rcv_cb+0xca/0x140
+   xfrm_input+0x11eb/0x6660
+   __input_process_payload+0xb87/0x24c0
+   iptfs_input_ordered+0x560/0x8e0
+   iptfs_drop_timer+0x464/0x8e0
+   __hrtimer_run_queues+0x270/0x600
+   hrtimer_run_softirq+0x14b/0x270
+   [...]
+
+  Freed by task 394:
+   [...]
+   kfree+0x23c/0x490
+   kvfree+0x31/0x40
+   netdev_release+0x6d/0x90
+   device_release+0xce/0x250
+   kobject_put+0x18d/0x4f0
+   netdev_run_todo+0x724/0x1360
+   rtnl_dellink+0x401/0x1020
+   [...]
+
+Keep only scalar tunnel metadata in an skb extension. The VTI callbacks
+look up the device by ifindex under RCU and check its link configuration
+before using its private data. If the VTI no longer exists, drop the
+deferred packet. Use the same metadata to preserve tunnel mark handling
+and IPv6 tunnel detection, and clear it when a new XFRM receive path starts
+and after the callback completes.
+
+Guard the skb extension accesses with CONFIG_XFRM and provide no-op or
+NULL-returning helpers when it is disabled, since xfrm.h is also included
+by code built without XFRM support.
+
+Signed-off-by: Jun Yao <yaojun8558363@gmail.com>
+
+---
+v1: https://lore.kernel.org/lkml/20261111094629.230568-1-yaojun8558363@gmail.com/T/#u
+
+Changes in v2:
+- Group the tunnel info helpers under CONFIG_XFRM and provide NULL-returning
+  or no-op stubs when it is disabled, fixing the !CONFIG_XFRM build errors.
+- Document the runtime reproduction and include a trimmed KASAN report.
+
+Build failure reported by the kernel test robot:
+https://lore.kernel.org/oe-kbuild-all/202611120519.EG3LbKfu-lkp@intel.com/
+
+Build-tested bzImage and modules using x86_64_defconfig-based configurations
+with CONFIG_WERROR=y and GCC 13.3.0:
+- CONFIG_XFRM=y, including IPv4/IPv6 VTI and ESP offload, XFRM interface,
+  and IP-TFS.
+- CONFIG_XFRM=n and CONFIG_SKB_EXTENSIONS=n.
+Both builds completed without errors or warnings.
+
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 6787fcf6a..f97412b95 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -5044,6 +5044,7 @@ enum skb_ext_id {
+ #endif
+ #ifdef CONFIG_XFRM
+ 	SKB_EXT_SEC_PATH,
++	SKB_EXT_XFRM_TUNNEL,
+ #endif
+ #if IS_ENABLED(CONFIG_NET_TC_SKB_EXT)
+ 	TC_SKB_EXT,
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 445223a8d..38815faca 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -382,6 +382,7 @@ struct xfrm_dst_lookup_params {
+ };
+ 
+ struct net_device;
++struct ip6_tnl;
+ struct xfrm_type;
+ struct xfrm_dst;
+ struct xfrm_policy_afinfo {
+@@ -740,14 +741,70 @@ struct xfrm_tunnel_skb_cb {
+ 		struct inet_skb_parm h4;
+ 		struct inet6_skb_parm h6;
+ 	} header;
++	/* Keep the layout of the other XFRM skb control blocks stable. */
++	unsigned long reserved;
++};
++
++enum xfrm_tunnel_info_type {
++	XFRM_TUNNEL_INFO_VTI4,
++	XFRM_TUNNEL_INFO_VTI6,
++	XFRM_TUNNEL_INFO_IP6,
++};
+ 
++/* Stored in an skb extension so it survives asynchronous XFRM input. */
++struct xfrm_tunnel_info {
++	int ifindex;
++	__be32 i_key;
++	u8 type;
+ 	union {
+-		struct ip_tunnel *ip4;
+-		struct ip6_tnl *ip6;
+-	} tunnel;
++		struct {
++			int link;
++			__be32 saddr;
++			__be32 daddr;
++		} ip4;
++		struct {
++			int link;
++			u8 proto;
++			struct in6_addr laddr;
++			struct in6_addr raddr;
++		} ip6;
++	};
+ };
+ 
+-#define XFRM_TUNNEL_SKB_CB(__skb) ((struct xfrm_tunnel_skb_cb *)&((__skb)->cb[0]))
++#ifdef CONFIG_XFRM
++static inline struct xfrm_tunnel_info *
++xfrm_tunnel_info_add(struct sk_buff *skb)
++{
++	return skb_ext_add(skb, SKB_EXT_XFRM_TUNNEL);
++}
++
++static inline const struct xfrm_tunnel_info *
++xfrm_tunnel_info(const struct sk_buff *skb)
++{
++	return skb_ext_find(skb, SKB_EXT_XFRM_TUNNEL);
++}
++
++static inline void xfrm_tunnel_info_clear(struct sk_buff *skb)
++{
++	skb_ext_del(skb, SKB_EXT_XFRM_TUNNEL);
++}
++#else
++static inline struct xfrm_tunnel_info *
++xfrm_tunnel_info_add(struct sk_buff *skb)
++{
++	return NULL;
++}
++
++static inline const struct xfrm_tunnel_info *
++xfrm_tunnel_info(const struct sk_buff *skb)
++{
++	return NULL;
++}
++
++static inline void xfrm_tunnel_info_clear(struct sk_buff *skb)
++{
++}
++#endif /* CONFIG_XFRM */
+ 
+ /*
+  * This structure is used for the duration where packets are being
+@@ -1851,7 +1908,7 @@ int xfrm4_rcv(struct sk_buff *skb);
+ 
+ static inline int xfrm4_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi)
+ {
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct iphdr, daddr);
+ 	return xfrm_input(skb, nexthdr, spi, 0);
+@@ -2300,15 +2357,17 @@ static inline int xfrm_if_id_put(struct sk_buff *skb, __u32 if_id)
+ static inline int xfrm_tunnel_check(struct sk_buff *skb, struct xfrm_state *x,
+ 				    unsigned int family)
+ {
++	const struct xfrm_tunnel_info *info = xfrm_tunnel_info(skb);
+ 	bool tunnel = false;
+ 
+ 	switch(family) {
+ 	case AF_INET:
+-		if (XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4)
++		if (info && info->type == XFRM_TUNNEL_INFO_VTI4)
+ 			tunnel = true;
+ 		break;
+ 	case AF_INET6:
+-		if (XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6)
++		if (info && (info->type == XFRM_TUNNEL_INFO_VTI6 ||
++			     info->type == XFRM_TUNNEL_INFO_IP6))
+ 			tunnel = true;
+ 		break;
+ 	}
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 8da53d5b7..32f41370d 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5241,6 +5241,7 @@ static const u8 skb_ext_type_len[] = {
+ #endif
+ #ifdef CONFIG_XFRM
+ 	[SKB_EXT_SEC_PATH] = SKB_EXT_CHUNKSIZEOF(struct sec_path),
++	[SKB_EXT_XFRM_TUNNEL] = SKB_EXT_CHUNKSIZEOF(struct xfrm_tunnel_info),
+ #endif
+ #if IS_ENABLED(CONFIG_NET_TC_SKB_EXT)
+ 	[TC_SKB_EXT] = SKB_EXT_CHUNKSIZEOF(struct tc_skb_ext),
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index abd77162f..fa0a2a73b 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -81,7 +81,7 @@ static struct sk_buff *esp4_gro_receive(struct list_head *head,
+ 	if (NAPI_GRO_CB(skb)->proto == IPPROTO_UDP)
+ 		encap_type = UDP_ENCAP_ESPINUDP;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct iphdr, daddr);
+ 	XFRM_SPI_SKB_CB(skb)->seq = seq;
+diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
+index c4f14d42d..3594254df 100644
+--- a/net/ipv4/ip_vti.c
++++ b/net/ipv4/ip_vti.c
+@@ -58,10 +58,25 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, flags,
+ 				  iph->saddr, iph->daddr, 0);
+ 	if (tunnel) {
++		struct xfrm_tunnel_info *info;
++
+ 		if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))
+ 			goto drop;
+ 
+-		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
++		info = xfrm_tunnel_info_add(skb);
++		if (!info)
++			goto drop;
++
++		*info = (struct xfrm_tunnel_info) {
++			.ifindex = tunnel->dev->ifindex,
++			.i_key = tunnel->parms.i_key,
++			.type = XFRM_TUNNEL_INFO_VTI4,
++			.ip4 = {
++				.link = tunnel->parms.link,
++				.saddr = tunnel->parms.iph.saddr,
++				.daddr = tunnel->parms.iph.daddr,
++			},
++		};
+ 
+ 		if (update_skb_dev)
+ 			skb->dev = tunnel->dev;
+@@ -96,18 +111,28 @@ static int vti_rcv_proto(struct sk_buff *skb)
+ 
+ static int vti_rcv_cb(struct sk_buff *skb, int err)
+ {
++	const struct xfrm_tunnel_info *info = xfrm_tunnel_info(skb);
+ 	unsigned short family;
+ 	struct net_device *dev;
+ 	struct xfrm_state *x;
+ 	const struct xfrm_mode *inner_mode;
+-	struct ip_tunnel *tunnel = XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4;
++	struct ip_tunnel *tunnel;
+ 	u32 orig_mark = skb->mark;
+ 	int ret;
+ 
+-	if (!tunnel)
++	if (!info || info->type != XFRM_TUNNEL_INFO_VTI4)
+ 		return 1;
+ 
+-	dev = tunnel->dev;
++	dev = dev_get_by_index_rcu(dev_net(skb->dev), info->ifindex);
++	if (!dev || dev->rtnl_link_ops != &vti_link_ops)
++		return err ? 1 : -ENODEV;
++
++	tunnel = netdev_priv(dev);
++	if (tunnel->parms.i_key != info->i_key ||
++	    tunnel->parms.link != info->ip4.link ||
++	    tunnel->parms.iph.saddr != info->ip4.saddr ||
++	    tunnel->parms.iph.daddr != info->ip4.daddr)
++		return err ? 1 : -ENODEV;
+ 
+ 	if (err) {
+ 		DEV_STATS_INC(dev, rx_errors);
+@@ -131,7 +156,7 @@ static int vti_rcv_cb(struct sk_buff *skb, int err)
+ 
+ 	family = inner_mode->family;
+ 
+-	skb->mark = be32_to_cpu(tunnel->parms.i_key);
++	skb->mark = be32_to_cpu(info->i_key);
+ 	ret = xfrm_policy_check(NULL, XFRM_POLICY_IN, skb, family);
+ 	skb->mark = orig_mark;
+ 
+diff --git a/net/ipv4/xfrm4_protocol.c b/net/ipv4/xfrm4_protocol.c
+index 4ee624d8e..c31426ea8 100644
+--- a/net/ipv4/xfrm4_protocol.c
++++ b/net/ipv4/xfrm4_protocol.c
+@@ -65,7 +65,7 @@ int xfrm4_rcv_encap(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 	struct xfrm4_protocol *handler;
+ 	struct xfrm4_protocol __rcu **head = proto_handlers(nexthdr);
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct iphdr, daddr);
+ 
+@@ -98,7 +98,7 @@ static int xfrm4_esp_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm4_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(esp4_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+@@ -126,7 +126,7 @@ static int xfrm4_ah_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm4_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(ah4_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+@@ -154,7 +154,7 @@ static int xfrm4_ipcomp_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm4_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(ipcomp4_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 22895521a..00cdae2c7 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -110,7 +110,7 @@ static struct sk_buff *esp6_gro_receive(struct list_head *head,
+ 		goto out;
+ 
+ 	IP6CB(skb)->nhoff = nhoff;
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
+ 	XFRM_SPI_SKB_CB(skb)->seq = seq;
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index c79027839..6cf40b000 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -302,6 +302,8 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 	rcu_read_lock();
+ 	t = vti6_tnl_lookup(dev_net(skb->dev), &ipv6h->saddr, &ipv6h->daddr);
+ 	if (t) {
++		struct xfrm_tunnel_info *info;
++
+ 		if (t->parms.proto != IPPROTO_IPV6 && t->parms.proto != 0) {
+ 			rcu_read_unlock();
+ 			goto discard;
+@@ -319,9 +321,26 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 			goto discard;
+ 		}
+ 
++		info = xfrm_tunnel_info_add(skb);
++		if (!info) {
++			rcu_read_unlock();
++			goto discard;
++		}
++
++		*info = (struct xfrm_tunnel_info) {
++			.ifindex = t->dev->ifindex,
++			.i_key = t->parms.i_key,
++			.type = XFRM_TUNNEL_INFO_VTI6,
++			.ip6 = {
++				.link = t->parms.link,
++				.proto = t->parms.proto,
++				.laddr = t->parms.laddr,
++				.raddr = t->parms.raddr,
++			},
++		};
++
+ 		rcu_read_unlock();
+ 
+-		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
+ 		XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
+ 		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
+ 		return xfrm_input(skb, nexthdr, spi, encap_type);
+@@ -342,18 +361,29 @@ static int vti6_rcv(struct sk_buff *skb)
+ 
+ static int vti6_rcv_cb(struct sk_buff *skb, int err)
+ {
++	const struct xfrm_tunnel_info *info = xfrm_tunnel_info(skb);
+ 	unsigned short family;
+ 	struct net_device *dev;
+ 	struct xfrm_state *x;
+ 	const struct xfrm_mode *inner_mode;
+-	struct ip6_tnl *t = XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6;
++	struct ip6_tnl *t;
+ 	u32 orig_mark = skb->mark;
+ 	int ret;
+ 
+-	if (!t)
++	if (!info || info->type != XFRM_TUNNEL_INFO_VTI6)
+ 		return 1;
+ 
+-	dev = t->dev;
++	dev = dev_get_by_index_rcu(dev_net(skb->dev), info->ifindex);
++	if (!dev || dev->rtnl_link_ops != &vti6_link_ops)
++		return err ? 1 : -ENODEV;
++
++	t = netdev_priv(dev);
++	if (t->parms.i_key != info->i_key ||
++	    t->parms.link != info->ip6.link ||
++	    t->parms.proto != info->ip6.proto ||
++	    !ipv6_addr_equal(&t->parms.laddr, &info->ip6.laddr) ||
++	    !ipv6_addr_equal(&t->parms.raddr, &info->ip6.raddr))
++		return err ? 1 : -ENODEV;
+ 
+ 	if (err) {
+ 		DEV_STATS_INC(dev, rx_errors);
+@@ -377,7 +407,7 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
+ 
+ 	family = inner_mode->family;
+ 
+-	skb->mark = be32_to_cpu(t->parms.i_key);
++	skb->mark = be32_to_cpu(info->i_key);
+ 	ret = xfrm_policy_check(NULL, XFRM_POLICY_IN, skb, family);
+ 	skb->mark = orig_mark;
+ 
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 07edef258..9aed0b21d 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -15,6 +15,7 @@
+ #include <linux/netfilter.h>
+ #include <linux/netfilter_ipv6.h>
+ #include <net/ipv6.h>
++#include <net/ip6_tunnel.h>
+ #include <net/xfrm.h>
+ #include <net/protocol.h>
+ #include <net/gro.h>
+@@ -22,7 +23,28 @@
+ int xfrm6_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 		  struct ip6_tnl *t)
+ {
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
++	struct xfrm_tunnel_info *info;
++
++	xfrm_tunnel_info_clear(skb);
++	if (t) {
++		info = xfrm_tunnel_info_add(skb);
++		if (!info) {
++			kfree_skb(skb);
++			return 0;
++		}
++
++		*info = (struct xfrm_tunnel_info) {
++			.ifindex = t->dev->ifindex,
++			.i_key = t->parms.i_key,
++			.type = XFRM_TUNNEL_INFO_IP6,
++			.ip6 = {
++				.link = t->parms.link,
++				.proto = t->parms.proto,
++				.laddr = t->parms.laddr,
++				.raddr = t->parms.raddr,
++			},
++		};
++	}
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
+ 	return xfrm_input(skb, nexthdr, spi, 0);
+diff --git a/net/ipv6/xfrm6_protocol.c b/net/ipv6/xfrm6_protocol.c
+index 9b586fcec..2e93029a3 100644
+--- a/net/ipv6/xfrm6_protocol.c
++++ b/net/ipv6/xfrm6_protocol.c
+@@ -66,7 +66,7 @@ int xfrm6_rcv_encap(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 	struct xfrm6_protocol *handler;
+ 	struct xfrm6_protocol __rcu **head = proto_handlers(nexthdr);
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 	XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
+ 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
+ 
+@@ -113,7 +113,7 @@ static int xfrm6_esp_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm6_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(esp6_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+@@ -142,7 +142,7 @@ static int xfrm6_ah_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm6_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(ah6_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+@@ -171,7 +171,7 @@ static int xfrm6_ipcomp_rcv(struct sk_buff *skb)
+ 	int ret;
+ 	struct xfrm6_protocol *handler;
+ 
+-	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++	xfrm_tunnel_info_clear(skb);
+ 
+ 	for_each_protocol_rcu(ipcomp6_handlers, handler)
+ 		if ((ret = handler->handler(skb)) != -EINVAL)
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 5ed87d513..a5d67d506 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -466,6 +466,7 @@ static int xfrm_inner_mode_input(struct xfrm_state *x,
+ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ {
+ 	const struct xfrm_state_afinfo *afinfo;
++	const struct xfrm_tunnel_info *tunnel_info;
+ 	struct net *net = dev_net(skb->dev);
+ 	struct net_device *dev = skb->dev;
+ 	int err;
+@@ -555,16 +556,20 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	}
+ 
+ 	family = XFRM_SPI_SKB_CB(skb)->family;
++	tunnel_info = xfrm_tunnel_info(skb);
+ 
+ 	/* if tunnel is present override skb->mark value with tunnel i_key */
+ 	switch (family) {
+ 	case AF_INET:
+-		if (XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4)
+-			mark = be32_to_cpu(XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4->parms.i_key);
++		if (tunnel_info &&
++		    tunnel_info->type == XFRM_TUNNEL_INFO_VTI4)
++			mark = be32_to_cpu(tunnel_info->i_key);
+ 		break;
+ 	case AF_INET6:
+-		if (XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6)
+-			mark = be32_to_cpu(XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6->parms.i_key);
++		if (tunnel_info &&
++		    (tunnel_info->type == XFRM_TUNNEL_INFO_VTI6 ||
++		     tunnel_info->type == XFRM_TUNNEL_INFO_IP6))
++			mark = be32_to_cpu(tunnel_info->i_key);
+ 		break;
+ 	}
+ 
+@@ -739,6 +744,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		goto drop;
+ 	}
+ 
++	xfrm_tunnel_info_clear(skb);
+ 	nf_reset_ct(skb);
+ 
+ 	if (decaps) {
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 9835fbe63..d91b5f22d 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -322,10 +322,10 @@ static int xfrmi_input(struct sk_buff *skb, int nexthdr, __be32 spi,
+ 	XFRM_SPI_SKB_CB(skb)->family = family;
+ 	if (family == AF_INET) {
+ 		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct iphdr, daddr);
+-		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
++		xfrm_tunnel_info_clear(skb);
+ 	} else {
+ 		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
+-		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
++		xfrm_tunnel_info_clear(skb);
+ 	}
+ 
+ 	return xfrm_input(skb, nexthdr, spi, encap_type);
+
