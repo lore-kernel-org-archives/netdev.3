@@ -1,53 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794480329;
-	b=yDRAzsQXO6RDSkAaqXPwKR7t8xB6RoGGpUY0KAkgd9pIybRr4NPCayhq6CIsjjQoNS30
-	 T8AjmLutkwfdPfJe4e6b0jotS+ggYonf2lTwU0XXhOdU9C9YDDgA9UdC1KvgbxLSJTDv8
-	 lCeg671aFC1qFGx3yuLh3qmw0KecfA4wK/MyaaqX3Xl/ikVYoCfSx9Gg2YfVDAREnJdhw
-	 nDJypfSvlJO/mpRuFzlrvZgDR9Ne2tBSMcA1VT86sRJY9SSJ4i/Lzxi/V2JDeRZjiHshD
-	 FqQFoz7/63/YHk62brOx/HldHl41EZJ+ZUnPOSo+9SvLW2mwVySE0Ddr6OjR6gGn6qQ==
+	b=Ba6hrYfd9dyIdRPc+AGwqtAGC0ypljzH4fBlMDNAWpfrbiBqVUS2esvjtJ8L6ln97Zbp
+	 bXXsSX7W2CoPiUKoxH2BvhUWhvCCJsvoQHa9v96wZD6Ih2gxHnOwltORsKN+JSIgSbL5h
+	 Z7Frji8peZQLlk7cqgtYiuK9zp4+Qm9yhiG9ofXAMqAhgfCgEIFkP8Yi8kbniFrdlh6Ue
+	 kkJ0l/ynZFAlI4Dt6P0jycOQd+YDmVFv9lVwf+1zNe/EvisGtDAz1rHgxfjEy4iS092J1
+	 RMGiQNI9/eVLe64npmwcDpDD53kWf/i96rn9cUf5SJMjaSb9zIT4CfmldINDjFGsH/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794480329;
 	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=IFMeZbLIaegiXj/zfONdiWfOWMlEVj7LkVrGQYZjHPg=;
-	b=aMJgZhlxA8v3fOVN9ZexEpFBcZNEZDK21QZ1+63aKwaUQwOPx0YtNbrU5mDwECT7gpgh
-	 AdGUwHngCUdQOI/UwMIIy3y623UJ3gqVnhoQcIWqWnweZSbBPJXNXBvLp5ecfnpyswboH
-	 wKuc6NmNJ6S6g3fH+WKfN8V6yx937HkkuyR1OwFv+x1qFW2KENJFcR7ZvxDa+q/QMqjsJ
-	 q2xEWyv31tkERBnolFv6lNOORu/CpW7BSYrJfiNbzVg8SWXYpRPNO/dqkLqSNxV5RCqcd
-	 LBudiVvICFprPuLsKQvlXCfFD/gpPcqaR8OErTztmF/lmEEP9O9w1fduTqUMQw8J81w==
+	bh=Xg+KYajz7Z1q6LDz3Lm1nAnAFjWCVa0syzQx7o7Tgdc=;
+	b=V2A8dRII2vcC9JlY1IVNy1Hs6FFGZAPziCrNh2iL3I+n7Ix32qainpi5PtzZLUqwEXHt
+	 SDedAH7bVN4EJuHpbjhd77qt2ZgHKF9BfxiJCB+IMnlt26gaOYsU8ZQKhWU0fG7EJxptK
+	 BaDRKq9ZCllLJGy5D3M1PtbSgrNgnY2yL/YaRuA7K3EpAach6vJiO4D2Xxnz/EtRxByz1
+	 EaAuLkQzWuVraAEXf5s/RMG+OIsa7j0OZsYuhv6xFzZVv4GeXQ6FxeNZWqb09akCzFEAW
+	 kua4oyjSEekQv+vlArau52F7kdNMD0b1ID7hA+jlhlT1/DZuErXg8XpDtmCgdjcg0ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=tipi-net.de;
 	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=yQtAWMRm;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=l1o2zFav;
 	arc=none smtp.remote-ip=194.13.80.246
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C950606A891;
-	Thu, 12 Nov 2026 10:45:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C950606A891
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27712606A89C;
+	Thu, 12 Nov 2026 10:45:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27712606A89C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=yQtAWMRm
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63431A50BD;
-	Thu, 12 Nov 2026 11:45:26 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=l1o2zFav
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13D21A50C9;
+	Thu, 12 Nov 2026 11:45:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794480326; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1794480327; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=IFMeZbLIaegiXj/zfONdiWfOWMlEVj7LkVrGQYZjHPg=;
-	b=yQtAWMRmUD2W7RApt6ZOHZ8lNuZFaU+6mSI/rbv4R8Rt51MDKGZHgLi06+B8yWDqJ+2LI/
-	A7xBR0Uafj0dAAWykU9jP5GHOVin/aZnmlH/SPHqKJTUUzWwAMaBy5bBeaTFQcZC3rlWQF
-	HtPg6mpOcxKQVF+NafHkNFiXKCWa6r36kSxGXKYF3kJomMHt0JtHe0aIbH6Xz8Gh76M7xZ
-	Amm5DgpgBpGFa/gosoz03syIyQ/Nz0nOr00apv7V/tyIz3LmlmFMHSe9atGzCioNnj1DPI
-	ZSXlbLKVugH/nKi2Zbx/Fny2HwWsAzkDeSm1TCw5q6iUgX1nNPtoi37Knaaw8Q==
+	bh=Xg+KYajz7Z1q6LDz3Lm1nAnAFjWCVa0syzQx7o7Tgdc=;
+	b=l1o2zFavhOfZ5s09lspCqxjwPY3f3svFQtiJ3R3eBTZVsMpTgAavJG31ToQb642X8FSe1w
+	17hs1nYrtg1rsSpVuMLTHlLJOHiNn5fHf7xnU3d2UWyep7qiIfhqYOEp22YWtau7/2HiMI
+	0RZydr/t/d0zHiXgo1VOl5NyzzB67B/Zjhi0qEW3ps949crCuw/DtM1rTreZz4dQspQHqU
+	96crpp9LodZwzV4VtEfkEdweUwxB51d+ICUEAaIjooJFmqjraDKgL4Pt2nX47v2B/xKZv3
+	q35zQsGhLcXJA10CRu8LYS2pSpBdzrLuTl9nS208wAG1pmQ6PVAtaCDqqVGuGg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Thu, 12 Nov 2026 11:45:17 +0100
-Subject: [PATCH net-next v7 3/9] net: bcmgenet: allow a continuation
- descriptor without the alignment pad
+Date: Thu, 12 Nov 2026 11:45:18 +0100
+Subject: [PATCH net-next v7 4/9] net: bcmgenet: rename ENET_MAX_MTU_SIZE to
+ ENET_MAX_FRAME_LEN
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,7 +59,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-nb-genet-mtu-nn-v2-v7-3-43a5d90b3256@tipi-net.de>
+Message-Id: <20261112-nb-genet-mtu-nn-v2-v7-4-43a5d90b3256@tipi-net.de>
 References: <20261112-nb-genet-mtu-nn-v2-v7-0-43a5d90b3256@tipi-net.de>
 In-Reply-To: <20261112-nb-genet-mtu-nn-v2-v7-0-43a5d90b3256@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -70,65 +70,65 @@ To: Doug Berger <opendmb@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
+ linux-kernel@vger.kernel.org
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-A frame longer than the packet ready threshold arrives in several
-descriptors, each with its own status block. Only the first one also
-carries the two alignment bytes. The length check assumes the pad is always
-there, so a continuation holding a single byte looks a byte too short and
-the whole frame is dropped.
+ENET_MAX_MTU_SIZE holds a frame length, not an MTU. Both users program it
+into hardware that expects a frame length. The name is wrong once the MTU
+is no longer fixed at ETH_DATA_LEN.
 
-Account for the pad on the first descriptor only.
+No functional change.
 
-The MTU cannot produce a frame past the threshold yet, so nothing hits this
-today. It is preparation for the larger MTU.
-
-Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 ++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h | 7 +++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4c2a38eaab108..d4eac993368fe 100644
+index d4eac993368fe..b0b0d9b423482 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -53,7 +53,8 @@
+@@ -2673,7 +2673,7 @@ static void init_umac(struct bcmgenet_priv *priv)
+ 			     UMAC_MIB_CTRL);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_MIB_CTRL);
  
- /* Page pool RX buffer layout:
-  * RSB(64) + pad(2) | frame data | skb_shared_info
-- * The HW writes the 64B RSB + 2B alignment padding before the frame.
-+ * The HW writes the 64B RSB before every descriptor of a frame. Only the
-+ * first one also gets the 2B alignment padding.
-  */
- #define GENET_RSB_PAD		(sizeof(struct status_64) + 2)
+-	bcmgenet_umac_writel(priv, ENET_MAX_MTU_SIZE, UMAC_MAX_FRAME_LEN);
++	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN, UMAC_MAX_FRAME_LEN);
  
-@@ -2363,6 +2364,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		unsigned int rx_offset, rx_size;
- 		struct status_64 *status;
- 		struct page *rx_page;
-+		unsigned int min_len;
- 		void *hard_start;
- 		__be16 rx_csum;
+ 	/* init tx registers, enable TSB */
+ 	reg = bcmgenet_tbuf_ctrl_get(priv);
+@@ -2781,7 +2781,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
-@@ -2399,8 +2401,12 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			  __func__, p_index, ring->c_index,
- 			  ring->read_ptr, dma_length_status);
+ 	/* Set flow period for ring != 0 */
+ 	if (index)
+-		flow_period_val = ENET_MAX_MTU_SIZE << 16;
++		flow_period_val = ENET_MAX_FRAME_LEN << 16;
  
-+		/* Only the first descriptor carries the alignment pad */
-+		min_len = dma_flag & DMA_SOP ? GENET_RSB_PAD
-+					     : sizeof(struct status_64);
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 6ab3f73475550..afaccb7699336 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -28,12 +28,11 @@
+ /* which ring is descriptor based */
+ #define DESC_INDEX				16
+ 
+-/* Body(1500) + EH_SIZE(14) + VLANTAG(4) + BRCMTAG(6) + FCS(4) = 1528.
+- * 1536 is multiple of 256 bytes
+- */
+ #define ENET_BRCM_TAG_LEN	6
+ #define ENET_PAD		8
+-#define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
 +
- 		/* Reject lengths that would underflow the SKB build path. */
--		if (unlikely(len > RX_BUF_LENGTH || len < GENET_RSB_PAD)) {
-+		if (unlikely(len > RX_BUF_LENGTH || len < min_len)) {
- 			netif_err(priv, rx_status, dev,
- 				  "invalid packet length %d\n", len);
- 			BCMGENET_STATS64_INC(stats, length_errors);
++/* Longest frame the MAC must accept for the default MTU */
++#define ENET_MAX_FRAME_LEN	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
+ 				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
+ #define DMA_MAX_BURST_LENGTH    0x10
+ 
 
 -- 
 2.53.0
