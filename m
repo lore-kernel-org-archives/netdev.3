@@ -1,52 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794480328;
-	b=17gLPA+Ssv/MAaJCuKBPKo/vz85WjL3GlXZ5d5sHBfxq4C+/DvBB9enaPcNrJ3eRmr74
-	 0TQ9yQcbgJo5qhuxnzDOXYUD2zxNvgn7QYRyo83NQq1Ckn6qyQa0Xqw8t/pSVnEaj08OX
-	 5pq8gH1Tq1DCbETZ1mgJVNZiGJ1IPjozmdQaqiRxEZO816qOL8F8L3coewH++30MWu1B6
-	 ZtpMfkMHLKSxJUf3HA/ngz0VJld9XzfRVOsi1iQg7iEUHxQ7tQ/qc4wPzMyjc4eokLOe5
-	 hZ3la+jVXBOs3VF5K59ZX27uTvYq5JZKgypp/4I30E6cIjh0HQUE+TFiybkpKeXr2Ww==
+	t=1794480356;
+	b=iHc9BOwjmIH8Tc/hEPk2ovnccEDrRCsCiPIvsi1BSqiOAy73dyg57J9iwjYgNUnrH3eh
+	 0ObH7W88n23Yq9C6piT/JIZYRtYew8NgjTUehb+WviFa2wJYSodwatiMe+nQIUp3NG0YJ
+	 TaOpwOdCpTGXsP5GcgjeUFP7riC2WWnhfiJ+aAWf3I5eYGFQ1Xt7oiQ/lXVsd8+NCBkA7
+	 yciLqKaUp1xcmq0dHHDXLaJrsYYArgOOiIXkQ72tEXj3tCbJupq4q/EXSPYZiMn2q+gO3
+	 Q0XKNCqpFCDhlhmiEMhGHALAH0L+3yEKB+Y38TR1DG294ZOzqFnd/qUvyLw4nxduvLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794480328;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=rWfeEa0PZ69WDxMC/jfdmA+1QgFkiF6Sosrj8/1XMWI=;
-	b=t0mxMBoTSbojf/Ls0BBL8ZJCGZ/wjQdpeyHgPujUveK0WlGV9Uz33lZUfqWP5vWH6fUA
-	 Ljdin5Z8Mc7y/JJiC2AJLVuV1Ty3FW7PnTqO0aX50uBpTpX/UkwOnUqx6Rau1IZ9bzJWf
-	 WnsSsjyea13ogkCru6cEGSndWQoJQktvm/S8zBJHCiJsxd6aXucWTkg5iiU04RCwgrWgg
-	 jgFXnD9qOxW6Khnu8nMYQZrsuquEGl7DhVR9LBsO/4TfQWAjFjhg1J3aWV/8dSeLJHWro
-	 3q8JlTdFQxTAugIUYuwfwLFGeluSS5hnzr9TsMpOzK9xAvYqcnR6CEnDYmxNGnK7YrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794480356;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
+	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
+	b=4iaX/dXsEit5SDSZGGV5EqyQYra4kzZCHMjxDLFv7I8EBJPuPB+tu4UIgr26yVBzcmeJ
+	 444jMLm82p3TyKqhVh9owOxRlVLSRu6VWtTEVYXNgi2i3MPW2kNeBuSBkl5iLnAhPz+Uz
+	 EwwWBUKCA2PIElbsGbM00pmJK1oQ3ZVjdRM0ow/ot5J5vLtXRO8X51V16B5jTApJP5dVD
+	 646kTs/n7u5sNaEo1h/WN7LnLOzY1b4IlwIuqMNZLKjz9B5odjXg1UpNXuadDjuxjcWHl
+	 tBuw6vyyPp+1nuUgxGz1zNAbaOvS33Kue9pHLwXCffMenVW3zUjxv6f/qC6THGVUZ2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jjyhyoHt;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEE606A88A;
-	Thu, 12 Nov 2026 10:45:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67EEE606A88A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C82606A33E;
+	Thu, 12 Nov 2026 10:45:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75C82606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jjyhyoHt
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD5BDA167A;
-	Thu, 12 Nov 2026 11:45:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794480324; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=rWfeEa0PZ69WDxMC/jfdmA+1QgFkiF6Sosrj8/1XMWI=;
-	b=jjyhyoHt2jfGX5QGZSNQzFH2mpIxmuNeemOa3TililwxFke/2RWB9pJwN1NSZf6hKYd4dj
-	N8EbtMHMvOQNteIeNEG2zzplS1RNTKeJ8Bw9VusFqG/FlZnS3Jhn3Mi1PIzB7bV8ZiHn3S
-	B106sLEjB7YlUIrKt6J5m47DMfTKX/WGudLBRfRjUslyQHBMkRRhMMH+tBdsT9HJJLWsfU
-	OiwJlk298LxB7Mf4kS0KhHI1Ztx6LDL7WnpI34MAoo3J6UX//uqvJT1WJkiSHp3lqRnnmO
-	Z+XXFBwSTiP+fPBdreAkCcVsZD6oDArslEIHgu1fIWRJ6Sb6MWm9WUn6VX35pw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v7 0/9] net: bcmgenet: support larger MTUs
-Date: Thu, 12 Nov 2026 11:45:14 +0100
-Message-Id: <20261112-nb-genet-mtu-nn-v2-v7-0-43a5d90b3256@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=QM+hxa8S
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6C17021C82;
+	Thu, 12 Nov 2026 10:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794480353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
+	b=QM+hxa8SO3kXjLDKLwIaK+hPE+CFmebUEyVLd9wWlZ8yPay0XuEKWjb2hHPlFXwrG7DMHy
+	0iAJIRyF4VSIwnjFD/uNrmNED/6mEviFTEPN33IWXPPN/7tE3xgqOLmkgHgIR9pNySZ6Qf
+	Eg0gzzfNWpjJUOahQYicH3ABXC1CCb4=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=QM+hxa8S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794480353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tSYotEmmpwO0914M6sxzeqhwcBbbWulbYcdw+O9tcI8=;
+	b=QM+hxa8SO3kXjLDKLwIaK+hPE+CFmebUEyVLd9wWlZ8yPay0XuEKWjb2hHPlFXwrG7DMHy
+	0iAJIRyF4VSIwnjFD/uNrmNED/6mEviFTEPN33IWXPPN/7tE3xgqOLmkgHgIR9pNySZ6Qf
+	Eg0gzzfNWpjJUOahQYicH3ABXC1CCb4=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06AE713432;
+	Thu, 12 Nov 2026 10:45:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YOzfM+CY9Wr4VwAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Thu, 12 Nov 2026 10:45:53 +0000
+From: Oliver Neukum <oneukum@suse.com>
+To: petkan@nucleusys.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH net 1/1] net: usb: rtl8150: break cycle between tasklet and URB
+Date: Thu, 12 Nov 2026 11:45:11 +0100
+Message-ID: <20261112104548.693456-1-oneukum@suse.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,117 +93,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PwW7DIAwG4FepOI8JGzBLT3uPaYdATMthtEoY6
- lTl3cdyWaaiHS3bn3/fxcJz4kUcD3cxc01LuuRWuKeDCOcxn1imqdUCFRIohTJ7eeLMRX6UT5m
- zrCiNQm+ZolYURVu8zhzTbUPfxM9o5lsR761zTku5zF/btQpb/z+4glRyoCnQZE3wzK8lXVPjy
- vPEG1hxj1AXwYYE4xkBLAyAj4jeI66L6IY4M7qBgoIhdJKYHQL9d0xDkJG1j2N8CeERsXtEdxH
- bEOXIUwxolO8koV8EVB+hhhBMljSQI7Z/kXVdvwG5TOGmGQIAAA==
-X-Change-ID: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Justin Chen <justin.chen@broadcom.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6C17021C82
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-10.51 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[netdev];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:email]
+X-Spam-Score: -10.51
 
-This is v7 of my genet series which adds larger MTU / jumbo packet support.
+The tasklet can resubmit the URB, which in turn can
+resubmit the tasklet. The cycle needs to be broken.
+The simplest way to do so is to prevent the resubmission
+of the URBs by poisoning them.
 
-Larger MTU aka. jumbo frames are requested often by Raspberry Pi users, but
-the hardware has its quirks with larger frames. Dave Stevenson's PoC [1] had
-the receive side working, and thanks to Justin, who checked the RTL for what
-the hardware does with long frames, I could add the missing puzzle pieces.
-
-GENET never sets dev->max_mtu and the packet ready thresholds stay at their
-2048 byte reset default, so long frames were dropped on receive and never
-sent on transmit.
-
-Patches 1 to 5 prepare the driver, patch 8 sets the MTU, as far as one
-descriptor reaches (3564 bytes with 4K pages). Patch 9 reassembles what the
-hardware hands up above that, which gets the ceiling to 16347 [2]. Patch 6
-splits a frame ending just past the packet ready threshold, which otherwise
-stops the transmitter [3]. Patch 7 builds the new rings before dropping the
-old ones, so a failed MTU change leaves the interface alone.
-
-A split frame takes one descriptor more. Patch 6 adds it to the two limits
-which 1e09af397bc7 and fbfd7cfd2019 put on the 32 descriptor rings, so the
-queue stops one descriptor earlier and a frame is flattened one fragment
-sooner.
-
-Patch 8 needs bcmgenet_fini_dma() to clear rx_cbs and tx_cbs, which landed
-in net as 1c1f51c3ee9c.
-
-Tested on a Raspberry Pi CM4 (GENET v5), peer at the same MTU:
-- MTU 1500: iperf3 TCP 941/941 Mbit/s, UDP 956 Mbit/s, unchanged
-- MTU 9000: iperf3 TCP 991/987 Mbit/s, UDP 993 Mbit/s, no loss
-- MTU 1500 to 16347 with traffic and ifdown/ifup's
-- pktgen at line rate, 3858/3872/3886 byte frames mixed with 64 byte ones
-- raw frames across every receive descriptor boundary, byte exact
-- CONFIG_MAX_SKB_FRAGS 31, 29 to 31 fragment frames in the split window
-
-Pierre-Marin Leclercq tested v5 on a Raspberry Pi 4.
-
-[1] https://github.com/raspberrypi/linux/pull/7614
-[2] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5669564355
-[3] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5735557324
-
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Fixes: eff674a514bd3 ("USB: rtl8150_disconnect() needs tasklet_kill()")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
-Changes in v7:
-- Patch 1 rings the doorbell on the skb_share_check() exit too (sashiko)
-- Patch 6 wakes and stops the transmit queue at the same threshold (sashiko)
-- Patch 9 clears frag_drop once the dropped frame has ended (sashiko)
-- Dropped Florian's Reviewed-by on patches 1 and 9, both changed
-- Dropped Pierre-Marin's Tested-by on patch 9, it changed
+ drivers/net/usb/rtl8150.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-To: Doug Berger <opendmb@gmail.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-To: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-v6: https://patch.msgid.link/20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de
-v5: https://patch.msgid.link/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de
-v4: https://patch.msgid.link/20261012-nb-genet-mtu-nn-v2-v4-0-2e2e3bfaf8cc@tipi-net.de
-v3: https://patch.msgid.link/20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de
-v2: https://patch.msgid.link/20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de
-v1: https://patch.msgid.link/20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de
-
----
-Nicolai Buchwitz (9):
-      net: bcmgenet: ring the doorbell when the last frame of a batch is dropped
-      net: bcmgenet: let the caller decide whether to start the PHY
-      net: bcmgenet: allow a continuation descriptor without the alignment pad
-      net: bcmgenet: rename ENET_MAX_MTU_SIZE to ENET_MAX_FRAME_LEN
-      net: bcmgenet: derive the receive buffer length from the MTU
-      net: bcmgenet: split frames that end just past the transmit threshold
-      net: bcmgenet: build the DMA rings before giving up the running ones
-      net: bcmgenet: allow the MTU to be changed
-      net: bcmgenet: reassemble jumbo frames from status block fragments
-
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 737 +++++++++++++++++++------
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  34 +-
- 2 files changed, 588 insertions(+), 183 deletions(-)
----
-base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
-change-id: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
-
-Best regards,
---  
-Nicolai Buchwitz <nb@tipi-net.de>
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index d51e43170e03..846e6329d571 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -343,6 +343,13 @@ static int alloc_all_urbs(rtl8150_t * dev)
+ 		return 0;
+ 	}
+ 
++	/*
++	 * They need to be blocked so that open()
++	 * can unblock them
++	 */
++	usb_block_urb(dev->rx_urb);
++	usb_block_urb(dev->tx_urb);
++	usb_block_urb(dev->intr_urb);
+ 	return 1;
+ }
+ 
+@@ -353,11 +360,18 @@ static void free_all_urbs(rtl8150_t * dev)
+ 	usb_free_urb(dev->intr_urb);
+ }
+ 
++static void reenable_all_urbs(rtl8150_t *dev)
++{
++	usb_unpoison_urb(dev->rx_urb);
++	usb_unpoison_urb(dev->tx_urb);
++	usb_unpoison_urb(dev->intr_urb);
++}
++
+ static void unlink_all_urbs(rtl8150_t * dev)
+ {
+-	usb_kill_urb(dev->rx_urb);
+-	usb_kill_urb(dev->tx_urb);
+-	usb_kill_urb(dev->intr_urb);
++	usb_poison_urb(dev->rx_urb);
++	usb_poison_urb(dev->tx_urb);
++	usb_poison_urb(dev->intr_urb);
+ }
+ 
+ static inline struct sk_buff *pull_skb(rtl8150_t *dev)
+@@ -425,6 +439,11 @@ static void read_bulk_callback(struct urb *urb)
+ 	netdev->stats.rx_bytes += pkt_len;
+ 
+ 	spin_lock_irqsave(&dev->rx_pool_lock, flags);
++	/* prevent an eteral loop */
++	if (test_bit(RTL8150_UNPLUG, &dev->flags)) {
++		spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
++		return;
++	}
+ 	skb = pull_skb(dev);
+ 	spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
+ 	if (!skb)
+@@ -518,7 +537,7 @@ static void intr_callback(struct urb *urb)
+ 	res = usb_submit_urb (urb, GFP_ATOMIC);
+ 	if (res == -ENODEV)
+ 		netif_device_detach(dev->netdev);
+-	else if (res)
++	else if (res != -EPERM)
+ 		dev_err(&dev->udev->dev,
+ 			"can't resubmit intr, %s-%s/input0, status %d\n",
+ 			dev->udev->bus->bus_name, dev->udev->devpath, res);
+@@ -751,6 +770,7 @@ static int rtl8150_open(struct net_device *netdev)
+ 	if (!dev->rx_skb)
+ 		return -ENOMEM;
+ 
++	reenable_all_urbs(dev);
+ 	set_registers(dev, IDR, 6, netdev->dev_addr);
+ 
+ 	usb_fill_bulk_urb(dev->rx_urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
+@@ -969,8 +989,9 @@ static void rtl8150_disconnect(struct usb_interface *intf)
+ 	if (dev) {
+ 		set_bit(RTL8150_UNPLUG, &dev->flags);
+ 		tasklet_kill(&dev->tl);
+-		unregister_netdev(dev->netdev);
+ 		unlink_all_urbs(dev);
++		tasklet_kill(&dev->tl);
++		unregister_netdev(dev->netdev);
+ 		free_all_urbs(dev);
+ 		free_skb_pool(dev);
+ 		dev_kfree_skb(dev->rx_skb);
+-- 
+2.56.0
 
