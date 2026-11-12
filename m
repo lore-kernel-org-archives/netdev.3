@@ -1,148 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.120
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794484936;
-	b=MIBW6KdJ1iAglHjeeN1Kk4qVgNpbG5StYcm0Jwo+E8WUM0jXWMUD5aQMAO+JBDZ9FMM/
-	 EkFu8l0NjqQcPzA+9Ub1BUiBKU7C7VYxF5RDTACLuMzttbb4kaYEEIPaZb8dlEsWrlcxL
-	 Tj167z0X60LXhLW8IicnG8DqYM0JbIdgE2FKW2RWEfT4eBHdcUBZdKc66i98R1/F5y4A3
-	 XJ6j1skSkN/JHkTMfwfqK6kTA7325R9R5ToL9DYA8u1TR5saT9HM4Ye7tC24yyOp0Axr3
-	 Mc6WwlZ805E7xpXkXyksFyRwCfVY83YhmM8OPdiUg0whETCiGlCOloT9m6AEk9G+zSw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794484936;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-Mentions:X-MS-Has-Attach:
-	 X-MS-TNEF-Correlator:msip_labels:x-ms-publictraffictype:
-	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Ko/Gkkeo0mdvDUa5o4qk3Q6B+iiG2ypU13H8M4wnhOM=;
-	b=lc0IgbjXwOQqw2O/BSAsXtyDXGPE2ApDrE4hU9oEEjyIo4P36exAYqHXmQb7JREaG1Dz
-	 E+SiLv66eoM3/5qTnSw77jaFx4Y05hpltr3se3qe4ysH7z73K3oW977/G2dPRwoSV18Jd
-	 uhrtv2s85Jlu6sLNPvwZn14/LsMm1su4s43SF8qqkc2vEUVdhdi0XammlN5mc3Pkxjpz8
-	 dCXSUlaROaf3+rNXNgoW7KnKD3Lymry4cLg/HCKLNWwFiVQbjZC5td7opavO+meJOz6PE
-	 dbX0xdF8BUtQRcfa9KyVZgo4fKlBoe2JV/Tekz5X7dSB16ioBw7bkly8MOro3bxO8/g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=earthlink.iq;
-	spf=pass smtp.mailfrom=earthlink.iq;
-	dkim=pass header.d=earthlink.iq header.i=@earthlink.iq header.a=rsa-sha256 header.s=selector1 header.b=j13WoJ0v;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.120
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023120.outbound.protection.outlook.com [40.107.159.120])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794485011;
+	b=m6BM1a6zx93e0RJ9WuMYafhxtXobjrWCubH5rxJ2QznCiV55J49F81ARVxsATRRBO+1v
+	 0jfTu9fIeOcTtwJchUGwvT8RVt0O6B1yLQcoDKzJ0WVTDQG5Op4Tu/DgqOCmlD5Xwc4aK
+	 miNtPV/Trrk+xeKepATbcnAAunIi5Um8HG6atJj4nMsgzZHOnNRbPezlsYAAx4EL6cjEF
+	 M9ejabrON/E0LDFrtGdzKP30VXPBheqCx0bfye4Y/7TLViNDIUfYvyeZlS0Jo/boiEeRj
+	 ARAvdCVTYBnYsAfu3HYg4yBxNX+/KfUwfn6tkMOctvpvySCJJAlEhNYWx6trB6D7tCA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794485011;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=qjpP6sWhpG2Ula7WRaKgo/2HPG4feJykT/QDSXFbrdo=;
+	b=2jrSjXLFfnecdUv+zFcxEluOJ8nnNOWvGbSlwuBUf3f6/5Mv9jAHEusMhtbzPpaNMGMe
+	 mDCusVUrQ+a2NBCEMkvJgG8YQwK/Ztdcy/oQgS+e8zLCgA19dGenc2jqojjm8oXH59UTZ
+	 ksXD/8DnklbVyQ2xq5lm25RRocEL3pHiP2siKsJsYTJWknbV34gmzR/eaCf93nJMh1UNJ
+	 Jy54ajr49LK2J4Faf6aCwI5/imbChOn222h79nw8+a22ecYWgnedriMhZqg8N5nf5Pj+d
+	 Vb/Ekm6+5PQvq8pj6ntGEjtGMwN9TcrbQ8LJOURr2ZJ3t4ZZh5gEFdoSZbYq5IHrlqQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bdwzf7H3;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=PzRRGtld;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AEE606A335;
-	Thu, 12 Nov 2026 12:02:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0AEE606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=earthlink.iq
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earthlink.iq
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272FC606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:03:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 272FC606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=earthlink.iq header.i=@earthlink.iq header.a=rsa-sha256 header.s=selector1 header.b=j13WoJ0v
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XS1mGc/eBA7GNDheElp2EuFdj2KxCgdZE2498e4A7QpeXjrzReHc6GiiYDt631pQLh5qt08I0890aKTVUvYBWtkECoC0ZeuUc6LzFUtMSROjjZsnqwAMtZM8XUtzwsvGbhP+JXrNrzSfgIoanDjbtdHrGVHdkzHlBRGEmpjUfItNNghbAJ85gb1H9d4CAR+dBe7JJTlgIpX8Ool+wLh2vUvNW14OX0Kdq4ZpSW9q8hlaqWHHARFlHj2IfKt/RVf24136ngwuA0yFKaM90Si41aRFlsKOkKtj0t1h+Qgl4q09tuYJ3Jl18yByZqYjwmXrwg7ODimCR3oVCjK0SkY6Vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ko/Gkkeo0mdvDUa5o4qk3Q6B+iiG2ypU13H8M4wnhOM=;
- b=ogex3oU5qw5Z4sLCTGUZiycDzBwkOF/ImqX5JG/4+cqqOaM1YcnWj1CngOVxaxc7y+SDXDbWnVqTGVv/mOomRh9hF0thNOzjad98MZCnbOu91FBgAzOYt8HfD67f6npXlDsGX7j64GBu8FP/kmD709CE80KxTX/PXh6c1dIUC7h5ggdPve4oGfwhyPvD34aaOCwdnpNSvl6fzO3DmXZ/FIjZ7MS0LJvVSd98nDYlhjoWNJCGA43EYAtW04w9p13Nrkwun9zm6mHZKzLf2twrKqgzinS/nGuOAH6XzzEnS3BwnhFsfqtPvgAry3qw9QXXAyLUGp6Jq/42J6XBf4pFqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=earthlink.iq; dmarc=pass action=none header.from=earthlink.iq;
- dkim=pass header.d=earthlink.iq; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=earthlink.iq;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ko/Gkkeo0mdvDUa5o4qk3Q6B+iiG2ypU13H8M4wnhOM=;
- b=j13WoJ0vNe4naz9TLAP39yAzRuB8CwVNmVPSFapP3LNzRNvt9G+YxELBxYmrmTn2X0VZuzMktcc/RTiz5LP6NDQCMhSOtaZYiaqWmBB1q+dgY8RvPGmw+QqG30Eu34wc9Do2cEySc8sgShGaar67PS4l2dGd6gocDu/jGDvlUbZ+QQdlGZo+pAkpl/6hmthYxZ291CxrYH9vavPnZ/ZZhHybRAUVkmZUcA12//yIJhOSjbxFR3eI8PDRQSqo3xyZXYSje5bJB77c0AGVu1oKAVxqs3xy42VH3WQ+gjnpGoX3G8TNk9MzQ067Zx1zgsIgb6DICZ6LBgtFi9bgfmfcGw==
-Received: from DB7PR02MB4313.eurprd02.prod.outlook.com (2603:10a6:10:48::15)
- by VI6PPF84D0E6D3B.eurprd02.prod.outlook.com (2603:10a6:808:1::313) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
- 2026 12:02:09 +0000
-Received: from DB7PR02MB4313.eurprd02.prod.outlook.com
- ([fe80::ac76:9f97:356c:b810]) by DB7PR02MB4313.eurprd02.prod.outlook.com
- ([fe80::ac76:9f97:356c:b810%5]) with mapi id 15.21.0615.008; Thu, 12 Nov 2026
- 12:02:09 +0000
-From: Muhammad Zuhayr al-Tayyar <mzuhayr@earthlink.iq>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Cosmin Ratiu
-	<cratiu@nvidia.com>
-CC: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>
-Subject: Re: [BUG] net/mlx5: nf flowtable offload rules never hit in switchdev
- - root chain misses to slow path, not to the FT chain
-Thread-Topic: [BUG] net/mlx5: nf flowtable offload rules never hit in
- switchdev - root chain misses to slow path, not to the FT chain
-Thread-Index: AQHdbElUgfk1enT3QE6ugzlHtdAqZbcqTM+AgAAVLV8=
-Date: Thu, 12 Nov 2026 12:02:09 +0000
-Message-ID:
- <DB7PR02MB43130E9B57458E49F3B8BCF1C6702@DB7PR02MB4313.eurprd02.prod.outlook.com>
-References:
- <AM0PR02MB4307F6D53A2B0AD628D91C81C6682@AM0PR02MB4307.eurprd02.prod.outlook.com>
- <62612ebd42aef5eec1f06a5465e3e6aff9110d41.camel@nvidia.com>
-In-Reply-To: <62612ebd42aef5eec1f06a5465e3e6aff9110d41.camel@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-Mentions: cratiu@nvidia.com
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=earthlink.iq;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB7PR02MB4313:EE_|VI6PPF84D0E6D3B:EE_
-x-ms-office365-filtering-correlation-id: 53f54f56-af7e-4e97-7a01-08df40b4c792
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|22082099003|18002099003|261028144727099003|56012099006|4143699003|261026140227099003|261026121527099003|261102123227099003|261021121427099003|261022105027099003|261022075727099003|5023799004|261009223027099003|38070700021|10067099003;
-x-microsoft-antispam-message-info:
- JLJ3962CmfgSL6U3ZNZ1WDQmvJN+E14ZroFH1N8TDRjeAZclZPfQfXvRL/5xHwS9wqZHH7ZR2aYKAKRRbD9wQt03EQFlJeXIUdLLzryL7MKVRKB8erDcGBXGJijCZ/bUBybEaShJySdJWl6Hz3ezrRXt+A32sZpjkdr92R5Yem1ZOqg1L89a1I0RWKyfjJJ7jzkgQ8y1Vul5QYGY90zrIqxw57gxTJDHBtH7DYuSS9D4k2nM69t4weWl6sDDg8jU7ZhlQkyJEyZK/IsbLw1KM6OYqgifHSH/z6xdJHBFBLKeEetT7flCAHC5vkkM249in5/bYRKSg1TMMvuZD/+EHBX63edTcOfc7iOdBGemxMmDhEAIpQ8UPw+Yw5AtZLOr66r4oFZ6hKt4TxuxGlTPCzhjLu5xZ4h1B+SeY53eitsFiuYo0wNppzXVilv/Cl2Wm8cw0aPUc+MXCyRQ343e4Syzk9uR7TWdppgdSqh/tfl6kDJCjhsMXs4gbII010BkpJAdHN/iJ5Sif/1cx20WD6hAS2lAgrpQmfduddfJRdE+Z6SKBiVzSW3FpsZgLelW9yv0w7nn+d2D4DYKIEuz9G0SXs/MW/RogHWLI7eJE7V39Xpq+wveb2rNxI7/GWTMTtitR8rnTkF34yy3qXFA0JjwrPsoV2yUWF5A/vzxrn7L8A+0jiaTf+6S6+nEDGiP47CuvYWwOu4QUXJaVVOcKZGLTjs9Qy2elS2SKmqLEew=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR02MB4313.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(261028144727099003)(56012099006)(4143699003)(261026140227099003)(261026121527099003)(261102123227099003)(261021121427099003)(261022105027099003)(261022075727099003)(5023799004)(261009223027099003)(38070700021)(10067099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?GPWuKVD0D0CQqZxwQi4l29418aDv612tYW7GY3DnZKQ0QwtgRwrRUizfGM?=
- =?iso-8859-1?Q?Qcv3qhPcaMpdpR3/orehKG5ezqOo4PVfAjQKIkuolIwg8AWXRTjW6l2qJl?=
- =?iso-8859-1?Q?9NGVLQUEcNUEW5DfJEpra78Q4mefA/5Vke+q/Ph/c7LCltD8mCaSKAmg4Y?=
- =?iso-8859-1?Q?nC3PU5SqW8E5qcm2L0yV3FamN4CTq4s4kDsvGKY7+O4DnptauaNOTu0Lsj?=
- =?iso-8859-1?Q?9dkV2oG1ZfBFuSS7YoHKddoPPq9frmrMX2p1ERH4oXpSHzRghc3n7VaSyT?=
- =?iso-8859-1?Q?3xwvSRwgYZcjcGtj0Wi2FWD0ocRbuHV2/myYZJsf8IPZnlUyP1k6hLRwOX?=
- =?iso-8859-1?Q?2CeexL4xAKDZ/ca02wCVoff5sVCJYaRiG+RcyFq7Lws+fZZ2X7Vm5I0TrL?=
- =?iso-8859-1?Q?bA3Ydgo56hbej1LZiS1KTiVqDoLJATJkLYKAmsAw6y5elo7buHqpt9pZR2?=
- =?iso-8859-1?Q?VlDJ3L/6gpddqL6zC+DIOTju/3Y8PCuuMnKqTtE2hsmu+4lrwf9vVM+UAI?=
- =?iso-8859-1?Q?r39djE/6zQIEkMVgwj+Hyt4hukwLqXiAELNJgFhkhPn3Fz1QedC6lYsfO5?=
- =?iso-8859-1?Q?QOjNJ/aYOgODXh2Z8DrnauNwTP7P9eidyvvtluhEvKIO4EGZfWlTM5kTc4?=
- =?iso-8859-1?Q?EFi8sTJVKshvg14WiSLctksnZOVTTDFZft5fnh7ZVkoYCRH6wDkYV+W/KU?=
- =?iso-8859-1?Q?4Y6D4mbw/JKYFwa3X8P2E7d7taO1Yv7HInerHJlG5GTI3N7bfevj0x0Pqe?=
- =?iso-8859-1?Q?L+3M+H2gfxQ6xlaGTUPI7GyT7MWFw8eiEJI4eBQbMGxSJMHA2y2yYl/zWQ?=
- =?iso-8859-1?Q?Nc/sNaUHOw4UbQS6iJVn/Q0AO7/7vDvBH6yb1ON83H0SMg5bwnrCMYFJh1?=
- =?iso-8859-1?Q?qxEoPUpHXnvWgmQF644j8LIoKGKFkNq7Vihdzn3Oh69WfLTEOlwkn8+cNU?=
- =?iso-8859-1?Q?KimhrQW/Su8Nzg6rP6G0Maj4OdLsCt2alWoFnyt3GNhTJsbYAjQYOG6/LR?=
- =?iso-8859-1?Q?i6N8aS0gcB49XdeT0S+mF9KnjO2FOfi+zfxHrvUyxZ4ppZX2nbrc2BWMNE?=
- =?iso-8859-1?Q?+Z+8B8ArZxq7vRrgHATUCmBsFol/dZ3e0ZtSBuq68j8L6dvYbgqy1ZWQp5?=
- =?iso-8859-1?Q?cA97+8y84xn+YtgW+RrrYtznzo+0gQvKRgXMhbCrxTfDhRWKysrSkIWKVJ?=
- =?iso-8859-1?Q?U8Gpm9vwudFRChttZyElJlm+qaPNrCtliBA7nT/p2xKEoib04kR0Qrj71U?=
- =?iso-8859-1?Q?MSbMFlvwcrFx/7dh7lyC4gEn9C/jmUYCeDxJdTM3bMQrutXVsU1l/+iJk4?=
- =?iso-8859-1?Q?11l2aDAIc+EKN2y1ycLDMKYLPow82hqxnK9oiAHfzQcEB7qrknWjvAzdDG?=
- =?iso-8859-1?Q?n6by8To7UiyEU4S+tuuRETljzfo6iS0s6mxrlSuzwCSIH1D/10/SwWzvUY?=
- =?iso-8859-1?Q?fxAjony++ocQyEz66g6NcD28vqXPmLjofYhq/a7QF0vOzr9D3Kck0+C83j?=
- =?iso-8859-1?Q?zidSa5LEKX94Bn0cFk6ou/ZKaH9/ax9SZYByFCH801LfNHQly8xsRlzNVQ?=
- =?iso-8859-1?Q?xlmbII8Pi305IoUeWAB6nOJ1tM/ef1w7EgDFE3WAZXYmXG5aC14Z11hpYx?=
- =?iso-8859-1?Q?P0q21KfeGqaPn/x2MBU7uab/aDCYWFe9liqlhCsGcZMTvcnsj0xRIlp3db?=
- =?iso-8859-1?Q?C3iZD3xPWrAAGDwe4uhs4WifhJ88mf2iA4FlFd8vKEnz24ZIRWhgKBSErG?=
- =?iso-8859-1?Q?Fb23/UsIu4C7SSTSG+llViUiWkjLmcqCxuef3I9s6UOIVd?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bdwzf7H3;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=PzRRGtld
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794485010;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qjpP6sWhpG2Ula7WRaKgo/2HPG4feJykT/QDSXFbrdo=;
+	b=Bdwzf7H3xAekP/HbHjzVxt6kfoXz1kOIOM0ru/JZQDYvLUAz7UC3ibl/NlXvQ+OUBO9FoT
+	gEY2sYtP+GVMXPPnoQeIwfTkQNss3+nccdPEEGKlIpomrUaluI0k5XRNWP8V+0QRxcQdco
+	PY9EZBbd7FiT+PYaOWCKA5Y436KndP0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-646-sB2bq5i1O1K9xjsbAp4EeA-1; Thu, 12 Nov 2026 07:03:28 -0500
+X-MC-Unique: sB2bq5i1O1K9xjsbAp4EeA-1
+X-Mimecast-MFC-AGG-ID: sB2bq5i1O1K9xjsbAp4EeA_1794485007
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c42888c50c4so378690166b.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:03:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794485007; x=1795089807; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qjpP6sWhpG2Ula7WRaKgo/2HPG4feJykT/QDSXFbrdo=;
+        b=PzRRGtldF7LT6cDvfPC91vb+8yFU6aS9u/gMeT34r+Pl4QQ4FDB0Q477WF0UaQsaX3
+         awiY2l60BCGwK7UCJEwE3NM6b844ae1zRyoW/Ial8eGw5rAWOsA0kkVHUakOhwtQrVZz
+         XlsGdL6Y63+sRg9yRwpCt+SodxDbnGXy9qWlyxlzTePvpGTdzfkutScmHm1S1cJathgy
+         E2BfRMmWHO640KbUBz6OD31CxqAai7xiMplBg5xzVCgOJBAJg6d9jgHPAaP4sg82JkXP
+         INVVs4+mPR9tMdp+g0LNqqFzSSYumdlFZUin0ZJfMb/RvXILJ1BhpLjGGZEyJGzbGi3m
+         KVFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794485007; x=1795089807;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qjpP6sWhpG2Ula7WRaKgo/2HPG4feJykT/QDSXFbrdo=;
+        b=IJHOPT+O/0QYayi5cM1aeBVOq6Y8TawZITuv866INJzdVrfw853FB7FBo6j0w1FcJz
+         CvNAYyQfIJGdbqkj5ZTchtDd5XPNO32OcFCAXDvlHNi8ND8Neqcy3IBPScBT5bmLAf9W
+         rGdcwXFd/WRWEdgupvsGJFeXgEd/8mDUckNgheHCieuCikoJcImQLTxMp7nslNR/Q7fG
+         BPg7uJm7/uVmzLtXcIPMy8qq8ibwkk41OrnT5gsvMC67FGazi3opZFRoWaXcBoGzqO8O
+         Rd7MuGslSHIbqqmons8tuDSLidr0Fd6cj79Fqr3wu//AzAryX11980kC4QyLpliN7snH
+         h4Vw==
+X-Forwarded-Encrypted: i=1; AL+hErEH+5OgHtoukKPqKL1/AOfJDLLRlM4yb35df8TXKRFtibG3AHZv85kdx0hsBI2FhPzv3IpC8E0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/EoaWcZ793Iot4QVANrMjKo1dql6yDd6MYwaDnKafwefo/cwMo
+	hgHPpCz5OPlHSmpgmRXjcQZO+FbJ2JRG8zcWT+2UxvgMWYsv+FU+qP4SeLvZ2uowvGLcW060LT2
+	aq7st/J0mEe6+QCXBx0WiJsAYAZ4PpoDkV5i6VEv3no7Z8ccYhiv+uMmi8w==
+X-Gm-Gg: AYBFou2WwQXP+tfac7j5ZbZesloU0IgP4PcVC80wzfXt8rzwZ2rNDQC+l/nC9zV1G/m
+	XBDYmzGFUolWEPSg115TqyuDTGHKpiAaEfxRdZKQ0d1l+jUPy5w0W5PIMbAaAr+qx/6IKC6yQz7
+	PdL1dkiMcNwNiNU3gJ2dQx4lUIVs7r/p9uX7M2HiqF0PJ2d5IPrLkGxH1MmO1JMG8jMhg2Y67F9
+	L7TGoQJy6EMj9+5fKS6cQVNGRhA9no0q80rX9V2Z4FboessdA/FaOc9DKvlj+Ps4Px/8q8XwnEe
+	YQ8G5wynkpMyZ2FM8t9IDugVnmoETFlOkI9SDgQQA61izacDCo+GNaoFTZKtXlqLqei6Ks/zHUJ
+	X8OI94rXdd6cOyYS26uHOYui72G0CN8XcoWa18E7ibMclvFkjgy7SBh5nqA4oCnvMl0oSkeq57x
+	1rylhhta7+0Dl4PQEca7M1UkvHh7OV6D9AKzNXVmjBwGnW
+X-Received: by 2002:a17:906:c150:b0:c41:7e99:c6c2 with SMTP id a640c23a62f3a-c5066d8a016mr441081966b.44.1794485007423;
+        Thu, 12 Nov 2026 04:03:27 -0800 (PST)
+X-Received: by 2002:a17:906:c150:b0:c41:7e99:c6c2 with SMTP id a640c23a62f3a-c5066d8a016mr441077566b.44.1794485006914;
+        Thu, 12 Nov 2026 04:03:26 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49bad3cd31dsm2017312f8f.56.2026.11.12.04.03.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 04:03:25 -0800 (PST)
+Message-ID: <d662a912-2b1f-4815-9f1b-f510753f8bd0@redhat.com>
+Date: Thu, 12 Nov 2026 13:03:24 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -152,114 +112,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: earthlink.iq
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR02MB4313.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53f54f56-af7e-4e97-7a01-08df40b4c792
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2026 12:02:09.6034
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 89d949e4-9c48-4c58-9092-cf9b53301a04
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZcTc0pcV3x1uJrAtmuvbYD20DvQ0J8gpSnuQAzc6TVo23tddk8Be0aC8kRl+eyyEJT9ddxzLIpsI2q+Q0lNBgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI6PPF84D0E6D3B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 4/5] hv_netvsc: move a new VF to netvsc's
+ netns from a work item
+To: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, kameroncarr@linux.microsoft.com,
+ ernis@linux.microsoft.com
+References: <20261109194843.1353592-5-kuba@kernel.org>
+ <179439413220.2199510.12624366739640158561@kernel.org>
+ <20261111104020.2ba90f97@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261111104020.2ba90f97@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Dear @Cosmin,=A0=0A=
-=0A=
-Thanks for your reply. I would really appreciate it if you could handle thi=
-s, as my schedule is currently very tight.=0A=
-=0A=
-Best Regards,=0A=
-=0A=
-Mohammed=0A=
-=0A=
-=0A=
-=0A=
-________________________________________=0A=
-From: Cosmin Ratiu <cratiu@nvidia.com>=0A=
-Sent: Thursday, November 12, 2026 1:43 PM=0A=
-To: netdev@vger.kernel.org <netdev@vger.kernel.org>; Muhammad Zuhayr al-Tay=
-yar <mzuhayr@earthlink.iq>=0A=
-Cc: Tariq Toukan <tariqt@nvidia.com>; Leon Romanovsky <leonro@nvidia.com>; =
-Saeed Mahameed <saeedm@nvidia.com>; linux-rdma@vger.kernel.org <linux-rdma@=
-vger.kernel.org>; Mark Bloch <mbloch@nvidia.com>=0A=
-Subject: Re: [BUG] net/mlx5: nf flowtable offload rules never hit in switch=
-dev - root chain misses to slow path, not to the FT chain=0A=
-=0A=
-=0A=
-[External Email] This message originated from outside our organization. Ple=
-ase exercise caution when clicking links or opening attachments.=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-On Wed, 2026-11-04 at 10:46 +0000, Muhammad Zuhayr al-Tayyar wrote:=0A=
-=0A=
-> Analysis=0A=
-=0A=
-> --------=0A=
-=0A=
-> esw_chains_create() (eswitch_offloads.c) does, in this order:=0A=
-=0A=
->=0A=
-=0A=
->=A0=A0 1. nf_ft =3D mlx5_chains_get_table(chains,=0A=
-=0A=
-> mlx5_chains_get_nf_ft_chain(chains), 1, 0);=0A=
-=0A=
->=A0=A0 2. ft =3D mlx5_chains_get_table(chains, 0, 1, 0);=A0=A0=A0=A0=A0 /*=
- "Always=0A=
-=0A=
-> open the root" */=0A=
-=0A=
->=A0=A0 3. mlx5_chains_set_end_ft(chains, nf_ft);=0A=
-=0A=
->=0A=
-=0A=
-> mlx5_chains_create_prio() (lib/fs_chains.c) chooses the miss=0A=
-=0A=
-> destination=0A=
-=0A=
-> of a new prio when that prio is created:=0A=
-=0A=
->=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0 next_ft =3D (chain =3D=3D mlx5_chains_get_nf_ft_chain(c=
-hains)) ?=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 chains_default_ft(chains)=
- :=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 chains_end_ft(chains);=0A=
-=0A=
->=0A=
-=0A=
-> When the root prio is created in step 2, chains_end_ft() is still=0A=
-=0A=
-> attr->default_ft (set in mlx5_chains_init(), here tc_miss_table). So=0A=
-=0A=
-> the=0A=
-=0A=
-> root's miss rule forwards to tc_miss_table, i.e. the slow path, and=0A=
-=0A=
-> the FT=0A=
-=0A=
-> chain is unreachable.=0A=
-=0A=
-=0A=
-=0A=
-Thank you for the report, it looks correct.=0A=
-=0A=
-The suggested fix also looks correct.=0A=
-=0A=
-=0A=
-=0A=
-Would you prefer to formally send a patch with the fix or are you happy=0A=
-=0A=
-to let us handle it, with a Reported-by attributing to you?=0A=
-=0A=
-=0A=
-=0A=
-Cosmin.=0A=
-=0A=
+On 11/11/26 19:40, Jakub Kicinski wrote:
+> On Wed, 11 Nov 2026 10:48:52 +0000 netdev-bot+sashiko@kernel.org wrote:
+>>> +	/* pick up whatever netvsc_suspend() stopped vfns_work from doing */
+>>> +	schedule_delayed_work(&net_device_ctx->vfns_work, 0);
+>>> +
+>>
+>> [Severity: Medium]
+>> Can this run the VF move or takeover before the VF's own driver has
+>> resumed?
+> 
+> The resume handling is a disaster, I can drop this patch completely,
+> if preferred, it's not really required for the XDP rework.
+
+I think it's better to keep this series to the bare minimum. I
+understand the rest is functionally independent from this one, and
+the above concern is only really relevant. I'll drop this patch while
+applying the series.
+
+/P
+
