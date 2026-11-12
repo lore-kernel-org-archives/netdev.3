@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794445206;
-	b=BJxWihDyh1sjvZ5NVBwVJX53MLw41jJg2CaYLYE1MSNEhvYyA7gdNWgm7XVt1uZXRwhb
-	 5024PeNCNzYIWPQwqJER+AlO5AmLQA2LZTPBu5V71cuNoCsbLbaHakG5k0qg/BgF58gf+
-	 E1Zaj3zf1Gi6jKjPUVojpiVi0rphUioxqK6x4W8teP31WDWRfwwSDAzLvxNvBzmPnPbJO
-	 vWG8UqipZcg7dAkhPi/BtjgIJFqSIRqBAryKda0/gQRJqjBLGZi7yvLw5wowJKBiulInC
-	 s+fUUn39JeVRfkypU33sii672rC+7eiH534lEtnyqFqqEeB0QAb3AdXh9boq1TSZi1w==
+	t=1794445209;
+	b=3RMQMzoBjyoJVXq0pq9pLQD14JBUMN/LtkHBTsOYjyS1Nz4vnYGJtN4HW6aSS0QYuXV3
+	 awqCGM749WPWCkx3O6fK85JJAaRxJps1uNqdCNdqmTf7bXlbMu/P+sH1x6wA0kbIuYxW9
+	 j85u08vOhv+jCaB50Ixw19aWqth7pkEJyroucauXkkVYcz61bbKVyO/NhhuQh458XutBk
+	 6LRTReNzLWGIcGzdmxWILla8+v3cZ79Wtj2jPnZkssaCmfn9Gn6h/08HGwsu3pwJAv/Ce
+	 Qp+VU1E30n5Gdr1cy6E8VXrxDazpAj09GCfjJWxOjL8Rpes9IWw9fLpZ9y4/DxhtaEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794445206;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794445209;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=rw8fU+RPNYfzHQgBcgq/+3Cakn9swjOarArfHTPFBo0=;
-	b=pNPEDzatSrZJOMWdjjdyon1VUtPoVkFrszsgNivdFYIbkfnbSeDIMXRI/gnfan9IWm41
-	 KPmOuddEM49mJiTUVazlZ9DjVcXx0CkPSskgM2BSfuDO1qqB+5DM+hZ2NJ3+JOiT6fXOZ
-	 86M1tZRS3s8c1owGRmpN64Dx+SITE/gKG/H4zhWjoa/ANnmaZun/4dxdM5ApNjzr36UIn
-	 FKm7D9Y9E2cqQEUgqsJoUNL/tlPB7TW7KgkKHv++lb28C/Gprap+UhfVFZVeQxvBKXGvn
-	 uNOOMkdPNR49cxxOkP4fNxxINsxmtIQ4pn8/M5bo6+3yQlG6OentO3MnDIo5uyBG1rw==
+	bh=uIotu3yVNVExwyG4fblu84Hlm4rATA4G44A+C8v55ZQ=;
+	b=hrbarRDhEaN3q1P62p1IBKrZL6iA4pp81W1ogBvMQ98hMfozT4adJPsIdWW3TofyX9pU
+	 I4GsWXFtSMjaGxQNBiXALoBTv7IX2mkF6eZG91trP/dW0/Y0iEpWRQA9/vpYe0Sn7uRZN
+	 Eur0RIsctzuPf0/Mwvgb7bQnfV87xvphCCaXKEHtlnMZWD/AiJt+7g9JheSeYVjL6BEB9
+	 qoSVdjhUSHxvSjxP1kiGXXin9Xkx2jURbkGm6iA+k0IIJUw1zJFJ2mSJHVTQbiBPLGvlJ
+	 5A2o+sfKZM6EBYQB5Dr31J0cBwCHhVbTN2woJLZ7occHICTDHidEEsWyTSz9hLUSjrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gEBt4GWb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mge8OiW5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C7606A31C;
-	Thu, 12 Nov 2026 01:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524B4606A882;
+	Thu, 12 Nov 2026 01:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gEBt4GWb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A961F00A05;
-	Thu, 12 Nov 2026 01:00:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mge8OiW5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8F91F00A06;
+	Thu, 12 Nov 2026 01:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794445206;
-	bh=rw8fU+RPNYfzHQgBcgq/+3Cakn9swjOarArfHTPFBo0=;
+	s=k20260515; t=1794445209;
+	bh=uIotu3yVNVExwyG4fblu84Hlm4rATA4G44A+C8v55ZQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gEBt4GWb99VVhrLIN7fOwSl3Q6+39cJ+jRNN6prlyM19M1GNAKN44h90dllK2VsfS
-	 TiPS0u1Hdr70b6HNIsp4cWjcqBD60EZ47VLynnYsDJ2MhM+uxTARZizShHh+8DHfzq
-	 9B6CVdWTErAt0ssNZadOIAqQrmXTvBnDr7IWIR+AMJpX4hXrElvNvQLKLNxG9LPhDr
-	 +iTLo1BEidOkLPDY1+H7a64cE8RwjofVe4Sm1l+iSvRGNm2wYC5vrftqHuRa56lCel
-	 cS/bHO8uokMVh8lHx+76AfzIydS/fkwSk9kV9m4/Elo3DW1iFN+wcYxobEvp0ko7je
-	 QoMw5n8tp/gwA==
+	b=Mge8OiW5/gSGUtK+5hhlqcGvfFVNkfHFQ6o3i3Qb0WLWLVfyZs7btPZa+rOhdLX1B
+	 kxFwOznZtUxiCeQQt/j05IHb9/lT7LdipeT+fe/gOh6NUgIvgpph5ip++OINIMIKPN
+	 fcVx2ExzonGeu3R47QuQUT10i04yGt1cKR9/mNbN4gFQvBrdolBpxknu4f2NfvO6jC
+	 bSf1Bg5dUrc4n3F1y2e7+H36bc7lMZ3ZFlkbHq2R8EHlsF4HsRXnyXvVU7hOaB0Zcn
+	 wpcdQXMpYMbjK9LVJJYKHVnTsrvx9PLeVWm9CuXRITGQNRSl9CS3pBefRxDX3LWh0L
+	 J/W9l3FphWKkw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D825D391AFCE;
-	Thu, 12 Nov 2026 01:00:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20F83391AFCE;
+	Thu, 12 Nov 2026 01:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] tun: disallow setting IEEE 802.15.4 and 6LoWPAN
- link
- types via TUNSETLINK
+Subject: Re: [PATCH net-next] pppoe: use sk_node for session hash chains
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179444520444.1739789.1727685745049840269.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Nov 2026 01:00:04 +0000
-References: <20261109083037.22337-1-skalpesh942@gmail.com>
-In-Reply-To: <20261109083037.22337-1-skalpesh942@gmail.com>
-To: Kalpesh Solanki <skalpesh942@gmail.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
- alex.aring@gmail.com, stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+ <179444520767.1739789.10681932147394019452.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 01:00:07 +0000
+References: <20261110091255.24158-1-qingfang.deng@linux.dev>
+In-Reply-To: <20261110091255.24158-1-qingfang.deng@linux.dev>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ericwouds@gmail.com,
+ manizada@pm.me, nbd@nbd.name, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  9 Nov 2026 14:00:37 +0530 you wrote:
-> A userspace application can set the link type of a TUN/TAP interface
-> to ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, or ARPHRD_6LOWPAN
-> via ioctl(fd, TUNSETLINK, arg) because tun_get_addr_len() explicitly
-> recognized these types.
+On Tue, 10 Nov 2026 17:12:52 +0800 you wrote:
+> PPPoE uses a private next pointer to chain sockets in each hash bucket.
+> Removing a socket requires walking the chain to find its predecessor.
 > 
-> However, TUN devices cannot function as genuine IEEE 802.15.4 or 6LoWPAN
-> interfaces:
+> Use sock.sk_node and the standard hlist helpers to allow constant-time
+> removal and eliminate pppox_sock.next. Cache the bucket index in sk_hash
+> before publishing the socket and use it to advance /proc/net/pppoe
+> iteration between buckets.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v4] tun: disallow setting IEEE 802.15.4 and 6LoWPAN link types via TUNSETLINK
-    https://git.kernel.org/netdev/net/c/968f2b94a596
+  - [net-next] pppoe: use sk_node for session hash chains
+    https://git.kernel.org/netdev/net-next/c/7845123d30f9
 
 You are awesome, thank you!
 -- 
