@@ -1,100 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794462026;
-	b=q+qmmJaQ46FJtTqBF1fB9oPO3NJ7nHjmbajHzqR4AP/yex1YGNYR//UKQ1IS3hSfb7Hw
-	 Hm//CSQ4nlYlA84xLR41VSlh4QmTAteDpAB60yQNPPwr/EMzVW9NXgxRNFMk2PEno2hsI
-	 aULCYGvD94e33CkbOmX/OnItoZ0/uHs0tQKth1pO44t3430JxMvFh16Uo+YrpLUzTyA4a
-	 dI2POKgc87XITN4wQxgRB87j7lWDpVozHvAFqYp7+L8UK66wCkLBxb1mggeFoebUZAwyC
-	 KVOLdNGqM6muzSatyNGhiJfr5dYoom5OX5HPIN0AKUubEMVUaAPotW7cEHVG3w0G5Kg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794462026;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=38irPCmvvGjLk5lYC3qAN0yOb0IGyp2qLG+JcM/wS5Y=;
-	b=OfAb6MTiWhPgdWC8Cert1VpwoyWQ5YvbMJKOoUXSu6PM4/qxMGcCIAAriI0baLpzJu7O
-	 UEOp39KmpON1lZf25yvmw/exsPYJAg0Wd8DVfpOclVwwYYraH3dsz0QWst+Y2Fl//8cCI
-	 xj8R/AJeln5DoMSPJKJqWuwuLvRf306RjixSeLHSavTqOSM9NZyR9XXRqTyAPs8YL32Jn
-	 T3HMU49OSmCFB8UxCbZV+NyUQyfGTMKfbuqlNYYblp70l4/kV7Blsr9uoIbZg7h/HXyVf
-	 UBNZci0+zSicD1F8W6j7zMqwxxFqPrHBN8ESfyVPbFUOCfrhH31zB3cR/nqeKPkDtRg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wiSP1H30;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.224
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794462429;
+	b=pd9ppoK7s5BuD+m8H9Wg5cYAG+z1v49z8R6hn61zi8bZL+BxlM33UFaAloQnzeR3wrFb
+	 S1uBJB3vP+V7fpnyoMvTR2MLoIIxMuh1kc5WkvJ4ZaByDDwX2FqWqwWzIW2+HbE0G9mVx
+	 oM+8T4umW+XKwTtCYHd7AVPEgfHCCDZAJ+4cDUlnriunT86CqWHYeFvCmd2HAd+ARqceu
+	 nFtB71wgioJT3X2r7idH6Vhb60C7myCG3FcDXrXtgrbXP+FhCPrDJDMSXazGC3F6IhN1w
+	 xsskCB7wtI16xkqY5hWB3qkwl9vaR6f4ppYq2pieBO19FtE+WEaO52pR6278791rS4g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794462429;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=f5zZSofPOE7pOeadwcOvAoWM5g2nJttE3jMN5ZTD1KM=;
+	b=k6iNTN37i1d/1O2TbQoDI9hwgy5wsj2VyH3AvGFHx1FUuiQKmSDG2TBn1WxGWcYcPfRm
+	 T2invjMNyMbqt42skINV+DD0UJJNBrdP1T86czlAdDa8ueuZFA8BEd5hJ0gxgH7XKEVvo
+	 eyq0EsiJvI2UgT42Fdj//abJ9s32XYO0Y29E2jTgeesS3Jwg6KnmAk01G7tadWAOdu8w8
+	 kq1zsbvm2YbWNwf3ype3qyAz2TsqAO4zyoaOWt4fliBPEjG5qzDsChjWb3FJCfaMC2fnu
+	 Mz/0e0Bxv25KZl8xj/SZf0QihRODGIvIs3QvCSnHPJ4CgVz7gqy91fJ3bCjftfbAR6Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=goivygNS;
+	arc=none smtp.remote-ip=95.215.58.224
+Received: from mta1.migadu.com (out-224.mta1.migadu.com [95.215.58.224])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D196606A31C
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:40:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D196606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6814606A321
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 05:47:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6814606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wiSP1H30
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c5066da8aa1so203884166b.3
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 21:40:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794462024; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DxGqy33szmhu9fngjNExuKQtYcUoGNwjZn1SUN8ERW8pedEr5V9lfuNcFHQt3jbv9P
-         bqZp+zYYb2uhrD0ebirvp+bkeC7iWJkMw/jOTNGSeSGUuq6Ao3MghDsUgUdwo1BuyrkX
-         GfxFLL5tpUwrM4WOOUfciHJRhe81HxlhyGZ2reAD9bhNHnu+Fe67zH8d47lg8fjdWVKG
-         ThchY4NCmTK0qvbEuakQ9hgv9W3unJTcIn5LzqSpO91BxQ/3LKK1z/uiegUKRKWk4km3
-         xtKKU6HhjzG3GFZBH7jlChVjIHwogob5jcFgX6L9JVYYroWGIu6m1NIUk5vkhYiotLzV
-         VEfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=38irPCmvvGjLk5lYC3qAN0yOb0IGyp2qLG+JcM/wS5Y=;
-        fh=/fJa8FPU7bT9r7FoOY38aSBsp9Gca69uQlkDiF0/6ko=;
-        b=g6NEn0IDqWbiMjDddO7Oae4jih+JLQY10synQ97Ji8mC/QcOEFFWI1lavgJc9mK0JB
-         zliD7k7p4b46KDQxxkteArNl0x5aZnA8RFpN4MdzlRA3aS+vwhgchijzRzWiVFyMdUIP
-         0DN+2/FMdBPpZKvTCEvj8MTLXAQWP7VIyJTFG3CphXwHQL6f5FWiP36y+AIt9IjNhZrk
-         l6r0lRYiLE7JOL7vnVSyXaKnMbvSk8HAyNfkgVN2wxmf0xnGHNMP0v3u7ioQAgWCrb2H
-         LLCJ41Ymjuq0e2ay3q898GGLjGT0tLXZh57EVr9wvlwgNp3P/WTS5YUWXG2ob3n5qN5z
-         e21A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794462024; x=1795066824; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=38irPCmvvGjLk5lYC3qAN0yOb0IGyp2qLG+JcM/wS5Y=;
-        b=wiSP1H30N+pOIX4JU+YFc0ypLRbulh+k2VON+jINPs6ok6uM9BfppBiClRcl1rZy6a
-         4h22HDJvucxbsKi8xg7w4aPL/OiUx/GARig6JPKqOgXqDVQIe4z4twpQ+yZj1VVdmW8o
-         wcP0+8vYIWDqWpjcvyyuIw9ygAe372THc5FAKB2UnviV9l3okyX6Ep7aVdHDLkYOqnKK
-         btf2rPI1DUOoc0qfG9FvIYCbkm6yzLboj7tlViqvCspKiSpmhwQlLVkw9WjtDh6c7Af7
-         64yY/YAbTPU5KtyRVFv748eYXt9VROS3PwHKefwFoHEG3HLQUVi0DFFbUL7B0UQsYvI1
-         AhzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794462024; x=1795066824;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=38irPCmvvGjLk5lYC3qAN0yOb0IGyp2qLG+JcM/wS5Y=;
-        b=z1KERZMUIvn+PIUUOul4CO2X2bT9xoWfNTmQzOd5+Yu1LMwujYfOJJOrrS690WZOs5
-         zIWi4ucbmlJTLCpab9XEQSxHkOvOvSoCK+62i/yNTdKMx7xUICMNa7N2JXwT7V+jZrDW
-         l2b5Hbj2WwfPwPqhFJDz6GWfyF7ZNPkawHKtt2RhO017IrXbgTjN9aD0Dmlz+1Uzf30M
-         F+JhEl9tNvFFG2kbRTVxPgoGJe/En5Bufo9OPstc1wH1kiaAx+NndnMqmiQq8kZ5KA2K
-         F80tv0LvBuYkINkJHB8B6FXpacHFcHVGItoFxIkGjzJjdFPvl8xWi8jnA9mrndvDZrhb
-         SuUw==
-X-Forwarded-Encrypted: i=1; AL+hErEb2oY+IzmSUutlT7veKYoPwyT663f183cu+WsAx9kN0q5VvSsqYA4jHDf38NFCi3KmPpMRFzA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+v1hsCFMDVGX4gFFWEmAETNGU17CKxfe9cG3O4pRvIkB+IlSIA
-	7Dch+00uEHTneY845Dux8kUaprRi9wIuOYCtAIvhiBs4Fe7T0Ee3bzrLX+eE8heac1tOtXl3EiU
-	/ZWJsDIcacE8xhOD1iNI1Vm0XWtORWgXQfsLm
-X-Gm-Gg: AYBFou0y5u3yKB8aJndug9cHK1z88ohDfdcF1CQub3FEtdB/KOlFsUVK6hqp+Ck1AgA
-	l1fozrMkeZ8uursBXPWqg3HSC+1SI2MZscWdkE3bR7Rd4JKAdW4A7VMXM2xQMejPn+35st7sT8C
-	nG6LlNlnGTrK4woEMfz9Lb//7E9tbO+WLWZNyc9xfUS1ApmcRiCYAM+hL0p7Lhrif2ebWLr3TR0
-	HDsIaneafYu0dX8pWhfCSjSGFIzzfQIt0b7P2xaXqBZIPAR94MT8E56kUFdqrWFxPfx4OelJY+6
-	8xyUEgSjm2cWsTjyXicBQZS54kYftKrnGntp6S2Mlkk8XjyEWZgrYO2XvhbBW8TfszEE1DwVz2t
-	OdsrHN9qmC8fVnclRPtaA3mZom6+rU2iV8dVyVSXhSt+N8th/EyLHtafkWIHnWvlcafui
-X-Received: by 2002:a17:907:3e1e:b0:c40:f89f:d91d with SMTP id
- a640c23a62f3a-c5066c9b92dmr321953966b.28.1794462023595; Wed, 11 Nov 2026
- 21:40:23 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=goivygNS
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Yc0v2vfQ0O7Xkps+Yu8K3w1Y6vmIMR7uOHhL3n0bXUY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794462426; v=1; x=1795067226;
+ b=goivygNSyXEwoFusujkN+y4PjvFBczyVOWVYkNQ+cu4vcx5eR33089ezgBjje1JC/Wdv5KoX
+ H8xYm5XRk0p2yOYEmxq0gpFtey0EbMZZSsOUygzEl6SoCO2nSyHvammUwPYmILaf21/TKCm9p+q
+ dgtbQoJo+rf7tjT4WZNbf4uI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 7497ed603e4f674f;
+	Thu, 12 Nov 2026 05:47:06 +0000
+X-Mizu-Trace-ID: 7497ed603e4f674f
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Thu, 12 Nov 2026 13:46:44 +0800
+Subject: [PATCH net v4] ipv6: ioam6: do not modify shared tuninfo
+ eh.nexthdr
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,61 +60,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110114623.2659197-1-yasuakitorimaru@gmail.com> <179431155869.488859.10143317051771395220@kernel.org>
-In-Reply-To: <179431155869.488859.10143317051771395220@kernel.org>
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Date: Thu, 12 Nov 2026 14:40:11 +0900
-X-Gm-Features: AclHuK_FTK64i6rz-dgQu9pXZ051Du56rXiAeB66ytOoSbASfD_csh6txxR6a1w
-Message-ID: <CAA2s7u4sfe8J2EXtmEtPmcV4N61B32Zn1E82EMaN7VpVtG-njA@mail.gmail.com>
-Subject: Re: [PATCH ipsec] xfrm: account XFRMA_MARK in xfrm_sa_len()
-To: netdev-bot+sinfo@kernel.org
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261112-ipv6_ioam_lock-v4-1-89e3381be525@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNTQ7CIBAF4KsY1mIYCk3rynsYYygOOv5AUyrRm
+ N5drC7ULmfyvvceLGJHGNly9mAdJooUfD7UfMbswfg9ctrlm0khSwBRcGpTuaVgLttzsCdeahD
+ SGq1qUbGM2g4d3cbCNfPYs837Ga/NEW3/qnrFDhT70N3H2QRj+LOg/hcScODKSWUVNDnSrE73M
+ /kQF9aP7Ul+ez3xMvvKCTSFsMo5M/HFt68nvsjeVCXUutL1DvDHD8PwBOYRwP9EAQAA
+X-Change-ID: 20261103-ipv6_ioam_lock-65102ca54908
+To: Justin Iurman <justin.iurman@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, 
+ Sashiko <netdev-bot+sashiko@kernel.org>
+X-Mailer: b4 0.16.0
 
-Thanks. Here is the information the series is missing.
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Discovered by manual code inspection: xfrm_notify_sa() sizes its message
-with xfrm_sa_len(), while copy_to_user_state_extra() appends XFRMA_MARK
-whenever the state carries a mark, and xfrm_sa_len() does not count that
-attribute.  The issue was not triggered on a running system.  There is no
-syzbot report and nothing was observed on a machine in real use.
+ioam6_do_inline() and ioam6_do_encap() stored the next header into
+the shared ilwt->tuninfo template and then memcpy()ed it into the
+skb. The lwtstate is used from multiple CPUs without locking, so
+another packet can overwrite eh.nexthdr between the store and the
+memcpy.
 
-It was then confirmed by instrumenting xfrm_notify_sa() on an x86-64 KASAN
-build under qemu: adding a marked state raised the accounted length by
-exactly 12 bytes (348 -> 360), matching
-nla_total_size(sizeof(struct xfrm_mark)).  The shortfall itself was not
-reproduced as -EMSGSIZE, because the skb allocation has slack and
-km_state_notify() discards the return value; the commit message states
-this.
+The packet can then leave with an HBH nexthdr that does not match its
+payload (e.g. TCP labelled as UDP, or a local packet labelled
+IPPROTO_IPV6). Set nexthdr on the per-packet Hop-by-Hop copy after
+memcpy instead, leave the shared template read-only.
 
-On testing: the change only alters the computed length, so it was tested by
-building and booting the patched kernel with the same instrumentation, wher=
-e
-the accounted length includes the mark.  No selftest covers xfrm_sa_len(),
-and this is core networking code, so no hardware was involved.
+Mark the tuninfo argument const now that the shared template is no
+longer modified, and drop the unnecessary (u8 *) cast in memcpy.
 
-Yasuaki Torimaru
+Fixes: 3edede08ff37 ("ipv6: ioam: Support for IOAM injection with lwtunnels")
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+Closes: https://lore.kernel.org/netdev/179336082844.3134.1265197633714491521@kernel.org
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+The issue is reported by Sashiko. It was confirmed with concurrent TCP
+and UDP traffic through a shared ioam6 inline route on a multi-CPU host.
 
-2026=E5=B9=B411=E6=9C=8810=E6=97=A5(=E7=81=AB) 20:52 <netdev-bot+sinfo@kern=
-el.org>:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Without the fix, a packet can leave with an HBH nexthdr that does not
+match its payload (e.g. hbh->nexthdr=17 with a TCP segment after the HBH,
+or hbh->nexthdr=6 with a UDP segment). With the fix, the same load reports
+no HBH/L4 mismatch: nexthdr is written only on the per-packet Hop-by-Hop
+header after memcpy, never on the shared tuninfo template.
+---
+Changes in v4:
+- Use a temp variable for the ipv6_opt_hdr setting (Jakub Kicinski)
+- Link to v3: https://patch.msgid.link/20261109-ipv6_ioam_lock-v3-1-a86195859d1e@kylinos.cn
+
+Changes in v3:
+- make tuninfo as const (Justin Iurman)
+- Link to v2: https://patch.msgid.link/20261105-ipv6_ioam_lock-v2-1-8f0ea30c4ffa@kylinos.cn
+
+Changes in v2:
+- Add one missed Fixes tag. No code change.
+- Link to v1: https://patch.msgid.link/20261104-ipv6_ioam_lock-v1-1-4f24c41b261b@kylinos.cn
+---
+ net/ipv6/ioam6_iptunnel.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index cfb2c41634a0..e8be0d922f74 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -254,10 +254,11 @@ static int ioam6_do_fill(struct net *net, struct sk_buff *skb)
+ }
+ 
+ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+-			   struct ioam6_lwt_encap *tuninfo,
++			   const struct ioam6_lwt_encap *tuninfo,
+ 			   struct dst_entry *cache_dst)
+ {
+ 	struct ipv6hdr *oldhdr, *hdr;
++	struct ipv6_opt_hdr *opt_hdr;
+ 	int hdrlen, err;
+ 
+ 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
+@@ -276,12 +277,13 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+ 
+ 	hdr = ipv6_hdr(skb);
+ 	memmove(hdr, oldhdr, sizeof(*oldhdr));
+-	tuninfo->eh.nexthdr = hdr->nexthdr;
+ 
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 	skb_postpush_rcsum(skb, hdr, sizeof(*hdr) + hdrlen);
+ 
+-	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	opt_hdr = (struct ipv6_opt_hdr *)skb_transport_header(skb);
++	memcpy(opt_hdr, tuninfo, hdrlen);
++	opt_hdr->nexthdr = hdr->nexthdr;
+ 
+ 	hdr->nexthdr = NEXTHDR_HOP;
+ 	hdr->payload_len = cpu_to_be16(skb->len - sizeof(*hdr));
+@@ -290,7 +292,7 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+ }
+ 
+ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+-			  struct ioam6_lwt_encap *tuninfo,
++			  const struct ioam6_lwt_encap *tuninfo,
+ 			  bool has_tunsrc,
+ 			  struct in6_addr *tunsrc,
+ 			  struct in6_addr *tundst,
+@@ -298,6 +300,7 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct ipv6hdr *hdr, *inner_hdr;
++	struct ipv6_opt_hdr *opt_hdr;
+ 	int hdrlen, len, err;
+ 
+ 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
+@@ -314,8 +317,9 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 
+-	tuninfo->eh.nexthdr = NEXTHDR_IPV6;
+-	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	opt_hdr = (struct ipv6_opt_hdr *)skb_transport_header(skb);
++	memcpy(opt_hdr, tuninfo, hdrlen);
++	opt_hdr->nexthdr = NEXTHDR_IPV6;
+ 
+ 	hdr = ipv6_hdr(skb);
+ 	memcpy(hdr, inner_hdr, sizeof(*hdr));
+
+---
+base-commit: 145480b28ca82e9fae789427cc4569e596515a32
+change-id: 20261103-ipv6_ioam_lock-65102ca54908
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
+
