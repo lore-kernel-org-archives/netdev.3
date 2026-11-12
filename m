@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794459257;
-	b=yfyTEBph41uEoYiJrfN+HLw1TNThz19k4lmVj8xHNyUy+SiFwMhXAs/TDDVrwc1toIRG
-	 qEpdaSmdtGzYtrH8F9A6VY3OS4YLE4Cufv7ieW4VY6CvZYW5xboIY6Bu9Du0XXPliecoF
-	 EjzFPtpzRC/0JGCruqAyP8j20iYRDUYqcOHEPVTnpY5R0yVtQHj+Hg+dLNzm77gjIn8Ey
-	 bTPhjhTcTl08sD5rULgAJMUge4sKPlnAASVK2h+YGYIzg8/DeA5Z1AqvS1cDt+UDqAKB3
-	 PBInrpJpifEc7zZ01Gpk3Cu9ApoljtPxXAYpXcay/SrZbdBM4wE22TI1TvJZmDIPwyQ==
+	t=1794459262;
+	b=AdtXNCDFTmACrW7lwipx+t1t8ODp7Zk3IK8MqVjwlUiCrMAfQZDm+QvYv2zthNmnLiTK
+	 g2FiOHeR8j1dMxBmK6P6LU/6WK+JJNzm6h60ikMx5R6Li41Kbzl1KSsiXblcuoyrxlQOD
+	 H5+dBVIDCvJgCURPLkqjyoFu3PgoGP7a0yQ6fU2zHxzf6RptgUy718iMRU/luHeEgF69w
+	 iaQGIV/L1lG+jV5zmAh+LtHcmGsnyNwooDShPJvPXMC2scOn5fnsPUeWMmVr3CN/L7Biy
+	 hdS2k3tTw2/qCgnA+swzqlIb3NER897GtLkzvvrUCQTbVbAfXlVUBner9KnEhA85dew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794459257;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794459262;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-	b=aSzGfKUeTHC24sBi60o9qp7IEAgoNWSL+WFoxVCXm4Vyxog8Gl0CHCZqNMEBZ8SpTXw7
-	 cZvGfqq7OC5tLUbaI8HSI1S3TduqYJvIZfg25jOOKxJueYQDL7GIWSEJqwVypUR08uHWQ
-	 n85MiaE0SMPeVsdo9OI0tG2qs9d8JmSLiNXFwjAqLIJOBFQSpl5+U9KTEApbsKti0F1pO
-	 hte41ThAM6T+iyXk1Re34XRVp1su1cLrMNGhKnIpnPG41L2BwRy7upYIs/ybI04JC11O+
-	 pP1efhKfxIAfsKtYuecYXcxsvoo+Rtt+S3Q3v+/nljWpyvpUyUg5rCNG4HRP+wlou2A==
+	bh=qvUR5N5zKOCVhfOIkYeVqQzWv23vnIRuXnDClDfRP6c=;
+	b=kfYRJoZJ+f/TYa4hhfdqCaLTovqJxwrGB9dmwjIQqH3Dsq2gUb4XJSsUwwBBBDDhK52/
+	 NpcHYzBHeVwxk3PIyNqHIbnRD6Mh1VlQtEdFk1qmN/Y0vGOff/FL29igWEBFdNXkAHCON
+	 baxQ9GgkX+cu7J9o5QTlXnDRxQwNaMvDdKhETvoU2auxIfeutBeYeoXkU5qLQXJ8EzTGa
+	 jcNd1NUaGdkcNPze3vSsEfYpMEiExbBWfT5r/EgVXj3x67xoxm37+Kj5PrZNU3OkU7Djw
+	 Uj4Kxv0ID8AKU5+R7uWrKWlZ2Qgu+Bmfl+Coy1KBAaykhL/178tMsMQn/2wL+DNouYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iPFScD85;
-	arc=none smtp.remote-ip=74.125.82.41
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vxOvM81O;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC63606A89B
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:54:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0DC63606A89B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE719606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 04:54:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE719606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iPFScD85
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15ea896ddc8so5915066c88.0
-        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:54:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vxOvM81O
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-37628596783so3652087eec.1
+        for <netdev@vger.kernel.org>; Wed, 11 Nov 2026 20:54:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794459256; x=1795064056; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794459261; x=1795064061; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-        b=iPFScD85PsZv8LHT/PgflVmuoG/DMPT5VMLPWwT8NoTJoj2D1nrdo6K+5giU12Y+Jn
-         EYPIWlhKwMVOkUUvxfPaS5XXCQ5BanFutYroYJT7n+2P9P7v+MFGieudv/HWEyrOG07c
-         JJbkZKBDMaMki3FvX33T+VsikkkJcrtStKrgzo+UkBm0iZ5g/lV44kyiBjQUQuRh/vXE
-         JfQC8KU/Atp+8K2Pjz09TqedwadUXnTpDEi/pIE9deYQJwKVKyNIZEeRql6/usv39tHd
-         +RqtQLZoq84sT2k/CutAFpI1CKJcYlp4E7X/8tk6IN/cE0Z1TpVF9MIXNHXUA+Jnjib8
-         3Rkg==
+        bh=qvUR5N5zKOCVhfOIkYeVqQzWv23vnIRuXnDClDfRP6c=;
+        b=vxOvM81OAZY0jnBX+TWPk/FQHy9bLvKQT0klCx+oBGc4K/28t28hCS3QTue8hRuPy1
+         /KCfBloBsKb3HO3trPP2UkwSoHppvWpYCaZBLjqj+0yjHCHYQELgzCPlHOwgXxXgNqgf
+         CS+mgLp4pU1kBpIR75ynbBrBpLmf75IktdD8cVpmnIOLCSCisZ72rlPGIVL3+/3tgCMF
+         gN27dxLPEpXcAd9N+sQI0z+En0fSikB52+5S/TZiW6tvQiDRksdHMq7L9sFKml7XLBm6
+         gsswf4UTlbkqJzciJ1NloyhrfWCkNVQUFke7v5h9SgiaXHhds/umRQa4LhgBb76/jhdv
+         ONYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794459256; x=1795064056;
+        d=1e100.net; s=20260707; t=1794459261; x=1795064061;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-        b=csBvdXqEOzG84c6CmG2zb3sAeGnhpEeW2qdNtSclwpE1a6PdbPMgG2wqcVk2YKQr/6
-         6VuuQRThzrT25Ge6Ub2Ex2vZ1ecT67fd0L6rTTwWsAHjG/YVKVQUGVo3NQpIhdagUJ1E
-         hqcJbaCmdQuD/2Dq9B01RA880PB702FaanpnBL8Cb/Wfoz4qat3jSrYTQ0XzSWw90ImM
-         QFat/Fy7p6ZzkubUl22cbqNFL4emz5UG3CiXJG9yL760fW5Bi70WBKW1C3oLcwzvE6eB
-         VJJUEKOlLpHc4ItSfkgppx67/fb2NJLmuyUIFFe/Zxw4XsNew+a/ND4+TP2voF9P3P9p
-         YTqg==
-X-Gm-Message-State: APuU4Z87zxCagu6vuwY6TPo4bVKEOS/UqWsbCzLoXtUAaaTxV+GhJdRJ
-	KaJa2EroFJ1LI74eyQ2IElqIq18a1nDmgmE3sW5JyPipXnEfEyO7lG4TMXDi9A==
-X-Gm-Gg: AYBFou23Lt21TdntTQCj9pcn5Yd3N/gJHEtFA84EldX+pVH+y/9xvrnJVvYIHB4f8tL
-	IOmKZ0Ih5R1sQv6tcn8daD3+VnJqQheVaWQNcCjYNplWXvvn0Op22Fcg+zcWgJrAIwZEFjkiqj1
-	kNz+iSGiSVrVv504oWCy4mS2Cvj90FwbMA4g9hnF2dUq1QQ/CEe6gmHHo2RmnYVYjTTsycht0TP
-	YWqjMQryvwwHflcK0rLZV2DBmjc0N8xvbC246ABYaG0WPC/T9Ta75wWVhHP7RMUhxef/RxDAXb7
-	/WoQI9IB8QNy6MSoeSr3mHKqswiQa70eTtVT9/0FrsTpe4cdCjxdK83yNJOIl4T8vZNs1QjRdRN
-	mhzwp69t5CzaiYtsZRc0DHEKKbEESQo4C5hIkgm8rSN0rTh2A25SMQK0/uF+a6F1cXgvgT0jxE9
-	HxYpWkk3Wqn1Fh9hNUazcadFxLNdwNqigsjYxHuBsbeQHEIF+4DR4dPZ6zBmSTSHY93CLIdDmzS
-	XABG1Vy8e5+WWUFV5EmQpDggC5nRcSxF0EmatvX8K3Mu67h2IXzxqZI7rM7CMOHN8TUNDZ4zbXB
-	w876ycaAA7+yVMER4W+yEX+1ErwQ9A==
-X-Received: by 2002:a05:7300:e9db:10b0:377:2fb9:9296 with SMTP id 5a478bee46e88-3772fb9c7afmr3183946eec.8.1794459256200;
-        Wed, 11 Nov 2026 20:54:16 -0800 (PST)
+        bh=qvUR5N5zKOCVhfOIkYeVqQzWv23vnIRuXnDClDfRP6c=;
+        b=frFWDlqqElWc4TFy2O8CRHG5ZfX9DTC3A4BeE17tVRBOS90bVUML5Zum53lAzTE73E
+         0jByayabazvUzKVE2HnZ8F/tXYoNDFn413/CTv5tyJ7h5vqNMnr8plFus94LzBYSpR01
+         uNr+dLRoo/bnVcDHGzycnxsEx/Rw4xIDoC6oS3ZOwtvHPeTobwS/wA9y+gLF6RQik6ta
+         dHCKXIjfeu4i5qlItMAgkpjEzv+B5Bka40dakON8gP2BlN++KlqSu999bGBH75fopNKW
+         Hu2lQlableGoEDR64T3bG9QJNpzzbWapifMMPhfXqgptLx4SGlI+dkWG034/iYNVtmVA
+         tWEQ==
+X-Gm-Message-State: APuU4Z8OlZhS5NtvBmM9fYnPIFkcq/nWnJ+w5gcTPEUu+H0Ar4MnwHgC
+	MZVdmXdB3s88FayR9lbj3wuuR4uH+q5svcndG9cA4nhk8/6C+iI3jla17selwg==
+X-Gm-Gg: AYBFou2pqVoEEHOch4nVF/Fa2nr7mcA3KJ3FNMgzZqmwNyThx70pvJnAEH/dbhSSYcV
+	1XS1sP3HvvI9Rb9lmQqgaEO5MHU7ocaaxqWqn3aG2VMhIPjr7XR9fNtRMoKsfN3L3NqOns4Xg4w
+	0f0f+BLkwvsRp52HXoAoIXWYkpdaykGgxI4wea+6S2OORoMPwGYEgrQtY/qPs1L3O9GDlurUwHk
+	wrXQsSeUFfYeSpDg54gJIKgkFu/9P6ePJIw2ifdS5kmb8z5/YYZgInY1UB7maXTC1ngzLG8dxhs
+	R2bcV7YY++AI38lNdI5rwz0pJ2u5+OGXRW+lR5vD3xFppWHiVWo7rz5hAlcRIGoaDQndaHJ+aD7
+	QRPN3P/iUPDxAl7xPoFWGjUZV5TqkVDViNeEuzkWC1UXqH9HoepFLDbZxpjZ4mqNtNhT0AhyvC9
+	kd3s7FpOZN4sYNgfgsGj0uJDBIjIapJF+1AkiCBQxc1qGWksklHb4ye33ur/0u8e4rT/blRlgg5
+	KDlUJSUZg+VBddqK4kl4bkuZBT28rxLVLzOpgYDIylg8zyugCBGxcrC5N+tM6bXv61Y2NtKQVnA
+	O98LlOoS
+X-Received: by 2002:a05:7301:7e0a:b0:36a:4a68:84e5 with SMTP id 5a478bee46e88-376850cff34mr4147957eec.8.1794459260793;
+        Wed, 11 Nov 2026 20:54:20 -0800 (PST)
 Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.54.08
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520cfdfc6sm23921585eec.17.2026.11.11.20.54.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 20:54:09 -0800 (PST)
+        Wed, 11 Nov 2026 20:54:17 -0800 (PST)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -98,9 +98,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net v2 10/12] net: phy: smsc: wait for LAN83C183 power-down recovery
-Date: Wed, 11 Nov 2026 20:52:52 -0800
-Message-ID: <20261112045301.3669532-11-f.fainelli@gmail.com>
+Subject: [PATCH net v2 11/12] net: au1000: keep the MAC stopped until the PHY link is ready
+Date: Wed, 11 Nov 2026 20:52:53 -0800
+Message-ID: <20261112045301.3669532-12-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261112045301.3669532-1-f.fainelli@gmail.com>
 References: <20261112045301.3669532-1-f.fainelli@gmail.com>
@@ -115,89 +115,129 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The LAN83C183 uses the generic PHY driver, which returns immediately
-after clearing BMCR_PDOWN. Section 1.11 of the datasheet allows 500 ms
-before normal operation is restored. Starting the Au1000 MAC before the
-MII clocks recover can hang the MTX-1 when reopening its interface.
+phy_stop() powers down the PHY when the interface is closed. The driver
+leaves MAC receive/transmit enabled on link-down and enables them during
+initialization before the PHY resumes. MTX-1 can hang when the MAC runs
+while its MII clocks are absent or still recovering.
 
-Add a LAN83C183 driver entry and resume callback. Wait for recovery only
-when BMCR_PDOWN was actually cleared, and propagate MDIO errors without
-waiting. Resuming an already awake PHY does not incur the delay.
+Stop the MAC on link-down before phylib suspends the PHY. On open, clear
+the driver's acknowledged link cache and synchronously resume the PHY
+to restore its MII clocks and honor its recovery delay. Initialize the
+MAC before phy_start() so the PHY worker cannot access MDIO or enable
+traffic during setup. Leave RX/TX stopped until a link-up callback
+configures duplex and enables traffic.
+
+Use the acknowledged link and duplex cache under the device lock during
+initialization, retaining it for watchdog recovery. Keep the reset-time
+hard stop for paths without a preceding link-down callback. On resume
+failure reset the MAC and release the IRQ; if initialization fails,
+suspend the PHY again before cleanup.
 
 Fixes: be9dad1f9f26 ("net: phy: suspend phydev when going to HALTED")
-Link: https://pdf.dzsc.com/LAN/LAN83C183.pdf#page=44
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/phy/Kconfig |  2 +-
- drivers/net/phy/smsc.c  | 26 ++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 39 ++++++++++++++++++++++-----
+ 1 file changed, 32 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 30e9d22c8d1a..10466b2574eb 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -421,7 +421,7 @@ config SMSC_PHY
- 	tristate "SMSC PHYs"
- 	select CRC16
- 	help
--	  Currently supports the LAN83C185, LAN8187 and LAN8700 PHYs
-+	  Currently supports the LAN83C183, LAN83C185, LAN8187 and LAN8700 PHYs
+diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+index 8b7a88ceb3c5..d60430a3795e 100644
+--- a/drivers/net/ethernet/amd/au1000_eth.c
++++ b/drivers/net/ethernet/amd/au1000_eth.c
+@@ -456,7 +456,8 @@ au1000_adjust_link(struct net_device *dev)
+ 		/* link state changed */
  
- config STE10XP
- 	tristate "STMicroelectronics STe10Xp PHYs"
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 48487149c225..c3b51afd4b1e 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -13,6 +13,7 @@
+ 		if (!phydev->link) {
+-			/* link went down */
++			/* Stop the MAC before the PHY can remove its clocks. */
++			au1000_hard_stop(dev);
+ 			aup->old_speed = 0;
+ 			aup->old_duplex = -1;
+ 		}
+@@ -691,8 +692,8 @@ static u32 au1000_rx_mode(struct net_device *dev, u32 reg);
+  * When the device powers up, the clocks are disabled and the
+  * mac is in reset state.  When the interface is closed, we
+  * do the same -- reset the device and disable the clocks to
+- * conserve power. Thus, whenever au1000_init() is called,
+- * the device should already be in reset state.
++ * conserve power. The device must be stopped before au1000_init() is
++ * called, but may be out of reset for MDIO accesses while resuming the PHY.
   */
- 
- #include <linux/clk.h>
-+#include <linux/delay.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mii.h>
-@@ -684,8 +685,32 @@ int smsc_phy_probe(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(smsc_phy_probe);
- 
-+static int lan83c183_resume(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = phy_modify_changed(phydev, MII_BMCR, BMCR_PDOWN, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* The PHY needs up to 500 ms to restore operation after power-down. */
-+	if (ret)
-+		msleep(500);
-+
-+	return 0;
-+}
-+
- static struct phy_driver smsc_phy_driver[] = {
+ static int au1000_init(struct net_device *dev)
  {
-+	.phy_id		= 0x0016f840,
-+	.phy_id_mask	= 0xfffffff0,
-+	.name		= "SMSC LAN83C183",
-+
-+	.get_features	= genphy_read_abilities,
-+	.suspend	= genphy_suspend,
-+	.resume		= lan83c183_resume,
-+	.set_loopback	= genphy_loopback,
-+}, {
- 	.phy_id		= 0x0007c0a0, /* OUI=0x00800f, Model#=0x0a */
- 	.phy_id_mask	= 0xfffffff0,
- 	.name		= "SMSC LAN83C185",
-@@ -887,6 +912,7 @@ MODULE_AUTHOR("Herbert Valerio Riedel");
- MODULE_LICENSE("GPL");
+@@ -727,12 +728,12 @@ static int au1000_init(struct net_device *dev)
  
- static const struct mdio_device_id __maybe_unused smsc_tbl[] = {
-+	{ 0x0016f840, 0xfffffff0 },
- 	{ 0x0007c0a0, 0xfffffff0 },
- 	{ 0x0007c0b0, 0xfffffff0 },
- 	{ 0x0007c0c0, 0xfffffff0 },
+ 	wmb(); /* drain writebuffer */
+ 
+-	control = MAC_RX_ENABLE | MAC_TX_ENABLE;
++	control = 0;
+ #ifndef CONFIG_CPU_LITTLE_ENDIAN
+ 	control |= MAC_BIG_ENDIAN;
+ #endif
+ 	if (dev->phydev) {
+-		if (dev->phydev->link && (DUPLEX_FULL == dev->phydev->duplex))
++		if (aup->old_link && aup->old_duplex == DUPLEX_FULL)
+ 			control |= MAC_FULL_DUPLEX;
+ 		else
+ 			control |= MAC_DISABLE_RX_OWN;
+@@ -742,6 +743,10 @@ static int au1000_init(struct net_device *dev)
+ 
+ 	control = au1000_rx_mode(dev, control);
+ 
++	/* Only use link state acknowledged by au1000_adjust_link(). */
++	if (!dev->phydev || aup->old_link)
++		control |= MAC_RX_ENABLE | MAC_TX_ENABLE;
++
+ 	writel(control, &aup->mac->control);
+ 	writel(0x8100, &aup->mac->vlan1_tag); /* activate vlan support */
+ 	wmb(); /* drain writebuffer */
+@@ -916,6 +921,7 @@ static irqreturn_t au1000_interrupt(int irq, void *dev_id)
+ 
+ static int au1000_open(struct net_device *dev)
+ {
++	unsigned long flags;
+ 	int retval;
+ 	struct au1000_private *aup = netdev_priv(dev);
+ 
+@@ -928,11 +934,25 @@ static int au1000_open(struct net_device *dev)
+ 		return retval;
+ 	}
+ 
++	spin_lock_irqsave(&aup->lock, flags);
++	aup->old_link = 0;
++	aup->old_speed = 0;
++	aup->old_duplex = -1;
++	spin_unlock_irqrestore(&aup->lock, flags);
++
++	/* Restore the MII clocks without starting the PHY state machine. */
++	if (dev->phydev) {
++		retval = phy_resume(dev->phydev);
++		if (retval)
++			goto err_reset;
++	}
++
+ 	retval = au1000_init(dev);
+ 	if (retval) {
+ 		netdev_err(dev, "error in au1000_init\n");
+-		free_irq(dev->irq, dev);
+-		return retval;
++		if (dev->phydev)
++			phy_suspend(dev->phydev);
++		goto err_reset;
+ 	}
+ 
+ 	if (dev->phydev)
+@@ -943,6 +963,11 @@ static int au1000_open(struct net_device *dev)
+ 	netif_dbg(aup, drv, dev, "open: Initialization done.\n");
+ 
+ 	return 0;
++
++err_reset:
++	au1000_reset_mac(dev);
++	free_irq(dev->irq, dev);
++	return retval;
+ }
+ 
+ static int au1000_close(struct net_device *dev)
 -- 
 2.53.0
 
