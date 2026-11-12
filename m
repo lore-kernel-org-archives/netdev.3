@@ -1,76 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794513832;
-	b=iqn3qs2yNwFjIXP8ocezaozZY63Db8QoGkoZxSyw3o4FYi2aEipI/Y9Auisn3f9L2pDF
-	 L+Ygd80gMVKzf2yCTHLw2n5fwuHczhln0nvuGG3E2rr1Ki2Htkef/CmQSomSvlNtXYrNA
-	 nOS/Vk2jnv3C1Lielvpv45mJVY9SmhYy1ZWLlq3bDqpqNysp10VjeIFzC0yVVLKXg5t5N
-	 HCldfVA2bbgWnBFhTy6Qw4NZ3zzbzLrdIMZT3JuTpBs3Xe2gxcjHg3c0pVi9tx9Dy0KqQ
-	 bwlgsNSM32rEXEzz8BtDJ7PRb+HonK5a16+hQbxPXXXLnoIP1hjFgpqhGPwDsqB0K3Q==
+	t=1794514918;
+	b=GzpD7Uz3NIPbaUQ0nK0G8gwW9HKIvn2ONeVllOU9vAigUyy5g31evz+RZTU+gRfv7y2S
+	 GeC+Iolowqx5hZtW0pTRG3wYPwRwQNtZcJgUSfPt5LEkBKTGIkzeUpplTuasUe0f5f5P7
+	 3tnpnu/YjtsMgJskT4V/tBEybUXLKSPLiozxiM0irzusvm748sD6VILNgVir5deND+PHe
+	 f2C25tKq+r98aBuIvyhrTXiqjcVyu/eUnlveHV12cmtuoSuUin0RStojuHx/EWAk1N9VR
+	 j/R5ZPCKdtTWcJdaDd8NO/EIUZatCdvItOI0SgDXMywSenR56CJFs9ZqbEu7+RKdgkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794513832;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=5gV/6C2AHmV+xeANCfCNQ0nPfep5V3gLCUrkMNmMk7o=;
-	b=tI4FYjdjQwCkUwUbvpcKLYNXgapMZgdEK8WGGmgb3LDt3jO9nZFB01u9yPBQJyt4rwU8
-	 W/MJFm72q0LaO2rI3B2bfPx1sTnFwbXvIJiuTMMWwhqe6qtvLSwIWt5g0KqvHob7VLooW
-	 jDfE1i9IRlscI5tDGWYJX0mE+tFLUU/aZdGfte9FeABjOqoEzrUnI5tlSnNyR4gfuwTPV
-	 x7+fcqdactIWv9c6IZPiAmITO53qk1B4f9KAwL93d7WhAnYiKM7AijHTIedupYmKsi1DJ
-	 gfKyIrTqE6JEMpT0/HSFAZM6o4A2p1SDFWM7TxWZzR2xivLMbmP4aegYhwEaL34CpUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794514918;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=JWZrjKwcXmjICx0+YDbcMtJTiJ23RLhSnQ9nOf3lyEk=;
+	b=jZUQUTf3AVFMEbCXoVab51wqabw6bkCHpJiRbp91N5Ww0HoiCEMEZL9zt1hPquPYScrs
+	 n5wk4PFNmzOyKhF62dJdStUqBInWFzEQftANamDr+nOTRh5UCnAec+aAdF3q5EBv2h7u5
+	 SfvsWhuFE7K2M3WoQVS4yLCLdpNCCDAaFDPPG6JuMJozaHa2hoShqgzB9LzapkvuJBYdw
+	 CMLP1W8cmJWDo+AcevQmyB02kU2+c76fw4qR+mtdnCVgMfgSizWwUoNZprOWfnUB9m3g/
+	 eeodqXozB9zKs7REGB/2rODsCEYt4zsEsh6szuot6BMY0SQhmIabC3qxryiE7hXkZuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AOPa7Utz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2hvHRh8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F10606A31C;
-	Thu, 12 Nov 2026 20:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44627606A323
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 20:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AOPa7Utz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC91F000C4;
-	Thu, 12 Nov 2026 20:03:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2hvHRh8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2E71F000C4;
+	Thu, 12 Nov 2026 20:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794513831;
-	bh=5gV/6C2AHmV+xeANCfCNQ0nPfep5V3gLCUrkMNmMk7o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=AOPa7Utzo8hGrUb1g8FR1eUscVISdpgMMukqb5E77PFz1A8oOG1n10ayV5uUs444j
-	 eJnxzADNKmBB3Vwh9EJ1Pe/3gv4rcKrb1JU+OhK2yEWVVomgQ6wUaxFZb047h7NHpL
-	 DIZgkt4JT09zQIeICTMmwEOyyFAn1dvBornsClCTI6h6Mpw/2H32Uc5lgJb3btjgKm
-	 ypPwalQ1RyZ1Vpw84/9q5qMgENrEb7R/NTCyXeBtfqiMVyzwcDyuhDhnfgdhZge+Tx
-	 9Q7K+DwerqtOhtHOleBO8z1GdZZTP9rcqgxaO7ycg70Jj0exD6Is3Kt76yEs/5/C2C
-	 2o8PEYlS22reg==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Stanislav Fomichev
- <sdf@fomichev.me>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya
- Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
- Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai
- <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org,
- io-uring@vger.kernel.org, Mina Almasry <almasrymina@google.com>, "Mike
- Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
- <bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David
- Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Stuart Clark
- <stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 11/11] eth: fbnic: Support AF_XDP page pool
- zero copy
-In-Reply-To: <avWk5as19fvZoEJA@boxer>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-12-bjorn@kernel.org> <avWk5as19fvZoEJA@boxer>
-Date: Thu, 12 Nov 2026 21:03:48 +0100
-Message-ID: <87wlqhq0kb.fsf@all.your.base.are.belong.to.us>
+	s=k20260515; t=1794514918;
+	bh=JWZrjKwcXmjICx0+YDbcMtJTiJ23RLhSnQ9nOf3lyEk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=a2hvHRh8sD1ttugenc/VfdkMFMBjjhJD8+pZ38XW+HXDSBxJ11e4ZSIvSvy6ekb3D
+	 ITbEzydsJTeLwmLwdgyv1Ne2I/Jvvfgye8tgk5A93WAoyut8ziQA26K4zxbYeXHM1W
+	 RHx27T3lmUT1/xIvwpCYr7FFU4IDTW9ur5QE8MY3Y30DWWZ4lppADU8OBGpP1cS6mD
+	 5drZT1wQUcsOyx5hEklrnMrmi5dJB6MVDnP5N8+Zf3TcRHCcpjITj8oTyapguWondq
+	 n4xoA8xR7Ry0CgBOcOdsQS5uwPFimrXik7N1xXjbCtmLiFK2wU4QGXrGvUBKOxmljA
+	 0YphzgoGTqh/Q==
+Subject:
+ Re: [PATCH net-next 1/2] bonding: 3ad: Receive packets in COLLECTING state
+From: netdev-bot+sashiko@kernel.org
+To: idosch@nvidia.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@kernel.org, jv@jvosburgh.net,
+ andrew+netdev@lunn.ch, razor@blackwall.org, aahila@google.com
+Date: Thu, 12 Nov 2026 20:21:57 +0000
+Message-ID: <179451491706.2199510.1058504888559496420@kernel.org>
+In-Reply-To: <20261111171947.2816258-1-idosch@nvidia.com>
+References: <20261111171947.2816258-1-idosch@nvidia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,56 +63,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> On Tue, Nov 10, 2026 at 11:20:32AM +0100, Bj=C3=B6rn T=C3=B6pel wrote:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
->> @@ -538,6 +547,13 @@ static int fbnic_bpf(struct net_device *netdev, str=
-uct netdev_bpf *bpf)
->>  {
->>  	struct bpf_prog *prog =3D bpf->prog, *prev_prog;
->>  	struct fbnic_net *fbn =3D netdev_priv(netdev);
->> +	const struct xsk_rx_check *check;
->> +
->> +	if (bpf->command =3D=3D XDP_VALIDATE_XSK_POOL) {
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The fix clears 'inactive' only when ad_enable_collecting()
+  runs.
+- [Low] The patch fixes a real, user-visible bug but has no Fixes: tag.
+
+--
+
+bonding: 3ad: Receive packets in COLLECTING state
+
+With coupled control disabled, an 802.3ad port in COLLECTING state should
+receive packets, but the RX path only delivers from slaves whose inactive
+flag is cleared. This patch makes bond_set_slave_rx_enabled_flags() clear
+slave->inactive in addition to slave->rx_disabled.
+
+> When coupled control is disabled, a port in COLLECTING state is supposed
+> to receive packets, but it does not. The bond only delivers packets from
+> slaves whose 'inactive' flag is cleared, whereas
+> bond_set_slave_rx_enabled_flags() only clears 'rx_disabled'.
 >
-> do you really need a separate command here? why not rely on existing
-> XDP_SETUP_XSK_POOL ?
->
-> here it doesn't look like things being validated are something unique that
-> you could not check during XDP_SETUP_XSK_POOL and XDP_SETUP_PROG.
+> Fix by clearing 'inactive' as well.
 
-I'd like to keep it. XDP_SETUP_XSK_POOL means "set up driver ZC for this
-pool": the driver maps the UMEM and restarts its queue, and the core
-WARNs if it didn't map. A provider driver does neither; it only says yes
-or no, before the core maps and installs anything. The same question
-comes up on MTU and program changes of a bound device, with the new MTU
-or program, which XDP_SETUP_XSK_POOL can't carry. One command keeps that
-in one place, and v2 runs it from the core MTU path too, so a driver
-can't forget that case. This is only a burden for the core.
+[Severity: Low]
+Should this carry a Fixes: tag?
 
-> Overall, +400 lines for zc pp-based support...not sure what I was
-> expecting and I know we need Tx side implementation.
+bond_set_slave_rx_enabled_flags() was added by commit 240fd405528b
+("bonding: Add independent control state machine"), and that commit only
+cleared rx_disabled. The RX gate in bond_should_deliver_exact_match()
+checks only bond_is_slave_inactive(), so the bug goes back to that commit.
 
-fbnic had no AF_XDP at all. Of patch 11, about 120 lines are TX and 58
-are docs; the rest is RX setup, refill and the checks. 08-10 add XDP
-redirect, netmem heads and whole buffers to fbnic, which aren't
-ZC-specific.
+The notes say this targets net-next because it never worked, and that
+makes sense. A tag would still let stable and distro maintainers link the
+fix to the original commit:
 
-> However, I am wondering if better example for this change set would be the
-> driver that already supports pp *and* carries the separate ZC data path
-> (ekhm, see ice?). Then you could show case at least in diffstat how much
-> less work is needed for AF_XDP support.
+Fixes: 240fd405528b ("bonding: Add independent control state machine")
 
-ice RX is on page pool through libeth, but ice has no queue API, and
-libeth can't select a provider yet; that's also why ice can't do devmem
-or io_uring zcrx. The provider has no unaligned mode either, which ice
-supports. mlx5 or gve already have page pool RX, the queue API and their
-own ZC path, so one of those would show the deletion with less
-groundwork. I can do that as a follow-up.
+> diff --git a/include/net/bonding.h b/include/net/bonding.h
+> index 598d56b1bc970..cb89aff437f44 100644
+> --- a/include/net/bonding.h
+> +++ b/include/net/bonding.h
+> @@ -594,6 +594,7 @@ static inline void bond_set_slave_active_flags(struct slave *slave,
+>  static inline void bond_set_slave_rx_enabled_flags(struct slave *slave,
+>  					       bool notify)
+>  {
+> +	slave->inactive = 0;
+>  	slave->rx_disabled = 0;
+>  }
 
+[Severity: Medium]
+With this change, inactive is only cleared when ad_enable_collecting()
+runs. Can a COLLECTING port still be left with inactive=1 and
+rx_disabled=0?
 
-Bj=C3=B6rn
+bond_option_all_slaves_active_set() can still set inactive without
+touching rx_disabled when all_slaves_active goes from 1 to 0:
+
+drivers/net/bonding/bond_options.c:bond_option_all_slaves_active_set() {
+    ...
+	bond_for_each_slave(bond, slave, iter) {
+		if (!bond_is_active_slave(slave)) {
+			if (newval->value)
+				slave->inactive = 0;
+			else
+				slave->inactive = 1;
+		}
+	}
+    ...
+}
+
+A COLLECTING port matches !bond_is_active_slave(). This is because
+ad_disable_distributing()->__disable_distributing_port()->
+bond_set_slave_tx_disabled_flags() left it in BOND_STATE_BACKUP.
+
+The steady-state COLLECTING recheck in ad_mux_machine() only looks at
+rx_disabled:
+
+drivers/net/bonding/bond_3ad.c:ad_mux_machine() {
+    ...
+					if (aggregator->is_active &&
+					    bond_is_slave_rx_disabled(slave)) {
+						ad_enable_collecting(port);
+						*update_slave_arr = true;
+					}
+    ...
+}
+
+Since rx_disabled stays 0, the recheck never fires. Until the next mux
+transition, bond_should_deliver_exact_match() keeps returning true, and
+every non-LACPDU frame on that port gets RX_HANDLER_EXACT.
+
+The notes list this as known issue 1 and describe COLLECTING as
+transient. However, the companion selftest ("selftests: bonding: Add a
+test for 802.3ad with coupled control disabled") keeps a port in
+COLLECTING indefinitely by clearing the partner's Collecting bit. So a
+partner that never sets LACP_STATE_COLLECTING would keep the port
+dropping traffic.
+
+Would it work to also check bond_is_slave_inactive(slave) in the recheck,
+for example:
+
+    bond_is_slave_rx_disabled(slave) || bond_is_slave_inactive(slave)
+
+That would let the port recover on the next state machine tick.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111171947.2816258-1-idosch%40nvidia.com
