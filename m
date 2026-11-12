@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794522089;
-	b=ppb4xog2ruy3ACVXja47o6Sx2pmxFcBOobGWRhXhy3T2ANMibe30JfA9uga9xpPpR0zj
-	 nZ2Dq42XJUavhAdosKG0FgRGKaXa8CBULG2tju3LLZ4g06oS/DhSZkS4b0y8MYYTkSv6Z
-	 VIkX6OXKG6MBnwLZd05f3XRzCE7Ju6vcr1wNx3gXiXsW+X8cu3m+dOAa3EwByb4+8Ih06
-	 LfTteNxQ5yIc8Q+frukuDpt8YqucBy4/NrnNM8fqUnDpkbEmbL7lQGfkfTOM/V76J/iLK
-	 6PqSNApiXxJ0MmcyuNeEoG1Kt2cxf0MWUUr84V100/cM6HUPvBV9BA06DMmPLde4MAQ==
+	t=1794522159;
+	b=HB7ERXDEx2WBT1KDluhs7akO+eiD6DLTg8lO9HD6KAHfi6qoatLxDFhBA7kVyqN1JNaC
+	 Lbmd8Bw33z91vZab5mPe98NIXVJvKv96U+5Hp5UdXROi0WW9cICeftVOs/M65FfWbHdcM
+	 efPP5FULxAhBHn9cr43+IHEsP12n1ku3mnJgCnz1YBQPIAtMTj31wU0uK7MmBgxsmmLJA
+	 /FF/DiFASJ9CI18+Zd6Hhcc+o30T20QD1KSOdwl348jtq/0v4sNI4wFf8Lxot0DShyoXM
+	 1cMo0GUTenSVbyzm7YGsk9wuzx/z3Ny5X444mNLUWfkTsYTI6+bJu+m/7h0e5EZw2gQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794522089;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794522159;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
@@ -15,88 +15,88 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 X-DetectorID-Processed;
-	bh=ryOGIzWANYk795wucbwRaaM2psKG1cATfQ6kt+6oYVQ=;
-	b=k9FUvhVMomfJTrO02EfUWGLtAFozf+Uxi1HyJ3FjXVPJ160QlysR7kPG2S1U3AEEzoK+
-	 LnBVThP1niVwX5CCvwmFCOCPBBBjq2A5XfR1FJ09VRv1wq+LvWJPYOsnoS+vZivtM/Sxp
-	 DeIQRumGbedWQ40Tr2Zuowj9YAFR3qaB7+AY64V6jFVdXV8K4jLGtfgxmyl/ZD1Uf9558
-	 i69ogEulJm4XjfO/xafaSppNaD9OCII81HGwadRxtkuyiHwn0V7WIQJiQqnscfMF39r2D
-	 swEGf10KLrXAX6k2ejcOGCI3nDkyrX+/jYqyUOsudSyDEnzLmIY6+NUazjlamwt3Ckg==
+	bh=+q1vn1hShkCKGydXxe5nU9m/qd7sW0I7os6nazrrI7E=;
+	b=azTesjzjx7ZSSNflFPmGrHvlY2/kInNU3fwLhP1d+ytSltgGMTygkD/TNCAco6QZJVXa
+	 hBV4WWvFPea5u7Kox4r29UJWzHmXCwnhk8NB6IalvgiKo2cTX+aNN2+ywN2G8eA+OVsFT
+	 Ae725F9HP0B2iPml9KM9kKtK/W3gN0d7k1i7b5V5D+UHbh89AxTTiCGxbn4IRKiUT43lG
+	 KJeTJW+k2kSvtfvt1wM3SxpGA6azg6pSN0bgzl7MKm5mML28/6uGEvEu9FZkKAT8XH2sO
+	 Yd9RzqwP8WqLT/Nr+IaO3RAMNRUCI2KXqw3qPG98zECx7IlrTipqXnUP7u08mPf6iLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Xbez+FtK;
-	arc=none smtp.remote-ip=209.85.214.228
-Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aqax2RMd;
+	arc=none smtp.remote-ip=209.85.215.225
+Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B03606A884
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:21:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2B03606A884
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0005F606A31C
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 22:22:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0005F606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Xbez+FtK
-Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2ede7cb02daso10749605ad.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:21:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aqax2RMd
+Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cdab8873d9dso147583a12.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:22:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794522088; x=1795126888;
+        d=1e100.net; s=20260707; t=1794522158; x=1795126958;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=ryOGIzWANYk795wucbwRaaM2psKG1cATfQ6kt+6oYVQ=;
-        b=jL45+fKtcAkHY2woMksDp2y0BcqfQUMIAHmLNYE8O0bSRTcNoff21QqGDyygvpnbKU
-         czrdgyspz8Zw/Mv3+Xzk69LvcZfyi5LHyI9UnM3hlfoVY0Uswbqx8N9v4T7KiItWsmg2
-         ByDmUZ0DQoAq7oUAP2XcunTiqCLTKTWlYDQkY5PJjfHACoXuTkGB9xYclQucKfLB5zSx
-         VvvcQmwVzZ6Gz6GEgFm40c+Fqc79vp1yuQRwX4ZTqD/g/R7Iyq2ITKQILxcIQ6ta9fnk
-         om1fOl/qZErr2CFsrCNioqKjSuHN7GON9n8v5BqSQLUDA6FaxuA5dQMAvJfhcmjkYx08
-         9LjA==
-X-Forwarded-Encrypted: i=1; AL+hErHduPwX8fPVREW6fJu1QLpHcCY8CoV3ohVq5Yb4Wq44/VmgltpvDppMLOQxM1zo3ymV66IEy/A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z88lMht0UxZhRMdsOwur7TZNMcg1KfbIuIV/sjCjdJ6YbvqM5d5
-	SK/GRESj2sbjK8GDfInNGL4zYhdFaVLZ5RXSfY7zO5Yta1GzFRKUB6LskPmo3B1xf1fu5N3TiZQ
-	oadGe+HD2zSQGXlUe/zie768RggR4AIYoDtVpBZJFG7dPbbF6tQn68AbGRHhFpAlhe3YBbFaamP
-	LmtISS03HOsfS3jEC+BGroSRqxO29j12aKOasGpSQsLyN8sn+WQRqPgWdvRstmqh7M0D53vlTI4
-	ACYuDkKLqjZu9qB
-X-Gm-Gg: AYBFou1qGzSyo7F1r8QKhqiXQauz7E3R6iTgM75+DHLcoub7Lds5Cvpv17HadWR+Sp7
-	RwGPl6MZHYn/eSjOdvq9unk1Vpp/tK3kPJ84actqgs3MvkMXONCYco0BsrIYBf81reGRZLVs3Z4
-	sQ1YKE9rhzUsQCVt8kefr1beJLHaWESudIAWX9dEkkslvBkgo+h4Zs9anxanBPIdoTtEPnWgzZn
-	xwS24ugPr1sb4gF5gnOm85SzZeNx5qq80pIzd24aIDRu64FRE45mT1kV6M/hiCwfL7U5EOkiqfr
-	YPu6zPYYj0XPL08Ch5/YXy1bnZncXwl1GsiUb/Eo6oy9SZakoHMzYjP9ndv97zN4vT9tpK3lVsl
-	mKXAE1D0BVeUPTPNiVSPRHMfHaY72bnkwSWn3/x4dsoDbwDcm6kPjUfQlcjaQGOzyFeH2EkF574
-	7ap8JYOJINRM+JXIzk0Tq4fIdNh6qC2h84G9nsw6X1
-X-Received: by 2002:a17:90a:e7c1:b0:3b0:9409:6969 with SMTP id 98e67ed59e1d1-3b1b0b94eaemr228211a91.19.1794522087886;
-        Thu, 12 Nov 2026 14:21:27 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1b25dd0e1sm198827a91.2.2026.11.12.14.21.27
+        bh=+q1vn1hShkCKGydXxe5nU9m/qd7sW0I7os6nazrrI7E=;
+        b=TMPFRF3NiqzOfO4juVk70RNpLXXMSc6t6OOuOAyRsF02AJRYUNQplMHJu6HxAZ2FUa
+         b0bItNhZkEuuRjh+1qqxHecbtvv7sjp9jwQhrTnEEJA0p5CrJE3Mw3xQvHZ+V4Qz5Ee6
+         551D0dNKi4i37mxpPdpwwuTRp1ZyjIAV9FE1YLk6JE8BmRz9457c1VbBv++O2Jvpf26M
+         txuyiuykimGDM8pN2NeeCQy1rD/DwPH2sMwHxcBypCr7S5mV7yeyXRpDCbKgVn1oo2JR
+         P3Axa+LKsigy7vwHP1uuUUu5c8zZ84j8RHid/JYkf0+W1gYxmgBSLhtKF0Nto9u8VFx3
+         aR4A==
+X-Forwarded-Encrypted: i=1; AL+hErE8+Tk48H8AIWT8FUSvxlguaxo9AS1fk5G9nbqlBap65TPL6Iz7MDZawteUf2lqzFqnB9M/yTk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/4eFz5V+AmEt28RMNpZ5EHyTIaUSMov6VMLiedJgtIO+JZODNY
+	jTvamLWSwLSgTG+4+NCNSQ4WnvsAy9A4Lg7juAQnIIt4T9j+64wKCEU7ziHv1Yk9eyFEwPLFK0H
+	q5Cut417ShuLo+flrxdHRC4M/fQc4nCslB0kPAKqIEtp9rpCB+9d1yPAoxxhaVEe6wmullFs82Z
+	k5UP0RhdhU17HaZLyxkzVJ65hDSJkZW1H3qNV/zkjUE6OcoBzsDMWAq5jlVoaTp+6VvTyOaoBqQ
+	Ps982yTPQukMntR
+X-Gm-Gg: AYBFou0hUNPXiR66o6iCeNS9aw0VXoT/e5uBaCCicSap5OVJ4lbhmFrbmuJ1rj+Ph5P
+	35UboYjxKFcNQgxTKbtNgFmWSp6FA5tMCx0N9chyV4571Nm4vJp13siL1Ia13oe1R104POdyWwn
+	JJ95c2JdF/8rDu8PkuDQDyLSlcEhc8PS21FIK87JDAr2YILI/GTwuGOdTKPARQg4hrOWeJKPXL2
+	+qHs+QuvJdPXz5h57QXguopmzT5xij8FuBWcltvWnK0AJnHq14UpKo46k588DVZcjT/4xemQ71K
+	+OYZuDz+9b8HXZUGEGtFdIMERghLEfRCC7mxkX9IQYizZ9DC+iq26ra42NprkkE5UBQt/PzirOW
+	Aw6jmBEedAiYdTlxFM9Oxxt2qHMjDZjFTs5F7v4FKnx2QHHqLQvX4BZRXMNSkmo0FF57m9OJmvf
+	qtk6oNrM8EI8ewwsoA853bS/zXi0fiVHiwy66RKxJX
+X-Received: by 2002:a17:90b:4c11:b0:3b0:a3eb:759b with SMTP id 98e67ed59e1d1-3b1b0a42bc7mr405849a91.23.1794522157974;
+        Thu, 12 Nov 2026 14:22:37 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b197cdf4dbsm3928474a91.8.2026.11.12.14.22.37
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Nov 2026 14:21:27 -0800 (PST)
+        Thu, 12 Nov 2026 14:22:37 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a065d0e9deso204490b3a.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:21:26 -0800 (PST)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36f26e6abe9so378988eec.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 14:22:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794522086; x=1795126886; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794522156; x=1795126956; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ryOGIzWANYk795wucbwRaaM2psKG1cATfQ6kt+6oYVQ=;
-        b=Xbez+FtKbFsQUfi9+XwqBxNfdXjUj4/Sv3i6aThTVP3JaumR2yE7SqUYYxNCbLU/Yq
-         Znu3874ct7moOlcXwY2lafxJFQImVme2EIOwV8tdI3D44xetlvOajEI7Vkojp+rwFF4D
-         Bbsn+of6oI1IsMs209zTAlS8gIbWpr0U+N9uo=
-X-Forwarded-Encrypted: i=1; AL+hErEIcoit46Mgxl9utkp2vpTQUdxUlJmuUQxmTrG3BlasHsU2PZKmQHH2NxsxPDsOkSqAeEUGOjQ=@vger.kernel.org
-X-Received: by 2002:a05:6a00:4b52:b0:878:3704:e0f6 with SMTP id d2e1a72fcca58-8beb7a2536emr537598b3a.28.1794522085879;
-        Thu, 12 Nov 2026 14:21:25 -0800 (PST)
-X-Received: by 2002:a05:6a00:4b52:b0:878:3704:e0f6 with SMTP id d2e1a72fcca58-8beb7a2536emr537584b3a.28.1794522085400;
-        Thu, 12 Nov 2026 14:21:25 -0800 (PST)
+        bh=+q1vn1hShkCKGydXxe5nU9m/qd7sW0I7os6nazrrI7E=;
+        b=aqax2RMdzVDdPWUbIcapkUmgBGc08arZbBnXRMz2/Xo0P4vK0FNKEfdYu+JcGrh7RC
+         Kj3eKwSuyw/IvHY1cG3i3NCQsMyM2ock80T9T8G/tbSojdroPIQaIhOvOsX/Haqpnr3u
+         6R+QLIuj2iMNdT6YqCxsEHBvuQVRsETiuM4IE=
+X-Forwarded-Encrypted: i=1; AL+hErF4s++RJ8VNmw5VJIoKVrlAl6QPvjVBBMPJVuo3/V7ASZfb/Fsd3D9qjS2FkkY3rpDPbWsqXIY=@vger.kernel.org
+X-Received: by 2002:a05:693c:66d3:20b0:36c:c434:b6b8 with SMTP id 5a478bee46e88-37966e3afa3mr453944eec.26.1794522156235;
+        Thu, 12 Nov 2026 14:22:36 -0800 (PST)
+X-Received: by 2002:a05:693c:66d3:20b0:36c:c434:b6b8 with SMTP id 5a478bee46e88-37966e3afa3mr453922eec.26.1794522155473;
+        Thu, 12 Nov 2026 14:22:35 -0800 (PST)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed1d6207fsm187440b3a.32.2026.11.12.14.21.22
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379563e6b6dsm2846867eec.21.2026.11.12.14.22.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 14:21:23 -0800 (PST)
-Message-ID: <742a9b5e-0ef9-4ec7-9073-ba3b4689aa65@broadcom.com>
-Date: Thu, 12 Nov 2026 14:21:22 -0800
+        Thu, 12 Nov 2026 14:22:34 -0800 (PST)
+Message-ID: <15a83cef-3549-40a0-a8cb-0bb9234276f1@broadcom.com>
+Date: Thu, 12 Nov 2026 14:22:33 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,8 +107,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/6] net: bcm4908_enet: drop a TX frame whose DMA
- mapping failed
+Subject: Re: [PATCH net v2 3/6] net: bcm4908_enet: release the TX ring on stop
 To: Kordian Chmielewski <kudzo51@gmail.com>, netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
  <rafal@milecki.pl>, bcm-kernel-feedback-list@broadcom.com,
@@ -117,7 +116,7 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  linux-kernel@vger.kernel.org
 References: <20261112195051.597102-1-kudzo51@gmail.com>
- <20261112195051.597102-3-kudzo51@gmail.com>
+ <20261112195051.597102-4-kudzo51@gmail.com>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -152,22 +151,29 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20261112195051.597102-3-kudzo51@gmail.com>
+In-Reply-To: <20261112195051.597102-4-kudzo51@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 11/12/26 11:50, Kordian Chmielewski wrote:
-> When dma_map_single() fails, start_xmit() returns NETDEV_TX_BUSY with
-> the queue still running, after it has already stored the skb in the
-> slot. Documentation/networking/driver.rst treats NETDEV_TX_BUSY under
-> normal circumstances as a hard error, and a driver that returns it must
-> not keep any reference to the skb. Here the stack requeues the frame
-> and retries it while the slot still points at it. Drop the frame
-> instead: free the skb, count it as dropped and return NETDEV_TX_OK.
-> Map the buffer before the slot is touched.
+> bcm4908_enet_stop() disables the TX DMA but leaves the ring as it is:
+> the skbs that poll_tx() has not freed yet stay mapped and are never
+> freed, and the descriptors the DMA has not sent yet keep
+> DMA_CTL_STATUS_OWN. The skbs, the socket memory they hold and their
+> mappings leak. The next open starts the indexes from 0 again over
+> those descriptors, so the DMA may send stale frames from before the
+> stop, and if the first descriptor still has OWN, start_xmit() stops
+> the queue before it enables the DMA, with nothing left to wake it.
 > 
-> Found by reading the code.
+> Wait for the TX DMA channel to stop, as is already done for RX, then
+> unmap and free the skbs between read_idx and write_idx, and clear the
+> TX descriptors when the ring is initialised. A descriptor that
+> start_xmit() is about to use then never carries OWN, so drop the check
+> that stopped the queue on one. The RX helper's timeout warning said
+> TX; make it say RX.
+> 
+> Found by reading the code; I have not seen these on the hardware.
 > 
 > Fixes: 4feffeadbcb2 ("net: broadcom: bcm4908enet: add BCM4908 controller driver")
 > Signed-off-by: Kordian Chmielewski <kudzo51@gmail.com>
