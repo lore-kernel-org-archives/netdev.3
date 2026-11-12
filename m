@@ -1,49 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794477354;
-	b=QIOtophuMD3OimBQzpQ9uLtUN2cpWnKk0+UWQ5ihIozFXMfvsbTITSRe9o3hoj63/GaB
-	 V+S9QcaFz0/WUMoqqLyIKpBxN0Ikjkke1GG1cBgD/EkEQzFiZgn1GGSa0NTRhSlIYfIss
-	 sB+T0yNknI69SUwKKEYwbUTKxAgTTPi221X3EEKnkD6qVJXdZNfMct3f7R1hYL2ti/P4q
-	 rJUKHrOIp6RjFhk4ORB0tZvQeNg7WsBeRMQB0YK7re5FrUSXr1+w+QRKjXAW7qdngx7wg
-	 e+JahXBWtXipzXvtj+bPLDlWmEG50gsRbFQI8dNSmzolw3vnQ8o4kKCg3sUkBGEqueg==
+	t=1794477606;
+	b=kGQG23ZM4ItB+z2vxjCFYp8fDeA/2wifPbtWvYCeRxeFF1XMil6iBO2YkkpKSofAP04K
+	 aPfv3Vuj/9t1cJhHe1uK7uSZ82NzTB2/1AN11kfhijkQSyAlD/atDbyMThaANxi1lONTL
+	 jan46FPMbjQ9aOtr8wVMNOnCfTkT8QRnXgfD1DN4/T13YR2xZ5fzQDP6fWxyUS54qR+K1
+	 yOuve9t9BSTVll3An3dXXE93JBkgiKSHCDHwcDl23gxKePLK7YCTOUqIJyl97H02ZdGI/
+	 CUGKulEBI1VTRdyIuBvQDWYJKNbXcpa3J6J1T4Q8b635AkZMp3YfpHHopq8sTMd5ssg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794477354;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=yEC/vZNOKTkAFWLkMBKlCC1dHTq3fXauXlYSOK1PQyw=;
-	b=OstzSJrdJG4LfOH5OqbddRkq86SE7eWn1VJ7fZekeOD9DmwBG+P2RHTIC/HXiXCnMNLX
-	 gNY7i85frko4TJRGzieOm5hZIFVl1v/6t/eizhtPBA1XjLJ7GYB6rFFTM4gytsmgtqWIY
-	 KMPaHuGQLLY2WWUZ3ZcvkJlXTxZgkn6jukic/Ak+0X1O17qjXkmHOnLgNF76Q8v82SdyJ
-	 9fArNVRo9g27PtSXiiboiyAmuE/uormIBn1Q+x/sGjZ9CG3VODMf1H/38qnmZIBu1dCV4
-	 ugiirFSTHInOb2ncr1zU3fIPQKM5Cp8K0bSAKHPO+0/M0/qrdm+Fg3Nq/Al03lsetsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794477606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=fGRlGGYybYZD5rUwhWpmwOKxGOAAu67qlqBSQsnLu5k=;
+	b=yf0gYDo7mA8Ks9pZ78/pwWYe0dnJot77BaJDGfqzmwiv80CZQKGB/rOCxx0sNgDqrMV6
+	 bK5crwgUK+3XwvmtkXawsD84/I9CtbC17H1jiDlPc8H/Kxnw6DUQrSZg1ppbdwulwoX7l
+	 tGlg3kpfCk0Cb4EHwy4tj3RZvO8csqamUh38/6G7r3F/+WiPLtnqJ8M0+W5BQwiqGjZZB
+	 Og1dj1CuAKxWzp5Rp7S/rK39xGDS2axqwoO0SctfvdjSKJDkdvAry2IPGt7BqL2X3NQUK
+	 etkg9vrF8inZieBH+WsTDwv7q9m/R4zM1nv/WQ78U6TnQCvq56icUhOct7ndZI25epA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ZrNPvQFC;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7MBROYK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A940F606A323
-	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 09:55:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A940F606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B5D606A331;
+	Thu, 12 Nov 2026 10:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ZrNPvQFC
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DC880A166C;
-	Thu, 12 Nov 2026 10:55:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794477351; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=yEC/vZNOKTkAFWLkMBKlCC1dHTq3fXauXlYSOK1PQyw=;
-	b=ZrNPvQFCjsKZS7uA10pKE5Ip5QJMXl7RtmjRFs5ZpJwi4sQNluDjt2qSC7fH+oUYwvcC9t
-	cqo3Ws0M/ab44x9I7FmHdrzIG6HsXHXWY6nQwOd/kKqZvLWO+yMCabcflpxOXgz0gP3NPu
-	7QdvnVxkgVAbBVUUAxBh5GDCi0+AbkI7alCvyXUKLmOMccEyvtGbf2y1m8H/9oER8+3X3q
-	gkTUN+1qv0cnZvoWOtZtBqx0m/i9Mkb46zs9vmFOuL6nC/VdOgY9vR8TxKEaeIWqyZysyU
-	Wfqwdt14wRUuwQlAjbdeOWgJ693cGtodKUTQlnB6YJeTO3GbMH5DpZMVcQSO9g==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7MBROYK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3BB1F00A05;
+	Thu, 12 Nov 2026 10:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794477605;
+	bh=fGRlGGYybYZD5rUwhWpmwOKxGOAAu67qlqBSQsnLu5k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=G7MBROYKXgvSMmoShTZ1C6Pn102zMF34faIzzJPrmZjjaV6GEO8yMQYLDcwHNJ8zk
+	 GUI7nFdNn9dTFJ2R5IZgiZyM/nvSlRqisy2tBUGmZdZeYdsUkpqSvhi4joPSeTJiFr
+	 oe0RFvMkSm7BOu8goZBP8p5atkubU7y/w1jRNTQAS8uvSLb5IzaclVDtCFqXGwZKsM
+	 qivRlRUkldSRPc07QV0UoBDf3Ah7pvyg96iPXLZPcmBEKH67PgiIfJcOOaTwr4GOxI
+	 zS4yLfd+sqDNVmMIFxLPsUdniwK9DfS1YQYSyJVdmRn7YUJpOPT3RXNfgZdFk4i/g+
+	 lVRV6Iedo82GQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B16F3AA9A95;
+	Thu, 12 Nov 2026 10:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,43 +53,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 12 Nov 2026 10:55:49 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Richard Cochran
- <richardcochran@gmail.com>, Jose Abreu <Jose.Abreu@synopsys.com>,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net] net: stmmac: re-base EST after PTP settime64
-In-Reply-To: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
-References: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
-Message-ID: <6fcb41af4802e0d5b9d759b5e2d3ecd6@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] dt-bindings: net: Convert HiSilicon GMAC v1/2 to
+ DT
+ schema
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179447760442.1983710.9367740045427311229.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 10:00:04 +0000
+References: <20261109191641.653847-3-robh@kernel.org>
+In-Reply-To: <20261109191641.653847-3-robh@kernel.org>
+To: Rob Herring (Arm) <robh@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shenjian15@huawei.com, shaojijie@huawei.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, f.fainelli@gmail.com, andrew@lunn.ch,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-Hi Lorenzo
+Hello:
 
-On 11.11.2026 10:54, Lorenzo Bianconi wrote:
-> stmmac_set_time() initializes the PTP clock through
-> stmmac_init_systime() (TSINIT) while holding only ptp_lock.  It neither
-> takes est_lock nor disables and re-bases EST around the step, unlike
-> stmmac_adjust_time(), which performs TSUPDT through
-> stmmac_adjust_systime() under est_lock.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-adjust_time() drops est_lock around the step, so this isn't quite right.
-Same for "as stmmac_adjust_time() does" below. Please reword this if 
-there
-is a v2.
-
+On Mon,  9 Nov 2026 13:16:41 -0600 you wrote:
+> Convert the HiSilicon GMAC v1/2 binding to DT schema format.
+> 
+> As this binding also contains the MDIO bus directly rather than in an
+> 'mdio' child node, the MDIO node name schema needs to be relaxed.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> 
 > [...]
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Here is the summary with links:
+  - [net-next] dt-bindings: net: Convert HiSilicon GMAC v1/2 to DT schema
+    https://git.kernel.org/netdev/net-next/c/556e0ac6a771
 
-Thanks,
-Nicolai
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
