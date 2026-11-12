@@ -1,50 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487552;
-	b=CwcnpBcfTyZjVI/EozQVIWn1NMfuoXhO4QaWzrcQ9d+6UsxQS2a8vY3U7g+vLq5D74ua
-	 DkvjJiDqFmev7KP5WVFYwRh9hSF34QjlVonbElivY/+eeoR/9rsgWfQFzlFmOlwkvwHNo
-	 R8Y7lJG8nRBrTkPZjpKwO3az4N6osw883PkYEMX07v4uQOtPwlJ5gLkNLOEcpeOfodfK4
-	 PX0ykooU1tgySzf8pB9p6gJt8LJ8gFy1oJ3vxYuLcaj+onhtRpL8TMmPGIzmLapD4Kizz
-	 6XA7Un9xVx5GzWeDb2K30k0Z1qQ+FX3nss1C/vyVLxue+WNXvGmHp0zPLgZISSZgTNA==
+	t=1794487561;
+	b=cphvSNGjrux7Jyussbzeq/ZLrX8hYgitvS6Mx+WuOkVG6H9ORSvWqH3lV1FbI98zBSGE
+	 nDJkeVUmDoOvuzVM/hQnVMCwD0KNVpD2Dcw0b3h9LUXafM/OTy8omlxrJg71sNhV1piNa
+	 9CKsiuOdgG35kSqjb0/oU2KDvORn+C1cUuQ5aSMgpkYuPPfzjlOQfegYBPZoYxzQUMQuS
+	 lIHNt2ikuw9o4YUoi1XKhH66yulhzps7PpAFQ7iROEOPWLAjxXWJjQRvMKcA6ZAOPMttC
+	 a00ydIMOYg8oAzafwD4nsr2/VtY6237B+a316QqtHi64XaSK86qY0CU7rfnADlueBAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487552;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:User-Agent:X-Bm-Milter-Handled:
-	 X-Bm-Transport-Timestamp;
-	bh=fkuD8USi293M2GyM1a4ma7QYzKDoDimjsvNM+ReEAsc=;
-	b=ELgtsApgpcTtGKhGG21D5WRG0g1T25nW82Ez4fHkPkaVI9Ebfa2x7wRF+2ILe5w5aJvU
-	 4b5iWlogBGtb+WZak9EfnZN7/IkLh0c7tzZgyqQZfuhuqa/LjDD7P7G2QmJkSFDednApS
-	 59CZoXjJdeF0CILcQQBGwfDqKhNCmWFxWosqs08+XeehY4SM9OuH1Fe0T9bkfAf+uEvnF
-	 hSY8Lo8QkWylfopra66y20g7ym1IfuGgB1T5PamrB3piA/X39ClmQvoDsCj6yGQIX5YXw
-	 8pPg6R/Y0lvb56uvIWFZH3KOgLYRs25VJtpsJO83cbtszQYpqSFjbjWAmRJ6h9YQpUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487561;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=JqmpB5V0UJQajlsRMfwMtixeo10RY8jo/QPsCgZA0d0=;
+	b=10PRb1a5fPy6jbu1y8zcnOnUgM1Pd6XfWgyS2SjsbOLkBLw/hp1Lvfg2+81fE6PGEVvq
+	 evgoFKW2j6h/0mpb/6rNUikkUoDh+gKI7NqCVlJahB36/TRAYpxw4EhXNA6BAYlTXSuYL
+	 FbCJiIMuv34UJ8P1f1Uh8T34iHPIbQL/5bphCoRuXae4FYZ/TC5wRx7+gocEnUYjndgqe
+	 vudzBClMraBl466kBmG+REw/zeGVSCdqxIpJM4NdSXu2rpmbHbs7sUc+yPzAU6etf25NJ
+	 tUlGLfgDIVRiJvFOTUYOBytsWO51kNhUoIxQgsQrX6me/7UfXWcuA/mYDR3HrGMXcLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=kHo7EZ9U;
+	arc=none smtp.remote-ip=162.62.58.211
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBCE606A323;
-	Thu, 12 Nov 2026 12:45:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCBCE606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 040824832C;
-	Thu, 12 Nov 2026 13:45:43 +0100 (CET)
-Date: Thu, 12 Nov 2026 13:45:34 +0100
-From: Gabriel Goller <g.goller@proxmox.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] ipv6: reset all.force_forwarding when disabling
- all.forwarding
-Message-ID: <avW0C4_kHRv9v3Lr@luna.proxmox.com>
-References: <20261109-ipv6_reset_all-v1-1-815dfd508246@proxmox.com>
- <179436921928.2199510.2583920348009853721@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC061606A338
+	for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 12:45:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC061606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=kHo7EZ9U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1794487554; bh=JqmpB5V0UJQajlsRMfwMtixeo10RY8jo/QPsCgZA0d0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kHo7EZ9UsL2ZrfiBY3IxAXLVh/7LfYfS/9OXzo01hS93BHitatOalsEMlJz+LKSR3
+	 9r6dmZYUNocP59fmhClhPmTXggdtiapklkHUK0feo7i3+fvD60JEdF5/wf/u6uwvav
+	 2cmNa3jcNQWAeBXFJ5WMV7D2jMSk2U2TuBHmyV7c=
+Received: from localhost.localdomain ([2409:8d5c:8f0:65e5:e498:8f16:a485:ceef])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id B70218AE; Thu, 12 Nov 2026 20:45:48 +0800
+X-QQ-mid: xmsmtpt1794487550tmaw77872
+Message-ID: <tencent_28A2BD1631FE531992E91753BA6419FFC506@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJcREJkrvuUFCtWib1OPE3zJrun6iOGxYUjNRmFzinPQeY3ZFj9S
+	 OX4fwCIbRte4ky5NM+1mQIpDpYXMEAPAg11hBuagfwLa1TBspC05uwLz/ETALXv733TijF2W3Gap
+	 8yAF4dRmgBf95NTm/++pIqRvKMBdnnSlvyCACGB+KSflIBwtrn3SvXbT05POgLOZeVbMOiuGJ9K+
+	 o9+gUaDZFcbR5d38K8fftjmLoXgDXNSh+KKhpfj33PoNOsO9fRJtfKLhA8hHd9HPNgkHfL5QuVs8
+	 R4l8fB0+pqXc7jisR90iPKm81JfrVGDDeFBa/uahvlbulpztdTzj90QwPndR/iXWdzSVoWcNk4bw
+	 gD+JMfCDT/119EsJw/lRRk3v9RyjQu62/MM7yBRi2IhLcgr+BZlTN6XHey+rVyVsuv5JRi+JfxDI
+	 tDaeO46iVuJ5o1iEVwkRX9bbc87A3Pc9ej4GHUs2d9cBoNRG5o9WgiqHTdREjki3HWdv/uOvYSQy
+	 qsENugSnGl1fJjsE7IRgswk+6vSJe9ZwIx8M2YM1kK8q9vJxK8LuX/ogtmXeoBisrp/GzOamBcEm
+	 CGmDTB0Gtub7yd5gGp+Jb4wwfFjRFYExJddrKH1vIzbBaLl4S2Xd57fpiNjyMSWi0hFv1R0a2yOg
+	 SpGiLh4eLB8qfWg6zQfvWr5umkgUsQlSeS7mZ3AnDiuq0+ZaVZ8i4ZUTtqOwIwnfBbRxpu9Rj00h
+	 o4Kilx/RXdoilxSzlmwBbQ4VRnlUf9jfTgLcf0Of0Ci6FcXxwV5oY3HKbOHi1BP4S/3+Q33rYMGL
+	 AdGnGOau+CXbniPBBBx+iHpEGKUA/KfkkhyN+/i8JeRITEnFBAFO9l2lkrIs+uENySnV1OMhWCM0
+	 RHxIheVMo1q5MEo1AQme/Fi1YYwSwZFpHwkKx6tx9NNfNiHg9TJ62NJkc9KnfrY3jo21APCvMrAk
+	 4w01dxwLzEiBISQxQBvsjPuf8j7iqdY2IZIjZ6bn6BIFVnbQ1ni3enaPg6w5H+newufXC4HKAfRz
+	 TZ2Ok3wQsFNkrqyWQ02nlw30bLRcO4ilnobNpXwl/RlmdRPzGwA/nDvkSmHTJxDaQdx9jcVfEm3X
+	 iQw8aK
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Hang Nan <2122295973@qq.com>
+To: netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev,
+	matttbe@kernel.org,
+	martineau@kernel.org,
+	geliang@kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kuniyu@google.com,
+	willemb@google.com,
+	linux-kernel@vger.kernel.org,
+	Hang Nan <2122295973@qq.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] net: mptcp: take token lookup references with acquire ordering
+Date: Thu, 12 Nov 2026 20:45:46 +0800
+X-OQ-MSGID: <20261112124547.193812-2-2122295973@qq.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261112124547.193812-1-2122295973@qq.com>
+References: <20261112124547.193812-1-2122295973@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,158 +92,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179436921928.2199510.2583920348009853721@kernel.org>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1794487536000
 
-On 11.11.2026 03:53, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] In net/ipv6/addrconf.c, addrconf_fixup_forwarding() (lines
->   908-915) now sends inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,…
-> - [Medium] ipv6: missing NETCONFA_FORCE_FORWARDING in
->   inet6_netconf_fill_devconf()
-> - [Low] The patch fixes a user-visible bug but has no Fixes: tag.
-> 
-> --
-> 
-> ipv6: reset all.force_forwarding when disabling all.forwarding
-> 
-> When all.forwarding is disabled, this patch also clears
-> all.force_forwarding, so that writing 1 to all.force_forwarding later
-> re-enables the interfaces. It also sends a netconf notification for the
-> change.
-> 
-> > diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-> > index d9d13e78bf13b..9007a58039e65 100644
-> > --- a/net/ipv6/addrconf.c
-> > +++ b/net/ipv6/addrconf.c
-> > @@ -905,6 +905,14 @@ static int addrconf_fixup_forwarding(const struct ctl_table *table, int *p, int
-> >  						     net->ipv6.devconf_dflt);
-> >  
-> >  		addrconf_forward_change(net, newf);
-> > +		/* Disabling all.forwarding also resets all.force_forwarding */
-> > +		if (newf == 0 && net->ipv6.devconf_all->force_forwarding) {
-> > +			WRITE_ONCE(net->ipv6.devconf_all->force_forwarding, 0);
-> 
-> [Severity: Low]
-> Should this patch carry a Fixes: tag for commit f24987ef6959, the commit
-> that added the force_forwarding sysctl?
-> 
-> That commit added the per-interface reset in addrconf_forward_change():
-> 
->     if (newf == 0)
->         WRITE_ONCE(idev->cnf.force_forwarding, 0);
-> 
-> It did not reset devconf_all->force_forwarding. Because
-> addrconf_sysctl_force_forwarding() only acts on a write when
-> old_val != new_val, writing 1 again does nothing.
-> 
-> Without the tag, stable kernels that have force_forwarding may not pick
-> up this fix.
+mptcp_token_get_sock() validates the token and the network namespace,
+takes a reference on the socket and then validates them again.  The
+second validation only rejects a socket that is being torn down if it is
+ordered after the reference acquisition: mptcp_token_destroy() unlinks
+the socket and does WRITE_ONCE(msk->token, 0), so a reader that observes
+the token before the acquisition can return a socket whose token has
+already been cleared.
 
-Hmm not sure about this one. If I make a new version I'll add it.
+refcount_inc_not_zero() does not provide acquire ordering since the
+refcount_t consolidation in fb041bb7c0a9, which removed the ordering
+that the previous atomic_add_unless() based implementation gave.  On
+weakly ordered CPUs the loads of msk->token and sock_net(sk) can
+therefore be reordered before the refcount increment, defeating the
+re-validation.
 
-> > +			inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,
-> > +						     NETCONFA_FORCE_FORWARDING,
-> > +						     NETCONFA_IFINDEX_ALL,
-> > +						     net->ipv6.devconf_all);
-> 
-> [Severity: Medium]
-> Does this notification carry the force_forwarding value at all?
-> 
-> inet6_netconf_notify_devconf() sizes the skb with
-> inet6_netconf_msgsize_devconf(type) and fills it with
-> inet6_netconf_fill_devconf(). Neither helper handles
-> NETCONFA_FORCE_FORWARDING. They only know about NETCONFA_FORWARDING,
-> NETCONFA_MC_FORWARDING, NETCONFA_PROXY_NEIGH and
-> NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN.
-> 
-> So when all.forwarding is set to 0 while all.force_forwarding is set,
-> RTNLGRP_IPV6_NETCONF listeners get an RTM_NEWNETCONF for
-> NETCONFA_IFINDEX_ALL that contains only NETCONFA_IFINDEX. The size and
-> fill helpers agree with each other, so WARN_ON(err == -EMSGSIZE) in
-> inet6_netconf_notify_devconf() never fires. The message without a
-> value goes out silently.
-> 
-> An RTM_GETNETCONF request that ends up with all set in
-> inet6_netconf_fill_devconf() also omits force_forwarding. A listener
-> therefore cannot recover the new state by querying afterwards either.
-> 
-> The commit message says netconf listeners are notified. With this
-> message they cannot tell what changed or what the new value is.
-> 
-> The gap predates this patch. The existing force_forwarding
-> notifications in addrconf_sysctl_force_forwarding() and
-> addrconf_force_forward_change() have the same problem. This patch adds
-> one more caller that depends on that path.
-> 
-> Could NETCONFA_FORCE_FORWARDING handling be added to
-> inet6_netconf_msgsize_devconf() and inet6_netconf_fill_devconf(),
-> either as a preceding patch or in the same series?
+The same pattern was fixed for the IPv4 and IPv6 established lookups,
+inet_twsk_purge() and bpf_sk_assign() in 5b5d8f351dd9.  The iterator
+below has the same shape and is converted as well.
 
-This is fixed by this commit:
-2d916a8c307c ("ipv6: Add NETCONFA_FORCE_FORWARDING to netconf messages")
+No behaviour change on strongly ordered architectures; this only
+restores the ordering the second validation relies on.
 
-> [Severity: Medium]
-> Does this notification actually carry the new force_forwarding value?
-> 
-> inet6_netconf_fill_devconf() only puts NETCONFA_FORWARDING,
-> NETCONFA_MC_FORWARDING, NETCONFA_PROXY_NEIGH and
-> NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN. It has no branch for
-> NETCONFA_FORCE_FORWARDING, so for this type it emits only the ifindex:
-> 
-> net/ipv6/addrconf.c:inet6_netconf_fill_devconf() {
->     ...
-> 	if ((all || type == NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN) &&
-> 	    nla_put_s32(skb, NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN,
-> 			READ_ONCE(devconf->ignore_routes_with_linkdown)) < 0)
-> 		goto nla_put_failure;
-> 
-> out:
-> 	nlmsg_end(skb, nlh);
->     ...
-> }
-> 
-> inet6_netconf_msgsize_devconf() reserves no space for it either. The two
-> helpers agree, so no WARN fires.
-> 
-> As a result, RTNLGRP_IPV6_NETCONF listeners get an RTM_NEWNETCONF for
-> "all" with no NETCONFA_FORCE_FORWARDING attribute.
-> 
-> The commit message says "Reset all.force_forwarding too and notify netconf
-> listeners", but listeners cannot tell from this message what changed or
-> what the new value is.
-> 
-> The missing fill support dates back to f24987ef6959. The existing
-> force_forwarding notifications in addrconf_sysctl_force_forwarding() and
-> addrconf_force_forward_change() have the same gap. This patch adds one more
-> caller that depends on that path.
-> 
-> Could NETCONFA_FORCE_FORWARDING branches be added to both
-> inet6_netconf_msgsize_devconf() and inet6_netconf_fill_devconf(), either
-> as a prerequisite or in the same series?
+Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hang Nan <2122295973@qq.com>
+---
+ net/mptcp/token.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Same as above, already fixed.
-
-> > +		}
-> >  		if ((!newf) ^ (!old))
-> >  			inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,
-> >  						     NETCONFA_FORWARDING,
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-ipv6_reset_all-v1-1-815dfd508246%40proxmox.com
+diff --git a/net/mptcp/token.c b/net/mptcp/token.c
+index e0f2823f92ef..3429b43a9f7c 100644
+--- a/net/mptcp/token.c
++++ b/net/mptcp/token.c
+@@ -309,7 +309,7 @@ struct mptcp_sock *mptcp_token_get_sock(struct net *net, u32 token)
+ 		    !net_eq(sock_net(sk), net))
+ 			continue;
+ 
+-		if (!refcount_inc_not_zero(&sk->sk_refcnt))
++		if (!refcount_inc_not_zero_acquire(&sk->sk_refcnt))
+ 			goto not_found;
+ 
+ 		if (READ_ONCE(msk->token) != token ||
+@@ -370,7 +370,7 @@ struct mptcp_sock *mptcp_token_iter_next(const struct net *net, long *s_slot,
+ 			if (num <= *s_num)
+ 				continue;
+ 
+-			if (!refcount_inc_not_zero(&sk->sk_refcnt))
++			if (!refcount_inc_not_zero_acquire(&sk->sk_refcnt))
+ 				continue;
+ 
+ 			if (!net_eq(sock_net(sk), net)) {
+-- 
+2.53.0
 
