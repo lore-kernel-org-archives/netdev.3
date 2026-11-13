@@ -1,139 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596084;
-	b=Y/jqdMrfKOpgaWInaU9Tq9lSXi7FvZCB1jp+FV8OhpEmo9g6u7tJrZ//qw+wUcCspM4p
-	 lX7le0yx6c2+LbFPyBzVf+Xd7V4s1JhtPt3V6eb3bURR3pibUW+1MUZkIgbRNlYNlrUe5
-	 1xj1OyZaXDzspoTJ1ds/GFx5z4iPeqmjw9I7UDofOhDd8vtWMAvhtFi8i/ls6kTgSb96g
-	 Aai1Pb2c/CRrtnVWDF2oYoUnW4CGrLomIo+D9Ta7TZlpzSiQsEdzcKlwuOpAdrCNrjCZD
-	 jzhVEa6b+UCVTmvA/GURuG7QgUH95ejkOmG5t0PqzEQlcc9zakmsStVGAPs7GgU+bmQ==
+	t=1794596134;
+	b=TENjjQ4dRtp0E/xX/IzrKswJiL7fM1JSUBxU6L4mmU4tbRurqfzklTsRdC93KHZpVqQM
+	 c3Kg6JiYh9R/yP2QdAenfh/pbOAFCpBRq9NtM2lXkTjdqbgUdReCZuGa7fxTy3XxoPbek
+	 GX/6uOpJMBx0VDZiCK7SCSnHNX4Q6tK5cPiroZCprbA98cmgKDOy9HaVr3CVes4kl/CQb
+	 2ukRQsrPl3xvR96AoEUJlOj7b1AAV+CQQG4Jsv2ArzMPunAoJX5kPoVWgv2rqm4xhL2q8
+	 +HEoMaJiBzz+zFsUTclOXjtO3fcB+RY4TxQvSpvJFKbaUbaV7pueQ88bOBz4HbhSQBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596084;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596134;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Authority-Analysis:
 	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
-	b=vUI5wPs5vCqEoIiBlZ3nWiOyXXoyBravo3H+3Bh0rcSLSO4dRpXTHFsQkOX5rxbumXtY
-	 rTKaUdzDv5SnzaAeJyyXmG8PWIqRiXNwo1EHo+vQeJplBcLZp34igvRqI6Ta9vdfGp0nI
-	 A4dTmTAwUIinUksd3bbvo99JORsPCMhMpu0KgEinI6N+EtDbZSq5tI6XYHMPYu6S3cZOh
-	 GLf3K6lttL8B/PamyPWgwZdSBdpkRULs5YRccyyr9y0Uvz4MdH0esBM4UQyw662Z+27JP
-	 qb9/XMNaLa4doLxgiXlMqPO5r1qSb1+69c9Ge2wKwUj90O6EOY1r9Zu+LoGm+HpIqFA==
+	bh=MzQo6b40FJqZIOj7U/fNaW1qa/xGJTIi7wkOrZE5CFE=;
+	b=e4GsxnaiSS6vwIj2pxcyoySRstsy0qYZdVs47HGI6jYzs1KSJsVSTYdGaZ8UvDuwQw5P
+	 q1FQ8VOd1UFdjNmguaSdJVIU0/tm+inU+xL4lLRXDoo8ehdACmt0J6T9hum9+qY/hgxfq
+	 l6PbxyVCUW5dcE4CfpKKgL5+phLcBV6aHH5XOtD7OS7Xemc/SlIxCYrBoS0SrCSxtf2yZ
+	 X4Xu8ycjPfK/fkMH8lUPj4autz78PGCwd/2Oo67jhx+Rn96AdFtepSHANscK6K0JzM35e
+	 hkAjG1pjYfnAZeVNZfFV8FsuG26KLxf0Zwcid7i0/lCSpAJ5hfE3LrHtRvOoFZbk9HQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=fURUUT0X;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xr7eWkSP;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PxOxofnA;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E411C606B34F
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E411C606B34F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E26606A330
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:55:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6E26606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=fURUUT0X;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xr7eWkSP
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFR0dt074893
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=sFBq9fRHwG6
-	vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=; b=fURUUT0XleKiE1C/Vux+befwt+/
-	dPsCZuHNQAShw3zqmbbPvnkWmciAMOJmcPPjX/Ypz5i8xGx5igroHMccVx+b153T
-	uIpQ7885fRsHjkWRYpoBVsESepqQQcYBw2TwRc+AQxQQzBPmipPxvz2QTuBrcg/U
-	fxflhQRaD9AWLlT0VkEyW8xmO8xeOm7gg0EuYPIqqxROMDx8T0RNRi2GJT+72Zzf
-	BRyN7VhBSQrTqV5w2Gbr8XxWutaOeSSTe4uIT86yAJhpD14B7KdLcqKJBttPaHBk
-	Nu7PpBDZGbwJEUEyWxW2WkQw3GHZ29zfEI+9kF/mEEv+0sfWto/DrsKryPg==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwu2mu45g-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-341eff9e381so1940918eec.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:54:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794596083; x=1795200883; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
-        b=Xr7eWkSPhxjVpIYSoHEqbWrQpLZ3DxUBabQj491dqLflisNnb4VJb+8xE/GfYaI98E
-         JmHgrqvK1yeJXibJ323mWl9WpL9eeQB0re8BhQmdCZPs8z4EVQtsdlJsy+PHYmfjDMai
-         IsCl2GVWoJZm/xdEikQPKubSbcTxmMk0+VH70mK6DW0tvyRDVbs5+r5OZhlcNmDDXx7N
-         1eoYMZ+Cy6nXHqGzcnOkpIv/YOars2hflxYxh+ACr/+XnT9dzwv6lGwi7HENM4yHetTu
-         VQWVVQYwpYRIG4JvzUAhzQ0f2fUWgKIllXu46Ar3DIe8TnbmK+KCtEAyC8e7So+VJd5C
-         Sdyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596083; x=1795200883;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
-        b=QFAo6h5EV2ajvzgQY9kclXzwjbCoASlEAt56XxwwunhVBn3t41YPRyGTlo52Tidx9O
-         C9IHevBBTxJCY9fTP5FQd6Gx1bQ3Waju2KFb4HMPkEd0XcHNkuam+1WXvvh1Qbs08yMU
-         dQMX0wdp4j/p5gYdz6DctPbWyWURx3Oc0sivhAG7tzq+dl4xjV6SdVZTlhbFbd331U2H
-         V2XvYrn1mRa2Lf4aaxeU4/zkD1JvCrBVBG1iJOvrsHT8/csEhUVlNLBBCmajlV/YoaKN
-         rUCvGWLVM4F/QQQ3oymXm8rnMWXqHeOGFHVwLvfGUiWjmF5B5k+7RDW0CU3NoFWUJY16
-         l9Xw==
-X-Forwarded-Encrypted: i=1; AL+hErFeX7aICxyphw9oIUKGm5Rpz3g0qrFxalPuPehgdPU67ghDwhwXP+6PSG50IHwIRfdgGCuzNns=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9H9lWEie13c4DWRA77p6Vx9RRDjOtSpIuEKqKrP6Ka/Tj742+4
-	liEFifwIp9aHEaDi+gEVSrVz1v/VGVjv05IDw9pgeghs/lCB+1ByKUqIHbYYuQSvrW7sxZhky8n
-	Z32QyFOK547xabKQvGsWqNu4b6nGI4jNmpIhjJUQV+tUW6168kyTAb6XJs+0=
-X-Gm-Gg: AYBFou1nkJ2oUB975D6e9Yt1q8hedsE4/jB+cifMkk0t78OaiOfjHkrih92rFKHOgB7
-	qKRBcdAjBTKJN2RowAHVyPUexL/3CMJ5YqdCOTvf2vU1BIzFOfeWz8R3YAGST8e0zlQijpiVGbA
-	PZ3itno9c93iHQBC3GdG7AzDoIleIWOxGQ8nbNOQ46t3ORh43xaARaSjqesBNeEHRglZMJ+qkO9
-	/uqF7CgzJqPb/scH4bDPZjC3mpoLPmKDpbGdDqwnTJm0lTcfFcEdSm/maZF4YVVDCSZmt2f8YvC
-	naGAj4ChT/9C+EJIeJ7Kbpf3ooiGmikSQAa/fJuvhLgxG9wxwAVBwMHPrdrlhjKkLQZGHNLc6HJ
-	DEKPOAP/t3w/LQo8smqWGcGQDXlHdsTVEbmcTsS2RbOr1PEsSFyh6OOX2anbcisQsG99Spa5Dae
-	Q=
-X-Received: by 2002:a05:7300:c7c3:b0:377:ee18:c290 with SMTP id 5a478bee46e88-3796676b12amr2938736eec.21.1794596082061;
-        Fri, 13 Nov 2026 10:54:42 -0800 (PST)
-X-Received: by 2002:a05:7300:c7c3:b0:377:ee18:c290 with SMTP id 5a478bee46e88-3796676b12amr2938703eec.21.1794596081228;
-        Fri, 13 Nov 2026 10:54:41 -0800 (PST)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379563e6b6dsm15547667eec.21.2026.11.13.10.54.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 10:54:40 -0800 (PST)
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Sumit Garg <sumit.garg@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>, David Airlie <airlied@gmail.com>,
-        Simona Vetter <simona@ffwll.ch>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-        "Bryan O'Donoghue" <bod@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jeff Johnson <jjohnson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Abel Vesa <abelvesa@kernel.org>, Sean Paul <sean@poorly.run>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-media@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org,
-        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Subject: [PATCH v2 9/9] firmware: qcom: pas: remove qcom_pas_auth_and_reset()
-Date: Sat, 14 Nov 2026 00:20:09 +0530
-Message-ID: <20261113185009.157893-10-mukesh.ojha@oss.qualcomm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261113185009.157893-1-mukesh.ojha@oss.qualcomm.com>
-References: <20261113185009.157893-1-mukesh.ojha@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PxOxofnA
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFiXv03395037;
+	Fri, 13 Nov 2026 18:55:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MzQo6b
+	40FJqZIOj7U/fNaW1qa/xGJTIi7wkOrZE5CFE=; b=PxOxofnAcz2RXbeVI+w4mz
+	7sOH+7JT9u401lKOJKbaBr816SGas5BqkObpQpqIjGLv6W3ny7rcAWWo/m4TXbeY
+	08t+S8wfLEXzEZ0ZmSzs+65xksXDt5wQL54yq3AhaKFjf5CQMBCtYbe/9sky3Z5b
+	7X/I6dH/+cO5ATa7PCFLqEiwdG8HyVw6LCAf3LkgpkbZsL1fTB/3YEN+1WHa4UVu
+	1mzBEsSSRHxk8Pa4n5RZJuueM7hL0XIgFoz9LytKg801IjPA72UwGbaZ26ha9nkQ
+	B+/FBZ2QRTpu0Nxw3vapDr0NQQHgVFybd9UJEGwR3M6VkT0f3wVB4VRA0zv3zrdQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hssdm4pqr-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 13 Nov 2026 18:55:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFYxbD2453156;
+	Fri, 13 Nov 2026 18:55:16 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hwegfd4kh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Nov 2026 18:55:16 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ADIsrHi30802638
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Nov 2026 18:54:53 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E84E358059;
+	Fri, 13 Nov 2026 18:54:52 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BFD7F58017;
+	Fri, 13 Nov 2026 18:54:49 +0000 (GMT)
+Received: from [9.67.72.137] (unknown [9.67.72.137])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Nov 2026 18:54:49 +0000 (GMT)
+Message-ID: <361a5a43-9fcb-423a-808f-d8cdf1d9ad5e@linux.ibm.com>
+Date: Fri, 13 Nov 2026 10:54:49 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -143,176 +86,284 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 06/15] ibmveth: Refactor TX resource
+ allocation in open/close paths
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+References: <20261109235556.60604-7-mmc@linux.ibm.com>
+ <179452782258.2199510.1384176100068608942@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <179452782258.2199510.1384176100068608942@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: X9DfLBSoAH1XbvoB5A4qiUW0VYLm_wf_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX3A7YhN2amtiZ
- Lgdeiqw+q0wb2BrxzGh1sdt+0s5hmOhbMarQu8C3xyoooKksjyPvOLKbJYjQP+A08aO72ARR+WU
- qH8cZA6Z13075YMUmm612xCvRnNmotadVuYRgEnOvnnMKAQf0o7Ok1RgsnkgqircO16C3+742Xj
- JmzUe901UHNlBJHqO+bGCLDjnsvgTLQ2o7DrGx7vZ2fHDb8ArIV88QfCy7SfGV2M3yPDyfyY9FY
- FAWOE2AHxZlS+Ca9W9MAaw+Jt3uatp6EMcoQxfkBdSQP3iDr0bQCQDu3up+u8HfXOEEMYBln/l9
- 8Qppzvi8ZNirpyUq32lba3mF+TSYo6+WmpMsODoS3EKw3HRUNcdzJlgkiwnfYCh9uuED1xIPtPm
- 58SgUhH59/g8Idd5aCg3m4vNK+sDYZddTv3ls1KMDrC9uyJvZrjjJhZca13wIjcK+YyI1Z7ktmQ
- STeXXLeOWeiPAHHVl6A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX+hQGyX3eusBG
- uwznOgjqll2oUVP7gIh4qlIAQclLD6rs/p7Y0U4XtzDGFlguaz7izsBUReScXQuriEM9MQTs+nG
- Y6Nec0CCCMG5inZkedkVqgcRTHuZjsM=
-X-Authority-Analysis: v=2.4 cv=ddQVTnXe c=1 sm=1 tr=0 ts=6af75cf3 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
- a=sV0Ut8U-cAKt8JUqj3YA:9 a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-GUID: X9DfLBSoAH1XbvoB5A4qiUW0VYLm_wf_
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=POqaavqC c=1 sm=1 tr=0 ts=6af75d15 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=KieAIxUdgdruANkDTVcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3MyBTYWx0ZWRfX7nLydZXzMXJL
+ 3AgPPTSlHVnbiEbgJBkjz/ktN4eicQFBYZqpeD4S4vJyCHVkRPQg1jAmHa52zC410w6IVY0Zpmc
+ kgcZMTAuqZbeCUT/i3Mxt323opgrserS73zZuVX/JaTPMqlmv9TxZgLtT4tQ13af8L6jCWkhMbD
+ QmG5AA7Cf2Qci5WO4yh+xnXmiFiHfRJIupv+R2DYBYW0oLmHBEsninWzy1teoI2I/hfBs4R+G2P
+ egXMkFZIYUs7GneKe/TfzXLDb2VywutryuOqgDX5mKWtKlDIRq37tZ2tnF6aDDZi4uyQ7gniu0j
+ vQHCzkinxy/sHIDgIiz+QgIDaRjvhXGGmy67W2kjA9jzYrSUdkSDHZlneUvk4zO+UBd14+pvKIE
+ J7bKyb7CFMZuKxpfGgxJowB/6E7/BasOmnHwOKctD8D9brZ04l6mKZCSbuR3/P2/ouYXOch9GvN
+ XjvllB81jVPGPKChikQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3MyBTYWx0ZWRfXx91O3UGKVtUs
+ f2WHpksSz0K7cv2YBxXFTZ6qv9sa3qOjcN72+0KiWGI7a4uinsC1jtpl8tXjNtkcB0oBh+EQjfU
+ 62qGPCAW9UN/+5pbIsZBeamXOT1MH1Q=
+X-Proofpoint-ORIG-GUID: BdisUuincl5p1a-ZwwcazCuCBT4xWSKd
+X-Proofpoint-GUID: o6PiT2dxa8hDAdoa84RAaa-VrurgN88t
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-13_05,2026-11-11_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130075
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130073
 
-All callers have been migrated to qcom_pas_prepare_and_auth_reset(),
-which additionally sets up a shmbridge over firmware memory before
-TrustZone authentication.  Remove the bare pas_id-only wrapper, its
-EXPORT_SYMBOL_GPL, the header declaration, the auth_and_reset ops slot
-from struct qcom_pas_ops and both backend implementations.
 
-The internal helper functions (__qcom_scm_pas_auth_and_reset,
-__qcom_pas_tee_auth_and_reset) remain as they are called directly by
-their respective prepare_and_auth_reset implementations.
+On 11/12/26 3:57 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 · High: 0 · Medium: 3 · Low: 0 (2)
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] The patch is titled 'Refactor', but it also carries the only
+>    fix for a NULL-pointer dereference that already exists in the base…
+> - [Medium] ibmveth_open() now allocates the TX LTBs (line 1432) after
+>    h_register_logical_lan, ibmveth_alloc_buffer_pools(),…
+> - [Medium] The patch makes a non-NULL tx_ltb_ptr[idx] mean 'this LTB is
+>    usable'.
+>
+> Pre-existing issues:
+> - [Low] Not a real bug for the scenario described (baseline decision:
+>    false).
+> - [Low] Resolved later in the series (baseline decision: false).
+>
+> --
+>
+> ibmveth: Refactor TX resource allocation in open/close paths
+>
+> This patch moves TX LTB allocation and freeing in open() and close() into
+> the new ibmveth_alloc_tx_resources() and ibmveth_free_tx_resources()
+> helpers. It also moves the TX allocation to the end of open(), after RX
+> is live. It adds netif_tx_disable() at the start of open(), and adds a
+> check in ibmveth_start_xmit() that drops packets when tx_ltb_ptr[] is
+> NULL.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 62e6c9a9f5e91..cab895cc970c5 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> +/* Caller must ensure tx_ltb_ptr[idx] is NULL. open() runs on
+>> + * probe-zeroed slots; set_channels() skips populated indices.
+>> + */
+>>   static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
+>>   {
+>>   	adapter->tx_ltb_ptr[idx] = kzalloc(adapter->tx_ltb_size,
+>> @@ -1277,12 +1287,54 @@ static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
+>>   			   "unable to DMA map tx long term buffer\n");
+>>   		kfree(adapter->tx_ltb_ptr[idx]);
+>>   		adapter->tx_ltb_ptr[idx] = NULL;
+>> +		adapter->tx_ltb_dma[idx] = 0;
+>>   		return -ENOMEM;
+>>   	}
+> [Severity: Medium]
+> ibmveth_free_tx_ltb() now takes a non-NULL tx_ltb_ptr[idx] to mean the
+> LTB is usable, and the new check in ibmveth_start_xmit() depends on that.
+> Does ibmveth_allocate_tx_ltb() follow the same rule?
+>
+> It stores the kzalloc() result in tx_ltb_ptr[idx] before tx_ltb_dma[idx]
+> is mapped. On the map failure path it calls kfree() before it clears the
+> slot.
+>
+> The stale sender that the new guard is meant to catch could hit these
+> windows on a later grow. After a shrink, netif_tx_wake_all_queues()
+> leaves the freed index j without DRV_XOFF. If ethtool -L then grows the
+> queues, ibmveth_set_channels() does this:
+>
+> 	netif_tx_stop_all_queues(netdev);
+>
+> 	/* Allocate any queue that we need */
+> 	for (i = old; i < goal; i++) {
+> 		...
+> 		rc = ibmveth_allocate_tx_ltb(adapter, i);
+>
+> The grow path has no synchronize_net(). A stale sender that already
+> passed the DRV_XOFF check could see a non-NULL tx_ltb_ptr[j] and
+> memcpy() into it. It could then put tx_ltb_dma[j] == 0 into the
+> H_SEND_LOGICAL_LAN descriptor, or write into memory that the map failure
+> path is about to kfree().
+>
+> The grow-failure free loop in ibmveth_set_channels() also frees the slots
+> it just allocated without waiting for a grace period.
+>
+> Would it be safer to allocate and map into local variables, and publish
+> tx_ltb_ptr[idx] last with WRITE_ONCE() or a release store? On failure,
+> the slot could be cleared before kfree(), and ibmveth_start_xmit() could
+> read the pointer and the DMA address once each.
+>
+> [ ... ]
+That publish-before-map ordering was already there. This patch doesn't
+touch the allocation order or the ethtool -L TX grow loop; it only
+clears tx_ltb_dma[] on the map-failure path and in the free helper. So
+in net-next today, a stale sender after a shrink can hit a NULL
+tx_ltb_ptr[], and one during a grow can hit the window you describe.
+The new check turns the first case into a drop, but it doesn't try to
+fix the grow window.
 
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
----
- drivers/firmware/qcom/qcom_pas.c       | 16 ----------------
- drivers/firmware/qcom/qcom_pas.h       |  3 ---
- drivers/firmware/qcom/qcom_pas_tee.c   |  6 ------
- drivers/firmware/qcom/qcom_scm.c       |  7 +++----
- include/linux/firmware/qcom/qcom_pas.h |  1 -
- 5 files changed, 3 insertions(+), 30 deletions(-)
+Your suggestion is the right fix: allocate and map into locals, publish
+the pointer only once the DMA address is valid, clear it before freeing
+on failure, and read the pointer and DMA address once in xmit. I'd
+rather do that as a follow-up to the TX resize code than grow this
+series.
+>> @@ -1373,26 +1424,36 @@ static int ibmveth_open(struct net_device *netdev)
+>>   	 */
+>>   	rc = ibmveth_setup_rx_interrupts(adapter);
+>>   	if (rc)
+>> -		goto out_free_buffer_pools;
+>> +		goto out_unregister_lan;
+>>   
+>>   	netdev_dbg(netdev, "initial replenish cycle\n");
+>>   	ibmveth_schedule_rx_queue(adapter, 0);
+>>   
+>> +	rc = ibmveth_alloc_tx_resources(adapter);
+>> +	if (rc)
+>> +		goto out_cleanup_rx_interrupts;
+> [Severity: Medium]
+> Can a TX LTB allocation failure here now free RX buffers that PHYP still
+> owns?
+>
+> By this point ibmveth_schedule_rx_queue(adapter, 0) has posted RX skb DMA
+> addresses to the hypervisor. If kzalloc() or dma_map_single() fails in
+> ibmveth_allocate_tx_ltb(), open() jumps to out_cleanup_rx_interrupts and
+> falls through into:
+>
+> out_unregister_lan:
+> 	do {
+> 		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> 	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> 	ibmveth_free_buffer_pools(adapter);
+> out_free_queue_mem:
+> 	ibmveth_cleanup_rx_resources(adapter);
+>
+> Any H_FREE_LOGICAL_LAN result other than busy is ignored. The posted RX
+> skbs are then unmapped and freed, and so are the RX ring and the buffer
+> list pages. If the H_FREE failed, could PHYP still DMA inbound frames, or
+> the buffer list drop counter, into pages already returned to the
+> allocator?
+>
+> Before this patch, TX allocation ran before LAN registration, so only
+> close() had this window.
+>
+> The commit message says a later patch keeps this memory mapped on a hard
+> failure. At the end of the series, though, ibmveth_free_all_queues() only
+> returns -EIO in multi-queue mode:
+>
+> 	if (lpar_rc != H_PARAMETER && adapter->multi_queue)
+> 		return -EIO;
+>
+> so single-queue mode would still free the posted buffers on this path.
+>
+> Does TX LTB allocation need to move after the replenish kick? Since
+> ibmveth_alloc_tx_resources() unwinds its own partial failure, it could
+> probably stay before h_register_logical_lan(), or at least before
+> ibmveth_schedule_rx_queue().
+>
+> [ ... ]
+Only if two things go wrong in the same open(): the TX LTB allocation
+fails after the RX buffers are posted, and then H_FREE_LOGICAL_LAN
+returns a hard failure. In multi-queue mode (patch 10 onward)
+ibmveth_free_all_queues() returns -EIO and open() leaves the LAN memory
+mapped, so the next open() or remove() can retry the free. Single-queue
+mode still does what close() has always done: log the H_FREE failure
+and unmap.
 
-diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
-index fdf62003fbf1..08bf3a8d3bf6 100644
---- a/drivers/firmware/qcom/qcom_pas.c
-+++ b/drivers/firmware/qcom/qcom_pas.c
-@@ -184,22 +184,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
- }
- EXPORT_SYMBOL_GPL(qcom_pas_get_rsc_table);
- 
--/**
-- * qcom_pas_auth_and_reset() - Authenticate the given peripheral firmware
-- *			       and reset the remote processor
-- * @pas_id:	peripheral authentication service id
-- *
-- * Return: 0 on success.
-- */
--int qcom_pas_auth_and_reset(u32 pas_id)
--{
--	if (!ops_ptr)
--		return -ENODEV;
--
--	return ops_ptr->auth_and_reset(ops_ptr->dev, pas_id);
--}
--EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
--
- /**
-  * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
-  *				       remote processor
-diff --git a/drivers/firmware/qcom/qcom_pas.h b/drivers/firmware/qcom/qcom_pas.h
-index 8643e2760602..a296be2be8c0 100644
---- a/drivers/firmware/qcom/qcom_pas.h
-+++ b/drivers/firmware/qcom/qcom_pas.h
-@@ -18,8 +18,6 @@ struct device;
-  * @get_rsc_table:		Peripheral get resource table callback.
-  * @prepare_and_auth_reset:	Peripheral prepare firmware authentication and
-  *				reset callback.
-- * @auth_and_reset:		Peripheral firmware authentication and reset
-- *				callback.
-  * @set_remote_state:		Peripheral set remote state callback.
-  * @shutdown:			Peripheral shutdown callback.
-  * @metadata_release:		Image metadata release callback.
-@@ -37,7 +35,6 @@ struct qcom_pas_ops {
- 			       size_t *output_rt_size);
- 	int (*prepare_and_auth_reset)(struct device *dev,
- 				      struct qcom_pas_context *ctx);
--	int (*auth_and_reset)(struct device *dev, u32 pas_id);
- 	int (*set_remote_state)(struct device *dev, u32 state, u32 pas_id);
- 	int (*shutdown)(struct device *dev, u32 pas_id);
- 	void (*metadata_release)(struct device *dev,
-diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
-index 1fca2712d791..525b8a02ae82 100644
---- a/drivers/firmware/qcom/qcom_pas_tee.c
-+++ b/drivers/firmware/qcom/qcom_pas_tee.c
-@@ -331,11 +331,6 @@ static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
- 	return ret;
- }
- 
--static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
--{
--	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
--}
--
- static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
- 					       struct qcom_pas_context *ctx)
- {
-@@ -412,7 +407,6 @@ static struct qcom_pas_ops qcom_pas_ops_tee = {
- 	.init_image		= qcom_pas_tee_init_image,
- 	.mem_setup		= qcom_pas_tee_mem_setup,
- 	.get_rsc_table		= qcom_pas_tee_get_rsc_table,
--	.auth_and_reset		= qcom_pas_tee_auth_and_reset,
- 	.prepare_and_auth_reset	= qcom_pas_tee_prepare_and_auth_reset,
- 	.set_remote_state	= qcom_pas_tee_set_remote_state,
- 	.shutdown		= qcom_pas_tee_shutdown,
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 030e4ba90812..b0f96e751167 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -855,7 +855,7 @@ static void *qcom_scm_pas_get_rsc_table(struct device *dev,
- 	return ret ? ERR_PTR(ret) : tbl_ptr;
- }
- 
--static int qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
-+static int __qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -896,7 +896,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
- 	 * memory region and then invokes a call to TrustZone to authenticate.
- 	 */
- 	if (!ctx->use_tzmem)
--		return qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
-+		return __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 
- 	/*
- 	 * When Linux runs @ EL2 Linux must create the shmbridge itself and then
-@@ -906,7 +906,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	ret = qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
-+	ret = __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 	qcom_tzmem_shm_bridge_delete(handle);
- 
- 	return ret;
-@@ -987,7 +987,6 @@ static struct qcom_pas_ops qcom_pas_ops_scm = {
- 	.init_image		= qcom_scm_pas_init_image,
- 	.mem_setup		= qcom_scm_pas_mem_setup,
- 	.get_rsc_table		= qcom_scm_pas_get_rsc_table,
--	.auth_and_reset		= qcom_scm_pas_auth_and_reset,
- 	.prepare_and_auth_reset	= qcom_scm_pas_prepare_and_auth_reset,
- 	.set_remote_state	= qcom_scm_pas_set_remote_state,
- 	.shutdown		= qcom_scm_pas_shutdown,
-diff --git a/include/linux/firmware/qcom/qcom_pas.h b/include/linux/firmware/qcom/qcom_pas.h
-index 458075868bf5..53b8d9631f22 100644
---- a/include/linux/firmware/qcom/qcom_pas.h
-+++ b/include/linux/firmware/qcom/qcom_pas.h
-@@ -48,7 +48,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
- 					      void *input_rt, size_t input_rt_size,
- 					      size_t *output_rt_size);
- int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size);
--int qcom_pas_auth_and_reset(u32 pas_id);
- int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx);
- int qcom_pas_set_remote_state(u32 state, u32 pas_id);
- int qcom_pas_shutdown(u32 pas_id);
--- 
-2.55.0
+Moving the TX allocation ahead of h_register_logical_lan() would close
+this particular window. I didn't want to reshuffle open() again for a
+case that needs both a TX allocation failure and a hard H_FREE failure.
+The single-queue hard-H_FREE policy is something I plan to fix
+separately.
+>> @@ -1864,6 +1923,14 @@ static netdev_tx_t ibmveth_start_xmit(struct sk_buff *skb,
+>>   	int i, queue_num = skb_get_queue_mapping(skb);
+>>   	unsigned long mss = 0;
+>>   
+>> +	/* TX LTBs are freed on shrink; a sender that picked its queue
+>> +	 * before the shrink can get here after the free.
+>> +	 */
+>> +	if (unlikely(!adapter->tx_ltb_ptr[queue_num])) {
+> [Severity: Medium]
+> Does this check fix a NULL pointer dereference that is already in the
+> base tree?
+>
+> On a TX shrink, ibmveth_set_channels() frees the dropped LTBs and then
+> wakes every queue, including the freed indices:
+>
+> 	for (i = old; i > goal; i--) {
+> 		if (adapter->tx_ltb_ptr[i - 1])
+> 			ibmveth_free_tx_ltb(adapter, i - 1);
+> 	}
+>
+> 	netif_tx_wake_all_queues(netdev);
+>
+> Some senders can still have a queue_mapping that points at a freed
+> index. One is AF_PACKET with PACKET_QDISC_BYPASS, preempted between
+> packet_pick_tx_queue() and dev_direct_xmit(). Another is pktgen reusing
+> a cloned skb. In the old ibmveth_start_xmit(), such a sender reaches the
+> memcpy() into adapter->tx_ltb_ptr[queue_num] with a NULL pointer.
+>
+> If so, could this check be sent as a separate minimal patch for net,
+> with a tag like the following?
+>
+> Fixes: 10c2aba89cc0 ("ibmveth: Ethtool set queue support")
+>
+> Right now it sits inside a refactor in the middle of a net-next series,
+> along with the open() reorder and the RX helper dependencies, so it
+> can't be backported on its own.
+Yes, though the trigger is narrow. Normal stack TX is drained by the
+synchronize_net() in the shrink path. What's left is senders holding a
+stale queue mapping that bypass that path, e.g. PACKET_QDISC_BYPASS or
+pktgen reusing an skb after ethtool -L removed the queue.
 
+I kept the check in this patch because it's where start_xmit() learns
+to cope with a missing LTB, and the later MQ patches build on that. If
+the maintainers want it for stable, I can peel it out as a minimal net
+fix with the fix tag.
+> Also, the commit message says:
+>
+>    a sender already in xmit during the free is not covered, as before
+>    this series.
+>
+> Isn't that sender already drained on the shrink path? When queues are
+> being disabled, netif_set_real_num_tx_queues() calls synchronize_net(),
+> and ibmveth_set_channels() calls it before the free loop. What remains is
+> a stale sender that arrives after netif_tx_wake_all_queues(), and that
+> is the case this check catches.
+Yes. netif_set_real_num_tx_queues() runs before the LTB free loop and
+synchronizes when queues are removed. What's left is a stale sender
+that shows up after the later wake. The commit message sentence about
+an already-in-xmit sender not being covered is too broad; I'll fix it
+in the follow-up.
+
+Thanks,
+Mingming
