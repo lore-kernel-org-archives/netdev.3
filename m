@@ -1,71 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.127
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794553525;
-	b=wkXs4c6KlbdBTRkbQRr6d5A42qoixU9Bm0Nlh9TH5rUw+WukfkFbKRfIM8w/XZsp4oMK
-	 wsgHr9vqkIMtFW1JsPAUAvyQsU0qzZ1z4gQAP1cjQeg92sVeMP2u7vDeB2ResOy4roTmN
-	 vS2y0lVR9VcwAaUn0rK7OQ1aQVFXFSrU8EZRGRH1/lk/ERWiQ5cUr0Xlf5W40thv2aUw8
-	 21RuQLZJ8LPRWjhWfF3TSs3GNfsc9N9GPwcPEcc2MdDV2MgA1h4HZ5ht+BEchmYx1qWdq
-	 OE3IL1clokq49NH8HkYQUUfsN1kaVYF8wF4GaoKIQ0NjnjxAyfyiyuu4+rCgHSWn1zQ==
+	t=1794553594;
+	b=Zbp5lRpJw+GAzYv8HpFW8+ANJsp28xleYARXiNC4mlxLdPT6NK8r4P1q8q/nv0AWQcIq
+	 93QWbuqwEfUUd+YrmMGFObBdC+bQ5KADSTU7eyPwHYiDH5h1uHAzdFemKyReYUhDyWBKH
+	 sLV4p/54zA71OhJi9cE7TCMwY2XyRzvmGVTM3z+I4Blko6NyobVFAtpSlpbcSn456VMD9
+	 oBqN0g5AfzSapa+yyKaZzOFKrJTmp8viDaob9sD+AXbAS3wrAYNHP+jDJQXBUJZdaejmm
+	 lNyrywieCbMN3AQ5UahcSqYh/Gr5A58OxB0vXBM3DOAEt105gxmU0h5i4byjZbD+gKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794553525;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Date:Message-ID;
-	bh=PL2JrQrlFCZkPDlSoBfHNnVP+PHI384lIjGURt26NKY=;
-	b=dkjxVwj3Han8EtxomsYsgB9pe5ZPqlAUzwgNWwBlYD8jKN7YSLuzJug1cQVNuHvtSHeQ
-	 /af3EjPczZGxaIYFXpN8OtK7EW9o0TwMsvF5G//mEN4mDEpTlJ08qMGUW7plJfe4qW9bo
-	 YK/1RGaTuixv2S0REuLofjYW4iMW+Raaf2+Aictga2FVT1/VQRv+HKE3QUUFYGngrfuWr
-	 6Jk4ANGlW030h1pMmg1X5TqvolUx5qjOkS3nLZzegxiNelW9tunvTFoHC+OyvXiiJJfMZ
-	 FFtHTeKt1+VQTQIrUMStcixwtZW2YK2LV2jCBkxSf5A3dAnpC3GD/JboPvDPeM5sMBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794553594;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=4dL6718CjmrEnD528xX0GaVmfeB3Ih1PoOomOicJTmk=;
+	b=rNoyMs4+3h//LlSUhYem2E9U1yEgkEou1yl9Zsk/A7aHv0TK1jPNrv4Ct8fPjH3P+un3
+	 SyqmrKUMGjb52HXId/qoWJYVdS2XbZnGNygNUxql96J0smo9EeLKnj6oq/dubX63tG5xY
+	 XaKAWZcE8yqfAxT4DqMTrnpcX0+3/m4iCMTBQneAQyFEyArhIp8XBaXj8XYmLlHy8cqiI
+	 VDSGZykY5R2I40ntJvTuFlGOvIqpCOyAr1fqaAABZWQUw215c07CZDoPxPnS6wGIVil5n
+	 IVn4ghwT4QmH8DVy5EWiZVcY7aXg4PRDh0cpACDBspfmuy9eRoY/9tBHrhbvsUGsacg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=dZs+UKLK;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908BD606A882;
-	Fri, 13 Nov 2026 07:05:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 908BD606A882
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aMDlVYwR;
+	arc=none smtp.remote-ip=95.215.58.127
+Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE839606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:06:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE839606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=dZs+UKLK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=dZs+UKLKx+GGQ9ZfipaY7BmrMPy+PSlxKvealr0KCY2mGcABMir3FpOQHgXQhZBxk/PcLi1bzPyIJ
-	 eIl5Kbg7GEO2lLZhfcK0pHuxAt7D6TXCOxXf0Aaew08YtaOCu5w+NZplvBYvuWBt6HJlmaWpHM3KT9
-	 AR/N4AySI1eTGoWI=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af6b6aff86-e66ec;
-	Fri, 13 Nov 2026 15:05:20 +0800 (CST)
-X-RM-TRANSID:2ee56af6b6aff86-e66ec
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [198.18.0.35] (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36af6b6ae209-1aa50;
-	Fri, 13 Nov 2026 15:05:19 +0800 (CST)
-X-RM-TRANSID:2ee36af6b6ae209-1aa50
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-    idosch@nvidia.com,
-    davem@davemloft.net,
-    edumazet@kernel.org,
-    kuba@kernel.org,
-    pabeni@redhat.com,
-    horms@kernel.org,
-    linux-kernel@vger.kernel.org,
-    kuniyu@google.com,
-    xeb@mail.ru,
-    yana06070@163.com,
-    netdev-bot+sashiko@kernel.org
-Subject: [PATCH net-next v3] ip6_gre: fix changelink conflict checks for L2
- tunnels
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aMDlVYwR
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=n162zU1LsiDQjzL5WwI3PMMZWu0/W5egH3fDuHDdVqA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794553590; v=1; x=1795158390;
+ b=aMDlVYwRpN9krvsVUUDdAkTD5n3zcnZlTPDsNtuo4EvH2Wpy9LW1yLpbgcBX/iX5ptCogGIl
+ Br4xB0UsVnB7RWdtYDq1TR4WdRBvmgZqNwbq5H3y694BZWgg8ysffTpq3lv29yTVyyh1kJXKeyz
+ AjZovhSj0L/MtEiEcg7H/P8E=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 58c73366565f7543;
+	Fri, 13 Nov 2026 07:06:30 +0000
+X-Mizu-Trace-ID: 58c73366565f7543
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 13 Nov 2026 15:06:17 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Yuyang Huang <yuyanghuang@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, 1342116488@qq.com
+Subject: Re: [PATCH net-next v2] ipv4: igmp: report IFA_TARGET_NETNSID in
+ multicast address dumps
+Message-ID: <ava26Y1CKb0CJrId@fedora>
+References: <20261112082352.152338-1-sunwenbo@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,111 +70,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Fri, 13 Nov 2026 15:05:02 +0800
-Message-ID: <179455350258.84965.17518172977020586093.ip6gre-v3@cmss.chinamobile.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112082352.152338-1-sunwenbo@cmss.chinamobile.com>
 
-ip6gre_changelink_common() calls ip6gre_tunnel_locate(), which only looks
-for ARPHRD_IP6GRE devices. For ip6gretap and ip6erspan, this lets an
-update create a duplicate L2 tunnel or makes a valid update fail because
-of an unrelated L3 tunnel. A duplicate can receive traffic intended for
-the original tunnel.
+On Thu, Nov 12, 2026 at 04:23:52PM +0800, Wenbo Sun wrote:
+> Commit eb4e17a1d915 ("netlink: support dumping IPv4 multicast addresses")
+> extended RTM_GETMULTICAST to dump IPv4 multicast addresses by reusing
+> inet_valid_dump_ifaddr_req(), which already accepts IFA_TARGET_NETNSID
+> and switches to the target network namespace. However,
+> inet_fill_ifmcaddr() does not include IFA_TARGET_NETNSID in the dump
+> replies yet.
+> 
+> In contrast, IPv4 unicast dumps (inet_fill_ifaddr()), IPv6 multicast
+> dumps (inet6_fill_ifmcaddr()), and AF_PACKET multicast dumps
+> (dev_mc_fill_addr()) all report IFA_TARGET_NETNSID when a netns id is
+> specified. Adding the same behavior to IPv4 multicast dumps aligns
+> reporting across address families and helps userspace consistently
+> identify target-netns replies.
+> 
+> Emit IFA_TARGET_NETNSID in inet_fill_ifmcaddr() when args->netnsid >= 0,
+> and initialize fillargs.netnsid = -1 in inet_ifmcaddr_notify() so that
+> multicast join/leave notifications do not include IFA_TARGET_NETNSID or
+> exceed their preallocated skb size.
+> 
+> This alignment was identified with the assistance of an LLM-based code
+> review tool, confirmed in a User-Mode Linux (UML) environment where AF_INET
+> RTM_GETMULTICAST dumps with IFA_TARGET_NETNSID omitted the attribute while
+> AF_INET6 included it, and verified in UML that AF_INET multicast dumps
+> now report IFA_TARGET_NETNSID, regular dumps without netnsid continue to
+> work, and multicast join/leave notifications succeed without warning.
+> 
+> Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+> ---
+> Changes in v2:
+> - Target net-next as an enhancement/alignment change and drop the Fixes
+>   tag, per Hangbin Liu's review.
+> - Soften and clarify the commit message to reflect feature alignment with
+>   inet_fill_ifaddr(), inet6_fill_ifmcaddr(), and dev_mc_fill_addr().
+> - Link to v1: https://lore.kernel.org/r/20261111082222.327963-1-sunwenbo@cmss.chinamobile.com
+> 
+>  net/ipv4/igmp.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> index 144fca158adc..831d003677ba 100644
+> --- a/net/ipv4/igmp.c
+> +++ b/net/ipv4/igmp.c
+> @@ -1517,6 +1517,12 @@ int inet_fill_ifmcaddr(struct sk_buff *skb, struct net_device *dev,
+>  	ifm->ifa_scope = RT_SCOPE_UNIVERSE;
+>  	ifm->ifa_index = dev->ifindex;
+>  
+> +	if (args->netnsid >= 0 &&
+> +	    nla_put_s32(skb, IFA_TARGET_NETNSID, args->netnsid)) {
+> +		nlmsg_cancel(skb, nlh);
+> +		return -EMSGSIZE;
+> +	}
+> +
+>  	ci.cstamp = (READ_ONCE(im->mca_cstamp) - INITIAL_JIFFIES) * 100UL / HZ;
+>  	ci.tstamp = ci.cstamp;
+>  	ci.ifa_prefered = INFINITY_LIFE_TIME;
+> @@ -1538,6 +1544,7 @@ static void inet_ifmcaddr_notify(struct net_device *dev,
+>  {
+>  	struct inet_fill_args fillargs = {
+>  		.event = event,
+> +		.netnsid = -1,
+>  	};
+>  	struct net *net = dev_net(dev);
+>  	struct sk_buff *skb;
+> -- 
+> 2.33.0
+> 
 
-Use ip6gre_tunnel_find() with dev->type for ordinary devices. A match on
-another device, including a metadata device, remains a conflict. For
-metadata devices, update the device itself without the ordinary
-duplicate search, as newlink does. Leave the shared find helper,
-newlink, legacy ioctls and receive lookup unchanged.
-
-Check conflicts and unregistering before applying encapsulation
-parameters, so these rejected requests leave the encapsulation unchanged.
-
-Found during code review of the newlink and changelink duplicate checks.
-Reproduced under UML with an IPv6 underlay named under:
-
-  ip link add tap1 type ip6gretap local fd26:106::1 \
-      remote fd26:106::2 key 100 dev under
-  ip link add tap2 type ip6gretap local fd26:106::1 \
-      remote fd26:106::2 key 200 dev under
-  ip link set tap1 up
-  ip link set tap2 up
-  ip link set tap2 type ip6gretap key 100
-
-Before the fix, the last command succeeds and received frames move from
-tap1 to tap2. With the fix, it fails with EEXIST and tap2 is unchanged.
-Custom UML tests covered both L2 kinds, metadata updates with ip6gre0
-present, receive interfaces and tunnel metadata, legacy ioctls, and
-encapsulation state after a rejected update.
-
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
-Changes in v3:
-- Keep the shared ip6gre_tunnel_find() unchanged, including metadata
-  matches, so newlink and legacy ioctls keep their existing behavior.
-- Skip the ordinary duplicate search when updating a metadata device,
-  as suggested by Jakub.
-- Reject an ordinary update that matches another device, including a
-  metadata device, without changing receive lookup or allowing new
-  same-key combinations.
-- Check conflicts and unregistering before changing encapsulation.
-
-v2: https://lore.kernel.org/netdev/20261104150330.70963-1-yanxia@cmss.chinamobile.com/
-Review: https://lore.kernel.org/netdev/20261110205838.2246603-1-kuba@kernel.org/
-
-Tested on net-next c88fd6989aea9237a60a4859139a265bfb7ddc0b with
-W=1 UML builds of the baseline and this patch. Runtime checks used
-custom netlink, ioctl and packet tests; kernel selftests were not run.
-
- net/ipv6/ip6_gre.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
-
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index b5d6ed8..0a113bc 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -2046,28 +2046,25 @@ ip6gre_changelink_common(struct net_device *dev, struct nlattr *tb[],
- 	if (dev == ign->fb_tunnel_dev)
- 		return ERR_PTR(-EINVAL);
- 
--	if (ip6gre_netlink_encap_parms(data, &ipencap)) {
--		int err = ip6_tnl_encap_setup(nt, &ipencap);
--
--		if (err < 0)
--			return ERR_PTR(err);
--	}
--
- 	ip6gre_netlink_parms(data, p_p);
- 
--	t = ip6gre_tunnel_locate(net, p_p, 0);
--
--	if (t) {
--		if (t->dev != dev)
-+	if (!nt->parms.collect_md) {
-+		t = ip6gre_tunnel_find(net, p_p, dev->type);
-+		if (t && t->dev != dev)
- 			return ERR_PTR(-EEXIST);
--	} else {
--		t = nt;
- 	}
- 
--	if (ip6gre_tunnel_unregistering(t))
-+	if (ip6gre_tunnel_unregistering(nt))
- 		return ERR_PTR(-ENODEV);
- 
--	return t;
-+	if (ip6gre_netlink_encap_parms(data, &ipencap)) {
-+		int err = ip6_tnl_encap_setup(nt, &ipencap);
-+
-+		if (err < 0)
-+			return ERR_PTR(err);
-+	}
-+
-+	return nt;
- }
- 
- static int ip6gre_changelink(struct net_device *dev, struct nlattr *tb[],
-
-base-commit: c88fd6989aea9237a60a4859139a265bfb7ddc0b
-
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
