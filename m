@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794587931;
-	b=wr+2yTgk5KQlHhhbRcXlIzML6Bxl38MHk9MxbEtRkDx+7LwvPyq2tfwpRVLtrtRxLBGV
-	 1k5toPq2q7Eguplh0AdxlWeV5Y9xYAJlleam8ulaDPjyXqSh/UZRR2mcokqvSXLwQDGl2
-	 VeRbHDla9GdD1W5hpHogd8jQTZgX5hUKsUnN/uJYNb2CE9UVNSmm49a4z638hleRovV0b
-	 tPNRwZLXxMV3M6RQQeaMTOut2BV2e9lM6BkXVBieWvIZzbDSokXXB5X+NZ+U4mb3qzN6e
-	 1EZJUY8a6ZWce80vCmsPNU3Nyq43j8O/Qf6XZwiUui6001R3AD21lUGo1XaEUDyFJDw==
+	t=1794587932;
+	b=IBprCT25vJMZRaY1bOdAPeS3pfA3qBpBR4H//iYSD9gkd7FPJ6GmrUSjtr/l0ZjdHMA8
+	 RB/6rlt53bdzuLmDE+nXsfRP1Vq8kEn6NNNx1a4Xc5yIjzleW9S129AEhjN7opoEgFh+e
+	 AL45rUJBIn0hx4bUasZpb58QA3zJjJXporHE7Mdls2vcQXkIXPR83NbA56iOIP53rLsA7
+	 d6sU7vTJWaVz+y7LGNpIiunqqXMVg6d91pWAboDdiMCZKhsNDUZ3N2Qh1hDiecQ2kZu+y
+	 ubS4hOj+GIPubyaVr2QcTN+rvVC7AFjixJmAT7nxzQxmBITnZj/16g5Do2zgqPoxGrw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587931;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794587932;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ElhyKJTPLC9sa0kKw8UjgPt6BJk/sHWMBZUKNWMIGmY=;
-	b=KF/TOl63P/0iC4hIc/H1FMyOOKWImMmYSynaYBfO3KzhDY994kx21eISZFZ13bnFMMSh
-	 ovp3jbvXWVQsUcVNw2WjK3nIUVZdkCjIECxb6hjKhAyvqbdpJBtVgCQj9HUBYyt3lWkec
-	 aaBkTrNtWEZxjesGHPBJ5AZL6d+mX2U3FGa1dEsa8cBJhko/K6soAJrDbXrtlIBEToEv8
-	 NikJZZXVsiACSCegvLERogRSMT0mOEYmfO2+P1EEiihbIl0BUeV8whuPJ5tLsQ4TLRX+g
-	 G4NgWQEyHn5eqlzPIgCcaptHBCiM9xO7q4WI3B4Zv6mgInQrYrqSqCd4WOt6TS/6Jlw==
+	bh=aWQrPeagJRuHhlv3UwVohIzY/ndLnIlqUr3hBo8qhN4=;
+	b=jDKlXifN9XknHNF8ttPTolwk/Snuw4IGgomEisJPFltgtvK1JElH7ngRJEqRQ7qnALfj
+	 kZT/WMn4QsX58WF4I6r0yG90BZMryOOiHWgAFWIph4ztQ5CwcSRZdsqHwdC6z+4yA/UOS
+	 dAFbi4f+dBwciPqio9IQ7wKSfGUbc7r6gz8n+sLyDIY/Giqj2YlS5ER7PdcP+7JI+bxNk
+	 C4R1H7oLfGUGWbNY34K0r33p8DsyCyzQCwxGdgXnjXSb7wTnbmYrze6/57d2fH0mf/a6z
+	 lwSUviE7jbaTx0q59zpX6cpHkG0i+ZcDBxJcFRaQPEno9TCZh/fFPYU8wAYSwjPohuw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cPzVMMHC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ANwfseDx;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F04606A8BA;
-	Fri, 13 Nov 2026 16:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB3A60A3807;
+	Fri, 13 Nov 2026 16:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cPzVMMHC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ANwfseDx
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794587930;
-	b=eCYk3kRts2hW0rqi5yY2hpCbcLTG5nvM096uMPAI9Ci3XgC0haaMYQ5eMK5R3Hi5xrX1
-	 TnZA5uXxjrYC6v73dBryKGovSCAkj2QdVLOaLAZrAMTk77SIE9yF0YuUNz9kXT5m/czW9
-	 +O7t2CWodgxLGBVxp2g8DGmvtrJY+pWFNu8iXAPiAGLZ0D86R0AqG1M9LJqZVm7GpvtKD
-	 r0xxcR5FztZO3zZUOACcQXckCV8X0sm2exwCmLXpMaN8yX0yTxj6WHPbKdppJ+mntO7xW
-	 ZEvOo1gQ7pVNbYghM7C6dCn5qsa7TvSaLWmuOvmkiqhQhszGl2mPLJ0SqtAzSh8EXcg==
+	t=1794587931;
+	b=FPQod+xZcgov4am5UvhhKxVM3/XYCnmqf1qlOmO8QI4NcqeCJs43qvfAU9JbjPQzf7a2
+	 lzULnx7gDbyQu9YJrSJWLyEM2MFnu84VpPSa05q7IDtRs5NiGhQTTJu7Aqk6dQ9x24XPQ
+	 N32lYpU9T2cfsmeAoQjaNKrJd9puCynG76/gN7N5bzusuLncXpGsFA2be/8M2jmNfLeNI
+	 OjIvV3Ra2sHfz+CqGzkGfneE5Md6s7TTQRDhJPgl996kVKhnA4mZBBKd13PKZ+CJTguMy
+	 mZqgSk0EgYUd4aiP6tWWkCTm53S6A+4nS47ckGxMUGZ9vDPF9GqWeUSFF+vZKSnfeMw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794587930;
+	c=relaxed/relaxed; t=1794587931;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ElhyKJTPLC9sa0kKw8UjgPt6BJk/sHWMBZUKNWMIGmY=;
-	b=u2vsrZeiTDfp4MBXxadgC9c6swTVf559ctO5UmpH6cepz/XxNKnnFP3kc6yYADt8hh7J
-	 KN/gWe3KBvrFvQGRUVr4FPoqzbWyiTgDKSiV5Pn2Bi7BFCdwmykYzqa/KJMvQ/UcFFCu0
-	 qK3g9Gr7j03WFE32gRgZX5wP25Q5M7nvgThCkmKmwf9reTYoZZiNWPGo8vJvZVWjq52z6
-	 SKJ8mxSXCpqT3EbRBPXm6FJ2O7otGXJ7M6pJJW6qpUgyXzvDh2gf8NellZ4S9tQcNb8lV
-	 JvCoeb3WEM25kNm1myaRhnFFbsuWlRJNjTkbqMkgHr24ewHxcOR0mkQMXfhydK9as8A==
+	bh=aWQrPeagJRuHhlv3UwVohIzY/ndLnIlqUr3hBo8qhN4=;
+	b=Ox0GQEJMGgZhUCOqYDTR9ZFZdXSM22p0O7oXObwYi/V/g+p/sp/De69weM+AO0G5OU2s
+	 60Xj1aFzJQRhWrMHyAHT5gd5jhcw7CA9W48uJUJ2M3LpAYdgSBZA1L8WGWcvjGpFaNDj2
+	 T4N+uqCDhRBNyU8v3VpLJg/Hj2KHC5R/09bWCqXie3DYjR6HCfRIsqs6yQMxyQIeZfjeO
+	 0gFLdJfBhC/5626sk36sE7pgKyuxv9gF9F83FvByA+c8Ki5mBKH4jVWWUdQKpP81Lc1fe
+	 73XF3nUTsIUCCzE9qUi03l5PKS5uCVhLswuNNeGEqqniPEoO5A5QQy8Pw8PcbWnTXig==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0D29F1F000C7;
-	Fri, 13 Nov 2026 16:38:49 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 673B91F000C8;
+	Fri, 13 Nov 2026 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794587930;
-	bh=ElhyKJTPLC9sa0kKw8UjgPt6BJk/sHWMBZUKNWMIGmY=;
+	s=k20260515; t=1794587931;
+	bh=aWQrPeagJRuHhlv3UwVohIzY/ndLnIlqUr3hBo8qhN4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=cPzVMMHCyn+OFwhkw9aBWgxP3MJW3ucNQ66BKerP0uCRbp17X5SsigzIRb7P+o12E
-	 0VfqfHb0et6Hy0XooG3qhN93pMse1dOxerVVBO4ObkRl31Oy5aYuTnw1dZyOeneYo/
-	 Qe3/g1jTwEk+HPyDOGvyL43r8CmTbUiUplVI/goHU5uI8A5qBccbq+p12V0MRsPkE1
-	 iWfjhONG45Uy6mDOfYkDaHagFH/p3YR/bCjwMVfplATrahGzzcJE3ENojwQMjsxPJh
-	 O6rjTOI/4L2tPBW7o65813zDf+wAjBJEfYT0SQIY0tEHSkjXTTlDVVlvjUsUeW6gWJ
-	 rt3r4wu9LB9hg==
+	b=ANwfseDxlRVhtwI/+TDGsbXThfNorLa/nWtjxjgun5swENib16W2LvfsDBmNgJO8Y
+	 LqcQ1t7KodxhOXluBrKg9Z8YJV6D4Q39LURJYARnwXywXdkuBYBlyw/TtwGFosedO1
+	 6JiNPH0Li/FDSxkqiA2kA3OHM2Jm9CM7M6rsFYDdit5chlWTrcdDxgom/agRJQA2P/
+	 quG7YRxRmyiWh7gQfLvCLSRK91dK1VaNJoWOE2paFHZX3em22Lq7tQW536C+kNpfMP
+	 k16oy1gZsBAFuJjFpFiMEwvSO3cjtpy8VdK+1CoexEFhWeGDIQviLjLNbDI30PaHkZ
+	 IsZfiP68Bhn5A==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8CD6A4999A;
-	Fri, 13 Nov 2026 16:38:48 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 0B74F499AE;
+	Fri, 13 Nov 2026 16:38:49 +0000 (UTC)
 From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Fri, 13 Nov 2026 16:38:49 +0000
-Subject: [PATCH 3/9] dt-bindings: soc: rockchip: grf: Allow a clock for the
- RK3588 PHP GRF
+Date: Fri, 13 Nov 2026 16:38:54 +0000
+Subject: [PATCH 8/9] arm64: dts: rockchip: Attach the masters of the RK3588
+ PHP SMMU
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-mmu600-php-v1-3-231196049a3b@gmail.com>
+Message-Id: <20261113-mmu600-php-v1-8-231196049a3b@gmail.com>
 References: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
 In-Reply-To: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -103,11 +103,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
  Sebastian Reichel <sebastian.reichel@collabora.com>, 
  Arun Iyengar <aiyengar1990@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794587927; l=998;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794587927; l=3063;
  i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=B5gD6Ma73MQyMzaxyEvJStUcX9v8sHv/gtVo98dAf/c=;
- b=YT0aXhYrbKWY8wlrkZK/hEcyepwr4yg+gW6WEGC5ZSfHukSI3V4Bwa9sgPmHU73BoKkP5Tvm5
- /1hLXK4TftNA5gYYm+6NtnDIiiU7hbtYOagZcGdymdVu2rJRlg28B67
+ bh=Eywo1baNrJ1Su6epW6UvLlR5LbuALQF4wCpKeTucpp0=;
+ b=nZdrYLxPkrM8t5kgc8zE46GmG7YiEe37zQU/0qimGODqdNWa1XU0hl4ibHEnRFGyNy0jrx5Wz
+ AIpNMKWpha+CX4LhWo3q5qXrGXglhp81dgdSq7IpUmmNkhylyT/XD48
 X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
  pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
 X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
@@ -118,38 +118,71 @@ Content-Transfer-Encoding: 7bit
 
 From: Arun Iyengar <aiyengar1990@gmail.com>
 
-The RK3588 PHP GRF is clocked from pclk_php_root, which is gated when
-no PHP peripheral holds it. Allow the clock, so the syscon regmap
-enables it.
+GMAC0/1, SATA0-2 and USB3OTG_2 are behind MMU600_PHP with StreamIDs
+1-6. No effect until the SMMU is enabled.
 
 Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
 ---
- Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi  | 4 ++++
+ arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-index e94c83d7c138..2525eb51f13b 100644
---- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-+++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-@@ -321,8 +321,16 @@ allOf:
-         - clocks
- 
-     else:
--      properties:
--        clocks: false
-+      if:
-+        not:
-+          properties:
-+            compatible:
-+              contains:
-+                const: rockchip,rk3588-php-grf
-+
-+      then:
-+        properties:
-+          clocks: false
- 
- examples:
-   - |
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index 3bf8d0e4ff33..cb0a39f63788 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -534,6 +534,7 @@ usb_host2_xhci: usb@fcd00000 {
+ 		compatible = "rockchip,rk3588-dwc3", "snps,dwc3";
+ 		reg = <0x0 0xfcd00000 0x0 0x400000>;
+ 		interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH 0>;
++		iommus = <&mmu600_php 6>;
+ 		clocks = <&cru REF_CLK_USB3OTG2>, <&cru SUSPEND_CLK_USB3OTG2>,
+ 			 <&cru ACLK_USB3OTG2>, <&cru CLK_UTMI_OTG2>,
+ 			 <&cru CLK_PIPEPHY2_PIPE_U3_G>;
+@@ -2310,6 +2311,7 @@ gmac1: ethernet@fe1c0000 {
+ 		interrupts = <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH 0>,
+ 			     <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH 0>;
+ 		interrupt-names = "macirq", "eth_wake_irq";
++		iommus = <&mmu600_php 2>;
+ 		clocks = <&cru CLK_GMAC_125M>, <&cru CLK_GMAC_50M>,
+ 			 <&cru PCLK_GMAC1>, <&cru ACLK_GMAC1>,
+ 			 <&cru CLK_GMAC1_PTP_REF>;
+@@ -2357,6 +2359,7 @@ sata0: sata@fe210000 {
+ 		compatible = "rockchip,rk3588-dwc-ahci", "snps,dwc-ahci";
+ 		reg = <0 0xfe210000 0 0x1000>;
+ 		interrupts = <GIC_SPI 273 IRQ_TYPE_LEVEL_HIGH 0>;
++		iommus = <&mmu600_php 3>;
+ 		clocks = <&cru ACLK_SATA0>, <&cru CLK_PMALIVE0>,
+ 			 <&cru CLK_RXOOB0>, <&cru CLK_PIPEPHY0_REF>,
+ 			 <&cru CLK_PIPEPHY0_PIPE_ASIC_G>;
+@@ -2380,6 +2383,7 @@ sata2: sata@fe230000 {
+ 		compatible = "rockchip,rk3588-dwc-ahci", "snps,dwc-ahci";
+ 		reg = <0 0xfe230000 0 0x1000>;
+ 		interrupts = <GIC_SPI 275 IRQ_TYPE_LEVEL_HIGH 0>;
++		iommus = <&mmu600_php 5>;
+ 		clocks = <&cru ACLK_SATA2>, <&cru CLK_PMALIVE2>,
+ 			 <&cru CLK_RXOOB2>, <&cru CLK_PIPEPHY2_REF>,
+ 			 <&cru CLK_PIPEPHY2_PIPE_ASIC_G>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
+index 2bcf30d8a338..425770a8ff61 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
+@@ -538,6 +538,7 @@ gmac0: ethernet@fe1b0000 {
+ 		interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH 0>,
+ 			     <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH 0>;
+ 		interrupt-names = "macirq", "eth_wake_irq";
++		iommus = <&mmu600_php 1>;
+ 		clocks = <&cru CLK_GMAC_125M>, <&cru CLK_GMAC_50M>,
+ 			 <&cru PCLK_GMAC0>, <&cru ACLK_GMAC0>,
+ 			 <&cru CLK_GMAC0_PTP_REF>;
+@@ -585,6 +586,7 @@ sata1: sata@fe220000 {
+ 		compatible = "rockchip,rk3588-dwc-ahci", "snps,dwc-ahci";
+ 		reg = <0 0xfe220000 0 0x1000>;
+ 		interrupts = <GIC_SPI 274 IRQ_TYPE_LEVEL_HIGH 0>;
++		iommus = <&mmu600_php 4>;
+ 		clocks = <&cru ACLK_SATA1>, <&cru CLK_PMALIVE1>,
+ 			 <&cru CLK_RXOOB1>, <&cru CLK_PIPEPHY1_REF>,
+ 			 <&cru CLK_PIPEPHY1_PIPE_ASIC_G>;
 
 -- 
 2.55.0
