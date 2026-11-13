@@ -1,97 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794562540;
-	b=SwkgV7XY4VWZSY+cuaA90y5ceJGDbQj3NDnZt6eB0ElkviNUjuvGxQ9nFvgxNddAniLY
-	 i/U5bZwLPzEdBJN0BMUVqzshsn8mEZfPzIPCdzscrRqoP+oluQHIseMYVwiNhrYi6sLGU
-	 +AgKI58+saiMkV45Z48GTVN6xfa+9Yn0c1ZVfjBPcZ8ZBeEFZo0zeDsU3z6EdLae8wQJs
-	 H8ORhpXKoUwzYPb4f8z5g/2/RhTePnZuhljcEtpC7zmmx3/6pyRet7CweemEFuD0L/Er7
-	 JFk3GTO9HE3CRuTijn6kRERYETNy1fIeYnbhZYyEyJBIhT9bkgr/ZkiG6WsVkFyXAOA==
+	t=1794563274;
+	b=uG8/2Om4iP6C/4AWdFPaYVmmssYFdTeQXFN9y7RpZfYNZVLIFhDC0qJSdZz4q82GQTJA
+	 +1O+Qk5qu10GeJfexgsKl3WcQHeuVMA8NrTmZaB/X8ePmoML5a++JqkR5pxnKkkGKD7e5
+	 eyHMPKKO3KT83u7o1gh9Tzhk4lWacNlf6YDUde/rcPgW3Sw94hTJXv7ztYmJ8hdaODDvE
+	 YtpmCV8gDuUHDLya1g+iy+OQvEO8+NVkCqXzFcnpgNZN6UMeM5zawKtmxHPdkMXB6rU3J
+	 TBrsqS8CVtLhfQD17kxHwCD9jakMvkRGquYBcRp9dyaTN0dWwPQ9Z8BJ0MrxIOO//lA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794562540;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=EvWVYCmSrC08VmYMuwyjP4TbqhqKKrVCh8mKPIgk3uU=;
-	b=pmNuG/cCk3to820MS7dJeQJJ1Gs5BrCpaEJ4/hM+6PoiqcbS4hLHraJpmvP/vJs8mzMW
-	 YYS7Z05mYG6lc2lLS0uPySYd1pU+9z1H8ZGGHcnbSg3tDaWPvLDbxqujc/bOIuW2bKD8N
-	 jQsKBPF3ChGXc4O31wN+ZnOyb2uHzr6klWBppKFNp2ZIXU8lrrS6T9os9wRjNlIV8TdKF
-	 eNMFME9DwFWzEQm7sRfjC8UgZBOOTPvc18HR/DjD25hO1IDLRZ1vacuhORCsqZZcXwQpt
-	 ytxa0sGf5SoyOZhENFY7iueV0S29qMBk5HIrbAO/c6m5jxmzhoaiQnAOdMfhI6JtUMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563274;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=Lye2VWkcbOLJPzpCzSxr8rD8nzn28pSDZgqknwmL318=;
+	b=JOja/IJJ7thQ/r/kLkxGoetclTJ4jSRD8Cb01W/EiBZgc6V26ni+Q0eKtEHe49sMa6Uk
+	 lHLLaVA/KW0axijlLKc1X62ICz+TvPKBuJsmmhZc5ysN6GVFGYoP20/+Yu9pdavEwx2XQ
+	 JH0XIyWy8O9Et4mLgyAc5aa7RUZ04e4uOs6XaiGNB35UXaA2hF0oksjLo5vOFi/JNsZwx
+	 cy+inPUzlFq+c2r4Ig74bZA0L/3LCeZg19Tsu7MieX9sZmyPmlMMooKo2YYEurXWpxsC6
+	 9jvNIXPjBukaoqarBDpUp7chr2w1EzDEgUvfCdG2l3vEcWgTFS+XNYYZShleEU9LxZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ifBkNW17;
-	arc=none smtp.remote-ip=209.85.216.48
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=AId2hsdH;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCF1606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:35:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CCF1606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id A1FFD606A321;
+	Fri, 13 Nov 2026 09:47:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1FFD606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ifBkNW17
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3b12cb3c37bso302388a91.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794562539; x=1795167339; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EvWVYCmSrC08VmYMuwyjP4TbqhqKKrVCh8mKPIgk3uU=;
-        b=ifBkNW17ag3PsQDR2M2f2Vr/CK5hdnTZJwwq6uGUXVXwey8VPDG1/WSbFKF9BD0fTQ
-         4IN6KhNAUi26mPv5XZqZNO1js6sntMtGTkz+Q2yrIc1Eqjitf2CyVd3jYD8BWhgVWdZp
-         Yrg8/PNRE1wQcVpzRwiO4yV8/7Y5FL79aG/DG3YdjybS8RVO0Tcw6HmR7DU4A8crs3d5
-         KSWCKoOAh0n1hnXIN9cvmjw3ppH4tDfkv2w2+6bbJYiDCrK808lgpG09HDGdlpALzv5P
-         P4KcAutF1x+i89igrxSHOHqg4Ja5mnAT5Qyj1YXiiLp8iF+5bB4ivBkelRRrIzRU10JK
-         YpyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794562539; x=1795167339;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=EvWVYCmSrC08VmYMuwyjP4TbqhqKKrVCh8mKPIgk3uU=;
-        b=Uh3ArFtNvD6QulzX39eVvipeKaEW1Un3M/WU2iMxPVNTJKR0Gl7LaMQLg5+RKw9Oss
-         xhCSAAobEGP/xze7mByli/HiXhmVK6nTHc442BXEiHGcwAies8u+ELb9hiHzrWoZWO92
-         C+xTKXioW0ZDXLRADmcgDYOgjOBnYDr/PHHi8WQWnYmgIMVWn7snykS83AraOAAHsvsS
-         5iVAbakrdFiu2NoVzRqi0MlI+bGaHXylzGRhcl/bjO1RtD1DA2XJ5MzSxKIPk7gOXR/W
-         wTSBDoH4gWp1FRfKkBNDI0fKgZrKx1QFpPdhdNYgQRVn3rzco7xDjLwZL+cx5ecR+iiE
-         cAwA==
-X-Forwarded-Encrypted: i=1; AL+hErEIO8W22RFpk7w467rbC7y1n1XfeGwp2eV2MXNWx9MOQXNROWdOVvX7cY002pGyG4/7ETbaYL0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9wc1cMqohQ6x8qDAqk/YutDYENvJxjSQFn157uI3v7SkEatUrh
-	JMMLBr2eMMZcek6WreqnNLke+stgsjUt13KETCDmhWO/mLfvqaF1T1oc
-X-Gm-Gg: AYBFou3P7RPv8HPdp027xm4HQcCRzZz5JkVyNjmmhu04FGQJXdt/4i0C2jjsXHfVzlT
-	NAkc8v1BCCIw6Qz5Q8LnYYABpr/A0CQm2MJbVAeZNu6l/T45SpGRRbZ5R8/OqekRIQpCmzo6rln
-	CmHrbU/cbL147zttUcJR29x10JQ5F6jV5AIzcEI8kprWqkhouS/IwFymGWGyEs1ch4w4sxwjCSa
-	2phF0GG0MkERKrEfIsNNr9qFs+7YJhbrvym3BlZFyR7lrP/Ojelbxco7Bc+PWZmhXGcPL6qYsv0
-	CZ24Iyr4QT0rGLw2rlLfAuVhUvhtfZwZASba8clLtCOcLtQv+BuGpVjl/HObGzeLLSsbEmU3s/m
-	4f66cu+baQvL2mko3qPnVsqS4x7D1/HICycvlN7v3Z4PHtwdqsq79oS54/l5VRNlEMkXCWtMn6a
-	E/J0gMU/OjbhQ8yED4LBzHw81CSQeMGckbZpiWF0gBsPTIm0gzEnbHDOXF2lN/vbd2zJ4siTgJN
-	4SLW8TVi5dxRZxwRctCNSXb9etau10YJIHRZ/asbdxWy8ANQUZDpaM2edqzhyKjxIxf2JKrhut6
-	8+Z1G3HpWnRNe9zbbnxcbPVHtOtNSg/Sj9FxHqAfNhmjXEK4j5Hj5PnmMPYVcAJsMH9WgU8=
-X-Received: by 2002:a17:90b:3146:b0:3a4:b0a1:c7ed with SMTP id 98e67ed59e1d1-3b1b09fa56bmr1796891a91.13.1794562539479;
-        Fri, 13 Nov 2026 01:35:39 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18c847asm928446a12.28.2026.11.13.01.35.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 01:35:38 -0800 (PST)
-Date: Fri, 13 Nov 2026 18:35:35 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v2] tcp: fix NULL pointer dereference when restarting
- a Fast Open listener
-Message-ID: <avbZ541P9VdrpfUz@v4bel>
-References: <avMkfJrXhCFXn8M_@v4bel>
- <179450310167.2199510.18107423940014989443@kernel.org>
- <CAL4WiioP-25nYs19MiNAjnzbvi-H870uem1W+jY5jTJb=DKn+g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=AId2hsdH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1794563270;
+	bh=Lye2VWkcbOLJPzpCzSxr8rD8nzn28pSDZgqknwmL318=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AId2hsdHBhcIphzpyggWxENo/TtfqEjtT30C2fjiMJPnxhzPu/zQQWdi8QlONXLb7
+	 mtd4AZ6jQ1SOkeVFUSyr3q1Dfrs83iguOQ1Cc/T+6bHL/OZTpbGWynWMwWjV6jXzB/
+	 Yoev+1qo8lrQxUZZbKkgI0TVuO4lWN4SRoLMv0EVt3FQRaJczRYZ2mpjZQl4M4HVzq
+	 PTVYnuZzMbn4ve8nx/l7AUKoiFm8OWiTL/yisTq5gdSwkL4XA9TYlU8T2Jt6srfBxb
+	 mNkMW4NDjgLyJOWTTDFT9P2n1zm9a+2TzDgzBfRcvX/yicOoxW3iB9e1bOacg5+xkF
+	 MxspB6nxh7pEQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id BF04E6007A;
+	Fri, 13 Nov 2026 10:47:50 +0100 (CET)
+Date: Fri, 13 Nov 2026 10:47:47 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, Jiri Pirko <jiri@resnulli.us>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v2 3/4] netfilter: nft_fwd_netdev: drop the
+ stale dst when steering to a device
+Message-ID: <avbcwzUuzp3ZnjCM@chamomile>
+References: <CORE-9NOG.v2.r0.20261112151659@mojatatu.com>
+ <CORE-9NOG.v2.r0.20261112151659-3@mojatatu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,151 +73,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL4WiioP-25nYs19MiNAjnzbvi-H870uem1W+jY5jTJb=DKn+g@mail.gmail.com>
+In-Reply-To: <CORE-9NOG.v2.r0.20261112151659-3@mojatatu.com>
 
-On Fri, Nov 13, 2026 at 09:59:54AM +0100, Eric Dumazet wrote:
-> Le jeu. 12 nov. 2026 à 18:05, <netdev-bot+sashiko@kernel.org> a écrit :
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 · High: 1 · Medium: 0 · Low: 0
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchwork
-> > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > (one such reply per series is enough).
-> >
-> > - [High] The patch is meant to stop request_socks from being stranded in
-> >   rskq_rst_head while they hold a listener reference, but another path…
-> >
-> > --
-> >
-> > tcp: fix NULL pointer dereference when restarting a Fast Open listener
-> >
-> > This patch makes inet_csk_listen_stop() always take fastopenq.lock and
-> > detach rskq_rst_head while holding it. That serializes the drain against
-> > reqsk_fastopen_remove() adding entries to the RST list. The goal is to
-> > stop request_socks from being stranded on rskq_rst_head while holding a
-> > listener reference, and to avoid the NULL rskq_rst_tail dereference seen
-> > when listen() is called again.
-> >
-> > > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> > > index 37cc8606d6835..9ca59dca5d184 100644
-> > > --- a/net/ipv4/inet_connection_sock.c
-> > > +++ b/net/ipv4/inet_connection_sock.c
-> > > @@ -1533,17 +1533,15 @@ void inet_csk_listen_stop(struct sock *sk)
-> >
-> > [ ... ]
-> >
-> > > +     /* Free all the reqs queued in rskq_rst_head. */
-> > > +     spin_lock_bh(&queue->fastopenq.lock);
-> > > +     req = queue->fastopenq.rskq_rst_head;
-> > > +     queue->fastopenq.rskq_rst_head = NULL;
-> > > +     spin_unlock_bh(&queue->fastopenq.lock);
-> > > +     while (req != NULL) {
-> > > +             next = req->dl_next;
-> > > +             reqsk_put(req);
-> > > +             req = next;
-> > >       }
-> > >       WARN_ON_ONCE(sk->sk_ack_backlog);
-> > >  }
-> >
-> > [Severity: High]
-> > Is this fix complete? The commit message says:
-> >
-> >     With this synchronization, reqsk_fastopen_remove() either inserts the
-> >     request_sock before inet_csk_listen_stop() acquires the lock, in which
-> >     case inet_csk_listen_stop() reclaims it, or sees that the listener is
-> >     not in TCP_LISTEN and does not insert anything.
-> >
-> > That argument only holds if every exit from TCP_LISTEN goes through
-> > inet_csk_listen_stop(). The failure path in inet_csk_listen_start()
-> > does not:
-> >
-> > net/ipv4/inet_connection_sock.c:inet_csk_listen_start() {
-> >     ...
-> >         reqsk_queue_alloc(&icsk->icsk_accept_queue);
-> >     ...
-> >         inet_sk_state_store(sk, TCP_LISTEN);
-> >         err = sk->sk_prot->get_port(sk, inet->inet_num);
-> >         if (!err) {
-> >                 ...
-> >                 err = sk->sk_prot->hash(sk);
-> >
-> >                 if (likely(!err))
-> >                         return 0;
-> >         }
-> >
-> >         inet_sk_set_state(sk, TCP_CLOSE);
-> >         return err;
-> > }
-> >
-> > Take a listener that went through shutdown(SHUT_RD) or connect(AF_UNSPEC)
-> > while an accepted Fast Open child was still in SYN_RECV. Then listen() is
-> > called on it again. If an RST for that child arrives after TCP_LISTEN is
-> > stored, reqsk_fastopen_remove() passes this check under fastopenq->lock:
-> >
-> >         if (!reset || lsk->sk_state != TCP_LISTEN) {
-> >
-> > It then links req onto rskq_rst_head/rskq_rst_tail without calling
-> > reqsk_put().
-> >
-> > Now suppose get_port() fails afterwards, for example with EADDRINUSE
-> > because another SO_REUSEADDR socket started listening on the port, or
-> > hash() fails. The socket goes back to TCP_CLOSE and rskq_rst_head is never
-> > drained.
-> >
-> > A later close() will not reclaim the list, because __tcp_close() only
-> > calls inet_csk_listen_stop() when sk_state == TCP_LISTEN. A later
-> > successful listen() just overwrites the list in reqsk_queue_alloc():
-> >
-> >         queue->fastopenq.rskq_rst_head = NULL;
-> >         queue->fastopenq.rskq_rst_tail = NULL;
-> >
-> > Does this leak the request_sock? If so, it also leaks the listener
-> > reference taken in reqsk_alloc_noprof(), which only
-> > sock_put(req->rsk_listener) in __reqsk_free() drops. That would pin the
-> > listener sock and its netns reference too.
-> >
-> > This looks like the same leak the commit message describes, reached
-> > through a different TCP_LISTEN -> TCP_CLOSE transition.
-> >
-> > Should the inet_csk_listen_start() error path also drain fastopenq under
-> > fastopenq.lock? Alternatively, could the drain move to a place that covers
-> > both paths?
-> >
-> > --
-> > Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/avMkfJrXhCFXn8M_%40v4bel
+On Thu, Nov 12, 2026 at 03:40:48PM -0500, Jamal Hadi Salim wrote:
+> This is a followup of the review of the teql arp-queue fix as reported
+> by Sashiko.
 > 
-> This looks legitimate, but it is a separate and pre-existing issue,
-> not something added or made worse by this patch.
+> The issue:
+> The neighbour variant of fwd rewrites skb->dev to the configured output
+> device and calls neigh_xmit(), but leaves the skb's dst untouched. If that
+> device's neighbour for the configured nexthop is incomplete, the packet is
+> parked on the neighbour's arp_queue while the stale dst still describes the
+> device the packet was routed through. Draining the queue re-looks the
+> neighbour up from that dst, so the frame is built with the routed device's
+> link-layer header and then transmitted on the configured device. The packet
+> leaves with another device's addresses.
 > 
-> inet_csk_listen_start() sets TCP_LISTEN before get_port()/hash() and
-> goes back to TCP_CLOSE on failure without purging rskq_rst_head, so an
-> RST for a Fast Open child accepted in a previous life of the listener
-> can queue a request there during that window. Nothing reclaims it
-> afterwards.
+> The Fix:
+> Release the dst before the device switch. Both lookup inputs the neighbour
+> transmission needs, the device and the nexthop, are supplied by the rule,
+> so the route dst is never consulted. Without it the queue drain keeps the
+> parking neighbour and the frame carries the configured device's addresses.
 > 
-> It needs listen() to fail (e.g. -EADDRINUSE because another
-> SO_REUSEADDR socket started listening on the port) with the RST
-> landing while get_port() runs, so the window is quite small.
+> The release goes through skb_dst_drop_keep_metadata(), so encapsulation
+> parameters a route carries are handed over to a metadata dst instead of
+> being lost, and a metadata dst already on the packet is left in place. If
+> that copy cannot be allocated the packet is dropped, never sent with the
+> stale route.
 > 
-> Hyunwoo, no need to respin, your v2 is fine as is for the
-> inet_csk_listen_stop() side.
+> Conditions to recreate the bug:
+> Two network namespaces, A (10.10.0.1/24) and B (10.1.0.1/24) in one, their
+> veth peers in the other with only A's peer addressed (10.10.0.2/24) so B's
+> nexthop cannot be resolved by ARP. Resolve A's neighbour for 10.10.0.2 as
+> permanent, then load this ruleset on A:
 > 
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+>     table netdev t {
+>             chain c {
+>                     type filter hook egress device va priority 0
+>                     policy accept
+>                     fwd ip to 10.1.0.2 device vb
+>             }
+>     }
+> 
+> Send one packet to 10.10.0.2. It is parked on B's incomplete neighbour
+> for 10.1.0.2; once that neighbour becomes valid the frame leaves B
+> carrying A's source address and A's neighbour as the destination.
+> 
+> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com
+> Link: https://lore.kernel.org/netdev/QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com/
+> Link: https://lore.kernel.org/netdev/avTfQjFQYR2NNdRg@chamomile/
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Thanks for the review.
-
-> 
-> I will send a follow-up on top of it, moving the purge to a helper
-> that is also called from the inet_csk_listen_start() error path.
-
-I'll review the follow-up patch once it's posted.
-
-
-Best regards,
-Hyunwoo Kim
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
