@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532505;
-	b=plYY0D3Is6pnc6QgBaBm9zB37BJjIrTSvTdYD/tHil1jFnwHwfxhODBktTIURr7LGweK
-	 W2ucDkgXN9fp7tVmcw9MPLANciqsJpSno6sz/ozLP81ANjv2Znh79z0BGrGggkn6HOt+I
-	 LfKAqzUYuTuf4RoDZ/8tIjFY95FUwXXSMNaRQW9Ua66nfHK5zfNsKGRipueTOeKbV5P+O
-	 ozQWBLX7oRq39XDF03mpsU5Nh5WjbULumXTnLhUJd49BBUvTr9F7KoOuaGC/1vHVo7NKH
-	 Xh1UJuJGrRUhilO9CsWHMaC4y+yKH7UzVU6D6MnyLhzADKCdntl+OVL+d8RSQLX7KHQ==
+	t=1794532500;
+	b=12EYGe0oqqAWMLRuArEjQFUn1Tst67f9VK8DSBFSB8V+oEl4iFk6+eNaaE0WRNk1N5ar
+	 2OeRWWnCXLttWDNT/HbbozCK5XQSdrj4jba2yeeDJlIQ2IS3Ooycp+Y0WIBvGNsFamrJ2
+	 FoOlFEeaoRPa5wweHuYTTB2leH+vPhUAxxwuSwAKQE2SxndI6pvZiz7NsPkl4eJXHr5Bz
+	 cX/CNpB6YqwbwYTBIk83LsFrs8QflE9gb/LNNSa8lvp47/jCUpTjuB4expTEy9/tFt9n2
+	 A5nNHdjGZEZjNWetfWCa97Ho06jv9VRdbUr1Cw8YDmtDhkS0XM+C+A8voxorhsPpohg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532505;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532500;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=L/mDYBLr21Zl+KzenQ/2+WneZOvu1su6eDvZBqxB/YQ=;
-	b=ta0gNY/Yk6HyYLnZCYFulQAsIoa+LbeVKzO9aqDJxpT4HAy/MeRvLYH1EEBPQ1fwBfxQ
-	 N1SzGvOzLu1QsU3DolTqGKUFWuSNkA/nTLCbqzrZaN1g/ScLuSGqtynhNBKeOfmc2BsVO
-	 4UJA4nYjf1naJDfVnBeXKDJDqlqHWbpnBT8GtVvLAJt6QQGZik1hE3XYtai9GbWqPgicq
-	 CnT5T0rjyzucdNSgWC5/Y0eH1v4398/llKiPuzH+uny4ubI0aVDS2nBkVsm1f6/T5GR67
-	 DmJ7TNSal8lrJXcK4MOGJJgEZC5G7StnFzwpjUkGWdKrL9LlWn7Be0jQ158dmUYDDMg==
+	bh=zzEsJnJnM1bQXthU4+437vS4Xm/cQAtHw6bJmg1IONE=;
+	b=tVugAzNV5g17WplV4aGHrlafGKb2QlUERxj96Jw3dsUBEzDTZ3qZ6FtfgymQVoV+cJKi
+	 dP0hqrp8b9lcqRh5GbT2+COwJ7+lXtkh4GbgsZGt1NOtjGTEo1uYlmlSxPjV/XrAcZqFd
+	 FM0UpNnIhdpvNgxePUs3n9JMr+hRLPUFDM3J/EAFHzfMioZyhYQhNMaHh6Zr5jyiPgcWr
+	 0XpQr5jQyKQLLFaIoBN5mIqSkPsrzzS8Be8V+8lqhRGJj2qs5I+PJ7SZ3zhSY/Y8LFIGm
+	 Air/Ex3OoK6ve+nwFRulPUeHg1a4D0JXc5gjbdyXD/8opfQTcQpKBrTWbWSjVYg3mfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Ky0wmxXF;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=S3duZu2R;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20133606A899;
-	Fri, 13 Nov 2026 01:15:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20133606A899
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61104606A333;
+	Fri, 13 Nov 2026 01:15:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61104606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Ky0wmxXF
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=S3duZu2R
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794532503;
-	bh=L/mDYBLr21Zl+KzenQ/2+WneZOvu1su6eDvZBqxB/YQ=;
+	s=2025; t=1794532498;
+	bh=zzEsJnJnM1bQXthU4+437vS4Xm/cQAtHw6bJmg1IONE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ky0wmxXFn7yFW79dZpI/uzvN5LUzu8s/xgAFt+2J/7XaQZeBlvtMA1N5bYEZooM/r
-	 wfYBSyrQqeviqVkMNRXOa3bUw8DWLev/uIyoh4kIyw3O3qFN3mVxbW4uoN8NNXiQyl
-	 YnCna9IvwwzYZrqW8bGeX/2TxD4EhyJEX9FpxSIt3oLKFsZj+bR7q8Jl3w40z8TCfr
-	 K3D1fhIJ6RKW+V2a/1eBmPRMhk6W9Z8Ih6AzewGCvu8lbxRViUUkkHElbygX0dv5Jr
-	 MDw61huX0nDwDh2GXFndSWgjAs///98P/49ayKevst8o91sadY8WXLAzS3GsNUM6a2
-	 Dghbi5faT9Zpw==
+	b=S3duZu2RNJMgqFlSR5qyfemWOVEJk7CLxGNhx3v4Oeu+x5/yDE0DhjWu+lQakoK1i
+	 IkxE28ZVxd4vBY7xVxkGSKDC/6KdjrvS08XA/vrQMJBkXQzklu4CIe3TI87BlOI3vQ
+	 JgBPoH1z4an41Usg5FjMXFTG2ggIQHH4NImEdvOQUhmdi2CvP2DMGzJDrWuF8o6OT7
+	 n9ZravCuPxf7lgpNV6UlR/aQJhT5a+8hJY2gNfrnzGMUJH8SPpiIMGm83EB7cui4aP
+	 vePNQ4U7tc9kpbqeQVsDUIgXJA9WptdBVOnt5R8YSLYahRgAy1NcTYsMeiwTVskJBn
+	 3SbiwcnmhMkNQ==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id EE44060060;
-	Fri, 13 Nov 2026 02:15:02 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 3C5AA6005C;
+	Fri, 13 Nov 2026 02:14:58 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 05/15] ipvs: reject FTP control ports as data ports
-Date: Fri, 13 Nov 2026 02:14:37 +0100
-Message-ID: <20261113011447.2357709-6-pablo@netfilter.org>
+Subject: [PATCH net 02/15] ipv6: update *offset for non-first fragments in ipv6_find_hdr()
+Date: Fri, 13 Nov 2026 02:14:34 +0100
+Message-ID: <20261113011447.2357709-3-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261113011447.2357709-1-pablo@netfilter.org>
 References: <20261113011447.2357709-1-pablo@netfilter.org>
@@ -73,71 +73,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zihan Xi <zihanx@nebusec.ai>
+From: Axel Mierczuk <axel.mierczuk@1password.com>
 
-The FTP helper must not treat a configured control port as a data port.
-Accepting such a port can leave IPVS connections in a state that leads
-to recursive expiration and kernel stack exhaustion.
+The non-first fragment early return is the only successful exit of
+ipv6_find_hdr() that leaves *offset untouched. IPVS used the initial
+offset as if it had been updated.
 
-Reject zero and configured control ports before creating passive data
-connections. For active mode, reject a zero client port and a derived
-data port that is itself a configured control port.
+For non-first fragments with target < 0, set *offset immediately
+after the Fragment header, at the start of the fragment payload.
+Callers must still account for the nonzero fragment offset. A
+NEXTHDR_FRAGMENT search continues to return the Fragment header's
+offset. Other target < 0 callers check the returned fragment offset
+or ignore *offset here.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Fixes: b777e0ce7437 ("[NETFILTER]: make ipv6_find_hdr() find transport protocol header")
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Axel Mierczuk <axel.mierczuk@1password.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipvs/ip_vs_ftp.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/ipv6/exthdrs_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 9e3e005a8263..4822a1a75212 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -62,6 +62,17 @@ static unsigned short ports[IP_VS_APP_MAX_PORTS] = {21, 0};
- module_param_array(ports, ushort, &ports_count, 0444);
- MODULE_PARM_DESC(ports, "Ports to monitor for FTP control commands");
- 
-+static bool is_control_port(u16 port)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ports_count; i++) {
-+		if (ports[i] == port)
-+			return true;
-+	}
-+	return false;
-+}
-+
- 
- static char *ip_vs_ftp_data_ptr(struct sk_buff *skb, struct ip_vs_iphdr *ipvsh)
- {
-@@ -319,6 +330,10 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	/* Do not redirect data to control ports */
-+	if (!port || is_control_port(ntohs(port)))
-+		return 0;
-+
- 	/* Now update or create a connection entry for it */
- 	{
- 		struct ip_vs_conn_param p;
-@@ -529,6 +544,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	if (!port || is_control_port(ntohs(cp->vport) - 1))
-+		return 0;
-+
- 	/* Passive mode off */
- 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
- 
+diff --git a/net/ipv6/exthdrs_core.c b/net/ipv6/exthdrs_core.c
+index 4a9748338cf4..e27f5b8cc154 100644
+--- a/net/ipv6/exthdrs_core.c
++++ b/net/ipv6/exthdrs_core.c
+@@ -179,7 +179,10 @@ EXPORT_SYMBOL_GPL(ipv6_find_tlv);
+  *
+  * Note that non-1st fragment is special case that "the protocol number
+  * of last header" is "next header" field in Fragment header. In this case,
+- * *offset is meaningless and fragment offset is stored in *fragoff if fragoff
++ * for target < 0, *offset points immediately after the Fragment header,
++ * at the start of the fragment payload. Callers must still account for
++ * the nonzero fragment offset before interpreting the payload. The
++ * fragment offset is stored in *fragoff if fragoff
+  * isn't NULL.
+  *
+  * if flags is not NULL and it's a fragment, then the frag flag
+@@ -261,6 +264,7 @@ int ipv6_find_hdr(const struct sk_buff *skb, unsigned int *offset,
+ 				     hp->nexthdr == NEXTHDR_NONE)) {
+ 					if (fragoff)
+ 						*fragoff = _frag_off;
++					*offset = start + sizeof(struct frag_hdr);
+ 					return hp->nexthdr;
+ 				}
+ 				if (!found)
 -- 
 2.47.3
 
