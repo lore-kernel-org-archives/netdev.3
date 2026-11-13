@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549083;
-	b=ob7fOAr5vkDUCK3rZipVVbYgz8iLiXNxTsr2i9D4XQxJbK5tL7YemkHqYubYpovm3jw4
-	 jnvgJyu4er5Ta85UfO7Tg5r8A/kkb3Px2tdZ5N80VPycc1sAdD+THCzYerrVa+azFG3BZ
-	 Gj2yDiSe6rikAJhJ4nuGu7qV3082N5VRxNFqGGMgTtUGUoHjRllEWnDNyunQ5Svicc4Go
-	 Og7Lk8jt+mKG8Ra/BjW3bHUfdhDA6n0SrEK622RRTFt5Lx01OcQLOu55UzF9d9jTOgLJH
-	 SvmsHGMhY5QGZMSFOOfk6/2eajxRvzrxgyDh2CUoHPDNcfO70beM0QZAPy5sEG8wPng==
+	t=1794549080;
+	b=Hb8YCrKhNP5xfadFQJvZy136pusubkke/6MNznkuInUcFiI8ae7Er8a1C7xCs3O3fBT1
+	 1P7tUyX49uZ5+tlqHjffwFJTudN8ND9AEWW1pLRvvhl8sjQsqtwyD6zAp/bpBx5yWN9V0
+	 mhOD0lwgavzoOarLW7mZtxRShFh/Hv9GLx7TKZoXUvi8UGN/hOjzFEZWS7PHQO90aamqx
+	 vMkbNDTZ5b16tC6vMaAfcrkwZX2rs9eq7Rl65pb23BEcRm0+u1LVFMRpPSP+hDVU+U1s3
+	 +yuziLhnzOMEn/Q0SGooafAvg1GolxrNGNYz+4qlhNTksSEW8ALD3Fq1lEr/Dw3nkkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549083;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549080;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=R07tQz7kn6oV2V7MKV8H83hgqF5e3GIkYvn5QQvp8os=;
-	b=3MYzzey8FK0egB/EPh/qtKSmFL6htM9diciNWbecF/dv3GTd/QryzFeRaZxnmFwiFQWC
-	 QhsB72hcXESXPgbFxy2A+Pk35+TJx1JAVpgmCaeBuceVHzHMf6lYyZ5JJY0ASIuPi8hL8
-	 dGpbi4kfzf0yn8uJbgD3Tnucx1/mwvCr3q8qMWKxuflBcLd+WjiSTn9Hkj/ymNZOad4gr
-	 pUre7osOQ1aJipQniEi8i4wRqUGT8nAB6y8JYtj2Y4gRKMiB/evczqMnSFS3A0Z4BakDG
-	 XHHwKQ1JM4QScr6yXkU9WU3B9u00HRcAoUb0O1/uD9nhq/X2Wf2DV+qf3Fsnt7/baBw==
+	bh=l0WoN34knT+NLDw2syaUA1McmMkTTpOg+RnQ9PosWrU=;
+	b=2TP6OGLFCnnkDB+BvL3Z4vTAA7TqQxsrMyN15hXKt8V2p51DXCaTqPGeNwbY1GaM7AOL
+	 ZSf7Mrt+hc1UXHR0oXSbofEHKcwqWu/aI4y0p0T5OkCz3McmB8Hcgn9iQD40diSGZtsIm
+	 p3EoS1QS/jRU/dbVwbwrPLc8Ob33vQIvzGO7hyXqhQhvANPvMmSxQJXwQv9l1HFpvZ8a3
+	 XG9Luplj3M0tPbgAy9vQa286akADVlgcG3nmQQJ98KY0GrtioztwY09z308zEDgQsRcuh
+	 QXXR+TkZN8DURoygsOcVxGY1tXPcbp1rnfjo//T3wI51M0OP3Nay4fPhOXvSVOkaYow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gW7R9epk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htgOrZSY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C9606A889;
-	Fri, 13 Nov 2026 05:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E6A606A321;
+	Fri, 13 Nov 2026 05:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gW7R9epk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AB11F000C6;
-	Fri, 13 Nov 2026 05:51:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htgOrZSY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791651F000C4;
+	Fri, 13 Nov 2026 05:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549083;
-	bh=R07tQz7kn6oV2V7MKV8H83hgqF5e3GIkYvn5QQvp8os=;
+	s=k20260515; t=1794549080;
+	bh=l0WoN34knT+NLDw2syaUA1McmMkTTpOg+RnQ9PosWrU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gW7R9epkuJTQU64jlMgBZTrWqZjhMRaCwCjvfGxts8NZF7ApSLSRqOlBxfi/xiGXT
-	 Wg+TDzbYg01Ho9vSXoGu5Kf73zRvyQBTsaxQmLNgfEhWttgYaLyq8iV5B5jWFZjL66
-	 unQUyCIpRAVE+Xopqd7ZU7Mwnmmht3Rbk3RaEBS52TZxMSHl8SOT1m1ur8guE5EVS6
-	 OrSBnw/NH0WJjmRNQLloF0B2F2Hbi5FKzE3/KLNu2gKwwpEC1S6fBCfqLUsSQVBLi6
-	 MXkEd8TKxZCA5gSRgH6PsAvYRCQbCBfdfFU+Mpa8kSgVtYBIXbSzLuUBkegQInkZTo
-	 A1aE0FengMSEg==
-Subject: Re: [PATCH net-next v3 3/3] net: phy: dp83tg720: report inclusive RX
- packet totals
+	b=htgOrZSYyhQjK8JsRwbRMnbjPU85kWVpzG/UekeuXCBGrv+IGwPhLroJpwPr2NlZP
+	 4vq1/s632R2fh7zspZm3S5pv6E1Z5TBaSqFFp+zAG7qwzSMP435D0vZIyxPeCOZ65w
+	 gLlKYdCyGDf47YfA/nCE9X+6TujGd1YU3+wAh5E8CIV+yWqk+5uUHO8erIThzuECFl
+	 3iy5PWaVPcDYfHrYp9o0kxyP8UnB2+bT6KPqIdcqI6MGJIbih2dBcxb2YWlwUp1BF2
+	 GV67WjCAsVk6gsnmYAJz8+Gi0bBCrP7sZtv7paSp8nIj96VBaVd0dQyQjsocuhsvqq
+	 SuKVmlELUp7NA==
+Subject:
+ Re: [PATCH net-next v3 1/3] ethtool: add PHY receive frame and byte totals
 From: netdev-bot+sashiko@kernel.org
 To: james.hilliard1@gmail.com
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
@@ -49,10 +49,10 @@ Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
  rdunlap@infradead.org, o.rempel@pengutronix.de, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Fri, 13 Nov 2026 05:51:21 +0000
-Message-ID: <179454908193.2199510.11384974363448482430@kernel.org>
-In-Reply-To: <20261109-submit-acx00-phy-stats-v1-v3-3-fbc6327c5be4@gmail.com>
-References: <20261109-submit-acx00-phy-stats-v1-v3-3-fbc6327c5be4@gmail.com>
+Date: Fri, 13 Nov 2026 05:51:18 +0000
+Message-ID: <179454907898.2199510.14049135165340239195@kernel.org>
+In-Reply-To: <20261109-submit-acx00-phy-stats-v1-v3-1-fbc6327c5be4@gmail.com>
+References: <20261109-submit-acx00-phy-stats-v1-v3-1-fbc6327c5be4@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -72,87 +72,76 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The patch carries `Fixes: 677d895af1cc ("net: phy: dp83tg720: add
-  statistics support")`, which tells AUTOSEL/stable to backport it to…
-
-Pre-existing issues:
-- [Medium] After this patch, two TI PHY drivers with the same counter
-  layout map it to different uAPI attributes.
+- [Low] In Documentation/networking/ethtool-netlink.rst, the stats-group
+  table row for ETHTOOL_STATS_PHY (line 1668) changes the documented…
+- [Low] The patch defines exactly which bytes rx_bytes_total /
+  RxOctetsTotal counts: Ethernet header, padding and FCS, but not…
 
 --
 
-net: phy: dp83tg720: report inclusive RX packet totals
+ethtool: add PHY receive frame and byte totals
 
-This commit moves the accumulated PKT_STAT_4/PKT_STAT_5 RX packet count in
-dp83tg720_get_phy_stats() from rx_packets to rx_packets_total. The datasheet
-says the hardware counter includes errored packets. Userspace now sees it as
-RxFramesTotal instead of RxFrames in the ethtool phydev statistics group.
+This patch adds optional rx_packets_total and rx_bytes_total counters to
+struct ethtool_phy_stats. They are exposed in the phydev statistics group
+as ETHTOOL_A_STATS_PHY_RX_PKTS_TOTAL and ETHTOOL_A_STATS_PHY_RX_BYTES_TOTAL.
+Both totals include frames with errors, the byte total is defined to
+include the Ethernet header, padding and FCS, and the netlink documentation
+is updated to match.
 
-Link: https://www.ti.com/lit/ds/symlink/dp83tg720s-q1.pdf
-
-> diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
-> index 391c1d8688083..5824eff92937c 100644
-> --- a/drivers/net/phy/dp83tg720.c
-> +++ b/drivers/net/phy/dp83tg720.c
-> @@ -309,7 +309,7 @@ static void dp83tg720_get_phy_stats(struct phy_device *phydev,
->  
->  	stats->tx_packets = priv->stats.tx_pkt_cnt;
->  	stats->tx_errors = priv->stats.tx_err_pkt_cnt;
-> -	stats->rx_packets = priv->stats.rx_pkt_cnt;
-> +	stats->rx_packets_total = priv->stats.rx_pkt_cnt;
+> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+> index eba226c79ec36..5528d0f7afdd9 100644
+> --- a/Documentation/networking/ethtool-netlink.rst
+> +++ b/Documentation/networking/ethtool-netlink.rst
+> @@ -1665,7 +1665,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currently defined values are:
+>   ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30.3.2.1.*)
+>   ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistics (30.3.3.*)
+>   ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
+> - ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defined by IEEE
+> + ETHTOOL_STATS_PHY      phydev   Additional PHY statistics, not defined by IEEE
 
 [Severity: Low]
-Can this be backported on its own, given the Fixes: tag?
+This isn't a bug, but this hunk changes the documented group name for
+ETHTOOL_STATS_PHY from "phy" to "phydev", and the commit message does not
+mention it.
 
-    Fixes: 677d895af1cc ("net: phy: dp83tg720: add statistics support")
+The new name is correct and matches the kernel:
 
-The rx_packets_total member of struct ethtool_phy_stats doesn't exist at
-the baseline. It comes from the earlier patch in this series, "ethtool: add
-PHY receive frame and byte totals". That patch also adds the kerneldoc, the
-ETHTOOL_A_STATS_PHY_RX_PKTS_TOTAL uAPI attribute and the "RxFramesTotal"
-string.
-
-Stable tooling will pick this up for kernels that contain 677d895af1cc.
-There it would either fail to build in dp83tg720_get_phy_stats() or bring
-a new uAPI attribute into stable. It would also change which phydev stats
-userspace sees for this PHY.
-
-Should the Fixes: tag be dropped? Alternatively, could the commit message
-state the dependency on the ethtool patch and say it isn't meant for
-stable alone?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but it creates a difference
-between this driver and dp83td510.c, which still does this in
-dp83td510_get_phy_stats():
-
-drivers/net/phy/dp83td510.c:dp83td510_get_phy_stats() {
+net/ethtool/stats.c:stats_std_names[] {
     ...
-	stats->rx_packets = priv->stats.rx_pkt_cnt;
-	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
+	[ETHTOOL_STATS_PHY]			= "phydev",
     ...
 }
 
-Both drivers describe the registers the same way:
+The new paragraph below refers to the phydev group, so keeping the fix in
+this patch seems reasonable. Could the commit message mention the
+correction, or could it go in a separate patch?
 
- * - DP83TD510E_PKT_STAT_4: Contains RX packet count bits [15:0].
- * - DP83TD510E_PKT_STAT_5: Contains RX packet count bits [31:16].
- * - DP83TD510E_PKT_STAT_6: Contains RX error packet count.
+[ ... ]
 
-The update_stats code and the rx_pkt_cnt/rx_err_pkt_cnt fields are also
-the same. include/linux/ethtool.h documents rx_packets as "Total
-successfully received frames".
+> +The ``phydev`` group provides separate counters for successfully received
+> +traffic and total received traffic. ``ETHTOOL_A_STATS_PHY_RX_PKTS``
+> +(``RxFrames``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES`` (``RxOctets``) count
+> +successfully received frames and bytes. ``ETHTOOL_A_STATS_PHY_RX_PKTS_TOTAL``
+> +(``RxFramesTotal``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES_TOTAL`` (``RxOctetsTotal``)
+> +include frames with errors. The total byte count includes the Ethernet header,
+> +padding and FCS, but excludes the preamble and start frame delimiter. These
 
-Does the DP83TD510E datasheet also define PKT_STAT_4/5 as a total that
-includes errored packets? If so, dp83td510 would report RxFrames with the
-same overcount this patch fixes for dp83tg720. Userspace would then see
-different meanings for RxFrames depending on which TI PHY is attached.
+[Severity: Low]
+Should these byte boundaries also apply to RxOctets?
 
-Should dp83td510_get_phy_stats() get the same change?
+This paragraph says which bytes RxOctetsTotal counts, but it gives no
+such rule for RxOctets. The kernel-doc for rx_bytes in struct
+ethtool_phy_stats in include/linux/ethtool.h still only says:
 
->  	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
->  }
->
+ * @rx_bytes: Total successfully received bytes
+
+A driver could report rx_bytes without FCS and rx_bytes_total with FCS,
+and both would match the documentation. In that case, RxOctetsTotal minus
+RxOctets would not be the number of bytes in errored frames.
+
+No PHY driver in drivers/net/phy sets ethtool_phy_stats.rx_bytes yet. Can
+the definition be made the same for both counters now, before a driver
+depends on it?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-submit-acx00-phy-stats-v1-v3-0-fbc6327c5be4%40gmail.com
