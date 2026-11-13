@@ -1,86 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794564919;
-	b=eb8cfEief/t0eZCi+2T4p5j7Xbx7lYUaIOP/u/7qcCpIBIWZsNNfL9rXGPVtbbqYriHD
-	 Cr2yhPmAeT09N2ApsUoAVQ7lx+oadKWkYPcPTc5+VsriGfFZyBgh/0aOyX/mI1zGmCeES
-	 KL6J6b9s6Uzl+OGcgFJchbSkYGDWK/iHoD8jkepfLkWIm6maRD1CJDFqgR5iXyUD83TAr
-	 m7KY1YK1vWMYmabqdUNdQP2JBAdgAsnCn9LD2UqzX01RxW93XYWkJ7f2urFMlvVPaJZdN
-	 N7Kse9plAhVMthnuBPQbug+Dx8VgOCOj60SejohBxVv/VAwkTaH1d0sVo3dkIRv22qw==
+	t=1794564960;
+	b=rH+muGPUl53t1CLd9K/jT9Yz2TRI3bMAs4Cp/4OZLisT5BcBzkKqmEXhvy2hYQyKsdYm
+	 1nSwPrpHsHPklJTHXQcXdyG8YuUmVp3k7Q6nZjj2B7UxK2PHNrzAEg2EcaGpSsFjrr6YQ
+	 8Z6K/ED8hri7bPBdljcQzcJyKnmEUS1Bbum1cysI+eNu3XilBnCAzKRKSFlLsCw1/TeSV
+	 I0/eemb1G/ozgBjzOAA437PyLIZWHsglhMvYMBFcsUepijpkIJuM5Mi/0gTmmVPVap1vK
+	 Lm3erTx7zD2doyg1WjSo08ko9RrWT70j8+/C2Odw2CYwBIl21QrIEX8pKpQ7YQFsFIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794564919;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794564960;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
 	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-	b=h6ORjgA2EMcbhxUAUpkiRAWzP3B08XaKYvCkXawe+qvHrjwXaxVvRYJgXCd9kbLuDJMJ
-	 5z0LNZ/jXf5qZ2zy6j4j4yTedTVKtXCKjrY0SLCU7tAb3pG062jefFBT0jPtZ7qoFA14s
-	 bYuOsuCYPQBEDqDZxtafmjEF6WxnVfn5KCcI1IJxKVdXJp2UZ9sV2yTO+K3MbBu1yQyOx
-	 aMhUxXtuuVOBQddZS8pOmBnWC9DjikAc2McI+yxjedh67OmFCg2nBYbGC9MCQZ9djkM13
-	 nSgiLFq4cRBuh0Ud+u2Y19jGaTmp/7FBjGivU6cXziOzPB294czxopgmvcte6fRlOOQ==
+	bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+	b=22oK5CqXuauaZJQa05W3jSykTM/nlHl0dAOl5jxcbNK1lubOKxwrkTUC+RdnhtsBJkTQ
+	 o1BYoAo9fc6lH9mchc+R3KwHNKW9OKheWWIoX+iuAkBY0RWnkFie0lV5KgRhTGOPzYWPR
+	 ujLwCd7GhVk17ZYnp4YukzSDINlTTR32EPQ+Igq0R2dcKGWpVgBZozODxluCJ/koU4UP8
+	 WD3XSrhH+PL5h1DfuQW9f7y9zpTyO9wscc+Nf1DWj6F4C0Oo5iFrc+NjOlR+H6V4iyO8d
+	 OENoPvl52KbO6mMObmB0KWMI9QXwA/nJ0Q7Y676J/YWlljd0YyUe3oT9ESNwyNP2t/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=amutable.com;
 	spf=pass smtp.mailfrom=amutable.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=XokUN4uh;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=lkMNxDps;
+	arc=none smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CE8606A8AD
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:15:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0CE8606A8AD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF79606B105
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:15:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEF79606B105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=XokUN4uh
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so5469235e9.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:15:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=lkMNxDps
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c506094fd93so151136966b.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:15:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564917; x=1795169717; darn=vger.kernel.org;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564958; x=1795169758; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:content-type
          :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-        b=XokUN4uhZ5cnIDNPS9kLjfaPp8ZSmyDY7nHz3ffF9uftFGQzzc0NaUd0CPxl6tmm/G
-         EB2bqVZrrrQULKzHfxmMlarOF7+NP4G1EuGLp1x7hwkFzcf5DKQIlYH5+zTWTg0qLXK8
-         Q27+pu7matN83z4kFimCCYFY9EtcVBpSYh+f+WbPWczzC82gi2dU1+IxENiNgIvD4ssI
-         1POQJndyP8zOY9I/drEtHc8Rir/wcokVwFCL8xkdsULqRcKqvw/m2pftg5e6OYSufYMA
-         FPm06vn59Z5lYx4UA2FpKr0UjB0BBdejlJLIE+RKFWt9/d0/clXrD3SuYpmwDbHdW+74
-         JQJg==
+        bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+        b=lkMNxDpsxePjk96S0ywzwnWUXxYio8wx2cNNe0nC6j26qPYCKZTFlNU+9IrTfafYUJ
+         vVJYUkmMgC1UbEefAlU1yHOjVK+ZyaavdAq5vDpOrqfNUQTfZSYOp+z5MtAN0fGM0C/g
+         WKoVDnfAgRrvHWrOgLujvGV7IRsdQm2D1xIiTvFC1PPHHAhefB4+1EzNQGHJZGVEqqG3
+         mRj5HPfDo3Do87jK8wkSwQeESRRW3NHA44wwS7GSfUWi+U+GxhbfTaI9vHs9ExXVB/2E
+         aEkBTT5WDqLpZOCj3LhS4i2xxQF422KmjG442iJAtFRLE9RsLg4/ErcRXtOWPDB+ahLm
+         /22g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794564917; x=1795169717;
+        d=1e100.net; s=20260707; t=1794564958; x=1795169758;
         h=mime-version:user-agent:content-transfer-encoding:content-type
          :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-        b=RlLnENAMke+nKIPFFNobjZtuKBN9XpAwLpych4WytnJwpFN/Z74EkDw6/Auc10v4sG
-         4gJ8Op+MvZ1bMx7r2Q2csIL37a838iZ/UKiMvpbKtFzKn0b/9zqzOA/L96TQP22VK2y5
-         jS0ah79/wXUQg5U6qmfNNxkqzH4b5VuvxnYzU43FFtJ+vbhxJJG2um9PHig9JmNv/a2w
-         aqxBo435Vn0N3FjEFBX6p+2ugUaHy4FUAsG1S25mTPWX78bWmlJ6B450x5cVQcPQFFJE
-         Svuog/kLbHNFDAF5oDiXasRJSbW0UH/UbNilwN1g8dYUSkF6fG/VNZMf8qb8K9yVDTjG
-         OGlw==
-X-Forwarded-Encrypted: i=1; AL+hErGesnEIGFADUi/eH7nAklz0onMjHIggTi1Zsad4X/kIg0fB7CM1EsmejGKsY62CBYLHSBA4ysc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/L8fErc2nz2EKNcQjXvnhU8yj/r0zTHVpNDxEzBRriJbiIvIcT
-	uHUA0vLyuzAYVQqS6W0bnGiKxfvSgknanD44JccPOAu+k0wtSodQGnALwmfevWkIq1dp
-X-Gm-Gg: AYBFou1O55+qot2EUVYI6/dVjvDofYexyCho2NW4V2BEAn5qxSsU/Bf5RetrwztxNak
-	zP0btsDbXTFX2DVkDghNfYIX2q84Q6jH3zgRP8CRNZiWKPpGLghLHzmP6qVL3Wqn3dAwpA05KnC
-	R/8i4PrfmQ2A1AqBKgF2PXXagO80rQ9BfakRrcj61/YWar4bm/reaF8BVwiDCcB66OxVAQykbhM
-	Eu+kNzly+/DSlm6bK/K760CgfuW+xXSWS4IQjY46S5Kht6K1TziEXVkCQ6NRy3Lq1vK03chMhT5
-	zuPN7pUSgyD7a81xtRVOgNr50MvCK9jLMZ79UKlJCY/IcAUCw/v4osr2NS7C8z7avhUs2xLm/M5
-	ZqOpqWjIHKtb/12RfZ0Sl1RwJtvexzyRqadBYCSdoDHiw6PoW9HueQKxnPPBMFLbXJGetaG0kR0
-	5nDoU57PzY1C/mWQQwREMHtchBUD7Bk4Uqvzag5Tq292k3mThOSlYQhRbnupMHDV8RMyGk0cMZm
-	ewXVjsrTnCa672ZvGQydlsovhYF9lxqU2LFBYxFp5hjq+kQgtXl8PFu3sXkSd7yoMnd5hiyIipk
-	1SFgeoCXKi5sCBT0MaMC7VuUfFf4h+Ybiff3LiGBctDxlZnXv/ug6frSTXtg2Gg=
-X-Received: by 2002:a05:600c:4f84:b0:4a7:7f3f:6f8e with SMTP id 5b1f17b1804b1-4bb5599ade1mr43492835e9.0.1794564916955;
-        Fri, 13 Nov 2026 02:15:16 -0800 (PST)
+        bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+        b=VcBZS63lU3QYUqBpMAy7ENElCMk3OLnlrCP+qPvsObEHipJGQlrgEIHNSiZ7CtTyQd
+         PMnHQTP/JsaWmDwVcBT2X+D3OzZKaQ0DDIpH8KIKDR42PJAX6BrPRTmdyQkV1QPDc35n
+         +aBKFh+Yd1o3Of10EqJq+v2w4n3uh7TcOsOKzhPhuGpksLixRZQbRo7wrXdHoW1+SsJj
+         bzWKANDl2sFR/Cq88Ovn9bqo6+Wu7QtwM7/+VMM+FY3mYjtpLXB6kcS4jy4nYEGF7E+t
+         85vFc9sbVl7CvNWzuyolXF/+ikhlqQPk5hHeR/rDqMD25U1d51nZ7mGlkyt/2J6NSC0O
+         +lIA==
+X-Forwarded-Encrypted: i=1; AL+hErEfCaM+h7VH07BWsKNVLGLK+nFoZpA/BYlsjuHXtN+xbCmcKaNKi4kCa1NNd05SnpNCBqcYhsk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/dVgXCQhBTZWJueDFR4DEHmvRqMz/fxBT3Qsvl47EC8snaWfRg
+	kmAHr3ya+UxnCe9+ZSzk7Ic4BtJiKZdEUvM1naFB14Og6pdP3bLIl+djw/oXI5Dajfl4
+X-Gm-Gg: AYBFou1944QCOu1DSqVcVxGMfrV+Wp0jqbf+mItARhyS7/vzCURXkVxw3r90vgOk5BI
+	wzF1Mff4LEQgDiGmWJ6bphQyLRdjlx1Qa4HICt37RWr3TGnfJe8nJ58wXqaxxr+xJ8dpKi4xMxA
+	8PPrIIIYq6Vyv9nnVJXzvPkUCuCZXI6g9IiKMHbSzwFFPo5azpzyKoEdrvr3+2qEpA7ixNAHJMr
+	4tKymXXGCJGGMSL0+F9Xl5UrJBbDA/SzcwNjzY31bZjzq8seQb7n+5sSLy5WO0Luhseky8YIepi
+	/TzBorGM7gjsdfBYk3L5uFop+ovNXNlMJiR5R7LJPBTEWXjFzqxsdXJ63aOzOeOsZiwpUAviVk+
+	g/8xOkr2zv8yF2ryg3nCtc6uzO0bfrK3RuaIdPIwlh1PlFoKyVtLdFWyunRdvv7tQ3iDDs5sZ9N
+	g+ACVIPuGi8mhWlQfNgIJI3QfYn9xfjblqbdX5LzQZZ3TR7uJxGlCFjYRzbTbcKua3bu52Uj7fV
+	NO31ehKAwF77DOSV+zAqAOGyZpSdA+ChclEGdcPf1tSt6XSYJUBWu9GNhzbUwB0nuokLJc4tR/2
+	n6rGU/pD24QxVQzfIZNVNI2guhgFgIbQdEuQIiZDct4VH1GZH3AuuMjAcikYuS4=
+X-Received: by 2002:a17:906:f59c:b0:c42:102f:15f0 with SMTP id a640c23a62f3a-c509614d4c1mr171873666b.3.1794564958075;
+        Fri, 13 Nov 2026 02:15:58 -0800 (PST)
 Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb56680ea9sm31982365e9.0.2026.11.13.02.15.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b7d1b7sm75606066b.74.2026.11.13.02.15.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:15:16 -0800 (PST)
-Message-ID: <e2edfa06d185acd86b46945622b6eb6dff97b307.camel@amutable.com>
-Subject: Re: [PATCH RFC 33/41] fs: add file_is_pseudo()
+        Fri, 13 Nov 2026 02:15:57 -0800 (PST)
+Message-ID: <c5a694991af7e9182fd475a20bf4cfd73a13e395.camel@amutable.com>
+Subject: Re: [PATCH RFC 34/41] loop: refuse files on pseudo filesystems as
+ backing files
 From: Alexander Mikhalitsyn <alex@amutable.com>
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
@@ -98,10 +99,10 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
  linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
  <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
  linux-kselftest@vger.kernel.org
-Date: Fri, 13 Nov 2026 11:15:14 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-33-4c998976c6c7@kernel.org>
+Date: Fri, 13 Nov 2026 11:15:56 +0100
+In-Reply-To: <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
 References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-33-4c998976c6c7@kernel.org>
+	 <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2-0+deb13u1 
@@ -116,54 +117,76 @@ Precedence: list
 MIME-Version: 1.0
 
 On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> Add a helper to check whether a file is a regular file on a pseudo
-> filesystem. Only regular files count. Device nodes on pseudo
-> filesystems
-> such as devpts, binderfs or the block devices on bdevfs are what they
-> are.
+> Currently loop accepts any regular file that implements ->read_iter()
+> as
+> a backing file and any that also implements ->write_iter() as a
+> writable
+> one. That includes files on procfs, sysfs and other pseudo
+> filesystems.
+> For example, /proc/kcore attaches read-only as a loop device the size
+> of
+> the kernel's virtual address space, 64 PiB with 5-level paging. sysfs
+> attributes attach read-write as 4096 byte loop devices. Writing a
+> block
+> to the loop device of /sys/kernel/mm/transparent_hugepage/enabled
+> changes the THP setting.
 >=20
-> Look at the inode that actually provides the data via d_real_inode().
-> overlayfs accepts sysfs, cgroup2, debugfs, tracefs, configfs and
-> securityfs as lower layers and reads of such an overlayfs file are
-> served by the file on the pseudo filesystem. Checking the overlayfs
-> inode would miss that.
+> That's not just nonsensical, it can be abused. Loop calls -
+> >read_iter()
+> and ->write_iter() of the backing file directly from its worker which
+> runs with kernel credentials. But pseudo files enforce part of their
+> access rules at read and write time against current. Dozens of sysfs
+> ->show() and ->store() methods call capable(). Behind a loop device
+> all
+> of these checks are done against the loop worker instead of the task
+> that opened the file. And setting up a loop device requires no
+> capabilities, only access to the device nodes. So on v7.4-rc1:
 >=20
-> No functional changes.
+> - uid 0 without any capabilities can't write to
+> /sys/kernel/reboot/mode
+> =C2=A0 as mode_store() requires CAP_SYS_BOOT. Writing "warm" through a
+> loop
+> =C2=A0 device works.
+>=20
+> - uid 0 without any capabilities can't read the files in
+> =C2=A0 /sys/firmware/dmi/entries/*/ as dmi_sysfs_attr_show() requires
+> =C2=A0 CAP_SYS_ADMIN. Reading them through a loop device works.
+>=20
+> - An unprivileged container that was handed a loop device can't
+> change
+> =C2=A0 gro_flush_timeout of its own network devices as
+> =C2=A0 gro_flush_timeout_store() requires CAP_NET_ADMIN in the initial
+> user
+> =C2=A0 namespace. Writing it through a loop device works.
+>=20
+> The same goes for hard_offline_page, the md and sd attributes, rfkill
+> and others.
+>=20
+> Refuse files on pseudo filesystems as loop backing files. Note that
+> file_is_pseudo() looks through overlayfs so stacking overlayfs on top
+> of
+> sysfs doesn't get around this.
 >=20
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
 Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 
 > ---
-> =C2=A0include/linux/fs.h | 12 ++++++++++++
-> =C2=A01 file changed, 12 insertions(+)
+> =C2=A0drivers/block/loop.c | 3 +++
+> =C2=A01 file changed, 3 insertions(+)
 >=20
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 99caef43ff3c..407ffb6342ec 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2553,6 +2553,18 @@ static inline const struct inode
-> *file_user_inode(const struct file *f)
-> =C2=A0	return file_inode(f);
+> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> index c96e35c3ef42..1482580a1979 100644
+> --- a/drivers/block/loop.c
+> +++ b/drivers/block/loop.c
+> @@ -537,6 +537,9 @@ static int loop_check_backing_file(struct file
+> *file)
+> =C2=A0	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> +	if (file_is_pseudo(file))
+> +		return -EINVAL;
+> +
+> =C2=A0	return 0;
 > =C2=A0}
 > =C2=A0
-> +/*
-> + * Regular files on pseudo filesystems are kernel interfaces and
-> must not be
-> + * used as storage. Look through stacking filesystems at the inode
-> that
-> + * provides the data.
-> + */
-> +static inline bool file_is_pseudo(const struct file *file)
-> +{
-> +	const struct inode *inode =3D d_real_inode(file-
-> >f_path.dentry);
-> +
-> +	return S_ISREG(inode->i_mode) && (inode->i_sb->s_iflags &
-> SB_I_PSEUDO);
-> +}
-> +
-> =C2=A0static inline struct file *file_clone_open(struct file *file)
-> =C2=A0{
-> =C2=A0	return dentry_open(&file->f_path, file->f_flags, file-
-> >f_cred);
