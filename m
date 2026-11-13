@@ -1,77 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794565980;
-	b=yiw4iHzNzY+xC6MPz+2FMgjThc0FQ9RV4ExiMLZXhrwdA7cZPgG3VQt3myShA1guZUoA
-	 gliHrc2YNeWnkY8VW6lZURdYZzcFMIT3zfKAR0h0nLqvCZA0swxJ70eMNvLNSeFiFBQCX
-	 s6QyLN7nq1S8ODflpArcSv6ZIM5V7l0r5qjznYyNLxEppRFy2/25alXTXmkmmIWpNGikV
-	 yrKGeoO290ZPEVe1o4ofkyO8ZXTfGijeVWic3i2CskrlaKDrHJIHHg53ADM7cqgBFaTNo
-	 r5ZYzfNpfT/6Y7PupeJxv8ETR/zTDvLdtheabjxAjvnF3HW6Z0yLajgUahh632q/k7w==
+	t=1794566071;
+	b=ploeMM3uggvycWCUHTVfiAvwcbdt6PDr6Zx5VuwZF6zmA+3GghK2OtmdM/a4ptNxT/KF
+	 C3ft0lveqwi5Bt+NGsX74s+1mQKJQnnrbeFS8spD9fuVLQnpTOjmeGi3m0w5tZzouqSR5
+	 ui9PkC4FJBtUFIjHiiPRnIiNId86kzE5jIEh/ppe7JVvFMXc5aRRe89pjcAB1MO0lr5T5
+	 /Ro1C6y39Y1ZnF9yuRYzMh2fCVbv3oWIryTAE5T+9655j0HUFvDdT8T0Eo3rBOGGM7KZN
+	 0g2r7DQJnzuEIGceXfCMc3luAYV/pY6yeMg/x/UENIDOZQT16Y86nPbiiwObLPCIwpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794565980;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=5imrvEs41cVSH3fvVbJToFqYBiDffRwl0SlTmuWzR10=;
-	b=Vf2NHPaJ+QpLypfX4iz2ElDX0i6S+5Xsk3n+MYPyAntJAQEU65iCZ6+9fFQ3PDJlo0KH
-	 4Uuz95/wxRDCW4LRjUEnLKRzM+EqDJKjywqwQFr1csEE28CcQMciJvZaTZhk5i+UXMq0N
-	 Pi4ZjMXoDTAJQSpgHnrzmmCeNRGsg2sPC6pkmG4WkXZehgiwNyAVxVzrkmNAEKDoFdxqs
-	 1HzZYgnlrYS4pSUeB/sG1XD0DpCWxXHcJ2ri8xtuqku902wK24Jq+k0arVe2ZBX4m3NPX
-	 mn+rmKsfii5x9CVwhCu8u++mCGtSIXFgLY9cz8T3bJHJfe87z4DvgehN5mXIEn8ZtJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794566071;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=/YmEl9MFZJXUpvQcOVvvVL0ExNudpMN/SkBtuR3ZO8M=;
+	b=BYPCOuHBbyqAjahJbepk7Ke9uEzt/6KZkvjwLBICtoUNhXtmNETc1VzP9CN/aaotnj3n
+	 Vh7NrLjVbtp0LOMBXiPMjX87pIo938COHoc0Z+03oWLxvsqY/zsXjoJubTrZRoA0B4pbV
+	 fJ/lR7bJzWWF1qqIlGTdT4cyhc/H3bWyxyhMY7F9YvhcEoiGLm+29NlU2wjDQWxSnpwUy
+	 2mQCsFJnL0VBEavWtb/KiDNC2xPLSIYyHNVr8ded6twgCsIo1pnXkoqA/59ME2U9M+C33
+	 gh4KTll6gJSnyVWvTNg8y8r7HoC6hcg3kgeVfSBAMVyMMN6jJlYN9jX9LMeHLMlsd/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=JIhQsvIN;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYzvZ9Vu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1696606A31C;
-	Fri, 13 Nov 2026 10:32:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1696606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0CA606A31C;
+	Fri, 13 Nov 2026 10:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=JIhQsvIN
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7FAC4C4EFC8;
-	Fri, 13 Nov 2026 10:32:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D94DF601D5;
-	Fri, 13 Nov 2026 10:32:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 26F9511BC16C6;
-	Fri, 13 Nov 2026 11:32:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794565974; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=5imrvEs41cVSH3fvVbJToFqYBiDffRwl0SlTmuWzR10=;
-	b=JIhQsvINzwYBKMMipCjNfp/a1rINNSI/ia3cMaVMmIxVcOCxmxFQIgNXMl/7QwMKfFE9LZ
-	2qyLvMX0dKisrxMRbfeGpK6L5QRDH0s+QtA6naNobXrUHwtr0Fu1Vm3nvXI0GjNbWzASq5
-	/fdHBoJ3c7QRlYUxBUP+dzMm2+J+IbnqbqeOUNhdhTzSXh0mYxvI0z3230DDs9lXdIrw2H
-	neTresrg4mN2iwcEpNqh2hhJJUU4fOcwoexiAaMn3QllNvrspaOPJYBbADoFyCYW8r4ztk
-	D7FFVAx8r1wivFlq0UeQYgz8SRGHM88J1aJwcV5z9iPvxbsRhE3eUZso9SI/qA==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Magnus Leatti <magnusleatti@kernelriot.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net v3] net: stmmac: Clear DMA errors for multi-channel interrupts
-Date: Fri, 13 Nov 2026 11:32:35 +0100
-Message-ID: <20261113103236.2184751-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYzvZ9Vu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C621F000C4;
+	Fri, 13 Nov 2026 10:34:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794566071;
+	bh=/YmEl9MFZJXUpvQcOVvvVL0ExNudpMN/SkBtuR3ZO8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dYzvZ9VuqN0iwIV1Ntjt6pLlZGQ2VfvGi1FQqbo+ihEW+xZEUfxZy+H9+P3yObpGy
+	 0f2LFRss025GXIfk/hZaHQpfPOg5T3Kf43WZpPfXhSvrs+DzqOLV8oCqyLm3P9hF1F
+	 JfxAcP/aBjt2aNTbsvlUJksV9ED0PLbF5mtTU+76dxAiXln5RipbQEjP8ir0htc0+O
+	 GhZWg9p8mD2smMhKo/FaTvcMJyMhHf5LhMSNVA8LYCkPao7yi4Q85f/Deyr2Bfis9j
+	 1dN3BmStapfIYy8XmRI/YGCq0WXpXJnAiGGfm0zFeBG3jFkwIoro3/ZY7PZPOzpVjb
+	 VVHsgM4PmZeTw==
+Date: Fri, 13 Nov 2026 10:34:26 +0000
+From: Simon Horman <horms@kernel.org>
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+	David Heidelberg <david@ixit.cz>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Samuel Ortiz <sameo@rivosinc.com>, linux-kernel@vger.kernel.org,
+	yana06070@163.com
+Subject: Re: [PATCH net-next] NFC: digital: fix target leak after Type 1 Tag
+ discovery
+Message-ID: <20261113103426.GK18859@horms.kernel.org>
+References: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
+ <20261113100007.GI18859@horms.kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,142 +65,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113100007.GI18859@horms.kernel.org>
 
-The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
-and this leads to interrupt storms when one of these interrupts starts
-firing :
+On Fri, Nov 13, 2026 at 10:00:07AM +0000, Simon Horman wrote:
+> On Mon, Nov 09, 2026 at 03:18:32AM +0000, Xia Yan wrote:
+> > digital_in_recv_sens_res() allocates a target for an NFC-A response.
+> > For a Type 1 Tag, it calls digital_target_found() synchronously.
+> > nfc_targets_found() copies the target into dev->targets.
+> > 
+> > On success, rc is zero and the callback skips kfree(target).
+> > The original allocation is lost when the callback returns.
+> > Each completed Type 1 Tag discovery leaks one struct nfc_target.
+> > 
+> > Free the target after digital_target_found() returns. Clear the pointer
+> > to avoid freeing it again on the error path. Keep the target for other
+> > tag types, whose discovery continues asynchronously.
+> > 
+> > Found during a code review of NFC-A target ownership.
+> > 
+> > Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+> > Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+> > ---
+> >  net/nfc/digital_technology.c | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+> > index ae6487c10a25..2d52e390cc67 100644
+> > --- a/net/nfc/digital_technology.c
+> > +++ b/net/nfc/digital_technology.c
+> > @@ -510,10 +510,13 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+> >  		goto exit;
+> >  	}
+> >  
+> > -	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
+> > +	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res)) {
+> >  		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
+> > -	else
+> > +		kfree(target);
+> > +		target = NULL;
+> > +	} else {
+> >  		rc = digital_in_send_sdd_req(ddev, target);
+> > +	}
+> >  
+> >  exit:
+> >  	dev_kfree_skb(resp);
+> 
+> Thanks Yan,
+> 
+> I agree this is a bug and that you patch correctly addresses it.
+> However, I wonder if it would be cleaner to confine cleanup to
+> the exit path, centralising the kfree logic.
+> 
+> Something like this (compile tested only!):
+> 
+> diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+> index ae6487c10a25..94880172f016 100644
+> --- a/net/nfc/digital_technology.c
+> +++ b/net/nfc/digital_technology.c
+> @@ -483,6 +483,7 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+>  				     struct sk_buff *resp)
+>  {
+>  	struct nfc_target *target = NULL;
+> +	bool res_is_t1t = false;
+>  	int rc;
+>  
+>  	if (IS_ERR(resp)) {
+> @@ -510,7 +511,8 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+>  		goto exit;
+>  	}
+>  
+> -	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
+> +	res_is_t1t = DIGITAL_SENS_RES_IS_T1T(target->sens_res);
+> +	if (res_is_t1t)
+>  		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
+>  	else
+>  		rc = digital_in_send_sdd_req(ddev, target);
+> @@ -518,10 +520,11 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+>  exit:
+>  	dev_kfree_skb(resp);
+>  
+> -	if (rc) {
 
- - The RBU (rx buff unav) which triggers under high traffic load
+Probably a comment is warranted here. Something like this:
 
-   This triggers easily with iperf3 and small udp packets, and shows
-   when running the netpoll kselftest
+	/* Release target on error.
+	 * digital_target_found() does not take ownership of target,
+	 * so also release target if res_is_t1t is true.
+	 */
 
- - The RPS (rx process stop) which triggers when we stop the DMA RX.
-
-   This one shows when restarting the RX logic without doing a down/up
-   cycle, like when attaching an XDP program. The XSK kselftests
-   triggers it.
-
-Let's make sure we clear these interrupts for multi-MSI cases, and call
-stmmac_global_err() upon fatal bus errors.
-
-For that introduce an "ERR" DMA dir, as we don't want to touch the
-RI/TI bits when handling these interrupts.
-
-Both of the above storms have been found on dwmac-motorcomm (YT6801),
-and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
-ring_reconfig.py and netpoll_basic kernel selftests.
-
-This seems to only affect dwmac4, there's no multi-msi mode on
-dwmac1000 (except on loongson which I couldn't test), and on
-dwxgmac these interrupts are masked as of today.
-
-Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for multi-MSI")
-Fixes: 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU interrupts")
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Tested-by: Magnus Leatti <magnusleatti@kernelriot.com>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
-V3:
- - No code changes, just rebase
- - Add all review/test tags (thanks !)
- - Add missing Fixes tag to show the commit that makes the error visible
- - Reword the commit log a bit, this may happen on loongson
-V2:
-https://lore.kernel.org/netdev/20261103125430.962715-1-maxime.chevallier@bootlin.com/
- - Discarded the helper, call directly stmmac_dma_interrupt_status on
-   all chans and use stmmac_global_err() for TX hard errors, following
-   sashiko's review.
-
-V1: https://lore.kernel.org/netdev/20261030102251.208929-1-maxime.chevallier@bootlin.com/
-
- drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
- .../net/ethernet/stmicro/stmmac/dwmac4_dma.h  |  5 +++++
- .../net/ethernet/stmicro/stmmac/dwmac4_lib.c  |  2 ++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 +++++++++++++++++++
- 4 files changed, 27 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index c74bc7c9750e..a972bee66504 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -382,6 +382,7 @@ enum dma_irq_dir {
- 	DMA_DIR_RX = 0x1,
- 	DMA_DIR_TX = 0x2,
- 	DMA_DIR_RXTX = 0x3,
-+	DMA_DIR_ERR = 0x4,
- };
- 
- enum request_irq_err {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-index 43b036d4e95b..a7caac3c98e6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-@@ -173,6 +173,11 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
- 					 DMA_CHAN_STATUS_TI | \
- 					 DMA_CHAN_STATUS_MSK_COMMON)
- 
-+#define DMA_CHAN_STATUS_MSK_ERR		(DMA_CHAN_STATUS_AIS | \
-+					 DMA_CHAN_STATUS_FBE | \
-+					 DMA_CHAN_STATUS_RPS | \
-+					 DMA_CHAN_STATUS_RBU)
-+
- int dwmac4_dma_reset(void __iomem *ioaddr);
- void dwmac4_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			   u32 chan, bool rx, bool tx);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index a0249715fafa..02aa1a3dd1e2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -150,6 +150,8 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
- 		intr_status &= DMA_CHAN_STATUS_MSK_RX;
- 	else if (dir == DMA_DIR_TX)
- 		intr_status &= DMA_CHAN_STATUS_MSK_TX;
-+	else if (dir == DMA_DIR_ERR)
-+		intr_status &= DMA_CHAN_STATUS_MSK_ERR;
- 
- 	/* ABNORMAL interrupts */
- 	if (unlikely(intr_status & DMA_CHAN_STATUS_AIS)) {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 25894771e9e9..0bcbf837d9cc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3145,6 +3145,22 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
- 	return status;
- }
- 
-+static void stmmac_dma_err_interrupt(struct stmmac_priv *priv)
-+{
-+	u8 channels_to_check = max(priv->plat->rx_queues_to_use,
-+				   priv->plat->tx_queues_to_use);
-+	int status;
-+	u8 chan;
-+
-+	for (chan = 0; chan < channels_to_check; chan++) {
-+		status = stmmac_dma_interrupt_status(priv, priv->ioaddr,
-+						     &priv->xstats, chan,
-+						     DMA_DIR_ERR);
-+		if (unlikely(status & tx_hard_error))
-+			stmmac_global_err(priv);
-+	}
-+}
-+
- /**
-  * stmmac_dma_interrupt - DMA ISR
-  * @priv: driver private structure
-@@ -6498,6 +6514,9 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	/* To handle Common interrupts */
- 	stmmac_common_interrupt(priv);
- 
-+	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
-+		stmmac_dma_err_interrupt(priv);
-+
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.56.0
-
+> +	if (rc || res_is_t1t)
+>  		kfree(target);
+> +
+> +	if (rc)
+>  		digital_poll_next_tech(ddev);
+> -	}
+>  }
+>  
+>  int digital_in_send_sens_req(struct nfc_digital_dev *ddev, u8 rf_tech)
