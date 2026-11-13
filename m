@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794598677;
-	b=antZUPr/4MnssNNAHfI1Jp/rVMrwM60PczOi2q/DnbKnGFn/xHxmeOmX00zOodg8hhNP
-	 A0zYaken6A7OKoJgjLX84MaROj7pVArRRzRwpIu/t0PcDAWWxV2EIcftrA6hYs3wA7KzE
-	 nkvK3eeTqFp4OAYdLkO++8c8tfluHF1f5HZugt2rjiy6ga+l7Aqrxry6Lhc6rGiOEgX9u
-	 q8laNuTw0XmXR+j+DLGEhv929hRe6mQ+U8zLE9zX6GYItpkoy0po9Ex0J3/yb6za0ejzl
-	 XARvS5ti7VkpIbx6ANYuF1Gtdr/COXRqVQQTzlbIGRYqQUE8NWHhJFRuhNOjJCWccpw==
+	t=1794598917;
+	b=L75wDogIwWuQv8Tz4bjHIfhZ4ENOWu9HBOTZVMDRdPF/h8wiWtzxthpFLnIXbMbOWZe7
+	 NR4MBlhobx89jxHsMLpkH+PXGg6homDmtHHE1zWRfpU5RUhcduPGMGaXuVmMNE8Y+QJSq
+	 ENvnCb48FLeMeSdY6rJM0CiGBcMjNXrfUzh5wEwBRB+oQN/oGgdH4oRaDkViivqbjO96K
+	 xAU/p+5K/n2O4GScXsoLSyroPjb6mkyXjwGopKEFxE2UaBB8E+t2A25chCOPzyNPaLft8
+	 BbgLX8FNOM7fG0CtQY8t1PxSKF9K+Nt8N/bkLtOx9A/apWSXRSk4HpyloZMOol5gEHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794598677;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794598917;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=bhgX6TiO3ggoyg1USBIbhCVBJ0zZrGNa5rG+Utg78n1i/ZqFiN7uKQPpUe0OnPAnE2SQ
-	 rp25Hq1KOlsnkgjdBFvS0iPwNx+l057WOSDQHKbNJ8QP1kPOXGMVVzYygzvaoTBcX59ma
-	 q3NT/tsc5C8lGn0cdBrRcE0p/Zkw0d9ngmmqDgu2uiy/JyQuJcIBsGRZFoGJ36WcVHCMc
-	 zsSsj5DNbz6Nnskx1aotNa5+j42DwCoDcsVIHqw9hBHJsoUER+w1vQUGeKk2P+y40Djoj
-	 e1FIxfysSVXVNlAKuQ+SF9EXSOZBWO0TKLLM/qgkkntcQkAS5wFNhe804gv11KzETHg==
+	b=fWViZp5OE2NtRBePgwR/AX6Mpeo4P9ORdldVMfAYdKzl9Q1h1c1wQ73OdrOXXYP68+UD
+	 I4UxNL+taFh5bYrGr8xYeZpturyAjfKwypdN4K5X7UX6k8MzMW8ivrM2+gDhOHlizrXmJ
+	 3lNyqmuciFix3gH2CCb5B7dA2gVBmIJS5bQSC6/TY0+TgTkwM8Z5CEsXp1hwCFt2Y9ICY
+	 Fz8mG2U+7t3Aa/EfqZXwq8JOVDQEKKr3G+axtLjfwU3zU5zju9hnj66I2OJcibuoItOyd
+	 Wq+t7H6ehLdjxZ70tXvNw0SAmjx6DwbCzNsagy7kXKqxchVJkwtscvBicjYCUmerWSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UGvRXjaz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSI5N8J1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CD6606A327;
-	Fri, 13 Nov 2026 19:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C86606A331;
+	Fri, 13 Nov 2026 19:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UGvRXjaz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E8E1F000C4;
-	Fri, 13 Nov 2026 19:37:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSI5N8J1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BCE1F000C4;
+	Fri, 13 Nov 2026 19:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794598677;
+	s=k20260515; t=1794598917;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UGvRXjazTqUrFd1aUWNF2u4UPVZDzjHnO8YGdEeO77TY45oRP8ybMux/F6P+OZ2s+
-	 +Vi6pkFrDulqfoUXG15M5UvLP1MARqtyehfoKIBJhU+Gm+thCm8BUWh7+BZEjR3NSP
-	 WKxoEHRqd239CmakowucqcHqC4ywh2edmxaKL1+SPptL+uQGaEjlZFblESbMvnOddO
-	 5po6HbXvYhcwl3dSh5RTgtGz77ZIrU979mCmOXmkmWE17w1vswJ/plYCoHuH+ybb4E
-	 M47NeUz4mFV69802sTzCbQMXlN9llKYWv4WWcfaagcrTsisdU3O7DcHnkvqO6iZqEG
-	 hZJpI1sn1kzyQ==
+	b=bSI5N8J1rJbZe4tb5pSeat802yMzcEktzML74O0vmAVGYXi0rDwU+BTarTYo8UPaK
+	 T0xnx/pOEzbOxqAO8M3cxjDpvA2u6dCJCEbY070ivD2F5CXdjO2rExzqaW/k0s5aiW
+	 fKpDxI2pHG6JcZMiO7ovGNoXi2ibD3JVze4mBxLShR9Y4xfzCc4eIhTfNpt0CVnXLa
+	 /pcMH3iGHhXL02TiN68MUah2vn3d1iUt62R7zkmj/mr9uR5HXdTp+zjy+8/WSkRWs9
+	 hJWwb3QpfhMKN63ekxPDqUT5Ffom5/sotSwJAC1YHl2a7lxFMY43kS4Ip63I8mEURN
+	 8qnshs73gwFCQ==
 From: netdev-bot+sinfo@kernel.org
 To: Hengyu Liang <hengyul@cs.unc.edu>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Simon Horman <horms@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Benjamin Coddington <bcodding@hammerspace.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Subject: 
- Re: [PATCH net] neighbour: do not update an existing proxy entry on SIOCSARP
-Date: Fri, 13 Nov 2026 19:37:56 +0000
-Message-ID: <179459867630.2168702.7684618528835869761@kernel.org>
-In-Reply-To: <20261113193355.3820232-1-hengyul@cs.unc.edu>
-References: <20261113193355.3820232-1-hengyul@cs.unc.edu>
+ Re: [PATCH net] tls: fix send() returning success after the TCP send failed
+Date: Fri, 13 Nov 2026 19:41:56 +0000
+Message-ID: <179459891623.2168702.5534679656595552608@kernel.org>
+In-Reply-To: <20261113193649.3822306-1-hengyul@cs.unc.edu>
+References: <20261113193649.3822306-1-hengyul@cs.unc.edu>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
