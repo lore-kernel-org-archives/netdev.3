@@ -1,78 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794573922;
-	b=UTvzTlyg7XumO/xUSdLciSX9oVi78FpOqW0ba1bpO4QZtlyBjg7mtJBWz76bRU730B0j
-	 q8rVos8S62RQtUw0X4hj5NO0sKsIhJK17VxcTfCM0jNKw+PjfBS/y3liiz/C9ukmpmVWx
-	 UaSOaJta4vbtYSGPW2zq0pW7QQtL/itwrkjmzqUWMihI8xA7WHTA07tDQteYDcy1BgYFk
-	 oPzOwd1nBl3NBPbbT6jcQS29zaMHxnGtjrWaINyLobosjFnpnx1TdZjVWms5Ncw58L1Ti
-	 v2lw3Pf+yqw6+qT7JmweVpfEhix1dOmQMcDtZM1K2KOsJ2ZVHiZu7NEEsXMmSmHwY+w==
+	t=1794573994;
+	b=PPvDtWKJOd/JCvmNknK/Ig9eeaBXy+UbIFhunUo9o+KlMxOJW5fk0H3E9BkjE1mV2eyt
+	 CetSI9EZXInAewTYJ7dx8DyaT9zfdIQgUrtX1PFBi2xbCDC5Y25VtcC7SFlUgBqlo3ULl
+	 w+I3RRsJRRjw0B55TiHy2jxWKiaoXeVNv3x46ESubfg7TytrD8f6Ge1Zbis5sWjgbdkfx
+	 mGF4BnSXM8AD4il+6rejn75uzAgH2m7F46/u6YRajKiYe+dIqbY8bwUSxLA7GfOlTZKWj
+	 AAWw0wV1gvg/8dmjQYhKVWFXoyQzElKTpAkLbi9vKtkUBE46k6bV+MRUTxMOmbWD2oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794573922;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=HoGTW3gc9Rq9B8/aEMn7cAx7SDpJrptD9i9Rqej6gbY=;
-	b=PzxFpm0g7F1Rtz94RKpE7z8jBndDy6YzSsZQchL3Ioh3Vm3BCHd8vi646XZlt2qxZzY0
-	 PfCB6gJGSeY9DmoCHVIQPpEIxA6zox5/t5uHl6maL0oQdQiFXadybuRyvcH7dXVL4XE2q
-	 s1lBs55QRMY4L4R2BvpHo9Ip6qTA8sVC2NOsVQpfI+4+53iP3G+3t4Xwvuii5JDMlh6c/
-	 5FgCL+2OSBKblZDRAOBHEMVJBRUA9aE306e3BRPUkKmkdGelETp4oacXfdwv2BZPTLMd4
-	 IiexieHC9oq1yUkDJuXkPCNDL7YJP1nRN3DTcmBTrxcZ8mKUpq+1pxkhr9H48qa+ghA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794573994;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=X1n982sTQrbnQ6IoKJRrZJFIdmMhg7SCn+FpAoU2xiI=;
+	b=vWEnTYz3YY8cs/s60Fc6aEaqJnfHVLHygZIWn+oJKNfy9sV7SF+Sz4Vg0uLz4SGTpy/R
+	 h4lIb93FBx1v6HmnjAhe8yMbJ+emvXeTIcmxY+PZXaCFQ+UXqcFpdjMMuK+THIXLUK+LZ
+	 8LucnQhj0oM7NBlpAsrhx6YdlK6DZZpY1zmTyxT+P9gzTb7N41vztFifJQpPEShs98Ktq
+	 lDL9Nb+JGSuwF74Dpck7iN5FBmDTTWE864tAFZCt7YFJmiE905eNdOxo2kqQyilJPqXrD
+	 WoT0hhh/2Ee9lgH2juKk/Qh9FxxO6U/JIHzjrRNWrg3EVhwhCjBnZVnLiMAFF78n7og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=k+iKId++;
-	arc=none smtp.remote-ip=203.205.221.231
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bqJyCjLB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A42F606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:45:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A42F606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99A3606A32D;
+	Fri, 13 Nov 2026 12:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=k+iKId++
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794573917;
-	bh=HoGTW3gc9Rq9B8/aEMn7cAx7SDpJrptD9i9Rqej6gbY=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bqJyCjLB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0601F000C5;
+	Fri, 13 Nov 2026 12:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794573993;
+	bh=X1n982sTQrbnQ6IoKJRrZJFIdmMhg7SCn+FpAoU2xiI=;
 	h=From:To:Cc:Subject:Date;
-	b=k+iKId++VmmBg8wTjCZqW86iHSyLiEUen6piuYr3odewHwmNDsd4sprE0S43Y6HWx
-	 PulXbGz0a8MDmyx+FbZQ4WrUZ4YT4jtdQOD6OUxKCPqA/4PWMZmt3TYd6nwlGK3rrl
-	 tR92BXiPqN7QhfKjQcpkYosEEKfrEB1o/OpWDHlY=
-Received: from localhost.localdomain ([240e:3bb:3033:7d41:3d43:876a:14ed:84bb])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id B48B4646; Fri, 13 Nov 2026 20:45:08 +0800
-X-QQ-mid: xmsmtpt1794573908txnuao84w
-Message-ID: <tencent_50548A0CA0A2E93225C5F5DD2DA865400607@qq.com>
-X-QQ-XMAILINFO: MC6m07AaSFhrgbdkfdoApSPzEkMLO5PpNxzn2dBY9RluIJ1hd0ySbPf4yfKPif
-	 7EcA/lQbDg6SMYb9Nk1KR+y25GqGoJcnUumc5n0/nEX8TDoOUqAw3ECe8+8hpW/ZV49c6XPkQxM0
-	 ICk4QgtLuim1qr/8jxkT8dddbqnDr8WskWddsmtfDF6I+XUFzdLLSIuMD3rqoP06RVh7glfKQrTm
-	 aqVvVqtsahVjy7Sho+ZxrrsvfsVOiML7eUZ8mF0UBXiZkoBV7Qa6jnzvuX8Dl8987guqYtSwiFjo
-	 SQKJdhb1zWf7mQx3iwYVFM3Zcf0hkLP4lGCtxbBOPtaSxbs/AGzVNRGSjdezc1PnkmnjqAlPvs6E
-	 OUv71Bn79m/15LJG9SlMH4tevFNyo5+GRBEJljs0QA6uRzkvjW4AkFeWQ583FUcVR+CInaIcebC5
-	 TIh2oOXQp2W7+Rwiml14/DvghP8jP4J2xGi47+K3MXaw1+sneTsgqw1SVUg1Ad2PsiUnQb8lRJqx
-	 i7J8yK+mpjYJozSImUcMQZmLwwZPvTiLtB7gp93AKABNW/aqgkrjOgxAKPKYFcTYZ+s4dX/9i7F1
-	 X5MugFHfr4oXQuFD6H+N+mSVUhXiMjoRiS/HcetVlqo1SFyqL5DrqTjCQfHWfKS90gHOkCJ4TQnh
-	 NYFP0mPiuDb5bMZ/644CukZIVEmnJPomGvqIdybo200xysclMqXUnTkj8pRo4NoQIFYVYufnIvUv
-	 i/UjyU0FYX1NfdDS0wiKPOqmvDWiUsdPQ7dcZ5Gm3biZwyzHKdak+Le5xNQlOp3ATP5l0kLbh3yW
-	 riZgIoNCcRGNZZAgynFoOSlhPOXog5g2PKEWXu4rWV4cqF1BKEGfy/Wd22geIQyUu6ocqzm8EkgZ
-	 HsQZtyflUCIUAHEiTqpkB2FWXH4301oF0oCpVLjI/uyz0s8LUI187JnL1a75EISuTsg6XC/ONrD6
-	 oEr6ArTDrNFIYc/osoQym3ae/pMRRGd04iWd7mNWQ3QTFR+nPEXOJnVPvnmBis0l+xck9XK7ffLR
-	 9CxES+m/N2AKIW8Hvgm7wmSbrJKkupl69pVGn1/CwK800dWfAiEDT+bUppu/gILO9j1CYgGA==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: memoriaru@foxmail.com
-To: netdev@vger.kernel.org
-Cc: daniel@makrotopia.org,
-	andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	memoriaru@foxmail.com
-Subject: [PATCH net] net: dsa: mxl862xx: bound FDB dump walk with a read limit
-Date: Fri, 13 Nov 2026 20:45:08 +0800
-X-OQ-MSGID: <20261113124508.30307-1-memoriaru@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	b=bqJyCjLBtehN6wA6bx4tnGTNkdRCi/nDHAtBfsT1mAhE6txSC77vEyHyWO29ImVH6
+	 E/igpMxBHc6HX1qKZ8ExVIbqRYlpE0RtYJlwenZEzf7uuut5V4gLlH2snK7f4G5Ag7
+	 4Mn+pj9NVuH9mw6J+LcNrYxto1rK+8vWC8Cv6SOknoVAMxNpm9uX4K5URJ+g2KCFbj
+	 zOWtvvPEiIRtN/Dv4wjkZTXgl1Hn/M698fAbrcCJlHA+VXYsNlCPcaLJvzJBPoNB1o
+	 k3t2FSu46dlTLv42CyWk9rx/1VkJyUAwCaOYh+vlzplKv11DLrF3EjRDFGb59E5pz1
+	 1pDKt9dbR2J1A==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-sctp@vger.kernel.org,
+	dev@openvswitch.org,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net 0/5] net: avoid truncated transport header offsets
+Date: Fri, 13 Nov 2026 13:46:20 +0100
+Message-ID: <20261113124625.4010206-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,79 +77,38 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Hewei <memoriaru@foxmail.com>
+skb->transport_header is a 16-bit offset from skb->head, and U16_MAX
+is reserved as the "not set" value. skb_set_transport_header() silently
+truncates an offset that does not fit.
 
-mxl862xx_port_fdb_dump() walks the MAC table in a while (true) loop
-whose only exit is the device-reported "last" flag, holding RTNL for
-the whole duration. Entries for other ports are skipped without
-invoking the DSA callback, so the netlink dump buffer never fills and
-the loop has no other way to terminate.
+The first patch addresses the report from Hyunwoo Kim, by applying
+the IP6_MAX_EXT_HDRS_CNT limit to ipv6_gro_pull_exthdrs().
 
-If the firmware crashes or misbehaves mid-walk and never sets the last
-flag, the driver spins forever with RTNL held, blocking all netlink
-configuration and stack operations on the system.
+The four following patches convert places storing an offset derived
+from an IPv6 extension header walk to skb_set_transport_header_careful().
+A single chain being bounded to 24576 bytes, these need a large
+skb->data - skb->head to overflow, for instance after nested
+decapsulations. They are hardening, no reproducer was written.
 
-Bound the walk with a conservative read limit (16k, well above any
-documented table size for this family) and return -EIO when it is
-exceeded. The limit is checked after the "last" test so that a
-correctly ended walk of a full table is not rejected: the walk needs
-one read more than the number of entries it reports.
+The same change for nf_ct_frag6_gather() is sent separately to
+the netfilter tree.
 
-Not tested on real hardware; found by code inspection while auditing
-the loop termination conditions.
+Eric Dumazet (5):
+  ipv6: gro: limit the number of extension headers
+  ipv6: mcast: use skb_set_transport_header_careful() in
+    ipv6_mc_check_exthdrs()
+  net: openvswitch: use skb_set_transport_header_careful() in
+    parse_ipv6hdr()
+  sctp: use skb_set_transport_header_careful() in sctp_v6_err()
+  udp: use skb_set_transport_header_careful() in __udp6_lib_err_encap()
 
-Fixes: 340bdf984613c4a9 ("net: dsa: mxl862xx: implement bridge offloading")
-Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
----
- drivers/net/dsa/mxl862xx/mxl862xx.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ net/ipv6/ip6_offload.c | 8 ++++++++
+ net/ipv6/mcast_snoop.c | 3 ++-
+ net/ipv6/udp.c         | 7 ++++---
+ net/openvswitch/flow.c | 3 ++-
+ net/sctp/ipv6.c        | 5 ++++-
+ 5 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-index e05ad52cd..37e8c18f1 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-@@ -30,6 +30,11 @@
-  */
- #define MXL862XX_STATS_POLL_INTERVAL	(2 * HZ)
- 
-+/* Conservative bound for the MAC table read loop: the exact capacity is
-+ * not part of the public driver API (see mxl862xx_port_fdb_dump()).
-+ */
-+#define MXL862XX_MAC_TABLE_WALK_LIMIT	16384
-+
- struct mxl862xx_mib_desc {
- 	unsigned int size;
- 	unsigned int offset;
-@@ -1503,6 +1508,7 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
- 	struct mxl862xx_mac_table_read param = { .initial = 1 };
- 	struct mxl862xx_priv *priv = ds->priv;
- 	u32 entry_port_id;
-+	int count = 0;
- 	int ret;
- 
- 	while (true) {
-@@ -1513,6 +1519,22 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
- 		if (param.last)
- 			break;
- 
-+		/* The exact MAC table capacity is not part of the public
-+		 * driver API. Use a conservative read limit: 16k is well
-+		 * above any documented table size for this family. Checked
-+		 * after the "last" test so that a correctly ended walk of
-+		 * a full table is not rejected; if the firmware dies or
-+		 * misbehaves mid-walk this also stops us from spinning
-+		 * forever with RTNL held.
-+		 */
-+		if (count++ >= MXL862XX_MAC_TABLE_WALK_LIMIT) {
-+			dev_err(ds->dev,
-+				"FDB dump walk exceeded %d reads, aborting\n",
-+				MXL862XX_MAC_TABLE_WALK_LIMIT);
-+			return -EIO;
-+		}
-+
- 		entry_port_id = le32_to_cpu(param.port_id);
- 
- 		if (entry_port_id == port) {
 -- 
-2.39.5 (Apple Git-154)
+2.53.0
 
