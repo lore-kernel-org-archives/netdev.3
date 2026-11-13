@@ -1,49 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.71.23
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.71.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572569;
-	b=OH6lpHl1sghHkqyLuqWtnWnx1PvrCZihyP+xONi+Ofcr1nX49PX0QvqcXigrRFkDvyvZ
-	 ThggVn6D7fOn4pOkIywfE9dL0872QKC+Ut6IwKWq5MM913OCHNVSXoqlLMM9b3FJyvF9C
-	 6DrgnW7ZkXSr0D7u6WoBdeMHt1NnvO0NPveJsStcWAmzp15gwzMTH3gGl6UtFaUPhKekD
-	 DMdDNSHOJVuZyq4Wyu2SnkHAyzJJX0VKAwrzvhj2OFOmwDwKeu5u5EQmwSVr4o6JbItId
-	 OT2vH7ApOrEWn9YWVEqjv8LihIP2KoG4SsmKocQWkR/pLZVlqX1N0P0YEGr9lJDQqYg==
+	t=1794572574;
+	b=CPrvW3CiKyg9A1juF5dAsXTTNM6g5IZJCzpxuDR4RPNh5pE+NetDGJb+CGA1Whq32mQ0
+	 mmHbIcdaodd8W+GXGUr0NAvqZgK114eTHVQzC9/3GxpEnnFH0xBHsGugD7iK2F1jqpM27
+	 PpdlMUHtoJXAbDPVFQEjD8t5ZG+usap69pZ9Ib/lKMPsQNBATSkwWpkxCWLYYwx4yroJH
+	 ykkwVpcH2JhJd7ICJ4QMThQ0ad20MrFdruTTPs2g9E0eIX8/11Tgk9ktSpApyCl6BuXtN
+	 EBpTPWuyQ9OY6yrPgein3p1WaNyrLhTCLHWyFDYkvCXaLf5MeAmKXfqx4oHTlE2FJzA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572569;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572574;
 	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
 	 mail-alias-created-date:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Info-Out:X-JNJ;
-	bh=bt0dRZvel7uCGiKOrOk3gqB3xIVVwQuehuV0zR22300=;
-	b=rzQFMbnBMUfj3NjdYBIFzg1eO6e86PMGNMs0FxgcKjdvxX0StNVDosMxAXmhg9D0PB+s
-	 cv3NmsppO8XfFm22R65DFSV7UrR8dtPVMskjLwAe03a75lONTUQre7ib/teegu14qlzPy
-	 VldRAAOJwKNIzKAU9bQCmKnhR6PAZlDLQdDqJJ/01LhYWU72qZNAk16go8M6MuVDvWtAR
-	 kAJI8RGb5SHOxPthI84Ajx7OWxckP91wyLPN+HyvYl6rtN4syTo3ABpvrTP1j/PRVomXa
-	 8lftKcGCd2sPZkgquX13zsQ/loynKYBQXs6IrPGgTf9kLHenyl4LysYCzUMh1Oc+vFg==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Authority-Info-Out:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-JNJ;
+	bh=KGylqHnvsSTjU0nTqQedWOHt6q4bSFKygjVoGVm+fL0=;
+	b=QhEAbxB6u7eDIBAaCvnMBzTydYFO3CplnYJVoWwIbEtKrsgb2Knm8T5cgKDZU9uDf6RP
+	 U642KSbnpK2O2dGLKFW6hEDKNmW0tBFJGUxj/RIb1qSSzMn3TV8gfIKDKB+Mrod7mpelS
+	 eyIvg4pdE3t7p/yLqhocdaVXE/6F2BAul3M7mkO1ClwwchE62NDyeg7kAyB0OBBuBq4yq
+	 bmzPCyjEbzQYEuc+Z4vFw2CL1r+Ov/B+APcvnOirsMSCD8ZAiLIwYKtQ/mdTzfVkMgsE+
+	 YLJrnVtu7a0EkAayr+Z38sr95VNcX+orvkwEgXVK4C3I3gR2aDdVT/4ZhukCVVIUlQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=verdict.gg;
 	spf=pass smtp.mailfrom=verdict.gg;
-	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KbIVuJvT;
-	arc=none smtp.remote-ip=57.103.71.23
-Received: from outbound.mr.icloud.com (mr-2005l-snip4-11.eps.apple.com [57.103.71.23])
+	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=celweJ6m;
+	arc=none smtp.remote-ip=57.103.71.84
+Received: from outbound.mr.icloud.com (mr-2005c-snip4-1.eps.apple.com [57.103.71.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E960A260E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:22:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F3E960A260E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FB360A380D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:22:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30FB360A380D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KbIVuJvT
+	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=celweJ6m
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id CF70118002ED;
-	Fri, 13 Nov 2026 12:22:46 +0000 (UTC)
-X-ICL-RepId: 01a1d4dc-4083-7683-8f3f-5ecbb7eb1538
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794572567; x=1826108567; bh=bt0dRZvel7uCGiKOrOk3gqB3xIVVwQuehuV0zR22300=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=KbIVuJvTWDzRrxv0TtF0zTvRlD329H308juooyl97wmdj7dzJSMyC+0D6aJD+X+f4XgKlOnMml5ps9CFnC7crUFdXCDB1LESGaTWOHaz3gGzW4bCECbEv/E48cqPTX78zD0bfcww9kcURdytXUl/8SptFzauDjt//7WvhDgrzQ+lHkOdS09mnd6XYRtgf+TtzliW5G7rFb3HybVrxQMgNObKQJWdakuTtHjRVYke9wmfOY4fDHjPeWTx2DEoA8ZrDlrpplIsRphxOvCbZkWxM4o06Z2dXM6YcQ2dSsqF1LrvdXoLrY+PYvMv3fVhAlKWdlsqrFf5xqNHwSNmz9a0Cg==
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id C5601180028F;
+	Fri, 13 Nov 2026 12:22:52 +0000 (UTC)
+X-ICL-RepId: 01a1d4dc-5868-72ed-ad0a-a4a493e58525
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794572573; x=1826108573; bh=KGylqHnvsSTjU0nTqQedWOHt6q4bSFKygjVoGVm+fL0=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=celweJ6mK1FlQK1y2dKTyF62gva5sO1VyDAek13vcfvszGBcHJHaftbHxwUaVVj/R7iAxD/tgyJ8EDN4lRJdSemiRH0bpDEYMk+D16jpeB624h+K1+4aST/YAQ/vLAoee43HOY01/gtz4hryI2zcFsIlWjDaksj+BMjjlrZCrFNYbZRPoSnEF63us/BtJKVY4TKewljjVZJ5oKxHKFz4xEkwO8+Wo4LiALpO6SAjvsamODyuXO+KZ1uz/b+CqH6dovq4RiGYRWAE+vFNqju93U1XzcplRn2StFcSLknSg9ihIwItF87gI9DWpt4czFRlQcKDqwtRCE59v3lS+R6TUw==
 mail-alias-created-date: 1621344842221
 Received: from DelNac.mail.msk (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id D54831800280;
-	Fri, 13 Nov 2026 12:22:43 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id F142B18002A1;
+	Fri, 13 Nov 2026 12:22:49 +0000 (UTC)
 From: Vladimir Vdovin <deliran@verdict.gg>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
@@ -57,10 +58,12 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [PATCH net-next v3 0/3] ipv4/ipv6: Cache pmtu on all paths of a multipath route
-Date: Fri, 13 Nov 2026 15:22:34 +0300
-Message-ID: <20261113122237.88990-1-deliran@verdict.gg>
+Subject: [PATCH net-next v3 2/3] ipv6: Cache pmtu for all paths of a multipath route
+Date: Fri, 13 Nov 2026 15:22:36 +0300
+Message-ID: <20261113122237.88990-3-deliran@verdict.gg>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261113122237.88990-1-deliran@verdict.gg>
+References: <20261113122237.88990-1-deliran@verdict.gg>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,85 +74,222 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX8HtkCB4+aRuh
- N1DFs7tkNlP9aUpqhJDn+FI6BAGNxHQuUKMgcvyKtLV8nGNWQ3jHLaY23fBaUPQ/c+T1BaBatP+
- Ln4wRMHOKiLoAU+l9fDsL1XsF/KVCt8=
-X-Proofpoint-ORIG-GUID: cxBUL5emJaNB3-UsmY_rWg0nb10Jc8rY
-X-Proofpoint-GUID: cxBUL5emJaNB3-UsmY_rWg0nb10Jc8rY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX1uF6+ceSGwNr
- PqnvXq3xjoSlDoWkP65kcuaphH55fWsCE6FvLJB6rw5g+ZYgdT9XAG2lZ7j0shBJAgEpk7SELV0
- g32/oTGa3HHJTmYC1FIHE/7UwVfzhovFEeswkgXbrPoPUk5hooeoc6W4P+g0em1y0sYt+s7tBZy
- W8a5TxlQB1TJPdHQgHd8vmvRkHiowhHDN9DUa5MeDEfBeSf4jKrrcdUi6x9wno59b7iyR9sErlo
- evQHd+27F0jnS8Y9/c/NIC1Mc2hRytMFG+G5/laVM5akLFJNZ/GZm3RPfYH/z1/IlLm21jmFF+K
- iMqjeExK8U7HxcQJQwA4wK36theTWNMI+DYpt2ElFxY5XNeXgk9dC2jWiBFaeY=
-X-Authority-Info-Out: v=2.4 cv=O4SsLx9W c=1 sm=1 tr=0 ts=6af70117
+X-Authority-Info-Out: v=2.4 cv=SM/Xx+vH c=1 sm=1 tr=0 ts=6af7011d
  cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
  a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EYaFdmsEC1CjpenOt5ir:22 a=DQNyVv6Damu5ko3fWwIu:22 a=VwQbUJbxAAAA:8
- a=wNayiuiad2-6BH9Lc6QA:9
-X-JNJ: AAAAAAABUiyGmFaQ2crbvPe+YUnXcpLFfEWtht9UkfyB6jKmN5seQXU9g68TQbpusbU/M7
- NEvUn8O9ilnMy0X5QGgjDSsv8e3DfnNuJac0WSM4Ju0nzMzueKMNFqW2MiqUzZdWlung9g
- Zx7lcRnmCcHy7paADvEVinn9mOsDZqHrhKxRDigQ7TRZzZFlteRaA1HoNNEeNKzRccw2WR
- kirRGp6MpabQRKFLBBhZOrIvOdnGDkK9Mb59qFYsbhIsCh2qnZuqp/9x4KM2UE8U2J8eSM
- ZRJDAoWnV+AKuHeOkLOEq1jLBGos2LJyOt6Gp4sYBb+4k4bixqVEnXo5nf8yb1xMm3NzLi
- 6b0f3t/16PLLzjNEarZ/WPVUhaQihlXDJkzCydubKJGzP6m7YTbASulc09bGyVT5kB5sce
- JSoDSU/q7p4hh6fy++yHYDZFhFBvEfhObhBckw1kPwmMTAXKguLnHrTLXPz8cIYleKRisO
- hvosL48LYuFk/ehZ7aVofuAj7DiRaJuhUkT8fDbUsMzgeOTaoJdXL3fSPQRyL3gigEX893
- JuENFFnP9RF+w4WimxyWEwnRtzM6RNe10QgNpU4GU+0jSYUAhMYq168YwV/A5PgIVaaCII
- 3fJleSdcU97mdRY6/kH3WWd8GXQr+Cxqn1Ydq+dieWvwKrf95L7VfPPuoMUyWm6wmD1XqB
- hFzxgAxZgHVTFJFXFsG39PEK2m1QRQIpYedrqP/OV9eWdvgvG0lAYn2TgWnsHHKKVrr2ZM
- 6WGUzVryDMlkC3iNjyCQP6FDBzIU5CI7wY/fhZBm+yDjhmodIcQw6OJ/9WIqzUVpLKR/fV
- LenBj7ioJnpWoh+5JlVOQKdeUnrGDQzVCyacahgBJI3glugvHeKKS51CzxW7hlJxZkmmVg
- GFwskfEQ63yk7M5vIZ1d2hqeRqoDsoYAAeYckuBZu+UVglNlrmfQizK3tiNnZLFfsupHz+
- nOhZpYqcH+Oy3H3H2pmooZVcjQAJcicALkqNe2qFidqwarVMxZl1sqsDlHrTuWkRJWpdGw
- 0OmtwYJM7imUQ/S2gxywIytP0k41NIlqbTxGPnikdedZUamMcN7HCdeUHzFrn+bL2qRnwc
- Y9GXL/VKYxbnIswmy/eChOXnIGTjzm+FFxo6txOrEydU57vazgZVA6zoQucDkqsXD91JuH
- V5fHityM3NV6MwfbwzeyqXhu+7iEpzEZa4QUaZkxJ82tUpTRMKxwzZiuVW9ItvAWM5aJ3B
- Xsdxr2uHiC8i4iGFtfOnrtJhQufZquSc2bhkFHFK+K4G/5Y8cPIDZggvZbuHAM4ZrctmX+
- mwBCYTT5FAZ3nJ+JS8a0NE7cR478Km8JeXu7AzvldD
+ a=EYaFdmsEC1CjpenOt5ir:22 a=ieB-HjlS9-5fP-wcyLUk:22 a=VwQbUJbxAAAA:8
+ a=Om8ETnXUOpCeNUuhku8A:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX5FUKNx3z/Fkm
+ eyED/pBAKoew8zx1E/+eBVbzvcAQZlZlKd71Z9Ji3yF/gqN+854MFKQYREzMZwiIv35b87VB3e7
+ YA46AwPNL7PS3Ag7xQo0MsGKaWIEFv8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX3pesGpu7Xku3
+ Kb7QrRAPk5cQ2aWvd4VeaPzcVrB/ZqPCssOIOeMkN/ZE6WYMog7m5AKEOqmcKaMeIm0OdTdQw2E
+ 63osikHgk9IN88fro8R28gXp9iBcKI64yof+ViDMNqxTfHfmLV+oWRJXFjWF0FYxgbhbwVWRg2p
+ bqDPtDm+r6hK1560RHfLnEapuvF/jyTZE2Akn3hcckmJ7g8NBDGdNw+gBEILJ1I4W2QgMujJ2g9
+ 7EpVeL9Ic1/T56nlpJ6JpgQBy3NNLLqUCWhSP/l2WAGkwp7YRuStwd4d4ZjHO9K1CPXtONn2/6Y
+ YYoyl2MmRqIJcSDs+KYXTp6UG8c2gcDPOqx5JSdoS620luJ19RYpVdRawG3XH8=
+X-Proofpoint-GUID: MLHMo0fI-mxQ55uNtw5KDWLOcgDLhJrB
+X-Proofpoint-ORIG-GUID: MLHMo0fI-mxQ55uNtw5KDWLOcgDLhJrB
+X-JNJ: AAAAAAABGNdUBIiINU6xVXvrsF8xMc622jB2Ll3zKOuhqqwpT+qsfGT0Tr3btbWuHNercb
+ nOqySqE0diJw6oRm1lGHDTmJ1Z6bmlaWsMCU41QrkBoDEoefcQzluv3XgkD3NZuYUuGy9k
+ oLluxKb0WDRWx494FrcX8azi7uZlCLXUJfmHQWI8OiEQQNJKUdYqaNYAev9uTVOYMuP8rK
+ N8G752vdhQ708YM9yPfJ6A+qfTzA+XTME5+cTu9WcBwQ4zcUGfjf9GAk1hAa59h0+g70x5
+ BmKc6w1vN+z/pjlu6fpOVIre6tKcgH8y4ywUxFDjJqsRYQcn7uGFynjC4RWo6zCcI9P2Yt
+ HjG2Ts1XR1u9pNXuRa2tUBF18eU9TuRHxj27zyuHfP2fC5WQgk91jDGVc2nxtZzcyTdMZP
+ QXjdLJlgoKi5ZrlAQlMXIl4FbE5RoQnGweac2L+5qk6BUFUUMDbMSGjBv2ctk9Cu51V3SJ
+ zVEgojeBXkCGp2yZK4xJyJdVox8WoxGu/YjABEPGmW5a8RQ1ufkYSDoO4z0VgXU3enfqur
+ U1Oy3EixGiqIh+1UHXcKOOEk6fpNwxyVGV8kmsUdk8BoyvQe9zxfZlaRkKyLPSa1Y/+OAB
+ S/P0gv/UUP3SPSvGIE1H/QkYBDHWFITtqbCHtFFzRSurbGEx4u5FTXpeDnd3hrFLWWo3kS
+ VLnbFYdOTPAIKDNfJdiG6bGu5LkPPrAcgeAWt0fy8o7tUHyNvab0rIkPuZ4oQfGiisBUdI
+ f8ZowpDzUaQ8F+47q18nT0tfHvjaSyxW+Ye7cEpu8OXMMus7fQO294s02tQbZ6qhvCMgCZ
+ io/x4wJuUbheEnhoEXgSRo1TN97OH9uRHni88EajbiLahO8=
 
-IPv6 counterpart of commit 7d3f3b4367f3 ("net: ipv4: Cache pmtu for
-all packet paths if multipath enabled"), deferred back then [1].
+ip6_update_pmtu() looks the destination up without the protocol and
+ports the offending packet was hashed on, so with a multipath route the
+exception may be created on another path than the one the packet took.
+The flow then keeps sending too big packets on its path, every Packet
+Too Big lands on the same wrong path, and the flow blackholes.
 
-Patch 1 keeps the IPv4 fan-out from raising the pmtu of a path above
-what it can carry, patch 2 does the IPv6 side, patch 3 adds the tests:
-the IPv6 variant of the pmtu.sh multipath test and, for both families,
-a multipath test with paths of different MTU. The asymmetric tests
-fail without patch 1, the IPv6 ones without patch 2.
+Same problem and same fix as for IPv4 in commit 7d3f3b4367f3 ("net:
+ipv4: Cache pmtu for all packet paths if multipath enabled"): cache the
+pmtu on every path of the route. For a nexthop object walk all of its
+fib6_nh, for a legacy multipath route walk the siblings of the fib6_info
+the dst came from.
 
-v3, after the Sashiko review of v2:
-- compare the mtu with what each path uses now, not once with the
-  looked-up dst, so no path gets a pmtu above what it can carry
-- ipv6: keep updating a cached dst itself, the walk may not find it
-- ipv4: Fixes: tag, Fragmentation Needed wording
-- tests: MTU 1350 on the link to R2, so a Packet Too Big from R1 must
-  not be cached on the path via R2
-- tests: return routes on R1 and R2, hex flow labels, skip when
-  "ip route get" has no flowlabel
-v2: https://lore.kernel.org/netdev/20261110095903.84813-1-deliran@verdict.gg/
+A path only ever lowers what it uses: the pmtu of the exception it
+already has for the destination, which is updated in place so that a
+gateway from a redirect stays, the mtu of the device for an exception
+without a pmtu, or the mtu of the route and the device when a new
+exception is created. That check moves from the looked-up dst to each
+path: the lookup may land on a path narrower than the Packet Too Big,
+which used to end the update before the path the flow is on had learned
+anything.
 
-v2, after the Sashiko review of v1:
-- update an existing exception in place, on every Packet Too Big
-- don't walk the siblings of a fib6_info no longer in the tree
-- commit message: the lookup in ip6_update_pmtu() hashes without
-  protocol and ports
-- new ipv4 patch, tests with paths of different MTU
-v1: https://lore.kernel.org/netdev/20261017210508.71849-1-deliran@verdict.gg/
+A dst that is a cached exception, or can't have one, is still updated
+itself as before: the walk is keyed by the destination and would not
+find the first hop dst of a socket with a routing header.
 
-[1] https://lore.kernel.org/netdev/ad29493c-9e48-4a94-b327-e47af3a9d137@kernel.org/
+Link: https://lore.kernel.org/netdev/ad29493c-9e48-4a94-b327-e47af3a9d137@kernel.org/
+Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
+---
+ net/ipv6/route.c | 121 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 82 insertions(+), 39 deletions(-)
 
-Vladimir Vdovin (3):
-  ipv4: Only lower the pmtu of the other paths of a multipath route
-  ipv6: Cache pmtu for all paths of a multipath route
-  selftests: net: pmtu: Add IPv6 and asymmetric multipath tests
-
- net/ipv4/route.c                    |  30 +++
- net/ipv6/route.c                    | 121 ++++++++----
- tools/testing/selftests/net/pmtu.sh | 281 ++++++++++++++++++++++++----
- 3 files changed, 355 insertions(+), 77 deletions(-)
-
-
-base-commit: d26955e57475434b59d43ba372b2a50d33d5e0ed
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 04098cf32eab..ccb11a465528 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2911,12 +2911,55 @@ static bool rt6_cache_allowed_for_pmtu(const struct rt6_info *rt)
+ 		(rt->rt6i_flags & RTF_PCPU || rcu_access_pointer(rt->from));
+ }
+ 
++struct rt6_pmtu_arg {
++	struct fib6_result	res;
++	const struct in6_addr	*daddr;
++	const struct in6_addr	*saddr;
++	u32			mtu;
++};
++
++/* Cache a pmtu on one path of a route, never raising what the path
++ * uses for daddr. An existing exception is updated in place, a new
++ * one would lose a gateway learned from a redirect.
++ */
++static int rt6_nh_update_pmtu(struct fib6_nh *nh, void *_arg)
++{
++	struct rt6_pmtu_arg *arg = _arg;
++	struct fib6_result *res = &arg->res;
++	struct rt6_info *rt;
++
++	res->nh = nh;
++	rt = rt6_find_cached_rt(res, arg->daddr, arg->saddr);
++	if (rt) {
++		if (arg->mtu < dst6_mtu(&rt->dst)) {
++			rt6_do_update_pmtu(rt, arg->mtu);
++			fib6_nh_update_exception(nh, res->f6i->fib6_src.plen,
++						 rt);
++		}
++		return 0;
++	}
++
++	if (arg->mtu >= fib6_mtu(res))
++		return 0;
++
++	rt = ip6_rt_cache_alloc(res, arg->daddr, arg->saddr);
++	if (rt) {
++		rt6_do_update_pmtu(rt, arg->mtu);
++		if (rt6_insert_exception(rt, res))
++			dst_release_immediate(&rt->dst);
++	}
++
++	return 0;
++}
++
+ static void __ip6_rt_update_pmtu(struct dst_entry *dst, const struct sock *sk,
+ 				 const struct ipv6hdr *iph, u32 mtu,
+ 				 bool confirm_neigh)
+ {
+-	const struct in6_addr *daddr, *saddr;
++	struct rt6_pmtu_arg arg = { .mtu = mtu };
+ 	struct rt6_info *rt6 = dst_rt6_info(dst);
++	const struct in6_addr *daddr, *saddr;
++	struct fib6_info *f6i, *sibling;
+ 
+ 	/* Note: do *NOT* check dst_metric_locked(dst, RTAX_MTU)
+ 	 * IPv6 pmtu discovery isn't optional, so 'mtu lock' cannot disable it.
+@@ -2939,55 +2982,55 @@ static void __ip6_rt_update_pmtu(struct dst_entry *dst, const struct sock *sk,
+ 
+ 	if (mtu < IPV6_MIN_MTU)
+ 		return;
+-	if (mtu >= dst6_mtu(dst))
+-		return;
+ 
+-	if (!rt6_cache_allowed_for_pmtu(rt6)) {
++	rcu_read_lock();
++	/* A dst that is a cached exception, or can't have one, is updated
++	 * itself: the walk below is keyed by daddr and may not find it, a
++	 * socket with a routing header holds the dst of the first hop while
++	 * daddr is the final destination.
++	 */
++	if (!rt6_cache_allowed_for_pmtu(rt6) && mtu < dst6_mtu(dst)) {
+ 		rt6_do_update_pmtu(rt6, mtu);
+ 		/* update rt6_ex->stamp for cache */
+ 		if (rt6->rt6i_flags & RTF_CACHE)
+ 			rt6_update_exception_stamp_rt(rt6);
+-	} else if (daddr) {
+-		struct fib6_result res = {};
+-		struct rt6_info *nrt6;
+-
+-		rcu_read_lock();
+-		res.f6i = rcu_dereference(rt6->from);
+-		if (!res.f6i)
+-			goto out_unlock;
+-
+-		res.fib6_flags = res.f6i->fib6_flags;
+-		res.fib6_type = res.f6i->fib6_type;
++	}
+ 
+-		if (res.f6i->nh) {
+-			struct fib6_nh_match_arg arg = {
+-				.dev = dst_dev_rcu(dst),
+-				.gw = &rt6->rt6i_gateway,
+-			};
++	f6i = rcu_dereference(rt6->from);
++	/* Don't walk the siblings of a route being removed from the tree */
++	if (!daddr || !f6i || !rcu_access_pointer(f6i->fib6_node))
++		goto out;
+ 
+-			nexthop_for_each_fib6_nh(res.f6i->nh,
+-						 fib6_nh_find_match, &arg);
++	arg.daddr = daddr;
++	arg.saddr = saddr;
++	arg.res.f6i = f6i;
++	arg.res.fib6_flags = f6i->fib6_flags;
++	arg.res.fib6_type = f6i->fib6_type;
+ 
+-			/* fib6_info uses a nexthop that does not have fib6_nh
+-			 * using the dst->dev + gw. Should be impossible.
+-			 */
+-			if (!arg.match)
+-				goto out_unlock;
++	/* The lookup in ip6_update_pmtu() doesn't hash on the protocol and
++	 * ports, dst may be another path than the too big packet took:
++	 * cache the pmtu on every path it lowers.
++	 */
++	if (f6i->nh) {
++		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_update_pmtu, &arg);
++		goto out;
++	}
+ 
+-			res.nh = arg.match;
+-		} else {
+-			res.nh = res.f6i->fib6_nh;
+-		}
++	rt6_nh_update_pmtu(f6i->fib6_nh, &arg);
+ 
+-		nrt6 = ip6_rt_cache_alloc(&res, daddr, saddr);
+-		if (nrt6) {
+-			rt6_do_update_pmtu(nrt6, mtu);
+-			if (rt6_insert_exception(nrt6, &res))
+-				dst_release_immediate(&nrt6->dst);
+-		}
+-out_unlock:
+-		rcu_read_unlock();
++	/* fib6_del_route() zeroes fib6_nsiblings before unlinking f6i, stop
++	 * then as the walk would never get back to its head.
++	 */
++	list_for_each_entry_rcu(sibling, &f6i->fib6_siblings, fib6_siblings) {
++		arg.res.f6i = sibling;
++		arg.res.fib6_flags = sibling->fib6_flags;
++		arg.res.fib6_type = sibling->fib6_type;
++		rt6_nh_update_pmtu(sibling->fib6_nh, &arg);
++		if (!READ_ONCE(f6i->fib6_nsiblings))
++			break;
+ 	}
++out:
++	rcu_read_unlock();
+ }
+ 
+ static void ip6_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
 -- 
 2.56.0
 
