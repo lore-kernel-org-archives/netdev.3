@@ -1,58 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.118
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794558218;
-	b=o+Hw7DMZ2Ea/01YKOyQe23Cdxx9unrTho68MCp0ORwOqe78Yqs3r2ezGvPQOFZVSPat1
-	 Kel1MnpnEYdgaa/ZzCd1bvWVts3vtyQVfv3PF68ncmEdPTlOMIdAE7S0DlhEmSGY/W2dG
-	 C2Fm1nTF03UMc2QCadNzTGSg2o9s3BT/io9qRxTZNmxNuFPCIfkUJijsyPXbioMbsD8FQ
-	 hSwfde36mUaB55NG1xLNCS6M+dG62zkaO5S1vDN/XH3QNmCxBRpmaF+N9sA9Hyo7jYpHG
-	 ZhNlbzs9Cyrio4jpBu+HXYiUZYIDHfZy0XC3XyNi8+NOHohEfP0ptQDgzicaju8wyRA==
+	t=1794558577;
+	b=MkIGvgPQ4GCaFCC6nrTk6wZ9qyEI6tiB5H/6gJoiQq6tgDEjZDEGoNHMbdIMq6tX0afM
+	 spYpK6zAzSDQO831ihfAN1skl0vQXM4nKzZ2u2EGql4HocZeZg80cQ2hlxHxB08IE1MJ0
+	 J6FAUCbKFWMg4edIuF1GrhoMNY/rKI6QeoEm5GDvTaRKBGzTnYPF0BnQkCgfIn0MnIHC8
+	 hjigaZOUqrx9s5m6WV0XZ/7hMrpmZEypFl46xD9+g1xIQSNbU+zELiYZAM3+6oh1TRuvz
+	 SQeC+oWLM1R63W1De00g6Xw0raK668yrchYB0wwqN4+LasQmR1a2N8cz/Px3rW97O1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794558218;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=+xvWra1IEANazOUIzu9aYSpzBjP8CbiiZ/8VsGzinn4=;
-	b=iCngHPUVk9gs71XwApXqbAcet2qZTgvBSJKRT7184S1dCvoAZ/hQ4bzLG7Wc+6Mx6Qk/
-	 6kjvJQgAvzyMb5i6PkEeHMO3IMQ8WMlpyi3R2CVT6Lh6Yb1dyEQqhCJXcD1p9ZMxykot1
-	 JBtTo4lzj2PolJWYrb2QjNpCxNOcwTgcwViSvTpG1TX8fJt0fTjO9dpyrpyy0Ee9FvMDZ
-	 HDoEjy4YSuewOr/nAQX9u+jOv1X5j7jWewnwsy3VTnFTARMxk1Qpbr48n4lZW+xBAXyZ5
-	 0+DOEi8OGSFz6bi6lw0mceyGO+J3nKyvPCDedKBz3UethyT1Tk2DhrHU/VrDAhKgR/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794558577;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=1mYFa7xxgjAJeyPToTySUaczpeeUgBwhkLFQ6YEU7hQ=;
+	b=EIq9jK1t5DltnbNT6wngWpevTXp7vjR6Vrrmhrqc5CFWAwKuNzLgS+AFP2o2BKvXobDY
+	 n3bE29PWP4u5t7JZYuuEfd3zHO3eVDsEJrAT347i0u5Kvcne80NM3aKoZAc6O9v5VnflX
+	 WLDMz0iYq2W6y8VD+eJUiTMeQ4DEt6s4R31rdXnCDtiJcQ6cCosFa68n4A3nBQBJNyxT/
+	 6iHLQLCpezHmGWEV1biXmm4tuh7ziXVQk+2MXLOmodSjwI6Xa/yRpwBs0Zu/zZF6bCbQz
+	 2R0BW6yAd2Z4FreG6OnhdZLkfLtzX0t1wc5rcPuIS9CMFVE+gQurqWbMTqrffG+6eVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GU+JXV4Q;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=Z4pVlkPr;
+	arc=none smtp.remote-ip=109.224.244.118
+Received: from mail-244118.protonmail.ch (mail-244118.protonmail.ch [109.224.244.118])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA6760A6F51;
-	Fri, 13 Nov 2026 08:23:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AA6760A6F51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34AF60A3839;
+	Fri, 13 Nov 2026 08:29:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F34AF60A3839
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GU+JXV4Q
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B1D71C4F76E;
-	Fri, 13 Nov 2026 08:23:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1B0A5601D5;
-	Fri, 13 Nov 2026 08:23:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF65B11BC06F0;
-	Fri, 13 Nov 2026 09:23:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794558214; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=+xvWra1IEANazOUIzu9aYSpzBjP8CbiiZ/8VsGzinn4=;
-	b=GU+JXV4QJPFmtQbnhkL9VJX0jszc0OySFQarr89JdBgAZRT+LZu/MiIgtdoT4ptk/co1XE
-	vsGS6kdmJMih+mTBZiY42Paf0jfqPWaS0sQrEYRKCsRXuVs3h7y0GZEXx46e01IYQ4tDdW
-	QgbC1iwhetxZ+CijzqOpweUJVEfygITk0Ez7uGaIhOga5s3OYpAQErtUi2dzqKRK6BXAel
-	f1LdK7ZKYvepAKJhW8QHJQkwXkg5cZVDWJLuzMeHfP+dFCbqU3HDpW9Au/mKkXgY9FNqua
-	Q5OELq4eunCmxyg9bXqytE5A+MO36ZAyOmCSDYGGl0ZQgkgkoW1VDuro8ehBYg==
-Message-ID: <36ecbf49-0d09-4abf-a93d-fc3f92191f7d@bootlin.com>
-Date: Fri, 13 Nov 2026 09:23:27 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=Z4pVlkPr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1794558573; x=1794817773;
+	bh=1mYFa7xxgjAJeyPToTySUaczpeeUgBwhkLFQ6YEU7hQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Z4pVlkPru5cQylQgYvXMOr49LFb2OHKQRpwgqEsPQ8IYOcp5mY86PTpezXkfEXJIM
+	 TSWPAC6obDhtBNj8zBxGTMp4LunDoLDgHI8CkgfsnlwI90lWB9o6nf88ZWXy5JTsyJ
+	 oyg4WoL4zZxN7i4Q4dYHhxADPMk3sh+uRVhA6rIsjYPzgl+bzhDT/FttGFSsPYvf5B
+	 UZxLMtao3ZKqzEClyme06nK7cG5P1Vh00IoMUU72thYfI/lkBUMkmXeqLlIgi6RL8Y
+	 GlCImxsZ7xBP1myXhpZBT84h2pzXJ9nbLH4rhzSnwNydeyT9lMMQhmNIm9Y6BzKyC6
+	 E8DKtqW7gMFxg==
+Date: Fri, 13 Nov 2026 08:29:24 +0000
+To: Ding Meng <meng.ding@siemens.com>, "gerhard@engleder-embedded.com" <gerhard@engleder-embedded.com>
+From: Paul Moses <p@1g4.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Richard Cochran <richardcochran@gmail.com>, florian.bezdeka@siemens.com, jan.kiszka@siemens.com, wq.wang@siemens.com, Jason Xing <kerneljasonxing@gmail.com>, Simon Horman <horms@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Martin KaFai Lau
+	<martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
+Message-ID: <Fhn2gT70aJ-2_eak73NBZYuXuKtVb64PoD8VQ9jwm-S-K0RhZilAg9iwSBJ0RlaiSrRvM1vPw1aHvGPjcktu9GmdBuvFk9244-q2IVOrFu0=@1g4.org>
+In-Reply-To: <4pqljild2fp6eotiicvwbwu2wfw66fzd4qamwt6utirdjxlaok@iiu2f3k7azrp>
+References: <20261105071706.7043-1-meng.ding@siemens.com> <20261110134539.12d860ef@kernel.org> <4pqljild2fp6eotiicvwbwu2wfw66fzd4qamwt6utirdjxlaok@iiu2f3k7azrp>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 8667dd8222532892df754a88db7395758801c657
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,57 +65,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: dwmac-rk: only read the delays the
- MAC applies
-To: aiyengar1990@gmail.com, Heiko Stuebner <heiko@sntech.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-kernel@vger.kernel.org
-References: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
 
-On 11/10/26 08:13, Arun Iyengar via B4 Relay wrote:
-> From: Arun Iyengar <aiyengar1990@gmail.com>
-> 
-> The tx_delay and rx_delay properties are only used for the directions in
-> which the MAC inserts the RGMII clock delay itself: both for "rgmii",
-> TX for "rgmii-rxid" and RX for "rgmii-txid". For "rgmii-id" (the PHY
-> adds both delays, the recommended setup) and for RMII they are ignored
-> by rk_gmac_powerup().
-> 
-> The driver nevertheless parses both properties unconditionally and logs
-> an error, plus the default it picks, for each one that is missing. A
-> correct device tree using "rgmii-rxid" therefore gets
-> 
->   Can not read property: rx_delay.
->   set rx_delay to 0x10
-> 
-> and one using "rgmii-id" gets the same pair for tx_delay as well, for a
-> value that is never programmed.
-> 
-> Only parse the delay values that will actually be used, so the error is
-> reserved for device trees that really lack a required delay. Behaviour
-> for "rgmii", "rgmii-rxid" and "rgmii-txid" is unchanged.
-> 
-> Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
+>=20
+> Then, drivers that use deferred timestamp conversion (e.g. igc, engleder)=
+ must
+> specify a busy poll dependency if they want to obtain the original net
+> device upon consuming the skb. However, this dependency is far from
+> obvious, and annotating it for future features of this kind will be very
+> hard to discover.
 
-LGTM, I was worried about breaking compat but the rk_gmac_powerup() only
-applies the rx/tx delays based on the ID mode, so
+The "deferred timestamp conversion" was incomplete is what I'm saying.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
+This started with 97dc7cd92ac6, 0abb62b68252 and 069b142f5819 were built up=
+on
+it, so maybe Gerhard should decide the path forward?
