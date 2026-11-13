@@ -1,68 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.71.67
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.202
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572574;
-	b=cGK5z8qJDdF8by09dLEJHGDMlT7vc1tInZ53R5cfo4NUxt0wmfh6ht9QZ3wv5RFRa37l
-	 3Yjq1MBgQV3P7O/Fv7HV3YcaDakl+mkzJG98u39A5aaMz2bCsSCQNDrC1HaM5Gz9vW03/
-	 OsXx6hRd5q5Fwii4O1DyF7HrQEcRN9b/OvlXFhHsHifn4lo9cgyEpB+tkO4V4BCmVfgB4
-	 CP8KM3IlTD19MrWC9BcHuNmLi7Fl+lwXOpEqNDb1AJ6rOY+1KH0mq0XM3p3VMS21sg868
-	 7SHkvX0cX/LiFYlS5nwvQDUa3RgXX0IinxWIUXgNKBs4YA3GCBtbnHDpxsNSfRQrW7Q==
+	t=1794572689;
+	b=bWdg/xWmGr4s0deoLb4b7p5rCygERTI60yEAxCuTaF7H156t/LwdNn5zOFPDQXfxWa45
+	 AxhcKzeAY9HPU56aD7RfOluxAYETTPnr0/cuTyWuGNyoVQElDQPRtRI1c+bAWXQ5UXyy9
+	 YQEpi7VAN/BJnOVFitqFrY8BUGXe35Rq283kLPNNFljq5GGT/LDbF4q/w7sxCCvvGT3Fq
+	 KrjIWjmy/qltlq4C5g09TkQ7lGL+A2pOkru44qWbEEkQcNSyroAobrR9F6QKIzdgbgNWY
+	 Hv4NxJ5nQFFJTMgkBaSmbneQVufRcptDIMWNins9lqfIIooUAGTgL9pt01Azh8RDMww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572574;
-	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
-	 mail-alias-created-date:Received:From:To:Cc:Subject:Date:Message-ID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572689;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Info-Out:X-JNJ;
-	bh=CAPJTphDYYFKEENJOeATe0OoS3X41+ZOVJxvbKyL+Ow=;
-	b=ZgQLFFXgN6KiIRKjL6N71RY1ux/RdvRwbt4YMzGDXi1THwbsVwwZmu7cbDkp3JpOvieg
-	 S+9HqauS+tbNmFMqQf1PUuH6N9h48X+OuoV+okN3t4sAGSZQUVdYMcycL5IW7T2xIo2dB
-	 7NjasPk/LsqniMWPxkRI/Fe0KBWykKmfKHH2bxRl3IBzBUUsHZ5hUn1VuPy95toss1g8Q
-	 myLIXVsD6CYBbWNTHGqzkYs4BfneTRyvCg8n7pbq+pRxX5BA9cCDoiyLwk+Xzb58OD2J7
-	 butbgyFC+dhDU/yBRsp3Qc4suDtnfDoOd3zKojcohzu5B3h0oooQYwZ429zwHh5cpLg==
+	 Content-Transfer-Encoding;
+	bh=vUQoKJTRB64FqUDu+PSq1SdeEdNWmuZGiya1/1IMQxU=;
+	b=kteikhhfvg2eSuUJo51vyrldNGXVr+QJNDQCFjHKvarp71CidaxldzrXknE7kEgr9wZK
+	 icSl/7Zx3XlAAmOtGsbjXjR6WikISt4rMn0OYRZZ/eGvOcHtjFSgB7SdrkSVc4hNOSvDX
+	 VaQrcYrUrfsIGSQGdVDznd5gIRVAVD9hs+iB5lLo3qR+ON+kZRDauClQxctJQIqjD9lE+
+	 hpqvTHbGTzMlUVta+ynPC2ebS6HOFFFskySf6trxTsC0ujKHFz+o5ZQRRorm/sy3OjsLW
+	 h5i1+LokKN3efqcjmTrlwOmwUX6Ghyb15IXDkWGx6K9yKQCJ/BAJHK3mTsXRJII3BwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=verdict.gg;
-	spf=pass smtp.mailfrom=verdict.gg;
-	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KUMlAOWr;
-	arc=none smtp.remote-ip=57.103.71.67
-Received: from outbound.mr.icloud.com (mr-2005g-snip4-4.eps.apple.com [57.103.71.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=kcQhkSdW;
+	arc=none smtp.remote-ip=203.205.221.202
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C519060A3807
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:22:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C519060A3807
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA060A383A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:24:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DCA060A383A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KUMlAOWr
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id 2317A18002F0;
-	Fri, 13 Nov 2026 12:22:49 +0000 (UTC)
-X-ICL-RepId: 01a1d4dc-4dd5-7c87-9bb1-eb56a6bfed53
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794572573; x=1826108573; bh=CAPJTphDYYFKEENJOeATe0OoS3X41+ZOVJxvbKyL+Ow=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=KUMlAOWr6DV2m92RyUnR/G1u7oVsHeNmI9PIKh80FwQLG4n5/7rmmikoRcl/yda4wU0Y2cjAeeY+chb33t3yARRckwsmTY2T1NvDIstVXxh5rWzq0KcQSB+0NE9cb5izB16gyrva5QxNb2XhFIlry9W05YIJ32QlRhtcBVMJNMKL3QVdfHwY6GmgyTdbjVmltNNNDSUeXYj3shCnDiUGzPvr/4SgEqSwgfzBcZDAIwTMjMmwyY/IeSE6gaoOOEKTAbLevNPqv9epKYZht7kDlnQhqNF9ojo6rZjaSkWfFMBWH1xAGhvp+XW5fO42FR8HdmmNo7RPty4Zz3h+crsa7g==
-mail-alias-created-date: 1621344842221
-Received: from DelNac.mail.msk (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id F054A18002EE;
-	Fri, 13 Nov 2026 12:22:46 +0000 (UTC)
-From: Vladimir Vdovin <deliran@verdict.gg>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [PATCH net-next v3 1/3] ipv4: Only lower the pmtu of the other paths of a multipath route
-Date: Fri, 13 Nov 2026 15:22:35 +0300
-Message-ID: <20261113122237.88990-2-deliran@verdict.gg>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261113122237.88990-1-deliran@verdict.gg>
-References: <20261113122237.88990-1-deliran@verdict.gg>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=kcQhkSdW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1794572685;
+	bh=vUQoKJTRB64FqUDu+PSq1SdeEdNWmuZGiya1/1IMQxU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kcQhkSdWR9bzOBC6lgiAjvroe677BOWbzs55cFc0YgeU3VqjAj8ZiWzPp1gwfDkT6
+	 XUd95a1L8+jxjmU3gJgo2A6F24gbYzRrqp7MMPatwFHN9E8sP9dRqFrEtYfNruTO/x
+	 HulRfKoMGDjFQH6MMtKRrtyl96D7GvLUxfqYK7Ik=
+Received: from localhost.localdomain ([240e:3bb:3033:7d41:3d43:876a:14ed:84bb])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 6280BA3F; Fri, 13 Nov 2026 20:24:40 +0800
+X-QQ-mid: xmsmtpt1794572684twlywm79q
+Message-ID: <tencent_59DA758E2D9AE574063C0A0EA094E96AA507@qq.com>
+X-QQ-XMAILINFO: M+5cKLn0wXDtx8ER4eIXHpu3ejEWSni9N08cPPf0elsIfQeAesimD8IgTw7hNk
+	 xNxCbYNhLGSKZRF8NjqpUqZtyW+S7AOu7QTOD9p5UKV4tnAvx5d1U18tSIAl7jEAkSEcUWSCFuMy
+	 CMxhA8OWUm11vG2L2IP2LLCUtYDuzLJvSPHmYbd8flcmI9ThJyW81XlSt396qqn/q7JtrYjNcZqw
+	 Qbjv5W+UrNsD6kW+zCRzJYeQKZl9LVgJtNNP/9A+NX20j//eZy0erputUPoyLZ4rcOydkkswsNdQ
+	 fblEdMHA2ZP74U98UQko7cnn/rMUk5krAuu65581J+9TX9nunN5GazXoK6lce173W3eq4jxv9xtA
+	 kP7FWGoz9gLFwpwHar3FQqjGAk6wxgt4s/O/nHfy75ZdEBl9+LdGBq6H4ApfkrPIBpdbNJW3U5nj
+	 7jU7sYtz2Uh54Qu5AXvdAeAoqU5Y4MNNrcQN2unXcEk1F+3fTMZdy7vslnjOajl78gBw95LXywVD
+	 dRfJTVVqQLAN8nU/j7A/GJploxiaUKwzmrPlmC/csJLQZ+JS4Mcjm1971t9VsWya1SP08mmtDBl1
+	 dHX2e8BbInAYh2chzIpU2Zok8i1Kbb9RaJrZLM2PbhkASFoWvWER5y9MwxkJWBBJzpRCiF1dmDNh
+	 lb4Qh2sXud9jJriTTMLsr7/y+2jV7xs7WyZBaMi59ZiHEnlzfmzD2msMgvaVYBqNvka7qkaSp1Gh
+	 KyhDKD01WwNuLHumoxrn8T7tY4H1aTypVdWRLgC4/6JK+4XqRBpd12HLEbyYf9lc9TmBVIbA1d//
+	 37jdngk8mVCZVOzMvdyFZiRhOyyaSfuItIgCH55f0Qc1kIz71Uotu61zUeFDPqV++7aP5wp5V5rg
+	 6Hw8/dOdTY1LbfjOBkgIkAwDyWCnKtmVFMneZ5qhFhO1D754oIEpSXjvjCQXozJox+4BMsKLWjrT
+	 dA2rHuxLg/qL3w+NrZtmzInDABvvZWx9jfmF7LOpSLm6KqrxOgwvTC17Z9HxWffJCaRfeSWe9B+2
+	 +ilawPH2J2Tug7iqJDJmUEvgW+U0gARIBCbOX5FdCAweT0wdrC5N7oIs2cRShajXYezPRPCG5RDS
+	 bMFxEO
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org,
+	daniel.machon@microchip.com
+Cc: Steen.Hegelund@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	memoriaru@foxmail.com
+Subject: [PATCH net v4 2/2] net: lan969x: fix RX ring stall on frames from inactive ports
+Date: Fri, 13 Nov 2026 20:24:39 +0800
+X-OQ-MSGID: <20261113122439.26292-3-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20261113122439.26292-1-memoriaru@foxmail.com>
+References: <20261110105239.5olhrlwa3mck74f4@DEN-DL-M70577>
+ <20261113122439.26292-1-memoriaru@foxmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,110 +85,68 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: iYPjl1fPsKEE3JDTr09BaKW-U0xrB-pa
-X-Proofpoint-ORIG-GUID: iYPjl1fPsKEE3JDTr09BaKW-U0xrB-pa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX3ZuI9pm4zDZg
- 3V56i7+rCEIIu1cyXBD1u3M7nF6LYS22bJYGXBiqUgVwawnPGZpu3/6p8KR8RfHYCTDaI4PI/bC
- hcO4Hs0wkDjZzTsGIIkkhmBuJX9rNacw8DA3u6+C5z5MIqvTh1dDSmZtZfVKV5hwWwimqllo4Yo
- 5YAD9a2VULrGvv4Hfe/Ldg0N67pExXGjSDpCl8cuTMI6IdfNcAGhJoxtaoXPLUF2eUq1PgPf3xc
- rLB99GJ64iaQX2sLUGL1oC5qNTDT3aRzihjVYfeHm+TuXnJq5H0xbEyI+d/62rGE5RBo2nOuEfs
- UKwLx3bD88cir2hIazGWmmZ5eOr8LP1ID3KAlsSjDThJM86VtvTk+24YjC1Ic4=
-X-Authority-Info-Out: v=2.4 cv=WrYm8Nfv c=1 sm=1 tr=0 ts=6af7011b
- cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
- a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=LRu4Mgyf0Pww-iI-pl8A:9
-X-JNJ: AAAAAAAB4dz2jpGX6Y8hexPYNj6OFg2unHRmK+2Rvda4H/yTk1YfO3l4d9GDdMwTvTW0sk
- PMc87Ibp0SFXYpR3KdGLx3rBzb4qEWNTMyAFoMr+5HnD/9mSOIyUywHGk7drnJXEWKWFhY
- 81oB2c3A4uSg8wnRRo4VbiCVth0FBKpAayYFXh56otv31g8s1hrVUcMDBWfsoS5gyba2TT
- fPJPjPnO5EoWD8UlL5Ekkmaxdu3ljRRThxnjk36vRMhuyMJinoG0hL/kFUd1c3s5B/9H0l
- NGfoRdcTeJWBV94Pc8H+MJwfn93tMCOxomVV0GiCjCKlsvOKSAINFVRV1eE88hp/DODMpL
- hb6y2IA+kUPep9cryGAkJhKDIptwW6Rlk2zNpa7dl3FzVr/+tQW4Ls3/J6d/7VnEnBSB62
- d7i2Uzw2Glc2NIZR1QvQJn4L0nl9zRtQIJlvEZsvx5N2FLOUhuVjQcafzy26ROTiaFy8Wl
- nNmyPmkmAxeLkifvS9e/l3rFQiVXVTzMdzWNUUsDKdg5t/X38zmVW4BSurFTz5rDn7/u2+
- X3nuXCar7PFdWWXCKTS8lSn4Plds4BxwMl0+X/sHdrzG7PdQNYzl6F2QJY72jk7Aumi6Pb
- uNjJYYGRq/kT7Eo+5zR+AWuinFQi4Aj7NyFKmwntFh8K+ib+8ab0aqk78HDJoGMWwZYId7
- ol+/56857PB/t8l3ayudTLJwerD/TV9kDH8Uoxqv4/8MZsrys3pWq266G6wvNgDrcP1Wz/
- UJ2+bEVxKd5Nc540lrlG4jETnron2PXsyiiErEeHEQHAxUHmGUiXd60NRNLE7aU+ZTd9Bs
- EaLq6EsD9i9prqokjqUfVMGaLPOF9wi0nB+MLvi2Fi6pBQ==
 
-Since commit 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths
-if multipath enabled") __ip_rt_update_pmtu() caches the mtu of a
-Fragmentation Needed on every path of a multipath route, as the lookup
-there doesn't know the flow the message was sent for and may land on
-another path than the one that flow is on. But only that path is
-checked against the mtu, by the old_mtu early return, the others get it
-as is. A path whose device or route mtu is below it, or that already
-learned a lower pmtu, ends up with a pmtu above what it can carry: its
-flows send packets of that size, which don't get through, and no
-Fragmentation Needed comes back for them until the exception expires.
+From: Zhang Hewei <memoriaru@foxmail.com>
 
-Skip a path when the mtu would not lower what that path uses now: the
-pmtu of its live exception if it has one, else the mtu of the route or
-the device, the way ipv4_mtu() would report them. A mtu locked because
-it is below ip_rt_min_pmtu is still written everywhere, it clears DF
-and has to reach the path the flow is on.
+When a received frame's source port does not map to an active netdev,
+lan969x_fdma_rx_get_frame() recycles the page via the page pool and
+returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
+loop without advancing the FDMA software cursor.
 
-Fixes: 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths if multipath enabled")
-Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
+As on sparx5, the DCB still carries its hardware DONE bit, so every
+following NAPI poll picks the same DCB, hits the same inactive-port
+branch and breaks again: RX traffic stalls on all ports until the
+module is reloaded.
+
+Unify the NULL semantics: NULL always means "frame dropped, page
+recycled", covering both the inactive-port case and a failed
+build_skb(). The poll loop then advances past such a DB like it does
+for any other frame, dropping only the bogus frame and keeping RX
+alive. The WARN_ON() backtrace is also gone, which previously slowed
+RX to a crawl on every bad frame.
+
+Found by code inspection; the stall needs the hardware to emit a frame
+with an invalid source port, which cannot be triggered without
+hardware. The drop-and-advance form was tested on lan969x hardware.
+
+Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
 ---
- net/ipv4/route.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../microchip/sparx5/lan969x/lan969x_fdma.c        | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index d0a5f6d77094..f0da009f4115 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -150,6 +150,8 @@ static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
- 					       struct sk_buff *skb,
- 					       const void *daddr);
- static void ipv4_confirm_neigh(const struct dst_entry *dst, const void *daddr);
-+static struct fib_nh_exception *find_exception(struct fib_nh_common *nhc,
-+					       __be32 daddr);
+diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+index 053d125..4181a9d 100644
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+@@ -113,8 +113,12 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
+ 	sparx5_ifh_parse(sparx5, page_address(page), &fi);
+ 	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
+ 					       NULL;
+-	if (WARN_ON(!port))
+-		goto free_page;
++	if (!port) {
++		dev_err_ratelimited(sparx5->dev, "Data on inactive port %d\n",
++				    fi.src_port);
++		page_pool_recycle_direct(rx->page_pool, page);
++		return NULL;
++	}
  
- static struct dst_ops ipv4_dst_ops = {
- 	.family =		AF_INET,
-@@ -1046,6 +1048,26 @@ out:	kfree_skb_reason(skb, reason);
- 	return 0;
- }
+ 	skb = build_skb(page_address(page), fdma->db_size);
+ 	if (unlikely(!skb))
+@@ -258,10 +262,8 @@ int lan969x_fdma_napi_poll(struct napi_struct *napi, int weight)
+ 			break;
  
-+#ifdef CONFIG_IP_ROUTE_MULTIPATH
-+/* The mtu a path currently uses for daddr, as ipv4_mtu() would report it. */
-+static u32 fib_nhc_mtu(struct fib_nh_common *nhc, const struct fib_info *fi,
-+		       __be32 daddr)
-+{
-+	struct fib_nh_exception *fnhe = find_exception(nhc, daddr);
-+	u32 mtu = 0;
-+
-+	if (fnhe && fnhe->fnhe_genid == fnhe_genid(dev_net(nhc->nhc_dev)))
-+		mtu = fnhe->fnhe_pmtu;
-+	if (!mtu)
-+		mtu = fi->fib_mtu;
-+	if (!mtu)
-+		mtu = READ_ONCE(nhc->nhc_dev->mtu);
-+	mtu = min(mtu, IP_MAX_MTU);
-+
-+	return mtu - lwtunnel_headroom(nhc->nhc_lwtstate, mtu);
-+}
-+#endif
-+
- static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- {
- 	struct dst_entry *dst = &rt->dst;
-@@ -1085,6 +1107,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 				nhc = fib_info_nhc(res.fi, nhsel);
- 				if (!nhc)
- 					break;
-+				/* old_mtu above is the mtu of the path dst
-+				 * is on, don't raise what another path
-+				 * uses. A locked mtu clears DF and goes
-+				 * to every path.
-+				 */
-+				if (!lock &&
-+				    mtu > fib_nhc_mtu(nhc, res.fi, fl4->daddr))
-+					continue;
- 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 						      jiffies + net->ipv4.ip_rt_mtu_expires);
- 			}
+ 		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
+-		if (!skb)
+-			break;
+-
+-		napi_gro_receive(&rx->napi, skb);
++		if (skb)
++			napi_gro_receive(&rx->napi, skb);
+ 
+ 		fdma_db_advance(fdma);
+ 		counter++;
 -- 
-2.56.0
+2.39.5 (Apple Git-154)
 
