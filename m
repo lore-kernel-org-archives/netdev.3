@@ -1,67 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.60
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794547435;
-	b=Q2Mo5YI+Nckg0hdpdNn5IcjxmH7XkUYl1Q86NihWqOwomciPwOmzKlc9a0NoSbxAlrJb
-	 +RAq29BNuYfywqhy2gFdZ7la8WMd+8GEQnY+Eea2s8/JqlAksceBaG6gHKf2sfmvrzk9e
-	 eIGceQbz2FzRC8XP8h6mvR228VPTSS09fh0eY/A5oW29JHRZQgvOKJWlIU4UUqxXE+xRs
-	 5TVtKO1tbwSGXb99AvtnyssGo9gzAECqUoAPicdBJlHnPpAZElLNxIA04Ntb0oNNfD94p
-	 NTzrLl6UIcrAWcXw9a/7dh1xnFy0gPof/TjE0Qy00tYU5R8R1izZP6Jb/llBIQbpaNg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794547435;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=yNTGZ6HgL81sFOWpVaEuJsNuoy6BFVlh8YpAP+qxSFg=;
-	b=ZUfwU9HzZzsMy5U7bp+SiXYjuc1+vE8q7zXtJ2XgqSwDI4G75zwKq2EdBSdGCh8swFWF
-	 cBS2n6qYD7qy8drc2wwc22zK9h3rW/5yIy5rxhUNjqRFjj3q1c5jSmpMAOvUReN2eZJAq
-	 fZRvg8lNFaWFbVribkJ9PTzqdHLgr4ftCnr74bN+hOgz1CM2EBSVdhRI8/31QzSZdNYVy
-	 cvPrDQZG6gN6jBEuFdHIH9FISfVreGM0Vq9MdwOGWFRphgpHhc5nJUIEYQsEkhBKWwpfc
-	 /sPUtSGTP+pBei9+G3phEXN7jacPRYut5gJaPS1nFZH4OH8EoPRGBPC468epW1wrlww==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WSU2j+Xi;
-	arc=none smtp.remote-ip=95.215.58.60
-Received: from mta1.migadu.com (out-60.mta1.migadu.com [95.215.58.60])
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794547871;
+	b=MA0zh+myPV8Tt78BkF3xt3XHbppDeEQjhSoNmlff/MHqd+Hki/n+awWHlVBgpmo2n3t4
+	 Tek6M5S0L0cRo/YPAYbCgkZ6N/mFhZcfO0+aQgc6iCdCRW9tbwkESDwO/KauGJeaNWBMA
+	 3Oqu29BPN9kiYIPVO/h+bfcOIpcaFksP0UdtSqqF5ir2RXcCgJbV4xsdffWovyGQcsey5
+	 vdySFCDZCzT+gyzJZxOPn3eSKIQcr0FCReMwb6s4AbHudfuYlrerrp57uwZPnvqOZuXXU
+	 MYuHGra6Vogs4bVNG5gK0sRt7TOTLPVQhdUF0+jYw2Fv+kwfaxm8lkAhUbmg5fN1j9Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794547871;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=w43UbU37I+5iOET4dygwr5SwGRkUmEoClUGG8OTjGgI=;
+	b=lfbsa6FjMUMtRUerqOTqoz2R6ofLi3EANhTWESIZOcZN+bHrF5D1ajBh/ggJWNxPthvl
+	 +SndtWhQvgSjUZHAUFoMSrw+xtLpVcemcNl9imDHMhFS7flLkGHOMFGClVHuZoHa/fp7B
+	 FS9liUemAUFf3C3nJ8UQowV2BruobjnIt9O9+Xk/v93Z0hMtv7DOW2TvxAs3oXt7i/nW7
+	 o0Ch53UwKEvEo6QmFUFZ1OFJ3ZTQ+YahMLUTpjwi2FjX1c5vlP2GdUnfgEZ70IKxJEInF
+	 AUDSp+2zwCQXow0BDDFwQC69PsIbar//NPit454HLvVCqczrsD3t4gddBettqtjmU/A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="VTU/Umv/";
+	arc=fail smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205D0606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:23:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 205D0606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65F9606A327
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:31:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B65F9606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WSU2j+Xi
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=nETvmS/sv7eeoqiH4Fl5bLT2YjeMLjjRzngwbfcsPpQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794547432; v=1; x=1795152232;
- b=WSU2j+XiebmLYrNp9W9Shr5UPkdngXfFdyHjKmniofOAAt9fjXRSY/iLichbVRWTGtxXt4sX
- JjF8L2FBD87afjzdgjU2hpsIt5msQMEFDF3XYfxRr3xsBch1EXFD4KrFVOt28WP9y+gU1GWuzpL
- hmqlSe7b3YL16n2sSPstAkf4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 4c369a421a5cba68;
-	Fri, 13 Nov 2026 05:23:51 +0000
-X-Mizu-Trace-ID: 4c369a421a5cba68
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 13 Nov 2026 13:23:40 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Pin-yen Lin <treapking@google.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Bjoern Doebel <doebel@amazon.de>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org, Matthieu Baerts <matttbe@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Jonathan Toppins <jon.toppins+linux@gmail.com>,
-	linux-kselftest@vger.kernel.org, Hangbin Liu <liuhangbin@gmail.com>
-Subject: Re: [PATCH net] selftests: bonding: fix failover race in
- bond_options.sh prio test
-Message-ID: <avaewOJD7tX1UYfE@fedora>
-References: <20261112014942.2946303-1-treapking@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VTU/Umv/
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b71ee00f0dso4647a12.1
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 21:31:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794547869; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QL80SDIZn+SRqPRPXbLJKFQ9t7gRPEdN2uKQzrjVHWn5pcIG6QZWNAEd2U7LztKIYK
+         E2N4M2vbENk9OxuSv4ZwabLVstMqNf+H51HTVSpGNUo1LsK2X/BGb1CjTBqvWSS1kx8s
+         EsFDynwUjZYDf1jD/a8uKoap4wkQM73LxNya8J+9x4HQzrL9AYVGHNJ3bVHfG/1yhyRc
+         ARECnYeCuCoRCfPhlnpj3XMEKWY5+Eg+JGbfDgNo+5FT1sewDJAvU1+WZfWkAWUeo0jC
+         DoyDafiEQ50IOikwtpEjtAi9wN+Doe6KrMGHbJoQZ//FBa827/YZK2sJPwD84xmftKCC
+         FbwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=w43UbU37I+5iOET4dygwr5SwGRkUmEoClUGG8OTjGgI=;
+        fh=vWlqezP5Htfxewai80i/EY4pLyLbw0XT6gnlTaEVlQo=;
+        b=J1BGxrxmb5siXYSnjiOYLpyyvCr549zWg21ITvNA6iHz6wKcTPhlj/TcIO/yjbs21v
+         2ztvmFuZsPs5kgl2gznemhZkEJUk6wswLyjutJsJpqci4XrMPAbaQcXK8NYQSkTstu9V
+         wfJCKPpKdcLxFiudcIpdmfte+Z89QmnWYQboSLoVEqvdcyisdnnONZv1RZofx2X2zv1h
+         x8dJhrgl9d6JPXqStFpLOc4LsE064mt+0p5Vnmz5ox80hr7f2ao5GWanIr5plXQPaRyH
+         aF6Cu3n1VzuD6wy/8zVJG7HKToFL+CnOUr7fowRV1VEh7AEFxtF+96JYnbjbwzEnFibc
+         LEwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794547869; x=1795152669; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=w43UbU37I+5iOET4dygwr5SwGRkUmEoClUGG8OTjGgI=;
+        b=VTU/Umv/XxRmtX3d/XSHHHzSkVNlCjGAiWWmvRpYtATJbDMspOvWRWvSyyqUeqeGeO
+         Q8uCINspbjVgU1zSuH+9UnHcqxv8cjRjT4BNbJxmhaQFB8TeexUJIOYqLp4e6zCgNF7n
+         GqWGMPJWmhxv2jXRWVtVDAZqa1EhqIWzuIWQ7K3QsEysQ+usM5G4CvZUur47OQUqnPpY
+         PP7Up96FsigDTcgDAk4n7JTplwxHbQe689kspsrS0geT7o0ItGIgt0vez+TupVh2sN/m
+         e+JFPSRT2SGGBWIOmeouwuXUS1RYlIiX34y+UZSFFdexoH4xWaCTbeVKnfpyGGT5KVCu
+         Qs2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794547869; x=1795152669;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=w43UbU37I+5iOET4dygwr5SwGRkUmEoClUGG8OTjGgI=;
+        b=qZaUO9brM15d2/T6yWbHQH7tC/kg0DDfQzpfjeOtYQNHcl1yec2b0+YlV2zwVHwQ2H
+         ZSkHkPPKT7ts1l+diPGNv+Wym1T+OnqLWebJcmqasnVF86Ikxos1+8ym5ybpIHBwWoe7
+         CIfq6QhaF947UBo0POtF7t9pnGlRY5K6vFrubx9h1pkW+HMwYu043bkd/GAg0Of8LGsG
+         CFzoELlOrID9m3EKRHiZqe6eCll8IZbbJBbf381zM7NoXpU+/JpYubN0VzZRiuhCnIYY
+         A58YQ/DNIfRw0h+xKPbdP709hGX5fAWL66JKU/VZbN+BBrJxkr81edgn/dYwp6LFYLel
+         PPHw==
+X-Forwarded-Encrypted: i=1; AL+hErGNKulmRQZao4sRb0YpK1pCevp0aco598j3dnZin8TXhhvpUDsJP0Cdygy3sIJs1y/tEc6tZ1M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9g1VKi1CoTuElOuhotudg3Tk5EomkfXAciI5cDnsP0IwoGZfPq
+	YCZ65z/L1kTu+56DDyhtHfWrY3JPleUU3u71rdAwZS3siKRk2a+Rq5pc8A//VMFO1i1cT0cLrif
+	Vla0XfNs2eecuHMFwKvNRA4sHD1C7I55bHIMrMHeP
+X-Gm-Gg: AYBFou3MJI9p+CVHsIhMBjGweoy6RrDqGSTwvevKCzvPSuV3Z9ZMyr5tKhAFAHYGOLC
+	Gdu6wY5z9+Pvy8RofZUkrUG6jCb1Z0a+Tc/dtdiSLWr7Vh2Uzboi8D/PQDONlh/K+XkmmA0YzHD
+	G93VpH4HudEBcl6lNZ7p3yJstjsUgo4c9wEDwJk/Wi0zPUhscPdDzLF0dwG6N7hgNgHZHQrSJhU
+	8zjAia8MtvtKGGG4tS4MlHt/SWI+SlFY3d82VWIP+BIRJ1Iv0j7AdBG0pk9WNRzNHRwGrzxyqoq
+	0ZThBJp/+epzkTtYJk3oWYjGcAZZA9Jr/rw+q+T4TYA0HNunp+VVvxGm1Ff6mCGji/vj8FPsAUk
+	JQJLUspSuDreKriCn401A9r1evrv4eTNH4fo=
+X-Received: by 2002:a05:6402:50c:b0:6b1:bce6:1220 with SMTP id
+ 4fb4d7f45d1cf-6b7c82ccc67mr31403a12.12.1794547868632; Thu, 12 Nov 2026
+ 21:31:08 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,138 +104,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112014942.2946303-1-treapking@google.com>
+References: <20261110102039.1002605-1-bjorn@kernel.org> <20261110102039.1002605-3-bjorn@kernel.org>
+In-Reply-To: <20261110102039.1002605-3-bjorn@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 12 Nov 2026 21:30:57 -0800
+X-Gm-Features: AclHuK8G8jI-cBJtcQSxvGp_Bq701GaxLVhNUpqBJGdSCTN97QaxO6J0E1uIQ_U
+Message-ID: <CAHS8izMaAv6gX1NeJR+QCf43CL+DC4DgePRNNxSLoE31jxHU0g@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 02/11] net: Add memory provider capabilities
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, io-uring@vger.kernel.org, 
+	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi <bestswngs@gmail.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Stuart Clark <stuclar@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Pin-yen,
-On Wed, Nov 11, 2026 at 05:46:18PM -0800, Pin-yen Lin wrote:
-> The prio test intermittently fails in the arp_ip_target and
-> ns_ip6_target variants:
-> 
->   TEST: prio (active-backup ns_ip6_target primary_reselect 1)   [FAIL]
->   	Current active slave is eth0 but not eth2
-> 
-> The ARP/NS monitor marks a slave down when it has received nothing for
-> too long. With arp_interval 100 and the default arp_missed_max, that is
-> about 250ms for the active slave (eth1) and 350ms for a backup slave
-> (eth0, eth2). Every 100ms, eth1 sends a probe: eth1 receives the reply,
-> and eth0/eth2 receive a copy forwarded by the gateway bridge. Once eth1
-> is down, its probes reach no one and no slave receives anything, so
-> eth1 normally times out first and the new active slave is picked by
-> prio:
-> 
->   t=0    probe: eth1 gets the reply, eth0/eth2 get a copy
->   t=10   test sets eth1 down
->   t=300  monitor: eth1 idle 300ms -> down
->                   eth0/eth2 idle 300ms -> up, eth2 picked by prio
-> 
-> But the test takes eth1 down right after bond_check_connection(), whose
-> ping replies only arrive on eth1:
-> 
->   t=0    probe: eth1 gets the reply, eth0/eth2 get a copy
->   t=70   ping reply on eth1 only
->   t=85   test sets eth1 down
->   t=300  monitor: eth1 idle 230ms -> still up
->   t=400  monitor: eth1 idle 330ms -> down
->                   eth2 idle 400ms -> down too
-> 
-> eth2 can then no longer be picked. eth0 becomes the active slave if it
-> happened to receive some other packet (e.g. an MLD report), otherwise
-> whichever slave comes back first does. With primary_reselect 1 or 2,
-> the bond keeps eth0 even after eth2 comes back.
-> 
-> Before taking the active slave down, wait two monitor intervals
-> (200ms), so that at least one more probe is sent after the last ping
-> reply and all slaves last received that probe. The miimon variants do
-> not need the wait, but the extra delay is negligible.
+On Tue, Nov 10, 2026 at 2:21=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
+.org> wrote:
+>
+> The core treats every memory provider as unreadable: installing one
+> needs header split and no XDP program, and any page pool that allows
+> unreadable netmem takes it. An AF_XDP UMEM provider is readable, needs
+> XDP, and hands out whole buffers.
+>
+> Describe providers by MP_CAP_READABLE and MP_CAP_FRAG; devmem and
+> io_uring keep their behavior with MP_CAP_FRAG. A page pool takes a
+> readable provider only with the new PP_FLAG_MEM_PROVIDER:
 
-I'm afraid the waiting time is too strict, especially with a debug kernel
-since delays can happen.
-
-Bjoern is also fixing[1] this issue by pinging a non-existent neighbor to
-keep traffic flowing. Would you like to test whether that works for you?
-
-[1] https://lore.kernel.org/netdev/20261104142018.552135-1-doebel@amazon.de/
-
-Thanks
-Hangbin
-
-> 
-> Hit in our CI on GCE VMs (4 of 51 runs); the test only uses veth. On
-> the same VMs, 7 of 30 loops of the prio tests failed without this
-> change, and 20 of 20 loops passed with it.
-> 
-> Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
-> Signed-off-by: Pin-yen Lin <treapking@google.com>
-> ---
-> 
->  .../drivers/net/bonding/bond_options.sh       | 26 ++++++++++++++++---
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> index 187b478d0ddf..16c1c2d97005 100755
-> --- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> +++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> @@ -13,6 +13,24 @@ ALL_TESTS="
->  
->  lib_dir=$(dirname "$0")
->  source ${lib_dir}/bond_topo_3d1c.sh
-> +
-> +# The ARP/NS monitor marks a slave down when it has received nothing for too
-> +# long: ~250ms for the active slave and ~350ms for a backup slave with
-> +# arp_interval 100. The backups only receive the copies of the active slave's
-> +# probes that the gateway bridge forwards, but the active slave also gets the
-> +# replies to the pings in bond_check_connection(). If the active slave goes
-> +# down right after such a reply, it times out in the same monitor run as the
-> +# backups, and the new active slave is then not picked by prio. Wait two
-> +# monitor intervals, so that at least one more probe is sent and all slaves
-> +# last received that probe.
-> +bond_link_down()
-> +{
-> +	local slave=$1
-> +
-> +	sleep 0.2
-> +	ip -n ${s_ns} link set "$slave" down
-> +}
-> +
->  c_maddr="33:33:ff:00:00:10"
->  g_maddr="33:33:ff:00:02:54"
->  
-> @@ -97,12 +115,12 @@ prio_test()
->  	check_active_slave eth1
->  
->  	# active slave should be the higher prio slave
-> -	ip -n ${s_ns} link set $active_slave down
-> +	bond_link_down $active_slave
->  	check_active_slave eth2
->  	bond_check_connection "fail over"
->  
->  	# when only 1 slave is up
-> -	ip -n ${s_ns} link set $active_slave down
-> +	bond_link_down $active_slave
->  	check_active_slave eth0
->  	bond_check_connection "only 1 slave up"
->  
-> @@ -134,7 +152,7 @@ prio_test()
->  			;;
->  		"2")
->  			check_active_slave "$pre_active_slave"
-> -			ip -n ${s_ns} link set $active_slave down
-> +			bond_link_down $active_slave
->  			bond_check_connection "pre_active slave down"
->  			check_active_slave "eth1"
->  			;;
-> @@ -153,7 +171,7 @@ prio_test()
->  		check_err $? "eth3 prio is not -50"
->  		check_active_slave "eth1"
->  
-> -		ip -n ${s_ns} link set $active_slave down
-> +		bond_link_down $active_slave
->  		check_active_slave "eth0"
->  		bond_check_connection "change slave prio"
->  	fi
-> -- 
-> 2.56.1.703.gf848ed807c-goog
-> 
-> base-commit: 665b4149e91b781a71bce8637c3a4d7d64dba05f
+Why do we need this? I thought whatever creates the pool actually
+shouldn't get to pick whether the pool picks up the memory provider. I
+thought if core has configured the rxq for a memory provider then the
+pool is forced to take it.
