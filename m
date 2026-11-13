@@ -1,90 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794611556;
-	b=jPRjrsOH2ms3YHKwXfJrN4nWNFbEfSjKQZqcIhT4uHse0bx28/IJWZ9CQvjJtZcQ9JMI
-	 XsaCyT3umAuioQuYybxNBJaRsCCZQOj5tRtoQvDm8e78VtoGGjKn/qZNy6qiEAynQUesQ
-	 0jWU5QHJlVc3HW7Y/uTH/bb2fsWcJEHVGnwluVjoBw8Ps1JUbZcmQoE1Mi9rckyai1S9M
-	 04tLIZ8Cee8YcGbmgYRHKBOm3z1lIEsJ3j2dtrP5THbe5xfEreSkQs4dQZCjYbJk3i118
-	 qubjeD0In3tS1kDdLTW1GN8i+LYSr4nA3heSJl7mT0lqBIgQU/XrO7ZnQ6XxOrJLrJA==
+	t=1794611896;
+	b=C/VRPpQ3XTTXxdIIFdsmqEX4zUq1DIeXe6uEjrS2BntwirM6yw81Dh8Ti6iTZVEafhMF
+	 v0Y92P4g44eKYLDPGB2MR7ARSPSCyXzIFeCRIED2oWzhCEkPHqVMfU/DqnIhsHqi1Mn5b
+	 m1bPEJGp7K/LGrx8OmQt1FqggqTFG/hLPRIceuiqmcmOm+8dw46FmQQ5N/C3/u0JqTJCL
+	 m5gcY1GQj+ZCpypvG5Bp0icNQFCP3vNZYqBYAEUHTK9V/m8ZaAcARQZXxqyFkU1qtjpEU
+	 U8Hi1j6kMbV+sYtU492cV5CVMP9qitNu1JzCOgjdijxR/aAOoEFy0u6fxNwBA/NdAKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794611556;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=+6yVjCRm7kQgtN/Ys75rMDZVr3H3S+6MSu7jsNw554M=;
-	b=3IC+4zx4nqZjNRM9Qa5qUL4K8OO1MvDTxhmYGtit/0eC9FY+R9FOOy/NHAHFEY7hMuvT
-	 adofQfmRgZ0jE76J6KnVbwXZhFX3ewhykSowdp734F75Nq8vhVFEdCpSQchZOUrGnL+Qu
-	 GXqyp9vJ03gNp+SXzZsyyqxc9VjwOFFqwC7IbNgGrVyDiPF0X2eiY0D3qZfWr6F1+X+6y
-	 TQyVIfwS7eHG+SRslaiSkmujXawL12yk7eq5t0nvCgKn78iE2HvZKTVIy0ISu3WFW/lQq
-	 zC2x6ef5KA1M23md6UQfOIB4f7bpDwGeDPwBePeYpp+ltjscRak9SiAfT9nvqDP7uTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794611896;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	b=cxAKsVB1GO3iitIbPEeQ8THd0oqnbpWMvO+nmhRp3EBUpyyLjhh+S3hW7ZpYhRUp0vgJ
+	 LzyWtGlW60J7YTEiu9LZceKDlBJAdz+GXBZyX1n0MiMVo+tBvkYaAQmjbcycbAIK8kZ57
+	 dWQccgdDHiTJg+3EMQlljUbl5CiLIU9AGYiJ/74ndQjuQeNqOmXn0UDH4rLnveEFm3Ub1
+	 iC9oLi9Q8a9iWMQNlcZkxqVActKaBgDrN5rX4BxBwkrC6/4k8s5lB+lEvR/GEb1zr+vc8
+	 CmZFHt9BBYOTcLIP0233MBYVgovDlJhXFfLtHWhN7T7388tlXrcpT+447iunOM81nZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="dzcy/VVE";
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYikHGBp;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DC4606A882
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:12:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80DC4606A882
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB0606A338
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dzcy/VVE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794611555; x=1826147555;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=q5S2vgA+hlGkYzq/6hM0YQLcDcI7ndlB8d2K1+nqqAA=;
-  b=dzcy/VVEV6XkZIxQYiMJLgvYfJdhhLy8V14abw0r161cnNLD/gXQ4XKr
-   SetpyVK2JulIOTAIxNNY5iypBktGOyje/sAcoF46dbsM6j0w9zGLuzZZy
-   1Y62ynXTX1zkdw+mSIG0H2uGaiRrvh9AEEj6RsjhMcWZgQjx+gq2hry23
-   TeTt6+4q3trweCfg66kFEDtsVzi8wAJFPVj2K0aZIdKJKG7BRulh+xofg
-   ZrhiE4W9OZvniK7wofbtvL158AS1TkEbuAbFF72Qj0qKCLZS5d/YPgMFb
-   rk1cVcBG7F8KIJ/07kRo26rMfD7AOe/+wJTQVkzpvfdrN0UPr/JCUGZeB
-   w==;
-X-CSE-ConnectionGUID: NRlJxO8GTEG5AVIeKsXvqA==
-X-CSE-MsgGUID: wqWkEzirQQqMnv/ByskWbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3443137"
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="3443137"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 15:12:33 -0800
-X-CSE-ConnectionGUID: 6DCgbTnMSzSoBHMgsmUc/g==
-X-CSE-MsgGUID: YJqEoMG5TCSDwqVWqF5Ihg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="9360979"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2026 15:12:32 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	poros@redhat.com,
-	david.m.ertman@intel.com,
-	pengpeng@iscas.ac.cn,
-	przemyslaw.kitszel@intel.com,
-	vinicius.gomes@intel.com,
-	sridhar.samudrala@intel.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 1/6] ice: use global queue index in TC to-queue offload
-Date: Fri, 13 Nov 2026 15:12:18 -0800
-Message-ID: <20261113231225.1864810-2-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYikHGBp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2851F000C4;
+	Fri, 13 Nov 2026 23:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794611896;
+	bh=oVTc5I6nKpBiLsItkBZmeShBR8ASpkDeEBpnWBZ++aw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KYikHGBp/+bPif/TJRrK8A7fw+olegBF+qjvpxsIBKUYvgdyrSoAXWnXXCT422gHB
+	 hrZkK1+1OHpYwzjxTSbUyahmdpIOil6TrCHEADfBO331kJg/cyeD/GPp6NqMqexts1
+	 FWfzRi9H82uQktYD4ZHssXkaongGjn+5UDQrFR3JtRMCCM9yQfSWqYgGv5Ea34iZ3t
+	 RrzFOsHTvMw3u8cuC8DG/M8mpagYf3McJD4fc9Dc9Yz5Xn8wAjJ9DzeDtT27/lwVnW
+	 pcN6Ty5pfXf2S4FmmbKF390Gq1tNGcXxb4aUyzbtB2eFh9X2d4zEF/7sP/CC/YzYJE
+	 Q+sx1VIG/H4HA==
+From: netdev-bot+sinfo@kernel.org
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ michal.swiatkowski@linux.intel.com, poros@redhat.com,
+ david.m.ertman@intel.com, pengpeng@iscas.ac.cn, przemyslaw.kitszel@intel.com
+Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
+ 2026-11-13 (ice)
+Date: Fri, 13 Nov 2026 23:18:15 +0000
+Message-ID: <179461189531.2168702.16973424835691406701@kernel.org>
 In-Reply-To: <20261113231225.1864810-1-anthony.l.nguyen@intel.com>
 References: <20261113231225.1864810-1-anthony.l.nguyen@intel.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,41 +64,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Hi!
 
-Previously index within PF was used, which caused rules to fail on any PF
-other than PF0. Switch to global queue index by adding first RX queue id
-from caps.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Triggered during code development. Validated on HW by adding different
-set of to queue rules on various PFs
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Fixes: 143b86f346c7 ("ice: Enable RX queue selection using skbedit action")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by LLM and not proven at runtime). If it was triggered
+   please include the symptoms, like the stack trace or kernel messages.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index d20357c04127..6f49ecb4165b 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -1202,7 +1202,8 @@ ice_add_tc_flower_adv_fltr(struct ice_vsi *vsi,
- 		break;
- 	case ICE_FWD_TO_Q:
- 		/* HW queue number in global space */
--		rule_info.sw_act.fwd_id.q_id = tc_fltr->action.fwd.q.hw_queue;
-+		rule_info.sw_act.fwd_id.q_id = tc_fltr->action.fwd.q.hw_queue +
-+			hw->func_caps.common_cap.rxq_first_id;
- 		rule_info.sw_act.vsi_handle = dest_vsi->idx;
- 		rule_info.priority = ICE_SWITCH_FLTR_PRIO_QUEUE;
- 		rule_info.sw_act.src = hw->pf_id;
--- 
-2.47.1
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
