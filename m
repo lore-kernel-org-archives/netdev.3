@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794593929;
-	b=TAQnGYOqGXJiFM3fR4pse65uMo7D/Wej/ZCySOVH5d+aYf5OvUhKGvcWUB8q7O1bcwpK
-	 xqMCO9EYiVGq8Cb4B6xRHSMisHGeejB+vrqrmqMKnBax/ap744IUZEP/7dj0kuAncJRE2
-	 wYtT5OQft/XVBgfLGYZNTEyiwfrUJIvN3sZj/GW0hStgoIxQQNzwmKzf4wlGv3W5u5a9r
-	 VnI9cp59MrmSJ1Hpw3wcPLCBIjdf+EM+0Rn5xQSACDnJynVnG+5mJk8R6A8obGEsOzTk3
-	 CDEshnxbqsLxLeVSaa2Q1hNIMACoSf9iqGoyc5wNhKez0mh4phYijE8qyxdugKhntxw==
+	t=1794593950;
+	b=hRULG+djLXhhm8iB9j1+JsNsENV/2dw6cZ1R0JcMCTVXEHsO6Cvlo8AEVf4dbT7u+5rw
+	 BQPQmuq287XcnOrBxgiAxj3Uq1uWiSefR9noEmOLBg0wermNGD/ybSvIRaiH0FBqkDSE4
+	 iDnmEdBIFAAn2srPF8n1MbGA2FZvlm7H2X8v7vxYhjSb37YIYNKZWb225Z1CRmHFMEaYX
+	 A96nwOJMDuNbG7wdCUIJU42WgZg/vGt6tp3JKiGaPpGCn/KhC0OnDm1VN56mqeWn0c05D
+	 vS0EHag2b0hUe+FeUCXxnTmZEQmDCujd2JnebQs6tU/Bo5t5TffapnnZ53yMluWx6ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794593929;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 From:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=YMmgQJzMtgBLpA0dIqJ/1stJoQj5sUUq2ttQetzsqvg=;
-	b=pFUVE9kYeIFgViM0zXyj6SGj25MPIVaxvTew77x1/NUbjo3e9e6N9eFKSALOlcPvTXSo
-	 /nuz0VSwdY1tR5vgR4lLf9DESF484qN8CxWGTOI6YevHa7xBnkH4V94bU4oNy4p/zqJuu
-	 o6DttB6rgKg1nvdT4+n17MpVCt3vdY8NIuDhDjD7swqyvREdE5Ai5GkHXNWgdTjWMFKWd
-	 jDWMYblnrDgvau2zxzZFMOVOdgE+mBZb2t3Lp8gbk5GagXrhXUXc/XTtMvKyLExsLgBDW
-	 HfBpTWVkJeh7Lt9SZx+p5keo46KStlJb8ex76dBTJrycAitBpzT1EObbwuaA1yk7qWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794593950;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=/VIh85zZMfzSY6G83+v5V/TjnRLbNiLly0GYfH3nJNs=;
+	b=t5x8xi0TRkyR8iJ3UUKXMnZPoc9QcquUX45STYBhFxRu7x3iK7Ltd58SQdSEjMde4fyL
+	 UhlBsWjwV/CycfC5U22MLur1cdTRQTXnJD8xIdmQzmqK9jk7G/vCpsVEcIP/BO8uZJQ5T
+	 PH+x8MeudQYPu+tY8g8go0ZsE+xdtFGOfqYPF6/jtXkuQKVPsXgnoBLpqQBI8QawEgIwc
+	 23hvXrlEHSIBrkKg0Cv638ZmnoGGmLLCElDAANyNY/x1U26xaB9EA88CSW3cQ1BUBOL/E
+	 Dzmy806hdseQWkqz7O+/68/NZhEDGsgAm1U3irKePlBLkagD4rcq7r6N/3CJauMFVtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=g0BsCETI;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzC7cE78;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E15606A893
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:18:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82E15606A893
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA45606A8A6
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=g0BsCETI
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 711F8C4F755;
-	Fri, 13 Nov 2026 18:18:49 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8D04A60015;
-	Fri, 13 Nov 2026 18:18:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 079F711BC17F0;
-	Fri, 13 Nov 2026 19:18:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794593921; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=YMmgQJzMtgBLpA0dIqJ/1stJoQj5sUUq2ttQetzsqvg=;
-	b=g0BsCETI93Z/vfFeXyPOJ+wzeIFI6lkh5ApLVBfCqngmB8VuE3lgNx75ASl9xFGzHvNAdg
-	krnVf3mAFlgbjTFnYU0f9dpTgSjMOe72qiAe0g1vpjRYz6eJVqyClQDdCRdekbA3FjCL4q
-	DBNU/2YFYRhaaZ7t7HcHnuzAkJ1bUw7cq8reOM0XCoGUq8fUgW+6xap8gO4HDWfi3MtEfq
-	1ayZ91VLFHUfLD1vH+ZriMiLXZk/fDrQchCULwXig+YrX8fvt+IuWlV9VX4DjD62/nh5Yk
-	UABhQ5nIjbbNUbuTZWTBJqRzRMOHwiTVqTh5X5ewzQSoREPEJ+jISsu9igODXw==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzC7cE78
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5543D1F000D3
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:19:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794593950;
+	bh=/VIh85zZMfzSY6G83+v5V/TjnRLbNiLly0GYfH3nJNs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TzC7cE78kKFl2rFE1ESKez8K3/v6Pqk/6PLrXGyiq2H8nW8RaKll1mNR/hvrBhoAX
+	 9WUKboDxL2p3Jax+koelb066IybY3DAyK95vGOnYrQLEWCd8zr9JB2nkLXwMD48oro
+	 eBlcvuFHizULDj5hONrf7IDExHONWpvIf77MgXaUD3OXBqfZQ67bfgb2xPq1SoAoJK
+	 T3NkAz2AcSCaHe3eo20kPD9U/cE84jkgmN3fcFTb3UIgs2jbLigXSsu2MG4WlwRKQd
+	 lN4tR2+CCuZNMvYNucVewMR1jQy7sxt8uriatRDaKQNHlu1Xb8w/7Uzi3R4wDwiNfg
+	 QeLT7VoO7hmng==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso2100660e87.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:19:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEJxZ7vy2e5meUx8ywyvSQRECzMO1UiK/u1flK0R/yA7eN3qAyzHf8Nnir3uEmJekyGwYgSzoU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8mplm6QVo8ryailRLWmQsXF8R1MBldq9HzTciR/zyWpL8eqxKP
+	EiFR8BkazOAdebDEfCeVaUjnt/gd7lNtSnXxYS3kBz4OwYH4WQbFOvaMzfxdV0I7Eh9Hlnpfvv/
+	dswfD25DeLmCbAy07GJgumJYx4TBXJCI=
+X-Received: by 2002:a05:6512:1310:b0:5bf:cf80:dfd8 with SMTP id
+ 2adb3069b0e04-5c170a0bb47mr1769832e87.23.1794593948320; Fri, 13 Nov 2026
+ 10:19:08 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,110 +58,99 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
+From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Date: Fri, 13 Nov 2026 19:18:55 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jyuMjh4En_r2TYui+sNbGveJ0Rz1Da39LEK9e-HxHgGA@mail.gmail.com>
+X-Gm-Features: AclHuK9_YtJ6aWlSAf9yM8R-lWnFcHYi_anHWoQsLhZYkqzdVHJqxA51shEqA-Y
+Message-ID: <CAJZ5v0jyuMjh4En_r2TYui+sNbGveJ0Rz1Da39LEK9e-HxHgGA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
+ return 1 when !CONFIG_PM
+To: Frank.Li@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>, 
+	Karol Wachowski <karol.wachowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Matthew Brost <matthew.brost@intel.com>, 
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Guan-Yu Lin <guanyulin@google.com>, Mathias Nyman <mathias.nyman@linux.intel.com>, 
+	linux-pm@vger.kernel.org, linux-usb@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-staging@lists.linux.dev, netdev@vger.kernel.org, imx@lists.linux.dev, 
+	Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Nov 2026 19:18:32 +0100
-Message-Id: <DMUAG5X9SJS5.3IJRLV67X9SXH@bootlin.com>
-Subject: Re: [PATCH net-next v6 2/2] net: macb: distribute evenly Tx SRAM
- segments
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Paolo Valerio" <pvalerio@redhat.com>,
- "Vladimir Kondratiev" <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-To: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Russell King" <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261113-macb-set-channels-v6-0-5de59d9e7f02@bootlin.com>
- <20261113-macb-set-channels-v6-2-5de59d9e7f02@bootlin.com>
-In-Reply-To: <20261113-macb-set-channels-v6-2-5de59d9e7f02@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri Nov 13, 2026 at 6:32 PM CET, Th=C3=A9o Lebrun wrote:
-> +/*
-> + * Distribute evenly available segments across queues. The computation i=
-s
-> + * complex because (1) segments are counted in powers of two and (2) a q=
-ueue
-> + * can only use up to 8 segments. There are four types of cases:
-> + *  - Sharing all segments equally is doable. Take num_queues=3D4 and
-> + *    num_segments=3D16. Each queue will get 2^2=3D4 segments.
-> + *  - Sharing all segments is doable. Take num_queues=3D5 and num_segmen=
-ts=3D16.
-> + *    Three queues will get 2^2=3D4 segments and two will get 2^1=3D2 se=
-gments.
-> + *  - Sharing all segments is not doable because not enough queues are
-> + *    available. Take num_queues=3D1 and num_segments=3D16; queue 0 can =
-only have 8
-> + *    segments.
-> + *  - Sharing all segments is not doable because not enough segments are
-> + *    available. Take num_queues=3D4 and num_segments=3D2.
-> + *
-> + * We start by computing the power each queue will have. For num_queues=
-=3D5 and
-> + * num_segments=3D16, each queue will have at least 2^1 segments. That l=
-eaves us
-> + * with remaining_segments=3D6. If we increase the power for a queue, we=
- get a
-> + * delta of 2 (2^2-2^1). The first three queues will therefore be advant=
-aged
-> + * and each have 2^2 segments. The remaining 2 queues will only have 2^1
-> + * segments.
-> + */
-> +static u32 gem_sram_distribute_segments(unsigned int num_queues,
-> +					unsigned int num_segments)
-> +{
-> +	unsigned int pow, remaining_segments, i;
-> +	unsigned int num_advantaged_queues =3D 0;
-> +	u32 val =3D 0;
-> +
-> +	/* When growing the max # of queues, make sure to return a u64 here and
-> +	 * to write into GEM_TXQSEGALLOC_UPPER.
-> +	 */
-> +	static_assert(MACB_MAX_QUEUES =3D=3D 8);
-> +
-> +	/* pow=3D0 for all queues. ilog2(0) is dangerous. */
-> +	if (num_queues >=3D num_segments)
-> +		return 0;
-> +
-> +	pow =3D min_t(unsigned int, ilog2(num_segments / num_queues), 3);
-> +	remaining_segments =3D num_segments - num_queues * (1U << pow);
-> +
-> +	/* We can only distribute remaining segments if (1) there are remaining
-> +	 * segments and (2) we did not reach the max segments per queue (2^3).
-> +	 */
-> +	if (remaining_segments !=3D 0 && pow !=3D 3) {
-> +		unsigned int delta =3D (1U << (pow + 1)) - (1U << pow);
-> +
-> +		num_advantaged_queues =3D remaining_segments / delta;
-> +	}
-> +
-> +	for (i =3D 0; i < num_advantaged_queues; i++)
-> +		val |=3D field_prep(GEM_TXQSEGALLOC_MASK(i), pow + 1);
-> +	for (i =3D num_advantaged_queues; i < num_queues; i++)
-> +		val |=3D field_prep(GEM_TXQSEGALLOC_MASK(i), pow);
-> +
-> +	return val;
-> +}
+On Thu, Oct 29, 2026 at 5:31=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+>
+> From: Frank Li <Frank.Li@nxp.com>
+>
+> When CONFIG_PM is not enabled, all devices runtime PM state should be
+> treated as active.
+>
+> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get()=
+.
+> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+> should return the same value as the stub pm_runtime_get(), which is 1.
+>
+> Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
+>
+> Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
+>   Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
+>   Callers: drivers/accel/ethosu/ethosu_perfmon.c,
+>            drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
+>            drivers/gpu/drm/msm/msm_perfcntr.c,
+>            drivers/gpu/drm/v3d/v3d_mmu.c,
+>            drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
+>            drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
+>            drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
+>            drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
+>            drivers/media/pci/intel/ipu6/ipu6-buttress.c,
+>            sound/hda/core/device.c
+>
+> Pattern B: if (!ret) after get -- no impact
+>   Both -EINVAL and 1 are non-zero, !ret is false in both cases.
+>   drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
+>     in kernels without CONFIG_PM), drivers/pci/pci.c
+>
+> Pattern C: ret > 0 / ret <=3D 0 / ret !=3D 1 checks -- FIXED
+>   drivers/usb/core/offload.c: checks (!=3D 1), old -EINVAL caused
+>     -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+>   drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<=3D 0), old -EINVAL
+>     spuriously triggered WARN. Fixed: 1 > 0, no warn.
+>   drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<=3D 0), old
+>     -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+>   drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+>     Fixed: proceeds correctly without CONFIG_PM.
+>   drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+>     (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+>     xe_pxp.c) now correctly treat !CONFIG_PM as active.
+>   drivers/net/ipa/ipa_smp2p.c: power_on =3D (> 0), now correctly true.
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+>     executes stall register update.
+>   drivers/staging/media/ipu7/ipu7-buttress.c: active (<=3D 0) early
+>     return now skipped, correctly proceeds.
+>
+> Pattern D: explicit -EINVAL check
+>   drivers/hwmon/prom21-xhci.c: checks (> 0) then (=3D=3D -EINVAL).
+>     Old: took -EINVAL fallback. New: takes (> 0) fast path.
+>     Both succeed when CONFIG_PM is disabled; functionally equivalent.
+>   drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
+>     stub is never reached. No impact.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-This implementation doesn't use all segments if
-num_segments > 8*num_queues. Reported by Nicolai and discussed here [0].
-I don't think any hardware lands in that case, but let's fix the bug.
-I will let some time pass before iterating.
-
-[0]: https://lore.kernel.org/all/1113dac19771ff7881b60bfdd14b0af6@tipi-net.=
-de/
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+People sent feedback, so I'm wondering if there's going to be a v2 or
+does someone else need to take care of this going forward?
