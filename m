@@ -1,67 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794590101;
-	b=re+2zk9T5iiAAXrQ/mJBwJAvIDzuuBr+sToMOb8v761somU/muKu3Qdq+mhYBJYX2hMB
-	 6bqH2NqRcvaauWjV0aCNplh7Y7wq66f/YNWAtDrg191Pto1MsEi2d1tbDvc8ls7wsOjie
-	 rliZSnWqrJBRWG2V16gEPwy1Zjja8UD+aUFA3LM4ntA8sN2ePias8AcQMZDublWydlYYA
-	 a+idkI25R22ysLz8cXmk5wTI7xcOeEH788L4zC+jsld9FGYwi1k0OXvf7RNTXodcTevYq
-	 Bd8s6IG+5EPksWecuXE1C8a+nksDjD6gXpiKLnmDiMOjYR8gf1TabDnrhZswjnOoz8Q==
+	t=1794590140;
+	b=izZbuT9zYqPezTOJm4flINwAHqiY3r2tHAFMVoGf6sqfgTCgVfmoqKVP4reQDYiVI4HH
+	 cowFlobwBYdGg/orHa1+d564Ntddriw7yNJr3PjvipGM+UuktO1YrLW39Y9DjaeEEH1g1
+	 Hqw5Bb/315okVEJB4romuOYAgkWnVt4aHWBGBJs5gzDDm4mn0M7VXH3vc0WcZ4E1WwDkC
+	 M0sLDiqh5d3otYfJWmE1jbLVNFgsx58ygCmf+iCgyDJKvq96UJdq7Wi7pzlYwIYymDyte
+	 G3ZAw2oAOu1zbuUiBsrizUIUmMa9FqpyXf07hxvLN0tlg5cEujUuWkNGPkCQvU3wNzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794590101;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794590140;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=1suJMfr4F2t+hvLEf/eqvweGBr12R4RYJ9ohUXZMmLQ=;
-	b=3w34QZIEpVMHaxD2aLScvSisLV0p36uwNs7SbY4b9HhOA7Kzy/l9OZLiU9v3KOX0rtLv
-	 4l4Uro+BL+uWm4IxCw2vanpuJNjO7+TxFzX+oaEdMCJcg06P5mvhsKx5ZvNLYfwxM4mWl
-	 xK2f4QVfnDi7rJUq1GeWrdrUrCSY9BFDhOTE8mV6pxHI328sCow2JmFLWr/HOopE12Stz
-	 T/0kAW6dM0+yodapiZr46bI6xf64IUPKNdcaY5pe1RTaF6Y3rfu3zD0NsuWEVMhOj7qr5
-	 uZukeice7vCFObVu5LWVYj42AIO1X7THspz2U4OyJhLcXFXe6V8btzWYzTPo/d+Z9Lw==
+	bh=1vMesprYhFeENWisDIzJhcy04vIcu8PwjlxWvClS8Hs=;
+	b=Vk6X/9KiWoJ0ZUfA2TBPjZWXhq985VnfNsuSPvzWuXllhubmv8daOmW4uS5HcZy17/g0
+	 i1la+ohJZRrvYhxyH44ft8M8SvSv97tg9hM1OKn1uVhWUZpWpj+89uZKYSICjkkd7GTC0
+	 MwT/FiUkoOBuvMHWx+VxntJ5B8+Os7ppZhZs+yXrqPQdyQH1WvWnR6msCF+55sF7bB6sg
+	 eSLozKoQJJz05WkrA9UYizJ3KQtyLk2kyDnRL8CwDl76a5S5Lqb0ATtP5H0cRJihI6ZQY
+	 yiOu95ldI4OATU9hB5k0keGmZhs3U19n8ZARu+eQ6DVRjHthV+FUDJKeLDwIYMgun9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+G53xRS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="EyVRa/9f";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B0460A2635;
-	Fri, 13 Nov 2026 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED688606E20D;
+	Fri, 13 Nov 2026 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+G53xRS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE6D1F000C4;
-	Fri, 13 Nov 2026 17:14:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EyVRa/9f
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB021F000C4;
+	Fri, 13 Nov 2026 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794590101;
-	bh=1suJMfr4F2t+hvLEf/eqvweGBr12R4RYJ9ohUXZMmLQ=;
+	s=k20260515; t=1794590139;
+	bh=1vMesprYhFeENWisDIzJhcy04vIcu8PwjlxWvClS8Hs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K+G53xRSt8vDf6/x/l3LPjRGhF5omdp/pkv805gZbqnCe+Upy/fEqej9LIoLRdbPJ
-	 /nOLeWFABGHPoNdRgJwqooL/MmPecQBEz+bMZ7V++L2Tne5kYqrIxTANG0vKtVwv6P
-	 wNTGd7Rp4FC4jYxpC0Tgd/GwGTsHDEqnwV44JgLiu1zEz0QZZeHT1WcxRRavSYFxS3
-	 EdCKfUgokXaR0RjcDOSkrzUMRr39pcOoGI/UkkG+H1mNo8al9Fp7ahMRbfUSqaFW34
-	 YVYkUHXsjcbamC8vAlS84fx1DwCL0+U5WrxxPNeewpO79OQR1hFo8W4qV+XtJed9tY
-	 LOunxBwh6Py/A==
-Date: Fri, 13 Nov 2026 17:14:55 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Lucas Tanure <tanure@linux.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net, Eric Dumazet <edumazet@kernel.org>,
+	b=EyVRa/9fVvx9+Qbm0nTockS2FVMvizEhoCsvvuFlwnODla6jIfcftkyAaI4hWexcL
+	 pUSC3y3CyEo3ZLC4Njyo7cK13k1/EWsLdIFajb3d+ckXZG5Vu+0JFU09dKEenWwrvD
+	 ogQeZhOCJCpIw8TLahIIifIrGlbU5C9wR5wM3kjyZIhPlMBc4Zyz+9khmFDS/6Dw4B
+	 0WMkPMTrRxZhEMnLsL1DVMXbrsAfV1h6Ow81B9z8COrDULGtlrD6hMy9kT/iuqWRNe
+	 uUZ1zefj5znLTMOE/lpnyaGwMN4kxrLFr3QihAO3Lpvc6z9jzl1W7Ck74qEAI7MvJb
+	 lFvhNdGfk4Mgg==
+Date: Fri, 13 Nov 2026 17:15:31 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/7] dt-bindings: net: add amlogic,t7-dwmac
-Message-ID: <20261113-headband-resistant-354bae47c2b2@spud>
-References: <20261113121852.334604-1-tanure@linux.com>
- <20261113121852.334604-3-tanure@linux.com>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>, Julian Anastasov <ja@ssi.bg>,
+	Allison Henderson <achender@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	bridge@lists.linux.dev, linux-security-module@vger.kernel.org,
+	mptcp@lists.linux.dev, lvs-devel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+	linux-sctp@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH net-next 08/14] rds: annotate data-races around core rds
+ sysctls
+Message-ID: <20261113171531.GR18859@horms.kernel.org>
+References: <20261109025425.328445-1-jiayuan.chen@linux.dev>
+ <20261109025425.328445-9-jiayuan.chen@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,27 +82,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LpKzrxi3dFo/IMea"
-Content-Disposition: inline
-In-Reply-To: <20261113121852.334604-3-tanure@linux.com>
-
---LpKzrxi3dFo/IMea
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20261109025425.328445-9-jiayuan.chen@linux.dev>
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+On Mon, Nov 09, 2026 at 10:52:07AM +0800, Jiayuan Chen wrote:
+> reconnect_min_delay_ms, reconnect_max_delay_ms, max_unacked_packets,
+> max_unacked_bytes and ping_enable are read without any lock while their
+> sysctl handlers update them with WRITE_ONCE(). Add READ_ONCE() to the
+> readers.
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
---LpKzrxi3dFo/IMea
-Content-Type: application/pgp-signature; name=signature.asc
+As per my remarks on another patch. Networking does prefer lines
+80 columns wide or less. But I am inclined to turn a blind eye
+to the in the case of longer lines introduced by this patch because
+they are not that much longer and addressing them seems rather tedious.
+That said, I would not object to them being fixed.
 
------BEGIN PGP SIGNATURE-----
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavdFjwAKCRB4tDGHoIJi
-0iKAAQD8cRe2UwvrgIAurM7gqjc5GRJvmH08nxT23alr7Ij1fgD/XhJ/l3gmDO8e
-WxfYr9fWD1PaIuMhdEbBltsE/3a4gAo=
-=4R2d
------END PGP SIGNATURE-----
-
---LpKzrxi3dFo/IMea--
+...
