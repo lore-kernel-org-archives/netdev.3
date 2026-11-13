@@ -1,62 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.204.34.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577305;
-	b=f1YoHeGSnFUVg1aKa1ksbvew77xACz+2kZ5pWQqymXb6hwoBdw+X612iQohRXJ4ZbHKf
-	 efsyBLfn4cmAXV4+JkuSIauBIdQGQnGEp5f2yN8Xag+ikLgINBNxoSZbPw8cU4j/Vkg5+
-	 H38LOD9g50QyvLtcoeCJHe2mPF26OW9BEkPchATUPq0+Qgluxk4MChZZxApBXABxGD2qF
-	 JRUCSNNn3sOYIsZn9rp41bphHY0AoaPLPJ4inUGo2XN7DvVnzN2En7FFgw8mKRHY36Ppb
-	 RpIW09yuSjHv0jF8m/+QRsbR/tHt4K3mqwZIZzzvSSTtKZIeVjTGLDZODpMGQ7o8LRA==
+	t=1794577392;
+	b=4eLyepQf4juKM/NLyYLZu+bIHynEbHhdbQ2qAw8XRVcUwZBMZ96fi/Cc50TbFU/gwkxB
+	 9IVsNxRDNznGBSqGMK9ZQWsb8Q3ZlZdcpILM8Kre4n+lQBkXNpZRC+ZSlRu1xB2rpapLr
+	 FJWsoHBogZsBxoczeQSSF37T7Jng29EiGCx/86WfW823I1pwcJUu6oZf/mqgnF1HpHIvD
+	 8Y8pEdFxRaKZ+xX40+cHzQZfXqQtGbVbJjhJPtt9N+wmW22OsXGiNA8K7rdVCYgaCDMy8
+	 qMLqQVEUCvCTnGPPhUL/KVpqZ+wTk32EIi6phrxfQpW8RsULvXPJpDsmZsSJ4M1qW3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577305;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:MIME-Version:Content-Type:Content-Disposition:
-	 X-Debian-User;
-	bh=2/YHWXloHM6NRG40BpIM23KsyPGTOxBBteru1wPX7WI=;
-	b=snpBPKImDY5CsqIzAzepTUCHWdfANm6OFwpDvfJSLsJtWu3nOnqL4jkXBvY3brUo7w2h
-	 w2nYXXhMX1PzJ71nJr2Cwssq539gOARWctg5yeEP/i4lx9nfjRdjU5n9h0Il7dZ1NuoHl
-	 MsZr4BaBXMzmdaCktjQHwC4OZHJOr1991Eesm01eesYsyFBGVwlRGD8c/uY2+Ze1z1hqz
-	 2v+zAgoa5zo6g2xF3WTbuv7WDsx4mJ7AXBiDfYWJNw4yLj2yesKPrCgJ/kNHdP5TiCwrX
-	 Uw3YMeQNf0lrsnWTynB83k14KVnACv2j4fH3H/cGV6VI1IAn+KSWxp7/zRNoXJ6x0og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577392;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=3kcrlVRBobTRT8jOtREfiBLM6vTtQc7X6ndLPnK4qOc=;
+	b=aaecWaCZiiuvsGMjvGcGY8Ejgyxcj7BjzH50sZRgXzyHt3s5zSIYUHACyn/Ew/JJp8yL
+	 5JvI3vWbmyKZCWPs1wekiTfDcNKqbW4SLbwDbeYaW1VGuC6oitik9h4W7FcviUZCNMU6l
+	 OMgU2aK5pcvvlanuoLXDZPFIjKinaImIaHASL3UqXmvkc+0bxQKrJwKbxnhwD4bKwgIFH
+	 UwCtCG2c52r5/QYRjlCu3OfCPJdxEOAaSf0a3aHLFzvQAeBqa2uW9zjWlzwZg4DvqDuBZ
+	 pnmvSPM8SmMLLvNOHKnHi/5WG1ohLzkwdT4FwYOeaeryQLGcFhtrvdGuWoLOrYdmwIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=gkTm0r4m;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=uniontech.com;
+	spf=pass smtp.mailfrom=uniontech.com;
+	dkim=pass header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=cKkX2C9T;
+	arc=none smtp.remote-ip=54.204.34.130
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F185606A323;
-	Fri, 13 Nov 2026 13:41:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F185606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69324606A327;
+	Fri, 13 Nov 2026 13:43:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69324606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=gkTm0r4m
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=2/YHWXloHM6NRG40BpIM23KsyPGTOxBBteru1wPX7WI=; b=gkTm0r4m04jVkuRPR2BXolPhBG
-	HPCULuqlhawqnijke2K7d96Dd4AI0QtCSLfw4aDrfFgHTJbNKwPvzfyDCNOaBfqEmBDflV/5+VoUl
-	TfMvlvPHdAHFLiMtqPEe+Tww/0LpCDaK55JDao6nQCQN3U7TnI4Q1o17Kp1fVjjdRgTu5xYhFQK4M
-	XIOqMArye+JmaTJfFlznDK51WLr1QcEUusYcq74At0SlM8iNZT/03L/XOUJibUYaXj8Ir1cv8LmHy
-	gpMy72jigkg+HCA9D7rqwUqoLEuEnxBuhOE7Sk2+xga196nyjAgKQX2mZeek4G7vVXejYrJ0Ig4pf
-	Snx7nwRw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xRrXA-00EnAK-0S;
-	Fri, 13 Nov 2026 13:41:40 +0000
-Date: Fri, 13 Nov 2026 05:41:35 -0800
-From: Breno Leitao <leitao@debian.org>
-To: john.ogness@linutronix.de, pmladek@suse.com, kuba@kernel.org, 
-	gustavold@gmail.com
-Cc: linux-kernel@vger.kernel.org, printk@lists.linux.dev, 
-	netdev@vger.kernel.org
-Subject: [RFC] netconsole: plan for a safe atomic write
-Message-ID: <avcI9gVR7brRHQSQ@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=cKkX2C9T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1794577330;
+	bh=3kcrlVRBobTRT8jOtREfiBLM6vTtQc7X6ndLPnK4qOc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=cKkX2C9TU/v7CMDu8ugevsUTc5a31S7buh2ror1VZhNiorOX6FXSVjxpppf7JpIOI
+	 grypYAyhUtU72O4aTG+Qe2pGBRWf8GnC3TKYnMe7+QWAWcHXZp5rE9Kox9jMBi6UBD
+	 T7FwdYUsE4487kmxajUaoXmD2tJ4bBMkjvbMoxiw=
+X-QQ-mid: zesmtpgz8t1794577305t88a9c797
+X-QQ-Originating-IP: UpGU27M314SgLzhWg8rwr6TRitp95Zs5/+Vkkk4Vmrk=
+Received: from uniontech.com ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 13 Nov 2026 21:41:43 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2692691757360946475
+EX-QQ-RecipientCnt: 10
+From: Yichong Chen <chenyichong@uniontech.com>
+To: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-wpan@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhan Jun <zhanjun@uniontech.com>,
+	syzbot+8a8482d4c33cc58babb4@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Yichong Chen <chenyichong@uniontech.com>
+Subject: [PATCH net] ieee802154: hwsim: free PIB after hardware unregister
+Date: Fri, 13 Nov 2026 21:41:41 +0800
+Message-ID: <0D7C088B45E7283A+20261113134141.2626113-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,53 +74,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OE2B1K8X9uN6TKRJknmgrzQ8Ba+/H4Q/PDI3pM1HiENumoaa+39xeTTP
+	Tb3HtFJN/ArQZA0ll4i+R4WEyv+c6UCgukuAk8Df64MNbytdWPzGcQUPvBwDpNTJbt60dcU
+	III9jEPFMPRX8i4v12nzJVqD45Jm6Orcl/xkko1a7n4LgMWUZ4Lo8I0lLFbnNt/YVk3mE2O
+	s/Acj07aTdfSmSvG3PnJo0gCwzZqJYb3kvLqvzVq6lhh1lV3F/VvddXutOyyb329czZg2hF
+	DJN+mZ28V/r/5lPnfswBad/GsJj9zxcnIXDla9xjHkBe8UHngaXQqZCzRMzNLFMxo1kxMnw
+	5DvXDUV8/wm3LeY/dRlHENfPuafH4BnYpnhsZSl1crSvwbz+P8rxjqSeuH9VZDHQXBHxRXI
+	4btkLfsxiVv4a3P3EfLHFb7Kos/LoA2Z+vPqI0RnJNyryyYCTBD4TVtUA4XTsG0zFfe8hXo
+	G/H7/4CAdxbVNNuVfj5bAPztQwparvcMq3NVfF7dfOaojHQK+C5V5QjsFtZGL9vxlntESpn
+	k8aphZgvGTFzkkq71RzItV5JXWfd6hty1IydJzPxVKHp2hvfE6oS1lD5EdnSkxgFOuQDiZ2
+	PjqV4PJz/lcOr9yHen/GZ4I5zD33mbHggQXBceteF13bS5/s36CQ7W6xp5lNa0Kszq9xOOJ
+	M7ZQCTDq25Ytx1OLx2XToAe4+QGWq44ijSUKincPQNlaQ3eiur+XUR2gD57WSNNOiY4oPkC
+	B49fVqrwqChZcy5iKc5JMFpVHakdMIFinx1pWB1hmpc6uCkKuJ2iZ2wNUFSdyiyGGY5jjFv
+	xyoiHZSEjW5ZuQ3IW7C/AdJVixecrZSH6MQ+UqvaAXpu9+Pw6VNqYZdJojN83QUGOoaB4ok
+	3BdjWjnsDZsNpgRvGRkvFhspAuHMtqLDgoHSq+U+7jdLjRnADdjBTvWVcuDDDs1DC+Hunm7
+	As5Sa7Z7p+Xv+jZ2H/c8hZ39SIgaNwWPzlLChPBne9uzkasqL9XddpgboT9dlTMG8/GI0g+
+	8ay/4x0XWcpbNc/i1Kl7oxzTZKYU+VsOkFvDslHd+IixAL02kg0PNKb6PXLASpmUlLcSpET
+	hM5gWN1QmPCddPvaq90oic=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-Hello,
+From: Zhan Jun <zhanjun@uniontech.com>
 
-netconsole is CON_NBCON_ATOMIC_UNSAFE, so write_atomic() only runs at
-the very end of panic. There is a desired to have called safe atomic
-printing[1].
+hwsim_del() queued the current PIB for RCU freeing before calling
+ieee802154_unregister_hw(). Unregistering the hardware closes its
+interfaces and aborts an in-progress scan; scan cleanup calls
+set_channel(), which replaces the same phy->pib and queues the old object
+for RCU freeing again. KASAN then reports an invalid free in
+hwsim_update_pib().
 
-This is the plan I would like to agree on before posting patches:
+Unregister the hardware first, then atomically detach the final PIB under
+pib_lock and queue only that current object for RCU freeing. This lets all
+driver callbacks finish before the PIB is reclaimed and avoids freeing a
+PIB that was already replaced during teardown.
 
-1. Now that we have one console per target, use one lock per
-   console/target.
-   - printk holds the target's device_lock around write_thread(),
-     write_atomic() runs under the console ownership, and stopping
-     a target takes both. target_list_lock and the cleanup list go away:
-     the list changes under dynamic_netconsole_mutex and RTNL, and is
-     walked under either.
+Reported-by: syzbot+8a8482d4c33cc58babb4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6af5f575.b350cda4.2b6a63.0000.GAE@google.com/T/
+Fixes: f25da51fdc38 ("ieee802154: hwsim: add replacement for fakelb")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+---
+ drivers/net/ieee802154/mac802154_hwsim.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-2. A per-target field to track atomic writes.
-   - In that mode, skbs come only from a pool popped without a lock and
-     refilled through irq_work.
-
-3. A try-once netpoll transmit, as Jakub outlined [2]:
-   - One HARD_TX_TRYLOCK, then busy, with no polling, freeing or
-     wakeups, which can deadlock under rq->lock[3].
-   - It refuses when this CPU owns the queue (netif_tx_owned()), is in
-     the device's NAPI poll (netpoll_owner_active()), or is in NMI on
-     PREEMPT_RT.
-
-This does not make ndo_start_xmit() safe, so the flag stays until
-drivers can opt in to atomic transmit.
-
-It is still unclear to me whether write_atomic() should depend on the
-context (regular NMI/panic): 
- * For regular NMI use the try lock as best effort
- * Ignore the locks only in the final panic flush. (unclear if this is
-   an option)
-
-Is this a reasonable plan, or, there are some missing parts I am not
-seeing?
-
-Thanks,
---breno
-
-[1] https://lore.kernel.org/all/874ie4y5mw.fsf@jogness.linutronix.de/
-[2] https://lore.kernel.org/all/20260617132127.645534d1@kernel.org/
-[3] https://lore.kernel.org/all/20260610183621.3915271-1-vlad.wing@gmail.com/
+diff --git a/drivers/net/ieee802154/mac802154_hwsim.c b/drivers/net/ieee802154/mac802154_hwsim.c
+index a9bd1555d2dc..a65ae2afb789 100644
+--- a/drivers/net/ieee802154/mac802154_hwsim.c
++++ b/drivers/net/ieee802154/mac802154_hwsim.c
+@@ -1008,12 +1008,16 @@ static void hwsim_del(struct hwsim_phy *phy)
+ 		list_del_rcu(&e->list);
+ 		hwsim_free_edge(e);
+ 	}
+-	pib = rcu_dereference(phy->pib);
+ 	rcu_read_unlock();
+ 
++	ieee802154_unregister_hw(phy->hw);
++
++	spin_lock_bh(&phy->pib_lock);
++	pib = rcu_replace_pointer(phy->pib, NULL,
++				  lockdep_is_held(&phy->pib_lock));
++	spin_unlock_bh(&phy->pib_lock);
+ 	kfree_rcu(pib, rcu);
+ 
+-	ieee802154_unregister_hw(phy->hw);
+ 	ieee802154_free_hw(phy->hw);
+ }
+ 
+-- 
+2.51.0
 
