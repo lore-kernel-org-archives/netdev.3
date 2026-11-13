@@ -1,64 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.254.49.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794579100;
-	b=UN1ZnMYfwzmXDtt0sadCCZ8lSPLyMdZLEIXtw2pWo4ORUj/frQ709S+EDhddmMgfEjQZ
-	 7Etr7v/LQ43oL2ObTi75f4hES1nUbChypM3EwWQW6YTkp+roTlxSfwWLeUnjOg7X80Cpe
-	 bsXossCX5WfjeHG7Vp+0FYL3yBVucd0b7gzODVU3u9e/qd1tJb5fI63Yj6gzNJ7gsdW2A
-	 Ukzp/xuNtEo6EC6g/0FZetd3FmLLvmg1Ost56sP/chNlXv2lQBEySUeY6JLHi0N9npl6g
-	 hUs4LSY+ZuJVxPN+BfObVrOArbLsyzQX09sEbGh7M4dp9MKQ2X5na/jd62DiyAZVeSg==
+	t=1794579432;
+	b=OONSInaf5ekCtpwfOk+lFroFC7yNLY6vBKrUvETUVmEGEK2AeEa/RGfmRBaSWvNgh59j
+	 VlrmwbxbJADJl4MKPAcr7us+ULVJIOCQRg79RdKtpoFpVA+VfY144UTqRsO+1gO76jTrW
+	 hpwQoGmyIQFGHcF6uvi2REsaYL9ZnHhHQgDO5lw1of63rkQqe3ZGg6c9xmwsk2ittS9md
+	 4wRGudb9YL0Q1LuUzCIXqiCguXlC9iuDyvQFqvDJRtxgrxQxv2MC87X0+1+tEsap55KQ5
+	 T3zygQVj1SqgPcL79VFPv5dE2RXZ2a0jF87mU8P1UVd5G34UFGdKglxqvdn6xCYNlbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794579100;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=sLyZtPTkFdbyABhOZWUDHW8SHa1Rc6mfsRhG3LxmUD0=;
-	b=naIjyHT5mpzxopBqTICWbBL+KOrTCQra4F82s8FAxEkuffm33SQmi1dQynWhqksLGPNS
-	 1QoJPiq2e4dptMwWxaQS6WxwIBDkRarej2w4nwE21HlsXyyvd283uAj9Iii+QX2yVdmfz
-	 aShVD/guwub1u5vj5vnVV5375Nwnb9HmN5Lf7ZHrXUvbU8mng7XxkNy4M6eHZz/TjAFuN
-	 Q7xl3eor6tOUjV7YdLXpe+bUrOUvLwF2yUN/79T0S59ZLnq+qwFeS+BVtUrxnDDXh2uzI
-	 Sz/hQKWPbQqjez3ADdrnka+w0XbTmzhsohSzDKqO0tAKd1uqd2zNgXAtyCoXCDkGpuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794579432;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-HM-Tid:
+	 X-HM-MType:X-HM-Spam-Status:DKIM-Signature;
+	bh=ev+Xl72+1OCLuwasUtviXG9+6wDTgYoAYsCBeKV+34I=;
+	b=dGCjpeu3mpJ8rqPZ1+FQ/IG2HzoP8YpjqTZnVO3hqhW+HtpqpDij65+forGNfL3mvTPO
+	 wU9/m1SfnairWTKNgOaUOfa22Mze7H/PKyenppNi/kURQ7t6OmnPHjPsHAmycuR+BHMye
+	 3jhNiJLf9BikNS0bPIcCJCxykXsa0UAZPmnT5PKg5wXPnj/oZ99+4/Ro9UXVtM4VxVs+t
+	 Myu+Ouepl8/siqQV5pF0b7ABP5WWu2Ej5uJd6idgn92N5QuXfcH7Ez7dV1qiqf2//ykLd
+	 mzVdIoR84KPLCrQTz9XBBzsZngPBAm/RH+OqNhC/LJ13w4Vpglyn84KOFnzXEO90gCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LFiDLwd1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=mail.sdu.edu.cn;
+	spf=pass smtp.mailfrom=mail.sdu.edu.cn;
+	dkim=pass header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=I1JA5P5q;
+	arc=none smtp.remote-ip=45.254.49.198
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13866606A323;
-	Fri, 13 Nov 2026 14:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEED606A323;
+	Fri, 13 Nov 2026 14:17:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FEED606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.sdu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.sdu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LFiDLwd1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C221F000C7;
-	Fri, 13 Nov 2026 14:11:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794579099;
-	bh=sLyZtPTkFdbyABhOZWUDHW8SHa1Rc6mfsRhG3LxmUD0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LFiDLwd19eqv1M/wfh/wfBb1Udo/ZBY+O8dwghW8LLPfnonRIb6IOMNHskBISKFm8
-	 2kkRLMFOAcZ6ypBiugXQWBX8Lvg1LzlxJeVeR7ZSHOLRGM5+XyWJRoZYI7wVkaDxOo
-	 AaB0yI1Dlouv/rLVUReucII0ea7DsylKK5ZmYnL3upraoh+slvDe+93G/sBm7A7CsH
-	 frgWE8izxpik2L+2beVpbeO36Fa4Ngtm5K2TcuqMs0ogLXYCakREFOQ/yz251INW2R
-	 rcAUGv3a2uzjYis1MGFCNTBqIK/1iQC/w3M9YhNl5Eya3hc091Qnir7NZMGtJtf9fz
-	 TBujsBdYUikLA==
-From: netdev-bot+sinfo@kernel.org
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 0/6] bonding: refactor bond_enslave() to fix XDP
- ordering and error rollback
-Date: Fri, 13 Nov 2026 14:11:38 +0000
-Message-ID: <179457909841.2168702.4398846656468541262@kernel.org>
-In-Reply-To: <20261113-bond_enslave_restruct-v1-0-364c549e78db@kylinos.cn>
-References: <20261113-bond_enslave_restruct-v1-0-364c549e78db@kylinos.cn>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=I1JA5P5q
+Received: from lgs.. (unknown [101.76.249.61])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 549b5a83e;
+	Fri, 13 Nov 2026 22:17:05 +0800 (GMT+08:00)
+From: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] iavf: Fix potential QoS capabilities leak on removal
+Date: Fri, 13 Nov 2026 22:17:04 +0800
+Message-ID: <20261113-4e14e563a1-net-iavf@mail.sdu.edu.cn>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,21 +60,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa1d544e98d03a1kunm647ab2784891f
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTUJNVh8ZSksaTU5MTx8YH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS0pVTE1VSU9CVU1KWVdZFhoPEhUdFFlBWU9LSFVKS0lCQ0
+	NMVUpLS1VLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=I1JA5P5qmnbqbrfRDiLxoEbIBviJDrid741fAgSv/KcQjU0cXX2wAPCKE55hKZRbuw6P37kLYmHuzBHL3h1WXSuJBOUSkCKDPNcmsjiuUYYt9nTmAcuQHNSYPYpTKYgCH+LVKblxSB2OrZ/SxaltCxYRfCZe3dMXLsWuSmd2vzM=; c=relaxed/relaxed; s=default; d=mail.sdu.edu.cn; v=1;
+	bh=ev+Xl72+1OCLuwasUtviXG9+6wDTgYoAYsCBeKV+34I=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi!
+Probe allocates qos_caps separately from the netdev. Remove frees the
+netdev without releasing this allocation.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Free the capabilities after the workqueue is drained and before freeing
+the netdev.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by LLM and not proven at runtime). If it was triggered
-   please include the symptoms, like the stack trace or kernel messages.
+This issue was found by our static analysis tool under development.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Fixes: 4c1a457cb8b0 ("iavf: add support to exchange qos capabilities")
+Signed-off-by: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
+---
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 2f8a80a11336..a2e7bc4cba88 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5680,6 +5680,7 @@ static void iavf_remove(struct pci_dev *pdev)
+ 
+ 	pci_set_drvdata(pdev, NULL);
+ 
++	kfree(adapter->qos_caps);
+ 	free_netdev(netdev);
+ 
+ 	pci_disable_device(pdev);
+
+base-commit: 2e54b3e187300893688c2c7517894f5d96732e05
