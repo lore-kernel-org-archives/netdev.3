@@ -1,118 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794603199;
-	b=sWhmtqWcq3xgF17QXj6hnaRZmwLRw/kuqSgXPrjdOdLQh4Lw1irc9jjjmpMZKkZkJvP4
-	 rRKasT4kRxN1V6weLxr9o0b5+qhMbecWwPTvUs9Hy3i7XEgwZ8tshxJKYj/OOUM28HsZW
-	 vNoX8RDEBRGQrMTNbIfXWCFUnchrlmjUthyaXW35hSIIDC1ZSHbkEjSXSIlhZS67g+DXl
-	 6JSboPQGoCetr9Gqq39fOAJZjKtWqkcmtqkrt/Ec1JVf644/HyIhI/Iol+1tUby11cqhh
-	 qxYOpZcj6Y6gxJza4+le4QUqC00lckBCat7iONVy9al3BgedIY2HiL5Qkw2dBSB1Iaw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794603199;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
-	b=TNhVBb01tBOt1tVhQfdNZ/EB6/bo5tQf9XfNrq/J75gIhUqkRdfRRgc5LMzN/2onPYn2
-	 rBMVYmYgyAalKoDQs0izwILcP+aX2xQcYd3o6jzw5NKv0KZYJ4EL+0YlORzkRzDVSz3b6
-	 cWL8d3J7PkXWD9a0szcx3z1uNBpS+NQbxCTzxLkzXql4GlM6IsgYrwK5tQgjxi3BTSdhs
-	 yvuHrrvXiwqxu7z640KJht4uc3dOihFgogsvZAe1XRJqwRU6NMQprMeW5gVOl6HPrtIHP
-	 mDgiW6RaGxCoqOEyVBuPuMajZXYfCg4RsParOup2goQ295UsT9eon5kfZXjvRt/dTSg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nokia-bell-labs.com;
-	spf=fail smtp.mailfrom=nokia-bell-labs.com;
-	dkim=pass header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=dl8wDFTt;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.37
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012037.outbound.protection.outlook.com [52.101.66.37])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794603329;
+	b=tmuPngmZIiaaLkyHOl3CrvYCMTjVD6Gc0k3qrydEZ8dngWGv6gCmWzQPWeUonWfZM1lm
+	 KZv8QahmWiPEa6QsZpJiAIO1zt3bjhYLndkGGFu5fsbQ/gaNzolfaDFg7bNfoWc3LyDAr
+	 iO3BT5SUmrsuG6GB/7sPgStXNzjdc8ChAzvJqXdNCcB75CxvrGeq8PNb4z0weYoogimQ9
+	 Y5gZQHSC0X0vH5/oh53pM8IFwx3mw18w4NVjyBLR6ZHYN2/lk7q/nLFqSdQV5U2IIdnzJ
+	 ERVjy7L/t5Jp6u5d2gUTvHRDJP0cqXLEoRm/P+lwTnhgLnJwUXSQ0a6owKlx5u57x7A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794603329;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=z8+Ts67/O281nCBcV7IfvsBb3ZpvM9se/ske5htY3Lw=;
+	b=kO8peqzYlCbqo4o8/Kvf4AqySuAgp66BI6gHrp5RW50qkiIZQco4HFj+4DS4dXOAfRPP
+	 VSz9aP6MVHpzcouwET13oW+gqpnRZ6hga+gYsSB4KiS3p9iGE8R5+SK0LxbalTcAYVdli
+	 OMRWUFLAUd5pPZSMcjYnqFS9CJeSkQygF17orICVCJrla/A9q5gSUn/n6v6qLQZb1GSZd
+	 w63nkPaMId2WLi5qDTuZ5oWU55zrZCihQ6rSNhJjVBNyjB5Tpi0NkO1I+lL2XNCxIhDSb
+	 fjpxMfPxXVTD5Ahkk0XfSDHoUEx/L87v/dipJEtJqHBT4m3fo4o5jhgM8rcS1Hq20Lw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OG7SCUsF;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3F4606A323;
-	Fri, 13 Nov 2026 20:53:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C3F4606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1AC606A333;
+	Fri, 13 Nov 2026 20:55:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C1AC606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=dl8wDFTt
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kL22p8BZF/Emfj8IJkbvDzCaUJdCVWlN8Le2jw0n/OLcE9U9DIIcqIx8tSTlhAjHxzYBx5Tj7nC2KFqwuL6jS60jVuk6QxNtqK9kfoIE3pAH9k6ik+kJBsyMl3cct5cC7cjQNoCoxrqVdezm3hf2HmFvh3p9ec0PE9VTN8k1UCCFuMruVTrpLp3QBkAauSbZ+3e1dNDXrqMelcZx3jhtLogAzTsfHtgKJtTUOkWICf5gs3Gl+40o/TXPjsp0BxRF6V9dDZwMCHk7m7Zq9sTTDJt5CTyfIyRfssNvzoJCl71hNXGESLSziqACOyq8UJi9ZA0i/RxIfblKrWD6A8qEJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
- b=NfmO6Tgsr7k0+ZBmT5OKZBjbtqfpFCBPaRuQgLoaRUc8QmSqwOl8mWKInYY3b9bmG3lbhf9K/HUc0JB7kRMNvMPywbskIr581sr+Al1GdfDt1xkKcUethRppb+9YcqZEaxKj2vUkyj2gS2MfjXZEA9GBAhKdJbLIp8ZgzoOpOKc2p1Rr1nGmiR0gowJr0TkaW0Qd0+Y+LHW8A9jciuhd9vQaGOFmtcrxwGfCF4RIvF1NIVuV5UyLYgixXVBBzvCxctRbpGp6wvNnC9iIg+Znj2FthUBsv/eqAQ38a06YOGVrWdIwEvUWfQI38gLeWzxchhOlTHZN2MTp8k6HYil6ng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.29) smtp.rcpttodomain=davemloft.net
- smtp.mailfrom=nokia-bell-labs.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=nokia-bell-labs.com; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
- b=dl8wDFTtq6tsCVZ2/hNvzbKllW+o7L6zunmn7fGrmcsijJazhuQtBivZsF9gC+X11LcRpAXiiN1TuyETQBtXhz9TnOCsr8DRYhPfNq2wbOh9qLo2aEUw4aBSciBqNsEjTj+VjUL/q9iShQTXDkL4yF0ndaAW6t8/2BgMfhrpTv/HBJ9wykReoZYWMc7r9MDwPZM7kC/VJD4R3VwDLKMZKJWvzjueRDjP8TzuYXL6LaIsUS9r5iN9NTB5kNFbb4xU4raZfA50tYh2N0zhNCgXQA/sZIhaXwIEh+h+plFmcfa+ocrEjXwG8t1Hbcc6vOf+IcH4r4I9mvzB+7Q0jtYOhQ==
-Received: from PAZP264CA0074.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1fa::9)
- by AS8PR07MB9397.eurprd07.prod.outlook.com (2603:10a6:20b:637::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Fri, 13 Nov
- 2026 20:53:14 +0000
-Received: from ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
- (2603:10a6:102:1fa:cafe::93) by PAZP264CA0074.outlook.office365.com
- (2603:10a6:102:1fa::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Fri,
- 13 Nov 2026 20:53:12 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 131.228.2.29) smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not
- signed) header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.29 as permitted sender) receiver=protection.outlook.com;
- client-ip=131.228.2.29; helo=fihe3nok0735.emea.nsn-net.net; pr=C
-Received: from fihe3nok0735.emea.nsn-net.net (131.228.2.29) by
- ZR1PEPF0000E6B0.mail.protection.outlook.com (10.167.241.87) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4
- via Frontend Transport; Fri, 13 Nov 2026 20:53:11 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe3nok0735.emea.nsn-net.net (Postfix) with ESMTP id AC22255B67;
-	Fri, 13 Nov 2026 14:57:01 +0200 (EET)
-From: chia-yu.chang@nokia-bell-labs.com
-To: linux-kernel@vger.kernel.org,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuniyu@google.com,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen0607@gmail.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com,
-	Mike_Rudolph@comcast.com,
-	Jeff_Howe@comcast.com,
-	srichard@netapp.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH net-next v3 0/4] TCP Prague preparation series
-Date: Fri, 13 Nov 2026 13:56:24 +0100
-Message-Id: <20261113125628.2893742-1-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OG7SCUsF
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=z8+Ts67/O281nCBcV7IfvsBb3ZpvM9se/ske5htY3Lw=; b=OG7SCUsFRQ9UlsA0Km34RySyFV
+	5KNQqGF6UqJlEb07jcYP4+uRPRt2IJeoJeCuZk0SV3JCvnYraNdRVPDe+L/ab4AcmH+EQBWznYFLR
+	gNqrSZ4+aFNZZi3XJU+XriBljy6JpeqOQEKAjPrcTuu5ohSGBC34/6PVwWoJwTOXbxTA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xRyIj-00GMY9-4S; Fri, 13 Nov 2026 21:55:13 +0100
+Date: Fri, 13 Nov 2026 21:55:13 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/3] ethtool: add PHY receive frame and byte
+ totals
+Message-ID: <6dd40eca-5c17-47f5-893d-0d106f28ea06@lunn.ch>
+References: <20261113-submit-acx00-phy-stats-v1-v4-0-986b8a4a1871@gmail.com>
+ <20261113-submit-acx00-phy-stats-v1-v4-1-986b8a4a1871@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,66 +71,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZR1PEPF0000E6B0:EE_|AS8PR07MB9397:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6224384f-f06f-40cd-17ac-08df41c82170
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|7416014|376014|36860700016|1800799024|18002099003|3023799007|921020|11063799006|10067099003|56012099006|261009223027099003|261102123227099003|261102130727099003|261026121527099003|261021121427099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	8a+WSusvS5xeQemooL6J7XFBRs/wxG1rGASY210j3isLJinHfzJ8yzqMw/o6KRg1nmXV9bEeeQkaQ8nyQvEG9zyqNw2IJDtrLsma1dlLQjG1UUnoXHMkhtD+XPFwhjVb5uqQUl4dnMDyEQYr2i6RA4jhcHCmsDOH0JUoqbTA19/ATINFCNgBk1cw0LfGFiG9BBFWd17cN8H4bybjRyVY+Sz2w9/wOnAPRONnRpl+3lv8Axcmm5cow1QyvR0W9E1hyb97rUPRL3iEzrfW9F2C8rfU977uuupQzs/wBaubUMyxwBt8ZM5QP5zlw6zdoUA/c5TGxuAsIdQA1+uQhHi4PH1mwocPqS7gMX3MBlgA9CXfIrVeQdPIcY5Y/ZxOrvAQ0QZfPX72PDbtlG177S3N14I2aATgdIw4rX37g5gGwwK9HoVgRdvl38tWPZshVW7ss/ecn8dUMWfdyMbf6+3HwuoYqFh9d6b8KcWvLV/Dq68B9RQ8elO3CAJS5ypIOA+YOQAYjUHjwM53zGB64zlChdHpC6JWCc/uxg1/4YYbA3+CN2x0EQ4KIc7IwQIH7MEvNn4Nqy2Xy8O7j0gXxYna/mKZmi9EHua+4SSwjlgJdgixyDA878Spkw6DBi4dZWwXmv6eE4oNxI54K5P0JFrsDZDVuGZu20QB6XMedJAwrTe7XQnYU6ee6Q5ZwrajJLKF/T+Z/lxnKDWJnv3IJf0ULS4dOYZcd5x1EwBcDSl5qqopq1IkunCoQhOwi77tUVG7
-X-Forefront-Antispam-Report:
-	CIP:131.228.2.29;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0735.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(7416014)(376014)(36860700016)(1800799024)(18002099003)(3023799007)(921020)(11063799006)(10067099003)(56012099006)(261009223027099003)(261102123227099003)(261102130727099003)(261026121527099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	DBIvnOOaaKfRFujQ9LnrKsthLipPGUbOWZ3he649kpc4GxbtaUUPQZhdFyC1QTuoDe98yC9Er1fR2w2rU7hn7tS9Fpt7o1MbPzRsAvYX8GIXY5jImHL1Tcl/hu2xw+4mGzGooKclhpcWlxRbiVxiJkeC56PRKUEf0SZOy5ldh2n/diBPMwxW9mfeeFRfy+SVMkq3E0Adp9LbLe51z0/mQdJrsI1AjAXtC4y3vyXgaezcxuyNqdJHUUFprW4m9+LHZvMwT6Zdy4lF/Tdqcnugqboh6sj5DqZT/VScG51RJ1qSjH9dKgS5aFlvj+DQrnpo1o18e1HTX26YASfWvCr/xOu3e5u7JxGop4TRA8Dm4m/xNrmkDMHDizlOzbrQn7VkgLWWFkzSCdS9XM2KAIbp59WUa1A3FN0HzOLNKR4RQcfgRIbsKMlTIl3w3B4l/kp8
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 20:53:11.8843
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6224384f-f06f-40cd-17ac-08df41c82170
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.29];Helo=[fihe3nok0735.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB9397
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113-submit-acx00-phy-stats-v1-v4-1-986b8a4a1871@gmail.com>
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Correct the documented group name to
+> phydev, matching the existing name exported by the kernel.
 
-Hello,
+> +++ b/Documentation/networking/ethtool-netlink.rst
+> @@ -1665,7 +1665,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currently defined values are:
+>   ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30.3.2.1.*)
+>   ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistics (30.3.3.*)
+>   ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
+> - ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defined by IEEE
+> + ETHTOOL_STATS_PHY      phydev   Additional PHY statistics, not defined by IEEE
+>   ====================== ======== ===============================================
+>  
+>  Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in the reply.
 
-Please find the v3 TCP Prague preparation series, and TCP Prague will
-be submitted after this series.
+This should be a patch of its own. That would of forced you to write a
+useful commit message, and i would not of needed to ask why it
+changed.
 
-This patch includes the following additions:
-(1) Add ece_delta to rate_sample;
-(2) Rename existing rename ECN transmit helper function;
-(3) Add TCP_ECN_SEND_ECT_1 to use ECT_1 after negotiation;
-(4) Add MSS ceiling callback for congestion control to limit MSS.
+You want lots of small patches, with good commit messages, which are
+obviously correct.
 
-Best regards,
-Chia-Yu
+I suggest you spend some time reviewing other developers patches. See
+it from the other side.
+
+    Andrew
 
 ---
-Chia-Yu Chang (3):
-  tcp: rename ECN transmit helper function
-  tcp: add TCP_ECN_SEND_ECT_1 flag for congestion control
-  tcp: add MSS ceiling callback for congestion control
-
-Ilpo Järvinen (1):
-  tcp: export CE count in rate_sample
-
- include/net/tcp.h     |  6 ++++++
- include/net/tcp_ecn.h | 12 +++++++++---
- net/ipv4/tcp_cong.c   |  8 +++++---
- net/ipv4/tcp_input.c  | 40 +++++++++++++++++++---------------------
- net/ipv4/tcp_output.c | 18 +++++++++++++++++-
- 5 files changed, 56 insertions(+), 28 deletions(-)
-
--- 
-2.34.1
-
+pw-bot: cr
