@@ -1,50 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.68.141
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.71.67
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572577;
-	b=le/HJhkUXUK7tW8UF7Zb+qBhMFlZJW7bInNKuRs895HvKP+vGV2obS5+RQhmrm6Gys4c
-	 tWZ53My3A35k0JIQnthuC/y/qD4IxZ17Vs9UQkUjqnxQGtZI5iJl9msDpds+Zqo0objqC
-	 s6bqkwDYcI2//TttIdOpz3dvS9Qz2D2r/7DwddrOD18pYVvvvLd5VJGf+7vUtoNzarb39
-	 MU2Puabe3mETTyxQq46HD9IFDUYvJLLP7H8cmfpFwNObuUBGxaRl60R5m5rMoCfe0kd1A
-	 3P1AtCaNYcE0BaneNWrMBWVo0auDYF3qgxZCguLhfUyNPwGW0v4Wg+u4srZDM0Hil7Q==
+	t=1794572574;
+	b=cGK5z8qJDdF8by09dLEJHGDMlT7vc1tInZ53R5cfo4NUxt0wmfh6ht9QZ3wv5RFRa37l
+	 3Yjq1MBgQV3P7O/Fv7HV3YcaDakl+mkzJG98u39A5aaMz2bCsSCQNDrC1HaM5Gz9vW03/
+	 OsXx6hRd5q5Fwii4O1DyF7HrQEcRN9b/OvlXFhHsHifn4lo9cgyEpB+tkO4V4BCmVfgB4
+	 CP8KM3IlTD19MrWC9BcHuNmLi7Fl+lwXOpEqNDb1AJ6rOY+1KH0mq0XM3p3VMS21sg868
+	 7SHkvX0cX/LiFYlS5nwvQDUa3RgXX0IinxWIUXgNKBs4YA3GCBtbnHDpxsNSfRQrW7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572577;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572574;
 	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
 	 mail-alias-created-date:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Authority-Info-Out:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-JNJ;
-	bh=aMh7wVLNn5osDzNMZDx0QV5BBB+Pz+NiLpirZBF6xfA=;
-	b=fv5ixWx7cJiE4Tpm0ZdMEILW4uJ+BnC15vCtpNZfolyGXxczZc0TclZj/vVk04lvliTB
-	 LwLjjLf7dD3E2Uidq/EJgsWTxvus03XiIb0YYl4p9bJGqponbsxRx/sYZnA41E/J1qWBE
-	 XhJCd2YQ+12782NaepgAkWbjNgwx5J6nntIWSyI2qpo6CyGgH8tJTpQFDPUMv94LyZYTI
-	 9WZ1LGA2hJrEU2OI1gEEFTsuGWiWsMYiKS0lJcexss6++W/chV+R3QQS2uZDnr1aud9qR
-	 UmQ/t6nOXtt69h0lsgrVbUrXga4ZD0gQYSs6aatkjq637Udea0oZJkce0noxjG5nAiQ==
+	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Info-Out:X-JNJ;
+	bh=CAPJTphDYYFKEENJOeATe0OoS3X41+ZOVJxvbKyL+Ow=;
+	b=ZgQLFFXgN6KiIRKjL6N71RY1ux/RdvRwbt4YMzGDXi1THwbsVwwZmu7cbDkp3JpOvieg
+	 S+9HqauS+tbNmFMqQf1PUuH6N9h48X+OuoV+okN3t4sAGSZQUVdYMcycL5IW7T2xIo2dB
+	 7NjasPk/LsqniMWPxkRI/Fe0KBWykKmfKHH2bxRl3IBzBUUsHZ5hUn1VuPy95toss1g8Q
+	 myLIXVsD6CYBbWNTHGqzkYs4BfneTRyvCg8n7pbq+pRxX5BA9cCDoiyLwk+Xzb58OD2J7
+	 butbgyFC+dhDU/yBRsp3Qc4suDtnfDoOd3zKojcohzu5B3h0oooQYwZ429zwHh5cpLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=verdict.gg;
 	spf=pass smtp.mailfrom=verdict.gg;
-	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=IstPGMGc;
-	arc=none smtp.remote-ip=57.103.68.141
-Received: from outbound.mr.icloud.com (mr-2002h-snip4-11.eps.apple.com [57.103.68.141])
+	dkim=pass header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KUMlAOWr;
+	arc=none smtp.remote-ip=57.103.71.67
+Received: from outbound.mr.icloud.com (mr-2005g-snip4-4.eps.apple.com [57.103.71.67])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927B8606A335
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:22:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 927B8606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C519060A3807
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:22:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C519060A3807
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=IstPGMGc
+	dkim=pass (2048-bit key, unprotected) header.d=verdict.gg header.i=@verdict.gg header.a=rsa-sha256 header.s=sig1 header.b=KUMlAOWr
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id AA3471800180;
-	Fri, 13 Nov 2026 12:22:55 +0000 (UTC)
-X-ICL-RepId: 01a1d4dc-63c9-7eec-aaa6-ef1ade63e68e
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794572576; x=1826108576; bh=aMh7wVLNn5osDzNMZDx0QV5BBB+Pz+NiLpirZBF6xfA=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=IstPGMGc/pzcQ15Vrx6z+XbJoBmCVGTPItx1yRjz9OkxmbTZKmsJMAk6ODqjR3OG1pVXLLInszZiORDBfwnyrqWIfoMUQkqaHb2rLh+tGoNUvxYhPNxNbQjoaFVkPnTfHNvKnYOARSGMsg5DFr+HM91EUiQ+GUeUajeI0O612aGsuYGCchCn1ulGCWJXoeOrxyMUT4DYRqRiZIdG04i3+7tSU1JG6tNZf+h2r65En8S6J7n8WRa9WLeNIud7WXwmQMLKsiYezOfjcxyui6si0v1M7UdVhgimp8CAtimZc4WQ5w7p5Ot8eDkQjfy/JQMAC3mo5oQYvHLl8PKUlILITQ==
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id 2317A18002F0;
+	Fri, 13 Nov 2026 12:22:49 +0000 (UTC)
+X-ICL-RepId: 01a1d4dc-4dd5-7c87-9bb1-eb56a6bfed53
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1794572573; x=1826108573; bh=CAPJTphDYYFKEENJOeATe0OoS3X41+ZOVJxvbKyL+Ow=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=KUMlAOWr6DV2m92RyUnR/G1u7oVsHeNmI9PIKh80FwQLG4n5/7rmmikoRcl/yda4wU0Y2cjAeeY+chb33t3yARRckwsmTY2T1NvDIstVXxh5rWzq0KcQSB+0NE9cb5izB16gyrva5QxNb2XhFIlry9W05YIJ32QlRhtcBVMJNMKL3QVdfHwY6GmgyTdbjVmltNNNDSUeXYj3shCnDiUGzPvr/4SgEqSwgfzBcZDAIwTMjMmwyY/IeSE6gaoOOEKTAbLevNPqv9epKYZht7kDlnQhqNF9ojo6rZjaSkWfFMBWH1xAGhvp+XW5fO42FR8HdmmNo7RPty4Zz3h+crsa7g==
 mail-alias-created-date: 1621344842221
 Received: from DelNac.mail.msk (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id F3353180019B;
-	Fri, 13 Nov 2026 12:22:52 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id F054A18002EE;
+	Fri, 13 Nov 2026 12:22:46 +0000 (UTC)
 From: Vladimir Vdovin <deliran@verdict.gg>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
@@ -58,9 +57,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [PATCH net-next v3 3/3] selftests: net: pmtu: Add IPv6 and asymmetric multipath tests
-Date: Fri, 13 Nov 2026 15:22:37 +0300
-Message-ID: <20261113122237.88990-4-deliran@verdict.gg>
+Subject: [PATCH net-next v3 1/3] ipv4: Only lower the pmtu of the other paths of a multipath route
+Date: Fri, 13 Nov 2026 15:22:35 +0300
+Message-ID: <20261113122237.88990-2-deliran@verdict.gg>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261113122237.88990-1-deliran@verdict.gg>
 References: <20261113122237.88990-1-deliran@verdict.gg>
@@ -74,406 +73,110 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Info-Out: v=2.4 cv=SM/Xx+vH c=1 sm=1 tr=0 ts=6af7011f
+X-Proofpoint-GUID: iYPjl1fPsKEE3JDTr09BaKW-U0xrB-pa
+X-Proofpoint-ORIG-GUID: iYPjl1fPsKEE3JDTr09BaKW-U0xrB-pa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX3ZuI9pm4zDZg
+ 3V56i7+rCEIIu1cyXBD1u3M7nF6LYS22bJYGXBiqUgVwawnPGZpu3/6p8KR8RfHYCTDaI4PI/bC
+ hcO4Hs0wkDjZzTsGIIkkhmBuJX9rNacw8DA3u6+C5z5MIqvTh1dDSmZtZfVKV5hwWwimqllo4Yo
+ 5YAD9a2VULrGvv4Hfe/Ldg0N67pExXGjSDpCl8cuTMI6IdfNcAGhJoxtaoXPLUF2eUq1PgPf3xc
+ rLB99GJ64iaQX2sLUGL1oC5qNTDT3aRzihjVYfeHm+TuXnJq5H0xbEyI+d/62rGE5RBo2nOuEfs
+ UKwLx3bD88cir2hIazGWmmZ5eOr8LP1ID3KAlsSjDThJM86VtvTk+24YjC1Ic4=
+X-Authority-Info-Out: v=2.4 cv=WrYm8Nfv c=1 sm=1 tr=0 ts=6af7011b
  cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
  a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EYaFdmsEC1CjpenOt5ir:22 a=ieB-HjlS9-5fP-wcyLUk:22 a=E8YXmJpeDLvvPdLe3XAA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfXwg53/fcw7qaA
- hbnG8fgdytNI26tx+CC2ecs291vcSk0bFfWhpOuWDD8M4eB+dw5aznFM/n/5gzf737wwaKWWhMd
- FdDY0RWkJMiVHd3O3M2q2/vRKIjZFlg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0OSBTYWx0ZWRfX89FAKFlemTAV
- PR+hmEb7mDDWZTI0PjouX6ryaZ3bY4rWW3rjLf65Lr5zsKUi3nG10c+/5IuZliqc1QDg1cb5zJM
- 3HniM/BEbWwcdE8H3MSyCFoThGSAjUz8Zb84R/TELbxHNqMxGS+x6rmOacuK4YfAQ76FkuvLlvu
- VgOzJ10Ps++d3l1CpT5U0dXOO8I9K8Sww0O2G1hO45Qg7M3IdDGQ/XnM2Fm/LnNAiPnW0Zn6Ku3
- fqSDeGdiWGpuFBQ0fl43wwxO4Af6RKtXvF4Wr3FWNEqxYZMRWffagPvTju49XekXID4vwC1/l0Z
- YrniMpX2EB6yg9XA8wY2CA2OXyWl7vfcDW72+2lTNk9cnEDTLRcDJ1WsutROck=
-X-Proofpoint-GUID: qBbd35-q3jY4QO25nrL14s99iF6xgHoT
-X-Proofpoint-ORIG-GUID: qBbd35-q3jY4QO25nrL14s99iF6xgHoT
-X-JNJ: AAAAAAABwj3sdWXdSgqD8Rl/UtkLBFkWYSo9iuETAFyXPkxZBwiZ7u/SJKGE1w/FruQ80j
- jOpTPXG1FgUOgc2aOG8RB9TTJ3VThqD44cfY3TOrIQGUYVt/kigkZ/DoOyXjABMFu3TbiJ
- i7UKcNoo5JODshYjM+DT3tQ+gvUkM7Wfqr1b+uqQUrx8TY4iXGchLcl0JP7KhJqLdBilmf
- 5yzGSZXJzZQm81D1hf+aDBKDwJT30XkXI5UqMs/KNdyRSWIuBIeaq5k6kATlEUlUs9nL6I
- qoHV4CyQEEY/1g5AU1kcsdkUdMYCgrSba8FDfTw2xh8+o8wAlHfa+jGyxueJRNj2X5fb/J
- QbOR5x2kvZZ7CFM5NCUomjpDakqTFS7MYiNe2HCKBcO+lXQghI/IR2rma2ATtRAej6EFo2
- IVXSZPQm/Lf7KYQ09fybtpx8RMdBP05StaFvSCp8GJzMBEkYmu7UdOls3gwoxzcNQZ/l/7
- MyZfQcMnDFCJ13QLMzj1ReR7ix9qJZzdXh74j84pJWHHOrqwTpRbruhUV9+C1A61rc5Gfu
- 4ra6itFR4m48kd7vVSlCNoHwOm3VfMMIp9G1aEbpXOH7GlDf//6QXM8mCNSAVuP4tv7lWN
- SW5Z+znI7UrNbFRIGUzYnhUGDQoWcfibuTWzIb4hPX2id5DT6SW2OPZRxLmF37siQTM1Fi
- WvEeLzqyLgb1BOXEjis48rOMG2LKgTs52Bh7Phh8azJOsdYfFDoor3dj32okH2AGY8Kc3O
- 40V4Ww0SIBH+FGLEpJdWA8QgO3Dpi8fwp8lnDoIOvWa6YluY3ey2gGE8xHTogIuqal8yPB
- Byxb9vG6JMqCo1V/ChfVXzPTL51g3NjA4jA=
+ a=LRu4Mgyf0Pww-iI-pl8A:9
+X-JNJ: AAAAAAAB4dz2jpGX6Y8hexPYNj6OFg2unHRmK+2Rvda4H/yTk1YfO3l4d9GDdMwTvTW0sk
+ PMc87Ibp0SFXYpR3KdGLx3rBzb4qEWNTMyAFoMr+5HnD/9mSOIyUywHGk7drnJXEWKWFhY
+ 81oB2c3A4uSg8wnRRo4VbiCVth0FBKpAayYFXh56otv31g8s1hrVUcMDBWfsoS5gyba2TT
+ fPJPjPnO5EoWD8UlL5Ekkmaxdu3ljRRThxnjk36vRMhuyMJinoG0hL/kFUd1c3s5B/9H0l
+ NGfoRdcTeJWBV94Pc8H+MJwfn93tMCOxomVV0GiCjCKlsvOKSAINFVRV1eE88hp/DODMpL
+ hb6y2IA+kUPep9cryGAkJhKDIptwW6Rlk2zNpa7dl3FzVr/+tQW4Ls3/J6d/7VnEnBSB62
+ d7i2Uzw2Glc2NIZR1QvQJn4L0nl9zRtQIJlvEZsvx5N2FLOUhuVjQcafzy26ROTiaFy8Wl
+ nNmyPmkmAxeLkifvS9e/l3rFQiVXVTzMdzWNUUsDKdg5t/X38zmVW4BSurFTz5rDn7/u2+
+ X3nuXCar7PFdWWXCKTS8lSn4Plds4BxwMl0+X/sHdrzG7PdQNYzl6F2QJY72jk7Aumi6Pb
+ uNjJYYGRq/kT7Eo+5zR+AWuinFQi4Aj7NyFKmwntFh8K+ib+8ab0aqk78HDJoGMWwZYId7
+ ol+/56857PB/t8l3ayudTLJwerD/TV9kDH8Uoxqv4/8MZsrys3pWq266G6wvNgDrcP1Wz/
+ UJ2+bEVxKd5Nc540lrlG4jETnron2PXsyiiErEeHEQHAxUHmGUiXd60NRNLE7aU+ZTd9Bs
+ EaLq6EsD9i9prqokjqUfVMGaLPOF9wi0nB+MLvi2Fi6pBQ==
 
-Make pmtu_ipv4_mp_exceptions family agnostic and add
-pmtu_ipv6_mp_exceptions: one oversized ping over a multipath route must
-leave PMTU exceptions on both paths.
+Since commit 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths
+if multipath enabled") __ip_rt_update_pmtu() caches the mtu of a
+Fragmentation Needed on every path of a multipath route, as the lookup
+there doesn't know the flow the message was sent for and may land on
+another path than the one that flow is on. But only that path is
+checked against the mtu, by the old_mtu early return, the others get it
+as is. A path whose device or route mtu is below it, or that already
+learned a lower pmtu, ends up with a pmtu above what it can carry: its
+flows send packets of that size, which don't get through, and no
+Fragmentation Needed comes back for them until the exception expires.
 
-Add pmtu_ipv4_mp_asym_exceptions and pmtu_ipv6_mp_asym_exceptions with
-an MTU of 1400 behind one router, and 1350 on the link to the other
-router with 1300 behind it. They pick a flow through each router (a
-source address for IPv4, whose multipath hash covers addresses only, a
-flow label for IPv6) and check that a Packet Too Big from the first
-router is cached on its path only, as the second one can't carry 1400,
-then that a flow through the second router lowers the PMTU of both
-paths.
+Skip a path when the mtu would not lower what that path uses now: the
+pmtu of its live exception if it has one, else the mtu of the route or
+the device, the way ipv4_mtu() would report them. A mtu locked because
+it is below ip_rt_min_pmtu is still written everywhere, it clears DF
+and has to reach the path the flow is on.
 
-Without the preceding fixes the asymmetric tests fail for both families
-and the IPv6 multipath test as well, with both legacy nexthops and
-nexthop objects.
-
+Fixes: 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths if multipath enabled")
 Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
 ---
- tools/testing/selftests/net/pmtu.sh | 281 ++++++++++++++++++++++++----
- 1 file changed, 243 insertions(+), 38 deletions(-)
+ net/ipv4/route.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index c7cd271714ef..2bd132991841 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -203,6 +203,19 @@
- #	on host A and B on lo reachable via both routers. Host A and B
- #	addresses have multipath routes to each other, b_r1 mtu = 1500.
- #	Check that PMTU exceptions are created for both paths.
-+#
-+# - pmtu_ipv6_mp_exceptions
-+#	Same as above but with IPv6
-+#
-+# - pmtu_ipv4_mp_asym_exceptions
-+#	Same topology as pmtu_ipv4_mp_exceptions, with b_r1 mtu = 1400,
-+#	a_r2 mtu = 1350 and b_r2 mtu = 1300. Pick a flow through each router
-+#	and check that a Packet Too Big from R1 creates a PMTU exception on
-+#	the path via R1 only, as the path via R2 can't carry 1400, then that
-+#	a flow through R2 lowers the PMTU of both paths
-+#
-+# - pmtu_ipv6_mp_asym_exceptions
-+#	Same as above but with IPv6
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index d0a5f6d77094..f0da009f4115 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -150,6 +150,8 @@ static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
+ 					       struct sk_buff *skb,
+ 					       const void *daddr);
+ static void ipv4_confirm_neigh(const struct dst_entry *dst, const void *daddr);
++static struct fib_nh_exception *find_exception(struct fib_nh_common *nhc,
++					       __be32 daddr);
  
- source lib.sh
- 
-@@ -272,7 +285,10 @@ tests="
- 	list_flush_ipv6_exception	ipv6: list and flush cached exceptions	1
- 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
- 	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1
--	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions	1"
-+	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions	1
-+	pmtu_ipv6_mp_exceptions		ipv6: PMTU multipath nh exceptions	1
-+	pmtu_ipv4_mp_asym_exceptions	ipv4: PMTU multipath nh exceptions, asymmetric MTUs	1
-+	pmtu_ipv6_mp_asym_exceptions	ipv6: PMTU multipath nh exceptions, asymmetric MTUs	1"
- 
- # Addressing and routing for tests with routers: four network segments, with
- # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
-@@ -350,8 +366,12 @@ tunnel6_b_addr="fd00:2::b"
- tunnel6_mask="64"
- 
- host4_a_addr="192.168.99.99"
-+host4_a_net="192.168.97"
- host4_b_addr="192.168.88.88"
- 
-+host6_a_addr="fc00:1000::a"
-+host6_b_addr="fc00:1001::b"
-+
- dummy6_0_prefix="fc00:1000::"
- dummy6_1_prefix="fc00:1001::"
- dummy6_mask="64"
-@@ -994,49 +1014,112 @@ setup_ovs_bridge() {
+ static struct dst_ops ipv4_dst_ops = {
+ 	.family =		AF_INET,
+@@ -1046,6 +1048,26 @@ out:	kfree_skb_reason(skb, reason);
+ 	return 0;
  }
  
- setup_multipath_new() {
--	# Set up host A with multipath routes to host B host4_b_addr
--	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
--	run_cmd ${ns_a} ip nexthop add id 401 via ${prefix4}.${a_r1}.2 dev veth_A-R1
--	run_cmd ${ns_a} ip nexthop add id 402 via ${prefix4}.${a_r2}.2 dev veth_A-R2
--	run_cmd ${ns_a} ip nexthop add id 403 group 401/402
--	run_cmd ${ns_a} ip route add ${host4_b_addr} src ${host4_a_addr} nhid 403
-+	family=${1}
++#ifdef CONFIG_IP_ROUTE_MULTIPATH
++/* The mtu a path currently uses for daddr, as ipv4_mtu() would report it. */
++static u32 fib_nhc_mtu(struct fib_nh_common *nhc, const struct fib_info *fi,
++		       __be32 daddr)
++{
++	struct fib_nh_exception *fnhe = find_exception(nhc, daddr);
++	u32 mtu = 0;
 +
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_a_r1=${prefix4}.${a_r1}.2
-+		nh_a_r2=${prefix4}.${a_r2}.2
-+		nh_b_r1=${prefix4}.${b_r1}.2
-+		nh_b_r2=${prefix4}.${b_r2}.2
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_a_r1=${prefix6}:${a_r1}::2
-+		nh_a_r2=${prefix6}:${a_r2}::2
-+		nh_b_r1=${prefix6}:${b_r1}::2
-+		nh_b_r2=${prefix6}:${b_r2}::2
-+	fi
++	if (fnhe && fnhe->fnhe_genid == fnhe_genid(dev_net(nhc->nhc_dev)))
++		mtu = fnhe->fnhe_pmtu;
++	if (!mtu)
++		mtu = fi->fib_mtu;
++	if (!mtu)
++		mtu = READ_ONCE(nhc->nhc_dev->mtu);
++	mtu = min(mtu, IP_MAX_MTU);
 +
-+	# Set up host A with multipath routes to host B host_b_addr
-+	run_cmd ${ns_a} ip addr add ${host_a_addr} dev lo
-+	run_cmd ${ns_a} ip nexthop add id ${family}01 via ${nh_a_r1} dev veth_A-R1
-+	run_cmd ${ns_a} ip nexthop add id ${family}02 via ${nh_a_r2} dev veth_A-R2
-+	run_cmd ${ns_a} ip nexthop add id ${family}03 group ${family}01/${family}02
-+	run_cmd ${ns_a} ip route add ${host_b_addr} src ${host_a_addr} nhid ${family}03
- 
--	# Set up host B with multipath routes to host A host4_a_addr
--	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
--	run_cmd ${ns_b} ip nexthop add id 401 via ${prefix4}.${b_r1}.2 dev veth_B-R1
--	run_cmd ${ns_b} ip nexthop add id 402 via ${prefix4}.${b_r2}.2 dev veth_B-R2
--	run_cmd ${ns_b} ip nexthop add id 403 group 401/402
--	run_cmd ${ns_b} ip route add ${host4_a_addr} src ${host4_b_addr} nhid 403
-+	# Set up host B with multipath routes to host A host_a_addr
-+	run_cmd ${ns_b} ip addr add ${host_b_addr} dev lo
-+	run_cmd ${ns_b} ip nexthop add id ${family}01 via ${nh_b_r1} dev veth_B-R1
-+	run_cmd ${ns_b} ip nexthop add id ${family}02 via ${nh_b_r2} dev veth_B-R2
-+	run_cmd ${ns_b} ip nexthop add id ${family}03 group ${family}01/${family}02
-+	run_cmd ${ns_b} ip route add ${host_a_addr} src ${host_b_addr} nhid ${family}03
- }
- 
- setup_multipath_old() {
--	# Set up host A with multipath routes to host B host4_b_addr
--	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
--	run_cmd ${ns_a} ip route add ${host4_b_addr} \
--			src ${host4_a_addr} \
--			nexthop via ${prefix4}.${a_r1}.2 weight 1 \
--			nexthop via ${prefix4}.${a_r2}.2 weight 1
-+	family=${1}
-+
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_a_r1=${prefix4}.${a_r1}.2
-+		nh_a_r2=${prefix4}.${a_r2}.2
-+		nh_b_r1=${prefix4}.${b_r1}.2
-+		nh_b_r2=${prefix4}.${b_r2}.2
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_a_r1=${prefix6}:${a_r1}::2
-+		nh_a_r2=${prefix6}:${a_r2}::2
-+		nh_b_r1=${prefix6}:${b_r1}::2
-+		nh_b_r2=${prefix6}:${b_r2}::2
-+	fi
-+
-+	# Set up host A with multipath routes to host B host_b_addr
-+	run_cmd ${ns_a} ip addr add ${host_a_addr} dev lo
-+	run_cmd ${ns_a} ip route add ${host_b_addr} \
-+			src ${host_a_addr} \
-+			nexthop via ${nh_a_r1} weight 1 \
-+			nexthop via ${nh_a_r2} weight 1
- 
--	# Set up host B with multipath routes to host A host4_a_addr
--	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
--	run_cmd ${ns_b} ip route add ${host4_a_addr} \
--			src ${host4_b_addr} \
--			nexthop via ${prefix4}.${b_r1}.2 weight 1 \
--			nexthop via ${prefix4}.${b_r2}.2 weight 1
-+	# Set up host B with multipath routes to host A host_a_addr
-+	run_cmd ${ns_b} ip addr add ${host_b_addr} dev lo
-+	run_cmd ${ns_b} ip route add ${host_a_addr} \
-+			src ${host_b_addr} \
-+			nexthop via ${nh_b_r1} weight 1 \
-+			nexthop via ${nh_b_r2} weight 1
- }
- 
-+
- setup_multipath() {
-+	family="$1"
-+
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_r1_a=${prefix4}.${a_r1}.1
-+		nh_r1_b=${prefix4}.${b_r1}.1
-+		nh_r2_a=${prefix4}.${a_r2}.1
-+		nh_r2_b=${prefix4}.${b_r2}.1
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_r1_a=${prefix6}:${a_r1}::1
-+		nh_r1_b=${prefix6}:${b_r1}::1
-+		nh_r2_a=${prefix6}:${a_r2}::1
-+		nh_r2_b=${prefix6}:${b_r2}::1
-+	fi
-+
- 	if [ "$USE_NH" = "yes" ]; then
--		setup_multipath_new
-+		setup_multipath_new ${family}
- 	else
--		setup_multipath_old
-+		setup_multipath_old ${family}
- 	fi
- 
- 	# Set up routers with routes to dummies
--	run_cmd ${ns_r1} ip route add ${host4_a_addr} via ${prefix4}.${a_r1}.1
--	run_cmd ${ns_r2} ip route add ${host4_a_addr} via ${prefix4}.${a_r2}.1
--	run_cmd ${ns_r1} ip route add ${host4_b_addr} via ${prefix4}.${b_r1}.1
--	run_cmd ${ns_r2} ip route add ${host4_b_addr} via ${prefix4}.${b_r2}.1
-+	run_cmd ${ns_r1} ip route add ${host_a_addr} via ${nh_r1_a}
-+	run_cmd ${ns_r2} ip route add ${host_a_addr} via ${nh_r2_a}
-+	run_cmd ${ns_r1} ip route add ${host_b_addr} via ${nh_r1_b}
-+	run_cmd ${ns_r2} ip route add ${host_b_addr} via ${nh_r2_b}
++	return mtu - lwtunnel_headroom(nhc->nhc_lwtstate, mtu);
 +}
++#endif
 +
-+setup_multipath4() {
-+	setup_multipath 4
-+}
-+
-+setup_multipath6() {
-+	setup_multipath 6
- }
- 
- setup() {
-@@ -2377,8 +2460,18 @@ test_pmtu_ipv6_route_change() {
- 	test_pmtu_ipvX_route_change 6
- }
- 
--test_pmtu_ipv4_mp_exceptions() {
--	setup namespaces routing multipath || return $ksft_skip
-+test_pmtu_ipvX_mp_exceptions() {
-+	family=${1}
-+
-+	if [ ${family} -eq 4 ]; then
-+		ping=ping
-+		dst="${host4_b_addr}"
-+	else
-+		ping=${ping6}
-+		dst="${host6_b_addr}"
-+	fi
-+
-+	setup namespaces routing multipath${family} || return $ksft_skip
- 
- 	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
- 	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
-@@ -2395,18 +2488,130 @@ test_pmtu_ipv4_mp_exceptions() {
- 	mtu "${ns_r2}" veth_R2-A 2000
- 	mtu "${ns_r2}" veth_R2-B 1500
- 	mtu "${ns_b}"  veth_B-R2 1500
--
- 	# Ping and expect two nexthop exceptions for two routes
--	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 1 -s 1800 "${host4_b_addr}"
-+	run_cmd ${ns_a} ${ping} -q -M want -i 0.1 -c 1 -s 1800 "${dst}"
- 
- 	# Check that exceptions have been created with the correct PMTU
--	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R1)"
--	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R2)"
--
-+	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R1)"
-+	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R2)"
- 	check_pmtu_value "1500" "${pmtu_a_R1}" "exceeding MTU (veth_A-R1)" || return 1
- 	check_pmtu_value "1500" "${pmtu_a_R2}" "exceeding MTU (veth_A-R2)" || return 1
- }
- 
-+test_pmtu_ipv4_mp_exceptions() {
-+	test_pmtu_ipvX_mp_exceptions 4
-+}
-+
-+# Find a flow from host A to ${2} that goes out through ${3}: a source
-+# address out of ${host4_a_net}, added to lo as needed, since the IPv4
-+# multipath hash covers addresses only, or an IPv6 flow label, in hex as
-+# both ip and ping take it, for a packet sent from ${host6_a_addr}
-+mp_flow_via() {
-+	family="${1}"
-+	dst="${2}"
-+	oif="${3}"
-+
-+	for i in $(seq 1 32); do
-+		if [ ${family} -eq 4 ]; then
-+			flow="${host4_a_net}.${i}"
-+			${ns_a} ip addr add ${flow}/32 dev lo 2>/dev/null
-+			out="$(${ns_a} ip route get ${dst} from ${flow} 2>/dev/null)"
-+		else
-+			flow="$(printf "0x%x" ${i})"
-+			out="$(${ns_a} ip route get ${dst} from ${host6_a_addr} \
-+				ipproto 58 flowlabel ${flow} 2>/dev/null)"
-+		fi
-+		case "${out}" in
-+		*" dev ${oif} "*)
-+			echo "${flow}"
-+			return 0
-+			;;
-+		esac
-+	done
-+
-+	return 1
-+}
-+
-+test_pmtu_ipvX_mp_asym_exceptions() {
-+	family=${1}
-+
-+	if [ ${family} -eq 4 ]; then
-+		ping=ping
-+		dst="${host4_b_addr}"
-+	else
-+		ping=${ping6}
-+		dst="${host6_b_addr}"
-+	fi
-+
-+	setup namespaces routing multipath${family} || return $ksft_skip
-+
-+	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
-+	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
-+	      "${ns_a}"  veth_A-R2    "${ns_r2}" veth_R2-A \
-+	      "${ns_r2}" veth_R2-B    "${ns_b}"  veth_B-R2
-+
-+	if [ ${family} -eq 4 ]; then
-+		# Routes back to the source addresses mp_flow_via() picks
-+		run_cmd ${ns_r1} ip route add ${host4_a_net}.0/24 via ${prefix4}.${a_r1}.1
-+		run_cmd ${ns_r2} ip route add ${host4_a_net}.0/24 via ${prefix4}.${a_r2}.1
-+	else
-+		${ns_a} ip route get ${dst} ipproto 58 flowlabel 0x1 >/dev/null 2>&1 || {
-+			err "  ip route get flowlabel not supported"; return $ksft_skip; }
-+	fi
-+
-+	# Set up initial MTU values: 1400 behind R1, 1350 to R2, 1300 behind R2
-+	mtu "${ns_a}"  veth_A-R1 2000
-+	mtu "${ns_r1}" veth_R1-A 2000
-+	mtu "${ns_r1}" veth_R1-B 1400
-+	mtu "${ns_b}"  veth_B-R1 1400
-+
-+	mtu "${ns_a}"  veth_A-R2 1350
-+	mtu "${ns_r2}" veth_R2-A 1350
-+	mtu "${ns_r2}" veth_R2-B 1300
-+	mtu "${ns_b}"  veth_B-R2 1300
-+
-+	flow_r1="$(mp_flow_via ${family} ${dst} veth_A-R1)" || {
-+		err "  no flow through veth_A-R1 found"; return 1; }
-+	flow_r2="$(mp_flow_via ${family} ${dst} veth_A-R2)" || {
-+		err "  no flow through veth_A-R2 found"; return 1; }
-+	if [ ${family} -eq 4 ]; then
-+		ping_r1="${ping} -I ${flow_r1}"
-+		ping_r2="${ping} -I ${flow_r2}"
-+	else
-+		ping_r1="${ping} -I ${host6_a_addr} -F ${flow_r1}"
-+		ping_r2="${ping} -I ${host6_a_addr} -F ${flow_r2}"
-+	fi
-+
-+	# A Packet Too Big from R1 is cached on the path via R1, not on the
-+	# path via R2, whose link can't carry 1400
-+	run_cmd ${ns_a} ${ping_r1} -q -M want -i 0.1 -c 1 -s 1800 "${dst}"
-+
-+	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R1)"
-+	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R2)"
-+	check_pmtu_value "1400" "${pmtu_a_R1}" "exceeding MTU via R1 (veth_A-R1)" || return 1
-+	check_pmtu_value "" "${pmtu_a_R2}" "exceeding MTU via R1 (veth_A-R2)" || return 1
-+
-+	# The lower MTU behind R2 lowers the PMTU of both paths
-+	run_cmd ${ns_a} ${ping_r2} -q -M want -i 0.1 -c 1 -s 1300 "${dst}"
-+
-+	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R1)"
-+	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R2)"
-+	check_pmtu_value "1300" "${pmtu_a_R1}" "exceeding MTU via R2 (veth_A-R1)" || return 1
-+	check_pmtu_value "1300" "${pmtu_a_R2}" "exceeding MTU via R2 (veth_A-R2)" || return 1
-+}
-+
-+test_pmtu_ipv4_mp_asym_exceptions() {
-+	test_pmtu_ipvX_mp_asym_exceptions 4
-+}
-+
-+test_pmtu_ipv6_mp_asym_exceptions() {
-+	test_pmtu_ipvX_mp_asym_exceptions 6
-+}
-+
-+test_pmtu_ipv6_mp_exceptions() {
-+	test_pmtu_ipvX_mp_exceptions 6
-+}
-+
- usage() {
- 	echo
- 	echo "$0 [OPTIONS] [TEST]..."
+ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ {
+ 	struct dst_entry *dst = &rt->dst;
+@@ -1085,6 +1107,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 				nhc = fib_info_nhc(res.fi, nhsel);
+ 				if (!nhc)
+ 					break;
++				/* old_mtu above is the mtu of the path dst
++				 * is on, don't raise what another path
++				 * uses. A locked mtu clears DF and goes
++				 * to every path.
++				 */
++				if (!lock &&
++				    mtu > fib_nhc_mtu(nhc, res.fi, fl4->daddr))
++					continue;
+ 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 						      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 			}
 -- 
 2.56.0
 
