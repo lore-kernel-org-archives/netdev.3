@@ -1,99 +1,210 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.52
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794571306;
-	b=an+b2rEsFYuY8K+Fl5ooXJN1njSxuILcoi3Ov9N0G4CYMyK1RMyKIEG7ncYSxGh17c5o
-	 qdqJFk3CUnaigaDEdwkWlDleZLxo/BYnAiPThA0P95dhdx5J0gH+GWsj23wJmTZDJcwFF
-	 Bno/V5gHm0nAItnTgsUBZ7xUYOa0zG507YwffdvEjYSkua8hQZEnO0GtGZ/FVh7R+qCFl
-	 upstxyHMa/GX1xycv515K930GR4GqlMyTAV0ypOmzl3alLZIQqE2rHDfq9dJtEbOcjk98
-	 ha7J/4Kx2qj6WZblVU6sox2QE5K9rOnJnaJOG8/9DJ5/NulFZ8I+CV5OG8ZzVW5XuOw==
+	t=1794571380;
+	b=RuHWqF7MjcEZFbsi8qFbft9ognwC1XLzH5b4Vv3NHOv6Cu1zmHaN0ZlRnRwTpyE6WsQR
+	 j1b825xjYALt1MOzEMmClT3SG/Cg6vZtFfnHDoVDCU0aD2PUrdk4EegVrU1CirWhzFN8P
+	 hBIYvDVMpcJOm5IxoLeIm/KHy5eZMSuisim6aloehJ8ZMKhXGO5Ka9dMKLAkxALdeQQBF
+	 XPqOw6RfEPOqa2yVnBUSQ8v3AVO061ltid0RjxS3ujEsNwsfTCVVvRnvvIf8Zl7uQnRpF
+	 HKq0N4sf7n8civl/WDKp0WR3RFLAynyJLgOqUuNH5bp+c8/3NAJy2rObObvrQ+9l0iw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794571306;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-ID:References:In-Reply-To:To:CC:
-	 X-Mailer:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794571380;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=cu0W+xYu8Ur8iREfOVKM1Sg6ts8WzrHN5Mt/1Du8ils=;
-	b=Kds19bPRxdNtYKEMq/OlMoWiZmyMyrGeegaiwegcn2srEWxQbjz3FIeZMQcJR2ekJnzK
-	 EJhBzuXNXOEdXJRl9R3xh/ZWPtnn5fEqjByVH+h1lP8WmbmAgS3oFpfxMSKJv5lZ55iET
-	 62Hwt1YnKz+oKdnqr67rI857O2AyxxDUUlHG1L1y3FDy94Z6N0pShdEg0ScMphc11b4xO
-	 9o7lUmkFkLQfmLd5SCt+uBQJs8QkGMladOSEkhR9JNjEUX9UV7EogTw52+pm018aE4DO7
-	 +OmUQtaZuIkCae4EMBOKfIoHvrrfP9gSmIzCdTiDVHuIyPRV9FqpyrFrxor+5JGsa9A==
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=o4fZ6NiE58Go47E7elTL2xBVuuAZC1n3IVg4+61jD4M=;
+	b=0F/KAhQQDwh2IS8cccIHyoz16kL/sruexYx7X7KjmXvAscG7TO8/xidymi6rEDgkEiiB
+	 FoPqfGmkB/jNUccffCIIm1yUddDxdCT+8mJTkbKrzatxHRpDY/FAQxDWbYDsGIizgA/lo
+	 Fof10Ahfx4rjy3o1V5m+B7EldL00qhtx8SS8qNDdY/rVeSQ/KmqqWGE7ogu4T6AVeMM6g
+	 YdOw863TpPOtt8iy2kHqj7HKty5ZWRfozyixEhzRWV8J66HfuPGuEoxHr0qcwKl2OnPSk
+	 LpTuXOYI2wrpCmi5eO9HiCGjlxcv2w1G+0W8H/qsD9Mhz4ItrOkMPb/ZgXUWpuMpGjg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=cxxqjDJ7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.52
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010052.outbound.protection.outlook.com [40.93.198.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n1JTG6hg;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=WXSA12Oi;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF3760A2606;
-	Fri, 13 Nov 2026 12:01:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEF3760A2606
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE6F606A336;
+	Fri, 13 Nov 2026 12:02:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBE6F606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=cxxqjDJ7
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n1JTG6hg;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=WXSA12Oi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794571380; x=1826107380;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=3BVgHsM8mMRKCWNsanrPpMKINm9vGwp1Z4QIQ1r0fjY=;
+  b=n1JTG6hg56cpjyBSijIgEXljrHvWVBdLU1HiJrKeNgs8yzatrzF6lXe2
+   2658cSGJUmqRTUjqvLVTNgANyoRjhyhmgCglzPUmJ4oqd+JePGgU0UcLl
+   KDvSV9ht8TcgVZJzSH74kIuhTEkjCq2YRc+FXUEsICDzoIpLBjey8bgFS
+   CEoK6whzakj01BCSQCzXPelgxkVSf3dvVWc1fnT//O+PkTnIK5emntAQh
+   4Q1Ho+HqVT6WZoTkHkuhKYle3TzDm6rtp18NdiQ1zsiRwjA63KEvlsUwE
+   9iURN+1dhvfsSWkW5H9CebcFOC7VX8wfzgEaGoxmsHpS2zWM8V/hJw8Nu
+   Q==;
+X-CSE-ConnectionGUID: yAtemSlrTkyBWnvR3/fpEw==
+X-CSE-MsgGUID: ntdX/dTXSd6rtBd3u7mn7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3260801"
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="3260801"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 04:02:59 -0800
+X-CSE-ConnectionGUID: u6+wZ0wdSoeL8eQ5brPQ7w==
+X-CSE-MsgGUID: Gl+GRKGtRXeQXmWYBH1twg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="8796726"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 04:02:59 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 13 Nov 2026 04:02:58 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Fri, 13 Nov 2026 04:02:58 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.33) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 13 Nov 2026 04:02:57 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rgQJZyeaINvO0RGWRtJ66ftqYt/TFcsvox4YCEIq+9sqeQYvBOJMx/TgIuSvTZNB9OHrWKSbwYdnGScZIGh4LB18DJi/ChmbSruR/8808VePEswNiGc4ALHG3w0C/gFYBs8XHPKRuBTuLqUHbJCb83SKZ/RHRtGJsk+1I6g1R4/VKLeqAJsvTdXwT+idmbZ6hTbmSlHD/QbD07Xwi/q49rlvY7W2/LWvYg1moDFFduSKbQPld1EXfEql2lrR24au3omhyexj9R2ND9wVDKNgNh5NZDPWzzMlv397xA8qQ7/E9vVkrclGVKEzczCdVwcuP5RTpnSZIWARMC6fCZBpeg==
+ b=GwcUkb9cu3R1Qr+p+ruMZkjAOU3L/M/Q87lXAH+okMwzsG1A3dFBVz+4SpiCPVoZ7QQA7a0CnLbMwuBIcVFXdKejkbno/dwUB38IAHneHkFAktmL5vGFXjsBwTH5ArrnArzs+e18Z37Csa6B6u/8rw5/wVShkShSPi5+NolmkOJvQr2vKpEuk4UQQn45nCUlVn73aby2X2q5xZTrxmssb8rL06teV2bldjrF85lUPMG1xAyodorQEqA0tigXiTKsfUba2VjfDXWDEm3IC/VoOhIZRRlvAzD+UR+CfutTKtGZ77tmFSPvDigbB78gO9RGkTgjGuG0+1EHsqjw7AQmyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cu0W+xYu8Ur8iREfOVKM1Sg6ts8WzrHN5Mt/1Du8ils=;
- b=MoCiBfDSPiJcImn1spSsun7VYiOgFOD3KXDF4HLpB9vFckAXjlGNfePDoM+Jg8gMrcEeiZM5WahCdB2mvOH5s7u2IIekrrcn4M2MJ+sFhbpcUGUGkPZEiaJJ4+Z+pRLa3YBwGC6ex4xbBP9Ed5oRh7pW3+7cLzXNiuMO48+GHAm6ZCNyERT4KizmVWq1uP+b0vt1+Hrnf2CP2loXuLOMn8lnxG1Iybd0IXK35IA3FOGvCyDKOK4E/XlILk4kFhZWLEYIlSCDHV+fqRBjJ56vbF8flMqqI6S/a/I4wu1m/wwRull/PAiAmAJ51aGG5fbTA0bU81NqunwJ1vttBNExHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=o4fZ6NiE58Go47E7elTL2xBVuuAZC1n3IVg4+61jD4M=;
+ b=oQOxj/yBNXxK2THlb8n8+GZvv5i/BaA6i8+21K+EBEC7j3ktVufeHh9lxAmGAAHKrFmYoQG11S14JcLJIxt5xoUDQ6aEypZcVC/aa+K5ReitQRpp4LE6SvJTlxSoMNBMjnnUBpqrU/rePwOP+HMFdzPrbQ0Vm1ikaaUecMUhwQq3aQwLny367l63K3aeFTTI8cv+h7BEoiSjlnt9DBeuS9VdI6IjY5UVqUrVzkkudDlmG4kvKwmCdvXamJK6yiw+ys/FPufTgs70rdVnYTbwKuVYqr/HQeCYrXIxN5uy+5snSOz9JOWjZXqWT+JAaotAZGGIH+GidO1ZHZfBytUsjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cu0W+xYu8Ur8iREfOVKM1Sg6ts8WzrHN5Mt/1Du8ils=;
- b=cxxqjDJ7+glqvduoI8dToV8TGE9mZXhsQ/O0JfZDc90gnW5pXG8v3Az6fDbBPGS59glxnk/eUgZMeVe7VMeeET2Y+Bqi13H+ysGVKvia8tSCjqF9mUYutLXUd0jIzkQzfgR4xL7o2pEwWimK2AX3U7QEhT8Z26k39eE0hWeSGuY=
-Received: from CH2PR20CA0017.namprd20.prod.outlook.com (2603:10b6:610:58::27)
- by CH2PR12MB4248.namprd12.prod.outlook.com (2603:10b6:610:7a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Fri, 13 Nov
- 2026 12:01:42 +0000
-Received: from BL2PEPF000352CC.namprd02.prod.outlook.com
- (2603:10b6:610:58:cafe::1f) by CH2PR20CA0017.outlook.office365.com
- (2603:10b6:610:58::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Fri, 13
- Nov 2026 12:01:40 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL2PEPF000352CC.mail.protection.outlook.com (10.167.249.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Fri, 13 Nov 2026 12:01:40 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
- 2026 12:47:27 -0600
-Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Thu, 12 Nov 2026 12:47:22 -0600
-From: Srinivas Neeli <srinivas.neeli@amd.com>
-Date: Fri, 13 Nov 2026 00:16:47 +0530
-Subject: [PATCH net-next v4 3/8] net: xilinx: tsn: add endpoint MAC driver
- skeleton
+ bh=o4fZ6NiE58Go47E7elTL2xBVuuAZC1n3IVg4+61jD4M=;
+ b=WXSA12Oixu2ta12ZxS4/HEh1lHdxc4IaRz0rhOEexIGTGL1HSE0bh7Fy6TycPeooF7QN3B4JWvNU2yFD/N9wV5yqoqWYHk+QLcjn4NTMn1KVkNrbzfPI+nYMNKP+h1147APeR4vQHkFeLsB82IDLGz4wTPnMsawCmxTHU+okEKQ=
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ (2603:10b6:610:34d::22) by BL1PR11MB5221.namprd11.prod.outlook.com
+ (2603:10b6:208:310::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Fri, 13 Nov
+ 2026 12:02:47 +0000
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584]) by CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584%7]) with mapi id 15.21.0615.009; Fri, 13 Nov 2026
+ 12:02:47 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Tianyi Gao <tianyi@cloudflare.com>, "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>
+CC: John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
+	<sdf@fomichev.me>, Lorenzo Bianconi <lorenzo@kernel.org>, Vladimir Vdovin
+	<deliran@verdict.gg>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter
+	<donald.hunter@gmail.com>, Eduard Zingerman <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, Song Liu <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Fijalkowski, Maciej"
+	<maciej.fijalkowski@intel.com>, "Lobakin, Aleksander"
+	<aleksander.lobakin@intel.com>, "Karlsson, Magnus"
+	<magnus.karlsson@intel.com>, "Vyavahare, Tushar"
+	<tushar.vyavahare@intel.com>, Jason Xing <kerneljasonxing@gmail.com>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Madalin Bucur <madalin.bucur@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>, "Jonathan Corbet" <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Randy
+ Dunlap <rdunlap@infradead.org>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, "Bill Wendling" <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, "Chris J Arges"
+	<carges@cloudflare.com>, Jakub Sitnicki <jakub@cloudflare.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>, "kernel-team@cloudflare.com"
+	<kernel-team@cloudflare.com>
+Subject: RE: [PATCH bpf-next 02/15] net: dpaa, dpaa2: clear the skb core
+ extension flag
+Thread-Topic: [PATCH bpf-next 02/15] net: dpaa, dpaa2: clear the skb core
+ extension flag
+Thread-Index: AQHdcTO+77YJv7IvfEGuCfkav4RF7rcr60Iw
+Date: Fri, 13 Nov 2026 12:02:47 +0000
+Message-ID: <CH3PR11MB566895F1CFCD1EC995B08E6E51E57F2@CH3PR11MB566895.namprd11.prod.outlook.com>
+References: <cover.1794281983.git.tianyi@cloudflare.com>
+ <bff7f72c7c28f67497e23a6629b9e4db74332da6.1794281983.git.tianyi@cloudflare.com>
+In-Reply-To: <bff7f72c7c28f67497e23a6629b9e4db74332da6.1794281983.git.tianyi@cloudflare.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB566895:EE_|BL1PR11MB5221:EE_
+x-ms-office365-filtering-correlation-id: 10ebc469-c347-4e7a-1603-08df417e08b0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|261028144727099003|261022115727099003|261026121527099003|261102123227099003|261026140227099003|261021135927099003|261022075727099003|261021121427099003|56012099006|38070700021|11063799006|4143699003|261022113327099003|261022105027099003|10067099003|22082099003|261009223027099003|18002099003;
+x-microsoft-antispam-message-info: /S7paou6+w9cioE2JxMu/wFgTmyYdXEnGlzq/SUt9uvjCTji7WVSy2oZ1zqp/NDqmfn47jCpkP1d5VB/i+YwHjt3zUgWCA/pGzD4U9mHfsJ7V8BvCNf/s91STauvM3Zo/3YCwbOKSYA8ZQwwexG4SWd0+VQDPuWgyT9OX0KCJNccmYbXSzuSfHskCdIt4b7sSZZCsAdH9OXmNtm2R2ajFxAdfT6FH6CaVXezRF3j/3eA1wnEaXOdcnY0eVRBAiN84W4Qn5R73PLPq5T8YLKBgSTCo9OjN1zu7qS+mRvjoS/w99dkojNFNf9ADw6UvRBri6qyn1Fpsouh90fw5lj5oxLatkodt7OuFQBtnpRFvvBhVQkzjxf2rdgBLrB+dymMq5fk3tSdBsHWEz9J3thfg2jXMfhAuiweqtiyPYWmN+6T0cb3wWZlvOqVA/qwE6uqAqQH6B+1wclKCW/Mtcg87nGO5z0zrLXfo8zsClrmkYFgtVsxc/U52mFuxZFvJdXLCSGIACQDzaoil7sdjz8HSvujJ09YaCShu+Z6hxvvRHo/65BDBQSLq0e6EQJ4aOIAOG9sDJmltyVe2ns8x7cD0yyB/ebxthTXRVpUI1r0b1CrhWDPYauLTeDZ9pf5oJBpAtwRu4vfy4aTpcsHxGtevMj43XGK9QQs6iIdLdK2LUr6ifz8GJUpvIlORM4fiyXNazhSMiLqlFziCdVvekwhfaXs/alLZwtYcgAh3UWXj9s=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB566895.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(261028144727099003)(261022115727099003)(261026121527099003)(261102123227099003)(261026140227099003)(261021135927099003)(261022075727099003)(261021121427099003)(56012099006)(38070700021)(11063799006)(4143699003)(261022113327099003)(261022105027099003)(10067099003)(22082099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?4c92mINoUhB5d4XxQAcX1vl6O793sgcfSIgHTft3ao/c6bmsIcJGDbVAlvnT?=
+ =?us-ascii?Q?HRwXchvqu7bkukXPJ9k9jkBB97Ln15OsTWh9yaIfKDriURXCRFDKKqX9zHBX?=
+ =?us-ascii?Q?zMOa6b3Jxy7TSKOhdL2sYryvD/2rNLOxDs7bYaoZrBbgpZp+ti/J3n2yVWP1?=
+ =?us-ascii?Q?waN7pXsk+gOcRKG0nnnT5wYk/vQvFq1jnXssbUzwI6l2Tyk34tLidml8yWKv?=
+ =?us-ascii?Q?L/1kIDeah46zEJ4HX4pA/2Wg4qudM5dc+S5z4DF1nJx4b44FiTBrlGKs9T//?=
+ =?us-ascii?Q?QPNUVMFhKg0BeMUP8LgHc9OI2i6FIdCg0K9p07cURMp+bQgaXNfqba/csYBq?=
+ =?us-ascii?Q?uOVBaoEqFctvsHF6hscEXVw+kzoFtmjUt0jcj62BTw+3RU30Ffe+95iU+UCQ?=
+ =?us-ascii?Q?gQqey5D2RPANXhjLCkEGb0IFIRHBjYrp+bii3o3cPizdD54L49XgTWHlO966?=
+ =?us-ascii?Q?ldJdcgoQIZZ+kFSRv56U9NeUNupeHtKb5Ud2qm0kY0Jmp4cGD1ZGMY2kk0Io?=
+ =?us-ascii?Q?GkSxvO9Q0l5eJpuvskTt6ZoyxFEOO1qIadTwbeHf1yAM5qyxD3+wWivotkZM?=
+ =?us-ascii?Q?5rpWhiPIn508gqNXN+vrGuCuiGblcKivYNAZFEQP0ROeuz2dpqLqNQuVAuiT?=
+ =?us-ascii?Q?3jnFGHdT/2JZjkbt7jvAztdwXevq7qQD8HYc8fdulm9ezzw+I/iIvqLOreTt?=
+ =?us-ascii?Q?5Fv3kucOu+ErlsSxkD/OJsD2SUKd23alJAeKyVev3AakN8kawYNy+G3itF8O?=
+ =?us-ascii?Q?5LVSehtJttMsGosI4RUnnQybXTjRWpgYB6GTGRla3m2h9rbnxYOAz3UTFzeg?=
+ =?us-ascii?Q?r0fuNJqJHISw9qCblxxj1RQPKpEAsJNLeDu37iyCQaNl+M5gQo0Njg1RT2xI?=
+ =?us-ascii?Q?5LwmNXpW3XoHfNDrP080mUiFURtk6QpQ+IoSan4P8UEHwa+A9W/dDAeGZfUR?=
+ =?us-ascii?Q?cgGIA+ZHB2b/0zapRYWDrHXPSdV680ehKEqQOWqK5GXYGqhxO+mJc5N3fXpH?=
+ =?us-ascii?Q?m6a9gt7e9uTKN4R3gvlrGJPAsc1D/6iOLT0khVjapwzxB37CAuuf1+71MpB+?=
+ =?us-ascii?Q?+5WFThVMbZGBixzcpeDac1u8KXIQH9rP+RKa1DzBt5sT5EjCjVFfatGw3zEx?=
+ =?us-ascii?Q?Ht4mbDzvXkON/linJo6l5GqykopAiU5tSfrmpdWKKlyeBwGfGEoNvjs0Bl3M?=
+ =?us-ascii?Q?XeDx4UaM/QvP3U/GNlBw14CXIvggqRFRn+N9/ZSH68msAdtpSFUO+ZJktb4f?=
+ =?us-ascii?Q?Pbmx1NgfyMXnFI4xLNMdCtWfiwnHiUNZz+22BHSXwtACwuW2LZsjr8iXubpE?=
+ =?us-ascii?Q?DpPLkq2zcUp39NLuTgwGqK3Uy7UkXXYO5zSU5ZvUnNNz78zjkbdppqL0uLCy?=
+ =?us-ascii?Q?fJ9QiKDYRoAeFR+cadnV2Pj1AGCKG6xiqx7R4NaKfhyRtVVHlxZDKUH7/yd+?=
+ =?us-ascii?Q?v3k/flP6ax6cI95H2dNSDBXXrpZXuxGIKHRymAqH6i19fLmL3ymQsrefz2jZ?=
+ =?us-ascii?Q?Rzb+8EAl0n1dRwJQm+5Qopw+71lA2el6+i3t9GiIjf0dllENTWw4h72SrS8u?=
+ =?us-ascii?Q?Gy8xljeDrQZUELKUHDVnPjl59J6/WYyvMkIretqKiu7IBogO0/bDDO+7pHjn?=
+ =?us-ascii?Q?j4AYw75oN606nEofEbzUB9uD82GNVmbJ9wBduOPVw5Gej36xWLz3IsbnKnT2?=
+ =?us-ascii?Q?F8XjF908h/G+Xe6QUQxDtnbj8FF8EWWNxsLGP/aXE0Wi4T/xxx82AtkOd0W+?=
+ =?us-ascii?Q?Ad2qY77D0+v/NkQ8liwo7a2NKUC1alM=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,291 +214,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261113-patches_v2_external-v4-3-56bb26f042a4@amd.com>
-References: <20261113-patches_v2_external-v4-0-56bb26f042a4@amd.com>
-In-Reply-To: <20261113-patches_v2_external-v4-0-56bb26f042a4@amd.com>
-To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Michal
- Simek" <michal.simek@amd.com>, Sebastian Andrzej Siewior
-	<bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, Eric Dumazet <edumazet@kernel.org>, "Eric
- Dumazet" <edumazet@kernel.org>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-rt-devel@lists.linux.dev>, Srinivas Neeli <srinivas.neeli@amd.com>,
-	<git@amd.com>, <neelisrinivas18@gmail.com>
-X-Mailer: b4 0.16.0
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL2PEPF000352CC:EE_|CH2PR12MB4248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08ffa4b1-593a-487a-2315-08df417de0a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|23010399003|22082099003|18002099003|921020|11063799006|261102123227099003|261026140227099003|261028144727099003|261026121527099003|261022075727099003|261022105027099003|261021121427099003|56012099006|261021123027099003|261009223027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	QaDJiIejak70rMsheAbneAWD8NVfhCQHiwMCY466E/j8w/5i7UWSqkJV3UiWQEMR4ovx70wuSyguh9HwMAsmLWO4fhtoCuaErev1pV+7hDX1KfrtM4LTzB8zkplFKkNG9uq/O4OBP6t4Pn90gqLZPoXhOjzLjjraHJreaxZ9h6HRS2fJ7aBUnoqvEzatXvI1mYK23Y6XgUQ1GCfukxrSmwVswa0hVVaHwZNlwxHAdfBJCJF+f8De4tVYbSWrZYO9rIZu1FmXoVYO+kq5nMznz5Nbq7MVQWLAQxs0zf1bfKRGA/4OWMKyWVTNgl2Pf6TwDWGpaf0CBQKvhDlKWSY1EXX8f2EmcBkBr/J1jryy8CnkG2qpB+UKcQt4d1U5opAQpjHFmxAAC82dTutb3G9d3eU/ttXtTc4SRKq1vpZjKWYZrLjZdn9+s09hBEe37tswnCxib6TJ+t2lW+W0ZIXcznX/oeEPJdmuqIwugwX1bBehqZWRxByUSo7l0i0VAaQ0CwuqE5KeA3R9xWuGDhOIhRRaZtMbOel/Ky/cvlUGavMkDKG+OKxH/+dNsX+GeNEpI1bQSySLSe4QIQWhMLFCWpWlNi3Bz3uge9toCJwhXiFCk0sJ1RCa8Qg+dfk7vOYhCkufjt5yupdAYznEn2AXcq36vEbkNsMLRtRwWoCCNg3hNM9OdcQDRNoic2r5wK5aLlvaxYAn1lA3KMx6mM227OcyWO/NPoTg+/h/ghVqRKqn6b0JFK1iVw32T0ABYzTU
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(23010399003)(22082099003)(18002099003)(921020)(11063799006)(261102123227099003)(261026140227099003)(261028144727099003)(261026121527099003)(261022075727099003)(261022105027099003)(261021121427099003)(56012099006)(261021123027099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	haoWTkl4kgFjiLGwtz8U/4HD6MM9loVOLMQMNtvBQ0IiYZt+6jtgc+clBaMEV6lCC5da6cFnHsgPSSWhcpcuG+4AL2DWMxoltAI35+Z0hJmN7jLeduw3IlGR8tTAZKdcHo+JWkGkmwuGi1xxQvm8jtPQoJNmmNwjirrtREujKE2zQdNMIVwBNahDx1lan4o7gBxw29NXtfONksWrW/roDFOdBu6JBTc+lDY3+lw3xltc0czN2DBJ0kkYzAcIEn9M/WVep1Pr+b24z+6iYnk2Vky6Mt6wPM1EbNy9g8IZnbV1jZLHpLqVJrCep9i0HyVl9UxsyIgbapSNVfPIPPkEIeJwmJ0s5CZ6zlaemUV2UnaFdQyA//6yiy9wHL4k4Qc71+mfeOot/8fs60Lunm4SBHi/2n3wRS0zqw/DIWeRPyI5h6Pn3YnTRBbHHKfkW6S+
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 12:01:40.4349
+X-Exchange-RoutingPolicyChecked: 4cARNF/zIeUIHz3hmjyDtAZIpS72JrcmAr4OTBB47AaXf+WMgECbodpmw6H1twaXmP0vJAIUzZlNkT2yQlQS7VcDFN9UIFX51BBK78mdMpd8hZuEiKbrPiYY9a3d1g437GmYOjC03o3zVWGwvVXbwBel9ynhFoCPjcfDd81NUWwL6Md1cVmoTNLtzghatddWhOVLaw/nczLlz8GiFBABwkN14qYBfo6y7shgttJJkd326mDCXnO+GCDhp1pkcXfrAOONAD65L5GBjyzHNHbnCbgKFluJWsswguEjmIB4d3I7dO+/0VmSkitSvRLrlDVWv9xC2SerLjzoqw/PorVrZw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB566895.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10ebc469-c347-4e7a-1603-08df417e08b0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2026 12:02:47.6983
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08ffa4b1-593a-487a-2315-08df417de0a5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL2PEPF000352CC.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4248
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eRCU93zqFBWUYLE5olPaxhDf2RDAvrnN3Bdtrae9x+w3k85Rd1uUUpoebTDzj7FE3Xi7DJGKxy47tNSYsPn6Dfx7SAMc+LOTzRlk0390o30=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5221
+X-OriginatorOrg: intel.com
 
-The TSN Endpoint MAC owns the IP's host-side MCDMA data path and is the
-netdev physically wired to the CPU. The DSA switch needs this netdev to
-exist as its conduit.
 
-Add a platform driver (compatible "xlnx,tsn-ep-mac") for the endpoint.
-Register the netdev with the standard eth%d name, set its MAC address, and
-provide minimal netdev and ethtool ops. ndo_open starts the queues and
-ndo_start_xmit drops frames.
 
-Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
+> -----Original Message-----
+> From: Tianyi Gao <tianyi@cloudflare.com>
+> Sent: Tuesday, November 10, 2026 4:57 AM
+> To: bpf@vger.kernel.org; netdev@vger.kernel.org; Alexei Starovoitov
+> <ast@kernel.org>; Daniel Borkmann <daniel@iogearbox.net>; Andrii
+> Nakryiko <andrii@kernel.org>; Martin KaFai Lau <martin.lau@linux.dev>;
+> Jakub Kicinski <kuba@kernel.org>; Jesper Dangaard Brouer
+> <hawk@kernel.org>
+> Cc: John Fastabend <john.fastabend@gmail.com>; Stanislav Fomichev
+> <sdf@fomichev.me>; Lorenzo Bianconi <lorenzo@kernel.org>; Vladimir
+> Vdovin <deliran@verdict.gg>; David S. Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Simon
+> Horman <horms@kernel.org>; Andrew Lunn <andrew+netdev@lunn.ch>; Donald
+> Hunter <donald.hunter@gmail.com>; Eduard Zingerman <eddyz87@gmail.com>;
+> Kumar Kartikeya Dwivedi <memxor@gmail.com>; Song Liu <song@kernel.org>;
+> Yonghong Song <yonghong.song@linux.dev>; Jiri Olsa <jolsa@kernel.org>;
+> Emil Tsalapatis <emil@etsalapatis.com>; Ihor Solodrai
+> <ihor.solodrai@linux.dev>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Fijalkowski, Maciej
+> <maciej.fijalkowski@intel.com>; Lobakin, Aleksander
+> <aleksander.lobakin@intel.com>; Karlsson, Magnus
+> <magnus.karlsson@intel.com>; Vyavahare, Tushar
+> <tushar.vyavahare@intel.com>; Jason Xing <kerneljasonxing@gmail.com>;
+> Nikolay Aleksandrov <razor@blackwall.org>; Madalin Bucur
+> <madalin.bucur@nxp.com>; Ioana Ciornei <ioana.ciornei@nxp.com>; Jonathan
+> Corbet <corbet@lwn.net>; Shuah Khan <skhan@linuxfoundation.org>; Shuah
+> Khan <shuah@kernel.org>; Randy Dunlap <rdunlap@infradead.org>; Nathan
+> Chancellor <nathan@kernel.org>; Nick Desaulniers
+> <ndesaulniers@google.com>; Bill Wendling <morbo@google.com>; Justin
+> Stitt <justinstitt@google.com>; Chris J Arges <carges@cloudflare.com>;
+> Jakub Sitnicki <jakub@cloudflare.com>; linux-doc@vger.kernel.org; linux-
+> kselftest@vger.kernel.org; intel-wired-lan@lists.osuosl.org;
+> llvm@lists.linux.dev; kernel-team@cloudflare.com; Tianyi Gao
+> <tianyi@cloudflare.com>
+> Subject: [PATCH bpf-next 02/15] net: dpaa, dpaa2: clear the skb core
+> extension flag
+>=20
+> dpaa_run_xdp() and dpaa2_eth_run_xdp() move data_hard_start to the start
+> of the buffer after the XDP program runs and before XDP_REDIRECT.
+> xdp_skb_ext() then returns a different address from the one used while
+> storing the entries. These drivers have not implemented the XDP RX
+> metadata kfuncs. Hence they now clear the XDP_FLAGS_HAS_SKB_EXT flag
+> before XDP_REDIRECT, and their redirected frames carry no stored
+> entries.
+>=20
+> With the A050385 erratum workaround, dpaa already moves data_hard_start
+> before the XDP program runs, so the entries remain valid. The flag is
+> cleared on that path too, to keep the change simple. This can change
+> when dpaa implements the XDP RX metadata kfuncs.
+>=20
+> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
+> ---
+>  drivers/net/ethernet/freescale/dpaa/dpaa_eth.c   | 2 ++
+>  drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 2 ++
+>  2 files changed, 4 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+> b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+> index ad2d8256eb8d..4cafc0b84dc9 100644
+> --- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+> +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+> @@ -2654,6 +2654,8 @@ static u32 dpaa_run_xdp(struct dpaa_priv *priv,
+> struct qm_fd *fd, void *vaddr,
+>  		/* Allow redirect to use the full headroom */
+>  		xdp.data_hard_start =3D vaddr;
+>  		xdp.frame_sz =3D DPAA_BP_RAW_SIZE;
+> +		/* data_hard_start moves, so the stored entries are lost
+> */
+> +		xdp_buff_clear_skb_ext_flag(&xdp);
+>=20
+>  		err =3D xdp_do_redirect(priv->net_dev, &xdp, xdp_prog);
+>  		if (err) {
+> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> index 7227a35dfaf2..fcefdc9daf2b 100644
+> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> @@ -472,6 +472,8 @@ static u32 dpaa2_eth_run_xdp(struct dpaa2_eth_priv
+> *priv,
+>  		/* Allow redirect use of full headroom */
+>  		xdp.data_hard_start =3D vaddr;
+>  		xdp.frame_sz =3D DPAA2_ETH_RX_BUF_RAW_SIZE;
+> +		/* data_hard_start moves, so the stored entries are lost
+> */
+> +		xdp_buff_clear_skb_ext_flag(&xdp);
+>=20
+>  		err =3D xdp_do_redirect(priv->net_dev, &xdp, xdp_prog);
+>  		if (unlikely(err)) {
+> --
+> 2.56.0
 
----
-Changes in v4:
-- Use alloc_etherdev() so the standard eth%d name is registered with
-  NET_NAME_ENUM.
-
-Changes in v3:
-- Register the netdev with the standard eth%d name (NET_NAME_UNKNOWN) instead
-  of a custom "ep%d".
-
-Changes in v2:
-- Name the netdev ep%d with NET_NAME_ENUM instead of a fixed "ep", so a second
-  IP instance does not clash on register_netdev(). The %d enumeration is what
-  NET_NAME_ENUM describes, and it matches the eth%d naming in net/dsa/user.c.
-- Drop the mapped but unused register window (ep->regs and its ioremap).
-  It was intended for QBV support, which is not part of this series, so the
-  endpoint driver does not use it. The mapping will be re-added when QBV
-  support lands.
-- Use dev_kfree_skb_any() on the drop path, not dev_kfree_skb().
-- Drop the mod_devicetable.h include, platform_device.h already pulls it in.
----
- drivers/net/ethernet/xilinx/tsn/Makefile          |   2 +-
- drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h      |  15 +++
- drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c   | 143 ++++++++++++++++++++++
- drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c |   3 +
- 4 files changed, 162 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/xilinx/tsn/Makefile b/drivers/net/ethernet/xilinx/tsn/Makefile
-index 6f99226f3dc8..5886828b386f 100644
---- a/drivers/net/ethernet/xilinx/tsn/Makefile
-+++ b/drivers/net/ethernet/xilinx/tsn/Makefile
-@@ -1,2 +1,2 @@
- obj-$(CONFIG_XILINX_TSN) += xilinx_tsn.o
--xilinx_tsn-y := xilinx_tsn_main.o
-+xilinx_tsn-y := xilinx_tsn_main.o xilinx_tsn_ep.o
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
-new file mode 100644
-index 000000000000..b0757e22d1fd
---- /dev/null
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * AMD/Xilinx TSN Endpoint Ethernet MAC driver, shared definitions.
-+ *
-+ * Copyright (C) 2026 Advanced Micro Devices, Inc.
-+ */
-+
-+#ifndef _XILINX_TSN_H
-+#define _XILINX_TSN_H
-+
-+#include <linux/platform_device.h>
-+
-+extern struct platform_driver xlnx_tsn_ep_driver;
-+
-+#endif /* _XILINX_TSN_H */
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-new file mode 100644
-index 000000000000..b6458bb0ba0f
---- /dev/null
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-@@ -0,0 +1,143 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * AMD/Xilinx TSN Endpoint MAC driver.
-+ *
-+ * Copyright (C) 2026 Advanced Micro Devices, Inc.
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/ethtool.h>
-+#include <linux/if_ether.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/of.h>
-+#include <linux/of_net.h>
-+#include <linux/platform_device.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
-+
-+#include "xilinx_tsn.h"
-+
-+#define DRIVER_NAME			"xilinx_tsn_ep"
-+
-+/**
-+ * struct xlnx_tsn_ep - EP MAC private data, embedded in net_device priv area
-+ * @ndev: the conduit netdev
-+ * @dev: backing device
-+ */
-+struct xlnx_tsn_ep {
-+	struct net_device *ndev;
-+	struct device *dev;
-+};
-+
-+static netdev_tx_t ep_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-+{
-+	dev_kfree_skb_any(skb);
-+	DEV_STATS_INC(ndev, tx_dropped);
-+	return NETDEV_TX_OK;
-+}
-+
-+static int ep_open(struct net_device *ndev)
-+{
-+	netif_tx_start_all_queues(ndev);
-+
-+	return 0;
-+}
-+
-+static int ep_stop(struct net_device *ndev)
-+{
-+	netif_tx_disable(ndev);
-+
-+	return 0;
-+}
-+
-+static void ep_get_drvinfo(struct net_device *ndev, struct ethtool_drvinfo *ed)
-+{
-+	strscpy(ed->driver, DRIVER_NAME, sizeof(ed->driver));
-+}
-+
-+static const struct net_device_ops ep_netdev_ops = {
-+	.ndo_open		= ep_open,
-+	.ndo_stop		= ep_stop,
-+	.ndo_start_xmit		= ep_start_xmit,
-+	.ndo_validate_addr	= eth_validate_addr,
-+	.ndo_set_mac_address	= eth_mac_addr,
-+};
-+
-+static const struct ethtool_ops ep_ethtool_ops = {
-+	.get_drvinfo	= ep_get_drvinfo,
-+};
-+
-+static int xlnx_tsn_ep_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct net_device *ndev;
-+	struct xlnx_tsn_ep *ep;
-+	u8 mac_addr[ETH_ALEN];
-+	int ret;
-+
-+	ndev = alloc_etherdev(sizeof(*ep));
-+	if (!ndev)
-+		return -ENOMEM;
-+
-+	SET_NETDEV_DEV(ndev, dev);
-+	ndev->netdev_ops = &ep_netdev_ops;
-+	ndev->ethtool_ops = &ep_ethtool_ops;
-+	ndev->features = NETIF_F_SG;
-+
-+	ep = netdev_priv(ndev);
-+	ep->ndev = ndev;
-+	ep->dev = dev;
-+
-+	ret = of_get_mac_address(dev->of_node, mac_addr);
-+	if (ret == -EPROBE_DEFER) {
-+		goto err_free_ndev;
-+	} else if (!ret && is_valid_ether_addr(mac_addr)) {
-+		eth_hw_addr_set(ndev, mac_addr);
-+	} else {
-+		eth_hw_addr_random(ndev);
-+		dev_info(dev, "no valid MAC in DT, using random address %pM\n",
-+			 ndev->dev_addr);
-+	}
-+
-+	platform_set_drvdata(pdev, ep);
-+
-+	ret = register_netdev(ndev);
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to register net device\n");
-+		goto err_free_ndev;
-+	}
-+
-+	return 0;
-+
-+err_free_ndev:
-+	free_netdev(ndev);
-+	return ret;
-+}
-+
-+static void xlnx_tsn_ep_remove(struct platform_device *pdev)
-+{
-+	struct xlnx_tsn_ep *ep = platform_get_drvdata(pdev);
-+
-+	if (!ep)
-+		return;
-+
-+	unregister_netdev(ep->ndev);
-+	free_netdev(ep->ndev);
-+}
-+
-+static const struct of_device_id xlnx_tsn_ep_of_match[] = {
-+	{ .compatible = "xlnx,tsn-ep-mac" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, xlnx_tsn_ep_of_match);
-+
-+struct platform_driver xlnx_tsn_ep_driver = {
-+	.probe	= xlnx_tsn_ep_probe,
-+	.remove	= xlnx_tsn_ep_remove,
-+	.driver	= {
-+		.name		= DRIVER_NAME,
-+		.of_match_table	= xlnx_tsn_ep_of_match,
-+	},
-+};
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-index afe7609c67fb..d33a00dd6d15 100644
---- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-@@ -15,6 +15,8 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- 
-+#include "xilinx_tsn.h"
-+
- #define TSN_NUM_CLOCKS		6
- 
- /**
-@@ -85,6 +87,7 @@ static struct platform_driver tsn_driver = {
- 
- static struct platform_driver * const tsn_drivers[] = {
- 	&tsn_driver,
-+	&xlnx_tsn_ep_driver,
- };
- 
- static int __init xlnx_tsn_init(void)
-
--- 
-2.43.0
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
