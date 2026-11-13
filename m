@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794614346;
-	b=mARwPTq200pkXixrX8A2jMsosO7mqq5rRhSwTldHciDMBjzwpcKjjRdxrJ1H0mYRHTpL
-	 WCa1QBZFPNgNzSIQL9wRbQd2UlS92a6gAozQMkEsEAgzjypXrvrgtl5oIvvPoL21ikoSZ
-	 wb97J7m0zoQncv9EsnEMYIJif1Jkt0n6fbTcodgpmq4wOYpa2qUpQgzqn7b+lsl7UX1Jz
-	 Ia5JCt+dh9Hud2XvguF9uRi39MGo/THp/QnkQQRUfd16kOluBBieKlGoa7U4F4XU9LNB4
-	 iyZzQd9OxagJtHyZmUUVOQLEMqOEtT37J7ReIreUgCaZV52axNOiYtHzgMp8f5tXT3A==
+	t=1794614342;
+	b=w74EPh7MgUqzRPZNJcodGfB3hscPwERnswvP4LSAdJ8E8WZ77n+3LbEE8pzREJXHkuQJ
+	 qaL+IU0AR/tdKMPLhp64RUPJfzF/GXdYC2zEQo20bQkHdK0OxDa2j/OcF2TNgfyp4pdHf
+	 +oac627fA9cDm8s8wh27BfJPfBKJyzGhQwgKPv9CIqq9GitmlJ+PjwjsgkHNzZCaFm4Hc
+	 oWoLdSAJr57Oc9VyTpw8ocq7XDbpSMA0IEdP3pQ01eDdmXaZdWUJwUdUEbaXScFI4aZoY
+	 1jgRqj9m8CMTopV5OeZ16ud4gP0UoHg39oirUaqPTl0xbrpx+81n4/zNY4VgjQ7rvCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794614346;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794614342;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=CIJ9lTxFK2rYD9M28Y9MMRCwwxN4Oxtl/6GVumckvVQ=;
-	b=VznL6FwS9cb5ztvsR8ry9X0dk0EHgYz8QByBIliVZJd2P/0oFvLpEmGVtQsopj43MCNi
-	 kN4ntUZRCYprvhA0sv2fl4k7IgOvxae0etbwuxbkxh6i/SUEdDrQIFAIzh3mEGq32RQGZ
-	 YtB/Ii6+TN+JCJrvlfRToI4v8LNlX8qHyU9k6JoCRYovEWqZ2iKX9C+T38viXLZc3RxhG
-	 hwz7UEQ5XyXiiTHjy1Yi9EpvWnGtjbnRJnHdghUL14sqL0Tl2VEqYifaesUwp0p4xpaS4
-	 qQDB4fgw9r1eLrPPzSHKJ+nV3++qWeapruEc0aU1T1Fp8mBFOo5SlvK1LHejuQUNuOQ==
+	bh=3Y34gjrCf1/M8nt0B/F1aUTr5s9mtv5S2XS9OA+DkLI=;
+	b=o9c3D6NLE5oZ81/ASru4+HMUofs1HWS8US8sFLyLc5Rvh3zbZhpHyfijMKZ2b2hCyvEi
+	 gvhAmzg0/YX4RCzoCnSneBY+aNleshrsMu7D7nfNCH7w0Y+WUExjHimEPM+Ld0s/KpYe8
+	 qOsJN06yGMoXZDJ9WjqrRgXDe4vh6F7ORY/1McKZH2Yq1SaYeFE6+RY0cF4WRC7MQfWpT
+	 BBk3zFDQMPC3LCIHuQlzCQMLoziCcFXBMpExw78pm4F9ivIdsEwfq1QiU5XUW99Z4LFfN
+	 mEATssRiM8F5LcKp187yFYr6xBgdDWKi8qAPEPnthBxJDHZ7AF8QwwYvFvZKDEwgb2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kFJX82tH;
-	arc=none smtp.remote-ip=209.85.218.47
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j98LLVL7;
+	arc=none smtp.remote-ip=209.85.218.46
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F7260A2623
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:59:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0F7260A2623
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA54606A332
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:59:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CA54606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kFJX82tH
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c4d2b741ed9so298928266b.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:59:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j98LLVL7
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c50aaad19fbso85094066b.0
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794614340; x=1795219140; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794614339; x=1795219139; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CIJ9lTxFK2rYD9M28Y9MMRCwwxN4Oxtl/6GVumckvVQ=;
-        b=kFJX82tHdIN4mLBK3xEGp9XQvLW+6z2W5p3pqMRs8rAFVFnL+1g+4xJ9gB7JKWkotW
-         bjfAtLvgwiIvBgXJQrXpZqY+C1Lsk/0xh6wkpzE42iqiYqGNof6bQNehlnbFCIke2C4d
-         bb7o8G8S3/BYJd7aO7Ts/QNTQ1/4DUGSm9DNpnGLb0/hGUh8OotqCIrx0iMfkN1+GS5I
-         +IA4vgy0ETP4IgXNIVGdHbc/Uy9yehyVEV9G71gOvsuAzge8Ss/bkgiOl03nRQ/68Y96
-         kIwHEmyd4S6m0s1YC6pHJ+f4OoUjePcCDUE10WwC+PSgEQw5mTIVqKfWDjVaVOGlmoiP
-         MRMQ==
+        bh=3Y34gjrCf1/M8nt0B/F1aUTr5s9mtv5S2XS9OA+DkLI=;
+        b=j98LLVL7Bger13mwxy+RIduMv5CvRdYzEFv1VIx3U66oUFXRZWXDTshuxUo2ymJYC0
+         c9mtAA1yhWm1trTEBiJcm//l7uq6Bhwjz0i/w/ZXtt5kg+MPsQU+S/3RVgNYh8MZbpED
+         p7AALQrnD2xjkeHwWawtkYLo2DXJO2xm5n5Il9VMwn2ElfYSIRbg853fsVPFBSi3IcVK
+         QVQW/LODLe6ZrXrYSCElLBNTAdAgpe8mOohE3gwiOJArbcTwFpM94901+CS37YPiG86X
+         E8y/DApyidI2jBZLE2+TwSDUsp2eDgGLUJq/S1ur5AQbCH6VuE7rgw/8uC4bLnlxgZPP
+         ALFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794614340; x=1795219140;
+        d=1e100.net; s=20260707; t=1794614339; x=1795219139;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CIJ9lTxFK2rYD9M28Y9MMRCwwxN4Oxtl/6GVumckvVQ=;
-        b=j51OnHeBeRYEpGqQObzmk3sjTdLiU7FOe3YAh0rKz8t0CT1htkEIBottQjP8Ls9QY2
-         1f0U+Aylo486aym3UhiIkF+vNAT0+nCyHpQsZhM+k2Jw9f1/da6xIuUfgH2kT72wJ009
-         qTMN0DN+psiuwAZwIf/Tt4dXzp5J2Eriu3UNXcNoL02ndfquEdINN1jRQnfC4j82iXWQ
-         RfJ78wC67hlga43T7Ug4WE8m/mx9kJ/jQiodN2ddHf3xf37TudxD27X4LIzhpiRcroU3
-         iyPNeB+fj2Ua8iLoYWhLdzLPD/NlcYRUga0p05sFVFIBLZj+BX+dvjAxzTNQWUu1Rxbh
-         UXMA==
-X-Gm-Message-State: APuU4Z/h8zPO/dmWxoDW/jNLzW7Zbb+CIKpY4CUbps+0xvaPHpVCecfa
-	GNq4TieGIckA0yvspAswU9YLxFkBL6NNpwhwt56cmgO14fdb2kWWc9mDSZwH6U4G
-X-Gm-Gg: AYBFou2JxoI6FYzZ1JEJ2QY2wPIk23StXU6f1qQwsgYHhnjOJjlRnnmcfWispI8mJNi
-	pWIx0g1Isw4FCtAP/8hDcEsjVYh8P5GxUKreGWlIKA+YD4nP+VsHW4P+FtMg/elHw+S3JcKgtBG
-	Weja6qEH6fvFv8cEbxIwsstD+TeDmruK1U/07qECQXHuoUWxPMa+dyW4EB7k5pB+Oz5T+kJTDTD
-	k0fWkdZdNmJVkM8CO4h3qfYxNghOd4Z/JuwxVNC0xW2aLb8mlReNUB3zmpe81DQra3jSMD52tco
-	W8XeQ6uuWZffsglyOzglMr+GiQyNxCZMzwft9pwZ4ERcUTCOPMCZOEH6Vw04AfX7/RXpTXP9SUT
-	Xtpb5psQimaabskDOAb9YDTitJjIhwlNeDxSBQ5uLtoMnEsgrhiUFi448PHNrY4u1a+vbKshcwq
-	lDhCWR0oNe9j6acWHBBRoZkq5HXTSDx/XdfByxr/vqI+MmsO8lFynIiM4t4mOHVffxq+iD4LRo+
-	F6rpQ3UwSk+xDVuU+8fdXuk00CIJkn9PxdxT882Z3QD96vaM01bi6KOP+lOEZ3TDhNOr1obhwbl
-	JYruCs4UOR9paHMpgZTNdxQaW2l7TdARrFCW6L01
-X-Received: by 2002:a17:906:c151:b0:c2d:c800:d797 with SMTP id a640c23a62f3a-c509614d4ccmr342511866b.6.1794614339929;
-        Fri, 13 Nov 2026 15:58:59 -0800 (PST)
+        bh=3Y34gjrCf1/M8nt0B/F1aUTr5s9mtv5S2XS9OA+DkLI=;
+        b=zwI3cjAdapuNrr26vNKKE3yySjheJb0+Bl2xxvg7UQo1arb57svZW6c9GpRENWTSs6
+         1JiixPeCOkwcH7i/lbFGOTVytEub9nUZIvclWJIjmslmm5V/m2dOIGPV6u9h5I7SERWo
+         IHzMW70Gw6LabRwlonqoag7x5s/38sLA/Z6qMcXHgeIojSPEpFWUCIBqXorspT7rnlY/
+         yKHWc+00Sm56xiKFoDa2yzWCG6i2SSuVpCY8pRySRk6jcbtOfE59boXdJIjKCJRnuwoS
+         HTlECaMS/jbPpukdPVaN3WRnyVy6F12sN/fFd7Zw20LirfiDeLpn/7+/B+tpFQgKXYSn
+         b+0Q==
+X-Gm-Message-State: APuU4Z/3HPCPzd6J6zDxoIJK0hoUX2/MpuL8EeP3ny9VYt4TMfQikQ1P
+	4cxdOkXvPNK5tnikcr9YBCc+V5XMK3TnliM4zn9+ZAk8VMVfcPGu4HeLHWFK62FF
+X-Gm-Gg: AYBFou1G1xkUlfEJzVH6N5mLSxaYgaDVf0ZQ47iDHObz99XfVnZodhpFCU/g7TMUT0k
+	DcqB5M8FSxnXFq70s8T9eV0PJX4StOUk0PnAdoTMQMUGaN2bkGwcljGuSPL2qiOxEtyT3rSO0dk
+	LTwUw89O6Ycugr45/PcJvMzV73BelC6tZBySpzTztHJcYBnhNIEEBundjuid0tB8jeTuHJ7Qgpj
+	TsZLh84uCbrDt+L0YMDS8o+ZNtNmzfhfYpfCUECYVwjwwsWab/eA8tJ+4ClPqnbzdJTkxvdnDfz
+	A9Jrw2vWu5wpBPXO96xnwK8tMPdnNVaZ8+n6LV1wOhX6TTh3wmWkcmEPwxxlZgh8H79jkARSm5o
+	Vx6fX/ynd0RorBh+5yWnTeDpnRjKIgF8eG11PRtkq9l1hq7Gn/lyYD4a/EieBDkePuACCVnKVrV
+	7ST7i/hif+8XX68Kv1wXAV3ggoeS76wGh58oftCI2+tOACTTlJ3APOdUeLTINc6S2cNjeaMK7RC
+	lyZ71nfI91GFGRIRBGJ5rLQMGj9xsanoui69OEYkf5fk7FzHfypxsSAf4I+p22qqalOAqxE4dqI
+	yDedMGOGeUxv8gaq5M0lli+GKsRpUUDVZOAq30hs
+X-Received: by 2002:a17:907:a08a:b0:c4c:b545:f29d with SMTP id a640c23a62f3a-c5096545652mr356912566b.36.1794614338993;
+        Fri, 13 Nov 2026 15:58:58 -0800 (PST)
 Received: from kordpc.lan ([2a13:e746:396c:c600::8f9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b3dbaesm153454266b.32.2026.11.13.15.58.59
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b3dbaesm153454266b.32.2026.11.13.15.58.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 15:58:59 -0800 (PST)
+        Fri, 13 Nov 2026 15:58:58 -0800 (PST)
 From: Kordian Chmielewski <kudzo51@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -89,9 +89,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 6/7] net: bcm4908_enet: publish the buffer address before OWN
-Date: Sat, 14 Nov 2026 00:58:46 +0100
-Message-ID: <20261113235847.517308-7-kudzo51@gmail.com>
+Subject: [PATCH net v3 5/7] net: bcm4908_enet: unmap RX buffers on stop with their mapped size
+Date: Sat, 14 Nov 2026 00:58:45 +0100
+Message-ID: <20261113235847.517308-6-kudzo51@gmail.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261113235847.517308-1-kudzo51@gmail.com>
 References: <20261113235847.517308-1-kudzo51@gmail.com>
@@ -106,63 +106,34 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-bcm4908_enet_dma_alloc_rx_buf() hands a descriptor to the DMA by
-writing its control word, with DMA_CTL_STATUS_OWN, first and the new
-buffer address second. If the DMA read the descriptor between the two
-stores, it would write the next frame into the old buffer, which
-poll_rx() is turning into an skb. start_xmit() writes the address
-first, but nothing orders the two stores, and the descriptors live in
-coherent memory, where arm64 may make them visible in either order.
+Since the switch to build_skb() the RX buffers are mapped with
+ENET_RX_BUF_DMA_SIZE and slot->len is no longer set for them, but
+bcm4908_enet_dma_uninit() still unmaps them with slot->len. Use the
+size they were mapped with.
 
-Write the address first on both paths and order it before the control
-word with dma_wmb(). In poll_rx(), read what the DMA wrote only after
-seeing OWN clear (dma_rmb()), as Documentation/memory-barriers.txt
-describes for descriptors shared with a device.
+Found by reading the code.
 
-Found by reading the code; I have no test that shows the DMA reading a
-descriptor while it is being refilled.
-
-Fixes: 4feffeadbcb2 ("net: broadcom: bcm4908enet: add BCM4908 controller driver")
+Fixes: 3a1cc23a75ab ("net: broadcom: bcm4908_enet: use build_skb()")
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Kordian Chmielewski <kudzo51@gmail.com>
 ---
- drivers/net/ethernet/broadcom/bcm4908_enet.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcm4908_enet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-index 4065769da..4139dad3a 100644
+index 03de65d9b..4065769da 100644
 --- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
 +++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-@@ -291,8 +291,10 @@ static int bcm4908_enet_dma_alloc_rx_buf(struct bcm4908_enet *enet, unsigned int
- 	tmp |= DMA_CTL_STATUS_OWN;
- 	if (idx == enet->rx_ring.length - 1)
- 		tmp |= DMA_CTL_STATUS_WRAP;
--	buf_desc->ctl = cpu_to_le32(tmp);
- 	buf_desc->addr = cpu_to_le32(slot->dma_addr);
-+	/* Hand the descriptor to the DMA only once it holds the new buffer */
-+	dma_wmb();
-+	buf_desc->ctl = cpu_to_le32(tmp);
- 
- 	return 0;
- }
-@@ -613,6 +615,8 @@ static netdev_tx_t bcm4908_enet_start_xmit(struct sk_buff *skb, struct net_devic
- 	netdev_sent_queue(enet->netdev, skb->len);
- 
- 	buf_desc->addr = cpu_to_le32((uint32_t)slot->dma_addr);
-+	/* The DMA must not see OWN before the buffer address */
-+	dma_wmb();
- 	buf_desc->ctl = cpu_to_le32(tmp);
- 
- 	bcm4908_enet_dma_tx_ring_enable(enet, &enet->tx_ring);
-@@ -647,6 +651,8 @@ static int bcm4908_enet_poll_rx(struct napi_struct *napi, int weight)
- 		ctl = le32_to_cpu(buf_desc->ctl);
- 		if (ctl & DMA_CTL_STATUS_OWN)
- 			break;
-+		/* Read the rest only after the DMA gave the descriptor back */
-+		dma_rmb();
- 
- 		slot = enet->rx_ring.slots[enet->rx_ring.read_idx];
- 
+@@ -334,7 +334,8 @@ static void bcm4908_enet_dma_uninit(struct bcm4908_enet *enet)
+ 		slot = &rx_ring->slots[i];
+ 		if (!slot->buf)
+ 			continue;
+-		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_FROM_DEVICE);
++		dma_unmap_single(dev, slot->dma_addr, ENET_RX_BUF_DMA_SIZE,
++				 DMA_FROM_DEVICE);
+ 		skb_free_frag(slot->buf);
+ 		slot->buf = NULL;
+ 	}
 -- 
 2.56.1
 
