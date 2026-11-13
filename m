@@ -1,100 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.48
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794578081;
-	b=TMK2aW38Cfs67nYB5wMcGA0+2xB8cFxRqoQ3J73YBn6cXzEwNcH59xQ4R2SViEjNL9Cd
-	 +9mRrvDxwcnThqzf0BQG3oZY5mVFQxr+SCpmIBmeim0mv4g9g7SJDgJaDsjEltTGzCi0h
-	 NvdUEsGG7UWZ+s0Lb6jrz66gvSqSxgEs6wTEOg0EIifxj6i4YstHGIPljS71xbxUYoJfy
-	 8j070pPCL1C3zTpcIc4jlr6FX/evtjZPrW8sKsQJZwvIEHqc6BOQlNIsQ/ljGyqmwbOeo
-	 l+qmZ+O1L0dXjWyocm7n8cLwyKmMSyuUOJkpRVunub/oLxObkfqUL0DL7/Ai7+oQXrA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794578081;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:X-Google-Original-Message-ID:Date:From:To:Cc:Subject:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=wLLpkF4cjBVNx1uNJleKZrvmo7zDl67dEZ7VEFv3KR0=;
-	b=lgWz+CPa0JKi2+LWaS6tVi6I5XcaHLqHuIcaRurmAK5TFmtwd4lQlAC9TeiPW5vGQq8w
-	 r0p6dCPdU5Y+YokEjPGBsxzp1bdVSKqndH8UCHr5N3O3FTVJih+qmZ5JRfDkCq1uZyLsO
-	 awScByaf4f12VGsLVN/FfX58Mqwj7J8CyGPOPK8iUuFGVLgs8T7Z7A1QOOYMdqoS2eld2
-	 B2ev1o6J0jJlrhnR8UVU4H1JuAxfScWxq006qQOaJoM+CzWcrRVPmzJL8y3RM0nozTfV7
-	 E/wceiAtTxEocxqwjZAl9F6l9pUA9JuPDiMTj1JfGtr//Q2mTNhZae2Y00iZcln2mww==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vN6x1Vg+;
-	arc=none smtp.remote-ip=209.85.218.48
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794578243;
+	b=NjkhbADEbo+O08xAqjd2LEKGV5YBgsT/fqaoomg3pTlBeYtngQ7WEu/ePwvm/vsPONoD
+	 8BO/Zyc3I2766MILs/dz0qYaPxL00OC6QBqZFaSEPKpjcVuolbeS8zcN5EOYHtMwOxlYf
+	 3Pl9EhYPimfi9TBaJTRbZiSxfkl84BZ9lGJLds2nJ5mEWoy2vXovZ6alQPEb2SFxCXbV+
+	 jQjuM9Sc/SEfl1IyXhZkTT8aP0r55xc2KbewQDoAixsITXKZxPEGQBxSgqbgacMD0lVno
+	 mLou5n1tpsaNxqwrNB/yETqDvPVDwDzn6JYraxthC8O9qRFHXkVw4AOaqhkIhvCFvCg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794578243;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=DgpYO/VSAfAhMfvdbl5shO5wtKU1LiPu1ETvfgfLye0=;
+	b=B73lyguhS0eoXpHhYuaH52k6ndAhJmiWjqg8aIEmYmXmB0hQ3MyfslHvcpUMuRl3Rv8Z
+	 kJIoCHcdZeSci1W6WpNdn4Fz/m3Sxl5PcHLyEX+XMnOHV10sAmkI2PcXON7qfFjtHLBlx
+	 jhwppbwfkCYYYYYc7qHNshk2kLR/ImwOKU1+0VFS4PhCXWAwxOXRoYazKP80O2uP/OHJQ
+	 KEKpmj9rCuvJFzOwIMlAZobshuxDBPs29SShH4A/hFsNWa12RRivDyH1JOg+by1v2vJBg
+	 OEuN2fOQNjG0b/imrJ5IuNSXieDs3oHfYBNi8Tcr6X4QhOmv/sWj4XzYjCJ7g88o8Lw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QDpcg874;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF89606A33F;
+	Fri, 13 Nov 2026 13:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QDpcg874
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794578243;
+	b=J2+lQAtycUP4YJP52ciZvNub8jZcUpzxeBAGpGqVHvgoBLIZrQ5nXtWcqZVi0T5jrV/b
+	 HIOTHrtO68NgduvaMA6m2UJTQNQxmEZV8oPZtsP4jNo2MTZKyG1YcEzNFNKLIGw5XlQ9m
+	 8a2aVlXAty6rQUP1rLhA9JDOtEFwSs53rFnMYDVotpKBX+90ZA4NnMTmDjOrtV0/ObmQd
+	 oo+2wKRQA+TIUvwxIcGNomS4v+ECNKAUNfqWvwcpeRxOQtjt0X6tc97GFxgkPaJYG3GJv
+	 xQqfcNlJQcRB/O8YCaJk7j6uHaJxlU+pBhBjD7+LdYOhRUdUNkHecRj/+48RHLxAukA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794578243;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=DgpYO/VSAfAhMfvdbl5shO5wtKU1LiPu1ETvfgfLye0=;
+	b=2kYlbIIHNqFRQk/Pl8JPQpgT4vhRU/lwwUlQjNAAqJT+9j9KtRhEWz9dI0KeyO3euvaK
+	 miN7VNs0IiNNEuYSQ/EipVO1Y8qphtu2yrSMMBTA6DHwPIwQF8o8nbwh2HPXnR16Hi2CF
+	 GVsr2XOFk5zCNHyasHzsTeYSOW+7AQHfR6aVriudL3KnDjr0x8PCSdQ3RBWip+pgxxskj
+	 u6KmKBOPLU4sRevoP8y/qZ+p6aKZmNL/m/52sKRSpnrqYsVCngHXJ3INn0d9e/HX6/Ou0
+	 WpAFXhJIlqX4uQsO2QvVm9MgQ7BkOw+tUtj8FOPoTueTdGHwAnyNygc056v8aQXRmLg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC72606A898
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:54:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BC72606A898
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vN6x1Vg+
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso253153666b.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:54:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794578080; x=1795182880; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wLLpkF4cjBVNx1uNJleKZrvmo7zDl67dEZ7VEFv3KR0=;
-        b=vN6x1Vg+cWbRws0oppzT0pYULxFVRSyz5ZMm4n03rHi+HYaL8SdKbfoy0Z0i3m8RCq
-         fL5vB+QE42Rum2oxeFeTP+XbMe6HLgYIgmeAhrn4Z3EqYul4GOdlxsSjSIS0S+23lvuv
-         6cxrMEmbjsquxKmSdeIwtwCqYALg6bsp/vbIY125m7azK+cjMN5l/neOD6Qh0EUYC0kt
-         MTtMt7X+XCVdIUW0kQChWCrt28EYHyU05qQwO3/T1Wkqnqq0wexqcSwVc9epMwwixNiw
-         MXd2lDNCYk9ZJ6WdPsLMRFcOiRrhQ4jq6Y6A+ZcYuU/qYSpI6y9aXkCTA32gglhZo/3W
-         iVCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794578080; x=1795182880;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wLLpkF4cjBVNx1uNJleKZrvmo7zDl67dEZ7VEFv3KR0=;
-        b=B0CT+nSVRDUbnDTc9ONeKkK+LRvI6EzDVj9rSnjMzB/CxGJ1RSXsHWlVWmngC7PYn9
-         E17S8RSyd/tKZqKAuZJvozJM7XiGCZbKqCIY9zrKQGd94Ot0K9l917TYF4n3B3IAZFSL
-         7wYSlw6PJVRwyMQ05m+tUR3WeuOXane6PhY+zSAXl3e1FzL0sVeMDtyqJN3a8ptRW4Vj
-         x1zFw+TvNFeFhesgsbBlpRgewCJbG5ZfsOXohsuFDSadIUeGR4VIATz0AjpFy9tTWU6w
-         gtS7daCTCAxd57k1ih44NHceNGMT7LaS4V+olAp+wlCQ5jWIbvC6+eUtWavRbxxsIzJP
-         z/mA==
-X-Forwarded-Encrypted: i=1; AL+hErH0OhFnQhka0VQ/45oMkLGDalExBszWBxrspQZRdTBhdITftQrb/6YeCPa21qkBmWYposh3a1Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z92z5PrZdNOlB1ZRptzgFSgOaOX/yRgxP1U56652knE3wMNjcK3
-	q9QTjLPlP7OHjzqEwZXzUlR/AiOD/av3LqQNvisU5EKq4kc6D9etetd5
-X-Gm-Gg: AYBFou3553HOYJsPA1J9TiXn4NX6I/Y7kz6F1Fb+q/ZuzNmOJiDywuKNMXIarwGntQR
-	lgV7gL9x12CPQVEB5vdG1r7sqfiDN6ZIbFkNaI4CGh/jAOs6dooyvcqbmdiB11C5d+yUEml53RM
-	HnQAak9/lmEODia8SQxpBViQ+Nwn0Lcf2PBmAP87jYVnazGD9PFqBNmt4Yz+26ft4ZI5LjkxYQP
-	lOHX+NPaFYmbZqAShcCz7314lF+tVsMrjDKq5OhpvVs/PJcmA1ljzhoKt388J9DVisSFt6B9Bo3
-	Bfguqm3XUAu/ucCppTzqBWTV6Zj7VaUhsyEwjzOLxWOt3955jWd0ghGhDk4a/i/ycQ7magA5nGw
-	QxUMXJXf83/WquNJ4rrUpXB2GDK1BAnegHEn9r2tiNDp5iLXueH0e8EIreZondrCg+R0blITrKu
-	9vIo2smO0U31BAH+rFHpCVBr2dtSM/TkhcGdWdLcVjtV+unWyNEGabJKOA/D0ApvGTagnmslcDR
-	zMoHZBr7NBwCOKQaCEjuXFgsW9Vcmq1UqXHj8VHHT6/pdhlGvmlgpxlSCwHOtbA7VuM7x3HgsVC
-	J6eAN8L8eC6GYy/txEiNXuteR7qMMqGmmJU0EHmLMZ2SDg2peaUu16hWBsWjP0/CbshFgMPfMJd
-	NgM0dPXV7rnFINFVy7Ndkgzr+djCZsEbXvk/6qQ6fdw==
-X-Received: by 2002:a17:907:94c5:b0:c50:576f:b3a8 with SMTP id a640c23a62f3a-c50963d9089mr297085466b.48.1794578079717;
-        Fri, 13 Nov 2026 05:54:39 -0800 (PST)
-Received: from Ansuel-XPS. (host-212-171-11-167.pool212171.interbusiness.it. [212.171.11.167])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b236fdsm98205966b.19.2026.11.13.05.54.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 05:54:39 -0800 (PST)
-Message-ID: <6af7169f.a90a51d8.32ae4c.1a7e@mx.google.com>
-X-Google-Original-Message-ID: <avcWnNDG0MA7jaOW@Ansuel-XPS.>
-Date: Fri, 13 Nov 2026 14:54:36 +0100
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] net: phy: use const char * const for
- phylink_an_mode_str
-References: <20261112131358.106442-1-ansuelsmth@gmail.com>
- <86b2767e-c2a6-4bc1-ab30-c69069edf253@lunn.ch>
+	by smtp.kernel.org (Postfix) with ESMTPS id BC1E01F000CC;
+	Fri, 13 Nov 2026 13:57:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794578243;
+	bh=DgpYO/VSAfAhMfvdbl5shO5wtKU1LiPu1ETvfgfLye0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=QDpcg8740wJvqj3Kr2m7tIcWDvYzZkZ0wItMwSHaGw2zq6El8Z5EGlsl6wOegLQdL
+	 VMjB7s5g4BoNmWchWUKtZEV0TgiWUD0x2/JrpcghO7DpRSVqflQD+htDYf1D2/nnQA
+	 0M59mkzPvdWp1iSMFlJQ1R5XAVAnxdn/CVepG74wcu4hvDBeMlwOpkktzRjFnkauYh
+	 mEgfRi3R7DldVuKKcpAg+uCj1gxvqPK0rnM90F1XgJyShtRn5qY8Jb4cDM+CtLKfT5
+	 Xim/NQ3f+/7d1P9QRrWqFJmtugNWb1pKpO0/AtiNRc6cNX4A7D8TracvK2vkLa6Gxr
+	 tUCKAjZn4FhQA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 34870477DC;
+	Fri, 13 Nov 2026 13:57:22 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Fri, 13 Nov 2026 08:57:22 -0500
+Subject: [PATCH net 1/2] dibs: loopback: reset the client id when the owner
+ unregisters a DMB
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,23 +83,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86b2767e-c2a6-4bc1-ab30-c69069edf253@lunn.ch>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261113-b4-disp-19244662-v1-1-39b256b70ca7@proton.me>
+References: <20261113-b4-disp-19244662-v1-0-39b256b70ca7@proton.me>
+In-Reply-To: <20261113-b4-disp-19244662-v1-0-39b256b70ca7@proton.me>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+ "D. Wythe" <alibuda@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Dust Li <dust.li@linux.alibaba.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Sidraya Jayagond <sidraya@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Alexandra Winter <wintera@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, Hidayath Khan <hidayath@linux.ibm.com>, 
+ Julian Ruess <julianr@linux.ibm.com>, Wenjia Zhang <wenjia@linux.ibm.com>, 
+ linux-rdma@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>, 
+ Tony Lu <tonylu@linux.alibaba.com>, netdev@vger.kernel.org, 
+ Simon Horman <horms@kernel.org>, linux-s390@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794578241; l=2169;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=KBghDMOoyAS0OHozRJLfnD9xGKdfuhieCEeZH/+0AEo=;
+ b=ao6MdYbeFjNiyBLA7eJqe9r9q2xkL2cdgXwtEyuVBujzXfzJIpbt5P9JOAQEMFhWLELS87+4N
+ /5PQytpKWyoDJQ0VsWP2hm/PVfQL0T5vwqmVwScun/vXLqHMaJHLej8
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 13, 2026 at 02:53:05PM +0100, Andrew Lunn wrote:
-> On Thu, Nov 12, 2026 at 02:13:56PM +0100, Christian Marangi wrote:
-> > The local string array should use const char * const as reported by
-> > checkpatch.pl. Use the correct type as to mute checkpatch warning.
-> > 
-> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> 
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-I notice a more suited title would be to use net: phylink: ...
+dibs_lo_unregister_dmb() resets the DMB's dmb_clientid_arr[] entry only
+on the last put. If an attacher still holds the DMB, as when an SMC link
+group is freed while a peer is still attached, the entry stays set after
+the attacher's dibs_lo_detach_dmb() frees the DMB.
+dibs_unregister_client() then warns at rmmod smc and returns -EBUSY,
+which smc_ism_exit() ignores: smc stays in clients[] and dibs->subs[],
+and a later dibs_dev_add() or dibs_dev_del() (rmmod dibs, ISM hotplug)
+calls into the unloaded module.
 
-It's ok if I send v2 and fix the title (and keep your tag?)
+Reset the entry when the owner unregisters, before its put, as
+ism_unregister_dmb() does. The index stays allocated until the last put,
+and the attacher's writes no longer raise an interrupt for a client that
+gave the DMB up.
+
+Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+ drivers/dibs/dibs_loopback.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
+index 44a2e74c2efc..566e61a013d0 100644
+--- a/drivers/dibs/dibs_loopback.c
++++ b/drivers/dibs/dibs_loopback.c
+@@ -138,6 +138,13 @@ static int dibs_lo_unregister_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb)
+ 
+ 	ldev = dibs->drv_priv;
+ 
++	/* Reset before the owner's put: after it, an attacher's detach can
++	 * free the index for a new DMB.
++	 */
++	spin_lock_irqsave(&dibs->lock, flags);
++	dibs->dmb_clientid_arr[dmb->idx] = NO_DIBS_CLIENT;
++	spin_unlock_irqrestore(&dibs->lock, flags);
++
+ 	/* find dmb from hash table */
+ 	write_lock_bh(&ldev->dmb_ht_lock);
+ 	hash_for_each_possible(ldev->dmb_ht, tmp_node, list, dmb->dmb_tok) {
+@@ -155,13 +162,8 @@ static int dibs_lo_unregister_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb)
+ 		hash_del(&dmb_node->list);
+ 	write_unlock_bh(&ldev->dmb_ht_lock);
+ 
+-	if (last) {
+-		spin_lock_irqsave(&dibs->lock, flags);
+-		dibs->dmb_clientid_arr[dmb_node->sba_idx] = NO_DIBS_CLIENT;
+-		spin_unlock_irqrestore(&dibs->lock, flags);
+-
++	if (last)
+ 		dibs_lo_free_dmb(ldev, dmb_node);
+-	}
+ 	return 0;
+ }
+ 
 
 -- 
-	Ansuel
+2.56.0
+
+
