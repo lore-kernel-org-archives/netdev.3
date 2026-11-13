@@ -1,74 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=92.121.32.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.77
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794583019;
-	b=o31tMQNhW6cyJKIyyQD6RMppXRopLgCAceep6HLMbZO7KUSTipk5j9Fhy8B8NN24Gnbi
-	 4+xqLaIOgVBl1MlwOTURt5yf8nv88gcctOMg+8TAHQzSCRr4Gd957P/YpLqk5V4jczoQa
-	 KF16gLow4WiNobNRISjQchsMkiurxO+o7pdxqIvWeBCpvruvUfaBBJUugJ2gZFlNawkVT
-	 3vdv5zxV0XcQMh2cQQCEh1+G2O+0R9TG7c6D34I8Zy2YPbxz6G/ZD5gqCK40a1KhQBWsc
-	 BZulXtPpaHe9cppgt5AsPbTaTZdCUn/yP0LrSEduq94e37O4ZUiqyo0s2Q402eLGpZQ==
+	t=1794583087;
+	b=laIvvNCn2/pKsKnSSnUprIAXi7EZpDwQVwGtc/6RhSBRbrCr08qpmEKEVp/r1sEwQGFI
+	 hfdkJOQtlnCHfqlIRmcFjk+7Eqw//iaRxCSfsYDa+//THe3t3Pj6j0n9Kqg6jmvgSh2IG
+	 d7h5ORSWPXxs5WTKQRzkwZK/l7/T5aX/xar2TWlM7BJkM6V3spDiXDuAf+rQOQBWr2m7O
+	 QiU7wGHBGLP81Sv1bupkJXEGSmE1oT5cBigIoC8gy5ox6jw+09pJtBL6ykxiGNmZhbZdY
+	 AR7/Ee9zjqIe0mn73DNjJlX6fYlD9CS35kZ1IcxI+ERyZYi5GU3YcnXO1MimZJVFJBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794583019;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
-	 DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=uKib2WONiwyAn3NNdrBU0u8Y5Qax9KbCLC9NRfJsdxo=;
-	b=wpe/yPQXu5mVXsxCqH+yQUl1kqHVCzjMXGwW83d6tZFz3wDzshF5mlmMWds0fhV6THdQ
-	 NRutFEF9B5P1TapS6xtwL4UuSEQc/qQN5T/xraQuxzbm9nVPi3uYXTnwZKr4psAGmK7AN
-	 sgkC0eXXQd48m3uD+2JTBcUMnkf+Awlkk+g6FME3kWZ6GgbZSxPc3psru9FOAxclbAdFL
-	 y+uN4JA0JQaecF4QMpBZDDVt6RQhWb9C/x2NuyKjTevfDjtd62Alore0xUs0xoiIyCMmh
-	 vM5V3ePoT8JvVnI1XTtvJHnx7+aXvUD0w/w1Y48q5T/WrFX8XbXw+hrfAxFjF8HhoMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794583087;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=cAIGF/N/dcgGFqkWqmHvmxdGrhlHqENgdut6TKmMIms=;
+	b=mOMJRE7WDiPJHtCO+jAcMF9HcuSvxqd3Gs9KkxLK5ek1/CT7sOOryeuK1ywQNqPv+lqN
+	 VtigJKLCMW5TPS2ZjlGirTi9lFkGkfPbmc6js7IZbY0d/k2BzBaitl9q1nIxkNdhW2lyv
+	 86OfA8nTgGQbRwohTRZ1ecxtGKhWoqhgKL1nSqB3lyi5ySCLQVmjsB4CefSDEyg2OwjFY
+	 dUwDle3o1evN64wEzKxoDziCluwkREG7kJ68uugd0PHTJivg3KXnemsqCwYkiaE42dj9I
+	 TBfVM7zmHfoL0mcFEZsRy3BXZM2qNSXGFPPbyXf5nxFxAlnYit+GM8p8z1v4rpqbCPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=nselector2 header.b=catQyEcP;
-	arc=none smtp.remote-ip=92.121.32.55
-Received: from inva130.nxp.com (inva130.nxp.com [92.121.32.55])
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GblbfX92;
+	arc=none smtp.remote-ip=173.37.86.77
+Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97FD60A2628;
-	Fri, 13 Nov 2026 15:16:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A97FD60A2628
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661B606A327
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:18:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C661B606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=nselector2 header.b=catQyEcP
-Received: from localhost (localhost [127.0.0.1])
-	by inva130.nxp.com (Postfix) with ESMTP id 8C6186088977;
-	Fri, 13 Nov 2026 16:12:40 +0100 (CET)
-X-Virus-Scanned: amavis at nxp.com
-Received: from inva130.nxp.com ([127.0.0.1])
- by localhost (inva130.nxp.com [127.0.0.1]) (amavis, port 10024) with ESMTP
- id IPz2I8BUYV7H; Fri, 13 Nov 2026 16:12:40 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva130.nxp.com (Postfix) with ESMTP id 2911F6049C64;
-	Fri, 13 Nov 2026 16:02:45 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 inva130.nxp.com 2911F6049C64
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com;
-	s=nselector2; t=1794582165;
-	bh=uKib2WONiwyAn3NNdrBU0u8Y5Qax9KbCLC9NRfJsdxo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=catQyEcPB79HiDB/y4dFLPIWX0p6qKOiDp8w9qWBCLu4fXV3HY9g4J/ZSS1iXOyw2
-	 ar8egmXkVV/8SrRKOTCvr0fTeoY2EUKMj3LQgFULDG92v4A6KluTDItpSelhbKQ3MN
-	 wqmrN80aGhPP7xLX26CRr9pQ5rROYOFH6QtI7dklT3eDd+SPqIOvU0TO+ogaerQcgf
-	 u58rQtxNGK8H92CDc4jVTRdJ1hmiC0qz4KlkcNXLGUXhq0lFqVNYUBEmurGWHlloFx
-	 I3x56DMNvtQJVMIAcEn2jXKPsXpDdr7WrJ4+DiH01WXo8XhNoD2z+0P5ab50HSwGUn
-	 mAju/KGy+E6CA==
-Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 3CBC2202B6;
-	Fri, 13 Nov 2026 16:02:44 +0100 (CET)
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: netdev@vger.kernel.org
-Cc: s32@nxp.com,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 6/6] PCI: Create OF node for NXP ENETC pseudo-MAC functions
-Date: Fri, 13 Nov 2026 17:02:37 +0200
-Message-Id: <e256f380f2f1bc88752ee261101cc83ad84ebedd.1794581338.git.claudiu.manoil@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1794581338.git.claudiu.manoil@nxp.com>
-References: <cover.1794581338.git.claudiu.manoil@nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GblbfX92
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1629; q=dns/txt;
+  s=iport01; t=1794583086; x=1795792686;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cAIGF/N/dcgGFqkWqmHvmxdGrhlHqENgdut6TKmMIms=;
+  b=GblbfX92o75YxLT5i3+IuNa3fKsCYi/xLtY/G27eFpB9lY2kUWBjkrA0
+   EdHYuEdFFn5pP55lDmpweS8WBcZZhUkSvkoDYxVPXMHzqF5PUY+BFMSyU
+   wHN/MxH9yyORyI8q3zqTzYPQ/TRADneLhxqiYXpjwoGGzKhaQiwydqrea
+   2z97jprSce+p6og0U98v8/5tAaUlUzSxxVtU177ayvTvuukujIzX4ImLe
+   ZwfoqflA7UzBRBkMy+tYv5/DwCDZ86xpQ+8u7JBI08gqvcC/ZIbGTolbu
+   /fqMDzk/MFloU0p735Fpl0lgm/TaEUxsEKS0ZIWis7ADV6xZgo1SQcKkh
+   A==;
+X-CSE-ConnectionGUID: fFS/OjccTTK0iwMW/oNSbQ==
+X-CSE-MsgGUID: AbZBe0ZIRbmCFJ4UcS1XEg==
+X-IPAS-Result: =?us-ascii?q?A0AnAADQKPdq/4z/Ja1aHAEBAQEBAQcBARIBAQQEAQGBf?=
+ =?us-ascii?q?AcBAQsBhCtDhSCIG4lZA54iFIFqDwEBAQ9RBAEBhQUCjh8CJjQJDgECBAMCA?=
+ =?us-ascii?q?wEBAQEBAQEBAQEBAQoBAQUBAQECAQcFgQ4ThlyQEwEBAQIBIw8BRgULCxoCJ?=
+ =?us-ascii?q?gICVoMbgk4nA7pCeoEygQHeR4F0FYEKLgGFc4JuAYUDdoR9JxuBSUSBFAGDL?=
+ =?us-ascii?q?D6EKmaDD4JqBIIigQyXd0gKeBwDWSwBVRMNCgsHBYElQwM1EioVI0sFLR2BI?=
+ =?us-ascii?q?yEdFxEeWBsGBRIgKkBDW4ESgQVdgSsoXQECH0YtFYF1AoJRgSNdAgFJQQ4HR?=
+ =?us-ascii?q?VMJJUMSRyQiCBIJARMaLAqBGjU8CSY/FQxbDAgDGgUaJgIfCAILAgx0KBEQE?=
+ =?us-ascii?q?x0eJC8FGiY+GwqBDgUYDUgRLDcVGQQ9AW4HlRwPUBMVQgEiCRJEcQkpAk6TJ?=
+ =?us-ascii?q?SIHPJIFgTWKQ5UZhCqBaJ92GjOEBI0UmVqZCKQOTYRqgWg8gVkzGggbFYMjU?=
+ =?us-ascii?q?hkP4H8mcQcCBw8Ck3EBAQ?=
+IronPort-Data: A9a23:sRKWhqjan+/g1IYjGFGiX4O+X161oxEKZh0ujC45NGQN5FlHY01je
+ htvCD2COP3ZZzejc48laN7loR8H7cKAnNM2GQM9qH1gRnljpJueD7x1DKtf0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+FHwdOCn/SMhvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
+ vus5ZeAULOZ82QsaDxNsvvY8EoHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
+ 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
+ Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUW1N0wJmNF/
+ sAkC2gMcTW8wOWQ+7iCH7wEasQLdKEHPasFsX1miDWcBvE8TNWbGOPB5MRT23E7gcUm8fT2P
+ pVCL2EwKk6dPlsWZg9/5JEWxI9EglHkeiFZs1KWpYI84nPYy0p6172F3N/9J4DVHp8IwhnBz
+ o7A103zMDsXbO6+8zCA2VyO2tLEpnrLdY1HQdVU8dYv2jV/3Fc7BBQIWF6TrfCnh0u6XNxDb
+ UoZ5kIGoKQv8UW5Q8XVXBCipnOA+BkGVLJ4EPAw4SmOx7DS7gLfAXILJhZHZcAqudFzTzs2l
+ USAhNPoBjtHs7CPT3+ZsLCOoluaMC4ZN2IdJikJUQcI/fHnvYc1yBnPJv57GaS4iNzdAzz8w
+ zmW6iM5gt07i8MX26il1U7IjijqpZXTSAMxoALNUQqYAhhRfoWpYcmsrFPc9/sFdN3fRViat
+ 39CkM+bhAwTMayweOW2aL1lNNmUCzytaVUwXXYH80EdygmQ
+IronPort-HdrOrdr: A9a23:1BillK8rFtMJ2Dzho5Nuk+D+I+orL9Y04lQ7vn2ZhyY4TiX+rb
+ HIoB17726RtN9/Yh8dcLy7UpVoBEmslqKdgrNhWItKPjOGhILAFugLhrcKgQeQeREWndQz6U
+ 4PScVD4aXLbWRSvILd/BSyFcomzZ2s9aClgvqb8lJWJDsaDZ2JK2xCe36m+oocfng+OaYE
+X-Talos-CUID: =?us-ascii?q?9a23=3A6hWqoWqBS3CIWFz+/JfLWAzmUc4LSTr6znzbH3O?=
+ =?us-ascii?q?bUWd2bYLSTnmr8poxxg=3D=3D?=
+X-Talos-MUID: 9a23:YJ1WHgqSICk65GgQUVUezxhoBu1lu5aPMkoIursk5/SPDnVAFjjI2Q==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,211,1787011200"; 
+   d="scan'208";a="547325471"
+Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
+  by rcdn-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 13 Nov 2026 15:17:59 +0000
+Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id 34C401800061A;
+	Fri, 13 Nov 2026 15:17:58 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	sebaddel@cisco.com,
+	aradhana@cisco.com,
+	rfaucett@cisco.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v7 1/2] enic: retain admin-channel DMA until queues stop
+Date: Fri, 13 Nov 2026 07:17:22 -0800
+Message-ID: <20261113151722.3116868-1-satishkh@cisco.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179450328635.2199510.2101319582570477640@kernel.org>
+References: <20261109-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v7-0-30ca6f467673@cisco.com> <20261109-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v7-1-30ca6f467673@cisco.com> <179450328635.2199510.2101319582570477640@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,47 +117,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-03.cisco.com
 
-NXP ENETCv4 pseudo-MAC (PPM) ports can be probed as pure PCI endpoints,
-without any "ethernet" node in the static device tree. The ENETC4 driver
-describes their fixed link by attaching a fixed-link node to the PCI
-function's own OF node, which requires that node to exist.
+Thanks for the review.
 
-Request the PCI core to synthesize a per-function OF node for these
-devices by registering of_pci_make_dev_node() as a final fixup, following
-the existing precedent for the Xilinx, Red Hat and EFAR devices. The
-helper is a no-op when the function already has a static OF node, so this
-has no effect on platforms that describe ENETC via static DT. It only
-takes effect when CONFIG_PCI_DYNAMIC_OF_NODES is enabled.
+> enic_admin_channel_close() can return an error after releasing the graph.
 
-Both ENETC4 PCI device IDs are covered (0xe101 and 0xe110), since either
-can be instantiated as a pseudo-MAC port on S32N79.
+Agreed. The QP_DISABLE result and the direct queue-stop checks describe
+different outcomes. If both complete disable helpers succeed, the resources
+are released and the state becomes DOWN, even when firmware rejected
+QP_DISABLE. The partial-open caller can therefore print a misleading
+close-failure message. The queue-stop proof and resource handling remain
+correct.
 
-Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
----
-v4: none
-v3: none
-v2: none (reworded the overlay reference to match patch 1's fixed-link
-    approach; no functional change)
+> The quarantine check can close a PF and prevent its reset.
 
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+The ownership check deliberately remains outside enic_has_admin_chan().
+Disabling SR-IOV clears ENIC_SRIOV_ENABLED but can leave retained admin
+resources with unresolved DMA ownership. Clearing that flag must not
+bypass the reset guard.
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7f1f47ea2ee4..71f272d8a296 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6563,6 +6563,8 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_TOSHIBA, 0x0220, of_pci_make_dev_node);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe101, of_pci_make_dev_node);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe110, of_pci_make_dev_node);
- 
- /*
-  * Devices known to require a longer delay before first config space access
--- 
-2.34.1
+I agree that PF reset and reopen policy need to be consistent. PF
+admin-channel activation is dormant in this series because
+.sriov_configure is not registered.
 
+> A failed internal reopen can leave the interface marked up and allow
+> repeated NAPI teardown.
+
+Agreed. This is the pre-existing datapath lifecycle issue acknowledged
+in my earlier replies. Adding dev_close() directly after failed reopen
+would invoke another stop and can encounter the same problem.
+
+I will handle the pre-existing datapath lifecycle issue in a separate
+fix. The PF quarantine and recovery policy will be addressed before PF
+SR-IOV activation, and I will follow up separately on the close-status
+diagnostic.
+
+If there are no further concerns with the two fixes in V7, would you
+please consider applying the series to net?
+
+Regards,
+Satish
