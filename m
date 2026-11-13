@@ -1,60 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794531773;
-	b=L6fYj0KZoaRWLDuevGzlwZJ5LKnr8UdDzpJeE882JKlxm537FUgTRDuW9UPLzw1j8PqH
-	 84lF1tvMRuvYO248a7YCK9fNgc6dWrIzOh70Cd8W++ZD1iBEmea27GgZ/piLhZwlvaAC8
-	 WV9xGlaM3bs7hNMMbmIU2OmRVAZ0+f2WXBUiVH6NuMPqFRlBADpc62PH3+KAuYp/bRbnf
-	 ZHcDRtIHNLkSdNdRACCMVH36bzQEmgLAvVP6JwM82PO9AsnGWzyjNA6EdOxLOOWRtuLfP
-	 YISYmOSoaGPLATeLKR4yeK9k1+2tNfU1sZw+TmPIHhzTO2dk0fgTDyQ7hJ6Om99OUrw==
+	t=1794532075;
+	b=lWO3AGAQzJ+l1xramrHaLP1gaYpMWofvzEWcvkLSzubcy8lW8BOJPUaQ9J6QfwYq8kI7
+	 gXljbYzfqsdoQesKzOHSpC972Zu5O+eZuapd1takSkKCOIIEhZ4Ivtl361UGLfS0Y12+H
+	 OT8IAypW/eyIOOw1pDz8A3myX5XMRDxz6Hb7Gls7npK7rwFoG64VaxMjYbPDvFo4JYbYO
+	 cSWAbm6dCy4UqhXqm/OzhlEJc7iiEvkH1Emr3OfZl8UvYm6FVxZls4B6cUFyNYuqb5gw6
+	 LTkMtEtkJ1vA3Kf4/Fb2gpm/C8IKXeeiFE5seoYYFUyyNPIZzMaoT3liropsIK1mRiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794531773;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=nIAyxgbc0dBhpCr5slLCIJwaBkTcRa7SaWQgrgx1Si8=;
-	b=066fc93Tu0RC2TwQWuoLRFmeBvc+T9krCS9R8GB0lhYEmMRvHxS//MfRP+j2IRFd71Td
-	 r54TAzswOtgedcxkrl8qhSG/JQoEr07teGZWI2BoD6PKS+sPWfwHJeApodhFRiV+lyrS9
-	 kwZIydsMKHMZGdCHIFYBuDVGO0DUDPzZIItX6Hj3BbRLmq60NilBiKqfRD9PZ3Qja5oHS
-	 vPaT3mYgvqk/y/YPNmXPvuXFxg5udQFSW7G5z0OIQk1UwH7acSPlYkMiwf/OaivoOJgSf
-	 qmg+P18tj1fvwWpgFwqOJGhtgH5ovbwR4E7um5FFIntC4TRVkmy+fk84hTrl64W6k9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532075;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=SeGWYFi/n0Lblm9iaCke+B2p70tFL4hdkNwQxuOUa3U=;
+	b=c95Y8xsh8vXkJD1QtR+0umZDUOtujhrHX4ji90I0AfV6ta6A/ds1m8Cc7iD+lBLDikHS
+	 Obzb51WtGni4AfcF1hm+55t/PxCP7C5BW+CgR8IY8HmJxZbxG9S+AIXC/fwV4BIMQV186
+	 bMPDXZ8oS2IN7Pib5c1vOBKDqG8g0lE+rApt9vgdG0kn9wfZ2xLr7SbDv9ynLOZgPqA8W
+	 bSKcnbppHh2L7aIVc5ZuVtMrDWCDpJlWPIUqj+Ap0V3+MiXdWlxD73d0e/rE7Pf/dBeRD
+	 1rzLvvwoSo+2SXDKDUkaYQcDcC0fgwHORHJyjO9jp0J2s8WIt5tmR74S6d+J2ZaLDcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=proton.me;
-	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=UPoJn0rz;
-	arc=none smtp.remote-ip=109.224.244.16
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="xF/ukmbf";
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80408606A888;
-	Fri, 13 Nov 2026 01:02:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80408606A888
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9400D606A32D;
+	Fri, 13 Nov 2026 01:07:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9400D606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=UPoJn0rz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1794531769; x=1794790969;
-	bh=nIAyxgbc0dBhpCr5slLCIJwaBkTcRa7SaWQgrgx1Si8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=UPoJn0rzmtHUnLQ3O/nDivcaaFknqIJOpiUP6CguPaEYrsZf9c4+VWjk9lh8C1RQ0
-	 U6UdFKyG5ILHNkFJtK40fc/kPVF9udi3XKUxhZIV/IBnUvgHg4wzUzW8SNoiZPP08Y
-	 UCluRZj4JY7xfr4a2jMkmx1GaJIY29RQcEGwbr5F7zdRmIRc7iQ9mqBzvRMhYWVp2l
-	 Cj/St8K+v3rNSvmk/FCJ06oPLBfCUy9Sq/0ecwro+jy4dQvhOT1p+Q7jm4Gvf4MHB8
-	 utS7d8+rT29949okFa++22lapjfVSay/+HbGqObp0nPgnhe1F2qNieLlfu4fctyTD3
-	 ugaaZWpYtmmww==
-Date: Fri, 13 Nov 2026 01:02:45 +0000
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Sidraya Jayagond <sidraya@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, Mahanta Jambigi <mjambigi@linux.ibm.com>, "D . Wythe" <alibuda@linux.alibaba.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Guangguan Wang <guangguan.wang@linux.alibaba.com>, Ursula Braun <ubraun@linux.ibm.com>, Stefan Raspl <raspl@linux.ibm.com>, linux-s390@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org, Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, Dust Li <dust.li@linux.alibaba.com>
-Subject: Re: [PATCH net v8 4/4] net/smc: bound the link failover cursor advance to the send buffer
-Message-ID: <20261113010235.418440-1-hexlabsecurity@proton.me>
-In-Reply-To: <fc454b46-b66c-4a16-aa1c-3ea0c2e91d15@redhat.com>
-References: <20261029-b4-disp-33001ace-v8-4-f9bb96e17827@proton.me> <179364387382.3131.13471253186660322977@kernel.org> <fc454b46-b66c-4a16-aa1c-3ea0c2e91d15@redhat.com>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 3134a679630143b5913b128635697a100cf4272a
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=xF/ukmbf
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SeGWYFi/n0Lblm9iaCke+B2p70tFL4hdkNwQxuOUa3U=; b=xF/ukmbfd3uVVeWQFwYi1kzqzO
+	exrzeAT/DJipxxiBU8mABEJQCso/XVuVIsm/aUwekV3vJfkhJY+KreQxXz7FjCC6DNrIZ7QhgADP+
+	4XOkfe1cavOY6fWNJkMnoTQgrN2XTVZaeA6hi+3PHqp3LeVCs4lURqL3eNfcsBKfksGM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xRflR-00G9Eq-3H; Fri, 13 Nov 2026 02:07:37 +0100
+Date: Fri, 13 Nov 2026 02:07:37 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Navid Ghahremani <ghahramani.navid@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
+	stefandoesinger@gmail.com, krzk@kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 16/24] net: phy: Add Sanechips ZX5201 PHY support
+Message-ID: <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
+References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
+ <20261014072109.1759502-17-ghahramani.navid@gmail.com>
+ <788c9b01-473e-4c45-b6f0-b2ba054da8e9@lunn.ch>
+ <20261113003655.3665572-1-ghahramani.navid@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,81 +70,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113003655.3665572-1-ghahramani.navid@gmail.com>
 
-On 11/3/26 11:22, Paolo Abeni wrote:
-> On 11/2/26 19:24, netdev-bot+sashiko@kernel.org wrote:
-> > - [Medium] The patch adds a cons.count < peer_rmbe_size gate to
-> >    smc_switch_cursor().
-> > - [Medium] The new bound in smc_switch_cursor(), diff <=3D
-> >    smc_curs_diff(len, &tx_curs_sent, &prep), is computed from a snapsho=
-t...
-> I think the above are the last 2 comments standing that need to be addres=
-sed,
-> (the high one in patch 1 is addressed by patch 2, the high one in patch 2=
- is
-> addressed by a separate patch).
+> > We need to understand this, because if it is an RGMII PHY, we need to
+> > address the RGMII delays, which that page says it can controller.
+> 
+> That part I still have to find out. My driver has always told phylib
+> gmii and the WAN port runs at 1 Gbs, but I have not worked out yet
+> what the link between the SoC and the ZX5201 really is.
 
-Both are right; v9 [1] changes the code for each.
+https://www.sanechips.com.cn/en/Products/WiredEn/fixedNetworkTerminalEn/1558027080778723330.html
 
-> > - [Medium] The patch adds a cons.count < peer_rmbe_size gate to
-> >    smc_switch_cursor().
+This says it is RGMII.
 
-For a count past the RMBE, v8 turned a stalled connection into a write
-past the peer's RMBE. A check in smc_write_space() isn't enough:
-smc_cdc_msg_recv_action() credits peer_rmbe_space from the next
-consumer cursor, so one more CDC after the switch opens the window
-again. A conforming peer gets the same write if it keeps reading across
-the end of its RMBE before the resend.
+> SerDes was just the name I gave the registers at the second address,
+> and there is no public documentation for them. I will find out what
+> the interface is, and how the delays are set if it is RGMII, before
+> I send the networking patches again.
 
-v9 bounds the write where its length and destination are computed (new
-5/6): at most one RMBE per call, and the first chunk ends no later than
-the RMBE whatever the wraps say. On rxe with a 16K RMBE and the count
-forged at RMBE + 4096, v8 posts 16384 bytes from offset 1 and the link
-goes down; v9 posts 16383 + 1 and the link stays up. With a conforming
-peer, 9000 bytes unconfirmed at the failover and read before the
-resend, then 2000 more sent, unpatched and v8 post the 11000 bytes in
-one chunk from offset 12001 and the surviving link goes down; v9 posts
-4383 + 6617 and the peer reads the stream intact.
+So picking SERDES is probably causing some of this confusion. SERDES
+implies there is a PCS, and the PCS is doing signalling for SGMII or
+1000BaseX. With RGMII, none of that exists. The registers might be
+controlling clocks, or regulators etc.
 
-5/6 turns one-chunk writes into two, so it sits on a fix for how
-smcr_tx_rdma_writes() sizes the second chunk's source (new 4/6, the
-pre-existing [High] on the source SGE in the review of v7's 4/4). A
-conforming peer reaches that one: a completion handled between the
-first two cursor copies of smc_switch_cursor() leaves tx_curs_sent 600
-bytes behind prod, and unpatched and v8 then build a source SGE that
-ends 4536 bytes past the send buffer (KASAN splat on the unpatched
-run).
+https://www.sanechips.com.cn/en/ProductEn/WiredEn/ethernetConnectivityEn/index.html
 
-> > - [Medium] The new bound in smc_switch_cursor(), diff <=3D
-> >    smc_curs_diff(len, &tx_curs_sent, &prep), is computed from a snapsho=
-t...
+Also says RGMII.
 
-6/6 (v8's 4/4) sets tx_curs_fin and local_tx_ctrl_fin from the advanced
-tx_curs_sent and local_tx_ctrl.prod, which change only under send_lock,
-instead of adding to the live cursors: the first of the review's two
-options. With a completion handed to smc_cdc_tx_handler() inside the
-switch (test hook), v8 leaves local_tx_ctrl_fin at count 16713 for a
-16384-byte RMBE; v9 leaves it on prod.
-
-The switch still isn't serialized against smc_cdc_tx_handler(): a
-completion handled inside it is still credited to sndbuf_space more
-than once (the pre-existing [High] on that race) and can make the next
-write hand the peer bytes it has already read. 3/6 keeps send() inside
-the send buffer, but send() can then overwrite data the peer has not
-received (by inspection). Serializing the switch means taking the
-socket spinlock around send_lock in smc_switch_conns(); v9 doesn't do
-that. In two races with a completion inside the switch v9 ends worse
-than unpatched; the cover has both.
-
-The [Low] of that review, on the new comment in smc_switch_cursor():
-6/6's comment no longer says "else that peer stalls", and the message
-no longer says "still sizes".
-
-[1] https://lore.kernel.org/all/20261112-b4-disp-0287c16e-v9-0-e5e8fa688177=
-@proton.me/
-
-Thanks,
-Bryam
-
+     Andrew
