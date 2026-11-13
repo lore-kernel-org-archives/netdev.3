@@ -1,60 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794564013;
-	b=f3tTfGnmrXLfnggYgxmNZbgrEb0ix4PZ/bwZ7AZ5QOM6i0QDvAOk0dTEWTxek85NW9lN
-	 3hFYV+ERZxiu2lle25XWEf8b34xAB/lJ7dg1kjH19k5Gx0dkSwmSf7p/CPliVwbXb6nEd
-	 gKc/4WTLNRbPiA1S2NXiJU7yn6AmHAvRkXqXFXH3daeQLJ9AY0BZnsLw2KyQypDdLfzDk
-	 ZCULXvWXNl0uFV+4g01SWJgh11vBXfMmGKmIXJE8TlUFS2A3wEIoL1Iw7mXlx2HMRIZxU
-	 KzmlPbfr0ioQw1chZKH5hGEi5IM9QTx6XS2XXtSOZRG6v0B4JnOu/ipWIBHY2ha6s9g==
+	t=1794564140;
+	b=eqfvnYfOn/85MDywAih5+edTa5536tdgD+g8Ae0NqYVGbq+Vbs6RFEaWgRHAG6EsNuo+
+	 bZ58JI8RYycmtsqEPAhCe4H06RuCj4M+GdKYYoE9+QJNtNGkxNlGOwsG5K3Bj0uKzgcza
+	 aLSl/ZyUadZGTKzjIQxHZjtupZDYg67Yz9mA7vXNP6P3rVH9j9OFmTaRMELW7PtROyzb7
+	 oPtVsKDnAXl1qmmYVfYcr9t9oLBAOEr2lTHhqgbzfSmrs+fIBSMCD/55LgOCYo8KRxAcV
+	 xonTTI5FExRSaVVhTNdQkE8HMkaF8kZyYR416dVRuZi0K28dKfEFvq4ou+6bc6qadmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794564013;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=CZEQVZ6TVB8PXZyirm0oWvsQKQ+yV93wdSIBjZmPOVw=;
-	b=g7qzc+yTROi725US3HFRyDcq2IsgmyrGKRKgvXT/PnjCuUzxCH8vub0jEtyoeSdkUada
-	 3qwyCnCUpzO7GLX2qWgRXv4mUjqbkSCRCtf2+Hdxj+j2hZCF+PbMFmilSN5rDu4hQ/Yaf
-	 i23OMG4xsdZOyyYpr6kwAgvLqHeYCU3ZWj1rMy+aL2/EHWshUa+bzHy3sAs6THau9xOFw
-	 Rz8vKBpmtNA7AfHUN1LDd/7tjTY3VgugR+MYnEYJW8HkP2JZFWolV4Syc8drU8b0a2x3h
-	 Wc2g8bGPaGeWH04Fr9opaBmRR4JM8MuP+fKCxwCpzBJlxa0KdkqvxJWkONrqVeMdgRA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794564140;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=Ee4ggwaa7pvqsvjnONVsvhhjx7Blw4b1QTFG8P7u7TE=;
+	b=MLFSDROcODKkurWCu3ds1nO52oSxxL4LLkVli2rFXfor6dzH+7LojMNxff8WhkME+3yT
+	 NUN0f9aGSD6BEcS0gmjYudnHnrjtMntocsFt2qs+sfngfBNMZdAAOiTuPJZdxy2fgEihx
+	 NaIkQ64jtlzxLAr/kEzpg8cKXwZxd3atxzyFN0+lWNNQiA0thqYXplnNxNGBEA9etswa/
+	 /+32HOef+SKzM291nmdfp6UgUN++5ErmrASjfBsI9lTwl6bq/JDsHOORLJsC1k+rKeeXJ
+	 eyFRFIIZgMUxgkJ7meqXWuquefyZGMt3FrjfCtc7JSghX5rdWtMOr0lZ4pi3bzFde/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioh3c7+L;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=amutable.com;
+	spf=pass smtp.mailfrom=amutable.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=mxnEK0OE;
+	arc=none smtp.remote-ip=209.85.208.54
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1232606A337;
-	Fri, 13 Nov 2026 10:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C70606A332
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:02:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6C70606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioh3c7+L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA301F000C4;
-	Fri, 13 Nov 2026 10:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794564012;
-	bh=CZEQVZ6TVB8PXZyirm0oWvsQKQ+yV93wdSIBjZmPOVw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ioh3c7+Li4hBvBjUiWmNiOBUipdlGq9BrKY1Gllg/1pwHe4dGrEqLu5Eib4iKE9vs
-	 UA9832q26rizKLXxFqb3g3RKIQUGWCCTjt+/s+xFwcTjDEEg3KR9dCESBg3O3OPw6R
-	 C6ADhMfinEJvPopECOflU3BqH+WfjYGOqM3GKZ9Mb39gFdGTLUx+dYJljEcRcYp2hn
-	 5f8AW0yrwbSj1r832w81nTXfJfKBtgE24MDxl5w1cLa3mmbQUJYbPgU+Jo1lrJ18m2
-	 ghFcegLfOjleLF6tlNqaFnaN7YTQgvJceIomLGKtoE2Y6u2WKM19qo40jfINrRbA3E
-	 ynOw0pUK1sf8g==
-Date: Fri, 13 Nov 2026 10:00:07 +0000
-From: Simon Horman <horms@kernel.org>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Thierry Escande <thierry.escande@linux.intel.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Samuel Ortiz <sameo@rivosinc.com>, linux-kernel@vger.kernel.org,
-	yana06070@163.com
-Subject: Re: [PATCH net-next] NFC: digital: fix target leak after Type 1 Tag
- discovery
-Message-ID: <20261113100007.GI18859@horms.kernel.org>
-References: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=mxnEK0OE
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b7bffb5b8fso1233861a12.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:02:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564138; x=1795168938; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Ee4ggwaa7pvqsvjnONVsvhhjx7Blw4b1QTFG8P7u7TE=;
+        b=mxnEK0OEI7AZoc/CfUYBfL7b57vnPAty4yH1m7TS29a3jfzgxF6O21C+4eoAVH56Q9
+         piX6TGhock7wjcI74HawyxxvBGzm9YxMDwhPO59HW6wNIzGY38ltasaZh4hFELwGRqEv
+         EACaW/+rYd6+QPU5/79gIyHIHlnigPDAQAFlfCT0ngxFbKNdFkIgPJ4AQQVbJxYRU4kd
+         sGda4OaUFoBKprw0qaI3K+cYJzK6vhQ24s+osuqJwxviEyFLXhcz7lQ/DUhHhDlN7iYr
+         P/EQDWGz9doNbLrGEB0hB+YKjuFHlmGHIGpXLhiZ/HiYA8bpaS50WmEcn/ZjJ0UCEMyu
+         vVpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794564138; x=1795168938;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ee4ggwaa7pvqsvjnONVsvhhjx7Blw4b1QTFG8P7u7TE=;
+        b=HRTXrWQ3yVDhkLE10+VWs10wG3kND3ljv4oG4MhGCJAjZvqk7Bg/e54vfFth9oa7ow
+         cocp7kK62V1+heA3POWjnQhfY3vxsSeFQtGwMInzPdWZhjnJM1o9LF1dJM0OcKxn55EM
+         UZF9Rl4bPGxxMYkzs2APAFLzuzb4khc3BcdSAbAPIhbLNqoVbHtvEUkBPyPh9Pd1bszK
+         hGCn6MGJmK7GBY4B4xDO7SyRB5l7d1i+3qGRmbipOo0KTB3jQ9sDAqo3YX84DVJzIUFz
+         mMrzIu57+k01CsRlAWjzo4LiaK0/oDmOTrqIGEfZxQBl0KmOrkVwwvK4WjTWXpqIf2w3
+         BIZA==
+X-Forwarded-Encrypted: i=1; AL+hErHhQFHlfuWLykMG8zOsfhnHbnO0ydezbX17kNc1WwFfJblT/kxGSUwss0NWpl9Lxm3PPryHi5I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+8icDvjfy1dZozEh1t18rirTnBrE+lKMg2m6HrsvNowTJZkcOt
+	p/4qoz8u7UJjVa7CgAhBhkg82lfO0BAmLT7mm8OKSUDqMCRlnj5Qoreo/Qm67H/OnFjP
+X-Gm-Gg: AYBFou2OAgSdCG6RzpiJ+phj8cTpWYpHAQc+aq9d26npJfBG64a+oa79MeySE9M7OUA
+	wSEKlZ56tbQpGcj04rVw3UKn7DOVk+Jgq/oQqTC6MkAR4jSI56tPEPMXnJn1qDGuGNoisBM5Yg9
+	kyJiqMPaXWAvbvZykMEn21vTjhZ5djGMZdZaGZXyVo9q54FcxEx+RHQNJK/0OBS/Kr57DBmnGsV
+	V1+gHfhS+qBIM8Qvbtooik8cJFj9WN7EHZMRsFXo4Z86XefJolUquMShlhJwKA1vq2SVXkkEOgI
+	9F3PmJR6EP326ZpTSzLWEkR6QLc6CbAeBS1yQkw9DxGIRYtdBFaGzTGSn3gbeHI1dRBnj6FzssT
+	ji/gQ64XCBBvrjE+cgK6IsaFcwg5dzSSRLjE5pelmd8oEBYWidJjSC8rAo6Gs91a+gu33p1jOlv
+	BR2HMshr2CkpMsq4AXJAJLyRPxG1Lq8gkgTxTanKzd5rUn6iki99NCgyw9uVLjOP7VbhJnl2hVf
+	AagGogK40q383TVAK9ChWITouggSWaQlZcBIWRh8Xn9zmDcbDNrtCm+qRn859s5436ARovcNScJ
+	DojIHUlE81eZ6N3tqzjPMVwK962OZvDvHML6I4jrKRqWC3DEnCGA1oJaZfS2z3g=
+X-Received: by 2002:a05:6402:c4e1:10b0:6b6:eefc:ae7a with SMTP id 4fb4d7f45d1cf-6b7c088f8ecmr1236733a12.4.1794564138223;
+        Fri, 13 Nov 2026 02:02:18 -0800 (PST)
+Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7c23c672asm734155a12.15.2026.11.13.02.02.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 02:02:17 -0800 (PST)
+Message-ID: <f4ce8239f22046e90cf4807853282a570c73707a.camel@amutable.com>
+Subject: Re: [PATCH RFC 04/41] fs: add SB_I_PSEUDO
+From: Alexander Mikhalitsyn <alex@amutable.com>
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
+ Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
+ linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
+ ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
+ <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org
+Date: Fri, 13 Nov 2026 11:02:15 +0100
+In-Reply-To: <20261110-work-loop-pseudo-v1-4-4c998976c6c7@kernel.org>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+	 <20261110-work-loop-pseudo-v1-4-4c998976c6c7@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,93 +114,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
 
-On Mon, Nov 09, 2026 at 03:18:32AM +0000, Xia Yan wrote:
-> digital_in_recv_sens_res() allocates a target for an NFC-A response.
-> For a Type 1 Tag, it calls digital_target_found() synchronously.
-> nfc_targets_found() copies the target into dev->targets.
-> 
-> On success, rc is zero and the callback skips kfree(target).
-> The original allocation is lost when the callback returns.
-> Each completed Type 1 Tag discovery leaks one struct nfc_target.
-> 
-> Free the target after digital_target_found() returns. Clear the pointer
-> to avoid freeing it again on the error path. Keep the target for other
-> tag types, whose discovery continues asynchronously.
-> 
-> Found during a code review of NFC-A target ownership.
-> 
-> Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
-> Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
+> Currently, there's no way to tell whether the files of a filesystem
+> store data or whether they are kernel interfaces. Files on pseudo
+> filesystems such as procfs or sysfs generate their contents when
+> they're
+> read and writes to them are commands to the kernel.
+>=20
+> But a few places in the kernel take an arbitrary file and use it as
+> storage: loop, zloop, the nvme target's file backend, the scsi
+> target's
+> fileio backend, fuse passthrough, the usb mass storage gadget and
+> erofs
+> file-backed mounts. At most they check the file type and whether the
+> file implements ->read_iter() and ->write_iter(). That's not enough.
+> kernfs provides both for every sysfs attribute for example.
+>=20
+> Add SB_I_PSEUDO so a filesystem can state that its regular files are
+> kernel interfaces and must not be used as storage.
+>=20
+> Pseudo filesystems also never hold executables or device nodes. But
+> currently each of them decides on its own whether to raise
+> SB_I_NOEXEC
+> and SB_I_NODEV. Some do, most don't. Add fc_init_pseudo() as the
+> common
+> initialization point for all pseudo filesystems that raises all three
+> flags and switch init_pseudo() over to it. The following patches
+> convert the mountable pseudo filesystems.
+>=20
+> Nothing checks SB_I_PSEUDO yet so no functional changes.
+>=20
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+
 > ---
->  net/nfc/digital_technology.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
-> index ae6487c10a25..2d52e390cc67 100644
-> --- a/net/nfc/digital_technology.c
-> +++ b/net/nfc/digital_technology.c
-> @@ -510,10 +510,13 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
->  		goto exit;
->  	}
->  
-> -	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
-> +	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res)) {
->  		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
-> -	else
-> +		kfree(target);
-> +		target = NULL;
-> +	} else {
->  		rc = digital_in_send_sdd_req(ddev, target);
-> +	}
->  
->  exit:
->  	dev_kfree_skb(resp);
-
-Thanks Yan,
-
-I agree this is a bug and that you patch correctly addresses it.
-However, I wonder if it would be cleaner to confine cleanup to
-the exit path, centralising the kfree logic.
-
-Something like this (compile tested only!):
-
-diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
-index ae6487c10a25..94880172f016 100644
---- a/net/nfc/digital_technology.c
-+++ b/net/nfc/digital_technology.c
-@@ -483,6 +483,7 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
- 				     struct sk_buff *resp)
- {
- 	struct nfc_target *target = NULL;
-+	bool res_is_t1t = false;
- 	int rc;
- 
- 	if (IS_ERR(resp)) {
-@@ -510,7 +511,8 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
- 		goto exit;
- 	}
- 
--	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
-+	res_is_t1t = DIGITAL_SENS_RES_IS_T1T(target->sens_res);
-+	if (res_is_t1t)
- 		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
- 	else
- 		rc = digital_in_send_sdd_req(ddev, target);
-@@ -518,10 +520,11 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
- exit:
- 	dev_kfree_skb(resp);
- 
--	if (rc) {
-+	if (rc || res_is_t1t)
- 		kfree(target);
-+
-+	if (rc)
- 		digital_poll_next_tech(ddev);
--	}
- }
- 
- int digital_in_send_sens_req(struct nfc_digital_dev *ddev, u8 rf_tech)
+> =C2=A0fs/libfs.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +=
+-
+> =C2=A0include/linux/fs/super_types.h |=C2=A0 1 +
+> =C2=A0include/linux/pseudo_fs.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 11 ++++++=
++++++
+> =C2=A03 files changed, 13 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 96a6e9b1535f..8c8789489fdf 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -735,7 +735,7 @@ struct pseudo_fs_context *init_pseudo(struct
+> fs_context *fc,
+> =C2=A0		fc->fs_private =3D ctx;
+> =C2=A0		fc->ops =3D &pseudo_fs_context_ops;
+> =C2=A0		fc->sb_flags |=3D SB_NOUSER;
+> -		fc->s_iflags |=3D SB_I_NOEXEC | SB_I_NODEV;
+> +		fc_init_pseudo(fc);
+> =C2=A0		fc->global =3D true;
+> =C2=A0	}
+> =C2=A0	return ctx;
+> diff --git a/include/linux/fs/super_types.h
+> b/include/linux/fs/super_types.h
+> index 72f4288e16c5..472200bdf081 100644
+> --- a/include/linux/fs/super_types.h
+> +++ b/include/linux/fs/super_types.h
+> @@ -359,5 +359,6 @@ struct super_block {
+> =C2=A0#define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on
+> this superblock */
+> =C2=A0#define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this
+> superblock */
+> =C2=A0#define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee
+> data persistence on sync */
+> +#define SB_I_PSEUDO	0x00010000	/* regular files are kernel
+> interfaces, not storage */
+> =C2=A0
+> =C2=A0#endif /* _LINUX_FS_SUPER_TYPES_H */
+> diff --git a/include/linux/pseudo_fs.h b/include/linux/pseudo_fs.h
+> index a651e60d9410..0ca408aa60af 100644
+> --- a/include/linux/pseudo_fs.h
+> +++ b/include/linux/pseudo_fs.h
+> @@ -2,6 +2,7 @@
+> =C2=A0#define __LINUX_PSEUDO_FS__
+> =C2=A0
+> =C2=A0#include <linux/fs_context.h>
+> +#include <linux/fs/super_types.h>
+> =C2=A0
+> =C2=A0struct pseudo_fs_context {
+> =C2=A0	const struct super_operations *ops;
+> @@ -15,4 +16,14 @@ struct pseudo_fs_context {
+> =C2=A0struct pseudo_fs_context *init_pseudo(struct fs_context *fc,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long magic);
+> =C2=A0
+> +/*
+> + * Common initialization for all pseudo filesystems, mountable or
+> not. Their
+> + * regular files are kernel interfaces. They don't store data and
+> pseudo
+> + * filesystems never hold executables or device nodes.
+> + */
+> +static inline void fc_init_pseudo(struct fs_context *fc)
+> +{
+> +	fc->s_iflags |=3D SB_I_PSEUDO | SB_I_NOEXEC | SB_I_NODEV;
+> +}
+> +
+> =C2=A0#endif
