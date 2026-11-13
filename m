@@ -1,96 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794540550;
-	b=fkXKBUgMFiZazLpYGPz1fTDN5NruESwInM7dacM0lovFa4rUsg6nru26Fw9PmHDF9Vfs
-	 3fvBWxSRkO7VgK6xERcpKAuYzMQV9e3Bg6XaHI20fLPSBRNimnEKhjS3vLMf7r6puyVgc
-	 AOBZ0AWZiphl8oyyaspRn9TNRuAISp4hqHZ4e0iE912SdeIYAE8VKmhowjm7WiOXAp3pt
-	 sEEBwQDCGb7ObRLQ3o0zsDdNIaJAt+ckbr2ucXtVNbeQ710lHd88UFSw25oKe3qwKSB+3
-	 tmNGoMhoKeTwjhW4UNxKqjjrNUwZWMie/0txyrurJymP4N/IXmK3rmWzr/fCD2Ypxgw==
+	t=1794540905;
+	b=SztxJQZa7CHRrov1zR2U8CyDm3x4JACb1qqiL+PtQilpwIMrtqFUmPaSm5iOfUFcLwOZ
+	 a2wOjted62/JUKSWcL0jIpyIX5bTzMasBOD1UE+Afy5MBqQ2iqdENs3OH16exRwcd8ER5
+	 ARcpVLjPOaFG7BnY9bNGZwurnMsSkPcS7YYTqKHKK7XDpdzl7J4+zbqU0lstx0d8lrkyK
+	 fxrAhd3aX1A1uge500/rtvL02Nb5fYYkPgR/olCOWQMdscz/j+gh3TB6MDYXY/i1XNsuC
+	 KRDINlXCA99B3opBzg62AfPkUBTeP5Uy90GTfaIOFRwJLojnSXgqnPyHxE7Amtfu41Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794540550;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
-	b=2EU4dekvMhKqmOMjgjiVjFn16CGq11EsoIhwIfsUdxLZGwtEQtfQKLlspmJ77LUBn6lt
-	 /itwrVHKDBNlz22NF+X3EdCZ0QgW+8lSIR/gBQDnXPcvWH5fnFnQIMvr4VWhwQbWqunOC
-	 CBDbGMPS9Ny4jLAZkg6N9Bp3KdaGeus4QCr6PmsLJMfjRemf4iFIcd1lG/2m9AkNtZu1V
-	 GJbn0x4OuTnm04+3yqNkBU02u21Qtn2o12GLtdoOdyqX7avmAfCMz0OmxtNpknpEyfqXk
-	 v3eTHvghVXktMapuBgkWQb2fHBm1n2kc9pBxXBaNR4UN75z9+yrTwGalvnuKFLz7v8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794540905;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=IPZ3HOktLUKO7C6+7rK8PWwT7CibQnKEc7TizM3393o=;
+	b=VH534L+q+GCtrXX744fMMu7EdZN8t9BWnaGzpiw+0imrIOjEPeaQMOqgTj7ynkS1wDdj
+	 tl0tFTDkEWllXkMXQUNSKQu28xjvjeyyhy/xk9HiUdycoVUlMjcSe2+oFX9VA1LQk0MKY
+	 Bs1zD6w7U43Ro0eCqFcItPvZORbN22CS2ZKqhVGQwK7btCrD0e5ImSBCiln5QvIUNfCMQ
+	 vIrhYdqzu2P0ZoZHmK5FISE4WQMPa0SJxM5G/WxY8Kyts4Uwe7LbNVHt2zLDh+I+8xbP9
+	 e3b93CNUwTry2WEf21dXNZZ+nPRmRlv92Z3Z9KiIROroDJGsJSx/wv9D7CQvCO9T2Rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b+cixmrE;
-	arc=none smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=gRnXIVRB;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=PTaLV2oO;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91480606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 03:29:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91480606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A9606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 03:35:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 521A9606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b+cixmrE
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cdb75699c7cso179654a12.2
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:29:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=gRnXIVRB;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=PTaLV2oO
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AD2JqRE3273406
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 03:35:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IPZ3HOktLUKO7C6+7rK8PWwT7CibQnKEc7TizM3393o=; b=gRnXIVRBJDeM8ySw
+	aPNieEiH7Q31za35m7BrDXSXEwzVomjsjQmGkm4/SgoUxgWkcCtfB99OQ5Wlez8X
+	p9Avu5YAaCgt5F/3mUxfJKrMz3MVgU3cglt6YLqxcYi4++JGPGeE1Y+eNB1RfbiF
+	IldTPCGIsLsb0GZL+cK3UUv/y2gmhXNyhvVqhhvROtlbLIONAp/gGQOABiUI4+ly
+	+eSxZJxnhnrFlgzT2lAyrrN7M8gC+r7K873liA/SHsrV+fN8oTsW70bHscT1jGgG
+	Jav1fzcVOB5XlpJ6DVvZSPVnbZv+aDbbCyjNq3plOrf3KVAuTOtJFOQCjQQRstLe
+	8ppyDA==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwqufgh40-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 03:35:03 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd652c0385bso332633a12.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:35:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794540544; x=1795145344; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
-        b=b+cixmrEkhG8B2FLuslGH/982o8yDK4CKzbnMcESoppN1oTQOqPMvYmraVAajZw7UO
-         lHGal90PN4yXv+1CZIGgzuveVliopVzmJs4CYVZsxjc4TVRaPOCb0s/wEhw5NUlmIgkm
-         8CYNhOv6dPEG5UcpOic1h33f4VgUaoU8sOW6LeGSvsLJBkQ3OftQpqu4l5j+PRbBaptG
-         yHcu4QoQNbNIvujdjt8niVrtl3v+qfj6+HP7jpptE0/7LlQtYcZvFS3KEr2fiWlZbEM7
-         crk4t7XR7cIPxfTvKXrPLGrFIDEbWPOiLIBbtwae/GvvV+KcLRUBVPR3ZdDYrcWU200B
-         ou/A==
+        d=oss.qualcomm.com; s=google; t=1794540903; x=1795145703; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IPZ3HOktLUKO7C6+7rK8PWwT7CibQnKEc7TizM3393o=;
+        b=PTaLV2oOe3UKjSpdSc2iI73FcRNBDEWGiPqwIg+uPoJjTj9JmjbHf5BccxN3dpSgDK
+         YRQYmJ3P9kZDUMYkZG/JBG6UB9Mg8M/B2qJGCP3PvORsfJOcPknJEn7hYwiTDYz00RS8
+         GcBCrI/eGVqXgJa41vBvnvnrVqUdHHl5tdKQgO62tbZ7zaGjCXG8jRLY2KXpEg9Cafyi
+         F3rRyqiIzDyJ7lXZmhRFwkkTFH1ZNEB2Fx26g9t7Z56eLx1hthODRXG69Ro6i97bEMCk
+         TtXb9CZ1Vi+AD1Mj88XbivvmOrKeaVTVudNJpl9Cn8tEA7Zu66pEIXMWu/1+8VUyuAtr
+         NWKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794540544; x=1795145344;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
-        b=UVzjG1bZCZbFZYmRFGsNssrqR+iLWFsjSNMD3P+cAb/1mxGQ/Ohlv00XhRS6d0Vk4C
-         YGkvEOQm0XTG4LItl2HTZi3sBu5mWetpl3T7S7HBIXNMWVvn9xngcmxtTjL+3mGlUjkW
-         nWI1yCL0TyPsRao4CLLudNzUR4Cf1aGq5f4Kr1OSKPDMTQP1f3SL3sTz3CwDKkOM0ybu
-         xfOqRtRX/gSwpYY8qySgpRfOA976a+59nxWqpvuYtJO3BiABgyOPjlAIceIp+O51LsqX
-         aatj5j4i9fm+owZzmYEsPtP/R2XgVie0y8n7bCjB17NxHYxNKcsmOQdIY6wS7l/TNFhy
-         DTFQ==
-X-Forwarded-Encrypted: i=1; AL+hErG8XTcgdsLftMJoUWzszvZ0Yfs4PLVs3XiPI9B6En9j+69jyRgPJBwceRL5DywcVH4oAyuypHk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/9uWVU0FnQxvxHk3FT2R59Q7HojSxRt/Qi2UeFafyoBpO9AKOD
-	UK7wSKCzem9W69R2PnpJw5n4SI52esT1l5gjn8RBwqE9P0/kxCoT3MUS
-X-Gm-Gg: AYBFou1AGZMVTfm5dWn08SnhbCHF8RvR7zWzeIGPQr6GxraQtvhmAggMcZS19EK3b20
-	kUCPyOyjlruUjlL9+xXsYv7yd2UMg6OjGF2sihWnF3aZeY3Lw/I9iIx377h1FjWcRbTdTfrbcy3
-	p+82hfOYgZHybERkSL2A1CkckCfxpLSWo0P0/HmLlOuyQB1EZ5ZDVLlfiH79PPYtqyoQM2GmkJs
-	7jU1r/g3Y3lHDt81StdNYWbTkXZwg5Tsaf/ALhLBJrEVdDgB7eixxkt0UDZYUA3IFedrQVy5sME
-	BJkjHHfYUuwx/+3jX32ZIeDJiJzgMm/3Yx0r02EQMN5aomRRe5Gfwb0mLXmxTkSpw3cplEKcsc1
-	5RSKJvixOgSOtp422aRyle8gv8wOlaU24PwbGdoKEMccHQywm4YDNL0TJbFSjQnLEXkpfLifinX
-	vrA+jfxtAOKHGSr5xLC9OUvJvP/z5sdK85BBlgcXulDPU3BOkYgD+twNCDmbCKh3T/N2yEJK6bO
-	v3exUD2BDTOayqDMpOmE6e4Vgzd0jnQBuOFECazcNoPpyYr2mEvyOPpvbsgetnmpgJu5aaws6Jf
-	wYzMeIoRerBMMvdKUIFh7Tbd0mBt1mxoClo637lx5g==
-X-Received: by 2002:a17:90a:c2c8:b0:3ac:80dc:f40c with SMTP id 98e67ed59e1d1-3b1b0a0e9fbmr951734a91.14.1794540543447;
-        Thu, 12 Nov 2026 19:29:03 -0800 (PST)
-Received: from localhost.localdomain ([223.104.68.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d32ea0sm7087063a91.15.2026.11.12.19.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 19:29:02 -0800 (PST)
-From: Yong Liu <pkfxxxing@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] sctp: revalidate association sockets after locking
-Date: Fri, 13 Nov 2026 11:28:02 +0800
-Message-ID: <20261113032805.1447885-1-pkfxxxing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261110120212.1110283-2-pkfxxxing@gmail.com>
-References: <20261110120212.1110283-1-pkfxxxing@gmail.com> <20261110120212.1110283-2-pkfxxxing@gmail.com>
+        d=1e100.net; s=20260707; t=1794540903; x=1795145703;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IPZ3HOktLUKO7C6+7rK8PWwT7CibQnKEc7TizM3393o=;
+        b=ovWzHL9WF399V9rp3O4xW6g2ZW/+zaFKNYyC2GGzo1xSU0WxvvBEoymjQS+lOCtyi0
+         AhED6427vPzoh8dfw2l5j09uwQw9Lb/r9UlcaJTqW/0ubgSMZ1+N5LxTp6m61rM8/WHV
+         uH3pPo5ouFY47a0DWTbRAwxo8lLiIMEP3LsyOy0K3FwGilEUf185AcVw9d/wq/bPUFVM
+         TjPP0ePpik1D+rymZHXfXGxniqhRr9H54PInuBbdWBN2R5eM+D5t4NMDVH/bWUDsMrzc
+         CjZsYLAYAT2/vZhpK5gVuHVqs568IDiQADNBY69oe0CK8XuSrRvjfg8SsU35Gz5q1gW/
+         4Prg==
+X-Forwarded-Encrypted: i=1; AL+hErFM/a192BFNu37IC5nmlN7wzz0wiMoCdenv3UBdX64j/kEg6MIO1of9H7vuCcZ3E5s3YfjmO8U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+ORx8FV0jFxw/EMaKRItuFukFHmGrXXZg9G1vfmGnQRPChOuIN
+	jvvMo7y2JiJzY9ftXSFUSScgdSnBBFK0SG8WMsmabcijcokKbHAnKgOiYZ+MJFttswjRJ/bWZE1
+	4WV+iUZsS3XRF7XWlFxQ5k4iGGcuSHzZnmy+pUbGstz42XUYtt4kHajASq28=
+X-Gm-Gg: AYBFou0x+2Ub1k//EEYMyH0Eq1p7QsXH6TuhMnAUUCCAGiJ7+WGRSvQD63Gc0xgSsUv
+	91mdyyYJ3U7c5NebmWTs063Pd3cF9NHpfbUbDlbcSOFejTGBdv+LRO45A0h/rkAV82ugtmadvZk
+	Omk+kOkVKF/w8yhC9W7gLpMKXTg5hgnZKlvc3Rz1WGXp8GcGGQm7hg5F78yIAH1B3dd8f8fA71T
+	B3YBslYJYAjbQ5oHMT9DagZJqucZFVtUhZtWCblqOJRqyEXPwa2wHCH5etZERnD38qkD0um9/2M
+	ELXR3R3u6G6Sh+eEOPxZ3IjwJiv6jJT2B/AH3nDqGQ2s0SVtzzG1MasRIg6Z17P2c2x0ubWs0WY
+	iArOlD06JObr93sPhDpN4ufKoRtJs6IPNoezcRZck+O3v9me5/+PFUEOSmJt2J3oYRH4+8w==
+X-Received: by 2002:a17:902:e882:b0:2e8:3d48:4d88 with SMTP id d9443c01a7336-2ee0da31ea2mr13290275ad.7.1794540902737;
+        Thu, 12 Nov 2026 19:35:02 -0800 (PST)
+X-Received: by 2002:a17:902:e882:b0:2e8:3d48:4d88 with SMTP id d9443c01a7336-2ee0da31ea2mr13290065ad.7.1794540902273;
+        Thu, 12 Nov 2026 19:35:02 -0800 (PST)
+Received: from [10.235.8.108] ([114.94.8.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f7e4e47sm3464175ad.38.2026.11.12.19.34.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 19:35:01 -0800 (PST)
+Message-ID: <15996045-3f5e-4680-95f9-925c97301ab0@oss.qualcomm.com>
+Date: Fri, 13 Nov 2026 11:34:53 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,377 +115,153 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dt-bindings: clock: qcom: Add NSS clock controller
+ for IPQ5210 SoC
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+        Jerome Brunet <jbrunet+clk@baylibre.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Georgi Djakov <djakov@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        netdev@vger.kernel.org, quic_kkumarcs@quicinc.com,
+        quic_linchen@quicinc.com, quic_leiwei@quicinc.com
+References: <20261111-qcom_ipq5210_nsscc-v2-0-7e2c1dda3ed2@oss.qualcomm.com>
+ <20261111-qcom_ipq5210_nsscc-v2-1-7e2c1dda3ed2@oss.qualcomm.com>
+ <20261112-wild-accurate-cockatrice-a80efa@quoll>
+Content-Language: en-US
+From: Jie Luo <jie.luo@oss.qualcomm.com>
+In-Reply-To: <20261112-wild-accurate-cockatrice-a80efa@quoll>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: L4qeP85uCU4LlcxckE5OU8K2-oZZvqUQ
+X-Proofpoint-ORIG-GUID: L4qeP85uCU4LlcxckE5OU8K2-oZZvqUQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDAxNCBTYWx0ZWRfX9NnoKZK6AmyS
+ ZV3JQICZe5RX74KiMMYQFs/rHZvr77ZoznBYb43nOfvWzNgVcdSXgl9Qs0I0GNnvvYEa13s0VyT
+ yoDgjzhVqComxuKYxgW9e1oaUB3H7Nq1ah+ZDDCwk9r1fuTo61O+P3IOdDxIIbkwEuoX2xFGNGe
+ booYa0oZ7qsoJqlKjzYMwZFwotmE7aQFARXmBYCvP3iH5CLCmKXHWB7mOOG43OisXpzpCyChdRW
+ CHdCWB+3yjracSsE5kzngJ8KtKQT6ua/DnKE1y+vPTNu/YWReCyj9Yo8haAgX6waNRRqR03TXIl
+ T0bTmwH+BcdgyhsqW34l2NIHSZVo6vltSjT/J9Dz3vEGX0tavC7C38Ndr+S2I1YvsNrWGbdhb8a
+ gosCuoMsfCf1+B78SFz02V41r95efeFsS7QkjhoW4i7AirkyjS9doXDo7AD3l3iZdoV+RbPsnzx
+ pjvd2xjD1a0n7LRQuAQ==
+X-Authority-Analysis: v=2.4 cv=XZocX455 c=1 sm=1 tr=0 ts=6af68567 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=gEfo2CItAAAA:8 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=vjzNbMJ68Ufz2hOSJBcA:9
+ a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22 a=sptkURWiP4Gy88Gu7hUp:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDAxNCBTYWx0ZWRfX/ak1uT7fSdXT
+ UyX+zBMzk/aVcPImvyYqGyaf6hoCTaGfF7P98Kc+jvOrW7IEp9VglhHeX4ekaeZUsq4i9gPlYiS
+ WRyyho38d8WtxRp/Bwsr3D8IOm5ACVg=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-13_01,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130014
 
-SCTP timer callbacks and ICMP error lookup cache asoc->base.sk before
-acquiring its BH lock. An accept or peeloff can move the association to
-a new socket in between. Processing under the old socket lock can then
-race with an abort on the new socket that tears down the association's
-queues. Transport and association references do not keep those queues
-alive. With mdelay() instrumentation widening the race, KASAN reported a
-slab-use-after-free in sctp_chunk_abandoned() from the T3 retransmit path.
 
-The ICMP error handlers also reread asoc->base.sk after lookup, so they
-can use the new socket without holding its BH lock. In particular, the
-PMTU handler can reach the same retransmit path, while protocol-unreachable
-handling can run the state machine directly.
 
-Recheck the association's socket after locking it in the timer callbacks.
-Treat a mismatch like a busy socket and use the existing reference-counted
-retry path. Pass the socket locked by sctp_err_lookup() to both IPv4 and
-IPv6 error handlers, including their UDP encapsulation callers. Defer PMTU
-and protocol-unreachable processing and ignore redirects when that socket
-no longer matches the association. Require a matching socket for immediate
-error reports as well.
+On 11/12/2026 6:57 PM, Krzysztof Kozlowski wrote:
+> On Wed, Nov 11, 2026 at 02:00:55AM -0800, Luo Jie wrote:
+>> NSS clock controller provides the clocks and resets to the networking
+>> blocks such as PPE (Packet Process Engine), UNIPHY (PCS) and EPHY on
+>> IPQ5210 devices.
+>>
+>> Add support for the compatible string "qcom,ipq5210-nsscc" based on the
+>> existing IPQ9574/IPQ5424 NSS clock controller Device Tree binding. IPQ5210
+>> additionally exposes a pair of EPHY-RAW Rx/Tx clock sources used to derive
+>> the clocks for its integrated 2.5G Ethernet PHY, so extend the clocks and
+>> clock-names lists with "ephy_rx" and "ephy_tx".
+>>
+>> Also add master/slave ids for IPQ5210 networking interfaces, which are used
+>> by the nsscc-ipq5210 driver for providing interconnect services using the
+>> icc-clk framework.
+>>
+>> Signed-off-by: Luo Jie <jie.luo@oss.qualcomm.com>
+>> ---
+>>  .../bindings/clock/qcom,ipq9574-nsscc.yaml         |  47 ++++++++-
+>>  include/dt-bindings/clock/qcom,ipq5210-nsscc.h     | 106 +++++++++++++++++++++
+>>  include/dt-bindings/interconnect/qcom,ipq5210.h    |  18 ++++
+>>  include/dt-bindings/reset/qcom,ipq5210-nsscc.h     |  60 ++++++++++++
+>>  4 files changed, 228 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml b/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
+>> index a35bbc7b1924..dc7d90a99dc7 100644
+>> --- a/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
+>> +++ b/Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml
+>> @@ -4,24 +4,28 @@
+>>  $id: http://devicetree.org/schemas/clock/qcom,ipq9574-nsscc.yaml#
+>>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>  
+>> -title: Qualcomm Networking Sub System Clock & Reset Controller on IPQ9574 and IPQ5424
+>> +title: Qualcomm Networking Sub System Clock & Reset Controller on IPQ SoCs
+>>  
+>>  maintainers:
+>>    - Bjorn Andersson <andersson@kernel.org>
+>> +  - Luo Jie <jie.luo@oss.qualcomm.com>
+>>  
+>>  description: |
+>>    Qualcomm networking sub system clock control module provides the clocks,
+>> -  resets on IPQ9574 and IPQ5424
+>> +  resets on IPQ9574, IPQ5424 and IPQ5210
+>>  
+>>    See also:
+>> +    include/dt-bindings/clock/qcom,ipq5210-nsscc.h
+>>      include/dt-bindings/clock/qcom,ipq5424-nsscc.h
+>>      include/dt-bindings/clock/qcom,ipq9574-nsscc.h
+>> +    include/dt-bindings/reset/qcom,ipq5210-nsscc.h
+>>      include/dt-bindings/reset/qcom,ipq5424-nsscc.h
+>>      include/dt-bindings/reset/qcom,ipq9574-nsscc.h
+>>  
+>>  properties:
+>>    compatible:
+>>      enum:
+>> +      - qcom,ipq5210-nsscc
+>>        - qcom,ipq5424-nsscc
+>>        - qcom,ipq9574-nsscc
+>>  
+>> @@ -42,6 +46,9 @@ properties:
+>>        - description: Uniphy2 NSS Rx clock source
+>>        - description: Uniphy2 NSS Tx clock source
+>>        - description: GCC NSSCC clock source
+>> +      - description: CMN_PLL EPHY-RAW Rx clock source
+>> +      - description: CMN_PLL EPHY-RAW Tx clock source
+>> +    minItems: 11
+> 
+> Please place minItems at the beginning, before "items:".
 
-Use READ_ONCE() for the socket pointer reads in the timer, ICMP, receive
-and backlog paths, paired with WRITE_ONCE() in sctp_assoc_migrate(). Take
-the new socket reference before publishing its pointer. The cached socket
-is protected by BH context and the endpoint's RCU-deferred sock_put().
+Thanks, I will move minItems before "items:" in the next version.
 
-The issue was discovered and fixed by Qihoo 360's Tulongfeng multi-agent
-system.
+> 
+>>  
+>>    '#interconnect-cells':
+>>      const: 1
+>> @@ -63,6 +70,9 @@ properties:
+>>        - const: uniphy2_rx
+>>        - const: uniphy2_tx
+>>        - const: bus
+>> +      - const: ephy_rx
+>> +      - const: ephy_tx
+>> +    minItems: 11
+> 
+> Same here
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yong Liu <pkfxxxing@gmail.com>
----
-Changes in v2:
-- Use Yong Liu for the author and Signed-off-by, as requested by Jakub
-  Kicinski.
-- Address Xin Long's review and the Sashiko ICMP finding: pass the locked
-  socket to the IPv4/IPv6 error handlers and their UDP encapsulation
-  callers, and revalidate it before immediate ICMP processing.
-- Use READ_ONCE() for socket pointer reads in sctp_err_lookup(), sctp_rcv()
-  and sctp_backlog_rcv().
-- Broaden the subject and commit message to cover the ICMP paths.
+OK.
 
-v1: https://lore.kernel.org/all/20261110120212.1110283-2-pkfxxxing@gmail.com/
-
-Based on b3dfbde62cf1981c4638939c159dfd087b7a72e9 (Linux 7.4.0-rc2).
-
- net/sctp/associola.c     |  4 ++--
- net/sctp/input.c         | 32 ++++++++++++++++---------------
- net/sctp/ipv6.c          | 11 ++++++-----
- net/sctp/sm_sideeffect.c | 41 ++++++++++++++++++++--------------------
- 4 files changed, 45 insertions(+), 43 deletions(-)
-
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index 4521be3bd8..c5d520c8d7 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1088,8 +1088,8 @@ void sctp_assoc_migrate(struct sctp_association *assoc, struct sock *newsk)
- 	sctp_endpoint_hold(assoc->ep);
- 
- 	/* Get a reference to the new sock.  */
--	assoc->base.sk = newsk;
--	sock_hold(assoc->base.sk);
-+	sock_hold(newsk);
-+	WRITE_ONCE(assoc->base.sk, newsk);
- 
- 	/* Add the association to the new endpoint's list of associations.  */
- 	sctp_endpoint_add_asoc(newsp->ep, assoc);
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 9494cfa511..e25c94ad08 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -169,7 +169,7 @@ int sctp_rcv(struct sk_buff *skb)
- 
- 	/* Retrieve the common input handling substructure. */
- 	rcvr = asoc ? &asoc->base : &ep->base;
--	sk = rcvr->sk;
-+	sk = READ_ONCE(rcvr->sk);
- 
- 	/*
- 	 * RFC 2960, 8.4 - Handle "Out of the blue" Packets.
-@@ -217,7 +217,7 @@ int sctp_rcv(struct sk_buff *skb)
- 	 */
- 	bh_lock_sock(sk);
- 
--	if (sk != rcvr->sk) {
-+	if (sk != READ_ONCE(rcvr->sk)) {
- 		/* Our cached sk is different from the rcvr->sk.  This is
- 		 * because migrate()/accept() may have moved the association
- 		 * to a new socket and released all the sockets.  So now we
-@@ -226,7 +226,7 @@ int sctp_rcv(struct sk_buff *skb)
- 		 * of the current sk.
- 		 */
- 		bh_unlock_sock(sk);
--		sk = rcvr->sk;
-+		sk = READ_ONCE(rcvr->sk);
- 		bh_lock_sock(sk);
- 	}
- 
-@@ -292,7 +292,7 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 		goto done;
- 	}
- 
--	if (unlikely(rcvr->sk != sk)) {
-+	if (unlikely(READ_ONCE(rcvr->sk) != sk)) {
- 		/* In this case, the association moved from one socket to
- 		 * another.  We are currently sitting on the backlog of the
- 		 * old socket, so we need to move.
-@@ -304,7 +304,7 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 		 * Otherwise, we can safely push the chunk on the inqueue.
- 		 */
- 
--		sk = rcvr->sk;
-+		sk = READ_ONCE(rcvr->sk);
- 		local_bh_disable();
- 		bh_lock_sock(sk);
- 
-@@ -377,7 +377,7 @@ void sctp_icmp_frag_needed(struct sock *sk, struct sctp_association *asoc,
- 	     t->pl.probe_size + sctp_transport_pl_hlen(t) <= pmtu))
- 		return;
- 
--	if (sock_owned_by_user(sk)) {
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
- 		atomic_set(&t->mtu_info, pmtu);
- 		asoc->pmtu_pending = 1;
- 		t->pmtu_pending = 1;
-@@ -410,7 +410,8 @@ void sctp_icmp_redirect(struct sock *sk, struct sctp_transport *t,
- {
- 	struct dst_entry *dst;
- 
--	if (sock_owned_by_user(sk) || !t)
-+	if (sock_owned_by_user(sk) || !t ||
-+	    sk != READ_ONCE(t->asoc->base.sk))
- 		return;
- 	dst = sctp_transport_dst_check(t);
- 	if (dst)
-@@ -432,7 +433,7 @@ void sctp_icmp_proto_unreachable(struct sock *sk,
- 			   struct sctp_association *asoc,
- 			   struct sctp_transport *t)
- {
--	if (sock_owned_by_user(sk)) {
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
- 		if (timer_pending(&t->proto_unreach_timer))
- 			return;
- 		else {
-@@ -492,7 +493,7 @@ struct sock *sctp_err_lookup(struct net *net, int family, struct sk_buff *skb,
- 	if (!asoc)
- 		return NULL;
- 
--	sk = asoc->base.sk;
-+	sk = READ_ONCE(asoc->base.sk);
- 
- 	/* RFC 4960, Appendix C. ICMP Handling
- 	 *
-@@ -526,7 +527,7 @@ struct sock *sctp_err_lookup(struct net *net, int family, struct sk_buff *skb,
- 	/* If too many ICMPs get dropped on busy
- 	 * servers this needs to be solved differently.
- 	 */
--	if (sock_owned_by_user(sk))
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk))
- 		__NET_INC_STATS(net, LINUX_MIB_LOCKDROPPEDICMPS);
- 
- 	*app = asoc;
-@@ -546,11 +547,11 @@ void sctp_err_finish(struct sock *sk, struct sctp_transport *t)
- 	sctp_transport_put(t);
- }
- 
--static void sctp_v4_err_handle(struct sctp_transport *t, struct sk_buff *skb,
-+static void sctp_v4_err_handle(struct sock *sk, struct sctp_transport *t,
-+			       struct sk_buff *skb,
- 			       __u8 type, __u8 code, __u32 info)
- {
- 	struct sctp_association *asoc = t->asoc;
--	struct sock *sk = asoc->base.sk;
- 	int err = 0;
- 
- 	switch (type) {
-@@ -582,7 +583,8 @@ static void sctp_v4_err_handle(struct sctp_transport *t, struct sk_buff *skb,
- 	default:
- 		return;
- 	}
--	if (!sock_owned_by_user(sk) && inet_test_bit(RECVERR, sk)) {
-+	if (!sock_owned_by_user(sk) && sk == READ_ONCE(asoc->base.sk) &&
-+	    inet_test_bit(RECVERR, sk)) {
- 		sk->sk_err = err;
- 		sk_error_report(sk);
- 	} else {  /* Only an error on timeout */
-@@ -630,7 +632,7 @@ int sctp_v4_err(struct sk_buff *skb, __u32 info)
- 		return -ENOENT;
- 	}
- 
--	sctp_v4_err_handle(transport, skb, type, code, info);
-+	sctp_v4_err_handle(sk, transport, skb, type, code, info);
- 	sctp_err_finish(sk, transport);
- 
- 	return 0;
-@@ -660,7 +662,7 @@ int sctp_udp_v4_err(struct sock *sk, struct sk_buff *skb)
- 	}
- 	if (hdr->type == ICMP_DEST_UNREACH && hdr->code == ICMP_FRAG_NEEDED)
- 		info = ntohs(hdr->un.frag.mtu);
--	sctp_v4_err_handle(t, skb, hdr->type, hdr->code, info);
-+	sctp_v4_err_handle(sk, t, skb, hdr->type, hdr->code, info);
- 
- 	sctp_err_finish(sk, t);
- 	return 1;
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index 97390569c4..f96e79ca7f 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -123,11 +123,11 @@ static struct notifier_block sctp_inet6addr_notifier = {
- 	.notifier_call = sctp_inet6addr_event,
- };
- 
--static void sctp_v6_err_handle(struct sctp_transport *t, struct sk_buff *skb,
-+static void sctp_v6_err_handle(struct sock *sk, struct sctp_transport *t,
-+			       struct sk_buff *skb,
- 			       __u8 type, __u8 code, __u32 info)
- {
- 	struct sctp_association *asoc = t->asoc;
--	struct sock *sk = asoc->base.sk;
- 	int err = 0;
- 
- 	switch (type) {
-@@ -149,7 +149,8 @@ static void sctp_v6_err_handle(struct sctp_transport *t, struct sk_buff *skb,
- 	}
- 
- 	icmpv6_err_convert(type, code, &err);
--	if (!sock_owned_by_user(sk) && inet6_test_bit(RECVERR6, sk)) {
-+	if (!sock_owned_by_user(sk) && sk == READ_ONCE(asoc->base.sk) &&
-+	    inet6_test_bit(RECVERR6, sk)) {
- 		sk->sk_err = err;
- 		sk_error_report(sk);
- 	} else {
-@@ -181,7 +182,7 @@ static int sctp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 		return -ENOENT;
- 	}
- 
--	sctp_v6_err_handle(transport, skb, type, code, ntohl(info));
-+	sctp_v6_err_handle(sk, transport, skb, type, code, ntohl(info));
- 	sctp_err_finish(sk, transport);
- 
- 	return 0;
-@@ -211,7 +212,7 @@ int sctp_udp_v6_err(struct sock *sk, struct sk_buff *skb)
- 	}
- 	if (hdr->icmp6_type == ICMPV6_PKT_TOOBIG)
- 		info = ntohl(hdr->icmp6_mtu);
--	sctp_v6_err_handle(t, skb, hdr->icmp6_type, hdr->icmp6_code, info);
-+	sctp_v6_err_handle(sk, t, skb, hdr->icmp6_type, hdr->icmp6_code, info);
- 
- 	sctp_err_finish(sk, t);
- 	return 1;
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 35f540fb15..bd6b23369f 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -233,15 +233,14 @@ void sctp_generate_t3_rtx_event(struct timer_list *t)
- 	struct sctp_transport *transport =
- 		timer_container_of(transport, t, T3_rtx_timer);
- 	struct sctp_association *asoc = transport->asoc;
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 	int error;
- 
--	/* Check whether a task is in the sock.  */
--
-+	/* Defer if the socket is busy or the association has migrated. */
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy\n", __func__);
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved\n", __func__);
- 
- 		/* Try again later.  */
- 		sctp_transport_hold(transport);
-@@ -271,13 +270,13 @@ void sctp_generate_t3_rtx_event(struct timer_list *t)
- static void sctp_generate_timeout_event(struct sctp_association *asoc,
- 					enum sctp_event_timeout timeout_type)
- {
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 	int error = 0;
- 
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy: timer %d\n", __func__,
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved: timer %d\n", __func__,
- 			 timeout_type);
- 
- 		/* Try again later.  */
-@@ -362,7 +361,7 @@ static void sctp_generate_autoclose_event(struct timer_list *t)
- 	sctp_generate_timeout_event(asoc, SCTP_EVENT_TIMEOUT_AUTOCLOSE);
- }
- 
--/* Generate a heart beat event.  If the sock is busy, reschedule.   Make
-+/* Generate a heart beat event.  If the sock is busy or moved, reschedule.   Make
-  * sure that the transport is still valid.
-  */
- void sctp_generate_heartbeat_event(struct timer_list *t)
-@@ -370,14 +369,14 @@ void sctp_generate_heartbeat_event(struct timer_list *t)
- 	struct sctp_transport *transport = timer_container_of(transport, t,
- 							      hb_timer);
- 	struct sctp_association *asoc = transport->asoc;
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 	u32 elapsed, timeout;
- 	int error = 0;
- 
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy\n", __func__);
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved\n", __func__);
- 
- 		/* Try again later.  */
- 		sctp_transport_hold(transport);
-@@ -418,12 +417,12 @@ void sctp_generate_proto_unreach_event(struct timer_list *t)
- 	struct sctp_transport *transport =
- 		timer_container_of(transport, t, proto_unreach_timer);
- 	struct sctp_association *asoc = transport->asoc;
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy\n", __func__);
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved\n", __func__);
- 
- 		/* Try again later.  */
- 		sctp_transport_hold(transport);
-@@ -454,13 +453,13 @@ void sctp_generate_reconf_event(struct timer_list *t)
- 	struct sctp_transport *transport =
- 		timer_container_of(transport, t, reconf_timer);
- 	struct sctp_association *asoc = transport->asoc;
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 	int error = 0;
- 
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy\n", __func__);
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved\n", __func__);
- 
- 		/* Try again later.  */
- 		sctp_transport_hold(transport);
-@@ -492,13 +491,13 @@ void sctp_generate_probe_event(struct timer_list *t)
- 	struct sctp_transport *transport = timer_container_of(transport, t,
- 							      probe_timer);
- 	struct sctp_association *asoc = transport->asoc;
--	struct sock *sk = asoc->base.sk;
-+	struct sock *sk = READ_ONCE(asoc->base.sk);
- 	struct net *net = sock_net(sk);
- 	int error = 0;
- 
- 	bh_lock_sock(sk);
--	if (sock_owned_by_user(sk)) {
--		pr_debug("%s: sock is busy\n", __func__);
-+	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
-+		pr_debug("%s: sock is busy or moved\n", __func__);
- 
- 		/* Try again later.  */
- 		sctp_transport_hold(transport);
--- 
-2.43.0
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> Best regards,
+> Krzysztof
+> 
 
