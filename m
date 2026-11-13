@@ -1,60 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602530;
-	b=oHjlqaBR4Ib1qs9scRf/vI1QuSsCTS7ZWUiAlSJRfYX24jf95zYATABWTbDe/1j2003+
-	 EFRZfQye8o6MUW9brt7bM7TNINckV838RBkIWj21bAxcUjEhbAwkXFY5pmI7VB5zu0Och
-	 S2ike3D91xPhS+MJBf0+mhQAB29UA6vvOTvsxMRFKurWvpvUER1SzIZJT5JBp9ur0PhIr
-	 Ij2T0yuchq2NOeMnpVVKPp60zA0b2E+7WpKICShSaXdE6giZ9J7c1kUcOUD77/S4FCthA
-	 RH9QHw+eOIqZuwdbyt2hjbNYNu3GPSKqrOHHVKqokQycKCClti/Ds/cZjimcfH3N7/g==
+	t=1794602532;
+	b=kGrDsfcLVTL2tXLXtyZ+EQDxMuUAvQ+mHV2zZFVFa8V5dAJOJhUEsf3vF3/wMiIDHJhw
+	 2Kd0T9X/n5lbcf2IEMEJ+Q7NSs0AHgdqOZ/J55VGTNb7uWQxu/lXrwTNxeteUVMf90wgh
+	 jYMmC4S3c4xQuHAe2Q0j4MP8pGtXYnD7rv8xhqNgM6e8j9q3R4hxSDid1zIrHVL8hH6hf
+	 0Cyh80JlQV8UKi6bs9A1rTyF2vAxfMpGlAoxYDLEIfQpGx99QVuYsJdFRQzXwVzL+f9hz
+	 xSnfpYoEKzDHP/93mSYGxESrlQ0UrF0v3Jf1FCVhxFFaQrKBh5Az76gQvq0x1NBGw6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602530;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=8G3hnlHk6VC2wTViDZLxE+VNr7eD89vT49GcW2PzJA0=;
-	b=q6so/HNoi6nAEvhEVN9QzOt1EJG3iMpSzRC7hgncK1ubR8Me50Uk6foTV/l6V9ANGKV7
-	 v1SarxWihn8xjGjwcmC7CNw/V3M6v5Tx4XMzpUo9DhZ+MVRijfI/hdvnUz5Ns+9zzxae6
-	 dify4nAhaXdZglBdnCsdAnGhTwKH+a1sednRaSG9VInpxS+Dx2bYVz/fOhBtWgSbX7em+
-	 kCnCcO3kYCmIEXoRj2GEtPKdckXgcuL+WGPiWutlTXdQzHmSbkfJ6tfQx7BqD1oqu2s4L
-	 VNrlGVdX3ZjpHSSLy3+OSJUqLsh6Uz0IF3p+rlxqRxE+aShgxMcbgyaJVG9JMzdr+3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602532;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
+	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=sV+HdYVMMEHC0OQ8zbugTeBoUtFJiy4lGJAqfe9bpwU=;
+	b=bLU3HnoyldR0vFwgB++NrZ5a0qaS2y9miA5Ca8sKnJKol1kc07UHeYPfRwN4WtG9xlok
+	 nHz7Y+DoaJ7j7NCWj/t+Ym3sdgPyp910tq9Wo//ZXZ0Uce18zTIg9uYmvgDcHUASNnEIM
+	 4ZvDhsC6Vc+mOCiplGh8WvVk8K8G85dU+Xr6yxY+ufS4feNVUSI7WpyINw1fNzClFk2Y/
+	 44rATdJRb8U7l/m8gSQX3pBe2WdQLWkb3BJJcpBXKZDof0sItRy/YAsy+wWZFjV4v4Xys
+	 tCyZDqMKaaiKpByTeB9FN4jrrZ5VmkPFSAkD2uUlMXqYGKkFZwBo4ObKPDfCyN5X5Pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="PRTf/NKc";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dXUreyO9;
+	arc=none smtp.remote-ip=209.85.216.48
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C53606A330;
-	Fri, 13 Nov 2026 20:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DC6606A899
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:42:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19DC6606A899
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PRTf/NKc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF01F000C6;
-	Fri, 13 Nov 2026 20:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794602530;
-	bh=8G3hnlHk6VC2wTViDZLxE+VNr7eD89vT49GcW2PzJA0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PRTf/NKce2rgcBSIBz7ZMMu4UK8VEOkk7nSfrZc0AK4vmYwGDu0GrLbbYlwZPIIoy
-	 vvvFYf5plttYdqOpVQk1iS3CxdMud+xJY3snZB+HzHHwOgC/PyvOawrExZObCpxCFk
-	 D/EBzoHtZT9Hq+puXzaYUZRce1UEwP1p02QAVJMppS/MQXml7J6XfYIaks06k+Ck5U
-	 JUWtN+Ash2xXQ7uA/R9uaOoaZL33XXldFaPpKU4k4SxVyuA747G2kUUuBpwJ3hIExE
-	 tOBSCEaak+dmCrr84zHK7yLH0HJ4VTU6gk2U03YztgSj1ja/ZKfmFMvCbesvesvi+D
-	 SsiaP0DfHiNpw==
-Subject: Re: [PATCH net v2 3/6] net: bcm4908_enet: release the TX ring on stop
-From: netdev-bot+sashiko@kernel.org
-To: kudzo51@gmail.com
-Cc: netdev@vger.kernel.org, f.fainelli@gmail.com,
- florian.fainelli@broadcom.com, rafal@milecki.pl,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 20:42:08 +0000
-Message-ID: <179460252891.2199510.811569497068459485@kernel.org>
-In-Reply-To: <20261112195051.597102-4-kudzo51@gmail.com>
-References: <20261112195051.597102-4-kudzo51@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dXUreyO9
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3ae2b7e1e17so1673879a91.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794602531; x=1795207331; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=sV+HdYVMMEHC0OQ8zbugTeBoUtFJiy4lGJAqfe9bpwU=;
+        b=dXUreyO9lY8J6rVAnRlJfDyxuA+MDszLQAkNpBPfbZWiqkN0oliRbpCHEUZ6AUG/lz
+         efHQD4O6tjzRz687XHxyitXetZuy8DGNY05FvwiKYruaFxrzynr4CAL6S4UKZluE9BS8
+         +wUXZ+IUTLZHEvyr3GOVTr24OY0rYaKp7Xq1p93g1fhswjhyZhFcbAZJ0oeqDXEYBaOP
+         4rS3Noo79ZjbyglVjsCZC+J+V401FzwHdAQHuoQSOKr3h+zJEeW+rpQBYhvskGlbMz7v
+         vKQFf7Zf//Whn423XyIMRLnFUNc3fTMyeiqfN3GmlCUkj7UBgdX12I2RVbF/KSgQE1v0
+         jogg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794602531; x=1795207331;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sV+HdYVMMEHC0OQ8zbugTeBoUtFJiy4lGJAqfe9bpwU=;
+        b=kkILYC8Zmiu/B7NTVkywIvJB2Rq2fK3m47IoQI+zJa1FeYahgtI3Wr/jxZqlGyAWbU
+         dQ4cB8ib721yCtWDGG7MZpffTsclRgkVfNGd6uIcW/AlSfqMjtUaJmQox6TVo0oRTpw0
+         lVCp5Btut+537v0tRJew8HG6U9bE8v+NIlxVlGgrM7fhtKh+3U+M47zWGxtBzOuDBAqP
+         B1xQnpzwXpp7oRK3WZWzSL2NcJz4iji1vG7u7PeoFYRdcfgsydLN7xj1R0Rla209X+1C
+         iVf7Q/4rLFurvuS/2kB7FJUQxXjM/AH3dW8lp+xAUcqqM6NBQvrtybGJTI7+xi3gtVev
+         NNSw==
+X-Gm-Message-State: APuU4Z/LQjxVcHmkvdDAU1jCv0BJUUxM++PSFkZPwzyte2AtU89mniP2
+	UyDbub3S6ou8tImiUDEZGPgTZXdxy/ztywxOLZSZuFrCFMaS/rtQ/EF7
+X-Gm-Gg: AYBFou1WZize2bZTAOLgsYt/3Gb20X5oC5qHw/B20627xn1BkHD+tLIfLux+vudZKeX
+	P2Sp5xivsLi1qqJD+XvDrpvqztkyY/HTI+9XxapyAImPQ/+p8BtKJeyxqrpYbhmdrzL4ilnYGDd
+	EBt+m93VrqSQTmoan9Bw7KkORwwirnAAFanx5GIhtcPWRQBerDwuM4gOvSofTxRWyB1a1MjD3mc
+	QQvtQwEWAeOp52xKpCguuV7Q1NzQugTgadoqq2eEiKvucIAL5NmPnelp+gK3TGs6aOntYV/vvO9
+	Pe69SD2sx7CmJT8/IfrgqBrYjts01z0s5lLzTbl6EurcyRjdJ+rF3/hQqfCqb852Wwp7CnLvgYu
+	E2rv1/3Q5MBt688qCpUiDs88d8H3TuArICOA3Afgkepgp68ILqjt3uaDS9U95AZlFPQ7+6APyxI
+	IYFxDcX5obHCfAqUSEpYWghSKhrLPq+PWsKlUPFyadSGBfwIGD6lPtoEfkVR6oCWKb7rb3r/g5/
+	x6fyIokn4h3J6Y7/SlhJbTYhbWsSVrypJpLhPmrmJyc1XLRrsQpVLGEY8xDZqRSbgk24Uh/uKoE
+	0DDWw6cdcEfCwqOmyGOM5+i2zJcbv09BNFckL/3nC7ePzK/XGQgrBAL1SmsKN2GLureFZToZutG
+	QN9VvGYXtt7+u2O8CamZO1J/7gH3Bb9ipeYewlDUxpvMzRKwfHQfrNoILozOnLV2tx24=
+X-Received: by 2002:a17:90b:4c02:b0:3b1:922a:7b22 with SMTP id 98e67ed59e1d1-3b1b0d77ae9mr3493152a91.60.1794602531231;
+        Fri, 13 Nov 2026 12:42:11 -0800 (PST)
+Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d0f6e0sm11195538a91.9.2026.11.13.12.42.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 12:42:10 -0800 (PST)
+Subject: [net PATCH 6/6] fbnic: Allocate FW completions with kvzalloc
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
+Date: Fri, 13 Nov 2026 12:42:08 -0800
+Message-ID: 
+ <179460252839.8819.6136127951599786768.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <179460241885.8819.7179935130629202331.stgit@ahduyck-xeon-server.home.arpa>
+References: 
+ <179460241885.8819.7179935130629202331.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,212 +101,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Alexander Duyck <alexanderduyck@fb.com>
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0
+The fbnic_fw_reporter_dump function reads the firmware coredump into a
+completion that carries the whole dump, allocated by the
+__fbnic_fw_alloc_cmpl function with kzalloc. A dump of a few hundred
+kilobytes makes that a high-order physically contiguous allocation.
+The dump runs from the devlink health auto-dump when the FW reporter
+fires, which happens on the service task with RTNL held, and a reporter
+firing on a missed heartbeat is most likely when the host is already
+short of memory. That is where such an allocation is least likely to
+succeed and most likely to drive reclaim and compaction hard.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Allocate completions with kvzalloc and free them with kvfree. Small
+completions are still served by the slab allocator, and the coredump
+falls back to vmalloc instead of failing or stalling. Nothing hands the
+buffer to the device: the mailbox Rx path copies each chunk in with
+memcpy.
 
-- [High] Double free and double DMA unmap of TX skbs, introduced by the
-  new bcm4908_enet_tx_ring_clean().
-- [Medium] bcm4908_enet_stop() now frees in-flight TX buffers even when
-  the TX DMA channel was never confirmed stopped.
+The dump size comes from the firmware, and until now kmalloc refusing
+anything too large was the only bound on it. The firmware keeps its
+core dump, header included, in a 256K region of its flash, so reject a
+larger size as bogus instead of allocating and reading it with RTNL
+held.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is High
-  severity and it stops the patch's new cleanup from ever running in…
+This was seen on production hosts during host memory stalls, where the
+auto-dump that followed a missed heartbeat logged an order-6 page
+allocation failure in this allocation.
 
---
+Fixes: 005a54722e9d ("eth: fbnic: add FW health reporter")
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_devlink.c |    5 +++++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c      |    5 +++--
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.h      |    5 +++++
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-net: bcm4908_enet: release the TX ring on stop
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+index 0b653c4c20a7..f63cf3224510 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+@@ -414,6 +414,11 @@ static int fbnic_fw_reporter_dump(struct devlink_health_reporter *reporter,
+ 				   "Firmware core dump returned size 0");
+ 		return -EIO;
+ 	}
++	if (size > FBNIC_FW_COREDUMP_MAX_SIZE) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Firmware core dump size is too large");
++		return -EIO;
++	}
+ 
+ 	/* Read the dump, we can only transfer TLV_MAX_DATA at a time */
+ 	index_count = DIV_ROUND_UP(size, TLV_MAX_DATA);
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 3465f0139883..96cfe0b4cd8d 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -382,7 +382,7 @@ static void fbnic_fw_release_cmpl_data(struct kref *kref)
+ 
+ 	cmpl_data = container_of(kref, struct fbnic_fw_completion,
+ 				 ref_count);
+-	kfree(cmpl_data);
++	kvfree(cmpl_data);
+ }
+ 
+ static struct fbnic_fw_completion *
+@@ -2108,7 +2108,8 @@ struct fbnic_fw_completion *__fbnic_fw_alloc_cmpl(u32 msg_type,
+ {
+ 	struct fbnic_fw_completion *cmpl;
+ 
+-	cmpl = kzalloc(sizeof(*cmpl) + priv_size, GFP_KERNEL);
++	/* Can be large, and the device never accesses it, so allow vmalloc */
++	cmpl = kvzalloc(sizeof(*cmpl) + priv_size, GFP_KERNEL);
+ 	if (!cmpl)
+ 		return NULL;
+ 
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
+index f47669129c9d..52f69274889e 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
+@@ -40,6 +40,11 @@ struct fbnic_fw_mbx {
+ #define FBNIC_FW_MAX_LOG_HISTORY		14
+ #define FBNIC_MBX_RX_TO_SEC			10
+ 
++/* The FW keeps its core dump, header included, in a 256K region of its
++ * QSPI flash, so no valid dump is larger than that.
++ */
++#define FBNIC_FW_COREDUMP_MAX_SIZE	SZ_256K
++
+ struct fbnic_fw_ver {
+ 	u32 version;
+ 	char commit[FBNIC_FW_CAP_RESP_COMMIT_MAX_SIZE];
 
-This patch makes bcm4908_enet_stop() wait for the TX DMA channel to stop,
-then unmap and free the skbs still left between read_idx and write_idx. It
-also clears the TX descriptors when the ring is initialised, and drops the
-OWN check in bcm4908_enet_start_xmit().
 
-> diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-> index b1738d954b91a..a28adef03e0e3 100644
-> --- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
-> +++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-
-[ ... ]
-
-> @@ -365,7 +370,22 @@ static void bcm4908_enet_dma_tx_ring_enable(struct bcm4908_enet *enet,
->  static void bcm4908_enet_dma_tx_ring_disable(struct bcm4908_enet *enet,
->  					     struct bcm4908_enet_dma_ring *ring)
->  {
-> +	unsigned long deadline;
-> +	u32 tmp;
-> +
->  	enet_write(enet, ring->cfg_block + ENET_DMA_CH_CFG, 0);
-> +
-> +	/* Wait for the channel to stop, as for RX, before freeing buffers */
-> +	deadline = jiffies + usecs_to_jiffies(2000);
-> +	do {
-> +		tmp = enet_read(enet, ring->cfg_block + ENET_DMA_CH_CFG);
-> +		if (!(tmp & ENET_DMA_CH_CFG_ENABLE))
-> +			return;
-> +		enet_write(enet, ring->cfg_block + ENET_DMA_CH_CFG, 0);
-> +		usleep_range(10, 30);
-> +	} while (!time_after_eq(jiffies, deadline));
-> +
-> +	dev_warn(enet->dev, "Timeout waiting for DMA TX stop\n");
->  }
-
-[Severity: Medium]
-When this poll times out, the helper only warns and returns void.
-bcm4908_enet_stop() then calls bcm4908_enet_tx_ring_clean() anyway, which
-unmaps and frees the skbs behind descriptors that may still have
-DMA_CTL_STATUS_OWN set.
-
-After stop, ENET_DMA_CTRL_CFG_MASTER_EN and the UMAC CMD_TX_EN bit also stay
-set. The channel reset and the descriptor clear only happen in the next
-open().
-
-If the TX engine has not really stopped, can it keep fetching those buffers
-and send the contents of freed, possibly reused, pages onto the wire? Before
-this patch those skbs were leaked, so they were never freed while the DMA
-could still reach them. I could not confirm from the code whether this
-engine keeps fetching after ENABLE is cleared.
-
-The commit message says the wait is there so the skbs are freed only after
-the channel has stopped, but on the timeout path they are freed anyway.
-
-Also, at HZ=100 or HZ=250, usecs_to_jiffies(2000) rounds up to one jiffy. If
-a tick lands during the first usleep_range(10, 30), the loop gives up after
-roughly 10-30us. Is the 2ms timeout actually honoured here?
-
-Could the helper report the timeout, so that stop() can force a channel
-reset through ENET_DMA_CTRL_CHANNEL_RESET (or clear MASTER_EN and confirm
-the stop), or else leak the buffers deliberately instead of freeing them?
-
-[ ... ]
-
-> @@ -496,6 +516,21 @@ static int bcm4908_enet_open(struct net_device *netdev)
->  	return 0;
->  }
->  
-> +static void bcm4908_enet_tx_ring_clean(struct bcm4908_enet *enet)
-> +{
-> +	struct bcm4908_enet_dma_ring *tx_ring = &enet->tx_ring;
-> +	struct device *dev = enet->dev;
-> +	int i;
-> +
-> +	for (i = tx_ring->read_idx; i != tx_ring->write_idx;
-> +	     i = i == tx_ring->length - 1 ? 0 : i + 1) {
-> +		struct bcm4908_enet_dma_ring_slot *slot = &tx_ring->slots[i];
-> +
-> +		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
-> +		dev_kfree_skb_any(slot->skb);
-> +	}
-> +}
-
-[Severity: High]
-This frees every skb in slots[read_idx..write_idx) but leaves read_idx,
-write_idx and slot->skb as they were. Emptying the ring is left to
-bcm4908_enet_dma_ring_init() in the next open. Is that call always reached?
-
-bcm4908_enet_dma_init() fills the RX ring first and returns early if that
-fails:
-
-	for (i = 0; i < rx_ring->length; i++) {
-		err = bcm4908_enet_dma_alloc_rx_buf(enet, i);
-		if (err) {
-			dev_err(dev, "Failed to alloc RX buffer: %d\n", err);
-			bcm4908_enet_dma_uninit(enet);
-			return err;
-		}
-	}
-
-	bcm4908_enet_dma_ring_init(enet, &enet->tx_ring);
-
-bcm4908_enet_open() ignores that return value and returns 0:
-
-	bcm4908_enet_dma_reset(enet);
-	bcm4908_enet_dma_init(enet);
-
-Suppose napi_alloc_frag() or dma_map_single() fails in
-bcm4908_enet_dma_alloc_rx_buf() during ifup. The interface then comes up
-with the old TX read_idx/write_idx range. Those slots still point at skbs
-that were already freed, and the new TX descriptor memset did not run
-either.
-
-On the next ifdown, won't bcm4908_enet_tx_ring_clean() walk the same range
-and call dma_unmap_single() and dev_kfree_skb_any() on the same skbs a
-second time?
-
-bcm4908_enet_poll_tx() can also free them again before that, for any stale
-descriptor in the range with OWN clear:
-
-		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
-		dev_kfree_skb(slot->skb);
-
-The ignored return value in open() predates this patch. However, before this
-patch those skbs were leaked rather than freed, so the stale pointers were
-still valid.
-
-Would it be safer to make the ring empty inside
-bcm4908_enet_tx_ring_clean() itself, for example by resetting read_idx and
-write_idx and/or setting slot->skb to NULL?
-
->  static int bcm4908_enet_stop(struct net_device *netdev)
->  {
->  	struct bcm4908_enet *enet = netdev_priv(netdev);
-> @@ -511,6 +546,7 @@ static int bcm4908_enet_stop(struct net_device *netdev)
->  	bcm4908_enet_dma_rx_ring_disable(enet, &enet->rx_ring);
->  	bcm4908_enet_dma_tx_ring_disable(enet, &enet->tx_ring);
->  
-> +	bcm4908_enet_tx_ring_clean(enet);
->  	bcm4908_enet_dma_uninit(enet);
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. It does
-mean the new cleanup is never reached when the device tree has no "tx"
-interrupt.
-
-The brcm,bcm4908-enet binding allows a single interrupt (interrupt-names has
-minItems: 1). Probe accepts a negative value from
-platform_get_irq_byname(pdev, "tx"). In that case bcm4908_enet_open() only
-enables the TX NAPI conditionally:
-
-	if (enet->irq_tx > 0) {
-		napi_enable(&tx_ring->napi);
-
-but bcm4908_enet_stop() disables it unconditionally, before the
-bcm4908_enet_tx_ring_clean() call above:
-
-	napi_disable(&rx_ring->napi);
-	napi_disable(&tx_ring->napi);
-
-A TX NAPI that was never enabled still has NAPI_STATE_SCHED and
-NAPI_STATE_NPSVC set from netif_napi_add, and only napi_enable() clears
-them. So napi_disable_locked() sits in:
-
-	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
-		usleep_range(20, 200);
-		val = READ_ONCE(n->state);
-	}
-
-Does ndo_stop then hang forever with rtnl and the netdev lock held?
-
-The same mode has a second problem. In bcm4908_enet_start_xmit(),
-napi_schedule(&enet->tx_ring.napi) does nothing, because napi_schedule_prep()
-sees SCHED already set, so bcm4908_enet_poll_tx() never runs. Doesn't the
-TX ring then fill until netif_txq_maybe_stop() stops the queue, with nothing
-left to wake it?
-
-The conditional napi_enable() and the unconditional napi_disable() appear
-to come from commit 12bb508bfe5a ("net: broadcom: bcm4908_enet: support TX
-interrupt").
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261112195051.597102-1-kudzo51%40gmail.com
