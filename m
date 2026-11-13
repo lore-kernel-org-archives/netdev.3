@@ -1,141 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794555752;
-	b=OcM/TXd9xugMYBYYUcdxuv/mOCxf+OUmGicaH8ejDg1JCyvmJiEdktOWkWZYx5+vqrA4
-	 kHQYQyVXM7NeauT5a5LYqceHownJAfkx+6m30eZrklYFozo6UkmhCmgRPyWEhMXXbgln6
-	 4F+IlFQxfxgyaQBSqlB30tUhsQK2l1j2BsrO/En5gpcW/a/seSFaxEC7NoMEzqtyvKSz4
-	 zRwdLiL+oLjk4i11a/ui2PxAzZlhjfveLF29/aymu7d3mWSfbbIgCC1tRm5JnJcAYsqwN
-	 P+8ReldinhT9ISQjJrRS661Zaeyb2epOjWvvSIw3XmAyfd6XI9QaN0RnDcXiRCS6JIw==
+	t=1794555955;
+	b=JKaw9gdK/i6f7jcM/kjHKLSR+LANMZURY+rUOpgaW/ErdsHyRvMTDs9Zv+7hpsm28CBw
+	 hK//bm/ZG23zCE/LXrO7oVhxh0XkN2Syg/+RAZnlstW+m+u3y29pYAzPQdiQA57FHD7dC
+	 OJVlgi3N1cHOvklXKlGR3oo9WZsVbxPUpRgoL7+5uqGEuhaI0O0Mn6CjhsouCkyVZYpuq
+	 u3+YjZiXl3hU6PRT6oSdzTpX95bt1gKf4Y7aFaOhARZbfIdAtXEua9JO4xFzWTSFi63Kr
+	 BeV1h7xXfMGkNuYmcI4HDZHs0E6o/0FpHzwytinKQCDnINSLC8YxUgeHSWRRDkDSD8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794555752;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=NUl3m6J5h7TCNp52N0g9QRpKf+c3/loK8kBHxy8vOxQ=;
-	b=gtS1ncW1kQTpeBIZ+ehESB4h3i4Sbt704wflBPgzwuDD9Lgtph3bET8H4dV43U1C2IbS
-	 um1eQad2hhFAM3pWAuUjuKj60W9uokY/qxDKEdetbYf6Liiw4WIDGHB0dsCXGkyqeEl9Q
-	 73T0oK7DAvDwemgdvWvkFUp2/JuO25qGSnzzCBfNOKCfPmnyr70WQRGQW83BhMbWndigs
-	 UHTFcbTfFOENKWcLgyJPBAIyh18oeVIa8OnjJ4hPQSrN+TxJj2mHkPiegJxSlClWYHv9D
-	 CD7y3xWEmz8Q6amFG3fCvnwhRtf6mFsdVk8C09EheWQUaYX/GpAef2B2oJUjTgMcZyQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794555955;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=AfT7uUWR+HjWfuHF1XrjoR+uG1dvw6mA7zq+R48PPaY=;
+	b=dXo43GWFhOLqb9o5gHyW06gEoNJOaQb1CiwjqJcaSgWPV4SZya9BFK+4r7GQSUX9RQ0p
+	 Ycjei/p5ACAw/F0Ua70JxVI8tX26WKLqssIcKOdIUMIht6fxkUYHhXq9zEsacXCw2UKt7
+	 afgklT07BpkE1UkQXoOVLv5+Y0BsABUi9Q8C5Gkg/tUjlvOS5kzPJ/CtiSHK4oX2igBTR
+	 cgF0HrzC7/D15TmhHWcZZ/7Kj9NojcAwpsIXwmRWMme4t1GJDeocXe+11RgRczN5v6Rkx
+	 mY/XQKluiw2Zef7N6XjfJTks5Y6HKYEho6ZymXVwZ/kA2a2UwZ8UMRbx7sMWZEy1Zvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=IKrqBXbW;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="kr/XEq95";
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5m3UZXR;
+	arc=none smtp.remote-ip=95.215.58.7
+Received: from mta1.migadu.com (out-7.mta1.migadu.com [95.215.58.7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76E7606A32E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:42:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A76E7606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CCE606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:45:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2CCE606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=IKrqBXbW;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kr/XEq95
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AD57656073405
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:42:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=NUl3m6J5h7TCNp52N0g9QRpK
-	f+c3/loK8kBHxy8vOxQ=; b=IKrqBXbW+S1yf2L+Lm3ZghG01nzAfsaaUMKMZR6d
-	2Y9uuJZNT2swj+FR1QJJ8zT9MJQ+nroqqhjwN9IFSABNwUpnm0iABq1jVx4Kur+E
-	vp2mIERuTNtqhXtGjuJKef+NrF5rUMZAuiDP5DmubXsdORit1TNHbQbV+4I5FCz3
-	aK8Y4QHyT6pQ4xwh9WOqetFA7KvBlxPB7occy19Cka00JJKnZduvMK9/q2+ELYiX
-	SMglpDVmAJjthY1D5bTZmocJ4zM8S8+9icDBuWVdblifaoOpixwVxAu8iYVLE3i2
-	0yHmgraIYz4RJ2h2pqiEw/U5T+vF2uq7cW9jT34dYYMLmg==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwbs0421f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:42:30 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-341eff9e381so1112398eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:42:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794555749; x=1795160549; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NUl3m6J5h7TCNp52N0g9QRpKf+c3/loK8kBHxy8vOxQ=;
-        b=kr/XEq959Hr+MdasQEucxRQHib3AH4Q09htxKsgHwxvYqWuC72NjtI3ggQfqve2Kea
-         bLGx/X0EUf9qVhy+gFrF9jA6BoaPx4CojA0kzvNkk+9wbEmFa54LA6P6FrNxhWIWo4cY
-         yb9xeZZtEmnMrxHcrEcTtKPSbcqCU6sEL8nwdkOKL/TEaLUixjO/gzEKfrOBTXSvZJTT
-         a0O3leFJiE9weDrJ3HmB7ayucqk4TOixq/dyigGkzn497n0ZewrMoA1dyFFoRXXLm9gq
-         fEWmn+sDW7KLk65RenuSmEUoB7SM3RpJr9or0xdFSy+VyS9+NgniD6juFO00A+Gx9bFm
-         eYCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794555749; x=1795160549;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NUl3m6J5h7TCNp52N0g9QRpKf+c3/loK8kBHxy8vOxQ=;
-        b=sCAjLRaF7fGxrnbjytUSvqu71hp+dEnkckXhlVMchgIS+gtnGTLsOblJofzwpxyLQS
-         VizFjdtj/KJuuusgF6jQA5Bo+bm4FTu9Hq8ilfgCDAs3VGLJQFEV0cxv0kS2WElRZCsa
-         63LUGzxmEZ+VU7ceigE0O09NphaX07Zbt2A05OAHJdUukYJZTeALmGG/zYXq2HcEEBiZ
-         u47tK3QhmkX7nnFR/5JneD9SI76EKpleU9mDv6Wb+rWbYLKycXeUyAZtRMDhWZS3wI6/
-         F+Z59PQqBoqEDGdH72a3yPIACqvC30Tggujvm1Xbjk2GbnRE71c/fRdl+g7npVyHSiuQ
-         O6kA==
-X-Forwarded-Encrypted: i=1; AL+hErHF4kJGnB1x6OCozX9V65/zYq3PBe5cNdoDTj9z7si32qEE45GwaDZGi8fV9XfVVVwsb2l1eVI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8G9u7U9Me2sCKRY9b6O76HYnAeV5rx2TfXxIO2toWsVusTQLyJ
-	JNyQkruHiNvYBLVbE7wiY6L4iYFkiVRTXJcF07QEYiPWZFf41+ivxsUGMowRkSgIuLGMLf7+lBs
-	Ju3mCohbIaNWDB8SamrDjveyKGDbQIDkQIDI8q0xLi2rVdRMOo+4axogTsnU=
-X-Gm-Gg: AYBFou0Ajc7dgLxhrI4zClIDIP0WKmIIz/C+OKTm/DaQG/Nvhv6zxI4fVSS2+ZjkoPS
-	aFltDN1XxjuNpUvbbuYprAENv80CFDfj49eKZq6q7w3Nh+5ewVD7sg5wcEfQi4ngxF845LGEwl9
-	7r7bF1buTPqypBcvlDo0SZRqmu+aA/icTgKPOvVd1uzCYGq6CCNNEY2gzfBFLi6eoUgUq+65Fpg
-	8DbrfnrZTQqiVH5HGjwhRFuirg1ZKMHoLmaAcwjLsjlXwp+YD9didq75AK6gFw4j5MlGfpM3pYl
-	4vV6b2ZKompWycvTiBbaPFYzL99wlCmiC6G3S3Y8cgqFOD1UnN2FIe2UOsf/HO6WT3KLAv5Ttsi
-	KlgTtPSaBVti7zl1XIvPU69zkS/xC4Ex8pDbTPHGJg1ZAGj+dKrn19WFBcEFyJP2P/nR6dkVGCT
-	0M
-X-Received: by 2002:a05:701b:290a:b0:16c:3408:760b with SMTP id a92af1059eb24-1b503121292mr1619116c88.32.1794555749327;
-        Thu, 12 Nov 2026 23:42:29 -0800 (PST)
-X-Received: by 2002:a05:701b:290a:b0:16c:3408:760b with SMTP id a92af1059eb24-1b503121292mr1619067c88.32.1794555748517;
-        Thu, 12 Nov 2026 23:42:28 -0800 (PST)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50309b2b5sm4436549c88.1.2026.11.12.23.42.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 23:42:28 -0800 (PST)
-Date: Fri, 13 Nov 2026 13:12:16 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Gourav Kumar <gourav.kumar@oss.qualcomm.com>
-Cc: Sumit Garg <sumit.garg@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>, David Airlie <airlied@gmail.com>,
-        Simona Vetter <simona@ffwll.ch>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-        Bryan O'Donoghue <bod@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jeff Johnson <jjohnson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Abel Vesa <abelvesa@kernel.org>, Sean Paul <sean@poorly.run>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-media@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH 3/8] media: iris: migrate firmware loading to
- qcom_mdt_pas_load() and qcom_pas_prepare_and_auth_reset()
-Message-ID: <20261113074216.5md7myragcw2xkf2@hu-mojha-hyd.qualcomm.com>
-References: <20260925155737.4161358-1-mukesh.ojha@oss.qualcomm.com>
- <20260925155737.4161358-4-mukesh.ojha@oss.qualcomm.com>
- <aa70a256-eba2-483f-8326-c3bd2ff3d33e@oss.qualcomm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5m3UZXR
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ki2r00FA9QQTrclX5fpRpLYxr58L48LKLHS4glbqT/I=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794555952; v=1; x=1795160752;
+ b=h5m3UZXRuNYLYQtnn+cJhEaYI9bk0koWARzO0uapev6tuoR+TnucIL9T5pnpn/AdDHa1ukKt
+ Y2gm5USTtsRGiLy06zxdDjf9ttpmC5htgbLqqP726TweimrrYX5D7QAObwegM4AH8sOCaWKqBuG
+ dVUdKxmY2YLnEmXipv9waHfE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 344b705ad4e98c2b;
+	Fri, 13 Nov 2026 07:45:44 +0000
+X-Mizu-Trace-ID: 344b705ad4e98c2b
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 13 Nov 2026 15:45:25 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ido Schimmel <idosch@idosch.org>
+Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
+	razor@blackwall.org, aahila@google.com
+Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
+ with coupled control disabled
+Message-ID: <avbAFdyJowX8CvOB@fedora>
+References: <20261111171947.2816258-1-idosch@nvidia.com>
+ <20261111171947.2816258-2-idosch@nvidia.com>
+ <avZ07oXIXo7xZyCC@fedora>
+ <20261113070732.GC3517282@shredder>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -145,169 +70,217 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aa70a256-eba2-483f-8326-c3bd2ff3d33e@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDAzMCBTYWx0ZWRfX6q0UtlvyITgT
- WkdXyqCjs1tI6YHQyj/GUrNjdlImsmPRPApQRf6geg6s7+GzdXTCiWUvZm1ZKEf9WMtJxWUrnXx
- RiA1E5va163ww1D3uzDeYV+Vn4pm+ZpkSVjMfs8Bw7kBvAozVuyCeuvGcfVK5q+0nU85poq+Bel
- jLx9UlLrIWw8lU2rzkU+o3GQP1VfAtJ2/3jYeyLivwnu/b0Y7w4h/dtP7WTJs7E2t7Gf66wrXmR
- TKAbCklL5WgkzwUnc9Nl/DUO2sUSXdPQ1oHLjGF69SjV4qZbF7Si+tnlfh0x09fq2967aA5lSGy
- OJ18vZ/HjsD5MDZO5XOt7wDKLUURL+08V2kpKrWT+Mono9niPcrUNVHjcTcZjc2Oy4hBr4NP2WG
- 2Yyl8XIjXlM8CdW6SOinP/RPJ8eOEzNDCzzq8k6NbEZmWZq/yF7A4KY/y7FbOol6XmhtB8NVSWv
- ko+Ji+8xiDlAfuZ5aKw==
-X-Authority-Analysis: v=2.4 cv=AsF7T+9P c=1 sm=1 tr=0 ts=6af6bf66 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=sX6kAIEwX3NwIotb1QIA:9 a=CjuIK1q_8ugA:10
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDAzMCBTYWx0ZWRfX1XYktsbvTvwY
- Ge19smL/J9UOOFpkBiaoOzzvmHm9QNT4zprPicpqGfebzyZZNI+L0CtNyeH4SZ0ugGRNWcRjqR/
- LXpDvahh9Vp1NSIJT5lfF/V+5QKdpgk=
-X-Proofpoint-GUID: WpAAkhY2sT2nYV6kMmSOXCq5-r3mXi2D
-X-Proofpoint-ORIG-GUID: WpAAkhY2sT2nYV6kMmSOXCq5-r3mXi2D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_02,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 phishscore=0 impostorscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130030
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261113070732.GC3517282@shredder>
 
-On Tue, Oct 27, 2026 at 03:01:41PM +0530, Gourav Kumar wrote:
-> 
-> 
-> On 9/25/2026 9:27 PM, Mukesh Ojha wrote:
-> > iris_load_fw_to_memory() calls qcom_mdt_load() which bundles metadata
-> > init, memory setup, and segment loading with no PAS context, and
-> > iris_fw_load() calls qcom_pas_auth_and_reset() which skips the shmbridge
-> > prepare step required before TrustZone authentication.
+Hi Ido,
+On Fri, Nov 13, 2026 at 09:07:32AM +0200, Ido Schimmel wrote:
+> On Fri, Nov 13, 2026 at 10:24:46AM +0800, Hangbin Liu wrote:
+> > Hi Ido,
+> > On Wed, Nov 11, 2026 at 07:19:47PM +0200, Ido Schimmel wrote:
+> > > Test that with coupled control disabled, a port in COLLECTING state
+> > > receives packets.
+> > > 
+> > > In this mode, a port only transitions from COLLECTING to DISTRIBUTING
+> > > state if its partner sets the Collecting bit in its LACPDUs. Therefore,
+> > > keep the port in COLLECTING state by clearing the Collecting bit in
+> > > received LACPDUs.
+> > > 
+> > > Also test that ping works once the port moves to DISTRIBUTING state.
+> > > 
+> > > Use VRFs rather than network namespaces so that the test could be run
+> > > with a veth pair or a pair of physically connected ports.
+> > > 
+> > > Output without "bonding: 3ad: Receive packets in COLLECTING state":
+> > > 
+> > >  # ./bond_lacp_independent_control.sh
+> > >  TEST: Receive in COLLECTING state                                   [FAIL]
+> > >          Packets not received in COLLECTING state
+> > >  TEST: Ping in DISTRIBUTING state                                    [ OK ]
+> > > 
+> > > Output with the fix:
+> > > 
+> > >  # ./bond_lacp_independent_control.sh
+> > >  TEST: Receive in COLLECTING state                                   [ OK ]
+> > >  TEST: Ping in DISTRIBUTING state                                    [ OK ]
+> > > 
+> > > Reviewed-by: Petr Machata <petrm@nvidia.com>
+> > > Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> > > ---
+> > >  .../selftests/drivers/net/bonding/Makefile    |   1 +
+> > >  .../bonding/bond_lacp_independent_control.sh  | 144 ++++++++++++++++++
+> > >  .../selftests/drivers/net/bonding/config      |   6 +
+> > >  3 files changed, 151 insertions(+)
+> > >  create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> > > 
+> > > diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
+> > > index e337c099fb40..46d9fede5918 100644
+> > > --- a/tools/testing/selftests/drivers/net/bonding/Makefile
+> > > +++ b/tools/testing/selftests/drivers/net/bonding/Makefile
+> > > @@ -7,6 +7,7 @@ TEST_PROGS := \
+> > >  	bond-eth-type-change.sh \
+> > >  	bond-lladdr-target.sh \
+> > >  	bond_ipsec_offload.sh \
+> > > +	bond_lacp_independent_control.sh \
+> > >  	bond_lacp_prio.sh \
+> > >  	bond_lacp_strict.sh \
+> > >  	bond_macvlan_ipvlan.sh \
+> > > diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> > > new file mode 100755
+> > > index 000000000000..c29712e01e49
+> > > --- /dev/null
+> > > +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> > > @@ -0,0 +1,144 @@
+> > > +#!/bin/bash
+> > > +# SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +# +-------------------------+ +-------------------------+
+> > > +# | H1 (vrf)                | | H2 (vrf)                |
+> > > +# |  + bond1 (802.3ad)      | |  + bond2 (802.3ad)      |
+> > > +# |  | coupled_control off  | |  |                      |
+> > > +# |  | 192.0.2.1/28         | |  | 192.0.2.2/28         |
+> > > +# |  |                      | |  |                      |
+> > > +# |  + $h1                  | |  + $h2                  |
+> > > +# +--|----------------------+ +--|----------------------+
+> > > +#    |                           |
+> > > +#    +---------------------------+
+> > > +
+> > > +# shellcheck disable=SC2034,SC2329
+> > > +ALL_TESTS="
+> > > +	collecting
+> > > +	distributing
+> > > +"
+> > > +NUM_NETIFS=2
+> > > +REQUIRE_MZ=no
+> > > +lib_dir=$(dirname "$0")
+> > > +# shellcheck disable=SC1091
+> > > +source "$lib_dir"/../../../net/forwarding/lib.sh
+> > > +
+> > > +lacp_state_get()
+> > > +{
+> > > +	local dev=$1; shift
+> > > +
+> > > +	ip -d -j link show dev "$dev" | \
+> > > +		jq '.[].linkinfo.info_slave_data.ad_actor_oper_port_state'
+> > > +}
+> > > +
+> > > +# The actor state of a port in ATTACHED state is 0x0f: Activity (0x01),
+> > > +# Timeout (0x02), Aggregation (0x04) and Synchronization (0x08). The
+> > > +# Collecting (0x10) bit is added in COLLECTING state (0x1f) and the
+> > > +# Distributing (0x20) bit in DISTRIBUTING state (0x3f).
+> > > +lacp_state_wait()
+> > > +{
+> > > +	local dev=$1; shift
+> > > +	local state=$1; shift
+> > > +
+> > > +	slowwait "$WAIT_TIMEOUT" until_counter_is "== $state" \
+> > > +		lacp_state_get "$dev" > /dev/null
+> > > +}
+> > > +
+> > > +partner_state_clear()
+> > > +{
+> > > +	local bits=$1; shift
+> > > +
+> > > +	tc filter replace dev "$h1" ingress pref 1 handle 101 protocol 0x8809 \
+> > > +		flower skip_hw action pedit munge offset 18 u8 set 0 \
+> > > +		retain "$bits"
+> > > +}
+> > > +
+> > > +h1_create()
+> > > +{
+> > > +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
+> > > +		coupled_control off
+> > > +	adf_ip_link_set_master "$h1" bond1
+> > > +	adf_simple_if_init bond1 192.0.2.1/28
+> > > +
+> > > +	tc qdisc add dev "$h1" clsact
+> > > +	defer tc qdisc del dev "$h1" clsact
+> > > +
+> > > +	tc qdisc add dev bond1 clsact
+> > > +	defer tc qdisc del dev bond1 clsact
+> > > +
+> > > +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
+> > > +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
+> > > +		ip_proto icmp type 8 action pass
+> > > +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
+> > > +}
+> > > +
+> > > +h2_create()
+> > > +{
+> > > +	adf_ip_link_add bond2 type bond mode 802.3ad lacp_rate fast
+> > > +	adf_ip_link_set_master "$h2" bond2
+> > > +	adf_simple_if_init bond2 192.0.2.2/28
+> > > +}
+> > > +
+> > > +setup_prepare()
+> > > +{
+> > > +	h1=${NETIFS[p1]}
+> > > +	h2=${NETIFS[p2]}
+> > > +
+> > > +	adf_vrf_prepare
 > > 
-> > Since the auth call is in a different function from where the PAS context
-> > is allocated, add a pas_ctx pointer to struct iris_core so it can be
-> > threaded between the two call sites.  Replace qcom_mdt_load() with
-> > devm_qcom_pas_context_alloc() and qcom_mdt_pas_load() in
-> > iris_load_fw_to_memory(), storing the context in core->pas_ctx, then
-> > pass it to qcom_pas_prepare_and_auth_reset() in iris_fw_load().
+> > Nit: why we need the vrf prepare? The h1/h2 should be veth interface, no?
+> 
+> No. The VRF usage is intentional. From the commit message:
+> 
+> "Use VRFs rather than network namespaces so that the test could be run
+> with a veth pair or a pair of physically connected ports."
+> 
+
+Oh, I wrote too few VRF tests. I just noticed that we use `adf_simple_if_init`
+to create the VRF interfaces.
+
+For a pair of physically connected ports, do you mean two ports connected
+back-to-back on the *same* host? Otherwise I’m not sure how to run the test
+using two physical ports across two different hosts.
+
 > > 
-> > Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> > ---
-> >  drivers/media/platform/qcom/iris/iris_core.h  |  2 ++
-> >  .../media/platform/qcom/iris/iris_firmware.c  | 20 ++++++++-----------
-> >  2 files changed, 10 insertions(+), 12 deletions(-)
+> > > diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
+> > > index b62c70715293..71c6d69d98a1 100644
+> > > --- a/tools/testing/selftests/drivers/net/bonding/config
+> > > +++ b/tools/testing/selftests/drivers/net/bonding/config
+> > > @@ -1,13 +1,17 @@
+> > >  CONFIG_BONDING=y
+> > > +CONFIG_BPF_SYSCALL=y
+> > >  CONFIG_BRIDGE=y
+> > > +CONFIG_CGROUP_BPF=y
+> > >  CONFIG_CONFIGFS_FS=y
+> > >  CONFIG_DUMMY=y
+> > >  CONFIG_INET_ESP=y
+> > >  CONFIG_INET_ESP_OFFLOAD=y
+> > >  CONFIG_IPV6=y
+> > > +CONFIG_IPV6_MULTIPLE_TABLES=y
 > > 
-> > diff --git a/drivers/media/platform/qcom/iris/iris_core.h b/drivers/media/platform/qcom/iris/iris_core.h
-> > index 24da60448cf2..68e6adcc1dfd 100644
-> > --- a/drivers/media/platform/qcom/iris/iris_core.h
-> > +++ b/drivers/media/platform/qcom/iris/iris_core.h
-> > @@ -8,6 +8,7 @@
-> >  
-> >  #include <linux/types.h>
-> >  #include <linux/pm_domain.h>
-> > +#include <linux/firmware/qcom/qcom_pas.h>
-> >  #include <media/v4l2-device.h>
-> >  
-> >  #include "iris_hfi_common.h"
-> > @@ -123,6 +124,7 @@ struct iris_core {
-> >  	/* encoder and decoder have overlapping caps, so two different arrays are required */
-> >  	struct platform_inst_fw_cap		inst_fw_caps_dec[INST_FW_CAP_MAX];
-> >  	struct platform_inst_fw_cap		inst_fw_caps_enc[INST_FW_CAP_MAX];
-> > +	struct qcom_pas_context			*pas_ctx;
-> >  };
-> >  
-> >  int iris_core_init(struct iris_core *core);
-> > diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
-> > index 21cdf1c39835..e73a5dd98b88 100644
-> > --- a/drivers/media/platform/qcom/iris/iris_firmware.c
-> > +++ b/drivers/media/platform/qcom/iris/iris_firmware.c
-> > @@ -115,9 +115,7 @@ static int iris_load_fw_to_memory(struct iris_core *core)
-> >  	struct resource res;
-> >  	phys_addr_t mem_phys;
-> >  	const char *fw_name;
-> > -	size_t res_size;
-> >  	ssize_t fw_size;
-> > -	void *mem_virt;
-> >  	int ret;
-> >  
-> >  	ret = of_reserved_mem_region_to_resource(dev->of_node, 0, &res);
-> > @@ -125,7 +123,6 @@ static int iris_load_fw_to_memory(struct iris_core *core)
-> >  		return ret;
-> >  
-> >  	mem_phys = res.start;
-> > -	res_size = resource_size(&res);
-> >  
-> >  	firmware = iris_detect_firmware(core, &fw_name);
-> >  	if (IS_ERR(firmware))
-> > @@ -134,21 +131,20 @@ static int iris_load_fw_to_memory(struct iris_core *core)
-> >  	core->iris_firmware_data = core->iris_firmware_desc->firmware_data;
-> >  
-> >  	fw_size = qcom_mdt_get_size(firmware);
-> > -	if (fw_size < 0 || res_size < (size_t)fw_size) {
-> > +	if (fw_size < 0 || resource_size(&res) < (size_t)fw_size) {
-> >  		ret = -EINVAL;
-> >  		goto err_release_fw;
-> >  	}
-> >  
-> > -	mem_virt = memremap(mem_phys, res_size, MEMREMAP_WC);
-> > -	if (!mem_virt) {
-> > -		ret = -ENOMEM;
-> > +	core->pas_ctx = devm_qcom_pas_context_alloc(dev, IRIS_PAS_ID, mem_phys,
-> > +						    resource_size(&res));
-> > +	if (IS_ERR(core->pas_ctx)) {
-> > +		ret = PTR_ERR(core->pas_ctx);
-> > +		core->pas_ctx = NULL;
-> >  		goto err_release_fw;
-> >  	}
-> >  
-> > -	ret = qcom_mdt_load(dev, firmware, fw_name,
-> > -			    IRIS_PAS_ID, mem_virt, mem_phys, res_size, NULL);
-> > -
-> > -	memunmap(mem_virt);
-> > +	ret = qcom_mdt_pas_load(core->pas_ctx, firmware, fw_name, NULL);
+> > Do we need this config ?
 > 
-> qcom_mdt_pas_load() passes the ctx to qcom_pas_init_image(), which keeps
-> the metadata buffer in ctx->ptr, and qcom_pas_prepare_and_auth_reset()
-> does not free it. Who is expected to call qcom_pas_metadata_release()
-> for iris? I don't see it called after authentication (or on its
-> failure), unlike in qcom_q6v5_pas.c.
+> Yes. CONFIG_NET_VRF depends on it when IPv6 is enabled and it's not
+> enabled by default. Other config files that enable CONFIG_NET_VRF list
+> it as well.
 > 
-Below change is merged, so buffer will be freed in the call itself, no need
-to call qcom_pas_metadata_release() explicitly for clients who are not
-interested in saving their metadata context.
-
-
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=2aa8fafc08e777e9da356307c1a0117e7f4277cf
-
-
-> Gourav Kumar
+> > 
+> > >  CONFIG_IPVLAN=y
+> > >  CONFIG_MACVLAN=y
+> > >  CONFIG_NET_ACT_GACT=y
+> > > +CONFIG_NET_ACT_PEDIT=m
+> > >  CONFIG_NET_CLS_FLOWER=y
+> > >  CONFIG_NET_CLS_MATCHALL=m
+> > >  CONFIG_NETCONSOLE=m
+> > > @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
+> > >  CONFIG_NETCONSOLE_EXTENDED_LOG=y
+> > >  CONFIG_NETDEVSIM=m
+> > >  CONFIG_NET_IPGRE=y
+> > > +CONFIG_NET_L3_MASTER_DEV=y
+> > >  CONFIG_NET_SCH_INGRESS=y
+> > > +CONFIG_NET_VRF=y
+> > 
+> > If yes, this config could be removed. And the H1 (vrf) description in the
+> > chart.
 > 
-> >  err_release_fw:
-> >  	release_firmware(firmware);
-> >  
-> > @@ -166,7 +162,7 @@ int iris_fw_load(struct iris_core *core)
-> >  		return ret;
-> >  	}
-> >  
-> > -	ret = qcom_pas_auth_and_reset(IRIS_PAS_ID);
-> > +	ret = qcom_pas_prepare_and_auth_reset(core->pas_ctx);
-> 
-> ctx->use_tzmem is not set for iris, so the shmbridge creation in
-> qcom_scm_pas_prepare_and_auth_reset() is skipped and the behaviour is
-> the same as the old qcom_pas_auth_and_reset(). Please reword the commit
-> message accordingly, since it currently implies that the prepare step is
-> now performed by the new API as a fix.
+> See above. VRF is needed.
 
-Sure.
+Thanks for the explanation.
 
-> 
-> Gourav Kumar
-> 
-> >  	if (ret)  {
-> >  		dev_err(core->dev, "auth and reset failed: %d\n", ret);
-> >  		return ret;
-> 
-
--- 
--Mukesh Ojha
+Regards
+Hangbin
