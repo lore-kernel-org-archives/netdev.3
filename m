@@ -1,66 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532075;
-	b=lWO3AGAQzJ+l1xramrHaLP1gaYpMWofvzEWcvkLSzubcy8lW8BOJPUaQ9J6QfwYq8kI7
-	 gXljbYzfqsdoQesKzOHSpC972Zu5O+eZuapd1takSkKCOIIEhZ4Ivtl361UGLfS0Y12+H
-	 OT8IAypW/eyIOOw1pDz8A3myX5XMRDxz6Hb7Gls7npK7rwFoG64VaxMjYbPDvFo4JYbYO
-	 cSWAbm6dCy4UqhXqm/OzhlEJc7iiEvkH1Emr3OfZl8UvYm6FVxZls4B6cUFyNYuqb5gw6
-	 LTkMtEtkJ1vA3Kf4/Fb2gpm/C8IKXeeiFE5seoYYFUyyNPIZzMaoT3liropsIK1mRiQ==
+	t=1794532113;
+	b=Njth+ObPuXXHjGwSOKIDMt2KrAc5H05WXVz5ujGKNa9K6jxOcJFdUS8u7sLpYn11V2au
+	 4y+NPJie8Ea1teWI5zJxgujAy1RXF0uTB9fxfSnbI05OGTnJgaTsOqSQbdXIsuLOBAPHS
+	 vZQmjJqYg2DVL2Asssf513C6oZdBM9KnVQ7m9XIxHgTHv7fOnr3Mt2tKStoEKzfzmYwN1
+	 v07DgB/6dsz+wczBbH9JE9HVqQPmYr17Kb4bv6pijIcVteMnxKx19gVxra1tGuS41UIcf
+	 uj/ASipjYZ4vO2aDchR80GLcWrcLGYzFn82D/ordYNdaTh5O+SUPPPmll1EbqIPlU+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532075;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=SeGWYFi/n0Lblm9iaCke+B2p70tFL4hdkNwQxuOUa3U=;
-	b=c95Y8xsh8vXkJD1QtR+0umZDUOtujhrHX4ji90I0AfV6ta6A/ds1m8Cc7iD+lBLDikHS
-	 Obzb51WtGni4AfcF1hm+55t/PxCP7C5BW+CgR8IY8HmJxZbxG9S+AIXC/fwV4BIMQV186
-	 bMPDXZ8oS2IN7Pib5c1vOBKDqG8g0lE+rApt9vgdG0kn9wfZ2xLr7SbDv9ynLOZgPqA8W
-	 bSKcnbppHh2L7aIVc5ZuVtMrDWCDpJlWPIUqj+Ap0V3+MiXdWlxD73d0e/rE7Pf/dBeRD
-	 1rzLvvwoSo+2SXDKDUkaYQcDcC0fgwHORHJyjO9jp0J2s8WIt5tmR74S6d+J2ZaLDcQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532113;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=VfkhSy3UWNK1wUNwtpizITXqTOUwLRletHc/mH1J4Gc=;
+	b=OxAccF2J+A3dNgLatED0BY0yJ11vJ156L9PvJq12YGkABOBAKKD2ExJDQ/bLkHrxpUV1
+	 0m3tqgWrI97nSoOmnsby1nw/5BOp1q17FZYfq84rnqcilCCRDethdG1H06ww/EuQ3Q6zb
+	 whwI2s99LfbHAy15aFVRxS8XLav5CDxgcNFGzq8Rm6wgv4lghoOz1ww9BquJaHbhYwwG6
+	 wiZdMhmbBuoAb9ygiHzWToIuUMnvN8UqaJmDzZsKgsA3zd5HX/hzGHbl9fBV2GVQWKUVP
+	 cDAxklqLcgL2Ehctrn5NS1+VZVGQ3G2pCW+ojsRwGBpdno25ti9/x59uEJ/aq8nLaJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="xF/ukmbf";
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="SSq/6NJf";
+	arc=none smtp.remote-ip=192.198.163.11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9400D606A32D;
-	Fri, 13 Nov 2026 01:07:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9400D606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E84F606A32A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:08:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E84F606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=xF/ukmbf
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SeGWYFi/n0Lblm9iaCke+B2p70tFL4hdkNwQxuOUa3U=; b=xF/ukmbfd3uVVeWQFwYi1kzqzO
-	exrzeAT/DJipxxiBU8mABEJQCso/XVuVIsm/aUwekV3vJfkhJY+KreQxXz7FjCC6DNrIZ7QhgADP+
-	4XOkfe1cavOY6fWNJkMnoTQgrN2XTVZaeA6hi+3PHqp3LeVCs4lURqL3eNfcsBKfksGM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xRflR-00G9Eq-3H; Fri, 13 Nov 2026 02:07:37 +0100
-Date: Fri, 13 Nov 2026 02:07:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Navid Ghahremani <ghahramani.navid@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
-	stefandoesinger@gmail.com, krzk@kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 16/24] net: phy: Add Sanechips ZX5201 PHY support
-Message-ID: <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
-References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
- <20261014072109.1759502-17-ghahramani.navid@gmail.com>
- <788c9b01-473e-4c45-b6f0-b2ba054da8e9@lunn.ch>
- <20261113003655.3665572-1-ghahramani.navid@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SSq/6NJf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794532112; x=1826068112;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xMMo5kDl2lDu5t/K9k/e6Fuhw9JIcGyKKkyF/qkXgKQ=;
+  b=SSq/6NJfJyRe+Y7CO0lh9HWBb5NegDe4UKzmMS+X5ES1fAD52AdtD/5a
+   S4sBPJUXuCBn2NqbRAgh48dJrD9Gb1821Ejjb5dv18Wx4QmmoBweNks2w
+   jczLUgTICimu4wgghyDV2eREOlHjqFMTra3tEfKPSHO+O8vvaS93FqsCP
+   I2yWTiWm/NRjBssqMH9ErPwfIfHpL2MKJ1b4iNMDhe7359kZ7lPLoVnuL
+   Zha/kz0byJOoPD0Axl5iPXOXJ4+Qtj9SATcUN2Tlc7CKV3xWC91UTiLsD
+   9T7Ync8CfrVS3xY4390sZUk3+CmqAMu6mUgX6IqYP5rxWplwGvfSxOdV0
+   Q==;
+X-CSE-ConnectionGUID: rCOxSoVLRHKEkq2XUg4OTw==
+X-CSE-MsgGUID: XeXLi9j6SPeGahb6jzflFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3252590"
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="3252590"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 17:08:31 -0800
+X-CSE-ConnectionGUID: GCkd5ik4TC+Dd+FoQKtetw==
+X-CSE-MsgGUID: u8cu8H2fQPWcNP0B4sR3aQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="9214831"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa007.fm.intel.com with ESMTP; 12 Nov 2026 16:58:29 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Ivy Lopez <skunkolee@gmail.com>,
+	anthony.l.nguyen@intel.com,
+	dima.ruinskiy@intel.com,
+	luoxuanqiang@kylinos.cn,
+	nsvatoslav515@gmail.com,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Moriya Kadosh <moriyax.kadosh@intel.com>
+Subject: [PATCH net 1/3] e1000e: fix incorrect modified flag check in e1000_read_nvm_spt()
+Date: Thu, 12 Nov 2026 16:58:18 -0800
+Message-ID: <20261113005823.130021-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20261113005823.130021-1-anthony.l.nguyen@intel.com>
+References: <20261113005823.130021-1-anthony.l.nguyen@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,33 +90,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113003655.3665572-1-ghahramani.navid@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> > We need to understand this, because if it is an RGMII PHY, we need to
-> > address the RGMII delays, which that page says it can controller.
-> 
-> That part I still have to find out. My driver has always told phylib
-> gmii and the WAN port runs at 1 Gbs, but I have not worked out yet
-> what the link between the SoC and the ZX5201 really is.
+From: Ivy Lopez <skunkolee@gmail.com>
 
-https://www.sanechips.com.cn/en/Products/WiredEn/fixedNetworkTerminalEn/1558027080778723330.html
+e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one
+32-bit dword for efficiency. When deciding whether to use the
+shadow RAM value for the high word (data[i + 1]), it incorrectly
+checks the "modified" flag of the low word (shadow_ram[offset + i])
+instead of the high word's own flag (shadow_ram[offset + i + 1]).
 
-This says it is RGMII.
+This can cause silent NVM shadow RAM corruption:
+ - if only the high word is marked modified, its pending write is
+   lost and the stale flash value is returned instead
+ - if only the low word is marked modified, the high word is
+   incorrectly overwritten with the low word's shadow value
 
-> SerDes was just the name I gave the registers at the second address,
-> and there is no public documentation for them. I will find out what
-> the interface is, and how the delays are set if it is RGMII, before
-> I send the networking patches again.
+This function is used on all PCH chips from SPT onward (SPT, CNP,
+TGP, ADP, MTP, etc). The bug has been present since the dword-read
+optimization was introduced for these chips.
 
-So picking SERDES is probably causing some of this confusion. SERDES
-implies there is a PCS, and the PCS is doing signalling for SGMII or
-1000BaseX. With RGMII, none of that exists. The registers might be
-controlling clocks, or regulators etc.
+Note: this was found via code review while investigating a separate
+reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
+this fix does not resolve that particular symptom, but the flag
+check is still a genuine logic bug that can corrupt shadow RAM
+contents and should be fixed regardless.
 
-https://www.sanechips.com.cn/en/ProductEn/WiredEn/ethernetConnectivityEn/index.html
+Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
+Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Tested-by: Moriya Kadosh <moriyax.kadosh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Also says RGMII.
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index aa90e0ce8aca..87cd1cdc6f10 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw *hw, u16 offset, u16 words,
+ 				    dev_spec->shadow_ram[offset + i].value;
+ 			else
+ 				data[i] = (u16)(dword & 0xFFFF);
+-			if (dev_spec->shadow_ram[offset + i].modified)
++			if (dev_spec->shadow_ram[offset + i + 1].modified)
+ 				data[i + 1] =
+ 				    dev_spec->shadow_ram[offset + i + 1].value;
+ 			else
+-- 
+2.47.1
 
-     Andrew
