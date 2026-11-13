@@ -1,101 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794609503;
-	b=rPzPzoGwxWMHMOHo17CKLEZusd+c2PG50MDqI4po4/Ix2pvDOFFf355kMxPGL/LfrRT8
-	 Qy//BgEPcOmEKAzKi5g4+BSxqNZ7221vgLI3tAb9LZ73V8lbcRC1FBd4FX+zjypybPAVo
-	 JPRgMR+V9CmHvr549yA4BaZF+Dacoq9ONLy58TspIbuARtLrW2+0KseQKqV7gUC0byOer
-	 fL+5DxiZQ78WWF8AlwSzaBUvFVaeJJNDbSf95caX24BPMgKvL80wF6sbYWIFAHzY/YCC0
-	 GV+kqAtzWe1yzec+1dpgjX+KZu8kg40VR8h04m7Fr+XlRETpZhweSgPFfo7LEqUCN5w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794609503;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=4tX/7Z9Vzs8sF/DcogbCQPLNqTP7ZH5DqSeIXezg1HA=;
-	b=SiDbJUNJKUeCa6gs3tuzZsmbbiPChEtbkHy12RsPtA9gv7lohRtw1TNy5PC51CBrLgWX
-	 j/qxGKRk9AFmyUNA4iLytzhw2KtMfvu6J7S7uB4HA46XYetwtM2vI3r40TnaCHjsGk+VM
-	 J1QFQxZ/zysMbW9/lJUDGXQ5ENkwF7jdTQxBaMx9IL9vKDYFg8wybQPhOsqFujsDL5OJk
-	 bxq5MhgCaDovwVPEpuSaRqcCvEVKjGhB7L/VqPi46V5cA90CrKgXldYAGWuNpQGJfFk/h
-	 tepHIpnt3XF91/7hY8sHOldain303XWTWABYJtqaecWoY/3O8lGOA7uFPIShvO4wpJQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WgETjJ9j;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794609803;
+	b=e4Fisj+AY+z8TWbrJ34hDHeTTB2Pe00gZY+6qzW9YxTnzJXowBefCqVBTSDcfAtkGOBo
+	 vyKKDVVu8TNiFlxBXnGrWehDfDsziyvMfLWBzqcANyYFLEgNm1r1sPDT4IJZc8LLxRHuW
+	 ALwUVaPKo50wLazE6+T40Ar8FkFO/iDsmcQ90+Kt9BHHYhN5HbVZW0hL4ksWZUb3T3E6m
+	 k1RGwpVDLl4+sFCRoUlAnESmm/kCgHId+SebRy6SOB6f6OHZeSFN2pEhEUk/WqmuBzjV7
+	 44DW7vFZTcoLqGNkbAIRRhCL6oOkBttNrtPw8ykXh3LI3YsXcQAIUzgugul0V607nug==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794609803;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
+	b=upOV0rJVFwgw7VCG/ieg+oTahbrMF615mIdrhpI55CU+8MkBhJfi9gJgyGPpkpIbQIhi
+	 XinZeNEODoSaXC4jz+YnMrcanxwF/hNaJm+WgE9/A2QxvIweuh1lPANCDdxtq7N/ZgKTN
+	 efb2mNSgZ3n/Ji1EcDNC6rHGURFosG1OPInsm4t1LO1Ra7I4f+yJMw1xhW9hx4a90PLla
+	 XIE6m/jigoeST3aYJab9NxQjKHnNfgv1f8cpc03ObOs8B7l7GpmpcTS8ZuAQ5f9H0KNjM
+	 8hqY3JttlQQ/P/k/yufqasD9K6iyM7C3km3vf8d2AWELvzyniOrDqb9k3y/a92U06+g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lXNS6fzM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44BA606A549;
-	Fri, 13 Nov 2026 22:38:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E44BA606A549
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9E606A33A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 22:43:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53A9E606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WgETjJ9j
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADLf6AD2841807;
-	Fri, 13 Nov 2026 14:38:00 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=4tX/7Z9Vzs8
-	sF/DcogbCQPLNqTP7ZH5DqSeIXezg1HA=; b=WgETjJ9jdwMQky1gVOegQ7DFioX
-	nvLSkBHB3O+ja2F1Q+M4LSKH5BwBXtodPwineGTgBJ5utL8jZe37Oze9zF21xqyL
-	lB7uCW40FSkfHkNb9NS/rVlSezmjGEC2H/IjT9oONFPK/OZ9BWJsedba9p788UBy
-	CUjHcfZ4597DuVvDueaSYwHRdXF0igVkwz+N7xEdWZ2wnpIEkPo2mkdtkH9PCxsJ
-	xq2ioHW6FYVxY+dt+NQaz51Pyivm0eov8hn6y1mrHyqtyReAg/2st6kEMAD+A32B
-	r8IFyqJItICp/v3SXWcStcnLyPV0+DyRAbwQTUAPMrtF2tUN+hmsadpT67g==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwj8chtec-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 13 Nov 2026 14:38:00 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
- 2026 22:37:59 +0000
-Date: Fri, 13 Nov 2026 14:37:58 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Sergio Lopez <slp@redhat.com>
-CC: Stefano Garzarella <sgarzare@redhat.com>,
-        Alexei Starovoitov
-	<ast@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Bryan Tan
-	<bryan-bt.tan@broadcom.com>,
-        Vishnu Dasa <vishnu.dasa@broadcom.com>,
-        Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Stefan
- Hajnoczi <stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason
- Wang <jasowangio@gmail.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?=
-	<eperezma@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui
-	<decui@microsoft.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap
-	<rdunlap@infradead.org>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH RFC v3 7/8] vsock: fragment datagrams across receive
- buffers
-Message-ID: <aveRRt/rHQ1By6ul@devvm29614.prn0.facebook.com>
-References: <20261113-vsock-dgram-support-v3-0-1523c8e9b27e@redhat.com>
- <20261113-vsock-dgram-support-v3-7-1523c8e9b27e@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lXNS6fzM
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5ece6c1d1cbso467504e0c.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:43:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794609799; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jC1KFpfinE2U7Vt/v/zCB4cYEHUDYSfmqeyjA+hVWqGps3cfil4rZCUBovCn+8arSB
+         ZDe4ln+3FJdsATxKgogthAdiakUfr84B43zOyrWMy/iPdWciBKfrZULhFT8px97JDwMm
+         RYyUhoHyaxWcl7bgJDmAt7f0eOxdHkHHKKiyDh8ET4VuDvyCu+yTw9O7HhLf33KPSViO
+         YWyfm+wP+IeCwu7VDz/spEdkFubh1F1gX47hjAOZT2sCW5nVvP3OdB6GOBZBkFYZKtl6
+         aJ0guywzJ6W67i7NSMpYLKVEGyb4+BmvOUoLdkdKNu0Ga3HBlsKHxpc9i4vKdvVI+ud5
+         oehQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
+        fh=j+bX9ovjuhiLO9ZXjbHQx1qL1hH/OjM/RH/6DZlZqP0=;
+        b=bjifEI7I1f2+oQprxd+rDX+cayWo6MLorphSrAgmK1yA3Aq7DKDrR5spOkLduDGPUS
+         bMTD0dYtRMKWnZyCN5rafxPVAZCkXmVYLGZVX4dxzkqIWaXGDE8/Haq9H0vg885e0Nor
+         uRH8SjXNlwQd54GcJa4GqtMCf+psqtQC5Qczfdv34eVON9Zkqtvw8qzt6uKuW4Lee5VR
+         epdYmD3hWPLpFxybRSXA5bc2alaSPHidt2FornuC4C/9YppxBnxb1lI7uHPKkmb2Oe7b
+         ie6TmsOo7ESaG228Pe+uIjo8jUBKW4T8fxOTJkretozGK8jcNlki74ksGCbauApcfzJN
+         0xqQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794609799; x=1795214599; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
+        b=lXNS6fzML+4ms8KRhgrDko+jDoeFLKoP7/8V9vvA0kngy5RONQDDaSWlykfzxvWBqy
+         ba3/RQkLsh5FJA7UziUKYswTcUoLp64Sprh1UKYouGqpRI4Zo52eTG9fTjA419TGXujq
+         ioxmWNLa+9j3Thyf7jRbQTEXHmqlt/zskzknrOjWG26iWAH1Jm868zz2hs9QpgTc4UMh
+         7aTNKsMd9Fd+lzUjNUj0iqIKUs2rHsbmTDUJJOhbyOKm8W+bzoO03dOKoulBUbuBt+Wm
+         PbaO0hG5DWySwdQCyKK6qRZ1lJwXcgfoAIi/koTLJVlNNaqY5YaC9c/u23zPaw4bZOv7
+         18Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794609799; x=1795214599;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
+        b=vc3eRbzyQnsWVhI2aPBn8FHw7eKfr7JmO8QfGGBUXw+oC4uxs4hlH3NtbbXRr6ydpk
+         NPqhc3DuCi5485gIt6Gfwv1bCNh1SOK3bBtYnJPKGJa++nH699KkdJ7PHAuPvLAP4+p2
+         VQJLIBd6Gwv+4uv42eYhi/0UtLCIetIvxURGdXoNL04fDyf4ickn7184rnCbptrfHdiK
+         Uo87xw56QPKDytKsExUFt3cVZVgRKOAXstE8YvDLSyaoV46MJzFWcho5nP+yraVxQfRX
+         oM+eCZuk0WXIOVAmzwc8s04wK7rImFggwuA20q1zPZF+7vlxXRPYbFMc/CaLHNgg5Hf2
+         YF5A==
+X-Forwarded-Encrypted: i=1; AL+hErEYSUL2FQC2gcsTKU34zyPesmqRd25XgCPc4cCPetFUMTwJtUQiHglH2PuAm2kGyYc9Tj0D0UA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+eTgL2zFx7w4osSRLvDQ+XDjWKaqAFdNcajvAmYYN3UY8whElE
+	aU5TTlqXoE92Z3iHmJ2AbGB2ReDXEifO7pgTR8oq1UCmXzqeOWa4gdkIjEDh2iaAaObZyi20zc5
+	74w76yGiUOyHmZWJJTDls8kXbmqVRES4=
+X-Gm-Gg: AYBFou0hlmpfEV3T7+v5SRmxaIoec44xRxxEYR+Aeuw6WpZZqDJfD5mx/crcovbBZNI
+	xlmZ9aJO17VVA0CrM1GTeCvruq/t//F5ngab4iK5qBR7SqkYRKSykOu5a5EJLDvu5amvsgP2zUv
+	yZi3RUELecDdLO3pqlUNxxdsBX+ADWtgV58z6d0vwdCNuT1sv4Trq27Nssj2F44KQ6hqvfFn92n
+	Y2LhVjnDpSgc1eFNpyzop1lyOs8qwx2PIC0XCItI7Tr7/lbGEof2YuY2jnZNzyQNDJccWxI1zVj
+	Bvu5JwrJ2mm4O6dGPWOzoyHtyzi7PziHfQuzX14VzGN3j+PguDTrEDW50kxASI8ZidNHuaUIJ9e
+	1uEgMke9/bTcbG25cPYzb6fCcxxBeYZYu5BgvOB5vBGCuGVVJU96t3P4iD5/F643xGhlW06j63g
+	ftAy6QMcxcHnb/mK7cUBbJ5Hq+qHLsqLAnuVYMhZ1KhK2Le8kYFXbtJwoGyoI0f3PtITmqkJS/W
+	bxEqdrpb4Bat5G/btQdvjo/Eh+T/w==
+X-Received: by 2002:a05:6102:84c2:b0:7cc:ccb:ce5a with SMTP id
+ ada2fe7eead31-7d64d89cdabmr1053049137.28.1794609799139; Fri, 13 Nov 2026
+ 14:43:19 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,353 +106,158 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261113-vsock-dgram-support-v3-7-1523c8e9b27e@redhat.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA5MCBTYWx0ZWRfXwuHqpVeHPfUx
- YSYZrtHDQlo2QqxsvVP4nmeRDQTJCG8ZBTQt5FPRfkM/XmhvQxeRa1iR1SWgT6Kqew2692EQu/c
- QCucGYojzLzunPU4whTpjLebKQeYg3Zx1rS6s20eLQDP/FGYxWFMKc41iTKvhkSH0OzoKu++Vrr
- eSsKQ09pl6KCqd8uDVtT4Sz2xQq1guOoY3aw7DUt/+nkROKpVMhmvyqPCV5oAa8Mc//Izgc3e3J
- MF7xJJW1iPmXd1xX//nirHPWeX5/G/FkI8HdGBEzhlO0BbZqnBLuehxcmzeDMuhJc5W1eFzKF1F
- kE8+TRz1b9glm8kd3oDiH9QuTGz/HGy30JVFxTS8wQm60o8Ne1dXjjVQEKEmF4/Eacow4bsz0Pc
- NaPu7EtudXscFZWZ5wYrgL/JXlPlB+qeVfaYjdDAbimyF0HbJ+lAT6isEgPSxcF+mZC4vWXBKs2
- bYOwxeKHnvFMvnmbpPw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA5MCBTYWx0ZWRfX+m+6Ukwt/re9
- nJ5t7Rt4bj//OWK7CowD3dryD9bwGr/5ZymEI0fcUGYwJ3X6OaF76bpI9khtaCQ1iNbjCFMvpug
- ZLJP9Ej8+IUU3KQ5qattv2U1iZSACnI=
-X-Authority-Analysis: v=2.4 cv=DuvDa2/+ c=1 sm=1 tr=0 ts=6af79148 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22 a=20KFwNOVAAAA:8
- a=g20ymAsBIF5uQeyiu3MA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: ZG9E_BFKVg4jOA7zSdhltnqTQGBMXDXG
-X-Proofpoint-ORIG-GUID: ZG9E_BFKVg4jOA7zSdhltnqTQGBMXDXG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_06,2026-11-11_03,2025-10-01_01
+References: <20261109-submit-acx00-phy-stats-v1-v3-0-fbc6327c5be4@gmail.com>
+ <20261109-submit-acx00-phy-stats-v1-v3-1-fbc6327c5be4@gmail.com>
+ <348f19e7-120e-4b41-adab-be016c7a6083@lunn.ch> <avdaBgWc5tpMhtqF@pengutronix.de>
+In-Reply-To: <avdaBgWc5tpMhtqF@pengutronix.de>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Fri, 13 Nov 2026 15:43:08 -0700
+X-Gm-Features: AclHuK_y5r8zy20zeheg5z5NyDwRpxzoSdoNuCWdWvLU_7paTeMna_98mFT74a0
+Message-ID: <CADvTj4q+QuSOre_Z7Kq286fLqrLfTq26oBCarDzx=wrc7Zz_WQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/3] ethtool: add PHY receive frame and byte totals
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 13, 2026 at 06:15:47PM +0100, Sergio Lopez wrote:
-> The guest already uses page-sized RX allocations. A datagram can exceed
-> one RX buffer. Growing every posted buffer to hold a full datagram would
-> increase virtqueue memory use and make small queued datagrams retain large
-> backing allocations. With delayed reads, a bounded receive queue could
-> then fill after only a few messages.
-> 
-> Define START and EOM flags for datagram packets. Mark outgoing messages
-> with both flags, and let vhost split a message across guest RX buffers,
-> keeping START on the first fragment and EOM on the last. When a data
-> packet meets a descriptor with no payload space, vhost returns that
-> descriptor with zero used bytes. It drops datagrams but requeues stream
-> and seqpacket data for a later buffer.
-> 
-> Reassemble consecutive fragments in the guest before tap or socket
-> delivery. Bound a partial message to 64 fragments and 64 KiB. Discard
-> incomplete messages on malformed packets, a new START, a peer mismatch,
-> an intervening non-datagram packet, or virtqueue teardown. Require complete
-> framing for host and loopback ingress.
-> 
-> A QEMU reproducer now delivers a 9 KiB datagram as one message and all
-> 16 messages of a delayed-read burst. Paired host/guest selftests cover
-> 64 KiB messages and the burst through both a userspace backend and the
-> patched Linux vhost backend, with stream and seqpacket controls. A nested
-> vhost-vsock guest posting header-only RX buffers also passes stream and
-> seqpacket receive tests.
-> 
-> Signed-off-by: Sergio Lopez <slp@redhat.com>
-> ---
->  drivers/vhost/vsock.c                   |  15 +++++
->  include/uapi/linux/virtio_vsock.h       |   8 +++
->  net/vmw_vsock/virtio_transport.c        | 115 ++++++++++++++++++++++++++++++--
->  net/vmw_vsock/virtio_transport_common.c |  11 ++-
->  4 files changed, 141 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index f4fb2ac732f5..1ff4a9aff907 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -185,6 +185,19 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
->  		 * buffer, we split it using multiple buffers.
->  		 */
->  		if (payload_len > iov_len - sizeof(*hdr)) {
-> +			if (iov_len == sizeof(*hdr)) {
-> +				/* Connected sockets must retry with the next buffer. */
-> +				if (le16_to_cpu(hdr->type) ==
-> +				    VIRTIO_VSOCK_TYPE_DGRAM)
-> +					kfree_skb(skb);
-> +				else
-> +					virtio_vsock_skb_queue_head(
-> +						&vsock->send_pkt_queue, skb);
-> +				vhost_add_used(vq, head, 0);
-> +				added = true;
-> +				continue;
-> +			}
-> +
->  			payload_len = iov_len - sizeof(*hdr);
->  
->  			/* As we are copying pieces of large packet's buffer to
-> @@ -244,6 +257,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
->  		 */
->  		if (VIRTIO_VSOCK_SKB_CB(skb)->offset < skb->len) {
->  			hdr->flags |= cpu_to_le32(flags_to_restore);
-> +			if (le16_to_cpu(hdr->type) == VIRTIO_VSOCK_TYPE_DGRAM)
-> +				hdr->flags &= ~cpu_to_le32(VIRTIO_VSOCK_DGRAM_START);
->  
->  			/* We are queueing the same skb to handle
->  			 * the remaining bytes, and we want to deliver it
-> diff --git a/include/uapi/linux/virtio_vsock.h b/include/uapi/linux/virtio_vsock.h
-> index 27b4b2b8bf13..e1937f756eeb 100644
-> --- a/include/uapi/linux/virtio_vsock.h
-> +++ b/include/uapi/linux/virtio_vsock.h
-> @@ -101,6 +101,14 @@ enum virtio_vsock_shutdown {
->  enum virtio_vsock_rw {
->  	VIRTIO_VSOCK_SEQ_EOM = 1,
->  	VIRTIO_VSOCK_SEQ_EOR = 2,
-> +	/*
-> +	 * With VIRTIO_VSOCK_F_DGRAM, START marks the first RW packet of a
-> +	 * datagram and EOM marks the last. Both are set for a datagram that
-> +	 * fits in one packet. Fragments must be consecutive on the receive
-> +	 * virtqueue. Each packet's len is its fragment length.
-> +	 */
-> +	VIRTIO_VSOCK_DGRAM_EOM = VIRTIO_VSOCK_SEQ_EOM,
-> +	VIRTIO_VSOCK_DGRAM_START = 4,
+On Fri, Nov 13, 2026 at 11:42=E2=80=AFAM Oleksij Rempel <o.rempel@pengutron=
+ix.de> wrote:
+>
+> On Tue, Nov 10, 2026 at 05:42:33PM +0100, Andrew Lunn wrote:
+> > On Mon, Nov 09, 2026 at 07:48:32PM -0700, James Hilliard wrote:
+> > > The generic PHY receive packet and byte counters describe successfull=
+y
+> > > received traffic. Some PHYs instead count all received frames and byt=
+es,
+> > > including frames with errors. A frame error count cannot recover the
+> > > number of successfully received bytes because damaged frames have
+> > > different lengths.
+> > >
+> > > Add optional receive-total counters to ethtool_phy_stats and the phyd=
+ev
+> > > statistics group. Count frame bytes including the Ethernet header, pa=
+dding
+> > > and FCS, and excluding the preamble and start frame delimiter. These
+> > > counters describe reception at the PHY, before MAC or host filtering.
+> > >
+> > > Append the new attributes so existing statistic IDs and their meaning=
+s
+> > > remain unchanged. Publish the names through the existing statistics s=
+tring
+> > > set, and retain the unset-counter convention so drivers can report ei=
+ther
+> > > set of counters independently.
+> > >
+> > > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> > > ---
+> > >  Documentation/networking/ethtool-netlink.rst | 16 +++++++++++++++-
+> > >  include/linux/ethtool.h                      |  6 ++++++
+> > >  include/uapi/linux/ethtool_netlink.h         |  2 ++
+> > >  net/ethtool/stats.c                          |  8 +++++++-
+> > >  4 files changed, 30 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/Documentation/networking/ethtool-netlink.rst b/Documenta=
+tion/networking/ethtool-netlink.rst
+> > > index eba226c79ec3..5528d0f7afdd 100644
+> > > --- a/Documentation/networking/ethtool-netlink.rst
+> > > +++ b/Documentation/networking/ethtool-netlink.rst
+> > > @@ -1665,7 +1665,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currentl=
+y defined values are:
+> > >   ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30=
+.3.2.1.*)
+> > >   ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistic=
+s (30.3.3.*)
+> > >   ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
+> > > - ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defi=
+ned by IEEE
+> > > + ETHTOOL_STATS_PHY      phydev   Additional PHY statistics, not defi=
+ned by IEEE
+> > >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
+=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+> > >
+> > >  Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in th=
+e reply.
+> > > @@ -1683,6 +1683,20 @@ by ``ETHTOOL_A_STATS_GRP_SS_ID``. Complex stat=
+istics (such as RMON histogram
+> > >  entries) are also listed inside ``ETHTOOL_A_STATS_GRP`` and do not h=
+ave
+> > >  a string defined in the string set.
+> > >
+> > > +The ``phydev`` group provides separate counters for successfully rec=
+eived
+> > > +traffic and total received traffic.
+> >
+> > You need to be careful with naming here. This is a
+> > kAPI. phydev/phylib/phylink are implementation details, a set of
+> > helpers which some MAC drivers use to implement PHYs. But MAC driver
+> > can implement PHYs in different ways, and don't need to use a phydev.
+> >
+> > ``ETHTOOL_A_STATS_PHY_RX_PKTS``
+> > > +(``RxFrames``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES`` (``RxOctets``) c=
+ount
+> > > +successfully received frames and bytes. ``ETHTOOL_A_STATS_PHY_RX_PKT=
+S_TOTAL``
+> > > +(``RxFramesTotal``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES_TOTAL`` (``Rx=
+OctetsTotal``)
+> > > +include frames with errors. The total byte count includes the Ethern=
+et header,
+> > > +padding and FCS, but excludes the preamble and start frame delimiter=
+.
+> >
+> > And what would you call it when the counter does include the preamble
+> > and start frame delimiter?
+> >
+> > Take a step back. Just because this PHY has these counters, do we need
+> > to support them? And what happens when the next PHY comes along with
+> > slightly different counters? Do we add them as well?
+> >
+> > It is vendor SDK syndrome. The hardware can do this, so lets expose
+> > it.
+> >
+> > What is your use case here which justifies these specific counters.
+>
+> I have the same question. James, your answer mentions traffic monitoring
+> and error diagnosis, but not a concrete problem on AC200/AC300 that these
+> totals would help with. My guess is a receive problem that another driver
+> for this PHY already works around.
+>
+> Rockchip's vendor driver for the same PHY ID (RK630 and RV1106) reads the
+> packet and CRC error counters from page 9, registers 0x1b/0x1c and
+> 0x1d/0x1e:
+>
+> https://github.com/rockchip-linux/kernel/blob/eeb355823a794954737fd75820d=
+fccdab4c57af6/drivers/net/phy/rk630phy.c#L430
+>
+> The vendor driver does not export them. It polls them to tune the
+> receiver. If there is a signal but no link, it switches to a second
+> analog setting and checks again. It switches settings in two more cases:
+> too few frames arrive, or more than 15% of the frames have a CRC error.
 
-Should this be 4 if VIRTIO_VSOCK_DGRAM_EOM = VIRTIO_VSOCK_SEQ_EOM = 1?
-Seems like 3 is missing?
+Allwinner applies efuse-derived trim on both AC200 and AC300 alongside
+hard-coded PHY register settings. AC200 uses one fixed set of settings;
+AC300 selects between two sets using efuse bit 9. These are applied at
+initialization, rather than adjusted from live packet/error statistics.
 
->  };
+> Its comments call this "Long network cable parameters". It also changes
+> the RX detect threshold depending on the temperature.
+>
+> Do you see a problem like this on your AC200/AC300 boards? If so, can
+> you describe it? Then we can decide whether the driver should work
+> around that problem.
 
-Is VIRTIO_VSOCK_DGRAM_START strictly necessary? If we just received an
-EOM from a peer, then we know that the next pkt from that peer is also
-the start of a new dgram. We'd have to be careful to never abandon a
-datagram partway through, but for example I think we can just requeue
-the datagram fragment to later retry if we fail to place onto the vq?
+I haven't reproduced that problem or tested long cables and temperature
+extremes. Temporary register changes on AC200 confirmed that candidate
+tuning fields are writable, but not that their analog meanings match
+Rockchip's. Adaptive tuning could be relevant future work, but I don't
+yet have evidence that ACx00 needs the Rockchip workaround.
 
->  
->  #endif /* _UAPI_LINUX_VIRTIO_VSOCK_H */
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index 87a96e94c3c2..c8c58a7dcec4 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -54,6 +54,8 @@ struct virtio_vsock {
->  	bool rx_run;
->  	int rx_buf_nr;
->  	int rx_buf_max_nr;
-> +	struct sk_buff_head dgram_rx_queue;
-> +	u32 dgram_rx_len;
->  
->  	u32 guest_cid;
->  	bool seqpacket_allow;
-> @@ -312,7 +314,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
->  static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
->  {
->  	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
-> -	struct scatterlist pkt, *p;
-> +	struct scatterlist pkt;
->  	struct virtqueue *vq;
->  	struct sk_buff *skb;
->  	int ret;
-> @@ -325,9 +327,9 @@ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
->  			break;
->  
->  		memset(skb->head, 0, VIRTIO_VSOCK_SKB_HEADROOM);
-> +		virtio_vsock_skb_put(skb, total_len - VIRTIO_VSOCK_SKB_HEADROOM);
->  		sg_init_one(&pkt, virtio_vsock_hdr(skb), total_len);
-> -		p = &pkt;
-> -		ret = virtqueue_add_sgs(vq, &p, 0, 1, skb, GFP_KERNEL);
-> +		ret = virtqueue_add_inbuf(vq, &pkt, 1, skb, GFP_KERNEL);
->  		if (ret < 0) {
->  			kfree_skb(skb);
->  			break;
-> @@ -661,6 +663,93 @@ virtio_transport_dgram_allow_check(struct vsock_sock *vsk, u32 cid, u32 port)
->  	return dgram_allow;
->  }
->  
-> +#define VIRTIO_VSOCK_DGRAM_MAX_FRAGS	64
-> +
-> +/* The RX worker holds rx_lock while assembling fragments from one virtqueue. */
-> +static void virtio_vsock_dgram_reset(struct virtio_vsock *vsock)
-> +{
-> +	skb_queue_purge(&vsock->dgram_rx_queue);
-> +	vsock->dgram_rx_len = 0;
-> +}
-> +
-> +static bool virtio_vsock_dgram_same_peer(struct sk_buff *first,
-> +					 struct sk_buff *next)
-> +{
-> +	const struct virtio_vsock_hdr *a = virtio_vsock_hdr(first);
-> +	const struct virtio_vsock_hdr *b = virtio_vsock_hdr(next);
-> +
-> +	return a->src_cid == b->src_cid && a->dst_cid == b->dst_cid &&
-> +	       a->src_port == b->src_port && a->dst_port == b->dst_port;
-> +}
-> +
-> +static struct sk_buff *
-> +virtio_vsock_dgram_reassemble(struct virtio_vsock *vsock, struct sk_buff *skb)
-> +{
-> +	struct sk_buff_head *queue = &vsock->dgram_rx_queue;
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +	struct sk_buff *assembled, *fragment;
-> +	u32 flags = le32_to_cpu(hdr->flags);
-> +	int offset = 0;
-> +
-> +	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW ||
-> +	    flags & ~(VIRTIO_VSOCK_DGRAM_START | VIRTIO_VSOCK_DGRAM_EOM))
-> +		goto drop_partial;
-> +
-> +	/* START also resynchronizes after an abandoned datagram. */
-> +	if (flags & VIRTIO_VSOCK_DGRAM_START)
-> +		virtio_vsock_dgram_reset(vsock);
-> +	else if (skb_queue_empty(queue))
-> +		goto drop_skb;
-> +
-> +	fragment = skb_peek(queue);
-> +	if (fragment && !virtio_vsock_dgram_same_peer(fragment, skb))
-> +		goto drop_partial;
-> +	if (skb->len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE - vsock->dgram_rx_len ||
-> +	    skb_queue_len(queue) >= VIRTIO_VSOCK_DGRAM_MAX_FRAGS ||
-> +	    (!(flags & VIRTIO_VSOCK_DGRAM_EOM) && !skb->len))
-> +		goto drop_partial;
-> +
-> +	if (flags & VIRTIO_VSOCK_DGRAM_EOM && skb_queue_empty(queue))
-> +		return skb;
-> +
-> +	vsock->dgram_rx_len += skb->len;
-> +	skb_queue_tail(queue, skb);
-> +	if (!(flags & VIRTIO_VSOCK_DGRAM_EOM))
-> +		return NULL;
-> +
-> +	assembled = virtio_vsock_alloc_skb(VIRTIO_VSOCK_SKB_HEADROOM +
-> +					     vsock->dgram_rx_len, GFP_KERNEL);
-> +	if (!assembled)
-> +		goto reset;
-> +	virtio_vsock_skb_put(assembled, vsock->dgram_rx_len);
-> +	fragment = skb_peek(queue);
-> +	memcpy(virtio_vsock_hdr(assembled), virtio_vsock_hdr(fragment),
-> +	       sizeof(*hdr));
-> +	hdr = virtio_vsock_hdr(assembled);
-> +	hdr->len = cpu_to_le32(vsock->dgram_rx_len);
-> +	hdr->flags = cpu_to_le32(VIRTIO_VSOCK_DGRAM_START |
-> +				  VIRTIO_VSOCK_DGRAM_EOM);
-> +	skb_queue_walk(queue, fragment) {
-> +		if (skb_store_bits(assembled, offset, fragment->data,
-> +				   fragment->len)) {
-> +			kfree_skb(assembled);
-> +			goto reset;
-> +		}
-> +		offset += fragment->len;
-> +	}
-> +	virtio_vsock_dgram_reset(vsock);
-> +	return assembled;
-> +
-> +drop_partial:
-> +	virtio_vsock_dgram_reset(vsock);
-> +drop_skb:
-> +	kfree_skb(skb);
-> +	return NULL;
-> +reset:
-> +	virtio_vsock_dgram_reset(vsock);
-> +	return NULL;
-> +}
-> +
->  static void virtio_transport_rx_work(struct work_struct *work)
->  {
->  	struct virtio_vsock *vsock =
-> @@ -697,7 +786,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  
->  			/* Drop short/long packets */
->  			if (unlikely(len < sizeof(*hdr) ||
-> -				     len > virtio_vsock_skb_len(skb))) {
-> +				     len > sizeof(*hdr) + skb->len)) {
-> +				virtio_vsock_dgram_reset(vsock);
->  				kfree_skb(skb);
->  				continue;
->  			}
-> @@ -705,6 +795,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  			hdr = virtio_vsock_hdr(skb);
->  			payload_len = le32_to_cpu(hdr->len);
->  			if (unlikely(payload_len > len - sizeof(*hdr))) {
-> +				virtio_vsock_dgram_reset(vsock);
->  				kfree_skb(skb);
->  				continue;
->  			}
-> @@ -713,12 +804,19 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  			if (le16_to_cpu(hdr->type) == VIRTIO_VSOCK_TYPE_DGRAM &&
->  			    (!vsock->dgram_allow ||
->  			     le64_to_cpu(hdr->dst_cid) != vsock->guest_cid)) {
-> +				virtio_vsock_dgram_reset(vsock);
->  				kfree_skb(skb);
->  				continue;
->  			}
->  
-> -			if (payload_len)
-> -				virtio_vsock_skb_put(skb, payload_len);
-> +			pskb_trim_unique(skb, payload_len);
-> +			if (le16_to_cpu(hdr->type) == VIRTIO_VSOCK_TYPE_DGRAM) {
-> +				skb = virtio_vsock_dgram_reassemble(vsock, skb);
-> +				if (!skb)
-> +					continue;
-> +			} else if (!skb_queue_empty(&vsock->dgram_rx_queue)) {
-> +				virtio_vsock_dgram_reset(vsock);
-> +			}
->  
->  			virtio_transport_deliver_tap_pkt(skb);
->  
-> @@ -730,7 +828,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  	} while (!virtqueue_enable_cb(vq));
->  
->  out:
-> -	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> +	if (!vsock->rx_buf_nr ||
-> +	    vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->  		virtio_vsock_rx_fill(vsock);
->  out_nofill:
->  	mutex_unlock(&vsock->rx_lock);
-> @@ -824,6 +923,7 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
->  	mutex_lock(&vsock->rx_lock);
->  	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
->  		kfree_skb(skb);
-> +	virtio_vsock_dgram_reset(vsock);
->  	mutex_unlock(&vsock->rx_lock);
->  
->  	mutex_lock(&vsock->tx_lock);
-> @@ -865,6 +965,7 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
->  
->  	mutex_init(&vsock->tx_lock);
->  	mutex_init(&vsock->rx_lock);
-> +	skb_queue_head_init(&vsock->dgram_rx_queue);
->  	mutex_init(&vsock->event_lock);
->  	skb_queue_head_init(&vsock->send_pkt_queue);
->  	INIT_WORK(&vsock->rx_work, virtio_transport_rx_work);
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index c540bc40755a..23f141cd786a 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -275,6 +275,13 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->  				hdr->flags |= cpu_to_le32(VIRTIO_VSOCK_SEQ_EOR);
->  		}
->  	}
-> +	if (info->type == VIRTIO_VSOCK_TYPE_DGRAM) {
-> +		struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +
-> +		/* Vhost may split this message across guest RX buffers. */
-> +		hdr->flags |= cpu_to_le32(VIRTIO_VSOCK_DGRAM_START |
-> +					  VIRTIO_VSOCK_DGRAM_EOM);
-> +	}
->  
->  	if (info->reply)
->  		virtio_vsock_skb_set_reply(skb);
-> @@ -1877,7 +1884,9 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  	 * datagrams are silently dropped (no RST).
->  	 */
->  	if (le16_to_cpu(hdr->type) == VIRTIO_VSOCK_TYPE_DGRAM) {
-> -		if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW)
-> +		if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW ||
-> +		    le32_to_cpu(hdr->flags) !=
-> +		    (VIRTIO_VSOCK_DGRAM_START | VIRTIO_VSOCK_DGRAM_EOM))
->  			goto free_pkt;
->  
->  		sk = vsock_find_bound_dgram_socket_net(&dst, net);
-> 
-> -- 
-> 2.56.0
-> 
+>
+> Oleksij
