@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794549827;
-	b=KL+edx/Q1dzQAasrv3HOgWu7qQts8+UkJ4eBODtYBY0c5u5eYKeS9VJ7uTpZXTOUuzui
-	 EuFg7MtBHbz9XdPfweeo2v3HqMuuH0g6U1MBYDvHp1PHy6sb56bxKjPgKXrhvCrhUqGnj
-	 47URchUJsxqXs6j+lvsFUNekLLgPRZUVKDcHdxAdhH8nMfWaMK99GepjA/75p+FeiIckA
-	 kx/GYnpZgGVtRt2U3FGLhV6HNKBZ2Co7453hcG3FHD/+m8C06vZbMD0cM1Knt0Z2yUQHb
-	 2mTEFpxN8+l41xiWRoOu6yMSWAAovChoY7aVjO6Db8S5FIX2Xa06GaKi69FM421+r6A==
+	b=HubQ+uXUa8If7h6qRygBQAxcccTOycVIxZiuGBKP3LG6RrupGCTIHlA0SLtJnL9hYJyD
+	 oyZksptPvWibpYXJNcMYGeHsYw7zSHyRlfi5FRaR6vHEWtkrpYdQI5B7EPHrfrCt6nXMx
+	 u5Z5p47EWifRzrN33qddSj32RG45bYWP4wKmrBPuygY4VzLVgEG0c/58FQT49KV2DMn+d
+	 EcGlYJJvBcirOitP8/u00f9cNracwcgPKS4doPZwVrq+W2J387Vq+ZNGHdAjagT6judGh
+	 b2ViHJs78BUHY7LU5YLxKSClSCMgIrkin++0yNhOU6nVFu1d4duEINHj2meFTFMlQ2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794549827;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=NvIhzZQf5UDJnO9c5CN0m5GvDC31vrAe1Cgg3SyZmPI=;
-	b=JzkME4tKFvADm0+/sukrE9tLGFEKrhJCBrT1rlhGIMbltuWTqWx4WVW3KjYqpQCInvF8
-	 ixmKEOKIxEitAPXYo1+G+pHnd1BH/qOt4ueEXtQ8lNeV47B0aIcLS5qvNc+Y21aPmiabw
-	 0+LmcZ7dZNUbMy4ouRM4bSf61klxBseV2w35yccVz5lOMvG5Fnks+TFOAA9dkPy40Or5C
-	 3IAEOiWk6GAX5kPPSyvIFqk7Pki8rbSuf2EtdsrhN8TbtdGh8A8ET6/ItbK38heU5P4SY
-	 JuBVbxC9RHh6VnUyVeEeGsIBoH6hYtkhZCnll4nsmDXCvq+M5D+79yqO2Yiif7l9itg==
+	bh=Zm0SXoTsslJ98OYXXtI9gqGgG6mU0h0OU9o2vwPu4zc=;
+	b=vLUUjFZfo9Svyl/DeplUgRgFVBmVLknjChoDsOWiF62b/eIvous6SyYY6kxVPFDTeSyv
+	 M8KvXfHj0Ve6u/WWLrxCI7pCb8fE8tbbtUyVXire0kdXAhKQxlxwaGqJkph6Izpg7B+oo
+	 wM1CG87i4g6s+uFTz4wCFX2I7sVAd4EILAkFkDjSBR/WKT5/q16VghQXSrYePi7lV7c4b
+	 VZqyctRKK9QMnUySrJsQNp/f9K4tv0qAnmvF5rmS2TxvzMLdZ5gCsU+oAGRz943LrCzr/
+	 Erc2ltbpCI/3i5kVhy5l2Xu3/ngC69NaXalqyTbxrA/4Ged9jpeR9zWjcmuhxCu7XDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKzpP+CA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EX1a+XGG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3E606A321
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 06:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0906606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 06:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKzpP+CA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352111F000C4;
-	Fri, 13 Nov 2026 06:03:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EX1a+XGG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC481F000C5;
+	Fri, 13 Nov 2026 06:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549826;
-	bh=NvIhzZQf5UDJnO9c5CN0m5GvDC31vrAe1Cgg3SyZmPI=;
+	s=k20260515; t=1794549827;
+	bh=Zm0SXoTsslJ98OYXXtI9gqGgG6mU0h0OU9o2vwPu4zc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HKzpP+CAXtuLONzX/frRtkegHUJc61HwzeB2N3dQiaaPgiKiQTVKoa4cMfAkPOeqx
-	 tyb+n6cHMvvyin3v77VdTfSINrKFJKnw7uCnhoXd9g01a7C+vKYjAkvHBxhP1pRfbY
-	 fH/pqOSOU7T2VpWcz8g4FgB1bZOrNhMVbqWsPIEwFddsWD0wtjK8By9PX0fPWv6b2f
-	 5MT570h6Iw7seUCoYq+5AIOWYfK87vgDZQ68rDt6+X3v45iOz05SvcSiF54QkduBEi
-	 CoFhmB0/kr0ZKRUjNiNF/MDRaTgQvCl8nwEoca5CALvC3tkCmkxG4pYh1jB5gKaNw1
-	 IMdZCdd4UejzQ==
-Subject: Re: [PATCH net-next v4 1/4] selftests: net: py: add metric output
+	b=EX1a+XGGwBx+6r9TJTxfkeOgnEbqr12c+0aaZhbL23F9L+oaGCMjne3M6IKrvASM2
+	 +1VzL0UbolXAxiCpQ4WA1GXDiXMYdNbNaoM/PP8scZJEsZkv5osDEPpFHOTrOfcVa5
+	 ljLRvlJnaiOyYTpjuVjZr1RTnSrdku0Bc2DtB3qdT1jPxCWrvIF3H59gYVHD/BOssz
+	 14f/PCufumUPg+8BUw87ar/5h/ujz4dZqhsofqsHcD5vGU/YYY96DrtFqabDfzK1+w
+	 lY8o8ABX31zmxxcztNeiwJxk9XIqJYY/vuwtQrKZWuAm7l6Bqi5dSQD8bvIQLkcL+3
+	 KQX6clHqhs1XQ==
+Subject:
+ Re: [PATCH net-next v4 2/4] selftests: drv-net: add an iperf performance test
 From: netdev-bot+sashiko@kernel.org
 To: sdf.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, bjorn@kernel.org
-Date: Fri, 13 Nov 2026 06:03:45 +0000
-Message-ID: <179454982577.2199510.14565556723328267605@kernel.org>
-In-Reply-To: <20261111000246.962871-2-sdf@fomichev.me>
-References: <20261111000246.962871-2-sdf@fomichev.me>
+Date: Fri, 13 Nov 2026 06:03:46 +0000
+Message-ID: <179454982676.2199510.893997649108643676@kernel.org>
+In-Reply-To: <20261111000246.962871-3-sdf@fomichev.me>
+References: <20261111000246.962871-3-sdf@fomichev.me>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,125 +69,87 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] In tools/testing/selftests/net/lib/py/ksft.py, the ksft_metric()
-  docstring ("They do not affect the result.") and…
-- [Low] ksft_metric() in tools/testing/selftests/net/lib/py/ksft.py does
-  not check that `goal` is one of "higher", "lower" or "zero", or that…
-- [Low] tools/testing/selftests/drivers/net/README.rst now documents
-  ksft_metric() under "Guidance for test authors", next to ksft_pr(),…
+- [Low] In commit "selftests: drv-net: add an iperf performance test",
+  the author and sign-off addresses differ.
+- [Low] The patch adds a new HW-only test directory,
+  tools/testing/selftests/drivers/net/perf.
 
 --
 
-selftests: net: py: add metric output
+selftests: drv-net: add an iperf performance test
 
-This commit adds ksft_metric() to the Python net selftest library. The
-helper prints a numeric measurement of the current test case as a compact
-JSON line prefixed with "ktap-metric-json:", tagged with a goal of higher,
-lower or zero. It is exported from net/lib/py and documented in
-drivers/net/README.rst.
+This commit adds a new drivers/net/perf selftest target with its own
+lib/py, similar to drivers/net/hw. It adds Iperf3Runner.measure(), which
+returns an Iperf3Result, and a new iperf.py test that reports TCP
+throughput as a ktap metric.
 
-> diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-> index 3fe49bce4f3a5..f651163c16c8c 100644
-> --- a/tools/testing/selftests/drivers/net/README.rst
-> +++ b/tools/testing/selftests/drivers/net/README.rst
-> @@ -259,6 +259,22 @@ ksft_pr()
->  
->  Use ``ksft_pr()`` instead of ``print()`` to avoid breaking TAP format.
->  
-> +ksft_metric()
-> +~~~~~~~~~~~~~
-> +
-> +Use ``ksft_metric()`` to report a numeric measurement of the current test
-> +case. Metrics are printed right away as compact JSON. For example::
+> Reviewed-by: Björn Töpel <bjorn@kernel.org>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 
 [Severity: Low]
-Can tests in drivers/net/ and drivers/net/hw/ import this helper the way
-the README suggests?
+This isn't a bug, but the author and sign-off addresses don't match:
 
-This section sits next to ksft_pr(), defer(), ksft_disruptive and
-ksft_variants. All of those are re-exported by
-drivers/net/lib/py/__init__.py and drivers/net/hw/lib/py/__init__.py.
-Both files use an explicit import list and an explicit __all__:
+  Author: Stanislav Fomichev <sdf.kernel@gmail.com>
+  Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 
-    from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-        ksft_setup, ksft_variants, KsftNamedVariant
+There is no From: line or second Signed-off-by linking the two, and
+checkpatch flags this as a From:/Signed-off-by: email address mismatch.
+The other patches in the series have the same mismatch.
 
-This patch only adds ksft_metric to net/lib/py/__init__.py. So a test in
-drivers/net/ or drivers/net/hw/ that does "from lib.py import ksft_metric"
-would fail with ImportError when the module loads.
+Could the author address be changed to match, or a Signed-off-by from
+the author address be added?
 
-Later patches in the series add drivers/net/perf/lib/py/__init__.py,
-which does export ksft_metric. The drivers/net and drivers/net/hw libs
-still don't export it at the end of the series.
-
-Should those two re-export lists be updated as well?
+> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+> index 07c3719f8b04b..c55d7792b27c4 100644
+> --- a/tools/testing/selftests/Makefile
+> +++ b/tools/testing/selftests/Makefile
+> @@ -159,7 +159,7 @@ TARGETS_HOTPLUG = cpu-hotplug
+>  TARGETS_HOTPLUG += memory-hotplug
+>  
+>  # Networking tests want the net/lib target, include it automatically
+> -ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
+> +ifneq ($(filter net drivers/net drivers/net/hw drivers/net/perf,$(TARGETS)),)
+>  ifeq ($(filter net/lib,$(TARGETS)),)
+>  	INSTALL_DEP_TARGETS := net/lib
+>  endif
 
 [ ... ]
 
-> diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
-> index 81287c2daff09..572ee17b4f4f2 100644
-> --- a/tools/testing/selftests/net/lib/py/ksft.py
-> +++ b/tools/testing/selftests/net/lib/py/ksft.py
+> diff --git a/tools/testing/selftests/drivers/net/perf/iperf.py b/tools/testing/selftests/drivers/net/perf/iperf.py
+> new file mode 100755
+> index 0000000000000..5b6f0bce2a03d
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/perf/iperf.py
 
 [ ... ]
 
-> @@ -93,6 +94,25 @@ def ksft_pr(*objs, **kwargs):
->      print(pfx, prefixed, **kwargs)
->  
->  
-> +def ksft_metric(name, value, *, goal):
-> +    """
-> +    Report a numeric measurement of the current test case.
-> +
-> +    Metrics are printed right away. They do not affect the result.
-> +
-> +    Args:
-> +      name - name of the metric, e.g. "throughput"
-> +      value - the measured number
-> +      goal - "higher" or "lower" for a performance metric, depending on
-> +             which way is better, "zero" for an error metric, which must
-> +             be zero
-> +    """
-> +    metric = {"name": name, "value": value, "goal": goal}
+> +def main():
+> +    """Run the iperf performance test."""
+> +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
 
 [Severity: Low]
-This isn't a bug, but should ksft_metric() check that goal is one of
-"higher", "lower" or "zero", and that value is a number?
+Should tools/testing/selftests/drivers/net/README.rst be updated to cover
+the new drivers/net/perf directory?
 
-Right now, a misspelled goal, a string or None value, or a bool (which
-is encoded as true) still produces a well-formed ktap-metric-json line.
-A consumer may not be able to classify that line.
+With nsim_test=False this is a HW-only test. The "Both modes required"
+section of the README still says:
 
-The callers added later in the series, drivers/net/perf/iperf.py and
-drivers/net/perf/devmem.py, both pass goal="higher" with a float
-throughput. So this would only catch mistakes in future callers.
+  All tests in drivers/net must support running both against a software device
+  and a real device. SW-only tests should instead be placed in net/ or
+  drivers/net/netdevsim, HW-only tests in drivers/net/hw.
 
-> +    payload = json.dumps(metric, allow_nan=False, separators=(",", ":"),
-> +                         sort_keys=True)
+The build/install example also only lists the existing targets:
 
-[Severity: Low]
-Is "They do not affect the result" true for every input?
+  # make -C tools/testing/selftests/ TARGETS="drivers/net drivers/net/hw"
 
-With allow_nan=False, json.dumps() raises ValueError for NaN or
-+/-Infinity, and TypeError for values it cannot encode. ksft_metric()
-does not catch these, so they reach the generic handler in ksft_run():
+No patch in the series mentions drivers/net/perf in the README. Users who
+follow the example won't build or install the new perf tests, and the
+placement rule for HW-only tests no longer matches the tree.
 
-        except BaseException as e:
-            ...
-            KSFT_RESULT = False
-            cnt_key = 'fail'
+> +        ksft_run([tcp], args=(cfg,))
+> +    ksft_exit()
 
-The test case is then reported as failed. The README makes the same
-claim: "Metrics do not affect the result of the test."
-
-The callers in the series always pass finite throughput values. Also,
-allow_nan=False looks like a deliberate choice to keep the output strict
-JSON.
-
-Could the docstring and the README say that non-finite or non-numeric
-values raise an exception and fail the test case?
-
-> +    ksft_pr(f"ktap-metric-json: {payload}")
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111000246.962871-1-sdf%40fomichev.me
