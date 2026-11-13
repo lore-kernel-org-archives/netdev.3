@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602529;
-	b=pvs7WiaJuj5YEpxaOXuH4z20H39XiLckfWS0uw8ioaj6ZnWsOxWPOK2iburXnEDcbjNA
-	 6WW9M59fb1MtJUMCQfaSGcPqROeysIC3SgaJtvxHsRyvjps2eWvDpHydqd++VxKqOuGSm
-	 +42erPf1AQojjgThboAnJ81ogZbNEHmdE3rrq/7kiBccPg/nrHYoMK06c03nPDXTRuObq
-	 DKinUShQ+5BgstpprnalyoCBqolr7n3nmSB3gEZ+zPi7/TND607cA5/ahlaNsGGildqp7
-	 M6R8QjU2vls1dy/sHrXuPlslkNIHRNOpJIipyl2jCB3vIdIuWPYH13iawIyCbBZ7VFQ==
+	t=1794602530;
+	b=oHjlqaBR4Ib1qs9scRf/vI1QuSsCTS7ZWUiAlSJRfYX24jf95zYATABWTbDe/1j2003+
+	 EFRZfQye8o6MUW9brt7bM7TNINckV838RBkIWj21bAxcUjEhbAwkXFY5pmI7VB5zu0Och
+	 S2ike3D91xPhS+MJBf0+mhQAB29UA6vvOTvsxMRFKurWvpvUER1SzIZJT5JBp9ur0PhIr
+	 Ij2T0yuchq2NOeMnpVVKPp60zA0b2E+7WpKICShSaXdE6giZ9J7c1kUcOUD77/S4FCthA
+	 RH9QHw+eOIqZuwdbyt2hjbNYNu3GPSKqrOHHVKqokQycKCClti/Ds/cZjimcfH3N7/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602529;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602530;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=24ZB7C+xk57SPHEJRtbLd+k3HhvZYXpppDTs6E1+8t0=;
-	b=23gzaXS0yfwEVJOkbs/tTfcATjayd1DaUi5ff7ZfDEfX6ohO6GstuExNsJDsX4COzH4L
-	 hJTCWBAoXG1YXYVmJkCAxPu/8t3bf+/lu1KmeR3M07S39hQOHnL+sXuTK8U5Exr3cnDmj
-	 c1Z7jCR4wt86AjTi3BiuJsyVV5yn/M7hx/e+fwyFW9JJEKElVkebMl6ve/S4qqYprrzpm
-	 KaC/7t+7HD/ITKR+/PRYXmzhrECUOBVqmwYY0WJpU5sjJg2a9ReLlCpJdRyM7C+QUaS9g
-	 kxfmED8I2qXLCtMNZMbIMNJXeeo/UI0NAoWpQUeS2bOnR90mUTKlSBL5MzVFOBzBdRg==
+	bh=8G3hnlHk6VC2wTViDZLxE+VNr7eD89vT49GcW2PzJA0=;
+	b=q6so/HNoi6nAEvhEVN9QzOt1EJG3iMpSzRC7hgncK1ubR8Me50Uk6foTV/l6V9ANGKV7
+	 v1SarxWihn8xjGjwcmC7CNw/V3M6v5Tx4XMzpUo9DhZ+MVRijfI/hdvnUz5Ns+9zzxae6
+	 dify4nAhaXdZglBdnCsdAnGhTwKH+a1sednRaSG9VInpxS+Dx2bYVz/fOhBtWgSbX7em+
+	 kCnCcO3kYCmIEXoRj2GEtPKdckXgcuL+WGPiWutlTXdQzHmSbkfJ6tfQx7BqD1oqu2s4L
+	 VNrlGVdX3ZjpHSSLy3+OSJUqLsh6Uz0IF3p+rlxqRxE+aShgxMcbgyaJVG9JMzdr+3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibI9HDRY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="PRTf/NKc";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1ED606A32D;
-	Fri, 13 Nov 2026 20:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C53606A330;
+	Fri, 13 Nov 2026 20:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibI9HDRY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278561F000C4;
-	Fri, 13 Nov 2026 20:42:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PRTf/NKc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF01F000C6;
+	Fri, 13 Nov 2026 20:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794602528;
-	bh=24ZB7C+xk57SPHEJRtbLd+k3HhvZYXpppDTs6E1+8t0=;
+	s=k20260515; t=1794602530;
+	bh=8G3hnlHk6VC2wTViDZLxE+VNr7eD89vT49GcW2PzJA0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ibI9HDRYDL3qXuFApPYH5PzklzMtkjMgPsQ9RwGtlZr9JTimBy94vdVnkzq7RAFxf
-	 Uce0BCNFGzKODk9tr+1GNTR+MB65wjrnp2gCJ+hNa5m7Jj/gFrkoOtkT9hM4yD+vCk
-	 BSzMWpSV1Nbp1rwFOB0gw21wQ2YEKz5iHcLnci2GTBeFKoe1YOTosgXKkzkjIvgxMj
-	 fyaGSuAzZ18g1/EczxeBKOJzBfNx6ZpSxbbH893PjZHv/IfP9YIcqWCUN9n4N8y0y+
-	 6ShnuynbHZ9WzcoY7JsEJINL0mvPOGh5oHk15Yvmc62N3HHROpWrai3HGBjSahO33c
-	 akthls1omT7mQ==
-Subject: Re: [PATCH net v2 1/6] net: bcm4908_enet: fix the TX ring wrap
+	b=PRTf/NKce2rgcBSIBz7ZMMu4UK8VEOkk7nSfrZc0AK4vmYwGDu0GrLbbYlwZPIIoy
+	 vvvFYf5plttYdqOpVQk1iS3CxdMud+xJY3snZB+HzHHwOgC/PyvOawrExZObCpxCFk
+	 D/EBzoHtZT9Hq+puXzaYUZRce1UEwP1p02QAVJMppS/MQXml7J6XfYIaks06k+Ck5U
+	 JUWtN+Ash2xXQ7uA/R9uaOoaZL33XXldFaPpKU4k4SxVyuA747G2kUUuBpwJ3hIExE
+	 tOBSCEaak+dmCrr84zHK7yLH0HJ4VTU6gk2U03YztgSj1ja/ZKfmFMvCbesvesvi+D
+	 SsiaP0DfHiNpw==
+Subject: Re: [PATCH net v2 3/6] net: bcm4908_enet: release the TX ring on stop
 From: netdev-bot+sashiko@kernel.org
 To: kudzo51@gmail.com
 Cc: netdev@vger.kernel.org, f.fainelli@gmail.com,
@@ -48,11 +48,11 @@ Cc: netdev@vger.kernel.org, f.fainelli@gmail.com,
  bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 20:42:07 +0000
-Message-ID: <179460252768.2199510.4667025168810979943@kernel.org>
-In-Reply-To: <20261112195051.597102-2-kudzo51@gmail.com>
-References: <20261112195051.597102-2-kudzo51@gmail.com>
-X-sashiko-severity: Medium
+Date: Fri, 13 Nov 2026 20:42:08 +0000
+Message-ID: <179460252891.2199510.811569497068459485@kernel.org>
+In-Reply-To: <20261112195051.597102-4-kudzo51@gmail.com>
+References: <20261112195051.597102-4-kudzo51@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,204 +76,200 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] net: bcm4908_enet: missing barriers and late write_idx update
-  on TX ring
+- [High] Double free and double DMA unmap of TX skbs, introduced by the
+  new bcm4908_enet_tx_ring_clean().
+- [Medium] bcm4908_enet_stop() now frees in-flight TX buffers even when
+  the TX DMA channel was never confirmed stopped.
 
 Pre-existing issues:
-- [High] When the device tree has no "tx" interrupt, TX completions never
-  run, so the queue stop/wake design this patch adds cannot work.
-- [High] bcm4908_enet_poll_tx() reads the producer index without a lock
-  or ordering, then reads descriptor and slot contents with no read…
+- [High] This problem wasn't introduced by this patch, but it is High
+  severity and it stops the patch's new cleanup from ever running in…
 
 --
 
-net: bcm4908_enet: fix the TX ring wrap
+net: bcm4908_enet: release the TX ring on stop
 
-This patch makes start_xmit() and poll_tx() wrap the TX ring indexes at
-the same point. It sets WRAP on the last descriptor and keeps one
-descriptor free, so read_idx == write_idx always means an empty ring. It
-also switches the queue stop/wake logic to the netif_txq_* helpers from
-netdev_queues.h.
+This patch makes bcm4908_enet_stop() wait for the TX DMA channel to stop,
+then unmap and free the skbs still left between read_idx and write_idx. It
+also clears the TX descriptors when the ring is initialised, and drops the
+OWN check in bcm4908_enet_start_xmit().
 
 > diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-> index fd2715f84af97..60f711e8ce189 100644
+> index b1738d954b91a..a28adef03e0e3 100644
 > --- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
 > +++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
 
 [ ... ]
 
-> @@ -518,30 +519,34 @@ static int bcm4908_enet_stop(struct net_device *netdev)
-
-[ ... ]
-
->  	/* Free transmitted skbs */
->  	if (enet->irq_tx < 0 &&
-> -	    !(le32_to_cpu(ring->buf_desc[ring->read_idx].ctl) & DMA_CTL_STATUS_OWN))
-> +	    !(le32_to_cpu(ring->buf_desc[READ_ONCE(ring->read_idx)].ctl) &
-> +	      DMA_CTL_STATUS_OWN))
->  		napi_schedule(&enet->tx_ring.napi);
-
-[ ... ]
-
-> @@ -572,8 +577,13 @@ static netdev_tx_t bcm4908_enet_start_xmit(struct sk_buff *skb, struct net_devic
->  
->  	bcm4908_enet_dma_tx_ring_enable(enet, &enet->tx_ring);
->  
-> -	if (++ring->write_idx == ring->length - 1)
-> -		ring->write_idx = 0;
-> +	if (ring->write_idx == ring->length - 1)
-> +		WRITE_ONCE(ring->write_idx, 0);
-> +	else
-> +		WRITE_ONCE(ring->write_idx, ring->write_idx + 1);
+> @@ -365,7 +370,22 @@ static void bcm4908_enet_dma_tx_ring_enable(struct bcm4908_enet *enet,
+>  static void bcm4908_enet_dma_tx_ring_disable(struct bcm4908_enet *enet,
+>  					     struct bcm4908_enet_dma_ring *ring)
+>  {
+> +	unsigned long deadline;
+> +	u32 tmp;
 > +
-> +	/* poll_tx() wakes the queue once there is room again */
-> +	netif_txq_maybe_stop(txq, bcm4908_enet_tx_free_descs(ring), 1, 1);
+>  	enet_write(enet, ring->cfg_block + ENET_DMA_CH_CFG, 0);
+> +
+> +	/* Wait for the channel to stop, as for RX, before freeing buffers */
+> +	deadline = jiffies + usecs_to_jiffies(2000);
+> +	do {
+> +		tmp = enet_read(enet, ring->cfg_block + ENET_DMA_CH_CFG);
+> +		if (!(tmp & ENET_DMA_CH_CFG_ENABLE))
+> +			return;
+> +		enet_write(enet, ring->cfg_block + ENET_DMA_CH_CFG, 0);
+> +		usleep_range(10, 30);
+> +	} while (!time_after_eq(jiffies, deadline));
+> +
+> +	dev_warn(enet->dev, "Timeout waiting for DMA TX stop\n");
+>  }
 
 [Severity: Medium]
-This isn't introduced by this patch either, but separately from the
-missing read barrier on write_idx in bcm4908_enet_poll_tx(), are there
-two more ordering problems in this lockless ring?
+When this poll times out, the helper only warns and returns void.
+bcm4908_enet_stop() then calls bcm4908_enet_tx_ring_clean() anyway, which
+unmaps and frees the skbs behind descriptors that may still have
+DMA_CTL_STATUS_OWN set.
 
-bcm4908_enet_start_xmit() hands the descriptor to the DMA by setting
-OWN in buf_desc->ctl, and kicks the channel with
-bcm4908_enet_dma_tx_ring_enable(), before it publishes the new
-ring->write_idx here. Suppose the frame completes and the TX interrupt
-is taken on another CPU inside that window. bcm4908_enet_irq_handler()
-masks and acks the TX interrupt and schedules the TX NAPI.
-bcm4908_enet_poll_tx() then still sees read_idx == write_idx, handles
-nothing, calls napi_complete_done() and unmasks the interrupt again.
-The status for that frame has already been acked, so nothing brings
-poll_tx() back for it.
+After stop, ENET_DMA_CTRL_CFG_MASTER_EN and the UMAC CMD_TX_EN bit also stay
+set. The channel reset and the descriptor clear only happen in the next
+open().
 
-If that frame is the one that made netdev_sent_queue() hit the BQL
-limit, or made netif_txq_maybe_stop() stop the queue, nothing is left
-to wake it and TX stalls much like the bug this patch fixes. If not,
-the skb and its BQL bytes still sit there until some later frame's
-completion. The window is small, but a hard interrupt on the
-transmitting CPU between the enable and the WRITE_ONCE() is enough to
-widen it.
+If the TX engine has not really stopped, can it keep fetching those buffers
+and send the contents of freed, possibly reused, pages onto the wire? Before
+this patch those skbs were leaked, so they were never freed while the DMA
+could still reach them. I could not confirm from the code whether this
+engine keeps fetching after ENABLE is cleared.
 
-Simply publishing write_idx before the enable doesn't look sufficient
-if the channel is still running from an earlier frame and picks up
-the descriptor as soon as OWN is set. Would it make sense for
-poll_tx() to re-check the ring after re-enabling the interrupt and
-reschedule itself if a completed descriptor is pending?
+The commit message says the wait is there so the skbs are freed only after
+the channel has stopped, but on the timeout path they are freed anyway.
 
-Second, the WRITE_ONCE(tx_ring->read_idx, read_idx) at the end of
-bcm4908_enet_poll_tx() is not a release. On arm64 that store can
-become visible before the earlier loads of buf_desc->ctl,
-slot->dma_addr, slot->len and slot->skb in the loop are done. When
-poll_tx() reclaims several slots in one pass from a full ring,
-bcm4908_enet_tx_free_descs() in start_xmit() on another CPU can
-already count them as free, and start_xmit() refills slots[] and
-buf_desc[] for them. Could poll_tx() then unmap the new buffer, free
-the new skb while the DMA is reading it, or report the wrong length
-to BQL?
+Also, at HZ=100 or HZ=250, usecs_to_jiffies(2000) rounds up to one jiffy. If
+a tick lands during the first usleep_range(10, 30), the loop gives up after
+roughly 10-30us. Is the 2ms timeout actually honoured here?
 
-Would smp_store_release(&tx_ring->read_idx, read_idx) here, paired
-with smp_load_acquire() of read_idx in bcm4908_enet_tx_free_descs(),
-be enough? The barrier in netif_txq_completed_wake() comes after
-this store, so it does not order the loads in the loop before it.
-
-[Severity: High]
-This is a pre-existing issue, but does this comment still hold when the
-device tree has no "tx" interrupt?
-
-The binding (brcm,bcm4908-enet.yaml) has minItems: 1 for interrupts and
-interrupt-names, so a DT with only "rx" is valid. In that case
-bcm4908_enet_probe() stores a negative value in enet->irq_tx, and
-bcm4908_enet_open() never enables the TX NAPI:
-
-bcm4908_enet_open() {
-    ...
-	if (enet->irq_tx > 0) {
-		napi_enable(&tx_ring->napi);
-    ...
-}
-
-netif_napi_add() leaves NAPI_STATE_SCHED set until napi_enable(). So the
-napi_schedule() fallback in bcm4908_enet_start_xmit() never does
-anything: napi_schedule_prep() sees SCHED already set and returns false,
-and bcm4908_enet_poll_tx() never runs.
-
-After this patch, poll_tx()->netif_txq_completed_wake() is the only path
-that wakes the queue. Once length - 1 frames are queued, or the BQL limit
-is reached, netif_txq_maybe_stop() stops the queue. start_xmit() is then
-never called again, so TX stays stopped for good.
-
-On ifdown, bcm4908_enet_stop() calls napi_disable(&tx_ring->napi)
-unconditionally. Does napi_disable_locked() then spin forever with RTNL
-held, waiting for SCHED/NPSVC to clear on a NAPI that was never enabled?
-stop() also calls free_irq(enet->irq_tx, enet) with a negative IRQ.
-
-This dates back to commit 12bb508bfe5a ("net: broadcom: bcm4908_enet:
-support TX interrupt"). The later patches in this series don't seem to
-change the open/stop gating or the irq_tx < 0 path.
-
-Would it make sense to always enable the TX NAPI and only free the TX IRQ
-when irq_tx > 0? Another option is to make the TX interrupt mandatory.
-
->  
->  	return NETDEV_TX_OK;
->  }
-> @@ -652,17 +662,19 @@ static int bcm4908_enet_poll_tx(struct napi_struct *napi, int weight)
+Could the helper report the timeout, so that stop() can force a channel
+reset through ENET_DMA_CTRL_CHANNEL_RESET (or clear MASTER_EN and confirm
+the stop), or else leak the buffers deliberately instead of freeing them?
 
 [ ... ]
 
-> +	int read_idx = tx_ring->read_idx;
->  	unsigned int bytes = 0;
->  	int handled = 0;
+> @@ -496,6 +516,21 @@ static int bcm4908_enet_open(struct net_device *netdev)
+>  	return 0;
+>  }
 >  
-> -	while (handled < weight && tx_ring->read_idx != tx_ring->write_idx) {
-> -		buf_desc = &tx_ring->buf_desc[tx_ring->read_idx];
-> +	while (handled < weight && read_idx != READ_ONCE(tx_ring->write_idx)) {
-> +		buf_desc = &tx_ring->buf_desc[read_idx];
->  		if (le32_to_cpu(buf_desc->ctl) & DMA_CTL_STATUS_OWN)
->  			break;
-> -		slot = &tx_ring->slots[tx_ring->read_idx];
-> +		slot = &tx_ring->slots[read_idx];
->  
->  		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
->  		dev_kfree_skb(slot->skb);
+> +static void bcm4908_enet_tx_ring_clean(struct bcm4908_enet *enet)
+> +{
+> +	struct bcm4908_enet_dma_ring *tx_ring = &enet->tx_ring;
+> +	struct device *dev = enet->dev;
+> +	int i;
+> +
+> +	for (i = tx_ring->read_idx; i != tx_ring->write_idx;
+> +	     i = i == tx_ring->length - 1 ? 0 : i + 1) {
+> +		struct bcm4908_enet_dma_ring_slot *slot = &tx_ring->slots[i];
+> +
+> +		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
+> +		dev_kfree_skb_any(slot->skb);
+> +	}
+> +}
 
 [Severity: High]
-This isn't a bug introduced by this patch, but is a read barrier missing
-between the write_idx load and the descriptor and slot loads here?
+This frees every skb in slots[read_idx..write_idx) but leaves read_idx,
+write_idx and slot->skb as they were. Emptying the ring is left to
+bcm4908_enet_dma_ring_init() in the next open. Is that call always reached?
 
-write_idx is not read with smp_load_acquire(), and there is no
-smp_rmb()/dma_rmb() before the reads of buf_desc->ctl and slot->dma_addr,
-slot->len and slot->skb. Only a control dependency links them, and on
-arm64 that doesn't order a load against a later load.
+bcm4908_enet_dma_init() fills the RX ring first and returns early if that
+fails:
 
-Nothing clears the ctl word of a free descriptor, so a slot completed on
-the previous lap still has OWN=0. That looks the same as a frame that
-just completed. Suppose poll_tx() has caught up, so read_idx == write_idx
-== i:
+	for (i = 0; i < rx_ring->length; i++) {
+		err = bcm4908_enet_dma_alloc_rx_buf(enet, i);
+		if (err) {
+			dev_err(dev, "Failed to alloc RX buffer: %d\n", err);
+			bcm4908_enet_dma_uninit(enet);
+			return err;
+		}
+	}
 
-CPU1 (start_xmit, under the TX queue lock)
-    fill slots[i], set buf_desc[i].ctl = OWN
-    bcm4908_enet_dma_tx_ring_enable()
-    WRITE_ONCE(ring->write_idx, i + 1)
+	bcm4908_enet_dma_ring_init(enet, &enet->tx_ring);
 
-CPU2 (poll_tx, NAPI, does not take the TX queue lock)
-    load buf_desc[i].ctl early -> stale OWN=0
-    READ_ONCE(tx_ring->write_idx) -> i + 1
-    dma_unmap_single() / dev_kfree_skb() on slot i
+bcm4908_enet_open() ignores that return value and returns 0:
 
-Could this unmap and free the skb that the DMA is still reading? And if
-the slot loads return the previous lap's values, could it double free
-the old skb and leak the new one? BQL and the statistics would also be
-updated too early.
+	bcm4908_enet_dma_reset(enet);
+	bcm4908_enet_dma_init(enet);
 
-The patch turns this loop into an explicit lockless producer/consumer
-scheme, but the netif_txq_* helpers only order the stop/wake decision.
-The later patch in this series that publishes the buffer address before
-OWN adds dma_wmb()/dma_rmb() only to the producer and RX paths. poll_tx()
-is the same at the end of the series.
+Suppose napi_alloc_frag() or dma_map_single() fails in
+bcm4908_enet_dma_alloc_rx_buf() during ifup. The interface then comes up
+with the old TX read_idx/write_idx range. Those slots still point at skbs
+that were already freed, and the new TX descriptor memset did not run
+either.
 
-Would it be enough to use smp_load_acquire(&tx_ring->write_idx) paired
-with smp_store_release() in start_xmit()? Adding an smp_rmb() after the
-index check would be another option.
+On the next ifdown, won't bcm4908_enet_tx_ring_clean() walk the same range
+and call dma_unmap_single() and dev_kfree_skb_any() on the same skbs a
+second time?
+
+bcm4908_enet_poll_tx() can also free them again before that, for any stale
+descriptor in the range with OWN clear:
+
+		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
+		dev_kfree_skb(slot->skb);
+
+The ignored return value in open() predates this patch. However, before this
+patch those skbs were leaked rather than freed, so the stale pointers were
+still valid.
+
+Would it be safer to make the ring empty inside
+bcm4908_enet_tx_ring_clean() itself, for example by resetting read_idx and
+write_idx and/or setting slot->skb to NULL?
+
+>  static int bcm4908_enet_stop(struct net_device *netdev)
+>  {
+>  	struct bcm4908_enet *enet = netdev_priv(netdev);
+> @@ -511,6 +546,7 @@ static int bcm4908_enet_stop(struct net_device *netdev)
+>  	bcm4908_enet_dma_rx_ring_disable(enet, &enet->rx_ring);
+>  	bcm4908_enet_dma_tx_ring_disable(enet, &enet->tx_ring);
+>  
+> +	bcm4908_enet_tx_ring_clean(enet);
+>  	bcm4908_enet_dma_uninit(enet);
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. It does
+mean the new cleanup is never reached when the device tree has no "tx"
+interrupt.
+
+The brcm,bcm4908-enet binding allows a single interrupt (interrupt-names has
+minItems: 1). Probe accepts a negative value from
+platform_get_irq_byname(pdev, "tx"). In that case bcm4908_enet_open() only
+enables the TX NAPI conditionally:
+
+	if (enet->irq_tx > 0) {
+		napi_enable(&tx_ring->napi);
+
+but bcm4908_enet_stop() disables it unconditionally, before the
+bcm4908_enet_tx_ring_clean() call above:
+
+	napi_disable(&rx_ring->napi);
+	napi_disable(&tx_ring->napi);
+
+A TX NAPI that was never enabled still has NAPI_STATE_SCHED and
+NAPI_STATE_NPSVC set from netif_napi_add, and only napi_enable() clears
+them. So napi_disable_locked() sits in:
+
+	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+		usleep_range(20, 200);
+		val = READ_ONCE(n->state);
+	}
+
+Does ndo_stop then hang forever with rtnl and the netdev lock held?
+
+The same mode has a second problem. In bcm4908_enet_start_xmit(),
+napi_schedule(&enet->tx_ring.napi) does nothing, because napi_schedule_prep()
+sees SCHED already set, so bcm4908_enet_poll_tx() never runs. Doesn't the
+TX ring then fill until netif_txq_maybe_stop() stops the queue, with nothing
+left to wake it?
+
+The conditional napi_enable() and the unconditional napi_disable() appear
+to come from commit 12bb508bfe5a ("net: broadcom: bcm4908_enet: support TX
+interrupt").
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261112195051.597102-1-kudzo51%40gmail.com
