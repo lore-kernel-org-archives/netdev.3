@@ -1,73 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=50.112.246.219
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794605655;
-	b=tUhgyvjg45pJf/vAiyTh/1mBzkjK5ymKSVEOClsZ4Kktrn5JFJoN/wb8A3VzR1zW7Z4C
-	 X7Aw5LKbei7qy0a57+KuLUvwucfiBuVNUovvcxYDPVj4K4WDwZoKzy8hCg+PXUOAO3ecm
-	 lZ1XE5m7uHlYRzd25uT1yLEJyYkgW6Bno4NGf2+qK6kYE4Spy2qg/n04E0MvPtKbigMJV
-	 P+Y6brfUhhNamctTqtzcbdxcftkPiiDAGiceS8prgB6WlqEaKFmMYFE84+5MJ16c3r9DI
-	 Aowlmut4VTmOqFGaDA3t3MgNklP5HnLMytrOuL0lLzH1PqCGpYYLyl1144E3Ekty08Q==
+	t=1794605705;
+	b=OZbnDXiBv7hz3KONmKs2ODwAZtgHJGvOIc1A1GL2lT3ZGTYCGfWU8qxEd62Kt/+CsqYK
+	 oqGNeQP/1grGzTC597Hr4peJops79hbmUdfp1BrZeo8A6rYAqkbwxqnV4mVAzw5frJAJ3
+	 b0Atl7OzAZEUB06+6IfiRwdJ1V7zt1fImemWFX+R105l2mIoUQODSshAxEM5QIX83czHR
+	 IX7pyfyeaNBHJnIyCRiwBeguGE29nvq7+yMRFmYKHW8tEQeFgYUVT17ZPiz1AIE2e61vK
+	 modlKhgGfOGLbiiygAMOfzbi8DKRceFmfAxddWiWOUwk2E5fkQq9HGiODfpgAy0yZNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794605655;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version;
-	bh=bT4/su/kt3f5MZ69eUq74I8ys00QmHN4pzyX5zqRUbk=;
-	b=Y2koBSkgm1HK34oK7lACwgg5k0Ac2yKR4OAZezzN6CqE6K2yfJ56b4yBL5ELupTlEind
-	 +sXtAqi769t5PQjYmBYLW5jF5E8Sf4gLvCAsJVt01Dk3nIuhYW9CJtaPxffMS2BCobi0H
-	 jBbAfBdvloaAAkiunnaj2JkXWUf55AAxo+BFlPMshdKG8meBYBduEdwX1vbraVspjr0tO
-	 wr8L0StOUb6p+CKtiv4w7PUBOYnY+jDBisBjdRX2+IrSN3ZQBcd6KMTId11XqBo76H1VB
-	 2KfLxYzakl6IF+TdCDKDuFnvD18AaIYZh06LCOj8MzJDv5kWFTkV2EODEs2kEZ7eMDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794605705;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 CC:In-Reply-To:References:Date:Message-ID:X-Mailer:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=vUUHf+0GtGXfhxGVNNe2uvulZqXDlClhUKfS9oBPKsY=;
+	b=hTXib14XC/GFRjeH90aqz4a1xi609DaCWU9wKJYc8Kejl24ctUh+uXLAw98GgWFIyE25
+	 4YwZL9VlXtMn6zhfGBP3W7mmozbeOqvEw5rtu4fa0t3Lo5fDdG7xZ+XgeUjTKYjgwqd1s
+	 56XH4140hYSPyqDKhr96qBVF4ijEwTpatTVczgP8UzIzunqFlLyaBRUHKwiOoaMdB9m4+
+	 ozoBXf6jMKkyp2/iNtD1ZIDojViHdLigiJibtWZkWKSPy2GxeEeo5WYVkqhrjcXWq1oRj
+	 SGembgi7P9d7n0skY780roUR3UpI2LiC/G0jJriPt0NaOrx/ugQpjFtvoqCuofnPJ6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Vv6Klqp3;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.com;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=MSxy1DAZ;
+	arc=none smtp.remote-ip=50.112.246.219
+Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD68606A323
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 21:34:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BD68606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171A3606A32E;
+	Fri, 13 Nov 2026 21:35:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 171A3606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Vv6Klqp3
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADLSiFo1114001;
-	Fri, 13 Nov 2026 13:34:09 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=bT4/su/kt3f
-	5MZ69eUq74I8ys00QmHN4pzyX5zqRUbk=; b=Vv6Klqp3zfXVhRL7kNuWvX5q+0i
-	XG785uhWGpMRDismA+acLCaa+Rur/H9gPq87S66+jYcQeQ9ey+kk2mTyzruyaPd2
-	JZaNtWcGTZn1d/jULezcFxSoWmVoJFa5UtmnMyvPeyVReLYHecFCRreNdev6nUvu
-	FH2pWZMoX/ZQCVnt7IX5960j0j1kA1JkjcZe7fLUlzrl4kLutx9bYtQg5F3GAq0q
-	g1U2Gn9yHKEN+8CCvuLxkO80IQwUCftXIdM78YrBiiaWb2IxUyraQnPXZmA1O1QZ
-	0Ta68VmMXjZcafTLD5b4UZTXjJfkojh4jOMw2s7Ecr7iPvFTXtEeb9UVh9g==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwftjtcp3-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 13 Nov 2026 13:34:09 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
- 2026 21:34:08 +0000
-Date: Fri, 13 Nov 2026 13:34:07 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-CC: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
-        Stefano
- Garzarella <sgarzare@redhat.com>,
-        <virtualization@lists.linux.dev>
-Subject: Re: [PATCH RFC iproute2-next 2/2] ip: add "ip vsock" to move the
- guest vsock device to a netns
-Message-ID: <aveCT0JPHPsqCkL4@devvm29614.prn0.facebook.com>
-References: <20261105-vsock-guest-ns-v1-0-b1c11b3b69c7@meta.com>
- <20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
- <20261106102659.77f8ba56@stephen-xps.local>
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=MSxy1DAZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794605705; x=1826141705;
+  h=mime-version:content-transfer-encoding:subject:from:to:
+   cc:in-reply-to:references:date:message-id;
+  bh=vUUHf+0GtGXfhxGVNNe2uvulZqXDlClhUKfS9oBPKsY=;
+  b=MSxy1DAZjovRUyE67HpDZaT6dn/u2plprPzLLLTWYYisd+kcA0wSLqik
+   1b8o9cxMOgLdDmjUSEb8YIazIh5h3ZnvuUye0kXMECPMIucvbjL2CO/Pe
+   pjXbzEtN0yDffZo5xza2pR7S3eYFRsqQ9hRboN/zYHxq5UE6TAimtI4rY
+   gkwe9Ze7hbYCf1bameXAwnl/DJphmHN8H8i7KXqI0OawWgBXkT3TBH7Gt
+   C21zEyZaChLrG4VJG6jxukOpDS0DKrd517os+dXCuqGEhG/KdBO1BM9jB
+   hYL4AOWWsOXtGX/vMbUyhrGgOTPw8+h9dvkTOEjAg6vdpRtubH8JzoNnm
+   A==;
+X-CSE-ConnectionGUID: 5f/UAGLvRIiMJrsrctevTA==
+X-CSE-MsgGUID: amrnvTLJRhyicXNpPJQREg==
+X-IronPort-AV: E=Sophos;i="6.27,212,1787011200"; 
+   d="scan'208";a="33734704"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 21:35:02 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:22766]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.46.128:2525] with esmtp (Farcaster)
+ id 3dc962cb-f3af-4bc3-878d-33e7a3ebc71a; Fri, 13 Nov 2026 21:35:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 3dc962cb-f3af-4bc3-878d-33e7a3ebc71a
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 13 Nov 2026 21:03:03 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 13 Nov 2026 21:03:01 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,47 +74,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261106102659.77f8ba56@stephen-xps.local>
-X-Authority-Analysis: v=2.4 cv=ZYiIpcVA c=1 sm=1 tr=0 ts=6af78251 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=VEq9NWtHcDJz48dA:21 a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=PAz_-FQ8hEVmOPYdF0yf:22
- a=VabnemYjAAAA:8 a=CHgJ09IQ0WI7wAN8FdwA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfX5Z5p0Euxs9l+
- /bhvQMcF0Zg6ZK/uveYj+A6LBfv4ti7wKaJO5Pd+OGpB5j9Pzp3jsnX7wSJDS6zm54/zCiRM186
- aoAWjkmdsp0Vfww0D54tQRzSltAcvskAxcmWnetl2LYaIMLmHc7y2hwYoUIVwT0Jmv2nFrjpCmG
- iQzStNW7KfomHy3Per7itCtAZ9nl2Dt+gSWPlosM7FQAL/p8c6/hrhBmHUjjc0cNyzP1SA4d3Q+
- IgyIMCvgXRdV90XxDbrTxWbGSvmhLUKKphRe25/W+x1gvLqFVFh9xwjZkgDTVbp81tjgznsIy4v
- pcLDyCzD4CNECwcXZXTVVOVWX/t0a1d2e3A04cp8N1y9Rd1056IKbJqG9rwAOmPu7GOFmEIlIid
- Na0dq+mka1SxM7T37/FMkkd9gJyH+Wxf8tKr/FmJh+NWY6yw8LdM4wY6sYa9ZK/vKgRPD7yc6wW
- MAZUtvZvbGTliQYrw5g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfX4TywDtri0zbc
- Wlm3dGExtVxp/vKlAOZKKdo98ypAA+9o3GudS8mb7sKZinI5d0M21nZ4DwRbAdG5ogIaEctcUO7
- 5mtfpmO+zWp/h/V6T9f7/r4V7egNc1U=
-X-Proofpoint-ORIG-GUID: YV-5JhPTdzAdUtJaZ2Bbc67y_UtXtXyH
-X-Proofpoint-GUID: YV-5JhPTdzAdUtJaZ2Bbc67y_UtXtXyH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_06,2026-11-11_03,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB
+ page kernels
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "Harry Yoo (Meta)" <harry@kernel.org>, Arthur Kiyanovski
+	<akiyano@amazon.com>, David Arinzon <darinzon@amazon.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Breno Leitao
+	<leitao@debian.org>, <kernel-team@meta.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+In-Reply-To: <20261111164751.5ac643fa@kernel.org>
+References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
+ <20261111164751.5ac643fa@kernel.org>
+Date: Fri, 13 Nov 2026 21:02:56 +0000
+Message-ID: <179460377625.24249.14913382632287673336.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: EX19D031UWC001.ant.amazon.com (10.13.139.241) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Fri, Nov 06, 2026 at 10:26:59AM +0100, Stephen Hemminger wrote:
-> On Thu, 5 Nov 2026 11:30:36 -0800
-> Bobby Eshleman <bobbyeshleman@meta.com> wrote:
+On 2026-11-11 16:47:51-08:00, Jakub Kicinski wrote:
+> On Fri, 06 Nov 2026 03:17:11 +0000 Harry Yoo (Meta) wrote:
 > 
-> > + * The guest's vsock device is not a netdev, so rtnetlink cannot move it.
-> > + * The "vsock" generic netlink family moves it with VSOCK_CMD_DEV_NETNS_SET
-> > + * and reports where it is with VSOCK_CMD_DEV_NETNS_GET. There is nothing to
-> > + * name in a request: the kernel serves it in the namespace of the socket it
-> > + * arrived on, so the destination is chosen by sending it from there, and the
-> > + * reported namespace is an nsid relative to the sender.
-> > + */
+> > This shows up when RX data stays in socket receive queues, as each
+> > queued skb keeps the whole 64kB page alive while at most 16kB of it
+> > holds data. On an EC2 t4g.large instance (64kB pages, 8GB memory) with
+> > 519MB left unread across 64 TCP sockets, RX pages pinned 2869MB of
+> > memory while the socket layer accounted only 687MB.
 > 
-> Please be more concise in comments, AI seems to think it gets paid by word.
+> I'm not sure you're actually fixing the problem you're describing?
+> You optimize the memory use but the (unused) tail of the buffer is
+> still not charged to any skb, is it? Or does it now fit perfectly?
+> 
+> Normally when the page can no longer be chunked up we should charge
+> the tail to whoever happened to use it last (see the page pool code
+> which does that).
+> 
+> Either way, you have to respin this on top of Breno's fix which
+> was applied earlier today.
 
-True, will definitely shrink this down.
+Jakub,
 
-Best,
-Bobby
+If I understand correctly what you are saying, you are correct.
+skb->truesize is still not reported correctly.
+
+The focus in this patch is different. It is about using the whole
+64KB page instead of only the first 16KB.
+
+Harry's own figures show most of it is recovered — 497MB pinned for
+519MB unread, against 2869MB before — so the remaining gap is the
+final tail of each page, not the 48kB.
+
+So I agree the commit message needs to be more precise.
+
+The skb->truesize fix can come as a separate fix after this one.
+
+Thanks,
+Arthur
+
