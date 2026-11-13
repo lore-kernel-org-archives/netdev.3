@@ -1,74 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794605744;
-	b=YuuEacuy3KL0cuNriseVQesOO/MzeA3vYBMR7vEev0SGBlE63Cy775osM6e2f52Uu4RI
-	 5YvzZMivTU5+8Q23eT+JVJeqRuj3kXEdNZVLPcVIetA5i1E5rngA5soeJfdX6Vi1j2msv
-	 eKoEZOBFiZytGR5WXuyESalQHFUA2AnPEQ+ENwge2vwhPHB+yt0yGM2RKpE/TQFtOnwaK
-	 grvV4tnaopEMwl8LaCPLMTKQqvHy1rKTy+kH3GpBUhMsZZJZNc2dlUOzAv2pM8wA1ketu
-	 aST8vy3dY8GpocpsmxGPkmbAw5sTcXjPk8TG4oCFMKK2OQvknlEkmEVIohI3lqvxwvg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794605744;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=4iOYl7h/u5X/1BsQ9LaeXNUXC89a9eBu1n0c2YTCfu4=;
-	b=SmyRkfzvtRefRzAHzU1rIlVLEEtAmQi4CS5f8cXLS+tK53crSVzXFu4sWD9y0KquKVZ3
-	 ybJWJ6MiiM2WI6ZQL4o6MsdObahs55YbZKKzYQkQhqQa7KO/Kx53o04RZcFMKggiJzMwQ
-	 Ybk02twWH9z24Pfn23QGVZ2DIJsU0H2dr2TkXMLNY85XOeaHPZpfXSb4b4cRNR0MYKDEr
-	 o/MVnQnBHxkFkddpGhL703vVadgbpNOTZbZIRZTRiRz1qfO0NZeG0MLKhQtoqdqiQifFt
-	 BFvoGrt763X8i0H5LR/NIA+64m5apbGbrAReypgU5HCYe/LH11JXkFspykvUhQzdCqg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=F8CFVQ0F;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794605803;
+	b=CJKXsD+ywpT5TipBTswUDAfSFRmmCsF4rpTC+KawJD3rwMFXj/4D+aXsxWm9Dl9dLtiA
+	 uoQlU5IFj9rdNBHNc4r+cKdrNbpgUulh0daPP6z7glnW7zPVGgSJK9az73+LmjRXihg/i
+	 ZrVksKh3u9fzCdzR6MVc83p6dy5pMf37cUoZAdY44nNvUULDn0A/9UlyKD0hdB890k7eI
+	 GZYbI5hbNWEmS2oUUDn7DoltnJdAoEufsuNiETCYG+DL1YhnYQz5iCfG53tqUHvyHyxbA
+	 gQGd1u+uX14NvqHspPAUwQr9Jz4XV7YkOGbt9MivTBOnhoJP2+c9YrhymnyGlzcn0Nw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794605803;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:Content-Type:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=elh99CQp9IfkfP6c6rVHcWjZMVI/UtW+jJfkl3iJqq8=;
+	b=aXicrK0IVeQzn5goJODSgmbvF7F9BQ/e9zaFolGGfNDEjxxQrpyZ/iRMDCCSVjgqziaL
+	 F1DuMPrbweCJPd+zycylbFmzaiUeopaqJvp+21YEJm8y1W/Xy/f865EUVkHPcBVN/dYCQ
+	 HkrYqF9Kiz1N6wq6bJ7P7HWYk45CYA35cCgj1IYv359GDDZzeBRA9+3blAEe2mYmrwoJY
+	 +kNWmN54W6t3BNS7lVr7GNR3GDY0TVWQW3bhIsulTPV02fspT7tVIhasqOdnT+amLjBW9
+	 muAai1u4iwtNx6IzWAmhPVZ4sHphQpWHG14z6FyvqDEkS8OdFil26LeYgeHsoGinL5Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nokia-bell-labs.com;
+	spf=fail smtp.mailfrom=nokia-bell-labs.com;
+	dkim=pass header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=Y3azZvqc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.47
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013047.outbound.protection.outlook.com [40.107.159.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F6606A8A3
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 21:35:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B4F6606A8A3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773D606A334;
+	Fri, 13 Nov 2026 21:36:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9773D606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=F8CFVQ0F
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADLT1cg2585617;
-	Fri, 13 Nov 2026 13:35:36 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=4iOYl7h/u5X
-	/1BsQ9LaeXNUXC89a9eBu1n0c2YTCfu4=; b=F8CFVQ0Fw9/v03E8EGjly7S8Vk2
-	n0+khaT3g9ocy0Pj5e1cls1ce9nvvlQkSsyqMjVu95MpXqaR+INDoR58zirga3IQ
-	cMtbFo8iudqnUkwuf4yn1InSC9DlDtPrJadjHONwwadVqXdFlHN/PGM0wTtR0G+I
-	68gC0klBYgnZZj9IZ/jBfx/b8hncEsv7gCmS7mNBO18/9wDL1PTJ7PM3yTWxf7c+
-	sJx3eudRdaTwNMcI5aVdMzaL/QVDYOpa1pt4n8fCVxDGshnDfmaE+5q2dStX3Zps
-	gI+uaMtZh5iUJoIYwsFiQlB3nOUKDd9l8LGk61DDdotOHcNF7Lr8oJ3bQOw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwjg5ruhp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 13 Nov 2026 13:35:35 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
- 2026 21:35:34 +0000
-Date: Fri, 13 Nov 2026 13:35:33 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-CC: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
-        Stefano
- Garzarella <sgarzare@redhat.com>,
-        <virtualization@lists.linux.dev>
-Subject: Re: [PATCH RFC iproute2-next 2/2] ip: add "ip vsock" to move the
- guest vsock device to a netns
-Message-ID: <aveCpf9XDQMCV0fK@devvm29614.prn0.facebook.com>
-References: <20261105-vsock-guest-ns-v1-0-b1c11b3b69c7@meta.com>
- <20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
- <20261106103646.41a0f13a@stephen-xps.local>
+	dkim=pass (2048-bit key, unprotected) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=Y3azZvqc
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KCZNJ4mvL6a3v5hfbMgNoF7eSSiKxhKHFXY7Scnh3dJrkTiOnLrQ+8Ck0yNsbWu0DrtMfAMmyNth8DlubQB1nKAhTzH+nzKjA8dXpXYSPFsROfL2kQSocZL1dAxU14i5n4S3C00vENOK9cL/D7RekVl0ziG8wxW26i7B/9r0bDLmtI2nuU6kwM7k3BEA/nnJPJnsGaLYj2erZRl3rs8o4JSq5qzKFf8Cb8ncdR+SqtcK6gs7Zjt6S0JYbLwIYO/tZKmls44n8+AEDOI62kCdUzQiiw6U9o/GJDdnhfcZ976Rxhkq5vcs2RD9UHNShnEcFHt+guWcJ6lKcLf8PS4JHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=elh99CQp9IfkfP6c6rVHcWjZMVI/UtW+jJfkl3iJqq8=;
+ b=qY5hAaFFdJYWak8fl9vmx4ZCzFM+tJVEcbdOBMm1LUwVvim72z4WYt4522bGbr3iC3GBvWDI6bYuWJicWw7QMsp+FoEaiS8rKTPKKTefEFU2+OsLIslgN3sLb5DWHzXwVnSpDBTzuT8r1MvytmkqI4WV8o7IbfJNm+FMS2agpRW/L4gMUFCZ0PXpsZN/P5j4pNsjZ4oC/TmzRvUmHB80WcDKTCXLJLopON2PS9qwOcqZB+HkAz+IuZC6wEYfl7utsX+3XuxKXU0NBkvCWBUXgr158raLc2tx7+1kt+qaScXIkD5d6Sm8ZFhklcpWCyhUNtdIn62cWL+/IIMl2bUs/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.29) smtp.rcpttodomain=davemloft.net
+ smtp.mailfrom=nokia-bell-labs.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=nokia-bell-labs.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=elh99CQp9IfkfP6c6rVHcWjZMVI/UtW+jJfkl3iJqq8=;
+ b=Y3azZvqcUYyiQgrm+y9RBZAp3+3qM4Rb6ogB5JybDdbaKZQhRQT/TQmKo57GydlmSmAErxo0TBCuQNwLPRf1NMwOhG6r38tGpGURs7Wp1EYzwk4daEyREYM8iJj1QWnM6sYDdBE3vN0rhrjwMCganKnTm4wtnt7apOyg4NKUDCUJjMAyS1Xr19WkUFa1Cf+ttSLAZ++8yS08buK99dOcE2Aan3WbURNKIqeBzdzWs7XW9jTLKEfKhyDlEDiNgK443cDJMybbdkvOtU2+4ld7V4E17wg7rk3VTo04WgPtC69cj8rzAhdS/fbtkePMYGRYPC3eCzUkSKxSxWyExNyGqw==
+Received: from PR3P192CA0006.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:56::11)
+ by AS5PR07MB10005.eurprd07.prod.outlook.com (2603:10a6:20b:681::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Fri, 13 Nov
+ 2026 21:36:38 +0000
+Received: from AM7PEPF00000053.EURPRD83.prod.outlook.com
+ (2603:10a6:102:56:cafe::2) by PR3P192CA0006.outlook.office365.com
+ (2603:10a6:102:56::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Fri, 13
+ Nov 2026 21:36:38 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 131.228.2.29) smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not
+ signed) header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.29 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.29; helo=fihe3nok0735.emea.nsn-net.net; pr=C
+Received: from fihe3nok0735.emea.nsn-net.net (131.228.2.29) by
+ AM7PEPF00000053.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.0
+ via Frontend Transport; Fri, 13 Nov 2026 21:36:37 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0735.emea.nsn-net.net (Postfix) with ESMTP id CDF0755BC6;
+	Fri, 13 Nov 2026 14:57:06 +0200 (EET)
+From: chia-yu.chang@nokia-bell-labs.com
+To: linux-kernel@vger.kernel.org,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuniyu@google.com,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen0607@gmail.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com,
+	Mike_Rudolph@comcast.com,
+	Jeff_Howe@comcast.com,
+	srichard@netapp.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH net-next v3 2/4] tcp: rename ECN transmit helper function
+Date: Fri, 13 Nov 2026 13:56:26 +0100
+Message-Id: <20261113125628.2893742-3-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261113125628.2893742-1-chia-yu.chang@nokia-bell-labs.com>
+References: <20261113125628.2893742-1-chia-yu.chang@nokia-bell-labs.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,172 +124,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261106103646.41a0f13a@stephen-xps.local>
-X-Proofpoint-ORIG-GUID: JKUT2pGgrnFahTRmpNO8QHCVZIxj_PD6
-X-Proofpoint-GUID: JKUT2pGgrnFahTRmpNO8QHCVZIxj_PD6
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfXzy7MxeUUzERD
- NWG+geB4ff7yaYbafDTzsA83HwRgg74tXU3Wb20Q3rrqmjb5gxA7alLnpoS5QYjnmPpMQJHN8Z4
- 9KusjkfEu1Wxh1yHInte9szAimAI4ow=
-X-Authority-Analysis: v=2.4 cv=Mcb5KJ/f c=1 sm=1 tr=0 ts=6af782a8 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=VEq9NWtHcDJz48dA:21 a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
- a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=N7c5Zlm_GsJ_Jf1E2xsA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfX8mS0i7qB91Cp
- n78gokfkDjyc24R6hTKLOle2iz6Z/RYpPzAYxUNG17c40LBJaOsUf1RqiLElivAOGhMABCj+cnT
- Wz7Fj5+VLO/LLAYarvw+MT8aaLOtlJAVb1sgXPEF7pr1V/fXJ1lzNIZg6YoaDxHwaiuOV7CqyU4
- pSLqHMsehhEQVI/YQ5Np8SCovnVBqOFs+66YCNojafGl9ZIwwl7c85Ca5fYQK3q063hF+TzLpzE
- NXJwAdcwNcbW1BU1yf4dKvZmmCGkPTF0w80STh6jxf3g0tnszvl0dsH8dwU/wn2gNy8XUKmhEi4
- 6npN3jfdleeKuppC4OclaKi7Fxt87QZ5emMI/IIeFMyb+cKJENpBeTQYLiBtI4T5AL4JaADQ18u
- iSaLMrbvlHqHKODLJgNpySahfE25BVqhUDjp1nxSA3ODkEbfbMn01J/obrKP9UpEdB4Eegk9VPG
- MxCDhHJT2G3KgtI/2kw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_06,2026-11-11_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PEPF00000053:EE_|AS5PR07MB10005:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: fe915f09-5b0c-44db-85b7-08df41ce325d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|7416014|1800799024|376014|82310400026|921020|261022075727099003|261009223027099003|11063799006|261102123227099003|261021121427099003|261021123027099003|261026121527099003|18002099003|22082099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	9oYwKZS1sBWoZjPTo0+HoZa2cLYpVHEMAWNbbhHXNaOPEq7L/Asfjq7Jcw8ambpTzDaJmTTj9b906cvTImaY1W7tJWusoqzyyNGAm2mrLKN4NHIamtKSPnxZOFHtdqriUV1ar4GhXrzV5u8zdwf8TOsvoKcKSU4Qxo7e7Hb73KVU8HDjwsz2SEeGj9cgKyi32ybRckOO8HPCnnDqQixGc+DbozQaCXEBNHTvaOzdv5beR65d8n4tTtZBgxvi9RcHsZLXHvkO/iETepr28Kd5xeTUNT5/Ow07njCYF5e61F5LKN2M85xlTv0i9DRJaBADjP56Aj4FWN1G+nsSoDAI+2XFO1ZkhP0W+pGFAY7zxOG7b1/I8VKd8/QSrzvUbaHsIx6C60Uttg1IuFufkPy6seXC6+YCJjqtcQ5ICGQv0sA9X2lwt5ewq2yCKk7oVPz7sLJMgTgF1/YE6libBBfSjmUODMKmGUgC92RcAn9T3a/8/pa63ekng8kxSKVe2MeHqrsw1K7SioyBkl0GdhQgNu9dxNCkoVoklfDdMI4AD8Fcl+xcP+9bPxQRqtFsdr7oRUZQAPejEsIou3QOnCrtKTFgdstswUUtWIMK2J6Lv7ztVR3cNX1UcBgVtnusNJ2qDGcWJEC78T7dL3dRvtn10VXYQ8Puo7WvGmjvkDpNAOCXqe0njvW45oygOcQXRwyjMG7tUTq7iCwoOfFgkEPL2BUIN5QLyyZ6t9efuccOHs+0Yq/WdKxIaVUmXAfZiGkr
+X-Forefront-Antispam-Report:
+	CIP:131.228.2.29;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0735.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(7416014)(1800799024)(376014)(82310400026)(921020)(261022075727099003)(261009223027099003)(11063799006)(261102123227099003)(261021121427099003)(261021123027099003)(261026121527099003)(18002099003)(22082099003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	byazRfgwFn3E9WDW0xFbQOtRtkuxZZlCiEIroQ/Fs9S3jQHOlLTZs7v4nkBLNfQYgYzVkiatLtVykx+zCqCFBWl7ml8/H867ahV/LNr1VpIt7K9HHXfpoi4wLJXcayWnnuiBCtyS7ZJ8jbm/znnltWPklkJzc4wMlS8kFQ/oooE4Gu0RVW3NjrGU2iMoIQHnTYBeAbnKOPGB/YKdrcnYtpZCj0wzCfAGWmDnfIHEHlH7Tj3BfcmJVonoOTeKv1KDG0u3emaGhkaYtdx/Qws0H5WB7+4k8t2TBQA0DZVsFqtwp9U2tD1m9cF1N0fD+sgo+efpJKwmn33w2kxL4u2vp1OFDvI8598jKFj113sA4zuqD/ecpe8Z2HB9R0tqkLkUjIdAor1wLT49JD4dIROuq+EqjExOumN4PFHBrHYTCgd6YiQO9jywA64XPL/T+jJW
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 21:36:37.3035
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe915f09-5b0c-44db-85b7-08df41ce325d
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.29];Helo=[fihe3nok0735.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-AM7PEPF00000053.EURPRD83.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR07MB10005
 
-On Fri, Nov 06, 2026 at 10:36:46AM +0100, Stephen Hemminger wrote:
-> On Thu, 5 Nov 2026 11:30:36 -0800
-> Bobby Eshleman <bobbyeshleman@meta.com> wrote:
-> 
-> > The guest's vsock device is not a netdev, so rtnetlink cannot move it
-> > between network namespaces. Add an "ip vsock" object that goes through
-> > the "vsock" generic netlink family instead:
-> > 
-> >   ip vsock set netns { PID | NETNSNAME | NETNSFILE }
-> >   ip vsock show
-> > 
-> > "set" issues VSOCK_CMD_DEV_NETNS_SET from inside the target namespace,
-> > since the kernel moves the device to the namespace the request was sent
-> > from. "show" issues VSOCK_CMD_DEV_NETNS_GET and prints where the device
-> > is, relative to the current namespace.
-> > 
-> > Link: https://lore.kernel.org/all/20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com/
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> 
-> Semi-automated review using review-prompts for iproute2
-> 
-> 
-> On Thu, 5 Nov 2026 11:30:36 -0800, Bobby Eshleman wrote:
-> 
-> Thanks, this is mostly in good shape. A few things to fix before it
-> goes beyond RFC.
-> 
-> > +#include <linux/vsock_netlink.h>
-> 
-> This depends on a uapi header (and kernel series) that is not yet
-> merged. iproute2-next can only take this once the kernel side is in
-> net-next; the header update should then come from the normal uapi
-> sync rather than a hand-added copy in patch 1/2.
-> 
-> > +static int vsock_talk(__u8 cmd, struct nlmsghdr **answer)
-> > +{
-> > +	GENL_REQUEST(req, 128, 0, 0, VSOCK_FAMILY_VERSION, cmd, NLM_F_REQUEST);
-> > +	struct rtnl_handle grth = { .fd = -1 };
-> > +	int family = -1;
-> > +	int ret;
-> > +
-> > +	if (genl_init_handle(&grth, VSOCK_FAMILY_NAME, &family)) {
-> > +		fprintf(stderr,
-> > +			"Cannot resolve the \"%s\" netlink family, the kernel may not support moving the vsock device.\n",
-> > +			VSOCK_FAMILY_NAME);
-> > +		return -1;
-> > +	}
-> 
-> genl_init_handle() leaves the socket open when genl_resolve_family()
-> fails, so this leaks grth.fd. Harmless today since ip exits, but not
-> under "ip -batch". Add rtnl_close(&grth) on this path.
-> 
-> Also genl_resolve_family() already prints "Error talking to the kernel"
-> on failure, so the user gets two messages. Not a big deal, just be aware.
-> 
-> > +static void vsock_print_netnsid(int id)
-> > +{
-> > +	char *name;
-> > +
-> > +	if (is_json_context()) {
-> > +		print_int(PRINT_JSON, "netnsid", NULL, id);
-> > +		return;
-> > +	}
-> 
-> This copies the IFLA_LINK_NETNSID pattern from ipaddress.c, which is
-> fine for consistency, but note that JSON users never get the netns
-> name and get -1 for "unknown". Consider also emitting
-> print_string(PRINT_JSON, "netns", NULL, name) when a name exists.
-> 
-> > +int do_ipvsock(int argc, char **argv)
-> > +{
-> > +	if (argc < 1)
-> > +		return vsock_dev_netns_show();
-> > +
-> > +	if (matches(*argv, "show") == 0 ||
-> > +	    matches(*argv, "list") == 0) {
-> ...
-> > +	if (matches(*argv, "set") == 0)
-> ...
-> > +	if (matches(*argv, "help") == 0)
-> > +		usage();
-> 
-> and in vsock_set():
-> 
-> > +		} else if (matches(*argv, "help") == 0) {
-> 
-> New code must use strcmp(), not matches(). Abbreviation matching has
-> caused repeated breakage when keywords are added later (e.g. "s" here
-> already matches both "show" and "set"; order decides which wins).
-> Please convert all of these to strcmp().
-> 
-> > +	ret = rtnl_talk(&grth, &req.n, answer);
-> > +	rtnl_close(&grth);
-> > +
-> > +	return ret < 0 ? -2 : 0;
-> 
-> The -2 propagates out as the exit status of ip (254). Other ip
-> subcommands return -1/1 on failure; either is fine but please be
-> consistent with vsock_dev_netns_set() which returns -1 for its own
-> errors and -2 for a kernel error.
-> 
-> > +		"Usage:	ip vsock set netns { PID | NETNSNAME | NETNSFILE }\n"
-> > +		"	ip vsock show\n");
-> 
-> Literal tabs in the usage string; the rest of ip uses spaces for
-> alignment here ("Usage: ip vsock ...\n       ip vsock show\n").
-> Also "ip vsock help" should be listed.
-> 
-> > +static int vsock_dev_netns_set(const char *netns)
-> > +{
-> ...
-> > +	if (setns(netns_fd, CLONE_NEWNET) < 0) {
-> 
-> Design note, more for the kernel side than this patch: because
-> VSOCK_CMD_DEV_NETNS_SET has no target attribute, userspace has to do a
-> setns() dance, and "ip -n foo vsock set netns bar" ends up depending on
-> which namespace the genl socket was opened in. rtnetlink and devlink
-> both take an explicit NETNS_FD / NETNS_PID / NETNS_ID attribute for
-> this; doing the same for vsock would make the tool trivial and avoid
-> needing setns() (and the privileges to enter the target ns) at all.
-> Since this is RFC on both sides it seems worth reconsidering now.
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-This does make sense, we'll use this approach in the kernel.
+Rename INET_ECN_xmit_ect_1_negotiation() to
+INET_ECN_xmit_negotiation_ect(). The previous name suggests that the
+helper always uses ECT(1), while it actually chooses the ECT codepoint
+to be used during the ECN negotiation.
 
-> 
-> If the kernel API stays as is, the setns/restore logic looks correct.
-> 
-> > +ip vsock set netns 1
-> > +.RS 4
-> > +Move the device back to the initial network namespace, undoing the assignment.
-> 
-> That only holds if ip is run in the initial pid namespace; "1" is a
-> PID, not "the initial netns". Maybe say so, or use /proc/1/ns/net.
-> 
-> Minor: the man page says "Nothing follows vsock when the device is in
-> the current namespace" -- worth also showing an example of the
-> "netnsid unknown" output so users know what it means.
+This renaming also prepares for the introduction of a similarly named
+helper function for established connections in the followup patch.
 
-Will address other feedback too.
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Best,
-Bobby
+--
+v3:
+- Rename helper to better reflect its behavior
+---
+ include/net/tcp_ecn.h | 6 +++---
+ net/ipv4/tcp_cong.c   | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+index 865d5c5a7718..9ca016d98972 100644
+--- a/include/net/tcp_ecn.h
++++ b/include/net/tcp_ecn.h
+@@ -33,7 +33,7 @@ enum tcp_accecn_option {
+ };
+ 
+ /* Apply either ECT(0) or ECT(1) based on TCP_CONG_ECT_1_NEGOTIATION flag */
+-static inline void INET_ECN_xmit_ect_1_negotiation(struct sock *sk)
++static inline void INET_ECN_xmit_negotiation_ect(struct sock *sk)
+ {
+ 	__INET_ECN_xmit(sk, tcp_ca_ect_1_negotiation(sk));
+ }
+@@ -583,7 +583,7 @@ static inline void tcp_ecn_send_synack(struct sock *sk, struct sk_buff *skb)
+ 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ECE;
+ 	else if (tcp_ca_needs_ecn(sk) ||
+ 		 tcp_bpf_ca_needs_ecn(sk))
+-		INET_ECN_xmit_ect_1_negotiation(sk);
++		INET_ECN_xmit_negotiation_ect(sk);
+ 
+ 	if (tp->ecn_flags & TCP_ECN_MODE_ACCECN) {
+ 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ACE;
+@@ -618,7 +618,7 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
+ 
+ 	if (use_ecn) {
+ 		if (tcp_ca_needs_ecn(sk) || bpf_needs_ecn)
+-			INET_ECN_xmit_ect_1_negotiation(sk);
++			INET_ECN_xmit_negotiation_ect(sk);
+ 
+ 		TCP_SKB_CB(skb)->tcp_flags |= TCPHDR_ECE | TCPHDR_CWR;
+ 		if (use_accecn) {
+diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
+index e3f462f161dd..3331679c81d7 100644
+--- a/net/ipv4/tcp_cong.c
++++ b/net/ipv4/tcp_cong.c
+@@ -228,7 +228,7 @@ void tcp_assign_congestion_control(struct sock *sk)
+ 
+ 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
+ 	if (ca->flags & TCP_CONG_NEEDS_ECN)
+-		INET_ECN_xmit_ect_1_negotiation(sk);
++		INET_ECN_xmit_negotiation_ect(sk);
+ 	else
+ 		INET_ECN_dontxmit(sk);
+ }
+@@ -258,7 +258,7 @@ static void tcp_reinit_congestion_control(struct sock *sk,
+ 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
+ 
+ 	if (ca->flags & TCP_CONG_NEEDS_ECN)
+-		INET_ECN_xmit_ect_1_negotiation(sk);
++		INET_ECN_xmit_negotiation_ect(sk);
+ 	else
+ 		INET_ECN_dontxmit(sk);
+ 
+-- 
+2.34.1
+
