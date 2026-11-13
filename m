@@ -1,100 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794614349;
-	b=LTI/2FGs9P7eeNP1fOm64IQguWkTCZwG2o94jnFmUIDtpgVgD5U77CAMEIZ5RBNVP4fZ
-	 RvihDE8jW8jtfBpT1/qt+oD3hhb4RADiv9D7pn3lWteCFqcNyVDdkXKtAeZ0hZjnmTW+E
-	 u/EaFj+QIqj1/NCDCrrI8KAIQop9cWrRsXWoYfAJ3l+zzDxCMUdluYFVu4UzKwtYzu2OZ
-	 6aW+KEAju9UO+nJkRZKLB17WUAOqd0hLc7dzmoddNlEk3XlndqeZZCbAb9bfub6lUP2C9
-	 NE4clEvptlpaKdgsVdmv3gR/wqgQysDHJJm8YrTSSZTRaDumpmG11m20hgRdJzpdmLA==
+	t=1794614371;
+	b=Ui7f6636wczR+qqFCoZTwbXCDQzVyNblkFnm6Dc6RRdEiHTNyw611SUSv+9c5VU72DFC
+	 63OGu8ORPhuG5Oky1hix4lM1L1BbGq7lYVOj5SiM8jNHEml/oVvSe+rX4kGfs5anEF3je
+	 Ln/aCrBMA31eI7CjFa0V39dR4eRd/DOjVlYUbRnCp7OYlzutVYR/XVNcwgySmGveH2nZ8
+	 gwcIVrsuAaIzn7cn4d8ZUrEM8VK5b8fHbZ6Ot674WyZ8QQQcxCCFvHql++oJH+EQGxzUa
+	 eHOsd1aCYgivDX0l44h7ql93MiInwNx072Qk1tWOn+qlRdOqyTTk0YWBWyuy9CVwMfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794614349;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=EVQIgja+KMPXdTV3DxptR9gCtQg/oHJzcCZeV6M7rI0=;
-	b=27PJBtbS/xf/D5D+VJniucbuhfOyXE89iEvFQ/ax1m/URHYwp56u/OaMzCjn5DTboJqb
-	 +0HCxNzX83fD1PJC4XyJHZkE//gK95EwPlsl86SRyepmma34FsT7Ju53c5nwxlnZ0gk/u
-	 kWHUNlLUbaGr2Q7N4K4vrxHd8exkFfu8XPD3K9cZl5luhLvnZtuZ4nxr0bpyRjY7I+b0W
-	 dkcsiQbUq3s6FOAZ7fk9dKOQ0GRHuCox6Unf3W+wWMXWbiUoriRTShxdKTDvxoBDtS5kJ
-	 ueeFJfYEgTYlZ52o6LdmP7PbJ21wY5N9m/nzB2OBJ3mUcIm/2IX5Uj4SZf9onxKhF9w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794614371;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=10M1G/t/korwKZ2sRQj6Qe5dF4CowjfWMMV1uNJdnG0=;
+	b=iUpOnxz6ZSoArJLQBZu4l+C/4g3nhB7wHyif2jXSafqTxeP2RenS2j39OtcGGZ2AzBCe
+	 vfkZynmW535vWE5vP0/5jQtFX9QVFYtDTyiN4xeqcBFsoOBLNWiVNyp0g4cEGfkkmzMZ3
+	 BReVTbwtUyI5ebXLU5r88sBjcdOLJOPXjiI7Tpv8TWHX173QjaQUg/L+Jo5E/z+SdP9SZ
+	 Nf/Fbk+JfdJkAFperKoroW0A+PzMU/2+NqX+MFlddeF9hHJqpHF0l2ZvSISJAUwWI+Xmf
+	 pjAhzCVH3TqHzhkDpvL4Ws3D5PAoio1DNl1BOt4VCd5TUSPGijkZnALcXVHhuW8nIbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RcYnU9wK;
-	arc=none smtp.remote-ip=209.85.218.48
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YDYMVCyQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782A660A2600
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:59:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 782A660A2600
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0941606A896
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RcYnU9wK
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c4d21051042so323565366b.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:59:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794614341; x=1795219141; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EVQIgja+KMPXdTV3DxptR9gCtQg/oHJzcCZeV6M7rI0=;
-        b=RcYnU9wKb/bGVQGflm2btBEsjiQpoLNIKdcmqYs7m3ClQbS3wsScIUisGYrUqMOyu8
-         v2yKz2F3b/yGI7FAv6EaqM3HzjLB8ouajjZIV6CVi6hDLf8OcVwE+TqyOPFsT9e/Ttpr
-         Cr/TO+NZsSGFFTUtAJw2IlvRvGObOkLbhlo1aOkxN/PAG591fMxd7HpL1kAe5CcObyik
-         GtecC8+Mi/x7sjwIOPx8RTEO9yp3u0OKS68R59PP/qHRDf8ZAxT3mJ8kA5ynEsvlRagt
-         BT2qeHo3grbbCSCfdvi8QfBk7prnxys4KGao9uc06mV9Qe/sSC0VBiFGwKSW6FvgMCU6
-         aZ9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794614341; x=1795219141;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EVQIgja+KMPXdTV3DxptR9gCtQg/oHJzcCZeV6M7rI0=;
-        b=O1OqO89+mGwtuSLwOr+BwzdVeExZ55NZuAw4JQhPi39PuwLOngoz9zy+SdsdqoINCC
-         qD4w+uuzriWII4N0I9pGfsdvUsw9OtwNy7Ye6xXUdHbJuNARVWZz/ZJ7h8vcUU0qYTdd
-         MmNv/LnkgmofRMybQ2XFaEul+xYjQCVpjyRujbeGcQooTQ69vKbpJM367lHl40XPbtWo
-         JDWd/WOLgu2SdQPGSsYuvoX8kKsmiSkQ1m4lRK1vBOsG/oQossEguNoqzUoATH6dsUjk
-         MhSJBrjXQRDp58ESle/+oldUbMo/p8cN6NptWSwUr7aBPgkbSFnp9T73cd/MYVvz/3gI
-         ZFXw==
-X-Gm-Message-State: APuU4Z/uWHbBaVbYSvuVOyC+6NPEyiKOnwxhxBBZkINwUxkM+4jlxjxe
-	nhBj93U5jxHZsof8Ir3zd4ByG9C5pLg0p2z6xTKFd+0eLvOpoG0tWWygRa792lS5
-X-Gm-Gg: AYBFou0WuxzUHI35v7dkO+1mMgJOPLGI5LoFHc9LqRM0Pj5hG2HH4+bffENFZA42iyV
-	SgLxkvXxRohKm3DK505Nw0yDqFGoH570vvpNt8SQO62qKwZrOXwkjsBwSLhyPEh8I812qdqLVhb
-	EZ/PbXiAJDEXyqukZ4Tetoviz1QpCktvj2OqTph1bKe2Toxc0fwXiW+fJKjOu7IrIh3gyTt2wy6
-	0QEWqueOqBJyZJ0iahDfvBcVfAgWhbBaV2VmFXAlK6fTBzjFF//2wPfYiDiUTm5hHdguNwZRi9X
-	s/V7QUf9QD+SBeUPFGFcAqX2ODIU6GAunrpqfZTqsoBpCRDRd8nsfSSgX1is1zAL/TH8IUrX9oK
-	CREr16lYzdtA6hPqYj2T9qLXVp+fEO5FOcYdHhnuX887nLk3b6evxYBl+cbtMGapUTZNUPvBYOZ
-	kUvP91/K+zGwOJU36IUAycZbk5khXE86GYf96Gdb3yU2303Rx6xfft3Y6BTYGJpDLtGOWwK+3Mw
-	yJQZ5DijIPGWX2I7Z0ZV8bCTYtBHNu+zhxtYxbcm0MhkZunPhhclwcw2onZCGU3/02iXZ5vyA59
-	1uMygk9H+ZCye8mV/DvrDPEsBpjQCrDXjpS5P3Hz
-X-Received: by 2002:a17:907:86a0:b0:c44:16ad:c31d with SMTP id a640c23a62f3a-c509614d4abmr362582466b.4.1794614340662;
-        Fri, 13 Nov 2026 15:59:00 -0800 (PST)
-Received: from kordpc.lan ([2a13:e746:396c:c600::8f9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b3dbaesm153454266b.32.2026.11.13.15.59.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 15:59:00 -0800 (PST)
-From: Kordian Chmielewski <kudzo51@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 7/7] net: bcm4908_enet: order the TX ring index accesses
-Date: Sat, 14 Nov 2026 00:58:47 +0100
-Message-ID: <20261113235847.517308-8-kudzo51@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261113235847.517308-1-kudzo51@gmail.com>
-References: <20261113235847.517308-1-kudzo51@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YDYMVCyQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E420F1F000C4;
+	Fri, 13 Nov 2026 23:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794614370;
+	bh=10M1G/t/korwKZ2sRQj6Qe5dF4CowjfWMMV1uNJdnG0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=YDYMVCyQJVbzs9FhEvLBZlNImnkb5pu1WViGEFde+3I5OsB04Rv2T3ZosGe2v5M3/
+	 Dk1Xnl97rmHadmvST6uDgbF9dihuVr534MuwaB0lbcDC1QYHEOGdWQmbY5wir7SyfV
+	 XbOVFPo1Oh8RArpiI9AMVCcJ1gBKp7wK15xRjXdBP7T5oh7D7dkpMBg8D8HWtqgPW8
+	 mY9UsuCHYTOo6oTwWDV3r8LoPA1ifhq8JUhPSDs8EDc3uaplJ2ynuRFxGqaL+JzHFa
+	 f4JX/uQ/k0B2R2QNeUALKPNa1f+ynIwdz14rqiZhVD+FEaQBPBUFh6Y5cXKVCkuZPU
+	 +71/unZsDqCmA==
+Subject: Re: [PATCH net] net: stmmac: re-base EST after PTP settime64
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Fri, 13 Nov 2026 23:59:29 +0000
+Message-ID: <179461436943.2199510.3966572269599982119@kernel.org>
+In-Reply-To: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
+References: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,97 +64,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Since the TX interrupt was added, poll_tx() runs in its own NAPI and
-does not take the TX queue lock, so it and start_xmit() share the TX
-ring with only the two indexes between them. Nothing orders the
-accesses around those indexes:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-- poll_tx() reads write_idx, then the descriptor and the slot. On arm64
-  the later loads may be satisfied first, so poll_tx() may see the new
-  write_idx together with the previous lap's descriptor, which has no
-  OWN, and the previous lap's slot. It would then unmap and free a
-  frame the DMA has not sent yet, or free the old skb a second time.
-- poll_tx() publishes read_idx once it is done with the slots it
-  freed, but that store is not ordered after its loads from those
-  slots, so start_xmit() may refill a slot before poll_tx() has read
-  it.
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-Publish each index with smp_store_release() and read the other side's
-index with smp_load_acquire() before touching the slots. start_xmit()
-now publishes write_idx right after the descriptor, before the MMIO
-write that kicks the DMA rather than after it, which narrows the window
-in which the DMA can complete a frame that poll_tx() cannot see yet.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Sashiko's review of the previous version of this series pointed this
-out; I have not seen it on the hardware.
+- [Medium] The commit message gets stmmac_adjust_time() wrong, and it
+  uses that function as the model for the new code.
+- [Medium] stmmac_adjust_time() and stmmac_set_time() are the .adjtime
+  and .settime64 callbacks in the same ops tables (stmmac_ptp.c lines…
+- [Medium] In stmmac_set_time() the new code ignores the return values of
+  both stmmac_est_configure(..., false) and __stmmac_setup_est(), and…
 
-Fixes: 12bb508bfe5a ("net: broadcom: bcm4908_enet: support TX interrupt")
-Signed-off-by: Kordian Chmielewski <kudzo51@gmail.com>
----
- drivers/net/ethernet/broadcom/bcm4908_enet.c | 26 ++++++++++++++------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+--
 
-diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-index 4139dad3a..8bc620de2 100644
---- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
-+++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-@@ -566,7 +566,9 @@ static int bcm4908_enet_stop(struct net_device *netdev)
-  */
- static int bcm4908_enet_tx_free_descs(struct bcm4908_enet_dma_ring *ring)
- {
--	int free = READ_ONCE(ring->read_idx) - READ_ONCE(ring->write_idx) - 1;
-+	/* Pairs with smp_store_release() in bcm4908_enet_poll_tx() */
-+	int free = smp_load_acquire(&ring->read_idx) -
-+		   READ_ONCE(ring->write_idx) - 1;
- 
- 	return free < 0 ? free + ring->length : free;
- }
-@@ -619,12 +621,14 @@ static netdev_tx_t bcm4908_enet_start_xmit(struct sk_buff *skb, struct net_devic
- 	dma_wmb();
- 	buf_desc->ctl = cpu_to_le32(tmp);
- 
--	bcm4908_enet_dma_tx_ring_enable(enet, &enet->tx_ring);
-+	/* Publish the slot and the descriptor before the index; pairs with
-+	 * smp_load_acquire() in bcm4908_enet_poll_tx()
-+	 */
-+	smp_store_release(&ring->write_idx,
-+			  ring->write_idx < ring->length - 1 ?
-+			  ring->write_idx + 1 : 0);
- 
--	if (ring->write_idx == ring->length - 1)
--		WRITE_ONCE(ring->write_idx, 0);
--	else
--		WRITE_ONCE(ring->write_idx, ring->write_idx + 1);
-+	bcm4908_enet_dma_tx_ring_enable(enet, &enet->tx_ring);
- 
- 	/* poll_tx() wakes the queue once there is room again */
- 	netif_txq_maybe_stop(txq, bcm4908_enet_tx_free_descs(ring), 1, 1);
-@@ -718,7 +722,10 @@ static int bcm4908_enet_poll_tx(struct napi_struct *napi, int weight)
- 	unsigned int bytes = 0;
- 	int handled = 0;
- 
--	while (handled < weight && read_idx != READ_ONCE(tx_ring->write_idx)) {
-+	while (handled < weight) {
-+		/* Pairs with the release in bcm4908_enet_start_xmit() */
-+		if (read_idx == smp_load_acquire(&tx_ring->write_idx))
-+			break;
- 		buf_desc = &tx_ring->buf_desc[read_idx];
- 		if (le32_to_cpu(buf_desc->ctl) & DMA_CTL_STATUS_OWN)
- 			break;
-@@ -733,7 +740,10 @@ static int bcm4908_enet_poll_tx(struct napi_struct *napi, int weight)
- 		if (++read_idx == tx_ring->length)
- 			read_idx = 0;
- 	}
--	WRITE_ONCE(tx_ring->read_idx, read_idx);
-+	/* Be done with the slots before start_xmit() may reuse them; pairs
-+	 * with smp_load_acquire() in bcm4908_enet_tx_free_descs()
-+	 */
-+	smp_store_release(&tx_ring->read_idx, read_idx);
- 
- 	enet->netdev->stats.tx_packets += handled;
- 	enet->netdev->stats.tx_bytes += bytes;
+net: stmmac: re-base EST after PTP settime64
+
+This patch makes stmmac_set_time() take est_lock and disable EST before
+it steps the PHC with stmmac_init_systime(). Afterwards it re-bases EST
+through __stmmac_setup_est(). The goal is to stop EST from running with
+a stale base time after clock_settime() on the PHC.
+
+> stmmac_set_time() initializes the PTP clock through
+> stmmac_init_systime() (TSINIT) while holding only ptp_lock.  It neither
+> takes est_lock nor disables and re-bases EST around the step, unlike
+> stmmac_adjust_time(), which performs TSUPDT through
+> stmmac_adjust_systime() under est_lock.
+
+[ ... ]
+
+> Take est_lock for the whole disable/step/reprogram sequence, as
+> stmmac_adjust_time() does: disable EST before initializing the clock and
+> call __stmmac_setup_est() afterwards so the base time is recomputed from
+> the reserved taprio base time and the new clock.
+
+[Severity: Medium]
+Does this match what stmmac_adjust_time() does? In stmmac_ptp.c,
+stmmac_adjust_time() releases est_lock before the step and takes it
+again afterwards:
+
+stmmac_adjust_time() {
+    ...
+	mutex_lock(&priv->est_lock);
+	if (priv->est && priv->est->enable)
+		stmmac_est_configure(priv, priv, priv->est,
+				     priv->plat->clk_ptp_rate, false);
+	mutex_unlock(&priv->est_lock);
+
+	write_lock_irqsave(&priv->ptp_lock, flags);
+	stmmac_adjust_systime(priv, priv->ptpaddr, sec, nsec, neg_adj, xmac);
+	write_unlock_irqrestore(&priv->ptp_lock, flags);
+
+	mutex_lock(&priv->est_lock);
+	if (priv->est && priv->est->enable)
+		__stmmac_setup_est(priv);
+	mutex_unlock(&priv->est_lock);
+    ...
+}
+
+So TSUPDT runs under ptp_lock only, not under est_lock. The new
+stmmac_set_time() holds est_lock across the write side of ptp_lock, and
+stmmac_adjust_time() never nests the locks that way.
+
+The est_lock -> ptp_lock (read) ordering does already exist through
+__stmmac_setup_est()->gettimex64(), and stmmac_init_systime() does use
+readl_poll_timeout_atomic(). That part of the ordering argument holds. The
+precedent of stmmac_adjust_time() holding est_lock across the step does
+not.
+
+Could the commit message describe what stmmac_adjust_time() actually
+does?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> index 31a66e855d6b1..6370bdc6c58b5 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> @@ -129,10 +129,19 @@ static int stmmac_set_time(struct ptp_clock_info *ptp,
+>  	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
+>  	unsigned long flags;
+>  
+> +	mutex_lock(&priv->est_lock);
+
+[Severity: Medium]
+stmmac_set_time() now holds est_lock for the whole disable/step/re-base
+sequence. Its sibling .adjtime callback, stmmac_adjust_time(), still
+releases est_lock between disabling EST and the TSUPDT step (see the
+snippet above).
+
+Can tc_taprio_configure() still get into that window?
+
+CPU1                                  CPU2
+stmmac_adjust_time()
+  mutex_lock(&priv->est_lock)
+  stmmac_est_configure(..., false)
+  mutex_unlock(&priv->est_lock)
+                                      tc_taprio_configure()
+                                        mutex_lock(&priv->est_lock)
+                                        gettimex64()  /* pre-step clock */
+                                        stmmac_est_configure(..., true)
+                                        priv->est->enable = true
+                                        mutex_unlock(&priv->est_lock)
+  write_lock_irqsave(&priv->ptp_lock)
+  stmmac_adjust_systime()  /* EST enabled in hardware */
+  write_unlock_irqrestore(&priv->ptp_lock)
+  mutex_lock(&priv->est_lock)
+  __stmmac_setup_est()
+
+In that case EST is running in hardware while the clock is stepped. That
+goes against the "If EST is enabled, disabled it before adjust ptp time"
+comment in stmmac_adjust_time(). The later __stmmac_setup_est() re-base
+corrects the base time, so the effect lasts only as long as the window.
+
+The commit message treats stmmac_adjust_time() as already covering this
+case. Should stmmac_adjust_time() also hold est_lock across the step, so
+that the .adjtime and .settime64 paths behave the same way?
+
+> +	if (priv->est && priv->est->enable)
+> +		stmmac_est_configure(priv, priv, priv->est,
+> +				     priv->plat->clk_ptp_rate, false);
+> +
+>  	write_lock_irqsave(&priv->ptp_lock, flags);
+>  	stmmac_init_systime(priv, priv->ptpaddr, ts->tv_sec, ts->tv_nsec);
+>  	write_unlock_irqrestore(&priv->ptp_lock, flags);
+>  
+> +	if (priv->est && priv->est->enable)
+> +		__stmmac_setup_est(priv);
+> +	mutex_unlock(&priv->est_lock);
+> +
+>  	return 0;
+>  }
+
+[Severity: Medium]
+Should the return values of stmmac_est_configure(..., false) and
+__stmmac_setup_est() be checked here?
+
+est_configure() in stmmac_est.c writes each register through est_write().
+est_write() polls with readl_poll_timeout() and can return -ETIMEDOUT. On
+any failure, est_configure() returns early, before it writes EST_CONTROL
+and EST_INT_EN:
+
+est_configure() {
+    ...
+	if (ret)
+		return ret;
+
+	for (i = 0; i < cfg->gcl_size; i++) {
+		ret = est_write(est_addr, i, cfg->gcl[i], true);
+		if (ret)
+			return ret;
+	}
+    ...
+}
+
+If the disable call fails, EEST stays set and stmmac_init_systime()
+steps the clock while EST is still running. That is the situation this
+patch is meant to avoid.
+
+If the disable succeeds but the re-enable inside __stmmac_setup_est()
+fails, EST stays off in hardware. __stmmac_setup_est() only logs the
+error:
+
+__stmmac_setup_est() {
+    ...
+	if (err) {
+		netdev_err(priv->dev, "failed to re-configure EST\n");
+		return err;
+	}
+    ...
+}
+
+priv->est->enable is still true and stmmac_set_time() returns 0. Taprio
+then believes the gate schedule is active until taprio is reconfigured.
+On a similar failure, tc_taprio_configure() clears priv->est->enable, and
+stmmac_setup_est() passes the error up.
+
+stmmac_adjust_time() already ignores these return values in the same way.
+This patch adds the same pattern to the settime64 path.
+
 -- 
-2.56.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6%40oss.qualcomm.com
