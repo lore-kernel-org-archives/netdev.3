@@ -1,63 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794601983;
-	b=pcF7RG8IS3EMSSFpMZIRmmSm5/Mikee87YqPohYTaUnwK1Oy7ynGzX+C3sYeSORIjKhr
-	 yIFH/5O3T93JxgPVIO5GriMmyeunUHRWXGO1MudUwnhBX4rVHHEPISauzcNmr/hRU92Wz
-	 QN0nJ+LfnJiaMcODPtCaTTsKLsYK+6hit1Rt9pIYBn7+Lk09Zh6Yt1+IKRrcs7/G4tIcA
-	 HGoivNKH3Wt/LW+7rsjG5B1x9pY7P9EnjENz8zos8+yYf6tmMUWniV/froPPd8c3vo70m
-	 GShV0W4SZ0ptmkP/VHTzHDwdOxJFqT3dLHtQEu738mmJnyj4GAf0wel5bUAKz+6KyAA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794601983;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=KB3jO2Uh980sYfYogP8Ce6aR0qJaY2oratJHAC8zDpM=;
-	b=JeD2j9t+o+BNSyNpdMe+97V5P7rmGrbCmbkZDS7RHR7a0DcqtqMXZBa3m5VS7xe6MUBO
-	 kXuGSxlEyIwfjE7jsGF8j7gyshmxJoRRBHWYxFpKBpJi/FiyA3T+u9jxxSb7X37JQ4dOO
-	 QumST+WSDj5cXjQYYDlIJc7OEUJUpDzv8/6ejFShKeyipspMo3Yi8sBe4RNakO19HIlM0
-	 RM/tpXzhC5Wx89sjul2V0EonqvxByNz1rFVGGIrwg9kjIc5juPI2APUg/s2sKgG1aVhLm
-	 v0WJJ+2dNhe2ooWjyzP56vpF1DAefnkWZa0V6113sVCbIoLAuILNW7QjOpqUha3QRWw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=bckuey0Z;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794602237;
+	b=A3TiDb8omyrRB4DykPzpktB9ovANFWNksQqeKQj+m7mlB5Uh78cOnhxExpogvVVh+01R
+	 z2eg42eUGM4WTkqwyirsPOHpNrwvbkvLAyvoiOdXY2CbrhU5LfVJouUphByHdrA+DB0hN
+	 BptYJ6oXYWT6dhu7eIuPG7ZjvMXA/dSr+Yfkoz4g7Xo879Z6CPp8w+hz3WAQDNJioWKPZ
+	 QTXluY3o1gKoqgkP6761St18HaST1Pc5XACUheoLlSVceNPiCrZXlwcTH3BcqtLw9T/UM
+	 TElfahnTFOTRzWdwUwh542hBBU0dAT3xRTd4rxRAlP0wejqS+8kIHw5E56swDd7TrdA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602237;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=Q0zmMS95Y2iOsvCJTAiye2FTSJmpfdS8NTIq4CrS7fg=;
+	b=W1xu3r9bW+6g7IhkYWs6uFEPH81Pe7Z5cgDXJTkrYYAljjgqFs+DW+3KY6bDCS4agM0I
+	 XNnuMO1KDtltwnLl4MMyTmw58TusPSCWmbH2Gj/MEH/QpNFqDledS8EbavEC1Nl5PUgKE
+	 7ph8WxQ+yFTCEI5EAuEc9PbOQWWe64WqbhiH3JNdtE39ujzX9rVpXvWwm5OC2eZg/xNL8
+	 Ilq15itslGFuRBXCBEqZsF9cchsfpKsRPUFYAhWe/R+uGStSnhNOlFmNSVRRrDe+znIg6
+	 RjYvLTNpNeNKG3JQ1mm0iOsNvNH7LIET4qr94vcGC+4K204tEbOKwF+sY+5VuAvRIYQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ceb14J6a;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538A1606A327;
-	Fri, 13 Nov 2026 20:33:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 538A1606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E255606A32E
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:37:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E255606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=bckuey0Z
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KB3jO2Uh980sYfYogP8Ce6aR0qJaY2oratJHAC8zDpM=; b=bckuey0Z9y3l43ZbikGRihLCKL
-	alpuVFssHwH4Vcv4s1nhWQILNGHj15E7P7hUv8oqbcqyWcjaTA12NdS+xvH5ogkyUvfBiPii+VfHY
-	5DxWfBoejA3LNErUg71EDJ4j5cSxdmFG0eWYIP7M2HZG6hxwJJWqInJo1DrbO9sOteMc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xRxx9-00GMIW-Eu; Fri, 13 Nov 2026 21:32:55 +0100
-Date: Fri, 13 Nov 2026 21:32:55 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Artem Shimko <a.shimko.dev@gmail.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	maxime.chevallier@bootlin.com, pavel@ucw.cz,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-leds@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 3/3] net: phy: dap8211r: add led hardware
- control support
-Message-ID: <8ef5b0a7-58f6-4c62-8153-6a9c8d3703f7@lunn.ch>
-References: <20261113110546.173624-1-a.shimko.dev@gmail.com>
- <20261113110546.173624-4-a.shimko.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ceb14J6a
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso342318666b.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:37:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794602236; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rtwHFwgnwIQT9GHSrTf7vlaSM55YoEax1FaAz5o44bv/U8uw42vLwBMP745dKURdQ0
+         AOHzKolkJF4dccdqEEQiVcumJS7W37Ah/kYaGNtlLyylZdcXE8GXyXeC8Zxvu3BVwdgq
+         PdDm3u6fOmi+GkmZ3EGJ4dVnovXnIqXO57z+KFx+1dBDfeRUUvqFdVvZ5ydN1RwXvE+b
+         9V7RvjuuQx4GecqIzQq/kO5CpJLfxbOw991UBl+XOm0llyf9P2TUhdLvNXh46It8owMz
+         FQYw7nn3Dly2dl4g0eXkAKRMGyM48siYAsyMCa2b3yjpF09eMXrY3Oa3Wb1Tq8vjAWvc
+         vIxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Q0zmMS95Y2iOsvCJTAiye2FTSJmpfdS8NTIq4CrS7fg=;
+        fh=HX/c7wAa4UXjroDpfxXPhJBlHYwkEgnqljflredSg+s=;
+        b=mdTgdfxWcysRqLm+FyaFPhjVZ48W3DUl5qdZeKjMHdyiX5jB3W3a/5melw1sYRleZp
+         nJ9GG+FOciO8nzwgITtQ6J9SoEZ6Fl/XqQhzOqnoya5cs1kiEiWQWeknitrpWYZ99j/W
+         l3eEWSzz9JFEJPxp1huT4LJ4ynNrFPfASdflvjz6dOqirEb0p/QPD+aUjptjqRr/rjmR
+         nROk/UopAOAltCIOROagA2oRkOP7RC+conHz1oQ24PBB4eaHb0efNnrHfwreS1/y/HxD
+         Er/yIjsQyB1prc4G4PiU2DMFAmZPMeQmjAoHONfiSf/ULyYcZpAz08YANKKfx93YKfCf
+         WLZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794602236; x=1795207036; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q0zmMS95Y2iOsvCJTAiye2FTSJmpfdS8NTIq4CrS7fg=;
+        b=ceb14J6aCiub8PwS3mQUNXCY86BMGZZQN0L1eWWeFCdjdbQZHzYli0Me/XBqFJklt9
+         XX+If23LQbF5WHPiMWO8ua7VpEW7IhWILPW1GW9spI/dcCYFiMts30JmZND/SnlNFFH4
+         S5SPkdaqTj5jyb7Fs7Da96CnEC4YLZ699XdNoh6D30NY4HloKgLGZr78cCGDsb5k4Vko
+         sHZCrPg6/C58dnhlVfWwFyJamWaNhSJmmel16hhiMUjUPh3cynRPiusEyPn+IflD1z8s
+         wDArTtpsxB8ee5rurZ4JN7V5z3m7nGPitzpVn1fcQUF4J4Ko1jIgJqxn8ug812tScxKG
+         M8+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794602236; x=1795207036;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Q0zmMS95Y2iOsvCJTAiye2FTSJmpfdS8NTIq4CrS7fg=;
+        b=d8iCM/cP4pY8XCJdbCV1Uj5HCBSv3nfenvPNvE4oTGUytnJ6BqG82hqNV9osy37nZS
+         03IG5uQ7dmnZKstPs4Do6zwBmgjkga+CAqd+bbxuHgeI77o3OxsMhFhRTpqkPdVJL9QU
+         EQtVNjB3lkM4DMeUYKE0KCqB82HFxVnkLuNlG+inMYlmrz0k4BvDyHSntl7tQbTJJblh
+         bqI7LkvGijZx953wy94fy3oEElySrTt5HHnv9hfdne4+s84jCG4cqdHvs0LPgGOrEhGJ
+         5c4yNxvoJaktewj9LqAqvDqpb8qf188ZMwSluLXee4oVUSqWOw0eHm0101CxCGyyk88q
+         Edkw==
+X-Gm-Message-State: APuU4Z/V4RyomhZ4WEQvb66EuBtYaqbvChnfq1CApSiD1mzTbf8EvbFE
+	4wU+CPYMSYIIraGeTHKKEyJU/NG/AmGH98iTTpsb5AXGyxP7e4iolzbX6yb6B7ehuAep82En116
+	QzPgM6PTJhJV15vHrmYllSajh8gz22Gts9VuOJdMcmn4QEb+kVVOfttqo
+X-Gm-Gg: AYBFou1x6OujAps38hLXaHgEYIngF7DqGXLskwRO8qZVkkLNqaa1oZIJNIeoJik/ETN
+	e1eH3Yy8N+6q8CLtJSr9WW55WtahMZXEGgsYM2E9UBKy630ORxR4n3oI4q/ucWfVjxEp7KejRT6
+	tutbAJZZ/6vkNZk61U/u1d4kyqoRAouyfZDwbI+HKyJLbYuz+UqjSe/6ecxnr6M7rkVCk93ToNF
+	cP5FD2ZKriO5nZYK7lnxZIoJsgNL0s9Obf3jzE4Xb8mQyW/29TZSO4tmc+222sb1Lnaf3rkkL9W
+	wW+C8WTOgFju447a4QX5AEM4AwPp1W8IQxVn7jSZkLUyUIFQAZy6WvWF9GfFNiFrA6cgpStxrz3
+	XX42J1X5sQKnXbBP2t7NLPjD1HVokExMi5+ragg==
+X-Received: by 2002:a17:906:c14e:b0:c3f:c878:7c1d with SMTP id
+ a640c23a62f3a-c5096307650mr316429966b.9.1794602235243; Fri, 13 Nov 2026
+ 12:37:15 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,36 +102,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113110546.173624-4-a.shimko.dev@gmail.com>
+References: <20261113195553.2220562-1-joshwash@google.com>
+In-Reply-To: <20261113195553.2220562-1-joshwash@google.com>
+From: Joshua Washington <joshwash@google.com>
+Date: Fri, 13 Nov 2026 12:37:03 -0800
+X-Gm-Features: AclHuK9ptA2Q7NDGZ-JiCdfTID2_a3zpW-s80Ltd9yW31n9tVs_J6wRqHrbt7_I
+Message-ID: <CALuQH+XPebJ67K9ntdYoruXdLH0tSt7EFkesfd_=3ATNJiQBwQ@mail.gmail.com>
+Subject: Re: [PATCH net] gve: fix checksum state and gso_segs of HW-GRO packets
+To: netdev@vger.kernel.org
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jordan Rhee <jordanrhee@google.com>, 
+	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Praveen Kaligineedi <pkaligineedi@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> +#define DAP8211R_LED_ACT_BLINK		BIT(13)
-> +#define DAP8211R_LED_FULL_DUPLEX	BIT(12)
-> +#define DAP8211R_LED_HALF_DUPLEX	BIT(11)
-> +#define DAP8211R_LED_TX			BIT(10)
-> +#define DAP8211R_LED_RX			BIT(9)
-> +#define DAP8211R_LED_LINK_1000		BIT(6)
-> +#define DAP8211R_LED_LINK_100		BIT(5)
-> +#define DAP8211R_LED_LINK_10		BIT(4)
+This patch is missing my signoff. I will respin, adding the singoff
+and removing the reviewed-by, after the 24 hour period.
 
-Do any of these bits allow forced on/off?
-
-> +static int dap8211r_led_hw_is_supported(struct phy_device *phydev, u8 index, unsigned long rules)
-> +{
-> +	switch (index) {
-> +	case DAP8211R_LED_ID_0:
-> +		fallthrough;
-> +	case DAP8211R_LED_ID_1:
-> +		fallthrough;
-> +	case DAP8211R_LED_ID_2:
-> +		break;
-
-You can collapse case statements, without fallthrough, if there is no
-code.
-
-It is also possible to do:
-
-case DAP8211R_LED_ID_0..DAP8211R_LED_ID_2:
-
-     Andrew
+-- Josh
